@@ -36,6 +36,7 @@ class CounterSegTree {
         return data[k + sz].begin()->first;
     }
     void set(int k, const key_type& x) {
+        assert(0 <= k and k < n);
         k += sz;
         key_type y = data[k].begin()->first;
         while (k > 0) {
@@ -43,7 +44,7 @@ class CounterSegTree {
             if (itr->second == 1) {
                 data[k].erase(itr);
             } else {
-                itr->second++;
+                itr->second--;
             }
             data[k][x]++;
             k >>= 1;

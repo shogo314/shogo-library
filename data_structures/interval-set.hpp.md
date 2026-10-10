@@ -2,10 +2,13 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
-  _extendedVerifiedWith: []
+  _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/yukicoder-674.2.test.cpp
+    title: test/yukicoder-674.2.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':warning:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "\u534A\u958B\u533A\u9593\u3092\u7BA1\u7406\u3059\u308B"
     links: []
@@ -111,8 +114,9 @@ data:
   path: data_structures/interval-set.hpp
   requiredBy: []
   timestamp: '2026-10-09 19:25:54+09:00'
-  verificationStatus: LIBRARY_NO_TESTS
-  verifiedWith: []
+  verificationStatus: LIBRARY_ALL_AC
+  verifiedWith:
+  - test/yukicoder-674.2.test.cpp
 documentation_of: data_structures/interval-set.hpp
 layout: document
 redirect_from:

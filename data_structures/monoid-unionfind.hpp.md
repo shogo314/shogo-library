@@ -10,8 +10,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/yukicoder-674.test.cpp
-    title: test/yukicoder-674.test.cpp
+    path: test/yukicoder-674.1.test.cpp
+    title: test/yukicoder-674.1.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -217,7 +217,7 @@ data:
   timestamp: '2026-10-10 20:42:46+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/yukicoder-674.test.cpp
+  - test/yukicoder-674.1.test.cpp
 documentation_of: data_structures/monoid-unionfind.hpp
 layout: document
 redirect_from:

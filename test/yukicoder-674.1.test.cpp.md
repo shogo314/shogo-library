@@ -20,7 +20,7 @@ data:
     PROBLEM: https://yukicoder.me/problems/no/674
     links:
     - https://yukicoder.me/problems/no/674
-  bundledCode: "#line 1 \"test/yukicoder-674.test.cpp\"\n#define PROBLEM \"https://yukicoder.me/problems/no/674\"\
+  bundledCode: "#line 1 \"test/yukicoder-674.1.test.cpp\"\n#define PROBLEM \"https://yukicoder.me/problems/no/674\"\
     \n\n#line 2 \"data_structures/monoid-unionfind.hpp\"\n\n/**\n * @file monoid-unionfind.hpp\n\
     \ * @brief \u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\u3092\u4E57\u305B\u308BUnionFind\n\
     \ */\n\n#include <utility>\n#include <vector>\n#line 2 \"data_structures/unionfind.hpp\"\
@@ -184,10 +184,10 @@ data:
     \ prod(int a) {\n        return val[leader(a)];\n    }\n};\n\ntemplate <typename\
     \ M>\nMonoidUnionFind(int, M) -> MonoidUnionFind<M>;\ntemplate <typename M>\n\
     MonoidUnionFind(std::vector<typename M::S>, M) -> MonoidUnionFind<M>;\n#line 4\
-    \ \"test/yukicoder-674.test.cpp\"\n\n#include <iostream>\n#include <set>\n\nusing\
-    \ ll = long long;\n\nint main() {\n    ll D, Q;\n    std::cin >> D >> Q;\n   \
-    \ std::vector<std::pair<ll, ll>> AB(Q);\n    std::set<ll> s;\n    for (auto& [A,\
-    \ B] : AB) {\n        std::cin >> A >> B;\n        s.insert(A);\n        s.insert(A\
+    \ \"test/yukicoder-674.1.test.cpp\"\n\n#include <iostream>\n#include <set>\n\n\
+    using ll = long long;\n\nint main() {\n    ll D, Q;\n    std::cin >> D >> Q;\n\
+    \    std::vector<std::pair<ll, ll>> AB(Q);\n    std::set<ll> s;\n    for (auto&\
+    \ [A, B] : AB) {\n        std::cin >> A >> B;\n        s.insert(A);\n        s.insert(A\
     \ - 1);\n        s.insert(B);\n        s.insert(B + 1);\n    }\n    std::vector<ll>\
     \ v(s.begin(), s.end());\n    std::vector<bool> f(s.size());\n    std::vector<std::pair<int,\
     \ int>> init;\n    for (std::size_t i = 0; i < v.size(); i++) {\n        init.push_back({i,\
@@ -226,15 +226,15 @@ data:
   - data_structures/unionfind.hpp
   - algebra/monoid.hpp
   isVerificationFile: true
-  path: test/yukicoder-674.test.cpp
+  path: test/yukicoder-674.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-10 20:42:46+09:00'
+  timestamp: '2026-10-10 21:22:32+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/yukicoder-674.test.cpp
+documentation_of: test/yukicoder-674.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/yukicoder-674.test.cpp
-- /verify/test/yukicoder-674.test.cpp.html
-title: test/yukicoder-674.test.cpp
+- /verify/test/yukicoder-674.1.test.cpp
+- /verify/test/yukicoder-674.1.test.cpp.html
+title: test/yukicoder-674.1.test.cpp
 ---

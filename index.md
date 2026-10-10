@@ -57,7 +57,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: data_structures/convex-hull-trick.hpp
       title: Convex Hull Trick
-    - icon: ':warning:'
+    - icon: ':heavy_check_mark:'
       path: data_structures/counter-segtree.hpp
       title: data_structures/counter-segtree.hpp
     - icon: ':warning:'
@@ -66,7 +66,7 @@ data:
     - icon: ':warning:'
       path: data_structures/imos.hpp
       title: "imos\u6CD5\u3067\u533A\u9593\u4F5C\u7528\u30011\u70B9\u53D6\u5F97"
-    - icon: ':warning:'
+    - icon: ':heavy_check_mark:'
       path: data_structures/interval-set.hpp
       title: "\u534A\u958B\u533A\u9593\u3092\u7BA1\u7406\u3059\u308B"
     - icon: ':heavy_check_mark:'
@@ -150,7 +150,7 @@ data:
       title: floor(sqrt(n))
   - name: others
     pages:
-    - icon: ':warning:'
+    - icon: ':heavy_check_mark:'
       path: others/mo.hpp
       title: others/mo.hpp
   - name: string
@@ -297,6 +297,9 @@ data:
       path: test/yosupo-point-set-range-composite.3.test.cpp
       title: test/yosupo-point-set-range-composite.3.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo-point-set-range-frequency.test.cpp
+      title: test/yosupo-point-set-range-frequency.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo-polynomial-taylor-shift.test.cpp
       title: test/yosupo-polynomial-taylor-shift.test.cpp
     - icon: ':heavy_check_mark:'
@@ -333,6 +336,9 @@ data:
       path: test/yosupo-shortest-path.test.cpp
       title: test/yosupo-shortest-path.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo-static-range-inversions-query.test.cpp
+      title: test/yosupo-static-range-inversions-query.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo-unionfind-with-potential-non-commutative-group.test.cpp
       title: test/yosupo-unionfind-with-potential-non-commutative-group.test.cpp
     - icon: ':heavy_check_mark:'
@@ -354,8 +360,11 @@ data:
       path: test/yukicoder-2292.test.cpp
       title: test/yukicoder-2292.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/yukicoder-674.test.cpp
-      title: test/yukicoder-674.test.cpp
+      path: test/yukicoder-674.1.test.cpp
+      title: test/yukicoder-674.1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yukicoder-674.2.test.cpp
+      title: test/yukicoder-674.2.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yukicoder-898.test.cpp
       title: test/yukicoder-898.test.cpp

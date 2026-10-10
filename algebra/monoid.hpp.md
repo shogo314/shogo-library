@@ -97,8 +97,8 @@ data:
     path: test/yukicoder-2292.test.cpp
     title: test/yukicoder-2292.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yukicoder-674.test.cpp
-    title: test/yukicoder-674.test.cpp
+    path: test/yukicoder-674.1.test.cpp
+    title: test/yukicoder-674.1.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -324,7 +324,6 @@ data:
   - test/aoj-dsl-2-b.test.cpp
   - test/yosupo-range-affine-range-sum.2.test.cpp
   - test/yosupo-range-affine-range-sum.1.test.cpp
-  - test/yukicoder-674.test.cpp
   - test/aoj-dsl-2-f.test.cpp
   - test/yosupo-point-set-range-composite.3.test.cpp
   - test/yosupo-point-add-rectangle-sum.test.cpp
@@ -335,6 +334,7 @@ data:
   - test/yosupo-point-set-range-composite.2.test.cpp
   - test/yosupo-range-chmin-chmax-add-range-sum.2.test.cpp
   - test/yosupo-range-chmin-chmax-add-range-sum.1.test.cpp
+  - test/yukicoder-674.1.test.cpp
   - test/yosupo-point-set-range-composite.1.test.cpp
   - test/aoj-dsl-2-i.test.cpp
   - test/aoj-dsl-2-g.test.cpp

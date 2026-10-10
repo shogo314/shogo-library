@@ -2,10 +2,13 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
-  _extendedVerifiedWith: []
+  _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo-static-range-inversions-query.test.cpp
+    title: test/yosupo-static-range-inversions-query.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':warning:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"others/mo.hpp\"\n#include <vector>\n#include <array>\n#include\
@@ -85,8 +88,9 @@ data:
   path: others/mo.hpp
   requiredBy: []
   timestamp: '2026-10-09 19:25:54+09:00'
-  verificationStatus: LIBRARY_NO_TESTS
-  verifiedWith: []
+  verificationStatus: LIBRARY_ALL_AC
+  verifiedWith:
+  - test/yosupo-static-range-inversions-query.test.cpp
 documentation_of: others/mo.hpp
 layout: document
 redirect_from:

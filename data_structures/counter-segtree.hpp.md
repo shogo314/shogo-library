@@ -2,10 +2,13 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
-  _extendedVerifiedWith: []
+  _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo-point-set-range-frequency.test.cpp
+    title: test/yosupo-point-set-range-frequency.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':warning:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     links: []
   bundledCode: "#line 2 \"data_structures/counter-segtree.hpp\"\n#include <cassert>\n\
@@ -20,14 +23,15 @@ data:
     \ data[2 * i];\n            for (auto [s, c] : data[2 * i + 1]) {\n          \
     \      data[i][s] += c;\n            }\n        }\n    }\n    key_type get(int\
     \ k) const {\n        assert(0 <= k and k < n);\n        return data[k + sz].begin()->first;\n\
-    \    }\n    void set(int k, const key_type& x) {\n        k += sz;\n        key_type\
-    \ y = data[k].begin()->first;\n        while (k > 0) {\n            auto itr =\
-    \ data[k].find(y);\n            if (itr->second == 1) {\n                data[k].erase(itr);\n\
-    \            } else {\n                itr->second++;\n            }\n       \
-    \     data[k][x]++;\n            k >>= 1;\n        }\n    }\n    std::pair<key_type,\
-    \ mapped_type> lower_bound(int l, int r, key_type x) const {\n        std::pair<key_type,\
-    \ mapped_type> ret = {{}, 0};\n        l += sz;\n        r += sz;\n        while\
-    \ (l < r) {\n            if (l & 1) {\n                auto itr = data[l].lower_bound(x);\n\
+    \    }\n    void set(int k, const key_type& x) {\n        assert(0 <= k and k\
+    \ < n);\n        k += sz;\n        key_type y = data[k].begin()->first;\n    \
+    \    while (k > 0) {\n            auto itr = data[k].find(y);\n            if\
+    \ (itr->second == 1) {\n                data[k].erase(itr);\n            } else\
+    \ {\n                itr->second--;\n            }\n            data[k][x]++;\n\
+    \            k >>= 1;\n        }\n    }\n    std::pair<key_type, mapped_type>\
+    \ lower_bound(int l, int r, key_type x) const {\n        std::pair<key_type, mapped_type>\
+    \ ret = {{}, 0};\n        l += sz;\n        r += sz;\n        while (l < r) {\n\
+    \            if (l & 1) {\n                auto itr = data[l].lower_bound(x);\n\
     \                if (itr != data[l].end()) {\n                    if (ret.second\
     \ == 0) {\n                        ret = *itr;\n                    } else if\
     \ (itr->first == ret.first) {\n                        ret.second += itr->second;\n\
@@ -62,14 +66,14 @@ data:
     \ * i + 1]) {\n                data[i][s] += c;\n            }\n        }\n  \
     \  }\n    key_type get(int k) const {\n        assert(0 <= k and k < n);\n   \
     \     return data[k + sz].begin()->first;\n    }\n    void set(int k, const key_type&\
-    \ x) {\n        k += sz;\n        key_type y = data[k].begin()->first;\n     \
-    \   while (k > 0) {\n            auto itr = data[k].find(y);\n            if (itr->second\
-    \ == 1) {\n                data[k].erase(itr);\n            } else {\n       \
-    \         itr->second++;\n            }\n            data[k][x]++;\n         \
-    \   k >>= 1;\n        }\n    }\n    std::pair<key_type, mapped_type> lower_bound(int\
-    \ l, int r, key_type x) const {\n        std::pair<key_type, mapped_type> ret\
-    \ = {{}, 0};\n        l += sz;\n        r += sz;\n        while (l < r) {\n  \
-    \          if (l & 1) {\n                auto itr = data[l].lower_bound(x);\n\
+    \ x) {\n        assert(0 <= k and k < n);\n        k += sz;\n        key_type\
+    \ y = data[k].begin()->first;\n        while (k > 0) {\n            auto itr =\
+    \ data[k].find(y);\n            if (itr->second == 1) {\n                data[k].erase(itr);\n\
+    \            } else {\n                itr->second--;\n            }\n       \
+    \     data[k][x]++;\n            k >>= 1;\n        }\n    }\n    std::pair<key_type,\
+    \ mapped_type> lower_bound(int l, int r, key_type x) const {\n        std::pair<key_type,\
+    \ mapped_type> ret = {{}, 0};\n        l += sz;\n        r += sz;\n        while\
+    \ (l < r) {\n            if (l & 1) {\n                auto itr = data[l].lower_bound(x);\n\
     \                if (itr != data[l].end()) {\n                    if (ret.second\
     \ == 0) {\n                        ret = *itr;\n                    } else if\
     \ (itr->first == ret.first) {\n                        ret.second += itr->second;\n\
@@ -96,9 +100,10 @@ data:
   isVerificationFile: false
   path: data_structures/counter-segtree.hpp
   requiredBy: []
-  timestamp: '2026-10-09 19:25:54+09:00'
-  verificationStatus: LIBRARY_NO_TESTS
-  verifiedWith: []
+  timestamp: '2026-10-10 21:22:32+09:00'
+  verificationStatus: LIBRARY_ALL_AC
+  verifiedWith:
+  - test/yosupo-point-set-range-frequency.test.cpp
 documentation_of: data_structures/counter-segtree.hpp
 layout: document
 redirect_from:

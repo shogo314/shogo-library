@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "../graph/functional-graph.hpp"
+#include "../../graph/functional-graph.hpp"
 
 int main(void) {
     int N, X;

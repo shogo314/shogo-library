@@ -43,3 +43,4 @@ g++ -std=c++17 -I /path/to/shogo-library main.cpp
 [online-judge-tools/verification-helper](https://github.com/online-judge-tools/verification-helper) で、`test/` 以下のテストを GitHub Actions 上で検証しています。
 
 - yukicoder のテストには `YUKICODER_TOKEN` が必要です。
+- `test/atcoder/` には AtCoder の問題で書いたテストを置いています。AtCoder のテストケースは CI で取得できないため、`*.test.cpp` にせず検証の対象外にしています。手元で `oj` を使って確認できます。

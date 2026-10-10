@@ -1,9 +1,9 @@
 #define PROBLEM "https://atcoder.jp/contests/jsc2021/tasks/jsc2021_g"
 #define IGNORE
 
-#include "../math/modint.hpp"
-#include "../math/matrix.hpp"
-#include "../data_structures/unionfind.hpp"
+#include "../../math/modint.hpp"
+#include "../../math/matrix.hpp"
+#include "../../data_structures/unionfind.hpp"
 #include <set>
 
 using mint = modint1000000007;

@@ -4,21 +4,21 @@
 #include <iostream>
 #include <limits>
 
-#include "../data_structures/lazy-segtree.hpp"
-
-// 区間 [l, r) の i 番目の要素を f + i にする
-struct UpdateAddIndexMin : monoid::Min<int> {
-    using S = int;
-    using F = int;
-    static constexpr F ID = std::numeric_limits<int>::max();
-    static S mapping(F f, S x, int l, int) { return f == ID ? x : f + l; }
-    static F composition(F f, F g) { return f == ID ? g : f; }
-    static F id() { return ID; }
-};
+#include "../../data_structures/lazy-segtree.hpp"
 
 int main(void) {
     int h, w; std::cin >> h >> w;
-    LazySegTree<UpdateAddIndexMin> seg(std::vector<int>(w, 0));
+    int id = std::numeric_limits<int>::max();
+    LazySegTree seg(std::vector<int>(w, 0), ActedMonoid(
+        [](int a, int b) { return std::min(a, b); }, id,
+        [&](int f, int x, int l, int) {
+            return f == id ? x : f + l;
+        },
+        [&](int f, int g) {
+            return f == id ? g : f;
+        },
+        id
+    ));
     for(int i = 0; i < h; i++) {
         int a, b; std::cin >> a >> b; a--;
         if(a == 0) {

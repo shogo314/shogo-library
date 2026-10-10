@@ -4,7 +4,7 @@
 #include <iostream>
 #include <algorithm>
 
-#include "../graph/graph_util.hpp"
+#include "../../graph/graph_util.hpp"
 
 int main(void){
 

@@ -1,0 +1,7 @@
+description: "\u7AF6\u6280\u30D7\u30ED\u30B0\u30E9\u30DF\u30F3\u30B0\u7528\u306E C++\
+  \ \u30E9\u30A4\u30D6\u30E9\u30EA"
+plugins:
+- jemoji
+- jekyll-redirect-from
+theme: jekyll-theme-minimal
+title: shogo-library

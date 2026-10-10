@@ -29,6 +29,7 @@ int main(void) {
             xs.push_back(p);
         }
     }
+    if(xs.empty()) return 0;
     std::sort(xs.begin(), xs.end());
     LiChaoTree<long long> cht(xs);
     for(auto [op, a, b] : qs) {

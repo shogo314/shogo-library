@@ -14,21 +14,18 @@ bool operator==(const Matrix_2x2& t1, const Matrix_2x2& t2) {
     return t1.a == t2.a && t1.b == t2.b && t1.c == t2.c && t1.d == t2.d;
 }
 
-struct Op {
-    Matrix_2x2 operator()(const Matrix_2x2& f, const Matrix_2x2& g) const {
+struct MatrixGroup {
+    using S = Matrix_2x2;
+    static S op(const S& f, const S& g) {
         return {f.a * g.a + f.b * g.c,
                 f.a * g.b + f.b * g.d,
                 f.c * g.a + f.d * g.c,
                 f.c * g.b + f.d * g.d};
     }
-};
-struct E {
-    Matrix_2x2 operator()() const {
+    static S e() {
         return {1, 0, 0, 1};
     }
-};
-struct Inv {
-    Matrix_2x2 operator()(const Matrix_2x2& f) const {
+    static S inv(const S& f) {
         mint detinv = (f.a * f.d - f.b * f.c).inv();
         return {f.d * detinv, -f.b * detinv, -f.c * detinv, f.a * detinv};
     }
@@ -48,7 +45,7 @@ std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>&
 int main() {
     int N, Q;
     std::cin >> N >> Q;
-    PotentializedUnionFind<Matrix_2x2, Op, E, Inv> uf(N);
+    PotentializedUnionFind<MatrixGroup> uf(N);
     while (Q--) {
         int t;
         std::cin >> t;

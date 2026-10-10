@@ -8,7 +8,7 @@
 
 template <typename mint>
 bool solve(int n, const std::vector<std::array<int, 3>>& abx) {
-    UnionFindMul<mint> uf(n);
+    PotentializedUnionFind<group::Prod<mint>> uf(n);
     for (auto [a, b, x] : abx) {
         mint mx = x;
         if (mx != 0) {

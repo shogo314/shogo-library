@@ -2,24 +2,23 @@
 #define IGNORE
 
 #include <iostream>
+#include <limits>
 
 #include "../data_structures/lazy-segtree.hpp"
 
+// 区間 [l, r) の i 番目の要素を f + i にする
+struct UpdateAddIndexMin : monoid::Min<int> {
+    using S = int;
+    using F = int;
+    static constexpr F ID = std::numeric_limits<int>::max();
+    static S mapping(F f, S x, int l, int) { return f == ID ? x : f + l; }
+    static F composition(F f, F g) { return f == ID ? g : f; }
+    static F id() { return ID; }
+};
+
 int main(void) {
     int h, w; std::cin >> h >> w;
-    struct Mapping {
-        int operator() (int f, int x, int l, int r) {
-            int id = more_functional::MaxLimit<int>{}();
-            return f == id ? x : f + l;
-        }
-    };
-    struct Composition {
-        int operator() (int f, int g) {
-            int id = more_functional::MaxLimit<int>{}();
-            return f == id ? g : f;
-        }
-    };
-    StaticLazySegTree<int, more_functional::Min<int>, more_functional::MaxLimit<int>, int, Mapping, Composition, more_functional::MaxLimit<int>> seg(std::vector<int>(w, 0));
+    LazySegTree<UpdateAddIndexMin> seg(std::vector<int>(w, 0));
     for(int i = 0; i < h; i++) {
         int a, b; std::cin >> a >> b; a--;
         if(a == 0) {

@@ -35,7 +35,7 @@ int main(void) {
     e.min2 = inf;
     e.sum = 0;
     F id{-inf, inf, 0};
-    SegTreeBeats seg(v, [&](const S& l, const S& r) {
+    SegTreeBeats seg(v, ActedMonoid([&](const S& l, const S& r) {
         S res;
         res.max1 = std::max(l.max1, r.max1);
         if(l.max1 == r.max1) {
@@ -114,7 +114,7 @@ int main(void) {
         res.ub = std::clamp(g.ub + f.add, f.lb, f.ub);
         res.add = f.add + g.add;
         return res;
-    }, id);
+    }, id));
     while(q--) {
         int op; std::cin >> op;
         if(op == 0) {

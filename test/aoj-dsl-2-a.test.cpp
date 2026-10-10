@@ -6,7 +6,7 @@
 
 int main(void) {
     int n, q; std::cin >> n >> q;
-    RMinQ<int> seg(n);
+    SegTree<monoid::Min<int>> seg(n);
     while(q--) {
         int com, x, y; std::cin >> com >> x >> y;
         if(com == 0) seg.set(x, y);

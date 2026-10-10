@@ -10,33 +10,30 @@
 #include <optional>
 #include <utility>
 #include <vector>
-#include "../base/more_functional.hpp"
+#include "../algebra/group.hpp"
 
 /**
  * @brief 区間の閾値以内の値の積
  *
- * @tparam S value_type 可換群の型
+ * @tparam G 値の可換群 (algebra/group.hpp)
  * @tparam K key_type ソートに使う型
- * @tparam Op Sの積のファンクタ
- * @tparam E Sの単位元を返すファンクタ
- * @tparam Inv Sの逆元を返すファンクタ
  * @tparam Comp Kを比較するファンクタ
  */
-template <typename S = long long,
+template <typename G = group::Sum<long long>,
           typename K = long long,
-          class Op = std::plus<S>,
-          class E = more_functional::None<S>,
-          class Inv = std::negate<S>,
           class Comp = std::less<K>>
 class MergeSortTree {
    public:
-    using value_type = S;
+    using value_type = typename G::S;
     using key_type = K;
 
-    inline constexpr static auto op = Op();
-    inline constexpr static auto inv = Inv();
-    inline constexpr static auto e = E();
     inline constexpr static auto comp = Comp();
+
+   private:
+    G g;
+    value_type op(const value_type& x, const value_type& y) const { return g.op(x, y); }
+    value_type e() const { return g.e(); }
+    value_type inv(const value_type& x) const { return g.inv(x); }
 
    private:
     int n, sz, height;
@@ -113,7 +110,7 @@ class MergeSortTree {
     /**
      * @param value_key valueとkeyのpairのvector
      */
-    explicit MergeSortTree(const std::vector<std::pair<value_type, key_type>>& value_key) {
+    explicit MergeSortTree(const std::vector<std::pair<value_type, key_type>>& value_key, G g = G()) : g(std::move(g)) {
         std::vector<key_type> key;
         std::vector<value_type> value;
         key.reserve(value_key.size());
@@ -128,7 +125,7 @@ class MergeSortTree {
      * @param value prodで計算する対象
      * @param key ソートする基準
      */
-    MergeSortTree(const std::vector<value_type>& value, const std::vector<key_type>& key) {
+    MergeSortTree(const std::vector<value_type>& value, const std::vector<key_type>& key, G g = G()) : g(std::move(g)) {
         assert(key.size() == value.size());
         this->initialize(value, key);
     }
@@ -163,16 +160,3 @@ class MergeSortTree {
         return ret;
     }
 };
-
-/**
- * @tparam S 可換群の型
- * @tparam K ソートに使う型
- */
-template <typename S, typename K>
-using MSTreeSum = MergeSortTree<S, K, std::plus<S>, more_functional::None<S>, std::negate<S>, std::less<K>>;
-/**
- * @tparam S 可換群の型
- * @tparam K ソートに使う型
- */
-template <typename S, typename K>
-using MSTreeProd = MergeSortTree<S, K, std::multiplies<S>, more_functional::One<S>, more_functional::Div<S>, std::less<K>>;

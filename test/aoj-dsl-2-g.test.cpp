@@ -6,7 +6,7 @@
 
 int main(void) {
     int n, q; std::cin >> n >> q;
-    RAddSumQ<long long> seg(n);
+    LazySegTree<acted_monoid::AddSum<long long>> seg(n);
     while(q--) {
         int op; std::cin >> op;
         if(op == 0) {

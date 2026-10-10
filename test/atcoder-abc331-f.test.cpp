@@ -7,8 +7,10 @@
 #include "../data_structures/segtree.hpp"
 
 RollingHash rh;
-struct E {
-    RHString operator()() const { return RHString(rh); }
+struct RHMonoid {
+    using S = RHString;
+    static S op(const S& a, const S& b) { return a + b; }
+    static S e() { return RHString(rh); }
 };
 
 int main() {
@@ -20,7 +22,7 @@ int main() {
     for (char c : S) {
         init.emplace_back(rh, c);
     }
-    StaticSegTree<RHString, std::plus<RHString>, E> seg(init);
+    SegTree<RHMonoid> seg(init);
     while (Q--) {
         int q;
         std::cin >> q;

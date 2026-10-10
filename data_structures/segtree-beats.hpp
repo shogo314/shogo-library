@@ -10,22 +10,32 @@
 #include <limits>
 #include <ostream>
 #include <tuple>
+#include <utility>
 #include <vector>
+#include "../algebra/acted-monoid.hpp"
 
 /**
- * @brief Segment Tree BeatsのCRTP基底クラス
- * 
- * @tparam S 値モノイドの型
- * @tparam F 作用素モノイドの型
- * @tparam ActualSegTree 派生クラス
+ * @brief Segment Tree Beats
+ *
+ * 作用素付きモノイド (algebra/acted-monoid.hpp) と同じ形の型を受け取るが、
+ * mapping は std::pair<bool, S> (作用に失敗したか, 作用後の値) を返す
+ * 失敗した場合は子に伝搬してから計算し直す
+ *
+ * @tparam A 作用素付きモノイド
  */
-template <typename S, typename F, typename ActualSegTreeBeats>
-class SegTreeBeatsBase {
-    S op(const S& a, const S& b) const { return static_cast<const ActualSegTreeBeats&>(*this).op(a, b); }
-    S e() const { return static_cast<const ActualSegTreeBeats&>(*this).e(); }
-    std::pair<bool, S> mapping(const F& f, const S& x, int l, int r) const { return static_cast<const ActualSegTreeBeats&>(*this).mapping(f, x, l, r); }
-    F composition(const F& f, const F& g) const { return static_cast<const ActualSegTreeBeats&>(*this).composition(f, g); }
-    F id() const { return static_cast<const ActualSegTreeBeats&>(*this).id(); }
+template <typename A>
+class SegTreeBeats {
+public:
+    using S = typename A::S;
+    using F = typename A::F;
+
+private:
+    A a;
+    S op(const S& x, const S& y) const { return a.op(x, y); }
+    S e() const { return a.e(); }
+    std::pair<bool, S> mapping(const F& f, const S& x, int l, int r) const { return acted_monoid::apply_mapping(a, f, x, l, r); }
+    F composition(const F& f, const F& g) const { return a.composition(f, g); }
+    F id() const { return a.id(); }
 
     int n, sz, height;
     std::vector<S> data;
@@ -55,10 +65,10 @@ class SegTreeBeatsBase {
     }
 
     class SegTreeBeatsReference {
-        SegTreeBeatsBase& segtree;
+        SegTreeBeats& segtree;
         int k;
     public:
-        SegTreeBeatsReference(SegTreeBeatsBase& segtree, int k) : segtree(segtree), k(k) {}
+        SegTreeBeatsReference(SegTreeBeats& segtree, int k) : segtree(segtree), k(k) {}
         SegTreeBeatsReference& operator=(const S& x) {
             segtree.set(k, x);
             return *this;
@@ -66,7 +76,6 @@ class SegTreeBeatsBase {
         operator S() { return segtree.get(k); }
     };
 
-protected:
     void construct_data() {
         sz = 1;
         height = 0;
@@ -78,14 +87,31 @@ protected:
         fail.assign(sz * 2, false);
         lazy.assign(sz * 2, id());
     }
-    void initialize(const std::vector<S>& v) {
+public:
+    /**
+     * @brief コンストラクタ
+     *
+     * @param n 要素数
+     * @param a 作用素付きモノイド
+     */
+    explicit SegTreeBeats(int n = 0, A a = A()) : a(std::move(a)), n(n) {
+        construct_data();
+    }
+    /**
+     * @brief コンストラクタ
+     *
+     * @param v 初期の要素
+     * @param a 作用素付きモノイド
+     */
+    explicit SegTreeBeats(const std::vector<S>& v, A a = A()) : SegTreeBeats(v.size(), std::move(a)) {
         for (int i = 0; i < n; i++) data[sz + i] = v[i];
         for (int i = sz - 1; i > 0; i--) update(i);
     }
 
-public:
-    // Warning: 継承先のコンストラクタでconstruct_data()を必ず呼び出す！
-    SegTreeBeatsBase(int n = 0) : n(n) {}
+    /**
+     * @brief 要素数を返す
+     */
+    int size() const { return n; }
 
     /**
      * @brief 指定された要素の値を返す
@@ -118,7 +144,7 @@ public:
      * @return std::basic_ostream<CharT, Traits>& 出力ストリーム 
      */
     template <class CharT, class Traits>
-    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, SegTreeBeatsBase& rhs) {
+    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, SegTreeBeats& rhs) {
         for(int i = 0; i < rhs.n; i++) {
             if(i != 0) os << CharT(' ');
             os << rhs[i];
@@ -304,134 +330,7 @@ public:
     }
 };
 
-/**
- * @brief ファンクタが静的な場合のSegment Tree Beatsの実装
- * 
- * @tparam S 値モノイドの型
- * @tparam Op 値の積のファンクタ
- * @tparam E 積の単位元を返すファンクタ
- * @tparam F 作用素モノイドの型
- * @tparam Mapping 作用素を適用するファンクタ 引数は(作用素, 値)または(作用素, 値, サイズ)(作用素, 値, 左の子, 右の子) 戻り値は(失敗したか(bool), 値)のstd::pair
- * @tparam Composition 作用素の積のファンクタ
- * @tparam ID 作用素の単位元を返すファンクタ
- */
-template <typename S, typename Op, typename E, typename F, typename Mapping, typename Composition, typename ID>
-class StaticSegTreeBeats : public SegTreeBeatsBase<S, F, StaticSegTreeBeats<S, Op, E, F, Mapping, Composition, ID>> {
-    using BaseType = SegTreeBeatsBase<S, F, StaticSegTreeBeats<S, Op, E, F, Mapping, Composition, ID>>;
-
-    inline static Op operator_object;
-    inline static E identity_object;
-    inline static Mapping mapping_object;
-    inline static Composition lazy_operator_object;
-    inline static ID lazy_identity_object;
-public:
-    S op(const S& a, const S& b) const { return operator_object(a, b); }
-    S e() const { return identity_object(); }
-    std::pair<bool, S> mapping(const F& f, const S& x, int l, int r) const {
-        if constexpr(std::is_invocable_v<Mapping, F, S, int, int>) {
-            return mapping_object(f, x, l, r);
-        } else if constexpr(std::is_invocable_v<Mapping, F, S, int>) {
-            return mapping_object(f, x, r - l);
-        } else {
-            return mapping_object(f, x);
-        }
-    }
-    F composition(const F& f, const F& g) const {
-        return lazy_operator_object(f, g);
-    }
-    F id() const { return lazy_identity_object(); }
-
-    /**
-     * @brief デフォルトコンストラクタ
-     * 
-    */
-    StaticSegTreeBeats() = default;
-    /**
-     * @brief コンストラクタ
-     * 
-     * @param n 要素数
-     */
-    explicit StaticSegTreeBeats(int n) : BaseType(n) {
-        this->construct_data();
-    }
-    /**
-     * @brief コンストラクタ
-     * 
-     * @param v 初期の要素
-     */
-    explicit StaticSegTreeBeats(const std::vector<S>& v) : StaticSegTreeBeats(v.size()) {
-        this->initialize(v);
-    }
-};
-
-/**
- * @brief コンストラクタで関数オブジェクトを与えることで積を定義するSegment Tree Beatsの実装
- * テンプレート引数を省略することができ、ラムダ式が使える
- * 
- * @tparam S モノイドの型
- * @tparam Op 積の関数オブジェクトの型
- * @tparam F 作用素モノイドの型
- * @tparam Mapping 作用素を適用する関数オブジェクトの型
- * @tparam Composition 作用素の積の関数オブジェクトの型
- */
-template <typename S, typename Op, typename F, typename Mapping, typename Composition>
-class SegTreeBeats : public SegTreeBeatsBase<S, F, SegTreeBeats<S, Op, F, Mapping, Composition>> {
-    using BaseType = SegTreeBeatsBase<S, F, SegTreeBeats<S, Op, F, Mapping, Composition>>;
-
-    Op operator_object;
-    S identity;
-    Mapping mapping_object;
-    Composition lazy_operator_object;
-    F lazy_identity;
-
-public:
-    S op(const S& a, const S& b) const { return operator_object(a, b); }
-    S e() const { return identity; }
-    std::pair<bool, S> mapping(const F& f, const S& x, int l, int r) const {
-        if constexpr(std::is_invocable_v<Mapping, F, S, int, int>) {
-            return mapping_object(f, x, l, r);
-        } else if constexpr(std::is_invocable_v<Mapping, F, S, int>) {
-            return mapping_object(f, x, r - l);
-        } else {
-            return mapping_object(f, x);
-        }
-    }
-    F composition(const F& f, const F& g) const {
-        return lazy_operator_object(f, g);
-    }
-    F id() const { return lazy_identity; }
-
-    /**
-     * @brief デフォルトコンストラクタ
-    */
-    SegTreeBeats() = default;
-    /**
-     * @brief コンストラクタ
-     * 
-     * @param n 要素数
-     * @param op 積の関数オブジェクト
-     * @param identity 単位元
-     * @param mapping 作用素を適用する関数オブジェクト
-     * @param composition 作用素の積の関数オブジェクト
-     * @param lazy_identity 作用素の単位元
-     */
-    explicit SegTreeBeats(int n, Op op, const S& identity, Mapping mapping, Composition composition, const F& lazy_identity)
-        : BaseType(n), operator_object(std::move(op)), identity(identity), mapping_object(std::move(mapping)),
-        lazy_operator_object(std::move(composition)), lazy_identity(lazy_identity) {
-        this->construct_data();
-    }
-    /**
-     * @brief コンストラクタ
-     * 
-     * @param v 初期の要素
-     * @param op 積の関数オブジェクト
-     * @param identity 単位元
-     * @param mapping 作用素を適用する関数オブジェクト
-     * @param composition 作用素の積の関数オブジェクト
-     * @param lazy_identity 作用素の単位元
-     */
-    explicit SegTreeBeats(const std::vector<S>& v, Op op, const S& identity, Mapping mapping, Composition composition, const F& lazy_identity)
-        : SegTreeBeats(v.size(), std::move(op), identity, std::move(mapping), std::move(composition), lazy_identity) {
-        this->initialize(v);
-    }
-};
+template <typename A>
+SegTreeBeats(int, A) -> SegTreeBeats<A>;
+template <typename A>
+SegTreeBeats(std::vector<typename A::S>, A) -> SegTreeBeats<A>;

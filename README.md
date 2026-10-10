@@ -7,14 +7,14 @@
 
 | ディレクトリ | 内容 |
 |---|---|
-| `base/` | 入出力、型特性、関数オブジェクト、コンテスト用テンプレート (`all` で一括 include) |
-| `data_structures/` | セグメント木各種、Union-Find、マージソートツリー、Li Chao Tree など |
+| `base/` | 入出力、型特性、`range`、`repr` (出力をそのままコンストラクタに使える文字列化)、コンテスト用テンプレート (`all` で一括 include) |
+| `algebra/` | モノイド・群・作用素付きモノイドの定義 |
+| `data_structures/` | セグメント木各種 (モノイドを渡して使う)、Union-Find、マージソートツリー、Li Chao Tree など |
 | `graph/` | グラフ、木、全方位木 DP、Functional Graph |
 | `math/` | modint、行列、形式的冪級数、組み合わせ、数論、多倍長整数 |
 | `string/` | Z-algorithm、ローリングハッシュ |
 | `geometry/` | 幾何 (ベクトル、凸包など) |
 | `others/` | Mo's algorithm |
-| `py/` | Python 風の `range` や `repr` |
 | `test/` | オンラインジャッジでの検証用テスト |
 
 ## 使い方
@@ -24,6 +24,14 @@
 ```cpp
 #include "data_structures/segtree.hpp"
 #include "math/modint.hpp"
+```
+
+データ構造には `algebra/` のモノイドを渡します。ラムダ式から作ることもできます。
+
+```cpp
+SegTree<monoid::Max<int>> seg(n);
+SegTree seg2(v, Monoid([](int a, int b) { return a + b; }, 0));
+LazySegTree<acted_monoid::AffineSum<mint>> lseg(v);
 ```
 
 ```sh

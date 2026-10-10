@@ -12,7 +12,7 @@ int main(void) {
     std::vector<int> par(n-1);
     for(int i = 0; i < n-1; i++) std::cin >> par[i];
     RootedTree tree(par, 0);
-    RMinQ<long long> et_depth(tree.euler_tour.size());
+    SegTree<monoid::Min<long long>> et_depth(tree.euler_tour.size());
     std::vector<int> pre_idx(n);
     for(int i = 0; i < (int)tree.euler_tour.size(); i++) {
         auto [u, cnt] = tree.euler_tour[i];

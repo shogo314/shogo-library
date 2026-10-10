@@ -11,9 +11,9 @@ int main() {
         int l, r; std::cin >> l >> r;
         lr[i] = {l, r};
     }
-    SegTree seg(lr, [](const std::pair<int, int>& a, const std::pair<int, int>& b) {
+    SegTree seg(lr, Monoid([](const std::pair<int, int>& a, const std::pair<int, int>& b) {
             return std::pair<int, int>(std::max(a.first, b.first), std::min(a.second, b.second));
-            }, std::pair<int,int>(0, 1e9));
+            }, std::pair<int,int>(0, 1e9)));
     while(q--) {
         int a, b; std::cin >> a >> b; b--;
         int r = seg.max_right(b, [&](const std::pair<int, int>& x) { return x.first <= a && a <= x.second; });

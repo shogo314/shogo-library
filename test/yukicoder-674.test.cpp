@@ -1,7 +1,6 @@
 #define PROBLEM "https://yukicoder.me/problems/no/674"
 
 #include "../data_structures/monoid-unionfind.hpp"
-#include "../base/more_functional.hpp"
 
 #include <iostream>
 #include <set>
@@ -26,7 +25,7 @@ int main() {
     for (std::size_t i = 0; i < v.size(); i++) {
         init.push_back({i, i});
     }
-    MonoidUnionFind<std::pair<int, int>, more_functional::MinMax<int>> uf(init);
+    MonoidUnionFind<monoid::MinMax<int>> uf(init);
     ll ans = 0;
     for (auto [A, B] : AB) {
         int k = std::lower_bound(v.begin(), v.end(), A) - v.begin();

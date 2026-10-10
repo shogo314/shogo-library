@@ -21,7 +21,7 @@ int main(void) {
         dA.push_back(A[i + 1] - A[i]);
         dB.push_back(B[i + 1] - B[i]);
     }
-    RGcdQ<int> seg1(dA), seg2(dB);
+    SegTree<monoid::Gcd<int>> seg1(dA), seg2(dB);
     while (Q--) {
         int h1, h2, w1, w2;
         std::cin >> h1 >> h2 >> w1 >> w2;

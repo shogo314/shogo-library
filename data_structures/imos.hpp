@@ -8,32 +8,52 @@
 #include <cassert>
 #include <functional>
 #include <vector>
-#include "../base/more_functional.hpp"
+#include <utility>
+#include "../algebra/acted-monoid.hpp"
 
 /**
  * @brief imos法で区間作用、1点取得する。
- * @tparam S 値
- * @tparam F 作用素 アーベル群(可換群)
- * @tparam Mapping 作用素を適用するファンクタ 引数は(作用素, 値)
- * @tparam Composition 作用素の積のファンクタ
- * @tparam ID 作用素の単位元を返すファンクタ
- * @tparam Inv 作用素の逆元を返すファンクタ
+ *
+ * 例: Imos<acted_monoid::AddSum<long long>> imos(n);
+ *
+ * @tparam A 作用素付きモノイド (algebra/acted-monoid.hpp)
+ *           作用素はアーベル群(可換群)をなし、inv を持つ必要がある 値のモノイドの演算は使わない
  */
-template <typename S, typename F, typename Mapping, typename Composition, typename ID, typename Inv>
+template <typename A>
 class Imos {
+   public:
+    using S = typename A::S;
+    using F = typename A::F;
+
    private:
+    A a;
+    int _n, t;
     std::vector<S> data;
     std::vector<F> lazy;
-    int _n, t;
+
+    S mapping(const F& f, const S& x, int k) const { return acted_monoid::apply_mapping(a, f, x, k, k + 1); }
+    F composition(const F& f, const F& g) const { return a.composition(f, g); }
+    F id() const { return a.id(); }
+    F inv(const F& f) const { return a.inv(f); }
 
    public:
-    inline constexpr static auto mapping = Mapping();
-    inline constexpr static auto composition = Composition();
-    inline constexpr static auto id = ID();
-    inline constexpr static auto inv = Inv();
-    explicit Imos(int n) : _n(n), t(n), data(n), lazy(n, id()) {}
-    Imos(int n, const S& value) : _n(n), t(n), data(n, value), lazy(n, id()) {}
-    explicit Imos(const std::vector<S>& value) : _n(value.size()), t(value.size()), data(value), lazy(value.size(), id()) {}
+    /**
+     * @param n 要素数 各要素は S() で初期化する
+     * @param a 作用素付きモノイド
+     */
+    explicit Imos(int n = 0, A a = A()) : Imos(n, S(), std::move(a)) {}
+    /**
+     * @param n 要素数
+     * @param value 各要素の初期値
+     * @param a 作用素付きモノイド
+     */
+    Imos(int n, const S& value, A a = A()) : a(std::move(a)), _n(n), t(n), data(n, value), lazy(n, this->a.id()) {}
+    /**
+     * @param value 各要素の初期値
+     * @param a 作用素付きモノイド
+     */
+    explicit Imos(const std::vector<S>& value, A a = A()) : a(std::move(a)), _n(value.size()), t(value.size()), data(value), lazy(value.size(), this->a.id()) {}
+
     /**
      * @brief 1点作用
      * @param k インデックス
@@ -41,7 +61,7 @@ class Imos {
      */
     void apply(int k, const F& f) {
         assert(0 <= k && k < _n);
-        data[k] = mapping(f, data[k]);
+        data[k] = mapping(f, data[k], k);
     }
     /**
      * @brief [l, r)の区間の値にfを作用させる
@@ -63,7 +83,7 @@ class Imos {
     const S& get(int k) {
         assert(0 <= k && k < _n);
         while (t <= k) {
-            data[t] = mapping(lazy[t], data[t]);
+            data[t] = mapping(lazy[t], data[t], t);
             if (t + 1 < _n) {
                 lazy[t + 1] = composition(lazy[t], lazy[t + 1]);
             }
@@ -73,16 +93,3 @@ class Imos {
         return data[k];
     }
 };
-
-/**
- * @brief 区間加算
- * @tparam S 可換群の型
- */
-template <typename S>
-using StaticRAddQ = Imos<S, S, std::plus<S>, std::plus<S>, more_functional::None<S>, std::negate<S>>;
-/**
- * @brief 区間積
- * @tparam S 可換群の型
- */
-template <typename S>
-using StaticRMulQ = Imos<S, S, std::multiplies<S>, std::multiplies<S>, more_functional::One<S>, more_functional::Div<S>>;

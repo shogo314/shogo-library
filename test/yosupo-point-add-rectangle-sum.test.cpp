@@ -52,7 +52,7 @@ int main(void) {
         ly = std::lower_bound(ys.begin(), ys.end(), ly) - ys.begin();
         ry = std::lower_bound(ys.begin(), ys.end(), ry) - ys.begin();
     }
-    RSumQ2D<long long> seg(xs.size(), ys.size(), set_queries, prod_queries);
+    SegTree2D<monoid::Sum<long long>> seg(xs.size(), ys.size(), set_queries, prod_queries);
     for(auto& [op, a, b, c, d] : queries) {
         if(op == 0) {
             a = std::lower_bound(xs.begin(), xs.end(), a) - xs.begin();

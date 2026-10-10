@@ -7,19 +7,24 @@
 
 #include <algorithm>
 #include <tuple>
+#include <utility>
 #include <vector>
-#include "../base/more_functional.hpp"
+#include "../algebra/monoid.hpp"
 
 /**
- * @brief 2次元セグメント木のCRTP基底クラス
+ * @brief 2次元セグメント木 (更新・取得する座標を先読みして圧縮する)
  *
- * @tparam S モノイドの型
- * @tparam ActualSegTree 派生クラス
+ * @tparam M 可換モノイド (algebra/monoid.hpp)
  */
-template <typename S, typename ActualSegTree>
-class SegTree2DBase {
-    S op(S a, S b) const { return static_cast<const ActualSegTree&>(*this).op(a, b); }
-    S e() const { return static_cast<const ActualSegTree&>(*this).e(); }
+template <typename M>
+class SegTree2D {
+public:
+    using S = typename M::S;
+
+private:
+    M m;
+    S op(const S& a, const S& b) const { return m.op(a, b); }
+    S e() const { return m.e(); }
 
     int h, w, sz_x, sz_y, height_x, height_y;
     std::vector<std::vector<int>> y_indices;
@@ -107,7 +112,6 @@ class SegTree2DBase {
         return op(left_prod, right_prod);
     }
 
-protected:
     void construct_data(const std::vector<std::tuple<int, int>>& set_query_indices, const std::vector<std::tuple<int, int, int, int>>& prod_query_indices) {
         sz_x = 1; height_x = 0;
         while(sz_x < h) { sz_x <<= 1; ++height_x; }
@@ -167,8 +171,20 @@ protected:
     }
 
 public:
-    // Warning: 継承先のコンストラクタでconstruct_data()を必ず呼び出す！
-    SegTree2DBase(int h = 0, int w = 0) : h(h), w(w) {}
+    SegTree2D() = default;
+    /**
+     * @brief コンストラクタ
+     *
+     * @param h x座標の範囲 [0, h)
+     * @param w y座標の範囲 [0, w)
+     * @param set_query_indices set/apply する座標 (x, y) の列
+     * @param prod_query_indices prod する範囲 (lx, rx, ly, ry) の列
+     * @param m モノイド
+     */
+    explicit SegTree2D(int h, int w, const std::vector<std::tuple<int, int>>& set_query_indices, const std::vector<std::tuple<int, int, int, int>>& prod_query_indices, M m = M())
+        : m(std::move(m)), h(h), w(w) {
+        construct_data(set_query_indices, prod_query_indices);
+    }
 
     /**
      * @brief 指定された要素の値を返す
@@ -215,95 +231,5 @@ public:
     }
 };
 
-/**
- * @brief 積のファンクタが静的な場合の2次元セグメント木の実装
- *
- * @tparam S モノイドの型
- * @tparam Op 積のファンクタ
- * @tparam E 積の単位元を返すファンクタ
- */
-template <typename S, typename Op, typename E>
-class StaticSegTree2D : public SegTree2DBase<S, StaticSegTree2D<S, Op, E>> {
-    using BaseType = SegTree2DBase<S, StaticSegTree2D<S, Op, E>>;
-
-    inline static Op operator_object;
-    inline static E identity;
-public:
-    S op(const S& a, const S& b) const { return operator_object(a, b); }
-    S e() const { return identity(); }
-
-    /**
-     * @brief デフォルトコンストラクタ
-     */
-    StaticSegTree2D() = default;
-
-    /**
-     * @brief コンストラクタ
-     *
-     * @param h 高さ(x∈[0,h))となる値
-     * @param w 幅(y∈[0,w))となる値
-     * @param set_query_indices 要素の更新で指定するx座標とy座標のペアの列
-     * @param prod_query_indices 総積のクエリで指定するx座標とy座標のペアの列
-     */
-    explicit StaticSegTree2D(int h, int w, const std::vector<std::tuple<int, int>>& set_query_indices, const std::vector<std::tuple<int, int, int, int>>& prod_query_indices) : BaseType(h, w) {
-        this->construct_data(set_query_indices, prod_query_indices);
-    }
-};
-
-/**
- * @brief コンストラクタで関数オブジェクトを与えることで積を定義する2次元セグメント木の実装
- * テンプレート引数を省略することができ、ラムダ式が使える
- *
- * @tparam S モノイドの型
- * @tparam Op 積の関数オブジェクトの型
- */
-template <typename S, typename Op>
-class SegTree2D : public SegTree2DBase<S, SegTree2D<S, Op>> {
-    using BaseType = SegTree2DBase<S, SegTree2D<S, Op>>;
-
-    Op operator_object;
-    S identity;
-
-public:
-    S op(const S& a, const S& b) const { return operator_object(a, b); }
-    S e() const { return identity; }
-
-    /**
-     * @brief デフォルトコンストラクタ
-     */
-    SegTree2D() = default;
-
-    /**
-     * @brief コンストラクタ
-     *
-     * @param h 高さ(x∈[0,h))となる値
-     * @param w 幅(y∈[0,w))となる値
-     * @param set_query_indices 要素の更新で指定するx座標とy座標のペアの列
-     * @param prod_query_indices 総積のクエリで指定するx座標とy座標のペアの列
-     */
-    explicit SegTree2D(int h, int w, const std::vector<std::tuple<int, int>>& set_query_indices, const std::vector<std::tuple<int, int, int, int>>& prod_query_indices, Op op, const S& identity) : BaseType(h, w), operator_object(std::move(op)), identity(identity) {
-        this->construct_data(set_query_indices, prod_query_indices);
-    }
-};
-
-/**
- * @brief RangeMaxQuery
- *
- * @tparam S 型
- */
-template <typename S>
-using RMaxQ2D = StaticSegTree2D<S, more_functional::Max<S>, more_functional::MinLimit<S>>;
-/**
- * @brief RangeMinQuery
- *
- * @tparam S 型
- */
-template <typename S>
-using RMinQ2D = StaticSegTree2D<S, more_functional::Min<S>, more_functional::MaxLimit<S>>;
-/**
- * @brief RangeSumQuery
- *
- * @tparam S 型
- */
-template <typename S>
-using RSumQ2D = StaticSegTree2D<S, std::plus<S>, more_functional::None<S>>;
+template <typename M>
+SegTree2D(int, int, std::vector<std::tuple<int, int>>, std::vector<std::tuple<int, int, int, int>>, M) -> SegTree2D<M>;

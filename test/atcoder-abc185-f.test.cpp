@@ -12,7 +12,7 @@ int main(void) {
     for (int& a : A) {
         std::cin >> a;
     }
-    RXorQ<int> seg(A);
+    SegTree<monoid::Xor<int>> seg(A);
     while (Q--) {
         int T, X, Y;
         std::cin >> T >> X >> Y;

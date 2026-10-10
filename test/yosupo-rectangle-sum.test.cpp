@@ -21,7 +21,7 @@ int main() {
         key[i] = XYW[i][1];
         value[i] = XYW[i][2];
     }
-    MSTreeSum<long long, int> mstree(value, key);
+    MergeSortTree<group::Sum<long long>, int> mstree(value, key);
     while (Q--) {
         int L, D, R, U;
         std::cin >> L >> D >> R >> U;

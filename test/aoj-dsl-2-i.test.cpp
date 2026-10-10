@@ -6,7 +6,7 @@
 
 int main(void) {
     int n, q; std::cin >> n >> q;
-    RUpdateSumQ<int> seg(std::vector<int>(n, 0));
+    LazySegTree<acted_monoid::UpdateSum<int>> seg(std::vector<int>(n, 0));
     while(q--) {
         int op; std::cin >> op;
         if(op == 0) {

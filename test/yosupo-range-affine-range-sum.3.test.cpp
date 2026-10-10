@@ -31,7 +31,7 @@ int main(void) {
             return {1, 0};
         };
     };
-    TemplateLazySegTree<RangeAffineRangeSum> seg(a);
+    LazySegTree<RangeAffineRangeSum> seg(a);
     while (q--) {
         int op;
         std::cin >> op;

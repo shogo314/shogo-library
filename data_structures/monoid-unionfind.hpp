@@ -5,26 +5,38 @@
  * @brief 可換モノイドを乗せるUnionFind
  */
 
+#include <utility>
+#include <vector>
 #include "unionfind.hpp"
+#include "../algebra/monoid.hpp"
 
 /**
  * @brief 可換モノイドを乗せるUnionFind
  *
- * @tparam S
- * @tparam Op
+ * @tparam M 可換モノイド (algebra/monoid.hpp)
  */
-template <typename S, class Op>
+template <typename M>
 class MonoidUnionFind : private UnionFind {
+   public:
+    using S = typename M::S;
+
    private:
+    M m;
     std::vector<S> val;
     using UnionFind::_n;
     using UnionFind::parent_or_size;
 
    public:
-    inline constexpr static auto op = Op();
-
-    explicit MonoidUnionFind(std::vector<S> v) : UnionFind(v.size()), val(v) {}
-    MonoidUnionFind(int n, S e) : UnionFind(n), val(n, e) {}
+    /**
+     * @param n 要素数 各要素の値は単位元で初期化する
+     * @param m 可換モノイド
+     */
+    explicit MonoidUnionFind(int n = 0, M m = M()) : UnionFind(n), m(std::move(m)), val(n, this->m.e()) {}
+    /**
+     * @param v 各要素の初期値
+     * @param m 可換モノイド
+     */
+    explicit MonoidUnionFind(std::vector<S> v, M m = M()) : UnionFind(v.size()), m(std::move(m)), val(std::move(v)) {}
     using UnionFind::groups;
     using UnionFind::leader;
     using UnionFind::same;
@@ -37,10 +49,18 @@ class MonoidUnionFind : private UnionFind {
         if (-parent_or_size[x] < -parent_or_size[y]) std::swap(x, y);
         parent_or_size[x] += parent_or_size[y];
         parent_or_size[y] = x;
-        val[x] = op(val[x], val[y]);
+        val[x] = m.op(val[x], val[y]);
         return x;
     }
+    /**
+     * @brief 要素aの属する連結成分の値の総積
+     */
     const S& prod(int a) {
         return val[leader(a)];
     }
 };
+
+template <typename M>
+MonoidUnionFind(int, M) -> MonoidUnionFind<M>;
+template <typename M>
+MonoidUnionFind(std::vector<typename M::S>, M) -> MonoidUnionFind<M>;

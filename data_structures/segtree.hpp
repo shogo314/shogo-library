@@ -8,29 +8,38 @@
 #include <cassert>
 #include <functional>
 #include <ostream>
+#include <utility>
 #include <vector>
-#include "../base/more_functional.hpp"
+#include "../algebra/monoid.hpp"
 
 /**
- * @brief セグメント木のCRTP基底クラス
- * 
- * @tparam S モノイドの型
- * @tparam ActualSegTree 派生クラス
+ * @brief セグメント木
+ *
+ * 例:
+ * SegTree<monoid::Max<int>> seg(n);
+ * SegTree seg(v, Monoid([](int a, int b) { return a + b; }, 0));
+ *
+ * @tparam M モノイド (algebra/monoid.hpp)
  */
-template <typename S, typename ActualSegTree>
-class SegTreeBase {
-    S op(const S& a, const S& b) const { return static_cast<const ActualSegTree&>(*this).op(a, b); }
-    S e() const { return static_cast<const ActualSegTree&>(*this).e(); }
+template <typename M>
+class SegTree {
+public:
+    using S = typename M::S;
+
+private:
+    M m;
+    S op(const S& a, const S& b) const { return m.op(a, b); }
+    S e() const { return m.e(); }
 
     int n, sz, height;
     std::vector<S> data;
     void update(int k) { data[k] = op(data[2 * k], data[2 * k + 1]); }
 
     class SegTreeReference {
-        SegTreeBase& segtree;
+        SegTree& segtree;
         int k;
     public:
-        SegTreeReference(SegTreeBase& segtree, int k) : segtree(segtree), k(k) {}
+        SegTreeReference(SegTree& segtree, int k) : segtree(segtree), k(k) {}
         SegTreeReference& operator=(const S& x) {
             segtree.set(k, x);
             return *this;
@@ -38,7 +47,6 @@ class SegTreeBase {
         operator S() const { return segtree.get(k); }
     };
 
-protected:
     void construct_data() {
         sz = 1;
         height = 0;
@@ -48,14 +56,32 @@ protected:
         }
         data.assign(sz * 2, e());
     }
-    void initialize(const std::vector<S>& v) {
+
+public:
+    /**
+     * @brief コンストラクタ
+     *
+     * @param n 要素数
+     * @param m モノイド
+     */
+    explicit SegTree(int n = 0, M m = M()) : m(std::move(m)), n(n) {
+        construct_data();
+    }
+    /**
+     * @brief コンストラクタ
+     *
+     * @param v 初期の要素
+     * @param m モノイド
+     */
+    explicit SegTree(const std::vector<S>& v, M m = M()) : SegTree(v.size(), std::move(m)) {
         for (int i = 0; i < n; i++) data[sz + i] = v[i];
         for (int i = sz - 1; i > 0; i--) update(i);
     }
 
-public:
-    // Warning: 継承先のコンストラクタでconstruct_data()を必ず呼び出す！
-    SegTreeBase(int n = 0) : n(n) {}
+    /**
+     * @brief 要素数を返す
+     */
+    int size() const { return n; }
 
     /**
      * @brief 指定された要素の値を返す
@@ -92,7 +118,7 @@ public:
      * @return std::basic_ostream<CharT, Traits>& 出力ストリーム 
      */
     template <class CharT, class Traits>
-    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const SegTreeBase& rhs) {
+    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const SegTree& rhs) {
         for(int i = 0; i < rhs.n; i++) {
             if(i != 0) os << CharT(' ');
             os << rhs[i];
@@ -214,152 +240,7 @@ public:
     }
 };
 
-/**
- * @brief 積のファンクタが静的な場合のセグメント木の実装
- * 
- * @tparam S モノイドの型
- * @tparam Op 積のファンクタ
- * @tparam E 積の単位元を返すファンクタ
- */
-template <typename S, typename Op, typename E>
-class StaticSegTree : public SegTreeBase<S, StaticSegTree<S, Op, E>> {
-    using BaseType = SegTreeBase<S, StaticSegTree<S, Op, E>>;
-
-    inline static Op operator_object;
-    inline static E identity_object;
-public:
-    S op(const S& a, const S& b) const { return operator_object(a, b); }
-    S e() const { return identity_object(); }
-
-    /**
-     * @brief デフォルトコンストラクタ
-     * 
-    */
-    StaticSegTree() = default;
-    /**
-     * @brief コンストラクタ
-     * 
-     * @param n 要素数
-     */
-    explicit StaticSegTree(int n) : BaseType(n) {
-        this->construct_data();
-    }
-    /**
-     * @brief コンストラクタ
-     * 
-     * @param v 初期の要素
-     */
-    explicit StaticSegTree(const std::vector<S>& v) : StaticSegTree(v.size()) {
-        this->initialize(v);
-    }
-};
-
-/**
- * @brief コンストラクタで関数オブジェクトを与えることで積を定義するセグメント木の実装
- * テンプレート引数を省略することができ、ラムダ式が使える
- * 
- * @tparam S モノイドの型
- * @tparam Op 積の関数オブジェクトの型
- */
-template <typename S, typename Op>
-class SegTree : public SegTreeBase<S, SegTree<S, Op>> {
-    using BaseType = SegTreeBase<S, SegTree<S, Op>>;
-
-    Op operator_object;
-    S identity;
-
-public:
-    S op(const S& a, const S& b) const { return operator_object(a, b); }
-    S e() const { return identity; }
-
-    /**
-     * @brief デフォルトコンストラクタ
-    */
-    SegTree() = default;
-    /**
-     * @brief コンストラクタ
-     * 
-     * @param n 要素数
-     * @param op 積の関数オブジェクト
-     * @param identity 単位元
-     */
-    explicit SegTree(int n, Op op, const S& identity) : BaseType(n), operator_object(std::move(op)), identity(identity) {
-        this->construct_data();
-    }
-    /**
-     * @brief コンストラクタ
-     * 
-     * @param v 初期の要素
-     * @param op 積の関数オブジェクト
-     * @param identity 単位元
-     */
-    explicit SegTree(const std::vector<S>& v, Op op, const S& identity) : SegTree(v.size(), std::move(op), identity) {
-        this->initialize(v);
-    }
-};
-
-/**
- * @brief RangeMaxQuery
- * 
- * @tparam S 型
- */
-template <typename S>
-using RMaxQ = StaticSegTree<S, more_functional::Max<S>, more_functional::MinLimit<S>>;
-/**
- * @brief RangeMinQuery
- * 
- * @tparam S 型
- */
-template <typename S>
-using RMinQ = StaticSegTree<S, more_functional::Min<S>, more_functional::MaxLimit<S>>;
-/**
- * @brief RangeSumQuery
- * 
- * @tparam S 型
- */
-template <typename S>
-using RSumQ = StaticSegTree<S, std::plus<S>, more_functional::None<S>>;
-/**
- * @brief RangeProdQuery
- *
- * @tparam S 型
- */
-template <typename S>
-using RProdQ = StaticSegTree<S, std::multiplies<S>, more_functional::One<S>>;
-/**
- * @brief RangeXorQuery
- *
- * @tparam S 型
- */
-template <typename S>
-using RXorQ = StaticSegTree<S, std::bit_xor<S>, more_functional::Zero<S>>;
-/**
- * @brief RangeGcdQuery
- *
- * @tparam S 型
- */
-template <typename S>
-using RGcdQ = StaticSegTree<S, more_functional::Gcd<S>, more_functional::Zero<S>>;
-
-namespace segtree {
-    template <typename T>
-    using TemplateS = typename T::S;
-    template <typename T>
-    struct TemplateOp {
-        TemplateS<T> operator()(const TemplateS<T>& a, const TemplateS<T>& b) const {
-            return T().op(a, b);
-        }
-    };
-    template <typename T>
-    struct TemplateE {
-        TemplateS<T> operator()() const {
-            return T().e();
-        }
-    };
-}
-template <typename T>
-using TemplateSegTree = StaticSegTree<
-    segtree::TemplateS<T>,
-    segtree::TemplateOp<T>,
-    segtree::TemplateE<T>
->;
+template <typename M>
+SegTree(int, M) -> SegTree<M>;
+template <typename M>
+SegTree(std::vector<typename M::S>, M) -> SegTree<M>;

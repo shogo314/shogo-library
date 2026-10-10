@@ -10,35 +10,35 @@
 #include <stack>
 #include <utility>
 #include <vector>
-#include "../base/more_functional.hpp"
+#include "../algebra/group.hpp"
 
 /**
  * @brief ポテンシャル付きUnionFind
- * @tparam S ポテンシャルの型
- * @tparam Op Sの積のファンクタ
- * @tparam E Sの単位元を返すファンクタ
- * @tparam Inv Sの逆元を返すファンクタ
+ * @tparam G ポテンシャルの群 (algebra/group.hpp) 非可換でもよい
  */
-template <typename S, class Op, class E, class Inv>
+template <typename G>
 class PotentializedUnionFind {
+   public:
+    using S = typename G::S;
+
    private:
+    G g;
     int _n;
     // 負ならサイズ、非負なら親
     std::vector<int> parent_or_size;
     // 重み
     std::vector<S> diff_weight;
 
-    inline constexpr static auto op = Op();
-    inline constexpr static auto e = E();
-    inline constexpr static auto inv = Inv();
+    S op(const S& a, const S& b) const { return g.op(a, b); }
+    S e() const { return g.e(); }
+    S inv(const S& a) const { return g.inv(a); }
 
    public:
-    PotentializedUnionFind() : _n{}, parent_or_size{}, diff_weight{} {}
-
     /**
      * @param n 要素数
+     * @param g ポテンシャルの群
      */
-    explicit PotentializedUnionFind(int n) : _n(n), parent_or_size(n, -1), diff_weight(n, e()) {}
+    explicit PotentializedUnionFind(int n = 0, G g = G()) : g(std::move(g)), _n(n), parent_or_size(n, -1), diff_weight(n, e()) {}
 
     /**
      * @brief 頂点aの属する連結成分の代表元
@@ -95,7 +95,6 @@ class PotentializedUnionFind {
 
     /**
      * @brief (b のポテンシャル) - (a のポテンシャル)
-     * @remark デフォルトコンストラクタで作られる S について Inv が定義されているならば、a == b を許容
      */
     S diff(int a, int b) {
         assert(same(a, b));
@@ -138,13 +137,5 @@ class PotentializedUnionFind {
     }
 };
 
-/**
- * @tparam S 群の型
- */
-template <typename S>
-using UnionFindPlus = PotentializedUnionFind<S, std::plus<S>, more_functional::None<S>, std::negate<S>>;
-/**
- * @tparam S 群の型
- */
-template <typename S>
-using UnionFindMul = PotentializedUnionFind<S, std::multiplies<S>, more_functional::One<S>, more_functional::Div<S>>;
+template <typename G>
+PotentializedUnionFind(int, G) -> PotentializedUnionFind<G>;

@@ -30,7 +30,7 @@ int main() {
     std::sort(x.begin(), x.end());
     x.erase(std::unique(x.begin(), x.end()), x.end());
     int m = x.size();
-    RUpdateMinQ<int> seg(std::vector<int>(m, 0));
+    LazySegTree<acted_monoid::UpdateMin<int>> seg(std::vector<int>(m, 0));
     for(auto [t, u, v] : qs) {
         if(t == 1) {
             u = std::lower_bound(x.begin(), x.end(), u) - x.begin();

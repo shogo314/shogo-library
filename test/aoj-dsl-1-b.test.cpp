@@ -7,7 +7,7 @@
 int main() {
     int n, q;
     std::cin >> n >> q;
-    UnionFindPlus<long long> uf(n);
+    PotentializedUnionFind<group::Sum<long long>> uf(n);
     while (q--) {
         int t;
         std::cin >> t;

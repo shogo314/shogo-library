@@ -6,7 +6,7 @@
 
 int main(void) {
     int n, q; std::cin >> n >> q;
-    RSumQ<int> seg(n);
+    SegTree<monoid::Sum<int>> seg(n);
     while(q--) {
         int com, x, y; std::cin >> com >> x >> y;
         if(com == 0) seg.apply(x-1, y);

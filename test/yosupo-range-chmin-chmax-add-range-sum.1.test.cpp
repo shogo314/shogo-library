@@ -11,13 +11,19 @@ long long inf = 2e18;
 int main(void) {
     std::cin.tie(nullptr);
     std::ios_base::sync_with_stdio(false);
-    struct S {
+    struct Node {
         // 1番目、1番目の要素数、2番目、合計
         long long max1, max1_num, max2, min1, min1_num, min2, sum;
-        S(long long x = 0) : max1(x), max1_num(1), max2(-inf), min1(x), min1_num(1), min2(inf), sum(x) {}
+        Node(long long x = 0) : max1(x), max1_num(1), max2(-inf), min1(x), min1_num(1), min2(inf), sum(x) {}
     };
-    struct Op {
-        S operator() (const S& l, const S& r) {
+    struct Clamp {
+        // clamp(x + add, lb, ub)
+        long long lb, ub, add;
+    };
+    struct ChminChmaxAddSum {
+        using S = Node;
+        using F = Clamp;
+        S op(const S& l, const S& r) const {
             S res;
             res.max1 = std::max(l.max1, r.max1);
             if(l.max1 == r.max1) {
@@ -44,9 +50,7 @@ int main(void) {
             res.sum = l.sum + r.sum;
             return res;
         }
-    };
-    struct E {
-        S operator() () {
+        S e() const {
             S res;
             res.max1 = -inf;
             res.max1_num = 0;
@@ -57,13 +61,7 @@ int main(void) {
             res.sum = 0;
             return res;
         }
-    };
-    struct F {
-        // clamp(x + add, lb, ub)
-        long long lb, ub, add;
-    };
-    struct Mapping {
-        std::pair<bool, S> operator() (const F& f, const S& x, int sz) {
+        std::pair<bool, S> mapping(const F& f, const S& x, int sz) const {
             S res = x;
             res.max1 += f.add;
             res.max2 += f.add;
@@ -111,18 +109,14 @@ int main(void) {
             }
             return {false, res};
         }
-    };
-    struct Composition {
-        F operator() (const F& f, const F& g) {
+        F composition(const F& f, const F& g) const {
             F res;
             res.lb = std::clamp(g.lb + f.add, f.lb, f.ub);
             res.ub = std::clamp(g.ub + f.add, f.lb, f.ub);
             res.add = f.add + g.add;
             return res;
         }
-    };
-    struct Id {
-        F operator() () {
+        F id() const {
             F res;
             res.lb = -inf;
             res.ub = inf;
@@ -131,23 +125,23 @@ int main(void) {
         }
     };
     int n, q; std::cin >> n >> q;
-    std::vector<S> v(n);
+    std::vector<Node> v(n);
     for(int i = 0; i < n; i++) {
         long long a; std::cin >> a;
-        v[i] = S(a);
+        v[i] = Node(a);
     }
-    StaticSegTreeBeats<S, Op, E, F, Mapping, Composition, Id> seg(v);
+    SegTreeBeats<ChminChmaxAddSum> seg(v);
     while(q--) {
         int op; std::cin >> op;
         if(op == 0) {
             int l, r; long long b; std::cin >> l >> r >> b;
-            seg.apply(l, r, F{-inf, b, 0});
+            seg.apply(l, r, Clamp{-inf, b, 0});
         } else if(op == 1) {
             int l, r; long long b; std::cin >> l >> r >> b;
-            seg.apply(l, r, F{b, inf, 0});
+            seg.apply(l, r, Clamp{b, inf, 0});
         } else if(op == 2) {
             int l, r; long long b; std::cin >> l >> r >> b;
-            seg.apply(l, r, F{-inf, inf, b});
+            seg.apply(l, r, Clamp{-inf, inf, b});
         } else {
             int l, r; std::cin >> l >> r;
             std::cout << seg.prod(l, r).sum << std::endl;

@@ -10,28 +10,12 @@ int main(void) {
     using MI = modint998244353;
     std::vector<MI> a(n);
     for(int i = 0; i < n; i++) std::cin >> a[i];
-    struct Affine { MI a, b; };
-    struct Mapping {
-        MI operator() (const Affine& f, MI x, int sz) {
-            return f.a * x + f.b * MI(sz);
-        }
-    };
-    struct Composition {
-        Affine operator() (const Affine& f, const Affine& g) {
-            return {f.a * g.a, f.a * g.b + f.b};
-        }
-    };
-    struct Id {
-        Affine operator() () {
-            return {1, 0};
-        }
-    };
-    StaticLazySegTree<MI, std::plus<MI>, more_functional::None<MI>, Affine, Mapping, Composition, Id> seg(a);
+    LazySegTree<acted_monoid::AffineSum<MI>> seg(a);
     while(q--) {
         int op; std::cin >> op;
         if(op == 0) {
             int l, r; MI b, c; std::cin >> l >> r >> b >> c;
-            seg.apply(l, r, {b, c});
+            seg.apply(l, r, std::make_pair(b, c));
         } else {
             int l, r; std::cin >> l >> r;
             std::cout << seg.prod(l, r) << '\n';

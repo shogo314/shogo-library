@@ -11,16 +11,16 @@ int main() {
     using MI = modint998244353;
     struct RangeComposite {
         using S = std::pair<MI, MI>;
-        S op(const S& l, const S& r) {
+        S op(const S& l, const S& r) const {
             return std::make_pair(r.first * l.first, r.first * l.second + r.second);
         }
-        S e() {
+        S e() const {
             return std::make_pair(MI(1), MI(0));
         }
     };
     std::vector<std::pair<MI, MI>> v(n);
     for (int i = 0; i < n; i++) std::cin >> v[i].first >> v[i].second;
-    TemplateSegTree<RangeComposite> seg(v);
+    SegTree<RangeComposite> seg(v);
     while (q--) {
         int op;
         std::cin >> op;

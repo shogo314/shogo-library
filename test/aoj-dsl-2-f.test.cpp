@@ -6,7 +6,7 @@
 
 int main(void) {
     int n, q; std::cin >> n >> q;
-    RUpdateMinQ<int> seg(n);
+    LazySegTree<acted_monoid::UpdateMin<int>> seg(n);
     while(q--) {
         int op; std::cin >> op;
         if(op == 0) {

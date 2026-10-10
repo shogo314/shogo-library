@@ -5,9 +5,6 @@ data:
   - icon: ':heavy_check_mark:'
     path: data_structures/monoid-unionfind.hpp
     title: "\u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\u3092\u4E57\u305B\u308BUnionFind"
-  - icon: ':warning:'
-    path: test/atcoder/jsc2021-g.cpp
-    title: test/atcoder/jsc2021-g.cpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/yosupo-unionfind.test.cpp
@@ -106,7 +103,6 @@ data:
   path: data_structures/unionfind.hpp
   requiredBy:
   - data_structures/monoid-unionfind.hpp
-  - test/atcoder/jsc2021-g.cpp
   timestamp: '2026-10-09 19:25:54+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:

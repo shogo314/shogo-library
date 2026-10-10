@@ -32,24 +32,6 @@ data:
   - icon: ':heavy_check_mark:'
     path: data_structures/segtree.hpp
     title: "\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
-  - icon: ':warning:'
-    path: test/atcoder/abc177-f.1.cpp
-    title: test/atcoder/abc177-f.1.cpp
-  - icon: ':warning:'
-    path: test/atcoder/abc177-f.2.cpp
-    title: test/atcoder/abc177-f.2.cpp
-  - icon: ':warning:'
-    path: test/atcoder/abc185-f.cpp
-    title: test/atcoder/abc185-f.cpp
-  - icon: ':warning:'
-    path: test/atcoder/abc254-f.cpp
-    title: test/atcoder/abc254-f.cpp
-  - icon: ':warning:'
-    path: test/atcoder/abc331-f.cpp
-    title: test/atcoder/abc331-f.cpp
-  - icon: ':warning:'
-    path: test/atcoder/past202012-n.cpp
-    title: test/atcoder/past202012-n.cpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj-dsl-1-b.test.cpp
@@ -332,12 +314,6 @@ data:
   - data_structures/segtree.hpp
   - data_structures/imos.hpp
   - data_structures/monoid-unionfind.hpp
-  - test/atcoder/abc331-f.cpp
-  - test/atcoder/abc177-f.1.cpp
-  - test/atcoder/abc177-f.2.cpp
-  - test/atcoder/past202012-n.cpp
-  - test/atcoder/abc185-f.cpp
-  - test/atcoder/abc254-f.cpp
   - algebra/group.hpp
   - algebra/acted-monoid.hpp
   timestamp: '2026-10-10 20:42:46+09:00'

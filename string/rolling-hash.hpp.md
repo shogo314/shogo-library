@@ -4,10 +4,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: base/traits.hpp
     title: base/traits.hpp
-  _extendedRequiredBy:
-  - icon: ':warning:'
-    path: test/atcoder/abc331-f.cpp
-    title: test/atcoder/abc331-f.cpp
+  _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/yosupo-enumerate-palindromes.test.cpp
@@ -337,8 +334,7 @@ data:
   - base/traits.hpp
   isVerificationFile: false
   path: string/rolling-hash.hpp
-  requiredBy:
-  - test/atcoder/abc331-f.cpp
+  requiredBy: []
   timestamp: '2026-10-09 19:25:54+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:

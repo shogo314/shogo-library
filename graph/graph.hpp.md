@@ -11,12 +11,6 @@ data:
   - icon: ':heavy_check_mark:'
     path: graph/tree.hpp
     title: "\u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8"
-  - icon: ':warning:'
-    path: test/atcoder/abc282-d.cpp
-    title: test/atcoder/abc282-d.cpp
-  - icon: ':warning:'
-    path: test/atcoder/edpc-g.cpp
-    title: test/atcoder/edpc-g.cpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj-1595.test.cpp
@@ -308,8 +302,6 @@ data:
   - graph/tree.hpp
   - graph/rerooting-dp.hpp
   - graph/graph_util.hpp
-  - test/atcoder/edpc-g.cpp
-  - test/atcoder/abc282-d.cpp
   timestamp: '2026-10-09 19:25:54+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:

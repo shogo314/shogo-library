@@ -11,9 +11,6 @@ data:
   - icon: ':heavy_check_mark:'
     path: math/number-theory.hpp
     title: "a^(-1) mod MOD\u3092\u8FD4\u3059"
-  - icon: ':warning:'
-    path: test/atcoder/jsc2021-g.cpp
-    title: test/atcoder/jsc2021-g.cpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj-jag-summer-2971.test.cpp
@@ -564,7 +561,6 @@ data:
   isVerificationFile: false
   path: math/modint.hpp
   requiredBy:
-  - test/atcoder/jsc2021-g.cpp
   - math/fps.hpp
   - math/combinatorics.hpp
   - math/number-theory.hpp

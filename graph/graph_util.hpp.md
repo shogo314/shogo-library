@@ -4,13 +4,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: graph/graph.hpp
     title: "\u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9"
-  _extendedRequiredBy:
-  - icon: ':warning:'
-    path: test/atcoder/abc282-d.cpp
-    title: test/atcoder/abc282-d.cpp
-  - icon: ':warning:'
-    path: test/atcoder/edpc-g.cpp
-    title: test/atcoder/edpc-g.cpp
+  _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj-alds1-11-d.test.cpp
@@ -332,9 +326,7 @@ data:
   - graph/graph.hpp
   isVerificationFile: false
   path: graph/graph_util.hpp
-  requiredBy:
-  - test/atcoder/edpc-g.cpp
-  - test/atcoder/abc282-d.cpp
+  requiredBy: []
   timestamp: '2026-10-10 20:54:50+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:

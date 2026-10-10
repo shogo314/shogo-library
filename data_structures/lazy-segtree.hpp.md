@@ -7,13 +7,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
-  _extendedRequiredBy:
-  - icon: ':warning:'
-    path: test/atcoder/abc177-f.1.cpp
-    title: test/atcoder/abc177-f.1.cpp
-  - icon: ':warning:'
-    path: test/atcoder/abc177-f.2.cpp
-    title: test/atcoder/abc177-f.2.cpp
+  _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj-dsl-2-f.test.cpp
@@ -576,9 +570,7 @@ data:
   - algebra/monoid.hpp
   isVerificationFile: false
   path: data_structures/lazy-segtree.hpp
-  requiredBy:
-  - test/atcoder/abc177-f.1.cpp
-  - test/atcoder/abc177-f.2.cpp
+  requiredBy: []
   timestamp: '2026-10-10 20:42:46+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:

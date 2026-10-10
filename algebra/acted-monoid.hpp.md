@@ -14,12 +14,6 @@ data:
   - icon: ':heavy_check_mark:'
     path: data_structures/segtree-beats.hpp
     title: Segment Tree Beats
-  - icon: ':warning:'
-    path: test/atcoder/abc177-f.1.cpp
-    title: test/atcoder/abc177-f.1.cpp
-  - icon: ':warning:'
-    path: test/atcoder/abc177-f.2.cpp
-    title: test/atcoder/abc177-f.2.cpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj-dsl-2-f.test.cpp
@@ -497,8 +491,6 @@ data:
   - data_structures/lazy-segtree.hpp
   - data_structures/segtree-beats.hpp
   - data_structures/imos.hpp
-  - test/atcoder/abc177-f.1.cpp
-  - test/atcoder/abc177-f.2.cpp
   timestamp: '2026-10-10 20:42:46+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:

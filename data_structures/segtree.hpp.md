@@ -4,19 +4,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
-  _extendedRequiredBy:
-  - icon: ':warning:'
-    path: test/atcoder/abc185-f.cpp
-    title: test/atcoder/abc185-f.cpp
-  - icon: ':warning:'
-    path: test/atcoder/abc254-f.cpp
-    title: test/atcoder/abc254-f.cpp
-  - icon: ':warning:'
-    path: test/atcoder/abc331-f.cpp
-    title: test/atcoder/abc331-f.cpp
-  - icon: ':warning:'
-    path: test/atcoder/past202012-n.cpp
-    title: test/atcoder/past202012-n.cpp
+  _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj-dsl-2-a.test.cpp
@@ -340,11 +328,7 @@ data:
   - algebra/monoid.hpp
   isVerificationFile: false
   path: data_structures/segtree.hpp
-  requiredBy:
-  - test/atcoder/abc331-f.cpp
-  - test/atcoder/past202012-n.cpp
-  - test/atcoder/abc185-f.cpp
-  - test/atcoder/abc254-f.cpp
+  requiredBy: []
   timestamp: '2026-10-10 20:42:46+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:

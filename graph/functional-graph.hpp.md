@@ -1,16 +1,7 @@
 ---
 data:
   _extendedDependsOn: []
-  _extendedRequiredBy:
-  - icon: ':warning:'
-    path: test/atcoder/abc228-b.cpp
-    title: test/atcoder/abc228-b.cpp
-  - icon: ':warning:'
-    path: test/atcoder/abc256-e.cpp
-    title: test/atcoder/abc256-e.cpp
-  - icon: ':warning:'
-    path: test/atcoder/abc367-e.cpp
-    title: test/atcoder/abc367-e.cpp
+  _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/unittest-functional-graph.test.cpp
@@ -179,10 +170,7 @@ data:
   dependsOn: []
   isVerificationFile: false
   path: graph/functional-graph.hpp
-  requiredBy:
-  - test/atcoder/abc256-e.cpp
-  - test/atcoder/abc367-e.cpp
-  - test/atcoder/abc228-b.cpp
+  requiredBy: []
   timestamp: '2026-10-09 19:25:54+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:

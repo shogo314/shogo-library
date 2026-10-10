@@ -17,9 +17,6 @@ data:
   - icon: ':heavy_check_mark:'
     path: string/rolling-hash.hpp
     title: "\u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5"
-  - icon: ':warning:'
-    path: test/atcoder/abc331-f.cpp
-    title: test/atcoder/abc331-f.cpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/yosupo-enumerate-palindromes.test.cpp
@@ -137,7 +134,6 @@ data:
   - base/functions.hpp
   - base/vector_func.hpp
   - base/container_func.hpp
-  - test/atcoder/abc331-f.cpp
   - string/rolling-hash.hpp
   timestamp: '2026-10-09 19:25:54+09:00'
   verificationStatus: LIBRARY_ALL_AC

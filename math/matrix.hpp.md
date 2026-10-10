@@ -1,13 +1,7 @@
 ---
 data:
   _extendedDependsOn: []
-  _extendedRequiredBy:
-  - icon: ':warning:'
-    path: test/atcoder/abc300-b.cpp
-    title: test/atcoder/abc300-b.cpp
-  - icon: ':warning:'
-    path: test/atcoder/jsc2021-g.cpp
-    title: test/atcoder/jsc2021-g.cpp
+  _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj-3314.test.cpp
@@ -480,9 +474,7 @@ data:
   dependsOn: []
   isVerificationFile: false
   path: math/matrix.hpp
-  requiredBy:
-  - test/atcoder/jsc2021-g.cpp
-  - test/atcoder/abc300-b.cpp
+  requiredBy: []
   timestamp: '2026-10-09 19:25:54+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:

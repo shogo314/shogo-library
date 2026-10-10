@@ -161,47 +161,6 @@ data:
     - icon: ':heavy_check_mark:'
       path: string/string.hpp
       title: Z-algorithm
-  - name: test/atcoder
-    pages:
-    - icon: ':warning:'
-      path: test/atcoder/abc177-f.1.cpp
-      title: test/atcoder/abc177-f.1.cpp
-    - icon: ':warning:'
-      path: test/atcoder/abc177-f.2.cpp
-      title: test/atcoder/abc177-f.2.cpp
-    - icon: ':warning:'
-      path: test/atcoder/abc185-f.cpp
-      title: test/atcoder/abc185-f.cpp
-    - icon: ':warning:'
-      path: test/atcoder/abc228-b.cpp
-      title: test/atcoder/abc228-b.cpp
-    - icon: ':warning:'
-      path: test/atcoder/abc254-f.cpp
-      title: test/atcoder/abc254-f.cpp
-    - icon: ':warning:'
-      path: test/atcoder/abc256-e.cpp
-      title: test/atcoder/abc256-e.cpp
-    - icon: ':warning:'
-      path: test/atcoder/abc282-d.cpp
-      title: test/atcoder/abc282-d.cpp
-    - icon: ':warning:'
-      path: test/atcoder/abc300-b.cpp
-      title: test/atcoder/abc300-b.cpp
-    - icon: ':warning:'
-      path: test/atcoder/abc331-f.cpp
-      title: test/atcoder/abc331-f.cpp
-    - icon: ':warning:'
-      path: test/atcoder/abc367-e.cpp
-      title: test/atcoder/abc367-e.cpp
-    - icon: ':warning:'
-      path: test/atcoder/edpc-g.cpp
-      title: test/atcoder/edpc-g.cpp
-    - icon: ':warning:'
-      path: test/atcoder/jsc2021-g.cpp
-      title: test/atcoder/jsc2021-g.cpp
-    - icon: ':warning:'
-      path: test/atcoder/past202012-n.cpp
-      title: test/atcoder/past202012-n.cpp
   verificationCategories:
   - name: test
     pages:

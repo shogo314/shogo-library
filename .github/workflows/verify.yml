@@ -29,5 +29,7 @@ jobs:
     - name: Run tests
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # ドキュメントを gh-pages ブランチに push して GitHub Pages で公開する
+        GH_PAT: ${{ secrets.GITHUB_TOKEN }}
         YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
       run: oj-verify all -j $(nproc) --timeout=6000

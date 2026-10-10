@@ -31,6 +31,7 @@
 "test/yosupo-inv-of-fps.test.cpp": "2026-10-09 19:25:54 +0900",
 "test/yosupo-lca.1.test.cpp": "2026-10-09 19:25:54 +0900",
 "test/yosupo-lca.2.test.cpp": "2026-10-09 19:25:54 +0900",
+"test/yosupo-line-add-get-min.test.cpp": "2026-10-10 13:20:44 +0900",
 "test/yosupo-log-of-fps.test.cpp": "2026-10-09 19:25:54 +0900",
 "test/yosupo-partition-function_1.test.cpp": "2026-10-09 19:25:54 +0900",
 "test/yosupo-partition-function_2.test.cpp": "2026-10-09 19:25:54 +0900",

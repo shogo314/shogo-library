@@ -253,10 +253,11 @@ struct Vector {
      * @brief 偏角ソートのファンクタ
      * 
      * 二次元限定、反時計回り
+     * x軸正方向を始点とし、零ベクトルはx軸正方向と同じ偏角として扱う
      */
     struct ArgSortComp {
-        template <std::enable_if_t<Dim == 2>* = nullptr>
-        bool operator()(const Vector& lhs, const Vector& rhs) {
+        constexpr bool operator()(const Vector& lhs, const Vector& rhs) const noexcept {
+            static_assert(Dim == 2, "ArgSortComp: Dim must be 2");
             int l_half = lhs[1] < 0 || (lhs[1] == 0 && lhs[0] < 0);
             int r_half = rhs[1] < 0 || (rhs[1] == 0 && rhs[0] < 0);
             if(l_half != r_half) return l_half < r_half;
@@ -359,6 +360,36 @@ constexpr Vector<T, 3> cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs) n
 /**
  * @brief 線分の交差判定
  * 
+ * 整数型でも使える。外積を計算するため、座標の絶対値の2乗の数倍がTに収まる必要がある
+ * 
+ * @param p1 1本目の線分の端点1
+ * @param p2 1本目の線分の端点2
+ * @param q1 2本目の線分の端点1
+ * @param q2 2本目の線分の端点2
+ * @tparam T 座標の型
+ * @return bool 共有点を持つか
+ */
+template <typename T>
+constexpr bool segments_intersect(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& q1, const Vector<T, 2>& q2) {
+    assert(p1 != p2 && q1 != q2 && "segments_intersect: degenerate segment");
+    auto sign = [](T x) { return (x > 0) - (x < 0); };
+    int q1_section = sign(cross(p2 - p1, q1 - p1)); // 直線p1p2に対してq1がどの位置にあるか
+    int q2_section = sign(cross(p2 - p1, q2 - p1)); // 直線p1p2に対してq2がどの位置にあるか
+    int p1_section = sign(cross(q2 - q1, p1 - q1)); // 直線q1q2に対してp1がどの位置にあるか
+    int p2_section = sign(cross(q2 - q1, p2 - q1)); // 直線q1q2に対してp2がどの位置にあるか
+    if(q1_section == 0 && q2_section == 0) {
+        // 4点が同一直線上にある場合
+        return dot(q1-p1, q2-p1) <= 0 || dot(q1-p2, q2-p2) <= 0 || dot(p1-q1, p2-q1) <= 0;
+    }
+    return q1_section * q2_section <= 0 && p1_section * p2_section <= 0;
+}
+
+/**
+ * @brief 線分の交差判定と共有点の計算
+ * 
+ * 共有点の座標は一般に整数にならないため、浮動小数点型限定
+ * 整数座標で交差判定だけしたい場合は segments_intersect を使う
+ * 
  * @param p1 1本目の線分の端点1
  * @param p2 1本目の線分の端点2
  * @param q1 2本目の線分の端点1
@@ -368,31 +399,17 @@ constexpr Vector<T, 3> cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs) n
  */
 template <typename T>
 constexpr std::pair<bool, Vector<T, 2>> segment_intersect(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& q1, const Vector<T, 2>& q2) {
-    assert(p1 != p2 && q1 != q2 && "segment_intersect: degenerate segment");
-    T q1_cross = cross(p2 - p1, q1 - p1);
-    int q1_section = (q1_cross > 0) - (q1_cross < 0); // 直線p1p2に対してq1がどの位置にあるか
-    T q2_cross = cross(p2 - p1, q2 - p1);
-    int q2_section = (q2_cross > 0) - (q2_cross < 0); // 直線p1p2に対してq2がどの位置にあるか
-    T p1_cross = cross(q2 - q1, p1 - q1);
-    int p1_section = (p1_cross > 0) - (p1_cross < 0); // 直線q1q2に対してp1がどの位置にあるか
-    T p2_cross = cross(q2 - q1, p2 - q1);
-    int p2_section = (p2_cross > 0) - (p2_cross < 0); // 直線q1q2に対してp2がどの位置にあるか
-    if(q1_section == 0 && q2_section == 0) {
+    static_assert(std::is_floating_point_v<T>, "segment_intersect: T must be a floating point type (use segments_intersect for integers)");
+    if(!segments_intersect(p1, p2, q1, q2)) return std::make_pair(false, Vector<T, 2>());
+    if(cross(p2 - p1, q1 - p1) == 0 && cross(p2 - p1, q2 - p1) == 0) {
         // 4点が同一直線上にある場合
         if(dot(q1-p1, q2-p1) <= 0) return std::make_pair(true, p1);
         if(dot(q1-p2, q2-p2) <= 0) return std::make_pair(true, p2);
-        if(dot(p1-q1, p2-q1) <= 0) return std::make_pair(true, q1);
-        return std::make_pair(false, Vector<T, 2>());
+        return std::make_pair(true, q1);
     }
-    if(q1_section * q2_section > 0 || p1_section * p2_section > 0) return std::make_pair(false, Vector<T, 2>());
     T area = cross(p2 - p1, q2 - q1); // 4点を頂点とする四角形の符号付き面積
-    T partial_area = p1_cross; // 三角形q1q2p1の符号付き面積
-    Vector<T, 2> vp12 = p2 - p1; // ベクトルp1p2
-    if constexpr(std::is_integral_v<T>) {
-        T g = std::gcd(area, partial_area);
-        area /= g; partial_area /= g;
-    }
-    return std::make_pair(true, p1 + vp12 * partial_area / area);
+    T partial_area = cross(q2 - q1, p1 - q1); // 三角形q1q2p1の符号付き面積
+    return std::make_pair(true, p1 + (p2 - p1) * partial_area / area);
 }
 
 /**

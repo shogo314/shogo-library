@@ -1,4 +1,5 @@
 #define PROBLEM "https://atcoder.jp/contests/past202012-open/tasks/past202012_n"
+#define IGNORE
 
 #include "../data_structures/segtree.hpp"
 #include <iostream>

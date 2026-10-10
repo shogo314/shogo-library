@@ -1,4 +1,5 @@
 #define PROBLEM "https://atcoder.jp/contests/abc282/tasks/abc282_d"
+#define IGNORE
 
 #include <algorithm>
 #include <array>

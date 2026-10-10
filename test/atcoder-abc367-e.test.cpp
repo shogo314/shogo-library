@@ -1,4 +1,5 @@
 #define PROBLEM "https://atcoder.jp/contests/abc367/tasks/abc367_e"
+#define IGNORE
 
 #include <iostream>
 

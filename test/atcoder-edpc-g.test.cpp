@@ -1,4 +1,5 @@
 #define PROBLEM "https://atcoder.jp/contests/dp/tasks/dp_g"
+#define IGNORE
 
 #include <iostream>
 #include <algorithm>

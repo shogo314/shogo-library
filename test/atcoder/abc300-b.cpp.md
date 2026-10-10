@@ -1,21 +1,18 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/matrix.hpp
     title: "\u884C\u5217"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':warning:'
   attributes:
-    '*NOT_SPECIAL_COMMENTS*': ''
-    IGNORE: ''
-    IGNORE_IF_GCC: ''
     links:
     - https://atcoder.jp/contests/abc300/tasks/abc300_b
-  bundledCode: "#line 1 \"test/atcoder-abc300-b.test.cpp\"\n#define PROBLEM \"https://atcoder.jp/contests/abc300/tasks/abc300_b\"\
+  bundledCode: "#line 1 \"test/atcoder/abc300-b.cpp\"\n#define PROBLEM \"https://atcoder.jp/contests/abc300/tasks/abc300_b\"\
     \n#define IGNORE\n\n#include <iostream>\n\n#line 2 \"math/matrix.hpp\"\n\n#include\
     \ <vector>\n#include <string>\n#include <algorithm>\n#include <valarray>\n#include\
     \ <cassert>\n#include <type_traits>\n\nnamespace matrix {\n    template <typename\
@@ -240,7 +237,7 @@ data:
     \ {\n                T scale = A[j][pivot_col[i]];\n                for(int k\
     \ = pivot_col[i]; k < w; k ++) {\n                    A[j][k] = OperatorProperty::add(A[j][k],\
     \ OperatorProperty::neg(OperatorProperty::mul(A[i][k], scale)));\n           \
-    \     }\n            }\n        }\n        return d;\n    }\n};\n#line 7 \"test/atcoder-abc300-b.test.cpp\"\
+    \     }\n            }\n        }\n        return d;\n    }\n};\n#line 7 \"test/atcoder/abc300-b.cpp\"\
     \n\nint main(void) {\n    int h, w; std::cin >> h >> w;\n    std::vector<std::string>\
     \ a(h), b(h);\n    for(int i = 0; i < h; i ++) {\n        std::cin >> a[i];\n\
     \    }\n    for(int i = 0; i < h; i ++) {\n        std::cin >> b[i];\n    }\n\
@@ -250,7 +247,7 @@ data:
     \ }\n        }\n    }\n    std::cout << \"No\" << std::endl;\n    return 0;\n\
     }\n"
   code: "#define PROBLEM \"https://atcoder.jp/contests/abc300/tasks/abc300_b\"\n#define\
-    \ IGNORE\n\n#include <iostream>\n\n#include \"../math/matrix.hpp\"\n\nint main(void)\
+    \ IGNORE\n\n#include <iostream>\n\n#include \"../../math/matrix.hpp\"\n\nint main(void)\
     \ {\n    int h, w; std::cin >> h >> w;\n    std::vector<std::string> a(h), b(h);\n\
     \    for(int i = 0; i < h; i ++) {\n        std::cin >> a[i];\n    }\n    for(int\
     \ i = 0; i < h; i ++) {\n        std::cin >> b[i];\n    }\n    Matrix<char> A(a),\
@@ -260,16 +257,16 @@ data:
     \    std::cout << \"No\" << std::endl;\n    return 0;\n}"
   dependsOn:
   - math/matrix.hpp
-  isVerificationFile: true
-  path: test/atcoder-abc300-b.test.cpp
+  isVerificationFile: false
+  path: test/atcoder/abc300-b.cpp
   requiredBy: []
-  timestamp: '2026-10-10 12:56:34+09:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2026-10-10 21:12:50+09:00'
+  verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
-documentation_of: test/atcoder-abc300-b.test.cpp
+documentation_of: test/atcoder/abc300-b.cpp
 layout: document
 redirect_from:
-- /verify/test/atcoder-abc300-b.test.cpp
-- /verify/test/atcoder-abc300-b.test.cpp.html
-title: test/atcoder-abc300-b.test.cpp
+- /library/test/atcoder/abc300-b.cpp
+- /library/test/atcoder/abc300-b.cpp.html
+title: test/atcoder/abc300-b.cpp
 ---

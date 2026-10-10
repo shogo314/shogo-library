@@ -1,10 +1,22 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':warning:'
+    path: test/atcoder/abc185-f.cpp
+    title: test/atcoder/abc185-f.cpp
+  - icon: ':warning:'
+    path: test/atcoder/abc254-f.cpp
+    title: test/atcoder/abc254-f.cpp
+  - icon: ':warning:'
+    path: test/atcoder/abc331-f.cpp
+    title: test/atcoder/abc331-f.cpp
+  - icon: ':warning:'
+    path: test/atcoder/past202012-n.cpp
+    title: test/atcoder/past202012-n.cpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj-dsl-2-a.test.cpp
@@ -12,18 +24,6 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj-dsl-2-b.test.cpp
     title: test/aoj-dsl-2-b.test.cpp
-  - icon: ':x:'
-    path: test/atcoder-abc185-f.test.cpp
-    title: test/atcoder-abc185-f.test.cpp
-  - icon: ':x:'
-    path: test/atcoder-abc254-f.test.cpp
-    title: test/atcoder-abc254-f.test.cpp
-  - icon: ':x:'
-    path: test/atcoder-abc331-f.test.cpp
-    title: test/atcoder-abc331-f.test.cpp
-  - icon: ':x:'
-    path: test/atcoder-past202012-n.test.cpp
-    title: test/atcoder-past202012-n.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo-lca.2.test.cpp
     title: test/yosupo-lca.2.test.cpp
@@ -36,9 +36,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo-point-set-range-composite.3.test.cpp
     title: test/yosupo-point-set-range-composite.3.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
     links: []
@@ -340,19 +340,19 @@ data:
   - algebra/monoid.hpp
   isVerificationFile: false
   path: data_structures/segtree.hpp
-  requiredBy: []
+  requiredBy:
+  - test/atcoder/abc331-f.cpp
+  - test/atcoder/past202012-n.cpp
+  - test/atcoder/abc185-f.cpp
+  - test/atcoder/abc254-f.cpp
   timestamp: '2026-10-10 20:42:46+09:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/aoj-dsl-2-a.test.cpp
   - test/aoj-dsl-2-b.test.cpp
-  - test/atcoder-abc185-f.test.cpp
-  - test/atcoder-abc331-f.test.cpp
   - test/yosupo-point-set-range-composite.3.test.cpp
-  - test/atcoder-past202012-n.test.cpp
   - test/yosupo-point-set-range-composite.2.test.cpp
   - test/yosupo-point-set-range-composite.1.test.cpp
-  - test/atcoder-abc254-f.test.cpp
   - test/yosupo-lca.2.test.cpp
 documentation_of: data_structures/segtree.hpp
 layout: document

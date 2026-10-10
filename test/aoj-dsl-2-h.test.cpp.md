@@ -1,13 +1,13 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: algebra/acted-monoid.hpp
     title: "\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: data_structures/lazy-segtree.hpp
     title: "\u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
   _extendedRequiredBy: []

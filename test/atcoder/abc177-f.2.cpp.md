@@ -1,27 +1,24 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: algebra/acted-monoid.hpp
     title: "\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: data_structures/lazy-segtree.hpp
     title: "\u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':warning:'
   attributes:
-    '*NOT_SPECIAL_COMMENTS*': ''
-    IGNORE: ''
-    IGNORE_IF_GCC: ''
     links:
     - https://atcoder.jp/contests/abc177/tasks/abc177_f
-  bundledCode: "#line 1 \"test/atcoder-abc177-f.1.test.cpp\"\n#define PROBLEM \"https://atcoder.jp/contests/abc177/tasks/abc177_f\"\
+  bundledCode: "#line 1 \"test/atcoder/abc177-f.2.cpp\"\n#define PROBLEM \"https://atcoder.jp/contests/abc177/tasks/abc177_f\"\
     \n#define IGNORE\n\n#include <iostream>\n#include <limits>\n\n#line 2 \"data_structures/lazy-segtree.hpp\"\
     \n\n/**\n * @file lazy-segtree.hpp\n * @brief \u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\
     \u30E1\u30F3\u30C8\u6728\n */\n\n#include <cassert>\n#include <functional>\n#include\
@@ -417,47 +414,43 @@ data:
     \ - sz;\n            }\n            sum = op(data[r], sum);\n        } while((r\
     \ & -r) != r);\n        return 0;\n    }\n};\n\ntemplate <typename A>\nLazySegTree(int,\
     \ A) -> LazySegTree<A>;\ntemplate <typename A>\nLazySegTree(std::vector<typename\
-    \ A::S>, A) -> LazySegTree<A>;\n#line 8 \"test/atcoder-abc177-f.1.test.cpp\"\n\
-    \n// \u533A\u9593 [l, r) \u306E i \u756A\u76EE\u306E\u8981\u7D20\u3092 f + i \u306B\
-    \u3059\u308B\nstruct UpdateAddIndexMin : monoid::Min<int> {\n    using S = int;\n\
-    \    using F = int;\n    static constexpr F ID = std::numeric_limits<int>::max();\n\
-    \    static S mapping(F f, S x, int l, int) { return f == ID ? x : f + l; }\n\
-    \    static F composition(F f, F g) { return f == ID ? g : f; }\n    static F\
-    \ id() { return ID; }\n};\n\nint main(void) {\n    int h, w; std::cin >> h >>\
-    \ w;\n    LazySegTree<UpdateAddIndexMin> seg(std::vector<int>(w, 0));\n    for(int\
-    \ i = 0; i < h; i++) {\n        int a, b; std::cin >> a >> b; a--;\n        if(a\
-    \ == 0) {\n            // unreachable to [a,b)\n            seg.apply(a, b, 1000000000);\n\
-    \        } else {\n            seg.apply(a, b, seg[a-1] + 1 - a);\n        }\n\
-    \        int ans = seg.all_prod();\n        std::cout << (ans >= 1000000000 ?\
-    \ -1 : ans+i+1) << '\\n';\n    }\n}\n"
+    \ A::S>, A) -> LazySegTree<A>;\n#line 8 \"test/atcoder/abc177-f.2.cpp\"\n\nint\
+    \ main(void) {\n    int h, w; std::cin >> h >> w;\n    int id = std::numeric_limits<int>::max();\n\
+    \    LazySegTree seg(std::vector<int>(w, 0), ActedMonoid(\n        [](int a, int\
+    \ b) { return std::min(a, b); }, id,\n        [&](int f, int x, int l, int) {\n\
+    \            return f == id ? x : f + l;\n        },\n        [&](int f, int g)\
+    \ {\n            return f == id ? g : f;\n        },\n        id\n    ));\n  \
+    \  for(int i = 0; i < h; i++) {\n        int a, b; std::cin >> a >> b; a--;\n\
+    \        if(a == 0) {\n            // unreachable to [a,b)\n            seg.apply(a,\
+    \ b, 1000000000);\n        } else {\n            seg.apply(a, b, seg[a-1] + 1\
+    \ - a);\n        }\n        int ans = seg.all_prod();\n        std::cout << (ans\
+    \ >= 1000000000 ? -1 : ans+i+1) << '\\n';\n    }\n}\n"
   code: "#define PROBLEM \"https://atcoder.jp/contests/abc177/tasks/abc177_f\"\n#define\
-    \ IGNORE\n\n#include <iostream>\n#include <limits>\n\n#include \"../data_structures/lazy-segtree.hpp\"\
-    \n\n// \u533A\u9593 [l, r) \u306E i \u756A\u76EE\u306E\u8981\u7D20\u3092 f + i\
-    \ \u306B\u3059\u308B\nstruct UpdateAddIndexMin : monoid::Min<int> {\n    using\
-    \ S = int;\n    using F = int;\n    static constexpr F ID = std::numeric_limits<int>::max();\n\
-    \    static S mapping(F f, S x, int l, int) { return f == ID ? x : f + l; }\n\
-    \    static F composition(F f, F g) { return f == ID ? g : f; }\n    static F\
-    \ id() { return ID; }\n};\n\nint main(void) {\n    int h, w; std::cin >> h >>\
-    \ w;\n    LazySegTree<UpdateAddIndexMin> seg(std::vector<int>(w, 0));\n    for(int\
-    \ i = 0; i < h; i++) {\n        int a, b; std::cin >> a >> b; a--;\n        if(a\
-    \ == 0) {\n            // unreachable to [a,b)\n            seg.apply(a, b, 1000000000);\n\
-    \        } else {\n            seg.apply(a, b, seg[a-1] + 1 - a);\n        }\n\
-    \        int ans = seg.all_prod();\n        std::cout << (ans >= 1000000000 ?\
-    \ -1 : ans+i+1) << '\\n';\n    }\n}\n"
+    \ IGNORE\n\n#include <iostream>\n#include <limits>\n\n#include \"../../data_structures/lazy-segtree.hpp\"\
+    \n\nint main(void) {\n    int h, w; std::cin >> h >> w;\n    int id = std::numeric_limits<int>::max();\n\
+    \    LazySegTree seg(std::vector<int>(w, 0), ActedMonoid(\n        [](int a, int\
+    \ b) { return std::min(a, b); }, id,\n        [&](int f, int x, int l, int) {\n\
+    \            return f == id ? x : f + l;\n        },\n        [&](int f, int g)\
+    \ {\n            return f == id ? g : f;\n        },\n        id\n    ));\n  \
+    \  for(int i = 0; i < h; i++) {\n        int a, b; std::cin >> a >> b; a--;\n\
+    \        if(a == 0) {\n            // unreachable to [a,b)\n            seg.apply(a,\
+    \ b, 1000000000);\n        } else {\n            seg.apply(a, b, seg[a-1] + 1\
+    \ - a);\n        }\n        int ans = seg.all_prod();\n        std::cout << (ans\
+    \ >= 1000000000 ? -1 : ans+i+1) << '\\n';\n    }\n}\n"
   dependsOn:
   - data_structures/lazy-segtree.hpp
   - algebra/acted-monoid.hpp
   - algebra/monoid.hpp
-  isVerificationFile: true
-  path: test/atcoder-abc177-f.1.test.cpp
+  isVerificationFile: false
+  path: test/atcoder/abc177-f.2.cpp
   requiredBy: []
-  timestamp: '2026-10-10 20:42:46+09:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2026-10-10 21:12:50+09:00'
+  verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
-documentation_of: test/atcoder-abc177-f.1.test.cpp
+documentation_of: test/atcoder/abc177-f.2.cpp
 layout: document
 redirect_from:
-- /verify/test/atcoder-abc177-f.1.test.cpp
-- /verify/test/atcoder-abc177-f.1.test.cpp.html
-title: test/atcoder-abc177-f.1.test.cpp
+- /library/test/atcoder/abc177-f.2.cpp
+- /library/test/atcoder/abc177-f.2.cpp.html
+title: test/atcoder/abc177-f.2.cpp
 ---

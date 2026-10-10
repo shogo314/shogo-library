@@ -1,30 +1,27 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: base/traits.hpp
     title: base/traits.hpp
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: data_structures/segtree.hpp
     title: "\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: string/rolling-hash.hpp
     title: "\u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':warning:'
   attributes:
-    '*NOT_SPECIAL_COMMENTS*': ''
-    IGNORE: ''
-    IGNORE_IF_GCC: ''
     links:
     - https://atcoder.jp/contests/abc331/tasks/abc331_f
-  bundledCode: "#line 1 \"test/atcoder-abc331-f.test.cpp\"\n#define PROBLEM \"https://atcoder.jp/contests/abc331/tasks/abc331_f\"\
+  bundledCode: "#line 1 \"test/atcoder/abc331-f.cpp\"\n#define PROBLEM \"https://atcoder.jp/contests/abc331/tasks/abc331_f\"\
     \n#define IGNORE\n\n#include <iostream>\n\n#line 2 \"string/rolling-hash.hpp\"\
     \n\n#include <string>\n#include <vector>\n#include <random>\n#include <cassert>\n\
     #include <string_view>\n#include <type_traits>\n\n#line 2 \"base/traits.hpp\"\n\
@@ -402,10 +399,10 @@ data:
     \ r + 1 - sz;\n            }\n            sum = op(data[r], sum);\n        } while\
     \ ((r & -r) != r);\n        return 0;\n    }\n};\n\ntemplate <typename M>\nSegTree(int,\
     \ M) -> SegTree<M>;\ntemplate <typename M>\nSegTree(std::vector<typename M::S>,\
-    \ M) -> SegTree<M>;\n#line 8 \"test/atcoder-abc331-f.test.cpp\"\n\nRollingHash\
-    \ rh;\nstruct RHMonoid {\n    using S = RHString;\n    static S op(const S& a,\
-    \ const S& b) { return a + b; }\n    static S e() { return RHString(rh); }\n};\n\
-    \nint main() {\n    int N, Q;\n    std::string S;\n    std::cin >> N >> Q >> S;\n\
+    \ M) -> SegTree<M>;\n#line 8 \"test/atcoder/abc331-f.cpp\"\n\nRollingHash rh;\n\
+    struct RHMonoid {\n    using S = RHString;\n    static S op(const S& a, const\
+    \ S& b) { return a + b; }\n    static S e() { return RHString(rh); }\n};\n\nint\
+    \ main() {\n    int N, Q;\n    std::string S;\n    std::cin >> N >> Q >> S;\n\
     \    std::vector<RHString> init;\n    init.reserve(N);\n    for (char c : S) {\n\
     \        init.emplace_back(rh, c);\n    }\n    SegTree<RHMonoid> seg(init);\n\
     \    while (Q--) {\n        int q;\n        std::cin >> q;\n        if (q == 1)\
@@ -415,11 +412,11 @@ data:
     \ - 1, R).is_palindrome() ? \"Yes\" : \"No\") << std::endl;\n        }\n    }\n\
     }\n"
   code: "#define PROBLEM \"https://atcoder.jp/contests/abc331/tasks/abc331_f\"\n#define\
-    \ IGNORE\n\n#include <iostream>\n\n#include \"../string/rolling-hash.hpp\"\n#include\
-    \ \"../data_structures/segtree.hpp\"\n\nRollingHash rh;\nstruct RHMonoid {\n \
-    \   using S = RHString;\n    static S op(const S& a, const S& b) { return a +\
-    \ b; }\n    static S e() { return RHString(rh); }\n};\n\nint main() {\n    int\
-    \ N, Q;\n    std::string S;\n    std::cin >> N >> Q >> S;\n    std::vector<RHString>\
+    \ IGNORE\n\n#include <iostream>\n\n#include \"../../string/rolling-hash.hpp\"\n\
+    #include \"../../data_structures/segtree.hpp\"\n\nRollingHash rh;\nstruct RHMonoid\
+    \ {\n    using S = RHString;\n    static S op(const S& a, const S& b) { return\
+    \ a + b; }\n    static S e() { return RHString(rh); }\n};\n\nint main() {\n  \
+    \  int N, Q;\n    std::string S;\n    std::cin >> N >> Q >> S;\n    std::vector<RHString>\
     \ init;\n    init.reserve(N);\n    for (char c : S) {\n        init.emplace_back(rh,\
     \ c);\n    }\n    SegTree<RHMonoid> seg(init);\n    while (Q--) {\n        int\
     \ q;\n        std::cin >> q;\n        if (q == 1) {\n            int x;\n    \
@@ -432,16 +429,16 @@ data:
   - base/traits.hpp
   - data_structures/segtree.hpp
   - algebra/monoid.hpp
-  isVerificationFile: true
-  path: test/atcoder-abc331-f.test.cpp
+  isVerificationFile: false
+  path: test/atcoder/abc331-f.cpp
   requiredBy: []
-  timestamp: '2026-10-10 20:42:46+09:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2026-10-10 21:12:50+09:00'
+  verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
-documentation_of: test/atcoder-abc331-f.test.cpp
+documentation_of: test/atcoder/abc331-f.cpp
 layout: document
 redirect_from:
-- /verify/test/atcoder-abc331-f.test.cpp
-- /verify/test/atcoder-abc331-f.test.cpp.html
-title: test/atcoder-abc331-f.test.cpp
+- /library/test/atcoder/abc331-f.cpp
+- /library/test/atcoder/abc331-f.cpp.html
+title: test/atcoder/abc331-f.cpp
 ---

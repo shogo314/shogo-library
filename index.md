@@ -3,13 +3,13 @@ data:
   libraryCategories:
   - name: algebra
     pages:
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: algebra/acted-monoid.hpp
       title: "\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
     - icon: ':heavy_check_mark:'
       path: algebra/group.hpp
       title: "\u7FA4\u306E\u5B9A\u7FA9"
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: algebra/monoid.hpp
       title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   - name: base
@@ -36,7 +36,7 @@ data:
     - icon: ':warning:'
       path: base/repr.hpp
       title: base/repr.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: base/traits.hpp
       title: base/traits.hpp
     - icon: ':warning:'
@@ -69,7 +69,7 @@ data:
     - icon: ':warning:'
       path: data_structures/interval-set.hpp
       title: "\u534A\u958B\u533A\u9593\u3092\u7BA1\u7406\u3059\u308B"
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: data_structures/lazy-segtree.hpp
       title: "\u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
     - icon: ':heavy_check_mark:'
@@ -93,13 +93,13 @@ data:
     - icon: ':heavy_check_mark:'
       path: data_structures/segtree-beats.hpp
       title: Segment Tree Beats
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: data_structures/segtree.hpp
       title: "\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
     - icon: ':warning:'
       path: data_structures/tadpole-array.hpp
       title: "\u304A\u305F\u307E\u3058\u3083\u304F\u3057\u914D\u5217"
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: data_structures/unionfind.hpp
       title: UnionFind
   - name: geometry
@@ -109,13 +109,13 @@ data:
       title: "\u5E7E\u4F55\u5B66\u3068\u3057\u3066\u306E\u30D9\u30AF\u30C8\u30EB"
   - name: graph
     pages:
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: graph/functional-graph.hpp
       title: "\u30D5\u30A1\u30F3\u30AF\u30B7\u30E7\u30CA\u30EB\u30B0\u30E9\u30D5"
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: graph/graph.hpp
       title: "\u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9"
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: graph/graph_util.hpp
       title: "\u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570"
     - icon: ':heavy_check_mark:'
@@ -135,10 +135,10 @@ data:
     - icon: ':warning:'
       path: math/infint.hpp
       title: math/infint.hpp
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: math/matrix.hpp
       title: "\u884C\u5217"
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: math/modint.hpp
       title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
         \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9"
@@ -155,12 +155,53 @@ data:
       title: others/mo.hpp
   - name: string
     pages:
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: string/rolling-hash.hpp
       title: "\u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5"
     - icon: ':heavy_check_mark:'
       path: string/string.hpp
       title: Z-algorithm
+  - name: test/atcoder
+    pages:
+    - icon: ':warning:'
+      path: test/atcoder/abc177-f.1.cpp
+      title: test/atcoder/abc177-f.1.cpp
+    - icon: ':warning:'
+      path: test/atcoder/abc177-f.2.cpp
+      title: test/atcoder/abc177-f.2.cpp
+    - icon: ':warning:'
+      path: test/atcoder/abc185-f.cpp
+      title: test/atcoder/abc185-f.cpp
+    - icon: ':warning:'
+      path: test/atcoder/abc228-b.cpp
+      title: test/atcoder/abc228-b.cpp
+    - icon: ':warning:'
+      path: test/atcoder/abc254-f.cpp
+      title: test/atcoder/abc254-f.cpp
+    - icon: ':warning:'
+      path: test/atcoder/abc256-e.cpp
+      title: test/atcoder/abc256-e.cpp
+    - icon: ':warning:'
+      path: test/atcoder/abc282-d.cpp
+      title: test/atcoder/abc282-d.cpp
+    - icon: ':warning:'
+      path: test/atcoder/abc300-b.cpp
+      title: test/atcoder/abc300-b.cpp
+    - icon: ':warning:'
+      path: test/atcoder/abc331-f.cpp
+      title: test/atcoder/abc331-f.cpp
+    - icon: ':warning:'
+      path: test/atcoder/abc367-e.cpp
+      title: test/atcoder/abc367-e.cpp
+    - icon: ':warning:'
+      path: test/atcoder/edpc-g.cpp
+      title: test/atcoder/edpc-g.cpp
+    - icon: ':warning:'
+      path: test/atcoder/jsc2021-g.cpp
+      title: test/atcoder/jsc2021-g.cpp
+    - icon: ':warning:'
+      path: test/atcoder/past202012-n.cpp
+      title: test/atcoder/past202012-n.cpp
   verificationCategories:
   - name: test
     pages:
@@ -236,45 +277,6 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/aoj-jag-summer-2971.test.cpp
       title: test/aoj-jag-summer-2971.test.cpp
-    - icon: ':x:'
-      path: test/atcoder-abc177-f.1.test.cpp
-      title: test/atcoder-abc177-f.1.test.cpp
-    - icon: ':x:'
-      path: test/atcoder-abc177-f.2.test.cpp
-      title: test/atcoder-abc177-f.2.test.cpp
-    - icon: ':x:'
-      path: test/atcoder-abc185-f.test.cpp
-      title: test/atcoder-abc185-f.test.cpp
-    - icon: ':x:'
-      path: test/atcoder-abc228-b.test.cpp
-      title: test/atcoder-abc228-b.test.cpp
-    - icon: ':x:'
-      path: test/atcoder-abc254-f.test.cpp
-      title: test/atcoder-abc254-f.test.cpp
-    - icon: ':x:'
-      path: test/atcoder-abc256-e.test.cpp
-      title: test/atcoder-abc256-e.test.cpp
-    - icon: ':x:'
-      path: test/atcoder-abc282-d.test.cpp
-      title: test/atcoder-abc282-d.test.cpp
-    - icon: ':x:'
-      path: test/atcoder-abc300-b.test.cpp
-      title: test/atcoder-abc300-b.test.cpp
-    - icon: ':x:'
-      path: test/atcoder-abc331-f.test.cpp
-      title: test/atcoder-abc331-f.test.cpp
-    - icon: ':x:'
-      path: test/atcoder-abc367-e.test.cpp
-      title: test/atcoder-abc367-e.test.cpp
-    - icon: ':x:'
-      path: test/atcoder-edpc-g.test.cpp
-      title: test/atcoder-edpc-g.test.cpp
-    - icon: ':x:'
-      path: test/atcoder-jsc2021-g.test.cpp
-      title: test/atcoder-jsc2021-g.test.cpp
-    - icon: ':x:'
-      path: test/atcoder-past202012-n.test.cpp
-      title: test/atcoder-past202012-n.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest-functional-graph.test.cpp
       title: test/unittest-functional-graph.test.cpp

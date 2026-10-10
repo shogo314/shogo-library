@@ -11,13 +11,13 @@ data:
   - icon: ':heavy_check_mark:'
     path: math/number-theory.hpp
     title: "a^(-1) mod MOD\u3092\u8FD4\u3059"
+  - icon: ':warning:'
+    path: test/atcoder/jsc2021-g.cpp
+    title: test/atcoder/jsc2021-g.cpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj-jag-summer-2971.test.cpp
     title: test/aoj-jag-summer-2971.test.cpp
-  - icon: ':x:'
-    path: test/atcoder-jsc2021-g.test.cpp
-    title: test/atcoder-jsc2021-g.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo-binomial-coefficient.test.cpp
     title: test/yosupo-binomial-coefficient.test.cpp
@@ -87,9 +87,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yukicoder-search-oji.test.cpp
     title: test/yukicoder-search-oji.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067\
       \ mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9"
@@ -564,11 +564,12 @@ data:
   isVerificationFile: false
   path: math/modint.hpp
   requiredBy:
+  - test/atcoder/jsc2021-g.cpp
   - math/fps.hpp
   - math/combinatorics.hpp
   - math/number-theory.hpp
   timestamp: '2026-10-09 19:25:54+09:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/yosupo-range-affine-range-sum.3.test.cpp
   - test/yosupo-range-affine-range-sum.2.test.cpp
@@ -593,7 +594,6 @@ data:
   - test/yosupo-pow-of-fps.test.cpp
   - test/yosupo-unionfind-with-potential-non-commutative-group.test.cpp
   - test/yosupo-inv-of-fps.test.cpp
-  - test/atcoder-jsc2021-g.test.cpp
   - test/yosupo-convolution-mod-1000000007.test.cpp
 documentation_of: math/modint.hpp
 layout: document

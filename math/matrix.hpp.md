@@ -1,17 +1,17 @@
 ---
 data:
   _extendedDependsOn: []
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':warning:'
+    path: test/atcoder/abc300-b.cpp
+    title: test/atcoder/abc300-b.cpp
+  - icon: ':warning:'
+    path: test/atcoder/jsc2021-g.cpp
+    title: test/atcoder/jsc2021-g.cpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj-3314.test.cpp
     title: test/aoj-3314.test.cpp
-  - icon: ':x:'
-    path: test/atcoder-abc300-b.test.cpp
-    title: test/atcoder-abc300-b.test.cpp
-  - icon: ':x:'
-    path: test/atcoder-jsc2021-g.test.cpp
-    title: test/atcoder-jsc2021-g.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yukicoder-rotate-enlarge_1.test.cpp
     title: test/yukicoder-rotate-enlarge_1.test.cpp
@@ -21,9 +21,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yukicoder-search-oji.test.cpp
     title: test/yukicoder-search-oji.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "\u884C\u5217"
     links: []
@@ -480,16 +480,16 @@ data:
   dependsOn: []
   isVerificationFile: false
   path: math/matrix.hpp
-  requiredBy: []
+  requiredBy:
+  - test/atcoder/jsc2021-g.cpp
+  - test/atcoder/abc300-b.cpp
   timestamp: '2026-10-09 19:25:54+09:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/yukicoder-rotate-enlarge_1.test.cpp
   - test/yukicoder-rotate-enlarge_2.test.cpp
   - test/yukicoder-search-oji.test.cpp
-  - test/atcoder-abc300-b.test.cpp
   - test/aoj-3314.test.cpp
-  - test/atcoder-jsc2021-g.test.cpp
 documentation_of: math/matrix.hpp
 layout: document
 redirect_from:

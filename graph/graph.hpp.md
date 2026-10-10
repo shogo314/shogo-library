@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: graph/graph_util.hpp
     title: "\u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570"
   - icon: ':heavy_check_mark:'
@@ -11,6 +11,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: graph/tree.hpp
     title: "\u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8"
+  - icon: ':warning:'
+    path: test/atcoder/abc282-d.cpp
+    title: test/atcoder/abc282-d.cpp
+  - icon: ':warning:'
+    path: test/atcoder/edpc-g.cpp
+    title: test/atcoder/edpc-g.cpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj-1595.test.cpp
@@ -33,12 +39,6 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj-grl-5-b.test.cpp
     title: test/aoj-grl-5-b.test.cpp
-  - icon: ':x:'
-    path: test/atcoder-abc282-d.test.cpp
-    title: test/atcoder-abc282-d.test.cpp
-  - icon: ':x:'
-    path: test/atcoder-edpc-g.test.cpp
-    title: test/atcoder-edpc-g.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest-graph-util.test.cpp
     title: test/unittest-graph-util.test.cpp
@@ -54,9 +54,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yukicoder-898.test.cpp
     title: test/yukicoder-898.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "\u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9"
     links: []
@@ -308,20 +308,20 @@ data:
   - graph/tree.hpp
   - graph/rerooting-dp.hpp
   - graph/graph_util.hpp
+  - test/atcoder/edpc-g.cpp
+  - test/atcoder/abc282-d.cpp
   timestamp: '2026-10-09 19:25:54+09:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/aoj-grl-1-b.test.cpp
   - test/aoj-grl-5-a.test.cpp
   - test/yosupo-lca.1.test.cpp
   - test/aoj-1595.test.cpp
   - test/aoj-3372.test.cpp
-  - test/atcoder-abc282-d.test.cpp
   - test/yosupo-shortest-path.test.cpp
   - test/aoj-grl-5-b.test.cpp
   - test/yukicoder-898.test.cpp
   - test/aoj-grl-4-a.test.cpp
-  - test/atcoder-edpc-g.test.cpp
   - test/yosupo-lca.2.test.cpp
   - test/unittest-graph-util.test.cpp
   - test/aoj-alds1-11-d.test.cpp

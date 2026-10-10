@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: base/traits.hpp
     title: base/traits.hpp
   _extendedRequiredBy: []

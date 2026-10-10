@@ -1,10 +1,16 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: graph/graph.hpp
     title: "\u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9"
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':warning:'
+    path: test/atcoder/abc282-d.cpp
+    title: test/atcoder/abc282-d.cpp
+  - icon: ':warning:'
+    path: test/atcoder/edpc-g.cpp
+    title: test/atcoder/edpc-g.cpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj-alds1-11-d.test.cpp
@@ -12,18 +18,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj-grl-4-a.test.cpp
     title: test/aoj-grl-4-a.test.cpp
-  - icon: ':x:'
-    path: test/atcoder-abc282-d.test.cpp
-    title: test/atcoder-abc282-d.test.cpp
-  - icon: ':x:'
-    path: test/atcoder-edpc-g.test.cpp
-    title: test/atcoder-edpc-g.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest-graph-util.test.cpp
     title: test/unittest-graph-util.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "\u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570"
     links: []
@@ -332,13 +332,13 @@ data:
   - graph/graph.hpp
   isVerificationFile: false
   path: graph/graph_util.hpp
-  requiredBy: []
+  requiredBy:
+  - test/atcoder/edpc-g.cpp
+  - test/atcoder/abc282-d.cpp
   timestamp: '2026-10-10 20:54:50+09:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/atcoder-abc282-d.test.cpp
   - test/aoj-grl-4-a.test.cpp
-  - test/atcoder-edpc-g.test.cpp
   - test/unittest-graph-util.test.cpp
   - test/aoj-alds1-11-d.test.cpp
 documentation_of: graph/graph_util.hpp

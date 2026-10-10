@@ -1,19 +1,25 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   _extendedRequiredBy:
   - icon: ':warning:'
     path: data_structures/imos.hpp
     title: "imos\u6CD5\u3067\u533A\u9593\u4F5C\u7528\u30011\u70B9\u53D6\u5F97"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: data_structures/lazy-segtree.hpp
     title: "\u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
   - icon: ':heavy_check_mark:'
     path: data_structures/segtree-beats.hpp
     title: Segment Tree Beats
+  - icon: ':warning:'
+    path: test/atcoder/abc177-f.1.cpp
+    title: test/atcoder/abc177-f.1.cpp
+  - icon: ':warning:'
+    path: test/atcoder/abc177-f.2.cpp
+    title: test/atcoder/abc177-f.2.cpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj-dsl-2-f.test.cpp
@@ -27,12 +33,6 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj-dsl-2-i.test.cpp
     title: test/aoj-dsl-2-i.test.cpp
-  - icon: ':x:'
-    path: test/atcoder-abc177-f.1.test.cpp
-    title: test/atcoder-abc177-f.1.test.cpp
-  - icon: ':x:'
-    path: test/atcoder-abc177-f.2.test.cpp
-    title: test/atcoder-abc177-f.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo-range-affine-range-sum.1.test.cpp
     title: test/yosupo-range-affine-range-sum.1.test.cpp
@@ -51,9 +51,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yukicoder-2292.test.cpp
     title: test/yukicoder-2292.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\
       \u7FA9"
@@ -497,8 +497,10 @@ data:
   - data_structures/lazy-segtree.hpp
   - data_structures/segtree-beats.hpp
   - data_structures/imos.hpp
+  - test/atcoder/abc177-f.1.cpp
+  - test/atcoder/abc177-f.2.cpp
   timestamp: '2026-10-10 20:42:46+09:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/yosupo-range-affine-range-sum.3.test.cpp
   - test/yosupo-range-affine-range-sum.2.test.cpp
@@ -510,8 +512,6 @@ data:
   - test/yosupo-range-chmin-chmax-add-range-sum.1.test.cpp
   - test/aoj-dsl-2-i.test.cpp
   - test/aoj-dsl-2-g.test.cpp
-  - test/atcoder-abc177-f.1.test.cpp
-  - test/atcoder-abc177-f.2.test.cpp
 documentation_of: algebra/acted-monoid.hpp
 layout: document
 redirect_from:

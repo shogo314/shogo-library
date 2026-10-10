@@ -1,24 +1,21 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: data_structures/segtree.hpp
     title: "\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':warning:'
   attributes:
-    '*NOT_SPECIAL_COMMENTS*': ''
-    IGNORE: ''
-    IGNORE_IF_GCC: ''
     links:
-    - https://atcoder.jp/contests/abc254/tasks/abc254_f
-  bundledCode: "#line 1 \"test/atcoder-abc254-f.test.cpp\"\n#define PROBLEM \"https://atcoder.jp/contests/abc254/tasks/abc254_f\"\
+    - https://atcoder.jp/contests/abc185/tasks/abc185_f
+  bundledCode: "#line 1 \"test/atcoder/abc185-f.cpp\"\n#define PROBLEM \"https://atcoder.jp/contests/abc185/tasks/abc185_f\"\
     \n#define IGNORE\n\n#include <iostream>\n\n#line 2 \"data_structures/segtree.hpp\"\
     \n\n/**\n * @file segtree.hpp\n * @brief \u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n\
     \ */\n\n#include <cassert>\n#include <functional>\n#include <ostream>\n#include\
@@ -215,40 +212,34 @@ data:
     \ r + 1 - sz;\n            }\n            sum = op(data[r], sum);\n        } while\
     \ ((r & -r) != r);\n        return 0;\n    }\n};\n\ntemplate <typename M>\nSegTree(int,\
     \ M) -> SegTree<M>;\ntemplate <typename M>\nSegTree(std::vector<typename M::S>,\
-    \ M) -> SegTree<M>;\n#line 7 \"test/atcoder-abc254-f.test.cpp\"\n\nint main(void)\
-    \ {\n    int N, Q;\n    std::cin >> N >> Q;\n    std::vector<int> A(N), B(N),\
-    \ dA, dB;\n    for (int& a : A) {\n        std::cin >> a;\n    }\n    for (int&\
-    \ b : B) {\n        std::cin >> b;\n    }\n    dA.reserve(N - 1);\n    dB.reserve(N\
-    \ - 1);\n    for (int i = 0; i < N - 1; i++) {\n        dA.push_back(A[i + 1]\
-    \ - A[i]);\n        dB.push_back(B[i + 1] - B[i]);\n    }\n    SegTree<monoid::Gcd<int>>\
-    \ seg1(dA), seg2(dB);\n    while (Q--) {\n        int h1, h2, w1, w2;\n      \
-    \  std::cin >> h1 >> h2 >> w1 >> w2;\n        int g = A[h1 - 1] + B[w1 - 1];\n\
-    \        g = std::gcd(g, seg1.prod(h1 - 1, h2 - 1));\n        g = std::gcd(g,\
-    \ seg2.prod(w1 - 1, w2 - 1));\n        std::cout << g << std::endl;\n    }\n}\n"
-  code: "#define PROBLEM \"https://atcoder.jp/contests/abc254/tasks/abc254_f\"\n#define\
-    \ IGNORE\n\n#include <iostream>\n\n#include \"../data_structures/segtree.hpp\"\
+    \ M) -> SegTree<M>;\n#line 7 \"test/atcoder/abc185-f.cpp\"\n\nint main(void) {\n\
+    \    int N, Q;\n    std::cin >> N >> Q;\n    std::vector<int> A(N);\n    for (int&\
+    \ a : A) {\n        std::cin >> a;\n    }\n    SegTree<monoid::Xor<int>> seg(A);\n\
+    \    while (Q--) {\n        int T, X, Y;\n        std::cin >> T >> X >> Y;\n \
+    \       if (T == 1) {\n            seg.apply(X - 1, Y);\n        } else {\n  \
+    \          int ans;\n            ans = seg.prod(X - 1, Y);\n            std::cout\
+    \ << ans << std::endl;\n        }\n    }\n}\n"
+  code: "#define PROBLEM \"https://atcoder.jp/contests/abc185/tasks/abc185_f\"\n#define\
+    \ IGNORE\n\n#include <iostream>\n\n#include \"../../data_structures/segtree.hpp\"\
     \n\nint main(void) {\n    int N, Q;\n    std::cin >> N >> Q;\n    std::vector<int>\
-    \ A(N), B(N), dA, dB;\n    for (int& a : A) {\n        std::cin >> a;\n    }\n\
-    \    for (int& b : B) {\n        std::cin >> b;\n    }\n    dA.reserve(N - 1);\n\
-    \    dB.reserve(N - 1);\n    for (int i = 0; i < N - 1; i++) {\n        dA.push_back(A[i\
-    \ + 1] - A[i]);\n        dB.push_back(B[i + 1] - B[i]);\n    }\n    SegTree<monoid::Gcd<int>>\
-    \ seg1(dA), seg2(dB);\n    while (Q--) {\n        int h1, h2, w1, w2;\n      \
-    \  std::cin >> h1 >> h2 >> w1 >> w2;\n        int g = A[h1 - 1] + B[w1 - 1];\n\
-    \        g = std::gcd(g, seg1.prod(h1 - 1, h2 - 1));\n        g = std::gcd(g,\
-    \ seg2.prod(w1 - 1, w2 - 1));\n        std::cout << g << std::endl;\n    }\n}\n"
+    \ A(N);\n    for (int& a : A) {\n        std::cin >> a;\n    }\n    SegTree<monoid::Xor<int>>\
+    \ seg(A);\n    while (Q--) {\n        int T, X, Y;\n        std::cin >> T >> X\
+    \ >> Y;\n        if (T == 1) {\n            seg.apply(X - 1, Y);\n        } else\
+    \ {\n            int ans;\n            ans = seg.prod(X - 1, Y);\n           \
+    \ std::cout << ans << std::endl;\n        }\n    }\n}\n"
   dependsOn:
   - data_structures/segtree.hpp
   - algebra/monoid.hpp
-  isVerificationFile: true
-  path: test/atcoder-abc254-f.test.cpp
+  isVerificationFile: false
+  path: test/atcoder/abc185-f.cpp
   requiredBy: []
-  timestamp: '2026-10-10 20:42:46+09:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2026-10-10 21:12:50+09:00'
+  verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
-documentation_of: test/atcoder-abc254-f.test.cpp
+documentation_of: test/atcoder/abc185-f.cpp
 layout: document
 redirect_from:
-- /verify/test/atcoder-abc254-f.test.cpp
-- /verify/test/atcoder-abc254-f.test.cpp.html
-title: test/atcoder-abc254-f.test.cpp
+- /library/test/atcoder/abc185-f.cpp
+- /library/test/atcoder/abc185-f.cpp.html
+title: test/atcoder/abc185-f.cpp
 ---

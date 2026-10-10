@@ -1,23 +1,23 @@
 ---
 data:
   _extendedDependsOn: []
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':warning:'
+    path: test/atcoder/abc228-b.cpp
+    title: test/atcoder/abc228-b.cpp
+  - icon: ':warning:'
+    path: test/atcoder/abc256-e.cpp
+    title: test/atcoder/abc256-e.cpp
+  - icon: ':warning:'
+    path: test/atcoder/abc367-e.cpp
+    title: test/atcoder/abc367-e.cpp
   _extendedVerifiedWith:
-  - icon: ':x:'
-    path: test/atcoder-abc228-b.test.cpp
-    title: test/atcoder-abc228-b.test.cpp
-  - icon: ':x:'
-    path: test/atcoder-abc256-e.test.cpp
-    title: test/atcoder-abc256-e.test.cpp
-  - icon: ':x:'
-    path: test/atcoder-abc367-e.test.cpp
-    title: test/atcoder-abc367-e.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest-functional-graph.test.cpp
     title: test/unittest-functional-graph.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "\u30D5\u30A1\u30F3\u30AF\u30B7\u30E7\u30CA\u30EB\u30B0\u30E9\u30D5"
     links: []
@@ -179,14 +179,14 @@ data:
   dependsOn: []
   isVerificationFile: false
   path: graph/functional-graph.hpp
-  requiredBy: []
+  requiredBy:
+  - test/atcoder/abc256-e.cpp
+  - test/atcoder/abc367-e.cpp
+  - test/atcoder/abc228-b.cpp
   timestamp: '2026-10-09 19:25:54+09:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest-functional-graph.test.cpp
-  - test/atcoder-abc256-e.test.cpp
-  - test/atcoder-abc228-b.test.cpp
-  - test/atcoder-abc367-e.test.cpp
 documentation_of: graph/functional-graph.hpp
 layout: document
 redirect_from:

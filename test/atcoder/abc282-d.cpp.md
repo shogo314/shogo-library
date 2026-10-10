@@ -1,24 +1,21 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: graph/graph.hpp
     title: "\u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: graph/graph_util.hpp
     title: "\u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':warning:'
   attributes:
-    '*NOT_SPECIAL_COMMENTS*': ''
-    IGNORE: ''
-    IGNORE_IF_GCC: ''
     links:
     - https://atcoder.jp/contests/abc282/tasks/abc282_d
-  bundledCode: "#line 1 \"test/atcoder-abc282-d.test.cpp\"\n#define PROBLEM \"https://atcoder.jp/contests/abc282/tasks/abc282_d\"\
+  bundledCode: "#line 1 \"test/atcoder/abc282-d.cpp\"\n#define PROBLEM \"https://atcoder.jp/contests/abc282/tasks/abc282_d\"\
     \n#define IGNORE\n\n#include <algorithm>\n#include <array>\n\n#line 2 \"graph/graph_util.hpp\"\
     \n\n/**\n * @file graph_util.hpp\n * @brief \u30B0\u30E9\u30D5\u306B\u95A2\u3059\
     \u308B\u95A2\u6570\n */\n\n#include <stack>\n\n#line 2 \"graph/graph.hpp\"\n\n\
@@ -229,17 +226,17 @@ data:
     \ e.dst);\n                }\n            }\n        }\n    }\n    Cost res =\
     \ inf;\n    for (int k = 0; k < G.n; k++) {\n        if (dp[k].back() != inf &&\
     \ (res == inf || res > dp[k].back())) res = dp[k].back();\n    }\n    return res;\n\
-    }\n#line 8 \"test/atcoder-abc282-d.test.cpp\"\n\nint main(void) {\n    int N,\
-    \ M;\n    std::cin >> N >> M;\n    Graph<int> graph(N);\n    graph.read(M);\n\
-    \    std::vector<int> c = bipartite_coloring(graph);\n    if (c.empty()) {\n \
-    \       std::cout << 0 << std::endl;\n        return 0;\n    }\n    std::vector<std::vector<int>>\
-    \ groups = connected_components(graph);\n    long long ans = (long long)N * (N\
-    \ - 1) / 2 - M;\n    for (const std::vector<int>& group : groups) {\n        std::array<long\
+    }\n#line 8 \"test/atcoder/abc282-d.cpp\"\n\nint main(void) {\n    int N, M;\n\
+    \    std::cin >> N >> M;\n    Graph<int> graph(N);\n    graph.read(M);\n    std::vector<int>\
+    \ c = bipartite_coloring(graph);\n    if (c.empty()) {\n        std::cout << 0\
+    \ << std::endl;\n        return 0;\n    }\n    std::vector<std::vector<int>> groups\
+    \ = connected_components(graph);\n    long long ans = (long long)N * (N - 1) /\
+    \ 2 - M;\n    for (const std::vector<int>& group : groups) {\n        std::array<long\
     \ long, 2> wb = {};\n        std::for_each(group.begin(), group.end(), [&](int\
     \ x) { wb[c[x]]++; });\n        auto [w, b] = wb;\n        ans -= w * (w - 1)\
     \ / 2 + b * (b - 1) / 2;\n    }\n    std::cout << ans << std::endl;\n}\n"
   code: "#define PROBLEM \"https://atcoder.jp/contests/abc282/tasks/abc282_d\"\n#define\
-    \ IGNORE\n\n#include <algorithm>\n#include <array>\n\n#include \"../graph/graph_util.hpp\"\
+    \ IGNORE\n\n#include <algorithm>\n#include <array>\n\n#include \"../../graph/graph_util.hpp\"\
     \n\nint main(void) {\n    int N, M;\n    std::cin >> N >> M;\n    Graph<int> graph(N);\n\
     \    graph.read(M);\n    std::vector<int> c = bipartite_coloring(graph);\n   \
     \ if (c.empty()) {\n        std::cout << 0 << std::endl;\n        return 0;\n\
@@ -252,16 +249,16 @@ data:
   dependsOn:
   - graph/graph_util.hpp
   - graph/graph.hpp
-  isVerificationFile: true
-  path: test/atcoder-abc282-d.test.cpp
+  isVerificationFile: false
+  path: test/atcoder/abc282-d.cpp
   requiredBy: []
-  timestamp: '2026-10-10 20:54:50+09:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2026-10-10 21:12:50+09:00'
+  verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
-documentation_of: test/atcoder-abc282-d.test.cpp
+documentation_of: test/atcoder/abc282-d.cpp
 layout: document
 redirect_from:
-- /verify/test/atcoder-abc282-d.test.cpp
-- /verify/test/atcoder-abc282-d.test.cpp.html
-title: test/atcoder-abc282-d.test.cpp
+- /library/test/atcoder/abc282-d.cpp
+- /library/test/atcoder/abc282-d.cpp.html
+title: test/atcoder/abc282-d.cpp
 ---

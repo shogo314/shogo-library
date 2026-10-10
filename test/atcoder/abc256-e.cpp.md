@@ -1,21 +1,18 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: graph/functional-graph.hpp
     title: "\u30D5\u30A1\u30F3\u30AF\u30B7\u30E7\u30CA\u30EB\u30B0\u30E9\u30D5"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':warning:'
   attributes:
-    '*NOT_SPECIAL_COMMENTS*': ''
-    IGNORE: ''
-    IGNORE_IF_GCC: ''
     links:
-    - https://atcoder.jp/contests/abc228/tasks/abc228_b
-  bundledCode: "#line 1 \"test/atcoder-abc228-b.test.cpp\"\n#define PROBLEM \"https://atcoder.jp/contests/abc228/tasks/abc228_b\"\
+    - https://atcoder.jp/contests/abc256/tasks/abc256_e
+  bundledCode: "#line 1 \"test/atcoder/abc256-e.cpp\"\n#define PROBLEM \"https://atcoder.jp/contests/abc256/tasks/abc256_e\"\
     \n#define IGNORE\n\n#include <iostream>\n\n#line 2 \"graph/functional-graph.hpp\"\
     \n\n/**\n * @file functional-graph.hpp\n * @brief \u30D5\u30A1\u30F3\u30AF\u30B7\
     \u30E7\u30CA\u30EB\u30B0\u30E9\u30D5\n */\n#include <algorithm>\n#line 9 \"graph/functional-graph.hpp\"\
@@ -93,25 +90,32 @@ data:
     \  /**\n     * @brief \u9802\u70B9x\u304B\u30890\u56DE\u4EE5\u4E0A\u306E\u79FB\
     \u52D5\u3067\u305F\u3069\u308A\u7740\u3051\u308B\u9802\u70B9\u306E\u500B\u6570\
     \n     */\n    int hopable(int x) const {\n        return depth[x] + (int)cycle_list[connected_id[x]].size();\n\
-    \    }\n};\n#line 7 \"test/atcoder-abc228-b.test.cpp\"\n\nint main(void) {\n \
-    \   int N, X;\n    std::cin >> N >> X;\n    FunctionalGraph fg(N);\n    fg.read();\n\
-    \    std::cout << fg.hopable(X - 1) << std::endl;\n}\n"
-  code: "#define PROBLEM \"https://atcoder.jp/contests/abc228/tasks/abc228_b\"\n#define\
-    \ IGNORE\n\n#include <iostream>\n\n#include \"../graph/functional-graph.hpp\"\n\
-    \nint main(void) {\n    int N, X;\n    std::cin >> N >> X;\n    FunctionalGraph\
-    \ fg(N);\n    fg.read();\n    std::cout << fg.hopable(X - 1) << std::endl;\n}\n"
+    \    }\n};\n#line 7 \"test/atcoder/abc256-e.cpp\"\n\nint main(void) {\n    int\
+    \ N;\n    std::cin >> N;\n    FunctionalGraph fg(N);\n    fg.read();\n    std::vector<int>\
+    \ C(N);\n    for (int& c : C) std::cin >> c;\n    long long ans = 0;\n    for\
+    \ (const auto& cycle : fg.cycle_list) {\n        int tmp = 1 << 30;\n        for\
+    \ (int u : cycle)\n            if (C[u] < tmp) tmp = C[u];\n        ans += tmp;\n\
+    \    }\n    std::cout << ans << std::endl;\n}\n"
+  code: "#define PROBLEM \"https://atcoder.jp/contests/abc256/tasks/abc256_e\"\n#define\
+    \ IGNORE\n\n#include <iostream>\n\n#include \"../../graph/functional-graph.hpp\"\
+    \n\nint main(void) {\n    int N;\n    std::cin >> N;\n    FunctionalGraph fg(N);\n\
+    \    fg.read();\n    std::vector<int> C(N);\n    for (int& c : C) std::cin >>\
+    \ c;\n    long long ans = 0;\n    for (const auto& cycle : fg.cycle_list) {\n\
+    \        int tmp = 1 << 30;\n        for (int u : cycle)\n            if (C[u]\
+    \ < tmp) tmp = C[u];\n        ans += tmp;\n    }\n    std::cout << ans << std::endl;\n\
+    }\n"
   dependsOn:
   - graph/functional-graph.hpp
-  isVerificationFile: true
-  path: test/atcoder-abc228-b.test.cpp
+  isVerificationFile: false
+  path: test/atcoder/abc256-e.cpp
   requiredBy: []
-  timestamp: '2026-10-10 12:56:34+09:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2026-10-10 21:12:50+09:00'
+  verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
-documentation_of: test/atcoder-abc228-b.test.cpp
+documentation_of: test/atcoder/abc256-e.cpp
 layout: document
 redirect_from:
-- /verify/test/atcoder-abc228-b.test.cpp
-- /verify/test/atcoder-abc228-b.test.cpp.html
-title: test/atcoder-abc228-b.test.cpp
+- /library/test/atcoder/abc256-e.cpp
+- /library/test/atcoder/abc256-e.cpp.html
+title: test/atcoder/abc256-e.cpp
 ---

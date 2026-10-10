@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: algebra/acted-monoid.hpp
     title: "\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   - icon: ':heavy_check_mark:'
@@ -11,7 +11,7 @@ data:
   - icon: ':warning:'
     path: data_structures/imos.hpp
     title: "imos\u6CD5\u3067\u533A\u9593\u4F5C\u7528\u30011\u70B9\u53D6\u5F97"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: data_structures/lazy-segtree.hpp
     title: "\u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
   - icon: ':heavy_check_mark:'
@@ -29,9 +29,27 @@ data:
   - icon: ':heavy_check_mark:'
     path: data_structures/segtree-beats.hpp
     title: Segment Tree Beats
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: data_structures/segtree.hpp
     title: "\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
+  - icon: ':warning:'
+    path: test/atcoder/abc177-f.1.cpp
+    title: test/atcoder/abc177-f.1.cpp
+  - icon: ':warning:'
+    path: test/atcoder/abc177-f.2.cpp
+    title: test/atcoder/abc177-f.2.cpp
+  - icon: ':warning:'
+    path: test/atcoder/abc185-f.cpp
+    title: test/atcoder/abc185-f.cpp
+  - icon: ':warning:'
+    path: test/atcoder/abc254-f.cpp
+    title: test/atcoder/abc254-f.cpp
+  - icon: ':warning:'
+    path: test/atcoder/abc331-f.cpp
+    title: test/atcoder/abc331-f.cpp
+  - icon: ':warning:'
+    path: test/atcoder/past202012-n.cpp
+    title: test/atcoder/past202012-n.cpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj-dsl-1-b.test.cpp
@@ -57,24 +75,6 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj-jag-summer-2971.test.cpp
     title: test/aoj-jag-summer-2971.test.cpp
-  - icon: ':x:'
-    path: test/atcoder-abc177-f.1.test.cpp
-    title: test/atcoder-abc177-f.1.test.cpp
-  - icon: ':x:'
-    path: test/atcoder-abc177-f.2.test.cpp
-    title: test/atcoder-abc177-f.2.test.cpp
-  - icon: ':x:'
-    path: test/atcoder-abc185-f.test.cpp
-    title: test/atcoder-abc185-f.test.cpp
-  - icon: ':x:'
-    path: test/atcoder-abc254-f.test.cpp
-    title: test/atcoder-abc254-f.test.cpp
-  - icon: ':x:'
-    path: test/atcoder-abc331-f.test.cpp
-    title: test/atcoder-abc331-f.test.cpp
-  - icon: ':x:'
-    path: test/atcoder-past202012-n.test.cpp
-    title: test/atcoder-past202012-n.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo-lca.2.test.cpp
     title: test/yosupo-lca.2.test.cpp
@@ -117,9 +117,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yukicoder-674.test.cpp
     title: test/yukicoder-674.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
     links: []
@@ -332,10 +332,16 @@ data:
   - data_structures/segtree.hpp
   - data_structures/imos.hpp
   - data_structures/monoid-unionfind.hpp
+  - test/atcoder/abc331-f.cpp
+  - test/atcoder/abc177-f.1.cpp
+  - test/atcoder/abc177-f.2.cpp
+  - test/atcoder/past202012-n.cpp
+  - test/atcoder/abc185-f.cpp
+  - test/atcoder/abc254-f.cpp
   - algebra/group.hpp
   - algebra/acted-monoid.hpp
   timestamp: '2026-10-10 20:42:46+09:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/yosupo-range-affine-range-sum.3.test.cpp
   - test/aoj-dsl-2-a.test.cpp
@@ -343,13 +349,10 @@ data:
   - test/yosupo-range-affine-range-sum.2.test.cpp
   - test/yosupo-range-affine-range-sum.1.test.cpp
   - test/yukicoder-674.test.cpp
-  - test/atcoder-abc185-f.test.cpp
-  - test/atcoder-abc331-f.test.cpp
   - test/aoj-dsl-2-f.test.cpp
   - test/yosupo-point-set-range-composite.3.test.cpp
   - test/yosupo-point-add-rectangle-sum.test.cpp
   - test/aoj-jag-summer-2971.test.cpp
-  - test/atcoder-past202012-n.test.cpp
   - test/yukicoder-2292.test.cpp
   - test/aoj-dsl-2-h.test.cpp
   - test/aoj-dsl-1-b.test.cpp
@@ -358,12 +361,9 @@ data:
   - test/yosupo-range-chmin-chmax-add-range-sum.1.test.cpp
   - test/yosupo-point-set-range-composite.1.test.cpp
   - test/aoj-dsl-2-i.test.cpp
-  - test/atcoder-abc254-f.test.cpp
   - test/aoj-dsl-2-g.test.cpp
-  - test/atcoder-abc177-f.1.test.cpp
   - test/yosupo-unionfind-with-potential-non-commutative-group.test.cpp
   - test/yosupo-rectangle-sum.test.cpp
-  - test/atcoder-abc177-f.2.test.cpp
   - test/yosupo-lca.2.test.cpp
 documentation_of: algebra/monoid.hpp
 layout: document

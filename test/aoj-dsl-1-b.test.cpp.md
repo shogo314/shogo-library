@@ -4,7 +4,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: algebra/group.hpp
     title: "\u7FA4\u306E\u5B9A\u7FA9"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   - icon: ':heavy_check_mark:'

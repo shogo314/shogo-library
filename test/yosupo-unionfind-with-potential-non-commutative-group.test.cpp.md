@@ -4,13 +4,13 @@ data:
   - icon: ':heavy_check_mark:'
     path: algebra/group.hpp
     title: "\u7FA4\u306E\u5B9A\u7FA9"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   - icon: ':heavy_check_mark:'
     path: data_structures/potentialized-unionfind.hpp
     title: "\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: math/modint.hpp
     title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
       \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9"

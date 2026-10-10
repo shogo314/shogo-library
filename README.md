@@ -34,5 +34,4 @@ g++ -std=c++17 -I /path/to/shogo-library main.cpp
 
 [online-judge-tools/verification-helper](https://github.com/online-judge-tools/verification-helper) で、`test/` 以下のテストを GitHub Actions 上で検証しています。
 
-- AtCoder のテストケースは Dropbox から取得するため、secrets に `DROPBOX_APP_KEY` / `DROPBOX_APP_SECRET` / `DROPBOX_REFRESH_TOKEN` が必要です。
 - yukicoder のテストには `YUKICODER_TOKEN` が必要です。

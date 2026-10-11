@@ -7,23 +7,23 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj-dsl-2-a.test.cpp
-    title: test/aoj-dsl-2-a.test.cpp
+    path: test/aoj/dsl-2-a.test.cpp
+    title: test/aoj/dsl-2-a.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj-dsl-2-b.test.cpp
-    title: test/aoj-dsl-2-b.test.cpp
+    path: test/aoj/dsl-2-b.test.cpp
+    title: test/aoj/dsl-2-b.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-lca.2.test.cpp
-    title: test/yosupo-lca.2.test.cpp
+    path: test/yosupo/lca.2.test.cpp
+    title: test/yosupo/lca.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-point-set-range-composite.1.test.cpp
-    title: test/yosupo-point-set-range-composite.1.test.cpp
+    path: test/yosupo/point-set-range-composite.1.test.cpp
+    title: test/yosupo/point-set-range-composite.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-point-set-range-composite.2.test.cpp
-    title: test/yosupo-point-set-range-composite.2.test.cpp
+    path: test/yosupo/point-set-range-composite.2.test.cpp
+    title: test/yosupo/point-set-range-composite.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-point-set-range-composite.3.test.cpp
-    title: test/yosupo-point-set-range-composite.3.test.cpp
+    path: test/yosupo/point-set-range-composite.3.test.cpp
+    title: test/yosupo/point-set-range-composite.3.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -225,7 +225,16 @@ data:
     \ r + 1 - sz;\n            }\n            sum = op(data[r], sum);\n        } while\
     \ ((r & -r) != r);\n        return 0;\n    }\n};\n\ntemplate <typename M>\nSegTree(int,\
     \ M) -> SegTree<M>;\ntemplate <typename M>\nSegTree(std::vector<typename M::S>,\
-    \ M) -> SegTree<M>;\n"
+    \ M) -> SegTree<M>;\n\n/**\n * @brief RangeMaxQuery\n *\n * @tparam S \u578B\n\
+    \ */\ntemplate <typename S>\nusing RMaxQ = SegTree<monoid::Max<S>>;\n/**\n * @brief\
+    \ RangeMinQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RMinQ\
+    \ = SegTree<monoid::Min<S>>;\n/**\n * @brief RangeSumQuery\n *\n * @tparam S \u578B\
+    \n */\ntemplate <typename S>\nusing RSumQ = SegTree<monoid::Sum<S>>;\n/**\n *\
+    \ @brief RangeProdQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename S>\n\
+    using RProdQ = SegTree<monoid::Prod<S>>;\n/**\n * @brief RangeXorQuery\n *\n *\
+    \ @tparam S \u578B\n */\ntemplate <typename S>\nusing RXorQ = SegTree<monoid::Xor<S>>;\n\
+    /**\n * @brief RangeGcdQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename\
+    \ S>\nusing RGcdQ = SegTree<monoid::Gcd<S>>;\n"
   code: "#pragma once\n\n/**\n * @file segtree.hpp\n * @brief \u30BB\u30B0\u30E1\u30F3\
     \u30C8\u6728\n */\n\n#include <cassert>\n#include <functional>\n#include <ostream>\n\
     #include <utility>\n#include <vector>\n#include \"../algebra/monoid.hpp\"\n\n\
@@ -323,21 +332,30 @@ data:
     \ r + 1 - sz;\n            }\n            sum = op(data[r], sum);\n        } while\
     \ ((r & -r) != r);\n        return 0;\n    }\n};\n\ntemplate <typename M>\nSegTree(int,\
     \ M) -> SegTree<M>;\ntemplate <typename M>\nSegTree(std::vector<typename M::S>,\
-    \ M) -> SegTree<M>;\n"
+    \ M) -> SegTree<M>;\n\n/**\n * @brief RangeMaxQuery\n *\n * @tparam S \u578B\n\
+    \ */\ntemplate <typename S>\nusing RMaxQ = SegTree<monoid::Max<S>>;\n/**\n * @brief\
+    \ RangeMinQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RMinQ\
+    \ = SegTree<monoid::Min<S>>;\n/**\n * @brief RangeSumQuery\n *\n * @tparam S \u578B\
+    \n */\ntemplate <typename S>\nusing RSumQ = SegTree<monoid::Sum<S>>;\n/**\n *\
+    \ @brief RangeProdQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename S>\n\
+    using RProdQ = SegTree<monoid::Prod<S>>;\n/**\n * @brief RangeXorQuery\n *\n *\
+    \ @tparam S \u578B\n */\ntemplate <typename S>\nusing RXorQ = SegTree<monoid::Xor<S>>;\n\
+    /**\n * @brief RangeGcdQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename\
+    \ S>\nusing RGcdQ = SegTree<monoid::Gcd<S>>;\n"
   dependsOn:
   - src/algebra/monoid.hpp
   isVerificationFile: false
   path: src/data_structures/segtree.hpp
   requiredBy: []
-  timestamp: '2026-10-11 23:34:07+09:00'
+  timestamp: '2026-10-12 00:27:04+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/aoj-dsl-2-a.test.cpp
-  - test/aoj-dsl-2-b.test.cpp
-  - test/yosupo-point-set-range-composite.3.test.cpp
-  - test/yosupo-point-set-range-composite.2.test.cpp
-  - test/yosupo-point-set-range-composite.1.test.cpp
-  - test/yosupo-lca.2.test.cpp
+  - test/aoj/dsl-2-b.test.cpp
+  - test/aoj/dsl-2-a.test.cpp
+  - test/yosupo/point-set-range-composite.3.test.cpp
+  - test/yosupo/lca.2.test.cpp
+  - test/yosupo/point-set-range-composite.1.test.cpp
+  - test/yosupo/point-set-range-composite.2.test.cpp
 documentation_of: src/data_structures/segtree.hpp
 layout: document
 redirect_from:

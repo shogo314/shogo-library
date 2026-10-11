@@ -17,7 +17,7 @@
 | `src/string/` | Z-algorithm、ローリングハッシュ |
 | `src/geometry/` | 幾何 (ベクトル、凸包など) |
 | `src/others/` | Mo's algorithm |
-| `test/` | オンラインジャッジでの検証用テスト |
+| `test/` | オンラインジャッジでの検証用テスト (ジャッジごとにディレクトリを分けています) |
 
 ## 使い方
 
@@ -35,6 +35,8 @@ SegTree<monoid::Max<int>> seg(n);
 SegTree seg2(v, Monoid([](int a, int b) { return a + b; }, 0));
 LazySegTree<acted_monoid::AffineSum<mint>> lseg(v);
 ```
+
+よく使うものには `RMinQ<S>` (= `SegTree<monoid::Min<S>>`) や `RAddMinQ<S>` (= `LazySegTree<acted_monoid::AddMin<S>>`) などの別名があります。
 
 ```sh
 g++ -std=c++17 -I /path/to/shogo-library/src main.cpp

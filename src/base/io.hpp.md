@@ -4,17 +4,17 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj-cgl-3-a.test.cpp
-    title: test/aoj-cgl-3-a.test.cpp
+    path: test/aoj/cgl-3-a.test.cpp
+    title: test/aoj/cgl-3-a.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj-cgl-3-b.test.cpp
-    title: test/aoj-cgl-3-b.test.cpp
+    path: test/aoj/cgl-3-b.test.cpp
+    title: test/aoj/cgl-3-b.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj-cgl-3-c.test.cpp
-    title: test/aoj-cgl-3-c.test.cpp
+    path: test/aoj/cgl-3-c.test.cpp
+    title: test/aoj/cgl-3-c.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-convolution-mod-2-64.test.cpp
-    title: test/yosupo-convolution-mod-2-64.test.cpp
+    path: test/yosupo/convolution-mod-2-64.test.cpp
+    title: test/yosupo/convolution-mod-2-64.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -196,10 +196,10 @@ data:
   timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/aoj-cgl-3-a.test.cpp
-  - test/aoj-cgl-3-b.test.cpp
-  - test/yosupo-convolution-mod-2-64.test.cpp
-  - test/aoj-cgl-3-c.test.cpp
+  - test/aoj/cgl-3-a.test.cpp
+  - test/aoj/cgl-3-c.test.cpp
+  - test/aoj/cgl-3-b.test.cpp
+  - test/yosupo/convolution-mod-2-64.test.cpp
 documentation_of: src/base/io.hpp
 layout: document
 redirect_from:

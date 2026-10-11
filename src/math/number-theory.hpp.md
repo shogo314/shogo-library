@@ -14,50 +14,50 @@ data:
     title: src/math/fps.hpp
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-binomial-coefficient.test.cpp
-    title: test/yosupo-binomial-coefficient.test.cpp
+    path: test/yosupo/binomial-coefficient.test.cpp
+    title: test/yosupo/binomial-coefficient.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-convolution-mod-1000000007.test.cpp
-    title: test/yosupo-convolution-mod-1000000007.test.cpp
+    path: test/yosupo/convolution-mod-1000000007.test.cpp
+    title: test/yosupo/convolution-mod-1000000007.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-convolution-mod-2-64.test.cpp
-    title: test/yosupo-convolution-mod-2-64.test.cpp
+    path: test/yosupo/convolution-mod-2-64.test.cpp
+    title: test/yosupo/convolution-mod-2-64.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-convolution-mod.test.cpp
-    title: test/yosupo-convolution-mod.test.cpp
+    path: test/yosupo/convolution-mod.test.cpp
+    title: test/yosupo/convolution-mod.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-exp-of-fps.test.cpp
-    title: test/yosupo-exp-of-fps.test.cpp
+    path: test/yosupo/exp-of-fps.test.cpp
+    title: test/yosupo/exp-of-fps.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-inv-of-fps.test.cpp
-    title: test/yosupo-inv-of-fps.test.cpp
+    path: test/yosupo/inv-of-fps.test.cpp
+    title: test/yosupo/inv-of-fps.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-log-of-fps.test.cpp
-    title: test/yosupo-log-of-fps.test.cpp
+    path: test/yosupo/log-of-fps.test.cpp
+    title: test/yosupo/log-of-fps.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-partition-function_1.test.cpp
-    title: test/yosupo-partition-function_1.test.cpp
+    path: test/yosupo/partition-function_1.test.cpp
+    title: test/yosupo/partition-function_1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-partition-function_2.test.cpp
-    title: test/yosupo-partition-function_2.test.cpp
+    path: test/yosupo/partition-function_2.test.cpp
+    title: test/yosupo/partition-function_2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-polynomial-taylor-shift.test.cpp
-    title: test/yosupo-polynomial-taylor-shift.test.cpp
+    path: test/yosupo/polynomial-taylor-shift.test.cpp
+    title: test/yosupo/polynomial-taylor-shift.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-pow-of-fps.test.cpp
-    title: test/yosupo-pow-of-fps.test.cpp
+    path: test/yosupo/pow-of-fps.test.cpp
+    title: test/yosupo/pow-of-fps.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-sharp-p-subset-sum.test.cpp
-    title: test/yosupo-sharp-p-subset-sum.test.cpp
+    path: test/yosupo/sharp-p-subset-sum.test.cpp
+    title: test/yosupo/sharp-p-subset-sum.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yukicoder-117.test.cpp
-    title: test/yukicoder-117.test.cpp
+    path: test/yukicoder/117.test.cpp
+    title: test/yukicoder/117.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yukicoder-186.test.cpp
-    title: test/yukicoder-186.test.cpp
+    path: test/yukicoder/186.test.cpp
+    title: test/yukicoder/186.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yukicoder-187.test.cpp
-    title: test/yukicoder-187.test.cpp
+    path: test/yukicoder/187.test.cpp
+    title: test/yukicoder/187.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -613,21 +613,21 @@ data:
   timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/yosupo-log-of-fps.test.cpp
-  - test/yosupo-partition-function_1.test.cpp
-  - test/yosupo-binomial-coefficient.test.cpp
-  - test/yosupo-polynomial-taylor-shift.test.cpp
-  - test/yosupo-sharp-p-subset-sum.test.cpp
-  - test/yukicoder-187.test.cpp
-  - test/yosupo-partition-function_2.test.cpp
-  - test/yukicoder-186.test.cpp
-  - test/yosupo-convolution-mod.test.cpp
-  - test/yosupo-exp-of-fps.test.cpp
-  - test/yosupo-convolution-mod-2-64.test.cpp
-  - test/yukicoder-117.test.cpp
-  - test/yosupo-pow-of-fps.test.cpp
-  - test/yosupo-inv-of-fps.test.cpp
-  - test/yosupo-convolution-mod-1000000007.test.cpp
+  - test/yosupo/exp-of-fps.test.cpp
+  - test/yosupo/partition-function_2.test.cpp
+  - test/yosupo/inv-of-fps.test.cpp
+  - test/yosupo/binomial-coefficient.test.cpp
+  - test/yosupo/pow-of-fps.test.cpp
+  - test/yosupo/polynomial-taylor-shift.test.cpp
+  - test/yosupo/partition-function_1.test.cpp
+  - test/yosupo/convolution-mod-2-64.test.cpp
+  - test/yosupo/convolution-mod-1000000007.test.cpp
+  - test/yosupo/log-of-fps.test.cpp
+  - test/yosupo/sharp-p-subset-sum.test.cpp
+  - test/yosupo/convolution-mod.test.cpp
+  - test/yukicoder/187.test.cpp
+  - test/yukicoder/117.test.cpp
+  - test/yukicoder/186.test.cpp
 documentation_of: src/math/number-theory.hpp
 layout: document
 redirect_from:

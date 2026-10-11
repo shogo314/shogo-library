@@ -4,8 +4,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/yukicoder-674.2.test.cpp
-    title: test/yukicoder-674.2.test.cpp
+    path: test/yukicoder/674.2.test.cpp
+    title: test/yukicoder/674.2.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -116,7 +116,7 @@ data:
   timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/yukicoder-674.2.test.cpp
+  - test/yukicoder/674.2.test.cpp
 documentation_of: src/data_structures/interval-set.hpp
 layout: document
 redirect_from:

@@ -7,8 +7,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-point-add-rectangle-sum.test.cpp
-    title: test/yosupo-point-add-rectangle-sum.test.cpp
+    path: test/yosupo/point-add-rectangle-sum.test.cpp
+    title: test/yosupo/point-add-rectangle-sum.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -219,7 +219,12 @@ data:
     \n     * @param ry y\u5EA7\u6A19\u306E\u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF\
     \n     */\n    S prod(int lx, int rx, int ly, int ry) {\n        return prod_x(lx,\
     \ rx, ly, ry);\n    }\n};\n\ntemplate <typename M>\nSegTree2D(int, int, std::vector<std::tuple<int,\
-    \ int>>, std::vector<std::tuple<int, int, int, int>>, M) -> SegTree2D<M>;\n"
+    \ int>>, std::vector<std::tuple<int, int, int, int>>, M) -> SegTree2D<M>;\n\n\
+    /**\n * @brief RangeMaxQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename\
+    \ S>\nusing RMaxQ2D = SegTree2D<monoid::Max<S>>;\n/**\n * @brief RangeMinQuery\n\
+    \ *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RMinQ2D = SegTree2D<monoid::Min<S>>;\n\
+    /**\n * @brief RangeSumQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename\
+    \ S>\nusing RSumQ2D = SegTree2D<monoid::Sum<S>>;\n"
   code: "#pragma once\n\n/**\n * @file segtree-2d.hpp\n * @brief 2\u6B21\u5143\u30BB\
     \u30B0\u30E1\u30F3\u30C8\u6728\n */\n\n#include <algorithm>\n#include <tuple>\n\
     #include <utility>\n#include <vector>\n#include \"../algebra/monoid.hpp\"\n\n\
@@ -326,16 +331,21 @@ data:
     \n     * @param ry y\u5EA7\u6A19\u306E\u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF\
     \n     */\n    S prod(int lx, int rx, int ly, int ry) {\n        return prod_x(lx,\
     \ rx, ly, ry);\n    }\n};\n\ntemplate <typename M>\nSegTree2D(int, int, std::vector<std::tuple<int,\
-    \ int>>, std::vector<std::tuple<int, int, int, int>>, M) -> SegTree2D<M>;\n"
+    \ int>>, std::vector<std::tuple<int, int, int, int>>, M) -> SegTree2D<M>;\n\n\
+    /**\n * @brief RangeMaxQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename\
+    \ S>\nusing RMaxQ2D = SegTree2D<monoid::Max<S>>;\n/**\n * @brief RangeMinQuery\n\
+    \ *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RMinQ2D = SegTree2D<monoid::Min<S>>;\n\
+    /**\n * @brief RangeSumQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename\
+    \ S>\nusing RSumQ2D = SegTree2D<monoid::Sum<S>>;\n"
   dependsOn:
   - src/algebra/monoid.hpp
   isVerificationFile: false
   path: src/data_structures/segtree-2d.hpp
   requiredBy: []
-  timestamp: '2026-10-11 23:34:07+09:00'
+  timestamp: '2026-10-12 00:27:04+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/yosupo-point-add-rectangle-sum.test.cpp
+  - test/yosupo/point-add-rectangle-sum.test.cpp
 documentation_of: src/data_structures/segtree-2d.hpp
 layout: document
 redirect_from:

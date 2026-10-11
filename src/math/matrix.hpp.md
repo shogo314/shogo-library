@@ -4,17 +4,17 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj-3314.test.cpp
-    title: test/aoj-3314.test.cpp
+    path: test/aoj/3314.test.cpp
+    title: test/aoj/3314.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yukicoder-rotate-enlarge_1.test.cpp
-    title: test/yukicoder-rotate-enlarge_1.test.cpp
+    path: test/yukicoder/rotate-enlarge_1.test.cpp
+    title: test/yukicoder/rotate-enlarge_1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yukicoder-rotate-enlarge_2.test.cpp
-    title: test/yukicoder-rotate-enlarge_2.test.cpp
+    path: test/yukicoder/rotate-enlarge_2.test.cpp
+    title: test/yukicoder/rotate-enlarge_2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yukicoder-search-oji.test.cpp
-    title: test/yukicoder-search-oji.test.cpp
+    path: test/yukicoder/search-oji.test.cpp
+    title: test/yukicoder/search-oji.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -478,10 +478,10 @@ data:
   timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/yukicoder-rotate-enlarge_1.test.cpp
-  - test/yukicoder-rotate-enlarge_2.test.cpp
-  - test/yukicoder-search-oji.test.cpp
-  - test/aoj-3314.test.cpp
+  - test/aoj/3314.test.cpp
+  - test/yukicoder/rotate-enlarge_1.test.cpp
+  - test/yukicoder/rotate-enlarge_2.test.cpp
+  - test/yukicoder/search-oji.test.cpp
 documentation_of: src/math/matrix.hpp
 layout: document
 redirect_from:

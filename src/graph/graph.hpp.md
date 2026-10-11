@@ -13,41 +13,41 @@ data:
     title: "\u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj-1595.test.cpp
-    title: test/aoj-1595.test.cpp
+    path: test/aoj/1595.test.cpp
+    title: test/aoj/1595.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj-3372.test.cpp
-    title: test/aoj-3372.test.cpp
+    path: test/aoj/3372.test.cpp
+    title: test/aoj/3372.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj-alds1-11-d.test.cpp
-    title: test/aoj-alds1-11-d.test.cpp
+    path: test/aoj/alds1-11-d.test.cpp
+    title: test/aoj/alds1-11-d.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj-grl-1-b.test.cpp
-    title: test/aoj-grl-1-b.test.cpp
+    path: test/aoj/grl-1-b.test.cpp
+    title: test/aoj/grl-1-b.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj-grl-4-a.test.cpp
-    title: test/aoj-grl-4-a.test.cpp
+    path: test/aoj/grl-4-a.test.cpp
+    title: test/aoj/grl-4-a.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj-grl-5-a.test.cpp
-    title: test/aoj-grl-5-a.test.cpp
+    path: test/aoj/grl-5-a.test.cpp
+    title: test/aoj/grl-5-a.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj-grl-5-b.test.cpp
-    title: test/aoj-grl-5-b.test.cpp
+    path: test/aoj/grl-5-b.test.cpp
+    title: test/aoj/grl-5-b.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest-graph-util.test.cpp
-    title: test/unittest-graph-util.test.cpp
+    path: test/unittest/graph-util.test.cpp
+    title: test/unittest/graph-util.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-lca.1.test.cpp
-    title: test/yosupo-lca.1.test.cpp
+    path: test/yosupo/lca.1.test.cpp
+    title: test/yosupo/lca.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-lca.2.test.cpp
-    title: test/yosupo-lca.2.test.cpp
+    path: test/yosupo/lca.2.test.cpp
+    title: test/yosupo/lca.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-shortest-path.test.cpp
-    title: test/yosupo-shortest-path.test.cpp
+    path: test/yosupo/shortest-path.test.cpp
+    title: test/yosupo/shortest-path.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yukicoder-898.test.cpp
-    title: test/yukicoder-898.test.cpp
+    path: test/yukicoder/898.test.cpp
+    title: test/yukicoder/898.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -305,18 +305,18 @@ data:
   timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/aoj-grl-1-b.test.cpp
-  - test/aoj-grl-5-a.test.cpp
-  - test/yosupo-lca.1.test.cpp
-  - test/aoj-1595.test.cpp
-  - test/aoj-3372.test.cpp
-  - test/yosupo-shortest-path.test.cpp
-  - test/aoj-grl-5-b.test.cpp
-  - test/yukicoder-898.test.cpp
-  - test/aoj-grl-4-a.test.cpp
-  - test/yosupo-lca.2.test.cpp
-  - test/unittest-graph-util.test.cpp
-  - test/aoj-alds1-11-d.test.cpp
+  - test/unittest/graph-util.test.cpp
+  - test/aoj/1595.test.cpp
+  - test/aoj/grl-1-b.test.cpp
+  - test/aoj/grl-4-a.test.cpp
+  - test/aoj/alds1-11-d.test.cpp
+  - test/aoj/grl-5-a.test.cpp
+  - test/aoj/grl-5-b.test.cpp
+  - test/aoj/3372.test.cpp
+  - test/yosupo/lca.1.test.cpp
+  - test/yosupo/lca.2.test.cpp
+  - test/yosupo/shortest-path.test.cpp
+  - test/yukicoder/898.test.cpp
 documentation_of: src/graph/graph.hpp
 layout: document
 redirect_from:

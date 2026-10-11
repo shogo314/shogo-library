@@ -4,8 +4,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-point-set-range-frequency.test.cpp
-    title: test/yosupo-point-set-range-frequency.test.cpp
+    path: test/yosupo/point-set-range-frequency.test.cpp
+    title: test/yosupo/point-set-range-frequency.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -103,7 +103,7 @@ data:
   timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/yosupo-point-set-range-frequency.test.cpp
+  - test/yosupo/point-set-range-frequency.test.cpp
 documentation_of: src/data_structures/counter-segtree.hpp
 layout: document
 redirect_from:

@@ -4,8 +4,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest-functional-graph.test.cpp
-    title: test/unittest-functional-graph.test.cpp
+    path: test/unittest/functional-graph.test.cpp
+    title: test/unittest/functional-graph.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -174,7 +174,7 @@ data:
   timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest-functional-graph.test.cpp
+  - test/unittest/functional-graph.test.cpp
 documentation_of: src/graph/functional-graph.hpp
 layout: document
 redirect_from:

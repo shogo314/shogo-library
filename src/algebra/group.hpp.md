@@ -13,17 +13,17 @@ data:
     title: "\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj-dsl-1-b.test.cpp
-    title: test/aoj-dsl-1-b.test.cpp
+    path: test/aoj/dsl-1-b.test.cpp
+    title: test/aoj/dsl-1-b.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj-jag-summer-2971.test.cpp
-    title: test/aoj-jag-summer-2971.test.cpp
+    path: test/aoj/jag-summer-2971.test.cpp
+    title: test/aoj/jag-summer-2971.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-rectangle-sum.test.cpp
-    title: test/yosupo-rectangle-sum.test.cpp
+    path: test/yosupo/rectangle-sum.test.cpp
+    title: test/yosupo/rectangle-sum.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-unionfind-with-potential-non-commutative-group.test.cpp
-    title: test/yosupo-unionfind-with-potential-non-commutative-group.test.cpp
+    path: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
+    title: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -190,10 +190,10 @@ data:
   timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/aoj-jag-summer-2971.test.cpp
-  - test/aoj-dsl-1-b.test.cpp
-  - test/yosupo-unionfind-with-potential-non-commutative-group.test.cpp
-  - test/yosupo-rectangle-sum.test.cpp
+  - test/aoj/jag-summer-2971.test.cpp
+  - test/aoj/dsl-1-b.test.cpp
+  - test/yosupo/rectangle-sum.test.cpp
+  - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
 documentation_of: src/algebra/group.hpp
 layout: document
 redirect_from:

@@ -7,14 +7,14 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj-alds1-11-d.test.cpp
-    title: test/aoj-alds1-11-d.test.cpp
+    path: test/aoj/alds1-11-d.test.cpp
+    title: test/aoj/alds1-11-d.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj-grl-4-a.test.cpp
-    title: test/aoj-grl-4-a.test.cpp
+    path: test/aoj/grl-4-a.test.cpp
+    title: test/aoj/grl-4-a.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest-graph-util.test.cpp
-    title: test/unittest-graph-util.test.cpp
+    path: test/unittest/graph-util.test.cpp
+    title: test/unittest/graph-util.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -330,9 +330,9 @@ data:
   timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/aoj-grl-4-a.test.cpp
-  - test/unittest-graph-util.test.cpp
-  - test/aoj-alds1-11-d.test.cpp
+  - test/unittest/graph-util.test.cpp
+  - test/aoj/grl-4-a.test.cpp
+  - test/aoj/alds1-11-d.test.cpp
 documentation_of: src/graph/graph_util.hpp
 layout: document
 redirect_from:

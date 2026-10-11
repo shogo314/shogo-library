@@ -10,29 +10,29 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj-dsl-2-f.test.cpp
-    title: test/aoj-dsl-2-f.test.cpp
+    path: test/aoj/dsl-2-f.test.cpp
+    title: test/aoj/dsl-2-f.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj-dsl-2-g.test.cpp
-    title: test/aoj-dsl-2-g.test.cpp
+    path: test/aoj/dsl-2-g.test.cpp
+    title: test/aoj/dsl-2-g.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj-dsl-2-h.test.cpp
-    title: test/aoj-dsl-2-h.test.cpp
+    path: test/aoj/dsl-2-h.test.cpp
+    title: test/aoj/dsl-2-h.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj-dsl-2-i.test.cpp
-    title: test/aoj-dsl-2-i.test.cpp
+    path: test/aoj/dsl-2-i.test.cpp
+    title: test/aoj/dsl-2-i.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-range-affine-range-sum.1.test.cpp
-    title: test/yosupo-range-affine-range-sum.1.test.cpp
+    path: test/yosupo/range-affine-range-sum.1.test.cpp
+    title: test/yosupo/range-affine-range-sum.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-range-affine-range-sum.2.test.cpp
-    title: test/yosupo-range-affine-range-sum.2.test.cpp
+    path: test/yosupo/range-affine-range-sum.2.test.cpp
+    title: test/yosupo/range-affine-range-sum.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-range-affine-range-sum.3.test.cpp
-    title: test/yosupo-range-affine-range-sum.3.test.cpp
+    path: test/yosupo/range-affine-range-sum.3.test.cpp
+    title: test/yosupo/range-affine-range-sum.3.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yukicoder-2292.test.cpp
-    title: test/yukicoder-2292.test.cpp
+    path: test/yukicoder/2292.test.cpp
+    title: test/yukicoder/2292.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -434,7 +434,24 @@ data:
     \ - sz;\n            }\n            sum = op(data[r], sum);\n        } while((r\
     \ & -r) != r);\n        return 0;\n    }\n};\n\ntemplate <typename A>\nLazySegTree(int,\
     \ A) -> LazySegTree<A>;\ntemplate <typename A>\nLazySegTree(std::vector<typename\
-    \ A::S>, A) -> LazySegTree<A>;\n"
+    \ A::S>, A) -> LazySegTree<A>;\n\n/**\n * @brief \u533A\u9593\u6700\u5C0F\u5024\
+    \u66F4\u65B0\u3001\u533A\u9593\u6700\u5C0F\u5024\n *\n * @tparam S \u578B\n */\n\
+    template <typename S>\nusing RChminMinQ = LazySegTree<acted_monoid::ChminMin<S>>;\n\
+    /**\n * @brief \u533A\u9593\u6700\u5927\u5024\u66F4\u65B0\u3001\u533A\u9593\u6700\
+    \u5927\u5024\n *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RChmaxMaxQ\
+    \ = LazySegTree<acted_monoid::ChmaxMax<S>>;\n/**\n * @brief \u533A\u9593\u52A0\
+    \u7B97\u3001\u533A\u9593\u6700\u5C0F\u5024\n *\n * @tparam S \u578B\n */\ntemplate\
+    \ <typename S>\nusing RAddMinQ = LazySegTree<acted_monoid::AddMin<S>>;\n/**\n\
+    \ * @brief \u533A\u9593\u52A0\u7B97\u3001\u533A\u9593\u6700\u5927\u5024\n *\n\
+    \ * @tparam S \u578B\n */\ntemplate <typename S>\nusing RAddMaxQ = LazySegTree<acted_monoid::AddMax<S>>;\n\
+    /**\n * @brief \u533A\u9593\u52A0\u7B97\u3001\u533A\u9593\u548C\n *\n * @tparam\
+    \ S \u578B\n */\ntemplate <typename S>\nusing RAddSumQ = LazySegTree<acted_monoid::AddSum<S>>;\n\
+    /**\n * @brief \u533A\u9593\u5909\u66F4\u3001\u533A\u9593\u6700\u5C0F\u5024\n\
+    \ *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RUpdateMinQ = LazySegTree<acted_monoid::UpdateMin<S>>;\n\
+    /**\n * @brief \u533A\u9593\u5909\u66F4\u3001\u533A\u9593\u6700\u5927\u5024\n\
+    \ *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RUpdateMaxQ = LazySegTree<acted_monoid::UpdateMax<S>>;\n\
+    /**\n * @brief \u533A\u9593\u5909\u66F4\u3001\u533A\u9593\u548C\n *\n * @tparam\
+    \ S \u578B\n */\ntemplate <typename S>\nusing RUpdateSumQ = LazySegTree<acted_monoid::UpdateSum<S>>;\n"
   code: "#pragma once\n\n/**\n * @file lazy-segtree.hpp\n * @brief \u9045\u5EF6\u4F1D\
     \u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n */\n\n#include <cassert>\n#include\
     \ <functional>\n#include <ostream>\n#include <utility>\n#include <vector>\n#include\
@@ -565,24 +582,41 @@ data:
     \ - sz;\n            }\n            sum = op(data[r], sum);\n        } while((r\
     \ & -r) != r);\n        return 0;\n    }\n};\n\ntemplate <typename A>\nLazySegTree(int,\
     \ A) -> LazySegTree<A>;\ntemplate <typename A>\nLazySegTree(std::vector<typename\
-    \ A::S>, A) -> LazySegTree<A>;\n"
+    \ A::S>, A) -> LazySegTree<A>;\n\n/**\n * @brief \u533A\u9593\u6700\u5C0F\u5024\
+    \u66F4\u65B0\u3001\u533A\u9593\u6700\u5C0F\u5024\n *\n * @tparam S \u578B\n */\n\
+    template <typename S>\nusing RChminMinQ = LazySegTree<acted_monoid::ChminMin<S>>;\n\
+    /**\n * @brief \u533A\u9593\u6700\u5927\u5024\u66F4\u65B0\u3001\u533A\u9593\u6700\
+    \u5927\u5024\n *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RChmaxMaxQ\
+    \ = LazySegTree<acted_monoid::ChmaxMax<S>>;\n/**\n * @brief \u533A\u9593\u52A0\
+    \u7B97\u3001\u533A\u9593\u6700\u5C0F\u5024\n *\n * @tparam S \u578B\n */\ntemplate\
+    \ <typename S>\nusing RAddMinQ = LazySegTree<acted_monoid::AddMin<S>>;\n/**\n\
+    \ * @brief \u533A\u9593\u52A0\u7B97\u3001\u533A\u9593\u6700\u5927\u5024\n *\n\
+    \ * @tparam S \u578B\n */\ntemplate <typename S>\nusing RAddMaxQ = LazySegTree<acted_monoid::AddMax<S>>;\n\
+    /**\n * @brief \u533A\u9593\u52A0\u7B97\u3001\u533A\u9593\u548C\n *\n * @tparam\
+    \ S \u578B\n */\ntemplate <typename S>\nusing RAddSumQ = LazySegTree<acted_monoid::AddSum<S>>;\n\
+    /**\n * @brief \u533A\u9593\u5909\u66F4\u3001\u533A\u9593\u6700\u5C0F\u5024\n\
+    \ *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RUpdateMinQ = LazySegTree<acted_monoid::UpdateMin<S>>;\n\
+    /**\n * @brief \u533A\u9593\u5909\u66F4\u3001\u533A\u9593\u6700\u5927\u5024\n\
+    \ *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RUpdateMaxQ = LazySegTree<acted_monoid::UpdateMax<S>>;\n\
+    /**\n * @brief \u533A\u9593\u5909\u66F4\u3001\u533A\u9593\u548C\n *\n * @tparam\
+    \ S \u578B\n */\ntemplate <typename S>\nusing RUpdateSumQ = LazySegTree<acted_monoid::UpdateSum<S>>;\n"
   dependsOn:
   - src/algebra/acted-monoid.hpp
   - src/algebra/monoid.hpp
   isVerificationFile: false
   path: src/data_structures/lazy-segtree.hpp
   requiredBy: []
-  timestamp: '2026-10-11 23:34:07+09:00'
+  timestamp: '2026-10-12 00:27:04+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/yosupo-range-affine-range-sum.3.test.cpp
-  - test/yosupo-range-affine-range-sum.2.test.cpp
-  - test/yosupo-range-affine-range-sum.1.test.cpp
-  - test/aoj-dsl-2-f.test.cpp
-  - test/yukicoder-2292.test.cpp
-  - test/aoj-dsl-2-h.test.cpp
-  - test/aoj-dsl-2-i.test.cpp
-  - test/aoj-dsl-2-g.test.cpp
+  - test/aoj/dsl-2-i.test.cpp
+  - test/aoj/dsl-2-g.test.cpp
+  - test/aoj/dsl-2-h.test.cpp
+  - test/aoj/dsl-2-f.test.cpp
+  - test/yosupo/range-affine-range-sum.2.test.cpp
+  - test/yosupo/range-affine-range-sum.3.test.cpp
+  - test/yosupo/range-affine-range-sum.1.test.cpp
+  - test/yukicoder/2292.test.cpp
 documentation_of: src/data_structures/lazy-segtree.hpp
 layout: document
 redirect_from:

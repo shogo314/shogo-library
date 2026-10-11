@@ -4,11 +4,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-line-add-get-min.test.cpp
-    title: test/yosupo-line-add-get-min.test.cpp
+    path: test/yosupo/line-add-get-min.test.cpp
+    title: test/yosupo/line-add-get-min.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-segment-add-get-min.test.cpp
-    title: test/yosupo-segment-add-get-min.test.cpp
+    path: test/yosupo/segment-add-get-min.test.cpp
+    title: test/yosupo/segment-add-get-min.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -113,8 +113,8 @@ data:
   timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/yosupo-segment-add-get-min.test.cpp
-  - test/yosupo-line-add-get-min.test.cpp
+  - test/yosupo/segment-add-get-min.test.cpp
+  - test/yosupo/line-add-get-min.test.cpp
 documentation_of: src/data_structures/convex-hull-trick.hpp
 layout: document
 redirect_from:

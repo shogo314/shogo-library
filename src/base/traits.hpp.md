@@ -19,8 +19,8 @@ data:
     title: "\u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-enumerate-palindromes.test.cpp
-    title: test/yosupo-enumerate-palindromes.test.cpp
+    path: test/yosupo/enumerate-palindromes.test.cpp
+    title: test/yosupo/enumerate-palindromes.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -138,7 +138,7 @@ data:
   timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/yosupo-enumerate-palindromes.test.cpp
+  - test/yosupo/enumerate-palindromes.test.cpp
 documentation_of: src/base/traits.hpp
 layout: document
 redirect_from:

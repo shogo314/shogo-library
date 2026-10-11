@@ -16,35 +16,35 @@ data:
     title: Segment Tree Beats
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj-dsl-2-f.test.cpp
-    title: test/aoj-dsl-2-f.test.cpp
+    path: test/aoj/dsl-2-f.test.cpp
+    title: test/aoj/dsl-2-f.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj-dsl-2-g.test.cpp
-    title: test/aoj-dsl-2-g.test.cpp
+    path: test/aoj/dsl-2-g.test.cpp
+    title: test/aoj/dsl-2-g.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj-dsl-2-h.test.cpp
-    title: test/aoj-dsl-2-h.test.cpp
+    path: test/aoj/dsl-2-h.test.cpp
+    title: test/aoj/dsl-2-h.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj-dsl-2-i.test.cpp
-    title: test/aoj-dsl-2-i.test.cpp
+    path: test/aoj/dsl-2-i.test.cpp
+    title: test/aoj/dsl-2-i.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-range-affine-range-sum.1.test.cpp
-    title: test/yosupo-range-affine-range-sum.1.test.cpp
+    path: test/yosupo/range-affine-range-sum.1.test.cpp
+    title: test/yosupo/range-affine-range-sum.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-range-affine-range-sum.2.test.cpp
-    title: test/yosupo-range-affine-range-sum.2.test.cpp
+    path: test/yosupo/range-affine-range-sum.2.test.cpp
+    title: test/yosupo/range-affine-range-sum.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-range-affine-range-sum.3.test.cpp
-    title: test/yosupo-range-affine-range-sum.3.test.cpp
+    path: test/yosupo/range-affine-range-sum.3.test.cpp
+    title: test/yosupo/range-affine-range-sum.3.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-range-chmin-chmax-add-range-sum.1.test.cpp
-    title: test/yosupo-range-chmin-chmax-add-range-sum.1.test.cpp
+    path: test/yosupo/range-chmin-chmax-add-range-sum.1.test.cpp
+    title: test/yosupo/range-chmin-chmax-add-range-sum.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo-range-chmin-chmax-add-range-sum.2.test.cpp
-    title: test/yosupo-range-chmin-chmax-add-range-sum.2.test.cpp
+    path: test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
+    title: test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yukicoder-2292.test.cpp
-    title: test/yukicoder-2292.test.cpp
+    path: test/yukicoder/2292.test.cpp
+    title: test/yukicoder/2292.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -494,16 +494,16 @@ data:
   timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/yosupo-range-affine-range-sum.3.test.cpp
-  - test/yosupo-range-affine-range-sum.2.test.cpp
-  - test/yosupo-range-affine-range-sum.1.test.cpp
-  - test/aoj-dsl-2-f.test.cpp
-  - test/yukicoder-2292.test.cpp
-  - test/aoj-dsl-2-h.test.cpp
-  - test/yosupo-range-chmin-chmax-add-range-sum.2.test.cpp
-  - test/yosupo-range-chmin-chmax-add-range-sum.1.test.cpp
-  - test/aoj-dsl-2-i.test.cpp
-  - test/aoj-dsl-2-g.test.cpp
+  - test/aoj/dsl-2-i.test.cpp
+  - test/aoj/dsl-2-g.test.cpp
+  - test/aoj/dsl-2-h.test.cpp
+  - test/aoj/dsl-2-f.test.cpp
+  - test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
+  - test/yosupo/range-affine-range-sum.2.test.cpp
+  - test/yosupo/range-affine-range-sum.3.test.cpp
+  - test/yosupo/range-chmin-chmax-add-range-sum.1.test.cpp
+  - test/yosupo/range-affine-range-sum.1.test.cpp
+  - test/yukicoder/2292.test.cpp
 documentation_of: src/algebra/acted-monoid.hpp
 layout: document
 redirect_from:

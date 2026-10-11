@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/enumerate_quotients"
 
-#include "../math/sqrt.hpp"
+#include "../src/math/sqrt.hpp"
 #include <vector>
 #include <algorithm>
 #include <iostream>

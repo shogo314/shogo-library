@@ -3,8 +3,8 @@
 #include <array>
 #include <iostream>
 
-#include "../math/modint.hpp"
-#include "../data_structures/potentialized-unionfind.hpp"
+#include "../src/math/modint.hpp"
+#include "../src/data_structures/potentialized-unionfind.hpp"
 
 template <typename mint>
 bool solve(int n, const std::vector<std::array<int, 3>>& abx) {

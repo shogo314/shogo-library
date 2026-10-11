@@ -3,8 +3,8 @@
 
 #include <iostream>
 
-#include "../../string/rolling-hash.hpp"
-#include "../../data_structures/segtree.hpp"
+#include "../../src/string/rolling-hash.hpp"
+#include "../../src/data_structures/segtree.hpp"
 
 RollingHash rh;
 struct RHMonoid {

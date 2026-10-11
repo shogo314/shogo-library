@@ -4,7 +4,7 @@
 #include <iostream>
 #include <limits>
 
-#include "../../data_structures/lazy-segtree.hpp"
+#include "../../src/data_structures/lazy-segtree.hpp"
 
 // 区間 [l, r) の i 番目の要素を f + i にする
 struct UpdateAddIndexMin : monoid::Min<int> {

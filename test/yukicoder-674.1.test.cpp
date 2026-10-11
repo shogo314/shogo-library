@@ -1,6 +1,6 @@
 #define PROBLEM "https://yukicoder.me/problems/no/674"
 
-#include "../data_structures/monoid-unionfind.hpp"
+#include "../src/data_structures/monoid-unionfind.hpp"
 
 #include <iostream>
 #include <set>

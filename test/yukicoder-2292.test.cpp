@@ -1,6 +1,6 @@
 #define PROBLEM "https://yukicoder.me/problems/9177"
 
-#include "../data_structures/lazy-segtree.hpp"
+#include "../src/data_structures/lazy-segtree.hpp"
 #include <algorithm>
 #include <iostream>
 

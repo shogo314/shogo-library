@@ -1,6 +1,6 @@
 #define PROBLEM "https://yukicoder.me/problems/no/898"
 
-#include "../graph/tree.hpp"
+#include "../src/graph/tree.hpp"
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;

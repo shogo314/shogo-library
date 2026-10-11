@@ -1,6 +1,6 @@
 #define PROBLEM "https://yukicoder.me/problems/no/187"
 
-#include "../math/number-theory.hpp"
+#include "../src/math/number-theory.hpp"
 
 #include <iostream>
 

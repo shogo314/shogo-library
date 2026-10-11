@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../data_structures/counter-segtree.hpp"
+#include "../src/data_structures/counter-segtree.hpp"
 
 int main() {
     std::cin.tie(nullptr);

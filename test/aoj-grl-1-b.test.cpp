@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "../graph/graph.hpp"
+#include "../src/graph/graph.hpp"
 
 int main(void) {
     constexpr int INF = 1e8;

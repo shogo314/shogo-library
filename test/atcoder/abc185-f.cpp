@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "../../data_structures/segtree.hpp"
+#include "../../src/data_structures/segtree.hpp"
 
 int main(void) {
     int N, Q;

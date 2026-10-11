@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "../graph/rerooting-dp.hpp"
+#include "../src/graph/rerooting-dp.hpp"
 
 int main() {
     int N;

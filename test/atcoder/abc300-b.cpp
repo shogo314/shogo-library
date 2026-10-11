@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "../../math/matrix.hpp"
+#include "../../src/math/matrix.hpp"
 
 int main(void) {
     int h, w; std::cin >> h >> w;

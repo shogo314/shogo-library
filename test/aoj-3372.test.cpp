@@ -1,5 +1,5 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/3372"
-#include "../graph/tree.hpp"
+#include "../src/graph/tree.hpp"
 using namespace std;
 using ll = long long;
 

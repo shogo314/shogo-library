@@ -2,8 +2,8 @@
 
 #include <iomanip>
 
-#include "../base/io.hpp"
-#include "../geometry/vector.hpp"
+#include "../src/base/io.hpp"
+#include "../src/geometry/vector.hpp"
 
 int main(void) {
     int n; std::cin >> n;

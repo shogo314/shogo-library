@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/shortest_path"
 
-#include "../graph/graph.hpp"
+#include "../src/graph/graph.hpp"
 
 int main() {
     int n, m, s, t; std::cin >> n >> m >> s >> t;

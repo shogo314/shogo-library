@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "../graph/graph_util.hpp"
+#include "../src/graph/graph_util.hpp"
 
 int main() {
     int n, m; std::cin >> n >> m;

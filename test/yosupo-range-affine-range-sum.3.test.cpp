@@ -3,8 +3,8 @@
 #include <iostream>
 #include <utility>
 
-#include "../data_structures/lazy-segtree.hpp"
-#include "../math/modint.hpp"
+#include "../src/data_structures/lazy-segtree.hpp"
+#include "../src/math/modint.hpp"
 
 int main(void) {
     int n, q;

@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/sharp_p_subset_sum"
 
-#include "../math/fps.hpp"
+#include "../src/math/fps.hpp"
 
 using mint = modint998244353;
 const int mod = 998244353;

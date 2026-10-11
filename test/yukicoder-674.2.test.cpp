@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <iostream>
 
-#include "../data_structures/interval-set.hpp"
+#include "../src/data_structures/interval-set.hpp"
 
 int main() {
     long long d;

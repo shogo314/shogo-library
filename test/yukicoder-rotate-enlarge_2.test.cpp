@@ -1,6 +1,6 @@
 #define PROBLEM "https://yukicoder.me/problems/no/565"
 
-#include "../math/matrix.hpp"
+#include "../src/math/matrix.hpp"
 #include <iostream>
 #include <string>
 

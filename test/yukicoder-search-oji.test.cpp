@@ -1,7 +1,7 @@
 #define PROBLEM "https://yukicoder.me/problems/no/1340"
 
-#include "../math/matrix.hpp"
-#include "../math/modint.hpp"
+#include "../src/math/matrix.hpp"
+#include "../src/math/modint.hpp"
 #include <iostream>
 
 using mint3 = static_modint<57>;

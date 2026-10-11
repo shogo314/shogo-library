@@ -4,7 +4,7 @@
 #include <iostream>
 #include <limits>
 
-#include "../../data_structures/lazy-segtree.hpp"
+#include "../../src/data_structures/lazy-segtree.hpp"
 
 int main(void) {
     int h, w; std::cin >> h >> w;

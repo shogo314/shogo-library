@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "../math/modint.hpp"
-#include "../data_structures/lazy-segtree.hpp"
+#include "../src/math/modint.hpp"
+#include "../src/data_structures/lazy-segtree.hpp"
 
 int main(void) {
     int n, q; std::cin >> n >> q;

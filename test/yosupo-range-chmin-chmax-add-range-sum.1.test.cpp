@@ -4,7 +4,7 @@
 #include <iostream>
 #include <ostream>
 
-#include "../data_structures/segtree-beats.hpp"
+#include "../src/data_structures/segtree-beats.hpp"
 
 long long inf = 2e18;
 

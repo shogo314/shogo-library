@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "../math/modint.hpp"
-#include "../data_structures/segtree.hpp"
+#include "../src/math/modint.hpp"
+#include "../src/data_structures/segtree.hpp"
 
 int main() {
     int n, q;

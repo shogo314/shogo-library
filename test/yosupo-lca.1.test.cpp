@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "../graph/tree.hpp"
+#include "../src/graph/tree.hpp"
 
 int main(void) {
     std::cin.tie(nullptr);

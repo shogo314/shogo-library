@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../others/mo.hpp"
+#include "../src/others/mo.hpp"
 
 int main() {
     std::cin.tie(nullptr);

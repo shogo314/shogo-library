@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "../data_structures/unionfind.hpp"
+#include "../src/data_structures/unionfind.hpp"
 
 int main() {
     int N, Q;

@@ -5,7 +5,7 @@ title: shogo-library
 競技プログラミング用の C++ ライブラリです。
 ソースコードは [shogo314/shogo-library](https://github.com/shogo314/shogo-library) にあります。
 
-リポジトリのルートを include パスに追加して、必要なヘッダを include します。
+`src/` を include パスに追加して、必要なヘッダを include します。
 
 ```cpp
 #include "data_structures/segtree.hpp"

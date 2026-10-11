@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "../geometry/vector.hpp"
+#include "../src/geometry/vector.hpp"
 
 int main(void) {
     int n; std::cin >> n;

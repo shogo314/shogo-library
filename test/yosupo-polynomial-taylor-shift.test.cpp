@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/polynomial_taylor_shift"
 
-#include "../math/fps.hpp"
+#include "../src/math/fps.hpp"
 
 using mint = modint998244353;
 

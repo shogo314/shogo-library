@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "../graph/tree.hpp"
-#include "../data_structures/segtree.hpp"
+#include "../src/graph/tree.hpp"
+#include "../src/data_structures/segtree.hpp"
 
 int main(void) {
     std::cin.tie(nullptr);

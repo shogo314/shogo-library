@@ -6,7 +6,7 @@
 #include <iostream>
 #include <random>
 
-#include "../data_structures/binary-trie.hpp"
+#include "../src/data_structures/binary-trie.hpp"
 
 using namespace std;
 

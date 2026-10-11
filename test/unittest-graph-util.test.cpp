@@ -10,7 +10,7 @@
 #include <tuple>
 #include <vector>
 
-#include "../graph/graph_util.hpp"
+#include "../src/graph/graph_util.hpp"
 
 int main() {
     std::mt19937 rng(314);

@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/pow_of_formal_power_series"
 
-#include "../math/fps.hpp"
+#include "../src/math/fps.hpp"
 
 using mint = modint998244353;
 

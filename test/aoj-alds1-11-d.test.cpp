@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../graph/graph_util.hpp"
+#include "../src/graph/graph_util.hpp"
 
 int main() {
     std::cin.tie(nullptr);

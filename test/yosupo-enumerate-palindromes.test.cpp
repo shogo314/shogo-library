@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/enumerate_palindromes"
 
-#include "../string/rolling-hash.hpp"
+#include "../src/string/rolling-hash.hpp"
 
 #include <iostream>
 

@@ -1,7 +1,7 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/binomial_coefficient"
 
-#include "../math/combinatorics.hpp"
-#include "../math/number-theory.hpp"
+#include "../src/math/combinatorics.hpp"
+#include "../src/math/number-theory.hpp"
 
 #include <iostream>
 

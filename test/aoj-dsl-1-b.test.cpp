@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "../data_structures/potentialized-unionfind.hpp"
+#include "../src/data_structures/potentialized-unionfind.hpp"
 
 int main() {
     int n, q;

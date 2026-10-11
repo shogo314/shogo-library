@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../data_structures/merge-sort-tree.hpp"
+#include "../src/data_structures/merge-sort-tree.hpp"
 
 int main() {
     int N, Q;

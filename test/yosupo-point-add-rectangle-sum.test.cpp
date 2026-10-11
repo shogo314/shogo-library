@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/point_add_rectangle_sum"
 
-#include "../data_structures/segtree-2d.hpp"
+#include "../src/data_structures/segtree-2d.hpp"
 
 #include <iostream>
 

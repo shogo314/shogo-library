@@ -1,8 +1,8 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=3314"
 #define ERROR 1e-6
 
-#include "../math/matrix.hpp"
-#include "../geometry/vector.hpp"
+#include "../src/math/matrix.hpp"
+#include "../src/geometry/vector.hpp"
 
 #include <iomanip>
 #include <iostream>

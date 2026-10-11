@@ -9,7 +9,7 @@
 #include <set>
 #include <vector>
 
-#include "../graph/functional-graph.hpp"
+#include "../src/graph/functional-graph.hpp"
 
 // x から k 回移動した頂点 (周期を見つけて k を縮める)
 int naive_hop(const std::vector<int>& g, int x, long long k) {

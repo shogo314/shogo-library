@@ -1,6 +1,6 @@
 #define PROBLEM "https://yukicoder.me/problems/no/186"
 
-#include "../math/number-theory.hpp"
+#include "../src/math/number-theory.hpp"
 
 int main() {
     std::vector<long long> x(3), y(3);

@@ -1,7 +1,7 @@
 #define PROBLEM "https://yukicoder.me/problems/no/117"
 
-#include "../math/combinatorics.hpp"
-#include "../math/modint.hpp"
+#include "../src/math/combinatorics.hpp"
+#include "../src/math/modint.hpp"
 
 #include <iostream>
 

@@ -3,7 +3,7 @@
 #include <iomanip>
 #include <iostream>
 
-#include "../geometry/vector.hpp"
+#include "../src/geometry/vector.hpp"
 
 int main() {
     int q; std::cin >> q;

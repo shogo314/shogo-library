@@ -17,7 +17,7 @@
 | `src/string/` | Z-algorithm、ローリングハッシュ |
 | `src/geometry/` | 幾何 (ベクトル、凸包など) |
 | `src/others/` | Mo's algorithm |
-| `test/` | オンラインジャッジでの検証用テスト |
+| `test/` | オンラインジャッジでの検証用テスト (ジャッジごとにディレクトリを分けています) |
 
 ## 使い方
 

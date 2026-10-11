@@ -9,6 +9,11 @@ on:
 permissions:
   contents: write
 
+# 新しい push が来たら古い実行をキャンセルする (検証結果の push が競合して落ちるのを防ぐ)
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   verify:
     runs-on: ubuntu-latest

@@ -36,6 +36,8 @@ SegTree seg2(v, Monoid([](int a, int b) { return a + b; }, 0));
 LazySegTree<acted_monoid::AffineSum<mint>> lseg(v);
 ```
 
+よく使うものには `RMinQ<S>` (= `SegTree<monoid::Min<S>>`) や `RAddMinQ<S>` (= `LazySegTree<acted_monoid::AddMin<S>>`) などの別名があります。
+
 ```sh
 g++ -std=c++17 -I /path/to/shogo-library/src main.cpp
 ```

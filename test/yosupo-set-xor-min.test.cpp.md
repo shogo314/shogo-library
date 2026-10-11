@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: data_structures/binary-trie.hpp
+    path: src/data_structures/binary-trie.hpp
     title: "\u7B26\u53F7\u306A\u3057\u6574\u6570\u306E\u591A\u91CD\u96C6\u5408\u3092\
       \u7BA1\u7406\u3059\u308B"
   _extendedRequiredBy: []
@@ -16,13 +16,13 @@ data:
     links:
     - https://judge.yosupo.jp/problem/set_xor_min
   bundledCode: "#line 1 \"test/yosupo-set-xor-min.test.cpp\"\n#define PROBLEM \"https://judge.yosupo.jp/problem/set_xor_min\"\
-    \n\n#include <iostream>\n\n#line 2 \"data_structures/binary-trie.hpp\"\n\n#include\
-    \ <assert.h>\n#include <limits>\n#include <memory>\n#include <utility>\n\n/**\n\
-    \ * @brief \u7B26\u53F7\u306A\u3057\u6574\u6570\u306E\u591A\u91CD\u96C6\u5408\u3092\
-    \u7BA1\u7406\u3059\u308B\n * @tparam `d` \u6271\u3046\u6574\u6570\u5024\u306E\u30D3\
-    \u30C3\u30C8\u5E45\u3002T\u306E\u6841\u4EE5\u4E0B\u3067\u3042\u308B\u3053\u3068\
-    \u3092\u8981\u8ACB\n */\ntemplate <unsigned int d, typename T = unsigned long\
-    \ long>\nclass BinaryTrie {\n    static_assert(std::numeric_limits<T>::is_integer);\n\
+    \n\n#include <iostream>\n\n#line 2 \"src/data_structures/binary-trie.hpp\"\n\n\
+    #include <assert.h>\n#include <limits>\n#include <memory>\n#include <utility>\n\
+    \n/**\n * @brief \u7B26\u53F7\u306A\u3057\u6574\u6570\u306E\u591A\u91CD\u96C6\u5408\
+    \u3092\u7BA1\u7406\u3059\u308B\n * @tparam `d` \u6271\u3046\u6574\u6570\u5024\u306E\
+    \u30D3\u30C3\u30C8\u5E45\u3002T\u306E\u6841\u4EE5\u4E0B\u3067\u3042\u308B\u3053\
+    \u3068\u3092\u8981\u8ACB\n */\ntemplate <unsigned int d, typename T = unsigned\
+    \ long long>\nclass BinaryTrie {\n    static_assert(std::numeric_limits<T>::is_integer);\n\
     \    static_assert(!std::numeric_limits<T>::is_signed);\n    static_assert(d <=\
     \ std::numeric_limits<T>::digits, \"d must be T digits or less\");\n    struct\
     \ BinaryTrieNode {\n        std::shared_ptr<BinaryTrieNode> children[2] = {nullptr,\
@@ -115,7 +115,7 @@ data:
     \            std::cout << A.nth_element(0) << std::endl;\n            A.apply_xor(x);\n\
     \            break;\n        }\n    }\n\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/set_xor_min\"\n\n#include\
-    \ <iostream>\n\n#include \"../data_structures/binary-trie.hpp\"\n\nint main(void)\
+    \ <iostream>\n\n#include \"../src/data_structures/binary-trie.hpp\"\n\nint main(void)\
     \ {\n    \n    int Q;\n    std::cin >> Q;\n    BinaryTrie<30> A;\n    while (Q--)\
     \ {\n        int q, x;\n        std::cin >> q >> x;\n        switch (q) {\n  \
     \      case 0:\n            if (A.count(x) == 0) {\n                A.insert(x);\n\
@@ -124,11 +124,11 @@ data:
     \  std::cout << A.nth_element(0) << std::endl;\n            A.apply_xor(x);\n\
     \            break;\n        }\n    }\n\n}"
   dependsOn:
-  - data_structures/binary-trie.hpp
+  - src/data_structures/binary-trie.hpp
   isVerificationFile: true
   path: test/yosupo-set-xor-min.test.cpp
   requiredBy: []
-  timestamp: '2026-10-09 19:25:54+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo-set-xor-min.test.cpp

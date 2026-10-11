@@ -2,10 +2,10 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: graph/graph.hpp
+    path: src/graph/graph.hpp
     title: "\u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9"
   - icon: ':heavy_check_mark:'
-    path: graph/tree.hpp
+    path: src/graph/tree.hpp
     title: "\u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -18,9 +18,9 @@ data:
     links:
     - https://yukicoder.me/problems/no/898
   bundledCode: "#line 1 \"test/yukicoder-898.test.cpp\"\n#define PROBLEM \"https://yukicoder.me/problems/no/898\"\
-    \n\n#line 2 \"graph/tree.hpp\"\n\n/**\n * @file tree.hpp\n * @brief \u6728\u306E\
-    \u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n*/\n\n#include <algorithm>\n\
-    #include <cassert>\n#include <stack>\n#include <tuple>\n\n#line 2 \"graph/graph.hpp\"\
+    \n\n#line 2 \"src/graph/tree.hpp\"\n\n/**\n * @file tree.hpp\n * @brief \u6728\
+    \u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n*/\n\n#include <algorithm>\n\
+    #include <cassert>\n#include <stack>\n#include <tuple>\n\n#line 2 \"src/graph/graph.hpp\"\
     \n\n#include <iostream>\n#include <limits>\n#include <queue>\n#include <vector>\n\
     \n/**\n * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n\
     \ * @tparam Cost \u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u578B\n */\ntemplate <typename\
@@ -140,7 +140,7 @@ data:
     \ {\n                    dist[e.dst] = dist[e.src] + e.cost;\n               \
     \     prev[e.dst] = e;\n                    que.push({dist[e.dst], e.dst});\n\
     \                }\n            }\n        }\n        return {dist, prev};\n \
-    \   }\n};\n#line 14 \"graph/tree.hpp\"\n\ntemplate <typename>\nstruct RootedTree;\n\
+    \   }\n};\n#line 14 \"src/graph/tree.hpp\"\n\ntemplate <typename>\nstruct RootedTree;\n\
     template <typename>\nstruct DoublingClimbTree;\n\n/**\n * @brief \u6839\u306A\u3057\
     \u6728\n * \n * @tparam Cost = int \u8FBA\u306E\u91CD\u307F\n * \n * Graph<Cost>\u3092\
     \u7D99\u627F\u3057\u3001\u3059\u3079\u3066\u7121\u5411\u8FBA\u3067\u8868\u3059\
@@ -338,7 +338,7 @@ data:
     \ dct.lca(xyz[1], xyz[2]);\n        int center = lca01 ^ lca02 ^ lca12;\n    \
     \    cout << dct.dist(xyz[0], center) + dct.dist(xyz[1], center) + dct.dist(xyz[2],\
     \ center) << endl;\n    }\n}\n"
-  code: "#define PROBLEM \"https://yukicoder.me/problems/no/898\"\n\n#include \"../graph/tree.hpp\"\
+  code: "#define PROBLEM \"https://yukicoder.me/problems/no/898\"\n\n#include \"../src/graph/tree.hpp\"\
     \n#include <bits/stdc++.h>\nusing namespace std;\nusing ll = long long;\n\nint\
     \ main() {\n    int n; cin >> n;\n    Tree<ll> tr(n); tr.read(0, true);\n    DoublingClimbTree<ll>\
     \ dct(tr, 0);\n    int q; cin >> q;\n    while(q--) {\n        array<int, 3> xyz;\n\
@@ -348,12 +348,12 @@ data:
     \    cout << dct.dist(xyz[0], center) + dct.dist(xyz[1], center) + dct.dist(xyz[2],\
     \ center) << endl;\n    }\n}\n"
   dependsOn:
-  - graph/tree.hpp
-  - graph/graph.hpp
+  - src/graph/tree.hpp
+  - src/graph/graph.hpp
   isVerificationFile: true
   path: test/yukicoder-898.test.cpp
   requiredBy: []
-  timestamp: '2026-10-09 19:25:54+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yukicoder-898.test.cpp

@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: geometry/vector.hpp
+    path: src/geometry/vector.hpp
     title: "\u5E7E\u4F55\u5B66\u3068\u3057\u3066\u306E\u30D9\u30AF\u30C8\u30EB"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -15,7 +15,7 @@ data:
     links:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_4_A
   bundledCode: "#line 1 \"test/aoj-cgl-4-a.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_4_A\"\
-    \n\n#include <iostream>\n\n#line 2 \"geometry/vector.hpp\"\n\n#include <algorithm>\n\
+    \n\n#include <iostream>\n\n#line 2 \"src/geometry/vector.hpp\"\n\n#include <algorithm>\n\
     #include <array>\n#include <cassert>\n#include <cmath>\n#include <initializer_list>\n\
     #include <istream>\n#include <numeric>\n#include <ostream>\n#include <stack>\n\
     #include <tuple>\n#include <type_traits>\n#include <vector>\n\n/**\n * @brief\
@@ -317,7 +317,7 @@ data:
     \    std::cout << polygon.size() << '\\n';\n    for(auto& p : polygon) std::cout\
     \ << p << '\\n';\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_4_A\"\
-    \n\n#include <iostream>\n\n#include \"../geometry/vector.hpp\"\n\nint main(void)\
+    \n\n#include <iostream>\n\n#include \"../src/geometry/vector.hpp\"\n\nint main(void)\
     \ {\n    int n; std::cin >> n;\n    std::vector<Vector<int>> points(n);\n    for(int\
     \ i = 0; i < n; ++i) std::cin >> points[i];\n    std::vector<Vector<int>> polygon\
     \ = convex_hull(points, true);\n    int j = 0;\n    for(int i = 0; i < (int)polygon.size();\
@@ -327,11 +327,11 @@ data:
     \ << polygon.size() << '\\n';\n    for(auto& p : polygon) std::cout << p << '\\\
     n';\n}"
   dependsOn:
-  - geometry/vector.hpp
+  - src/geometry/vector.hpp
   isVerificationFile: true
   path: test/aoj-cgl-4-a.test.cpp
   requiredBy: []
-  timestamp: '2026-10-10 13:32:22+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj-cgl-4-a.test.cpp

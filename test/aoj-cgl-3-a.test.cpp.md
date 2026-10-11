@@ -2,11 +2,11 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: base/io.hpp
+    path: src/base/io.hpp
     title: "\u7A7A\u767D\u533A\u5207\u308A\u51FA\u529B\u3001iostream\u306E\u30AA\u30FC\
       \u30D0\u30FC\u30ED\u30FC\u30C9"
   - icon: ':heavy_check_mark:'
-    path: geometry/vector.hpp
+    path: src/geometry/vector.hpp
     title: "\u5E7E\u4F55\u5B66\u3068\u3057\u3066\u306E\u30D9\u30AF\u30C8\u30EB"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -19,136 +19,136 @@ data:
     links:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_3_A
   bundledCode: "#line 1 \"test/aoj-cgl-3-a.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_3_A\"\
-    \n\n#include <iomanip>\n\n#line 2 \"base/io.hpp\"\n/**\n * @file io.hpp\n * @brief\
-    \ \u7A7A\u767D\u533A\u5207\u308A\u51FA\u529B\u3001iostream\u306E\u30AA\u30FC\u30D0\
-    \u30FC\u30ED\u30FC\u30C9\n */\n\n#include <array>\n#include <iostream>\n#include\
-    \ <set>\n#include <utility>\n#include <tuple>\n#include <vector>\n\n// \u30CD\u30B9\
-    \u30C8\u3057\u305F\u578B (pair<vector<int>, int> \u306A\u3069) \u3092\u6271\u3048\
-    \u308B\u3088\u3046\u306B\u5148\u306B\u5BA3\u8A00\u3057\u3066\u304A\u304F\ntemplate\
-    \ <typename T1, typename T2, typename CharT, typename Traits>\nstd::basic_istream<CharT,\
-    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, std::pair<T1, T2>&\
-    \ p);\ntemplate <typename... Types, typename CharT, typename Traits>\nstd::basic_istream<CharT,\
-    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, std::tuple<Types...>&\
-    \ p);\ntemplate <typename T, size_t N, typename CharT, typename Traits>\nstd::basic_istream<CharT,\
-    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, std::array<T, N>&\
-    \ a);\ntemplate <typename T, typename CharT, typename Traits>\nstd::basic_istream<CharT,\
-    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, std::vector<T>& v);\n\
-    template <typename T1, typename T2, typename CharT, typename Traits>\nstd::basic_ostream<CharT,\
-    \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const std::pair<T1,\
-    \ T2>& p);\ntemplate <typename... Types, typename CharT, typename Traits>\nstd::basic_ostream<CharT,\
-    \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const std::tuple<Types...>&\
-    \ p);\ntemplate <typename T, size_t N, typename CharT, typename Traits>\nstd::basic_ostream<CharT,\
-    \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const std::array<T,\
-    \ N>& a);\ntemplate <typename T, typename CharT, typename Traits>\nstd::basic_ostream<CharT,\
-    \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const std::vector<T>&\
-    \ v);\ntemplate <typename T, typename CharT, typename Traits>\nstd::basic_ostream<CharT,\
-    \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const std::set<T>&\
-    \ s);\n\nnamespace tuple_io {\n    template <typename Tuple, size_t I, typename\
-    \ CharT, typename Traits>\n    std::basic_istream<CharT, Traits>& read_tuple(std::basic_istream<CharT,\
-    \ Traits>& is, Tuple& t) {\n        is >> std::get<I>(t);\n        if constexpr\
-    \ (I + 1 < std::tuple_size_v<Tuple>) {\n            return read_tuple<Tuple, I\
-    \ + 1>(is, t);\n        }\n        return is;\n    }\n    template <typename Tuple,\
-    \ size_t I, typename CharT, typename Traits>\n    std::basic_ostream<CharT, Traits>&\
-    \ write_tuple(std::basic_ostream<CharT, Traits>& os, const Tuple& t) {\n     \
-    \   os << std::get<I>(t);\n        if constexpr (I + 1 < std::tuple_size_v<Tuple>)\
-    \ {\n            os << CharT(' ');\n            return write_tuple<Tuple, I +\
-    \ 1>(os, t);\n        }\n        return os;\n    }\n};\n\ntemplate <typename T1,\
-    \ typename T2, typename CharT, typename Traits>\nstd::basic_istream<CharT, Traits>&\
-    \ operator>>(std::basic_istream<CharT, Traits>& is, std::pair<T1, T2>& p) {\n\
-    \    is >> p.first >> p.second;\n    return is;\n}\ntemplate <typename... Types,\
-    \ typename CharT, typename Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
-    \ Traits>& is, std::tuple<Types...>& p) {\n    return tuple_io::read_tuple<std::tuple<Types...>,\
-    \ 0>(is, p);\n}\ntemplate <typename T, size_t N, typename CharT, typename Traits>\n\
+    \n\n#include <iomanip>\n\n#line 2 \"src/base/io.hpp\"\n/**\n * @file io.hpp\n\
+    \ * @brief \u7A7A\u767D\u533A\u5207\u308A\u51FA\u529B\u3001iostream\u306E\u30AA\
+    \u30FC\u30D0\u30FC\u30ED\u30FC\u30C9\n */\n\n#include <array>\n#include <iostream>\n\
+    #include <set>\n#include <utility>\n#include <tuple>\n#include <vector>\n\n//\
+    \ \u30CD\u30B9\u30C8\u3057\u305F\u578B (pair<vector<int>, int> \u306A\u3069) \u3092\
+    \u6271\u3048\u308B\u3088\u3046\u306B\u5148\u306B\u5BA3\u8A00\u3057\u3066\u304A\
+    \u304F\ntemplate <typename T1, typename T2, typename CharT, typename Traits>\n\
     std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT, Traits>&\
-    \ is, std::array<T, N>& a) {\n    for(auto& e : a) is >> e;\n    return is;\n\
-    }\ntemplate <typename T, typename CharT, typename Traits>\nstd::basic_istream<CharT,\
-    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, std::vector<T>& v)\
-    \ {\n    for(auto& e : v) is >> e;\n    return is;\n}\n\ntemplate <typename T1,\
-    \ typename T2, typename CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>&\
-    \ operator<<(std::basic_ostream<CharT, Traits>& os, const std::pair<T1, T2>& p)\
-    \ {\n    os << p.first << CharT(' ') << p.second;\n    return os;\n}\ntemplate\
-    \ <typename... Types, typename CharT, typename Traits>\nstd::basic_ostream<CharT,\
-    \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const std::tuple<Types...>&\
-    \ p) {\n    return tuple_io::write_tuple<std::tuple<Types...>, 0>(os, p);\n}\n\
-    template <typename T, size_t N, typename CharT, typename Traits>\nstd::basic_ostream<CharT,\
-    \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const std::array<T,\
-    \ N>& a) {\n    for(size_t i = 0; i < N; ++i) {\n        if(i) os << CharT(' ');\n\
-    \        os << a[i];\n    }\n    return os;\n}\ntemplate <typename T, typename\
+    \ is, std::pair<T1, T2>& p);\ntemplate <typename... Types, typename CharT, typename\
+    \ Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    \ Traits>& is, std::tuple<Types...>& p);\ntemplate <typename T, size_t N, typename\
+    \ CharT, typename Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    \ Traits>& is, std::array<T, N>& a);\ntemplate <typename T, typename CharT, typename\
+    \ Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    \ Traits>& is, std::vector<T>& v);\ntemplate <typename T1, typename T2, typename\
     \ CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
-    \ Traits>& os, const std::vector<T>& v) {\n    for(size_t i = 0; i < v.size();\
-    \ ++i) {\n        if(i) os << CharT(' ');\n        os << v[i];\n    }\n    return\
-    \ os;\n}\ntemplate <typename T, typename CharT, typename Traits>\nstd::basic_ostream<CharT,\
-    \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const std::set<T>&\
-    \ s) {\n    for(auto itr = s.begin(); itr != s.end(); ++itr) {\n        if(itr\
-    \ != s.begin()) os << CharT(' ');\n        os << *itr;\n    }\n    return os;\n\
-    }\n\n/**\n * @brief \u7A7A\u884C\u51FA\u529B\n */\ninline void print() { std::cout\
-    \ << '\\n'; }\n/**\n * @brief \u51FA\u529B\u3057\u3066\u6539\u884C\n * \n * @tparam\
-    \ T \u578B\n * @param x \u51FA\u529B\u3059\u308B\u5024\n */\ntemplate <typename\
-    \ T>\nvoid print(const T& x) { std::cout << x << '\\n'; }\n/**\n * @brief \u7A7A\
-    \u767D\u533A\u5207\u308A\u3067\u51FA\u529B\u3057\u3066\u6539\u884C\n * \n * @tparam\
-    \ T 1\u3064\u76EE\u306E\u8981\u7D20\u306E\u578B\n * @tparam Tail 2\u3064\u76EE\
-    \u4EE5\u964D\u306E\u8981\u7D20\u306E\u578B\n * @param x 1\u3064\u76EE\u306E\u8981\
-    \u7D20\n * @param tail 2\u3064\u76EE\u4EE5\u964D\u306E\u8981\u7D20\n */\ntemplate\
-    \ <typename T, typename... Tail>\nvoid print(const T& x, const Tail&... tail)\
-    \ {\n    std::cout << x << ' ';\n    print(tail...);\n}\n\n/**\n * @brief \u6A19\
-    \u6E96\u30A8\u30E9\u30FC\u51FA\u529B\u306B\u7A7A\u884C\u51FA\u529B\n */\ninline\
-    \ void err() { std::cerr << std::endl; }\n/**\n * @brief \u6A19\u6E96\u30A8\u30E9\
-    \u30FC\u51FA\u529B\u306B\u51FA\u529B\u3057\u3066\u6539\u884C\n *\n * @tparam T\
-    \ \u578B\n * @param x \u51FA\u529B\u3059\u308B\u5024\n */\ntemplate <typename\
-    \ T>\nvoid err(const T& x) { std::cerr << x << std::endl; }\n/**\n * @brief \u6A19\
-    \u6E96\u30A8\u30E9\u30FC\u51FA\u529B\u306B\u7A7A\u767D\u533A\u5207\u308A\u3067\
-    \u51FA\u529B\u3057\u3066\u6539\u884C\n *\n * @tparam T 1\u3064\u76EE\u306E\u8981\
-    \u7D20\u306E\u578B\n * @tparam Tail 2\u3064\u76EE\u4EE5\u964D\u306E\u8981\u7D20\
-    \u306E\u578B\n * @param x 1\u3064\u76EE\u306E\u8981\u7D20\n * @param tail 2\u3064\
-    \u76EE\u4EE5\u964D\u306E\u8981\u7D20\n */\ntemplate <typename T, typename... Tail>\n\
-    void err(const T& x, const Tail&... tail) {\n    std::cerr << x << ' ';\n    err(tail...);\n\
-    }\n#line 2 \"geometry/vector.hpp\"\n\n#include <algorithm>\n#line 5 \"geometry/vector.hpp\"\
-    \n#include <cassert>\n#include <cmath>\n#include <initializer_list>\n#include\
-    \ <istream>\n#include <numeric>\n#include <ostream>\n#include <stack>\n#line 13\
-    \ \"geometry/vector.hpp\"\n#include <type_traits>\n#line 15 \"geometry/vector.hpp\"\
-    \n\n/**\n * @brief \u5E7E\u4F55\u5B66\u3068\u3057\u3066\u306E\u30D9\u30AF\u30C8\
-    \u30EB\n *\n * @tparam T \u578B \u7701\u7565\u3057\u305F\u3089double\n * @tparam\
-    \ Dim \u6B21\u5143 \u7701\u7565\u3057\u305F\u30892\n */\ntemplate <typename T\
-    \ = double, int Dim = 2, std::enable_if_t<std::is_scalar_v<T> && (Dim > 0)>* =\
-    \ nullptr>\nstruct Vector {\n    std::array<T, Dim> v; //!< \u30D9\u30AF\u30C8\
-    \u30EB\u306E\u6210\u5206\u8868\u793A\n\n    /**\n     * @brief \u30C7\u30D5\u30A9\
-    \u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * \u30BC\u30ED\u30D9\
-    \u30AF\u30C8\u30EB\n     */\n    constexpr Vector() noexcept : v() {}\n    /**\n\
-    \     * @brief \u53EF\u5909\u9577\u5F15\u6570\u306B\u3088\u308B\u30B3\u30F3\u30B9\
-    \u30C8\u30E9\u30AF\u30BF\n     * \n     * @tparam Args \n     */\n    template\
-    \ <typename... Args>\n    constexpr Vector(Args... args) noexcept : v{args...}\
-    \ {}\n\n    /**\n     * @brief i\u756A\u76EE\u306E\u6210\u5206\u3092\u8FD4\u3059\
-    \n     * \n     * @param i\n     * @return T& \n     */\n    constexpr T& operator[](int\
-    \ i) noexcept {\n        return v[i];\n    }\n    /**\n     * @brief i\u756A\u76EE\
-    \u306E\u6210\u5206\u3092\u8FD4\u3059\n     * \n     * @param i\n     * @return\
-    \ T& \n     */\n    constexpr const T& operator[](int i) const noexcept {\n  \
-    \      return v[i];\n    }\n\n    /**\n     * @brief \u52A0\u7B97\u4EE3\u5165\u6F14\
-    \u7B97\u5B50\n     * \n     * @param rhs \n     * @return Vector& \n     */\n\
-    \    constexpr Vector& operator+=(const Vector& rhs) noexcept {\n        for(int\
-    \ i = 0; i < Dim; i++) v[i] += rhs[i];\n        return *this;\n    }\n    /**\n\
-    \     * @brief \u6E1B\u7B97\u4EE3\u5165\u6F14\u7B97\u5B50\n     * \n     * @param\
-    \ rhs \n     * @return Vector& \n     */\n    constexpr Vector& operator-=(const\
-    \ Vector& rhs) noexcept {\n        for(int i = 0; i < Dim; i++) v[i] -= rhs.v[i];\n\
-    \        return *this;\n    }\n    /**\n     * @brief \u30B9\u30AB\u30E9\u30FC\
-    \u500D\u4EE3\u5165\u6F14\u7B97\u5B50\n     * \n     * @param coef \n     * @return\
-    \ Vector& \n     */\n    constexpr Vector& operator*=(const T& coef) noexcept\
-    \ {\n        for(int i = 0; i < Dim; i++) v[i] *= coef;\n        return *this;\n\
-    \    }\n    /**\n     * @brief \u30B9\u30AB\u30E9\u30FC\u306E\u9006\u6570\u500D\
-    \u4EE3\u5165\u6F14\u7B97\u5B50\n     * \n     * @param coef \n     * @return Vector&\
-    \ \n     */\n    Vector& operator/=(const T& coef) {\n        for(int i = 0; i\
-    \ < Dim; i++) {\n            if constexpr(std::is_integral_v<T>) {\n         \
-    \       assert(v[i] % coef == 0 && \"Vector::operator/= : coef must be a divisor\
-    \ of all elements\");\n            }\n            v[i] /= coef;\n        }\n \
-    \       return *this;\n    }\n\n    /**\n     * @brief \u5358\u9805\u30D7\u30E9\
+    \ Traits>& os, const std::pair<T1, T2>& p);\ntemplate <typename... Types, typename\
+    \ CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \ Traits>& os, const std::tuple<Types...>& p);\ntemplate <typename T, size_t N,\
+    \ typename CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \ Traits>& os, const std::array<T, N>& a);\ntemplate <typename T, typename CharT,\
+    \ typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \ Traits>& os, const std::vector<T>& v);\ntemplate <typename T, typename CharT,\
+    \ typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \ Traits>& os, const std::set<T>& s);\n\nnamespace tuple_io {\n    template <typename\
+    \ Tuple, size_t I, typename CharT, typename Traits>\n    std::basic_istream<CharT,\
+    \ Traits>& read_tuple(std::basic_istream<CharT, Traits>& is, Tuple& t) {\n   \
+    \     is >> std::get<I>(t);\n        if constexpr (I + 1 < std::tuple_size_v<Tuple>)\
+    \ {\n            return read_tuple<Tuple, I + 1>(is, t);\n        }\n        return\
+    \ is;\n    }\n    template <typename Tuple, size_t I, typename CharT, typename\
+    \ Traits>\n    std::basic_ostream<CharT, Traits>& write_tuple(std::basic_ostream<CharT,\
+    \ Traits>& os, const Tuple& t) {\n        os << std::get<I>(t);\n        if constexpr\
+    \ (I + 1 < std::tuple_size_v<Tuple>) {\n            os << CharT(' ');\n      \
+    \      return write_tuple<Tuple, I + 1>(os, t);\n        }\n        return os;\n\
+    \    }\n};\n\ntemplate <typename T1, typename T2, typename CharT, typename Traits>\n\
+    std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT, Traits>&\
+    \ is, std::pair<T1, T2>& p) {\n    is >> p.first >> p.second;\n    return is;\n\
+    }\ntemplate <typename... Types, typename CharT, typename Traits>\nstd::basic_istream<CharT,\
+    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, std::tuple<Types...>&\
+    \ p) {\n    return tuple_io::read_tuple<std::tuple<Types...>, 0>(is, p);\n}\n\
+    template <typename T, size_t N, typename CharT, typename Traits>\nstd::basic_istream<CharT,\
+    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, std::array<T, N>&\
+    \ a) {\n    for(auto& e : a) is >> e;\n    return is;\n}\ntemplate <typename T,\
+    \ typename CharT, typename Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    \ Traits>& is, std::vector<T>& v) {\n    for(auto& e : v) is >> e;\n    return\
+    \ is;\n}\n\ntemplate <typename T1, typename T2, typename CharT, typename Traits>\n\
+    std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>&\
+    \ os, const std::pair<T1, T2>& p) {\n    os << p.first << CharT(' ') << p.second;\n\
+    \    return os;\n}\ntemplate <typename... Types, typename CharT, typename Traits>\n\
+    std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>&\
+    \ os, const std::tuple<Types...>& p) {\n    return tuple_io::write_tuple<std::tuple<Types...>,\
+    \ 0>(os, p);\n}\ntemplate <typename T, size_t N, typename CharT, typename Traits>\n\
+    std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>&\
+    \ os, const std::array<T, N>& a) {\n    for(size_t i = 0; i < N; ++i) {\n    \
+    \    if(i) os << CharT(' ');\n        os << a[i];\n    }\n    return os;\n}\n\
+    template <typename T, typename CharT, typename Traits>\nstd::basic_ostream<CharT,\
+    \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const std::vector<T>&\
+    \ v) {\n    for(size_t i = 0; i < v.size(); ++i) {\n        if(i) os << CharT('\
+    \ ');\n        os << v[i];\n    }\n    return os;\n}\ntemplate <typename T, typename\
+    \ CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \ Traits>& os, const std::set<T>& s) {\n    for(auto itr = s.begin(); itr != s.end();\
+    \ ++itr) {\n        if(itr != s.begin()) os << CharT(' ');\n        os << *itr;\n\
+    \    }\n    return os;\n}\n\n/**\n * @brief \u7A7A\u884C\u51FA\u529B\n */\ninline\
+    \ void print() { std::cout << '\\n'; }\n/**\n * @brief \u51FA\u529B\u3057\u3066\
+    \u6539\u884C\n * \n * @tparam T \u578B\n * @param x \u51FA\u529B\u3059\u308B\u5024\
+    \n */\ntemplate <typename T>\nvoid print(const T& x) { std::cout << x << '\\n';\
+    \ }\n/**\n * @brief \u7A7A\u767D\u533A\u5207\u308A\u3067\u51FA\u529B\u3057\u3066\
+    \u6539\u884C\n * \n * @tparam T 1\u3064\u76EE\u306E\u8981\u7D20\u306E\u578B\n\
+    \ * @tparam Tail 2\u3064\u76EE\u4EE5\u964D\u306E\u8981\u7D20\u306E\u578B\n * @param\
+    \ x 1\u3064\u76EE\u306E\u8981\u7D20\n * @param tail 2\u3064\u76EE\u4EE5\u964D\u306E\
+    \u8981\u7D20\n */\ntemplate <typename T, typename... Tail>\nvoid print(const T&\
+    \ x, const Tail&... tail) {\n    std::cout << x << ' ';\n    print(tail...);\n\
+    }\n\n/**\n * @brief \u6A19\u6E96\u30A8\u30E9\u30FC\u51FA\u529B\u306B\u7A7A\u884C\
+    \u51FA\u529B\n */\ninline void err() { std::cerr << std::endl; }\n/**\n * @brief\
+    \ \u6A19\u6E96\u30A8\u30E9\u30FC\u51FA\u529B\u306B\u51FA\u529B\u3057\u3066\u6539\
+    \u884C\n *\n * @tparam T \u578B\n * @param x \u51FA\u529B\u3059\u308B\u5024\n\
+    \ */\ntemplate <typename T>\nvoid err(const T& x) { std::cerr << x << std::endl;\
+    \ }\n/**\n * @brief \u6A19\u6E96\u30A8\u30E9\u30FC\u51FA\u529B\u306B\u7A7A\u767D\
+    \u533A\u5207\u308A\u3067\u51FA\u529B\u3057\u3066\u6539\u884C\n *\n * @tparam T\
+    \ 1\u3064\u76EE\u306E\u8981\u7D20\u306E\u578B\n * @tparam Tail 2\u3064\u76EE\u4EE5\
+    \u964D\u306E\u8981\u7D20\u306E\u578B\n * @param x 1\u3064\u76EE\u306E\u8981\u7D20\
+    \n * @param tail 2\u3064\u76EE\u4EE5\u964D\u306E\u8981\u7D20\n */\ntemplate <typename\
+    \ T, typename... Tail>\nvoid err(const T& x, const Tail&... tail) {\n    std::cerr\
+    \ << x << ' ';\n    err(tail...);\n}\n#line 2 \"src/geometry/vector.hpp\"\n\n\
+    #include <algorithm>\n#line 5 \"src/geometry/vector.hpp\"\n#include <cassert>\n\
+    #include <cmath>\n#include <initializer_list>\n#include <istream>\n#include <numeric>\n\
+    #include <ostream>\n#include <stack>\n#line 13 \"src/geometry/vector.hpp\"\n#include\
+    \ <type_traits>\n#line 15 \"src/geometry/vector.hpp\"\n\n/**\n * @brief \u5E7E\
+    \u4F55\u5B66\u3068\u3057\u3066\u306E\u30D9\u30AF\u30C8\u30EB\n *\n * @tparam T\
+    \ \u578B \u7701\u7565\u3057\u305F\u3089double\n * @tparam Dim \u6B21\u5143 \u7701\
+    \u7565\u3057\u305F\u30892\n */\ntemplate <typename T = double, int Dim = 2, std::enable_if_t<std::is_scalar_v<T>\
+    \ && (Dim > 0)>* = nullptr>\nstruct Vector {\n    std::array<T, Dim> v; //!< \u30D9\
+    \u30AF\u30C8\u30EB\u306E\u6210\u5206\u8868\u793A\n\n    /**\n     * @brief \u30C7\
+    \u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * \u30BC\
+    \u30ED\u30D9\u30AF\u30C8\u30EB\n     */\n    constexpr Vector() noexcept : v()\
+    \ {}\n    /**\n     * @brief \u53EF\u5909\u9577\u5F15\u6570\u306B\u3088\u308B\u30B3\
+    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * \n     * @tparam Args \n     */\n\
+    \    template <typename... Args>\n    constexpr Vector(Args... args) noexcept\
+    \ : v{args...} {}\n\n    /**\n     * @brief i\u756A\u76EE\u306E\u6210\u5206\u3092\
+    \u8FD4\u3059\n     * \n     * @param i\n     * @return T& \n     */\n    constexpr\
+    \ T& operator[](int i) noexcept {\n        return v[i];\n    }\n    /**\n    \
+    \ * @brief i\u756A\u76EE\u306E\u6210\u5206\u3092\u8FD4\u3059\n     * \n     *\
+    \ @param i\n     * @return T& \n     */\n    constexpr const T& operator[](int\
+    \ i) const noexcept {\n        return v[i];\n    }\n\n    /**\n     * @brief \u52A0\
+    \u7B97\u4EE3\u5165\u6F14\u7B97\u5B50\n     * \n     * @param rhs \n     * @return\
+    \ Vector& \n     */\n    constexpr Vector& operator+=(const Vector& rhs) noexcept\
+    \ {\n        for(int i = 0; i < Dim; i++) v[i] += rhs[i];\n        return *this;\n\
+    \    }\n    /**\n     * @brief \u6E1B\u7B97\u4EE3\u5165\u6F14\u7B97\u5B50\n  \
+    \   * \n     * @param rhs \n     * @return Vector& \n     */\n    constexpr Vector&\
+    \ operator-=(const Vector& rhs) noexcept {\n        for(int i = 0; i < Dim; i++)\
+    \ v[i] -= rhs.v[i];\n        return *this;\n    }\n    /**\n     * @brief \u30B9\
+    \u30AB\u30E9\u30FC\u500D\u4EE3\u5165\u6F14\u7B97\u5B50\n     * \n     * @param\
+    \ coef \n     * @return Vector& \n     */\n    constexpr Vector& operator*=(const\
+    \ T& coef) noexcept {\n        for(int i = 0; i < Dim; i++) v[i] *= coef;\n  \
+    \      return *this;\n    }\n    /**\n     * @brief \u30B9\u30AB\u30E9\u30FC\u306E\
+    \u9006\u6570\u500D\u4EE3\u5165\u6F14\u7B97\u5B50\n     * \n     * @param coef\
+    \ \n     * @return Vector& \n     */\n    Vector& operator/=(const T& coef) {\n\
+    \        for(int i = 0; i < Dim; i++) {\n            if constexpr(std::is_integral_v<T>)\
+    \ {\n                assert(v[i] % coef == 0 && \"Vector::operator/= : coef must\
+    \ be a divisor of all elements\");\n            }\n            v[i] /= coef;\n\
+    \        }\n        return *this;\n    }\n\n    /**\n     * @brief \u5358\u9805\
+    \u30D7\u30E9\u30B9\u6F14\u7B97\u5B50\n     * \n     * @return Vector \n     */\n\
+    \    [[nodiscard]]\n    constexpr Vector operator+() const noexcept {\n      \
+    \  return *this;\n    }\n    /**\n     * @brief \u5358\u9805\u30DE\u30A4\u30CA\
     \u30B9\u6F14\u7B97\u5B50\n     * \n     * @return Vector \n     */\n    [[nodiscard]]\n\
-    \    constexpr Vector operator+() const noexcept {\n        return *this;\n  \
-    \  }\n    /**\n     * @brief \u5358\u9805\u30DE\u30A4\u30CA\u30B9\u6F14\u7B97\u5B50\
-    \n     * \n     * @return Vector \n     */\n    [[nodiscard]]\n    constexpr Vector\
-    \ operator-() const noexcept {\n        return *this * (-1);\n    }\n\n    /**\n\
-    \     * @brief \u52A0\u7B97\u6F14\u7B97\u5B50\n     * \n     * @param lhs \n \
-    \    * @param rhs \n     * @return Vector \n     */\n    [[nodiscard]]\n    friend\
-    \ constexpr Vector operator+(const Vector& lhs, const Vector& rhs) noexcept {\n\
-    \        return std::move(Vector(lhs) += rhs);\n    }\n\n    /**\n     * @brief\
+    \    constexpr Vector operator-() const noexcept {\n        return *this * (-1);\n\
+    \    }\n\n    /**\n     * @brief \u52A0\u7B97\u6F14\u7B97\u5B50\n     * \n   \
+    \  * @param lhs \n     * @param rhs \n     * @return Vector \n     */\n    [[nodiscard]]\n\
+    \    friend constexpr Vector operator+(const Vector& lhs, const Vector& rhs) noexcept\
+    \ {\n        return std::move(Vector(lhs) += rhs);\n    }\n\n    /**\n     * @brief\
     \ \u6E1B\u7B97\u6F14\u7B97\u5B50\n     * \n     * @param lhs \n     * @param rhs\
     \ \n     * @return Vector \n     */\n    [[nodiscard]]\n    friend constexpr Vector\
     \ operator-(const Vector& lhs, const Vector& rhs) noexcept {\n        return std::move(Vector(lhs)\
@@ -400,17 +400,17 @@ data:
     \ std::cin >> polygon;\n    std::cout << std::fixed << std::setprecision(1) <<\
     \ polygon_area(polygon) << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_3_A\"\
-    \n\n#include <iomanip>\n\n#include \"../base/io.hpp\"\n#include \"../geometry/vector.hpp\"\
+    \n\n#include <iomanip>\n\n#include \"../src/base/io.hpp\"\n#include \"../src/geometry/vector.hpp\"\
     \n\nint main(void) {\n    int n; std::cin >> n;\n    std::vector<Vector<>> polygon(n);\
     \ std::cin >> polygon;\n    std::cout << std::fixed << std::setprecision(1) <<\
     \ polygon_area(polygon) << std::endl;\n}"
   dependsOn:
-  - base/io.hpp
-  - geometry/vector.hpp
+  - src/base/io.hpp
+  - src/geometry/vector.hpp
   isVerificationFile: true
   path: test/aoj-cgl-3-a.test.cpp
   requiredBy: []
-  timestamp: '2026-10-10 13:32:22+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj-cgl-3-a.test.cpp

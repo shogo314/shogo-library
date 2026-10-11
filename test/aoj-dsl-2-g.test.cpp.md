@@ -2,13 +2,13 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: algebra/acted-monoid.hpp
+    path: src/algebra/acted-monoid.hpp
     title: "\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   - icon: ':heavy_check_mark:'
-    path: algebra/monoid.hpp
+    path: src/algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   - icon: ':heavy_check_mark:'
-    path: data_structures/lazy-segtree.hpp
+    path: src/data_structures/lazy-segtree.hpp
     title: "\u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -21,10 +21,10 @@ data:
     links:
     - http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_G
   bundledCode: "#line 1 \"test/aoj-dsl-2-g.test.cpp\"\n#define PROBLEM \"http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_G\"\
-    \n\n#include <iostream>\n\n#line 2 \"data_structures/lazy-segtree.hpp\"\n\n/**\n\
-    \ * @file lazy-segtree.hpp\n * @brief \u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\
-    \u30F3\u30C8\u6728\n */\n\n#include <cassert>\n#include <functional>\n#include\
-    \ <ostream>\n#include <utility>\n#include <vector>\n#line 2 \"algebra/acted-monoid.hpp\"\
+    \n\n#include <iostream>\n\n#line 2 \"src/data_structures/lazy-segtree.hpp\"\n\n\
+    /**\n * @file lazy-segtree.hpp\n * @brief \u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\
+    \u30E1\u30F3\u30C8\u6728\n */\n\n#include <cassert>\n#include <functional>\n#include\
+    \ <ostream>\n#include <utility>\n#include <vector>\n#line 2 \"src/algebra/acted-monoid.hpp\"\
     \n\n/**\n * @file acted-monoid.hpp\n * @brief \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
     \u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
     \u30CE\u30A4\u30C9\u306F\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp) \u306E\u30E1\
@@ -39,7 +39,7 @@ data:
     \u7B49\u5199\u50CF\n * \u4F5C\u7528\u7D20\u304C\u7FA4\u3092\u306A\u3059\u5834\u5408\
     \ (imos.hpp \u3067\u4F7F\u3046) \u306F\n * - F inv(const F& f): \u9006\u4F5C\u7528\
     \u7D20\n */\n\n#include <array>\n#include <limits>\n#include <optional>\n#include\
-    \ <type_traits>\n#line 2 \"algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n\
+    \ <type_traits>\n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n\
     \ * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\
     \u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\
     \u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S&\
@@ -47,8 +47,8 @@ data:
     \ * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\
     \u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\
     \u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\
-    \n#include <algorithm>\n#line 16 \"algebra/monoid.hpp\"\n#include <numeric>\n\
-    #line 19 \"algebra/monoid.hpp\"\n\nnamespace monoid {\n\n/**\n * @brief \u548C\
+    \n#include <algorithm>\n#line 16 \"src/algebra/monoid.hpp\"\n#include <numeric>\n\
+    #line 19 \"src/algebra/monoid.hpp\"\n\nnamespace monoid {\n\n/**\n * @brief \u548C\
     \n */\ntemplate <typename T>\nstruct Sum {\n    using S = T;\n    static constexpr\
     \ S op(const S& a, const S& b) { return a + b; }\n    static constexpr S e() {\
     \ return S(0); }\n};\n\n/**\n * @brief \u7A4D\n */\ntemplate <typename T>\nstruct\
@@ -137,7 +137,7 @@ data:
     \    Monoid() = default;\n    constexpr Monoid(Op op, const S& e) : op_object(std::move(op)),\
     \ identity(e) {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a,\
     \ b); }\n    constexpr S e() const { return identity; }\n};\ntemplate <typename\
-    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 23 \"algebra/acted-monoid.hpp\"\
+    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 23 \"src/algebra/acted-monoid.hpp\"\
     \n\nnamespace acted_monoid {\n\nnamespace detail {\ntemplate <typename A, typename\
     \ = void>\nstruct has_mapping_lr : std::false_type {};\ntemplate <typename A>\n\
     struct has_mapping_lr<A, std::void_t<decltype(std::declval<const A&>().mapping(std::declval<const\
@@ -289,8 +289,8 @@ data:
     \ g); }\n    constexpr F id() const { return lazy_identity; }\n};\ntemplate <typename\
     \ Op, typename T, typename Mapping, typename Composition, typename U>\nActedMonoid(Op,\
     \ T, Mapping, Composition, U) -> ActedMonoid<T, Op, U, Mapping, Composition>;\n\
-    #line 14 \"data_structures/lazy-segtree.hpp\"\n\n/**\n * @brief \u9045\u5EF6\u4F1D\
-    \u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n *\n * \u4F8B:\n * LazySegTree<acted_monoid::AffineSum<mint>>\
+    #line 14 \"src/data_structures/lazy-segtree.hpp\"\n\n/**\n * @brief \u9045\u5EF6\
+    \u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n *\n * \u4F8B:\n * LazySegTree<acted_monoid::AffineSum<mint>>\
     \ seg(v);\n *\n * @tparam A \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\
     \ (algebra/acted-monoid.hpp)\n */\ntemplate <typename A>\nclass LazySegTree {\n\
     public:\n    using S = typename A::S;\n    using F = typename A::F;\n\nprivate:\n\
@@ -424,21 +424,21 @@ data:
     \ >> s >> t; s--;\n            std::cout << seg.prod(s, t) << '\\n';\n       \
     \ }\n    }\n}\n"
   code: "#define PROBLEM \"http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_G\"\
-    \n\n#include <iostream>\n\n#include \"../data_structures/lazy-segtree.hpp\"\n\n\
-    int main(void) {\n    int n, q; std::cin >> n >> q;\n    LazySegTree<acted_monoid::AddSum<long\
+    \n\n#include <iostream>\n\n#include \"../src/data_structures/lazy-segtree.hpp\"\
+    \n\nint main(void) {\n    int n, q; std::cin >> n >> q;\n    LazySegTree<acted_monoid::AddSum<long\
     \ long>> seg(n);\n    while(q--) {\n        int op; std::cin >> op;\n        if(op\
     \ == 0) {\n            int s, t; long long x; std::cin >> s >> t >> x; s--;\n\
     \            seg.apply(s, t, x);\n        } else {\n            int s, t; std::cin\
     \ >> s >> t; s--;\n            std::cout << seg.prod(s, t) << '\\n';\n       \
     \ }\n    }\n}"
   dependsOn:
-  - data_structures/lazy-segtree.hpp
-  - algebra/acted-monoid.hpp
-  - algebra/monoid.hpp
+  - src/data_structures/lazy-segtree.hpp
+  - src/algebra/acted-monoid.hpp
+  - src/algebra/monoid.hpp
   isVerificationFile: true
   path: test/aoj-dsl-2-g.test.cpp
   requiredBy: []
-  timestamp: '2026-10-10 20:42:46+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj-dsl-2-g.test.cpp

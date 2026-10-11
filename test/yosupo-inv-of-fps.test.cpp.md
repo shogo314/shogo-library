@@ -2,14 +2,14 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: math/fps.hpp
-    title: math/fps.hpp
+    path: src/math/fps.hpp
+    title: src/math/fps.hpp
   - icon: ':heavy_check_mark:'
-    path: math/modint.hpp
+    path: src/math/modint.hpp
     title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
       \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9"
   - icon: ':heavy_check_mark:'
-    path: math/number-theory.hpp
+    path: src/math/number-theory.hpp
     title: "a^(-1) mod MOD\u3092\u8FD4\u3059"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -22,71 +22,72 @@ data:
     links:
     - https://judge.yosupo.jp/problem/inv_of_formal_power_series
   bundledCode: "#line 1 \"test/yosupo-inv-of-fps.test.cpp\"\n#define PROBLEM \"https://judge.yosupo.jp/problem/inv_of_formal_power_series\"\
-    \n\n#line 2 \"math/fps.hpp\"\n\n#include <algorithm>\n#line 2 \"math/number-theory.hpp\"\
-    \n\n#include <numeric>\n#include <vector>\n#line 2 \"math/modint.hpp\"\n\n/**\n\
-    \ * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\
-    \u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#include <iostream>\n\
-    #include <utility>\n#include <limits>\n#include <type_traits>\n#include <cstdint>\n\
-    #include <cassert>\n\nnamespace detail {\n    static constexpr std::uint16_t prime32_bases[]\
-    \ {\n        15591,  2018,  166, 7429,  8064, 16045, 10503,  4399,  1949,  1295,\
-    \ 2776,  3620,   560,  3128,  5212,  2657,\n         2300,  2021, 4652, 1471,\
-    \  9336,  4018,  2398, 20462, 10277,  8028, 2213,  6219,   620,  3763,  4852,\
-    \  5012,\n         3185,  1333, 6227, 5298,  1074,  2391,  5113,  7061,   803,\
-    \  1269, 3875,   422,   751,   580,  4729, 10239,\n          746,  2951,  556,\
-    \ 2206,  3778,   481,  1522,  3476,   481,  2487, 3266,  5633,   488,  3373, \
-    \ 6441,  3344,\n           17, 15105, 1490, 4154,  2036,  1882,  1813,   467,\
-    \  3307, 14042, 6371,   658,  1005,   903,   737,  1887,\n         7447,  1888,\
-    \ 2848, 1784,  7559,  3400,   951, 13969,  4304,   177,   41, 19875,  3110, 13221,\
-    \  8726,   571,\n         7043,  6943, 1199,  352,  6435,   165,  1169,  3315,\
-    \   978,   233, 3003,  2562,  2994, 10587, 10030,  2377,\n         1902,  5354,\
-    \ 4447, 1555,   263, 27027,  2283,   305,   669,  1912,  601,  6186,   429,  1930,\
-    \ 14873,  1784,\n         1661,   524, 3577,  236,  2360,  6146,  2850, 55637,\
-    \  1753,  4178, 8466,   222,  2579,  2743,  2031,  2226,\n         2276,   374,\
-    \ 2132,  813, 23788,  1610,  4422,  5159,  1725,  3597, 3366, 14336,   579,  \
-    \ 165,  1375, 10018,\n        12616,  9816, 1371,  536,  1867, 10864,   857, \
-    \ 2206,  5788,   434, 8085, 17618,   727,  3639,  1595,  4944,\n         2129,\
-    \  2029, 8195, 8344,  6232,  9183,  8126,  1870,  3296,  7455, 8947, 25017,  \
-    \ 541, 19115,   368,   566,\n         5674,   411,  522, 1027,  8215,  2050, \
-    \ 6544, 10049,   614,   774, 2333,  3007, 35201,  4706,  1152,  1785,\n      \
-    \   1028,  1540, 3743,  493,  4474,  2521, 26845,  8354,   864, 18915, 5465, \
-    \ 2447,    42,  4511,  1660,   166,\n         1249,  6259, 2553,  304,   272,\
-    \  7286,    73,  6554,   899,  2816, 5197, 13330,  7054,  2818,  3199,   811,\n\
-    \          922,   350, 7514, 4452,  3449,  2663,  4708,   418,  1621,  1171, 3471,\
-    \    88, 11345,   412,  1559,   194,\n    };\n\n    static constexpr bool is_SPRP(std::uint32_t\
-    \ n, std::uint32_t a) noexcept {\n        std::uint32_t d = n - 1;\n        std::uint32_t\
-    \ s = 0;\n        while ((d & 1) == 0) {\n            ++s;\n            d >>=\
-    \ 1;\n        }\n        std::uint64_t cur = 1;\n        std::uint64_t pw = d;\n\
-    \        while (pw) {\n            if (pw & 1) cur = (cur * a) % n;\n        \
-    \    a = (static_cast<std::uint64_t>(a) * a) % n;\n            pw >>= 1;\n   \
-    \     }\n        if (cur == 1) return true;\n        for (std::uint32_t r = 0;\
-    \ r < s; ++r) {\n            if (cur == n - 1) return true;\n            cur =\
-    \ (cur * cur) % n;\n        }\n        return false;\n    }\n\n    // 32\u30D3\
-    \u30C3\u30C8\u7B26\u53F7\u306A\u3057\u6574\u6570\u306E\u7D20\u6570\u5224\u5B9A\
-    \n    // \u53C2\u8003: M. Forisek and J. Jancina, \u201CFast Primality Testing\
-    \ for Integers That Fit into a Machine Word,\u201D presented at the Conference\
-    \ on Current Trends in Theory and Practice of Informatics, 2015.\n    [[nodiscard]]\n\
-    \    static constexpr bool is_prime32(std::uint32_t x) noexcept {\n        if\
-    \ (x == 2 || x == 3 || x == 5 || x == 7) return true;\n        if (x % 2 == 0\
-    \ || x % 3 == 0 || x % 5 == 0 || x % 7 == 0) return false;\n        if (x < 121)\
-    \ return (x > 1);\n        std::uint64_t h = x;\n        h = ((h >> 16) ^ h) *\
-    \ 0x45d9f3b;\n        h = ((h >> 16) ^ h) * 0x45d9f3b;\n        h = ((h >> 16)\
-    \ ^ h) & 0xff;\n        return is_SPRP(x, prime32_bases[h]);\n    }\n}\n\n///\
-    \ @brief static_modint \u3068 dynamic_modint \u306E\u5B9F\u88C5\u3092 CRTP \u306B\
-    \u3088\u3063\u3066\u884C\u3046\u305F\u3081\u306E\u30AF\u30E9\u30B9\u30C6\u30F3\
-    \u30D7\u30EC\u30FC\u30C8\n/// @tparam Modint \u3053\u306E\u30AF\u30E9\u30B9\u30C6\
-    \u30F3\u30D7\u30EC\u30FC\u30C8\u3092\u7D99\u627F\u3059\u308B\u30AF\u30E9\u30B9\
-    \ntemplate <class Modint>\nclass modint_base {\npublic:\n    /// @brief \u4FDD\
-    \u6301\u3059\u308B\u5024\u306E\u578B\n    using value_type = std::uint32_t;\n\n\
-    \    /// @brief 0 \u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    constexpr\
-    \ modint_base() noexcept\n        : m_value{ 0 } {}\n\n    /// @brief @c value\
-    \ \u306E\u5270\u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    ///\
-    \ @param value \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\n    template <class\
-    \ SignedIntegral, std::enable_if_t<std::is_integral_v<SignedIntegral> && std::is_signed_v<SignedIntegral>>*\
-    \ = nullptr>\n    constexpr modint_base(SignedIntegral value) noexcept\n     \
-    \   : m_value{ static_cast<value_type>((static_cast<long long>(value) % Modint::mod()\
-    \ + Modint::mod()) % Modint::mod()) } {}\n\n    /// @brief @c value \u306E\u5270\
-    \u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    /// @param value \u521D\
-    \u671F\u5316\u306B\u4F7F\u3046\u5024\n    template <class UnsignedIntegral, std::enable_if_t<std::is_integral_v<UnsignedIntegral>\
+    \n\n#line 2 \"src/math/fps.hpp\"\n\n#include <algorithm>\n#line 2 \"src/math/number-theory.hpp\"\
+    \n\n#include <numeric>\n#include <vector>\n#line 2 \"src/math/modint.hpp\"\n\n\
+    /**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\
+    \u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#include\
+    \ <iostream>\n#include <utility>\n#include <limits>\n#include <type_traits>\n\
+    #include <cstdint>\n#include <cassert>\n\nnamespace detail {\n    static constexpr\
+    \ std::uint16_t prime32_bases[] {\n        15591,  2018,  166, 7429,  8064, 16045,\
+    \ 10503,  4399,  1949,  1295, 2776,  3620,   560,  3128,  5212,  2657,\n     \
+    \    2300,  2021, 4652, 1471,  9336,  4018,  2398, 20462, 10277,  8028, 2213,\
+    \  6219,   620,  3763,  4852,  5012,\n         3185,  1333, 6227, 5298,  1074,\
+    \  2391,  5113,  7061,   803,  1269, 3875,   422,   751,   580,  4729, 10239,\n\
+    \          746,  2951,  556, 2206,  3778,   481,  1522,  3476,   481,  2487, 3266,\
+    \  5633,   488,  3373,  6441,  3344,\n           17, 15105, 1490, 4154,  2036,\
+    \  1882,  1813,   467,  3307, 14042, 6371,   658,  1005,   903,   737,  1887,\n\
+    \         7447,  1888, 2848, 1784,  7559,  3400,   951, 13969,  4304,   177, \
+    \  41, 19875,  3110, 13221,  8726,   571,\n         7043,  6943, 1199,  352, \
+    \ 6435,   165,  1169,  3315,   978,   233, 3003,  2562,  2994, 10587, 10030, \
+    \ 2377,\n         1902,  5354, 4447, 1555,   263, 27027,  2283,   305,   669,\
+    \  1912,  601,  6186,   429,  1930, 14873,  1784,\n         1661,   524, 3577,\
+    \  236,  2360,  6146,  2850, 55637,  1753,  4178, 8466,   222,  2579,  2743, \
+    \ 2031,  2226,\n         2276,   374, 2132,  813, 23788,  1610,  4422,  5159,\
+    \  1725,  3597, 3366, 14336,   579,   165,  1375, 10018,\n        12616,  9816,\
+    \ 1371,  536,  1867, 10864,   857,  2206,  5788,   434, 8085, 17618,   727,  3639,\
+    \  1595,  4944,\n         2129,  2029, 8195, 8344,  6232,  9183,  8126,  1870,\
+    \  3296,  7455, 8947, 25017,   541, 19115,   368,   566,\n         5674,   411,\
+    \  522, 1027,  8215,  2050,  6544, 10049,   614,   774, 2333,  3007, 35201,  4706,\
+    \  1152,  1785,\n         1028,  1540, 3743,  493,  4474,  2521, 26845,  8354,\
+    \   864, 18915, 5465,  2447,    42,  4511,  1660,   166,\n         1249,  6259,\
+    \ 2553,  304,   272,  7286,    73,  6554,   899,  2816, 5197, 13330,  7054,  2818,\
+    \  3199,   811,\n          922,   350, 7514, 4452,  3449,  2663,  4708,   418,\
+    \  1621,  1171, 3471,    88, 11345,   412,  1559,   194,\n    };\n\n    static\
+    \ constexpr bool is_SPRP(std::uint32_t n, std::uint32_t a) noexcept {\n      \
+    \  std::uint32_t d = n - 1;\n        std::uint32_t s = 0;\n        while ((d &\
+    \ 1) == 0) {\n            ++s;\n            d >>= 1;\n        }\n        std::uint64_t\
+    \ cur = 1;\n        std::uint64_t pw = d;\n        while (pw) {\n            if\
+    \ (pw & 1) cur = (cur * a) % n;\n            a = (static_cast<std::uint64_t>(a)\
+    \ * a) % n;\n            pw >>= 1;\n        }\n        if (cur == 1) return true;\n\
+    \        for (std::uint32_t r = 0; r < s; ++r) {\n            if (cur == n - 1)\
+    \ return true;\n            cur = (cur * cur) % n;\n        }\n        return\
+    \ false;\n    }\n\n    // 32\u30D3\u30C3\u30C8\u7B26\u53F7\u306A\u3057\u6574\u6570\
+    \u306E\u7D20\u6570\u5224\u5B9A\n    // \u53C2\u8003: M. Forisek and J. Jancina,\
+    \ \u201CFast Primality Testing for Integers That Fit into a Machine Word,\u201D\
+    \ presented at the Conference on Current Trends in Theory and Practice of Informatics,\
+    \ 2015.\n    [[nodiscard]]\n    static constexpr bool is_prime32(std::uint32_t\
+    \ x) noexcept {\n        if (x == 2 || x == 3 || x == 5 || x == 7) return true;\n\
+    \        if (x % 2 == 0 || x % 3 == 0 || x % 5 == 0 || x % 7 == 0) return false;\n\
+    \        if (x < 121) return (x > 1);\n        std::uint64_t h = x;\n        h\
+    \ = ((h >> 16) ^ h) * 0x45d9f3b;\n        h = ((h >> 16) ^ h) * 0x45d9f3b;\n \
+    \       h = ((h >> 16) ^ h) & 0xff;\n        return is_SPRP(x, prime32_bases[h]);\n\
+    \    }\n}\n\n/// @brief static_modint \u3068 dynamic_modint \u306E\u5B9F\u88C5\
+    \u3092 CRTP \u306B\u3088\u3063\u3066\u884C\u3046\u305F\u3081\u306E\u30AF\u30E9\
+    \u30B9\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n/// @tparam Modint \u3053\u306E\u30AF\
+    \u30E9\u30B9\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\u3092\u7D99\u627F\u3059\u308B\
+    \u30AF\u30E9\u30B9\ntemplate <class Modint>\nclass modint_base {\npublic:\n  \
+    \  /// @brief \u4FDD\u6301\u3059\u308B\u5024\u306E\u578B\n    using value_type\
+    \ = std::uint32_t;\n\n    /// @brief 0 \u3067\u521D\u671F\u5316\u3057\u307E\u3059\
+    \u3002\n    constexpr modint_base() noexcept\n        : m_value{ 0 } {}\n\n  \
+    \  /// @brief @c value \u306E\u5270\u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\
+    \u3002\n    /// @param value \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\n    template\
+    \ <class SignedIntegral, std::enable_if_t<std::is_integral_v<SignedIntegral> &&\
+    \ std::is_signed_v<SignedIntegral>>* = nullptr>\n    constexpr modint_base(SignedIntegral\
+    \ value) noexcept\n        : m_value{ static_cast<value_type>((static_cast<long\
+    \ long>(value) % Modint::mod() + Modint::mod()) % Modint::mod()) } {}\n\n    ///\
+    \ @brief @c value \u306E\u5270\u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\
+    \u3002\n    /// @param value \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\n    template\
+    \ <class UnsignedIntegral, std::enable_if_t<std::is_integral_v<UnsignedIntegral>\
     \ && std::is_unsigned_v<UnsignedIntegral>>* = nullptr>\n    constexpr modint_base(UnsignedIntegral\
     \ value) noexcept\n        : m_value{ static_cast<value_type>(value % Modint::mod())\
     \ } {}\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092\u53D6\
@@ -256,7 +257,7 @@ data:
     \      : base_type{value} {}\n\nprivate:\n    inline static value_type modulus\
     \ = 998244353;\n};\n\nusing modint998244353 = static_modint<998244353>;\nusing\
     \ modint1000000007 = static_modint<1000000007>;\nusing modint = dynamic_modint<-1>;\n\
-    #line 6 \"math/number-theory.hpp\"\n\n/**\n * @brief a^(-1) mod MOD\u3092\u8FD4\
+    #line 6 \"src/math/number-theory.hpp\"\n\n/**\n * @brief a^(-1) mod MOD\u3092\u8FD4\
     \u3059\n * @param a long long\n * @param MOD long long\n * @return long long\n\
     \ */\ninline long long modinv(long long a, long long MOD) {\n    a %= MOD;\n \
     \   if (a < 0) a += MOD;\n    long long b = MOD, u = 1, v = 0;\n    while (b)\
@@ -407,8 +408,8 @@ data:
     \ * (c1[i] - y0)).value();\n        int y2 = (NTT::imod01 * (c2[i] - y0) - NTT::imod1\
     \ * y1).value();\n        __int128_t tmp = (__int128_t)mod01 * y2 + (__int128_t)mod0\
     \ * y1 + y0;\n        if(tmp < (mod012 >> 1)) res[i] = tmp;\n        else res[i]\
-    \ = tmp - mod012;\n    }\n    return res;\n}\n#line 5 \"math/fps.hpp\"\n\ntemplate\
-    \ <typename mint> struct FPS : std::vector<mint> {\n    using std::vector<mint>::vector;\n\
+    \ = tmp - mod012;\n    }\n    return res;\n}\n#line 5 \"src/math/fps.hpp\"\n\n\
+    template <typename mint> struct FPS : std::vector<mint> {\n    using std::vector<mint>::vector;\n\
     \ \n    // constructor\n    FPS(const std::vector<mint>& r) : std::vector<mint>(r)\
     \ {}\n \n    // core operator\n    inline FPS pre(int siz) const {\n        return\
     \ FPS(begin(*this), begin(*this) + std::min((int)this->size(), siz));\n    }\n\
@@ -509,18 +510,18 @@ data:
     \ = inv(a);\n    for(auto e : f) std::cout << e << \" \";\n    std::cout << std::endl;\n\
     \    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/inv_of_formal_power_series\"\
-    \n\n#include \"../math/fps.hpp\"\n\nusing mint = modint998244353;\n\nint main()\
+    \n\n#include \"../src/math/fps.hpp\"\n\nusing mint = modint998244353;\n\nint main()\
     \ {\n    long long n;\n    std::cin >> n;\n    FPS<mint> a(n);\n    for(auto&\
     \ x : a) std::cin >> x;\n    auto f = inv(a);\n    for(auto e : f) std::cout <<\
     \ e << \" \";\n    std::cout << std::endl;\n    return 0;\n}\n"
   dependsOn:
-  - math/fps.hpp
-  - math/number-theory.hpp
-  - math/modint.hpp
+  - src/math/fps.hpp
+  - src/math/number-theory.hpp
+  - src/math/modint.hpp
   isVerificationFile: true
   path: test/yosupo-inv-of-fps.test.cpp
   requiredBy: []
-  timestamp: '2026-10-09 19:25:54+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo-inv-of-fps.test.cpp

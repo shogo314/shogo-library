@@ -2,16 +2,16 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: algebra/monoid.hpp
+    path: src/algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   - icon: ':heavy_check_mark:'
-    path: data_structures/segtree.hpp
+    path: src/data_structures/segtree.hpp
     title: "\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
   - icon: ':heavy_check_mark:'
-    path: graph/graph.hpp
+    path: src/graph/graph.hpp
     title: "\u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9"
   - icon: ':heavy_check_mark:'
-    path: graph/tree.hpp
+    path: src/graph/tree.hpp
     title: "\u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -24,30 +24,30 @@ data:
     links:
     - https://judge.yosupo.jp/problem/lca
   bundledCode: "#line 1 \"test/yosupo-lca.2.test.cpp\"\n#define PROBLEM \"https://judge.yosupo.jp/problem/lca\"\
-    \n\n#include <iostream>\n\n#line 2 \"graph/tree.hpp\"\n\n/**\n * @file tree.hpp\n\
+    \n\n#include <iostream>\n\n#line 2 \"src/graph/tree.hpp\"\n\n/**\n * @file tree.hpp\n\
     \ * @brief \u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n*/\n\n\
     #include <algorithm>\n#include <cassert>\n#include <stack>\n#include <tuple>\n\
-    \n#line 2 \"graph/graph.hpp\"\n\n#line 4 \"graph/graph.hpp\"\n#include <limits>\n\
-    #include <queue>\n#include <vector>\n\n/**\n * @brief \u30B0\u30E9\u30D5\u306E\
-    \u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\u30B3\u30B9\u30C8\
-    \u306E\u578B\n */\ntemplate <typename Cost = int>\nstruct Graph {\n    /**\n \
-    \    * @brief \u6709\u5411\u8FBA\u306E\u69CB\u9020\u4F53\n     *\n     * operator\
-    \ int()\u3092\u5B9A\u7FA9\u3057\u3066\u3044\u308B\u306E\u3067\u3001int\u578B\u306B\
-    \u30AD\u30E3\u30B9\u30C8\u3059\u308B\u3068\u52DD\u624B\u306Bdst\u306B\u306A\u308B\
-    \n     * \u4F8B\u3048\u3070\u3001\n     * for (auto& e : g[v]) \u3092\u3059\u308B\
-    \u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\u304C\u5217\u6319\u3055\u308C\u308B\
-    \u304C\u3001\n     * for (int dst : g[v]) \u3068\u3059\u308B\u3068\u3001v\u304B\
-    \u3089\u51FA\u308B\u8FBA\u306E\u884C\u304D\u5148\u304C\u5217\u6319\u3055\u308C\
-    \u308B\n     */\n    struct Edge {\n        int src = -1;   //!< \u59CB\u70B9\n\
-    \        int dst = -1;   //!< \u7D42\u70B9\n        Cost cost = {}; //!< \u30B3\
-    \u30B9\u30C8\n        int id = -1;    //!< \u8FBA\u306E\u756A\u53F7(\u8FFD\u52A0\
-    \u3055\u308C\u305F\u9806\u3001\u7121\u5411\u8FBA\u306E\u5834\u5408\u306Fid\u304C\
-    \u540C\u3058\u3067\u65B9\u5411\u304C\u9006\u306E\u3082\u306E\u304C2\u3064\u5B58\
-    \u5728\u3059\u308B)\n        Edge() = default;\n        Edge(int src, int dst,\
-    \ Cost cost = 1, int id = -1) : src(src), dst(dst), cost(cost), id(id) {}\n  \
-    \      operator int() const { return dst; }\n    };\n\n    int n;            \
-    \                //!< \u9802\u70B9\u6570\n    int m;                         \
-    \   //!< \u8FBA\u6570\n    std::vector<std::vector<Edge>> g; //!< \u30B0\u30E9\
+    \n#line 2 \"src/graph/graph.hpp\"\n\n#line 4 \"src/graph/graph.hpp\"\n#include\
+    \ <limits>\n#include <queue>\n#include <vector>\n\n/**\n * @brief \u30B0\u30E9\
+    \u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\u30B3\
+    \u30B9\u30C8\u306E\u578B\n */\ntemplate <typename Cost = int>\nstruct Graph {\n\
+    \    /**\n     * @brief \u6709\u5411\u8FBA\u306E\u69CB\u9020\u4F53\n     *\n \
+    \    * operator int()\u3092\u5B9A\u7FA9\u3057\u3066\u3044\u308B\u306E\u3067\u3001\
+    int\u578B\u306B\u30AD\u30E3\u30B9\u30C8\u3059\u308B\u3068\u52DD\u624B\u306Bdst\u306B\
+    \u306A\u308B\n     * \u4F8B\u3048\u3070\u3001\n     * for (auto& e : g[v]) \u3092\
+    \u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\u304C\u5217\u6319\u3055\
+    \u308C\u308B\u304C\u3001\n     * for (int dst : g[v]) \u3068\u3059\u308B\u3068\
+    \u3001v\u304B\u3089\u51FA\u308B\u8FBA\u306E\u884C\u304D\u5148\u304C\u5217\u6319\
+    \u3055\u308C\u308B\n     */\n    struct Edge {\n        int src = -1;   //!< \u59CB\
+    \u70B9\n        int dst = -1;   //!< \u7D42\u70B9\n        Cost cost = {}; //!<\
+    \ \u30B3\u30B9\u30C8\n        int id = -1;    //!< \u8FBA\u306E\u756A\u53F7(\u8FFD\
+    \u52A0\u3055\u308C\u305F\u9806\u3001\u7121\u5411\u8FBA\u306E\u5834\u5408\u306F\
+    id\u304C\u540C\u3058\u3067\u65B9\u5411\u304C\u9006\u306E\u3082\u306E\u304C2\u3064\
+    \u5B58\u5728\u3059\u308B)\n        Edge() = default;\n        Edge(int src, int\
+    \ dst, Cost cost = 1, int id = -1) : src(src), dst(dst), cost(cost), id(id) {}\n\
+    \        operator int() const { return dst; }\n    };\n\n    int n;          \
+    \                  //!< \u9802\u70B9\u6570\n    int m;                       \
+    \     //!< \u8FBA\u6570\n    std::vector<std::vector<Edge>> g; //!< \u30B0\u30E9\
     \u30D5\u306E\u96A3\u63A5\u30EA\u30B9\u30C8\u8868\u73FE\n\n    /**\n     * @brief\
     \ \u30C7\u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n \
     \    */\n    Graph() : n(0), m(0), g(0) {}\n    /**\n     * @brief \u30B3\u30F3\
@@ -147,7 +147,7 @@ data:
     \ {\n                    dist[e.dst] = dist[e.src] + e.cost;\n               \
     \     prev[e.dst] = e;\n                    que.push({dist[e.dst], e.dst});\n\
     \                }\n            }\n        }\n        return {dist, prev};\n \
-    \   }\n};\n#line 14 \"graph/tree.hpp\"\n\ntemplate <typename>\nstruct RootedTree;\n\
+    \   }\n};\n#line 14 \"src/graph/tree.hpp\"\n\ntemplate <typename>\nstruct RootedTree;\n\
     template <typename>\nstruct DoublingClimbTree;\n\n/**\n * @brief \u6839\u306A\u3057\
     \u6728\n * \n * @tparam Cost = int \u8FBA\u306E\u91CD\u307F\n * \n * Graph<Cost>\u3092\
     \u7D99\u627F\u3057\u3001\u3059\u3079\u3066\u7121\u5411\u8FBA\u3067\u8868\u3059\
@@ -336,10 +336,10 @@ data:
     \        for(int i = 0; i < h - 1; i++) {\n            for(int j = 0; j < n; j++)\
     \ {\n                if(doubling_par[i][j] != -1) {\n                    doubling_par[i+1][j]\
     \ = doubling_par[i][doubling_par[i][j]];\n                }\n            }\n \
-    \       }\n    }\n};\n#line 2 \"data_structures/segtree.hpp\"\n\n/**\n * @file\
+    \       }\n    }\n};\n#line 2 \"src/data_structures/segtree.hpp\"\n\n/**\n * @file\
     \ segtree.hpp\n * @brief \u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n */\n\n#line 9\
-    \ \"data_structures/segtree.hpp\"\n#include <functional>\n#include <ostream>\n\
-    #include <utility>\n#line 2 \"algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n\
+    \ \"src/data_structures/segtree.hpp\"\n#include <functional>\n#include <ostream>\n\
+    #include <utility>\n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n\
     \ * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\
     \u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\
     \u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S&\
@@ -347,8 +347,8 @@ data:
     \ * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\
     \u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\
     \u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\
-    \n#line 16 \"algebra/monoid.hpp\"\n#include <numeric>\n#include <type_traits>\n\
-    #line 19 \"algebra/monoid.hpp\"\n\nnamespace monoid {\n\n/**\n * @brief \u548C\
+    \n#line 16 \"src/algebra/monoid.hpp\"\n#include <numeric>\n#include <type_traits>\n\
+    #line 19 \"src/algebra/monoid.hpp\"\n\nnamespace monoid {\n\n/**\n * @brief \u548C\
     \n */\ntemplate <typename T>\nstruct Sum {\n    using S = T;\n    static constexpr\
     \ S op(const S& a, const S& b) { return a + b; }\n    static constexpr S e() {\
     \ return S(0); }\n};\n\n/**\n * @brief \u7A4D\n */\ntemplate <typename T>\nstruct\
@@ -437,7 +437,7 @@ data:
     \    Monoid() = default;\n    constexpr Monoid(Op op, const S& e) : op_object(std::move(op)),\
     \ identity(e) {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a,\
     \ b); }\n    constexpr S e() const { return identity; }\n};\ntemplate <typename\
-    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 14 \"data_structures/segtree.hpp\"\
+    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 14 \"src/data_structures/segtree.hpp\"\
     \n\n/**\n * @brief \u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n *\n * \u4F8B:\n * SegTree<monoid::Max<int>>\
     \ seg(n);\n * SegTree seg(v, Monoid([](int a, int b) { return a + b; }, 0));\n\
     \ *\n * @tparam M \u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\n */\ntemplate\
@@ -544,8 +544,8 @@ data:
     \ v);\n        std::cout << et_depth.prod(pre_idx[u], pre_idx[v]+1) % n << '\\\
     n';\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/lca\"\n\n#include <iostream>\n\
-    \n#include \"../graph/tree.hpp\"\n#include \"../data_structures/segtree.hpp\"\n\
-    \nint main(void) {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(0);\n\
+    \n#include \"../src/graph/tree.hpp\"\n#include \"../src/data_structures/segtree.hpp\"\
+    \n\nint main(void) {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(0);\n\
     \    int n, q; std::cin >> n >> q;\n    std::vector<int> par(n-1);\n    for(int\
     \ i = 0; i < n-1; i++) std::cin >> par[i];\n    RootedTree tree(par, 0);\n   \
     \ SegTree<monoid::Min<long long>> et_depth(tree.euler_tour.size());\n    std::vector<int>\
@@ -556,14 +556,14 @@ data:
     \ v);\n        std::cout << et_depth.prod(pre_idx[u], pre_idx[v]+1) % n << '\\\
     n';\n    }\n}"
   dependsOn:
-  - graph/tree.hpp
-  - graph/graph.hpp
-  - data_structures/segtree.hpp
-  - algebra/monoid.hpp
+  - src/graph/tree.hpp
+  - src/graph/graph.hpp
+  - src/data_structures/segtree.hpp
+  - src/algebra/monoid.hpp
   isVerificationFile: true
   path: test/yosupo-lca.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-10 20:42:46+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo-lca.2.test.cpp

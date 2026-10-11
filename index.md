@@ -1,165 +1,165 @@
 ---
 data:
   libraryCategories:
-  - name: algebra
+  - name: src/algebra
     pages:
     - icon: ':heavy_check_mark:'
-      path: algebra/acted-monoid.hpp
+      path: src/algebra/acted-monoid.hpp
       title: "\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
     - icon: ':heavy_check_mark:'
-      path: algebra/group.hpp
+      path: src/algebra/group.hpp
       title: "\u7FA4\u306E\u5B9A\u7FA9"
     - icon: ':heavy_check_mark:'
-      path: algebra/monoid.hpp
+      path: src/algebra/monoid.hpp
       title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
-  - name: base
+  - name: src/base
     pages:
     - icon: ':warning:'
-      path: base/bit.hpp
+      path: src/base/bit.hpp
       title: "2\u9032\u6570\u306E\u6587\u5B57\u5217\u3092long long\u306B\u3059\u308B"
     - icon: ':warning:'
-      path: base/container_func.hpp
-      title: base/container_func.hpp
+      path: src/base/container_func.hpp
+      title: src/base/container_func.hpp
     - icon: ':warning:'
-      path: base/functions.hpp
-      title: base/functions.hpp
+      path: src/base/functions.hpp
+      title: src/base/functions.hpp
     - icon: ':heavy_check_mark:'
-      path: base/io.hpp
+      path: src/base/io.hpp
       title: "\u7A7A\u767D\u533A\u5207\u308A\u51FA\u529B\u3001iostream\u306E\u30AA\
         \u30FC\u30D0\u30FC\u30ED\u30FC\u30C9"
     - icon: ':warning:'
-      path: base/macro.hpp
-      title: base/macro.hpp
+      path: src/base/macro.hpp
+      title: src/base/macro.hpp
     - icon: ':warning:'
-      path: base/range.hpp
+      path: src/base/range.hpp
       title: step != 0
     - icon: ':warning:'
-      path: base/repr.hpp
-      title: base/repr.hpp
+      path: src/base/repr.hpp
+      title: src/base/repr.hpp
     - icon: ':heavy_check_mark:'
-      path: base/traits.hpp
-      title: base/traits.hpp
+      path: src/base/traits.hpp
+      title: src/base/traits.hpp
     - icon: ':warning:'
-      path: base/type_alias.hpp
-      title: base/type_alias.hpp
+      path: src/base/type_alias.hpp
+      title: src/base/type_alias.hpp
     - icon: ':warning:'
-      path: base/vector_func.hpp
-      title: base/vector_func.hpp
-  - name: data_structures
+      path: src/base/vector_func.hpp
+      title: src/base/vector_func.hpp
+  - name: src/data_structures
     pages:
     - icon: ':heavy_check_mark:'
-      path: data_structures/binary-trie.hpp
+      path: src/data_structures/binary-trie.hpp
       title: "\u7B26\u53F7\u306A\u3057\u6574\u6570\u306E\u591A\u91CD\u96C6\u5408\u3092\
         \u7BA1\u7406\u3059\u308B"
     - icon: ':warning:'
-      path: data_structures/circular-ring.hpp
+      path: src/data_structures/circular-ring.hpp
       title: "\u5186\u74B0"
     - icon: ':heavy_check_mark:'
-      path: data_structures/convex-hull-trick.hpp
+      path: src/data_structures/convex-hull-trick.hpp
       title: Convex Hull Trick
     - icon: ':heavy_check_mark:'
-      path: data_structures/counter-segtree.hpp
-      title: data_structures/counter-segtree.hpp
+      path: src/data_structures/counter-segtree.hpp
+      title: src/data_structures/counter-segtree.hpp
     - icon: ':warning:'
-      path: data_structures/counter.hpp
-      title: data_structures/counter.hpp
+      path: src/data_structures/counter.hpp
+      title: src/data_structures/counter.hpp
     - icon: ':warning:'
-      path: data_structures/imos.hpp
+      path: src/data_structures/imos.hpp
       title: "imos\u6CD5\u3067\u533A\u9593\u4F5C\u7528\u30011\u70B9\u53D6\u5F97"
     - icon: ':heavy_check_mark:'
-      path: data_structures/interval-set.hpp
+      path: src/data_structures/interval-set.hpp
       title: "\u534A\u958B\u533A\u9593\u3092\u7BA1\u7406\u3059\u308B"
     - icon: ':heavy_check_mark:'
-      path: data_structures/lazy-segtree.hpp
+      path: src/data_structures/lazy-segtree.hpp
       title: "\u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
     - icon: ':heavy_check_mark:'
-      path: data_structures/merge-sort-tree.hpp
+      path: src/data_structures/merge-sort-tree.hpp
       title: "\u30DE\u30FC\u30B8\u30BD\u30FC\u30C8\u30C4\u30EA\u30FC"
     - icon: ':warning:'
-      path: data_structures/mex-update.hpp
-      title: data_structures/mex-update.hpp
+      path: src/data_structures/mex-update.hpp
+      title: src/data_structures/mex-update.hpp
     - icon: ':heavy_check_mark:'
-      path: data_structures/monoid-unionfind.hpp
+      path: src/data_structures/monoid-unionfind.hpp
       title: "\u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\u3092\u4E57\u305B\u308BUnionFind"
     - icon: ':heavy_check_mark:'
-      path: data_structures/potentialized-unionfind.hpp
+      path: src/data_structures/potentialized-unionfind.hpp
       title: "\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind"
     - icon: ':warning:'
-      path: data_structures/priority_counter.hpp
-      title: data_structures/priority_counter.hpp
+      path: src/data_structures/priority_counter.hpp
+      title: src/data_structures/priority_counter.hpp
     - icon: ':heavy_check_mark:'
-      path: data_structures/segtree-2d.hpp
+      path: src/data_structures/segtree-2d.hpp
       title: "2\u6B21\u5143\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
     - icon: ':heavy_check_mark:'
-      path: data_structures/segtree-beats.hpp
+      path: src/data_structures/segtree-beats.hpp
       title: Segment Tree Beats
     - icon: ':heavy_check_mark:'
-      path: data_structures/segtree.hpp
+      path: src/data_structures/segtree.hpp
       title: "\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
     - icon: ':warning:'
-      path: data_structures/tadpole-array.hpp
+      path: src/data_structures/tadpole-array.hpp
       title: "\u304A\u305F\u307E\u3058\u3083\u304F\u3057\u914D\u5217"
     - icon: ':heavy_check_mark:'
-      path: data_structures/unionfind.hpp
+      path: src/data_structures/unionfind.hpp
       title: UnionFind
-  - name: geometry
+  - name: src/geometry
     pages:
     - icon: ':heavy_check_mark:'
-      path: geometry/vector.hpp
+      path: src/geometry/vector.hpp
       title: "\u5E7E\u4F55\u5B66\u3068\u3057\u3066\u306E\u30D9\u30AF\u30C8\u30EB"
-  - name: graph
+  - name: src/graph
     pages:
     - icon: ':heavy_check_mark:'
-      path: graph/functional-graph.hpp
+      path: src/graph/functional-graph.hpp
       title: "\u30D5\u30A1\u30F3\u30AF\u30B7\u30E7\u30CA\u30EB\u30B0\u30E9\u30D5"
     - icon: ':heavy_check_mark:'
-      path: graph/graph.hpp
+      path: src/graph/graph.hpp
       title: "\u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9"
     - icon: ':heavy_check_mark:'
-      path: graph/graph_util.hpp
+      path: src/graph/graph_util.hpp
       title: "\u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570"
     - icon: ':heavy_check_mark:'
-      path: graph/rerooting-dp.hpp
+      path: src/graph/rerooting-dp.hpp
       title: "\u5168\u65B9\u4F4D\u6728DP"
     - icon: ':heavy_check_mark:'
-      path: graph/tree.hpp
+      path: src/graph/tree.hpp
       title: "\u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8"
-  - name: math
+  - name: src/math
     pages:
     - icon: ':heavy_check_mark:'
-      path: math/combinatorics.hpp
+      path: src/math/combinatorics.hpp
       title: "\u7D44\u307F\u5408\u308F\u305B"
     - icon: ':heavy_check_mark:'
-      path: math/fps.hpp
-      title: math/fps.hpp
+      path: src/math/fps.hpp
+      title: src/math/fps.hpp
     - icon: ':warning:'
-      path: math/infint.hpp
-      title: math/infint.hpp
+      path: src/math/infint.hpp
+      title: src/math/infint.hpp
     - icon: ':heavy_check_mark:'
-      path: math/matrix.hpp
+      path: src/math/matrix.hpp
       title: "\u884C\u5217"
     - icon: ':heavy_check_mark:'
-      path: math/modint.hpp
+      path: src/math/modint.hpp
       title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
         \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9"
     - icon: ':heavy_check_mark:'
-      path: math/number-theory.hpp
+      path: src/math/number-theory.hpp
       title: "a^(-1) mod MOD\u3092\u8FD4\u3059"
     - icon: ':heavy_check_mark:'
-      path: math/sqrt.hpp
+      path: src/math/sqrt.hpp
       title: floor(sqrt(n))
-  - name: others
+  - name: src/others
     pages:
     - icon: ':heavy_check_mark:'
-      path: others/mo.hpp
-      title: others/mo.hpp
-  - name: string
+      path: src/others/mo.hpp
+      title: src/others/mo.hpp
+  - name: src/string
     pages:
     - icon: ':heavy_check_mark:'
-      path: string/rolling-hash.hpp
+      path: src/string/rolling-hash.hpp
       title: "\u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5"
     - icon: ':heavy_check_mark:'
-      path: string/string.hpp
+      path: src/string/string.hpp
       title: Z-algorithm
   verificationCategories:
   - name: test
@@ -386,7 +386,7 @@ title: shogo-library
 競技プログラミング用の C++ ライブラリです。
 ソースコードは [shogo314/shogo-library](https://github.com/shogo314/shogo-library) にあります。
 
-リポジトリのルートを include パスに追加して、必要なヘッダを include します。
+`src/` を include パスに追加して、必要なヘッダを include します。
 
 ```cpp
 #include "data_structures/segtree.hpp"

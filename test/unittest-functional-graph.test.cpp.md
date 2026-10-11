@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: graph/functional-graph.hpp
+    path: src/graph/functional-graph.hpp
     title: "\u30D5\u30A1\u30F3\u30AF\u30B7\u30E7\u30CA\u30EB\u30B0\u30E9\u30D5"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -20,10 +20,10 @@ data:
     \u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\
     \u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World\
     \ \u3092\u51FA\u529B\u3059\u308B\n\n#include <algorithm>\n#include <iostream>\n\
-    #include <random>\n#include <set>\n#include <vector>\n\n#line 2 \"graph/functional-graph.hpp\"\
+    #include <random>\n#include <set>\n#include <vector>\n\n#line 2 \"src/graph/functional-graph.hpp\"\
     \n\n/**\n * @file functional-graph.hpp\n * @brief \u30D5\u30A1\u30F3\u30AF\u30B7\
-    \u30E7\u30CA\u30EB\u30B0\u30E9\u30D5\n */\n#line 9 \"graph/functional-graph.hpp\"\
-    \n#include <numeric>\n#line 12 \"graph/functional-graph.hpp\"\n\n/**\n * @brief\
+    \u30E7\u30CA\u30EB\u30B0\u30E9\u30D5\n */\n#line 9 \"src/graph/functional-graph.hpp\"\
+    \n#include <numeric>\n#line 12 \"src/graph/functional-graph.hpp\"\n\n/**\n * @brief\
     \ N\u9802\u70B9N\u8FBA\u306E\u6709\u5411\u30B0\u30E9\u30D5\u3067\u3001\u3059\u3079\
     \u3066\u306E\u9802\u70B9\u306E\u51FA\u6B21\u6570\u304C1\n */\nstruct FunctionalGraph\
     \ {\n    int n;                                         //!< \u9802\u70B9\u6570\
@@ -138,7 +138,7 @@ data:
     \u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\
     \u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World\
     \ \u3092\u51FA\u529B\u3059\u308B\n\n#include <algorithm>\n#include <iostream>\n\
-    #include <random>\n#include <set>\n#include <vector>\n\n#include \"../graph/functional-graph.hpp\"\
+    #include <random>\n#include <set>\n#include <vector>\n\n#include \"../src/graph/functional-graph.hpp\"\
     \n\n// x \u304B\u3089 k \u56DE\u79FB\u52D5\u3057\u305F\u9802\u70B9 (\u5468\u671F\
     \u3092\u898B\u3064\u3051\u3066 k \u3092\u7E2E\u3081\u308B)\nint naive_hop(const\
     \ std::vector<int>& g, int x, long long k) {\n    std::vector<long long> visited(g.size(),\
@@ -175,11 +175,11 @@ data:
     \            if (fg.hop(x, k) != naive_hop(g, x, k)) ok = false;\n        }\n\
     \    }\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
-  - graph/functional-graph.hpp
+  - src/graph/functional-graph.hpp
   isVerificationFile: true
   path: test/unittest-functional-graph.test.cpp
   requiredBy: []
-  timestamp: '2026-10-10 20:54:50+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest-functional-graph.test.cpp

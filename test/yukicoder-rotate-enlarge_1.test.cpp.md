@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: math/matrix.hpp
+    path: src/math/matrix.hpp
     title: "\u884C\u5217"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -15,8 +15,8 @@ data:
     links:
     - https://yukicoder.me/problems/no/565
   bundledCode: "#line 1 \"test/yukicoder-rotate-enlarge_1.test.cpp\"\n#define PROBLEM\
-    \ \"https://yukicoder.me/problems/no/565\"\n\n#line 2 \"math/matrix.hpp\"\n\n\
-    #include <vector>\n#include <string>\n#include <algorithm>\n#include <valarray>\n\
+    \ \"https://yukicoder.me/problems/no/565\"\n\n#line 2 \"src/math/matrix.hpp\"\n\
+    \n#include <vector>\n#include <string>\n#include <algorithm>\n#include <valarray>\n\
     #include <cassert>\n#include <type_traits>\n\nnamespace matrix {\n    template\
     \ <typename T>\n    struct OperatorPropertyDefault {\n        constexpr static\
     \ T zero() { return T(0); }\n        constexpr static T add(const T &a, const\
@@ -249,7 +249,7 @@ data:
     \    for(int i = 0; i < r; i += 90) mat = mat.transpose().rev_lr();\n    for(auto\
     \ s : mat.vstr()) {\n        std::string t = extend(s, k);\n        for(int i\
     \ = 0; i < k; i ++) std::cout << t << std::endl;\n    }\n    return 0;\n}\n\n"
-  code: "#define PROBLEM \"https://yukicoder.me/problems/no/565\"\n\n#include \"../math/matrix.hpp\"\
+  code: "#define PROBLEM \"https://yukicoder.me/problems/no/565\"\n\n#include \"../src/math/matrix.hpp\"\
     \n#include <iostream>\n#include <string>\n\nstd::string extend(std::string s,\
     \ int k) {\n    std::string ret = \"\";\n    for(char c : s) ret += std::string(k,\
     \ c);\n    return ret;\n}\n\nint main() {\n    int r, k, h, w;\n    std::cin >>\
@@ -259,11 +259,11 @@ data:
     \ {\n        std::string t = extend(s, k);\n        for(int i = 0; i < k; i ++)\
     \ std::cout << t << std::endl;\n    }\n    return 0;\n}\n\n"
   dependsOn:
-  - math/matrix.hpp
+  - src/math/matrix.hpp
   isVerificationFile: true
   path: test/yukicoder-rotate-enlarge_1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-09 19:25:54+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yukicoder-rotate-enlarge_1.test.cpp

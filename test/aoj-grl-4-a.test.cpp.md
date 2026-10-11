@@ -2,10 +2,10 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: graph/graph.hpp
+    path: src/graph/graph.hpp
     title: "\u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9"
   - icon: ':heavy_check_mark:'
-    path: graph/graph_util.hpp
+    path: src/graph/graph_util.hpp
     title: "\u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -18,14 +18,14 @@ data:
     links:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_4_A
   bundledCode: "#line 1 \"test/aoj-grl-4-a.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_4_A\"\
-    \n\n#include <iostream>\n\n#line 2 \"graph/graph_util.hpp\"\n\n/**\n * @file graph_util.hpp\n\
-    \ * @brief \u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570\n */\n\n#include\
-    \ <stack>\n\n#line 2 \"graph/graph.hpp\"\n\n#line 4 \"graph/graph.hpp\"\n#include\
-    \ <limits>\n#include <queue>\n#include <vector>\n\n/**\n * @brief \u30B0\u30E9\
-    \u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\u30B3\
-    \u30B9\u30C8\u306E\u578B\n */\ntemplate <typename Cost = int>\nstruct Graph {\n\
-    \    /**\n     * @brief \u6709\u5411\u8FBA\u306E\u69CB\u9020\u4F53\n     *\n \
-    \    * operator int()\u3092\u5B9A\u7FA9\u3057\u3066\u3044\u308B\u306E\u3067\u3001\
+    \n\n#include <iostream>\n\n#line 2 \"src/graph/graph_util.hpp\"\n\n/**\n * @file\
+    \ graph_util.hpp\n * @brief \u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570\
+    \n */\n\n#include <stack>\n\n#line 2 \"src/graph/graph.hpp\"\n\n#line 4 \"src/graph/graph.hpp\"\
+    \n#include <limits>\n#include <queue>\n#include <vector>\n\n/**\n * @brief \u30B0\
+    \u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\
+    \u30B3\u30B9\u30C8\u306E\u578B\n */\ntemplate <typename Cost = int>\nstruct Graph\
+    \ {\n    /**\n     * @brief \u6709\u5411\u8FBA\u306E\u69CB\u9020\u4F53\n     *\n\
+    \     * operator int()\u3092\u5B9A\u7FA9\u3057\u3066\u3044\u308B\u306E\u3067\u3001\
     int\u578B\u306B\u30AD\u30E3\u30B9\u30C8\u3059\u308B\u3068\u52DD\u624B\u306Bdst\u306B\
     \u306A\u308B\n     * \u4F8B\u3048\u3070\u3001\n     * for (auto& e : g[v]) \u3092\
     \u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\u304C\u5217\u6319\u3055\
@@ -140,13 +140,13 @@ data:
     \ {\n                    dist[e.dst] = dist[e.src] + e.cost;\n               \
     \     prev[e.dst] = e;\n                    que.push({dist[e.dst], e.dst});\n\
     \                }\n            }\n        }\n        return {dist, prev};\n \
-    \   }\n};\n#line 11 \"graph/graph_util.hpp\"\n\n/**\n * @brief \u7121\u5411\u30B0\
-    \u30E9\u30D5\u306B\u3064\u3044\u3066\u3001\u4E8C\u90E8\u30B0\u30E9\u30D5\u306A\
-    \u30890\u30681\u306B\u5F69\u8272\u3057\u305F\u7D50\u679C\u3092\u3072\u3068\u3064\
-    \u8FD4\u3057\u3001\u4E8C\u90E8\u30B0\u30E9\u30D5\u3067\u306A\u3044\u306A\u3089\
-    \u7A7A\u306Evector\u3092\u8FD4\u3059\u3002\n * \u9023\u7D50\u6210\u5206\u306E\u3046\
-    \u3061\u3001\u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\u306E\u6700\u3082\u5C0F\u3055\
-    \u3044\u3082\u306E\u30920\u306B\u3059\u308B\u3002\n * @return std::vector<int>\
+    \   }\n};\n#line 11 \"src/graph/graph_util.hpp\"\n\n/**\n * @brief \u7121\u5411\
+    \u30B0\u30E9\u30D5\u306B\u3064\u3044\u3066\u3001\u4E8C\u90E8\u30B0\u30E9\u30D5\
+    \u306A\u30890\u30681\u306B\u5F69\u8272\u3057\u305F\u7D50\u679C\u3092\u3072\u3068\
+    \u3064\u8FD4\u3057\u3001\u4E8C\u90E8\u30B0\u30E9\u30D5\u3067\u306A\u3044\u306A\
+    \u3089\u7A7A\u306Evector\u3092\u8FD4\u3059\u3002\n * \u9023\u7D50\u6210\u5206\u306E\
+    \u3046\u3061\u3001\u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\u306E\u6700\u3082\u5C0F\
+    \u3055\u3044\u3082\u306E\u30920\u306B\u3059\u308B\u3002\n * @return std::vector<int>\
     \ \u5404\u9802\u70B9\u306E\u5F69\u8272\u7D50\u679C\n */\ntemplate <typename Cost\
     \ = int>\nstd::vector<int> bipartite_coloring(const Graph<Cost>& graph) {\n  \
     \  std::vector<int> color(graph.n, -1);\n    for (int i = 0; i < graph.n; i++)\
@@ -232,17 +232,17 @@ data:
     \ >> n >> m;\n    Graph<int> graph(n);\n    graph.read(m, 0, false, true);\n \
     \   std::cout << (has_cycle(graph) ? 1 : 0) << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_4_A\"\
-    \n\n#include <iostream>\n\n#include \"../graph/graph_util.hpp\"\n\nint main()\
+    \n\n#include <iostream>\n\n#include \"../src/graph/graph_util.hpp\"\n\nint main()\
     \ {\n    int n, m; std::cin >> n >> m;\n    Graph<int> graph(n);\n    graph.read(m,\
     \ 0, false, true);\n    std::cout << (has_cycle(graph) ? 1 : 0) << std::endl;\n\
     }\n"
   dependsOn:
-  - graph/graph_util.hpp
-  - graph/graph.hpp
+  - src/graph/graph_util.hpp
+  - src/graph/graph.hpp
   isVerificationFile: true
   path: test/aoj-grl-4-a.test.cpp
   requiredBy: []
-  timestamp: '2026-10-10 20:54:50+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj-grl-4-a.test.cpp

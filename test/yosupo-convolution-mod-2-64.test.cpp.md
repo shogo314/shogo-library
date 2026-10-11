@@ -2,15 +2,15 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: base/io.hpp
+    path: src/base/io.hpp
     title: "\u7A7A\u767D\u533A\u5207\u308A\u51FA\u529B\u3001iostream\u306E\u30AA\u30FC\
       \u30D0\u30FC\u30ED\u30FC\u30C9"
   - icon: ':heavy_check_mark:'
-    path: math/modint.hpp
+    path: src/math/modint.hpp
     title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
       \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9"
   - icon: ':heavy_check_mark:'
-    path: math/number-theory.hpp
+    path: src/math/number-theory.hpp
     title: "a^(-1) mod MOD\u3092\u8FD4\u3059"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -23,7 +23,7 @@ data:
     links:
     - https://judge.yosupo.jp/problem/convolution_mod_2_64
   bundledCode: "#line 1 \"test/yosupo-convolution-mod-2-64.test.cpp\"\n#define PROBLEM\
-    \ \"https://judge.yosupo.jp/problem/convolution_mod_2_64\"\n\n#line 2 \"base/io.hpp\"\
+    \ \"https://judge.yosupo.jp/problem/convolution_mod_2_64\"\n\n#line 2 \"src/base/io.hpp\"\
     \n/**\n * @file io.hpp\n * @brief \u7A7A\u767D\u533A\u5207\u308A\u51FA\u529B\u3001\
     iostream\u306E\u30AA\u30FC\u30D0\u30FC\u30ED\u30FC\u30C9\n */\n\n#include <array>\n\
     #include <iostream>\n#include <set>\n#include <utility>\n#include <tuple>\n#include\
@@ -106,13 +106,13 @@ data:
     \u964D\u306E\u8981\u7D20\u306E\u578B\n * @param x 1\u3064\u76EE\u306E\u8981\u7D20\
     \n * @param tail 2\u3064\u76EE\u4EE5\u964D\u306E\u8981\u7D20\n */\ntemplate <typename\
     \ T, typename... Tail>\nvoid err(const T& x, const Tail&... tail) {\n    std::cerr\
-    \ << x << ' ';\n    err(tail...);\n}\n#line 2 \"math/number-theory.hpp\"\n\n#include\
-    \ <numeric>\n#line 2 \"math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief\
-    \ \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\
-    \u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line 10 \"math/modint.hpp\"\n#include\
-    \ <limits>\n#include <type_traits>\n#include <cstdint>\n#include <cassert>\n\n\
-    namespace detail {\n    static constexpr std::uint16_t prime32_bases[] {\n   \
-    \     15591,  2018,  166, 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,\
+    \ << x << ' ';\n    err(tail...);\n}\n#line 2 \"src/math/number-theory.hpp\"\n\
+    \n#include <numeric>\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n\
+    \ * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067\
+    \ mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line 10 \"src/math/modint.hpp\"\
+    \n#include <limits>\n#include <type_traits>\n#include <cstdint>\n#include <cassert>\n\
+    \nnamespace detail {\n    static constexpr std::uint16_t prime32_bases[] {\n \
+    \       15591,  2018,  166, 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,\
     \  3620,   560,  3128,  5212,  2657,\n         2300,  2021, 4652, 1471,  9336,\
     \  4018,  2398, 20462, 10277,  8028, 2213,  6219,   620,  3763,  4852,  5012,\n\
     \         3185,  1333, 6227, 5298,  1074,  2391,  5113,  7061,   803,  1269, 3875,\
@@ -340,7 +340,7 @@ data:
     \      : base_type{value} {}\n\nprivate:\n    inline static value_type modulus\
     \ = 998244353;\n};\n\nusing modint998244353 = static_modint<998244353>;\nusing\
     \ modint1000000007 = static_modint<1000000007>;\nusing modint = dynamic_modint<-1>;\n\
-    #line 6 \"math/number-theory.hpp\"\n\n/**\n * @brief a^(-1) mod MOD\u3092\u8FD4\
+    #line 6 \"src/math/number-theory.hpp\"\n\n/**\n * @brief a^(-1) mod MOD\u3092\u8FD4\
     \u3059\n * @param a long long\n * @param MOD long long\n * @return long long\n\
     \ */\ninline long long modinv(long long a, long long MOD) {\n    a %= MOD;\n \
     \   if (a < 0) a += MOD;\n    long long b = MOD, u = 1, v = 0;\n    while (b)\
@@ -513,35 +513,35 @@ data:
     \ i = 0; i < n+m-1; i++) {\n        c[i] += (unsigned long long)c20[i] << 62;\n\
     \    }\n    std::cout << c << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/convolution_mod_2_64\"\n\
-    \n#include \"../base/io.hpp\"\n#include \"../math/number-theory.hpp\"\n\nint main(void)\
-    \ {\n    int n, m; std::cin >> n >> m;\n    std::vector<long long> a0(n), a1(n),\
-    \ a2(n), b0(m), b1(m), b2(m);\n    for(int i = 0; i < n; i++) {\n        unsigned\
-    \ long long a; std::cin >> a;\n        a0[i] = a & ((1ULL << 31) - 1);\n     \
-    \   a1[i] = a >> 31 & ((1ULL << 31) - 1);\n        a2[i] = a >> 62;\n    }\n \
-    \   for(int i = 0; i < m; i++) {\n        unsigned long long b; std::cin >> b;\n\
-    \        b0[i] = b & ((1ULL << 31) - 1);\n        b1[i] = b >> 31 & ((1ULL <<\
-    \ 31) - 1);\n        b2[i] = b >> 62;\n    }\n    std::vector<unsigned long long>\
-    \ c(n+m-1);\n    std::vector<long long> c00 = convolution_ll(a0, b0);\n    for(int\
-    \ i = 0; i < n+m-1; i++) {\n        c[i] += (unsigned long long)c00[i];\n    }\n\
-    \    std::vector<long long> c01 = convolution_ll(a0, b1);\n    for(int i = 0;\
-    \ i < n+m-1; i++) {\n        c[i] += (unsigned long long)c01[i] << 31;\n    }\n\
-    \    std::vector<long long> c02 = convolution_ll(a0, b2);\n    for(int i = 0;\
-    \ i < n+m-1; i++) {\n        c[i] += (unsigned long long)c02[i] << 62;\n    }\n\
-    \    std::vector<long long> c10 = convolution_ll(a1, b0);\n    for(int i = 0;\
-    \ i < n+m-1; i++) {\n        c[i] += (unsigned long long)c10[i] << 31;\n    }\n\
-    \    std::vector<long long> c11 = convolution_ll(a1, b1);\n    for(int i = 0;\
-    \ i < n+m-1; i++) {\n        c[i] += (unsigned long long)c11[i] << 62;\n    }\n\
-    \    std::vector<long long> c20 = convolution_ll(a2, b0);\n    for(int i = 0;\
-    \ i < n+m-1; i++) {\n        c[i] += (unsigned long long)c20[i] << 62;\n    }\n\
-    \    std::cout << c << std::endl;\n}\n"
+    \n#include \"../src/base/io.hpp\"\n#include \"../src/math/number-theory.hpp\"\n\
+    \nint main(void) {\n    int n, m; std::cin >> n >> m;\n    std::vector<long long>\
+    \ a0(n), a1(n), a2(n), b0(m), b1(m), b2(m);\n    for(int i = 0; i < n; i++) {\n\
+    \        unsigned long long a; std::cin >> a;\n        a0[i] = a & ((1ULL << 31)\
+    \ - 1);\n        a1[i] = a >> 31 & ((1ULL << 31) - 1);\n        a2[i] = a >> 62;\n\
+    \    }\n    for(int i = 0; i < m; i++) {\n        unsigned long long b; std::cin\
+    \ >> b;\n        b0[i] = b & ((1ULL << 31) - 1);\n        b1[i] = b >> 31 & ((1ULL\
+    \ << 31) - 1);\n        b2[i] = b >> 62;\n    }\n    std::vector<unsigned long\
+    \ long> c(n+m-1);\n    std::vector<long long> c00 = convolution_ll(a0, b0);\n\
+    \    for(int i = 0; i < n+m-1; i++) {\n        c[i] += (unsigned long long)c00[i];\n\
+    \    }\n    std::vector<long long> c01 = convolution_ll(a0, b1);\n    for(int\
+    \ i = 0; i < n+m-1; i++) {\n        c[i] += (unsigned long long)c01[i] << 31;\n\
+    \    }\n    std::vector<long long> c02 = convolution_ll(a0, b2);\n    for(int\
+    \ i = 0; i < n+m-1; i++) {\n        c[i] += (unsigned long long)c02[i] << 62;\n\
+    \    }\n    std::vector<long long> c10 = convolution_ll(a1, b0);\n    for(int\
+    \ i = 0; i < n+m-1; i++) {\n        c[i] += (unsigned long long)c10[i] << 31;\n\
+    \    }\n    std::vector<long long> c11 = convolution_ll(a1, b1);\n    for(int\
+    \ i = 0; i < n+m-1; i++) {\n        c[i] += (unsigned long long)c11[i] << 62;\n\
+    \    }\n    std::vector<long long> c20 = convolution_ll(a2, b0);\n    for(int\
+    \ i = 0; i < n+m-1; i++) {\n        c[i] += (unsigned long long)c20[i] << 62;\n\
+    \    }\n    std::cout << c << std::endl;\n}\n"
   dependsOn:
-  - base/io.hpp
-  - math/number-theory.hpp
-  - math/modint.hpp
+  - src/base/io.hpp
+  - src/math/number-theory.hpp
+  - src/math/modint.hpp
   isVerificationFile: true
   path: test/yosupo-convolution-mod-2-64.test.cpp
   requiredBy: []
-  timestamp: '2026-10-09 19:25:54+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo-convolution-mod-2-64.test.cpp

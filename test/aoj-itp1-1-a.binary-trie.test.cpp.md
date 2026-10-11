@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: data_structures/binary-trie.hpp
+    path: src/data_structures/binary-trie.hpp
     title: "\u7B26\u53F7\u306A\u3057\u6574\u6570\u306E\u591A\u91CD\u96C6\u5408\u3092\
       \u7BA1\u7406\u3059\u308B"
   _extendedRequiredBy: []
@@ -18,7 +18,7 @@ data:
   bundledCode: "#line 1 \"test/aoj-itp1-1-a.binary-trie.test.cpp\"\n#define PROBLEM\
     \ \"https://onlinejudge.u-aizu.ac.jp/problems/ITP1_1_A\"\n\n#include <algorithm>\n\
     #include <vector>\n#include <assert.h>\n#include <iostream>\n#include <random>\n\
-    \n#line 2 \"data_structures/binary-trie.hpp\"\n\n#line 4 \"data_structures/binary-trie.hpp\"\
+    \n#line 2 \"src/data_structures/binary-trie.hpp\"\n\n#line 4 \"src/data_structures/binary-trie.hpp\"\
     \n#include <limits>\n#include <memory>\n#include <utility>\n\n/**\n * @brief \u7B26\
     \u53F7\u306A\u3057\u6574\u6570\u306E\u591A\u91CD\u96C6\u5408\u3092\u7BA1\u7406\
     \u3059\u308B\n * @tparam `d` \u6271\u3046\u6574\u6570\u5024\u306E\u30D3\u30C3\u30C8\
@@ -136,7 +136,7 @@ data:
     \        }\n    }\n    std::cout << \"Hello World\\n\";\n\n}\n"
   code: "#define PROBLEM \"https://onlinejudge.u-aizu.ac.jp/problems/ITP1_1_A\"\n\n\
     #include <algorithm>\n#include <vector>\n#include <assert.h>\n#include <iostream>\n\
-    #include <random>\n\n#include \"../data_structures/binary-trie.hpp\"\n\nusing\
+    #include <random>\n\n#include \"../src/data_structures/binary-trie.hpp\"\n\nusing\
     \ namespace std;\n\nint main(void) {\n\n    std::random_device rd;\n    std::mt19937\
     \ gen(rd());\n    std::uniform_int_distribution<unsigned long long> dist(0, UINT64_MAX);\n\
     \    std::vector<unsigned long long> pool;\n    for (int i = 0; i < 24; ++i) {\n\
@@ -164,11 +164,11 @@ data:
     \    assert((int)A.size() == BT.size());\n        default:\n            break;\n\
     \        }\n    }\n    std::cout << \"Hello World\\n\";\n\n}\n"
   dependsOn:
-  - data_structures/binary-trie.hpp
+  - src/data_structures/binary-trie.hpp
   isVerificationFile: true
   path: test/aoj-itp1-1-a.binary-trie.test.cpp
   requiredBy: []
-  timestamp: '2026-10-09 19:25:54+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj-itp1-1-a.binary-trie.test.cpp

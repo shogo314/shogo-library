@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: graph/graph.hpp
+    path: src/graph/graph.hpp
     title: "\u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -15,7 +15,7 @@ data:
     links:
     - https://judge.yosupo.jp/problem/shortest_path
   bundledCode: "#line 1 \"test/yosupo-shortest-path.test.cpp\"\n#define PROBLEM \"\
-    https://judge.yosupo.jp/problem/shortest_path\"\n\n#line 2 \"graph/graph.hpp\"\
+    https://judge.yosupo.jp/problem/shortest_path\"\n\n#line 2 \"src/graph/graph.hpp\"\
     \n\n#include <iostream>\n#include <limits>\n#include <queue>\n#include <vector>\n\
     \n/**\n * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n\
     \ * @tparam Cost \u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u578B\n */\ntemplate <typename\
@@ -145,9 +145,9 @@ data:
     \ it++) {\n        std::cout << it->first << ' ' << it->second << '\\n';\n   \
     \ }\n}\n\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/shortest_path\"\n\n#include\
-    \ \"../graph/graph.hpp\"\n\nint main() {\n    int n, m, s, t; std::cin >> n >>\
-    \ m >> s >> t;\n    Graph<long long> g(n); g.read(m, 0, true, true);\n    auto\
-    \ [dist, prev] = g.shortest_path(s);\n    if(dist[t] == -1) {\n        std::cout\
+    \ \"../src/graph/graph.hpp\"\n\nint main() {\n    int n, m, s, t; std::cin >>\
+    \ n >> m >> s >> t;\n    Graph<long long> g(n); g.read(m, 0, true, true);\n  \
+    \  auto [dist, prev] = g.shortest_path(s);\n    if(dist[t] == -1) {\n        std::cout\
     \ << -1 << '\\n';\n        return 0;\n    }\n    std::vector<std::pair<int, int>>\
     \ route;\n    int cur = t;\n    while(cur != s) {\n        route.emplace_back(prev[cur].src,\
     \ prev[cur].dst);\n        cur = prev[cur].src;\n    }\n    std::cout << dist[t]\
@@ -155,11 +155,11 @@ data:
     \ it++) {\n        std::cout << it->first << ' ' << it->second << '\\n';\n   \
     \ }\n}\n\n"
   dependsOn:
-  - graph/graph.hpp
+  - src/graph/graph.hpp
   isVerificationFile: true
   path: test/yosupo-shortest-path.test.cpp
   requiredBy: []
-  timestamp: '2026-10-09 19:25:54+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo-shortest-path.test.cpp

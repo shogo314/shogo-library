@@ -2,11 +2,11 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: base/io.hpp
+    path: src/base/io.hpp
     title: "\u7A7A\u767D\u533A\u5207\u308A\u51FA\u529B\u3001iostream\u306E\u30AA\u30FC\
       \u30D0\u30FC\u30ED\u30FC\u30C9"
   - icon: ':heavy_check_mark:'
-    path: geometry/vector.hpp
+    path: src/geometry/vector.hpp
     title: "\u5E7E\u4F55\u5B66\u3068\u3057\u3066\u306E\u30D9\u30AF\u30C8\u30EB"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -19,7 +19,7 @@ data:
     links:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_3_B
   bundledCode: "#line 1 \"test/aoj-cgl-3-b.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_3_B\"\
-    \n\n#line 2 \"base/io.hpp\"\n/**\n * @file io.hpp\n * @brief \u7A7A\u767D\u533A\
+    \n\n#line 2 \"src/base/io.hpp\"\n/**\n * @file io.hpp\n * @brief \u7A7A\u767D\u533A\
     \u5207\u308A\u51FA\u529B\u3001iostream\u306E\u30AA\u30FC\u30D0\u30FC\u30ED\u30FC\
     \u30C9\n */\n\n#include <array>\n#include <iostream>\n#include <set>\n#include\
     \ <utility>\n#include <tuple>\n#include <vector>\n\n// \u30CD\u30B9\u30C8\u3057\
@@ -102,10 +102,10 @@ data:
     \u306E\u578B\n * @param x 1\u3064\u76EE\u306E\u8981\u7D20\n * @param tail 2\u3064\
     \u76EE\u4EE5\u964D\u306E\u8981\u7D20\n */\ntemplate <typename T, typename... Tail>\n\
     void err(const T& x, const Tail&... tail) {\n    std::cerr << x << ' ';\n    err(tail...);\n\
-    }\n#line 2 \"geometry/vector.hpp\"\n\n#include <algorithm>\n#line 5 \"geometry/vector.hpp\"\
+    }\n#line 2 \"src/geometry/vector.hpp\"\n\n#include <algorithm>\n#line 5 \"src/geometry/vector.hpp\"\
     \n#include <cassert>\n#include <cmath>\n#include <initializer_list>\n#include\
     \ <istream>\n#include <numeric>\n#include <ostream>\n#include <stack>\n#line 13\
-    \ \"geometry/vector.hpp\"\n#include <type_traits>\n#line 15 \"geometry/vector.hpp\"\
+    \ \"src/geometry/vector.hpp\"\n#include <type_traits>\n#line 15 \"src/geometry/vector.hpp\"\
     \n\n/**\n * @brief \u5E7E\u4F55\u5B66\u3068\u3057\u3066\u306E\u30D9\u30AF\u30C8\
     \u30EB\n *\n * @tparam T \u578B \u7701\u7565\u3057\u305F\u3089double\n * @tparam\
     \ Dim \u6B21\u5143 \u7701\u7565\u3057\u305F\u30892\n */\ntemplate <typename T\
@@ -400,16 +400,17 @@ data:
     \ std::cin >> polygon;\n    std::cout << polygon_is_convex(polygon) << std::endl;\n\
     }\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_3_B\"\
-    \n\n#include \"../base/io.hpp\"\n#include \"../geometry/vector.hpp\"\n\nint main(void)\
-    \ {\n    int n; std::cin >> n;\n    std::vector<Vector<>> polygon(n); std::cin\
-    \ >> polygon;\n    std::cout << polygon_is_convex(polygon) << std::endl;\n}"
+    \n\n#include \"../src/base/io.hpp\"\n#include \"../src/geometry/vector.hpp\"\n\
+    \nint main(void) {\n    int n; std::cin >> n;\n    std::vector<Vector<>> polygon(n);\
+    \ std::cin >> polygon;\n    std::cout << polygon_is_convex(polygon) << std::endl;\n\
+    }"
   dependsOn:
-  - base/io.hpp
-  - geometry/vector.hpp
+  - src/base/io.hpp
+  - src/geometry/vector.hpp
   isVerificationFile: true
   path: test/aoj-cgl-3-b.test.cpp
   requiredBy: []
-  timestamp: '2026-10-10 13:32:22+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj-cgl-3-b.test.cpp

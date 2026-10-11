@@ -2,8 +2,8 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: others/mo.hpp
-    title: others/mo.hpp
+    path: src/others/mo.hpp
+    title: src/others/mo.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
@@ -16,8 +16,8 @@ data:
     - https://judge.yosupo.jp/problem/static_range_inversions_query
   bundledCode: "#line 1 \"test/yosupo-static-range-inversions-query.test.cpp\"\n#define\
     \ PROBLEM \"https://judge.yosupo.jp/problem/static_range_inversions_query\"\n\n\
-    #include <algorithm>\n#include <iostream>\n#include <vector>\n\n#line 3 \"others/mo.hpp\"\
-    \n#include <array>\n#include <type_traits>\n#line 6 \"others/mo.hpp\"\n#include\
+    #include <algorithm>\n#include <iostream>\n#include <vector>\n\n#line 3 \"src/others/mo.hpp\"\
+    \n#include <array>\n#include <type_traits>\n#line 6 \"src/others/mo.hpp\"\n#include\
     \ <cmath>\n\ntemplate <typename U, class ADD_LEFT, class DELETE_LEFT, class ADD_RIGHT\
     \ = ADD_LEFT, class DELETE_RIGHT = DELETE_LEFT>\nstruct Mo {\n   private:\n  \
     \  int _n;\n    std::vector<std::array<int, 3>> lri;\n    U _e;\n    ADD_LEFT\
@@ -75,7 +75,7 @@ data:
     }\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/static_range_inversions_query\"\
     \n\n#include <algorithm>\n#include <iostream>\n#include <vector>\n\n#include \"\
-    ../others/mo.hpp\"\n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios_base::sync_with_stdio(false);\n\
+    ../src/others/mo.hpp\"\n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios_base::sync_with_stdio(false);\n\
     \    int n, q; std::cin >> n >> q;\n    std::vector<int> a(n);\n    for (int&\
     \ x : a) std::cin >> x;\n    // \u5EA7\u6A19\u5727\u7E2E\n    std::vector<int>\
     \ xs = a;\n    std::sort(xs.begin(), xs.end());\n    xs.erase(std::unique(xs.begin(),\
@@ -96,11 +96,11 @@ data:
     \ long& inv) { return inv; })) {\n        std::cout << ans << '\\n';\n    }\n\
     }\n"
   dependsOn:
-  - others/mo.hpp
+  - src/others/mo.hpp
   isVerificationFile: true
   path: test/yosupo-static-range-inversions-query.test.cpp
   requiredBy: []
-  timestamp: '2026-10-10 21:22:32+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo-static-range-inversions-query.test.cpp

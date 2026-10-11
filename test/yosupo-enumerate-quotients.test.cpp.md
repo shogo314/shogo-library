@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: math/sqrt.hpp
+    path: src/math/sqrt.hpp
     title: floor(sqrt(n))
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -15,7 +15,7 @@ data:
     links:
     - https://judge.yosupo.jp/problem/enumerate_quotients
   bundledCode: "#line 1 \"test/yosupo-enumerate-quotients.test.cpp\"\n#define PROBLEM\
-    \ \"https://judge.yosupo.jp/problem/enumerate_quotients\"\n\n#line 2 \"math/sqrt.hpp\"\
+    \ \"https://judge.yosupo.jp/problem/enumerate_quotients\"\n\n#line 2 \"src/math/sqrt.hpp\"\
     \n\n/**\n * @brief floor(sqrt(n))\n * @param n \u5E73\u65B9\u6839\u3092\u6C42\u3081\
     \u305F\u3044\u6574\u6570 long long \u578B\u3067 0 <= n < 2^63 \u3092\u6E80\u305F\
     \u3059\n * @return long long\n */\ninline long long sqrtll(long long n) { \n \
@@ -32,20 +32,20 @@ data:
     \ long e : v1) std::cout << e << \" \";\n    std::cout << std::endl;\n\n    return\
     \ 0;\n}\n\n\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/enumerate_quotients\"\n\
-    \n#include \"../math/sqrt.hpp\"\n#include <vector>\n#include <algorithm>\n#include\
-    \ <iostream>\n\nint main() {\n    long long n;\n    std::cin >> n;\n    std::vector<long\
-    \ long> v1, v2;\n    long long m = sqrtll(n);\n    for(long long i = 1; i <= m;\
-    \ i ++) {\n        v1.push_back(n / i);\n        v2.push_back(i);\n    }\n   \
-    \ if(v1.back() == v2.back()) v1.pop_back();\n\n    std::cout << v1.size() + v2.size()\
-    \ << std::endl;\n    reverse(v1.begin(), v1.end());\n    for(long long e : v2)\
-    \ std::cout << e << \" \";\n    for(long long e : v1) std::cout << e << \" \"\
-    ;\n    std::cout << std::endl;\n\n    return 0;\n}\n\n\n"
+    \n#include \"../src/math/sqrt.hpp\"\n#include <vector>\n#include <algorithm>\n\
+    #include <iostream>\n\nint main() {\n    long long n;\n    std::cin >> n;\n  \
+    \  std::vector<long long> v1, v2;\n    long long m = sqrtll(n);\n    for(long\
+    \ long i = 1; i <= m; i ++) {\n        v1.push_back(n / i);\n        v2.push_back(i);\n\
+    \    }\n    if(v1.back() == v2.back()) v1.pop_back();\n\n    std::cout << v1.size()\
+    \ + v2.size() << std::endl;\n    reverse(v1.begin(), v1.end());\n    for(long\
+    \ long e : v2) std::cout << e << \" \";\n    for(long long e : v1) std::cout <<\
+    \ e << \" \";\n    std::cout << std::endl;\n\n    return 0;\n}\n\n\n"
   dependsOn:
-  - math/sqrt.hpp
+  - src/math/sqrt.hpp
   isVerificationFile: true
   path: test/yosupo-enumerate-quotients.test.cpp
   requiredBy: []
-  timestamp: '2026-10-09 19:25:54+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo-enumerate-quotients.test.cpp

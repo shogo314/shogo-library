@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: geometry/vector.hpp
+    path: src/geometry/vector.hpp
     title: "\u5E7E\u4F55\u5B66\u3068\u3057\u3066\u306E\u30D9\u30AF\u30C8\u30EB"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -15,7 +15,7 @@ data:
     links:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_2_C
   bundledCode: "#line 1 \"test/aoj-cgl-2-c.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_2_C\"\
-    \n\n#include <iomanip>\n#include <iostream>\n\n#line 2 \"geometry/vector.hpp\"\
+    \n\n#include <iomanip>\n#include <iostream>\n\n#line 2 \"src/geometry/vector.hpp\"\
     \n\n#include <algorithm>\n#include <array>\n#include <cassert>\n#include <cmath>\n\
     #include <initializer_list>\n#include <istream>\n#include <numeric>\n#include\
     \ <ostream>\n#include <stack>\n#include <tuple>\n#include <type_traits>\n#include\
@@ -314,17 +314,17 @@ data:
     \ p3;\n        std::cout << segment_intersect(p0, p1, p2, p3).second << std::endl;\n\
     \    }\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_2_C\"\
-    \n\n#include <iomanip>\n#include <iostream>\n\n#include \"../geometry/vector.hpp\"\
+    \n\n#include <iomanip>\n#include <iostream>\n\n#include \"../src/geometry/vector.hpp\"\
     \n\nint main() {\n    int q; std::cin >> q;\n    std::cout << std::fixed << std::setprecision(10);\n\
     \    while(q--) {\n        Vector p0, p1, p2, p3; std::cin >> p0 >> p1 >> p2 >>\
     \ p3;\n        std::cout << segment_intersect(p0, p1, p2, p3).second << std::endl;\n\
     \    }\n}"
   dependsOn:
-  - geometry/vector.hpp
+  - src/geometry/vector.hpp
   isVerificationFile: true
   path: test/aoj-cgl-2-c.test.cpp
   requiredBy: []
-  timestamp: '2026-10-10 13:32:22+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj-cgl-2-c.test.cpp

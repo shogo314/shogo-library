@@ -2,11 +2,11 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: math/modint.hpp
+    path: src/math/modint.hpp
     title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
       \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9"
   - icon: ':heavy_check_mark:'
-    path: math/number-theory.hpp
+    path: src/math/number-theory.hpp
     title: "a^(-1) mod MOD\u3092\u8FD4\u3059"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -19,8 +19,8 @@ data:
     links:
     - https://yukicoder.me/problems/no/186
   bundledCode: "#line 1 \"test/yukicoder-186.test.cpp\"\n#define PROBLEM \"https://yukicoder.me/problems/no/186\"\
-    \n\n#line 2 \"math/number-theory.hpp\"\n\n#include <numeric>\n#include <vector>\n\
-    #line 2 \"math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\
+    \n\n#line 2 \"src/math/number-theory.hpp\"\n\n#include <numeric>\n#include <vector>\n\
+    #line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\
     \u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\
     \u30E9\u30B9\n */\n\n#include <iostream>\n#include <utility>\n#include <limits>\n\
     #include <type_traits>\n#include <cstdint>\n#include <cassert>\n\nnamespace detail\
@@ -253,7 +253,7 @@ data:
     \      : base_type{value} {}\n\nprivate:\n    inline static value_type modulus\
     \ = 998244353;\n};\n\nusing modint998244353 = static_modint<998244353>;\nusing\
     \ modint1000000007 = static_modint<1000000007>;\nusing modint = dynamic_modint<-1>;\n\
-    #line 6 \"math/number-theory.hpp\"\n\n/**\n * @brief a^(-1) mod MOD\u3092\u8FD4\
+    #line 6 \"src/math/number-theory.hpp\"\n\n/**\n * @brief a^(-1) mod MOD\u3092\u8FD4\
     \u3059\n * @param a long long\n * @param MOD long long\n * @return long long\n\
     \ */\ninline long long modinv(long long a, long long MOD) {\n    a %= MOD;\n \
     \   if (a < 0) a += MOD;\n    long long b = MOD, u = 1, v = 0;\n    while (b)\
@@ -409,18 +409,18 @@ data:
     \ i < 3; ++i) std::cin >> x[i] >> y[i];\n    auto [ans, l] = crt(x, y);\n    if(l\
     \ == 0) std::cout << -1 << '\\n';\n    else if(ans == 0) std::cout << l << '\\\
     n';\n    else std::cout << ans << '\\n';\n}\n\n"
-  code: "#define PROBLEM \"https://yukicoder.me/problems/no/186\"\n\n#include \"../math/number-theory.hpp\"\
+  code: "#define PROBLEM \"https://yukicoder.me/problems/no/186\"\n\n#include \"../src/math/number-theory.hpp\"\
     \n\nint main() {\n    std::vector<long long> x(3), y(3);\n    for (int i = 0;\
     \ i < 3; ++i) std::cin >> x[i] >> y[i];\n    auto [ans, l] = crt(x, y);\n    if(l\
     \ == 0) std::cout << -1 << '\\n';\n    else if(ans == 0) std::cout << l << '\\\
     n';\n    else std::cout << ans << '\\n';\n}\n\n"
   dependsOn:
-  - math/number-theory.hpp
-  - math/modint.hpp
+  - src/math/number-theory.hpp
+  - src/math/modint.hpp
   isVerificationFile: true
   path: test/yukicoder-186.test.cpp
   requiredBy: []
-  timestamp: '2026-10-09 19:25:54+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yukicoder-186.test.cpp

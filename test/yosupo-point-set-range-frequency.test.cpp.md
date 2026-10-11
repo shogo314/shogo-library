@@ -2,8 +2,8 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: data_structures/counter-segtree.hpp
-    title: data_structures/counter-segtree.hpp
+    path: src/data_structures/counter-segtree.hpp
+    title: src/data_structures/counter-segtree.hpp
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
@@ -16,8 +16,8 @@ data:
     - https://judge.yosupo.jp/problem/point_set_range_frequency
   bundledCode: "#line 1 \"test/yosupo-point-set-range-frequency.test.cpp\"\n#define\
     \ PROBLEM \"https://judge.yosupo.jp/problem/point_set_range_frequency\"\n\n#include\
-    \ <iostream>\n#include <vector>\n\n#line 2 \"data_structures/counter-segtree.hpp\"\
-    \n#include <cassert>\n#include <map>\n#line 5 \"data_structures/counter-segtree.hpp\"\
+    \ <iostream>\n#include <vector>\n\n#line 2 \"src/data_structures/counter-segtree.hpp\"\
+    \n#include <cassert>\n#include <map>\n#line 5 \"src/data_structures/counter-segtree.hpp\"\
     \n\ntemplate <typename T>\nclass CounterSegTree {\n    using key_type = T;\n \
     \   using mapped_type = int;\n\n    int n, sz, height;\n    std::vector<std::map<key_type,\
     \ mapped_type>> data;\n\n   public:\n    explicit CounterSegTree(const std::vector<key_type>&\
@@ -67,7 +67,7 @@ data:
     \ r, x; std::cin >> l >> r >> x;\n            std::cout << seg.find(l, r, x).second\
     \ << '\\n';\n        }\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/point_set_range_frequency\"\
-    \n\n#include <iostream>\n#include <vector>\n\n#include \"../data_structures/counter-segtree.hpp\"\
+    \n\n#include <iostream>\n#include <vector>\n\n#include \"../src/data_structures/counter-segtree.hpp\"\
     \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios_base::sync_with_stdio(false);\n\
     \    int n, q; std::cin >> n >> q;\n    std::vector<int> a(n);\n    for (int&\
     \ x : a) std::cin >> x;\n    CounterSegTree<int> seg(a);\n    while (q--) {\n\
@@ -76,11 +76,11 @@ data:
     \ r, x; std::cin >> l >> r >> x;\n            std::cout << seg.find(l, r, x).second\
     \ << '\\n';\n        }\n    }\n}\n"
   dependsOn:
-  - data_structures/counter-segtree.hpp
+  - src/data_structures/counter-segtree.hpp
   isVerificationFile: true
   path: test/yosupo-point-set-range-frequency.test.cpp
   requiredBy: []
-  timestamp: '2026-10-10 21:22:32+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo-point-set-range-frequency.test.cpp

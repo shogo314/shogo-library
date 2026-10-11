@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: graph/graph.hpp
+    path: src/graph/graph.hpp
     title: "\u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -15,7 +15,7 @@ data:
     links:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_B
   bundledCode: "#line 1 \"test/aoj-grl-1-b.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_B\"\
-    \n\n#include <iostream>\n\n#line 2 \"graph/graph.hpp\"\n\n#line 4 \"graph/graph.hpp\"\
+    \n\n#include <iostream>\n\n#line 2 \"src/graph/graph.hpp\"\n\n#line 4 \"src/graph/graph.hpp\"\
     \n#include <limits>\n#include <queue>\n#include <vector>\n\n/**\n * @brief \u30B0\
     \u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\
     \u30B3\u30B9\u30C8\u306E\u578B\n */\ntemplate <typename Cost = int>\nstruct Graph\
@@ -144,9 +144,9 @@ data:
     \ >= INF) {\n            std::cout << \"INF\" << std::endl;\n        } else {\n\
     \            std::cout << ans[i] << std::endl;\n        }\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_B\"\
-    \n\n#include <iostream>\n\n#include \"../graph/graph.hpp\"\n\nint main(void) {\n\
-    \    constexpr int INF = 1e8;\n    int n, m, r;\n    std::cin >> n >> m >> r;\n\
-    \    Graph<int> graph(n);\n    graph.read(m, 0, true, true);\n    std::vector<int>\
+    \n\n#include <iostream>\n\n#include \"../src/graph/graph.hpp\"\n\nint main(void)\
+    \ {\n    constexpr int INF = 1e8;\n    int n, m, r;\n    std::cin >> n >> m >>\
+    \ r;\n    Graph<int> graph(n);\n    graph.read(m, 0, true, true);\n    std::vector<int>\
     \ ans = graph.bellman_ford(r, INF).first;\n    for (int i = 0; i < n; i++) {\n\
     \        if (ans[i] <= -INF) {\n            std::cout << \"NEGATIVE CYCLE\" <<\
     \ std::endl;\n            return 0;\n        }\n    }\n    for (int i = 0; i <\
@@ -154,11 +154,11 @@ data:
     \ std::endl;\n        } else {\n            std::cout << ans[i] << std::endl;\n\
     \        }\n    }\n}\n"
   dependsOn:
-  - graph/graph.hpp
+  - src/graph/graph.hpp
   isVerificationFile: true
   path: test/aoj-grl-1-b.test.cpp
   requiredBy: []
-  timestamp: '2026-10-09 19:25:54+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj-grl-1-b.test.cpp

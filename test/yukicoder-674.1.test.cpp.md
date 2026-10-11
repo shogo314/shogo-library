@@ -2,13 +2,13 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: algebra/monoid.hpp
+    path: src/algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   - icon: ':heavy_check_mark:'
-    path: data_structures/monoid-unionfind.hpp
+    path: src/data_structures/monoid-unionfind.hpp
     title: "\u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\u3092\u4E57\u305B\u308BUnionFind"
   - icon: ':heavy_check_mark:'
-    path: data_structures/unionfind.hpp
+    path: src/data_structures/unionfind.hpp
     title: UnionFind
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -21,20 +21,20 @@ data:
     links:
     - https://yukicoder.me/problems/no/674
   bundledCode: "#line 1 \"test/yukicoder-674.1.test.cpp\"\n#define PROBLEM \"https://yukicoder.me/problems/no/674\"\
-    \n\n#line 2 \"data_structures/monoid-unionfind.hpp\"\n\n/**\n * @file monoid-unionfind.hpp\n\
+    \n\n#line 2 \"src/data_structures/monoid-unionfind.hpp\"\n\n/**\n * @file monoid-unionfind.hpp\n\
     \ * @brief \u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\u3092\u4E57\u305B\u308BUnionFind\n\
-    \ */\n\n#include <utility>\n#include <vector>\n#line 2 \"data_structures/unionfind.hpp\"\
+    \ */\n\n#include <utility>\n#include <vector>\n#line 2 \"src/data_structures/unionfind.hpp\"\
     \n\n/**\n * @file unionfind.hpp\n * @brief UnionFind\n */\n\n#include <algorithm>\n\
-    #include <cassert>\n#line 11 \"data_structures/unionfind.hpp\"\n\n/**\n * @brief\
-    \ \u7121\u5411\u30B0\u30E9\u30D5\u306B\u5BFE\u3057\u3066\u300C\u8FBA\u306E\u8FFD\
-    \u52A0\u300D\u3001\u300C2\u9802\u70B9\u304C\u9023\u7D50\u304B\u306E\u5224\u5B9A\
-    \u300D\u3092\u3059\u308B\n */\nstruct UnionFind {\n   protected:\n    int _n;\n\
-    \    // \u8CA0\u306A\u3089\u30B5\u30A4\u30BA\u3001\u975E\u8CA0\u306A\u3089\u89AA\
-    \n    std::vector<int> parent_or_size;\n\n   public:\n    UnionFind() : _n(0)\
-    \ {}\n    explicit UnionFind(int n) : _n(n), parent_or_size(n, -1) {}\n\n    /**\n\
-    \     * @brief \u8FBA(a,b)\u3092\u8DB3\u3059\n     * @return \u9023\u7D50\u3057\
-    \u305F\u3082\u306E\u306E\u4EE3\u8868\u5143\n     */\n    int merge(int a, int\
-    \ b) {\n        assert(0 <= a && a < _n);\n        assert(0 <= b && b < _n);\n\
+    #include <cassert>\n#line 11 \"src/data_structures/unionfind.hpp\"\n\n/**\n *\
+    \ @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u5BFE\u3057\u3066\u300C\u8FBA\u306E\
+    \u8FFD\u52A0\u300D\u3001\u300C2\u9802\u70B9\u304C\u9023\u7D50\u304B\u306E\u5224\
+    \u5B9A\u300D\u3092\u3059\u308B\n */\nstruct UnionFind {\n   protected:\n    int\
+    \ _n;\n    // \u8CA0\u306A\u3089\u30B5\u30A4\u30BA\u3001\u975E\u8CA0\u306A\u3089\
+    \u89AA\n    std::vector<int> parent_or_size;\n\n   public:\n    UnionFind() :\
+    \ _n(0) {}\n    explicit UnionFind(int n) : _n(n), parent_or_size(n, -1) {}\n\n\
+    \    /**\n     * @brief \u8FBA(a,b)\u3092\u8DB3\u3059\n     * @return \u9023\u7D50\
+    \u3057\u305F\u3082\u306E\u306E\u4EE3\u8868\u5143\n     */\n    int merge(int a,\
+    \ int b) {\n        assert(0 <= a && a < _n);\n        assert(0 <= b && b < _n);\n\
     \        int x = leader(a), y = leader(b);\n        if (x == y) return x;\n  \
     \      if (-parent_or_size[x] < -parent_or_size[y]) std::swap(x, y);\n       \
     \ parent_or_size[x] += parent_or_size[y];\n        parent_or_size[y] = x;\n  \
@@ -63,24 +63,25 @@ data:
     \        }\n        result.erase(\n            std::remove_if(result.begin(),\
     \ result.end(),\n                           [&](const std::vector<int>& v) { return\
     \ v.empty(); }),\n            result.end());\n        return result;\n    }\n\
-    };\n#line 2 \"algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n * @brief \u30E2\
-    \u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\
-    \u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\
-    \n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S& a, const S& b): \u7A4D\
-    \ (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n * op, e \u306F static\
-    \ \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\
-    \u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\
-    \u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\n#line 15 \"algebra/monoid.hpp\"\
-    \n#include <limits>\n#include <numeric>\n#include <type_traits>\n#line 19 \"algebra/monoid.hpp\"\
-    \n\nnamespace monoid {\n\n/**\n * @brief \u548C\n */\ntemplate <typename T>\n\
-    struct Sum {\n    using S = T;\n    static constexpr S op(const S& a, const S&\
-    \ b) { return a + b; }\n    static constexpr S e() { return S(0); }\n};\n\n/**\n\
-    \ * @brief \u7A4D\n */\ntemplate <typename T>\nstruct Prod {\n    using S = T;\n\
-    \    static constexpr S op(const S& a, const S& b) { return a * b; }\n    static\
-    \ constexpr S e() { return S(1); }\n};\n\n/**\n * @brief \u6700\u5927\u5024 \u5358\
-    \u4F4D\u5143\u306F\u578B\u306E\u6700\u5C0F\u5024\n */\ntemplate <typename T>\n\
-    struct Max {\n    using S = T;\n    static constexpr S op(const S& a, const S&\
-    \ b) { return std::max(a, b); }\n    static constexpr S e() { return std::numeric_limits<S>::lowest();\
+    };\n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n * @brief\
+    \ \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\
+    \u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\
+    \u3059\n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S& a, const S&\
+    \ b): \u7A4D (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n * op, e \u306F\
+    \ static \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\u30FC\u30BF\
+    \u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\
+    \u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\n#line 15\
+    \ \"src/algebra/monoid.hpp\"\n#include <limits>\n#include <numeric>\n#include\
+    \ <type_traits>\n#line 19 \"src/algebra/monoid.hpp\"\n\nnamespace monoid {\n\n\
+    /**\n * @brief \u548C\n */\ntemplate <typename T>\nstruct Sum {\n    using S =\
+    \ T;\n    static constexpr S op(const S& a, const S& b) { return a + b; }\n  \
+    \  static constexpr S e() { return S(0); }\n};\n\n/**\n * @brief \u7A4D\n */\n\
+    template <typename T>\nstruct Prod {\n    using S = T;\n    static constexpr S\
+    \ op(const S& a, const S& b) { return a * b; }\n    static constexpr S e() { return\
+    \ S(1); }\n};\n\n/**\n * @brief \u6700\u5927\u5024 \u5358\u4F4D\u5143\u306F\u578B\
+    \u306E\u6700\u5C0F\u5024\n */\ntemplate <typename T>\nstruct Max {\n    using\
+    \ S = T;\n    static constexpr S op(const S& a, const S& b) { return std::max(a,\
+    \ b); }\n    static constexpr S e() { return std::numeric_limits<S>::lowest();\
     \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\
     \u6700\u5927\u5024\n */\ntemplate <typename T>\nstruct Min {\n    using S = T;\n\
     \    static constexpr S op(const S& a, const S& b) { return std::min(a, b); }\n\
@@ -160,7 +161,7 @@ data:
     \    Monoid() = default;\n    constexpr Monoid(Op op, const S& e) : op_object(std::move(op)),\
     \ identity(e) {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a,\
     \ b); }\n    constexpr S e() const { return identity; }\n};\ntemplate <typename\
-    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 12 \"data_structures/monoid-unionfind.hpp\"\
+    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 12 \"src/data_structures/monoid-unionfind.hpp\"\
     \n\n/**\n * @brief \u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\u3092\u4E57\u305B\u308B\
     UnionFind\n *\n * @tparam M \u53EF\u63DB\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\n\
     \ */\ntemplate <typename M>\nclass MonoidUnionFind : private UnionFind {\n   public:\n\
@@ -202,7 +203,7 @@ data:
     \        p = uf.prod(k);\n        if (ans < v[p.second] - v[p.first] + 1) {\n\
     \            ans = v[p.second] - v[p.first] + 1;\n        }\n        std::cout\
     \ << ans << std::endl;\n    }\n}\n"
-  code: "#define PROBLEM \"https://yukicoder.me/problems/no/674\"\n\n#include \"../data_structures/monoid-unionfind.hpp\"\
+  code: "#define PROBLEM \"https://yukicoder.me/problems/no/674\"\n\n#include \"../src/data_structures/monoid-unionfind.hpp\"\
     \n\n#include <iostream>\n#include <set>\n\nusing ll = long long;\n\nint main()\
     \ {\n    ll D, Q;\n    std::cin >> D >> Q;\n    std::vector<std::pair<ll, ll>>\
     \ AB(Q);\n    std::set<ll> s;\n    for (auto& [A, B] : AB) {\n        std::cin\
@@ -222,13 +223,13 @@ data:
     \            ans = v[p.second] - v[p.first] + 1;\n        }\n        std::cout\
     \ << ans << std::endl;\n    }\n}\n"
   dependsOn:
-  - data_structures/monoid-unionfind.hpp
-  - data_structures/unionfind.hpp
-  - algebra/monoid.hpp
+  - src/data_structures/monoid-unionfind.hpp
+  - src/data_structures/unionfind.hpp
+  - src/algebra/monoid.hpp
   isVerificationFile: true
   path: test/yukicoder-674.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-10 21:22:32+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yukicoder-674.1.test.cpp

@@ -2,10 +2,10 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: algebra/monoid.hpp
+    path: src/algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   - icon: ':heavy_check_mark:'
-    path: data_structures/segtree-2d.hpp
+    path: src/data_structures/segtree-2d.hpp
     title: "2\u6B21\u5143\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -19,9 +19,9 @@ data:
     - https://judge.yosupo.jp/problem/point_add_rectangle_sum
   bundledCode: "#line 1 \"test/yosupo-point-add-rectangle-sum.test.cpp\"\n#define\
     \ PROBLEM \"https://judge.yosupo.jp/problem/point_add_rectangle_sum\"\n\n#line\
-    \ 2 \"data_structures/segtree-2d.hpp\"\n\n/**\n * @file segtree-2d.hpp\n * @brief\
-    \ 2\u6B21\u5143\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n */\n\n#include <algorithm>\n\
-    #include <tuple>\n#include <utility>\n#include <vector>\n#line 2 \"algebra/monoid.hpp\"\
+    \ 2 \"src/data_structures/segtree-2d.hpp\"\n\n/**\n * @file segtree-2d.hpp\n *\
+    \ @brief 2\u6B21\u5143\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n */\n\n#include <algorithm>\n\
+    #include <tuple>\n#include <utility>\n#include <vector>\n#line 2 \"src/algebra/monoid.hpp\"\
     \n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
     \n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
     \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\
@@ -29,17 +29,17 @@ data:
     \ \u5358\u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\
     \u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\
     \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\
-    \u51FA\u3059)\n */\n\n#line 15 \"algebra/monoid.hpp\"\n#include <limits>\n#include\
-    \ <numeric>\n#include <type_traits>\n#line 19 \"algebra/monoid.hpp\"\n\nnamespace\
-    \ monoid {\n\n/**\n * @brief \u548C\n */\ntemplate <typename T>\nstruct Sum {\n\
-    \    using S = T;\n    static constexpr S op(const S& a, const S& b) { return\
-    \ a + b; }\n    static constexpr S e() { return S(0); }\n};\n\n/**\n * @brief\
-    \ \u7A4D\n */\ntemplate <typename T>\nstruct Prod {\n    using S = T;\n    static\
-    \ constexpr S op(const S& a, const S& b) { return a * b; }\n    static constexpr\
-    \ S e() { return S(1); }\n};\n\n/**\n * @brief \u6700\u5927\u5024 \u5358\u4F4D\
-    \u5143\u306F\u578B\u306E\u6700\u5C0F\u5024\n */\ntemplate <typename T>\nstruct\
-    \ Max {\n    using S = T;\n    static constexpr S op(const S& a, const S& b) {\
-    \ return std::max(a, b); }\n    static constexpr S e() { return std::numeric_limits<S>::lowest();\
+    \u51FA\u3059)\n */\n\n#line 15 \"src/algebra/monoid.hpp\"\n#include <limits>\n\
+    #include <numeric>\n#include <type_traits>\n#line 19 \"src/algebra/monoid.hpp\"\
+    \n\nnamespace monoid {\n\n/**\n * @brief \u548C\n */\ntemplate <typename T>\n\
+    struct Sum {\n    using S = T;\n    static constexpr S op(const S& a, const S&\
+    \ b) { return a + b; }\n    static constexpr S e() { return S(0); }\n};\n\n/**\n\
+    \ * @brief \u7A4D\n */\ntemplate <typename T>\nstruct Prod {\n    using S = T;\n\
+    \    static constexpr S op(const S& a, const S& b) { return a * b; }\n    static\
+    \ constexpr S e() { return S(1); }\n};\n\n/**\n * @brief \u6700\u5927\u5024 \u5358\
+    \u4F4D\u5143\u306F\u578B\u306E\u6700\u5C0F\u5024\n */\ntemplate <typename T>\n\
+    struct Max {\n    using S = T;\n    static constexpr S op(const S& a, const S&\
+    \ b) { return std::max(a, b); }\n    static constexpr S e() { return std::numeric_limits<S>::lowest();\
     \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\
     \u6700\u5927\u5024\n */\ntemplate <typename T>\nstruct Min {\n    using S = T;\n\
     \    static constexpr S op(const S& a, const S& b) { return std::min(a, b); }\n\
@@ -119,7 +119,7 @@ data:
     \    Monoid() = default;\n    constexpr Monoid(Op op, const S& e) : op_object(std::move(op)),\
     \ identity(e) {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a,\
     \ b); }\n    constexpr S e() const { return identity; }\n};\ntemplate <typename\
-    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 13 \"data_structures/segtree-2d.hpp\"\
+    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 13 \"src/data_structures/segtree-2d.hpp\"\
     \n\n/**\n * @brief 2\u6B21\u5143\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u66F4\u65B0\
     \u30FB\u53D6\u5F97\u3059\u308B\u5EA7\u6A19\u3092\u5148\u8AAD\u307F\u3057\u3066\
     \u5727\u7E2E\u3059\u308B)\n *\n * @tparam M \u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\
@@ -258,8 +258,8 @@ data:
     \ d) - ys.begin();\n            std::cout << seg.prod(a, c, b, d) << '\\n';\n\
     \        }\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/point_add_rectangle_sum\"\
-    \n\n#include \"../data_structures/segtree-2d.hpp\"\n\n#include <iostream>\n\n\
-    int main(void) {\n    std::cin.tie(nullptr);\n    std::ios_base::sync_with_stdio(false);\n\
+    \n\n#include \"../src/data_structures/segtree-2d.hpp\"\n\n#include <iostream>\n\
+    \nint main(void) {\n    std::cin.tie(nullptr);\n    std::ios_base::sync_with_stdio(false);\n\
     \n    int n, q; std::cin >> n >> q;\n    std::vector<std::tuple<int, int>> set_queries;\n\
     \    std::vector<std::tuple<int, int, int, int>> prod_queries;\n    std::vector<std::tuple<int,\
     \ int, int, int, int>> queries;\n    std::vector<int> xs, ys;\n    for (int i\
@@ -292,12 +292,12 @@ data:
     \ d) - ys.begin();\n            std::cout << seg.prod(a, c, b, d) << '\\n';\n\
     \        }\n    }\n}\n"
   dependsOn:
-  - data_structures/segtree-2d.hpp
-  - algebra/monoid.hpp
+  - src/data_structures/segtree-2d.hpp
+  - src/algebra/monoid.hpp
   isVerificationFile: true
   path: test/yosupo-point-add-rectangle-sum.test.cpp
   requiredBy: []
-  timestamp: '2026-10-10 20:42:46+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo-point-add-rectangle-sum.test.cpp

@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: data_structures/unionfind.hpp
+    path: src/data_structures/unionfind.hpp
     title: UnionFind
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -15,7 +15,7 @@ data:
     links:
     - https://judge.yosupo.jp/problem/unionfind
   bundledCode: "#line 1 \"test/yosupo-unionfind.test.cpp\"\n#define PROBLEM \"https://judge.yosupo.jp/problem/unionfind\"\
-    \n\n#include <iostream>\n\n#line 2 \"data_structures/unionfind.hpp\"\n\n/**\n\
+    \n\n#include <iostream>\n\n#line 2 \"src/data_structures/unionfind.hpp\"\n\n/**\n\
     \ * @file unionfind.hpp\n * @brief UnionFind\n */\n\n#include <algorithm>\n#include\
     \ <cassert>\n#include <vector>\n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\
     \u306B\u5BFE\u3057\u3066\u300C\u8FBA\u306E\u8FFD\u52A0\u300D\u3001\u300C2\u9802\
@@ -60,17 +60,17 @@ data:
     \ {\n            g.merge(u, v);\n        } else {\n            std::cout << g.same(u,\
     \ v) << '\\n';\n        }\n    }\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/unionfind\"\n\n#include\
-    \ <iostream>\n\n#include \"../data_structures/unionfind.hpp\"\n\nint main() {\n\
-    \    int N, Q;\n    std::cin >> N >> Q;\n    UnionFind g(N);\n    int t, u, v;\n\
-    \    for (int i = 0; i < Q; i++) {\n        std::cin >> t >> u >> v;\n       \
-    \ if (t == 0) {\n            g.merge(u, v);\n        } else {\n            std::cout\
-    \ << g.same(u, v) << '\\n';\n        }\n    }\n    return 0;\n}\n"
+    \ <iostream>\n\n#include \"../src/data_structures/unionfind.hpp\"\n\nint main()\
+    \ {\n    int N, Q;\n    std::cin >> N >> Q;\n    UnionFind g(N);\n    int t, u,\
+    \ v;\n    for (int i = 0; i < Q; i++) {\n        std::cin >> t >> u >> v;\n  \
+    \      if (t == 0) {\n            g.merge(u, v);\n        } else {\n         \
+    \   std::cout << g.same(u, v) << '\\n';\n        }\n    }\n    return 0;\n}\n"
   dependsOn:
-  - data_structures/unionfind.hpp
+  - src/data_structures/unionfind.hpp
   isVerificationFile: true
   path: test/yosupo-unionfind.test.cpp
   requiredBy: []
-  timestamp: '2026-10-09 19:25:54+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo-unionfind.test.cpp

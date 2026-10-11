@@ -2,16 +2,16 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: algebra/acted-monoid.hpp
+    path: src/algebra/acted-monoid.hpp
     title: "\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   - icon: ':heavy_check_mark:'
-    path: algebra/monoid.hpp
+    path: src/algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   - icon: ':heavy_check_mark:'
-    path: data_structures/lazy-segtree.hpp
+    path: src/data_structures/lazy-segtree.hpp
     title: "\u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
   - icon: ':heavy_check_mark:'
-    path: math/modint.hpp
+    path: src/math/modint.hpp
     title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
       \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9"
   _extendedRequiredBy: []
@@ -26,43 +26,43 @@ data:
     - https://judge.yosupo.jp/problem/range_affine_range_sum
   bundledCode: "#line 1 \"test/yosupo-range-affine-range-sum.3.test.cpp\"\n#define\
     \ PROBLEM \"https://judge.yosupo.jp/problem/range_affine_range_sum\"\n\n#include\
-    \ <iostream>\n#include <utility>\n\n#line 2 \"data_structures/lazy-segtree.hpp\"\
+    \ <iostream>\n#include <utility>\n\n#line 2 \"src/data_structures/lazy-segtree.hpp\"\
     \n\n/**\n * @file lazy-segtree.hpp\n * @brief \u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\
     \u30E1\u30F3\u30C8\u6728\n */\n\n#include <cassert>\n#include <functional>\n#include\
-    \ <ostream>\n#line 12 \"data_structures/lazy-segtree.hpp\"\n#include <vector>\n\
-    #line 2 \"algebra/acted-monoid.hpp\"\n\n/**\n * @file acted-monoid.hpp\n * @brief\
-    \ \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n\
-    \ * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306F\u30E2\u30CE\u30A4\
-    \u30C9 (algebra/monoid.hpp) \u306E\u30E1\u30F3\u30D0\u306B\u52A0\u3048\u3066\u6B21\
+    \ <ostream>\n#line 12 \"src/data_structures/lazy-segtree.hpp\"\n#include <vector>\n\
+    #line 2 \"src/algebra/acted-monoid.hpp\"\n\n/**\n * @file acted-monoid.hpp\n *\
+    \ @brief \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
+    \n *\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306F\u30E2\u30CE\
+    \u30A4\u30C9 (algebra/monoid.hpp) \u306E\u30E1\u30F3\u30D0\u306B\u52A0\u3048\u3066\
+    \u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\
+    \u3059\n * - using F: \u4F5C\u7528\u7D20\u306E\u578B\n * - S mapping(const F&\
+    \ f, const S& x): \u4F5C\u7528\u7D20\u306E\u9069\u7528 f(x)\n *   \u533A\u9593\
+    \u306E\u60C5\u5831\u304C\u5FC5\u8981\u306A\u5834\u5408\u306F mapping(f, x, sz)\
+    \ (sz \u306F\u533A\u9593\u306E\u9577\u3055) \u3084 mapping(f, x, l, r) (\u533A\
+    \u9593 [l, r)) \u3067\u3082\u3088\u3044\n * - F composition(const F& f, const\
+    \ F& g): \u4F5C\u7528\u7D20\u306E\u5408\u6210 f\u2218g (g\u3092\u9069\u7528\u3057\
+    \u305F\u5F8C\u306Bf\u3092\u9069\u7528\u3059\u308B)\n * - F id(): \u6052\u7B49\u5199\
+    \u50CF\n * \u4F5C\u7528\u7D20\u304C\u7FA4\u3092\u306A\u3059\u5834\u5408 (imos.hpp\
+    \ \u3067\u4F7F\u3046) \u306F\n * - F inv(const F& f): \u9006\u4F5C\u7528\u7D20\
+    \n */\n\n#include <array>\n#include <limits>\n#include <optional>\n#include <type_traits>\n\
+    #line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n * @brief \u30E2\
+    \u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\
     \u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\
-    \n * - using F: \u4F5C\u7528\u7D20\u306E\u578B\n * - S mapping(const F& f, const\
-    \ S& x): \u4F5C\u7528\u7D20\u306E\u9069\u7528 f(x)\n *   \u533A\u9593\u306E\u60C5\
-    \u5831\u304C\u5FC5\u8981\u306A\u5834\u5408\u306F mapping(f, x, sz) (sz \u306F\u533A\
-    \u9593\u306E\u9577\u3055) \u3084 mapping(f, x, l, r) (\u533A\u9593 [l, r)) \u3067\
-    \u3082\u3088\u3044\n * - F composition(const F& f, const F& g): \u4F5C\u7528\u7D20\
-    \u306E\u5408\u6210 f\u2218g (g\u3092\u9069\u7528\u3057\u305F\u5F8C\u306Bf\u3092\
-    \u9069\u7528\u3059\u308B)\n * - F id(): \u6052\u7B49\u5199\u50CF\n * \u4F5C\u7528\
-    \u7D20\u304C\u7FA4\u3092\u306A\u3059\u5834\u5408 (imos.hpp \u3067\u4F7F\u3046\
-    ) \u306F\n * - F inv(const F& f): \u9006\u4F5C\u7528\u7D20\n */\n\n#include <array>\n\
-    #include <limits>\n#include <optional>\n#include <type_traits>\n#line 2 \"algebra/monoid.hpp\"\
-    \n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
-    \n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
-    \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\
-    \n * - S op(const S& a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e():\
-    \ \u5358\u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\
-    \u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\
-    \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\
-    \u51FA\u3059)\n */\n\n#include <algorithm>\n#line 16 \"algebra/monoid.hpp\"\n\
-    #include <numeric>\n#line 19 \"algebra/monoid.hpp\"\n\nnamespace monoid {\n\n\
-    /**\n * @brief \u548C\n */\ntemplate <typename T>\nstruct Sum {\n    using S =\
-    \ T;\n    static constexpr S op(const S& a, const S& b) { return a + b; }\n  \
-    \  static constexpr S e() { return S(0); }\n};\n\n/**\n * @brief \u7A4D\n */\n\
-    template <typename T>\nstruct Prod {\n    using S = T;\n    static constexpr S\
-    \ op(const S& a, const S& b) { return a * b; }\n    static constexpr S e() { return\
-    \ S(1); }\n};\n\n/**\n * @brief \u6700\u5927\u5024 \u5358\u4F4D\u5143\u306F\u578B\
-    \u306E\u6700\u5C0F\u5024\n */\ntemplate <typename T>\nstruct Max {\n    using\
-    \ S = T;\n    static constexpr S op(const S& a, const S& b) { return std::max(a,\
-    \ b); }\n    static constexpr S e() { return std::numeric_limits<S>::lowest();\
+    \n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S& a, const S& b): \u7A4D\
+    \ (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n * op, e \u306F static\
+    \ \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\
+    \u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\
+    \u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\n#include <algorithm>\n\
+    #line 16 \"src/algebra/monoid.hpp\"\n#include <numeric>\n#line 19 \"src/algebra/monoid.hpp\"\
+    \n\nnamespace monoid {\n\n/**\n * @brief \u548C\n */\ntemplate <typename T>\n\
+    struct Sum {\n    using S = T;\n    static constexpr S op(const S& a, const S&\
+    \ b) { return a + b; }\n    static constexpr S e() { return S(0); }\n};\n\n/**\n\
+    \ * @brief \u7A4D\n */\ntemplate <typename T>\nstruct Prod {\n    using S = T;\n\
+    \    static constexpr S op(const S& a, const S& b) { return a * b; }\n    static\
+    \ constexpr S e() { return S(1); }\n};\n\n/**\n * @brief \u6700\u5927\u5024 \u5358\
+    \u4F4D\u5143\u306F\u578B\u306E\u6700\u5C0F\u5024\n */\ntemplate <typename T>\n\
+    struct Max {\n    using S = T;\n    static constexpr S op(const S& a, const S&\
+    \ b) { return std::max(a, b); }\n    static constexpr S e() { return std::numeric_limits<S>::lowest();\
     \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\
     \u6700\u5927\u5024\n */\ntemplate <typename T>\nstruct Min {\n    using S = T;\n\
     \    static constexpr S op(const S& a, const S& b) { return std::min(a, b); }\n\
@@ -142,7 +142,7 @@ data:
     \    Monoid() = default;\n    constexpr Monoid(Op op, const S& e) : op_object(std::move(op)),\
     \ identity(e) {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a,\
     \ b); }\n    constexpr S e() const { return identity; }\n};\ntemplate <typename\
-    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 23 \"algebra/acted-monoid.hpp\"\
+    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 23 \"src/algebra/acted-monoid.hpp\"\
     \n\nnamespace acted_monoid {\n\nnamespace detail {\ntemplate <typename A, typename\
     \ = void>\nstruct has_mapping_lr : std::false_type {};\ntemplate <typename A>\n\
     struct has_mapping_lr<A, std::void_t<decltype(std::declval<const A&>().mapping(std::declval<const\
@@ -294,8 +294,8 @@ data:
     \ g); }\n    constexpr F id() const { return lazy_identity; }\n};\ntemplate <typename\
     \ Op, typename T, typename Mapping, typename Composition, typename U>\nActedMonoid(Op,\
     \ T, Mapping, Composition, U) -> ActedMonoid<T, Op, U, Mapping, Composition>;\n\
-    #line 14 \"data_structures/lazy-segtree.hpp\"\n\n/**\n * @brief \u9045\u5EF6\u4F1D\
-    \u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n *\n * \u4F8B:\n * LazySegTree<acted_monoid::AffineSum<mint>>\
+    #line 14 \"src/data_structures/lazy-segtree.hpp\"\n\n/**\n * @brief \u9045\u5EF6\
+    \u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n *\n * \u4F8B:\n * LazySegTree<acted_monoid::AffineSum<mint>>\
     \ seg(v);\n *\n * @tparam A \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\
     \ (algebra/acted-monoid.hpp)\n */\ntemplate <typename A>\nclass LazySegTree {\n\
     public:\n    using S = typename A::S;\n    using F = typename A::F;\n\nprivate:\n\
@@ -421,13 +421,13 @@ data:
     \ - sz;\n            }\n            sum = op(data[r], sum);\n        } while((r\
     \ & -r) != r);\n        return 0;\n    }\n};\n\ntemplate <typename A>\nLazySegTree(int,\
     \ A) -> LazySegTree<A>;\ntemplate <typename A>\nLazySegTree(std::vector<typename\
-    \ A::S>, A) -> LazySegTree<A>;\n#line 2 \"math/modint.hpp\"\n\n/**\n * @file modint.hpp\n\
-    \ * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067\
-    \ mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line 12 \"math/modint.hpp\"\
-    \n#include <cstdint>\n#line 14 \"math/modint.hpp\"\n\nnamespace detail {\n   \
-    \ static constexpr std::uint16_t prime32_bases[] {\n        15591,  2018,  166,\
-    \ 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,  3620,   560,  3128, \
-    \ 5212,  2657,\n         2300,  2021, 4652, 1471,  9336,  4018,  2398, 20462,\
+    \ A::S>, A) -> LazySegTree<A>;\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file\
+    \ modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\
+    \u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line 12 \"src/math/modint.hpp\"\
+    \n#include <cstdint>\n#line 14 \"src/math/modint.hpp\"\n\nnamespace detail {\n\
+    \    static constexpr std::uint16_t prime32_bases[] {\n        15591,  2018, \
+    \ 166, 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,  3620,   560,  3128,\
+    \  5212,  2657,\n         2300,  2021, 4652, 1471,  9336,  4018,  2398, 20462,\
     \ 10277,  8028, 2213,  6219,   620,  3763,  4852,  5012,\n         3185,  1333,\
     \ 6227, 5298,  1074,  2391,  5113,  7061,   803,  1269, 3875,   422,   751,  \
     \ 580,  4729, 10239,\n          746,  2951,  556, 2206,  3778,   481,  1522, \
@@ -671,10 +671,10 @@ data:
     \ l, r;\n            std::cin >> l >> r;\n            std::cout << seg.prod(l,\
     \ r) << '\\n';\n        }\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/range_affine_range_sum\"\
-    \n\n#include <iostream>\n#include <utility>\n\n#include \"../data_structures/lazy-segtree.hpp\"\
-    \n#include \"../math/modint.hpp\"\n\nint main(void) {\n    int n, q;\n    std::cin\
-    \ >> n >> q;\n    using MI = modint998244353;\n    std::vector<MI> a(n);\n   \
-    \ for (int i = 0; i < n; i++) std::cin >> a[i];\n    struct RangeAffineRangeSum\
+    \n\n#include <iostream>\n#include <utility>\n\n#include \"../src/data_structures/lazy-segtree.hpp\"\
+    \n#include \"../src/math/modint.hpp\"\n\nint main(void) {\n    int n, q;\n   \
+    \ std::cin >> n >> q;\n    using MI = modint998244353;\n    std::vector<MI> a(n);\n\
+    \    for (int i = 0; i < n; i++) std::cin >> a[i];\n    struct RangeAffineRangeSum\
     \ {\n        using S = MI;\n        S op(const S& a, const S& b) const {\n   \
     \         return a + b;\n        }\n        S e() const {\n            return\
     \ 0;\n        }\n        using F = std::pair<MI, MI>;\n        S mapping(const\
@@ -689,14 +689,14 @@ data:
     \    std::cin >> l >> r;\n            std::cout << seg.prod(l, r) << '\\n';\n\
     \        }\n    }\n}\n"
   dependsOn:
-  - data_structures/lazy-segtree.hpp
-  - algebra/acted-monoid.hpp
-  - algebra/monoid.hpp
-  - math/modint.hpp
+  - src/data_structures/lazy-segtree.hpp
+  - src/algebra/acted-monoid.hpp
+  - src/algebra/monoid.hpp
+  - src/math/modint.hpp
   isVerificationFile: true
   path: test/yosupo-range-affine-range-sum.3.test.cpp
   requiredBy: []
-  timestamp: '2026-10-10 20:42:46+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo-range-affine-range-sum.3.test.cpp

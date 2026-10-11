@@ -2,10 +2,10 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: graph/graph.hpp
+    path: src/graph/graph.hpp
     title: "\u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9"
   - icon: ':heavy_check_mark:'
-    path: graph/tree.hpp
+    path: src/graph/tree.hpp
     title: "\u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -18,30 +18,30 @@ data:
     links:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_5_B
   bundledCode: "#line 1 \"test/aoj-grl-5-b.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_5_B\"\
-    \n\n#include <iostream>\n\n#line 2 \"graph/tree.hpp\"\n\n/**\n * @file tree.hpp\n\
+    \n\n#include <iostream>\n\n#line 2 \"src/graph/tree.hpp\"\n\n/**\n * @file tree.hpp\n\
     \ * @brief \u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n*/\n\n\
     #include <algorithm>\n#include <cassert>\n#include <stack>\n#include <tuple>\n\
-    \n#line 2 \"graph/graph.hpp\"\n\n#line 4 \"graph/graph.hpp\"\n#include <limits>\n\
-    #include <queue>\n#include <vector>\n\n/**\n * @brief \u30B0\u30E9\u30D5\u306E\
-    \u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\u30B3\u30B9\u30C8\
-    \u306E\u578B\n */\ntemplate <typename Cost = int>\nstruct Graph {\n    /**\n \
-    \    * @brief \u6709\u5411\u8FBA\u306E\u69CB\u9020\u4F53\n     *\n     * operator\
-    \ int()\u3092\u5B9A\u7FA9\u3057\u3066\u3044\u308B\u306E\u3067\u3001int\u578B\u306B\
-    \u30AD\u30E3\u30B9\u30C8\u3059\u308B\u3068\u52DD\u624B\u306Bdst\u306B\u306A\u308B\
-    \n     * \u4F8B\u3048\u3070\u3001\n     * for (auto& e : g[v]) \u3092\u3059\u308B\
-    \u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\u304C\u5217\u6319\u3055\u308C\u308B\
-    \u304C\u3001\n     * for (int dst : g[v]) \u3068\u3059\u308B\u3068\u3001v\u304B\
-    \u3089\u51FA\u308B\u8FBA\u306E\u884C\u304D\u5148\u304C\u5217\u6319\u3055\u308C\
-    \u308B\n     */\n    struct Edge {\n        int src = -1;   //!< \u59CB\u70B9\n\
-    \        int dst = -1;   //!< \u7D42\u70B9\n        Cost cost = {}; //!< \u30B3\
-    \u30B9\u30C8\n        int id = -1;    //!< \u8FBA\u306E\u756A\u53F7(\u8FFD\u52A0\
-    \u3055\u308C\u305F\u9806\u3001\u7121\u5411\u8FBA\u306E\u5834\u5408\u306Fid\u304C\
-    \u540C\u3058\u3067\u65B9\u5411\u304C\u9006\u306E\u3082\u306E\u304C2\u3064\u5B58\
-    \u5728\u3059\u308B)\n        Edge() = default;\n        Edge(int src, int dst,\
-    \ Cost cost = 1, int id = -1) : src(src), dst(dst), cost(cost), id(id) {}\n  \
-    \      operator int() const { return dst; }\n    };\n\n    int n;            \
-    \                //!< \u9802\u70B9\u6570\n    int m;                         \
-    \   //!< \u8FBA\u6570\n    std::vector<std::vector<Edge>> g; //!< \u30B0\u30E9\
+    \n#line 2 \"src/graph/graph.hpp\"\n\n#line 4 \"src/graph/graph.hpp\"\n#include\
+    \ <limits>\n#include <queue>\n#include <vector>\n\n/**\n * @brief \u30B0\u30E9\
+    \u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\u30B3\
+    \u30B9\u30C8\u306E\u578B\n */\ntemplate <typename Cost = int>\nstruct Graph {\n\
+    \    /**\n     * @brief \u6709\u5411\u8FBA\u306E\u69CB\u9020\u4F53\n     *\n \
+    \    * operator int()\u3092\u5B9A\u7FA9\u3057\u3066\u3044\u308B\u306E\u3067\u3001\
+    int\u578B\u306B\u30AD\u30E3\u30B9\u30C8\u3059\u308B\u3068\u52DD\u624B\u306Bdst\u306B\
+    \u306A\u308B\n     * \u4F8B\u3048\u3070\u3001\n     * for (auto& e : g[v]) \u3092\
+    \u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\u304C\u5217\u6319\u3055\
+    \u308C\u308B\u304C\u3001\n     * for (int dst : g[v]) \u3068\u3059\u308B\u3068\
+    \u3001v\u304B\u3089\u51FA\u308B\u8FBA\u306E\u884C\u304D\u5148\u304C\u5217\u6319\
+    \u3055\u308C\u308B\n     */\n    struct Edge {\n        int src = -1;   //!< \u59CB\
+    \u70B9\n        int dst = -1;   //!< \u7D42\u70B9\n        Cost cost = {}; //!<\
+    \ \u30B3\u30B9\u30C8\n        int id = -1;    //!< \u8FBA\u306E\u756A\u53F7(\u8FFD\
+    \u52A0\u3055\u308C\u305F\u9806\u3001\u7121\u5411\u8FBA\u306E\u5834\u5408\u306F\
+    id\u304C\u540C\u3058\u3067\u65B9\u5411\u304C\u9006\u306E\u3082\u306E\u304C2\u3064\
+    \u5B58\u5728\u3059\u308B)\n        Edge() = default;\n        Edge(int src, int\
+    \ dst, Cost cost = 1, int id = -1) : src(src), dst(dst), cost(cost), id(id) {}\n\
+    \        operator int() const { return dst; }\n    };\n\n    int n;          \
+    \                  //!< \u9802\u70B9\u6570\n    int m;                       \
+    \     //!< \u8FBA\u6570\n    std::vector<std::vector<Edge>> g; //!< \u30B0\u30E9\
     \u30D5\u306E\u96A3\u63A5\u30EA\u30B9\u30C8\u8868\u73FE\n\n    /**\n     * @brief\
     \ \u30C7\u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n \
     \    */\n    Graph() : n(0), m(0), g(0) {}\n    /**\n     * @brief \u30B3\u30F3\
@@ -141,7 +141,7 @@ data:
     \ {\n                    dist[e.dst] = dist[e.src] + e.cost;\n               \
     \     prev[e.dst] = e;\n                    que.push({dist[e.dst], e.dst});\n\
     \                }\n            }\n        }\n        return {dist, prev};\n \
-    \   }\n};\n#line 14 \"graph/tree.hpp\"\n\ntemplate <typename>\nstruct RootedTree;\n\
+    \   }\n};\n#line 14 \"src/graph/tree.hpp\"\n\ntemplate <typename>\nstruct RootedTree;\n\
     template <typename>\nstruct DoublingClimbTree;\n\n/**\n * @brief \u6839\u306A\u3057\
     \u6728\n * \n * @tparam Cost = int \u8FBA\u306E\u91CD\u307F\n * \n * Graph<Cost>\u3092\
     \u7D99\u627F\u3057\u3001\u3059\u3079\u3066\u7121\u5411\u8FBA\u3067\u8868\u3059\
@@ -346,27 +346,28 @@ data:
     \ + e.cost;\n        }\n    }\n    for(int i = 0; i < n; i++) {\n        std::cout\
     \ << ans[i] << '\\n';\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_5_B\"\
-    \n\n#include <iostream>\n\n#include \"../graph/tree.hpp\"\n\nint main(void) {\n\
-    \    int n; std::cin >> n;\n    Tree<int> tree(n); tree.read(0, true);\n    RootedTree<int>\
-    \ rooted_tree = tree.set_root(0);\n    std::vector<int> dp(n);\n    std::vector<int>\
-    \ ans(n);\n    for(int i = 0; i < n; i++) {\n        int u = rooted_tree.preorder[i];\n\
-    \        ans[u] = std::max(dp[u], rooted_tree.height[u]);\n        auto& child\
-    \ = rooted_tree.child[u];\n        int s = child.size();\n        std::vector<int>\
-    \ height_lmax(s+1), height_rmax(s+1);\n        for(int j = 0; j < s; j++) {\n\
-    \            auto& e = child[j];\n            height_lmax[j+1] = std::max(height_lmax[j],\
-    \ rooted_tree.height[e] + e.cost);\n        }\n        for(int j = s-1; j >= 0;\
-    \ j--) {\n            auto& e = child[j];\n            height_rmax[j] = std::max(height_rmax[j+1],\
-    \ rooted_tree.height[e] + e.cost);\n        }\n        for(int j = 0; j < s; j++)\
-    \ {\n            auto& e = child[j];\n            dp[e] = std::max(dp[u], std::max(height_lmax[j],\
-    \ height_rmax[j+1])) + e.cost;\n        }\n    }\n    for(int i = 0; i < n; i++)\
-    \ {\n        std::cout << ans[i] << '\\n';\n    }\n}\n"
+    \n\n#include <iostream>\n\n#include \"../src/graph/tree.hpp\"\n\nint main(void)\
+    \ {\n    int n; std::cin >> n;\n    Tree<int> tree(n); tree.read(0, true);\n \
+    \   RootedTree<int> rooted_tree = tree.set_root(0);\n    std::vector<int> dp(n);\n\
+    \    std::vector<int> ans(n);\n    for(int i = 0; i < n; i++) {\n        int u\
+    \ = rooted_tree.preorder[i];\n        ans[u] = std::max(dp[u], rooted_tree.height[u]);\n\
+    \        auto& child = rooted_tree.child[u];\n        int s = child.size();\n\
+    \        std::vector<int> height_lmax(s+1), height_rmax(s+1);\n        for(int\
+    \ j = 0; j < s; j++) {\n            auto& e = child[j];\n            height_lmax[j+1]\
+    \ = std::max(height_lmax[j], rooted_tree.height[e] + e.cost);\n        }\n   \
+    \     for(int j = s-1; j >= 0; j--) {\n            auto& e = child[j];\n     \
+    \       height_rmax[j] = std::max(height_rmax[j+1], rooted_tree.height[e] + e.cost);\n\
+    \        }\n        for(int j = 0; j < s; j++) {\n            auto& e = child[j];\n\
+    \            dp[e] = std::max(dp[u], std::max(height_lmax[j], height_rmax[j+1]))\
+    \ + e.cost;\n        }\n    }\n    for(int i = 0; i < n; i++) {\n        std::cout\
+    \ << ans[i] << '\\n';\n    }\n}\n"
   dependsOn:
-  - graph/tree.hpp
-  - graph/graph.hpp
+  - src/graph/tree.hpp
+  - src/graph/graph.hpp
   isVerificationFile: true
   path: test/aoj-grl-5-b.test.cpp
   requiredBy: []
-  timestamp: '2026-10-09 19:25:54+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj-grl-5-b.test.cpp

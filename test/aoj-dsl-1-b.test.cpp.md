@@ -2,13 +2,13 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: algebra/group.hpp
+    path: src/algebra/group.hpp
     title: "\u7FA4\u306E\u5B9A\u7FA9"
   - icon: ':heavy_check_mark:'
-    path: algebra/monoid.hpp
+    path: src/algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   - icon: ':heavy_check_mark:'
-    path: data_structures/potentialized-unionfind.hpp
+    path: src/data_structures/potentialized-unionfind.hpp
     title: "\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -21,15 +21,15 @@ data:
     links:
     - https://onlinejudge.u-aizu.ac.jp/problems/DSL_1_B
   bundledCode: "#line 1 \"test/aoj-dsl-1-b.test.cpp\"\n#define PROBLEM \"https://onlinejudge.u-aizu.ac.jp/problems/DSL_1_B\"\
-    \n\n#include <iostream>\n\n#line 2 \"data_structures/potentialized-unionfind.hpp\"\
+    \n\n#include <iostream>\n\n#line 2 \"src/data_structures/potentialized-unionfind.hpp\"\
     \n\n/**\n * @file potentialized-unionfind.hpp\n * @brief \u30DD\u30C6\u30F3\u30B7\
     \u30E3\u30EB\u4ED8\u304DUnionFind\n */\n#include <algorithm>\n#include <cassert>\n\
     #include <functional>\n#include <stack>\n#include <utility>\n#include <vector>\n\
-    #line 2 \"algebra/group.hpp\"\n\n/**\n * @file group.hpp\n * @brief \u7FA4\u306E\
-    \u5B9A\u7FA9\n *\n * \u7FA4\u306F\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\
+    #line 2 \"src/algebra/group.hpp\"\n\n/**\n * @file group.hpp\n * @brief \u7FA4\
+    \u306E\u5B9A\u7FA9\n *\n * \u7FA4\u306F\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\
     \ \u306E\u30E1\u30F3\u30D0\u306B\u52A0\u3048\u3066\u6B21\u306E\u30E1\u30F3\u30D0\
     \u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - S inv(const S& a):\
-    \ \u9006\u5143\n */\n\n#line 2 \"algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n\
+    \ \u9006\u5143\n */\n\n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n\
     \ * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\
     \u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\
     \u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S&\
@@ -37,22 +37,22 @@ data:
     \ * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\
     \u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\
     \u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\
-    \n#line 15 \"algebra/monoid.hpp\"\n#include <limits>\n#include <numeric>\n#include\
-    \ <type_traits>\n#line 19 \"algebra/monoid.hpp\"\n\nnamespace monoid {\n\n/**\n\
-    \ * @brief \u548C\n */\ntemplate <typename T>\nstruct Sum {\n    using S = T;\n\
-    \    static constexpr S op(const S& a, const S& b) { return a + b; }\n    static\
-    \ constexpr S e() { return S(0); }\n};\n\n/**\n * @brief \u7A4D\n */\ntemplate\
-    \ <typename T>\nstruct Prod {\n    using S = T;\n    static constexpr S op(const\
-    \ S& a, const S& b) { return a * b; }\n    static constexpr S e() { return S(1);\
-    \ }\n};\n\n/**\n * @brief \u6700\u5927\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\
-    \u6700\u5C0F\u5024\n */\ntemplate <typename T>\nstruct Max {\n    using S = T;\n\
-    \    static constexpr S op(const S& a, const S& b) { return std::max(a, b); }\n\
-    \    static constexpr S e() { return std::numeric_limits<S>::lowest(); }\n};\n\
-    \n/**\n * @brief \u6700\u5C0F\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\u6700\
-    \u5927\u5024\n */\ntemplate <typename T>\nstruct Min {\n    using S = T;\n   \
-    \ static constexpr S op(const S& a, const S& b) { return std::min(a, b); }\n \
-    \   static constexpr S e() { return std::numeric_limits<S>::max(); }\n};\n\n/**\n\
-    \ * @brief \u6700\u5C0F\u5024\u3068\u6700\u5927\u5024\u306E\u7D44 {min, max}\n\
+    \n#line 15 \"src/algebra/monoid.hpp\"\n#include <limits>\n#include <numeric>\n\
+    #include <type_traits>\n#line 19 \"src/algebra/monoid.hpp\"\n\nnamespace monoid\
+    \ {\n\n/**\n * @brief \u548C\n */\ntemplate <typename T>\nstruct Sum {\n    using\
+    \ S = T;\n    static constexpr S op(const S& a, const S& b) { return a + b; }\n\
+    \    static constexpr S e() { return S(0); }\n};\n\n/**\n * @brief \u7A4D\n */\n\
+    template <typename T>\nstruct Prod {\n    using S = T;\n    static constexpr S\
+    \ op(const S& a, const S& b) { return a * b; }\n    static constexpr S e() { return\
+    \ S(1); }\n};\n\n/**\n * @brief \u6700\u5927\u5024 \u5358\u4F4D\u5143\u306F\u578B\
+    \u306E\u6700\u5C0F\u5024\n */\ntemplate <typename T>\nstruct Max {\n    using\
+    \ S = T;\n    static constexpr S op(const S& a, const S& b) { return std::max(a,\
+    \ b); }\n    static constexpr S e() { return std::numeric_limits<S>::lowest();\
+    \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\
+    \u6700\u5927\u5024\n */\ntemplate <typename T>\nstruct Min {\n    using S = T;\n\
+    \    static constexpr S op(const S& a, const S& b) { return std::min(a, b); }\n\
+    \    static constexpr S e() { return std::numeric_limits<S>::max(); }\n};\n\n\
+    /**\n * @brief \u6700\u5C0F\u5024\u3068\u6700\u5927\u5024\u306E\u7D44 {min, max}\n\
     \ */\ntemplate <typename T>\nstruct MinMax {\n    using S = std::pair<T, T>;\n\
     \    static constexpr S op(const S& a, const S& b) { return {std::min(a.first,\
     \ b.first), std::max(a.second, b.second)}; }\n    static constexpr S e() { return\
@@ -127,7 +127,7 @@ data:
     \    Monoid() = default;\n    constexpr Monoid(Op op, const S& e) : op_object(std::move(op)),\
     \ identity(e) {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a,\
     \ b); }\n    constexpr S e() const { return identity; }\n};\ntemplate <typename\
-    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 12 \"algebra/group.hpp\"\
+    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 12 \"src/algebra/group.hpp\"\
     \n\nnamespace group {\n\n/**\n * @brief \u52A0\u6CD5\u7FA4\n */\ntemplate <typename\
     \ T>\nstruct Sum : monoid::Sum<T> {\n    using S = T;\n    static constexpr S\
     \ inv(const S& a) { return -a; }\n};\n\n/**\n * @brief \u4E57\u6CD5\u7FA4 (0\u3092\
@@ -148,7 +148,7 @@ data:
     \ {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a, b);\
     \ }\n    constexpr S e() const { return identity; }\n    constexpr S inv(const\
     \ S& a) const { return inv_object(a); }\n};\ntemplate <typename Op, typename T,\
-    \ typename Inv>\nGroup(Op, T, Inv) -> Group<T, Op, Inv>;\n#line 14 \"data_structures/potentialized-unionfind.hpp\"\
+    \ typename Inv>\nGroup(Op, T, Inv) -> Group<T, Op, Inv>;\n#line 14 \"src/data_structures/potentialized-unionfind.hpp\"\
     \n\n/**\n * @brief \u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind\n\
     \ * @tparam G \u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u306E\u7FA4 (algebra/group.hpp)\
     \ \u975E\u53EF\u63DB\u3067\u3082\u3088\u3044\n */\ntemplate <typename G>\nclass\
@@ -211,7 +211,7 @@ data:
     \          std::cout << uf.diff(x, y) << std::endl;\n            else\n      \
     \          std::cout << '?' << std::endl;\n        }\n    }\n}\n"
   code: "#define PROBLEM \"https://onlinejudge.u-aizu.ac.jp/problems/DSL_1_B\"\n\n\
-    #include <iostream>\n\n#include \"../data_structures/potentialized-unionfind.hpp\"\
+    #include <iostream>\n\n#include \"../src/data_structures/potentialized-unionfind.hpp\"\
     \n\nint main() {\n    int n, q;\n    std::cin >> n >> q;\n    PotentializedUnionFind<group::Sum<long\
     \ long>> uf(n);\n    while (q--) {\n        int t;\n        std::cin >> t;\n \
     \       if (t == 0) {\n            int x, y, z;\n            std::cin >> x >>\
@@ -220,13 +220,13 @@ data:
     \          std::cout << uf.diff(x, y) << std::endl;\n            else\n      \
     \          std::cout << '?' << std::endl;\n        }\n    }\n}\n"
   dependsOn:
-  - data_structures/potentialized-unionfind.hpp
-  - algebra/group.hpp
-  - algebra/monoid.hpp
+  - src/data_structures/potentialized-unionfind.hpp
+  - src/algebra/group.hpp
+  - src/algebra/monoid.hpp
   isVerificationFile: true
   path: test/aoj-dsl-1-b.test.cpp
   requiredBy: []
-  timestamp: '2026-10-10 20:42:46+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj-dsl-1-b.test.cpp

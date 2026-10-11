@@ -2,10 +2,10 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: base/traits.hpp
-    title: base/traits.hpp
+    path: src/base/traits.hpp
+    title: src/base/traits.hpp
   - icon: ':heavy_check_mark:'
-    path: string/rolling-hash.hpp
+    path: src/string/rolling-hash.hpp
     title: "\u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -18,10 +18,10 @@ data:
     links:
     - https://judge.yosupo.jp/problem/enumerate_palindromes
   bundledCode: "#line 1 \"test/yosupo-enumerate-palindromes.test.cpp\"\n#define PROBLEM\
-    \ \"https://judge.yosupo.jp/problem/enumerate_palindromes\"\n\n#line 2 \"string/rolling-hash.hpp\"\
+    \ \"https://judge.yosupo.jp/problem/enumerate_palindromes\"\n\n#line 2 \"src/string/rolling-hash.hpp\"\
     \n\n#include <string>\n#include <vector>\n#include <random>\n#include <cassert>\n\
-    #include <string_view>\n#include <type_traits>\n\n#line 2 \"base/traits.hpp\"\n\
-    \n#include <cstddef>\n#include <iterator>\n#include <set>\n#line 7 \"base/traits.hpp\"\
+    #include <string_view>\n#include <type_traits>\n\n#line 2 \"src/base/traits.hpp\"\
+    \n\n#include <cstddef>\n#include <iterator>\n#include <set>\n#line 7 \"src/base/traits.hpp\"\
     \n#include <utility>\n\nnamespace detail {\nusing std::begin, std::end;\n\ntemplate\
     \ <class T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate\
     \ <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
@@ -71,12 +71,12 @@ data:
     \ : std::true_type {};\n}  // namespace detail\ntemplate <class T>\nstruct is_sorted_container\
     \ : detail::is_sorted_container_impl<T>::type {};\ntemplate <class T>\ninline\
     \ constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n#line\
-    \ 11 \"string/rolling-hash.hpp\"\n\nstruct RHString;\n\n/**\n * @brief \u30ED\u30FC\
-    \u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5\n *\n * \u30D3\u30C3\u30C8\u6F14\u7B97\
-    \u306B\u5BC4\u308B\u9AD8\u901F\u5316\u306E\u305F\u3081\u30CF\u30C3\u30B7\u30E5\
-    \u306FMOD = 2^61-1\u3067\u8A08\u7B97\u3055\u308C\u308B\n *\n * 10^8\u500B\u304F\
-    \u3089\u3044\u306A\u308999%\u306E\u78BA\u7387\u3067\u885D\u7A81\u3059\u308B\u7D44\
-    \u304C\u5B58\u5728\u3057\u306A\u3044\n */\nclass RollingHash {\n    constexpr\
+    \ 11 \"src/string/rolling-hash.hpp\"\n\nstruct RHString;\n\n/**\n * @brief \u30ED\
+    \u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5\n *\n * \u30D3\u30C3\u30C8\u6F14\
+    \u7B97\u306B\u5BC4\u308B\u9AD8\u901F\u5316\u306E\u305F\u3081\u30CF\u30C3\u30B7\
+    \u30E5\u306FMOD = 2^61-1\u3067\u8A08\u7B97\u3055\u308C\u308B\n *\n * 10^8\u500B\
+    \u304F\u3089\u3044\u306A\u308999%\u306E\u78BA\u7387\u3067\u885D\u7A81\u3059\u308B\
+    \u7D44\u304C\u5B58\u5728\u3057\u306A\u3044\n */\nclass RollingHash {\n    constexpr\
     \ static unsigned long long MASK30 = (1ULL << 30) - 1;\n    constexpr static unsigned\
     \ long long MASK31 = (1ULL << 31) - 1;\n    constexpr static unsigned long long\
     \ MOD = (1ULL << 61) - 1;\n\n    // a < MOD, b < MOD\u5FC5\u9808\n    constexpr\
@@ -215,27 +215,27 @@ data:
     \     else ng = mid;\n        }\n        ans[i*2+1] = ok*2;\n    }\n    for(int\
     \ i = 0; i < n*2-1; i++) std::cout << ans[i] << \" \\n\"[i+1==n*2-1];\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/enumerate_palindromes\"\
-    \n\n#include \"../string/rolling-hash.hpp\"\n\n#include <iostream>\n\nint main(void)\
-    \ {\n    std::string s; std::cin >> s;\n    int n = s.length();\n    RollingHash\
-    \ rh;\n    auto hash1 = rh.build(s);\n    auto hash2 = rh.build(s.rbegin(), s.rend());\n\
-    \    std::vector<int> ans(n*2-1);\n    for(int i = 0; i < n; i++) {\n        int\
-    \ ok = 0, ng = std::min(i+1, n-i);\n        while(ng - ok > 1) {\n           \
-    \ int mid = (ok + ng) / 2;\n            if(rh.query(hash1, i-mid, i+mid+1) ==\
-    \ rh.query(hash2, s.length()-i-mid-1, s.length()-i+mid)) ok = mid;\n         \
-    \   else ng = mid;\n        }\n        ans[i*2] = ok*2+1;\n    }\n    for(int\
-    \ i = 0; i < n-1; i++) {\n        int ok = 0, ng = std::min(i+2, n-i);\n     \
-    \   while(ng - ok > 1) {\n            int mid = (ok + ng) / 2;\n            if(rh.query(hash1,\
-    \ i-mid+1, i+mid+1) == rh.query(hash2, s.length()-i-mid-1, s.length()-i+mid-1))\
-    \ ok = mid;\n            else ng = mid;\n        }\n        ans[i*2+1] = ok*2;\n\
-    \    }\n    for(int i = 0; i < n*2-1; i++) std::cout << ans[i] << \" \\n\"[i+1==n*2-1];\n\
-    }\n"
+    \n\n#include \"../src/string/rolling-hash.hpp\"\n\n#include <iostream>\n\nint\
+    \ main(void) {\n    std::string s; std::cin >> s;\n    int n = s.length();\n \
+    \   RollingHash rh;\n    auto hash1 = rh.build(s);\n    auto hash2 = rh.build(s.rbegin(),\
+    \ s.rend());\n    std::vector<int> ans(n*2-1);\n    for(int i = 0; i < n; i++)\
+    \ {\n        int ok = 0, ng = std::min(i+1, n-i);\n        while(ng - ok > 1)\
+    \ {\n            int mid = (ok + ng) / 2;\n            if(rh.query(hash1, i-mid,\
+    \ i+mid+1) == rh.query(hash2, s.length()-i-mid-1, s.length()-i+mid)) ok = mid;\n\
+    \            else ng = mid;\n        }\n        ans[i*2] = ok*2+1;\n    }\n  \
+    \  for(int i = 0; i < n-1; i++) {\n        int ok = 0, ng = std::min(i+2, n-i);\n\
+    \        while(ng - ok > 1) {\n            int mid = (ok + ng) / 2;\n        \
+    \    if(rh.query(hash1, i-mid+1, i+mid+1) == rh.query(hash2, s.length()-i-mid-1,\
+    \ s.length()-i+mid-1)) ok = mid;\n            else ng = mid;\n        }\n    \
+    \    ans[i*2+1] = ok*2;\n    }\n    for(int i = 0; i < n*2-1; i++) std::cout <<\
+    \ ans[i] << \" \\n\"[i+1==n*2-1];\n}\n"
   dependsOn:
-  - string/rolling-hash.hpp
-  - base/traits.hpp
+  - src/string/rolling-hash.hpp
+  - src/base/traits.hpp
   isVerificationFile: true
   path: test/yosupo-enumerate-palindromes.test.cpp
   requiredBy: []
-  timestamp: '2026-10-09 19:25:54+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo-enumerate-palindromes.test.cpp

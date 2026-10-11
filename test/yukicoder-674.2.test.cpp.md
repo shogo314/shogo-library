@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: data_structures/interval-set.hpp
+    path: src/data_structures/interval-set.hpp
     title: "\u534A\u958B\u533A\u9593\u3092\u7BA1\u7406\u3059\u308B"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -15,8 +15,8 @@ data:
     links:
     - https://yukicoder.me/problems/no/674
   bundledCode: "#line 1 \"test/yukicoder-674.2.test.cpp\"\n#define PROBLEM \"https://yukicoder.me/problems/no/674\"\
-    \n\n#include <algorithm>\n#include <iostream>\n\n#line 2 \"data_structures/interval-set.hpp\"\
-    \n#include <cassert>\n#include <functional>\n#line 5 \"data_structures/interval-set.hpp\"\
+    \n\n#include <algorithm>\n#include <iostream>\n\n#line 2 \"src/data_structures/interval-set.hpp\"\
+    \n#include <cassert>\n#include <functional>\n#line 5 \"src/data_structures/interval-set.hpp\"\
     \n#include <iterator>\n#include <limits>\n#include <optional>\n#include <set>\n\
     #include <type_traits>\n#include <vector>\n/**\n * @brief \u534A\u958B\u533A\u9593\
     \u3092\u7BA1\u7406\u3059\u308B\n * @tparam T \u30B9\u30AB\u30E9\u30FC\n */\ntemplate\
@@ -72,8 +72,8 @@ data:
     \        auto [l, r] = s.covered_by(a).value();\n        ans = std::max(ans, r\
     \ - l);\n        std::cout << ans << '\\n';\n    }\n}\n"
   code: "#define PROBLEM \"https://yukicoder.me/problems/no/674\"\n\n#include <algorithm>\n\
-    #include <iostream>\n\n#include \"../data_structures/interval-set.hpp\"\n\nint\
-    \ main() {\n    long long d;\n    int q;\n    std::cin >> d >> q;\n    IntervalSet<long\
+    #include <iostream>\n\n#include \"../src/data_structures/interval-set.hpp\"\n\n\
+    int main() {\n    long long d;\n    int q;\n    std::cin >> d >> q;\n    IntervalSet<long\
     \ long> s;\n    long long ans = 0;\n    while (q--) {\n        long long a, b;\n\
     \        std::cin >> a >> b;\n        // \u9589\u533A\u9593 [a, b] \u3092\u534A\
     \u958B\u533A\u9593 [a, b+1) \u3068\u3057\u3066\u8FFD\u52A0\u3059\u308B (\u96A3\
@@ -81,11 +81,11 @@ data:
     \ b + 1);\n        auto [l, r] = s.covered_by(a).value();\n        ans = std::max(ans,\
     \ r - l);\n        std::cout << ans << '\\n';\n    }\n}\n"
   dependsOn:
-  - data_structures/interval-set.hpp
+  - src/data_structures/interval-set.hpp
   isVerificationFile: true
   path: test/yukicoder-674.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-10 21:22:32+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yukicoder-674.2.test.cpp

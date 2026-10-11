@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: data_structures/convex-hull-trick.hpp
+    path: src/data_structures/convex-hull-trick.hpp
     title: Convex Hull Trick
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -15,7 +15,7 @@ data:
     links:
     - https://judge.yosupo.jp/problem/line_add_get_min
   bundledCode: "#line 1 \"test/yosupo-line-add-get-min.test.cpp\"\n#define PROBLEM\
-    \ \"https://judge.yosupo.jp/problem/line_add_get_min\"\n\n#line 2 \"data_structures/convex-hull-trick.hpp\"\
+    \ \"https://judge.yosupo.jp/problem/line_add_get_min\"\n\n#line 2 \"src/data_structures/convex-hull-trick.hpp\"\
     \n\n/**\n * @file convex-hull-tric.hpp\n * @brief Convex Hull Trick\n *\n * \u4E00\
     \u6B21\u95A2\u6570\u3067\u8868\u3055\u308C\u308B\u76F4\u7DDA\u307E\u305F\u306F\
     \u7DDA\u5206\u306E\u96C6\u5408\u3092\u7BA1\u7406\u3057\u3001\u3042\u308Bx\u306B\
@@ -77,7 +77,7 @@ data:
     \ a) - xs.begin();\n            std::cout << cht.get_min(i) << '\\n';\n      \
     \  }\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/line_add_get_min\"\n\n\
-    #include \"../data_structures/convex-hull-trick.hpp\"\n\n#include <algorithm>\n\
+    #include \"../src/data_structures/convex-hull-trick.hpp\"\n\n#include <algorithm>\n\
     #include <iostream>\n#include <vector>\n#include <tuple>\n\nint main(void) {\n\
     \    std::cin.tie(nullptr);\n    std::ios_base::sync_with_stdio(false);\n\n  \
     \  int n, q; std::cin >> n >> q;\n    std::vector<std::tuple<int, long long, long>>\
@@ -94,11 +94,11 @@ data:
     \ a) - xs.begin();\n            std::cout << cht.get_min(i) << '\\n';\n      \
     \  }\n    }\n}\n"
   dependsOn:
-  - data_structures/convex-hull-trick.hpp
+  - src/data_structures/convex-hull-trick.hpp
   isVerificationFile: true
   path: test/yosupo-line-add-get-min.test.cpp
   requiredBy: []
-  timestamp: '2026-10-10 13:20:44+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo-line-add-get-min.test.cpp

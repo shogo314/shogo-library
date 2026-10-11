@@ -2,13 +2,13 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: algebra/group.hpp
+    path: src/algebra/group.hpp
     title: "\u7FA4\u306E\u5B9A\u7FA9"
   - icon: ':heavy_check_mark:'
-    path: algebra/monoid.hpp
+    path: src/algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   - icon: ':heavy_check_mark:'
-    path: data_structures/merge-sort-tree.hpp
+    path: src/data_structures/merge-sort-tree.hpp
     title: "\u30DE\u30FC\u30B8\u30BD\u30FC\u30C8\u30C4\u30EA\u30FC"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -22,23 +22,23 @@ data:
     - https://judge.yosupo.jp/problem/rectangle_sum
   bundledCode: "#line 1 \"test/yosupo-rectangle-sum.test.cpp\"\n#define PROBLEM \"\
     https://judge.yosupo.jp/problem/rectangle_sum\"\n\n#include <array>\n#include\
-    \ <iostream>\n#include <vector>\n\n#line 2 \"data_structures/merge-sort-tree.hpp\"\
+    \ <iostream>\n#include <vector>\n\n#line 2 \"src/data_structures/merge-sort-tree.hpp\"\
     \n\n/**\n * @file merge-sort-tree.hpp\n * @brief \u30DE\u30FC\u30B8\u30BD\u30FC\
     \u30C8\u30C4\u30EA\u30FC\n */\n#include <algorithm>\n#include <cassert>\n#include\
-    \ <functional>\n#include <optional>\n#include <utility>\n#line 2 \"algebra/group.hpp\"\
+    \ <functional>\n#include <optional>\n#include <utility>\n#line 2 \"src/algebra/group.hpp\"\
     \n\n/**\n * @file group.hpp\n * @brief \u7FA4\u306E\u5B9A\u7FA9\n *\n * \u7FA4\
     \u306F\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp) \u306E\u30E1\u30F3\u30D0\u306B\
     \u52A0\u3048\u3066\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\
     \u3057\u3066\u8868\u3059\n * - S inv(const S& a): \u9006\u5143\n */\n\n#line 2\
-    \ \"algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\
-    \u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\
-    \u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using\
-    \ S: \u8981\u7D20\u306E\u578B\n * - S op(const S& a, const S& b): \u7A4D (\u7D50\
-    \u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n * op, e \u306F static \u3067\u3082\
-    \u975E static \u3067\u3082\u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\
-    \u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\
-    \u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\n#line 15 \"algebra/monoid.hpp\"\n\
-    #include <limits>\n#include <numeric>\n#include <type_traits>\n#line 19 \"algebra/monoid.hpp\"\
+    \ \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\
+    \u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\
+    \u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * -\
+    \ using S: \u8981\u7D20\u306E\u578B\n * - S op(const S& a, const S& b): \u7A4D\
+    \ (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n * op, e \u306F static\
+    \ \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\
+    \u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\
+    \u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\n#line 15 \"src/algebra/monoid.hpp\"\
+    \n#include <limits>\n#include <numeric>\n#include <type_traits>\n#line 19 \"src/algebra/monoid.hpp\"\
     \n\nnamespace monoid {\n\n/**\n * @brief \u548C\n */\ntemplate <typename T>\n\
     struct Sum {\n    using S = T;\n    static constexpr S op(const S& a, const S&\
     \ b) { return a + b; }\n    static constexpr S e() { return S(0); }\n};\n\n/**\n\
@@ -127,7 +127,7 @@ data:
     \    Monoid() = default;\n    constexpr Monoid(Op op, const S& e) : op_object(std::move(op)),\
     \ identity(e) {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a,\
     \ b); }\n    constexpr S e() const { return identity; }\n};\ntemplate <typename\
-    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 12 \"algebra/group.hpp\"\
+    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 12 \"src/algebra/group.hpp\"\
     \n\nnamespace group {\n\n/**\n * @brief \u52A0\u6CD5\u7FA4\n */\ntemplate <typename\
     \ T>\nstruct Sum : monoid::Sum<T> {\n    using S = T;\n    static constexpr S\
     \ inv(const S& a) { return -a; }\n};\n\n/**\n * @brief \u4E57\u6CD5\u7FA4 (0\u3092\
@@ -148,7 +148,7 @@ data:
     \ {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a, b);\
     \ }\n    constexpr S e() const { return identity; }\n    constexpr S inv(const\
     \ S& a) const { return inv_object(a); }\n};\ntemplate <typename Op, typename T,\
-    \ typename Inv>\nGroup(Op, T, Inv) -> Group<T, Op, Inv>;\n#line 14 \"data_structures/merge-sort-tree.hpp\"\
+    \ typename Inv>\nGroup(Op, T, Inv) -> Group<T, Op, Inv>;\n#line 14 \"src/data_structures/merge-sort-tree.hpp\"\
     \n\n/**\n * @brief \u533A\u9593\u306E\u95BE\u5024\u4EE5\u5185\u306E\u5024\u306E\
     \u7A4D\n *\n * @tparam G \u5024\u306E\u53EF\u63DB\u7FA4 (algebra/group.hpp)\n\
     \ * @tparam K key_type \u30BD\u30FC\u30C8\u306B\u4F7F\u3046\u578B\n * @tparam\
@@ -233,7 +233,7 @@ data:
     \        int r = std::lower_bound(v.begin(), v.end(), R) - v.begin();\n      \
     \  std::cout << mstree.prod(l, r, D, U) << std::endl;\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/rectangle_sum\"\n\n#include\
-    \ <array>\n#include <iostream>\n#include <vector>\n\n#include \"../data_structures/merge-sort-tree.hpp\"\
+    \ <array>\n#include <iostream>\n#include <vector>\n\n#include \"../src/data_structures/merge-sort-tree.hpp\"\
     \n\nint main() {\n    int N, Q;\n    std::cin >> N >> Q;\n    std::vector<std::array<int,\
     \ 3>> XYW(N);\n    for (auto& [X, Y, W] : XYW) {\n        std::cin >> X >> Y >>\
     \ W;\n    }\n    std::sort(XYW.begin(), XYW.end());\n    std::vector<int> v(N),\
@@ -245,13 +245,13 @@ data:
     \        int r = std::lower_bound(v.begin(), v.end(), R) - v.begin();\n      \
     \  std::cout << mstree.prod(l, r, D, U) << std::endl;\n    }\n}\n"
   dependsOn:
-  - data_structures/merge-sort-tree.hpp
-  - algebra/group.hpp
-  - algebra/monoid.hpp
+  - src/data_structures/merge-sort-tree.hpp
+  - src/algebra/group.hpp
+  - src/algebra/monoid.hpp
   isVerificationFile: true
   path: test/yosupo-rectangle-sum.test.cpp
   requiredBy: []
-  timestamp: '2026-10-10 20:42:46+09:00'
+  timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo-rectangle-sum.test.cpp

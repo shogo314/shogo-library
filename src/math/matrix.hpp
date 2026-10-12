@@ -63,13 +63,6 @@ template<class T, class OperatorProperty = matrix::OperatorPropertyDefault<T>> s
     }
 
     /**
-     * @brief コンストラクタ
-     * @param _n 行列(グリッド)の行数
-     * @param _m 行列(グリッド)の列数
-     * @param _val 行列(グリッド)の要素の初期値
-     * @return Matrix
-     */
-    /**
      * @brief 初期化子リストから作るコンストラクタ
      * 例: Matrix<mint> A({{1, 1}, {1, 0}});
      * @param il 各行の要素のリスト
@@ -78,6 +71,13 @@ template<class T, class OperatorProperty = matrix::OperatorPropertyDefault<T>> s
         v.reserve(n);
         for(const auto& row : il) v.emplace_back(row);
     }
+    /**
+     * @brief コンストラクタ
+     * @param _n 行列(グリッド)の行数
+     * @param _m 行列(グリッド)の列数
+     * @param _val 行列(グリッド)の要素の初期値
+     * @return Matrix
+     */
     Matrix(int _n, int _m, T _val = OperatorProperty::zero()) : n(_n), m(_m), v(n, std::vector<T>(m, _val)) {}
     
     auto begin() noexcept {return v.begin();}
@@ -271,7 +271,7 @@ template<class T, class OperatorProperty = matrix::OperatorPropertyDefault<T>> s
     */
     Matrix &operator+=(const Matrix &B) {
         if(n == 0) return (*this);
-        assert(n == B.size() && m == B[0].size());
+        assert(n == B.n && m == B.m);
         for(int i = 0; i < n; i++)
             for(int j = 0; j < m; j++)
                 (*this)[i][j] = OperatorProperty::add((*this)[i][j], B[i][j]);
@@ -284,7 +284,7 @@ template<class T, class OperatorProperty = matrix::OperatorPropertyDefault<T>> s
     */
     Matrix &operator-=(const Matrix &B) {
         if(n == 0) return (*this);
-        assert(n == B.size() && m == B[0].size());
+        assert(n == B.n && m == B.m);
         for(int i = 0; i < n; i++)
             for(int j = 0; j < m; j++) 
                 (*this)[i][j] = OperatorProperty::add((*this)[i][j], OperatorProperty::neg(B[i][j]));
@@ -375,6 +375,8 @@ template<class T, class OperatorProperty = matrix::OperatorPropertyDefault<T>> s
     /**
      * @brief 行列式
      * @return 行列式
+     * @note 割り算を使うので、要素は体 (modint や浮動小数点型など) であること。
+     *       int や long long では割り算が切り捨てになり、正しい値にならない
     */
     [[nodiscard]]
     T det() const {
@@ -393,6 +395,7 @@ template<class T, class OperatorProperty = matrix::OperatorPropertyDefault<T>> s
     /**
      * @brief 逆行列
      * @return 逆行列
+     * @note det と同じく、要素は体 (modint や浮動小数点型など) であること
      */
     [[nodiscard]]
     Matrix inv() const {

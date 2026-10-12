@@ -42,6 +42,15 @@ LazySegTree<acted_monoid::AffineSum<mint>> lseg(v);
 g++ -std=c++17 -I /path/to/shogo-library/src main.cpp
 ```
 
+### 作者の使い方
+
+作者は [cpp_include](https://github.com/shogo314/cpp_include) で管理しています。`update.py` がこのリポジトリの `src/` だけを `cpp_include/shogo-library/` に展開し、`cpp_include` を `CPLUS_INCLUDE_PATH` に設定して、AC Library (`atcoder/`) と並べて使っています。
+
+```cpp
+#include <atcoder/all>
+#include "shogo-library/math/modint.hpp"
+```
+
 ## 検証
 
 [online-judge-tools/verification-helper](https://github.com/online-judge-tools/verification-helper) で、`test/` 以下のテストを GitHub Actions 上で検証しています。

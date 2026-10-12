@@ -7,10 +7,11 @@ data:
     title: "\u7D44\u307F\u5408\u308F\u305B"
   - icon: ':heavy_check_mark:'
     path: src/math/fps.hpp
-    title: src/math/fps.hpp
+    title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570"
   - icon: ':heavy_check_mark:'
     path: src/math/number-theory.hpp
-    title: "a^(-1) mod MOD\u3092\u8FD4\u3059"
+    title: "\u6570\u8AD6 (\u9006\u5143\u3001\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\u3001\
+      \u7573\u307F\u8FBC\u307F\u306A\u3069)"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/jag-summer-2971.test.cpp

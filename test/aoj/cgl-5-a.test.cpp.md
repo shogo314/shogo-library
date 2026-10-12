@@ -3,7 +3,7 @@ data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
     path: src/geometry/vector.hpp
-    title: "\u5E7E\u4F55\u5B66\u3068\u3057\u3066\u306E\u30D9\u30AF\u30C8\u30EB"
+    title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
@@ -17,7 +17,8 @@ data:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_5_A
   bundledCode: "#line 1 \"test/aoj/cgl-5-a.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_5_A\"\
     \n#define ERROR \"1e-6\"\n\n#include <iomanip>\n#include <iostream>\n\n#line 2\
-    \ \"src/geometry/vector.hpp\"\n\n#include <algorithm>\n#include <array>\n#include\
+    \ \"src/geometry/vector.hpp\"\n\n/**\n * @file vector.hpp\n * @brief \u5E7E\u4F55\
+    \u30D9\u30AF\u30C8\u30EB\n */\n\n#include <algorithm>\n#include <array>\n#include\
     \ <cassert>\n#include <cmath>\n#include <initializer_list>\n#include <istream>\n\
     #include <numeric>\n#include <ostream>\n#include <stack>\n#include <tuple>\n#include\
     \ <type_traits>\n#include <vector>\n\n/**\n * @brief \u5E7E\u4F55\u5B66\u3068\u3057\
@@ -325,7 +326,7 @@ data:
   isVerificationFile: true
   path: test/aoj/cgl-5-a.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 00:13:34+09:00'
+  timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/cgl-5-a.test.cpp

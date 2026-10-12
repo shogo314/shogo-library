@@ -3,50 +3,55 @@ data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
     path: src/base/traits.hpp
-    title: src/base/traits.hpp
+    title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':warning:'
   attributes:
+    document_title: "vector \u306B\u5BFE\u3059\u308B\u6F14\u7B97\u5B50\u3068\u95A2\
+      \u6570"
     links: []
-  bundledCode: "#line 2 \"src/base/vector_func.hpp\"\n#include <algorithm>\n#include\
-    \ <cmath>\n#include <cstddef>\n#include <numeric>\n#include <vector>\n\n#line\
-    \ 2 \"src/base/traits.hpp\"\n\n#line 4 \"src/base/traits.hpp\"\n#include <iterator>\n\
-    #include <set>\n#include <type_traits>\n#include <utility>\n\nnamespace detail\
-    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
-    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
-    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace detail\n\n\
-    template <class T>\nstruct is_range : detail::is_range_impl<T>::type {};\ntemplate\
-    \ <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define\
-    \ HAS_METHOD(func_name)                                                      \
-    \        \\\n    namespace detail {                                          \
-    \                           \\\n    template <class T, class = void>         \
-    \                                              \\\n    struct has_##func_name##_impl\
-    \ : std::false_type {};                                    \\\n    template <class\
-    \ T>                                                                     \\\n\
-    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
-    \ \\\n        : std::true_type {};                                           \
-    \                    \\\n    }                                               \
-    \                                       \\\n    template <class T>           \
-    \                                                          \\\n    struct has_##func_name\
-    \ : detail::has_##func_name##_impl<T>::type {};                   \\\n    template\
-    \ <class T>                                                                  \
-    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
-    \n#define HAS_METHOD_ARG(func_name)                                          \
-    \                                    \\\n    namespace detail {              \
-    \                                                                           \\\
-    \n    template <class T, typename U, class = void>                           \
-    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
-    \ {};                                                        \\\n    template\
-    \ <class T, typename U>                                                      \
-    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
-    \ \\\n        : std::true_type {};                                           \
-    \                                        \\\n    }                           \
+  bundledCode: "#line 2 \"src/base/vector_func.hpp\"\n\n/**\n * @file vector_func.hpp\n\
+    \ * @brief vector \u306B\u5BFE\u3059\u308B\u6F14\u7B97\u5B50\u3068\u95A2\u6570\
+    \n */\n\n#include <algorithm>\n#include <cmath>\n#include <cstddef>\n#include\
+    \ <numeric>\n#include <vector>\n\n#line 2 \"src/base/traits.hpp\"\n\n/**\n * @file\
+    \ traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 9 \"src/base/traits.hpp\"\
+    \n#include <iterator>\n#include <set>\n#include <type_traits>\n#include <utility>\n\
+    \nnamespace detail {\nusing std::begin, std::end;\n\ntemplate <class T, class\
+    \ = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct\
+    \ is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
+    \ : std::true_type {};\n}  // namespace detail\n\ntemplate <class T>\nstruct is_range\
+    \ : detail::is_range_impl<T>::type {};\ntemplate <class T>\ninline constexpr bool\
+    \ is_range_v = is_range<T>::value;\n\n#define HAS_METHOD(func_name)          \
+    \                                                    \\\n    namespace detail\
+    \ {                                                                     \\\n \
+    \   template <class T, class = void>                                         \
+    \              \\\n    struct has_##func_name##_impl : std::false_type {};   \
+    \                                 \\\n    template <class T>                 \
+    \                                                    \\\n    struct has_##func_name##_impl<T,\
+    \ std::void_t<decltype(std::declval<T>().func_name())>> \\\n        : std::true_type\
+    \ {};                                                               \\\n    }\
     \                                                                            \
-    \   \\\n    template <class T, typename U>                                   \
-    \                                          \\\n    struct has_##func_name : detail::has_##func_name##_impl<T,\
+    \          \\\n    template <class T>                                        \
+    \                             \\\n    struct has_##func_name : detail::has_##func_name##_impl<T>::type\
+    \ {};                   \\\n    template <class T>                           \
+    \                                          \\\n    inline constexpr bool has_##func_name##_v\
+    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
+    \                                                                    \\\n    namespace\
+    \ detail {                                                                   \
+    \                      \\\n    template <class T, typename U, class = void>  \
+    \                                                             \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                                      \
+    \  \\\n    template <class T, typename U>                                    \
+    \                                         \\\n    struct has_##func_name##_impl<T,\
+    \ U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>> \\\
+    \n        : std::true_type {};                                               \
+    \                                    \\\n    }                               \
+    \                                                                           \\\
+    \n    template <class T, typename U>                                         \
+    \                                    \\\n    struct has_##func_name : detail::has_##func_name##_impl<T,\
     \ U>::type {};                                    \\\n    template <class T, typename\
     \ U>                                                                         \
     \    \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
@@ -63,7 +68,7 @@ data:
     \ : std::true_type {};\n}  // namespace detail\ntemplate <class T>\nstruct is_sorted_container\
     \ : detail::is_sorted_container_impl<T>::type {};\ntemplate <class T>\ninline\
     \ constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n#line\
-    \ 9 \"src/base/vector_func.hpp\"\n\ntemplate <typename T>\nstd::vector<std::ptrdiff_t>\
+    \ 15 \"src/base/vector_func.hpp\"\n\ntemplate <typename T>\nstd::vector<std::ptrdiff_t>\
     \ sorted_idx(const std::vector<T> &v, bool reverse = false) {\n    std::vector<std::ptrdiff_t>\
     \ ret(v.size());\n    std::iota(ret.begin(), ret.end(), 0);\n    std::sort(ret.begin(),\
     \ ret.end(), [&](std::ptrdiff_t i, std::ptrdiff_t j) {\n        return v[i] <\
@@ -135,41 +140,42 @@ data:
     \ long v, int base = 10) {\n    std::vector<long long> res;\n    while (v > 0)\
     \ {\n        res.push_back(v % base);\n        v /= base;\n    }\n    std::reverse(res.begin(),\
     \ res.end());\n    return res;\n}\n"
-  code: "#pragma once\n#include <algorithm>\n#include <cmath>\n#include <cstddef>\n\
-    #include <numeric>\n#include <vector>\n\n#include \"traits.hpp\"\n\ntemplate <typename\
-    \ T>\nstd::vector<std::ptrdiff_t> sorted_idx(const std::vector<T> &v, bool reverse\
-    \ = false) {\n    std::vector<std::ptrdiff_t> ret(v.size());\n    std::iota(ret.begin(),\
-    \ ret.end(), 0);\n    std::sort(ret.begin(), ret.end(), [&](std::ptrdiff_t i,\
-    \ std::ptrdiff_t j) {\n        return v[i] < v[j];\n    });\n    if (reverse)\
-    \ std::reverse(ret.begin(), ret.end());\n    return ret;\n}\n\ntemplate <typename\
-    \ T>\ninline std::vector<T> &operator++(std::vector<T> &v) {\n    for (auto &e\
-    \ : v) e++;\n    return v;\n}\ntemplate <typename T>\ninline std::vector<T> operator++(std::vector<T>\
-    \ &v, int) {\n    auto res = v;\n    for (auto &e : v) e++;\n    return res;\n\
-    }\ntemplate <typename T>\ninline std::vector<T> &operator--(std::vector<T> &v)\
-    \ {\n    for (auto &e : v) e--;\n    return v;\n}\ntemplate <typename T>\ninline\
-    \ std::vector<T> operator--(std::vector<T> &v, int) {\n    auto res = v;\n   \
-    \ for (auto &e : v) e--;\n    return res;\n}\n\ntemplate <typename T, typename\
-    \ U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T> &operator+=(std::vector<T>\
-    \ &v1, const std::vector<U> &v2) {\n    if (v2.size() > v1.size()) {\n       \
-    \ v1.resize(v2.size());\n    }\n    for (size_t i = 0; i < v2.size(); i++) {\n\
-    \        v1[i] += v2[i];\n    }\n    return v1;\n}\n\ntemplate <typename T, typename\
-    \ U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T> operator+(const\
-    \ std::vector<T> &v1, const std::vector<U> &v2) {\n    std::vector<T> res(v1);\n\
-    \    return res += v2;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
-    \ T>)>\ninline std::vector<T> &operator+=(std::vector<T> &v, const U &u) {\n \
-    \   for (T &e : v) {\n        e += u;\n    }\n    return v;\n}\n\ntemplate <typename\
+  code: "#pragma once\n\n/**\n * @file vector_func.hpp\n * @brief vector \u306B\u5BFE\
+    \u3059\u308B\u6F14\u7B97\u5B50\u3068\u95A2\u6570\n */\n\n#include <algorithm>\n\
+    #include <cmath>\n#include <cstddef>\n#include <numeric>\n#include <vector>\n\n\
+    #include \"traits.hpp\"\n\ntemplate <typename T>\nstd::vector<std::ptrdiff_t>\
+    \ sorted_idx(const std::vector<T> &v, bool reverse = false) {\n    std::vector<std::ptrdiff_t>\
+    \ ret(v.size());\n    std::iota(ret.begin(), ret.end(), 0);\n    std::sort(ret.begin(),\
+    \ ret.end(), [&](std::ptrdiff_t i, std::ptrdiff_t j) {\n        return v[i] <\
+    \ v[j];\n    });\n    if (reverse) std::reverse(ret.begin(), ret.end());\n   \
+    \ return ret;\n}\n\ntemplate <typename T>\ninline std::vector<T> &operator++(std::vector<T>\
+    \ &v) {\n    for (auto &e : v) e++;\n    return v;\n}\ntemplate <typename T>\n\
+    inline std::vector<T> operator++(std::vector<T> &v, int) {\n    auto res = v;\n\
+    \    for (auto &e : v) e++;\n    return res;\n}\ntemplate <typename T>\ninline\
+    \ std::vector<T> &operator--(std::vector<T> &v) {\n    for (auto &e : v) e--;\n\
+    \    return v;\n}\ntemplate <typename T>\ninline std::vector<T> operator--(std::vector<T>\
+    \ &v, int) {\n    auto res = v;\n    for (auto &e : v) e--;\n    return res;\n\
+    }\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\n\
+    inline std::vector<T> &operator+=(std::vector<T> &v1, const std::vector<U> &v2)\
+    \ {\n    if (v2.size() > v1.size()) {\n        v1.resize(v2.size());\n    }\n\
+    \    for (size_t i = 0; i < v2.size(); i++) {\n        v1[i] += v2[i];\n    }\n\
+    \    return v1;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
+    \ T>)>\ninline std::vector<T> operator+(const std::vector<T> &v1, const std::vector<U>\
+    \ &v2) {\n    std::vector<T> res(v1);\n    return res += v2;\n}\n\ntemplate <typename\
     \ T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>\
-    \ operator+(const std::vector<T> &v, const U &u) {\n    std::vector<T> res(v);\n\
-    \    return res += u;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
-    \ T>)>\ninline std::vector<T> operator+(const U &u, const std::vector<T> &v) {\n\
+    \ &operator+=(std::vector<T> &v, const U &u) {\n    for (T &e : v) {\n       \
+    \ e += u;\n    }\n    return v;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
+    \ T>)>\ninline std::vector<T> operator+(const std::vector<T> &v, const U &u) {\n\
     \    std::vector<T> res(v);\n    return res += u;\n}\n\ntemplate <typename T,\
     \ typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>\
-    \ &operator*=(std::vector<T> &v1, const std::vector<U> &v2) {\n    if (v2.size()\
-    \ > v1.size()) {\n        v1.resize(v2.size());\n    }\n    for (size_t i = 0;\
-    \ i < v2.size(); i++) {\n        v1[i] *= v2[i];\n    }\n    for (size_t i = v2.size();\
-    \ i < v1.size(); i++) {\n        v1[i] *= U(0);\n    }\n    return v1;\n}\n\n\
-    template <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\n\
-    inline std::vector<T> operator*(const std::vector<T> &v1, const std::vector<U>\
+    \ operator+(const U &u, const std::vector<T> &v) {\n    std::vector<T> res(v);\n\
+    \    return res += u;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
+    \ T>)>\ninline std::vector<T> &operator*=(std::vector<T> &v1, const std::vector<U>\
+    \ &v2) {\n    if (v2.size() > v1.size()) {\n        v1.resize(v2.size());\n  \
+    \  }\n    for (size_t i = 0; i < v2.size(); i++) {\n        v1[i] *= v2[i];\n\
+    \    }\n    for (size_t i = v2.size(); i < v1.size(); i++) {\n        v1[i] *=\
+    \ U(0);\n    }\n    return v1;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
+    \ T>)>\ninline std::vector<T> operator*(const std::vector<T> &v1, const std::vector<U>\
     \ &v2) {\n    std::vector<T> res(v1);\n    return res *= v2;\n}\n\ntemplate <typename\
     \ T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>\
     \ &operator*=(std::vector<T> &v, const U &u) {\n    for (T &e : v) {\n       \
@@ -214,7 +220,7 @@ data:
   isVerificationFile: false
   path: src/base/vector_func.hpp
   requiredBy: []
-  timestamp: '2026-10-11 23:34:07+09:00'
+  timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: src/base/vector_func.hpp
@@ -222,5 +228,5 @@ layout: document
 redirect_from:
 - /library/src/base/vector_func.hpp
 - /library/src/base/vector_func.hpp.html
-title: src/base/vector_func.hpp
+title: "vector \u306B\u5BFE\u3059\u308B\u6F14\u7B97\u5B50\u3068\u95A2\u6570"
 ---

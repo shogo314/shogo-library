@@ -31,10 +31,11 @@ data:
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
-    document_title: "\u5E7E\u4F55\u5B66\u3068\u3057\u3066\u306E\u30D9\u30AF\u30C8\u30EB"
+    document_title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"
     links: []
-  bundledCode: "#line 2 \"src/geometry/vector.hpp\"\n\n#include <algorithm>\n#include\
-    \ <array>\n#include <cassert>\n#include <cmath>\n#include <initializer_list>\n\
+  bundledCode: "#line 2 \"src/geometry/vector.hpp\"\n\n/**\n * @file vector.hpp\n\
+    \ * @brief \u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB\n */\n\n#include <algorithm>\n\
+    #include <array>\n#include <cassert>\n#include <cmath>\n#include <initializer_list>\n\
     #include <istream>\n#include <numeric>\n#include <ostream>\n#include <stack>\n\
     #include <tuple>\n#include <type_traits>\n#include <vector>\n\n/**\n * @brief\
     \ \u5E7E\u4F55\u5B66\u3068\u3057\u3066\u306E\u30D9\u30AF\u30C8\u30EB\n *\n * @tparam\
@@ -326,7 +327,8 @@ data:
     \u30AF\u30B9\n */\ntemplate <typename T>\nstd::tuple<double, int, int> closest_point_pair(const\
     \ std::vector<Vector<T, 2>>& points) {\n    auto [d2, i, j] = closest_point_pair_squred(points);\n\
     \    return {std::sqrt(d2), i, j};\n}\n"
-  code: "#pragma once\n\n#include <algorithm>\n#include <array>\n#include <cassert>\n\
+  code: "#pragma once\n\n/**\n * @file vector.hpp\n * @brief \u5E7E\u4F55\u30D9\u30AF\
+    \u30C8\u30EB\n */\n\n#include <algorithm>\n#include <array>\n#include <cassert>\n\
     #include <cmath>\n#include <initializer_list>\n#include <istream>\n#include <numeric>\n\
     #include <ostream>\n#include <stack>\n#include <tuple>\n#include <type_traits>\n\
     #include <vector>\n\n/**\n * @brief \u5E7E\u4F55\u5B66\u3068\u3057\u3066\u306E\
@@ -623,7 +625,7 @@ data:
   isVerificationFile: false
   path: src/geometry/vector.hpp
   requiredBy: []
-  timestamp: '2026-10-11 23:34:07+09:00'
+  timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/aoj/cgl-3-a.test.cpp
@@ -639,5 +641,5 @@ layout: document
 redirect_from:
 - /library/src/geometry/vector.hpp
 - /library/src/geometry/vector.hpp.html
-title: "\u5E7E\u4F55\u5B66\u3068\u3057\u3066\u306E\u30D9\u30AF\u30C8\u30EB"
+title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"
 ---

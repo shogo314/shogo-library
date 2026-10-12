@@ -3,8 +3,7 @@ data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
     path: src/data_structures/binary-trie.hpp
-    title: "\u7B26\u53F7\u306A\u3057\u6574\u6570\u306E\u591A\u91CD\u96C6\u5408\u3092\
-      \u7BA1\u7406\u3059\u308B"
+    title: Binary Trie
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
@@ -18,7 +17,8 @@ data:
   bundledCode: "#line 1 \"test/aoj/itp1-1-a.binary-trie.test.cpp\"\n#define PROBLEM\
     \ \"https://onlinejudge.u-aizu.ac.jp/problems/ITP1_1_A\"\n\n#include <algorithm>\n\
     #include <vector>\n#include <assert.h>\n#include <iostream>\n#include <random>\n\
-    \n#line 2 \"src/data_structures/binary-trie.hpp\"\n\n#line 4 \"src/data_structures/binary-trie.hpp\"\
+    \n#line 2 \"src/data_structures/binary-trie.hpp\"\n\n/**\n * @file binary-trie.hpp\n\
+    \ * @brief Binary Trie\n */\n\n#line 9 \"src/data_structures/binary-trie.hpp\"\
     \n#include <limits>\n#include <memory>\n#include <utility>\n\n/**\n * @brief \u7B26\
     \u53F7\u306A\u3057\u6574\u6570\u306E\u591A\u91CD\u96C6\u5408\u3092\u7BA1\u7406\
     \u3059\u308B\n * @tparam `d` \u6271\u3046\u6574\u6570\u5024\u306E\u30D3\u30C3\u30C8\
@@ -168,7 +168,7 @@ data:
   isVerificationFile: true
   path: test/aoj/itp1-1-a.binary-trie.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 00:13:34+09:00'
+  timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/itp1-1-a.binary-trie.test.cpp

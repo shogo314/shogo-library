@@ -3,14 +3,15 @@ data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
     path: src/math/fps.hpp
-    title: src/math/fps.hpp
+    title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570"
   - icon: ':heavy_check_mark:'
     path: src/math/modint.hpp
     title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
       \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9"
   - icon: ':heavy_check_mark:'
     path: src/math/number-theory.hpp
-    title: "a^(-1) mod MOD\u3092\u8FD4\u3059"
+    title: "\u6570\u8AD6 (\u9006\u5143\u3001\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\u3001\
+      \u7573\u307F\u8FBC\u307F\u306A\u3069)"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
@@ -23,12 +24,15 @@ data:
     - https://judge.yosupo.jp/problem/partition_function
   bundledCode: "#line 1 \"test/yosupo/partition-function_1.test.cpp\"\n#define PROBLEM\
     \ \"https://judge.yosupo.jp/problem/partition_function\"\n\n#line 2 \"src/math/fps.hpp\"\
-    \n\n#include <algorithm>\n#line 2 \"src/math/number-theory.hpp\"\n\n#include <numeric>\n\
-    #include <vector>\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n\
-    \ * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067\
-    \ mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#include <iostream>\n#include\
-    \ <utility>\n#include <limits>\n#include <type_traits>\n#include <cstdint>\n#include\
-    \ <cassert>\n\nnamespace detail {\n    static constexpr std::uint16_t prime32_bases[]\
+    \n\n/**\n * @file fps.hpp\n * @brief \u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\n */\n\
+    \n#include <algorithm>\n#line 2 \"src/math/number-theory.hpp\"\n\n/**\n * @file\
+    \ number-theory.hpp\n * @brief \u6570\u8AD6 (\u9006\u5143\u3001\u4E2D\u56FD\u5270\
+    \u4F59\u5B9A\u7406\u3001\u7573\u307F\u8FBC\u307F\u306A\u3069)\n */\n\n#include\
+    \ <numeric>\n#include <vector>\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file\
+    \ modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\
+    \u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#include <iostream>\n\
+    #include <utility>\n#include <limits>\n#include <type_traits>\n#include <cstdint>\n\
+    #include <cassert>\n\nnamespace detail {\n    static constexpr std::uint16_t prime32_bases[]\
     \ {\n        15591,  2018,  166, 7429,  8064, 16045, 10503,  4399,  1949,  1295,\
     \ 2776,  3620,   560,  3128,  5212,  2657,\n         2300,  2021, 4652, 1471,\
     \  9336,  4018,  2398, 20462, 10277,  8028, 2213,  6219,   620,  3763,  4852,\
@@ -257,10 +261,10 @@ data:
     \      : base_type{value} {}\n\nprivate:\n    inline static value_type modulus\
     \ = 998244353;\n};\n\nusing modint998244353 = static_modint<998244353>;\nusing\
     \ modint1000000007 = static_modint<1000000007>;\nusing modint = dynamic_modint<-1>;\n\
-    #line 6 \"src/math/number-theory.hpp\"\n\n/**\n * @brief a^(-1) mod MOD\u3092\u8FD4\
-    \u3059\n * @param a long long\n * @param MOD long long\n * @return long long\n\
-    \ */\ninline long long modinv(long long a, long long MOD) {\n    a %= MOD;\n \
-    \   if (a < 0) a += MOD;\n    long long b = MOD, u = 1, v = 0;\n    while (b)\
+    #line 11 \"src/math/number-theory.hpp\"\n\n/**\n * @brief a^(-1) mod MOD\u3092\
+    \u8FD4\u3059\n * @param a long long\n * @param MOD long long\n * @return long\
+    \ long\n */\ninline long long modinv(long long a, long long MOD) {\n    a %= MOD;\n\
+    \    if (a < 0) a += MOD;\n    long long b = MOD, u = 1, v = 0;\n    while (b)\
     \ {\n        long long t = a / b;\n        a -= t * b; std::swap(a, b);\n    \
     \    u -= t * v; std::swap(u, v);\n    }\n    u %= MOD; \n    if (u < 0) u +=\
     \ MOD;\n    return u;\n}\n\n/**\n * @brief a^n mod MOD\u3092\u8FD4\u3059\n * @param\
@@ -408,7 +412,7 @@ data:
     \ * (c1[i] - y0)).value();\n        int y2 = (NTT::imod01 * (c2[i] - y0) - NTT::imod1\
     \ * y1).value();\n        __int128_t tmp = (__int128_t)mod01 * y2 + (__int128_t)mod0\
     \ * y1 + y0;\n        if(tmp < (mod012 >> 1)) res[i] = tmp;\n        else res[i]\
-    \ = tmp - mod012;\n    }\n    return res;\n}\n#line 5 \"src/math/fps.hpp\"\n\n\
+    \ = tmp - mod012;\n    }\n    return res;\n}\n#line 10 \"src/math/fps.hpp\"\n\n\
     template <typename mint> struct FPS : std::vector<mint> {\n    using std::vector<mint>::vector;\n\
     \ \n    // constructor\n    FPS(const std::vector<mint>& r) : std::vector<mint>(r)\
     \ {}\n \n    // core operator\n    inline FPS pre(int siz) const {\n        return\
@@ -523,7 +527,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/partition-function_1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 00:13:34+09:00'
+  timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/partition-function_1.test.cpp

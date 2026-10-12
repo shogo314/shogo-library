@@ -3,7 +3,7 @@ data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
     path: src/base/traits.hpp
-    title: src/base/traits.hpp
+    title: "\u578B\u7279\u6027"
   - icon: ':heavy_check_mark:'
     path: src/string/rolling-hash.hpp
     title: "\u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5"
@@ -19,12 +19,14 @@ data:
     - https://judge.yosupo.jp/problem/enumerate_palindromes
   bundledCode: "#line 1 \"test/yosupo/enumerate-palindromes.test.cpp\"\n#define PROBLEM\
     \ \"https://judge.yosupo.jp/problem/enumerate_palindromes\"\n\n#line 2 \"src/string/rolling-hash.hpp\"\
-    \n\n#include <string>\n#include <vector>\n#include <random>\n#include <cassert>\n\
-    #include <string_view>\n#include <type_traits>\n\n#line 2 \"src/base/traits.hpp\"\
-    \n\n#include <cstddef>\n#include <iterator>\n#include <set>\n#line 7 \"src/base/traits.hpp\"\
-    \n#include <utility>\n\nnamespace detail {\nusing std::begin, std::end;\n\ntemplate\
-    \ <class T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate\
-    \ <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \n\n/**\n * @file rolling-hash.hpp\n * @brief \u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\
+    \u30C3\u30B7\u30E5\n */\n\n#include <string>\n#include <vector>\n#include <random>\n\
+    #include <cassert>\n#include <string_view>\n#include <type_traits>\n\n#line 2\
+    \ \"src/base/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\
+    \n */\n\n#include <cstddef>\n#include <iterator>\n#include <set>\n#line 12 \"\
+    src/base/traits.hpp\"\n#include <utility>\n\nnamespace detail {\nusing std::begin,\
+    \ std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl : std::false_type\
+    \ {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
     \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace detail\n\n\
     template <class T>\nstruct is_range : detail::is_range_impl<T>::type {};\ntemplate\
     \ <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define\
@@ -71,7 +73,7 @@ data:
     \ : std::true_type {};\n}  // namespace detail\ntemplate <class T>\nstruct is_sorted_container\
     \ : detail::is_sorted_container_impl<T>::type {};\ntemplate <class T>\ninline\
     \ constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n#line\
-    \ 11 \"src/string/rolling-hash.hpp\"\n\nstruct RHString;\n\n/**\n * @brief \u30ED\
+    \ 16 \"src/string/rolling-hash.hpp\"\n\nstruct RHString;\n\n/**\n * @brief \u30ED\
     \u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5\n *\n * \u30D3\u30C3\u30C8\u6F14\
     \u7B97\u306B\u5BC4\u308B\u9AD8\u901F\u5316\u306E\u305F\u3081\u30CF\u30C3\u30B7\
     \u30E5\u306FMOD = 2^61-1\u3067\u8A08\u7B97\u3055\u308C\u308B\n *\n * 10^8\u500B\
@@ -235,7 +237,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/enumerate-palindromes.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 00:13:34+09:00'
+  timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/enumerate-palindromes.test.cpp

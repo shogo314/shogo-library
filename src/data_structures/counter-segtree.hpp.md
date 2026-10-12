@@ -10,18 +10,22 @@ data:
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
+    document_title: "\u533A\u9593\u5185\u306E\u5024\u306E\u500B\u6570\u3092\u6570\u3048\
+      \u308B\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
     links: []
-  bundledCode: "#line 2 \"src/data_structures/counter-segtree.hpp\"\n#include <cassert>\n\
-    #include <map>\n#include <vector>\n\ntemplate <typename T>\nclass CounterSegTree\
-    \ {\n    using key_type = T;\n    using mapped_type = int;\n\n    int n, sz, height;\n\
-    \    std::vector<std::map<key_type, mapped_type>> data;\n\n   public:\n    explicit\
-    \ CounterSegTree(const std::vector<key_type>& v) {\n        n = v.size();\n  \
-    \      sz = 1;\n        height = 0;\n        while (sz < n) {\n            sz\
-    \ <<= 1;\n            height++;\n        }\n        data.assign(sz * 2, {});\n\
-    \        for (int i = 0; i < n; i++) {\n            data[i + sz][v[i]] = 1;\n\
-    \        }\n        for (int i = sz - 1; i > 0; i--) {\n            data[i] =\
-    \ data[2 * i];\n            for (auto [s, c] : data[2 * i + 1]) {\n          \
-    \      data[i][s] += c;\n            }\n        }\n    }\n    key_type get(int\
+  bundledCode: "#line 2 \"src/data_structures/counter-segtree.hpp\"\n\n/**\n * @file\
+    \ counter-segtree.hpp\n * @brief \u533A\u9593\u5185\u306E\u5024\u306E\u500B\u6570\
+    \u3092\u6570\u3048\u308B\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n */\n\n#include\
+    \ <cassert>\n#include <map>\n#include <vector>\n\ntemplate <typename T>\nclass\
+    \ CounterSegTree {\n    using key_type = T;\n    using mapped_type = int;\n\n\
+    \    int n, sz, height;\n    std::vector<std::map<key_type, mapped_type>> data;\n\
+    \n   public:\n    explicit CounterSegTree(const std::vector<key_type>& v) {\n\
+    \        n = v.size();\n        sz = 1;\n        height = 0;\n        while (sz\
+    \ < n) {\n            sz <<= 1;\n            height++;\n        }\n        data.assign(sz\
+    \ * 2, {});\n        for (int i = 0; i < n; i++) {\n            data[i + sz][v[i]]\
+    \ = 1;\n        }\n        for (int i = sz - 1; i > 0; i--) {\n            data[i]\
+    \ = data[2 * i];\n            for (auto [s, c] : data[2 * i + 1]) {\n        \
+    \        data[i][s] += c;\n            }\n        }\n    }\n    key_type get(int\
     \ k) const {\n        assert(0 <= k and k < n);\n        return data[k + sz].begin()->first;\n\
     \    }\n    void set(int k, const key_type& x) {\n        assert(0 <= k and k\
     \ < n);\n        k += sz;\n        key_type y = data[k].begin()->first;\n    \
@@ -54,10 +58,12 @@ data:
     \           if (itr != data[r].end()) {\n                    ret.second += itr->second;\n\
     \                }\n            }\n            l >>= 1;\n            r >>= 1;\n\
     \        }\n        return ret;\n    }\n};\n"
-  code: "#pragma once\n#include <cassert>\n#include <map>\n#include <vector>\n\ntemplate\
-    \ <typename T>\nclass CounterSegTree {\n    using key_type = T;\n    using mapped_type\
-    \ = int;\n\n    int n, sz, height;\n    std::vector<std::map<key_type, mapped_type>>\
-    \ data;\n\n   public:\n    explicit CounterSegTree(const std::vector<key_type>&\
+  code: "#pragma once\n\n/**\n * @file counter-segtree.hpp\n * @brief \u533A\u9593\
+    \u5185\u306E\u5024\u306E\u500B\u6570\u3092\u6570\u3048\u308B\u30BB\u30B0\u30E1\
+    \u30F3\u30C8\u6728\n */\n\n#include <cassert>\n#include <map>\n#include <vector>\n\
+    \ntemplate <typename T>\nclass CounterSegTree {\n    using key_type = T;\n   \
+    \ using mapped_type = int;\n\n    int n, sz, height;\n    std::vector<std::map<key_type,\
+    \ mapped_type>> data;\n\n   public:\n    explicit CounterSegTree(const std::vector<key_type>&\
     \ v) {\n        n = v.size();\n        sz = 1;\n        height = 0;\n        while\
     \ (sz < n) {\n            sz <<= 1;\n            height++;\n        }\n      \
     \  data.assign(sz * 2, {});\n        for (int i = 0; i < n; i++) {\n         \
@@ -100,7 +106,7 @@ data:
   isVerificationFile: false
   path: src/data_structures/counter-segtree.hpp
   requiredBy: []
-  timestamp: '2026-10-11 23:34:07+09:00'
+  timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/yosupo/point-set-range-frequency.test.cpp
@@ -109,5 +115,6 @@ layout: document
 redirect_from:
 - /library/src/data_structures/counter-segtree.hpp
 - /library/src/data_structures/counter-segtree.hpp.html
-title: src/data_structures/counter-segtree.hpp
+title: "\u533A\u9593\u5185\u306E\u5024\u306E\u500B\u6570\u3092\u6570\u3048\u308B\u30BB\
+  \u30B0\u30E1\u30F3\u30C8\u6728"
 ---

@@ -3,7 +3,7 @@ data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
     path: src/graph/graph.hpp
-    title: "\u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9"
+    title: "\u30B0\u30E9\u30D5"
   - icon: ':heavy_check_mark:'
     path: src/graph/graph_util.hpp
     title: "\u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570"
@@ -20,7 +20,8 @@ data:
   bundledCode: "#line 1 \"test/aoj/grl-4-a.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_4_A\"\
     \n\n#include <iostream>\n\n#line 2 \"src/graph/graph_util.hpp\"\n\n/**\n * @file\
     \ graph_util.hpp\n * @brief \u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570\
-    \n */\n\n#include <stack>\n\n#line 2 \"src/graph/graph.hpp\"\n\n#line 4 \"src/graph/graph.hpp\"\
+    \n */\n\n#include <stack>\n\n#line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file\
+    \ graph.hpp\n * @brief \u30B0\u30E9\u30D5\n */\n\n#line 9 \"src/graph/graph.hpp\"\
     \n#include <limits>\n#include <queue>\n#include <vector>\n\n/**\n * @brief \u30B0\
     \u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\
     \u30B3\u30B9\u30C8\u306E\u578B\n */\ntemplate <typename Cost = int>\nstruct Graph\
@@ -242,7 +243,7 @@ data:
   isVerificationFile: true
   path: test/aoj/grl-4-a.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 00:13:34+09:00'
+  timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/grl-4-a.test.cpp

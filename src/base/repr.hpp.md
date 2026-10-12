@@ -3,19 +3,24 @@ data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
     path: src/base/traits.hpp
-    title: src/base/traits.hpp
+    title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':warning:'
   attributes:
+    document_title: "\u51FA\u529B\u3092\u305D\u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\
+      \u30E9\u30AF\u30BF\u306B\u4F7F\u3048\u308B\u6587\u5B57\u5217\u5316 (repr)"
     links: []
-  bundledCode: "#line 2 \"src/base/repr.hpp\"\n#include <array>\n#include <iostream>\n\
-    #include <map>\n#include <set>\n#include <sstream>\n#include <string>\n#include\
-    \ <utility>\n#include <vector>\n#line 2 \"src/base/traits.hpp\"\n\n#include <cstddef>\n\
-    #include <iterator>\n#line 6 \"src/base/traits.hpp\"\n#include <type_traits>\n\
-    #line 8 \"src/base/traits.hpp\"\n\nnamespace detail {\nusing std::begin, std::end;\n\
+  bundledCode: "#line 2 \"src/base/repr.hpp\"\n\n/**\n * @file repr.hpp\n * @brief\
+    \ \u51FA\u529B\u3092\u305D\u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\
+    \u30BF\u306B\u4F7F\u3048\u308B\u6587\u5B57\u5217\u5316 (repr)\n */\n\n#include\
+    \ <array>\n#include <iostream>\n#include <map>\n#include <set>\n#include <sstream>\n\
+    #include <string>\n#include <utility>\n#include <vector>\n#line 2 \"src/base/traits.hpp\"\
+    \n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n\
+    #include <iterator>\n#line 11 \"src/base/traits.hpp\"\n#include <type_traits>\n\
+    #line 13 \"src/base/traits.hpp\"\n\nnamespace detail {\nusing std::begin, std::end;\n\
     \ntemplate <class T, class = void>\nstruct is_range_impl : std::false_type {};\n\
     template <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
     \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace detail\n\n\
@@ -64,7 +69,7 @@ data:
     \ : std::true_type {};\n}  // namespace detail\ntemplate <class T>\nstruct is_sorted_container\
     \ : detail::is_sorted_container_impl<T>::type {};\ntemplate <class T>\ninline\
     \ constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n#line\
-    \ 11 \"src/base/repr.hpp\"\n\nnamespace detail {\n\n///////////////////////////////////////////////////////////////////\n\
+    \ 17 \"src/base/repr.hpp\"\n\nnamespace detail {\n\n///////////////////////////////////////////////////////////////////\n\
     /////////////////////////// declaration ///////////////////////////\n///////////////////////////////////////////////////////////////////\n\
     \ninline std::string type_str(const char*);\ninline std::string initializer_str(const\
     \ char*);\ninline std::string repr(const char*);\n\ninline std::string type_str(const\
@@ -210,10 +215,13 @@ data:
     \ initializer_str(const T& t) {\n    return detail::initializer_str(t);\n}\ntemplate\
     \ <typename T>\ninline std::string repr(const T& t) {\n    return detail::repr(t);\n\
     }\n\n#define DEBUG(x) { std::cerr << #x << \" = \" << repr(x) << std::endl; }\n"
-  code: "#pragma once\n#include <array>\n#include <iostream>\n#include <map>\n#include\
-    \ <set>\n#include <sstream>\n#include <string>\n#include <utility>\n#include <vector>\n\
-    #include \"traits.hpp\"\n\nnamespace detail {\n\n///////////////////////////////////////////////////////////////////\n\
-    /////////////////////////// declaration ///////////////////////////\n///////////////////////////////////////////////////////////////////\n\
+  code: "#pragma once\n\n/**\n * @file repr.hpp\n * @brief \u51FA\u529B\u3092\u305D\
+    \u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u306B\u4F7F\u3048\
+    \u308B\u6587\u5B57\u5217\u5316 (repr)\n */\n\n#include <array>\n#include <iostream>\n\
+    #include <map>\n#include <set>\n#include <sstream>\n#include <string>\n#include\
+    \ <utility>\n#include <vector>\n#include \"traits.hpp\"\n\nnamespace detail {\n\
+    \n///////////////////////////////////////////////////////////////////\n///////////////////////////\
+    \ declaration ///////////////////////////\n///////////////////////////////////////////////////////////////////\n\
     \ninline std::string type_str(const char*);\ninline std::string initializer_str(const\
     \ char*);\ninline std::string repr(const char*);\n\ninline std::string type_str(const\
     \ char&);\ninline std::string initializer_str(const char&);\ninline std::string\
@@ -363,7 +371,7 @@ data:
   isVerificationFile: false
   path: src/base/repr.hpp
   requiredBy: []
-  timestamp: '2026-10-11 23:34:07+09:00'
+  timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: src/base/repr.hpp
@@ -371,5 +379,6 @@ layout: document
 redirect_from:
 - /library/src/base/repr.hpp
 - /library/src/base/repr.hpp.html
-title: src/base/repr.hpp
+title: "\u51FA\u529B\u3092\u305D\u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\
+  \u30BF\u306B\u4F7F\u3048\u308B\u6587\u5B57\u5217\u5316 (repr)"
 ---

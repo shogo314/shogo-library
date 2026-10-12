@@ -3,7 +3,7 @@ data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
     path: src/others/mo.hpp
-    title: src/others/mo.hpp
+    title: Mo's algorithm
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
@@ -16,8 +16,9 @@ data:
     - https://judge.yosupo.jp/problem/static_range_inversions_query
   bundledCode: "#line 1 \"test/yosupo/static-range-inversions-query.test.cpp\"\n#define\
     \ PROBLEM \"https://judge.yosupo.jp/problem/static_range_inversions_query\"\n\n\
-    #include <algorithm>\n#include <iostream>\n#include <vector>\n\n#line 3 \"src/others/mo.hpp\"\
-    \n#include <array>\n#include <type_traits>\n#line 6 \"src/others/mo.hpp\"\n#include\
+    #include <algorithm>\n#include <iostream>\n#include <vector>\n\n#line 2 \"src/others/mo.hpp\"\
+    \n\n/**\n * @file mo.hpp\n * @brief Mo's algorithm\n */\n\n#line 9 \"src/others/mo.hpp\"\
+    \n#include <array>\n#include <type_traits>\n#line 12 \"src/others/mo.hpp\"\n#include\
     \ <cmath>\n\ntemplate <typename U, class ADD_LEFT, class DELETE_LEFT, class ADD_RIGHT\
     \ = ADD_LEFT, class DELETE_RIGHT = DELETE_LEFT>\nstruct Mo {\n   private:\n  \
     \  int _n;\n    std::vector<std::array<int, 3>> lri;\n    U _e;\n    ADD_LEFT\
@@ -100,7 +101,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/static-range-inversions-query.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 00:13:34+09:00'
+  timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/static-range-inversions-query.test.cpp

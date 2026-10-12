@@ -3,7 +3,8 @@ data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
     path: src/data_structures/counter-segtree.hpp
-    title: src/data_structures/counter-segtree.hpp
+    title: "\u533A\u9593\u5185\u306E\u5024\u306E\u500B\u6570\u3092\u6570\u3048\u308B\
+      \u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
@@ -17,7 +18,9 @@ data:
   bundledCode: "#line 1 \"test/yosupo/point-set-range-frequency.test.cpp\"\n#define\
     \ PROBLEM \"https://judge.yosupo.jp/problem/point_set_range_frequency\"\n\n#include\
     \ <iostream>\n#include <vector>\n\n#line 2 \"src/data_structures/counter-segtree.hpp\"\
-    \n#include <cassert>\n#include <map>\n#line 5 \"src/data_structures/counter-segtree.hpp\"\
+    \n\n/**\n * @file counter-segtree.hpp\n * @brief \u533A\u9593\u5185\u306E\u5024\
+    \u306E\u500B\u6570\u3092\u6570\u3048\u308B\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\
+    \n */\n\n#include <cassert>\n#include <map>\n#line 11 \"src/data_structures/counter-segtree.hpp\"\
     \n\ntemplate <typename T>\nclass CounterSegTree {\n    using key_type = T;\n \
     \   using mapped_type = int;\n\n    int n, sz, height;\n    std::vector<std::map<key_type,\
     \ mapped_type>> data;\n\n   public:\n    explicit CounterSegTree(const std::vector<key_type>&\
@@ -80,7 +83,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/point-set-range-frequency.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 00:13:34+09:00'
+  timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/point-set-range-frequency.test.cpp

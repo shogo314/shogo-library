@@ -3,7 +3,7 @@ data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
     path: src/base/traits.hpp
-    title: src/base/traits.hpp
+    title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
@@ -15,43 +15,45 @@ data:
   attributes:
     document_title: "\u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5"
     links: []
-  bundledCode: "#line 2 \"src/string/rolling-hash.hpp\"\n\n#include <string>\n#include\
-    \ <vector>\n#include <random>\n#include <cassert>\n#include <string_view>\n#include\
-    \ <type_traits>\n\n#line 2 \"src/base/traits.hpp\"\n\n#include <cstddef>\n#include\
-    \ <iterator>\n#include <set>\n#line 7 \"src/base/traits.hpp\"\n#include <utility>\n\
-    \nnamespace detail {\nusing std::begin, std::end;\n\ntemplate <class T, class\
-    \ = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct\
-    \ is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
-    \ : std::true_type {};\n}  // namespace detail\n\ntemplate <class T>\nstruct is_range\
-    \ : detail::is_range_impl<T>::type {};\ntemplate <class T>\ninline constexpr bool\
-    \ is_range_v = is_range<T>::value;\n\n#define HAS_METHOD(func_name)          \
-    \                                                    \\\n    namespace detail\
-    \ {                                                                     \\\n \
-    \   template <class T, class = void>                                         \
-    \              \\\n    struct has_##func_name##_impl : std::false_type {};   \
-    \                                 \\\n    template <class T>                 \
-    \                                                    \\\n    struct has_##func_name##_impl<T,\
-    \ std::void_t<decltype(std::declval<T>().func_name())>> \\\n        : std::true_type\
-    \ {};                                                               \\\n    }\
-    \                                                                            \
-    \          \\\n    template <class T>                                        \
-    \                             \\\n    struct has_##func_name : detail::has_##func_name##_impl<T>::type\
-    \ {};                   \\\n    template <class T>                           \
-    \                                          \\\n    inline constexpr bool has_##func_name##_v\
-    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
-    \                                                                    \\\n    namespace\
-    \ detail {                                                                   \
-    \                      \\\n    template <class T, typename U, class = void>  \
-    \                                                             \\\n    struct has_##func_name##_impl\
-    \ : std::false_type {};                                                      \
-    \  \\\n    template <class T, typename U>                                    \
-    \                                         \\\n    struct has_##func_name##_impl<T,\
-    \ U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>> \\\
-    \n        : std::true_type {};                                               \
-    \                                    \\\n    }                               \
+  bundledCode: "#line 2 \"src/string/rolling-hash.hpp\"\n\n/**\n * @file rolling-hash.hpp\n\
+    \ * @brief \u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5\n */\n\n#include\
+    \ <string>\n#include <vector>\n#include <random>\n#include <cassert>\n#include\
+    \ <string_view>\n#include <type_traits>\n\n#line 2 \"src/base/traits.hpp\"\n\n\
+    /**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n\
+    #include <iterator>\n#include <set>\n#line 12 \"src/base/traits.hpp\"\n#include\
+    \ <utility>\n\nnamespace detail {\nusing std::begin, std::end;\n\ntemplate <class\
+    \ T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class\
+    \ T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace detail\n\n\
+    template <class T>\nstruct is_range : detail::is_range_impl<T>::type {};\ntemplate\
+    \ <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define\
+    \ HAS_METHOD(func_name)                                                      \
+    \        \\\n    namespace detail {                                          \
+    \                           \\\n    template <class T, class = void>         \
+    \                                              \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                    \\\n    template <class\
+    \ T>                                                                     \\\n\
+    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                    \\\n    }                                               \
+    \                                       \\\n    template <class T>           \
+    \                                                          \\\n    struct has_##func_name\
+    \ : detail::has_##func_name##_impl<T>::type {};                   \\\n    template\
+    \ <class T>                                                                  \
+    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
+    \n#define HAS_METHOD_ARG(func_name)                                          \
+    \                                    \\\n    namespace detail {              \
     \                                                                           \\\
-    \n    template <class T, typename U>                                         \
-    \                                    \\\n    struct has_##func_name : detail::has_##func_name##_impl<T,\
+    \n    template <class T, typename U, class = void>                           \
+    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                                        \\\n    template\
+    \ <class T, typename U>                                                      \
+    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                                        \\\n    }                           \
+    \                                                                            \
+    \   \\\n    template <class T, typename U>                                   \
+    \                                          \\\n    struct has_##func_name : detail::has_##func_name##_impl<T,\
     \ U>::type {};                                    \\\n    template <class T, typename\
     \ U>                                                                         \
     \    \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
@@ -68,7 +70,7 @@ data:
     \ : std::true_type {};\n}  // namespace detail\ntemplate <class T>\nstruct is_sorted_container\
     \ : detail::is_sorted_container_impl<T>::type {};\ntemplate <class T>\ninline\
     \ constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n#line\
-    \ 11 \"src/string/rolling-hash.hpp\"\n\nstruct RHString;\n\n/**\n * @brief \u30ED\
+    \ 16 \"src/string/rolling-hash.hpp\"\n\nstruct RHString;\n\n/**\n * @brief \u30ED\
     \u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5\n *\n * \u30D3\u30C3\u30C8\u6F14\
     \u7B97\u306B\u5BC4\u308B\u9AD8\u901F\u5316\u306E\u305F\u3081\u30CF\u30C3\u30B7\
     \u30E5\u306FMOD = 2^61-1\u3067\u8A08\u7B97\u3055\u308C\u308B\n *\n * 10^8\u500B\
@@ -198,15 +200,16 @@ data:
     \     return t1.sz == t2.sz && t1.hash1 == t2.hash1 && t1.hash2 == t2.hash2;\n\
     \    }\n    friend bool operator!=(const RHString& t1, const RHString& t2) { return\
     \ !(t1 == t2); }\n};\n"
-  code: "#pragma once\n\n#include <string>\n#include <vector>\n#include <random>\n\
-    #include <cassert>\n#include <string_view>\n#include <type_traits>\n\n#include\
-    \ \"../base/traits.hpp\"\n\nstruct RHString;\n\n/**\n * @brief \u30ED\u30FC\u30EA\
-    \u30F3\u30B0\u30CF\u30C3\u30B7\u30E5\n *\n * \u30D3\u30C3\u30C8\u6F14\u7B97\u306B\
-    \u5BC4\u308B\u9AD8\u901F\u5316\u306E\u305F\u3081\u30CF\u30C3\u30B7\u30E5\u306F\
-    MOD = 2^61-1\u3067\u8A08\u7B97\u3055\u308C\u308B\n *\n * 10^8\u500B\u304F\u3089\
-    \u3044\u306A\u308999%\u306E\u78BA\u7387\u3067\u885D\u7A81\u3059\u308B\u7D44\u304C\
-    \u5B58\u5728\u3057\u306A\u3044\n */\nclass RollingHash {\n    constexpr static\
-    \ unsigned long long MASK30 = (1ULL << 30) - 1;\n    constexpr static unsigned\
+  code: "#pragma once\n\n/**\n * @file rolling-hash.hpp\n * @brief \u30ED\u30FC\u30EA\
+    \u30F3\u30B0\u30CF\u30C3\u30B7\u30E5\n */\n\n#include <string>\n#include <vector>\n\
+    #include <random>\n#include <cassert>\n#include <string_view>\n#include <type_traits>\n\
+    \n#include \"../base/traits.hpp\"\n\nstruct RHString;\n\n/**\n * @brief \u30ED\
+    \u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5\n *\n * \u30D3\u30C3\u30C8\u6F14\
+    \u7B97\u306B\u5BC4\u308B\u9AD8\u901F\u5316\u306E\u305F\u3081\u30CF\u30C3\u30B7\
+    \u30E5\u306FMOD = 2^61-1\u3067\u8A08\u7B97\u3055\u308C\u308B\n *\n * 10^8\u500B\
+    \u304F\u3089\u3044\u306A\u308999%\u306E\u78BA\u7387\u3067\u885D\u7A81\u3059\u308B\
+    \u7D44\u304C\u5B58\u5728\u3057\u306A\u3044\n */\nclass RollingHash {\n    constexpr\
+    \ static unsigned long long MASK30 = (1ULL << 30) - 1;\n    constexpr static unsigned\
     \ long long MASK31 = (1ULL << 31) - 1;\n    constexpr static unsigned long long\
     \ MOD = (1ULL << 61) - 1;\n\n    // a < MOD, b < MOD\u5FC5\u9808\n    constexpr\
     \ static unsigned long long add(unsigned long long a, unsigned long long b) {\n\
@@ -335,7 +338,7 @@ data:
   isVerificationFile: false
   path: src/string/rolling-hash.hpp
   requiredBy: []
-  timestamp: '2026-10-11 23:34:07+09:00'
+  timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/yosupo/enumerate-palindromes.test.cpp

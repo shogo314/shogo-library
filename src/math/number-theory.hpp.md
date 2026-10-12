@@ -11,7 +11,7 @@ data:
     title: "\u7D44\u307F\u5408\u308F\u305B"
   - icon: ':heavy_check_mark:'
     path: src/math/fps.hpp
-    title: src/math/fps.hpp
+    title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/binomial-coefficient.test.cpp
@@ -62,9 +62,12 @@ data:
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
-    document_title: "a^(-1) mod MOD\u3092\u8FD4\u3059"
+    document_title: "\u6570\u8AD6 (\u9006\u5143\u3001\u4E2D\u56FD\u5270\u4F59\u5B9A\
+      \u7406\u3001\u7573\u307F\u8FBC\u307F\u306A\u3069)"
     links: []
-  bundledCode: "#line 2 \"src/math/number-theory.hpp\"\n\n#include <numeric>\n#include\
+  bundledCode: "#line 2 \"src/math/number-theory.hpp\"\n\n/**\n * @file number-theory.hpp\n\
+    \ * @brief \u6570\u8AD6 (\u9006\u5143\u3001\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\
+    \u3001\u7573\u307F\u8FBC\u307F\u306A\u3069)\n */\n\n#include <numeric>\n#include\
     \ <vector>\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief\
     \ \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\
     \u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#include <iostream>\n#include <utility>\n\
@@ -298,10 +301,10 @@ data:
     \      : base_type{value} {}\n\nprivate:\n    inline static value_type modulus\
     \ = 998244353;\n};\n\nusing modint998244353 = static_modint<998244353>;\nusing\
     \ modint1000000007 = static_modint<1000000007>;\nusing modint = dynamic_modint<-1>;\n\
-    #line 6 \"src/math/number-theory.hpp\"\n\n/**\n * @brief a^(-1) mod MOD\u3092\u8FD4\
-    \u3059\n * @param a long long\n * @param MOD long long\n * @return long long\n\
-    \ */\ninline long long modinv(long long a, long long MOD) {\n    a %= MOD;\n \
-    \   if (a < 0) a += MOD;\n    long long b = MOD, u = 1, v = 0;\n    while (b)\
+    #line 11 \"src/math/number-theory.hpp\"\n\n/**\n * @brief a^(-1) mod MOD\u3092\
+    \u8FD4\u3059\n * @param a long long\n * @param MOD long long\n * @return long\
+    \ long\n */\ninline long long modinv(long long a, long long MOD) {\n    a %= MOD;\n\
+    \    if (a < 0) a += MOD;\n    long long b = MOD, u = 1, v = 0;\n    while (b)\
     \ {\n        long long t = a / b;\n        a -= t * b; std::swap(a, b);\n    \
     \    u -= t * v; std::swap(u, v);\n    }\n    u %= MOD; \n    if (u < 0) u +=\
     \ MOD;\n    return u;\n}\n\n/**\n * @brief a^n mod MOD\u3092\u8FD4\u3059\n * @param\
@@ -450,7 +453,9 @@ data:
     \ * y1).value();\n        __int128_t tmp = (__int128_t)mod01 * y2 + (__int128_t)mod0\
     \ * y1 + y0;\n        if(tmp < (mod012 >> 1)) res[i] = tmp;\n        else res[i]\
     \ = tmp - mod012;\n    }\n    return res;\n}\n"
-  code: "#pragma once\n\n#include <numeric>\n#include <vector>\n#include \"modint.hpp\"\
+  code: "#pragma once\n\n/**\n * @file number-theory.hpp\n * @brief \u6570\u8AD6 (\u9006\
+    \u5143\u3001\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\u3001\u7573\u307F\u8FBC\u307F\
+    \u306A\u3069)\n */\n\n#include <numeric>\n#include <vector>\n#include \"modint.hpp\"\
     \n\n/**\n * @brief a^(-1) mod MOD\u3092\u8FD4\u3059\n * @param a long long\n *\
     \ @param MOD long long\n * @return long long\n */\ninline long long modinv(long\
     \ long a, long long MOD) {\n    a %= MOD;\n    if (a < 0) a += MOD;\n    long\
@@ -610,7 +615,7 @@ data:
   requiredBy:
   - src/math/fps.hpp
   - src/math/combinatorics.hpp
-  timestamp: '2026-10-11 23:34:07+09:00'
+  timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/yosupo/exp-of-fps.test.cpp
@@ -633,5 +638,6 @@ layout: document
 redirect_from:
 - /library/src/math/number-theory.hpp
 - /library/src/math/number-theory.hpp.html
-title: "a^(-1) mod MOD\u3092\u8FD4\u3059"
+title: "\u6570\u8AD6 (\u9006\u5143\u3001\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\u3001\
+  \u7573\u307F\u8FBC\u307F\u306A\u3069)"
 ---

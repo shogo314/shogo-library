@@ -20,53 +20,53 @@ data:
     - https://yukicoder.me/problems/no/1340
   bundledCode: "#line 1 \"test/yukicoder/search-oji.test.cpp\"\n#define PROBLEM \"\
     https://yukicoder.me/problems/no/1340\"\n\n#line 2 \"src/math/matrix.hpp\"\n\n\
-    #include <vector>\n#include <string>\n#include <algorithm>\n#include <valarray>\n\
-    #include <cassert>\n#include <type_traits>\n\nnamespace matrix {\n    template\
-    \ <typename T>\n    struct OperatorPropertyDefault {\n        constexpr static\
-    \ T zero() { return T(0); }\n        constexpr static T add(const T &a, const\
-    \ T &b) { return a + b; }\n        constexpr static T neg(const T &a) { return\
-    \ -a; }\n        constexpr static T one() { return T(1); }\n        constexpr\
-    \ static T mul(const T &a, const T &b) { return a * b; }\n        constexpr static\
-    \ T inv(const T &a) { return T(1) / a; }\n    };\n}\n\n/**\n * @brief \u884C\u5217\
-    \n * @tparam T \u578B \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u8981\u7D20\
-    \u3068\u306A\u308Bint\u3084char\n * @tparam OperatorProperty \u884C\u5217\u306E\
-    \u8981\u7D20\u306E\u6F14\u7B97\u3092\u5B9A\u7FA9\u3059\u308B\u69CB\u9020\u4F53\
-    \ 0,1\u3068+,*\u306A\u3089\u7701\u7565\u53EF\n *\n * @note\n * OperatorProperty\u306E\
-    \u4F8B\uFF08\u6574\u6570\u306Exor\u3068and\u306B\u3088\u308B\u74B0\uFF09\n * @code\n\
-    \ * struct XorOperatorProperty {\n *     constexpr static int zero() { return\
-    \ 0; }\n *     constexpr static int add(const int &a, const int &b) { return a\
-    \ ^ b; }\n *     constexpr static int neg(const int &a) { return a; }\n *    \
-    \ constexpr static int one() { return 1; }\n *     constexpr static int mul(const\
-    \ int &a, const int &b) { return a & b; }\n * };\n * @endcode\n * constexpr\u3067\
-    \u3042\u308B\u5FC5\u8981\u306F\u306A\u304F\u3001\u307E\u305Finv\u306A\u3069\u4F7F\
-    \u308F\u306A\u3044\u3082\u306E\u306F\u5B9A\u7FA9\u3057\u306A\u304F\u3066\u3082\
-    \u3088\u3044\uFF08\u5FC5\u8981\u306A\u3082\u306E\u304C\u306A\u304B\u3063\u305F\
-    \u3089\u30B3\u30F3\u30D1\u30A4\u30EB\u30A8\u30E9\u30FC\u304C\u767A\u751F\u3059\
-    \u308B\uFF09\n */\ntemplate<class T, class OperatorProperty = matrix::OperatorPropertyDefault<T>>\
-    \ struct Matrix {\n    int n, m;\n    std::vector<std::vector<T>> v;\n\n    /**\n\
-    \     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param v \u884C\
-    \u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u5143\u3068\u306A\u308B vector<string>\
-    \ \u3084 vector<vector<T>>\n     * @return Matrix\n     */\n    template <typename\
-    \ Iterable>\n    Matrix(const std::vector<Iterable>& v_) noexcept : n(v_.size()),\
-    \ m(v_.size() == 0 ? 0 : v_[0].size()) {\n        v.resize(n);\n        for(int\
-    \ i = 0; i < n; i++) {\n            v[i].assign(v_[i].begin(), v_[i].end());\n\
-    \        }\n    }\n\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\
-    \u30BF\n     * @param _n \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u884C\u6570\
-    \n     * @param _m \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u5217\u6570\n\
-    \     * @param _val \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u8981\u7D20\u306E\
-    \u521D\u671F\u5024\n     * @return Matrix\n     */\n    Matrix(int _n, int _m,\
-    \ T _val = OperatorProperty::zero()) : n(_n), m(_m), v(n, std::vector<T>(m, _val))\
-    \ {}\n    \n    auto begin() noexcept {return v.begin();}\n    auto end() noexcept\
-    \ {return v.end();}\n\n    /**\n     * @brief \u884C\u5217(\u30B0\u30EA\u30C3\u30C9\
-    )\u306E\u884C\u6570\n     * @return size_t\n     */\n    [[nodiscard]]\n    size_t\
-    \ size() const {return v.size();}\n\n    std::vector<T>& operator [] (int i) {return\
-    \ v[i];}\n    const std::vector<T>& operator [] (int i) const {return v[i];}\n\
-    \    Matrix& operator = (const std::vector<std::vector<T>> &A) noexcept {\n  \
-    \      n = A.size();\n        m = (n == 0 ? 0 : A[0].size());\n        v = A;\n\
-    \        return *this;\n    }\n    bool operator == (const Matrix &A) const noexcept\
-    \ {\n        return this->v == A.v;\n    }\n    bool operator != (const Matrix\
-    \ &A) const noexcept {\n        return this->v != A.v;\n    }\n\n    /**\n   \
-    \  * @brief \u8EE2\u7F6E\n     * @return Matrix\n     */\n    [[nodiscard]]\n\
+    /**\n * @file matrix.hpp\n * @brief \u884C\u5217\n */\n\n#include <vector>\n#include\
+    \ <string>\n#include <algorithm>\n#include <valarray>\n#include <cassert>\n#include\
+    \ <type_traits>\n\nnamespace matrix {\n    template <typename T>\n    struct OperatorPropertyDefault\
+    \ {\n        constexpr static T zero() { return T(0); }\n        constexpr static\
+    \ T add(const T &a, const T &b) { return a + b; }\n        constexpr static T\
+    \ neg(const T &a) { return -a; }\n        constexpr static T one() { return T(1);\
+    \ }\n        constexpr static T mul(const T &a, const T &b) { return a * b; }\n\
+    \        constexpr static T inv(const T &a) { return T(1) / a; }\n    };\n}\n\n\
+    /**\n * @brief \u884C\u5217\n * @tparam T \u578B \u884C\u5217(\u30B0\u30EA\u30C3\
+    \u30C9)\u306E\u8981\u7D20\u3068\u306A\u308Bint\u3084char\n * @tparam OperatorProperty\
+    \ \u884C\u5217\u306E\u8981\u7D20\u306E\u6F14\u7B97\u3092\u5B9A\u7FA9\u3059\u308B\
+    \u69CB\u9020\u4F53 0,1\u3068+,*\u306A\u3089\u7701\u7565\u53EF\n *\n * @note\n\
+    \ * OperatorProperty\u306E\u4F8B\uFF08\u6574\u6570\u306Exor\u3068and\u306B\u3088\
+    \u308B\u74B0\uFF09\n * @code\n * struct XorOperatorProperty {\n *     constexpr\
+    \ static int zero() { return 0; }\n *     constexpr static int add(const int &a,\
+    \ const int &b) { return a ^ b; }\n *     constexpr static int neg(const int &a)\
+    \ { return a; }\n *     constexpr static int one() { return 1; }\n *     constexpr\
+    \ static int mul(const int &a, const int &b) { return a & b; }\n * };\n * @endcode\n\
+    \ * constexpr\u3067\u3042\u308B\u5FC5\u8981\u306F\u306A\u304F\u3001\u307E\u305F\
+    inv\u306A\u3069\u4F7F\u308F\u306A\u3044\u3082\u306E\u306F\u5B9A\u7FA9\u3057\u306A\
+    \u304F\u3066\u3082\u3088\u3044\uFF08\u5FC5\u8981\u306A\u3082\u306E\u304C\u306A\
+    \u304B\u3063\u305F\u3089\u30B3\u30F3\u30D1\u30A4\u30EB\u30A8\u30E9\u30FC\u304C\
+    \u767A\u751F\u3059\u308B\uFF09\n */\ntemplate<class T, class OperatorProperty\
+    \ = matrix::OperatorPropertyDefault<T>> struct Matrix {\n    int n, m;\n    std::vector<std::vector<T>>\
+    \ v;\n\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n  \
+    \   * @param v \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u5143\u3068\u306A\u308B\
+    \ vector<string> \u3084 vector<vector<T>>\n     * @return Matrix\n     */\n  \
+    \  template <typename Iterable>\n    Matrix(const std::vector<Iterable>& v_) noexcept\
+    \ : n(v_.size()), m(v_.size() == 0 ? 0 : v_[0].size()) {\n        v.resize(n);\n\
+    \        for(int i = 0; i < n; i++) {\n            v[i].assign(v_[i].begin(),\
+    \ v_[i].end());\n        }\n    }\n\n    /**\n     * @brief \u30B3\u30F3\u30B9\
+    \u30C8\u30E9\u30AF\u30BF\n     * @param _n \u884C\u5217(\u30B0\u30EA\u30C3\u30C9\
+    )\u306E\u884C\u6570\n     * @param _m \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\
+    \u5217\u6570\n     * @param _val \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u8981\
+    \u7D20\u306E\u521D\u671F\u5024\n     * @return Matrix\n     */\n    Matrix(int\
+    \ _n, int _m, T _val = OperatorProperty::zero()) : n(_n), m(_m), v(n, std::vector<T>(m,\
+    \ _val)) {}\n    \n    auto begin() noexcept {return v.begin();}\n    auto end()\
+    \ noexcept {return v.end();}\n\n    /**\n     * @brief \u884C\u5217(\u30B0\u30EA\
+    \u30C3\u30C9)\u306E\u884C\u6570\n     * @return size_t\n     */\n    [[nodiscard]]\n\
+    \    size_t size() const {return v.size();}\n\n    std::vector<T>& operator []\
+    \ (int i) {return v[i];}\n    const std::vector<T>& operator [] (int i) const\
+    \ {return v[i];}\n    Matrix& operator = (const std::vector<std::vector<T>> &A)\
+    \ noexcept {\n        n = A.size();\n        m = (n == 0 ? 0 : A[0].size());\n\
+    \        v = A;\n        return *this;\n    }\n    bool operator == (const Matrix\
+    \ &A) const noexcept {\n        return this->v == A.v;\n    }\n    bool operator\
+    \ != (const Matrix &A) const noexcept {\n        return this->v != A.v;\n    }\n\
+    \n    /**\n     * @brief \u8EE2\u7F6E\n     * @return Matrix\n     */\n    [[nodiscard]]\n\
     \    Matrix transpose() noexcept {\n        if(n == 0) return Matrix(v);\n   \
     \     std::vector<std::vector<T>> ret(m);\n        for(int i = 0; i < m; i ++)\
     \ {\n            ret[i].resize(n);\n            for(int j = 0; j < n; j ++) ret[i][j]\
@@ -509,7 +509,7 @@ data:
   isVerificationFile: true
   path: test/yukicoder/search-oji.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 00:13:34+09:00'
+  timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yukicoder/search-oji.test.cpp

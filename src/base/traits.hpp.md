@@ -4,16 +4,19 @@ data:
   _extendedRequiredBy:
   - icon: ':warning:'
     path: src/base/container_func.hpp
-    title: src/base/container_func.hpp
+    title: "\u30B3\u30F3\u30C6\u30CA\u306B\u5BFE\u3059\u308B\u95A2\u6570 (sorted,\
+      \ max, sum \u306A\u3069)"
   - icon: ':warning:'
     path: src/base/functions.hpp
-    title: src/base/functions.hpp
+    title: "\u6C4E\u7528\u95A2\u6570 (chmin, chmax, \u4E8C\u5206\u63A2\u7D22\u306A\
+      \u3069)"
   - icon: ':warning:'
     path: src/base/repr.hpp
-    title: src/base/repr.hpp
+    title: "\u51FA\u529B\u3092\u305D\u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\u30E9\
+      \u30AF\u30BF\u306B\u4F7F\u3048\u308B\u6587\u5B57\u5217\u5316 (repr)"
   - icon: ':warning:'
     path: src/base/vector_func.hpp
-    title: src/base/vector_func.hpp
+    title: "vector \u306B\u5BFE\u3059\u308B\u6F14\u7B97\u5B50\u3068\u95A2\u6570"
   - icon: ':heavy_check_mark:'
     path: src/string/rolling-hash.hpp
     title: "\u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5"
@@ -25,10 +28,12 @@ data:
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
+    document_title: "\u578B\u7279\u6027"
     links: []
-  bundledCode: "#line 2 \"src/base/traits.hpp\"\n\n#include <cstddef>\n#include <iterator>\n\
-    #include <set>\n#include <type_traits>\n#include <utility>\n\nnamespace detail\
-    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
+  bundledCode: "#line 2 \"src/base/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief\
+    \ \u578B\u7279\u6027\n */\n\n#include <cstddef>\n#include <iterator>\n#include\
+    \ <set>\n#include <type_traits>\n#include <utility>\n\nnamespace detail {\nusing\
+    \ std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
     \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
     \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace detail\n\n\
     template <class T>\nstruct is_range : detail::is_range_impl<T>::type {};\ntemplate\
@@ -76,10 +81,11 @@ data:
     \ : std::true_type {};\n}  // namespace detail\ntemplate <class T>\nstruct is_sorted_container\
     \ : detail::is_sorted_container_impl<T>::type {};\ntemplate <class T>\ninline\
     \ constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n"
-  code: "#pragma once\n\n#include <cstddef>\n#include <iterator>\n#include <set>\n\
-    #include <type_traits>\n#include <utility>\n\nnamespace detail {\nusing std::begin,\
-    \ std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl : std::false_type\
-    \ {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+  code: "#pragma once\n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n\
+    \ */\n\n#include <cstddef>\n#include <iterator>\n#include <set>\n#include <type_traits>\n\
+    #include <utility>\n\nnamespace detail {\nusing std::begin, std::end;\n\ntemplate\
+    \ <class T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate\
+    \ <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
     \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace detail\n\n\
     template <class T>\nstruct is_range : detail::is_range_impl<T>::type {};\ntemplate\
     \ <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define\
@@ -135,7 +141,7 @@ data:
   - src/base/vector_func.hpp
   - src/base/container_func.hpp
   - src/string/rolling-hash.hpp
-  timestamp: '2026-10-11 23:34:07+09:00'
+  timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/yosupo/enumerate-palindromes.test.cpp
@@ -144,5 +150,5 @@ layout: document
 redirect_from:
 - /library/src/base/traits.hpp
 - /library/src/base/traits.hpp.html
-title: src/base/traits.hpp
+title: "\u578B\u7279\u6027"
 ---

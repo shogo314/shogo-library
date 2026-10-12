@@ -3,21 +3,25 @@ data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
     path: src/base/traits.hpp
-    title: src/base/traits.hpp
+    title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':warning:'
   attributes:
+    document_title: "\u30B3\u30F3\u30C6\u30CA\u306B\u5BFE\u3059\u308B\u95A2\u6570\
+      \ (sorted, max, sum \u306A\u3069)"
     links: []
-  bundledCode: "#line 2 \"src/base/container_func.hpp\"\n#include <algorithm>\n#include\
-    \ <cassert>\n#include <functional>\n#include <initializer_list>\n#include <iterator>\n\
-    #include <numeric>\n#line 2 \"src/base/traits.hpp\"\n\n#include <cstddef>\n#line\
-    \ 5 \"src/base/traits.hpp\"\n#include <set>\n#include <type_traits>\n#include\
-    \ <utility>\n\nnamespace detail {\nusing std::begin, std::end;\n\ntemplate <class\
-    \ T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class\
-    \ T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+  bundledCode: "#line 2 \"src/base/container_func.hpp\"\n\n/**\n * @file container_func.hpp\n\
+    \ * @brief \u30B3\u30F3\u30C6\u30CA\u306B\u5BFE\u3059\u308B\u95A2\u6570 (sorted,\
+    \ max, sum \u306A\u3069)\n */\n\n#include <algorithm>\n#include <cassert>\n#include\
+    \ <functional>\n#include <initializer_list>\n#include <iterator>\n#include <numeric>\n\
+    #line 2 \"src/base/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\
+    \u6027\n */\n\n#include <cstddef>\n#line 10 \"src/base/traits.hpp\"\n#include\
+    \ <set>\n#include <type_traits>\n#include <utility>\n\nnamespace detail {\nusing\
+    \ std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
     \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace detail\n\n\
     template <class T>\nstruct is_range : detail::is_range_impl<T>::type {};\ntemplate\
     \ <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define\
@@ -64,8 +68,8 @@ data:
     \ : std::true_type {};\n}  // namespace detail\ntemplate <class T>\nstruct is_sorted_container\
     \ : detail::is_sorted_container_impl<T>::type {};\ntemplate <class T>\ninline\
     \ constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n#line\
-    \ 9 \"src/base/container_func.hpp\"\n\n#define METHOD_EXPAND(func)           \
-    \                             \\\n    template <typename T, ENABLE_IF_T(has_##func##_v<T>)>\
+    \ 15 \"src/base/container_func.hpp\"\n\n#define METHOD_EXPAND(func)          \
+    \                              \\\n    template <typename T, ENABLE_IF_T(has_##func##_v<T>)>\
     \          \\\n    inline constexpr auto func(const T &t) -> decltype(t.func())\
     \ { \\\n        return t.func();                                           \\\n\
     \    }\n\n#define METHOD_AND_FUNC_ARG_EXPAND(func)                           \
@@ -159,19 +163,20 @@ data:
     \ <class C>\ninline constexpr mem_difference_type<C> bisect_right(const C &v,\
     \ const mem_value_type<C> &x) {\n    return std::distance(v.begin(), upper_bound(v,\
     \ x));\n}\n"
-  code: "#pragma once\n#include <algorithm>\n#include <cassert>\n#include <functional>\n\
-    #include <initializer_list>\n#include <iterator>\n#include <numeric>\n#include\
-    \ \"traits.hpp\"\n\n#define METHOD_EXPAND(func)                              \
-    \          \\\n    template <typename T, ENABLE_IF_T(has_##func##_v<T>)>     \
-    \     \\\n    inline constexpr auto func(const T &t) -> decltype(t.func()) { \\\
-    \n        return t.func();                                           \\\n    }\n\
-    \n#define METHOD_AND_FUNC_ARG_EXPAND(func)                                   \
-    \  \\\n    template <typename T, typename U, ENABLE_IF_T(has_##func##_v<T, U>)>\
-    \     \\\n    inline constexpr auto func(const T &t, const U &u)             \
-    \          \\\n        -> decltype(t.func(u)) {                              \
-    \               \\\n        return t.func(u);                                \
-    \                    \\\n    }                                               \
-    \                         \\\n    template <typename T, typename U, ENABLE_IF_T(not\
+  code: "#pragma once\n\n/**\n * @file container_func.hpp\n * @brief \u30B3\u30F3\u30C6\
+    \u30CA\u306B\u5BFE\u3059\u308B\u95A2\u6570 (sorted, max, sum \u306A\u3069)\n */\n\
+    \n#include <algorithm>\n#include <cassert>\n#include <functional>\n#include <initializer_list>\n\
+    #include <iterator>\n#include <numeric>\n#include \"traits.hpp\"\n\n#define METHOD_EXPAND(func)\
+    \                                        \\\n    template <typename T, ENABLE_IF_T(has_##func##_v<T>)>\
+    \          \\\n    inline constexpr auto func(const T &t) -> decltype(t.func())\
+    \ { \\\n        return t.func();                                           \\\n\
+    \    }\n\n#define METHOD_AND_FUNC_ARG_EXPAND(func)                           \
+    \          \\\n    template <typename T, typename U, ENABLE_IF_T(has_##func##_v<T,\
+    \ U>)>     \\\n    inline constexpr auto func(const T &t, const U &u)        \
+    \               \\\n        -> decltype(t.func(u)) {                         \
+    \                    \\\n        return t.func(u);                           \
+    \                         \\\n    }                                          \
+    \                              \\\n    template <typename T, typename U, ENABLE_IF_T(not\
     \ has_##func##_v<T, U>)> \\\n    inline constexpr auto func(const T &t, const\
     \ U &u)                       \\\n        -> decltype(std::func(t.begin(), t.end(),\
     \ u)) {                      \\\n        return std::func(t.begin(), t.end(),\
@@ -261,7 +266,7 @@ data:
   isVerificationFile: false
   path: src/base/container_func.hpp
   requiredBy: []
-  timestamp: '2026-10-11 23:34:07+09:00'
+  timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: src/base/container_func.hpp
@@ -269,5 +274,6 @@ layout: document
 redirect_from:
 - /library/src/base/container_func.hpp
 - /library/src/base/container_func.hpp.html
-title: src/base/container_func.hpp
+title: "\u30B3\u30F3\u30C6\u30CA\u306B\u5BFE\u3059\u308B\u95A2\u6570 (sorted, max,\
+  \ sum \u306A\u3069)"
 ---

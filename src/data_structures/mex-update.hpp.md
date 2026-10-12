@@ -7,11 +7,13 @@ data:
   _pathExtension: hpp
   _verificationStatusIcon: ':warning:'
   attributes:
+    document_title: "1\u70B9\u66F4\u65B0\u30FB\u5168\u4F53\u306E mex \u53D6\u5F97"
     links: []
-  bundledCode: "#line 2 \"src/data_structures/mex-update.hpp\"\n#include <cassert>\n\
-    #include <limits>\n#include <map>\n#include <set>\n#include <vector>\n\ntemplate\
-    \ <typename T>\nstruct MexUpdate {\n    using value_type = T;\n\n   private:\n\
-    \    inline constexpr static value_type e = std::numeric_limits<value_type>::max();\n\
+  bundledCode: "#line 2 \"src/data_structures/mex-update.hpp\"\n\n/**\n * @file mex-update.hpp\n\
+    \ * @brief 1\u70B9\u66F4\u65B0\u30FB\u5168\u4F53\u306E mex \u53D6\u5F97\n */\n\
+    \n#include <cassert>\n#include <limits>\n#include <map>\n#include <set>\n#include\
+    \ <vector>\n\ntemplate <typename T>\nstruct MexUpdate {\n    using value_type\
+    \ = T;\n\n   private:\n    inline constexpr static value_type e = std::numeric_limits<value_type>::max();\n\
     \n    int n;\n    std::vector<value_type> v;\n    std::set<int> s;\n    std::map<int,\
     \ size_t> m;\n\n   public:\n    MexUpdate() = default;\n    MexUpdate(int n) :\
     \ n(n), v(n, e) {\n        assert(n > 0);\n        assert(n + 1 < e);\n      \
@@ -32,10 +34,12 @@ data:
     \                s.erase(xx);\n            } else {\n                itr->second++;\n\
     \            }\n        }\n        v[k] = x;\n    }\n    value_type prod() const\
     \ {\n        return *s.begin();\n    }\n};\n"
-  code: "#pragma once\n#include <cassert>\n#include <limits>\n#include <map>\n#include\
-    \ <set>\n#include <vector>\n\ntemplate <typename T>\nstruct MexUpdate {\n    using\
-    \ value_type = T;\n\n   private:\n    inline constexpr static value_type e = std::numeric_limits<value_type>::max();\n\
-    \n    int n;\n    std::vector<value_type> v;\n    std::set<int> s;\n    std::map<int,\
+  code: "#pragma once\n\n/**\n * @file mex-update.hpp\n * @brief 1\u70B9\u66F4\u65B0\
+    \u30FB\u5168\u4F53\u306E mex \u53D6\u5F97\n */\n\n#include <cassert>\n#include\
+    \ <limits>\n#include <map>\n#include <set>\n#include <vector>\n\ntemplate <typename\
+    \ T>\nstruct MexUpdate {\n    using value_type = T;\n\n   private:\n    inline\
+    \ constexpr static value_type e = std::numeric_limits<value_type>::max();\n\n\
+    \    int n;\n    std::vector<value_type> v;\n    std::set<int> s;\n    std::map<int,\
     \ size_t> m;\n\n   public:\n    MexUpdate() = default;\n    MexUpdate(int n) :\
     \ n(n), v(n, e) {\n        assert(n > 0);\n        assert(n + 1 < e);\n      \
     \  std::set<int>::iterator hint = s.end();\n        for (int i = n; i >= 0; --i)\
@@ -59,7 +63,7 @@ data:
   isVerificationFile: false
   path: src/data_structures/mex-update.hpp
   requiredBy: []
-  timestamp: '2026-10-11 23:34:07+09:00'
+  timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: src/data_structures/mex-update.hpp
@@ -67,5 +71,5 @@ layout: document
 redirect_from:
 - /library/src/data_structures/mex-update.hpp
 - /library/src/data_structures/mex-update.hpp.html
-title: src/data_structures/mex-update.hpp
+title: "1\u70B9\u66F4\u65B0\u30FB\u5168\u4F53\u306E mex \u53D6\u5F97"
 ---

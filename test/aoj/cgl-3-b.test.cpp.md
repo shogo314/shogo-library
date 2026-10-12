@@ -7,7 +7,7 @@ data:
       \u30D0\u30FC\u30ED\u30FC\u30C9"
   - icon: ':heavy_check_mark:'
     path: src/geometry/vector.hpp
-    title: "\u5E7E\u4F55\u5B66\u3068\u3057\u3066\u306E\u30D9\u30AF\u30C8\u30EB"
+    title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
@@ -102,53 +102,54 @@ data:
     \u306E\u578B\n * @param x 1\u3064\u76EE\u306E\u8981\u7D20\n * @param tail 2\u3064\
     \u76EE\u4EE5\u964D\u306E\u8981\u7D20\n */\ntemplate <typename T, typename... Tail>\n\
     void err(const T& x, const Tail&... tail) {\n    std::cerr << x << ' ';\n    err(tail...);\n\
-    }\n#line 2 \"src/geometry/vector.hpp\"\n\n#include <algorithm>\n#line 5 \"src/geometry/vector.hpp\"\
-    \n#include <cassert>\n#include <cmath>\n#include <initializer_list>\n#include\
-    \ <istream>\n#include <numeric>\n#include <ostream>\n#include <stack>\n#line 13\
-    \ \"src/geometry/vector.hpp\"\n#include <type_traits>\n#line 15 \"src/geometry/vector.hpp\"\
-    \n\n/**\n * @brief \u5E7E\u4F55\u5B66\u3068\u3057\u3066\u306E\u30D9\u30AF\u30C8\
-    \u30EB\n *\n * @tparam T \u578B \u7701\u7565\u3057\u305F\u3089double\n * @tparam\
-    \ Dim \u6B21\u5143 \u7701\u7565\u3057\u305F\u30892\n */\ntemplate <typename T\
-    \ = double, int Dim = 2, std::enable_if_t<std::is_scalar_v<T> && (Dim > 0)>* =\
-    \ nullptr>\nstruct Vector {\n    std::array<T, Dim> v; //!< \u30D9\u30AF\u30C8\
-    \u30EB\u306E\u6210\u5206\u8868\u793A\n\n    /**\n     * @brief \u30C7\u30D5\u30A9\
-    \u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * \u30BC\u30ED\u30D9\
-    \u30AF\u30C8\u30EB\n     */\n    constexpr Vector() noexcept : v() {}\n    /**\n\
-    \     * @brief \u53EF\u5909\u9577\u5F15\u6570\u306B\u3088\u308B\u30B3\u30F3\u30B9\
-    \u30C8\u30E9\u30AF\u30BF\n     * \n     * @tparam Args \n     */\n    template\
-    \ <typename... Args>\n    constexpr Vector(Args... args) noexcept : v{args...}\
-    \ {}\n\n    /**\n     * @brief i\u756A\u76EE\u306E\u6210\u5206\u3092\u8FD4\u3059\
-    \n     * \n     * @param i\n     * @return T& \n     */\n    constexpr T& operator[](int\
-    \ i) noexcept {\n        return v[i];\n    }\n    /**\n     * @brief i\u756A\u76EE\
-    \u306E\u6210\u5206\u3092\u8FD4\u3059\n     * \n     * @param i\n     * @return\
-    \ T& \n     */\n    constexpr const T& operator[](int i) const noexcept {\n  \
-    \      return v[i];\n    }\n\n    /**\n     * @brief \u52A0\u7B97\u4EE3\u5165\u6F14\
-    \u7B97\u5B50\n     * \n     * @param rhs \n     * @return Vector& \n     */\n\
-    \    constexpr Vector& operator+=(const Vector& rhs) noexcept {\n        for(int\
-    \ i = 0; i < Dim; i++) v[i] += rhs[i];\n        return *this;\n    }\n    /**\n\
-    \     * @brief \u6E1B\u7B97\u4EE3\u5165\u6F14\u7B97\u5B50\n     * \n     * @param\
-    \ rhs \n     * @return Vector& \n     */\n    constexpr Vector& operator-=(const\
-    \ Vector& rhs) noexcept {\n        for(int i = 0; i < Dim; i++) v[i] -= rhs.v[i];\n\
-    \        return *this;\n    }\n    /**\n     * @brief \u30B9\u30AB\u30E9\u30FC\
-    \u500D\u4EE3\u5165\u6F14\u7B97\u5B50\n     * \n     * @param coef \n     * @return\
-    \ Vector& \n     */\n    constexpr Vector& operator*=(const T& coef) noexcept\
-    \ {\n        for(int i = 0; i < Dim; i++) v[i] *= coef;\n        return *this;\n\
-    \    }\n    /**\n     * @brief \u30B9\u30AB\u30E9\u30FC\u306E\u9006\u6570\u500D\
-    \u4EE3\u5165\u6F14\u7B97\u5B50\n     * \n     * @param coef \n     * @return Vector&\
-    \ \n     */\n    Vector& operator/=(const T& coef) {\n        for(int i = 0; i\
-    \ < Dim; i++) {\n            if constexpr(std::is_integral_v<T>) {\n         \
-    \       assert(v[i] % coef == 0 && \"Vector::operator/= : coef must be a divisor\
-    \ of all elements\");\n            }\n            v[i] /= coef;\n        }\n \
-    \       return *this;\n    }\n\n    /**\n     * @brief \u5358\u9805\u30D7\u30E9\
+    }\n#line 2 \"src/geometry/vector.hpp\"\n\n/**\n * @file vector.hpp\n * @brief\
+    \ \u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB\n */\n\n#include <algorithm>\n#line 10\
+    \ \"src/geometry/vector.hpp\"\n#include <cassert>\n#include <cmath>\n#include\
+    \ <initializer_list>\n#include <istream>\n#include <numeric>\n#include <ostream>\n\
+    #include <stack>\n#line 18 \"src/geometry/vector.hpp\"\n#include <type_traits>\n\
+    #line 20 \"src/geometry/vector.hpp\"\n\n/**\n * @brief \u5E7E\u4F55\u5B66\u3068\
+    \u3057\u3066\u306E\u30D9\u30AF\u30C8\u30EB\n *\n * @tparam T \u578B \u7701\u7565\
+    \u3057\u305F\u3089double\n * @tparam Dim \u6B21\u5143 \u7701\u7565\u3057\u305F\
+    \u30892\n */\ntemplate <typename T = double, int Dim = 2, std::enable_if_t<std::is_scalar_v<T>\
+    \ && (Dim > 0)>* = nullptr>\nstruct Vector {\n    std::array<T, Dim> v; //!< \u30D9\
+    \u30AF\u30C8\u30EB\u306E\u6210\u5206\u8868\u793A\n\n    /**\n     * @brief \u30C7\
+    \u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * \u30BC\
+    \u30ED\u30D9\u30AF\u30C8\u30EB\n     */\n    constexpr Vector() noexcept : v()\
+    \ {}\n    /**\n     * @brief \u53EF\u5909\u9577\u5F15\u6570\u306B\u3088\u308B\u30B3\
+    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * \n     * @tparam Args \n     */\n\
+    \    template <typename... Args>\n    constexpr Vector(Args... args) noexcept\
+    \ : v{args...} {}\n\n    /**\n     * @brief i\u756A\u76EE\u306E\u6210\u5206\u3092\
+    \u8FD4\u3059\n     * \n     * @param i\n     * @return T& \n     */\n    constexpr\
+    \ T& operator[](int i) noexcept {\n        return v[i];\n    }\n    /**\n    \
+    \ * @brief i\u756A\u76EE\u306E\u6210\u5206\u3092\u8FD4\u3059\n     * \n     *\
+    \ @param i\n     * @return T& \n     */\n    constexpr const T& operator[](int\
+    \ i) const noexcept {\n        return v[i];\n    }\n\n    /**\n     * @brief \u52A0\
+    \u7B97\u4EE3\u5165\u6F14\u7B97\u5B50\n     * \n     * @param rhs \n     * @return\
+    \ Vector& \n     */\n    constexpr Vector& operator+=(const Vector& rhs) noexcept\
+    \ {\n        for(int i = 0; i < Dim; i++) v[i] += rhs[i];\n        return *this;\n\
+    \    }\n    /**\n     * @brief \u6E1B\u7B97\u4EE3\u5165\u6F14\u7B97\u5B50\n  \
+    \   * \n     * @param rhs \n     * @return Vector& \n     */\n    constexpr Vector&\
+    \ operator-=(const Vector& rhs) noexcept {\n        for(int i = 0; i < Dim; i++)\
+    \ v[i] -= rhs.v[i];\n        return *this;\n    }\n    /**\n     * @brief \u30B9\
+    \u30AB\u30E9\u30FC\u500D\u4EE3\u5165\u6F14\u7B97\u5B50\n     * \n     * @param\
+    \ coef \n     * @return Vector& \n     */\n    constexpr Vector& operator*=(const\
+    \ T& coef) noexcept {\n        for(int i = 0; i < Dim; i++) v[i] *= coef;\n  \
+    \      return *this;\n    }\n    /**\n     * @brief \u30B9\u30AB\u30E9\u30FC\u306E\
+    \u9006\u6570\u500D\u4EE3\u5165\u6F14\u7B97\u5B50\n     * \n     * @param coef\
+    \ \n     * @return Vector& \n     */\n    Vector& operator/=(const T& coef) {\n\
+    \        for(int i = 0; i < Dim; i++) {\n            if constexpr(std::is_integral_v<T>)\
+    \ {\n                assert(v[i] % coef == 0 && \"Vector::operator/= : coef must\
+    \ be a divisor of all elements\");\n            }\n            v[i] /= coef;\n\
+    \        }\n        return *this;\n    }\n\n    /**\n     * @brief \u5358\u9805\
+    \u30D7\u30E9\u30B9\u6F14\u7B97\u5B50\n     * \n     * @return Vector \n     */\n\
+    \    [[nodiscard]]\n    constexpr Vector operator+() const noexcept {\n      \
+    \  return *this;\n    }\n    /**\n     * @brief \u5358\u9805\u30DE\u30A4\u30CA\
     \u30B9\u6F14\u7B97\u5B50\n     * \n     * @return Vector \n     */\n    [[nodiscard]]\n\
-    \    constexpr Vector operator+() const noexcept {\n        return *this;\n  \
-    \  }\n    /**\n     * @brief \u5358\u9805\u30DE\u30A4\u30CA\u30B9\u6F14\u7B97\u5B50\
-    \n     * \n     * @return Vector \n     */\n    [[nodiscard]]\n    constexpr Vector\
-    \ operator-() const noexcept {\n        return *this * (-1);\n    }\n\n    /**\n\
-    \     * @brief \u52A0\u7B97\u6F14\u7B97\u5B50\n     * \n     * @param lhs \n \
-    \    * @param rhs \n     * @return Vector \n     */\n    [[nodiscard]]\n    friend\
-    \ constexpr Vector operator+(const Vector& lhs, const Vector& rhs) noexcept {\n\
-    \        return std::move(Vector(lhs) += rhs);\n    }\n\n    /**\n     * @brief\
+    \    constexpr Vector operator-() const noexcept {\n        return *this * (-1);\n\
+    \    }\n\n    /**\n     * @brief \u52A0\u7B97\u6F14\u7B97\u5B50\n     * \n   \
+    \  * @param lhs \n     * @param rhs \n     * @return Vector \n     */\n    [[nodiscard]]\n\
+    \    friend constexpr Vector operator+(const Vector& lhs, const Vector& rhs) noexcept\
+    \ {\n        return std::move(Vector(lhs) += rhs);\n    }\n\n    /**\n     * @brief\
     \ \u6E1B\u7B97\u6F14\u7B97\u5B50\n     * \n     * @param lhs \n     * @param rhs\
     \ \n     * @return Vector \n     */\n    [[nodiscard]]\n    friend constexpr Vector\
     \ operator-(const Vector& lhs, const Vector& rhs) noexcept {\n        return std::move(Vector(lhs)\
@@ -410,7 +411,7 @@ data:
   isVerificationFile: true
   path: test/aoj/cgl-3-b.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 00:13:34+09:00'
+  timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/cgl-3-b.test.cpp

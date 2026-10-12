@@ -9,9 +9,10 @@ data:
   attributes:
     document_title: "\u5186\u74B0"
     links: []
-  bundledCode: "#line 2 \"src/data_structures/circular-ring.hpp\"\n#include <cassert>\n\
-    #include <vector>\n\n/**\n * @brief \u5186\u74B0\n * @tparam T \n */\ntemplate\
-    \ <typename T>\nstruct CircularRing {\n    std::vector<T> data;\n    CircularRing(const\
+  bundledCode: "#line 2 \"src/data_structures/circular-ring.hpp\"\n\n/**\n * @file\
+    \ circular-ring.hpp\n * @brief \u5186\u74B0\n */\n\n#include <cassert>\n#include\
+    \ <vector>\n\n/**\n * @brief \u5186\u74B0\n * @tparam T \n */\ntemplate <typename\
+    \ T>\nstruct CircularRing {\n    std::vector<T> data;\n    CircularRing(const\
     \ std::vector<T>& v) : data(v) {}\n    CircularRing(const CircularRing&) = default;\n\
     \    CircularRing() = default;\n    CircularRing(size_t s) : data(s) {}\n    T\
     \ at(long long i) const {\n        assert(!data.empty());\n        i %= static_cast<long\
@@ -21,23 +22,23 @@ data:
     \ long>(data.size());\n        return data[i];\n    }\n    T operator[](long long\
     \ i) const {\n        return at(i);\n    }\n    T& operator[](long long i) {\n\
     \        return at(i);\n    }\n};\n"
-  code: "#pragma once\n#include <cassert>\n#include <vector>\n\n/**\n * @brief \u5186\
-    \u74B0\n * @tparam T \n */\ntemplate <typename T>\nstruct CircularRing {\n   \
-    \ std::vector<T> data;\n    CircularRing(const std::vector<T>& v) : data(v) {}\n\
-    \    CircularRing(const CircularRing&) = default;\n    CircularRing() = default;\n\
-    \    CircularRing(size_t s) : data(s) {}\n    T at(long long i) const {\n    \
-    \    assert(!data.empty());\n        i %= static_cast<long long>(data.size());\n\
-    \        if (i < 0) i += static_cast<long long>(data.size());\n        return\
-    \ data[i];\n    }\n    T& at(long long i) {\n        assert(!data.empty());\n\
+  code: "#pragma once\n\n/**\n * @file circular-ring.hpp\n * @brief \u5186\u74B0\n\
+    \ */\n\n#include <cassert>\n#include <vector>\n\n/**\n * @brief \u5186\u74B0\n\
+    \ * @tparam T \n */\ntemplate <typename T>\nstruct CircularRing {\n    std::vector<T>\
+    \ data;\n    CircularRing(const std::vector<T>& v) : data(v) {}\n    CircularRing(const\
+    \ CircularRing&) = default;\n    CircularRing() = default;\n    CircularRing(size_t\
+    \ s) : data(s) {}\n    T at(long long i) const {\n        assert(!data.empty());\n\
     \        i %= static_cast<long long>(data.size());\n        if (i < 0) i += static_cast<long\
-    \ long>(data.size());\n        return data[i];\n    }\n    T operator[](long long\
-    \ i) const {\n        return at(i);\n    }\n    T& operator[](long long i) {\n\
-    \        return at(i);\n    }\n};\n"
+    \ long>(data.size());\n        return data[i];\n    }\n    T& at(long long i)\
+    \ {\n        assert(!data.empty());\n        i %= static_cast<long long>(data.size());\n\
+    \        if (i < 0) i += static_cast<long long>(data.size());\n        return\
+    \ data[i];\n    }\n    T operator[](long long i) const {\n        return at(i);\n\
+    \    }\n    T& operator[](long long i) {\n        return at(i);\n    }\n};\n"
   dependsOn: []
   isVerificationFile: false
   path: src/data_structures/circular-ring.hpp
   requiredBy: []
-  timestamp: '2026-10-11 23:34:07+09:00'
+  timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: src/data_structures/circular-ring.hpp

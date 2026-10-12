@@ -16,7 +16,7 @@ data:
     document_title: Convex Hull Trick
     links: []
   bundledCode: "#line 2 \"src/data_structures/convex-hull-trick.hpp\"\n\n/**\n * @file\
-    \ convex-hull-tric.hpp\n * @brief Convex Hull Trick\n *\n * \u4E00\u6B21\u95A2\
+    \ convex-hull-trick.hpp\n * @brief Convex Hull Trick\n *\n * \u4E00\u6B21\u95A2\
     \u6570\u3067\u8868\u3055\u308C\u308B\u76F4\u7DDA\u307E\u305F\u306F\u7DDA\u5206\
     \u306E\u96C6\u5408\u3092\u7BA1\u7406\u3057\u3001\u3042\u308Bx\u306B\u5BFE\u3059\
     \u308B\u6700\u5C0F\u5024\u3092\u6C42\u3081\u308B\n */\n\n#include <cassert>\n\
@@ -61,7 +61,7 @@ data:
     \ bs[k];\n        while(k > 1) {\n            k >>= 1;\n            T tmp = as[k]*x\
     \ + bs[k];\n            if(tmp < res) res = tmp;\n        }\n        return res;\n\
     \    }\n};\n"
-  code: "#pragma once\n\n/**\n * @file convex-hull-tric.hpp\n * @brief Convex Hull\
+  code: "#pragma once\n\n/**\n * @file convex-hull-trick.hpp\n * @brief Convex Hull\
     \ Trick\n *\n * \u4E00\u6B21\u95A2\u6570\u3067\u8868\u3055\u308C\u308B\u76F4\u7DDA\
     \u307E\u305F\u306F\u7DDA\u5206\u306E\u96C6\u5408\u3092\u7BA1\u7406\u3057\u3001\
     \u3042\u308Bx\u306B\u5BFE\u3059\u308B\u6700\u5C0F\u5024\u3092\u6C42\u3081\u308B\
@@ -110,7 +110,7 @@ data:
   isVerificationFile: false
   path: src/data_structures/convex-hull-trick.hpp
   requiredBy: []
-  timestamp: '2026-10-11 23:34:07+09:00'
+  timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/yosupo/segment-add-get-min.test.cpp

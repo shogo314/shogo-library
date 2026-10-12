@@ -3,7 +3,7 @@ data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
     path: src/math/sqrt.hpp
-    title: floor(sqrt(n))
+    title: "\u6574\u6570\u306E\u5E73\u65B9\u6839"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
@@ -16,7 +16,8 @@ data:
     - https://judge.yosupo.jp/problem/enumerate_quotients
   bundledCode: "#line 1 \"test/yosupo/enumerate-quotients.test.cpp\"\n#define PROBLEM\
     \ \"https://judge.yosupo.jp/problem/enumerate_quotients\"\n\n#line 2 \"src/math/sqrt.hpp\"\
-    \n\n/**\n * @brief floor(sqrt(n))\n * @param n \u5E73\u65B9\u6839\u3092\u6C42\u3081\
+    \n\n/**\n * @file sqrt.hpp\n * @brief \u6574\u6570\u306E\u5E73\u65B9\u6839\n */\n\
+    \n/**\n * @brief floor(sqrt(n))\n * @param n \u5E73\u65B9\u6839\u3092\u6C42\u3081\
     \u305F\u3044\u6574\u6570 long long \u578B\u3067 0 <= n < 2^63 \u3092\u6E80\u305F\
     \u3059\n * @return long long\n */\ninline long long sqrtll(long long n) { \n \
     \   // 3037000500 = ceil(sqrt(2^63))\n    long long le = 0, ri = 3037000500; \n\
@@ -45,7 +46,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/enumerate-quotients.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 00:13:34+09:00'
+  timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/enumerate-quotients.test.cpp

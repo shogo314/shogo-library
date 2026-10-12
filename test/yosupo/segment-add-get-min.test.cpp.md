@@ -16,7 +16,7 @@ data:
     - https://judge.yosupo.jp/problem/segment_add_get_min
   bundledCode: "#line 1 \"test/yosupo/segment-add-get-min.test.cpp\"\n#define PROBLEM\
     \ \"https://judge.yosupo.jp/problem/segment_add_get_min\"\n\n#line 2 \"src/data_structures/convex-hull-trick.hpp\"\
-    \n\n/**\n * @file convex-hull-tric.hpp\n * @brief Convex Hull Trick\n *\n * \u4E00\
+    \n\n/**\n * @file convex-hull-trick.hpp\n * @brief Convex Hull Trick\n *\n * \u4E00\
     \u6B21\u95A2\u6570\u3067\u8868\u3055\u308C\u308B\u76F4\u7DDA\u307E\u305F\u306F\
     \u7DDA\u5206\u306E\u96C6\u5408\u3092\u7BA1\u7406\u3057\u3001\u3042\u308Bx\u306B\
     \u5BFE\u3059\u308B\u6700\u5C0F\u5024\u3092\u6C42\u3081\u308B\n */\n\n#include\
@@ -108,7 +108,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/segment-add-get-min.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 00:13:34+09:00'
+  timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/segment-add-get-min.test.cpp

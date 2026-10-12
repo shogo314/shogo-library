@@ -7,7 +7,7 @@ data:
       \u30D0\u30FC\u30ED\u30FC\u30C9"
   - icon: ':heavy_check_mark:'
     path: src/geometry/vector.hpp
-    title: "\u5E7E\u4F55\u5B66\u3068\u3057\u3066\u306E\u30D9\u30AF\u30C8\u30EB"
+    title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
@@ -103,10 +103,11 @@ data:
     \n * @param tail 2\u3064\u76EE\u4EE5\u964D\u306E\u8981\u7D20\n */\ntemplate <typename\
     \ T, typename... Tail>\nvoid err(const T& x, const Tail&... tail) {\n    std::cerr\
     \ << x << ' ';\n    err(tail...);\n}\n#line 2 \"src/geometry/vector.hpp\"\n\n\
-    #include <algorithm>\n#line 5 \"src/geometry/vector.hpp\"\n#include <cassert>\n\
+    /**\n * @file vector.hpp\n * @brief \u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB\n */\n\
+    \n#include <algorithm>\n#line 10 \"src/geometry/vector.hpp\"\n#include <cassert>\n\
     #include <cmath>\n#include <initializer_list>\n#include <istream>\n#include <numeric>\n\
-    #include <ostream>\n#include <stack>\n#line 13 \"src/geometry/vector.hpp\"\n#include\
-    \ <type_traits>\n#line 15 \"src/geometry/vector.hpp\"\n\n/**\n * @brief \u5E7E\
+    #include <ostream>\n#include <stack>\n#line 18 \"src/geometry/vector.hpp\"\n#include\
+    \ <type_traits>\n#line 20 \"src/geometry/vector.hpp\"\n\n/**\n * @brief \u5E7E\
     \u4F55\u5B66\u3068\u3057\u3066\u306E\u30D9\u30AF\u30C8\u30EB\n *\n * @tparam T\
     \ \u578B \u7701\u7565\u3057\u305F\u3089double\n * @tparam Dim \u6B21\u5143 \u7701\
     \u7565\u3057\u305F\u30892\n */\ntemplate <typename T = double, int Dim = 2, std::enable_if_t<std::is_scalar_v<T>\
@@ -410,7 +411,7 @@ data:
   isVerificationFile: true
   path: test/aoj/cgl-3-a.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 00:13:34+09:00'
+  timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/cgl-3-a.test.cpp

@@ -13,30 +13,30 @@ data:
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
-    document_title: "\u7B26\u53F7\u306A\u3057\u6574\u6570\u306E\u591A\u91CD\u96C6\u5408\
-      \u3092\u7BA1\u7406\u3059\u308B"
+    document_title: Binary Trie
     links: []
-  bundledCode: "#line 2 \"src/data_structures/binary-trie.hpp\"\n\n#include <assert.h>\n\
-    #include <limits>\n#include <memory>\n#include <utility>\n\n/**\n * @brief \u7B26\
-    \u53F7\u306A\u3057\u6574\u6570\u306E\u591A\u91CD\u96C6\u5408\u3092\u7BA1\u7406\
-    \u3059\u308B\n * @tparam `d` \u6271\u3046\u6574\u6570\u5024\u306E\u30D3\u30C3\u30C8\
-    \u5E45\u3002T\u306E\u6841\u4EE5\u4E0B\u3067\u3042\u308B\u3053\u3068\u3092\u8981\
-    \u8ACB\n */\ntemplate <unsigned int d, typename T = unsigned long long>\nclass\
-    \ BinaryTrie {\n    static_assert(std::numeric_limits<T>::is_integer);\n    static_assert(!std::numeric_limits<T>::is_signed);\n\
-    \    static_assert(d <= std::numeric_limits<T>::digits, \"d must be T digits or\
-    \ less\");\n    struct BinaryTrieNode {\n        std::shared_ptr<BinaryTrieNode>\
-    \ children[2] = {nullptr, nullptr};\n        unsigned int level, subcnt = 0;\n\
-    \        T xval = 0;\n\n        BinaryTrieNode(int lvl) : level(lvl) {}\n    \
-    \    bool get_bit(T v) const { return ((v >> (level - 1)) & 1) > 0; }\n      \
-    \  bool is_leaf() const { return level == 0; }\n        // \u5B50\u306E\u72B6\u614B\
-    \u304Cvalid\u304B\u3069\u3046\u304B\n        // 0: xx, 1: xo, 2: ox, 3: oo\n \
-    \       int state_children() const {\n            return ((bool)children[1] <<\
-    \ 1) | (bool)children[0];\n        }\n        // xor\u306E\u5024\u3092\u5B50\u30CE\
-    \u30FC\u30C9\u306B\u4F1D\u64AD\u3059\u308B\n        void affect_xor() {\n    \
-    \        if (get_bit(xval)) {\n                std::swap(children[0], children[1]);\n\
-    \            }\n            if (children[0])\n                children[0]->xval\
-    \ ^= xval;\n            if (children[1])\n                children[1]->xval ^=\
-    \ xval;\n            xval = 0;\n        }\n    };\n    using NodePtr = std::shared_ptr<BinaryTrieNode>;\n\
+  bundledCode: "#line 2 \"src/data_structures/binary-trie.hpp\"\n\n/**\n * @file binary-trie.hpp\n\
+    \ * @brief Binary Trie\n */\n\n#include <assert.h>\n#include <limits>\n#include\
+    \ <memory>\n#include <utility>\n\n/**\n * @brief \u7B26\u53F7\u306A\u3057\u6574\
+    \u6570\u306E\u591A\u91CD\u96C6\u5408\u3092\u7BA1\u7406\u3059\u308B\n * @tparam\
+    \ `d` \u6271\u3046\u6574\u6570\u5024\u306E\u30D3\u30C3\u30C8\u5E45\u3002T\u306E\
+    \u6841\u4EE5\u4E0B\u3067\u3042\u308B\u3053\u3068\u3092\u8981\u8ACB\n */\ntemplate\
+    \ <unsigned int d, typename T = unsigned long long>\nclass BinaryTrie {\n    static_assert(std::numeric_limits<T>::is_integer);\n\
+    \    static_assert(!std::numeric_limits<T>::is_signed);\n    static_assert(d <=\
+    \ std::numeric_limits<T>::digits, \"d must be T digits or less\");\n    struct\
+    \ BinaryTrieNode {\n        std::shared_ptr<BinaryTrieNode> children[2] = {nullptr,\
+    \ nullptr};\n        unsigned int level, subcnt = 0;\n        T xval = 0;\n\n\
+    \        BinaryTrieNode(int lvl) : level(lvl) {}\n        bool get_bit(T v) const\
+    \ { return ((v >> (level - 1)) & 1) > 0; }\n        bool is_leaf() const { return\
+    \ level == 0; }\n        // \u5B50\u306E\u72B6\u614B\u304Cvalid\u304B\u3069\u3046\
+    \u304B\n        // 0: xx, 1: xo, 2: ox, 3: oo\n        int state_children() const\
+    \ {\n            return ((bool)children[1] << 1) | (bool)children[0];\n      \
+    \  }\n        // xor\u306E\u5024\u3092\u5B50\u30CE\u30FC\u30C9\u306B\u4F1D\u64AD\
+    \u3059\u308B\n        void affect_xor() {\n            if (get_bit(xval)) {\n\
+    \                std::swap(children[0], children[1]);\n            }\n       \
+    \     if (children[0])\n                children[0]->xval ^= xval;\n         \
+    \   if (children[1])\n                children[1]->xval ^= xval;\n           \
+    \ xval = 0;\n        }\n    };\n    using NodePtr = std::shared_ptr<BinaryTrieNode>;\n\
     \    NodePtr root_ptr = std::make_shared<BinaryTrieNode>(d);\n\n  public:\n  \
     \  /**\n     * @brief \u96C6\u5408\u306Bn\u3092\u8FFD\u52A0 (O(d))\n     */\n\
     \    void insert(T n) {\n        NodePtr cur_ptr = root_ptr;\n        while (!cur_ptr->is_leaf())\
@@ -106,12 +106,13 @@ data:
     \u9664\u3059\u308B\u3002\u78BA\u4FDD\u3057\u305F\u30E1\u30E2\u30EA\u9818\u57DF\
     \u3082\u524A\u9664\u3055\u308C\u308B\n     */\n    void clear() {\n        root_ptr\
     \ = std::make_shared<BinaryTrieNode>(d);\n    }\n};\n"
-  code: "#pragma once\n\n#include <assert.h>\n#include <limits>\n#include <memory>\n\
-    #include <utility>\n\n/**\n * @brief \u7B26\u53F7\u306A\u3057\u6574\u6570\u306E\
-    \u591A\u91CD\u96C6\u5408\u3092\u7BA1\u7406\u3059\u308B\n * @tparam `d` \u6271\u3046\
-    \u6574\u6570\u5024\u306E\u30D3\u30C3\u30C8\u5E45\u3002T\u306E\u6841\u4EE5\u4E0B\
-    \u3067\u3042\u308B\u3053\u3068\u3092\u8981\u8ACB\n */\ntemplate <unsigned int\
-    \ d, typename T = unsigned long long>\nclass BinaryTrie {\n    static_assert(std::numeric_limits<T>::is_integer);\n\
+  code: "#pragma once\n\n/**\n * @file binary-trie.hpp\n * @brief Binary Trie\n */\n\
+    \n#include <assert.h>\n#include <limits>\n#include <memory>\n#include <utility>\n\
+    \n/**\n * @brief \u7B26\u53F7\u306A\u3057\u6574\u6570\u306E\u591A\u91CD\u96C6\u5408\
+    \u3092\u7BA1\u7406\u3059\u308B\n * @tparam `d` \u6271\u3046\u6574\u6570\u5024\u306E\
+    \u30D3\u30C3\u30C8\u5E45\u3002T\u306E\u6841\u4EE5\u4E0B\u3067\u3042\u308B\u3053\
+    \u3068\u3092\u8981\u8ACB\n */\ntemplate <unsigned int d, typename T = unsigned\
+    \ long long>\nclass BinaryTrie {\n    static_assert(std::numeric_limits<T>::is_integer);\n\
     \    static_assert(!std::numeric_limits<T>::is_signed);\n    static_assert(d <=\
     \ std::numeric_limits<T>::digits, \"d must be T digits or less\");\n    struct\
     \ BinaryTrieNode {\n        std::shared_ptr<BinaryTrieNode> children[2] = {nullptr,\
@@ -200,7 +201,7 @@ data:
   isVerificationFile: false
   path: src/data_structures/binary-trie.hpp
   requiredBy: []
-  timestamp: '2026-10-11 23:34:07+09:00'
+  timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/aoj/itp1-1-a.binary-trie.test.cpp
@@ -210,6 +211,5 @@ layout: document
 redirect_from:
 - /library/src/data_structures/binary-trie.hpp
 - /library/src/data_structures/binary-trie.hpp.html
-title: "\u7B26\u53F7\u306A\u3057\u6574\u6570\u306E\u591A\u91CD\u96C6\u5408\u3092\u7BA1\
-  \u7406\u3059\u308B"
+title: Binary Trie
 ---

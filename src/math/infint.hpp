@@ -100,7 +100,8 @@ struct infint {
             _v = 0;
             return *this;
         }
-        if (std::abs(_v) >= _PlusInf / std::abs(o._v)) {
+        // 有限の値の最大は _PlusInf - 1
+        if (std::abs(_v) > (_PlusInf - 1) / std::abs(o._v)) {
             if ((_v > 0) ^ (o._v > 0)) {
                 _v = _MinusInf;
             } else {
@@ -128,6 +129,15 @@ struct infint {
             _v = 0;
             return *this;
         }
+        if (not isfinite()) {
+            // ±inf / 有限 = ±inf (符号は商の符号)
+            if ((_v > 0) ^ (o._v > 0)) {
+                _v = _MinusInf;
+            } else {
+                _v = _PlusInf;
+            }
+            return *this;
+        }
         _v /= o._v;
         return *this;
     }
@@ -141,6 +151,11 @@ struct infint {
             return *this;
         }
         if (o._v == 0) {
+            _v = _NaN;
+            return *this;
+        }
+        if (not isfinite()) {
+            // ±inf % 有限 は定まらない (浮動小数点数の fmod と同じく NaN)
             _v = _NaN;
             return *this;
         }

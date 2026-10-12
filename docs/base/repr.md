@@ -30,7 +30,7 @@ DEBUG(n);                               // 標準エラー出力に "n = 3"
 | `unsigned int` / `unsigned long` / `unsigned long long` | `3u` / `3ul` / `3ull` |
 | `float` / `double` / `long double` | `1.500000f` / `1.500000` / `1.500000l` (`std::to_string` を使うので小数点以下 6 桁) |
 | `char` | `'a'`、`'\n'` などのエスケープ、表示できない文字は 8 進数 |
-| `const char*` / `std::string` | `"abc"` / `std::string"abc"` |
+| `const char*` / `std::string` | `"abc"` / `std::string{"abc"}` |
 | `std::vector` / `std::set` / `std::array` / `std::map` / `std::pair` | `std::vector<int>{1, 2}` など、要素も再帰的に文字列化 |
 | `repr()` などのメンバ関数を持つ型 | そのメンバ関数の結果 ([Range](range.hpp) など) |
 | それ以外 | `T{}` |

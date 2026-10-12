@@ -35,6 +35,6 @@ int main() {
             x.push_back(combpq[i].C(n, k));
             y.push_back(combpq[i].pq);
         }
-        std::cout << crt(x, y).first << std::endl;
+        std::cout << crt(x, y)->x << std::endl;
     }
 }

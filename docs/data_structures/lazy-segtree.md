@@ -7,6 +7,7 @@ documentation_of: //src/data_structures/lazy-segtree.hpp
 
 ```cpp
 LazySegTree<acted_monoid::AffineSum<mint>> seg(v);
+seg.apply(l, r, Affine<mint>{b, c});  // [l, r) の各値を b * x + c にする
 RAddMinQ<long long> seg2(n);  // 別名を使う
 ```
 

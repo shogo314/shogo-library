@@ -25,7 +25,7 @@ documentation_of: //src/algebra/monoid.hpp
 | `Or<T>` | `T` | `a | b` | `0` |
 | `Gcd<T>` | `T` | `gcd(a, b)` | `0` |
 | `Lcm<T>` | `T` | `lcm(a, b)` | `1` |
-| `Composite<T>` | `pair<T, T>` | 1次関数 $f(x) = \mathrm{first} \cdot x + \mathrm{second}$ の合成 (左から順に適用) | 恒等写像 |
+| `Composite<T>` | `Affine<T>` | 1次関数 $f(x) = ax + b$ の合成 (左から順に適用) | 恒等写像 |
 | `Parenthesis` | `Parenthesis::S` | 括弧列の連結 (対応の取れていない `)` と `(` の個数) | 空の括弧列 |
 | `MinWith<T, U = int>` | `pair<T, U>` | 最小値とその位置 (同じ値なら左側) | |
 | `MaxWith<T, U = int>` | `pair<T, U>` | 最大値とその位置 (同じ値なら左側) | |
@@ -33,6 +33,24 @@ documentation_of: //src/algebra/monoid.hpp
 | `MaxCount<T, U = long long>` | `pair<T, U>` | 最大値とその個数 | |
 
 `Parenthesis::S` は文字 `'('`、`')'` から作れます。`is_valid()` で正しい括弧列かどうかを判定できます。
+
+## 1次関数 `Affine<T>`
+
+`Composite` の要素や、[作用素付きモノイド](acted-monoid.hpp) の `AffineSum` の作用素に使う、1次関数 $f(x) = ax + b$ の型です。
+
+```cpp
+Affine<mint> f{2, 3};   // f(x) = 2x + 3 (省略すると恒等写像 {1, 0})
+mint y = f(x);          // 2x + 3
+std::cin >> f;          // "a b" を読む
+std::cout << f;         // "a b" を出力
+```
+
+| メンバ | 説明 |
+|---|---|
+| `a` / `b` | 傾き / 切片 |
+| `f(x)` | $ax + b$ |
+| `==`、`!=` | 比較 |
+| `is >> f`、`os << f` | `a` と `b` を空白区切りで入出力 |
 
 ## ラムダ式から作る
 

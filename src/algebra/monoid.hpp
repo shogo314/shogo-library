@@ -12,10 +12,35 @@
  */
 
 #include <algorithm>
+#include <istream>
 #include <limits>
 #include <numeric>
+#include <ostream>
 #include <type_traits>
 #include <utility>
+
+/**
+ * @brief 1次関数 f(x) = a * x + b
+ *
+ * monoid::Composite の要素や acted_monoid::AffineSum の作用素に使う
+ * 例: Affine<mint> f{2, 3}; f(x) は 2x + 3。省略すると恒等写像 {1, 0}
+ */
+template <typename T>
+struct Affine {
+    T a = T(1);  //!< 傾き
+    T b = T(0);  //!< 切片
+    constexpr T operator()(const T& x) const { return a * x + b; }
+    friend constexpr bool operator==(const Affine& f, const Affine& g) { return f.a == g.a && f.b == g.b; }
+    friend constexpr bool operator!=(const Affine& f, const Affine& g) { return !(f == g); }
+    template <class CharT, class Traits>
+    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Affine& f) {
+        return is >> f.a >> f.b;
+    }
+    template <class CharT, class Traits>
+    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const Affine& f) {
+        return os << f.a << CharT(' ') << f.b;
+    }
+};
 
 namespace monoid {
 
@@ -122,14 +147,14 @@ struct Lcm {
 };
 
 /**
- * @brief 1次関数 f(x) = first * x + second の合成
+ * @brief 1次関数 (Affine) の合成
  * op(f, g) = g∘f (左から順に適用する)
  * 区間 [l, r) の積は f_{r-1}(...f_l(x)) を表す
  */
 template <typename T>
 struct Composite {
-    using S = std::pair<T, T>;
-    static constexpr S op(const S& f, const S& g) { return {g.first * f.first, g.first * f.second + g.second}; }
+    using S = Affine<T>;
+    static constexpr S op(const S& f, const S& g) { return {g.a * f.a, g.a * f.b + g.b}; }
     static constexpr S e() { return {T(1), T(0)}; }
 };
 

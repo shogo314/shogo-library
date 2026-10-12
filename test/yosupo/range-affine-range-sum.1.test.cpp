@@ -15,7 +15,7 @@ int main(void) {
         int op; std::cin >> op;
         if(op == 0) {
             int l, r; MI b, c; std::cin >> l >> r >> b >> c;
-            seg.apply(l, r, std::make_pair(b, c));
+            seg.apply(l, r, Affine<MI>{b, c});
         } else {
             int l, r; std::cin >> l >> r;
             std::cout << seg.prod(l, r) << '\n';

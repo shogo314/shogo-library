@@ -26,8 +26,8 @@ documentation_of: //src/algebra/acted-monoid.hpp
 | `UpdateMax<T>` | 区間代入 | 区間最大値 | `optional<T>` | |
 | `ChminMin<T>` | 区間 chmin | 区間最小値 | `T` | |
 | `ChmaxMax<T>` | 区間 chmax | 区間最大値 | `T` | |
-| `AffineSum<T>` | 区間アフィン変換 $x \leftarrow \mathrm{first} \cdot x + \mathrm{second}$ | 区間和 | `pair<T, T>` | |
-| `UpdateComposite<T>` | 区間代入 | 1次関数の合成 (`monoid::Composite`) | `optional<pair<T, T>>` | |
+| `AffineSum<T>` | 区間アフィン変換 $x \leftarrow ax + b$ | 区間和 | [`Affine<T>`](monoid.hpp) | |
+| `UpdateComposite<T>` | 区間代入 | 1次関数の合成 (`monoid::Composite`) | `optional<Affine<T>>` | |
 | `AddMinWith<T, U = int>` | 区間加算 | 区間最小値とその位置 | `T` | |
 | `AddMaxWith<T, U = int>` | 区間加算 | 区間最大値とその位置 | `T` | |
 | `AddMinCount<T, U = long long>` | 区間加算 | 区間最小値とその個数 | `T` | |

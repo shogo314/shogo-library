@@ -12,9 +12,13 @@ int main() {
     for (int i = 0; i < N; ++i) {
         std::cin >> x[i] >> y[i];
     }
-    auto [ans, l] = crt(x, y, MOD);
-    if(l == -1) std::cout << -1 << std::endl;
-    else if([&] {
+    auto res = crt(x, y, MOD);
+    if(!res) {
+        std::cout << -1 << std::endl;
+        return 0;
+    }
+    auto [ans, l] = *res;
+    if([&] {
         long long tmp = l * MOD;
         for(int i = 0; i < N; ++i) {
             if(tmp % y[i] != x[i]) return false;

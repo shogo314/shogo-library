@@ -10,6 +10,6 @@ int main() {
     std::cout << std::fixed << std::setprecision(10);
     while(q--) {
         Vector p0, p1, p2, p3; std::cin >> p0 >> p1 >> p2 >> p3;
-        std::cout << segment_intersect(p0, p1, p2, p3).second << std::endl;
+        std::cout << *segment_intersect(p0, p1, p2, p3) << std::endl;
     }
 }

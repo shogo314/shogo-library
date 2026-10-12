@@ -8,7 +8,7 @@ documentation_of: //src/graph/graph.hpp
 ```cpp
 Graph<long long> g(n);
 g.read(m, -1, true);                // 1-indexed、重み付き、無向の辺を m 本読む
-auto [dist, prev] = g.shortest_path(0);
+auto sp = g.shortest_path(0);        // sp.dist[v] が距離、sp.path(v) が経路
 for (int v : g[u]) { /* u から出る辺の行き先 */ }
 for (auto& e : g[u]) { /* e.src, e.dst, e.cost, e.id */ }
 ```
@@ -29,7 +29,13 @@ for (auto& e : g[u]) { /* e.src, e.dst, e.cost, e.id */ }
 
 ## 最短路
 
-いずれも `{各頂点への距離, 各頂点への最短路の直前の辺}` を返します。直前の辺を `src` でたどると経路を復元できます。
+いずれも `ShortestPath` を返します。`auto [dist, prev] = g.shortest_path(s);` のように受け取ることもできます。
+
+| メンバ | 内容 |
+|---|---|
+| `dist[v]` | `v` への最短路長 |
+| `prev[v]` | `v` への最短路上の直前の辺 (始点と未到達の頂点では `src == -1`) |
+| `path(t)` | 始点から `t` への最短路を構成する辺のリスト (始点側から順に)。`t` が始点か未到達なら空。負閉路の影響を受ける頂点では assert で落ちる |
 
 | 関数 | アルゴリズム | 未到達の頂点の距離 | 計算量 |
 |---|---|---|---|

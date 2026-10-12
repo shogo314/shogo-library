@@ -6,7 +6,7 @@ documentation_of: //src/math/matrix.hpp
 行列 `Matrix<T, OperatorProperty>` です。線形代数の行列としても、文字のグリッド (`Matrix<char>`) としても使えます。
 
 ```cpp
-Matrix<mint> A({{1, 1}, {1, 0}});
+Matrix<mint> A({ {1, 1}, {1, 0} });
 auto F = A.pow(n);                    // フィボナッチ数列の行列累乗
 
 std::vector<std::string> s(h);        // グリッドを読み込んで回転する
@@ -20,7 +20,7 @@ auto t = g.rotate(1).vstr();          // 時計回りに 90 度回して vector<
 
 | メンバ | 説明 |
 |---|---|
-| `Matrix({{a, b}, {c, d}})` | 初期化子リストから作る |
+| `Matrix({ {a, b}, {c, d} })` | 初期化子リストから作る |
 | `Matrix(v)` | `vector<vector<T>>` や `vector<string>` から作る |
 | `Matrix(n, m, val = 0)` | `n` 行 `m` 列で、要素はすべて `val` |
 | `n` / `m` | 行数 / 列数 |

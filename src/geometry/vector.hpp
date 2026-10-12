@@ -541,7 +541,7 @@ std::vector<Vector<T, 2>> convex_hull(const std::vector<Vector<T, 2>>& _points, 
  * @return std::tuple<T, int, int> 最近点対の距離の2乗、最近点対のインデックス
  */
 template <typename T>
-std::tuple<T, int, int> closest_point_pair_squred(const std::vector<Vector<T, 2>>& points) {
+std::tuple<T, int, int> closest_point_pair_squared(const std::vector<Vector<T, 2>>& points) {
     std::vector<int> sorted_idx(points.size());
     std::iota(sorted_idx.begin(), sorted_idx.end(), 0);
     std::sort(sorted_idx.begin(), sorted_idx.end(), [&](int i, int j) {
@@ -623,6 +623,13 @@ std::tuple<T, int, int> closest_point_pair_squred(const std::vector<Vector<T, 2>
  */
 template <typename T>
 std::tuple<double, int, int> closest_point_pair(const std::vector<Vector<T, 2>>& points) {
-    auto [d2, i, j] = closest_point_pair_squred(points);
+    auto [d2, i, j] = closest_point_pair_squared(points);
     return {std::sqrt(d2), i, j};
+}
+/**
+ * @deprecated closest_point_pair_squared を使うこと(綴りの誤りを直して改名した)
+ */
+template <typename T>
+[[deprecated("use closest_point_pair_squared")]] std::tuple<T, int, int> closest_point_pair_squred(const std::vector<Vector<T, 2>>& points) {
+    return closest_point_pair_squared(points);
 }

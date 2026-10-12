@@ -21,7 +21,7 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 | 辺の追加 (`add_edge`)・入力 (`read`) | ✓ | | |
 | 直径 (`diameter`) | ✓ | | |
 | `g[v]`、`edges()`、`shortest_path` ([グラフ](graph.hpp) と同じ) | ✓ | ✓ | ✓ |
-| 親・子・深さ・高さ・部分木サイズ・巡回順 | | ✓ | ✓ (重みなしの深さ・高さを除く) |
+| 親・子・深さ・高さ・部分木サイズ・巡回順 | | ✓ | ✓ |
 | `climb`、`lca`、`dist` | | | ✓ |
 
 ## `Tree<Cost = int>` (根なし木)

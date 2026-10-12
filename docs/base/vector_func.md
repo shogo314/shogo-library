@@ -37,6 +37,7 @@ auto idx = sorted_idx(a, true);   // 値の降順に並べた添字
 | `extend(v, w)` | `w` を末尾に連結 |
 | `assign(v, w)` | `w` の内容で置き換える (型の変換つき) |
 | `radix_convert(x, base = 10)` | 整数 `x` を `base` 進数の桁のリスト (上位桁から) にする |
+| `radix_convert(digits, base = 10)` | `base` 進数の桁のリスト (上位桁から) を整数に戻す |
 
 ## 関連
 

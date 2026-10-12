@@ -42,5 +42,5 @@ std::sort(ps.begin(), ps.end(), P::ArgSortComp());  // 偏角ソート
 | `polygon_contains(poly, p)` | 点が多角形 (反時計回り) の 0: 外部、1: 辺上、2: 内部 | ✓ | $O(n)$ |
 | `convex_hull(ps, include_straight = false)` | 凸包 (反時計回り)。`include_straight` で 180 度の頂点を含めるか選ぶ | ✓ | $O(n \log n)$ |
 | `select_convex(ps, include_straight = false)` | 順番を保った半凸包。x の昇順なら下凸包、降順なら上凸包 | ✓ | $O(n)$ |
-| `closest_point_pair_squred(ps)` | 最近点対の `{距離の2乗, 添字 i, 添字 j}` | ✓ | $O(n \log^2 n)$ |
+| `closest_point_pair_squared(ps)` | 最近点対の `{距離の2乗, 添字 i, 添字 j}` | ✓ | $O(n \log^2 n)$ |
 | `closest_point_pair(ps)` | 最近点対の `{距離, 添字 i, 添字 j}` | ✓ | $O(n \log^2 n)$ |

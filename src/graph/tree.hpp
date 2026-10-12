@@ -268,6 +268,8 @@ struct DoublingClimbTree : private RootedTree<Cost> {
     using RootedTree<Cost>::child;
     using RootedTree<Cost>::depth;
     using RootedTree<Cost>::height;
+    using RootedTree<Cost>::unweighted_depth;
+    using RootedTree<Cost>::unweighted_height;
     using RootedTree<Cost>::sz;
     using RootedTree<Cost>::preorder;
     using RootedTree<Cost>::postorder;
@@ -365,11 +367,11 @@ struct DoublingClimbTree : private RootedTree<Cost> {
     }
     
     /**
-     * @brief 頂点間距離(重みなし)
+     * @brief 頂点間距離(重み付き)
      * 
      * @param u 頂点1
      * @param v 頂点2
-     * @return int uとv間の最短経路の辺の本数
+     * @return Cost uとv間の最短経路の辺の重みの和
      */
     Cost dist(int u, int v) const {
         return this->depth[u] + this->depth[v] - this->depth[lca(u, v)] * 2;

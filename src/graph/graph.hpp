@@ -127,8 +127,8 @@ struct Graph {
      * @param inf コストのminの単位元 未到達の頂点への距離はinfになる 省略すると
      * @return std::pair<std::vector<Cost>, std::vector<Edge>> first:各頂点への最短路長 second:各頂点への最短路上の直前の辺
      */
-    std::pair<std::vector<Cost>, std::vector<Edge>> shortest_path(int s, bool weignted = true, Cost inf = -1) const {
-        if (weignted)
+    std::pair<std::vector<Cost>, std::vector<Edge>> shortest_path(int s, bool weighted = true, Cost inf = -1) const {
+        if (weighted)
             return shortest_path_dijkstra(s, inf);
         return shortest_path_bfs(s, inf);
     }

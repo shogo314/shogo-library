@@ -197,9 +197,8 @@ std::vector<T> unique(const std::vector<T> &v) {
 
 inline long long radix_convert(const std::vector<long long> &v, int base = 10) {
     long long res = 0;
-    for (int i = v.size() - 1; i >= 0; i--) {
-        res <<= base;
-        res += v[i];
+    for (long long d : v) {
+        res = res * base + d;
     }
     return res;
 }

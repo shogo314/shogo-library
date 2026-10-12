@@ -10,8 +10,14 @@ data:
     title: "\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dsl-1-b.test.cpp
-    title: test/aoj/dsl-1-b.test.cpp
+    path: test/aoj/alds1-11-d.2.test.cpp
+    title: test/aoj/alds1-11-d.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl-1-b.1.test.cpp
+    title: test/aoj/dsl-1-b.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl-1-b.2.test.cpp
+    title: test/aoj/dsl-1-b.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/jag-summer-2971.test.cpp
     title: test/aoj/jag-summer-2971.test.cpp
@@ -138,8 +144,10 @@ data:
   timestamp: '2026-10-12 20:50:36+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/aoj/alds1-11-d.2.test.cpp
   - test/aoj/jag-summer-2971.test.cpp
-  - test/aoj/dsl-1-b.test.cpp
+  - test/aoj/dsl-1-b.2.test.cpp
+  - test/aoj/dsl-1-b.1.test.cpp
   - test/yosupo/unionfind.test.cpp
   - test/yosupo/minimum-spanning-tree.test.cpp
   - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp

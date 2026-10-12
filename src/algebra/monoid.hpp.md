@@ -8,7 +8,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/algebra/group.hpp
     title: "\u7FA4\u306E\u5B9A\u7FA9"
-  - icon: ':warning:'
+  - icon: ':heavy_check_mark:'
     path: src/data_structures/imos.hpp
     title: "imos\u6CD5\u3067\u533A\u9593\u4F5C\u7528\u30011\u70B9\u53D6\u5F97"
   - icon: ':heavy_check_mark:'
@@ -34,8 +34,11 @@ data:
     title: "\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dsl-1-b.test.cpp
-    title: test/aoj/dsl-1-b.test.cpp
+    path: test/aoj/dsl-1-b.1.test.cpp
+    title: test/aoj/dsl-1-b.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl-1-b.2.test.cpp
+    title: test/aoj/dsl-1-b.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/dsl-2-a.test.cpp
     title: test/aoj/dsl-2-a.test.cpp
@@ -49,20 +52,47 @@ data:
     path: test/aoj/dsl-2-g.test.cpp
     title: test/aoj/dsl-2-g.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dsl-2-h.test.cpp
-    title: test/aoj/dsl-2-h.test.cpp
+    path: test/aoj/dsl-2-h.1.test.cpp
+    title: test/aoj/dsl-2-h.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl-2-h.2.test.cpp
+    title: test/aoj/dsl-2-h.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/dsl-2-i.test.cpp
     title: test/aoj/dsl-2-i.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl-5-a.test.cpp
+    title: test/aoj/dsl-5-a.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/itp2-3-b.1.test.cpp
+    title: test/aoj/itp2-3-b.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/itp2-3-b.2.test.cpp
+    title: test/aoj/itp2-3-b.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/itp2-3-b.3.test.cpp
+    title: test/aoj/itp2-3-b.3.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/aoj/jag-summer-2971.test.cpp
     title: test/aoj/jag-summer-2971.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/area-of-union-of-rectangles.test.cpp
-    title: test/yosupo/area-of-union-of-rectangles.test.cpp
+    path: test/aoj/ntl-1-c.test.cpp
+    title: test/aoj/ntl-1-c.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/area-of-union-of-rectangles.1.test.cpp
+    title: test/yosupo/area-of-union-of-rectangles.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/area-of-union-of-rectangles.2.test.cpp
+    title: test/yosupo/area-of-union-of-rectangles.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/lca.2.test.cpp
     title: test/yosupo/lca.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/point-add-range-sum.1.test.cpp
+    title: test/yosupo/point-add-range-sum.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/point-add-range-sum.2.test.cpp
+    title: test/yosupo/point-add-range-sum.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/point-add-rectangle-sum.test.cpp
     title: test/yosupo/point-add-rectangle-sum.test.cpp
@@ -75,6 +105,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/point-set-range-composite.3.test.cpp
     title: test/yosupo/point-set-range-composite.3.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/point-set-range-composite.4.test.cpp
+    title: test/yosupo/point-set-range-composite.4.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/range-affine-point-get.test.cpp
     title: test/yosupo/range-affine-point-get.test.cpp
@@ -97,8 +130,11 @@ data:
     path: test/yosupo/range-set-range-composite.test.cpp
     title: test/yosupo/range-set-range-composite.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/rectangle-sum.test.cpp
-    title: test/yosupo/rectangle-sum.test.cpp
+    path: test/yosupo/rectangle-sum.1.test.cpp
+    title: test/yosupo/rectangle-sum.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/rectangle-sum.2.test.cpp
+    title: test/yosupo/rectangle-sum.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
     title: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
@@ -364,27 +400,39 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/aoj/dsl-2-b.test.cpp
+  - test/aoj/dsl-2-h.1.test.cpp
+  - test/aoj/itp2-3-b.1.test.cpp
   - test/aoj/jag-summer-2971.test.cpp
-  - test/aoj/dsl-1-b.test.cpp
+  - test/aoj/ntl-1-c.test.cpp
   - test/aoj/dsl-2-i.test.cpp
   - test/aoj/dsl-2-g.test.cpp
   - test/aoj/dsl-2-a.test.cpp
-  - test/aoj/dsl-2-h.test.cpp
+  - test/aoj/dsl-1-b.2.test.cpp
+  - test/aoj/dsl-1-b.1.test.cpp
+  - test/aoj/dsl-5-a.test.cpp
   - test/aoj/dsl-2-f.test.cpp
+  - test/aoj/itp2-3-b.2.test.cpp
+  - test/aoj/itp2-3-b.3.test.cpp
+  - test/aoj/dsl-2-h.2.test.cpp
+  - test/yosupo/point-add-range-sum.1.test.cpp
   - test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
+  - test/yosupo/point-set-range-composite.4.test.cpp
   - test/yosupo/range-affine-range-sum.2.test.cpp
   - test/yosupo/range-affine-range-sum.3.test.cpp
+  - test/yosupo/rectangle-sum.2.test.cpp
+  - test/yosupo/area-of-union-of-rectangles.2.test.cpp
   - test/yosupo/point-set-range-composite.3.test.cpp
-  - test/yosupo/rectangle-sum.test.cpp
   - test/yosupo/point-add-rectangle-sum.test.cpp
   - test/yosupo/range-set-range-composite.test.cpp
   - test/yosupo/lca.2.test.cpp
-  - test/yosupo/area-of-union-of-rectangles.test.cpp
   - test/yosupo/point-set-range-composite.1.test.cpp
   - test/yosupo/point-set-range-composite.2.test.cpp
   - test/yosupo/range-chmin-chmax-add-range-sum.1.test.cpp
   - test/yosupo/range-affine-point-get.test.cpp
   - test/yosupo/vertex-add-subtree-sum.test.cpp
+  - test/yosupo/area-of-union-of-rectangles.1.test.cpp
+  - test/yosupo/rectangle-sum.1.test.cpp
+  - test/yosupo/point-add-range-sum.2.test.cpp
   - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
   - test/yosupo/range-affine-range-sum.1.test.cpp
   - test/yukicoder/674.1.test.cpp

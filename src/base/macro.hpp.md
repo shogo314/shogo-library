@@ -5,14 +5,17 @@ data:
     path: src/base/io.hpp
     title: "\u7A7A\u767D\u533A\u5207\u308A\u51FA\u529B\u3001iostream\u306E\u30AA\u30FC\
       \u30D0\u30FC\u30ED\u30FC\u30C9"
-  - icon: ':warning:'
+  - icon: ':heavy_check_mark:'
     path: src/base/type_alias.hpp
     title: "\u578B\u306E\u5225\u540D"
   _extendedRequiredBy: []
-  _extendedVerifiedWith: []
+  _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/1160.test.cpp
+    title: test/aoj/1160.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':warning:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "\u30DE\u30AF\u30ED (rep \u306A\u3069)"
     links: []
@@ -190,8 +193,9 @@ data:
   path: src/base/macro.hpp
   requiredBy: []
   timestamp: '2026-10-12 20:22:09+09:00'
-  verificationStatus: LIBRARY_NO_TESTS
-  verifiedWith: []
+  verificationStatus: LIBRARY_ALL_AC
+  verifiedWith:
+  - test/aoj/1160.test.cpp
 documentation_of: src/base/macro.hpp
 layout: document
 title: "\u30DE\u30AF\u30ED (rep \u306A\u3069)"

@@ -14,7 +14,7 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/sort_points_by_argument
     links:
     - https://judge.yosupo.jp/problem/sort_points_by_argument
-  bundledCode: "#line 1 \"test/yosupo/sort-points-by-argument.test.cpp\"\n#define\
+  bundledCode: "#line 1 \"test/yosupo/sort-points-by-argument.1.test.cpp\"\n#define\
     \ PROBLEM \"https://judge.yosupo.jp/problem/sort_points_by_argument\"\n\n#include\
     \ <algorithm>\n#include <iostream>\n#include <vector>\n\n#line 2 \"src/geometry/vector.hpp\"\
     \n\n/**\n * @file vector.hpp\n * @brief \u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB\n\
@@ -325,7 +325,7 @@ data:
     \u8AA4\u308A\u3092\u76F4\u3057\u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename\
     \ T>\n[[deprecated(\"use closest_point_pair_squared\")]] ClosestPairSquared<T>\
     \ closest_point_pair_squred(const std::vector<Vector<T, 2>>& points) {\n    return\
-    \ closest_point_pair_squared(points);\n}\n#line 8 \"test/yosupo/sort-points-by-argument.test.cpp\"\
+    \ closest_point_pair_squared(points);\n}\n#line 8 \"test/yosupo/sort-points-by-argument.1.test.cpp\"\
     \n\nint main() {\n    int n; std::cin >> n;\n    using P = Vector<long long>;\n\
     \    std::vector<P> ps(n);\n    for (auto& p : ps) std::cin >> p;\n    // ArgSortComp\
     \ \u306F x \u8EF8\u6B63\u65B9\u5411\u304B\u3089\u53CD\u6642\u8A08\u56DE\u308A\
@@ -349,15 +349,15 @@ data:
   dependsOn:
   - src/geometry/vector.hpp
   isVerificationFile: true
-  path: test/yosupo/sort-points-by-argument.test.cpp
+  path: test/yosupo/sort-points-by-argument.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 00:57:44+09:00'
+  timestamp: '2026-10-13 01:36:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/yosupo/sort-points-by-argument.test.cpp
+documentation_of: test/yosupo/sort-points-by-argument.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/yosupo/sort-points-by-argument.test.cpp
-- /verify/test/yosupo/sort-points-by-argument.test.cpp.html
-title: test/yosupo/sort-points-by-argument.test.cpp
+- /verify/test/yosupo/sort-points-by-argument.1.test.cpp
+- /verify/test/yosupo/sort-points-by-argument.1.test.cpp.html
+title: test/yosupo/sort-points-by-argument.1.test.cpp
 ---

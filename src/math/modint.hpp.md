@@ -53,6 +53,9 @@ data:
     path: test/yosupo/convolution-mod.test.cpp
     title: test/yosupo/convolution-mod.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/counting-spanning-tree-undirected.test.cpp
+    title: test/yosupo/counting-spanning-tree-undirected.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/division-of-polynomials.test.cpp
     title: test/yosupo/division-of-polynomials.test.cpp
   - icon: ':heavy_check_mark:'
@@ -82,6 +85,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/point-set-range-composite.3.test.cpp
     title: test/yosupo/point-set-range-composite.3.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/point-set-range-composite.4.test.cpp
+    title: test/yosupo/point-set-range-composite.4.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/polynomial-taylor-shift.test.cpp
     title: test/yosupo/polynomial-taylor-shift.test.cpp
@@ -616,6 +622,7 @@ data:
   - test/aoj/dpl-5-b.2.test.cpp
   - test/yosupo/binomial-coefficient-prime-mod.test.cpp
   - test/yosupo/exp-of-fps.test.cpp
+  - test/yosupo/point-set-range-composite.4.test.cpp
   - test/yosupo/range-affine-range-sum.2.test.cpp
   - test/yosupo/range-affine-range-sum.3.test.cpp
   - test/yosupo/partition-function_2.test.cpp
@@ -624,6 +631,7 @@ data:
   - test/yosupo/binomial-coefficient.test.cpp
   - test/yosupo/pow-of-fps.test.cpp
   - test/yosupo/point-set-range-composite.3.test.cpp
+  - test/yosupo/counting-spanning-tree-undirected.test.cpp
   - test/yosupo/polynomial-taylor-shift.test.cpp
   - test/yosupo/range-set-range-composite.test.cpp
   - test/yosupo/partition-function_1.test.cpp

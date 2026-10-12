@@ -13,8 +13,23 @@ data:
     path: test/aoj/dsl-2-b.test.cpp
     title: test/aoj/dsl-2-b.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/aoj/itp2-3-b.1.test.cpp
+    title: test/aoj/itp2-3-b.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/itp2-3-b.2.test.cpp
+    title: test/aoj/itp2-3-b.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/itp2-3-b.3.test.cpp
+    title: test/aoj/itp2-3-b.3.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/ntl-1-c.test.cpp
+    title: test/aoj/ntl-1-c.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/lca.2.test.cpp
     title: test/yosupo/lca.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/point-add-range-sum.2.test.cpp
+    title: test/yosupo/point-add-range-sum.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/point-set-range-composite.1.test.cpp
     title: test/yosupo/point-set-range-composite.1.test.cpp
@@ -374,12 +389,17 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/aoj/dsl-2-b.test.cpp
+  - test/aoj/itp2-3-b.1.test.cpp
+  - test/aoj/ntl-1-c.test.cpp
   - test/aoj/dsl-2-a.test.cpp
+  - test/aoj/itp2-3-b.2.test.cpp
+  - test/aoj/itp2-3-b.3.test.cpp
   - test/yosupo/point-set-range-composite.3.test.cpp
   - test/yosupo/lca.2.test.cpp
   - test/yosupo/point-set-range-composite.1.test.cpp
   - test/yosupo/point-set-range-composite.2.test.cpp
   - test/yosupo/vertex-add-subtree-sum.test.cpp
+  - test/yosupo/point-add-range-sum.2.test.cpp
   - test/yukicoder/1036.1.test.cpp
   - test/yukicoder/1036.2.test.cpp
 documentation_of: src/data_structures/segtree.hpp

@@ -7,8 +7,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/alds1-11-d.test.cpp
-    title: test/aoj/alds1-11-d.test.cpp
+    path: test/aoj/alds1-11-d.1.test.cpp
+    title: test/aoj/alds1-11-d.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/grl-4-a.test.cpp
     title: test/aoj/grl-4-a.test.cpp
@@ -350,7 +350,7 @@ data:
   verifiedWith:
   - test/unittest/graph-util.test.cpp
   - test/aoj/grl-4-a.test.cpp
-  - test/aoj/alds1-11-d.test.cpp
+  - test/aoj/alds1-11-d.1.test.cpp
 documentation_of: src/graph/graph_util.hpp
 layout: document
 title: "\u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570"

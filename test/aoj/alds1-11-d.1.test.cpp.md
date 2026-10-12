@@ -17,7 +17,7 @@ data:
     PROBLEM: https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_11_D
     links:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_11_D
-  bundledCode: "#line 1 \"test/aoj/alds1-11-d.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_11_D\"\
+  bundledCode: "#line 1 \"test/aoj/alds1-11-d.1.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_11_D\"\
     \n\n#include <iostream>\n#include <vector>\n\n#line 2 \"src/graph/graph_util.hpp\"\
     \n\n/**\n * @file graph_util.hpp\n * @brief \u30B0\u30E9\u30D5\u306B\u95A2\u3059\
     \u308B\u95A2\u6570\n */\n\n#include <functional>\n#include <queue>\n#include <stack>\n\
@@ -245,7 +245,7 @@ data:
     \ e.dst);\n                }\n            }\n        }\n    }\n    Cost res =\
     \ inf;\n    for (int k = 0; k < G.n; k++) {\n        if (dp[k].back() != inf &&\
     \ (res == inf || res > dp[k].back())) res = dp[k].back();\n    }\n    return res;\n\
-    }\n#line 7 \"test/aoj/alds1-11-d.test.cpp\"\n\nint main() {\n    std::cin.tie(nullptr);\n\
+    }\n#line 7 \"test/aoj/alds1-11-d.1.test.cpp\"\n\nint main() {\n    std::cin.tie(nullptr);\n\
     \    std::ios_base::sync_with_stdio(false);\n    int n, m; std::cin >> n >> m;\n\
     \    Graph<int> graph(n);\n    graph.read(m, 0);\n    std::vector<int> id(n);\n\
     \    auto groups = connected_components(graph);\n    for (int i = 0; i < (int)groups.size();\
@@ -265,15 +265,15 @@ data:
   - src/graph/graph_util.hpp
   - src/graph/graph.hpp
   isVerificationFile: true
-  path: test/aoj/alds1-11-d.test.cpp
+  path: test/aoj/alds1-11-d.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 00:38:02+09:00'
+  timestamp: '2026-10-13 01:36:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/aoj/alds1-11-d.test.cpp
+documentation_of: test/aoj/alds1-11-d.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/aoj/alds1-11-d.test.cpp
-- /verify/test/aoj/alds1-11-d.test.cpp.html
-title: test/aoj/alds1-11-d.test.cpp
+- /verify/test/aoj/alds1-11-d.1.test.cpp
+- /verify/test/aoj/alds1-11-d.1.test.cpp.html
+title: test/aoj/alds1-11-d.1.test.cpp
 ---

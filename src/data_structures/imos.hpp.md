@@ -8,10 +8,13 @@ data:
     path: src/algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   _extendedRequiredBy: []
-  _extendedVerifiedWith: []
+  _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl-5-a.test.cpp
+    title: test/aoj/dsl-5-a.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':warning:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "imos\u6CD5\u3067\u533A\u9593\u4F5C\u7528\u30011\u70B9\u53D6\u5F97"
     links: []
@@ -388,8 +391,9 @@ data:
   path: src/data_structures/imos.hpp
   requiredBy: []
   timestamp: '2026-10-13 00:38:02+09:00'
-  verificationStatus: LIBRARY_NO_TESTS
-  verifiedWith: []
+  verificationStatus: LIBRARY_ALL_AC
+  verifiedWith:
+  - test/aoj/dsl-5-a.test.cpp
 documentation_of: src/data_structures/imos.hpp
 layout: document
 title: "imos\u6CD5\u3067\u533A\u9593\u4F5C\u7528\u30011\u70B9\u53D6\u5F97"

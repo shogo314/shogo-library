@@ -23,16 +23,16 @@ data:
     PROBLEM: https://onlinejudge.u-aizu.ac.jp/problems/DSL_1_B
     links:
     - https://onlinejudge.u-aizu.ac.jp/problems/DSL_1_B
-  bundledCode: "#line 1 \"test/aoj/dsl-1-b.test.cpp\"\n#define PROBLEM \"https://onlinejudge.u-aizu.ac.jp/problems/DSL_1_B\"\
-    \n\n#include <iostream>\n\n#line 2 \"src/data_structures/potentialized-unionfind.hpp\"\
+  bundledCode: "#line 1 \"test/aoj/dsl-1-b.2.test.cpp\"\n#define PROBLEM \"https://onlinejudge.u-aizu.ac.jp/problems/DSL_1_B\"\
+    \n\n#include <functional>\n#include <iostream>\n\n#line 2 \"src/data_structures/potentialized-unionfind.hpp\"\
     \n\n/**\n * @file potentialized-unionfind.hpp\n * @brief \u30DD\u30C6\u30F3\u30B7\
     \u30E3\u30EB\u4ED8\u304DUnionFind\n */\n#include <algorithm>\n#include <cassert>\n\
-    #include <functional>\n#include <stack>\n#include <utility>\n#include <vector>\n\
-    #line 2 \"src/data_structures/unionfind.hpp\"\n\n/**\n * @file unionfind.hpp\n\
-    \ * @brief UnionFind\n */\n\n#line 11 \"src/data_structures/unionfind.hpp\"\n\n\
-    /**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u5BFE\u3057\u3066\u300C\u8FBA\
-    \u306E\u8FFD\u52A0\u300D\u3001\u300C2\u9802\u70B9\u304C\u9023\u7D50\u304B\u306E\
-    \u5224\u5B9A\u300D\u3092\u3059\u308B\n */\nstruct UnionFind {\n   protected:\n\
+    #line 10 \"src/data_structures/potentialized-unionfind.hpp\"\n#include <stack>\n\
+    #include <utility>\n#include <vector>\n#line 2 \"src/data_structures/unionfind.hpp\"\
+    \n\n/**\n * @file unionfind.hpp\n * @brief UnionFind\n */\n\n#line 11 \"src/data_structures/unionfind.hpp\"\
+    \n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u5BFE\u3057\u3066\u300C\
+    \u8FBA\u306E\u8FFD\u52A0\u300D\u3001\u300C2\u9802\u70B9\u304C\u9023\u7D50\u304B\
+    \u306E\u5224\u5B9A\u300D\u3092\u3059\u308B\n */\nstruct UnionFind {\n   protected:\n\
     \    int _n;\n    // \u8CA0\u306A\u3089\u30B5\u30A4\u30BA\u3001\u975E\u8CA0\u306A\
     \u3089\u89AA\n    std::vector<int> parent_or_size;\n\n   public:\n    /**\n  \
     \   * @brief merge \u306E\u623B\u308A\u5024\n     *\n     * if (uf.merge(a, b))\
@@ -271,38 +271,44 @@ data:
     \ [&](const std::vector<int>& v) { return v.empty(); }), result.end());\n    \
     \    return result;\n    }\n\n   private:\n    S weight(int a) {\n        leader(a);\n\
     \        return diff_weight[a];\n    }\n};\n\ntemplate <typename G>\nPotentializedUnionFind(int,\
-    \ G) -> PotentializedUnionFind<G>;\n#line 6 \"test/aoj/dsl-1-b.test.cpp\"\n\n\
-    int main() {\n    int n, q;\n    std::cin >> n >> q;\n    PotentializedUnionFind<group::Sum<long\
-    \ long>> uf(n);\n    while (q--) {\n        int t;\n        std::cin >> t;\n \
-    \       if (t == 0) {\n            int x, y, z;\n            std::cin >> x >>\
-    \ y >> z;\n            uf.merge(x, y, z);\n        } else {\n            int x,\
-    \ y;\n            std::cin >> x >> y;\n            if (uf.same(x, y))\n      \
-    \          std::cout << uf.diff(x, y) << std::endl;\n            else\n      \
-    \          std::cout << '?' << std::endl;\n        }\n    }\n}\n"
+    \ G) -> PotentializedUnionFind<G>;\n#line 7 \"test/aoj/dsl-1-b.2.test.cpp\"\n\n\
+    // \u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u306E\u7FA4\u3092\u30E9\u30E0\u30C0\u5F0F\
+    \ (\u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8) \u304B\u3089\u4F5C\u308B\n\
+    int main() {\n    int n, q;\n    std::cin >> n >> q;\n    PotentializedUnionFind\
+    \ uf(n, Group(std::plus<long long>{}, 0LL, [](long long a) { return -a; }));\n\
+    \    while (q--) {\n        int t;\n        std::cin >> t;\n        if (t == 0)\
+    \ {\n            int x, y;\n            long long z;\n            std::cin >>\
+    \ x >> y >> z;\n            uf.merge(x, y, z);\n        } else {\n           \
+    \ int x, y;\n            std::cin >> x >> y;\n            if (uf.same(x, y))\n\
+    \                std::cout << uf.diff(x, y) << '\\n';\n            else\n    \
+    \            std::cout << '?' << '\\n';\n        }\n    }\n}\n"
   code: "#define PROBLEM \"https://onlinejudge.u-aizu.ac.jp/problems/DSL_1_B\"\n\n\
-    #include <iostream>\n\n#include \"../../src/data_structures/potentialized-unionfind.hpp\"\
-    \n\nint main() {\n    int n, q;\n    std::cin >> n >> q;\n    PotentializedUnionFind<group::Sum<long\
-    \ long>> uf(n);\n    while (q--) {\n        int t;\n        std::cin >> t;\n \
-    \       if (t == 0) {\n            int x, y, z;\n            std::cin >> x >>\
-    \ y >> z;\n            uf.merge(x, y, z);\n        } else {\n            int x,\
-    \ y;\n            std::cin >> x >> y;\n            if (uf.same(x, y))\n      \
-    \          std::cout << uf.diff(x, y) << std::endl;\n            else\n      \
-    \          std::cout << '?' << std::endl;\n        }\n    }\n}\n"
+    #include <functional>\n#include <iostream>\n\n#include \"../../src/data_structures/potentialized-unionfind.hpp\"\
+    \n\n// \u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u306E\u7FA4\u3092\u30E9\u30E0\u30C0\
+    \u5F0F (\u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8) \u304B\u3089\u4F5C\u308B\
+    \nint main() {\n    int n, q;\n    std::cin >> n >> q;\n    PotentializedUnionFind\
+    \ uf(n, Group(std::plus<long long>{}, 0LL, [](long long a) { return -a; }));\n\
+    \    while (q--) {\n        int t;\n        std::cin >> t;\n        if (t == 0)\
+    \ {\n            int x, y;\n            long long z;\n            std::cin >>\
+    \ x >> y >> z;\n            uf.merge(x, y, z);\n        } else {\n           \
+    \ int x, y;\n            std::cin >> x >> y;\n            if (uf.same(x, y))\n\
+    \                std::cout << uf.diff(x, y) << '\\n';\n            else\n    \
+    \            std::cout << '?' << '\\n';\n        }\n    }\n}\n"
   dependsOn:
   - src/data_structures/potentialized-unionfind.hpp
   - src/data_structures/unionfind.hpp
   - src/algebra/group.hpp
   - src/algebra/monoid.hpp
   isVerificationFile: true
-  path: test/aoj/dsl-1-b.test.cpp
+  path: test/aoj/dsl-1-b.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 00:38:02+09:00'
+  timestamp: '2026-10-13 01:36:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/aoj/dsl-1-b.test.cpp
+documentation_of: test/aoj/dsl-1-b.2.test.cpp
 layout: document
 redirect_from:
-- /verify/test/aoj/dsl-1-b.test.cpp
-- /verify/test/aoj/dsl-1-b.test.cpp.html
-title: test/aoj/dsl-1-b.test.cpp
+- /verify/test/aoj/dsl-1-b.2.test.cpp
+- /verify/test/aoj/dsl-1-b.2.test.cpp.html
+title: test/aoj/dsl-1-b.2.test.cpp
 ---

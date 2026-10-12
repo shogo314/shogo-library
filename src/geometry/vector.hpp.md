@@ -28,8 +28,8 @@ data:
     path: test/aoj/cgl-5-a.test.cpp
     title: test/aoj/cgl-5-a.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/sort-points-by-argument.test.cpp
-    title: test/yosupo/sort-points-by-argument.test.cpp
+    path: test/yosupo/sort-points-by-argument.1.test.cpp
+    title: test/yosupo/sort-points-by-argument.1.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -669,7 +669,7 @@ data:
   - test/aoj/3314.test.cpp
   - test/aoj/cgl-3-b.test.cpp
   - test/aoj/cgl-2-b.test.cpp
-  - test/yosupo/sort-points-by-argument.test.cpp
+  - test/yosupo/sort-points-by-argument.1.test.cpp
 documentation_of: src/geometry/vector.hpp
 layout: document
 title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"

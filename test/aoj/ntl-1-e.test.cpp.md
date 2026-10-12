@@ -86,13 +86,22 @@ data:
     constexpr T extgcd(const T &a, const T &b, T &x, T &y) {\n    T d = a;\n    if\
     \ (b != 0) {\n        d = extgcd(b, a % b, y, x);\n        y -= (a / b) * x;\n\
     \    } else {\n        x = 1;\n        y = 0;\n    }\n    return d;\n}\n\n/**\n\
-    \ * \u504F\u89D2\u30BD\u30FC\u30C8\n * \u53CD\u6642\u8A08\u56DE\u308A\n */\ntemplate\
-    \ <typename T, ENABLE_IF_T(std::is_integral_v<T>)>\nbool argcmp(std::array<T,\
-    \ 2> a, std::array<T, 2> b) {\n    T a0 = std::array<T, 2>{a[1], a[0]} < std::array<T,\
-    \ 2>{0, 0};\n    T b0 = std::array<T, 2>{b[1], b[0]} < std::array<T, 2>{0, 0};\n\
-    \    if (a0 < b0) {\n        return true;\n    } else if (b0 < a0) {\n       \
-    \ return false;\n    } else {\n        return b[0] * a[1] < a[0] * b[1];\n   \
-    \ }\n}\n\ntemplate <typename M, typename N, class F, ENABLE_IF_T(std::is_integral_v<std::common_type_t<M,\
+    \ * \u504F\u89D2\u30BD\u30FC\u30C8\n * \u53CD\u6642\u8A08\u56DE\u308A\n * x \u8EF8\
+    \u6B63\u65B9\u5411\u3092\u59CB\u70B9\u3068\u3057\u3001\u96F6\u30D9\u30AF\u30C8\
+    \u30EB\u306F x \u8EF8\u6B63\u65B9\u5411\u3068\u540C\u3058\u504F\u89D2\u3068\u3057\
+    \u3066\u6271\u3046\n */\ntemplate <typename T, ENABLE_IF_T(std::is_integral_v<T>)>\n\
+    bool argcmp(std::array<T, 2> a, std::array<T, 2> b) {\n    // \u96F6\u30D9\u30AF\
+    \u30C8\u30EB\u306F\u5916\u7A4D\u3067\u6BD4\u3079\u3089\u308C\u306A\u3044\u306E\
+    \u3067\u3001\u504F\u89D2 0 (x \u8EF8\u6B63\u65B9\u5411) \u3068\u3057\u3066\u5148\
+    \u306B\u5224\u5B9A\u3059\u308B\n    const bool a_zero = a[0] == 0 && a[1] == 0;\n\
+    \    const bool b_zero = b[0] == 0 && b[1] == 0;\n    if (b_zero) return false;\
+    \  // \u504F\u89D2 0 \u3088\u308A\u5C0F\u3055\u3044\u3082\u306E\u306F\u306A\u3044\
+    \n    if (a_zero) return !(b[1] == 0 && b[0] > 0);  // b \u306E\u504F\u89D2\u304C\
+    \ 0 \u3088\u308A\u5927\u304D\u3044\u304B\n    T a0 = std::array<T, 2>{a[1], a[0]}\
+    \ < std::array<T, 2>{0, 0};\n    T b0 = std::array<T, 2>{b[1], b[0]} < std::array<T,\
+    \ 2>{0, 0};\n    if (a0 < b0) {\n        return true;\n    } else if (b0 < a0)\
+    \ {\n        return false;\n    } else {\n        return b[0] * a[1] < a[0] *\
+    \ b[1];\n    }\n}\n\ntemplate <typename M, typename N, class F, ENABLE_IF_T(std::is_integral_v<std::common_type_t<M,\
     \ N>> and std::is_invocable_r_v<bool, F, std::common_type_t<M, N>>)>\ninline constexpr\
     \ std::common_type_t<M, N> binary_search(const M &ok, const N &ng, F f) {\n  \
     \  std::common_type_t<M, N> _ok = ok, _ng = ng;\n    while (std::abs(_ok - _ng)\
@@ -129,7 +138,7 @@ data:
   isVerificationFile: true
   path: test/aoj/ntl-1-e.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 00:57:44+09:00'
+  timestamp: '2026-10-13 01:32:37+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/ntl-1-e.test.cpp

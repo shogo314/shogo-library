@@ -4,6 +4,12 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/aoj/0029.test.cpp
+    title: test/aoj/0029.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/itp2-7-d.test.cpp
+    title: test/aoj/itp2-7-d.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/associative-array.test.cpp
     title: test/yosupo/associative-array.test.cpp
   _isVerificationFailed: false
@@ -124,6 +130,8 @@ data:
   timestamp: '2026-10-12 20:22:09+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/aoj/itp2-7-d.test.cpp
+  - test/aoj/0029.test.cpp
   - test/yosupo/associative-array.test.cpp
 documentation_of: src/data_structures/counter.hpp
 layout: document

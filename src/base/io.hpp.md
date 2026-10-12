@@ -2,10 +2,13 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy:
-  - icon: ':warning:'
+  - icon: ':heavy_check_mark:'
     path: src/base/macro.hpp
     title: "\u30DE\u30AF\u30ED (rep \u306A\u3069)"
   _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/1160.test.cpp
+    title: test/aoj/1160.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/cgl-3-a.test.cpp
     title: test/aoj/cgl-3-a.test.cpp
@@ -15,6 +18,18 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj/cgl-3-c.test.cpp
     title: test/aoj/cgl-3-c.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/itp1-2-c.test.cpp
+    title: test/aoj/itp1-2-c.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/itp1-6-a.test.cpp
+    title: test/aoj/itp1-6-a.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/itp2-5-a.1.test.cpp
+    title: test/aoj/itp2-5-a.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/itp2-5-b.test.cpp
+    title: test/aoj/itp2-5-b.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/convolution-mod-2-64.test.cpp
     title: test/yosupo/convolution-mod-2-64.test.cpp
@@ -200,9 +215,14 @@ data:
   timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/aoj/1160.test.cpp
   - test/aoj/cgl-3-a.test.cpp
+  - test/aoj/itp2-5-a.1.test.cpp
+  - test/aoj/itp2-5-b.test.cpp
+  - test/aoj/itp1-6-a.test.cpp
   - test/aoj/cgl-3-c.test.cpp
   - test/aoj/cgl-3-b.test.cpp
+  - test/aoj/itp1-2-c.test.cpp
   - test/yosupo/convolution-mod-2-64.test.cpp
 documentation_of: src/base/io.hpp
 layout: document

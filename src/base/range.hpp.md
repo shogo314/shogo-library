@@ -2,10 +2,13 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
-  _extendedVerifiedWith: []
+  _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/itp1-7-b.test.cpp
+    title: test/aoj/itp1-7-b.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':warning:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\u5217"
     links: []
@@ -388,8 +391,9 @@ data:
   path: src/base/range.hpp
   requiredBy: []
   timestamp: '2026-10-12 20:24:58+09:00'
-  verificationStatus: LIBRARY_NO_TESTS
-  verifiedWith: []
+  verificationStatus: LIBRARY_ALL_AC
+  verifiedWith:
+  - test/aoj/itp1-7-b.test.cpp
 documentation_of: src/base/range.hpp
 layout: document
 title: "Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\u5217"

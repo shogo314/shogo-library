@@ -2,10 +2,13 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
-  _extendedVerifiedWith: []
+  _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/grl-1-c.test.cpp
+    title: test/aoj/grl-1-c.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':warning:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "inf \u3092\u6301\u3064\u6574\u6570\u578B"
     links: []
@@ -297,8 +300,9 @@ data:
   path: src/math/infint.hpp
   requiredBy: []
   timestamp: '2026-10-12 20:24:58+09:00'
-  verificationStatus: LIBRARY_NO_TESTS
-  verifiedWith: []
+  verificationStatus: LIBRARY_ALL_AC
+  verifiedWith:
+  - test/aoj/grl-1-c.test.cpp
 documentation_of: src/math/infint.hpp
 layout: document
 title: "inf \u3092\u6301\u3064\u6574\u6570\u578B"

@@ -13,8 +13,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dsl-1-b.test.cpp
-    title: test/aoj/dsl-1-b.test.cpp
+    path: test/aoj/dsl-1-b.1.test.cpp
+    title: test/aoj/dsl-1-b.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl-1-b.2.test.cpp
+    title: test/aoj/dsl-1-b.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/jag-summer-2971.test.cpp
     title: test/aoj/jag-summer-2971.test.cpp
@@ -350,7 +353,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/aoj/jag-summer-2971.test.cpp
-  - test/aoj/dsl-1-b.test.cpp
+  - test/aoj/dsl-1-b.2.test.cpp
+  - test/aoj/dsl-1-b.1.test.cpp
   - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
 documentation_of: src/data_structures/potentialized-unionfind.hpp
 layout: document

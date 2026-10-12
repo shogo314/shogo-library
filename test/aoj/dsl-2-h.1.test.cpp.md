@@ -17,52 +17,50 @@ data:
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/area_of_union_of_rectangles
+    PROBLEM: http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_H
     links:
-    - https://judge.yosupo.jp/problem/area_of_union_of_rectangles
-  bundledCode: "#line 1 \"test/yosupo/area-of-union-of-rectangles.test.cpp\"\n#define\
-    \ PROBLEM \"https://judge.yosupo.jp/problem/area_of_union_of_rectangles\"\n\n\
-    #include <algorithm>\n#include <array>\n#include <iostream>\n#include <vector>\n\
-    \n#line 2 \"src/data_structures/lazy-segtree.hpp\"\n\n/**\n * @file lazy-segtree.hpp\n\
-    \ * @brief \u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n */\n\
-    \n#include <cassert>\n#include <functional>\n#include <ostream>\n#include <utility>\n\
-    #line 2 \"src/algebra/acted-monoid.hpp\"\n\n/**\n * @file acted-monoid.hpp\n *\
-    \ @brief \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
-    \n *\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306F\u30E2\u30CE\
-    \u30A4\u30C9 (algebra/monoid.hpp) \u306E\u30E1\u30F3\u30D0\u306B\u52A0\u3048\u3066\
-    \u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\
-    \u3059\n * - using F: \u4F5C\u7528\u7D20\u306E\u578B\n * - S mapping(const F&\
-    \ f, const S& x): \u4F5C\u7528\u7D20\u306E\u9069\u7528 f(x)\n *   \u533A\u9593\
-    \u306E\u60C5\u5831\u304C\u5FC5\u8981\u306A\u5834\u5408\u306F mapping(f, x, sz)\
-    \ (sz \u306F\u533A\u9593\u306E\u9577\u3055) \u3084 mapping(f, x, l, r) (\u533A\
-    \u9593 [l, r)) \u3067\u3082\u3088\u3044\n * - F composition(const F& f, const\
-    \ F& g): \u4F5C\u7528\u7D20\u306E\u5408\u6210 f\u2218g (g\u3092\u9069\u7528\u3057\
-    \u305F\u5F8C\u306Bf\u3092\u9069\u7528\u3059\u308B)\n * - F id(): \u6052\u7B49\u5199\
-    \u50CF\n * \u4F5C\u7528\u7D20\u304C\u7FA4\u3092\u306A\u3059\u5834\u5408 (imos.hpp\
-    \ \u3067\u4F7F\u3046) \u306F\n * - F inv(const F& f): \u9006\u4F5C\u7528\u7D20\
-    \n */\n\n#line 18 \"src/algebra/acted-monoid.hpp\"\n#include <limits>\n#include\
-    \ <optional>\n#include <type_traits>\n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n\
-    \ * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n\
-    \ * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\
-    \u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\n\
-    \ * - S op(const S& a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e(): \u5358\
-    \u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\u3088\
-    \u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\
-    \u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\
-    \u3059)\n */\n\n#line 15 \"src/algebra/monoid.hpp\"\n#include <istream>\n#line\
-    \ 17 \"src/algebra/monoid.hpp\"\n#include <numeric>\n#line 21 \"src/algebra/monoid.hpp\"\
-    \n\n/**\n * @brief 1\u6B21\u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite\
-    \ \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\
-    \u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\
-    \u3059\u308B\u3068\u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\n\
-    struct Affine {\n    T a = T(1);  //!< \u50BE\u304D\n    T b = T(0);  //!< \u5207\
-    \u7247\n    constexpr T operator()(const T& x) const { return a * x + b; }\n \
-    \   friend constexpr bool operator==(const Affine& f, const Affine& g) { return\
-    \ f.a == g.a && f.b == g.b; }\n    friend constexpr bool operator!=(const Affine&\
-    \ f, const Affine& g) { return !(f == g); }\n    template <class CharT, class\
-    \ Traits>\n    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
-    \ Traits>& is, Affine& f) {\n        return is >> f.a >> f.b;\n    }\n    template\
-    \ <class CharT, class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    - http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_H
+  bundledCode: "#line 1 \"test/aoj/dsl-2-h.1.test.cpp\"\n#define PROBLEM \"http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_H\"\
+    \n\n#include <iostream>\n\n#line 2 \"src/data_structures/lazy-segtree.hpp\"\n\n\
+    /**\n * @file lazy-segtree.hpp\n * @brief \u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\
+    \u30E1\u30F3\u30C8\u6728\n */\n\n#include <cassert>\n#include <functional>\n#include\
+    \ <ostream>\n#include <utility>\n#include <vector>\n#line 2 \"src/algebra/acted-monoid.hpp\"\
+    \n\n/**\n * @file acted-monoid.hpp\n * @brief \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
+    \u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
+    \u30CE\u30A4\u30C9\u306F\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp) \u306E\u30E1\
+    \u30F3\u30D0\u306B\u52A0\u3048\u3066\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
+    \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using F: \u4F5C\u7528\u7D20\u306E\
+    \u578B\n * - S mapping(const F& f, const S& x): \u4F5C\u7528\u7D20\u306E\u9069\
+    \u7528 f(x)\n *   \u533A\u9593\u306E\u60C5\u5831\u304C\u5FC5\u8981\u306A\u5834\
+    \u5408\u306F mapping(f, x, sz) (sz \u306F\u533A\u9593\u306E\u9577\u3055) \u3084\
+    \ mapping(f, x, l, r) (\u533A\u9593 [l, r)) \u3067\u3082\u3088\u3044\n * - F composition(const\
+    \ F& f, const F& g): \u4F5C\u7528\u7D20\u306E\u5408\u6210 f\u2218g (g\u3092\u9069\
+    \u7528\u3057\u305F\u5F8C\u306Bf\u3092\u9069\u7528\u3059\u308B)\n * - F id(): \u6052\
+    \u7B49\u5199\u50CF\n * \u4F5C\u7528\u7D20\u304C\u7FA4\u3092\u306A\u3059\u5834\u5408\
+    \ (imos.hpp \u3067\u4F7F\u3046) \u306F\n * - F inv(const F& f): \u9006\u4F5C\u7528\
+    \u7D20\n */\n\n#include <array>\n#include <limits>\n#include <optional>\n#include\
+    \ <type_traits>\n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n\
+    \ * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\
+    \u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\
+    \u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S&\
+    \ a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n\
+    \ * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\
+    \u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\
+    \u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\
+    \n#include <algorithm>\n#include <istream>\n#line 17 \"src/algebra/monoid.hpp\"\
+    \n#include <numeric>\n#line 21 \"src/algebra/monoid.hpp\"\n\n/**\n * @brief 1\u6B21\
+    \u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\u3084\
+    \ acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n * \u4F8B\
+    : Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\u3059\u308B\u3068\
+    \u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\nstruct Affine {\n\
+    \    T a = T(1);  //!< \u50BE\u304D\n    T b = T(0);  //!< \u5207\u7247\n    constexpr\
+    \ T operator()(const T& x) const { return a * x + b; }\n    friend constexpr bool\
+    \ operator==(const Affine& f, const Affine& g) { return f.a == g.a && f.b == g.b;\
+    \ }\n    friend constexpr bool operator!=(const Affine& f, const Affine& g) {\
+    \ return !(f == g); }\n    template <class CharT, class Traits>\n    friend std::basic_istream<CharT,\
+    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Affine& f) {\n  \
+    \      return is >> f.a >> f.b;\n    }\n    template <class CharT, class Traits>\n\
+    \    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const Affine& f) {\n        return os << f.a << CharT(' ') << f.b;\n\
     \    }\n};\n\nnamespace monoid {\n\n/**\n * @brief \u548C\n */\ntemplate <typename\
     \ T>\nstruct Sum {\n    using S = T;\n    static constexpr S op(const S& a, const\
@@ -448,74 +446,34 @@ data:
     \ *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RUpdateMaxQ = LazySegTree<acted_monoid::UpdateMax<S>>;\n\
     /**\n * @brief \u533A\u9593\u5909\u66F4\u3001\u533A\u9593\u548C\n *\n * @tparam\
     \ S \u578B\n */\ntemplate <typename S>\nusing RUpdateSumQ = LazySegTree<acted_monoid::UpdateSum<S>>;\n\
-    #line 9 \"test/yosupo/area-of-union-of-rectangles.test.cpp\"\n\n// x \u65B9\u5411\
-    \u306B\u8D70\u67FB\u3057\u3001y \u65B9\u5411\u306E\u5404\u533A\u9593\u304C\u4F55\
-    \u679A\u306E\u9577\u65B9\u5F62\u306B\u8986\u308F\u308C\u3066\u3044\u308B\u304B\
-    \u3092\u6301\u3064\n// \u533A\u9593\u52A0\u7B97\u30FB\u533A\u9593\u6700\u5C0F\u5024\
-    \u3068\u305D\u306E\u500B\u6570 (\u500B\u6570\u306F y \u65B9\u5411\u306E\u9577\u3055\
-    ) \u3067\u3001\u8986\u308F\u308C\u3066\u3044\u306A\u3044\u9577\u3055\u304C\u5206\
-    \u304B\u308B\nint main() {\n    int n;\n    std::cin >> n;\n    std::vector<std::array<long\
-    \ long, 4>> rect(n);\n    std::vector<long long> ys;\n    ys.reserve(2 * n);\n\
-    \    for (auto& [l, d, r, u] : rect) {\n        std::cin >> l >> d >> r >> u;\n\
-    \        ys.push_back(d);\n        ys.push_back(u);\n    }\n    std::sort(ys.begin(),\
-    \ ys.end());\n    ys.erase(std::unique(ys.begin(), ys.end()), ys.end());\n   \
-    \ int m = (int)ys.size() - 1;\n    using A = acted_monoid::AddMinCount<int, long\
-    \ long>;\n    std::vector<A::S> init(m);\n    for (int i = 0; i < m; i++) init[i]\
-    \ = {0, ys[i + 1] - ys[i]};\n    LazySegTree<A> seg(init);\n    const long long\
-    \ total = ys.back() - ys.front();\n\n    // (x, \u52A0\u3048\u308B\u5024, y \u306E\
-    \u533A\u9593 [lo, hi))\n    std::vector<std::array<long long, 4>> events;\n  \
-    \  events.reserve(2 * n);\n    for (auto [l, d, r, u] : rect) {\n        long\
-    \ long lo = std::lower_bound(ys.begin(), ys.end(), d) - ys.begin();\n        long\
-    \ long hi = std::lower_bound(ys.begin(), ys.end(), u) - ys.begin();\n        events.push_back({l,\
-    \ 1, lo, hi});\n        events.push_back({r, -1, lo, hi});\n    }\n    std::sort(events.begin(),\
-    \ events.end());\n    long long ans = 0;\n    for (int i = 0; i < (int)events.size();\
-    \ i++) {\n        auto [x, v, lo, hi] = events[i];\n        seg.apply((int)lo,\
-    \ (int)hi, (int)v);\n        if (i + 1 < (int)events.size()) {\n            auto\
-    \ [mn, cnt] = seg.all_prod();\n            long long covered = total - (mn ==\
-    \ 0 ? cnt : 0);\n            ans += covered * (events[i + 1][0] - x);\n      \
-    \  }\n    }\n    std::cout << ans << '\\n';\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/area_of_union_of_rectangles\"\
-    \n\n#include <algorithm>\n#include <array>\n#include <iostream>\n#include <vector>\n\
-    \n#include \"../../src/data_structures/lazy-segtree.hpp\"\n\n// x \u65B9\u5411\
-    \u306B\u8D70\u67FB\u3057\u3001y \u65B9\u5411\u306E\u5404\u533A\u9593\u304C\u4F55\
-    \u679A\u306E\u9577\u65B9\u5F62\u306B\u8986\u308F\u308C\u3066\u3044\u308B\u304B\
-    \u3092\u6301\u3064\n// \u533A\u9593\u52A0\u7B97\u30FB\u533A\u9593\u6700\u5C0F\u5024\
-    \u3068\u305D\u306E\u500B\u6570 (\u500B\u6570\u306F y \u65B9\u5411\u306E\u9577\u3055\
-    ) \u3067\u3001\u8986\u308F\u308C\u3066\u3044\u306A\u3044\u9577\u3055\u304C\u5206\
-    \u304B\u308B\nint main() {\n    int n;\n    std::cin >> n;\n    std::vector<std::array<long\
-    \ long, 4>> rect(n);\n    std::vector<long long> ys;\n    ys.reserve(2 * n);\n\
-    \    for (auto& [l, d, r, u] : rect) {\n        std::cin >> l >> d >> r >> u;\n\
-    \        ys.push_back(d);\n        ys.push_back(u);\n    }\n    std::sort(ys.begin(),\
-    \ ys.end());\n    ys.erase(std::unique(ys.begin(), ys.end()), ys.end());\n   \
-    \ int m = (int)ys.size() - 1;\n    using A = acted_monoid::AddMinCount<int, long\
-    \ long>;\n    std::vector<A::S> init(m);\n    for (int i = 0; i < m; i++) init[i]\
-    \ = {0, ys[i + 1] - ys[i]};\n    LazySegTree<A> seg(init);\n    const long long\
-    \ total = ys.back() - ys.front();\n\n    // (x, \u52A0\u3048\u308B\u5024, y \u306E\
-    \u533A\u9593 [lo, hi))\n    std::vector<std::array<long long, 4>> events;\n  \
-    \  events.reserve(2 * n);\n    for (auto [l, d, r, u] : rect) {\n        long\
-    \ long lo = std::lower_bound(ys.begin(), ys.end(), d) - ys.begin();\n        long\
-    \ long hi = std::lower_bound(ys.begin(), ys.end(), u) - ys.begin();\n        events.push_back({l,\
-    \ 1, lo, hi});\n        events.push_back({r, -1, lo, hi});\n    }\n    std::sort(events.begin(),\
-    \ events.end());\n    long long ans = 0;\n    for (int i = 0; i < (int)events.size();\
-    \ i++) {\n        auto [x, v, lo, hi] = events[i];\n        seg.apply((int)lo,\
-    \ (int)hi, (int)v);\n        if (i + 1 < (int)events.size()) {\n            auto\
-    \ [mn, cnt] = seg.all_prod();\n            long long covered = total - (mn ==\
-    \ 0 ? cnt : 0);\n            ans += covered * (events[i + 1][0] - x);\n      \
-    \  }\n    }\n    std::cout << ans << '\\n';\n}\n"
+    #line 6 \"test/aoj/dsl-2-h.1.test.cpp\"\n\nint main(void) {\n    int n, q; std::cin\
+    \ >> n >> q;\n    LazySegTree<acted_monoid::AddMin<int>> seg(std::vector<int>(n,\
+    \ 0));\n    while(q--) {\n        int op; std::cin >> op;\n        if(op == 0)\
+    \ {\n            int s, t, x; std::cin >> s >> t >> x; t++;\n            seg.apply(s,\
+    \ t, x);\n        } else {\n            int s, t; std::cin >> s >> t; t++;\n \
+    \           std::cout << seg.prod(s, t) << '\\n';\n        }\n    }\n}\n"
+  code: "#define PROBLEM \"http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_H\"\
+    \n\n#include <iostream>\n\n#include \"../../src/data_structures/lazy-segtree.hpp\"\
+    \n\nint main(void) {\n    int n, q; std::cin >> n >> q;\n    LazySegTree<acted_monoid::AddMin<int>>\
+    \ seg(std::vector<int>(n, 0));\n    while(q--) {\n        int op; std::cin >>\
+    \ op;\n        if(op == 0) {\n            int s, t, x; std::cin >> s >> t >> x;\
+    \ t++;\n            seg.apply(s, t, x);\n        } else {\n            int s,\
+    \ t; std::cin >> s >> t; t++;\n            std::cout << seg.prod(s, t) << '\\\
+    n';\n        }\n    }\n}"
   dependsOn:
   - src/data_structures/lazy-segtree.hpp
   - src/algebra/acted-monoid.hpp
   - src/algebra/monoid.hpp
   isVerificationFile: true
-  path: test/yosupo/area-of-union-of-rectangles.test.cpp
+  path: test/aoj/dsl-2-h.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 00:57:44+09:00'
+  timestamp: '2026-10-13 01:36:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/yosupo/area-of-union-of-rectangles.test.cpp
+documentation_of: test/aoj/dsl-2-h.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/yosupo/area-of-union-of-rectangles.test.cpp
-- /verify/test/yosupo/area-of-union-of-rectangles.test.cpp.html
-title: test/yosupo/area-of-union-of-rectangles.test.cpp
+- /verify/test/aoj/dsl-2-h.1.test.cpp
+- /verify/test/aoj/dsl-2-h.1.test.cpp.html
+title: test/aoj/dsl-2-h.1.test.cpp
 ---

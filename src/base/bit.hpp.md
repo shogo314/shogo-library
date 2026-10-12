@@ -2,10 +2,13 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
-  _extendedVerifiedWith: []
+  _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/itp2-10-c.test.cpp
+    title: test/aoj/itp2-10-c.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':warning:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "\u30D3\u30C3\u30C8\u6F14\u7B97"
     links: []
@@ -80,8 +83,9 @@ data:
   path: src/base/bit.hpp
   requiredBy: []
   timestamp: '2026-10-12 19:23:31+09:00'
-  verificationStatus: LIBRARY_NO_TESTS
-  verifiedWith: []
+  verificationStatus: LIBRARY_ALL_AC
+  verifiedWith:
+  - test/aoj/itp2-10-c.test.cpp
 documentation_of: src/base/bit.hpp
 layout: document
 title: "\u30D3\u30C3\u30C8\u6F14\u7B97"

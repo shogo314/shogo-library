@@ -7,11 +7,38 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/aoj/0022.test.cpp
+    title: test/aoj/0022.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/alds1-1-b.test.cpp
+    title: test/aoj/alds1-1-b.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/aoj/alds1-4-b.test.cpp
     title: test/aoj/alds1-4-b.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/aoj/itp1-10-c.test.cpp
+    title: test/aoj/itp1-10-c.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/itp1-2-c.test.cpp
+    title: test/aoj/itp1-2-c.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/aoj/itp1-4-d.test.cpp
     title: test/aoj/itp1-4-d.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/itp1-6-a.test.cpp
+    title: test/aoj/itp1-6-a.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/itp2-3-c.test.cpp
+    title: test/aoj/itp2-3-c.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/itp2-5-a.1.test.cpp
+    title: test/aoj/itp2-5-a.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/itp2-5-a.2.test.cpp
+    title: test/aoj/itp2-5-a.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/itp2-5-b.test.cpp
+    title: test/aoj/itp2-5-b.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -275,8 +302,17 @@ data:
   timestamp: '2026-10-12 20:22:09+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/aoj/0022.test.cpp
+  - test/aoj/alds1-1-b.test.cpp
   - test/aoj/itp1-4-d.test.cpp
+  - test/aoj/itp2-5-a.1.test.cpp
+  - test/aoj/itp2-3-c.test.cpp
+  - test/aoj/itp2-5-b.test.cpp
   - test/aoj/alds1-4-b.test.cpp
+  - test/aoj/itp1-10-c.test.cpp
+  - test/aoj/itp1-6-a.test.cpp
+  - test/aoj/itp2-5-a.2.test.cpp
+  - test/aoj/itp1-2-c.test.cpp
 documentation_of: src/base/container_func.hpp
 layout: document
 title: "\u30B3\u30F3\u30C6\u30CA\u306B\u5BFE\u3059\u308B\u95A2\u6570 (sorted, max,\

@@ -7,8 +7,20 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/aoj/1160.test.cpp
+    title: test/aoj/1160.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/alds1-4-d.test.cpp
+    title: test/aoj/alds1-4-d.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl-5-a.test.cpp
+    title: test/aoj/dsl-5-a.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/aoj/ntl-1-e.test.cpp
     title: test/aoj/ntl-1-e.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/sort-points-by-argument.2.test.cpp
+    title: test/yosupo/sort-points-by-argument.2.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -82,13 +94,22 @@ data:
     constexpr T extgcd(const T &a, const T &b, T &x, T &y) {\n    T d = a;\n    if\
     \ (b != 0) {\n        d = extgcd(b, a % b, y, x);\n        y -= (a / b) * x;\n\
     \    } else {\n        x = 1;\n        y = 0;\n    }\n    return d;\n}\n\n/**\n\
-    \ * \u504F\u89D2\u30BD\u30FC\u30C8\n * \u53CD\u6642\u8A08\u56DE\u308A\n */\ntemplate\
-    \ <typename T, ENABLE_IF_T(std::is_integral_v<T>)>\nbool argcmp(std::array<T,\
-    \ 2> a, std::array<T, 2> b) {\n    T a0 = std::array<T, 2>{a[1], a[0]} < std::array<T,\
-    \ 2>{0, 0};\n    T b0 = std::array<T, 2>{b[1], b[0]} < std::array<T, 2>{0, 0};\n\
-    \    if (a0 < b0) {\n        return true;\n    } else if (b0 < a0) {\n       \
-    \ return false;\n    } else {\n        return b[0] * a[1] < a[0] * b[1];\n   \
-    \ }\n}\n\ntemplate <typename M, typename N, class F, ENABLE_IF_T(std::is_integral_v<std::common_type_t<M,\
+    \ * \u504F\u89D2\u30BD\u30FC\u30C8\n * \u53CD\u6642\u8A08\u56DE\u308A\n * x \u8EF8\
+    \u6B63\u65B9\u5411\u3092\u59CB\u70B9\u3068\u3057\u3001\u96F6\u30D9\u30AF\u30C8\
+    \u30EB\u306F x \u8EF8\u6B63\u65B9\u5411\u3068\u540C\u3058\u504F\u89D2\u3068\u3057\
+    \u3066\u6271\u3046\n */\ntemplate <typename T, ENABLE_IF_T(std::is_integral_v<T>)>\n\
+    bool argcmp(std::array<T, 2> a, std::array<T, 2> b) {\n    // \u96F6\u30D9\u30AF\
+    \u30C8\u30EB\u306F\u5916\u7A4D\u3067\u6BD4\u3079\u3089\u308C\u306A\u3044\u306E\
+    \u3067\u3001\u504F\u89D2 0 (x \u8EF8\u6B63\u65B9\u5411) \u3068\u3057\u3066\u5148\
+    \u306B\u5224\u5B9A\u3059\u308B\n    const bool a_zero = a[0] == 0 && a[1] == 0;\n\
+    \    const bool b_zero = b[0] == 0 && b[1] == 0;\n    if (b_zero) return false;\
+    \  // \u504F\u89D2 0 \u3088\u308A\u5C0F\u3055\u3044\u3082\u306E\u306F\u306A\u3044\
+    \n    if (a_zero) return !(b[1] == 0 && b[0] > 0);  // b \u306E\u504F\u89D2\u304C\
+    \ 0 \u3088\u308A\u5927\u304D\u3044\u304B\n    T a0 = std::array<T, 2>{a[1], a[0]}\
+    \ < std::array<T, 2>{0, 0};\n    T b0 = std::array<T, 2>{b[1], b[0]} < std::array<T,\
+    \ 2>{0, 0};\n    if (a0 < b0) {\n        return true;\n    } else if (b0 < a0)\
+    \ {\n        return false;\n    } else {\n        return b[0] * a[1] < a[0] *\
+    \ b[1];\n    }\n}\n\ntemplate <typename M, typename N, class F, ENABLE_IF_T(std::is_integral_v<std::common_type_t<M,\
     \ N>> and std::is_invocable_r_v<bool, F, std::common_type_t<M, N>>)>\ninline constexpr\
     \ std::common_type_t<M, N> binary_search(const M &ok, const N &ng, F f) {\n  \
     \  std::common_type_t<M, N> _ok = ok, _ng = ng;\n    while (std::abs(_ok - _ng)\
@@ -122,39 +143,53 @@ data:
     \ &b, T &x, T &y) {\n    T d = a;\n    if (b != 0) {\n        d = extgcd(b, a\
     \ % b, y, x);\n        y -= (a / b) * x;\n    } else {\n        x = 1;\n     \
     \   y = 0;\n    }\n    return d;\n}\n\n/**\n * \u504F\u89D2\u30BD\u30FC\u30C8\n\
-    \ * \u53CD\u6642\u8A08\u56DE\u308A\n */\ntemplate <typename T, ENABLE_IF_T(std::is_integral_v<T>)>\n\
-    bool argcmp(std::array<T, 2> a, std::array<T, 2> b) {\n    T a0 = std::array<T,\
-    \ 2>{a[1], a[0]} < std::array<T, 2>{0, 0};\n    T b0 = std::array<T, 2>{b[1],\
-    \ b[0]} < std::array<T, 2>{0, 0};\n    if (a0 < b0) {\n        return true;\n\
-    \    } else if (b0 < a0) {\n        return false;\n    } else {\n        return\
-    \ b[0] * a[1] < a[0] * b[1];\n    }\n}\n\ntemplate <typename M, typename N, class\
-    \ F, ENABLE_IF_T(std::is_integral_v<std::common_type_t<M, N>> and std::is_invocable_r_v<bool,\
-    \ F, std::common_type_t<M, N>>)>\ninline constexpr std::common_type_t<M, N> binary_search(const\
-    \ M &ok, const N &ng, F f) {\n    std::common_type_t<M, N> _ok = ok, _ng = ng;\n\
-    \    while (std::abs(_ok - _ng) > 1) {\n        std::common_type_t<M, N> mid =\
-    \ (_ok + _ng) / 2;\n        if (f(mid)) {\n            _ok = mid;\n        } else\
-    \ {\n            _ng = mid;\n        }\n    }\n    return _ok;\n}\n\ntemplate\
-    \ <typename M, typename N, class F, ENABLE_IF_T(not std::is_integral_v<std::common_type_t<M,\
+    \ * \u53CD\u6642\u8A08\u56DE\u308A\n * x \u8EF8\u6B63\u65B9\u5411\u3092\u59CB\u70B9\
+    \u3068\u3057\u3001\u96F6\u30D9\u30AF\u30C8\u30EB\u306F x \u8EF8\u6B63\u65B9\u5411\
+    \u3068\u540C\u3058\u504F\u89D2\u3068\u3057\u3066\u6271\u3046\n */\ntemplate <typename\
+    \ T, ENABLE_IF_T(std::is_integral_v<T>)>\nbool argcmp(std::array<T, 2> a, std::array<T,\
+    \ 2> b) {\n    // \u96F6\u30D9\u30AF\u30C8\u30EB\u306F\u5916\u7A4D\u3067\u6BD4\
+    \u3079\u3089\u308C\u306A\u3044\u306E\u3067\u3001\u504F\u89D2 0 (x \u8EF8\u6B63\
+    \u65B9\u5411) \u3068\u3057\u3066\u5148\u306B\u5224\u5B9A\u3059\u308B\n    const\
+    \ bool a_zero = a[0] == 0 && a[1] == 0;\n    const bool b_zero = b[0] == 0 &&\
+    \ b[1] == 0;\n    if (b_zero) return false;  // \u504F\u89D2 0 \u3088\u308A\u5C0F\
+    \u3055\u3044\u3082\u306E\u306F\u306A\u3044\n    if (a_zero) return !(b[1] == 0\
+    \ && b[0] > 0);  // b \u306E\u504F\u89D2\u304C 0 \u3088\u308A\u5927\u304D\u3044\
+    \u304B\n    T a0 = std::array<T, 2>{a[1], a[0]} < std::array<T, 2>{0, 0};\n  \
+    \  T b0 = std::array<T, 2>{b[1], b[0]} < std::array<T, 2>{0, 0};\n    if (a0 <\
+    \ b0) {\n        return true;\n    } else if (b0 < a0) {\n        return false;\n\
+    \    } else {\n        return b[0] * a[1] < a[0] * b[1];\n    }\n}\n\ntemplate\
+    \ <typename M, typename N, class F, ENABLE_IF_T(std::is_integral_v<std::common_type_t<M,\
     \ N>> and std::is_invocable_r_v<bool, F, std::common_type_t<M, N>>)>\ninline constexpr\
     \ std::common_type_t<M, N> binary_search(const M &ok, const N &ng, F f) {\n  \
-    \  std::common_type_t<M, N> _ok = ok, _ng = ng;\n    for (int i = 0; i < 100;\
-    \ i++) {\n        std::common_type_t<M, N> mid = (_ok + _ng) / 2;\n        if\
+    \  std::common_type_t<M, N> _ok = ok, _ng = ng;\n    while (std::abs(_ok - _ng)\
+    \ > 1) {\n        std::common_type_t<M, N> mid = (_ok + _ng) / 2;\n        if\
     \ (f(mid)) {\n            _ok = mid;\n        } else {\n            _ng = mid;\n\
-    \        }\n    }\n    return _ok;\n}\n\n/**\n * 0 <= x < a\n */\ninline constexpr\
-    \ bool inrange(long long x, long long a) {\n    return 0 <= x and x < a;\n}\n\
-    /**\n * a <= x < b\n */\ninline constexpr bool inrange(long long x, long long\
-    \ a, long long b) {\n    return a <= x and x < b;\n}\n/**\n * 0 <= x < a and 0\
-    \ <= y < b\n */\ninline constexpr bool inrect(long long x, long long y, long long\
-    \ a, long long b) {\n    return 0 <= x and x < a and 0 <= y and y < b;\n}\n"
+    \        }\n    }\n    return _ok;\n}\n\ntemplate <typename M, typename N, class\
+    \ F, ENABLE_IF_T(not std::is_integral_v<std::common_type_t<M, N>> and std::is_invocable_r_v<bool,\
+    \ F, std::common_type_t<M, N>>)>\ninline constexpr std::common_type_t<M, N> binary_search(const\
+    \ M &ok, const N &ng, F f) {\n    std::common_type_t<M, N> _ok = ok, _ng = ng;\n\
+    \    for (int i = 0; i < 100; i++) {\n        std::common_type_t<M, N> mid = (_ok\
+    \ + _ng) / 2;\n        if (f(mid)) {\n            _ok = mid;\n        } else {\n\
+    \            _ng = mid;\n        }\n    }\n    return _ok;\n}\n\n/**\n * 0 <=\
+    \ x < a\n */\ninline constexpr bool inrange(long long x, long long a) {\n    return\
+    \ 0 <= x and x < a;\n}\n/**\n * a <= x < b\n */\ninline constexpr bool inrange(long\
+    \ long x, long long a, long long b) {\n    return a <= x and x < b;\n}\n/**\n\
+    \ * 0 <= x < a and 0 <= y < b\n */\ninline constexpr bool inrect(long long x,\
+    \ long long y, long long a, long long b) {\n    return 0 <= x and x < a and 0\
+    \ <= y and y < b;\n}\n"
   dependsOn:
   - src/base/traits.hpp
   isVerificationFile: false
   path: src/base/functions.hpp
   requiredBy: []
-  timestamp: '2026-10-12 20:22:09+09:00'
+  timestamp: '2026-10-13 01:32:37+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/aoj/1160.test.cpp
+  - test/aoj/alds1-4-d.test.cpp
   - test/aoj/ntl-1-e.test.cpp
+  - test/aoj/dsl-5-a.test.cpp
+  - test/yosupo/sort-points-by-argument.2.test.cpp
 documentation_of: src/base/functions.hpp
 layout: document
 title: "\u6C4E\u7528\u95A2\u6570 (chmin, chmax, \u4E8C\u5206\u63A2\u7D22\u306A\u3069\
@@ -178,7 +213,7 @@ if (inrect(i, j, h, w)) { /* グリッドの範囲内 */ }
 | `chmin(a, b)` / `chmax(a, b)` | `a` を `min(a, b)` / `max(a, b)` に更新し、更新したら `true` |
 | `binary_search(ok, ng, f)` | `f(ok)` が真、`f(ng)` が偽として、境界で `f` が真になる側の値を返す。整数なら `ok` と `ng` の差が 1 になるまで、浮動小数点数なら 100 回二分する |
 | `extgcd(a, b, x, y)` | $ax + by = \gcd(a, b)$ となる `x`、`y` を求め、$\gcd(a, b)$ を返す |
-| `argcmp(a, b)` | `std::array<T, 2>` (整数) の偏角ソートの比較関数。x 軸正方向から反時計回り |
+| `argcmp(a, b)` | `std::array<T, 2>` (整数) の偏角ソートの比較関数。x 軸正方向から反時計回りで、零ベクトルは x 軸正方向と同じ偏角 |
 | `inrange(x, a)` | $0 \le x < a$ か |
 | `inrange(x, a, b)` | $a \le x < b$ か |
 | `inrect(x, y, a, b)` | $0 \le x < a$ かつ $0 \le y < b$ か |

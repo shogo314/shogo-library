@@ -20,8 +20,8 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/rectangle_sum
     links:
     - https://judge.yosupo.jp/problem/rectangle_sum
-  bundledCode: "#line 1 \"test/yosupo/rectangle-sum.test.cpp\"\n#define PROBLEM \"\
-    https://judge.yosupo.jp/problem/rectangle_sum\"\n\n#include <array>\n#include\
+  bundledCode: "#line 1 \"test/yosupo/rectangle-sum.1.test.cpp\"\n#define PROBLEM\
+    \ \"https://judge.yosupo.jp/problem/rectangle_sum\"\n\n#include <array>\n#include\
     \ <iostream>\n#include <vector>\n\n#line 2 \"src/data_structures/merge-sort-tree.hpp\"\
     \n\n/**\n * @file merge-sort-tree.hpp\n * @brief \u30DE\u30FC\u30B8\u30BD\u30FC\
     \u30C8\u30C4\u30EA\u30FC\n */\n#include <algorithm>\n#include <cassert>\n#include\
@@ -235,7 +235,7 @@ data:
     \                l += t;\n            }\n            if (r & t) {\n          \
     \      r -= t;\n                ret = op(ret, prod_section(h * sz + r, h * sz\
     \ + r + t, a, b));\n            }\n            h--;\n            t <<= 1;\n  \
-    \      }\n        return ret;\n    }\n};\n#line 8 \"test/yosupo/rectangle-sum.test.cpp\"\
+    \      }\n        return ret;\n    }\n};\n#line 8 \"test/yosupo/rectangle-sum.1.test.cpp\"\
     \n\nint main() {\n    int N, Q;\n    std::cin >> N >> Q;\n    std::vector<std::array<int,\
     \ 3>> XYW(N);\n    for (auto& [X, Y, W] : XYW) {\n        std::cin >> X >> Y >>\
     \ W;\n    }\n    std::sort(XYW.begin(), XYW.end());\n    std::vector<int> v(N),\
@@ -263,15 +263,15 @@ data:
   - src/algebra/group.hpp
   - src/algebra/monoid.hpp
   isVerificationFile: true
-  path: test/yosupo/rectangle-sum.test.cpp
+  path: test/yosupo/rectangle-sum.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 00:38:02+09:00'
+  timestamp: '2026-10-13 01:36:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/yosupo/rectangle-sum.test.cpp
+documentation_of: test/yosupo/rectangle-sum.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/yosupo/rectangle-sum.test.cpp
-- /verify/test/yosupo/rectangle-sum.test.cpp.html
-title: test/yosupo/rectangle-sum.test.cpp
+- /verify/test/yosupo/rectangle-sum.1.test.cpp
+- /verify/test/yosupo/rectangle-sum.1.test.cpp.html
+title: test/yosupo/rectangle-sum.1.test.cpp
 ---

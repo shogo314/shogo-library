@@ -19,8 +19,8 @@ data:
     path: test/aoj/3372.test.cpp
     title: test/aoj/3372.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/alds1-11-d.test.cpp
-    title: test/aoj/alds1-11-d.test.cpp
+    path: test/aoj/alds1-11-d.1.test.cpp
+    title: test/aoj/alds1-11-d.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/grl-1-b.test.cpp
     title: test/aoj/grl-1-b.test.cpp
@@ -37,11 +37,17 @@ data:
     path: test/unittest/graph-util.test.cpp
     title: test/unittest/graph-util.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/jump-on-tree.test.cpp
+    title: test/yosupo/jump-on-tree.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/lca.1.test.cpp
     title: test/yosupo/lca.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/lca.2.test.cpp
     title: test/yosupo/lca.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/lca.3.test.cpp
+    title: test/yosupo/lca.3.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/minimum-spanning-tree.test.cpp
     title: test/yosupo/minimum-spanning-tree.test.cpp
@@ -350,16 +356,18 @@ data:
   - test/aoj/1595.test.cpp
   - test/aoj/grl-1-b.test.cpp
   - test/aoj/grl-4-a.test.cpp
-  - test/aoj/alds1-11-d.test.cpp
   - test/aoj/grl-5-a.test.cpp
   - test/aoj/grl-5-b.test.cpp
   - test/aoj/3372.test.cpp
+  - test/aoj/alds1-11-d.1.test.cpp
   - test/yosupo/minimum-spanning-tree.test.cpp
   - test/yosupo/lca.1.test.cpp
+  - test/yosupo/lca.3.test.cpp
   - test/yosupo/tree-diameter.test.cpp
   - test/yosupo/lca.2.test.cpp
   - test/yosupo/shortest-path.test.cpp
   - test/yosupo/vertex-add-subtree-sum.test.cpp
+  - test/yosupo/jump-on-tree.test.cpp
   - test/yukicoder/898.test.cpp
 documentation_of: src/graph/graph.hpp
 layout: document

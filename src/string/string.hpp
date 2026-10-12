@@ -5,6 +5,7 @@
  * @brief Z-algorithm
  */
 
+#include <iterator>
 #include <vector>
 
 /**

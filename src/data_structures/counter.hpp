@@ -7,10 +7,12 @@
 
 #include <algorithm>
 #include <cassert>
+#include <cstddef>
 #include <initializer_list>
 #include <iterator>
 #include <map>
 #include <type_traits>
+#include <utility>
 #include <vector>
 
 template <typename T>

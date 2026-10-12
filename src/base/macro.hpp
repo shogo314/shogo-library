@@ -5,6 +5,7 @@
  * @brief マクロ (rep など)
  */
 
+#include "io.hpp"
 #include "type_alias.hpp"
 
 #pragma GCC target("avx2")

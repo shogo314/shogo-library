@@ -7,6 +7,7 @@
 
 #include <cassert>
 #include <map>
+#include <utility>
 #include <vector>
 
 template <typename T>

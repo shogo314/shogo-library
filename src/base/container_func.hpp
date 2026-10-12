@@ -11,6 +11,7 @@
 #include <initializer_list>
 #include <iterator>
 #include <numeric>
+#include <vector>
 #include "traits.hpp"
 
 #define METHOD_EXPAND(func)                                        \

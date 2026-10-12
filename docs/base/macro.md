@@ -3,7 +3,7 @@ title: マクロ (rep など)
 documentation_of: //src/base/macro.hpp
 ---
 
-コンテスト用のマクロです。[型の別名](type_alias.hpp) を include し、最適化の `#pragma` (`avx2`、`O3`、`unroll-loops`) も設定します。入力用のマクロは [入出力](io.hpp) の `>>` を使うので、`io.hpp` も include してください (`base/all` を include すれば両方入ります)。
+コンテスト用のマクロです。[型の別名](type_alias.hpp) と、入力用のマクロが使う [入出力](io.hpp) を include し、最適化の `#pragma` (`avx2`、`O3`、`unroll-loops`) も設定します。
 
 ```cpp
 void solve() {

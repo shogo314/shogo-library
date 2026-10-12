@@ -5,7 +5,11 @@
  * @brief グラフに関する関数
  */
 
+#include <functional>
+#include <queue>
 #include <stack>
+#include <utility>
+#include <vector>
 
 #include "graph.hpp"
 

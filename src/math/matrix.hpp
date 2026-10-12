@@ -12,6 +12,8 @@
 #include <cassert>
 #include <type_traits>
 #include <initializer_list>
+#include <cmath>
+#include <utility>
 
 namespace matrix {
     template <typename T>

@@ -6,6 +6,7 @@
  */
 
 #include <cassert>
+#include <cstddef>
 #include <functional>
 #include <iostream>
 #include <iterator>
@@ -13,6 +14,7 @@
 #include <optional>
 #include <set>
 #include <type_traits>
+#include <utility>
 #include <vector>
 /**
  * @brief 半開区間を管理する

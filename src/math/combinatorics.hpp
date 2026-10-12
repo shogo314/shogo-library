@@ -6,6 +6,7 @@
  */
 
 #include <cassert>
+#include <numeric>
 #include <vector>
 #include "number-theory.hpp"
 
@@ -157,7 +158,7 @@ public:
      * @param n
      * @param r
      * @return nCr
-     * @note expand(Mod), O(log(r))
+     * @note extend(Mod), O(log(r))
      */
     inline static Modint C_lucas(long long n, long long r) {
         if (r < 0 || n < r) return 0;
@@ -229,9 +230,9 @@ struct CombinationPQ {
             r /= p;
             epsilon.push_back(n - m - r);
         }
-        if(delta == -1 && epsilon.size() >= q && accumulate(epsilon.begin()+q-1, epsilon.end(), 0) % 2 == 1) ans = pq - ans;
+        if(delta == -1 && (int)epsilon.size() >= q && std::accumulate(epsilon.begin()+q-1, epsilon.end(), 0) % 2 == 1) ans = pq - ans;
         if(ans == pq) ans = 0;
-        int e = accumulate(epsilon.begin(), epsilon.end(), 0);
+        int e = std::accumulate(epsilon.begin(), epsilon.end(), 0);
         if(e >= q) ans = 0;
         else {
             for(int i = 0; i < e; i++) {

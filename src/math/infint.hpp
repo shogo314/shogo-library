@@ -25,9 +25,9 @@ struct infint {
 
     T _v;
 
-    inline constexpr static T _PlusInf = std::numeric_limits<T>::max();       //<! 正の無限大
-    inline constexpr static T _MinusInf = std::numeric_limits<T>::min() + 1;  //<! 負の無限大
-    inline constexpr static T _NaN = std::numeric_limits<T>::min();           //<! Not a Number
+    inline constexpr static T _PlusInf = std::numeric_limits<T>::max();       //!< 正の無限大
+    inline constexpr static T _MinusInf = std::numeric_limits<T>::min() + 1;  //!< 負の無限大
+    inline constexpr static T _NaN = std::numeric_limits<T>::min();           //!< Not a Number
     static std::string str_plusinf;
     static std::string str_minusinf;
     static std::string str_nan;

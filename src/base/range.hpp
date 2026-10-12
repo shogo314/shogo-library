@@ -50,7 +50,8 @@ struct Range {
 
    public:
     /**
-     * @brief step != 0
+     * @brief start から stop の手前まで step ずつ進む整数列
+     * @pre step != 0
      */
     constexpr Range(value_type _start, value_type _stop, value_type _step)
         : start(_start), stop(_stop), step(_step), norm_stop(normalize(_start, _stop, _step)) {

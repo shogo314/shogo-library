@@ -47,7 +47,6 @@ struct IntervalSet {
         if (itr_l == data.end() or key_comp(r, itr_l->first)) {
             return {};
         }
-        if (key_comp(itr_l->first, l)) l = itr_l->first;
         auto itr_r = data.upper_bound({r, r});
         return std::pair<iterator, iterator>{itr_l, itr_r};
     }
@@ -94,7 +93,7 @@ struct IntervalSet {
         if (key_comp(r, std::prev(itr_r)->second)) r = std::prev(itr_r)->second;
         data.erase(itr_l, itr_r);
         data.emplace(l, r);
-    };
+    }
     void erase(key_type l, key_type r) {
         assert(key_comp(l, r));
         auto opt = find(l, r);

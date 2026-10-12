@@ -99,7 +99,7 @@ public:
     /**
      * @brief x=xs[i]における最小値を求める
      *
-     * @param x x座標(xsのインデックス)
+     * @param i x座標(xsのインデックス)
      * @return T 最小値
      */
     T get_min(int i) const {

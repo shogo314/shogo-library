@@ -120,6 +120,7 @@ public:
      * @return S 値
      */
     S get(int k) {
+        assert(0 <= k && k < n);
         k += sz;
         for(int h = height; h > 0; h--) {
             push(k >> h, h);
@@ -159,6 +160,7 @@ public:
      * @param x 新しい値
      */
     void set(int k, const S& x) {
+        assert(0 <= k && k < n);
         k += sz;
         for(int h = height; h > 0; h--) {
             push(k >> h, h);
@@ -175,6 +177,7 @@ public:
      * @return S 総積
      */
     S prod(int l, int r) {
+        assert(0 <= l && l <= r && r <= n);
         l += sz; r += sz;
         for(int h = height; h > 0; h--) {
             if(((l >> h) << h) != l) push(l >> h, h);
@@ -218,6 +221,7 @@ public:
      * @param f 作用素
      */
     void apply(int l, int r, const F& f) {
+        assert(0 <= l && l <= r && r <= n);
         if(l == r) return;
         l += sz; r += sz;
         for(int h = height; h > 0; h--) {

@@ -12,9 +12,11 @@
 
 template <typename T>
 class CounterSegTree {
+   public:
     using key_type = T;
     using mapped_type = int;
 
+   private:
     int n, sz, height;
     std::vector<std::map<key_type, mapped_type>> data;
 

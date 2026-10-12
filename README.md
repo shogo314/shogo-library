@@ -3,6 +3,8 @@
 競技プログラミング用の C++ ライブラリです。
 [ou-library](https://github.com/shogo314/ou-library) と [sh-library](https://github.com/shogo314/sh-library) を統合したものです。
 
+ドキュメント: <https://shogo314.github.io/shogo-library/>
+
 ## ディレクトリ構成
 
 ライブラリ本体は `src/` 以下にあります。
@@ -18,6 +20,7 @@
 | `src/geometry/` | 幾何 (ベクトル、凸包など) |
 | `src/others/` | Mo's algorithm |
 | `test/` | オンラインジャッジでの検証用テスト (ジャッジごとにディレクトリを分けています) |
+| `docs/` | ドキュメントの各ページに埋め込む機能一覧 (`documentation_of` でヘッダに対応付け) |
 
 ## 使い方
 

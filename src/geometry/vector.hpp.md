@@ -27,6 +27,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj/cgl-5-a.test.cpp
     title: test/aoj/cgl-5-a.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/sort-points-by-argument.test.cpp
+    title: test/yosupo/sort-points-by-argument.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -124,24 +127,31 @@ data:
     \u65B9\u5411\u3068\u540C\u3058\u504F\u89D2\u3068\u3057\u3066\u6271\u3046\n   \
     \  */\n    struct ArgSortComp {\n        constexpr bool operator()(const Vector&\
     \ lhs, const Vector& rhs) const noexcept {\n            static_assert(Dim == 2,\
-    \ \"ArgSortComp: Dim must be 2\");\n            int l_half = lhs[1] < 0 || (lhs[1]\
-    \ == 0 && lhs[0] < 0);\n            int r_half = rhs[1] < 0 || (rhs[1] == 0 &&\
-    \ rhs[0] < 0);\n            if(l_half != r_half) return l_half < r_half;\n   \
-    \         return rhs[0] * lhs[1] < lhs[0] * rhs[1];\n        }\n    };\n\n   \
-    \ /**\n     * @brief \u5165\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u304B\u3089\u306E\
-    \u8AAD\u307F\u8FBC\u307F\n     * \n     * @tparam CharT \u5165\u529B\u30B9\u30C8\
-    \u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n     * @tparam Traits \u5165\u529B\
-    \u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\u6027\n     * @param\
-    \ is \n     * @param rhs \n     * @return std::basic_istream<CharT, Traits>& \n\
-    \     */\n    template <class CharT, class Traits>\n    friend std::basic_istream<CharT,\
-    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Vector& rhs) {\n\
-    \        for(int i = 0; i < Dim; i++) is >> rhs.v[i];\n        return is;\n  \
-    \  }\n    /**\n     * @brief \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u3078\u306E\
-    \u66F8\u304D\u8FBC\u307F\n     * \n     * @tparam CharT \u51FA\u529B\u30B9\u30C8\
-    \u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n     * @tparam Traits \u51FA\u529B\
-    \u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\u6027\n     * @param\
-    \ is \n     * @param rhs \n     * @return std::basic_ostream<CharT, Traits>& \n\
-    \     */\n    template <class CharT, class Traits>\n    friend std::basic_ostream<CharT,\
+    \ \"ArgSortComp: Dim must be 2\");\n            // \u96F6\u30D9\u30AF\u30C8\u30EB\
+    \u306F\u5916\u7A4D\u3067\u6BD4\u3079\u3089\u308C\u306A\u3044\u306E\u3067\u3001\
+    \u504F\u89D2 0 (x \u8EF8\u6B63\u65B9\u5411) \u3068\u3057\u3066\u5148\u306B\u5224\
+    \u5B9A\u3059\u308B\n            const bool l_zero = lhs[0] == 0 && lhs[1] == 0;\n\
+    \            const bool r_zero = rhs[0] == 0 && rhs[1] == 0;\n            if(r_zero)\
+    \ return false;  // \u504F\u89D2 0 \u3088\u308A\u5C0F\u3055\u3044\u3082\u306E\u306F\
+    \u306A\u3044\n            if(l_zero) return !(rhs[1] == 0 && rhs[0] > 0);  //\
+    \ rhs \u306E\u504F\u89D2\u304C 0 \u3088\u308A\u5927\u304D\u3044\u304B\n      \
+    \      int l_half = lhs[1] < 0 || (lhs[1] == 0 && lhs[0] < 0);\n            int\
+    \ r_half = rhs[1] < 0 || (rhs[1] == 0 && rhs[0] < 0);\n            if(l_half !=\
+    \ r_half) return l_half < r_half;\n            return rhs[0] * lhs[1] < lhs[0]\
+    \ * rhs[1];\n        }\n    };\n\n    /**\n     * @brief \u5165\u529B\u30B9\u30C8\
+    \u30EA\u30FC\u30E0\u304B\u3089\u306E\u8AAD\u307F\u8FBC\u307F\n     * \n     *\
+    \ @tparam CharT \u5165\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\
+    \n     * @tparam Traits \u5165\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\
+    \u5B57\u578B\u7279\u6027\n     * @param is \n     * @param rhs \n     * @return\
+    \ std::basic_istream<CharT, Traits>& \n     */\n    template <class CharT, class\
+    \ Traits>\n    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    \ Traits>& is, Vector& rhs) {\n        for(int i = 0; i < Dim; i++) is >> rhs.v[i];\n\
+    \        return is;\n    }\n    /**\n     * @brief \u51FA\u529B\u30B9\u30C8\u30EA\
+    \u30FC\u30E0\u3078\u306E\u66F8\u304D\u8FBC\u307F\n     * \n     * @tparam CharT\
+    \ \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n     * @tparam\
+    \ Traits \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\
+    \u6027\n     * @param is \n     * @param rhs \n     * @return std::basic_ostream<CharT,\
+    \ Traits>& \n     */\n    template <class CharT, class Traits>\n    friend std::basic_ostream<CharT,\
     \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const Vector& rhs)\
     \ {\n        for(int i = 0; i < Dim; i++) {\n            if(i != 0) os << CharT('\
     \ ');\n            os << rhs.v[i];\n        }\n        return os;\n    }\n\n \
@@ -426,24 +436,31 @@ data:
     \u65B9\u5411\u3068\u540C\u3058\u504F\u89D2\u3068\u3057\u3066\u6271\u3046\n   \
     \  */\n    struct ArgSortComp {\n        constexpr bool operator()(const Vector&\
     \ lhs, const Vector& rhs) const noexcept {\n            static_assert(Dim == 2,\
-    \ \"ArgSortComp: Dim must be 2\");\n            int l_half = lhs[1] < 0 || (lhs[1]\
-    \ == 0 && lhs[0] < 0);\n            int r_half = rhs[1] < 0 || (rhs[1] == 0 &&\
-    \ rhs[0] < 0);\n            if(l_half != r_half) return l_half < r_half;\n   \
-    \         return rhs[0] * lhs[1] < lhs[0] * rhs[1];\n        }\n    };\n\n   \
-    \ /**\n     * @brief \u5165\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u304B\u3089\u306E\
-    \u8AAD\u307F\u8FBC\u307F\n     * \n     * @tparam CharT \u5165\u529B\u30B9\u30C8\
-    \u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n     * @tparam Traits \u5165\u529B\
-    \u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\u6027\n     * @param\
-    \ is \n     * @param rhs \n     * @return std::basic_istream<CharT, Traits>& \n\
-    \     */\n    template <class CharT, class Traits>\n    friend std::basic_istream<CharT,\
-    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Vector& rhs) {\n\
-    \        for(int i = 0; i < Dim; i++) is >> rhs.v[i];\n        return is;\n  \
-    \  }\n    /**\n     * @brief \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u3078\u306E\
-    \u66F8\u304D\u8FBC\u307F\n     * \n     * @tparam CharT \u51FA\u529B\u30B9\u30C8\
-    \u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n     * @tparam Traits \u51FA\u529B\
-    \u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\u6027\n     * @param\
-    \ is \n     * @param rhs \n     * @return std::basic_ostream<CharT, Traits>& \n\
-    \     */\n    template <class CharT, class Traits>\n    friend std::basic_ostream<CharT,\
+    \ \"ArgSortComp: Dim must be 2\");\n            // \u96F6\u30D9\u30AF\u30C8\u30EB\
+    \u306F\u5916\u7A4D\u3067\u6BD4\u3079\u3089\u308C\u306A\u3044\u306E\u3067\u3001\
+    \u504F\u89D2 0 (x \u8EF8\u6B63\u65B9\u5411) \u3068\u3057\u3066\u5148\u306B\u5224\
+    \u5B9A\u3059\u308B\n            const bool l_zero = lhs[0] == 0 && lhs[1] == 0;\n\
+    \            const bool r_zero = rhs[0] == 0 && rhs[1] == 0;\n            if(r_zero)\
+    \ return false;  // \u504F\u89D2 0 \u3088\u308A\u5C0F\u3055\u3044\u3082\u306E\u306F\
+    \u306A\u3044\n            if(l_zero) return !(rhs[1] == 0 && rhs[0] > 0);  //\
+    \ rhs \u306E\u504F\u89D2\u304C 0 \u3088\u308A\u5927\u304D\u3044\u304B\n      \
+    \      int l_half = lhs[1] < 0 || (lhs[1] == 0 && lhs[0] < 0);\n            int\
+    \ r_half = rhs[1] < 0 || (rhs[1] == 0 && rhs[0] < 0);\n            if(l_half !=\
+    \ r_half) return l_half < r_half;\n            return rhs[0] * lhs[1] < lhs[0]\
+    \ * rhs[1];\n        }\n    };\n\n    /**\n     * @brief \u5165\u529B\u30B9\u30C8\
+    \u30EA\u30FC\u30E0\u304B\u3089\u306E\u8AAD\u307F\u8FBC\u307F\n     * \n     *\
+    \ @tparam CharT \u5165\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\
+    \n     * @tparam Traits \u5165\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\
+    \u5B57\u578B\u7279\u6027\n     * @param is \n     * @param rhs \n     * @return\
+    \ std::basic_istream<CharT, Traits>& \n     */\n    template <class CharT, class\
+    \ Traits>\n    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    \ Traits>& is, Vector& rhs) {\n        for(int i = 0; i < Dim; i++) is >> rhs.v[i];\n\
+    \        return is;\n    }\n    /**\n     * @brief \u51FA\u529B\u30B9\u30C8\u30EA\
+    \u30FC\u30E0\u3078\u306E\u66F8\u304D\u8FBC\u307F\n     * \n     * @tparam CharT\
+    \ \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n     * @tparam\
+    \ Traits \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\
+    \u6027\n     * @param is \n     * @param rhs \n     * @return std::basic_ostream<CharT,\
+    \ Traits>& \n     */\n    template <class CharT, class Traits>\n    friend std::basic_ostream<CharT,\
     \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const Vector& rhs)\
     \ {\n        for(int i = 0; i < Dim; i++) {\n            if(i != 0) os << CharT('\
     \ ');\n            os << rhs.v[i];\n        }\n        return os;\n    }\n\n \
@@ -641,7 +658,7 @@ data:
   isVerificationFile: false
   path: src/geometry/vector.hpp
   requiredBy: []
-  timestamp: '2026-10-13 00:38:02+09:00'
+  timestamp: '2026-10-13 00:57:44+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/aoj/cgl-3-a.test.cpp
@@ -652,6 +669,7 @@ data:
   - test/aoj/3314.test.cpp
   - test/aoj/cgl-3-b.test.cpp
   - test/aoj/cgl-2-b.test.cpp
+  - test/yosupo/sort-points-by-argument.test.cpp
 documentation_of: src/geometry/vector.hpp
 layout: document
 title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"

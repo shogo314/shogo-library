@@ -14,8 +14,32 @@ data:
       \u7573\u307F\u8FBC\u307F\u306A\u3069)"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/aoj/dpl-5-b.1.test.cpp
+    title: test/aoj/dpl-5-b.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dpl-5-b.2.test.cpp
+    title: test/aoj/dpl-5-b.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dpl-5-d.1.test.cpp
+    title: test/aoj/dpl-5-d.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dpl-5-d.2.test.cpp
+    title: test/aoj/dpl-5-d.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dpl-5-e.lucas.test.cpp
+    title: test/aoj/dpl-5-e.lucas.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dpl-5-e.test.cpp
+    title: test/aoj/dpl-5-e.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dpl-5-f.test.cpp
+    title: test/aoj/dpl-5-f.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/aoj/jag-summer-2971.test.cpp
     title: test/aoj/jag-summer-2971.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/binomial-coefficient-prime-mod.test.cpp
+    title: test/yosupo/binomial-coefficient-prime-mod.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/binomial-coefficient.test.cpp
     title: test/yosupo/binomial-coefficient.test.cpp
@@ -29,6 +53,9 @@ data:
     path: test/yosupo/convolution-mod.test.cpp
     title: test/yosupo/convolution-mod.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/division-of-polynomials.test.cpp
+    title: test/yosupo/division-of-polynomials.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/exp-of-fps.test.cpp
     title: test/yosupo/exp-of-fps.test.cpp
   - icon: ':heavy_check_mark:'
@@ -37,6 +64,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/log-of-fps.test.cpp
     title: test/yosupo/log-of-fps.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/matrix-det.test.cpp
+    title: test/yosupo/matrix-det.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/partition-function_1.test.cpp
     title: test/yosupo/partition-function_1.test.cpp
@@ -59,6 +89,9 @@ data:
     path: test/yosupo/pow-of-fps.test.cpp
     title: test/yosupo/pow-of-fps.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/range-affine-point-get.test.cpp
+    title: test/yosupo/range-affine-point-get.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/range-affine-range-sum.1.test.cpp
     title: test/yosupo/range-affine-range-sum.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -67,6 +100,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/range-affine-range-sum.3.test.cpp
     title: test/yosupo/range-affine-range-sum.3.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/range-set-range-composite.test.cpp
+    title: test/yosupo/range-set-range-composite.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/sharp-p-subset-sum.test.cpp
     title: test/yosupo/sharp-p-subset-sum.test.cpp
@@ -570,26 +606,38 @@ data:
   timestamp: '2026-10-12 20:24:58+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/aoj/dpl-5-d.1.test.cpp
   - test/aoj/jag-summer-2971.test.cpp
+  - test/aoj/dpl-5-f.test.cpp
+  - test/aoj/dpl-5-b.1.test.cpp
+  - test/aoj/dpl-5-e.test.cpp
+  - test/aoj/dpl-5-e.lucas.test.cpp
+  - test/aoj/dpl-5-d.2.test.cpp
+  - test/aoj/dpl-5-b.2.test.cpp
+  - test/yosupo/binomial-coefficient-prime-mod.test.cpp
   - test/yosupo/exp-of-fps.test.cpp
   - test/yosupo/range-affine-range-sum.2.test.cpp
   - test/yosupo/range-affine-range-sum.3.test.cpp
   - test/yosupo/partition-function_2.test.cpp
   - test/yosupo/inv-of-fps.test.cpp
+  - test/yosupo/division-of-polynomials.test.cpp
   - test/yosupo/binomial-coefficient.test.cpp
   - test/yosupo/pow-of-fps.test.cpp
   - test/yosupo/point-set-range-composite.3.test.cpp
   - test/yosupo/polynomial-taylor-shift.test.cpp
+  - test/yosupo/range-set-range-composite.test.cpp
   - test/yosupo/partition-function_1.test.cpp
   - test/yosupo/point-set-range-composite.1.test.cpp
   - test/yosupo/point-set-range-composite.2.test.cpp
   - test/yosupo/convolution-mod-2-64.test.cpp
+  - test/yosupo/range-affine-point-get.test.cpp
   - test/yosupo/convolution-mod-1000000007.test.cpp
   - test/yosupo/log-of-fps.test.cpp
   - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
   - test/yosupo/sharp-p-subset-sum.test.cpp
   - test/yosupo/range-affine-range-sum.1.test.cpp
   - test/yosupo/convolution-mod.test.cpp
+  - test/yosupo/matrix-det.test.cpp
   - test/yukicoder/187.test.cpp
   - test/yukicoder/117.test.cpp
   - test/yukicoder/search-oji.test.cpp

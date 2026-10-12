@@ -16,6 +16,9 @@ data:
     path: test/aoj/jag-summer-2971.test.cpp
     title: test/aoj/jag-summer-2971.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/minimum-spanning-tree.test.cpp
+    title: test/yosupo/minimum-spanning-tree.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
     title: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
   - icon: ':heavy_check_mark:'
@@ -138,6 +141,7 @@ data:
   - test/aoj/jag-summer-2971.test.cpp
   - test/aoj/dsl-1-b.test.cpp
   - test/yosupo/unionfind.test.cpp
+  - test/yosupo/minimum-spanning-tree.test.cpp
   - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
   - test/yukicoder/674.1.test.cpp
 documentation_of: src/data_structures/unionfind.hpp

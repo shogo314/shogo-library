@@ -58,6 +58,9 @@ data:
     path: test/aoj/jag-summer-2971.test.cpp
     title: test/aoj/jag-summer-2971.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/area-of-union-of-rectangles.test.cpp
+    title: test/yosupo/area-of-union-of-rectangles.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/lca.2.test.cpp
     title: test/yosupo/lca.2.test.cpp
   - icon: ':heavy_check_mark:'
@@ -72,6 +75,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/point-set-range-composite.3.test.cpp
     title: test/yosupo/point-set-range-composite.3.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/range-affine-point-get.test.cpp
+    title: test/yosupo/range-affine-point-get.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/range-affine-range-sum.1.test.cpp
     title: test/yosupo/range-affine-range-sum.1.test.cpp
@@ -88,11 +94,23 @@ data:
     path: test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
     title: test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/range-set-range-composite.test.cpp
+    title: test/yosupo/range-set-range-composite.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/rectangle-sum.test.cpp
     title: test/yosupo/rectangle-sum.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
     title: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/vertex-add-subtree-sum.test.cpp
+    title: test/yosupo/vertex-add-subtree-sum.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yukicoder/1036.1.test.cpp
+    title: test/yukicoder/1036.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yukicoder/1036.2.test.cpp
+    title: test/yukicoder/1036.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/2292.test.cpp
     title: test/yukicoder/2292.test.cpp
@@ -359,13 +377,19 @@ data:
   - test/yosupo/point-set-range-composite.3.test.cpp
   - test/yosupo/rectangle-sum.test.cpp
   - test/yosupo/point-add-rectangle-sum.test.cpp
+  - test/yosupo/range-set-range-composite.test.cpp
   - test/yosupo/lca.2.test.cpp
+  - test/yosupo/area-of-union-of-rectangles.test.cpp
   - test/yosupo/point-set-range-composite.1.test.cpp
   - test/yosupo/point-set-range-composite.2.test.cpp
   - test/yosupo/range-chmin-chmax-add-range-sum.1.test.cpp
+  - test/yosupo/range-affine-point-get.test.cpp
+  - test/yosupo/vertex-add-subtree-sum.test.cpp
   - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
   - test/yosupo/range-affine-range-sum.1.test.cpp
   - test/yukicoder/674.1.test.cpp
+  - test/yukicoder/1036.1.test.cpp
+  - test/yukicoder/1036.2.test.cpp
   - test/yukicoder/2292.test.cpp
 documentation_of: src/algebra/monoid.hpp
 layout: document

@@ -24,6 +24,15 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/point-set-range-composite.3.test.cpp
     title: test/yosupo/point-set-range-composite.3.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/vertex-add-subtree-sum.test.cpp
+    title: test/yosupo/vertex-add-subtree-sum.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yukicoder/1036.1.test.cpp
+    title: test/yukicoder/1036.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yukicoder/1036.2.test.cpp
+    title: test/yukicoder/1036.2.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -370,6 +379,9 @@ data:
   - test/yosupo/lca.2.test.cpp
   - test/yosupo/point-set-range-composite.1.test.cpp
   - test/yosupo/point-set-range-composite.2.test.cpp
+  - test/yosupo/vertex-add-subtree-sum.test.cpp
+  - test/yukicoder/1036.1.test.cpp
+  - test/yukicoder/1036.2.test.cpp
 documentation_of: src/data_structures/segtree.hpp
 layout: document
 title: "\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"

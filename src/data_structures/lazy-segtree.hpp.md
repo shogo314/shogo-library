@@ -22,6 +22,12 @@ data:
     path: test/aoj/dsl-2-i.test.cpp
     title: test/aoj/dsl-2-i.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/area-of-union-of-rectangles.test.cpp
+    title: test/yosupo/area-of-union-of-rectangles.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/range-affine-point-get.test.cpp
+    title: test/yosupo/range-affine-point-get.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/range-affine-range-sum.1.test.cpp
     title: test/yosupo/range-affine-range-sum.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -30,6 +36,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/range-affine-range-sum.3.test.cpp
     title: test/yosupo/range-affine-range-sum.3.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/range-set-range-composite.test.cpp
+    title: test/yosupo/range-set-range-composite.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/2292.test.cpp
     title: test/yukicoder/2292.test.cpp
@@ -627,6 +636,9 @@ data:
   - test/aoj/dsl-2-f.test.cpp
   - test/yosupo/range-affine-range-sum.2.test.cpp
   - test/yosupo/range-affine-range-sum.3.test.cpp
+  - test/yosupo/range-set-range-composite.test.cpp
+  - test/yosupo/area-of-union-of-rectangles.test.cpp
+  - test/yosupo/range-affine-point-get.test.cpp
   - test/yosupo/range-affine-range-sum.1.test.cpp
   - test/yukicoder/2292.test.cpp
 documentation_of: src/data_structures/lazy-segtree.hpp

@@ -2,11 +2,11 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy:
-  - icon: ':warning:'
+  - icon: ':heavy_check_mark:'
     path: src/base/container_func.hpp
     title: "\u30B3\u30F3\u30C6\u30CA\u306B\u5BFE\u3059\u308B\u95A2\u6570 (sorted,\
       \ max, sum \u306A\u3069)"
-  - icon: ':warning:'
+  - icon: ':heavy_check_mark:'
     path: src/base/functions.hpp
     title: "\u6C4E\u7528\u95A2\u6570 (chmin, chmax, \u4E8C\u5206\u63A2\u7D22\u306A\
       \u3069)"
@@ -14,7 +14,7 @@ data:
     path: src/base/repr.hpp
     title: "\u51FA\u529B\u3092\u305D\u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\u30E9\
       \u30AF\u30BF\u306B\u4F7F\u3048\u308B\u6587\u5B57\u5217\u5316 (repr)"
-  - icon: ':warning:'
+  - icon: ':heavy_check_mark:'
     path: src/base/vector_func.hpp
     title: "vector \u306B\u5BFE\u3059\u308B\u6F14\u7B97\u5B50\u3068\u95A2\u6570"
   - icon: ':heavy_check_mark:'
@@ -22,8 +22,23 @@ data:
     title: "\u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/aoj/alds1-14-b.test.cpp
+    title: test/aoj/alds1-14-b.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/alds1-4-b.test.cpp
+    title: test/aoj/alds1-4-b.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/itp1-4-d.test.cpp
+    title: test/aoj/itp1-4-d.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/ntl-1-e.test.cpp
+    title: test/aoj/ntl-1-e.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/enumerate-palindromes.test.cpp
     title: test/yosupo/enumerate-palindromes.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/static-range-sum.test.cpp
+    title: test/yosupo/static-range-sum.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -144,6 +159,11 @@ data:
   timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/aoj/itp1-4-d.test.cpp
+  - test/aoj/alds1-4-b.test.cpp
+  - test/aoj/alds1-14-b.test.cpp
+  - test/aoj/ntl-1-e.test.cpp
+  - test/yosupo/static-range-sum.test.cpp
   - test/yosupo/enumerate-palindromes.test.cpp
 documentation_of: src/base/traits.hpp
 layout: document

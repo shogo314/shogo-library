@@ -5,10 +5,16 @@ data:
     path: src/base/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
-  _extendedVerifiedWith: []
+  _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/alds1-4-b.test.cpp
+    title: test/aoj/alds1-4-b.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/itp1-4-d.test.cpp
+    title: test/aoj/itp1-4-d.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':warning:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "\u30B3\u30F3\u30C6\u30CA\u306B\u5BFE\u3059\u308B\u95A2\u6570\
       \ (sorted, max, sum \u306A\u3069)"
@@ -267,8 +273,10 @@ data:
   path: src/base/container_func.hpp
   requiredBy: []
   timestamp: '2026-10-12 20:22:09+09:00'
-  verificationStatus: LIBRARY_NO_TESTS
-  verifiedWith: []
+  verificationStatus: LIBRARY_ALL_AC
+  verifiedWith:
+  - test/aoj/itp1-4-d.test.cpp
+  - test/aoj/alds1-4-b.test.cpp
 documentation_of: src/base/container_func.hpp
 layout: document
 title: "\u30B3\u30F3\u30C6\u30CA\u306B\u5BFE\u3059\u308B\u95A2\u6570 (sorted, max,\

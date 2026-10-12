@@ -7,6 +7,9 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/aoj/alds1-14-b.test.cpp
+    title: test/aoj/alds1-14-b.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/enumerate-palindromes.test.cpp
     title: test/yosupo/enumerate-palindromes.test.cpp
   _isVerificationFailed: false
@@ -341,6 +344,7 @@ data:
   timestamp: '2026-10-12 20:24:58+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/aoj/alds1-14-b.test.cpp
   - test/yosupo/enumerate-palindromes.test.cpp
 documentation_of: src/string/rolling-hash.hpp
 layout: document

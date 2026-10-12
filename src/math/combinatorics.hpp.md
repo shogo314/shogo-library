@@ -12,6 +12,30 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/aoj/dpl-5-b.1.test.cpp
+    title: test/aoj/dpl-5-b.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dpl-5-b.2.test.cpp
+    title: test/aoj/dpl-5-b.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dpl-5-d.1.test.cpp
+    title: test/aoj/dpl-5-d.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dpl-5-d.2.test.cpp
+    title: test/aoj/dpl-5-d.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dpl-5-e.lucas.test.cpp
+    title: test/aoj/dpl-5-e.lucas.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dpl-5-e.test.cpp
+    title: test/aoj/dpl-5-e.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dpl-5-f.test.cpp
+    title: test/aoj/dpl-5-f.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/binomial-coefficient-prime-mod.test.cpp
+    title: test/yosupo/binomial-coefficient-prime-mod.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/binomial-coefficient.test.cpp
     title: test/yosupo/binomial-coefficient.test.cpp
   - icon: ':heavy_check_mark:'
@@ -613,6 +637,14 @@ data:
   timestamp: '2026-10-13 00:38:02+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/aoj/dpl-5-d.1.test.cpp
+  - test/aoj/dpl-5-f.test.cpp
+  - test/aoj/dpl-5-b.1.test.cpp
+  - test/aoj/dpl-5-e.test.cpp
+  - test/aoj/dpl-5-e.lucas.test.cpp
+  - test/aoj/dpl-5-d.2.test.cpp
+  - test/aoj/dpl-5-b.2.test.cpp
+  - test/yosupo/binomial-coefficient-prime-mod.test.cpp
   - test/yosupo/binomial-coefficient.test.cpp
   - test/yukicoder/117.test.cpp
 documentation_of: src/math/combinatorics.hpp

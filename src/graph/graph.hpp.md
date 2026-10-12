@@ -43,8 +43,17 @@ data:
     path: test/yosupo/lca.2.test.cpp
     title: test/yosupo/lca.2.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/minimum-spanning-tree.test.cpp
+    title: test/yosupo/minimum-spanning-tree.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/shortest-path.test.cpp
     title: test/yosupo/shortest-path.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/tree-diameter.test.cpp
+    title: test/yosupo/tree-diameter.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/vertex-add-subtree-sum.test.cpp
+    title: test/yosupo/vertex-add-subtree-sum.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/898.test.cpp
     title: test/yukicoder/898.test.cpp
@@ -345,9 +354,12 @@ data:
   - test/aoj/grl-5-a.test.cpp
   - test/aoj/grl-5-b.test.cpp
   - test/aoj/3372.test.cpp
+  - test/yosupo/minimum-spanning-tree.test.cpp
   - test/yosupo/lca.1.test.cpp
+  - test/yosupo/tree-diameter.test.cpp
   - test/yosupo/lca.2.test.cpp
   - test/yosupo/shortest-path.test.cpp
+  - test/yosupo/vertex-add-subtree-sum.test.cpp
   - test/yukicoder/898.test.cpp
 documentation_of: src/graph/graph.hpp
 layout: document

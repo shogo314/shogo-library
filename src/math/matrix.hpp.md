@@ -7,6 +7,9 @@ data:
     path: test/aoj/3314.test.cpp
     title: test/aoj/3314.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/matrix-det.test.cpp
+    title: test/yosupo/matrix-det.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yukicoder/rotate-enlarge_1.test.cpp
     title: test/yukicoder/rotate-enlarge_1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -497,6 +500,7 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/aoj/3314.test.cpp
+  - test/yosupo/matrix-det.test.cpp
   - test/yukicoder/rotate-enlarge_1.test.cpp
   - test/yukicoder/rotate-enlarge_2.test.cpp
   - test/yukicoder/search-oji.test.cpp

@@ -5,10 +5,13 @@ data:
     path: src/base/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
-  _extendedVerifiedWith: []
+  _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/ntl-1-e.test.cpp
+    title: test/aoj/ntl-1-e.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':warning:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "\u6C4E\u7528\u95A2\u6570 (chmin, chmax, \u4E8C\u5206\u63A2\u7D22\
       \u306A\u3069)"
@@ -149,8 +152,9 @@ data:
   path: src/base/functions.hpp
   requiredBy: []
   timestamp: '2026-10-12 20:22:09+09:00'
-  verificationStatus: LIBRARY_NO_TESTS
-  verifiedWith: []
+  verificationStatus: LIBRARY_ALL_AC
+  verifiedWith:
+  - test/aoj/ntl-1-e.test.cpp
 documentation_of: src/base/functions.hpp
 layout: document
 title: "\u6C4E\u7528\u95A2\u6570 (chmin, chmax, \u4E8C\u5206\u63A2\u7D22\u306A\u3069\

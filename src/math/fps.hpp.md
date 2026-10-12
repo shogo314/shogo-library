@@ -12,6 +12,9 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/division-of-polynomials.test.cpp
+    title: test/yosupo/division-of-polynomials.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/exp-of-fps.test.cpp
     title: test/yosupo/exp-of-fps.test.cpp
   - icon: ':heavy_check_mark:'
@@ -643,6 +646,7 @@ data:
   - test/yosupo/exp-of-fps.test.cpp
   - test/yosupo/partition-function_2.test.cpp
   - test/yosupo/inv-of-fps.test.cpp
+  - test/yosupo/division-of-polynomials.test.cpp
   - test/yosupo/pow-of-fps.test.cpp
   - test/yosupo/polynomial-taylor-shift.test.cpp
   - test/yosupo/partition-function_1.test.cpp

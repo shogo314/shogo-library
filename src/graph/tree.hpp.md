@@ -28,6 +28,12 @@ data:
     path: test/yosupo/lca.2.test.cpp
     title: test/yosupo/lca.2.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/tree-diameter.test.cpp
+    title: test/yosupo/tree-diameter.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/vertex-add-subtree-sum.test.cpp
+    title: test/yosupo/vertex-add-subtree-sum.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yukicoder/898.test.cpp
     title: test/yukicoder/898.test.cpp
   _isVerificationFailed: false
@@ -572,7 +578,9 @@ data:
   - test/aoj/grl-5-b.test.cpp
   - test/aoj/3372.test.cpp
   - test/yosupo/lca.1.test.cpp
+  - test/yosupo/tree-diameter.test.cpp
   - test/yosupo/lca.2.test.cpp
+  - test/yosupo/vertex-add-subtree-sum.test.cpp
   - test/yukicoder/898.test.cpp
 documentation_of: src/graph/tree.hpp
 layout: document

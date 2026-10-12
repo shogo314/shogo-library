@@ -73,6 +73,21 @@ bool run(std::mt19937& rng) {
     return true;
 }
 
+// constexpr で使えること (C++17 の定数式で inc・+・size を評価する)
+constexpr bool constexpr_check() {
+    MaxCounter<int, 2> a;
+    a.inc(5);
+    a.inc(1);
+    a.inc(9);  // 上位 2 個 {9, 5} が残り、1 は押し出される
+    a.inc(5, 2);
+    MaxCounter<int, 2> b(7);
+    MaxCounter<int, 2> c = a + b;  // {9, 7}
+    return a.size() == 2 && a.data[0] == std::pair<int, long long>(9, 1) && a.data[1] == std::pair<int, long long>(5, 3) &&
+           c.data[0] == std::pair<int, long long>(9, 1) && c.data[1] == std::pair<int, long long>(7, 1) &&
+           MinCounter<int, 3>().size() == 0;
+}
+static_assert(constexpr_check());
+
 int main() {
     std::mt19937 rng(314);
     bool ok = true;

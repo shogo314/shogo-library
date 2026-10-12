@@ -1,0 +1,41 @@
+---
+title: 作用素付きモノイドの定義
+documentation_of: //src/algebra/acted-monoid.hpp
+---
+
+[遅延伝搬セグメント木](../data_structures/lazy-segtree.hpp) などに渡す作用素付きモノイドです。
+
+作用素付きモノイドは、[モノイド](monoid.hpp) のメンバに加えて次のメンバを持つ型として表します。
+
+- `using F`: 作用素の型
+- `S mapping(const F& f, const S& x)`: 作用素の適用 $f(x)$。区間の情報が必要な場合は `mapping(f, x, sz)` (`sz` は区間の長さ) や `mapping(f, x, l, r)` (区間 $[l, r)$) でもよい
+- `F composition(const F& f, const F& g)`: 作用素の合成 $f \circ g$ ($g$ を適用した後に $f$ を適用する)
+- `F id()`: 恒等写像
+- `F inv(const F& f)`: 逆作用素 ([imos法](../data_structures/imos.hpp) で使う場合のみ)
+
+## 一覧 (`namespace acted_monoid`)
+
+| 作用素付きモノイド | 作用 | 取得 | 作用素の型 `F` | `inv` |
+|---|---|---|---|---|
+| `AddSum<T>` | 区間加算 | 区間和 | `T` | ✓ |
+| `MulSum<T>` | 区間乗算 | 区間和 | `T` | ✓ |
+| `AddMin<T>` | 区間加算 | 区間最小値 | `T` | |
+| `AddMax<T>` | 区間加算 | 区間最大値 | `T` | |
+| `UpdateSum<T>` | 区間代入 | 区間和 | `optional<T>` | |
+| `UpdateMin<T>` | 区間代入 | 区間最小値 | `optional<T>` | |
+| `UpdateMax<T>` | 区間代入 | 区間最大値 | `optional<T>` | |
+| `ChminMin<T>` | 区間 chmin | 区間最小値 | `T` | |
+| `ChmaxMax<T>` | 区間 chmax | 区間最大値 | `T` | |
+| `AffineSum<T>` | 区間アフィン変換 $x \leftarrow \mathrm{first} \cdot x + \mathrm{second}$ | 区間和 | `pair<T, T>` | |
+| `UpdateComposite<T>` | 区間代入 | 1次関数の合成 (`monoid::Composite`) | `optional<pair<T, T>>` | |
+| `AddMinWith<T, U = int>` | 区間加算 | 区間最小値とその位置 | `T` | |
+| `AddMaxWith<T, U = int>` | 区間加算 | 区間最大値とその位置 | `T` | |
+| `AddMinCount<T, U = long long>` | 区間加算 | 区間最小値とその個数 | `T` | |
+| `AddMaxCount<T, U = long long>` | 区間加算 | 区間最大値とその個数 | `T` | |
+| `AddPowerSum<T, K>` | 区間加算 | 区間の 0 乗和から K 乗和 | `T` | |
+
+`AddPowerSum` の要素は `S(x)` で値 `x` の1要素から作り、`s[i]` で `i` 乗和を取得します。
+
+## ラムダ式から作る
+
+`ActedMonoid(op, e, mapping, composition, id)` で、関数オブジェクトから作用素付きモノイドを作れます。`mapping` の引数は `(f, x)`、`(f, x, sz)`、`(f, x, l, r)` のいずれでもかまいません。

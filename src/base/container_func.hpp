@@ -90,12 +90,12 @@ inline constexpr T max(const std::initializer_list<T> &v) {
 }
 
 METHOD_EXPAND(min)
-template <class C, ENABLE_IF_T(not has_max_v<C> and is_sorted_container_v<C>)>
+template <class C, ENABLE_IF_T(not has_min_v<C> and is_sorted_container_v<C>)>
 inline constexpr mem_value_type<C> min(const C &v) {
     assert(v.begin() != v.end());
     return *v.begin();
 }
-template <class C, ENABLE_IF_T(not has_max_v<C> and not is_sorted_container_v<C>)>
+template <class C, ENABLE_IF_T(not has_min_v<C> and not is_sorted_container_v<C>)>
 inline constexpr mem_value_type<C> min(const C &v) {
     assert(v.begin() != v.end());
     return *std::min_element(v.begin(), v.end());

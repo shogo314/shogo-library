@@ -59,6 +59,11 @@ struct Counter {
         return res += b;
     }
     Counter& operator-=(const Counter& o) {
+        // 自分自身を引くと、走査中の o.data の要素を inc が消してしまう
+        if (this == &o) {
+            data.clear();
+            return *this;
+        }
         for (const auto& [i, c] : o.data) {
             inc(i, -c);
         }

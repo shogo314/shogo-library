@@ -5,6 +5,7 @@
  * @brief Segment Tree Beats
  */
 
+#include <algorithm>
 #include <cassert>
 #include <functional>
 #include <limits>
@@ -47,8 +48,9 @@ private:
         fail[k] = false;
     }
     void apply_node(int k, int h, const F& f) {
-        int l = (k << h) & (sz - 1);
-        int r = l + (1 << h);
+        // 末尾の要素数を 2 べきにそろえるための余りの部分は区間に含めない
+        int l = std::min((k << h) & (sz - 1), n);
+        int r = std::min(((k << h) & (sz - 1)) + (1 << h), n);
         std::tie(fail[k], data[k]) = mapping(f, data[k], l, r);
         if(k < sz) {
             lazy[k] = composition(f, lazy[k]);

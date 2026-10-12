@@ -36,8 +36,8 @@ data:
   bundledCode: "#line 2 \"src/geometry/vector.hpp\"\n\n/**\n * @file vector.hpp\n\
     \ * @brief \u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB\n */\n\n#include <algorithm>\n\
     #include <array>\n#include <cassert>\n#include <cmath>\n#include <initializer_list>\n\
-    #include <istream>\n#include <numeric>\n#include <ostream>\n#include <stack>\n\
-    #include <tuple>\n#include <type_traits>\n#include <vector>\n\n/**\n * @brief\
+    #include <istream>\n#include <numeric>\n#include <optional>\n#include <ostream>\n\
+    #include <stack>\n#include <type_traits>\n#include <vector>\n\n/**\n * @brief\
     \ \u5E7E\u4F55\u5B66\u3068\u3057\u3066\u306E\u30D9\u30AF\u30C8\u30EB\n *\n * @tparam\
     \ T \u578B \u7701\u7565\u3057\u305F\u3089double\n * @tparam Dim \u6B21\u5143 \u7701\
     \u7565\u3057\u305F\u30892\n */\ntemplate <typename T = double, int Dim = 2, std::enable_if_t<std::is_scalar_v<T>\
@@ -197,39 +197,38 @@ data:
     \ @param p1 1\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B91\n * @param p2 1\u672C\
     \u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B92\n * @param q1 2\u672C\u76EE\u306E\u7DDA\
     \u5206\u306E\u7AEF\u70B91\n * @param q2 2\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\
-    \u70B92\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @return std::pair<bool, Vector<T,\
-    \ 2>> first\u306F\u5171\u6709\u70B9\u306E\u6709\u7121\u3001second\u306F\u5171\u6709\
-    \u70B9\u306E1\u4F8B\n */\ntemplate <typename T>\nconstexpr std::pair<bool, Vector<T,\
+    \u70B92\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @return std::optional<Vector<T,\
+    \ 2>> \u5171\u6709\u70B9\u306E1\u4F8B (\u5171\u6709\u70B9\u304C\u306A\u3051\u308C\
+    \u3070 std::nullopt)\n */\ntemplate <typename T>\nconstexpr std::optional<Vector<T,\
     \ 2>> segment_intersect(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const\
     \ Vector<T, 2>& q1, const Vector<T, 2>& q2) {\n    static_assert(std::is_floating_point_v<T>,\
     \ \"segment_intersect: T must be a floating point type (use segments_intersect\
-    \ for integers)\");\n    if(!segments_intersect(p1, p2, q1, q2)) return std::make_pair(false,\
-    \ Vector<T, 2>());\n    if(cross(p2 - p1, q1 - p1) == 0 && cross(p2 - p1, q2 -\
-    \ p1) == 0) {\n        // 4\u70B9\u304C\u540C\u4E00\u76F4\u7DDA\u4E0A\u306B\u3042\
-    \u308B\u5834\u5408\n        if(dot(q1-p1, q2-p1) <= 0) return std::make_pair(true,\
-    \ p1);\n        if(dot(q1-p2, q2-p2) <= 0) return std::make_pair(true, p2);\n\
-    \        return std::make_pair(true, q1);\n    }\n    T area = cross(p2 - p1,\
-    \ q2 - q1); // 4\u70B9\u3092\u9802\u70B9\u3068\u3059\u308B\u56DB\u89D2\u5F62\u306E\
+    \ for integers)\");\n    if(!segments_intersect(p1, p2, q1, q2)) return std::nullopt;\n\
+    \    if(cross(p2 - p1, q1 - p1) == 0 && cross(p2 - p1, q2 - p1) == 0) {\n    \
+    \    // 4\u70B9\u304C\u540C\u4E00\u76F4\u7DDA\u4E0A\u306B\u3042\u308B\u5834\u5408\
+    \n        if(dot(q1-p1, q2-p1) <= 0) return p1;\n        if(dot(q1-p2, q2-p2)\
+    \ <= 0) return p2;\n        return q1;\n    }\n    T area = cross(p2 - p1, q2\
+    \ - q1); // 4\u70B9\u3092\u9802\u70B9\u3068\u3059\u308B\u56DB\u89D2\u5F62\u306E\
     \u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\n    T partial_area = cross(q2 - q1, p1 -\
     \ q1); // \u4E09\u89D2\u5F62q1q2p1\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\n\
-    \    return std::make_pair(true, p1 + (p2 - p1) * partial_area / area);\n}\n\n\
-    /**\n * @brief \u591A\u89D2\u5F62\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\u306E\
-    2\u500D\n * \n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\
-    \u306E\u5EA7\u6A19\n * @return T \u9762\u7A4D\u306E2\u500D(\u53CD\u6642\u8A08\u56DE\
-    \u308A\u306A\u3089\u6B63\u3001\u6642\u8A08\u56DE\u308A\u306A\u3089\u8CA0)\n */\n\
-    template <typename T>\nT polygon_area_doubled(const std::vector<Vector<T, 2>>&\
-    \ polygon) {\n    T ret = 0;\n    for(int i = 0; i < (int)polygon.size(); i++)\
-    \ {\n        int j = i+1; if(j == (int)polygon.size()) j = 0;\n        ret +=\
-    \ cross(polygon[i], polygon[j]);\n    }\n    return ret;\n}\n\n/**\n * @brief\
-    \ \u591A\u89D2\u5F62\u306E\u9762\u7A4D\n * \n * @tparam T \u5EA7\u6A19\u306E\u578B\
-    \n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19(\u9806\u756A\u3001\u53CD\u6642\
-    \u8A08\u56DE\u308A\u304B\u6642\u8A08\u56DE\u308A\u304B\u306F\u554F\u308F\u306A\
-    \u3044)\n * @return double \u9762\u7A4D\n */\ntemplate <typename T>\ndouble polygon_area(const\
-    \ std::vector<Vector<T, 2>>& polygon) {\n    return std::abs(polygon_area_doubled(polygon))\
-    \ / 2.;\n}\n\n/**\n * @brief \u591A\u89D2\u5F62\u306E\u51F8\u6027\u5224\u5B9A\n\
-    \ * \n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\u306E\
-    \u5EA7\u6A19(\u53CD\u6642\u8A08\u56DE\u308A)\n * @return true \u51F8\n * @return\
-    \ false \u51F9\n */\ntemplate <typename T>\nbool polygon_is_convex(const std::vector<Vector<T,\
+    \    return p1 + (p2 - p1) * partial_area / area;\n}\n\n/**\n * @brief \u591A\u89D2\
+    \u5F62\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\u306E2\u500D\n * \n * @tparam\
+    \ T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19\
+    \n * @return T \u9762\u7A4D\u306E2\u500D(\u53CD\u6642\u8A08\u56DE\u308A\u306A\u3089\
+    \u6B63\u3001\u6642\u8A08\u56DE\u308A\u306A\u3089\u8CA0)\n */\ntemplate <typename\
+    \ T>\nT polygon_area_doubled(const std::vector<Vector<T, 2>>& polygon) {\n   \
+    \ T ret = 0;\n    for(int i = 0; i < (int)polygon.size(); i++) {\n        int\
+    \ j = i+1; if(j == (int)polygon.size()) j = 0;\n        ret += cross(polygon[i],\
+    \ polygon[j]);\n    }\n    return ret;\n}\n\n/**\n * @brief \u591A\u89D2\u5F62\
+    \u306E\u9762\u7A4D\n * \n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon\
+    \ \u9802\u70B9\u306E\u5EA7\u6A19(\u9806\u756A\u3001\u53CD\u6642\u8A08\u56DE\u308A\
+    \u304B\u6642\u8A08\u56DE\u308A\u304B\u306F\u554F\u308F\u306A\u3044)\n * @return\
+    \ double \u9762\u7A4D\n */\ntemplate <typename T>\ndouble polygon_area(const std::vector<Vector<T,\
+    \ 2>>& polygon) {\n    return std::abs(polygon_area_doubled(polygon)) / 2.;\n\
+    }\n\n/**\n * @brief \u591A\u89D2\u5F62\u306E\u51F8\u6027\u5224\u5B9A\n * \n *\
+    \ @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\u306E\u5EA7\
+    \u6A19(\u53CD\u6642\u8A08\u56DE\u308A)\n * @return true \u51F8\n * @return false\
+    \ \u51F9\n */\ntemplate <typename T>\nbool polygon_is_convex(const std::vector<Vector<T,\
     \ 2>>& polygon) {\n    int n = polygon.size();\n    for(int i = 0; i < n; i++)\
     \ {\n        int j = i+1; if(j == n) j = 0;\n        int k = j+1; if(k == n) k\
     \ = 0;\n        if(cross(polygon[j] - polygon[i], polygon[k] - polygon[j]) < 0)\
@@ -275,25 +274,30 @@ data:
     \u4E0A\u5074\u304C\u540C\u3058\u70B9\u5217\u306B\u306A\u308B\u306E\u3067\u7247\
     \u65B9\u3060\u3051\u4F7F\u3046\n    if(ret.size() == points.size() && tmp.size()\
     \ == points.size()) return ret;\n    for(int i = 1; i < (int)tmp.size()-1; i++)\
-    \ ret.push_back(tmp[i]);\n    return ret;\n}\n\n/**\n * @brief \u6700\u8FD1\u70B9\
-    \u5BFE\n * \n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param points \u9802\u70B9\
-    \u30EA\u30B9\u30C8\n * @return std::tuple<T, int, int> \u6700\u8FD1\u70B9\u5BFE\
-    \u306E\u8DDD\u96E2\u306E2\u4E57\u3001\u6700\u8FD1\u70B9\u5BFE\u306E\u30A4\u30F3\
-    \u30C7\u30C3\u30AF\u30B9\n */\ntemplate <typename T>\nstd::tuple<T, int, int>\
-    \ closest_point_pair_squared(const std::vector<Vector<T, 2>>& points) {\n    std::vector<int>\
-    \ sorted_idx(points.size());\n    std::iota(sorted_idx.begin(), sorted_idx.end(),\
-    \ 0);\n    std::sort(sorted_idx.begin(), sorted_idx.end(), [&](int i, int j) {\n\
-    \        return points[i][0] < points[j][0];\n    });\n    std::vector<int> left(1,\
-    \ 0); // \u5DE6\u7AEF\n    std::vector<int> right(1, points.size()); // \u53F3\
-    \u7AEF\n    std::vector<int> mid(1, points.size()/2); // \u4E2D\u592E\n    std::vector<int>\
-    \ par(1, -1); // \u89AA\n    std::vector<T> min_dist_squared(1, std::numeric_limits<T>::max());\
-    \ // \u6700\u5C0F\u8DDD\u96E2\u306E2\u4E57\n    std::vector<std::pair<int, int>>\
-    \ min_dist_pair(1, {-1, -1}); // \u6700\u5C0F\u8DDD\u96E2\u306E\u70B9\u5BFE\n\
-    \    std::stack<int> stk;\n    stk.push(~0);\n    stk.push(0);\n    while(!stk.empty())\
-    \ {\n        int u = stk.top(); stk.pop();\n        if(u >= 0) {\n           \
-    \ // \u884C\u304D\u304C\u3051\n            if(left[u] + 1 < mid[u]) {\n      \
-    \          int v = left.size();\n                left.push_back(left[u]);\n  \
-    \              right.push_back(mid[u]);\n                mid.push_back((left[u]\
+    \ ret.push_back(tmp[i]);\n    return ret;\n}\n\n/**\n * @brief closest_point_pair_squared\
+    \ \u306E\u623B\u308A\u5024\n */\ntemplate <typename T>\nstruct ClosestPairSquared\
+    \ {\n    T squared_dist;  //!< \u6700\u8FD1\u70B9\u5BFE\u306E\u8DDD\u96E2\u306E\
+    2\u4E57\n    int i, j;        //!< \u6700\u8FD1\u70B9\u5BFE\u306E\u6DFB\u5B57\n\
+    };\n/**\n * @brief closest_point_pair \u306E\u623B\u308A\u5024\n */\nstruct ClosestPair\
+    \ {\n    double dist;  //!< \u6700\u8FD1\u70B9\u5BFE\u306E\u8DDD\u96E2\n    int\
+    \ i, j;     //!< \u6700\u8FD1\u70B9\u5BFE\u306E\u6DFB\u5B57\n};\n\n/**\n * @brief\
+    \ \u6700\u8FD1\u70B9\u5BFE\n * \n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param\
+    \ points \u9802\u70B9\u30EA\u30B9\u30C8\n * @return ClosestPairSquared<T> \u6700\
+    \u8FD1\u70B9\u5BFE\u306E\u8DDD\u96E2\u306E2\u4E57\u3068\u6DFB\u5B57\n */\ntemplate\
+    \ <typename T>\nClosestPairSquared<T> closest_point_pair_squared(const std::vector<Vector<T,\
+    \ 2>>& points) {\n    std::vector<int> sorted_idx(points.size());\n    std::iota(sorted_idx.begin(),\
+    \ sorted_idx.end(), 0);\n    std::sort(sorted_idx.begin(), sorted_idx.end(), [&](int\
+    \ i, int j) {\n        return points[i][0] < points[j][0];\n    });\n    std::vector<int>\
+    \ left(1, 0); // \u5DE6\u7AEF\n    std::vector<int> right(1, points.size()); //\
+    \ \u53F3\u7AEF\n    std::vector<int> mid(1, points.size()/2); // \u4E2D\u592E\n\
+    \    std::vector<int> par(1, -1); // \u89AA\n    std::vector<T> min_dist_squared(1,\
+    \ std::numeric_limits<T>::max()); // \u6700\u5C0F\u8DDD\u96E2\u306E2\u4E57\n \
+    \   std::vector<std::pair<int, int>> min_dist_pair(1, {-1, -1}); // \u6700\u5C0F\
+    \u8DDD\u96E2\u306E\u70B9\u5BFE\n    std::stack<int> stk;\n    stk.push(~0);\n\
+    \    stk.push(0);\n    while(!stk.empty()) {\n        int u = stk.top(); stk.pop();\n\
+    \        if(u >= 0) {\n            // \u884C\u304D\u304C\u3051\n            if(left[u]\
+    \ + 1 < mid[u]) {\n                int v = left.size();\n                left.push_back(left[u]);\n\
+    \                right.push_back(mid[u]);\n                mid.push_back((left[u]\
     \ + mid[u]) / 2);\n                par.push_back(u);\n                min_dist_squared.push_back(std::numeric_limits<T>::max());\n\
     \                min_dist_pair.push_back({-1, -1});\n                stk.push(~v);\n\
     \                stk.push(v);\n            }\n            if(mid[u] + 1 < right[u])\
@@ -322,20 +326,19 @@ data:
     \            }\n        }\n    }\n    return {min_dist_squared[0], min_dist_pair[0].first,\
     \ min_dist_pair[0].second};\n}\n\n/**\n * @brief \u6700\u8FD1\u70B9\u5BFE\n *\
     \ \n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param points \u9802\u70B9\u30EA\
-    \u30B9\u30C8\n * @return std::tuple<double, int, int> \u6700\u8FD1\u70B9\u5BFE\
-    \u306E\u8DDD\u96E2\u3001\u6700\u8FD1\u70B9\u5BFE\u306E\u30A4\u30F3\u30C7\u30C3\
-    \u30AF\u30B9\n */\ntemplate <typename T>\nstd::tuple<double, int, int> closest_point_pair(const\
+    \u30B9\u30C8\n * @return ClosestPair \u6700\u8FD1\u70B9\u5BFE\u306E\u8DDD\u96E2\
+    \u3068\u6DFB\u5B57\n */\ntemplate <typename T>\nClosestPair closest_point_pair(const\
     \ std::vector<Vector<T, 2>>& points) {\n    auto [d2, i, j] = closest_point_pair_squared(points);\n\
-    \    return {std::sqrt(d2), i, j};\n}\n/**\n * @deprecated closest_point_pair_squared\
-    \ \u3092\u4F7F\u3046\u3053\u3068(\u7DB4\u308A\u306E\u8AA4\u308A\u3092\u76F4\u3057\
-    \u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename T>\n[[deprecated(\"use\
-    \ closest_point_pair_squared\")]] std::tuple<T, int, int> closest_point_pair_squred(const\
-    \ std::vector<Vector<T, 2>>& points) {\n    return closest_point_pair_squared(points);\n\
-    }\n"
+    \    return {std::sqrt(static_cast<double>(d2)), i, j};\n}\n/**\n * @deprecated\
+    \ closest_point_pair_squared \u3092\u4F7F\u3046\u3053\u3068(\u7DB4\u308A\u306E\
+    \u8AA4\u308A\u3092\u76F4\u3057\u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename\
+    \ T>\n[[deprecated(\"use closest_point_pair_squared\")]] ClosestPairSquared<T>\
+    \ closest_point_pair_squred(const std::vector<Vector<T, 2>>& points) {\n    return\
+    \ closest_point_pair_squared(points);\n}\n"
   code: "#pragma once\n\n/**\n * @file vector.hpp\n * @brief \u5E7E\u4F55\u30D9\u30AF\
     \u30C8\u30EB\n */\n\n#include <algorithm>\n#include <array>\n#include <cassert>\n\
     #include <cmath>\n#include <initializer_list>\n#include <istream>\n#include <numeric>\n\
-    #include <ostream>\n#include <stack>\n#include <tuple>\n#include <type_traits>\n\
+    #include <optional>\n#include <ostream>\n#include <stack>\n#include <type_traits>\n\
     #include <vector>\n\n/**\n * @brief \u5E7E\u4F55\u5B66\u3068\u3057\u3066\u306E\
     \u30D9\u30AF\u30C8\u30EB\n *\n * @tparam T \u578B \u7701\u7565\u3057\u305F\u3089\
     double\n * @tparam Dim \u6B21\u5143 \u7701\u7565\u3057\u305F\u30892\n */\ntemplate\
@@ -496,39 +499,38 @@ data:
     \ @param p1 1\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B91\n * @param p2 1\u672C\
     \u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B92\n * @param q1 2\u672C\u76EE\u306E\u7DDA\
     \u5206\u306E\u7AEF\u70B91\n * @param q2 2\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\
-    \u70B92\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @return std::pair<bool, Vector<T,\
-    \ 2>> first\u306F\u5171\u6709\u70B9\u306E\u6709\u7121\u3001second\u306F\u5171\u6709\
-    \u70B9\u306E1\u4F8B\n */\ntemplate <typename T>\nconstexpr std::pair<bool, Vector<T,\
+    \u70B92\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @return std::optional<Vector<T,\
+    \ 2>> \u5171\u6709\u70B9\u306E1\u4F8B (\u5171\u6709\u70B9\u304C\u306A\u3051\u308C\
+    \u3070 std::nullopt)\n */\ntemplate <typename T>\nconstexpr std::optional<Vector<T,\
     \ 2>> segment_intersect(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const\
     \ Vector<T, 2>& q1, const Vector<T, 2>& q2) {\n    static_assert(std::is_floating_point_v<T>,\
     \ \"segment_intersect: T must be a floating point type (use segments_intersect\
-    \ for integers)\");\n    if(!segments_intersect(p1, p2, q1, q2)) return std::make_pair(false,\
-    \ Vector<T, 2>());\n    if(cross(p2 - p1, q1 - p1) == 0 && cross(p2 - p1, q2 -\
-    \ p1) == 0) {\n        // 4\u70B9\u304C\u540C\u4E00\u76F4\u7DDA\u4E0A\u306B\u3042\
-    \u308B\u5834\u5408\n        if(dot(q1-p1, q2-p1) <= 0) return std::make_pair(true,\
-    \ p1);\n        if(dot(q1-p2, q2-p2) <= 0) return std::make_pair(true, p2);\n\
-    \        return std::make_pair(true, q1);\n    }\n    T area = cross(p2 - p1,\
-    \ q2 - q1); // 4\u70B9\u3092\u9802\u70B9\u3068\u3059\u308B\u56DB\u89D2\u5F62\u306E\
+    \ for integers)\");\n    if(!segments_intersect(p1, p2, q1, q2)) return std::nullopt;\n\
+    \    if(cross(p2 - p1, q1 - p1) == 0 && cross(p2 - p1, q2 - p1) == 0) {\n    \
+    \    // 4\u70B9\u304C\u540C\u4E00\u76F4\u7DDA\u4E0A\u306B\u3042\u308B\u5834\u5408\
+    \n        if(dot(q1-p1, q2-p1) <= 0) return p1;\n        if(dot(q1-p2, q2-p2)\
+    \ <= 0) return p2;\n        return q1;\n    }\n    T area = cross(p2 - p1, q2\
+    \ - q1); // 4\u70B9\u3092\u9802\u70B9\u3068\u3059\u308B\u56DB\u89D2\u5F62\u306E\
     \u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\n    T partial_area = cross(q2 - q1, p1 -\
     \ q1); // \u4E09\u89D2\u5F62q1q2p1\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\n\
-    \    return std::make_pair(true, p1 + (p2 - p1) * partial_area / area);\n}\n\n\
-    /**\n * @brief \u591A\u89D2\u5F62\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\u306E\
-    2\u500D\n * \n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\
-    \u306E\u5EA7\u6A19\n * @return T \u9762\u7A4D\u306E2\u500D(\u53CD\u6642\u8A08\u56DE\
-    \u308A\u306A\u3089\u6B63\u3001\u6642\u8A08\u56DE\u308A\u306A\u3089\u8CA0)\n */\n\
-    template <typename T>\nT polygon_area_doubled(const std::vector<Vector<T, 2>>&\
-    \ polygon) {\n    T ret = 0;\n    for(int i = 0; i < (int)polygon.size(); i++)\
-    \ {\n        int j = i+1; if(j == (int)polygon.size()) j = 0;\n        ret +=\
-    \ cross(polygon[i], polygon[j]);\n    }\n    return ret;\n}\n\n/**\n * @brief\
-    \ \u591A\u89D2\u5F62\u306E\u9762\u7A4D\n * \n * @tparam T \u5EA7\u6A19\u306E\u578B\
-    \n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19(\u9806\u756A\u3001\u53CD\u6642\
-    \u8A08\u56DE\u308A\u304B\u6642\u8A08\u56DE\u308A\u304B\u306F\u554F\u308F\u306A\
-    \u3044)\n * @return double \u9762\u7A4D\n */\ntemplate <typename T>\ndouble polygon_area(const\
-    \ std::vector<Vector<T, 2>>& polygon) {\n    return std::abs(polygon_area_doubled(polygon))\
-    \ / 2.;\n}\n\n/**\n * @brief \u591A\u89D2\u5F62\u306E\u51F8\u6027\u5224\u5B9A\n\
-    \ * \n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\u306E\
-    \u5EA7\u6A19(\u53CD\u6642\u8A08\u56DE\u308A)\n * @return true \u51F8\n * @return\
-    \ false \u51F9\n */\ntemplate <typename T>\nbool polygon_is_convex(const std::vector<Vector<T,\
+    \    return p1 + (p2 - p1) * partial_area / area;\n}\n\n/**\n * @brief \u591A\u89D2\
+    \u5F62\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\u306E2\u500D\n * \n * @tparam\
+    \ T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19\
+    \n * @return T \u9762\u7A4D\u306E2\u500D(\u53CD\u6642\u8A08\u56DE\u308A\u306A\u3089\
+    \u6B63\u3001\u6642\u8A08\u56DE\u308A\u306A\u3089\u8CA0)\n */\ntemplate <typename\
+    \ T>\nT polygon_area_doubled(const std::vector<Vector<T, 2>>& polygon) {\n   \
+    \ T ret = 0;\n    for(int i = 0; i < (int)polygon.size(); i++) {\n        int\
+    \ j = i+1; if(j == (int)polygon.size()) j = 0;\n        ret += cross(polygon[i],\
+    \ polygon[j]);\n    }\n    return ret;\n}\n\n/**\n * @brief \u591A\u89D2\u5F62\
+    \u306E\u9762\u7A4D\n * \n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon\
+    \ \u9802\u70B9\u306E\u5EA7\u6A19(\u9806\u756A\u3001\u53CD\u6642\u8A08\u56DE\u308A\
+    \u304B\u6642\u8A08\u56DE\u308A\u304B\u306F\u554F\u308F\u306A\u3044)\n * @return\
+    \ double \u9762\u7A4D\n */\ntemplate <typename T>\ndouble polygon_area(const std::vector<Vector<T,\
+    \ 2>>& polygon) {\n    return std::abs(polygon_area_doubled(polygon)) / 2.;\n\
+    }\n\n/**\n * @brief \u591A\u89D2\u5F62\u306E\u51F8\u6027\u5224\u5B9A\n * \n *\
+    \ @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\u306E\u5EA7\
+    \u6A19(\u53CD\u6642\u8A08\u56DE\u308A)\n * @return true \u51F8\n * @return false\
+    \ \u51F9\n */\ntemplate <typename T>\nbool polygon_is_convex(const std::vector<Vector<T,\
     \ 2>>& polygon) {\n    int n = polygon.size();\n    for(int i = 0; i < n; i++)\
     \ {\n        int j = i+1; if(j == n) j = 0;\n        int k = j+1; if(k == n) k\
     \ = 0;\n        if(cross(polygon[j] - polygon[i], polygon[k] - polygon[j]) < 0)\
@@ -574,25 +576,30 @@ data:
     \u4E0A\u5074\u304C\u540C\u3058\u70B9\u5217\u306B\u306A\u308B\u306E\u3067\u7247\
     \u65B9\u3060\u3051\u4F7F\u3046\n    if(ret.size() == points.size() && tmp.size()\
     \ == points.size()) return ret;\n    for(int i = 1; i < (int)tmp.size()-1; i++)\
-    \ ret.push_back(tmp[i]);\n    return ret;\n}\n\n/**\n * @brief \u6700\u8FD1\u70B9\
-    \u5BFE\n * \n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param points \u9802\u70B9\
-    \u30EA\u30B9\u30C8\n * @return std::tuple<T, int, int> \u6700\u8FD1\u70B9\u5BFE\
-    \u306E\u8DDD\u96E2\u306E2\u4E57\u3001\u6700\u8FD1\u70B9\u5BFE\u306E\u30A4\u30F3\
-    \u30C7\u30C3\u30AF\u30B9\n */\ntemplate <typename T>\nstd::tuple<T, int, int>\
-    \ closest_point_pair_squared(const std::vector<Vector<T, 2>>& points) {\n    std::vector<int>\
-    \ sorted_idx(points.size());\n    std::iota(sorted_idx.begin(), sorted_idx.end(),\
-    \ 0);\n    std::sort(sorted_idx.begin(), sorted_idx.end(), [&](int i, int j) {\n\
-    \        return points[i][0] < points[j][0];\n    });\n    std::vector<int> left(1,\
-    \ 0); // \u5DE6\u7AEF\n    std::vector<int> right(1, points.size()); // \u53F3\
-    \u7AEF\n    std::vector<int> mid(1, points.size()/2); // \u4E2D\u592E\n    std::vector<int>\
-    \ par(1, -1); // \u89AA\n    std::vector<T> min_dist_squared(1, std::numeric_limits<T>::max());\
-    \ // \u6700\u5C0F\u8DDD\u96E2\u306E2\u4E57\n    std::vector<std::pair<int, int>>\
-    \ min_dist_pair(1, {-1, -1}); // \u6700\u5C0F\u8DDD\u96E2\u306E\u70B9\u5BFE\n\
-    \    std::stack<int> stk;\n    stk.push(~0);\n    stk.push(0);\n    while(!stk.empty())\
-    \ {\n        int u = stk.top(); stk.pop();\n        if(u >= 0) {\n           \
-    \ // \u884C\u304D\u304C\u3051\n            if(left[u] + 1 < mid[u]) {\n      \
-    \          int v = left.size();\n                left.push_back(left[u]);\n  \
-    \              right.push_back(mid[u]);\n                mid.push_back((left[u]\
+    \ ret.push_back(tmp[i]);\n    return ret;\n}\n\n/**\n * @brief closest_point_pair_squared\
+    \ \u306E\u623B\u308A\u5024\n */\ntemplate <typename T>\nstruct ClosestPairSquared\
+    \ {\n    T squared_dist;  //!< \u6700\u8FD1\u70B9\u5BFE\u306E\u8DDD\u96E2\u306E\
+    2\u4E57\n    int i, j;        //!< \u6700\u8FD1\u70B9\u5BFE\u306E\u6DFB\u5B57\n\
+    };\n/**\n * @brief closest_point_pair \u306E\u623B\u308A\u5024\n */\nstruct ClosestPair\
+    \ {\n    double dist;  //!< \u6700\u8FD1\u70B9\u5BFE\u306E\u8DDD\u96E2\n    int\
+    \ i, j;     //!< \u6700\u8FD1\u70B9\u5BFE\u306E\u6DFB\u5B57\n};\n\n/**\n * @brief\
+    \ \u6700\u8FD1\u70B9\u5BFE\n * \n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param\
+    \ points \u9802\u70B9\u30EA\u30B9\u30C8\n * @return ClosestPairSquared<T> \u6700\
+    \u8FD1\u70B9\u5BFE\u306E\u8DDD\u96E2\u306E2\u4E57\u3068\u6DFB\u5B57\n */\ntemplate\
+    \ <typename T>\nClosestPairSquared<T> closest_point_pair_squared(const std::vector<Vector<T,\
+    \ 2>>& points) {\n    std::vector<int> sorted_idx(points.size());\n    std::iota(sorted_idx.begin(),\
+    \ sorted_idx.end(), 0);\n    std::sort(sorted_idx.begin(), sorted_idx.end(), [&](int\
+    \ i, int j) {\n        return points[i][0] < points[j][0];\n    });\n    std::vector<int>\
+    \ left(1, 0); // \u5DE6\u7AEF\n    std::vector<int> right(1, points.size()); //\
+    \ \u53F3\u7AEF\n    std::vector<int> mid(1, points.size()/2); // \u4E2D\u592E\n\
+    \    std::vector<int> par(1, -1); // \u89AA\n    std::vector<T> min_dist_squared(1,\
+    \ std::numeric_limits<T>::max()); // \u6700\u5C0F\u8DDD\u96E2\u306E2\u4E57\n \
+    \   std::vector<std::pair<int, int>> min_dist_pair(1, {-1, -1}); // \u6700\u5C0F\
+    \u8DDD\u96E2\u306E\u70B9\u5BFE\n    std::stack<int> stk;\n    stk.push(~0);\n\
+    \    stk.push(0);\n    while(!stk.empty()) {\n        int u = stk.top(); stk.pop();\n\
+    \        if(u >= 0) {\n            // \u884C\u304D\u304C\u3051\n            if(left[u]\
+    \ + 1 < mid[u]) {\n                int v = left.size();\n                left.push_back(left[u]);\n\
+    \                right.push_back(mid[u]);\n                mid.push_back((left[u]\
     \ + mid[u]) / 2);\n                par.push_back(u);\n                min_dist_squared.push_back(std::numeric_limits<T>::max());\n\
     \                min_dist_pair.push_back({-1, -1});\n                stk.push(~v);\n\
     \                stk.push(v);\n            }\n            if(mid[u] + 1 < right[u])\
@@ -621,21 +628,20 @@ data:
     \            }\n        }\n    }\n    return {min_dist_squared[0], min_dist_pair[0].first,\
     \ min_dist_pair[0].second};\n}\n\n/**\n * @brief \u6700\u8FD1\u70B9\u5BFE\n *\
     \ \n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param points \u9802\u70B9\u30EA\
-    \u30B9\u30C8\n * @return std::tuple<double, int, int> \u6700\u8FD1\u70B9\u5BFE\
-    \u306E\u8DDD\u96E2\u3001\u6700\u8FD1\u70B9\u5BFE\u306E\u30A4\u30F3\u30C7\u30C3\
-    \u30AF\u30B9\n */\ntemplate <typename T>\nstd::tuple<double, int, int> closest_point_pair(const\
+    \u30B9\u30C8\n * @return ClosestPair \u6700\u8FD1\u70B9\u5BFE\u306E\u8DDD\u96E2\
+    \u3068\u6DFB\u5B57\n */\ntemplate <typename T>\nClosestPair closest_point_pair(const\
     \ std::vector<Vector<T, 2>>& points) {\n    auto [d2, i, j] = closest_point_pair_squared(points);\n\
-    \    return {std::sqrt(d2), i, j};\n}\n/**\n * @deprecated closest_point_pair_squared\
-    \ \u3092\u4F7F\u3046\u3053\u3068(\u7DB4\u308A\u306E\u8AA4\u308A\u3092\u76F4\u3057\
-    \u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename T>\n[[deprecated(\"use\
-    \ closest_point_pair_squared\")]] std::tuple<T, int, int> closest_point_pair_squred(const\
-    \ std::vector<Vector<T, 2>>& points) {\n    return closest_point_pair_squared(points);\n\
-    }\n"
+    \    return {std::sqrt(static_cast<double>(d2)), i, j};\n}\n/**\n * @deprecated\
+    \ closest_point_pair_squared \u3092\u4F7F\u3046\u3053\u3068(\u7DB4\u308A\u306E\
+    \u8AA4\u308A\u3092\u76F4\u3057\u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename\
+    \ T>\n[[deprecated(\"use closest_point_pair_squared\")]] ClosestPairSquared<T>\
+    \ closest_point_pair_squred(const std::vector<Vector<T, 2>>& points) {\n    return\
+    \ closest_point_pair_squared(points);\n}\n"
   dependsOn: []
   isVerificationFile: false
   path: src/geometry/vector.hpp
   requiredBy: []
-  timestamp: '2026-10-12 19:40:02+09:00'
+  timestamp: '2026-10-13 00:38:02+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/aoj/cgl-3-a.test.cpp
@@ -683,12 +689,12 @@ std::sort(ps.begin(), ps.end(), P::ArgSortComp());  // 偏角ソート
 |---|---|:-:|---|
 | `cross(p, q)` | 外積。2次元ではスカラー (符号付き面積)、3次元ではベクトル | ✓ | $O(1)$ |
 | `segments_intersect(p1, p2, q1, q2)` | 線分 $p_1 p_2$ と $q_1 q_2$ が共有点を持つか | ✓ | $O(1)$ |
-| `segment_intersect(p1, p2, q1, q2)` | `{共有点を持つか, 共有点の1つ}` | 浮動小数点型のみ | $O(1)$ |
+| `segment_intersect(p1, p2, q1, q2)` | 共有点の1つを `std::optional` で返す (共有点がなければ `std::nullopt`) | 浮動小数点型のみ | $O(1)$ |
 | `polygon_area_doubled(poly)` | 多角形の符号付き面積の2倍 (反時計回りなら正) | ✓ | $O(n)$ |
 | `polygon_area(poly)` | 多角形の面積 (`double`、向きは問わない) | ✓ | $O(n)$ |
 | `polygon_is_convex(poly)` | 多角形 (反時計回り) が凸か | ✓ | $O(n)$ |
 | `polygon_contains(poly, p)` | 点が多角形 (反時計回り) の 0: 外部、1: 辺上、2: 内部 | ✓ | $O(n)$ |
 | `convex_hull(ps, include_straight = false)` | 凸包 (反時計回り)。`include_straight` で 180 度の頂点を含めるか選ぶ | ✓ | $O(n \log n)$ |
 | `select_convex(ps, include_straight = false)` | 順番を保った半凸包。x の昇順なら下凸包、降順なら上凸包 | ✓ | $O(n)$ |
-| `closest_point_pair_squared(ps)` | 最近点対の `{距離の2乗, 添字 i, 添字 j}` | ✓ | $O(n \log^2 n)$ |
-| `closest_point_pair(ps)` | 最近点対の `{距離, 添字 i, 添字 j}` | ✓ | $O(n \log^2 n)$ |
+| `closest_point_pair_squared(ps)` | 最近点対の距離の2乗と添字 (`.squared_dist`、`.i`、`.j`) | ✓ | $O(n \log^2 n)$ |
+| `closest_point_pair(ps)` | 最近点対の距離と添字 (`.dist`、`.i`、`.j`) | ✓ | $O(n \log^2 n)$ |

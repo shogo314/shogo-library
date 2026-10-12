@@ -42,48 +42,61 @@ data:
     \ * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\
     \u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\
     \u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\
-    \n#include <algorithm>\n#include <limits>\n#include <numeric>\n#include <type_traits>\n\
-    #include <utility>\n\nnamespace monoid {\n\n/**\n * @brief \u548C\n */\ntemplate\
-    \ <typename T>\nstruct Sum {\n    using S = T;\n    static constexpr S op(const\
-    \ S& a, const S& b) { return a + b; }\n    static constexpr S e() { return S(0);\
-    \ }\n};\n\n/**\n * @brief \u7A4D\n */\ntemplate <typename T>\nstruct Prod {\n\
+    \n#include <algorithm>\n#include <istream>\n#include <limits>\n#include <numeric>\n\
+    #include <ostream>\n#include <type_traits>\n#include <utility>\n\n/**\n * @brief\
+    \ 1\u6B21\u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\
+    \u3084 acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n *\
+    \ \u4F8B: Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\u3059\u308B\
+    \u3068\u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\nstruct Affine\
+    \ {\n    T a = T(1);  //!< \u50BE\u304D\n    T b = T(0);  //!< \u5207\u7247\n\
+    \    constexpr T operator()(const T& x) const { return a * x + b; }\n    friend\
+    \ constexpr bool operator==(const Affine& f, const Affine& g) { return f.a ==\
+    \ g.a && f.b == g.b; }\n    friend constexpr bool operator!=(const Affine& f,\
+    \ const Affine& g) { return !(f == g); }\n    template <class CharT, class Traits>\n\
+    \    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    \ Traits>& is, Affine& f) {\n        return is >> f.a >> f.b;\n    }\n    template\
+    \ <class CharT, class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \ Traits>& os, const Affine& f) {\n        return os << f.a << CharT(' ') << f.b;\n\
+    \    }\n};\n\nnamespace monoid {\n\n/**\n * @brief \u548C\n */\ntemplate <typename\
+    \ T>\nstruct Sum {\n    using S = T;\n    static constexpr S op(const S& a, const\
+    \ S& b) { return a + b; }\n    static constexpr S e() { return S(0); }\n};\n\n\
+    /**\n * @brief \u7A4D\n */\ntemplate <typename T>\nstruct Prod {\n    using S\
+    \ = T;\n    static constexpr S op(const S& a, const S& b) { return a * b; }\n\
+    \    static constexpr S e() { return S(1); }\n};\n\n/**\n * @brief \u6700\u5927\
+    \u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\u6700\u5C0F\u5024\n */\ntemplate <typename\
+    \ T>\nstruct Max {\n    using S = T;\n    static constexpr S op(const S& a, const\
+    \ S& b) { return std::max(a, b); }\n    static constexpr S e() { return std::numeric_limits<S>::lowest();\
+    \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\
+    \u6700\u5927\u5024\n */\ntemplate <typename T>\nstruct Min {\n    using S = T;\n\
+    \    static constexpr S op(const S& a, const S& b) { return std::min(a, b); }\n\
+    \    static constexpr S e() { return std::numeric_limits<S>::max(); }\n};\n\n\
+    /**\n * @brief \u6700\u5C0F\u5024\u3068\u6700\u5927\u5024\u306E\u7D44 {min, max}\n\
+    \ */\ntemplate <typename T>\nstruct MinMax {\n    using S = std::pair<T, T>;\n\
+    \    static constexpr S op(const S& a, const S& b) { return {std::min(a.first,\
+    \ b.first), std::max(a.second, b.second)}; }\n    static constexpr S e() { return\
+    \ {std::numeric_limits<T>::max(), std::numeric_limits<T>::lowest()}; }\n};\n\n\
+    /**\n * @brief \u6392\u4ED6\u7684\u8AD6\u7406\u548C\n */\ntemplate <typename T>\n\
+    struct Xor {\n    using S = T;\n    static constexpr S op(const S& a, const S&\
+    \ b) { return a ^ b; }\n    static constexpr S e() { return S(0); }\n};\n\n/**\n\
+    \ * @brief \u8AD6\u7406\u7A4D\n */\ntemplate <typename T>\nstruct And {\n    using\
+    \ S = T;\n    static constexpr S op(const S& a, const S& b) { return a & b; }\n\
+    \    static constexpr S e() { return ~S(0); }\n};\n\n/**\n * @brief \u8AD6\u7406\
+    \u548C\n */\ntemplate <typename T>\nstruct Or {\n    using S = T;\n    static\
+    \ constexpr S op(const S& a, const S& b) { return a | b; }\n    static constexpr\
+    \ S e() { return S(0); }\n};\n\n/**\n * @brief \u6700\u5927\u516C\u7D04\u6570\
+    \ \u5358\u4F4D\u5143\u306F0\n */\ntemplate <typename T>\nstruct Gcd {\n    static_assert(std::is_integral_v<T>);\n\
     \    using S = T;\n    static constexpr S op(const S& a, const S& b) { return\
-    \ a * b; }\n    static constexpr S e() { return S(1); }\n};\n\n/**\n * @brief\
-    \ \u6700\u5927\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\u6700\u5C0F\u5024\n\
-    \ */\ntemplate <typename T>\nstruct Max {\n    using S = T;\n    static constexpr\
-    \ S op(const S& a, const S& b) { return std::max(a, b); }\n    static constexpr\
-    \ S e() { return std::numeric_limits<S>::lowest(); }\n};\n\n/**\n * @brief \u6700\
-    \u5C0F\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\u6700\u5927\u5024\n */\ntemplate\
-    \ <typename T>\nstruct Min {\n    using S = T;\n    static constexpr S op(const\
-    \ S& a, const S& b) { return std::min(a, b); }\n    static constexpr S e() { return\
-    \ std::numeric_limits<S>::max(); }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\
-    \u6700\u5927\u5024\u306E\u7D44 {min, max}\n */\ntemplate <typename T>\nstruct\
-    \ MinMax {\n    using S = std::pair<T, T>;\n    static constexpr S op(const S&\
-    \ a, const S& b) { return {std::min(a.first, b.first), std::max(a.second, b.second)};\
-    \ }\n    static constexpr S e() { return {std::numeric_limits<T>::max(), std::numeric_limits<T>::lowest()};\
-    \ }\n};\n\n/**\n * @brief \u6392\u4ED6\u7684\u8AD6\u7406\u548C\n */\ntemplate\
-    \ <typename T>\nstruct Xor {\n    using S = T;\n    static constexpr S op(const\
-    \ S& a, const S& b) { return a ^ b; }\n    static constexpr S e() { return S(0);\
-    \ }\n};\n\n/**\n * @brief \u8AD6\u7406\u7A4D\n */\ntemplate <typename T>\nstruct\
-    \ And {\n    using S = T;\n    static constexpr S op(const S& a, const S& b) {\
-    \ return a & b; }\n    static constexpr S e() { return ~S(0); }\n};\n\n/**\n *\
-    \ @brief \u8AD6\u7406\u548C\n */\ntemplate <typename T>\nstruct Or {\n    using\
-    \ S = T;\n    static constexpr S op(const S& a, const S& b) { return a | b; }\n\
-    \    static constexpr S e() { return S(0); }\n};\n\n/**\n * @brief \u6700\u5927\
-    \u516C\u7D04\u6570 \u5358\u4F4D\u5143\u306F0\n */\ntemplate <typename T>\nstruct\
-    \ Gcd {\n    static_assert(std::is_integral_v<T>);\n    using S = T;\n    static\
-    \ constexpr S op(const S& a, const S& b) { return std::gcd(a, b); }\n    static\
-    \ constexpr S e() { return S(0); }\n};\n\n/**\n * @brief \u6700\u5C0F\u516C\u500D\
-    \u6570 \u5358\u4F4D\u5143\u306F1\n */\ntemplate <typename T>\nstruct Lcm {\n \
-    \   static_assert(std::is_integral_v<T>);\n    using S = T;\n    static constexpr\
-    \ S op(const S& a, const S& b) { return std::lcm(a, b); }\n    static constexpr\
-    \ S e() { return S(1); }\n};\n\n/**\n * @brief 1\u6B21\u95A2\u6570 f(x) = first\
-    \ * x + second \u306E\u5408\u6210\n * op(f, g) = g\u2218f (\u5DE6\u304B\u3089\u9806\
-    \u306B\u9069\u7528\u3059\u308B)\n * \u533A\u9593 [l, r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x))\
-    \ \u3092\u8868\u3059\n */\ntemplate <typename T>\nstruct Composite {\n    using\
-    \ S = std::pair<T, T>;\n    static constexpr S op(const S& f, const S& g) { return\
-    \ {g.first * f.first, g.first * f.second + g.second}; }\n    static constexpr\
-    \ S e() { return {T(1), T(0)}; }\n};\n\n/**\n * @brief \u62EC\u5F27\u5217 \u5BFE\
+    \ std::gcd(a, b); }\n    static constexpr S e() { return S(0); }\n};\n\n/**\n\
+    \ * @brief \u6700\u5C0F\u516C\u500D\u6570 \u5358\u4F4D\u5143\u306F1\n */\ntemplate\
+    \ <typename T>\nstruct Lcm {\n    static_assert(std::is_integral_v<T>);\n    using\
+    \ S = T;\n    static constexpr S op(const S& a, const S& b) { return std::lcm(a,\
+    \ b); }\n    static constexpr S e() { return S(1); }\n};\n\n/**\n * @brief 1\u6B21\
+    \u95A2\u6570 (Affine) \u306E\u5408\u6210\n * op(f, g) = g\u2218f (\u5DE6\u304B\
+    \u3089\u9806\u306B\u9069\u7528\u3059\u308B)\n * \u533A\u9593 [l, r) \u306E\u7A4D\
+    \u306F f_{r-1}(...f_l(x)) \u3092\u8868\u3059\n */\ntemplate <typename T>\nstruct\
+    \ Composite {\n    using S = Affine<T>;\n    static constexpr S op(const S& f,\
+    \ const S& g) { return {g.a * f.a, g.a * f.b + g.b}; }\n    static constexpr S\
+    \ e() { return {T(1), T(0)}; }\n};\n\n/**\n * @brief \u62EC\u5F27\u5217 \u5BFE\
     \u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\u3044 ')' \u3068 '(' \u306E\u500B\u6570\
     \n */\nstruct Parenthesis {\n    struct S {\n        long long close; // \u5BFE\
     \u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\u3044 ')' \u306E\u500B\u6570\n    \
@@ -187,7 +200,7 @@ data:
   requiredBy:
   - src/data_structures/potentialized-unionfind.hpp
   - src/data_structures/merge-sort-tree.hpp
-  timestamp: '2026-10-11 23:34:07+09:00'
+  timestamp: '2026-10-13 00:38:02+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/aoj/jag-summer-2971.test.cpp

@@ -47,22 +47,35 @@ data:
     \u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\u3088\
     \u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\
     \u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\
-    \u3059)\n */\n\n#include <algorithm>\n#line 16 \"src/algebra/monoid.hpp\"\n#include\
-    \ <numeric>\n#line 19 \"src/algebra/monoid.hpp\"\n\nnamespace monoid {\n\n/**\n\
-    \ * @brief \u548C\n */\ntemplate <typename T>\nstruct Sum {\n    using S = T;\n\
-    \    static constexpr S op(const S& a, const S& b) { return a + b; }\n    static\
-    \ constexpr S e() { return S(0); }\n};\n\n/**\n * @brief \u7A4D\n */\ntemplate\
-    \ <typename T>\nstruct Prod {\n    using S = T;\n    static constexpr S op(const\
-    \ S& a, const S& b) { return a * b; }\n    static constexpr S e() { return S(1);\
-    \ }\n};\n\n/**\n * @brief \u6700\u5927\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\
-    \u6700\u5C0F\u5024\n */\ntemplate <typename T>\nstruct Max {\n    using S = T;\n\
-    \    static constexpr S op(const S& a, const S& b) { return std::max(a, b); }\n\
-    \    static constexpr S e() { return std::numeric_limits<S>::lowest(); }\n};\n\
-    \n/**\n * @brief \u6700\u5C0F\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\u6700\
-    \u5927\u5024\n */\ntemplate <typename T>\nstruct Min {\n    using S = T;\n   \
-    \ static constexpr S op(const S& a, const S& b) { return std::min(a, b); }\n \
-    \   static constexpr S e() { return std::numeric_limits<S>::max(); }\n};\n\n/**\n\
-    \ * @brief \u6700\u5C0F\u5024\u3068\u6700\u5927\u5024\u306E\u7D44 {min, max}\n\
+    \u3059)\n */\n\n#include <algorithm>\n#include <istream>\n#line 17 \"src/algebra/monoid.hpp\"\
+    \n#include <numeric>\n#line 21 \"src/algebra/monoid.hpp\"\n\n/**\n * @brief 1\u6B21\
+    \u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\u3084\
+    \ acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n * \u4F8B\
+    : Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\u3059\u308B\u3068\
+    \u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\nstruct Affine {\n\
+    \    T a = T(1);  //!< \u50BE\u304D\n    T b = T(0);  //!< \u5207\u7247\n    constexpr\
+    \ T operator()(const T& x) const { return a * x + b; }\n    friend constexpr bool\
+    \ operator==(const Affine& f, const Affine& g) { return f.a == g.a && f.b == g.b;\
+    \ }\n    friend constexpr bool operator!=(const Affine& f, const Affine& g) {\
+    \ return !(f == g); }\n    template <class CharT, class Traits>\n    friend std::basic_istream<CharT,\
+    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Affine& f) {\n  \
+    \      return is >> f.a >> f.b;\n    }\n    template <class CharT, class Traits>\n\
+    \    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \ Traits>& os, const Affine& f) {\n        return os << f.a << CharT(' ') << f.b;\n\
+    \    }\n};\n\nnamespace monoid {\n\n/**\n * @brief \u548C\n */\ntemplate <typename\
+    \ T>\nstruct Sum {\n    using S = T;\n    static constexpr S op(const S& a, const\
+    \ S& b) { return a + b; }\n    static constexpr S e() { return S(0); }\n};\n\n\
+    /**\n * @brief \u7A4D\n */\ntemplate <typename T>\nstruct Prod {\n    using S\
+    \ = T;\n    static constexpr S op(const S& a, const S& b) { return a * b; }\n\
+    \    static constexpr S e() { return S(1); }\n};\n\n/**\n * @brief \u6700\u5927\
+    \u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\u6700\u5C0F\u5024\n */\ntemplate <typename\
+    \ T>\nstruct Max {\n    using S = T;\n    static constexpr S op(const S& a, const\
+    \ S& b) { return std::max(a, b); }\n    static constexpr S e() { return std::numeric_limits<S>::lowest();\
+    \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\
+    \u6700\u5927\u5024\n */\ntemplate <typename T>\nstruct Min {\n    using S = T;\n\
+    \    static constexpr S op(const S& a, const S& b) { return std::min(a, b); }\n\
+    \    static constexpr S e() { return std::numeric_limits<S>::max(); }\n};\n\n\
+    /**\n * @brief \u6700\u5C0F\u5024\u3068\u6700\u5927\u5024\u306E\u7D44 {min, max}\n\
     \ */\ntemplate <typename T>\nstruct MinMax {\n    using S = std::pair<T, T>;\n\
     \    static constexpr S op(const S& a, const S& b) { return {std::min(a.first,\
     \ b.first), std::max(a.second, b.second)}; }\n    static constexpr S e() { return\
@@ -83,75 +96,74 @@ data:
     \ <typename T>\nstruct Lcm {\n    static_assert(std::is_integral_v<T>);\n    using\
     \ S = T;\n    static constexpr S op(const S& a, const S& b) { return std::lcm(a,\
     \ b); }\n    static constexpr S e() { return S(1); }\n};\n\n/**\n * @brief 1\u6B21\
-    \u95A2\u6570 f(x) = first * x + second \u306E\u5408\u6210\n * op(f, g) = g\u2218\
-    f (\u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\u3059\u308B)\n * \u533A\u9593 [l,\
-    \ r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x)) \u3092\u8868\u3059\n */\ntemplate <typename\
-    \ T>\nstruct Composite {\n    using S = std::pair<T, T>;\n    static constexpr\
-    \ S op(const S& f, const S& g) { return {g.first * f.first, g.first * f.second\
-    \ + g.second}; }\n    static constexpr S e() { return {T(1), T(0)}; }\n};\n\n\
-    /**\n * @brief \u62EC\u5F27\u5217 \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\
-    \u3044 ')' \u3068 '(' \u306E\u500B\u6570\n */\nstruct Parenthesis {\n    struct\
-    \ S {\n        long long close; // \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\
-    \u3044 ')' \u306E\u500B\u6570\n        long long open;  // \u5BFE\u5FDC\u306E\u53D6\
-    \u308C\u3066\u3044\u306A\u3044 '(' \u306E\u500B\u6570\n        constexpr S(char\
-    \ c = 0) : close(c == ')'), open(c == '(') {}\n        constexpr S(long long close,\
-    \ long long open) : close(close), open(open) {}\n        /**\n         * @brief\
-    \ \u6B63\u3057\u3044\u62EC\u5F27\u5217\u304B\n         */\n        constexpr bool\
-    \ is_valid() const { return close == 0 && open == 0; }\n    };\n    static constexpr\
-    \ S op(const S& a, const S& b) {\n        if(a.open >= b.close) return S(a.close,\
-    \ a.open - b.close + b.open);\n        return S(a.close + b.close - a.open, b.open);\n\
-    \    }\n    static constexpr S e() { return S(); }\n};\n\n/**\n * @brief \u6700\
-    \u5C0F\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\
-    \u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u4F4D\
-    \u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\u578B\n */\ntemplate\
-    \ <typename T, typename U = int>\nstruct MinWith {\n    using S = std::pair<T,\
-    \ U>;\n    static constexpr S op(const S& a, const S& b) { return b.first < a.first\
-    \ ? b : a; }\n    static constexpr S e() { return {std::numeric_limits<T>::max(),\
-    \ U{}}; }\n};\n\n/**\n * @brief \u6700\u5927\u5024\u3068\u305D\u306E\u4F4D\u7F6E\
-    \ \u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n * @tparam\
-    \ T \u5024\u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\
-    \u3059\u308B\u5024\u306E\u578B\n */\ntemplate <typename T, typename U = int>\n\
-    struct MaxWith {\n    using S = std::pair<T, U>;\n    static constexpr S op(const\
-    \ S& a, const S& b) { return a.first < b.first ? b : a; }\n    static constexpr\
-    \ S e() { return {std::numeric_limits<T>::lowest(), U{}}; }\n};\n\n/**\n * @brief\
-    \ \u6700\u5C0F\u5024\u3068\u305D\u306E\u500B\u6570\n *\n * @tparam T \u5024\u306E\
-    \u578B\n * @tparam U \u500B\u6570\u306E\u578B\n */\ntemplate <typename T, typename\
-    \ U = long long>\nstruct MinCount {\n    using S = std::pair<T, U>;\n    static\
-    \ constexpr S op(const S& a, const S& b) {\n        if(a.first < b.first) return\
-    \ a;\n        if(b.first < a.first) return b;\n        return {a.first, a.second\
-    \ + b.second};\n    }\n    static constexpr S e() { return {std::numeric_limits<T>::max(),\
-    \ U(0)}; }\n};\n\n/**\n * @brief \u6700\u5927\u5024\u3068\u305D\u306E\u500B\u6570\
+    \u95A2\u6570 (Affine) \u306E\u5408\u6210\n * op(f, g) = g\u2218f (\u5DE6\u304B\
+    \u3089\u9806\u306B\u9069\u7528\u3059\u308B)\n * \u533A\u9593 [l, r) \u306E\u7A4D\
+    \u306F f_{r-1}(...f_l(x)) \u3092\u8868\u3059\n */\ntemplate <typename T>\nstruct\
+    \ Composite {\n    using S = Affine<T>;\n    static constexpr S op(const S& f,\
+    \ const S& g) { return {g.a * f.a, g.a * f.b + g.b}; }\n    static constexpr S\
+    \ e() { return {T(1), T(0)}; }\n};\n\n/**\n * @brief \u62EC\u5F27\u5217 \u5BFE\
+    \u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\u3044 ')' \u3068 '(' \u306E\u500B\u6570\
+    \n */\nstruct Parenthesis {\n    struct S {\n        long long close; // \u5BFE\
+    \u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\u3044 ')' \u306E\u500B\u6570\n    \
+    \    long long open;  // \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\u3044\
+    \ '(' \u306E\u500B\u6570\n        constexpr S(char c = 0) : close(c == ')'), open(c\
+    \ == '(') {}\n        constexpr S(long long close, long long open) : close(close),\
+    \ open(open) {}\n        /**\n         * @brief \u6B63\u3057\u3044\u62EC\u5F27\
+    \u5217\u304B\n         */\n        constexpr bool is_valid() const { return close\
+    \ == 0 && open == 0; }\n    };\n    static constexpr S op(const S& a, const S&\
+    \ b) {\n        if(a.open >= b.close) return S(a.close, a.open - b.close + b.open);\n\
+    \        return S(a.close + b.close - a.open, b.open);\n    }\n    static constexpr\
+    \ S e() { return S(); }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\
+    \u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n\
+    \ * @tparam T \u5024\u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\
+    \u968F\u3059\u308B\u5024\u306E\u578B\n */\ntemplate <typename T, typename U =\
+    \ int>\nstruct MinWith {\n    using S = std::pair<T, U>;\n    static constexpr\
+    \ S op(const S& a, const S& b) { return b.first < a.first ? b : a; }\n    static\
+    \ constexpr S e() { return {std::numeric_limits<T>::max(), U{}}; }\n};\n\n/**\n\
+    \ * @brief \u6700\u5927\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\
+    \u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\u306E\u578B\
+    \n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\
+    \u578B\n */\ntemplate <typename T, typename U = int>\nstruct MaxWith {\n    using\
+    \ S = std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) { return\
+    \ a.first < b.first ? b : a; }\n    static constexpr S e() { return {std::numeric_limits<T>::lowest(),\
+    \ U{}}; }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u500B\u6570\
     \n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u500B\u6570\u306E\u578B\n\
-    \ */\ntemplate <typename T, typename U = long long>\nstruct MaxCount {\n    using\
+    \ */\ntemplate <typename T, typename U = long long>\nstruct MinCount {\n    using\
     \ S = std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n\
-    \        if(a.first < b.first) return b;\n        if(b.first < a.first) return\
-    \ a;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
-    \ S e() { return {std::numeric_limits<T>::lowest(), U(0)}; }\n};\n\n} // namespace\
-    \ monoid\n\n/**\n * @brief \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3068\
-    \u5358\u4F4D\u5143\u304B\u3089\u5B9F\u884C\u6642\u306B\u4F5C\u308B\u30E2\u30CE\
-    \u30A4\u30C9\n * \u30E9\u30E0\u30C0\u5F0F\u3092\u4F7F\u3048\u308B\n *\n * \u4F8B\
-    : SegTree seg(v, Monoid([](int a, int b) { return std::max(a, b); }, -1));\n *\n\
-    \ * @tparam T \u8981\u7D20\u306E\u578B\n * @tparam Op \u7A4D\u306E\u95A2\u6570\
-    \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306E\u578B\n */\ntemplate <typename T, typename\
-    \ Op>\nstruct Monoid {\n    using S = T;\n    Op op_object;\n    S identity;\n\
-    \    Monoid() = default;\n    constexpr Monoid(Op op, const S& e) : op_object(std::move(op)),\
-    \ identity(e) {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a,\
-    \ b); }\n    constexpr S e() const { return identity; }\n};\ntemplate <typename\
-    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 23 \"src/algebra/acted-monoid.hpp\"\
-    \n\nnamespace acted_monoid {\n\nnamespace detail {\ntemplate <typename A, typename\
-    \ = void>\nstruct has_mapping_lr : std::false_type {};\ntemplate <typename A>\n\
-    struct has_mapping_lr<A, std::void_t<decltype(std::declval<const A&>().mapping(std::declval<const\
-    \ typename A::F&>(), std::declval<const typename A::S&>(), 0, 0))>> : std::true_type\
-    \ {};\ntemplate <typename A, typename = void>\nstruct has_mapping_sz : std::false_type\
-    \ {};\ntemplate <typename A>\nstruct has_mapping_sz<A, std::void_t<decltype(std::declval<const\
+    \        if(a.first < b.first) return a;\n        if(b.first < a.first) return\
+    \ b;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
+    \ S e() { return {std::numeric_limits<T>::max(), U(0)}; }\n};\n\n/**\n * @brief\
+    \ \u6700\u5927\u5024\u3068\u305D\u306E\u500B\u6570\n *\n * @tparam T \u5024\u306E\
+    \u578B\n * @tparam U \u500B\u6570\u306E\u578B\n */\ntemplate <typename T, typename\
+    \ U = long long>\nstruct MaxCount {\n    using S = std::pair<T, U>;\n    static\
+    \ constexpr S op(const S& a, const S& b) {\n        if(a.first < b.first) return\
+    \ b;\n        if(b.first < a.first) return a;\n        return {a.first, a.second\
+    \ + b.second};\n    }\n    static constexpr S e() { return {std::numeric_limits<T>::lowest(),\
+    \ U(0)}; }\n};\n\n} // namespace monoid\n\n/**\n * @brief \u95A2\u6570\u30AA\u30D6\
+    \u30B8\u30A7\u30AF\u30C8\u3068\u5358\u4F4D\u5143\u304B\u3089\u5B9F\u884C\u6642\
+    \u306B\u4F5C\u308B\u30E2\u30CE\u30A4\u30C9\n * \u30E9\u30E0\u30C0\u5F0F\u3092\u4F7F\
+    \u3048\u308B\n *\n * \u4F8B: SegTree seg(v, Monoid([](int a, int b) { return std::max(a,\
+    \ b); }, -1));\n *\n * @tparam T \u8981\u7D20\u306E\u578B\n * @tparam Op \u7A4D\
+    \u306E\u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306E\u578B\n */\ntemplate\
+    \ <typename T, typename Op>\nstruct Monoid {\n    using S = T;\n    Op op_object;\n\
+    \    S identity;\n    Monoid() = default;\n    constexpr Monoid(Op op, const S&\
+    \ e) : op_object(std::move(op)), identity(e) {}\n    constexpr S op(const S& a,\
+    \ const S& b) const { return op_object(a, b); }\n    constexpr S e() const { return\
+    \ identity; }\n};\ntemplate <typename Op, typename T>\nMonoid(Op, T) -> Monoid<T,\
+    \ Op>;\n#line 23 \"src/algebra/acted-monoid.hpp\"\n\nnamespace acted_monoid {\n\
+    \nnamespace detail {\ntemplate <typename A, typename = void>\nstruct has_mapping_lr\
+    \ : std::false_type {};\ntemplate <typename A>\nstruct has_mapping_lr<A, std::void_t<decltype(std::declval<const\
     \ A&>().mapping(std::declval<const typename A::F&>(), std::declval<const typename\
-    \ A::S&>(), 0))>> : std::true_type {};\n} // namespace detail\n\n/**\n * @brief\
-    \ \u533A\u9593 [l, r) \u3092\u8868\u3059\u8981\u7D20\u306B\u4F5C\u7528\u7D20\u3092\
-    \u9069\u7528\u3059\u308B\n * mapping \u306E\u5F15\u6570\u306E\u5F62\u306E\u9055\
-    \u3044\u3092\u5438\u53CE\u3059\u308B\n */\ntemplate <typename A>\nconstexpr auto\
-    \ apply_mapping(const A& a, const typename A::F& f, const typename A::S& x, int\
-    \ l, int r) {\n    if constexpr(detail::has_mapping_lr<A>::value) {\n        return\
-    \ a.mapping(f, x, l, r);\n    } else if constexpr(detail::has_mapping_sz<A>::value)\
+    \ A::S&>(), 0, 0))>> : std::true_type {};\ntemplate <typename A, typename = void>\n\
+    struct has_mapping_sz : std::false_type {};\ntemplate <typename A>\nstruct has_mapping_sz<A,\
+    \ std::void_t<decltype(std::declval<const A&>().mapping(std::declval<const typename\
+    \ A::F&>(), std::declval<const typename A::S&>(), 0))>> : std::true_type {};\n\
+    } // namespace detail\n\n/**\n * @brief \u533A\u9593 [l, r) \u3092\u8868\u3059\
+    \u8981\u7D20\u306B\u4F5C\u7528\u7D20\u3092\u9069\u7528\u3059\u308B\n * mapping\
+    \ \u306E\u5F15\u6570\u306E\u5F62\u306E\u9055\u3044\u3092\u5438\u53CE\u3059\u308B\
+    \n */\ntemplate <typename A>\nconstexpr auto apply_mapping(const A& a, const typename\
+    \ A::F& f, const typename A::S& x, int l, int r) {\n    if constexpr(detail::has_mapping_lr<A>::value)\
+    \ {\n        return a.mapping(f, x, l, r);\n    } else if constexpr(detail::has_mapping_sz<A>::value)\
     \ {\n        return a.mapping(f, x, r - l);\n    } else {\n        return a.mapping(f,\
     \ x);\n    }\n}\n\n/**\n * @brief \u533A\u9593\u52A0\u7B97\u3001\u533A\u9593\u548C\
     \n */\ntemplate <typename T>\nstruct AddSum : monoid::Sum<T> {\n    using S =\
@@ -201,18 +213,18 @@ data:
     \ }\n    static constexpr F composition(const F& f, const F& g) { return std::max(f,\
     \ g); }\n    static constexpr F id() { return std::numeric_limits<F>::lowest();\
     \ }\n};\n\n/**\n * @brief \u533A\u9593\u30A2\u30D5\u30A3\u30F3\u5909\u63DB x <-\
-    \ first * x + second\u3001\u533A\u9593\u548C\n */\ntemplate <typename T>\nstruct\
-    \ AffineSum : monoid::Sum<T> {\n    using S = T;\n    using F = std::pair<T, T>;\n\
-    \    static constexpr S mapping(const F& f, const S& x, int sz) { return f.first\
-    \ * x + f.second * S(sz); }\n    static constexpr F composition(const F& f, const\
-    \ F& g) { return {f.first * g.first, f.first * g.second + f.second}; }\n    static\
-    \ constexpr F id() { return {T(1), T(0)}; }\n};\n\n/**\n * @brief \u533A\u9593\
-    \u4EE3\u5165\u30011\u6B21\u95A2\u6570\u306E\u5408\u6210 (monoid::Composite)\n\
-    \ */\ntemplate <typename T>\nstruct UpdateComposite : monoid::Composite<T> {\n\
-    \    using S = std::pair<T, T>;\n    using F = std::optional<S>;\n    static constexpr\
-    \ S mapping(const F& f, const S& x, int sz) {\n        if(!f) return x;\n    \
-    \    // f \u3092 sz \u56DE\u5408\u6210\u3059\u308B\n        S ret = monoid::Composite<T>::e(),\
-    \ p = *f;\n        for(; sz > 0; sz >>= 1) {\n            if(sz & 1) ret = monoid::Composite<T>::op(ret,\
+    \ a * x + b (Affine)\u3001\u533A\u9593\u548C\n */\ntemplate <typename T>\nstruct\
+    \ AffineSum : monoid::Sum<T> {\n    using S = T;\n    using F = Affine<T>;\n \
+    \   static constexpr S mapping(const F& f, const S& x, int sz) { return f.a *\
+    \ x + f.b * S(sz); }\n    static constexpr F composition(const F& f, const F&\
+    \ g) { return {f.a * g.a, f.a * g.b + f.b}; }\n    static constexpr F id() { return\
+    \ {T(1), T(0)}; }\n};\n\n/**\n * @brief \u533A\u9593\u4EE3\u5165\u30011\u6B21\u95A2\
+    \u6570\u306E\u5408\u6210 (monoid::Composite)\n */\ntemplate <typename T>\nstruct\
+    \ UpdateComposite : monoid::Composite<T> {\n    using S = Affine<T>;\n    using\
+    \ F = std::optional<S>;\n    static constexpr S mapping(const F& f, const S& x,\
+    \ int sz) {\n        if(!f) return x;\n        // f \u3092 sz \u56DE\u5408\u6210\
+    \u3059\u308B\n        S ret = monoid::Composite<T>::e(), p = *f;\n        for(;\
+    \ sz > 0; sz >>= 1) {\n            if(sz & 1) ret = monoid::Composite<T>::op(ret,\
     \ p);\n            p = monoid::Composite<T>::op(p, p);\n        }\n        return\
     \ ret;\n    }\n    static constexpr F composition(const F& f, const F& g) { return\
     \ f ? f : g; }\n    static constexpr F id() { return std::nullopt; }\n};\n\n/**\n\
@@ -570,7 +582,7 @@ data:
   isVerificationFile: false
   path: src/data_structures/segtree-beats.hpp
   requiredBy: []
-  timestamp: '2026-10-12 20:24:58+09:00'
+  timestamp: '2026-10-13 00:38:02+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp

@@ -1,4 +1,10 @@
 #pragma once
+
+/**
+ * @file infint.hpp
+ * @brief inf を持つ整数型
+ */
+
 #include <algorithm>
 #include <iostream>
 #include <limits>

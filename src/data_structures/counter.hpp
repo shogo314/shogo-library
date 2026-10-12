@@ -1,4 +1,10 @@
 #pragma once
+
+/**
+ * @file counter.hpp
+ * @brief 値の個数を数える多重集合 (Counter)
+ */
+
 #include <algorithm>
 #include <cassert>
 #include <initializer_list>

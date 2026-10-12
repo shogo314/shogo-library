@@ -1,4 +1,10 @@
 #pragma once
+
+/**
+ * @file repr.hpp
+ * @brief 出力をそのままコンストラクタに使える文字列化 (repr)
+ */
+
 #include <array>
 #include <iostream>
 #include <map>

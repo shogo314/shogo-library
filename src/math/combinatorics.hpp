@@ -1,5 +1,10 @@
 #pragma once
 
+/**
+ * @file combinatorics.hpp
+ * @brief 組み合わせ
+ */
+
 #include <cassert>
 #include <vector>
 #include "number-theory.hpp"

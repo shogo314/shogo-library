@@ -1,4 +1,10 @@
 #pragma once
+
+/**
+ * @file mo.hpp
+ * @brief Mo's algorithm
+ */
+
 #include <vector>
 #include <array>
 #include <type_traits>

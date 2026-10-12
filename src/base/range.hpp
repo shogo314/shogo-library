@@ -1,4 +1,10 @@
 #pragma once
+
+/**
+ * @file range.hpp
+ * @brief Python の range のような整数列
+ */
+
 #include <cassert>
 #include <cstddef>
 #include <string>

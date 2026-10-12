@@ -1,5 +1,10 @@
 #pragma once
 
+/**
+ * @file binary-trie.hpp
+ * @brief Binary Trie
+ */
+
 #include <assert.h>
 #include <limits>
 #include <memory>

@@ -1,4 +1,10 @@
 #pragma once
+
+/**
+ * @file container_func.hpp
+ * @brief コンテナに対する関数 (sorted, max, sum など)
+ */
+
 #include <algorithm>
 #include <cassert>
 #include <functional>

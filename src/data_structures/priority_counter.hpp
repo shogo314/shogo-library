@@ -1,4 +1,10 @@
 #pragma once
+
+/**
+ * @file priority_counter.hpp
+ * @brief 上位 K 個の値とその個数
+ */
+
 #include <array>
 #include <cstddef>
 #include <functional>

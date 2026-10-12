@@ -1,5 +1,10 @@
 #pragma once
 
+/**
+ * @file graph.hpp
+ * @brief グラフ
+ */
+
 #include <iostream>
 #include <limits>
 #include <queue>

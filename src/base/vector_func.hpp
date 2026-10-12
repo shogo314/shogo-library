@@ -1,4 +1,10 @@
 #pragma once
+
+/**
+ * @file vector_func.hpp
+ * @brief vector に対する演算子と関数
+ */
+
 #include <algorithm>
 #include <cmath>
 #include <cstddef>

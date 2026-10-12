@@ -1,5 +1,10 @@
 #pragma once
 
+/**
+ * @file vector.hpp
+ * @brief 幾何ベクトル
+ */
+
 #include <algorithm>
 #include <array>
 #include <cassert>

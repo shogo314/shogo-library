@@ -1,5 +1,10 @@
 #pragma once
 
+/**
+ * @file number-theory.hpp
+ * @brief 数論 (逆元、中国剰余定理、畳み込みなど)
+ */
+
 #include <numeric>
 #include <vector>
 #include "modint.hpp"

@@ -1,4 +1,10 @@
 #pragma once
+
+/**
+ * @file interval-set.hpp
+ * @brief 半開区間の集合
+ */
+
 #include <cassert>
 #include <functional>
 #include <iostream>

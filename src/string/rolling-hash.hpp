@@ -1,5 +1,10 @@
 #pragma once
 
+/**
+ * @file rolling-hash.hpp
+ * @brief ローリングハッシュ
+ */
+
 #include <string>
 #include <vector>
 #include <random>

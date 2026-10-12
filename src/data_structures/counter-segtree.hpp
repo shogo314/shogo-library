@@ -1,4 +1,10 @@
 #pragma once
+
+/**
+ * @file counter-segtree.hpp
+ * @brief 区間内の値の個数を数えるセグメント木
+ */
+
 #include <cassert>
 #include <map>
 #include <vector>

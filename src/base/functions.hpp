@@ -1,4 +1,10 @@
 #pragma once
+
+/**
+ * @file functions.hpp
+ * @brief 汎用関数 (chmin, chmax, 二分探索など)
+ */
+
 #include <algorithm>
 #include <cmath>
 #include <numeric>

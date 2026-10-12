@@ -1,7 +1,7 @@
 #pragma once
 
 /**
- * @file convex-hull-tric.hpp
+ * @file convex-hull-trick.hpp
  * @brief Convex Hull Trick
  *
  * 一次関数で表される直線または線分の集合を管理し、あるxに対する最小値を求める

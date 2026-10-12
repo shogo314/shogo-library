@@ -1,5 +1,10 @@
 #pragma once
 
+/**
+ * @file string.hpp
+ * @brief Z-algorithm
+ */
+
 #include <vector>
 
 /**

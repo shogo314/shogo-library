@@ -18,65 +18,73 @@ data:
     \ \"https://yukicoder.me/problems/no/565\"\n\n#line 2 \"src/math/matrix.hpp\"\n\
     \n/**\n * @file matrix.hpp\n * @brief \u884C\u5217\n */\n\n#include <vector>\n\
     #include <string>\n#include <algorithm>\n#include <valarray>\n#include <cassert>\n\
-    #include <type_traits>\n\nnamespace matrix {\n    template <typename T>\n    struct\
-    \ OperatorPropertyDefault {\n        constexpr static T zero() { return T(0);\
-    \ }\n        constexpr static T add(const T &a, const T &b) { return a + b; }\n\
-    \        constexpr static T neg(const T &a) { return -a; }\n        constexpr\
-    \ static T one() { return T(1); }\n        constexpr static T mul(const T &a,\
-    \ const T &b) { return a * b; }\n        constexpr static T inv(const T &a) {\
-    \ return T(1) / a; }\n    };\n}\n\n/**\n * @brief \u884C\u5217\n * @tparam T \u578B\
-    \ \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u8981\u7D20\u3068\u306A\u308Bint\u3084\
-    char\n * @tparam OperatorProperty \u884C\u5217\u306E\u8981\u7D20\u306E\u6F14\u7B97\
-    \u3092\u5B9A\u7FA9\u3059\u308B\u69CB\u9020\u4F53 0,1\u3068+,*\u306A\u3089\u7701\
-    \u7565\u53EF\n *\n * @note\n * OperatorProperty\u306E\u4F8B\uFF08\u6574\u6570\u306E\
-    xor\u3068and\u306B\u3088\u308B\u74B0\uFF09\n * @code\n * struct XorOperatorProperty\
-    \ {\n *     constexpr static int zero() { return 0; }\n *     constexpr static\
-    \ int add(const int &a, const int &b) { return a ^ b; }\n *     constexpr static\
-    \ int neg(const int &a) { return a; }\n *     constexpr static int one() { return\
-    \ 1; }\n *     constexpr static int mul(const int &a, const int &b) { return a\
-    \ & b; }\n * };\n * @endcode\n * constexpr\u3067\u3042\u308B\u5FC5\u8981\u306F\
-    \u306A\u304F\u3001\u307E\u305Finv\u306A\u3069\u4F7F\u308F\u306A\u3044\u3082\u306E\
-    \u306F\u5B9A\u7FA9\u3057\u306A\u304F\u3066\u3082\u3088\u3044\uFF08\u5FC5\u8981\
-    \u306A\u3082\u306E\u304C\u306A\u304B\u3063\u305F\u3089\u30B3\u30F3\u30D1\u30A4\
-    \u30EB\u30A8\u30E9\u30FC\u304C\u767A\u751F\u3059\u308B\uFF09\n */\ntemplate<class\
-    \ T, class OperatorProperty = matrix::OperatorPropertyDefault<T>> struct Matrix\
-    \ {\n    int n, m;\n    std::vector<std::vector<T>> v;\n\n    /**\n     * @brief\
-    \ \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param v \u884C\u5217(\u30B0\
-    \u30EA\u30C3\u30C9)\u306E\u5143\u3068\u306A\u308B vector<string> \u3084 vector<vector<T>>\n\
-    \     * @return Matrix\n     */\n    template <typename Iterable>\n    Matrix(const\
-    \ std::vector<Iterable>& v_) noexcept : n(v_.size()), m(v_.size() == 0 ? 0 : v_[0].size())\
-    \ {\n        v.resize(n);\n        for(int i = 0; i < n; i++) {\n            v[i].assign(v_[i].begin(),\
-    \ v_[i].end());\n        }\n    }\n\n    /**\n     * @brief \u30B3\u30F3\u30B9\
-    \u30C8\u30E9\u30AF\u30BF\n     * @param _n \u884C\u5217(\u30B0\u30EA\u30C3\u30C9\
-    )\u306E\u884C\u6570\n     * @param _m \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\
-    \u5217\u6570\n     * @param _val \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u8981\
-    \u7D20\u306E\u521D\u671F\u5024\n     * @return Matrix\n     */\n    Matrix(int\
-    \ _n, int _m, T _val = OperatorProperty::zero()) : n(_n), m(_m), v(n, std::vector<T>(m,\
+    #include <type_traits>\n#include <initializer_list>\n\nnamespace matrix {\n  \
+    \  template <typename T>\n    struct OperatorPropertyDefault {\n        constexpr\
+    \ static T zero() { return T(0); }\n        constexpr static T add(const T &a,\
+    \ const T &b) { return a + b; }\n        constexpr static T neg(const T &a) {\
+    \ return -a; }\n        constexpr static T one() { return T(1); }\n        constexpr\
+    \ static T mul(const T &a, const T &b) { return a * b; }\n        constexpr static\
+    \ T inv(const T &a) { return T(1) / a; }\n    };\n}\n\n/**\n * @brief \u884C\u5217\
+    \n * @tparam T \u578B \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u8981\u7D20\
+    \u3068\u306A\u308Bint\u3084char\n * @tparam OperatorProperty \u884C\u5217\u306E\
+    \u8981\u7D20\u306E\u6F14\u7B97\u3092\u5B9A\u7FA9\u3059\u308B\u69CB\u9020\u4F53\
+    \ 0,1\u3068+,*\u306A\u3089\u7701\u7565\u53EF\n *\n * @note\n * OperatorProperty\u306E\
+    \u4F8B\uFF08\u6574\u6570\u306Exor\u3068and\u306B\u3088\u308B\u74B0\uFF09\n * @code\n\
+    \ * struct XorOperatorProperty {\n *     constexpr static int zero() { return\
+    \ 0; }\n *     constexpr static int add(const int &a, const int &b) { return a\
+    \ ^ b; }\n *     constexpr static int neg(const int &a) { return a; }\n *    \
+    \ constexpr static int one() { return 1; }\n *     constexpr static int mul(const\
+    \ int &a, const int &b) { return a & b; }\n * };\n * @endcode\n * constexpr\u3067\
+    \u3042\u308B\u5FC5\u8981\u306F\u306A\u304F\u3001\u307E\u305Finv\u306A\u3069\u4F7F\
+    \u308F\u306A\u3044\u3082\u306E\u306F\u5B9A\u7FA9\u3057\u306A\u304F\u3066\u3082\
+    \u3088\u3044\uFF08\u5FC5\u8981\u306A\u3082\u306E\u304C\u306A\u304B\u3063\u305F\
+    \u3089\u30B3\u30F3\u30D1\u30A4\u30EB\u30A8\u30E9\u30FC\u304C\u767A\u751F\u3059\
+    \u308B\uFF09\n */\ntemplate<class T, class OperatorProperty = matrix::OperatorPropertyDefault<T>>\
+    \ struct Matrix {\n    int n, m;\n    std::vector<std::vector<T>> v;\n\n    /**\n\
+    \     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param v \u884C\
+    \u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u5143\u3068\u306A\u308B vector<string>\
+    \ \u3084 vector<vector<T>>\n     * @return Matrix\n     */\n    template <typename\
+    \ Iterable>\n    Matrix(const std::vector<Iterable>& v_) noexcept : n(v_.size()),\
+    \ m(v_.size() == 0 ? 0 : v_[0].size()) {\n        v.resize(n);\n        for(int\
+    \ i = 0; i < n; i++) {\n            v[i].assign(v_[i].begin(), v_[i].end());\n\
+    \        }\n    }\n\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\
+    \u30BF\n     * @param _n \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u884C\u6570\
+    \n     * @param _m \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u5217\u6570\n\
+    \     * @param _val \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u8981\u7D20\u306E\
+    \u521D\u671F\u5024\n     * @return Matrix\n     */\n    /**\n     * @brief \u521D\
+    \u671F\u5316\u5B50\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\u30B3\u30F3\u30B9\
+    \u30C8\u30E9\u30AF\u30BF\n     * \u4F8B: Matrix<mint> A({{1, 1}, {1, 0}});\n \
+    \    * @param il \u5404\u884C\u306E\u8981\u7D20\u306E\u30EA\u30B9\u30C8\n    \
+    \ */\n    Matrix(std::initializer_list<std::initializer_list<T>> il) : n(il.size()),\
+    \ m(il.size() == 0 ? 0 : il.begin()->size()) {\n        v.reserve(n);\n      \
+    \  for(const auto& row : il) v.emplace_back(row);\n    }\n    Matrix(int _n, int\
+    \ _m, T _val = OperatorProperty::zero()) : n(_n), m(_m), v(n, std::vector<T>(m,\
     \ _val)) {}\n    \n    auto begin() noexcept {return v.begin();}\n    auto end()\
-    \ noexcept {return v.end();}\n\n    /**\n     * @brief \u884C\u5217(\u30B0\u30EA\
-    \u30C3\u30C9)\u306E\u884C\u6570\n     * @return size_t\n     */\n    [[nodiscard]]\n\
-    \    size_t size() const {return v.size();}\n\n    std::vector<T>& operator []\
-    \ (int i) {return v[i];}\n    const std::vector<T>& operator [] (int i) const\
-    \ {return v[i];}\n    Matrix& operator = (const std::vector<std::vector<T>> &A)\
-    \ noexcept {\n        n = A.size();\n        m = (n == 0 ? 0 : A[0].size());\n\
+    \ noexcept {return v.end();}\n    auto begin() const noexcept {return v.begin();}\n\
+    \    auto end() const noexcept {return v.end();}\n\n    /**\n     * @brief \u884C\
+    \u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u884C\u6570\n     * @return size_t\n  \
+    \   */\n    [[nodiscard]]\n    size_t size() const {return v.size();}\n\n    std::vector<T>&\
+    \ operator [] (int i) {return v[i];}\n    const std::vector<T>& operator [] (int\
+    \ i) const {return v[i];}\n    Matrix& operator = (const std::vector<std::vector<T>>\
+    \ &A) noexcept {\n        n = A.size();\n        m = (n == 0 ? 0 : A[0].size());\n\
     \        v = A;\n        return *this;\n    }\n    bool operator == (const Matrix\
     \ &A) const noexcept {\n        return this->v == A.v;\n    }\n    bool operator\
     \ != (const Matrix &A) const noexcept {\n        return this->v != A.v;\n    }\n\
     \n    /**\n     * @brief \u8EE2\u7F6E\n     * @return Matrix\n     */\n    [[nodiscard]]\n\
-    \    Matrix transpose() noexcept {\n        if(n == 0) return Matrix(v);\n   \
-    \     std::vector<std::vector<T>> ret(m);\n        for(int i = 0; i < m; i ++)\
-    \ {\n            ret[i].resize(n);\n            for(int j = 0; j < n; j ++) ret[i][j]\
-    \ = v[j][i];\n        }\n        return Matrix(ret);\n    }\n\n    /**\n     *\
-    \ @brief \u5DE6\u53F3\u53CD\u8EE2\n     * @return Matrix\n     */\n    [[nodiscard]]\n\
-    \    Matrix rev_lr() noexcept {\n        std::vector<std::vector<T>> ret = v;\n\
-    \        for(int i = 0; i < n; i ++) std::reverse(ret[i].begin(), ret[i].end());\n\
+    \    Matrix transpose() const noexcept {\n        if(n == 0) return Matrix(v);\n\
+    \        std::vector<std::vector<T>> ret(m);\n        for(int i = 0; i < m; i\
+    \ ++) {\n            ret[i].resize(n);\n            for(int j = 0; j < n; j ++)\
+    \ ret[i][j] = v[j][i];\n        }\n        return Matrix(ret);\n    }\n\n    /**\n\
+    \     * @brief \u5DE6\u53F3\u53CD\u8EE2\n     * @return Matrix\n     */\n    [[nodiscard]]\n\
+    \    Matrix rev_lr() const noexcept {\n        std::vector<std::vector<T>> ret\
+    \ = v;\n        for(int i = 0; i < n; i ++) std::reverse(ret[i].begin(), ret[i].end());\n\
     \        return Matrix(ret);\n    }\n\n    /**\n     * @brief \u4E0A\u4E0B\u53CD\
     \u8EE2\n     * @return Matrix\n     */\n    [[nodiscard]]\n    Matrix rev_ud()\
-    \ noexcept {\n        std::vector<std::vector<T>> ret = v;\n        reverse(ret.begin(),\
+    \ const noexcept {\n        std::vector<std::vector<T>> ret = v;\n        reverse(ret.begin(),\
     \ ret.end());\n        return Matrix(ret);\n    }\n\n    /**\n     * @brief \u6642\
     \u8A08\u5468\u308A\u306B90\u5EA6\u56DE\u8EE2\n     * @param k \u56DE\u8EE2\u3059\
     \u308B\u56DE\u6570\n     * @return Matrix\n     */\n    [[nodiscard]]\n    Matrix\
-    \ rotate(int k) noexcept {\n        k %= 4;\n        if(k == 0) return *this;\n\
+    \ rotate(int k) const noexcept {\n        k %= 4;\n        if(k == 0) return *this;\n\
     \        if(k < 0) k += 4;\n        if(k == 2) return this->rev_lr().rev_ud();\n\
     \        std::vector<std::vector<T>> ret(m);\n        if(k == 1) {\n         \
     \   for(int i = 0; i < m; i ++) {\n                ret[i].resize(n);\n       \
@@ -86,35 +94,36 @@ data:
     \ = v[j][m - i - 1];\n            }\n        }\n        return Matrix(ret);\n\
     \    }\n\n    /**\n     * @brief (i, j)\u3092((i + dy) mod n, (j + dx) mod m)\u306B\
     \u79FB\u52D5\n     * @return Matrix\n     */\n    [[nodiscard]]\n    Matrix shift(int\
-    \ dy, int dx) noexcept {\n        if(n == 0 || m == 0) return *this;\n       \
-    \ dy = (dy % n + n) % n;\n        dx = (dx % m + m) % m;\n        std::vector<std::vector<T>>\
+    \ dy, int dx) const noexcept {\n        if(n == 0 || m == 0) return *this;\n \
+    \       dy = (dy % n + n) % n;\n        dx = (dx % m + m) % m;\n        std::vector<std::vector<T>>\
     \ ret = v;\n        for(int i = 0, ni = dy; i < n; i ++, ni ++) {\n          \
     \  if(ni >= n) ni = 0;\n            for(int j = 0, nj = dx; j < m; j ++, nj ++)\
     \ {\n                if(nj >= m) nj = 0;\n                ret[ni][nj] = v[i][j];\n\
     \            }\n        }\n        return Matrix(ret);\n    }\n\n    /**\n   \
     \  * @brief \u5DE6\u306Bk\u56DE\u30B7\u30D5\u30C8\n     * @return Matrix\n   \
-    \  */\n    [[nodiscard]]\n    Matrix shift_l(int k) noexcept {\n        return\
-    \ this->shift(0, -k);\n    }\n\n    /**\n     * @brief \u53F3\u306Bk\u56DE\u30B7\
-    \u30D5\u30C8\n     * @return Matrix\n     */\n    [[nodiscard]]\n    Matrix shift_r(int\
-    \ k) noexcept {\n        return this->shift(0, k);\n    }\n\n    /**\n     * @brief\
-    \ \u4E0A\u306Bk\u56DE\u30B7\u30D5\u30C8\n     * @return Matrix\n     */\n    [[nodiscard]]\n\
-    \    Matrix shift_u(int k) noexcept {\n        return this->shift(-k, 0);\n  \
-    \  }\n\n    /**\n     * @brief \u4E0B\u306Bk\u56DE\u30B7\u30D5\u30C8\n     * @return\
-    \ Matrix\n     */\n    [[nodiscard]]\n    Matrix shift_d(int k) noexcept {\n \
-    \       return this->shift(k, 0);\n    }\n\n    /**\n     * @brief \u30B0\u30EA\
-    \u30C3\u30C9\u3092vector<string>\u3067\u8FD4\u3059\n     * @return std::vector<std::string>\n\
-    \     */\n    [[nodiscard]]\n    std::vector<std::string> vstr() noexcept {\n\
-    \        std::vector<std::string> ret(n);\n        for(int i = 0; i < n; i ++)\
-    \ {\n            ret[i].assign(v[i].begin(), v[i].end());\n        }\n       \
-    \ return ret;\n    }\n\n    /**\n     * @brief \u30B0\u30EA\u30C3\u30C9\u306E\
-    j\u5217\u76EE\u3092\u8FD4\u3059\n     * @param j \u8FD4\u3059\u5217\u756A\u53F7\
-    (0-indexed)\n     * @return std::vector<T>\n     */\n    [[nodiscard]]\n    std::vector<T>\
-    \ col(int j) noexcept {\n        std::vector<T> ret(n);\n        for(int i = 0;\
-    \ i < n; i ++) {\n            ret[i] = v[i][j];\n        }\n        return ret;\n\
-    \    }\n\n    /**\n     * @brief \u30B0\u30EA\u30C3\u30C9\u306Ei\u884C\u76EE\u3092\
-    string\u3067\u8FD4\u3059\n     * @param i \u8FD4\u3059\u884C\u756A\u53F7(0-indexed)\n\
-    \     * @return std::string\n     */\n    [[nodiscard]]\n    std::string str(int\
-    \ i) noexcept {\n        std::string ret;\n        ret.assign(v[i].begin(), v[i].end());\n\
+    \  */\n    [[nodiscard]]\n    Matrix shift_l(int k) const noexcept {\n       \
+    \ return this->shift(0, -k);\n    }\n\n    /**\n     * @brief \u53F3\u306Bk\u56DE\
+    \u30B7\u30D5\u30C8\n     * @return Matrix\n     */\n    [[nodiscard]]\n    Matrix\
+    \ shift_r(int k) const noexcept {\n        return this->shift(0, k);\n    }\n\n\
+    \    /**\n     * @brief \u4E0A\u306Bk\u56DE\u30B7\u30D5\u30C8\n     * @return\
+    \ Matrix\n     */\n    [[nodiscard]]\n    Matrix shift_u(int k) const noexcept\
+    \ {\n        return this->shift(-k, 0);\n    }\n\n    /**\n     * @brief \u4E0B\
+    \u306Bk\u56DE\u30B7\u30D5\u30C8\n     * @return Matrix\n     */\n    [[nodiscard]]\n\
+    \    Matrix shift_d(int k) const noexcept {\n        return this->shift(k, 0);\n\
+    \    }\n\n    /**\n     * @brief \u30B0\u30EA\u30C3\u30C9\u3092vector<string>\u3067\
+    \u8FD4\u3059\n     * @return std::vector<std::string>\n     */\n    [[nodiscard]]\n\
+    \    std::vector<std::string> vstr() const noexcept {\n        std::vector<std::string>\
+    \ ret(n);\n        for(int i = 0; i < n; i ++) {\n            ret[i].assign(v[i].begin(),\
+    \ v[i].end());\n        }\n        return ret;\n    }\n\n    /**\n     * @brief\
+    \ \u30B0\u30EA\u30C3\u30C9\u306Ej\u5217\u76EE\u3092\u8FD4\u3059\n     * @param\
+    \ j \u8FD4\u3059\u5217\u756A\u53F7(0-indexed)\n     * @return std::vector<T>\n\
+    \     */\n    [[nodiscard]]\n    std::vector<T> col(int j) const noexcept {\n\
+    \        std::vector<T> ret(n);\n        for(int i = 0; i < n; i ++) {\n     \
+    \       ret[i] = v[i][j];\n        }\n        return ret;\n    }\n\n    /**\n\
+    \     * @brief \u30B0\u30EA\u30C3\u30C9\u306Ei\u884C\u76EE\u3092string\u3067\u8FD4\
+    \u3059\n     * @param i \u8FD4\u3059\u884C\u756A\u53F7(0-indexed)\n     * @return\
+    \ std::string\n     */\n    [[nodiscard]]\n    std::string str(int i) const noexcept\
+    \ {\n        std::string ret;\n        ret.assign(v[i].begin(), v[i].end());\n\
     \        return ret;\n    }\n    /**\n     * @brief \u4FDD\u6301\u3057\u3066\u3044\
     \u308B\u884C\u5217\u306B\u884C\u5217B\u3092\u8DB3\u3059\n     * @param B \u8DB3\
     \u3059\u884C\u5217\n     * @return @c *this\n    */\n    Matrix &operator+=(const\
@@ -262,7 +271,7 @@ data:
   isVerificationFile: true
   path: test/yukicoder/rotate-enlarge_2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 19:23:31+09:00'
+  timestamp: '2026-10-12 19:56:50+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yukicoder/rotate-enlarge_2.test.cpp

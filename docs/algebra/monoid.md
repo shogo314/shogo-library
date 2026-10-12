@@ -22,7 +22,7 @@ documentation_of: //src/algebra/monoid.hpp
 | `MinMax<T>` | `pair<T, T>` | `{min, max}` の組 | `{最大値, 最小値}` |
 | `Xor<T>` | `T` | `a ^ b` | `0` |
 | `And<T>` | `T` | `a & b` | 全ビット 1 |
-| `Or<T>` | `T` | ビットごとの OR | `0` |
+| `Or<T>` | `T` | `a | b` | `0` |
 | `Gcd<T>` | `T` | `gcd(a, b)` | `0` |
 | `Lcm<T>` | `T` | `lcm(a, b)` | `1` |
 | `Composite<T>` | `pair<T, T>` | 1次関数 $f(x) = \mathrm{first} \cdot x + \mathrm{second}$ の合成 (左から順に適用) | 恒等写像 |

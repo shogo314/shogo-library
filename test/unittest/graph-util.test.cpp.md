@@ -99,8 +99,8 @@ data:
     \ std::pair<std::vector<Cost>, std::vector<Edge>> first:\u5404\u9802\u70B9\u3078\
     \u306E\u6700\u77ED\u8DEF\u9577 second:\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\
     \u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA\n     */\n    std::pair<std::vector<Cost>,\
-    \ std::vector<Edge>> shortest_path(int s, bool weignted = true, Cost inf = -1)\
-    \ const {\n        if (weignted)\n            return shortest_path_dijkstra(s,\
+    \ std::vector<Edge>> shortest_path(int s, bool weighted = true, Cost inf = -1)\
+    \ const {\n        if (weighted)\n            return shortest_path_dijkstra(s,\
     \ inf);\n        return shortest_path_bfs(s, inf);\n    }\n    /**\n     * @brief\
     \ \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\
     \u8DEF\n     *\n     * @param s \u59CB\u70B9\n     * @param inf \u30B3\u30B9\u30C8\
@@ -396,7 +396,7 @@ data:
   isVerificationFile: true
   path: test/unittest/graph-util.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 19:23:31+09:00'
+  timestamp: '2026-10-12 19:40:02+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/graph-util.test.cpp

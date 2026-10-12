@@ -263,7 +263,7 @@ data:
     \u30EA\u30B9\u30C8\n * @return std::tuple<T, int, int> \u6700\u8FD1\u70B9\u5BFE\
     \u306E\u8DDD\u96E2\u306E2\u4E57\u3001\u6700\u8FD1\u70B9\u5BFE\u306E\u30A4\u30F3\
     \u30C7\u30C3\u30AF\u30B9\n */\ntemplate <typename T>\nstd::tuple<T, int, int>\
-    \ closest_point_pair_squred(const std::vector<Vector<T, 2>>& points) {\n    std::vector<int>\
+    \ closest_point_pair_squared(const std::vector<Vector<T, 2>>& points) {\n    std::vector<int>\
     \ sorted_idx(points.size());\n    std::iota(sorted_idx.begin(), sorted_idx.end(),\
     \ 0);\n    std::sort(sorted_idx.begin(), sorted_idx.end(), [&](int i, int j) {\n\
     \        return points[i][0] < points[j][0];\n    });\n    std::vector<int> left(1,\
@@ -308,11 +308,16 @@ data:
     \u30B9\u30C8\n * @return std::tuple<double, int, int> \u6700\u8FD1\u70B9\u5BFE\
     \u306E\u8DDD\u96E2\u3001\u6700\u8FD1\u70B9\u5BFE\u306E\u30A4\u30F3\u30C7\u30C3\
     \u30AF\u30B9\n */\ntemplate <typename T>\nstd::tuple<double, int, int> closest_point_pair(const\
-    \ std::vector<Vector<T, 2>>& points) {\n    auto [d2, i, j] = closest_point_pair_squred(points);\n\
-    \    return {std::sqrt(d2), i, j};\n}\n#line 6 \"test/aoj/cgl-2-b.test.cpp\"\n\
-    \nint main() {\n    int q; std::cin >> q;\n    while(q--) {\n        Vector<long\
-    \ long> p0, p1, p2, p3; std::cin >> p0 >> p1 >> p2 >> p3;\n        std::cout <<\
-    \ (segments_intersect(p0, p1, p2, p3) ? 1 : 0) << std::endl;\n    }\n}\n"
+    \ std::vector<Vector<T, 2>>& points) {\n    auto [d2, i, j] = closest_point_pair_squared(points);\n\
+    \    return {std::sqrt(d2), i, j};\n}\n/**\n * @deprecated closest_point_pair_squared\
+    \ \u3092\u4F7F\u3046\u3053\u3068(\u7DB4\u308A\u306E\u8AA4\u308A\u3092\u76F4\u3057\
+    \u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename T>\n[[deprecated(\"use\
+    \ closest_point_pair_squared\")]] std::tuple<T, int, int> closest_point_pair_squred(const\
+    \ std::vector<Vector<T, 2>>& points) {\n    return closest_point_pair_squared(points);\n\
+    }\n#line 6 \"test/aoj/cgl-2-b.test.cpp\"\n\nint main() {\n    int q; std::cin\
+    \ >> q;\n    while(q--) {\n        Vector<long long> p0, p1, p2, p3; std::cin\
+    \ >> p0 >> p1 >> p2 >> p3;\n        std::cout << (segments_intersect(p0, p1, p2,\
+    \ p3) ? 1 : 0) << std::endl;\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_2_B\"\
     \n\n#include <iostream>\n\n#include \"../../src/geometry/vector.hpp\"\n\nint main()\
     \ {\n    int q; std::cin >> q;\n    while(q--) {\n        Vector<long long> p0,\
@@ -323,7 +328,7 @@ data:
   isVerificationFile: true
   path: test/aoj/cgl-2-b.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 19:23:31+09:00'
+  timestamp: '2026-10-12 19:40:02+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/cgl-2-b.test.cpp

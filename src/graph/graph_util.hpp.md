@@ -96,8 +96,8 @@ data:
     \ std::pair<std::vector<Cost>, std::vector<Edge>> first:\u5404\u9802\u70B9\u3078\
     \u306E\u6700\u77ED\u8DEF\u9577 second:\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\
     \u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA\n     */\n    std::pair<std::vector<Cost>,\
-    \ std::vector<Edge>> shortest_path(int s, bool weignted = true, Cost inf = -1)\
-    \ const {\n        if (weignted)\n            return shortest_path_dijkstra(s,\
+    \ std::vector<Edge>> shortest_path(int s, bool weighted = true, Cost inf = -1)\
+    \ const {\n        if (weighted)\n            return shortest_path_dijkstra(s,\
     \ inf);\n        return shortest_path_bfs(s, inf);\n    }\n    /**\n     * @brief\
     \ \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\
     \u8DEF\n     *\n     * @param s \u59CB\u70B9\n     * @param inf \u30B3\u30B9\u30C8\
@@ -328,7 +328,7 @@ data:
   isVerificationFile: false
   path: src/graph/graph_util.hpp
   requiredBy: []
-  timestamp: '2026-10-12 19:23:31+09:00'
+  timestamp: '2026-10-12 19:40:02+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/graph-util.test.cpp
@@ -336,8 +336,18 @@ data:
   - test/aoj/alds1-11-d.test.cpp
 documentation_of: src/graph/graph_util.hpp
 layout: document
-redirect_from:
-- /library/src/graph/graph_util.hpp
-- /library/src/graph/graph_util.hpp.html
 title: "\u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570"
 ---
+
+[グラフ](graph.hpp) `Graph<Cost>` を受け取る関数です。
+
+| 関数 | 対象 | 説明 | 計算量 |
+|---|---|---|---|
+| `is_bipartite(g)` | 無向 | 二部グラフか | $O(n + m)$ |
+| `bipartite_coloring(g)` | 無向 | 二部グラフなら各頂点を 0, 1 に彩色した結果 (各連結成分で番号最小の頂点を 0 にする)。二部グラフでなければ空 | $O(n + m)$ |
+| `connected_components(g)` | 無向 | 連結成分ごとの頂点のリスト | $O(n + m)$ |
+| `is_connected(g)` | 無向 | 連結か | $O(n + m)$ |
+| `is_tree(g)` | 無向 | 木か | $O(n + m)$ |
+| `topological_sort(g)` | 有向 | トポロジカル順に並べた頂点のリスト。DAG でなければ長さが `n` 未満になる | $O(n + m)$ |
+| `has_cycle(g)` | 有向 | 閉路を持つか | $O(n + m)$ |
+| `minimum_steiner_tree(g, X, inf = -1)` | 無向 | 頂点集合 `X` をすべて含む部分木の辺の重みの総和の最小値 | $O(3^k n + 2^k m \log m)$ ($k = \lvert X \rvert$) |

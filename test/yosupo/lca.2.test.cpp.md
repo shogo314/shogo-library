@@ -100,8 +100,8 @@ data:
     \ std::pair<std::vector<Cost>, std::vector<Edge>> first:\u5404\u9802\u70B9\u3078\
     \u306E\u6700\u77ED\u8DEF\u9577 second:\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\
     \u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA\n     */\n    std::pair<std::vector<Cost>,\
-    \ std::vector<Edge>> shortest_path(int s, bool weignted = true, Cost inf = -1)\
-    \ const {\n        if (weignted)\n            return shortest_path_dijkstra(s,\
+    \ std::vector<Edge>> shortest_path(int s, bool weighted = true, Cost inf = -1)\
+    \ const {\n        if (weighted)\n            return shortest_path_dijkstra(s,\
     \ inf);\n        return shortest_path_bfs(s, inf);\n    }\n    /**\n     * @brief\
     \ \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\
     \u8DEF\n     *\n     * @param s \u59CB\u70B9\n     * @param inf \u30B3\u30B9\u30C8\
@@ -278,7 +278,8 @@ data:
     \    using RootedTree<Cost>::operator[];\n    using RootedTree<Cost>::edges;\n\
     \    using RootedTree<Cost>::shortest_path;\n    using RootedTree<Cost>::root;\n\
     \    using RootedTree<Cost>::par;\n    using RootedTree<Cost>::child;\n    using\
-    \ RootedTree<Cost>::depth;\n    using RootedTree<Cost>::height;\n    using RootedTree<Cost>::sz;\n\
+    \ RootedTree<Cost>::depth;\n    using RootedTree<Cost>::height;\n    using RootedTree<Cost>::unweighted_depth;\n\
+    \    using RootedTree<Cost>::unweighted_height;\n    using RootedTree<Cost>::sz;\n\
     \    using RootedTree<Cost>::preorder;\n    using RootedTree<Cost>::postorder;\n\
     \    using RootedTree<Cost>::euler_tour;\n\n    int h; //!< \u30C0\u30D6\u30EA\
     \u30F3\u30B0\u306E\u56DE\u6570\n    std::vector<std::vector<int>> doubling_par;\
@@ -327,57 +328,57 @@ data:
     \            if(nu == -1) continue;\n            if(nu != nv) {\n            \
     \    u = nu;\n                v = nv;\n            }\n        }\n        return\
     \ this->par[u];\n    }\n    \n    /**\n     * @brief \u9802\u70B9\u9593\u8DDD\u96E2\
-    (\u91CD\u307F\u306A\u3057)\n     * \n     * @param u \u9802\u70B91\n     * @param\
-    \ v \u9802\u70B92\n     * @return int u\u3068v\u9593\u306E\u6700\u77ED\u7D4C\u8DEF\
-    \u306E\u8FBA\u306E\u672C\u6570\n     */\n    Cost dist(int u, int v) const {\n\
-    \        return this->depth[u] + this->depth[v] - this->depth[lca(u, v)] * 2;\n\
-    \    }\n    \nprivate:\n    void build() {\n        int n = this->n;\n       \
-    \ h = 1;\n        while((1 << h) < n) h++;\n        doubling_par.assign(h, std::vector<int>(n,\
-    \ -1));\n        for(int i = 0; i < n; i++) doubling_par[0][i] = this->par[i];\n\
-    \        for(int i = 0; i < h - 1; i++) {\n            for(int j = 0; j < n; j++)\
-    \ {\n                if(doubling_par[i][j] != -1) {\n                    doubling_par[i+1][j]\
-    \ = doubling_par[i][doubling_par[i][j]];\n                }\n            }\n \
-    \       }\n    }\n};\n#line 2 \"src/data_structures/segtree.hpp\"\n\n/**\n * @file\
-    \ segtree.hpp\n * @brief \u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n */\n\n#line 9\
-    \ \"src/data_structures/segtree.hpp\"\n#include <functional>\n#include <ostream>\n\
-    #include <utility>\n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n\
-    \ * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\
-    \u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\
-    \u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S&\
-    \ a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n\
-    \ * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\
-    \u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\
-    \u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\
-    \n#line 16 \"src/algebra/monoid.hpp\"\n#include <numeric>\n#include <type_traits>\n\
-    #line 19 \"src/algebra/monoid.hpp\"\n\nnamespace monoid {\n\n/**\n * @brief \u548C\
-    \n */\ntemplate <typename T>\nstruct Sum {\n    using S = T;\n    static constexpr\
-    \ S op(const S& a, const S& b) { return a + b; }\n    static constexpr S e() {\
-    \ return S(0); }\n};\n\n/**\n * @brief \u7A4D\n */\ntemplate <typename T>\nstruct\
-    \ Prod {\n    using S = T;\n    static constexpr S op(const S& a, const S& b)\
-    \ { return a * b; }\n    static constexpr S e() { return S(1); }\n};\n\n/**\n\
-    \ * @brief \u6700\u5927\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\u6700\u5C0F\
-    \u5024\n */\ntemplate <typename T>\nstruct Max {\n    using S = T;\n    static\
-    \ constexpr S op(const S& a, const S& b) { return std::max(a, b); }\n    static\
-    \ constexpr S e() { return std::numeric_limits<S>::lowest(); }\n};\n\n/**\n *\
-    \ @brief \u6700\u5C0F\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\u6700\u5927\u5024\
-    \n */\ntemplate <typename T>\nstruct Min {\n    using S = T;\n    static constexpr\
-    \ S op(const S& a, const S& b) { return std::min(a, b); }\n    static constexpr\
-    \ S e() { return std::numeric_limits<S>::max(); }\n};\n\n/**\n * @brief \u6700\
-    \u5C0F\u5024\u3068\u6700\u5927\u5024\u306E\u7D44 {min, max}\n */\ntemplate <typename\
-    \ T>\nstruct MinMax {\n    using S = std::pair<T, T>;\n    static constexpr S\
-    \ op(const S& a, const S& b) { return {std::min(a.first, b.first), std::max(a.second,\
-    \ b.second)}; }\n    static constexpr S e() { return {std::numeric_limits<T>::max(),\
-    \ std::numeric_limits<T>::lowest()}; }\n};\n\n/**\n * @brief \u6392\u4ED6\u7684\
-    \u8AD6\u7406\u548C\n */\ntemplate <typename T>\nstruct Xor {\n    using S = T;\n\
-    \    static constexpr S op(const S& a, const S& b) { return a ^ b; }\n    static\
-    \ constexpr S e() { return S(0); }\n};\n\n/**\n * @brief \u8AD6\u7406\u7A4D\n\
-    \ */\ntemplate <typename T>\nstruct And {\n    using S = T;\n    static constexpr\
-    \ S op(const S& a, const S& b) { return a & b; }\n    static constexpr S e() {\
-    \ return ~S(0); }\n};\n\n/**\n * @brief \u8AD6\u7406\u548C\n */\ntemplate <typename\
-    \ T>\nstruct Or {\n    using S = T;\n    static constexpr S op(const S& a, const\
-    \ S& b) { return a | b; }\n    static constexpr S e() { return S(0); }\n};\n\n\
-    /**\n * @brief \u6700\u5927\u516C\u7D04\u6570 \u5358\u4F4D\u5143\u306F0\n */\n\
-    template <typename T>\nstruct Gcd {\n    static_assert(std::is_integral_v<T>);\n\
+    (\u91CD\u307F\u4ED8\u304D)\n     * \n     * @param u \u9802\u70B91\n     * @param\
+    \ v \u9802\u70B92\n     * @return Cost u\u3068v\u9593\u306E\u6700\u77ED\u7D4C\u8DEF\
+    \u306E\u8FBA\u306E\u91CD\u307F\u306E\u548C\n     */\n    Cost dist(int u, int\
+    \ v) const {\n        return this->depth[u] + this->depth[v] - this->depth[lca(u,\
+    \ v)] * 2;\n    }\n    \nprivate:\n    void build() {\n        int n = this->n;\n\
+    \        h = 1;\n        while((1 << h) < n) h++;\n        doubling_par.assign(h,\
+    \ std::vector<int>(n, -1));\n        for(int i = 0; i < n; i++) doubling_par[0][i]\
+    \ = this->par[i];\n        for(int i = 0; i < h - 1; i++) {\n            for(int\
+    \ j = 0; j < n; j++) {\n                if(doubling_par[i][j] != -1) {\n     \
+    \               doubling_par[i+1][j] = doubling_par[i][doubling_par[i][j]];\n\
+    \                }\n            }\n        }\n    }\n};\n#line 2 \"src/data_structures/segtree.hpp\"\
+    \n\n/**\n * @file segtree.hpp\n * @brief \u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n\
+    \ */\n\n#line 9 \"src/data_structures/segtree.hpp\"\n#include <functional>\n#include\
+    \ <ostream>\n#include <utility>\n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n *\
+    \ @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n\
+    \ * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\
+    \u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\n\
+    \ * - S op(const S& a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e(): \u5358\
+    \u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\u3088\
+    \u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\
+    \u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\
+    \u3059)\n */\n\n#line 16 \"src/algebra/monoid.hpp\"\n#include <numeric>\n#include\
+    \ <type_traits>\n#line 19 \"src/algebra/monoid.hpp\"\n\nnamespace monoid {\n\n\
+    /**\n * @brief \u548C\n */\ntemplate <typename T>\nstruct Sum {\n    using S =\
+    \ T;\n    static constexpr S op(const S& a, const S& b) { return a + b; }\n  \
+    \  static constexpr S e() { return S(0); }\n};\n\n/**\n * @brief \u7A4D\n */\n\
+    template <typename T>\nstruct Prod {\n    using S = T;\n    static constexpr S\
+    \ op(const S& a, const S& b) { return a * b; }\n    static constexpr S e() { return\
+    \ S(1); }\n};\n\n/**\n * @brief \u6700\u5927\u5024 \u5358\u4F4D\u5143\u306F\u578B\
+    \u306E\u6700\u5C0F\u5024\n */\ntemplate <typename T>\nstruct Max {\n    using\
+    \ S = T;\n    static constexpr S op(const S& a, const S& b) { return std::max(a,\
+    \ b); }\n    static constexpr S e() { return std::numeric_limits<S>::lowest();\
+    \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\
+    \u6700\u5927\u5024\n */\ntemplate <typename T>\nstruct Min {\n    using S = T;\n\
+    \    static constexpr S op(const S& a, const S& b) { return std::min(a, b); }\n\
+    \    static constexpr S e() { return std::numeric_limits<S>::max(); }\n};\n\n\
+    /**\n * @brief \u6700\u5C0F\u5024\u3068\u6700\u5927\u5024\u306E\u7D44 {min, max}\n\
+    \ */\ntemplate <typename T>\nstruct MinMax {\n    using S = std::pair<T, T>;\n\
+    \    static constexpr S op(const S& a, const S& b) { return {std::min(a.first,\
+    \ b.first), std::max(a.second, b.second)}; }\n    static constexpr S e() { return\
+    \ {std::numeric_limits<T>::max(), std::numeric_limits<T>::lowest()}; }\n};\n\n\
+    /**\n * @brief \u6392\u4ED6\u7684\u8AD6\u7406\u548C\n */\ntemplate <typename T>\n\
+    struct Xor {\n    using S = T;\n    static constexpr S op(const S& a, const S&\
+    \ b) { return a ^ b; }\n    static constexpr S e() { return S(0); }\n};\n\n/**\n\
+    \ * @brief \u8AD6\u7406\u7A4D\n */\ntemplate <typename T>\nstruct And {\n    using\
+    \ S = T;\n    static constexpr S op(const S& a, const S& b) { return a & b; }\n\
+    \    static constexpr S e() { return ~S(0); }\n};\n\n/**\n * @brief \u8AD6\u7406\
+    \u548C\n */\ntemplate <typename T>\nstruct Or {\n    using S = T;\n    static\
+    \ constexpr S op(const S& a, const S& b) { return a | b; }\n    static constexpr\
+    \ S e() { return S(0); }\n};\n\n/**\n * @brief \u6700\u5927\u516C\u7D04\u6570\
+    \ \u5358\u4F4D\u5143\u306F0\n */\ntemplate <typename T>\nstruct Gcd {\n    static_assert(std::is_integral_v<T>);\n\
     \    using S = T;\n    static constexpr S op(const S& a, const S& b) { return\
     \ std::gcd(a, b); }\n    static constexpr S e() { return S(0); }\n};\n\n/**\n\
     \ * @brief \u6700\u5C0F\u516C\u500D\u6570 \u5358\u4F4D\u5143\u306F1\n */\ntemplate\
@@ -573,7 +574,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/lca.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 19:23:31+09:00'
+  timestamp: '2026-10-12 19:40:02+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/lca.2.test.cpp

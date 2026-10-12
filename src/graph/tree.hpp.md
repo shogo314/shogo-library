@@ -111,8 +111,8 @@ data:
     \u308B\u3068\n     * @return std::pair<std::vector<Cost>, std::vector<Edge>> first:\u5404\
     \u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u9577 second:\u5404\u9802\u70B9\u3078\
     \u306E\u6700\u77ED\u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA\n     */\n    std::pair<std::vector<Cost>,\
-    \ std::vector<Edge>> shortest_path(int s, bool weignted = true, Cost inf = -1)\
-    \ const {\n        if (weignted)\n            return shortest_path_dijkstra(s,\
+    \ std::vector<Edge>> shortest_path(int s, bool weighted = true, Cost inf = -1)\
+    \ const {\n        if (weighted)\n            return shortest_path_dijkstra(s,\
     \ inf);\n        return shortest_path_bfs(s, inf);\n    }\n    /**\n     * @brief\
     \ \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\
     \u8DEF\n     *\n     * @param s \u59CB\u70B9\n     * @param inf \u30B3\u30B9\u30C8\
@@ -289,7 +289,8 @@ data:
     \    using RootedTree<Cost>::operator[];\n    using RootedTree<Cost>::edges;\n\
     \    using RootedTree<Cost>::shortest_path;\n    using RootedTree<Cost>::root;\n\
     \    using RootedTree<Cost>::par;\n    using RootedTree<Cost>::child;\n    using\
-    \ RootedTree<Cost>::depth;\n    using RootedTree<Cost>::height;\n    using RootedTree<Cost>::sz;\n\
+    \ RootedTree<Cost>::depth;\n    using RootedTree<Cost>::height;\n    using RootedTree<Cost>::unweighted_depth;\n\
+    \    using RootedTree<Cost>::unweighted_height;\n    using RootedTree<Cost>::sz;\n\
     \    using RootedTree<Cost>::preorder;\n    using RootedTree<Cost>::postorder;\n\
     \    using RootedTree<Cost>::euler_tour;\n\n    int h; //!< \u30C0\u30D6\u30EA\
     \u30F3\u30B0\u306E\u56DE\u6570\n    std::vector<std::vector<int>> doubling_par;\
@@ -338,17 +339,17 @@ data:
     \            if(nu == -1) continue;\n            if(nu != nv) {\n            \
     \    u = nu;\n                v = nv;\n            }\n        }\n        return\
     \ this->par[u];\n    }\n    \n    /**\n     * @brief \u9802\u70B9\u9593\u8DDD\u96E2\
-    (\u91CD\u307F\u306A\u3057)\n     * \n     * @param u \u9802\u70B91\n     * @param\
-    \ v \u9802\u70B92\n     * @return int u\u3068v\u9593\u306E\u6700\u77ED\u7D4C\u8DEF\
-    \u306E\u8FBA\u306E\u672C\u6570\n     */\n    Cost dist(int u, int v) const {\n\
-    \        return this->depth[u] + this->depth[v] - this->depth[lca(u, v)] * 2;\n\
-    \    }\n    \nprivate:\n    void build() {\n        int n = this->n;\n       \
-    \ h = 1;\n        while((1 << h) < n) h++;\n        doubling_par.assign(h, std::vector<int>(n,\
-    \ -1));\n        for(int i = 0; i < n; i++) doubling_par[0][i] = this->par[i];\n\
-    \        for(int i = 0; i < h - 1; i++) {\n            for(int j = 0; j < n; j++)\
-    \ {\n                if(doubling_par[i][j] != -1) {\n                    doubling_par[i+1][j]\
-    \ = doubling_par[i][doubling_par[i][j]];\n                }\n            }\n \
-    \       }\n    }\n};\n"
+    (\u91CD\u307F\u4ED8\u304D)\n     * \n     * @param u \u9802\u70B91\n     * @param\
+    \ v \u9802\u70B92\n     * @return Cost u\u3068v\u9593\u306E\u6700\u77ED\u7D4C\u8DEF\
+    \u306E\u8FBA\u306E\u91CD\u307F\u306E\u548C\n     */\n    Cost dist(int u, int\
+    \ v) const {\n        return this->depth[u] + this->depth[v] - this->depth[lca(u,\
+    \ v)] * 2;\n    }\n    \nprivate:\n    void build() {\n        int n = this->n;\n\
+    \        h = 1;\n        while((1 << h) < n) h++;\n        doubling_par.assign(h,\
+    \ std::vector<int>(n, -1));\n        for(int i = 0; i < n; i++) doubling_par[0][i]\
+    \ = this->par[i];\n        for(int i = 0; i < h - 1; i++) {\n            for(int\
+    \ j = 0; j < n; j++) {\n                if(doubling_par[i][j] != -1) {\n     \
+    \               doubling_par[i+1][j] = doubling_par[i][doubling_par[i][j]];\n\
+    \                }\n            }\n        }\n    }\n};\n"
   code: "#pragma once\n\n/**\n * @file tree.hpp\n * @brief \u6728\u306E\u6C4E\u7528\
     \u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n*/\n\n#include <algorithm>\n#include <cassert>\n\
     #include <stack>\n#include <tuple>\n\n#include \"graph.hpp\"\n\ntemplate <typename>\n\
@@ -482,7 +483,8 @@ data:
     \    using RootedTree<Cost>::operator[];\n    using RootedTree<Cost>::edges;\n\
     \    using RootedTree<Cost>::shortest_path;\n    using RootedTree<Cost>::root;\n\
     \    using RootedTree<Cost>::par;\n    using RootedTree<Cost>::child;\n    using\
-    \ RootedTree<Cost>::depth;\n    using RootedTree<Cost>::height;\n    using RootedTree<Cost>::sz;\n\
+    \ RootedTree<Cost>::depth;\n    using RootedTree<Cost>::height;\n    using RootedTree<Cost>::unweighted_depth;\n\
+    \    using RootedTree<Cost>::unweighted_height;\n    using RootedTree<Cost>::sz;\n\
     \    using RootedTree<Cost>::preorder;\n    using RootedTree<Cost>::postorder;\n\
     \    using RootedTree<Cost>::euler_tour;\n\n    int h; //!< \u30C0\u30D6\u30EA\
     \u30F3\u30B0\u306E\u56DE\u6570\n    std::vector<std::vector<int>> doubling_par;\
@@ -531,24 +533,24 @@ data:
     \            if(nu == -1) continue;\n            if(nu != nv) {\n            \
     \    u = nu;\n                v = nv;\n            }\n        }\n        return\
     \ this->par[u];\n    }\n    \n    /**\n     * @brief \u9802\u70B9\u9593\u8DDD\u96E2\
-    (\u91CD\u307F\u306A\u3057)\n     * \n     * @param u \u9802\u70B91\n     * @param\
-    \ v \u9802\u70B92\n     * @return int u\u3068v\u9593\u306E\u6700\u77ED\u7D4C\u8DEF\
-    \u306E\u8FBA\u306E\u672C\u6570\n     */\n    Cost dist(int u, int v) const {\n\
-    \        return this->depth[u] + this->depth[v] - this->depth[lca(u, v)] * 2;\n\
-    \    }\n    \nprivate:\n    void build() {\n        int n = this->n;\n       \
-    \ h = 1;\n        while((1 << h) < n) h++;\n        doubling_par.assign(h, std::vector<int>(n,\
-    \ -1));\n        for(int i = 0; i < n; i++) doubling_par[0][i] = this->par[i];\n\
-    \        for(int i = 0; i < h - 1; i++) {\n            for(int j = 0; j < n; j++)\
-    \ {\n                if(doubling_par[i][j] != -1) {\n                    doubling_par[i+1][j]\
-    \ = doubling_par[i][doubling_par[i][j]];\n                }\n            }\n \
-    \       }\n    }\n};\n"
+    (\u91CD\u307F\u4ED8\u304D)\n     * \n     * @param u \u9802\u70B91\n     * @param\
+    \ v \u9802\u70B92\n     * @return Cost u\u3068v\u9593\u306E\u6700\u77ED\u7D4C\u8DEF\
+    \u306E\u8FBA\u306E\u91CD\u307F\u306E\u548C\n     */\n    Cost dist(int u, int\
+    \ v) const {\n        return this->depth[u] + this->depth[v] - this->depth[lca(u,\
+    \ v)] * 2;\n    }\n    \nprivate:\n    void build() {\n        int n = this->n;\n\
+    \        h = 1;\n        while((1 << h) < n) h++;\n        doubling_par.assign(h,\
+    \ std::vector<int>(n, -1));\n        for(int i = 0; i < n; i++) doubling_par[0][i]\
+    \ = this->par[i];\n        for(int i = 0; i < h - 1; i++) {\n            for(int\
+    \ j = 0; j < n; j++) {\n                if(doubling_par[i][j] != -1) {\n     \
+    \               doubling_par[i+1][j] = doubling_par[i][doubling_par[i][j]];\n\
+    \                }\n            }\n        }\n    }\n};\n"
   dependsOn:
   - src/graph/graph.hpp
   isVerificationFile: false
   path: src/graph/tree.hpp
   requiredBy:
   - src/graph/rerooting-dp.hpp
-  timestamp: '2026-10-12 19:23:31+09:00'
+  timestamp: '2026-10-12 19:40:02+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/aoj/1595.test.cpp
@@ -560,8 +562,69 @@ data:
   - test/yukicoder/898.test.cpp
 documentation_of: src/graph/tree.hpp
 layout: document
-redirect_from:
-- /library/src/graph/tree.hpp
-- /library/src/graph/tree.hpp.html
 title: "\u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8"
 ---
+
+木は 3 段階のクラスで表します。必要な機能に応じて、根なし木から変換して使います。
+
+```cpp
+Tree<long long> t(n);
+t.read(-1, true);                      // n-1 本の辺を読む (1-indexed、重み付き)
+auto path = t.diameter();              // 直径を構成する辺
+
+RootedTree rt = t.set_root(0);         // 根付き木 (親・子・深さ・部分木サイズなど)
+DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間距離
+```
+
+## どのクラスで何ができるか
+
+| 機能 | `Tree` | `RootedTree` | `DoublingClimbTree` |
+|---|:-:|:-:|:-:|
+| 辺の追加 (`add_edge`)・入力 (`read`) | ✓ | | |
+| 直径 (`diameter`) | ✓ | | |
+| `g[v]`、`edges()`、`shortest_path` ([グラフ](graph.hpp) と同じ) | ✓ | ✓ | ✓ |
+| 親・子・深さ・高さ・部分木サイズ・巡回順 | | ✓ | ✓ |
+| `climb`、`lca`、`dist` | | | ✓ |
+
+## `Tree<Cost = int>` (根なし木)
+
+| メンバ | 説明 | 計算量 |
+|---|---|---|
+| `Tree(n)` | 頂点数 `n` の空の木 | $O(n)$ |
+| `add_edge(u, v, w = 1)` | 辺を追加 | $O(1)$ |
+| `read(padding = -1, weighted = false)` | 標準入力から `n - 1` 本の辺を読む | $O(n)$ |
+| `diameter(weighted = true)` | 直径を構成する辺のリスト (端点から順に) | $O(n \log n)$ |
+| `set_root(r)` | 根を `r` にした `RootedTree` を返す | $O(n)$ |
+| `build_lca(r)` | 根を `r` にした `DoublingClimbTree` を返す | $O(n \log n)$ |
+
+## `RootedTree<Cost = int>` (根付き木)
+
+`Tree` の `set_root(r)` か、コンストラクタ `RootedTree(tree, r)` で作ります。`RootedTree(par, padding = -1)` で、頂点 1, ..., n-1 の親のリストから根が 0 の木を作ることもできます。構築は $O(n)$ です。
+
+| メンバ変数 | 内容 |
+|---|---|
+| `root` | 根 |
+| `par[v]` | 親へ向かう辺 (根では `dst == -1`) |
+| `child[v]` | 子へ向かう辺のリスト |
+| `depth[v]` / `unweighted_depth[v]` | 根からの距離 (重み付き / 重みなし) |
+| `height[v]` / `unweighted_height[v]` | 部分木の高さ (重み付き / 重みなし) |
+| `sz[v]` | 部分木の頂点数 |
+| `preorder` / `postorder` | 行きがけ順 / 帰りがけ順 |
+| `euler_tour` | オイラーツアー。DFS で通った `(頂点, その頂点を通った回数)` の列 |
+
+`build_lca()` で `DoublingClimbTree` に変換できます。
+
+## `DoublingClimbTree<Cost = int>` (ダブリング済み根付き木)
+
+`Tree` の `build_lca(r)`、`RootedTree` の `build_lca()`、またはコンストラクタ (`RootedTree` から、`Tree` と根から、親のリストから) で作ります。構築は $O(n \log n)$ です。
+
+| メンバ | 説明 | 計算量 |
+|---|---|---|
+| `climb(u, k)` | `u` から `k` 個上の祖先 (存在しなければ `-1`) | $O(\log n)$ |
+| `lca(u, v)` | 最小共通祖先 | $O(\log n)$ |
+| `dist(u, v)` | 2頂点間の距離 (重み付き) | $O(\log n)$ |
+| `doubling_par[i][v]` | `v` から $2^i$ 個上の祖先 (存在しなければ `-1`) | |
+
+## 関連
+
+- [全方位木DP](rerooting-dp.hpp) は `Tree` を受け取ります

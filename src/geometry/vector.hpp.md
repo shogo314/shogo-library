@@ -280,7 +280,7 @@ data:
     \u30EA\u30B9\u30C8\n * @return std::tuple<T, int, int> \u6700\u8FD1\u70B9\u5BFE\
     \u306E\u8DDD\u96E2\u306E2\u4E57\u3001\u6700\u8FD1\u70B9\u5BFE\u306E\u30A4\u30F3\
     \u30C7\u30C3\u30AF\u30B9\n */\ntemplate <typename T>\nstd::tuple<T, int, int>\
-    \ closest_point_pair_squred(const std::vector<Vector<T, 2>>& points) {\n    std::vector<int>\
+    \ closest_point_pair_squared(const std::vector<Vector<T, 2>>& points) {\n    std::vector<int>\
     \ sorted_idx(points.size());\n    std::iota(sorted_idx.begin(), sorted_idx.end(),\
     \ 0);\n    std::sort(sorted_idx.begin(), sorted_idx.end(), [&](int i, int j) {\n\
     \        return points[i][0] < points[j][0];\n    });\n    std::vector<int> left(1,\
@@ -325,8 +325,13 @@ data:
     \u30B9\u30C8\n * @return std::tuple<double, int, int> \u6700\u8FD1\u70B9\u5BFE\
     \u306E\u8DDD\u96E2\u3001\u6700\u8FD1\u70B9\u5BFE\u306E\u30A4\u30F3\u30C7\u30C3\
     \u30AF\u30B9\n */\ntemplate <typename T>\nstd::tuple<double, int, int> closest_point_pair(const\
-    \ std::vector<Vector<T, 2>>& points) {\n    auto [d2, i, j] = closest_point_pair_squred(points);\n\
-    \    return {std::sqrt(d2), i, j};\n}\n"
+    \ std::vector<Vector<T, 2>>& points) {\n    auto [d2, i, j] = closest_point_pair_squared(points);\n\
+    \    return {std::sqrt(d2), i, j};\n}\n/**\n * @deprecated closest_point_pair_squared\
+    \ \u3092\u4F7F\u3046\u3053\u3068(\u7DB4\u308A\u306E\u8AA4\u308A\u3092\u76F4\u3057\
+    \u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename T>\n[[deprecated(\"use\
+    \ closest_point_pair_squared\")]] std::tuple<T, int, int> closest_point_pair_squred(const\
+    \ std::vector<Vector<T, 2>>& points) {\n    return closest_point_pair_squared(points);\n\
+    }\n"
   code: "#pragma once\n\n/**\n * @file vector.hpp\n * @brief \u5E7E\u4F55\u30D9\u30AF\
     \u30C8\u30EB\n */\n\n#include <algorithm>\n#include <array>\n#include <cassert>\n\
     #include <cmath>\n#include <initializer_list>\n#include <istream>\n#include <numeric>\n\
@@ -574,7 +579,7 @@ data:
     \u30EA\u30B9\u30C8\n * @return std::tuple<T, int, int> \u6700\u8FD1\u70B9\u5BFE\
     \u306E\u8DDD\u96E2\u306E2\u4E57\u3001\u6700\u8FD1\u70B9\u5BFE\u306E\u30A4\u30F3\
     \u30C7\u30C3\u30AF\u30B9\n */\ntemplate <typename T>\nstd::tuple<T, int, int>\
-    \ closest_point_pair_squred(const std::vector<Vector<T, 2>>& points) {\n    std::vector<int>\
+    \ closest_point_pair_squared(const std::vector<Vector<T, 2>>& points) {\n    std::vector<int>\
     \ sorted_idx(points.size());\n    std::iota(sorted_idx.begin(), sorted_idx.end(),\
     \ 0);\n    std::sort(sorted_idx.begin(), sorted_idx.end(), [&](int i, int j) {\n\
     \        return points[i][0] < points[j][0];\n    });\n    std::vector<int> left(1,\
@@ -619,13 +624,18 @@ data:
     \u30B9\u30C8\n * @return std::tuple<double, int, int> \u6700\u8FD1\u70B9\u5BFE\
     \u306E\u8DDD\u96E2\u3001\u6700\u8FD1\u70B9\u5BFE\u306E\u30A4\u30F3\u30C7\u30C3\
     \u30AF\u30B9\n */\ntemplate <typename T>\nstd::tuple<double, int, int> closest_point_pair(const\
-    \ std::vector<Vector<T, 2>>& points) {\n    auto [d2, i, j] = closest_point_pair_squred(points);\n\
-    \    return {std::sqrt(d2), i, j};\n}\n"
+    \ std::vector<Vector<T, 2>>& points) {\n    auto [d2, i, j] = closest_point_pair_squared(points);\n\
+    \    return {std::sqrt(d2), i, j};\n}\n/**\n * @deprecated closest_point_pair_squared\
+    \ \u3092\u4F7F\u3046\u3053\u3068(\u7DB4\u308A\u306E\u8AA4\u308A\u3092\u76F4\u3057\
+    \u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename T>\n[[deprecated(\"use\
+    \ closest_point_pair_squared\")]] std::tuple<T, int, int> closest_point_pair_squred(const\
+    \ std::vector<Vector<T, 2>>& points) {\n    return closest_point_pair_squared(points);\n\
+    }\n"
   dependsOn: []
   isVerificationFile: false
   path: src/geometry/vector.hpp
   requiredBy: []
-  timestamp: '2026-10-12 19:23:31+09:00'
+  timestamp: '2026-10-12 19:40:02+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/aoj/cgl-3-a.test.cpp
@@ -638,8 +648,47 @@ data:
   - test/aoj/cgl-2-b.test.cpp
 documentation_of: src/geometry/vector.hpp
 layout: document
-redirect_from:
-- /library/src/geometry/vector.hpp
-- /library/src/geometry/vector.hpp.html
 title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"
 ---
+
+点・ベクトルを表す `Vector<T = double, Dim = 2>` と、それを使う幾何の関数です。整数座標でも使える関数は、外積を計算するので座標の絶対値の2乗の数倍が `T` に収まる必要があります。
+
+```cpp
+using P = Vector<long long>;
+std::vector<P> ps(n);
+for (auto& p : ps) std::cin >> p;      // "x y" を読む
+auto hull = convex_hull(ps);           // 凸包 (反時計回り)
+long long s2 = polygon_area_doubled(hull);
+std::sort(ps.begin(), ps.end(), P::ArgSortComp());  // 偏角ソート
+```
+
+## `Vector<T, Dim>` のメンバ
+
+| メンバ | 説明 |
+|---|---|
+| `Vector()` / `Vector(x, y, ...)` | ゼロベクトル / 成分を指定 |
+| `p[i]` | `i` 番目の成分 |
+| `+`、`-` (単項・二項)、`+=`、`-=` | 加減算 |
+| `p * c`、`c * p`、`p / c`、`*=`、`/=` | スカラー倍 (整数型で割り切れない除算は assert で落ちる) |
+| `==`、`!=`、`<`、`<=`、`>`、`>=` | 成分の辞書式順序で比較 |
+| `dot(p, q)` | 内積 |
+| `p.squared_norm()` | 長さの2乗 |
+| `p.abs()` | 長さ (`double`) |
+| `Vector::ArgSortComp` | 偏角ソートの比較関数 (2次元、x 軸正方向から反時計回り、ゼロベクトルは x 軸正方向と同じ扱い) |
+| `is >> p`、`os << p` | 成分を空白区切りで入出力 |
+
+## 関数
+
+| 関数 | 説明 | 整数型 | 計算量 |
+|---|---|:-:|---|
+| `cross(p, q)` | 外積。2次元ではスカラー (符号付き面積)、3次元ではベクトル | ✓ | $O(1)$ |
+| `segments_intersect(p1, p2, q1, q2)` | 線分 $p_1 p_2$ と $q_1 q_2$ が共有点を持つか | ✓ | $O(1)$ |
+| `segment_intersect(p1, p2, q1, q2)` | `{共有点を持つか, 共有点の1つ}` | 浮動小数点型のみ | $O(1)$ |
+| `polygon_area_doubled(poly)` | 多角形の符号付き面積の2倍 (反時計回りなら正) | ✓ | $O(n)$ |
+| `polygon_area(poly)` | 多角形の面積 (`double`、向きは問わない) | ✓ | $O(n)$ |
+| `polygon_is_convex(poly)` | 多角形 (反時計回り) が凸か | ✓ | $O(n)$ |
+| `polygon_contains(poly, p)` | 点が多角形 (反時計回り) の 0: 外部、1: 辺上、2: 内部 | ✓ | $O(n)$ |
+| `convex_hull(ps, include_straight = false)` | 凸包 (反時計回り)。`include_straight` で 180 度の頂点を含めるか選ぶ | ✓ | $O(n \log n)$ |
+| `select_convex(ps, include_straight = false)` | 順番を保った半凸包。x の昇順なら下凸包、降順なら上凸包 | ✓ | $O(n)$ |
+| `closest_point_pair_squared(ps)` | 最近点対の `{距離の2乗, 添字 i, 添字 j}` | ✓ | $O(n \log^2 n)$ |
+| `closest_point_pair(ps)` | 最近点対の `{距離, 添字 i, 添字 j}` | ✓ | $O(n \log^2 n)$ |

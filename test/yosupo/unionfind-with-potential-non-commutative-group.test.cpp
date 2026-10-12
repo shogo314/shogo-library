@@ -53,16 +53,8 @@ int main() {
             int u, v, x00, x01, x10, x11;
             std::cin >> u >> v >> x00 >> x01 >> x10 >> x11;
             Matrix_2x2 m{x00, x01, x10, x11};
-            if (uf.same(u, v)) {
-                if (uf.diff(v, u) == m) {
-                    std::cout << 1 << std::endl;
-                } else {
-                    std::cout << 0 << std::endl;
-                }
-            } else {
-                uf.merge(v, u, m);
-                std::cout << 1 << std::endl;
-            }
+            // 新しく統合できたか、すでに連結で矛盾しなければ 1
+            std::cout << (uf.merge(v, u, m) || uf.diff(v, u) == m) << std::endl;
         } else {
             int u, v;
             std::cin >> u >> v;

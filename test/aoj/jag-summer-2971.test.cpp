@@ -12,12 +12,9 @@ bool solve(int n, const std::vector<std::array<int, 3>>& abx) {
     for (auto [a, b, x] : abx) {
         mint mx = x;
         if (mx != 0) {
-            if (uf.same(a, b)) {
-                if (uf.diff(a, b) != mx) {
-                    return false;
-                }
-            } else {
-                uf.merge(a, b, mx);
+            // すでに連結で矛盾していたら false
+            if (!uf.merge(a, b, mx) && uf.diff(a, b) != mx) {
+                return false;
             }
         }
     }

@@ -17,11 +17,10 @@ int main(void) {
         if(a[i][j]) {
             uf_all.merge(i, j);
             if(a[i][j] == 1) {
-                if(uf.same(i, j)) {
+                if(!uf.merge(i, j)) {
                     std::cout << 0 << std::endl;
                     return 0;
                 }
-                uf.merge(i, j);
             } 
         }
     }

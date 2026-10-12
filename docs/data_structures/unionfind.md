@@ -12,6 +12,10 @@ uf.merge(1, 2);
 bool b = uf.same(0, 2);   // true
 int s = uf.size(0);       // 3
 auto g = uf.groups();     // 連結成分ごとの頂点のリスト
+
+// Kruskal 法: 新しく統合できた辺だけ使う
+if (uf.merge(u, v)) cost += w;
+auto [r, merged] = uf.merge(u, v);  // 代表元も受け取る
 ```
 
 ## メンバ関数
@@ -21,11 +25,21 @@ auto g = uf.groups();     // 連結成分ごとの頂点のリスト
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `UnionFind(n)` | 頂点数 `n`、辺なしで初期化 | $O(n)$ |
-| `merge(a, b)` | 辺 $(a, b)$ を追加し、つながった連結成分の代表元を返す | $O(\alpha(n))$ |
+| `merge(a, b)` | 辺 $(a, b)$ を追加し、`MergeResult` を返す (下記) | $O(\alpha(n))$ |
 | `same(a, b)` | `a` と `b` が連結か | $O(\alpha(n))$ |
 | `leader(a)` | `a` の属する連結成分の代表元 | $O(\alpha(n))$ |
 | `size(a)` | `a` の属する連結成分の頂点数 | $O(\alpha(n))$ |
 | `groups()` | 連結成分ごとの頂点のリスト | $O(n)$ |
+
+## `MergeResult`
+
+`merge` の戻り値です。`std::set::insert` と同じく、統合の途中で分かる 2 つの情報をどちらも返します。
+
+| メンバ | 内容 |
+|---|---|
+| `leader` | 統合後の代表元 |
+| `merged` | 新しく統合したか (もともと同じ連結成分なら `false`) |
+| `explicit operator bool` | `merged` を返す。`if (uf.merge(a, b))` と書ける |
 
 ## 関連
 

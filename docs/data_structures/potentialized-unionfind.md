@@ -21,14 +21,18 @@ long long d = uf.diff(0, 2); // p[2] - p[0] = -2
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `PotentializedUnionFind(n, g = G())` | 頂点数 `n` で初期化 | $O(n)$ |
-| `merge(a, b, w)` | $p_b - p_a = w$ を追加し、代表元を返す。すでに連結なら何もしない (矛盾していても検出しない) | $O(\alpha(n))$ |
+| `merge(a, b, w)` | $p_b - p_a = w$ を追加する。[UnionFind](unionfind.hpp) と同じ `MergeResult` (代表元と、新しく統合したか) を返す。すでに連結なら何もしない (矛盾していても検出しない) | $O(\alpha(n))$ |
 | `diff(a, b)` | $p_b - p_a$ (`a` と `b` は連結であること) | $O(\alpha(n))$ |
 | `same(a, b)` | `a` と `b` が連結か | $O(\alpha(n))$ |
 | `leader(a)` | `a` の属する連結成分の代表元 | $O(\alpha(n))$ |
 | `size(a)` | `a` の属する連結成分の頂点数 | $O(\alpha(n))$ |
 | `groups()` | 連結成分ごとの頂点のリスト | $O(n)$ |
 
-矛盾を検出したい場合は、`merge` の前に `same(a, b)` を確かめ、連結なら `diff(a, b) == w` かどうかを見ます。
+矛盾を検出したい場合は、`merge` が統合しなかったとき (すでに連結だったとき) に `diff(a, b) == w` かどうかを見ます。
+
+```cpp
+if (!uf.merge(a, b, w) && uf.diff(a, b) != w) { /* 矛盾 */ }
+```
 
 ## 関連
 

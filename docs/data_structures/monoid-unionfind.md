@@ -22,7 +22,7 @@ MonoidUnionFind uf2(v, Monoid([](int a, int b) { return std::min(a, b); }, INF))
 |---|---|---|
 | `MonoidUnionFind(n, m = M())` | 頂点数 `n`、各頂点の値は単位元 | $O(n)$ |
 | `MonoidUnionFind(v, m = M())` | 各頂点の値を `v` で初期化 | $O(n)$ |
-| `merge(a, b)` | 辺 $(a, b)$ を追加し、代表元を返す。2つの連結成分の値の積が新しい値になる | $O(\alpha(n))$ |
+| `merge(a, b)` | 辺 $(a, b)$ を追加する。2つの連結成分の値の積が新しい値になる。[UnionFind](unionfind.hpp) と同じ `MergeResult` (代表元と、新しく統合したか) を返す | $O(\alpha(n))$ |
 | `prod(a)` | `a` の属する連結成分の値の総積 | $O(\alpha(n))$ |
 | `same(a, b)`、`leader(a)`、`size(a)`、`groups()` | [UnionFind](unionfind.hpp) と同じ | |
 

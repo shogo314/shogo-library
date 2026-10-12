@@ -22,6 +22,18 @@ data:
     path: test/aoj/jag-summer-2971.test.cpp
     title: test/aoj/jag-summer-2971.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/monoid-unionfind.test.cpp
+    title: test/unittest/monoid-unionfind.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/monoid.test.cpp
+    title: test/unittest/monoid.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/potentialized-unionfind.test.cpp
+    title: test/unittest/potentialized-unionfind.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/unionfind.test.cpp
+    title: test/unittest/unionfind.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/minimum-spanning-tree.test.cpp
     title: test/yosupo/minimum-spanning-tree.test.cpp
   - icon: ':heavy_check_mark:'
@@ -144,6 +156,10 @@ data:
   timestamp: '2026-10-12 20:50:36+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/unionfind.test.cpp
+  - test/unittest/monoid-unionfind.test.cpp
+  - test/unittest/monoid.test.cpp
+  - test/unittest/potentialized-unionfind.test.cpp
   - test/aoj/alds1-11-d.2.test.cpp
   - test/aoj/jag-summer-2971.test.cpp
   - test/aoj/dsl-1-b.2.test.cpp

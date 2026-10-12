@@ -22,7 +22,7 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/binomial_coefficient_prime_mod
     links:
     - https://judge.yosupo.jp/problem/binomial_coefficient_prime_mod
-  bundledCode: "#line 1 \"test/yosupo/binomial-coefficient-prime-mod.test.cpp\"\n\
+  bundledCode: "#line 1 \"test/yosupo/binomial-coefficient-prime-mod.1.test.cpp\"\n\
     #define PROBLEM \"https://judge.yosupo.jp/problem/binomial_coefficient_prime_mod\"\
     \n\n#include <iostream>\n\n#line 2 \"src/math/combinatorics.hpp\"\n\n/**\n * @file\
     \ combinatorics.hpp\n * @brief \u7D44\u307F\u5408\u308F\u305B\n */\n\n#include\
@@ -510,7 +510,7 @@ data:
     \ ans;\n        if(ans == pq) ans = 0;\n        int e = std::accumulate(epsilon.begin(),\
     \ epsilon.end(), 0);\n        if(e >= q) ans = 0;\n        else {\n          \
     \  for(int i = 0; i < e; i++) {\n                ans = (long long)ans * p % pq;\n\
-    \            }\n        }\n        return ans;\n    }\n};\n#line 7 \"test/yosupo/binomial-coefficient-prime-mod.test.cpp\"\
+    \            }\n        }\n        return ans;\n    }\n};\n#line 7 \"test/yosupo/binomial-coefficient-prime-mod.1.test.cpp\"\
     \n\n// \u6CD5\u304C\u5B9F\u884C\u6642\u306B\u4E0E\u3048\u3089\u308C\u308B\u306E\
     \u3067 dynamic_modint \u3092\u4F7F\u3046\nusing mint = modint;\n\nint main() {\n\
     \    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    int t;\n\
@@ -530,15 +530,15 @@ data:
   - src/math/number-theory.hpp
   - src/math/modint.hpp
   isVerificationFile: true
-  path: test/yosupo/binomial-coefficient-prime-mod.test.cpp
+  path: test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 00:57:44+09:00'
+  timestamp: '2026-10-13 05:42:44+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/yosupo/binomial-coefficient-prime-mod.test.cpp
+documentation_of: test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/yosupo/binomial-coefficient-prime-mod.test.cpp
-- /verify/test/yosupo/binomial-coefficient-prime-mod.test.cpp.html
-title: test/yosupo/binomial-coefficient-prime-mod.test.cpp
+- /verify/test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
+- /verify/test/yosupo/binomial-coefficient-prime-mod.1.test.cpp.html
+title: test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
 ---

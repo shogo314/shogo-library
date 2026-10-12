@@ -28,6 +28,9 @@ data:
     path: test/aoj/cgl-5-a.test.cpp
     title: test/aoj/cgl-5-a.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/vector.test.cpp
+    title: test/unittest/vector.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/sort-points-by-argument.1.test.cpp
     title: test/yosupo/sort-points-by-argument.1.test.cpp
   _isVerificationFailed: false
@@ -661,6 +664,7 @@ data:
   timestamp: '2026-10-13 00:57:44+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/vector.test.cpp
   - test/aoj/cgl-3-a.test.cpp
   - test/aoj/cgl-2-c.test.cpp
   - test/aoj/cgl-5-a.test.cpp

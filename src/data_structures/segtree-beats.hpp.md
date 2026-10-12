@@ -10,6 +10,9 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/unittest/segtree-beats.test.cpp
+    title: test/unittest/segtree-beats.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/range-chmin-chmax-add-range-sum.1.test.cpp
     title: test/yosupo/range-chmin-chmax-add-range-sum.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -22,9 +25,9 @@ data:
     document_title: Segment Tree Beats
     links: []
   bundledCode: "#line 2 \"src/data_structures/segtree-beats.hpp\"\n\n/**\n * @file\
-    \ segtree-beats.hpp\n * @brief Segment Tree Beats\n */\n\n#include <cassert>\n\
-    #include <functional>\n#include <limits>\n#include <ostream>\n#include <tuple>\n\
-    #include <utility>\n#include <vector>\n#line 2 \"src/algebra/acted-monoid.hpp\"\
+    \ segtree-beats.hpp\n * @brief Segment Tree Beats\n */\n\n#include <algorithm>\n\
+    #include <cassert>\n#include <functional>\n#include <limits>\n#include <ostream>\n\
+    #include <tuple>\n#include <utility>\n#include <vector>\n#line 2 \"src/algebra/acted-monoid.hpp\"\
     \n\n/**\n * @file acted-monoid.hpp\n * @brief \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
     \u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
     \u30CE\u30A4\u30C9\u306F\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp) \u306E\u30E1\
@@ -47,20 +50,20 @@ data:
     \u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\u3088\
     \u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\
     \u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\
-    \u3059)\n */\n\n#include <algorithm>\n#include <istream>\n#line 17 \"src/algebra/monoid.hpp\"\
-    \n#include <numeric>\n#line 21 \"src/algebra/monoid.hpp\"\n\n/**\n * @brief 1\u6B21\
-    \u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\u3084\
-    \ acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n * \u4F8B\
-    : Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\u3059\u308B\u3068\
-    \u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\nstruct Affine {\n\
-    \    T a = T(1);  //!< \u50BE\u304D\n    T b = T(0);  //!< \u5207\u7247\n    constexpr\
-    \ T operator()(const T& x) const { return a * x + b; }\n    friend constexpr bool\
-    \ operator==(const Affine& f, const Affine& g) { return f.a == g.a && f.b == g.b;\
-    \ }\n    friend constexpr bool operator!=(const Affine& f, const Affine& g) {\
-    \ return !(f == g); }\n    template <class CharT, class Traits>\n    friend std::basic_istream<CharT,\
-    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Affine& f) {\n  \
-    \      return is >> f.a >> f.b;\n    }\n    template <class CharT, class Traits>\n\
-    \    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \u3059)\n */\n\n#line 15 \"src/algebra/monoid.hpp\"\n#include <istream>\n#line\
+    \ 17 \"src/algebra/monoid.hpp\"\n#include <numeric>\n#line 21 \"src/algebra/monoid.hpp\"\
+    \n\n/**\n * @brief 1\u6B21\u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite\
+    \ \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\
+    \u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\
+    \u3059\u308B\u3068\u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\n\
+    struct Affine {\n    T a = T(1);  //!< \u50BE\u304D\n    T b = T(0);  //!< \u5207\
+    \u7247\n    constexpr T operator()(const T& x) const { return a * x + b; }\n \
+    \   friend constexpr bool operator==(const Affine& f, const Affine& g) { return\
+    \ f.a == g.a && f.b == g.b; }\n    friend constexpr bool operator!=(const Affine&\
+    \ f, const Affine& g) { return !(f == g); }\n    template <class CharT, class\
+    \ Traits>\n    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    \ Traits>& is, Affine& f) {\n        return is >> f.a >> f.b;\n    }\n    template\
+    \ <class CharT, class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const Affine& f) {\n        return os << f.a << CharT(' ') << f.b;\n\
     \    }\n};\n\nnamespace monoid {\n\n/**\n * @brief \u548C\n */\ntemplate <typename\
     \ T>\nstruct Sum {\n    using S = T;\n    static constexpr S op(const S& a, const\
@@ -301,7 +304,7 @@ data:
     \ g); }\n    constexpr F id() const { return lazy_identity; }\n};\ntemplate <typename\
     \ Op, typename T, typename Mapping, typename Composition, typename U>\nActedMonoid(Op,\
     \ T, Mapping, Composition, U) -> ActedMonoid<T, Op, U, Mapping, Composition>;\n\
-    #line 16 \"src/data_structures/segtree-beats.hpp\"\n\n/**\n * @brief Segment Tree\
+    #line 17 \"src/data_structures/segtree-beats.hpp\"\n\n/**\n * @brief Segment Tree\
     \ Beats\n *\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9 (algebra/acted-monoid.hpp)\
     \ \u3068\u540C\u3058\u5F62\u306E\u578B\u3092\u53D7\u3051\u53D6\u308B\u304C\u3001\
     \n * mapping \u306F std::pair<bool, S> (\u4F5C\u7528\u306B\u5931\u6557\u3057\u305F\
@@ -317,8 +320,11 @@ data:
     \ g); }\n    F id() const { return a.id(); }\n\n    int n, sz, height;\n    std::vector<S>\
     \ data;\n    std::vector<int> fail;\n    std::vector<F> lazy;\n\n    void update(int\
     \ k) {\n        data[k] = op(data[2 * k], data[2 * k + 1]);\n        fail[k] =\
-    \ false;\n    }\n    void apply_node(int k, int h, const F& f) {\n        int\
-    \ l = (k << h) & (sz - 1);\n        int r = l + (1 << h);\n        std::tie(fail[k],\
+    \ false;\n    }\n    void apply_node(int k, int h, const F& f) {\n        // \u672B\
+    \u5C3E\u306E\u8981\u7D20\u6570\u3092 2 \u3079\u304D\u306B\u305D\u308D\u3048\u308B\
+    \u305F\u3081\u306E\u4F59\u308A\u306E\u90E8\u5206\u306F\u533A\u9593\u306B\u542B\
+    \u3081\u306A\u3044\n        int l = std::min((k << h) & (sz - 1), n);\n      \
+    \  int r = std::min(((k << h) & (sz - 1)) + (1 << h), n);\n        std::tie(fail[k],\
     \ data[k]) = mapping(f, data[k], l, r);\n        if(k < sz) {\n            lazy[k]\
     \ = composition(f, lazy[k]);\n            if(fail[k]) {\n                push(k,\
     \ h);\n                update(k);\n            }\n        }\n    }\n    void push(int\
@@ -438,10 +444,10 @@ data:
     \ SegTreeBeats<A>;\ntemplate <typename A>\nSegTreeBeats(std::vector<typename A::S>,\
     \ A) -> SegTreeBeats<A>;\n"
   code: "#pragma once\n\n/**\n * @file segtree-beats.hpp\n * @brief Segment Tree Beats\n\
-    \ */\n\n#include <cassert>\n#include <functional>\n#include <limits>\n#include\
-    \ <ostream>\n#include <tuple>\n#include <utility>\n#include <vector>\n#include\
-    \ \"../algebra/acted-monoid.hpp\"\n\n/**\n * @brief Segment Tree Beats\n *\n *\
-    \ \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9 (algebra/acted-monoid.hpp)\
+    \ */\n\n#include <algorithm>\n#include <cassert>\n#include <functional>\n#include\
+    \ <limits>\n#include <ostream>\n#include <tuple>\n#include <utility>\n#include\
+    \ <vector>\n#include \"../algebra/acted-monoid.hpp\"\n\n/**\n * @brief Segment\
+    \ Tree Beats\n *\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9 (algebra/acted-monoid.hpp)\
     \ \u3068\u540C\u3058\u5F62\u306E\u578B\u3092\u53D7\u3051\u53D6\u308B\u304C\u3001\
     \n * mapping \u306F std::pair<bool, S> (\u4F5C\u7528\u306B\u5931\u6557\u3057\u305F\
     \u304B, \u4F5C\u7528\u5F8C\u306E\u5024) \u3092\u8FD4\u3059\n * \u5931\u6557\u3057\
@@ -456,8 +462,11 @@ data:
     \ g); }\n    F id() const { return a.id(); }\n\n    int n, sz, height;\n    std::vector<S>\
     \ data;\n    std::vector<int> fail;\n    std::vector<F> lazy;\n\n    void update(int\
     \ k) {\n        data[k] = op(data[2 * k], data[2 * k + 1]);\n        fail[k] =\
-    \ false;\n    }\n    void apply_node(int k, int h, const F& f) {\n        int\
-    \ l = (k << h) & (sz - 1);\n        int r = l + (1 << h);\n        std::tie(fail[k],\
+    \ false;\n    }\n    void apply_node(int k, int h, const F& f) {\n        // \u672B\
+    \u5C3E\u306E\u8981\u7D20\u6570\u3092 2 \u3079\u304D\u306B\u305D\u308D\u3048\u308B\
+    \u305F\u3081\u306E\u4F59\u308A\u306E\u90E8\u5206\u306F\u533A\u9593\u306B\u542B\
+    \u3081\u306A\u3044\n        int l = std::min((k << h) & (sz - 1), n);\n      \
+    \  int r = std::min(((k << h) & (sz - 1)) + (1 << h), n);\n        std::tie(fail[k],\
     \ data[k]) = mapping(f, data[k], l, r);\n        if(k < sz) {\n            lazy[k]\
     \ = composition(f, lazy[k]);\n            if(fail[k]) {\n                push(k,\
     \ h);\n                update(k);\n            }\n        }\n    }\n    void push(int\
@@ -582,9 +591,10 @@ data:
   isVerificationFile: false
   path: src/data_structures/segtree-beats.hpp
   requiredBy: []
-  timestamp: '2026-10-13 00:38:02+09:00'
+  timestamp: '2026-10-13 06:02:01+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/segtree-beats.test.cpp
   - test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
   - test/yosupo/range-chmin-chmax-add-range-sum.1.test.cpp
 documentation_of: src/data_structures/segtree-beats.hpp

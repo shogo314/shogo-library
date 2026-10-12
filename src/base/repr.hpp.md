@@ -5,10 +5,13 @@ data:
     path: src/base/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
-  _extendedVerifiedWith: []
+  _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/repr.test.cpp
+    title: test/unittest/repr.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':warning:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "\u51FA\u529B\u3092\u305D\u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\
       \u30E9\u30AF\u30BF\u306B\u4F7F\u3048\u308B\u6587\u5B57\u5217\u5316 (repr)"
@@ -380,8 +383,9 @@ data:
   path: src/base/repr.hpp
   requiredBy: []
   timestamp: '2026-10-12 20:20:17+09:00'
-  verificationStatus: LIBRARY_NO_TESTS
-  verifiedWith: []
+  verificationStatus: LIBRARY_ALL_AC
+  verifiedWith:
+  - test/unittest/repr.test.cpp
 documentation_of: src/base/repr.hpp
 layout: document
 title: "\u51FA\u529B\u3092\u305D\u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\

@@ -2,10 +2,13 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
-  _extendedVerifiedWith: []
+  _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/tadpole-array.test.cpp
+    title: test/unittest/tadpole-array.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':warning:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "\u304A\u305F\u307E\u3058\u3083\u304F\u3057\u914D\u5217"
     links: []
@@ -41,8 +44,9 @@ data:
   path: src/data_structures/tadpole-array.hpp
   requiredBy: []
   timestamp: '2026-10-12 19:23:31+09:00'
-  verificationStatus: LIBRARY_NO_TESTS
-  verifiedWith: []
+  verificationStatus: LIBRARY_ALL_AC
+  verifiedWith:
+  - test/unittest/tadpole-array.test.cpp
 documentation_of: src/data_structures/tadpole-array.hpp
 layout: document
 title: "\u304A\u305F\u307E\u3058\u3083\u304F\u3057\u914D\u5217"

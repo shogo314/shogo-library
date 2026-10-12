@@ -35,7 +35,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/base/range.hpp
       title: "Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\u5217"
-    - icon: ':warning:'
+    - icon: ':heavy_check_mark:'
       path: src/base/repr.hpp
       title: "\u51FA\u529B\u3092\u305D\u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\u30E9\
         \u30AF\u30BF\u306B\u4F7F\u3048\u308B\u6587\u5B57\u5217\u5316 (repr)"
@@ -53,7 +53,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/data_structures/binary-trie.hpp
       title: Binary Trie
-    - icon: ':warning:'
+    - icon: ':heavy_check_mark:'
       path: src/data_structures/circular-ring.hpp
       title: "\u5186\u74B0"
     - icon: ':heavy_check_mark:'
@@ -79,7 +79,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/data_structures/merge-sort-tree.hpp
       title: "\u30DE\u30FC\u30B8\u30BD\u30FC\u30C8\u30C4\u30EA\u30FC"
-    - icon: ':warning:'
+    - icon: ':heavy_check_mark:'
       path: src/data_structures/mex-update.hpp
       title: "1\u70B9\u66F4\u65B0\u30FB\u5168\u4F53\u306E mex \u53D6\u5F97"
     - icon: ':heavy_check_mark:'
@@ -88,7 +88,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/data_structures/potentialized-unionfind.hpp
       title: "\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind"
-    - icon: ':warning:'
+    - icon: ':heavy_check_mark:'
       path: src/data_structures/priority_counter.hpp
       title: "\u4E0A\u4F4D K \u500B\u306E\u5024\u3068\u305D\u306E\u500B\u6570"
     - icon: ':heavy_check_mark:'
@@ -100,7 +100,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/data_structures/segtree.hpp
       title: "\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
-    - icon: ':warning:'
+    - icon: ':heavy_check_mark:'
       path: src/data_structures/tadpole-array.hpp
       title: "\u304A\u305F\u307E\u3058\u3083\u304F\u3057\u914D\u5217"
     - icon: ':heavy_check_mark:'
@@ -275,6 +275,9 @@ data:
       path: test/aoj/dsl-2-i.test.cpp
       title: test/aoj/dsl-2-i.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/aoj/dsl-4-a.test.cpp
+      title: test/aoj/dsl-4-a.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/aoj/dsl-5-a.test.cpp
       title: test/aoj/dsl-5-a.test.cpp
     - icon: ':heavy_check_mark:'
@@ -349,11 +352,119 @@ data:
   - name: test/unittest
     pages:
     - icon: ':heavy_check_mark:'
+      path: test/unittest/acted-monoid.test.cpp
+      title: test/unittest/acted-monoid.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/binary-trie.test.cpp
+      title: test/unittest/binary-trie.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/bit.test.cpp
+      title: test/unittest/bit.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/circular-ring.test.cpp
+      title: test/unittest/circular-ring.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/combinatorics.test.cpp
+      title: test/unittest/combinatorics.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/container-func-member.test.cpp
+      title: test/unittest/container-func-member.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/container-func.test.cpp
+      title: test/unittest/container-func.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/counter-segtree.test.cpp
+      title: test/unittest/counter-segtree.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/counter.test.cpp
+      title: test/unittest/counter.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/fps.test.cpp
+      title: test/unittest/fps.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/functional-graph.2.test.cpp
+      title: test/unittest/functional-graph.2.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/functional-graph.test.cpp
       title: test/unittest/functional-graph.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/functions.test.cpp
+      title: test/unittest/functions.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/graph-util.test.cpp
       title: test/unittest/graph-util.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/graph.test.cpp
+      title: test/unittest/graph.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/imos.test.cpp
+      title: test/unittest/imos.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/infint.test.cpp
+      title: test/unittest/infint.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/interval-set.test.cpp
+      title: test/unittest/interval-set.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/io.test.cpp
+      title: test/unittest/io.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/macro.test.cpp
+      title: test/unittest/macro.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/matrix.test.cpp
+      title: test/unittest/matrix.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/mex-update.test.cpp
+      title: test/unittest/mex-update.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/mo.test.cpp
+      title: test/unittest/mo.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/modint.test.cpp
+      title: test/unittest/modint.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/monoid-unionfind.test.cpp
+      title: test/unittest/monoid-unionfind.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/monoid.test.cpp
+      title: test/unittest/monoid.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/potentialized-unionfind.test.cpp
+      title: test/unittest/potentialized-unionfind.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/priority_counter.test.cpp
+      title: test/unittest/priority_counter.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/range.test.cpp
+      title: test/unittest/range.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/repr.test.cpp
+      title: test/unittest/repr.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/rerooting-dp.test.cpp
+      title: test/unittest/rerooting-dp.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/rolling-hash.test.cpp
+      title: test/unittest/rolling-hash.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/segtree-beats.test.cpp
+      title: test/unittest/segtree-beats.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/tadpole-array.test.cpp
+      title: test/unittest/tadpole-array.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/tree.test.cpp
+      title: test/unittest/tree.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/unionfind.test.cpp
+      title: test/unittest/unionfind.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/vector-func.test.cpp
+      title: test/unittest/vector-func.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/vector.test.cpp
+      title: test/unittest/vector.test.cpp
   - name: test/yosupo
     pages:
     - icon: ':heavy_check_mark:'
@@ -366,8 +477,11 @@ data:
       path: test/yosupo/associative-array.test.cpp
       title: test/yosupo/associative-array.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/yosupo/binomial-coefficient-prime-mod.test.cpp
-      title: test/yosupo/binomial-coefficient-prime-mod.test.cpp
+      path: test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
+      title: test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/binomial-coefficient-prime-mod.2.test.cpp
+      title: test/yosupo/binomial-coefficient-prime-mod.2.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/binomial-coefficient.test.cpp
       title: test/yosupo/binomial-coefficient.test.cpp
@@ -410,6 +524,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/lca.3.test.cpp
       title: test/yosupo/lca.3.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/lca.4.test.cpp
+      title: test/yosupo/lca.4.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/line-add-get-min.test.cpp
       title: test/yosupo/line-add-get-min.test.cpp
@@ -536,6 +653,9 @@ data:
       path: test/yukicoder/117.test.cpp
       title: test/yukicoder/117.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yukicoder/1641.test.cpp
+      title: test/yukicoder/1641.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yukicoder/186.test.cpp
       title: test/yukicoder/186.test.cpp
     - icon: ':heavy_check_mark:'
@@ -544,6 +664,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yukicoder/2292.test.cpp
       title: test/yukicoder/2292.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yukicoder/3652.test.cpp
+      title: test/yukicoder/3652.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yukicoder/674.1.test.cpp
       title: test/yukicoder/674.1.test.cpp

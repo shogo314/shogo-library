@@ -6,6 +6,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj/itp1-7-b.test.cpp
     title: test/aoj/itp1-7-b.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/range.test.cpp
+    title: test/unittest/range.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/repr.test.cpp
+    title: test/unittest/repr.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -393,6 +399,8 @@ data:
   timestamp: '2026-10-12 20:24:58+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/repr.test.cpp
+  - test/unittest/range.test.cpp
   - test/aoj/itp1-7-b.test.cpp
 documentation_of: src/base/range.hpp
 layout: document

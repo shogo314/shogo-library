@@ -7,6 +7,9 @@ data:
     path: test/aoj/3314.test.cpp
     title: test/aoj/3314.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/matrix.test.cpp
+    title: test/unittest/matrix.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/counting-spanning-tree-undirected.test.cpp
     title: test/yosupo/counting-spanning-tree-undirected.test.cpp
   - icon: ':heavy_check_mark:'
@@ -58,40 +61,40 @@ data:
     \     * @return Matrix\n     */\n    template <typename Iterable>\n    Matrix(const\
     \ std::vector<Iterable>& v_) noexcept : n(v_.size()), m(v_.size() == 0 ? 0 : v_[0].size())\
     \ {\n        v.resize(n);\n        for(int i = 0; i < n; i++) {\n            v[i].assign(v_[i].begin(),\
-    \ v_[i].end());\n        }\n    }\n\n    /**\n     * @brief \u30B3\u30F3\u30B9\
-    \u30C8\u30E9\u30AF\u30BF\n     * @param _n \u884C\u5217(\u30B0\u30EA\u30C3\u30C9\
-    )\u306E\u884C\u6570\n     * @param _m \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\
-    \u5217\u6570\n     * @param _val \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u8981\
-    \u7D20\u306E\u521D\u671F\u5024\n     * @return Matrix\n     */\n    /**\n    \
-    \ * @brief \u521D\u671F\u5316\u5B50\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\u30B3\
-    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * \u4F8B: Matrix<mint> A({{1, 1}, {1,\
-    \ 0}});\n     * @param il \u5404\u884C\u306E\u8981\u7D20\u306E\u30EA\u30B9\u30C8\
-    \n     */\n    Matrix(std::initializer_list<std::initializer_list<T>> il) : n(il.size()),\
-    \ m(il.size() == 0 ? 0 : il.begin()->size()) {\n        v.reserve(n);\n      \
-    \  for(const auto& row : il) v.emplace_back(row);\n    }\n    Matrix(int _n, int\
-    \ _m, T _val = OperatorProperty::zero()) : n(_n), m(_m), v(n, std::vector<T>(m,\
-    \ _val)) {}\n    \n    auto begin() noexcept {return v.begin();}\n    auto end()\
-    \ noexcept {return v.end();}\n    auto begin() const noexcept {return v.begin();}\n\
-    \    auto end() const noexcept {return v.end();}\n\n    /**\n     * @brief \u884C\
-    \u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u884C\u6570\n     * @return size_t\n  \
-    \   */\n    [[nodiscard]]\n    size_t size() const {return v.size();}\n\n    std::vector<T>&\
-    \ operator [] (int i) {return v[i];}\n    const std::vector<T>& operator [] (int\
-    \ i) const {return v[i];}\n    Matrix& operator = (const std::vector<std::vector<T>>\
-    \ &A) noexcept {\n        n = A.size();\n        m = (n == 0 ? 0 : A[0].size());\n\
-    \        v = A;\n        return *this;\n    }\n    bool operator == (const Matrix\
-    \ &A) const noexcept {\n        return this->v == A.v;\n    }\n    bool operator\
-    \ != (const Matrix &A) const noexcept {\n        return this->v != A.v;\n    }\n\
-    \n    /**\n     * @brief \u8EE2\u7F6E\n     * @return Matrix\n     */\n    [[nodiscard]]\n\
-    \    Matrix transpose() const noexcept {\n        if(n == 0) return Matrix(v);\n\
-    \        std::vector<std::vector<T>> ret(m);\n        for(int i = 0; i < m; i\
-    \ ++) {\n            ret[i].resize(n);\n            for(int j = 0; j < n; j ++)\
-    \ ret[i][j] = v[j][i];\n        }\n        return Matrix(ret);\n    }\n\n    /**\n\
-    \     * @brief \u5DE6\u53F3\u53CD\u8EE2\n     * @return Matrix\n     */\n    [[nodiscard]]\n\
-    \    Matrix rev_lr() const noexcept {\n        std::vector<std::vector<T>> ret\
-    \ = v;\n        for(int i = 0; i < n; i ++) std::reverse(ret[i].begin(), ret[i].end());\n\
-    \        return Matrix(ret);\n    }\n\n    /**\n     * @brief \u4E0A\u4E0B\u53CD\
-    \u8EE2\n     * @return Matrix\n     */\n    [[nodiscard]]\n    Matrix rev_ud()\
-    \ const noexcept {\n        std::vector<std::vector<T>> ret = v;\n        reverse(ret.begin(),\
+    \ v_[i].end());\n        }\n    }\n\n    /**\n     * @brief \u521D\u671F\u5316\
+    \u5B50\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\
+    \u30AF\u30BF\n     * \u4F8B: Matrix<mint> A({{1, 1}, {1, 0}});\n     * @param\
+    \ il \u5404\u884C\u306E\u8981\u7D20\u306E\u30EA\u30B9\u30C8\n     */\n    Matrix(std::initializer_list<std::initializer_list<T>>\
+    \ il) : n(il.size()), m(il.size() == 0 ? 0 : il.begin()->size()) {\n        v.reserve(n);\n\
+    \        for(const auto& row : il) v.emplace_back(row);\n    }\n    /**\n    \
+    \ * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param _n \u884C\
+    \u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u884C\u6570\n     * @param _m \u884C\u5217\
+    (\u30B0\u30EA\u30C3\u30C9)\u306E\u5217\u6570\n     * @param _val \u884C\u5217\
+    (\u30B0\u30EA\u30C3\u30C9)\u306E\u8981\u7D20\u306E\u521D\u671F\u5024\n     * @return\
+    \ Matrix\n     */\n    Matrix(int _n, int _m, T _val = OperatorProperty::zero())\
+    \ : n(_n), m(_m), v(n, std::vector<T>(m, _val)) {}\n    \n    auto begin() noexcept\
+    \ {return v.begin();}\n    auto end() noexcept {return v.end();}\n    auto begin()\
+    \ const noexcept {return v.begin();}\n    auto end() const noexcept {return v.end();}\n\
+    \n    /**\n     * @brief \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u884C\u6570\
+    \n     * @return size_t\n     */\n    [[nodiscard]]\n    size_t size() const {return\
+    \ v.size();}\n\n    std::vector<T>& operator [] (int i) {return v[i];}\n    const\
+    \ std::vector<T>& operator [] (int i) const {return v[i];}\n    Matrix& operator\
+    \ = (const std::vector<std::vector<T>> &A) noexcept {\n        n = A.size();\n\
+    \        m = (n == 0 ? 0 : A[0].size());\n        v = A;\n        return *this;\n\
+    \    }\n    bool operator == (const Matrix &A) const noexcept {\n        return\
+    \ this->v == A.v;\n    }\n    bool operator != (const Matrix &A) const noexcept\
+    \ {\n        return this->v != A.v;\n    }\n\n    /**\n     * @brief \u8EE2\u7F6E\
+    \n     * @return Matrix\n     */\n    [[nodiscard]]\n    Matrix transpose() const\
+    \ noexcept {\n        if(n == 0) return Matrix(v);\n        std::vector<std::vector<T>>\
+    \ ret(m);\n        for(int i = 0; i < m; i ++) {\n            ret[i].resize(n);\n\
+    \            for(int j = 0; j < n; j ++) ret[i][j] = v[j][i];\n        }\n   \
+    \     return Matrix(ret);\n    }\n\n    /**\n     * @brief \u5DE6\u53F3\u53CD\u8EE2\
+    \n     * @return Matrix\n     */\n    [[nodiscard]]\n    Matrix rev_lr() const\
+    \ noexcept {\n        std::vector<std::vector<T>> ret = v;\n        for(int i\
+    \ = 0; i < n; i ++) std::reverse(ret[i].begin(), ret[i].end());\n        return\
+    \ Matrix(ret);\n    }\n\n    /**\n     * @brief \u4E0A\u4E0B\u53CD\u8EE2\n   \
+    \  * @return Matrix\n     */\n    [[nodiscard]]\n    Matrix rev_ud() const noexcept\
+    \ {\n        std::vector<std::vector<T>> ret = v;\n        reverse(ret.begin(),\
     \ ret.end());\n        return Matrix(ret);\n    }\n\n    /**\n     * @brief \u6642\
     \u8A08\u5468\u308A\u306B90\u5EA6\u56DE\u8EE2\n     * @param k \u56DE\u8EE2\u3059\
     \u308B\u56DE\u6570\n     * @return Matrix\n     */\n    [[nodiscard]]\n    Matrix\
@@ -138,39 +141,39 @@ data:
     \        return ret;\n    }\n    /**\n     * @brief \u4FDD\u6301\u3057\u3066\u3044\
     \u308B\u884C\u5217\u306B\u884C\u5217B\u3092\u8DB3\u3059\n     * @param B \u8DB3\
     \u3059\u884C\u5217\n     * @return @c *this\n    */\n    Matrix &operator+=(const\
-    \ Matrix &B) {\n        if(n == 0) return (*this);\n        assert(n == B.size()\
-    \ && m == B[0].size());\n        for(int i = 0; i < n; i++)\n            for(int\
-    \ j = 0; j < m; j++)\n                (*this)[i][j] = OperatorProperty::add((*this)[i][j],\
+    \ Matrix &B) {\n        if(n == 0) return (*this);\n        assert(n == B.n &&\
+    \ m == B.m);\n        for(int i = 0; i < n; i++)\n            for(int j = 0; j\
+    \ < m; j++)\n                (*this)[i][j] = OperatorProperty::add((*this)[i][j],\
     \ B[i][j]);\n        return (*this);\n    }\n    /**\n     * @brief \u4FDD\u6301\
     \u3057\u3066\u3044\u308B\u884C\u5217\u304B\u3089\u884C\u5217B\u3092\u5F15\u304F\
     \n     * @param B \u5F15\u304F\u884C\u5217\n     * @return @c *this\n    */\n\
     \    Matrix &operator-=(const Matrix &B) {\n        if(n == 0) return (*this);\n\
-    \        assert(n == B.size() && m == B[0].size());\n        for(int i = 0; i\
-    \ < n; i++)\n            for(int j = 0; j < m; j++) \n                (*this)[i][j]\
-    \ = OperatorProperty::add((*this)[i][j], OperatorProperty::neg(B[i][j]));\n  \
-    \      return (*this);\n    }\n\n    /**\n     * @brief \u4FDD\u6301\u3057\u3066\
-    \u3044\u308B\u884C\u5217\u306B\u884C\u5217B\u3092\u639B\u3051\u308B\n     * @param\
-    \ B \u639B\u3051\u308B\u884C\u5217\n     * @return @c *this\n    */\n    Matrix\
-    \ &operator*=(const Matrix &B) {\n        assert(m == B.n);\n        int p = B.m;\n\
-    \        Matrix C(n, p);\n        for(int i = 0; i < n; i ++) {\n            for(int\
-    \ k = 0; k < m; k ++) {\n                for(int j = 0; j < p; j ++) {\n     \
-    \               C[i][j] = OperatorProperty::add(C[i][j], OperatorProperty::mul((*this)[i][k],\
-    \ B[k][j]));\n                }\n            }\n        }\n        v.swap(C.v);\n\
-    \        m = p;\n        return (*this);\n    }\n\n    /**\n     * @brief \u4FDD\
-    \u6301\u3057\u3066\u3044\u308B\u884C\u5217\u306Ek\u4E57\u3092\u6C42\u3081\u308B\
-    \n     * @param k \u6307\u6570\n     * @return Matrix\n    */\n    [[nodiscard]]\n\
-    \    Matrix pow(long long k) const {\n        Matrix A = *this, B(n, n);\n   \
-    \     for(int i = 0; i < n; i ++) B[i][i] = OperatorProperty::one();\n       \
-    \ while(k > 0) {\n            if(k & 1) B *= A;\n            A *= A;\n       \
-    \     k >>= 1;\n        }\n        return B;\n    }\n\n    [[nodiscard]]\n   \
-    \ Matrix operator+(const Matrix &B) const { return (Matrix(*this) += B); }\n \
-    \   [[nodiscard]]\n    Matrix operator-(const Matrix &B) const { return (Matrix(*this)\
-    \ -= B); }\n    [[nodiscard]]\n    Matrix operator*(const Matrix &B) const { return\
-    \ (Matrix(*this) *= B); }\n\n    /**\n     * @brief \u884C\u5217A\u3068\u5217\u30D9\
-    \u30AF\u30C8\u30EBB\u306E\u7A4D\n     * @param A Matrix\n     * @param B vector<T>\n\
-    \     * @return vector<T> \u5217\u30D9\u30AF\u30C8\u30EB\n    */\n    [[nodiscard]]\n\
-    \    friend std::vector<T> operator*(const Matrix &A, const std::vector<T> &B)\
-    \ {\n        assert(A.m == (int)B.size());\n        std::vector<T> ret(A.n, OperatorProperty::zero());\n\
+    \        assert(n == B.n && m == B.m);\n        for(int i = 0; i < n; i++)\n \
+    \           for(int j = 0; j < m; j++) \n                (*this)[i][j] = OperatorProperty::add((*this)[i][j],\
+    \ OperatorProperty::neg(B[i][j]));\n        return (*this);\n    }\n\n    /**\n\
+    \     * @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u884C\u5217\u306B\u884C\u5217\
+    B\u3092\u639B\u3051\u308B\n     * @param B \u639B\u3051\u308B\u884C\u5217\n  \
+    \   * @return @c *this\n    */\n    Matrix &operator*=(const Matrix &B) {\n  \
+    \      assert(m == B.n);\n        int p = B.m;\n        Matrix C(n, p);\n    \
+    \    for(int i = 0; i < n; i ++) {\n            for(int k = 0; k < m; k ++) {\n\
+    \                for(int j = 0; j < p; j ++) {\n                    C[i][j] =\
+    \ OperatorProperty::add(C[i][j], OperatorProperty::mul((*this)[i][k], B[k][j]));\n\
+    \                }\n            }\n        }\n        v.swap(C.v);\n        m\
+    \ = p;\n        return (*this);\n    }\n\n    /**\n     * @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u884C\u5217\u306Ek\u4E57\u3092\u6C42\u3081\u308B\n     * @param\
+    \ k \u6307\u6570\n     * @return Matrix\n    */\n    [[nodiscard]]\n    Matrix\
+    \ pow(long long k) const {\n        Matrix A = *this, B(n, n);\n        for(int\
+    \ i = 0; i < n; i ++) B[i][i] = OperatorProperty::one();\n        while(k > 0)\
+    \ {\n            if(k & 1) B *= A;\n            A *= A;\n            k >>= 1;\n\
+    \        }\n        return B;\n    }\n\n    [[nodiscard]]\n    Matrix operator+(const\
+    \ Matrix &B) const { return (Matrix(*this) += B); }\n    [[nodiscard]]\n    Matrix\
+    \ operator-(const Matrix &B) const { return (Matrix(*this) -= B); }\n    [[nodiscard]]\n\
+    \    Matrix operator*(const Matrix &B) const { return (Matrix(*this) *= B); }\n\
+    \n    /**\n     * @brief \u884C\u5217A\u3068\u5217\u30D9\u30AF\u30C8\u30EBB\u306E\
+    \u7A4D\n     * @param A Matrix\n     * @param B vector<T>\n     * @return vector<T>\
+    \ \u5217\u30D9\u30AF\u30C8\u30EB\n    */\n    [[nodiscard]]\n    friend std::vector<T>\
+    \ operator*(const Matrix &A, const std::vector<T> &B) {\n        assert(A.m ==\
+    \ (int)B.size());\n        std::vector<T> ret(A.n, OperatorProperty::zero());\n\
     \        for(int i = 0; i < A.n; i ++) {\n            for(int j = 0; j < A.m;\
     \ j ++) {\n                ret[i] = OperatorProperty::add(ret[i], OperatorProperty::mul(A[i][j],\
     \ B[j]));\n            }\n        }\n        return ret;\n    }\n\n    /**\n \
@@ -182,16 +185,23 @@ data:
     \   for(int i = 0; i < B.n; i ++) {\n            for(int j = 0; j < B.m; j ++)\
     \ {\n                ret[j] = OperatorProperty::add(ret[j], OperatorProperty::mul(A[i],\
     \ B[i][j]));\n            }\n        }\n        return ret;\n    }\n\n    /**\n\
-    \     * @brief \u884C\u5217\u5F0F\n     * @return \u884C\u5217\u5F0F\n    */\n\
-    \    [[nodiscard]]\n    T det() const {\n        assert(n == m);\n        if(n\
-    \ == 0) return T(1);\n        if constexpr(std::is_same_v<OperatorProperty, matrix::OperatorPropertyDefault<T>>)\
+    \     * @brief \u884C\u5217\u5F0F\n     * @return \u884C\u5217\u5F0F\n     * @note\
+    \ \u5272\u308A\u7B97\u3092\u4F7F\u3046\u306E\u3067\u3001\u8981\u7D20\u306F\u4F53\
+    \ (modint \u3084\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u306A\u3069) \u3067\u3042\
+    \u308B\u3053\u3068\u3002\n     *       int \u3084 long long \u3067\u306F\u5272\
+    \u308A\u7B97\u304C\u5207\u308A\u6368\u3066\u306B\u306A\u308A\u3001\u6B63\u3057\
+    \u3044\u5024\u306B\u306A\u3089\u306A\u3044\n    */\n    [[nodiscard]]\n    T det()\
+    \ const {\n        assert(n == m);\n        if(n == 0) return T(1);\n        if\
+    \ constexpr(std::is_same_v<OperatorProperty, matrix::OperatorPropertyDefault<T>>)\
     \ {\n            std::vector A(n, std::valarray(T(0), n));\n            for(int\
     \ i = 0; i < n; i ++) for(int j = 0; j < n; j ++) A[i][j] = this->v[i][j];\n \
     \           return forward_elimination(A);\n        } else {\n            auto\
     \ A = this->v;\n            return forward_elimination(A);\n        }\n    }\n\
     \n    /**\n     * @brief \u9006\u884C\u5217\n     * @return \u9006\u884C\u5217\
-    \n     */\n    [[nodiscard]]\n    Matrix inv() const {\n        assert(n == m);\n\
-    \        if(n == 0) return Matrix(n, n);\n        if constexpr(std::is_same_v<OperatorProperty,\
+    \n     * @note det \u3068\u540C\u3058\u304F\u3001\u8981\u7D20\u306F\u4F53 (modint\
+    \ \u3084\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u306A\u3069) \u3067\u3042\u308B\u3053\
+    \u3068\n     */\n    [[nodiscard]]\n    Matrix inv() const {\n        assert(n\
+    \ == m);\n        if(n == 0) return Matrix(n, n);\n        if constexpr(std::is_same_v<OperatorProperty,\
     \ matrix::OperatorPropertyDefault<T>>) {\n            std::vector A(n, std::valarray(T(0),\
     \ n+n));\n            for(int i = 0; i < n; i ++) {\n                for(int j\
     \ = 0; j < n; j ++) A[i][j] = this->v[i][j];\n                A[i][n+i] = T(1);\n\
@@ -292,40 +302,40 @@ data:
     \     * @return Matrix\n     */\n    template <typename Iterable>\n    Matrix(const\
     \ std::vector<Iterable>& v_) noexcept : n(v_.size()), m(v_.size() == 0 ? 0 : v_[0].size())\
     \ {\n        v.resize(n);\n        for(int i = 0; i < n; i++) {\n            v[i].assign(v_[i].begin(),\
-    \ v_[i].end());\n        }\n    }\n\n    /**\n     * @brief \u30B3\u30F3\u30B9\
-    \u30C8\u30E9\u30AF\u30BF\n     * @param _n \u884C\u5217(\u30B0\u30EA\u30C3\u30C9\
-    )\u306E\u884C\u6570\n     * @param _m \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\
-    \u5217\u6570\n     * @param _val \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u8981\
-    \u7D20\u306E\u521D\u671F\u5024\n     * @return Matrix\n     */\n    /**\n    \
-    \ * @brief \u521D\u671F\u5316\u5B50\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\u30B3\
-    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * \u4F8B: Matrix<mint> A({{1, 1}, {1,\
-    \ 0}});\n     * @param il \u5404\u884C\u306E\u8981\u7D20\u306E\u30EA\u30B9\u30C8\
-    \n     */\n    Matrix(std::initializer_list<std::initializer_list<T>> il) : n(il.size()),\
-    \ m(il.size() == 0 ? 0 : il.begin()->size()) {\n        v.reserve(n);\n      \
-    \  for(const auto& row : il) v.emplace_back(row);\n    }\n    Matrix(int _n, int\
-    \ _m, T _val = OperatorProperty::zero()) : n(_n), m(_m), v(n, std::vector<T>(m,\
-    \ _val)) {}\n    \n    auto begin() noexcept {return v.begin();}\n    auto end()\
-    \ noexcept {return v.end();}\n    auto begin() const noexcept {return v.begin();}\n\
-    \    auto end() const noexcept {return v.end();}\n\n    /**\n     * @brief \u884C\
-    \u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u884C\u6570\n     * @return size_t\n  \
-    \   */\n    [[nodiscard]]\n    size_t size() const {return v.size();}\n\n    std::vector<T>&\
-    \ operator [] (int i) {return v[i];}\n    const std::vector<T>& operator [] (int\
-    \ i) const {return v[i];}\n    Matrix& operator = (const std::vector<std::vector<T>>\
-    \ &A) noexcept {\n        n = A.size();\n        m = (n == 0 ? 0 : A[0].size());\n\
-    \        v = A;\n        return *this;\n    }\n    bool operator == (const Matrix\
-    \ &A) const noexcept {\n        return this->v == A.v;\n    }\n    bool operator\
-    \ != (const Matrix &A) const noexcept {\n        return this->v != A.v;\n    }\n\
-    \n    /**\n     * @brief \u8EE2\u7F6E\n     * @return Matrix\n     */\n    [[nodiscard]]\n\
-    \    Matrix transpose() const noexcept {\n        if(n == 0) return Matrix(v);\n\
-    \        std::vector<std::vector<T>> ret(m);\n        for(int i = 0; i < m; i\
-    \ ++) {\n            ret[i].resize(n);\n            for(int j = 0; j < n; j ++)\
-    \ ret[i][j] = v[j][i];\n        }\n        return Matrix(ret);\n    }\n\n    /**\n\
-    \     * @brief \u5DE6\u53F3\u53CD\u8EE2\n     * @return Matrix\n     */\n    [[nodiscard]]\n\
-    \    Matrix rev_lr() const noexcept {\n        std::vector<std::vector<T>> ret\
-    \ = v;\n        for(int i = 0; i < n; i ++) std::reverse(ret[i].begin(), ret[i].end());\n\
-    \        return Matrix(ret);\n    }\n\n    /**\n     * @brief \u4E0A\u4E0B\u53CD\
-    \u8EE2\n     * @return Matrix\n     */\n    [[nodiscard]]\n    Matrix rev_ud()\
-    \ const noexcept {\n        std::vector<std::vector<T>> ret = v;\n        reverse(ret.begin(),\
+    \ v_[i].end());\n        }\n    }\n\n    /**\n     * @brief \u521D\u671F\u5316\
+    \u5B50\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\
+    \u30AF\u30BF\n     * \u4F8B: Matrix<mint> A({{1, 1}, {1, 0}});\n     * @param\
+    \ il \u5404\u884C\u306E\u8981\u7D20\u306E\u30EA\u30B9\u30C8\n     */\n    Matrix(std::initializer_list<std::initializer_list<T>>\
+    \ il) : n(il.size()), m(il.size() == 0 ? 0 : il.begin()->size()) {\n        v.reserve(n);\n\
+    \        for(const auto& row : il) v.emplace_back(row);\n    }\n    /**\n    \
+    \ * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param _n \u884C\
+    \u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u884C\u6570\n     * @param _m \u884C\u5217\
+    (\u30B0\u30EA\u30C3\u30C9)\u306E\u5217\u6570\n     * @param _val \u884C\u5217\
+    (\u30B0\u30EA\u30C3\u30C9)\u306E\u8981\u7D20\u306E\u521D\u671F\u5024\n     * @return\
+    \ Matrix\n     */\n    Matrix(int _n, int _m, T _val = OperatorProperty::zero())\
+    \ : n(_n), m(_m), v(n, std::vector<T>(m, _val)) {}\n    \n    auto begin() noexcept\
+    \ {return v.begin();}\n    auto end() noexcept {return v.end();}\n    auto begin()\
+    \ const noexcept {return v.begin();}\n    auto end() const noexcept {return v.end();}\n\
+    \n    /**\n     * @brief \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u884C\u6570\
+    \n     * @return size_t\n     */\n    [[nodiscard]]\n    size_t size() const {return\
+    \ v.size();}\n\n    std::vector<T>& operator [] (int i) {return v[i];}\n    const\
+    \ std::vector<T>& operator [] (int i) const {return v[i];}\n    Matrix& operator\
+    \ = (const std::vector<std::vector<T>> &A) noexcept {\n        n = A.size();\n\
+    \        m = (n == 0 ? 0 : A[0].size());\n        v = A;\n        return *this;\n\
+    \    }\n    bool operator == (const Matrix &A) const noexcept {\n        return\
+    \ this->v == A.v;\n    }\n    bool operator != (const Matrix &A) const noexcept\
+    \ {\n        return this->v != A.v;\n    }\n\n    /**\n     * @brief \u8EE2\u7F6E\
+    \n     * @return Matrix\n     */\n    [[nodiscard]]\n    Matrix transpose() const\
+    \ noexcept {\n        if(n == 0) return Matrix(v);\n        std::vector<std::vector<T>>\
+    \ ret(m);\n        for(int i = 0; i < m; i ++) {\n            ret[i].resize(n);\n\
+    \            for(int j = 0; j < n; j ++) ret[i][j] = v[j][i];\n        }\n   \
+    \     return Matrix(ret);\n    }\n\n    /**\n     * @brief \u5DE6\u53F3\u53CD\u8EE2\
+    \n     * @return Matrix\n     */\n    [[nodiscard]]\n    Matrix rev_lr() const\
+    \ noexcept {\n        std::vector<std::vector<T>> ret = v;\n        for(int i\
+    \ = 0; i < n; i ++) std::reverse(ret[i].begin(), ret[i].end());\n        return\
+    \ Matrix(ret);\n    }\n\n    /**\n     * @brief \u4E0A\u4E0B\u53CD\u8EE2\n   \
+    \  * @return Matrix\n     */\n    [[nodiscard]]\n    Matrix rev_ud() const noexcept\
+    \ {\n        std::vector<std::vector<T>> ret = v;\n        reverse(ret.begin(),\
     \ ret.end());\n        return Matrix(ret);\n    }\n\n    /**\n     * @brief \u6642\
     \u8A08\u5468\u308A\u306B90\u5EA6\u56DE\u8EE2\n     * @param k \u56DE\u8EE2\u3059\
     \u308B\u56DE\u6570\n     * @return Matrix\n     */\n    [[nodiscard]]\n    Matrix\
@@ -372,39 +382,39 @@ data:
     \        return ret;\n    }\n    /**\n     * @brief \u4FDD\u6301\u3057\u3066\u3044\
     \u308B\u884C\u5217\u306B\u884C\u5217B\u3092\u8DB3\u3059\n     * @param B \u8DB3\
     \u3059\u884C\u5217\n     * @return @c *this\n    */\n    Matrix &operator+=(const\
-    \ Matrix &B) {\n        if(n == 0) return (*this);\n        assert(n == B.size()\
-    \ && m == B[0].size());\n        for(int i = 0; i < n; i++)\n            for(int\
-    \ j = 0; j < m; j++)\n                (*this)[i][j] = OperatorProperty::add((*this)[i][j],\
+    \ Matrix &B) {\n        if(n == 0) return (*this);\n        assert(n == B.n &&\
+    \ m == B.m);\n        for(int i = 0; i < n; i++)\n            for(int j = 0; j\
+    \ < m; j++)\n                (*this)[i][j] = OperatorProperty::add((*this)[i][j],\
     \ B[i][j]);\n        return (*this);\n    }\n    /**\n     * @brief \u4FDD\u6301\
     \u3057\u3066\u3044\u308B\u884C\u5217\u304B\u3089\u884C\u5217B\u3092\u5F15\u304F\
     \n     * @param B \u5F15\u304F\u884C\u5217\n     * @return @c *this\n    */\n\
     \    Matrix &operator-=(const Matrix &B) {\n        if(n == 0) return (*this);\n\
-    \        assert(n == B.size() && m == B[0].size());\n        for(int i = 0; i\
-    \ < n; i++)\n            for(int j = 0; j < m; j++) \n                (*this)[i][j]\
-    \ = OperatorProperty::add((*this)[i][j], OperatorProperty::neg(B[i][j]));\n  \
-    \      return (*this);\n    }\n\n    /**\n     * @brief \u4FDD\u6301\u3057\u3066\
-    \u3044\u308B\u884C\u5217\u306B\u884C\u5217B\u3092\u639B\u3051\u308B\n     * @param\
-    \ B \u639B\u3051\u308B\u884C\u5217\n     * @return @c *this\n    */\n    Matrix\
-    \ &operator*=(const Matrix &B) {\n        assert(m == B.n);\n        int p = B.m;\n\
-    \        Matrix C(n, p);\n        for(int i = 0; i < n; i ++) {\n            for(int\
-    \ k = 0; k < m; k ++) {\n                for(int j = 0; j < p; j ++) {\n     \
-    \               C[i][j] = OperatorProperty::add(C[i][j], OperatorProperty::mul((*this)[i][k],\
-    \ B[k][j]));\n                }\n            }\n        }\n        v.swap(C.v);\n\
-    \        m = p;\n        return (*this);\n    }\n\n    /**\n     * @brief \u4FDD\
-    \u6301\u3057\u3066\u3044\u308B\u884C\u5217\u306Ek\u4E57\u3092\u6C42\u3081\u308B\
-    \n     * @param k \u6307\u6570\n     * @return Matrix\n    */\n    [[nodiscard]]\n\
-    \    Matrix pow(long long k) const {\n        Matrix A = *this, B(n, n);\n   \
-    \     for(int i = 0; i < n; i ++) B[i][i] = OperatorProperty::one();\n       \
-    \ while(k > 0) {\n            if(k & 1) B *= A;\n            A *= A;\n       \
-    \     k >>= 1;\n        }\n        return B;\n    }\n\n    [[nodiscard]]\n   \
-    \ Matrix operator+(const Matrix &B) const { return (Matrix(*this) += B); }\n \
-    \   [[nodiscard]]\n    Matrix operator-(const Matrix &B) const { return (Matrix(*this)\
-    \ -= B); }\n    [[nodiscard]]\n    Matrix operator*(const Matrix &B) const { return\
-    \ (Matrix(*this) *= B); }\n\n    /**\n     * @brief \u884C\u5217A\u3068\u5217\u30D9\
-    \u30AF\u30C8\u30EBB\u306E\u7A4D\n     * @param A Matrix\n     * @param B vector<T>\n\
-    \     * @return vector<T> \u5217\u30D9\u30AF\u30C8\u30EB\n    */\n    [[nodiscard]]\n\
-    \    friend std::vector<T> operator*(const Matrix &A, const std::vector<T> &B)\
-    \ {\n        assert(A.m == (int)B.size());\n        std::vector<T> ret(A.n, OperatorProperty::zero());\n\
+    \        assert(n == B.n && m == B.m);\n        for(int i = 0; i < n; i++)\n \
+    \           for(int j = 0; j < m; j++) \n                (*this)[i][j] = OperatorProperty::add((*this)[i][j],\
+    \ OperatorProperty::neg(B[i][j]));\n        return (*this);\n    }\n\n    /**\n\
+    \     * @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u884C\u5217\u306B\u884C\u5217\
+    B\u3092\u639B\u3051\u308B\n     * @param B \u639B\u3051\u308B\u884C\u5217\n  \
+    \   * @return @c *this\n    */\n    Matrix &operator*=(const Matrix &B) {\n  \
+    \      assert(m == B.n);\n        int p = B.m;\n        Matrix C(n, p);\n    \
+    \    for(int i = 0; i < n; i ++) {\n            for(int k = 0; k < m; k ++) {\n\
+    \                for(int j = 0; j < p; j ++) {\n                    C[i][j] =\
+    \ OperatorProperty::add(C[i][j], OperatorProperty::mul((*this)[i][k], B[k][j]));\n\
+    \                }\n            }\n        }\n        v.swap(C.v);\n        m\
+    \ = p;\n        return (*this);\n    }\n\n    /**\n     * @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u884C\u5217\u306Ek\u4E57\u3092\u6C42\u3081\u308B\n     * @param\
+    \ k \u6307\u6570\n     * @return Matrix\n    */\n    [[nodiscard]]\n    Matrix\
+    \ pow(long long k) const {\n        Matrix A = *this, B(n, n);\n        for(int\
+    \ i = 0; i < n; i ++) B[i][i] = OperatorProperty::one();\n        while(k > 0)\
+    \ {\n            if(k & 1) B *= A;\n            A *= A;\n            k >>= 1;\n\
+    \        }\n        return B;\n    }\n\n    [[nodiscard]]\n    Matrix operator+(const\
+    \ Matrix &B) const { return (Matrix(*this) += B); }\n    [[nodiscard]]\n    Matrix\
+    \ operator-(const Matrix &B) const { return (Matrix(*this) -= B); }\n    [[nodiscard]]\n\
+    \    Matrix operator*(const Matrix &B) const { return (Matrix(*this) *= B); }\n\
+    \n    /**\n     * @brief \u884C\u5217A\u3068\u5217\u30D9\u30AF\u30C8\u30EBB\u306E\
+    \u7A4D\n     * @param A Matrix\n     * @param B vector<T>\n     * @return vector<T>\
+    \ \u5217\u30D9\u30AF\u30C8\u30EB\n    */\n    [[nodiscard]]\n    friend std::vector<T>\
+    \ operator*(const Matrix &A, const std::vector<T> &B) {\n        assert(A.m ==\
+    \ (int)B.size());\n        std::vector<T> ret(A.n, OperatorProperty::zero());\n\
     \        for(int i = 0; i < A.n; i ++) {\n            for(int j = 0; j < A.m;\
     \ j ++) {\n                ret[i] = OperatorProperty::add(ret[i], OperatorProperty::mul(A[i][j],\
     \ B[j]));\n            }\n        }\n        return ret;\n    }\n\n    /**\n \
@@ -416,16 +426,23 @@ data:
     \   for(int i = 0; i < B.n; i ++) {\n            for(int j = 0; j < B.m; j ++)\
     \ {\n                ret[j] = OperatorProperty::add(ret[j], OperatorProperty::mul(A[i],\
     \ B[i][j]));\n            }\n        }\n        return ret;\n    }\n\n    /**\n\
-    \     * @brief \u884C\u5217\u5F0F\n     * @return \u884C\u5217\u5F0F\n    */\n\
-    \    [[nodiscard]]\n    T det() const {\n        assert(n == m);\n        if(n\
-    \ == 0) return T(1);\n        if constexpr(std::is_same_v<OperatorProperty, matrix::OperatorPropertyDefault<T>>)\
+    \     * @brief \u884C\u5217\u5F0F\n     * @return \u884C\u5217\u5F0F\n     * @note\
+    \ \u5272\u308A\u7B97\u3092\u4F7F\u3046\u306E\u3067\u3001\u8981\u7D20\u306F\u4F53\
+    \ (modint \u3084\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u306A\u3069) \u3067\u3042\
+    \u308B\u3053\u3068\u3002\n     *       int \u3084 long long \u3067\u306F\u5272\
+    \u308A\u7B97\u304C\u5207\u308A\u6368\u3066\u306B\u306A\u308A\u3001\u6B63\u3057\
+    \u3044\u5024\u306B\u306A\u3089\u306A\u3044\n    */\n    [[nodiscard]]\n    T det()\
+    \ const {\n        assert(n == m);\n        if(n == 0) return T(1);\n        if\
+    \ constexpr(std::is_same_v<OperatorProperty, matrix::OperatorPropertyDefault<T>>)\
     \ {\n            std::vector A(n, std::valarray(T(0), n));\n            for(int\
     \ i = 0; i < n; i ++) for(int j = 0; j < n; j ++) A[i][j] = this->v[i][j];\n \
     \           return forward_elimination(A);\n        } else {\n            auto\
     \ A = this->v;\n            return forward_elimination(A);\n        }\n    }\n\
     \n    /**\n     * @brief \u9006\u884C\u5217\n     * @return \u9006\u884C\u5217\
-    \n     */\n    [[nodiscard]]\n    Matrix inv() const {\n        assert(n == m);\n\
-    \        if(n == 0) return Matrix(n, n);\n        if constexpr(std::is_same_v<OperatorProperty,\
+    \n     * @note det \u3068\u540C\u3058\u304F\u3001\u8981\u7D20\u306F\u4F53 (modint\
+    \ \u3084\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u306A\u3069) \u3067\u3042\u308B\u3053\
+    \u3068\n     */\n    [[nodiscard]]\n    Matrix inv() const {\n        assert(n\
+    \ == m);\n        if(n == 0) return Matrix(n, n);\n        if constexpr(std::is_same_v<OperatorProperty,\
     \ matrix::OperatorPropertyDefault<T>>) {\n            std::vector A(n, std::valarray(T(0),\
     \ n+n));\n            for(int i = 0; i < n; i ++) {\n                for(int j\
     \ = 0; j < n; j ++) A[i][j] = this->v[i][j];\n                A[i][n+i] = T(1);\n\
@@ -499,9 +516,10 @@ data:
   isVerificationFile: false
   path: src/math/matrix.hpp
   requiredBy: []
-  timestamp: '2026-10-12 20:22:09+09:00'
+  timestamp: '2026-10-13 06:07:05+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/matrix.test.cpp
   - test/aoj/3314.test.cpp
   - test/yosupo/counting-spanning-tree-undirected.test.cpp
   - test/yosupo/matrix-det.test.cpp
@@ -551,7 +569,9 @@ auto t = g.rotate(1).vstr();          // 時計回りに 90 度回して vector<
 | `A.det()` | 行列式 | $O(n^3)$ |
 | `A.inv()` | 逆行列 (正則でなければ assert で落ちる) | $O(n^3)$ |
 
-`det`、`inv` は浮動小数点型なら部分ピボット選択を行い、絶対値が $10^{-9}$ 未満を 0 とみなします。
+`det`、`inv` は掃き出し法で割り算を使うので、要素は体 (`modint` や浮動小数点型など) である必要があります。`int` や `long long` のような整数型では割り算が切り捨てになり、正しい値になりません (例: `Matrix<long long>({ {2, 1}, {1, 1} }).det()` は 1 ではなく 2 を返す)。整数の行列の行列式は、十分大きい素数を法とする `modint` で計算してください。
+
+浮動小数点型なら部分ピボット選択を行い、絶対値が $10^{-9}$ 未満を 0 とみなします。
 
 ## グリッド操作
 

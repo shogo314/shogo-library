@@ -25,6 +25,9 @@ data:
     path: test/aoj/dsl-2-i.test.cpp
     title: test/aoj/dsl-2-i.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/acted-monoid.test.cpp
+    title: test/unittest/acted-monoid.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/area-of-union-of-rectangles.1.test.cpp
     title: test/yosupo/area-of-union-of-rectangles.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -62,8 +65,8 @@ data:
     links: []
   bundledCode: "#line 2 \"src/data_structures/lazy-segtree.hpp\"\n\n/**\n * @file\
     \ lazy-segtree.hpp\n * @brief \u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\
-    \u30C8\u6728\n */\n\n#include <cassert>\n#include <functional>\n#include <ostream>\n\
-    #include <utility>\n#include <vector>\n#line 2 \"src/algebra/acted-monoid.hpp\"\
+    \u30C8\u6728\n */\n\n#include <algorithm>\n#include <cassert>\n#include <functional>\n\
+    #include <ostream>\n#include <utility>\n#include <vector>\n#line 2 \"src/algebra/acted-monoid.hpp\"\
     \n\n/**\n * @file acted-monoid.hpp\n * @brief \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
     \u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
     \u30CE\u30A4\u30C9\u306F\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp) \u306E\u30E1\
@@ -86,7 +89,7 @@ data:
     \ * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\
     \u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\
     \u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\
-    \n#include <algorithm>\n#include <istream>\n#line 17 \"src/algebra/monoid.hpp\"\
+    \n#line 15 \"src/algebra/monoid.hpp\"\n#include <istream>\n#line 17 \"src/algebra/monoid.hpp\"\
     \n#include <numeric>\n#line 21 \"src/algebra/monoid.hpp\"\n\n/**\n * @brief 1\u6B21\
     \u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\u3084\
     \ acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n * \u4F8B\
@@ -340,7 +343,7 @@ data:
     \ g); }\n    constexpr F id() const { return lazy_identity; }\n};\ntemplate <typename\
     \ Op, typename T, typename Mapping, typename Composition, typename U>\nActedMonoid(Op,\
     \ T, Mapping, Composition, U) -> ActedMonoid<T, Op, U, Mapping, Composition>;\n\
-    #line 14 \"src/data_structures/lazy-segtree.hpp\"\n\n/**\n * @brief \u9045\u5EF6\
+    #line 15 \"src/data_structures/lazy-segtree.hpp\"\n\n/**\n * @brief \u9045\u5EF6\
     \u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n *\n * \u4F8B:\n * LazySegTree<acted_monoid::AffineSum<mint>>\
     \ seg(v);\n *\n * @tparam A \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\
     \ (algebra/acted-monoid.hpp)\n */\ntemplate <typename A>\nclass LazySegTree {\n\
@@ -351,9 +354,12 @@ data:
     \ F& f, const F& g) const { return a.composition(f, g); }\n    F id() const {\
     \ return a.id(); }\n\n    int n, sz, height;\n    std::vector<S> data;\n    std::vector<F>\
     \ lazy;\n\n    void update(int k) { data[k] = op(data[2 * k], data[2 * k + 1]);\
-    \ }\n    void apply_node(int k, int h, const F& f) {\n        int l = (k << h)\
-    \ & (sz - 1);\n        int r = l + (1 << h);\n        data[k] = mapping(f, data[k],\
-    \ l, r);\n        if(k < sz) lazy[k] = composition(f, lazy[k]);\n    }\n    void\
+    \ }\n    void apply_node(int k, int h, const F& f) {\n        // \u672B\u5C3E\u306E\
+    \u8981\u7D20\u6570\u3092 2 \u3079\u304D\u306B\u305D\u308D\u3048\u308B\u305F\u3081\
+    \u306E\u4F59\u308A\u306E\u90E8\u5206\u306F\u533A\u9593\u306B\u542B\u3081\u306A\
+    \u3044\n        int l = std::min((k << h) & (sz - 1), n);\n        int r = std::min(((k\
+    \ << h) & (sz - 1)) + (1 << h), n);\n        data[k] = mapping(f, data[k], l,\
+    \ r);\n        if(k < sz) lazy[k] = composition(f, lazy[k]);\n    }\n    void\
     \ push(int k, int h) {\n        apply_node(2 * k, h-1, lazy[k]);\n        apply_node(2\
     \ * k + 1, h-1, lazy[k]);\n        lazy[k] = id();\n    }\n\n    class LazySegTreeReference\
     \ {\n        LazySegTree& segtree;\n        int k;\n    public:\n        LazySegTreeReference(LazySegTree&\
@@ -486,10 +492,10 @@ data:
     /**\n * @brief \u533A\u9593\u5909\u66F4\u3001\u533A\u9593\u548C\n *\n * @tparam\
     \ S \u578B\n */\ntemplate <typename S>\nusing RUpdateSumQ = LazySegTree<acted_monoid::UpdateSum<S>>;\n"
   code: "#pragma once\n\n/**\n * @file lazy-segtree.hpp\n * @brief \u9045\u5EF6\u4F1D\
-    \u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n */\n\n#include <cassert>\n#include\
-    \ <functional>\n#include <ostream>\n#include <utility>\n#include <vector>\n#include\
-    \ \"../algebra/acted-monoid.hpp\"\n\n/**\n * @brief \u9045\u5EF6\u4F1D\u642C\u30BB\
-    \u30B0\u30E1\u30F3\u30C8\u6728\n *\n * \u4F8B:\n * LazySegTree<acted_monoid::AffineSum<mint>>\
+    \u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n */\n\n#include <algorithm>\n#include\
+    \ <cassert>\n#include <functional>\n#include <ostream>\n#include <utility>\n#include\
+    \ <vector>\n#include \"../algebra/acted-monoid.hpp\"\n\n/**\n * @brief \u9045\u5EF6\
+    \u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n *\n * \u4F8B:\n * LazySegTree<acted_monoid::AffineSum<mint>>\
     \ seg(v);\n *\n * @tparam A \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\
     \ (algebra/acted-monoid.hpp)\n */\ntemplate <typename A>\nclass LazySegTree {\n\
     public:\n    using S = typename A::S;\n    using F = typename A::F;\n\nprivate:\n\
@@ -499,9 +505,12 @@ data:
     \ F& f, const F& g) const { return a.composition(f, g); }\n    F id() const {\
     \ return a.id(); }\n\n    int n, sz, height;\n    std::vector<S> data;\n    std::vector<F>\
     \ lazy;\n\n    void update(int k) { data[k] = op(data[2 * k], data[2 * k + 1]);\
-    \ }\n    void apply_node(int k, int h, const F& f) {\n        int l = (k << h)\
-    \ & (sz - 1);\n        int r = l + (1 << h);\n        data[k] = mapping(f, data[k],\
-    \ l, r);\n        if(k < sz) lazy[k] = composition(f, lazy[k]);\n    }\n    void\
+    \ }\n    void apply_node(int k, int h, const F& f) {\n        // \u672B\u5C3E\u306E\
+    \u8981\u7D20\u6570\u3092 2 \u3079\u304D\u306B\u305D\u308D\u3048\u308B\u305F\u3081\
+    \u306E\u4F59\u308A\u306E\u90E8\u5206\u306F\u533A\u9593\u306B\u542B\u3081\u306A\
+    \u3044\n        int l = std::min((k << h) & (sz - 1), n);\n        int r = std::min(((k\
+    \ << h) & (sz - 1)) + (1 << h), n);\n        data[k] = mapping(f, data[k], l,\
+    \ r);\n        if(k < sz) lazy[k] = composition(f, lazy[k]);\n    }\n    void\
     \ push(int k, int h) {\n        apply_node(2 * k, h-1, lazy[k]);\n        apply_node(2\
     \ * k + 1, h-1, lazy[k]);\n        lazy[k] = id();\n    }\n\n    class LazySegTreeReference\
     \ {\n        LazySegTree& segtree;\n        int k;\n    public:\n        LazySegTreeReference(LazySegTree&\
@@ -639,9 +648,10 @@ data:
   isVerificationFile: false
   path: src/data_structures/lazy-segtree.hpp
   requiredBy: []
-  timestamp: '2026-10-13 00:38:02+09:00'
+  timestamp: '2026-10-13 06:02:01+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/acted-monoid.test.cpp
   - test/aoj/dsl-2-h.1.test.cpp
   - test/aoj/dsl-2-i.test.cpp
   - test/aoj/dsl-2-g.test.cpp

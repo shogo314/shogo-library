@@ -12,6 +12,9 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/unittest/fps.test.cpp
+    title: test/unittest/fps.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/division-of-polynomials.test.cpp
     title: test/yosupo/division-of-polynomials.test.cpp
   - icon: ':heavy_check_mark:'
@@ -643,6 +646,7 @@ data:
   timestamp: '2026-10-13 00:38:02+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/fps.test.cpp
   - test/yosupo/exp-of-fps.test.cpp
   - test/yosupo/partition-function_2.test.cpp
   - test/yosupo/inv-of-fps.test.cpp

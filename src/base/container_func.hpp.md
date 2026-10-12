@@ -16,6 +16,9 @@ data:
     path: test/aoj/alds1-4-b.test.cpp
     title: test/aoj/alds1-4-b.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl-4-a.test.cpp
+    title: test/aoj/dsl-4-a.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/aoj/itp1-10-c.test.cpp
     title: test/aoj/itp1-10-c.test.cpp
   - icon: ':heavy_check_mark:'
@@ -39,6 +42,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj/itp2-5-b.test.cpp
     title: test/aoj/itp2-5-b.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/container-func-member.test.cpp
+    title: test/unittest/container-func-member.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/container-func.test.cpp
+    title: test/unittest/container-func.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -140,9 +149,9 @@ data:
     \ C &v) {\n    assert(v.begin() != v.end());\n    return *std::max_element(v.begin(),\
     \ v.end());\n}\ntemplate <typename T>\ninline constexpr T max(const std::initializer_list<T>\
     \ &v) {\n    return std::max(v);\n}\n\nMETHOD_EXPAND(min)\ntemplate <class C,\
-    \ ENABLE_IF_T(not has_max_v<C> and is_sorted_container_v<C>)>\ninline constexpr\
+    \ ENABLE_IF_T(not has_min_v<C> and is_sorted_container_v<C>)>\ninline constexpr\
     \ mem_value_type<C> min(const C &v) {\n    assert(v.begin() != v.end());\n   \
-    \ return *v.begin();\n}\ntemplate <class C, ENABLE_IF_T(not has_max_v<C> and not\
+    \ return *v.begin();\n}\ntemplate <class C, ENABLE_IF_T(not has_min_v<C> and not\
     \ is_sorted_container_v<C>)>\ninline constexpr mem_value_type<C> min(const C &v)\
     \ {\n    assert(v.begin() != v.end());\n    return *std::min_element(v.begin(),\
     \ v.end());\n}\ntemplate <typename T>\ninline constexpr T min(const std::initializer_list<T>\
@@ -187,14 +196,16 @@ data:
     \ C &v, const U &x) {\n    return std::distance(v.begin(), find(v, x));\n}\n\n\
     template <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\ninline\
     \ constexpr mem_value_type<C> mex(const C &v) {\n    std::vector<bool> b(v.size()\
-    \ + 1);\n    for (const auto &a : v) {\n        if (0 <= a and a < b.size()) {\n\
-    \            b[a] = true;\n        }\n    }\n    mem_value_type<C> ret;\n    for\
-    \ (size_t i = 0; i < b.size(); i++) {\n        if (not b[i]) {\n            ret\
-    \ = i;\n            break;\n        }\n    }\n    return ret;\n}\n\ntemplate <class\
-    \ C>\ninline constexpr mem_difference_type<C> bisect_left(const C &v, const mem_value_type<C>\
-    \ &x) {\n    return std::distance(v.begin(), lower_bound(v, x));\n}\ntemplate\
-    \ <class C>\ninline constexpr mem_difference_type<C> bisect_right(const C &v,\
-    \ const mem_value_type<C> &x) {\n    return std::distance(v.begin(), upper_bound(v,\
+    \ + 1);\n    for (const auto &a : v) {\n        if (0 <= a and static_cast<size_t>(a)\
+    \ < b.size()) {\n            b[a] = true;\n        }\n    }\n    mem_value_type<C>\
+    \ ret = 0;  // b \u306E\u8981\u7D20\u6570\u306F v \u3088\u308A 1 \u591A\u3044\u306E\
+    \u3067\u3001\u4E0B\u306E\u30EB\u30FC\u30D7\u3067\u5FC5\u305A\u898B\u3064\u304B\
+    \u308B\n    for (size_t i = 0; i < b.size(); i++) {\n        if (not b[i]) {\n\
+    \            ret = i;\n            break;\n        }\n    }\n    return ret;\n\
+    }\n\ntemplate <class C>\ninline constexpr mem_difference_type<C> bisect_left(const\
+    \ C &v, const mem_value_type<C> &x) {\n    return std::distance(v.begin(), lower_bound(v,\
+    \ x));\n}\ntemplate <class C>\ninline constexpr mem_difference_type<C> bisect_right(const\
+    \ C &v, const mem_value_type<C> &x) {\n    return std::distance(v.begin(), upper_bound(v,\
     \ x));\n}\n"
   code: "#pragma once\n\n/**\n * @file container_func.hpp\n * @brief \u30B3\u30F3\u30C6\
     \u30CA\u306B\u5BFE\u3059\u308B\u95A2\u6570 (sorted, max, sum \u306A\u3069)\n */\n\
@@ -238,9 +249,9 @@ data:
     \ C &v) {\n    assert(v.begin() != v.end());\n    return *std::max_element(v.begin(),\
     \ v.end());\n}\ntemplate <typename T>\ninline constexpr T max(const std::initializer_list<T>\
     \ &v) {\n    return std::max(v);\n}\n\nMETHOD_EXPAND(min)\ntemplate <class C,\
-    \ ENABLE_IF_T(not has_max_v<C> and is_sorted_container_v<C>)>\ninline constexpr\
+    \ ENABLE_IF_T(not has_min_v<C> and is_sorted_container_v<C>)>\ninline constexpr\
     \ mem_value_type<C> min(const C &v) {\n    assert(v.begin() != v.end());\n   \
-    \ return *v.begin();\n}\ntemplate <class C, ENABLE_IF_T(not has_max_v<C> and not\
+    \ return *v.begin();\n}\ntemplate <class C, ENABLE_IF_T(not has_min_v<C> and not\
     \ is_sorted_container_v<C>)>\ninline constexpr mem_value_type<C> min(const C &v)\
     \ {\n    assert(v.begin() != v.end());\n    return *std::min_element(v.begin(),\
     \ v.end());\n}\ntemplate <typename T>\ninline constexpr T min(const std::initializer_list<T>\
@@ -285,26 +296,31 @@ data:
     \ C &v, const U &x) {\n    return std::distance(v.begin(), find(v, x));\n}\n\n\
     template <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\ninline\
     \ constexpr mem_value_type<C> mex(const C &v) {\n    std::vector<bool> b(v.size()\
-    \ + 1);\n    for (const auto &a : v) {\n        if (0 <= a and a < b.size()) {\n\
-    \            b[a] = true;\n        }\n    }\n    mem_value_type<C> ret;\n    for\
-    \ (size_t i = 0; i < b.size(); i++) {\n        if (not b[i]) {\n            ret\
-    \ = i;\n            break;\n        }\n    }\n    return ret;\n}\n\ntemplate <class\
-    \ C>\ninline constexpr mem_difference_type<C> bisect_left(const C &v, const mem_value_type<C>\
-    \ &x) {\n    return std::distance(v.begin(), lower_bound(v, x));\n}\ntemplate\
-    \ <class C>\ninline constexpr mem_difference_type<C> bisect_right(const C &v,\
-    \ const mem_value_type<C> &x) {\n    return std::distance(v.begin(), upper_bound(v,\
+    \ + 1);\n    for (const auto &a : v) {\n        if (0 <= a and static_cast<size_t>(a)\
+    \ < b.size()) {\n            b[a] = true;\n        }\n    }\n    mem_value_type<C>\
+    \ ret = 0;  // b \u306E\u8981\u7D20\u6570\u306F v \u3088\u308A 1 \u591A\u3044\u306E\
+    \u3067\u3001\u4E0B\u306E\u30EB\u30FC\u30D7\u3067\u5FC5\u305A\u898B\u3064\u304B\
+    \u308B\n    for (size_t i = 0; i < b.size(); i++) {\n        if (not b[i]) {\n\
+    \            ret = i;\n            break;\n        }\n    }\n    return ret;\n\
+    }\n\ntemplate <class C>\ninline constexpr mem_difference_type<C> bisect_left(const\
+    \ C &v, const mem_value_type<C> &x) {\n    return std::distance(v.begin(), lower_bound(v,\
+    \ x));\n}\ntemplate <class C>\ninline constexpr mem_difference_type<C> bisect_right(const\
+    \ C &v, const mem_value_type<C> &x) {\n    return std::distance(v.begin(), upper_bound(v,\
     \ x));\n}\n"
   dependsOn:
   - src/base/traits.hpp
   isVerificationFile: false
   path: src/base/container_func.hpp
   requiredBy: []
-  timestamp: '2026-10-12 20:22:09+09:00'
+  timestamp: '2026-10-13 06:07:05+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/container-func-member.test.cpp
+  - test/unittest/container-func.test.cpp
   - test/aoj/0022.test.cpp
   - test/aoj/alds1-1-b.test.cpp
   - test/aoj/itp1-4-d.test.cpp
+  - test/aoj/dsl-4-a.test.cpp
   - test/aoj/itp2-5-a.1.test.cpp
   - test/aoj/itp2-3-c.test.cpp
   - test/aoj/itp2-5-b.test.cpp

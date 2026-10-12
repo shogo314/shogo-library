@@ -19,6 +19,9 @@ data:
     path: test/aoj/ntl-1-e.test.cpp
     title: test/aoj/ntl-1-e.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/functions.test.cpp
+    title: test/unittest/functions.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/sort-points-by-argument.2.test.cpp
     title: test/yosupo/sort-points-by-argument.2.test.cpp
   _isVerificationFailed: false
@@ -185,6 +188,7 @@ data:
   timestamp: '2026-10-13 01:32:37+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/functions.test.cpp
   - test/aoj/1160.test.cpp
   - test/aoj/alds1-4-d.test.cpp
   - test/aoj/ntl-1-e.test.cpp

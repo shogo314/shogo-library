@@ -6,6 +6,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj/grl-1-c.test.cpp
     title: test/aoj/grl-1-c.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/infint.test.cpp
+    title: test/unittest/infint.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -302,6 +305,7 @@ data:
   timestamp: '2026-10-12 20:24:58+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/infint.test.cpp
   - test/aoj/grl-1-c.test.cpp
 documentation_of: src/math/infint.hpp
 layout: document

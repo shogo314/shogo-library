@@ -35,8 +35,17 @@ data:
     path: test/aoj/dpl-5-f.test.cpp
     title: test/aoj/dpl-5-f.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/binomial-coefficient-prime-mod.test.cpp
-    title: test/yosupo/binomial-coefficient-prime-mod.test.cpp
+    path: test/unittest/combinatorics.test.cpp
+    title: test/unittest/combinatorics.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/fps.test.cpp
+    title: test/unittest/fps.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
+    title: test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/binomial-coefficient-prime-mod.2.test.cpp
+    title: test/yosupo/binomial-coefficient-prime-mod.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/binomial-coefficient.test.cpp
     title: test/yosupo/binomial-coefficient.test.cpp
@@ -655,6 +664,8 @@ data:
   timestamp: '2026-10-13 00:38:02+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/combinatorics.test.cpp
+  - test/unittest/fps.test.cpp
   - test/aoj/dpl-5-d.1.test.cpp
   - test/aoj/dpl-5-f.test.cpp
   - test/aoj/dpl-5-b.1.test.cpp
@@ -662,7 +673,7 @@ data:
   - test/aoj/dpl-5-e.lucas.test.cpp
   - test/aoj/dpl-5-d.2.test.cpp
   - test/aoj/dpl-5-b.2.test.cpp
-  - test/yosupo/binomial-coefficient-prime-mod.test.cpp
+  - test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
   - test/yosupo/exp-of-fps.test.cpp
   - test/yosupo/partition-function_2.test.cpp
   - test/yosupo/inv-of-fps.test.cpp
@@ -674,6 +685,7 @@ data:
   - test/yosupo/convolution-mod-2-64.test.cpp
   - test/yosupo/convolution-mod-1000000007.test.cpp
   - test/yosupo/log-of-fps.test.cpp
+  - test/yosupo/binomial-coefficient-prime-mod.2.test.cpp
   - test/yosupo/sharp-p-subset-sum.test.cpp
   - test/yosupo/convolution-mod.test.cpp
   - test/yukicoder/187.test.cpp

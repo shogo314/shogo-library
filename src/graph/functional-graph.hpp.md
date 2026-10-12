@@ -4,6 +4,9 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/unittest/functional-graph.2.test.cpp
+    title: test/unittest/functional-graph.2.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/functional-graph.test.cpp
     title: test/unittest/functional-graph.test.cpp
   _isVerificationFailed: false
@@ -175,6 +178,7 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/functional-graph.test.cpp
+  - test/unittest/functional-graph.2.test.cpp
 documentation_of: src/graph/functional-graph.hpp
 layout: document
 title: "\u30D5\u30A1\u30F3\u30AF\u30B7\u30E7\u30CA\u30EB\u30B0\u30E9\u30D5"

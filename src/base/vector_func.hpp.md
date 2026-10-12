@@ -7,6 +7,12 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl-4-a.test.cpp
+    title: test/aoj/dsl-4-a.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/vector-func.test.cpp
+    title: test/unittest/vector-func.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/static-range-sum.test.cpp
     title: test/yosupo/static-range-sum.test.cpp
   _isVerificationFailed: false
@@ -18,43 +24,43 @@ data:
     links: []
   bundledCode: "#line 2 \"src/base/vector_func.hpp\"\n\n/**\n * @file vector_func.hpp\n\
     \ * @brief vector \u306B\u5BFE\u3059\u308B\u6F14\u7B97\u5B50\u3068\u95A2\u6570\
-    \n */\n\n#include <algorithm>\n#include <cmath>\n#include <cstddef>\n#include\
-    \ <numeric>\n#include <vector>\n\n#line 2 \"src/base/traits.hpp\"\n\n/**\n * @file\
-    \ traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 9 \"src/base/traits.hpp\"\
-    \n#include <iterator>\n#include <set>\n#include <type_traits>\n#include <utility>\n\
-    \nnamespace detail {\nusing std::begin, std::end;\n\ntemplate <class T, class\
-    \ = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct\
-    \ is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
-    \ : std::true_type {};\n}  // namespace detail\n\ntemplate <class T>\nstruct is_range\
-    \ : detail::is_range_impl<T>::type {};\ntemplate <class T>\ninline constexpr bool\
-    \ is_range_v = is_range<T>::value;\n\n#define HAS_METHOD(func_name)          \
-    \                                                    \\\n    namespace detail\
-    \ {                                                                     \\\n \
-    \   template <class T, class = void>                                         \
-    \              \\\n    struct has_##func_name##_impl : std::false_type {};   \
-    \                                 \\\n    template <class T>                 \
-    \                                                    \\\n    struct has_##func_name##_impl<T,\
-    \ std::void_t<decltype(std::declval<T>().func_name())>> \\\n        : std::true_type\
-    \ {};                                                               \\\n    }\
-    \                                                                            \
-    \          \\\n    template <class T>                                        \
-    \                             \\\n    struct has_##func_name : detail::has_##func_name##_impl<T>::type\
-    \ {};                   \\\n    template <class T>                           \
-    \                                          \\\n    inline constexpr bool has_##func_name##_v\
-    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
-    \                                                                    \\\n    namespace\
-    \ detail {                                                                   \
-    \                      \\\n    template <class T, typename U, class = void>  \
-    \                                                             \\\n    struct has_##func_name##_impl\
-    \ : std::false_type {};                                                      \
-    \  \\\n    template <class T, typename U>                                    \
-    \                                         \\\n    struct has_##func_name##_impl<T,\
-    \ U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>> \\\
-    \n        : std::true_type {};                                               \
-    \                                    \\\n    }                               \
+    \n */\n\n#include <algorithm>\n#include <cassert>\n#include <cmath>\n#include\
+    \ <cstddef>\n#include <numeric>\n#include <vector>\n\n#line 2 \"src/base/traits.hpp\"\
+    \n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 9 \"\
+    src/base/traits.hpp\"\n#include <iterator>\n#include <set>\n#include <type_traits>\n\
+    #include <utility>\n\nnamespace detail {\nusing std::begin, std::end;\n\ntemplate\
+    \ <class T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate\
+    \ <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace detail\n\n\
+    template <class T>\nstruct is_range : detail::is_range_impl<T>::type {};\ntemplate\
+    \ <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define\
+    \ HAS_METHOD(func_name)                                                      \
+    \        \\\n    namespace detail {                                          \
+    \                           \\\n    template <class T, class = void>         \
+    \                                              \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                    \\\n    template <class\
+    \ T>                                                                     \\\n\
+    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                    \\\n    }                                               \
+    \                                       \\\n    template <class T>           \
+    \                                                          \\\n    struct has_##func_name\
+    \ : detail::has_##func_name##_impl<T>::type {};                   \\\n    template\
+    \ <class T>                                                                  \
+    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
+    \n#define HAS_METHOD_ARG(func_name)                                          \
+    \                                    \\\n    namespace detail {              \
     \                                                                           \\\
-    \n    template <class T, typename U>                                         \
-    \                                    \\\n    struct has_##func_name : detail::has_##func_name##_impl<T,\
+    \n    template <class T, typename U, class = void>                           \
+    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                                        \\\n    template\
+    \ <class T, typename U>                                                      \
+    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                                        \\\n    }                           \
+    \                                                                            \
+    \   \\\n    template <class T, typename U>                                   \
+    \                                          \\\n    struct has_##func_name : detail::has_##func_name##_impl<T,\
     \ U>::type {};                                    \\\n    template <class T, typename\
     \ U>                                                                         \
     \    \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
@@ -71,7 +77,7 @@ data:
     \ : std::true_type {};\n}  // namespace detail\ntemplate <class T>\nstruct is_sorted_container\
     \ : detail::is_sorted_container_impl<T>::type {};\ntemplate <class T>\ninline\
     \ constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n#line\
-    \ 15 \"src/base/vector_func.hpp\"\n\ntemplate <typename T>\nstd::vector<std::ptrdiff_t>\
+    \ 16 \"src/base/vector_func.hpp\"\n\ntemplate <typename T>\nstd::vector<std::ptrdiff_t>\
     \ sorted_idx(const std::vector<T> &v, bool reverse = false) {\n    std::vector<std::ptrdiff_t>\
     \ ret(v.size());\n    std::iota(ret.begin(), ret.end(), 0);\n    std::sort(ret.begin(),\
     \ ret.end(), [&](std::ptrdiff_t i, std::ptrdiff_t j) {\n        return v[i] <\
@@ -145,8 +151,8 @@ data:
     \    return res;\n}\n"
   code: "#pragma once\n\n/**\n * @file vector_func.hpp\n * @brief vector \u306B\u5BFE\
     \u3059\u308B\u6F14\u7B97\u5B50\u3068\u95A2\u6570\n */\n\n#include <algorithm>\n\
-    #include <cmath>\n#include <cstddef>\n#include <numeric>\n#include <vector>\n\n\
-    #include \"traits.hpp\"\n\ntemplate <typename T>\nstd::vector<std::ptrdiff_t>\
+    #include <cassert>\n#include <cmath>\n#include <cstddef>\n#include <numeric>\n\
+    #include <vector>\n\n#include \"traits.hpp\"\n\ntemplate <typename T>\nstd::vector<std::ptrdiff_t>\
     \ sorted_idx(const std::vector<T> &v, bool reverse = false) {\n    std::vector<std::ptrdiff_t>\
     \ ret(v.size());\n    std::iota(ret.begin(), ret.end(), 0);\n    std::sort(ret.begin(),\
     \ ret.end(), [&](std::ptrdiff_t i, std::ptrdiff_t j) {\n        return v[i] <\
@@ -223,9 +229,11 @@ data:
   isVerificationFile: false
   path: src/base/vector_func.hpp
   requiredBy: []
-  timestamp: '2026-10-12 19:40:02+09:00'
+  timestamp: '2026-10-13 06:02:01+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/vector-func.test.cpp
+  - test/aoj/dsl-4-a.test.cpp
   - test/yosupo/static-range-sum.test.cpp
 documentation_of: src/base/vector_func.hpp
 layout: document

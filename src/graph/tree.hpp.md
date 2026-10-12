@@ -22,6 +22,12 @@ data:
     path: test/aoj/grl-5-b.test.cpp
     title: test/aoj/grl-5-b.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/rerooting-dp.test.cpp
+    title: test/unittest/rerooting-dp.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/tree.test.cpp
+    title: test/unittest/tree.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/jump-on-tree.test.cpp
     title: test/yosupo/jump-on-tree.test.cpp
   - icon: ':heavy_check_mark:'
@@ -34,11 +40,17 @@ data:
     path: test/yosupo/lca.3.test.cpp
     title: test/yosupo/lca.3.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/lca.4.test.cpp
+    title: test/yosupo/lca.4.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/tree-diameter.test.cpp
     title: test/yosupo/tree-diameter.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/vertex-add-subtree-sum.test.cpp
     title: test/yosupo/vertex-add-subtree-sum.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yukicoder/1641.test.cpp
+    title: test/yukicoder/1641.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/898.test.cpp
     title: test/yukicoder/898.test.cpp
@@ -579,16 +591,20 @@ data:
   timestamp: '2026-10-13 00:38:02+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/rerooting-dp.test.cpp
+  - test/unittest/tree.test.cpp
   - test/aoj/1595.test.cpp
   - test/aoj/grl-5-a.test.cpp
   - test/aoj/grl-5-b.test.cpp
   - test/aoj/3372.test.cpp
+  - test/yosupo/lca.4.test.cpp
   - test/yosupo/lca.1.test.cpp
   - test/yosupo/lca.3.test.cpp
   - test/yosupo/tree-diameter.test.cpp
   - test/yosupo/lca.2.test.cpp
   - test/yosupo/vertex-add-subtree-sum.test.cpp
   - test/yosupo/jump-on-tree.test.cpp
+  - test/yukicoder/1641.test.cpp
   - test/yukicoder/898.test.cpp
 documentation_of: src/graph/tree.hpp
 layout: document

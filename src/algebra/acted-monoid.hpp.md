@@ -34,6 +34,15 @@ data:
     path: test/aoj/dsl-5-a.test.cpp
     title: test/aoj/dsl-5-a.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/acted-monoid.test.cpp
+    title: test/unittest/acted-monoid.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/imos.test.cpp
+    title: test/unittest/imos.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/segtree-beats.test.cpp
+    title: test/unittest/segtree-beats.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/area-of-union-of-rectangles.1.test.cpp
     title: test/yosupo/area-of-union-of-rectangles.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -530,6 +539,9 @@ data:
   timestamp: '2026-10-13 00:38:02+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/imos.test.cpp
+  - test/unittest/segtree-beats.test.cpp
+  - test/unittest/acted-monoid.test.cpp
   - test/aoj/dsl-2-h.1.test.cpp
   - test/aoj/dsl-2-i.test.cpp
   - test/aoj/dsl-2-g.test.cpp

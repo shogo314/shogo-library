@@ -21,13 +21,13 @@ data:
     \ \"https://judge.yosupo.jp/problem/static_range_sum\"\n\n#include <iostream>\n\
     #include <vector>\n\n#line 2 \"src/base/vector_func.hpp\"\n\n/**\n * @file vector_func.hpp\n\
     \ * @brief vector \u306B\u5BFE\u3059\u308B\u6F14\u7B97\u5B50\u3068\u95A2\u6570\
-    \n */\n\n#include <algorithm>\n#include <cmath>\n#include <cstddef>\n#include\
-    \ <numeric>\n#line 13 \"src/base/vector_func.hpp\"\n\n#line 2 \"src/base/traits.hpp\"\
-    \n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 9 \"\
-    src/base/traits.hpp\"\n#include <iterator>\n#include <set>\n#include <type_traits>\n\
-    #include <utility>\n\nnamespace detail {\nusing std::begin, std::end;\n\ntemplate\
-    \ <class T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate\
-    \ <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \n */\n\n#include <algorithm>\n#include <cassert>\n#include <cmath>\n#include\
+    \ <cstddef>\n#include <numeric>\n#line 14 \"src/base/vector_func.hpp\"\n\n#line\
+    \ 2 \"src/base/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\
+    \u6027\n */\n\n#line 9 \"src/base/traits.hpp\"\n#include <iterator>\n#include\
+    \ <set>\n#include <type_traits>\n#include <utility>\n\nnamespace detail {\nusing\
+    \ std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
     \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace detail\n\n\
     template <class T>\nstruct is_range : detail::is_range_impl<T>::type {};\ntemplate\
     \ <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define\
@@ -74,7 +74,7 @@ data:
     \ : std::true_type {};\n}  // namespace detail\ntemplate <class T>\nstruct is_sorted_container\
     \ : detail::is_sorted_container_impl<T>::type {};\ntemplate <class T>\ninline\
     \ constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n#line\
-    \ 15 \"src/base/vector_func.hpp\"\n\ntemplate <typename T>\nstd::vector<std::ptrdiff_t>\
+    \ 16 \"src/base/vector_func.hpp\"\n\ntemplate <typename T>\nstd::vector<std::ptrdiff_t>\
     \ sorted_idx(const std::vector<T> &v, bool reverse = false) {\n    std::vector<std::ptrdiff_t>\
     \ ret(v.size());\n    std::iota(ret.begin(), ret.end(), 0);\n    std::sort(ret.begin(),\
     \ ret.end(), [&](std::ptrdiff_t i, std::ptrdiff_t j) {\n        return v[i] <\
@@ -164,7 +164,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/static-range-sum.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 00:57:44+09:00'
+  timestamp: '2026-10-13 06:02:01+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/static-range-sum.test.cpp

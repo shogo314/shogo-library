@@ -9,6 +9,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj/1160.test.cpp
     title: test/aoj/1160.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/macro.test.cpp
+    title: test/unittest/macro.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -63,6 +66,7 @@ data:
   timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/macro.test.cpp
   - test/aoj/1160.test.cpp
 documentation_of: src/base/type_alias.hpp
 layout: document

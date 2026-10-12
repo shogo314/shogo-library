@@ -6,6 +6,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj/itp2-10-c.test.cpp
     title: test/aoj/itp2-10-c.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/bit.test.cpp
+    title: test/unittest/bit.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -85,6 +88,7 @@ data:
   timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/bit.test.cpp
   - test/aoj/itp2-10-c.test.cpp
 documentation_of: src/base/bit.hpp
 layout: document

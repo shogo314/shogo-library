@@ -2,10 +2,13 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
-  _extendedVerifiedWith: []
+  _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/circular-ring.test.cpp
+    title: test/unittest/circular-ring.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':warning:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "\u5186\u74B0"
     links: []
@@ -39,8 +42,9 @@ data:
   path: src/data_structures/circular-ring.hpp
   requiredBy: []
   timestamp: '2026-10-12 19:23:31+09:00'
-  verificationStatus: LIBRARY_NO_TESTS
-  verifiedWith: []
+  verificationStatus: LIBRARY_ALL_AC
+  verifiedWith:
+  - test/unittest/circular-ring.test.cpp
 documentation_of: src/data_structures/circular-ring.hpp
 layout: document
 title: "\u5186\u74B0"

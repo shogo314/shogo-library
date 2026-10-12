@@ -24,9 +24,9 @@ data:
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/range_chmin_chmax_add_range_sum\"\
     \n\n#include <algorithm>\n#include <iostream>\n#include <ostream>\n\n#line 2 \"\
     src/data_structures/segtree-beats.hpp\"\n\n/**\n * @file segtree-beats.hpp\n *\
-    \ @brief Segment Tree Beats\n */\n\n#include <cassert>\n#include <functional>\n\
-    #include <limits>\n#line 12 \"src/data_structures/segtree-beats.hpp\"\n#include\
-    \ <tuple>\n#include <utility>\n#include <vector>\n#line 2 \"src/algebra/acted-monoid.hpp\"\
+    \ @brief Segment Tree Beats\n */\n\n#line 9 \"src/data_structures/segtree-beats.hpp\"\
+    \n#include <cassert>\n#include <functional>\n#include <limits>\n#line 13 \"src/data_structures/segtree-beats.hpp\"\
+    \n#include <tuple>\n#include <utility>\n#include <vector>\n#line 2 \"src/algebra/acted-monoid.hpp\"\
     \n\n/**\n * @file acted-monoid.hpp\n * @brief \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
     \u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
     \u30CE\u30A4\u30C9\u306F\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp) \u306E\u30E1\
@@ -303,7 +303,7 @@ data:
     \ g); }\n    constexpr F id() const { return lazy_identity; }\n};\ntemplate <typename\
     \ Op, typename T, typename Mapping, typename Composition, typename U>\nActedMonoid(Op,\
     \ T, Mapping, Composition, U) -> ActedMonoid<T, Op, U, Mapping, Composition>;\n\
-    #line 16 \"src/data_structures/segtree-beats.hpp\"\n\n/**\n * @brief Segment Tree\
+    #line 17 \"src/data_structures/segtree-beats.hpp\"\n\n/**\n * @brief Segment Tree\
     \ Beats\n *\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9 (algebra/acted-monoid.hpp)\
     \ \u3068\u540C\u3058\u5F62\u306E\u578B\u3092\u53D7\u3051\u53D6\u308B\u304C\u3001\
     \n * mapping \u306F std::pair<bool, S> (\u4F5C\u7528\u306B\u5931\u6557\u3057\u305F\
@@ -319,8 +319,11 @@ data:
     \ g); }\n    F id() const { return a.id(); }\n\n    int n, sz, height;\n    std::vector<S>\
     \ data;\n    std::vector<int> fail;\n    std::vector<F> lazy;\n\n    void update(int\
     \ k) {\n        data[k] = op(data[2 * k], data[2 * k + 1]);\n        fail[k] =\
-    \ false;\n    }\n    void apply_node(int k, int h, const F& f) {\n        int\
-    \ l = (k << h) & (sz - 1);\n        int r = l + (1 << h);\n        std::tie(fail[k],\
+    \ false;\n    }\n    void apply_node(int k, int h, const F& f) {\n        // \u672B\
+    \u5C3E\u306E\u8981\u7D20\u6570\u3092 2 \u3079\u304D\u306B\u305D\u308D\u3048\u308B\
+    \u305F\u3081\u306E\u4F59\u308A\u306E\u90E8\u5206\u306F\u533A\u9593\u306B\u542B\
+    \u3081\u306A\u3044\n        int l = std::min((k << h) & (sz - 1), n);\n      \
+    \  int r = std::min(((k << h) & (sz - 1)) + (1 << h), n);\n        std::tie(fail[k],\
     \ data[k]) = mapping(f, data[k], l, r);\n        if(k < sz) {\n            lazy[k]\
     \ = composition(f, lazy[k]);\n            if(fail[k]) {\n                push(k,\
     \ h);\n                update(k);\n            }\n        }\n    }\n    void push(int\
@@ -578,7 +581,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/range-chmin-chmax-add-range-sum.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 00:38:02+09:00'
+  timestamp: '2026-10-13 06:02:01+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/range-chmin-chmax-add-range-sum.1.test.cpp

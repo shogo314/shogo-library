@@ -79,6 +79,24 @@ data:
     path: test/aoj/ntl-1-c.test.cpp
     title: test/aoj/ntl-1-c.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/acted-monoid.test.cpp
+    title: test/unittest/acted-monoid.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/imos.test.cpp
+    title: test/unittest/imos.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/monoid-unionfind.test.cpp
+    title: test/unittest/monoid-unionfind.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/monoid.test.cpp
+    title: test/unittest/monoid.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/potentialized-unionfind.test.cpp
+    title: test/unittest/potentialized-unionfind.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/segtree-beats.test.cpp
+    title: test/unittest/segtree-beats.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/area-of-union-of-rectangles.1.test.cpp
     title: test/yosupo/area-of-union-of-rectangles.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -148,8 +166,14 @@ data:
     path: test/yukicoder/1036.2.test.cpp
     title: test/yukicoder/1036.2.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yukicoder/1641.test.cpp
+    title: test/yukicoder/1641.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yukicoder/2292.test.cpp
     title: test/yukicoder/2292.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yukicoder/3652.test.cpp
+    title: test/yukicoder/3652.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/674.1.test.cpp
     title: test/yukicoder/674.1.test.cpp
@@ -399,6 +423,12 @@ data:
   timestamp: '2026-10-13 00:38:02+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/imos.test.cpp
+  - test/unittest/segtree-beats.test.cpp
+  - test/unittest/monoid-unionfind.test.cpp
+  - test/unittest/monoid.test.cpp
+  - test/unittest/potentialized-unionfind.test.cpp
+  - test/unittest/acted-monoid.test.cpp
   - test/aoj/dsl-2-b.test.cpp
   - test/aoj/dsl-2-h.1.test.cpp
   - test/aoj/itp2-3-b.1.test.cpp
@@ -439,6 +469,8 @@ data:
   - test/yukicoder/1036.1.test.cpp
   - test/yukicoder/1036.2.test.cpp
   - test/yukicoder/2292.test.cpp
+  - test/yukicoder/3652.test.cpp
+  - test/yukicoder/1641.test.cpp
 documentation_of: src/algebra/monoid.hpp
 layout: document
 title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"

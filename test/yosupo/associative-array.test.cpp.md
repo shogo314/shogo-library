@@ -41,19 +41,22 @@ data:
     \ auto& [i, c] : o.data) {\n            data[i] += c;\n        }\n        return\
     \ *this;\n    }\n    friend Counter operator+(const Counter& a, const Counter&\
     \ b) {\n        Counter res(a);\n        return res += b;\n    }\n    Counter&\
-    \ operator-=(const Counter& o) {\n        for (const auto& [i, c] : o.data) {\n\
-    \            inc(i, -c);\n        }\n        return *this;\n    }\n    friend\
-    \ Counter operator-(const Counter& a, const Counter& b) {\n        Counter res(a);\n\
-    \        return res -= b;\n    }\n    auto begin() const { return data.begin();\
-    \ }\n    auto end() const { return data.end(); }\n    std::size_t size() const\
-    \ {\n        return data.size();\n    }\n    mapped_type get(const key_type& key)\
-    \ const {\n        auto itr = data.find(key);\n        if (itr == data.end())\
-    \ return 0;\n        return itr->second;\n    }\n    void set(const key_type&\
-    \ key, const mapped_type& t) {\n        assert(t >= 0);\n        if (t > 0) {\n\
-    \            data[key] = t;\n        } else {\n            auto itr = data.find(key);\n\
-    \            if (itr != data.end()) {\n                data.erase(itr);\n    \
-    \        }\n        }\n    }\n    std::vector<value_type> most_common() const\
-    \ {\n        std::vector<value_type> ret;\n        ret.reserve(data.size());\n\
+    \ operator-=(const Counter& o) {\n        // \u81EA\u5206\u81EA\u8EAB\u3092\u5F15\
+    \u304F\u3068\u3001\u8D70\u67FB\u4E2D\u306E o.data \u306E\u8981\u7D20\u3092 inc\
+    \ \u304C\u6D88\u3057\u3066\u3057\u307E\u3046\n        if (this == &o) {\n    \
+    \        data.clear();\n            return *this;\n        }\n        for (const\
+    \ auto& [i, c] : o.data) {\n            inc(i, -c);\n        }\n        return\
+    \ *this;\n    }\n    friend Counter operator-(const Counter& a, const Counter&\
+    \ b) {\n        Counter res(a);\n        return res -= b;\n    }\n    auto begin()\
+    \ const { return data.begin(); }\n    auto end() const { return data.end(); }\n\
+    \    std::size_t size() const {\n        return data.size();\n    }\n    mapped_type\
+    \ get(const key_type& key) const {\n        auto itr = data.find(key);\n     \
+    \   if (itr == data.end()) return 0;\n        return itr->second;\n    }\n   \
+    \ void set(const key_type& key, const mapped_type& t) {\n        assert(t >= 0);\n\
+    \        if (t > 0) {\n            data[key] = t;\n        } else {\n        \
+    \    auto itr = data.find(key);\n            if (itr != data.end()) {\n      \
+    \          data.erase(itr);\n            }\n        }\n    }\n    std::vector<value_type>\
+    \ most_common() const {\n        std::vector<value_type> ret;\n        ret.reserve(data.size());\n\
     \        for (const auto& [i, c] : data) {\n            ret.push_back({i, c});\n\
     \        }\n        std::sort(ret.begin(), ret.end(), [](const value_type& a,\
     \ const value_type& b) { return a.second > b.second or (a.second == b.second and\
@@ -92,7 +95,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/associative-array.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 00:57:44+09:00'
+  timestamp: '2026-10-13 06:02:01+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/associative-array.test.cpp

@@ -10,7 +10,7 @@ data:
     path: src/base/functions.hpp
     title: "\u6C4E\u7528\u95A2\u6570 (chmin, chmax, \u4E8C\u5206\u63A2\u7D22\u306A\
       \u3069)"
-  - icon: ':warning:'
+  - icon: ':heavy_check_mark:'
     path: src/base/repr.hpp
     title: "\u51FA\u529B\u3092\u305D\u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\u30E9\
       \u30AF\u30BF\u306B\u4F7F\u3048\u308B\u6587\u5B57\u5217\u5316 (repr)"
@@ -39,6 +39,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj/alds1-4-d.test.cpp
     title: test/aoj/alds1-4-d.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl-4-a.test.cpp
+    title: test/aoj/dsl-4-a.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/dsl-5-a.test.cpp
     title: test/aoj/dsl-5-a.test.cpp
@@ -69,6 +72,24 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj/ntl-1-e.test.cpp
     title: test/aoj/ntl-1-e.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/container-func-member.test.cpp
+    title: test/unittest/container-func-member.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/container-func.test.cpp
+    title: test/unittest/container-func.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/functions.test.cpp
+    title: test/unittest/functions.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/repr.test.cpp
+    title: test/unittest/repr.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/rolling-hash.test.cpp
+    title: test/unittest/rolling-hash.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/vector-func.test.cpp
+    title: test/unittest/vector-func.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/enumerate-palindromes.test.cpp
     title: test/yosupo/enumerate-palindromes.test.cpp
@@ -198,10 +219,17 @@ data:
   timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/vector-func.test.cpp
+  - test/unittest/repr.test.cpp
+  - test/unittest/functions.test.cpp
+  - test/unittest/container-func-member.test.cpp
+  - test/unittest/rolling-hash.test.cpp
+  - test/unittest/container-func.test.cpp
   - test/aoj/1160.test.cpp
   - test/aoj/0022.test.cpp
   - test/aoj/alds1-1-b.test.cpp
   - test/aoj/itp1-4-d.test.cpp
+  - test/aoj/dsl-4-a.test.cpp
   - test/aoj/itp2-5-a.1.test.cpp
   - test/aoj/itp2-3-c.test.cpp
   - test/aoj/itp2-5-b.test.cpp

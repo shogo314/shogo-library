@@ -26,9 +26,9 @@ data:
     - https://nyaannyaan.github.io/library/modulo/arbitrary-mod-binomial.hpp
   bundledCode: "#line 2 \"src/math/combinatorics.hpp\"\n\n/**\n * @file combinatorics.hpp\n\
     \ * @brief \u7D44\u307F\u5408\u308F\u305B\n */\n\n#include <cassert>\n#include\
-    \ <vector>\n#line 2 \"src/math/number-theory.hpp\"\n\n/**\n * @file number-theory.hpp\n\
-    \ * @brief \u6570\u8AD6 (\u9006\u5143\u3001\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\
-    \u3001\u7573\u307F\u8FBC\u307F\u306A\u3069)\n */\n\n#include <numeric>\n#line\
+    \ <numeric>\n#include <vector>\n#line 2 \"src/math/number-theory.hpp\"\n\n/**\n\
+    \ * @file number-theory.hpp\n * @brief \u6570\u8AD6 (\u9006\u5143\u3001\u4E2D\u56FD\
+    \u5270\u4F59\u5B9A\u7406\u3001\u7573\u307F\u8FBC\u307F\u306A\u3069)\n */\n\n#line\
     \ 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\
     \u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\
     \u30E9\u30B9\n */\n\n#include <iostream>\n#include <utility>\n#include <limits>\n\
@@ -105,37 +105,38 @@ data:
     \ (m_value == Modint::mod()) {\n            m_value = 0;\n        }\n        return\
     \ static_cast<Modint&>(*this);\n    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\
     \u3044\u308B\u5024\u3092\u30A4\u30F3\u30AF\u30EA\u30E1\u30F3\u30C8\u3057\u3066\
+    \u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @return \u30A4\
+    \u30F3\u30AF\u30EA\u30E1\u30F3\u30C8\u3059\u308B\u524D\u306E\u5024\n    constexpr\
+    \ Modint operator++(int) noexcept {\n        auto x = static_cast<const Modint&>(*this);\n\
+    \        ++*this;\n        return x;\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u3092\u30C7\u30AF\u30EA\u30E1\u30F3\u30C8\u3057\u3066\
     \u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @return @c *this\n\
-    \    constexpr Modint operator++(int) noexcept {\n        auto x = static_cast<const\
-    \ Modint&>(*this);\n        ++*this;\n        return x;\n    }\n\n    /// @brief\
-    \ \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092\u30C7\u30AF\u30EA\u30E1\u30F3\
-    \u30C8\u3057\u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n   \
-    \ /// @return @c *this\n    constexpr Modint& operator--() noexcept {\n      \
-    \  if (m_value == 0) {\n            m_value = Modint::mod();\n        }\n    \
-    \    --m_value;\n        return static_cast<Modint&>(*this);\n    }\n\n    ///\
-    \ @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092\u30C7\u30AF\u30EA\u30E1\
-    \u30F3\u30C8\u3057\u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\
-    \n    /// @return @c *this\n    constexpr Modint operator--(int) noexcept {\n\
-    \        auto x = static_cast<const Modint&>(*this);\n        --*this;\n     \
-    \   return x;\n    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\
-    \u306B @c x \u306E\u6301\u3064\u5024\u3092\u8DB3\u3057\u3066\u3001\u5270\u4F59\
-    \u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @param x \u8DB3\u3059\u6570\n  \
-    \  /// @return @c *this\n    constexpr Modint& operator+=(const Modint& x) noexcept\
-    \ {\n        m_value += x.m_value;\n        if (m_value >= Modint::mod()) {\n\
-    \            m_value -= Modint::mod();\n        }\n        return static_cast<Modint&>(*this);\n\
-    \    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u304B\u3089\
-    \ @c x \u306E\u6301\u3064\u5024\u3092\u5F15\u3044\u3066\u3001\u5270\u4F59\u3092\
-    \u53D6\u308A\u307E\u3059\u3002\n    /// @param x \u5F15\u304F\u6570\n    /// @return\
-    \ @c *this\n    constexpr Modint& operator-=(const Modint& x) noexcept {\n   \
-    \     m_value -= x.m_value;\n        if (m_value >= Modint::mod()) {\n       \
-    \     m_value += Modint::mod();\n        }\n        return static_cast<Modint&>(*this);\n\
-    \    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u306B @c x\
-    \ \u306E\u6301\u3064\u5024\u3092\u639B\u3051\u3066\u3001\u5270\u4F59\u3092\u53D6\
-    \u308A\u307E\u3059\u3002\n    /// @param x \u639B\u3051\u308B\u6570\n    /// @return\
-    \ @c *this\n    constexpr Modint& operator*=(const Modint& x) noexcept {\n   \
-    \     m_value = static_cast<value_type>(static_cast<std::uint64_t>(m_value) *\
-    \ x.m_value % Modint::mod());\n        return static_cast<Modint&>(*this);\n \
-    \   }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092 @c x\
+    \    constexpr Modint& operator--() noexcept {\n        if (m_value == 0) {\n\
+    \            m_value = Modint::mod();\n        }\n        --m_value;\n       \
+    \ return static_cast<Modint&>(*this);\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u3092\u30C7\u30AF\u30EA\u30E1\u30F3\u30C8\u3057\u3066\
+    \u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @return \u30C7\
+    \u30AF\u30EA\u30E1\u30F3\u30C8\u3059\u308B\u524D\u306E\u5024\n    constexpr Modint\
+    \ operator--(int) noexcept {\n        auto x = static_cast<const Modint&>(*this);\n\
+    \        --*this;\n        return x;\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u306B @c x \u306E\u6301\u3064\u5024\u3092\u8DB3\u3057\
+    \u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @param x\
+    \ \u8DB3\u3059\u6570\n    /// @return @c *this\n    constexpr Modint& operator+=(const\
+    \ Modint& x) noexcept {\n        m_value += x.m_value;\n        if (m_value >=\
+    \ Modint::mod()) {\n            m_value -= Modint::mod();\n        }\n       \
+    \ return static_cast<Modint&>(*this);\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u304B\u3089 @c x \u306E\u6301\u3064\u5024\u3092\u5F15\
+    \u3044\u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @param\
+    \ x \u5F15\u304F\u6570\n    /// @return @c *this\n    constexpr Modint& operator-=(const\
+    \ Modint& x) noexcept {\n        m_value -= x.m_value;\n        if (m_value >=\
+    \ Modint::mod()) {\n            m_value += Modint::mod();\n        }\n       \
+    \ return static_cast<Modint&>(*this);\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u306B @c x \u306E\u6301\u3064\u5024\u3092\u639B\u3051\
+    \u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @param x\
+    \ \u639B\u3051\u308B\u6570\n    /// @return @c *this\n    constexpr Modint& operator*=(const\
+    \ Modint& x) noexcept {\n        m_value = static_cast<value_type>(static_cast<std::uint64_t>(m_value)\
+    \ * x.m_value % Modint::mod());\n        return static_cast<Modint&>(*this);\n\
+    \    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092 @c x\
     \ \u306E\u6301\u3064\u5024\u3067\u5272\u3063\u3066\u3001\u5270\u4F59\u3092\u53D6\
     \u308A\u307E\u3059\u3002\n    /// @remark \u6642\u9593\u8A08\u7B97\u91CF\uFF1A\
     \ @f$O(\\log x)@f$\n    /// @param x \u5272\u308B\u6570\n    /// @return @c *this\n\
@@ -413,7 +414,7 @@ data:
     \ * (c1[i] - y0)).value();\n        int y2 = (NTT::imod01 * (c2[i] - y0) - NTT::imod1\
     \ * y1).value();\n        __int128_t tmp = (__int128_t)mod01 * y2 + (__int128_t)mod0\
     \ * y1 + y0;\n        if(tmp < (mod012 >> 1)) res[i] = tmp;\n        else res[i]\
-    \ = tmp - mod012;\n    }\n    return res;\n}\n#line 11 \"src/math/combinatorics.hpp\"\
+    \ = tmp - mod012;\n    }\n    return res;\n}\n#line 12 \"src/math/combinatorics.hpp\"\
     \n\n/**\n * @brief \u7D44\u307F\u5408\u308F\u305B\n */\ntemplate <typename Modint>\n\
     class Combination {\n    static std::vector<Modint> fact, inv_fact;\n    static\
     \ long long cached_mod; // dynamic_modint \u3067 mod \u304C\u5909\u308F\u3063\u305F\
@@ -468,7 +469,7 @@ data:
     \ (n < 0 || r < 0) return 0;\n        if (n == 0 && r == 0) return 1;\n      \
     \  return C_loop(n + r - 1, r);\n    }\n\n    /**\n     * @brief nCr \u3092 Lucas\
     \ \u306E\u5B9A\u7406\u3092\u7528\u3044\u3066\u8A08\u7B97\u3059\u308B\n     * @param\
-    \ n\n     * @param r\n     * @return nCr\n     * @note expand(Mod), O(log(r))\n\
+    \ n\n     * @param r\n     * @return nCr\n     * @note extend(Mod), O(log(r))\n\
     \     */\n    inline static Modint C_lucas(long long n, long long r) {\n     \
     \   if (r < 0 || n < r) return 0;\n        if (r == 0 || n == r) return 1;\n \
     \       Modint res = 1;\n        while(r > 0) {\n            int ni = n % Modint::mod(),\
@@ -498,75 +499,76 @@ data:
     \ long)ans * fact_p[n % pq] % pq;\n            ans = (long long)ans * inv_fact_p[m\
     \ % pq] % pq;\n            ans = (long long)ans * inv_fact_p[r % pq] % pq;\n \
     \           n /= p;\n            m /= p;\n            r /= p;\n            epsilon.push_back(n\
-    \ - m - r);\n        }\n        if(delta == -1 && epsilon.size() >= q && accumulate(epsilon.begin()+q-1,\
-    \ epsilon.end(), 0) % 2 == 1) ans = pq - ans;\n        if(ans == pq) ans = 0;\n\
-    \        int e = accumulate(epsilon.begin(), epsilon.end(), 0);\n        if(e\
-    \ >= q) ans = 0;\n        else {\n            for(int i = 0; i < e; i++) {\n \
-    \               ans = (long long)ans * p % pq;\n            }\n        }\n   \
-    \     return ans;\n    }\n};\n"
+    \ - m - r);\n        }\n        if(delta == -1 && (int)epsilon.size() >= q &&\
+    \ std::accumulate(epsilon.begin()+q-1, epsilon.end(), 0) % 2 == 1) ans = pq -\
+    \ ans;\n        if(ans == pq) ans = 0;\n        int e = std::accumulate(epsilon.begin(),\
+    \ epsilon.end(), 0);\n        if(e >= q) ans = 0;\n        else {\n          \
+    \  for(int i = 0; i < e; i++) {\n                ans = (long long)ans * p % pq;\n\
+    \            }\n        }\n        return ans;\n    }\n};\n"
   code: "#pragma once\n\n/**\n * @file combinatorics.hpp\n * @brief \u7D44\u307F\u5408\
-    \u308F\u305B\n */\n\n#include <cassert>\n#include <vector>\n#include \"number-theory.hpp\"\
-    \n\n/**\n * @brief \u7D44\u307F\u5408\u308F\u305B\n */\ntemplate <typename Modint>\n\
-    class Combination {\n    static std::vector<Modint> fact, inv_fact;\n    static\
-    \ long long cached_mod; // dynamic_modint \u3067 mod \u304C\u5909\u308F\u3063\u305F\
-    \u3089\u524D\u8A08\u7B97\u3092\u3084\u308A\u76F4\u3059\n\npublic:\n    /**\n \
-    \    * @brief n \u307E\u3067\u306E\u968E\u4E57\u3068\u305D\u306E\u9006\u5143\u3092\
-    \u524D\u8A08\u7B97\u3059\u308B\n     * @param n\n     * @note O(n) \u5FC5\u8981\
-    \u306B\u306A\u3063\u305F\u3089\u547C\u3073\u51FA\u3055\u308C\u308B\u304C\u3001\
-    \u4E88\u3081\u5927\u304D\u306An\u306B\u5BFE\u3057\u3066\u547C\u3073\u51FA\u3057\
-    \u3066\u304A\u304F\u3053\u3068\u3067\u9006\u5143\u306E\u76F4\u63A5\u8A08\u7B97\
-    \u3092\u6E1B\u3089\u305B\u308B\n     */\n    inline static void extend(int n)\
-    \ {\n        if (cached_mod != (long long)Modint::mod()) {\n            cached_mod\
-    \ = Modint::mod();\n            fact = {1, 1};\n            inv_fact = {1, 1};\n\
-    \        }\n        int m = fact.size();\n        if (n < m) return;\n       \
-    \ fact.resize(n + 1);\n        inv_fact.resize(n + 1);\n        for (int i = m;\
-    \ i <= n; ++i) {\n            fact[i] = fact[i - 1] * i;\n        }\n        inv_fact[n]\
-    \ = fact[n].inv();\n        for (int i = n; i > m; --i) {\n            inv_fact[i\
-    \ - 1] = inv_fact[i] * i;\n        }\n    }\n    \n    /**\n     * @brief n \u306E\
-    \u968E\u4E57\u3092\u8FD4\u3059\n     * @param n\n     * @return n!\n     * @note\
-    \ extend(n), O(1)\n     */\n    inline static Modint factorial(int n) {\n    \
-    \    extend(n);\n        return fact[n];\n    }\n    /**\n     * @brief n \u306E\
-    \u968E\u4E57\u306E\u9006\u5143\u3092\u8FD4\u3059\n     * @param n\n     * @return\
-    \ n!^-1\n     * @note extend(n), O(1)\n     */\n    inline static Modint inverse_factorial(int\
-    \ n) {\n        extend(n);\n        return inv_fact[n];\n    }\n    /**\n    \
-    \ * @brief n \u306E\u9006\u5143\u3092\u8FD4\u3059\n     * @param n\n     * @return\
-    \ n^-1\n     * @note extend(n), O(1)\n     */\n    inline static Modint inverse(int\
-    \ n) {\n        assert(n > 0);\n        extend(n);\n        return inv_fact[n]\
-    \ * fact[n - 1];\n    }\n\n    /**\n     * @brief nPr \u3092\u8FD4\u3059\n   \
-    \  * @param n\n     * @param r\n     * @return nPr\n     * @note extend(n), O(1)\n\
-    \     */\n    inline static Modint P(int n, int r) {\n        if (r < 0 || n <\
-    \ r) return 0;\n        extend(n);\n        return fact[n] * inv_fact[n - r];\n\
-    \    }\n    /**\n     * @brief nCr \u3092\u8FD4\u3059\n     * @param n\n     *\
-    \ @param r\n     * @return nCr\n     * @note extend(n), O(1)\n     */\n    inline\
-    \ static Modint C(int n, int r) {\n        if (r < 0 || n < r) return 0;\n   \
-    \     extend(n);\n        return fact[n] * inv_fact[r] * inv_fact[n - r];\n  \
-    \  }\n    /**\n     * @brief nHr \u3092\u8FD4\u3059\n     * @param n\n     * @param\
-    \ r\n     * @return nHr\n     * @note extend(n+r-1), O(1)\n     */\n    inline\
-    \ static Modint H(int n, int r) {\n        if (n < 0 || r < 0) return 0;\n   \
-    \     if (n == 0 && r == 0) return 1;\n        return C(n + r - 1, r);\n    }\n\
-    \n    /**\n     * @brief nPr \u3092\u5B9A\u7FA9\u3069\u304A\u308A\u8A08\u7B97\u3059\
-    \u308B\n     * @param n\n     * @param r\n     * @return nPr\n     * @note O(r)\n\
-    \     */\n    inline static Modint P_loop(long long n, int r) {\n        if (r\
-    \ < 0 || n < r) return 0;\n        Modint res = 1;\n        for (int i = 0; i\
-    \ < r; ++i) {\n            res *= n - i;\n        }\n        return res;\n   \
-    \ }\n    /**\n     * @brief nCr \u3092\u5B9A\u7FA9\u3069\u304A\u308A\u8A08\u7B97\
-    \u3059\u308B\n     * @param n\n     * @param r\n     * @return nCr\n     * @note\
-    \ O(min(r, n-r))\n     */\n    inline static Modint C_loop(long long n, long long\
-    \ r) {\n        if (r < 0 || n < r) return 0;\n        if(r > n - r) r = n - r;\n\
-    \        extend(r);\n        return P_loop(n, r) * inv_fact[r];\n    }\n    /**\n\
-    \     * @brief nHr \u3092\u5B9A\u7FA9\u3069\u304A\u308A\u8A08\u7B97\u3059\u308B\
-    \n     * @param n\n     * @param r\n     * @return nHr\n     * @note O(r)\n  \
-    \   */\n    inline static Modint H_loop(long long n, long long r) {\n        if\
-    \ (n < 0 || r < 0) return 0;\n        if (n == 0 && r == 0) return 1;\n      \
-    \  return C_loop(n + r - 1, r);\n    }\n\n    /**\n     * @brief nCr \u3092 Lucas\
-    \ \u306E\u5B9A\u7406\u3092\u7528\u3044\u3066\u8A08\u7B97\u3059\u308B\n     * @param\
-    \ n\n     * @param r\n     * @return nCr\n     * @note expand(Mod), O(log(r))\n\
-    \     */\n    inline static Modint C_lucas(long long n, long long r) {\n     \
-    \   if (r < 0 || n < r) return 0;\n        if (r == 0 || n == r) return 1;\n \
-    \       Modint res = 1;\n        while(r > 0) {\n            int ni = n % Modint::mod(),\
-    \ ri = r % Modint::mod();\n            if (ni < ri) return 0;\n            res\
-    \ *= C(ni, ri);\n            n /= Modint::mod();\n            r /= Modint::mod();\n\
-    \        }\n        return res;\n    }\n};\n\ntemplate <typename Modint>\nstd::vector<Modint>\
+    \u308F\u305B\n */\n\n#include <cassert>\n#include <numeric>\n#include <vector>\n\
+    #include \"number-theory.hpp\"\n\n/**\n * @brief \u7D44\u307F\u5408\u308F\u305B\
+    \n */\ntemplate <typename Modint>\nclass Combination {\n    static std::vector<Modint>\
+    \ fact, inv_fact;\n    static long long cached_mod; // dynamic_modint \u3067 mod\
+    \ \u304C\u5909\u308F\u3063\u305F\u3089\u524D\u8A08\u7B97\u3092\u3084\u308A\u76F4\
+    \u3059\n\npublic:\n    /**\n     * @brief n \u307E\u3067\u306E\u968E\u4E57\u3068\
+    \u305D\u306E\u9006\u5143\u3092\u524D\u8A08\u7B97\u3059\u308B\n     * @param n\n\
+    \     * @note O(n) \u5FC5\u8981\u306B\u306A\u3063\u305F\u3089\u547C\u3073\u51FA\
+    \u3055\u308C\u308B\u304C\u3001\u4E88\u3081\u5927\u304D\u306An\u306B\u5BFE\u3057\
+    \u3066\u547C\u3073\u51FA\u3057\u3066\u304A\u304F\u3053\u3068\u3067\u9006\u5143\
+    \u306E\u76F4\u63A5\u8A08\u7B97\u3092\u6E1B\u3089\u305B\u308B\n     */\n    inline\
+    \ static void extend(int n) {\n        if (cached_mod != (long long)Modint::mod())\
+    \ {\n            cached_mod = Modint::mod();\n            fact = {1, 1};\n   \
+    \         inv_fact = {1, 1};\n        }\n        int m = fact.size();\n      \
+    \  if (n < m) return;\n        fact.resize(n + 1);\n        inv_fact.resize(n\
+    \ + 1);\n        for (int i = m; i <= n; ++i) {\n            fact[i] = fact[i\
+    \ - 1] * i;\n        }\n        inv_fact[n] = fact[n].inv();\n        for (int\
+    \ i = n; i > m; --i) {\n            inv_fact[i - 1] = inv_fact[i] * i;\n     \
+    \   }\n    }\n    \n    /**\n     * @brief n \u306E\u968E\u4E57\u3092\u8FD4\u3059\
+    \n     * @param n\n     * @return n!\n     * @note extend(n), O(1)\n     */\n\
+    \    inline static Modint factorial(int n) {\n        extend(n);\n        return\
+    \ fact[n];\n    }\n    /**\n     * @brief n \u306E\u968E\u4E57\u306E\u9006\u5143\
+    \u3092\u8FD4\u3059\n     * @param n\n     * @return n!^-1\n     * @note extend(n),\
+    \ O(1)\n     */\n    inline static Modint inverse_factorial(int n) {\n       \
+    \ extend(n);\n        return inv_fact[n];\n    }\n    /**\n     * @brief n \u306E\
+    \u9006\u5143\u3092\u8FD4\u3059\n     * @param n\n     * @return n^-1\n     * @note\
+    \ extend(n), O(1)\n     */\n    inline static Modint inverse(int n) {\n      \
+    \  assert(n > 0);\n        extend(n);\n        return inv_fact[n] * fact[n - 1];\n\
+    \    }\n\n    /**\n     * @brief nPr \u3092\u8FD4\u3059\n     * @param n\n   \
+    \  * @param r\n     * @return nPr\n     * @note extend(n), O(1)\n     */\n   \
+    \ inline static Modint P(int n, int r) {\n        if (r < 0 || n < r) return 0;\n\
+    \        extend(n);\n        return fact[n] * inv_fact[n - r];\n    }\n    /**\n\
+    \     * @brief nCr \u3092\u8FD4\u3059\n     * @param n\n     * @param r\n    \
+    \ * @return nCr\n     * @note extend(n), O(1)\n     */\n    inline static Modint\
+    \ C(int n, int r) {\n        if (r < 0 || n < r) return 0;\n        extend(n);\n\
+    \        return fact[n] * inv_fact[r] * inv_fact[n - r];\n    }\n    /**\n   \
+    \  * @brief nHr \u3092\u8FD4\u3059\n     * @param n\n     * @param r\n     * @return\
+    \ nHr\n     * @note extend(n+r-1), O(1)\n     */\n    inline static Modint H(int\
+    \ n, int r) {\n        if (n < 0 || r < 0) return 0;\n        if (n == 0 && r\
+    \ == 0) return 1;\n        return C(n + r - 1, r);\n    }\n\n    /**\n     * @brief\
+    \ nPr \u3092\u5B9A\u7FA9\u3069\u304A\u308A\u8A08\u7B97\u3059\u308B\n     * @param\
+    \ n\n     * @param r\n     * @return nPr\n     * @note O(r)\n     */\n    inline\
+    \ static Modint P_loop(long long n, int r) {\n        if (r < 0 || n < r) return\
+    \ 0;\n        Modint res = 1;\n        for (int i = 0; i < r; ++i) {\n       \
+    \     res *= n - i;\n        }\n        return res;\n    }\n    /**\n     * @brief\
+    \ nCr \u3092\u5B9A\u7FA9\u3069\u304A\u308A\u8A08\u7B97\u3059\u308B\n     * @param\
+    \ n\n     * @param r\n     * @return nCr\n     * @note O(min(r, n-r))\n     */\n\
+    \    inline static Modint C_loop(long long n, long long r) {\n        if (r <\
+    \ 0 || n < r) return 0;\n        if(r > n - r) r = n - r;\n        extend(r);\n\
+    \        return P_loop(n, r) * inv_fact[r];\n    }\n    /**\n     * @brief nHr\
+    \ \u3092\u5B9A\u7FA9\u3069\u304A\u308A\u8A08\u7B97\u3059\u308B\n     * @param\
+    \ n\n     * @param r\n     * @return nHr\n     * @note O(r)\n     */\n    inline\
+    \ static Modint H_loop(long long n, long long r) {\n        if (n < 0 || r < 0)\
+    \ return 0;\n        if (n == 0 && r == 0) return 1;\n        return C_loop(n\
+    \ + r - 1, r);\n    }\n\n    /**\n     * @brief nCr \u3092 Lucas \u306E\u5B9A\u7406\
+    \u3092\u7528\u3044\u3066\u8A08\u7B97\u3059\u308B\n     * @param n\n     * @param\
+    \ r\n     * @return nCr\n     * @note extend(Mod), O(log(r))\n     */\n    inline\
+    \ static Modint C_lucas(long long n, long long r) {\n        if (r < 0 || n <\
+    \ r) return 0;\n        if (r == 0 || n == r) return 1;\n        Modint res =\
+    \ 1;\n        while(r > 0) {\n            int ni = n % Modint::mod(), ri = r %\
+    \ Modint::mod();\n            if (ni < ri) return 0;\n            res *= C(ni,\
+    \ ri);\n            n /= Modint::mod();\n            r /= Modint::mod();\n   \
+    \     }\n        return res;\n    }\n};\n\ntemplate <typename Modint>\nstd::vector<Modint>\
     \ Combination<Modint>::fact{1, 1};\ntemplate <typename Modint>\nstd::vector<Modint>\
     \ Combination<Modint>::inv_fact{1, 1};\ntemplate <typename Modint>\nlong long\
     \ Combination<Modint>::cached_mod = 0;\n\n/**\n * @brief mod p^q \u3067\u306E\u4E8C\
@@ -590,27 +592,64 @@ data:
     \ long)ans * fact_p[n % pq] % pq;\n            ans = (long long)ans * inv_fact_p[m\
     \ % pq] % pq;\n            ans = (long long)ans * inv_fact_p[r % pq] % pq;\n \
     \           n /= p;\n            m /= p;\n            r /= p;\n            epsilon.push_back(n\
-    \ - m - r);\n        }\n        if(delta == -1 && epsilon.size() >= q && accumulate(epsilon.begin()+q-1,\
-    \ epsilon.end(), 0) % 2 == 1) ans = pq - ans;\n        if(ans == pq) ans = 0;\n\
-    \        int e = accumulate(epsilon.begin(), epsilon.end(), 0);\n        if(e\
-    \ >= q) ans = 0;\n        else {\n            for(int i = 0; i < e; i++) {\n \
-    \               ans = (long long)ans * p % pq;\n            }\n        }\n   \
-    \     return ans;\n    }\n};\n"
+    \ - m - r);\n        }\n        if(delta == -1 && (int)epsilon.size() >= q &&\
+    \ std::accumulate(epsilon.begin()+q-1, epsilon.end(), 0) % 2 == 1) ans = pq -\
+    \ ans;\n        if(ans == pq) ans = 0;\n        int e = std::accumulate(epsilon.begin(),\
+    \ epsilon.end(), 0);\n        if(e >= q) ans = 0;\n        else {\n          \
+    \  for(int i = 0; i < e; i++) {\n                ans = (long long)ans * p % pq;\n\
+    \            }\n        }\n        return ans;\n    }\n};\n"
   dependsOn:
   - src/math/number-theory.hpp
   - src/math/modint.hpp
   isVerificationFile: false
   path: src/math/combinatorics.hpp
   requiredBy: []
-  timestamp: '2026-10-12 19:23:31+09:00'
+  timestamp: '2026-10-12 20:24:58+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/yosupo/binomial-coefficient.test.cpp
   - test/yukicoder/117.test.cpp
 documentation_of: src/math/combinatorics.hpp
 layout: document
-redirect_from:
-- /library/src/math/combinatorics.hpp
-- /library/src/math/combinatorics.hpp.html
 title: "\u7D44\u307F\u5408\u308F\u305B"
 ---
+
+二項係数などを mod で求めます。
+
+```cpp
+using mint = static_modint<998244353>;
+using C = Combination<mint>;
+mint a = C::C(5, 2);                     // 10
+mint b = C::H(3, 2);                     // 6
+mint c = C::C_loop(1000000000000LL, 2);  // n が大きくても r が小さければ使える
+
+CombinationPQ cpq(2, 3);                 // mod 2^3 = 8
+int d = cpq.C(5, 2);                     // 10 mod 8 = 2
+```
+
+## `Combination<Modint>`
+
+static メンバ関数だけのクラスです。階乗とその逆元を必要になった分だけ前計算して使い回します。mod は素数で、使う $n$ より大きいこと。`dynamic_modint` で mod を変えた場合は前計算をやり直します。
+
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `factorial(n)` | $n!$ | 前計算 $O(n)$、以降 $O(1)$ |
+| `inverse_factorial(n)` | $(n!)^{-1}$ | 前計算 $O(n)$、以降 $O(1)$ |
+| `inverse(n)` | $n^{-1}$ ($n > 0$) | 前計算 $O(n)$、以降 $O(1)$ |
+| `P(n, r)` | ${}_n P_r$ (範囲外なら 0) | 前計算 $O(n)$、以降 $O(1)$ |
+| `C(n, r)` | ${}_n C_r$ (範囲外なら 0) | 前計算 $O(n)$、以降 $O(1)$ |
+| `H(n, r)` | ${}_n H_r = \binom{n+r-1}{r}$ | 前計算 $O(n + r)$、以降 $O(1)$ |
+| `P_loop(n, r)` | ${}_n P_r$ を定義どおり計算 (`n` は `long long`) | $O(r)$ |
+| `C_loop(n, r)` | ${}_n C_r$ を定義どおり計算 (`n`、`r` は `long long`) | $O(\min(r, n - r))$ |
+| `H_loop(n, r)` | ${}_n H_r$ を定義どおり計算 | $O(r)$ |
+| `C_lucas(n, r)` | ${}_n C_r$ を Lucas の定理で計算 (`n` が mod 以上でもよい) | 前計算 $O(\mathrm{mod})$、以降 $O(\log n)$ |
+| `extend(n)` | $n$ までの階乗を前計算しておく | $O(n)$ |
+
+## `CombinationPQ`
+
+素数 $p$ について、${}_n C_r \bmod p^q$ を求めます。素数でない mod の二項係数は、mod を素因数分解して各 $p^q$ で求め、[中国剰余定理](number-theory.hpp) でまとめます。
+
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `CombinationPQ(p, q)` | 前計算 | $O(p^q)$ |
+| `C(n, r)` | ${}_n C_r \bmod p^q$ (`int` で返す) | $O(\log n)$ |

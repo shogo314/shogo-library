@@ -22,35 +22,43 @@ data:
     \u70B9\u304C\u9023\u7D50\u304B\u306E\u5224\u5B9A\u300D\u3092\u3059\u308B\n */\n\
     struct UnionFind {\n   protected:\n    int _n;\n    // \u8CA0\u306A\u3089\u30B5\
     \u30A4\u30BA\u3001\u975E\u8CA0\u306A\u3089\u89AA\n    std::vector<int> parent_or_size;\n\
-    \n   public:\n    UnionFind() : _n(0) {}\n    explicit UnionFind(int n) : _n(n),\
-    \ parent_or_size(n, -1) {}\n\n    /**\n     * @brief \u8FBA(a,b)\u3092\u8DB3\u3059\
-    \n     * @return \u9023\u7D50\u3057\u305F\u3082\u306E\u306E\u4EE3\u8868\u5143\n\
-    \     */\n    int merge(int a, int b) {\n        assert(0 <= a && a < _n);\n \
-    \       assert(0 <= b && b < _n);\n        int x = leader(a), y = leader(b);\n\
-    \        if (x == y) return x;\n        if (-parent_or_size[x] < -parent_or_size[y])\
-    \ std::swap(x, y);\n        parent_or_size[x] += parent_or_size[y];\n        parent_or_size[y]\
-    \ = x;\n        return x;\n    }\n    /**\n     * @brief \u9802\u70B9a,b\u304C\
-    \u9023\u7D50\u304B\u3069\u3046\u304B\n     */\n    bool same(int a, int b) {\n\
-    \        assert(0 <= a && a < _n);\n        assert(0 <= b && b < _n);\n      \
-    \  return leader(a) == leader(b);\n    }\n    /**\n     * @brief \u9802\u70B9\
-    a\u306E\u5C5E\u3059\u308B\u9023\u7D50\u6210\u5206\u306E\u4EE3\u8868\u5143\n  \
-    \   */\n    int leader(int a) {\n        assert(0 <= a && a < _n);\n        if\
-    \ (parent_or_size[a] < 0) return a;\n        int x = a;\n        while (parent_or_size[x]\
-    \ >= 0) {\n            x = parent_or_size[x];\n        }\n        while (parent_or_size[a]\
-    \ >= 0) {\n            int t = parent_or_size[a];\n            parent_or_size[a]\
-    \ = x;\n            a = t;\n        }\n        return x;\n    }\n    /**\n   \
-    \  * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\u6210\u5206\u306E\
-    \u30B5\u30A4\u30BA\n     */\n    int size(int a) {\n        assert(0 <= a && a\
-    \ < _n);\n        return -parent_or_size[leader(a)];\n    }\n    /**\n     * @brief\
-    \ \u30B0\u30E9\u30D5\u3092\u9023\u7D50\u6210\u5206\u306B\u5206\u3051\u3001\u305D\
-    \u306E\u60C5\u5831\u3092\u8FD4\u3059\n     * @return \u300C\u4E00\u3064\u306E\u9023\
-    \u7D50\u6210\u5206\u306E\u9802\u70B9\u756A\u53F7\u306E\u30EA\u30B9\u30C8\u300D\
-    \u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<std::vector<int>> groups()\
-    \ {\n        std::vector<int> leader_buf(_n), group_size(_n);\n        for (int\
-    \ i = 0; i < _n; i++) {\n            leader_buf[i] = leader(i);\n            group_size[leader_buf[i]]++;\n\
-    \        }\n        std::vector<std::vector<int>> result(_n);\n        for (int\
-    \ i = 0; i < _n; i++) {\n            result[i].reserve(group_size[i]);\n     \
-    \   }\n        for (int i = 0; i < _n; i++) {\n            result[leader_buf[i]].push_back(i);\n\
+    \n   public:\n    /**\n     * @brief merge \u306E\u623B\u308A\u5024\n     *\n\
+    \     * if (uf.merge(a, b)) \u3067\u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B\
+    \u3092\u5224\u5B9A\u3067\u304D\u3001\n     * auto [r, merged] = uf.merge(a, b);\
+    \ \u3067\u4EE3\u8868\u5143\u3082\u53D7\u3051\u53D6\u308C\u308B\n     */\n    struct\
+    \ MergeResult {\n        int leader;   //!< \u7D71\u5408\u5F8C\u306E\u4EE3\u8868\
+    \u5143\n        bool merged;  //!< \u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B\
+    \ (\u3082\u3068\u3082\u3068\u540C\u3058\u9023\u7D50\u6210\u5206\u306A\u3089 false)\n\
+    \        explicit operator bool() const { return merged; }\n    };\n\n    UnionFind()\
+    \ : _n(0) {}\n    explicit UnionFind(int n) : _n(n), parent_or_size(n, -1) {}\n\
+    \n    /**\n     * @brief \u8FBA(a,b)\u3092\u8DB3\u3059\n     * @return \u7D71\u5408\
+    \u5F8C\u306E\u4EE3\u8868\u5143\u3068\u3001\u65B0\u3057\u304F\u7D71\u5408\u3057\
+    \u305F\u304B\n     */\n    MergeResult merge(int a, int b) {\n        assert(0\
+    \ <= a && a < _n);\n        assert(0 <= b && b < _n);\n        int x = leader(a),\
+    \ y = leader(b);\n        if (x == y) return {x, false};\n        if (-parent_or_size[x]\
+    \ < -parent_or_size[y]) std::swap(x, y);\n        parent_or_size[x] += parent_or_size[y];\n\
+    \        parent_or_size[y] = x;\n        return {x, true};\n    }\n    /**\n \
+    \    * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\u304B\n    \
+    \ */\n    bool same(int a, int b) {\n        assert(0 <= a && a < _n);\n     \
+    \   assert(0 <= b && b < _n);\n        return leader(a) == leader(b);\n    }\n\
+    \    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\u6210\
+    \u5206\u306E\u4EE3\u8868\u5143\n     */\n    int leader(int a) {\n        assert(0\
+    \ <= a && a < _n);\n        if (parent_or_size[a] < 0) return a;\n        int\
+    \ x = a;\n        while (parent_or_size[x] >= 0) {\n            x = parent_or_size[x];\n\
+    \        }\n        while (parent_or_size[a] >= 0) {\n            int t = parent_or_size[a];\n\
+    \            parent_or_size[a] = x;\n            a = t;\n        }\n        return\
+    \ x;\n    }\n    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\
+    \u7D50\u6210\u5206\u306E\u30B5\u30A4\u30BA\n     */\n    int size(int a) {\n \
+    \       assert(0 <= a && a < _n);\n        return -parent_or_size[leader(a)];\n\
+    \    }\n    /**\n     * @brief \u30B0\u30E9\u30D5\u3092\u9023\u7D50\u6210\u5206\
+    \u306B\u5206\u3051\u3001\u305D\u306E\u60C5\u5831\u3092\u8FD4\u3059\n     * @return\
+    \ \u300C\u4E00\u3064\u306E\u9023\u7D50\u6210\u5206\u306E\u9802\u70B9\u756A\u53F7\
+    \u306E\u30EA\u30B9\u30C8\u300D\u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<std::vector<int>>\
+    \ groups() {\n        std::vector<int> leader_buf(_n), group_size(_n);\n     \
+    \   for (int i = 0; i < _n; i++) {\n            leader_buf[i] = leader(i);\n \
+    \           group_size[leader_buf[i]]++;\n        }\n        std::vector<std::vector<int>>\
+    \ result(_n);\n        for (int i = 0; i < _n; i++) {\n            result[i].reserve(group_size[i]);\n\
+    \        }\n        for (int i = 0; i < _n; i++) {\n            result[leader_buf[i]].push_back(i);\n\
     \        }\n        result.erase(\n            std::remove_if(result.begin(),\
     \ result.end(),\n                           [&](const std::vector<int>& v) { return\
     \ v.empty(); }),\n            result.end());\n        return result;\n    }\n\
@@ -70,7 +78,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/unionfind.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 00:13:34+09:00'
+  timestamp: '2026-10-12 20:50:36+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/unionfind.test.cpp

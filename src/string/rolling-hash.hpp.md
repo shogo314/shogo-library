@@ -72,7 +72,7 @@ data:
     \ constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n#line\
     \ 16 \"src/string/rolling-hash.hpp\"\n\nstruct RHString;\n\n/**\n * @brief \u30ED\
     \u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5\n *\n * \u30D3\u30C3\u30C8\u6F14\
-    \u7B97\u306B\u5BC4\u308B\u9AD8\u901F\u5316\u306E\u305F\u3081\u30CF\u30C3\u30B7\
+    \u7B97\u306B\u3088\u308B\u9AD8\u901F\u5316\u306E\u305F\u3081\u30CF\u30C3\u30B7\
     \u30E5\u306FMOD = 2^61-1\u3067\u8A08\u7B97\u3055\u308C\u308B\n *\n * 10^8\u500B\
     \u304F\u3089\u3044\u306A\u308999%\u306E\u78BA\u7387\u3067\u885D\u7A81\u3059\u308B\
     \u7D44\u304C\u5B58\u5728\u3057\u306A\u3044\n */\nclass RollingHash {\n    constexpr\
@@ -205,7 +205,7 @@ data:
     #include <random>\n#include <cassert>\n#include <string_view>\n#include <type_traits>\n\
     \n#include \"../base/traits.hpp\"\n\nstruct RHString;\n\n/**\n * @brief \u30ED\
     \u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5\n *\n * \u30D3\u30C3\u30C8\u6F14\
-    \u7B97\u306B\u5BC4\u308B\u9AD8\u901F\u5316\u306E\u305F\u3081\u30CF\u30C3\u30B7\
+    \u7B97\u306B\u3088\u308B\u9AD8\u901F\u5316\u306E\u305F\u3081\u30CF\u30C3\u30B7\
     \u30E5\u306FMOD = 2^61-1\u3067\u8A08\u7B97\u3055\u308C\u308B\n *\n * 10^8\u500B\
     \u304F\u3089\u3044\u306A\u308999%\u306E\u78BA\u7387\u3067\u885D\u7A81\u3059\u308B\
     \u7D44\u304C\u5B58\u5728\u3057\u306A\u3044\n */\nclass RollingHash {\n    constexpr\
@@ -338,14 +338,47 @@ data:
   isVerificationFile: false
   path: src/string/rolling-hash.hpp
   requiredBy: []
-  timestamp: '2026-10-12 19:23:31+09:00'
+  timestamp: '2026-10-12 20:24:58+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/yosupo/enumerate-palindromes.test.cpp
 documentation_of: src/string/rolling-hash.hpp
 layout: document
-redirect_from:
-- /library/src/string/rolling-hash.hpp
-- /library/src/string/rolling-hash.hpp.html
 title: "\u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5"
 ---
+
+mod $2^{61} - 1$ のローリングハッシュです。基数は省略するとランダムに選ばれます。
+
+```cpp
+RollingHash rh;
+std::string s = "abcabc";
+auto h = rh.build(s);                          // 接頭辞のハッシュ
+bool eq = rh.query(h, 0, 3) == rh.query(h, 3, 6);  // "abc" == "abc": true
+
+RHString t(rh, "ab"), u(rh, "a");
+bool p = (t + u).is_palindrome();              // "aba" は回文: true
+```
+
+文字列だけでなく、整数の配列などにも使えます。`char` は 0〜255 として、負の整数は mod で正規化して扱います。
+
+## `RollingHash`
+
+| メンバ | 説明 | 計算量 |
+|---|---|---|
+| `RollingHash(base = 0)` | 基数を指定して作る (0 ならランダム) | $O(1)$ |
+| `build(s)` / `build(first, last)` | 長さ $n + 1$ の配列 `h` (`h[i]` は先頭 `i` 文字のハッシュ) | $O(n)$ |
+| `query(h, l, r)` | $[l, r)$ のハッシュ | $O(1)$ (初回は $O(r - l)$) |
+
+## `RHString`
+
+ハッシュ値と長さだけを持つ文字列型です。連結と比較を $O(1)$ で行えます。同じ `RollingHash` から作ったもの同士でしか演算できません。
+
+| メンバ | 説明 | 計算量 |
+|---|---|---|
+| `RHString(rh)` | 空文字列 | $O(1)$ |
+| `RHString(rh, s)` | 文字列・`vector` などの列、または 1 文字 (`char` や整数) から作る | $O(n)$ |
+| `t + u`、`t += u` | 連結 | $O(1)$ (初回は長さ分) |
+| `t == u`、`t != u` | 一致判定 | $O(1)$ |
+| `t = s`、`t.assign(s)` | 再代入 | $O(n)$ |
+| `t.is_palindrome()` | 回文か | $O(1)$ |
+| `t.size()`、`t.empty()`、`t.clear()` | 長さ・空か・空にする | $O(1)$ |

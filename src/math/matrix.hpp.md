@@ -24,34 +24,34 @@ data:
   bundledCode: "#line 2 \"src/math/matrix.hpp\"\n\n/**\n * @file matrix.hpp\n * @brief\
     \ \u884C\u5217\n */\n\n#include <vector>\n#include <string>\n#include <algorithm>\n\
     #include <valarray>\n#include <cassert>\n#include <type_traits>\n#include <initializer_list>\n\
-    \nnamespace matrix {\n    template <typename T>\n    struct OperatorPropertyDefault\
-    \ {\n        constexpr static T zero() { return T(0); }\n        constexpr static\
-    \ T add(const T &a, const T &b) { return a + b; }\n        constexpr static T\
-    \ neg(const T &a) { return -a; }\n        constexpr static T one() { return T(1);\
-    \ }\n        constexpr static T mul(const T &a, const T &b) { return a * b; }\n\
-    \        constexpr static T inv(const T &a) { return T(1) / a; }\n    };\n}\n\n\
-    /**\n * @brief \u884C\u5217\n * @tparam T \u578B \u884C\u5217(\u30B0\u30EA\u30C3\
-    \u30C9)\u306E\u8981\u7D20\u3068\u306A\u308Bint\u3084char\n * @tparam OperatorProperty\
-    \ \u884C\u5217\u306E\u8981\u7D20\u306E\u6F14\u7B97\u3092\u5B9A\u7FA9\u3059\u308B\
-    \u69CB\u9020\u4F53 0,1\u3068+,*\u306A\u3089\u7701\u7565\u53EF\n *\n * @note\n\
-    \ * OperatorProperty\u306E\u4F8B\uFF08\u6574\u6570\u306Exor\u3068and\u306B\u3088\
-    \u308B\u74B0\uFF09\n * @code\n * struct XorOperatorProperty {\n *     constexpr\
-    \ static int zero() { return 0; }\n *     constexpr static int add(const int &a,\
-    \ const int &b) { return a ^ b; }\n *     constexpr static int neg(const int &a)\
-    \ { return a; }\n *     constexpr static int one() { return 1; }\n *     constexpr\
-    \ static int mul(const int &a, const int &b) { return a & b; }\n * };\n * @endcode\n\
-    \ * constexpr\u3067\u3042\u308B\u5FC5\u8981\u306F\u306A\u304F\u3001\u307E\u305F\
-    inv\u306A\u3069\u4F7F\u308F\u306A\u3044\u3082\u306E\u306F\u5B9A\u7FA9\u3057\u306A\
-    \u304F\u3066\u3082\u3088\u3044\uFF08\u5FC5\u8981\u306A\u3082\u306E\u304C\u306A\
-    \u304B\u3063\u305F\u3089\u30B3\u30F3\u30D1\u30A4\u30EB\u30A8\u30E9\u30FC\u304C\
-    \u767A\u751F\u3059\u308B\uFF09\n */\ntemplate<class T, class OperatorProperty\
-    \ = matrix::OperatorPropertyDefault<T>> struct Matrix {\n    int n, m;\n    std::vector<std::vector<T>>\
-    \ v;\n\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n  \
-    \   * @param v \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u5143\u3068\u306A\u308B\
-    \ vector<string> \u3084 vector<vector<T>>\n     * @return Matrix\n     */\n  \
-    \  template <typename Iterable>\n    Matrix(const std::vector<Iterable>& v_) noexcept\
-    \ : n(v_.size()), m(v_.size() == 0 ? 0 : v_[0].size()) {\n        v.resize(n);\n\
-    \        for(int i = 0; i < n; i++) {\n            v[i].assign(v_[i].begin(),\
+    #include <cmath>\n#include <utility>\n\nnamespace matrix {\n    template <typename\
+    \ T>\n    struct OperatorPropertyDefault {\n        constexpr static T zero()\
+    \ { return T(0); }\n        constexpr static T add(const T &a, const T &b) { return\
+    \ a + b; }\n        constexpr static T neg(const T &a) { return -a; }\n      \
+    \  constexpr static T one() { return T(1); }\n        constexpr static T mul(const\
+    \ T &a, const T &b) { return a * b; }\n        constexpr static T inv(const T\
+    \ &a) { return T(1) / a; }\n    };\n}\n\n/**\n * @brief \u884C\u5217\n * @tparam\
+    \ T \u578B \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u8981\u7D20\u3068\u306A\
+    \u308Bint\u3084char\n * @tparam OperatorProperty \u884C\u5217\u306E\u8981\u7D20\
+    \u306E\u6F14\u7B97\u3092\u5B9A\u7FA9\u3059\u308B\u69CB\u9020\u4F53 0,1\u3068+,*\u306A\
+    \u3089\u7701\u7565\u53EF\n *\n * @note\n * OperatorProperty\u306E\u4F8B\uFF08\u6574\
+    \u6570\u306Exor\u3068and\u306B\u3088\u308B\u74B0\uFF09\n * @code\n * struct XorOperatorProperty\
+    \ {\n *     constexpr static int zero() { return 0; }\n *     constexpr static\
+    \ int add(const int &a, const int &b) { return a ^ b; }\n *     constexpr static\
+    \ int neg(const int &a) { return a; }\n *     constexpr static int one() { return\
+    \ 1; }\n *     constexpr static int mul(const int &a, const int &b) { return a\
+    \ & b; }\n * };\n * @endcode\n * constexpr\u3067\u3042\u308B\u5FC5\u8981\u306F\
+    \u306A\u304F\u3001\u307E\u305Finv\u306A\u3069\u4F7F\u308F\u306A\u3044\u3082\u306E\
+    \u306F\u5B9A\u7FA9\u3057\u306A\u304F\u3066\u3082\u3088\u3044\uFF08\u5FC5\u8981\
+    \u306A\u3082\u306E\u304C\u306A\u304B\u3063\u305F\u3089\u30B3\u30F3\u30D1\u30A4\
+    \u30EB\u30A8\u30E9\u30FC\u304C\u767A\u751F\u3059\u308B\uFF09\n */\ntemplate<class\
+    \ T, class OperatorProperty = matrix::OperatorPropertyDefault<T>> struct Matrix\
+    \ {\n    int n, m;\n    std::vector<std::vector<T>> v;\n\n    /**\n     * @brief\
+    \ \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param v \u884C\u5217(\u30B0\
+    \u30EA\u30C3\u30C9)\u306E\u5143\u3068\u306A\u308B vector<string> \u3084 vector<vector<T>>\n\
+    \     * @return Matrix\n     */\n    template <typename Iterable>\n    Matrix(const\
+    \ std::vector<Iterable>& v_) noexcept : n(v_.size()), m(v_.size() == 0 ? 0 : v_[0].size())\
+    \ {\n        v.resize(n);\n        for(int i = 0; i < n; i++) {\n            v[i].assign(v_[i].begin(),\
     \ v_[i].end());\n        }\n    }\n\n    /**\n     * @brief \u30B3\u30F3\u30B9\
     \u30C8\u30E9\u30AF\u30BF\n     * @param _n \u884C\u5217(\u30B0\u30EA\u30C3\u30C9\
     )\u306E\u884C\u6570\n     * @param _m \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\
@@ -257,35 +257,35 @@ data:
     \     }\n            }\n        }\n        return d;\n    }\n};\n"
   code: "#pragma once\n\n/**\n * @file matrix.hpp\n * @brief \u884C\u5217\n */\n\n\
     #include <vector>\n#include <string>\n#include <algorithm>\n#include <valarray>\n\
-    #include <cassert>\n#include <type_traits>\n#include <initializer_list>\n\nnamespace\
-    \ matrix {\n    template <typename T>\n    struct OperatorPropertyDefault {\n\
-    \        constexpr static T zero() { return T(0); }\n        constexpr static\
-    \ T add(const T &a, const T &b) { return a + b; }\n        constexpr static T\
-    \ neg(const T &a) { return -a; }\n        constexpr static T one() { return T(1);\
-    \ }\n        constexpr static T mul(const T &a, const T &b) { return a * b; }\n\
-    \        constexpr static T inv(const T &a) { return T(1) / a; }\n    };\n}\n\n\
-    /**\n * @brief \u884C\u5217\n * @tparam T \u578B \u884C\u5217(\u30B0\u30EA\u30C3\
-    \u30C9)\u306E\u8981\u7D20\u3068\u306A\u308Bint\u3084char\n * @tparam OperatorProperty\
-    \ \u884C\u5217\u306E\u8981\u7D20\u306E\u6F14\u7B97\u3092\u5B9A\u7FA9\u3059\u308B\
-    \u69CB\u9020\u4F53 0,1\u3068+,*\u306A\u3089\u7701\u7565\u53EF\n *\n * @note\n\
-    \ * OperatorProperty\u306E\u4F8B\uFF08\u6574\u6570\u306Exor\u3068and\u306B\u3088\
-    \u308B\u74B0\uFF09\n * @code\n * struct XorOperatorProperty {\n *     constexpr\
-    \ static int zero() { return 0; }\n *     constexpr static int add(const int &a,\
-    \ const int &b) { return a ^ b; }\n *     constexpr static int neg(const int &a)\
-    \ { return a; }\n *     constexpr static int one() { return 1; }\n *     constexpr\
-    \ static int mul(const int &a, const int &b) { return a & b; }\n * };\n * @endcode\n\
-    \ * constexpr\u3067\u3042\u308B\u5FC5\u8981\u306F\u306A\u304F\u3001\u307E\u305F\
-    inv\u306A\u3069\u4F7F\u308F\u306A\u3044\u3082\u306E\u306F\u5B9A\u7FA9\u3057\u306A\
-    \u304F\u3066\u3082\u3088\u3044\uFF08\u5FC5\u8981\u306A\u3082\u306E\u304C\u306A\
-    \u304B\u3063\u305F\u3089\u30B3\u30F3\u30D1\u30A4\u30EB\u30A8\u30E9\u30FC\u304C\
-    \u767A\u751F\u3059\u308B\uFF09\n */\ntemplate<class T, class OperatorProperty\
-    \ = matrix::OperatorPropertyDefault<T>> struct Matrix {\n    int n, m;\n    std::vector<std::vector<T>>\
-    \ v;\n\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n  \
-    \   * @param v \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u5143\u3068\u306A\u308B\
-    \ vector<string> \u3084 vector<vector<T>>\n     * @return Matrix\n     */\n  \
-    \  template <typename Iterable>\n    Matrix(const std::vector<Iterable>& v_) noexcept\
-    \ : n(v_.size()), m(v_.size() == 0 ? 0 : v_[0].size()) {\n        v.resize(n);\n\
-    \        for(int i = 0; i < n; i++) {\n            v[i].assign(v_[i].begin(),\
+    #include <cassert>\n#include <type_traits>\n#include <initializer_list>\n#include\
+    \ <cmath>\n#include <utility>\n\nnamespace matrix {\n    template <typename T>\n\
+    \    struct OperatorPropertyDefault {\n        constexpr static T zero() { return\
+    \ T(0); }\n        constexpr static T add(const T &a, const T &b) { return a +\
+    \ b; }\n        constexpr static T neg(const T &a) { return -a; }\n        constexpr\
+    \ static T one() { return T(1); }\n        constexpr static T mul(const T &a,\
+    \ const T &b) { return a * b; }\n        constexpr static T inv(const T &a) {\
+    \ return T(1) / a; }\n    };\n}\n\n/**\n * @brief \u884C\u5217\n * @tparam T \u578B\
+    \ \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u8981\u7D20\u3068\u306A\u308Bint\u3084\
+    char\n * @tparam OperatorProperty \u884C\u5217\u306E\u8981\u7D20\u306E\u6F14\u7B97\
+    \u3092\u5B9A\u7FA9\u3059\u308B\u69CB\u9020\u4F53 0,1\u3068+,*\u306A\u3089\u7701\
+    \u7565\u53EF\n *\n * @note\n * OperatorProperty\u306E\u4F8B\uFF08\u6574\u6570\u306E\
+    xor\u3068and\u306B\u3088\u308B\u74B0\uFF09\n * @code\n * struct XorOperatorProperty\
+    \ {\n *     constexpr static int zero() { return 0; }\n *     constexpr static\
+    \ int add(const int &a, const int &b) { return a ^ b; }\n *     constexpr static\
+    \ int neg(const int &a) { return a; }\n *     constexpr static int one() { return\
+    \ 1; }\n *     constexpr static int mul(const int &a, const int &b) { return a\
+    \ & b; }\n * };\n * @endcode\n * constexpr\u3067\u3042\u308B\u5FC5\u8981\u306F\
+    \u306A\u304F\u3001\u307E\u305Finv\u306A\u3069\u4F7F\u308F\u306A\u3044\u3082\u306E\
+    \u306F\u5B9A\u7FA9\u3057\u306A\u304F\u3066\u3082\u3088\u3044\uFF08\u5FC5\u8981\
+    \u306A\u3082\u306E\u304C\u306A\u304B\u3063\u305F\u3089\u30B3\u30F3\u30D1\u30A4\
+    \u30EB\u30A8\u30E9\u30FC\u304C\u767A\u751F\u3059\u308B\uFF09\n */\ntemplate<class\
+    \ T, class OperatorProperty = matrix::OperatorPropertyDefault<T>> struct Matrix\
+    \ {\n    int n, m;\n    std::vector<std::vector<T>> v;\n\n    /**\n     * @brief\
+    \ \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param v \u884C\u5217(\u30B0\
+    \u30EA\u30C3\u30C9)\u306E\u5143\u3068\u306A\u308B vector<string> \u3084 vector<vector<T>>\n\
+    \     * @return Matrix\n     */\n    template <typename Iterable>\n    Matrix(const\
+    \ std::vector<Iterable>& v_) noexcept : n(v_.size()), m(v_.size() == 0 ? 0 : v_[0].size())\
+    \ {\n        v.resize(n);\n        for(int i = 0; i < n; i++) {\n            v[i].assign(v_[i].begin(),\
     \ v_[i].end());\n        }\n    }\n\n    /**\n     * @brief \u30B3\u30F3\u30B9\
     \u30C8\u30E9\u30AF\u30BF\n     * @param _n \u884C\u5217(\u30B0\u30EA\u30C3\u30C9\
     )\u306E\u884C\u6570\n     * @param _m \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\
@@ -493,7 +493,7 @@ data:
   isVerificationFile: false
   path: src/math/matrix.hpp
   requiredBy: []
-  timestamp: '2026-10-12 19:56:50+09:00'
+  timestamp: '2026-10-12 20:22:09+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/aoj/3314.test.cpp
@@ -508,7 +508,7 @@ title: "\u884C\u5217"
 行列 `Matrix<T, OperatorProperty>` です。線形代数の行列としても、文字のグリッド (`Matrix<char>`) としても使えます。
 
 ```cpp
-Matrix<mint> A({{1, 1}, {1, 0}});
+Matrix<mint> A({ {1, 1}, {1, 0} });
 auto F = A.pow(n);                    // フィボナッチ数列の行列累乗
 
 std::vector<std::string> s(h);        // グリッドを読み込んで回転する
@@ -522,7 +522,7 @@ auto t = g.rotate(1).vstr();          // 時計回りに 90 度回して vector<
 
 | メンバ | 説明 |
 |---|---|
-| `Matrix({{a, b}, {c, d}})` | 初期化子リストから作る |
+| `Matrix({ {a, b}, {c, d} })` | 初期化子リストから作る |
 | `Matrix(v)` | `vector<vector<T>>` や `vector<string>` から作る |
 | `Matrix(n, m, val = 0)` | `n` 行 `m` 列で、要素はすべて `val` |
 | `n` / `m` | 行数 / 列数 |

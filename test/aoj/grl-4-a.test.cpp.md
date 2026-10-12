@@ -20,28 +20,29 @@ data:
   bundledCode: "#line 1 \"test/aoj/grl-4-a.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_4_A\"\
     \n\n#include <iostream>\n\n#line 2 \"src/graph/graph_util.hpp\"\n\n/**\n * @file\
     \ graph_util.hpp\n * @brief \u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570\
-    \n */\n\n#include <stack>\n\n#line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file\
-    \ graph.hpp\n * @brief \u30B0\u30E9\u30D5\n */\n\n#line 9 \"src/graph/graph.hpp\"\
-    \n#include <limits>\n#include <queue>\n#include <vector>\n\n/**\n * @brief \u30B0\
-    \u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\
-    \u30B3\u30B9\u30C8\u306E\u578B\n */\ntemplate <typename Cost = int>\nstruct Graph\
-    \ {\n    /**\n     * @brief \u6709\u5411\u8FBA\u306E\u69CB\u9020\u4F53\n     *\n\
-    \     * operator int()\u3092\u5B9A\u7FA9\u3057\u3066\u3044\u308B\u306E\u3067\u3001\
-    int\u578B\u306B\u30AD\u30E3\u30B9\u30C8\u3059\u308B\u3068\u52DD\u624B\u306Bdst\u306B\
-    \u306A\u308B\n     * \u4F8B\u3048\u3070\u3001\n     * for (auto& e : g[v]) \u3092\
-    \u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\u304C\u5217\u6319\u3055\
-    \u308C\u308B\u304C\u3001\n     * for (int dst : g[v]) \u3068\u3059\u308B\u3068\
-    \u3001v\u304B\u3089\u51FA\u308B\u8FBA\u306E\u884C\u304D\u5148\u304C\u5217\u6319\
-    \u3055\u308C\u308B\n     */\n    struct Edge {\n        int src = -1;   //!< \u59CB\
-    \u70B9\n        int dst = -1;   //!< \u7D42\u70B9\n        Cost cost = {}; //!<\
-    \ \u30B3\u30B9\u30C8\n        int id = -1;    //!< \u8FBA\u306E\u756A\u53F7(\u8FFD\
-    \u52A0\u3055\u308C\u305F\u9806\u3001\u7121\u5411\u8FBA\u306E\u5834\u5408\u306F\
-    id\u304C\u540C\u3058\u3067\u65B9\u5411\u304C\u9006\u306E\u3082\u306E\u304C2\u3064\
-    \u5B58\u5728\u3059\u308B)\n        Edge() = default;\n        Edge(int src, int\
-    \ dst, Cost cost = 1, int id = -1) : src(src), dst(dst), cost(cost), id(id) {}\n\
-    \        operator int() const { return dst; }\n    };\n\n    int n;          \
-    \                  //!< \u9802\u70B9\u6570\n    int m;                       \
-    \     //!< \u8FBA\u6570\n    std::vector<std::vector<Edge>> g; //!< \u30B0\u30E9\
+    \n */\n\n#include <functional>\n#include <queue>\n#include <stack>\n#include <utility>\n\
+    #include <vector>\n\n#line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file graph.hpp\n\
+    \ * @brief \u30B0\u30E9\u30D5\n */\n\n#line 9 \"src/graph/graph.hpp\"\n#include\
+    \ <limits>\n#line 12 \"src/graph/graph.hpp\"\n\n/**\n * @brief \u30B0\u30E9\u30D5\
+    \u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\u30B3\u30B9\
+    \u30C8\u306E\u578B\n */\ntemplate <typename Cost = int>\nstruct Graph {\n    /**\n\
+    \     * @brief \u6709\u5411\u8FBA\u306E\u69CB\u9020\u4F53\n     *\n     * operator\
+    \ int()\u3092\u5B9A\u7FA9\u3057\u3066\u3044\u308B\u306E\u3067\u3001int\u578B\u306B\
+    \u30AD\u30E3\u30B9\u30C8\u3059\u308B\u3068\u52DD\u624B\u306Bdst\u306B\u306A\u308B\
+    \n     * \u4F8B\u3048\u3070\u3001\n     * for (auto& e : g[v]) \u3092\u3059\u308B\
+    \u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\u304C\u5217\u6319\u3055\u308C\u308B\
+    \u304C\u3001\n     * for (int dst : g[v]) \u3068\u3059\u308B\u3068\u3001v\u304B\
+    \u3089\u51FA\u308B\u8FBA\u306E\u884C\u304D\u5148\u304C\u5217\u6319\u3055\u308C\
+    \u308B\n     */\n    struct Edge {\n        int src = -1;   //!< \u59CB\u70B9\n\
+    \        int dst = -1;   //!< \u7D42\u70B9\n        Cost cost = {}; //!< \u30B3\
+    \u30B9\u30C8\n        int id = -1;    //!< \u8FBA\u306E\u756A\u53F7(\u8FFD\u52A0\
+    \u3055\u308C\u305F\u9806\u3001\u7121\u5411\u8FBA\u306E\u5834\u5408\u306Fid\u304C\
+    \u540C\u3058\u3067\u65B9\u5411\u304C\u9006\u306E\u3082\u306E\u304C2\u3064\u5B58\
+    \u5728\u3059\u308B)\n        Edge() = default;\n        Edge(int src, int dst,\
+    \ Cost cost = 1, int id = -1) : src(src), dst(dst), cost(cost), id(id) {}\n  \
+    \      operator int() const { return dst; }\n    };\n\n    int n;            \
+    \                //!< \u9802\u70B9\u6570\n    int m;                         \
+    \   //!< \u8FBA\u6570\n    std::vector<std::vector<Edge>> g; //!< \u30B0\u30E9\
     \u30D5\u306E\u96A3\u63A5\u30EA\u30B9\u30C8\u8868\u73FE\n\n    /**\n     * @brief\
     \ \u30C7\u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n \
     \    */\n    Graph() : n(0), m(0), g(0) {}\n    /**\n     * @brief \u30B3\u30F3\
@@ -141,7 +142,7 @@ data:
     \ {\n                    dist[e.dst] = dist[e.src] + e.cost;\n               \
     \     prev[e.dst] = e;\n                    que.push({dist[e.dst], e.dst});\n\
     \                }\n            }\n        }\n        return {dist, prev};\n \
-    \   }\n};\n#line 11 \"src/graph/graph_util.hpp\"\n\n/**\n * @brief \u7121\u5411\
+    \   }\n};\n#line 15 \"src/graph/graph_util.hpp\"\n\n/**\n * @brief \u7121\u5411\
     \u30B0\u30E9\u30D5\u306B\u3064\u3044\u3066\u3001\u4E8C\u90E8\u30B0\u30E9\u30D5\
     \u306A\u30890\u30681\u306B\u5F69\u8272\u3057\u305F\u7D50\u679C\u3092\u3072\u3068\
     \u3064\u8FD4\u3057\u3001\u4E8C\u90E8\u30B0\u30E9\u30D5\u3067\u306A\u3044\u306A\
@@ -243,7 +244,7 @@ data:
   isVerificationFile: true
   path: test/aoj/grl-4-a.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 19:40:02+09:00'
+  timestamp: '2026-10-12 20:22:09+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/grl-4-a.test.cpp

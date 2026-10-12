@@ -1,7 +1,10 @@
 ---
 data:
   _extendedDependsOn: []
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':warning:'
+    path: src/base/macro.hpp
+    title: "\u30DE\u30AF\u30ED (rep \u306A\u3069)"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/cgl-3-a.test.cpp
@@ -192,7 +195,8 @@ data:
   dependsOn: []
   isVerificationFile: false
   path: src/base/io.hpp
-  requiredBy: []
+  requiredBy:
+  - src/base/macro.hpp
   timestamp: '2026-10-11 23:34:07+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
@@ -202,9 +206,41 @@ data:
   - test/yosupo/convolution-mod-2-64.test.cpp
 documentation_of: src/base/io.hpp
 layout: document
-redirect_from:
-- /library/src/base/io.hpp
-- /library/src/base/io.hpp.html
 title: "\u7A7A\u767D\u533A\u5207\u308A\u51FA\u529B\u3001iostream\u306E\u30AA\u30FC\
   \u30D0\u30FC\u30ED\u30FC\u30C9"
 ---
+
+STL のコンテナを `>>` / `<<` で入出力できるようにし、空白区切りで出力する `print` を追加します。
+
+```cpp
+std::vector<std::pair<int, int>> v(n);
+std::cin >> v;                  // 2n 個の整数を読む
+print(v);                       // "1 2 3 4" のように空白区切りで出力して改行
+print(1, "a", 2.5);             // "1 a 2.5"
+err(x, y);                      // 標準エラー出力に出す
+```
+
+## 入出力演算子
+
+ネストした型 (`vector<pair<int, int>>` など) もそのまま入出力できます。
+
+| 型 | `>>` | `<<` |
+|---|:-:|:-:|
+| `std::pair` | ✓ | ✓ |
+| `std::tuple` | ✓ | ✓ |
+| `std::array` | ✓ | ✓ |
+| `std::vector` | ✓ (あらかじめ要素数を決めておく) | ✓ |
+| `std::set` | | ✓ |
+
+出力は要素を空白 1 つで区切ります。
+
+## 関数
+
+| 関数 | 説明 |
+|---|---|
+| `print(x, ...)` | 引数を空白区切りで標準出力に出して改行。引数なしなら改行だけ |
+| `err(x, ...)` | 引数を空白区切りで標準エラー出力に出して改行 (`std::endl` でフラッシュする) |
+
+## 関連
+
+- デバッグ用に型ごと出力するなら [repr](repr.hpp) の `DEBUG(x)`

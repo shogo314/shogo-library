@@ -332,96 +332,99 @@ data:
     \u3092\u8FD4\u3059\n     */\n    int size() const { return n; }\n\n    /**\n \
     \    * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\u5024\u3092\u8FD4\
     \u3059\n     * \n     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     *\
-    \ @return S \u5024\n     */\n    S get(int k) {\n        k += sz;\n        for(int\
-    \ h = height; h > 0; h--) {\n            push(k >> h, h);\n        }\n       \
-    \ return data[k];\n    }\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\
-    \u8981\u7D20\u3078\u306E\u53C2\u7167\u3092\u8FD4\u3059\n     * \n     * @param\
-    \ k \n     * @return SegTreeReference \u8981\u7D20\u3078\u306E\u53C2\u7167 \u4EE3\
-    \u5165\u3055\u308C\u308B\u3068set()\u304C\u547C\u3070\u308C\u308B\n     */\n \
-    \   SegTreeBeatsReference operator[] (int k) { return SegTreeBeatsReference(*this,\
-    \ k); }\n\n    /**\n     * @brief \u5185\u5BB9\u3092\u51FA\u529B\u3059\u308B\n\
-    \     * \n     * @tparam CharT \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\
-    \u6587\u5B57\u578B\n     * @tparam Traits \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\
-    \u30E0\u306E\u6587\u5B57\u578B\u7279\u6027\n     * @param os \u51FA\u529B\u30B9\
-    \u30C8\u30EA\u30FC\u30E0\n     * @param rhs \u30BB\u30B0\u30E1\u30F3\u30C8\u6728\
-    \n     * @return std::basic_ostream<CharT, Traits>& \u51FA\u529B\u30B9\u30C8\u30EA\
-    \u30FC\u30E0 \n     */\n    template <class CharT, class Traits>\n    friend std::basic_ostream<CharT,\
-    \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, SegTreeBeats& rhs)\
-    \ {\n        for(int i = 0; i < rhs.n; i++) {\n            if(i != 0) os << CharT('\
-    \ ');\n            os << rhs[i];\n        }\n        return os;\n    }\n\n   \
-    \ /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\u5024\u3092\
-    x\u306B\u66F4\u65B0\u3059\u308B\n     * \n     * @param k \u30A4\u30F3\u30C7\u30C3\
-    \u30AF\u30B9\n     * @param x \u65B0\u3057\u3044\u5024\n     */\n    void set(int\
-    \ k, const S& x) {\n        k += sz;\n        for(int h = height; h > 0; h--)\
-    \ {\n            push(k >> h, h);\n        }\n        data[k] = x;\n        while(k\
+    \ @return S \u5024\n     */\n    S get(int k) {\n        assert(0 <= k && k <\
+    \ n);\n        k += sz;\n        for(int h = height; h > 0; h--) {\n         \
+    \   push(k >> h, h);\n        }\n        return data[k];\n    }\n    /**\n   \
+    \  * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u3078\u306E\u53C2\u7167\
+    \u3092\u8FD4\u3059\n     * \n     * @param k \n     * @return SegTreeReference\
+    \ \u8981\u7D20\u3078\u306E\u53C2\u7167 \u4EE3\u5165\u3055\u308C\u308B\u3068set()\u304C\
+    \u547C\u3070\u308C\u308B\n     */\n    SegTreeBeatsReference operator[] (int k)\
+    \ { return SegTreeBeatsReference(*this, k); }\n\n    /**\n     * @brief \u5185\
+    \u5BB9\u3092\u51FA\u529B\u3059\u308B\n     * \n     * @tparam CharT \u51FA\u529B\
+    \u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n     * @tparam Traits\
+    \ \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\u6027\
+    \n     * @param os \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\n     * @param rhs\
+    \ \u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n     * @return std::basic_ostream<CharT,\
+    \ Traits>& \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0 \n     */\n    template\
+    \ <class CharT, class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \ Traits>& os, SegTreeBeats& rhs) {\n        for(int i = 0; i < rhs.n; i++) {\n\
+    \            if(i != 0) os << CharT(' ');\n            os << rhs[i];\n       \
+    \ }\n        return os;\n    }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\
+    \u305F\u8981\u7D20\u306E\u5024\u3092x\u306B\u66F4\u65B0\u3059\u308B\n     * \n\
+    \     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * @param x \u65B0\u3057\
+    \u3044\u5024\n     */\n    void set(int k, const S& x) {\n        assert(0 <=\
+    \ k && k < n);\n        k += sz;\n        for(int h = height; h > 0; h--) {\n\
+    \            push(k >> h, h);\n        }\n        data[k] = x;\n        while(k\
     \ >>= 1) update(k);\n    }\n\n    /**\n     * @brief [l, r)\u306E\u533A\u9593\u306E\
     \u7DCF\u7A4D\u3092\u8FD4\u3059\n     * \n     * @param l \u534A\u958B\u533A\u9593\
     \u306E\u958B\u59CB\n     * @param r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF\
     \n     * @return S \u7DCF\u7A4D\n     */\n    S prod(int l, int r) {\n       \
-    \ l += sz; r += sz;\n        for(int h = height; h > 0; h--) {\n            if(((l\
-    \ >> h) << h) != l) push(l >> h, h);\n            if(((r >> h) << h) != r) push(r\
-    \ >> h, h);\n        }\n        S left_prod = e(), right_prod = e();\n       \
-    \ while(l < r) {\n            if(l & 1) left_prod = op(left_prod, data[l++]);\n\
-    \            if(r & 1) right_prod = op(data[--r], right_prod);\n            l\
-    \ >>= 1; r >>= 1;\n        }\n        return op(left_prod, right_prod);\n    }\n\
-    \    /**\n     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\u306E\u7DCF\u7A4D\
-    \u3092\u8FD4\u3059\n     * \n     * @return S \u7DCF\u7A4D\n     */\n    S all_prod()\
-    \ const { return data[1]; }\n    \n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\
-    \u305F\u8981\u7D20\u306E\u5024\u306Bx\u3092\u4F5C\u7528\u3055\u305B\u308B\n  \
-    \   * \n     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * @param x\
-    \ \u4F5C\u7528\u7D20\n     */\n    void apply(int k, const F& f) {\n        assert(0\
-    \ <= k && k < n);\n        k += sz;\n        for(int h = height; h > 0; h--) {\n\
-    \            push(k >> h, h);\n        }\n        data[k] = mapping(f, data[k],\
-    \ k - sz, k - sz + 1).second;\n        while(k >>= 1) update(k);\n    }\n    /**\n\
-    \     * @brief [l, r)\u306E\u533A\u9593\u306E\u5024\u306Bx\u3092\u4F5C\u7528\u3055\
-    \u305B\u308B\n     * \n     * @param l \u534A\u958B\u533A\u9593\u306E\u958B\u59CB\
-    \n     * @param r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF\n     * @param f\
-    \ \u4F5C\u7528\u7D20\n     */\n    void apply(int l, int r, const F& f) {\n  \
-    \      if(l == r) return;\n        l += sz; r += sz;\n        for(int h = height;\
-    \ h > 0; h--) {\n            if(((l >> h) << h) != l) push(l >> h, h);\n     \
-    \       if(((r >> h) << h) != r) push(r >> h, h);\n        }\n        {\n    \
-    \        int l2 = l, r2 = r;\n            int h = 0;\n            while(l < r)\
-    \ {\n                if(l & 1) apply_node(l++, h, f);\n                if(r &\
-    \ 1) apply_node(--r, h, f);\n                l >>= 1; r >>= 1;\n             \
-    \   h++;\n            }\n            l = l2; r = r2;\n        }\n        for(int\
-    \ h = 1; h <= height; h++) {\n            if(((l >> h) << h) != l) update(l >>\
-    \ h);\n            if(((r >> h) << h) != r) update((r - 1) >> h);\n        }\n\
-    \    }\n\n    /**\n     * @brief (r = l or g(prod([l, r))) = true) and (r = n\
-    \ or g(prod([l, r+1))) = false)\u3068\u306A\u308Br\u3092\u8FD4\u3059\n     * g\u304C\
-    \u5358\u8ABF\u306A\u3089\u3001g(prod([l, r))) = true\u3068\u306A\u308B\u6700\u5927\
-    \u306Er\n     * \n     * @tparam G\n     * @param l \u534A\u958B\u533A\u9593\u306E\
-    \u958B\u59CB\n     * @param g \u5224\u5B9A\u95A2\u6570 g(e) = true\n     * @return\
-    \ int\n     */\n    template <typename G>\n    int max_right(int l, G g) {\n \
-    \       assert(g(e()));\n        assert(0 <= l && l <= n);\n        if(l == n)\
-    \ return n;\n        l += sz;\n        for(int h = height; h > 0; h--) {\n   \
-    \         push(l >> h, h);\n        }\n        int h = 0;\n        while(l % 2\
-    \ == 0) {\n            l >>= 1;\n            h++;\n        }\n        S sum =\
-    \ e();\n        while(g(op(sum, data[l]))) {\n            sum = op(sum, data[l]);\n\
-    \            l++;\n            while(l % 2 == 0) {\n                l >>= 1;\n\
-    \                h++;\n            }\n            if(l == 1) return n;\n     \
-    \   }\n        while(l < sz) {\n            push(l, h);\n            if(!g(op(sum,\
-    \ data[l*2]))) {\n                l = l*2;\n            } else {\n           \
-    \     sum = op(sum, data[l*2]);\n                l = l*2+1;\n            }\n \
-    \           h--;\n        }\n        return l - sz;\n    }\n    /**\n     * @brief\
-    \ (l = 0 or g(prod([l, r))) = true) and (l = r or g(prod([l-1, r))) = false)\u3068\
-    \u306A\u308Bl\u3092\u8FD4\u3059\n     * g\u304C\u5358\u8ABF\u306A\u3089\u3001\
-    g(prod([l, r))) = true\u3068\u306A\u308B\u6700\u5C0F\u306El\n     * \n     * @tparam\
-    \ G\n     * @param r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF\n     * @param\
-    \ g \u5224\u5B9A\u95A2\u6570 g(e) = true\n     * @return int\n     */\n    template\
-    \ <typename G>\n    int min_left(int r, G g) {\n        assert(g(e()));\n    \
-    \    assert(0 <= r && r <= n);\n        if (r == 0) return 0;\n        r += sz;\n\
-    \        for(int h = height; h > 0; h--) {\n            push((r - 1) >> h, h);\n\
-    \        }\n        int h = 0;\n        S sum = e();\n        do {\n         \
-    \   r--;\n            while(r > 1 && r % 2 == 1) {\n                r >>= 1;\n\
-    \                h++;\n            }\n            if(!g(op(data[r], sum))) {\n\
-    \                while(r < sz) {\n                    push(r, h);\n          \
-    \          r = r*2 + 1;\n                    h--;\n                    if(g(op(data[r],\
-    \ sum))) {\n                        sum = op(data[r], sum);\n                \
-    \        r--;\n                    }\n                }\n                return\
-    \ r + 1 - sz;\n            }\n            sum = op(data[r], sum);\n        } while((r\
-    \ & -r) != r);\n        return 0;\n    }\n};\n\ntemplate <typename A>\nSegTreeBeats(int,\
-    \ A) -> SegTreeBeats<A>;\ntemplate <typename A>\nSegTreeBeats(std::vector<typename\
-    \ A::S>, A) -> SegTreeBeats<A>;\n"
+    \ assert(0 <= l && l <= r && r <= n);\n        l += sz; r += sz;\n        for(int\
+    \ h = height; h > 0; h--) {\n            if(((l >> h) << h) != l) push(l >> h,\
+    \ h);\n            if(((r >> h) << h) != r) push(r >> h, h);\n        }\n    \
+    \    S left_prod = e(), right_prod = e();\n        while(l < r) {\n          \
+    \  if(l & 1) left_prod = op(left_prod, data[l++]);\n            if(r & 1) right_prod\
+    \ = op(data[--r], right_prod);\n            l >>= 1; r >>= 1;\n        }\n   \
+    \     return op(left_prod, right_prod);\n    }\n    /**\n     * @brief \u3059\u3079\
+    \u3066\u306E\u8981\u7D20\u306E\u7DCF\u7A4D\u3092\u8FD4\u3059\n     * \n     *\
+    \ @return S \u7DCF\u7A4D\n     */\n    S all_prod() const { return data[1]; }\n\
+    \    \n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\
+    \u5024\u306Bx\u3092\u4F5C\u7528\u3055\u305B\u308B\n     * \n     * @param k \u30A4\
+    \u30F3\u30C7\u30C3\u30AF\u30B9\n     * @param x \u4F5C\u7528\u7D20\n     */\n\
+    \    void apply(int k, const F& f) {\n        assert(0 <= k && k < n);\n     \
+    \   k += sz;\n        for(int h = height; h > 0; h--) {\n            push(k >>\
+    \ h, h);\n        }\n        data[k] = mapping(f, data[k], k - sz, k - sz + 1).second;\n\
+    \        while(k >>= 1) update(k);\n    }\n    /**\n     * @brief [l, r)\u306E\
+    \u533A\u9593\u306E\u5024\u306Bx\u3092\u4F5C\u7528\u3055\u305B\u308B\n     * \n\
+    \     * @param l \u534A\u958B\u533A\u9593\u306E\u958B\u59CB\n     * @param r \u534A\
+    \u958B\u533A\u9593\u306E\u7D42\u7AEF\n     * @param f \u4F5C\u7528\u7D20\n   \
+    \  */\n    void apply(int l, int r, const F& f) {\n        assert(0 <= l && l\
+    \ <= r && r <= n);\n        if(l == r) return;\n        l += sz; r += sz;\n  \
+    \      for(int h = height; h > 0; h--) {\n            if(((l >> h) << h) != l)\
+    \ push(l >> h, h);\n            if(((r >> h) << h) != r) push(r >> h, h);\n  \
+    \      }\n        {\n            int l2 = l, r2 = r;\n            int h = 0;\n\
+    \            while(l < r) {\n                if(l & 1) apply_node(l++, h, f);\n\
+    \                if(r & 1) apply_node(--r, h, f);\n                l >>= 1; r\
+    \ >>= 1;\n                h++;\n            }\n            l = l2; r = r2;\n \
+    \       }\n        for(int h = 1; h <= height; h++) {\n            if(((l >> h)\
+    \ << h) != l) update(l >> h);\n            if(((r >> h) << h) != r) update((r\
+    \ - 1) >> h);\n        }\n    }\n\n    /**\n     * @brief (r = l or g(prod([l,\
+    \ r))) = true) and (r = n or g(prod([l, r+1))) = false)\u3068\u306A\u308Br\u3092\
+    \u8FD4\u3059\n     * g\u304C\u5358\u8ABF\u306A\u3089\u3001g(prod([l, r))) = true\u3068\
+    \u306A\u308B\u6700\u5927\u306Er\n     * \n     * @tparam G\n     * @param l \u534A\
+    \u958B\u533A\u9593\u306E\u958B\u59CB\n     * @param g \u5224\u5B9A\u95A2\u6570\
+    \ g(e) = true\n     * @return int\n     */\n    template <typename G>\n    int\
+    \ max_right(int l, G g) {\n        assert(g(e()));\n        assert(0 <= l && l\
+    \ <= n);\n        if(l == n) return n;\n        l += sz;\n        for(int h =\
+    \ height; h > 0; h--) {\n            push(l >> h, h);\n        }\n        int\
+    \ h = 0;\n        while(l % 2 == 0) {\n            l >>= 1;\n            h++;\n\
+    \        }\n        S sum = e();\n        while(g(op(sum, data[l]))) {\n     \
+    \       sum = op(sum, data[l]);\n            l++;\n            while(l % 2 ==\
+    \ 0) {\n                l >>= 1;\n                h++;\n            }\n      \
+    \      if(l == 1) return n;\n        }\n        while(l < sz) {\n            push(l,\
+    \ h);\n            if(!g(op(sum, data[l*2]))) {\n                l = l*2;\n  \
+    \          } else {\n                sum = op(sum, data[l*2]);\n             \
+    \   l = l*2+1;\n            }\n            h--;\n        }\n        return l -\
+    \ sz;\n    }\n    /**\n     * @brief (l = 0 or g(prod([l, r))) = true) and (l\
+    \ = r or g(prod([l-1, r))) = false)\u3068\u306A\u308Bl\u3092\u8FD4\u3059\n   \
+    \  * g\u304C\u5358\u8ABF\u306A\u3089\u3001g(prod([l, r))) = true\u3068\u306A\u308B\
+    \u6700\u5C0F\u306El\n     * \n     * @tparam G\n     * @param r \u534A\u958B\u533A\
+    \u9593\u306E\u7D42\u7AEF\n     * @param g \u5224\u5B9A\u95A2\u6570 g(e) = true\n\
+    \     * @return int\n     */\n    template <typename G>\n    int min_left(int\
+    \ r, G g) {\n        assert(g(e()));\n        assert(0 <= r && r <= n);\n    \
+    \    if (r == 0) return 0;\n        r += sz;\n        for(int h = height; h >\
+    \ 0; h--) {\n            push((r - 1) >> h, h);\n        }\n        int h = 0;\n\
+    \        S sum = e();\n        do {\n            r--;\n            while(r > 1\
+    \ && r % 2 == 1) {\n                r >>= 1;\n                h++;\n         \
+    \   }\n            if(!g(op(data[r], sum))) {\n                while(r < sz) {\n\
+    \                    push(r, h);\n                    r = r*2 + 1;\n         \
+    \           h--;\n                    if(g(op(data[r], sum))) {\n            \
+    \            sum = op(data[r], sum);\n                        r--;\n         \
+    \           }\n                }\n                return r + 1 - sz;\n       \
+    \     }\n            sum = op(data[r], sum);\n        } while((r & -r) != r);\n\
+    \        return 0;\n    }\n};\n\ntemplate <typename A>\nSegTreeBeats(int, A) ->\
+    \ SegTreeBeats<A>;\ntemplate <typename A>\nSegTreeBeats(std::vector<typename A::S>,\
+    \ A) -> SegTreeBeats<A>;\n"
   code: "#pragma once\n\n/**\n * @file segtree-beats.hpp\n * @brief Segment Tree Beats\n\
     \ */\n\n#include <cassert>\n#include <functional>\n#include <limits>\n#include\
     \ <ostream>\n#include <tuple>\n#include <utility>\n#include <vector>\n#include\
@@ -468,111 +471,174 @@ data:
     \u3092\u8FD4\u3059\n     */\n    int size() const { return n; }\n\n    /**\n \
     \    * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\u5024\u3092\u8FD4\
     \u3059\n     * \n     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     *\
-    \ @return S \u5024\n     */\n    S get(int k) {\n        k += sz;\n        for(int\
-    \ h = height; h > 0; h--) {\n            push(k >> h, h);\n        }\n       \
-    \ return data[k];\n    }\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\
-    \u8981\u7D20\u3078\u306E\u53C2\u7167\u3092\u8FD4\u3059\n     * \n     * @param\
-    \ k \n     * @return SegTreeReference \u8981\u7D20\u3078\u306E\u53C2\u7167 \u4EE3\
-    \u5165\u3055\u308C\u308B\u3068set()\u304C\u547C\u3070\u308C\u308B\n     */\n \
-    \   SegTreeBeatsReference operator[] (int k) { return SegTreeBeatsReference(*this,\
-    \ k); }\n\n    /**\n     * @brief \u5185\u5BB9\u3092\u51FA\u529B\u3059\u308B\n\
-    \     * \n     * @tparam CharT \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\
-    \u6587\u5B57\u578B\n     * @tparam Traits \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\
-    \u30E0\u306E\u6587\u5B57\u578B\u7279\u6027\n     * @param os \u51FA\u529B\u30B9\
-    \u30C8\u30EA\u30FC\u30E0\n     * @param rhs \u30BB\u30B0\u30E1\u30F3\u30C8\u6728\
-    \n     * @return std::basic_ostream<CharT, Traits>& \u51FA\u529B\u30B9\u30C8\u30EA\
-    \u30FC\u30E0 \n     */\n    template <class CharT, class Traits>\n    friend std::basic_ostream<CharT,\
-    \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, SegTreeBeats& rhs)\
-    \ {\n        for(int i = 0; i < rhs.n; i++) {\n            if(i != 0) os << CharT('\
-    \ ');\n            os << rhs[i];\n        }\n        return os;\n    }\n\n   \
-    \ /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\u5024\u3092\
-    x\u306B\u66F4\u65B0\u3059\u308B\n     * \n     * @param k \u30A4\u30F3\u30C7\u30C3\
-    \u30AF\u30B9\n     * @param x \u65B0\u3057\u3044\u5024\n     */\n    void set(int\
-    \ k, const S& x) {\n        k += sz;\n        for(int h = height; h > 0; h--)\
-    \ {\n            push(k >> h, h);\n        }\n        data[k] = x;\n        while(k\
+    \ @return S \u5024\n     */\n    S get(int k) {\n        assert(0 <= k && k <\
+    \ n);\n        k += sz;\n        for(int h = height; h > 0; h--) {\n         \
+    \   push(k >> h, h);\n        }\n        return data[k];\n    }\n    /**\n   \
+    \  * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u3078\u306E\u53C2\u7167\
+    \u3092\u8FD4\u3059\n     * \n     * @param k \n     * @return SegTreeReference\
+    \ \u8981\u7D20\u3078\u306E\u53C2\u7167 \u4EE3\u5165\u3055\u308C\u308B\u3068set()\u304C\
+    \u547C\u3070\u308C\u308B\n     */\n    SegTreeBeatsReference operator[] (int k)\
+    \ { return SegTreeBeatsReference(*this, k); }\n\n    /**\n     * @brief \u5185\
+    \u5BB9\u3092\u51FA\u529B\u3059\u308B\n     * \n     * @tparam CharT \u51FA\u529B\
+    \u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n     * @tparam Traits\
+    \ \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\u6027\
+    \n     * @param os \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\n     * @param rhs\
+    \ \u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n     * @return std::basic_ostream<CharT,\
+    \ Traits>& \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0 \n     */\n    template\
+    \ <class CharT, class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \ Traits>& os, SegTreeBeats& rhs) {\n        for(int i = 0; i < rhs.n; i++) {\n\
+    \            if(i != 0) os << CharT(' ');\n            os << rhs[i];\n       \
+    \ }\n        return os;\n    }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\
+    \u305F\u8981\u7D20\u306E\u5024\u3092x\u306B\u66F4\u65B0\u3059\u308B\n     * \n\
+    \     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * @param x \u65B0\u3057\
+    \u3044\u5024\n     */\n    void set(int k, const S& x) {\n        assert(0 <=\
+    \ k && k < n);\n        k += sz;\n        for(int h = height; h > 0; h--) {\n\
+    \            push(k >> h, h);\n        }\n        data[k] = x;\n        while(k\
     \ >>= 1) update(k);\n    }\n\n    /**\n     * @brief [l, r)\u306E\u533A\u9593\u306E\
     \u7DCF\u7A4D\u3092\u8FD4\u3059\n     * \n     * @param l \u534A\u958B\u533A\u9593\
     \u306E\u958B\u59CB\n     * @param r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF\
     \n     * @return S \u7DCF\u7A4D\n     */\n    S prod(int l, int r) {\n       \
-    \ l += sz; r += sz;\n        for(int h = height; h > 0; h--) {\n            if(((l\
-    \ >> h) << h) != l) push(l >> h, h);\n            if(((r >> h) << h) != r) push(r\
-    \ >> h, h);\n        }\n        S left_prod = e(), right_prod = e();\n       \
-    \ while(l < r) {\n            if(l & 1) left_prod = op(left_prod, data[l++]);\n\
-    \            if(r & 1) right_prod = op(data[--r], right_prod);\n            l\
-    \ >>= 1; r >>= 1;\n        }\n        return op(left_prod, right_prod);\n    }\n\
-    \    /**\n     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\u306E\u7DCF\u7A4D\
-    \u3092\u8FD4\u3059\n     * \n     * @return S \u7DCF\u7A4D\n     */\n    S all_prod()\
-    \ const { return data[1]; }\n    \n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\
-    \u305F\u8981\u7D20\u306E\u5024\u306Bx\u3092\u4F5C\u7528\u3055\u305B\u308B\n  \
-    \   * \n     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * @param x\
-    \ \u4F5C\u7528\u7D20\n     */\n    void apply(int k, const F& f) {\n        assert(0\
-    \ <= k && k < n);\n        k += sz;\n        for(int h = height; h > 0; h--) {\n\
-    \            push(k >> h, h);\n        }\n        data[k] = mapping(f, data[k],\
-    \ k - sz, k - sz + 1).second;\n        while(k >>= 1) update(k);\n    }\n    /**\n\
-    \     * @brief [l, r)\u306E\u533A\u9593\u306E\u5024\u306Bx\u3092\u4F5C\u7528\u3055\
-    \u305B\u308B\n     * \n     * @param l \u534A\u958B\u533A\u9593\u306E\u958B\u59CB\
-    \n     * @param r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF\n     * @param f\
-    \ \u4F5C\u7528\u7D20\n     */\n    void apply(int l, int r, const F& f) {\n  \
-    \      if(l == r) return;\n        l += sz; r += sz;\n        for(int h = height;\
-    \ h > 0; h--) {\n            if(((l >> h) << h) != l) push(l >> h, h);\n     \
-    \       if(((r >> h) << h) != r) push(r >> h, h);\n        }\n        {\n    \
-    \        int l2 = l, r2 = r;\n            int h = 0;\n            while(l < r)\
-    \ {\n                if(l & 1) apply_node(l++, h, f);\n                if(r &\
-    \ 1) apply_node(--r, h, f);\n                l >>= 1; r >>= 1;\n             \
-    \   h++;\n            }\n            l = l2; r = r2;\n        }\n        for(int\
-    \ h = 1; h <= height; h++) {\n            if(((l >> h) << h) != l) update(l >>\
-    \ h);\n            if(((r >> h) << h) != r) update((r - 1) >> h);\n        }\n\
-    \    }\n\n    /**\n     * @brief (r = l or g(prod([l, r))) = true) and (r = n\
-    \ or g(prod([l, r+1))) = false)\u3068\u306A\u308Br\u3092\u8FD4\u3059\n     * g\u304C\
-    \u5358\u8ABF\u306A\u3089\u3001g(prod([l, r))) = true\u3068\u306A\u308B\u6700\u5927\
-    \u306Er\n     * \n     * @tparam G\n     * @param l \u534A\u958B\u533A\u9593\u306E\
-    \u958B\u59CB\n     * @param g \u5224\u5B9A\u95A2\u6570 g(e) = true\n     * @return\
-    \ int\n     */\n    template <typename G>\n    int max_right(int l, G g) {\n \
-    \       assert(g(e()));\n        assert(0 <= l && l <= n);\n        if(l == n)\
-    \ return n;\n        l += sz;\n        for(int h = height; h > 0; h--) {\n   \
-    \         push(l >> h, h);\n        }\n        int h = 0;\n        while(l % 2\
-    \ == 0) {\n            l >>= 1;\n            h++;\n        }\n        S sum =\
-    \ e();\n        while(g(op(sum, data[l]))) {\n            sum = op(sum, data[l]);\n\
-    \            l++;\n            while(l % 2 == 0) {\n                l >>= 1;\n\
-    \                h++;\n            }\n            if(l == 1) return n;\n     \
-    \   }\n        while(l < sz) {\n            push(l, h);\n            if(!g(op(sum,\
-    \ data[l*2]))) {\n                l = l*2;\n            } else {\n           \
-    \     sum = op(sum, data[l*2]);\n                l = l*2+1;\n            }\n \
-    \           h--;\n        }\n        return l - sz;\n    }\n    /**\n     * @brief\
-    \ (l = 0 or g(prod([l, r))) = true) and (l = r or g(prod([l-1, r))) = false)\u3068\
-    \u306A\u308Bl\u3092\u8FD4\u3059\n     * g\u304C\u5358\u8ABF\u306A\u3089\u3001\
-    g(prod([l, r))) = true\u3068\u306A\u308B\u6700\u5C0F\u306El\n     * \n     * @tparam\
-    \ G\n     * @param r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF\n     * @param\
-    \ g \u5224\u5B9A\u95A2\u6570 g(e) = true\n     * @return int\n     */\n    template\
-    \ <typename G>\n    int min_left(int r, G g) {\n        assert(g(e()));\n    \
-    \    assert(0 <= r && r <= n);\n        if (r == 0) return 0;\n        r += sz;\n\
-    \        for(int h = height; h > 0; h--) {\n            push((r - 1) >> h, h);\n\
-    \        }\n        int h = 0;\n        S sum = e();\n        do {\n         \
-    \   r--;\n            while(r > 1 && r % 2 == 1) {\n                r >>= 1;\n\
-    \                h++;\n            }\n            if(!g(op(data[r], sum))) {\n\
-    \                while(r < sz) {\n                    push(r, h);\n          \
-    \          r = r*2 + 1;\n                    h--;\n                    if(g(op(data[r],\
-    \ sum))) {\n                        sum = op(data[r], sum);\n                \
-    \        r--;\n                    }\n                }\n                return\
-    \ r + 1 - sz;\n            }\n            sum = op(data[r], sum);\n        } while((r\
-    \ & -r) != r);\n        return 0;\n    }\n};\n\ntemplate <typename A>\nSegTreeBeats(int,\
-    \ A) -> SegTreeBeats<A>;\ntemplate <typename A>\nSegTreeBeats(std::vector<typename\
-    \ A::S>, A) -> SegTreeBeats<A>;\n"
+    \ assert(0 <= l && l <= r && r <= n);\n        l += sz; r += sz;\n        for(int\
+    \ h = height; h > 0; h--) {\n            if(((l >> h) << h) != l) push(l >> h,\
+    \ h);\n            if(((r >> h) << h) != r) push(r >> h, h);\n        }\n    \
+    \    S left_prod = e(), right_prod = e();\n        while(l < r) {\n          \
+    \  if(l & 1) left_prod = op(left_prod, data[l++]);\n            if(r & 1) right_prod\
+    \ = op(data[--r], right_prod);\n            l >>= 1; r >>= 1;\n        }\n   \
+    \     return op(left_prod, right_prod);\n    }\n    /**\n     * @brief \u3059\u3079\
+    \u3066\u306E\u8981\u7D20\u306E\u7DCF\u7A4D\u3092\u8FD4\u3059\n     * \n     *\
+    \ @return S \u7DCF\u7A4D\n     */\n    S all_prod() const { return data[1]; }\n\
+    \    \n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\
+    \u5024\u306Bx\u3092\u4F5C\u7528\u3055\u305B\u308B\n     * \n     * @param k \u30A4\
+    \u30F3\u30C7\u30C3\u30AF\u30B9\n     * @param x \u4F5C\u7528\u7D20\n     */\n\
+    \    void apply(int k, const F& f) {\n        assert(0 <= k && k < n);\n     \
+    \   k += sz;\n        for(int h = height; h > 0; h--) {\n            push(k >>\
+    \ h, h);\n        }\n        data[k] = mapping(f, data[k], k - sz, k - sz + 1).second;\n\
+    \        while(k >>= 1) update(k);\n    }\n    /**\n     * @brief [l, r)\u306E\
+    \u533A\u9593\u306E\u5024\u306Bx\u3092\u4F5C\u7528\u3055\u305B\u308B\n     * \n\
+    \     * @param l \u534A\u958B\u533A\u9593\u306E\u958B\u59CB\n     * @param r \u534A\
+    \u958B\u533A\u9593\u306E\u7D42\u7AEF\n     * @param f \u4F5C\u7528\u7D20\n   \
+    \  */\n    void apply(int l, int r, const F& f) {\n        assert(0 <= l && l\
+    \ <= r && r <= n);\n        if(l == r) return;\n        l += sz; r += sz;\n  \
+    \      for(int h = height; h > 0; h--) {\n            if(((l >> h) << h) != l)\
+    \ push(l >> h, h);\n            if(((r >> h) << h) != r) push(r >> h, h);\n  \
+    \      }\n        {\n            int l2 = l, r2 = r;\n            int h = 0;\n\
+    \            while(l < r) {\n                if(l & 1) apply_node(l++, h, f);\n\
+    \                if(r & 1) apply_node(--r, h, f);\n                l >>= 1; r\
+    \ >>= 1;\n                h++;\n            }\n            l = l2; r = r2;\n \
+    \       }\n        for(int h = 1; h <= height; h++) {\n            if(((l >> h)\
+    \ << h) != l) update(l >> h);\n            if(((r >> h) << h) != r) update((r\
+    \ - 1) >> h);\n        }\n    }\n\n    /**\n     * @brief (r = l or g(prod([l,\
+    \ r))) = true) and (r = n or g(prod([l, r+1))) = false)\u3068\u306A\u308Br\u3092\
+    \u8FD4\u3059\n     * g\u304C\u5358\u8ABF\u306A\u3089\u3001g(prod([l, r))) = true\u3068\
+    \u306A\u308B\u6700\u5927\u306Er\n     * \n     * @tparam G\n     * @param l \u534A\
+    \u958B\u533A\u9593\u306E\u958B\u59CB\n     * @param g \u5224\u5B9A\u95A2\u6570\
+    \ g(e) = true\n     * @return int\n     */\n    template <typename G>\n    int\
+    \ max_right(int l, G g) {\n        assert(g(e()));\n        assert(0 <= l && l\
+    \ <= n);\n        if(l == n) return n;\n        l += sz;\n        for(int h =\
+    \ height; h > 0; h--) {\n            push(l >> h, h);\n        }\n        int\
+    \ h = 0;\n        while(l % 2 == 0) {\n            l >>= 1;\n            h++;\n\
+    \        }\n        S sum = e();\n        while(g(op(sum, data[l]))) {\n     \
+    \       sum = op(sum, data[l]);\n            l++;\n            while(l % 2 ==\
+    \ 0) {\n                l >>= 1;\n                h++;\n            }\n      \
+    \      if(l == 1) return n;\n        }\n        while(l < sz) {\n            push(l,\
+    \ h);\n            if(!g(op(sum, data[l*2]))) {\n                l = l*2;\n  \
+    \          } else {\n                sum = op(sum, data[l*2]);\n             \
+    \   l = l*2+1;\n            }\n            h--;\n        }\n        return l -\
+    \ sz;\n    }\n    /**\n     * @brief (l = 0 or g(prod([l, r))) = true) and (l\
+    \ = r or g(prod([l-1, r))) = false)\u3068\u306A\u308Bl\u3092\u8FD4\u3059\n   \
+    \  * g\u304C\u5358\u8ABF\u306A\u3089\u3001g(prod([l, r))) = true\u3068\u306A\u308B\
+    \u6700\u5C0F\u306El\n     * \n     * @tparam G\n     * @param r \u534A\u958B\u533A\
+    \u9593\u306E\u7D42\u7AEF\n     * @param g \u5224\u5B9A\u95A2\u6570 g(e) = true\n\
+    \     * @return int\n     */\n    template <typename G>\n    int min_left(int\
+    \ r, G g) {\n        assert(g(e()));\n        assert(0 <= r && r <= n);\n    \
+    \    if (r == 0) return 0;\n        r += sz;\n        for(int h = height; h >\
+    \ 0; h--) {\n            push((r - 1) >> h, h);\n        }\n        int h = 0;\n\
+    \        S sum = e();\n        do {\n            r--;\n            while(r > 1\
+    \ && r % 2 == 1) {\n                r >>= 1;\n                h++;\n         \
+    \   }\n            if(!g(op(data[r], sum))) {\n                while(r < sz) {\n\
+    \                    push(r, h);\n                    r = r*2 + 1;\n         \
+    \           h--;\n                    if(g(op(data[r], sum))) {\n            \
+    \            sum = op(data[r], sum);\n                        r--;\n         \
+    \           }\n                }\n                return r + 1 - sz;\n       \
+    \     }\n            sum = op(data[r], sum);\n        } while((r & -r) != r);\n\
+    \        return 0;\n    }\n};\n\ntemplate <typename A>\nSegTreeBeats(int, A) ->\
+    \ SegTreeBeats<A>;\ntemplate <typename A>\nSegTreeBeats(std::vector<typename A::S>,\
+    \ A) -> SegTreeBeats<A>;\n"
   dependsOn:
   - src/algebra/acted-monoid.hpp
   - src/algebra/monoid.hpp
   isVerificationFile: false
   path: src/data_structures/segtree-beats.hpp
   requiredBy: []
-  timestamp: '2026-10-11 23:34:07+09:00'
+  timestamp: '2026-10-12 20:24:58+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
   - test/yosupo/range-chmin-chmax-add-range-sum.1.test.cpp
 documentation_of: src/data_structures/segtree-beats.hpp
 layout: document
-redirect_from:
-- /library/src/data_structures/segtree-beats.hpp
-- /library/src/data_structures/segtree-beats.hpp.html
 title: Segment Tree Beats
 ---
+
+区間 chmin/chmax などを扱う Segment Tree Beats です。[遅延伝搬セグメント木](lazy-segtree.hpp) と同じ形の作用素付きモノイド ([algebra/acted-monoid.hpp](../algebra/acted-monoid.hpp)) を受け取りますが、`mapping` は `std::pair<bool, S>` (作用に失敗したか, 作用後の値) を返します。失敗を返したノードは、子に作用を伝搬してから値を計算し直します。
+
+ライブラリには Beats 用の作用素付きモノイドは用意していないので、自分で定義します。区間 chmin・区間和の例です。
+
+```cpp
+struct Node {
+    long long max1, max2, cnt, sum;  // 最大値、2番目の最大値、最大値の個数、和
+    Node(long long x = 0) : max1(x), max2(LLONG_MIN), cnt(1), sum(x) {}
+};
+struct ChminSum {
+    using S = Node;
+    using F = long long;  // chmin する値
+    S op(const S& a, const S& b) const {
+        S r; r.sum = a.sum + b.sum;
+        if (a.max1 == b.max1) { r.max1 = a.max1; r.cnt = a.cnt + b.cnt; r.max2 = std::max(a.max2, b.max2); }
+        else if (a.max1 > b.max1) { r.max1 = a.max1; r.cnt = a.cnt; r.max2 = std::max(a.max2, b.max1); }
+        else { r.max1 = b.max1; r.cnt = b.cnt; r.max2 = std::max(a.max1, b.max2); }
+        return r;
+    }
+    S e() const { S r; r.max1 = r.max2 = LLONG_MIN; r.cnt = 0; r.sum = 0; return r; }
+    std::pair<bool, S> mapping(F f, const S& x) const {
+        if (x.max1 <= f) return {false, x};   // 変化なし
+        if (x.max2 < f) {                      // 最大値だけが変わる
+            S r = x; r.sum -= (x.max1 - f) * x.cnt; r.max1 = f;
+            return {false, r};
+        }
+        return {true, x};                      // 失敗: 子に伝搬して計算し直す
+    }
+    F composition(F f, F g) const { return std::min(f, g); }
+    F id() const { return LLONG_MAX; }
+};
+
+std::vector<Node> v = {5, 2, 8, 3};
+SegTreeBeats<ChminSum> seg(v);
+seg.apply(0, 4, 4);   // 区間 chmin
+seg.prod(0, 4).sum;   // 13
+```
+
+`mapping` は `(f, x)`、`(f, x, sz)`、`(f, x, l, r)` のどの形でもかまいません。ラムダ式から作る場合は `ActedMonoid(op, e, mapping, composition, id)` を渡します。区間 chmin・chmax・加算・区間和をまとめて扱う例は、テスト `test/yosupo/range-chmin-chmax-add-range-sum.*.test.cpp` にあります。
+
+## メンバ関数
+
+計算量は、作用素付きモノイドが Segment Tree Beats の条件を満たす場合のならし計算量です (区間 chmin・chmax・加算・区間和なら $O(\log^2 n)$)。
+
+| 関数 | 説明 |
+|---|---|
+| `SegTreeBeats(n, a = A())` | 要素数 `n`、すべて単位元で初期化 |
+| `SegTreeBeats(v, a = A())` | `v` で初期化 |
+| `size()` | 要素数 |
+| `get(k)` / `seg[k]` | `k` 番目の値 |
+| `set(k, x)` / `seg[k] = x` | `k` 番目を `x` に更新 |
+| `prod(l, r)` | 区間 $[l, r)$ の積 |
+| `all_prod()` | 全体の積 |
+| `apply(k, f)` | `k` 番目に `f` を作用 |
+| `apply(l, r, f)` | 区間 $[l, r)$ に `f` を作用 |
+| `max_right(l, g)` | `g(prod(l, r))` が真となる最大の `r` (`g` は単調) |
+| `min_left(r, g)` | `g(prod(l, r))` が真となる最小の `l` (`g` は単調) |
+| `os << seg` | 全要素を空白区切りで出力 |
+
+## 関連
+
+- 作用が常に成功する場合は [遅延伝搬セグメント木](lazy-segtree.hpp)

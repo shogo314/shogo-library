@@ -7,6 +7,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
+  - icon: ':heavy_check_mark:'
+    path: src/data_structures/unionfind.hpp
+    title: UnionFind
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
@@ -28,8 +31,55 @@ data:
     \ * @file potentialized-unionfind.hpp\n * @brief \u30DD\u30C6\u30F3\u30B7\u30E3\
     \u30EB\u4ED8\u304DUnionFind\n */\n#include <algorithm>\n#include <cassert>\n#include\
     \ <functional>\n#include <stack>\n#include <utility>\n#include <vector>\n#line\
-    \ 2 \"src/algebra/group.hpp\"\n\n/**\n * @file group.hpp\n * @brief \u7FA4\u306E\
-    \u5B9A\u7FA9\n *\n * \u7FA4\u306F\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\
+    \ 2 \"src/data_structures/unionfind.hpp\"\n\n/**\n * @file unionfind.hpp\n * @brief\
+    \ UnionFind\n */\n\n#line 11 \"src/data_structures/unionfind.hpp\"\n\n/**\n *\
+    \ @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u5BFE\u3057\u3066\u300C\u8FBA\u306E\
+    \u8FFD\u52A0\u300D\u3001\u300C2\u9802\u70B9\u304C\u9023\u7D50\u304B\u306E\u5224\
+    \u5B9A\u300D\u3092\u3059\u308B\n */\nstruct UnionFind {\n   protected:\n    int\
+    \ _n;\n    // \u8CA0\u306A\u3089\u30B5\u30A4\u30BA\u3001\u975E\u8CA0\u306A\u3089\
+    \u89AA\n    std::vector<int> parent_or_size;\n\n   public:\n    /**\n     * @brief\
+    \ merge \u306E\u623B\u308A\u5024\n     *\n     * if (uf.merge(a, b)) \u3067\u65B0\
+    \u3057\u304F\u7D71\u5408\u3057\u305F\u304B\u3092\u5224\u5B9A\u3067\u304D\u3001\
+    \n     * auto [r, merged] = uf.merge(a, b); \u3067\u4EE3\u8868\u5143\u3082\u53D7\
+    \u3051\u53D6\u308C\u308B\n     */\n    struct MergeResult {\n        int leader;\
+    \   //!< \u7D71\u5408\u5F8C\u306E\u4EE3\u8868\u5143\n        bool merged;  //!<\
+    \ \u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B (\u3082\u3068\u3082\u3068\u540C\
+    \u3058\u9023\u7D50\u6210\u5206\u306A\u3089 false)\n        explicit operator bool()\
+    \ const { return merged; }\n    };\n\n    UnionFind() : _n(0) {}\n    explicit\
+    \ UnionFind(int n) : _n(n), parent_or_size(n, -1) {}\n\n    /**\n     * @brief\
+    \ \u8FBA(a,b)\u3092\u8DB3\u3059\n     * @return \u7D71\u5408\u5F8C\u306E\u4EE3\
+    \u8868\u5143\u3068\u3001\u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B\n   \
+    \  */\n    MergeResult merge(int a, int b) {\n        assert(0 <= a && a < _n);\n\
+    \        assert(0 <= b && b < _n);\n        int x = leader(a), y = leader(b);\n\
+    \        if (x == y) return {x, false};\n        if (-parent_or_size[x] < -parent_or_size[y])\
+    \ std::swap(x, y);\n        parent_or_size[x] += parent_or_size[y];\n        parent_or_size[y]\
+    \ = x;\n        return {x, true};\n    }\n    /**\n     * @brief \u9802\u70B9\
+    a,b\u304C\u9023\u7D50\u304B\u3069\u3046\u304B\n     */\n    bool same(int a, int\
+    \ b) {\n        assert(0 <= a && a < _n);\n        assert(0 <= b && b < _n);\n\
+    \        return leader(a) == leader(b);\n    }\n    /**\n     * @brief \u9802\u70B9\
+    a\u306E\u5C5E\u3059\u308B\u9023\u7D50\u6210\u5206\u306E\u4EE3\u8868\u5143\n  \
+    \   */\n    int leader(int a) {\n        assert(0 <= a && a < _n);\n        if\
+    \ (parent_or_size[a] < 0) return a;\n        int x = a;\n        while (parent_or_size[x]\
+    \ >= 0) {\n            x = parent_or_size[x];\n        }\n        while (parent_or_size[a]\
+    \ >= 0) {\n            int t = parent_or_size[a];\n            parent_or_size[a]\
+    \ = x;\n            a = t;\n        }\n        return x;\n    }\n    /**\n   \
+    \  * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\u6210\u5206\u306E\
+    \u30B5\u30A4\u30BA\n     */\n    int size(int a) {\n        assert(0 <= a && a\
+    \ < _n);\n        return -parent_or_size[leader(a)];\n    }\n    /**\n     * @brief\
+    \ \u30B0\u30E9\u30D5\u3092\u9023\u7D50\u6210\u5206\u306B\u5206\u3051\u3001\u305D\
+    \u306E\u60C5\u5831\u3092\u8FD4\u3059\n     * @return \u300C\u4E00\u3064\u306E\u9023\
+    \u7D50\u6210\u5206\u306E\u9802\u70B9\u756A\u53F7\u306E\u30EA\u30B9\u30C8\u300D\
+    \u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<std::vector<int>> groups()\
+    \ {\n        std::vector<int> leader_buf(_n), group_size(_n);\n        for (int\
+    \ i = 0; i < _n; i++) {\n            leader_buf[i] = leader(i);\n            group_size[leader_buf[i]]++;\n\
+    \        }\n        std::vector<std::vector<int>> result(_n);\n        for (int\
+    \ i = 0; i < _n; i++) {\n            result[i].reserve(group_size[i]);\n     \
+    \   }\n        for (int i = 0; i < _n; i++) {\n            result[leader_buf[i]].push_back(i);\n\
+    \        }\n        result.erase(\n            std::remove_if(result.begin(),\
+    \ result.end(),\n                           [&](const std::vector<int>& v) { return\
+    \ v.empty(); }),\n            result.end());\n        return result;\n    }\n\
+    };\n#line 2 \"src/algebra/group.hpp\"\n\n/**\n * @file group.hpp\n * @brief \u7FA4\
+    \u306E\u5B9A\u7FA9\n *\n * \u7FA4\u306F\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\
     \ \u306E\u30E1\u30F3\u30D0\u306B\u52A0\u3048\u3066\u6B21\u306E\u30E1\u30F3\u30D0\
     \u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - S inv(const S& a):\
     \ \u9006\u5143\n */\n\n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n\
@@ -151,75 +201,18 @@ data:
     \ {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a, b);\
     \ }\n    constexpr S e() const { return identity; }\n    constexpr S inv(const\
     \ S& a) const { return inv_object(a); }\n};\ntemplate <typename Op, typename T,\
-    \ typename Inv>\nGroup(Op, T, Inv) -> Group<T, Op, Inv>;\n#line 14 \"src/data_structures/potentialized-unionfind.hpp\"\
+    \ typename Inv>\nGroup(Op, T, Inv) -> Group<T, Op, Inv>;\n#line 15 \"src/data_structures/potentialized-unionfind.hpp\"\
     \n\n/**\n * @brief \u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind\n\
     \ * @tparam G \u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u306E\u7FA4 (algebra/group.hpp)\
     \ \u975E\u53EF\u63DB\u3067\u3082\u3088\u3044\n */\ntemplate <typename G>\nclass\
-    \ PotentializedUnionFind {\n   public:\n    using S = typename G::S;\n\n   private:\n\
-    \    G g;\n    int _n;\n    // \u8CA0\u306A\u3089\u30B5\u30A4\u30BA\u3001\u975E\
-    \u8CA0\u306A\u3089\u89AA\n    std::vector<int> parent_or_size;\n    // \u91CD\u307F\
-    \n    std::vector<S> diff_weight;\n\n    S op(const S& a, const S& b) const {\
-    \ return g.op(a, b); }\n    S e() const { return g.e(); }\n    S inv(const S&\
-    \ a) const { return g.inv(a); }\n\n   public:\n    /**\n     * @param n \u8981\
-    \u7D20\u6570\n     * @param g \u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u306E\u7FA4\
-    \n     */\n    explicit PotentializedUnionFind(int n = 0, G g = G()) : g(std::move(g)),\
-    \ _n(n), parent_or_size(n, -1), diff_weight(n, e()) {}\n\n    /**\n     * @brief\
-    \ \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\u6210\u5206\u306E\u4EE3\u8868\
-    \u5143\n     */\n    int leader(int a) {\n        assert(0 <= a && a < _n);\n\
-    \        if (parent_or_size[a] < 0) return a;\n        std::stack<int> stk;\n\
-    \        stk.push(a);\n        while (parent_or_size[stk.top()] >= 0) {\n    \
-    \        stk.push(parent_or_size[stk.top()]);\n        }\n        const int root\
-    \ = stk.top();\n        stk.pop();\n        stk.pop();\n        while (!stk.empty())\
-    \ {\n            diff_weight[stk.top()] = op(diff_weight[parent_or_size[stk.top()]],\
-    \ diff_weight[stk.top()]);\n            parent_or_size[stk.top()] = root;\n  \
-    \          stk.pop();\n        }\n        return root;\n    }\n\n    /**\n   \
-    \  * @brief a \u306E\u30B0\u30EB\u30FC\u30D7\u3068 b \u306E\u30B0\u30EB\u30FC\u30D7\
-    \u3092\u7D71\u5408\u3059\u308B\n     * @param w (b \u306E\u30DD\u30C6\u30F3\u30B7\
-    \u30E3\u30EB) - (a \u306E\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB)\n     * @return\
-    \ \u9023\u7D50\u3057\u305F\u3082\u306E\u306E\u4EE3\u8868\u5143\n     */\n    int\
-    \ merge(int a, int b, S w) {\n        assert(0 <= a && a < _n);\n        assert(0\
-    \ <= b && b < _n);\n        w = op(weight(a), w);\n        w = op(w, inv(weight(b)));\n\
-    \        int x = leader(a), y = leader(b);\n        if (x == y) return x;\n  \
-    \      if (-parent_or_size[x] < -parent_or_size[y]) {\n            std::swap(x,\
-    \ y);\n            w = inv(w);\n        }\n        parent_or_size[x] += parent_or_size[y];\n\
-    \        parent_or_size[y] = x;\n        diff_weight[y] = w;\n        return x;\n\
-    \    }\n\n    /**\n     * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\
-    \u3046\u304B\n     */\n    bool same(int a, int b) {\n        assert(0 <= a &&\
-    \ a < _n);\n        assert(0 <= b && b < _n);\n        return leader(a) == leader(b);\n\
-    \    }\n\n    /**\n     * @brief (b \u306E\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\
-    ) - (a \u306E\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB)\n     */\n    S diff(int a,\
-    \ int b) {\n        assert(same(a, b));\n        return op(inv(weight(a)), weight(b));\n\
-    \    }\n\n    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\
-    \u6210\u5206\u306E\u30B5\u30A4\u30BA\n     */\n    int size(int a) {\n       \
-    \ assert(0 <= a && a < _n);\n        return -parent_or_size[leader(a)];\n    }\n\
-    \n    /**\n     * @brief \u30B0\u30E9\u30D5\u3092\u9023\u7D50\u6210\u5206\u306B\
-    \u5206\u3051\u3001\u305D\u306E\u60C5\u5831\u3092\u8FD4\u3059\n     * @return \u300C\
-    \u4E00\u3064\u306E\u9023\u7D50\u6210\u5206\u306E\u9802\u70B9\u756A\u53F7\u306E\
-    \u30EA\u30B9\u30C8\u300D\u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<std::vector<int>>\
-    \ groups() {\n        std::vector<int> leader_buf(_n), group_size(_n);\n     \
-    \   for (int i = 0; i < _n; i++) {\n            leader_buf[i] = leader(i);\n \
-    \           group_size[leader_buf[i]]++;\n        }\n        std::vector<std::vector<int>>\
-    \ result(_n);\n        for (int i = 0; i < _n; i++) {\n            result[i].reserve(group_size[i]);\n\
-    \        }\n        for (int i = 0; i < _n; i++) {\n            result[leader_buf[i]].push_back(i);\n\
-    \        }\n        result.erase(std::remove_if(result.begin(), result.end(),\
-    \ [&](const std::vector<int>& v) { return v.empty(); }), result.end());\n    \
-    \    return result;\n    }\n\n   private:\n    S weight(int a) {\n        leader(a);\n\
-    \        return diff_weight[a];\n    }\n};\n\ntemplate <typename G>\nPotentializedUnionFind(int,\
-    \ G) -> PotentializedUnionFind<G>;\n"
-  code: "#pragma once\n\n/**\n * @file potentialized-unionfind.hpp\n * @brief \u30DD\
-    \u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind\n */\n#include <algorithm>\n\
-    #include <cassert>\n#include <functional>\n#include <stack>\n#include <utility>\n\
-    #include <vector>\n#include \"../algebra/group.hpp\"\n\n/**\n * @brief \u30DD\u30C6\
-    \u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind\n * @tparam G \u30DD\u30C6\u30F3\
-    \u30B7\u30E3\u30EB\u306E\u7FA4 (algebra/group.hpp) \u975E\u53EF\u63DB\u3067\u3082\
-    \u3088\u3044\n */\ntemplate <typename G>\nclass PotentializedUnionFind {\n   public:\n\
-    \    using S = typename G::S;\n\n   private:\n    G g;\n    int _n;\n    // \u8CA0\
-    \u306A\u3089\u30B5\u30A4\u30BA\u3001\u975E\u8CA0\u306A\u3089\u89AA\n    std::vector<int>\
-    \ parent_or_size;\n    // \u91CD\u307F\n    std::vector<S> diff_weight;\n\n  \
-    \  S op(const S& a, const S& b) const { return g.op(a, b); }\n    S e() const\
-    \ { return g.e(); }\n    S inv(const S& a) const { return g.inv(a); }\n\n   public:\n\
-    \    /**\n     * @param n \u8981\u7D20\u6570\n     * @param g \u30DD\u30C6\u30F3\
-    \u30B7\u30E3\u30EB\u306E\u7FA4\n     */\n    explicit PotentializedUnionFind(int\
+    \ PotentializedUnionFind {\n   public:\n    using S = typename G::S;\n    using\
+    \ MergeResult = UnionFind::MergeResult;\n\n   private:\n    G g;\n    int _n;\n\
+    \    // \u8CA0\u306A\u3089\u30B5\u30A4\u30BA\u3001\u975E\u8CA0\u306A\u3089\u89AA\
+    \n    std::vector<int> parent_or_size;\n    // \u91CD\u307F\n    std::vector<S>\
+    \ diff_weight;\n\n    S op(const S& a, const S& b) const { return g.op(a, b);\
+    \ }\n    S e() const { return g.e(); }\n    S inv(const S& a) const { return g.inv(a);\
+    \ }\n\n   public:\n    /**\n     * @param n \u8981\u7D20\u6570\n     * @param\
+    \ g \u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u306E\u7FA4\n     */\n    explicit PotentializedUnionFind(int\
     \ n = 0, G g = G()) : g(std::move(g)), _n(n), parent_or_size(n, -1), diff_weight(n,\
     \ e()) {}\n\n    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\
     \u7D50\u6210\u5206\u306E\u4EE3\u8868\u5143\n     */\n    int leader(int a) {\n\
@@ -233,26 +226,96 @@ data:
     \  * @brief a \u306E\u30B0\u30EB\u30FC\u30D7\u3068 b \u306E\u30B0\u30EB\u30FC\u30D7\
     \u3092\u7D71\u5408\u3059\u308B\n     * @param w (b \u306E\u30DD\u30C6\u30F3\u30B7\
     \u30E3\u30EB) - (a \u306E\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB)\n     * @return\
-    \ \u9023\u7D50\u3057\u305F\u3082\u306E\u306E\u4EE3\u8868\u5143\n     */\n    int\
-    \ merge(int a, int b, S w) {\n        assert(0 <= a && a < _n);\n        assert(0\
-    \ <= b && b < _n);\n        w = op(weight(a), w);\n        w = op(w, inv(weight(b)));\n\
-    \        int x = leader(a), y = leader(b);\n        if (x == y) return x;\n  \
-    \      if (-parent_or_size[x] < -parent_or_size[y]) {\n            std::swap(x,\
-    \ y);\n            w = inv(w);\n        }\n        parent_or_size[x] += parent_or_size[y];\n\
-    \        parent_or_size[y] = x;\n        diff_weight[y] = w;\n        return x;\n\
-    \    }\n\n    /**\n     * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\
-    \u3046\u304B\n     */\n    bool same(int a, int b) {\n        assert(0 <= a &&\
-    \ a < _n);\n        assert(0 <= b && b < _n);\n        return leader(a) == leader(b);\n\
-    \    }\n\n    /**\n     * @brief (b \u306E\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\
-    ) - (a \u306E\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB)\n     */\n    S diff(int a,\
-    \ int b) {\n        assert(same(a, b));\n        return op(inv(weight(a)), weight(b));\n\
-    \    }\n\n    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\
-    \u6210\u5206\u306E\u30B5\u30A4\u30BA\n     */\n    int size(int a) {\n       \
-    \ assert(0 <= a && a < _n);\n        return -parent_or_size[leader(a)];\n    }\n\
-    \n    /**\n     * @brief \u30B0\u30E9\u30D5\u3092\u9023\u7D50\u6210\u5206\u306B\
-    \u5206\u3051\u3001\u305D\u306E\u60C5\u5831\u3092\u8FD4\u3059\n     * @return \u300C\
-    \u4E00\u3064\u306E\u9023\u7D50\u6210\u5206\u306E\u9802\u70B9\u756A\u53F7\u306E\
-    \u30EA\u30B9\u30C8\u300D\u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<std::vector<int>>\
+    \ \u7D71\u5408\u5F8C\u306E\u4EE3\u8868\u5143\u3068\u3001\u65B0\u3057\u304F\u7D71\
+    \u5408\u3057\u305F\u304B\n     * @note \u3059\u3067\u306B\u540C\u3058\u9023\u7D50\
+    \u6210\u5206\u306A\u3089\u4F55\u3082\u3057\u306A\u3044 (w \u304C\u77DB\u76FE\u3057\
+    \u3066\u3044\u3066\u3082\u691C\u51FA\u3057\u306A\u3044)\u3002\n     *       \u77DB\
+    \u76FE\u3092\u8ABF\u3079\u308B\u306B\u306F\u3001merged \u304C false \u306E\u3068\
+    \u304D\u306B diff(a, b) == w \u304B\u3092\u78BA\u304B\u3081\u308B\n     */\n \
+    \   MergeResult merge(int a, int b, S w) {\n        assert(0 <= a && a < _n);\n\
+    \        assert(0 <= b && b < _n);\n        w = op(weight(a), w);\n        w =\
+    \ op(w, inv(weight(b)));\n        int x = leader(a), y = leader(b);\n        if\
+    \ (x == y) return {x, false};\n        if (-parent_or_size[x] < -parent_or_size[y])\
+    \ {\n            std::swap(x, y);\n            w = inv(w);\n        }\n      \
+    \  parent_or_size[x] += parent_or_size[y];\n        parent_or_size[y] = x;\n \
+    \       diff_weight[y] = w;\n        return {x, true};\n    }\n\n    /**\n   \
+    \  * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\u304B\n     */\n\
+    \    bool same(int a, int b) {\n        assert(0 <= a && a < _n);\n        assert(0\
+    \ <= b && b < _n);\n        return leader(a) == leader(b);\n    }\n\n    /**\n\
+    \     * @brief (b \u306E\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB) - (a \u306E\u30DD\
+    \u30C6\u30F3\u30B7\u30E3\u30EB)\n     */\n    S diff(int a, int b) {\n       \
+    \ assert(same(a, b));\n        return op(inv(weight(a)), weight(b));\n    }\n\n\
+    \    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\u6210\
+    \u5206\u306E\u30B5\u30A4\u30BA\n     */\n    int size(int a) {\n        assert(0\
+    \ <= a && a < _n);\n        return -parent_or_size[leader(a)];\n    }\n\n    /**\n\
+    \     * @brief \u30B0\u30E9\u30D5\u3092\u9023\u7D50\u6210\u5206\u306B\u5206\u3051\
+    \u3001\u305D\u306E\u60C5\u5831\u3092\u8FD4\u3059\n     * @return \u300C\u4E00\u3064\
+    \u306E\u9023\u7D50\u6210\u5206\u306E\u9802\u70B9\u756A\u53F7\u306E\u30EA\u30B9\
+    \u30C8\u300D\u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<std::vector<int>>\
+    \ groups() {\n        std::vector<int> leader_buf(_n), group_size(_n);\n     \
+    \   for (int i = 0; i < _n; i++) {\n            leader_buf[i] = leader(i);\n \
+    \           group_size[leader_buf[i]]++;\n        }\n        std::vector<std::vector<int>>\
+    \ result(_n);\n        for (int i = 0; i < _n; i++) {\n            result[i].reserve(group_size[i]);\n\
+    \        }\n        for (int i = 0; i < _n; i++) {\n            result[leader_buf[i]].push_back(i);\n\
+    \        }\n        result.erase(std::remove_if(result.begin(), result.end(),\
+    \ [&](const std::vector<int>& v) { return v.empty(); }), result.end());\n    \
+    \    return result;\n    }\n\n   private:\n    S weight(int a) {\n        leader(a);\n\
+    \        return diff_weight[a];\n    }\n};\n\ntemplate <typename G>\nPotentializedUnionFind(int,\
+    \ G) -> PotentializedUnionFind<G>;\n"
+  code: "#pragma once\n\n/**\n * @file potentialized-unionfind.hpp\n * @brief \u30DD\
+    \u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind\n */\n#include <algorithm>\n\
+    #include <cassert>\n#include <functional>\n#include <stack>\n#include <utility>\n\
+    #include <vector>\n#include \"unionfind.hpp\"\n#include \"../algebra/group.hpp\"\
+    \n\n/**\n * @brief \u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind\n\
+    \ * @tparam G \u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u306E\u7FA4 (algebra/group.hpp)\
+    \ \u975E\u53EF\u63DB\u3067\u3082\u3088\u3044\n */\ntemplate <typename G>\nclass\
+    \ PotentializedUnionFind {\n   public:\n    using S = typename G::S;\n    using\
+    \ MergeResult = UnionFind::MergeResult;\n\n   private:\n    G g;\n    int _n;\n\
+    \    // \u8CA0\u306A\u3089\u30B5\u30A4\u30BA\u3001\u975E\u8CA0\u306A\u3089\u89AA\
+    \n    std::vector<int> parent_or_size;\n    // \u91CD\u307F\n    std::vector<S>\
+    \ diff_weight;\n\n    S op(const S& a, const S& b) const { return g.op(a, b);\
+    \ }\n    S e() const { return g.e(); }\n    S inv(const S& a) const { return g.inv(a);\
+    \ }\n\n   public:\n    /**\n     * @param n \u8981\u7D20\u6570\n     * @param\
+    \ g \u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u306E\u7FA4\n     */\n    explicit PotentializedUnionFind(int\
+    \ n = 0, G g = G()) : g(std::move(g)), _n(n), parent_or_size(n, -1), diff_weight(n,\
+    \ e()) {}\n\n    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\
+    \u7D50\u6210\u5206\u306E\u4EE3\u8868\u5143\n     */\n    int leader(int a) {\n\
+    \        assert(0 <= a && a < _n);\n        if (parent_or_size[a] < 0) return\
+    \ a;\n        std::stack<int> stk;\n        stk.push(a);\n        while (parent_or_size[stk.top()]\
+    \ >= 0) {\n            stk.push(parent_or_size[stk.top()]);\n        }\n     \
+    \   const int root = stk.top();\n        stk.pop();\n        stk.pop();\n    \
+    \    while (!stk.empty()) {\n            diff_weight[stk.top()] = op(diff_weight[parent_or_size[stk.top()]],\
+    \ diff_weight[stk.top()]);\n            parent_or_size[stk.top()] = root;\n  \
+    \          stk.pop();\n        }\n        return root;\n    }\n\n    /**\n   \
+    \  * @brief a \u306E\u30B0\u30EB\u30FC\u30D7\u3068 b \u306E\u30B0\u30EB\u30FC\u30D7\
+    \u3092\u7D71\u5408\u3059\u308B\n     * @param w (b \u306E\u30DD\u30C6\u30F3\u30B7\
+    \u30E3\u30EB) - (a \u306E\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB)\n     * @return\
+    \ \u7D71\u5408\u5F8C\u306E\u4EE3\u8868\u5143\u3068\u3001\u65B0\u3057\u304F\u7D71\
+    \u5408\u3057\u305F\u304B\n     * @note \u3059\u3067\u306B\u540C\u3058\u9023\u7D50\
+    \u6210\u5206\u306A\u3089\u4F55\u3082\u3057\u306A\u3044 (w \u304C\u77DB\u76FE\u3057\
+    \u3066\u3044\u3066\u3082\u691C\u51FA\u3057\u306A\u3044)\u3002\n     *       \u77DB\
+    \u76FE\u3092\u8ABF\u3079\u308B\u306B\u306F\u3001merged \u304C false \u306E\u3068\
+    \u304D\u306B diff(a, b) == w \u304B\u3092\u78BA\u304B\u3081\u308B\n     */\n \
+    \   MergeResult merge(int a, int b, S w) {\n        assert(0 <= a && a < _n);\n\
+    \        assert(0 <= b && b < _n);\n        w = op(weight(a), w);\n        w =\
+    \ op(w, inv(weight(b)));\n        int x = leader(a), y = leader(b);\n        if\
+    \ (x == y) return {x, false};\n        if (-parent_or_size[x] < -parent_or_size[y])\
+    \ {\n            std::swap(x, y);\n            w = inv(w);\n        }\n      \
+    \  parent_or_size[x] += parent_or_size[y];\n        parent_or_size[y] = x;\n \
+    \       diff_weight[y] = w;\n        return {x, true};\n    }\n\n    /**\n   \
+    \  * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\u304B\n     */\n\
+    \    bool same(int a, int b) {\n        assert(0 <= a && a < _n);\n        assert(0\
+    \ <= b && b < _n);\n        return leader(a) == leader(b);\n    }\n\n    /**\n\
+    \     * @brief (b \u306E\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB) - (a \u306E\u30DD\
+    \u30C6\u30F3\u30B7\u30E3\u30EB)\n     */\n    S diff(int a, int b) {\n       \
+    \ assert(same(a, b));\n        return op(inv(weight(a)), weight(b));\n    }\n\n\
+    \    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\u6210\
+    \u5206\u306E\u30B5\u30A4\u30BA\n     */\n    int size(int a) {\n        assert(0\
+    \ <= a && a < _n);\n        return -parent_or_size[leader(a)];\n    }\n\n    /**\n\
+    \     * @brief \u30B0\u30E9\u30D5\u3092\u9023\u7D50\u6210\u5206\u306B\u5206\u3051\
+    \u3001\u305D\u306E\u60C5\u5831\u3092\u8FD4\u3059\n     * @return \u300C\u4E00\u3064\
+    \u306E\u9023\u7D50\u6210\u5206\u306E\u9802\u70B9\u756A\u53F7\u306E\u30EA\u30B9\
+    \u30C8\u300D\u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<std::vector<int>>\
     \ groups() {\n        std::vector<int> leader_buf(_n), group_size(_n);\n     \
     \   for (int i = 0; i < _n; i++) {\n            leader_buf[i] = leader(i);\n \
     \           group_size[leader_buf[i]]++;\n        }\n        std::vector<std::vector<int>>\
@@ -264,12 +327,13 @@ data:
     \        return diff_weight[a];\n    }\n};\n\ntemplate <typename G>\nPotentializedUnionFind(int,\
     \ G) -> PotentializedUnionFind<G>;\n"
   dependsOn:
+  - src/data_structures/unionfind.hpp
   - src/algebra/group.hpp
   - src/algebra/monoid.hpp
   isVerificationFile: false
   path: src/data_structures/potentialized-unionfind.hpp
   requiredBy: []
-  timestamp: '2026-10-11 23:34:07+09:00'
+  timestamp: '2026-10-12 20:50:36+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/aoj/jag-summer-2971.test.cpp
@@ -277,8 +341,40 @@ data:
   - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
 documentation_of: src/data_structures/potentialized-unionfind.hpp
 layout: document
-redirect_from:
-- /library/src/data_structures/potentialized-unionfind.hpp
-- /library/src/data_structures/potentialized-unionfind.hpp.html
 title: "\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind"
 ---
+
+各頂点のポテンシャル $p$ について「$p_b - p_a = w$」という情報を追加しながら、同じ連結成分の2頂点のポテンシャルの差を求めます。ポテンシャルは群 ([algebra/group.hpp](../algebra/group.hpp)) で、非可換でもかまいません。
+
+```cpp
+PotentializedUnionFind<group::Sum<long long>> uf(n);
+uf.merge(0, 1, 3);           // p[1] - p[0] = 3
+uf.merge(1, 2, -5);          // p[2] - p[1] = -5
+long long d = uf.diff(0, 2); // p[2] - p[0] = -2
+```
+
+非可換な群では、「$p_b - p_a$」は $p_a^{-1} \cdot p_b$ を表します。つまり `merge(a, b, w)` は $p_b = p_a \cdot w$ という情報です。
+
+## メンバ関数
+
+計算量の $\alpha(n)$ はアッカーマン関数の逆関数で、実質定数です。
+
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `PotentializedUnionFind(n, g = G())` | 頂点数 `n` で初期化 | $O(n)$ |
+| `merge(a, b, w)` | $p_b - p_a = w$ を追加する。[UnionFind](unionfind.hpp) と同じ `MergeResult` (代表元と、新しく統合したか) を返す。すでに連結なら何もしない (矛盾していても検出しない) | $O(\alpha(n))$ |
+| `diff(a, b)` | $p_b - p_a$ (`a` と `b` は連結であること) | $O(\alpha(n))$ |
+| `same(a, b)` | `a` と `b` が連結か | $O(\alpha(n))$ |
+| `leader(a)` | `a` の属する連結成分の代表元 | $O(\alpha(n))$ |
+| `size(a)` | `a` の属する連結成分の頂点数 | $O(\alpha(n))$ |
+| `groups()` | 連結成分ごとの頂点のリスト | $O(n)$ |
+
+矛盾を検出したい場合は、`merge` が統合しなかったとき (すでに連結だったとき) に `diff(a, b) == w` かどうかを見ます。
+
+```cpp
+if (!uf.merge(a, b, w) && uf.diff(a, b) != w) { /* 矛盾 */ }
+```
+
+## 関連
+
+- ポテンシャルがない場合は [UnionFind](unionfind.hpp)

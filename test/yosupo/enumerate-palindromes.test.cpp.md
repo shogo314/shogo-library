@@ -75,7 +75,7 @@ data:
     \ constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n#line\
     \ 16 \"src/string/rolling-hash.hpp\"\n\nstruct RHString;\n\n/**\n * @brief \u30ED\
     \u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5\n *\n * \u30D3\u30C3\u30C8\u6F14\
-    \u7B97\u306B\u5BC4\u308B\u9AD8\u901F\u5316\u306E\u305F\u3081\u30CF\u30C3\u30B7\
+    \u7B97\u306B\u3088\u308B\u9AD8\u901F\u5316\u306E\u305F\u3081\u30CF\u30C3\u30B7\
     \u30E5\u306FMOD = 2^61-1\u3067\u8A08\u7B97\u3055\u308C\u308B\n *\n * 10^8\u500B\
     \u304F\u3089\u3044\u306A\u308999%\u306E\u78BA\u7387\u3067\u885D\u7A81\u3059\u308B\
     \u7D44\u304C\u5B58\u5728\u3057\u306A\u3044\n */\nclass RollingHash {\n    constexpr\
@@ -237,7 +237,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/enumerate-palindromes.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 19:23:31+09:00'
+  timestamp: '2026-10-12 20:24:58+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/enumerate-palindromes.test.cpp

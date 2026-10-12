@@ -104,37 +104,38 @@ data:
     \ (m_value == Modint::mod()) {\n            m_value = 0;\n        }\n        return\
     \ static_cast<Modint&>(*this);\n    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\
     \u3044\u308B\u5024\u3092\u30A4\u30F3\u30AF\u30EA\u30E1\u30F3\u30C8\u3057\u3066\
+    \u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @return \u30A4\
+    \u30F3\u30AF\u30EA\u30E1\u30F3\u30C8\u3059\u308B\u524D\u306E\u5024\n    constexpr\
+    \ Modint operator++(int) noexcept {\n        auto x = static_cast<const Modint&>(*this);\n\
+    \        ++*this;\n        return x;\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u3092\u30C7\u30AF\u30EA\u30E1\u30F3\u30C8\u3057\u3066\
     \u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @return @c *this\n\
-    \    constexpr Modint operator++(int) noexcept {\n        auto x = static_cast<const\
-    \ Modint&>(*this);\n        ++*this;\n        return x;\n    }\n\n    /// @brief\
-    \ \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092\u30C7\u30AF\u30EA\u30E1\u30F3\
-    \u30C8\u3057\u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n   \
-    \ /// @return @c *this\n    constexpr Modint& operator--() noexcept {\n      \
-    \  if (m_value == 0) {\n            m_value = Modint::mod();\n        }\n    \
-    \    --m_value;\n        return static_cast<Modint&>(*this);\n    }\n\n    ///\
-    \ @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092\u30C7\u30AF\u30EA\u30E1\
-    \u30F3\u30C8\u3057\u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\
-    \n    /// @return @c *this\n    constexpr Modint operator--(int) noexcept {\n\
-    \        auto x = static_cast<const Modint&>(*this);\n        --*this;\n     \
-    \   return x;\n    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\
-    \u306B @c x \u306E\u6301\u3064\u5024\u3092\u8DB3\u3057\u3066\u3001\u5270\u4F59\
-    \u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @param x \u8DB3\u3059\u6570\n  \
-    \  /// @return @c *this\n    constexpr Modint& operator+=(const Modint& x) noexcept\
-    \ {\n        m_value += x.m_value;\n        if (m_value >= Modint::mod()) {\n\
-    \            m_value -= Modint::mod();\n        }\n        return static_cast<Modint&>(*this);\n\
-    \    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u304B\u3089\
-    \ @c x \u306E\u6301\u3064\u5024\u3092\u5F15\u3044\u3066\u3001\u5270\u4F59\u3092\
-    \u53D6\u308A\u307E\u3059\u3002\n    /// @param x \u5F15\u304F\u6570\n    /// @return\
-    \ @c *this\n    constexpr Modint& operator-=(const Modint& x) noexcept {\n   \
-    \     m_value -= x.m_value;\n        if (m_value >= Modint::mod()) {\n       \
-    \     m_value += Modint::mod();\n        }\n        return static_cast<Modint&>(*this);\n\
-    \    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u306B @c x\
-    \ \u306E\u6301\u3064\u5024\u3092\u639B\u3051\u3066\u3001\u5270\u4F59\u3092\u53D6\
-    \u308A\u307E\u3059\u3002\n    /// @param x \u639B\u3051\u308B\u6570\n    /// @return\
-    \ @c *this\n    constexpr Modint& operator*=(const Modint& x) noexcept {\n   \
-    \     m_value = static_cast<value_type>(static_cast<std::uint64_t>(m_value) *\
-    \ x.m_value % Modint::mod());\n        return static_cast<Modint&>(*this);\n \
-    \   }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092 @c x\
+    \    constexpr Modint& operator--() noexcept {\n        if (m_value == 0) {\n\
+    \            m_value = Modint::mod();\n        }\n        --m_value;\n       \
+    \ return static_cast<Modint&>(*this);\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u3092\u30C7\u30AF\u30EA\u30E1\u30F3\u30C8\u3057\u3066\
+    \u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @return \u30C7\
+    \u30AF\u30EA\u30E1\u30F3\u30C8\u3059\u308B\u524D\u306E\u5024\n    constexpr Modint\
+    \ operator--(int) noexcept {\n        auto x = static_cast<const Modint&>(*this);\n\
+    \        --*this;\n        return x;\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u306B @c x \u306E\u6301\u3064\u5024\u3092\u8DB3\u3057\
+    \u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @param x\
+    \ \u8DB3\u3059\u6570\n    /// @return @c *this\n    constexpr Modint& operator+=(const\
+    \ Modint& x) noexcept {\n        m_value += x.m_value;\n        if (m_value >=\
+    \ Modint::mod()) {\n            m_value -= Modint::mod();\n        }\n       \
+    \ return static_cast<Modint&>(*this);\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u304B\u3089 @c x \u306E\u6301\u3064\u5024\u3092\u5F15\
+    \u3044\u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @param\
+    \ x \u5F15\u304F\u6570\n    /// @return @c *this\n    constexpr Modint& operator-=(const\
+    \ Modint& x) noexcept {\n        m_value -= x.m_value;\n        if (m_value >=\
+    \ Modint::mod()) {\n            m_value += Modint::mod();\n        }\n       \
+    \ return static_cast<Modint&>(*this);\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u306B @c x \u306E\u6301\u3064\u5024\u3092\u639B\u3051\
+    \u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @param x\
+    \ \u639B\u3051\u308B\u6570\n    /// @return @c *this\n    constexpr Modint& operator*=(const\
+    \ Modint& x) noexcept {\n        m_value = static_cast<value_type>(static_cast<std::uint64_t>(m_value)\
+    \ * x.m_value % Modint::mod());\n        return static_cast<Modint&>(*this);\n\
+    \    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092 @c x\
     \ \u306E\u6301\u3064\u5024\u3067\u5272\u3063\u3066\u3001\u5270\u4F59\u3092\u53D6\
     \u308A\u307E\u3059\u3002\n    /// @remark \u6642\u9593\u8A08\u7B97\u91CF\uFF1A\
     \ @f$O(\\log x)@f$\n    /// @param x \u5272\u308B\u6570\n    /// @return @c *this\n\
@@ -531,7 +532,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/partition-function_2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 19:23:31+09:00'
+  timestamp: '2026-10-12 20:24:58+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/partition-function_2.test.cpp

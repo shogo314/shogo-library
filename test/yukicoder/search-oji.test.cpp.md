@@ -22,44 +22,44 @@ data:
     https://yukicoder.me/problems/no/1340\"\n\n#line 2 \"src/math/matrix.hpp\"\n\n\
     /**\n * @file matrix.hpp\n * @brief \u884C\u5217\n */\n\n#include <vector>\n#include\
     \ <string>\n#include <algorithm>\n#include <valarray>\n#include <cassert>\n#include\
-    \ <type_traits>\n#include <initializer_list>\n\nnamespace matrix {\n    template\
-    \ <typename T>\n    struct OperatorPropertyDefault {\n        constexpr static\
-    \ T zero() { return T(0); }\n        constexpr static T add(const T &a, const\
-    \ T &b) { return a + b; }\n        constexpr static T neg(const T &a) { return\
-    \ -a; }\n        constexpr static T one() { return T(1); }\n        constexpr\
-    \ static T mul(const T &a, const T &b) { return a * b; }\n        constexpr static\
-    \ T inv(const T &a) { return T(1) / a; }\n    };\n}\n\n/**\n * @brief \u884C\u5217\
-    \n * @tparam T \u578B \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u8981\u7D20\
-    \u3068\u306A\u308Bint\u3084char\n * @tparam OperatorProperty \u884C\u5217\u306E\
-    \u8981\u7D20\u306E\u6F14\u7B97\u3092\u5B9A\u7FA9\u3059\u308B\u69CB\u9020\u4F53\
-    \ 0,1\u3068+,*\u306A\u3089\u7701\u7565\u53EF\n *\n * @note\n * OperatorProperty\u306E\
-    \u4F8B\uFF08\u6574\u6570\u306Exor\u3068and\u306B\u3088\u308B\u74B0\uFF09\n * @code\n\
-    \ * struct XorOperatorProperty {\n *     constexpr static int zero() { return\
-    \ 0; }\n *     constexpr static int add(const int &a, const int &b) { return a\
-    \ ^ b; }\n *     constexpr static int neg(const int &a) { return a; }\n *    \
-    \ constexpr static int one() { return 1; }\n *     constexpr static int mul(const\
-    \ int &a, const int &b) { return a & b; }\n * };\n * @endcode\n * constexpr\u3067\
-    \u3042\u308B\u5FC5\u8981\u306F\u306A\u304F\u3001\u307E\u305Finv\u306A\u3069\u4F7F\
-    \u308F\u306A\u3044\u3082\u306E\u306F\u5B9A\u7FA9\u3057\u306A\u304F\u3066\u3082\
-    \u3088\u3044\uFF08\u5FC5\u8981\u306A\u3082\u306E\u304C\u306A\u304B\u3063\u305F\
-    \u3089\u30B3\u30F3\u30D1\u30A4\u30EB\u30A8\u30E9\u30FC\u304C\u767A\u751F\u3059\
-    \u308B\uFF09\n */\ntemplate<class T, class OperatorProperty = matrix::OperatorPropertyDefault<T>>\
-    \ struct Matrix {\n    int n, m;\n    std::vector<std::vector<T>> v;\n\n    /**\n\
-    \     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param v \u884C\
-    \u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u5143\u3068\u306A\u308B vector<string>\
-    \ \u3084 vector<vector<T>>\n     * @return Matrix\n     */\n    template <typename\
-    \ Iterable>\n    Matrix(const std::vector<Iterable>& v_) noexcept : n(v_.size()),\
-    \ m(v_.size() == 0 ? 0 : v_[0].size()) {\n        v.resize(n);\n        for(int\
-    \ i = 0; i < n; i++) {\n            v[i].assign(v_[i].begin(), v_[i].end());\n\
-    \        }\n    }\n\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\
-    \u30BF\n     * @param _n \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u884C\u6570\
-    \n     * @param _m \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u5217\u6570\n\
-    \     * @param _val \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u8981\u7D20\u306E\
-    \u521D\u671F\u5024\n     * @return Matrix\n     */\n    /**\n     * @brief \u521D\
-    \u671F\u5316\u5B50\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\u30B3\u30F3\u30B9\
-    \u30C8\u30E9\u30AF\u30BF\n     * \u4F8B: Matrix<mint> A({{1, 1}, {1, 0}});\n \
-    \    * @param il \u5404\u884C\u306E\u8981\u7D20\u306E\u30EA\u30B9\u30C8\n    \
-    \ */\n    Matrix(std::initializer_list<std::initializer_list<T>> il) : n(il.size()),\
+    \ <type_traits>\n#include <initializer_list>\n#include <cmath>\n#include <utility>\n\
+    \nnamespace matrix {\n    template <typename T>\n    struct OperatorPropertyDefault\
+    \ {\n        constexpr static T zero() { return T(0); }\n        constexpr static\
+    \ T add(const T &a, const T &b) { return a + b; }\n        constexpr static T\
+    \ neg(const T &a) { return -a; }\n        constexpr static T one() { return T(1);\
+    \ }\n        constexpr static T mul(const T &a, const T &b) { return a * b; }\n\
+    \        constexpr static T inv(const T &a) { return T(1) / a; }\n    };\n}\n\n\
+    /**\n * @brief \u884C\u5217\n * @tparam T \u578B \u884C\u5217(\u30B0\u30EA\u30C3\
+    \u30C9)\u306E\u8981\u7D20\u3068\u306A\u308Bint\u3084char\n * @tparam OperatorProperty\
+    \ \u884C\u5217\u306E\u8981\u7D20\u306E\u6F14\u7B97\u3092\u5B9A\u7FA9\u3059\u308B\
+    \u69CB\u9020\u4F53 0,1\u3068+,*\u306A\u3089\u7701\u7565\u53EF\n *\n * @note\n\
+    \ * OperatorProperty\u306E\u4F8B\uFF08\u6574\u6570\u306Exor\u3068and\u306B\u3088\
+    \u308B\u74B0\uFF09\n * @code\n * struct XorOperatorProperty {\n *     constexpr\
+    \ static int zero() { return 0; }\n *     constexpr static int add(const int &a,\
+    \ const int &b) { return a ^ b; }\n *     constexpr static int neg(const int &a)\
+    \ { return a; }\n *     constexpr static int one() { return 1; }\n *     constexpr\
+    \ static int mul(const int &a, const int &b) { return a & b; }\n * };\n * @endcode\n\
+    \ * constexpr\u3067\u3042\u308B\u5FC5\u8981\u306F\u306A\u304F\u3001\u307E\u305F\
+    inv\u306A\u3069\u4F7F\u308F\u306A\u3044\u3082\u306E\u306F\u5B9A\u7FA9\u3057\u306A\
+    \u304F\u3066\u3082\u3088\u3044\uFF08\u5FC5\u8981\u306A\u3082\u306E\u304C\u306A\
+    \u304B\u3063\u305F\u3089\u30B3\u30F3\u30D1\u30A4\u30EB\u30A8\u30E9\u30FC\u304C\
+    \u767A\u751F\u3059\u308B\uFF09\n */\ntemplate<class T, class OperatorProperty\
+    \ = matrix::OperatorPropertyDefault<T>> struct Matrix {\n    int n, m;\n    std::vector<std::vector<T>>\
+    \ v;\n\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n  \
+    \   * @param v \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u5143\u3068\u306A\u308B\
+    \ vector<string> \u3084 vector<vector<T>>\n     * @return Matrix\n     */\n  \
+    \  template <typename Iterable>\n    Matrix(const std::vector<Iterable>& v_) noexcept\
+    \ : n(v_.size()), m(v_.size() == 0 ? 0 : v_[0].size()) {\n        v.resize(n);\n\
+    \        for(int i = 0; i < n; i++) {\n            v[i].assign(v_[i].begin(),\
+    \ v_[i].end());\n        }\n    }\n\n    /**\n     * @brief \u30B3\u30F3\u30B9\
+    \u30C8\u30E9\u30AF\u30BF\n     * @param _n \u884C\u5217(\u30B0\u30EA\u30C3\u30C9\
+    )\u306E\u884C\u6570\n     * @param _m \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\
+    \u5217\u6570\n     * @param _val \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u8981\
+    \u7D20\u306E\u521D\u671F\u5024\n     * @return Matrix\n     */\n    /**\n    \
+    \ * @brief \u521D\u671F\u5316\u5B50\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\u30B3\
+    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * \u4F8B: Matrix<mint> A({{1, 1}, {1,\
+    \ 0}});\n     * @param il \u5404\u884C\u306E\u8981\u7D20\u306E\u30EA\u30B9\u30C8\
+    \n     */\n    Matrix(std::initializer_list<std::initializer_list<T>> il) : n(il.size()),\
     \ m(il.size() == 0 ? 0 : il.begin()->size()) {\n        v.reserve(n);\n      \
     \  for(const auto& row : il) v.emplace_back(row);\n    }\n    Matrix(int _n, int\
     \ _m, T _val = OperatorProperty::zero()) : n(_n), m(_m), v(n, std::vector<T>(m,\
@@ -256,29 +256,29 @@ data:
     \     }\n            }\n        }\n        return d;\n    }\n};\n#line 2 \"src/math/modint.hpp\"\
     \n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\
     \u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#include\
-    \ <iostream>\n#include <utility>\n#include <limits>\n#line 12 \"src/math/modint.hpp\"\
-    \n#include <cstdint>\n#line 14 \"src/math/modint.hpp\"\n\nnamespace detail {\n\
-    \    static constexpr std::uint16_t prime32_bases[] {\n        15591,  2018, \
-    \ 166, 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,  3620,   560,  3128,\
-    \  5212,  2657,\n         2300,  2021, 4652, 1471,  9336,  4018,  2398, 20462,\
-    \ 10277,  8028, 2213,  6219,   620,  3763,  4852,  5012,\n         3185,  1333,\
-    \ 6227, 5298,  1074,  2391,  5113,  7061,   803,  1269, 3875,   422,   751,  \
-    \ 580,  4729, 10239,\n          746,  2951,  556, 2206,  3778,   481,  1522, \
-    \ 3476,   481,  2487, 3266,  5633,   488,  3373,  6441,  3344,\n           17,\
-    \ 15105, 1490, 4154,  2036,  1882,  1813,   467,  3307, 14042, 6371,   658,  1005,\
-    \   903,   737,  1887,\n         7447,  1888, 2848, 1784,  7559,  3400,   951,\
-    \ 13969,  4304,   177,   41, 19875,  3110, 13221,  8726,   571,\n         7043,\
-    \  6943, 1199,  352,  6435,   165,  1169,  3315,   978,   233, 3003,  2562,  2994,\
-    \ 10587, 10030,  2377,\n         1902,  5354, 4447, 1555,   263, 27027,  2283,\
-    \   305,   669,  1912,  601,  6186,   429,  1930, 14873,  1784,\n         1661,\
-    \   524, 3577,  236,  2360,  6146,  2850, 55637,  1753,  4178, 8466,   222,  2579,\
-    \  2743,  2031,  2226,\n         2276,   374, 2132,  813, 23788,  1610,  4422,\
-    \  5159,  1725,  3597, 3366, 14336,   579,   165,  1375, 10018,\n        12616,\
-    \  9816, 1371,  536,  1867, 10864,   857,  2206,  5788,   434, 8085, 17618,  \
-    \ 727,  3639,  1595,  4944,\n         2129,  2029, 8195, 8344,  6232,  9183, \
-    \ 8126,  1870,  3296,  7455, 8947, 25017,   541, 19115,   368,   566,\n      \
-    \   5674,   411,  522, 1027,  8215,  2050,  6544, 10049,   614,   774, 2333, \
-    \ 3007, 35201,  4706,  1152,  1785,\n         1028,  1540, 3743,  493,  4474,\
+    \ <iostream>\n#line 10 \"src/math/modint.hpp\"\n#include <limits>\n#line 12 \"\
+    src/math/modint.hpp\"\n#include <cstdint>\n#line 14 \"src/math/modint.hpp\"\n\n\
+    namespace detail {\n    static constexpr std::uint16_t prime32_bases[] {\n   \
+    \     15591,  2018,  166, 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,\
+    \  3620,   560,  3128,  5212,  2657,\n         2300,  2021, 4652, 1471,  9336,\
+    \  4018,  2398, 20462, 10277,  8028, 2213,  6219,   620,  3763,  4852,  5012,\n\
+    \         3185,  1333, 6227, 5298,  1074,  2391,  5113,  7061,   803,  1269, 3875,\
+    \   422,   751,   580,  4729, 10239,\n          746,  2951,  556, 2206,  3778,\
+    \   481,  1522,  3476,   481,  2487, 3266,  5633,   488,  3373,  6441,  3344,\n\
+    \           17, 15105, 1490, 4154,  2036,  1882,  1813,   467,  3307, 14042, 6371,\
+    \   658,  1005,   903,   737,  1887,\n         7447,  1888, 2848, 1784,  7559,\
+    \  3400,   951, 13969,  4304,   177,   41, 19875,  3110, 13221,  8726,   571,\n\
+    \         7043,  6943, 1199,  352,  6435,   165,  1169,  3315,   978,   233, 3003,\
+    \  2562,  2994, 10587, 10030,  2377,\n         1902,  5354, 4447, 1555,   263,\
+    \ 27027,  2283,   305,   669,  1912,  601,  6186,   429,  1930, 14873,  1784,\n\
+    \         1661,   524, 3577,  236,  2360,  6146,  2850, 55637,  1753,  4178, 8466,\
+    \   222,  2579,  2743,  2031,  2226,\n         2276,   374, 2132,  813, 23788,\
+    \  1610,  4422,  5159,  1725,  3597, 3366, 14336,   579,   165,  1375, 10018,\n\
+    \        12616,  9816, 1371,  536,  1867, 10864,   857,  2206,  5788,   434, 8085,\
+    \ 17618,   727,  3639,  1595,  4944,\n         2129,  2029, 8195, 8344,  6232,\
+    \  9183,  8126,  1870,  3296,  7455, 8947, 25017,   541, 19115,   368,   566,\n\
+    \         5674,   411,  522, 1027,  8215,  2050,  6544, 10049,   614,   774, 2333,\
+    \  3007, 35201,  4706,  1152,  1785,\n         1028,  1540, 3743,  493,  4474,\
     \  2521, 26845,  8354,   864, 18915, 5465,  2447,    42,  4511,  1660,   166,\n\
     \         1249,  6259, 2553,  304,   272,  7286,    73,  6554,   899,  2816, 5197,\
     \ 13330,  7054,  2818,  3199,   811,\n          922,   350, 7514, 4452,  3449,\
@@ -330,37 +330,38 @@ data:
     \ (m_value == Modint::mod()) {\n            m_value = 0;\n        }\n        return\
     \ static_cast<Modint&>(*this);\n    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\
     \u3044\u308B\u5024\u3092\u30A4\u30F3\u30AF\u30EA\u30E1\u30F3\u30C8\u3057\u3066\
+    \u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @return \u30A4\
+    \u30F3\u30AF\u30EA\u30E1\u30F3\u30C8\u3059\u308B\u524D\u306E\u5024\n    constexpr\
+    \ Modint operator++(int) noexcept {\n        auto x = static_cast<const Modint&>(*this);\n\
+    \        ++*this;\n        return x;\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u3092\u30C7\u30AF\u30EA\u30E1\u30F3\u30C8\u3057\u3066\
     \u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @return @c *this\n\
-    \    constexpr Modint operator++(int) noexcept {\n        auto x = static_cast<const\
-    \ Modint&>(*this);\n        ++*this;\n        return x;\n    }\n\n    /// @brief\
-    \ \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092\u30C7\u30AF\u30EA\u30E1\u30F3\
-    \u30C8\u3057\u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n   \
-    \ /// @return @c *this\n    constexpr Modint& operator--() noexcept {\n      \
-    \  if (m_value == 0) {\n            m_value = Modint::mod();\n        }\n    \
-    \    --m_value;\n        return static_cast<Modint&>(*this);\n    }\n\n    ///\
-    \ @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092\u30C7\u30AF\u30EA\u30E1\
-    \u30F3\u30C8\u3057\u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\
-    \n    /// @return @c *this\n    constexpr Modint operator--(int) noexcept {\n\
-    \        auto x = static_cast<const Modint&>(*this);\n        --*this;\n     \
-    \   return x;\n    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\
-    \u306B @c x \u306E\u6301\u3064\u5024\u3092\u8DB3\u3057\u3066\u3001\u5270\u4F59\
-    \u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @param x \u8DB3\u3059\u6570\n  \
-    \  /// @return @c *this\n    constexpr Modint& operator+=(const Modint& x) noexcept\
-    \ {\n        m_value += x.m_value;\n        if (m_value >= Modint::mod()) {\n\
-    \            m_value -= Modint::mod();\n        }\n        return static_cast<Modint&>(*this);\n\
-    \    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u304B\u3089\
-    \ @c x \u306E\u6301\u3064\u5024\u3092\u5F15\u3044\u3066\u3001\u5270\u4F59\u3092\
-    \u53D6\u308A\u307E\u3059\u3002\n    /// @param x \u5F15\u304F\u6570\n    /// @return\
-    \ @c *this\n    constexpr Modint& operator-=(const Modint& x) noexcept {\n   \
-    \     m_value -= x.m_value;\n        if (m_value >= Modint::mod()) {\n       \
-    \     m_value += Modint::mod();\n        }\n        return static_cast<Modint&>(*this);\n\
-    \    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u306B @c x\
-    \ \u306E\u6301\u3064\u5024\u3092\u639B\u3051\u3066\u3001\u5270\u4F59\u3092\u53D6\
-    \u308A\u307E\u3059\u3002\n    /// @param x \u639B\u3051\u308B\u6570\n    /// @return\
-    \ @c *this\n    constexpr Modint& operator*=(const Modint& x) noexcept {\n   \
-    \     m_value = static_cast<value_type>(static_cast<std::uint64_t>(m_value) *\
-    \ x.m_value % Modint::mod());\n        return static_cast<Modint&>(*this);\n \
-    \   }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092 @c x\
+    \    constexpr Modint& operator--() noexcept {\n        if (m_value == 0) {\n\
+    \            m_value = Modint::mod();\n        }\n        --m_value;\n       \
+    \ return static_cast<Modint&>(*this);\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u3092\u30C7\u30AF\u30EA\u30E1\u30F3\u30C8\u3057\u3066\
+    \u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @return \u30C7\
+    \u30AF\u30EA\u30E1\u30F3\u30C8\u3059\u308B\u524D\u306E\u5024\n    constexpr Modint\
+    \ operator--(int) noexcept {\n        auto x = static_cast<const Modint&>(*this);\n\
+    \        --*this;\n        return x;\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u306B @c x \u306E\u6301\u3064\u5024\u3092\u8DB3\u3057\
+    \u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @param x\
+    \ \u8DB3\u3059\u6570\n    /// @return @c *this\n    constexpr Modint& operator+=(const\
+    \ Modint& x) noexcept {\n        m_value += x.m_value;\n        if (m_value >=\
+    \ Modint::mod()) {\n            m_value -= Modint::mod();\n        }\n       \
+    \ return static_cast<Modint&>(*this);\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u304B\u3089 @c x \u306E\u6301\u3064\u5024\u3092\u5F15\
+    \u3044\u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @param\
+    \ x \u5F15\u304F\u6570\n    /// @return @c *this\n    constexpr Modint& operator-=(const\
+    \ Modint& x) noexcept {\n        m_value -= x.m_value;\n        if (m_value >=\
+    \ Modint::mod()) {\n            m_value += Modint::mod();\n        }\n       \
+    \ return static_cast<Modint&>(*this);\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u306B @c x \u306E\u6301\u3064\u5024\u3092\u639B\u3051\
+    \u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @param x\
+    \ \u639B\u3051\u308B\u6570\n    /// @return @c *this\n    constexpr Modint& operator*=(const\
+    \ Modint& x) noexcept {\n        m_value = static_cast<value_type>(static_cast<std::uint64_t>(m_value)\
+    \ * x.m_value % Modint::mod());\n        return static_cast<Modint&>(*this);\n\
+    \    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092 @c x\
     \ \u306E\u6301\u3064\u5024\u3067\u5272\u3063\u3066\u3001\u5270\u4F59\u3092\u53D6\
     \u308A\u307E\u3059\u3002\n    /// @remark \u6642\u9593\u8A08\u7B97\u91CF\uFF1A\
     \ @f$O(\\log x)@f$\n    /// @param x \u5272\u308B\u6570\n    /// @return @c *this\n\
@@ -518,7 +519,7 @@ data:
   isVerificationFile: true
   path: test/yukicoder/search-oji.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 19:56:50+09:00'
+  timestamp: '2026-10-12 20:24:58+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yukicoder/search-oji.test.cpp

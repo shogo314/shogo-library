@@ -84,8 +84,37 @@ data:
   verifiedWith: []
 documentation_of: src/data_structures/priority_counter.hpp
 layout: document
-redirect_from:
-- /library/src/data_structures/priority_counter.hpp
-- /library/src/data_structures/priority_counter.hpp.html
 title: "\u4E0A\u4F4D K \u500B\u306E\u5024\u3068\u305D\u306E\u500B\u6570"
 ---
+
+値を追加していき、大きい方から K 種類の値とそれぞれの個数だけを保持します。`+` で2つを合わせられるので、セグメント木に乗せて「区間の最大値とその個数」「区間で2番目に大きい値」などを求めるのに使えます。
+
+```cpp
+MaxCounter<int, 2> pc;                 // 大きい方から 2 種類
+for (int x : {3, 5, 1, 5, 4}) pc.inc(x);
+// pc.data = { {5, 2}, {4, 1} }
+
+MaxCounter<int> a(3), b(3);
+auto c = a + b;                        // c.data[0] = {3, 2}
+```
+
+## 型
+
+| 型 | 説明 |
+|---|---|
+| `PriorityCounter<T, K = 1, Compare = std::less<T>>` | `Compare` で大きい方から K 種類を保持 |
+| `MaxCounter<T, K = 1>` | 大きい方から K 種類 |
+| `MinCounter<T, K = 1>` | 小さい方から K 種類 |
+
+## メンバ
+
+| メンバ | 説明 | 計算量 |
+|---|---|---|
+| `PriorityCounter()` | 空 | $O(K)$ |
+| `PriorityCounter(x)` | 値 `x` が 1 個 | $O(K)$ |
+| `inc(x, c = 1)` | 値 `x` を `c` 個追加する。上位 K 種類に入らなければ捨てる | $O(K)$ |
+| `a + b`、`a += b` | 合わせる | $O(K^2)$ |
+| `size()` | 保持している値の種類数 (K 以下) | $O(K)$ |
+| `data[i]` | 上位から `i` 番目の `{値, 個数}`。`i >= size()` では個数が 0 | |
+
+値は追加されるだけなので、上位 K 種類から外れた値が再び上位に入ることはありません。そのため、追加の順番によらず上位 K 種類とその個数は正しく求まります。`c` は正の値にしてください (個数を減らす使い方はできません)。

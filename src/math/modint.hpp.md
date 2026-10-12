@@ -168,37 +168,38 @@ data:
     \ (m_value == Modint::mod()) {\n            m_value = 0;\n        }\n        return\
     \ static_cast<Modint&>(*this);\n    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\
     \u3044\u308B\u5024\u3092\u30A4\u30F3\u30AF\u30EA\u30E1\u30F3\u30C8\u3057\u3066\
+    \u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @return \u30A4\
+    \u30F3\u30AF\u30EA\u30E1\u30F3\u30C8\u3059\u308B\u524D\u306E\u5024\n    constexpr\
+    \ Modint operator++(int) noexcept {\n        auto x = static_cast<const Modint&>(*this);\n\
+    \        ++*this;\n        return x;\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u3092\u30C7\u30AF\u30EA\u30E1\u30F3\u30C8\u3057\u3066\
     \u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @return @c *this\n\
-    \    constexpr Modint operator++(int) noexcept {\n        auto x = static_cast<const\
-    \ Modint&>(*this);\n        ++*this;\n        return x;\n    }\n\n    /// @brief\
-    \ \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092\u30C7\u30AF\u30EA\u30E1\u30F3\
-    \u30C8\u3057\u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n   \
-    \ /// @return @c *this\n    constexpr Modint& operator--() noexcept {\n      \
-    \  if (m_value == 0) {\n            m_value = Modint::mod();\n        }\n    \
-    \    --m_value;\n        return static_cast<Modint&>(*this);\n    }\n\n    ///\
-    \ @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092\u30C7\u30AF\u30EA\u30E1\
-    \u30F3\u30C8\u3057\u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\
-    \n    /// @return @c *this\n    constexpr Modint operator--(int) noexcept {\n\
-    \        auto x = static_cast<const Modint&>(*this);\n        --*this;\n     \
-    \   return x;\n    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\
-    \u306B @c x \u306E\u6301\u3064\u5024\u3092\u8DB3\u3057\u3066\u3001\u5270\u4F59\
-    \u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @param x \u8DB3\u3059\u6570\n  \
-    \  /// @return @c *this\n    constexpr Modint& operator+=(const Modint& x) noexcept\
-    \ {\n        m_value += x.m_value;\n        if (m_value >= Modint::mod()) {\n\
-    \            m_value -= Modint::mod();\n        }\n        return static_cast<Modint&>(*this);\n\
-    \    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u304B\u3089\
-    \ @c x \u306E\u6301\u3064\u5024\u3092\u5F15\u3044\u3066\u3001\u5270\u4F59\u3092\
-    \u53D6\u308A\u307E\u3059\u3002\n    /// @param x \u5F15\u304F\u6570\n    /// @return\
-    \ @c *this\n    constexpr Modint& operator-=(const Modint& x) noexcept {\n   \
-    \     m_value -= x.m_value;\n        if (m_value >= Modint::mod()) {\n       \
-    \     m_value += Modint::mod();\n        }\n        return static_cast<Modint&>(*this);\n\
-    \    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u306B @c x\
-    \ \u306E\u6301\u3064\u5024\u3092\u639B\u3051\u3066\u3001\u5270\u4F59\u3092\u53D6\
-    \u308A\u307E\u3059\u3002\n    /// @param x \u639B\u3051\u308B\u6570\n    /// @return\
-    \ @c *this\n    constexpr Modint& operator*=(const Modint& x) noexcept {\n   \
-    \     m_value = static_cast<value_type>(static_cast<std::uint64_t>(m_value) *\
-    \ x.m_value % Modint::mod());\n        return static_cast<Modint&>(*this);\n \
-    \   }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092 @c x\
+    \    constexpr Modint& operator--() noexcept {\n        if (m_value == 0) {\n\
+    \            m_value = Modint::mod();\n        }\n        --m_value;\n       \
+    \ return static_cast<Modint&>(*this);\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u3092\u30C7\u30AF\u30EA\u30E1\u30F3\u30C8\u3057\u3066\
+    \u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @return \u30C7\
+    \u30AF\u30EA\u30E1\u30F3\u30C8\u3059\u308B\u524D\u306E\u5024\n    constexpr Modint\
+    \ operator--(int) noexcept {\n        auto x = static_cast<const Modint&>(*this);\n\
+    \        --*this;\n        return x;\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u306B @c x \u306E\u6301\u3064\u5024\u3092\u8DB3\u3057\
+    \u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @param x\
+    \ \u8DB3\u3059\u6570\n    /// @return @c *this\n    constexpr Modint& operator+=(const\
+    \ Modint& x) noexcept {\n        m_value += x.m_value;\n        if (m_value >=\
+    \ Modint::mod()) {\n            m_value -= Modint::mod();\n        }\n       \
+    \ return static_cast<Modint&>(*this);\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u304B\u3089 @c x \u306E\u6301\u3064\u5024\u3092\u5F15\
+    \u3044\u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @param\
+    \ x \u5F15\u304F\u6570\n    /// @return @c *this\n    constexpr Modint& operator-=(const\
+    \ Modint& x) noexcept {\n        m_value -= x.m_value;\n        if (m_value >=\
+    \ Modint::mod()) {\n            m_value += Modint::mod();\n        }\n       \
+    \ return static_cast<Modint&>(*this);\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u306B @c x \u306E\u6301\u3064\u5024\u3092\u639B\u3051\
+    \u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @param x\
+    \ \u639B\u3051\u308B\u6570\n    /// @return @c *this\n    constexpr Modint& operator*=(const\
+    \ Modint& x) noexcept {\n        m_value = static_cast<value_type>(static_cast<std::uint64_t>(m_value)\
+    \ * x.m_value % Modint::mod());\n        return static_cast<Modint&>(*this);\n\
+    \    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092 @c x\
     \ \u306E\u6301\u3064\u5024\u3067\u5272\u3063\u3066\u3001\u5270\u4F59\u3092\u53D6\
     \u308A\u307E\u3059\u3002\n    /// @remark \u6642\u9593\u8A08\u7B97\u91CF\uFF1A\
     \ @f$O(\\log x)@f$\n    /// @param x \u5272\u308B\u6570\n    /// @return @c *this\n\
@@ -401,37 +402,38 @@ data:
     \ (m_value == Modint::mod()) {\n            m_value = 0;\n        }\n        return\
     \ static_cast<Modint&>(*this);\n    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\
     \u3044\u308B\u5024\u3092\u30A4\u30F3\u30AF\u30EA\u30E1\u30F3\u30C8\u3057\u3066\
+    \u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @return \u30A4\
+    \u30F3\u30AF\u30EA\u30E1\u30F3\u30C8\u3059\u308B\u524D\u306E\u5024\n    constexpr\
+    \ Modint operator++(int) noexcept {\n        auto x = static_cast<const Modint&>(*this);\n\
+    \        ++*this;\n        return x;\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u3092\u30C7\u30AF\u30EA\u30E1\u30F3\u30C8\u3057\u3066\
     \u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @return @c *this\n\
-    \    constexpr Modint operator++(int) noexcept {\n        auto x = static_cast<const\
-    \ Modint&>(*this);\n        ++*this;\n        return x;\n    }\n\n    /// @brief\
-    \ \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092\u30C7\u30AF\u30EA\u30E1\u30F3\
-    \u30C8\u3057\u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n   \
-    \ /// @return @c *this\n    constexpr Modint& operator--() noexcept {\n      \
-    \  if (m_value == 0) {\n            m_value = Modint::mod();\n        }\n    \
-    \    --m_value;\n        return static_cast<Modint&>(*this);\n    }\n\n    ///\
-    \ @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092\u30C7\u30AF\u30EA\u30E1\
-    \u30F3\u30C8\u3057\u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\
-    \n    /// @return @c *this\n    constexpr Modint operator--(int) noexcept {\n\
-    \        auto x = static_cast<const Modint&>(*this);\n        --*this;\n     \
-    \   return x;\n    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\
-    \u306B @c x \u306E\u6301\u3064\u5024\u3092\u8DB3\u3057\u3066\u3001\u5270\u4F59\
-    \u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @param x \u8DB3\u3059\u6570\n  \
-    \  /// @return @c *this\n    constexpr Modint& operator+=(const Modint& x) noexcept\
-    \ {\n        m_value += x.m_value;\n        if (m_value >= Modint::mod()) {\n\
-    \            m_value -= Modint::mod();\n        }\n        return static_cast<Modint&>(*this);\n\
-    \    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u304B\u3089\
-    \ @c x \u306E\u6301\u3064\u5024\u3092\u5F15\u3044\u3066\u3001\u5270\u4F59\u3092\
-    \u53D6\u308A\u307E\u3059\u3002\n    /// @param x \u5F15\u304F\u6570\n    /// @return\
-    \ @c *this\n    constexpr Modint& operator-=(const Modint& x) noexcept {\n   \
-    \     m_value -= x.m_value;\n        if (m_value >= Modint::mod()) {\n       \
-    \     m_value += Modint::mod();\n        }\n        return static_cast<Modint&>(*this);\n\
-    \    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u306B @c x\
-    \ \u306E\u6301\u3064\u5024\u3092\u639B\u3051\u3066\u3001\u5270\u4F59\u3092\u53D6\
-    \u308A\u307E\u3059\u3002\n    /// @param x \u639B\u3051\u308B\u6570\n    /// @return\
-    \ @c *this\n    constexpr Modint& operator*=(const Modint& x) noexcept {\n   \
-    \     m_value = static_cast<value_type>(static_cast<std::uint64_t>(m_value) *\
-    \ x.m_value % Modint::mod());\n        return static_cast<Modint&>(*this);\n \
-    \   }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092 @c x\
+    \    constexpr Modint& operator--() noexcept {\n        if (m_value == 0) {\n\
+    \            m_value = Modint::mod();\n        }\n        --m_value;\n       \
+    \ return static_cast<Modint&>(*this);\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u3092\u30C7\u30AF\u30EA\u30E1\u30F3\u30C8\u3057\u3066\
+    \u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @return \u30C7\
+    \u30AF\u30EA\u30E1\u30F3\u30C8\u3059\u308B\u524D\u306E\u5024\n    constexpr Modint\
+    \ operator--(int) noexcept {\n        auto x = static_cast<const Modint&>(*this);\n\
+    \        --*this;\n        return x;\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u306B @c x \u306E\u6301\u3064\u5024\u3092\u8DB3\u3057\
+    \u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @param x\
+    \ \u8DB3\u3059\u6570\n    /// @return @c *this\n    constexpr Modint& operator+=(const\
+    \ Modint& x) noexcept {\n        m_value += x.m_value;\n        if (m_value >=\
+    \ Modint::mod()) {\n            m_value -= Modint::mod();\n        }\n       \
+    \ return static_cast<Modint&>(*this);\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u304B\u3089 @c x \u306E\u6301\u3064\u5024\u3092\u5F15\
+    \u3044\u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @param\
+    \ x \u5F15\u304F\u6570\n    /// @return @c *this\n    constexpr Modint& operator-=(const\
+    \ Modint& x) noexcept {\n        m_value -= x.m_value;\n        if (m_value >=\
+    \ Modint::mod()) {\n            m_value += Modint::mod();\n        }\n       \
+    \ return static_cast<Modint&>(*this);\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u306B @c x \u306E\u6301\u3064\u5024\u3092\u639B\u3051\
+    \u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @param x\
+    \ \u639B\u3051\u308B\u6570\n    /// @return @c *this\n    constexpr Modint& operator*=(const\
+    \ Modint& x) noexcept {\n        m_value = static_cast<value_type>(static_cast<std::uint64_t>(m_value)\
+    \ * x.m_value % Modint::mod());\n        return static_cast<Modint&>(*this);\n\
+    \    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092 @c x\
     \ \u306E\u6301\u3064\u5024\u3067\u5272\u3063\u3066\u3001\u5270\u4F59\u3092\u53D6\
     \u308A\u307E\u3059\u3002\n    /// @remark \u6642\u9593\u8A08\u7B97\u91CF\uFF1A\
     \ @f$O(\\log x)@f$\n    /// @param x \u5272\u308B\u6570\n    /// @return @c *this\n\
@@ -565,7 +567,7 @@ data:
   - src/math/fps.hpp
   - src/math/combinatorics.hpp
   - src/math/number-theory.hpp
-  timestamp: '2026-10-11 23:34:07+09:00'
+  timestamp: '2026-10-12 20:24:58+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/aoj/jag-summer-2971.test.cpp
@@ -594,9 +596,47 @@ data:
   - test/yukicoder/186.test.cpp
 documentation_of: src/math/modint.hpp
 layout: document
-redirect_from:
-- /library/src/math/modint.hpp
-- /library/src/math/modint.hpp.html
 title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\
   \u53D6\u308B\u30AF\u30E9\u30B9"
 ---
+
+四則演算のたびに mod を取る整数型です。法は $2^{31}$ 未満であること。
+
+```cpp
+using mint = static_modint<998244353>;   // modint998244353 と同じ
+mint a = 3, b = -1;                       // 負の数も剰余で初期化: b = 998244352
+mint c = a / 2 + b.pow(10);               // 割り算は逆元を掛ける
+
+modint::set_mod(13);                      // 実行時に法を決める
+modint x = 20;                            // 7
+```
+
+## 型
+
+| 型 | 説明 |
+|---|---|
+| `static_modint<Mod>` | コンパイル時に法 `Mod` が決まる |
+| `dynamic_modint<ID>` | 実行時に `set_mod(m)` で法を決める (初期値は 998244353)。`ID` ごとに別の法を持てる |
+| `modint998244353` | `static_modint<998244353>` |
+| `modint1000000007` | `static_modint<1000000007>` |
+| `modint` | `dynamic_modint<-1>` |
+
+## メンバ
+
+| メンバ | 説明 | 計算量 |
+|---|---|---|
+| `mint(x)` | 整数 `x` の剰余で初期化 (負でもよい) | $O(1)$ |
+| `x.value()` | 保持している値 ($0$ 以上 mod 未満) | $O(1)$ |
+| `mint::mod()` | 法 | $O(1)$ |
+| `mint::set_mod(m)` | 法を設定 (`dynamic_modint` のみ) | $O(1)$ |
+| `+`、`-`、`*`、`+=`、`-=`、`*=`、単項 `+` `-`、`++`、`--` | 演算 | $O(1)$ |
+| `/`、`/=` | 逆元を掛ける | $O(\log \mathrm{mod})$ |
+| `x.pow(n)` | $x^n$ (`n` は非負) | $O(\log n)$ |
+| `x.inv()` | 逆元 (存在しなければ assert で落ちる)。`static_modint` で法が素数なら $x^{\mathrm{mod} - 2}$ で求める | $O(\log \mathrm{mod})$ |
+| `==`、`!=` | 比較 | $O(1)$ |
+| `is >> x`、`os << x` | 入出力 (入力は `long long` として読んで剰余を取る) | |
+
+## 関連
+
+- 逆元・累乗・畳み込みなどの関数は [数論](number-theory.hpp)
+- 二項係数は [組み合わせ](combinatorics.hpp)

@@ -128,23 +128,27 @@ data:
     \ + std::string(t) + \"\\\"\";\n}\ninline std::string repr(const char* t) {\n\
     \    return detail::initializer_str(t);\n}\n\ninline std::string type_str(const\
     \ char&) {\n    return \"char\";\n}\ninline std::string initializer_str(const\
-    \ char& t) {\n    std::vector<std::string> v(128, \"\");\n    v['\\0'] = \"\\\\\
-    0\";\n    v['\\a'] = \"\\\\a\";\n    v['\\b'] = \"\\\\b\";\n    v['\\f'] = \"\\\
-    \\f\";\n    v['\\r'] = \"\\\\r\";\n    v['\\n'] = \"\\\\n\";\n    v['\\v'] = \"\
-    \\\\v\";\n    v['\\''] = \"\\\\'\";\n    v['\\\\'] = \"\\\\\\\\\";\n    if (!v[t].empty())\n\
-    \        return \"'\" + v[t] + \"'\";\n    if (32 <= t and t <= 126)\n       \
-    \ return \"'\" + std::string{t} + \"'\";\n    return \"'\\\\\" + std::to_string(t\
-    \ / 64) + std::to_string(t / 8 % 8) + std::to_string(t % 8) + \"'\";\n}\ninline\
-    \ std::string repr(const char& t) {\n    return detail::initializer_str(t);\n\
-    }\n\ninline std::string type_str(const int&) {\n    return \"int\";\n}\ninline\
-    \ std::string initializer_str(const int& t) {\n    return std::to_string(t);\n\
-    }\ninline std::string repr(const int& t) {\n    return detail::initializer_str(t);\n\
-    }\n\ninline std::string type_str(const long&) {\n    return \"long\";\n}\ninline\
-    \ std::string initializer_str(const long& t) {\n    return std::to_string(t) +\
-    \ \"l\";\n}\ninline std::string repr(const long& t) {\n    return detail::initializer_str(t);\n\
-    }\n\ninline std::string type_str(const long long&) {\n    return \"long long\"\
-    ;\n}\ninline std::string initializer_str(const long long& t) {\n    return std::to_string(t)\
-    \ + \"ll\";\n}\ninline std::string repr(const long long& t) {\n    return detail::initializer_str(t);\n\
+    \ char& t) {\n    // char \u304C\u7B26\u53F7\u4ED8\u304D\u3067\u3082\u6DFB\u5B57\
+    \u304C\u8CA0\u306B\u306A\u3089\u306A\u3044\u3088\u3046\u306B unsigned char \u3067\
+    \u6271\u3046 (UTF-8 \u306E\u30D0\u30A4\u30C8\u306A\u3069)\n    const unsigned\
+    \ char u = static_cast<unsigned char>(t);\n    std::vector<std::string> v(128,\
+    \ \"\");\n    v['\\0'] = \"\\\\0\";\n    v['\\a'] = \"\\\\a\";\n    v['\\b'] =\
+    \ \"\\\\b\";\n    v['\\f'] = \"\\\\f\";\n    v['\\r'] = \"\\\\r\";\n    v['\\\
+    n'] = \"\\\\n\";\n    v['\\v'] = \"\\\\v\";\n    v['\\''] = \"\\\\'\";\n    v['\\\
+    \\'] = \"\\\\\\\\\";\n    if (u < 128 and !v[u].empty())\n        return \"'\"\
+    \ + v[u] + \"'\";\n    if (32 <= u and u <= 126)\n        return \"'\" + std::string{t}\
+    \ + \"'\";\n    return \"'\\\\\" + std::to_string(u / 64) + std::to_string(u /\
+    \ 8 % 8) + std::to_string(u % 8) + \"'\";\n}\ninline std::string repr(const char&\
+    \ t) {\n    return detail::initializer_str(t);\n}\n\ninline std::string type_str(const\
+    \ int&) {\n    return \"int\";\n}\ninline std::string initializer_str(const int&\
+    \ t) {\n    return std::to_string(t);\n}\ninline std::string repr(const int& t)\
+    \ {\n    return detail::initializer_str(t);\n}\n\ninline std::string type_str(const\
+    \ long&) {\n    return \"long\";\n}\ninline std::string initializer_str(const\
+    \ long& t) {\n    return std::to_string(t) + \"l\";\n}\ninline std::string repr(const\
+    \ long& t) {\n    return detail::initializer_str(t);\n}\n\ninline std::string\
+    \ type_str(const long long&) {\n    return \"long long\";\n}\ninline std::string\
+    \ initializer_str(const long long& t) {\n    return std::to_string(t) + \"ll\"\
+    ;\n}\ninline std::string repr(const long long& t) {\n    return detail::initializer_str(t);\n\
     }\n\ninline std::string type_str(const unsigned int&) {\n    return \"unsigned\
     \ int\";\n}\ninline std::string initializer_str(const unsigned int& t) {\n   \
     \ return std::to_string(t) + \"u\";\n}\ninline std::string repr(const unsigned\
@@ -159,16 +163,16 @@ data:
     \ std::string type_str(const std::string&) {\n    return \"std::string\";\n}\n\
     inline std::string initializer_str(const std::string& t) {\n    return \"\\\"\"\
     \ + t + \"\\\"\";\n}\ninline std::string repr(const std::string& t) {\n    return\
-    \ detail::type_str(t) + detail::initializer_str(t);\n}\n\ninline std::string type_str(const\
-    \ float&) {\n    return \"float\";\n}\ninline std::string initializer_str(const\
-    \ float& t) {\n    return std::to_string(t) + \"f\";\n}\ninline std::string repr(const\
-    \ float& t) {\n    return detail::initializer_str(t);\n}\n\ninline std::string\
-    \ type_str(const double&) {\n    return \"double\";\n}\ninline std::string initializer_str(const\
-    \ double& t) {\n    return std::to_string(t);\n}\ninline std::string repr(const\
-    \ double& t) {\n    return detail::initializer_str(t);\n}\n\ninline std::string\
-    \ type_str(const long double&) {\n    return \"long double\";\n}\ninline std::string\
-    \ initializer_str(const long double& t) {\n    return std::to_string(t) + \"l\"\
-    ;\n}\ninline std::string repr(const long double& t) {\n    return detail::initializer_str(t);\n\
+    \ detail::type_str(t) + \"{\" + detail::initializer_str(t) + \"}\";\n}\n\ninline\
+    \ std::string type_str(const float&) {\n    return \"float\";\n}\ninline std::string\
+    \ initializer_str(const float& t) {\n    return std::to_string(t) + \"f\";\n}\n\
+    inline std::string repr(const float& t) {\n    return detail::initializer_str(t);\n\
+    }\n\ninline std::string type_str(const double&) {\n    return \"double\";\n}\n\
+    inline std::string initializer_str(const double& t) {\n    return std::to_string(t);\n\
+    }\ninline std::string repr(const double& t) {\n    return detail::initializer_str(t);\n\
+    }\n\ninline std::string type_str(const long double&) {\n    return \"long double\"\
+    ;\n}\ninline std::string initializer_str(const long double& t) {\n    return std::to_string(t)\
+    \ + \"l\";\n}\ninline std::string repr(const long double& t) {\n    return detail::initializer_str(t);\n\
     }\n\ntemplate <typename T>\ninline std::string type_str(const std::vector<T>&)\
     \ {\n    T t;\n    return \"std::vector<\" + detail::type_str(t) + \">\";\n}\n\
     template <typename T>\ninline std::string initializer_str(const std::vector<T>&\
@@ -188,10 +192,10 @@ data:
     \ T2>&) {\n    T1 t1;\n    T2 t2;\n    return \"std::pair<\" + detail::type_str(t1)\
     \ + \", \" + detail::type_str(t2) + \">\";\n}\ntemplate <typename T1, typename\
     \ T2>\ninline std::string initializer_str(const std::pair<T1, T2>& t) {\n    return\
-    \ \"{\" + detail::repr(t.first) + \", \" + detail::repr(t.second) + \"}\";\n}\n\
-    template <typename T1, typename T2>\ninline std::string repr(const std::pair<T1,\
-    \ T2>& t) {\n    return detail::type_str(t) + detail::initializer_str(t);\n}\n\
-    \ntemplate <typename T1, typename T2>\ninline std::string type_str(const std::map<T1,\
+    \ \"{\" + detail::initializer_str(t.first) + \", \" + detail::initializer_str(t.second)\
+    \ + \"}\";\n}\ntemplate <typename T1, typename T2>\ninline std::string repr(const\
+    \ std::pair<T1, T2>& t) {\n    return detail::type_str(t) + detail::initializer_str(t);\n\
+    }\n\ntemplate <typename T1, typename T2>\ninline std::string type_str(const std::map<T1,\
     \ T2>&) {\n    T1 t1;\n    T2 t2;\n    return \"std::map<\" + detail::type_str(t1)\
     \ + \", \" + detail::type_str(t2) + \">\";\n}\ntemplate <typename T1, typename\
     \ T2>\ninline std::string initializer_str(const std::map<T1, T2>& t) {\n    std::string\
@@ -279,23 +283,27 @@ data:
     \ + std::string(t) + \"\\\"\";\n}\ninline std::string repr(const char* t) {\n\
     \    return detail::initializer_str(t);\n}\n\ninline std::string type_str(const\
     \ char&) {\n    return \"char\";\n}\ninline std::string initializer_str(const\
-    \ char& t) {\n    std::vector<std::string> v(128, \"\");\n    v['\\0'] = \"\\\\\
-    0\";\n    v['\\a'] = \"\\\\a\";\n    v['\\b'] = \"\\\\b\";\n    v['\\f'] = \"\\\
-    \\f\";\n    v['\\r'] = \"\\\\r\";\n    v['\\n'] = \"\\\\n\";\n    v['\\v'] = \"\
-    \\\\v\";\n    v['\\''] = \"\\\\'\";\n    v['\\\\'] = \"\\\\\\\\\";\n    if (!v[t].empty())\n\
-    \        return \"'\" + v[t] + \"'\";\n    if (32 <= t and t <= 126)\n       \
-    \ return \"'\" + std::string{t} + \"'\";\n    return \"'\\\\\" + std::to_string(t\
-    \ / 64) + std::to_string(t / 8 % 8) + std::to_string(t % 8) + \"'\";\n}\ninline\
-    \ std::string repr(const char& t) {\n    return detail::initializer_str(t);\n\
-    }\n\ninline std::string type_str(const int&) {\n    return \"int\";\n}\ninline\
-    \ std::string initializer_str(const int& t) {\n    return std::to_string(t);\n\
-    }\ninline std::string repr(const int& t) {\n    return detail::initializer_str(t);\n\
-    }\n\ninline std::string type_str(const long&) {\n    return \"long\";\n}\ninline\
-    \ std::string initializer_str(const long& t) {\n    return std::to_string(t) +\
-    \ \"l\";\n}\ninline std::string repr(const long& t) {\n    return detail::initializer_str(t);\n\
-    }\n\ninline std::string type_str(const long long&) {\n    return \"long long\"\
-    ;\n}\ninline std::string initializer_str(const long long& t) {\n    return std::to_string(t)\
-    \ + \"ll\";\n}\ninline std::string repr(const long long& t) {\n    return detail::initializer_str(t);\n\
+    \ char& t) {\n    // char \u304C\u7B26\u53F7\u4ED8\u304D\u3067\u3082\u6DFB\u5B57\
+    \u304C\u8CA0\u306B\u306A\u3089\u306A\u3044\u3088\u3046\u306B unsigned char \u3067\
+    \u6271\u3046 (UTF-8 \u306E\u30D0\u30A4\u30C8\u306A\u3069)\n    const unsigned\
+    \ char u = static_cast<unsigned char>(t);\n    std::vector<std::string> v(128,\
+    \ \"\");\n    v['\\0'] = \"\\\\0\";\n    v['\\a'] = \"\\\\a\";\n    v['\\b'] =\
+    \ \"\\\\b\";\n    v['\\f'] = \"\\\\f\";\n    v['\\r'] = \"\\\\r\";\n    v['\\\
+    n'] = \"\\\\n\";\n    v['\\v'] = \"\\\\v\";\n    v['\\''] = \"\\\\'\";\n    v['\\\
+    \\'] = \"\\\\\\\\\";\n    if (u < 128 and !v[u].empty())\n        return \"'\"\
+    \ + v[u] + \"'\";\n    if (32 <= u and u <= 126)\n        return \"'\" + std::string{t}\
+    \ + \"'\";\n    return \"'\\\\\" + std::to_string(u / 64) + std::to_string(u /\
+    \ 8 % 8) + std::to_string(u % 8) + \"'\";\n}\ninline std::string repr(const char&\
+    \ t) {\n    return detail::initializer_str(t);\n}\n\ninline std::string type_str(const\
+    \ int&) {\n    return \"int\";\n}\ninline std::string initializer_str(const int&\
+    \ t) {\n    return std::to_string(t);\n}\ninline std::string repr(const int& t)\
+    \ {\n    return detail::initializer_str(t);\n}\n\ninline std::string type_str(const\
+    \ long&) {\n    return \"long\";\n}\ninline std::string initializer_str(const\
+    \ long& t) {\n    return std::to_string(t) + \"l\";\n}\ninline std::string repr(const\
+    \ long& t) {\n    return detail::initializer_str(t);\n}\n\ninline std::string\
+    \ type_str(const long long&) {\n    return \"long long\";\n}\ninline std::string\
+    \ initializer_str(const long long& t) {\n    return std::to_string(t) + \"ll\"\
+    ;\n}\ninline std::string repr(const long long& t) {\n    return detail::initializer_str(t);\n\
     }\n\ninline std::string type_str(const unsigned int&) {\n    return \"unsigned\
     \ int\";\n}\ninline std::string initializer_str(const unsigned int& t) {\n   \
     \ return std::to_string(t) + \"u\";\n}\ninline std::string repr(const unsigned\
@@ -310,16 +318,16 @@ data:
     \ std::string type_str(const std::string&) {\n    return \"std::string\";\n}\n\
     inline std::string initializer_str(const std::string& t) {\n    return \"\\\"\"\
     \ + t + \"\\\"\";\n}\ninline std::string repr(const std::string& t) {\n    return\
-    \ detail::type_str(t) + detail::initializer_str(t);\n}\n\ninline std::string type_str(const\
-    \ float&) {\n    return \"float\";\n}\ninline std::string initializer_str(const\
-    \ float& t) {\n    return std::to_string(t) + \"f\";\n}\ninline std::string repr(const\
-    \ float& t) {\n    return detail::initializer_str(t);\n}\n\ninline std::string\
-    \ type_str(const double&) {\n    return \"double\";\n}\ninline std::string initializer_str(const\
-    \ double& t) {\n    return std::to_string(t);\n}\ninline std::string repr(const\
-    \ double& t) {\n    return detail::initializer_str(t);\n}\n\ninline std::string\
-    \ type_str(const long double&) {\n    return \"long double\";\n}\ninline std::string\
-    \ initializer_str(const long double& t) {\n    return std::to_string(t) + \"l\"\
-    ;\n}\ninline std::string repr(const long double& t) {\n    return detail::initializer_str(t);\n\
+    \ detail::type_str(t) + \"{\" + detail::initializer_str(t) + \"}\";\n}\n\ninline\
+    \ std::string type_str(const float&) {\n    return \"float\";\n}\ninline std::string\
+    \ initializer_str(const float& t) {\n    return std::to_string(t) + \"f\";\n}\n\
+    inline std::string repr(const float& t) {\n    return detail::initializer_str(t);\n\
+    }\n\ninline std::string type_str(const double&) {\n    return \"double\";\n}\n\
+    inline std::string initializer_str(const double& t) {\n    return std::to_string(t);\n\
+    }\ninline std::string repr(const double& t) {\n    return detail::initializer_str(t);\n\
+    }\n\ninline std::string type_str(const long double&) {\n    return \"long double\"\
+    ;\n}\ninline std::string initializer_str(const long double& t) {\n    return std::to_string(t)\
+    \ + \"l\";\n}\ninline std::string repr(const long double& t) {\n    return detail::initializer_str(t);\n\
     }\n\ntemplate <typename T>\ninline std::string type_str(const std::vector<T>&)\
     \ {\n    T t;\n    return \"std::vector<\" + detail::type_str(t) + \">\";\n}\n\
     template <typename T>\ninline std::string initializer_str(const std::vector<T>&\
@@ -339,10 +347,10 @@ data:
     \ T2>&) {\n    T1 t1;\n    T2 t2;\n    return \"std::pair<\" + detail::type_str(t1)\
     \ + \", \" + detail::type_str(t2) + \">\";\n}\ntemplate <typename T1, typename\
     \ T2>\ninline std::string initializer_str(const std::pair<T1, T2>& t) {\n    return\
-    \ \"{\" + detail::repr(t.first) + \", \" + detail::repr(t.second) + \"}\";\n}\n\
-    template <typename T1, typename T2>\ninline std::string repr(const std::pair<T1,\
-    \ T2>& t) {\n    return detail::type_str(t) + detail::initializer_str(t);\n}\n\
-    \ntemplate <typename T1, typename T2>\ninline std::string type_str(const std::map<T1,\
+    \ \"{\" + detail::initializer_str(t.first) + \", \" + detail::initializer_str(t.second)\
+    \ + \"}\";\n}\ntemplate <typename T1, typename T2>\ninline std::string repr(const\
+    \ std::pair<T1, T2>& t) {\n    return detail::type_str(t) + detail::initializer_str(t);\n\
+    }\n\ntemplate <typename T1, typename T2>\ninline std::string type_str(const std::map<T1,\
     \ T2>&) {\n    T1 t1;\n    T2 t2;\n    return \"std::map<\" + detail::type_str(t1)\
     \ + \", \" + detail::type_str(t2) + \">\";\n}\ntemplate <typename T1, typename\
     \ T2>\ninline std::string initializer_str(const std::map<T1, T2>& t) {\n    std::string\
@@ -371,14 +379,45 @@ data:
   isVerificationFile: false
   path: src/base/repr.hpp
   requiredBy: []
-  timestamp: '2026-10-12 19:23:31+09:00'
+  timestamp: '2026-10-12 20:20:17+09:00'
   verificationStatus: LIBRARY_NO_TESTS
   verifiedWith: []
 documentation_of: src/base/repr.hpp
 layout: document
-redirect_from:
-- /library/src/base/repr.hpp
-- /library/src/base/repr.hpp.html
 title: "\u51FA\u529B\u3092\u305D\u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\
   \u30BF\u306B\u4F7F\u3048\u308B\u6587\u5B57\u5217\u5316 (repr)"
 ---
+
+値を、型名つきの C++ の初期化式のような文字列にします。デバッグ出力で、値の中身と型をまとめて確認できます。
+
+```cpp
+repr(std::vector<int>{1, 2});           // "std::vector<int>{1, 2}"
+repr(std::make_pair(1, 'x'));           // "std::pair<int, char>{1, 'x'}"
+repr(3LL);                              // "3ll"
+int n = 3;
+DEBUG(n);                               // 標準エラー出力に "n = 3"
+```
+
+## 関数・マクロ
+
+| 名前 | 説明 |
+|---|---|
+| `repr(x)` | 型名と初期化子を合わせた文字列 |
+| `type_str(x)` | 型名の文字列 (`"std::vector<int>"` など) |
+| `initializer_str(x)` | 初期化子の部分の文字列 (`"{1, 2}"` など) |
+| `DEBUG(x)` | 標準エラー出力に `x = repr(x)` を出す |
+
+## 対応している型
+
+| 型 | `repr` の例 |
+|---|---|
+| `int` / `long` / `long long` | `3` / `3l` / `3ll` |
+| `unsigned int` / `unsigned long` / `unsigned long long` | `3u` / `3ul` / `3ull` |
+| `float` / `double` / `long double` | `1.500000f` / `1.500000` / `1.500000l` (`std::to_string` を使うので小数点以下 6 桁) |
+| `char` | `'a'`、`'\n'` などのエスケープ、表示できない文字は 8 進数 |
+| `const char*` / `std::string` | `"abc"` / `std::string{"abc"}` |
+| `std::vector` / `std::set` / `std::array` / `std::map` / `std::pair` | `std::vector<int>{1, 2}` など、要素も再帰的に文字列化 |
+| `repr()` などのメンバ関数を持つ型 | そのメンバ関数の結果 ([Range](range.hpp) など) |
+| それ以外 | `T{}` |
+
+自作の型でも、メンバ関数 `repr()`、または `type_str()` と `initializer_str()` を定義すれば対応できます。

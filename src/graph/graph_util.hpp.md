@@ -23,9 +23,10 @@ data:
     links: []
   bundledCode: "#line 2 \"src/graph/graph_util.hpp\"\n\n/**\n * @file graph_util.hpp\n\
     \ * @brief \u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570\n */\n\n#include\
-    \ <stack>\n\n#line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file graph.hpp\n * @brief\
-    \ \u30B0\u30E9\u30D5\n */\n\n#include <iostream>\n#include <limits>\n#include\
-    \ <queue>\n#include <vector>\n\n/**\n * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\
+    \ <functional>\n#include <queue>\n#include <stack>\n#include <utility>\n#include\
+    \ <vector>\n\n#line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file graph.hpp\n * @brief\
+    \ \u30B0\u30E9\u30D5\n */\n\n#include <iostream>\n#include <limits>\n#line 12\
+    \ \"src/graph/graph.hpp\"\n\n/**\n * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\
     \u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u578B\
     \n */\ntemplate <typename Cost = int>\nstruct Graph {\n    /**\n     * @brief\
     \ \u6709\u5411\u8FBA\u306E\u69CB\u9020\u4F53\n     *\n     * operator int()\u3092\
@@ -144,7 +145,7 @@ data:
     \ {\n                    dist[e.dst] = dist[e.src] + e.cost;\n               \
     \     prev[e.dst] = e;\n                    que.push({dist[e.dst], e.dst});\n\
     \                }\n            }\n        }\n        return {dist, prev};\n \
-    \   }\n};\n#line 11 \"src/graph/graph_util.hpp\"\n\n/**\n * @brief \u7121\u5411\
+    \   }\n};\n#line 15 \"src/graph/graph_util.hpp\"\n\n/**\n * @brief \u7121\u5411\
     \u30B0\u30E9\u30D5\u306B\u3064\u3044\u3066\u3001\u4E8C\u90E8\u30B0\u30E9\u30D5\
     \u306A\u30890\u30681\u306B\u5F69\u8272\u3057\u305F\u7D50\u679C\u3092\u3072\u3068\
     \u3064\u8FD4\u3057\u3001\u4E8C\u90E8\u30B0\u30E9\u30D5\u3067\u306A\u3044\u306A\
@@ -234,7 +235,8 @@ data:
     \ (res == inf || res > dp[k].back())) res = dp[k].back();\n    }\n    return res;\n\
     }\n"
   code: "#pragma once\n\n/**\n * @file graph_util.hpp\n * @brief \u30B0\u30E9\u30D5\
-    \u306B\u95A2\u3059\u308B\u95A2\u6570\n */\n\n#include <stack>\n\n#include \"graph.hpp\"\
+    \u306B\u95A2\u3059\u308B\u95A2\u6570\n */\n\n#include <functional>\n#include <queue>\n\
+    #include <stack>\n#include <utility>\n#include <vector>\n\n#include \"graph.hpp\"\
     \n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u3064\u3044\u3066\u3001\
     \u4E8C\u90E8\u30B0\u30E9\u30D5\u306A\u30890\u30681\u306B\u5F69\u8272\u3057\u305F\
     \u7D50\u679C\u3092\u3072\u3068\u3064\u8FD4\u3057\u3001\u4E8C\u90E8\u30B0\u30E9\
@@ -328,7 +330,7 @@ data:
   isVerificationFile: false
   path: src/graph/graph_util.hpp
   requiredBy: []
-  timestamp: '2026-10-12 19:40:02+09:00'
+  timestamp: '2026-10-12 20:22:09+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/graph-util.test.cpp

@@ -196,8 +196,34 @@ data:
   - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
 documentation_of: src/algebra/group.hpp
 layout: document
-redirect_from:
-- /library/src/algebra/group.hpp
-- /library/src/algebra/group.hpp.html
 title: "\u7FA4\u306E\u5B9A\u7FA9"
 ---
+
+[ポテンシャル付きUnionFind](../data_structures/potentialized-unionfind.hpp) や [マージソートツリー](../data_structures/merge-sort-tree.hpp) などに渡す群です。
+
+群は [モノイド](monoid.hpp) のメンバ (`S`、`op`、`e`) に加えて、次のメンバを持つ型として表します。
+
+- `S inv(const S& a)`: 逆元
+
+## 一覧 (`namespace group`)
+
+| 群 | 要素の型 `S` | 積 | 単位元 | 逆元 |
+|---|---|---|---|---|
+| `Sum<T>` | `T` | `a + b` | `0` | `-a` |
+| `Prod<T>` | `T` | `a * b` | `1` | `1 / a` (0 を含まない体の元など) |
+| `Xor<T>` | `T` | `a ^ b` | `0` | `a` |
+
+いずれも `monoid::Sum<T>` などを継承しているので、モノイドとしても使えます。
+
+## ラムダ式から作る
+
+`Group(op, e, inv)` で、関数オブジェクトと単位元から群を作れます。
+
+```cpp
+auto g = Group([](int a, int b) { return a + b; }, 0, [](int a) { return -a; });
+PotentializedUnionFind uf(n, g);
+```
+
+## 関連
+
+- 逆元を持たない場合は [モノイド](monoid.hpp)

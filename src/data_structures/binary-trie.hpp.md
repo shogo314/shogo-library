@@ -55,19 +55,19 @@ data:
     \ }\n\n    /**\n     * @brief \u96C6\u5408\u304B\u3089n\u3092\u524A\u9664 (O(d))\n\
     \     * @note \u5B58\u5728\u3057\u306A\u3044\u8981\u7D20\u3092\u6307\u5B9A\u3057\
     \u305F\u3068\u304D\u3001\u4F55\u3082\u8D77\u3053\u3089\u306A\u3044\n     */\n\
-    \    void erase(T n) const {\n        unsigned int cnt = count(n);\n        if\
-    \ (cnt == 0)\n            return;\n        NodePtr cur_ptr = root_ptr;\n     \
-    \   while (true) {\n            cur_ptr->affect_xor();\n            cur_ptr->subcnt\
-    \ -= cnt;\n            NodePtr &nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n\
+    \    void erase(T n) {\n        unsigned int cnt = count(n);\n        if (cnt\
+    \ == 0)\n            return;\n        NodePtr cur_ptr = root_ptr;\n        while\
+    \ (true) {\n            cur_ptr->affect_xor();\n            cur_ptr->subcnt -=\
+    \ cnt;\n            NodePtr &nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n\
     \            if (nxt_ptr->subcnt == cnt) {\n                nxt_ptr = nullptr;\n\
     \                return;\n            }\n            cur_ptr = nxt_ptr;\n    \
     \    }\n    }\n\n    /**\n     * @brief \u96C6\u5408\u304B\u3089n\u3092\u4E00\u3064\
     \u3060\u3051\u524A\u9664 (O(d))\n     * @note \u5B58\u5728\u3057\u306A\u3044\u8981\
     \u7D20\u3092\u6307\u5B9A\u3057\u305F\u3068\u304D\u3001\u4F55\u3082\u8D77\u3053\
-    \u3089\u306A\u3044\n     */\n    void erase_one_element(T n) const {\n       \
-    \ if (count(n) == 0)\n            return;\n        NodePtr cur_ptr = root_ptr;\n\
-    \        while (!cur_ptr->is_leaf()) {\n            cur_ptr->affect_xor();\n \
-    \           cur_ptr->subcnt -= 1;\n            NodePtr &nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n\
+    \u3089\u306A\u3044\n     */\n    void erase_one_element(T n) {\n        if (count(n)\
+    \ == 0)\n            return;\n        NodePtr cur_ptr = root_ptr;\n        while\
+    \ (!cur_ptr->is_leaf()) {\n            cur_ptr->affect_xor();\n            cur_ptr->subcnt\
+    \ -= 1;\n            NodePtr &nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n\
     \            if (nxt_ptr->subcnt == 1) {\n                nxt_ptr = nullptr;\n\
     \                return;\n            }\n            cur_ptr = nxt_ptr;\n    \
     \    }\n        cur_ptr->subcnt -= 1;\n    }\n\n    /**\n     * @brief \u6607\u9806\
@@ -146,19 +146,19 @@ data:
     \ }\n\n    /**\n     * @brief \u96C6\u5408\u304B\u3089n\u3092\u524A\u9664 (O(d))\n\
     \     * @note \u5B58\u5728\u3057\u306A\u3044\u8981\u7D20\u3092\u6307\u5B9A\u3057\
     \u305F\u3068\u304D\u3001\u4F55\u3082\u8D77\u3053\u3089\u306A\u3044\n     */\n\
-    \    void erase(T n) const {\n        unsigned int cnt = count(n);\n        if\
-    \ (cnt == 0)\n            return;\n        NodePtr cur_ptr = root_ptr;\n     \
-    \   while (true) {\n            cur_ptr->affect_xor();\n            cur_ptr->subcnt\
-    \ -= cnt;\n            NodePtr &nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n\
+    \    void erase(T n) {\n        unsigned int cnt = count(n);\n        if (cnt\
+    \ == 0)\n            return;\n        NodePtr cur_ptr = root_ptr;\n        while\
+    \ (true) {\n            cur_ptr->affect_xor();\n            cur_ptr->subcnt -=\
+    \ cnt;\n            NodePtr &nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n\
     \            if (nxt_ptr->subcnt == cnt) {\n                nxt_ptr = nullptr;\n\
     \                return;\n            }\n            cur_ptr = nxt_ptr;\n    \
     \    }\n    }\n\n    /**\n     * @brief \u96C6\u5408\u304B\u3089n\u3092\u4E00\u3064\
     \u3060\u3051\u524A\u9664 (O(d))\n     * @note \u5B58\u5728\u3057\u306A\u3044\u8981\
     \u7D20\u3092\u6307\u5B9A\u3057\u305F\u3068\u304D\u3001\u4F55\u3082\u8D77\u3053\
-    \u3089\u306A\u3044\n     */\n    void erase_one_element(T n) const {\n       \
-    \ if (count(n) == 0)\n            return;\n        NodePtr cur_ptr = root_ptr;\n\
-    \        while (!cur_ptr->is_leaf()) {\n            cur_ptr->affect_xor();\n \
-    \           cur_ptr->subcnt -= 1;\n            NodePtr &nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n\
+    \u3089\u306A\u3044\n     */\n    void erase_one_element(T n) {\n        if (count(n)\
+    \ == 0)\n            return;\n        NodePtr cur_ptr = root_ptr;\n        while\
+    \ (!cur_ptr->is_leaf()) {\n            cur_ptr->affect_xor();\n            cur_ptr->subcnt\
+    \ -= 1;\n            NodePtr &nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n\
     \            if (nxt_ptr->subcnt == 1) {\n                nxt_ptr = nullptr;\n\
     \                return;\n            }\n            cur_ptr = nxt_ptr;\n    \
     \    }\n        cur_ptr->subcnt -= 1;\n    }\n\n    /**\n     * @brief \u6607\u9806\
@@ -201,15 +201,40 @@ data:
   isVerificationFile: false
   path: src/data_structures/binary-trie.hpp
   requiredBy: []
-  timestamp: '2026-10-12 19:23:31+09:00'
+  timestamp: '2026-10-12 20:24:58+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/aoj/itp1-1-a.binary-trie.test.cpp
   - test/yosupo/set-xor-min.test.cpp
 documentation_of: src/data_structures/binary-trie.hpp
 layout: document
-redirect_from:
-- /library/src/data_structures/binary-trie.hpp
-- /library/src/data_structures/binary-trie.hpp.html
 title: Binary Trie
 ---
+
+$d$ ビットの符号なし整数の多重集合を管理する Binary Trie `BinaryTrie<d, T = unsigned long long>` です。全要素への xor の作用ができます。
+
+```cpp
+BinaryTrie<30> bt;
+bt.insert(5); bt.insert(3); bt.insert(3); bt.insert(10);
+bt.count(3);         // 2
+bt.nth_element(0);   // 3 (最小値)
+bt.apply_xor(6);     // {5, 5, 3, 12}
+bt.nth_element(0);   // 3 (x との xor の最小値は apply_xor(x) してから nth_element(0))
+```
+
+## メンバ関数
+
+いずれも $O(d)$ です。
+
+| 関数 | 説明 |
+|---|---|
+| `insert(x)` | `x` を 1 個追加 |
+| `erase(x)` | `x` をすべて削除 (なければ何もしない) |
+| `erase_one_element(x)` | `x` を 1 個削除 (なければ何もしない) |
+| `count(x)` | `x` の個数 |
+| `size()` | 要素数 |
+| `nth_element(k)` | 小さい方から `k` 番目 (0-indexed) の値 |
+| `lower_bound(x)` | `x` 以上の最小の要素が何番目か (0-indexed)。なければ `size()` |
+| `upper_bound(x)` | `x` より大きい最小の要素が何番目か (0-indexed)。なければ `size()` |
+| `apply_xor(x)` | 全要素を `x` と xor する |
+| `clear()` | 全要素を削除してメモリを解放 |

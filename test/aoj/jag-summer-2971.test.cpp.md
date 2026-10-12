@@ -11,6 +11,9 @@ data:
     path: src/data_structures/potentialized-unionfind.hpp
     title: "\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind"
   - icon: ':heavy_check_mark:'
+    path: src/data_structures/unionfind.hpp
+    title: UnionFind
+  - icon: ':heavy_check_mark:'
     path: src/math/modint.hpp
     title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
       \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9"
@@ -102,37 +105,38 @@ data:
     \ (m_value == Modint::mod()) {\n            m_value = 0;\n        }\n        return\
     \ static_cast<Modint&>(*this);\n    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\
     \u3044\u308B\u5024\u3092\u30A4\u30F3\u30AF\u30EA\u30E1\u30F3\u30C8\u3057\u3066\
+    \u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @return \u30A4\
+    \u30F3\u30AF\u30EA\u30E1\u30F3\u30C8\u3059\u308B\u524D\u306E\u5024\n    constexpr\
+    \ Modint operator++(int) noexcept {\n        auto x = static_cast<const Modint&>(*this);\n\
+    \        ++*this;\n        return x;\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u3092\u30C7\u30AF\u30EA\u30E1\u30F3\u30C8\u3057\u3066\
     \u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @return @c *this\n\
-    \    constexpr Modint operator++(int) noexcept {\n        auto x = static_cast<const\
-    \ Modint&>(*this);\n        ++*this;\n        return x;\n    }\n\n    /// @brief\
-    \ \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092\u30C7\u30AF\u30EA\u30E1\u30F3\
-    \u30C8\u3057\u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n   \
-    \ /// @return @c *this\n    constexpr Modint& operator--() noexcept {\n      \
-    \  if (m_value == 0) {\n            m_value = Modint::mod();\n        }\n    \
-    \    --m_value;\n        return static_cast<Modint&>(*this);\n    }\n\n    ///\
-    \ @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092\u30C7\u30AF\u30EA\u30E1\
-    \u30F3\u30C8\u3057\u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\
-    \n    /// @return @c *this\n    constexpr Modint operator--(int) noexcept {\n\
-    \        auto x = static_cast<const Modint&>(*this);\n        --*this;\n     \
-    \   return x;\n    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\
-    \u306B @c x \u306E\u6301\u3064\u5024\u3092\u8DB3\u3057\u3066\u3001\u5270\u4F59\
-    \u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @param x \u8DB3\u3059\u6570\n  \
-    \  /// @return @c *this\n    constexpr Modint& operator+=(const Modint& x) noexcept\
-    \ {\n        m_value += x.m_value;\n        if (m_value >= Modint::mod()) {\n\
-    \            m_value -= Modint::mod();\n        }\n        return static_cast<Modint&>(*this);\n\
-    \    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u304B\u3089\
-    \ @c x \u306E\u6301\u3064\u5024\u3092\u5F15\u3044\u3066\u3001\u5270\u4F59\u3092\
-    \u53D6\u308A\u307E\u3059\u3002\n    /// @param x \u5F15\u304F\u6570\n    /// @return\
-    \ @c *this\n    constexpr Modint& operator-=(const Modint& x) noexcept {\n   \
-    \     m_value -= x.m_value;\n        if (m_value >= Modint::mod()) {\n       \
-    \     m_value += Modint::mod();\n        }\n        return static_cast<Modint&>(*this);\n\
-    \    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u306B @c x\
-    \ \u306E\u6301\u3064\u5024\u3092\u639B\u3051\u3066\u3001\u5270\u4F59\u3092\u53D6\
-    \u308A\u307E\u3059\u3002\n    /// @param x \u639B\u3051\u308B\u6570\n    /// @return\
-    \ @c *this\n    constexpr Modint& operator*=(const Modint& x) noexcept {\n   \
-    \     m_value = static_cast<value_type>(static_cast<std::uint64_t>(m_value) *\
-    \ x.m_value % Modint::mod());\n        return static_cast<Modint&>(*this);\n \
-    \   }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092 @c x\
+    \    constexpr Modint& operator--() noexcept {\n        if (m_value == 0) {\n\
+    \            m_value = Modint::mod();\n        }\n        --m_value;\n       \
+    \ return static_cast<Modint&>(*this);\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u3092\u30C7\u30AF\u30EA\u30E1\u30F3\u30C8\u3057\u3066\
+    \u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @return \u30C7\
+    \u30AF\u30EA\u30E1\u30F3\u30C8\u3059\u308B\u524D\u306E\u5024\n    constexpr Modint\
+    \ operator--(int) noexcept {\n        auto x = static_cast<const Modint&>(*this);\n\
+    \        --*this;\n        return x;\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u306B @c x \u306E\u6301\u3064\u5024\u3092\u8DB3\u3057\
+    \u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @param x\
+    \ \u8DB3\u3059\u6570\n    /// @return @c *this\n    constexpr Modint& operator+=(const\
+    \ Modint& x) noexcept {\n        m_value += x.m_value;\n        if (m_value >=\
+    \ Modint::mod()) {\n            m_value -= Modint::mod();\n        }\n       \
+    \ return static_cast<Modint&>(*this);\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u304B\u3089 @c x \u306E\u6301\u3064\u5024\u3092\u5F15\
+    \u3044\u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @param\
+    \ x \u5F15\u304F\u6570\n    /// @return @c *this\n    constexpr Modint& operator-=(const\
+    \ Modint& x) noexcept {\n        m_value -= x.m_value;\n        if (m_value >=\
+    \ Modint::mod()) {\n            m_value += Modint::mod();\n        }\n       \
+    \ return static_cast<Modint&>(*this);\n    }\n\n    /// @brief \u4FDD\u6301\u3057\
+    \u3066\u3044\u308B\u5024\u306B @c x \u306E\u6301\u3064\u5024\u3092\u639B\u3051\
+    \u3066\u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @param x\
+    \ \u639B\u3051\u308B\u6570\n    /// @return @c *this\n    constexpr Modint& operator*=(const\
+    \ Modint& x) noexcept {\n        m_value = static_cast<value_type>(static_cast<std::uint64_t>(m_value)\
+    \ * x.m_value % Modint::mod());\n        return static_cast<Modint&>(*this);\n\
+    \    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092 @c x\
     \ \u306E\u6301\u3064\u5024\u3067\u5272\u3063\u3066\u3001\u5270\u4F59\u3092\u53D6\
     \u308A\u307E\u3059\u3002\n    /// @remark \u6642\u9593\u8A08\u7B97\u91CF\uFF1A\
     \ @f$O(\\log x)@f$\n    /// @param x \u5272\u308B\u6570\n    /// @return @c *this\n\
@@ -263,48 +267,94 @@ data:
     \ * @brief \u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind\n */\n#include\
     \ <algorithm>\n#line 9 \"src/data_structures/potentialized-unionfind.hpp\"\n#include\
     \ <functional>\n#include <stack>\n#line 12 \"src/data_structures/potentialized-unionfind.hpp\"\
-    \n#include <vector>\n#line 2 \"src/algebra/group.hpp\"\n\n/**\n * @file group.hpp\n\
-    \ * @brief \u7FA4\u306E\u5B9A\u7FA9\n *\n * \u7FA4\u306F\u30E2\u30CE\u30A4\u30C9\
-    \ (algebra/monoid.hpp) \u306E\u30E1\u30F3\u30D0\u306B\u52A0\u3048\u3066\u6B21\u306E\
-    \u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * -\
-    \ S inv(const S& a): \u9006\u5143\n */\n\n#line 2 \"src/algebra/monoid.hpp\"\n\
-    \n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
-    \n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
-    \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\
-    \n * - S op(const S& a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e():\
-    \ \u5358\u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\
-    \u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\
-    \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\
-    \u51FA\u3059)\n */\n\n#line 16 \"src/algebra/monoid.hpp\"\n#include <numeric>\n\
-    #line 19 \"src/algebra/monoid.hpp\"\n\nnamespace monoid {\n\n/**\n * @brief \u548C\
-    \n */\ntemplate <typename T>\nstruct Sum {\n    using S = T;\n    static constexpr\
-    \ S op(const S& a, const S& b) { return a + b; }\n    static constexpr S e() {\
-    \ return S(0); }\n};\n\n/**\n * @brief \u7A4D\n */\ntemplate <typename T>\nstruct\
-    \ Prod {\n    using S = T;\n    static constexpr S op(const S& a, const S& b)\
-    \ { return a * b; }\n    static constexpr S e() { return S(1); }\n};\n\n/**\n\
-    \ * @brief \u6700\u5927\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\u6700\u5C0F\
-    \u5024\n */\ntemplate <typename T>\nstruct Max {\n    using S = T;\n    static\
-    \ constexpr S op(const S& a, const S& b) { return std::max(a, b); }\n    static\
-    \ constexpr S e() { return std::numeric_limits<S>::lowest(); }\n};\n\n/**\n *\
-    \ @brief \u6700\u5C0F\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\u6700\u5927\u5024\
-    \n */\ntemplate <typename T>\nstruct Min {\n    using S = T;\n    static constexpr\
-    \ S op(const S& a, const S& b) { return std::min(a, b); }\n    static constexpr\
-    \ S e() { return std::numeric_limits<S>::max(); }\n};\n\n/**\n * @brief \u6700\
-    \u5C0F\u5024\u3068\u6700\u5927\u5024\u306E\u7D44 {min, max}\n */\ntemplate <typename\
-    \ T>\nstruct MinMax {\n    using S = std::pair<T, T>;\n    static constexpr S\
-    \ op(const S& a, const S& b) { return {std::min(a.first, b.first), std::max(a.second,\
-    \ b.second)}; }\n    static constexpr S e() { return {std::numeric_limits<T>::max(),\
-    \ std::numeric_limits<T>::lowest()}; }\n};\n\n/**\n * @brief \u6392\u4ED6\u7684\
-    \u8AD6\u7406\u548C\n */\ntemplate <typename T>\nstruct Xor {\n    using S = T;\n\
-    \    static constexpr S op(const S& a, const S& b) { return a ^ b; }\n    static\
-    \ constexpr S e() { return S(0); }\n};\n\n/**\n * @brief \u8AD6\u7406\u7A4D\n\
-    \ */\ntemplate <typename T>\nstruct And {\n    using S = T;\n    static constexpr\
-    \ S op(const S& a, const S& b) { return a & b; }\n    static constexpr S e() {\
-    \ return ~S(0); }\n};\n\n/**\n * @brief \u8AD6\u7406\u548C\n */\ntemplate <typename\
-    \ T>\nstruct Or {\n    using S = T;\n    static constexpr S op(const S& a, const\
-    \ S& b) { return a | b; }\n    static constexpr S e() { return S(0); }\n};\n\n\
-    /**\n * @brief \u6700\u5927\u516C\u7D04\u6570 \u5358\u4F4D\u5143\u306F0\n */\n\
-    template <typename T>\nstruct Gcd {\n    static_assert(std::is_integral_v<T>);\n\
+    \n#include <vector>\n#line 2 \"src/data_structures/unionfind.hpp\"\n\n/**\n *\
+    \ @file unionfind.hpp\n * @brief UnionFind\n */\n\n#line 11 \"src/data_structures/unionfind.hpp\"\
+    \n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u5BFE\u3057\u3066\u300C\
+    \u8FBA\u306E\u8FFD\u52A0\u300D\u3001\u300C2\u9802\u70B9\u304C\u9023\u7D50\u304B\
+    \u306E\u5224\u5B9A\u300D\u3092\u3059\u308B\n */\nstruct UnionFind {\n   protected:\n\
+    \    int _n;\n    // \u8CA0\u306A\u3089\u30B5\u30A4\u30BA\u3001\u975E\u8CA0\u306A\
+    \u3089\u89AA\n    std::vector<int> parent_or_size;\n\n   public:\n    /**\n  \
+    \   * @brief merge \u306E\u623B\u308A\u5024\n     *\n     * if (uf.merge(a, b))\
+    \ \u3067\u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B\u3092\u5224\u5B9A\u3067\
+    \u304D\u3001\n     * auto [r, merged] = uf.merge(a, b); \u3067\u4EE3\u8868\u5143\
+    \u3082\u53D7\u3051\u53D6\u308C\u308B\n     */\n    struct MergeResult {\n    \
+    \    int leader;   //!< \u7D71\u5408\u5F8C\u306E\u4EE3\u8868\u5143\n        bool\
+    \ merged;  //!< \u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B (\u3082\u3068\
+    \u3082\u3068\u540C\u3058\u9023\u7D50\u6210\u5206\u306A\u3089 false)\n        explicit\
+    \ operator bool() const { return merged; }\n    };\n\n    UnionFind() : _n(0)\
+    \ {}\n    explicit UnionFind(int n) : _n(n), parent_or_size(n, -1) {}\n\n    /**\n\
+    \     * @brief \u8FBA(a,b)\u3092\u8DB3\u3059\n     * @return \u7D71\u5408\u5F8C\
+    \u306E\u4EE3\u8868\u5143\u3068\u3001\u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\
+    \u304B\n     */\n    MergeResult merge(int a, int b) {\n        assert(0 <= a\
+    \ && a < _n);\n        assert(0 <= b && b < _n);\n        int x = leader(a), y\
+    \ = leader(b);\n        if (x == y) return {x, false};\n        if (-parent_or_size[x]\
+    \ < -parent_or_size[y]) std::swap(x, y);\n        parent_or_size[x] += parent_or_size[y];\n\
+    \        parent_or_size[y] = x;\n        return {x, true};\n    }\n    /**\n \
+    \    * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\u304B\n    \
+    \ */\n    bool same(int a, int b) {\n        assert(0 <= a && a < _n);\n     \
+    \   assert(0 <= b && b < _n);\n        return leader(a) == leader(b);\n    }\n\
+    \    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\u6210\
+    \u5206\u306E\u4EE3\u8868\u5143\n     */\n    int leader(int a) {\n        assert(0\
+    \ <= a && a < _n);\n        if (parent_or_size[a] < 0) return a;\n        int\
+    \ x = a;\n        while (parent_or_size[x] >= 0) {\n            x = parent_or_size[x];\n\
+    \        }\n        while (parent_or_size[a] >= 0) {\n            int t = parent_or_size[a];\n\
+    \            parent_or_size[a] = x;\n            a = t;\n        }\n        return\
+    \ x;\n    }\n    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\
+    \u7D50\u6210\u5206\u306E\u30B5\u30A4\u30BA\n     */\n    int size(int a) {\n \
+    \       assert(0 <= a && a < _n);\n        return -parent_or_size[leader(a)];\n\
+    \    }\n    /**\n     * @brief \u30B0\u30E9\u30D5\u3092\u9023\u7D50\u6210\u5206\
+    \u306B\u5206\u3051\u3001\u305D\u306E\u60C5\u5831\u3092\u8FD4\u3059\n     * @return\
+    \ \u300C\u4E00\u3064\u306E\u9023\u7D50\u6210\u5206\u306E\u9802\u70B9\u756A\u53F7\
+    \u306E\u30EA\u30B9\u30C8\u300D\u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<std::vector<int>>\
+    \ groups() {\n        std::vector<int> leader_buf(_n), group_size(_n);\n     \
+    \   for (int i = 0; i < _n; i++) {\n            leader_buf[i] = leader(i);\n \
+    \           group_size[leader_buf[i]]++;\n        }\n        std::vector<std::vector<int>>\
+    \ result(_n);\n        for (int i = 0; i < _n; i++) {\n            result[i].reserve(group_size[i]);\n\
+    \        }\n        for (int i = 0; i < _n; i++) {\n            result[leader_buf[i]].push_back(i);\n\
+    \        }\n        result.erase(\n            std::remove_if(result.begin(),\
+    \ result.end(),\n                           [&](const std::vector<int>& v) { return\
+    \ v.empty(); }),\n            result.end());\n        return result;\n    }\n\
+    };\n#line 2 \"src/algebra/group.hpp\"\n\n/**\n * @file group.hpp\n * @brief \u7FA4\
+    \u306E\u5B9A\u7FA9\n *\n * \u7FA4\u306F\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\
+    \ \u306E\u30E1\u30F3\u30D0\u306B\u52A0\u3048\u3066\u6B21\u306E\u30E1\u30F3\u30D0\
+    \u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - S inv(const S& a):\
+    \ \u9006\u5143\n */\n\n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n\
+    \ * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\
+    \u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\
+    \u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S&\
+    \ a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n\
+    \ * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\
+    \u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\
+    \u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\
+    \n#line 16 \"src/algebra/monoid.hpp\"\n#include <numeric>\n#line 19 \"src/algebra/monoid.hpp\"\
+    \n\nnamespace monoid {\n\n/**\n * @brief \u548C\n */\ntemplate <typename T>\n\
+    struct Sum {\n    using S = T;\n    static constexpr S op(const S& a, const S&\
+    \ b) { return a + b; }\n    static constexpr S e() { return S(0); }\n};\n\n/**\n\
+    \ * @brief \u7A4D\n */\ntemplate <typename T>\nstruct Prod {\n    using S = T;\n\
+    \    static constexpr S op(const S& a, const S& b) { return a * b; }\n    static\
+    \ constexpr S e() { return S(1); }\n};\n\n/**\n * @brief \u6700\u5927\u5024 \u5358\
+    \u4F4D\u5143\u306F\u578B\u306E\u6700\u5C0F\u5024\n */\ntemplate <typename T>\n\
+    struct Max {\n    using S = T;\n    static constexpr S op(const S& a, const S&\
+    \ b) { return std::max(a, b); }\n    static constexpr S e() { return std::numeric_limits<S>::lowest();\
+    \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\
+    \u6700\u5927\u5024\n */\ntemplate <typename T>\nstruct Min {\n    using S = T;\n\
+    \    static constexpr S op(const S& a, const S& b) { return std::min(a, b); }\n\
+    \    static constexpr S e() { return std::numeric_limits<S>::max(); }\n};\n\n\
+    /**\n * @brief \u6700\u5C0F\u5024\u3068\u6700\u5927\u5024\u306E\u7D44 {min, max}\n\
+    \ */\ntemplate <typename T>\nstruct MinMax {\n    using S = std::pair<T, T>;\n\
+    \    static constexpr S op(const S& a, const S& b) { return {std::min(a.first,\
+    \ b.first), std::max(a.second, b.second)}; }\n    static constexpr S e() { return\
+    \ {std::numeric_limits<T>::max(), std::numeric_limits<T>::lowest()}; }\n};\n\n\
+    /**\n * @brief \u6392\u4ED6\u7684\u8AD6\u7406\u548C\n */\ntemplate <typename T>\n\
+    struct Xor {\n    using S = T;\n    static constexpr S op(const S& a, const S&\
+    \ b) { return a ^ b; }\n    static constexpr S e() { return S(0); }\n};\n\n/**\n\
+    \ * @brief \u8AD6\u7406\u7A4D\n */\ntemplate <typename T>\nstruct And {\n    using\
+    \ S = T;\n    static constexpr S op(const S& a, const S& b) { return a & b; }\n\
+    \    static constexpr S e() { return ~S(0); }\n};\n\n/**\n * @brief \u8AD6\u7406\
+    \u548C\n */\ntemplate <typename T>\nstruct Or {\n    using S = T;\n    static\
+    \ constexpr S op(const S& a, const S& b) { return a | b; }\n    static constexpr\
+    \ S e() { return S(0); }\n};\n\n/**\n * @brief \u6700\u5927\u516C\u7D04\u6570\
+    \ \u5358\u4F4D\u5143\u306F0\n */\ntemplate <typename T>\nstruct Gcd {\n    static_assert(std::is_integral_v<T>);\n\
     \    using S = T;\n    static constexpr S op(const S& a, const S& b) { return\
     \ std::gcd(a, b); }\n    static constexpr S e() { return S(0); }\n};\n\n/**\n\
     \ * @brief \u6700\u5C0F\u516C\u500D\u6570 \u5358\u4F4D\u5143\u306F1\n */\ntemplate\
@@ -386,51 +436,57 @@ data:
     \ {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a, b);\
     \ }\n    constexpr S e() const { return identity; }\n    constexpr S inv(const\
     \ S& a) const { return inv_object(a); }\n};\ntemplate <typename Op, typename T,\
-    \ typename Inv>\nGroup(Op, T, Inv) -> Group<T, Op, Inv>;\n#line 14 \"src/data_structures/potentialized-unionfind.hpp\"\
+    \ typename Inv>\nGroup(Op, T, Inv) -> Group<T, Op, Inv>;\n#line 15 \"src/data_structures/potentialized-unionfind.hpp\"\
     \n\n/**\n * @brief \u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind\n\
     \ * @tparam G \u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u306E\u7FA4 (algebra/group.hpp)\
     \ \u975E\u53EF\u63DB\u3067\u3082\u3088\u3044\n */\ntemplate <typename G>\nclass\
-    \ PotentializedUnionFind {\n   public:\n    using S = typename G::S;\n\n   private:\n\
-    \    G g;\n    int _n;\n    // \u8CA0\u306A\u3089\u30B5\u30A4\u30BA\u3001\u975E\
-    \u8CA0\u306A\u3089\u89AA\n    std::vector<int> parent_or_size;\n    // \u91CD\u307F\
-    \n    std::vector<S> diff_weight;\n\n    S op(const S& a, const S& b) const {\
-    \ return g.op(a, b); }\n    S e() const { return g.e(); }\n    S inv(const S&\
-    \ a) const { return g.inv(a); }\n\n   public:\n    /**\n     * @param n \u8981\
-    \u7D20\u6570\n     * @param g \u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u306E\u7FA4\
-    \n     */\n    explicit PotentializedUnionFind(int n = 0, G g = G()) : g(std::move(g)),\
-    \ _n(n), parent_or_size(n, -1), diff_weight(n, e()) {}\n\n    /**\n     * @brief\
-    \ \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\u6210\u5206\u306E\u4EE3\u8868\
-    \u5143\n     */\n    int leader(int a) {\n        assert(0 <= a && a < _n);\n\
-    \        if (parent_or_size[a] < 0) return a;\n        std::stack<int> stk;\n\
-    \        stk.push(a);\n        while (parent_or_size[stk.top()] >= 0) {\n    \
-    \        stk.push(parent_or_size[stk.top()]);\n        }\n        const int root\
-    \ = stk.top();\n        stk.pop();\n        stk.pop();\n        while (!stk.empty())\
-    \ {\n            diff_weight[stk.top()] = op(diff_weight[parent_or_size[stk.top()]],\
+    \ PotentializedUnionFind {\n   public:\n    using S = typename G::S;\n    using\
+    \ MergeResult = UnionFind::MergeResult;\n\n   private:\n    G g;\n    int _n;\n\
+    \    // \u8CA0\u306A\u3089\u30B5\u30A4\u30BA\u3001\u975E\u8CA0\u306A\u3089\u89AA\
+    \n    std::vector<int> parent_or_size;\n    // \u91CD\u307F\n    std::vector<S>\
+    \ diff_weight;\n\n    S op(const S& a, const S& b) const { return g.op(a, b);\
+    \ }\n    S e() const { return g.e(); }\n    S inv(const S& a) const { return g.inv(a);\
+    \ }\n\n   public:\n    /**\n     * @param n \u8981\u7D20\u6570\n     * @param\
+    \ g \u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u306E\u7FA4\n     */\n    explicit PotentializedUnionFind(int\
+    \ n = 0, G g = G()) : g(std::move(g)), _n(n), parent_or_size(n, -1), diff_weight(n,\
+    \ e()) {}\n\n    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\
+    \u7D50\u6210\u5206\u306E\u4EE3\u8868\u5143\n     */\n    int leader(int a) {\n\
+    \        assert(0 <= a && a < _n);\n        if (parent_or_size[a] < 0) return\
+    \ a;\n        std::stack<int> stk;\n        stk.push(a);\n        while (parent_or_size[stk.top()]\
+    \ >= 0) {\n            stk.push(parent_or_size[stk.top()]);\n        }\n     \
+    \   const int root = stk.top();\n        stk.pop();\n        stk.pop();\n    \
+    \    while (!stk.empty()) {\n            diff_weight[stk.top()] = op(diff_weight[parent_or_size[stk.top()]],\
     \ diff_weight[stk.top()]);\n            parent_or_size[stk.top()] = root;\n  \
     \          stk.pop();\n        }\n        return root;\n    }\n\n    /**\n   \
     \  * @brief a \u306E\u30B0\u30EB\u30FC\u30D7\u3068 b \u306E\u30B0\u30EB\u30FC\u30D7\
     \u3092\u7D71\u5408\u3059\u308B\n     * @param w (b \u306E\u30DD\u30C6\u30F3\u30B7\
     \u30E3\u30EB) - (a \u306E\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB)\n     * @return\
-    \ \u9023\u7D50\u3057\u305F\u3082\u306E\u306E\u4EE3\u8868\u5143\n     */\n    int\
-    \ merge(int a, int b, S w) {\n        assert(0 <= a && a < _n);\n        assert(0\
-    \ <= b && b < _n);\n        w = op(weight(a), w);\n        w = op(w, inv(weight(b)));\n\
-    \        int x = leader(a), y = leader(b);\n        if (x == y) return x;\n  \
-    \      if (-parent_or_size[x] < -parent_or_size[y]) {\n            std::swap(x,\
-    \ y);\n            w = inv(w);\n        }\n        parent_or_size[x] += parent_or_size[y];\n\
-    \        parent_or_size[y] = x;\n        diff_weight[y] = w;\n        return x;\n\
-    \    }\n\n    /**\n     * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\
-    \u3046\u304B\n     */\n    bool same(int a, int b) {\n        assert(0 <= a &&\
-    \ a < _n);\n        assert(0 <= b && b < _n);\n        return leader(a) == leader(b);\n\
-    \    }\n\n    /**\n     * @brief (b \u306E\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\
-    ) - (a \u306E\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB)\n     */\n    S diff(int a,\
-    \ int b) {\n        assert(same(a, b));\n        return op(inv(weight(a)), weight(b));\n\
-    \    }\n\n    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\
-    \u6210\u5206\u306E\u30B5\u30A4\u30BA\n     */\n    int size(int a) {\n       \
-    \ assert(0 <= a && a < _n);\n        return -parent_or_size[leader(a)];\n    }\n\
-    \n    /**\n     * @brief \u30B0\u30E9\u30D5\u3092\u9023\u7D50\u6210\u5206\u306B\
-    \u5206\u3051\u3001\u305D\u306E\u60C5\u5831\u3092\u8FD4\u3059\n     * @return \u300C\
-    \u4E00\u3064\u306E\u9023\u7D50\u6210\u5206\u306E\u9802\u70B9\u756A\u53F7\u306E\
-    \u30EA\u30B9\u30C8\u300D\u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<std::vector<int>>\
+    \ \u7D71\u5408\u5F8C\u306E\u4EE3\u8868\u5143\u3068\u3001\u65B0\u3057\u304F\u7D71\
+    \u5408\u3057\u305F\u304B\n     * @note \u3059\u3067\u306B\u540C\u3058\u9023\u7D50\
+    \u6210\u5206\u306A\u3089\u4F55\u3082\u3057\u306A\u3044 (w \u304C\u77DB\u76FE\u3057\
+    \u3066\u3044\u3066\u3082\u691C\u51FA\u3057\u306A\u3044)\u3002\n     *       \u77DB\
+    \u76FE\u3092\u8ABF\u3079\u308B\u306B\u306F\u3001merged \u304C false \u306E\u3068\
+    \u304D\u306B diff(a, b) == w \u304B\u3092\u78BA\u304B\u3081\u308B\n     */\n \
+    \   MergeResult merge(int a, int b, S w) {\n        assert(0 <= a && a < _n);\n\
+    \        assert(0 <= b && b < _n);\n        w = op(weight(a), w);\n        w =\
+    \ op(w, inv(weight(b)));\n        int x = leader(a), y = leader(b);\n        if\
+    \ (x == y) return {x, false};\n        if (-parent_or_size[x] < -parent_or_size[y])\
+    \ {\n            std::swap(x, y);\n            w = inv(w);\n        }\n      \
+    \  parent_or_size[x] += parent_or_size[y];\n        parent_or_size[y] = x;\n \
+    \       diff_weight[y] = w;\n        return {x, true};\n    }\n\n    /**\n   \
+    \  * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\u304B\n     */\n\
+    \    bool same(int a, int b) {\n        assert(0 <= a && a < _n);\n        assert(0\
+    \ <= b && b < _n);\n        return leader(a) == leader(b);\n    }\n\n    /**\n\
+    \     * @brief (b \u306E\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB) - (a \u306E\u30DD\
+    \u30C6\u30F3\u30B7\u30E3\u30EB)\n     */\n    S diff(int a, int b) {\n       \
+    \ assert(same(a, b));\n        return op(inv(weight(a)), weight(b));\n    }\n\n\
+    \    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\u6210\
+    \u5206\u306E\u30B5\u30A4\u30BA\n     */\n    int size(int a) {\n        assert(0\
+    \ <= a && a < _n);\n        return -parent_or_size[leader(a)];\n    }\n\n    /**\n\
+    \     * @brief \u30B0\u30E9\u30D5\u3092\u9023\u7D50\u6210\u5206\u306B\u5206\u3051\
+    \u3001\u305D\u306E\u60C5\u5831\u3092\u8FD4\u3059\n     * @return \u300C\u4E00\u3064\
+    \u306E\u9023\u7D50\u6210\u5206\u306E\u9802\u70B9\u756A\u53F7\u306E\u30EA\u30B9\
+    \u30C8\u300D\u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<std::vector<int>>\
     \ groups() {\n        std::vector<int> leader_buf(_n), group_size(_n);\n     \
     \   for (int i = 0; i < _n; i++) {\n            leader_buf[i] = leader(i);\n \
     \           group_size[leader_buf[i]]++;\n        }\n        std::vector<std::vector<int>>\
@@ -444,9 +500,9 @@ data:
     \n\ntemplate <typename mint>\nbool solve(int n, const std::vector<std::array<int,\
     \ 3>>& abx) {\n    PotentializedUnionFind<group::Prod<mint>> uf(n);\n    for (auto\
     \ [a, b, x] : abx) {\n        mint mx = x;\n        if (mx != 0) {\n         \
-    \   if (uf.same(a, b)) {\n                if (uf.diff(a, b) != mx) {\n       \
-    \             return false;\n                }\n            } else {\n       \
-    \         uf.merge(a, b, mx);\n            }\n        }\n    }\n    return true;\n\
+    \   // \u3059\u3067\u306B\u9023\u7D50\u3067\u77DB\u76FE\u3057\u3066\u3044\u305F\
+    \u3089 false\n            if (!uf.merge(a, b, mx) && uf.diff(a, b) != mx) {\n\
+    \                return false;\n            }\n        }\n    }\n    return true;\n\
     }\n\nint main() {\n    using mint3 = modint998244353;\n    using mint7 = modint1000000007;\n\
     \    using mint9 = static_modint<1000000009U>;\n    int n, m;\n    std::cin >>\
     \ n >> m;\n    std::vector<std::array<int, 3>> abx(m);\n    for (auto& [a, b,\
@@ -459,11 +515,11 @@ data:
     \n#include \"../../src/data_structures/potentialized-unionfind.hpp\"\n\ntemplate\
     \ <typename mint>\nbool solve(int n, const std::vector<std::array<int, 3>>& abx)\
     \ {\n    PotentializedUnionFind<group::Prod<mint>> uf(n);\n    for (auto [a, b,\
-    \ x] : abx) {\n        mint mx = x;\n        if (mx != 0) {\n            if (uf.same(a,\
-    \ b)) {\n                if (uf.diff(a, b) != mx) {\n                    return\
-    \ false;\n                }\n            } else {\n                uf.merge(a,\
-    \ b, mx);\n            }\n        }\n    }\n    return true;\n}\n\nint main()\
-    \ {\n    using mint3 = modint998244353;\n    using mint7 = modint1000000007;\n\
+    \ x] : abx) {\n        mint mx = x;\n        if (mx != 0) {\n            // \u3059\
+    \u3067\u306B\u9023\u7D50\u3067\u77DB\u76FE\u3057\u3066\u3044\u305F\u3089 false\n\
+    \            if (!uf.merge(a, b, mx) && uf.diff(a, b) != mx) {\n             \
+    \   return false;\n            }\n        }\n    }\n    return true;\n}\n\nint\
+    \ main() {\n    using mint3 = modint998244353;\n    using mint7 = modint1000000007;\n\
     \    using mint9 = static_modint<1000000009U>;\n    int n, m;\n    std::cin >>\
     \ n >> m;\n    std::vector<std::array<int, 3>> abx(m);\n    for (auto& [a, b,\
     \ x] : abx) {\n        std::cin >> a >> b >> x;\n        a--;\n        b--;\n\
@@ -473,12 +529,13 @@ data:
   dependsOn:
   - src/math/modint.hpp
   - src/data_structures/potentialized-unionfind.hpp
+  - src/data_structures/unionfind.hpp
   - src/algebra/group.hpp
   - src/algebra/monoid.hpp
   isVerificationFile: true
   path: test/aoj/jag-summer-2971.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 00:13:34+09:00'
+  timestamp: '2026-10-12 21:11:56+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/jag-summer-2971.test.cpp

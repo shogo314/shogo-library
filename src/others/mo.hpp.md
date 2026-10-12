@@ -26,7 +26,7 @@ data:
     \ DELETE_RIGHT, U&, int>, \"DELETE_RIGHT must be callable with (U&, int)\");\n\
     \n   public:\n    Mo(int n,\n       const U& e,\n       const ADD_LEFT& add_left,\n\
     \       const DELETE_LEFT& delete_left,\n       const ADD_RIGHT& add_right,\n\
-    \       const DELETE_RIGHT delete_right) : _n(n), lri(), _e(e), _add_left(add_left),\
+    \       const DELETE_RIGHT& delete_right) : _n(n), lri(), _e(e), _add_left(add_left),\
     \ _delete_left(delete_left), _add_right(add_right), _delete_right(delete_right)\
     \ {}\n    Mo(int n,\n       const U& e,\n       const ADD_LEFT& add_left,\n  \
     \     const DELETE_LEFT& delete_left) : _n(n), lri(), _e(e), _add_left(add_left),\
@@ -63,7 +63,7 @@ data:
     \ DELETE_RIGHT, U&, int>, \"DELETE_RIGHT must be callable with (U&, int)\");\n\
     \n   public:\n    Mo(int n,\n       const U& e,\n       const ADD_LEFT& add_left,\n\
     \       const DELETE_LEFT& delete_left,\n       const ADD_RIGHT& add_right,\n\
-    \       const DELETE_RIGHT delete_right) : _n(n), lri(), _e(e), _add_left(add_left),\
+    \       const DELETE_RIGHT& delete_right) : _n(n), lri(), _e(e), _add_left(add_left),\
     \ _delete_left(delete_left), _add_right(add_right), _delete_right(delete_right)\
     \ {}\n    Mo(int n,\n       const U& e,\n       const ADD_LEFT& add_left,\n  \
     \     const DELETE_LEFT& delete_left) : _n(n), lri(), _e(e), _add_left(add_left),\
@@ -90,14 +90,43 @@ data:
   isVerificationFile: false
   path: src/others/mo.hpp
   requiredBy: []
-  timestamp: '2026-10-12 19:23:31+09:00'
+  timestamp: '2026-10-12 20:24:58+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/yosupo/static-range-inversions-query.test.cpp
 documentation_of: src/others/mo.hpp
 layout: document
-redirect_from:
-- /library/src/others/mo.hpp
-- /library/src/others/mo.hpp.html
 title: Mo's algorithm
 ---
+
+区間 $[l, r)$ に対するクエリをまとめて先読みし、区間の端を 1 つずつ伸び縮みさせながら答えます。区間に要素を 1 つ追加・削除する操作が速くできるときに使えます。
+
+```cpp
+// 各クエリ [l, r) の、区間内の異なる値の個数
+std::vector<int> cnt(MAXA);
+auto add = [&](int& kinds, int i) { if (cnt[a[i]]++ == 0) kinds++; };
+auto del = [&](int& kinds, int i) { if (--cnt[a[i]] == 0) kinds--; };
+Mo mo(n, 0, add, del);                  // 左右で同じ操作なら 2 つ渡せばよい
+for (auto [l, r] : queries) mo.query(l, r);
+std::vector<int> ans = mo.solve<int>([](int& kinds) { return kinds; });  // クエリ順の答え
+```
+
+## 使い方
+
+| 関数 | 説明 |
+|---|---|
+| `Mo(n, e, add_left, delete_left, add_right, delete_right)` | 要素数 `n`、状態の初期値 `e` (型 `U`) と 4 つの操作で作る |
+| `Mo(n, e, add, del)` | 左端と右端で操作が同じ場合 |
+| `query(l, r)` | クエリ $[l, r)$ を追加する |
+| `solve<T>(f)` | すべてのクエリを処理し、各クエリで `f(state)` が返した値 (型 `T`) を、`query` を呼んだ順に並べて返す |
+
+操作はいずれも `(U& state, int i)` を受け取り、`state` を書き換えます。
+
+| 操作 | 呼ばれるとき |
+|---|---|
+| `add_left(state, i)` | 区間の左に要素 `i` を追加する |
+| `delete_left(state, i)` | 区間の左端の要素 `i` を削除する |
+| `add_right(state, i)` | 区間の右に要素 `i` を追加する |
+| `delete_right(state, i)` | 区間の右端の要素 `i` を削除する |
+
+操作が $O(1)$ のとき、全体の計算量は $O(n \sqrt{q} + q \log q)$ です ($q$ はクエリ数)。

@@ -20,82 +20,82 @@ data:
     links: []
   bundledCode: "#line 2 \"src/graph/rerooting-dp.hpp\"\n\n/**\n * @file rerooting-dp.hpp\n\
     \ * @brief \u5168\u65B9\u4F4D\u6728DP\n */\n#include <algorithm>\n#include <cstddef>\n\
-    #include <type_traits>\n#line 2 \"src/graph/tree.hpp\"\n\n/**\n * @file tree.hpp\n\
-    \ * @brief \u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n*/\n\n\
-    #line 9 \"src/graph/tree.hpp\"\n#include <cassert>\n#include <stack>\n#include\
-    \ <tuple>\n\n#line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file graph.hpp\n * @brief\
-    \ \u30B0\u30E9\u30D5\n */\n\n#include <iostream>\n#include <limits>\n#include\
-    \ <queue>\n#include <vector>\n\n/**\n * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\
-    \u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u578B\
-    \n */\ntemplate <typename Cost = int>\nstruct Graph {\n    /**\n     * @brief\
-    \ \u6709\u5411\u8FBA\u306E\u69CB\u9020\u4F53\n     *\n     * operator int()\u3092\
-    \u5B9A\u7FA9\u3057\u3066\u3044\u308B\u306E\u3067\u3001int\u578B\u306B\u30AD\u30E3\
-    \u30B9\u30C8\u3059\u308B\u3068\u52DD\u624B\u306Bdst\u306B\u306A\u308B\n     *\
-    \ \u4F8B\u3048\u3070\u3001\n     * for (auto& e : g[v]) \u3092\u3059\u308B\u3068\
-    \u3001v\u304B\u3089\u51FA\u308B\u8FBA\u304C\u5217\u6319\u3055\u308C\u308B\u304C\
-    \u3001\n     * for (int dst : g[v]) \u3068\u3059\u308B\u3068\u3001v\u304B\u3089\
-    \u51FA\u308B\u8FBA\u306E\u884C\u304D\u5148\u304C\u5217\u6319\u3055\u308C\u308B\
-    \n     */\n    struct Edge {\n        int src = -1;   //!< \u59CB\u70B9\n    \
-    \    int dst = -1;   //!< \u7D42\u70B9\n        Cost cost = {}; //!< \u30B3\u30B9\
-    \u30C8\n        int id = -1;    //!< \u8FBA\u306E\u756A\u53F7(\u8FFD\u52A0\u3055\
-    \u308C\u305F\u9806\u3001\u7121\u5411\u8FBA\u306E\u5834\u5408\u306Fid\u304C\u540C\
-    \u3058\u3067\u65B9\u5411\u304C\u9006\u306E\u3082\u306E\u304C2\u3064\u5B58\u5728\
-    \u3059\u308B)\n        Edge() = default;\n        Edge(int src, int dst, Cost\
-    \ cost = 1, int id = -1) : src(src), dst(dst), cost(cost), id(id) {}\n       \
-    \ operator int() const { return dst; }\n    };\n\n    int n;                 \
-    \           //!< \u9802\u70B9\u6570\n    int m;                            //!<\
-    \ \u8FBA\u6570\n    std::vector<std::vector<Edge>> g; //!< \u30B0\u30E9\u30D5\u306E\
-    \u96A3\u63A5\u30EA\u30B9\u30C8\u8868\u73FE\n\n    /**\n     * @brief \u30C7\u30D5\
-    \u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     */\n    Graph()\
-    \ : n(0), m(0), g(0) {}\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\
-    \u30AF\u30BF\n     * @param n \u9802\u70B9\u6570\n     */\n    explicit Graph(int\
-    \ n) : n(n), m(0), g(n) {}\n    /**\n     * @brief \u7121\u5411\u8FBA\u3092\u8FFD\
-    \u52A0\u3059\u308B\n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\
-    \n     * @param w \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n\
-    \    void add_edge(int u, int v, Cost w = 1) {\n        g[u].push_back({u, v,\
-    \ w, m});\n        g[v].push_back({v, u, w, m++});\n    }\n    /**\n     * @brief\
-    \ \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n     * @param u \u59CB\u70B9\
-    \n     * @param v \u7D42\u70B9\n     * @param w \u30B3\u30B9\u30C8 \u7701\u7565\
-    \u3057\u305F\u30891\n     */\n    void add_directed_edge(int u, int v, Cost w\
-    \ = 1) {\n        g[u].push_back({u, v, w, m++});\n    }\n    /**\n     * @brief\
-    \ \u8FBA\u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\u529B\u304B\u3089\u53D7\u3051\
-    \u53D6\u3063\u3066\u8FFD\u52A0\u3059\u308B\n     * @param m \u8FBA\u306E\u6570\
-    \n     * @param padding \u9802\u70B9\u756A\u53F7\u3092\u5165\u529B\u304B\u3089\
-    \u3044\u304F\u3064\u305A\u3089\u3059\u304B \u7701\u7565\u3057\u305F\u3089-1\n\
-    \     * @param weighted \u8FBA\u306E\u91CD\u307F\u304C\u5165\u529B\u3055\u308C\
-    \u308B\u304B \u7701\u7565\u3057\u305F\u3089false\u3068\u306A\u308A\u3001\u91CD\
-    \u307F1\u3067\u8FBA\u304C\u8FFD\u52A0\u3055\u308C\u308B\n     * @param directed\
-    \ \u6709\u5411\u30B0\u30E9\u30D5\u304B\u3069\u3046\u304B \u7701\u7565\u3057\u305F\
-    \u3089false\n     */\n    void read(int m, int padding = -1, bool weighted = false,\
-    \ bool directed = false) {\n        for (int i = 0; i < m; i++) {\n          \
-    \  int u, v;\n            std::cin >> u >> v;\n            u += padding, v +=\
-    \ padding;\n            Cost c(1);\n            if (weighted)\n              \
-    \  std::cin >> c;\n            if (directed)\n                add_directed_edge(u,\
-    \ v, c);\n            else\n                add_edge(u, v, c);\n        }\n  \
-    \  }\n    /**\n     * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u51FA\u308B\u8FBA\
-    \u3092\u5217\u6319\u3059\u308B\n     * @param v \u9802\u70B9\u756A\u53F7\n   \
-    \  * @return std::vector<Edge>& v\u304B\u3089\u51FA\u308B\u8FBA\u306E\u30EA\u30B9\
-    \u30C8\n     */\n    std::vector<Edge> &operator[](int v) {\n        return g[v];\n\
-    \    }\n    /**\n     * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u51FA\u308B\
-    \u8FBA\u3092\u5217\u6319\u3059\u308B\n     * @param v \u9802\u70B9\u756A\u53F7\
-    \n     * @return const std::vector<Edge>& v\u304B\u3089\u51FA\u308B\u8FBA\u306E\
-    \u30EA\u30B9\u30C8\n     */\n    const std::vector<Edge> &operator[](int v) const\
-    \ {\n        return g[v];\n    }\n    /**\n     * @brief \u8FBA\u306E\u30EA\u30B9\
-    \u30C8\n     * @return std::vector<Edge> \u8FBA\u306E\u30EA\u30B9\u30C8(id\u306E\
-    \u6607\u9806)\n     *\n     * \u7121\u5411\u8FBA\u306F\u4EE3\u8868\u3057\u3066\
-    1\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\n     */\n    std::vector<Edge>\
-    \ edges() const {\n        std::vector<Edge> res(m);\n        for (int i = 0;\
-    \ i < n; i++) {\n            for (auto &e : g[i]) {\n                res[e.id]\
-    \ = e;\n            }\n        }\n        return res;\n    }\n    /**\n     *\
-    \ @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\
-    \u77ED\u8DEF\n     *\n     * @param s \u59CB\u70B9\n     * @param weighted 1\u4EE5\
-    \u5916\u306E\u30B3\u30B9\u30C8\u306E\u8FBA\u304C\u5B58\u5728\u3059\u308B\u304B\
-    \ \u7701\u7565\u3059\u308B\u3068true\n     * @param inf \u30B3\u30B9\u30C8\u306E\
-    min\u306E\u5358\u4F4D\u5143 \u672A\u5230\u9054\u306E\u9802\u70B9\u3078\u306E\u8DDD\
-    \u96E2\u306Finf\u306B\u306A\u308B \u7701\u7565\u3059\u308B\u3068\n     * @return\
-    \ std::pair<std::vector<Cost>, std::vector<Edge>> first:\u5404\u9802\u70B9\u3078\
-    \u306E\u6700\u77ED\u8DEF\u9577 second:\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\
-    \u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA\n     */\n    std::pair<std::vector<Cost>,\
+    #include <type_traits>\n#include <utility>\n#include <vector>\n#line 2 \"src/graph/tree.hpp\"\
+    \n\n/**\n * @file tree.hpp\n * @brief \u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\
+    \u30EC\u30FC\u30C8\n*/\n\n#line 9 \"src/graph/tree.hpp\"\n#include <cassert>\n\
+    #include <stack>\n#include <tuple>\n\n#line 2 \"src/graph/graph.hpp\"\n\n/**\n\
+    \ * @file graph.hpp\n * @brief \u30B0\u30E9\u30D5\n */\n\n#include <iostream>\n\
+    #include <limits>\n#include <queue>\n#line 12 \"src/graph/graph.hpp\"\n\n/**\n\
+    \ * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam\
+    \ Cost \u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u578B\n */\ntemplate <typename Cost\
+    \ = int>\nstruct Graph {\n    /**\n     * @brief \u6709\u5411\u8FBA\u306E\u69CB\
+    \u9020\u4F53\n     *\n     * operator int()\u3092\u5B9A\u7FA9\u3057\u3066\u3044\
+    \u308B\u306E\u3067\u3001int\u578B\u306B\u30AD\u30E3\u30B9\u30C8\u3059\u308B\u3068\
+    \u52DD\u624B\u306Bdst\u306B\u306A\u308B\n     * \u4F8B\u3048\u3070\u3001\n   \
+    \  * for (auto& e : g[v]) \u3092\u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\u308B\
+    \u8FBA\u304C\u5217\u6319\u3055\u308C\u308B\u304C\u3001\n     * for (int dst :\
+    \ g[v]) \u3068\u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\u306E\u884C\
+    \u304D\u5148\u304C\u5217\u6319\u3055\u308C\u308B\n     */\n    struct Edge {\n\
+    \        int src = -1;   //!< \u59CB\u70B9\n        int dst = -1;   //!< \u7D42\
+    \u70B9\n        Cost cost = {}; //!< \u30B3\u30B9\u30C8\n        int id = -1;\
+    \    //!< \u8FBA\u306E\u756A\u53F7(\u8FFD\u52A0\u3055\u308C\u305F\u9806\u3001\u7121\
+    \u5411\u8FBA\u306E\u5834\u5408\u306Fid\u304C\u540C\u3058\u3067\u65B9\u5411\u304C\
+    \u9006\u306E\u3082\u306E\u304C2\u3064\u5B58\u5728\u3059\u308B)\n        Edge()\
+    \ = default;\n        Edge(int src, int dst, Cost cost = 1, int id = -1) : src(src),\
+    \ dst(dst), cost(cost), id(id) {}\n        operator int() const { return dst;\
+    \ }\n    };\n\n    int n;                            //!< \u9802\u70B9\u6570\n\
+    \    int m;                            //!< \u8FBA\u6570\n    std::vector<std::vector<Edge>>\
+    \ g; //!< \u30B0\u30E9\u30D5\u306E\u96A3\u63A5\u30EA\u30B9\u30C8\u8868\u73FE\n\
+    \n    /**\n     * @brief \u30C7\u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\
+    \u30E9\u30AF\u30BF\n     */\n    Graph() : n(0), m(0), g(0) {}\n    /**\n    \
+    \ * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param n \u9802\u70B9\
+    \u6570\n     */\n    explicit Graph(int n) : n(n), m(0), g(n) {}\n    /**\n  \
+    \   * @brief \u7121\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n     * @param u\
+    \ \u59CB\u70B9\n     * @param v \u7D42\u70B9\n     * @param w \u30B3\u30B9\u30C8\
+    \ \u7701\u7565\u3057\u305F\u30891\n     */\n    void add_edge(int u, int v, Cost\
+    \ w = 1) {\n        g[u].push_back({u, v, w, m});\n        g[v].push_back({v,\
+    \ u, w, m++});\n    }\n    /**\n     * @brief \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\
+    \u3059\u308B\n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n   \
+    \  * @param w \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n  \
+    \  void add_directed_edge(int u, int v, Cost w = 1) {\n        g[u].push_back({u,\
+    \ v, w, m++});\n    }\n    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\
+    \u6E96\u5165\u529B\u304B\u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\
+    \u308B\n     * @param m \u8FBA\u306E\u6570\n     * @param padding \u9802\u70B9\
+    \u756A\u53F7\u3092\u5165\u529B\u304B\u3089\u3044\u304F\u3064\u305A\u3089\u3059\
+    \u304B \u7701\u7565\u3057\u305F\u3089-1\n     * @param weighted \u8FBA\u306E\u91CD\
+    \u307F\u304C\u5165\u529B\u3055\u308C\u308B\u304B \u7701\u7565\u3057\u305F\u3089\
+    false\u3068\u306A\u308A\u3001\u91CD\u307F1\u3067\u8FBA\u304C\u8FFD\u52A0\u3055\
+    \u308C\u308B\n     * @param directed \u6709\u5411\u30B0\u30E9\u30D5\u304B\u3069\
+    \u3046\u304B \u7701\u7565\u3057\u305F\u3089false\n     */\n    void read(int m,\
+    \ int padding = -1, bool weighted = false, bool directed = false) {\n        for\
+    \ (int i = 0; i < m; i++) {\n            int u, v;\n            std::cin >> u\
+    \ >> v;\n            u += padding, v += padding;\n            Cost c(1);\n   \
+    \         if (weighted)\n                std::cin >> c;\n            if (directed)\n\
+    \                add_directed_edge(u, v, c);\n            else\n             \
+    \   add_edge(u, v, c);\n        }\n    }\n    /**\n     * @brief \u3042\u308B\u9802\
+    \u70B9\u304B\u3089\u51FA\u308B\u8FBA\u3092\u5217\u6319\u3059\u308B\n     * @param\
+    \ v \u9802\u70B9\u756A\u53F7\n     * @return std::vector<Edge>& v\u304B\u3089\u51FA\
+    \u308B\u8FBA\u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<Edge> &operator[](int\
+    \ v) {\n        return g[v];\n    }\n    /**\n     * @brief \u3042\u308B\u9802\
+    \u70B9\u304B\u3089\u51FA\u308B\u8FBA\u3092\u5217\u6319\u3059\u308B\n     * @param\
+    \ v \u9802\u70B9\u756A\u53F7\n     * @return const std::vector<Edge>& v\u304B\u3089\
+    \u51FA\u308B\u8FBA\u306E\u30EA\u30B9\u30C8\n     */\n    const std::vector<Edge>\
+    \ &operator[](int v) const {\n        return g[v];\n    }\n    /**\n     * @brief\
+    \ \u8FBA\u306E\u30EA\u30B9\u30C8\n     * @return std::vector<Edge> \u8FBA\u306E\
+    \u30EA\u30B9\u30C8(id\u306E\u6607\u9806)\n     *\n     * \u7121\u5411\u8FBA\u306F\
+    \u4EE3\u8868\u3057\u30661\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\n  \
+    \   */\n    std::vector<Edge> edges() const {\n        std::vector<Edge> res(m);\n\
+    \        for (int i = 0; i < n; i++) {\n            for (auto &e : g[i]) {\n \
+    \               res[e.id] = e;\n            }\n        }\n        return res;\n\
+    \    }\n    /**\n     * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\
+    \u70B9\u3078\u306E\u6700\u77ED\u8DEF\n     *\n     * @param s \u59CB\u70B9\n \
+    \    * @param weighted 1\u4EE5\u5916\u306E\u30B3\u30B9\u30C8\u306E\u8FBA\u304C\
+    \u5B58\u5728\u3059\u308B\u304B \u7701\u7565\u3059\u308B\u3068true\n     * @param\
+    \ inf \u30B3\u30B9\u30C8\u306Emin\u306E\u5358\u4F4D\u5143 \u672A\u5230\u9054\u306E\
+    \u9802\u70B9\u3078\u306E\u8DDD\u96E2\u306Finf\u306B\u306A\u308B \u7701\u7565\u3059\
+    \u308B\u3068\n     * @return std::pair<std::vector<Cost>, std::vector<Edge>> first:\u5404\
+    \u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u9577 second:\u5404\u9802\u70B9\u3078\
+    \u306E\u6700\u77ED\u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA\n     */\n    std::pair<std::vector<Cost>,\
     \ std::vector<Edge>> shortest_path(int s, bool weighted = true, Cost inf = -1)\
     \ const {\n        if (weighted)\n            return shortest_path_dijkstra(s,\
     \ inf);\n        return shortest_path_bfs(s, inf);\n    }\n    /**\n     * @brief\
@@ -334,7 +334,7 @@ data:
     \ = this->par[i];\n        for(int i = 0; i < h - 1; i++) {\n            for(int\
     \ j = 0; j < n; j++) {\n                if(doubling_par[i][j] != -1) {\n     \
     \               doubling_par[i+1][j] = doubling_par[i][doubling_par[i][j]];\n\
-    \                }\n            }\n        }\n    }\n};\n#line 11 \"src/graph/rerooting-dp.hpp\"\
+    \                }\n            }\n        }\n    }\n};\n#line 13 \"src/graph/rerooting-dp.hpp\"\
     \n\n/**\n * @brief \u5168\u65B9\u4F4D\u6728DP\n * dp[u] = addnode(merge(addedge(dp[v1],\
     \ uv1.cost, uv1.id), merge(addedge(dp[v2], uv2.cost, uv2.id), ...)), u) v_i\u306F\
     u\u306E\u5B50\n *\n * @tparam E \u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\n * @tparam\
@@ -376,39 +376,40 @@ data:
     \u30B0\u30E9\u30D5\u306E\u500B\u6570\n */\ntemplate <typename V, typename Cost>\n\
     inline std::vector<V> connected_subgraph_count(const Tree<Cost>& tree) {\n   \
     \ return rerooting_dp(\n        tree,\n        V(1),\n        [](V a, V b) { return\
-    \ a * b; },\n        [](V a, Cost c, int) { return a + 1; },\n        [](V a,\
-    \ int) { return a; });\n}\n"
+    \ a * b; },\n        [](V a, Cost, int) { return a + 1; },\n        [](V a, int)\
+    \ { return a; });\n}\n"
   code: "#pragma once\n\n/**\n * @file rerooting-dp.hpp\n * @brief \u5168\u65B9\u4F4D\
     \u6728DP\n */\n#include <algorithm>\n#include <cstddef>\n#include <type_traits>\n\
-    #include \"tree.hpp\"\n\n/**\n * @brief \u5168\u65B9\u4F4D\u6728DP\n * dp[u] =\
-    \ addnode(merge(addedge(dp[v1], uv1.cost, uv1.id), merge(addedge(dp[v2], uv2.cost,\
-    \ uv2.id), ...)), u) v_i\u306Fu\u306E\u5B50\n *\n * @tparam E \u53EF\u63DB\u30E2\
-    \u30CE\u30A4\u30C9\n * @tparam V DP\u306E\u578B\n * @param tree\n * @param e \u53EF\
-    \u63DB\u30E2\u30CE\u30A4\u30C9\u306E\u5358\u4F4D\u5143\n * @param merge (E,E)->E\
-    \ \u53EF\u63DB\n * @param addedge (V,Cost,int)->E\n * @param addnode (E,int)->V\n\
-    \ * @return std::vector<V>\n */\ntemplate <typename E, typename V = E, class Merge,\
-    \ class AddEdge, class AddNode, typename Cost>\nstd::vector<V> rerooting_dp(const\
-    \ Tree<Cost>& tree, E e, Merge merge, AddEdge addedge, AddNode addnode) {\n  \
-    \  static_assert(std::is_invocable_r_v<E, Merge, E, E>);\n    static_assert(std::is_invocable_r_v<E,\
-    \ AddEdge, V, Cost, int>);\n    static_assert(std::is_invocable_r_v<V, AddNode,\
-    \ E, int>);\n    RootedTree<Cost> rooted(tree, 0);\n    std::vector<V> subdp(rooted.n);\n\
-    \    for (int u : rooted.postorder) {\n        E tmp = e;\n        for (auto edge\
-    \ : rooted.child[u]) {\n            tmp = merge(tmp, addedge(subdp[edge.dst],\
-    \ edge.cost, edge.id));\n        }\n        subdp[u] = addnode(tmp, u);\n    }\n\
-    \    std::vector<V> dp(rooted.n);\n    std::vector<E> pe(rooted.n, e);\n    for\
-    \ (int u : rooted.preorder) {\n        const auto& ch = rooted.child[u];\n   \
-    \     std::vector<E> ri(ch.size() + 1, e);\n        for (std::size_t i = ch.size();\
-    \ i > 0; i--) {\n            ri[i - 1] = merge(ri[i], addedge(subdp[ch[i - 1].dst],\
-    \ ch[i - 1].cost, ch[i - 1].id));\n        }\n        dp[u] = addnode(merge(pe[u],\
-    \ ri[0]), u);\n        E le = pe[u];\n        for (std::size_t i = 0; i < ch.size();\
-    \ i++) {\n            pe[ch[i].dst] = addedge(addnode(merge(le, ri[i + 1]), u),\
-    \ ch[i].cost, ch[i].id);\n            le = merge(le, addedge(subdp[ch[i].dst],\
-    \ ch[i].cost, ch[i].id));\n        }\n    }\n    return dp;\n}\n\n/**\n * @brief\
-    \ \u6700\u3082\u9060\u3044\u9802\u70B9\u307E\u3067\u306E\u8DDD\u96E2\n */\ntemplate\
-    \ <typename Cost>\ninline std::vector<Cost> farthest_node_dist(const Tree<Cost>&\
-    \ tree) {\n    return rerooting_dp(\n        tree,\n        Cost{},\n        [](Cost\
-    \ a, Cost b) { return std::max<Cost>(a, b); },\n        [](Cost a, Cost c, int)\
-    \ { return a + c; },\n        [](Cost a, int) { return a; });\n}\n\n/**\n * @brief\
+    #include <utility>\n#include <vector>\n#include \"tree.hpp\"\n\n/**\n * @brief\
+    \ \u5168\u65B9\u4F4D\u6728DP\n * dp[u] = addnode(merge(addedge(dp[v1], uv1.cost,\
+    \ uv1.id), merge(addedge(dp[v2], uv2.cost, uv2.id), ...)), u) v_i\u306Fu\u306E\
+    \u5B50\n *\n * @tparam E \u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\n * @tparam V DP\u306E\
+    \u578B\n * @param tree\n * @param e \u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\u306E\
+    \u5358\u4F4D\u5143\n * @param merge (E,E)->E \u53EF\u63DB\n * @param addedge (V,Cost,int)->E\n\
+    \ * @param addnode (E,int)->V\n * @return std::vector<V>\n */\ntemplate <typename\
+    \ E, typename V = E, class Merge, class AddEdge, class AddNode, typename Cost>\n\
+    std::vector<V> rerooting_dp(const Tree<Cost>& tree, E e, Merge merge, AddEdge\
+    \ addedge, AddNode addnode) {\n    static_assert(std::is_invocable_r_v<E, Merge,\
+    \ E, E>);\n    static_assert(std::is_invocable_r_v<E, AddEdge, V, Cost, int>);\n\
+    \    static_assert(std::is_invocable_r_v<V, AddNode, E, int>);\n    RootedTree<Cost>\
+    \ rooted(tree, 0);\n    std::vector<V> subdp(rooted.n);\n    for (int u : rooted.postorder)\
+    \ {\n        E tmp = e;\n        for (auto edge : rooted.child[u]) {\n       \
+    \     tmp = merge(tmp, addedge(subdp[edge.dst], edge.cost, edge.id));\n      \
+    \  }\n        subdp[u] = addnode(tmp, u);\n    }\n    std::vector<V> dp(rooted.n);\n\
+    \    std::vector<E> pe(rooted.n, e);\n    for (int u : rooted.preorder) {\n  \
+    \      const auto& ch = rooted.child[u];\n        std::vector<E> ri(ch.size()\
+    \ + 1, e);\n        for (std::size_t i = ch.size(); i > 0; i--) {\n          \
+    \  ri[i - 1] = merge(ri[i], addedge(subdp[ch[i - 1].dst], ch[i - 1].cost, ch[i\
+    \ - 1].id));\n        }\n        dp[u] = addnode(merge(pe[u], ri[0]), u);\n  \
+    \      E le = pe[u];\n        for (std::size_t i = 0; i < ch.size(); i++) {\n\
+    \            pe[ch[i].dst] = addedge(addnode(merge(le, ri[i + 1]), u), ch[i].cost,\
+    \ ch[i].id);\n            le = merge(le, addedge(subdp[ch[i].dst], ch[i].cost,\
+    \ ch[i].id));\n        }\n    }\n    return dp;\n}\n\n/**\n * @brief \u6700\u3082\
+    \u9060\u3044\u9802\u70B9\u307E\u3067\u306E\u8DDD\u96E2\n */\ntemplate <typename\
+    \ Cost>\ninline std::vector<Cost> farthest_node_dist(const Tree<Cost>& tree) {\n\
+    \    return rerooting_dp(\n        tree,\n        Cost{},\n        [](Cost a,\
+    \ Cost b) { return std::max<Cost>(a, b); },\n        [](Cost a, Cost c, int) {\
+    \ return a + c; },\n        [](Cost a, int) { return a; });\n}\n\n/**\n * @brief\
     \ \u4ED6\u306E\u5168\u3066\u306E\u9802\u70B9\u3068\u306E\u8DDD\u96E2\u306E\u5408\
     \u8A08\n */\ntemplate <typename Cost>\ninline std::vector<Cost> distance_sums(const\
     \ Tree<Cost>& tree) {\n    using P = typename std::pair<Cost, int>;\n    auto\
@@ -421,22 +422,56 @@ data:
     \u30B0\u30E9\u30D5\u306E\u500B\u6570\n */\ntemplate <typename V, typename Cost>\n\
     inline std::vector<V> connected_subgraph_count(const Tree<Cost>& tree) {\n   \
     \ return rerooting_dp(\n        tree,\n        V(1),\n        [](V a, V b) { return\
-    \ a * b; },\n        [](V a, Cost c, int) { return a + 1; },\n        [](V a,\
-    \ int) { return a; });\n}\n"
+    \ a * b; },\n        [](V a, Cost, int) { return a + 1; },\n        [](V a, int)\
+    \ { return a; });\n}\n"
   dependsOn:
   - src/graph/tree.hpp
   - src/graph/graph.hpp
   isVerificationFile: false
   path: src/graph/rerooting-dp.hpp
   requiredBy: []
-  timestamp: '2026-10-12 19:40:02+09:00'
+  timestamp: '2026-10-12 20:24:58+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/aoj/1595.test.cpp
 documentation_of: src/graph/rerooting-dp.hpp
 layout: document
-redirect_from:
-- /library/src/graph/rerooting-dp.hpp
-- /library/src/graph/rerooting-dp.hpp.html
 title: "\u5168\u65B9\u4F4D\u6728DP"
 ---
+
+[木](tree.hpp) `Tree<Cost>` のすべての頂点について、その頂点を根としたときの木 DP の値を $O(n)$ で求めます。
+
+## `rerooting_dp<E, V = E>(tree, e, merge, addedge, addnode)`
+
+頂点 $u$ の子を $v_1, v_2, \dots$ とすると、次のように計算した `dp[u]` (型 `V`) を全頂点について返します。
+
+$$\mathrm{dp}[u] = \mathrm{addnode}(\mathrm{merge}(\mathrm{addedge}(\mathrm{dp}[v_1], \mathrm{cost}_1, \mathrm{id}_1), \mathrm{merge}(\mathrm{addedge}(\mathrm{dp}[v_2], \dots), \dots)), u)$$
+
+| 引数 | 型 | 意味 |
+|---|---|---|
+| `e` | `E` | `merge` の単位元 (子がないときの値) |
+| `merge(a, b)` | `(E, E) -> E` | 子からの値をまとめる。可換かつ結合的であること |
+| `addedge(x, cost, id)` | `(V, Cost, int) -> E` | 子の DP 値 `x` に、子へ向かう辺 (重み `cost`、番号 `id`) の分を加える |
+| `addnode(a, u)` | `(E, int) -> V` | まとめた値 `a` に頂点 `u` の分を加えて、`u` の DP 値にする |
+
+例: 各頂点から最も遠い頂点までの距離 (下の `farthest_node_dist` と同じ)
+
+```cpp
+Tree<long long> t(n);
+t.read(-1, true);
+auto dp = rerooting_dp(
+    t, 0LL,
+    [](long long a, long long b) { return std::max(a, b); },  // merge: 子の中で最大
+    [](long long x, long long c, int) { return x + c; },      // addedge: 辺の重みを足す
+    [](long long a, int) { return a; });                      // addnode: そのまま
+```
+
+## よく使う DP
+
+| 関数 | 説明 |
+|---|---|
+| `farthest_node_dist(tree)` | 各頂点から最も遠い頂点までの距離 (重み付き) |
+| `distance_sums(tree)` | 各頂点から他のすべての頂点への距離の合計 (重み付き) |
+| `connected_subgraph_count<V>(tree)` | 各頂点について、その頂点を含む連結な部分グラフ (頂点集合) の個数。`V` は `mint` など |
+
+いずれも計算量は $O(n)$ です。

@@ -38,8 +38,14 @@ data:
   - test/yosupo/enumerate-quotients.test.cpp
 documentation_of: src/math/sqrt.hpp
 layout: document
-redirect_from:
-- /library/src/math/sqrt.hpp
-- /library/src/math/sqrt.hpp.html
 title: "\u6574\u6570\u306E\u5E73\u65B9\u6839"
 ---
+
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `sqrtll(n)` | $\lfloor \sqrt{n} \rfloor$ ($0 \le n < 2^{63}$)。浮動小数点の誤差なしで求める | $O(\log n)$ |
+
+```cpp
+long long r = sqrtll(1000000000000000000LL);  // 1000000000
+long long s = sqrtll(15);                      // 3
+```

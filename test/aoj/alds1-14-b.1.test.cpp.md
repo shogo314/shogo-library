@@ -17,7 +17,7 @@ data:
     PROBLEM: https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_14_B
     links:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_14_B
-  bundledCode: "#line 1 \"test/aoj/alds1-14-b.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_14_B\"\
+  bundledCode: "#line 1 \"test/aoj/alds1-14-b.1.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_14_B\"\
     \n\n#include <iostream>\n#include <string>\n\n#line 2 \"src/string/rolling-hash.hpp\"\
     \n\n/**\n * @file rolling-hash.hpp\n * @brief \u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\
     \u30C3\u30B7\u30E5\n */\n\n#include <cstddef>\n#include <iterator>\n#line 11 \"\
@@ -203,8 +203,8 @@ data:
     \ RHString& t1, const RHString& t2) {\n        assert(&t1.rh == &t2.rh);\n   \
     \     return t1.sz == t2.sz && t1.hash1 == t2.hash1 && t1.hash2 == t2.hash2;\n\
     \    }\n    friend bool operator!=(const RHString& t1, const RHString& t2) { return\
-    \ !(t1 == t2); }\n};\n#line 7 \"test/aoj/alds1-14-b.test.cpp\"\n\nint main() {\n\
-    \    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    std::string\
+    \ !(t1 == t2); }\n};\n#line 7 \"test/aoj/alds1-14-b.1.test.cpp\"\n\nint main()\
+    \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    std::string\
     \ t, p;\n    std::cin >> t >> p;\n    RollingHash rh;\n    auto ht = rh.build(t);\n\
     \    auto hp = rh.build(p);\n    int n = t.size(), m = p.size();\n    unsigned\
     \ long long target = rh.query(hp, 0, m);\n    for (int i = 0; i + m <= n; i++)\
@@ -222,15 +222,15 @@ data:
   - src/string/rolling-hash.hpp
   - src/utility/traits.hpp
   isVerificationFile: true
-  path: test/aoj/alds1-14-b.test.cpp
+  path: test/aoj/alds1-14-b.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 13:03:23+09:00'
+  timestamp: '2026-10-14 00:42:16+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/aoj/alds1-14-b.test.cpp
+documentation_of: test/aoj/alds1-14-b.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/aoj/alds1-14-b.test.cpp
-- /verify/test/aoj/alds1-14-b.test.cpp.html
-title: test/aoj/alds1-14-b.test.cpp
+- /verify/test/aoj/alds1-14-b.1.test.cpp
+- /verify/test/aoj/alds1-14-b.1.test.cpp.html
+title: test/aoj/alds1-14-b.1.test.cpp
 ---

@@ -7,14 +7,14 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/alds1-14-b.test.cpp
-    title: test/aoj/alds1-14-b.test.cpp
+    path: test/aoj/alds1-14-b.1.test.cpp
+    title: test/aoj/alds1-14-b.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/rolling-hash.test.cpp
     title: test/unittest/rolling-hash.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/enumerate-palindromes.test.cpp
-    title: test/yosupo/enumerate-palindromes.test.cpp
+    path: test/yosupo/enumerate-palindromes.1.test.cpp
+    title: test/yosupo/enumerate-palindromes.1.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -349,8 +349,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/rolling-hash.test.cpp
-  - test/aoj/alds1-14-b.test.cpp
-  - test/yosupo/enumerate-palindromes.test.cpp
+  - test/aoj/alds1-14-b.1.test.cpp
+  - test/yosupo/enumerate-palindromes.1.test.cpp
 documentation_of: src/string/rolling-hash.hpp
 layout: document
 title: "\u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5"

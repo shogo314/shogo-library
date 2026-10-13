@@ -30,8 +30,8 @@ data:
     path: test/aoj/alds1-1-b.test.cpp
     title: test/aoj/alds1-1-b.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/alds1-14-b.test.cpp
-    title: test/aoj/alds1-14-b.test.cpp
+    path: test/aoj/alds1-14-b.1.test.cpp
+    title: test/aoj/alds1-14-b.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/alds1-4-b.test.cpp
     title: test/aoj/alds1-4-b.test.cpp
@@ -84,8 +84,8 @@ data:
     path: test/unittest/vector-func.test.cpp
     title: test/unittest/vector-func.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/enumerate-palindromes.test.cpp
-    title: test/yosupo/enumerate-palindromes.test.cpp
+    path: test/yosupo/enumerate-palindromes.1.test.cpp
+    title: test/yosupo/enumerate-palindromes.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/sort-points-by-argument.2.test.cpp
     title: test/yosupo/sort-points-by-argument.2.test.cpp
@@ -222,19 +222,19 @@ data:
   - test/aoj/0022.test.cpp
   - test/aoj/alds1-1-b.test.cpp
   - test/aoj/itp1-4-d.test.cpp
+  - test/aoj/alds1-14-b.1.test.cpp
   - test/aoj/itp2-5-a.1.test.cpp
   - test/aoj/itp2-3-c.test.cpp
   - test/aoj/itp2-5-b.test.cpp
   - test/aoj/alds1-4-b.test.cpp
   - test/aoj/itp1-10-c.test.cpp
   - test/aoj/itp1-6-a.test.cpp
-  - test/aoj/alds1-14-b.test.cpp
   - test/aoj/itp2-5-a.2.test.cpp
   - test/aoj/dsl-4-a.1.test.cpp
   - test/aoj/alds1-4-d.test.cpp
   - test/aoj/itp1-2-c.test.cpp
   - test/yosupo/static-range-sum.test.cpp
-  - test/yosupo/enumerate-palindromes.test.cpp
+  - test/yosupo/enumerate-palindromes.1.test.cpp
   - test/yosupo/sort-points-by-argument.2.test.cpp
 documentation_of: src/utility/traits.hpp
 layout: document

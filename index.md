@@ -181,7 +181,11 @@ data:
       title: "\u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5"
     - icon: ':heavy_check_mark:'
       path: src/string/string.hpp
-      title: Z-algorithm
+      title: "\u6587\u5B57\u5217\u30A2\u30EB\u30B4\u30EA\u30BA\u30E0 (Z-algorithm\u3001\
+        KMP\u3001Manacher)"
+    - icon: ':heavy_check_mark:'
+      path: src/string/suffix-array.hpp
+      title: "Suffix Array \u3068 LCP \u914D\u5217"
   - name: src/utility
     pages:
     - icon: ':heavy_check_mark:'
@@ -250,8 +254,11 @@ data:
       path: test/aoj/alds1-11-d.2.test.cpp
       title: test/aoj/alds1-11-d.2.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/aoj/alds1-14-b.test.cpp
-      title: test/aoj/alds1-14-b.test.cpp
+      path: test/aoj/alds1-14-b.1.test.cpp
+      title: test/aoj/alds1-14-b.1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/alds1-14-b.2.test.cpp
+      title: test/aoj/alds1-14-b.2.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/aoj/alds1-4-b.test.cpp
       title: test/aoj/alds1-4-b.test.cpp
@@ -576,6 +583,12 @@ data:
       path: test/unittest/sparse-table.test.cpp
       title: test/unittest/sparse-table.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/string.test.cpp
+      title: test/unittest/string.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/suffix-array.test.cpp
+      title: test/unittest/suffix-array.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/tadpole-array.test.cpp
       title: test/unittest/tadpole-array.test.cpp
     - icon: ':heavy_check_mark:'
@@ -632,8 +645,11 @@ data:
       path: test/yosupo/division-of-polynomials.test.cpp
       title: test/yosupo/division-of-polynomials.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/yosupo/enumerate-palindromes.test.cpp
-      title: test/yosupo/enumerate-palindromes.test.cpp
+      path: test/yosupo/enumerate-palindromes.1.test.cpp
+      title: test/yosupo/enumerate-palindromes.1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/enumerate-palindromes.2.test.cpp
+      title: test/yosupo/enumerate-palindromes.2.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/enumerate-primes.test.cpp
       title: test/yosupo/enumerate-primes.test.cpp
@@ -688,6 +704,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/minimum-spanning-tree.2.test.cpp
       title: test/yosupo/minimum-spanning-tree.2.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/number-of-substrings.test.cpp
+      title: test/yosupo/number-of-substrings.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/partition-function_1.test.cpp
       title: test/yosupo/partition-function_1.test.cpp
@@ -790,6 +809,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/staticrmq.test.cpp
       title: test/yosupo/staticrmq.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/suffixarray.test.cpp
+      title: test/yosupo/suffixarray.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/sum-of-floor-of-linear.test.cpp
       title: test/yosupo/sum-of-floor-of-linear.test.cpp

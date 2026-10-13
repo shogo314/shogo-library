@@ -17,47 +17,47 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/enumerate_palindromes
     links:
     - https://judge.yosupo.jp/problem/enumerate_palindromes
-  bundledCode: "#line 1 \"test/yosupo/enumerate-palindromes.test.cpp\"\n#define PROBLEM\
-    \ \"https://judge.yosupo.jp/problem/enumerate_palindromes\"\n\n#line 2 \"src/string/rolling-hash.hpp\"\
-    \n\n/**\n * @file rolling-hash.hpp\n * @brief \u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\
-    \u30C3\u30B7\u30E5\n */\n\n#include <cstddef>\n#include <iterator>\n#include <string>\n\
-    #include <vector>\n#include <random>\n#include <cassert>\n#include <string_view>\n\
-    #include <type_traits>\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file\
-    \ traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 10 \"src/utility/traits.hpp\"\
-    \n#include <set>\n#line 12 \"src/utility/traits.hpp\"\n#include <utility>\n\n\
-    namespace detail {\nusing std::begin, std::end;\n\ntemplate <class T, class =\
-    \ void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct\
-    \ is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
-    \ : std::true_type {};\n}  // namespace detail\n\ntemplate <class T>\nstruct is_range\
-    \ : detail::is_range_impl<T>::type {};\ntemplate <class T>\ninline constexpr bool\
-    \ is_range_v = is_range<T>::value;\n\n#define HAS_METHOD(func_name)          \
-    \                                                    \\\n    namespace detail\
-    \ {                                                                     \\\n \
-    \   template <class T, class = void>                                         \
-    \              \\\n    struct has_##func_name##_impl : std::false_type {};   \
-    \                                 \\\n    template <class T>                 \
-    \                                                    \\\n    struct has_##func_name##_impl<T,\
-    \ std::void_t<decltype(std::declval<T>().func_name())>> \\\n        : std::true_type\
-    \ {};                                                               \\\n    }\
-    \                                                                            \
-    \          \\\n    template <class T>                                        \
-    \                             \\\n    struct has_##func_name : detail::has_##func_name##_impl<T>::type\
-    \ {};                   \\\n    template <class T>                           \
-    \                                          \\\n    inline constexpr bool has_##func_name##_v\
-    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
-    \                                                                    \\\n    namespace\
-    \ detail {                                                                   \
-    \                      \\\n    template <class T, typename U, class = void>  \
-    \                                                             \\\n    struct has_##func_name##_impl\
-    \ : std::false_type {};                                                      \
-    \  \\\n    template <class T, typename U>                                    \
-    \                                         \\\n    struct has_##func_name##_impl<T,\
-    \ U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>> \\\
-    \n        : std::true_type {};                                               \
-    \                                    \\\n    }                               \
+  bundledCode: "#line 1 \"test/yosupo/enumerate-palindromes.1.test.cpp\"\n#define\
+    \ PROBLEM \"https://judge.yosupo.jp/problem/enumerate_palindromes\"\n\n#line 2\
+    \ \"src/string/rolling-hash.hpp\"\n\n/**\n * @file rolling-hash.hpp\n * @brief\
+    \ \u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5\n */\n\n#include <cstddef>\n\
+    #include <iterator>\n#include <string>\n#include <vector>\n#include <random>\n\
+    #include <cassert>\n#include <string_view>\n#include <type_traits>\n\n#line 2\
+    \ \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\
+    \u6027\n */\n\n#line 10 \"src/utility/traits.hpp\"\n#include <set>\n#line 12 \"\
+    src/utility/traits.hpp\"\n#include <utility>\n\nnamespace detail {\nusing std::begin,\
+    \ std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl : std::false_type\
+    \ {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace detail\n\n\
+    template <class T>\nstruct is_range : detail::is_range_impl<T>::type {};\ntemplate\
+    \ <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define\
+    \ HAS_METHOD(func_name)                                                      \
+    \        \\\n    namespace detail {                                          \
+    \                           \\\n    template <class T, class = void>         \
+    \                                              \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                    \\\n    template <class\
+    \ T>                                                                     \\\n\
+    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                    \\\n    }                                               \
+    \                                       \\\n    template <class T>           \
+    \                                                          \\\n    struct has_##func_name\
+    \ : detail::has_##func_name##_impl<T>::type {};                   \\\n    template\
+    \ <class T>                                                                  \
+    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
+    \n#define HAS_METHOD_ARG(func_name)                                          \
+    \                                    \\\n    namespace detail {              \
     \                                                                           \\\
-    \n    template <class T, typename U>                                         \
-    \                                    \\\n    struct has_##func_name : detail::has_##func_name##_impl<T,\
+    \n    template <class T, typename U, class = void>                           \
+    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                                        \\\n    template\
+    \ <class T, typename U>                                                      \
+    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                                        \\\n    }                           \
+    \                                                                            \
+    \   \\\n    template <class T, typename U>                                   \
+    \                                          \\\n    struct has_##func_name : detail::has_##func_name##_impl<T,\
     \ U>::type {};                                    \\\n    template <class T, typename\
     \ U>                                                                         \
     \    \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
@@ -203,8 +203,8 @@ data:
     \ RHString& t1, const RHString& t2) {\n        assert(&t1.rh == &t2.rh);\n   \
     \     return t1.sz == t2.sz && t1.hash1 == t2.hash1 && t1.hash2 == t2.hash2;\n\
     \    }\n    friend bool operator!=(const RHString& t1, const RHString& t2) { return\
-    \ !(t1 == t2); }\n};\n#line 4 \"test/yosupo/enumerate-palindromes.test.cpp\"\n\
-    \n#include <iostream>\n\nint main(void) {\n    std::string s; std::cin >> s;\n\
+    \ !(t1 == t2); }\n};\n#line 4 \"test/yosupo/enumerate-palindromes.1.test.cpp\"\
+    \n\n#include <iostream>\n\nint main(void) {\n    std::string s; std::cin >> s;\n\
     \    int n = s.length();\n    RollingHash rh;\n    auto hash1 = rh.build(s);\n\
     \    auto hash2 = rh.build(s.rbegin(), s.rend());\n    std::vector<int> ans(n*2-1);\n\
     \    for(int i = 0; i < n; i++) {\n        int ok = 0, ng = std::min(i+1, n-i);\n\
@@ -236,15 +236,15 @@ data:
   - src/string/rolling-hash.hpp
   - src/utility/traits.hpp
   isVerificationFile: true
-  path: test/yosupo/enumerate-palindromes.test.cpp
+  path: test/yosupo/enumerate-palindromes.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 13:03:23+09:00'
+  timestamp: '2026-10-14 00:42:16+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/yosupo/enumerate-palindromes.test.cpp
+documentation_of: test/yosupo/enumerate-palindromes.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/yosupo/enumerate-palindromes.test.cpp
-- /verify/test/yosupo/enumerate-palindromes.test.cpp.html
-title: test/yosupo/enumerate-palindromes.test.cpp
+- /verify/test/yosupo/enumerate-palindromes.1.test.cpp
+- /verify/test/yosupo/enumerate-palindromes.1.test.cpp.html
+title: test/yosupo/enumerate-palindromes.1.test.cpp
 ---

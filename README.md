@@ -16,7 +16,7 @@
 | `src/algebra/` | モノイド・群・作用素付きモノイドの定義 |
 | `src/data_structures/` | セグメント木各種 (モノイドを渡して使う)、Union-Find、マージソートツリー、Li Chao Tree など |
 | `src/graph/` | グラフ、木、全方位木 DP、Functional Graph、強連結成分分解 |
-| `src/math/` | modint、行列、形式的冪級数、組み合わせ、数論、無限大を持つ整数 (`infint`) |
+| `src/math/` | modint、行列、形式的冪級数、組み合わせ、数論、素数 (素数判定・素因数分解・篩)、無限大を持つ整数 (`infint`) |
 | `src/string/` | Z-algorithm、ローリングハッシュ |
 | `src/geometry/` | 幾何 (ベクトル、凸包、偏角ソートなど) |
 | `src/others/` | Mo's algorithm |

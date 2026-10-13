@@ -34,3 +34,4 @@ std::vector<bool> S = mf.min_cut(s);  // 最小カットの s 側
 ## 関連
 
 - 二部グラフの最大マッチングだけなら、より速い [二部マッチング](bipartite-matching.hpp)
+- 辺にコストがあるときは [最小費用流](min-cost-flow.hpp)

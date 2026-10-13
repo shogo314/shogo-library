@@ -1,8 +1,9 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
-// subset_sum、subset_sum_restore、count_subset_sum_* を、部分集合をすべて試す愚直な方法とランダムに比較する
+// subset_sum、subset_sum_restore、subset_sum_max*、count_subset_sum_* を、部分集合をすべて試す愚直な方法とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include <algorithm>
 #include <iostream>
 #include <random>
 #include <vector>
@@ -44,12 +45,50 @@ int main() {
             }
             ok = ok && s == S;
         }
+        // S 以下の最大値と、その復元
+        long long best = 0;
+        for (long long s = 0; s <= S; s++) {
+            if (cnt[s] > 0) best = s;
+        }
+        ok = ok && subset_sum_max(a, S) == best && subset_sum_max_bitset(a, S) == best;
+        ok = ok && subset_sum_max_meet_in_the_middle(a, S) == best;
+        auto mr = subset_sum_max_restore(a, S);
+        long long ms = 0;
+        for (int k = 0; k < (int)mr.size(); k++) {
+            if (mr[k] < 0 || mr[k] >= n || (k && mr[k - 1] >= mr[k])) ok = false;
+            else ms += a[mr[k]];
+        }
+        ok = ok && ms == best;
         // 個数
         int t = S;
         auto c1 = count_subset_sum_dp<long long>(a, t);
         auto c2 = count_subset_sum_fps<mint>(a, t);
         auto c3 = count_subset_sum<mint>(a, t);
         for (int s = 0; s <= t && ok; s++) ok = c1[s] == cnt[s] && c2[s] == mint(cnt[s]) && c3[s] == mint(cnt[s]);
+    }
+
+    // 要素も S も大きいときは半分全列挙が選ばれ、復元もできる
+    for (int rep = 0; rep < 200 && ok; rep++) {
+        int n = rng() % 21;
+        long long S = rng() % 1000000000000000000LL;
+        std::vector<long long> a(n);
+        for (auto& x : a) x = rng() % 100000000000000000LL;
+        long long best = 0;
+        for (int mask = 0; mask < (1 << n); mask++) {
+            long long s = 0;
+            for (int i = 0; i < n; i++) {
+                if (mask >> i & 1) s += a[i];
+            }
+            if (s <= S) best = std::max(best, s);
+        }
+        ok = ok && subset_sum_max(a, S) == best;
+        auto mr = subset_sum_max_restore(a, S);
+        long long ms = 0;
+        for (int k = 0; k < (int)mr.size(); k++) {
+            if (k && mr[k - 1] >= mr[k]) ok = false;
+            ms += a[mr[k]];
+        }
+        ok = ok && ms == best;
     }
 
     // 例

@@ -7,20 +7,7 @@
 
 #include <cassert>
 #include <vector>
-
-namespace internal_divisor_transform {
-// n 以下の素数 (エラトステネスの篩)
-inline std::vector<int> primes(int n) {
-    std::vector<bool> composite(n + 1);
-    std::vector<int> res;
-    for (int i = 2; i <= n; i++) {
-        if (composite[i]) continue;
-        res.push_back(i);
-        for (long long j = (long long)i * i; j <= n; j += i) composite[j] = true;
-    }
-    return res;
-}
-}  // namespace internal_divisor_transform
+#include "prime.hpp"
 
 /**
  * @brief 約数のゼータ変換 a[n] <- sum_{d | n} a[d] O(N log log N)
@@ -29,7 +16,7 @@ inline std::vector<int> primes(int n) {
 template <typename T>
 void divisor_zeta(std::vector<T>& a) {
     int n = (int)a.size() - 1;
-    for (int p : internal_divisor_transform::primes(n)) {
+    for (int p : enumerate_primes(n)) {
         for (int i = 1; i <= n / p; i++) a[i * p] += a[i];
     }
 }
@@ -41,7 +28,7 @@ void divisor_zeta(std::vector<T>& a) {
 template <typename T>
 void divisor_mobius(std::vector<T>& a) {
     int n = (int)a.size() - 1;
-    for (int p : internal_divisor_transform::primes(n)) {
+    for (int p : enumerate_primes(n)) {
         for (int i = n / p; i >= 1; i--) a[i * p] -= a[i];
     }
 }
@@ -53,7 +40,7 @@ void divisor_mobius(std::vector<T>& a) {
 template <typename T>
 void multiple_zeta(std::vector<T>& a) {
     int n = (int)a.size() - 1;
-    for (int p : internal_divisor_transform::primes(n)) {
+    for (int p : enumerate_primes(n)) {
         for (int i = n / p; i >= 1; i--) a[i] += a[i * p];
     }
 }
@@ -65,7 +52,7 @@ void multiple_zeta(std::vector<T>& a) {
 template <typename T>
 void multiple_mobius(std::vector<T>& a) {
     int n = (int)a.size() - 1;
-    for (int p : internal_divisor_transform::primes(n)) {
+    for (int p : enumerate_primes(n)) {
         for (int i = 1; i <= n / p; i++) a[i] -= a[i * p];
     }
 }

@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cassert>
 #include <vector>
+#include "combinatorics.hpp"
 #include "convolution.hpp"
 
 template <typename mint> struct FPS : std::vector<mint> {
@@ -205,21 +206,16 @@ template <typename mint> struct FPS : std::vector<mint> {
     }
 
     inline friend FPS taylor_shift(FPS f, mint a) {
+        using C = Combination<mint>;
         int n = f.size();
-        std::vector<mint> fac(n, 1), inv(n, 1), finv(n, 1);
-        int mod = mint::mod();
-        for(int i = 2; i < n; i ++) {
-            fac[i] = fac[i - 1] * i;
-            inv[i] = -inv[mod % i] * (mod / i);
-            finv[i] = finv[i - 1] * inv[i];
-        }
-        for(int i = 0; i < n; i ++) f[i] *= fac[i];
+        C::extend(n);
+        for(int i = 0; i < n; i ++) f[i] *= C::factorial(i);
         std::reverse(f.begin(), f.end());
         FPS<mint> g(n, 1);
-        for(int i = 1; i < n; i ++) g[i] = g[i - 1] * a * inv[i];
+        for(int i = 1; i < n; i ++) g[i] = g[i - 1] * a * C::inv(i);
         f = (f * g).pre(n);
         std::reverse(f.begin(), f.end());
-        for(int i = 0; i < n; i ++) f[i] *= finv[i];
+        for(int i = 0; i < n; i ++) f[i] *= C::inverse_factorial(i);
         return f;
     }
 };

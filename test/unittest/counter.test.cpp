@@ -25,7 +25,7 @@ Model normalize(Model m) {
 
 bool same(const Counter<int>& c, const Model& m) {
     Model mm = normalize(m);
-    if (c.size() != mm.size()) return false;
+    if (c.size() != (int)mm.size()) return false;
     // total は重複を含めた要素数 (個数の総和)
     long long sum = 0;
     for (auto [x, cnt] : mm) sum += cnt;

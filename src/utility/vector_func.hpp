@@ -16,10 +16,10 @@
 #include "traits.hpp"
 
 template <typename T>
-std::vector<std::ptrdiff_t> sorted_idx(const std::vector<T> &v, bool reverse = false) {
-    std::vector<std::ptrdiff_t> ret(v.size());
+std::vector<int> sorted_idx(const std::vector<T> &v, bool reverse = false) {
+    std::vector<int> ret(v.size());
     std::iota(ret.begin(), ret.end(), 0);
-    std::sort(ret.begin(), ret.end(), [&](std::ptrdiff_t i, std::ptrdiff_t j) {
+    std::sort(ret.begin(), ret.end(), [&](int i, int j) {
         return v[i] < v[j];
     });
     if (reverse) std::reverse(ret.begin(), ret.end());

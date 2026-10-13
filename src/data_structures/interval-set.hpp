@@ -108,8 +108,8 @@ struct IntervalSet {
             tmp.pop_back();
         }
     }
-    std::size_t size() const {
-        return data.size();
+    int size() const {
+        return static_cast<int>(data.size());
     }
     std::vector<value_type> to_vector() const {
         return std::vector<value_type>(data.begin(), data.end());

@@ -78,8 +78,8 @@ struct Counter {
     /**
      * @brief 異なる値の個数 (重複は数えない)
      */
-    std::size_t size() const {
-        return data.size();
+    int size() const {
+        return static_cast<int>(data.size());
     }
     /**
      * @brief 重複を含めた要素数 (個数の総和)

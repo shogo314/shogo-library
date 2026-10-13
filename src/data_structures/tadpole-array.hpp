@@ -17,7 +17,7 @@ template <typename T>
 struct TadpoleArray {
    private:
     std::vector<T> data;
-    std::size_t k;
+    int k;
 
    public:
     /**
@@ -25,15 +25,19 @@ struct TadpoleArray {
      */
     TadpoleArray(const std::vector<T>& v, int i) : data(v) {
         assert(0 <= i and i < static_cast<int>(data.size()));
-        k = static_cast<std::size_t>(i);
+        k = i;
     }
     TadpoleArray() = default;
     TadpoleArray(const TadpoleArray&) = default;
-    T at(std::size_t i) const {
+    /**
+     * @brief i 番目の要素 (i は配列の長さを超えてもよい)
+     */
+    T at(long long i) const {
+        assert(i >= 0);
         if (i < k) return data[i];
-        return data[(i - k) % (data.size() - k) + k];
+        return data[(i - k) % (static_cast<long long>(data.size()) - k) + k];
     }
-    T operator[](std::size_t i) const {
+    T operator[](long long i) const {
         return at(i);
     }
 };

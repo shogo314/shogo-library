@@ -48,7 +48,7 @@ int main() {
                 for (long long x = l; x < r; x++) cov[x - LO] = false;
             }
             auto expect = runs(cov);
-            if (st.to_vector() != expect || st.size() != expect.size()) ok = false;
+            if (st.to_vector() != expect || st.size() != (int)expect.size()) ok = false;
 
             // covered_by(k): k を含む区間
             for (long long k = LO; k < HI; k++) {

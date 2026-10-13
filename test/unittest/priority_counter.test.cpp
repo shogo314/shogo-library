@@ -24,7 +24,7 @@ std::vector<std::pair<int, long long>> top_k(const std::map<int, long long>& m) 
 template <size_t K, class Compare>
 bool same(const PriorityCounter<int, K, Compare>& pc, const std::map<int, long long>& m) {
     auto expect = top_k<K, Compare>(m);
-    if (pc.size() != expect.size()) return false;
+    if (pc.size() != (int)expect.size()) return false;
     for (size_t i = 0; i < expect.size(); i++) {
         if (pc.data[i] != expect[i]) return false;
     }

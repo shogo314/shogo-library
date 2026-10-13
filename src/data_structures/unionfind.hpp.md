@@ -22,6 +22,9 @@ data:
     path: test/aoj/jag-summer-2971.test.cpp
     title: test/aoj/jag-summer-2971.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/mapping.test.cpp
+    title: test/unittest/mapping.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/monoid-unionfind.test.cpp
     title: test/unittest/monoid-unionfind.test.cpp
   - icon: ':heavy_check_mark:'
@@ -157,6 +160,7 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/unionfind.test.cpp
+  - test/unittest/mapping.test.cpp
   - test/unittest/monoid-unionfind.test.cpp
   - test/unittest/monoid.test.cpp
   - test/unittest/potentialized-unionfind.test.cpp

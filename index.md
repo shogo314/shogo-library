@@ -412,6 +412,9 @@ data:
       path: test/unittest/macro.test.cpp
       title: test/unittest/macro.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/mapping.test.cpp
+      title: test/unittest/mapping.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/matrix.test.cpp
       title: test/unittest/matrix.test.cpp
     - icon: ':heavy_check_mark:'

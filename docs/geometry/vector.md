@@ -58,3 +58,4 @@ std::sort(ps.begin(), ps.end(), P::ArgSortComp());  // 偏角ソート
 ## 関連
 
 - 円の交点・接線・内接円・外接円は [円](circle.hpp)
+- 傾きや比を誤差なく比べるには [有理数](../math/rational.hpp)

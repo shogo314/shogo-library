@@ -35,3 +35,7 @@ Counter<int> d = c + Counter<int>(3);  // 3 を 1 個足した Counter
 | `c.total()` | 重複を含めた要素数 (個数の総和。Python の `Counter.total()` と同じ) | $O(n)$ |
 | `c.most_common()` | `{値, 個数}` のリスト。個数の降順、同数なら値の昇順 | $O(n \log n)$ |
 | `c.data` | 中身の `std::map<T, long long>` (値の昇順に走査できる) | |
+
+## 関連
+
+- 最大・最小と任意の要素の削除だけなら [削除可能な優先度付きキュー](erasable-priority-queue.hpp)

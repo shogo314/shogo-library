@@ -4,6 +4,7 @@
 // 入力マクロは std::cin の入力元を、出力マクロは std::cout の出力先を一時的に差し替えて検証する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include <algorithm>
 #include <iostream>
 #include <sstream>
 #include <string>

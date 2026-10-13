@@ -3,7 +3,7 @@ title: 型の別名
 documentation_of: //src/base/type_alias.hpp
 ---
 
-コンテスト用の短い型名です。`<bits/stdc++.h>` を include します。
+コンテスト用の短い型名です。使う標準ヘッダ (`<vector>`、`<map>`、`<queue>` など) だけを include します。標準ライブラリをまとめて使う場合は `base/all` を include します。
 
 ```cpp
 vl a(n);                    // std::vector<long long>

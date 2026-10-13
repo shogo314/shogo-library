@@ -5,7 +5,16 @@
  * @brief 型の別名
  */
 
-#include <bits/stdc++.h>
+#include <array>
+#include <deque>
+#include <functional>
+#include <list>
+#include <map>
+#include <queue>
+#include <set>
+#include <string>
+#include <utility>
+#include <vector>
 
 using ll = long long;
 using ull = unsigned long long;

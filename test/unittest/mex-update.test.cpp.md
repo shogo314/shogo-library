@@ -22,37 +22,38 @@ data:
     \u3059\u308B\n\n#include <iostream>\n#include <random>\n#include <set>\n#include\
     \ <vector>\n\n#line 2 \"src/data_structures/mex-update.hpp\"\n\n/**\n * @file\
     \ mex-update.hpp\n * @brief 1\u70B9\u66F4\u65B0\u30FB\u5168\u4F53\u306E mex \u53D6\
-    \u5F97\n */\n\n#include <cassert>\n#include <limits>\n#include <map>\n#line 13\
-    \ \"src/data_structures/mex-update.hpp\"\n\ntemplate <typename T>\nstruct MexUpdate\
-    \ {\n    using value_type = T;\n\n   private:\n    inline constexpr static value_type\
-    \ e = std::numeric_limits<value_type>::max();\n\n    int n;\n    std::vector<value_type>\
-    \ v;\n    std::set<int> s;\n    std::map<int, size_t> m;\n\n   public:\n    MexUpdate()\
-    \ = default;\n    MexUpdate(int n) : n(n), v(n, e) {\n        assert(n > 0);\n\
-    \        assert(n + 1 < e);\n        std::set<int>::iterator hint = s.end();\n\
-    \        for (int i = n; i >= 0; --i) {\n            hint = s.emplace_hint(hint,\
-    \ i);\n        }\n    }\n    MexUpdate(const std::vector<value_type>& init) :\
-    \ n(init.size()), v(init) {\n        assert(n > 0);\n        assert(n + 1 < e);\n\
-    \        std::set<int>::iterator hint = s.end();\n        for (int i = n; i >=\
-    \ 0; --i) {\n            hint = s.emplace_hint(hint, i);\n        }\n        for\
-    \ (const auto& i : init) {\n            if (0 <= i and i <= n) {\n           \
-    \     m[i]++;\n                s.erase(i);\n            }\n        }\n    }\n\
-    \    void set(int k, const value_type& x) {\n        assert(0 <= k and k < n);\n\
-    \        if (0 <= v[k] and v[k] <= n) {\n            int v_k = v[k];\n       \
-    \     auto itr = m.find(v_k);\n            if (itr->second > 1) {\n          \
-    \      itr->second--;\n            } else {\n                m.erase(itr);\n \
-    \               s.insert(v_k);\n            }\n        }\n        if (0 <= x and\
-    \ x <= n) {\n            int xx = x;\n            auto itr = m.find(xx);\n   \
-    \         if (itr == m.end()) {\n                m[xx]++;\n                s.erase(xx);\n\
-    \            } else {\n                itr->second++;\n            }\n       \
-    \ }\n        v[k] = x;\n    }\n    value_type prod() const {\n        return *s.begin();\n\
-    \    }\n};\n#line 12 \"test/unittest/mex-update.test.cpp\"\n\n// v \u306B\u542B\
-    \u307E\u308C\u306A\u3044\u6700\u5C0F\u306E\u975E\u8CA0\u6574\u6570\ntemplate <typename\
-    \ T>\nT naive_mex(const std::vector<T>& v) {\n    std::set<T> s(v.begin(), v.end());\n\
-    \    T x = 0;\n    while (s.count(x)) x++;\n    return x;\n}\n\ntemplate <typename\
-    \ T>\nbool run(std::mt19937& rng) {\n    for (int rep = 0; rep < 2000; rep++)\
-    \ {\n        int n = rng() % 8 + 1;\n        // \u7BC4\u56F2\u5916\u306E\u5024\
-    \ (\u8CA0\u306E\u5024\u3084 n \u3088\u308A\u5927\u304D\u3044\u5024) \u3082\u6DF7\
-    \u305C\u308B\n        auto random_value = [&]() -> T { return static_cast<T>(static_cast<int>(rng()\
+    \u5F97\n */\n\n#include <cassert>\n#include <cstddef>\n#include <limits>\n#include\
+    \ <map>\n#line 14 \"src/data_structures/mex-update.hpp\"\n\ntemplate <typename\
+    \ T>\nstruct MexUpdate {\n    using value_type = T;\n\n   private:\n    inline\
+    \ constexpr static value_type e = std::numeric_limits<value_type>::max();\n\n\
+    \    int n;\n    std::vector<value_type> v;\n    std::set<int> s;\n    std::map<int,\
+    \ std::size_t> m;\n\n   public:\n    MexUpdate() = default;\n    MexUpdate(int\
+    \ n) : n(n), v(n, e) {\n        assert(n > 0);\n        assert(n + 1 < e);\n \
+    \       std::set<int>::iterator hint = s.end();\n        for (int i = n; i >=\
+    \ 0; --i) {\n            hint = s.emplace_hint(hint, i);\n        }\n    }\n \
+    \   MexUpdate(const std::vector<value_type>& init) : n(init.size()), v(init) {\n\
+    \        assert(n > 0);\n        assert(n + 1 < e);\n        std::set<int>::iterator\
+    \ hint = s.end();\n        for (int i = n; i >= 0; --i) {\n            hint =\
+    \ s.emplace_hint(hint, i);\n        }\n        for (const auto& i : init) {\n\
+    \            if (0 <= i and i <= n) {\n                m[i]++;\n             \
+    \   s.erase(i);\n            }\n        }\n    }\n    void set(int k, const value_type&\
+    \ x) {\n        assert(0 <= k and k < n);\n        if (0 <= v[k] and v[k] <= n)\
+    \ {\n            int v_k = v[k];\n            auto itr = m.find(v_k);\n      \
+    \      if (itr->second > 1) {\n                itr->second--;\n            } else\
+    \ {\n                m.erase(itr);\n                s.insert(v_k);\n         \
+    \   }\n        }\n        if (0 <= x and x <= n) {\n            int xx = x;\n\
+    \            auto itr = m.find(xx);\n            if (itr == m.end()) {\n     \
+    \           m[xx]++;\n                s.erase(xx);\n            } else {\n   \
+    \             itr->second++;\n            }\n        }\n        v[k] = x;\n  \
+    \  }\n    value_type prod() const {\n        return *s.begin();\n    }\n};\n#line\
+    \ 12 \"test/unittest/mex-update.test.cpp\"\n\n// v \u306B\u542B\u307E\u308C\u306A\
+    \u3044\u6700\u5C0F\u306E\u975E\u8CA0\u6574\u6570\ntemplate <typename T>\nT naive_mex(const\
+    \ std::vector<T>& v) {\n    std::set<T> s(v.begin(), v.end());\n    T x = 0;\n\
+    \    while (s.count(x)) x++;\n    return x;\n}\n\ntemplate <typename T>\nbool\
+    \ run(std::mt19937& rng) {\n    for (int rep = 0; rep < 2000; rep++) {\n     \
+    \   int n = rng() % 8 + 1;\n        // \u7BC4\u56F2\u5916\u306E\u5024 (\u8CA0\u306E\
+    \u5024\u3084 n \u3088\u308A\u5927\u304D\u3044\u5024) \u3082\u6DF7\u305C\u308B\n\
+    \        auto random_value = [&]() -> T { return static_cast<T>(static_cast<int>(rng()\
     \ % (n + 6)) - 3); };\n        std::vector<T> v;\n        MexUpdate<T> mu;\n \
     \       if (rep % 2 == 0) {\n            // MexUpdate(n): \u5024\u306F\u3069\u308C\
     \u3082 mex \u306B\u5F71\u97FF\u3057\u306A\u3044\u5024\u3067\u521D\u671F\u5316\u3055\
@@ -103,7 +104,7 @@ data:
   isVerificationFile: true
   path: test/unittest/mex-update.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 06:02:01+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/mex-update.test.cpp

@@ -17,16 +17,16 @@ data:
   bundledCode: "#line 1 \"test/aoj/grl-1-c.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_C\"\
     \n\n#include <iostream>\n#include <vector>\n\n#line 2 \"src/math/infint.hpp\"\n\
     \n/**\n * @file infint.hpp\n * @brief inf \u3092\u6301\u3064\u6574\u6570\u578B\
-    \n */\n\n#include <algorithm>\n#line 10 \"src/math/infint.hpp\"\n#include <limits>\n\
-    #include <ostream>\n#include <string>\n#include <string_view>\n#include <type_traits>\n\
-    \n/**\n * inf\u3092\u3082\u3064\u6574\u6570\u578B\n * T\u306F\u7B26\u53F7\u4ED8\
-    \u304D\u6574\u6570\u3067\u3042\u308A\u30012\u306E\u88DC\u6570\u8868\u73FE\u3067\
-    \u8868\u3055\u308C\u308B\u3053\u3068\u3092\u671F\u5F85\u3059\u308B\n */\ntemplate\
-    \ <typename T = long long>\nstruct infint {\n   private:\n    static_assert(std::is_integral_v<T>\
-    \ and std::is_signed_v<T>);\n    static_assert(std::numeric_limits<T>::min() +\
-    \ 1 == -std::numeric_limits<T>::max());\n\n    T _v;\n\n    inline constexpr static\
-    \ T _PlusInf = std::numeric_limits<T>::max();       //!< \u6B63\u306E\u7121\u9650\
-    \u5927\n    inline constexpr static T _MinusInf = std::numeric_limits<T>::min()\
+    \n */\n\n#include <algorithm>\n#include <cstdlib>\n#line 11 \"src/math/infint.hpp\"\
+    \n#include <limits>\n#include <ostream>\n#include <string>\n#include <string_view>\n\
+    #include <type_traits>\n\n/**\n * inf\u3092\u3082\u3064\u6574\u6570\u578B\n *\
+    \ T\u306F\u7B26\u53F7\u4ED8\u304D\u6574\u6570\u3067\u3042\u308A\u30012\u306E\u88DC\
+    \u6570\u8868\u73FE\u3067\u8868\u3055\u308C\u308B\u3053\u3068\u3092\u671F\u5F85\
+    \u3059\u308B\n */\ntemplate <typename T = long long>\nstruct infint {\n   private:\n\
+    \    static_assert(std::is_integral_v<T> and std::is_signed_v<T>);\n    static_assert(std::numeric_limits<T>::min()\
+    \ + 1 == -std::numeric_limits<T>::max());\n\n    T _v;\n\n    inline constexpr\
+    \ static T _PlusInf = std::numeric_limits<T>::max();       //!< \u6B63\u306E\u7121\
+    \u9650\u5927\n    inline constexpr static T _MinusInf = std::numeric_limits<T>::min()\
     \ + 1;  //!< \u8CA0\u306E\u7121\u9650\u5927\n    inline constexpr static T _NaN\
     \ = std::numeric_limits<T>::min();           //!< Not a Number\n    static std::string\
     \ str_plusinf;\n    static std::string str_minusinf;\n    static std::string str_nan;\n\
@@ -197,7 +197,7 @@ data:
   isVerificationFile: true
   path: test/aoj/grl-1-c.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 01:36:07+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/grl-1-c.test.cpp

@@ -26,8 +26,7 @@ data:
     \ \u3092\u51FA\u529B\u3059\u308B\n\n#include <iostream>\n#include <random>\n#include\
     \ <sstream>\n#include <string>\n#include <vector>\n\n#line 2 \"src/graph/functional-graph.hpp\"\
     \n\n/**\n * @file functional-graph.hpp\n * @brief \u30D5\u30A1\u30F3\u30AF\u30B7\
-    \u30E7\u30CA\u30EB\u30B0\u30E9\u30D5\n */\n#include <algorithm>\n#line 9 \"src/graph/functional-graph.hpp\"\
-    \n#include <numeric>\n#include <set>\n#line 12 \"src/graph/functional-graph.hpp\"\
+    \u30E7\u30CA\u30EB\u30B0\u30E9\u30D5\n */\n#include <algorithm>\n#line 10 \"src/graph/functional-graph.hpp\"\
     \n\n/**\n * @brief N\u9802\u70B9N\u8FBA\u306E\u6709\u5411\u30B0\u30E9\u30D5\u3067\
     \u3001\u3059\u3079\u3066\u306E\u9802\u70B9\u306E\u51FA\u6B21\u6570\u304C1\n */\n\
     struct FunctionalGraph {\n    int n;                                         //!<\
@@ -158,7 +157,7 @@ data:
   isVerificationFile: true
   path: test/unittest/functional-graph.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 06:02:01+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/functional-graph.2.test.cpp

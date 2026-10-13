@@ -24,9 +24,8 @@ data:
     #include <optional>\n#include <random>\n#include <utility>\n#include <vector>\n\
     \n#line 2 \"src/data_structures/interval-set.hpp\"\n\n/**\n * @file interval-set.hpp\n\
     \ * @brief \u534A\u958B\u533A\u9593\u306E\u96C6\u5408\n */\n\n#include <cassert>\n\
-    #include <cstddef>\n#include <functional>\n#line 12 \"src/data_structures/interval-set.hpp\"\
-    \n#include <iterator>\n#include <limits>\n#line 15 \"src/data_structures/interval-set.hpp\"\
-    \n#include <set>\n#include <type_traits>\n#line 19 \"src/data_structures/interval-set.hpp\"\
+    #include <cstddef>\n#include <functional>\n#include <iterator>\n#line 13 \"src/data_structures/interval-set.hpp\"\
+    \n#include <set>\n#include <type_traits>\n#line 17 \"src/data_structures/interval-set.hpp\"\
     \n/**\n * @brief \u534A\u958B\u533A\u9593\u3092\u7BA1\u7406\u3059\u308B\n * @tparam\
     \ T \u30B9\u30AB\u30E9\u30FC\n */\ntemplate <typename T = long long, class Compare\
     \ = std::less<T>, std::enable_if_t<std::is_scalar_v<T>>* = nullptr>\nstruct IntervalSet\
@@ -153,7 +152,7 @@ data:
   isVerificationFile: true
   path: test/unittest/interval-set.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 06:02:01+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/interval-set.test.cpp

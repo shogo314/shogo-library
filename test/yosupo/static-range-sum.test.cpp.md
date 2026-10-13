@@ -2,10 +2,10 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: src/base/traits.hpp
+    path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   - icon: ':heavy_check_mark:'
-    path: src/base/vector_func.hpp
+    path: src/utility/vector_func.hpp
     title: "vector \u306B\u5BFE\u3059\u308B\u6F14\u7B97\u5B50\u3068\u95A2\u6570"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -19,15 +19,16 @@ data:
     - https://judge.yosupo.jp/problem/static_range_sum
   bundledCode: "#line 1 \"test/yosupo/static-range-sum.test.cpp\"\n#define PROBLEM\
     \ \"https://judge.yosupo.jp/problem/static_range_sum\"\n\n#include <iostream>\n\
-    #include <vector>\n\n#line 2 \"src/base/vector_func.hpp\"\n\n/**\n * @file vector_func.hpp\n\
-    \ * @brief vector \u306B\u5BFE\u3059\u308B\u6F14\u7B97\u5B50\u3068\u95A2\u6570\
-    \n */\n\n#include <algorithm>\n#include <cassert>\n#include <cmath>\n#include\
-    \ <cstddef>\n#include <numeric>\n#line 14 \"src/base/vector_func.hpp\"\n\n#line\
-    \ 2 \"src/base/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\
-    \u6027\n */\n\n#line 9 \"src/base/traits.hpp\"\n#include <iterator>\n#include\
-    \ <set>\n#include <type_traits>\n#include <utility>\n\nnamespace detail {\nusing\
-    \ std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
-    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    #include <vector>\n\n#line 2 \"src/utility/vector_func.hpp\"\n\n/**\n * @file\
+    \ vector_func.hpp\n * @brief vector \u306B\u5BFE\u3059\u308B\u6F14\u7B97\u5B50\
+    \u3068\u95A2\u6570\n */\n\n#include <algorithm>\n#include <cassert>\n#include\
+    \ <cmath>\n#include <cstddef>\n#include <numeric>\n#include <type_traits>\n#line\
+    \ 15 \"src/utility/vector_func.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n\
+    /**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\
+    \n#include <iterator>\n#include <set>\n#line 12 \"src/utility/traits.hpp\"\n#include\
+    \ <utility>\n\nnamespace detail {\nusing std::begin, std::end;\n\ntemplate <class\
+    \ T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class\
+    \ T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
     \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace detail\n\n\
     template <class T>\nstruct is_range : detail::is_range_impl<T>::type {};\ntemplate\
     \ <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define\
@@ -74,7 +75,7 @@ data:
     \ : std::true_type {};\n}  // namespace detail\ntemplate <class T>\nstruct is_sorted_container\
     \ : detail::is_sorted_container_impl<T>::type {};\ntemplate <class T>\ninline\
     \ constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n#line\
-    \ 16 \"src/base/vector_func.hpp\"\n\ntemplate <typename T>\nstd::vector<std::ptrdiff_t>\
+    \ 17 \"src/utility/vector_func.hpp\"\n\ntemplate <typename T>\nstd::vector<std::ptrdiff_t>\
     \ sorted_idx(const std::vector<T> &v, bool reverse = false) {\n    std::vector<std::ptrdiff_t>\
     \ ret(v.size());\n    std::iota(ret.begin(), ret.end(), 0);\n    std::sort(ret.begin(),\
     \ ret.end(), [&](std::ptrdiff_t i, std::ptrdiff_t j) {\n        return v[i] <\
@@ -89,8 +90,8 @@ data:
     }\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\n\
     inline std::vector<T> &operator+=(std::vector<T> &v1, const std::vector<U> &v2)\
     \ {\n    if (v2.size() > v1.size()) {\n        v1.resize(v2.size());\n    }\n\
-    \    for (size_t i = 0; i < v2.size(); i++) {\n        v1[i] += v2[i];\n    }\n\
-    \    return v1;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
+    \    for (std::size_t i = 0; i < v2.size(); i++) {\n        v1[i] += v2[i];\n\
+    \    }\n    return v1;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
     \ T>)>\ninline std::vector<T> operator+(const std::vector<T> &v1, const std::vector<U>\
     \ &v2) {\n    std::vector<T> res(v1);\n    return res += v2;\n}\n\ntemplate <typename\
     \ T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>\
@@ -103,9 +104,9 @@ data:
     \    return res += u;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
     \ T>)>\ninline std::vector<T> &operator*=(std::vector<T> &v1, const std::vector<U>\
     \ &v2) {\n    if (v2.size() > v1.size()) {\n        v1.resize(v2.size());\n  \
-    \  }\n    for (size_t i = 0; i < v2.size(); i++) {\n        v1[i] *= v2[i];\n\
-    \    }\n    for (size_t i = v2.size(); i < v1.size(); i++) {\n        v1[i] *=\
-    \ U(0);\n    }\n    return v1;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
+    \  }\n    for (std::size_t i = 0; i < v2.size(); i++) {\n        v1[i] *= v2[i];\n\
+    \    }\n    for (std::size_t i = v2.size(); i < v1.size(); i++) {\n        v1[i]\
+    \ *= U(0);\n    }\n    return v1;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
     \ T>)>\ninline std::vector<T> operator*(const std::vector<T> &v1, const std::vector<U>\
     \ &v2) {\n    std::vector<T> res(v1);\n    return res *= v2;\n}\n\ntemplate <typename\
     \ T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>\
@@ -152,19 +153,19 @@ data:
     \ long> s = cumulative_sum(a);\n    while (q--) {\n        int l, r;\n       \
     \ std::cin >> l >> r;\n        std::cout << s[r] - s[l] << '\\n';\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/static_range_sum\"\n\n\
-    #include <iostream>\n#include <vector>\n\n#include \"../../src/base/vector_func.hpp\"\
+    #include <iostream>\n#include <vector>\n\n#include \"../../src/utility/vector_func.hpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    int n, q;\n    std::cin >> n >> q;\n    std::vector<long long> a(n);\n  \
     \  for (auto& x : a) std::cin >> x;\n    // s[i] = a[0] + ... + a[i-1]\n    std::vector<long\
     \ long> s = cumulative_sum(a);\n    while (q--) {\n        int l, r;\n       \
     \ std::cin >> l >> r;\n        std::cout << s[r] - s[l] << '\\n';\n    }\n}\n"
   dependsOn:
-  - src/base/vector_func.hpp
-  - src/base/traits.hpp
+  - src/utility/vector_func.hpp
+  - src/utility/traits.hpp
   isVerificationFile: true
   path: test/yosupo/static-range-sum.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 06:02:01+09:00'
+  timestamp: '2026-10-13 13:03:23+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/static-range-sum.test.cpp

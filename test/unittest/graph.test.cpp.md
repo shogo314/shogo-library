@@ -21,28 +21,29 @@ data:
     \u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World\
     \ \u3092\u51FA\u529B\u3059\u308B\n\n#include <iostream>\n#include <random>\n#include\
     \ <vector>\n\n#line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file graph.hpp\n * @brief\
-    \ \u30B0\u30E9\u30D5\n */\n\n#include <algorithm>\n#include <cassert>\n#line 11\
-    \ \"src/graph/graph.hpp\"\n#include <limits>\n#include <queue>\n#line 14 \"src/graph/graph.hpp\"\
-    \n\n/**\n * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n\
-    \ * @tparam Cost \u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u578B\n */\ntemplate <typename\
-    \ Cost = int>\nstruct Graph {\n    /**\n     * @brief \u6709\u5411\u8FBA\u306E\
-    \u69CB\u9020\u4F53\n     *\n     * operator int()\u3092\u5B9A\u7FA9\u3057\u3066\
-    \u3044\u308B\u306E\u3067\u3001int\u578B\u306B\u30AD\u30E3\u30B9\u30C8\u3059\u308B\
-    \u3068\u52DD\u624B\u306Bdst\u306B\u306A\u308B\n     * \u4F8B\u3048\u3070\u3001\
-    \n     * for (auto& e : g[v]) \u3092\u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\
-    \u308B\u8FBA\u304C\u5217\u6319\u3055\u308C\u308B\u304C\u3001\n     * for (int\
-    \ dst : g[v]) \u3068\u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\u306E\
-    \u884C\u304D\u5148\u304C\u5217\u6319\u3055\u308C\u308B\n     */\n    struct Edge\
-    \ {\n        int src = -1;   //!< \u59CB\u70B9\n        int dst = -1;   //!< \u7D42\
-    \u70B9\n        Cost cost = {}; //!< \u30B3\u30B9\u30C8\n        int id = -1;\
-    \    //!< \u8FBA\u306E\u756A\u53F7(\u8FFD\u52A0\u3055\u308C\u305F\u9806\u3001\u7121\
-    \u5411\u8FBA\u306E\u5834\u5408\u306Fid\u304C\u540C\u3058\u3067\u65B9\u5411\u304C\
-    \u9006\u306E\u3082\u306E\u304C2\u3064\u5B58\u5728\u3059\u308B)\n        Edge()\
-    \ = default;\n        Edge(int src, int dst, Cost cost = 1, int id = -1) : src(src),\
-    \ dst(dst), cost(cost), id(id) {}\n        operator int() const { return dst;\
-    \ }\n    };\n\n    /**\n     * @brief \u6700\u77ED\u8DEF\u306E\u7D50\u679C\n \
-    \    *\n     * auto [dist, prev] = g.shortest_path(s); \u306E\u3088\u3046\u306B\
-    \u53D7\u3051\u53D6\u308C\u308B\n     */\n    struct ShortestPath {\n        std::vector<Cost>\
+    \ \u30B0\u30E9\u30D5\n */\n\n#include <algorithm>\n#include <cassert>\n#include\
+    \ <functional>\n#line 12 \"src/graph/graph.hpp\"\n#include <limits>\n#include\
+    \ <queue>\n#include <utility>\n#line 16 \"src/graph/graph.hpp\"\n\n/**\n * @brief\
+    \ \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam Cost\
+    \ \u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u578B\n */\ntemplate <typename Cost = int>\n\
+    struct Graph {\n    /**\n     * @brief \u6709\u5411\u8FBA\u306E\u69CB\u9020\u4F53\
+    \n     *\n     * operator int()\u3092\u5B9A\u7FA9\u3057\u3066\u3044\u308B\u306E\
+    \u3067\u3001int\u578B\u306B\u30AD\u30E3\u30B9\u30C8\u3059\u308B\u3068\u52DD\u624B\
+    \u306Bdst\u306B\u306A\u308B\n     * \u4F8B\u3048\u3070\u3001\n     * for (auto&\
+    \ e : g[v]) \u3092\u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\u304C\
+    \u5217\u6319\u3055\u308C\u308B\u304C\u3001\n     * for (int dst : g[v]) \u3068\
+    \u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\u306E\u884C\u304D\u5148\
+    \u304C\u5217\u6319\u3055\u308C\u308B\n     */\n    struct Edge {\n        int\
+    \ src = -1;   //!< \u59CB\u70B9\n        int dst = -1;   //!< \u7D42\u70B9\n \
+    \       Cost cost = {}; //!< \u30B3\u30B9\u30C8\n        int id = -1;    //!<\
+    \ \u8FBA\u306E\u756A\u53F7(\u8FFD\u52A0\u3055\u308C\u305F\u9806\u3001\u7121\u5411\
+    \u8FBA\u306E\u5834\u5408\u306Fid\u304C\u540C\u3058\u3067\u65B9\u5411\u304C\u9006\
+    \u306E\u3082\u306E\u304C2\u3064\u5B58\u5728\u3059\u308B)\n        Edge() = default;\n\
+    \        Edge(int src, int dst, Cost cost = 1, int id = -1) : src(src), dst(dst),\
+    \ cost(cost), id(id) {}\n        operator int() const { return dst; }\n    };\n\
+    \n    /**\n     * @brief \u6700\u77ED\u8DEF\u306E\u7D50\u679C\n     *\n     *\
+    \ auto [dist, prev] = g.shortest_path(s); \u306E\u3088\u3046\u306B\u53D7\u3051\
+    \u53D6\u308C\u308B\n     */\n    struct ShortestPath {\n        std::vector<Cost>\
     \ dist;  //!< \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u9577\n       \
     \ std::vector<Edge> prev;  //!< \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\
     \u4E0A\u306E\u76F4\u524D\u306E\u8FBA (\u59CB\u70B9\u3068\u672A\u5230\u9054\u306E\
@@ -213,7 +214,7 @@ data:
   isVerificationFile: true
   path: test/unittest/graph.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 06:02:01+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/graph.test.cpp

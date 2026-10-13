@@ -32,12 +32,11 @@ data:
     #include <iostream>\n#include <random>\n#include <vector>\n\n#line 2 \"src/data_structures/potentialized-unionfind.hpp\"\
     \n\n/**\n * @file potentialized-unionfind.hpp\n * @brief \u30DD\u30C6\u30F3\u30B7\
     \u30E3\u30EB\u4ED8\u304DUnionFind\n */\n#line 8 \"src/data_structures/potentialized-unionfind.hpp\"\
-    \n#include <cassert>\n#include <functional>\n#include <stack>\n#include <utility>\n\
-    #line 2 \"src/data_structures/unionfind.hpp\"\n\n/**\n * @file unionfind.hpp\n\
-    \ * @brief UnionFind\n */\n\n#line 11 \"src/data_structures/unionfind.hpp\"\n\n\
-    /**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u5BFE\u3057\u3066\u300C\u8FBA\
-    \u306E\u8FFD\u52A0\u300D\u3001\u300C2\u9802\u70B9\u304C\u9023\u7D50\u304B\u306E\
-    \u5224\u5B9A\u300D\u3092\u3059\u308B\n */\nstruct UnionFind {\n   protected:\n\
+    \n#include <cassert>\n#include <stack>\n#include <utility>\n#line 2 \"src/data_structures/unionfind.hpp\"\
+    \n\n/**\n * @file unionfind.hpp\n * @brief UnionFind\n */\n\n#line 12 \"src/data_structures/unionfind.hpp\"\
+    \n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u5BFE\u3057\u3066\u300C\
+    \u8FBA\u306E\u8FFD\u52A0\u300D\u3001\u300C2\u9802\u70B9\u304C\u9023\u7D50\u304B\
+    \u306E\u5224\u5B9A\u300D\u3092\u3059\u308B\n */\nstruct UnionFind {\n   protected:\n\
     \    int _n;\n    // \u8CA0\u306A\u3089\u30B5\u30A4\u30BA\u3001\u975E\u8CA0\u306A\
     \u3089\u89AA\n    std::vector<int> parent_or_size;\n\n   public:\n    /**\n  \
     \   * @brief merge \u306E\u623B\u308A\u5024\n     *\n     * if (uf.merge(a, b))\
@@ -84,29 +83,29 @@ data:
     \u306E\u5B9A\u7FA9\n *\n * \u7FA4\u306F\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\
     \ \u306E\u30E1\u30F3\u30D0\u306B\u52A0\u3048\u3066\u6B21\u306E\u30E1\u30F3\u30D0\
     \u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - S inv(const S& a):\
-    \ \u9006\u5143\n */\n\n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n\
-    \ * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\
-    \u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\
-    \u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S&\
-    \ a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n\
-    \ * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\
-    \u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\
-    \u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\
-    \n#line 15 \"src/algebra/monoid.hpp\"\n#include <array>\n#include <cstddef>\n\
-    #include <istream>\n#include <limits>\n#include <numeric>\n#include <ostream>\n\
-    #include <type_traits>\n#line 23 \"src/algebra/monoid.hpp\"\n\n/**\n * @brief\
-    \ 1\u6B21\u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\
-    \u3084 acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n *\
-    \ \u4F8B: Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\u3059\u308B\
-    \u3068\u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\nstruct Affine\
-    \ {\n    T a = T(1);  //!< \u50BE\u304D\n    T b = T(0);  //!< \u5207\u7247\n\
-    \    constexpr T operator()(const T& x) const { return a * x + b; }\n    friend\
-    \ constexpr bool operator==(const Affine& f, const Affine& g) { return f.a ==\
-    \ g.a && f.b == g.b; }\n    friend constexpr bool operator!=(const Affine& f,\
-    \ const Affine& g) { return !(f == g); }\n    template <class CharT, class Traits>\n\
-    \    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
-    \ Traits>& is, Affine& f) {\n        return is >> f.a >> f.b;\n    }\n    template\
-    \ <class CharT, class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \ \u9006\u5143\n */\n\n#include <array>\n#include <cstddef>\n#line 2 \"src/algebra/monoid.hpp\"\
+    \n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
+    \n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
+    \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\
+    \n * - S op(const S& a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e():\
+    \ \u5358\u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\
+    \u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\
+    \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\
+    \u51FA\u3059)\n */\n\n#line 17 \"src/algebra/monoid.hpp\"\n#include <istream>\n\
+    #include <limits>\n#include <numeric>\n#include <ostream>\n#include <type_traits>\n\
+    #line 23 \"src/algebra/monoid.hpp\"\n\n/**\n * @brief 1\u6B21\u95A2\u6570 f(x)\
+    \ = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum\
+    \ \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3};\
+    \ f(x) \u306F 2x + 3\u3002\u7701\u7565\u3059\u308B\u3068\u6052\u7B49\u5199\u50CF\
+    \ {1, 0}\n */\ntemplate <typename T>\nstruct Affine {\n    T a = T(1);  //!< \u50BE\
+    \u304D\n    T b = T(0);  //!< \u5207\u7247\n    constexpr T operator()(const T&\
+    \ x) const { return a * x + b; }\n    friend constexpr bool operator==(const Affine&\
+    \ f, const Affine& g) { return f.a == g.a && f.b == g.b; }\n    friend constexpr\
+    \ bool operator!=(const Affine& f, const Affine& g) { return !(f == g); }\n  \
+    \  template <class CharT, class Traits>\n    friend std::basic_istream<CharT,\
+    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Affine& f) {\n  \
+    \      return is >> f.a >> f.b;\n    }\n    template <class CharT, class Traits>\n\
+    \    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const Affine& f) {\n        return os << f.a << CharT(' ') << f.b;\n\
     \    }\n};\n\nnamespace monoid {\n\n/**\n * @brief \u548C\n */\ntemplate <typename\
     \ T>\nstruct Sum {\n    using S = T;\n    static constexpr S op(const S& a, const\
@@ -213,7 +212,7 @@ data:
     \    Monoid() = default;\n    constexpr Monoid(Op op, const S& e) : op_object(std::move(op)),\
     \ identity(e) {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a,\
     \ b); }\n    constexpr S e() const { return identity; }\n};\ntemplate <typename\
-    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 12 \"src/algebra/group.hpp\"\
+    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 15 \"src/algebra/group.hpp\"\
     \n\nnamespace group {\n\n/**\n * @brief \u52A0\u6CD5\u7FA4\n */\ntemplate <typename\
     \ T>\nstruct Sum : monoid::Sum<T> {\n    using S = T;\n    static constexpr S\
     \ inv(const S& a) { return -a; }\n};\n\n/**\n * @brief \u4E57\u6CD5\u7FA4 (0\u3092\
@@ -243,7 +242,7 @@ data:
     \ S& b) const { return op_object(a, b); }\n    constexpr S e() const { return\
     \ identity; }\n    constexpr S inv(const S& a) const { return inv_object(a); }\n\
     };\ntemplate <typename Op, typename T, typename Inv>\nGroup(Op, T, Inv) -> Group<T,\
-    \ Op, Inv>;\n#line 15 \"src/data_structures/potentialized-unionfind.hpp\"\n\n\
+    \ Op, Inv>;\n#line 14 \"src/data_structures/potentialized-unionfind.hpp\"\n\n\
     /**\n * @brief \u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind\n * @tparam\
     \ G \u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u306E\u7FA4 (algebra/group.hpp) \u975E\
     \u53EF\u63DB\u3067\u3082\u3088\u3044\n */\ntemplate <typename G>\nclass PotentializedUnionFind\
@@ -368,7 +367,7 @@ data:
   isVerificationFile: true
   path: test/unittest/potentialized-unionfind.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 12:10:14+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/potentialized-unionfind.test.cpp

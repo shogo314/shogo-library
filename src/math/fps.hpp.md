@@ -48,17 +48,18 @@ data:
     document_title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570"
     links: []
   bundledCode: "#line 2 \"src/math/fps.hpp\"\n\n/**\n * @file fps.hpp\n * @brief \u5F62\
-    \u5F0F\u7684\u51AA\u7D1A\u6570\n */\n\n#include <algorithm>\n#line 2 \"src/math/number-theory.hpp\"\
-    \n\n/**\n * @file number-theory.hpp\n * @brief \u6570\u8AD6 (\u9006\u5143\u3001\
-    \u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\u3001\u7573\u307F\u8FBC\u307F\u306A\u3069\
-    )\n */\n\n#include <numeric>\n#include <optional>\n#include <vector>\n#line 2\
-    \ \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\
-    \u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\
-    \u30B9\n */\n\n#include <iostream>\n#include <utility>\n#include <limits>\n#include\
-    \ <type_traits>\n#include <cstdint>\n#include <cassert>\n\nnamespace detail {\n\
-    \    static constexpr std::uint16_t prime32_bases[] {\n        15591,  2018, \
-    \ 166, 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,  3620,   560,  3128,\
-    \  5212,  2657,\n         2300,  2021, 4652, 1471,  9336,  4018,  2398, 20462,\
+    \u5F0F\u7684\u51AA\u7D1A\u6570\n */\n\n#include <algorithm>\n#include <cassert>\n\
+    #include <vector>\n#line 2 \"src/math/number-theory.hpp\"\n\n/**\n * @file number-theory.hpp\n\
+    \ * @brief \u6570\u8AD6 (\u9006\u5143\u3001\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\
+    \u3001\u7573\u307F\u8FBC\u307F\u306A\u3069)\n */\n\n#line 10 \"src/math/number-theory.hpp\"\
+    \n#include <numeric>\n#include <optional>\n#include <utility>\n#line 2 \"src/math/modint.hpp\"\
+    \n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\
+    \u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#include\
+    \ <iostream>\n#line 10 \"src/math/modint.hpp\"\n#include <limits>\n#include <type_traits>\n\
+    #include <cstdint>\n#line 14 \"src/math/modint.hpp\"\n\nnamespace detail {\n \
+    \   static constexpr std::uint16_t prime32_bases[] {\n        15591,  2018,  166,\
+    \ 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,  3620,   560,  3128, \
+    \ 5212,  2657,\n         2300,  2021, 4652, 1471,  9336,  4018,  2398, 20462,\
     \ 10277,  8028, 2213,  6219,   620,  3763,  4852,  5012,\n         3185,  1333,\
     \ 6227, 5298,  1074,  2391,  5113,  7061,   803,  1269, 3875,   422,   751,  \
     \ 580,  4729, 10239,\n          746,  2951,  556, 2206,  3778,   481,  1522, \
@@ -286,7 +287,7 @@ data:
     \      : base_type{value} {}\n\nprivate:\n    inline static value_type modulus\
     \ = 998244353;\n};\n\nusing modint998244353 = static_modint<998244353>;\nusing\
     \ modint1000000007 = static_modint<1000000007>;\nusing modint = dynamic_modint<-1>;\n\
-    #line 12 \"src/math/number-theory.hpp\"\n\n/**\n * @brief a^(-1) mod MOD\u3092\
+    #line 15 \"src/math/number-theory.hpp\"\n\n/**\n * @brief a^(-1) mod MOD\u3092\
     \u8FD4\u3059\n * @param a long long\n * @param MOD long long\n * @return long\
     \ long\n */\ninline long long modinv(long long a, long long MOD) {\n    a %= MOD;\n\
     \    if (a < 0) a += MOD;\n    long long b = MOD, u = 1, v = 0;\n    while (b)\
@@ -442,7 +443,7 @@ data:
     \ * (c1[i] - y0)).value();\n        int y2 = (NTT::imod01 * (c2[i] - y0) - NTT::imod1\
     \ * y1).value();\n        __int128_t tmp = (__int128_t)mod01 * y2 + (__int128_t)mod0\
     \ * y1 + y0;\n        if(tmp < (mod012 >> 1)) res[i] = tmp;\n        else res[i]\
-    \ = tmp - mod012;\n    }\n    return res;\n}\n#line 10 \"src/math/fps.hpp\"\n\n\
+    \ = tmp - mod012;\n    }\n    return res;\n}\n#line 12 \"src/math/fps.hpp\"\n\n\
     template <typename mint> struct FPS : std::vector<mint> {\n    using std::vector<mint>::vector;\n\
     \ \n    // constructor\n    FPS(const std::vector<mint>& r) : std::vector<mint>(r)\
     \ {}\n \n    // core operator\n    inline FPS pre(int siz) const {\n        return\
@@ -540,98 +541,99 @@ data:
     \    auto t = modpow(f, n / 2, m);\n    t = (t * t) % m;\n    if (n & 1) t = (t\
     \ * f) % m;\n    return t;\n}\n"
   code: "#pragma once\n\n/**\n * @file fps.hpp\n * @brief \u5F62\u5F0F\u7684\u51AA\
-    \u7D1A\u6570\n */\n\n#include <algorithm>\n#include \"number-theory.hpp\"\n\n\
-    template <typename mint> struct FPS : std::vector<mint> {\n    using std::vector<mint>::vector;\n\
-    \ \n    // constructor\n    FPS(const std::vector<mint>& r) : std::vector<mint>(r)\
-    \ {}\n \n    // core operator\n    inline FPS pre(int siz) const {\n        return\
-    \ FPS(begin(*this), begin(*this) + std::min((int)this->size(), siz));\n    }\n\
-    \    inline FPS rev() const {\n        FPS res = *this;\n        reverse(begin(res),\
-    \ end(res));\n        return res;\n    }\n    inline FPS& normalize() {\n    \
-    \    while (!this->empty() && this->back() == 0) this->pop_back();\n        return\
-    \ *this;\n    }\n \n    // basic operator\n    inline FPS operator - () const\
-    \ noexcept {\n        FPS res = (*this);\n        for (int i = 0; i < (int)res.size();\
-    \ ++i) res[i] = -res[i];\n        return res;\n    }\n    inline FPS operator\
-    \ + (const mint& v) const { return FPS(*this) += v; }\n    inline FPS operator\
-    \ + (const FPS& r) const { return FPS(*this) += r; }\n    inline FPS operator\
-    \ - (const mint& v) const { return FPS(*this) -= v; }\n    inline FPS operator\
-    \ - (const FPS& r) const { return FPS(*this) -= r; }\n    inline FPS operator\
-    \ * (const mint& v) const { return FPS(*this) *= v; }\n    inline FPS operator\
-    \ * (const FPS& r) const { return FPS(*this) *= r; }\n    inline FPS operator\
-    \ / (const mint& v) const { return FPS(*this) /= v; }\n    inline FPS operator\
-    \ << (int x) const { return FPS(*this) <<= x; }\n    inline FPS operator >> (int\
-    \ x) const { return FPS(*this) >>= x; }\n    inline FPS& operator += (const mint&\
-    \ v) {\n        if (this->empty()) this->resize(1);\n        (*this)[0] += v;\n\
-    \        return *this;\n    }\n    inline FPS& operator += (const FPS& r) {\n\
-    \        if (r.size() > this->size()) this->resize(r.size());\n        for (int\
-    \ i = 0; i < (int)r.size(); ++i) (*this)[i] += r[i];\n        return this->normalize();\n\
-    \    }\n    inline FPS& operator -= (const mint& v) {\n        if (this->empty())\
-    \ this->resize(1);\n        (*this)[0] -= v;\n        return *this;\n    }\n \
-    \   inline FPS& operator -= (const FPS& r) {\n        if (r.size() > this->size())\
+    \u7D1A\u6570\n */\n\n#include <algorithm>\n#include <cassert>\n#include <vector>\n\
+    #include \"number-theory.hpp\"\n\ntemplate <typename mint> struct FPS : std::vector<mint>\
+    \ {\n    using std::vector<mint>::vector;\n \n    // constructor\n    FPS(const\
+    \ std::vector<mint>& r) : std::vector<mint>(r) {}\n \n    // core operator\n \
+    \   inline FPS pre(int siz) const {\n        return FPS(begin(*this), begin(*this)\
+    \ + std::min((int)this->size(), siz));\n    }\n    inline FPS rev() const {\n\
+    \        FPS res = *this;\n        reverse(begin(res), end(res));\n        return\
+    \ res;\n    }\n    inline FPS& normalize() {\n        while (!this->empty() &&\
+    \ this->back() == 0) this->pop_back();\n        return *this;\n    }\n \n    //\
+    \ basic operator\n    inline FPS operator - () const noexcept {\n        FPS res\
+    \ = (*this);\n        for (int i = 0; i < (int)res.size(); ++i) res[i] = -res[i];\n\
+    \        return res;\n    }\n    inline FPS operator + (const mint& v) const {\
+    \ return FPS(*this) += v; }\n    inline FPS operator + (const FPS& r) const {\
+    \ return FPS(*this) += r; }\n    inline FPS operator - (const mint& v) const {\
+    \ return FPS(*this) -= v; }\n    inline FPS operator - (const FPS& r) const {\
+    \ return FPS(*this) -= r; }\n    inline FPS operator * (const mint& v) const {\
+    \ return FPS(*this) *= v; }\n    inline FPS operator * (const FPS& r) const {\
+    \ return FPS(*this) *= r; }\n    inline FPS operator / (const mint& v) const {\
+    \ return FPS(*this) /= v; }\n    inline FPS operator << (int x) const { return\
+    \ FPS(*this) <<= x; }\n    inline FPS operator >> (int x) const { return FPS(*this)\
+    \ >>= x; }\n    inline FPS& operator += (const mint& v) {\n        if (this->empty())\
+    \ this->resize(1);\n        (*this)[0] += v;\n        return *this;\n    }\n \
+    \   inline FPS& operator += (const FPS& r) {\n        if (r.size() > this->size())\
     \ this->resize(r.size());\n        for (int i = 0; i < (int)r.size(); ++i) (*this)[i]\
-    \ -= r[i];\n        return this->normalize();\n    }\n    inline FPS& operator\
-    \ *= (const mint& v) {\n        for (int i = 0; i < (int)this->size(); ++i) (*this)[i]\
-    \ *= v;\n        return *this;\n    }\n    inline FPS& operator *= (const FPS&\
-    \ r) {\n        return *this = convolution((*this), r);\n    }\n    inline FPS&\
-    \ operator /= (const mint& v) {\n        assert(v != 0);\n        mint iv = v.inv();\n\
-    \        for (int i = 0; i < (int)this->size(); ++i) (*this)[i] *= iv;\n     \
-    \   return *this;\n    }\n    inline FPS& operator <<= (int x) {\n        FPS\
-    \ res(x, 0);\n        res.insert(res.end(), begin(*this), end(*this));\n     \
-    \   return *this = res;\n    }\n    inline FPS& operator >>= (int x) {\n     \
-    \   if((int) this->size() <= x) return *this = FPS<mint> (1, 0);\n        FPS\
-    \ res;\n        res.insert(res.end(), begin(*this) + x, end(*this));\n       \
-    \ return *this = res;\n    }\n    inline mint eval(const mint& v){\n        mint\
-    \ res = 0;\n        for (int i = (int)this->size()-1; i >= 0; --i) {\n       \
-    \     res *= v;\n            res += (*this)[i];\n        }\n        return res;\n\
-    \    }\n    inline friend FPS gcd(const FPS& f, const FPS& g) {\n        if (g.empty())\
-    \ return f;\n        return gcd(g, f % g);\n    }\n \n    // advanced operation\n\
-    \    // df/dx\n    inline friend FPS diff(const FPS& f) {\n        int n = (int)f.size();\n\
-    \        if (n == 0) return FPS();\n        FPS res(n-1);\n        for (int i\
-    \ = 1; i < n; ++i) res[i-1] = f[i] * i;\n        return res;\n    }\n \n    //\
-    \ \\int f dx\n    inline friend FPS intg(const FPS& f) {\n        int n = (int)f.size();\n\
-    \        FPS res(n+1, 0);\n        for (int i = 0; i < n; ++i) res[i+1] = f[i]\
-    \ / (i+1);\n        return res;\n    }\n \n    // inv(f), f[0] must not be 0\n\
-    \    inline friend FPS inv(const FPS& f, int deg) {\n        assert(!f.empty()\
-    \ && f[0] != 0);\n        if (deg < 0) deg = (int)f.size();\n        if (deg ==\
-    \ 0) return FPS();\n        FPS res({mint(1) / f[0]});\n        for (int i = 1;\
-    \ i < deg; i <<= 1) {\n            res = (res + res - res * res * f.pre(i << 1)).pre(i\
-    \ << 1);\n        }\n        res.resize(deg);\n        return res;\n    }\n  \
-    \  inline friend FPS inv(const FPS& f) {\n        return inv(f, f.size());\n \
-    \   }\n \n    // division, r must be normalized (r.back() must not be 0)\n   \
-    \ inline FPS& operator /= (const FPS& r) {\n        assert(!r.empty());\n    \
-    \    assert(r.back() != 0);\n        this->normalize();\n        if (this->size()\
-    \ < r.size()) {\n            this->clear();\n            return *this;\n     \
-    \   }\n        int need = (int)this->size() - (int)r.size() + 1;\n        *this\
-    \ = ((*this).rev().pre(need) * inv(r.rev(), need)).pre(need).rev();\n        return\
-    \ *this;\n    }\n    inline FPS& operator %= (const FPS &r) {\n        assert(!r.empty());\n\
-    \        assert(r.back() != 0);\n        this->normalize();\n        FPS q = (*this)\
-    \ / r;\n        return *this -= q * r;\n    }\n    inline FPS operator / (const\
-    \ FPS& r) const { return FPS(*this) /= r; }\n    inline FPS operator % (const\
-    \ FPS& r) const { return FPS(*this) %= r; }\n \n    // log(f) = \\int f'/f dx,\
-    \ f[0] must be 1\n    inline friend FPS log(const FPS& f, int deg) {\n       \
-    \ assert(!f.empty() && f[0] == 1);\n        FPS res = intg(diff(f) * inv(f, deg));\n\
-    \        res.resize(deg);\n        return res;\n    }\n    inline friend FPS log(const\
-    \ FPS& f) {\n        return log(f, f.size());\n    }\n \n    // exp(f), f[0] must\
-    \ be 0\n    inline friend FPS exp(const FPS& f, int deg) {\n        assert(f.empty()\
-    \ || f[0] == 0);\n        FPS res(1, 1);\n        for (int i = 1; i < deg; i <<=\
-    \ 1) {\n            res = res * (f.pre(i<<1) - log(res, i<<1) + 1).pre(i<<1);\n\
-    \        }\n        res.resize(deg);\n        return res;\n    }\n    inline friend\
-    \ FPS exp(const FPS& f) {\n        return exp(f, f.size());\n    }\n \n    //\
-    \ pow(f) = exp(e * log f)\n    inline friend FPS pow(const FPS& f, long long e,\
-    \ int deg) {\n        if(e == 0) {\n            auto ret = FPS(deg, 0);\n    \
-    \        if (deg > 0) ret[0] = 1;\n            return ret;\n        }\n      \
-    \  long long i = 0;\n        while (i < (int)f.size() && f[i] == 0) ++i;\n   \
-    \     if (i == (int)f.size()) return FPS(deg, 0);\n        if ((i >= 1 and e >=\
-    \ deg) or i * e >= deg) return FPS(deg, 0);\n        mint k = f[i];\n        FPS\
-    \ res = exp(log((f >> i) / k, deg) * e, deg) * k.pow(e) << (e * i);\n        res.resize(deg);\n\
-    \        return res;\n    }\n    inline friend FPS pow(const FPS& f, long long\
-    \ e) {\n        return pow(f, e, f.size());\n    }\n\n    inline friend FPS taylor_shift(FPS\
-    \ f, mint a) {\n        int n = f.size();\n        std::vector<mint> fac(n, 1),\
-    \ inv(n, 1), finv(n, 1);\n        int mod = mint::mod();\n        for(int i =\
-    \ 2; i < n; i ++) {\n            fac[i] = fac[i - 1] * i;\n            inv[i]\
-    \ = -inv[mod % i] * (mod / i);\n            finv[i] = finv[i - 1] * inv[i];\n\
-    \        }\n        for(int i = 0; i < n; i ++) f[i] *= fac[i];\n        std::reverse(f.begin(),\
-    \ f.end());\n        FPS<mint> g(n, 1);\n        for(int i = 1; i < n; i ++) g[i]\
-    \ = g[i - 1] * a * inv[i];\n        f = (f * g).pre(n);\n        std::reverse(f.begin(),\
+    \ += r[i];\n        return this->normalize();\n    }\n    inline FPS& operator\
+    \ -= (const mint& v) {\n        if (this->empty()) this->resize(1);\n        (*this)[0]\
+    \ -= v;\n        return *this;\n    }\n    inline FPS& operator -= (const FPS&\
+    \ r) {\n        if (r.size() > this->size()) this->resize(r.size());\n       \
+    \ for (int i = 0; i < (int)r.size(); ++i) (*this)[i] -= r[i];\n        return\
+    \ this->normalize();\n    }\n    inline FPS& operator *= (const mint& v) {\n \
+    \       for (int i = 0; i < (int)this->size(); ++i) (*this)[i] *= v;\n       \
+    \ return *this;\n    }\n    inline FPS& operator *= (const FPS& r) {\n       \
+    \ return *this = convolution((*this), r);\n    }\n    inline FPS& operator /=\
+    \ (const mint& v) {\n        assert(v != 0);\n        mint iv = v.inv();\n   \
+    \     for (int i = 0; i < (int)this->size(); ++i) (*this)[i] *= iv;\n        return\
+    \ *this;\n    }\n    inline FPS& operator <<= (int x) {\n        FPS res(x, 0);\n\
+    \        res.insert(res.end(), begin(*this), end(*this));\n        return *this\
+    \ = res;\n    }\n    inline FPS& operator >>= (int x) {\n        if((int) this->size()\
+    \ <= x) return *this = FPS<mint> (1, 0);\n        FPS res;\n        res.insert(res.end(),\
+    \ begin(*this) + x, end(*this));\n        return *this = res;\n    }\n    inline\
+    \ mint eval(const mint& v){\n        mint res = 0;\n        for (int i = (int)this->size()-1;\
+    \ i >= 0; --i) {\n            res *= v;\n            res += (*this)[i];\n    \
+    \    }\n        return res;\n    }\n    inline friend FPS gcd(const FPS& f, const\
+    \ FPS& g) {\n        if (g.empty()) return f;\n        return gcd(g, f % g);\n\
+    \    }\n \n    // advanced operation\n    // df/dx\n    inline friend FPS diff(const\
+    \ FPS& f) {\n        int n = (int)f.size();\n        if (n == 0) return FPS();\n\
+    \        FPS res(n-1);\n        for (int i = 1; i < n; ++i) res[i-1] = f[i] *\
+    \ i;\n        return res;\n    }\n \n    // \\int f dx\n    inline friend FPS\
+    \ intg(const FPS& f) {\n        int n = (int)f.size();\n        FPS res(n+1, 0);\n\
+    \        for (int i = 0; i < n; ++i) res[i+1] = f[i] / (i+1);\n        return\
+    \ res;\n    }\n \n    // inv(f), f[0] must not be 0\n    inline friend FPS inv(const\
+    \ FPS& f, int deg) {\n        assert(!f.empty() && f[0] != 0);\n        if (deg\
+    \ < 0) deg = (int)f.size();\n        if (deg == 0) return FPS();\n        FPS\
+    \ res({mint(1) / f[0]});\n        for (int i = 1; i < deg; i <<= 1) {\n      \
+    \      res = (res + res - res * res * f.pre(i << 1)).pre(i << 1);\n        }\n\
+    \        res.resize(deg);\n        return res;\n    }\n    inline friend FPS inv(const\
+    \ FPS& f) {\n        return inv(f, f.size());\n    }\n \n    // division, r must\
+    \ be normalized (r.back() must not be 0)\n    inline FPS& operator /= (const FPS&\
+    \ r) {\n        assert(!r.empty());\n        assert(r.back() != 0);\n        this->normalize();\n\
+    \        if (this->size() < r.size()) {\n            this->clear();\n        \
+    \    return *this;\n        }\n        int need = (int)this->size() - (int)r.size()\
+    \ + 1;\n        *this = ((*this).rev().pre(need) * inv(r.rev(), need)).pre(need).rev();\n\
+    \        return *this;\n    }\n    inline FPS& operator %= (const FPS &r) {\n\
+    \        assert(!r.empty());\n        assert(r.back() != 0);\n        this->normalize();\n\
+    \        FPS q = (*this) / r;\n        return *this -= q * r;\n    }\n    inline\
+    \ FPS operator / (const FPS& r) const { return FPS(*this) /= r; }\n    inline\
+    \ FPS operator % (const FPS& r) const { return FPS(*this) %= r; }\n \n    // log(f)\
+    \ = \\int f'/f dx, f[0] must be 1\n    inline friend FPS log(const FPS& f, int\
+    \ deg) {\n        assert(!f.empty() && f[0] == 1);\n        FPS res = intg(diff(f)\
+    \ * inv(f, deg));\n        res.resize(deg);\n        return res;\n    }\n    inline\
+    \ friend FPS log(const FPS& f) {\n        return log(f, f.size());\n    }\n \n\
+    \    // exp(f), f[0] must be 0\n    inline friend FPS exp(const FPS& f, int deg)\
+    \ {\n        assert(f.empty() || f[0] == 0);\n        FPS res(1, 1);\n       \
+    \ for (int i = 1; i < deg; i <<= 1) {\n            res = res * (f.pre(i<<1) -\
+    \ log(res, i<<1) + 1).pre(i<<1);\n        }\n        res.resize(deg);\n      \
+    \  return res;\n    }\n    inline friend FPS exp(const FPS& f) {\n        return\
+    \ exp(f, f.size());\n    }\n \n    // pow(f) = exp(e * log f)\n    inline friend\
+    \ FPS pow(const FPS& f, long long e, int deg) {\n        if(e == 0) {\n      \
+    \      auto ret = FPS(deg, 0);\n            if (deg > 0) ret[0] = 1;\n       \
+    \     return ret;\n        }\n        long long i = 0;\n        while (i < (int)f.size()\
+    \ && f[i] == 0) ++i;\n        if (i == (int)f.size()) return FPS(deg, 0);\n  \
+    \      if ((i >= 1 and e >= deg) or i * e >= deg) return FPS(deg, 0);\n      \
+    \  mint k = f[i];\n        FPS res = exp(log((f >> i) / k, deg) * e, deg) * k.pow(e)\
+    \ << (e * i);\n        res.resize(deg);\n        return res;\n    }\n    inline\
+    \ friend FPS pow(const FPS& f, long long e) {\n        return pow(f, e, f.size());\n\
+    \    }\n\n    inline friend FPS taylor_shift(FPS f, mint a) {\n        int n =\
+    \ f.size();\n        std::vector<mint> fac(n, 1), inv(n, 1), finv(n, 1);\n   \
+    \     int mod = mint::mod();\n        for(int i = 2; i < n; i ++) {\n        \
+    \    fac[i] = fac[i - 1] * i;\n            inv[i] = -inv[mod % i] * (mod / i);\n\
+    \            finv[i] = finv[i - 1] * inv[i];\n        }\n        for(int i = 0;\
+    \ i < n; i ++) f[i] *= fac[i];\n        std::reverse(f.begin(), f.end());\n  \
+    \      FPS<mint> g(n, 1);\n        for(int i = 1; i < n; i ++) g[i] = g[i - 1]\
+    \ * a * inv[i];\n        f = (f * g).pre(n);\n        std::reverse(f.begin(),\
     \ f.end());\n        for(int i = 0; i < n; i ++) f[i] *= finv[i];\n        return\
     \ f;\n    }\n};\n\ntemplate <typename mint> FPS<mint> modpow(const FPS<mint> &f,\
     \ long long n, const FPS<mint> &m) {\n    if (n == 0) return FPS<mint>(1, 1);\n\
@@ -643,7 +645,7 @@ data:
   isVerificationFile: false
   path: src/math/fps.hpp
   requiredBy: []
-  timestamp: '2026-10-13 00:38:02+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/fps.test.cpp

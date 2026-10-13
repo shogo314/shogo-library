@@ -29,8 +29,8 @@ data:
     \n#include <functional>\n#include <queue>\n#include <stack>\n#include <utility>\n\
     #line 14 \"src/graph/graph_util.hpp\"\n\n#line 2 \"src/graph/graph.hpp\"\n\n/**\n\
     \ * @file graph.hpp\n * @brief \u30B0\u30E9\u30D5\n */\n\n#line 9 \"src/graph/graph.hpp\"\
-    \n#include <cassert>\n#line 11 \"src/graph/graph.hpp\"\n#include <limits>\n#line\
-    \ 14 \"src/graph/graph.hpp\"\n\n/**\n * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\
+    \n#include <cassert>\n#line 12 \"src/graph/graph.hpp\"\n#include <limits>\n#line\
+    \ 16 \"src/graph/graph.hpp\"\n\n/**\n * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\
     \u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u578B\
     \n */\ntemplate <typename Cost = int>\nstruct Graph {\n    /**\n     * @brief\
     \ \u6709\u5411\u8FBA\u306E\u69CB\u9020\u4F53\n     *\n     * operator int()\u3092\
@@ -496,7 +496,7 @@ data:
   isVerificationFile: true
   path: test/unittest/graph-util.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 10:23:03+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/graph-util.test.cpp

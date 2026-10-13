@@ -15,21 +15,21 @@ data:
   bundledCode: "#line 2 \"src/data_structures/priority_counter.hpp\"\n\n/**\n * @file\
     \ priority_counter.hpp\n * @brief \u4E0A\u4F4D K \u500B\u306E\u5024\u3068\u305D\
     \u306E\u500B\u6570\n */\n\n#include <array>\n#include <cstddef>\n#include <functional>\n\
-    #include <map>\n#include <type_traits>\n#include <utility>\n\ntemplate <typename\
-    \ T, size_t K = 1, class Compare = std::less<T>, std::enable_if_t<(K >= 1), std::nullptr_t>\
+    #include <type_traits>\n#include <utility>\n\ntemplate <typename T, std::size_t\
+    \ K = 1, class Compare = std::less<T>, std::enable_if_t<(K >= 1), std::nullptr_t>\
     \ = nullptr>\nstruct PriorityCounter {\n    using key_type = T;\n    using mapped_type\
     \ = long long;\n    using value_type = std::pair<key_type, mapped_type>;\n   \
-    \ inline constexpr static size_t k = K;\n\n    // C++17 \u306E constexpr \u30B3\
-    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u306F\u3059\u3079\u3066\u306E\u30E1\
-    \u30F3\u30D0\u306E\u521D\u671F\u5316\u304C\u5FC5\u8981\u306A\u306E\u3067\u3001\
-    \u5024\u521D\u671F\u5316\u3057\u3066\u304A\u304F\n    std::array<value_type, K>\
-    \ data{};\n\n    constexpr PriorityCounter() {}\n    constexpr PriorityCounter(const\
+    \ inline constexpr static std::size_t k = K;\n\n    // C++17 \u306E constexpr\
+    \ \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u306F\u3059\u3079\u3066\u306E\
+    \u30E1\u30F3\u30D0\u306E\u521D\u671F\u5316\u304C\u5FC5\u8981\u306A\u306E\u3067\
+    \u3001\u5024\u521D\u671F\u5316\u3057\u3066\u304A\u304F\n    std::array<value_type,\
+    \ K> data{};\n\n    constexpr PriorityCounter() {}\n    constexpr PriorityCounter(const\
     \ key_type& x) : PriorityCounter() {\n        data[0].first = x;\n        data[0].second\
-    \ = 1;\n    }\n\n    constexpr size_t size() const {\n        for (size_t i =\
-    \ 0; i < k; i++) {\n            if (data[i].second == 0) {\n                return\
-    \ i;\n            }\n        }\n        return k;\n    }\n\n    constexpr void\
-    \ inc(const key_type& x, const mapped_type& c = 1) {\n        bool f = false;\n\
-    \        key_type pre_key{};\n        mapped_type pre_mapped{};\n        for (size_t\
+    \ = 1;\n    }\n\n    constexpr std::size_t size() const {\n        for (std::size_t\
+    \ i = 0; i < k; i++) {\n            if (data[i].second == 0) {\n             \
+    \   return i;\n            }\n        }\n        return k;\n    }\n\n    constexpr\
+    \ void inc(const key_type& x, const mapped_type& c = 1) {\n        bool f = false;\n\
+    \        key_type pre_key{};\n        mapped_type pre_mapped{};\n        for (std::size_t\
     \ i = 0; i < k; i++) {\n            if (f) {\n                // std::swap \u306F\
     \ C++17 \u3067\u306F constexpr \u3067\u306A\u3044\u306E\u3067\u624B\u3067\u5165\
     \u308C\u66FF\u3048\u308B\n                key_type tmp_key = data[i].first;\n\
@@ -44,57 +44,57 @@ data:
     \  f = true;\n            } else if (not Compare()(x, data[i].first)) {\n    \
     \            data[i].second += c;\n                return;\n            }\n  \
     \      }\n    }\n\n    constexpr PriorityCounter& operator+=(const PriorityCounter&\
-    \ o) {\n        for (size_t i = 0; i < k; i++) {\n            if (o.data[i].second\
+    \ o) {\n        for (std::size_t i = 0; i < k; i++) {\n            if (o.data[i].second\
     \ == 0) break;\n            this->inc(o.data[i].first, o.data[i].second);\n  \
     \      }\n        return *this;\n    }\n    constexpr friend PriorityCounter operator+(const\
     \ PriorityCounter& a, const PriorityCounter& b) {\n        PriorityCounter res(a);\n\
-    \        return res += b;\n    }\n};\n\ntemplate <typename T, size_t K = 1>\n\
-    using MaxCounter = PriorityCounter<T, K>;\n\ntemplate <typename T, size_t K =\
-    \ 1>\nusing MinCounter = PriorityCounter<T, K, std::greater<T>>;\n"
+    \        return res += b;\n    }\n};\n\ntemplate <typename T, std::size_t K =\
+    \ 1>\nusing MaxCounter = PriorityCounter<T, K>;\n\ntemplate <typename T, std::size_t\
+    \ K = 1>\nusing MinCounter = PriorityCounter<T, K, std::greater<T>>;\n"
   code: "#pragma once\n\n/**\n * @file priority_counter.hpp\n * @brief \u4E0A\u4F4D\
     \ K \u500B\u306E\u5024\u3068\u305D\u306E\u500B\u6570\n */\n\n#include <array>\n\
-    #include <cstddef>\n#include <functional>\n#include <map>\n#include <type_traits>\n\
-    #include <utility>\n\ntemplate <typename T, size_t K = 1, class Compare = std::less<T>,\
-    \ std::enable_if_t<(K >= 1), std::nullptr_t> = nullptr>\nstruct PriorityCounter\
-    \ {\n    using key_type = T;\n    using mapped_type = long long;\n    using value_type\
-    \ = std::pair<key_type, mapped_type>;\n    inline constexpr static size_t k =\
-    \ K;\n\n    // C++17 \u306E constexpr \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\
-    \u3067\u306F\u3059\u3079\u3066\u306E\u30E1\u30F3\u30D0\u306E\u521D\u671F\u5316\
-    \u304C\u5FC5\u8981\u306A\u306E\u3067\u3001\u5024\u521D\u671F\u5316\u3057\u3066\
-    \u304A\u304F\n    std::array<value_type, K> data{};\n\n    constexpr PriorityCounter()\
-    \ {}\n    constexpr PriorityCounter(const key_type& x) : PriorityCounter() {\n\
-    \        data[0].first = x;\n        data[0].second = 1;\n    }\n\n    constexpr\
-    \ size_t size() const {\n        for (size_t i = 0; i < k; i++) {\n          \
-    \  if (data[i].second == 0) {\n                return i;\n            }\n    \
-    \    }\n        return k;\n    }\n\n    constexpr void inc(const key_type& x,\
-    \ const mapped_type& c = 1) {\n        bool f = false;\n        key_type pre_key{};\n\
-    \        mapped_type pre_mapped{};\n        for (size_t i = 0; i < k; i++) {\n\
-    \            if (f) {\n                // std::swap \u306F C++17 \u3067\u306F\
-    \ constexpr \u3067\u306A\u3044\u306E\u3067\u624B\u3067\u5165\u308C\u66FF\u3048\
-    \u308B\n                key_type tmp_key = data[i].first;\n                data[i].first\
-    \ = pre_key;\n                pre_key = tmp_key;\n                mapped_type\
-    \ tmp_mapped = data[i].second;\n                data[i].second = pre_mapped;\n\
-    \                pre_mapped = tmp_mapped;\n                continue;\n       \
-    \     }\n            if (data[i].second == 0) {\n                data[i].first\
-    \ = x;\n                data[i].second += c;\n                return;\n      \
-    \      }\n            if (Compare()(data[i].first, x)) {\n                pre_key\
-    \ = data[i].first;\n                pre_mapped = data[i].second;\n           \
-    \     data[i].first = x;\n                data[i].second = c;\n              \
-    \  f = true;\n            } else if (not Compare()(x, data[i].first)) {\n    \
+    #include <cstddef>\n#include <functional>\n#include <type_traits>\n#include <utility>\n\
+    \ntemplate <typename T, std::size_t K = 1, class Compare = std::less<T>, std::enable_if_t<(K\
+    \ >= 1), std::nullptr_t> = nullptr>\nstruct PriorityCounter {\n    using key_type\
+    \ = T;\n    using mapped_type = long long;\n    using value_type = std::pair<key_type,\
+    \ mapped_type>;\n    inline constexpr static std::size_t k = K;\n\n    // C++17\
+    \ \u306E constexpr \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u306F\u3059\
+    \u3079\u3066\u306E\u30E1\u30F3\u30D0\u306E\u521D\u671F\u5316\u304C\u5FC5\u8981\
+    \u306A\u306E\u3067\u3001\u5024\u521D\u671F\u5316\u3057\u3066\u304A\u304F\n   \
+    \ std::array<value_type, K> data{};\n\n    constexpr PriorityCounter() {}\n  \
+    \  constexpr PriorityCounter(const key_type& x) : PriorityCounter() {\n      \
+    \  data[0].first = x;\n        data[0].second = 1;\n    }\n\n    constexpr std::size_t\
+    \ size() const {\n        for (std::size_t i = 0; i < k; i++) {\n            if\
+    \ (data[i].second == 0) {\n                return i;\n            }\n        }\n\
+    \        return k;\n    }\n\n    constexpr void inc(const key_type& x, const mapped_type&\
+    \ c = 1) {\n        bool f = false;\n        key_type pre_key{};\n        mapped_type\
+    \ pre_mapped{};\n        for (std::size_t i = 0; i < k; i++) {\n            if\
+    \ (f) {\n                // std::swap \u306F C++17 \u3067\u306F constexpr \u3067\
+    \u306A\u3044\u306E\u3067\u624B\u3067\u5165\u308C\u66FF\u3048\u308B\n         \
+    \       key_type tmp_key = data[i].first;\n                data[i].first = pre_key;\n\
+    \                pre_key = tmp_key;\n                mapped_type tmp_mapped =\
+    \ data[i].second;\n                data[i].second = pre_mapped;\n            \
+    \    pre_mapped = tmp_mapped;\n                continue;\n            }\n    \
+    \        if (data[i].second == 0) {\n                data[i].first = x;\n    \
     \            data[i].second += c;\n                return;\n            }\n  \
-    \      }\n    }\n\n    constexpr PriorityCounter& operator+=(const PriorityCounter&\
-    \ o) {\n        for (size_t i = 0; i < k; i++) {\n            if (o.data[i].second\
-    \ == 0) break;\n            this->inc(o.data[i].first, o.data[i].second);\n  \
-    \      }\n        return *this;\n    }\n    constexpr friend PriorityCounter operator+(const\
-    \ PriorityCounter& a, const PriorityCounter& b) {\n        PriorityCounter res(a);\n\
-    \        return res += b;\n    }\n};\n\ntemplate <typename T, size_t K = 1>\n\
-    using MaxCounter = PriorityCounter<T, K>;\n\ntemplate <typename T, size_t K =\
-    \ 1>\nusing MinCounter = PriorityCounter<T, K, std::greater<T>>;\n"
+    \          if (Compare()(data[i].first, x)) {\n                pre_key = data[i].first;\n\
+    \                pre_mapped = data[i].second;\n                data[i].first =\
+    \ x;\n                data[i].second = c;\n                f = true;\n       \
+    \     } else if (not Compare()(x, data[i].first)) {\n                data[i].second\
+    \ += c;\n                return;\n            }\n        }\n    }\n\n    constexpr\
+    \ PriorityCounter& operator+=(const PriorityCounter& o) {\n        for (std::size_t\
+    \ i = 0; i < k; i++) {\n            if (o.data[i].second == 0) break;\n      \
+    \      this->inc(o.data[i].first, o.data[i].second);\n        }\n        return\
+    \ *this;\n    }\n    constexpr friend PriorityCounter operator+(const PriorityCounter&\
+    \ a, const PriorityCounter& b) {\n        PriorityCounter res(a);\n        return\
+    \ res += b;\n    }\n};\n\ntemplate <typename T, std::size_t K = 1>\nusing MaxCounter\
+    \ = PriorityCounter<T, K>;\n\ntemplate <typename T, std::size_t K = 1>\nusing\
+    \ MinCounter = PriorityCounter<T, K, std::greater<T>>;\n"
   dependsOn: []
   isVerificationFile: false
   path: src/data_structures/priority_counter.hpp
   requiredBy: []
-  timestamp: '2026-10-13 06:08:44+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/priority_counter.test.cpp

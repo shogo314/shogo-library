@@ -23,34 +23,35 @@ data:
     links: []
   bundledCode: "#line 2 \"src/data_structures/merge-sort-tree.hpp\"\n\n/**\n * @file\
     \ merge-sort-tree.hpp\n * @brief \u30DE\u30FC\u30B8\u30BD\u30FC\u30C8\u30C4\u30EA\
-    \u30FC\n */\n#include <algorithm>\n#include <cassert>\n#include <functional>\n\
-    #include <optional>\n#include <utility>\n#include <vector>\n#line 2 \"src/algebra/group.hpp\"\
-    \n\n/**\n * @file group.hpp\n * @brief \u7FA4\u306E\u5B9A\u7FA9\n *\n * \u7FA4\
-    \u306F\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp) \u306E\u30E1\u30F3\u30D0\u306B\
-    \u52A0\u3048\u3066\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\
-    \u3057\u3066\u8868\u3059\n * - S inv(const S& a): \u9006\u5143\n */\n\n#line 2\
-    \ \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\
-    \u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\
-    \u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * -\
-    \ using S: \u8981\u7D20\u306E\u578B\n * - S op(const S& a, const S& b): \u7A4D\
-    \ (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n * op, e \u306F static\
-    \ \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\
-    \u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\
-    \u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\n#line 15 \"src/algebra/monoid.hpp\"\
-    \n#include <array>\n#include <cstddef>\n#include <istream>\n#include <limits>\n\
-    #include <numeric>\n#include <ostream>\n#include <type_traits>\n#line 23 \"src/algebra/monoid.hpp\"\
-    \n\n/**\n * @brief 1\u6B21\u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite\
-    \ \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\
-    \u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\
-    \u3059\u308B\u3068\u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\n\
-    struct Affine {\n    T a = T(1);  //!< \u50BE\u304D\n    T b = T(0);  //!< \u5207\
-    \u7247\n    constexpr T operator()(const T& x) const { return a * x + b; }\n \
-    \   friend constexpr bool operator==(const Affine& f, const Affine& g) { return\
-    \ f.a == g.a && f.b == g.b; }\n    friend constexpr bool operator!=(const Affine&\
-    \ f, const Affine& g) { return !(f == g); }\n    template <class CharT, class\
-    \ Traits>\n    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
-    \ Traits>& is, Affine& f) {\n        return is >> f.a >> f.b;\n    }\n    template\
-    \ <class CharT, class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \u30FC\n */\n#include <algorithm>\n#include <cassert>\n#include <cstddef>\n#include\
+    \ <functional>\n#include <optional>\n#include <utility>\n#include <vector>\n#line\
+    \ 2 \"src/algebra/group.hpp\"\n\n/**\n * @file group.hpp\n * @brief \u7FA4\u306E\
+    \u5B9A\u7FA9\n *\n * \u7FA4\u306F\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\
+    \ \u306E\u30E1\u30F3\u30D0\u306B\u52A0\u3048\u3066\u6B21\u306E\u30E1\u30F3\u30D0\
+    \u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - S inv(const S& a):\
+    \ \u9006\u5143\n */\n\n#include <array>\n#line 2 \"src/algebra/monoid.hpp\"\n\n\
+    /**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
+    \n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
+    \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\
+    \n * - S op(const S& a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e():\
+    \ \u5358\u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\
+    \u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\
+    \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\
+    \u51FA\u3059)\n */\n\n#line 17 \"src/algebra/monoid.hpp\"\n#include <istream>\n\
+    #include <limits>\n#include <numeric>\n#include <ostream>\n#include <type_traits>\n\
+    #line 23 \"src/algebra/monoid.hpp\"\n\n/**\n * @brief 1\u6B21\u95A2\u6570 f(x)\
+    \ = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum\
+    \ \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3};\
+    \ f(x) \u306F 2x + 3\u3002\u7701\u7565\u3059\u308B\u3068\u6052\u7B49\u5199\u50CF\
+    \ {1, 0}\n */\ntemplate <typename T>\nstruct Affine {\n    T a = T(1);  //!< \u50BE\
+    \u304D\n    T b = T(0);  //!< \u5207\u7247\n    constexpr T operator()(const T&\
+    \ x) const { return a * x + b; }\n    friend constexpr bool operator==(const Affine&\
+    \ f, const Affine& g) { return f.a == g.a && f.b == g.b; }\n    friend constexpr\
+    \ bool operator!=(const Affine& f, const Affine& g) { return !(f == g); }\n  \
+    \  template <class CharT, class Traits>\n    friend std::basic_istream<CharT,\
+    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Affine& f) {\n  \
+    \      return is >> f.a >> f.b;\n    }\n    template <class CharT, class Traits>\n\
+    \    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const Affine& f) {\n        return os << f.a << CharT(' ') << f.b;\n\
     \    }\n};\n\nnamespace monoid {\n\n/**\n * @brief \u548C\n */\ntemplate <typename\
     \ T>\nstruct Sum {\n    using S = T;\n    static constexpr S op(const S& a, const\
@@ -157,7 +158,7 @@ data:
     \    Monoid() = default;\n    constexpr Monoid(Op op, const S& e) : op_object(std::move(op)),\
     \ identity(e) {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a,\
     \ b); }\n    constexpr S e() const { return identity; }\n};\ntemplate <typename\
-    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 12 \"src/algebra/group.hpp\"\
+    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 15 \"src/algebra/group.hpp\"\
     \n\nnamespace group {\n\n/**\n * @brief \u52A0\u6CD5\u7FA4\n */\ntemplate <typename\
     \ T>\nstruct Sum : monoid::Sum<T> {\n    using S = T;\n    static constexpr S\
     \ inv(const S& a) { return -a; }\n};\n\n/**\n * @brief \u4E57\u6CD5\u7FA4 (0\u3092\
@@ -187,7 +188,7 @@ data:
     \ S& b) const { return op_object(a, b); }\n    constexpr S e() const { return\
     \ identity; }\n    constexpr S inv(const S& a) const { return inv_object(a); }\n\
     };\ntemplate <typename Op, typename T, typename Inv>\nGroup(Op, T, Inv) -> Group<T,\
-    \ Op, Inv>;\n#line 14 \"src/data_structures/merge-sort-tree.hpp\"\n\n/**\n * @brief\
+    \ Op, Inv>;\n#line 15 \"src/data_structures/merge-sort-tree.hpp\"\n\n/**\n * @brief\
     \ \u533A\u9593\u306E\u95BE\u5024\u4EE5\u5185\u306E\u5024\u306E\u7A4D\n *\n * @tparam\
     \ G \u5024\u306E\u53EF\u63DB\u7FA4 (algebra/group.hpp)\n * @tparam K key_type\
     \ \u30BD\u30FC\u30C8\u306B\u4F7F\u3046\u578B\n * @tparam Comp K\u3092\u6BD4\u8F03\
@@ -237,50 +238,50 @@ data:
     \    explicit MergeSortTree(const std::vector<std::pair<value_type, key_type>>&\
     \ value_key, G g = G()) : g(std::move(g)) {\n        std::vector<key_type> key;\n\
     \        std::vector<value_type> value;\n        key.reserve(value_key.size());\n\
-    \        value.reserve(value_key.size());\n        for (size_t i = 0; i < value_key.size();\
-    \ i++) {\n            value.push_back(value_key[i].first);\n            key.push_back(value_key[i].second);\n\
-    \        }\n        this->initialize(value, key);\n    }\n    /**\n     * @param\
-    \ value prod\u3067\u8A08\u7B97\u3059\u308B\u5BFE\u8C61\n     * @param key \u30BD\
-    \u30FC\u30C8\u3059\u308B\u57FA\u6E96\n     */\n    MergeSortTree(const std::vector<value_type>&\
-    \ value, const std::vector<key_type>& key, G g = G()) : g(std::move(g)) {\n  \
-    \      assert(key.size() == value.size());\n        this->initialize(value, key);\n\
-    \    }\n\n    /**\n     * @brief product value[i] s.t. a <= key[i] < b , i in\
-    \ [l, r)\n     *\n     * @param l \u534A\u958B\u533A\u9593\u306E\u958B\u59CB nullopt\u306E\
-    \u5834\u5408\u306F0\n     * @param r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF\
-    \ 0<=l<=r<=n nullopt\u306E\u5834\u5408\u306Fn\n     * @param a nullopt\u306E\u5834\
-    \u5408\u306F\u8CA0\u306E\u7121\u9650\u5927\n     * @param b nullopt\u306E\u5834\
-    \u5408\u306F\u6B63\u306E\u7121\u9650\u5927\n     */\n    value_type prod(std::optional<int>\
-    \ l_ = std::nullopt, std::optional<int> r_ = std::nullopt, std::optional<key_type>\
-    \ a = std::nullopt, std::optional<key_type> b = std::nullopt) const {\n      \
-    \  int l = l_.value_or(0), r = r_.value_or(n);\n        assert(0 <= l && l <=\
-    \ r && r <= n);\n        if (a.has_value() && b.has_value() && !comp(a.value(),\
-    \ b.value())) return e();\n        value_type ret = e();\n        int h = height\
-    \ - 1;\n        int t = 1;\n        while (l < r) {\n            if (l & t) {\n\
-    \                ret = op(ret, prod_section(h * sz + l, h * sz + l + t, a, b));\n\
-    \                l += t;\n            }\n            if (r & t) {\n          \
-    \      r -= t;\n                ret = op(ret, prod_section(h * sz + r, h * sz\
-    \ + r + t, a, b));\n            }\n            h--;\n            t <<= 1;\n  \
-    \      }\n        return ret;\n    }\n};\n"
+    \        value.reserve(value_key.size());\n        for (std::size_t i = 0; i <\
+    \ value_key.size(); i++) {\n            value.push_back(value_key[i].first);\n\
+    \            key.push_back(value_key[i].second);\n        }\n        this->initialize(value,\
+    \ key);\n    }\n    /**\n     * @param value prod\u3067\u8A08\u7B97\u3059\u308B\
+    \u5BFE\u8C61\n     * @param key \u30BD\u30FC\u30C8\u3059\u308B\u57FA\u6E96\n \
+    \    */\n    MergeSortTree(const std::vector<value_type>& value, const std::vector<key_type>&\
+    \ key, G g = G()) : g(std::move(g)) {\n        assert(key.size() == value.size());\n\
+    \        this->initialize(value, key);\n    }\n\n    /**\n     * @brief product\
+    \ value[i] s.t. a <= key[i] < b , i in [l, r)\n     *\n     * @param l \u534A\u958B\
+    \u533A\u9593\u306E\u958B\u59CB nullopt\u306E\u5834\u5408\u306F0\n     * @param\
+    \ r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF 0<=l<=r<=n nullopt\u306E\u5834\u5408\
+    \u306Fn\n     * @param a nullopt\u306E\u5834\u5408\u306F\u8CA0\u306E\u7121\u9650\
+    \u5927\n     * @param b nullopt\u306E\u5834\u5408\u306F\u6B63\u306E\u7121\u9650\
+    \u5927\n     */\n    value_type prod(std::optional<int> l_ = std::nullopt, std::optional<int>\
+    \ r_ = std::nullopt, std::optional<key_type> a = std::nullopt, std::optional<key_type>\
+    \ b = std::nullopt) const {\n        int l = l_.value_or(0), r = r_.value_or(n);\n\
+    \        assert(0 <= l && l <= r && r <= n);\n        if (a.has_value() && b.has_value()\
+    \ && !comp(a.value(), b.value())) return e();\n        value_type ret = e();\n\
+    \        int h = height - 1;\n        int t = 1;\n        while (l < r) {\n  \
+    \          if (l & t) {\n                ret = op(ret, prod_section(h * sz + l,\
+    \ h * sz + l + t, a, b));\n                l += t;\n            }\n          \
+    \  if (r & t) {\n                r -= t;\n                ret = op(ret, prod_section(h\
+    \ * sz + r, h * sz + r + t, a, b));\n            }\n            h--;\n       \
+    \     t <<= 1;\n        }\n        return ret;\n    }\n};\n"
   code: "#pragma once\n\n/**\n * @file merge-sort-tree.hpp\n * @brief \u30DE\u30FC\
     \u30B8\u30BD\u30FC\u30C8\u30C4\u30EA\u30FC\n */\n#include <algorithm>\n#include\
-    \ <cassert>\n#include <functional>\n#include <optional>\n#include <utility>\n\
-    #include <vector>\n#include \"../algebra/group.hpp\"\n\n/**\n * @brief \u533A\u9593\
-    \u306E\u95BE\u5024\u4EE5\u5185\u306E\u5024\u306E\u7A4D\n *\n * @tparam G \u5024\
-    \u306E\u53EF\u63DB\u7FA4 (algebra/group.hpp)\n * @tparam K key_type \u30BD\u30FC\
-    \u30C8\u306B\u4F7F\u3046\u578B\n * @tparam Comp K\u3092\u6BD4\u8F03\u3059\u308B\
-    \u30D5\u30A1\u30F3\u30AF\u30BF\n */\ntemplate <typename G = group::Sum<long long>,\n\
-    \          typename K = long long,\n          class Comp = std::less<K>>\nclass\
-    \ MergeSortTree {\n   public:\n    using value_type = typename G::S;\n    using\
-    \ key_type = K;\n\n    inline constexpr static auto comp = Comp();\n\n   private:\n\
-    \    G g;\n    value_type op(const value_type& x, const value_type& y) const {\
-    \ return g.op(x, y); }\n    value_type e() const { return g.e(); }\n    value_type\
-    \ inv(const value_type& x) const { return g.inv(x); }\n\n   private:\n    int\
-    \ n, sz, height;\n    std::vector<key_type> key_data;\n    std::vector<value_type>\
-    \ cumulative_value;\n\n    void initialize(const std::vector<value_type>& value,\
-    \ const std::vector<key_type>& key) {\n        n = key.size();\n        sz = 1;\n\
-    \        height = 1;\n        while (sz < n) {\n            sz <<= 1;\n      \
-    \      height++;\n        }\n        key_data.assign(sz * height, {});\n     \
-    \   std::vector<value_type> value_data(sz * height, e());\n        cumulative_value.assign(sz\
+    \ <cassert>\n#include <cstddef>\n#include <functional>\n#include <optional>\n\
+    #include <utility>\n#include <vector>\n#include \"../algebra/group.hpp\"\n\n/**\n\
+    \ * @brief \u533A\u9593\u306E\u95BE\u5024\u4EE5\u5185\u306E\u5024\u306E\u7A4D\n\
+    \ *\n * @tparam G \u5024\u306E\u53EF\u63DB\u7FA4 (algebra/group.hpp)\n * @tparam\
+    \ K key_type \u30BD\u30FC\u30C8\u306B\u4F7F\u3046\u578B\n * @tparam Comp K\u3092\
+    \u6BD4\u8F03\u3059\u308B\u30D5\u30A1\u30F3\u30AF\u30BF\n */\ntemplate <typename\
+    \ G = group::Sum<long long>,\n          typename K = long long,\n          class\
+    \ Comp = std::less<K>>\nclass MergeSortTree {\n   public:\n    using value_type\
+    \ = typename G::S;\n    using key_type = K;\n\n    inline constexpr static auto\
+    \ comp = Comp();\n\n   private:\n    G g;\n    value_type op(const value_type&\
+    \ x, const value_type& y) const { return g.op(x, y); }\n    value_type e() const\
+    \ { return g.e(); }\n    value_type inv(const value_type& x) const { return g.inv(x);\
+    \ }\n\n   private:\n    int n, sz, height;\n    std::vector<key_type> key_data;\n\
+    \    std::vector<value_type> cumulative_value;\n\n    void initialize(const std::vector<value_type>&\
+    \ value, const std::vector<key_type>& key) {\n        n = key.size();\n      \
+    \  sz = 1;\n        height = 1;\n        while (sz < n) {\n            sz <<=\
+    \ 1;\n            height++;\n        }\n        key_data.assign(sz * height, {});\n\
+    \        std::vector<value_type> value_data(sz * height, e());\n        cumulative_value.assign(sz\
     \ * height, {});\n        for (int i = 0; i < n; i++) {\n            key_data[(height\
     \ - 1) * sz + i] = key[i];\n            value_data[(height - 1) * sz + i] = value[i];\n\
     \            cumulative_value[(height - 1) * sz + i] = value[i];\n        }\n\
@@ -314,37 +315,37 @@ data:
     \    explicit MergeSortTree(const std::vector<std::pair<value_type, key_type>>&\
     \ value_key, G g = G()) : g(std::move(g)) {\n        std::vector<key_type> key;\n\
     \        std::vector<value_type> value;\n        key.reserve(value_key.size());\n\
-    \        value.reserve(value_key.size());\n        for (size_t i = 0; i < value_key.size();\
-    \ i++) {\n            value.push_back(value_key[i].first);\n            key.push_back(value_key[i].second);\n\
-    \        }\n        this->initialize(value, key);\n    }\n    /**\n     * @param\
-    \ value prod\u3067\u8A08\u7B97\u3059\u308B\u5BFE\u8C61\n     * @param key \u30BD\
-    \u30FC\u30C8\u3059\u308B\u57FA\u6E96\n     */\n    MergeSortTree(const std::vector<value_type>&\
-    \ value, const std::vector<key_type>& key, G g = G()) : g(std::move(g)) {\n  \
-    \      assert(key.size() == value.size());\n        this->initialize(value, key);\n\
-    \    }\n\n    /**\n     * @brief product value[i] s.t. a <= key[i] < b , i in\
-    \ [l, r)\n     *\n     * @param l \u534A\u958B\u533A\u9593\u306E\u958B\u59CB nullopt\u306E\
-    \u5834\u5408\u306F0\n     * @param r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF\
-    \ 0<=l<=r<=n nullopt\u306E\u5834\u5408\u306Fn\n     * @param a nullopt\u306E\u5834\
-    \u5408\u306F\u8CA0\u306E\u7121\u9650\u5927\n     * @param b nullopt\u306E\u5834\
-    \u5408\u306F\u6B63\u306E\u7121\u9650\u5927\n     */\n    value_type prod(std::optional<int>\
-    \ l_ = std::nullopt, std::optional<int> r_ = std::nullopt, std::optional<key_type>\
-    \ a = std::nullopt, std::optional<key_type> b = std::nullopt) const {\n      \
-    \  int l = l_.value_or(0), r = r_.value_or(n);\n        assert(0 <= l && l <=\
-    \ r && r <= n);\n        if (a.has_value() && b.has_value() && !comp(a.value(),\
-    \ b.value())) return e();\n        value_type ret = e();\n        int h = height\
-    \ - 1;\n        int t = 1;\n        while (l < r) {\n            if (l & t) {\n\
-    \                ret = op(ret, prod_section(h * sz + l, h * sz + l + t, a, b));\n\
-    \                l += t;\n            }\n            if (r & t) {\n          \
-    \      r -= t;\n                ret = op(ret, prod_section(h * sz + r, h * sz\
-    \ + r + t, a, b));\n            }\n            h--;\n            t <<= 1;\n  \
-    \      }\n        return ret;\n    }\n};\n"
+    \        value.reserve(value_key.size());\n        for (std::size_t i = 0; i <\
+    \ value_key.size(); i++) {\n            value.push_back(value_key[i].first);\n\
+    \            key.push_back(value_key[i].second);\n        }\n        this->initialize(value,\
+    \ key);\n    }\n    /**\n     * @param value prod\u3067\u8A08\u7B97\u3059\u308B\
+    \u5BFE\u8C61\n     * @param key \u30BD\u30FC\u30C8\u3059\u308B\u57FA\u6E96\n \
+    \    */\n    MergeSortTree(const std::vector<value_type>& value, const std::vector<key_type>&\
+    \ key, G g = G()) : g(std::move(g)) {\n        assert(key.size() == value.size());\n\
+    \        this->initialize(value, key);\n    }\n\n    /**\n     * @brief product\
+    \ value[i] s.t. a <= key[i] < b , i in [l, r)\n     *\n     * @param l \u534A\u958B\
+    \u533A\u9593\u306E\u958B\u59CB nullopt\u306E\u5834\u5408\u306F0\n     * @param\
+    \ r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF 0<=l<=r<=n nullopt\u306E\u5834\u5408\
+    \u306Fn\n     * @param a nullopt\u306E\u5834\u5408\u306F\u8CA0\u306E\u7121\u9650\
+    \u5927\n     * @param b nullopt\u306E\u5834\u5408\u306F\u6B63\u306E\u7121\u9650\
+    \u5927\n     */\n    value_type prod(std::optional<int> l_ = std::nullopt, std::optional<int>\
+    \ r_ = std::nullopt, std::optional<key_type> a = std::nullopt, std::optional<key_type>\
+    \ b = std::nullopt) const {\n        int l = l_.value_or(0), r = r_.value_or(n);\n\
+    \        assert(0 <= l && l <= r && r <= n);\n        if (a.has_value() && b.has_value()\
+    \ && !comp(a.value(), b.value())) return e();\n        value_type ret = e();\n\
+    \        int h = height - 1;\n        int t = 1;\n        while (l < r) {\n  \
+    \          if (l & t) {\n                ret = op(ret, prod_section(h * sz + l,\
+    \ h * sz + l + t, a, b));\n                l += t;\n            }\n          \
+    \  if (r & t) {\n                r -= t;\n                ret = op(ret, prod_section(h\
+    \ * sz + r, h * sz + r + t, a, b));\n            }\n            h--;\n       \
+    \     t <<= 1;\n        }\n        return ret;\n    }\n};\n"
   dependsOn:
   - src/algebra/group.hpp
   - src/algebra/monoid.hpp
   isVerificationFile: false
   path: src/data_structures/merge-sort-tree.hpp
   requiredBy: []
-  timestamp: '2026-10-13 12:10:14+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/yosupo/rectangle-sum.2.test.cpp

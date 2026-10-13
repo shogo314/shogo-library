@@ -2,14 +2,14 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: src/base/range.hpp
+    path: src/utility/range.hpp
     title: "Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\u5217"
   - icon: ':heavy_check_mark:'
-    path: src/base/repr.hpp
+    path: src/utility/repr.hpp
     title: "\u51FA\u529B\u3092\u305D\u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\u30E9\
       \u30AF\u30BF\u306B\u4F7F\u3048\u308B\u6587\u5B57\u5217\u5316 (repr)"
   - icon: ':heavy_check_mark:'
-    path: src/base/traits.hpp
+    path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -34,10 +34,10 @@ data:
     \u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\
     \u3059\u308B\n\n#include <array>\n#include <iostream>\n#include <map>\n#include\
     \ <random>\n#include <set>\n#include <sstream>\n#include <string>\n#include <utility>\n\
-    #include <vector>\n\n#line 2 \"src/base/range.hpp\"\n\n/**\n * @file range.hpp\n\
+    #include <vector>\n\n#line 2 \"src/utility/range.hpp\"\n\n/**\n * @file range.hpp\n\
     \ * @brief Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\u5217\n */\n\
-    \n#include <cassert>\n#include <cstddef>\n#include <iterator>\n#line 12 \"src/base/range.hpp\"\
-    \n#include <type_traits>\n#line 15 \"src/base/range.hpp\"\n\nstruct Range {\n\
+    \n#include <cassert>\n#include <cstddef>\n#include <iterator>\n#line 12 \"src/utility/range.hpp\"\
+    \n#include <type_traits>\n#line 15 \"src/utility/range.hpp\"\n\nstruct Range {\n\
     \   public:\n    using value_type = long long;\n    using const_reference = const\
     \ value_type&;\n    using size_type = std::size_t;\n    using difference_type\
     \ = std::ptrdiff_t;\n\n    const value_type start;\n    const value_type stop;\n\
@@ -221,13 +221,13 @@ data:
     \     if (a.size() == 1) return true;\n        if (a.step != b.step) return false;\n\
     \        return true;\n    }\n    constexpr friend bool operator!=(const Range&\
     \ a, const Range& b) noexcept {\n        return !(a == b);\n    }\n};\n#line 2\
-    \ \"src/base/repr.hpp\"\n\n/**\n * @file repr.hpp\n * @brief \u51FA\u529B\u3092\
+    \ \"src/utility/repr.hpp\"\n\n/**\n * @file repr.hpp\n * @brief \u51FA\u529B\u3092\
     \u305D\u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u306B\u4F7F\
-    \u3048\u308B\u6587\u5B57\u5217\u5316 (repr)\n */\n\n#line 2 \"src/base/traits.hpp\"\
+    \u3048\u308B\u6587\u5B57\u5217\u5316 (repr)\n */\n\n#line 2 \"src/utility/traits.hpp\"\
     \n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 13 \"\
-    src/base/traits.hpp\"\n\nnamespace detail {\nusing std::begin, std::end;\n\ntemplate\
-    \ <class T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate\
-    \ <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    src/utility/traits.hpp\"\n\nnamespace detail {\nusing std::begin, std::end;\n\n\
+    template <class T, class = void>\nstruct is_range_impl : std::false_type {};\n\
+    template <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
     \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace detail\n\n\
     template <class T>\nstruct is_range : detail::is_range_impl<T>::type {};\ntemplate\
     \ <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define\
@@ -274,7 +274,7 @@ data:
     \ : std::true_type {};\n}  // namespace detail\ntemplate <class T>\nstruct is_sorted_container\
     \ : detail::is_sorted_container_impl<T>::type {};\ntemplate <class T>\ninline\
     \ constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n#line\
-    \ 17 \"src/base/repr.hpp\"\n\nnamespace detail {\n\n///////////////////////////////////////////////////////////////////\n\
+    \ 18 \"src/utility/repr.hpp\"\n\nnamespace detail {\n\n///////////////////////////////////////////////////////////////////\n\
     /////////////////////////// declaration ///////////////////////////\n///////////////////////////////////////////////////////////////////\n\
     \ninline std::string type_str(const char*);\ninline std::string initializer_str(const\
     \ char*);\ninline std::string repr(const char*);\n\ninline std::string type_str(const\
@@ -310,12 +310,12 @@ data:
     \ T2>&);\n\ntemplate <typename T1, typename T2>\ninline std::string type_str(const\
     \ std::map<T1, T2>&);\ntemplate <typename T1, typename T2>\ninline std::string\
     \ initializer_str(const std::map<T1, T2>&);\ntemplate <typename T1, typename T2>\n\
-    inline std::string repr(const std::map<T1, T2>&);\n\ntemplate <typename T, size_t\
+    inline std::string repr(const std::map<T1, T2>&);\n\ntemplate <typename T, std::size_t\
     \ N>\ninline std::string type_str(const std::array<T, N>&);\ntemplate <typename\
-    \ T, size_t N>\ninline std::string initializer_str(const std::array<T, N>&);\n\
-    template <typename T, size_t N>\ninline std::string repr(const std::array<T, N>&);\n\
-    \n///////////////////////////////////////////////////////////////////\n///////////////////////////\
-    \ definition ////////////////////////////\n///////////////////////////////////////////////////////////////////\n\
+    \ T, std::size_t N>\ninline std::string initializer_str(const std::array<T, N>&);\n\
+    template <typename T, std::size_t N>\ninline std::string repr(const std::array<T,\
+    \ N>&);\n\n///////////////////////////////////////////////////////////////////\n\
+    /////////////////////////// definition ////////////////////////////\n///////////////////////////////////////////////////////////////////\n\
     \ntemplate <typename T, std::enable_if_t<not has_type_str_v<T>, std::nullptr_t>\
     \ = nullptr>\ninline std::string type_str(const T& t) {\n    return \"T\";\n}\n\
     template <typename T, std::enable_if_t<has_type_str_v<T>, std::nullptr_t> = nullptr>\n\
@@ -410,16 +410,16 @@ data:
     \      ret += detail::initializer_str(itr->second);\n        ret += \"}\";\n \
     \   }\n    ret += \"}\";\n    return ret;\n}\ntemplate <typename T1, typename\
     \ T2>\ninline std::string repr(const std::map<T1, T2>& t) {\n    return detail::type_str(t)\
-    \ + detail::initializer_str(t);\n}\n\ntemplate <typename T, size_t N>\ninline\
+    \ + detail::initializer_str(t);\n}\n\ntemplate <typename T, std::size_t N>\ninline\
     \ std::string type_str(const std::array<T, N>&) {\n    T t;\n    return \"std::array<\"\
     \ + detail::type_str(t) + \", \" + std::to_string(N) + \">\";\n}\ntemplate <typename\
-    \ T, size_t N>\ninline std::string initializer_str(const std::array<T, N>& t)\
-    \ {\n    std::string ret;\n    ret += \"{\";\n    for (auto itr = t.begin(); itr\
-    \ != t.end(); itr++) {\n        if (itr != t.begin()) ret += \", \";\n       \
-    \ ret += detail::initializer_str(*itr);\n    }\n    ret += \"}\";\n    return\
-    \ ret;\n}\ntemplate <typename T, size_t N>\ninline std::string repr(const std::array<T,\
-    \ N>& t) {\n    return detail::type_str(t) + detail::initializer_str(t);\n}\n\n\
-    }  // namespace detail\n\ntemplate <typename T>\ninline std::string type_str(const\
+    \ T, std::size_t N>\ninline std::string initializer_str(const std::array<T, N>&\
+    \ t) {\n    std::string ret;\n    ret += \"{\";\n    for (auto itr = t.begin();\
+    \ itr != t.end(); itr++) {\n        if (itr != t.begin()) ret += \", \";\n   \
+    \     ret += detail::initializer_str(*itr);\n    }\n    ret += \"}\";\n    return\
+    \ ret;\n}\ntemplate <typename T, std::size_t N>\ninline std::string repr(const\
+    \ std::array<T, N>& t) {\n    return detail::type_str(t) + detail::initializer_str(t);\n\
+    }\n\n}  // namespace detail\n\ntemplate <typename T>\ninline std::string type_str(const\
     \ T& t) {\n    return detail::type_str(t);\n}\ntemplate <typename T>\ninline std::string\
     \ initializer_str(const T& t) {\n    return detail::initializer_str(t);\n}\ntemplate\
     \ <typename T>\ninline std::string repr(const T& t) {\n    return detail::repr(t);\n\
@@ -519,7 +519,7 @@ data:
     \u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\
     \u3059\u308B\n\n#include <array>\n#include <iostream>\n#include <map>\n#include\
     \ <random>\n#include <set>\n#include <sstream>\n#include <string>\n#include <utility>\n\
-    #include <vector>\n\n#include \"../../src/base/range.hpp\"\n#include \"../../src/base/repr.hpp\"\
+    #include <vector>\n\n#include \"../../src/utility/range.hpp\"\n#include \"../../src/utility/repr.hpp\"\
     \n\nbool ok = true;\nvoid check(bool cond, const std::string& what) {\n    if\
     \ (!cond) {\n        if (ok) std::cerr << \"failed: \" << what << std::endl;\n\
     \        ok = false;\n    }\n}\n\n#define CHECK_REPR(value, ...)             \
@@ -603,13 +603,13 @@ data:
     xs = std::vector<int>{1, 2}\\n\", \"DEBUG\");\n    }\n\n    if (ok) std::cout\
     \ << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
-  - src/base/range.hpp
-  - src/base/repr.hpp
-  - src/base/traits.hpp
+  - src/utility/range.hpp
+  - src/utility/repr.hpp
+  - src/utility/traits.hpp
   isVerificationFile: true
   path: test/unittest/repr.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 06:02:01+09:00'
+  timestamp: '2026-10-13 13:03:23+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/repr.test.cpp

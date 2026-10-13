@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: src/base/traits.hpp
+    path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
   _extendedVerifiedWith:
@@ -16,14 +16,14 @@ data:
     document_title: "\u51FA\u529B\u3092\u305D\u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\
       \u30E9\u30AF\u30BF\u306B\u4F7F\u3048\u308B\u6587\u5B57\u5217\u5316 (repr)"
     links: []
-  bundledCode: "#line 2 \"src/base/repr.hpp\"\n\n/**\n * @file repr.hpp\n * @brief\
+  bundledCode: "#line 2 \"src/utility/repr.hpp\"\n\n/**\n * @file repr.hpp\n * @brief\
     \ \u51FA\u529B\u3092\u305D\u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\
     \u30BF\u306B\u4F7F\u3048\u308B\u6587\u5B57\u5217\u5316 (repr)\n */\n\n#include\
-    \ <array>\n#include <iostream>\n#include <map>\n#include <set>\n#include <sstream>\n\
-    #include <string>\n#include <utility>\n#include <vector>\n#line 2 \"src/base/traits.hpp\"\
-    \n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n\
-    #include <iterator>\n#line 11 \"src/base/traits.hpp\"\n#include <type_traits>\n\
-    #line 13 \"src/base/traits.hpp\"\n\nnamespace detail {\nusing std::begin, std::end;\n\
+    \ <array>\n#include <cstddef>\n#include <iostream>\n#include <map>\n#include <set>\n\
+    #include <string>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\
+    #line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\
+    \u7279\u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\n#include <iterator>\n\
+    #line 13 \"src/utility/traits.hpp\"\n\nnamespace detail {\nusing std::begin, std::end;\n\
     \ntemplate <class T, class = void>\nstruct is_range_impl : std::false_type {};\n\
     template <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
     \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace detail\n\n\
@@ -72,7 +72,7 @@ data:
     \ : std::true_type {};\n}  // namespace detail\ntemplate <class T>\nstruct is_sorted_container\
     \ : detail::is_sorted_container_impl<T>::type {};\ntemplate <class T>\ninline\
     \ constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n#line\
-    \ 17 \"src/base/repr.hpp\"\n\nnamespace detail {\n\n///////////////////////////////////////////////////////////////////\n\
+    \ 18 \"src/utility/repr.hpp\"\n\nnamespace detail {\n\n///////////////////////////////////////////////////////////////////\n\
     /////////////////////////// declaration ///////////////////////////\n///////////////////////////////////////////////////////////////////\n\
     \ninline std::string type_str(const char*);\ninline std::string initializer_str(const\
     \ char*);\ninline std::string repr(const char*);\n\ninline std::string type_str(const\
@@ -108,12 +108,12 @@ data:
     \ T2>&);\n\ntemplate <typename T1, typename T2>\ninline std::string type_str(const\
     \ std::map<T1, T2>&);\ntemplate <typename T1, typename T2>\ninline std::string\
     \ initializer_str(const std::map<T1, T2>&);\ntemplate <typename T1, typename T2>\n\
-    inline std::string repr(const std::map<T1, T2>&);\n\ntemplate <typename T, size_t\
+    inline std::string repr(const std::map<T1, T2>&);\n\ntemplate <typename T, std::size_t\
     \ N>\ninline std::string type_str(const std::array<T, N>&);\ntemplate <typename\
-    \ T, size_t N>\ninline std::string initializer_str(const std::array<T, N>&);\n\
-    template <typename T, size_t N>\ninline std::string repr(const std::array<T, N>&);\n\
-    \n///////////////////////////////////////////////////////////////////\n///////////////////////////\
-    \ definition ////////////////////////////\n///////////////////////////////////////////////////////////////////\n\
+    \ T, std::size_t N>\ninline std::string initializer_str(const std::array<T, N>&);\n\
+    template <typename T, std::size_t N>\ninline std::string repr(const std::array<T,\
+    \ N>&);\n\n///////////////////////////////////////////////////////////////////\n\
+    /////////////////////////// definition ////////////////////////////\n///////////////////////////////////////////////////////////////////\n\
     \ntemplate <typename T, std::enable_if_t<not has_type_str_v<T>, std::nullptr_t>\
     \ = nullptr>\ninline std::string type_str(const T& t) {\n    return \"T\";\n}\n\
     template <typename T, std::enable_if_t<has_type_str_v<T>, std::nullptr_t> = nullptr>\n\
@@ -208,27 +208,27 @@ data:
     \      ret += detail::initializer_str(itr->second);\n        ret += \"}\";\n \
     \   }\n    ret += \"}\";\n    return ret;\n}\ntemplate <typename T1, typename\
     \ T2>\ninline std::string repr(const std::map<T1, T2>& t) {\n    return detail::type_str(t)\
-    \ + detail::initializer_str(t);\n}\n\ntemplate <typename T, size_t N>\ninline\
+    \ + detail::initializer_str(t);\n}\n\ntemplate <typename T, std::size_t N>\ninline\
     \ std::string type_str(const std::array<T, N>&) {\n    T t;\n    return \"std::array<\"\
     \ + detail::type_str(t) + \", \" + std::to_string(N) + \">\";\n}\ntemplate <typename\
-    \ T, size_t N>\ninline std::string initializer_str(const std::array<T, N>& t)\
-    \ {\n    std::string ret;\n    ret += \"{\";\n    for (auto itr = t.begin(); itr\
-    \ != t.end(); itr++) {\n        if (itr != t.begin()) ret += \", \";\n       \
-    \ ret += detail::initializer_str(*itr);\n    }\n    ret += \"}\";\n    return\
-    \ ret;\n}\ntemplate <typename T, size_t N>\ninline std::string repr(const std::array<T,\
-    \ N>& t) {\n    return detail::type_str(t) + detail::initializer_str(t);\n}\n\n\
-    }  // namespace detail\n\ntemplate <typename T>\ninline std::string type_str(const\
+    \ T, std::size_t N>\ninline std::string initializer_str(const std::array<T, N>&\
+    \ t) {\n    std::string ret;\n    ret += \"{\";\n    for (auto itr = t.begin();\
+    \ itr != t.end(); itr++) {\n        if (itr != t.begin()) ret += \", \";\n   \
+    \     ret += detail::initializer_str(*itr);\n    }\n    ret += \"}\";\n    return\
+    \ ret;\n}\ntemplate <typename T, std::size_t N>\ninline std::string repr(const\
+    \ std::array<T, N>& t) {\n    return detail::type_str(t) + detail::initializer_str(t);\n\
+    }\n\n}  // namespace detail\n\ntemplate <typename T>\ninline std::string type_str(const\
     \ T& t) {\n    return detail::type_str(t);\n}\ntemplate <typename T>\ninline std::string\
     \ initializer_str(const T& t) {\n    return detail::initializer_str(t);\n}\ntemplate\
     \ <typename T>\ninline std::string repr(const T& t) {\n    return detail::repr(t);\n\
     }\n\n#define DEBUG(x) { std::cerr << #x << \" = \" << repr(x) << std::endl; }\n"
   code: "#pragma once\n\n/**\n * @file repr.hpp\n * @brief \u51FA\u529B\u3092\u305D\
     \u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u306B\u4F7F\u3048\
-    \u308B\u6587\u5B57\u5217\u5316 (repr)\n */\n\n#include <array>\n#include <iostream>\n\
-    #include <map>\n#include <set>\n#include <sstream>\n#include <string>\n#include\
-    \ <utility>\n#include <vector>\n#include \"traits.hpp\"\n\nnamespace detail {\n\
-    \n///////////////////////////////////////////////////////////////////\n///////////////////////////\
-    \ declaration ///////////////////////////\n///////////////////////////////////////////////////////////////////\n\
+    \u308B\u6587\u5B57\u5217\u5316 (repr)\n */\n\n#include <array>\n#include <cstddef>\n\
+    #include <iostream>\n#include <map>\n#include <set>\n#include <string>\n#include\
+    \ <type_traits>\n#include <utility>\n#include <vector>\n#include \"traits.hpp\"\
+    \n\nnamespace detail {\n\n///////////////////////////////////////////////////////////////////\n\
+    /////////////////////////// declaration ///////////////////////////\n///////////////////////////////////////////////////////////////////\n\
     \ninline std::string type_str(const char*);\ninline std::string initializer_str(const\
     \ char*);\ninline std::string repr(const char*);\n\ninline std::string type_str(const\
     \ char&);\ninline std::string initializer_str(const char&);\ninline std::string\
@@ -263,12 +263,12 @@ data:
     \ T2>&);\n\ntemplate <typename T1, typename T2>\ninline std::string type_str(const\
     \ std::map<T1, T2>&);\ntemplate <typename T1, typename T2>\ninline std::string\
     \ initializer_str(const std::map<T1, T2>&);\ntemplate <typename T1, typename T2>\n\
-    inline std::string repr(const std::map<T1, T2>&);\n\ntemplate <typename T, size_t\
+    inline std::string repr(const std::map<T1, T2>&);\n\ntemplate <typename T, std::size_t\
     \ N>\ninline std::string type_str(const std::array<T, N>&);\ntemplate <typename\
-    \ T, size_t N>\ninline std::string initializer_str(const std::array<T, N>&);\n\
-    template <typename T, size_t N>\ninline std::string repr(const std::array<T, N>&);\n\
-    \n///////////////////////////////////////////////////////////////////\n///////////////////////////\
-    \ definition ////////////////////////////\n///////////////////////////////////////////////////////////////////\n\
+    \ T, std::size_t N>\ninline std::string initializer_str(const std::array<T, N>&);\n\
+    template <typename T, std::size_t N>\ninline std::string repr(const std::array<T,\
+    \ N>&);\n\n///////////////////////////////////////////////////////////////////\n\
+    /////////////////////////// definition ////////////////////////////\n///////////////////////////////////////////////////////////////////\n\
     \ntemplate <typename T, std::enable_if_t<not has_type_str_v<T>, std::nullptr_t>\
     \ = nullptr>\ninline std::string type_str(const T& t) {\n    return \"T\";\n}\n\
     template <typename T, std::enable_if_t<has_type_str_v<T>, std::nullptr_t> = nullptr>\n\
@@ -363,30 +363,30 @@ data:
     \      ret += detail::initializer_str(itr->second);\n        ret += \"}\";\n \
     \   }\n    ret += \"}\";\n    return ret;\n}\ntemplate <typename T1, typename\
     \ T2>\ninline std::string repr(const std::map<T1, T2>& t) {\n    return detail::type_str(t)\
-    \ + detail::initializer_str(t);\n}\n\ntemplate <typename T, size_t N>\ninline\
+    \ + detail::initializer_str(t);\n}\n\ntemplate <typename T, std::size_t N>\ninline\
     \ std::string type_str(const std::array<T, N>&) {\n    T t;\n    return \"std::array<\"\
     \ + detail::type_str(t) + \", \" + std::to_string(N) + \">\";\n}\ntemplate <typename\
-    \ T, size_t N>\ninline std::string initializer_str(const std::array<T, N>& t)\
-    \ {\n    std::string ret;\n    ret += \"{\";\n    for (auto itr = t.begin(); itr\
-    \ != t.end(); itr++) {\n        if (itr != t.begin()) ret += \", \";\n       \
-    \ ret += detail::initializer_str(*itr);\n    }\n    ret += \"}\";\n    return\
-    \ ret;\n}\ntemplate <typename T, size_t N>\ninline std::string repr(const std::array<T,\
-    \ N>& t) {\n    return detail::type_str(t) + detail::initializer_str(t);\n}\n\n\
-    }  // namespace detail\n\ntemplate <typename T>\ninline std::string type_str(const\
+    \ T, std::size_t N>\ninline std::string initializer_str(const std::array<T, N>&\
+    \ t) {\n    std::string ret;\n    ret += \"{\";\n    for (auto itr = t.begin();\
+    \ itr != t.end(); itr++) {\n        if (itr != t.begin()) ret += \", \";\n   \
+    \     ret += detail::initializer_str(*itr);\n    }\n    ret += \"}\";\n    return\
+    \ ret;\n}\ntemplate <typename T, std::size_t N>\ninline std::string repr(const\
+    \ std::array<T, N>& t) {\n    return detail::type_str(t) + detail::initializer_str(t);\n\
+    }\n\n}  // namespace detail\n\ntemplate <typename T>\ninline std::string type_str(const\
     \ T& t) {\n    return detail::type_str(t);\n}\ntemplate <typename T>\ninline std::string\
     \ initializer_str(const T& t) {\n    return detail::initializer_str(t);\n}\ntemplate\
     \ <typename T>\ninline std::string repr(const T& t) {\n    return detail::repr(t);\n\
     }\n\n#define DEBUG(x) { std::cerr << #x << \" = \" << repr(x) << std::endl; }\n"
   dependsOn:
-  - src/base/traits.hpp
+  - src/utility/traits.hpp
   isVerificationFile: false
-  path: src/base/repr.hpp
+  path: src/utility/repr.hpp
   requiredBy: []
-  timestamp: '2026-10-12 20:20:17+09:00'
+  timestamp: '2026-10-13 13:03:23+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/repr.test.cpp
-documentation_of: src/base/repr.hpp
+documentation_of: src/utility/repr.hpp
 layout: document
 title: "\u51FA\u529B\u3092\u305D\u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\
   \u30BF\u306B\u4F7F\u3048\u308B\u6587\u5B57\u5217\u5316 (repr)"

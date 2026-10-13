@@ -22,7 +22,7 @@ data:
     \u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\
     \u3059\u308B\n\n#include <iostream>\n#include <random>\n#include <set>\n\n#line\
     \ 2 \"src/data_structures/binary-trie.hpp\"\n\n/**\n * @file binary-trie.hpp\n\
-    \ * @brief Binary Trie\n */\n\n#include <assert.h>\n#include <limits>\n#include\
+    \ * @brief Binary Trie\n */\n\n#include <cassert>\n#include <limits>\n#include\
     \ <memory>\n#include <utility>\n\n/**\n * @brief \u7B26\u53F7\u306A\u3057\u6574\
     \u6570\u306E\u591A\u91CD\u96C6\u5408\u3092\u7BA1\u7406\u3059\u308B\n * @tparam\
     \ `d` \u6271\u3046\u6574\u6570\u5024\u306E\u30D3\u30C3\u30C8\u5E45\u3002T\u306E\
@@ -164,7 +164,7 @@ data:
   isVerificationFile: true
   path: test/unittest/binary-trie.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 06:02:01+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/binary-trie.test.cpp

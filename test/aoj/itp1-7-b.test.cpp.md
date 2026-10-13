@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: src/base/range.hpp
+    path: src/utility/range.hpp
     title: "Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\u5217"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -15,11 +15,11 @@ data:
     links:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_7_B
   bundledCode: "#line 1 \"test/aoj/itp1-7-b.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_7_B\"\
-    \n\n#include <iostream>\n\n#line 2 \"src/base/range.hpp\"\n\n/**\n * @file range.hpp\n\
-    \ * @brief Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\u5217\n */\n\
-    \n#include <cassert>\n#include <cstddef>\n#include <iterator>\n#include <string>\n\
-    #include <type_traits>\n#include <utility>\n#include <vector>\n\nstruct Range\
-    \ {\n   public:\n    using value_type = long long;\n    using const_reference\
+    \n\n#include <iostream>\n\n#line 2 \"src/utility/range.hpp\"\n\n/**\n * @file\
+    \ range.hpp\n * @brief Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\
+    \u5217\n */\n\n#include <cassert>\n#include <cstddef>\n#include <iterator>\n#include\
+    \ <string>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\n\
+    struct Range {\n   public:\n    using value_type = long long;\n    using const_reference\
     \ = const value_type&;\n    using size_type = std::size_t;\n    using difference_type\
     \ = std::ptrdiff_t;\n\n    const value_type start;\n    const value_type stop;\n\
     \    const value_type step;\n\n   private:\n    const value_type norm_stop;\n\n\
@@ -209,7 +209,7 @@ data:
     \                    if (a + b + c == x) cnt++;\n                }\n         \
     \   }\n        }\n        std::cout << cnt << '\\n';\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_7_B\"\
-    \n\n#include <iostream>\n\n#include \"../../src/base/range.hpp\"\n\nint main()\
+    \n\n#include <iostream>\n\n#include \"../../src/utility/range.hpp\"\n\nint main()\
     \ {\n    long long n, x;\n    while (std::cin >> n >> x && (n != 0 || x != 0))\
     \ {\n        int cnt = 0;\n        for (long long a : Range(1, n + 1)) {\n   \
     \         for (long long b : Range(a + 1, n + 1)) {\n                for (long\
@@ -217,11 +217,11 @@ data:
     \                }\n            }\n        }\n        std::cout << cnt << '\\\
     n';\n    }\n}\n"
   dependsOn:
-  - src/base/range.hpp
+  - src/utility/range.hpp
   isVerificationFile: true
   path: test/aoj/itp1-7-b.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 01:36:07+09:00'
+  timestamp: '2026-10-13 13:03:23+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/itp1-7-b.test.cpp

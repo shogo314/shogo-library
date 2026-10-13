@@ -2,15 +2,15 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: src/base/container_func.hpp
-    title: "\u30B3\u30F3\u30C6\u30CA\u306B\u5BFE\u3059\u308B\u95A2\u6570 (sorted,\
-      \ max, sum \u306A\u3069)"
-  - icon: ':heavy_check_mark:'
     path: src/base/io.hpp
     title: "\u7A7A\u767D\u533A\u5207\u308A\u51FA\u529B\u3001iostream\u306E\u30AA\u30FC\
       \u30D0\u30FC\u30ED\u30FC\u30C9"
   - icon: ':heavy_check_mark:'
-    path: src/base/traits.hpp
+    path: src/utility/container_func.hpp
+    title: "\u30B3\u30F3\u30C6\u30CA\u306B\u5BFE\u3059\u308B\u95A2\u6570 (sorted,\
+      \ max, sum \u306A\u3069)"
+  - icon: ':heavy_check_mark:'
+    path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -24,15 +24,16 @@ data:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP2_5_B
   bundledCode: "#line 1 \"test/aoj/itp2-5-b.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP2_5_B\"\
     \n\n#include <iostream>\n#include <string>\n#include <tuple>\n#include <vector>\n\
-    \n#line 2 \"src/base/container_func.hpp\"\n\n/**\n * @file container_func.hpp\n\
+    \n#line 2 \"src/utility/container_func.hpp\"\n\n/**\n * @file container_func.hpp\n\
     \ * @brief \u30B3\u30F3\u30C6\u30CA\u306B\u5BFE\u3059\u308B\u95A2\u6570 (sorted,\
     \ max, sum \u306A\u3069)\n */\n\n#include <algorithm>\n#include <cassert>\n#include\
-    \ <functional>\n#include <initializer_list>\n#include <iterator>\n#include <numeric>\n\
-    #line 2 \"src/base/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\
-    \u6027\n */\n\n#include <cstddef>\n#line 10 \"src/base/traits.hpp\"\n#include\
-    \ <set>\n#include <type_traits>\n#include <utility>\n\nnamespace detail {\nusing\
-    \ std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
-    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ <cstddef>\n#include <functional>\n#include <initializer_list>\n#include <iterator>\n\
+    #include <numeric>\n#include <type_traits>\n#line 2 \"src/utility/traits.hpp\"\
+    \n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 10 \"\
+    src/utility/traits.hpp\"\n#include <set>\n#line 12 \"src/utility/traits.hpp\"\n\
+    #include <utility>\n\nnamespace detail {\nusing std::begin, std::end;\n\ntemplate\
+    \ <class T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate\
+    \ <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
     \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace detail\n\n\
     template <class T>\nstruct is_range : detail::is_range_impl<T>::type {};\ntemplate\
     \ <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define\
@@ -79,8 +80,8 @@ data:
     \ : std::true_type {};\n}  // namespace detail\ntemplate <class T>\nstruct is_sorted_container\
     \ : detail::is_sorted_container_impl<T>::type {};\ntemplate <class T>\ninline\
     \ constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n#line\
-    \ 16 \"src/base/container_func.hpp\"\n\n#define METHOD_EXPAND(func)          \
-    \                              \\\n    template <typename T, ENABLE_IF_T(has_##func##_v<T>)>\
+    \ 18 \"src/utility/container_func.hpp\"\n\n#define METHOD_EXPAND(func)       \
+    \                                 \\\n    template <typename T, ENABLE_IF_T(has_##func##_v<T>)>\
     \          \\\n    inline constexpr auto func(const T &t) -> decltype(t.func())\
     \ { \\\n        return t.func();                                           \\\n\
     \    }\n\n#define METHOD_AND_FUNC_ARG_EXPAND(func)                           \
@@ -156,54 +157,54 @@ data:
     template <class C>\ninline constexpr mem_value_type<C> average(const C &v) {\n\
     \    assert(v.size());\n    return sum(v) / v.size();\n}\n\ntemplate <class C>\n\
     inline constexpr mem_value_type<C> median(const C &v) {\n    assert(not v.empty());\n\
-    \    std::vector<size_t> u(v.size());\n    std::iota(u.begin(), u.end(), 0);\n\
-    \    std::sort(u.begin(), u.end(), [&](size_t a, size_t b) {\n        return v[a]\
-    \ < v[b];\n    });\n    if (v.size() & 1) {\n        return v[u[v.size() / 2]];\n\
-    \    }\n    // C++20\n    // return std::midpoint(v[u[v.size() / 2]], v[u[v.size()\
-    \ / 2 - 1]]);\n    return (v[u[v.size() / 2]] + v[u[v.size() / 2 - 1]]) / 2;\n\
-    }\n\ntemplate <class C, typename U>\ninline constexpr std::ptrdiff_t index(const\
-    \ C &v, const U &x) {\n    return std::distance(v.begin(), find(v, x));\n}\n\n\
-    template <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\ninline\
-    \ constexpr mem_value_type<C> mex(const C &v) {\n    std::vector<bool> b(v.size()\
-    \ + 1);\n    for (const auto &a : v) {\n        if (0 <= a and static_cast<size_t>(a)\
+    \    std::vector<std::size_t> u(v.size());\n    std::iota(u.begin(), u.end(),\
+    \ 0);\n    std::sort(u.begin(), u.end(), [&](std::size_t a, std::size_t b) {\n\
+    \        return v[a] < v[b];\n    });\n    if (v.size() & 1) {\n        return\
+    \ v[u[v.size() / 2]];\n    }\n    // C++20\n    // return std::midpoint(v[u[v.size()\
+    \ / 2]], v[u[v.size() / 2 - 1]]);\n    return (v[u[v.size() / 2]] + v[u[v.size()\
+    \ / 2 - 1]]) / 2;\n}\n\ntemplate <class C, typename U>\ninline constexpr std::ptrdiff_t\
+    \ index(const C &v, const U &x) {\n    return std::distance(v.begin(), find(v,\
+    \ x));\n}\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
+    inline constexpr mem_value_type<C> mex(const C &v) {\n    std::vector<bool> b(v.size()\
+    \ + 1);\n    for (const auto &a : v) {\n        if (0 <= a and static_cast<std::size_t>(a)\
     \ < b.size()) {\n            b[a] = true;\n        }\n    }\n    mem_value_type<C>\
     \ ret = 0;  // b \u306E\u8981\u7D20\u6570\u306F v \u3088\u308A 1 \u591A\u3044\u306E\
     \u3067\u3001\u4E0B\u306E\u30EB\u30FC\u30D7\u3067\u5FC5\u305A\u898B\u3064\u304B\
-    \u308B\n    for (size_t i = 0; i < b.size(); i++) {\n        if (not b[i]) {\n\
-    \            ret = i;\n            break;\n        }\n    }\n    return ret;\n\
+    \u308B\n    for (std::size_t i = 0; i < b.size(); i++) {\n        if (not b[i])\
+    \ {\n            ret = i;\n            break;\n        }\n    }\n    return ret;\n\
     }\n\ntemplate <class C>\ninline constexpr mem_difference_type<C> bisect_left(const\
     \ C &v, const mem_value_type<C> &x) {\n    return std::distance(v.begin(), lower_bound(v,\
     \ x));\n}\ntemplate <class C>\ninline constexpr mem_difference_type<C> bisect_right(const\
     \ C &v, const mem_value_type<C> &x) {\n    return std::distance(v.begin(), upper_bound(v,\
     \ x));\n}\n#line 2 \"src/base/io.hpp\"\n/**\n * @file io.hpp\n * @brief \u7A7A\
     \u767D\u533A\u5207\u308A\u51FA\u529B\u3001iostream\u306E\u30AA\u30FC\u30D0\u30FC\
-    \u30ED\u30FC\u30C9\n */\n\n#include <array>\n#line 13 \"src/base/io.hpp\"\n\n\
+    \u30ED\u30FC\u30C9\n */\n\n#include <array>\n#line 14 \"src/base/io.hpp\"\n\n\
     // \u30CD\u30B9\u30C8\u3057\u305F\u578B (pair<vector<int>, int> \u306A\u3069)\
     \ \u3092\u6271\u3048\u308B\u3088\u3046\u306B\u5148\u306B\u5BA3\u8A00\u3057\u3066\
     \u304A\u304F\ntemplate <typename T1, typename T2, typename CharT, typename Traits>\n\
     std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT, Traits>&\
     \ is, std::pair<T1, T2>& p);\ntemplate <typename... Types, typename CharT, typename\
     \ Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
-    \ Traits>& is, std::tuple<Types...>& p);\ntemplate <typename T, size_t N, typename\
-    \ CharT, typename Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    \ Traits>& is, std::tuple<Types...>& p);\ntemplate <typename T, std::size_t N,\
+    \ typename CharT, typename Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
     \ Traits>& is, std::array<T, N>& a);\ntemplate <typename T, typename CharT, typename\
     \ Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
     \ Traits>& is, std::vector<T>& v);\ntemplate <typename T1, typename T2, typename\
     \ CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const std::pair<T1, T2>& p);\ntemplate <typename... Types, typename\
     \ CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
-    \ Traits>& os, const std::tuple<Types...>& p);\ntemplate <typename T, size_t N,\
-    \ typename CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \ Traits>& os, const std::tuple<Types...>& p);\ntemplate <typename T, std::size_t\
+    \ N, typename CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const std::array<T, N>& a);\ntemplate <typename T, typename CharT,\
     \ typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const std::vector<T>& v);\ntemplate <typename T, typename CharT,\
     \ typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const std::set<T>& s);\n\nnamespace tuple_io {\n    template <typename\
-    \ Tuple, size_t I, typename CharT, typename Traits>\n    std::basic_istream<CharT,\
+    \ Tuple, std::size_t I, typename CharT, typename Traits>\n    std::basic_istream<CharT,\
     \ Traits>& read_tuple(std::basic_istream<CharT, Traits>& is, Tuple& t) {\n   \
     \     is >> std::get<I>(t);\n        if constexpr (I + 1 < std::tuple_size_v<Tuple>)\
     \ {\n            return read_tuple<Tuple, I + 1>(is, t);\n        }\n        return\
-    \ is;\n    }\n    template <typename Tuple, size_t I, typename CharT, typename\
+    \ is;\n    }\n    template <typename Tuple, std::size_t I, typename CharT, typename\
     \ Traits>\n    std::basic_ostream<CharT, Traits>& write_tuple(std::basic_ostream<CharT,\
     \ Traits>& os, const Tuple& t) {\n        os << std::get<I>(t);\n        if constexpr\
     \ (I + 1 < std::tuple_size_v<Tuple>) {\n            os << CharT(' ');\n      \
@@ -214,7 +215,7 @@ data:
     }\ntemplate <typename... Types, typename CharT, typename Traits>\nstd::basic_istream<CharT,\
     \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, std::tuple<Types...>&\
     \ p) {\n    return tuple_io::read_tuple<std::tuple<Types...>, 0>(is, p);\n}\n\
-    template <typename T, size_t N, typename CharT, typename Traits>\nstd::basic_istream<CharT,\
+    template <typename T, std::size_t N, typename CharT, typename Traits>\nstd::basic_istream<CharT,\
     \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, std::array<T, N>&\
     \ a) {\n    for(auto& e : a) is >> e;\n    return is;\n}\ntemplate <typename T,\
     \ typename CharT, typename Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
@@ -225,13 +226,13 @@ data:
     \    return os;\n}\ntemplate <typename... Types, typename CharT, typename Traits>\n\
     std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>&\
     \ os, const std::tuple<Types...>& p) {\n    return tuple_io::write_tuple<std::tuple<Types...>,\
-    \ 0>(os, p);\n}\ntemplate <typename T, size_t N, typename CharT, typename Traits>\n\
-    std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>&\
-    \ os, const std::array<T, N>& a) {\n    for(size_t i = 0; i < N; ++i) {\n    \
-    \    if(i) os << CharT(' ');\n        os << a[i];\n    }\n    return os;\n}\n\
-    template <typename T, typename CharT, typename Traits>\nstd::basic_ostream<CharT,\
+    \ 0>(os, p);\n}\ntemplate <typename T, std::size_t N, typename CharT, typename\
+    \ Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \ Traits>& os, const std::array<T, N>& a) {\n    for(std::size_t i = 0; i < N;\
+    \ ++i) {\n        if(i) os << CharT(' ');\n        os << a[i];\n    }\n    return\
+    \ os;\n}\ntemplate <typename T, typename CharT, typename Traits>\nstd::basic_ostream<CharT,\
     \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const std::vector<T>&\
-    \ v) {\n    for(size_t i = 0; i < v.size(); ++i) {\n        if(i) os << CharT('\
+    \ v) {\n    for(std::size_t i = 0; i < v.size(); ++i) {\n        if(i) os << CharT('\
     \ ');\n        os << v[i];\n    }\n    return os;\n}\ntemplate <typename T, typename\
     \ CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const std::set<T>& s) {\n    for(auto itr = s.begin(); itr != s.end();\
@@ -269,7 +270,7 @@ data:
     \n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP2_5_B\"\
     \n\n#include <iostream>\n#include <string>\n#include <tuple>\n#include <vector>\n\
-    \n#include \"../../src/base/container_func.hpp\"\n#include \"../../src/base/io.hpp\"\
+    \n#include \"../../src/utility/container_func.hpp\"\n#include \"../../src/base/io.hpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    int n;\n    std::cin >> n;\n    // \u4FA1\u5024\u3001\u91CD\u3055\u3001\u578B\
     \u3001\u65E5\u6642\u3001\u540D\u524D (\u3053\u306E\u9806\u306E\u8F9E\u66F8\u5F0F\
@@ -280,13 +281,13 @@ data:
     \ << t << '\\n';  // tuple \u3092\u7A7A\u767D\u533A\u5207\u308A\u3067\u51FA\u529B\
     \n}\n"
   dependsOn:
-  - src/base/container_func.hpp
-  - src/base/traits.hpp
+  - src/utility/container_func.hpp
+  - src/utility/traits.hpp
   - src/base/io.hpp
   isVerificationFile: true
   path: test/aoj/itp2-5-b.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 06:07:05+09:00'
+  timestamp: '2026-10-13 13:03:23+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/itp2-5-b.test.cpp

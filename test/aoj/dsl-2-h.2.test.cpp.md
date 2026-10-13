@@ -24,8 +24,8 @@ data:
     \n\n#include <iostream>\n#include <vector>\n\n#line 2 \"src/data_structures/lazy-segtree.hpp\"\
     \n\n/**\n * @file lazy-segtree.hpp\n * @brief \u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\
     \u30E1\u30F3\u30C8\u6728\n */\n\n#include <algorithm>\n#include <cassert>\n#include\
-    \ <functional>\n#include <ostream>\n#include <utility>\n#line 2 \"src/algebra/acted-monoid.hpp\"\
-    \n\n/**\n * @file acted-monoid.hpp\n * @brief \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
+    \ <ostream>\n#include <utility>\n#line 2 \"src/algebra/acted-monoid.hpp\"\n\n\
+    /**\n * @file acted-monoid.hpp\n * @brief \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
     \u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
     \u30CE\u30A4\u30C9\u306F\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp) \u306E\u30E1\
     \u30F3\u30D0\u306B\u52A0\u3048\u3066\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
@@ -38,29 +38,30 @@ data:
     \u7528\u3057\u305F\u5F8C\u306Bf\u3092\u9069\u7528\u3059\u308B)\n * - F id(): \u6052\
     \u7B49\u5199\u50CF\n * \u4F5C\u7528\u7D20\u304C\u7FA4\u3092\u306A\u3059\u5834\u5408\
     \ (imos.hpp \u3067\u4F7F\u3046) \u306F\n * - F inv(const F& f): \u9006\u4F5C\u7528\
-    \u7D20\n */\n\n#include <array>\n#include <limits>\n#include <optional>\n#include\
-    \ <type_traits>\n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n\
-    \ * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\
-    \u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\
-    \u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S&\
-    \ a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n\
-    \ * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\
-    \u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\
-    \u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\
-    \n#line 16 \"src/algebra/monoid.hpp\"\n#include <cstddef>\n#include <istream>\n\
-    #line 19 \"src/algebra/monoid.hpp\"\n#include <numeric>\n#line 23 \"src/algebra/monoid.hpp\"\
-    \n\n/**\n * @brief 1\u6B21\u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite\
-    \ \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\
-    \u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\
-    \u3059\u308B\u3068\u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\n\
-    struct Affine {\n    T a = T(1);  //!< \u50BE\u304D\n    T b = T(0);  //!< \u5207\
-    \u7247\n    constexpr T operator()(const T& x) const { return a * x + b; }\n \
-    \   friend constexpr bool operator==(const Affine& f, const Affine& g) { return\
-    \ f.a == g.a && f.b == g.b; }\n    friend constexpr bool operator!=(const Affine&\
-    \ f, const Affine& g) { return !(f == g); }\n    template <class CharT, class\
-    \ Traits>\n    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
-    \ Traits>& is, Affine& f) {\n        return is >> f.a >> f.b;\n    }\n    template\
-    \ <class CharT, class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \u7D20\n */\n\n#line 18 \"src/algebra/acted-monoid.hpp\"\n#include <array>\n#include\
+    \ <cstddef>\n#include <limits>\n#include <optional>\n#include <type_traits>\n\
+    #line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n * @brief \u30E2\
+    \u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\
+    \u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\
+    \n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S& a, const S& b): \u7A4D\
+    \ (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n * op, e \u306F static\
+    \ \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\
+    \u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\
+    \u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\n#line 17 \"src/algebra/monoid.hpp\"\
+    \n#include <istream>\n#line 19 \"src/algebra/monoid.hpp\"\n#include <numeric>\n\
+    #line 23 \"src/algebra/monoid.hpp\"\n\n/**\n * @brief 1\u6B21\u95A2\u6570 f(x)\
+    \ = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum\
+    \ \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3};\
+    \ f(x) \u306F 2x + 3\u3002\u7701\u7565\u3059\u308B\u3068\u6052\u7B49\u5199\u50CF\
+    \ {1, 0}\n */\ntemplate <typename T>\nstruct Affine {\n    T a = T(1);  //!< \u50BE\
+    \u304D\n    T b = T(0);  //!< \u5207\u7247\n    constexpr T operator()(const T&\
+    \ x) const { return a * x + b; }\n    friend constexpr bool operator==(const Affine&\
+    \ f, const Affine& g) { return f.a == g.a && f.b == g.b; }\n    friend constexpr\
+    \ bool operator!=(const Affine& f, const Affine& g) { return !(f == g); }\n  \
+    \  template <class CharT, class Traits>\n    friend std::basic_istream<CharT,\
+    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Affine& f) {\n  \
+    \      return is >> f.a >> f.b;\n    }\n    template <class CharT, class Traits>\n\
+    \    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const Affine& f) {\n        return os << f.a << CharT(' ') << f.b;\n\
     \    }\n};\n\nnamespace monoid {\n\n/**\n * @brief \u548C\n */\ntemplate <typename\
     \ T>\nstruct Sum {\n    using S = T;\n    static constexpr S op(const S& a, const\
@@ -167,7 +168,7 @@ data:
     \    Monoid() = default;\n    constexpr Monoid(Op op, const S& e) : op_object(std::move(op)),\
     \ identity(e) {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a,\
     \ b); }\n    constexpr S e() const { return identity; }\n};\ntemplate <typename\
-    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 23 \"src/algebra/acted-monoid.hpp\"\
+    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 25 \"src/algebra/acted-monoid.hpp\"\
     \n\nnamespace acted_monoid {\n\nnamespace detail {\ntemplate <typename A, typename\
     \ = void>\nstruct has_mapping_lr : std::false_type {};\ntemplate <typename A>\n\
     struct has_mapping_lr<A, std::void_t<decltype(std::declval<const A&>().mapping(std::declval<const\
@@ -319,7 +320,7 @@ data:
     \ g); }\n    constexpr F id() const { return lazy_identity; }\n};\ntemplate <typename\
     \ Op, typename T, typename Mapping, typename Composition, typename U>\nActedMonoid(Op,\
     \ T, Mapping, Composition, U) -> ActedMonoid<T, Op, U, Mapping, Composition>;\n\
-    #line 15 \"src/data_structures/lazy-segtree.hpp\"\n\n/**\n * @brief \u9045\u5EF6\
+    #line 14 \"src/data_structures/lazy-segtree.hpp\"\n\n/**\n * @brief \u9045\u5EF6\
     \u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n *\n * \u4F8B:\n * LazySegTree<acted_monoid::AffineSum<mint>>\
     \ seg(v);\n *\n * @tparam A \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\
     \ (algebra/acted-monoid.hpp)\n */\ntemplate <typename A>\nclass LazySegTree {\n\
@@ -500,7 +501,7 @@ data:
   isVerificationFile: true
   path: test/aoj/dsl-2-h.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 12:10:14+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/dsl-2-h.2.test.cpp

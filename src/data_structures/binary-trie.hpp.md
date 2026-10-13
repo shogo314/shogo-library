@@ -19,7 +19,7 @@ data:
     document_title: Binary Trie
     links: []
   bundledCode: "#line 2 \"src/data_structures/binary-trie.hpp\"\n\n/**\n * @file binary-trie.hpp\n\
-    \ * @brief Binary Trie\n */\n\n#include <assert.h>\n#include <limits>\n#include\
+    \ * @brief Binary Trie\n */\n\n#include <cassert>\n#include <limits>\n#include\
     \ <memory>\n#include <utility>\n\n/**\n * @brief \u7B26\u53F7\u306A\u3057\u6574\
     \u6570\u306E\u591A\u91CD\u96C6\u5408\u3092\u7BA1\u7406\u3059\u308B\n * @tparam\
     \ `d` \u6271\u3046\u6574\u6570\u5024\u306E\u30D3\u30C3\u30C8\u5E45\u3002T\u306E\
@@ -110,7 +110,7 @@ data:
     \u3082\u524A\u9664\u3055\u308C\u308B\n     */\n    void clear() {\n        root_ptr\
     \ = std::make_shared<BinaryTrieNode>(d);\n    }\n};\n"
   code: "#pragma once\n\n/**\n * @file binary-trie.hpp\n * @brief Binary Trie\n */\n\
-    \n#include <assert.h>\n#include <limits>\n#include <memory>\n#include <utility>\n\
+    \n#include <cassert>\n#include <limits>\n#include <memory>\n#include <utility>\n\
     \n/**\n * @brief \u7B26\u53F7\u306A\u3057\u6574\u6570\u306E\u591A\u91CD\u96C6\u5408\
     \u3092\u7BA1\u7406\u3059\u308B\n * @tparam `d` \u6271\u3046\u6574\u6570\u5024\u306E\
     \u30D3\u30C3\u30C8\u5E45\u3002T\u306E\u6841\u4EE5\u4E0B\u3067\u3042\u308B\u3053\
@@ -204,7 +204,7 @@ data:
   isVerificationFile: false
   path: src/data_structures/binary-trie.hpp
   requiredBy: []
-  timestamp: '2026-10-12 20:24:58+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/binary-trie.test.cpp

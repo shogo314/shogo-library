@@ -21,34 +21,34 @@ data:
   bundledCode: "#line 1 \"test/aoj/cgl-3-a.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_3_A\"\
     \n\n#include <iomanip>\n\n#line 2 \"src/base/io.hpp\"\n/**\n * @file io.hpp\n\
     \ * @brief \u7A7A\u767D\u533A\u5207\u308A\u51FA\u529B\u3001iostream\u306E\u30AA\
-    \u30FC\u30D0\u30FC\u30ED\u30FC\u30C9\n */\n\n#include <array>\n#include <iostream>\n\
-    #include <set>\n#include <utility>\n#include <tuple>\n#include <vector>\n\n//\
-    \ \u30CD\u30B9\u30C8\u3057\u305F\u578B (pair<vector<int>, int> \u306A\u3069) \u3092\
-    \u6271\u3048\u308B\u3088\u3046\u306B\u5148\u306B\u5BA3\u8A00\u3057\u3066\u304A\
-    \u304F\ntemplate <typename T1, typename T2, typename CharT, typename Traits>\n\
-    std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT, Traits>&\
-    \ is, std::pair<T1, T2>& p);\ntemplate <typename... Types, typename CharT, typename\
-    \ Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
-    \ Traits>& is, std::tuple<Types...>& p);\ntemplate <typename T, size_t N, typename\
-    \ CharT, typename Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    \u30FC\u30D0\u30FC\u30ED\u30FC\u30C9\n */\n\n#include <array>\n#include <cstddef>\n\
+    #include <iostream>\n#include <set>\n#include <utility>\n#include <tuple>\n#include\
+    \ <vector>\n\n// \u30CD\u30B9\u30C8\u3057\u305F\u578B (pair<vector<int>, int>\
+    \ \u306A\u3069) \u3092\u6271\u3048\u308B\u3088\u3046\u306B\u5148\u306B\u5BA3\u8A00\
+    \u3057\u3066\u304A\u304F\ntemplate <typename T1, typename T2, typename CharT,\
+    \ typename Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    \ Traits>& is, std::pair<T1, T2>& p);\ntemplate <typename... Types, typename CharT,\
+    \ typename Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    \ Traits>& is, std::tuple<Types...>& p);\ntemplate <typename T, std::size_t N,\
+    \ typename CharT, typename Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
     \ Traits>& is, std::array<T, N>& a);\ntemplate <typename T, typename CharT, typename\
     \ Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
     \ Traits>& is, std::vector<T>& v);\ntemplate <typename T1, typename T2, typename\
     \ CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const std::pair<T1, T2>& p);\ntemplate <typename... Types, typename\
     \ CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
-    \ Traits>& os, const std::tuple<Types...>& p);\ntemplate <typename T, size_t N,\
-    \ typename CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \ Traits>& os, const std::tuple<Types...>& p);\ntemplate <typename T, std::size_t\
+    \ N, typename CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const std::array<T, N>& a);\ntemplate <typename T, typename CharT,\
     \ typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const std::vector<T>& v);\ntemplate <typename T, typename CharT,\
     \ typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const std::set<T>& s);\n\nnamespace tuple_io {\n    template <typename\
-    \ Tuple, size_t I, typename CharT, typename Traits>\n    std::basic_istream<CharT,\
+    \ Tuple, std::size_t I, typename CharT, typename Traits>\n    std::basic_istream<CharT,\
     \ Traits>& read_tuple(std::basic_istream<CharT, Traits>& is, Tuple& t) {\n   \
     \     is >> std::get<I>(t);\n        if constexpr (I + 1 < std::tuple_size_v<Tuple>)\
     \ {\n            return read_tuple<Tuple, I + 1>(is, t);\n        }\n        return\
-    \ is;\n    }\n    template <typename Tuple, size_t I, typename CharT, typename\
+    \ is;\n    }\n    template <typename Tuple, std::size_t I, typename CharT, typename\
     \ Traits>\n    std::basic_ostream<CharT, Traits>& write_tuple(std::basic_ostream<CharT,\
     \ Traits>& os, const Tuple& t) {\n        os << std::get<I>(t);\n        if constexpr\
     \ (I + 1 < std::tuple_size_v<Tuple>) {\n            os << CharT(' ');\n      \
@@ -59,7 +59,7 @@ data:
     }\ntemplate <typename... Types, typename CharT, typename Traits>\nstd::basic_istream<CharT,\
     \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, std::tuple<Types...>&\
     \ p) {\n    return tuple_io::read_tuple<std::tuple<Types...>, 0>(is, p);\n}\n\
-    template <typename T, size_t N, typename CharT, typename Traits>\nstd::basic_istream<CharT,\
+    template <typename T, std::size_t N, typename CharT, typename Traits>\nstd::basic_istream<CharT,\
     \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, std::array<T, N>&\
     \ a) {\n    for(auto& e : a) is >> e;\n    return is;\n}\ntemplate <typename T,\
     \ typename CharT, typename Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
@@ -70,13 +70,13 @@ data:
     \    return os;\n}\ntemplate <typename... Types, typename CharT, typename Traits>\n\
     std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>&\
     \ os, const std::tuple<Types...>& p) {\n    return tuple_io::write_tuple<std::tuple<Types...>,\
-    \ 0>(os, p);\n}\ntemplate <typename T, size_t N, typename CharT, typename Traits>\n\
-    std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>&\
-    \ os, const std::array<T, N>& a) {\n    for(size_t i = 0; i < N; ++i) {\n    \
-    \    if(i) os << CharT(' ');\n        os << a[i];\n    }\n    return os;\n}\n\
-    template <typename T, typename CharT, typename Traits>\nstd::basic_ostream<CharT,\
+    \ 0>(os, p);\n}\ntemplate <typename T, std::size_t N, typename CharT, typename\
+    \ Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \ Traits>& os, const std::array<T, N>& a) {\n    for(std::size_t i = 0; i < N;\
+    \ ++i) {\n        if(i) os << CharT(' ');\n        os << a[i];\n    }\n    return\
+    \ os;\n}\ntemplate <typename T, typename CharT, typename Traits>\nstd::basic_ostream<CharT,\
     \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const std::vector<T>&\
-    \ v) {\n    for(size_t i = 0; i < v.size(); ++i) {\n        if(i) os << CharT('\
+    \ v) {\n    for(std::size_t i = 0; i < v.size(); ++i) {\n        if(i) os << CharT('\
     \ ');\n        os << v[i];\n    }\n    return os;\n}\ntemplate <typename T, typename\
     \ CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const std::set<T>& s) {\n    for(auto itr = s.begin(); itr != s.end();\
@@ -105,9 +105,9 @@ data:
     \ << x << ' ';\n    err(tail...);\n}\n#line 2 \"src/geometry/vector.hpp\"\n\n\
     /**\n * @file vector.hpp\n * @brief \u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB\n */\n\
     \n#include <algorithm>\n#line 10 \"src/geometry/vector.hpp\"\n#include <cassert>\n\
-    #include <cmath>\n#include <initializer_list>\n#include <istream>\n#include <numeric>\n\
+    #include <cmath>\n#include <istream>\n#include <limits>\n#include <numeric>\n\
     #include <optional>\n#include <ostream>\n#include <stack>\n#include <type_traits>\n\
-    #line 20 \"src/geometry/vector.hpp\"\n\n/**\n * @brief \u5E7E\u4F55\u5B66\u3068\
+    #line 21 \"src/geometry/vector.hpp\"\n\n/**\n * @brief \u5E7E\u4F55\u5B66\u3068\
     \u3057\u3066\u306E\u30D9\u30AF\u30C8\u30EB\n *\n * @tparam T \u578B \u7701\u7565\
     \u3057\u305F\u3089double\n * @tparam Dim \u6B21\u5143 \u7701\u7565\u3057\u305F\
     \u30892\n */\ntemplate <typename T = double, int Dim = 2, std::enable_if_t<std::is_scalar_v<T>\
@@ -426,7 +426,7 @@ data:
   isVerificationFile: true
   path: test/aoj/cgl-3-a.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 00:57:44+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/cgl-3-a.test.cpp

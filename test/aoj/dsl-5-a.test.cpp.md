@@ -9,11 +9,7 @@ data:
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   - icon: ':heavy_check_mark:'
     path: src/base/functions.hpp
-    title: "\u6C4E\u7528\u95A2\u6570 (chmin, chmax, \u4E8C\u5206\u63A2\u7D22\u306A\
-      \u3069)"
-  - icon: ':heavy_check_mark:'
-    path: src/base/traits.hpp
-    title: "\u578B\u7279\u6027"
+    title: "\u6C4E\u7528\u95A2\u6570 (chmin, chmax \u306A\u3069)"
   - icon: ':heavy_check_mark:'
     path: src/data_structures/imos.hpp
     title: "imos\u6CD5\u3067\u533A\u9593\u4F5C\u7528\u30011\u70B9\u53D6\u5F97"
@@ -29,145 +25,65 @@ data:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_5_A
   bundledCode: "#line 1 \"test/aoj/dsl-5-a.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_5_A\"\
     \n\n#include <iostream>\n\n#line 2 \"src/base/functions.hpp\"\n\n/**\n * @file\
-    \ functions.hpp\n * @brief \u6C4E\u7528\u95A2\u6570 (chmin, chmax, \u4E8C\u5206\
-    \u63A2\u7D22\u306A\u3069)\n */\n\n#include <algorithm>\n#include <array>\n#include\
-    \ <cmath>\n#include <numeric>\n#line 2 \"src/base/traits.hpp\"\n\n/**\n * @file\
-    \ traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n#include\
-    \ <iterator>\n#include <set>\n#include <type_traits>\n#include <utility>\n\nnamespace\
-    \ detail {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\n\
-    struct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T,\
-    \ std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>> :\
-    \ std::true_type {};\n}  // namespace detail\n\ntemplate <class T>\nstruct is_range\
-    \ : detail::is_range_impl<T>::type {};\ntemplate <class T>\ninline constexpr bool\
-    \ is_range_v = is_range<T>::value;\n\n#define HAS_METHOD(func_name)          \
-    \                                                    \\\n    namespace detail\
-    \ {                                                                     \\\n \
-    \   template <class T, class = void>                                         \
-    \              \\\n    struct has_##func_name##_impl : std::false_type {};   \
-    \                                 \\\n    template <class T>                 \
-    \                                                    \\\n    struct has_##func_name##_impl<T,\
-    \ std::void_t<decltype(std::declval<T>().func_name())>> \\\n        : std::true_type\
-    \ {};                                                               \\\n    }\
-    \                                                                            \
-    \          \\\n    template <class T>                                        \
-    \                             \\\n    struct has_##func_name : detail::has_##func_name##_impl<T>::type\
-    \ {};                   \\\n    template <class T>                           \
-    \                                          \\\n    inline constexpr bool has_##func_name##_v\
-    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
-    \                                                                    \\\n    namespace\
-    \ detail {                                                                   \
-    \                      \\\n    template <class T, typename U, class = void>  \
-    \                                                             \\\n    struct has_##func_name##_impl\
-    \ : std::false_type {};                                                      \
-    \  \\\n    template <class T, typename U>                                    \
-    \                                         \\\n    struct has_##func_name##_impl<T,\
-    \ U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>> \\\
-    \n        : std::true_type {};                                               \
-    \                                    \\\n    }                               \
-    \                                                                           \\\
-    \n    template <class T, typename U>                                         \
-    \                                    \\\n    struct has_##func_name : detail::has_##func_name##_impl<T,\
-    \ U>::type {};                                    \\\n    template <class T, typename\
-    \ U>                                                                         \
-    \    \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
-    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
-    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
-    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
-    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
-    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
-    \ntemplate <class C>\nusing mem_value_type = typename C::value_type;\ntemplate\
-    \ <class C>\nusing mem_difference_type = typename C::difference_type;\n\nnamespace\
-    \ detail {\ntemplate <class T, class = void>\nstruct is_sorted_container_impl\
-    \ : std::false_type {};\ntemplate <class T>\nstruct is_sorted_container_impl<std::set<T>>\
-    \ : std::true_type {};\ntemplate <class T>\nstruct is_sorted_container_impl<std::multiset<T>>\
-    \ : std::true_type {};\n}  // namespace detail\ntemplate <class T>\nstruct is_sorted_container\
-    \ : detail::is_sorted_container_impl<T>::type {};\ntemplate <class T>\ninline\
-    \ constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n#line\
-    \ 13 \"src/base/functions.hpp\"\n\ntemplate <typename T1, typename T2>\ninline\
-    \ constexpr bool chmin(T1 &a, T2 b) {\n    if (a > b) {\n        a = b;\n    \
-    \    return true;\n    }\n    return false;\n}\n\ntemplate <typename T1, typename\
-    \ T2>\ninline constexpr bool chmax(T1 &a, T2 b) {\n    if (a < b) {\n        a\
-    \ = b;\n        return true;\n    }\n    return false;\n}\n\ninline constexpr\
-    \ long long max(const long long &t1, const long long &t2) {\n    return std::max<long\
-    \ long>(t1, t2);\n}\n\ninline constexpr long long min(const long long &t1, const\
-    \ long long &t2) {\n    return std::min<long long>(t1, t2);\n}\n\nusing std::abs;\n\
-    using std::gcd;\nusing std::lcm;\nusing std::size;\n\ntemplate <typename T>\n\
-    constexpr T extgcd(const T &a, const T &b, T &x, T &y) {\n    T d = a;\n    if\
-    \ (b != 0) {\n        d = extgcd(b, a % b, y, x);\n        y -= (a / b) * x;\n\
-    \    } else {\n        x = 1;\n        y = 0;\n    }\n    return d;\n}\n\n/**\n\
-    \ * \u504F\u89D2\u30BD\u30FC\u30C8\n * \u53CD\u6642\u8A08\u56DE\u308A\n * x \u8EF8\
-    \u6B63\u65B9\u5411\u3092\u59CB\u70B9\u3068\u3057\u3001\u96F6\u30D9\u30AF\u30C8\
-    \u30EB\u306F x \u8EF8\u6B63\u65B9\u5411\u3068\u540C\u3058\u504F\u89D2\u3068\u3057\
-    \u3066\u6271\u3046\n */\ntemplate <typename T, ENABLE_IF_T(std::is_integral_v<T>)>\n\
-    bool argcmp(std::array<T, 2> a, std::array<T, 2> b) {\n    // \u96F6\u30D9\u30AF\
-    \u30C8\u30EB\u306F\u5916\u7A4D\u3067\u6BD4\u3079\u3089\u308C\u306A\u3044\u306E\
-    \u3067\u3001\u504F\u89D2 0 (x \u8EF8\u6B63\u65B9\u5411) \u3068\u3057\u3066\u5148\
-    \u306B\u5224\u5B9A\u3059\u308B\n    const bool a_zero = a[0] == 0 && a[1] == 0;\n\
-    \    const bool b_zero = b[0] == 0 && b[1] == 0;\n    if (b_zero) return false;\
-    \  // \u504F\u89D2 0 \u3088\u308A\u5C0F\u3055\u3044\u3082\u306E\u306F\u306A\u3044\
-    \n    if (a_zero) return !(b[1] == 0 && b[0] > 0);  // b \u306E\u504F\u89D2\u304C\
-    \ 0 \u3088\u308A\u5927\u304D\u3044\u304B\n    T a0 = std::array<T, 2>{a[1], a[0]}\
-    \ < std::array<T, 2>{0, 0};\n    T b0 = std::array<T, 2>{b[1], b[0]} < std::array<T,\
-    \ 2>{0, 0};\n    if (a0 < b0) {\n        return true;\n    } else if (b0 < a0)\
-    \ {\n        return false;\n    } else {\n        return b[0] * a[1] < a[0] *\
-    \ b[1];\n    }\n}\n\ntemplate <typename M, typename N, class F, ENABLE_IF_T(std::is_integral_v<std::common_type_t<M,\
-    \ N>> and std::is_invocable_r_v<bool, F, std::common_type_t<M, N>>)>\ninline constexpr\
-    \ std::common_type_t<M, N> binary_search(const M &ok, const N &ng, F f) {\n  \
-    \  std::common_type_t<M, N> _ok = ok, _ng = ng;\n    while (std::abs(_ok - _ng)\
-    \ > 1) {\n        std::common_type_t<M, N> mid = (_ok + _ng) / 2;\n        if\
-    \ (f(mid)) {\n            _ok = mid;\n        } else {\n            _ng = mid;\n\
-    \        }\n    }\n    return _ok;\n}\n\ntemplate <typename M, typename N, class\
-    \ F, ENABLE_IF_T(not std::is_integral_v<std::common_type_t<M, N>> and std::is_invocable_r_v<bool,\
-    \ F, std::common_type_t<M, N>>)>\ninline constexpr std::common_type_t<M, N> binary_search(const\
-    \ M &ok, const N &ng, F f) {\n    std::common_type_t<M, N> _ok = ok, _ng = ng;\n\
-    \    for (int i = 0; i < 100; i++) {\n        std::common_type_t<M, N> mid = (_ok\
-    \ + _ng) / 2;\n        if (f(mid)) {\n            _ok = mid;\n        } else {\n\
-    \            _ng = mid;\n        }\n    }\n    return _ok;\n}\n\n/**\n * 0 <=\
-    \ x < a\n */\ninline constexpr bool inrange(long long x, long long a) {\n    return\
-    \ 0 <= x and x < a;\n}\n/**\n * a <= x < b\n */\ninline constexpr bool inrange(long\
-    \ long x, long long a, long long b) {\n    return a <= x and x < b;\n}\n/**\n\
-    \ * 0 <= x < a and 0 <= y < b\n */\ninline constexpr bool inrect(long long x,\
-    \ long long y, long long a, long long b) {\n    return 0 <= x and x < a and 0\
-    \ <= y and y < b;\n}\n#line 2 \"src/data_structures/imos.hpp\"\n\n/**\n * @file\
-    \ imos.hpp\n * @brief imos\u6CD5\u3067\u533A\u9593\u4F5C\u7528\u30011\u70B9\u53D6\
-    \u5F97\n */\n\n#include <cassert>\n#include <functional>\n#include <vector>\n\
-    #line 2 \"src/algebra/acted-monoid.hpp\"\n\n/**\n * @file acted-monoid.hpp\n *\
-    \ @brief \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
-    \n *\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306F\u30E2\u30CE\
-    \u30A4\u30C9 (algebra/monoid.hpp) \u306E\u30E1\u30F3\u30D0\u306B\u52A0\u3048\u3066\
-    \u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\
-    \u3059\n * - using F: \u4F5C\u7528\u7D20\u306E\u578B\n * - S mapping(const F&\
-    \ f, const S& x): \u4F5C\u7528\u7D20\u306E\u9069\u7528 f(x)\n *   \u533A\u9593\
-    \u306E\u60C5\u5831\u304C\u5FC5\u8981\u306A\u5834\u5408\u306F mapping(f, x, sz)\
-    \ (sz \u306F\u533A\u9593\u306E\u9577\u3055) \u3084 mapping(f, x, l, r) (\u533A\
-    \u9593 [l, r)) \u3067\u3082\u3088\u3044\n * - F composition(const F& f, const\
-    \ F& g): \u4F5C\u7528\u7D20\u306E\u5408\u6210 f\u2218g (g\u3092\u9069\u7528\u3057\
-    \u305F\u5F8C\u306Bf\u3092\u9069\u7528\u3059\u308B)\n * - F id(): \u6052\u7B49\u5199\
-    \u50CF\n * \u4F5C\u7528\u7D20\u304C\u7FA4\u3092\u306A\u3059\u5834\u5408 (imos.hpp\
-    \ \u3067\u4F7F\u3046) \u306F\n * - F inv(const F& f): \u9006\u4F5C\u7528\u7D20\
-    \n */\n\n#line 18 \"src/algebra/acted-monoid.hpp\"\n#include <limits>\n#include\
-    \ <optional>\n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n\
-    \ * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\
-    \u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\
-    \u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S&\
-    \ a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n\
-    \ * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\
-    \u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\
-    \u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\
-    \n#line 17 \"src/algebra/monoid.hpp\"\n#include <istream>\n#line 20 \"src/algebra/monoid.hpp\"\
-    \n#include <ostream>\n#line 23 \"src/algebra/monoid.hpp\"\n\n/**\n * @brief 1\u6B21\
-    \u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\u3084\
-    \ acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n * \u4F8B\
-    : Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\u3059\u308B\u3068\
-    \u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\nstruct Affine {\n\
-    \    T a = T(1);  //!< \u50BE\u304D\n    T b = T(0);  //!< \u5207\u7247\n    constexpr\
-    \ T operator()(const T& x) const { return a * x + b; }\n    friend constexpr bool\
-    \ operator==(const Affine& f, const Affine& g) { return f.a == g.a && f.b == g.b;\
-    \ }\n    friend constexpr bool operator!=(const Affine& f, const Affine& g) {\
-    \ return !(f == g); }\n    template <class CharT, class Traits>\n    friend std::basic_istream<CharT,\
-    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Affine& f) {\n  \
-    \      return is >> f.a >> f.b;\n    }\n    template <class CharT, class Traits>\n\
-    \    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \ functions.hpp\n * @brief \u6C4E\u7528\u95A2\u6570 (chmin, chmax \u306A\u3069\
+    )\n */\n\n#include <algorithm>\n#include <cmath>\n#include <iterator>\n#include\
+    \ <numeric>\n\ntemplate <typename T1, typename T2>\ninline constexpr bool chmin(T1\
+    \ &a, T2 b) {\n    if (a > b) {\n        a = b;\n        return true;\n    }\n\
+    \    return false;\n}\n\ntemplate <typename T1, typename T2>\ninline constexpr\
+    \ bool chmax(T1 &a, T2 b) {\n    if (a < b) {\n        a = b;\n        return\
+    \ true;\n    }\n    return false;\n}\n\ninline constexpr long long max(const long\
+    \ long &t1, const long long &t2) {\n    return std::max<long long>(t1, t2);\n\
+    }\n\ninline constexpr long long min(const long long &t1, const long long &t2)\
+    \ {\n    return std::min<long long>(t1, t2);\n}\n\nusing std::abs;\nusing std::gcd;\n\
+    using std::lcm;\nusing std::size;\n\ntemplate <typename T>\nconstexpr T extgcd(const\
+    \ T &a, const T &b, T &x, T &y) {\n    T d = a;\n    if (b != 0) {\n        d\
+    \ = extgcd(b, a % b, y, x);\n        y -= (a / b) * x;\n    } else {\n       \
+    \ x = 1;\n        y = 0;\n    }\n    return d;\n}\n\n/**\n * 0 <= x < a\n */\n\
+    inline constexpr bool inrange(long long x, long long a) {\n    return 0 <= x and\
+    \ x < a;\n}\n/**\n * a <= x < b\n */\ninline constexpr bool inrange(long long\
+    \ x, long long a, long long b) {\n    return a <= x and x < b;\n}\n/**\n * 0 <=\
+    \ x < a and 0 <= y < b\n */\ninline constexpr bool inrect(long long x, long long\
+    \ y, long long a, long long b) {\n    return 0 <= x and x < a and 0 <= y and y\
+    \ < b;\n}\n#line 2 \"src/data_structures/imos.hpp\"\n\n/**\n * @file imos.hpp\n\
+    \ * @brief imos\u6CD5\u3067\u533A\u9593\u4F5C\u7528\u30011\u70B9\u53D6\u5F97\n\
+    \ */\n\n#include <cassert>\n#include <vector>\n#include <utility>\n#line 2 \"\
+    src/algebra/acted-monoid.hpp\"\n\n/**\n * @file acted-monoid.hpp\n * @brief \u4F5C\
+    \u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u4F5C\
+    \u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306F\u30E2\u30CE\u30A4\u30C9\
+    \ (algebra/monoid.hpp) \u306E\u30E1\u30F3\u30D0\u306B\u52A0\u3048\u3066\u6B21\u306E\
+    \u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * -\
+    \ using F: \u4F5C\u7528\u7D20\u306E\u578B\n * - S mapping(const F& f, const S&\
+    \ x): \u4F5C\u7528\u7D20\u306E\u9069\u7528 f(x)\n *   \u533A\u9593\u306E\u60C5\
+    \u5831\u304C\u5FC5\u8981\u306A\u5834\u5408\u306F mapping(f, x, sz) (sz \u306F\u533A\
+    \u9593\u306E\u9577\u3055) \u3084 mapping(f, x, l, r) (\u533A\u9593 [l, r)) \u3067\
+    \u3082\u3088\u3044\n * - F composition(const F& f, const F& g): \u4F5C\u7528\u7D20\
+    \u306E\u5408\u6210 f\u2218g (g\u3092\u9069\u7528\u3057\u305F\u5F8C\u306Bf\u3092\
+    \u9069\u7528\u3059\u308B)\n * - F id(): \u6052\u7B49\u5199\u50CF\n * \u4F5C\u7528\
+    \u7D20\u304C\u7FA4\u3092\u306A\u3059\u5834\u5408 (imos.hpp \u3067\u4F7F\u3046\
+    ) \u306F\n * - F inv(const F& f): \u9006\u4F5C\u7528\u7D20\n */\n\n#line 18 \"\
+    src/algebra/acted-monoid.hpp\"\n#include <array>\n#include <cstddef>\n#include\
+    \ <limits>\n#include <optional>\n#include <type_traits>\n#line 2 \"src/algebra/monoid.hpp\"\
+    \n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
+    \n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
+    \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\
+    \n * - S op(const S& a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e():\
+    \ \u5358\u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\
+    \u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\
+    \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\
+    \u51FA\u3059)\n */\n\n#line 17 \"src/algebra/monoid.hpp\"\n#include <istream>\n\
+    #line 20 \"src/algebra/monoid.hpp\"\n#include <ostream>\n#line 23 \"src/algebra/monoid.hpp\"\
+    \n\n/**\n * @brief 1\u6B21\u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite\
+    \ \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\
+    \u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\
+    \u3059\u308B\u3068\u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\n\
+    struct Affine {\n    T a = T(1);  //!< \u50BE\u304D\n    T b = T(0);  //!< \u5207\
+    \u7247\n    constexpr T operator()(const T& x) const { return a * x + b; }\n \
+    \   friend constexpr bool operator==(const Affine& f, const Affine& g) { return\
+    \ f.a == g.a && f.b == g.b; }\n    friend constexpr bool operator!=(const Affine&\
+    \ f, const Affine& g) { return !(f == g); }\n    template <class CharT, class\
+    \ Traits>\n    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    \ Traits>& is, Affine& f) {\n        return is >> f.a >> f.b;\n    }\n    template\
+    \ <class CharT, class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const Affine& f) {\n        return os << f.a << CharT(' ') << f.b;\n\
     \    }\n};\n\nnamespace monoid {\n\n/**\n * @brief \u548C\n */\ntemplate <typename\
     \ T>\nstruct Sum {\n    using S = T;\n    static constexpr S op(const S& a, const\
@@ -274,7 +190,7 @@ data:
     \    Monoid() = default;\n    constexpr Monoid(Op op, const S& e) : op_object(std::move(op)),\
     \ identity(e) {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a,\
     \ b); }\n    constexpr S e() const { return identity; }\n};\ntemplate <typename\
-    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 23 \"src/algebra/acted-monoid.hpp\"\
+    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 25 \"src/algebra/acted-monoid.hpp\"\
     \n\nnamespace acted_monoid {\n\nnamespace detail {\ntemplate <typename A, typename\
     \ = void>\nstruct has_mapping_lr : std::false_type {};\ntemplate <typename A>\n\
     struct has_mapping_lr<A, std::void_t<decltype(std::declval<const A&>().mapping(std::declval<const\
@@ -426,7 +342,7 @@ data:
     \ g); }\n    constexpr F id() const { return lazy_identity; }\n};\ntemplate <typename\
     \ Op, typename T, typename Mapping, typename Composition, typename U>\nActedMonoid(Op,\
     \ T, Mapping, Composition, U) -> ActedMonoid<T, Op, U, Mapping, Composition>;\n\
-    #line 13 \"src/data_structures/imos.hpp\"\n\n/**\n * @brief imos\u6CD5\u3067\u533A\
+    #line 12 \"src/data_structures/imos.hpp\"\n\n/**\n * @brief imos\u6CD5\u3067\u533A\
     \u9593\u4F5C\u7528\u30011\u70B9\u53D6\u5F97\u3059\u308B\u3002\n *\n * \u4F8B:\
     \ Imos<acted_monoid::AddSum<long long>> imos(n);\n *\n * @tparam A \u4F5C\u7528\
     \u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9 (algebra/acted-monoid.hpp)\n *    \
@@ -483,14 +399,13 @@ data:
     \ imos.get(i));\n    std::cout << ans << '\\n';\n}\n"
   dependsOn:
   - src/base/functions.hpp
-  - src/base/traits.hpp
   - src/data_structures/imos.hpp
   - src/algebra/acted-monoid.hpp
   - src/algebra/monoid.hpp
   isVerificationFile: true
   path: test/aoj/dsl-5-a.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 12:10:14+09:00'
+  timestamp: '2026-10-13 13:03:23+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/dsl-5-a.test.cpp

@@ -24,9 +24,9 @@ data:
     links: []
   bundledCode: "#line 2 \"src/data_structures/monoid-unionfind.hpp\"\n\n/**\n * @file\
     \ monoid-unionfind.hpp\n * @brief \u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\u3092\u4E57\
-    \u305B\u308BUnionFind\n */\n\n#include <utility>\n#include <vector>\n#line 2 \"\
-    src/data_structures/unionfind.hpp\"\n\n/**\n * @file unionfind.hpp\n * @brief\
-    \ UnionFind\n */\n\n#include <algorithm>\n#include <cassert>\n#line 11 \"src/data_structures/unionfind.hpp\"\
+    \u305B\u308BUnionFind\n */\n\n#include <cassert>\n#include <utility>\n#include\
+    \ <vector>\n#line 2 \"src/data_structures/unionfind.hpp\"\n\n/**\n * @file unionfind.hpp\n\
+    \ * @brief UnionFind\n */\n\n#include <algorithm>\n#line 12 \"src/data_structures/unionfind.hpp\"\
     \n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u5BFE\u3057\u3066\u300C\
     \u8FBA\u306E\u8FFD\u52A0\u300D\u3001\u300C2\u9802\u70B9\u304C\u9023\u7D50\u304B\
     \u306E\u5224\u5B9A\u300D\u3092\u3059\u308B\n */\nstruct UnionFind {\n   protected:\n\
@@ -201,7 +201,7 @@ data:
     \    Monoid() = default;\n    constexpr Monoid(Op op, const S& e) : op_object(std::move(op)),\
     \ identity(e) {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a,\
     \ b); }\n    constexpr S e() const { return identity; }\n};\ntemplate <typename\
-    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 12 \"src/data_structures/monoid-unionfind.hpp\"\
+    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 13 \"src/data_structures/monoid-unionfind.hpp\"\
     \n\n/**\n * @brief \u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\u3092\u4E57\u305B\u308B\
     UnionFind\n *\n * @tparam M \u53EF\u63DB\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\n\
     \ */\ntemplate <typename M>\nclass MonoidUnionFind : private UnionFind {\n   public:\n\
@@ -230,19 +230,19 @@ data:
     \ <typename M>\nMonoidUnionFind(int, M) -> MonoidUnionFind<M>;\ntemplate <typename\
     \ M>\nMonoidUnionFind(std::vector<typename M::S>, M) -> MonoidUnionFind<M>;\n"
   code: "#pragma once\n\n/**\n * @file monoid-unionfind.hpp\n * @brief \u53EF\u63DB\
-    \u30E2\u30CE\u30A4\u30C9\u3092\u4E57\u305B\u308BUnionFind\n */\n\n#include <utility>\n\
-    #include <vector>\n#include \"unionfind.hpp\"\n#include \"../algebra/monoid.hpp\"\
-    \n\n/**\n * @brief \u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\u3092\u4E57\u305B\u308B\
-    UnionFind\n *\n * @tparam M \u53EF\u63DB\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\n\
-    \ */\ntemplate <typename M>\nclass MonoidUnionFind : private UnionFind {\n   public:\n\
-    \    using S = typename M::S;\n\n   private:\n    M m;\n    std::vector<S> val;\n\
-    \    using UnionFind::_n;\n    using UnionFind::parent_or_size;\n\n   public:\n\
-    \    /**\n     * @param n \u8981\u7D20\u6570 \u5404\u8981\u7D20\u306E\u5024\u306F\
-    \u5358\u4F4D\u5143\u3067\u521D\u671F\u5316\u3059\u308B\n     * @param m \u53EF\
-    \u63DB\u30E2\u30CE\u30A4\u30C9\n     */\n    explicit MonoidUnionFind(int n =\
-    \ 0, M m = M()) : UnionFind(n), m(std::move(m)), val(n, this->m.e()) {}\n    /**\n\
-    \     * @param v \u5404\u8981\u7D20\u306E\u521D\u671F\u5024\n     * @param m \u53EF\
-    \u63DB\u30E2\u30CE\u30A4\u30C9\n     */\n    explicit MonoidUnionFind(std::vector<S>\
+    \u30E2\u30CE\u30A4\u30C9\u3092\u4E57\u305B\u308BUnionFind\n */\n\n#include <cassert>\n\
+    #include <utility>\n#include <vector>\n#include \"unionfind.hpp\"\n#include \"\
+    ../algebra/monoid.hpp\"\n\n/**\n * @brief \u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\
+    \u3092\u4E57\u305B\u308BUnionFind\n *\n * @tparam M \u53EF\u63DB\u30E2\u30CE\u30A4\
+    \u30C9 (algebra/monoid.hpp)\n */\ntemplate <typename M>\nclass MonoidUnionFind\
+    \ : private UnionFind {\n   public:\n    using S = typename M::S;\n\n   private:\n\
+    \    M m;\n    std::vector<S> val;\n    using UnionFind::_n;\n    using UnionFind::parent_or_size;\n\
+    \n   public:\n    /**\n     * @param n \u8981\u7D20\u6570 \u5404\u8981\u7D20\u306E\
+    \u5024\u306F\u5358\u4F4D\u5143\u3067\u521D\u671F\u5316\u3059\u308B\n     * @param\
+    \ m \u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\n     */\n    explicit MonoidUnionFind(int\
+    \ n = 0, M m = M()) : UnionFind(n), m(std::move(m)), val(n, this->m.e()) {}\n\
+    \    /**\n     * @param v \u5404\u8981\u7D20\u306E\u521D\u671F\u5024\n     * @param\
+    \ m \u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\n     */\n    explicit MonoidUnionFind(std::vector<S>\
     \ v, M m = M()) : UnionFind(v.size()), m(std::move(m)), val(std::move(v)) {}\n\
     \    using MergeResult = UnionFind::MergeResult;\n    using UnionFind::groups;\n\
     \    using UnionFind::leader;\n    using UnionFind::same;\n    using UnionFind::size;\n\
@@ -265,7 +265,7 @@ data:
   isVerificationFile: false
   path: src/data_structures/monoid-unionfind.hpp
   requiredBy: []
-  timestamp: '2026-10-13 12:10:14+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/monoid-unionfind.test.cpp

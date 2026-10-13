@@ -32,34 +32,34 @@ data:
     \n#line 2 \"src/base/macro.hpp\"\n\n/**\n * @file macro.hpp\n * @brief \u30DE\u30AF\
     \u30ED (rep \u306A\u3069)\n */\n\n#line 2 \"src/base/io.hpp\"\n/**\n * @file io.hpp\n\
     \ * @brief \u7A7A\u767D\u533A\u5207\u308A\u51FA\u529B\u3001iostream\u306E\u30AA\
-    \u30FC\u30D0\u30FC\u30ED\u30FC\u30C9\n */\n\n#include <array>\n#line 9 \"src/base/io.hpp\"\
-    \n#include <set>\n#include <utility>\n#include <tuple>\n#line 13 \"src/base/io.hpp\"\
-    \n\n// \u30CD\u30B9\u30C8\u3057\u305F\u578B (pair<vector<int>, int> \u306A\u3069\
-    ) \u3092\u6271\u3048\u308B\u3088\u3046\u306B\u5148\u306B\u5BA3\u8A00\u3057\u3066\
-    \u304A\u304F\ntemplate <typename T1, typename T2, typename CharT, typename Traits>\n\
-    std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT, Traits>&\
-    \ is, std::pair<T1, T2>& p);\ntemplate <typename... Types, typename CharT, typename\
-    \ Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
-    \ Traits>& is, std::tuple<Types...>& p);\ntemplate <typename T, size_t N, typename\
-    \ CharT, typename Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    \u30FC\u30D0\u30FC\u30ED\u30FC\u30C9\n */\n\n#include <array>\n#include <cstddef>\n\
+    #line 10 \"src/base/io.hpp\"\n#include <set>\n#include <utility>\n#include <tuple>\n\
+    #line 14 \"src/base/io.hpp\"\n\n// \u30CD\u30B9\u30C8\u3057\u305F\u578B (pair<vector<int>,\
+    \ int> \u306A\u3069) \u3092\u6271\u3048\u308B\u3088\u3046\u306B\u5148\u306B\u5BA3\
+    \u8A00\u3057\u3066\u304A\u304F\ntemplate <typename T1, typename T2, typename CharT,\
+    \ typename Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    \ Traits>& is, std::pair<T1, T2>& p);\ntemplate <typename... Types, typename CharT,\
+    \ typename Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    \ Traits>& is, std::tuple<Types...>& p);\ntemplate <typename T, std::size_t N,\
+    \ typename CharT, typename Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
     \ Traits>& is, std::array<T, N>& a);\ntemplate <typename T, typename CharT, typename\
     \ Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
     \ Traits>& is, std::vector<T>& v);\ntemplate <typename T1, typename T2, typename\
     \ CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const std::pair<T1, T2>& p);\ntemplate <typename... Types, typename\
     \ CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
-    \ Traits>& os, const std::tuple<Types...>& p);\ntemplate <typename T, size_t N,\
-    \ typename CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \ Traits>& os, const std::tuple<Types...>& p);\ntemplate <typename T, std::size_t\
+    \ N, typename CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const std::array<T, N>& a);\ntemplate <typename T, typename CharT,\
     \ typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const std::vector<T>& v);\ntemplate <typename T, typename CharT,\
     \ typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const std::set<T>& s);\n\nnamespace tuple_io {\n    template <typename\
-    \ Tuple, size_t I, typename CharT, typename Traits>\n    std::basic_istream<CharT,\
+    \ Tuple, std::size_t I, typename CharT, typename Traits>\n    std::basic_istream<CharT,\
     \ Traits>& read_tuple(std::basic_istream<CharT, Traits>& is, Tuple& t) {\n   \
     \     is >> std::get<I>(t);\n        if constexpr (I + 1 < std::tuple_size_v<Tuple>)\
     \ {\n            return read_tuple<Tuple, I + 1>(is, t);\n        }\n        return\
-    \ is;\n    }\n    template <typename Tuple, size_t I, typename CharT, typename\
+    \ is;\n    }\n    template <typename Tuple, std::size_t I, typename CharT, typename\
     \ Traits>\n    std::basic_ostream<CharT, Traits>& write_tuple(std::basic_ostream<CharT,\
     \ Traits>& os, const Tuple& t) {\n        os << std::get<I>(t);\n        if constexpr\
     \ (I + 1 < std::tuple_size_v<Tuple>) {\n            os << CharT(' ');\n      \
@@ -70,7 +70,7 @@ data:
     }\ntemplate <typename... Types, typename CharT, typename Traits>\nstd::basic_istream<CharT,\
     \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, std::tuple<Types...>&\
     \ p) {\n    return tuple_io::read_tuple<std::tuple<Types...>, 0>(is, p);\n}\n\
-    template <typename T, size_t N, typename CharT, typename Traits>\nstd::basic_istream<CharT,\
+    template <typename T, std::size_t N, typename CharT, typename Traits>\nstd::basic_istream<CharT,\
     \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, std::array<T, N>&\
     \ a) {\n    for(auto& e : a) is >> e;\n    return is;\n}\ntemplate <typename T,\
     \ typename CharT, typename Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
@@ -81,13 +81,13 @@ data:
     \    return os;\n}\ntemplate <typename... Types, typename CharT, typename Traits>\n\
     std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>&\
     \ os, const std::tuple<Types...>& p) {\n    return tuple_io::write_tuple<std::tuple<Types...>,\
-    \ 0>(os, p);\n}\ntemplate <typename T, size_t N, typename CharT, typename Traits>\n\
-    std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>&\
-    \ os, const std::array<T, N>& a) {\n    for(size_t i = 0; i < N; ++i) {\n    \
-    \    if(i) os << CharT(' ');\n        os << a[i];\n    }\n    return os;\n}\n\
-    template <typename T, typename CharT, typename Traits>\nstd::basic_ostream<CharT,\
+    \ 0>(os, p);\n}\ntemplate <typename T, std::size_t N, typename CharT, typename\
+    \ Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \ Traits>& os, const std::array<T, N>& a) {\n    for(std::size_t i = 0; i < N;\
+    \ ++i) {\n        if(i) os << CharT(' ');\n        os << a[i];\n    }\n    return\
+    \ os;\n}\ntemplate <typename T, typename CharT, typename Traits>\nstd::basic_ostream<CharT,\
     \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const std::vector<T>&\
-    \ v) {\n    for(size_t i = 0; i < v.size(); ++i) {\n        if(i) os << CharT('\
+    \ v) {\n    for(std::size_t i = 0; i < v.size(); ++i) {\n        if(i) os << CharT('\
     \ ');\n        os << v[i];\n    }\n    return os;\n}\ntemplate <typename T, typename\
     \ CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const std::set<T>& s) {\n    for(auto itr = s.begin(); itr != s.end();\
@@ -351,7 +351,7 @@ data:
   isVerificationFile: true
   path: test/unittest/macro.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 06:02:01+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/macro.test.cpp

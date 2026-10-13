@@ -99,17 +99,17 @@ data:
     \u305F\u5F8C\u306Bf\u3092\u9069\u7528\u3059\u308B)\n * - F id(): \u6052\u7B49\u5199\
     \u50CF\n * \u4F5C\u7528\u7D20\u304C\u7FA4\u3092\u306A\u3059\u5834\u5408 (imos.hpp\
     \ \u3067\u4F7F\u3046) \u306F\n * - F inv(const F& f): \u9006\u4F5C\u7528\u7D20\
-    \n */\n\n#include <array>\n#include <limits>\n#include <optional>\n#include <type_traits>\n\
-    #include <utility>\n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n\
-    \ * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\
-    \u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\
-    \u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S&\
-    \ a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n\
-    \ * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\
-    \u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\
-    \u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\
-    \n#include <algorithm>\n#line 16 \"src/algebra/monoid.hpp\"\n#include <cstddef>\n\
-    #include <istream>\n#line 19 \"src/algebra/monoid.hpp\"\n#include <numeric>\n\
+    \n */\n\n#include <algorithm>\n#include <array>\n#include <cstddef>\n#include\
+    \ <limits>\n#include <optional>\n#include <type_traits>\n#include <utility>\n\
+    #line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n * @brief \u30E2\
+    \u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\
+    \u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\
+    \n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S& a, const S& b): \u7A4D\
+    \ (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n * op, e \u306F static\
+    \ \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\
+    \u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\
+    \u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\n#line 17 \"src/algebra/monoid.hpp\"\
+    \n#include <istream>\n#line 19 \"src/algebra/monoid.hpp\"\n#include <numeric>\n\
     #include <ostream>\n#line 23 \"src/algebra/monoid.hpp\"\n\n/**\n * @brief 1\u6B21\
     \u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\u3084\
     \ acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n * \u4F8B\
@@ -229,7 +229,7 @@ data:
     \    Monoid() = default;\n    constexpr Monoid(Op op, const S& e) : op_object(std::move(op)),\
     \ identity(e) {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a,\
     \ b); }\n    constexpr S e() const { return identity; }\n};\ntemplate <typename\
-    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 23 \"src/algebra/acted-monoid.hpp\"\
+    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 25 \"src/algebra/acted-monoid.hpp\"\
     \n\nnamespace acted_monoid {\n\nnamespace detail {\ntemplate <typename A, typename\
     \ = void>\nstruct has_mapping_lr : std::false_type {};\ntemplate <typename A>\n\
     struct has_mapping_lr<A, std::void_t<decltype(std::declval<const A&>().mapping(std::declval<const\
@@ -394,22 +394,22 @@ data:
     \ f\u2218g (g\u3092\u9069\u7528\u3057\u305F\u5F8C\u306Bf\u3092\u9069\u7528\u3059\
     \u308B)\n * - F id(): \u6052\u7B49\u5199\u50CF\n * \u4F5C\u7528\u7D20\u304C\u7FA4\
     \u3092\u306A\u3059\u5834\u5408 (imos.hpp \u3067\u4F7F\u3046) \u306F\n * - F inv(const\
-    \ F& f): \u9006\u4F5C\u7528\u7D20\n */\n\n#include <array>\n#include <limits>\n\
-    #include <optional>\n#include <type_traits>\n#include <utility>\n#include \"monoid.hpp\"\
-    \n\nnamespace acted_monoid {\n\nnamespace detail {\ntemplate <typename A, typename\
-    \ = void>\nstruct has_mapping_lr : std::false_type {};\ntemplate <typename A>\n\
-    struct has_mapping_lr<A, std::void_t<decltype(std::declval<const A&>().mapping(std::declval<const\
-    \ typename A::F&>(), std::declval<const typename A::S&>(), 0, 0))>> : std::true_type\
-    \ {};\ntemplate <typename A, typename = void>\nstruct has_mapping_sz : std::false_type\
-    \ {};\ntemplate <typename A>\nstruct has_mapping_sz<A, std::void_t<decltype(std::declval<const\
+    \ F& f): \u9006\u4F5C\u7528\u7D20\n */\n\n#include <algorithm>\n#include <array>\n\
+    #include <cstddef>\n#include <limits>\n#include <optional>\n#include <type_traits>\n\
+    #include <utility>\n#include \"monoid.hpp\"\n\nnamespace acted_monoid {\n\nnamespace\
+    \ detail {\ntemplate <typename A, typename = void>\nstruct has_mapping_lr : std::false_type\
+    \ {};\ntemplate <typename A>\nstruct has_mapping_lr<A, std::void_t<decltype(std::declval<const\
     \ A&>().mapping(std::declval<const typename A::F&>(), std::declval<const typename\
-    \ A::S&>(), 0))>> : std::true_type {};\n} // namespace detail\n\n/**\n * @brief\
-    \ \u533A\u9593 [l, r) \u3092\u8868\u3059\u8981\u7D20\u306B\u4F5C\u7528\u7D20\u3092\
-    \u9069\u7528\u3059\u308B\n * mapping \u306E\u5F15\u6570\u306E\u5F62\u306E\u9055\
-    \u3044\u3092\u5438\u53CE\u3059\u308B\n */\ntemplate <typename A>\nconstexpr auto\
-    \ apply_mapping(const A& a, const typename A::F& f, const typename A::S& x, int\
-    \ l, int r) {\n    if constexpr(detail::has_mapping_lr<A>::value) {\n        return\
-    \ a.mapping(f, x, l, r);\n    } else if constexpr(detail::has_mapping_sz<A>::value)\
+    \ A::S&>(), 0, 0))>> : std::true_type {};\ntemplate <typename A, typename = void>\n\
+    struct has_mapping_sz : std::false_type {};\ntemplate <typename A>\nstruct has_mapping_sz<A,\
+    \ std::void_t<decltype(std::declval<const A&>().mapping(std::declval<const typename\
+    \ A::F&>(), std::declval<const typename A::S&>(), 0))>> : std::true_type {};\n\
+    } // namespace detail\n\n/**\n * @brief \u533A\u9593 [l, r) \u3092\u8868\u3059\
+    \u8981\u7D20\u306B\u4F5C\u7528\u7D20\u3092\u9069\u7528\u3059\u308B\n * mapping\
+    \ \u306E\u5F15\u6570\u306E\u5F62\u306E\u9055\u3044\u3092\u5438\u53CE\u3059\u308B\
+    \n */\ntemplate <typename A>\nconstexpr auto apply_mapping(const A& a, const typename\
+    \ A::F& f, const typename A::S& x, int l, int r) {\n    if constexpr(detail::has_mapping_lr<A>::value)\
+    \ {\n        return a.mapping(f, x, l, r);\n    } else if constexpr(detail::has_mapping_sz<A>::value)\
     \ {\n        return a.mapping(f, x, r - l);\n    } else {\n        return a.mapping(f,\
     \ x);\n    }\n}\n\n/**\n * @brief \u533A\u9593\u52A0\u7B97\u3001\u533A\u9593\u548C\
     \n */\ntemplate <typename T>\nstruct AddSum : monoid::Sum<T> {\n    using S =\
@@ -555,7 +555,7 @@ data:
   - src/data_structures/lazy-segtree.hpp
   - src/data_structures/segtree-beats.hpp
   - src/data_structures/imos.hpp
-  timestamp: '2026-10-13 12:10:14+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/imos.test.cpp

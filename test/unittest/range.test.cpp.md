@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: src/base/range.hpp
+    path: src/utility/range.hpp
     title: "Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\u5217"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -20,13 +20,13 @@ data:
     \u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\
     \u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\
     \u308B\n\n#include <algorithm>\n#include <iostream>\n#include <iterator>\n#include\
-    \ <random>\n#include <string>\n#include <vector>\n\n#line 2 \"src/base/range.hpp\"\
+    \ <random>\n#include <string>\n#include <vector>\n\n#line 2 \"src/utility/range.hpp\"\
     \n\n/**\n * @file range.hpp\n * @brief Python \u306E range \u306E\u3088\u3046\u306A\
     \u6574\u6570\u5217\n */\n\n#include <cassert>\n#include <cstddef>\n#line 12 \"\
-    src/base/range.hpp\"\n#include <type_traits>\n#include <utility>\n#line 15 \"\
-    src/base/range.hpp\"\n\nstruct Range {\n   public:\n    using value_type = long\
-    \ long;\n    using const_reference = const value_type&;\n    using size_type =\
-    \ std::size_t;\n    using difference_type = std::ptrdiff_t;\n\n    const value_type\
+    src/utility/range.hpp\"\n#include <type_traits>\n#include <utility>\n#line 15\
+    \ \"src/utility/range.hpp\"\n\nstruct Range {\n   public:\n    using value_type\
+    \ = long long;\n    using const_reference = const value_type&;\n    using size_type\
+    \ = std::size_t;\n    using difference_type = std::ptrdiff_t;\n\n    const value_type\
     \ start;\n    const value_type stop;\n    const value_type step;\n\n   private:\n\
     \    const value_type norm_stop;\n\n    constexpr static value_type normalize(value_type\
     \ _start, value_type _stop, value_type _step) {\n        assert(_step != 0);\n\
@@ -319,7 +319,7 @@ data:
     \u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\
     \u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\
     \u308B\n\n#include <algorithm>\n#include <iostream>\n#include <iterator>\n#include\
-    \ <random>\n#include <string>\n#include <vector>\n\n#include \"../../src/base/range.hpp\"\
+    \ <random>\n#include <string>\n#include <vector>\n\n#include \"../../src/utility/range.hpp\"\
     \n\nusing ll = long long;\n\n// Python \u306E range(start, stop, step) \u3068\u540C\
     \u3058\u5217\nstd::vector<ll> naive_range(ll start, ll stop, ll step) {\n    std::vector<ll>\
     \ v;\n    if (step > 0) {\n        for (ll x = start; x < stop; x += step) v.push_back(x);\n\
@@ -425,11 +425,11 @@ data:
     \ 10, 2)\", \"repr\");\n    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
     }\n"
   dependsOn:
-  - src/base/range.hpp
+  - src/utility/range.hpp
   isVerificationFile: true
   path: test/unittest/range.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 06:02:01+09:00'
+  timestamp: '2026-10-13 13:03:23+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/range.test.cpp

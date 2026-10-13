@@ -22,36 +22,36 @@ data:
     \ \u3092\u51FA\u529B\u3059\u308B\n\n#include <algorithm>\n#include <iostream>\n\
     #include <random>\n#include <set>\n#include <vector>\n\n#line 2 \"src/graph/functional-graph.hpp\"\
     \n\n/**\n * @file functional-graph.hpp\n * @brief \u30D5\u30A1\u30F3\u30AF\u30B7\
-    \u30E7\u30CA\u30EB\u30B0\u30E9\u30D5\n */\n#line 9 \"src/graph/functional-graph.hpp\"\
-    \n#include <numeric>\n#line 12 \"src/graph/functional-graph.hpp\"\n\n/**\n * @brief\
-    \ N\u9802\u70B9N\u8FBA\u306E\u6709\u5411\u30B0\u30E9\u30D5\u3067\u3001\u3059\u3079\
-    \u3066\u306E\u9802\u70B9\u306E\u51FA\u6B21\u6570\u304C1\n */\nstruct FunctionalGraph\
-    \ {\n    int n;                                         //!< \u9802\u70B9\u6570\
-    \n    std::vector<int> g;                            //!< \u30B0\u30E9\u30D5\n\
-    \    std::vector<bool> is_cycle;                    //!< \u30B5\u30A4\u30AF\u30EB\
-    \u4E0A\u306E\u9802\u70B9\u304B\n    std::vector<int> depth;                  \
-    \      //!< \u30B5\u30A4\u30AF\u30EB\u4E0A\u306E\u9802\u70B9\u307E\u3067\u306E\
-    \u8DDD\u96E2\n    std::vector<int> root;                         //!< \u6700\u3082\
-    \u8FD1\u3044\u30B5\u30A4\u30AF\u30EB\u4E0A\u306E\u9802\u70B9\n    std::vector<std::vector<int>>\
-    \ connected_list;  //!< \u5404\u9023\u7D50\u6210\u5206\u306E\u30EA\u30B9\u30C8\
-    \n    std::vector<std::vector<int>> cycle_list;      //!< \u5404\u9023\u7D50\u6210\
-    \u5206\u306E\u30B5\u30A4\u30AF\u30EB\n    std::vector<int> connected_id;     \
-    \            //!< \u305D\u306E\u9802\u70B9\u304C\u5C5E\u3059\u308B\u9023\u7D50\
-    \u6210\u5206\u306Eindex\n    std::vector<int> root_idx;                     //!<\
-    \ root\u306Ecycle_list\u4E0A\u306Eindex\n    std::vector<std::vector<int>> doubling;\
-    \        //!< DoublingClimbTree\n\n    void build() {\n        is_cycle.assign(n,\
-    \ false);\n        depth.assign(n, 0);\n        root.assign(n, -1);\n        connected_id.assign(n,\
-    \ 0);\n        root_idx.assign(n, 0);\n        connected_list.clear();\n     \
-    \   cycle_list.clear();\n        std::vector<bool> visited(n);\n        for (int\
-    \ i = 0; i < n; i++) {\n            if (visited[i]) continue;\n            std::vector<int>\
-    \ v;\n            int u = i;\n            while (!visited[u]) {\n            \
-    \    visited[u] = true;\n                v.push_back(u);\n                u =\
-    \ g[u];\n            }\n            if (root[u] == -1) {\n                int\
-    \ k = std::find(v.begin(), v.end(), u) - v.begin();\n                cycle_list.push_back({});\n\
-    \                connected_list.push_back({});\n                for (int j = 0;\
-    \ j < k; j++) {\n                    is_cycle[v[j]] = false;\n               \
-    \     root[v[j]] = u;\n                    root_idx[v[j]] = 0;\n             \
-    \       connected_id[v[j]] = cycle_list.size() - 1;\n                    depth[v[j]]\
+    \u30E7\u30CA\u30EB\u30B0\u30E9\u30D5\n */\n#line 10 \"src/graph/functional-graph.hpp\"\
+    \n\n/**\n * @brief N\u9802\u70B9N\u8FBA\u306E\u6709\u5411\u30B0\u30E9\u30D5\u3067\
+    \u3001\u3059\u3079\u3066\u306E\u9802\u70B9\u306E\u51FA\u6B21\u6570\u304C1\n */\n\
+    struct FunctionalGraph {\n    int n;                                         //!<\
+    \ \u9802\u70B9\u6570\n    std::vector<int> g;                            //!<\
+    \ \u30B0\u30E9\u30D5\n    std::vector<bool> is_cycle;                    //!<\
+    \ \u30B5\u30A4\u30AF\u30EB\u4E0A\u306E\u9802\u70B9\u304B\n    std::vector<int>\
+    \ depth;                        //!< \u30B5\u30A4\u30AF\u30EB\u4E0A\u306E\u9802\
+    \u70B9\u307E\u3067\u306E\u8DDD\u96E2\n    std::vector<int> root;             \
+    \            //!< \u6700\u3082\u8FD1\u3044\u30B5\u30A4\u30AF\u30EB\u4E0A\u306E\
+    \u9802\u70B9\n    std::vector<std::vector<int>> connected_list;  //!< \u5404\u9023\
+    \u7D50\u6210\u5206\u306E\u30EA\u30B9\u30C8\n    std::vector<std::vector<int>>\
+    \ cycle_list;      //!< \u5404\u9023\u7D50\u6210\u5206\u306E\u30B5\u30A4\u30AF\
+    \u30EB\n    std::vector<int> connected_id;                 //!< \u305D\u306E\u9802\
+    \u70B9\u304C\u5C5E\u3059\u308B\u9023\u7D50\u6210\u5206\u306Eindex\n    std::vector<int>\
+    \ root_idx;                     //!< root\u306Ecycle_list\u4E0A\u306Eindex\n \
+    \   std::vector<std::vector<int>> doubling;        //!< DoublingClimbTree\n\n\
+    \    void build() {\n        is_cycle.assign(n, false);\n        depth.assign(n,\
+    \ 0);\n        root.assign(n, -1);\n        connected_id.assign(n, 0);\n     \
+    \   root_idx.assign(n, 0);\n        connected_list.clear();\n        cycle_list.clear();\n\
+    \        std::vector<bool> visited(n);\n        for (int i = 0; i < n; i++) {\n\
+    \            if (visited[i]) continue;\n            std::vector<int> v;\n    \
+    \        int u = i;\n            while (!visited[u]) {\n                visited[u]\
+    \ = true;\n                v.push_back(u);\n                u = g[u];\n      \
+    \      }\n            if (root[u] == -1) {\n                int k = std::find(v.begin(),\
+    \ v.end(), u) - v.begin();\n                cycle_list.push_back({});\n      \
+    \          connected_list.push_back({});\n                for (int j = 0; j <\
+    \ k; j++) {\n                    is_cycle[v[j]] = false;\n                   \
+    \ root[v[j]] = u;\n                    root_idx[v[j]] = 0;\n                 \
+    \   connected_id[v[j]] = cycle_list.size() - 1;\n                    depth[v[j]]\
     \ = k - j;\n                    connected_list.back().push_back(v[j]);\n     \
     \           }\n                for (int j = k; j < (int)v.size(); j++) {\n   \
     \                 is_cycle[v[j]] = true;\n                    root[v[j]] = v[j];\n\
@@ -179,7 +179,7 @@ data:
   isVerificationFile: true
   path: test/unittest/functional-graph.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 00:13:34+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/functional-graph.test.cpp

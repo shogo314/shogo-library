@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: src/base/traits.hpp
+    path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
   _extendedVerifiedWith:
@@ -55,15 +55,16 @@ data:
     document_title: "\u30B3\u30F3\u30C6\u30CA\u306B\u5BFE\u3059\u308B\u95A2\u6570\
       \ (sorted, max, sum \u306A\u3069)"
     links: []
-  bundledCode: "#line 2 \"src/base/container_func.hpp\"\n\n/**\n * @file container_func.hpp\n\
+  bundledCode: "#line 2 \"src/utility/container_func.hpp\"\n\n/**\n * @file container_func.hpp\n\
     \ * @brief \u30B3\u30F3\u30C6\u30CA\u306B\u5BFE\u3059\u308B\u95A2\u6570 (sorted,\
     \ max, sum \u306A\u3069)\n */\n\n#include <algorithm>\n#include <cassert>\n#include\
-    \ <functional>\n#include <initializer_list>\n#include <iterator>\n#include <numeric>\n\
-    #include <vector>\n#line 2 \"src/base/traits.hpp\"\n\n/**\n * @file traits.hpp\n\
-    \ * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n#line 10 \"src/base/traits.hpp\"\
-    \n#include <set>\n#include <type_traits>\n#include <utility>\n\nnamespace detail\
-    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
-    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ <cstddef>\n#include <functional>\n#include <initializer_list>\n#include <iterator>\n\
+    #include <numeric>\n#include <type_traits>\n#include <vector>\n#line 2 \"src/utility/traits.hpp\"\
+    \n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 10 \"\
+    src/utility/traits.hpp\"\n#include <set>\n#line 12 \"src/utility/traits.hpp\"\n\
+    #include <utility>\n\nnamespace detail {\nusing std::begin, std::end;\n\ntemplate\
+    \ <class T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate\
+    \ <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
     \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace detail\n\n\
     template <class T>\nstruct is_range : detail::is_range_impl<T>::type {};\ntemplate\
     \ <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define\
@@ -110,8 +111,8 @@ data:
     \ : std::true_type {};\n}  // namespace detail\ntemplate <class T>\nstruct is_sorted_container\
     \ : detail::is_sorted_container_impl<T>::type {};\ntemplate <class T>\ninline\
     \ constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n#line\
-    \ 16 \"src/base/container_func.hpp\"\n\n#define METHOD_EXPAND(func)          \
-    \                              \\\n    template <typename T, ENABLE_IF_T(has_##func##_v<T>)>\
+    \ 18 \"src/utility/container_func.hpp\"\n\n#define METHOD_EXPAND(func)       \
+    \                                 \\\n    template <typename T, ENABLE_IF_T(has_##func##_v<T>)>\
     \          \\\n    inline constexpr auto func(const T &t) -> decltype(t.func())\
     \ { \\\n        return t.func();                                           \\\n\
     \    }\n\n#define METHOD_AND_FUNC_ARG_EXPAND(func)                           \
@@ -187,21 +188,21 @@ data:
     template <class C>\ninline constexpr mem_value_type<C> average(const C &v) {\n\
     \    assert(v.size());\n    return sum(v) / v.size();\n}\n\ntemplate <class C>\n\
     inline constexpr mem_value_type<C> median(const C &v) {\n    assert(not v.empty());\n\
-    \    std::vector<size_t> u(v.size());\n    std::iota(u.begin(), u.end(), 0);\n\
-    \    std::sort(u.begin(), u.end(), [&](size_t a, size_t b) {\n        return v[a]\
-    \ < v[b];\n    });\n    if (v.size() & 1) {\n        return v[u[v.size() / 2]];\n\
-    \    }\n    // C++20\n    // return std::midpoint(v[u[v.size() / 2]], v[u[v.size()\
-    \ / 2 - 1]]);\n    return (v[u[v.size() / 2]] + v[u[v.size() / 2 - 1]]) / 2;\n\
-    }\n\ntemplate <class C, typename U>\ninline constexpr std::ptrdiff_t index(const\
-    \ C &v, const U &x) {\n    return std::distance(v.begin(), find(v, x));\n}\n\n\
-    template <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\ninline\
-    \ constexpr mem_value_type<C> mex(const C &v) {\n    std::vector<bool> b(v.size()\
-    \ + 1);\n    for (const auto &a : v) {\n        if (0 <= a and static_cast<size_t>(a)\
+    \    std::vector<std::size_t> u(v.size());\n    std::iota(u.begin(), u.end(),\
+    \ 0);\n    std::sort(u.begin(), u.end(), [&](std::size_t a, std::size_t b) {\n\
+    \        return v[a] < v[b];\n    });\n    if (v.size() & 1) {\n        return\
+    \ v[u[v.size() / 2]];\n    }\n    // C++20\n    // return std::midpoint(v[u[v.size()\
+    \ / 2]], v[u[v.size() / 2 - 1]]);\n    return (v[u[v.size() / 2]] + v[u[v.size()\
+    \ / 2 - 1]]) / 2;\n}\n\ntemplate <class C, typename U>\ninline constexpr std::ptrdiff_t\
+    \ index(const C &v, const U &x) {\n    return std::distance(v.begin(), find(v,\
+    \ x));\n}\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
+    inline constexpr mem_value_type<C> mex(const C &v) {\n    std::vector<bool> b(v.size()\
+    \ + 1);\n    for (const auto &a : v) {\n        if (0 <= a and static_cast<std::size_t>(a)\
     \ < b.size()) {\n            b[a] = true;\n        }\n    }\n    mem_value_type<C>\
     \ ret = 0;  // b \u306E\u8981\u7D20\u6570\u306F v \u3088\u308A 1 \u591A\u3044\u306E\
     \u3067\u3001\u4E0B\u306E\u30EB\u30FC\u30D7\u3067\u5FC5\u305A\u898B\u3064\u304B\
-    \u308B\n    for (size_t i = 0; i < b.size(); i++) {\n        if (not b[i]) {\n\
-    \            ret = i;\n            break;\n        }\n    }\n    return ret;\n\
+    \u308B\n    for (std::size_t i = 0; i < b.size(); i++) {\n        if (not b[i])\
+    \ {\n            ret = i;\n            break;\n        }\n    }\n    return ret;\n\
     }\n\ntemplate <class C>\ninline constexpr mem_difference_type<C> bisect_left(const\
     \ C &v, const mem_value_type<C> &x) {\n    return std::distance(v.begin(), lower_bound(v,\
     \ x));\n}\ntemplate <class C>\ninline constexpr mem_difference_type<C> bisect_right(const\
@@ -209,23 +210,24 @@ data:
     \ x));\n}\n"
   code: "#pragma once\n\n/**\n * @file container_func.hpp\n * @brief \u30B3\u30F3\u30C6\
     \u30CA\u306B\u5BFE\u3059\u308B\u95A2\u6570 (sorted, max, sum \u306A\u3069)\n */\n\
-    \n#include <algorithm>\n#include <cassert>\n#include <functional>\n#include <initializer_list>\n\
-    #include <iterator>\n#include <numeric>\n#include <vector>\n#include \"traits.hpp\"\
-    \n\n#define METHOD_EXPAND(func)                                        \\\n  \
-    \  template <typename T, ENABLE_IF_T(has_##func##_v<T>)>          \\\n    inline\
-    \ constexpr auto func(const T &t) -> decltype(t.func()) { \\\n        return t.func();\
-    \                                           \\\n    }\n\n#define METHOD_AND_FUNC_ARG_EXPAND(func)\
-    \                                     \\\n    template <typename T, typename U,\
-    \ ENABLE_IF_T(has_##func##_v<T, U>)>     \\\n    inline constexpr auto func(const\
-    \ T &t, const U &u)                       \\\n        -> decltype(t.func(u)) {\
-    \                                             \\\n        return t.func(u);  \
-    \                                                  \\\n    }                 \
-    \                                                       \\\n    template <typename\
-    \ T, typename U, ENABLE_IF_T(not has_##func##_v<T, U>)> \\\n    inline constexpr\
-    \ auto func(const T &t, const U &u)                       \\\n        -> decltype(std::func(t.begin(),\
-    \ t.end(), u)) {                      \\\n        return std::func(t.begin(),\
-    \ t.end(), u);                             \\\n    }\n\nMETHOD_EXPAND(reversed)\n\
-    template <class C, ENABLE_IF_T(not has_reversed_v<C>)>\ninline constexpr C reversed(C\
+    \n#include <algorithm>\n#include <cassert>\n#include <cstddef>\n#include <functional>\n\
+    #include <initializer_list>\n#include <iterator>\n#include <numeric>\n#include\
+    \ <type_traits>\n#include <vector>\n#include \"traits.hpp\"\n\n#define METHOD_EXPAND(func)\
+    \                                        \\\n    template <typename T, ENABLE_IF_T(has_##func##_v<T>)>\
+    \          \\\n    inline constexpr auto func(const T &t) -> decltype(t.func())\
+    \ { \\\n        return t.func();                                           \\\n\
+    \    }\n\n#define METHOD_AND_FUNC_ARG_EXPAND(func)                           \
+    \          \\\n    template <typename T, typename U, ENABLE_IF_T(has_##func##_v<T,\
+    \ U>)>     \\\n    inline constexpr auto func(const T &t, const U &u)        \
+    \               \\\n        -> decltype(t.func(u)) {                         \
+    \                    \\\n        return t.func(u);                           \
+    \                         \\\n    }                                          \
+    \                              \\\n    template <typename T, typename U, ENABLE_IF_T(not\
+    \ has_##func##_v<T, U>)> \\\n    inline constexpr auto func(const T &t, const\
+    \ U &u)                       \\\n        -> decltype(std::func(t.begin(), t.end(),\
+    \ u)) {                      \\\n        return std::func(t.begin(), t.end(),\
+    \ u);                             \\\n    }\n\nMETHOD_EXPAND(reversed)\ntemplate\
+    \ <class C, ENABLE_IF_T(not has_reversed_v<C>)>\ninline constexpr C reversed(C\
     \ t) {\n    std::reverse(t.begin(), t.end());\n    return t;\n}\n\nMETHOD_EXPAND(sorted)\n\
     template <class C, ENABLE_IF_T(not has_sorted_v<C>)>\ninline constexpr C sorted(C\
     \ t, bool reverse = false) {\n    std::sort(t.begin(), t.end());\n    if (reverse)\
@@ -287,32 +289,32 @@ data:
     template <class C>\ninline constexpr mem_value_type<C> average(const C &v) {\n\
     \    assert(v.size());\n    return sum(v) / v.size();\n}\n\ntemplate <class C>\n\
     inline constexpr mem_value_type<C> median(const C &v) {\n    assert(not v.empty());\n\
-    \    std::vector<size_t> u(v.size());\n    std::iota(u.begin(), u.end(), 0);\n\
-    \    std::sort(u.begin(), u.end(), [&](size_t a, size_t b) {\n        return v[a]\
-    \ < v[b];\n    });\n    if (v.size() & 1) {\n        return v[u[v.size() / 2]];\n\
-    \    }\n    // C++20\n    // return std::midpoint(v[u[v.size() / 2]], v[u[v.size()\
-    \ / 2 - 1]]);\n    return (v[u[v.size() / 2]] + v[u[v.size() / 2 - 1]]) / 2;\n\
-    }\n\ntemplate <class C, typename U>\ninline constexpr std::ptrdiff_t index(const\
-    \ C &v, const U &x) {\n    return std::distance(v.begin(), find(v, x));\n}\n\n\
-    template <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\ninline\
-    \ constexpr mem_value_type<C> mex(const C &v) {\n    std::vector<bool> b(v.size()\
-    \ + 1);\n    for (const auto &a : v) {\n        if (0 <= a and static_cast<size_t>(a)\
+    \    std::vector<std::size_t> u(v.size());\n    std::iota(u.begin(), u.end(),\
+    \ 0);\n    std::sort(u.begin(), u.end(), [&](std::size_t a, std::size_t b) {\n\
+    \        return v[a] < v[b];\n    });\n    if (v.size() & 1) {\n        return\
+    \ v[u[v.size() / 2]];\n    }\n    // C++20\n    // return std::midpoint(v[u[v.size()\
+    \ / 2]], v[u[v.size() / 2 - 1]]);\n    return (v[u[v.size() / 2]] + v[u[v.size()\
+    \ / 2 - 1]]) / 2;\n}\n\ntemplate <class C, typename U>\ninline constexpr std::ptrdiff_t\
+    \ index(const C &v, const U &x) {\n    return std::distance(v.begin(), find(v,\
+    \ x));\n}\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
+    inline constexpr mem_value_type<C> mex(const C &v) {\n    std::vector<bool> b(v.size()\
+    \ + 1);\n    for (const auto &a : v) {\n        if (0 <= a and static_cast<std::size_t>(a)\
     \ < b.size()) {\n            b[a] = true;\n        }\n    }\n    mem_value_type<C>\
     \ ret = 0;  // b \u306E\u8981\u7D20\u6570\u306F v \u3088\u308A 1 \u591A\u3044\u306E\
     \u3067\u3001\u4E0B\u306E\u30EB\u30FC\u30D7\u3067\u5FC5\u305A\u898B\u3064\u304B\
-    \u308B\n    for (size_t i = 0; i < b.size(); i++) {\n        if (not b[i]) {\n\
-    \            ret = i;\n            break;\n        }\n    }\n    return ret;\n\
+    \u308B\n    for (std::size_t i = 0; i < b.size(); i++) {\n        if (not b[i])\
+    \ {\n            ret = i;\n            break;\n        }\n    }\n    return ret;\n\
     }\n\ntemplate <class C>\ninline constexpr mem_difference_type<C> bisect_left(const\
     \ C &v, const mem_value_type<C> &x) {\n    return std::distance(v.begin(), lower_bound(v,\
     \ x));\n}\ntemplate <class C>\ninline constexpr mem_difference_type<C> bisect_right(const\
     \ C &v, const mem_value_type<C> &x) {\n    return std::distance(v.begin(), upper_bound(v,\
     \ x));\n}\n"
   dependsOn:
-  - src/base/traits.hpp
+  - src/utility/traits.hpp
   isVerificationFile: false
-  path: src/base/container_func.hpp
+  path: src/utility/container_func.hpp
   requiredBy: []
-  timestamp: '2026-10-13 06:07:05+09:00'
+  timestamp: '2026-10-13 13:03:23+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/container-func-member.test.cpp
@@ -329,7 +331,7 @@ data:
   - test/aoj/itp1-6-a.test.cpp
   - test/aoj/itp2-5-a.2.test.cpp
   - test/aoj/itp1-2-c.test.cpp
-documentation_of: src/base/container_func.hpp
+documentation_of: src/utility/container_func.hpp
 layout: document
 title: "\u30B3\u30F3\u30C6\u30CA\u306B\u5BFE\u3059\u308B\u95A2\u6570 (sorted, max,\
   \ sum \u306A\u3069)"

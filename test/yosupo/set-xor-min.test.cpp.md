@@ -16,7 +16,7 @@ data:
     - https://judge.yosupo.jp/problem/set_xor_min
   bundledCode: "#line 1 \"test/yosupo/set-xor-min.test.cpp\"\n#define PROBLEM \"https://judge.yosupo.jp/problem/set_xor_min\"\
     \n\n#include <iostream>\n\n#line 2 \"src/data_structures/binary-trie.hpp\"\n\n\
-    /**\n * @file binary-trie.hpp\n * @brief Binary Trie\n */\n\n#include <assert.h>\n\
+    /**\n * @file binary-trie.hpp\n * @brief Binary Trie\n */\n\n#include <cassert>\n\
     #include <limits>\n#include <memory>\n#include <utility>\n\n/**\n * @brief \u7B26\
     \u53F7\u306A\u3057\u6574\u6570\u306E\u591A\u91CD\u96C6\u5408\u3092\u7BA1\u7406\
     \u3059\u308B\n * @tparam `d` \u6271\u3046\u6574\u6570\u5024\u306E\u30D3\u30C3\u30C8\
@@ -127,7 +127,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/set-xor-min.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 20:24:58+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/set-xor-min.test.cpp

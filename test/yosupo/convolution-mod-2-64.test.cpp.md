@@ -27,33 +27,33 @@ data:
     \ \"https://judge.yosupo.jp/problem/convolution_mod_2_64\"\n\n#line 2 \"src/base/io.hpp\"\
     \n/**\n * @file io.hpp\n * @brief \u7A7A\u767D\u533A\u5207\u308A\u51FA\u529B\u3001\
     iostream\u306E\u30AA\u30FC\u30D0\u30FC\u30ED\u30FC\u30C9\n */\n\n#include <array>\n\
-    #include <iostream>\n#include <set>\n#include <utility>\n#include <tuple>\n#include\
-    \ <vector>\n\n// \u30CD\u30B9\u30C8\u3057\u305F\u578B (pair<vector<int>, int>\
-    \ \u306A\u3069) \u3092\u6271\u3048\u308B\u3088\u3046\u306B\u5148\u306B\u5BA3\u8A00\
-    \u3057\u3066\u304A\u304F\ntemplate <typename T1, typename T2, typename CharT,\
-    \ typename Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    #include <cstddef>\n#include <iostream>\n#include <set>\n#include <utility>\n\
+    #include <tuple>\n#include <vector>\n\n// \u30CD\u30B9\u30C8\u3057\u305F\u578B\
+    \ (pair<vector<int>, int> \u306A\u3069) \u3092\u6271\u3048\u308B\u3088\u3046\u306B\
+    \u5148\u306B\u5BA3\u8A00\u3057\u3066\u304A\u304F\ntemplate <typename T1, typename\
+    \ T2, typename CharT, typename Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
     \ Traits>& is, std::pair<T1, T2>& p);\ntemplate <typename... Types, typename CharT,\
     \ typename Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
-    \ Traits>& is, std::tuple<Types...>& p);\ntemplate <typename T, size_t N, typename\
-    \ CharT, typename Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    \ Traits>& is, std::tuple<Types...>& p);\ntemplate <typename T, std::size_t N,\
+    \ typename CharT, typename Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
     \ Traits>& is, std::array<T, N>& a);\ntemplate <typename T, typename CharT, typename\
     \ Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
     \ Traits>& is, std::vector<T>& v);\ntemplate <typename T1, typename T2, typename\
     \ CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const std::pair<T1, T2>& p);\ntemplate <typename... Types, typename\
     \ CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
-    \ Traits>& os, const std::tuple<Types...>& p);\ntemplate <typename T, size_t N,\
-    \ typename CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \ Traits>& os, const std::tuple<Types...>& p);\ntemplate <typename T, std::size_t\
+    \ N, typename CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const std::array<T, N>& a);\ntemplate <typename T, typename CharT,\
     \ typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const std::vector<T>& v);\ntemplate <typename T, typename CharT,\
     \ typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const std::set<T>& s);\n\nnamespace tuple_io {\n    template <typename\
-    \ Tuple, size_t I, typename CharT, typename Traits>\n    std::basic_istream<CharT,\
+    \ Tuple, std::size_t I, typename CharT, typename Traits>\n    std::basic_istream<CharT,\
     \ Traits>& read_tuple(std::basic_istream<CharT, Traits>& is, Tuple& t) {\n   \
     \     is >> std::get<I>(t);\n        if constexpr (I + 1 < std::tuple_size_v<Tuple>)\
     \ {\n            return read_tuple<Tuple, I + 1>(is, t);\n        }\n        return\
-    \ is;\n    }\n    template <typename Tuple, size_t I, typename CharT, typename\
+    \ is;\n    }\n    template <typename Tuple, std::size_t I, typename CharT, typename\
     \ Traits>\n    std::basic_ostream<CharT, Traits>& write_tuple(std::basic_ostream<CharT,\
     \ Traits>& os, const Tuple& t) {\n        os << std::get<I>(t);\n        if constexpr\
     \ (I + 1 < std::tuple_size_v<Tuple>) {\n            os << CharT(' ');\n      \
@@ -64,7 +64,7 @@ data:
     }\ntemplate <typename... Types, typename CharT, typename Traits>\nstd::basic_istream<CharT,\
     \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, std::tuple<Types...>&\
     \ p) {\n    return tuple_io::read_tuple<std::tuple<Types...>, 0>(is, p);\n}\n\
-    template <typename T, size_t N, typename CharT, typename Traits>\nstd::basic_istream<CharT,\
+    template <typename T, std::size_t N, typename CharT, typename Traits>\nstd::basic_istream<CharT,\
     \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, std::array<T, N>&\
     \ a) {\n    for(auto& e : a) is >> e;\n    return is;\n}\ntemplate <typename T,\
     \ typename CharT, typename Traits>\nstd::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
@@ -75,13 +75,13 @@ data:
     \    return os;\n}\ntemplate <typename... Types, typename CharT, typename Traits>\n\
     std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>&\
     \ os, const std::tuple<Types...>& p) {\n    return tuple_io::write_tuple<std::tuple<Types...>,\
-    \ 0>(os, p);\n}\ntemplate <typename T, size_t N, typename CharT, typename Traits>\n\
-    std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>&\
-    \ os, const std::array<T, N>& a) {\n    for(size_t i = 0; i < N; ++i) {\n    \
-    \    if(i) os << CharT(' ');\n        os << a[i];\n    }\n    return os;\n}\n\
-    template <typename T, typename CharT, typename Traits>\nstd::basic_ostream<CharT,\
+    \ 0>(os, p);\n}\ntemplate <typename T, std::size_t N, typename CharT, typename\
+    \ Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \ Traits>& os, const std::array<T, N>& a) {\n    for(std::size_t i = 0; i < N;\
+    \ ++i) {\n        if(i) os << CharT(' ');\n        os << a[i];\n    }\n    return\
+    \ os;\n}\ntemplate <typename T, typename CharT, typename Traits>\nstd::basic_ostream<CharT,\
     \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const std::vector<T>&\
-    \ v) {\n    for(size_t i = 0; i < v.size(); ++i) {\n        if(i) os << CharT('\
+    \ v) {\n    for(std::size_t i = 0; i < v.size(); ++i) {\n        if(i) os << CharT('\
     \ ');\n        os << v[i];\n    }\n    return os;\n}\ntemplate <typename T, typename\
     \ CharT, typename Traits>\nstd::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const std::set<T>& s) {\n    for(auto itr = s.begin(); itr != s.end();\
@@ -110,70 +110,71 @@ data:
     \ << x << ' ';\n    err(tail...);\n}\n#line 2 \"src/math/number-theory.hpp\"\n\
     \n/**\n * @file number-theory.hpp\n * @brief \u6570\u8AD6 (\u9006\u5143\u3001\u4E2D\
     \u56FD\u5270\u4F59\u5B9A\u7406\u3001\u7573\u307F\u8FBC\u307F\u306A\u3069)\n */\n\
-    \n#include <numeric>\n#include <optional>\n#line 2 \"src/math/modint.hpp\"\n\n\
-    /**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\
-    \u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line\
-    \ 10 \"src/math/modint.hpp\"\n#include <limits>\n#include <type_traits>\n#include\
-    \ <cstdint>\n#include <cassert>\n\nnamespace detail {\n    static constexpr std::uint16_t\
-    \ prime32_bases[] {\n        15591,  2018,  166, 7429,  8064, 16045, 10503,  4399,\
-    \  1949,  1295, 2776,  3620,   560,  3128,  5212,  2657,\n         2300,  2021,\
-    \ 4652, 1471,  9336,  4018,  2398, 20462, 10277,  8028, 2213,  6219,   620,  3763,\
-    \  4852,  5012,\n         3185,  1333, 6227, 5298,  1074,  2391,  5113,  7061,\
-    \   803,  1269, 3875,   422,   751,   580,  4729, 10239,\n          746,  2951,\
-    \  556, 2206,  3778,   481,  1522,  3476,   481,  2487, 3266,  5633,   488,  3373,\
-    \  6441,  3344,\n           17, 15105, 1490, 4154,  2036,  1882,  1813,   467,\
-    \  3307, 14042, 6371,   658,  1005,   903,   737,  1887,\n         7447,  1888,\
-    \ 2848, 1784,  7559,  3400,   951, 13969,  4304,   177,   41, 19875,  3110, 13221,\
-    \  8726,   571,\n         7043,  6943, 1199,  352,  6435,   165,  1169,  3315,\
-    \   978,   233, 3003,  2562,  2994, 10587, 10030,  2377,\n         1902,  5354,\
-    \ 4447, 1555,   263, 27027,  2283,   305,   669,  1912,  601,  6186,   429,  1930,\
-    \ 14873,  1784,\n         1661,   524, 3577,  236,  2360,  6146,  2850, 55637,\
-    \  1753,  4178, 8466,   222,  2579,  2743,  2031,  2226,\n         2276,   374,\
-    \ 2132,  813, 23788,  1610,  4422,  5159,  1725,  3597, 3366, 14336,   579,  \
-    \ 165,  1375, 10018,\n        12616,  9816, 1371,  536,  1867, 10864,   857, \
-    \ 2206,  5788,   434, 8085, 17618,   727,  3639,  1595,  4944,\n         2129,\
-    \  2029, 8195, 8344,  6232,  9183,  8126,  1870,  3296,  7455, 8947, 25017,  \
-    \ 541, 19115,   368,   566,\n         5674,   411,  522, 1027,  8215,  2050, \
-    \ 6544, 10049,   614,   774, 2333,  3007, 35201,  4706,  1152,  1785,\n      \
-    \   1028,  1540, 3743,  493,  4474,  2521, 26845,  8354,   864, 18915, 5465, \
-    \ 2447,    42,  4511,  1660,   166,\n         1249,  6259, 2553,  304,   272,\
-    \  7286,    73,  6554,   899,  2816, 5197, 13330,  7054,  2818,  3199,   811,\n\
-    \          922,   350, 7514, 4452,  3449,  2663,  4708,   418,  1621,  1171, 3471,\
-    \    88, 11345,   412,  1559,   194,\n    };\n\n    static constexpr bool is_SPRP(std::uint32_t\
-    \ n, std::uint32_t a) noexcept {\n        std::uint32_t d = n - 1;\n        std::uint32_t\
-    \ s = 0;\n        while ((d & 1) == 0) {\n            ++s;\n            d >>=\
-    \ 1;\n        }\n        std::uint64_t cur = 1;\n        std::uint64_t pw = d;\n\
-    \        while (pw) {\n            if (pw & 1) cur = (cur * a) % n;\n        \
-    \    a = (static_cast<std::uint64_t>(a) * a) % n;\n            pw >>= 1;\n   \
-    \     }\n        if (cur == 1) return true;\n        for (std::uint32_t r = 0;\
-    \ r < s; ++r) {\n            if (cur == n - 1) return true;\n            cur =\
-    \ (cur * cur) % n;\n        }\n        return false;\n    }\n\n    // 32\u30D3\
-    \u30C3\u30C8\u7B26\u53F7\u306A\u3057\u6574\u6570\u306E\u7D20\u6570\u5224\u5B9A\
-    \n    // \u53C2\u8003: M. Forisek and J. Jancina, \u201CFast Primality Testing\
-    \ for Integers That Fit into a Machine Word,\u201D presented at the Conference\
-    \ on Current Trends in Theory and Practice of Informatics, 2015.\n    [[nodiscard]]\n\
-    \    static constexpr bool is_prime32(std::uint32_t x) noexcept {\n        if\
-    \ (x == 2 || x == 3 || x == 5 || x == 7) return true;\n        if (x % 2 == 0\
-    \ || x % 3 == 0 || x % 5 == 0 || x % 7 == 0) return false;\n        if (x < 121)\
-    \ return (x > 1);\n        std::uint64_t h = x;\n        h = ((h >> 16) ^ h) *\
-    \ 0x45d9f3b;\n        h = ((h >> 16) ^ h) * 0x45d9f3b;\n        h = ((h >> 16)\
-    \ ^ h) & 0xff;\n        return is_SPRP(x, prime32_bases[h]);\n    }\n}\n\n///\
-    \ @brief static_modint \u3068 dynamic_modint \u306E\u5B9F\u88C5\u3092 CRTP \u306B\
-    \u3088\u3063\u3066\u884C\u3046\u305F\u3081\u306E\u30AF\u30E9\u30B9\u30C6\u30F3\
-    \u30D7\u30EC\u30FC\u30C8\n/// @tparam Modint \u3053\u306E\u30AF\u30E9\u30B9\u30C6\
-    \u30F3\u30D7\u30EC\u30FC\u30C8\u3092\u7D99\u627F\u3059\u308B\u30AF\u30E9\u30B9\
-    \ntemplate <class Modint>\nclass modint_base {\npublic:\n    /// @brief \u4FDD\
-    \u6301\u3059\u308B\u5024\u306E\u578B\n    using value_type = std::uint32_t;\n\n\
-    \    /// @brief 0 \u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    constexpr\
-    \ modint_base() noexcept\n        : m_value{ 0 } {}\n\n    /// @brief @c value\
-    \ \u306E\u5270\u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    ///\
-    \ @param value \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\n    template <class\
-    \ SignedIntegral, std::enable_if_t<std::is_integral_v<SignedIntegral> && std::is_signed_v<SignedIntegral>>*\
-    \ = nullptr>\n    constexpr modint_base(SignedIntegral value) noexcept\n     \
-    \   : m_value{ static_cast<value_type>((static_cast<long long>(value) % Modint::mod()\
-    \ + Modint::mod()) % Modint::mod()) } {}\n\n    /// @brief @c value \u306E\u5270\
-    \u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    /// @param value \u521D\
-    \u671F\u5316\u306B\u4F7F\u3046\u5024\n    template <class UnsignedIntegral, std::enable_if_t<std::is_integral_v<UnsignedIntegral>\
+    \n#include <algorithm>\n#include <cassert>\n#include <numeric>\n#include <optional>\n\
+    #line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\
+    \u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\
+    \u30E9\u30B9\n */\n\n#line 10 \"src/math/modint.hpp\"\n#include <limits>\n#include\
+    \ <type_traits>\n#include <cstdint>\n#line 14 \"src/math/modint.hpp\"\n\nnamespace\
+    \ detail {\n    static constexpr std::uint16_t prime32_bases[] {\n        15591,\
+    \  2018,  166, 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,  3620,  \
+    \ 560,  3128,  5212,  2657,\n         2300,  2021, 4652, 1471,  9336,  4018, \
+    \ 2398, 20462, 10277,  8028, 2213,  6219,   620,  3763,  4852,  5012,\n      \
+    \   3185,  1333, 6227, 5298,  1074,  2391,  5113,  7061,   803,  1269, 3875, \
+    \  422,   751,   580,  4729, 10239,\n          746,  2951,  556, 2206,  3778,\
+    \   481,  1522,  3476,   481,  2487, 3266,  5633,   488,  3373,  6441,  3344,\n\
+    \           17, 15105, 1490, 4154,  2036,  1882,  1813,   467,  3307, 14042, 6371,\
+    \   658,  1005,   903,   737,  1887,\n         7447,  1888, 2848, 1784,  7559,\
+    \  3400,   951, 13969,  4304,   177,   41, 19875,  3110, 13221,  8726,   571,\n\
+    \         7043,  6943, 1199,  352,  6435,   165,  1169,  3315,   978,   233, 3003,\
+    \  2562,  2994, 10587, 10030,  2377,\n         1902,  5354, 4447, 1555,   263,\
+    \ 27027,  2283,   305,   669,  1912,  601,  6186,   429,  1930, 14873,  1784,\n\
+    \         1661,   524, 3577,  236,  2360,  6146,  2850, 55637,  1753,  4178, 8466,\
+    \   222,  2579,  2743,  2031,  2226,\n         2276,   374, 2132,  813, 23788,\
+    \  1610,  4422,  5159,  1725,  3597, 3366, 14336,   579,   165,  1375, 10018,\n\
+    \        12616,  9816, 1371,  536,  1867, 10864,   857,  2206,  5788,   434, 8085,\
+    \ 17618,   727,  3639,  1595,  4944,\n         2129,  2029, 8195, 8344,  6232,\
+    \  9183,  8126,  1870,  3296,  7455, 8947, 25017,   541, 19115,   368,   566,\n\
+    \         5674,   411,  522, 1027,  8215,  2050,  6544, 10049,   614,   774, 2333,\
+    \  3007, 35201,  4706,  1152,  1785,\n         1028,  1540, 3743,  493,  4474,\
+    \  2521, 26845,  8354,   864, 18915, 5465,  2447,    42,  4511,  1660,   166,\n\
+    \         1249,  6259, 2553,  304,   272,  7286,    73,  6554,   899,  2816, 5197,\
+    \ 13330,  7054,  2818,  3199,   811,\n          922,   350, 7514, 4452,  3449,\
+    \  2663,  4708,   418,  1621,  1171, 3471,    88, 11345,   412,  1559,   194,\n\
+    \    };\n\n    static constexpr bool is_SPRP(std::uint32_t n, std::uint32_t a)\
+    \ noexcept {\n        std::uint32_t d = n - 1;\n        std::uint32_t s = 0;\n\
+    \        while ((d & 1) == 0) {\n            ++s;\n            d >>= 1;\n    \
+    \    }\n        std::uint64_t cur = 1;\n        std::uint64_t pw = d;\n      \
+    \  while (pw) {\n            if (pw & 1) cur = (cur * a) % n;\n            a =\
+    \ (static_cast<std::uint64_t>(a) * a) % n;\n            pw >>= 1;\n        }\n\
+    \        if (cur == 1) return true;\n        for (std::uint32_t r = 0; r < s;\
+    \ ++r) {\n            if (cur == n - 1) return true;\n            cur = (cur *\
+    \ cur) % n;\n        }\n        return false;\n    }\n\n    // 32\u30D3\u30C3\u30C8\
+    \u7B26\u53F7\u306A\u3057\u6574\u6570\u306E\u7D20\u6570\u5224\u5B9A\n    // \u53C2\
+    \u8003: M. Forisek and J. Jancina, \u201CFast Primality Testing for Integers That\
+    \ Fit into a Machine Word,\u201D presented at the Conference on Current Trends\
+    \ in Theory and Practice of Informatics, 2015.\n    [[nodiscard]]\n    static\
+    \ constexpr bool is_prime32(std::uint32_t x) noexcept {\n        if (x == 2 ||\
+    \ x == 3 || x == 5 || x == 7) return true;\n        if (x % 2 == 0 || x % 3 ==\
+    \ 0 || x % 5 == 0 || x % 7 == 0) return false;\n        if (x < 121) return (x\
+    \ > 1);\n        std::uint64_t h = x;\n        h = ((h >> 16) ^ h) * 0x45d9f3b;\n\
+    \        h = ((h >> 16) ^ h) * 0x45d9f3b;\n        h = ((h >> 16) ^ h) & 0xff;\n\
+    \        return is_SPRP(x, prime32_bases[h]);\n    }\n}\n\n/// @brief static_modint\
+    \ \u3068 dynamic_modint \u306E\u5B9F\u88C5\u3092 CRTP \u306B\u3088\u3063\u3066\
+    \u884C\u3046\u305F\u3081\u306E\u30AF\u30E9\u30B9\u30C6\u30F3\u30D7\u30EC\u30FC\
+    \u30C8\n/// @tparam Modint \u3053\u306E\u30AF\u30E9\u30B9\u30C6\u30F3\u30D7\u30EC\
+    \u30FC\u30C8\u3092\u7D99\u627F\u3059\u308B\u30AF\u30E9\u30B9\ntemplate <class\
+    \ Modint>\nclass modint_base {\npublic:\n    /// @brief \u4FDD\u6301\u3059\u308B\
+    \u5024\u306E\u578B\n    using value_type = std::uint32_t;\n\n    /// @brief 0\
+    \ \u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    constexpr modint_base()\
+    \ noexcept\n        : m_value{ 0 } {}\n\n    /// @brief @c value \u306E\u5270\u4F59\
+    \u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    /// @param value \u521D\u671F\
+    \u5316\u306B\u4F7F\u3046\u5024\n    template <class SignedIntegral, std::enable_if_t<std::is_integral_v<SignedIntegral>\
+    \ && std::is_signed_v<SignedIntegral>>* = nullptr>\n    constexpr modint_base(SignedIntegral\
+    \ value) noexcept\n        : m_value{ static_cast<value_type>((static_cast<long\
+    \ long>(value) % Modint::mod() + Modint::mod()) % Modint::mod()) } {}\n\n    ///\
+    \ @brief @c value \u306E\u5270\u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\
+    \u3002\n    /// @param value \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\n    template\
+    \ <class UnsignedIntegral, std::enable_if_t<std::is_integral_v<UnsignedIntegral>\
     \ && std::is_unsigned_v<UnsignedIntegral>>* = nullptr>\n    constexpr modint_base(UnsignedIntegral\
     \ value) noexcept\n        : m_value{ static_cast<value_type>(value % Modint::mod())\
     \ } {}\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092\u53D6\
@@ -344,7 +345,7 @@ data:
     \      : base_type{value} {}\n\nprivate:\n    inline static value_type modulus\
     \ = 998244353;\n};\n\nusing modint998244353 = static_modint<998244353>;\nusing\
     \ modint1000000007 = static_modint<1000000007>;\nusing modint = dynamic_modint<-1>;\n\
-    #line 12 \"src/math/number-theory.hpp\"\n\n/**\n * @brief a^(-1) mod MOD\u3092\
+    #line 15 \"src/math/number-theory.hpp\"\n\n/**\n * @brief a^(-1) mod MOD\u3092\
     \u8FD4\u3059\n * @param a long long\n * @param MOD long long\n * @return long\
     \ long\n */\ninline long long modinv(long long a, long long MOD) {\n    a %= MOD;\n\
     \    if (a < 0) a += MOD;\n    long long b = MOD, u = 1, v = 0;\n    while (b)\
@@ -550,7 +551,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/convolution-mod-2-64.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 00:38:02+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/convolution-mod-2-64.test.cpp

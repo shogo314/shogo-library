@@ -37,17 +37,18 @@ data:
     \ @brief \u7FA4\u306E\u5B9A\u7FA9\n *\n * \u7FA4\u306F\u30E2\u30CE\u30A4\u30C9\
     \ (algebra/monoid.hpp) \u306E\u30E1\u30F3\u30D0\u306B\u52A0\u3048\u3066\u6B21\u306E\
     \u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * -\
-    \ S inv(const S& a): \u9006\u5143\n */\n\n#line 2 \"src/algebra/monoid.hpp\"\n\
-    \n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
+    \ S inv(const S& a): \u9006\u5143\n */\n\n#line 12 \"src/algebra/group.hpp\"\n\
+    #include <cstddef>\n#include <utility>\n#line 2 \"src/algebra/monoid.hpp\"\n\n\
+    /**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
     \n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
     \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\
     \n * - S op(const S& a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e():\
     \ \u5358\u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\
     \u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\
     \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\
-    \u51FA\u3059)\n */\n\n#line 16 \"src/algebra/monoid.hpp\"\n#include <cstddef>\n\
-    #include <istream>\n#include <limits>\n#line 20 \"src/algebra/monoid.hpp\"\n#include\
-    \ <ostream>\n#include <type_traits>\n#include <utility>\n\n/**\n * @brief 1\u6B21\
+    \u51FA\u3059)\n */\n\n#line 17 \"src/algebra/monoid.hpp\"\n#include <istream>\n\
+    #include <limits>\n#line 20 \"src/algebra/monoid.hpp\"\n#include <ostream>\n#include\
+    \ <type_traits>\n#line 23 \"src/algebra/monoid.hpp\"\n\n/**\n * @brief 1\u6B21\
     \u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\u3084\
     \ acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n * \u4F8B\
     : Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\u3059\u308B\u3068\
@@ -166,7 +167,7 @@ data:
     \    Monoid() = default;\n    constexpr Monoid(Op op, const S& e) : op_object(std::move(op)),\
     \ identity(e) {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a,\
     \ b); }\n    constexpr S e() const { return identity; }\n};\ntemplate <typename\
-    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 12 \"src/algebra/group.hpp\"\
+    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 15 \"src/algebra/group.hpp\"\
     \n\nnamespace group {\n\n/**\n * @brief \u52A0\u6CD5\u7FA4\n */\ntemplate <typename\
     \ T>\nstruct Sum : monoid::Sum<T> {\n    using S = T;\n    static constexpr S\
     \ inv(const S& a) { return -a; }\n};\n\n/**\n * @brief \u4E57\u6CD5\u7FA4 (0\u3092\
@@ -199,8 +200,8 @@ data:
     \ Op, Inv>;\n#line 2 \"src/data_structures/potentialized-unionfind.hpp\"\n\n/**\n\
     \ * @file potentialized-unionfind.hpp\n * @brief \u30DD\u30C6\u30F3\u30B7\u30E3\
     \u30EB\u4ED8\u304DUnionFind\n */\n#line 8 \"src/data_structures/potentialized-unionfind.hpp\"\
-    \n#include <cassert>\n#include <functional>\n#include <stack>\n#line 2 \"src/data_structures/unionfind.hpp\"\
-    \n\n/**\n * @file unionfind.hpp\n * @brief UnionFind\n */\n\n#line 11 \"src/data_structures/unionfind.hpp\"\
+    \n#include <cassert>\n#include <stack>\n#line 2 \"src/data_structures/unionfind.hpp\"\
+    \n\n/**\n * @file unionfind.hpp\n * @brief UnionFind\n */\n\n#line 12 \"src/data_structures/unionfind.hpp\"\
     \n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u5BFE\u3057\u3066\u300C\
     \u8FBA\u306E\u8FFD\u52A0\u300D\u3001\u300C2\u9802\u70B9\u304C\u9023\u7D50\u304B\
     \u306E\u5224\u5B9A\u300D\u3092\u3059\u308B\n */\nstruct UnionFind {\n   protected:\n\
@@ -246,7 +247,7 @@ data:
     \        }\n        result.erase(\n            std::remove_if(result.begin(),\
     \ result.end(),\n                           [&](const std::vector<int>& v) { return\
     \ v.empty(); }),\n            result.end());\n        return result;\n    }\n\
-    };\n#line 15 \"src/data_structures/potentialized-unionfind.hpp\"\n\n/**\n * @brief\
+    };\n#line 14 \"src/data_structures/potentialized-unionfind.hpp\"\n\n/**\n * @brief\
     \ \u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind\n * @tparam G \u30DD\
     \u30C6\u30F3\u30B7\u30E3\u30EB\u306E\u7FA4 (algebra/group.hpp) \u975E\u53EF\u63DB\
     \u3067\u3082\u3088\u3044\n */\ntemplate <typename G>\nclass PotentializedUnionFind\
@@ -308,7 +309,7 @@ data:
     \        return diff_weight[a];\n    }\n};\n\ntemplate <typename G>\nPotentializedUnionFind(int,\
     \ G) -> PotentializedUnionFind<G>;\n#line 2 \"src/data_structures/segtree.hpp\"\
     \n\n/**\n * @file segtree.hpp\n * @brief \u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n\
-    \ */\n\n#line 14 \"src/data_structures/segtree.hpp\"\n\n/**\n * @brief \u30BB\u30B0\
+    \ */\n\n#line 13 \"src/data_structures/segtree.hpp\"\n\n/**\n * @brief \u30BB\u30B0\
     \u30E1\u30F3\u30C8\u6728\n *\n * \u4F8B:\n * SegTree<monoid::Max<int>> seg(n);\n\
     \ * SegTree seg(v, Monoid([](int a, int b) { return a + b; }, 0));\n *\n * @tparam\
     \ M \u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\n */\ntemplate <typename M>\n\
@@ -557,7 +558,7 @@ data:
   isVerificationFile: true
   path: test/unittest/mapping.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 12:10:14+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/mapping.test.cpp

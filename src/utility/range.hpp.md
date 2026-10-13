@@ -18,7 +18,7 @@ data:
   attributes:
     document_title: "Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\u5217"
     links: []
-  bundledCode: "#line 2 \"src/base/range.hpp\"\n\n/**\n * @file range.hpp\n * @brief\
+  bundledCode: "#line 2 \"src/utility/range.hpp\"\n\n/**\n * @file range.hpp\n * @brief\
     \ Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\u5217\n */\n\n#include\
     \ <cassert>\n#include <cstddef>\n#include <iterator>\n#include <string>\n#include\
     \ <type_traits>\n#include <utility>\n#include <vector>\n\nstruct Range {\n   public:\n\
@@ -394,15 +394,15 @@ data:
     \ a, const Range& b) noexcept {\n        return !(a == b);\n    }\n};\n"
   dependsOn: []
   isVerificationFile: false
-  path: src/base/range.hpp
+  path: src/utility/range.hpp
   requiredBy: []
-  timestamp: '2026-10-12 20:24:58+09:00'
+  timestamp: '2026-10-13 13:03:23+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/repr.test.cpp
   - test/unittest/range.test.cpp
   - test/aoj/itp1-7-b.test.cpp
-documentation_of: src/base/range.hpp
+documentation_of: src/utility/range.hpp
 layout: document
 title: "Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\u5217"
 ---

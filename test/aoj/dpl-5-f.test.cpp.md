@@ -28,13 +28,13 @@ data:
     \ <cassert>\n#include <numeric>\n#include <vector>\n#line 2 \"src/math/number-theory.hpp\"\
     \n\n/**\n * @file number-theory.hpp\n * @brief \u6570\u8AD6 (\u9006\u5143\u3001\
     \u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\u3001\u7573\u307F\u8FBC\u307F\u306A\u3069\
-    )\n */\n\n#line 9 \"src/math/number-theory.hpp\"\n#include <optional>\n#line 2\
-    \ \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\
-    \u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\
-    \u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\n#include <utility>\n#include <limits>\n\
-    #include <type_traits>\n#include <cstdint>\n#line 14 \"src/math/modint.hpp\"\n\
-    \nnamespace detail {\n    static constexpr std::uint16_t prime32_bases[] {\n \
-    \       15591,  2018,  166, 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,\
+    )\n */\n\n#include <algorithm>\n#line 11 \"src/math/number-theory.hpp\"\n#include\
+    \ <optional>\n#include <utility>\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file\
+    \ modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\
+    \u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line 10 \"src/math/modint.hpp\"\
+    \n#include <limits>\n#include <type_traits>\n#include <cstdint>\n#line 14 \"src/math/modint.hpp\"\
+    \n\nnamespace detail {\n    static constexpr std::uint16_t prime32_bases[] {\n\
+    \        15591,  2018,  166, 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,\
     \  3620,   560,  3128,  5212,  2657,\n         2300,  2021, 4652, 1471,  9336,\
     \  4018,  2398, 20462, 10277,  8028, 2213,  6219,   620,  3763,  4852,  5012,\n\
     \         3185,  1333, 6227, 5298,  1074,  2391,  5113,  7061,   803,  1269, 3875,\
@@ -263,7 +263,7 @@ data:
     \      : base_type{value} {}\n\nprivate:\n    inline static value_type modulus\
     \ = 998244353;\n};\n\nusing modint998244353 = static_modint<998244353>;\nusing\
     \ modint1000000007 = static_modint<1000000007>;\nusing modint = dynamic_modint<-1>;\n\
-    #line 12 \"src/math/number-theory.hpp\"\n\n/**\n * @brief a^(-1) mod MOD\u3092\
+    #line 15 \"src/math/number-theory.hpp\"\n\n/**\n * @brief a^(-1) mod MOD\u3092\
     \u8FD4\u3059\n * @param a long long\n * @param MOD long long\n * @return long\
     \ long\n */\ninline long long modinv(long long a, long long MOD) {\n    a %= MOD;\n\
     \    if (a < 0) a += MOD;\n    long long b = MOD, u = 1, v = 0;\n    while (b)\
@@ -531,7 +531,7 @@ data:
   isVerificationFile: true
   path: test/aoj/dpl-5-f.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 00:57:44+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/dpl-5-f.test.cpp

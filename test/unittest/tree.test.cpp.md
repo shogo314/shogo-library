@@ -26,9 +26,10 @@ data:
     \ <iostream>\n#include <random>\n#include <utility>\n#include <vector>\n\n#line\
     \ 2 \"src/graph/tree.hpp\"\n\n/**\n * @file tree.hpp\n * @brief \u6728\u306E\u6C4E\
     \u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n*/\n\n#include <algorithm>\n#include\
-    \ <cassert>\n#include <stack>\n\n#line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file\
-    \ graph.hpp\n * @brief \u30B0\u30E9\u30D5\n */\n\n#line 11 \"src/graph/graph.hpp\"\
-    \n#include <limits>\n#include <queue>\n#line 14 \"src/graph/graph.hpp\"\n\n/**\n\
+    \ <cassert>\n#include <stack>\n#line 13 \"src/graph/tree.hpp\"\n\n#line 2 \"src/graph/graph.hpp\"\
+    \n\n/**\n * @file graph.hpp\n * @brief \u30B0\u30E9\u30D5\n */\n\n#line 10 \"\
+    src/graph/graph.hpp\"\n#include <functional>\n#line 12 \"src/graph/graph.hpp\"\
+    \n#include <limits>\n#include <queue>\n#line 16 \"src/graph/graph.hpp\"\n\n/**\n\
     \ * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam\
     \ Cost \u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u578B\n */\ntemplate <typename Cost\
     \ = int>\nstruct Graph {\n    /**\n     * @brief \u6709\u5411\u8FBA\u306E\u69CB\
@@ -162,7 +163,7 @@ data:
     \ {\n                    dist[e.dst] = dist[e.src] + e.cost;\n               \
     \     prev[e.dst] = e;\n                    que.push({dist[e.dst], e.dst});\n\
     \                }\n            }\n        }\n        return {dist, prev};\n \
-    \   }\n};\n#line 13 \"src/graph/tree.hpp\"\n\ntemplate <typename>\nstruct RootedTree;\n\
+    \   }\n};\n#line 15 \"src/graph/tree.hpp\"\n\ntemplate <typename>\nstruct RootedTree;\n\
     template <typename>\nstruct DoublingClimbTree;\n\n/**\n * @brief \u6839\u306A\u3057\
     \u6728\n * \n * @tparam Cost = int \u8FBA\u306E\u91CD\u307F\n * \n * Graph<Cost>\u3092\
     \u7D99\u627F\u3057\u3001\u3059\u3079\u3066\u7121\u5411\u8FBA\u3067\u8868\u3059\
@@ -429,7 +430,7 @@ data:
   isVerificationFile: true
   path: test/unittest/tree.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 06:02:01+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/tree.test.cpp

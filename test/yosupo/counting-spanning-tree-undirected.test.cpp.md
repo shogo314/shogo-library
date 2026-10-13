@@ -21,11 +21,11 @@ data:
   bundledCode: "#line 1 \"test/yosupo/counting-spanning-tree-undirected.test.cpp\"\
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/counting_spanning_tree_undirected\"\
     \n\n#include <iostream>\n\n#line 2 \"src/math/matrix.hpp\"\n\n/**\n * @file matrix.hpp\n\
-    \ * @brief \u884C\u5217\n */\n\n#include <vector>\n#include <string>\n#include\
-    \ <algorithm>\n#include <valarray>\n#include <cassert>\n#include <type_traits>\n\
-    #include <initializer_list>\n#include <cmath>\n#include <utility>\n\nnamespace\
-    \ matrix {\n    template <typename T>\n    struct OperatorPropertyDefault {\n\
-    \        constexpr static T zero() { return T(0); }\n        constexpr static\
+    \ * @brief \u884C\u5217\n */\n\n#include <cstddef>\n#include <vector>\n#include\
+    \ <string>\n#include <algorithm>\n#include <valarray>\n#include <cassert>\n#include\
+    \ <type_traits>\n#include <initializer_list>\n#include <cmath>\n#include <utility>\n\
+    \nnamespace matrix {\n    template <typename T>\n    struct OperatorPropertyDefault\
+    \ {\n        constexpr static T zero() { return T(0); }\n        constexpr static\
     \ T add(const T &a, const T &b) { return a + b; }\n        constexpr static T\
     \ neg(const T &a) { return -a; }\n        constexpr static T one() { return T(1);\
     \ }\n        constexpr static T mul(const T &a, const T &b) { return a * b; }\n\
@@ -67,25 +67,25 @@ data:
     \ {return v.begin();}\n    auto end() noexcept {return v.end();}\n    auto begin()\
     \ const noexcept {return v.begin();}\n    auto end() const noexcept {return v.end();}\n\
     \n    /**\n     * @brief \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u884C\u6570\
-    \n     * @return size_t\n     */\n    [[nodiscard]]\n    size_t size() const {return\
-    \ v.size();}\n\n    std::vector<T>& operator [] (int i) {return v[i];}\n    const\
-    \ std::vector<T>& operator [] (int i) const {return v[i];}\n    Matrix& operator\
-    \ = (const std::vector<std::vector<T>> &A) noexcept {\n        n = A.size();\n\
-    \        m = (n == 0 ? 0 : A[0].size());\n        v = A;\n        return *this;\n\
-    \    }\n    bool operator == (const Matrix &A) const noexcept {\n        return\
-    \ this->v == A.v;\n    }\n    bool operator != (const Matrix &A) const noexcept\
-    \ {\n        return this->v != A.v;\n    }\n\n    /**\n     * @brief \u8EE2\u7F6E\
-    \n     * @return Matrix\n     */\n    [[nodiscard]]\n    Matrix transpose() const\
-    \ noexcept {\n        if(n == 0) return Matrix(v);\n        std::vector<std::vector<T>>\
-    \ ret(m);\n        for(int i = 0; i < m; i ++) {\n            ret[i].resize(n);\n\
-    \            for(int j = 0; j < n; j ++) ret[i][j] = v[j][i];\n        }\n   \
-    \     return Matrix(ret);\n    }\n\n    /**\n     * @brief \u5DE6\u53F3\u53CD\u8EE2\
-    \n     * @return Matrix\n     */\n    [[nodiscard]]\n    Matrix rev_lr() const\
-    \ noexcept {\n        std::vector<std::vector<T>> ret = v;\n        for(int i\
-    \ = 0; i < n; i ++) std::reverse(ret[i].begin(), ret[i].end());\n        return\
-    \ Matrix(ret);\n    }\n\n    /**\n     * @brief \u4E0A\u4E0B\u53CD\u8EE2\n   \
-    \  * @return Matrix\n     */\n    [[nodiscard]]\n    Matrix rev_ud() const noexcept\
-    \ {\n        std::vector<std::vector<T>> ret = v;\n        reverse(ret.begin(),\
+    \n     * @return std::size_t\n     */\n    [[nodiscard]]\n    std::size_t size()\
+    \ const {return v.size();}\n\n    std::vector<T>& operator [] (int i) {return\
+    \ v[i];}\n    const std::vector<T>& operator [] (int i) const {return v[i];}\n\
+    \    Matrix& operator = (const std::vector<std::vector<T>> &A) noexcept {\n  \
+    \      n = A.size();\n        m = (n == 0 ? 0 : A[0].size());\n        v = A;\n\
+    \        return *this;\n    }\n    bool operator == (const Matrix &A) const noexcept\
+    \ {\n        return this->v == A.v;\n    }\n    bool operator != (const Matrix\
+    \ &A) const noexcept {\n        return this->v != A.v;\n    }\n\n    /**\n   \
+    \  * @brief \u8EE2\u7F6E\n     * @return Matrix\n     */\n    [[nodiscard]]\n\
+    \    Matrix transpose() const noexcept {\n        if(n == 0) return Matrix(v);\n\
+    \        std::vector<std::vector<T>> ret(m);\n        for(int i = 0; i < m; i\
+    \ ++) {\n            ret[i].resize(n);\n            for(int j = 0; j < n; j ++)\
+    \ ret[i][j] = v[j][i];\n        }\n        return Matrix(ret);\n    }\n\n    /**\n\
+    \     * @brief \u5DE6\u53F3\u53CD\u8EE2\n     * @return Matrix\n     */\n    [[nodiscard]]\n\
+    \    Matrix rev_lr() const noexcept {\n        std::vector<std::vector<T>> ret\
+    \ = v;\n        for(int i = 0; i < n; i ++) std::reverse(ret[i].begin(), ret[i].end());\n\
+    \        return Matrix(ret);\n    }\n\n    /**\n     * @brief \u4E0A\u4E0B\u53CD\
+    \u8EE2\n     * @return Matrix\n     */\n    [[nodiscard]]\n    Matrix rev_ud()\
+    \ const noexcept {\n        std::vector<std::vector<T>> ret = v;\n        reverse(ret.begin(),\
     \ ret.end());\n        return Matrix(ret);\n    }\n\n    /**\n     * @brief \u6642\
     \u8A08\u5468\u308A\u306B90\u5EA6\u56DE\u8EE2\n     * @param k \u56DE\u8EE2\u3059\
     \u308B\u56DE\u6570\n     * @return Matrix\n     */\n    [[nodiscard]]\n    Matrix\
@@ -528,7 +528,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/counting-spanning-tree-undirected.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 06:07:05+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/counting-spanning-tree-undirected.test.cpp

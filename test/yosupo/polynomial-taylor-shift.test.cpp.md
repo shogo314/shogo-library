@@ -25,17 +25,18 @@ data:
   bundledCode: "#line 1 \"test/yosupo/polynomial-taylor-shift.test.cpp\"\n#define\
     \ PROBLEM \"https://judge.yosupo.jp/problem/polynomial_taylor_shift\"\n\n#line\
     \ 2 \"src/math/fps.hpp\"\n\n/**\n * @file fps.hpp\n * @brief \u5F62\u5F0F\u7684\
-    \u51AA\u7D1A\u6570\n */\n\n#include <algorithm>\n#line 2 \"src/math/number-theory.hpp\"\
-    \n\n/**\n * @file number-theory.hpp\n * @brief \u6570\u8AD6 (\u9006\u5143\u3001\
-    \u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\u3001\u7573\u307F\u8FBC\u307F\u306A\u3069\
-    )\n */\n\n#include <numeric>\n#include <optional>\n#include <vector>\n#line 2\
-    \ \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\
-    \u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\
-    \u30B9\n */\n\n#include <iostream>\n#include <utility>\n#include <limits>\n#include\
-    \ <type_traits>\n#include <cstdint>\n#include <cassert>\n\nnamespace detail {\n\
-    \    static constexpr std::uint16_t prime32_bases[] {\n        15591,  2018, \
-    \ 166, 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,  3620,   560,  3128,\
-    \  5212,  2657,\n         2300,  2021, 4652, 1471,  9336,  4018,  2398, 20462,\
+    \u51AA\u7D1A\u6570\n */\n\n#include <algorithm>\n#include <cassert>\n#include\
+    \ <vector>\n#line 2 \"src/math/number-theory.hpp\"\n\n/**\n * @file number-theory.hpp\n\
+    \ * @brief \u6570\u8AD6 (\u9006\u5143\u3001\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\
+    \u3001\u7573\u307F\u8FBC\u307F\u306A\u3069)\n */\n\n#line 10 \"src/math/number-theory.hpp\"\
+    \n#include <numeric>\n#include <optional>\n#include <utility>\n#line 2 \"src/math/modint.hpp\"\
+    \n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\
+    \u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#include\
+    \ <iostream>\n#line 10 \"src/math/modint.hpp\"\n#include <limits>\n#include <type_traits>\n\
+    #include <cstdint>\n#line 14 \"src/math/modint.hpp\"\n\nnamespace detail {\n \
+    \   static constexpr std::uint16_t prime32_bases[] {\n        15591,  2018,  166,\
+    \ 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,  3620,   560,  3128, \
+    \ 5212,  2657,\n         2300,  2021, 4652, 1471,  9336,  4018,  2398, 20462,\
     \ 10277,  8028, 2213,  6219,   620,  3763,  4852,  5012,\n         3185,  1333,\
     \ 6227, 5298,  1074,  2391,  5113,  7061,   803,  1269, 3875,   422,   751,  \
     \ 580,  4729, 10239,\n          746,  2951,  556, 2206,  3778,   481,  1522, \
@@ -263,7 +264,7 @@ data:
     \      : base_type{value} {}\n\nprivate:\n    inline static value_type modulus\
     \ = 998244353;\n};\n\nusing modint998244353 = static_modint<998244353>;\nusing\
     \ modint1000000007 = static_modint<1000000007>;\nusing modint = dynamic_modint<-1>;\n\
-    #line 12 \"src/math/number-theory.hpp\"\n\n/**\n * @brief a^(-1) mod MOD\u3092\
+    #line 15 \"src/math/number-theory.hpp\"\n\n/**\n * @brief a^(-1) mod MOD\u3092\
     \u8FD4\u3059\n * @param a long long\n * @param MOD long long\n * @return long\
     \ long\n */\ninline long long modinv(long long a, long long MOD) {\n    a %= MOD;\n\
     \    if (a < 0) a += MOD;\n    long long b = MOD, u = 1, v = 0;\n    while (b)\
@@ -419,7 +420,7 @@ data:
     \ * (c1[i] - y0)).value();\n        int y2 = (NTT::imod01 * (c2[i] - y0) - NTT::imod1\
     \ * y1).value();\n        __int128_t tmp = (__int128_t)mod01 * y2 + (__int128_t)mod0\
     \ * y1 + y0;\n        if(tmp < (mod012 >> 1)) res[i] = tmp;\n        else res[i]\
-    \ = tmp - mod012;\n    }\n    return res;\n}\n#line 10 \"src/math/fps.hpp\"\n\n\
+    \ = tmp - mod012;\n    }\n    return res;\n}\n#line 12 \"src/math/fps.hpp\"\n\n\
     template <typename mint> struct FPS : std::vector<mint> {\n    using std::vector<mint>::vector;\n\
     \ \n    // constructor\n    FPS(const std::vector<mint>& r) : std::vector<mint>(r)\
     \ {}\n \n    // core operator\n    inline FPS pre(int siz) const {\n        return\
@@ -533,7 +534,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/polynomial-taylor-shift.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 00:38:02+09:00'
+  timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/polynomial-taylor-shift.test.cpp

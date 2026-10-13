@@ -28,8 +28,8 @@ data:
     \u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n*/\n\n#include <algorithm>\n#include\
     \ <cassert>\n#include <stack>\n#line 13 \"src/graph/tree.hpp\"\n\n#line 2 \"src/graph/graph.hpp\"\
     \n\n/**\n * @file graph.hpp\n * @brief \u30B0\u30E9\u30D5\n */\n\n#line 10 \"\
-    src/graph/graph.hpp\"\n#include <functional>\n#line 12 \"src/graph/graph.hpp\"\
-    \n#include <limits>\n#include <queue>\n#line 16 \"src/graph/graph.hpp\"\n\n/**\n\
+    src/graph/graph.hpp\"\n#include <deque>\n#include <functional>\n#line 13 \"src/graph/graph.hpp\"\
+    \n#include <limits>\n#include <queue>\n#line 17 \"src/graph/graph.hpp\"\n\n/**\n\
     \ * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam\
     \ Cost \u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u578B\n */\ntemplate <typename Cost\
     \ = int>\nstruct Graph {\n    /**\n     * @brief \u6709\u5411\u8FBA\u306E\u69CB\
@@ -145,49 +145,83 @@ data:
     \ {\n                        dist[e.dst] = -inf;\n                        prev[e.dst]\
     \ = e;\n                        changed = true;\n                    }\n     \
     \           }\n            if (!changed)\n                break;\n        }\n\
-    \        return {dist, prev};\n    }\n\n  private:\n    ShortestPath shortest_path_bfs(int\
+    \        return {dist, prev};\n    }\n    /**\n     * @brief \u8FBA\u306E\u30B3\
+    \u30B9\u30C8\u304C 0 \u304B 1 \u3060\u3051\u306E\u30B0\u30E9\u30D5\u3067\u3001\
+    \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\
+    \u8DEF (01-BFS) O(n + m)\n     *\n     * @param s \u59CB\u70B9\n     * @param\
+    \ inf \u672A\u5230\u9054\u306E\u9802\u70B9\u3078\u306E\u8DDD\u96E2 \u7701\u7565\
+    \u3059\u308B\u3068 -1\n     * @return ShortestPath \u5404\u9802\u70B9\u3078\u306E\
+    \u6700\u77ED\u8DEF\u9577 (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\u306E\u6700\
+    \u77ED\u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA (prev)\n     */\n    ShortestPath\
+    \ shortest_path_01bfs(int s, Cost inf = -1) const {\n        std::vector<Cost>\
+    \ dist(n, inf);\n        std::vector<Edge> prev(n);\n        std::deque<int> que;\n\
+    \        dist[s] = 0;\n        que.push_back(s);\n        while (!que.empty())\
+    \ {\n            int u = que.front();\n            que.pop_front();\n        \
+    \    for (auto &e : g[u]) {\n                assert(e.cost == 0 || e.cost == 1);\n\
+    \                if (dist[e.dst] == inf || dist[e.dst] > dist[u] + e.cost) {\n\
+    \                    dist[e.dst] = dist[u] + e.cost;\n                    prev[e.dst]\
+    \ = e;\n                    if (e.cost == 0) que.push_front(e.dst);\n        \
+    \            else que.push_back(e.dst);\n                }\n            }\n  \
+    \      }\n        return {dist, prev};\n    }\n    /**\n     * @brief \u5168\u70B9\
+    \u5BFE\u9593\u306E\u6700\u77ED\u8DEF\u9577 (Floyd-Warshall) O(n^3)\n     *\n \
+    \    * @param inf \u672A\u5230\u9054\u3092\u8868\u3059\u5024 \u7701\u7565\u3059\
+    \u308B\u3068 std::numeric_limits<Cost>::max() / 4\n     * @return std::vector<std::vector<Cost>>\
+    \ dist[i][j] \u304C i \u304B\u3089 j \u3078\u306E\u6700\u77ED\u8DEF\u9577 (\u5230\
+    \u9054\u3067\u304D\u306A\u3051\u308C\u3070 inf)\n     * @note \u8CA0\u306E\u8FBA\
+    \u304C\u3042\u3063\u3066\u3082\u3088\u3044\u3002dist[i][i] < 0 \u3068\u306A\u308B\
+    \ i \u304C\u3042\u308C\u3070\u8CA0\u9589\u8DEF\u304C\u3042\u308B\n     */\n  \
+    \  std::vector<std::vector<Cost>> floyd_warshall(Cost inf = std::numeric_limits<Cost>::max()\
+    \ / 4) const {\n        std::vector<std::vector<Cost>> dist(n, std::vector<Cost>(n,\
+    \ inf));\n        for (int i = 0; i < n; i++) dist[i][i] = Cost{};\n        for\
+    \ (int i = 0; i < n; i++) {\n            for (auto &e : g[i]) dist[i][e.dst] =\
+    \ std::min(dist[i][e.dst], e.cost);\n        }\n        for (int k = 0; k < n;\
+    \ k++) {\n            for (int i = 0; i < n; i++) {\n                if (dist[i][k]\
+    \ == inf) continue;\n                for (int j = 0; j < n; j++) {\n         \
+    \           if (dist[k][j] == inf) continue;\n                    dist[i][j] =\
+    \ std::min(dist[i][j], dist[i][k] + dist[k][j]);\n                }\n        \
+    \    }\n        }\n        return dist;\n    }\n\n  private:\n    ShortestPath\
+    \ shortest_path_bfs(int s, Cost inf) const {\n        std::vector<Cost> dist(n,\
+    \ inf);\n        std::vector<Edge> prev(n);\n        std::queue<int> que;\n  \
+    \      dist[s] = 0;\n        que.push(s);\n        while (!que.empty()) {\n  \
+    \          int u = que.front();\n            que.pop();\n            for (auto\
+    \ &e : g[u]) {\n                if (dist[e.dst] == inf) {\n                  \
+    \  dist[e.dst] = dist[e.src] + 1;\n                    prev[e.dst] = e;\n    \
+    \                que.push(e.dst);\n                }\n            }\n        }\n\
+    \        return {dist, prev};\n    }\n    ShortestPath shortest_path_dijkstra(int\
     \ s, Cost inf) const {\n        std::vector<Cost> dist(n, inf);\n        std::vector<Edge>\
-    \ prev(n);\n        std::queue<int> que;\n        dist[s] = 0;\n        que.push(s);\n\
-    \        while (!que.empty()) {\n            int u = que.front();\n          \
-    \  que.pop();\n            for (auto &e : g[u]) {\n                if (dist[e.dst]\
-    \ == inf) {\n                    dist[e.dst] = dist[e.src] + 1;\n            \
-    \        prev[e.dst] = e;\n                    que.push(e.dst);\n            \
-    \    }\n            }\n        }\n        return {dist, prev};\n    }\n    ShortestPath\
-    \ shortest_path_dijkstra(int s, Cost inf) const {\n        std::vector<Cost> dist(n,\
-    \ inf);\n        std::vector<Edge> prev(n);\n        using Node = std::pair<Cost,\
-    \ int>;\n        std::priority_queue<Node, std::vector<Node>, std::greater<Node>>\
-    \ que;\n        dist[s] = 0;\n        que.push({0, s});\n        while (!que.empty())\
-    \ {\n            auto [d, u] = que.top();\n            que.pop();\n          \
-    \  if (d > dist[u])\n                continue;\n            for (auto &e : g[u])\
-    \ {\n                if (dist[e.dst] == inf || dist[e.dst] > dist[e.src] + e.cost)\
-    \ {\n                    dist[e.dst] = dist[e.src] + e.cost;\n               \
-    \     prev[e.dst] = e;\n                    que.push({dist[e.dst], e.dst});\n\
-    \                }\n            }\n        }\n        return {dist, prev};\n \
-    \   }\n};\n#line 15 \"src/graph/tree.hpp\"\n\ntemplate <typename>\nstruct RootedTree;\n\
-    template <typename>\nstruct DoublingClimbTree;\n\n/**\n * @brief \u6839\u306A\u3057\
-    \u6728\n * \n * @tparam Cost = int \u8FBA\u306E\u91CD\u307F\n * \n * Graph<Cost>\u3092\
-    \u7D99\u627F\u3057\u3001\u3059\u3079\u3066\u7121\u5411\u8FBA\u3067\u8868\u3059\
-    \n*/\ntemplate <typename Cost = int>\nstruct Tree : private Graph<Cost> {\n  \
-    \  // Graph<Cost>* g = new Tree<Cost>(); \u304C\u3067\u304D\u3066\u3057\u307E\u3046\
-    \u3068\u3001delete\u6642\u306B\u30E1\u30E2\u30EA\u30EA\u30FC\u30AF\u304C\u767A\
-    \u751F\n    // \u56DE\u907F\u3059\u308B\u305F\u3081private\u7D99\u627F\u306B\u3057\
-    \u3066\u3001\u30E1\u30F3\u30D0\u3092\u3059\u3079\u3066using\u5BA3\u8A00\n    using\
-    \ Edge = typename Graph<Cost>::Edge;\n    using Graph<Cost>::n;\n    using Graph<Cost>::m;\n\
-    \    using Graph<Cost>::g;\n    using Graph<Cost>::Graph;\n    using Graph<Cost>::add_edge;\n\
-    \    using Graph<Cost>::add_directed_edge;\n    using Graph<Cost>::operator[];\n\
-    \    using Graph<Cost>::edges;\n    using Graph<Cost>::shortest_path;\n    using\
-    \ ShortestPath = typename Graph<Cost>::ShortestPath;\n\n    /**\n     * @brief\
-    \ \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * \n     * @param n \u30CE\u30FC\
-    \u30C9\u6570\n     */\n    Tree(int n = 0) : Graph<Cost>(n) {}\n\n    /**\n  \
-    \   * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\u529B\u304B\u3089\
-    \u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\u308B\n     * @param padding\
-    \  = -1 \u9802\u70B9\u756A\u53F7\u3092\u5165\u529B\u304B\u3089\u3044\u304F\u3064\
-    \u305A\u3089\u3059\u304B\n     * @param weighted = false \u8FBA\u306E\u91CD\u307F\
-    \u304C\u5165\u529B\u3055\u308C\u308B\u304B\n     */\n    void read(int padding\
-    \ = -1, bool weighted = false) {\n        Graph<Cost>::read(this->n - 1, padding,\
-    \ weighted, false);\n    }\n    \n    /**\n     * @brief \u6728\u306E\u76F4\u5F84\
-    \n     * \n     * @param weighted = true \u91CD\u307F\u4ED8\u304D\u304B\n    \
-    \ * @return std::vector<Edge> \u76F4\u5F84\u3092\u69CB\u6210\u3059\u308B\u8FBA\
+    \ prev(n);\n        using Node = std::pair<Cost, int>;\n        std::priority_queue<Node,\
+    \ std::vector<Node>, std::greater<Node>> que;\n        dist[s] = 0;\n        que.push({0,\
+    \ s});\n        while (!que.empty()) {\n            auto [d, u] = que.top();\n\
+    \            que.pop();\n            if (d > dist[u])\n                continue;\n\
+    \            for (auto &e : g[u]) {\n                if (dist[e.dst] == inf ||\
+    \ dist[e.dst] > dist[e.src] + e.cost) {\n                    dist[e.dst] = dist[e.src]\
+    \ + e.cost;\n                    prev[e.dst] = e;\n                    que.push({dist[e.dst],\
+    \ e.dst});\n                }\n            }\n        }\n        return {dist,\
+    \ prev};\n    }\n};\n#line 15 \"src/graph/tree.hpp\"\n\ntemplate <typename>\n\
+    struct RootedTree;\ntemplate <typename>\nstruct DoublingClimbTree;\n\n/**\n *\
+    \ @brief \u6839\u306A\u3057\u6728\n * \n * @tparam Cost = int \u8FBA\u306E\u91CD\
+    \u307F\n * \n * Graph<Cost>\u3092\u7D99\u627F\u3057\u3001\u3059\u3079\u3066\u7121\
+    \u5411\u8FBA\u3067\u8868\u3059\n*/\ntemplate <typename Cost = int>\nstruct Tree\
+    \ : private Graph<Cost> {\n    // Graph<Cost>* g = new Tree<Cost>(); \u304C\u3067\
+    \u304D\u3066\u3057\u307E\u3046\u3068\u3001delete\u6642\u306B\u30E1\u30E2\u30EA\
+    \u30EA\u30FC\u30AF\u304C\u767A\u751F\n    // \u56DE\u907F\u3059\u308B\u305F\u3081\
+    private\u7D99\u627F\u306B\u3057\u3066\u3001\u30E1\u30F3\u30D0\u3092\u3059\u3079\
+    \u3066using\u5BA3\u8A00\n    using Edge = typename Graph<Cost>::Edge;\n    using\
+    \ Graph<Cost>::n;\n    using Graph<Cost>::m;\n    using Graph<Cost>::g;\n    using\
+    \ Graph<Cost>::Graph;\n    using Graph<Cost>::add_edge;\n    using Graph<Cost>::add_directed_edge;\n\
+    \    using Graph<Cost>::operator[];\n    using Graph<Cost>::edges;\n    using\
+    \ Graph<Cost>::shortest_path;\n    using ShortestPath = typename Graph<Cost>::ShortestPath;\n\
+    \n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * \n\
+    \     * @param n \u30CE\u30FC\u30C9\u6570\n     */\n    Tree(int n = 0) : Graph<Cost>(n)\
+    \ {}\n\n    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\
+    \u529B\u304B\u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\u308B\n   \
+    \  * @param padding  = -1 \u9802\u70B9\u756A\u53F7\u3092\u5165\u529B\u304B\u3089\
+    \u3044\u304F\u3064\u305A\u3089\u3059\u304B\n     * @param weighted = false \u8FBA\
+    \u306E\u91CD\u307F\u304C\u5165\u529B\u3055\u308C\u308B\u304B\n     */\n    void\
+    \ read(int padding = -1, bool weighted = false) {\n        Graph<Cost>::read(this->n\
+    \ - 1, padding, weighted, false);\n    }\n    \n    /**\n     * @brief \u6728\u306E\
+    \u76F4\u5F84\n     * \n     * @param weighted = true \u91CD\u307F\u4ED8\u304D\u304B\
+    \n     * @return std::vector<Edge> \u76F4\u5F84\u3092\u69CB\u6210\u3059\u308B\u8FBA\
     \u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<Edge> diameter(bool weighted\
     \ = true) const {\n        std::vector<Cost> dist = shortest_path(0, weighted).dist;\n\
     \        int u = std::max_element(dist.begin(), dist.end()) - dist.begin();\n\
@@ -430,7 +464,7 @@ data:
   isVerificationFile: true
   path: test/unittest/tree.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 12:42:03+09:00'
+  timestamp: '2026-10-13 20:34:04+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/tree.test.cpp

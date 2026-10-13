@@ -8,7 +8,16 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/data_structures/potentialized-unionfind.hpp
     title: "\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind"
+  - icon: ':heavy_check_mark:'
+    path: src/graph/graph_util.hpp
+    title: "\u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570"
+  - icon: ':heavy_check_mark:'
+    path: src/graph/two-sat.hpp
+    title: 2-SAT
   _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/alds1-11-d.1.test.cpp
+    title: test/aoj/alds1-11-d.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/alds1-11-d.2.test.cpp
     title: test/aoj/alds1-11-d.2.test.cpp
@@ -19,8 +28,20 @@ data:
     path: test/aoj/dsl-1-b.2.test.cpp
     title: test/aoj/dsl-1-b.2.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/aoj/grl-2-a.test.cpp
+    title: test/aoj/grl-2-a.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/grl-4-a.test.cpp
+    title: test/aoj/grl-4-a.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/aoj/jag-summer-2971.test.cpp
     title: test/aoj/jag-summer-2971.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/graph-util.test.cpp
+    title: test/unittest/graph-util.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/lowlink.test.cpp
+    title: test/unittest/lowlink.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/mapping.test.cpp
     title: test/unittest/mapping.test.cpp
@@ -34,11 +55,23 @@ data:
     path: test/unittest/potentialized-unionfind.test.cpp
     title: test/unittest/potentialized-unionfind.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/two-sat.test.cpp
+    title: test/unittest/two-sat.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/unionfind.test.cpp
     title: test/unittest/unionfind.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/minimum-spanning-tree.test.cpp
-    title: test/yosupo/minimum-spanning-tree.test.cpp
+    path: test/yosupo/minimum-spanning-tree.1.test.cpp
+    title: test/yosupo/minimum-spanning-tree.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/minimum-spanning-tree.2.test.cpp
+    title: test/yosupo/minimum-spanning-tree.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/scc.test.cpp
+    title: test/yosupo/scc.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/two-sat.test.cpp
+    title: test/yosupo/two-sat.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
     title: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
@@ -154,22 +187,33 @@ data:
   isVerificationFile: false
   path: src/data_structures/unionfind.hpp
   requiredBy:
+  - src/graph/graph_util.hpp
+  - src/graph/two-sat.hpp
   - src/data_structures/potentialized-unionfind.hpp
   - src/data_structures/monoid-unionfind.hpp
   timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/unionfind.test.cpp
+  - test/unittest/two-sat.test.cpp
+  - test/unittest/lowlink.test.cpp
   - test/unittest/mapping.test.cpp
   - test/unittest/monoid-unionfind.test.cpp
   - test/unittest/monoid.test.cpp
   - test/unittest/potentialized-unionfind.test.cpp
+  - test/unittest/graph-util.test.cpp
   - test/aoj/alds1-11-d.2.test.cpp
   - test/aoj/jag-summer-2971.test.cpp
+  - test/aoj/grl-4-a.test.cpp
+  - test/aoj/grl-2-a.test.cpp
   - test/aoj/dsl-1-b.2.test.cpp
   - test/aoj/dsl-1-b.1.test.cpp
+  - test/aoj/alds1-11-d.1.test.cpp
   - test/yosupo/unionfind.test.cpp
-  - test/yosupo/minimum-spanning-tree.test.cpp
+  - test/yosupo/two-sat.test.cpp
+  - test/yosupo/minimum-spanning-tree.2.test.cpp
+  - test/yosupo/minimum-spanning-tree.1.test.cpp
+  - test/yosupo/scc.test.cpp
   - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
   - test/yukicoder/674.1.test.cpp
 documentation_of: src/data_structures/unionfind.hpp

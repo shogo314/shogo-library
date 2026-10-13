@@ -17,12 +17,12 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/minimum_spanning_tree
     links:
     - https://judge.yosupo.jp/problem/minimum_spanning_tree
-  bundledCode: "#line 1 \"test/yosupo/minimum-spanning-tree.test.cpp\"\n#define PROBLEM\
-    \ \"https://judge.yosupo.jp/problem/minimum_spanning_tree\"\n\n#include <algorithm>\n\
-    #include <iostream>\n#include <vector>\n\n#line 2 \"src/graph/graph.hpp\"\n\n\
-    /**\n * @file graph.hpp\n * @brief \u30B0\u30E9\u30D5\n */\n\n#line 9 \"src/graph/graph.hpp\"\
-    \n#include <cassert>\n#include <functional>\n#line 12 \"src/graph/graph.hpp\"\n\
-    #include <limits>\n#include <queue>\n#include <utility>\n#line 16 \"src/graph/graph.hpp\"\
+  bundledCode: "#line 1 \"test/yosupo/minimum-spanning-tree.1.test.cpp\"\n#define\
+    \ PROBLEM \"https://judge.yosupo.jp/problem/minimum_spanning_tree\"\n\n#include\
+    \ <algorithm>\n#include <iostream>\n#include <vector>\n\n#line 2 \"src/graph/graph.hpp\"\
+    \n\n/**\n * @file graph.hpp\n * @brief \u30B0\u30E9\u30D5\n */\n\n#line 9 \"src/graph/graph.hpp\"\
+    \n#include <cassert>\n#include <deque>\n#include <functional>\n#line 13 \"src/graph/graph.hpp\"\
+    \n#include <limits>\n#include <queue>\n#include <utility>\n#line 17 \"src/graph/graph.hpp\"\
     \n\n/**\n * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n\
     \ * @tparam Cost \u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u578B\n */\ntemplate <typename\
     \ Cost = int>\nstruct Graph {\n    /**\n     * @brief \u6709\u5411\u8FBA\u306E\
@@ -138,29 +138,63 @@ data:
     \ {\n                        dist[e.dst] = -inf;\n                        prev[e.dst]\
     \ = e;\n                        changed = true;\n                    }\n     \
     \           }\n            if (!changed)\n                break;\n        }\n\
-    \        return {dist, prev};\n    }\n\n  private:\n    ShortestPath shortest_path_bfs(int\
+    \        return {dist, prev};\n    }\n    /**\n     * @brief \u8FBA\u306E\u30B3\
+    \u30B9\u30C8\u304C 0 \u304B 1 \u3060\u3051\u306E\u30B0\u30E9\u30D5\u3067\u3001\
+    \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\
+    \u8DEF (01-BFS) O(n + m)\n     *\n     * @param s \u59CB\u70B9\n     * @param\
+    \ inf \u672A\u5230\u9054\u306E\u9802\u70B9\u3078\u306E\u8DDD\u96E2 \u7701\u7565\
+    \u3059\u308B\u3068 -1\n     * @return ShortestPath \u5404\u9802\u70B9\u3078\u306E\
+    \u6700\u77ED\u8DEF\u9577 (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\u306E\u6700\
+    \u77ED\u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA (prev)\n     */\n    ShortestPath\
+    \ shortest_path_01bfs(int s, Cost inf = -1) const {\n        std::vector<Cost>\
+    \ dist(n, inf);\n        std::vector<Edge> prev(n);\n        std::deque<int> que;\n\
+    \        dist[s] = 0;\n        que.push_back(s);\n        while (!que.empty())\
+    \ {\n            int u = que.front();\n            que.pop_front();\n        \
+    \    for (auto &e : g[u]) {\n                assert(e.cost == 0 || e.cost == 1);\n\
+    \                if (dist[e.dst] == inf || dist[e.dst] > dist[u] + e.cost) {\n\
+    \                    dist[e.dst] = dist[u] + e.cost;\n                    prev[e.dst]\
+    \ = e;\n                    if (e.cost == 0) que.push_front(e.dst);\n        \
+    \            else que.push_back(e.dst);\n                }\n            }\n  \
+    \      }\n        return {dist, prev};\n    }\n    /**\n     * @brief \u5168\u70B9\
+    \u5BFE\u9593\u306E\u6700\u77ED\u8DEF\u9577 (Floyd-Warshall) O(n^3)\n     *\n \
+    \    * @param inf \u672A\u5230\u9054\u3092\u8868\u3059\u5024 \u7701\u7565\u3059\
+    \u308B\u3068 std::numeric_limits<Cost>::max() / 4\n     * @return std::vector<std::vector<Cost>>\
+    \ dist[i][j] \u304C i \u304B\u3089 j \u3078\u306E\u6700\u77ED\u8DEF\u9577 (\u5230\
+    \u9054\u3067\u304D\u306A\u3051\u308C\u3070 inf)\n     * @note \u8CA0\u306E\u8FBA\
+    \u304C\u3042\u3063\u3066\u3082\u3088\u3044\u3002dist[i][i] < 0 \u3068\u306A\u308B\
+    \ i \u304C\u3042\u308C\u3070\u8CA0\u9589\u8DEF\u304C\u3042\u308B\n     */\n  \
+    \  std::vector<std::vector<Cost>> floyd_warshall(Cost inf = std::numeric_limits<Cost>::max()\
+    \ / 4) const {\n        std::vector<std::vector<Cost>> dist(n, std::vector<Cost>(n,\
+    \ inf));\n        for (int i = 0; i < n; i++) dist[i][i] = Cost{};\n        for\
+    \ (int i = 0; i < n; i++) {\n            for (auto &e : g[i]) dist[i][e.dst] =\
+    \ std::min(dist[i][e.dst], e.cost);\n        }\n        for (int k = 0; k < n;\
+    \ k++) {\n            for (int i = 0; i < n; i++) {\n                if (dist[i][k]\
+    \ == inf) continue;\n                for (int j = 0; j < n; j++) {\n         \
+    \           if (dist[k][j] == inf) continue;\n                    dist[i][j] =\
+    \ std::min(dist[i][j], dist[i][k] + dist[k][j]);\n                }\n        \
+    \    }\n        }\n        return dist;\n    }\n\n  private:\n    ShortestPath\
+    \ shortest_path_bfs(int s, Cost inf) const {\n        std::vector<Cost> dist(n,\
+    \ inf);\n        std::vector<Edge> prev(n);\n        std::queue<int> que;\n  \
+    \      dist[s] = 0;\n        que.push(s);\n        while (!que.empty()) {\n  \
+    \          int u = que.front();\n            que.pop();\n            for (auto\
+    \ &e : g[u]) {\n                if (dist[e.dst] == inf) {\n                  \
+    \  dist[e.dst] = dist[e.src] + 1;\n                    prev[e.dst] = e;\n    \
+    \                que.push(e.dst);\n                }\n            }\n        }\n\
+    \        return {dist, prev};\n    }\n    ShortestPath shortest_path_dijkstra(int\
     \ s, Cost inf) const {\n        std::vector<Cost> dist(n, inf);\n        std::vector<Edge>\
-    \ prev(n);\n        std::queue<int> que;\n        dist[s] = 0;\n        que.push(s);\n\
-    \        while (!que.empty()) {\n            int u = que.front();\n          \
-    \  que.pop();\n            for (auto &e : g[u]) {\n                if (dist[e.dst]\
-    \ == inf) {\n                    dist[e.dst] = dist[e.src] + 1;\n            \
-    \        prev[e.dst] = e;\n                    que.push(e.dst);\n            \
-    \    }\n            }\n        }\n        return {dist, prev};\n    }\n    ShortestPath\
-    \ shortest_path_dijkstra(int s, Cost inf) const {\n        std::vector<Cost> dist(n,\
-    \ inf);\n        std::vector<Edge> prev(n);\n        using Node = std::pair<Cost,\
-    \ int>;\n        std::priority_queue<Node, std::vector<Node>, std::greater<Node>>\
-    \ que;\n        dist[s] = 0;\n        que.push({0, s});\n        while (!que.empty())\
-    \ {\n            auto [d, u] = que.top();\n            que.pop();\n          \
-    \  if (d > dist[u])\n                continue;\n            for (auto &e : g[u])\
-    \ {\n                if (dist[e.dst] == inf || dist[e.dst] > dist[e.src] + e.cost)\
-    \ {\n                    dist[e.dst] = dist[e.src] + e.cost;\n               \
-    \     prev[e.dst] = e;\n                    que.push({dist[e.dst], e.dst});\n\
-    \                }\n            }\n        }\n        return {dist, prev};\n \
-    \   }\n};\n#line 2 \"src/data_structures/unionfind.hpp\"\n\n/**\n * @file unionfind.hpp\n\
-    \ * @brief UnionFind\n */\n\n#line 12 \"src/data_structures/unionfind.hpp\"\n\n\
-    /**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u5BFE\u3057\u3066\u300C\u8FBA\
-    \u306E\u8FFD\u52A0\u300D\u3001\u300C2\u9802\u70B9\u304C\u9023\u7D50\u304B\u306E\
-    \u5224\u5B9A\u300D\u3092\u3059\u308B\n */\nstruct UnionFind {\n   protected:\n\
+    \ prev(n);\n        using Node = std::pair<Cost, int>;\n        std::priority_queue<Node,\
+    \ std::vector<Node>, std::greater<Node>> que;\n        dist[s] = 0;\n        que.push({0,\
+    \ s});\n        while (!que.empty()) {\n            auto [d, u] = que.top();\n\
+    \            que.pop();\n            if (d > dist[u])\n                continue;\n\
+    \            for (auto &e : g[u]) {\n                if (dist[e.dst] == inf ||\
+    \ dist[e.dst] > dist[e.src] + e.cost) {\n                    dist[e.dst] = dist[e.src]\
+    \ + e.cost;\n                    prev[e.dst] = e;\n                    que.push({dist[e.dst],\
+    \ e.dst});\n                }\n            }\n        }\n        return {dist,\
+    \ prev};\n    }\n};\n#line 2 \"src/data_structures/unionfind.hpp\"\n\n/**\n *\
+    \ @file unionfind.hpp\n * @brief UnionFind\n */\n\n#line 12 \"src/data_structures/unionfind.hpp\"\
+    \n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u5BFE\u3057\u3066\u300C\
+    \u8FBA\u306E\u8FFD\u52A0\u300D\u3001\u300C2\u9802\u70B9\u304C\u9023\u7D50\u304B\
+    \u306E\u5224\u5B9A\u300D\u3092\u3059\u308B\n */\nstruct UnionFind {\n   protected:\n\
     \    int _n;\n    // \u8CA0\u306A\u3089\u30B5\u30A4\u30BA\u3001\u975E\u8CA0\u306A\
     \u3089\u89AA\n    std::vector<int> parent_or_size;\n\n   public:\n    /**\n  \
     \   * @brief merge \u306E\u623B\u308A\u5024\n     *\n     * if (uf.merge(a, b))\
@@ -203,8 +237,8 @@ data:
     \        }\n        result.erase(\n            std::remove_if(result.begin(),\
     \ result.end(),\n                           [&](const std::vector<int>& v) { return\
     \ v.empty(); }),\n            result.end());\n        return result;\n    }\n\
-    };\n#line 9 \"test/yosupo/minimum-spanning-tree.test.cpp\"\n\nint main() {\n \
-    \   int n, m; std::cin >> n >> m;\n    Graph<long long> g(n); g.read(m, 0, true);\n\
+    };\n#line 9 \"test/yosupo/minimum-spanning-tree.1.test.cpp\"\n\nint main() {\n\
+    \    int n, m; std::cin >> n >> m;\n    Graph<long long> g(n); g.read(m, 0, true);\n\
     \    // edges() \u306F\u8FBA\u306E\u756A\u53F7\u9806 (\u5165\u529B\u9806) \u306B\
     \u4E26\u3076\n    auto es = g.edges();\n    std::stable_sort(es.begin(), es.end(),\
     \ [](const auto& a, const auto& b) { return a.cost < b.cost; });\n    UnionFind\
@@ -230,15 +264,15 @@ data:
   - src/graph/graph.hpp
   - src/data_structures/unionfind.hpp
   isVerificationFile: true
-  path: test/yosupo/minimum-spanning-tree.test.cpp
+  path: test/yosupo/minimum-spanning-tree.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 12:42:03+09:00'
+  timestamp: '2026-10-13 20:34:04+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/yosupo/minimum-spanning-tree.test.cpp
+documentation_of: test/yosupo/minimum-spanning-tree.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/yosupo/minimum-spanning-tree.test.cpp
-- /verify/test/yosupo/minimum-spanning-tree.test.cpp.html
-title: test/yosupo/minimum-spanning-tree.test.cpp
+- /verify/test/yosupo/minimum-spanning-tree.1.test.cpp
+- /verify/test/yosupo/minimum-spanning-tree.1.test.cpp.html
+title: test/yosupo/minimum-spanning-tree.1.test.cpp
 ---

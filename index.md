@@ -111,6 +111,10 @@ data:
       path: src/graph/graph_util.hpp
       title: "\u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570"
     - icon: ':heavy_check_mark:'
+      path: src/graph/lowlink.hpp
+      title: "lowlink (\u95A2\u7BC0\u70B9\u3001\u6A4B\u3001\u4E8C\u91CD\u8FBA\u9023\
+        \u7D50\u6210\u5206\u5206\u89E3)"
+    - icon: ':heavy_check_mark:'
       path: src/graph/rerooting-dp.hpp
       title: "\u5168\u65B9\u4F4D\u6728DP"
     - icon: ':heavy_check_mark:'
@@ -220,6 +224,9 @@ data:
       path: test/aoj/alds1-1-c.test.cpp
       title: test/aoj/alds1-1-c.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/aoj/alds1-11-c.test.cpp
+      title: test/aoj/alds1-11-c.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/aoj/alds1-11-d.1.test.cpp
       title: test/aoj/alds1-11-d.1.test.cpp
     - icon: ':heavy_check_mark:'
@@ -319,8 +326,20 @@ data:
       path: test/aoj/grl-1-b.test.cpp
       title: test/aoj/grl-1-b.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/aoj/grl-1-c.test.cpp
-      title: test/aoj/grl-1-c.test.cpp
+      path: test/aoj/grl-1-c.1.test.cpp
+      title: test/aoj/grl-1-c.1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/grl-1-c.2.test.cpp
+      title: test/aoj/grl-1-c.2.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/grl-2-a.test.cpp
+      title: test/aoj/grl-2-a.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/grl-3-a.test.cpp
+      title: test/aoj/grl-3-a.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/grl-3-b.test.cpp
+      title: test/aoj/grl-3-b.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/aoj/grl-4-a.test.cpp
       title: test/aoj/grl-4-a.test.cpp
@@ -458,6 +477,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/io.test.cpp
       title: test/unittest/io.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/lowlink.test.cpp
+      title: test/unittest/lowlink.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/macro.test.cpp
       title: test/unittest/macro.test.cpp
@@ -605,8 +627,11 @@ data:
       path: test/yosupo/matrix-det.test.cpp
       title: test/yosupo/matrix-det.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/yosupo/minimum-spanning-tree.test.cpp
-      title: test/yosupo/minimum-spanning-tree.test.cpp
+      path: test/yosupo/minimum-spanning-tree.1.test.cpp
+      title: test/yosupo/minimum-spanning-tree.1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/minimum-spanning-tree.2.test.cpp
+      title: test/yosupo/minimum-spanning-tree.2.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/partition-function_1.test.cpp
       title: test/yosupo/partition-function_1.test.cpp
@@ -712,6 +737,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/tree-diameter.test.cpp
       title: test/yosupo/tree-diameter.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/two-edge-connected-components.test.cpp
+      title: test/yosupo/two-edge-connected-components.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/two-sat.test.cpp
       title: test/yosupo/two-sat.test.cpp

@@ -14,7 +14,7 @@ data:
     PROBLEM: https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_C
     links:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_C
-  bundledCode: "#line 1 \"test/aoj/grl-1-c.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_C\"\
+  bundledCode: "#line 1 \"test/aoj/grl-1-c.1.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_C\"\
     \n\n#include <iostream>\n#include <vector>\n\n#line 2 \"src/math/infint.hpp\"\n\
     \n/**\n * @file infint.hpp\n * @brief inf \u3092\u6301\u3064\u6574\u6570\u578B\
     \n */\n\n#include <algorithm>\n#include <cstdlib>\n#line 11 \"src/math/infint.hpp\"\
@@ -156,7 +156,7 @@ data:
     \       return t1._v != t2._v;\n    }\n};\ntemplate <typename T>\nstd::string\
     \ infint<T>::str_plusinf = \"inf\";\ntemplate <typename T>\nstd::string infint<T>::str_minusinf\
     \ = \"-inf\";\ntemplate <typename T>\nstd::string infint<T>::str_nan = \"nan\"\
-    ;\n#line 7 \"test/aoj/grl-1-c.test.cpp\"\n\nint main() {\n    using I = infint<long\
+    ;\n#line 7 \"test/aoj/grl-1-c.1.test.cpp\"\n\nint main() {\n    using I = infint<long\
     \ long>;\n    int n, m;\n    std::cin >> n >> m;\n    std::vector<std::vector<I>>\
     \ d(n, std::vector<I>(n, I::Inf()));\n    for (int i = 0; i < n; i++) d[i][i]\
     \ = 0;\n    for (int i = 0; i < m; i++) {\n        int s, t;\n        long long\
@@ -195,15 +195,15 @@ data:
   dependsOn:
   - src/math/infint.hpp
   isVerificationFile: true
-  path: test/aoj/grl-1-c.test.cpp
+  path: test/aoj/grl-1-c.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 12:42:03+09:00'
+  timestamp: '2026-10-13 20:34:04+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/aoj/grl-1-c.test.cpp
+documentation_of: test/aoj/grl-1-c.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/aoj/grl-1-c.test.cpp
-- /verify/test/aoj/grl-1-c.test.cpp.html
-title: test/aoj/grl-1-c.test.cpp
+- /verify/test/aoj/grl-1-c.1.test.cpp
+- /verify/test/aoj/grl-1-c.1.test.cpp.html
+title: test/aoj/grl-1-c.1.test.cpp
 ---

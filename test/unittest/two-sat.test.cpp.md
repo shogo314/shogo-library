@@ -2,6 +2,9 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
+    path: src/data_structures/unionfind.hpp
+    title: UnionFind
+  - icon: ':heavy_check_mark:'
     path: src/graph/graph.hpp
     title: "\u30B0\u30E9\u30D5"
   - icon: ':heavy_check_mark:'
@@ -29,19 +32,19 @@ data:
     #line 2 \"src/graph/two-sat.hpp\"\n\n/**\n * @file two-sat.hpp\n * @brief 2-SAT\n\
     \ */\n\n#include <cassert>\n#line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file graph.hpp\n\
     \ * @brief \u30B0\u30E9\u30D5\n */\n\n#include <algorithm>\n#line 10 \"src/graph/graph.hpp\"\
-    \n#include <functional>\n#line 12 \"src/graph/graph.hpp\"\n#include <limits>\n\
-    #include <queue>\n#include <utility>\n#line 16 \"src/graph/graph.hpp\"\n\n/**\n\
-    \ * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam\
-    \ Cost \u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u578B\n */\ntemplate <typename Cost\
-    \ = int>\nstruct Graph {\n    /**\n     * @brief \u6709\u5411\u8FBA\u306E\u69CB\
-    \u9020\u4F53\n     *\n     * operator int()\u3092\u5B9A\u7FA9\u3057\u3066\u3044\
-    \u308B\u306E\u3067\u3001int\u578B\u306B\u30AD\u30E3\u30B9\u30C8\u3059\u308B\u3068\
-    \u52DD\u624B\u306Bdst\u306B\u306A\u308B\n     * \u4F8B\u3048\u3070\u3001\n   \
-    \  * for (auto& e : g[v]) \u3092\u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\u308B\
-    \u8FBA\u304C\u5217\u6319\u3055\u308C\u308B\u304C\u3001\n     * for (int dst :\
-    \ g[v]) \u3068\u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\u306E\u884C\
-    \u304D\u5148\u304C\u5217\u6319\u3055\u308C\u308B\n     */\n    struct Edge {\n\
-    \        int src = -1;   //!< \u59CB\u70B9\n        int dst = -1;   //!< \u7D42\
+    \n#include <deque>\n#include <functional>\n#line 13 \"src/graph/graph.hpp\"\n\
+    #include <limits>\n#include <queue>\n#include <utility>\n#line 17 \"src/graph/graph.hpp\"\
+    \n\n/**\n * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n\
+    \ * @tparam Cost \u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u578B\n */\ntemplate <typename\
+    \ Cost = int>\nstruct Graph {\n    /**\n     * @brief \u6709\u5411\u8FBA\u306E\
+    \u69CB\u9020\u4F53\n     *\n     * operator int()\u3092\u5B9A\u7FA9\u3057\u3066\
+    \u3044\u308B\u306E\u3067\u3001int\u578B\u306B\u30AD\u30E3\u30B9\u30C8\u3059\u308B\
+    \u3068\u52DD\u624B\u306Bdst\u306B\u306A\u308B\n     * \u4F8B\u3048\u3070\u3001\
+    \n     * for (auto& e : g[v]) \u3092\u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\
+    \u308B\u8FBA\u304C\u5217\u6319\u3055\u308C\u308B\u304C\u3001\n     * for (int\
+    \ dst : g[v]) \u3068\u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\u306E\
+    \u884C\u304D\u5148\u304C\u5217\u6319\u3055\u308C\u308B\n     */\n    struct Edge\
+    \ {\n        int src = -1;   //!< \u59CB\u70B9\n        int dst = -1;   //!< \u7D42\
     \u70B9\n        Cost cost = {}; //!< \u30B3\u30B9\u30C8\n        int id = -1;\
     \    //!< \u8FBA\u306E\u756A\u53F7(\u8FFD\u52A0\u3055\u308C\u305F\u9806\u3001\u7121\
     \u5411\u8FBA\u306E\u5834\u5408\u306Fid\u304C\u540C\u3058\u3067\u65B9\u5411\u304C\
@@ -146,28 +149,109 @@ data:
     \ {\n                        dist[e.dst] = -inf;\n                        prev[e.dst]\
     \ = e;\n                        changed = true;\n                    }\n     \
     \           }\n            if (!changed)\n                break;\n        }\n\
-    \        return {dist, prev};\n    }\n\n  private:\n    ShortestPath shortest_path_bfs(int\
+    \        return {dist, prev};\n    }\n    /**\n     * @brief \u8FBA\u306E\u30B3\
+    \u30B9\u30C8\u304C 0 \u304B 1 \u3060\u3051\u306E\u30B0\u30E9\u30D5\u3067\u3001\
+    \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\
+    \u8DEF (01-BFS) O(n + m)\n     *\n     * @param s \u59CB\u70B9\n     * @param\
+    \ inf \u672A\u5230\u9054\u306E\u9802\u70B9\u3078\u306E\u8DDD\u96E2 \u7701\u7565\
+    \u3059\u308B\u3068 -1\n     * @return ShortestPath \u5404\u9802\u70B9\u3078\u306E\
+    \u6700\u77ED\u8DEF\u9577 (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\u306E\u6700\
+    \u77ED\u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA (prev)\n     */\n    ShortestPath\
+    \ shortest_path_01bfs(int s, Cost inf = -1) const {\n        std::vector<Cost>\
+    \ dist(n, inf);\n        std::vector<Edge> prev(n);\n        std::deque<int> que;\n\
+    \        dist[s] = 0;\n        que.push_back(s);\n        while (!que.empty())\
+    \ {\n            int u = que.front();\n            que.pop_front();\n        \
+    \    for (auto &e : g[u]) {\n                assert(e.cost == 0 || e.cost == 1);\n\
+    \                if (dist[e.dst] == inf || dist[e.dst] > dist[u] + e.cost) {\n\
+    \                    dist[e.dst] = dist[u] + e.cost;\n                    prev[e.dst]\
+    \ = e;\n                    if (e.cost == 0) que.push_front(e.dst);\n        \
+    \            else que.push_back(e.dst);\n                }\n            }\n  \
+    \      }\n        return {dist, prev};\n    }\n    /**\n     * @brief \u5168\u70B9\
+    \u5BFE\u9593\u306E\u6700\u77ED\u8DEF\u9577 (Floyd-Warshall) O(n^3)\n     *\n \
+    \    * @param inf \u672A\u5230\u9054\u3092\u8868\u3059\u5024 \u7701\u7565\u3059\
+    \u308B\u3068 std::numeric_limits<Cost>::max() / 4\n     * @return std::vector<std::vector<Cost>>\
+    \ dist[i][j] \u304C i \u304B\u3089 j \u3078\u306E\u6700\u77ED\u8DEF\u9577 (\u5230\
+    \u9054\u3067\u304D\u306A\u3051\u308C\u3070 inf)\n     * @note \u8CA0\u306E\u8FBA\
+    \u304C\u3042\u3063\u3066\u3082\u3088\u3044\u3002dist[i][i] < 0 \u3068\u306A\u308B\
+    \ i \u304C\u3042\u308C\u3070\u8CA0\u9589\u8DEF\u304C\u3042\u308B\n     */\n  \
+    \  std::vector<std::vector<Cost>> floyd_warshall(Cost inf = std::numeric_limits<Cost>::max()\
+    \ / 4) const {\n        std::vector<std::vector<Cost>> dist(n, std::vector<Cost>(n,\
+    \ inf));\n        for (int i = 0; i < n; i++) dist[i][i] = Cost{};\n        for\
+    \ (int i = 0; i < n; i++) {\n            for (auto &e : g[i]) dist[i][e.dst] =\
+    \ std::min(dist[i][e.dst], e.cost);\n        }\n        for (int k = 0; k < n;\
+    \ k++) {\n            for (int i = 0; i < n; i++) {\n                if (dist[i][k]\
+    \ == inf) continue;\n                for (int j = 0; j < n; j++) {\n         \
+    \           if (dist[k][j] == inf) continue;\n                    dist[i][j] =\
+    \ std::min(dist[i][j], dist[i][k] + dist[k][j]);\n                }\n        \
+    \    }\n        }\n        return dist;\n    }\n\n  private:\n    ShortestPath\
+    \ shortest_path_bfs(int s, Cost inf) const {\n        std::vector<Cost> dist(n,\
+    \ inf);\n        std::vector<Edge> prev(n);\n        std::queue<int> que;\n  \
+    \      dist[s] = 0;\n        que.push(s);\n        while (!que.empty()) {\n  \
+    \          int u = que.front();\n            que.pop();\n            for (auto\
+    \ &e : g[u]) {\n                if (dist[e.dst] == inf) {\n                  \
+    \  dist[e.dst] = dist[e.src] + 1;\n                    prev[e.dst] = e;\n    \
+    \                que.push(e.dst);\n                }\n            }\n        }\n\
+    \        return {dist, prev};\n    }\n    ShortestPath shortest_path_dijkstra(int\
     \ s, Cost inf) const {\n        std::vector<Cost> dist(n, inf);\n        std::vector<Edge>\
-    \ prev(n);\n        std::queue<int> que;\n        dist[s] = 0;\n        que.push(s);\n\
-    \        while (!que.empty()) {\n            int u = que.front();\n          \
-    \  que.pop();\n            for (auto &e : g[u]) {\n                if (dist[e.dst]\
-    \ == inf) {\n                    dist[e.dst] = dist[e.src] + 1;\n            \
-    \        prev[e.dst] = e;\n                    que.push(e.dst);\n            \
-    \    }\n            }\n        }\n        return {dist, prev};\n    }\n    ShortestPath\
-    \ shortest_path_dijkstra(int s, Cost inf) const {\n        std::vector<Cost> dist(n,\
-    \ inf);\n        std::vector<Edge> prev(n);\n        using Node = std::pair<Cost,\
-    \ int>;\n        std::priority_queue<Node, std::vector<Node>, std::greater<Node>>\
-    \ que;\n        dist[s] = 0;\n        que.push({0, s});\n        while (!que.empty())\
-    \ {\n            auto [d, u] = que.top();\n            que.pop();\n          \
-    \  if (d > dist[u])\n                continue;\n            for (auto &e : g[u])\
-    \ {\n                if (dist[e.dst] == inf || dist[e.dst] > dist[e.src] + e.cost)\
-    \ {\n                    dist[e.dst] = dist[e.src] + e.cost;\n               \
-    \     prev[e.dst] = e;\n                    que.push({dist[e.dst], e.dst});\n\
-    \                }\n            }\n        }\n        return {dist, prev};\n \
-    \   }\n};\n#line 2 \"src/graph/graph_util.hpp\"\n\n/**\n * @file graph_util.hpp\n\
+    \ prev(n);\n        using Node = std::pair<Cost, int>;\n        std::priority_queue<Node,\
+    \ std::vector<Node>, std::greater<Node>> que;\n        dist[s] = 0;\n        que.push({0,\
+    \ s});\n        while (!que.empty()) {\n            auto [d, u] = que.top();\n\
+    \            que.pop();\n            if (d > dist[u])\n                continue;\n\
+    \            for (auto &e : g[u]) {\n                if (dist[e.dst] == inf ||\
+    \ dist[e.dst] > dist[e.src] + e.cost) {\n                    dist[e.dst] = dist[e.src]\
+    \ + e.cost;\n                    prev[e.dst] = e;\n                    que.push({dist[e.dst],\
+    \ e.dst});\n                }\n            }\n        }\n        return {dist,\
+    \ prev};\n    }\n};\n#line 2 \"src/graph/graph_util.hpp\"\n\n/**\n * @file graph_util.hpp\n\
     \ * @brief \u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570\n */\n\n#line\
     \ 11 \"src/graph/graph_util.hpp\"\n#include <stack>\n#line 14 \"src/graph/graph_util.hpp\"\
-    \n\n#line 16 \"src/graph/graph_util.hpp\"\n\n/**\n * @brief \u7121\u5411\u30B0\
+    \n\n#line 2 \"src/data_structures/unionfind.hpp\"\n\n/**\n * @file unionfind.hpp\n\
+    \ * @brief UnionFind\n */\n\n#line 12 \"src/data_structures/unionfind.hpp\"\n\n\
+    /**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u5BFE\u3057\u3066\u300C\u8FBA\
+    \u306E\u8FFD\u52A0\u300D\u3001\u300C2\u9802\u70B9\u304C\u9023\u7D50\u304B\u306E\
+    \u5224\u5B9A\u300D\u3092\u3059\u308B\n */\nstruct UnionFind {\n   protected:\n\
+    \    int _n;\n    // \u8CA0\u306A\u3089\u30B5\u30A4\u30BA\u3001\u975E\u8CA0\u306A\
+    \u3089\u89AA\n    std::vector<int> parent_or_size;\n\n   public:\n    /**\n  \
+    \   * @brief merge \u306E\u623B\u308A\u5024\n     *\n     * if (uf.merge(a, b))\
+    \ \u3067\u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B\u3092\u5224\u5B9A\u3067\
+    \u304D\u3001\n     * auto [r, merged] = uf.merge(a, b); \u3067\u4EE3\u8868\u5143\
+    \u3082\u53D7\u3051\u53D6\u308C\u308B\n     */\n    struct MergeResult {\n    \
+    \    int leader;   //!< \u7D71\u5408\u5F8C\u306E\u4EE3\u8868\u5143\n        bool\
+    \ merged;  //!< \u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B (\u3082\u3068\
+    \u3082\u3068\u540C\u3058\u9023\u7D50\u6210\u5206\u306A\u3089 false)\n        explicit\
+    \ operator bool() const { return merged; }\n    };\n\n    UnionFind() : _n(0)\
+    \ {}\n    explicit UnionFind(int n) : _n(n), parent_or_size(n, -1) {}\n\n    /**\n\
+    \     * @brief \u8FBA(a,b)\u3092\u8DB3\u3059\n     * @return \u7D71\u5408\u5F8C\
+    \u306E\u4EE3\u8868\u5143\u3068\u3001\u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\
+    \u304B\n     */\n    MergeResult merge(int a, int b) {\n        assert(0 <= a\
+    \ && a < _n);\n        assert(0 <= b && b < _n);\n        int x = leader(a), y\
+    \ = leader(b);\n        if (x == y) return {x, false};\n        if (-parent_or_size[x]\
+    \ < -parent_or_size[y]) std::swap(x, y);\n        parent_or_size[x] += parent_or_size[y];\n\
+    \        parent_or_size[y] = x;\n        return {x, true};\n    }\n    /**\n \
+    \    * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\u304B\n    \
+    \ */\n    bool same(int a, int b) {\n        assert(0 <= a && a < _n);\n     \
+    \   assert(0 <= b && b < _n);\n        return leader(a) == leader(b);\n    }\n\
+    \    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\u6210\
+    \u5206\u306E\u4EE3\u8868\u5143\n     */\n    int leader(int a) {\n        assert(0\
+    \ <= a && a < _n);\n        if (parent_or_size[a] < 0) return a;\n        int\
+    \ x = a;\n        while (parent_or_size[x] >= 0) {\n            x = parent_or_size[x];\n\
+    \        }\n        while (parent_or_size[a] >= 0) {\n            int t = parent_or_size[a];\n\
+    \            parent_or_size[a] = x;\n            a = t;\n        }\n        return\
+    \ x;\n    }\n    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\
+    \u7D50\u6210\u5206\u306E\u30B5\u30A4\u30BA\n     */\n    int size(int a) {\n \
+    \       assert(0 <= a && a < _n);\n        return -parent_or_size[leader(a)];\n\
+    \    }\n    /**\n     * @brief \u30B0\u30E9\u30D5\u3092\u9023\u7D50\u6210\u5206\
+    \u306B\u5206\u3051\u3001\u305D\u306E\u60C5\u5831\u3092\u8FD4\u3059\n     * @return\
+    \ \u300C\u4E00\u3064\u306E\u9023\u7D50\u6210\u5206\u306E\u9802\u70B9\u756A\u53F7\
+    \u306E\u30EA\u30B9\u30C8\u300D\u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<std::vector<int>>\
+    \ groups() {\n        std::vector<int> leader_buf(_n), group_size(_n);\n     \
+    \   for (int i = 0; i < _n; i++) {\n            leader_buf[i] = leader(i);\n \
+    \           group_size[leader_buf[i]]++;\n        }\n        std::vector<std::vector<int>>\
+    \ result(_n);\n        for (int i = 0; i < _n; i++) {\n            result[i].reserve(group_size[i]);\n\
+    \        }\n        for (int i = 0; i < _n; i++) {\n            result[leader_buf[i]].push_back(i);\n\
+    \        }\n        result.erase(\n            std::remove_if(result.begin(),\
+    \ result.end(),\n                           [&](const std::vector<int>& v) { return\
+    \ v.empty(); }),\n            result.end());\n        return result;\n    }\n\
+    };\n#line 17 \"src/graph/graph_util.hpp\"\n\n/**\n * @brief \u7121\u5411\u30B0\
     \u30E9\u30D5\u306B\u3064\u3044\u3066\u3001\u4E8C\u90E8\u30B0\u30E9\u30D5\u306A\
     \u30890\u30681\u306B\u5F69\u8272\u3057\u305F\u7D50\u679C\u3092\u3072\u3068\u3064\
     \u8FD4\u3057\u3001\u4E8C\u90E8\u30B0\u30E9\u30D5\u3067\u306A\u3044\u306A\u3089\
@@ -266,46 +350,63 @@ data:
     \u306E\u9006\u306B\u898B\u3064\u3051\u308B\u306E\u3067\u3001\u9006\u9806\u306B\
     \u4E26\u3079\u308B\n    std::vector<std::vector<int>> groups(k);\n    for (int\
     \ v = 0; v < n; v++) groups[k - 1 - comp[v]].push_back(v);\n    return groups;\n\
-    }\n\n/**\n * @brief \u6700\u5C0F\u30B7\u30E5\u30BF\u30A4\u30CA\u30FC\u6728\u306E\
-    \u8FBA\u91CD\u307F\u306E\u7DCF\u548C\n */\ntemplate <typename Cost, typename T>\n\
-    Cost minimum_steiner_tree(const Graph<Cost>& G, const std::vector<T>& X, Cost\
-    \ inf = -1) {\n    if (X.empty()) return Cost{};\n    std::vector<std::vector<Cost>>\
-    \ dp(G.n, std::vector<Cost>(1 << X.size(), inf));\n    for (int p = 0; p < (int)X.size();\
-    \ p++) dp[X[p]][1 << p] = {};\n    for (int i = 0; i < (1 << X.size()); i++) {\n\
-    \        for (int j = i; j > 0; j = (j - 1) & i) {\n            for (int k = 0;\
-    \ k < G.n; k++) {\n                if (dp[k][j] != inf && dp[k][i ^ j] != inf)\
-    \ {\n                    if (dp[k][i] == inf || dp[k][i] > dp[k][j] + dp[k][i\
-    \ ^ j]) dp[k][i] = dp[k][j] + dp[k][i ^ j];\n                }\n            }\n\
-    \        }\n        std::priority_queue<std::pair<Cost, int>, std::vector<std::pair<Cost,\
-    \ int>>, std::greater<std::pair<Cost, int>>> que;\n        for (int k = 0; k <\
-    \ G.n; k++)\n            if (dp[k][i] != inf) que.emplace(dp[k][i], k);\n    \
-    \    while (que.size()) {\n            auto [d, u] = que.top();\n            que.pop();\n\
-    \            if (d > dp[u][i]) continue;\n            for (auto e : G[u]) {\n\
-    \                if (dp[e.dst][i] == inf || dp[e.dst][i] > d + e.cost) {\n   \
-    \                 dp[e.dst][i] = d + e.cost;\n                    que.emplace(d\
-    \ + e.cost, e.dst);\n                }\n            }\n        }\n    }\n    Cost\
-    \ res = inf;\n    for (int k = 0; k < G.n; k++) {\n        if (dp[k].back() !=\
-    \ inf && (res == inf || res > dp[k].back())) res = dp[k].back();\n    }\n    return\
-    \ res;\n}\n#line 12 \"src/graph/two-sat.hpp\"\n\n/**\n * @brief 2-SAT\n *\n *\
-    \ \u5909\u6570 x_0, ..., x_{n-1} \u306B\u3064\u3044\u3066\u306E\u300C(x_i = f)\
-    \ \u307E\u305F\u306F (x_j = g)\u300D\u3068\u3044\u3046\u5F62\u306E\u6761\u4EF6\
-    \u3092\u4E26\u3079\u3066\u3001\n * \u3059\u3079\u3066\u3092\u6E80\u305F\u3059\u5272\
-    \u308A\u5F53\u3066\u304C\u3042\u308B\u304B\u3092\u5224\u5B9A\u3059\u308B\n * \u5F37\
-    \u9023\u7D50\u6210\u5206\u5206\u89E3\u3092\u4F7F\u3046\u3002O(n + \u6761\u4EF6\
-    \u306E\u500B\u6570)\n * \u4F8B:\n * TwoSat ts(n);\n * ts.add_clause(0, true, 1,\
-    \ false);  // x_0 \u307E\u305F\u306F (not x_1)\n * if (ts.satisfiable()) auto\
-    \ ans = ts.answer();\n */\nclass TwoSat {\n    int n;\n    // \u9802\u70B9 i \u306F\
-    \u300Cx_i = true\u300D\u3001\u9802\u70B9 n + i \u306F\u300Cx_i = false\u300D\u3092\
-    \u8868\u3059\n    Graph<int> graph;\n    std::vector<bool> ans;\n    int literal(int\
-    \ i, bool f) const { return f ? i : n + i; }\n\npublic:\n    explicit TwoSat(int\
-    \ n = 0) : n(n), graph(2 * n), ans(n) {}\n\n    int size() const { return n; }\n\
-    \n    /**\n     * @brief \u6761\u4EF6\u300C(x_i = f) \u307E\u305F\u306F (x_j =\
-    \ g)\u300D\u3092\u52A0\u3048\u308B\n     */\n    void add_clause(int i, bool f,\
-    \ int j, bool g) {\n        assert(0 <= i && i < n && 0 <= j && j < n);\n    \
-    \    // (x_i != f) \u306A\u3089 (x_j = g)\u3001(x_j != g) \u306A\u3089 (x_i =\
-    \ f)\n        graph.add_directed_edge(literal(i, !f), literal(j, g));\n      \
-    \  graph.add_directed_edge(literal(j, !g), literal(i, f));\n    }\n    /**\n \
-    \    * @brief \u6761\u4EF6\u300C(x_i = f) \u306A\u3089\u3070 (x_j = g)\u300D\u3092\
+    }\n\n/**\n * @brief \u6700\u5C0F\u5168\u57DF\u6728\u306E\u7D50\u679C\n */\ntemplate\
+    \ <typename Cost>\nstruct MinimumSpanningTree {\n    Cost cost;              \
+    \                        //!< \u4F7F\u3063\u305F\u8FBA\u306E\u30B3\u30B9\u30C8\
+    \u306E\u7DCF\u548C\n    std::vector<typename Graph<Cost>::Edge> edges;  //!< \u4F7F\
+    \u3063\u305F\u8FBA (\u30B3\u30B9\u30C8\u306E\u6607\u9806\u3001\u540C\u3058\u30B3\
+    \u30B9\u30C8\u306A\u3089\u8FBA\u306E\u756A\u53F7\u9806)\n};\n\n/**\n * @brief\
+    \ \u7121\u5411\u30B0\u30E9\u30D5\u306E\u6700\u5C0F\u5168\u57DF\u6728 (Kruskal\
+    \ \u6CD5) O(m log m)\n *\n * \u9023\u7D50\u3067\u306A\u3051\u308C\u3070\u3001\u5404\
+    \u9023\u7D50\u6210\u5206\u306E\u6700\u5C0F\u5168\u57DF\u6728\u3092\u5408\u308F\
+    \u305B\u305F\u3082\u306E (\u6700\u5C0F\u5168\u57DF\u68EE) \u3092\u8FD4\u3059\n\
+    \ * \u9023\u7D50\u304B\u3069\u3046\u304B\u306F edges.size() == n - 1 \u3067\u5224\
+    \u5B9A\u3067\u304D\u308B\n */\ntemplate <typename Cost = int>\nMinimumSpanningTree<Cost>\
+    \ minimum_spanning_tree(const Graph<Cost>& graph) {\n    auto es = graph.edges();\n\
+    \    std::stable_sort(es.begin(), es.end(), [](const auto& a, const auto& b) {\
+    \ return a.cost < b.cost; });\n    UnionFind uf(graph.n);\n    MinimumSpanningTree<Cost>\
+    \ res{Cost{}, {}};\n    for (const auto& e : es) {\n        if (uf.merge(e.src,\
+    \ e.dst)) {\n            res.cost += e.cost;\n            res.edges.push_back(e);\n\
+    \        }\n    }\n    return res;\n}\n\n/**\n * @brief \u6700\u5C0F\u30B7\u30E5\
+    \u30BF\u30A4\u30CA\u30FC\u6728\u306E\u8FBA\u91CD\u307F\u306E\u7DCF\u548C\n */\n\
+    template <typename Cost, typename T>\nCost minimum_steiner_tree(const Graph<Cost>&\
+    \ G, const std::vector<T>& X, Cost inf = -1) {\n    if (X.empty()) return Cost{};\n\
+    \    std::vector<std::vector<Cost>> dp(G.n, std::vector<Cost>(1 << X.size(), inf));\n\
+    \    for (int p = 0; p < (int)X.size(); p++) dp[X[p]][1 << p] = {};\n    for (int\
+    \ i = 0; i < (1 << X.size()); i++) {\n        for (int j = i; j > 0; j = (j -\
+    \ 1) & i) {\n            for (int k = 0; k < G.n; k++) {\n                if (dp[k][j]\
+    \ != inf && dp[k][i ^ j] != inf) {\n                    if (dp[k][i] == inf ||\
+    \ dp[k][i] > dp[k][j] + dp[k][i ^ j]) dp[k][i] = dp[k][j] + dp[k][i ^ j];\n  \
+    \              }\n            }\n        }\n        std::priority_queue<std::pair<Cost,\
+    \ int>, std::vector<std::pair<Cost, int>>, std::greater<std::pair<Cost, int>>>\
+    \ que;\n        for (int k = 0; k < G.n; k++)\n            if (dp[k][i] != inf)\
+    \ que.emplace(dp[k][i], k);\n        while (que.size()) {\n            auto [d,\
+    \ u] = que.top();\n            que.pop();\n            if (d > dp[u][i]) continue;\n\
+    \            for (auto e : G[u]) {\n                if (dp[e.dst][i] == inf ||\
+    \ dp[e.dst][i] > d + e.cost) {\n                    dp[e.dst][i] = d + e.cost;\n\
+    \                    que.emplace(d + e.cost, e.dst);\n                }\n    \
+    \        }\n        }\n    }\n    Cost res = inf;\n    for (int k = 0; k < G.n;\
+    \ k++) {\n        if (dp[k].back() != inf && (res == inf || res > dp[k].back()))\
+    \ res = dp[k].back();\n    }\n    return res;\n}\n#line 12 \"src/graph/two-sat.hpp\"\
+    \n\n/**\n * @brief 2-SAT\n *\n * \u5909\u6570 x_0, ..., x_{n-1} \u306B\u3064\u3044\
+    \u3066\u306E\u300C(x_i = f) \u307E\u305F\u306F (x_j = g)\u300D\u3068\u3044\u3046\
+    \u5F62\u306E\u6761\u4EF6\u3092\u4E26\u3079\u3066\u3001\n * \u3059\u3079\u3066\u3092\
+    \u6E80\u305F\u3059\u5272\u308A\u5F53\u3066\u304C\u3042\u308B\u304B\u3092\u5224\
+    \u5B9A\u3059\u308B\n * \u5F37\u9023\u7D50\u6210\u5206\u5206\u89E3\u3092\u4F7F\u3046\
+    \u3002O(n + \u6761\u4EF6\u306E\u500B\u6570)\n * \u4F8B:\n * TwoSat ts(n);\n *\
+    \ ts.add_clause(0, true, 1, false);  // x_0 \u307E\u305F\u306F (not x_1)\n * if\
+    \ (ts.satisfiable()) auto ans = ts.answer();\n */\nclass TwoSat {\n    int n;\n\
+    \    // \u9802\u70B9 i \u306F\u300Cx_i = true\u300D\u3001\u9802\u70B9 n + i \u306F\
+    \u300Cx_i = false\u300D\u3092\u8868\u3059\n    Graph<int> graph;\n    std::vector<bool>\
+    \ ans;\n    int literal(int i, bool f) const { return f ? i : n + i; }\n\npublic:\n\
+    \    explicit TwoSat(int n = 0) : n(n), graph(2 * n), ans(n) {}\n\n    int size()\
+    \ const { return n; }\n\n    /**\n     * @brief \u6761\u4EF6\u300C(x_i = f) \u307E\
+    \u305F\u306F (x_j = g)\u300D\u3092\u52A0\u3048\u308B\n     */\n    void add_clause(int\
+    \ i, bool f, int j, bool g) {\n        assert(0 <= i && i < n && 0 <= j && j <\
+    \ n);\n        // (x_i != f) \u306A\u3089 (x_j = g)\u3001(x_j != g) \u306A\u3089\
+    \ (x_i = f)\n        graph.add_directed_edge(literal(i, !f), literal(j, g));\n\
+    \        graph.add_directed_edge(literal(j, !g), literal(i, f));\n    }\n    /**\n\
+    \     * @brief \u6761\u4EF6\u300C(x_i = f) \u306A\u3089\u3070 (x_j = g)\u300D\u3092\
     \u52A0\u3048\u308B\n     */\n    void add_imply(int i, bool f, int j, bool g)\
     \ { add_clause(i, !f, j, g); }\n    /**\n     * @brief \u6761\u4EF6\u300Cx_i =\
     \ f\u300D\u3092\u52A0\u3048\u308B\n     */\n    void add_fix(int i, bool f) {\
@@ -389,10 +490,11 @@ data:
   - src/graph/two-sat.hpp
   - src/graph/graph.hpp
   - src/graph/graph_util.hpp
+  - src/data_structures/unionfind.hpp
   isVerificationFile: true
   path: test/unittest/two-sat.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 20:17:40+09:00'
+  timestamp: '2026-10-13 20:34:04+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/two-sat.test.cpp

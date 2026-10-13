@@ -16,7 +16,7 @@
 | `src/algebra/` | モノイド・群・作用素付きモノイドの定義 |
 | `src/data_structures/` | セグメント木各種 (モノイドを渡して使う)、Fenwick Tree、Sparse Table、Union-Find、マージソートツリー、Li Chao Tree、双対セグメント木、Sliding Window Aggregation (スライド最小値)、削除可能な優先度付きキューなど |
 | `src/graph/` | グラフ (最短路、全点対間最短路)、木、全方位木 DP、Functional Graph、強連結成分分解、最小全域木、lowlink (関節点・橋)、2-SAT、最大流、最小費用流、二部マッチング、HL 分解 |
-| `src/math/` | modint、行列、形式的冪級数、組み合わせ、数論、素数 (素数判定・素因数分解・篩)、無限大を持つ整数 (`infint`)、floor sum |
+| `src/math/` | modint、行列、形式的冪級数、組み合わせ、数論、素数 (素数判定・素因数分解・篩)、無限大を持つ整数 (`infint`)、floor sum、約数・倍数のゼータ変換とメビウス変換 (GCD・LCM 畳み込み) |
 | `src/string/` | Z-algorithm、KMP、Manacher、Suffix Array と LCP 配列、ローリングハッシュ |
 | `src/geometry/` | 幾何 (ベクトル、凸包、偏角ソートなど) |
 | `src/others/` | Mo's algorithm、最長増加部分列 (LIS)、転倒数 |

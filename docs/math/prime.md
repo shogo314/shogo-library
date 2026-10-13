@@ -42,3 +42,7 @@ auto g = sv.factorize(x);            // O(log x)
 | `limit()` | 前計算した範囲の上限 `n` |
 
 `n` が $10^7$ を大きく超えるときは、メモリを抑えた `enumerate_primes` を使います。
+
+## 関連
+
+- 約数・倍数のゼータ変換、メビウス変換と GCD・LCM 畳み込みは [約数変換](divisor-transform.hpp)

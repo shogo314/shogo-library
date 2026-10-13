@@ -153,7 +153,7 @@ struct Graph {
      *
      * @param s 始点
      * @param weighted 1以外のコストの辺が存在するか 省略するとtrue
-     * @param inf コストのminの単位元 未到達の頂点への距離はinfになる 省略すると
+     * @param inf コストのminの単位元 未到達の頂点への距離はinfになる 省略すると -1
      * @return ShortestPath 各頂点への最短路長 (dist) と、各頂点への最短路上の直前の辺 (prev)
      */
     ShortestPath shortest_path(int s, bool weighted = true, Cost inf = -1) const {

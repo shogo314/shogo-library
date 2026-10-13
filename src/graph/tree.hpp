@@ -139,7 +139,7 @@ struct RootedTree : private Tree<Cost> {
     std::vector<Cost> height; //!< 部分木の高さのリスト
     std::vector<int> unweighted_depth; //!< 重みなしの深さのリスト
     std::vector<int> unweighted_height; //!< 重みなしの部分木の高さのリスト
-    std::vector<int> sz; //!< 部分期の頂点数のリスト
+    std::vector<int> sz; //!< 部分木の頂点数のリスト
     std::vector<int> preorder; //!< 先行順巡回
     std::vector<int> postorder; //!< 後行順巡回
     std::vector<std::pair<int, int>> euler_tour; //!< オイラーツアー DFS中にとおった頂点の(頂点番号,その頂点を通った回数)のリスト

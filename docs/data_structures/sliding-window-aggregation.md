@@ -8,7 +8,8 @@ documentation_of: //src/data_structures/sliding-window-aggregation.hpp
 モノイド ([algebra/monoid.hpp](../algebra/monoid.hpp)) を乗せたキューです。末尾への追加、先頭の削除、全体の積の取得を償却 $O(1)$ で行います。モノイドは可換でなくてもよく、逆元もいりません。
 
 ```cpp
-SlidingWindowAggregation<monoid::Composite<mint>> swag;
+// Composite の積は f∘g なので、先頭から順に適用するには Reverse で積の順序を逆にする
+SlidingWindowAggregation<monoid::Reverse<monoid::Composite<mint>>> swag;
 swag.push(Affine<mint>{2, 3});
 swag.push(Affine<mint>{1, 5});
 mint y = swag.prod()(x);  // 先頭から順に適用した結果 (2x + 3) + 5

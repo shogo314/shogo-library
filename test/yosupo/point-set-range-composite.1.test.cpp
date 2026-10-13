@@ -10,7 +10,8 @@ int main(void) {
     using S = Affine<modint998244353>;
     std::vector<S> v(n);
     for(int i = 0; i < n; i++) std::cin >> v[i];
-    SegTree<monoid::Composite<modint998244353>> seg(v);
+    // Composite は f∘g なので、左から順に適用するには積の順序を逆にする
+    SegTree<monoid::Reverse<monoid::Composite<modint998244353>>> seg(v);
     while(q--) {
         int op; std::cin >> op;
         if(op == 0) {

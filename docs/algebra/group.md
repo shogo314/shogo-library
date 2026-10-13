@@ -16,7 +16,7 @@ documentation_of: //src/algebra/group.hpp
 | `Sum<T>` | `T` | `a + b` | `0` | `-a` |
 | `Prod<T>` | `T` | `a * b` | `1` | `1 / a` (0 を含まない体の元など) |
 | `Xor<T>` | `T` | `a ^ b` | `0` | `a` |
-| `Permutation<N>` | `std::array<int, N>` | 置換の合成 (左から順に適用。[`monoid::Mapping<N>`](monoid.hpp) と同じ) | 恒等置換 | 逆置換 |
+| `Permutation<N>` | `std::array<int, N>` | 置換の合成 $f \circ g$ ($g$ を先に適用。[`monoid::Mapping<N>`](monoid.hpp) と同じ) | 恒等置換 | 逆置換 |
 
 いずれも `monoid::Sum<T>` などを継承しているので、モノイドとしても使えます。
 

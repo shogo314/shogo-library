@@ -1,7 +1,7 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/vertex_set_path_composite"
 
 // HL 分解とセグメント木で、パス上の 1 次関数の合成を求める
-// 合成は交換法則が成り立たないので、根に近づく向きの区間は逆順の積を持つセグメント木で求める
+// 合成は交換法則が成り立たないので、index の昇順にたどる区間と降順にたどる区間で別のセグメント木を使う
 
 #include <iostream>
 #include <vector>
@@ -28,9 +28,9 @@ int main() {
     std::vector<F> init(n);
     for (int v = 0; v < n; v++) init[hld.index(v)] = f[v];
     // forward は index の昇順に適用し、backward は降順に適用する
-    SegTree<monoid::Composite<mint>> forward(init);
-    auto rev_op = [](const F& x, const F& y) { return monoid::Composite<mint>::op(y, x); };
-    SegTree backward(init, Monoid(rev_op, monoid::Composite<mint>::e()));
+    // Composite の積は f∘g (右の関数を先に適用する) なので、降順に適用するのは Composite そのもの
+    SegTree<monoid::Reverse<monoid::Composite<mint>>> forward(init);
+    SegTree<monoid::Composite<mint>> backward(init);
     while (q--) {
         int t;
         std::cin >> t;

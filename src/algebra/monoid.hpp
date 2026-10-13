@@ -152,7 +152,8 @@ struct Lcm {
  * @brief {0, 1, ..., N-1} から自分自身への写像の合成 (変換モノイド)
  *
  * 要素 f は f[x] が x の行き先を表す std::array<int, N>。全単射でなくてよい
- * op(f, g) = g∘f (左から順に適用する)。区間 [l, r) の積は f_{r-1}(...f_l(x)) を表す
+ * op(f, g) = f∘g (g を先に適用する)。区間 [l, r) の積は f_l(...f_{r-1}(x)) を表す
+ * 左から順に適用したい場合は monoid::Reverse<monoid::Mapping<N>> を使う
  * 例: SegTree<monoid::Mapping<3>> seg(n); seg.set(i, {0, 2, 1});
  * swap(i, j) で i と j を入れ替える写像を作れる
  *
@@ -163,7 +164,7 @@ struct Mapping {
     using S = std::array<int, N>;
     static constexpr S op(const S& f, const S& g) {
         S h{};
-        for (std::size_t x = 0; x < N; x++) h[x] = g[f[x]];
+        for (std::size_t x = 0; x < N; x++) h[x] = f[g[x]];
         return h;
     }
     static constexpr S e() {
@@ -182,13 +183,14 @@ struct Mapping {
 
 /**
  * @brief 1次関数 (Affine) の合成
- * op(f, g) = g∘f (左から順に適用する)
- * 区間 [l, r) の積は f_{r-1}(...f_l(x)) を表す
+ * op(f, g) = f∘g (g を先に適用する)
+ * 区間 [l, r) の積は f_l(...f_{r-1}(x)) を表す
+ * 左から順に適用したい (f_{r-1}(...f_l(x)) を求めたい) 場合は monoid::Reverse<monoid::Composite<T>> を使う
  */
 template <typename T>
 struct Composite {
     using S = Affine<T>;
-    static constexpr S op(const S& f, const S& g) { return {g.a * f.a, g.a * f.b + g.b}; }
+    static constexpr S op(const S& f, const S& g) { return {f.a * g.a, f.a * g.b + f.b}; }
     static constexpr S e() { return {T(1), T(0)}; }
 };
 
@@ -271,6 +273,23 @@ struct MaxCount {
         return {a.first, a.second + b.second};
     }
     static constexpr S e() { return {std::numeric_limits<T>::lowest(), U(0)}; }
+};
+
+/**
+ * @brief 積の順序を逆にしたモノイド op(a, b) = M::op(b, a)
+ *
+ * 例: SegTree<monoid::Reverse<monoid::Composite<mint>>> seg(v); の区間 [l, r) の積は f_{r-1}(...f_l(x))
+ *
+ * @tparam M もとのモノイド
+ */
+template <typename M>
+struct Reverse {
+    using S = typename M::S;
+    M m;
+    constexpr Reverse() : m() {}
+    constexpr explicit Reverse(M m) : m(std::move(m)) {}
+    constexpr S op(const S& a, const S& b) const { return m.op(b, a); }
+    constexpr S e() const { return m.e(); }
 };
 
 } // namespace monoid

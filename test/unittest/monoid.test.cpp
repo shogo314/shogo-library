@@ -106,14 +106,16 @@ int main() {
         std::ostringstream os;
         os << f;
         check(os.str() == "2 3", "Affine <<");
-        // Composite で合成した結果が関数の合成と一致する
+        // Composite で合成した結果が関数の合成 a∘b と一致する。Reverse は b∘a
         for (int rep = 0; rep < 1000 && ok; rep++) {
             Affine<long long> a{(long long)(rng() % 7) - 3, (long long)(rng() % 7) - 3};
             Affine<long long> b{(long long)(rng() % 7) - 3, (long long)(rng() % 7) - 3};
             long long x = (long long)(rng() % 7) - 3;
             auto c = monoid::Composite<long long>::op(a, b);
-            check(c(x) == b(a(x)), "Composite op");
-            check(c == Affine<long long>{b.a * a.a, b.a * a.b + b.b}, "Affine == after op");
+            check(c(x) == a(b(x)), "Composite op");
+            check(c == Affine<long long>{a.a * b.a, a.a * b.b + a.b}, "Affine == after op");
+            auto d = monoid::Reverse<monoid::Composite<long long>>().op(a, b);
+            check(d(x) == b(a(x)), "Reverse<Composite> op");
         }
     }
 

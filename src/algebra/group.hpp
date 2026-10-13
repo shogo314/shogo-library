@@ -46,7 +46,7 @@ struct Xor : monoid::Xor<T> {
  * @brief {0, 1, ..., N-1} の置換 (全単射) の合成
  *
  * monoid::Mapping<N> に逆置換を加えたもの。要素は置換であること
- * op(f, g) = g∘f (左から順に適用する)
+ * op(f, g) = f∘g (g を先に適用する)
  *
  * @tparam N 置換する要素の個数
  */

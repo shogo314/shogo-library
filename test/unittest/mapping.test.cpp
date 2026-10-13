@@ -22,8 +22,9 @@ constexpr bool equal(const std::array<int, N>& a, const std::array<int, N>& b) {
     }
     return true;
 }
-// constexpr で使えること: (0, 2, 1) を適用してから (1, 1, 0) を適用すると (1, 0, 1)
-static_assert(equal(monoid::Mapping<3>::op({0, 2, 1}, {1, 1, 0}), {1, 0, 1}));
+// constexpr で使えること: op(f, g) = f∘g。(1, 1, 0) を適用してから (0, 2, 1) を適用すると (2, 2, 0)
+static_assert(equal(monoid::Mapping<3>::op({0, 2, 1}, {1, 1, 0}), {2, 2, 0}));
+static_assert(equal(monoid::Reverse<monoid::Mapping<3>>().op({1, 1, 0}, {0, 2, 1}), {2, 2, 0}));
 static_assert(equal(monoid::Mapping<3>::e(), {0, 1, 2}));
 static_assert(equal(group::Permutation<3>::inv({1, 2, 0}), {2, 0, 1}));
 static_assert(equal(monoid::Mapping<3>::swap(1, 2), {0, 2, 1}));
@@ -43,7 +44,7 @@ std::array<int, N> random_mapping(std::mt19937& rng, bool bijective) {
     return f;
 }
 
-// SegTree<monoid::Mapping<N>> の区間積が、区間の写像を左から順に適用した結果と一致するか
+// SegTree<monoid::Mapping<N>> の区間積が、区間の写像を右から順に適用した結果と一致するか
 template <std::size_t N>
 bool check_segtree(std::mt19937& rng) {
     using S = std::array<int, N>;
@@ -63,7 +64,7 @@ bool check_segtree(std::mt19937& rng) {
                 S got = seg.prod(l, r);
                 for (int x = 0; x < (int)N; x++) {
                     int y = x;
-                    for (int i = l; i < r; i++) y = a[i][y];
+                    for (int i = r - 1; i >= l; i--) y = a[i][y];
                     if (got[x] != y) return false;
                 }
             }

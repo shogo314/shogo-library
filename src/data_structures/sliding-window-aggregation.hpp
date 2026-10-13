@@ -17,7 +17,7 @@
  *
  * 末尾への追加、先頭の削除、全体の積を償却 O(1) で行う。モノイドは可換でなくてもよい
  * 例:
- * SlidingWindowAggregation<monoid::Composite<mint>> swag;
+ * SlidingWindowAggregation<monoid::Reverse<monoid::Composite<mint>>> swag;  // 先頭から順に適用
  * swag.push(f); swag.pop(); swag.prod();
  *
  * @tparam M モノイド (algebra/monoid.hpp)

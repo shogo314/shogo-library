@@ -21,11 +21,11 @@ auto [l, r] = hld.subtree(v);          // 部分木の和は ft.prod(l, r)
 
 `u` から `v` へのパスを列の区間に分け、`u` 側から順に並べたリストを返します。各要素 `(a, b)` は、列の `a` 番目から `b` 番目まで (両端を含む) を `a` から `b` の向きにたどることを表します。向きを表すため、`subtree` などの半開区間 `[l, r)` と違って **閉区間** です。`a > b` なら index が減る向き、つまり根に近づく向きにたどります。
 
-1 次関数の合成のように交換法則が成り立たない演算では、向きを区別します。index の昇順に積を取るセグメント木と、降順に積を取るセグメント木 (演算の引数を入れ替えたもの) の 2 本を用意します。
+1 次関数の合成のように交換法則が成り立たない演算では、向きを区別します。index の昇順に適用するセグメント木と、降順に適用するセグメント木の 2 本を用意します。`monoid::Composite` の積は $f \circ g$ ($g$ を先に適用) なので、昇順に適用する側は積の順序を逆にした `monoid::Reverse` を使います。
 
 ```cpp
-SegTree<monoid::Composite<mint>> forward(init);
-SegTree backward(init, Monoid([](const F& x, const F& y) { return monoid::Composite<mint>::op(y, x); }, F()));
+SegTree<monoid::Reverse<monoid::Composite<mint>>> forward(init);
+SegTree<monoid::Composite<mint>> backward(init);
 for (auto [a, b] : hld.path(u, v)) x = a <= b ? forward.prod(a, b + 1)(x) : backward.prod(b, a + 1)(x);
 ```
 

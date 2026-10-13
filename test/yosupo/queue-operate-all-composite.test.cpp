@@ -11,7 +11,8 @@ int main() {
     using mint = modint998244353;
     int q;
     std::cin >> q;
-    SlidingWindowAggregation<monoid::Composite<mint>> swag;
+    // Composite は f∘g なので、先に入れたものから順に適用するには積の順序を逆にする
+    SlidingWindowAggregation<monoid::Reverse<monoid::Composite<mint>>> swag;
     while (q--) {
         int t;
         std::cin >> t;

@@ -32,4 +32,5 @@ for (int i = 0; i < (int)groups.size(); i++) {
 
 ## 関連
 
+- 関節点・橋・二重辺連結成分分解は [lowlink](lowlink.hpp)
 - 2-SAT は [2-SAT](two-sat.hpp)

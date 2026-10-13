@@ -39,10 +39,10 @@ for (auto& e : g[u]) { /* e.src, e.dst, e.cost, e.id */ }
 
 | 関数 | アルゴリズム | 未到達の頂点の距離 | 計算量 |
 |---|---|---|---|
-| `shortest_path(s)` | Dijkstra | `inf` (省略時 `-1`) | $O(m \log m)$ |
-| `shortest_path(s, false)` | BFS (辺の重みを 1 とみなす) | `inf` (省略時 `-1`) | $O(n + m)$ |
+| `shortest_path(s)` | Dijkstra | `inf` (省略時 `max / 4`) | $O(m \log m)$ |
+| `shortest_path(s, false)` | BFS (辺の重みを 1 とみなす) | `inf` (省略時 `max / 4`) | $O(n + m)$ |
 | `bellman_ford(s)` | Bellman-Ford (負の辺も可) | `inf` (省略時 `max / 4`)。負閉路の影響を受ける頂点は `-inf` | $O(nm)$ |
-| `shortest_path_01bfs(s)` | 01-BFS (辺のコストは 0 か 1 だけ。それ以外は assert で落ちる) | `inf` (省略時 `-1`) | $O(n + m)$ |
+| `shortest_path_01bfs(s)` | 01-BFS (辺のコストは 0 か 1 だけ。それ以外は assert で落ちる) | `inf` (省略時 `max / 4`) | $O(n + m)$ |
 
 ## 全点対間の最短路
 

@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <functional>
+#include <limits>
 #include <queue>
 #include <stack>
 #include <utility>
@@ -311,9 +312,10 @@ MinimumSpanningTree<Cost> minimum_spanning_tree(const Graph<Cost>& graph) {
 
 /**
  * @brief 最小シュタイナー木の辺重みの総和
+ * @note X を連結にできなければ inf を返す
  */
 template <typename Cost, typename T>
-Cost minimum_steiner_tree(const Graph<Cost>& G, const std::vector<T>& X, Cost inf = -1) {
+Cost minimum_steiner_tree(const Graph<Cost>& G, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max() / 4) {
     if (X.empty()) return Cost{};
     std::vector<std::vector<Cost>> dp(G.n, std::vector<Cost>(1 << X.size(), inf));
     for (int p = 0; p < (int)X.size(); p++) dp[X[p]][1 << p] = {};

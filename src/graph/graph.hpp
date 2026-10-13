@@ -153,10 +153,10 @@ struct Graph {
      *
      * @param s 始点
      * @param weighted 1以外のコストの辺が存在するか 省略するとtrue
-     * @param inf コストのminの単位元 未到達の頂点への距離はinfになる 省略すると -1
+     * @param inf コストのminの単位元 未到達の頂点への距離はinfになる 省略すると std::numeric_limits<Cost>::max() / 4
      * @return ShortestPath 各頂点への最短路長 (dist) と、各頂点への最短路上の直前の辺 (prev)
      */
-    ShortestPath shortest_path(int s, bool weighted = true, Cost inf = -1) const {
+    ShortestPath shortest_path(int s, bool weighted = true, Cost inf = std::numeric_limits<Cost>::max() / 4) const {
         if (weighted)
             return shortest_path_dijkstra(s, inf);
         return shortest_path_bfs(s, inf);
@@ -211,10 +211,10 @@ struct Graph {
      * @brief 辺のコストが 0 か 1 だけのグラフで、ある頂点から各頂点への最短路 (01-BFS) O(n + m)
      *
      * @param s 始点
-     * @param inf 未到達の頂点への距離 省略すると -1
+     * @param inf 未到達の頂点への距離 省略すると std::numeric_limits<Cost>::max() / 4
      * @return ShortestPath 各頂点への最短路長 (dist) と、各頂点への最短路上の直前の辺 (prev)
      */
-    ShortestPath shortest_path_01bfs(int s, Cost inf = -1) const {
+    ShortestPath shortest_path_01bfs(int s, Cost inf = std::numeric_limits<Cost>::max() / 4) const {
         std::vector<Cost> dist(n, inf);
         std::vector<Edge> prev(n);
         std::deque<int> que;

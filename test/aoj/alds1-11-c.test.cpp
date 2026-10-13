@@ -3,6 +3,7 @@
 // コストがすべて 1 の有向グラフで Graph::shortest_path_01bfs を使う
 
 #include <iostream>
+#include <limits>
 
 #include "../../src/graph/graph.hpp"
 
@@ -19,6 +20,7 @@ int main() {
             g.add_directed_edge(u - 1, v - 1, 1);
         }
     }
-    auto dist = g.shortest_path_01bfs(0).dist;
-    for (int v = 0; v < n; v++) std::cout << v + 1 << ' ' << dist[v] << '\n';
+    const int inf = std::numeric_limits<int>::max() / 4;
+    auto dist = g.shortest_path_01bfs(0, inf).dist;
+    for (int v = 0; v < n; v++) std::cout << v + 1 << ' ' << (dist[v] == inf ? -1 : dist[v]) << '\n';
 }

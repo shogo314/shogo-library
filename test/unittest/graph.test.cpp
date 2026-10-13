@@ -63,7 +63,7 @@ int main() {
             if (a.dist != b.dist) ok = false;
             // prev をたどった経路の長さが dist と一致する
             for (int t = 0; t < n; t++) {
-                if (a.dist[t] == -1) continue;
+                if (a.dist[t] == std::numeric_limits<int>::max() / 4) continue;
                 int len = 0;
                 for (auto& e : a.path(t)) len += e.cost;
                 if (len != a.dist[t]) ok = false;

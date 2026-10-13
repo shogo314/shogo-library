@@ -5,6 +5,8 @@ documentation_of: //src/data_structures/priority_counter.hpp
 
 値を追加していき、大きい方から K 種類の値とそれぞれの個数だけを保持します。`+` で2つを合わせられるので、セグメント木に乗せて「区間の最大値とその個数」「区間で2番目に大きい値」などを求めるのに使えます。
 
+すべての操作は `constexpr` で、C++17 の定数式の中でも使えます。キーの型 `T` はデフォルト構築できる必要があります。
+
 ```cpp
 MaxCounter<int, 2> pc;                 // 大きい方から 2 種類
 for (int x : {3, 5, 1, 5, 4}) pc.inc(x);

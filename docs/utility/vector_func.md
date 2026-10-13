@@ -1,6 +1,6 @@
 ---
 title: vector に対する演算子と関数
-documentation_of: //src/base/vector_func.hpp
+documentation_of: //src/utility/vector_func.hpp
 ---
 
 `std::vector` に演算子と便利な関数を追加します。

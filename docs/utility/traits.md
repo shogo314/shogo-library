@@ -1,6 +1,6 @@
 ---
 title: 型特性
-documentation_of: //src/base/traits.hpp
+documentation_of: //src/utility/traits.hpp
 ---
 
 ライブラリ内のテンプレートで使う型特性とマクロです。[コンテナに対する関数](container_func.hpp) や [repr](repr.hpp) が、コンテナのメンバ関数の有無で呼び分けるのに使っています。

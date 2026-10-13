@@ -1,6 +1,6 @@
 ---
 title: ビット演算
-documentation_of: //src/base/bit.hpp
+documentation_of: //src/utility/bit.hpp
 ---
 
 ビット演算の関数です。引数は `long long` で、負の値を渡すと assert で落ちます。そのため、最上位ビット (63 ビット目) が立った 64 ビットの値 (`unsigned long long` のビット集合など) は直接渡せません。

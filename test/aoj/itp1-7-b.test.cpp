@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "../../src/base/range.hpp"
+#include "../../src/utility/range.hpp"
 
 int main() {
     long long n, x;

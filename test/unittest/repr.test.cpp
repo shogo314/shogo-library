@@ -15,8 +15,8 @@
 #include <utility>
 #include <vector>
 
-#include "../../src/base/range.hpp"
-#include "../../src/base/repr.hpp"
+#include "../../src/utility/range.hpp"
+#include "../../src/utility/repr.hpp"
 
 bool ok = true;
 void check(bool cond, const std::string& what) {

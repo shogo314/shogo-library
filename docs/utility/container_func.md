@@ -1,6 +1,6 @@
 ---
 title: コンテナに対する関数 (sorted, max, sum など)
-documentation_of: //src/base/container_func.hpp
+documentation_of: //src/utility/container_func.hpp
 ---
 
 コンテナ全体を受け取る Python 風の関数です。`begin()`、`end()` を持つコンテナならたいてい使えます。

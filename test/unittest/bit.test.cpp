@@ -7,7 +7,7 @@
 #include <random>
 #include <string>
 
-#include "../../src/base/bit.hpp"
+#include "../../src/utility/bit.hpp"
 
 bool ok = true;
 

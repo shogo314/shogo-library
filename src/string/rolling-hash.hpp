@@ -14,7 +14,7 @@
 #include <string_view>
 #include <type_traits>
 
-#include "../base/traits.hpp"
+#include "../utility/traits.hpp"
 
 struct RHString;
 

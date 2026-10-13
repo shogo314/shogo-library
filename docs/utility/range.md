@@ -1,6 +1,6 @@
 ---
 title: Python の range のような整数列
-documentation_of: //src/base/range.hpp
+documentation_of: //src/utility/range.hpp
 ---
 
 Python の `range` のような、等差数列を表す `Range` です。要素を実際には持たないので、長い列でもメモリを使いません。

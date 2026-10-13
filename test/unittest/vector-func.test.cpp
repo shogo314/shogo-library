@@ -9,7 +9,7 @@
 #include <random>
 #include <vector>
 
-#include "../../src/base/vector_func.hpp"
+#include "../../src/utility/vector_func.hpp"
 
 bool ok = true;
 

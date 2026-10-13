@@ -1,6 +1,6 @@
 ---
 title: 出力をそのままコンストラクタに使える文字列化 (repr)
-documentation_of: //src/base/repr.hpp
+documentation_of: //src/utility/repr.hpp
 ---
 
 値を、型名つきの C++ の初期化式のような文字列にします。デバッグ出力で、値の中身と型をまとめて確認できます。

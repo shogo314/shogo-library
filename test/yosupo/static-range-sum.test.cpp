@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../../src/base/vector_func.hpp"
+#include "../../src/utility/vector_func.hpp"
 
 int main() {
     std::ios::sync_with_stdio(false);

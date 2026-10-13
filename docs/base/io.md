@@ -36,4 +36,4 @@ err(x, y);                      // 標準エラー出力に出す
 
 ## 関連
 
-- デバッグ用に型ごと出力するなら [repr](repr.hpp) の `DEBUG(x)`
+- デバッグ用に型ごと出力するなら [repr](../utility/repr.hpp) の `DEBUG(x)`

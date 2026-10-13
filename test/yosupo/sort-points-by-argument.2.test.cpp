@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../../src/base/functions.hpp"
+#include "../../src/geometry/argcmp.hpp"
 
 int main() {
     std::cin.tie(nullptr);

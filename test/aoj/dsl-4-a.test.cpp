@@ -3,8 +3,8 @@
 #include <iostream>
 #include <vector>
 
-#include "../../src/base/container_func.hpp"
-#include "../../src/base/vector_func.hpp"
+#include "../../src/utility/container_func.hpp"
+#include "../../src/utility/vector_func.hpp"
 
 int main() {
     int n;

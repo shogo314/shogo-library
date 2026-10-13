@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "../../src/base/bit.hpp"
+#include "../../src/utility/bit.hpp"
 
 int main() {
     std::ios::sync_with_stdio(false);

@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
-// functions.hpp の関数を愚直な実装とランダムに比較する
+// functions.hpp と binary-search.hpp の関数を愚直な実装とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include <algorithm>
@@ -9,6 +9,7 @@
 #include <random>
 
 #include "../../src/base/functions.hpp"
+#include "../../src/utility/binary-search.hpp"
 
 bool ok = true;
 

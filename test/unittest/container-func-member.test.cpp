@@ -6,7 +6,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../../src/base/container_func.hpp"
+#include "../../src/utility/container_func.hpp"
 
 // 要素は {3, 1, 2} だが、メンバ関数は目印の値を返す
 struct Base {

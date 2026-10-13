@@ -142,6 +142,92 @@ template <typename Cost = int>
 }
 
 /**
+ * @brief 有向グラフの閉路を 1 つ求める
+ *
+ * DFS を再帰を使わずに行う。O(n + m)
+ * @return std::vector<Edge> 閉路の辺を、たどる順に並べたもの (e[k].dst == e[k + 1].src、末尾の dst は先頭の src)。閉路がなければ空
+ * 自己ループは長さ 1 の閉路になる。頂点の列は各辺の src で得られる
+ */
+template <typename Cost = int>
+std::vector<typename Graph<Cost>::Edge> find_cycle_directed(const Graph<Cost>& graph) {
+    using Edge = typename Graph<Cost>::Edge;
+    // state: 0 は未訪問、1 は DFS のスタック上、2 は探索済み
+    std::vector<int> state(graph.n, 0), iter(graph.n, 0);
+    std::vector<Edge> in(graph.n);  // DFS 木で v に入る辺
+    for (int root = 0; root < graph.n; root++) {
+        if (state[root]) continue;
+        std::vector<int> st = {root};
+        state[root] = 1;
+        while (!st.empty()) {
+            int v = st.back();
+            if (iter[v] == (int)graph[v].size()) {
+                state[v] = 2;
+                st.pop_back();
+                continue;
+            }
+            const Edge& e = graph[v][iter[v]++];
+            int u = e.dst;
+            if (state[u] == 0) {
+                state[u] = 1;
+                in[u] = e;
+                st.push_back(u);
+            } else if (state[u] == 1) {
+                // u はスタック上にあるので、u から v への木の辺と e で閉路になる
+                std::vector<Edge> res = {e};
+                for (int w = v; w != u; w = in[w].src) res.push_back(in[w]);
+                std::reverse(res.begin(), res.end());
+                return res;
+            }
+        }
+    }
+    return {};
+}
+
+/**
+ * @brief 無向グラフの閉路を 1 つ求める
+ *
+ * DFS を再帰を使わずに行う。O(n + m)
+ * @return std::vector<Edge> 閉路の辺を、たどる順に並べたもの (e[k].dst == e[k + 1].src、末尾の dst は先頭の src)。閉路がなければ空
+ * 自己ループは長さ 1、多重辺は長さ 2 の閉路になる (同じ辺を戻ることはない)。頂点の列は各辺の src で得られる
+ */
+template <typename Cost = int>
+std::vector<typename Graph<Cost>::Edge> find_cycle_undirected(const Graph<Cost>& graph) {
+    using Edge = typename Graph<Cost>::Edge;
+    std::vector<int> state(graph.n, 0), iter(graph.n, 0);
+    std::vector<Edge> in(graph.n);
+    for (int root = 0; root < graph.n; root++) {
+        if (state[root]) continue;
+        std::vector<int> st = {root};
+        state[root] = 1;
+        while (!st.empty()) {
+            int v = st.back();
+            if (iter[v] == (int)graph[v].size()) {
+                state[v] = 2;
+                st.pop_back();
+                continue;
+            }
+            const Edge& e = graph[v][iter[v]++];
+            // 親へ戻る辺は、頂点ではなく辺の番号で区別する (多重辺を閉路として見つけるため)
+            if (e.id == in[v].id) continue;  // 根では in[v].id == -1
+            int u = e.dst;
+            if (state[u] == 0) {
+                state[u] = 1;
+                in[u] = e;
+                st.push_back(u);
+            } else if (state[u] == 1) {
+                // u は v の祖先 (か v 自身) なので、u から v への木の辺と e で閉路になる
+                std::vector<Edge> res = {e};
+                for (int w = v; w != u; w = in[w].src) res.push_back(in[w]);
+                std::reverse(res.begin(), res.end());
+                return res;
+            }
+            // state[u] == 2 にはならない (なるなら、u の側でこの辺により閉路が見つかっている)
+        }
+    }
+    return {};
+}
+
+/**
  * @brief 有向グラフを強連結成分分解する
  *
  * Tarjan のアルゴリズムを再帰を使わずに行う。O(n + m)

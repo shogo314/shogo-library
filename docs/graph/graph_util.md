@@ -14,6 +14,8 @@ documentation_of: //src/graph/graph_util.hpp
 | `is_tree(g)` | 無向 | 木か | $O(n + m)$ |
 | `topological_sort(g)` | 有向 | トポロジカル順に並べた頂点のリスト。DAG でなければ長さが `n` 未満になる | $O(n + m)$ |
 | `has_cycle(g)` | 有向 | 閉路を持つか | $O(n + m)$ |
+| `find_cycle_directed(g)` | 有向 | 閉路を 1 つ求め、その辺をたどる順に並べたもの (`std::vector<Edge>`)。閉路がなければ空 | $O(n + m)$ |
+| `find_cycle_undirected(g)` | 無向 | 同上。同じ辺を戻ることはなく、自己ループは長さ 1、多重辺は長さ 2 の閉路になる | $O(n + m)$ |
 | `strongly_connected_components(g)` | 有向 | 強連結成分ごとの頂点のリスト。成分はトポロジカル順 (成分 A から B へ辺があれば A が先) に並ぶ | $O(n + m)$ |
 | `minimum_spanning_tree(g)` | 無向 | 最小全域木 (Kruskal 法)。`cost` (コストの総和) と `edges` (使った辺) を持つ構造体を返す。連結でなければ最小全域森 | $O(m \log m)$ |
 | `minimum_steiner_tree(g, X, inf = -1)` | 無向 | 頂点集合 `X` をすべて含む部分木の辺の重みの総和の最小値 | $O(3^k n + 2^k m \log m)$ ($k = \lvert X \rvert$) |
@@ -25,6 +27,15 @@ auto groups = strongly_connected_components(g);
 std::vector<int> id(g.n);
 for (int i = 0; i < (int)groups.size(); i++) {
     for (int v : groups[i]) id[v] = i;
+}
+```
+
+閉路の辺 `c` は、`c[k].dst == c[k + 1].src` (末尾の `dst` は先頭の `src`) となる順に並びます。頂点の列は各辺の `src`、辺の番号は各辺の `id` です。
+
+```cpp
+auto c = find_cycle_directed(g);
+if (!c.empty()) {
+    for (auto& e : c) std::cout << e.src << ' ';  // 閉路の頂点
 }
 ```
 

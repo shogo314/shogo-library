@@ -31,8 +31,8 @@ trie.find("x");                  // -1 (ノードがない)
 | `child(v, c)` | ノード `v` から文字 `c` で進んだノード (なければ -1) |
 | `parent(v)` | 親 (根なら -1) |
 | `depth(v)` | 深さ (ノードの文字列の長さ) |
-| `prefix_count(v)` | ノード `v` を通る (`v` の文字列で始まる) 文字列の個数 |
-| `word_count(v)` | ノード `v` で終わる文字列の個数 |
+| `count_prefix_at(v)` | ノード `v` を通る (`v` の文字列で始まる) 文字列の個数 |
+| `count_at(v)` | ノード `v` で終わる文字列の個数 |
 
 - `s` は `std::string` のほか、`std::vector<int>` などの整数の列でもかまいません (`Trie<10, 0>` に数字の列を入れるなど)。
 - ノードは子の番号を `K` 個の配列で持つので、メモリは「ノード数 × (4K + 16) バイト」ほど使います。文字の種類が少ないときは `K` を小さくしてください。
@@ -45,7 +45,7 @@ trie.find("x");                  // -1 (ノードがない)
 ```cpp
 long long sum = 0;
 for (int v = 1; v < trie.size(); v++) {
-    long long c = trie.prefix_count(v);
+    long long c = trie.count_prefix_at(v);
     sum += c * (c - 1) / 2;
 }
 ```

@@ -54,7 +54,7 @@ int main() {
             ok = ok && trie.count(t) == cnt && trie.count_prefix(t) == pre && trie.total() == total;
             ok = ok && trie.longest_common_prefix(t) == lcp;
             if (v != -1) {
-                ok = ok && trie.word_count(v) == cnt && trie.prefix_count(v) == pre && trie.depth(v) == (int)t.size();
+                ok = ok && trie.count_at(v) == cnt && trie.count_prefix_at(v) == pre && trie.depth(v) == (int)t.size();
             }
         }
         // ノードの数と、親子・深さの関係
@@ -75,7 +75,7 @@ int main() {
     std::vector<std::string> words = {"ab", "abc", "arc"};
     for (auto& w : words) trie.insert(w);
     long long sum = 0;
-    for (int v = 1; v < trie.size(); v++) sum += (long long)trie.prefix_count(v) * (trie.prefix_count(v) - 1) / 2;
+    for (int v = 1; v < trie.size(); v++) sum += (long long)trie.count_prefix_at(v) * (trie.count_prefix_at(v) - 1) / 2;
     ok = ok && sum == 4;  // lcp(ab, abc) = 2, lcp(ab, arc) = 1, lcp(abc, arc) = 1
     // vector<int> も追加できる
     Trie<10, 0> digits;

@@ -138,11 +138,11 @@ public:
     /**
      * @brief ノード v を通る (v の文字列を接頭辞に持つ) 文字列の個数
      */
-    int prefix_count(int v) const { return nodes[v].prefix_cnt; }
+    int count_prefix_at(int v) const { return nodes[v].prefix_cnt; }
     /**
      * @brief ノード v で終わる文字列の個数
      */
-    int word_count(int v) const { return nodes[v].word_cnt; }
+    int count_at(int v) const { return nodes[v].word_cnt; }
 
     /**
      * @brief s の接頭辞のうち、追加した文字列のどれかの接頭辞にもなっているものの最長の長さ O(|s|)

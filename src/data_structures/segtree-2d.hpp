@@ -6,6 +6,7 @@
  */
 
 #include <algorithm>
+#include <cassert>
 #include <tuple>
 #include <utility>
 #include <vector>
@@ -193,6 +194,7 @@ public:
      * @return 要素の値
      */
     S get(int kx, int ky) {
+        assert(0 <= kx && kx < h && 0 <= ky && ky < w);
         kx += sz_x;
         return get_y(kx, ky);
     }
@@ -204,6 +206,7 @@ public:
      * @param x 代入する値
      */
     void set(int kx, int ky, const S& x) {
+        assert(0 <= kx && kx < h && 0 <= ky && ky < w);
         update_tree_x(kx, ky, x);
     }
 
@@ -227,6 +230,8 @@ public:
      * @param ry y座標の半開区間の終端
      */
     S prod(int lx, int rx, int ly, int ry) {
+        assert(0 <= lx && lx <= rx && rx <= h);
+        assert(0 <= ly && ly <= ry && ry <= w);
         return prod_x(lx, rx, ly, ry);
     }
 };

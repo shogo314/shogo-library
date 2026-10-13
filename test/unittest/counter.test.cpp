@@ -26,6 +26,10 @@ Model normalize(Model m) {
 bool same(const Counter<int>& c, const Model& m) {
     Model mm = normalize(m);
     if (c.size() != mm.size()) return false;
+    // total は重複を含めた要素数 (個数の総和)
+    long long sum = 0;
+    for (auto [x, cnt] : mm) sum += cnt;
+    if (c.total() != sum) return false;
     // begin / end で走査した結果が値の昇順に一致する
     std::vector<std::pair<int, long long>> a(c.begin(), c.end()), b(mm.begin(), mm.end());
     if (a != b) return false;
@@ -79,6 +83,10 @@ int main() {
         check(s.size() == 1 && s["ab"] == 1, "Counter<std::string>(x)");
         Counter<char> chars(std::string("aab"));
         check(chars['a'] == 2 && chars['b'] == 1 && chars.size() == 2, "Counter<char>(string)");
+        // size は異なる値の個数、total は重複を含めた要素数
+        Counter<int> dup(std::vector<int>{3, 3, 3, 5});
+        check(dup.size() == 2 && dup.total() == 4, "size / total");
+        check(Counter<int>().total() == 0, "total of empty");
     }
 
     for (int rep = 0; rep < 3000 && ok; rep++) {

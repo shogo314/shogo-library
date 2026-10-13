@@ -75,8 +75,20 @@ struct Counter {
     }
     auto begin() const { return data.begin(); }
     auto end() const { return data.end(); }
+    /**
+     * @brief 異なる値の個数 (重複は数えない)
+     */
     std::size_t size() const {
         return data.size();
+    }
+    /**
+     * @brief 重複を含めた要素数 (個数の総和)
+     * @note Python の collections.Counter.total() と同じ。O(異なる値の個数)
+     */
+    mapped_type total() const {
+        mapped_type ret = 0;
+        for (const auto& [key, cnt] : data) ret += cnt;
+        return ret;
     }
     mapped_type get(const key_type& key) const {
         auto itr = data.find(key);

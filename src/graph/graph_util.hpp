@@ -102,27 +102,27 @@ bool is_tree(const Graph<Cost>& graph) {
 
 /**
  * @brief 有向グラフをトポロジカルソートする
- * @param G トポロジカルソートするグラフ
- * @return ソートされたノード番号のvector DAGでなければ長さがG.n未満になる
+ * @return std::vector<int> トポロジカル順に並べた頂点のリスト。DAG でなければ空
  */
-template <typename Cost>
-std::vector<int> topological_sort(const Graph<Cost>& G) {
-    std::vector<int> indeg(G.n), sorted;
+template <typename Cost = int>
+std::vector<int> topological_sort(const Graph<Cost>& graph) {
+    std::vector<int> indeg(graph.n), sorted;
     std::queue<int> q;
-    for (int i = 0; i < G.n; i++) {
-        for (int dst : G[i]) indeg[dst]++;
+    for (int i = 0; i < graph.n; i++) {
+        for (int dst : graph[i]) indeg[dst]++;
     }
-    for (int i = 0; i < G.n; i++) {
+    for (int i = 0; i < graph.n; i++) {
         if (!indeg[i]) q.push(i);
     }
     while (!q.empty()) {
         int cur = q.front();
         q.pop();
-        for (int dst : G[cur]) {
+        for (int dst : graph[cur]) {
             if (!--indeg[dst]) q.push(dst);
         }
         sorted.push_back(cur);
     }
+    if ((int)sorted.size() < graph.n) return {};
     return sorted;
 }
 
@@ -132,7 +132,7 @@ std::vector<int> topological_sort(const Graph<Cost>& G) {
  */
 template <typename Cost = int>
 bool has_cycle(const Graph<Cost>& graph) {
-    return (int)topological_sort(graph).size() < graph.n;
+    return graph.n > 0 && topological_sort(graph).empty();
 }
 /**
  * @deprecated has_cycle を使うこと(名前と意味が逆に読めるため改名した)

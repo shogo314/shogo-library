@@ -99,7 +99,7 @@ int main() {
                 for (int i = 0; i < n; i++) pos[order[i]] = i;
                 for (auto [u, v] : edges) if (!(pos[u] < pos[v])) ok = false;
             }
-        } else if ((int)order.size() >= n) {
+        } else if (!order.empty()) {
             ok = false;
         }
     }

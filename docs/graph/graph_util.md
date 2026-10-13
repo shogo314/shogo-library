@@ -12,7 +12,7 @@ documentation_of: //src/graph/graph_util.hpp
 | `connected_components(g)` | 無向 | 連結成分ごとの頂点のリスト | $O(n + m)$ |
 | `is_connected(g)` | 無向 | 連結か | $O(n + m)$ |
 | `is_tree(g)` | 無向 | 木か | $O(n + m)$ |
-| `topological_sort(g)` | 有向 | トポロジカル順に並べた頂点のリスト。DAG でなければ長さが `n` 未満になる | $O(n + m)$ |
+| `topological_sort(g)` | 有向 | トポロジカル順に並べた頂点のリスト。DAG でなければ空 | $O(n + m)$ |
 | `has_cycle(g)` | 有向 | 閉路を持つか | $O(n + m)$ |
 | `find_cycle_directed(g)` | 有向 | 閉路を 1 つ求め、その辺をたどる順に並べたもの (`std::vector<Edge>`)。閉路がなければ空 | $O(n + m)$ |
 | `find_cycle_undirected(g)` | 無向 | 同上。同じ辺を戻ることはなく、自己ループは長さ 1、多重辺は長さ 2 の閉路になる | $O(n + m)$ |

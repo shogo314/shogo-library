@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
-// MaxFlow を、頂点の分け方をすべて試して求めた最小カットと比べる
+// MaxFlow を、頂点の分け方をすべて試して求めた最小カットと比べる。change_edge も確かめる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include <iostream>
@@ -65,6 +65,19 @@ int main() {
             if (cut[u] && !cut[v]) cap += c;
         }
         if (!cut[s] || cut[t] || cap != f) ok = false;
+
+        // change_edge で流量を 0 に戻すと、もう一度同じだけ流せる
+        for (int i = 0; i < m; i++) mf.change_edge(i, std::get<2>(es[i]), 0);
+        for (int i = 0; i < m; i++) {
+            if (mf.get_edge(i).flow != 0) ok = false;
+        }
+        if (mf.flow(s, t) != best) ok = false;
+        // 容量を 0 にした辺には流れない
+        int k = m == 0 ? -1 : (int)(rng() % m);
+        if (k != -1) {
+            mf.change_edge(k, 0, 0);
+            if (mf.get_edge(k).cap != 0 || mf.get_edge(k).flow != 0) ok = false;
+        }
     }
 
     if (ok) std::cout << "Hello World" << std::endl;

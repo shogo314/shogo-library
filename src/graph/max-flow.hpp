@@ -126,6 +126,17 @@ public:
         return {pos[i].first, e.to, e.cap + re.cap, re.cap};
     }
     /**
+     * @brief 番号 i の辺の容量を new_cap に、流れている量を new_flow に変える
+     * ほかの辺の流量は変えないので、流量の保存則が崩れることがある
+     */
+    void change_edge(int i, Cap new_cap, Cap new_flow) {
+        assert(0 <= i && i < (int)pos.size() && 0 <= new_flow && new_flow <= new_cap);
+        auto& e = g[pos[i].first][pos[i].second];
+        auto& re = g[e.to][e.rev];
+        e.cap = new_cap - new_flow;
+        re.cap = new_flow;
+    }
+    /**
      * @brief すべての辺の情報 (追加した順)
      */
     std::vector<Edge> edges() const {

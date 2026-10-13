@@ -24,6 +24,7 @@ std::vector<bool> S = mf.min_cut(s);  // 最小カットの s 側
 | `flow(s, t, limit)` | 流す量の上限を `limit` にする |
 | `get_edge(i)` | 番号 `i` の辺の `from`、`to`、`cap` (容量)、`flow` (流れている量) |
 | `edges()` | すべての辺の情報 (追加した順) |
+| `change_edge(i, new_cap, new_flow)` | 番号 `i` の辺の容量を `new_cap`、流れている量を `new_flow` に変える ($0 \le$ `new_flow` $\le$ `new_cap`)。ほかの辺の流量は変えないので、流量の保存則が崩れることがある |
 | `min_cut(s)` | 残余グラフで `s` から行ける頂点か。`flow(s, t)` で流しきった後なら、`true` の頂点の集合が最小カットの `s` 側になる |
 
 `flow` を何度も呼ぶと、前回までの流れに追加して流します。辺を追加してから、もう一度 `flow` を呼ぶこともできます。

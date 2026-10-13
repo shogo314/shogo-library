@@ -202,48 +202,107 @@ data:
     \ - q1); // 4\u70B9\u3092\u9802\u70B9\u3068\u3059\u308B\u56DB\u89D2\u5F62\u306E\
     \u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\n    T partial_area = cross(q2 - q1, p1 -\
     \ q1); // \u4E09\u89D2\u5F62q1q2p1\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\n\
-    \    return p1 + (p2 - p1) * partial_area / area;\n}\n\n/**\n * @brief \u591A\u89D2\
-    \u5F62\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\u306E2\u500D\n * \n * @tparam\
-    \ T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19\
-    \n * @return T \u9762\u7A4D\u306E2\u500D(\u53CD\u6642\u8A08\u56DE\u308A\u306A\u3089\
-    \u6B63\u3001\u6642\u8A08\u56DE\u308A\u306A\u3089\u8CA0)\n */\ntemplate <typename\
-    \ T>\nT polygon_area_doubled(const std::vector<Vector<T, 2>>& polygon) {\n   \
-    \ T ret = 0;\n    for(int i = 0; i < (int)polygon.size(); i++) {\n        int\
-    \ j = i+1; if(j == (int)polygon.size()) j = 0;\n        ret += cross(polygon[i],\
-    \ polygon[j]);\n    }\n    return ret;\n}\n\n/**\n * @brief \u591A\u89D2\u5F62\
-    \u306E\u9762\u7A4D\n * \n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon\
-    \ \u9802\u70B9\u306E\u5EA7\u6A19(\u9806\u756A\u3001\u53CD\u6642\u8A08\u56DE\u308A\
-    \u304B\u6642\u8A08\u56DE\u308A\u304B\u306F\u554F\u308F\u306A\u3044)\n * @return\
-    \ double \u9762\u7A4D\n */\ntemplate <typename T>\ndouble polygon_area(const std::vector<Vector<T,\
-    \ 2>>& polygon) {\n    return std::abs(polygon_area_doubled(polygon)) / 2.;\n\
-    }\n\n/**\n * @brief \u591A\u89D2\u5F62\u306E\u51F8\u6027\u5224\u5B9A\n * \n *\
-    \ @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\u306E\u5EA7\
-    \u6A19(\u53CD\u6642\u8A08\u56DE\u308A)\n * @return true \u51F8\n * @return false\
-    \ \u51F9\n */\ntemplate <typename T>\nbool polygon_is_convex(const std::vector<Vector<T,\
-    \ 2>>& polygon) {\n    int n = polygon.size();\n    for(int i = 0; i < n; i++)\
-    \ {\n        int j = i+1; if(j == n) j = 0;\n        int k = j+1; if(k == n) k\
-    \ = 0;\n        if(cross(polygon[j] - polygon[i], polygon[k] - polygon[j]) < 0)\
-    \ return false;\n    }\n    return true;\n}\n\n/**\n * @brief \u70B9\u306E\u591A\
-    \u89D2\u5F62\u5185\u5305\u542B\u5224\u5B9A\n * \n * @tparam T \u5EA7\u6A19\u306E\
-    \u578B\n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19(\u53CD\u6642\u8A08\u56DE\
-    \u308A)\n * @param p \u70B9\u306E\u5EA7\u6A19\n * @return int 0: \u5916\u90E8\
-    , 1: \u8FBA\u4E0A, 2: \u5185\u90E8\n */\ntemplate <typename T>\nint polygon_contains(const\
-    \ std::vector<Vector<T, 2>>& polygon, const Vector<T, 2>& p) {\n    bool in =\
-    \ false;\n    for(int i = 0; i < (int)polygon.size(); i++) {\n        int j =\
-    \ i+1; if(j == (int)polygon.size()) j = 0;\n        Vector<T> v1 = polygon[i]\
-    \ - p, v2 = polygon[j] - p;\n        if(v1[1] > v2[1]) std::swap(v1, v2);\n  \
-    \      T c = cross(v1, v2);\n        if(v1[1] <= 0 && v2[1] > 0 && c < 0) in =\
-    \ !in;\n        if(c == 0 && dot(v1, v2) <= 0) return 1;\n    }\n    return in\
-    \ ? 2 : 0;\n}\n\n/**\n * @brief \u591A\u89D2\u5F62\u306E\u534A\u51F8\u5305\n *\
-    \ \u4E0E\u3048\u3089\u308C\u305F\u9802\u70B9\u30EA\u30B9\u30C8\u306E\u9806\u756A\
-    \u3092\u4FDD\u3063\u3066\u53CD\u6642\u8A08\u56DE\u308A\u306B\u51F8\u5305\u3092\
-    \u69CB\u6210\u3059\u308B\n * x\u306E\u6607\u9806\u306B\u30BD\u30FC\u30C8\u3055\
-    \u308C\u3066\u3044\u308C\u3070\u4E0B\u51F8\u5305\u3001x\u306E\u964D\u9806\u306B\
-    \u30BD\u30FC\u30C8\u3055\u308C\u3066\u3044\u308C\u3070\u4E0A\u51F8\u5305\u304C\
-    \u5F97\u3089\u308C\u308B\n * \n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param\
-    \ points \u9802\u70B9\u30EA\u30B9\u30C8\n * @param include_straight \u5185\u89D2\
-    \u304C180\u5EA6\u306E\u9802\u70B9\u3092\u542B\u3080\u304B\u3069\u3046\u304B\n\
-    \ * @return std::vector<Vector<T, 2>> \u534A\u51F8\u5305\u306E\u9802\u70B9\u306E\
+    \    return p1 + (p2 - p1) * partial_area / area;\n}\n\n/**\n * @brief 3\u70B9\
+    \u306E\u4F4D\u7F6E\u95A2\u4FC2 (counter-clockwise)\n *\n * \u6574\u6570\u578B\u3067\
+    \u3082\u4F7F\u3048\u308B\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u3067\u306F\
+    \u8AA4\u5DEE\u3092\u8003\u3048\u305A\u306B\u6BD4\u8F03\u3059\u308B\n *\n * @tparam\
+    \ T \u5EA7\u6A19\u306E\u578B\n * @return int 1: a\u2192b\u2192c \u304C\u53CD\u6642\
+    \u8A08\u56DE\u308A, -1: \u6642\u8A08\u56DE\u308A, 2: c, a, b \u306E\u9806\u306B\
+    \u4E00\u76F4\u7DDA\u4E0A, -2: a, b, c \u306E\u9806\u306B\u4E00\u76F4\u7DDA\u4E0A\
+    , 0: c \u304C\u7DDA\u5206 ab \u4E0A\n */\ntemplate <typename T>\nconstexpr int\
+    \ ccw(const Vector<T, 2>& a, const Vector<T, 2>& b, const Vector<T, 2>& c) {\n\
+    \    Vector<T, 2> u = b - a, v = c - a;\n    T cr = cross(u, v);\n    if(cr >\
+    \ 0) return 1;\n    if(cr < 0) return -1;\n    if(dot(u, v) < 0) return 2;\n \
+    \   if(u.squared_norm() < v.squared_norm()) return -2;\n    return 0;\n}\n\n/**\n\
+    \ * @brief \u76F4\u7DDA p1p2 \u3068\u76F4\u7DDA q1q2 \u304C\u5E73\u884C\u304B\
+    \ (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate <typename\
+    \ T>\nconstexpr bool is_parallel(const Vector<T, 2>& p1, const Vector<T, 2>& p2,\
+    \ const Vector<T, 2>& q1, const Vector<T, 2>& q2) {\n    return cross(p2 - p1,\
+    \ q2 - q1) == 0;\n}\n/**\n * @brief \u76F4\u7DDA p1p2 \u3068\u76F4\u7DDA q1q2\
+    \ \u304C\u76F4\u4EA4\u3059\u308B\u304B (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\
+    \u308B)\n */\ntemplate <typename T>\nconstexpr bool is_orthogonal(const Vector<T,\
+    \ 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& q1, const Vector<T, 2>&\
+    \ q2) {\n    return dot(p2 - p1, q2 - q1) == 0;\n}\n\n/**\n * @brief \u70B9 p\
+    \ \u304B\u3089\u76F4\u7DDA p1p2 \u306B\u4E0B\u308D\u3057\u305F\u5782\u7DDA\u306E\
+    \u8DB3 (\u5C04\u5F71)\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n\
+    \ */\ntemplate <typename T>\nconstexpr Vector<T, 2> projection(const Vector<T,\
+    \ 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& p) {\n    static_assert(std::is_floating_point_v<T>,\
+    \ \"projection: T must be a floating point type\");\n    assert(p1 != p2 && \"\
+    projection: degenerate line\");\n    Vector<T, 2> d = p2 - p1;\n    return p1\
+    \ + d * (dot(p - p1, d) / d.squared_norm());\n}\n/**\n * @brief \u76F4\u7DDA p1p2\
+    \ \u306B\u3064\u3044\u3066\u70B9 p \u3068\u5BFE\u79F0\u306A\u70B9 (\u53CD\u5C04\
+    )\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n */\ntemplate <typename\
+    \ T>\nconstexpr Vector<T, 2> reflection(const Vector<T, 2>& p1, const Vector<T,\
+    \ 2>& p2, const Vector<T, 2>& p) {\n    return projection(p1, p2, p) * T(2) -\
+    \ p;\n}\n\n/**\n * @brief \u76F4\u7DDA p1p2 \u3068\u76F4\u7DDA q1q2 \u306E\u4EA4\
+    \u70B9\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n * @return std::optional<Vector<T,\
+    \ 2>> \u4EA4\u70B9 (\u5E73\u884C\u306A\u3089 std::nullopt)\n */\ntemplate <typename\
+    \ T>\nconstexpr std::optional<Vector<T, 2>> line_intersection(const Vector<T,\
+    \ 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& q1, const Vector<T, 2>&\
+    \ q2) {\n    static_assert(std::is_floating_point_v<T>, \"line_intersection: T\
+    \ must be a floating point type\");\n    Vector<T, 2> d = p2 - p1, e = q2 - q1;\n\
+    \    T c = cross(e, d);\n    if(c == 0) return std::nullopt;\n    // p1 + d t\
+    \ \u304C\u76F4\u7DDA q1q2 \u4E0A\u306B\u3042\u308B t\n    return p1 + d * (cross(e,\
+    \ q1 - p1) / c);\n}\n\n/**\n * @brief \u70B9 p \u3068\u76F4\u7DDA p1p2 \u306E\u8DDD\
+    \u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate <typename\
+    \ T>\ndouble distance_point_line(const Vector<T, 2>& p1, const Vector<T, 2>& p2,\
+    \ const Vector<T, 2>& p) {\n    assert(p1 != p2 && \"distance_point_line: degenerate\
+    \ line\");\n    return std::abs(static_cast<double>(cross(p2 - p1, p - p1))) /\
+    \ (p2 - p1).abs();\n}\n/**\n * @brief \u70B9 p \u3068\u7DDA\u5206 p1p2 \u306E\u8DDD\
+    \u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate <typename\
+    \ T>\ndouble distance_point_segment(const Vector<T, 2>& p1, const Vector<T, 2>&\
+    \ p2, const Vector<T, 2>& p) {\n    if(p1 == p2) return (p - p1).abs();\n    //\
+    \ \u5782\u7DDA\u306E\u8DB3\u304C\u7DDA\u5206\u306E\u5916\u306A\u3089\u3001\u8FD1\
+    \u3044\u65B9\u306E\u7AEF\u70B9\u3068\u306E\u8DDD\u96E2\n    if(dot(p2 - p1, p\
+    \ - p1) < 0) return (p - p1).abs();\n    if(dot(p1 - p2, p - p2) < 0) return (p\
+    \ - p2).abs();\n    return distance_point_line(p1, p2, p);\n}\n/**\n * @brief\
+    \ \u7DDA\u5206 p1p2 \u3068\u7DDA\u5206 q1q2 \u306E\u8DDD\u96E2 (\u6574\u6570\u578B\
+    \u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate <typename T>\ndouble distance_segments(const\
+    \ Vector<T, 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& q1, const Vector<T,\
+    \ 2>& q2) {\n    if(p1 != p2 && q1 != q2 && segments_intersect(p1, p2, q1, q2))\
+    \ return 0;\n    return std::min({distance_point_segment(p1, p2, q1), distance_point_segment(p1,\
+    \ p2, q2),\n                     distance_point_segment(q1, q2, p1), distance_point_segment(q1,\
+    \ q2, p2)});\n}\n\n/**\n * @brief \u591A\u89D2\u5F62\u306E\u7B26\u53F7\u4ED8\u304D\
+    \u9762\u7A4D\u306E2\u500D\n * \n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param\
+    \ polygon \u9802\u70B9\u306E\u5EA7\u6A19\n * @return T \u9762\u7A4D\u306E2\u500D\
+    (\u53CD\u6642\u8A08\u56DE\u308A\u306A\u3089\u6B63\u3001\u6642\u8A08\u56DE\u308A\
+    \u306A\u3089\u8CA0)\n */\ntemplate <typename T>\nT polygon_area_doubled(const\
+    \ std::vector<Vector<T, 2>>& polygon) {\n    T ret = 0;\n    for(int i = 0; i\
+    \ < (int)polygon.size(); i++) {\n        int j = i+1; if(j == (int)polygon.size())\
+    \ j = 0;\n        ret += cross(polygon[i], polygon[j]);\n    }\n    return ret;\n\
+    }\n\n/**\n * @brief \u591A\u89D2\u5F62\u306E\u9762\u7A4D\n * \n * @tparam T \u5EA7\
+    \u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19(\u9806\u756A\
+    \u3001\u53CD\u6642\u8A08\u56DE\u308A\u304B\u6642\u8A08\u56DE\u308A\u304B\u306F\
+    \u554F\u308F\u306A\u3044)\n * @return double \u9762\u7A4D\n */\ntemplate <typename\
+    \ T>\ndouble polygon_area(const std::vector<Vector<T, 2>>& polygon) {\n    return\
+    \ std::abs(polygon_area_doubled(polygon)) / 2.;\n}\n\n/**\n * @brief \u591A\u89D2\
+    \u5F62\u306E\u51F8\u6027\u5224\u5B9A\n * \n * @tparam T \u5EA7\u6A19\u306E\u578B\
+    \n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19(\u53CD\u6642\u8A08\u56DE\u308A\
+    )\n * @return true \u51F8\n * @return false \u51F9\n */\ntemplate <typename T>\n\
+    bool polygon_is_convex(const std::vector<Vector<T, 2>>& polygon) {\n    int n\
+    \ = polygon.size();\n    for(int i = 0; i < n; i++) {\n        int j = i+1; if(j\
+    \ == n) j = 0;\n        int k = j+1; if(k == n) k = 0;\n        if(cross(polygon[j]\
+    \ - polygon[i], polygon[k] - polygon[j]) < 0) return false;\n    }\n    return\
+    \ true;\n}\n\n/**\n * @brief \u70B9\u306E\u591A\u89D2\u5F62\u5185\u5305\u542B\u5224\
+    \u5B9A\n * \n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\
+    \u306E\u5EA7\u6A19(\u53CD\u6642\u8A08\u56DE\u308A)\n * @param p \u70B9\u306E\u5EA7\
+    \u6A19\n * @return int 0: \u5916\u90E8, 1: \u8FBA\u4E0A, 2: \u5185\u90E8\n */\n\
+    template <typename T>\nint polygon_contains(const std::vector<Vector<T, 2>>& polygon,\
+    \ const Vector<T, 2>& p) {\n    bool in = false;\n    for(int i = 0; i < (int)polygon.size();\
+    \ i++) {\n        int j = i+1; if(j == (int)polygon.size()) j = 0;\n        Vector<T>\
+    \ v1 = polygon[i] - p, v2 = polygon[j] - p;\n        if(v1[1] > v2[1]) std::swap(v1,\
+    \ v2);\n        T c = cross(v1, v2);\n        if(v1[1] <= 0 && v2[1] > 0 && c\
+    \ < 0) in = !in;\n        if(c == 0 && dot(v1, v2) <= 0) return 1;\n    }\n  \
+    \  return in ? 2 : 0;\n}\n\n/**\n * @brief \u591A\u89D2\u5F62\u306E\u534A\u51F8\
+    \u5305\n * \u4E0E\u3048\u3089\u308C\u305F\u9802\u70B9\u30EA\u30B9\u30C8\u306E\u9806\
+    \u756A\u3092\u4FDD\u3063\u3066\u53CD\u6642\u8A08\u56DE\u308A\u306B\u51F8\u5305\
+    \u3092\u69CB\u6210\u3059\u308B\n * x\u306E\u6607\u9806\u306B\u30BD\u30FC\u30C8\
+    \u3055\u308C\u3066\u3044\u308C\u3070\u4E0B\u51F8\u5305\u3001x\u306E\u964D\u9806\
+    \u306B\u30BD\u30FC\u30C8\u3055\u308C\u3066\u3044\u308C\u3070\u4E0A\u51F8\u5305\
+    \u304C\u5F97\u3089\u308C\u308B\n * \n * @tparam T \u5EA7\u6A19\u306E\u578B\n *\
+    \ @param points \u9802\u70B9\u30EA\u30B9\u30C8\n * @param include_straight \u5185\
+    \u89D2\u304C180\u5EA6\u306E\u9802\u70B9\u3092\u542B\u3080\u304B\u3069\u3046\u304B\
+    \n * @return std::vector<Vector<T, 2>> \u534A\u51F8\u5305\u306E\u9802\u70B9\u306E\
     \u5EA7\u6A19(\u53CD\u6642\u8A08\u56DE\u308A)\n */\ntemplate <typename T>\nstd::vector<Vector<T,\
     \ 2>> select_convex(const std::vector<Vector<T, 2>>& points, bool include_straight\
     \ = false) {\n    std::vector<Vector<T, 2>> ret;\n    for(auto& p : points) {\n\
@@ -351,7 +410,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/sort-points-by-argument.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 12:42:03+09:00'
+  timestamp: '2026-10-14 01:43:22+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/sort-points-by-argument.1.test.cpp

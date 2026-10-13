@@ -40,8 +40,8 @@ data:
     path: test/yosupo/point-set-range-composite.4.test.cpp
     title: test/yosupo/point-set-range-composite.4.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/range-affine-point-get.test.cpp
-    title: test/yosupo/range-affine-point-get.test.cpp
+    path: test/yosupo/range-affine-point-get.1.test.cpp
+    title: test/yosupo/range-affine-point-get.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/range-affine-range-sum.1.test.cpp
     title: test/yosupo/range-affine-range-sum.1.test.cpp
@@ -680,9 +680,9 @@ data:
   - test/yosupo/point-set-range-composite.4.test.cpp
   - test/yosupo/range-affine-range-sum.2.test.cpp
   - test/yosupo/range-affine-range-sum.3.test.cpp
+  - test/yosupo/range-affine-point-get.1.test.cpp
   - test/yosupo/area-of-union-of-rectangles.2.test.cpp
   - test/yosupo/range-set-range-composite.test.cpp
-  - test/yosupo/range-affine-point-get.test.cpp
   - test/yosupo/area-of-union-of-rectangles.1.test.cpp
   - test/yosupo/range-affine-range-sum.1.test.cpp
   - test/yukicoder/2292.test.cpp
@@ -742,5 +742,5 @@ LazySegTree seg(v, ActedMonoid(
 
 ## 関連
 
-- 区間作用・1点取得だけなら [imos法](imos.hpp)
+- 区間作用・1点取得だけなら [imos法](imos.hpp) (作用素が逆元を持つ場合) か [双対セグメント木](dual-segtree.hpp)
 - 区間 chmin/chmax・区間加算・区間和なら [Segment Tree Beats](segtree-beats.hpp)

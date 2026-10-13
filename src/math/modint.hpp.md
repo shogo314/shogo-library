@@ -44,6 +44,12 @@ data:
     path: test/unittest/combinatorics.test.cpp
     title: test/unittest/combinatorics.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/divisor-transform.test.cpp
+    title: test/unittest/divisor-transform.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/dual-segtree.test.cpp
+    title: test/unittest/dual-segtree.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/fps.test.cpp
     title: test/unittest/fps.test.cpp
   - icon: ':heavy_check_mark:'
@@ -52,6 +58,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/modint.test.cpp
     title: test/unittest/modint.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/sliding-window-aggregation.test.cpp
+    title: test/unittest/sliding-window-aggregation.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
     title: test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
@@ -80,8 +89,14 @@ data:
     path: test/yosupo/exp-of-fps.test.cpp
     title: test/yosupo/exp-of-fps.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/gcd-convolution.test.cpp
+    title: test/yosupo/gcd-convolution.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/inv-of-fps.test.cpp
     title: test/yosupo/inv-of-fps.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/lcm-convolution.test.cpp
+    title: test/yosupo/lcm-convolution.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/log-of-fps.test.cpp
     title: test/yosupo/log-of-fps.test.cpp
@@ -113,8 +128,14 @@ data:
     path: test/yosupo/pow-of-fps.test.cpp
     title: test/yosupo/pow-of-fps.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/range-affine-point-get.test.cpp
-    title: test/yosupo/range-affine-point-get.test.cpp
+    path: test/yosupo/queue-operate-all-composite.test.cpp
+    title: test/yosupo/queue-operate-all-composite.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/range-affine-point-get.1.test.cpp
+    title: test/yosupo/range-affine-point-get.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/range-affine-point-get.2.test.cpp
+    title: test/yosupo/range-affine-point-get.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/range-affine-range-sum.1.test.cpp
     title: test/yosupo/range-affine-range-sum.1.test.cpp
@@ -635,7 +656,10 @@ data:
   verifiedWith:
   - test/unittest/modint.test.cpp
   - test/unittest/combinatorics.test.cpp
+  - test/unittest/dual-segtree.test.cpp
+  - test/unittest/sliding-window-aggregation.test.cpp
   - test/unittest/acted-monoid.test.cpp
+  - test/unittest/divisor-transform.test.cpp
   - test/unittest/matrix.test.cpp
   - test/unittest/fps.test.cpp
   - test/aoj/dpl-5-d.1.test.cpp
@@ -646,11 +670,14 @@ data:
   - test/aoj/dpl-5-e.lucas.test.cpp
   - test/aoj/dpl-5-d.2.test.cpp
   - test/aoj/dpl-5-b.2.test.cpp
+  - test/yosupo/queue-operate-all-composite.test.cpp
+  - test/yosupo/gcd-convolution.test.cpp
   - test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
   - test/yosupo/exp-of-fps.test.cpp
   - test/yosupo/point-set-range-composite.4.test.cpp
   - test/yosupo/range-affine-range-sum.2.test.cpp
   - test/yosupo/range-affine-range-sum.3.test.cpp
+  - test/yosupo/range-affine-point-get.1.test.cpp
   - test/yosupo/partition-function_2.test.cpp
   - test/yosupo/inv-of-fps.test.cpp
   - test/yosupo/division-of-polynomials.test.cpp
@@ -662,13 +689,14 @@ data:
   - test/yosupo/polynomial-taylor-shift.test.cpp
   - test/yosupo/range-set-range-composite.test.cpp
   - test/yosupo/partition-function_1.test.cpp
+  - test/yosupo/range-affine-point-get.2.test.cpp
   - test/yosupo/point-set-range-composite.1.test.cpp
   - test/yosupo/point-set-range-composite.2.test.cpp
   - test/yosupo/convolution-mod-2-64.test.cpp
-  - test/yosupo/range-affine-point-get.test.cpp
   - test/yosupo/convolution-mod-1000000007.test.cpp
   - test/yosupo/log-of-fps.test.cpp
   - test/yosupo/binomial-coefficient-prime-mod.2.test.cpp
+  - test/yosupo/lcm-convolution.test.cpp
   - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
   - test/yosupo/sharp-p-subset-sum.test.cpp
   - test/yosupo/range-affine-range-sum.1.test.cpp

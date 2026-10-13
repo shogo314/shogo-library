@@ -47,6 +47,14 @@ data:
       title: "\u5024\u306E\u500B\u6570\u3092\u6570\u3048\u308B\u591A\u91CD\u96C6\u5408\
         \ (Counter)"
     - icon: ':heavy_check_mark:'
+      path: src/data_structures/dual-segtree.hpp
+      title: "\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u533A\u9593\u4F5C\
+        \u7528\u30011\u70B9\u53D6\u5F97)"
+    - icon: ':heavy_check_mark:'
+      path: src/data_structures/erasable-priority-queue.hpp
+      title: "\u524A\u9664\u53EF\u80FD\u306A\u512A\u5148\u5EA6\u4ED8\u304D\u30AD\u30E5\
+        \u30FC"
+    - icon: ':heavy_check_mark:'
       path: src/data_structures/fenwick-tree.hpp
       title: Fenwick Tree (Binary Indexed Tree)
     - icon: ':heavy_check_mark:'
@@ -83,6 +91,10 @@ data:
       path: src/data_structures/segtree.hpp
       title: "\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
     - icon: ':heavy_check_mark:'
+      path: src/data_structures/sliding-window-aggregation.hpp
+      title: "Sliding Window Aggregation \u3068\u30B9\u30E9\u30A4\u30C9\u6700\u5C0F\
+        \u5024"
+    - icon: ':heavy_check_mark:'
       path: src/data_structures/sparse-table.hpp
       title: Sparse Table
     - icon: ':heavy_check_mark:'
@@ -96,6 +108,10 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/geometry/argcmp.hpp
       title: "\u504F\u89D2\u30BD\u30FC\u30C8\u306E\u6BD4\u8F03\u95A2\u6570"
+    - icon: ':heavy_check_mark:'
+      path: src/geometry/circle.hpp
+      title: "\u5186 (\u4F4D\u7F6E\u95A2\u4FC2\u3001\u4EA4\u70B9\u3001\u63A5\u7DDA\
+        \u3001\u5185\u63A5\u5186\u3001\u5916\u63A5\u5186)"
     - icon: ':heavy_check_mark:'
       path: src/geometry/vector.hpp
       title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"
@@ -142,6 +158,11 @@ data:
       path: src/math/combinatorics.hpp
       title: "\u7D44\u307F\u5408\u308F\u305B"
     - icon: ':heavy_check_mark:'
+      path: src/math/divisor-transform.hpp
+      title: "\u7D04\u6570\u30FB\u500D\u6570\u306E\u30BC\u30FC\u30BF\u5909\u63DB\u3001\
+        \u30E1\u30D3\u30A6\u30B9\u5909\u63DB\u3068 GCD\u30FBLCM \u7573\u307F\u8FBC\
+        \u307F"
+    - icon: ':heavy_check_mark:'
       path: src/math/floor-sum.hpp
       title: "floor sum (\u4E00\u6B21\u95A2\u6570\u306E\u5E8A\u95A2\u6570\u306E\u548C\
         )"
@@ -167,8 +188,14 @@ data:
       title: "\u7D20\u6570 (\u7D20\u6570\u5224\u5B9A\u3001\u7D20\u56E0\u6570\u5206\
         \u89E3\u3001\u7D04\u6570\u5217\u6319\u3001\u7BE9)"
     - icon: ':heavy_check_mark:'
+      path: src/math/rational.hpp
+      title: "\u6709\u7406\u6570"
+    - icon: ':heavy_check_mark:'
       path: src/math/sqrt.hpp
       title: "\u6574\u6570\u306E\u5E73\u65B9\u6839"
+    - icon: ':heavy_check_mark:'
+      path: src/math/xor-basis.hpp
+      title: "XOR \u57FA\u5E95 (F2 \u4E0A\u306E\u7DDA\u5F62\u57FA\u5E95)"
   - name: src/others
     pages:
     - icon: ':heavy_check_mark:'
@@ -192,6 +219,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/string/suffix-array.hpp
       title: "Suffix Array \u3068 LCP \u914D\u5217"
+    - icon: ':heavy_check_mark:'
+      path: src/string/trie.hpp
+      title: Trie
   - name: src/utility
     pages:
     - icon: ':heavy_check_mark:'
@@ -269,17 +299,35 @@ data:
       path: test/aoj/alds1-4-b.test.cpp
       title: test/aoj/alds1-4-b.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/aoj/alds1-4-c.test.cpp
+      title: test/aoj/alds1-4-c.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/aoj/alds1-4-d.test.cpp
       title: test/aoj/alds1-4-d.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/aoj/alds1-5-d.test.cpp
       title: test/aoj/alds1-5-d.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/aoj/cgl-1-a.test.cpp
+      title: test/aoj/cgl-1-a.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/cgl-1-b.test.cpp
+      title: test/aoj/cgl-1-b.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/cgl-1-c.test.cpp
+      title: test/aoj/cgl-1-c.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/cgl-2-a.test.cpp
+      title: test/aoj/cgl-2-a.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/aoj/cgl-2-b.test.cpp
       title: test/aoj/cgl-2-b.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/aoj/cgl-2-c.test.cpp
       title: test/aoj/cgl-2-c.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/cgl-2-d.test.cpp
+      title: test/aoj/cgl-2-d.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/aoj/cgl-3-a.test.cpp
       title: test/aoj/cgl-3-a.test.cpp
@@ -295,6 +343,24 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/aoj/cgl-5-a.test.cpp
       title: test/aoj/cgl-5-a.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/cgl-7-a.test.cpp
+      title: test/aoj/cgl-7-a.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/cgl-7-b.test.cpp
+      title: test/aoj/cgl-7-b.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/cgl-7-c.test.cpp
+      title: test/aoj/cgl-7-c.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/cgl-7-d.test.cpp
+      title: test/aoj/cgl-7-d.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/cgl-7-e.test.cpp
+      title: test/aoj/cgl-7-e.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/cgl-7-f.test.cpp
+      title: test/aoj/cgl-7-f.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/aoj/dpl-1-d.test.cpp
       title: test/aoj/dpl-1-d.test.cpp
@@ -335,6 +401,12 @@ data:
       path: test/aoj/dsl-2-b.2.test.cpp
       title: test/aoj/dsl-2-b.2.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/aoj/dsl-2-d.test.cpp
+      title: test/aoj/dsl-2-d.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/dsl-2-e.test.cpp
+      title: test/aoj/dsl-2-e.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/aoj/dsl-2-f.test.cpp
       title: test/aoj/dsl-2-f.test.cpp
     - icon: ':heavy_check_mark:'
@@ -349,6 +421,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/aoj/dsl-2-i.test.cpp
       title: test/aoj/dsl-2-i.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/dsl-3-d.test.cpp
+      title: test/aoj/dsl-3-d.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/aoj/dsl-4-a.1.test.cpp
       title: test/aoj/dsl-4-a.1.test.cpp
@@ -475,6 +550,9 @@ data:
       path: test/unittest/bit.test.cpp
       title: test/unittest/bit.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/circle.test.cpp
+      title: test/unittest/circle.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/circular-ring.test.cpp
       title: test/unittest/circular-ring.test.cpp
     - icon: ':heavy_check_mark:'
@@ -495,6 +573,15 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/counter.test.cpp
       title: test/unittest/counter.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/divisor-transform.test.cpp
+      title: test/unittest/divisor-transform.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/dual-segtree.test.cpp
+      title: test/unittest/dual-segtree.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/erasable-priority-queue.test.cpp
+      title: test/unittest/erasable-priority-queue.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/fenwick-tree.test.cpp
       title: test/unittest/fenwick-tree.test.cpp
@@ -586,6 +673,9 @@ data:
       path: test/unittest/range.test.cpp
       title: test/unittest/range.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/rational.test.cpp
+      title: test/unittest/rational.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/repr.test.cpp
       title: test/unittest/repr.test.cpp
     - icon: ':heavy_check_mark:'
@@ -597,6 +687,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/segtree-beats.test.cpp
       title: test/unittest/segtree-beats.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/sliding-window-aggregation.test.cpp
+      title: test/unittest/sliding-window-aggregation.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/sparse-table.test.cpp
       title: test/unittest/sparse-table.test.cpp
@@ -613,6 +706,9 @@ data:
       path: test/unittest/tree.test.cpp
       title: test/unittest/tree.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/trie.test.cpp
+      title: test/unittest/trie.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/two-sat.test.cpp
       title: test/unittest/two-sat.test.cpp
     - icon: ':heavy_check_mark:'
@@ -622,8 +718,14 @@ data:
       path: test/unittest/vector-func.test.cpp
       title: test/unittest/vector-func.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/vector-line.test.cpp
+      title: test/unittest/vector-line.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/vector.test.cpp
       title: test/unittest/vector.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/xor-basis.test.cpp
+      title: test/unittest/xor-basis.test.cpp
   - name: test/yosupo
     pages:
     - icon: ':heavy_check_mark:'
@@ -663,6 +765,9 @@ data:
       path: test/yosupo/division-of-polynomials.test.cpp
       title: test/yosupo/division-of-polynomials.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/double-ended-priority-queue.test.cpp
+      title: test/yosupo/double-ended-priority-queue.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/enumerate-palindromes.1.test.cpp
       title: test/yosupo/enumerate-palindromes.1.test.cpp
     - icon: ':heavy_check_mark:'
@@ -680,6 +785,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/factorize.test.cpp
       title: test/yosupo/factorize.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/gcd-convolution.test.cpp
+      title: test/yosupo/gcd-convolution.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/inv-of-fps.test.cpp
       title: test/yosupo/inv-of-fps.test.cpp
@@ -704,6 +812,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/lca.5.test.cpp
       title: test/yosupo/lca.5.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/lcm-convolution.test.cpp
+      title: test/yosupo/lcm-convolution.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/line-add-get-min.test.cpp
       title: test/yosupo/line-add-get-min.test.cpp
@@ -768,8 +879,14 @@ data:
       path: test/yosupo/primality-test.test.cpp
       title: test/yosupo/primality-test.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/yosupo/range-affine-point-get.test.cpp
-      title: test/yosupo/range-affine-point-get.test.cpp
+      path: test/yosupo/queue-operate-all-composite.test.cpp
+      title: test/yosupo/queue-operate-all-composite.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/range-affine-point-get.1.test.cpp
+      title: test/yosupo/range-affine-point-get.1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/range-affine-point-get.2.test.cpp
+      title: test/yosupo/range-affine-point-get.2.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/range-affine-range-sum.1.test.cpp
       title: test/yosupo/range-affine-range-sum.1.test.cpp

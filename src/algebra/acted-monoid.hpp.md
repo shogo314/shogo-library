@@ -6,6 +6,10 @@ data:
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
+    path: src/data_structures/dual-segtree.hpp
+    title: "\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u533A\u9593\u4F5C\u7528\
+      \u30011\u70B9\u53D6\u5F97)"
+  - icon: ':heavy_check_mark:'
     path: src/data_structures/imos.hpp
     title: "imos\u6CD5\u3067\u533A\u9593\u4F5C\u7528\u30011\u70B9\u53D6\u5F97"
   - icon: ':heavy_check_mark:'
@@ -15,6 +19,12 @@ data:
     path: src/data_structures/segtree-beats.hpp
     title: Segment Tree Beats
   _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl-2-d.test.cpp
+    title: test/aoj/dsl-2-d.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl-2-e.test.cpp
+    title: test/aoj/dsl-2-e.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/dsl-2-f.test.cpp
     title: test/aoj/dsl-2-f.test.cpp
@@ -37,6 +47,9 @@ data:
     path: test/unittest/acted-monoid.test.cpp
     title: test/unittest/acted-monoid.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/dual-segtree.test.cpp
+    title: test/unittest/dual-segtree.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/imos.test.cpp
     title: test/unittest/imos.test.cpp
   - icon: ':heavy_check_mark:'
@@ -55,8 +68,11 @@ data:
     path: test/yosupo/point-set-range-composite.4.test.cpp
     title: test/yosupo/point-set-range-composite.4.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/range-affine-point-get.test.cpp
-    title: test/yosupo/range-affine-point-get.test.cpp
+    path: test/yosupo/range-affine-point-get.1.test.cpp
+    title: test/yosupo/range-affine-point-get.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/range-affine-point-get.2.test.cpp
+    title: test/yosupo/range-affine-point-get.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/range-affine-range-sum.1.test.cpp
     title: test/yosupo/range-affine-range-sum.1.test.cpp
@@ -554,16 +570,20 @@ data:
   requiredBy:
   - src/data_structures/lazy-segtree.hpp
   - src/data_structures/segtree-beats.hpp
+  - src/data_structures/dual-segtree.hpp
   - src/data_structures/imos.hpp
   timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/imos.test.cpp
   - test/unittest/segtree-beats.test.cpp
+  - test/unittest/dual-segtree.test.cpp
   - test/unittest/acted-monoid.test.cpp
   - test/aoj/dsl-2-h.1.test.cpp
+  - test/aoj/dsl-2-d.test.cpp
   - test/aoj/dsl-2-i.test.cpp
   - test/aoj/dsl-2-g.test.cpp
+  - test/aoj/dsl-2-e.test.cpp
   - test/aoj/dsl-5-a.test.cpp
   - test/aoj/dsl-2-f.test.cpp
   - test/aoj/dsl-2-h.2.test.cpp
@@ -572,10 +592,11 @@ data:
   - test/yosupo/point-set-range-composite.4.test.cpp
   - test/yosupo/range-affine-range-sum.2.test.cpp
   - test/yosupo/range-affine-range-sum.3.test.cpp
+  - test/yosupo/range-affine-point-get.1.test.cpp
   - test/yosupo/area-of-union-of-rectangles.2.test.cpp
   - test/yosupo/range-set-range-composite.test.cpp
+  - test/yosupo/range-affine-point-get.2.test.cpp
   - test/yosupo/range-chmin-chmax-add-range-sum.1.test.cpp
-  - test/yosupo/range-affine-point-get.test.cpp
   - test/yosupo/area-of-union-of-rectangles.1.test.cpp
   - test/yosupo/range-affine-range-sum.1.test.cpp
   - test/yukicoder/2292.test.cpp

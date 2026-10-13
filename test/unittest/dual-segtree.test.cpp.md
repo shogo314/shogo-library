@@ -8,8 +8,9 @@ data:
     path: src/algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   - icon: ':heavy_check_mark:'
-    path: src/data_structures/lazy-segtree.hpp
-    title: "\u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
+    path: src/data_structures/dual-segtree.hpp
+    title: "\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u533A\u9593\u4F5C\u7528\
+      \u30011\u70B9\u53D6\u5F97)"
   - icon: ':heavy_check_mark:'
     path: src/math/modint.hpp
     title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
@@ -21,75 +22,82 @@ data:
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/range_affine_point_get
+    PROBLEM: https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
     links:
-    - https://judge.yosupo.jp/problem/range_affine_point_get
-  bundledCode: "#line 1 \"test/yosupo/range-affine-point-get.test.cpp\"\n#define PROBLEM\
-    \ \"https://judge.yosupo.jp/problem/range_affine_point_get\"\n\n#include <iostream>\n\
-    #include <vector>\n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n\
-    \ * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067\
-    \ mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\
-    \n#include <utility>\n#include <limits>\n#include <type_traits>\n#include <cstdint>\n\
-    #include <cassert>\n\nnamespace detail {\n    static constexpr std::uint16_t prime32_bases[]\
-    \ {\n        15591,  2018,  166, 7429,  8064, 16045, 10503,  4399,  1949,  1295,\
-    \ 2776,  3620,   560,  3128,  5212,  2657,\n         2300,  2021, 4652, 1471,\
-    \  9336,  4018,  2398, 20462, 10277,  8028, 2213,  6219,   620,  3763,  4852,\
-    \  5012,\n         3185,  1333, 6227, 5298,  1074,  2391,  5113,  7061,   803,\
-    \  1269, 3875,   422,   751,   580,  4729, 10239,\n          746,  2951,  556,\
-    \ 2206,  3778,   481,  1522,  3476,   481,  2487, 3266,  5633,   488,  3373, \
-    \ 6441,  3344,\n           17, 15105, 1490, 4154,  2036,  1882,  1813,   467,\
-    \  3307, 14042, 6371,   658,  1005,   903,   737,  1887,\n         7447,  1888,\
-    \ 2848, 1784,  7559,  3400,   951, 13969,  4304,   177,   41, 19875,  3110, 13221,\
-    \  8726,   571,\n         7043,  6943, 1199,  352,  6435,   165,  1169,  3315,\
-    \   978,   233, 3003,  2562,  2994, 10587, 10030,  2377,\n         1902,  5354,\
-    \ 4447, 1555,   263, 27027,  2283,   305,   669,  1912,  601,  6186,   429,  1930,\
-    \ 14873,  1784,\n         1661,   524, 3577,  236,  2360,  6146,  2850, 55637,\
-    \  1753,  4178, 8466,   222,  2579,  2743,  2031,  2226,\n         2276,   374,\
-    \ 2132,  813, 23788,  1610,  4422,  5159,  1725,  3597, 3366, 14336,   579,  \
-    \ 165,  1375, 10018,\n        12616,  9816, 1371,  536,  1867, 10864,   857, \
-    \ 2206,  5788,   434, 8085, 17618,   727,  3639,  1595,  4944,\n         2129,\
-    \  2029, 8195, 8344,  6232,  9183,  8126,  1870,  3296,  7455, 8947, 25017,  \
-    \ 541, 19115,   368,   566,\n         5674,   411,  522, 1027,  8215,  2050, \
-    \ 6544, 10049,   614,   774, 2333,  3007, 35201,  4706,  1152,  1785,\n      \
-    \   1028,  1540, 3743,  493,  4474,  2521, 26845,  8354,   864, 18915, 5465, \
-    \ 2447,    42,  4511,  1660,   166,\n         1249,  6259, 2553,  304,   272,\
-    \  7286,    73,  6554,   899,  2816, 5197, 13330,  7054,  2818,  3199,   811,\n\
-    \          922,   350, 7514, 4452,  3449,  2663,  4708,   418,  1621,  1171, 3471,\
-    \    88, 11345,   412,  1559,   194,\n    };\n\n    static constexpr bool is_SPRP(std::uint32_t\
-    \ n, std::uint32_t a) noexcept {\n        std::uint32_t d = n - 1;\n        std::uint32_t\
-    \ s = 0;\n        while ((d & 1) == 0) {\n            ++s;\n            d >>=\
-    \ 1;\n        }\n        std::uint64_t cur = 1;\n        std::uint64_t pw = d;\n\
-    \        while (pw) {\n            if (pw & 1) cur = (cur * a) % n;\n        \
-    \    a = (static_cast<std::uint64_t>(a) * a) % n;\n            pw >>= 1;\n   \
-    \     }\n        if (cur == 1) return true;\n        for (std::uint32_t r = 0;\
-    \ r < s; ++r) {\n            if (cur == n - 1) return true;\n            cur =\
-    \ (cur * cur) % n;\n        }\n        return false;\n    }\n\n    // 32\u30D3\
-    \u30C3\u30C8\u7B26\u53F7\u306A\u3057\u6574\u6570\u306E\u7D20\u6570\u5224\u5B9A\
-    \n    // \u53C2\u8003: M. Forisek and J. Jancina, \u201CFast Primality Testing\
-    \ for Integers That Fit into a Machine Word,\u201D presented at the Conference\
-    \ on Current Trends in Theory and Practice of Informatics, 2015.\n    [[nodiscard]]\n\
-    \    static constexpr bool is_prime32(std::uint32_t x) noexcept {\n        if\
-    \ (x == 2 || x == 3 || x == 5 || x == 7) return true;\n        if (x % 2 == 0\
-    \ || x % 3 == 0 || x % 5 == 0 || x % 7 == 0) return false;\n        if (x < 121)\
-    \ return (x > 1);\n        std::uint64_t h = x;\n        h = ((h >> 16) ^ h) *\
-    \ 0x45d9f3b;\n        h = ((h >> 16) ^ h) * 0x45d9f3b;\n        h = ((h >> 16)\
-    \ ^ h) & 0xff;\n        return is_SPRP(x, prime32_bases[h]);\n    }\n}\n\n///\
-    \ @brief static_modint \u3068 dynamic_modint \u306E\u5B9F\u88C5\u3092 CRTP \u306B\
-    \u3088\u3063\u3066\u884C\u3046\u305F\u3081\u306E\u30AF\u30E9\u30B9\u30C6\u30F3\
-    \u30D7\u30EC\u30FC\u30C8\n/// @tparam Modint \u3053\u306E\u30AF\u30E9\u30B9\u30C6\
-    \u30F3\u30D7\u30EC\u30FC\u30C8\u3092\u7D99\u627F\u3059\u308B\u30AF\u30E9\u30B9\
-    \ntemplate <class Modint>\nclass modint_base {\npublic:\n    /// @brief \u4FDD\
-    \u6301\u3059\u308B\u5024\u306E\u578B\n    using value_type = std::uint32_t;\n\n\
-    \    /// @brief 0 \u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    constexpr\
-    \ modint_base() noexcept\n        : m_value{ 0 } {}\n\n    /// @brief @c value\
-    \ \u306E\u5270\u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    ///\
-    \ @param value \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\n    template <class\
-    \ SignedIntegral, std::enable_if_t<std::is_integral_v<SignedIntegral> && std::is_signed_v<SignedIntegral>>*\
-    \ = nullptr>\n    constexpr modint_base(SignedIntegral value) noexcept\n     \
-    \   : m_value{ static_cast<value_type>((static_cast<long long>(value) % Modint::mod()\
-    \ + Modint::mod()) % Modint::mod()) } {}\n\n    /// @brief @c value \u306E\u5270\
-    \u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    /// @param value \u521D\
-    \u671F\u5316\u306B\u4F7F\u3046\u5024\n    template <class UnsignedIntegral, std::enable_if_t<std::is_integral_v<UnsignedIntegral>\
+    - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
+  bundledCode: "#line 1 \"test/unittest/dual-segtree.test.cpp\"\n#define PROBLEM \"\
+    https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\n\n// DualSegTree\
+    \ \u3092\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\
+    \u8F03\u3059\u308B\n// \u53EF\u63DB\u3067\u306A\u3044\u4F5C\u7528 (\u30A2\u30D5\
+    \u30A3\u30F3\u5909\u63DB) \u3068\u3001\u533A\u9593\u306E\u9577\u3055\u3092\u4F7F\
+    \u3046\u4F5C\u7528 (\u533A\u9593\u52A0\u7B97\u30FB\u533A\u9593\u548C) \u3067\u78BA\
+    \u304B\u3081\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\
+    \u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\
+    \u3059\u308B\n\n#include <iostream>\n#include <random>\n#include <vector>\n\n\
+    #line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\
+    \u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\
+    \u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\n#include <utility>\n#include\
+    \ <limits>\n#include <type_traits>\n#include <cstdint>\n#include <cassert>\n\n\
+    namespace detail {\n    static constexpr std::uint16_t prime32_bases[] {\n   \
+    \     15591,  2018,  166, 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,\
+    \  3620,   560,  3128,  5212,  2657,\n         2300,  2021, 4652, 1471,  9336,\
+    \  4018,  2398, 20462, 10277,  8028, 2213,  6219,   620,  3763,  4852,  5012,\n\
+    \         3185,  1333, 6227, 5298,  1074,  2391,  5113,  7061,   803,  1269, 3875,\
+    \   422,   751,   580,  4729, 10239,\n          746,  2951,  556, 2206,  3778,\
+    \   481,  1522,  3476,   481,  2487, 3266,  5633,   488,  3373,  6441,  3344,\n\
+    \           17, 15105, 1490, 4154,  2036,  1882,  1813,   467,  3307, 14042, 6371,\
+    \   658,  1005,   903,   737,  1887,\n         7447,  1888, 2848, 1784,  7559,\
+    \  3400,   951, 13969,  4304,   177,   41, 19875,  3110, 13221,  8726,   571,\n\
+    \         7043,  6943, 1199,  352,  6435,   165,  1169,  3315,   978,   233, 3003,\
+    \  2562,  2994, 10587, 10030,  2377,\n         1902,  5354, 4447, 1555,   263,\
+    \ 27027,  2283,   305,   669,  1912,  601,  6186,   429,  1930, 14873,  1784,\n\
+    \         1661,   524, 3577,  236,  2360,  6146,  2850, 55637,  1753,  4178, 8466,\
+    \   222,  2579,  2743,  2031,  2226,\n         2276,   374, 2132,  813, 23788,\
+    \  1610,  4422,  5159,  1725,  3597, 3366, 14336,   579,   165,  1375, 10018,\n\
+    \        12616,  9816, 1371,  536,  1867, 10864,   857,  2206,  5788,   434, 8085,\
+    \ 17618,   727,  3639,  1595,  4944,\n         2129,  2029, 8195, 8344,  6232,\
+    \  9183,  8126,  1870,  3296,  7455, 8947, 25017,   541, 19115,   368,   566,\n\
+    \         5674,   411,  522, 1027,  8215,  2050,  6544, 10049,   614,   774, 2333,\
+    \  3007, 35201,  4706,  1152,  1785,\n         1028,  1540, 3743,  493,  4474,\
+    \  2521, 26845,  8354,   864, 18915, 5465,  2447,    42,  4511,  1660,   166,\n\
+    \         1249,  6259, 2553,  304,   272,  7286,    73,  6554,   899,  2816, 5197,\
+    \ 13330,  7054,  2818,  3199,   811,\n          922,   350, 7514, 4452,  3449,\
+    \  2663,  4708,   418,  1621,  1171, 3471,    88, 11345,   412,  1559,   194,\n\
+    \    };\n\n    static constexpr bool is_SPRP(std::uint32_t n, std::uint32_t a)\
+    \ noexcept {\n        std::uint32_t d = n - 1;\n        std::uint32_t s = 0;\n\
+    \        while ((d & 1) == 0) {\n            ++s;\n            d >>= 1;\n    \
+    \    }\n        std::uint64_t cur = 1;\n        std::uint64_t pw = d;\n      \
+    \  while (pw) {\n            if (pw & 1) cur = (cur * a) % n;\n            a =\
+    \ (static_cast<std::uint64_t>(a) * a) % n;\n            pw >>= 1;\n        }\n\
+    \        if (cur == 1) return true;\n        for (std::uint32_t r = 0; r < s;\
+    \ ++r) {\n            if (cur == n - 1) return true;\n            cur = (cur *\
+    \ cur) % n;\n        }\n        return false;\n    }\n\n    // 32\u30D3\u30C3\u30C8\
+    \u7B26\u53F7\u306A\u3057\u6574\u6570\u306E\u7D20\u6570\u5224\u5B9A\n    // \u53C2\
+    \u8003: M. Forisek and J. Jancina, \u201CFast Primality Testing for Integers That\
+    \ Fit into a Machine Word,\u201D presented at the Conference on Current Trends\
+    \ in Theory and Practice of Informatics, 2015.\n    [[nodiscard]]\n    static\
+    \ constexpr bool is_prime32(std::uint32_t x) noexcept {\n        if (x == 2 ||\
+    \ x == 3 || x == 5 || x == 7) return true;\n        if (x % 2 == 0 || x % 3 ==\
+    \ 0 || x % 5 == 0 || x % 7 == 0) return false;\n        if (x < 121) return (x\
+    \ > 1);\n        std::uint64_t h = x;\n        h = ((h >> 16) ^ h) * 0x45d9f3b;\n\
+    \        h = ((h >> 16) ^ h) * 0x45d9f3b;\n        h = ((h >> 16) ^ h) & 0xff;\n\
+    \        return is_SPRP(x, prime32_bases[h]);\n    }\n}\n\n/// @brief static_modint\
+    \ \u3068 dynamic_modint \u306E\u5B9F\u88C5\u3092 CRTP \u306B\u3088\u3063\u3066\
+    \u884C\u3046\u305F\u3081\u306E\u30AF\u30E9\u30B9\u30C6\u30F3\u30D7\u30EC\u30FC\
+    \u30C8\n/// @tparam Modint \u3053\u306E\u30AF\u30E9\u30B9\u30C6\u30F3\u30D7\u30EC\
+    \u30FC\u30C8\u3092\u7D99\u627F\u3059\u308B\u30AF\u30E9\u30B9\ntemplate <class\
+    \ Modint>\nclass modint_base {\npublic:\n    /// @brief \u4FDD\u6301\u3059\u308B\
+    \u5024\u306E\u578B\n    using value_type = std::uint32_t;\n\n    /// @brief 0\
+    \ \u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    constexpr modint_base()\
+    \ noexcept\n        : m_value{ 0 } {}\n\n    /// @brief @c value \u306E\u5270\u4F59\
+    \u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    /// @param value \u521D\u671F\
+    \u5316\u306B\u4F7F\u3046\u5024\n    template <class SignedIntegral, std::enable_if_t<std::is_integral_v<SignedIntegral>\
+    \ && std::is_signed_v<SignedIntegral>>* = nullptr>\n    constexpr modint_base(SignedIntegral\
+    \ value) noexcept\n        : m_value{ static_cast<value_type>((static_cast<long\
+    \ long>(value) % Modint::mod() + Modint::mod()) % Modint::mod()) } {}\n\n    ///\
+    \ @brief @c value \u306E\u5270\u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\
+    \u3002\n    /// @param value \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\n    template\
+    \ <class UnsignedIntegral, std::enable_if_t<std::is_integral_v<UnsignedIntegral>\
     \ && std::is_unsigned_v<UnsignedIntegral>>* = nullptr>\n    constexpr modint_base(UnsignedIntegral\
     \ value) noexcept\n        : m_value{ static_cast<value_type>(value % Modint::mod())\
     \ } {}\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092\u53D6\
@@ -260,34 +268,33 @@ data:
     \      : base_type{value} {}\n\nprivate:\n    inline static value_type modulus\
     \ = 998244353;\n};\n\nusing modint998244353 = static_modint<998244353>;\nusing\
     \ modint1000000007 = static_modint<1000000007>;\nusing modint = dynamic_modint<-1>;\n\
-    #line 2 \"src/data_structures/lazy-segtree.hpp\"\n\n/**\n * @file lazy-segtree.hpp\n\
-    \ * @brief \u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n */\n\
-    \n#include <algorithm>\n#line 10 \"src/data_structures/lazy-segtree.hpp\"\n#include\
-    \ <ostream>\n#line 2 \"src/algebra/acted-monoid.hpp\"\n\n/**\n * @file acted-monoid.hpp\n\
-    \ * @brief \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
-    \n *\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306F\u30E2\u30CE\
-    \u30A4\u30C9 (algebra/monoid.hpp) \u306E\u30E1\u30F3\u30D0\u306B\u52A0\u3048\u3066\
-    \u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\
-    \u3059\n * - using F: \u4F5C\u7528\u7D20\u306E\u578B\n * - S mapping(const F&\
-    \ f, const S& x): \u4F5C\u7528\u7D20\u306E\u9069\u7528 f(x)\n *   \u533A\u9593\
-    \u306E\u60C5\u5831\u304C\u5FC5\u8981\u306A\u5834\u5408\u306F mapping(f, x, sz)\
-    \ (sz \u306F\u533A\u9593\u306E\u9577\u3055) \u3084 mapping(f, x, l, r) (\u533A\
-    \u9593 [l, r)) \u3067\u3082\u3088\u3044\n * - F composition(const F& f, const\
-    \ F& g): \u4F5C\u7528\u7D20\u306E\u5408\u6210 f\u2218g (g\u3092\u9069\u7528\u3057\
-    \u305F\u5F8C\u306Bf\u3092\u9069\u7528\u3059\u308B)\n * - F id(): \u6052\u7B49\u5199\
-    \u50CF\n * \u4F5C\u7528\u7D20\u304C\u7FA4\u3092\u306A\u3059\u5834\u5408 (imos.hpp\
-    \ \u3067\u4F7F\u3046) \u306F\n * - F inv(const F& f): \u9006\u4F5C\u7528\u7D20\
-    \n */\n\n#line 18 \"src/algebra/acted-monoid.hpp\"\n#include <array>\n#include\
-    \ <cstddef>\n#line 21 \"src/algebra/acted-monoid.hpp\"\n#include <optional>\n\
-    #line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n * @brief \u30E2\
-    \u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\
-    \u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\
-    \n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S& a, const S& b): \u7A4D\
-    \ (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n * op, e \u306F static\
-    \ \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\
-    \u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\
-    \u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\n#line 17 \"src/algebra/monoid.hpp\"\
-    \n#include <istream>\n#line 19 \"src/algebra/monoid.hpp\"\n#include <numeric>\n\
+    #line 2 \"src/data_structures/dual-segtree.hpp\"\n\n/**\n * @file dual-segtree.hpp\n\
+    \ * @brief \u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u533A\u9593\u4F5C\
+    \u7528\u30011\u70B9\u53D6\u5F97)\n */\n\n#line 2 \"src/algebra/acted-monoid.hpp\"\
+    \n\n/**\n * @file acted-monoid.hpp\n * @brief \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
+    \u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
+    \u30CE\u30A4\u30C9\u306F\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp) \u306E\u30E1\
+    \u30F3\u30D0\u306B\u52A0\u3048\u3066\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
+    \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using F: \u4F5C\u7528\u7D20\u306E\
+    \u578B\n * - S mapping(const F& f, const S& x): \u4F5C\u7528\u7D20\u306E\u9069\
+    \u7528 f(x)\n *   \u533A\u9593\u306E\u60C5\u5831\u304C\u5FC5\u8981\u306A\u5834\
+    \u5408\u306F mapping(f, x, sz) (sz \u306F\u533A\u9593\u306E\u9577\u3055) \u3084\
+    \ mapping(f, x, l, r) (\u533A\u9593 [l, r)) \u3067\u3082\u3088\u3044\n * - F composition(const\
+    \ F& f, const F& g): \u4F5C\u7528\u7D20\u306E\u5408\u6210 f\u2218g (g\u3092\u9069\
+    \u7528\u3057\u305F\u5F8C\u306Bf\u3092\u9069\u7528\u3059\u308B)\n * - F id(): \u6052\
+    \u7B49\u5199\u50CF\n * \u4F5C\u7528\u7D20\u304C\u7FA4\u3092\u306A\u3059\u5834\u5408\
+    \ (imos.hpp \u3067\u4F7F\u3046) \u306F\n * - F inv(const F& f): \u9006\u4F5C\u7528\
+    \u7D20\n */\n\n#include <algorithm>\n#include <array>\n#include <cstddef>\n#line\
+    \ 21 \"src/algebra/acted-monoid.hpp\"\n#include <optional>\n#line 2 \"src/algebra/monoid.hpp\"\
+    \n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
+    \n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
+    \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\
+    \n * - S op(const S& a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e():\
+    \ \u5358\u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\
+    \u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\
+    \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\
+    \u51FA\u3059)\n */\n\n#line 17 \"src/algebra/monoid.hpp\"\n#include <istream>\n\
+    #line 19 \"src/algebra/monoid.hpp\"\n#include <numeric>\n#include <ostream>\n\
     #line 23 \"src/algebra/monoid.hpp\"\n\n/**\n * @brief 1\u6B21\u95A2\u6570 f(x)\
     \ = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum\
     \ \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3};\
@@ -559,187 +566,166 @@ data:
     \ g); }\n    constexpr F id() const { return lazy_identity; }\n};\ntemplate <typename\
     \ Op, typename T, typename Mapping, typename Composition, typename U>\nActedMonoid(Op,\
     \ T, Mapping, Composition, U) -> ActedMonoid<T, Op, U, Mapping, Composition>;\n\
-    #line 14 \"src/data_structures/lazy-segtree.hpp\"\n\n/**\n * @brief \u9045\u5EF6\
-    \u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n *\n * \u4F8B:\n * LazySegTree<acted_monoid::AffineSum<mint>>\
-    \ seg(v);\n *\n * @tparam A \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\
-    \ (algebra/acted-monoid.hpp)\n */\ntemplate <typename A>\nclass LazySegTree {\n\
-    public:\n    using S = typename A::S;\n    using F = typename A::F;\n\nprivate:\n\
-    \    A a;\n    S op(const S& x, const S& y) const { return a.op(x, y); }\n   \
-    \ S e() const { return a.e(); }\n    S mapping(const F& f, const S& x, int l,\
-    \ int r) const { return acted_monoid::apply_mapping(a, f, x, l, r); }\n    F composition(const\
-    \ F& f, const F& g) const { return a.composition(f, g); }\n    F id() const {\
-    \ return a.id(); }\n\n    int n, sz, height;\n    std::vector<S> data;\n    std::vector<F>\
-    \ lazy;\n\n    void update(int k) { data[k] = op(data[2 * k], data[2 * k + 1]);\
-    \ }\n    void apply_node(int k, int h, const F& f) {\n        // \u672B\u5C3E\u306E\
-    \u8981\u7D20\u6570\u3092 2 \u3079\u304D\u306B\u305D\u308D\u3048\u308B\u305F\u3081\
-    \u306E\u4F59\u308A\u306E\u90E8\u5206\u306F\u533A\u9593\u306B\u542B\u3081\u306A\
-    \u3044\n        int l = std::min((k << h) & (sz - 1), n);\n        int r = std::min(((k\
-    \ << h) & (sz - 1)) + (1 << h), n);\n        data[k] = mapping(f, data[k], l,\
-    \ r);\n        if(k < sz) lazy[k] = composition(f, lazy[k]);\n    }\n    void\
-    \ push(int k, int h) {\n        apply_node(2 * k, h-1, lazy[k]);\n        apply_node(2\
-    \ * k + 1, h-1, lazy[k]);\n        lazy[k] = id();\n    }\n\n    class LazySegTreeReference\
-    \ {\n        LazySegTree& segtree;\n        int k;\n    public:\n        LazySegTreeReference(LazySegTree&\
-    \ segtree, int k) : segtree(segtree), k(k) {}\n        LazySegTreeReference& operator=(const\
-    \ S& x) {\n            segtree.set(k, x);\n            return *this;\n       \
-    \ }\n        operator S() { return segtree.get(k); }\n    };\n\n    void construct_data()\
-    \ {\n        sz = 1;\n        height = 0;\n        while (sz < n) {\n        \
-    \    sz <<= 1;\n            height++;\n        }\n        data.assign(sz * 2,\
-    \ e());\n        lazy.assign(sz * 2, id());\n    }\n\npublic:\n    /**\n     *\
-    \ @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @param n \u8981\
-    \u7D20\u6570\n     * @param a \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\
-    \u30C9\n     */\n    explicit LazySegTree(int n = 0, A a = A()) : a(std::move(a)),\
-    \ n(n) {\n        construct_data();\n    }\n    /**\n     * @brief \u30B3\u30F3\
-    \u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @param v \u521D\u671F\u306E\u8981\
-    \u7D20\n     * @param a \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\
-    \n     */\n    explicit LazySegTree(const std::vector<S>& v, A a = A()) : LazySegTree(v.size(),\
-    \ std::move(a)) {\n        for (int i = 0; i < n; i++) data[sz + i] = v[i];\n\
-    \        for (int i = sz - 1; i > 0; i--) update(i);\n    }\n\n    /**\n     *\
-    \ @brief \u8981\u7D20\u6570\u3092\u8FD4\u3059\n     */\n    int size() const {\
-    \ return n; }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\
-    \u306E\u5024\u3092\u8FD4\u3059\n     * \n     * @param k \u30A4\u30F3\u30C7\u30C3\
-    \u30AF\u30B9\n     * @return S \u5024\n     */\n    S get(int k) {\n        assert(0\
-    \ <= k && k < n);\n        k += sz;\n        for(int h = height; h > 0; h--) {\n\
-    \            push(k >> h, h);\n        }\n        return data[k];\n    }\n   \
-    \ /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u3078\u306E\u53C2\
-    \u7167\u3092\u8FD4\u3059\n     * \n     * @param k \n     * @return SegTreeReference\
-    \ \u8981\u7D20\u3078\u306E\u53C2\u7167 \u4EE3\u5165\u3055\u308C\u308B\u3068set()\u304C\
-    \u547C\u3070\u308C\u308B\n     */\n    LazySegTreeReference operator[] (int k)\
-    \ { return LazySegTreeReference(*this, k); }\n\n    /**\n     * @brief \u5185\u5BB9\
-    \u3092\u51FA\u529B\u3059\u308B\n     * \n     * @tparam CharT \u51FA\u529B\u30B9\
-    \u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n     * @tparam Traits \u51FA\
-    \u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\u6027\n   \
-    \  * @param os \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\n     * @param rhs \u30BB\
-    \u30B0\u30E1\u30F3\u30C8\u6728\n     * @return std::basic_ostream<CharT, Traits>&\
-    \ \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0 \n     */\n    template <class CharT,\
-    \ class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
-    \ Traits>& os, LazySegTree& rhs) {\n        for(int i = 0; i < rhs.n; i++) {\n\
-    \            if(i != 0) os << CharT(' ');\n            os << rhs[i];\n       \
-    \ }\n        return os;\n    }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\
-    \u305F\u8981\u7D20\u306E\u5024\u3092x\u306B\u66F4\u65B0\u3059\u308B\n     * \n\
-    \     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * @param x \u65B0\u3057\
-    \u3044\u5024\n     */\n    void set(int k, const S& x) {\n        assert(0 <=\
-    \ k && k < n);\n        k += sz;\n        for(int h = height; h > 0; h--) {\n\
-    \            push(k >> h, h);\n        }\n        data[k] = x;\n        while(k\
-    \ >>= 1) update(k);\n    }\n\n    /**\n     * @brief [l, r)\u306E\u533A\u9593\u306E\
-    \u7DCF\u7A4D\u3092\u8FD4\u3059\n     * \n     * @param l \u534A\u958B\u533A\u9593\
-    \u306E\u958B\u59CB\n     * @param r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF\
-    \ 0<=l<=r<=n\n     * @return S \u7DCF\u7A4D\n     */\n    S prod(int l, int r)\
-    \ {\n        assert(0 <= l && l <= r && r <= n);\n        l += sz; r += sz;\n\
-    \        for(int h = height; h > 0; h--) {\n            if(((l >> h) << h) !=\
-    \ l) push(l >> h, h);\n            if(((r >> h) << h) != r) push(r >> h, h);\n\
-    \        }\n        S left_prod = e(), right_prod = e();\n        while(l < r)\
-    \ {\n            if(l & 1) left_prod = op(left_prod, data[l++]);\n           \
-    \ if(r & 1) right_prod = op(data[--r], right_prod);\n            l >>= 1; r >>=\
-    \ 1;\n        }\n        return op(left_prod, right_prod);\n    }\n    /**\n \
-    \    * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\u306E\u7DCF\u7A4D\u3092\u8FD4\
-    \u3059\n     * \n     * @return S \u7DCF\u7A4D\n     */\n    S all_prod() const\
-    \ { return data[1]; }\n    \n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\
-    \u8981\u7D20\u306E\u5024\u306Bf\u3092\u4F5C\u7528\u3055\u305B\u308B\n     * \n\
-    \     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * @param f \u4F5C\u7528\
-    \u7D20\n     */\n    void apply(int k, const F& f) {\n        assert(0 <= k &&\
-    \ k < n);\n        k += sz;\n        for(int h = height; h > 0; h--) {\n     \
-    \       push(k >> h, h);\n        }\n        data[k] = mapping(f, data[k], k -\
-    \ sz, k - sz + 1);\n        while(k >>= 1) update(k);\n    }\n    /**\n     *\
-    \ @brief [l, r)\u306E\u533A\u9593\u306E\u5024\u306Bx\u3092\u4F5C\u7528\u3055\u305B\
-    \u308B\n     * \n     * @param l \u534A\u958B\u533A\u9593\u306E\u958B\u59CB\n\
-    \     * @param r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF 0<=l<=r<=n\n     *\
-    \ @param f \u4F5C\u7528\u7D20\n     */\n    void apply(int l, int r, const F&\
-    \ f) {\n        assert(0 <= l && l <= r && r <= n);\n        if(l == r) return;\n\
-    \        l += sz; r += sz;\n        for(int h = height; h > 0; h--) {\n      \
-    \      if(((l >> h) << h) != l) push(l >> h, h);\n            if(((r >> h) <<\
-    \ h) != r) push(r >> h, h);\n        }\n        {\n            int l2 = l, r2\
-    \ = r;\n            int h = 0;\n            while(l < r) {\n                if(l\
-    \ & 1) apply_node(l++, h, f);\n                if(r & 1) apply_node(--r, h, f);\n\
-    \                l >>= 1; r >>= 1;\n                h++;\n            }\n    \
-    \        l = l2; r = r2;\n        }\n        for(int h = 1; h <= height; h++)\
-    \ {\n            if(((l >> h) << h) != l) update(l >> h);\n            if(((r\
-    \ >> h) << h) != r) update((r - 1) >> h);\n        }\n    }\n\n    /**\n     *\
-    \ @brief (r = l or g(prod([l, r))) = true) and (r = n or g(prod([l, r+1))) = false)\u3068\
-    \u306A\u308Br\u3092\u8FD4\u3059\n     * g\u304C\u5358\u8ABF\u306A\u3089\u3001\
-    g(prod([l, r))) = true\u3068\u306A\u308B\u6700\u5927\u306Er\n     * \n     * @tparam\
-    \ G\n     * @param l \u534A\u958B\u533A\u9593\u306E\u958B\u59CB 0<=l<=n\n    \
-    \ * @param g \u5224\u5B9A\u95A2\u6570 g(e) = true\n     * @return int\n     */\n\
-    \    template <typename G>\n    int max_right(int l, G g) {\n        assert(g(e()));\n\
-    \        assert(0 <= l && l <= n);\n        if(l == n) return n;\n        l +=\
-    \ sz;\n        for(int h = height; h > 0; h--) {\n            push(l >> h, h);\n\
-    \        }\n        int h = 0;\n        while(l % 2 == 0) {\n            l >>=\
-    \ 1;\n            h++;\n        }\n        S sum = e();\n        while(g(op(sum,\
-    \ data[l]))) {\n            sum = op(sum, data[l]);\n            l++;\n      \
-    \      while(l % 2 == 0) {\n                l >>= 1;\n                h++;\n \
-    \           }\n            if(l == 1) return n;\n        }\n        while(l <\
-    \ sz) {\n            push(l, h);\n            if(!g(op(sum, data[l*2]))) {\n \
-    \               l = l*2;\n            } else {\n                sum = op(sum,\
-    \ data[l*2]);\n                l = l*2+1;\n            }\n            h--;\n \
-    \       }\n        return l - sz;\n    }\n    /**\n     * @brief (l = 0 or g(prod([l,\
-    \ r))) = true) and (l = r or g(prod([l-1, r))) = false)\u3068\u306A\u308Bl\u3092\
-    \u8FD4\u3059\n     * g\u304C\u5358\u8ABF\u306A\u3089\u3001g(prod([l, r))) = true\u3068\
-    \u306A\u308B\u6700\u5C0F\u306El\n     * \n     * @tparam G\n     * @param r \u534A\
-    \u958B\u533A\u9593\u306E\u7D42\u7AEF 0<=r<=n\n     * @param g \u5224\u5B9A\u95A2\
-    \u6570 g(e) = true\n     * @return int\n     */\n    template <typename G>\n \
-    \   int min_left(int r, G g) {\n        assert(g(e()));\n        assert(0 <= r\
-    \ && r <= n);\n        if (r == 0) return 0;\n        r += sz;\n        for(int\
-    \ h = height; h > 0; h--) {\n            push((r - 1) >> h, h);\n        }\n \
-    \       int h = 0;\n        S sum = e();\n        do {\n            r--;\n   \
-    \         while(r > 1 && r % 2 == 1) {\n                r >>= 1;\n           \
-    \     h++;\n            }\n            if(!g(op(data[r], sum))) {\n          \
-    \      while(r < sz) {\n                    push(r, h);\n                    r\
-    \ = r*2 + 1;\n                    h--;\n                    if(g(op(data[r], sum)))\
-    \ {\n                        sum = op(data[r], sum);\n                       \
-    \ r--;\n                    }\n                }\n                return r + 1\
-    \ - sz;\n            }\n            sum = op(data[r], sum);\n        } while((r\
-    \ & -r) != r);\n        return 0;\n    }\n};\n\ntemplate <typename A>\nLazySegTree(int,\
-    \ A) -> LazySegTree<A>;\ntemplate <typename A>\nLazySegTree(std::vector<typename\
-    \ A::S>, A) -> LazySegTree<A>;\n\n/**\n * @brief \u533A\u9593\u6700\u5C0F\u5024\
-    \u66F4\u65B0\u3001\u533A\u9593\u6700\u5C0F\u5024\n *\n * @tparam S \u578B\n */\n\
-    template <typename S>\nusing RChminMinQ = LazySegTree<acted_monoid::ChminMin<S>>;\n\
-    /**\n * @brief \u533A\u9593\u6700\u5927\u5024\u66F4\u65B0\u3001\u533A\u9593\u6700\
-    \u5927\u5024\n *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RChmaxMaxQ\
-    \ = LazySegTree<acted_monoid::ChmaxMax<S>>;\n/**\n * @brief \u533A\u9593\u52A0\
-    \u7B97\u3001\u533A\u9593\u6700\u5C0F\u5024\n *\n * @tparam S \u578B\n */\ntemplate\
-    \ <typename S>\nusing RAddMinQ = LazySegTree<acted_monoid::AddMin<S>>;\n/**\n\
-    \ * @brief \u533A\u9593\u52A0\u7B97\u3001\u533A\u9593\u6700\u5927\u5024\n *\n\
-    \ * @tparam S \u578B\n */\ntemplate <typename S>\nusing RAddMaxQ = LazySegTree<acted_monoid::AddMax<S>>;\n\
-    /**\n * @brief \u533A\u9593\u52A0\u7B97\u3001\u533A\u9593\u548C\n *\n * @tparam\
-    \ S \u578B\n */\ntemplate <typename S>\nusing RAddSumQ = LazySegTree<acted_monoid::AddSum<S>>;\n\
-    /**\n * @brief \u533A\u9593\u5909\u66F4\u3001\u533A\u9593\u6700\u5C0F\u5024\n\
-    \ *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RUpdateMinQ = LazySegTree<acted_monoid::UpdateMin<S>>;\n\
-    /**\n * @brief \u533A\u9593\u5909\u66F4\u3001\u533A\u9593\u6700\u5927\u5024\n\
-    \ *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RUpdateMaxQ = LazySegTree<acted_monoid::UpdateMax<S>>;\n\
-    /**\n * @brief \u533A\u9593\u5909\u66F4\u3001\u533A\u9593\u548C\n *\n * @tparam\
-    \ S \u578B\n */\ntemplate <typename S>\nusing RUpdateSumQ = LazySegTree<acted_monoid::UpdateSum<S>>;\n\
-    #line 8 \"test/yosupo/range-affine-point-get.test.cpp\"\n\nint main() {\n    int\
-    \ n, q;\n    std::cin >> n >> q;\n    using mint = modint998244353;\n    std::vector<mint>\
-    \ a(n);\n    for (auto& x : a) std::cin >> x;\n    LazySegTree<acted_monoid::AffineSum<mint>>\
-    \ seg(a);\n    while (q--) {\n        int t;\n        std::cin >> t;\n       \
-    \ if (t == 0) {\n            int l, r;\n            mint b, c;\n            std::cin\
-    \ >> l >> r >> b >> c;\n            seg.apply(l, r, Affine<mint>{b, c});\n   \
-    \     } else {\n            int i;\n            std::cin >> i;\n            std::cout\
-    \ << seg.get(i) << '\\n';\n        }\n    }\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/range_affine_point_get\"\
-    \n\n#include <iostream>\n#include <vector>\n\n#include \"../../src/math/modint.hpp\"\
-    \n#include \"../../src/data_structures/lazy-segtree.hpp\"\n\nint main() {\n  \
-    \  int n, q;\n    std::cin >> n >> q;\n    using mint = modint998244353;\n   \
-    \ std::vector<mint> a(n);\n    for (auto& x : a) std::cin >> x;\n    LazySegTree<acted_monoid::AffineSum<mint>>\
-    \ seg(a);\n    while (q--) {\n        int t;\n        std::cin >> t;\n       \
-    \ if (t == 0) {\n            int l, r;\n            mint b, c;\n            std::cin\
-    \ >> l >> r >> b >> c;\n            seg.apply(l, r, Affine<mint>{b, c});\n   \
-    \     } else {\n            int i;\n            std::cin >> i;\n            std::cout\
-    \ << seg.get(i) << '\\n';\n        }\n    }\n}\n"
+    #line 12 \"src/data_structures/dual-segtree.hpp\"\n\n/**\n * @brief \u53CC\u5BFE\
+    \u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u533A\u9593\u4F5C\u7528\u30011\u70B9\u53D6\
+    \u5F97)\n *\n * \u533A\u9593\u3078\u306E\u4F5C\u7528\u7D20\u306E\u9069\u7528\u3068\
+    1\u70B9\u306E\u53D6\u5F97\u3092 O(log n) \u3067\u884C\u3046\u3002\u4F5C\u7528\u7D20\
+    \u306F\u53EF\u63DB\u3067\u306A\u304F\u3066\u3082\u3088\u3044\n * \u9045\u5EF6\u4F1D\
+    \u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\u3068\u9055\u3044\u3001\u5024\u306E\
+    \u30E2\u30CE\u30A4\u30C9\u306E\u6F14\u7B97 (op\u3001e) \u306F\u4F7F\u308F\u306A\
+    \u3044\n * \u4F8B:\n * DualSegTree<acted_monoid::AffineSum<mint>> seg(v);\n *\
+    \ seg.apply(l, r, Affine<mint>{b, c});\n * mint x = seg.get(i);\n *\n * @tparam\
+    \ A \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9 (algebra/acted-monoid.hpp)\n\
+    \ */\ntemplate <typename A>\nclass DualSegTree {\npublic:\n    using S = typename\
+    \ A::S;\n    using F = typename A::F;\n\nprivate:\n    A a;\n    int n, sz, height;\n\
+    \    std::vector<S> data;  // \u8449\u306E\u5024 (\u4F5C\u7528\u7D20\u3092\u307E\
+    \u3060\u9069\u7528\u3057\u3066\u3044\u306A\u3044\u3082\u306E)\n    std::vector<F>\
+    \ lazy;  // \u5404\u30CE\u30FC\u30C9\u306E\u533A\u9593\u306B\u3001\u307E\u3060\
+    \u4E0B\u3078\u4F1D\u3048\u3066\u3044\u306A\u3044\u4F5C\u7528\u7D20\n\n    S mapping(const\
+    \ F& f, const S& x, int k) const { return acted_monoid::apply_mapping(a, f, x,\
+    \ k, k + 1); }\n    F composition(const F& f, const F& g) const { return a.composition(f,\
+    \ g); }\n    F id() const { return a.id(); }\n\n    void apply_node(int k, const\
+    \ F& f) { lazy[k] = composition(f, lazy[k]); }\n    void push(int k) {\n     \
+    \   apply_node(2 * k, lazy[k]);\n        apply_node(2 * k + 1, lazy[k]);\n   \
+    \     lazy[k] = id();\n    }\n    // \u8449 k \u306E\u7956\u5148\u306E\u4F5C\u7528\
+    \u7D20\u3092\u3059\u3079\u3066\u4E0B\u3078\u4F1D\u3048\u308B\n    void push_ancestors(int\
+    \ k) {\n        for (int h = height; h > 0; h--) push(k >> h);\n    }\n\n    void\
+    \ construct() {\n        sz = 1;\n        height = 0;\n        while (sz < n)\
+    \ {\n            sz <<= 1;\n            height++;\n        }\n        lazy.assign(2\
+    \ * sz, id());\n    }\n\npublic:\n    /**\n     * @param n \u8981\u7D20\u6570\
+    \ \u5404\u8981\u7D20\u306F S() \u3067\u521D\u671F\u5316\u3059\u308B\n     * @param\
+    \ a \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n     */\n    explicit\
+    \ DualSegTree(int n = 0, A a = A()) : DualSegTree(n, S(), std::move(a)) {}\n \
+    \   /**\n     * @param n \u8981\u7D20\u6570\n     * @param value \u5404\u8981\u7D20\
+    \u306E\u521D\u671F\u5024\n     * @param a \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
+    \u30CE\u30A4\u30C9\n     */\n    DualSegTree(int n, const S& value, A a = A())\
+    \ : a(std::move(a)), n(n), data(n, value) { construct(); }\n    /**\n     * @param\
+    \ v \u521D\u671F\u306E\u8981\u7D20\n     * @param a \u4F5C\u7528\u7D20\u4ED8\u304D\
+    \u30E2\u30CE\u30A4\u30C9\n     */\n    explicit DualSegTree(const std::vector<S>&\
+    \ v, A a = A()) : a(std::move(a)), n(v.size()), data(v) { construct(); }\n\n \
+    \   /**\n     * @brief \u8981\u7D20\u6570\u3092\u8FD4\u3059\n     */\n    int\
+    \ size() const { return n; }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\
+    \u305F\u8981\u7D20\u306E\u5024\u3092\u8FD4\u3059 O(log n)\n     */\n    S get(int\
+    \ k) const {\n        assert(0 <= k && k < n);\n        // \u6839\u306B\u8FD1\u3044\
+    \u30CE\u30FC\u30C9\u307B\u3069\u5F8C\u306B\u4F5C\u7528\u3057\u305F\u4F5C\u7528\
+    \u7D20\u306A\u306E\u3067\u3001\u8449\u304B\u3089\u9806\u306B\u5408\u6210\u3059\
+    \u308B\n        F f = id();\n        for (int i = k + sz; i > 0; i >>= 1) f =\
+    \ composition(lazy[i], f);\n        return mapping(f, data[k], k);\n    }\n  \
+    \  /**\n     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\u306E\u5024\u3092\u8FD4\
+    \u3059 O(n)\n     */\n    std::vector<S> all() {\n        for (int k = 1; k <\
+    \ sz; k++) push(k);\n        std::vector<S> res(n);\n        for (int k = 0; k\
+    \ < n; k++) res[k] = mapping(lazy[k + sz], data[k], k);\n        return res;\n\
+    \    }\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\
+    \u5024\u3092 x \u306B\u3059\u308B O(log n)\n     */\n    void set(int k, const\
+    \ S& x) {\n        assert(0 <= k && k < n);\n        push_ancestors(k + sz);\n\
+    \        data[k] = x;\n        lazy[k + sz] = id();\n    }\n\n    /**\n     *\
+    \ @brief 1\u70B9\u4F5C\u7528 O(log n)\n     */\n    void apply(int k, const F&\
+    \ f) {\n        assert(0 <= k && k < n);\n        push_ancestors(k + sz);\n  \
+    \      apply_node(k + sz, f);\n    }\n    /**\n     * @brief [l, r) \u306E\u533A\
+    \u9593\u306E\u5024\u306B f \u3092\u4F5C\u7528\u3055\u305B\u308B O(log n)\n   \
+    \  */\n    void apply(int l, int r, const F& f) {\n        assert(0 <= l && l\
+    \ <= r && r <= n);\n        if (l == r) return;\n        l += sz;\n        r +=\
+    \ sz;\n        // \u4F5C\u7528\u3059\u308B\u533A\u9593\u306E\u5883\u754C\u306E\
+    \u7956\u5148\u306B\u6B8B\u3063\u3066\u3044\u308B\u4F5C\u7528\u7D20\u3092\u5148\
+    \u306B\u4E0B\u3078\u4F1D\u3048\u308B (\u4F5C\u7528\u7D20\u304C\u53EF\u63DB\u3067\
+    \u306A\u304F\u3066\u3082\u9806\u5E8F\u3092\u4FDD\u3064\u305F\u3081)\n        for\
+    \ (int h = height; h > 0; h--) {\n            if (((l >> h) << h) != l) push(l\
+    \ >> h);\n            if (((r >> h) << h) != r) push((r - 1) >> h);\n        }\n\
+    \        for (; l < r; l >>= 1, r >>= 1) {\n            if (l & 1) apply_node(l++,\
+    \ f);\n            if (r & 1) apply_node(--r, f);\n        }\n    }\n};\n#line\
+    \ 13 \"test/unittest/dual-segtree.test.cpp\"\n\nusing mint = modint998244353;\n\
+    \nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int\
+    \ rep = 0; rep < 2000 && ok; rep++) {\n        int n = rng() % 12 + 1;\n     \
+    \   std::vector<mint> v(n);\n        DualSegTree<acted_monoid::AffineSum<mint>>\
+    \ seg;\n        switch (rep % 3) {\n            case 0:\n                seg =\
+    \ DualSegTree<acted_monoid::AffineSum<mint>>(n);\n                break;\n   \
+    \         case 1: {\n                mint x = rng() % 10;\n                seg\
+    \ = DualSegTree<acted_monoid::AffineSum<mint>>(n, x);\n                v.assign(n,\
+    \ x);\n                break;\n            }\n            default:\n         \
+    \       for (auto& x : v) x = rng() % 10;\n                seg = DualSegTree<acted_monoid::AffineSum<mint>>(v);\n\
+    \                break;\n        }\n        if (seg.size() != n) ok = false;\n\
+    \        for (int t = 0; t < 40; t++) {\n            int op = rng() % 5;\n   \
+    \         Affine<mint> f{mint(rng() % 5), mint(rng() % 5)};\n            if (op\
+    \ == 0) {\n                int l = rng() % (n + 1), r = rng() % (n + 1);\n   \
+    \             if (l > r) std::swap(l, r);\n                seg.apply(l, r, f);\n\
+    \                for (int i = l; i < r; i++) v[i] = f(v[i]);\n            } else\
+    \ if (op == 1) {\n                int k = rng() % n;\n                seg.apply(k,\
+    \ f);\n                v[k] = f(v[k]);\n            } else if (op == 2) {\n  \
+    \              int k = rng() % n;\n                mint x = rng() % 10;\n    \
+    \            seg.set(k, x);\n                v[k] = x;\n            } else if\
+    \ (op == 3) {\n                int k = rng() % n;\n                if (seg.get(k)\
+    \ != v[k]) ok = false;\n            } else {\n                if (seg.all() !=\
+    \ v) ok = false;\n            }\n        }\n        for (int k = 0; k < n; k++)\
+    \ {\n            if (seg.get(k) != v[k]) ok = false;\n        }\n    }\n    //\
+    \ \u533A\u9593\u306E\u9577\u3055\u3092\u4F7F\u3046 mapping (\u8981\u7D20\u3054\
+    \u3068\u306B\u9577\u3055 1 \u3068\u3057\u3066\u4F5C\u7528\u3059\u308B)\n    for\
+    \ (int rep = 0; rep < 500 && ok; rep++) {\n        int n = rng() % 12 + 1;\n \
+    \       std::vector<long long> v(n);\n        DualSegTree<acted_monoid::AddSum<long\
+    \ long>> seg(n);\n        for (int t = 0; t < 40; t++) {\n            int l =\
+    \ rng() % (n + 1), r = rng() % (n + 1);\n            if (l > r) std::swap(l, r);\n\
+    \            long long x = (long long)(rng() % 21) - 10;\n            seg.apply(l,\
+    \ r, x);\n            for (int i = l; i < r; i++) v[i] += x;\n            int\
+    \ k = rng() % n;\n            if (seg.get(k) != v[k]) ok = false;\n        }\n\
+    \    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n    else std::cerr\
+    \ << \"failed\" << std::endl;\n}\n"
+  code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
+    \n\n// DualSegTree \u3092\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u30E9\u30F3\u30C0\
+    \u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u53EF\u63DB\u3067\u306A\u3044\u4F5C\u7528\
+    \ (\u30A2\u30D5\u30A3\u30F3\u5909\u63DB) \u3068\u3001\u533A\u9593\u306E\u9577\u3055\
+    \u3092\u4F7F\u3046\u4F5C\u7528 (\u533A\u9593\u52A0\u7B97\u30FB\u533A\u9593\u548C\
+    ) \u3067\u78BA\u304B\u3081\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\
+    \u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World\
+    \ \u3092\u51FA\u529B\u3059\u308B\n\n#include <iostream>\n#include <random>\n#include\
+    \ <vector>\n\n#include \"../../src/math/modint.hpp\"\n#include \"../../src/data_structures/dual-segtree.hpp\"\
+    \n\nusing mint = modint998244353;\n\nint main() {\n    std::mt19937 rng(314);\n\
+    \    bool ok = true;\n    for (int rep = 0; rep < 2000 && ok; rep++) {\n     \
+    \   int n = rng() % 12 + 1;\n        std::vector<mint> v(n);\n        DualSegTree<acted_monoid::AffineSum<mint>>\
+    \ seg;\n        switch (rep % 3) {\n            case 0:\n                seg =\
+    \ DualSegTree<acted_monoid::AffineSum<mint>>(n);\n                break;\n   \
+    \         case 1: {\n                mint x = rng() % 10;\n                seg\
+    \ = DualSegTree<acted_monoid::AffineSum<mint>>(n, x);\n                v.assign(n,\
+    \ x);\n                break;\n            }\n            default:\n         \
+    \       for (auto& x : v) x = rng() % 10;\n                seg = DualSegTree<acted_monoid::AffineSum<mint>>(v);\n\
+    \                break;\n        }\n        if (seg.size() != n) ok = false;\n\
+    \        for (int t = 0; t < 40; t++) {\n            int op = rng() % 5;\n   \
+    \         Affine<mint> f{mint(rng() % 5), mint(rng() % 5)};\n            if (op\
+    \ == 0) {\n                int l = rng() % (n + 1), r = rng() % (n + 1);\n   \
+    \             if (l > r) std::swap(l, r);\n                seg.apply(l, r, f);\n\
+    \                for (int i = l; i < r; i++) v[i] = f(v[i]);\n            } else\
+    \ if (op == 1) {\n                int k = rng() % n;\n                seg.apply(k,\
+    \ f);\n                v[k] = f(v[k]);\n            } else if (op == 2) {\n  \
+    \              int k = rng() % n;\n                mint x = rng() % 10;\n    \
+    \            seg.set(k, x);\n                v[k] = x;\n            } else if\
+    \ (op == 3) {\n                int k = rng() % n;\n                if (seg.get(k)\
+    \ != v[k]) ok = false;\n            } else {\n                if (seg.all() !=\
+    \ v) ok = false;\n            }\n        }\n        for (int k = 0; k < n; k++)\
+    \ {\n            if (seg.get(k) != v[k]) ok = false;\n        }\n    }\n    //\
+    \ \u533A\u9593\u306E\u9577\u3055\u3092\u4F7F\u3046 mapping (\u8981\u7D20\u3054\
+    \u3068\u306B\u9577\u3055 1 \u3068\u3057\u3066\u4F5C\u7528\u3059\u308B)\n    for\
+    \ (int rep = 0; rep < 500 && ok; rep++) {\n        int n = rng() % 12 + 1;\n \
+    \       std::vector<long long> v(n);\n        DualSegTree<acted_monoid::AddSum<long\
+    \ long>> seg(n);\n        for (int t = 0; t < 40; t++) {\n            int l =\
+    \ rng() % (n + 1), r = rng() % (n + 1);\n            if (l > r) std::swap(l, r);\n\
+    \            long long x = (long long)(rng() % 21) - 10;\n            seg.apply(l,\
+    \ r, x);\n            for (int i = l; i < r; i++) v[i] += x;\n            int\
+    \ k = rng() % n;\n            if (seg.get(k) != v[k]) ok = false;\n        }\n\
+    \    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n    else std::cerr\
+    \ << \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/math/modint.hpp
-  - src/data_structures/lazy-segtree.hpp
+  - src/data_structures/dual-segtree.hpp
   - src/algebra/acted-monoid.hpp
   - src/algebra/monoid.hpp
   isVerificationFile: true
-  path: test/yosupo/range-affine-point-get.test.cpp
+  path: test/unittest/dual-segtree.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 12:42:03+09:00'
+  timestamp: '2026-10-14 01:43:22+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/yosupo/range-affine-point-get.test.cpp
+documentation_of: test/unittest/dual-segtree.test.cpp
 layout: document
 redirect_from:
-- /verify/test/yosupo/range-affine-point-get.test.cpp
-- /verify/test/yosupo/range-affine-point-get.test.cpp.html
-title: test/yosupo/range-affine-point-get.test.cpp
+- /verify/test/unittest/dual-segtree.test.cpp
+- /verify/test/unittest/dual-segtree.test.cpp.html
+title: test/unittest/dual-segtree.test.cpp
 ---

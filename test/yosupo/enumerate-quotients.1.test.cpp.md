@@ -14,7 +14,7 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/enumerate_quotients
     links:
     - https://judge.yosupo.jp/problem/enumerate_quotients
-  bundledCode: "#line 1 \"test/yosupo/enumerate-quotients.test.cpp\"\n#define PROBLEM\
+  bundledCode: "#line 1 \"test/yosupo/enumerate-quotients.1.test.cpp\"\n#define PROBLEM\
     \ \"https://judge.yosupo.jp/problem/enumerate_quotients\"\n\n#line 2 \"src/math/sqrt.hpp\"\
     \n\n/**\n * @file sqrt.hpp\n * @brief \u6574\u6570\u306E\u5E73\u65B9\u6839\n */\n\
     \n/**\n * @brief floor(sqrt(n))\n * @param n \u5E73\u65B9\u6839\u3092\u6C42\u3081\
@@ -23,7 +23,7 @@ data:
     \   // 3037000500 = ceil(sqrt(2^63))\n    long long le = 0, ri = 3037000500; \n\
     \    while(ri - le > 1) {\n        long long mid = (le + ri) / 2;\n        if(mid\
     \ * mid <= n) le = mid;\n        else ri = mid;\n    }\n    return le;\n}\n#line\
-    \ 4 \"test/yosupo/enumerate-quotients.test.cpp\"\n#include <vector>\n#include\
+    \ 4 \"test/yosupo/enumerate-quotients.1.test.cpp\"\n#include <vector>\n#include\
     \ <algorithm>\n#include <iostream>\n\nint main() {\n    long long n;\n    std::cin\
     \ >> n;\n    std::vector<long long> v1, v2;\n    long long m = sqrtll(n);\n  \
     \  for(long long i = 1; i <= m; i ++) {\n        v1.push_back(n / i);\n      \
@@ -44,15 +44,15 @@ data:
   dependsOn:
   - src/math/sqrt.hpp
   isVerificationFile: true
-  path: test/yosupo/enumerate-quotients.test.cpp
+  path: test/yosupo/enumerate-quotients.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-12 19:23:31+09:00'
+  timestamp: '2026-10-14 03:19:43+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/yosupo/enumerate-quotients.test.cpp
+documentation_of: test/yosupo/enumerate-quotients.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/yosupo/enumerate-quotients.test.cpp
-- /verify/test/yosupo/enumerate-quotients.test.cpp.html
-title: test/yosupo/enumerate-quotients.test.cpp
+- /verify/test/yosupo/enumerate-quotients.1.test.cpp
+- /verify/test/yosupo/enumerate-quotients.1.test.cpp.html
+title: test/yosupo/enumerate-quotients.1.test.cpp
 ---

@@ -4,8 +4,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/enumerate-quotients.test.cpp
-    title: test/yosupo/enumerate-quotients.test.cpp
+    path: test/yosupo/enumerate-quotients.1.test.cpp
+    title: test/yosupo/enumerate-quotients.1.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -35,7 +35,7 @@ data:
   timestamp: '2026-10-12 19:23:31+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/yosupo/enumerate-quotients.test.cpp
+  - test/yosupo/enumerate-quotients.1.test.cpp
 documentation_of: src/math/sqrt.hpp
 layout: document
 title: "\u6574\u6570\u306E\u5E73\u65B9\u6839"

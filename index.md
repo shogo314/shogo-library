@@ -188,6 +188,9 @@ data:
       title: "\u7D20\u6570 (\u7D20\u6570\u5224\u5B9A\u3001\u7D20\u56E0\u6570\u5206\
         \u89E3\u3001\u7D04\u6570\u5217\u6319\u3001\u7BE9)"
     - icon: ':heavy_check_mark:'
+      path: src/math/quotients.hpp
+      title: "\u5546\u306E\u5217\u6319"
+    - icon: ':heavy_check_mark:'
       path: src/math/rational.hpp
       title: "\u6709\u7406\u6570"
     - icon: ':heavy_check_mark:'
@@ -701,6 +704,9 @@ data:
       path: test/unittest/priority_counter.test.cpp
       title: test/unittest/priority_counter.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/quotients.test.cpp
+      title: test/unittest/quotients.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/range.test.cpp
       title: test/unittest/range.test.cpp
     - icon: ':heavy_check_mark:'
@@ -811,8 +817,11 @@ data:
       path: test/yosupo/enumerate-primes.test.cpp
       title: test/yosupo/enumerate-primes.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/yosupo/enumerate-quotients.test.cpp
-      title: test/yosupo/enumerate-quotients.test.cpp
+      path: test/yosupo/enumerate-quotients.1.test.cpp
+      title: test/yosupo/enumerate-quotients.1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/enumerate-quotients.2.test.cpp
+      title: test/yosupo/enumerate-quotients.2.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/exp-of-fps.test.cpp
       title: test/yosupo/exp-of-fps.test.cpp

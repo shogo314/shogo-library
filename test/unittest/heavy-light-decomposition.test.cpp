@@ -79,8 +79,8 @@ int main() {
                 int d = p.size() - 1;
                 int w = *std::min_element(p.begin(), p.end(), [&](int a, int b) { return dep[a] < dep[b]; });
                 if (hld.lca(u, v) != w || hld.dist(u, v) != d) ok = false;
-                for (int k = -1; k <= d + 1; k++) {
-                    int expect = 0 <= k && k <= d ? p[k] : -1;
+                for (int k = 0; k <= d + 1; k++) {
+                    int expect = k <= d ? p[k] : -1;
                     if (hld.jump(u, v, k) != expect) ok = false;
                 }
                 // path が返す区間をつなげると、u から v への頂点の列になる
@@ -107,10 +107,10 @@ int main() {
                 }
                 if (got_edge != expect_edge) ok = false;
             }
-            for (int k = -1; k <= n; k++) {
+            for (int k = 0; k <= n; k++) {
                 int x = u;
                 for (int i = 0; i < k && x != -1; i++) x = par[x];
-                if (hld.hop(u, k) != (k < 0 ? -1 : x)) ok = false;
+                if (hld.hop(u, k) != x) ok = false;
             }
         }
         // Tree や RootedTree からも同じものが作れる

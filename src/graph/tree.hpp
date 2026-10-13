@@ -331,7 +331,7 @@ struct DoublingClimbTree : private RootedTree<Cost> {
      * @return int k回登った頂点
      */
     int hop(int u, int k) const {
-        assert(k >= 0);
+        assert(0 <= u && u < this->n && k >= 0);
         if(k > this->unweighted_depth[u]) return -1;
         for(int i = 0; i < h; i++) {
             if(k >> i & 1) u = doubling_par[i][u];
@@ -348,6 +348,7 @@ struct DoublingClimbTree : private RootedTree<Cost> {
      * @return int LCAの頂点番号
      */
     int lca(int u, int v) const {
+        assert(0 <= u && u < this->n && 0 <= v && v < this->n);
         if(this->unweighted_depth[u] > this->unweighted_depth[v]) std::swap(u, v);
         v = hop(v, this->unweighted_depth[v] - this->unweighted_depth[u]);
         if(u == v) return u;

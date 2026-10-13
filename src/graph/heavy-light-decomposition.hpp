@@ -105,6 +105,7 @@ public:
      * @brief u と v の最小共通祖先 O(log n)
      */
     int lca(int u, int v) const {
+        assert(0 <= u && u < n && 0 <= v && v < n);
         while (head[u] != head[v]) {
             if (dep[head[u]] < dep[head[v]]) std::swap(u, v);
             u = par[head[u]];
@@ -119,7 +120,8 @@ public:
      * @brief v から根の方へ k 本の辺を進んだ頂点 (k > depth(v) なら -1) O(log n)
      */
     int hop(int v, int k) const {
-        if (k < 0 || k > dep[v]) return -1;
+        assert(0 <= v && v < n && k >= 0);
+        if (k > dep[v]) return -1;
         while (true) {
             int h = head[v];
             if (in[v] - in[h] >= k) return order[in[v] - k];
@@ -131,7 +133,7 @@ public:
      * @brief u から v へのパスで、u から k 本の辺を進んだ頂点 (k > dist(u, v) なら -1) O(log n)
      */
     int jump(int u, int v, int k) const {
-        if (k < 0) return -1;
+        assert(0 <= u && u < n && 0 <= v && v < n && k >= 0);
         int w = lca(u, v);
         int du = dep[u] - dep[w], dv = dep[v] - dep[w];
         if (k <= du) return hop(u, k);
@@ -149,6 +151,7 @@ public:
      * @param edge true なら辺についてのパスにする。辺 (parent(v), v) を index(v) 番目に対応させ、lca の位置を含めない
      */
     std::vector<std::pair<int, int>> path(int u, int v, bool edge = false) const {
+        assert(0 <= u && u < n && 0 <= v && v < n);
         std::vector<std::pair<int, int>> up, down;
         while (head[u] != head[v]) {
             if (dep[head[u]] >= dep[head[v]]) {

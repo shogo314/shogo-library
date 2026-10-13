@@ -5,6 +5,7 @@
  * @brief ファンクショナルグラフ
  */
 #include <algorithm>
+#include <cassert>
 #include <iostream>
 #include <vector>
 
@@ -24,6 +25,8 @@ struct FunctionalGraph {
     std::vector<std::vector<int>> doubling;        //!< DoublingClimbTree
 
     void build() {
+        assert((int)g.size() == n);
+        for (int i = 0; i < n; i++) assert(0 <= g[i] && g[i] < n);
         is_cycle.assign(n, false);
         depth.assign(n, 0);
         root.assign(n, -1);
@@ -127,6 +130,7 @@ struct FunctionalGraph {
      * @return int 頂点番号
      */
     int hop(int x, long long k) const {
+        assert(0 <= x && x < n && k >= 0);
         if (k >= depth[x]) {
             k -= depth[x];
             x = root[x];
@@ -149,6 +153,7 @@ struct FunctionalGraph {
      * @brief 頂点xから0回以上の移動でたどり着ける頂点の個数
      */
     int hopable(int x) const {
+        assert(0 <= x && x < n);
         return depth[x] + (int)cycles[group_id[x]].size();
     }
 };

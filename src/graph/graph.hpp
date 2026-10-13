@@ -84,6 +84,7 @@ struct Graph {
      * @param w コスト 省略したら1
      */
     void add_edge(int u, int v, Cost w = 1) {
+        assert(0 <= u && u < n && 0 <= v && v < n);
         g[u].push_back({u, v, w, m});
         g[v].push_back({v, u, w, m++});
     }
@@ -94,6 +95,7 @@ struct Graph {
      * @param w コスト 省略したら1
      */
     void add_directed_edge(int u, int v, Cost w = 1) {
+        assert(0 <= u && u < n && 0 <= v && v < n);
         g[u].push_back({u, v, w, m++});
     }
     /**
@@ -157,6 +159,7 @@ struct Graph {
      * @return ShortestPath 各頂点への最短路長 (dist) と、各頂点への最短路上の直前の辺 (prev)
      */
     ShortestPath shortest_path(int s, bool weighted = true, Cost inf = std::numeric_limits<Cost>::max() / 4) const {
+        assert(0 <= s && s < n);
         if (weighted)
             return shortest_path_dijkstra(s, inf);
         return shortest_path_bfs(s, inf);
@@ -169,6 +172,7 @@ struct Graph {
      * @return ShortestPath 各頂点への最短路長 (dist) と、各頂点への最短路上の直前の辺 (prev)
      */
     ShortestPath bellman_ford(int s, Cost inf = std::numeric_limits<Cost>::max() / 4) const {
+        assert(0 <= s && s < n);
         std::vector<Cost> dist(n, inf);
         std::vector<Edge> prev(n);
         dist[s] = Cost{};
@@ -215,6 +219,7 @@ struct Graph {
      * @return ShortestPath 各頂点への最短路長 (dist) と、各頂点への最短路上の直前の辺 (prev)
      */
     ShortestPath shortest_path_01bfs(int s, Cost inf = std::numeric_limits<Cost>::max() / 4) const {
+        assert(0 <= s && s < n);
         std::vector<Cost> dist(n, inf);
         std::vector<Edge> prev(n);
         std::deque<int> que;

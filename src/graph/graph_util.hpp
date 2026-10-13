@@ -6,6 +6,7 @@
  */
 
 #include <algorithm>
+#include <cassert>
 #include <functional>
 #include <limits>
 #include <queue>
@@ -317,6 +318,7 @@ MinimumSpanningTree<Cost> minimum_spanning_tree(const Graph<Cost>& graph) {
 template <typename Cost, typename T>
 Cost minimum_steiner_tree(const Graph<Cost>& graph, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max() / 4) {
     if (X.empty()) return Cost{};
+    for (const auto& x : X) assert(0 <= x && x < graph.n);
     std::vector<std::vector<Cost>> dp(graph.n, std::vector<Cost>(1 << X.size(), inf));
     for (int p = 0; p < (int)X.size(); p++) dp[X[p]][1 << p] = {};
     for (int i = 0; i < (1 << X.size()); i++) {

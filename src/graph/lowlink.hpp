@@ -6,6 +6,7 @@
  */
 
 #include <algorithm>
+#include <cassert>
 #include <vector>
 #include "graph.hpp"
 
@@ -92,11 +93,17 @@ public:
     /**
      * @brief v が関節点 (取り除くと連結成分が増える頂点) か
      */
-    bool is_articulation_point(int v) const { return art[v]; }
+    bool is_articulation_point(int v) const {
+        assert(0 <= v && v < n);
+        return art[v];
+    }
     /**
      * @brief 番号 id の辺が橋 (取り除くと連結成分が増える辺) か
      */
-    bool is_bridge(int id) const { return bridge[id]; }
+    bool is_bridge(int id) const {
+        assert(0 <= id && id < (int)bridge.size());
+        return bridge[id];
+    }
     /**
      * @brief 関節点の頂点番号の昇順のリスト
      */
@@ -108,7 +115,10 @@ public:
     /**
      * @brief 頂点 v が属する二重辺連結成分の番号
      */
-    int two_edge_connected_group_id(int v) const { return comp[v]; }
+    int two_edge_connected_group_id(int v) const {
+        assert(0 <= v && v < n);
+        return comp[v];
+    }
     /**
      * @brief 二重辺連結成分 (橋を取り除いたときの連結成分) ごとの頂点のリスト
      */

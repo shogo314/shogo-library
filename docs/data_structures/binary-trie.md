@@ -30,3 +30,7 @@ bt.nth_element(0);   // 3 (x との xor の最小値は apply_xor(x) してか�
 | `upper_bound(x)` | `x` より大きい最小の要素が何番目か (0-indexed)。なければ `size()` |
 | `apply_xor(x)` | 全要素を `x` と xor する |
 | `clear()` | 全要素を削除してメモリを解放 |
+
+## 関連
+
+- XOR で作れる値の集合は [XOR 基底](../math/xor-basis.hpp)

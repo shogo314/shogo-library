@@ -7,9 +7,9 @@ documentation_of: //src/math/infint.hpp
 
 ```cpp
 using I = infint<>;
-I a = I::Inf(), b = 5;
+I a = I::inf(), b = 5;
 I c = a + b;               // inf
-I d = I::Max() + b;        // inf (オーバーフローは飽和する)
+I d = I::max() + b;        // inf (オーバーフローは飽和する)
 I e = a - a;               // nan
 std::cout << c << ' ' << -c << ' ' << e << '\n';  // "inf -inf nan"
 ```
@@ -22,8 +22,8 @@ std::cout << c << ' ' << -c << ' ' << e << '\n';  // "inf -inf nan"
 |---|---|
 | `infint<T>(x)` | 整数 `x` |
 | `infint<T>("inf")`、`"plusinf"` / `"minusinf"` / `"nan"` | 正の無限大 / 負の無限大 / NaN (大文字小文字は問わない)。それ以外の文字列は整数として読む |
-| `Inf()`、`PlusInf()` / `MinusInf()` / `NaN()` | 正の無限大 / 負の無限大 / NaN |
-| `Max()` / `Min()` | 無限大でない最大値 / 最小値 |
+| `inf()`、`plus_inf()` / `minus_inf()` / `nan()` | 正の無限大 / 負の無限大 / NaN |
+| `max()` / `min()` | 無限大でない最大値 / 最小値 |
 
 ## 演算
 
@@ -41,7 +41,7 @@ std::cout << c << ' ' << -c << ' ' << e << '\n';  // "inf -inf nan"
 | 関数 | 説明 |
 |---|---|
 | `val()` | 内部表現の値 |
-| `isfinite()` | 有限か |
-| `isPlusInf()`、`isInf()` / `isMinusInf()` / `isNaN()` | 正の無限大か (`isInf` も正の無限大のみ) / 負の無限大か / NaN か |
+| `is_finite()` | 有限か |
+| `is_plus_inf()`、`is_inf()` / `is_minus_inf()` / `is_nan()` | 正の無限大か (`is_inf` も正の無限大のみ) / 負の無限大か / NaN か |
 | `to_string()`、`os << x` | 文字列にする。無限大などの表記は `set_str_plusinf(s)`、`set_str_minusinf(s)`、`set_str_nan(s)` で変えられる (初期値 `inf`、`-inf`、`nan`) |
 | `repr()` | `infint<>{"plusinf"}` のような、コンストラクタにそのまま使える文字列 |

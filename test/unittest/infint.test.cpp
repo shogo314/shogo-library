@@ -1,7 +1,7 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
 // infint の演算を、無限大・NaN を分けて __int128 で愚直に計算したものと比較する
-// 境界の値 (Max()、Min() とその前後) を含む値の全組で、四則演算・剰余・比較・符号反転を確かめる
+// 境界の値 (max()、min() とその前後) を含む値の全組で、四則演算・剰余・比較・符号反転を確かめる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include <iostream>
@@ -31,9 +31,9 @@ struct Checker {
         return {Naive::Finite, x};
     }
     static Naive of(const I& a) {
-        if (a.isNaN()) return {Naive::NaN, 0};
-        if (a.isPlusInf()) return {Naive::PlusInf, 0};
-        if (a.isMinusInf()) return {Naive::MinusInf, 0};
+        if (a.is_nan()) return {Naive::NaN, 0};
+        if (a.is_plus_inf()) return {Naive::PlusInf, 0};
+        if (a.is_minus_inf()) return {Naive::MinusInf, 0};
         return {Naive::Finite, a.val()};
     }
     static int sign(const Naive& a) {
@@ -90,7 +90,7 @@ struct Checker {
 
     static bool run(std::mt19937_64& rng) {
         bool ok = true;
-        std::vector<I> vals = {I::PlusInf(), I::MinusInf(), I::NaN(), I::Inf(), I::Max(), I::Min(), I(0), I(1), I(-1), I(2), I(-2), I(3), I(-7)};
+        std::vector<I> vals = {I::plus_inf(), I::minus_inf(), I::nan(), I::inf(), I::max(), I::min(), I(0), I(1), I(-1), I(2), I(-2), I(3), I(-7)};
         for (__int128 d : {1, 2, 3}) {
             vals.push_back(I(static_cast<T>(MAXV - 1 - d)));
             vals.push_back(I(static_cast<T>(MINV + 2 + d)));
@@ -110,15 +110,15 @@ struct Checker {
         }
 
         // 値の作り方と判定
-        if (I::Max().val() != MAXV - 1 || I::Min().val() != MINV + 2) ok = false;
-        if (!I::Max().isfinite() || !I::Min().isfinite()) ok = false;
-        if (I().val() != 0 || !I().isfinite()) ok = false;
-        if (!I::Inf().isPlusInf() || !I::Inf().isInf() || I::MinusInf().isInf() || !I::MinusInf().isMinusInf()) ok = false;
-        if (I::NaN().isfinite() || I::PlusInf().isfinite() || I::MinusInf().isfinite()) ok = false;
+        if (I::max().val() != MAXV - 1 || I::min().val() != MINV + 2) ok = false;
+        if (!I::max().is_finite() || !I::min().is_finite()) ok = false;
+        if (I().val() != 0 || !I().is_finite()) ok = false;
+        if (!I::inf().is_plus_inf() || !I::inf().is_inf() || I::minus_inf().is_inf() || !I::minus_inf().is_minus_inf()) ok = false;
+        if (I::nan().is_finite() || I::plus_inf().is_finite() || I::minus_inf().is_finite()) ok = false;
 
         for (const I& a : vals) {
             Naive na = of(a);
-            if (a.isfinite() != (na.kind == Naive::Finite)) ok = false;
+            if (a.is_finite() != (na.kind == Naive::Finite)) ok = false;
             // 単項の + と -
             if (!same(of(+a), na)) ok = false;
             if (!same(of(-a), neg(na))) ok = false;
@@ -166,16 +166,16 @@ int main() {
 
     using I = infint<long long>;
     // 文字列からの構築 (大文字小文字は問わない)
-    if (!I("inf").isPlusInf() || !I("INF").isPlusInf() || !I("PlusInf").isPlusInf()) ok = false;
-    if (!I("minusinf").isMinusInf() || !I("MinusINF").isMinusInf()) ok = false;
-    if (!I("nan").isNaN() || !I("NaN").isNaN()) ok = false;
+    if (!I("inf").is_plus_inf() || !I("INF").is_plus_inf() || !I("PlusInf").is_plus_inf()) ok = false;
+    if (!I("minusinf").is_minus_inf() || !I("MinusINF").is_minus_inf()) ok = false;
+    if (!I("nan").is_nan() || !I("NaN").is_nan()) ok = false;
     if (I("123").val() != 123 || I("-45").val() != -45 || I("0").val() != 0) ok = false;
 
     // 文字列化と表記の変更
-    if (I::Inf().to_string() != "inf" || I::MinusInf().to_string() != "-inf" || I::NaN().to_string() != "nan" || I(-42).to_string() != "-42") ok = false;
+    if (I::inf().to_string() != "inf" || I::minus_inf().to_string() != "-inf" || I::nan().to_string() != "nan" || I(-42).to_string() != "-42") ok = false;
     {
         std::ostringstream os;
-        os << I::Inf() << ' ' << I(7) << ' ' << I::NaN();
+        os << I::inf() << ' ' << I(7) << ' ' << I::nan();
         if (os.str() != "inf 7 nan") ok = false;
     }
     I::set_str_plusinf("INF");
@@ -183,20 +183,20 @@ int main() {
     I::set_str_nan("?");
     {
         std::ostringstream os;
-        os << I::Inf() << ' ' << I::MinusInf() << ' ' << I::NaN() << ' ' << I(5);
+        os << I::inf() << ' ' << I::minus_inf() << ' ' << I::nan() << ' ' << I(5);
         if (os.str() != "INF -INF ? 5") ok = false;
     }
     I::set_str_plusinf("inf");
     I::set_str_minusinf("-inf");
     I::set_str_nan("nan");
-    if (I::Inf().to_string() != "inf") ok = false;
+    if (I::inf().to_string() != "inf") ok = false;
 
     // repr: コンストラクタにそのまま使える文字列
     if (I::type_str() != "infint<>") ok = false;
     if (I(5).initializer_str() != "{5}" || I(-3).repr() != "infint<>{-3}") ok = false;
-    if (I::Inf().repr() != "infint<>{\"plusinf\"}" || I::MinusInf().repr() != "infint<>{\"minusinf\"}" || I::NaN().repr() != "infint<>{\"nan\"}") ok = false;
+    if (I::inf().repr() != "infint<>{\"plusinf\"}" || I::minus_inf().repr() != "infint<>{\"minusinf\"}" || I::nan().repr() != "infint<>{\"nan\"}") ok = false;
     // repr の結果から作り直すと同じ値になる
-    if (!I("plusinf").isPlusInf() || !I("minusinf").isMinusInf()) ok = false;
+    if (!I("plusinf").is_plus_inf() || !I("minusinf").is_minus_inf()) ok = false;
 
     if (ok) std::cout << "Hello World" << std::endl;
 }

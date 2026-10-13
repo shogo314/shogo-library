@@ -9,7 +9,7 @@ int main() {
     using I = infint<long long>;
     int n, m;
     std::cin >> n >> m;
-    std::vector<std::vector<I>> d(n, std::vector<I>(n, I::Inf()));
+    std::vector<std::vector<I>> d(n, std::vector<I>(n, I::inf()));
     for (int i = 0; i < n; i++) d[i][i] = 0;
     for (int i = 0; i < m; i++) {
         int s, t;
@@ -35,7 +35,7 @@ int main() {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             if (j) std::cout << ' ';
-            if (d[i][j].isPlusInf()) std::cout << "INF";
+            if (d[i][j].is_plus_inf()) std::cout << "INF";
             else std::cout << d[i][j];
         }
         std::cout << '\n';

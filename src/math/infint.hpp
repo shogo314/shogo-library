@@ -26,9 +26,9 @@ struct infint {
 
     T _v;
 
-    inline constexpr static T _PlusInf = std::numeric_limits<T>::max();       //!< 正の無限大
-    inline constexpr static T _MinusInf = std::numeric_limits<T>::min() + 1;  //!< 負の無限大
-    inline constexpr static T _NaN = std::numeric_limits<T>::min();           //!< Not a Number
+    inline constexpr static T plus_inf_value = std::numeric_limits<T>::max();       //!< 正の無限大
+    inline constexpr static T minus_inf_value = std::numeric_limits<T>::min() + 1;  //!< 負の無限大
+    inline constexpr static T nan_value = std::numeric_limits<T>::min();           //!< Not a Number
     static std::string str_plusinf;
     static std::string str_minusinf;
     static std::string str_nan;
@@ -45,13 +45,13 @@ struct infint {
             }
         });
         if (s == "plusinf") {
-            _v = _PlusInf;
+            _v = plus_inf_value;
         } else if (s == "inf") {
-            _v = _PlusInf;
+            _v = plus_inf_value;
         } else if (s == "minusinf") {
-            _v = _MinusInf;
+            _v = minus_inf_value;
         } else if (s == "nan") {
-            _v = _NaN;
+            _v = nan_value;
         } else {
             _v = std::stoll(s);
         }
@@ -62,11 +62,11 @@ struct infint {
      */
     constexpr T val() const noexcept { return _v; }
 
-    constexpr bool isNaN() const noexcept { return _v == _NaN; }
-    constexpr bool isPlusInf() const noexcept { return _v == _PlusInf; }
-    constexpr bool isMinusInf() const noexcept { return _v == _MinusInf; }
-    constexpr bool isInf() const noexcept { return _v == _PlusInf; }
-    constexpr bool isfinite() const noexcept { return _MinusInf < _v and _v < _PlusInf; }
+    constexpr bool is_nan() const noexcept { return _v == nan_value; }
+    constexpr bool is_plus_inf() const noexcept { return _v == plus_inf_value; }
+    constexpr bool is_minus_inf() const noexcept { return _v == minus_inf_value; }
+    constexpr bool is_inf() const noexcept { return _v == plus_inf_value; }
+    constexpr bool is_finite() const noexcept { return minus_inf_value < _v and _v < plus_inf_value; }
 
     constexpr infint& operator=(const infint& o) noexcept {
         _v = o._v;
@@ -79,21 +79,21 @@ struct infint {
 
     constexpr infint operator+() const noexcept { return _v; }
     constexpr infint operator-() const noexcept {
-        if (_v == _NaN) return _v;
+        if (_v == nan_value) return _v;
         return -_v;
     }
     constexpr infint& operator*=(const infint& o) noexcept {
-        if (isNaN() or o.isNaN()) {
-            _v = _NaN;
+        if (is_nan() or o.is_nan()) {
+            _v = nan_value;
             return *this;
         }
-        if (not isfinite() or not o.isfinite()) {
+        if (not is_finite() or not o.is_finite()) {
             if (_v == 0 or o._v == 0) {
-                _v = _NaN;
+                _v = nan_value;
             } else if ((_v > 0) ^ (o._v > 0)) {
-                _v = _MinusInf;
+                _v = minus_inf_value;
             } else {
-                _v = _PlusInf;
+                _v = plus_inf_value;
             }
             return *this;
         }
@@ -101,12 +101,12 @@ struct infint {
             _v = 0;
             return *this;
         }
-        // 有限の値の最大は _PlusInf - 1
-        if (std::abs(_v) > (_PlusInf - 1) / std::abs(o._v)) {
+        // 有限の値の最大は plus_inf_value - 1
+        if (std::abs(_v) > (plus_inf_value - 1) / std::abs(o._v)) {
             if ((_v > 0) ^ (o._v > 0)) {
-                _v = _MinusInf;
+                _v = minus_inf_value;
             } else {
-                _v = _PlusInf;
+                _v = plus_inf_value;
             }
             return *this;
         }
@@ -114,28 +114,28 @@ struct infint {
         return *this;
     }
     constexpr infint& operator/=(const infint& o) noexcept {
-        if (isNaN() or o.isNaN()) {
-            _v = _NaN;
+        if (is_nan() or o.is_nan()) {
+            _v = nan_value;
             return *this;
         }
-        if (not isfinite() and not o.isfinite()) {
-            _v = _NaN;
+        if (not is_finite() and not o.is_finite()) {
+            _v = nan_value;
             return *this;
         }
         if (o._v == 0) {
-            _v = _NaN;
+            _v = nan_value;
             return *this;
         }
-        if (not o.isfinite()) {
+        if (not o.is_finite()) {
             _v = 0;
             return *this;
         }
-        if (not isfinite()) {
+        if (not is_finite()) {
             // ±inf / 有限 = ±inf (符号は商の符号)
             if ((_v > 0) ^ (o._v > 0)) {
-                _v = _MinusInf;
+                _v = minus_inf_value;
             } else {
-                _v = _PlusInf;
+                _v = plus_inf_value;
             }
             return *this;
         }
@@ -143,52 +143,52 @@ struct infint {
         return *this;
     }
     constexpr infint& operator%=(const infint& o) noexcept {
-        if (isNaN() or o.isNaN()) {
-            _v = _NaN;
+        if (is_nan() or o.is_nan()) {
+            _v = nan_value;
             return *this;
         }
-        if (not isfinite() and not o.isfinite()) {
-            _v = _NaN;
+        if (not is_finite() and not o.is_finite()) {
+            _v = nan_value;
             return *this;
         }
         if (o._v == 0) {
-            _v = _NaN;
+            _v = nan_value;
             return *this;
         }
-        if (not isfinite()) {
+        if (not is_finite()) {
             // ±inf % 有限 は定まらない (浮動小数点数の fmod と同じく NaN)
-            _v = _NaN;
+            _v = nan_value;
             return *this;
         }
-        if (not o.isfinite()) {
+        if (not o.is_finite()) {
             return *this;
         }
         _v %= o._v;
         return *this;
     }
     constexpr infint& operator+=(const infint& o) noexcept {
-        if (isNaN() or o.isNaN()) {
-            _v = _NaN;
+        if (is_nan() or o.is_nan()) {
+            _v = nan_value;
             return *this;
         }
-        if (not isfinite() or not o.isfinite()) {
-            if (not isfinite() and not o.isfinite()) {
-                if (isPlusInf() ^ o.isPlusInf()) {
-                    _v = _NaN;
+        if (not is_finite() or not o.is_finite()) {
+            if (not is_finite() and not o.is_finite()) {
+                if (is_plus_inf() ^ o.is_plus_inf()) {
+                    _v = nan_value;
                 }
-            } else if (not o.isfinite()) {
+            } else if (not o.is_finite()) {
                 _v = o._v;
             }
             return *this;
         }
         if (o._v > 0) {
-            if (_v >= _PlusInf - o._v) {
-                _v = _PlusInf;
+            if (_v >= plus_inf_value - o._v) {
+                _v = plus_inf_value;
                 return *this;
             }
         } else if (o._v < 0) {
-            if (_v <= _MinusInf - o._v) {
-                _v = _MinusInf;
+            if (_v <= minus_inf_value - o._v) {
+                _v = minus_inf_value;
                 return *this;
             }
         }
@@ -196,28 +196,28 @@ struct infint {
         return *this;
     }
     constexpr infint& operator-=(const infint& o) noexcept {
-        if (isNaN() or o.isNaN()) {
-            _v = _NaN;
+        if (is_nan() or o.is_nan()) {
+            _v = nan_value;
             return *this;
         }
-        if (not isfinite() or not o.isfinite()) {
-            if (not isfinite() and not o.isfinite()) {
-                if (isPlusInf() == o.isPlusInf()) {
-                    _v = _NaN;
+        if (not is_finite() or not o.is_finite()) {
+            if (not is_finite() and not o.is_finite()) {
+                if (is_plus_inf() == o.is_plus_inf()) {
+                    _v = nan_value;
                 }
-            } else if (not o.isfinite()) {
+            } else if (not o.is_finite()) {
                 _v = -o._v;
             }
             return *this;
         }
         if (o._v > 0) {
-            if (_v <= _MinusInf + o._v) {
-                _v = _MinusInf;
+            if (_v <= minus_inf_value + o._v) {
+                _v = minus_inf_value;
                 return *this;
             }
         } else if (o._v < 0) {
-            if (_v >= _PlusInf + o._v) {
-                _v = _PlusInf;
+            if (_v >= plus_inf_value + o._v) {
+                _v = plus_inf_value;
                 return *this;
             }
         }
@@ -226,11 +226,11 @@ struct infint {
     }
     static std::string type_str() { return "infint<>"; }
     std::string initializer_str() const {
-        if (_v == _PlusInf) {
+        if (_v == plus_inf_value) {
             return "{\"plusinf\"}";
-        } else if (_v == _MinusInf) {
+        } else if (_v == minus_inf_value) {
             return "{\"minusinf\"}";
-        } else if (_v == _NaN) {
+        } else if (_v == nan_value) {
             return "{\"nan\"}";
         } else {
             return "{" + std::to_string(_v) + "}";
@@ -240,11 +240,11 @@ struct infint {
         return this->type_str() + this->initializer_str();
     }
     std::string to_string() const {
-        if (_v == _PlusInf) {
+        if (_v == plus_inf_value) {
             return str_plusinf;
-        } else if (_v == _MinusInf) {
+        } else if (_v == minus_inf_value) {
             return str_minusinf;
-        } else if (_v == _NaN) {
+        } else if (_v == nan_value) {
             return str_nan;
         } else {
             return std::to_string(_v);
@@ -268,38 +268,38 @@ struct infint {
     /**
      * 正の無限大
      */
-    constexpr static infint PlusInf() noexcept {
-        return _PlusInf;
+    constexpr static infint plus_inf() noexcept {
+        return plus_inf_value;
     }
     /**
      * 負の無限大
      */
-    constexpr static infint MinusInf() noexcept {
-        return _MinusInf;
+    constexpr static infint minus_inf() noexcept {
+        return minus_inf_value;
     }
     /**
      * Not a Number
      */
-    constexpr static infint NaN() noexcept {
-        return _NaN;
+    constexpr static infint nan() noexcept {
+        return nan_value;
     }
     /**
-     * 正の無限大(PlusInfと同じ)
+     * 正の無限大(plus_inf と同じ)
      */
-    constexpr static infint Inf() noexcept {
-        return _PlusInf;
+    constexpr static infint inf() noexcept {
+        return plus_inf_value;
     }
     /**
      * 正の無限大でない最大値
      */
-    constexpr static infint Max() noexcept {
-        return _PlusInf - 1;
+    constexpr static infint max() noexcept {
+        return plus_inf_value - 1;
     }
     /**
      * 負の無限大でない最小値
      */
-    constexpr static infint Min() noexcept {
-        return _MinusInf + 1;
+    constexpr static infint min() noexcept {
+        return minus_inf_value + 1;
     }
 
     friend constexpr infint operator*(const infint& t1, const infint& t2) noexcept {
@@ -323,19 +323,19 @@ struct infint {
         return res -= t2;
     }
     friend constexpr bool operator<(const infint& t1, const infint& t2) noexcept {
-        if (t1.isNaN() or t2.isNaN()) return false;
+        if (t1.is_nan() or t2.is_nan()) return false;
         return t1._v < t2._v;
     }
     friend constexpr bool operator>(const infint& t1, const infint& t2) noexcept {
-        if (t1.isNaN() or t2.isNaN()) return false;
+        if (t1.is_nan() or t2.is_nan()) return false;
         return t1._v > t2._v;
     }
     friend constexpr bool operator<=(const infint& t1, const infint& t2) noexcept {
-        if (t1.isNaN() or t2.isNaN()) return false;
+        if (t1.is_nan() or t2.is_nan()) return false;
         return t1._v <= t2._v;
     }
     friend constexpr bool operator>=(const infint& t1, const infint& t2) noexcept {
-        if (t1.isNaN() or t2.isNaN()) return false;
+        if (t1.is_nan() or t2.is_nan()) return false;
         return t1._v >= t2._v;
     }
     friend constexpr bool operator==(const infint& t1, const infint& t2) noexcept {

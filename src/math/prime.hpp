@@ -11,22 +11,11 @@
 #include <numeric>
 #include <utility>
 #include <vector>
+#include "modular-arithmetic.hpp"
 
 namespace prime_detail {
 
 using u64 = unsigned long long;
-using u128 = unsigned __int128;
-
-constexpr u64 mul_mod(u64 a, u64 b, u64 m) { return static_cast<u64>(static_cast<u128>(a) * b % m); }
-constexpr u64 pow_mod(u64 a, u64 e, u64 m) {
-    u64 res = 1 % m;
-    a %= m;
-    for (; e > 0; e >>= 1) {
-        if (e & 1) res = mul_mod(res, a, m);
-        a = mul_mod(a, a, m);
-    }
-    return res;
-}
 
 /**
  * @brief Pollard の ρ 法 (Brent の改良) で合成数 n の 1 でも n でもない約数を 1 つ見つける
@@ -35,7 +24,7 @@ inline u64 find_factor(u64 n) {
     if (n % 2 == 0) return 2;
     constexpr u64 m = 128;
     for (u64 c = 1;; c++) {
-        auto f = [&](u64 x) { return (mul_mod(x, x, n) + c) % n; };
+        auto f = [&](u64 x) { return (modmul(x, x, n) + c) % n; };
         auto diff = [](u64 x, u64 y) { return x > y ? x - y : y - x; };
         u64 x = 0, y = 2, ys = 2, q = 1, g = 1;
         for (u64 r = 1; g == 1; r <<= 1) {
@@ -45,7 +34,7 @@ inline u64 find_factor(u64 n) {
                 ys = y;
                 for (u64 i = 0; i < m && i < r - k; i++) {
                     y = f(y);
-                    q = mul_mod(q, diff(x, y), n);
+                    q = modmul(q, diff(x, y), n);
                 }
                 g = std::gcd(q, n);
             }
@@ -79,11 +68,11 @@ constexpr bool is_prime(long long n) {
     for (u64 a : {2ULL, 325ULL, 9375ULL, 28178ULL, 450775ULL, 9780504ULL, 1795265022ULL}) {
         a %= m;
         if (a == 0) continue;
-        u64 x = pow_mod(a, d, m);
+        u64 x = modpow(a, d, m);
         if (x == 1 || x == m - 1) continue;
         bool composite = true;
         for (int i = 1; i < s; i++) {
-            x = mul_mod(x, x, m);
+            x = modmul(x, x, m);
             if (x == m - 1) {
                 composite = false;
                 break;

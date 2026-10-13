@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <cassert>
 #include <vector>
-#include "number-theory.hpp"
+#include "convolution.hpp"
 
 template <typename mint> struct FPS : std::vector<mint> {
     using std::vector<mint>::vector;

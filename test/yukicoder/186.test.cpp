@@ -2,6 +2,9 @@
 
 #include "../../src/math/number-theory.hpp"
 
+#include <iostream>
+#include <vector>
+
 int main() {
     std::vector<long long> x(3), y(3);
     for (int i = 0; i < 3; ++i) std::cin >> x[i] >> y[i];

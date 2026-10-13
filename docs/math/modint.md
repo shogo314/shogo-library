@@ -41,5 +41,5 @@ modint x = 20;                            // 7
 
 ## 関連
 
-- 逆元・累乗・畳み込みなどの関数は [数論](number-theory.hpp)
+- `long long` の逆元・累乗は [mod 演算](modular-arithmetic.hpp)、畳み込みは [畳み込み](convolution.hpp)
 - 二項係数は [組み合わせ](combinatorics.hpp)

@@ -3,7 +3,7 @@ title: 形式的冪級数
 documentation_of: //src/math/fps.hpp
 ---
 
-`std::vector<mint>` を継承した形式的冪級数 `FPS<mint>` です。`f[i]` が $x^i$ の係数です。掛け算は [数論](number-theory.hpp) の `convolution` を使うので、mod は 998244353 以外でもかまいません (998244353 のときが速い)。
+`std::vector<mint>` を継承した形式的冪級数 `FPS<mint>` です。`f[i]` が $x^i$ の係数です。掛け算は [畳み込み](convolution.hpp) の `convolution` を使うので、mod は 998244353 以外でもかまいません (998244353 のときが速い)。
 
 ```cpp
 using mint = static_modint<998244353>;

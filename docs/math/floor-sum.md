@@ -20,5 +20,5 @@ long long t = floor_sum(3, 2, -1, 0);  // 0 + (-1) + (-1) = -2
 
 ## 関連
 
-- mod 演算や中国剰余定理は [数論](number-theory.hpp)
+- mod 演算は [mod 演算](modular-arithmetic.hpp)、中国剰余定理は [数論](number-theory.hpp)
 - $\lfloor n/i \rfloor$ の値ごとにまとめるには [商の列挙](quotients.hpp)

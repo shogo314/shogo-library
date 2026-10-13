@@ -31,7 +31,7 @@ bool check(long long m, int lim) {
         if (n > 0) f = f * n % m;
         if ((long long)C::factorial(n).value() != f) ok = false;
         if ((C::factorial(n) * C::inverse_factorial(n)).value() != 1 % m) ok = false;
-        if (n > 0 && (C::inverse(n) * M(n)).value() != 1 % m) ok = false;
+        if (n > 0 && (C::inv(n) * M(n)).value() != 1 % m) ok = false;
     }
     for (int n = 0; n <= lim; n++) {
         for (int r = -1; r <= lim + 1; r++) {
@@ -74,7 +74,7 @@ int main() {
         std::mt19937_64 rng(314);
         for (int rep = 0; rep < 1000; rep++) {
             int n = rng() % 100000 + 1;
-            if ((Combination<M>::inverse(n) * M(n)).value() != 1) ok = false;
+            if ((Combination<M>::inv(n) * M(n)).value() != 1) ok = false;
         }
     }
 

@@ -8,7 +8,7 @@
 #include <cassert>
 #include <numeric>
 #include <vector>
-#include "number-theory.hpp"
+#include "modular-arithmetic.hpp"
 
 /**
  * @brief 組み合わせ
@@ -69,7 +69,7 @@ public:
      * @return n^-1
      * @note extend(n), O(1)
      */
-    inline static Modint inverse(int n) {
+    inline static Modint inv(int n) {
         assert(n > 0);
         extend(n);
         return inv_fact[n] * fact[n - 1];

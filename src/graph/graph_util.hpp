@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "graph.hpp"
+#include "../data_structures/unionfind.hpp"
 
 /**
  * @brief 無向グラフについて、二部グラフなら0と1に彩色した結果をひとつ返し、二部グラフでないなら空のvectorを返す。
@@ -190,6 +191,36 @@ std::vector<std::vector<int>> strongly_connected_components(const Graph<Cost>& g
     std::vector<std::vector<int>> groups(k);
     for (int v = 0; v < n; v++) groups[k - 1 - comp[v]].push_back(v);
     return groups;
+}
+
+/**
+ * @brief 最小全域木の結果
+ */
+template <typename Cost>
+struct MinimumSpanningTree {
+    Cost cost;                                      //!< 使った辺のコストの総和
+    std::vector<typename Graph<Cost>::Edge> edges;  //!< 使った辺 (コストの昇順、同じコストなら辺の番号順)
+};
+
+/**
+ * @brief 無向グラフの最小全域木 (Kruskal 法) O(m log m)
+ *
+ * 連結でなければ、各連結成分の最小全域木を合わせたもの (最小全域森) を返す
+ * 連結かどうかは edges.size() == n - 1 で判定できる
+ */
+template <typename Cost = int>
+MinimumSpanningTree<Cost> minimum_spanning_tree(const Graph<Cost>& graph) {
+    auto es = graph.edges();
+    std::stable_sort(es.begin(), es.end(), [](const auto& a, const auto& b) { return a.cost < b.cost; });
+    UnionFind uf(graph.n);
+    MinimumSpanningTree<Cost> res{Cost{}, {}};
+    for (const auto& e : es) {
+        if (uf.merge(e.src, e.dst)) {
+            res.cost += e.cost;
+            res.edges.push_back(e);
+        }
+    }
+    return res;
 }
 
 /**

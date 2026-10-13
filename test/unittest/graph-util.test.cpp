@@ -10,6 +10,7 @@
 #include <tuple>
 #include <vector>
 
+#include "../../src/data_structures/unionfind.hpp"
 #include "../../src/graph/graph_util.hpp"
 
 int main() {
@@ -190,6 +191,38 @@ int main() {
         }
         if (terminals.empty()) best = 0;
         if (minimum_steiner_tree(graph, terminals) != best) ok = false;
+    }
+
+    // minimum_spanning_tree: 辺の部分集合をすべて試して最小のコストの全域森と比べる
+    for (int rep = 0; rep < 1000 && ok; rep++) {
+        int n = rng() % 6 + 1, m = rng() % 9;
+        Graph<int> graph(n);
+        for (int i = 0; i < m; i++) graph.add_edge(rng() % n, rng() % n, rng() % 10);
+        auto es = graph.edges();
+        auto comps = connected_components(graph);
+        int need = n - (int)comps.size();  // 全域森の辺の本数
+        int best = -1;
+        for (int mask = 0; mask < (1 << m); mask++) {
+            if (__builtin_popcount(mask) != need) continue;
+            UnionFind uf(n);
+            bool forest = true;
+            int cost = 0;
+            for (int i = 0; i < m; i++) {
+                if (!(mask >> i & 1)) continue;
+                if (!uf.merge(es[i].src, es[i].dst)) forest = false;
+                cost += es[i].cost;
+            }
+            if (forest && (best == -1 || cost < best)) best = cost;
+        }
+        auto mst = minimum_spanning_tree(graph);
+        if (mst.cost != best || (int)mst.edges.size() != need) ok = false;
+        UnionFind uf(n);
+        int sum = 0;
+        for (const auto& e : mst.edges) {
+            if (!uf.merge(e.src, e.dst)) ok = false;
+            sum += e.cost;
+        }
+        if (sum != mst.cost) ok = false;
     }
 
     if (ok) std::cout << "Hello World" << std::endl;

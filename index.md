@@ -172,6 +172,9 @@ data:
   - name: src/others
     pages:
     - icon: ':heavy_check_mark:'
+      path: src/others/inversion-number.hpp
+      title: "\u8EE2\u5012\u6570"
+    - icon: ':heavy_check_mark:'
       path: src/others/longest-increasing-subsequence.hpp
       title: "\u6700\u9577\u5897\u52A0\u90E8\u5206\u5217 (LIS)"
     - icon: ':heavy_check_mark:'
@@ -268,6 +271,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/aoj/alds1-4-d.test.cpp
       title: test/aoj/alds1-4-d.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/alds1-5-d.test.cpp
+      title: test/aoj/alds1-5-d.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/aoj/cgl-2-b.test.cpp
       title: test/aoj/cgl-2-b.test.cpp
@@ -525,6 +531,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/interval-set.test.cpp
       title: test/unittest/interval-set.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/inversion-number.test.cpp
+      title: test/unittest/inversion-number.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/io.test.cpp
       title: test/unittest/io.test.cpp

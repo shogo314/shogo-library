@@ -19,7 +19,7 @@
 | `src/math/` | modint、行列、形式的冪級数、組み合わせ、数論、素数 (素数判定・素因数分解・篩)、無限大を持つ整数 (`infint`)、floor sum |
 | `src/string/` | Z-algorithm、KMP、Manacher、Suffix Array と LCP 配列、ローリングハッシュ |
 | `src/geometry/` | 幾何 (ベクトル、凸包、偏角ソートなど) |
-| `src/others/` | Mo's algorithm、最長増加部分列 (LIS) |
+| `src/others/` | Mo's algorithm、最長増加部分列 (LIS)、転倒数 |
 | `test/` | 検証用テスト (ジャッジごとにディレクトリを分けています。`test/unittest/` は問題を使わない単体テスト) |
 | `docs/` | ドキュメントの各ページに埋め込む機能一覧 (`documentation_of` でヘッダに対応付け) |
 

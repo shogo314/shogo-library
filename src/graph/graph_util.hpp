@@ -315,26 +315,26 @@ MinimumSpanningTree<Cost> minimum_spanning_tree(const Graph<Cost>& graph) {
  * @note X を連結にできなければ inf を返す
  */
 template <typename Cost, typename T>
-Cost minimum_steiner_tree(const Graph<Cost>& G, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max() / 4) {
+Cost minimum_steiner_tree(const Graph<Cost>& graph, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max() / 4) {
     if (X.empty()) return Cost{};
-    std::vector<std::vector<Cost>> dp(G.n, std::vector<Cost>(1 << X.size(), inf));
+    std::vector<std::vector<Cost>> dp(graph.n, std::vector<Cost>(1 << X.size(), inf));
     for (int p = 0; p < (int)X.size(); p++) dp[X[p]][1 << p] = {};
     for (int i = 0; i < (1 << X.size()); i++) {
         for (int j = i; j > 0; j = (j - 1) & i) {
-            for (int k = 0; k < G.n; k++) {
+            for (int k = 0; k < graph.n; k++) {
                 if (dp[k][j] != inf && dp[k][i ^ j] != inf) {
                     if (dp[k][i] == inf || dp[k][i] > dp[k][j] + dp[k][i ^ j]) dp[k][i] = dp[k][j] + dp[k][i ^ j];
                 }
             }
         }
         std::priority_queue<std::pair<Cost, int>, std::vector<std::pair<Cost, int>>, std::greater<std::pair<Cost, int>>> que;
-        for (int k = 0; k < G.n; k++)
+        for (int k = 0; k < graph.n; k++)
             if (dp[k][i] != inf) que.emplace(dp[k][i], k);
         while (que.size()) {
             auto [d, u] = que.top();
             que.pop();
             if (d > dp[u][i]) continue;
-            for (auto e : G[u]) {
+            for (auto e : graph[u]) {
                 if (dp[e.dst][i] == inf || dp[e.dst][i] > d + e.cost) {
                     dp[e.dst][i] = d + e.cost;
                     que.emplace(d + e.cost, e.dst);
@@ -343,7 +343,7 @@ Cost minimum_steiner_tree(const Graph<Cost>& G, const std::vector<T>& X, Cost in
         }
     }
     Cost res = inf;
-    for (int k = 0; k < G.n; k++) {
+    for (int k = 0; k < graph.n; k++) {
         if (dp[k].back() != inf && (res == inf || res > dp[k].back())) res = dp[k].back();
     }
     return res;

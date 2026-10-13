@@ -31,7 +31,7 @@ bool b = fg.is_cycle[3];     // false
 | `is_cycle[v]` | `v` がサイクル上にあるか |
 | `depth[v]` | `v` からサイクルに入るまでの距離 (サイクル上なら 0) |
 | `root[v]` | `v` から進んで最初に着くサイクル上の頂点 |
-| `connected_id[v]` | `v` が属する連結成分の番号 |
-| `connected_list[c]` | 連結成分 `c` の頂点のリスト |
-| `cycle_list[c]` | 連結成分 `c` のサイクルの頂点を、辺をたどる順に並べたリスト |
-| `root_idx[v]` | `root[v]` の `cycle_list` 上の位置 |
+| `group_id[v]` | `v` が属する連結成分の番号 |
+| `groups[c]` | 連結成分 `c` の頂点のリスト |
+| `cycles[c]` | 連結成分 `c` のサイクルの頂点を、辺をたどる順に並べたリスト |
+| `root_index[v]` | `root[v]` の `cycles` 上の位置 |

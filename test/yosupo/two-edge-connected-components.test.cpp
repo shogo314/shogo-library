@@ -13,7 +13,7 @@ int main() {
     Graph<int> g(n);
     g.read(m, 0);
     LowLink ll(g);
-    const auto& groups = ll.two_edge_connected_components();
+    const auto& groups = ll.two_edge_connected_groups();
     std::cout << groups.size() << '\n';
     for (const auto& group : groups) {
         std::cout << group.size();

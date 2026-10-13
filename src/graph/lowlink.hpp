@@ -16,7 +16,7 @@
  * 多重辺と自己ループがあってもよい (親へ戻る辺は頂点ではなく辺の番号で区別する)
  * 例:
  * LowLink ll(g);
- * ll.articulation_points(); ll.bridges(); ll.two_edge_connected_components();
+ * ll.articulation_points(); ll.bridges(); ll.two_edge_connected_groups();
  *
  * @tparam Cost 辺のコストの型
  */
@@ -108,9 +108,9 @@ public:
     /**
      * @brief 頂点 v が属する二重辺連結成分の番号
      */
-    int two_edge_connected_component_id(int v) const { return comp[v]; }
+    int two_edge_connected_group_id(int v) const { return comp[v]; }
     /**
      * @brief 二重辺連結成分 (橋を取り除いたときの連結成分) ごとの頂点のリスト
      */
-    const std::vector<std::vector<int>>& two_edge_connected_components() const { return groups; }
+    const std::vector<std::vector<int>>& two_edge_connected_groups() const { return groups; }
 };

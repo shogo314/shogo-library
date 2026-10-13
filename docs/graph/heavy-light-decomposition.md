@@ -42,7 +42,7 @@ for (auto [a, b] : hld.path(u, v)) x = a <= b ? forward.prod(a, b + 1)(x) : back
 | `path(u, v, edge = false)` | `u` から `v` へのパスに対応する区間のリスト (上の説明を参照) | $O(\log n)$ |
 | `lca(u, v)` | 最小共通祖先 | $O(\log n)$ |
 | `dist(u, v)` | `u` と `v` の間の辺の本数 | $O(\log n)$ |
-| `climb(v, k)` | `v` から根の方へ `k` 本進んだ頂点 (なければ `-1`) | $O(\log n)$ |
+| `hop(v, k)` | `v` から根の方へ `k` 本進んだ頂点 (なければ `-1`) | $O(\log n)$ |
 | `jump(u, v, k)` | `u` から `v` へのパスで、`u` から `k` 本進んだ頂点 (なければ `-1`) | $O(\log n)$ |
 
 ## 関連

@@ -110,7 +110,7 @@ int main() {
             for (int k = -1; k <= n; k++) {
                 int x = u;
                 for (int i = 0; i < k && x != -1; i++) x = par[x];
-                if (hld.climb(u, k) != (k < 0 ? -1 : x)) ok = false;
+                if (hld.hop(u, k) != (k < 0 ? -1 : x)) ok = false;
             }
         }
         // Tree や RootedTree からも同じものが作れる

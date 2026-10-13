@@ -60,12 +60,12 @@ int main() {
         for (int i = 0; i < m; i++) {
             if (!ll.is_bridge(i)) uf.merge(es[i].first, es[i].second);
         }
-        const auto& groups = ll.two_edge_connected_components();
+        const auto& groups = ll.two_edge_connected_groups();
         int total = 0;
         for (int k = 0; k < (int)groups.size(); k++) {
             total += groups[k].size();
             for (int v : groups[k]) {
-                if (ll.two_edge_connected_component_id(v) != k || !uf.same(v, groups[k][0])) ok = false;
+                if (ll.two_edge_connected_group_id(v) != k || !uf.same(v, groups[k][0])) ok = false;
             }
         }
         int uf_groups = 0;

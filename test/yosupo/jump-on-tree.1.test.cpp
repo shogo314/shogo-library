@@ -22,9 +22,9 @@ int main() {
         if (i > dist) {
             std::cout << -1 << '\n';
         } else if (i <= ds) {
-            std::cout << dt.climb(s, i) << '\n';
+            std::cout << dt.hop(s, i) << '\n';
         } else {
-            std::cout << dt.climb(t, dist - i) << '\n';
+            std::cout << dt.hop(t, dist - i) << '\n';
         }
     }
 }

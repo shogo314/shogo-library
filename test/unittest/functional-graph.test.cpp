@@ -45,9 +45,9 @@ int main() {
                 if (y == x) on_cycle[x] = true;
             }
         }
-        // cycle_list の各要素は g でつながったサイクルで、全体としてサイクル上の頂点をちょうど1回ずつ含む
+        // cycles の各要素は g でつながったサイクルで、全体としてサイクル上の頂点をちょうど1回ずつ含む
         std::vector<int> cnt(n);
-        for (const auto& cycle : fg.cycle_list) {
+        for (const auto& cycle : fg.cycles) {
             for (int i = 0; i < (int)cycle.size(); i++) {
                 if (g[cycle[i]] != cycle[(i + 1) % cycle.size()]) ok = false;
                 cnt[cycle[i]]++;

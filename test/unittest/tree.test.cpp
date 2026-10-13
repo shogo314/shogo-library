@@ -48,10 +48,10 @@ int main() {
         if (dt.n != n || dt.root != root) ok = false;
         for (int v = 0; v < n; v++) {
             if (dt.par[v].dst != par[v] || dt.unweighted_depth[v] != dep[v] || dt.depth[v] != wdep[v]) ok = false;
-            // climb: k 個上の祖先 (存在しなければ -1)
+            // hop: k 個上の祖先 (存在しなければ -1)
             int x = v;
             for (int k = 0; k <= n; k++) {
-                if (dt.climb(v, k) != x) ok = false;
+                if (dt.hop(v, k) != x) ok = false;
                 if (x != -1) x = par[x];
             }
         }

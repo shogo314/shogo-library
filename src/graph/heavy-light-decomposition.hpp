@@ -118,7 +118,7 @@ public:
     /**
      * @brief v から根の方へ k 本の辺を進んだ頂点 (k > depth(v) なら -1) O(log n)
      */
-    int climb(int v, int k) const {
+    int hop(int v, int k) const {
         if (k < 0 || k > dep[v]) return -1;
         while (true) {
             int h = head[v];
@@ -134,8 +134,8 @@ public:
         if (k < 0) return -1;
         int w = lca(u, v);
         int du = dep[u] - dep[w], dv = dep[v] - dep[w];
-        if (k <= du) return climb(u, k);
-        if (k <= du + dv) return climb(v, du + dv - k);
+        if (k <= du) return hop(u, k);
+        if (k <= du + dv) return hop(v, du + dv - k);
         return -1;
     }
 

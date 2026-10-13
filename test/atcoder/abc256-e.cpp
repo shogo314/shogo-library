@@ -13,7 +13,7 @@ int main(void) {
     std::vector<int> C(N);
     for (int& c : C) std::cin >> c;
     long long ans = 0;
-    for (const auto& cycle : fg.cycle_list) {
+    for (const auto& cycle : fg.cycles) {
         int tmp = 1 << 30;
         for (int u : cycle)
             if (C[u] < tmp) tmp = C[u];

@@ -248,7 +248,7 @@ private:
 /**
  * @brief 親頂点ダブリング済み根付き木
  * 
- * @tparam Cost = int 辺の重み(注: climbでは根の重みは考えない)
+ * @tparam Cost = int 辺の重み(注: hopでは根の重みは考えない)
  */
 template <typename Cost = int>
 struct DoublingClimbTree : private RootedTree<Cost> {
@@ -330,7 +330,7 @@ struct DoublingClimbTree : private RootedTree<Cost> {
      * @param k 登る段数
      * @return int k回登った頂点
      */
-    int climb(int u, int k) const {
+    int hop(int u, int k) const {
         assert(k >= 0);
         if(k > this->unweighted_depth[u]) return -1;
         for(int i = 0; i < h; i++) {
@@ -349,7 +349,7 @@ struct DoublingClimbTree : private RootedTree<Cost> {
      */
     int lca(int u, int v) const {
         if(this->unweighted_depth[u] > this->unweighted_depth[v]) std::swap(u, v);
-        v = climb(v, this->unweighted_depth[v] - this->unweighted_depth[u]);
+        v = hop(v, this->unweighted_depth[v] - this->unweighted_depth[u]);
         if(u == v) return u;
         for(int i = h - 1; i >= 0; i--) {
             int nu = doubling_par[i][u];

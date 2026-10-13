@@ -22,7 +22,7 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 | 直径 (`diameter`) | ✓ | | |
 | `g[v]`、`edges()`、`shortest_path` ([グラフ](graph.hpp) と同じ) | ✓ | ✓ | ✓ |
 | 親・子・深さ・高さ・部分木サイズ・巡回順 | | ✓ | ✓ |
-| `climb`、`lca`、`dist` | | | ✓ |
+| `hop`、`lca`、`dist` | | | ✓ |
 
 ## `Tree<Cost = int>` (根なし木)
 
@@ -58,7 +58,7 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 
 | メンバ | 説明 | 計算量 |
 |---|---|---|
-| `climb(u, k)` | `u` から `k` 個上の祖先 (存在しなければ `-1`) | $O(\log n)$ |
+| `hop(u, k)` | `u` から `k` 個上の祖先 (存在しなければ `-1`) | $O(\log n)$ |
 | `lca(u, v)` | 最小共通祖先 | $O(\log n)$ |
 | `dist(u, v)` | 2頂点間の距離 (重み付き) | $O(\log n)$ |
 | `doubling_par[i][v]` | `v` から $2^i$ 個上の祖先 (存在しなければ `-1`) | |

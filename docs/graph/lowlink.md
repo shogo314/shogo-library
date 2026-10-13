@@ -13,7 +13,7 @@ g.read(m, 0);
 LowLink ll(g);
 for (int v : ll.articulation_points()) { /* 関節点 */ }
 for (int id : ll.bridges()) { auto e = g.edges()[id]; /* 橋 e.src - e.dst */ }
-auto groups = ll.two_edge_connected_components();
+auto groups = ll.two_edge_connected_groups();
 ```
 
 ## メンバ
@@ -25,8 +25,8 @@ auto groups = ll.two_edge_connected_components();
 | `is_articulation_point(v)` | `v` が関節点か |
 | `bridges()` | 橋 (取り除くと連結成分が増える辺) の辺の番号 (`Edge::id`) の昇順のリスト |
 | `is_bridge(id)` | 番号 `id` の辺が橋か |
-| `two_edge_connected_components()` | 二重辺連結成分 (橋をすべて取り除いたときの連結成分) ごとの頂点のリスト |
-| `two_edge_connected_component_id(v)` | `v` が属する二重辺連結成分の番号 (`two_edge_connected_components()` の添字) |
+| `two_edge_connected_groups()` | 二重辺連結成分 (橋をすべて取り除いたときの連結成分) ごとの頂点のリスト |
+| `two_edge_connected_group_id(v)` | `v` が属する二重辺連結成分の番号 (`two_edge_connected_groups()` の添字) |
 | `ord[v]` / `low[v]` | DFS で訪れた順番 / lowlink の値 |
 
 ## 関連

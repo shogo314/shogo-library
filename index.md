@@ -139,6 +139,10 @@ data:
       path: src/math/combinatorics.hpp
       title: "\u7D44\u307F\u5408\u308F\u305B"
     - icon: ':heavy_check_mark:'
+      path: src/math/floor-sum.hpp
+      title: "floor sum (\u4E00\u6B21\u95A2\u6570\u306E\u5E8A\u95A2\u6570\u306E\u548C\
+        )"
+    - icon: ':heavy_check_mark:'
       path: src/math/fps.hpp
       title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570"
     - icon: ':heavy_check_mark:'
@@ -164,6 +168,9 @@ data:
       title: "\u6574\u6570\u306E\u5E73\u65B9\u6839"
   - name: src/others
     pages:
+    - icon: ':heavy_check_mark:'
+      path: src/others/longest-increasing-subsequence.hpp
+      title: "\u6700\u9577\u5897\u52A0\u90E8\u5206\u5217 (LIS)"
     - icon: ':heavy_check_mark:'
       path: src/others/mo.hpp
       title: Mo's algorithm
@@ -272,6 +279,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/aoj/cgl-5-a.test.cpp
       title: test/aoj/cgl-5-a.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/dpl-1-d.test.cpp
+      title: test/aoj/dpl-1-d.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/aoj/dpl-5-b.1.test.cpp
       title: test/aoj/dpl-5-b.1.test.cpp
@@ -470,6 +480,9 @@ data:
       path: test/unittest/fenwick-tree.test.cpp
       title: test/unittest/fenwick-tree.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/floor-sum.test.cpp
+      title: test/unittest/floor-sum.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/fps.test.cpp
       title: test/unittest/fps.test.cpp
     - icon: ':heavy_check_mark:'
@@ -502,6 +515,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/io.test.cpp
       title: test/unittest/io.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/longest-increasing-subsequence.test.cpp
+      title: test/unittest/longest-increasing-subsequence.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/lowlink.test.cpp
       title: test/unittest/lowlink.test.cpp
@@ -661,6 +677,9 @@ data:
       path: test/yosupo/log-of-fps.test.cpp
       title: test/yosupo/log-of-fps.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/longest-increasing-subsequence.test.cpp
+      title: test/yosupo/longest-increasing-subsequence.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/matrix-det.test.cpp
       title: test/yosupo/matrix-det.test.cpp
     - icon: ':heavy_check_mark:'
@@ -771,6 +790,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/staticrmq.test.cpp
       title: test/yosupo/staticrmq.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/sum-of-floor-of-linear.test.cpp
+      title: test/yosupo/sum-of-floor-of-linear.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/tree-diameter.test.cpp
       title: test/yosupo/tree-diameter.test.cpp

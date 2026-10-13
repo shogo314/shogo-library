@@ -749,3 +749,4 @@ $c_k = \sum_{i + j = k} a_i b_j$ を求めます。短い方の長さが 30 未�
 
 - 多項式・形式的冪級数の演算は [形式的冪級数](fps.hpp)
 - 二項係数などは [組み合わせ](combinatorics.hpp)
+- 一次関数の床関数の和は [floor sum](floor-sum.hpp)

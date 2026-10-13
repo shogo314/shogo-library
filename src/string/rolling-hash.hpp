@@ -5,6 +5,8 @@
  * @brief ローリングハッシュ
  */
 
+#include <cstddef>
+#include <iterator>
 #include <string>
 #include <vector>
 #include <random>
@@ -132,7 +134,7 @@ public:
  */
 struct RHString {
     RollingHash& rh;
-    size_t sz;
+    std::size_t sz;
     unsigned long long hash1;  //!< 正順
     unsigned long long hash2;  //!< 逆順
     /**
@@ -140,7 +142,7 @@ struct RHString {
      * 予めRollingHashをインスタンス化しておく必要がある
      */
     RHString(RollingHash& rh) : rh(rh), sz(0), hash1(0), hash2(0) {}
-    RHString(RollingHash& rh, size_t sz, unsigned long long hash1, unsigned long long hash2) : rh(rh), sz(sz), hash1(hash1), hash2(hash2) {}
+    RHString(RollingHash& rh, std::size_t sz, unsigned long long hash1, unsigned long long hash2) : rh(rh), sz(sz), hash1(hash1), hash2(hash2) {}
     RHString(const RHString& o) : rh(o.rh), sz(o.sz), hash1(o.hash1), hash2(o.hash2) {}
     /**
      * @brief vectorなどで初期化する
@@ -176,7 +178,7 @@ struct RHString {
     bool is_palindrome() const {
         return hash1 == hash2;
     }
-    size_t size() const {
+    std::size_t size() const {
         return sz;
     }
     void clear() {

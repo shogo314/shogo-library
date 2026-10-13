@@ -5,6 +5,7 @@
  */
 
 #include <array>
+#include <cstddef>
 #include <iostream>
 #include <set>
 #include <utility>
@@ -16,7 +17,7 @@ template <typename T1, typename T2, typename CharT, typename Traits>
 std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT, Traits>& is, std::pair<T1, T2>& p);
 template <typename... Types, typename CharT, typename Traits>
 std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT, Traits>& is, std::tuple<Types...>& p);
-template <typename T, size_t N, typename CharT, typename Traits>
+template <typename T, std::size_t N, typename CharT, typename Traits>
 std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT, Traits>& is, std::array<T, N>& a);
 template <typename T, typename CharT, typename Traits>
 std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT, Traits>& is, std::vector<T>& v);
@@ -24,7 +25,7 @@ template <typename T1, typename T2, typename CharT, typename Traits>
 std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const std::pair<T1, T2>& p);
 template <typename... Types, typename CharT, typename Traits>
 std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const std::tuple<Types...>& p);
-template <typename T, size_t N, typename CharT, typename Traits>
+template <typename T, std::size_t N, typename CharT, typename Traits>
 std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const std::array<T, N>& a);
 template <typename T, typename CharT, typename Traits>
 std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const std::vector<T>& v);
@@ -32,7 +33,7 @@ template <typename T, typename CharT, typename Traits>
 std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const std::set<T>& s);
 
 namespace tuple_io {
-    template <typename Tuple, size_t I, typename CharT, typename Traits>
+    template <typename Tuple, std::size_t I, typename CharT, typename Traits>
     std::basic_istream<CharT, Traits>& read_tuple(std::basic_istream<CharT, Traits>& is, Tuple& t) {
         is >> std::get<I>(t);
         if constexpr (I + 1 < std::tuple_size_v<Tuple>) {
@@ -40,7 +41,7 @@ namespace tuple_io {
         }
         return is;
     }
-    template <typename Tuple, size_t I, typename CharT, typename Traits>
+    template <typename Tuple, std::size_t I, typename CharT, typename Traits>
     std::basic_ostream<CharT, Traits>& write_tuple(std::basic_ostream<CharT, Traits>& os, const Tuple& t) {
         os << std::get<I>(t);
         if constexpr (I + 1 < std::tuple_size_v<Tuple>) {
@@ -60,7 +61,7 @@ template <typename... Types, typename CharT, typename Traits>
 std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT, Traits>& is, std::tuple<Types...>& p) {
     return tuple_io::read_tuple<std::tuple<Types...>, 0>(is, p);
 }
-template <typename T, size_t N, typename CharT, typename Traits>
+template <typename T, std::size_t N, typename CharT, typename Traits>
 std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT, Traits>& is, std::array<T, N>& a) {
     for(auto& e : a) is >> e;
     return is;
@@ -80,9 +81,9 @@ template <typename... Types, typename CharT, typename Traits>
 std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const std::tuple<Types...>& p) {
     return tuple_io::write_tuple<std::tuple<Types...>, 0>(os, p);
 }
-template <typename T, size_t N, typename CharT, typename Traits>
+template <typename T, std::size_t N, typename CharT, typename Traits>
 std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const std::array<T, N>& a) {
-    for(size_t i = 0; i < N; ++i) {
+    for(std::size_t i = 0; i < N; ++i) {
         if(i) os << CharT(' ');
         os << a[i];
     }
@@ -90,7 +91,7 @@ std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>&
 }
 template <typename T, typename CharT, typename Traits>
 std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const std::vector<T>& v) {
-    for(size_t i = 0; i < v.size(); ++i) {
+    for(std::size_t i = 0; i < v.size(); ++i) {
         if(i) os << CharT(' ');
         os << v[i];
     }

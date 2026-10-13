@@ -14,7 +14,9 @@
  * - F inv(const F& f): 逆作用素
  */
 
+#include <algorithm>
 #include <array>
+#include <cstddef>
 #include <limits>
 #include <optional>
 #include <type_traits>

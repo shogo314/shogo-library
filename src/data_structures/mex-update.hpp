@@ -6,6 +6,7 @@
  */
 
 #include <cassert>
+#include <cstddef>
 #include <limits>
 #include <map>
 #include <set>
@@ -21,7 +22,7 @@ struct MexUpdate {
     int n;
     std::vector<value_type> v;
     std::set<int> s;
-    std::map<int, size_t> m;
+    std::map<int, std::size_t> m;
 
    public:
     MexUpdate() = default;

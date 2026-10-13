@@ -7,8 +7,6 @@
 
 #include <algorithm>
 #include <cassert>
-#include <functional>
-#include <limits>
 #include <ostream>
 #include <tuple>
 #include <utility>

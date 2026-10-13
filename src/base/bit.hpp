@@ -7,7 +7,6 @@
 
 #include <cassert>
 #include <string>
-#include <vector>
 
 /**
  * @brief 2進数の文字列をlong longにする

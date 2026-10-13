@@ -7,9 +7,11 @@
 
 #include <algorithm>
 #include <cassert>
+#include <functional>
 #include <iostream>
 #include <limits>
 #include <queue>
+#include <utility>
 #include <vector>
 
 /**

@@ -7,10 +7,12 @@
 
 #include <algorithm>
 #include <cassert>
+#include <cstddef>
 #include <functional>
 #include <initializer_list>
 #include <iterator>
 #include <numeric>
+#include <type_traits>
 #include <vector>
 #include "traits.hpp"
 
@@ -186,9 +188,9 @@ inline constexpr mem_value_type<C> average(const C &v) {
 template <class C>
 inline constexpr mem_value_type<C> median(const C &v) {
     assert(not v.empty());
-    std::vector<size_t> u(v.size());
+    std::vector<std::size_t> u(v.size());
     std::iota(u.begin(), u.end(), 0);
-    std::sort(u.begin(), u.end(), [&](size_t a, size_t b) {
+    std::sort(u.begin(), u.end(), [&](std::size_t a, std::size_t b) {
         return v[a] < v[b];
     });
     if (v.size() & 1) {
@@ -208,12 +210,12 @@ template <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>
 inline constexpr mem_value_type<C> mex(const C &v) {
     std::vector<bool> b(v.size() + 1);
     for (const auto &a : v) {
-        if (0 <= a and static_cast<size_t>(a) < b.size()) {
+        if (0 <= a and static_cast<std::size_t>(a) < b.size()) {
             b[a] = true;
         }
     }
     mem_value_type<C> ret = 0;  // b の要素数は v より 1 多いので、下のループで必ず見つかる
-    for (size_t i = 0; i < b.size(); i++) {
+    for (std::size_t i = 0; i < b.size(); i++) {
         if (not b[i]) {
             ret = i;
             break;

@@ -10,6 +10,7 @@
 #include <cmath>
 #include <cstddef>
 #include <numeric>
+#include <type_traits>
 #include <vector>
 
 #include "traits.hpp"
@@ -53,7 +54,7 @@ inline std::vector<T> &operator+=(std::vector<T> &v1, const std::vector<U> &v2) 
     if (v2.size() > v1.size()) {
         v1.resize(v2.size());
     }
-    for (size_t i = 0; i < v2.size(); i++) {
+    for (std::size_t i = 0; i < v2.size(); i++) {
         v1[i] += v2[i];
     }
     return v1;
@@ -90,10 +91,10 @@ inline std::vector<T> &operator*=(std::vector<T> &v1, const std::vector<U> &v2) 
     if (v2.size() > v1.size()) {
         v1.resize(v2.size());
     }
-    for (size_t i = 0; i < v2.size(); i++) {
+    for (std::size_t i = 0; i < v2.size(); i++) {
         v1[i] *= v2[i];
     }
-    for (size_t i = v2.size(); i < v1.size(); i++) {
+    for (std::size_t i = v2.size(); i < v1.size(); i++) {
         v1[i] *= U(0);
     }
     return v1;

@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <cassert>
 #include <stack>
+#include <utility>
+#include <vector>
 
 #include "graph.hpp"
 

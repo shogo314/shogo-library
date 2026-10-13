@@ -5,8 +5,11 @@
  * @brief 数論 (逆元、中国剰余定理、畳み込みなど)
  */
 
+#include <algorithm>
+#include <cassert>
 #include <numeric>
 #include <optional>
+#include <utility>
 #include <vector>
 #include "modint.hpp"
 

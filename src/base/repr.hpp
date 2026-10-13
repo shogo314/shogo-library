@@ -6,11 +6,12 @@
  */
 
 #include <array>
+#include <cstddef>
 #include <iostream>
 #include <map>
 #include <set>
-#include <sstream>
 #include <string>
+#include <type_traits>
 #include <utility>
 #include <vector>
 #include "traits.hpp"
@@ -97,11 +98,11 @@ inline std::string initializer_str(const std::map<T1, T2>&);
 template <typename T1, typename T2>
 inline std::string repr(const std::map<T1, T2>&);
 
-template <typename T, size_t N>
+template <typename T, std::size_t N>
 inline std::string type_str(const std::array<T, N>&);
-template <typename T, size_t N>
+template <typename T, std::size_t N>
 inline std::string initializer_str(const std::array<T, N>&);
-template <typename T, size_t N>
+template <typename T, std::size_t N>
 inline std::string repr(const std::array<T, N>&);
 
 ///////////////////////////////////////////////////////////////////
@@ -352,12 +353,12 @@ inline std::string repr(const std::map<T1, T2>& t) {
     return detail::type_str(t) + detail::initializer_str(t);
 }
 
-template <typename T, size_t N>
+template <typename T, std::size_t N>
 inline std::string type_str(const std::array<T, N>&) {
     T t;
     return "std::array<" + detail::type_str(t) + ", " + std::to_string(N) + ">";
 }
-template <typename T, size_t N>
+template <typename T, std::size_t N>
 inline std::string initializer_str(const std::array<T, N>& t) {
     std::string ret;
     ret += "{";
@@ -368,7 +369,7 @@ inline std::string initializer_str(const std::array<T, N>& t) {
     ret += "}";
     return ret;
 }
-template <typename T, size_t N>
+template <typename T, std::size_t N>
 inline std::string repr(const std::array<T, N>& t) {
     return detail::type_str(t) + detail::initializer_str(t);
 }

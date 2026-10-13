@@ -8,6 +8,9 @@
  * - S inv(const S& a): 逆元
  */
 
+#include <array>
+#include <cstddef>
+#include <utility>
 #include "monoid.hpp"
 
 namespace group {

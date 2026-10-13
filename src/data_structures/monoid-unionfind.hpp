@@ -5,6 +5,7 @@
  * @brief 可換モノイドを乗せるUnionFind
  */
 
+#include <cassert>
 #include <utility>
 #include <vector>
 #include "unionfind.hpp"

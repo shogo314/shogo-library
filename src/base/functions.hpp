@@ -9,6 +9,7 @@
 #include <array>
 #include <cmath>
 #include <numeric>
+#include <type_traits>
 #include "traits.hpp"
 
 template <typename T1, typename T2>

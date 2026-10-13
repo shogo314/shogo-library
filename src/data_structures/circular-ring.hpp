@@ -6,6 +6,7 @@
  */
 
 #include <cassert>
+#include <cstddef>
 #include <vector>
 
 /**
@@ -18,7 +19,7 @@ struct CircularRing {
     CircularRing(const std::vector<T>& v) : data(v) {}
     CircularRing(const CircularRing&) = default;
     CircularRing() = default;
-    CircularRing(size_t s) : data(s) {}
+    CircularRing(std::size_t s) : data(s) {}
     T at(long long i) const {
         assert(!data.empty());
         i %= static_cast<long long>(data.size());

@@ -6,7 +6,6 @@
  */
 #include <algorithm>
 #include <cassert>
-#include <functional>
 #include <stack>
 #include <utility>
 #include <vector>

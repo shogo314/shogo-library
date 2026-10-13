@@ -8,16 +8,15 @@
 #include <array>
 #include <cstddef>
 #include <functional>
-#include <map>
 #include <type_traits>
 #include <utility>
 
-template <typename T, size_t K = 1, class Compare = std::less<T>, std::enable_if_t<(K >= 1), std::nullptr_t> = nullptr>
+template <typename T, std::size_t K = 1, class Compare = std::less<T>, std::enable_if_t<(K >= 1), std::nullptr_t> = nullptr>
 struct PriorityCounter {
     using key_type = T;
     using mapped_type = long long;
     using value_type = std::pair<key_type, mapped_type>;
-    inline constexpr static size_t k = K;
+    inline constexpr static std::size_t k = K;
 
     // C++17 の constexpr コンストラクタではすべてのメンバの初期化が必要なので、値初期化しておく
     std::array<value_type, K> data{};
@@ -28,8 +27,8 @@ struct PriorityCounter {
         data[0].second = 1;
     }
 
-    constexpr size_t size() const {
-        for (size_t i = 0; i < k; i++) {
+    constexpr std::size_t size() const {
+        for (std::size_t i = 0; i < k; i++) {
             if (data[i].second == 0) {
                 return i;
             }
@@ -41,7 +40,7 @@ struct PriorityCounter {
         bool f = false;
         key_type pre_key{};
         mapped_type pre_mapped{};
-        for (size_t i = 0; i < k; i++) {
+        for (std::size_t i = 0; i < k; i++) {
             if (f) {
                 // std::swap は C++17 では constexpr でないので手で入れ替える
                 key_type tmp_key = data[i].first;
@@ -71,7 +70,7 @@ struct PriorityCounter {
     }
 
     constexpr PriorityCounter& operator+=(const PriorityCounter& o) {
-        for (size_t i = 0; i < k; i++) {
+        for (std::size_t i = 0; i < k; i++) {
             if (o.data[i].second == 0) break;
             this->inc(o.data[i].first, o.data[i].second);
         }
@@ -83,8 +82,8 @@ struct PriorityCounter {
     }
 };
 
-template <typename T, size_t K = 1>
+template <typename T, std::size_t K = 1>
 using MaxCounter = PriorityCounter<T, K>;
 
-template <typename T, size_t K = 1>
+template <typename T, std::size_t K = 1>
 using MinCounter = PriorityCounter<T, K, std::greater<T>>;

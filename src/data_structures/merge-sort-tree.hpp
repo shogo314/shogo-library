@@ -6,6 +6,7 @@
  */
 #include <algorithm>
 #include <cassert>
+#include <cstddef>
 #include <functional>
 #include <optional>
 #include <utility>
@@ -115,7 +116,7 @@ class MergeSortTree {
         std::vector<value_type> value;
         key.reserve(value_key.size());
         value.reserve(value_key.size());
-        for (size_t i = 0; i < value_key.size(); i++) {
+        for (std::size_t i = 0; i < value_key.size(); i++) {
             value.push_back(value_key[i].first);
             key.push_back(value_key[i].second);
         }

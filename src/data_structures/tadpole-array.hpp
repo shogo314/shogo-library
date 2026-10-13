@@ -6,6 +6,7 @@
  */
 
 #include <cassert>
+#include <cstddef>
 #include <vector>
 /**
  * @brief おたまじゃくし配列
@@ -16,7 +17,7 @@ template <typename T>
 struct TadpoleArray {
    private:
     std::vector<T> data;
-    size_t k;
+    std::size_t k;
 
    public:
     /**
@@ -24,15 +25,15 @@ struct TadpoleArray {
      */
     TadpoleArray(const std::vector<T>& v, int i) : data(v) {
         assert(0 <= i and i < static_cast<int>(data.size()));
-        k = static_cast<size_t>(i);
+        k = static_cast<std::size_t>(i);
     }
     TadpoleArray() = default;
     TadpoleArray(const TadpoleArray&) = default;
-    T at(size_t i) const {
+    T at(std::size_t i) const {
         if (i < k) return data[i];
         return data[(i - k) % (data.size() - k) + k];
     }
-    T operator[](size_t i) const {
+    T operator[](std::size_t i) const {
         return at(i);
     }
 };

@@ -6,7 +6,6 @@
  */
 
 #include <cassert>
-#include <functional>
 #include <vector>
 #include <utility>
 #include "../algebra/acted-monoid.hpp"

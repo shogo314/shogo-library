@@ -5,7 +5,7 @@
  * @brief Binary Trie
  */
 
-#include <assert.h>
+#include <cassert>
 #include <limits>
 #include <memory>
 #include <utility>

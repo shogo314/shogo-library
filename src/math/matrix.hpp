@@ -5,6 +5,7 @@
  * @brief 行列
  */
 
+#include <cstddef>
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -87,10 +88,10 @@ template<class T, class OperatorProperty = matrix::OperatorPropertyDefault<T>> s
 
     /**
      * @brief 行列(グリッド)の行数
-     * @return size_t
+     * @return std::size_t
      */
     [[nodiscard]]
-    size_t size() const {return v.size();}
+    std::size_t size() const {return v.size();}
 
     std::vector<T>& operator [] (int i) {return v[i];}
     const std::vector<T>& operator [] (int i) const {return v[i];}

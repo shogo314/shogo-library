@@ -6,6 +6,8 @@
  */
 
 #include <algorithm>
+#include <cassert>
+#include <vector>
 #include "number-theory.hpp"
 
 template <typename mint> struct FPS : std::vector<mint> {

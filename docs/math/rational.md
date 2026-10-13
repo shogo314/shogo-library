@@ -40,4 +40,4 @@ std::cout << c << '\n';    // 1/2
 
 ## 関連
 
-- 偏角でソートするだけなら [偏角ソートの比較関数](../geometry/argcmp.hpp)
+- 偏角でソートするだけなら [偏角](../geometry/angle.hpp) の `Angle`

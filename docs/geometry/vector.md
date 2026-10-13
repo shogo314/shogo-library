@@ -11,7 +11,7 @@ std::vector<P> ps(n);
 for (auto& p : ps) std::cin >> p;      // "x y" を読む
 auto hull = convex_hull(ps);           // 凸包 (反時計回り)
 long long s2 = polygon_area_doubled(hull);
-std::sort(ps.begin(), ps.end(), P::ArgSortComp());  // 偏角ソート
+std::sort(ps.begin(), ps.end(), [](const P& a, const P& b) { return Angle(a) < Angle(b); });  // 偏角ソート (angle.hpp)
 ```
 
 ## `Vector<T, Dim>` のメンバ
@@ -26,7 +26,6 @@ std::sort(ps.begin(), ps.end(), P::ArgSortComp());  // 偏角ソート
 | `dot(p, q)` | 内積 |
 | `p.squared_norm()` | 長さの2乗 |
 | `p.abs()` | 長さ (`double`) |
-| `Vector::ArgSortComp` | 偏角ソートの比較関数 (2次元、x 軸正方向から反時計回り、ゼロベクトルは x 軸正方向と同じ扱い) |
 | `is >> p`、`os << p` | 成分を空白区切りで入出力 |
 
 ## 関数
@@ -58,4 +57,5 @@ std::sort(ps.begin(), ps.end(), P::ArgSortComp());  // 偏角ソート
 ## 関連
 
 - 円の交点・接線・内接円・外接円は [円](circle.hpp)
+- 偏角ソートは [偏角](angle.hpp) の `Angle` (`Angle(p) < Angle(q)` で比べる)
 - 傾きや比を誤差なく比べるには [有理数](../math/rational.hpp)

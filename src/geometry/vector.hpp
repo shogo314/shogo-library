@@ -256,27 +256,6 @@ struct Vector {
     }
 
     /**
-     * @brief 偏角ソートのファンクタ
-     * 
-     * 二次元限定、反時計回り
-     * x軸正方向を始点とし、零ベクトルはx軸正方向と同じ偏角として扱う
-     */
-    struct ArgSortComp {
-        constexpr bool operator()(const Vector& lhs, const Vector& rhs) const noexcept {
-            static_assert(Dim == 2, "ArgSortComp: Dim must be 2");
-            // 零ベクトルは外積で比べられないので、偏角 0 (x 軸正方向) として先に判定する
-            const bool l_zero = lhs[0] == 0 && lhs[1] == 0;
-            const bool r_zero = rhs[0] == 0 && rhs[1] == 0;
-            if(r_zero) return false;  // 偏角 0 より小さいものはない
-            if(l_zero) return !(rhs[1] == 0 && rhs[0] > 0);  // rhs の偏角が 0 より大きいか
-            int l_half = lhs[1] < 0 || (lhs[1] == 0 && lhs[0] < 0);
-            int r_half = rhs[1] < 0 || (rhs[1] == 0 && rhs[0] < 0);
-            if(l_half != r_half) return l_half < r_half;
-            return rhs[0] * lhs[1] < lhs[0] * rhs[1];
-        }
-    };
-
-    /**
      * @brief 入力ストリームからの読み込み
      * 
      * @tparam CharT 入力ストリームの文字型

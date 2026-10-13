@@ -28,3 +28,4 @@ auto len = palindrome_lengths(std::string("abaaba"));  // {1, 0, 3, 0, 1, 6, 1, 
 
 - 接尾辞を辞書順に並べるには [Suffix Array と LCP 配列](suffix-array.hpp)
 - 部分文字列の一致判定をハッシュで行うには [ローリングハッシュ](rolling-hash.hpp)
+- 複数の文字列の接頭辞を扱うには [Trie](trie.hpp)

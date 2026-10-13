@@ -34,3 +34,4 @@ bt.nth_element(0);   // 3 (x との xor の最小値は apply_xor(x) してか�
 ## 関連
 
 - XOR で作れる値の集合は [XOR 基底](../math/xor-basis.hpp)
+- 文字列の Trie は [Trie](../string/trie.hpp)

@@ -103,6 +103,56 @@ int main() {
         }
     }
 
+    // 有向グラフ: strongly_connected_components (自己ループ・多重辺を含む)
+    for (int rep = 0; rep < 3000 && ok; rep++) {
+        int n = rng() % 9 + 1;
+        int m = rng() % 20;
+        Graph<int> graph(n);
+        std::vector<std::pair<int, int>> edges;
+        for (int i = 0; i < m; i++) {
+            int u = rng() % n, v = rng() % n;
+            graph.add_directed_edge(u, v);
+            edges.emplace_back(u, v);
+        }
+        // 愚直: 到達可能性 (自分自身には常に到達できる)
+        std::vector<std::vector<bool>> reach(n, std::vector<bool>(n));
+        for (int s = 0; s < n; s++) {
+            std::vector<int> stk = {s};
+            reach[s][s] = true;
+            while (!stk.empty()) {
+                int u = stk.back();
+                stk.pop_back();
+                for (auto [a, b] : edges) {
+                    if (a == u && !reach[s][b]) {
+                        reach[s][b] = true;
+                        stk.push_back(b);
+                    }
+                }
+            }
+        }
+        std::vector<std::vector<int>> groups = strongly_connected_components(graph);
+        std::vector<int> id(n, -1);
+        int total = 0;
+        for (int i = 0; i < (int)groups.size(); i++) {
+            for (int v : groups[i]) {
+                if (id[v] != -1) ok = false;  // 2 つの成分に入っている
+                id[v] = i;
+                total++;
+            }
+        }
+        if (total != n) ok = false;
+        // 同じ成分 ⇔ 互いに到達できる
+        for (int u = 0; u < n; u++) {
+            for (int v = 0; v < n; v++) {
+                if ((id[u] == id[v]) != (reach[u][v] && reach[v][u])) ok = false;
+            }
+        }
+        // 成分はトポロジカル順に並ぶ
+        for (auto [u, v] : edges) {
+            if (id[u] > id[v]) ok = false;
+        }
+    }
+
     // minimum_steiner_tree: 辺の部分集合を全探索する
     for (int rep = 0; rep < 500 && ok; rep++) {
         int n = rng() % 6 + 1;

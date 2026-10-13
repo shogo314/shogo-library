@@ -14,7 +14,7 @@
 | `src/base/` | 入出力、型特性、`range`、`repr` (出力をそのままコンストラクタに使える文字列化)、コンテスト用テンプレート (`all` で一括 include) |
 | `src/algebra/` | モノイド・群・作用素付きモノイドの定義 |
 | `src/data_structures/` | セグメント木各種 (モノイドを渡して使う)、Union-Find、マージソートツリー、Li Chao Tree など |
-| `src/graph/` | グラフ、木、全方位木 DP、Functional Graph |
+| `src/graph/` | グラフ、木、全方位木 DP、Functional Graph、強連結成分分解 |
 | `src/math/` | modint、行列、形式的冪級数、組み合わせ、数論、無限大を持つ整数 (`infint`) |
 | `src/string/` | Z-algorithm、ローリングハッシュ |
 | `src/geometry/` | 幾何 (ベクトル、凸包など) |

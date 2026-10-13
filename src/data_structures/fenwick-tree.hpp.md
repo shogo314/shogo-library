@@ -13,11 +13,20 @@ data:
     path: test/aoj/dsl-2-b.2.test.cpp
     title: test/aoj/dsl-2-b.2.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/aoj/grl-5-d.test.cpp
+    title: test/aoj/grl-5-d.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/fenwick-tree.test.cpp
     title: test/unittest/fenwick-tree.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/point-add-range-sum.3.test.cpp
     title: test/yosupo/point-add-range-sum.3.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/vertex-add-path-sum.test.cpp
+    title: test/yosupo/vertex-add-path-sum.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/vertex-add-subtree-sum.2.test.cpp
+    title: test/yosupo/vertex-add-subtree-sum.2.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -296,8 +305,11 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/fenwick-tree.test.cpp
+  - test/aoj/grl-5-d.test.cpp
   - test/aoj/dsl-2-b.2.test.cpp
   - test/yosupo/point-add-range-sum.3.test.cpp
+  - test/yosupo/vertex-add-path-sum.test.cpp
+  - test/yosupo/vertex-add-subtree-sum.2.test.cpp
 documentation_of: src/data_structures/fenwick-tree.hpp
 layout: document
 title: Fenwick Tree (Binary Indexed Tree)

@@ -102,6 +102,10 @@ data:
   - name: src/graph
     pages:
     - icon: ':heavy_check_mark:'
+      path: src/graph/bipartite-matching.hpp
+      title: "\u4E8C\u90E8\u30B0\u30E9\u30D5\u306E\u6700\u5927\u30DE\u30C3\u30C1\u30F3\
+        \u30B0 (Hopcroft-Karp \u6CD5)"
+    - icon: ':heavy_check_mark:'
       path: src/graph/functional-graph.hpp
       title: "\u30D5\u30A1\u30F3\u30AF\u30B7\u30E7\u30CA\u30EB\u30B0\u30E9\u30D5"
     - icon: ':heavy_check_mark:'
@@ -111,9 +115,15 @@ data:
       path: src/graph/graph_util.hpp
       title: "\u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570"
     - icon: ':heavy_check_mark:'
+      path: src/graph/heavy-light-decomposition.hpp
+      title: "HL \u5206\u89E3 (Heavy-Light Decomposition)"
+    - icon: ':heavy_check_mark:'
       path: src/graph/lowlink.hpp
       title: "lowlink (\u95A2\u7BC0\u70B9\u3001\u6A4B\u3001\u4E8C\u91CD\u8FBA\u9023\
         \u7D50\u6210\u5206\u5206\u89E3)"
+    - icon: ':heavy_check_mark:'
+      path: src/graph/max-flow.hpp
+      title: "\u6700\u5927\u6D41 (Dinic \u6CD5)"
     - icon: ':heavy_check_mark:'
       path: src/graph/rerooting-dp.hpp
       title: "\u5168\u65B9\u4F4D\u6728DP"
@@ -350,6 +360,15 @@ data:
       path: test/aoj/grl-5-b.test.cpp
       title: test/aoj/grl-5-b.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/aoj/grl-5-d.test.cpp
+      title: test/aoj/grl-5-d.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/grl-6-a.test.cpp
+      title: test/aoj/grl-6-a.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/grl-7-a.test.cpp
+      title: test/aoj/grl-7-a.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/aoj/itp1-1-a.binary-trie.test.cpp
       title: test/aoj/itp1-1-a.binary-trie.test.cpp
     - icon: ':heavy_check_mark:'
@@ -421,6 +440,9 @@ data:
       path: test/unittest/binary-trie.test.cpp
       title: test/unittest/binary-trie.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/bipartite-matching.test.cpp
+      title: test/unittest/bipartite-matching.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/bit.test.cpp
       title: test/unittest/bit.test.cpp
     - icon: ':heavy_check_mark:'
@@ -466,6 +488,9 @@ data:
       path: test/unittest/graph.test.cpp
       title: test/unittest/graph.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/heavy-light-decomposition.test.cpp
+      title: test/unittest/heavy-light-decomposition.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/imos.test.cpp
       title: test/unittest/imos.test.cpp
     - icon: ':heavy_check_mark:'
@@ -489,6 +514,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/matrix.test.cpp
       title: test/unittest/matrix.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/max-flow.test.cpp
+      title: test/unittest/max-flow.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/mex-update.test.cpp
       title: test/unittest/mex-update.test.cpp
@@ -570,6 +598,9 @@ data:
       path: test/yosupo/binomial-coefficient.test.cpp
       title: test/yosupo/binomial-coefficient.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/bipartitematching.test.cpp
+      title: test/yosupo/bipartitematching.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/convolution-mod-1000000007.test.cpp
       title: test/yosupo/convolution-mod-1000000007.test.cpp
     - icon: ':heavy_check_mark:'
@@ -603,8 +634,11 @@ data:
       path: test/yosupo/inv-of-fps.test.cpp
       title: test/yosupo/inv-of-fps.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/yosupo/jump-on-tree.test.cpp
-      title: test/yosupo/jump-on-tree.test.cpp
+      path: test/yosupo/jump-on-tree.1.test.cpp
+      title: test/yosupo/jump-on-tree.1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/jump-on-tree.2.test.cpp
+      title: test/yosupo/jump-on-tree.2.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/lca.1.test.cpp
       title: test/yosupo/lca.1.test.cpp
@@ -617,6 +651,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/lca.4.test.cpp
       title: test/yosupo/lca.4.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/lca.5.test.cpp
+      title: test/yosupo/lca.5.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/line-add-get-min.test.cpp
       title: test/yosupo/line-add-get-min.test.cpp
@@ -750,8 +787,17 @@ data:
       path: test/yosupo/unionfind.test.cpp
       title: test/yosupo/unionfind.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/yosupo/vertex-add-subtree-sum.test.cpp
-      title: test/yosupo/vertex-add-subtree-sum.test.cpp
+      path: test/yosupo/vertex-add-path-sum.test.cpp
+      title: test/yosupo/vertex-add-path-sum.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/vertex-add-subtree-sum.1.test.cpp
+      title: test/yosupo/vertex-add-subtree-sum.1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/vertex-add-subtree-sum.2.test.cpp
+      title: test/yosupo/vertex-add-subtree-sum.2.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/vertex-set-path-composite.test.cpp
+      title: test/yosupo/vertex-set-path-composite.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/zalgorithm.test.cpp
       title: test/yosupo/zalgorithm.test.cpp

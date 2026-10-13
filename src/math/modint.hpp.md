@@ -134,6 +134,9 @@ data:
     path: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
     title: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/vertex-set-path-composite.test.cpp
+    title: test/yosupo/vertex-set-path-composite.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yukicoder/117.test.cpp
     title: test/yukicoder/117.test.cpp
   - icon: ':heavy_check_mark:'
@@ -654,6 +657,7 @@ data:
   - test/yosupo/binomial-coefficient.test.cpp
   - test/yosupo/pow-of-fps.test.cpp
   - test/yosupo/point-set-range-composite.3.test.cpp
+  - test/yosupo/vertex-set-path-composite.test.cpp
   - test/yosupo/counting-spanning-tree-undirected.test.cpp
   - test/yosupo/polynomial-taylor-shift.test.cpp
   - test/yosupo/range-set-range-composite.test.cpp

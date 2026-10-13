@@ -56,11 +56,17 @@ data:
     path: test/aoj/grl-5-b.test.cpp
     title: test/aoj/grl-5-b.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/aoj/grl-5-d.test.cpp
+    title: test/aoj/grl-5-d.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/graph-util.test.cpp
     title: test/unittest/graph-util.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/graph.test.cpp
     title: test/unittest/graph.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/heavy-light-decomposition.test.cpp
+    title: test/unittest/heavy-light-decomposition.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/lowlink.test.cpp
     title: test/unittest/lowlink.test.cpp
@@ -74,8 +80,11 @@ data:
     path: test/unittest/two-sat.test.cpp
     title: test/unittest/two-sat.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/jump-on-tree.test.cpp
-    title: test/yosupo/jump-on-tree.test.cpp
+    path: test/yosupo/jump-on-tree.1.test.cpp
+    title: test/yosupo/jump-on-tree.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/jump-on-tree.2.test.cpp
+    title: test/yosupo/jump-on-tree.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/lca.1.test.cpp
     title: test/yosupo/lca.1.test.cpp
@@ -88,6 +97,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/lca.4.test.cpp
     title: test/yosupo/lca.4.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/lca.5.test.cpp
+    title: test/yosupo/lca.5.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/minimum-spanning-tree.1.test.cpp
     title: test/yosupo/minimum-spanning-tree.1.test.cpp
@@ -110,8 +122,17 @@ data:
     path: test/yosupo/two-sat.test.cpp
     title: test/yosupo/two-sat.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/vertex-add-subtree-sum.test.cpp
-    title: test/yosupo/vertex-add-subtree-sum.test.cpp
+    path: test/yosupo/vertex-add-path-sum.test.cpp
+    title: test/yosupo/vertex-add-path-sum.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/vertex-add-subtree-sum.1.test.cpp
+    title: test/yosupo/vertex-add-subtree-sum.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/vertex-add-subtree-sum.2.test.cpp
+    title: test/yosupo/vertex-add-subtree-sum.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/vertex-set-path-composite.test.cpp
+    title: test/yosupo/vertex-set-path-composite.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/1641.test.cpp
     title: test/yukicoder/1641.test.cpp
@@ -482,6 +503,7 @@ data:
   - test/unittest/lowlink.test.cpp
   - test/unittest/rerooting-dp.test.cpp
   - test/unittest/tree.test.cpp
+  - test/unittest/heavy-light-decomposition.test.cpp
   - test/unittest/graph.test.cpp
   - test/unittest/graph-util.test.cpp
   - test/aoj/grl-1-c.2.test.cpp
@@ -491,6 +513,7 @@ data:
   - test/aoj/grl-3-b.test.cpp
   - test/aoj/grl-4-a.test.cpp
   - test/aoj/grl-2-a.test.cpp
+  - test/aoj/grl-5-d.test.cpp
   - test/aoj/grl-5-a.test.cpp
   - test/aoj/grl-5-b.test.cpp
   - test/aoj/grl-3-a.test.cpp
@@ -498,17 +521,22 @@ data:
   - test/aoj/alds1-11-d.1.test.cpp
   - test/yosupo/two-sat.test.cpp
   - test/yosupo/lca.4.test.cpp
+  - test/yosupo/vertex-add-subtree-sum.1.test.cpp
+  - test/yosupo/jump-on-tree.1.test.cpp
   - test/yosupo/minimum-spanning-tree.2.test.cpp
   - test/yosupo/minimum-spanning-tree.1.test.cpp
   - test/yosupo/lca.1.test.cpp
   - test/yosupo/lca.3.test.cpp
+  - test/yosupo/vertex-add-path-sum.test.cpp
+  - test/yosupo/vertex-set-path-composite.test.cpp
+  - test/yosupo/vertex-add-subtree-sum.2.test.cpp
   - test/yosupo/tree-diameter.test.cpp
+  - test/yosupo/lca.5.test.cpp
   - test/yosupo/lca.2.test.cpp
   - test/yosupo/shortest-path.test.cpp
-  - test/yosupo/vertex-add-subtree-sum.test.cpp
   - test/yosupo/scc.test.cpp
+  - test/yosupo/jump-on-tree.2.test.cpp
   - test/yosupo/two-edge-connected-components.test.cpp
-  - test/yosupo/jump-on-tree.test.cpp
   - test/yukicoder/1641.test.cpp
   - test/yukicoder/898.test.cpp
 documentation_of: src/graph/graph.hpp

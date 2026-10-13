@@ -73,6 +73,9 @@ data:
     path: test/aoj/dsl-5-a.test.cpp
     title: test/aoj/dsl-5-a.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/aoj/grl-5-d.test.cpp
+    title: test/aoj/grl-5-d.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/aoj/itp2-3-b.1.test.cpp
     title: test/aoj/itp2-3-b.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -184,8 +187,17 @@ data:
     path: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
     title: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/vertex-add-subtree-sum.test.cpp
-    title: test/yosupo/vertex-add-subtree-sum.test.cpp
+    path: test/yosupo/vertex-add-path-sum.test.cpp
+    title: test/yosupo/vertex-add-path-sum.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/vertex-add-subtree-sum.1.test.cpp
+    title: test/yosupo/vertex-add-subtree-sum.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/vertex-add-subtree-sum.2.test.cpp
+    title: test/yosupo/vertex-add-subtree-sum.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/vertex-set-path-composite.test.cpp
+    title: test/yosupo/vertex-set-path-composite.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/1036.1.test.cpp
     title: test/yukicoder/1036.1.test.cpp
@@ -503,6 +515,7 @@ data:
   - test/aoj/ntl-1-c.test.cpp
   - test/aoj/dsl-2-i.test.cpp
   - test/aoj/dsl-2-g.test.cpp
+  - test/aoj/grl-5-d.test.cpp
   - test/aoj/dsl-2-a.test.cpp
   - test/aoj/dsl-1-b.2.test.cpp
   - test/aoj/dsl-2-b.1.test.cpp
@@ -517,12 +530,16 @@ data:
   - test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
   - test/yosupo/staticrmq.test.cpp
   - test/yosupo/point-set-range-composite.4.test.cpp
+  - test/yosupo/vertex-add-subtree-sum.1.test.cpp
   - test/yosupo/range-affine-range-sum.2.test.cpp
   - test/yosupo/range-affine-range-sum.3.test.cpp
   - test/yosupo/rectangle-sum.2.test.cpp
   - test/yosupo/point-add-range-sum.3.test.cpp
   - test/yosupo/area-of-union-of-rectangles.2.test.cpp
+  - test/yosupo/vertex-add-path-sum.test.cpp
   - test/yosupo/point-set-range-composite.3.test.cpp
+  - test/yosupo/vertex-set-path-composite.test.cpp
+  - test/yosupo/vertex-add-subtree-sum.2.test.cpp
   - test/yosupo/point-add-rectangle-sum.test.cpp
   - test/yosupo/range-set-range-composite.test.cpp
   - test/yosupo/lca.2.test.cpp
@@ -530,7 +547,6 @@ data:
   - test/yosupo/point-set-range-composite.2.test.cpp
   - test/yosupo/range-chmin-chmax-add-range-sum.1.test.cpp
   - test/yosupo/range-affine-point-get.test.cpp
-  - test/yosupo/vertex-add-subtree-sum.test.cpp
   - test/yosupo/area-of-union-of-rectangles.1.test.cpp
   - test/yosupo/rectangle-sum.1.test.cpp
   - test/yosupo/point-add-range-sum.2.test.cpp

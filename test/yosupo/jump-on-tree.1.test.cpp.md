@@ -17,7 +17,7 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/jump_on_tree
     links:
     - https://judge.yosupo.jp/problem/jump_on_tree
-  bundledCode: "#line 1 \"test/yosupo/jump-on-tree.test.cpp\"\n#define PROBLEM \"\
+  bundledCode: "#line 1 \"test/yosupo/jump-on-tree.1.test.cpp\"\n#define PROBLEM \"\
     https://judge.yosupo.jp/problem/jump_on_tree\"\n\n#include <iostream>\n#include\
     \ <utility>\n\n#line 2 \"src/graph/tree.hpp\"\n\n/**\n * @file tree.hpp\n * @brief\
     \ \u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n*/\n\n#include\
@@ -382,7 +382,7 @@ data:
     \ = this->par[i];\n        for(int i = 0; i < h - 1; i++) {\n            for(int\
     \ j = 0; j < n; j++) {\n                if(doubling_par[i][j] != -1) {\n     \
     \               doubling_par[i+1][j] = doubling_par[i][doubling_par[i][j]];\n\
-    \                }\n            }\n        }\n    }\n};\n#line 7 \"test/yosupo/jump-on-tree.test.cpp\"\
+    \                }\n            }\n        }\n    }\n};\n#line 7 \"test/yosupo/jump-on-tree.1.test.cpp\"\
     \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
     \    int n, q;\n    std::cin >> n >> q;\n    Tree<int> tree(n);\n    tree.read(0);\n\
     \    DoublingClimbTree<int> dt = std::move(tree).build_lca(0);\n    while (q--)\
@@ -409,15 +409,15 @@ data:
   - src/graph/tree.hpp
   - src/graph/graph.hpp
   isVerificationFile: true
-  path: test/yosupo/jump-on-tree.test.cpp
+  path: test/yosupo/jump-on-tree.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 20:34:04+09:00'
+  timestamp: '2026-10-13 20:58:56+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/yosupo/jump-on-tree.test.cpp
+documentation_of: test/yosupo/jump-on-tree.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/yosupo/jump-on-tree.test.cpp
-- /verify/test/yosupo/jump-on-tree.test.cpp.html
-title: test/yosupo/jump-on-tree.test.cpp
+- /verify/test/yosupo/jump-on-tree.1.test.cpp
+- /verify/test/yosupo/jump-on-tree.1.test.cpp.html
+title: test/yosupo/jump-on-tree.1.test.cpp
 ---

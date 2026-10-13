@@ -23,11 +23,11 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/vertex_add_subtree_sum
     links:
     - https://judge.yosupo.jp/problem/vertex_add_subtree_sum
-  bundledCode: "#line 1 \"test/yosupo/vertex-add-subtree-sum.test.cpp\"\n#define PROBLEM\
-    \ \"https://judge.yosupo.jp/problem/vertex_add_subtree_sum\"\n\n#include <iostream>\n\
-    #include <vector>\n\n#line 2 \"src/graph/tree.hpp\"\n\n/**\n * @file tree.hpp\n\
-    \ * @brief \u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n*/\n\n\
-    #include <algorithm>\n#include <cassert>\n#include <stack>\n#include <utility>\n\
+  bundledCode: "#line 1 \"test/yosupo/vertex-add-subtree-sum.1.test.cpp\"\n#define\
+    \ PROBLEM \"https://judge.yosupo.jp/problem/vertex_add_subtree_sum\"\n\n#include\
+    \ <iostream>\n#include <vector>\n\n#line 2 \"src/graph/tree.hpp\"\n\n/**\n * @file\
+    \ tree.hpp\n * @brief \u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\
+    \n*/\n\n#include <algorithm>\n#include <cassert>\n#include <stack>\n#include <utility>\n\
     #line 13 \"src/graph/tree.hpp\"\n\n#line 2 \"src/graph/graph.hpp\"\n\n/**\n *\
     \ @file graph.hpp\n * @brief \u30B0\u30E9\u30D5\n */\n\n#line 10 \"src/graph/graph.hpp\"\
     \n#include <deque>\n#include <functional>\n#line 13 \"src/graph/graph.hpp\"\n\
@@ -625,7 +625,7 @@ data:
     using RProdQ = SegTree<monoid::Prod<S>>;\n/**\n * @brief RangeXorQuery\n *\n *\
     \ @tparam S \u578B\n */\ntemplate <typename S>\nusing RXorQ = SegTree<monoid::Xor<S>>;\n\
     /**\n * @brief RangeGcdQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename\
-    \ S>\nusing RGcdQ = SegTree<monoid::Gcd<S>>;\n#line 8 \"test/yosupo/vertex-add-subtree-sum.test.cpp\"\
+    \ S>\nusing RGcdQ = SegTree<monoid::Gcd<S>>;\n#line 8 \"test/yosupo/vertex-add-subtree-sum.1.test.cpp\"\
     \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
     \    int n, q; std::cin >> n >> q;\n    std::vector<long long> a(n);\n    for\
     \ (auto& x : a) std::cin >> x;\n    std::vector<int> par(n - 1);\n    for (auto&\
@@ -663,15 +663,15 @@ data:
   - src/data_structures/segtree.hpp
   - src/algebra/monoid.hpp
   isVerificationFile: true
-  path: test/yosupo/vertex-add-subtree-sum.test.cpp
+  path: test/yosupo/vertex-add-subtree-sum.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 20:34:04+09:00'
+  timestamp: '2026-10-13 20:58:56+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/yosupo/vertex-add-subtree-sum.test.cpp
+documentation_of: test/yosupo/vertex-add-subtree-sum.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/yosupo/vertex-add-subtree-sum.test.cpp
-- /verify/test/yosupo/vertex-add-subtree-sum.test.cpp.html
-title: test/yosupo/vertex-add-subtree-sum.test.cpp
+- /verify/test/yosupo/vertex-add-subtree-sum.1.test.cpp
+- /verify/test/yosupo/vertex-add-subtree-sum.1.test.cpp.html
+title: test/yosupo/vertex-add-subtree-sum.1.test.cpp
 ---

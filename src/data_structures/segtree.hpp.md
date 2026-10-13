@@ -49,8 +49,11 @@ data:
     path: test/yosupo/rectangle-sum.3.test.cpp
     title: test/yosupo/rectangle-sum.3.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/vertex-add-subtree-sum.test.cpp
-    title: test/yosupo/vertex-add-subtree-sum.test.cpp
+    path: test/yosupo/vertex-add-subtree-sum.1.test.cpp
+    title: test/yosupo/vertex-add-subtree-sum.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/vertex-set-path-composite.test.cpp
+    title: test/yosupo/vertex-set-path-composite.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/1036.1.test.cpp
     title: test/yukicoder/1036.1.test.cpp
@@ -428,11 +431,12 @@ data:
   - test/aoj/dsl-2-b.1.test.cpp
   - test/aoj/itp2-3-b.2.test.cpp
   - test/aoj/itp2-3-b.3.test.cpp
+  - test/yosupo/vertex-add-subtree-sum.1.test.cpp
   - test/yosupo/point-set-range-composite.3.test.cpp
+  - test/yosupo/vertex-set-path-composite.test.cpp
   - test/yosupo/lca.2.test.cpp
   - test/yosupo/point-set-range-composite.1.test.cpp
   - test/yosupo/point-set-range-composite.2.test.cpp
-  - test/yosupo/vertex-add-subtree-sum.test.cpp
   - test/yosupo/point-add-range-sum.2.test.cpp
   - test/yosupo/rectangle-sum.3.test.cpp
   - test/yukicoder/1036.1.test.cpp

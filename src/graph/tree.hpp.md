@@ -22,14 +22,17 @@ data:
     path: test/aoj/grl-5-b.test.cpp
     title: test/aoj/grl-5-b.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/heavy-light-decomposition.test.cpp
+    title: test/unittest/heavy-light-decomposition.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/rerooting-dp.test.cpp
     title: test/unittest/rerooting-dp.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/tree.test.cpp
     title: test/unittest/tree.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/jump-on-tree.test.cpp
-    title: test/yosupo/jump-on-tree.test.cpp
+    path: test/yosupo/jump-on-tree.1.test.cpp
+    title: test/yosupo/jump-on-tree.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/lca.1.test.cpp
     title: test/yosupo/lca.1.test.cpp
@@ -46,8 +49,8 @@ data:
     path: test/yosupo/tree-diameter.test.cpp
     title: test/yosupo/tree-diameter.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/vertex-add-subtree-sum.test.cpp
-    title: test/yosupo/vertex-add-subtree-sum.test.cpp
+    path: test/yosupo/vertex-add-subtree-sum.1.test.cpp
+    title: test/yosupo/vertex-add-subtree-sum.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/1641.test.cpp
     title: test/yukicoder/1641.test.cpp
@@ -628,17 +631,18 @@ data:
   verifiedWith:
   - test/unittest/rerooting-dp.test.cpp
   - test/unittest/tree.test.cpp
+  - test/unittest/heavy-light-decomposition.test.cpp
   - test/aoj/1595.test.cpp
   - test/aoj/grl-5-a.test.cpp
   - test/aoj/grl-5-b.test.cpp
   - test/aoj/3372.test.cpp
   - test/yosupo/lca.4.test.cpp
+  - test/yosupo/vertex-add-subtree-sum.1.test.cpp
+  - test/yosupo/jump-on-tree.1.test.cpp
   - test/yosupo/lca.1.test.cpp
   - test/yosupo/lca.3.test.cpp
   - test/yosupo/tree-diameter.test.cpp
   - test/yosupo/lca.2.test.cpp
-  - test/yosupo/vertex-add-subtree-sum.test.cpp
-  - test/yosupo/jump-on-tree.test.cpp
   - test/yukicoder/1641.test.cpp
   - test/yukicoder/898.test.cpp
 documentation_of: src/graph/tree.hpp
@@ -709,3 +713,4 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 ## 関連
 
 - [全方位木DP](rerooting-dp.hpp) は `Tree` を受け取ります
+- パスや部分木へのクエリは [HL 分解](heavy-light-decomposition.hpp)

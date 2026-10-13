@@ -25,6 +25,9 @@ data:
     path: test/aoj/dsl-2-b.2.test.cpp
     title: test/aoj/dsl-2-b.2.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/aoj/grl-5-d.test.cpp
+    title: test/aoj/grl-5-d.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/aoj/jag-summer-2971.test.cpp
     title: test/aoj/jag-summer-2971.test.cpp
   - icon: ':heavy_check_mark:'
@@ -51,6 +54,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
     title: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/vertex-add-path-sum.test.cpp
+    title: test/yosupo/vertex-add-path-sum.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/vertex-add-subtree-sum.2.test.cpp
+    title: test/yosupo/vertex-add-subtree-sum.2.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -272,11 +281,14 @@ data:
   - test/unittest/potentialized-unionfind.test.cpp
   - test/unittest/fenwick-tree.test.cpp
   - test/aoj/jag-summer-2971.test.cpp
+  - test/aoj/grl-5-d.test.cpp
   - test/aoj/dsl-1-b.2.test.cpp
   - test/aoj/dsl-2-b.2.test.cpp
   - test/aoj/dsl-1-b.1.test.cpp
   - test/yosupo/rectangle-sum.2.test.cpp
   - test/yosupo/point-add-range-sum.3.test.cpp
+  - test/yosupo/vertex-add-path-sum.test.cpp
+  - test/yosupo/vertex-add-subtree-sum.2.test.cpp
   - test/yosupo/rectangle-sum.1.test.cpp
   - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
 documentation_of: src/algebra/group.hpp

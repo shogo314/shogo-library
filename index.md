@@ -202,6 +202,9 @@ data:
       path: src/others/inversion-number.hpp
       title: "\u8EE2\u5012\u6570"
     - icon: ':heavy_check_mark:'
+      path: src/others/knapsack.hpp
+      title: "\u30CA\u30C3\u30D7\u30B5\u30C3\u30AF\u554F\u984C"
+    - icon: ':heavy_check_mark:'
       path: src/others/longest-increasing-subsequence.hpp
       title: "\u6700\u9577\u5897\u52A0\u90E8\u5206\u5217 (LIS)"
     - icon: ':heavy_check_mark:'
@@ -362,8 +365,23 @@ data:
       path: test/aoj/cgl-7-f.test.cpp
       title: test/aoj/cgl-7-f.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/aoj/dpl-1-b.test.cpp
+      title: test/aoj/dpl-1-b.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/dpl-1-c.test.cpp
+      title: test/aoj/dpl-1-c.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/aoj/dpl-1-d.test.cpp
       title: test/aoj/dpl-1-d.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/dpl-1-f.test.cpp
+      title: test/aoj/dpl-1-f.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/dpl-1-g.test.cpp
+      title: test/aoj/dpl-1-g.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/dpl-1-h.test.cpp
+      title: test/aoj/dpl-1-h.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/aoj/dpl-5-b.1.test.cpp
       title: test/aoj/dpl-5-b.1.test.cpp
@@ -624,6 +642,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/io.test.cpp
       title: test/unittest/io.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/knapsack.test.cpp
+      title: test/unittest/knapsack.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/longest-increasing-subsequence.test.cpp
       title: test/unittest/longest-increasing-subsequence.test.cpp

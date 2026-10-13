@@ -66,3 +66,4 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 ## 関連
 
 - [全方位木DP](rerooting-dp.hpp) は `Tree` を受け取ります
+- パスや部分木へのクエリは [HL 分解](heavy-light-decomposition.hpp)

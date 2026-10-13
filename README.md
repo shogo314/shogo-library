@@ -15,7 +15,7 @@
 | `src/utility/` | コンテナ・`vector` 用の関数、二分探索、座標圧縮、ビット演算、型特性、`range`、`repr` (出力をそのままコンストラクタに使える文字列化)。必要なものだけ include する |
 | `src/algebra/` | モノイド・群・作用素付きモノイドの定義 |
 | `src/data_structures/` | セグメント木各種 (モノイドを渡して使う)、Fenwick Tree、Sparse Table、Union-Find、マージソートツリー、Li Chao Tree など |
-| `src/graph/` | グラフ (最短路、全点対間最短路)、木、全方位木 DP、Functional Graph、強連結成分分解、最小全域木、lowlink (関節点・橋)、2-SAT、最大流、二部マッチング |
+| `src/graph/` | グラフ (最短路、全点対間最短路)、木、全方位木 DP、Functional Graph、強連結成分分解、最小全域木、lowlink (関節点・橋)、2-SAT、最大流、二部マッチング、HL 分解 |
 | `src/math/` | modint、行列、形式的冪級数、組み合わせ、数論、素数 (素数判定・素因数分解・篩)、無限大を持つ整数 (`infint`) |
 | `src/string/` | Z-algorithm、ローリングハッシュ |
 | `src/geometry/` | 幾何 (ベクトル、凸包、偏角ソートなど) |

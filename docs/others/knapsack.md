@@ -51,3 +51,4 @@ $N$ は品物の個数、$V$ は価値の和です。
 ## 関連
 
 - 最長増加部分列は [LIS](longest-increasing-subsequence.hpp)
+- 価値を考えずに作れる和だけを求めるなら [部分和問題](subset-sum.hpp)

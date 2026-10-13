@@ -125,6 +125,9 @@ data:
       path: src/graph/max-flow.hpp
       title: "\u6700\u5927\u6D41 (Dinic \u6CD5)"
     - icon: ':heavy_check_mark:'
+      path: src/graph/min-cost-flow.hpp
+      title: "\u6700\u5C0F\u8CBB\u7528\u6D41 (primal-dual \u6CD5)"
+    - icon: ':heavy_check_mark:'
       path: src/graph/rerooting-dp.hpp
       title: "\u5168\u65B9\u4F4D\u6728DP"
     - icon: ':heavy_check_mark:'
@@ -383,6 +386,9 @@ data:
       path: test/aoj/grl-6-a.test.cpp
       title: test/aoj/grl-6-a.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/aoj/grl-6-b.test.cpp
+      title: test/aoj/grl-6-b.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/aoj/grl-7-a.test.cpp
       title: test/aoj/grl-7-a.test.cpp
     - icon: ':heavy_check_mark:'
@@ -543,6 +549,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/mex-update.test.cpp
       title: test/unittest/mex-update.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/min-cost-flow.test.cpp
+      title: test/unittest/min-cost-flow.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/mo.test.cpp
       title: test/unittest/mo.test.cpp

@@ -149,20 +149,28 @@ data:
     \ \u306E\u8FBA\u306E\u60C5\u5831\n     */\n    Edge get_edge(int i) const {\n\
     \        assert(0 <= i && i < (int)pos.size());\n        const auto& e = g[pos[i].first][pos[i].second];\n\
     \        const auto& re = g[e.to][e.rev];\n        return {pos[i].first, e.to,\
-    \ e.cap + re.cap, re.cap};\n    }\n    /**\n     * @brief \u3059\u3079\u3066\u306E\
-    \u8FBA\u306E\u60C5\u5831 (\u8FFD\u52A0\u3057\u305F\u9806)\n     */\n    std::vector<Edge>\
-    \ edges() const {\n        std::vector<Edge> res;\n        for (int i = 0; i <\
-    \ (int)pos.size(); i++) res.push_back(get_edge(i));\n        return res;\n   \
-    \ }\n\n    /**\n     * @brief \u76F4\u524D\u306E flow(s, t) \u306E\u5F8C\u3067\
-    \u3001\u6B8B\u4F59\u30B0\u30E9\u30D5\u3067 s \u304B\u3089\u884C\u3051\u308B\u9802\
-    \u70B9\u304B\n     * flow(s, t) \u3067\u6D41\u3057\u304D\u3063\u3066\u3044\u308C\
-    \u3070\u3001true \u306E\u9802\u70B9\u306E\u96C6\u5408\u304C\u6700\u5C0F\u30AB\u30C3\
-    \u30C8\u306E s \u5074\u306B\u306A\u308B\n     */\n    std::vector<bool> min_cut(int\
-    \ s) const {\n        std::vector<bool> visited(n);\n        std::vector<int>\
-    \ st = {s};\n        visited[s] = true;\n        while (!st.empty()) {\n     \
-    \       int v = st.back();\n            st.pop_back();\n            for (const\
-    \ auto& e : g[v]) {\n                if (e.cap > 0 && !visited[e.to]) {\n    \
-    \                visited[e.to] = true;\n                    st.push_back(e.to);\n\
+    \ e.cap + re.cap, re.cap};\n    }\n    /**\n     * @brief \u756A\u53F7 i \u306E\
+    \u8FBA\u306E\u5BB9\u91CF\u3092 new_cap \u306B\u3001\u6D41\u308C\u3066\u3044\u308B\
+    \u91CF\u3092 new_flow \u306B\u5909\u3048\u308B\n     * \u307B\u304B\u306E\u8FBA\
+    \u306E\u6D41\u91CF\u306F\u5909\u3048\u306A\u3044\u306E\u3067\u3001\u6D41\u91CF\
+    \u306E\u4FDD\u5B58\u5247\u304C\u5D29\u308C\u308B\u3053\u3068\u304C\u3042\u308B\
+    \n     */\n    void change_edge(int i, Cap new_cap, Cap new_flow) {\n        assert(0\
+    \ <= i && i < (int)pos.size() && 0 <= new_flow && new_flow <= new_cap);\n    \
+    \    auto& e = g[pos[i].first][pos[i].second];\n        auto& re = g[e.to][e.rev];\n\
+    \        e.cap = new_cap - new_flow;\n        re.cap = new_flow;\n    }\n    /**\n\
+    \     * @brief \u3059\u3079\u3066\u306E\u8FBA\u306E\u60C5\u5831 (\u8FFD\u52A0\u3057\
+    \u305F\u9806)\n     */\n    std::vector<Edge> edges() const {\n        std::vector<Edge>\
+    \ res;\n        for (int i = 0; i < (int)pos.size(); i++) res.push_back(get_edge(i));\n\
+    \        return res;\n    }\n\n    /**\n     * @brief \u76F4\u524D\u306E flow(s,\
+    \ t) \u306E\u5F8C\u3067\u3001\u6B8B\u4F59\u30B0\u30E9\u30D5\u3067 s \u304B\u3089\
+    \u884C\u3051\u308B\u9802\u70B9\u304B\n     * flow(s, t) \u3067\u6D41\u3057\u304D\
+    \u3063\u3066\u3044\u308C\u3070\u3001true \u306E\u9802\u70B9\u306E\u96C6\u5408\u304C\
+    \u6700\u5C0F\u30AB\u30C3\u30C8\u306E s \u5074\u306B\u306A\u308B\n     */\n   \
+    \ std::vector<bool> min_cut(int s) const {\n        std::vector<bool> visited(n);\n\
+    \        std::vector<int> st = {s};\n        visited[s] = true;\n        while\
+    \ (!st.empty()) {\n            int v = st.back();\n            st.pop_back();\n\
+    \            for (const auto& e : g[v]) {\n                if (e.cap > 0 && !visited[e.to])\
+    \ {\n                    visited[e.to] = true;\n                    st.push_back(e.to);\n\
     \                }\n            }\n        }\n        return visited;\n    }\n\
     };\n#line 14 \"test/unittest/bipartite-matching.test.cpp\"\n\nint main() {\n \
     \   std::mt19937 rng(314);\n    bool ok = true;\n    for (int rep = 0; rep < 3000\
@@ -221,7 +229,7 @@ data:
   isVerificationFile: true
   path: test/unittest/bipartite-matching.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 20:58:56+09:00'
+  timestamp: '2026-10-14 00:48:32+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/bipartite-matching.test.cpp

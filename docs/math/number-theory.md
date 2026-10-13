@@ -27,7 +27,7 @@ if (auto res = crt(r, m)) {
 |---|---|---|
 | `crt(r, m)` | `x` は最小の非負整数解、`lcm` は `m` の最小公倍数。lcm が `long long` に収まること | $O(k \log \max m)$ |
 | `crt(r, m, mod)` | `x` は最小の非負整数解 % `mod`、`lcm` は `m` の最小公倍数 % `mod`。lcm が大きくてもよい | $O(k^2 \log \max m)$ |
-| `coprimize_simultaneous_congruence_equation(r1, m1, r2, m2)` | 2 式の連立合同式を、mod が互いに素になるように書き換える (矛盾すればすべて -1) | $O(\log^2 \max m)$ |
+| `coprimize_simultaneous_congruence_equation(r1, m1, r2, m2)` | 2 式の連立合同式を、mod が互いに素になるように書き換える。矛盾すれば `false` を返し、引数は変えない | $O(\log^2 \max m)$ |
 
 ## 関連
 

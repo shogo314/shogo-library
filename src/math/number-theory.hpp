@@ -17,14 +17,11 @@
  * @param m1 long long
  * @param r2 long long
  * @param m2 long long
- * @note 矛盾する場合、r1 = r2 = m1 = m2 = -1となる
+ * @return 矛盾しなければ true。矛盾する場合は false を返し、引数は変えない
  */
-inline void coprimize_simultaneous_congruence_equation(long long& r1, long long& m1, long long& r2, long long& m2) {
+inline bool coprimize_simultaneous_congruence_equation(long long& r1, long long& m1, long long& r2, long long& m2) {
     long long g = std::gcd(m1, m2);
-    if((r2 - r1) % g != 0) {
-        r1 = r2 = m1 = m2 = -1;
-        return;
-    }
+    if((r2 - r1) % g != 0) return false;
     m1 /= g, m2 /= g;
     long long gi = std::gcd(g, m1);
     long long gj = g / gi;
@@ -34,6 +31,7 @@ inline void coprimize_simultaneous_congruence_equation(long long& r1, long long&
     } while(g != 1);
     m1 *= gi, m2 *= gj;
     r1 %= m1, r2 %= m2;
+    return true;
 }
 
 /**
@@ -60,8 +58,7 @@ inline std::optional<CRTResult> crt(const std::vector<long long>& r, const std::
     long long ans = (r[0] % m[0] + m[0]) % m[0];
     for (int i = 1; i < n; i++) {
         long long rr = (r[i] % m[i] + m[i]) % m[i], mm = m[i];
-        coprimize_simultaneous_congruence_equation(ans, m_lcm, rr, mm);
-        if(m_lcm == -1) return std::nullopt;
+        if(!coprimize_simultaneous_congruence_equation(ans, m_lcm, rr, mm)) return std::nullopt;
         long long t = ((rr - ans) * modinv(m_lcm, mm)) % mm;
         if(t < 0) t += mm;
         ans += t * m_lcm;
@@ -85,8 +82,7 @@ inline std::optional<CRTResult> crt(const std::vector<long long>& r, const std::
     // mを互いに素にする
     for(int i = 1; i < n; i++) {
         for(int j = 0; j < i; j++) {
-            coprimize_simultaneous_congruence_equation(r2[i], m2[i], r2[j], m2[j]);
-            if(m2[i] == -1) return std::nullopt;
+            if(!coprimize_simultaneous_congruence_equation(r2[i], m2[i], r2[j], m2[j])) return std::nullopt;
         }
     }
 

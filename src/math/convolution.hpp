@@ -157,14 +157,14 @@ template<class mint> std::vector<mint> convolution
     std::vector<NTT::mint1> a1(size_fft, 0), b1(size_fft, 0), c1(size_fft, 0);
     std::vector<NTT::mint2> a2(size_fft, 0), b2(size_fft, 0), c2(size_fft, 0);
     for (int i = 0; i < N; ++ i) {
-        a0[i] = A[i].value();
-        a1[i] = A[i].value();
-        a2[i] = A[i].value();
+        a0[i] = A[i].val();
+        a1[i] = A[i].val();
+        a2[i] = A[i].val();
     }
     for (int i = 0; i < M; ++ i) {
-        b0[i] = B[i].value();
-        b1[i] = B[i].value();
-        b2[i] = B[i].value();
+        b0[i] = B[i].val();
+        b1[i] = B[i].val();
+        b2[i] = B[i].val();
     }
     NTT::trans(a0), NTT::trans(a1), NTT::trans(a2), 
     NTT::trans(b0), NTT::trans(b1), NTT::trans(b2);
@@ -177,9 +177,9 @@ template<class mint> std::vector<mint> convolution
     const mint mod0 = NTT::MOD0, mod01 = mod0 * NTT::MOD1;
     std::vector<mint> res(N + M - 1);
     for (int i = 0; i < N + M - 1; ++ i) {
-        int y0 = c0[i].value();
-        int y1 = (NTT::imod0 * (c1[i] - y0)).value();
-        int y2 = (NTT::imod01 * (c2[i] - y0) - NTT::imod1 * y1).value();
+        int y0 = c0[i].val();
+        int y1 = (NTT::imod0 * (c1[i] - y0)).val();
+        int y2 = (NTT::imod01 * (c2[i] - y0) - NTT::imod1 * y1).val();
         res[i] = mod01 * y2 + mod0 * y1 + y0;
     }
     return res;
@@ -222,9 +222,9 @@ inline std::vector<long long> convolution_ll
     static const __int128_t mod012 = (__int128_t)mod01 * NTT::MOD2;
     std::vector<long long> res(N + M - 1);
     for (int i = 0; i < N + M - 1; ++ i) {
-        int y0 = c0[i].value();
-        int y1 = (NTT::imod0 * (c1[i] - y0)).value();
-        int y2 = (NTT::imod01 * (c2[i] - y0) - NTT::imod1 * y1).value();
+        int y0 = c0[i].val();
+        int y1 = (NTT::imod0 * (c1[i] - y0)).val();
+        int y2 = (NTT::imod01 * (c2[i] - y0) - NTT::imod1 * y1).val();
         __int128_t tmp = (__int128_t)mod01 * y2 + (__int128_t)mod0 * y1 + y0;
         if(tmp < (mod012 >> 1)) res[i] = tmp;
         else res[i] = tmp - mod012;

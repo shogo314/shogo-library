@@ -29,25 +29,25 @@ bool check(long long m, int lim) {
     long long f = 1;
     for (int n = 0; n <= lim; n++) {
         if (n > 0) f = f * n % m;
-        if ((long long)C::factorial(n).value() != f) ok = false;
-        if ((C::factorial(n) * C::inverse_factorial(n)).value() != 1 % m) ok = false;
-        if (n > 0 && (C::inv(n) * M(n)).value() != 1 % m) ok = false;
+        if ((long long)C::factorial(n).val() != f) ok = false;
+        if ((C::factorial(n) * C::inverse_factorial(n)).val() != 1 % m) ok = false;
+        if (n > 0 && (C::inv(n) * M(n)).val() != 1 % m) ok = false;
     }
     for (int n = 0; n <= lim; n++) {
         for (int r = -1; r <= lim + 1; r++) {
             long long ec = (r < 0 || r > n) ? 0 : c[n][r];
-            if ((long long)C::C(n, r).value() != ec) ok = false;
+            if ((long long)C::C(n, r).val() != ec) ok = false;
             // nPr = nCr * r!
             long long ep = 0;
             if (r >= 0 && r <= n) {
                 ep = ec;
                 for (int i = 1; i <= r; i++) ep = ep * i % m;
             }
-            if ((long long)C::P(n, r).value() != ep) ok = false;
+            if ((long long)C::P(n, r).val() != ep) ok = false;
             // nHr = (n+r-1)Cr (Combination は n < mod の範囲でのみ正しいので、n+r-1 < m に限る)
             if (n >= 1 && r >= 0 && r <= lim && n + r - 1 < m) {
                 long long eh = c[n + r - 1][r];
-                if ((long long)C::H(n, r).value() != eh) ok = false;
+                if ((long long)C::H(n, r).val() != eh) ok = false;
             }
         }
     }
@@ -74,7 +74,7 @@ int main() {
         std::mt19937_64 rng(314);
         for (int rep = 0; rep < 1000; rep++) {
             int n = rng() % 100000 + 1;
-            if ((Combination<M>::inv(n) * M(n)).value() != 1) ok = false;
+            if ((Combination<M>::inv(n) * M(n)).val() != 1) ok = false;
         }
     }
 

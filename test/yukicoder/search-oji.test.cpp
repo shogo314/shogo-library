@@ -35,7 +35,7 @@ int main() {
 
     int ans = 0;
     for(int i = 0; i < n; i ++) {
-        if(v1[i].value() || v2[i].value() || v3[i].value()) ans ++;
+        if(v1[i].val() || v2[i].val() || v3[i].val()) ans ++;
     }
     std::cout << ans << std::endl;
 

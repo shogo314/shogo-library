@@ -34,22 +34,22 @@ bool check_inc_dec(long long mod, std::mt19937_64& rng) {
         M a = x;
         // 前置: 変更後の自身を返す
         M& r1 = ++a;
-        if (&r1 != &a || (long long)a.value() != (x + 1) % mod) ok = false;
+        if (&r1 != &a || (long long)a.val() != (x + 1) % mod) ok = false;
         M& r2 = --a;
-        if (&r2 != &a || (long long)a.value() != x) ok = false;
+        if (&r2 != &a || (long long)a.val() != x) ok = false;
         // 後置: 変更前の値を返す
         M b = a++;
-        if ((long long)b.value() != x || (long long)a.value() != (x + 1) % mod) ok = false;
+        if ((long long)b.val() != x || (long long)a.val() != (x + 1) % mod) ok = false;
         M c = a--;
-        if ((long long)c.value() != (x + 1) % mod || (long long)a.value() != x) ok = false;
+        if ((long long)c.val() != (x + 1) % mod || (long long)a.val() != x) ok = false;
         // 0 から -- すると mod - 1 になる
         M z = 0;
         --z;
-        if ((long long)z.value() != mod - 1) ok = false;
+        if ((long long)z.val() != mod - 1) ok = false;
         M w = z++;
-        if ((long long)w.value() != mod - 1 || z.value() != 0) ok = false;
+        if ((long long)w.val() != mod - 1 || z.val() != 0) ok = false;
         // 単項の + はそのままの値
-        if ((+a).value() != a.value()) ok = false;
+        if ((+a).val() != a.val()) ok = false;
     }
     return ok;
 }
@@ -92,14 +92,14 @@ int main() {
         for (int a = 1; a < 1000; a++) {
             long long e = naive_inv(a, 1000);
             if (e == -1) continue;  // 互いに素でないものは逆元がない
-            if ((long long)M(a).inv().value() != e) ok = false, std::cerr << "inv mod 1000 " << a << std::endl;
+            if ((long long)M(a).inv().val() != e) ok = false, std::cerr << "inv mod 1000 " << a << std::endl;
         }
     }
     {
         using M = static_modint<998244353>;
         for (int rep = 0; rep < 1000; rep++) {
             M a = (long long)(rng() % 998244352 + 1);
-            if ((a * a.inv()).value() != 1) ok = false;
+            if ((a * a.inv()).val() != 1) ok = false;
         }
     }
 

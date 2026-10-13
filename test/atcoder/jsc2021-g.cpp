@@ -59,6 +59,6 @@ int main(void) {
             }
         }
     }
-    std::cout << mat.det().value() << std::endl; 
+    std::cout << mat.det().val() << std::endl; 
     return 0;
 }

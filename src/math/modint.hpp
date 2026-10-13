@@ -96,7 +96,7 @@ public:
     /// @brief 保持している値を取得します。
     /// @return 保持している値
     [[nodiscard]]
-    constexpr value_type value() const noexcept {
+    constexpr value_type val() const noexcept {
         return m_value;
     }
 
@@ -304,7 +304,7 @@ public:
     /// @return @c os
     template <class CharT, class Traits>
     friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const Modint& x) {
-        os << x.value();
+        os << x.val();
         return os;
     }
 

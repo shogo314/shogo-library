@@ -17,7 +17,7 @@ int main() {
         b[i] = mint(x);
     }
     auto c = convolution(a, b);
-    for(auto e : c) std::cout << e.value() << " ";
+    for(auto e : c) std::cout << e.val() << " ";
     std::cout << std::endl;
 
     return 0;

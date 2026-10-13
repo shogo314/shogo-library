@@ -210,6 +210,13 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/others/mo.hpp
       title: Mo's algorithm
+    - icon: ':heavy_check_mark:'
+      path: src/others/subset-sum-count.hpp
+      title: "\u90E8\u5206\u548C\u306E\u500B\u6570"
+    - icon: ':heavy_check_mark:'
+      path: src/others/subset-sum.hpp
+      title: "\u90E8\u5206\u548C\u554F\u984C (\u4F5C\u308C\u308B\u548C\u306E\u5224\
+        \u5B9A\u3068\u5FA9\u5143)"
   - name: src/string
     pages:
     - icon: ':heavy_check_mark:'
@@ -307,6 +314,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/aoj/alds1-4-d.test.cpp
       title: test/aoj/alds1-4-d.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/alds1-5-a.test.cpp
+      title: test/aoj/alds1-5-a.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/aoj/alds1-5-d.test.cpp
       title: test/aoj/alds1-5-d.test.cpp
@@ -718,6 +728,9 @@ data:
       path: test/unittest/string.test.cpp
       title: test/unittest/string.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/subset-sum.test.cpp
+      title: test/unittest/subset-sum.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/suffix-array.test.cpp
       title: test/unittest/suffix-array.test.cpp
     - icon: ':heavy_check_mark:'
@@ -945,8 +958,11 @@ data:
       path: test/yosupo/set-xor-min.test.cpp
       title: test/yosupo/set-xor-min.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/yosupo/sharp-p-subset-sum.test.cpp
-      title: test/yosupo/sharp-p-subset-sum.test.cpp
+      path: test/yosupo/sharp-p-subset-sum.1.test.cpp
+      title: test/yosupo/sharp-p-subset-sum.1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/sharp-p-subset-sum.2.test.cpp
+      title: test/yosupo/sharp-p-subset-sum.2.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/shortest-path.test.cpp
       title: test/yosupo/shortest-path.test.cpp

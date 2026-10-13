@@ -12,6 +12,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/math/fps.hpp
     title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570"
+  - icon: ':heavy_check_mark:'
+    path: src/others/subset-sum-count.hpp
+    title: "\u90E8\u5206\u548C\u306E\u500B\u6570"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/dpl-5-b.1.test.cpp
@@ -40,6 +43,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/fps.test.cpp
     title: test/unittest/fps.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/subset-sum.test.cpp
+    title: test/unittest/subset-sum.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
     title: test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
@@ -83,8 +89,11 @@ data:
     path: test/yosupo/pow-of-fps.test.cpp
     title: test/yosupo/pow-of-fps.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/sharp-p-subset-sum.test.cpp
-    title: test/yosupo/sharp-p-subset-sum.test.cpp
+    path: test/yosupo/sharp-p-subset-sum.1.test.cpp
+    title: test/yosupo/sharp-p-subset-sum.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/sharp-p-subset-sum.2.test.cpp
+    title: test/yosupo/sharp-p-subset-sum.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/117.test.cpp
     title: test/yukicoder/117.test.cpp
@@ -663,10 +672,12 @@ data:
   requiredBy:
   - src/math/fps.hpp
   - src/math/combinatorics.hpp
+  - src/others/subset-sum-count.hpp
   timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/combinatorics.test.cpp
+  - test/unittest/subset-sum.test.cpp
   - test/unittest/fps.test.cpp
   - test/aoj/dpl-5-d.1.test.cpp
   - test/aoj/dpl-5-f.test.cpp
@@ -688,7 +699,8 @@ data:
   - test/yosupo/convolution-mod-1000000007.test.cpp
   - test/yosupo/log-of-fps.test.cpp
   - test/yosupo/binomial-coefficient-prime-mod.2.test.cpp
-  - test/yosupo/sharp-p-subset-sum.test.cpp
+  - test/yosupo/sharp-p-subset-sum.2.test.cpp
+  - test/yosupo/sharp-p-subset-sum.1.test.cpp
   - test/yosupo/convolution-mod.test.cpp
   - test/yukicoder/187.test.cpp
   - test/yukicoder/117.test.cpp

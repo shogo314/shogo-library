@@ -12,6 +12,9 @@ data:
     path: src/math/number-theory.hpp
     title: "\u6570\u8AD6 (\u9006\u5143\u3001\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\u3001\
       \u7573\u307F\u8FBC\u307F\u306A\u3069)"
+  - icon: ':heavy_check_mark:'
+    path: src/others/subset-sum-count.hpp
+    title: "\u90E8\u5206\u548C\u306E\u500B\u6570"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/dpl-5-b.1.test.cpp
@@ -61,6 +64,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/sliding-window-aggregation.test.cpp
     title: test/unittest/sliding-window-aggregation.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/subset-sum.test.cpp
+    title: test/unittest/subset-sum.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
     title: test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
@@ -149,8 +155,11 @@ data:
     path: test/yosupo/range-set-range-composite.test.cpp
     title: test/yosupo/range-set-range-composite.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/sharp-p-subset-sum.test.cpp
-    title: test/yosupo/sharp-p-subset-sum.test.cpp
+    path: test/yosupo/sharp-p-subset-sum.1.test.cpp
+    title: test/yosupo/sharp-p-subset-sum.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/sharp-p-subset-sum.2.test.cpp
+    title: test/yosupo/sharp-p-subset-sum.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
     title: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
@@ -651,6 +660,7 @@ data:
   - src/math/fps.hpp
   - src/math/combinatorics.hpp
   - src/math/number-theory.hpp
+  - src/others/subset-sum-count.hpp
   timestamp: '2026-10-12 20:24:58+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
@@ -661,6 +671,7 @@ data:
   - test/unittest/acted-monoid.test.cpp
   - test/unittest/divisor-transform.test.cpp
   - test/unittest/matrix.test.cpp
+  - test/unittest/subset-sum.test.cpp
   - test/unittest/fps.test.cpp
   - test/aoj/dpl-5-d.1.test.cpp
   - test/aoj/jag-summer-2971.test.cpp
@@ -697,8 +708,9 @@ data:
   - test/yosupo/log-of-fps.test.cpp
   - test/yosupo/binomial-coefficient-prime-mod.2.test.cpp
   - test/yosupo/lcm-convolution.test.cpp
+  - test/yosupo/sharp-p-subset-sum.2.test.cpp
   - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
-  - test/yosupo/sharp-p-subset-sum.test.cpp
+  - test/yosupo/sharp-p-subset-sum.1.test.cpp
   - test/yosupo/range-affine-range-sum.1.test.cpp
   - test/yosupo/convolution-mod.test.cpp
   - test/yosupo/matrix-det.test.cpp

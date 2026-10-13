@@ -21,7 +21,7 @@ data:
     PROBLEM: https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_4_A
     links:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_4_A
-  bundledCode: "#line 1 \"test/aoj/dsl-4-a.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_4_A\"\
+  bundledCode: "#line 1 \"test/aoj/dsl-4-a.1.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_4_A\"\
     \n\n#include <iostream>\n#include <vector>\n\n#line 2 \"src/utility/container_func.hpp\"\
     \n\n/**\n * @file container_func.hpp\n * @brief \u30B3\u30F3\u30C6\u30CA\u306B\
     \u5BFE\u3059\u308B\u95A2\u6570 (sorted, max, sum \u306A\u3069)\n */\n\n#include\
@@ -250,8 +250,8 @@ data:
     }\n\ninline std::vector<long long> radix_convert(long long v, int base = 10) {\n\
     \    std::vector<long long> res;\n    while (v > 0) {\n        res.push_back(v\
     \ % base);\n        v /= base;\n    }\n    std::reverse(res.begin(), res.end());\n\
-    \    return res;\n}\n#line 8 \"test/aoj/dsl-4-a.test.cpp\"\n\nint main() {\n \
-    \   int n;\n    std::cin >> n;\n    std::vector<long long> x1(n), y1(n), x2(n),\
+    \    return res;\n}\n#line 8 \"test/aoj/dsl-4-a.1.test.cpp\"\n\nint main() {\n\
+    \    int n;\n    std::cin >> n;\n    std::vector<long long> x1(n), y1(n), x2(n),\
     \ y2(n);\n    std::vector<long long> xs, ys;\n    for (int i = 0; i < n; i++)\
     \ {\n        std::cin >> x1[i] >> y1[i] >> x2[i] >> y2[i];\n        xs.push_back(x1[i]),\
     \ xs.push_back(x2[i]);\n        ys.push_back(y1[i]), ys.push_back(y2[i]);\n  \
@@ -289,15 +289,15 @@ data:
   - src/utility/traits.hpp
   - src/utility/vector_func.hpp
   isVerificationFile: true
-  path: test/aoj/dsl-4-a.test.cpp
+  path: test/aoj/dsl-4-a.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 13:03:23+09:00'
+  timestamp: '2026-10-13 20:17:40+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/aoj/dsl-4-a.test.cpp
+documentation_of: test/aoj/dsl-4-a.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/aoj/dsl-4-a.test.cpp
-- /verify/test/aoj/dsl-4-a.test.cpp.html
-title: test/aoj/dsl-4-a.test.cpp
+- /verify/test/aoj/dsl-4-a.1.test.cpp
+- /verify/test/aoj/dsl-4-a.1.test.cpp.html
+title: test/aoj/dsl-4-a.1.test.cpp
 ---

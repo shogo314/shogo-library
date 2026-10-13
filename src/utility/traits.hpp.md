@@ -39,8 +39,8 @@ data:
     path: test/aoj/alds1-4-d.test.cpp
     title: test/aoj/alds1-4-d.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dsl-4-a.test.cpp
-    title: test/aoj/dsl-4-a.test.cpp
+    path: test/aoj/dsl-4-a.1.test.cpp
+    title: test/aoj/dsl-4-a.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/itp1-10-c.test.cpp
     title: test/aoj/itp1-10-c.test.cpp
@@ -222,7 +222,6 @@ data:
   - test/aoj/0022.test.cpp
   - test/aoj/alds1-1-b.test.cpp
   - test/aoj/itp1-4-d.test.cpp
-  - test/aoj/dsl-4-a.test.cpp
   - test/aoj/itp2-5-a.1.test.cpp
   - test/aoj/itp2-3-c.test.cpp
   - test/aoj/itp2-5-b.test.cpp
@@ -231,6 +230,7 @@ data:
   - test/aoj/itp1-6-a.test.cpp
   - test/aoj/alds1-14-b.test.cpp
   - test/aoj/itp2-5-a.2.test.cpp
+  - test/aoj/dsl-4-a.1.test.cpp
   - test/aoj/alds1-4-d.test.cpp
   - test/aoj/itp1-2-c.test.cpp
   - test/yosupo/static-range-sum.test.cpp

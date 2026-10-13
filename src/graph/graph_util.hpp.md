@@ -4,7 +4,10 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/graph/graph.hpp
     title: "\u30B0\u30E9\u30D5"
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':heavy_check_mark:'
+    path: src/graph/two-sat.hpp
+    title: 2-SAT
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/alds1-11-d.1.test.cpp
@@ -16,8 +19,14 @@ data:
     path: test/unittest/graph-util.test.cpp
     title: test/unittest/graph-util.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/two-sat.test.cpp
+    title: test/unittest/two-sat.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/scc.test.cpp
     title: test/yosupo/scc.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/two-sat.test.cpp
+    title: test/yosupo/two-sat.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -409,13 +418,16 @@ data:
   - src/graph/graph.hpp
   isVerificationFile: false
   path: src/graph/graph_util.hpp
-  requiredBy: []
+  requiredBy:
+  - src/graph/two-sat.hpp
   timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/two-sat.test.cpp
   - test/unittest/graph-util.test.cpp
   - test/aoj/grl-4-a.test.cpp
   - test/aoj/alds1-11-d.1.test.cpp
+  - test/yosupo/two-sat.test.cpp
   - test/yosupo/scc.test.cpp
 documentation_of: src/graph/graph_util.hpp
 layout: document

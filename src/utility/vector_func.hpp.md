@@ -7,8 +7,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dsl-4-a.test.cpp
-    title: test/aoj/dsl-4-a.test.cpp
+    path: test/aoj/dsl-4-a.1.test.cpp
+    title: test/aoj/dsl-4-a.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/vector-func.test.cpp
     title: test/unittest/vector-func.test.cpp
@@ -235,7 +235,7 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/vector-func.test.cpp
-  - test/aoj/dsl-4-a.test.cpp
+  - test/aoj/dsl-4-a.1.test.cpp
   - test/yosupo/static-range-sum.test.cpp
 documentation_of: src/utility/vector_func.hpp
 layout: document

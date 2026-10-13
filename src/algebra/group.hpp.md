@@ -6,6 +6,9 @@ data:
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
+    path: src/data_structures/fenwick-tree.hpp
+    title: Fenwick Tree (Binary Indexed Tree)
+  - icon: ':heavy_check_mark:'
     path: src/data_structures/merge-sort-tree.hpp
     title: "\u30DE\u30FC\u30B8\u30BD\u30FC\u30C8\u30C4\u30EA\u30FC"
   - icon: ':heavy_check_mark:'
@@ -19,8 +22,14 @@ data:
     path: test/aoj/dsl-1-b.2.test.cpp
     title: test/aoj/dsl-1-b.2.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl-2-b.2.test.cpp
+    title: test/aoj/dsl-2-b.2.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/aoj/jag-summer-2971.test.cpp
     title: test/aoj/jag-summer-2971.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/fenwick-tree.test.cpp
+    title: test/unittest/fenwick-tree.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/mapping.test.cpp
     title: test/unittest/mapping.test.cpp
@@ -30,6 +39,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/potentialized-unionfind.test.cpp
     title: test/unittest/potentialized-unionfind.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/point-add-range-sum.3.test.cpp
+    title: test/yosupo/point-add-range-sum.3.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/rectangle-sum.1.test.cpp
     title: test/yosupo/rectangle-sum.1.test.cpp
@@ -249,6 +261,7 @@ data:
   isVerificationFile: false
   path: src/algebra/group.hpp
   requiredBy:
+  - src/data_structures/fenwick-tree.hpp
   - src/data_structures/potentialized-unionfind.hpp
   - src/data_structures/merge-sort-tree.hpp
   timestamp: '2026-10-13 12:42:03+09:00'
@@ -257,10 +270,13 @@ data:
   - test/unittest/mapping.test.cpp
   - test/unittest/monoid.test.cpp
   - test/unittest/potentialized-unionfind.test.cpp
+  - test/unittest/fenwick-tree.test.cpp
   - test/aoj/jag-summer-2971.test.cpp
   - test/aoj/dsl-1-b.2.test.cpp
+  - test/aoj/dsl-2-b.2.test.cpp
   - test/aoj/dsl-1-b.1.test.cpp
   - test/yosupo/rectangle-sum.2.test.cpp
+  - test/yosupo/point-add-range-sum.3.test.cpp
   - test/yosupo/rectangle-sum.1.test.cpp
   - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
 documentation_of: src/algebra/group.hpp

@@ -7,6 +7,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/data_structures/segtree.hpp
     title: "\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
+  - icon: ':heavy_check_mark:'
+    path: src/utility/compress.hpp
+    title: "\u5EA7\u6A19\u5727\u7E2E"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
@@ -14,36 +17,39 @@ data:
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://onlinejudge.u-aizu.ac.jp/problems/DSL_2_B
+    PROBLEM: https://judge.yosupo.jp/problem/rectangle_sum
     links:
-    - https://onlinejudge.u-aizu.ac.jp/problems/DSL_2_B
-  bundledCode: "#line 1 \"test/aoj/dsl-2-b.test.cpp\"\n#define PROBLEM \"https://onlinejudge.u-aizu.ac.jp/problems/DSL_2_B\"\
-    \n\n#include <iostream>\n\n#line 2 \"src/data_structures/segtree.hpp\"\n\n/**\n\
-    \ * @file segtree.hpp\n * @brief \u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n */\n\n\
-    #include <cassert>\n#include <ostream>\n#include <utility>\n#include <vector>\n\
-    #line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n * @brief \u30E2\
-    \u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\
-    \u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\
-    \n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S& a, const S& b): \u7A4D\
-    \ (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n * op, e \u306F static\
-    \ \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\
-    \u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\
-    \u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\n#include <algorithm>\n\
-    #include <array>\n#include <cstddef>\n#include <istream>\n#include <limits>\n\
-    #include <numeric>\n#line 21 \"src/algebra/monoid.hpp\"\n#include <type_traits>\n\
-    #line 23 \"src/algebra/monoid.hpp\"\n\n/**\n * @brief 1\u6B21\u95A2\u6570 f(x)\
-    \ = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum\
-    \ \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3};\
-    \ f(x) \u306F 2x + 3\u3002\u7701\u7565\u3059\u308B\u3068\u6052\u7B49\u5199\u50CF\
-    \ {1, 0}\n */\ntemplate <typename T>\nstruct Affine {\n    T a = T(1);  //!< \u50BE\
-    \u304D\n    T b = T(0);  //!< \u5207\u7247\n    constexpr T operator()(const T&\
-    \ x) const { return a * x + b; }\n    friend constexpr bool operator==(const Affine&\
-    \ f, const Affine& g) { return f.a == g.a && f.b == g.b; }\n    friend constexpr\
-    \ bool operator!=(const Affine& f, const Affine& g) { return !(f == g); }\n  \
-    \  template <class CharT, class Traits>\n    friend std::basic_istream<CharT,\
-    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Affine& f) {\n  \
-    \      return is >> f.a >> f.b;\n    }\n    template <class CharT, class Traits>\n\
-    \    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    - https://judge.yosupo.jp/problem/rectangle_sum
+  bundledCode: "#line 1 \"test/yosupo/rectangle-sum.3.test.cpp\"\n#define PROBLEM\
+    \ \"https://judge.yosupo.jp/problem/rectangle_sum\"\n\n// y \u5EA7\u6A19\u3092\
+    \ Compress \u3067\u5727\u7E2E\u3057\u3001x \u5EA7\u6A19\u306E\u9806\u306B\u70B9\
+    \u3092\u52A0\u3048\u306A\u304C\u3089\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\u3067\
+    \u533A\u9593\u548C\u3092\u53D6\u308B\n// \u30AF\u30A8\u30EA\u306E y \u5EA7\u6A19\
+    \u306F\u767B\u9332\u3057\u3066\u3044\u306A\u3044\u306E\u3067\u3001lower \u3067\
+    \u756A\u53F7\u3092\u6C42\u3081\u308B\n\n#include <algorithm>\n#include <iostream>\n\
+    #include <tuple>\n#include <vector>\n\n#line 2 \"src/algebra/monoid.hpp\"\n\n\
+    /**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
+    \n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
+    \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\
+    \n * - S op(const S& a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e():\
+    \ \u5358\u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\
+    \u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\
+    \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\
+    \u51FA\u3059)\n */\n\n#line 15 \"src/algebra/monoid.hpp\"\n#include <array>\n\
+    #include <cstddef>\n#include <istream>\n#include <limits>\n#include <numeric>\n\
+    #include <ostream>\n#include <type_traits>\n#include <utility>\n\n/**\n * @brief\
+    \ 1\u6B21\u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\
+    \u3084 acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n *\
+    \ \u4F8B: Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\u3059\u308B\
+    \u3068\u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\nstruct Affine\
+    \ {\n    T a = T(1);  //!< \u50BE\u304D\n    T b = T(0);  //!< \u5207\u7247\n\
+    \    constexpr T operator()(const T& x) const { return a * x + b; }\n    friend\
+    \ constexpr bool operator==(const Affine& f, const Affine& g) { return f.a ==\
+    \ g.a && f.b == g.b; }\n    friend constexpr bool operator!=(const Affine& f,\
+    \ const Affine& g) { return !(f == g); }\n    template <class CharT, class Traits>\n\
+    \    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    \ Traits>& is, Affine& f) {\n        return is >> f.a >> f.b;\n    }\n    template\
+    \ <class CharT, class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const Affine& f) {\n        return os << f.a << CharT(' ') << f.b;\n\
     \    }\n};\n\nnamespace monoid {\n\n/**\n * @brief \u548C\n */\ntemplate <typename\
     \ T>\nstruct Sum {\n    using S = T;\n    static constexpr S op(const S& a, const\
@@ -150,8 +156,10 @@ data:
     \    Monoid() = default;\n    constexpr Monoid(Op op, const S& e) : op_object(std::move(op)),\
     \ identity(e) {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a,\
     \ b); }\n    constexpr S e() const { return identity; }\n};\ntemplate <typename\
-    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 13 \"src/data_structures/segtree.hpp\"\
-    \n\n/**\n * @brief \u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n *\n * \u4F8B:\n * SegTree<monoid::Max<int>>\
+    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 2 \"src/data_structures/segtree.hpp\"\
+    \n\n/**\n * @file segtree.hpp\n * @brief \u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n\
+    \ */\n\n#include <cassert>\n#line 13 \"src/data_structures/segtree.hpp\"\n\n/**\n\
+    \ * @brief \u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n *\n * \u4F8B:\n * SegTree<monoid::Max<int>>\
     \ seg(n);\n * SegTree seg(v, Monoid([](int a, int b) { return a + b; }, 0));\n\
     \ *\n * @tparam M \u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\n */\ntemplate\
     \ <typename M>\nclass SegTree {\npublic:\n    using S = typename M::S;\n\nprivate:\n\
@@ -254,30 +262,113 @@ data:
     using RProdQ = SegTree<monoid::Prod<S>>;\n/**\n * @brief RangeXorQuery\n *\n *\
     \ @tparam S \u578B\n */\ntemplate <typename S>\nusing RXorQ = SegTree<monoid::Xor<S>>;\n\
     /**\n * @brief RangeGcdQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename\
-    \ S>\nusing RGcdQ = SegTree<monoid::Gcd<S>>;\n#line 6 \"test/aoj/dsl-2-b.test.cpp\"\
-    \n\nint main(void) {\n    int n, q; std::cin >> n >> q;\n    SegTree<monoid::Sum<int>>\
-    \ seg(n);\n    while(q--) {\n        int com, x, y; std::cin >> com >> x >> y;\n\
-    \        if(com == 0) seg.apply(x-1, y);\n        else std::cout << seg.prod(x-1,\
-    \ y) << '\\n';\n    }\n}\n"
-  code: "#define PROBLEM \"https://onlinejudge.u-aizu.ac.jp/problems/DSL_2_B\"\n\n\
-    #include <iostream>\n\n#include \"../../src/data_structures/segtree.hpp\"\n\n\
-    int main(void) {\n    int n, q; std::cin >> n >> q;\n    SegTree<monoid::Sum<int>>\
-    \ seg(n);\n    while(q--) {\n        int com, x, y; std::cin >> com >> x >> y;\n\
-    \        if(com == 0) seg.apply(x-1, y);\n        else std::cout << seg.prod(x-1,\
-    \ y) << '\\n';\n    }\n}\n"
+    \ S>\nusing RGcdQ = SegTree<monoid::Gcd<S>>;\n#line 2 \"src/utility/compress.hpp\"\
+    \n\n/**\n * @file compress.hpp\n * @brief \u5EA7\u6A19\u5727\u7E2E\n */\n\n#line\
+    \ 12 \"src/utility/compress.hpp\"\n\n/**\n * @brief \u5EA7\u6A19\u5727\u7E2E\n\
+    \ *\n * \u5024\u3092 add \u3067\u767B\u9332\u3057\u3001build \u3067\u30BD\u30FC\
+    \u30C8\u3068\u91CD\u8907\u9664\u53BB\u3092\u3057\u3066\u304B\u3089\u4F7F\u3046\
+    \n * \u4F8B:\n * Compress<long long> cp(A);  // A \u3092\u767B\u9332\u3057\u3066\
+    \ build \u307E\u3067\u884C\u3046\n * int i = cp.id(A[0]);        // 0 <= i < cp.size()\n\
+    \ *\n * @tparam T \u5024\u306E\u578B (< \u3067\u6BD4\u8F03\u3067\u304D\u308B\u3053\
+    \u3068)\n */\ntemplate <typename T>\nclass Compress {\n    std::vector<T> xs;\n\
+    \    bool built = false;\n\npublic:\n    Compress() = default;\n    /**\n    \
+    \ * @brief v \u306E\u5024\u3092\u767B\u9332\u3057\u3066 build \u3059\u308B\n \
+    \    */\n    explicit Compress(const std::vector<T>& v) : xs(v) { build(); }\n\
+    \n    /**\n     * @brief \u5024\u3092 1 \u3064\u767B\u9332\u3059\u308B\u3002build\
+    \ \u306E\u524D\u306B\u547C\u3076\n     */\n    void add(const T& x) {\n      \
+    \  assert(!built);\n        xs.push_back(x);\n    }\n    /**\n     * @brief v\
+    \ \u306E\u5024\u3092\u3059\u3079\u3066\u767B\u9332\u3059\u308B\u3002build \u306E\
+    \u524D\u306B\u547C\u3076\n     */\n    void add(const std::vector<T>& v) {\n \
+    \       assert(!built);\n        xs.insert(xs.end(), v.begin(), v.end());\n  \
+    \  }\n    /**\n     * @brief \u767B\u9332\u3057\u305F\u5024\u3092\u30BD\u30FC\u30C8\
+    \u3057\u3066\u91CD\u8907\u3092\u9664\u304F O(n log n)\n     */\n    void build()\
+    \ {\n        assert(!built);\n        std::sort(xs.begin(), xs.end());\n     \
+    \   xs.erase(std::unique(xs.begin(), xs.end()), xs.end());\n        built = true;\n\
+    \    }\n\n    /**\n     * @brief \u7570\u306A\u308B\u5024\u306E\u500B\u6570\n\
+    \     */\n    int size() const {\n        assert(built);\n        return xs.size();\n\
+    \    }\n    /**\n     * @brief \u767B\u9332\u3057\u305F\u5024 x \u306E\u756A\u53F7\
+    \ O(log n)\u3002\u767B\u9332\u3057\u3066\u3044\u306A\u3044\u5024\u306A\u3089 assert\
+    \ \u3067\u843D\u3061\u308B\n     */\n    int id(const T& x) const {\n        int\
+    \ i = lower(x);\n        assert(i < size() && !(x < xs[i]));\n        return i;\n\
+    \    }\n    /**\n     * @brief x \u4EE5\u4E0A\u3067\u6700\u5C0F\u306E\u5024\u306E\
+    \u756A\u53F7 O(log n)\u3002\u306A\u3051\u308C\u3070 size()\n     */\n    int lower(const\
+    \ T& x) const {\n        assert(built);\n        return std::lower_bound(xs.begin(),\
+    \ xs.end(), x) - xs.begin();\n    }\n    /**\n     * @brief x \u3088\u308A\u5927\
+    \u304D\u3044\u6700\u5C0F\u306E\u5024\u306E\u756A\u53F7 O(log n)\u3002\u306A\u3051\
+    \u308C\u3070 size()\n     */\n    int upper(const T& x) const {\n        assert(built);\n\
+    \        return std::upper_bound(xs.begin(), xs.end(), x) - xs.begin();\n    }\n\
+    \    /**\n     * @brief x \u3092\u767B\u9332\u3057\u305F\u304B O(log n)\n    \
+    \ */\n    bool contains(const T& x) const {\n        int i = lower(x);\n     \
+    \   return i < size() && !(x < xs[i]);\n    }\n    /**\n     * @brief \u756A\u53F7\
+    \ i \u306E\u5024\n     */\n    const T& operator[](int i) const {\n        assert(built\
+    \ && 0 <= i && i < size());\n        return xs[i];\n    }\n    /**\n     * @brief\
+    \ v \u306E\u5404\u5024\u3092\u756A\u53F7\u306B\u7F6E\u304D\u63DB\u3048\u305F\u5217\
+    \n     */\n    std::vector<int> ids(const std::vector<T>& v) const {\n       \
+    \ std::vector<int> res(v.size());\n        for (std::size_t i = 0; i < v.size();\
+    \ i++) res[i] = id(v[i]);\n        return res;\n    }\n    /**\n     * @brief\
+    \ \u30BD\u30FC\u30C8\u6E08\u307F\u3067\u91CD\u8907\u306E\u306A\u3044\u5024\u306E\
+    \u5217\n     */\n    const std::vector<T>& values() const {\n        assert(built);\n\
+    \        return xs;\n    }\n};\n#line 14 \"test/yosupo/rectangle-sum.3.test.cpp\"\
+    \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
+    \    int n, q;\n    std::cin >> n >> q;\n    std::vector<long long> x(n), y(n),\
+    \ w(n);\n    for (int i = 0; i < n; i++) std::cin >> x[i] >> y[i] >> w[i];\n \
+    \   Compress<long long> cy(y);\n    // (x \u5EA7\u6A19, \u7B26\u53F7, y \u306E\
+    \u533A\u9593\u306E\u5DE6\u7AEF, \u53F3\u7AEF, \u30AF\u30A8\u30EA\u756A\u53F7)\n\
+    \    std::vector<std::tuple<long long, int, int, int, int>> events;\n    for (int\
+    \ i = 0; i < q; i++) {\n        long long l, d, r, u;\n        std::cin >> l >>\
+    \ d >> r >> u;\n        int lo = cy.lower(d), hi = cy.lower(u);\n        events.emplace_back(l,\
+    \ -1, lo, hi, i);\n        events.emplace_back(r, 1, lo, hi, i);\n    }\n    std::sort(events.begin(),\
+    \ events.end());\n    std::vector<int> order(n);\n    for (int i = 0; i < n; i++)\
+    \ order[i] = i;\n    std::sort(order.begin(), order.end(), [&](int a, int b) {\
+    \ return x[a] < x[b]; });\n    SegTree<monoid::Sum<long long>> seg(cy.size());\n\
+    \    std::vector<long long> ans(q);\n    int p = 0;\n    for (auto [ex, sign,\
+    \ lo, hi, i] : events) {\n        // x \u5EA7\u6A19\u304C ex \u672A\u6E80\u306E\
+    \u70B9\u3092\u3059\u3079\u3066\u52A0\u3048\u308B\n        while (p < n && x[order[p]]\
+    \ < ex) {\n            int k = cy.id(y[order[p]]);\n            seg.set(k, seg.get(k)\
+    \ + w[order[p]]);\n            p++;\n        }\n        ans[i] += sign * seg.prod(lo,\
+    \ hi);\n    }\n    for (int i = 0; i < q; i++) std::cout << ans[i] << '\\n';\n\
+    }\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/rectangle_sum\"\n\n// y\
+    \ \u5EA7\u6A19\u3092 Compress \u3067\u5727\u7E2E\u3057\u3001x \u5EA7\u6A19\u306E\
+    \u9806\u306B\u70B9\u3092\u52A0\u3048\u306A\u304C\u3089\u30BB\u30B0\u30E1\u30F3\
+    \u30C8\u6728\u3067\u533A\u9593\u548C\u3092\u53D6\u308B\n// \u30AF\u30A8\u30EA\u306E\
+    \ y \u5EA7\u6A19\u306F\u767B\u9332\u3057\u3066\u3044\u306A\u3044\u306E\u3067\u3001\
+    lower \u3067\u756A\u53F7\u3092\u6C42\u3081\u308B\n\n#include <algorithm>\n#include\
+    \ <iostream>\n#include <tuple>\n#include <vector>\n\n#include \"../../src/algebra/monoid.hpp\"\
+    \n#include \"../../src/data_structures/segtree.hpp\"\n#include \"../../src/utility/compress.hpp\"\
+    \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
+    \    int n, q;\n    std::cin >> n >> q;\n    std::vector<long long> x(n), y(n),\
+    \ w(n);\n    for (int i = 0; i < n; i++) std::cin >> x[i] >> y[i] >> w[i];\n \
+    \   Compress<long long> cy(y);\n    // (x \u5EA7\u6A19, \u7B26\u53F7, y \u306E\
+    \u533A\u9593\u306E\u5DE6\u7AEF, \u53F3\u7AEF, \u30AF\u30A8\u30EA\u756A\u53F7)\n\
+    \    std::vector<std::tuple<long long, int, int, int, int>> events;\n    for (int\
+    \ i = 0; i < q; i++) {\n        long long l, d, r, u;\n        std::cin >> l >>\
+    \ d >> r >> u;\n        int lo = cy.lower(d), hi = cy.lower(u);\n        events.emplace_back(l,\
+    \ -1, lo, hi, i);\n        events.emplace_back(r, 1, lo, hi, i);\n    }\n    std::sort(events.begin(),\
+    \ events.end());\n    std::vector<int> order(n);\n    for (int i = 0; i < n; i++)\
+    \ order[i] = i;\n    std::sort(order.begin(), order.end(), [&](int a, int b) {\
+    \ return x[a] < x[b]; });\n    SegTree<monoid::Sum<long long>> seg(cy.size());\n\
+    \    std::vector<long long> ans(q);\n    int p = 0;\n    for (auto [ex, sign,\
+    \ lo, hi, i] : events) {\n        // x \u5EA7\u6A19\u304C ex \u672A\u6E80\u306E\
+    \u70B9\u3092\u3059\u3079\u3066\u52A0\u3048\u308B\n        while (p < n && x[order[p]]\
+    \ < ex) {\n            int k = cy.id(y[order[p]]);\n            seg.set(k, seg.get(k)\
+    \ + w[order[p]]);\n            p++;\n        }\n        ans[i] += sign * seg.prod(lo,\
+    \ hi);\n    }\n    for (int i = 0; i < q; i++) std::cout << ans[i] << '\\n';\n\
+    }\n"
   dependsOn:
-  - src/data_structures/segtree.hpp
   - src/algebra/monoid.hpp
+  - src/data_structures/segtree.hpp
+  - src/utility/compress.hpp
   isVerificationFile: true
-  path: test/aoj/dsl-2-b.test.cpp
+  path: test/yosupo/rectangle-sum.3.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 12:42:03+09:00'
+  timestamp: '2026-10-13 20:17:40+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/aoj/dsl-2-b.test.cpp
+documentation_of: test/yosupo/rectangle-sum.3.test.cpp
 layout: document
 redirect_from:
-- /verify/test/aoj/dsl-2-b.test.cpp
-- /verify/test/aoj/dsl-2-b.test.cpp.html
-title: test/aoj/dsl-2-b.test.cpp
+- /verify/test/yosupo/rectangle-sum.3.test.cpp
+- /verify/test/yosupo/rectangle-sum.3.test.cpp.html
+title: test/yosupo/rectangle-sum.3.test.cpp
 ---

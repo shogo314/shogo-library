@@ -9,6 +9,9 @@ data:
     path: src/algebra/group.hpp
     title: "\u7FA4\u306E\u5B9A\u7FA9"
   - icon: ':heavy_check_mark:'
+    path: src/data_structures/fenwick-tree.hpp
+    title: Fenwick Tree (Binary Indexed Tree)
+  - icon: ':heavy_check_mark:'
     path: src/data_structures/imos.hpp
     title: "imos\u6CD5\u3067\u533A\u9593\u4F5C\u7528\u30011\u70B9\u53D6\u5F97"
   - icon: ':heavy_check_mark:'
@@ -32,6 +35,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/data_structures/segtree.hpp
     title: "\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
+  - icon: ':heavy_check_mark:'
+    path: src/data_structures/sparse-table.hpp
+    title: Sparse Table
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/dsl-1-b.1.test.cpp
@@ -43,8 +49,11 @@ data:
     path: test/aoj/dsl-2-a.test.cpp
     title: test/aoj/dsl-2-a.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dsl-2-b.test.cpp
-    title: test/aoj/dsl-2-b.test.cpp
+    path: test/aoj/dsl-2-b.1.test.cpp
+    title: test/aoj/dsl-2-b.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl-2-b.2.test.cpp
+    title: test/aoj/dsl-2-b.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/dsl-2-f.test.cpp
     title: test/aoj/dsl-2-f.test.cpp
@@ -82,6 +91,9 @@ data:
     path: test/unittest/acted-monoid.test.cpp
     title: test/unittest/acted-monoid.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/fenwick-tree.test.cpp
+    title: test/unittest/fenwick-tree.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/imos.test.cpp
     title: test/unittest/imos.test.cpp
   - icon: ':heavy_check_mark:'
@@ -100,6 +112,9 @@ data:
     path: test/unittest/segtree-beats.test.cpp
     title: test/unittest/segtree-beats.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/sparse-table.test.cpp
+    title: test/unittest/sparse-table.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/area-of-union-of-rectangles.1.test.cpp
     title: test/yosupo/area-of-union-of-rectangles.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -114,6 +129,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/point-add-range-sum.2.test.cpp
     title: test/yosupo/point-add-range-sum.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/point-add-range-sum.3.test.cpp
+    title: test/yosupo/point-add-range-sum.3.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/point-add-rectangle-sum.test.cpp
     title: test/yosupo/point-add-rectangle-sum.test.cpp
@@ -156,6 +174,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/rectangle-sum.2.test.cpp
     title: test/yosupo/rectangle-sum.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/rectangle-sum.3.test.cpp
+    title: test/yosupo/rectangle-sum.3.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/staticrmq.test.cpp
+    title: test/yosupo/staticrmq.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
     title: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
@@ -449,6 +473,8 @@ data:
   isVerificationFile: false
   path: src/algebra/monoid.hpp
   requiredBy:
+  - src/data_structures/sparse-table.hpp
+  - src/data_structures/fenwick-tree.hpp
   - src/data_structures/lazy-segtree.hpp
   - src/data_structures/segtree-beats.hpp
   - src/data_structures/potentialized-unionfind.hpp
@@ -468,8 +494,9 @@ data:
   - test/unittest/monoid-unionfind.test.cpp
   - test/unittest/monoid.test.cpp
   - test/unittest/potentialized-unionfind.test.cpp
+  - test/unittest/fenwick-tree.test.cpp
   - test/unittest/acted-monoid.test.cpp
-  - test/aoj/dsl-2-b.test.cpp
+  - test/unittest/sparse-table.test.cpp
   - test/aoj/dsl-2-h.1.test.cpp
   - test/aoj/itp2-3-b.1.test.cpp
   - test/aoj/jag-summer-2971.test.cpp
@@ -478,6 +505,8 @@ data:
   - test/aoj/dsl-2-g.test.cpp
   - test/aoj/dsl-2-a.test.cpp
   - test/aoj/dsl-1-b.2.test.cpp
+  - test/aoj/dsl-2-b.1.test.cpp
+  - test/aoj/dsl-2-b.2.test.cpp
   - test/aoj/dsl-1-b.1.test.cpp
   - test/aoj/dsl-5-a.test.cpp
   - test/aoj/dsl-2-f.test.cpp
@@ -486,10 +515,12 @@ data:
   - test/aoj/dsl-2-h.2.test.cpp
   - test/yosupo/point-add-range-sum.1.test.cpp
   - test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
+  - test/yosupo/staticrmq.test.cpp
   - test/yosupo/point-set-range-composite.4.test.cpp
   - test/yosupo/range-affine-range-sum.2.test.cpp
   - test/yosupo/range-affine-range-sum.3.test.cpp
   - test/yosupo/rectangle-sum.2.test.cpp
+  - test/yosupo/point-add-range-sum.3.test.cpp
   - test/yosupo/area-of-union-of-rectangles.2.test.cpp
   - test/yosupo/point-set-range-composite.3.test.cpp
   - test/yosupo/point-add-rectangle-sum.test.cpp
@@ -504,6 +535,7 @@ data:
   - test/yosupo/rectangle-sum.1.test.cpp
   - test/yosupo/point-add-range-sum.2.test.cpp
   - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
+  - test/yosupo/rectangle-sum.3.test.cpp
   - test/yosupo/range-affine-range-sum.1.test.cpp
   - test/yukicoder/674.1.test.cpp
   - test/yukicoder/1036.1.test.cpp

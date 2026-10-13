@@ -11,6 +11,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/graph/tree.hpp
     title: "\u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8"
+  - icon: ':heavy_check_mark:'
+    path: src/graph/two-sat.hpp
+    title: 2-SAT
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/1595.test.cpp
@@ -46,6 +49,9 @@ data:
     path: test/unittest/tree.test.cpp
     title: test/unittest/tree.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/two-sat.test.cpp
+    title: test/unittest/two-sat.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/jump-on-tree.test.cpp
     title: test/yosupo/jump-on-tree.test.cpp
   - icon: ':heavy_check_mark:'
@@ -72,6 +78,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/tree-diameter.test.cpp
     title: test/yosupo/tree-diameter.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/two-sat.test.cpp
+    title: test/yosupo/two-sat.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/vertex-add-subtree-sum.test.cpp
     title: test/yosupo/vertex-add-subtree-sum.test.cpp
@@ -368,9 +377,11 @@ data:
   - src/graph/tree.hpp
   - src/graph/rerooting-dp.hpp
   - src/graph/graph_util.hpp
+  - src/graph/two-sat.hpp
   timestamp: '2026-10-13 12:42:03+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/two-sat.test.cpp
   - test/unittest/rerooting-dp.test.cpp
   - test/unittest/tree.test.cpp
   - test/unittest/graph.test.cpp
@@ -382,6 +393,7 @@ data:
   - test/aoj/grl-5-b.test.cpp
   - test/aoj/3372.test.cpp
   - test/aoj/alds1-11-d.1.test.cpp
+  - test/yosupo/two-sat.test.cpp
   - test/yosupo/lca.4.test.cpp
   - test/yosupo/minimum-spanning-tree.test.cpp
   - test/yosupo/lca.1.test.cpp

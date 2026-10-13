@@ -54,14 +54,21 @@ data:
     \ *this;\n    }\n    friend Counter operator-(const Counter& a, const Counter&\
     \ b) {\n        Counter res(a);\n        return res -= b;\n    }\n    auto begin()\
     \ const { return data.begin(); }\n    auto end() const { return data.end(); }\n\
-    \    std::size_t size() const {\n        return data.size();\n    }\n    mapped_type\
-    \ get(const key_type& key) const {\n        auto itr = data.find(key);\n     \
-    \   if (itr == data.end()) return 0;\n        return itr->second;\n    }\n   \
-    \ void set(const key_type& key, const mapped_type& t) {\n        assert(t >= 0);\n\
-    \        if (t > 0) {\n            data[key] = t;\n        } else {\n        \
-    \    auto itr = data.find(key);\n            if (itr != data.end()) {\n      \
-    \          data.erase(itr);\n            }\n        }\n    }\n    std::vector<value_type>\
-    \ most_common() const {\n        std::vector<value_type> ret;\n        ret.reserve(data.size());\n\
+    \    /**\n     * @brief \u7570\u306A\u308B\u5024\u306E\u500B\u6570 (\u91CD\u8907\
+    \u306F\u6570\u3048\u306A\u3044)\n     */\n    std::size_t size() const {\n   \
+    \     return data.size();\n    }\n    /**\n     * @brief \u91CD\u8907\u3092\u542B\
+    \u3081\u305F\u8981\u7D20\u6570 (\u500B\u6570\u306E\u7DCF\u548C)\n     * @note\
+    \ Python \u306E collections.Counter.total() \u3068\u540C\u3058\u3002O(\u7570\u306A\
+    \u308B\u5024\u306E\u500B\u6570)\n     */\n    mapped_type total() const {\n  \
+    \      mapped_type ret = 0;\n        for (const auto& [key, cnt] : data) ret +=\
+    \ cnt;\n        return ret;\n    }\n    mapped_type get(const key_type& key) const\
+    \ {\n        auto itr = data.find(key);\n        if (itr == data.end()) return\
+    \ 0;\n        return itr->second;\n    }\n    void set(const key_type& key, const\
+    \ mapped_type& t) {\n        assert(t >= 0);\n        if (t > 0) {\n         \
+    \   data[key] = t;\n        } else {\n            auto itr = data.find(key);\n\
+    \            if (itr != data.end()) {\n                data.erase(itr);\n    \
+    \        }\n        }\n    }\n    std::vector<value_type> most_common() const\
+    \ {\n        std::vector<value_type> ret;\n        ret.reserve(data.size());\n\
     \        for (const auto& [i, c] : data) {\n            ret.push_back({i, c});\n\
     \        }\n        std::sort(ret.begin(), ret.end(), [](const value_type& a,\
     \ const value_type& b) { return a.second > b.second or (a.second == b.second and\
@@ -109,14 +116,21 @@ data:
     \ *this;\n    }\n    friend Counter operator-(const Counter& a, const Counter&\
     \ b) {\n        Counter res(a);\n        return res -= b;\n    }\n    auto begin()\
     \ const { return data.begin(); }\n    auto end() const { return data.end(); }\n\
-    \    std::size_t size() const {\n        return data.size();\n    }\n    mapped_type\
-    \ get(const key_type& key) const {\n        auto itr = data.find(key);\n     \
-    \   if (itr == data.end()) return 0;\n        return itr->second;\n    }\n   \
-    \ void set(const key_type& key, const mapped_type& t) {\n        assert(t >= 0);\n\
-    \        if (t > 0) {\n            data[key] = t;\n        } else {\n        \
-    \    auto itr = data.find(key);\n            if (itr != data.end()) {\n      \
-    \          data.erase(itr);\n            }\n        }\n    }\n    std::vector<value_type>\
-    \ most_common() const {\n        std::vector<value_type> ret;\n        ret.reserve(data.size());\n\
+    \    /**\n     * @brief \u7570\u306A\u308B\u5024\u306E\u500B\u6570 (\u91CD\u8907\
+    \u306F\u6570\u3048\u306A\u3044)\n     */\n    std::size_t size() const {\n   \
+    \     return data.size();\n    }\n    /**\n     * @brief \u91CD\u8907\u3092\u542B\
+    \u3081\u305F\u8981\u7D20\u6570 (\u500B\u6570\u306E\u7DCF\u548C)\n     * @note\
+    \ Python \u306E collections.Counter.total() \u3068\u540C\u3058\u3002O(\u7570\u306A\
+    \u308B\u5024\u306E\u500B\u6570)\n     */\n    mapped_type total() const {\n  \
+    \      mapped_type ret = 0;\n        for (const auto& [key, cnt] : data) ret +=\
+    \ cnt;\n        return ret;\n    }\n    mapped_type get(const key_type& key) const\
+    \ {\n        auto itr = data.find(key);\n        if (itr == data.end()) return\
+    \ 0;\n        return itr->second;\n    }\n    void set(const key_type& key, const\
+    \ mapped_type& t) {\n        assert(t >= 0);\n        if (t > 0) {\n         \
+    \   data[key] = t;\n        } else {\n            auto itr = data.find(key);\n\
+    \            if (itr != data.end()) {\n                data.erase(itr);\n    \
+    \        }\n        }\n    }\n    std::vector<value_type> most_common() const\
+    \ {\n        std::vector<value_type> ret;\n        ret.reserve(data.size());\n\
     \        for (const auto& [i, c] : data) {\n            ret.push_back({i, c});\n\
     \        }\n        std::sort(ret.begin(), ret.end(), [](const value_type& a,\
     \ const value_type& b) { return a.second > b.second or (a.second == b.second and\
@@ -136,7 +150,7 @@ data:
   isVerificationFile: false
   path: src/data_structures/counter.hpp
   requiredBy: []
-  timestamp: '2026-10-13 06:02:01+09:00'
+  timestamp: '2026-10-13 10:20:01+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/counter.test.cpp
@@ -174,8 +188,9 @@ Counter<int> d = c + Counter<int>(3);  // 3 を 1 個足した Counter
 | `c[x] = k` / `c.set(x, k)` | `x` の個数を `k` にする (`k >= 0`) | $O(\log n)$ |
 | `c[x] += k`、`c[x] -= k` / `c.inc(x, k)` | `x` の個数を増減する (負になると assert で落ちる) | $O(\log n)$ |
 | `c + d`、`c += d` | 個数を足し合わせる | $O(m \log (n + m))$ ($m$ は `d` の異なる値の個数) |
-| `c - d`、`c -= d` | 個数を引く (負になると assert で落ちる) | $O(m \log n)$ |
+| `c - d`、`c -= d` | 個数を引く (負になると assert で落ちる)。`c -= c` で空になる | $O(m \log n)$ |
 | `for (auto [x, cnt] : c)` | `{値, 個数}` を値の昇順に走査 | $O(n)$ |
-| `c.size()` | 異なる値の個数 | $O(1)$ |
+| `c.size()` | 異なる値の個数 (重複は数えない) | $O(1)$ |
+| `c.total()` | 重複を含めた要素数 (個数の総和。Python の `Counter.total()` と同じ) | $O(n)$ |
 | `c.most_common()` | `{値, 個数}` のリスト。個数の降順、同数なら値の昇順 | $O(n \log n)$ |
 | `c.data` | 中身の `std::map<T, long long>` (値の昇順に走査できる) | |

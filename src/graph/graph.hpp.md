@@ -64,6 +64,9 @@ data:
     path: test/yosupo/minimum-spanning-tree.test.cpp
     title: test/yosupo/minimum-spanning-tree.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/scc.test.cpp
+    title: test/yosupo/scc.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/shortest-path.test.cpp
     title: test/yosupo/shortest-path.test.cpp
   - icon: ':heavy_check_mark:'
@@ -386,6 +389,7 @@ data:
   - test/yosupo/lca.2.test.cpp
   - test/yosupo/shortest-path.test.cpp
   - test/yosupo/vertex-add-subtree-sum.test.cpp
+  - test/yosupo/scc.test.cpp
   - test/yosupo/jump-on-tree.test.cpp
   - test/yukicoder/1641.test.cpp
   - test/yukicoder/898.test.cpp

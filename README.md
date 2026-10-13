@@ -14,12 +14,12 @@
 | `src/base/` | 入出力、型特性、`range`、`repr` (出力をそのままコンストラクタに使える文字列化)、コンテスト用テンプレート (`all` で一括 include) |
 | `src/algebra/` | モノイド・群・作用素付きモノイドの定義 |
 | `src/data_structures/` | セグメント木各種 (モノイドを渡して使う)、Union-Find、マージソートツリー、Li Chao Tree など |
-| `src/graph/` | グラフ、木、全方位木 DP、Functional Graph |
-| `src/math/` | modint、行列、形式的冪級数、組み合わせ、数論、多倍長整数 |
+| `src/graph/` | グラフ、木、全方位木 DP、Functional Graph、強連結成分分解 |
+| `src/math/` | modint、行列、形式的冪級数、組み合わせ、数論、無限大を持つ整数 (`infint`) |
 | `src/string/` | Z-algorithm、ローリングハッシュ |
 | `src/geometry/` | 幾何 (ベクトル、凸包など) |
 | `src/others/` | Mo's algorithm |
-| `test/` | オンラインジャッジでの検証用テスト (ジャッジごとにディレクトリを分けています) |
+| `test/` | 検証用テスト (ジャッジごとにディレクトリを分けています。`test/unittest/` は問題を使わない単体テスト) |
 | `docs/` | ドキュメントの各ページに埋め込む機能一覧 (`documentation_of` でヘッダに対応付け) |
 
 ## 使い方
@@ -56,7 +56,12 @@ g++ -std=c++17 -I /path/to/shogo-library/src main.cpp
 
 ## 検証
 
-[online-judge-tools/verification-helper](https://github.com/online-judge-tools/verification-helper) で、`test/` 以下のテストを GitHub Actions 上で検証しています。
+[online-judge-tools/verification-helper](https://github.com/online-judge-tools/verification-helper) で、`test/` 以下のテストを GitHub Actions 上で検証しています。CI は `ubuntu-24.04` に固定しています。
+
+ライブラリのすべての関数を、CI のテストのどれかから呼ぶようにしています (`test/atcoder/` は数えない)。
+
+- ジャッジの問題 (Library Checker・AOJ・yukicoder) で検証できるものは、問題を解くテストで検証します。同じ問題を別の機能で解き直すテストは `.1`・`.2` のように番号を付けます。
+- 合う問題がないものは `test/unittest/` で検証します。問題 (AOJ ITP1_1_A) の入力は使わず、愚直な実装とのランダムな比較や期待値との比較がすべて一致したときだけ `Hello World` を出力します。
 
 - yukicoder のテストには `YUKICODER_TOKEN` が必要です。
 - `test/atcoder/` には AtCoder の問題で書いたテストを置いています。AtCoder のテストケースは CI で取得できないため、`*.test.cpp` にせず検証の対象外にしています。手元で `oj` を使って確認できます。

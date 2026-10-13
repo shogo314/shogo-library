@@ -603,6 +603,9 @@ data:
       path: test/yosupo/rectangle-sum.2.test.cpp
       title: test/yosupo/rectangle-sum.2.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/scc.test.cpp
+      title: test/yosupo/scc.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/segment-add-get-min.test.cpp
       title: test/yosupo/segment-add-get-min.test.cpp
     - icon: ':heavy_check_mark:'

@@ -6,18 +6,20 @@
  */
 
 #include <cassert>
+#include <climits>
 #include <cmath>
 #include <vector>
 #include "../math/fps.hpp"
 
 /**
- * @brief 和が s になる部分集合 (各要素は 1 回まで) の個数を、s = 0, 1, ..., t について求める (DP) O(N t)
+ * @brief 和が s になる部分集合 (各要素は 1 回まで) の個数を、s = 0, 1, ..., S について求める (DP) O(N S)
  * @tparam T 個数の型 (modint や long long)
  * @param a 0 以上の整数の列
  */
 template <typename T>
-std::vector<T> count_subset_sum_dp(const std::vector<long long>& a, int t) {
-    assert(t >= 0);
+std::vector<T> subset_sum_count_dp(const std::vector<long long>& a, long long S) {
+    assert(0 <= S && S < INT_MAX);
+    const int t = static_cast<int>(S);
     std::vector<T> dp(t + 1, T(0));
     dp[0] = T(1);
     for (long long x : a) {
@@ -34,15 +36,16 @@ std::vector<T> count_subset_sum_dp(const std::vector<long long>& a, int t) {
 }
 
 /**
- * @brief 和が s になる部分集合 (各要素は 1 回まで) の個数を、s = 0, 1, ..., t について求める (形式的冪級数の exp) O(t log t)
+ * @brief 和が s になる部分集合 (各要素は 1 回まで) の個数を、s = 0, 1, ..., S について求める (形式的冪級数の exp) O(S log S)
  *
  * prod (1 + x^a_i) = exp(sum_i log(1 + x^a_i)) を使う
- * @tparam mint modint。mod は t より大きい素数であること
+ * @tparam mint modint。mod は S より大きい素数であること
  * @param a 0 以上の整数の列
  */
 template <typename mint>
-std::vector<mint> count_subset_sum_fps(const std::vector<long long>& a, int t) {
-    assert(t >= 0);
+std::vector<mint> subset_sum_count_fps(const std::vector<long long>& a, long long S) {
+    assert(0 <= S && S < INT_MAX);
+    const int t = static_cast<int>(S);
     std::vector<int> cnt(t + 1);
     mint zero_factor = 1;  // 0 の要素は、選ぶか選ばないかで 2 倍
     for (long long x : a) {
@@ -68,16 +71,16 @@ std::vector<mint> count_subset_sum_fps(const std::vector<long long>& a, int t) {
 }
 
 /**
- * @brief 和が s になる部分集合 (各要素は 1 回まで) の個数を、s = 0, 1, ..., t について求める
+ * @brief 和が s になる部分集合 (各要素は 1 回まで) の個数を、s = 0, 1, ..., S について求める
  *
- * 計算量が小さい方を選ぶ: count_subset_sum_dp O(N t) か count_subset_sum_fps O(t log t)
- * @tparam mint modint。mod は t より大きい素数であること
+ * 計算量が小さい方を選ぶ: subset_sum_count_dp O(N S) か subset_sum_count_fps O(S log S)
+ * @tparam mint modint。mod は S より大きい素数であること
  */
 template <typename mint>
-std::vector<mint> count_subset_sum(const std::vector<long long>& a, int t) {
-    // 実測では、DP は N t あたり約 0.2 ns、exp は t log t あたり約 100 ns なので、exp を 500 倍と見積もる
-    double dp_cost = (double)a.size() * (t + 1);
-    double fps_cost = 500.0 * (t + 1) * std::log2(t + 2);
-    if (dp_cost <= fps_cost) return count_subset_sum_dp<mint>(a, t);
-    return count_subset_sum_fps<mint>(a, t);
+std::vector<mint> subset_sum_count(const std::vector<long long>& a, long long S) {
+    // 実測では、DP は N S あたり約 0.2 ns、exp は S log S あたり約 100 ns なので、exp を 500 倍と見積もる
+    double dp_cost = (double)a.size() * (S + 1);
+    double fps_cost = 500.0 * (S + 1) * std::log2(S + 2);
+    if (dp_cost <= fps_cost) return subset_sum_count_dp<mint>(a, S);
+    return subset_sum_count_fps<mint>(a, S);
 }

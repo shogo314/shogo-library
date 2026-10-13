@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
-// subset_sum、subset_sum_restore、subset_sum_max*、count_subset_sum_* を、部分集合をすべて試す愚直な方法とランダムに比較する
+// subset_sum、subset_sum_restore、subset_sum_max*、subset_sum_count_* を、部分集合をすべて試す愚直な方法とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include <algorithm>
@@ -61,9 +61,9 @@ int main() {
         ok = ok && ms == best;
         // 個数
         int t = S;
-        auto c1 = count_subset_sum_dp<long long>(a, t);
-        auto c2 = count_subset_sum_fps<mint>(a, t);
-        auto c3 = count_subset_sum<mint>(a, t);
+        auto c1 = subset_sum_count_dp<long long>(a, t);
+        auto c2 = subset_sum_count_fps<mint>(a, t);
+        auto c3 = subset_sum_count<mint>(a, t);
         for (int s = 0; s <= t && ok; s++) ok = c1[s] == cnt[s] && c2[s] == mint(cnt[s]) && c3[s] == mint(cnt[s]);
     }
 

@@ -26,8 +26,8 @@ bt.nth_element(0);   // 3 (x との xor の最小値は apply_xor(x) してか�
 | `count(x)` | `x` の個数 |
 | `size()` | 要素数 |
 | `nth_element(k)` | 小さい方から `k` 番目 (0-indexed) の値 |
-| `lower_bound(x)` | `x` 以上の最小の要素が何番目か (0-indexed)。なければ `size()` |
-| `upper_bound(x)` | `x` より大きい最小の要素が何番目か (0-indexed)。なければ `size()` |
+| `bisect_left(x)` | `x` 未満の要素の個数 (`x` 以上の最小の要素が何番目か。なければ `size()`) |
+| `bisect_right(x)` | `x` 以下の要素の個数 (`x` より大きい最小の要素が何番目か。なければ `size()`) |
 | `apply_xor(x)` | 全要素を `x` と xor する |
 | `clear()` | 全要素を削除してメモリを解放 |
 

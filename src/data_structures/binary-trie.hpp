@@ -156,7 +156,7 @@ class BinaryTrie {
      * @brief n以上の要素を探索 (O(d))
      * @return 探索した値が昇順で何番目か (0-indexed)。該当する要素がなければtrie木のサイズが返る
      */
-    int lower_bound(T n) const {
+    int bisect_left(T n) const {
         if constexpr (d < std::numeric_limits<T>::digits) {
             if ((n >> d) != 0) return size();
         }
@@ -182,8 +182,8 @@ class BinaryTrie {
      * @brief nより大きな要素を探索 (O(d))
      * @return 探索した値が昇順で何番目か (0-indexed)。該当する要素がなければtrie木のサイズが返る
      */
-    int upper_bound(T n) const {
-        return (n < std::numeric_limits<T>::max() ? lower_bound(n + 1) : size());
+    int bisect_right(T n) const {
+        return (n < std::numeric_limits<T>::max() ? bisect_left(n + 1) : size());
     }
 
     /**

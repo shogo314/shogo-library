@@ -1,7 +1,7 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/rectangle_sum"
 
 // y 座標を Compress で圧縮し、x 座標の順に点を加えながらセグメント木で区間和を取る
-// クエリの y 座標は登録していないので、lower で番号を求める
+// クエリの y 座標は登録していないので、bisect_left で番号を求める
 
 #include <algorithm>
 #include <iostream>
@@ -25,7 +25,7 @@ int main() {
     for (int i = 0; i < q; i++) {
         long long l, d, r, u;
         std::cin >> l >> d >> r >> u;
-        int lo = cy.lower(d), hi = cy.lower(u);
+        int lo = cy.bisect_left(d), hi = cy.bisect_left(u);
         events.emplace_back(l, -1, lo, hi, i);
         events.emplace_back(r, 1, lo, hi, i);
     }

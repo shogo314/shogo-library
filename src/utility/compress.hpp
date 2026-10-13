@@ -67,21 +67,21 @@ public:
      * @brief 登録した値 x の番号 O(log n)。登録していない値なら assert で落ちる
      */
     int id(const T& x) const {
-        int i = lower(x);
+        int i = bisect_left(x);
         assert(i < size() && !(x < xs[i]));
         return i;
     }
     /**
      * @brief x 以上で最小の値の番号 O(log n)。なければ size()
      */
-    int lower(const T& x) const {
+    int bisect_left(const T& x) const {
         assert(built);
         return std::lower_bound(xs.begin(), xs.end(), x) - xs.begin();
     }
     /**
      * @brief x より大きい最小の値の番号 O(log n)。なければ size()
      */
-    int upper(const T& x) const {
+    int bisect_right(const T& x) const {
         assert(built);
         return std::upper_bound(xs.begin(), xs.end(), x) - xs.begin();
     }
@@ -89,7 +89,7 @@ public:
      * @brief x を登録したか O(log n)
      */
     bool contains(const T& x) const {
-        int i = lower(x);
+        int i = bisect_left(x);
         return i < size() && !(x < xs[i]);
     }
     /**

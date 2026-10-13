@@ -72,7 +72,7 @@ struct MexUpdate {
         }
         v[k] = x;
     }
-    value_type prod() const {
+    value_type mex() const {
         return *s.begin();
     }
 };

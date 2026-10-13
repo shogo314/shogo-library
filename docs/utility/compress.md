@@ -15,7 +15,7 @@ Compress<long long> cq;            // 複数の列やクエリの値をまとめ
 cq.add(A);
 cq.add(x);
 cq.build();
-int l = cq.lower(d), r = cq.lower(u);  // 値が [d, u) の範囲は番号 [l, r)
+int l = cq.bisect_left(d), r = cq.bisect_left(u);  // 値が [d, u) の範囲は番号 [l, r)
 ```
 
 値をすべて登録してから `build` を呼び、そのあとで番号を求めます。`build` の後に `add` したり、`build` の前に番号を求めたりすると assert で落ちます。
@@ -30,14 +30,14 @@ int l = cq.lower(d), r = cq.lower(u);  // 値が [d, u) の範囲は番号 [l, r
 | `build()` | 登録した値をソートして重複を除く。$O(n \log n)$ |
 | `size()` | 異なる値の個数 |
 | `id(x)` | 値 `x` の番号。登録していない値なら assert で落ちる。$O(\log n)$ |
-| `lower(x)` | `x` 以上で最小の値の番号 (なければ `size()`)。$O(\log n)$ |
-| `upper(x)` | `x` より大きい最小の値の番号 (なければ `size()`)。$O(\log n)$ |
+| `bisect_left(x)` | `x` 以上で最小の値の番号 (なければ `size()`)。$O(\log n)$ |
+| `bisect_right(x)` | `x` より大きい最小の値の番号 (なければ `size()`)。$O(\log n)$ |
 | `contains(x)` | `x` を登録したか。$O(\log n)$ |
 | `cp[i]` | 番号 `i` の値 |
 | `ids(v)` | `v` の各値を番号に置き換えた列 |
 | `values()` | ソート済みで重複のない値の列 |
 
-`id` と `lower` の違いに注意してください。圧縮に含めた値の番号は `id` で求めると、登録し忘れた値に気づけます。クエリの範囲の端のように、登録していない値で境界を求めるときは `lower` / `upper` を使います。
+`id` と `bisect_left` の違いに注意してください。圧縮に含めた値の番号は `id` で求めると、登録し忘れた値に気づけます。クエリの範囲の端のように、登録していない値で境界を求めるときは `bisect_left` / `bisect_right` を使います。
 
 ## 関連
 

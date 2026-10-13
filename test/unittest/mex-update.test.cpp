@@ -31,19 +31,19 @@ bool run(std::mt19937& rng) {
             // MexUpdate(n): 値はどれも mex に影響しない値で初期化される
             mu = MexUpdate<T>(n);
             v.assign(n, -1);
-            if (mu.prod() != 0) return false;
+            if (mu.mex() != 0) return false;
         } else {
             v.resize(n);
             for (auto& x : v) x = random_value();
             mu = MexUpdate<T>(v);
         }
-        if (mu.prod() != naive_mex(v)) return false;
+        if (mu.mex() != naive_mex(v)) return false;
         for (int t = 0; t < 20; t++) {
             int k = rng() % n;
             T x = random_value();
             mu.set(k, x);
             v[k] = x;
-            if (mu.prod() != naive_mex(v)) return false;
+            if (mu.mex() != naive_mex(v)) return false;
         }
     }
     return true;
@@ -54,9 +54,9 @@ int main() {
     bool ok = run<int>(rng) && run<long long>(rng);
     // 0..n-1 がすべて揃うと mex は n
     MexUpdate<int> full(std::vector<int>{2, 0, 1});
-    ok = ok && full.prod() == 3;
+    ok = ok && full.mex() == 3;
     full.set(1, 3);
-    ok = ok && full.prod() == 0;
+    ok = ok && full.mex() == 0;
     if (ok) std::cout << "Hello World" << std::endl;
     else std::cerr << "failed" << std::endl;
 }

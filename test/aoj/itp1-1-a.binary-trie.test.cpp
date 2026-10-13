@@ -56,8 +56,8 @@ int main(void) {
             break;
         case 4:
             std::sort(A.begin(), A.end());
-            assert(std::lower_bound(A.begin(), A.end(), x) - A.begin() == BT.lower_bound(x));
-            assert(std::upper_bound(A.begin(), A.end(), x) - A.begin() == BT.upper_bound(x));
+            assert(std::lower_bound(A.begin(), A.end(), x) - A.begin() == BT.bisect_left(x));
+            assert(std::upper_bound(A.begin(), A.end(), x) - A.begin() == BT.bisect_right(x));
             break;
         case 5:
             if (x >= A.size()) break;

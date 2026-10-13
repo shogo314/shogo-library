@@ -41,7 +41,7 @@ int main() {
                 while (lo < m && xs[lo] < x) lo++;
                 while (up < m && xs[up] <= x) up++;
                 bool has = std::count(a.begin(), a.end(), x) > 0;
-                ok = ok && c->lower(x) == lo && c->upper(x) == up && c->contains(x) == has;
+                ok = ok && c->bisect_left(x) == lo && c->bisect_right(x) == up && c->contains(x) == has;
             }
             std::vector<int> ids = c->ids(a);
             for (int i = 0; i < n; i++) ok = ok && xs[ids[i]] == a[i];
@@ -50,7 +50,7 @@ int main() {
 
     // 例: 文字列も圧縮できる
     Compress<std::string> cs(std::vector<std::string>{"b", "a", "c", "a"});
-    ok = ok && cs.size() == 3 && cs.id("c") == 2 && cs[0] == "a" && !cs.contains("d") && cs.lower("bb") == 2;
+    ok = ok && cs.size() == 3 && cs.id("c") == 2 && cs[0] == "a" && !cs.contains("d") && cs.bisect_left("bb") == 2;
 
     if (ok) std::cout << "Hello World" << std::endl;
     else std::cerr << "failed" << std::endl;

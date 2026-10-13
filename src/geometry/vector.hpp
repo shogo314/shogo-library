@@ -409,8 +409,8 @@ constexpr bool segments_intersect(const Vector<T, 2>& p1, const Vector<T, 2>& p2
  * @return std::optional<Vector<T, 2>> 共有点の1例 (共有点がなければ std::nullopt)
  */
 template <typename T>
-constexpr std::optional<Vector<T, 2>> segment_intersect(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& q1, const Vector<T, 2>& q2) {
-    static_assert(std::is_floating_point_v<T>, "segment_intersect: T must be a floating point type (use segments_intersect for integers)");
+constexpr std::optional<Vector<T, 2>> segment_intersection(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& q1, const Vector<T, 2>& q2) {
+    static_assert(std::is_floating_point_v<T>, "segment_intersection: T must be a floating point type (use segments_intersect for integers)");
     if(!segments_intersect(p1, p2, q1, q2)) return std::nullopt;
     if(cross(p2 - p1, q1 - p1) == 0 && cross(p2 - p1, q2 - p1) == 0) {
         // 4点が同一直線上にある場合

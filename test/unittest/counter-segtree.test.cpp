@@ -33,7 +33,7 @@ int main() {
             int l = rng() % (n + 1), r = rng() % (n + 1);
             if (l > r) std::swap(l, r);
             int x = rng() % 7;
-            // lower_bound: [l, r) にある x 以上の最小の値とその個数 (なければ個数 0)
+            // lower_bound: [l, r) にある x 以上の最小の値とその個数 (なければ std::nullopt)
             int best = -1, cnt = 0, same = 0;
             for (int i = l; i < r; i++) {
                 if (v[i] >= x && (best == -1 || v[i] < best)) best = v[i];
@@ -43,8 +43,11 @@ int main() {
                 if (v[i] == best) cnt++;
             }
             auto lb = seg.lower_bound(l, r, x);
-            if (lb.second != cnt) ok = false;
-            if (cnt > 0 && lb.first != best) ok = false;
+            if (cnt == 0) {
+                if (lb) ok = false;
+            } else {
+                if (!lb || lb->first != best || lb->second != cnt) ok = false;
+            }
             // find: [l, r) にある x の個数
             auto f = seg.find(l, r, x);
             if (f.first != x || f.second != same) ok = false;

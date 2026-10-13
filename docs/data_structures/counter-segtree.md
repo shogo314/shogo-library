@@ -8,7 +8,7 @@ documentation_of: //src/data_structures/counter-segtree.hpp
 ```cpp
 CounterSegTree<int> cs({3, 1, 3, 2, 3});
 cs.find(0, 4, 3);         // {3, 2}: [0, 4) に 3 は 2 個
-cs.lower_bound(1, 5, 2);  // {2, 1}: [1, 5) で 2 以上の最小の値は 2 で、1 個
+*cs.lower_bound(1, 5, 2); // {2, 1}: [1, 5) で 2 以上の最小の値は 2 で、1 個
 cs.set(2, 5);
 ```
 
@@ -20,6 +20,6 @@ cs.set(2, 5);
 | `get(k)` | `k` 番目の値 | $O(1)$ |
 | `set(k, x)` | `k` 番目を `x` に更新 | $O(\log^2 n)$ |
 | `find(l, r, x)` | `{x, 区間 [l, r) の x の個数}` | $O(\log^2 n)$ |
-| `lower_bound(l, r, x)` | 区間 $[l, r)$ で `x` 以上の最小の値と、その個数の `pair`。なければ個数が 0 | $O(\log^2 n)$ |
+| `lower_bound(l, r, x)` | 区間 $[l, r)$ で `x` 以上の最小の値と、その個数の `pair` (`std::optional`)。なければ `std::nullopt` | $O(\log^2 n)$ |
 
 メモリは $O(n \log n)$ 使います。

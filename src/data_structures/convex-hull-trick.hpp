@@ -9,7 +9,7 @@
 
 #include <cassert>
 #include <cstddef>
-#include <limits>
+#include <optional>
 #include <type_traits>
 #include <utility>
 #include <vector>
@@ -23,12 +23,17 @@ template <typename T, std::enable_if_t<std::is_scalar_v<T>, std::nullptr_t> = nu
 class LiChaoTree {
     int n, sz, height;
     std::vector<T> xs, as, bs;
+    std::vector<bool> exist;  // ノードが直線を持つか
 
     void update(T a, T b, int k, int h) {
         int l = (k << h) & (sz - 1);
         int r = l + (1 << h);
         
         while(1) {
+            if(!exist[k]) {
+                as[k] = a, bs[k] = b, exist[k] = true;
+                return;
+            }
             int m = (l + r) >> 1;
             T xl = xs[l], xm = xs[m];
             bool l_update = a*xl + b < as[k]*xl + bs[k];
@@ -65,7 +70,8 @@ public:
         }
         this->xs.resize(sz, xs.back());
         as.assign(sz*2, 0);
-        bs.assign(sz*2, std::numeric_limits<T>::max());
+        bs.assign(sz*2, 0);
+        exist.assign(sz*2, false);
     }
 
     /**
@@ -86,6 +92,7 @@ public:
      * @param r xの上限(xsのインデックス)
      */
     void add_segment(T a, T b, int l, int r) {
+        assert(0 <= l && l <= r && r <= n);
         if(l == r) return;
         l += sz, r += sz;
         int h = 0;
@@ -100,16 +107,16 @@ public:
      * @brief x=xs[i]における最小値を求める
      *
      * @param i x座標(xsのインデックス)
-     * @return T 最小値
+     * @return std::optional<T> 最小値。直線がなければ std::nullopt
      */
-    T get_min(int i) const {
+    std::optional<T> get_min(int i) const {
+        assert(0 <= i && i < n);
         T x = xs[i];
-        int k = i + sz;
-        T res = as[k]*x + bs[k];
-        while(k > 1) {
-            k >>= 1;
+        std::optional<T> res;
+        for(int k = i + sz; k >= 1; k >>= 1) {
+            if(!exist[k]) continue;
             T tmp = as[k]*x + bs[k];
-            if(tmp < res) res = tmp;
+            if(!res || tmp < *res) res = tmp;
         }
         return res;
     }

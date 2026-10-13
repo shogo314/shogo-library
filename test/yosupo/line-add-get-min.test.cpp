@@ -37,7 +37,7 @@ int main(void) {
             cht.add_line(a, b);
         } else {
             int i = std::lower_bound(xs.begin(), xs.end(), a) - xs.begin();
-            std::cout << cht.get_min(i) << '\n';
+            std::cout << *cht.get_min(i) << '\n';
         }
     }
 }

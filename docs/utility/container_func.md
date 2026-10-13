@@ -47,7 +47,7 @@ bool b = contains(v, 4);       // true
 | `find(c, x)` | `x` を指すイテレータ |
 | `count(c, x)` | `x` の個数 |
 | `contains(c, x)` | `x` を含むか |
-| `index(c, x)` | `x` が最初に現れる位置 (なければ `size`) |
+| `index(c, x)` | `x` が最初に現れる位置 (なければ `-1`) |
 | `lower_bound(c, x)` / `upper_bound(c, x)` | イテレータを返す |
 | `bisect_left(c, x)` / `bisect_right(c, x)` | 添字を返す (Python の `bisect`) |
 

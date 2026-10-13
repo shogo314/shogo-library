@@ -40,11 +40,11 @@ int main(void) {
             cht.add_segment(a, b, li, ri);
         } else {
             int i = std::lower_bound(xs.begin(), xs.end(), l) - xs.begin();
-            long long res = cht.get_min(i);
-            if(res == std::numeric_limits<long long>::max()) {
+            auto res = cht.get_min(i);
+            if(!res) {
                 std::cout << "INFINITY\n";
             } else {
-                std::cout << res << '\n';
+                std::cout << *res << '\n';
             }
         }
     }

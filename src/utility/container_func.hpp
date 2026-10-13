@@ -201,9 +201,12 @@ inline constexpr mem_value_type<C> median(const C &v) {
     return (v[u[v.size() / 2]] + v[u[v.size() / 2 - 1]]) / 2;
 }
 
+// x が最初に現れる位置。なければ -1
 template <class C, typename U>
-inline constexpr std::ptrdiff_t index(const C &v, const U &x) {
-    return std::distance(v.begin(), find(v, x));
+inline constexpr int index(const C &v, const U &x) {
+    auto it = find(v, x);
+    if (it == v.end()) return -1;
+    return static_cast<int>(std::distance(v.begin(), it));
 }
 
 template <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>

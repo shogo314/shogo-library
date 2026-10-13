@@ -106,10 +106,11 @@ int main() {
             check(median(d) == dexp, "median(vector<double>)");
         }
 
-        // index: 最初に現れる位置、なければ size
+        // index: 最初に現れる位置、なければ -1
         {
             long long x = (long long)(rng() % 13) - 6;
             long long expect = std::find(v.begin(), v.end(), x) - v.begin();
+            if (expect == (long long)v.size()) expect = -1;
             check(index(v, x) == expect, "index(c, x)");
         }
 
@@ -156,7 +157,7 @@ int main() {
     check(maximum_subarray(std::vector<int>{-5, -2, -9}) == -2, "maximum_subarray すべて負");
     check(maximum_subarray(std::vector<int>{-5, -2, -9}, 0) == 0, "maximum_subarray すべて負、空を許す");
     check(product(std::vector<int>{}) == 1 && product_xor(std::vector<int>{}) == 0, "product 空");
-    check(index(std::vector<int>{}, 3) == 0, "index 空");
+    check(index(std::vector<int>{}, 3) == -1, "index 空");
     check(sorted(std::string("bca"), std::greater<char>()) == "cba", "sorted(string, f)");
 
     if (ok) std::cout << "Hello World" << std::endl;

@@ -12,7 +12,7 @@
 | ディレクトリ | 内容 |
 |---|---|
 | `src/base/` | コンテスト用テンプレート (型の別名、マクロ、入出力、`chmin` などの汎用関数)。`all` で一括 include。提出サイズを抑えるため最小限にしている |
-| `src/utility/` | コンテナ・`vector` 用の関数、二分探索、ビット演算、型特性、`range`、`repr` (出力をそのままコンストラクタに使える文字列化)。必要なものだけ include する |
+| `src/utility/` | コンテナ・`vector` 用の関数、二分探索、座標圧縮、ビット演算、型特性、`range`、`repr` (出力をそのままコンストラクタに使える文字列化)。必要なものだけ include する |
 | `src/algebra/` | モノイド・群・作用素付きモノイドの定義 |
 | `src/data_structures/` | セグメント木各種 (モノイドを渡して使う)、Union-Find、マージソートツリー、Li Chao Tree など |
 | `src/graph/` | グラフ、木、全方位木 DP、Functional Graph、強連結成分分解 |

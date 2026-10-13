@@ -112,14 +112,12 @@ int main() {
         check(by_iteration(r.reversed()) == rv && r.reversed().size() == (size_t)n, "reversed");
         check(by_iteration(r.sorted()) == sv && r.sorted().size() == (size_t)n, "sorted");
 
-        // clipped: 値が [l, r] の要素だけを順番を保って残す
+        // clipped: 値が [l, r) の要素だけを順番を保って残す
         {
             ll l = rnd(-25, 25), rr = rnd(-25, 25);
             std::vector<ll> expect;
-            if (l <= rr) {
-                for (ll x : v)
-                    if (l <= x && x <= rr) expect.push_back(x);
-            }
+            for (ll x : v)
+                if (l <= x && x < rr) expect.push_back(x);
             Range c = r.clipped(l, rr);
             check(by_iteration(c) == expect && c.size() == expect.size(), "clipped");
         }

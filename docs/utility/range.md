@@ -43,7 +43,7 @@ Range(10).product_xor();  // 0 ^ 1 ^ ... ^ 9 = 1
 | `product_xor()` | 総 xor (要素は非負) | $O(\log^2 \max)$ |
 | `reversed()` | 逆順の `Range` | $O(1)$ |
 | `sorted()` | 昇順の `Range` | $O(1)$ |
-| `clipped(l, r)` | 要素のうち `l` 以上 `r` 以下のものの `Range` | $O(1)$ |
+| `clipped(l, r)` | 要素のうち `l` 以上 `r` 未満のものの `Range` | $O(1)$ |
 | `slice(s)` | 位置を `Range` `s` で選んだ `Range` (Python の `r[a:b:c]`) | $O(1)$ |
 | `to_vector()` | `std::vector<long long>` にする | $O(n)$ |
 | `==`、`!=` | 要素の列として等しいか (`Range(0, 5, 2) == Range(0, 6, 2)`) | $O(1)$ |

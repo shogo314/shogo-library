@@ -331,10 +331,11 @@ struct Range {
         }
     }
     /**
-     * @brief 要素が [l,r] である範囲を返す
+     * @brief 要素が [l, r) である範囲を返す
      */
     constexpr Range clipped(value_type l, value_type r) const {
-        if (l > r) return {};
+        if (l >= r) return {};
+        r--;  // 以下では r を含む [l, r] として扱う
         if (step > 0) {
             value_type _start = [&] {
                 if (norm_stop <= l) {
@@ -384,7 +385,7 @@ struct Range {
         if (r.empty()) return {};
         if (r.max() < 0) return {};
         if (r.min() >= static_cast<Range::value_type>(size())) return {};
-        Range trimmed_range(r.clipped(0, static_cast<Range::value_type>(size()) - 1));
+        Range trimmed_range(r.clipped(0, static_cast<Range::value_type>(size())));
         if (trimmed_range.empty()) return {};
         value_type _step = step * trimmed_range.step;
         value_type _start = at(trimmed_range.start);

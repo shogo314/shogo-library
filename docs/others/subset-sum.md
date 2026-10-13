@@ -25,4 +25,5 @@ if (!subset_sum_restore(a, 13)) {
 
 ## 関連
 
+- 和ごとの選び方の個数は [部分和の個数](subset-sum-count.hpp)
 - 価値と重さがあるときは [ナップサック問題](knapsack.hpp)

@@ -1,0 +1,64 @@
+#define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
+
+// subset_sum、subset_sum_restore、count_subset_sum_* を、部分集合をすべて試す愚直な方法とランダムに比較する
+// 問題の入力は使わず、すべて一致したら Hello World を出力する
+
+#include <iostream>
+#include <random>
+#include <vector>
+
+#include "../../src/math/modint.hpp"
+#include "../../src/others/subset-sum-count.hpp"
+#include "../../src/others/subset-sum.hpp"
+
+using mint = modint998244353;
+
+int main() {
+    std::mt19937_64 rng(314);
+    bool ok = true;
+    for (int rep = 0; rep < 2000 && ok; rep++) {
+        int n = rng() % 12;
+        long long S = rng() % 300;  // 64 の倍数の前後も含む
+        int amax = rng() % 2 ? 10 : 200;
+        std::vector<long long> a(n);
+        for (auto& x : a) x = rng() % (amax + 1);  // 0 も含む
+        std::vector<long long> cnt(S + 1);
+        for (int mask = 0; mask < (1 << n); mask++) {
+            long long s = 0;
+            for (int i = 0; i < n; i++) {
+                if (mask >> i & 1) s += a[i];
+            }
+            if (s <= S) cnt[s]++;
+        }
+        std::vector<bool> can = subset_sum(a, S);
+        ok = ok && (long long)can.size() == S + 1;
+        for (long long s = 0; s <= S && ok; s++) ok = can[s] == (cnt[s] > 0);
+        // 復元: 添字が昇順で重複がなく、和が S になる
+        auto r = subset_sum_restore(a, S);
+        ok = ok && r.has_value() == (cnt[S] > 0);
+        if (ok && r) {
+            long long s = 0;
+            for (int k = 0; k < (int)r->size(); k++) {
+                if ((*r)[k] < 0 || (*r)[k] >= n || (k && (*r)[k - 1] >= (*r)[k])) ok = false;
+                else s += a[(*r)[k]];
+            }
+            ok = ok && s == S;
+        }
+        // 個数
+        int t = S;
+        auto c1 = count_subset_sum_dp<long long>(a, t);
+        auto c2 = count_subset_sum_fps<mint>(a, t);
+        auto c3 = count_subset_sum<mint>(a, t);
+        for (int s = 0; s <= t && ok; s++) ok = c1[s] == cnt[s] && c2[s] == mint(cnt[s]) && c3[s] == mint(cnt[s]);
+    }
+
+    // 例
+    std::vector<long long> a = {3, 5, 9};
+    auto r = subset_sum_restore(a, 14);
+    ok = ok && r && *r == std::vector<int>{1, 2};
+    ok = ok && !subset_sum_restore(a, 13);
+    ok = ok && subset_sum_restore(a, 0) == std::vector<int>{};
+
+    if (ok) std::cout << "Hello World" << std::endl;
+    else std::cerr << "failed" << std::endl;
+}

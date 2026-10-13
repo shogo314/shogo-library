@@ -617,6 +617,9 @@ data:
       path: test/unittest/fenwick-tree.test.cpp
       title: test/unittest/fenwick-tree.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/find-cycle.test.cpp
+      title: test/unittest/find-cycle.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/floor-sum.test.cpp
       title: test/unittest/floor-sum.test.cpp
     - icon: ':heavy_check_mark:'
@@ -801,6 +804,12 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/counting-spanning-tree-undirected.test.cpp
       title: test/yosupo/counting-spanning-tree-undirected.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/cycle-detection-undirected.test.cpp
+      title: test/yosupo/cycle-detection-undirected.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/cycle-detection.test.cpp
+      title: test/yosupo/cycle-detection.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/division-of-polynomials.test.cpp
       title: test/yosupo/division-of-polynomials.test.cpp

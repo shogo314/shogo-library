@@ -59,6 +59,9 @@ data:
     path: test/aoj/grl-5-d.test.cpp
     title: test/aoj/grl-5-d.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/find-cycle.test.cpp
+    title: test/unittest/find-cycle.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/graph-util.test.cpp
     title: test/unittest/graph-util.test.cpp
   - icon: ':heavy_check_mark:'
@@ -79,6 +82,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/two-sat.test.cpp
     title: test/unittest/two-sat.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/cycle-detection-undirected.test.cpp
+    title: test/yosupo/cycle-detection-undirected.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/cycle-detection.test.cpp
+    title: test/yosupo/cycle-detection.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/jump-on-tree.1.test.cpp
     title: test/yosupo/jump-on-tree.1.test.cpp
@@ -502,6 +511,7 @@ data:
   - test/unittest/two-sat.test.cpp
   - test/unittest/lowlink.test.cpp
   - test/unittest/rerooting-dp.test.cpp
+  - test/unittest/find-cycle.test.cpp
   - test/unittest/tree.test.cpp
   - test/unittest/heavy-light-decomposition.test.cpp
   - test/unittest/graph.test.cpp
@@ -519,6 +529,7 @@ data:
   - test/aoj/grl-3-a.test.cpp
   - test/aoj/3372.test.cpp
   - test/aoj/alds1-11-d.1.test.cpp
+  - test/yosupo/cycle-detection-undirected.test.cpp
   - test/yosupo/two-sat.test.cpp
   - test/yosupo/lca.4.test.cpp
   - test/yosupo/vertex-add-subtree-sum.1.test.cpp
@@ -537,6 +548,7 @@ data:
   - test/yosupo/scc.test.cpp
   - test/yosupo/jump-on-tree.2.test.cpp
   - test/yosupo/two-edge-connected-components.test.cpp
+  - test/yosupo/cycle-detection.test.cpp
   - test/yukicoder/1641.test.cpp
   - test/yukicoder/898.test.cpp
 documentation_of: src/graph/graph.hpp

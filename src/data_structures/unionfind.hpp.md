@@ -37,6 +37,9 @@ data:
     path: test/aoj/jag-summer-2971.test.cpp
     title: test/aoj/jag-summer-2971.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/find-cycle.test.cpp
+    title: test/unittest/find-cycle.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/graph-util.test.cpp
     title: test/unittest/graph-util.test.cpp
   - icon: ':heavy_check_mark:'
@@ -60,6 +63,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/unionfind.test.cpp
     title: test/unittest/unionfind.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/cycle-detection-undirected.test.cpp
+    title: test/yosupo/cycle-detection-undirected.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/cycle-detection.test.cpp
+    title: test/yosupo/cycle-detection.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/minimum-spanning-tree.1.test.cpp
     title: test/yosupo/minimum-spanning-tree.1.test.cpp
@@ -198,6 +207,7 @@ data:
   - test/unittest/two-sat.test.cpp
   - test/unittest/lowlink.test.cpp
   - test/unittest/mapping.test.cpp
+  - test/unittest/find-cycle.test.cpp
   - test/unittest/monoid-unionfind.test.cpp
   - test/unittest/monoid.test.cpp
   - test/unittest/potentialized-unionfind.test.cpp
@@ -210,10 +220,12 @@ data:
   - test/aoj/dsl-1-b.1.test.cpp
   - test/aoj/alds1-11-d.1.test.cpp
   - test/yosupo/unionfind.test.cpp
+  - test/yosupo/cycle-detection-undirected.test.cpp
   - test/yosupo/two-sat.test.cpp
   - test/yosupo/minimum-spanning-tree.2.test.cpp
   - test/yosupo/minimum-spanning-tree.1.test.cpp
   - test/yosupo/scc.test.cpp
+  - test/yosupo/cycle-detection.test.cpp
   - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
   - test/yukicoder/674.1.test.cpp
 documentation_of: src/data_structures/unionfind.hpp

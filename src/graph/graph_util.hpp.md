@@ -22,11 +22,20 @@ data:
     path: test/aoj/grl-4-a.test.cpp
     title: test/aoj/grl-4-a.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/find-cycle.test.cpp
+    title: test/unittest/find-cycle.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/graph-util.test.cpp
     title: test/unittest/graph-util.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/two-sat.test.cpp
     title: test/unittest/two-sat.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/cycle-detection-undirected.test.cpp
+    title: test/yosupo/cycle-detection-undirected.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/cycle-detection.test.cpp
+    title: test/yosupo/cycle-detection.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/minimum-spanning-tree.2.test.cpp
     title: test/yosupo/minimum-spanning-tree.2.test.cpp
@@ -331,23 +340,83 @@ data:
     \u9006\u306B\u8AAD\u3081\u308B\u305F\u3081\u6539\u540D\u3057\u305F)\n */\ntemplate\
     \ <typename Cost = int>\n[[deprecated(\"use has_cycle\")]] bool has_acyclic(const\
     \ Graph<Cost>& graph) {\n    return has_cycle(graph);\n}\n\n/**\n * @brief \u6709\
-    \u5411\u30B0\u30E9\u30D5\u3092\u5F37\u9023\u7D50\u6210\u5206\u5206\u89E3\u3059\
-    \u308B\n *\n * Tarjan \u306E\u30A2\u30EB\u30B4\u30EA\u30BA\u30E0\u3092\u518D\u5E30\
-    \u3092\u4F7F\u308F\u305A\u306B\u884C\u3046\u3002O(n + m)\n *\n * @return std::vector<std::vector<int>>\
-    \ \u5F37\u9023\u7D50\u6210\u5206\u3054\u3068\u306E\u9802\u70B9\u306E\u30EA\u30B9\
-    \u30C8\u3002\n * \u6210\u5206\u306F\u30C8\u30DD\u30ED\u30B8\u30AB\u30EB\u9806\u306B\
-    \u4E26\u3076 (\u6210\u5206 A \u304B\u3089\u6210\u5206 B \u3078\u8FBA\u304C\u3042\
-    \u308C\u3070 A \u304C B \u3088\u308A\u524D)\n */\ntemplate <typename Cost = int>\n\
-    std::vector<std::vector<int>> strongly_connected_components(const Graph<Cost>&\
-    \ graph) {\n    const int n = graph.n;\n    std::vector<int> ord(n, -1), low(n),\
-    \ comp(n, -1), iter(n, 0);\n    std::vector<int> visiting;  // \u6210\u5206\u304C\
-    \u307E\u3060\u6C7A\u307E\u3063\u3066\u3044\u306A\u3044\u8A2A\u554F\u6E08\u307F\
-    \u306E\u9802\u70B9\n    std::vector<int> call;      // DFS \u306E\u547C\u3073\u51FA\
-    \u3057\u30B9\u30BF\u30C3\u30AF\n    int now = 0, k = 0;\n    for (int s = 0; s\
-    \ < n; s++) {\n        if (ord[s] != -1) continue;\n        ord[s] = low[s] =\
-    \ now++;\n        visiting.push_back(s);\n        call.push_back(s);\n       \
-    \ while (!call.empty()) {\n            int v = call.back();\n            if (iter[v]\
-    \ < (int)graph[v].size()) {\n                int to = graph[v][iter[v]++].dst;\n\
+    \u5411\u30B0\u30E9\u30D5\u306E\u9589\u8DEF\u3092 1 \u3064\u6C42\u3081\u308B\n\
+    \ *\n * DFS \u3092\u518D\u5E30\u3092\u4F7F\u308F\u305A\u306B\u884C\u3046\u3002\
+    O(n + m)\n * @return std::vector<Edge> \u9589\u8DEF\u306E\u8FBA\u3092\u3001\u305F\
+    \u3069\u308B\u9806\u306B\u4E26\u3079\u305F\u3082\u306E (e[k].dst == e[k + 1].src\u3001\
+    \u672B\u5C3E\u306E dst \u306F\u5148\u982D\u306E src)\u3002\u9589\u8DEF\u304C\u306A\
+    \u3051\u308C\u3070\u7A7A\n * \u81EA\u5DF1\u30EB\u30FC\u30D7\u306F\u9577\u3055\
+    \ 1 \u306E\u9589\u8DEF\u306B\u306A\u308B\u3002\u9802\u70B9\u306E\u5217\u306F\u5404\
+    \u8FBA\u306E src \u3067\u5F97\u3089\u308C\u308B\n */\ntemplate <typename Cost\
+    \ = int>\nstd::vector<typename Graph<Cost>::Edge> find_cycle_directed(const Graph<Cost>&\
+    \ graph) {\n    using Edge = typename Graph<Cost>::Edge;\n    // state: 0 \u306F\
+    \u672A\u8A2A\u554F\u30011 \u306F DFS \u306E\u30B9\u30BF\u30C3\u30AF\u4E0A\u3001\
+    2 \u306F\u63A2\u7D22\u6E08\u307F\n    std::vector<int> state(graph.n, 0), iter(graph.n,\
+    \ 0);\n    std::vector<Edge> in(graph.n);  // DFS \u6728\u3067 v \u306B\u5165\u308B\
+    \u8FBA\n    for (int root = 0; root < graph.n; root++) {\n        if (state[root])\
+    \ continue;\n        std::vector<int> st = {root};\n        state[root] = 1;\n\
+    \        while (!st.empty()) {\n            int v = st.back();\n            if\
+    \ (iter[v] == (int)graph[v].size()) {\n                state[v] = 2;\n       \
+    \         st.pop_back();\n                continue;\n            }\n         \
+    \   const Edge& e = graph[v][iter[v]++];\n            int u = e.dst;\n       \
+    \     if (state[u] == 0) {\n                state[u] = 1;\n                in[u]\
+    \ = e;\n                st.push_back(u);\n            } else if (state[u] == 1)\
+    \ {\n                // u \u306F\u30B9\u30BF\u30C3\u30AF\u4E0A\u306B\u3042\u308B\
+    \u306E\u3067\u3001u \u304B\u3089 v \u3078\u306E\u6728\u306E\u8FBA\u3068 e \u3067\
+    \u9589\u8DEF\u306B\u306A\u308B\n                std::vector<Edge> res = {e};\n\
+    \                for (int w = v; w != u; w = in[w].src) res.push_back(in[w]);\n\
+    \                std::reverse(res.begin(), res.end());\n                return\
+    \ res;\n            }\n        }\n    }\n    return {};\n}\n\n/**\n * @brief \u7121\
+    \u5411\u30B0\u30E9\u30D5\u306E\u9589\u8DEF\u3092 1 \u3064\u6C42\u3081\u308B\n\
+    \ *\n * DFS \u3092\u518D\u5E30\u3092\u4F7F\u308F\u305A\u306B\u884C\u3046\u3002\
+    O(n + m)\n * @return std::vector<Edge> \u9589\u8DEF\u306E\u8FBA\u3092\u3001\u305F\
+    \u3069\u308B\u9806\u306B\u4E26\u3079\u305F\u3082\u306E (e[k].dst == e[k + 1].src\u3001\
+    \u672B\u5C3E\u306E dst \u306F\u5148\u982D\u306E src)\u3002\u9589\u8DEF\u304C\u306A\
+    \u3051\u308C\u3070\u7A7A\n * \u81EA\u5DF1\u30EB\u30FC\u30D7\u306F\u9577\u3055\
+    \ 1\u3001\u591A\u91CD\u8FBA\u306F\u9577\u3055 2 \u306E\u9589\u8DEF\u306B\u306A\
+    \u308B (\u540C\u3058\u8FBA\u3092\u623B\u308B\u3053\u3068\u306F\u306A\u3044)\u3002\
+    \u9802\u70B9\u306E\u5217\u306F\u5404\u8FBA\u306E src \u3067\u5F97\u3089\u308C\u308B\
+    \n */\ntemplate <typename Cost = int>\nstd::vector<typename Graph<Cost>::Edge>\
+    \ find_cycle_undirected(const Graph<Cost>& graph) {\n    using Edge = typename\
+    \ Graph<Cost>::Edge;\n    std::vector<int> state(graph.n, 0), iter(graph.n, 0);\n\
+    \    std::vector<Edge> in(graph.n);\n    for (int root = 0; root < graph.n; root++)\
+    \ {\n        if (state[root]) continue;\n        std::vector<int> st = {root};\n\
+    \        state[root] = 1;\n        while (!st.empty()) {\n            int v =\
+    \ st.back();\n            if (iter[v] == (int)graph[v].size()) {\n           \
+    \     state[v] = 2;\n                st.pop_back();\n                continue;\n\
+    \            }\n            const Edge& e = graph[v][iter[v]++];\n           \
+    \ // \u89AA\u3078\u623B\u308B\u8FBA\u306F\u3001\u9802\u70B9\u3067\u306F\u306A\u304F\
+    \u8FBA\u306E\u756A\u53F7\u3067\u533A\u5225\u3059\u308B (\u591A\u91CD\u8FBA\u3092\
+    \u9589\u8DEF\u3068\u3057\u3066\u898B\u3064\u3051\u308B\u305F\u3081)\n        \
+    \    if (e.id == in[v].id) continue;  // \u6839\u3067\u306F in[v].id == -1\n \
+    \           int u = e.dst;\n            if (state[u] == 0) {\n               \
+    \ state[u] = 1;\n                in[u] = e;\n                st.push_back(u);\n\
+    \            } else if (state[u] == 1) {\n                // u \u306F v \u306E\
+    \u7956\u5148 (\u304B v \u81EA\u8EAB) \u306A\u306E\u3067\u3001u \u304B\u3089 v\
+    \ \u3078\u306E\u6728\u306E\u8FBA\u3068 e \u3067\u9589\u8DEF\u306B\u306A\u308B\n\
+    \                std::vector<Edge> res = {e};\n                for (int w = v;\
+    \ w != u; w = in[w].src) res.push_back(in[w]);\n                std::reverse(res.begin(),\
+    \ res.end());\n                return res;\n            }\n            // state[u]\
+    \ == 2 \u306B\u306F\u306A\u3089\u306A\u3044 (\u306A\u308B\u306A\u3089\u3001u \u306E\
+    \u5074\u3067\u3053\u306E\u8FBA\u306B\u3088\u308A\u9589\u8DEF\u304C\u898B\u3064\
+    \u304B\u3063\u3066\u3044\u308B)\n        }\n    }\n    return {};\n}\n\n/**\n\
+    \ * @brief \u6709\u5411\u30B0\u30E9\u30D5\u3092\u5F37\u9023\u7D50\u6210\u5206\u5206\
+    \u89E3\u3059\u308B\n *\n * Tarjan \u306E\u30A2\u30EB\u30B4\u30EA\u30BA\u30E0\u3092\
+    \u518D\u5E30\u3092\u4F7F\u308F\u305A\u306B\u884C\u3046\u3002O(n + m)\n *\n * @return\
+    \ std::vector<std::vector<int>> \u5F37\u9023\u7D50\u6210\u5206\u3054\u3068\u306E\
+    \u9802\u70B9\u306E\u30EA\u30B9\u30C8\u3002\n * \u6210\u5206\u306F\u30C8\u30DD\u30ED\
+    \u30B8\u30AB\u30EB\u9806\u306B\u4E26\u3076 (\u6210\u5206 A \u304B\u3089\u6210\u5206\
+    \ B \u3078\u8FBA\u304C\u3042\u308C\u3070 A \u304C B \u3088\u308A\u524D)\n */\n\
+    template <typename Cost = int>\nstd::vector<std::vector<int>> strongly_connected_components(const\
+    \ Graph<Cost>& graph) {\n    const int n = graph.n;\n    std::vector<int> ord(n,\
+    \ -1), low(n), comp(n, -1), iter(n, 0);\n    std::vector<int> visiting;  // \u6210\
+    \u5206\u304C\u307E\u3060\u6C7A\u307E\u3063\u3066\u3044\u306A\u3044\u8A2A\u554F\
+    \u6E08\u307F\u306E\u9802\u70B9\n    std::vector<int> call;      // DFS \u306E\u547C\
+    \u3073\u51FA\u3057\u30B9\u30BF\u30C3\u30AF\n    int now = 0, k = 0;\n    for (int\
+    \ s = 0; s < n; s++) {\n        if (ord[s] != -1) continue;\n        ord[s] =\
+    \ low[s] = now++;\n        visiting.push_back(s);\n        call.push_back(s);\n\
+    \        while (!call.empty()) {\n            int v = call.back();\n         \
+    \   if (iter[v] < (int)graph[v].size()) {\n                int to = graph[v][iter[v]++].dst;\n\
     \                if (ord[to] == -1) {\n                    ord[to] = low[to] =\
     \ now++;\n                    visiting.push_back(to);\n                    call.push_back(to);\n\
     \                } else if (comp[to] == -1) {\n                    low[v] = std::min(low[v],\
@@ -471,14 +540,74 @@ data:
     (\u540D\u524D\u3068\u610F\u5473\u304C\u9006\u306B\u8AAD\u3081\u308B\u305F\u3081\
     \u6539\u540D\u3057\u305F)\n */\ntemplate <typename Cost = int>\n[[deprecated(\"\
     use has_cycle\")]] bool has_acyclic(const Graph<Cost>& graph) {\n    return has_cycle(graph);\n\
-    }\n\n/**\n * @brief \u6709\u5411\u30B0\u30E9\u30D5\u3092\u5F37\u9023\u7D50\u6210\
-    \u5206\u5206\u89E3\u3059\u308B\n *\n * Tarjan \u306E\u30A2\u30EB\u30B4\u30EA\u30BA\
-    \u30E0\u3092\u518D\u5E30\u3092\u4F7F\u308F\u305A\u306B\u884C\u3046\u3002O(n +\
-    \ m)\n *\n * @return std::vector<std::vector<int>> \u5F37\u9023\u7D50\u6210\u5206\
-    \u3054\u3068\u306E\u9802\u70B9\u306E\u30EA\u30B9\u30C8\u3002\n * \u6210\u5206\u306F\
-    \u30C8\u30DD\u30ED\u30B8\u30AB\u30EB\u9806\u306B\u4E26\u3076 (\u6210\u5206 A \u304B\
-    \u3089\u6210\u5206 B \u3078\u8FBA\u304C\u3042\u308C\u3070 A \u304C B \u3088\u308A\
-    \u524D)\n */\ntemplate <typename Cost = int>\nstd::vector<std::vector<int>> strongly_connected_components(const\
+    }\n\n/**\n * @brief \u6709\u5411\u30B0\u30E9\u30D5\u306E\u9589\u8DEF\u3092 1 \u3064\
+    \u6C42\u3081\u308B\n *\n * DFS \u3092\u518D\u5E30\u3092\u4F7F\u308F\u305A\u306B\
+    \u884C\u3046\u3002O(n + m)\n * @return std::vector<Edge> \u9589\u8DEF\u306E\u8FBA\
+    \u3092\u3001\u305F\u3069\u308B\u9806\u306B\u4E26\u3079\u305F\u3082\u306E (e[k].dst\
+    \ == e[k + 1].src\u3001\u672B\u5C3E\u306E dst \u306F\u5148\u982D\u306E src)\u3002\
+    \u9589\u8DEF\u304C\u306A\u3051\u308C\u3070\u7A7A\n * \u81EA\u5DF1\u30EB\u30FC\u30D7\
+    \u306F\u9577\u3055 1 \u306E\u9589\u8DEF\u306B\u306A\u308B\u3002\u9802\u70B9\u306E\
+    \u5217\u306F\u5404\u8FBA\u306E src \u3067\u5F97\u3089\u308C\u308B\n */\ntemplate\
+    \ <typename Cost = int>\nstd::vector<typename Graph<Cost>::Edge> find_cycle_directed(const\
+    \ Graph<Cost>& graph) {\n    using Edge = typename Graph<Cost>::Edge;\n    //\
+    \ state: 0 \u306F\u672A\u8A2A\u554F\u30011 \u306F DFS \u306E\u30B9\u30BF\u30C3\
+    \u30AF\u4E0A\u30012 \u306F\u63A2\u7D22\u6E08\u307F\n    std::vector<int> state(graph.n,\
+    \ 0), iter(graph.n, 0);\n    std::vector<Edge> in(graph.n);  // DFS \u6728\u3067\
+    \ v \u306B\u5165\u308B\u8FBA\n    for (int root = 0; root < graph.n; root++) {\n\
+    \        if (state[root]) continue;\n        std::vector<int> st = {root};\n \
+    \       state[root] = 1;\n        while (!st.empty()) {\n            int v = st.back();\n\
+    \            if (iter[v] == (int)graph[v].size()) {\n                state[v]\
+    \ = 2;\n                st.pop_back();\n                continue;\n          \
+    \  }\n            const Edge& e = graph[v][iter[v]++];\n            int u = e.dst;\n\
+    \            if (state[u] == 0) {\n                state[u] = 1;\n           \
+    \     in[u] = e;\n                st.push_back(u);\n            } else if (state[u]\
+    \ == 1) {\n                // u \u306F\u30B9\u30BF\u30C3\u30AF\u4E0A\u306B\u3042\
+    \u308B\u306E\u3067\u3001u \u304B\u3089 v \u3078\u306E\u6728\u306E\u8FBA\u3068\
+    \ e \u3067\u9589\u8DEF\u306B\u306A\u308B\n                std::vector<Edge> res\
+    \ = {e};\n                for (int w = v; w != u; w = in[w].src) res.push_back(in[w]);\n\
+    \                std::reverse(res.begin(), res.end());\n                return\
+    \ res;\n            }\n        }\n    }\n    return {};\n}\n\n/**\n * @brief \u7121\
+    \u5411\u30B0\u30E9\u30D5\u306E\u9589\u8DEF\u3092 1 \u3064\u6C42\u3081\u308B\n\
+    \ *\n * DFS \u3092\u518D\u5E30\u3092\u4F7F\u308F\u305A\u306B\u884C\u3046\u3002\
+    O(n + m)\n * @return std::vector<Edge> \u9589\u8DEF\u306E\u8FBA\u3092\u3001\u305F\
+    \u3069\u308B\u9806\u306B\u4E26\u3079\u305F\u3082\u306E (e[k].dst == e[k + 1].src\u3001\
+    \u672B\u5C3E\u306E dst \u306F\u5148\u982D\u306E src)\u3002\u9589\u8DEF\u304C\u306A\
+    \u3051\u308C\u3070\u7A7A\n * \u81EA\u5DF1\u30EB\u30FC\u30D7\u306F\u9577\u3055\
+    \ 1\u3001\u591A\u91CD\u8FBA\u306F\u9577\u3055 2 \u306E\u9589\u8DEF\u306B\u306A\
+    \u308B (\u540C\u3058\u8FBA\u3092\u623B\u308B\u3053\u3068\u306F\u306A\u3044)\u3002\
+    \u9802\u70B9\u306E\u5217\u306F\u5404\u8FBA\u306E src \u3067\u5F97\u3089\u308C\u308B\
+    \n */\ntemplate <typename Cost = int>\nstd::vector<typename Graph<Cost>::Edge>\
+    \ find_cycle_undirected(const Graph<Cost>& graph) {\n    using Edge = typename\
+    \ Graph<Cost>::Edge;\n    std::vector<int> state(graph.n, 0), iter(graph.n, 0);\n\
+    \    std::vector<Edge> in(graph.n);\n    for (int root = 0; root < graph.n; root++)\
+    \ {\n        if (state[root]) continue;\n        std::vector<int> st = {root};\n\
+    \        state[root] = 1;\n        while (!st.empty()) {\n            int v =\
+    \ st.back();\n            if (iter[v] == (int)graph[v].size()) {\n           \
+    \     state[v] = 2;\n                st.pop_back();\n                continue;\n\
+    \            }\n            const Edge& e = graph[v][iter[v]++];\n           \
+    \ // \u89AA\u3078\u623B\u308B\u8FBA\u306F\u3001\u9802\u70B9\u3067\u306F\u306A\u304F\
+    \u8FBA\u306E\u756A\u53F7\u3067\u533A\u5225\u3059\u308B (\u591A\u91CD\u8FBA\u3092\
+    \u9589\u8DEF\u3068\u3057\u3066\u898B\u3064\u3051\u308B\u305F\u3081)\n        \
+    \    if (e.id == in[v].id) continue;  // \u6839\u3067\u306F in[v].id == -1\n \
+    \           int u = e.dst;\n            if (state[u] == 0) {\n               \
+    \ state[u] = 1;\n                in[u] = e;\n                st.push_back(u);\n\
+    \            } else if (state[u] == 1) {\n                // u \u306F v \u306E\
+    \u7956\u5148 (\u304B v \u81EA\u8EAB) \u306A\u306E\u3067\u3001u \u304B\u3089 v\
+    \ \u3078\u306E\u6728\u306E\u8FBA\u3068 e \u3067\u9589\u8DEF\u306B\u306A\u308B\n\
+    \                std::vector<Edge> res = {e};\n                for (int w = v;\
+    \ w != u; w = in[w].src) res.push_back(in[w]);\n                std::reverse(res.begin(),\
+    \ res.end());\n                return res;\n            }\n            // state[u]\
+    \ == 2 \u306B\u306F\u306A\u3089\u306A\u3044 (\u306A\u308B\u306A\u3089\u3001u \u306E\
+    \u5074\u3067\u3053\u306E\u8FBA\u306B\u3088\u308A\u9589\u8DEF\u304C\u898B\u3064\
+    \u304B\u3063\u3066\u3044\u308B)\n        }\n    }\n    return {};\n}\n\n/**\n\
+    \ * @brief \u6709\u5411\u30B0\u30E9\u30D5\u3092\u5F37\u9023\u7D50\u6210\u5206\u5206\
+    \u89E3\u3059\u308B\n *\n * Tarjan \u306E\u30A2\u30EB\u30B4\u30EA\u30BA\u30E0\u3092\
+    \u518D\u5E30\u3092\u4F7F\u308F\u305A\u306B\u884C\u3046\u3002O(n + m)\n *\n * @return\
+    \ std::vector<std::vector<int>> \u5F37\u9023\u7D50\u6210\u5206\u3054\u3068\u306E\
+    \u9802\u70B9\u306E\u30EA\u30B9\u30C8\u3002\n * \u6210\u5206\u306F\u30C8\u30DD\u30ED\
+    \u30B8\u30AB\u30EB\u9806\u306B\u4E26\u3076 (\u6210\u5206 A \u304B\u3089\u6210\u5206\
+    \ B \u3078\u8FBA\u304C\u3042\u308C\u3070 A \u304C B \u3088\u308A\u524D)\n */\n\
+    template <typename Cost = int>\nstd::vector<std::vector<int>> strongly_connected_components(const\
     \ Graph<Cost>& graph) {\n    const int n = graph.n;\n    std::vector<int> ord(n,\
     \ -1), low(n), comp(n, -1), iter(n, 0);\n    std::vector<int> visiting;  // \u6210\
     \u5206\u304C\u307E\u3060\u6C7A\u307E\u3063\u3066\u3044\u306A\u3044\u8A2A\u554F\
@@ -547,17 +676,20 @@ data:
   path: src/graph/graph_util.hpp
   requiredBy:
   - src/graph/two-sat.hpp
-  timestamp: '2026-10-13 20:34:04+09:00'
+  timestamp: '2026-10-14 03:23:41+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/two-sat.test.cpp
+  - test/unittest/find-cycle.test.cpp
   - test/unittest/graph-util.test.cpp
   - test/aoj/grl-4-a.test.cpp
   - test/aoj/grl-2-a.test.cpp
   - test/aoj/alds1-11-d.1.test.cpp
+  - test/yosupo/cycle-detection-undirected.test.cpp
   - test/yosupo/two-sat.test.cpp
   - test/yosupo/minimum-spanning-tree.2.test.cpp
   - test/yosupo/scc.test.cpp
+  - test/yosupo/cycle-detection.test.cpp
 documentation_of: src/graph/graph_util.hpp
 layout: document
 title: "\u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570"
@@ -574,6 +706,8 @@ title: "\u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570"
 | `is_tree(g)` | 無向 | 木か | $O(n + m)$ |
 | `topological_sort(g)` | 有向 | トポロジカル順に並べた頂点のリスト。DAG でなければ長さが `n` 未満になる | $O(n + m)$ |
 | `has_cycle(g)` | 有向 | 閉路を持つか | $O(n + m)$ |
+| `find_cycle_directed(g)` | 有向 | 閉路を 1 つ求め、その辺をたどる順に並べたもの (`std::vector<Edge>`)。閉路がなければ空 | $O(n + m)$ |
+| `find_cycle_undirected(g)` | 無向 | 同上。同じ辺を戻ることはなく、自己ループは長さ 1、多重辺は長さ 2 の閉路になる | $O(n + m)$ |
 | `strongly_connected_components(g)` | 有向 | 強連結成分ごとの頂点のリスト。成分はトポロジカル順 (成分 A から B へ辺があれば A が先) に並ぶ | $O(n + m)$ |
 | `minimum_spanning_tree(g)` | 無向 | 最小全域木 (Kruskal 法)。`cost` (コストの総和) と `edges` (使った辺) を持つ構造体を返す。連結でなければ最小全域森 | $O(m \log m)$ |
 | `minimum_steiner_tree(g, X, inf = -1)` | 無向 | 頂点集合 `X` をすべて含む部分木の辺の重みの総和の最小値 | $O(3^k n + 2^k m \log m)$ ($k = \lvert X \rvert$) |
@@ -585,6 +719,15 @@ auto groups = strongly_connected_components(g);
 std::vector<int> id(g.n);
 for (int i = 0; i < (int)groups.size(); i++) {
     for (int v : groups[i]) id[v] = i;
+}
+```
+
+閉路の辺 `c` は、`c[k].dst == c[k + 1].src` (末尾の `dst` は先頭の `src`) となる順に並びます。頂点の列は各辺の `src`、辺の番号は各辺の `id` です。
+
+```cpp
+auto c = find_cycle_directed(g);
+if (!c.empty()) {
+    for (auto& e : c) std::cout << e.src << ' ';  // 閉路の頂点
 }
 ```
 

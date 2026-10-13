@@ -9,6 +9,7 @@
 #include <array>
 #include <type_traits>
 #include <algorithm>
+#include <cassert>
 #include <cmath>
 
 template <typename U, class ADD_LEFT, class DELETE_LEFT, class ADD_RIGHT = ADD_LEFT, class DELETE_RIGHT = DELETE_LEFT>
@@ -39,6 +40,7 @@ struct Mo {
        const ADD_LEFT& add_left,
        const DELETE_LEFT& delete_left) : _n(n), lri(), _e(e), _add_left(add_left), _delete_left(delete_left), _add_right(add_left), _delete_right(delete_left) {}
     void query(int l, int r) {
+        assert(0 <= l && l <= r && r <= _n);
         lri.push_back({l, r, (int)lri.size()});
     }
     template <typename T, class F>

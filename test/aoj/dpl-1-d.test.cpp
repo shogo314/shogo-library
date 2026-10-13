@@ -10,5 +10,5 @@ int main() {
     std::cin >> n;
     std::vector<int> a(n);
     for (auto& x : a) std::cin >> x;
-    std::cout << longest_increasing_subsequence(a).size() << std::endl;
+    std::cout << longest_increasing_subsequence(a) << std::endl;
 }

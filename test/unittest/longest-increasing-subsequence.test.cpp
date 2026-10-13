@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
-// longest_increasing_subsequence を、すべての部分列を調べる愚直な方法とランダムに比較する
+// longest_increasing_subsequence とその復元、長さの列を、すべての部分列を調べる愚直な方法とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include <algorithm>
@@ -25,7 +25,8 @@ bool check(const std::vector<int>& a, bool strict, Compare comp) {
     }
     int best = n == 0 ? 0 : *std::max_element(len.begin(), len.end());
     if (longest_increasing_subsequence_lengths(a, strict, comp) != len) return false;
-    std::vector<int> idx = longest_increasing_subsequence(a, strict, comp);
+    if (longest_increasing_subsequence(a, strict, comp) != best) return false;
+    std::vector<int> idx = longest_increasing_subsequence_restore(a, strict, comp);
     if ((int)idx.size() != best) return false;
     for (int k = 0; k < (int)idx.size(); k++) {
         if (idx[k] < 0 || idx[k] >= n) return false;
@@ -50,11 +51,11 @@ int main() {
 
     // 例
     std::vector<int> a = {3, 1, 4, 1, 5, 9, 2, 6};
-    ok = ok && longest_increasing_subsequence(a).size() == 4;
-    ok = ok && longest_increasing_subsequence(a, false).size() == 4;
-    ok = ok && longest_increasing_subsequence(std::vector<int>{2, 2, 2}, false).size() == 3;
-    ok = ok && longest_increasing_subsequence(std::vector<int>{2, 2, 2}).size() == 1;
-    ok = ok && longest_increasing_subsequence(a, true, std::greater<int>()).size() == 2;
+    ok = ok && longest_increasing_subsequence(a) == 4;
+    ok = ok && longest_increasing_subsequence(a, false) == 4;
+    ok = ok && longest_increasing_subsequence(std::vector<int>{2, 2, 2}, false) == 3;
+    ok = ok && longest_increasing_subsequence(std::vector<int>{2, 2, 2}) == 1;
+    ok = ok && longest_increasing_subsequence(a, true, std::greater<int>()) == 2;
 
     if (ok) std::cout << "Hello World" << std::endl;
     else std::cerr << "failed" << std::endl;

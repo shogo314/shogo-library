@@ -31,14 +31,31 @@ std::vector<int> longest_increasing_subsequence_lengths(const std::vector<T>& a,
 }
 
 /**
- * @brief 最長増加部分列を 1 つ求め、その添字の昇順のリストを返す O(n log n)
- *
- * 長さだけが欲しいときは .size() を使う
+ * @brief 最長増加部分列の長さ O(n log n)
  * @param strict true なら狭義単調増加 (comp(前, 後) が成り立つ)、false なら広義単調増加 (comp(後, 前) が成り立たない)
  * @param comp 大小の比較。std::greater<T>() を渡すと減少列になる
  */
 template <typename T, typename Compare = std::less<T>>
-std::vector<int> longest_increasing_subsequence(const std::vector<T>& a, bool strict = true, Compare comp = Compare()) {
+int longest_increasing_subsequence(const std::vector<T>& a, bool strict = true, Compare comp = Compare()) {
+    // tail[k] は、長さ k + 1 の増加部分列の末尾として最も小さい値
+    std::vector<T> tail;
+    for (const T& x : a) {
+        auto it = strict ? std::lower_bound(tail.begin(), tail.end(), x, comp)
+                         : std::upper_bound(tail.begin(), tail.end(), x, comp);
+        if (it == tail.end()) tail.push_back(x);
+        else *it = x;
+    }
+    return tail.size();
+}
+
+/**
+ * @brief 最長増加部分列を 1 つ求め、その添字の昇順のリストを返す O(n log n)
+ * @param strict true なら狭義単調増加 (comp(前, 後) が成り立つ)、false なら広義単調増加 (comp(後, 前) が成り立たない)
+ * @param comp 大小の比較。std::greater<T>() を渡すと減少列になる
+ */
+template <typename T, typename Compare = std::less<T>>
+std::vector<int> longest_increasing_subsequence_restore(const std::vector<T>& a, bool strict = true,
+                                                         Compare comp = Compare()) {
     std::vector<int> len = longest_increasing_subsequence_lengths(a, strict, comp);
     int k = len.empty() ? 0 : *std::max_element(len.begin(), len.end());
     // 後ろから、長さが 1 ずつ減り、値が条件を満たす添字を選ぶ

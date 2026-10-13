@@ -216,7 +216,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/others/subset-sum.hpp
       title: "\u90E8\u5206\u548C\u554F\u984C (\u4F5C\u308C\u308B\u548C\u306E\u5224\
-        \u5B9A\u3068\u5FA9\u5143)"
+        \u5B9A\u3001S \u4EE5\u4E0B\u306E\u6700\u5927\u5024\u3068\u5FA9\u5143)"
   - name: src/string
     pages:
     - icon: ':heavy_check_mark:'

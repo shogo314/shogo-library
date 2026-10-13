@@ -18,7 +18,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/others/subset-sum.hpp
     title: "\u90E8\u5206\u548C\u554F\u984C (\u4F5C\u308C\u308B\u548C\u306E\u5224\u5B9A\
-      \u3068\u5FA9\u5143)"
+      \u3001S \u4EE5\u4E0B\u306E\u6700\u5927\u5024\u3068\u5FA9\u5143)"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
@@ -31,75 +31,76 @@ data:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
   bundledCode: "#line 1 \"test/unittest/subset-sum.test.cpp\"\n#define PROBLEM \"\
     https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\n\n// subset_sum\u3001\
-    subset_sum_restore\u3001count_subset_sum_* \u3092\u3001\u90E8\u5206\u96C6\u5408\
-    \u3092\u3059\u3079\u3066\u8A66\u3059\u611A\u76F4\u306A\u65B9\u6CD5\u3068\u30E9\
-    \u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\
-    \u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089\
-    \ Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include <iostream>\n#include\
-    \ <random>\n#include <vector>\n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file\
-    \ modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\
-    \u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\
-    \n#include <utility>\n#include <limits>\n#include <type_traits>\n#include <cstdint>\n\
-    #include <cassert>\n\nnamespace detail {\n    static constexpr std::uint16_t prime32_bases[]\
-    \ {\n        15591,  2018,  166, 7429,  8064, 16045, 10503,  4399,  1949,  1295,\
-    \ 2776,  3620,   560,  3128,  5212,  2657,\n         2300,  2021, 4652, 1471,\
-    \  9336,  4018,  2398, 20462, 10277,  8028, 2213,  6219,   620,  3763,  4852,\
-    \  5012,\n         3185,  1333, 6227, 5298,  1074,  2391,  5113,  7061,   803,\
-    \  1269, 3875,   422,   751,   580,  4729, 10239,\n          746,  2951,  556,\
-    \ 2206,  3778,   481,  1522,  3476,   481,  2487, 3266,  5633,   488,  3373, \
-    \ 6441,  3344,\n           17, 15105, 1490, 4154,  2036,  1882,  1813,   467,\
-    \  3307, 14042, 6371,   658,  1005,   903,   737,  1887,\n         7447,  1888,\
-    \ 2848, 1784,  7559,  3400,   951, 13969,  4304,   177,   41, 19875,  3110, 13221,\
-    \  8726,   571,\n         7043,  6943, 1199,  352,  6435,   165,  1169,  3315,\
-    \   978,   233, 3003,  2562,  2994, 10587, 10030,  2377,\n         1902,  5354,\
-    \ 4447, 1555,   263, 27027,  2283,   305,   669,  1912,  601,  6186,   429,  1930,\
-    \ 14873,  1784,\n         1661,   524, 3577,  236,  2360,  6146,  2850, 55637,\
-    \  1753,  4178, 8466,   222,  2579,  2743,  2031,  2226,\n         2276,   374,\
-    \ 2132,  813, 23788,  1610,  4422,  5159,  1725,  3597, 3366, 14336,   579,  \
-    \ 165,  1375, 10018,\n        12616,  9816, 1371,  536,  1867, 10864,   857, \
-    \ 2206,  5788,   434, 8085, 17618,   727,  3639,  1595,  4944,\n         2129,\
-    \  2029, 8195, 8344,  6232,  9183,  8126,  1870,  3296,  7455, 8947, 25017,  \
-    \ 541, 19115,   368,   566,\n         5674,   411,  522, 1027,  8215,  2050, \
-    \ 6544, 10049,   614,   774, 2333,  3007, 35201,  4706,  1152,  1785,\n      \
-    \   1028,  1540, 3743,  493,  4474,  2521, 26845,  8354,   864, 18915, 5465, \
-    \ 2447,    42,  4511,  1660,   166,\n         1249,  6259, 2553,  304,   272,\
-    \  7286,    73,  6554,   899,  2816, 5197, 13330,  7054,  2818,  3199,   811,\n\
-    \          922,   350, 7514, 4452,  3449,  2663,  4708,   418,  1621,  1171, 3471,\
-    \    88, 11345,   412,  1559,   194,\n    };\n\n    static constexpr bool is_SPRP(std::uint32_t\
-    \ n, std::uint32_t a) noexcept {\n        std::uint32_t d = n - 1;\n        std::uint32_t\
-    \ s = 0;\n        while ((d & 1) == 0) {\n            ++s;\n            d >>=\
-    \ 1;\n        }\n        std::uint64_t cur = 1;\n        std::uint64_t pw = d;\n\
-    \        while (pw) {\n            if (pw & 1) cur = (cur * a) % n;\n        \
-    \    a = (static_cast<std::uint64_t>(a) * a) % n;\n            pw >>= 1;\n   \
-    \     }\n        if (cur == 1) return true;\n        for (std::uint32_t r = 0;\
-    \ r < s; ++r) {\n            if (cur == n - 1) return true;\n            cur =\
-    \ (cur * cur) % n;\n        }\n        return false;\n    }\n\n    // 32\u30D3\
-    \u30C3\u30C8\u7B26\u53F7\u306A\u3057\u6574\u6570\u306E\u7D20\u6570\u5224\u5B9A\
-    \n    // \u53C2\u8003: M. Forisek and J. Jancina, \u201CFast Primality Testing\
-    \ for Integers That Fit into a Machine Word,\u201D presented at the Conference\
-    \ on Current Trends in Theory and Practice of Informatics, 2015.\n    [[nodiscard]]\n\
-    \    static constexpr bool is_prime32(std::uint32_t x) noexcept {\n        if\
-    \ (x == 2 || x == 3 || x == 5 || x == 7) return true;\n        if (x % 2 == 0\
-    \ || x % 3 == 0 || x % 5 == 0 || x % 7 == 0) return false;\n        if (x < 121)\
-    \ return (x > 1);\n        std::uint64_t h = x;\n        h = ((h >> 16) ^ h) *\
-    \ 0x45d9f3b;\n        h = ((h >> 16) ^ h) * 0x45d9f3b;\n        h = ((h >> 16)\
-    \ ^ h) & 0xff;\n        return is_SPRP(x, prime32_bases[h]);\n    }\n}\n\n///\
-    \ @brief static_modint \u3068 dynamic_modint \u306E\u5B9F\u88C5\u3092 CRTP \u306B\
-    \u3088\u3063\u3066\u884C\u3046\u305F\u3081\u306E\u30AF\u30E9\u30B9\u30C6\u30F3\
-    \u30D7\u30EC\u30FC\u30C8\n/// @tparam Modint \u3053\u306E\u30AF\u30E9\u30B9\u30C6\
-    \u30F3\u30D7\u30EC\u30FC\u30C8\u3092\u7D99\u627F\u3059\u308B\u30AF\u30E9\u30B9\
-    \ntemplate <class Modint>\nclass modint_base {\npublic:\n    /// @brief \u4FDD\
-    \u6301\u3059\u308B\u5024\u306E\u578B\n    using value_type = std::uint32_t;\n\n\
-    \    /// @brief 0 \u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    constexpr\
-    \ modint_base() noexcept\n        : m_value{ 0 } {}\n\n    /// @brief @c value\
-    \ \u306E\u5270\u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    ///\
-    \ @param value \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\n    template <class\
-    \ SignedIntegral, std::enable_if_t<std::is_integral_v<SignedIntegral> && std::is_signed_v<SignedIntegral>>*\
-    \ = nullptr>\n    constexpr modint_base(SignedIntegral value) noexcept\n     \
-    \   : m_value{ static_cast<value_type>((static_cast<long long>(value) % Modint::mod()\
-    \ + Modint::mod()) % Modint::mod()) } {}\n\n    /// @brief @c value \u306E\u5270\
-    \u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    /// @param value \u521D\
-    \u671F\u5316\u306B\u4F7F\u3046\u5024\n    template <class UnsignedIntegral, std::enable_if_t<std::is_integral_v<UnsignedIntegral>\
+    subset_sum_restore\u3001subset_sum_max*\u3001count_subset_sum_* \u3092\u3001\u90E8\
+    \u5206\u96C6\u5408\u3092\u3059\u3079\u3066\u8A66\u3059\u611A\u76F4\u306A\u65B9\
+    \u6CD5\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\
+    \u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\
+    \u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include <algorithm>\n\
+    #include <iostream>\n#include <random>\n#include <vector>\n\n#line 2 \"src/math/modint.hpp\"\
+    \n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\
+    \u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line\
+    \ 9 \"src/math/modint.hpp\"\n#include <utility>\n#include <limits>\n#include <type_traits>\n\
+    #include <cstdint>\n#include <cassert>\n\nnamespace detail {\n    static constexpr\
+    \ std::uint16_t prime32_bases[] {\n        15591,  2018,  166, 7429,  8064, 16045,\
+    \ 10503,  4399,  1949,  1295, 2776,  3620,   560,  3128,  5212,  2657,\n     \
+    \    2300,  2021, 4652, 1471,  9336,  4018,  2398, 20462, 10277,  8028, 2213,\
+    \  6219,   620,  3763,  4852,  5012,\n         3185,  1333, 6227, 5298,  1074,\
+    \  2391,  5113,  7061,   803,  1269, 3875,   422,   751,   580,  4729, 10239,\n\
+    \          746,  2951,  556, 2206,  3778,   481,  1522,  3476,   481,  2487, 3266,\
+    \  5633,   488,  3373,  6441,  3344,\n           17, 15105, 1490, 4154,  2036,\
+    \  1882,  1813,   467,  3307, 14042, 6371,   658,  1005,   903,   737,  1887,\n\
+    \         7447,  1888, 2848, 1784,  7559,  3400,   951, 13969,  4304,   177, \
+    \  41, 19875,  3110, 13221,  8726,   571,\n         7043,  6943, 1199,  352, \
+    \ 6435,   165,  1169,  3315,   978,   233, 3003,  2562,  2994, 10587, 10030, \
+    \ 2377,\n         1902,  5354, 4447, 1555,   263, 27027,  2283,   305,   669,\
+    \  1912,  601,  6186,   429,  1930, 14873,  1784,\n         1661,   524, 3577,\
+    \  236,  2360,  6146,  2850, 55637,  1753,  4178, 8466,   222,  2579,  2743, \
+    \ 2031,  2226,\n         2276,   374, 2132,  813, 23788,  1610,  4422,  5159,\
+    \  1725,  3597, 3366, 14336,   579,   165,  1375, 10018,\n        12616,  9816,\
+    \ 1371,  536,  1867, 10864,   857,  2206,  5788,   434, 8085, 17618,   727,  3639,\
+    \  1595,  4944,\n         2129,  2029, 8195, 8344,  6232,  9183,  8126,  1870,\
+    \  3296,  7455, 8947, 25017,   541, 19115,   368,   566,\n         5674,   411,\
+    \  522, 1027,  8215,  2050,  6544, 10049,   614,   774, 2333,  3007, 35201,  4706,\
+    \  1152,  1785,\n         1028,  1540, 3743,  493,  4474,  2521, 26845,  8354,\
+    \   864, 18915, 5465,  2447,    42,  4511,  1660,   166,\n         1249,  6259,\
+    \ 2553,  304,   272,  7286,    73,  6554,   899,  2816, 5197, 13330,  7054,  2818,\
+    \  3199,   811,\n          922,   350, 7514, 4452,  3449,  2663,  4708,   418,\
+    \  1621,  1171, 3471,    88, 11345,   412,  1559,   194,\n    };\n\n    static\
+    \ constexpr bool is_SPRP(std::uint32_t n, std::uint32_t a) noexcept {\n      \
+    \  std::uint32_t d = n - 1;\n        std::uint32_t s = 0;\n        while ((d &\
+    \ 1) == 0) {\n            ++s;\n            d >>= 1;\n        }\n        std::uint64_t\
+    \ cur = 1;\n        std::uint64_t pw = d;\n        while (pw) {\n            if\
+    \ (pw & 1) cur = (cur * a) % n;\n            a = (static_cast<std::uint64_t>(a)\
+    \ * a) % n;\n            pw >>= 1;\n        }\n        if (cur == 1) return true;\n\
+    \        for (std::uint32_t r = 0; r < s; ++r) {\n            if (cur == n - 1)\
+    \ return true;\n            cur = (cur * cur) % n;\n        }\n        return\
+    \ false;\n    }\n\n    // 32\u30D3\u30C3\u30C8\u7B26\u53F7\u306A\u3057\u6574\u6570\
+    \u306E\u7D20\u6570\u5224\u5B9A\n    // \u53C2\u8003: M. Forisek and J. Jancina,\
+    \ \u201CFast Primality Testing for Integers That Fit into a Machine Word,\u201D\
+    \ presented at the Conference on Current Trends in Theory and Practice of Informatics,\
+    \ 2015.\n    [[nodiscard]]\n    static constexpr bool is_prime32(std::uint32_t\
+    \ x) noexcept {\n        if (x == 2 || x == 3 || x == 5 || x == 7) return true;\n\
+    \        if (x % 2 == 0 || x % 3 == 0 || x % 5 == 0 || x % 7 == 0) return false;\n\
+    \        if (x < 121) return (x > 1);\n        std::uint64_t h = x;\n        h\
+    \ = ((h >> 16) ^ h) * 0x45d9f3b;\n        h = ((h >> 16) ^ h) * 0x45d9f3b;\n \
+    \       h = ((h >> 16) ^ h) & 0xff;\n        return is_SPRP(x, prime32_bases[h]);\n\
+    \    }\n}\n\n/// @brief static_modint \u3068 dynamic_modint \u306E\u5B9F\u88C5\
+    \u3092 CRTP \u306B\u3088\u3063\u3066\u884C\u3046\u305F\u3081\u306E\u30AF\u30E9\
+    \u30B9\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n/// @tparam Modint \u3053\u306E\u30AF\
+    \u30E9\u30B9\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\u3092\u7D99\u627F\u3059\u308B\
+    \u30AF\u30E9\u30B9\ntemplate <class Modint>\nclass modint_base {\npublic:\n  \
+    \  /// @brief \u4FDD\u6301\u3059\u308B\u5024\u306E\u578B\n    using value_type\
+    \ = std::uint32_t;\n\n    /// @brief 0 \u3067\u521D\u671F\u5316\u3057\u307E\u3059\
+    \u3002\n    constexpr modint_base() noexcept\n        : m_value{ 0 } {}\n\n  \
+    \  /// @brief @c value \u306E\u5270\u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\
+    \u3002\n    /// @param value \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\n    template\
+    \ <class SignedIntegral, std::enable_if_t<std::is_integral_v<SignedIntegral> &&\
+    \ std::is_signed_v<SignedIntegral>>* = nullptr>\n    constexpr modint_base(SignedIntegral\
+    \ value) noexcept\n        : m_value{ static_cast<value_type>((static_cast<long\
+    \ long>(value) % Modint::mod() + Modint::mod()) % Modint::mod()) } {}\n\n    ///\
+    \ @brief @c value \u306E\u5270\u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\
+    \u3002\n    /// @param value \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\n    template\
+    \ <class UnsignedIntegral, std::enable_if_t<std::is_integral_v<UnsignedIntegral>\
     \ && std::is_unsigned_v<UnsignedIntegral>>* = nullptr>\n    constexpr modint_base(UnsignedIntegral\
     \ value) noexcept\n        : m_value{ static_cast<value_type>(value % Modint::mod())\
     \ } {}\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092\u53D6\
@@ -274,49 +275,49 @@ data:
     \ * @brief \u90E8\u5206\u548C\u306E\u500B\u6570 (\u548C\u304C s \u306B\u306A\u308B\
     \u90E8\u5206\u96C6\u5408\u306E\u500B\u6570)\n */\n\n#line 9 \"src/others/subset-sum-count.hpp\"\
     \n#include <cmath>\n#line 2 \"src/math/fps.hpp\"\n\n/**\n * @file fps.hpp\n *\
-    \ @brief \u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\n */\n\n#include <algorithm>\n#line\
-    \ 2 \"src/math/number-theory.hpp\"\n\n/**\n * @file number-theory.hpp\n * @brief\
-    \ \u6570\u8AD6 (\u9006\u5143\u3001\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\u3001\u7573\
-    \u307F\u8FBC\u307F\u306A\u3069)\n */\n\n#line 10 \"src/math/number-theory.hpp\"\
-    \n#include <numeric>\n#include <optional>\n#line 15 \"src/math/number-theory.hpp\"\
-    \n\n/**\n * @brief a^(-1) mod MOD\u3092\u8FD4\u3059\n * @param a long long\n *\
-    \ @param MOD long long\n * @return long long\n */\ninline long long modinv(long\
-    \ long a, long long MOD) {\n    a %= MOD;\n    if (a < 0) a += MOD;\n    long\
-    \ long b = MOD, u = 1, v = 0;\n    while (b) {\n        long long t = a / b;\n\
-    \        a -= t * b; std::swap(a, b);\n        u -= t * v; std::swap(u, v);\n\
-    \    }\n    u %= MOD; \n    if (u < 0) u += MOD;\n    return u;\n}\n\n/**\n *\
-    \ @brief a^n mod MOD\u3092\u8FD4\u3059\n * @param a long long\n * @param n long\
-    \ long\n * @param MOD long long\n * @return long long\n */\ninline long long modpow(long\
-    \ long a, long long n, long long MOD) {\n    long long res = 1 % MOD;\n    a %=\
-    \ MOD;\n    if (a < 0) a += MOD;\n    if(n < 0) {\n        n = -n;\n        a\
-    \ = modinv(a, MOD);\n    }\n    while (n > 0) {\n        if (n & 1) res = res\
-    \ * a % MOD;\n        a = a * a % MOD;\n        n >>= 1;\n    }\n    return res;\n\
-    }\n\n/**\n * @brief 2\u5F0F\u306E\u9023\u7ACB\u5408\u540C\u5F0F\u3092\u3001m\u304C\
-    \u4E92\u3044\u306B\u7D20\u306B\u306A\u308B\u3088\u3046\u306B\u5909\u5F62\u3059\
-    \u308B\n * @param r1 long long\n * @param m1 long long\n * @param r2 long long\n\
-    \ * @param m2 long long\n * @note \u77DB\u76FE\u3059\u308B\u5834\u5408\u3001r1\
-    \ = r2 = m1 = m2 = -1\u3068\u306A\u308B\n */\ninline void coprimize_simulaneous_congruence_equation(long\
-    \ long& r1, long long& m1, long long& r2, long long& m2) {\n    long long g =\
-    \ std::gcd(m1, m2);\n    if((r2 - r1) % g != 0) {\n        r1 = r2 = m1 = m2 =\
-    \ -1;\n        return;\n    }\n    m1 /= g, m2 /= g;\n    long long gi = std::gcd(g,\
-    \ m1);\n    long long gj = g / gi;\n    do {\n        g = std::gcd(gi, gj);\n\
-    \        gi *= g, gj /= g;\n    } while(g != 1);\n    m1 *= gi, m2 *= gj;\n  \
-    \  r1 %= m1, r2 %= m2;\n}\n\n/**\n * @brief crt \u306E\u623B\u308A\u5024\n *\n\
-    \ * \u89E3\u306F x + lcm * k (k \u306F\u6574\u6570) \u3068\u8868\u305B\u308B\n\
-    \ */\nstruct CRTResult {\n    long long x;    //!< \u6700\u5C0F\u306E\u975E\u8CA0\
-    \u6574\u6570\u89E3\n    long long lcm;  //!< m \u306E\u6700\u5C0F\u516C\u500D\u6570\
-    \n};\n\n/**\n * @brief \u9023\u7ACB\u5408\u540C\u5F0F\u3092\u89E3\u304F\n * @param\
-    \ r vector<long long> \u4F59\u308A\u306E\u914D\u5217\n * @param m vector<long\
-    \ long> mod\u306E\u914D\u5217\n * @return std::optional<CRTResult> (\u89E3, LCM)\
-    \ \u89E3\u306A\u3057\u306E\u3068\u304D\u306F std::nullopt\n */\ninline std::optional<CRTResult>\
-    \ crt(const std::vector<long long>& r, const std::vector<long long>& m) {\n  \
-    \  assert(r.size() == m.size());\n    if(r.size() == 0) return CRTResult{0, 1};\n\
-    \    int n = (int)r.size();\n    long long m_lcm = m[0];\n    long long ans =\
-    \ (r[0] % m[0] + m[0]) % m[0];\n    for (int i = 1; i < n; i++) {\n        long\
-    \ long rr = (r[i] % m[i] + m[i]) % m[i], mm = m[i];\n        coprimize_simulaneous_congruence_equation(ans,\
-    \ m_lcm, rr, mm);\n        if(m_lcm == -1) return std::nullopt;\n        long\
-    \ long t = ((rr - ans) * modinv(m_lcm, mm)) % mm;\n        if(t < 0) t += mm;\n\
-    \        ans += t * m_lcm;\n        m_lcm *= mm;\n    }\n    return CRTResult{ans,\
+    \ @brief \u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\n */\n\n#line 2 \"src/math/number-theory.hpp\"\
+    \n\n/**\n * @file number-theory.hpp\n * @brief \u6570\u8AD6 (\u9006\u5143\u3001\
+    \u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\u3001\u7573\u307F\u8FBC\u307F\u306A\u3069\
+    )\n */\n\n#line 10 \"src/math/number-theory.hpp\"\n#include <numeric>\n#include\
+    \ <optional>\n#line 15 \"src/math/number-theory.hpp\"\n\n/**\n * @brief a^(-1)\
+    \ mod MOD\u3092\u8FD4\u3059\n * @param a long long\n * @param MOD long long\n\
+    \ * @return long long\n */\ninline long long modinv(long long a, long long MOD)\
+    \ {\n    a %= MOD;\n    if (a < 0) a += MOD;\n    long long b = MOD, u = 1, v\
+    \ = 0;\n    while (b) {\n        long long t = a / b;\n        a -= t * b; std::swap(a,\
+    \ b);\n        u -= t * v; std::swap(u, v);\n    }\n    u %= MOD; \n    if (u\
+    \ < 0) u += MOD;\n    return u;\n}\n\n/**\n * @brief a^n mod MOD\u3092\u8FD4\u3059\
+    \n * @param a long long\n * @param n long long\n * @param MOD long long\n * @return\
+    \ long long\n */\ninline long long modpow(long long a, long long n, long long\
+    \ MOD) {\n    long long res = 1 % MOD;\n    a %= MOD;\n    if (a < 0) a += MOD;\n\
+    \    if(n < 0) {\n        n = -n;\n        a = modinv(a, MOD);\n    }\n    while\
+    \ (n > 0) {\n        if (n & 1) res = res * a % MOD;\n        a = a * a % MOD;\n\
+    \        n >>= 1;\n    }\n    return res;\n}\n\n/**\n * @brief 2\u5F0F\u306E\u9023\
+    \u7ACB\u5408\u540C\u5F0F\u3092\u3001m\u304C\u4E92\u3044\u306B\u7D20\u306B\u306A\
+    \u308B\u3088\u3046\u306B\u5909\u5F62\u3059\u308B\n * @param r1 long long\n * @param\
+    \ m1 long long\n * @param r2 long long\n * @param m2 long long\n * @note \u77DB\
+    \u76FE\u3059\u308B\u5834\u5408\u3001r1 = r2 = m1 = m2 = -1\u3068\u306A\u308B\n\
+    \ */\ninline void coprimize_simulaneous_congruence_equation(long long& r1, long\
+    \ long& m1, long long& r2, long long& m2) {\n    long long g = std::gcd(m1, m2);\n\
+    \    if((r2 - r1) % g != 0) {\n        r1 = r2 = m1 = m2 = -1;\n        return;\n\
+    \    }\n    m1 /= g, m2 /= g;\n    long long gi = std::gcd(g, m1);\n    long long\
+    \ gj = g / gi;\n    do {\n        g = std::gcd(gi, gj);\n        gi *= g, gj /=\
+    \ g;\n    } while(g != 1);\n    m1 *= gi, m2 *= gj;\n    r1 %= m1, r2 %= m2;\n\
+    }\n\n/**\n * @brief crt \u306E\u623B\u308A\u5024\n *\n * \u89E3\u306F x + lcm\
+    \ * k (k \u306F\u6574\u6570) \u3068\u8868\u305B\u308B\n */\nstruct CRTResult {\n\
+    \    long long x;    //!< \u6700\u5C0F\u306E\u975E\u8CA0\u6574\u6570\u89E3\n \
+    \   long long lcm;  //!< m \u306E\u6700\u5C0F\u516C\u500D\u6570\n};\n\n/**\n *\
+    \ @brief \u9023\u7ACB\u5408\u540C\u5F0F\u3092\u89E3\u304F\n * @param r vector<long\
+    \ long> \u4F59\u308A\u306E\u914D\u5217\n * @param m vector<long long> mod\u306E\
+    \u914D\u5217\n * @return std::optional<CRTResult> (\u89E3, LCM) \u89E3\u306A\u3057\
+    \u306E\u3068\u304D\u306F std::nullopt\n */\ninline std::optional<CRTResult> crt(const\
+    \ std::vector<long long>& r, const std::vector<long long>& m) {\n    assert(r.size()\
+    \ == m.size());\n    if(r.size() == 0) return CRTResult{0, 1};\n    int n = (int)r.size();\n\
+    \    long long m_lcm = m[0];\n    long long ans = (r[0] % m[0] + m[0]) % m[0];\n\
+    \    for (int i = 1; i < n; i++) {\n        long long rr = (r[i] % m[i] + m[i])\
+    \ % m[i], mm = m[i];\n        coprimize_simulaneous_congruence_equation(ans, m_lcm,\
+    \ rr, mm);\n        if(m_lcm == -1) return std::nullopt;\n        long long t\
+    \ = ((rr - ans) * modinv(m_lcm, mm)) % mm;\n        if(t < 0) t += mm;\n     \
+    \   ans += t * m_lcm;\n        m_lcm *= mm;\n    }\n    return CRTResult{ans,\
     \ m_lcm};\n}\n\n/**\n * @brief \u9023\u7ACB\u5408\u540C\u5F0F\u306E\u6700\u5C0F\
     \u306E\u975E\u8CA0\u6574\u6570\u89E3 % MOD\u3092\u6C42\u3081\u308B\n * @param\
     \ r vector<long long> \u4F59\u308A\u306E\u914D\u5217\n * @param m vector<long\
@@ -576,7 +577,7 @@ data:
     \ = 500.0 * (t + 1) * std::log2(t + 2);\n    if (dp_cost <= fps_cost) return count_subset_sum_dp<mint>(a,\
     \ t);\n    return count_subset_sum_fps<mint>(a, t);\n}\n#line 2 \"src/others/subset-sum.hpp\"\
     \n\n/**\n * @file subset-sum.hpp\n * @brief \u90E8\u5206\u548C\u554F\u984C (\u4F5C\
-    \u308C\u308B\u548C\u306E\u5224\u5B9A\u3068\u5FA9\u5143)\n */\n\n#line 11 \"src/others/subset-sum.hpp\"\
+    \u308C\u308B\u548C\u306E\u5224\u5B9A\u3068\u5FA9\u5143)\n */\n\n#line 14 \"src/others/subset-sum.hpp\"\
     \n\nnamespace internal_subset_sum {\n// bits (S + 1 \u30D3\u30C3\u30C8) \u306B\
     \u3064\u3044\u3066 bits |= bits << s \u3092\u884C\u3046\u3002\u65B0\u3057\u304F\
     \u7ACB\u3063\u305F\u30D3\u30C3\u30C8\u3054\u3068\u306B f(\u4F4D\u7F6E) \u3092\u547C\
@@ -589,36 +590,171 @@ data:
     \u3048\u308B\u4F4D\u7F6E\u306F\u6368\u3066\u308B\n        unsigned long long added\
     \ = val & ~bits[k];\n        bits[k] |= val;\n        while (added) {\n      \
     \      f(k * 64 + __builtin_ctzll(added));\n            added &= added - 1;\n\
-    \        }\n    }\n}\n}  // namespace internal_subset_sum\n\n/**\n * @brief a\
-    \ \u306E\u90E8\u5206\u96C6\u5408 (\u5404\u8981\u7D20\u306F 1 \u56DE\u307E\u3067\
-    ) \u306E\u548C\u3068\u3057\u3066\u30010, 1, ..., S \u306E\u305D\u308C\u305E\u308C\
-    \u3092\u4F5C\u308C\u308B\u304B O(N S / 64)\n * @param a 0 \u4EE5\u4E0A\u306E\u6574\
-    \u6570\u306E\u5217\n * @return \u9577\u3055 S + 1 \u306E\u5217\u3002res[s] \u306F\
-    \u548C s \u3092\u4F5C\u308C\u308B\u304B\n */\ninline std::vector<bool> subset_sum(const\
-    \ std::vector<long long>& a, long long S) {\n    assert(S >= 0);\n    std::vector<unsigned\
-    \ long long> bits(S / 64 + 1);\n    bits[0] = 1;\n    for (long long x : a) {\n\
-    \        assert(x >= 0);\n        if (x == 0 || x > S) continue;\n        internal_subset_sum::shift_or(bits,\
-    \ S, x, [](long long) {});\n    }\n    std::vector<bool> res(S + 1);\n    for\
-    \ (long long s = 0; s <= S; s++) res[s] = bits[s / 64] >> (s % 64) & 1;\n    return\
-    \ res;\n}\n\n/**\n * @brief a \u306E\u90E8\u5206\u96C6\u5408 (\u5404\u8981\u7D20\
-    \u306F 1 \u56DE\u307E\u3067) \u3067\u548C\u304C\u3061\u3087\u3046\u3069 S \u306B\
-    \u306A\u308B\u3082\u306E\u3092 1 \u3064\u6C42\u3081\u3001\u305D\u306E\u6DFB\u5B57\
-    \u3092\u6607\u9806\u306B\u8FD4\u3059 O(N S / 64 + S)\n * @param a 0 \u4EE5\u4E0A\
-    \u306E\u6574\u6570\u306E\u5217\n * @return \u4F5C\u308C\u306A\u3051\u308C\u3070\
-    \ std::nullopt\n */\ninline std::optional<std::vector<int>> subset_sum_restore(const\
-    \ std::vector<long long>& a, long long S) {\n    assert(S >= 0);\n    std::vector<unsigned\
-    \ long long> bits(S / 64 + 1);\n    bits[0] = 1;\n    // from[s] \u306F\u3001\u548C\
-    \ s \u3092\u521D\u3081\u3066\u4F5C\u308C\u308B\u3088\u3046\u306B\u306A\u3063\u305F\
-    \u3068\u304D\u306B\u4F7F\u3063\u305F\u8981\u7D20\u306E\u6DFB\u5B57\n    std::vector<int>\
-    \ from(S + 1, -1);\n    for (int i = 0; i < (int)a.size(); i++) {\n        assert(a[i]\
-    \ >= 0);\n        if (a[i] == 0 || a[i] > S) continue;\n        internal_subset_sum::shift_or(bits,\
-    \ S, a[i], [&](long long s) { from[s] = i; });\n    }\n    if (!(bits[S / 64]\
-    \ >> (S % 64) & 1)) return std::nullopt;\n    // s - a[from[s]] \u306F from[s]\
-    \ \u3088\u308A\u524D\u306E\u8981\u7D20\u3060\u3051\u3067\u4F5C\u308C\u3066\u3044\
-    \u305F\u306E\u3067\u3001\u6DFB\u5B57\u306F\u771F\u306B\u6E1B\u3063\u3066\u3044\
-    \u304F\n    std::vector<int> res;\n    for (long long s = S; s > 0; s -= a[res.back()])\
-    \ res.push_back(from[s]);\n    return std::vector<int>(res.rbegin(), res.rend());\n\
-    }\n#line 13 \"test/unittest/subset-sum.test.cpp\"\n\nusing mint = modint998244353;\n\
+    \        }\n    }\n}\n\n// bitset \u3067\u4F5C\u308C\u308B\u548C\u3092\u6C42\u3081\
+    \u308B\u3002from \u304C\u3042\u308C\u3070\u3001\u548C s \u3092\u521D\u3081\u3066\
+    \u4F5C\u308C\u308B\u3088\u3046\u306B\u306A\u3063\u305F\u3068\u304D\u306B\u4F7F\
+    \u3063\u305F\u8981\u7D20\u306E\u6DFB\u5B57\u3092\u8A18\u9332\u3059\u308B\ninline\
+    \ std::vector<unsigned long long> build(const std::vector<long long>& a, long\
+    \ long S, std::vector<int>* from) {\n    assert(S >= 0);\n    std::vector<unsigned\
+    \ long long> bits(S / 64 + 1);\n    bits[0] = 1;\n    if (from) from->assign(S\
+    \ + 1, -1);\n    for (int i = 0; i < (int)a.size(); i++) {\n        assert(a[i]\
+    \ >= 0);\n        if (a[i] == 0 || a[i] > S) continue;\n        if (from) shift_or(bits,\
+    \ S, a[i], [&](long long s) { (*from)[s] = i; });\n        else shift_or(bits,\
+    \ S, a[i], [](long long) {});\n    }\n    return bits;\n}\ninline bool test(const\
+    \ std::vector<unsigned long long>& bits, long long s) { return bits[s / 64] >>\
+    \ (s % 64) & 1; }\n// \u4F5C\u308C\u308B\u548C s \u304B\u3089 from \u3092\u305F\
+    \u3069\u3063\u3066\u3001\u6DFB\u5B57\u306E\u6607\u9806\u306E\u30EA\u30B9\u30C8\
+    \u306B\u3059\u308B\n// s - a[from[s]] \u306F from[s] \u3088\u308A\u524D\u306E\u8981\
+    \u7D20\u3060\u3051\u3067\u4F5C\u308C\u3066\u3044\u305F\u306E\u3067\u3001\u6DFB\
+    \u5B57\u306F\u771F\u306B\u6E1B\u3063\u3066\u3044\u304F\ninline std::vector<int>\
+    \ trace(const std::vector<long long>& a, const std::vector<int>& from, long long\
+    \ s) {\n    std::vector<int> res;\n    for (; s > 0; s -= a[res.back()]) res.push_back(from[s]);\n\
+    \    return std::vector<int>(res.rbegin(), res.rend());\n}\n// \u4F5C\u308C\u308B\
+    \u548C\u306E\u3046\u3061 S \u4EE5\u4E0B\u306E\u6700\u5927\u5024\ninline long long\
+    \ max_bit(const std::vector<unsigned long long>& bits, long long S) {\n    for\
+    \ (long long k = S / 64; k >= 0; k--) {\n        unsigned long long x = bits[k];\n\
+    \        if (k == S / 64 && (S + 1) % 64) x &= (1ULL << ((S + 1) % 64)) - 1;\n\
+    \        if (x) return k * 64 + 63 - __builtin_clzll(x);\n    }\n    return 0;\n\
+    }\n\n// \u8981\u7D20 [l, r) \u306E\u90E8\u5206\u96C6\u5408\u306E\u3046\u3061\u548C\
+    \u304C S \u4EE5\u4E0B\u306E\u3082\u306E\u3092\u3001(\u548C, \u9078\u3093\u3060\
+    \u8981\u7D20\u306E\u30D3\u30C3\u30C8\u5217) \u306E\u548C\u306E\u6607\u9806\u3067\
+    \u5217\u6319\u3059\u308B\ninline std::vector<std::pair<long long, unsigned long\
+    \ long>> enumerate_half(const std::vector<long long>& a, int l, int r, long long\
+    \ S) {\n    std::vector<std::pair<long long, unsigned long long>> res = {{0, 0}},\
+    \ add, merged;\n    for (int i = l; i < r; i++) {\n        add.clear();\n    \
+    \    for (auto [x, mask] : res) {\n            if (a[i] <= S - x) add.emplace_back(x\
+    \ + a[i], mask | 1ULL << (i - l));\n        }\n        merged.resize(res.size()\
+    \ + add.size());\n        std::merge(res.begin(), res.end(), add.begin(), add.end(),\
+    \ merged.begin());\n        std::swap(res, merged);\n    }\n    return res;\n\
+    }\n// \u534A\u5206\u5168\u5217\u6319\u3067 S \u4EE5\u4E0B\u306E\u6700\u5927\u306E\
+    \u548C\u3092\u6C42\u3081\u3001(\u548C, \u524D\u534A\u306E\u30D3\u30C3\u30C8\u5217\
+    , \u5F8C\u534A\u306E\u30D3\u30C3\u30C8\u5217) \u3092\u8FD4\u3059\nstruct MitmResult\
+    \ {\n    long long sum;\n    unsigned long long left, right;\n};\ninline MitmResult\
+    \ meet_in_the_middle(const std::vector<long long>& a, long long S) {\n    assert(S\
+    \ >= 0);\n    int n = a.size();\n    assert(n <= 128 && \"subset_sum_max_meet_in_the_middle:\
+    \ too many elements\");\n    for (long long x : a) assert(x >= 0);\n    auto p\
+    \ = enumerate_half(a, 0, n / 2, S), q = enumerate_half(a, n / 2, n, S);\n    MitmResult\
+    \ res = {0, 0, 0};\n    // p \u3092\u548C\u306E\u6607\u9806\u306B\u898B\u308B\u3068\
+    \u3001\u7D44\u3081\u308B q \u306E\u548C\u306E\u4E0A\u9650\u306F\u6E1B\u3063\u3066\
+    \u3044\u304F\n    int j = q.size() - 1;\n    for (auto [x, mask] : p) {\n    \
+    \    while (q[j].first > S - x) j--;  // q[0] \u306F\u548C 0 \u306A\u306E\u3067\
+    \ j >= 0 \u306E\u307E\u307E\n        if (x + q[j].first > res.sum) res = {x +\
+    \ q[j].first, mask, q[j].second};\n    }\n    return res;\n}\ninline long double\
+    \ cost_bitset(int n, long long S) { return (long double)(n + 1) * ((long double)S\
+    \ / 64 + 1); }\ninline long double cost_meet_in_the_middle(int n) {\n    if (n\
+    \ > 120) return std::numeric_limits<long double>::infinity();\n    return 4 *\
+    \ (long double)(1ULL << ((n + 1) / 2));\n}\n}  // namespace internal_subset_sum\n\
+    \n/**\n * @brief a \u306E\u90E8\u5206\u96C6\u5408 (\u5404\u8981\u7D20\u306F 1\
+    \ \u56DE\u307E\u3067) \u306E\u548C\u3068\u3057\u3066\u30010, 1, ..., S \u306E\u305D\
+    \u308C\u305E\u308C\u3092\u4F5C\u308C\u308B\u304B O(N S / 64)\n * @param a 0 \u4EE5\
+    \u4E0A\u306E\u6574\u6570\u306E\u5217\n * @return \u9577\u3055 S + 1 \u306E\u5217\
+    \u3002res[s] \u306F\u548C s \u3092\u4F5C\u308C\u308B\u304B\n */\ninline std::vector<bool>\
+    \ subset_sum(const std::vector<long long>& a, long long S) {\n    auto bits =\
+    \ internal_subset_sum::build(a, S, nullptr);\n    std::vector<bool> res(S + 1);\n\
+    \    for (long long s = 0; s <= S; s++) res[s] = internal_subset_sum::test(bits,\
+    \ s);\n    return res;\n}\n\n/**\n * @brief a \u306E\u90E8\u5206\u96C6\u5408 (\u5404\
+    \u8981\u7D20\u306F 1 \u56DE\u307E\u3067) \u3067\u548C\u304C\u3061\u3087\u3046\u3069\
+    \ S \u306B\u306A\u308B\u3082\u306E\u3092 1 \u3064\u6C42\u3081\u3001\u305D\u306E\
+    \u6DFB\u5B57\u3092\u6607\u9806\u306B\u8FD4\u3059 O(N S / 64 + S)\n * @param a\
+    \ 0 \u4EE5\u4E0A\u306E\u6574\u6570\u306E\u5217\n * @return \u4F5C\u308C\u306A\u3051\
+    \u308C\u3070 std::nullopt\n */\ninline std::optional<std::vector<int>> subset_sum_restore(const\
+    \ std::vector<long long>& a, long long S) {\n    std::vector<int> from;\n    auto\
+    \ bits = internal_subset_sum::build(a, S, &from);\n    if (!internal_subset_sum::test(bits,\
+    \ S)) return std::nullopt;\n    return internal_subset_sum::trace(a, from, S);\n\
+    }\n\n/**\n * @brief a \u306E\u90E8\u5206\u96C6\u5408 (\u5404\u8981\u7D20\u306F\
+    \ 1 \u56DE\u307E\u3067) \u306E\u548C\u306E\u3046\u3061\u3001S \u4EE5\u4E0B\u306E\
+    \u6700\u5927\u5024 (bitset) O(N S / 64)\n * @param a 0 \u4EE5\u4E0A\u306E\u6574\
+    \u6570\u306E\u5217\n */\ninline long long subset_sum_max_bitset(const std::vector<long\
+    \ long>& a, long long S) {\n    return internal_subset_sum::max_bit(internal_subset_sum::build(a,\
+    \ S, nullptr), S);\n}\n\n/**\n * @brief a \u306E\u90E8\u5206\u96C6\u5408 (\u5404\
+    \u8981\u7D20\u306F 1 \u56DE\u307E\u3067) \u306E\u548C\u306E\u3046\u3061\u3001\
+    S \u4EE5\u4E0B\u306E\u6700\u5927\u5024 (\u534A\u5206\u5168\u5217\u6319) O(2^(N/2))\n\
+    \ * N \u304C 40 \u7A0B\u5EA6\u307E\u3067\u306A\u3089\u3001S \u3084\u8981\u7D20\
+    \u304C\u5927\u304D\u304F\u3066\u3082\u3088\u3044\n * @param a 0 \u4EE5\u4E0A\u306E\
+    \u6574\u6570\u306E\u5217\n */\ninline long long subset_sum_max_meet_in_the_middle(const\
+    \ std::vector<long long>& a, long long S) {\n    return internal_subset_sum::meet_in_the_middle(a,\
+    \ S).sum;\n}\n\n/**\n * @brief a \u306E\u90E8\u5206\u96C6\u5408 (\u5404\u8981\u7D20\
+    \u306F 1 \u56DE\u307E\u3067) \u306E\u548C\u306E\u3046\u3061\u3001S \u4EE5\u4E0B\
+    \u306E\u6700\u5927\u5024\n *\n * \u8A08\u7B97\u91CF\u304C\u5C0F\u3055\u3044\u65B9\
+    \u3092\u9078\u3076: subset_sum_max_bitset O(N S / 64) \u304B subset_sum_max_meet_in_the_middle\
+    \ O(2^(N/2))\n * @param a 0 \u4EE5\u4E0A\u306E\u6574\u6570\u306E\u5217\n */\n\
+    inline long long subset_sum_max(const std::vector<long long>& a, long long S)\
+    \ {\n    using namespace internal_subset_sum;\n    if (cost_bitset(a.size(), S)\
+    \ <= cost_meet_in_the_middle(a.size())) return subset_sum_max_bitset(a, S);\n\
+    \    return subset_sum_max_meet_in_the_middle(a, S);\n}\n\n/**\n * @brief \u548C\
+    \u304C S \u4EE5\u4E0B\u3067\u6700\u5927\u306B\u306A\u308B\u90E8\u5206\u96C6\u5408\
+    \ (\u5404\u8981\u7D20\u306F 1 \u56DE\u307E\u3067) \u3092 1 \u3064\u6C42\u3081\u3001\
+    \u305D\u306E\u6DFB\u5B57\u3092\u6607\u9806\u306B\u8FD4\u3059\n *\n * subset_sum_max\
+    \ \u3068\u540C\u3058\u304F\u3001bitset O(N S / 64 + S) \u3068\u534A\u5206\u5168\
+    \u5217\u6319 O(2^(N/2)) \u306E\u3046\u3061\u8A08\u7B97\u91CF\u304C\u5C0F\u3055\
+    \u3044\u65B9\u3092\u9078\u3076\n * @param a 0 \u4EE5\u4E0A\u306E\u6574\u6570\u306E\
+    \u5217\n */\ninline std::vector<int> subset_sum_max_restore(const std::vector<long\
+    \ long>& a, long long S) {\n    using namespace internal_subset_sum;\n    int\
+    \ n = a.size();\n    if (cost_bitset(n, S) <= cost_meet_in_the_middle(n)) {\n\
+    \        std::vector<int> from;\n        auto bits = build(a, S, &from);\n   \
+    \     return trace(a, from, max_bit(bits, S));\n    }\n    MitmResult r = meet_in_the_middle(a,\
+    \ S);\n    std::vector<int> res;\n    for (int i = 0; i < n / 2; i++) {\n    \
+    \    if (r.left >> i & 1) res.push_back(i);\n    }\n    for (int i = n / 2; i\
+    \ < n; i++) {\n        if (r.right >> (i - n / 2) & 1) res.push_back(i);\n   \
+    \ }\n    return res;\n}\n#line 14 \"test/unittest/subset-sum.test.cpp\"\n\nusing\
+    \ mint = modint998244353;\n\nint main() {\n    std::mt19937_64 rng(314);\n   \
+    \ bool ok = true;\n    for (int rep = 0; rep < 2000 && ok; rep++) {\n        int\
+    \ n = rng() % 12;\n        long long S = rng() % 300;  // 64 \u306E\u500D\u6570\
+    \u306E\u524D\u5F8C\u3082\u542B\u3080\n        int amax = rng() % 2 ? 10 : 200;\n\
+    \        std::vector<long long> a(n);\n        for (auto& x : a) x = rng() % (amax\
+    \ + 1);  // 0 \u3082\u542B\u3080\n        std::vector<long long> cnt(S + 1);\n\
+    \        for (int mask = 0; mask < (1 << n); mask++) {\n            long long\
+    \ s = 0;\n            for (int i = 0; i < n; i++) {\n                if (mask\
+    \ >> i & 1) s += a[i];\n            }\n            if (s <= S) cnt[s]++;\n   \
+    \     }\n        std::vector<bool> can = subset_sum(a, S);\n        ok = ok &&\
+    \ (long long)can.size() == S + 1;\n        for (long long s = 0; s <= S && ok;\
+    \ s++) ok = can[s] == (cnt[s] > 0);\n        // \u5FA9\u5143: \u6DFB\u5B57\u304C\
+    \u6607\u9806\u3067\u91CD\u8907\u304C\u306A\u304F\u3001\u548C\u304C S \u306B\u306A\
+    \u308B\n        auto r = subset_sum_restore(a, S);\n        ok = ok && r.has_value()\
+    \ == (cnt[S] > 0);\n        if (ok && r) {\n            long long s = 0;\n   \
+    \         for (int k = 0; k < (int)r->size(); k++) {\n                if ((*r)[k]\
+    \ < 0 || (*r)[k] >= n || (k && (*r)[k - 1] >= (*r)[k])) ok = false;\n        \
+    \        else s += a[(*r)[k]];\n            }\n            ok = ok && s == S;\n\
+    \        }\n        // S \u4EE5\u4E0B\u306E\u6700\u5927\u5024\u3068\u3001\u305D\
+    \u306E\u5FA9\u5143\n        long long best = 0;\n        for (long long s = 0;\
+    \ s <= S; s++) {\n            if (cnt[s] > 0) best = s;\n        }\n        ok\
+    \ = ok && subset_sum_max(a, S) == best && subset_sum_max_bitset(a, S) == best;\n\
+    \        ok = ok && subset_sum_max_meet_in_the_middle(a, S) == best;\n       \
+    \ auto mr = subset_sum_max_restore(a, S);\n        long long ms = 0;\n       \
+    \ for (int k = 0; k < (int)mr.size(); k++) {\n            if (mr[k] < 0 || mr[k]\
+    \ >= n || (k && mr[k - 1] >= mr[k])) ok = false;\n            else ms += a[mr[k]];\n\
+    \        }\n        ok = ok && ms == best;\n        // \u500B\u6570\n        int\
+    \ t = S;\n        auto c1 = count_subset_sum_dp<long long>(a, t);\n        auto\
+    \ c2 = count_subset_sum_fps<mint>(a, t);\n        auto c3 = count_subset_sum<mint>(a,\
+    \ t);\n        for (int s = 0; s <= t && ok; s++) ok = c1[s] == cnt[s] && c2[s]\
+    \ == mint(cnt[s]) && c3[s] == mint(cnt[s]);\n    }\n\n    // \u8981\u7D20\u3082\
+    \ S \u3082\u5927\u304D\u3044\u3068\u304D\u306F\u534A\u5206\u5168\u5217\u6319\u304C\
+    \u9078\u3070\u308C\u3001\u5FA9\u5143\u3082\u3067\u304D\u308B\n    for (int rep\
+    \ = 0; rep < 200 && ok; rep++) {\n        int n = rng() % 21;\n        long long\
+    \ S = rng() % 1000000000000000000LL;\n        std::vector<long long> a(n);\n \
+    \       for (auto& x : a) x = rng() % 100000000000000000LL;\n        long long\
+    \ best = 0;\n        for (int mask = 0; mask < (1 << n); mask++) {\n         \
+    \   long long s = 0;\n            for (int i = 0; i < n; i++) {\n            \
+    \    if (mask >> i & 1) s += a[i];\n            }\n            if (s <= S) best\
+    \ = std::max(best, s);\n        }\n        ok = ok && subset_sum_max(a, S) ==\
+    \ best;\n        auto mr = subset_sum_max_restore(a, S);\n        long long ms\
+    \ = 0;\n        for (int k = 0; k < (int)mr.size(); k++) {\n            if (k\
+    \ && mr[k - 1] >= mr[k]) ok = false;\n            ms += a[mr[k]];\n        }\n\
+    \        ok = ok && ms == best;\n    }\n\n    // \u4F8B\n    std::vector<long\
+    \ long> a = {3, 5, 9};\n    auto r = subset_sum_restore(a, 14);\n    ok = ok &&\
+    \ r && *r == std::vector<int>{1, 2};\n    ok = ok && !subset_sum_restore(a, 13);\n\
+    \    ok = ok && subset_sum_restore(a, 0) == std::vector<int>{};\n\n    if (ok)\
+    \ std::cout << \"Hello World\" << std::endl;\n    else std::cerr << \"failed\"\
+    \ << std::endl;\n}\n"
+  code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
+    \n\n// subset_sum\u3001subset_sum_restore\u3001subset_sum_max*\u3001count_subset_sum_*\
+    \ \u3092\u3001\u90E8\u5206\u96C6\u5408\u3092\u3059\u3079\u3066\u8A66\u3059\u611A\
+    \u76F4\u306A\u65B9\u6CD5\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\
+    \u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\
+    \u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\
+    \n\n#include <algorithm>\n#include <iostream>\n#include <random>\n#include <vector>\n\
+    \n#include \"../../src/math/modint.hpp\"\n#include \"../../src/others/subset-sum-count.hpp\"\
+    \n#include \"../../src/others/subset-sum.hpp\"\n\nusing mint = modint998244353;\n\
     \nint main() {\n    std::mt19937_64 rng(314);\n    bool ok = true;\n    for (int\
     \ rep = 0; rep < 2000 && ok; rep++) {\n        int n = rng() % 12;\n        long\
     \ long S = rng() % 300;  // 64 \u306E\u500D\u6570\u306E\u524D\u5F8C\u3082\u542B\
@@ -636,51 +772,37 @@ data:
     \ {\n            long long s = 0;\n            for (int k = 0; k < (int)r->size();\
     \ k++) {\n                if ((*r)[k] < 0 || (*r)[k] >= n || (k && (*r)[k - 1]\
     \ >= (*r)[k])) ok = false;\n                else s += a[(*r)[k]];\n          \
-    \  }\n            ok = ok && s == S;\n        }\n        // \u500B\u6570\n   \
-    \     int t = S;\n        auto c1 = count_subset_sum_dp<long long>(a, t);\n  \
-    \      auto c2 = count_subset_sum_fps<mint>(a, t);\n        auto c3 = count_subset_sum<mint>(a,\
-    \ t);\n        for (int s = 0; s <= t && ok; s++) ok = c1[s] == cnt[s] && c2[s]\
-    \ == mint(cnt[s]) && c3[s] == mint(cnt[s]);\n    }\n\n    // \u4F8B\n    std::vector<long\
+    \  }\n            ok = ok && s == S;\n        }\n        // S \u4EE5\u4E0B\u306E\
+    \u6700\u5927\u5024\u3068\u3001\u305D\u306E\u5FA9\u5143\n        long long best\
+    \ = 0;\n        for (long long s = 0; s <= S; s++) {\n            if (cnt[s] >\
+    \ 0) best = s;\n        }\n        ok = ok && subset_sum_max(a, S) == best &&\
+    \ subset_sum_max_bitset(a, S) == best;\n        ok = ok && subset_sum_max_meet_in_the_middle(a,\
+    \ S) == best;\n        auto mr = subset_sum_max_restore(a, S);\n        long long\
+    \ ms = 0;\n        for (int k = 0; k < (int)mr.size(); k++) {\n            if\
+    \ (mr[k] < 0 || mr[k] >= n || (k && mr[k - 1] >= mr[k])) ok = false;\n       \
+    \     else ms += a[mr[k]];\n        }\n        ok = ok && ms == best;\n      \
+    \  // \u500B\u6570\n        int t = S;\n        auto c1 = count_subset_sum_dp<long\
+    \ long>(a, t);\n        auto c2 = count_subset_sum_fps<mint>(a, t);\n        auto\
+    \ c3 = count_subset_sum<mint>(a, t);\n        for (int s = 0; s <= t && ok; s++)\
+    \ ok = c1[s] == cnt[s] && c2[s] == mint(cnt[s]) && c3[s] == mint(cnt[s]);\n  \
+    \  }\n\n    // \u8981\u7D20\u3082 S \u3082\u5927\u304D\u3044\u3068\u304D\u306F\
+    \u534A\u5206\u5168\u5217\u6319\u304C\u9078\u3070\u308C\u3001\u5FA9\u5143\u3082\
+    \u3067\u304D\u308B\n    for (int rep = 0; rep < 200 && ok; rep++) {\n        int\
+    \ n = rng() % 21;\n        long long S = rng() % 1000000000000000000LL;\n    \
+    \    std::vector<long long> a(n);\n        for (auto& x : a) x = rng() % 100000000000000000LL;\n\
+    \        long long best = 0;\n        for (int mask = 0; mask < (1 << n); mask++)\
+    \ {\n            long long s = 0;\n            for (int i = 0; i < n; i++) {\n\
+    \                if (mask >> i & 1) s += a[i];\n            }\n            if\
+    \ (s <= S) best = std::max(best, s);\n        }\n        ok = ok && subset_sum_max(a,\
+    \ S) == best;\n        auto mr = subset_sum_max_restore(a, S);\n        long long\
+    \ ms = 0;\n        for (int k = 0; k < (int)mr.size(); k++) {\n            if\
+    \ (k && mr[k - 1] >= mr[k]) ok = false;\n            ms += a[mr[k]];\n       \
+    \ }\n        ok = ok && ms == best;\n    }\n\n    // \u4F8B\n    std::vector<long\
     \ long> a = {3, 5, 9};\n    auto r = subset_sum_restore(a, 14);\n    ok = ok &&\
     \ r && *r == std::vector<int>{1, 2};\n    ok = ok && !subset_sum_restore(a, 13);\n\
     \    ok = ok && subset_sum_restore(a, 0) == std::vector<int>{};\n\n    if (ok)\
     \ std::cout << \"Hello World\" << std::endl;\n    else std::cerr << \"failed\"\
     \ << std::endl;\n}\n"
-  code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
-    \n\n// subset_sum\u3001subset_sum_restore\u3001count_subset_sum_* \u3092\u3001\
-    \u90E8\u5206\u96C6\u5408\u3092\u3059\u3079\u3066\u8A66\u3059\u611A\u76F4\u306A\
-    \u65B9\u6CD5\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\
-    \u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\
-    \u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include\
-    \ <iostream>\n#include <random>\n#include <vector>\n\n#include \"../../src/math/modint.hpp\"\
-    \n#include \"../../src/others/subset-sum-count.hpp\"\n#include \"../../src/others/subset-sum.hpp\"\
-    \n\nusing mint = modint998244353;\n\nint main() {\n    std::mt19937_64 rng(314);\n\
-    \    bool ok = true;\n    for (int rep = 0; rep < 2000 && ok; rep++) {\n     \
-    \   int n = rng() % 12;\n        long long S = rng() % 300;  // 64 \u306E\u500D\
-    \u6570\u306E\u524D\u5F8C\u3082\u542B\u3080\n        int amax = rng() % 2 ? 10\
-    \ : 200;\n        std::vector<long long> a(n);\n        for (auto& x : a) x =\
-    \ rng() % (amax + 1);  // 0 \u3082\u542B\u3080\n        std::vector<long long>\
-    \ cnt(S + 1);\n        for (int mask = 0; mask < (1 << n); mask++) {\n       \
-    \     long long s = 0;\n            for (int i = 0; i < n; i++) {\n          \
-    \      if (mask >> i & 1) s += a[i];\n            }\n            if (s <= S) cnt[s]++;\n\
-    \        }\n        std::vector<bool> can = subset_sum(a, S);\n        ok = ok\
-    \ && (long long)can.size() == S + 1;\n        for (long long s = 0; s <= S &&\
-    \ ok; s++) ok = can[s] == (cnt[s] > 0);\n        // \u5FA9\u5143: \u6DFB\u5B57\
-    \u304C\u6607\u9806\u3067\u91CD\u8907\u304C\u306A\u304F\u3001\u548C\u304C S \u306B\
-    \u306A\u308B\n        auto r = subset_sum_restore(a, S);\n        ok = ok && r.has_value()\
-    \ == (cnt[S] > 0);\n        if (ok && r) {\n            long long s = 0;\n   \
-    \         for (int k = 0; k < (int)r->size(); k++) {\n                if ((*r)[k]\
-    \ < 0 || (*r)[k] >= n || (k && (*r)[k - 1] >= (*r)[k])) ok = false;\n        \
-    \        else s += a[(*r)[k]];\n            }\n            ok = ok && s == S;\n\
-    \        }\n        // \u500B\u6570\n        int t = S;\n        auto c1 = count_subset_sum_dp<long\
-    \ long>(a, t);\n        auto c2 = count_subset_sum_fps<mint>(a, t);\n        auto\
-    \ c3 = count_subset_sum<mint>(a, t);\n        for (int s = 0; s <= t && ok; s++)\
-    \ ok = c1[s] == cnt[s] && c2[s] == mint(cnt[s]) && c3[s] == mint(cnt[s]);\n  \
-    \  }\n\n    // \u4F8B\n    std::vector<long long> a = {3, 5, 9};\n    auto r =\
-    \ subset_sum_restore(a, 14);\n    ok = ok && r && *r == std::vector<int>{1, 2};\n\
-    \    ok = ok && !subset_sum_restore(a, 13);\n    ok = ok && subset_sum_restore(a,\
-    \ 0) == std::vector<int>{};\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
-    \    else std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/math/modint.hpp
   - src/others/subset-sum-count.hpp
@@ -690,7 +812,7 @@ data:
   isVerificationFile: true
   path: test/unittest/subset-sum.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 02:15:46+09:00'
+  timestamp: '2026-10-14 03:16:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/subset-sum.test.cpp

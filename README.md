@@ -19,7 +19,7 @@
 | `src/math/` | modint、行列、形式的冪級数、組み合わせ、数論、素数 (素数判定・素因数分解・篩)、無限大を持つ整数 (`infint`)、floor sum、有理数、約数・倍数のゼータ変換とメビウス変換 (GCD・LCM 畳み込み)、XOR 基底 |
 | `src/string/` | Z-algorithm、KMP、Manacher、Suffix Array と LCP 配列、ローリングハッシュ、Trie |
 | `src/geometry/` | 幾何 (ベクトル、凸包、偏角ソート、ccw、射影・反射、直線の交点、点・線分の距離、円の交点・接線・内接円・外接円など) |
-| `src/others/` | Mo's algorithm、最長増加部分列 (LIS)、転倒数、ナップサック問題、部分和問題 (判定・復元・個数) |
+| `src/others/` | Mo's algorithm、最長増加部分列 (LIS)、転倒数、ナップサック問題、部分和問題 (判定・S 以下の最大値・復元・個数) |
 | `test/` | 検証用テスト (ジャッジごとにディレクトリを分けています。`test/unittest/` は問題を使わない単体テスト) |
 | `docs/` | ドキュメントの各ページに埋め込む機能一覧 (`documentation_of` でヘッダに対応付け) |
 

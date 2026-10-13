@@ -26,6 +26,7 @@ documentation_of: //src/algebra/monoid.hpp
 | `Gcd<T>` | `T` | `gcd(a, b)` | `0` |
 | `Lcm<T>` | `T` | `lcm(a, b)` | `1` |
 | `Composite<T>` | `Affine<T>` | 1次関数 $f(x) = ax + b$ の合成 (左から順に適用) | 恒等写像 |
+| `Mapping<N>` | `std::array<int, N>` | $\lbrace 0, \dots, N-1 \rbrace$ から自分自身への写像の合成 (左から順に適用)。全単射でなくてよい | 恒等写像 |
 | `Parenthesis` | `Parenthesis::S` | 括弧列の連結 (対応の取れていない `)` と `(` の個数) | 空の括弧列 |
 | `MinWith<T, U = int>` | `pair<T, U>` | 最小値とその位置 (同じ値なら左側) | |
 | `MaxWith<T, U = int>` | `pair<T, U>` | 最大値とその位置 (同じ値なら左側) | |
@@ -51,6 +52,18 @@ std::cout << f;         // "a b" を出力
 | `f(x)` | $ax + b$ |
 | `==`、`!=` | 比較 |
 | `is >> f`、`os << f` | `a` と `b` を空白区切りで入出力 |
+
+## 写像のモノイド `Mapping<N>`
+
+要素 `f` は、`f[x]` が `x` の行き先を表す `std::array<int, N>` です。置換に限らず、どんな写像でもかまいません (変換モノイド)。`op(f, g)` は `f` を適用してから `g` を適用した写像で、区間 $[l, r)$ の積は、区間の写像を左から順に適用した結果になります。
+
+```cpp
+SegTree<monoid::Mapping<3>> seg(n);  // 各要素は恒等写像 (0, 1, 2)
+seg.set(i, {0, 2, 1});               // 1 と 2 を入れ替える
+int y = seg.prod(l, r)[x];           // x に区間 [l, r) の写像を順に適用した行き先
+```
+
+`N` はコンパイル時に決める必要があります。置換に限って逆元も使いたい場合は、[群](group.hpp) の `group::Permutation<N>` を使います。
 
 ## ラムダ式から作る
 

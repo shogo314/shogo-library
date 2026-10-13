@@ -12,6 +12,8 @@
  */
 
 #include <algorithm>
+#include <array>
+#include <cstddef>
 #include <istream>
 #include <limits>
 #include <numeric>
@@ -144,6 +146,30 @@ struct Lcm {
     using S = T;
     static constexpr S op(const S& a, const S& b) { return std::lcm(a, b); }
     static constexpr S e() { return S(1); }
+};
+
+/**
+ * @brief {0, 1, ..., N-1} から自分自身への写像の合成 (変換モノイド)
+ *
+ * 要素 f は f[x] が x の行き先を表す std::array<int, N>。全単射でなくてよい
+ * op(f, g) = g∘f (左から順に適用する)。区間 [l, r) の積は f_{r-1}(...f_l(x)) を表す
+ * 例: SegTree<monoid::Mapping<3>> seg(n); seg.set(i, {0, 2, 1});
+ *
+ * @tparam N 写像の定義域・値域の大きさ
+ */
+template <std::size_t N>
+struct Mapping {
+    using S = std::array<int, N>;
+    static constexpr S op(const S& f, const S& g) {
+        S h{};
+        for (std::size_t x = 0; x < N; x++) h[x] = g[f[x]];
+        return h;
+    }
+    static constexpr S e() {
+        S h{};
+        for (std::size_t x = 0; x < N; x++) h[x] = static_cast<int>(x);
+        return h;
+    }
 };
 
 /**

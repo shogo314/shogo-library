@@ -42,3 +42,14 @@ for (auto& e : g[u]) { /* e.src, e.dst, e.cost, e.id */ }
 | `shortest_path(s)` | Dijkstra | `inf` (省略時 `-1`) | $O(m \log m)$ |
 | `shortest_path(s, false)` | BFS (辺の重みを 1 とみなす) | `inf` (省略時 `-1`) | $O(n + m)$ |
 | `bellman_ford(s)` | Bellman-Ford (負の辺も可) | `inf` (省略時 `max / 4`)。負閉路の影響を受ける頂点は `-inf` | $O(nm)$ |
+| `shortest_path_01bfs(s)` | 01-BFS (辺のコストは 0 か 1 だけ。それ以外は assert で落ちる) | `inf` (省略時 `-1`) | $O(n + m)$ |
+
+## 全点対間の最短路
+
+`floyd_warshall(inf = max / 4)` は、`dist[i][j]` が `i` から `j` への最短路長である `std::vector<std::vector<Cost>>` を返します (Floyd-Warshall、$O(n^3)$)。到達できなければ `inf` です。負の辺があってもよく、`dist[i][i] < 0` となる `i` があれば負閉路があります。
+
+```cpp
+auto d = g.floyd_warshall();
+bool negative_cycle = false;
+for (int i = 0; i < g.n; i++) negative_cycle |= d[i][i] < 0;
+```

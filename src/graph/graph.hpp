@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <deque>
 #include <functional>
 #include <iostream>
 #include <limits>
@@ -205,6 +206,58 @@ struct Graph {
                 break;
         }
         return {dist, prev};
+    }
+    /**
+     * @brief 辺のコストが 0 か 1 だけのグラフで、ある頂点から各頂点への最短路 (01-BFS) O(n + m)
+     *
+     * @param s 始点
+     * @param inf 未到達の頂点への距離 省略すると -1
+     * @return ShortestPath 各頂点への最短路長 (dist) と、各頂点への最短路上の直前の辺 (prev)
+     */
+    ShortestPath shortest_path_01bfs(int s, Cost inf = -1) const {
+        std::vector<Cost> dist(n, inf);
+        std::vector<Edge> prev(n);
+        std::deque<int> que;
+        dist[s] = 0;
+        que.push_back(s);
+        while (!que.empty()) {
+            int u = que.front();
+            que.pop_front();
+            for (auto &e : g[u]) {
+                assert(e.cost == 0 || e.cost == 1);
+                if (dist[e.dst] == inf || dist[e.dst] > dist[u] + e.cost) {
+                    dist[e.dst] = dist[u] + e.cost;
+                    prev[e.dst] = e;
+                    if (e.cost == 0) que.push_front(e.dst);
+                    else que.push_back(e.dst);
+                }
+            }
+        }
+        return {dist, prev};
+    }
+    /**
+     * @brief 全点対間の最短路長 (Floyd-Warshall) O(n^3)
+     *
+     * @param inf 未到達を表す値 省略すると std::numeric_limits<Cost>::max() / 4
+     * @return std::vector<std::vector<Cost>> dist[i][j] が i から j への最短路長 (到達できなければ inf)
+     * @note 負の辺があってもよい。dist[i][i] < 0 となる i があれば負閉路がある
+     */
+    std::vector<std::vector<Cost>> floyd_warshall(Cost inf = std::numeric_limits<Cost>::max() / 4) const {
+        std::vector<std::vector<Cost>> dist(n, std::vector<Cost>(n, inf));
+        for (int i = 0; i < n; i++) dist[i][i] = Cost{};
+        for (int i = 0; i < n; i++) {
+            for (auto &e : g[i]) dist[i][e.dst] = std::min(dist[i][e.dst], e.cost);
+        }
+        for (int k = 0; k < n; k++) {
+            for (int i = 0; i < n; i++) {
+                if (dist[i][k] == inf) continue;
+                for (int j = 0; j < n; j++) {
+                    if (dist[k][j] == inf) continue;
+                    dist[i][j] = std::min(dist[i][j], dist[i][k] + dist[k][j]);
+                }
+            }
+        }
+        return dist;
     }
 
   private:

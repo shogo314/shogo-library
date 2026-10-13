@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../../src/others/subset-sum.hpp"
+#include "../../src/dp/subset-sum.hpp"
 
 int main() {
     int n;

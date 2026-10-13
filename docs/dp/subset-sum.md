@@ -1,6 +1,6 @@
 ---
 title: 部分和問題 (作れる和の判定、S 以下の最大値と復元)
-documentation_of: //src/others/subset-sum.hpp
+documentation_of: //src/dp/subset-sum.hpp
 ---
 
 0 以上の整数の列 `a` から、各要素を 1 回まで選んで作れる和を求めます。bitset で 64 個ずつまとめて計算するか、半分全列挙を使います。

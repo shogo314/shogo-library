@@ -8,7 +8,7 @@
 #include <random>
 #include <vector>
 
-#include "../../src/others/knapsack.hpp"
+#include "../../src/dp/knapsack.hpp"
 
 // 品物 i を 0 個以上 m[i] 個以下選ぶすべての方法を試す
 long long naive(const std::vector<long long>& v, const std::vector<long long>& w, const std::vector<long long>& m,

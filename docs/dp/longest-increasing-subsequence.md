@@ -1,6 +1,6 @@
 ---
 title: 最長増加部分列 (LIS)
-documentation_of: //src/others/longest-increasing-subsequence.hpp
+documentation_of: //src/dp/longest-increasing-subsequence.hpp
 ---
 
 列 `a` の最長増加部分列を求めます。どれも $O(n \log n)$ です。

@@ -9,7 +9,7 @@
 #include <random>
 #include <vector>
 
-#include "../../src/others/longest-increasing-subsequence.hpp"
+#include "../../src/dp/longest-increasing-subsequence.hpp"
 
 template <typename Compare>
 bool check(const std::vector<int>& a, bool strict, Compare comp) {

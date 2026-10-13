@@ -1,6 +1,6 @@
 ---
 title: 部分和の個数
-documentation_of: //src/others/subset-sum-count.hpp
+documentation_of: //src/dp/subset-sum-count.hpp
 ---
 
 0 以上の整数の列 `a` から各要素を 1 回まで選ぶとき、和が $s$ になる選び方 (部分集合) の個数を、$s = 0, 1, \dots, t$ について求めます。

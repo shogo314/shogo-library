@@ -21,4 +21,4 @@ long long k = inversion_number(std::vector<int>{3, 1, 4, 1, 5});  // 3 ((3, 1), 
 
 ## 関連
 
-- 最長増加部分列は [LIS](longest-increasing-subsequence.hpp)
+- 最長増加部分列は [LIS](../dp/longest-increasing-subsequence.hpp)

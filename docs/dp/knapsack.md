@@ -1,6 +1,6 @@
 ---
 title: ナップサック問題
-documentation_of: //src/others/knapsack.hpp
+documentation_of: //src/dp/knapsack.hpp
 ---
 
 品物 $i$ は価値 `v[i]` と重さ `w[i]` を持ちます (どちらも 0 以上)。重さの和が `W` 以下になるように品物を選んで、価値の和の最大値を求めます。答えは `long long` に収まる必要があります。

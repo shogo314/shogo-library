@@ -9,8 +9,8 @@
 #include <vector>
 
 #include "../../src/math/modint.hpp"
-#include "../../src/others/subset-sum-count.hpp"
-#include "../../src/others/subset-sum.hpp"
+#include "../../src/dp/subset-sum-count.hpp"
+#include "../../src/dp/subset-sum.hpp"
 
 using mint = modint998244353;
 

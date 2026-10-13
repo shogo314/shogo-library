@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../../src/others/knapsack.hpp"
+#include "../../src/dp/knapsack.hpp"
 
 int main() {
     int n;

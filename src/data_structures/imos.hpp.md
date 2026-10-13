@@ -106,13 +106,18 @@ data:
     \u5168\u5358\u5C04\u3067\u306A\u304F\u3066\u3088\u3044\n * op(f, g) = g\u2218\
     f (\u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\u3059\u308B)\u3002\u533A\u9593 [l,\
     \ r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x)) \u3092\u8868\u3059\n * \u4F8B: SegTree<monoid::Mapping<3>>\
-    \ seg(n); seg.set(i, {0, 2, 1});\n *\n * @tparam N \u5199\u50CF\u306E\u5B9A\u7FA9\
-    \u57DF\u30FB\u5024\u57DF\u306E\u5927\u304D\u3055\n */\ntemplate <std::size_t N>\n\
-    struct Mapping {\n    using S = std::array<int, N>;\n    static constexpr S op(const\
-    \ S& f, const S& g) {\n        S h{};\n        for (std::size_t x = 0; x < N;\
-    \ x++) h[x] = g[f[x]];\n        return h;\n    }\n    static constexpr S e() {\n\
-    \        S h{};\n        for (std::size_t x = 0; x < N; x++) h[x] = static_cast<int>(x);\n\
-    \        return h;\n    }\n};\n\n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\
+    \ seg(n); seg.set(i, {0, 2, 1});\n * swap(i, j) \u3067 i \u3068 j \u3092\u5165\
+    \u308C\u66FF\u3048\u308B\u5199\u50CF\u3092\u4F5C\u308C\u308B\n *\n * @tparam N\
+    \ \u5199\u50CF\u306E\u5B9A\u7FA9\u57DF\u30FB\u5024\u57DF\u306E\u5927\u304D\u3055\
+    \n */\ntemplate <std::size_t N>\nstruct Mapping {\n    using S = std::array<int,\
+    \ N>;\n    static constexpr S op(const S& f, const S& g) {\n        S h{};\n \
+    \       for (std::size_t x = 0; x < N; x++) h[x] = g[f[x]];\n        return h;\n\
+    \    }\n    static constexpr S e() {\n        S h{};\n        for (std::size_t\
+    \ x = 0; x < N; x++) h[x] = static_cast<int>(x);\n        return h;\n    }\n \
+    \   // i \u3068 j \u3092\u5165\u308C\u66FF\u3048\u3001\u307B\u304B\u306F\u52D5\
+    \u304B\u3055\u306A\u3044\u5199\u50CF (\u4E92\u63DB)\n    static constexpr S swap(int\
+    \ i, int j) {\n        S h = e();\n        h[i] = j;\n        h[j] = i;\n    \
+    \    return h;\n    }\n};\n\n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\
     \u5408\u6210\n * op(f, g) = g\u2218f (\u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\
     \u3059\u308B)\n * \u533A\u9593 [l, r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x)) \u3092\
     \u8868\u3059\n */\ntemplate <typename T>\nstruct Composite {\n    using S = Affine<T>;\n\
@@ -410,7 +415,7 @@ data:
   isVerificationFile: false
   path: src/data_structures/imos.hpp
   requiredBy: []
-  timestamp: '2026-10-13 10:40:08+09:00'
+  timestamp: '2026-10-13 12:10:14+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/imos.test.cpp

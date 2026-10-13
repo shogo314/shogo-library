@@ -101,13 +101,18 @@ data:
     \u5168\u5358\u5C04\u3067\u306A\u304F\u3066\u3088\u3044\n * op(f, g) = g\u2218\
     f (\u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\u3059\u308B)\u3002\u533A\u9593 [l,\
     \ r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x)) \u3092\u8868\u3059\n * \u4F8B: SegTree<monoid::Mapping<3>>\
-    \ seg(n); seg.set(i, {0, 2, 1});\n *\n * @tparam N \u5199\u50CF\u306E\u5B9A\u7FA9\
-    \u57DF\u30FB\u5024\u57DF\u306E\u5927\u304D\u3055\n */\ntemplate <std::size_t N>\n\
-    struct Mapping {\n    using S = std::array<int, N>;\n    static constexpr S op(const\
-    \ S& f, const S& g) {\n        S h{};\n        for (std::size_t x = 0; x < N;\
-    \ x++) h[x] = g[f[x]];\n        return h;\n    }\n    static constexpr S e() {\n\
-    \        S h{};\n        for (std::size_t x = 0; x < N; x++) h[x] = static_cast<int>(x);\n\
-    \        return h;\n    }\n};\n\n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\
+    \ seg(n); seg.set(i, {0, 2, 1});\n * swap(i, j) \u3067 i \u3068 j \u3092\u5165\
+    \u308C\u66FF\u3048\u308B\u5199\u50CF\u3092\u4F5C\u308C\u308B\n *\n * @tparam N\
+    \ \u5199\u50CF\u306E\u5B9A\u7FA9\u57DF\u30FB\u5024\u57DF\u306E\u5927\u304D\u3055\
+    \n */\ntemplate <std::size_t N>\nstruct Mapping {\n    using S = std::array<int,\
+    \ N>;\n    static constexpr S op(const S& f, const S& g) {\n        S h{};\n \
+    \       for (std::size_t x = 0; x < N; x++) h[x] = g[f[x]];\n        return h;\n\
+    \    }\n    static constexpr S e() {\n        S h{};\n        for (std::size_t\
+    \ x = 0; x < N; x++) h[x] = static_cast<int>(x);\n        return h;\n    }\n \
+    \   // i \u3068 j \u3092\u5165\u308C\u66FF\u3048\u3001\u307B\u304B\u306F\u52D5\
+    \u304B\u3055\u306A\u3044\u5199\u50CF (\u4E92\u63DB)\n    static constexpr S swap(int\
+    \ i, int j) {\n        S h = e();\n        h[i] = j;\n        h[j] = i;\n    \
+    \    return h;\n    }\n};\n\n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\
     \u5408\u6210\n * op(f, g) = g\u2218f (\u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\
     \u3059\u308B)\n * \u533A\u9593 [l, r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x)) \u3092\
     \u8868\u3059\n */\ntemplate <typename T>\nstruct Composite {\n    using S = Affine<T>;\n\
@@ -417,7 +422,10 @@ data:
     \u9069\u7528\u3059\u308B\u3068 (1, 0, 1)\nstatic_assert(equal(monoid::Mapping<3>::op({0,\
     \ 2, 1}, {1, 1, 0}), {1, 0, 1}));\nstatic_assert(equal(monoid::Mapping<3>::e(),\
     \ {0, 1, 2}));\nstatic_assert(equal(group::Permutation<3>::inv({1, 2, 0}), {2,\
-    \ 0, 1}));\n\ntemplate <std::size_t N>\nstd::array<int, N> random_mapping(std::mt19937&\
+    \ 0, 1}));\nstatic_assert(equal(monoid::Mapping<3>::swap(1, 2), {0, 2, 1}));\n\
+    static_assert(equal(monoid::Mapping<4>::swap(3, 0), {3, 1, 2, 0}));\nstatic_assert(equal(monoid::Mapping<3>::swap(1,\
+    \ 1), {0, 1, 2}));\nstatic_assert(equal(group::Permutation<3>::swap(0, 1), {1,\
+    \ 0, 2}));\n\ntemplate <std::size_t N>\nstd::array<int, N> random_mapping(std::mt19937&\
     \ rng, bool bijective) {\n    std::array<int, N> f;\n    if (bijective) {\n  \
     \      std::iota(f.begin(), f.end(), 0);\n        std::shuffle(f.begin(), f.end(),\
     \ rng);\n    } else {\n        for (auto& v : f) v = rng() % N;\n    }\n    return\
@@ -464,10 +472,10 @@ data:
     \n    // \u4F8B: (0, 2, 1) \u3092\u533A\u9593\u306B\u4E26\u3079\u308B\u3002\u5076\
     \u6570\u500B\u306A\u3089\u6052\u7B49\u5199\u50CF\u3001\u5947\u6570\u500B\u306A\
     \u3089 (0, 2, 1)\n    SegTree<monoid::Mapping<3>> seg(4);\n    for (int i = 0;\
-    \ i < 4; i++) seg.set(i, {0, 2, 1});\n    ok = ok && seg.prod(0, 4) == std::array<int,\
-    \ 3>{0, 1, 2};\n    ok = ok && seg.prod(1, 4) == std::array<int, 3>{0, 2, 1};\n\
-    \n    if (ok) std::cout << \"Hello World\" << std::endl;\n    else std::cerr <<\
-    \ \"failed\" << std::endl;\n}\n"
+    \ i < 4; i++) seg.set(i, monoid::Mapping<3>::swap(1, 2));\n    ok = ok && seg.prod(0,\
+    \ 4) == std::array<int, 3>{0, 1, 2};\n    ok = ok && seg.prod(1, 4) == std::array<int,\
+    \ 3>{0, 2, 1};\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n   \
+    \ else std::cerr << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// monoid::Mapping (\u5199\u50CF\u306E\u5408\u6210) \u3068 group::Permutation\
     \ (\u7F6E\u63DB\u306E\u5408\u6210) \u3092\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u30E9\
@@ -486,9 +494,12 @@ data:
     \u3059\u308B\u3068 (1, 0, 1)\nstatic_assert(equal(monoid::Mapping<3>::op({0, 2,\
     \ 1}, {1, 1, 0}), {1, 0, 1}));\nstatic_assert(equal(monoid::Mapping<3>::e(), {0,\
     \ 1, 2}));\nstatic_assert(equal(group::Permutation<3>::inv({1, 2, 0}), {2, 0,\
-    \ 1}));\n\ntemplate <std::size_t N>\nstd::array<int, N> random_mapping(std::mt19937&\
-    \ rng, bool bijective) {\n    std::array<int, N> f;\n    if (bijective) {\n  \
-    \      std::iota(f.begin(), f.end(), 0);\n        std::shuffle(f.begin(), f.end(),\
+    \ 1}));\nstatic_assert(equal(monoid::Mapping<3>::swap(1, 2), {0, 2, 1}));\nstatic_assert(equal(monoid::Mapping<4>::swap(3,\
+    \ 0), {3, 1, 2, 0}));\nstatic_assert(equal(monoid::Mapping<3>::swap(1, 1), {0,\
+    \ 1, 2}));\nstatic_assert(equal(group::Permutation<3>::swap(0, 1), {1, 0, 2}));\n\
+    \ntemplate <std::size_t N>\nstd::array<int, N> random_mapping(std::mt19937& rng,\
+    \ bool bijective) {\n    std::array<int, N> f;\n    if (bijective) {\n       \
+    \ std::iota(f.begin(), f.end(), 0);\n        std::shuffle(f.begin(), f.end(),\
     \ rng);\n    } else {\n        for (auto& v : f) v = rng() % N;\n    }\n    return\
     \ f;\n}\n\n// SegTree<monoid::Mapping<N>> \u306E\u533A\u9593\u7A4D\u304C\u3001\
     \u533A\u9593\u306E\u5199\u50CF\u3092\u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\
@@ -533,10 +544,10 @@ data:
     \n    // \u4F8B: (0, 2, 1) \u3092\u533A\u9593\u306B\u4E26\u3079\u308B\u3002\u5076\
     \u6570\u500B\u306A\u3089\u6052\u7B49\u5199\u50CF\u3001\u5947\u6570\u500B\u306A\
     \u3089 (0, 2, 1)\n    SegTree<monoid::Mapping<3>> seg(4);\n    for (int i = 0;\
-    \ i < 4; i++) seg.set(i, {0, 2, 1});\n    ok = ok && seg.prod(0, 4) == std::array<int,\
-    \ 3>{0, 1, 2};\n    ok = ok && seg.prod(1, 4) == std::array<int, 3>{0, 2, 1};\n\
-    \n    if (ok) std::cout << \"Hello World\" << std::endl;\n    else std::cerr <<\
-    \ \"failed\" << std::endl;\n}\n"
+    \ i < 4; i++) seg.set(i, monoid::Mapping<3>::swap(1, 2));\n    ok = ok && seg.prod(0,\
+    \ 4) == std::array<int, 3>{0, 1, 2};\n    ok = ok && seg.prod(1, 4) == std::array<int,\
+    \ 3>{0, 2, 1};\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n   \
+    \ else std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/algebra/group.hpp
   - src/algebra/monoid.hpp
@@ -546,7 +557,7 @@ data:
   isVerificationFile: true
   path: test/unittest/mapping.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 10:40:08+09:00'
+  timestamp: '2026-10-13 12:10:14+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/mapping.test.cpp

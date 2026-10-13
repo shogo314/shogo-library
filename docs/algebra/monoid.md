@@ -63,6 +63,8 @@ seg.set(i, {0, 2, 1});               // 1 と 2 を入れ替える
 int y = seg.prod(l, r)[x];           // x に区間 [l, r) の写像を順に適用した行き先
 ```
 
+`Mapping<N>::swap(i, j)` は、`i` と `j` を入れ替えてほかは動かさない写像 (互換) を返します。上の `{0, 2, 1}` は `monoid::Mapping<3>::swap(1, 2)` と書けます。`group::Permutation<N>::swap(i, j)` でも使えます。
+
 `N` はコンパイル時に決める必要があります。置換に限って逆元も使いたい場合は、[群](group.hpp) の `group::Permutation<N>` を使います。
 
 ## ラムダ式から作る

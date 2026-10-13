@@ -154,6 +154,7 @@ struct Lcm {
  * 要素 f は f[x] が x の行き先を表す std::array<int, N>。全単射でなくてよい
  * op(f, g) = g∘f (左から順に適用する)。区間 [l, r) の積は f_{r-1}(...f_l(x)) を表す
  * 例: SegTree<monoid::Mapping<3>> seg(n); seg.set(i, {0, 2, 1});
+ * swap(i, j) で i と j を入れ替える写像を作れる
  *
  * @tparam N 写像の定義域・値域の大きさ
  */
@@ -168,6 +169,13 @@ struct Mapping {
     static constexpr S e() {
         S h{};
         for (std::size_t x = 0; x < N; x++) h[x] = static_cast<int>(x);
+        return h;
+    }
+    // i と j を入れ替え、ほかは動かさない写像 (互換)
+    static constexpr S swap(int i, int j) {
+        S h = e();
+        h[i] = j;
+        h[j] = i;
         return h;
     }
 };

@@ -26,6 +26,10 @@ constexpr bool equal(const std::array<int, N>& a, const std::array<int, N>& b) {
 static_assert(equal(monoid::Mapping<3>::op({0, 2, 1}, {1, 1, 0}), {1, 0, 1}));
 static_assert(equal(monoid::Mapping<3>::e(), {0, 1, 2}));
 static_assert(equal(group::Permutation<3>::inv({1, 2, 0}), {2, 0, 1}));
+static_assert(equal(monoid::Mapping<3>::swap(1, 2), {0, 2, 1}));
+static_assert(equal(monoid::Mapping<4>::swap(3, 0), {3, 1, 2, 0}));
+static_assert(equal(monoid::Mapping<3>::swap(1, 1), {0, 1, 2}));
+static_assert(equal(group::Permutation<3>::swap(0, 1), {1, 0, 2}));
 
 template <std::size_t N>
 std::array<int, N> random_mapping(std::mt19937& rng, bool bijective) {
@@ -115,7 +119,7 @@ int main() {
 
     // 例: (0, 2, 1) を区間に並べる。偶数個なら恒等写像、奇数個なら (0, 2, 1)
     SegTree<monoid::Mapping<3>> seg(4);
-    for (int i = 0; i < 4; i++) seg.set(i, {0, 2, 1});
+    for (int i = 0; i < 4; i++) seg.set(i, monoid::Mapping<3>::swap(1, 2));
     ok = ok && seg.prod(0, 4) == std::array<int, 3>{0, 1, 2};
     ok = ok && seg.prod(1, 4) == std::array<int, 3>{0, 2, 1};
 

@@ -25,7 +25,7 @@ class HeavyLightDecomposition {
     int n, root;
     std::vector<int> par, dep, sz, heavy, head, in, order;
 
-public:
+   public:
     /**
      * @brief 木 tree を根 root で HL 分解する
      * @param tree Graph、Tree、RootedTree など。tree.n が頂点数、for (int u : tree[v]) で v に隣接する頂点を列挙できること

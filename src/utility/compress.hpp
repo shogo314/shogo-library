@@ -25,7 +25,7 @@ class Compress {
     std::vector<T> xs;
     bool built = false;
 
-public:
+   public:
     Compress() = default;
     /**
      * @brief v の値を登録して build する

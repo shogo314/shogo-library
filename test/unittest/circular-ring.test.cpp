@@ -30,9 +30,15 @@ int main() {
             // 負の添字や大きな添字も使う
             long long i;
             switch (rng() % 3) {
-                case 0: i = static_cast<long long>(rng() % 20) - 10; break;
-                case 1: i = static_cast<long long>(rng() >> 2); break;
-                default: i = -static_cast<long long>(rng() >> 2); break;
+                case 0:
+                    i = static_cast<long long>(rng() % 20) - 10;
+                    break;
+                case 1:
+                    i = static_cast<long long>(rng() >> 2);
+                    break;
+                default:
+                    i = -static_cast<long long>(rng() >> 2);
+                    break;
             }
             long long p = pos(i, n);
             if (cring.at(i) != v[p] || cring[i] != v[p] || ring.at(i) != v[p] || ring[i] != v[p]) ok = false;

@@ -30,7 +30,7 @@ class LowLink {
     std::vector<int> comp;
     std::vector<std::vector<int>> groups;
 
-public:
+   public:
     std::vector<int> ord;  //!< DFS で訪れた順番
     std::vector<int> low;  //!< DFS 木の子孫から、木の辺を逆にたどらずに 1 本の後退辺で行ける頂点の ord の最小値
 

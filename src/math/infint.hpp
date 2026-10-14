@@ -20,7 +20,7 @@
  */
 template <typename T = long long>
 class infint {
-private:
+   private:
     static_assert(std::is_integral_v<T> && std::is_signed_v<T>);
     static_assert(std::numeric_limits<T>::min() + 1 == -std::numeric_limits<T>::max());
 
@@ -33,7 +33,7 @@ private:
     static std::string str_minusinf;
     static std::string str_nan;
 
-public:
+   public:
     constexpr infint() noexcept : _v(0) {}
     constexpr infint(const T& t) noexcept : _v(t) {}
     constexpr infint(const infint& o) noexcept : _v(o._v) {}

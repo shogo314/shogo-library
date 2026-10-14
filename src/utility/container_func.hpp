@@ -23,16 +23,16 @@
         return t.func();                                           \
     }
 
-#define METHOD_AND_FUNC_ARG_EXPAND(func)                                     \
-    template <typename T, typename U, ENABLE_IF_T(has_##func##_v<T, U>)>     \
-    inline constexpr auto func(const T& t, const U& u)                       \
-        -> decltype(t.func(u)) {                                             \
-        return t.func(u);                                                    \
-    }                                                                        \
+#define METHOD_AND_FUNC_ARG_EXPAND(func)                                  \
+    template <typename T, typename U, ENABLE_IF_T(has_##func##_v<T, U>)>  \
+    inline constexpr auto func(const T& t, const U& u)                    \
+        -> decltype(t.func(u)) {                                          \
+        return t.func(u);                                                 \
+    }                                                                     \
     template <typename T, typename U, ENABLE_IF_T(!has_##func##_v<T, U>)> \
-    inline constexpr auto func(const T& t, const U& u)                       \
-        -> decltype(std::func(t.begin(), t.end(), u)) {                      \
-        return std::func(t.begin(), t.end(), u);                             \
+    inline constexpr auto func(const T& t, const U& u)                    \
+        -> decltype(std::func(t.begin(), t.end(), u)) {                   \
+        return std::func(t.begin(), t.end(), u);                          \
     }
 
 METHOD_EXPAND(reversed)

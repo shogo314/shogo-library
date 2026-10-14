@@ -19,7 +19,7 @@ class Combination {
     static std::vector<Modint> fact, inv_fact;
     static long long cached_mod;  // dynamic_modint で mod が変わったら前計算をやり直す
 
-public:
+   public:
     /**
      * @brief n までの階乗とその逆元を前計算する
      * @param n

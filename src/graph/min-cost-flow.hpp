@@ -28,7 +28,7 @@
  */
 template <typename Cap, typename Cost>
 class MinCostFlow {
-public:
+   public:
     /**
      * @brief 辺の情報
      */
@@ -39,7 +39,7 @@ public:
         Cost cost;  //!< 1 だけ流したときのコスト
     };
 
-private:
+   private:
     struct InnerEdge {
         int to, rev;
         Cap cap;  // 残りの容量
@@ -89,7 +89,7 @@ private:
         return true;
     }
 
-public:
+   public:
     explicit MinCostFlow(int n = 0) : n(n), g(n), dual(n), dist(n), prev_v(n), prev_e(n), vis(n) {}
 
     int size() const { return n; }

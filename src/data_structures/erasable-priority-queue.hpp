@@ -36,7 +36,7 @@ class ErasablePriorityQueue {
         }
     }
 
-public:
+   public:
     explicit ErasablePriorityQueue(Compare comp = Compare()) : que(comp), del(comp), comp(comp) {}
 
     /**

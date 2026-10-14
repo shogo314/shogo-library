@@ -20,10 +20,10 @@
  */
 template <typename M>
 class SegTree2D {
-public:
+   public:
     using S = typename M::S;
 
-private:
+   private:
     M m;
     S op(const S& a, const S& b) const { return m.op(a, b); }
     S e() const { return m.e(); }
@@ -188,7 +188,7 @@ private:
         }
     }
 
-public:
+   public:
     SegTree2D() = default;
     /**
      * @brief コンストラクタ

@@ -14,7 +14,7 @@
 
 template <typename U, class ADD_LEFT, class DELETE_LEFT, class ADD_RIGHT = ADD_LEFT, class DELETE_RIGHT = DELETE_LEFT>
 class Mo {
-private:
+   private:
     int _n;
     std::vector<std::array<int, 3>> lri;
     U _e;
@@ -28,7 +28,7 @@ private:
     static_assert(std::is_invocable_r_v<void, ADD_RIGHT, U&, int>, "ADD_RIGHT must be callable with (U&, int)");
     static_assert(std::is_invocable_r_v<void, DELETE_RIGHT, U&, int>, "DELETE_RIGHT must be callable with (U&, int)");
 
-public:
+   public:
     Mo(int n,
        const U& e,
        const ADD_LEFT& add_left,

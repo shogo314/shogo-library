@@ -53,7 +53,7 @@ class BipartiteMatching {
         return found;
     }
 
-public:
+   public:
     BipartiteMatching(int l, int r) : l(l), r(r), g(l), match_l(l, -1), match_r(r, -1) {}
 
     /**

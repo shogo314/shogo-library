@@ -19,11 +19,11 @@
  */
 template <typename G>
 class PotentializedUnionFind {
-public:
+   public:
     using S = typename G::S;
     using MergeResult = UnionFind::MergeResult;
 
-private:
+   private:
     G g;
     int _n;
     // 負ならサイズ、非負なら親
@@ -35,7 +35,7 @@ private:
     S e() const { return g.e(); }
     S inv(const S& a) const { return g.inv(a); }
 
-public:
+   public:
     /**
      * @param n 要素数
      * @param g ポテンシャルの群
@@ -134,7 +134,7 @@ public:
         return result;
     }
 
-private:
+   private:
     S weight(int a) {
         leader(a);
         return diff_weight[a];

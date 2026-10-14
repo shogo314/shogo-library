@@ -25,11 +25,11 @@
  */
 template <typename A>
 class DualSegTree {
-public:
+   public:
     using S = typename A::S;
     using F = typename A::F;
 
-private:
+   private:
     A a;
     int n, sz, height;
     std::vector<S> data;  // 葉の値 (作用素をまだ適用していないもの)
@@ -60,7 +60,7 @@ private:
         lazy.assign(2 * sz, id());
     }
 
-public:
+   public:
     /**
      * @param n 要素数 各要素は S() で初期化する
      * @param a 作用素付きモノイド

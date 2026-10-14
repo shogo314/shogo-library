@@ -25,19 +25,19 @@ template <typename G = group::Sum<long long>,
           typename K = long long,
           class Comp = std::less<K>>
 class MergeSortTree {
-public:
+   public:
     using value_type = typename G::S;
     using key_type = K;
 
     inline constexpr static auto comp = Comp();
 
-private:
+   private:
     G g;
     value_type op(const value_type& x, const value_type& y) const { return g.op(x, y); }
     value_type e() const { return g.e(); }
     value_type inv(const value_type& x) const { return g.inv(x); }
 
-private:
+   private:
     int n, sz, height;
     std::vector<key_type> key_data;
     std::vector<value_type> cumulative_value;
@@ -107,7 +107,7 @@ private:
         return ret;
     }
 
-public:
+   public:
     MergeSortTree() = default;
     /**
      * @param value_key valueとkeyのpairのvector

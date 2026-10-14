@@ -45,7 +45,7 @@ class RollingHash {
         while (static_cast<int>(power.size()) <= n) power.push_back(mul(power.back(), base));
     }
 
-public:
+   public:
     /**
      * @brief 要素を[0, MOD)の値に変換する
      * @note charは符号に関わらず0~255として扱う 負の整数はMODで正規化する

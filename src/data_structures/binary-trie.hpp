@@ -47,7 +47,7 @@ class BinaryTrie {
     using NodePtr = std::shared_ptr<BinaryTrieNode>;
     NodePtr root_ptr = std::make_shared<BinaryTrieNode>(d);
 
-public:
+   public:
     /**
      * @brief 集合にnを追加 (O(d))
      */

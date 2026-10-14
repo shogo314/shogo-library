@@ -75,7 +75,7 @@ static constexpr bool is_prime32(std::uint32_t x) noexcept {
 /// @tparam Modint このクラステンプレートを継承するクラス
 template <class Modint>
 class modint_base {
-public:
+   public:
     /// @brief 保持する値の型
     using value_type = std::uint32_t;
 
@@ -310,7 +310,7 @@ public:
         return os;
     }
 
-protected:
+   protected:
     value_type m_value;
 };
 
@@ -320,10 +320,10 @@ template <std::uint32_t Mod>
 class static_modint : public modint_base<static_modint<Mod>> {
     static_assert(Mod > 0 && Mod <= std::numeric_limits<std::uint32_t>::max() / 2);
 
-private:
+   private:
     using base_type = modint_base<static_modint<Mod>>;
 
-public:
+   public:
     using typename base_type::value_type;
 
     /// @brief 法を取得します。
@@ -361,10 +361,10 @@ public:
 /// @tparam ID このIDごとに法を設定することができます
 template <int ID>
 class dynamic_modint : public modint_base<dynamic_modint<ID>> {
-private:
+   private:
     using base_type = modint_base<dynamic_modint<ID>>;
 
-public:
+   public:
     using typename base_type::value_type;
 
     /// @brief 法を取得します。
@@ -391,7 +391,7 @@ public:
     constexpr dynamic_modint(SignedIntegral value) noexcept
         : base_type{value} {}
 
-private:
+   private:
     inline static value_type modulus = 998244353;
 };
 

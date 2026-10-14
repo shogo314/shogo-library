@@ -198,7 +198,7 @@ class Sieve {
     std::vector<int> lpf;  // 最小素因数
     std::vector<int> ps;
 
-public:
+   public:
     explicit Sieve(int n) : n(n), lpf(n + 1, 0) {
         assert(n >= 0);
         for (int i = 2; i <= n; i++) {

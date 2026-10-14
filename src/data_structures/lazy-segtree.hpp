@@ -23,11 +23,11 @@
  */
 template <typename A>
 class LazySegTree {
-public:
+   public:
     using S = typename A::S;
     using F = typename A::F;
 
-private:
+   private:
     A a;
     S op(const S& x, const S& y) const { return a.op(x, y); }
     S e() const { return a.e(); }
@@ -56,7 +56,8 @@ private:
     class LazySegTreeReference {
         LazySegTree& segtree;
         int k;
-    public:
+
+       public:
         LazySegTreeReference(LazySegTree& segtree, int k) : segtree(segtree), k(k) {}
         LazySegTreeReference& operator=(const S& x) {
             segtree.set(k, x);
@@ -76,7 +77,7 @@ private:
         lazy.assign(sz * 2, id());
     }
 
-public:
+   public:
     /**
      * @brief コンストラクタ
      *

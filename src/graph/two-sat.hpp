@@ -29,7 +29,7 @@ class TwoSat {
     std::vector<bool> ans;
     int literal(int i, bool f) const { return f ? i : n + i; }
 
-public:
+   public:
     explicit TwoSat(int n = 0) : n(n), graph(2 * n), ans(n) {}
 
     int size() const { return n; }

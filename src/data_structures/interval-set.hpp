@@ -20,7 +20,7 @@
  */
 template <typename T = long long, class Compare = std::less<T>, std::enable_if_t<std::is_scalar_v<T>>* = nullptr>
 class IntervalSet {
-public:
+   public:
     using key_type = T;
     using value_type = std::pair<key_type, key_type>;
     inline constexpr static auto key_comp = Compare();
@@ -31,7 +31,7 @@ public:
     };
     inline constexpr static auto value_comp = value_compare();
 
-private:
+   private:
     std::set<value_type, value_compare> data;
     using iterator = typename decltype(data)::iterator;
     std::optional<std::pair<iterator, iterator>> find(key_type l, key_type r) const {
@@ -49,7 +49,7 @@ private:
         return std::pair<iterator, iterator>{itr_l, itr_r};
     }
 
-public:
+   public:
     IntervalSet() = default;
     /**
      * @brief k が含まれている区間

@@ -14,7 +14,7 @@
 #include <vector>
 
 struct Range {
-public:
+   public:
     using value_type = long long;
     using const_reference = const value_type&;
     using size_type = std::size_t;
@@ -24,7 +24,7 @@ public:
     const value_type stop;
     const value_type step;
 
-private:
+   private:
     const value_type norm_stop;
 
     constexpr static value_type normalize(value_type _start, value_type _stop, value_type _step) {
@@ -48,7 +48,7 @@ private:
         : start(_start), stop(_stop), step(_step), norm_stop(_norm_stop) {
     }
 
-public:
+   public:
     /**
      * @brief start から stop の手前まで step ずつ進む整数列
      * @pre step != 0
@@ -67,14 +67,14 @@ public:
     Range& operator=(const Range& o) = delete;
 
     struct const_iterator {
-    public:
+       public:
         using difference_type = Range::difference_type;
         using value_type = Range::value_type;
         using pointer = const Range::value_type*;
         using reference = const Range::value_type&;
         using iterator_category = std::random_access_iterator_tag;
 
-    private:
+       private:
         const Range& range;
         value_type value;
 
@@ -82,7 +82,7 @@ public:
             return range.start == o.range.start && range.stop == o.range.stop && range.step == o.range.step;
         }
 
-    public:
+       public:
         constexpr const_iterator(const Range& _range, value_type _value) noexcept
             : range(_range), value(_value) {}
         constexpr const_iterator(const const_iterator& o) noexcept

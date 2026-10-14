@@ -83,8 +83,8 @@ constexpr bool constexpr_check() {
     MaxCounter<int, 2> b(7);
     MaxCounter<int, 2> c = a + b;  // {9, 7}
     return a.size() == 2 && a.data[0] == std::pair<int, long long>(9, 1) && a.data[1] == std::pair<int, long long>(5, 3) &&
-        c.data[0] == std::pair<int, long long>(9, 1) && c.data[1] == std::pair<int, long long>(7, 1) &&
-        MinCounter<int, 3>().size() == 0;
+           c.data[0] == std::pair<int, long long>(9, 1) && c.data[1] == std::pair<int, long long>(7, 1) &&
+           MinCounter<int, 3>().size() == 0;
 }
 static_assert(constexpr_check());
 

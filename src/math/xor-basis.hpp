@@ -31,7 +31,7 @@ class XorBasis {
     T b[B] = {};  // b[i] は最上位ビットが i の基底 (なければ 0)
     int r = 0;
 
-public:
+   public:
     XorBasis() = default;
 
     /**

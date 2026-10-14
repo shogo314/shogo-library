@@ -46,7 +46,7 @@ class Trie {
         return c - Base;
     }
 
-public:
+   public:
     Trie() { add_node(-1, 0); }
 
     /**

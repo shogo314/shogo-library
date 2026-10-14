@@ -144,9 +144,12 @@ int main() {
     auto gen_f = [&]() -> Clamp {
         long long b = small();
         switch (rng() % 3) {
-            case 0: return Clamp{-inf, b, 0};     // chmin
-            case 1: return Clamp{b, inf, 0};      // chmax
-            default: return Clamp{-inf, inf, b};  // add
+            case 0:
+                return Clamp{-inf, b, 0};  // chmin
+            case 1:
+                return Clamp{b, inf, 0};  // chmax
+            default:
+                return Clamp{-inf, inf, b};  // add
         }
     };
     for (int rep = 0; rep < 300 && ok; rep++) {

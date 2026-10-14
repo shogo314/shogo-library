@@ -70,7 +70,7 @@ class Rational {
         }
     }
 
-public:
+   public:
     /**
      * @brief 整数 n
      */

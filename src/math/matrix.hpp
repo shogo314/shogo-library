@@ -48,7 +48,7 @@ struct OperatorPropertyDefault {
  */
 template <class T, class OperatorProperty = matrix::OperatorPropertyDefault<T>>
 class Matrix {
-public:
+   public:
     int n, m;
     std::vector<std::vector<T>> v;
 
@@ -444,7 +444,7 @@ public:
         }
     }
 
-private:
+   private:
     /**
      * @brief ガウスの消去法の前進消去を行って上三角行列を作り、行列式を返す
      * @param A 行列

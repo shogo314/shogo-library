@@ -23,10 +23,10 @@
  */
 template <typename M>
 class SegTree {
-public:
+   public:
     using S = typename M::S;
 
-private:
+   private:
     M m;
     S op(const S& a, const S& b) const { return m.op(a, b); }
     S e() const { return m.e(); }
@@ -38,7 +38,8 @@ private:
     class SegTreeReference {
         SegTree& segtree;
         int k;
-    public:
+
+       public:
         SegTreeReference(SegTree& segtree, int k) : segtree(segtree), k(k) {}
         SegTreeReference& operator=(const S& x) {
             segtree.set(k, x);
@@ -57,7 +58,7 @@ private:
         data.assign(sz * 2, e());
     }
 
-public:
+   public:
     /**
      * @brief コンストラクタ
      *

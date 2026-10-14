@@ -23,10 +23,10 @@
  */
 template <typename M>
 class SparseTable {
-public:
+   public:
     using S = typename M::S;
 
-private:
+   private:
     M m;
     int n;
     // table[k][i] は v[i] から v[i + 2^k - 1] までの積
@@ -35,7 +35,7 @@ private:
     S op(const S& a, const S& b) const { return m.op(a, b); }
     S e() const { return m.e(); }
 
-public:
+   public:
     explicit SparseTable(const std::vector<S>& v = {}, M m = M()) : m(std::move(m)), n(v.size()), table(1, v), lg(n + 1, 0) {
         for (int x = 2; x <= n; x++) lg[x] = lg[x / 2] + 1;
         for (int k = 1; (1 << k) <= n; k++) {

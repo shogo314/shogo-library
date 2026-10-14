@@ -46,15 +46,24 @@ struct OnlyInit {
 std::string naive_char_repr(char c) {
     unsigned char u = static_cast<unsigned char>(c);
     switch (c) {
-        case '\0': return "'\\0'";
-        case '\a': return "'\\a'";
-        case '\b': return "'\\b'";
-        case '\f': return "'\\f'";
-        case '\r': return "'\\r'";
-        case '\n': return "'\\n'";
-        case '\v': return "'\\v'";
-        case '\'': return "'\\''";
-        case '\\': return "'\\\\'";
+        case '\0':
+            return "'\\0'";
+        case '\a':
+            return "'\\a'";
+        case '\b':
+            return "'\\b'";
+        case '\f':
+            return "'\\f'";
+        case '\r':
+            return "'\\r'";
+        case '\n':
+            return "'\\n'";
+        case '\v':
+            return "'\\v'";
+        case '\'':
+            return "'\\''";
+        case '\\':
+            return "'\\\\'";
     }
     if (32 <= u && u <= 126) return std::string("'") + c + "'";
     return "'\\" + std::to_string(u / 64) + std::to_string(u / 8 % 8) + std::to_string(u % 8) + "'";

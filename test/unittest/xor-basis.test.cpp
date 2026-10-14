@@ -36,7 +36,7 @@ int main() {
                 for (int v : vals) mx = std::max(mx, y ^ v), mn = std::min(mn, y ^ v);
                 int less = std::lower_bound(vals.begin(), vals.end(), y) - vals.begin();
                 ok = ok && xb.contains(y) == (span.count(y) > 0) && xb.max(y) == mx && xb.min(y) == mn &&
-                    xb.count_less(y) == (unsigned long long)less;
+                     xb.count_less(y) == (unsigned long long)less;
             }
             // 基底の最上位ビットは降順で異なり、ほかの基底のそのビットは 0
             auto bs = xb.basis();

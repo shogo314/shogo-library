@@ -25,7 +25,7 @@
  */
 template <typename Cap>
 class MaxFlow {
-public:
+   public:
     /**
      * @brief 辺の情報
      */
@@ -35,7 +35,7 @@ public:
         Cap flow;  //!< 流れている量
     };
 
-private:
+   private:
     struct InnerEdge {
         int to, rev;
         Cap cap;  // 残りの容量
@@ -81,7 +81,7 @@ private:
         return res;
     }
 
-public:
+   public:
     explicit MaxFlow(int n = 0) : n(n), g(n) {}
 
     int size() const { return n; }

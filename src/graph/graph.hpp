@@ -22,7 +22,7 @@
  */
 template <typename Cost = int>
 class Graph {
-public:
+   public:
     /**
      * @brief 有向辺の構造体
      *
@@ -268,7 +268,7 @@ public:
         return dist;
     }
 
-private:
+   private:
     ShortestPath shortest_path_bfs(int s, Cost inf) const {
         std::vector<Cost> dist(n, inf);
         std::vector<Edge> prev(n);

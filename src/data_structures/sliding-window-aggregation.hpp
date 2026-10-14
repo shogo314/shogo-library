@@ -25,10 +25,10 @@
  */
 template <typename M>
 class SlidingWindowAggregation {
-public:
+   public:
     using S = typename M::S;
 
-private:
+   private:
     M m;
     // キューの前半をスタック front_vals (末尾がキューの先頭) で、後半を back_vals (末尾がキューの末尾) で持つ
     std::vector<S> front_vals, front_prod;  // front_prod[i] は front_vals[i], front_vals[i - 1], ..., front_vals[0] の積
@@ -38,7 +38,7 @@ private:
     S op(const S& x, const S& y) const { return m.op(x, y); }
     S e() const { return m.e(); }
 
-public:
+   public:
     explicit SlidingWindowAggregation(M m = M()) : m(std::move(m)), back_prod(this->m.e()) {}
 
     /**

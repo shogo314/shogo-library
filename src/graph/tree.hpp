@@ -123,7 +123,7 @@ struct Tree : private Graph<Cost> {
  */
 template <typename Cost = int>
 class RootedTree : private Tree<Cost> {
-public:
+   public:
     using Edge = typename Tree<Cost>::Edge;
     using Tree<Cost>::n;
     using Tree<Cost>::m;
@@ -198,7 +198,7 @@ public:
         return DoublingClimbTree<Cost>(std::move(*this));
     }
 
-private:
+   private:
     void build() {
         int n = this->n;
         assert(n > 0);
@@ -254,7 +254,7 @@ private:
  */
 template <typename Cost = int>
 class DoublingClimbTree : private RootedTree<Cost> {
-public:
+   public:
     using Edge = typename RootedTree<Cost>::Edge;
     using RootedTree<Cost>::n;
     using RootedTree<Cost>::m;
@@ -378,7 +378,7 @@ public:
         return this->depth[u] + this->depth[v] - this->depth[lca(u, v)] * 2;
     }
 
-private:
+   private:
     void build() {
         int n = this->n;
         h = 1;

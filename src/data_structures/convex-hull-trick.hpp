@@ -55,7 +55,7 @@ class LiChaoTree {
         }
     }
 
-public:
+   public:
     /**
      * @brief コンストラクタ
      *

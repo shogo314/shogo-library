@@ -24,10 +24,10 @@
  */
 template <typename G>
 class FenwickTree {
-public:
+   public:
     using S = typename G::S;
 
-private:
+   private:
     G g;
     int n;
     // data[i] は a[i - (i & -i)] から a[i-1] までの積 (1-indexed)
@@ -36,7 +36,7 @@ private:
     S e() const { return g.e(); }
     S inv(const S& a) const { return g.inv(a); }
 
-public:
+   public:
     /**
      * @brief 要素数 n で、すべての要素が単位元の Fenwick Tree を作る
      */

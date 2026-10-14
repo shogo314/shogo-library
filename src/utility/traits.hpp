@@ -26,7 +26,7 @@ template <class T>
 inline constexpr bool is_range_v = is_range<T>::value;
 
 #define HAS_METHOD(func_name)                                                              \
-    namespace internal_traits {                                                                     \
+    namespace internal_traits {                                                            \
     template <class T, class = void>                                                       \
     struct has_##func_name##_impl : std::false_type {};                                    \
     template <class T>                                                                     \
@@ -34,12 +34,12 @@ inline constexpr bool is_range_v = is_range<T>::value;
         : std::true_type {};                                                               \
     }                                                                                      \
     template <class T>                                                                     \
-    struct has_##func_name : internal_traits::has_##func_name##_impl<T>::type {};                   \
+    struct has_##func_name : internal_traits::has_##func_name##_impl<T>::type {};          \
     template <class T>                                                                     \
     inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;
 
 #define HAS_METHOD_ARG(func_name)                                                                              \
-    namespace internal_traits {                                                                                         \
+    namespace internal_traits {                                                                                \
     template <class T, typename U, class = void>                                                               \
     struct has_##func_name##_impl : std::false_type {};                                                        \
     template <class T, typename U>                                                                             \
@@ -47,7 +47,7 @@ inline constexpr bool is_range_v = is_range<T>::value;
         : std::true_type {};                                                                                   \
     }                                                                                                          \
     template <class T, typename U>                                                                             \
-    struct has_##func_name : internal_traits::has_##func_name##_impl<T, U>::type {};                                    \
+    struct has_##func_name : internal_traits::has_##func_name##_impl<T, U>::type {};                           \
     template <class T, typename U>                                                                             \
     inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;
 

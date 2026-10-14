@@ -62,7 +62,7 @@ struct PriorityCounter {
                 data[i].first = x;
                 data[i].second = c;
                 f = true;
-            } else if (not Compare()(x, data[i].first)) {
+            } else if (!Compare()(x, data[i].first)) {
                 data[i].second += c;
                 return;
             }

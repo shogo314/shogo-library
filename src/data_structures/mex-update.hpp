@@ -42,15 +42,15 @@ public:
             hint = s.emplace_hint(hint, i);
         }
         for (const auto& i : init) {
-            if (0 <= i and i <= n) {
+            if (0 <= i && i <= n) {
                 m[i]++;
                 s.erase(i);
             }
         }
     }
     void set(int k, const value_type& x) {
-        assert(0 <= k and k < n);
-        if (0 <= v[k] and v[k] <= n) {
+        assert(0 <= k && k < n);
+        if (0 <= v[k] && v[k] <= n) {
             int v_k = v[k];
             auto itr = m.find(v_k);
             if (itr->second > 1) {
@@ -60,7 +60,7 @@ public:
                 s.insert(v_k);
             }
         }
-        if (0 <= x and x <= n) {
+        if (0 <= x && x <= n) {
             int xx = x;
             auto itr = m.find(xx);
             if (itr == m.end()) {

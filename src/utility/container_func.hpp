@@ -29,27 +29,27 @@
         -> decltype(t.func(u)) {                                             \
         return t.func(u);                                                    \
     }                                                                        \
-    template <typename T, typename U, ENABLE_IF_T(not has_##func##_v<T, U>)> \
+    template <typename T, typename U, ENABLE_IF_T(!has_##func##_v<T, U>)> \
     inline constexpr auto func(const T& t, const U& u)                       \
         -> decltype(std::func(t.begin(), t.end(), u)) {                      \
         return std::func(t.begin(), t.end(), u);                             \
     }
 
 METHOD_EXPAND(reversed)
-template <class C, ENABLE_IF_T(not has_reversed_v<C>)>
+template <class C, ENABLE_IF_T(!has_reversed_v<C>)>
 inline constexpr C reversed(C t) {
     std::reverse(t.begin(), t.end());
     return t;
 }
 
 METHOD_EXPAND(sorted)
-template <class C, ENABLE_IF_T(not has_sorted_v<C>)>
+template <class C, ENABLE_IF_T(!has_sorted_v<C>)>
 inline constexpr C sorted(C t, bool reverse = false) {
     std::sort(t.begin(), t.end());
     if (reverse) std::reverse(t.begin(), t.end());
     return t;
 }
-template <class C, class F, ENABLE_IF_T(not has_sorted_v<C> and std::is_invocable_r_v<bool, F, mem_value_type<C>, mem_value_type<C>>)>
+template <class C, class F, ENABLE_IF_T(!has_sorted_v<C> && std::is_invocable_r_v<bool, F, mem_value_type<C>, mem_value_type<C>>)>
 inline constexpr C sorted(C t, F f) {
     std::sort(t.begin(), t.end(), f);
     return t;
@@ -77,12 +77,12 @@ inline constexpr void reverse(C& t) {
 }
 
 METHOD_EXPAND(max)
-template <class C, ENABLE_IF_T(not has_max_v<C> and is_sorted_container_v<C>)>
+template <class C, ENABLE_IF_T(!has_max_v<C> && is_sorted_container_v<C>)>
 inline constexpr mem_value_type<C> max(const C& v) {
     assert(v.begin() != v.end());
     return *v.rbegin();
 }
-template <class C, ENABLE_IF_T(not has_max_v<C> and not is_sorted_container_v<C>)>
+template <class C, ENABLE_IF_T(!has_max_v<C> && !is_sorted_container_v<C>)>
 inline constexpr mem_value_type<C> max(const C& v) {
     assert(v.begin() != v.end());
     return *std::max_element(v.begin(), v.end());
@@ -93,12 +93,12 @@ inline constexpr T max(const std::initializer_list<T>& v) {
 }
 
 METHOD_EXPAND(min)
-template <class C, ENABLE_IF_T(not has_min_v<C> and is_sorted_container_v<C>)>
+template <class C, ENABLE_IF_T(!has_min_v<C> && is_sorted_container_v<C>)>
 inline constexpr mem_value_type<C> min(const C& v) {
     assert(v.begin() != v.end());
     return *v.begin();
 }
-template <class C, ENABLE_IF_T(not has_min_v<C> and not is_sorted_container_v<C>)>
+template <class C, ENABLE_IF_T(!has_min_v<C> && !is_sorted_container_v<C>)>
 inline constexpr mem_value_type<C> min(const C& v) {
     assert(v.begin() != v.end());
     return *std::min_element(v.begin(), v.end());
@@ -109,7 +109,7 @@ inline constexpr T min(const std::initializer_list<T>& v) {
 }
 
 METHOD_EXPAND(sum)
-template <class C, ENABLE_IF_T(not has_sum_v<C>)>
+template <class C, ENABLE_IF_T(!has_sum_v<C>)>
 inline constexpr mem_value_type<C> sum(const C& v) {
     return std::accumulate(v.begin(), v.end(), mem_value_type<C>{});
 }
@@ -119,7 +119,7 @@ inline constexpr T sum(const std::initializer_list<T>& v) {
 }
 
 METHOD_EXPAND(product)
-template <class C, ENABLE_IF_T(not has_product_v<C>)>
+template <class C, ENABLE_IF_T(!has_product_v<C>)>
 inline constexpr mem_value_type<C> product(const C& v) {
     return std::accumulate(v.begin(), v.end(), mem_value_type<C>{1}, std::multiplies<mem_value_type<C>>());
 }
@@ -129,7 +129,7 @@ inline constexpr T product(const std::initializer_list<T>& v) {
 }
 
 METHOD_EXPAND(product_xor)
-template <class C, ENABLE_IF_T(not has_product_xor_v<C>)>
+template <class C, ENABLE_IF_T(!has_product_xor_v<C>)>
 inline constexpr mem_value_type<C> product_xor(const C& v) {
     return std::accumulate(v.begin(), v.end(), mem_value_type<C>{0}, std::bit_xor<mem_value_type<C>>());
 }
@@ -140,7 +140,7 @@ inline constexpr T product_xor(const std::initializer_list<T>& v) {
 
 template <class C>
 inline constexpr mem_value_type<C> maximum_subarray(const C& v) {
-    assert(not v.empty());
+    assert(!v.empty());
     auto itr = v.begin();
     mem_value_type<C> tmp = *itr++;
     mem_value_type<C> res = tmp;
@@ -188,7 +188,7 @@ inline constexpr mem_value_type<C> average(const C& v) {
 
 template <class C>
 inline constexpr mem_value_type<C> median(const C& v) {
-    assert(not v.empty());
+    assert(!v.empty());
     std::vector<std::size_t> u(v.size());
     std::iota(u.begin(), u.end(), 0);
     std::sort(u.begin(), u.end(), [&](std::size_t a, std::size_t b) {
@@ -214,13 +214,13 @@ template <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>
 inline constexpr mem_value_type<C> mex(const C& v) {
     std::vector<bool> b(v.size() + 1);
     for (const auto& a : v) {
-        if (0 <= a and static_cast<std::size_t>(a) < b.size()) {
+        if (0 <= a && static_cast<std::size_t>(a) < b.size()) {
             b[a] = true;
         }
     }
     mem_value_type<C> ret = 0;  // b の要素数は v より 1 多いので、下のループで必ず見つかる
     for (std::size_t i = 0; i < b.size(); i++) {
-        if (not b[i]) {
+        if (!b[i]) {
             ret = i;
             break;
         }

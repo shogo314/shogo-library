@@ -197,7 +197,7 @@ struct FPS : std::vector<mint> {
         long long i = 0;
         while (i < (int)f.size() && f[i] == 0) ++i;
         if (i == (int)f.size()) return FPS(deg, 0);
-        if ((i >= 1 and e >= deg) or i * e >= deg) return FPS(deg, 0);
+        if ((i >= 1 && e >= deg) || i * e >= deg) return FPS(deg, 0);
         mint k = f[i];
         FPS res = exp(log((f >> i) / k, deg) * e, deg) * k.pow(e) << (e * i);
         res.resize(deg);

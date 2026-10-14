@@ -24,7 +24,7 @@ public:
      * @brief 最後の次のインデックスがi
      */
     TadpoleArray(const std::vector<T>& v, int i) : data(v) {
-        assert(0 <= i and i < static_cast<int>(data.size()));
+        assert(0 <= i && i < static_cast<int>(data.size()));
         k = i;
     }
     TadpoleArray() = default;

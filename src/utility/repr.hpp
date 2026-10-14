@@ -110,7 +110,7 @@ inline std::string repr(const std::array<T, N>&);
 /////////////////////////// definition ////////////////////////////
 ///////////////////////////////////////////////////////////////////
 
-template <typename T, std::enable_if_t<not has_type_str_v<T>, std::nullptr_t> = nullptr>
+template <typename T, std::enable_if_t<!has_type_str_v<T>, std::nullptr_t> = nullptr>
 inline std::string type_str(const T& t) {
     return "T";
 }
@@ -118,7 +118,7 @@ template <typename T, std::enable_if_t<has_type_str_v<T>, std::nullptr_t> = null
 inline std::string type_str(const T& t) {
     return t.type_str();
 }
-template <typename T, std::enable_if_t<not has_initializer_str_v<T>, std::nullptr_t> = nullptr>
+template <typename T, std::enable_if_t<!has_initializer_str_v<T>, std::nullptr_t> = nullptr>
 inline std::string initializer_str(const T& t) {
     return "{}";
 }
@@ -126,7 +126,7 @@ template <typename T, std::enable_if_t<has_initializer_str_v<T>, std::nullptr_t>
 inline std::string initializer_str(const T& t) {
     return t.initializer_str();
 }
-template <typename T, std::enable_if_t<not has_repr_v<T>, std::nullptr_t> = nullptr>
+template <typename T, std::enable_if_t<!has_repr_v<T>, std::nullptr_t> = nullptr>
 inline std::string repr(const T& t) {
     return detail::type_str(t) + detail::initializer_str(t);
 }
@@ -161,9 +161,9 @@ inline std::string initializer_str(const char& t) {
     v['\v'] = "\\v";
     v['\''] = "\\'";
     v['\\'] = "\\\\";
-    if (u < 128 and !v[u].empty())
+    if (u < 128 && !v[u].empty())
         return "'" + v[u] + "'";
-    if (32 <= u and u <= 126)
+    if (32 <= u && u <= 126)
         return "'" + std::string{t} + "'";
     return "'\\" + std::to_string(u / 64) + std::to_string(u / 8 % 8) + std::to_string(u % 8) + "'";
 }

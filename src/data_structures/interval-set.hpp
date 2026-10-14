@@ -26,7 +26,7 @@ public:
     inline constexpr static auto key_comp = Compare();
     struct value_compare {
         bool operator()(const value_type& a, const value_type& b) const {
-            return key_comp(a.first, b.first) or (not key_comp(b.first, a.first) and key_comp(b.second, a.second));
+            return key_comp(a.first, b.first) || (!key_comp(b.first, a.first) && key_comp(b.second, a.second));
         }
     };
     inline constexpr static auto value_comp = value_compare();
@@ -38,11 +38,11 @@ private:
         auto itr_l = data.upper_bound({l, l});
         if (itr_l == data.begin()) {
         } else {
-            if (not key_comp(std::prev(itr_l)->second, l)) {
+            if (!key_comp(std::prev(itr_l)->second, l)) {
                 --itr_l;
             }
         }
-        if (itr_l == data.end() or key_comp(r, itr_l->first)) {
+        if (itr_l == data.end() || key_comp(r, itr_l->first)) {
             return {};
         }
         auto itr_r = data.upper_bound({r, r});
@@ -68,7 +68,7 @@ public:
      */
     std::optional<value_type> covered_by(key_type l, key_type r) const {
         auto opt = find(l, r);
-        if (not opt.has_value()) {
+        if (!opt.has_value()) {
             return {};
         }
         std::pair<iterator, iterator> p = opt.value();
@@ -82,7 +82,7 @@ public:
     void insert(key_type l, key_type r) {
         assert(key_comp(l, r));
         auto opt = find(l, r);
-        if (not opt.has_value()) {
+        if (!opt.has_value()) {
             data.emplace(l, r);
             return;
         }
@@ -95,7 +95,7 @@ public:
     void erase(key_type l, key_type r) {
         assert(key_comp(l, r));
         auto opt = find(l, r);
-        if (not opt.has_value()) {
+        if (!opt.has_value()) {
             return;
         }
         auto [itr_l, itr_r] = opt.value();
@@ -103,7 +103,7 @@ public:
         if (key_comp(itr_l->first, l)) tmp.push_back({itr_l->first, l});
         if (key_comp(r, std::prev(itr_r)->second)) tmp.push_back({r, std::prev(itr_r)->second});
         data.erase(itr_l, itr_r);
-        while (not tmp.empty()) {
+        while (!tmp.empty()) {
             data.insert(tmp.back());
             tmp.pop_back();
         }

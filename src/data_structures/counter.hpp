@@ -112,7 +112,7 @@ struct Counter {
         for (const auto& [i, c] : data) {
             ret.push_back({i, c});
         }
-        std::sort(ret.begin(), ret.end(), [](const value_type& a, const value_type& b) { return a.second > b.second or (a.second == b.second and a.first < b.first); });
+        std::sort(ret.begin(), ret.end(), [](const value_type& a, const value_type& b) { return a.second > b.second || (a.second == b.second && a.first < b.first); });
         return ret;
     }
     class CounterReference {

@@ -21,7 +21,7 @@
 template <typename T = long long>
 struct infint {
 private:
-    static_assert(std::is_integral_v<T> and std::is_signed_v<T>);
+    static_assert(std::is_integral_v<T> && std::is_signed_v<T>);
     static_assert(std::numeric_limits<T>::min() + 1 == -std::numeric_limits<T>::max());
 
     T _v;
@@ -40,7 +40,7 @@ public:
     infint(std::string_view sv) noexcept(false) {
         std::string s(sv);
         std::for_each(s.begin(), s.end(), [](char& c) {
-            if ('A' <= c and c <= 'Z') {
+            if ('A' <= c && c <= 'Z') {
                 c = c - 'A' + 'a';
             }
         });
@@ -66,7 +66,7 @@ public:
     constexpr bool is_plus_inf() const noexcept { return _v == plus_inf_value; }
     constexpr bool is_minus_inf() const noexcept { return _v == minus_inf_value; }
     constexpr bool is_inf() const noexcept { return _v == plus_inf_value; }
-    constexpr bool is_finite() const noexcept { return minus_inf_value < _v and _v < plus_inf_value; }
+    constexpr bool is_finite() const noexcept { return minus_inf_value < _v && _v < plus_inf_value; }
 
     constexpr infint& operator=(const infint& o) noexcept {
         _v = o._v;
@@ -83,12 +83,12 @@ public:
         return -_v;
     }
     constexpr infint& operator*=(const infint& o) noexcept {
-        if (is_nan() or o.is_nan()) {
+        if (is_nan() || o.is_nan()) {
             _v = nan_value;
             return *this;
         }
-        if (not is_finite() or not o.is_finite()) {
-            if (_v == 0 or o._v == 0) {
+        if (!is_finite() || !o.is_finite()) {
+            if (_v == 0 || o._v == 0) {
                 _v = nan_value;
             } else if ((_v > 0) ^ (o._v > 0)) {
                 _v = minus_inf_value;
@@ -97,7 +97,7 @@ public:
             }
             return *this;
         }
-        if (_v == 0 or o._v == 0) {
+        if (_v == 0 || o._v == 0) {
             _v = 0;
             return *this;
         }
@@ -114,11 +114,11 @@ public:
         return *this;
     }
     constexpr infint& operator/=(const infint& o) noexcept {
-        if (is_nan() or o.is_nan()) {
+        if (is_nan() || o.is_nan()) {
             _v = nan_value;
             return *this;
         }
-        if (not is_finite() and not o.is_finite()) {
+        if (!is_finite() && !o.is_finite()) {
             _v = nan_value;
             return *this;
         }
@@ -126,11 +126,11 @@ public:
             _v = nan_value;
             return *this;
         }
-        if (not o.is_finite()) {
+        if (!o.is_finite()) {
             _v = 0;
             return *this;
         }
-        if (not is_finite()) {
+        if (!is_finite()) {
             // ±inf / 有限 = ±inf (符号は商の符号)
             if ((_v > 0) ^ (o._v > 0)) {
                 _v = minus_inf_value;
@@ -143,11 +143,11 @@ public:
         return *this;
     }
     constexpr infint& operator%=(const infint& o) noexcept {
-        if (is_nan() or o.is_nan()) {
+        if (is_nan() || o.is_nan()) {
             _v = nan_value;
             return *this;
         }
-        if (not is_finite() and not o.is_finite()) {
+        if (!is_finite() && !o.is_finite()) {
             _v = nan_value;
             return *this;
         }
@@ -155,28 +155,28 @@ public:
             _v = nan_value;
             return *this;
         }
-        if (not is_finite()) {
+        if (!is_finite()) {
             // ±inf % 有限 は定まらない (浮動小数点数の fmod と同じく NaN)
             _v = nan_value;
             return *this;
         }
-        if (not o.is_finite()) {
+        if (!o.is_finite()) {
             return *this;
         }
         _v %= o._v;
         return *this;
     }
     constexpr infint& operator+=(const infint& o) noexcept {
-        if (is_nan() or o.is_nan()) {
+        if (is_nan() || o.is_nan()) {
             _v = nan_value;
             return *this;
         }
-        if (not is_finite() or not o.is_finite()) {
-            if (not is_finite() and not o.is_finite()) {
+        if (!is_finite() || !o.is_finite()) {
+            if (!is_finite() && !o.is_finite()) {
                 if (is_plus_inf() ^ o.is_plus_inf()) {
                     _v = nan_value;
                 }
-            } else if (not o.is_finite()) {
+            } else if (!o.is_finite()) {
                 _v = o._v;
             }
             return *this;
@@ -196,16 +196,16 @@ public:
         return *this;
     }
     constexpr infint& operator-=(const infint& o) noexcept {
-        if (is_nan() or o.is_nan()) {
+        if (is_nan() || o.is_nan()) {
             _v = nan_value;
             return *this;
         }
-        if (not is_finite() or not o.is_finite()) {
-            if (not is_finite() and not o.is_finite()) {
+        if (!is_finite() || !o.is_finite()) {
+            if (!is_finite() && !o.is_finite()) {
                 if (is_plus_inf() == o.is_plus_inf()) {
                     _v = nan_value;
                 }
-            } else if (not o.is_finite()) {
+            } else if (!o.is_finite()) {
                 _v = -o._v;
             }
             return *this;
@@ -323,19 +323,19 @@ public:
         return res -= t2;
     }
     friend constexpr bool operator<(const infint& t1, const infint& t2) noexcept {
-        if (t1.is_nan() or t2.is_nan()) return false;
+        if (t1.is_nan() || t2.is_nan()) return false;
         return t1._v < t2._v;
     }
     friend constexpr bool operator>(const infint& t1, const infint& t2) noexcept {
-        if (t1.is_nan() or t2.is_nan()) return false;
+        if (t1.is_nan() || t2.is_nan()) return false;
         return t1._v > t2._v;
     }
     friend constexpr bool operator<=(const infint& t1, const infint& t2) noexcept {
-        if (t1.is_nan() or t2.is_nan()) return false;
+        if (t1.is_nan() || t2.is_nan()) return false;
         return t1._v <= t2._v;
     }
     friend constexpr bool operator>=(const infint& t1, const infint& t2) noexcept {
-        if (t1.is_nan() or t2.is_nan()) return false;
+        if (t1.is_nan() || t2.is_nan()) return false;
         return t1._v >= t2._v;
     }
     friend constexpr bool operator==(const infint& t1, const infint& t2) noexcept {

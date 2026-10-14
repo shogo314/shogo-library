@@ -58,17 +58,17 @@ constexpr T extgcd(const T& a, const T& b, T& x, T& y) {
  * 0 <= x < a
  */
 inline constexpr bool inrange(long long x, long long a) {
-    return 0 <= x and x < a;
+    return 0 <= x && x < a;
 }
 /**
  * a <= x < b
  */
 inline constexpr bool inrange(long long x, long long a, long long b) {
-    return a <= x and x < b;
+    return a <= x && x < b;
 }
 /**
  * 0 <= x < a and 0 <= y < b
  */
 inline constexpr bool inrect(long long x, long long y, long long a, long long b) {
-    return 0 <= x and x < a and 0 <= y and y < b;
+    return 0 <= x && x < a && 0 <= y && y < b;
 }

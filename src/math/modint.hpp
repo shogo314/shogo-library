@@ -281,7 +281,7 @@ public:
     /// @return @c x と @c y の保持する値が等しければ @c false 、そうでなければ @c true
     [[nodiscard]]
     friend constexpr bool operator!=(const Modint& x, const Modint& y) noexcept {
-        return not(x == y);
+        return !(x == y);
     }
 
     /// @brief 入力ストリームから符号付き整数を読み取り、 @c x に格納します。

@@ -79,7 +79,7 @@ public:
         value_type value;
 
         constexpr bool same_range(const const_iterator& o) const noexcept {
-            return range.start == o.range.start and range.stop == o.range.stop and range.step == o.range.step;
+            return range.start == o.range.start && range.stop == o.range.stop && range.step == o.range.step;
         }
 
     public:
@@ -140,7 +140,7 @@ public:
             return value;
         }
         constexpr friend bool operator!=(const const_iterator& a, const const_iterator& b) noexcept {
-            return !a.same_range(b) or a.value != b.value;
+            return !a.same_range(b) || a.value != b.value;
         }
         constexpr friend bool operator==(const const_iterator& a, const const_iterator& b) noexcept {
             return !(a != b);
@@ -166,13 +166,13 @@ public:
      */
     constexpr difference_type count(value_type x) const noexcept {
         if (step > 0) {
-            if (start <= x and x < stop) {
+            if (start <= x && x < stop) {
                 if ((x - start) % step == 0) {
                     return 1;
                 }
             }
         } else {
-            if (stop < x and x <= start) {
+            if (stop < x && x <= start) {
                 if ((start - x) % (-step) == 0) {
                     return 1;
                 }
@@ -261,7 +261,7 @@ public:
      * 空だとエラー
      */
     constexpr value_type min() const {
-        assert(not empty());
+        assert(!empty());
         if (step > 0) {
             return start;
         } else {
@@ -273,7 +273,7 @@ public:
      * 空だとエラー
      */
     constexpr value_type max() const {
-        assert(not empty());
+        assert(!empty());
         if (step > 0) {
             return norm_stop - step;
         } else {
@@ -418,7 +418,7 @@ public:
         return ret;
     }
     constexpr friend bool operator==(const Range& a, const Range& b) noexcept {
-        if (a.empty() and b.empty()) return true;
+        if (a.empty() && b.empty()) return true;
         if (a.size() != b.size()) return false;
         if (a.start != b.start) return false;
         if (a.size() == 1) return true;

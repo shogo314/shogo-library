@@ -8,6 +8,7 @@
  * - using F: 作用素の型
  * - S mapping(const F& f, const S& x): 作用素の適用 f(x)
  *   区間の情報が必要な場合は mapping(f, x, sz) (sz は区間の長さ) や mapping(f, x, l, r) (区間 [l, r)) でもよい
+ *   sz, l, r は long long で渡す (動的セグメント木では int に収まらないことがある)
  * - F composition(const F& f, const F& g): 作用素の合成 f∘g (gを適用した後にfを適用する)
  * - F id(): 恒等写像
  * 作用素が群をなす場合 (imos.hpp で使う) は
@@ -42,7 +43,7 @@ namespace acted_monoid {
  * mapping の引数の形の違いを吸収する
  */
 template <typename A>
-constexpr auto apply_mapping(const A& a, const typename A::F& f, const typename A::S& x, int l, int r) {
+constexpr auto apply_mapping(const A& a, const typename A::F& f, const typename A::S& x, long long l, long long r) {
     if constexpr (internal_acted_monoid::has_mapping_lr<A>::value) {
         return a.mapping(f, x, l, r);
     } else if constexpr (internal_acted_monoid::has_mapping_sz<A>::value) {
@@ -59,7 +60,7 @@ template <typename T>
 struct AddSum : monoid::Sum<T> {
     using S = T;
     using F = T;
-    static constexpr S mapping(const F& f, const S& x, int sz) { return x + f * S(sz); }
+    static constexpr S mapping(const F& f, const S& x, long long sz) { return x + f * S(sz); }
     static constexpr F composition(const F& f, const F& g) { return f + g; }
     static constexpr F id() { return F(0); }
     static constexpr F inv(const F& f) { return -f; }
@@ -109,7 +110,7 @@ template <typename T>
 struct UpdateSum : monoid::Sum<T> {
     using S = T;
     using F = std::optional<T>;
-    static constexpr S mapping(const F& f, const S& x, int sz) { return f ? *f * S(sz) : x; }
+    static constexpr S mapping(const F& f, const S& x, long long sz) { return f ? *f * S(sz) : x; }
     static constexpr F composition(const F& f, const F& g) { return f ? f : g; }
     static constexpr F id() { return std::nullopt; }
 };
@@ -169,7 +170,7 @@ template <typename T>
 struct AffineSum : monoid::Sum<T> {
     using S = T;
     using F = Affine<T>;
-    static constexpr S mapping(const F& f, const S& x, int sz) { return f.a * x + f.b * S(sz); }
+    static constexpr S mapping(const F& f, const S& x, long long sz) { return f.a * x + f.b * S(sz); }
     static constexpr F composition(const F& f, const F& g) { return {f.a * g.a, f.a * g.b + f.b}; }
     static constexpr F id() { return {T(1), T(0)}; }
 };
@@ -181,7 +182,7 @@ template <typename T>
 struct UpdateComposite : monoid::Composite<T> {
     using S = Affine<T>;
     using F = std::optional<S>;
-    static constexpr S mapping(const F& f, const S& x, int sz) {
+    static constexpr S mapping(const F& f, const S& x, long long sz) {
         if (!f) return x;
         // f を sz 回合成する
         S ret = monoid::Composite<T>::e(), p = *f;
@@ -315,10 +316,10 @@ struct ActedMonoid {
         : op_object(std::move(op)), identity(e), mapping_object(std::move(mapping)), composition_object(std::move(composition)), lazy_identity(id) {}
     constexpr S op(const S& a, const S& b) const { return op_object(a, b); }
     constexpr S e() const { return identity; }
-    constexpr auto mapping(const F& f, const S& x, int l, int r) const {
-        if constexpr (std::is_invocable_v<const Mapping&, const F&, const S&, int, int>) {
+    constexpr auto mapping(const F& f, const S& x, long long l, long long r) const {
+        if constexpr (std::is_invocable_v<const Mapping&, const F&, const S&, long long, long long>) {
             return mapping_object(f, x, l, r);
-        } else if constexpr (std::is_invocable_v<const Mapping&, const F&, const S&, int>) {
+        } else if constexpr (std::is_invocable_v<const Mapping&, const F&, const S&, long long>) {
             return mapping_object(f, x, r - l);
         } else {
             return mapping_object(f, x);

@@ -8,7 +8,7 @@ documentation_of: //src/algebra/acted-monoid.hpp
 作用素付きモノイドは、[モノイド](monoid.hpp) のメンバに加えて次のメンバを持つ型として表します。
 
 - `using F`: 作用素の型
-- `S mapping(const F& f, const S& x)`: 作用素の適用 $f(x)$。区間の情報が必要な場合は `mapping(f, x, sz)` (`sz` は区間の長さ) や `mapping(f, x, l, r)` (区間 $[l, r)$) でもよい
+- `S mapping(const F& f, const S& x)`: 作用素の適用 $f(x)$。区間の情報が必要な場合は `mapping(f, x, sz)` (`sz` は区間の長さ) や `mapping(f, x, l, r)` (区間 $[l, r)$) でもよい。`sz`、`l`、`r` は `long long` で渡す (動的セグメント木では `int` に収まらないことがある。`int` で受け取る `mapping` もそのまま使える)
 - `F composition(const F& f, const F& g)`: 作用素の合成 $f \circ g$ ($g$ を適用した後に $f$ を適用する)
 - `F id()`: 恒等写像
 - `F inv(const F& f)`: 逆作用素 ([imos法](../data_structures/imos.hpp) で使う場合のみ)

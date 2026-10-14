@@ -24,8 +24,8 @@ struct Circle {
     Vector<T, 2> c;  //!< 中心
     T r;             //!< 半径
 
-    Circle() : c(), r() {}
-    Circle(const Vector<T, 2>& c, T r) : c(c), r(r) {}
+    constexpr Circle() : c(), r() {}
+    constexpr Circle(const Vector<T, 2>& c, T r) : c(c), r(r) {}
 
     /**
      * @brief "x y r" の順に読み込む

@@ -97,7 +97,7 @@ struct Vector {
      * @param coef
      * @return Vector&
      */
-    Vector& operator/=(const T& coef) {
+    constexpr Vector& operator/=(const T& coef) {
         for (int i = 0; i < Dim; i++) {
             if constexpr (std::is_integral_v<T>) {
                 assert(v[i] % coef == 0 && "Vector::operator/= : coef must be a divisor of all elements");
@@ -182,7 +182,7 @@ struct Vector {
      * @return Vector
      */
     [[nodiscard]]
-    friend Vector operator/(const Vector& lhs, const T& coef) {
+    friend constexpr Vector operator/(const Vector& lhs, const T& coef) {
         return std::move(Vector(lhs) /= coef);
     }
 

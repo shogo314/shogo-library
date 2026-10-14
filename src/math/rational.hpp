@@ -29,8 +29,8 @@ template <typename T = long long>
 class Rational {
     T p, q;  // p / q (q > 0、gcd(p, q) = 1)
 
-    static T abs_(T x) { return x < 0 ? -x : x; }
-    static T gcd_(T a, T b) {
+    static constexpr T abs_(T x) { return x < 0 ? -x : x; }
+    static constexpr T gcd_(T a, T b) {
         a = abs_(a), b = abs_(b);
         while (b != 0) {
             T t = a % b;
@@ -40,14 +40,14 @@ class Rational {
         return a;
     }
     // 切り捨て除算 (b > 0)
-    static T floor_div(T a, T b) { return a / b - (a % b < 0); }
+    static constexpr T floor_div(T a, T b) { return a / b - (a % b < 0); }
 
     struct Raw {};
     // すでに既約で q > 0 とわかっている場合
-    Rational(T p, T q, Raw) : p(p), q(q) {}
+    constexpr Rational(T p, T q, Raw) : p(p), q(q) {}
 
     // a / b と c / d (b, d > 0) を比べ、小さければ負、等しければ 0、大きければ正を返す
-    static int compare(T a, T b, T c, T d) {
+    static constexpr int compare(T a, T b, T c, T d) {
         if constexpr (sizeof(T) <= 8) {
             __int128 x = (__int128)a * d, y = (__int128)c * b;
             return x < y ? -1 : x > y ? 1
@@ -63,8 +63,10 @@ class Rational {
                     if (a == 0 && c == 0) return 0;
                     return a == 0 ? -sign : sign;
                 }
-                std::swap(a, b);
-                std::swap(c, d);
+                T t = a;
+                a = b, b = t;
+                t = c;
+                c = d, d = t;
                 sign = -sign;
             }
         }
@@ -74,11 +76,11 @@ class Rational {
     /**
      * @brief 整数 n
      */
-    Rational(T n = 0) : p(n), q(1) {}
+    constexpr Rational(T n = 0) : p(n), q(1) {}
     /**
      * @brief num / den (den != 0)
      */
-    Rational(T num, T den) : p(num), q(den) {
+    constexpr Rational(T num, T den) : p(num), q(den) {
         assert(den != 0 && "Rational: division by zero");
         if (q < 0) p = -p, q = -q;
         T g = gcd_(p, q);
@@ -88,50 +90,50 @@ class Rational {
     /**
      * @brief 分子
      */
-    T num() const { return p; }
+    constexpr T num() const { return p; }
     /**
      * @brief 分母 (正)
      */
-    T den() const { return q; }
+    constexpr T den() const { return q; }
 
     /**
      * @brief 以下で最大の整数
      */
-    T floor() const { return floor_div(p, q); }
+    constexpr T floor() const { return floor_div(p, q); }
     /**
      * @brief 以上で最小の整数
      */
-    T ceil() const { return -floor_div(-p, q); }
+    constexpr T ceil() const { return -floor_div(-p, q); }
     /**
      * @brief 整数か
      */
-    bool is_integer() const { return q == 1; }
+    constexpr bool is_integer() const { return q == 1; }
     /**
      * @brief double に直した値
      */
-    double to_double() const { return (double)p / (double)q; }
+    constexpr double to_double() const { return (double)p / (double)q; }
     /**
      * @brief long double に直した値
      */
-    long double to_long_double() const { return (long double)p / (long double)q; }
-    explicit operator double() const { return to_double(); }
+    constexpr long double to_long_double() const { return (long double)p / (long double)q; }
+    explicit constexpr operator double() const { return to_double(); }
 
     /**
      * @brief 逆数 (0 でないこと)
      */
-    Rational inv() const {
+    constexpr Rational inv() const {
         assert(p != 0 && "Rational: division by zero");
         return p > 0 ? Rational(q, p, Raw{}) : Rational(-q, -p, Raw{});
     }
     /**
      * @brief 絶対値
      */
-    Rational abs() const { return Rational(abs_(p), q, Raw{}); }
+    constexpr Rational abs() const { return Rational(abs_(p), q, Raw{}); }
 
-    Rational operator+() const { return *this; }
-    Rational operator-() const { return Rational(-p, q, Raw{}); }
+    constexpr Rational operator+() const { return *this; }
+    constexpr Rational operator-() const { return Rational(-p, q, Raw{}); }
 
-    Rational& operator+=(const Rational& r) {
+    constexpr Rational& operator+=(const Rational& r) {
         // p / q + r.p / r.q を、分母の gcd で割ってから通分する
         T g = gcd_(q, r.q);
         T qg = q / g;
@@ -141,27 +143,27 @@ class Rational {
         q = qg * (r.q / g2);
         return *this;
     }
-    Rational& operator-=(const Rational& r) { return *this += -r; }
-    Rational& operator*=(const Rational& r) {
+    constexpr Rational& operator-=(const Rational& r) { return *this += -r; }
+    constexpr Rational& operator*=(const Rational& r) {
         // 掛ける前に、分子と相手の分母の gcd で割る
         T g1 = gcd_(p, r.q), g2 = gcd_(r.p, q);
         p = (p / g1) * (r.p / g2);
         q = (q / g2) * (r.q / g1);
         return *this;
     }
-    Rational& operator/=(const Rational& r) { return *this *= r.inv(); }
+    constexpr Rational& operator/=(const Rational& r) { return *this *= r.inv(); }
 
-    friend Rational operator+(Rational a, const Rational& b) { return a += b; }
-    friend Rational operator-(Rational a, const Rational& b) { return a -= b; }
-    friend Rational operator*(Rational a, const Rational& b) { return a *= b; }
-    friend Rational operator/(Rational a, const Rational& b) { return a /= b; }
+    friend constexpr Rational operator+(Rational a, const Rational& b) { return a += b; }
+    friend constexpr Rational operator-(Rational a, const Rational& b) { return a -= b; }
+    friend constexpr Rational operator*(Rational a, const Rational& b) { return a *= b; }
+    friend constexpr Rational operator/(Rational a, const Rational& b) { return a /= b; }
 
-    friend bool operator==(const Rational& a, const Rational& b) { return a.p == b.p && a.q == b.q; }
-    friend bool operator!=(const Rational& a, const Rational& b) { return !(a == b); }
-    friend bool operator<(const Rational& a, const Rational& b) { return compare(a.p, a.q, b.p, b.q) < 0; }
-    friend bool operator>(const Rational& a, const Rational& b) { return b < a; }
-    friend bool operator<=(const Rational& a, const Rational& b) { return !(b < a); }
-    friend bool operator>=(const Rational& a, const Rational& b) { return !(a < b); }
+    friend constexpr bool operator==(const Rational& a, const Rational& b) { return a.p == b.p && a.q == b.q; }
+    friend constexpr bool operator!=(const Rational& a, const Rational& b) { return !(a == b); }
+    friend constexpr bool operator<(const Rational& a, const Rational& b) { return compare(a.p, a.q, b.p, b.q) < 0; }
+    friend constexpr bool operator>(const Rational& a, const Rational& b) { return b < a; }
+    friend constexpr bool operator<=(const Rational& a, const Rational& b) { return !(b < a); }
+    friend constexpr bool operator>=(const Rational& a, const Rational& b) { return !(a < b); }
 
     /**
      * @brief "p/q" の形の文字列 (整数なら "p")

@@ -26,7 +26,7 @@ inline long long btoll(std::string s, char one = '1') {
  * @brief 立っているビットを数える
  * __builtin_popcountll
  */
-inline int popcount(long long a) {
+inline constexpr int popcount(long long a) {
     assert(a >= 0);
     return __builtin_popcountll((unsigned long long)a);
 }
@@ -34,7 +34,7 @@ inline int popcount(long long a) {
  * @brief 左から連続した0のビットを数える
  * __builtin_clzll
  */
-inline int countl_zero(long long a) {
+inline constexpr int countl_zero(long long a) {
     assert(a >= 0);
     return __builtin_clzll((unsigned long long)a);
 }
@@ -42,7 +42,7 @@ inline int countl_zero(long long a) {
  * @brief 右から連続した0のビットを数える
  * __builtin_ctzll
  */
-inline int countr_zero(long long a) {
+inline constexpr int countr_zero(long long a) {
     assert(a >= 0);
     return __builtin_ctzll((unsigned long long)a);
 }

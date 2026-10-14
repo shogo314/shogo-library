@@ -252,20 +252,20 @@ template <typename T, int K>
 struct AddPowerSum {
     struct S {
         std::array<T, K + 1> val;
-        S() : val{} {}
-        S(const T& x) {
+        constexpr S() : val{} {}
+        constexpr S(const T& x) : val{} {
             val[0] = T(1);
             for (int i = 1; i <= K; i++) val[i] = val[i - 1] * x;
         }
-        const T& operator[](std::size_t i) const { return val[i]; }
+        constexpr const T& operator[](std::size_t i) const { return val[i]; }
     };
     using F = T;
-    static S op(const S& a, const S& b) {
+    static constexpr S op(const S& a, const S& b) {
         S ret;
         for (int i = 0; i <= K; i++) ret.val[i] = a.val[i] + b.val[i];
         return ret;
     }
-    static S e() { return S(); }
+    static constexpr S e() { return S(); }
     static S mapping(const F& f, const S& x) {
         // sum (x+f)^i = sum_j binom(i, j) f^j x^(i-j)
         static const auto binom = [] {
@@ -285,8 +285,8 @@ struct AddPowerSum {
         }
         return ret;
     }
-    static F composition(const F& f, const F& g) { return f + g; }
-    static F id() { return F(0); }
+    static constexpr F composition(const F& f, const F& g) { return f + g; }
+    static constexpr F id() { return F(0); }
 };
 
 }  // namespace acted_monoid

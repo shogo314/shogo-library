@@ -394,9 +394,9 @@ data:
     \u308B\n        F f = id();\n        for (int i = k + sz; i > 0; i >>= 1) f =\
     \ composition(lazy[i], f);\n        return mapping(f, data[k], k);\n    }\n  \
     \  /**\n     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\u306E\u5024\u3092\u8FD4\
-    \u3059 O(n)\n     */\n    std::vector<S> all() {\n        for (int k = 1; k <\
-    \ sz; k++) push(k);\n        std::vector<S> res(n);\n        for (int k = 0; k\
-    \ < n; k++) res[k] = mapping(lazy[k + sz], data[k], k);\n        return res;\n\
+    \u3059 O(n)\n     */\n    std::vector<S> to_vector() {\n        for (int k = 1;\
+    \ k < sz; k++) push(k);\n        std::vector<S> res(n);\n        for (int k =\
+    \ 0; k < n; k++) res[k] = mapping(lazy[k + sz], data[k], k);\n        return res;\n\
     \    }\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\
     \u5024\u3092 x \u306B\u3059\u308B O(log n)\n     */\n    void set(int k, const\
     \ S& x) {\n        assert(0 <= k && k < n);\n        push_ancestors(k + sz);\n\
@@ -722,13 +722,13 @@ data:
     \              int k = rng() % n;\n                mint x = rng() % 10;\n    \
     \            seg.set(k, x);\n                v[k] = x;\n            } else if\
     \ (op == 3) {\n                int k = rng() % n;\n                if (seg.get(k)\
-    \ != v[k]) ok = false;\n            } else {\n                if (seg.all() !=\
-    \ v) ok = false;\n            }\n        }\n        for (int k = 0; k < n; k++)\
-    \ {\n            if (seg.get(k) != v[k]) ok = false;\n        }\n    }\n    //\
-    \ \u533A\u9593\u306E\u9577\u3055\u3092\u4F7F\u3046 mapping (\u8981\u7D20\u3054\
-    \u3068\u306B\u9577\u3055 1 \u3068\u3057\u3066\u4F5C\u7528\u3059\u308B)\n    for\
-    \ (int rep = 0; rep < 500 && ok; rep++) {\n        int n = rng() % 12 + 1;\n \
-    \       std::vector<long long> v(n);\n        DualSegTree<acted_monoid::AddSum<long\
+    \ != v[k]) ok = false;\n            } else {\n                if (seg.to_vector()\
+    \ != v) ok = false;\n            }\n        }\n        for (int k = 0; k < n;\
+    \ k++) {\n            if (seg.get(k) != v[k]) ok = false;\n        }\n    }\n\
+    \    // \u533A\u9593\u306E\u9577\u3055\u3092\u4F7F\u3046 mapping (\u8981\u7D20\
+    \u3054\u3068\u306B\u9577\u3055 1 \u3068\u3057\u3066\u4F5C\u7528\u3059\u308B)\n\
+    \    for (int rep = 0; rep < 500 && ok; rep++) {\n        int n = rng() % 12 +\
+    \ 1;\n        std::vector<long long> v(n);\n        DualSegTree<acted_monoid::AddSum<long\
     \ long>> seg(n);\n        for (int t = 0; t < 40; t++) {\n            int l =\
     \ rng() % (n + 1), r = rng() % (n + 1);\n            if (l > r) std::swap(l, r);\n\
     \            long long x = (long long)(rng() % 21) - 10;\n            seg.apply(l,\
@@ -765,13 +765,13 @@ data:
     \              int k = rng() % n;\n                mint x = rng() % 10;\n    \
     \            seg.set(k, x);\n                v[k] = x;\n            } else if\
     \ (op == 3) {\n                int k = rng() % n;\n                if (seg.get(k)\
-    \ != v[k]) ok = false;\n            } else {\n                if (seg.all() !=\
-    \ v) ok = false;\n            }\n        }\n        for (int k = 0; k < n; k++)\
-    \ {\n            if (seg.get(k) != v[k]) ok = false;\n        }\n    }\n    //\
-    \ \u533A\u9593\u306E\u9577\u3055\u3092\u4F7F\u3046 mapping (\u8981\u7D20\u3054\
-    \u3068\u306B\u9577\u3055 1 \u3068\u3057\u3066\u4F5C\u7528\u3059\u308B)\n    for\
-    \ (int rep = 0; rep < 500 && ok; rep++) {\n        int n = rng() % 12 + 1;\n \
-    \       std::vector<long long> v(n);\n        DualSegTree<acted_monoid::AddSum<long\
+    \ != v[k]) ok = false;\n            } else {\n                if (seg.to_vector()\
+    \ != v) ok = false;\n            }\n        }\n        for (int k = 0; k < n;\
+    \ k++) {\n            if (seg.get(k) != v[k]) ok = false;\n        }\n    }\n\
+    \    // \u533A\u9593\u306E\u9577\u3055\u3092\u4F7F\u3046 mapping (\u8981\u7D20\
+    \u3054\u3068\u306B\u9577\u3055 1 \u3068\u3057\u3066\u4F5C\u7528\u3059\u308B)\n\
+    \    for (int rep = 0; rep < 500 && ok; rep++) {\n        int n = rng() % 12 +\
+    \ 1;\n        std::vector<long long> v(n);\n        DualSegTree<acted_monoid::AddSum<long\
     \ long>> seg(n);\n        for (int t = 0; t < 40; t++) {\n            int l =\
     \ rng() % (n + 1), r = rng() % (n + 1);\n            if (l > r) std::swap(l, r);\n\
     \            long long x = (long long)(rng() % 21) - 10;\n            seg.apply(l,\
@@ -788,7 +788,7 @@ data:
   isVerificationFile: true
   path: test/unittest/dual-segtree.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 16:41:25+09:00'
+  timestamp: '2026-10-14 21:19:45+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/dual-segtree.test.cpp

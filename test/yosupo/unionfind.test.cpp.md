@@ -17,19 +17,31 @@ data:
   bundledCode: "#line 1 \"test/yosupo/unionfind.test.cpp\"\n#define PROBLEM \"https://judge.yosupo.jp/problem/unionfind\"\
     \n\n#line 2 \"src/data_structures/unionfind.hpp\"\n\n/**\n * @file unionfind.hpp\n\
     \ * @brief UnionFind\n */\n\n#include <algorithm>\n#include <cassert>\n#include\
-    \ <utility>\n#include <vector>\n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\
-    \u306B\u5BFE\u3057\u3066\u300C\u8FBA\u306E\u8FFD\u52A0\u300D\u3001\u300C2\u9802\
-    \u70B9\u304C\u9023\u7D50\u304B\u306E\u5224\u5B9A\u300D\u3092\u3059\u308B\n */\n\
-    class UnionFind {\n   protected:\n    int _n;\n    // \u8CA0\u306A\u3089\u30B5\
-    \u30A4\u30BA\u3001\u975E\u8CA0\u306A\u3089\u89AA\n    std::vector<int> parent_or_size;\n\
-    \n   public:\n    /**\n     * @brief merge \u306E\u623B\u308A\u5024\n     *\n\
-    \     * if (uf.merge(a, b)) \u3067\u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B\
-    \u3092\u5224\u5B9A\u3067\u304D\u3001\n     * auto [r, merged] = uf.merge(a, b);\
-    \ \u3067\u4EE3\u8868\u5143\u3082\u53D7\u3051\u53D6\u308C\u308B\n     */\n    struct\
-    \ MergeResult {\n        int leader;   //!< \u7D71\u5408\u5F8C\u306E\u4EE3\u8868\
-    \u5143\n        bool merged;  //!< \u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B\
-    \ (\u3082\u3068\u3082\u3068\u540C\u3058\u9023\u7D50\u6210\u5206\u306A\u3089 false)\n\
-    \        explicit operator bool() const { return merged; }\n    };\n\n    UnionFind()\
+    \ <utility>\n#include <vector>\n\nnamespace internal_unionfind {\n/**\n * @brief\
+    \ \u5404\u8981\u7D20\u306E\u4EE3\u8868\u5143\u304B\u3089\u3001\u9023\u7D50\u6210\
+    \u5206\u3054\u3068\u306E\u8981\u7D20\u306E\u30EA\u30B9\u30C8\u3092\u4F5C\u308B\
+    \n * @param leader \u8981\u7D20 a \u306E\u4EE3\u8868\u5143\u3092\u8FD4\u3059\u95A2\
+    \u6570\n */\ntemplate <typename F>\nstd::vector<std::vector<int>> groups(int n,\
+    \ F leader) {\n    std::vector<int> leader_buf(n), group_size(n);\n    for (int\
+    \ i = 0; i < n; i++) {\n        leader_buf[i] = leader(i);\n        group_size[leader_buf[i]]++;\n\
+    \    }\n    std::vector<std::vector<int>> result(n);\n    for (int i = 0; i <\
+    \ n; i++) {\n        result[i].reserve(group_size[i]);\n    }\n    for (int i\
+    \ = 0; i < n; i++) {\n        result[leader_buf[i]].push_back(i);\n    }\n   \
+    \ result.erase(std::remove_if(result.begin(), result.end(), [&](const std::vector<int>&\
+    \ v) { return v.empty(); }), result.end());\n    return result;\n}\n}  // namespace\
+    \ internal_unionfind\n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u5BFE\
+    \u3057\u3066\u300C\u8FBA\u306E\u8FFD\u52A0\u300D\u3001\u300C2\u9802\u70B9\u304C\
+    \u9023\u7D50\u304B\u306E\u5224\u5B9A\u300D\u3092\u3059\u308B\n */\nclass UnionFind\
+    \ {\n   protected:\n    int _n;\n    // \u8CA0\u306A\u3089\u30B5\u30A4\u30BA\u3001\
+    \u975E\u8CA0\u306A\u3089\u89AA\n    std::vector<int> parent_or_size;\n\n   public:\n\
+    \    /**\n     * @brief merge \u306E\u623B\u308A\u5024\n     *\n     * if (uf.merge(a,\
+    \ b)) \u3067\u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B\u3092\u5224\u5B9A\
+    \u3067\u304D\u3001\n     * auto [r, merged] = uf.merge(a, b); \u3067\u4EE3\u8868\
+    \u5143\u3082\u53D7\u3051\u53D6\u308C\u308B\n     */\n    struct MergeResult {\n\
+    \        int leader;   //!< \u7D71\u5408\u5F8C\u306E\u4EE3\u8868\u5143\n     \
+    \   bool merged;  //!< \u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B (\u3082\
+    \u3068\u3082\u3068\u540C\u3058\u9023\u7D50\u6210\u5206\u306A\u3089 false)\n  \
+    \      explicit operator bool() const { return merged; }\n    };\n\n    UnionFind()\
     \ : _n(0) {}\n    explicit UnionFind(int n) : _n(n), parent_or_size(n, -1) {}\n\
     \n    /**\n     * @brief \u8FBA(a,b)\u3092\u8DB3\u3059\n     * @return \u7D71\u5408\
     \u5F8C\u306E\u4EE3\u8868\u5143\u3068\u3001\u65B0\u3057\u304F\u7D71\u5408\u3057\
@@ -54,19 +66,13 @@ data:
     \u306B\u5206\u3051\u3001\u305D\u306E\u60C5\u5831\u3092\u8FD4\u3059\n     * @return\
     \ \u300C\u4E00\u3064\u306E\u9023\u7D50\u6210\u5206\u306E\u9802\u70B9\u756A\u53F7\
     \u306E\u30EA\u30B9\u30C8\u300D\u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<std::vector<int>>\
-    \ groups() {\n        std::vector<int> leader_buf(_n), group_size(_n);\n     \
-    \   for (int i = 0; i < _n; i++) {\n            leader_buf[i] = leader(i);\n \
-    \           group_size[leader_buf[i]]++;\n        }\n        std::vector<std::vector<int>>\
-    \ result(_n);\n        for (int i = 0; i < _n; i++) {\n            result[i].reserve(group_size[i]);\n\
-    \        }\n        for (int i = 0; i < _n; i++) {\n            result[leader_buf[i]].push_back(i);\n\
-    \        }\n        result.erase(\n            std::remove_if(result.begin(),\
-    \ result.end(),\n                           [&](const std::vector<int>& v) { return\
-    \ v.empty(); }),\n            result.end());\n        return result;\n    }\n\
-    };\n#line 4 \"test/yosupo/unionfind.test.cpp\"\n\n#include <iostream>\n\nint main()\
-    \ {\n    int N, Q;\n    std::cin >> N >> Q;\n    UnionFind g(N);\n    int t, u,\
-    \ v;\n    for (int i = 0; i < Q; i++) {\n        std::cin >> t >> u >> v;\n  \
-    \      if (t == 0) {\n            g.merge(u, v);\n        } else {\n         \
-    \   std::cout << g.same(u, v) << '\\n';\n        }\n    }\n    return 0;\n}\n"
+    \ groups() {\n        return internal_unionfind::groups(_n, [&](int a) { return\
+    \ leader(a); });\n    }\n};\n#line 4 \"test/yosupo/unionfind.test.cpp\"\n\n#include\
+    \ <iostream>\n\nint main() {\n    int N, Q;\n    std::cin >> N >> Q;\n    UnionFind\
+    \ g(N);\n    int t, u, v;\n    for (int i = 0; i < Q; i++) {\n        std::cin\
+    \ >> t >> u >> v;\n        if (t == 0) {\n            g.merge(u, v);\n       \
+    \ } else {\n            std::cout << g.same(u, v) << '\\n';\n        }\n    }\n\
+    \    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/unionfind\"\n\n#include\
     \ \"../../src/data_structures/unionfind.hpp\"\n\n#include <iostream>\n\nint main()\
     \ {\n    int N, Q;\n    std::cin >> N >> Q;\n    UnionFind g(N);\n    int t, u,\
@@ -78,7 +84,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/unionfind.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-14 21:19:13+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/unionfind.test.cpp

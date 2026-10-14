@@ -203,25 +203,36 @@ data:
     \ 13 \"src/graph/graph_util.hpp\"\n#include <stack>\n#line 16 \"src/graph/graph_util.hpp\"\
     \n\n#line 2 \"src/data_structures/unionfind.hpp\"\n\n/**\n * @file unionfind.hpp\n\
     \ * @brief UnionFind\n */\n\n#line 12 \"src/data_structures/unionfind.hpp\"\n\n\
-    /**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u5BFE\u3057\u3066\u300C\u8FBA\
-    \u306E\u8FFD\u52A0\u300D\u3001\u300C2\u9802\u70B9\u304C\u9023\u7D50\u304B\u306E\
-    \u5224\u5B9A\u300D\u3092\u3059\u308B\n */\nclass UnionFind {\n   protected:\n\
-    \    int _n;\n    // \u8CA0\u306A\u3089\u30B5\u30A4\u30BA\u3001\u975E\u8CA0\u306A\
-    \u3089\u89AA\n    std::vector<int> parent_or_size;\n\n   public:\n    /**\n  \
-    \   * @brief merge \u306E\u623B\u308A\u5024\n     *\n     * if (uf.merge(a, b))\
-    \ \u3067\u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B\u3092\u5224\u5B9A\u3067\
-    \u304D\u3001\n     * auto [r, merged] = uf.merge(a, b); \u3067\u4EE3\u8868\u5143\
-    \u3082\u53D7\u3051\u53D6\u308C\u308B\n     */\n    struct MergeResult {\n    \
-    \    int leader;   //!< \u7D71\u5408\u5F8C\u306E\u4EE3\u8868\u5143\n        bool\
-    \ merged;  //!< \u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B (\u3082\u3068\
-    \u3082\u3068\u540C\u3058\u9023\u7D50\u6210\u5206\u306A\u3089 false)\n        explicit\
-    \ operator bool() const { return merged; }\n    };\n\n    UnionFind() : _n(0)\
-    \ {}\n    explicit UnionFind(int n) : _n(n), parent_or_size(n, -1) {}\n\n    /**\n\
-    \     * @brief \u8FBA(a,b)\u3092\u8DB3\u3059\n     * @return \u7D71\u5408\u5F8C\
-    \u306E\u4EE3\u8868\u5143\u3068\u3001\u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\
-    \u304B\n     */\n    MergeResult merge(int a, int b) {\n        assert(0 <= a\
-    \ && a < _n);\n        assert(0 <= b && b < _n);\n        int x = leader(a), y\
-    \ = leader(b);\n        if (x == y) return {x, false};\n        if (-parent_or_size[x]\
+    namespace internal_unionfind {\n/**\n * @brief \u5404\u8981\u7D20\u306E\u4EE3\u8868\
+    \u5143\u304B\u3089\u3001\u9023\u7D50\u6210\u5206\u3054\u3068\u306E\u8981\u7D20\
+    \u306E\u30EA\u30B9\u30C8\u3092\u4F5C\u308B\n * @param leader \u8981\u7D20 a \u306E\
+    \u4EE3\u8868\u5143\u3092\u8FD4\u3059\u95A2\u6570\n */\ntemplate <typename F>\n\
+    std::vector<std::vector<int>> groups(int n, F leader) {\n    std::vector<int>\
+    \ leader_buf(n), group_size(n);\n    for (int i = 0; i < n; i++) {\n        leader_buf[i]\
+    \ = leader(i);\n        group_size[leader_buf[i]]++;\n    }\n    std::vector<std::vector<int>>\
+    \ result(n);\n    for (int i = 0; i < n; i++) {\n        result[i].reserve(group_size[i]);\n\
+    \    }\n    for (int i = 0; i < n; i++) {\n        result[leader_buf[i]].push_back(i);\n\
+    \    }\n    result.erase(std::remove_if(result.begin(), result.end(), [&](const\
+    \ std::vector<int>& v) { return v.empty(); }), result.end());\n    return result;\n\
+    }\n}  // namespace internal_unionfind\n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\
+    \u30D5\u306B\u5BFE\u3057\u3066\u300C\u8FBA\u306E\u8FFD\u52A0\u300D\u3001\u300C\
+    2\u9802\u70B9\u304C\u9023\u7D50\u304B\u306E\u5224\u5B9A\u300D\u3092\u3059\u308B\
+    \n */\nclass UnionFind {\n   protected:\n    int _n;\n    // \u8CA0\u306A\u3089\
+    \u30B5\u30A4\u30BA\u3001\u975E\u8CA0\u306A\u3089\u89AA\n    std::vector<int> parent_or_size;\n\
+    \n   public:\n    /**\n     * @brief merge \u306E\u623B\u308A\u5024\n     *\n\
+    \     * if (uf.merge(a, b)) \u3067\u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B\
+    \u3092\u5224\u5B9A\u3067\u304D\u3001\n     * auto [r, merged] = uf.merge(a, b);\
+    \ \u3067\u4EE3\u8868\u5143\u3082\u53D7\u3051\u53D6\u308C\u308B\n     */\n    struct\
+    \ MergeResult {\n        int leader;   //!< \u7D71\u5408\u5F8C\u306E\u4EE3\u8868\
+    \u5143\n        bool merged;  //!< \u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B\
+    \ (\u3082\u3068\u3082\u3068\u540C\u3058\u9023\u7D50\u6210\u5206\u306A\u3089 false)\n\
+    \        explicit operator bool() const { return merged; }\n    };\n\n    UnionFind()\
+    \ : _n(0) {}\n    explicit UnionFind(int n) : _n(n), parent_or_size(n, -1) {}\n\
+    \n    /**\n     * @brief \u8FBA(a,b)\u3092\u8DB3\u3059\n     * @return \u7D71\u5408\
+    \u5F8C\u306E\u4EE3\u8868\u5143\u3068\u3001\u65B0\u3057\u304F\u7D71\u5408\u3057\
+    \u305F\u304B\n     */\n    MergeResult merge(int a, int b) {\n        assert(0\
+    \ <= a && a < _n);\n        assert(0 <= b && b < _n);\n        int x = leader(a),\
+    \ y = leader(b);\n        if (x == y) return {x, false};\n        if (-parent_or_size[x]\
     \ < -parent_or_size[y]) std::swap(x, y);\n        parent_or_size[x] += parent_or_size[y];\n\
     \        parent_or_size[y] = x;\n        return {x, true};\n    }\n    /**\n \
     \    * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\u304B\n    \
@@ -240,71 +251,64 @@ data:
     \u306B\u5206\u3051\u3001\u305D\u306E\u60C5\u5831\u3092\u8FD4\u3059\n     * @return\
     \ \u300C\u4E00\u3064\u306E\u9023\u7D50\u6210\u5206\u306E\u9802\u70B9\u756A\u53F7\
     \u306E\u30EA\u30B9\u30C8\u300D\u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<std::vector<int>>\
-    \ groups() {\n        std::vector<int> leader_buf(_n), group_size(_n);\n     \
-    \   for (int i = 0; i < _n; i++) {\n            leader_buf[i] = leader(i);\n \
-    \           group_size[leader_buf[i]]++;\n        }\n        std::vector<std::vector<int>>\
-    \ result(_n);\n        for (int i = 0; i < _n; i++) {\n            result[i].reserve(group_size[i]);\n\
-    \        }\n        for (int i = 0; i < _n; i++) {\n            result[leader_buf[i]].push_back(i);\n\
-    \        }\n        result.erase(\n            std::remove_if(result.begin(),\
-    \ result.end(),\n                           [&](const std::vector<int>& v) { return\
-    \ v.empty(); }),\n            result.end());\n        return result;\n    }\n\
-    };\n#line 19 \"src/graph/graph_util.hpp\"\n\n/**\n * @brief \u7121\u5411\u30B0\
-    \u30E9\u30D5\u306B\u3064\u3044\u3066\u3001\u4E8C\u90E8\u30B0\u30E9\u30D5\u306A\
-    \u30890\u30681\u306B\u5F69\u8272\u3057\u305F\u7D50\u679C\u3092\u3072\u3068\u3064\
-    \u8FD4\u3057\u3001\u4E8C\u90E8\u30B0\u30E9\u30D5\u3067\u306A\u3044\u306A\u3089\
-    \u7A7A\u306Evector\u3092\u8FD4\u3059\u3002\n * \u9023\u7D50\u6210\u5206\u306E\u3046\
-    \u3061\u3001\u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\u306E\u6700\u3082\u5C0F\u3055\
-    \u3044\u3082\u306E\u30920\u306B\u3059\u308B\u3002\n * @return std::vector<int>\
-    \ \u5404\u9802\u70B9\u306E\u5F69\u8272\u7D50\u679C\n */\ntemplate <typename Cost\
-    \ = int>\nstd::vector<int> bipartite_coloring(const Graph<Cost>& graph) {\n  \
-    \  std::vector<int> color(graph.n, -1);\n    for (int i = 0; i < graph.n; i++)\
-    \ {\n        if (color[i] != -1) continue;\n        std::stack<int> stk;\n   \
-    \     stk.push(i);\n        color[i] = 0;\n        while (!stk.empty()) {\n  \
-    \          int u = stk.top();\n            stk.pop();\n            for (int v\
-    \ : graph[u]) {\n                if (color[v] == -1) {\n                    color[v]\
-    \ = color[u] ^ 1;\n                    stk.push(v);\n                } else {\n\
-    \                    if (color[u] == color[v]) return {};\n                }\n\
-    \            }\n        }\n    }\n    return color;\n}\n\n/**\n * @brief \u7121\
-    \u5411\u30B0\u30E9\u30D5\u306B\u3064\u3044\u3066\u3001\u4E8C\u90E8\u30B0\u30E9\
+    \ groups() {\n        return internal_unionfind::groups(_n, [&](int a) { return\
+    \ leader(a); });\n    }\n};\n#line 19 \"src/graph/graph_util.hpp\"\n\n/**\n *\
+    \ @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u3064\u3044\u3066\u3001\u4E8C\u90E8\
+    \u30B0\u30E9\u30D5\u306A\u30890\u30681\u306B\u5F69\u8272\u3057\u305F\u7D50\u679C\
+    \u3092\u3072\u3068\u3064\u8FD4\u3057\u3001\u4E8C\u90E8\u30B0\u30E9\u30D5\u3067\
+    \u306A\u3044\u306A\u3089\u7A7A\u306Evector\u3092\u8FD4\u3059\u3002\n * \u9023\u7D50\
+    \u6210\u5206\u306E\u3046\u3061\u3001\u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\u306E\
+    \u6700\u3082\u5C0F\u3055\u3044\u3082\u306E\u30920\u306B\u3059\u308B\u3002\n *\
+    \ @return std::vector<int> \u5404\u9802\u70B9\u306E\u5F69\u8272\u7D50\u679C\n\
+    \ */\ntemplate <typename Cost = int>\nstd::vector<int> bipartite_coloring(const\
+    \ Graph<Cost>& graph) {\n    std::vector<int> color(graph.n, -1);\n    for (int\
+    \ i = 0; i < graph.n; i++) {\n        if (color[i] != -1) continue;\n        std::stack<int>\
+    \ stk;\n        stk.push(i);\n        color[i] = 0;\n        while (!stk.empty())\
+    \ {\n            int u = stk.top();\n            stk.pop();\n            for (int\
+    \ v : graph[u]) {\n                if (color[v] == -1) {\n                   \
+    \ color[v] = color[u] ^ 1;\n                    stk.push(v);\n               \
+    \ } else {\n                    if (color[u] == color[v]) return {};\n       \
+    \         }\n            }\n        }\n    }\n    return color;\n}\n\n/**\n *\
+    \ @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u3064\u3044\u3066\u3001\u4E8C\u90E8\
+    \u30B0\u30E9\u30D5\u304B\u3069\u3046\u304B\u3092\u5224\u5B9A\u3059\u308B\u3002\
+    \n * @return bool \u4E8C\u90E8\u30B0\u30E9\u30D5\u306A\u3089true\u3001\u4E8C\u90E8\
+    \u30B0\u30E9\u30D5\u3067\u306A\u3044\u306A\u3089false\u3092\u8FD4\u3059\u3002\n\
+    \ */\ntemplate <typename Cost = int>\nbool is_bipartite(const Graph<Cost>& graph)\
+    \ {\n    return !bipartite_coloring(graph).empty();\n}\n\n/**\n * @brief \u7121\
+    \u5411\u30B0\u30E9\u30D5\u306B\u3064\u3044\u3066\u3001\u9023\u7D50\u6210\u5206\
+    \u5206\u89E3\u3059\u308B\u3002\n * @return std::vector<std::vector<int>> \u300C\
+    \u540C\u3058\u9023\u7D50\u6210\u5206\u3068\u306A\u308B\u9802\u70B9\u306E\u30EA\
+    \u30B9\u30C8\u300D\u306E\u30EA\u30B9\u30C8\n */\ntemplate <typename Cost = int>\n\
+    std::vector<std::vector<int>> connected_components(const Graph<Cost>& graph) {\n\
+    \    std::vector<std::vector<int>> groups;\n    std::vector<bool> visited(graph.n);\n\
+    \    for (int i = 0; i < graph.n; i++) {\n        if (visited[i]) continue;\n\
+    \        std::stack<int> stk;\n        stk.push(i);\n        visited[i] = true;\n\
+    \        groups.push_back({i});\n        while (!stk.empty()) {\n            int\
+    \ u = stk.top();\n            stk.pop();\n            for (int v : graph[u]) {\n\
+    \                if (visited[v]) continue;\n                visited[v] = true;\n\
+    \                stk.push(v);\n                groups.back().push_back(v);\n \
+    \           }\n        }\n    }\n    return groups;\n}\n\n/**\n * @brief \u7121\
+    \u5411\u30B0\u30E9\u30D5\u306B\u3064\u3044\u3066\u3001\u9023\u7D50\u30B0\u30E9\
     \u30D5\u304B\u3069\u3046\u304B\u3092\u5224\u5B9A\u3059\u308B\u3002\n * @return\
-    \ bool \u4E8C\u90E8\u30B0\u30E9\u30D5\u306A\u3089true\u3001\u4E8C\u90E8\u30B0\u30E9\
+    \ bool \u9023\u7D50\u30B0\u30E9\u30D5\u306A\u3089true\u3001\u9023\u7D50\u30B0\u30E9\
     \u30D5\u3067\u306A\u3044\u306A\u3089false\u3092\u8FD4\u3059\u3002\n */\ntemplate\
-    \ <typename Cost = int>\nbool is_bipartite(const Graph<Cost>& graph) {\n    return\
-    \ !bipartite_coloring(graph).empty();\n}\n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\
-    \u30D5\u306B\u3064\u3044\u3066\u3001\u9023\u7D50\u6210\u5206\u5206\u89E3\u3059\
-    \u308B\u3002\n * @return std::vector<std::vector<int>> \u300C\u540C\u3058\u9023\
-    \u7D50\u6210\u5206\u3068\u306A\u308B\u9802\u70B9\u306E\u30EA\u30B9\u30C8\u300D\
-    \u306E\u30EA\u30B9\u30C8\n */\ntemplate <typename Cost = int>\nstd::vector<std::vector<int>>\
-    \ connected_components(const Graph<Cost>& graph) {\n    std::vector<std::vector<int>>\
-    \ groups;\n    std::vector<bool> visited(graph.n);\n    for (int i = 0; i < graph.n;\
-    \ i++) {\n        if (visited[i]) continue;\n        std::stack<int> stk;\n  \
-    \      stk.push(i);\n        visited[i] = true;\n        groups.push_back({i});\n\
-    \        while (!stk.empty()) {\n            int u = stk.top();\n            stk.pop();\n\
-    \            for (int v : graph[u]) {\n                if (visited[v]) continue;\n\
-    \                visited[v] = true;\n                stk.push(v);\n          \
-    \      groups.back().push_back(v);\n            }\n        }\n    }\n    return\
-    \ groups;\n}\n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u3064\u3044\
-    \u3066\u3001\u9023\u7D50\u30B0\u30E9\u30D5\u304B\u3069\u3046\u304B\u3092\u5224\
-    \u5B9A\u3059\u308B\u3002\n * @return bool \u9023\u7D50\u30B0\u30E9\u30D5\u306A\
-    \u3089true\u3001\u9023\u7D50\u30B0\u30E9\u30D5\u3067\u306A\u3044\u306A\u3089false\u3092\
-    \u8FD4\u3059\u3002\n */\ntemplate <typename Cost = int>\nbool is_connected(const\
-    \ Graph<Cost>& graph) {\n    return connected_components(graph).size() == 1;\n\
-    }\n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u3064\u3044\u3066\u3001\
-    \u6728\u304B\u3069\u3046\u304B\u3092\u5224\u5B9A\u3059\u308B\u3002\n * @return\
-    \ bool \u6728\u306A\u3089true\u3001\u6728\u3067\u306A\u3044\u306A\u3089false\u3092\
-    \u8FD4\u3059\u3002\n */\ntemplate <typename Cost = int>\nbool is_tree(const Graph<Cost>&\
-    \ graph) {\n    return graph.m == graph.n - 1 && is_connected(graph);\n}\n\n/**\n\
-    \ * @brief \u6709\u5411\u30B0\u30E9\u30D5\u3092\u30C8\u30DD\u30ED\u30B8\u30AB\u30EB\
-    \u30BD\u30FC\u30C8\u3059\u308B\n * @return std::vector<int> \u30C8\u30DD\u30ED\
-    \u30B8\u30AB\u30EB\u9806\u306B\u4E26\u3079\u305F\u9802\u70B9\u306E\u30EA\u30B9\
-    \u30C8\u3002DAG \u3067\u306A\u3051\u308C\u3070\u7A7A\n */\ntemplate <typename\
-    \ Cost = int>\nstd::vector<int> topological_sort(const Graph<Cost>& graph) {\n\
-    \    std::vector<int> indeg(graph.n), sorted;\n    std::queue<int> q;\n    for\
-    \ (int i = 0; i < graph.n; i++) {\n        for (int dst : graph[i]) indeg[dst]++;\n\
-    \    }\n    for (int i = 0; i < graph.n; i++) {\n        if (!indeg[i]) q.push(i);\n\
-    \    }\n    while (!q.empty()) {\n        int cur = q.front();\n        q.pop();\n\
-    \        for (int dst : graph[cur]) {\n            if (!--indeg[dst]) q.push(dst);\n\
-    \        }\n        sorted.push_back(cur);\n    }\n    if ((int)sorted.size()\
+    \ <typename Cost = int>\nbool is_connected(const Graph<Cost>& graph) {\n    return\
+    \ connected_components(graph).size() == 1;\n}\n\n/**\n * @brief \u7121\u5411\u30B0\
+    \u30E9\u30D5\u306B\u3064\u3044\u3066\u3001\u6728\u304B\u3069\u3046\u304B\u3092\
+    \u5224\u5B9A\u3059\u308B\u3002\n * @return bool \u6728\u306A\u3089true\u3001\u6728\
+    \u3067\u306A\u3044\u306A\u3089false\u3092\u8FD4\u3059\u3002\n */\ntemplate <typename\
+    \ Cost = int>\nbool is_tree(const Graph<Cost>& graph) {\n    return graph.m ==\
+    \ graph.n - 1 && is_connected(graph);\n}\n\n/**\n * @brief \u6709\u5411\u30B0\u30E9\
+    \u30D5\u3092\u30C8\u30DD\u30ED\u30B8\u30AB\u30EB\u30BD\u30FC\u30C8\u3059\u308B\
+    \n * @return std::vector<int> \u30C8\u30DD\u30ED\u30B8\u30AB\u30EB\u9806\u306B\
+    \u4E26\u3079\u305F\u9802\u70B9\u306E\u30EA\u30B9\u30C8\u3002DAG \u3067\u306A\u3051\
+    \u308C\u3070\u7A7A\n */\ntemplate <typename Cost = int>\nstd::vector<int> topological_sort(const\
+    \ Graph<Cost>& graph) {\n    std::vector<int> indeg(graph.n), sorted;\n    std::queue<int>\
+    \ q;\n    for (int i = 0; i < graph.n; i++) {\n        for (int dst : graph[i])\
+    \ indeg[dst]++;\n    }\n    for (int i = 0; i < graph.n; i++) {\n        if (!indeg[i])\
+    \ q.push(i);\n    }\n    while (!q.empty()) {\n        int cur = q.front();\n\
+    \        q.pop();\n        for (int dst : graph[cur]) {\n            if (!--indeg[dst])\
+    \ q.push(dst);\n        }\n        sorted.push_back(cur);\n    }\n    if ((int)sorted.size()\
     \ < graph.n) return {};\n    return sorted;\n}\n\n/**\n * @brief \u6709\u5411\u30B0\
     \u30E9\u30D5\u306B\u3064\u3044\u3066\u3001\u30B5\u30A4\u30AF\u30EB\u3092\u3082\
     \u3064\u304B\u3069\u3046\u304B\u3092\u5224\u5B9A\u3059\u308B\u3002\n * @return\
@@ -461,7 +465,7 @@ data:
   isVerificationFile: true
   path: test/aoj/grl-2-a.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 16:37:34+09:00'
+  timestamp: '2026-10-14 21:19:13+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/grl-2-a.test.cpp

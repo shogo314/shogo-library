@@ -386,9 +386,9 @@ data:
     \u308B\n        F f = id();\n        for (int i = k + sz; i > 0; i >>= 1) f =\
     \ composition(lazy[i], f);\n        return mapping(f, data[k], k);\n    }\n  \
     \  /**\n     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\u306E\u5024\u3092\u8FD4\
-    \u3059 O(n)\n     */\n    std::vector<S> all() {\n        for (int k = 1; k <\
-    \ sz; k++) push(k);\n        std::vector<S> res(n);\n        for (int k = 0; k\
-    \ < n; k++) res[k] = mapping(lazy[k + sz], data[k], k);\n        return res;\n\
+    \u3059 O(n)\n     */\n    std::vector<S> to_vector() {\n        for (int k = 1;\
+    \ k < sz; k++) push(k);\n        std::vector<S> res(n);\n        for (int k =\
+    \ 0; k < n; k++) res[k] = mapping(lazy[k + sz], data[k], k);\n        return res;\n\
     \    }\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\
     \u5024\u3092 x \u306B\u3059\u308B O(log n)\n     */\n    void set(int k, const\
     \ S& x) {\n        assert(0 <= k && k < n);\n        push_ancestors(k + sz);\n\
@@ -459,9 +459,9 @@ data:
     \u308B\n        F f = id();\n        for (int i = k + sz; i > 0; i >>= 1) f =\
     \ composition(lazy[i], f);\n        return mapping(f, data[k], k);\n    }\n  \
     \  /**\n     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\u306E\u5024\u3092\u8FD4\
-    \u3059 O(n)\n     */\n    std::vector<S> all() {\n        for (int k = 1; k <\
-    \ sz; k++) push(k);\n        std::vector<S> res(n);\n        for (int k = 0; k\
-    \ < n; k++) res[k] = mapping(lazy[k + sz], data[k], k);\n        return res;\n\
+    \u3059 O(n)\n     */\n    std::vector<S> to_vector() {\n        for (int k = 1;\
+    \ k < sz; k++) push(k);\n        std::vector<S> res(n);\n        for (int k =\
+    \ 0; k < n; k++) res[k] = mapping(lazy[k + sz], data[k], k);\n        return res;\n\
     \    }\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\
     \u5024\u3092 x \u306B\u3059\u308B O(log n)\n     */\n    void set(int k, const\
     \ S& x) {\n        assert(0 <= k && k < n);\n        push_ancestors(k + sz);\n\
@@ -489,7 +489,7 @@ data:
   isVerificationFile: false
   path: src/data_structures/dual-segtree.hpp
   requiredBy: []
-  timestamp: '2026-10-14 16:39:21+09:00'
+  timestamp: '2026-10-14 21:19:45+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/dual-segtree.test.cpp
@@ -530,7 +530,7 @@ DualSegTree seg3(n, acted_monoid::AddSum<long long>());  // 作用素付きモ�
 | `apply(k, f)` | `k` 番目の値に `f` を作用 | $O(\log n)$ |
 | `get(k)` | `k` 番目の値 | $O(\log n)$ |
 | `set(k, x)` | `k` 番目の値を `x` にする | $O(\log n)$ |
-| `all()` | すべての値を並べた `std::vector<S>` | $O(n)$ |
+| `to_vector()` | すべての値を並べた `std::vector<S>` | $O(n)$ |
 
 ## 関連
 

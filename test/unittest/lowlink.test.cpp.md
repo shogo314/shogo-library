@@ -277,25 +277,36 @@ data:
     \n\n#line 9 \"test/unittest/lowlink.test.cpp\"\n#include <random>\n#line 11 \"\
     test/unittest/lowlink.test.cpp\"\n\n#line 2 \"src/data_structures/unionfind.hpp\"\
     \n\n/**\n * @file unionfind.hpp\n * @brief UnionFind\n */\n\n#line 12 \"src/data_structures/unionfind.hpp\"\
-    \n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u5BFE\u3057\u3066\u300C\
-    \u8FBA\u306E\u8FFD\u52A0\u300D\u3001\u300C2\u9802\u70B9\u304C\u9023\u7D50\u304B\
-    \u306E\u5224\u5B9A\u300D\u3092\u3059\u308B\n */\nclass UnionFind {\n   protected:\n\
-    \    int _n;\n    // \u8CA0\u306A\u3089\u30B5\u30A4\u30BA\u3001\u975E\u8CA0\u306A\
-    \u3089\u89AA\n    std::vector<int> parent_or_size;\n\n   public:\n    /**\n  \
-    \   * @brief merge \u306E\u623B\u308A\u5024\n     *\n     * if (uf.merge(a, b))\
-    \ \u3067\u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B\u3092\u5224\u5B9A\u3067\
-    \u304D\u3001\n     * auto [r, merged] = uf.merge(a, b); \u3067\u4EE3\u8868\u5143\
-    \u3082\u53D7\u3051\u53D6\u308C\u308B\n     */\n    struct MergeResult {\n    \
-    \    int leader;   //!< \u7D71\u5408\u5F8C\u306E\u4EE3\u8868\u5143\n        bool\
-    \ merged;  //!< \u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B (\u3082\u3068\
-    \u3082\u3068\u540C\u3058\u9023\u7D50\u6210\u5206\u306A\u3089 false)\n        explicit\
-    \ operator bool() const { return merged; }\n    };\n\n    UnionFind() : _n(0)\
-    \ {}\n    explicit UnionFind(int n) : _n(n), parent_or_size(n, -1) {}\n\n    /**\n\
-    \     * @brief \u8FBA(a,b)\u3092\u8DB3\u3059\n     * @return \u7D71\u5408\u5F8C\
-    \u306E\u4EE3\u8868\u5143\u3068\u3001\u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\
-    \u304B\n     */\n    MergeResult merge(int a, int b) {\n        assert(0 <= a\
-    \ && a < _n);\n        assert(0 <= b && b < _n);\n        int x = leader(a), y\
-    \ = leader(b);\n        if (x == y) return {x, false};\n        if (-parent_or_size[x]\
+    \n\nnamespace internal_unionfind {\n/**\n * @brief \u5404\u8981\u7D20\u306E\u4EE3\
+    \u8868\u5143\u304B\u3089\u3001\u9023\u7D50\u6210\u5206\u3054\u3068\u306E\u8981\
+    \u7D20\u306E\u30EA\u30B9\u30C8\u3092\u4F5C\u308B\n * @param leader \u8981\u7D20\
+    \ a \u306E\u4EE3\u8868\u5143\u3092\u8FD4\u3059\u95A2\u6570\n */\ntemplate <typename\
+    \ F>\nstd::vector<std::vector<int>> groups(int n, F leader) {\n    std::vector<int>\
+    \ leader_buf(n), group_size(n);\n    for (int i = 0; i < n; i++) {\n        leader_buf[i]\
+    \ = leader(i);\n        group_size[leader_buf[i]]++;\n    }\n    std::vector<std::vector<int>>\
+    \ result(n);\n    for (int i = 0; i < n; i++) {\n        result[i].reserve(group_size[i]);\n\
+    \    }\n    for (int i = 0; i < n; i++) {\n        result[leader_buf[i]].push_back(i);\n\
+    \    }\n    result.erase(std::remove_if(result.begin(), result.end(), [&](const\
+    \ std::vector<int>& v) { return v.empty(); }), result.end());\n    return result;\n\
+    }\n}  // namespace internal_unionfind\n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\
+    \u30D5\u306B\u5BFE\u3057\u3066\u300C\u8FBA\u306E\u8FFD\u52A0\u300D\u3001\u300C\
+    2\u9802\u70B9\u304C\u9023\u7D50\u304B\u306E\u5224\u5B9A\u300D\u3092\u3059\u308B\
+    \n */\nclass UnionFind {\n   protected:\n    int _n;\n    // \u8CA0\u306A\u3089\
+    \u30B5\u30A4\u30BA\u3001\u975E\u8CA0\u306A\u3089\u89AA\n    std::vector<int> parent_or_size;\n\
+    \n   public:\n    /**\n     * @brief merge \u306E\u623B\u308A\u5024\n     *\n\
+    \     * if (uf.merge(a, b)) \u3067\u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B\
+    \u3092\u5224\u5B9A\u3067\u304D\u3001\n     * auto [r, merged] = uf.merge(a, b);\
+    \ \u3067\u4EE3\u8868\u5143\u3082\u53D7\u3051\u53D6\u308C\u308B\n     */\n    struct\
+    \ MergeResult {\n        int leader;   //!< \u7D71\u5408\u5F8C\u306E\u4EE3\u8868\
+    \u5143\n        bool merged;  //!< \u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B\
+    \ (\u3082\u3068\u3082\u3068\u540C\u3058\u9023\u7D50\u6210\u5206\u306A\u3089 false)\n\
+    \        explicit operator bool() const { return merged; }\n    };\n\n    UnionFind()\
+    \ : _n(0) {}\n    explicit UnionFind(int n) : _n(n), parent_or_size(n, -1) {}\n\
+    \n    /**\n     * @brief \u8FBA(a,b)\u3092\u8DB3\u3059\n     * @return \u7D71\u5408\
+    \u5F8C\u306E\u4EE3\u8868\u5143\u3068\u3001\u65B0\u3057\u304F\u7D71\u5408\u3057\
+    \u305F\u304B\n     */\n    MergeResult merge(int a, int b) {\n        assert(0\
+    \ <= a && a < _n);\n        assert(0 <= b && b < _n);\n        int x = leader(a),\
+    \ y = leader(b);\n        if (x == y) return {x, false};\n        if (-parent_or_size[x]\
     \ < -parent_or_size[y]) std::swap(x, y);\n        parent_or_size[x] += parent_or_size[y];\n\
     \        parent_or_size[y] = x;\n        return {x, true};\n    }\n    /**\n \
     \    * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\u304B\n    \
@@ -314,56 +325,49 @@ data:
     \u306B\u5206\u3051\u3001\u305D\u306E\u60C5\u5831\u3092\u8FD4\u3059\n     * @return\
     \ \u300C\u4E00\u3064\u306E\u9023\u7D50\u6210\u5206\u306E\u9802\u70B9\u756A\u53F7\
     \u306E\u30EA\u30B9\u30C8\u300D\u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<std::vector<int>>\
-    \ groups() {\n        std::vector<int> leader_buf(_n), group_size(_n);\n     \
-    \   for (int i = 0; i < _n; i++) {\n            leader_buf[i] = leader(i);\n \
-    \           group_size[leader_buf[i]]++;\n        }\n        std::vector<std::vector<int>>\
-    \ result(_n);\n        for (int i = 0; i < _n; i++) {\n            result[i].reserve(group_size[i]);\n\
-    \        }\n        for (int i = 0; i < _n; i++) {\n            result[leader_buf[i]].push_back(i);\n\
-    \        }\n        result.erase(\n            std::remove_if(result.begin(),\
-    \ result.end(),\n                           [&](const std::vector<int>& v) { return\
-    \ v.empty(); }),\n            result.end());\n        return result;\n    }\n\
-    };\n#line 13 \"test/unittest/lowlink.test.cpp\"\n\n// \u9802\u70B9 skip_v \u3068\
-    \u8FBA skip_e \u3092\u4F7F\u308F\u306A\u3044\u3068\u304D\u306E\u9023\u7D50\u6210\
-    \u5206\u306E\u6570 (skip_v \u81EA\u8EAB\u306F\u6570\u3048\u306A\u3044)\nint count_components(int\
-    \ n, const std::vector<std::pair<int, int>>& es, int skip_v, int skip_e) {\n \
-    \   UnionFind uf(n);\n    for (int i = 0; i < (int)es.size(); i++) {\n       \
-    \ if (i == skip_e) continue;\n        auto [u, v] = es[i];\n        if (u == skip_v\
-    \ || v == skip_v) continue;\n        uf.merge(u, v);\n    }\n    int c = 0;\n\
-    \    for (int v = 0; v < n; v++) c += v != skip_v && uf.leader(v) == v;\n    return\
-    \ c;\n}\n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n   \
-    \ for (int rep = 0; rep < 3000 && ok; rep++) {\n        int n = rng() % 9 + 1,\
-    \ m = rng() % 14;\n        Graph<int> g(n);\n        std::vector<std::pair<int,\
-    \ int>> es;\n        for (int i = 0; i < m; i++) {\n            int u = rng()\
-    \ % n, v = rng() % n;  // \u81EA\u5DF1\u30EB\u30FC\u30D7\u3068\u591A\u91CD\u8FBA\
-    \u3082\u542B\u3080\n            g.add_edge(u, v);\n            es.emplace_back(u,\
-    \ v);\n        }\n        LowLink ll(g);\n        int base = count_components(n,\
-    \ es, -1, -1);\n        std::vector<int> arts, bridges;\n        for (int v =\
-    \ 0; v < n; v++) {\n            // v \u3092\u53D6\u308A\u9664\u3044\u305F\u3068\
-    \u304D\u3001\u6B8B\u308A\u306E\u9802\u70B9\u306E\u9023\u7D50\u6210\u5206\u304C\
-    \u5897\u3048\u308B\u304B\n            // (v \u304C\u307B\u304B\u306E\u9802\u70B9\
-    \u3068\u3064\u306A\u304C\u3063\u3066\u3044\u306A\u3051\u308C\u3070\u3001v \u306E\
-    \u5206\u3060\u3051 1 \u6E1B\u308B\u306E\u304C\u666E\u901A)\n            bool isolated\
-    \ = true;\n            for (auto [a, b] : es) isolated &= !((a == v || b == v)\
-    \ && a != b);\n            bool art = count_components(n, es, v, -1) > base -\
-    \ (isolated ? 1 : 0);\n            if (art) arts.push_back(v);\n            if\
-    \ (ll.is_articulation_point(v) != art) ok = false;\n        }\n        for (int\
-    \ i = 0; i < m; i++) {\n            bool br = count_components(n, es, -1, i) >\
-    \ base;\n            if (br) bridges.push_back(i);\n            if (ll.is_bridge(i)\
-    \ != br) ok = false;\n        }\n        if (ll.articulation_points() != arts\
-    \ || ll.bridges() != bridges) ok = false;\n\n        // \u4E8C\u91CD\u8FBA\u9023\
-    \u7D50\u6210\u5206: \u6A4B\u3092\u3059\u3079\u3066\u53D6\u308A\u9664\u3044\u305F\
-    \u3068\u304D\u306E\u9023\u7D50\u6210\u5206\u3068\u4E00\u81F4\u3059\u308B\n   \
-    \     UnionFind uf(n);\n        for (int i = 0; i < m; i++) {\n            if\
-    \ (!ll.is_bridge(i)) uf.merge(es[i].first, es[i].second);\n        }\n       \
-    \ const auto& groups = ll.two_edge_connected_groups();\n        int total = 0;\n\
-    \        for (int k = 0; k < (int)groups.size(); k++) {\n            total +=\
-    \ groups[k].size();\n            for (int v : groups[k]) {\n                if\
-    \ (ll.two_edge_connected_group_id(v) != k || !uf.same(v, groups[k][0])) ok = false;\n\
-    \            }\n        }\n        int uf_groups = 0;\n        for (int v = 0;\
-    \ v < n; v++) uf_groups += uf.leader(v) == v;\n        if (total != n || (int)groups.size()\
-    \ != uf_groups) ok = false;\n    }\n\n    if (ok)\n        std::cout << \"Hello\
-    \ World\" << std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n\
-    }\n"
+    \ groups() {\n        return internal_unionfind::groups(_n, [&](int a) { return\
+    \ leader(a); });\n    }\n};\n#line 13 \"test/unittest/lowlink.test.cpp\"\n\n//\
+    \ \u9802\u70B9 skip_v \u3068\u8FBA skip_e \u3092\u4F7F\u308F\u306A\u3044\u3068\
+    \u304D\u306E\u9023\u7D50\u6210\u5206\u306E\u6570 (skip_v \u81EA\u8EAB\u306F\u6570\
+    \u3048\u306A\u3044)\nint count_components(int n, const std::vector<std::pair<int,\
+    \ int>>& es, int skip_v, int skip_e) {\n    UnionFind uf(n);\n    for (int i =\
+    \ 0; i < (int)es.size(); i++) {\n        if (i == skip_e) continue;\n        auto\
+    \ [u, v] = es[i];\n        if (u == skip_v || v == skip_v) continue;\n       \
+    \ uf.merge(u, v);\n    }\n    int c = 0;\n    for (int v = 0; v < n; v++) c +=\
+    \ v != skip_v && uf.leader(v) == v;\n    return c;\n}\n\nint main() {\n    std::mt19937\
+    \ rng(314);\n    bool ok = true;\n    for (int rep = 0; rep < 3000 && ok; rep++)\
+    \ {\n        int n = rng() % 9 + 1, m = rng() % 14;\n        Graph<int> g(n);\n\
+    \        std::vector<std::pair<int, int>> es;\n        for (int i = 0; i < m;\
+    \ i++) {\n            int u = rng() % n, v = rng() % n;  // \u81EA\u5DF1\u30EB\
+    \u30FC\u30D7\u3068\u591A\u91CD\u8FBA\u3082\u542B\u3080\n            g.add_edge(u,\
+    \ v);\n            es.emplace_back(u, v);\n        }\n        LowLink ll(g);\n\
+    \        int base = count_components(n, es, -1, -1);\n        std::vector<int>\
+    \ arts, bridges;\n        for (int v = 0; v < n; v++) {\n            // v \u3092\
+    \u53D6\u308A\u9664\u3044\u305F\u3068\u304D\u3001\u6B8B\u308A\u306E\u9802\u70B9\
+    \u306E\u9023\u7D50\u6210\u5206\u304C\u5897\u3048\u308B\u304B\n            // (v\
+    \ \u304C\u307B\u304B\u306E\u9802\u70B9\u3068\u3064\u306A\u304C\u3063\u3066\u3044\
+    \u306A\u3051\u308C\u3070\u3001v \u306E\u5206\u3060\u3051 1 \u6E1B\u308B\u306E\u304C\
+    \u666E\u901A)\n            bool isolated = true;\n            for (auto [a, b]\
+    \ : es) isolated &= !((a == v || b == v) && a != b);\n            bool art = count_components(n,\
+    \ es, v, -1) > base - (isolated ? 1 : 0);\n            if (art) arts.push_back(v);\n\
+    \            if (ll.is_articulation_point(v) != art) ok = false;\n        }\n\
+    \        for (int i = 0; i < m; i++) {\n            bool br = count_components(n,\
+    \ es, -1, i) > base;\n            if (br) bridges.push_back(i);\n            if\
+    \ (ll.is_bridge(i) != br) ok = false;\n        }\n        if (ll.articulation_points()\
+    \ != arts || ll.bridges() != bridges) ok = false;\n\n        // \u4E8C\u91CD\u8FBA\
+    \u9023\u7D50\u6210\u5206: \u6A4B\u3092\u3059\u3079\u3066\u53D6\u308A\u9664\u3044\
+    \u305F\u3068\u304D\u306E\u9023\u7D50\u6210\u5206\u3068\u4E00\u81F4\u3059\u308B\
+    \n        UnionFind uf(n);\n        for (int i = 0; i < m; i++) {\n          \
+    \  if (!ll.is_bridge(i)) uf.merge(es[i].first, es[i].second);\n        }\n   \
+    \     const auto& groups = ll.two_edge_connected_groups();\n        int total\
+    \ = 0;\n        for (int k = 0; k < (int)groups.size(); k++) {\n            total\
+    \ += groups[k].size();\n            for (int v : groups[k]) {\n              \
+    \  if (ll.two_edge_connected_group_id(v) != k || !uf.same(v, groups[k][0])) ok\
+    \ = false;\n            }\n        }\n        int uf_groups = 0;\n        for\
+    \ (int v = 0; v < n; v++) uf_groups += uf.leader(v) == v;\n        if (total !=\
+    \ n || (int)groups.size() != uf_groups) ok = false;\n    }\n\n    if (ok)\n  \
+    \      std::cout << \"Hello World\" << std::endl;\n    else\n        std::cerr\
+    \ << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// LowLink \u3092\u3001\u9802\u70B9\u3084\u8FBA\u3092 1 \u3064\u53D6\u308A\
     \u9664\u3044\u3066\u9023\u7D50\u6210\u5206\u306E\u6570\u3092\u6570\u3048\u308B\
@@ -420,7 +424,7 @@ data:
   isVerificationFile: true
   path: test/unittest/lowlink.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 16:37:34+09:00'
+  timestamp: '2026-10-14 21:19:13+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/lowlink.test.cpp

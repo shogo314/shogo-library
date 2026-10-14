@@ -380,9 +380,9 @@ data:
     \u308B\n        F f = id();\n        for (int i = k + sz; i > 0; i >>= 1) f =\
     \ composition(lazy[i], f);\n        return mapping(f, data[k], k);\n    }\n  \
     \  /**\n     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\u306E\u5024\u3092\u8FD4\
-    \u3059 O(n)\n     */\n    std::vector<S> all() {\n        for (int k = 1; k <\
-    \ sz; k++) push(k);\n        std::vector<S> res(n);\n        for (int k = 0; k\
-    \ < n; k++) res[k] = mapping(lazy[k + sz], data[k], k);\n        return res;\n\
+    \u3059 O(n)\n     */\n    std::vector<S> to_vector() {\n        for (int k = 1;\
+    \ k < sz; k++) push(k);\n        std::vector<S> res(n);\n        for (int k =\
+    \ 0; k < n; k++) res[k] = mapping(lazy[k + sz], data[k], k);\n        return res;\n\
     \    }\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\
     \u5024\u3092 x \u306B\u3059\u308B O(log n)\n     */\n    void set(int k, const\
     \ S& x) {\n        assert(0 <= k && k < n);\n        push_ancestors(k + sz);\n\
@@ -427,7 +427,7 @@ data:
   isVerificationFile: true
   path: test/aoj/dsl-2-e.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 16:39:21+09:00'
+  timestamp: '2026-10-14 21:19:45+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/dsl-2-e.test.cpp

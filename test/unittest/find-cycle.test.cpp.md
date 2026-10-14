@@ -33,25 +33,36 @@ data:
     #include <tuple>\n#include <vector>\n\n#line 2 \"src/data_structures/unionfind.hpp\"\
     \n\n/**\n * @file unionfind.hpp\n * @brief UnionFind\n */\n\n#include <algorithm>\n\
     #include <cassert>\n#include <utility>\n#line 12 \"src/data_structures/unionfind.hpp\"\
-    \n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u5BFE\u3057\u3066\u300C\
-    \u8FBA\u306E\u8FFD\u52A0\u300D\u3001\u300C2\u9802\u70B9\u304C\u9023\u7D50\u304B\
-    \u306E\u5224\u5B9A\u300D\u3092\u3059\u308B\n */\nclass UnionFind {\n   protected:\n\
-    \    int _n;\n    // \u8CA0\u306A\u3089\u30B5\u30A4\u30BA\u3001\u975E\u8CA0\u306A\
-    \u3089\u89AA\n    std::vector<int> parent_or_size;\n\n   public:\n    /**\n  \
-    \   * @brief merge \u306E\u623B\u308A\u5024\n     *\n     * if (uf.merge(a, b))\
-    \ \u3067\u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B\u3092\u5224\u5B9A\u3067\
-    \u304D\u3001\n     * auto [r, merged] = uf.merge(a, b); \u3067\u4EE3\u8868\u5143\
-    \u3082\u53D7\u3051\u53D6\u308C\u308B\n     */\n    struct MergeResult {\n    \
-    \    int leader;   //!< \u7D71\u5408\u5F8C\u306E\u4EE3\u8868\u5143\n        bool\
-    \ merged;  //!< \u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B (\u3082\u3068\
-    \u3082\u3068\u540C\u3058\u9023\u7D50\u6210\u5206\u306A\u3089 false)\n        explicit\
-    \ operator bool() const { return merged; }\n    };\n\n    UnionFind() : _n(0)\
-    \ {}\n    explicit UnionFind(int n) : _n(n), parent_or_size(n, -1) {}\n\n    /**\n\
-    \     * @brief \u8FBA(a,b)\u3092\u8DB3\u3059\n     * @return \u7D71\u5408\u5F8C\
-    \u306E\u4EE3\u8868\u5143\u3068\u3001\u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\
-    \u304B\n     */\n    MergeResult merge(int a, int b) {\n        assert(0 <= a\
-    \ && a < _n);\n        assert(0 <= b && b < _n);\n        int x = leader(a), y\
-    \ = leader(b);\n        if (x == y) return {x, false};\n        if (-parent_or_size[x]\
+    \n\nnamespace internal_unionfind {\n/**\n * @brief \u5404\u8981\u7D20\u306E\u4EE3\
+    \u8868\u5143\u304B\u3089\u3001\u9023\u7D50\u6210\u5206\u3054\u3068\u306E\u8981\
+    \u7D20\u306E\u30EA\u30B9\u30C8\u3092\u4F5C\u308B\n * @param leader \u8981\u7D20\
+    \ a \u306E\u4EE3\u8868\u5143\u3092\u8FD4\u3059\u95A2\u6570\n */\ntemplate <typename\
+    \ F>\nstd::vector<std::vector<int>> groups(int n, F leader) {\n    std::vector<int>\
+    \ leader_buf(n), group_size(n);\n    for (int i = 0; i < n; i++) {\n        leader_buf[i]\
+    \ = leader(i);\n        group_size[leader_buf[i]]++;\n    }\n    std::vector<std::vector<int>>\
+    \ result(n);\n    for (int i = 0; i < n; i++) {\n        result[i].reserve(group_size[i]);\n\
+    \    }\n    for (int i = 0; i < n; i++) {\n        result[leader_buf[i]].push_back(i);\n\
+    \    }\n    result.erase(std::remove_if(result.begin(), result.end(), [&](const\
+    \ std::vector<int>& v) { return v.empty(); }), result.end());\n    return result;\n\
+    }\n}  // namespace internal_unionfind\n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\
+    \u30D5\u306B\u5BFE\u3057\u3066\u300C\u8FBA\u306E\u8FFD\u52A0\u300D\u3001\u300C\
+    2\u9802\u70B9\u304C\u9023\u7D50\u304B\u306E\u5224\u5B9A\u300D\u3092\u3059\u308B\
+    \n */\nclass UnionFind {\n   protected:\n    int _n;\n    // \u8CA0\u306A\u3089\
+    \u30B5\u30A4\u30BA\u3001\u975E\u8CA0\u306A\u3089\u89AA\n    std::vector<int> parent_or_size;\n\
+    \n   public:\n    /**\n     * @brief merge \u306E\u623B\u308A\u5024\n     *\n\
+    \     * if (uf.merge(a, b)) \u3067\u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B\
+    \u3092\u5224\u5B9A\u3067\u304D\u3001\n     * auto [r, merged] = uf.merge(a, b);\
+    \ \u3067\u4EE3\u8868\u5143\u3082\u53D7\u3051\u53D6\u308C\u308B\n     */\n    struct\
+    \ MergeResult {\n        int leader;   //!< \u7D71\u5408\u5F8C\u306E\u4EE3\u8868\
+    \u5143\n        bool merged;  //!< \u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B\
+    \ (\u3082\u3068\u3082\u3068\u540C\u3058\u9023\u7D50\u6210\u5206\u306A\u3089 false)\n\
+    \        explicit operator bool() const { return merged; }\n    };\n\n    UnionFind()\
+    \ : _n(0) {}\n    explicit UnionFind(int n) : _n(n), parent_or_size(n, -1) {}\n\
+    \n    /**\n     * @brief \u8FBA(a,b)\u3092\u8DB3\u3059\n     * @return \u7D71\u5408\
+    \u5F8C\u306E\u4EE3\u8868\u5143\u3068\u3001\u65B0\u3057\u304F\u7D71\u5408\u3057\
+    \u305F\u304B\n     */\n    MergeResult merge(int a, int b) {\n        assert(0\
+    \ <= a && a < _n);\n        assert(0 <= b && b < _n);\n        int x = leader(a),\
+    \ y = leader(b);\n        if (x == y) return {x, false};\n        if (-parent_or_size[x]\
     \ < -parent_or_size[y]) std::swap(x, y);\n        parent_or_size[x] += parent_or_size[y];\n\
     \        parent_or_size[y] = x;\n        return {x, true};\n    }\n    /**\n \
     \    * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\u304B\n    \
@@ -70,83 +81,76 @@ data:
     \u306B\u5206\u3051\u3001\u305D\u306E\u60C5\u5831\u3092\u8FD4\u3059\n     * @return\
     \ \u300C\u4E00\u3064\u306E\u9023\u7D50\u6210\u5206\u306E\u9802\u70B9\u756A\u53F7\
     \u306E\u30EA\u30B9\u30C8\u300D\u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<std::vector<int>>\
-    \ groups() {\n        std::vector<int> leader_buf(_n), group_size(_n);\n     \
-    \   for (int i = 0; i < _n; i++) {\n            leader_buf[i] = leader(i);\n \
-    \           group_size[leader_buf[i]]++;\n        }\n        std::vector<std::vector<int>>\
-    \ result(_n);\n        for (int i = 0; i < _n; i++) {\n            result[i].reserve(group_size[i]);\n\
-    \        }\n        for (int i = 0; i < _n; i++) {\n            result[leader_buf[i]].push_back(i);\n\
-    \        }\n        result.erase(\n            std::remove_if(result.begin(),\
-    \ result.end(),\n                           [&](const std::vector<int>& v) { return\
-    \ v.empty(); }),\n            result.end());\n        return result;\n    }\n\
-    };\n#line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file graph.hpp\n * @brief \u30B0\
-    \u30E9\u30D5\n */\n\n#line 10 \"src/graph/graph.hpp\"\n#include <deque>\n#include\
-    \ <functional>\n#line 13 \"src/graph/graph.hpp\"\n#include <limits>\n#include\
-    \ <queue>\n#line 17 \"src/graph/graph.hpp\"\n\n/**\n * @brief \u30B0\u30E9\u30D5\
-    \u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\u30B3\u30B9\
-    \u30C8\u306E\u578B\n */\ntemplate <typename Cost = int>\nclass Graph {\n   public:\n\
-    \    /**\n     * @brief \u6709\u5411\u8FBA\u306E\u69CB\u9020\u4F53\n     *\n \
-    \    * operator int()\u3092\u5B9A\u7FA9\u3057\u3066\u3044\u308B\u306E\u3067\u3001\
-    int\u578B\u306B\u30AD\u30E3\u30B9\u30C8\u3059\u308B\u3068\u52DD\u624B\u306Bdst\u306B\
-    \u306A\u308B\n     * \u4F8B\u3048\u3070\u3001\n     * for (auto& e : g[v]) \u3092\
-    \u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\u304C\u5217\u6319\u3055\
-    \u308C\u308B\u304C\u3001\n     * for (int dst : g[v]) \u3068\u3059\u308B\u3068\
-    \u3001v\u304B\u3089\u51FA\u308B\u8FBA\u306E\u884C\u304D\u5148\u304C\u5217\u6319\
-    \u3055\u308C\u308B\n     */\n    struct Edge {\n        int src = -1;    //!<\
-    \ \u59CB\u70B9\n        int dst = -1;    //!< \u7D42\u70B9\n        Cost cost\
-    \ = {};  //!< \u30B3\u30B9\u30C8\n        int id = -1;     //!< \u8FBA\u306E\u756A\
-    \u53F7(\u8FFD\u52A0\u3055\u308C\u305F\u9806\u3001\u7121\u5411\u8FBA\u306E\u5834\
-    \u5408\u306Fid\u304C\u540C\u3058\u3067\u65B9\u5411\u304C\u9006\u306E\u3082\u306E\
-    \u304C2\u3064\u5B58\u5728\u3059\u308B)\n        Edge() = default;\n        Edge(int\
-    \ src, int dst, Cost cost = 1, int id = -1) : src(src), dst(dst), cost(cost),\
-    \ id(id) {}\n        operator int() const { return dst; }\n    };\n\n    /**\n\
-    \     * @brief \u6700\u77ED\u8DEF\u306E\u7D50\u679C\n     *\n     * auto [dist,\
-    \ prev] = g.shortest_path(s); \u306E\u3088\u3046\u306B\u53D7\u3051\u53D6\u308C\
-    \u308B\n     */\n    struct ShortestPath {\n        std::vector<Cost> dist;  //!<\
-    \ \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u9577\n        std::vector<Edge>\
-    \ prev;  //!< \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\u306E\u76F4\
-    \u524D\u306E\u8FBA (\u59CB\u70B9\u3068\u672A\u5230\u9054\u306E\u9802\u70B9\u3067\
-    \u306F src == -1)\n        /**\n         * @brief \u59CB\u70B9\u304B\u3089 t \u3078\
-    \u306E\u6700\u77ED\u8DEF\u3092\u69CB\u6210\u3059\u308B\u8FBA\u306E\u30EA\u30B9\
-    \u30C8 (\u59CB\u70B9\u5074\u304B\u3089\u9806\u306B)\n         * @note t \u304C\
-    \u59CB\u70B9\u304B\u672A\u5230\u9054\u306E\u9802\u70B9\u306A\u3089\u7A7A\u3002\
-    \u8CA0\u9589\u8DEF\u306E\u5F71\u97FF\u3092\u53D7\u3051\u308B\u9802\u70B9\u3067\
-    \u306F\u6700\u77ED\u8DEF\u304C\u5B9A\u307E\u3089\u306A\u3044 (assert \u3067\u843D\
-    \u3061\u308B)\n         */\n        std::vector<Edge> path(int t) const {\n  \
-    \          std::vector<Edge> res;\n            while (prev[t].src != -1) {\n \
-    \               res.push_back(prev[t]);\n                assert(res.size() < prev.size()\
-    \ && \"path: negative cycle\");\n                t = prev[t].src;\n          \
-    \  }\n            std::reverse(res.begin(), res.end());\n            return res;\n\
-    \        }\n    };\n\n    int n;                             //!< \u9802\u70B9\
-    \u6570\n    int m;                             //!< \u8FBA\u6570\n    std::vector<std::vector<Edge>>\
-    \ g;  //!< \u30B0\u30E9\u30D5\u306E\u96A3\u63A5\u30EA\u30B9\u30C8\u8868\u73FE\n\
-    \n    /**\n     * @brief \u30C7\u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\
-    \u30E9\u30AF\u30BF\n     */\n    Graph() : n(0), m(0), g(0) {}\n    /**\n    \
-    \ * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param n \u9802\u70B9\
-    \u6570\n     */\n    explicit Graph(int n) : n(n), m(0), g(n) {}\n    /**\n  \
-    \   * @brief \u9802\u70B9\u6570\n     */\n    int size() const { return n; }\n\
-    \    /**\n     * @brief \u7121\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n   \
-    \  * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n     * @param w \u30B3\
-    \u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n    void add_edge(int u,\
-    \ int v, Cost w = 1) {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n\
-    \        g[u].push_back({u, v, w, m});\n        g[v].push_back({v, u, w, m++});\n\
-    \    }\n    /**\n     * @brief \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\
-    \n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n     * @param w\
-    \ \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n    void add_directed_edge(int\
-    \ u, int v, Cost w = 1) {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n\
-    \        g[u].push_back({u, v, w, m++});\n    }\n    /**\n     * @brief \u8FBA\
-    \u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\u529B\u304B\u3089\u53D7\u3051\u53D6\
-    \u3063\u3066\u8FFD\u52A0\u3059\u308B\n     * @param m \u8FBA\u306E\u6570\n   \
-    \  * @param padding \u9802\u70B9\u756A\u53F7\u3092\u5165\u529B\u304B\u3089\u3044\
-    \u304F\u3064\u305A\u3089\u3059\u304B \u7701\u7565\u3057\u305F\u3089-1\n     *\
-    \ @param weighted \u8FBA\u306E\u91CD\u307F\u304C\u5165\u529B\u3055\u308C\u308B\
-    \u304B \u7701\u7565\u3057\u305F\u3089false\u3068\u306A\u308A\u3001\u91CD\u307F\
-    1\u3067\u8FBA\u304C\u8FFD\u52A0\u3055\u308C\u308B\n     * @param directed \u6709\
-    \u5411\u30B0\u30E9\u30D5\u304B\u3069\u3046\u304B \u7701\u7565\u3057\u305F\u3089\
-    false\n     */\n    void read(int m, int padding = -1, bool weighted = false,\
-    \ bool directed = false) {\n        for (int i = 0; i < m; i++) {\n          \
-    \  int u, v;\n            std::cin >> u >> v;\n            u += padding, v +=\
-    \ padding;\n            Cost c(1);\n            if (weighted)\n              \
-    \  std::cin >> c;\n            if (directed)\n                add_directed_edge(u,\
+    \ groups() {\n        return internal_unionfind::groups(_n, [&](int a) { return\
+    \ leader(a); });\n    }\n};\n#line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file\
+    \ graph.hpp\n * @brief \u30B0\u30E9\u30D5\n */\n\n#line 10 \"src/graph/graph.hpp\"\
+    \n#include <deque>\n#include <functional>\n#line 13 \"src/graph/graph.hpp\"\n\
+    #include <limits>\n#include <queue>\n#line 17 \"src/graph/graph.hpp\"\n\n/**\n\
+    \ * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam\
+    \ Cost \u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u578B\n */\ntemplate <typename Cost\
+    \ = int>\nclass Graph {\n   public:\n    /**\n     * @brief \u6709\u5411\u8FBA\
+    \u306E\u69CB\u9020\u4F53\n     *\n     * operator int()\u3092\u5B9A\u7FA9\u3057\
+    \u3066\u3044\u308B\u306E\u3067\u3001int\u578B\u306B\u30AD\u30E3\u30B9\u30C8\u3059\
+    \u308B\u3068\u52DD\u624B\u306Bdst\u306B\u306A\u308B\n     * \u4F8B\u3048\u3070\
+    \u3001\n     * for (auto& e : g[v]) \u3092\u3059\u308B\u3068\u3001v\u304B\u3089\
+    \u51FA\u308B\u8FBA\u304C\u5217\u6319\u3055\u308C\u308B\u304C\u3001\n     * for\
+    \ (int dst : g[v]) \u3068\u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\
+    \u306E\u884C\u304D\u5148\u304C\u5217\u6319\u3055\u308C\u308B\n     */\n    struct\
+    \ Edge {\n        int src = -1;    //!< \u59CB\u70B9\n        int dst = -1;  \
+    \  //!< \u7D42\u70B9\n        Cost cost = {};  //!< \u30B3\u30B9\u30C8\n     \
+    \   int id = -1;     //!< \u8FBA\u306E\u756A\u53F7(\u8FFD\u52A0\u3055\u308C\u305F\
+    \u9806\u3001\u7121\u5411\u8FBA\u306E\u5834\u5408\u306Fid\u304C\u540C\u3058\u3067\
+    \u65B9\u5411\u304C\u9006\u306E\u3082\u306E\u304C2\u3064\u5B58\u5728\u3059\u308B\
+    )\n        Edge() = default;\n        Edge(int src, int dst, Cost cost = 1, int\
+    \ id = -1) : src(src), dst(dst), cost(cost), id(id) {}\n        operator int()\
+    \ const { return dst; }\n    };\n\n    /**\n     * @brief \u6700\u77ED\u8DEF\u306E\
+    \u7D50\u679C\n     *\n     * auto [dist, prev] = g.shortest_path(s); \u306E\u3088\
+    \u3046\u306B\u53D7\u3051\u53D6\u308C\u308B\n     */\n    struct ShortestPath {\n\
+    \        std::vector<Cost> dist;  //!< \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\
+    \u8DEF\u9577\n        std::vector<Edge> prev;  //!< \u5404\u9802\u70B9\u3078\u306E\
+    \u6700\u77ED\u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA (\u59CB\u70B9\u3068\u672A\
+    \u5230\u9054\u306E\u9802\u70B9\u3067\u306F src == -1)\n        /**\n         *\
+    \ @brief \u59CB\u70B9\u304B\u3089 t \u3078\u306E\u6700\u77ED\u8DEF\u3092\u69CB\
+    \u6210\u3059\u308B\u8FBA\u306E\u30EA\u30B9\u30C8 (\u59CB\u70B9\u5074\u304B\u3089\
+    \u9806\u306B)\n         * @note t \u304C\u59CB\u70B9\u304B\u672A\u5230\u9054\u306E\
+    \u9802\u70B9\u306A\u3089\u7A7A\u3002\u8CA0\u9589\u8DEF\u306E\u5F71\u97FF\u3092\
+    \u53D7\u3051\u308B\u9802\u70B9\u3067\u306F\u6700\u77ED\u8DEF\u304C\u5B9A\u307E\
+    \u3089\u306A\u3044 (assert \u3067\u843D\u3061\u308B)\n         */\n        std::vector<Edge>\
+    \ path(int t) const {\n            std::vector<Edge> res;\n            while (prev[t].src\
+    \ != -1) {\n                res.push_back(prev[t]);\n                assert(res.size()\
+    \ < prev.size() && \"path: negative cycle\");\n                t = prev[t].src;\n\
+    \            }\n            std::reverse(res.begin(), res.end());\n          \
+    \  return res;\n        }\n    };\n\n    int n;                             //!<\
+    \ \u9802\u70B9\u6570\n    int m;                             //!< \u8FBA\u6570\
+    \n    std::vector<std::vector<Edge>> g;  //!< \u30B0\u30E9\u30D5\u306E\u96A3\u63A5\
+    \u30EA\u30B9\u30C8\u8868\u73FE\n\n    /**\n     * @brief \u30C7\u30D5\u30A9\u30EB\
+    \u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     */\n    Graph() : n(0),\
+    \ m(0), g(0) {}\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\
+    \n     * @param n \u9802\u70B9\u6570\n     */\n    explicit Graph(int n) : n(n),\
+    \ m(0), g(n) {}\n    /**\n     * @brief \u9802\u70B9\u6570\n     */\n    int size()\
+    \ const { return n; }\n    /**\n     * @brief \u7121\u5411\u8FBA\u3092\u8FFD\u52A0\
+    \u3059\u308B\n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n   \
+    \  * @param w \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n  \
+    \  void add_edge(int u, int v, Cost w = 1) {\n        assert(0 <= u && u < n &&\
+    \ 0 <= v && v < n);\n        g[u].push_back({u, v, w, m});\n        g[v].push_back({v,\
+    \ u, w, m++});\n    }\n    /**\n     * @brief \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\
+    \u3059\u308B\n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n   \
+    \  * @param w \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n  \
+    \  void add_directed_edge(int u, int v, Cost w = 1) {\n        assert(0 <= u &&\
+    \ u < n && 0 <= v && v < n);\n        g[u].push_back({u, v, w, m++});\n    }\n\
+    \    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\u529B\
+    \u304B\u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\u308B\n     * @param\
+    \ m \u8FBA\u306E\u6570\n     * @param padding \u9802\u70B9\u756A\u53F7\u3092\u5165\
+    \u529B\u304B\u3089\u3044\u304F\u3064\u305A\u3089\u3059\u304B \u7701\u7565\u3057\
+    \u305F\u3089-1\n     * @param weighted \u8FBA\u306E\u91CD\u307F\u304C\u5165\u529B\
+    \u3055\u308C\u308B\u304B \u7701\u7565\u3057\u305F\u3089false\u3068\u306A\u308A\
+    \u3001\u91CD\u307F1\u3067\u8FBA\u304C\u8FFD\u52A0\u3055\u308C\u308B\n     * @param\
+    \ directed \u6709\u5411\u30B0\u30E9\u30D5\u304B\u3069\u3046\u304B \u7701\u7565\
+    \u3057\u305F\u3089false\n     */\n    void read(int m, int padding = -1, bool\
+    \ weighted = false, bool directed = false) {\n        for (int i = 0; i < m; i++)\
+    \ {\n            int u, v;\n            std::cin >> u >> v;\n            u +=\
+    \ padding, v += padding;\n            Cost c(1);\n            if (weighted)\n\
+    \                std::cin >> c;\n            if (directed)\n                add_directed_edge(u,\
     \ v, c);\n            else\n                add_edge(u, v, c);\n        }\n  \
     \  }\n    /**\n     * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u51FA\u308B\u8FBA\
     \u3092\u5217\u6319\u3059\u308B\n     * @param v \u9802\u70B9\u756A\u53F7\n   \
@@ -535,7 +539,7 @@ data:
   isVerificationFile: true
   path: test/unittest/find-cycle.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 16:37:34+09:00'
+  timestamp: '2026-10-14 21:19:13+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/find-cycle.test.cpp

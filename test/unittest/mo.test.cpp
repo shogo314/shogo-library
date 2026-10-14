@@ -31,8 +31,9 @@ int main() {
             if (d.front() != a[i]) ok = false;
             d.pop_front();
         };
-        auto add_right = [&](std::deque<int>& d, int i) { d.push_back(a[i]); };
-        auto delete_right = [&](std::deque<int>& d, int i) {
+        // 位置は long long で渡される。int で受け取る操作 (左) と long long で受け取る操作 (右) のどちらも使える
+        auto add_right = [&](std::deque<int>& d, long long i) { d.push_back(a[i]); };
+        auto delete_right = [&](std::deque<int>& d, long long i) {
             if (d.back() != a[i]) ok = false;
             d.pop_back();
         };

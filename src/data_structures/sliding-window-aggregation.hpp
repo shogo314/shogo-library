@@ -97,6 +97,9 @@ class SlidingWindowAggregation {
     }
 };
 
+template <typename M>
+SlidingWindowAggregation(M) -> SlidingWindowAggregation<M>;
+
 /**
  * @brief 長さ k の各区間 [i, i + k) の最小値を並べたもの (長さ n - k + 1) O(n)
  *

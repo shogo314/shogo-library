@@ -139,3 +139,10 @@ class DualSegTree {
         }
     }
 };
+
+template <typename A>
+DualSegTree(int, A) -> DualSegTree<A>;
+template <typename A>
+DualSegTree(int, typename A::S, A) -> DualSegTree<A>;
+template <typename A>
+DualSegTree(std::vector<typename A::S>, A) -> DualSegTree<A>;

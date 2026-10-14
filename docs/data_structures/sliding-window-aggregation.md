@@ -14,6 +14,7 @@ swag.push(Affine<mint>{2, 3});
 swag.push(Affine<mint>{1, 5});
 mint y = swag.prod()(x);  // 先頭から順に適用した結果 (2x + 3) + 5
 swag.pop();               // 先頭を削除
+SlidingWindowAggregation swag2(Monoid([](int a, int b) { return std::min(a, b); }, INF));  // ラムダ式から作る
 ```
 
 キューを 2 つのスタックで表し、前半のスタックには先頭側からの積を持たせます。前半が空のときに `pop` すると、後半をまとめて前半へ移します。

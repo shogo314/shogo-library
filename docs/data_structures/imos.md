@@ -10,6 +10,7 @@ Imos<acted_monoid::AddSum<long long>> imos(5);
 imos.apply(1, 4, 10);
 imos.apply(2, 5, 1);
 imos.get(2);  // 11
+Imos imos2(5, acted_monoid::AddSum<long long>());  // 作用素付きモノイドの値から型を推論する
 ```
 
 作用素付きモノイド ([algebra/acted-monoid.hpp](../algebra/acted-monoid.hpp)) を渡します。作用素はアーベル群 (可換群) をなし、逆作用素 `inv` を持つ必要があります (`AddSum`、`MulSum` など)。値のモノイドの演算 (`op`、`e`) は使いません。

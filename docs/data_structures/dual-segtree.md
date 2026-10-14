@@ -14,6 +14,7 @@ mint x = seg.get(i);
 
 DualSegTree<acted_monoid::ChminMin<int>> seg2(n, INF);  // 区間 chmin、1点取得
 seg2.apply(l, r, 5);
+DualSegTree seg3(n, acted_monoid::AddSum<long long>());  // 作用素付きモノイドの値から型を推論する
 ```
 
 `mapping` が区間の長さを使う作用素付きモノイド (`AddSum` など) では、各要素に長さ 1 の区間として作用します。

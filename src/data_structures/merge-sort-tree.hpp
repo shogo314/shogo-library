@@ -162,3 +162,8 @@ class MergeSortTree {
         return ret;
     }
 };
+
+template <typename G, typename K>
+MergeSortTree(std::vector<std::pair<typename G::S, K>>, G) -> MergeSortTree<G, K>;
+template <typename G, typename K>
+MergeSortTree(std::vector<typename G::S>, std::vector<K>, G) -> MergeSortTree<G, K>;

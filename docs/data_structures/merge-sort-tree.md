@@ -11,6 +11,7 @@ std::vector<long long> key   = {5, 1, 4, 2, 3};
 MergeSortTree<> mst(value, key);           // 値は long long の和
 mst.prod(1, 4, 2, 5);                      // i ∈ [1, 4) かつ key ∈ [2, 5) → 3 + 4 = 7
 mst.prod(0, 5, std::nullopt, 3);           // key < 3 → 2 + 4 = 6
+MergeSortTree mst2(value, key, group::Sum<long long>());  // 群の値と key の型から推論する
 ```
 
 点の重みの矩形和 (x を添字、y をキーにする) や、区間内で閾値未満の値の個数・和などに使えます。

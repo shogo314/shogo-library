@@ -93,3 +93,10 @@ class Imos {
         return data[k];
     }
 };
+
+template <typename A>
+Imos(int, A) -> Imos<A>;
+template <typename A>
+Imos(int, typename A::S, A) -> Imos<A>;
+template <typename A>
+Imos(std::vector<typename A::S>, A) -> Imos<A>;

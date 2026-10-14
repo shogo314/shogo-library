@@ -17,7 +17,7 @@
 | `src/data_structures/` | セグメント木各種 (モノイドを渡して使う)、Fenwick Tree、Sparse Table、Union-Find、マージソートツリー、Li Chao Tree、双対セグメント木、Sliding Window Aggregation (スライド最小値)、削除可能な優先度付きキュー、動的セグメント木 (要素数が大きいもの)、Wavelet Matrix、永続データ構造 (セグメント木・遅延伝搬セグメント木・配列・Union-Find・スタック・キュー) など |
 | `src/graph/` | グラフ (最短路、全点対間最短路)、木、全方位木 DP、Functional Graph、強連結成分分解、閉路の検出と復元、最小全域木、lowlink (関節点・橋)、2-SAT、最大流、最小費用流、二部マッチング、HL 分解 |
 | `src/math/` | modint、mod 演算 (冪乗・逆元)、畳み込み、行列、形式的冪級数、組み合わせ、中国剰余定理、素数 (素数判定・素因数分解・篩)、無限大を持つ整数 (`infint`)、floor sum、商の列挙、有理数、約数・倍数のゼータ変換とメビウス変換 (GCD・LCM 畳み込み)、XOR 基底 |
-| `src/string/` | Z-algorithm、KMP、Manacher、Suffix Array と LCP 配列、ローリングハッシュ、Trie |
+| `src/string/` | Z-algorithm、KMP、Manacher、Suffix Array と LCP 配列、ローリングハッシュ、Trie、Aho-Corasick |
 | `src/geometry/` | 幾何 (ベクトル、凸包、偏角ソート、ccw、射影・反射、直線の交点、点・線分の距離、円の交点・接線・内接円・外接円など) |
 | `src/dp/` | 動的計画法 (ナップサック問題、部分和問題 (判定・S 以下の最大値・復元・個数)、最長増加部分列 (LIS)) |
 | `src/others/` | Mo's algorithm、転倒数 |

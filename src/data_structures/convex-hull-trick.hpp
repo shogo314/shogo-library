@@ -14,12 +14,14 @@
 #include <utility>
 #include <vector>
 
+#include "../utility/traits.hpp"
+
 /**
  * @brief 追加される傾きが単調とは限らない場合のConvex Hull Trick
  *
  * @tparam T 値の型
  */
-template <typename T, std::enable_if_t<std::is_scalar_v<T>, std::nullptr_t> = nullptr>
+template <typename T, ENABLE_IF_T(std::is_scalar_v<T>)>
 class LiChaoTree {
     int n, sz, height;
     std::vector<T> xs, as, bs;

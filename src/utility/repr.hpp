@@ -110,27 +110,27 @@ inline std::string repr(const std::array<T, N>&);
 /////////////////////////// definition ////////////////////////////
 ///////////////////////////////////////////////////////////////////
 
-template <typename T, std::enable_if_t<!has_type_str_v<T>, std::nullptr_t> = nullptr>
+template <typename T, ENABLE_IF_T(!has_type_str_v<T>)>
 inline std::string type_str(const T& t) {
     return "T";
 }
-template <typename T, std::enable_if_t<has_type_str_v<T>, std::nullptr_t> = nullptr>
+template <typename T, ENABLE_IF_T(has_type_str_v<T>)>
 inline std::string type_str(const T& t) {
     return t.type_str();
 }
-template <typename T, std::enable_if_t<!has_initializer_str_v<T>, std::nullptr_t> = nullptr>
+template <typename T, ENABLE_IF_T(!has_initializer_str_v<T>)>
 inline std::string initializer_str(const T& t) {
     return "{}";
 }
-template <typename T, std::enable_if_t<has_initializer_str_v<T>, std::nullptr_t> = nullptr>
+template <typename T, ENABLE_IF_T(has_initializer_str_v<T>)>
 inline std::string initializer_str(const T& t) {
     return t.initializer_str();
 }
-template <typename T, std::enable_if_t<!has_repr_v<T>, std::nullptr_t> = nullptr>
+template <typename T, ENABLE_IF_T(!has_repr_v<T>)>
 inline std::string repr(const T& t) {
     return internal_repr::type_str(t) + internal_repr::initializer_str(t);
 }
-template <typename T, std::enable_if_t<has_repr_v<T>, std::nullptr_t> = nullptr>
+template <typename T, ENABLE_IF_T(has_repr_v<T>)>
 inline std::string repr(const T& t) {
     return t.repr();
 }

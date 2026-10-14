@@ -14,11 +14,13 @@
 #include <type_traits>
 #include <utility>
 #include <vector>
+
+#include "../utility/traits.hpp"
 /**
  * @brief 半開区間を管理する
  * @tparam T スカラー
  */
-template <typename T = long long, class Compare = std::less<T>, std::enable_if_t<std::is_scalar_v<T>>* = nullptr>
+template <typename T = long long, class Compare = std::less<T>, ENABLE_IF_T(std::is_scalar_v<T>)>
 class IntervalSet {
    public:
     using key_type = T;

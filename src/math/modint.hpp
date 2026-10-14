@@ -12,6 +12,8 @@
 #include <type_traits>
 #include <utility>
 
+#include "../utility/traits.hpp"
+
 namespace internal_modint {
 // clang-format off
 static constexpr std::uint16_t prime32_bases[] {
@@ -85,13 +87,13 @@ class modint_base {
 
     /// @brief @c value の剰余で初期化します。
     /// @param value 初期化に使う値
-    template <class SignedIntegral, std::enable_if_t<std::is_integral_v<SignedIntegral> && std::is_signed_v<SignedIntegral>>* = nullptr>
+    template <class SignedIntegral, ENABLE_IF_T((std::is_integral_v<SignedIntegral> && std::is_signed_v<SignedIntegral>))>
     constexpr modint_base(SignedIntegral value) noexcept
         : m_value{static_cast<value_type>((static_cast<long long>(value) % Modint::mod() + Modint::mod()) % Modint::mod())} {}
 
     /// @brief @c value の剰余で初期化します。
     /// @param value 初期化に使う値
-    template <class UnsignedIntegral, std::enable_if_t<std::is_integral_v<UnsignedIntegral> && std::is_unsigned_v<UnsignedIntegral>>* = nullptr>
+    template <class UnsignedIntegral, ENABLE_IF_T((std::is_integral_v<UnsignedIntegral> && std::is_unsigned_v<UnsignedIntegral>))>
     constexpr modint_base(UnsignedIntegral value) noexcept
         : m_value{static_cast<value_type>(value % Modint::mod())} {}
 
@@ -339,7 +341,7 @@ class static_modint : public modint_base<static_modint<Mod>> {
 
     /// @brief @c value の剰余で初期化します。
     /// @param value 初期化に使う値
-    template <class SignedIntegral, std::enable_if_t<std::is_integral_v<SignedIntegral>>* = nullptr>
+    template <class SignedIntegral, ENABLE_IF_T(std::is_integral_v<SignedIntegral>)>
     constexpr static_modint(SignedIntegral value) noexcept
         : base_type{value} {}
 
@@ -387,7 +389,7 @@ class dynamic_modint : public modint_base<dynamic_modint<ID>> {
 
     /// @brief @c value の剰余で初期化します。
     /// @param value 初期化に使う値
-    template <class SignedIntegral, std::enable_if_t<std::is_integral_v<SignedIntegral>>* = nullptr>
+    template <class SignedIntegral, ENABLE_IF_T(std::is_integral_v<SignedIntegral>)>
     constexpr dynamic_modint(SignedIntegral value) noexcept
         : base_type{value} {}
 

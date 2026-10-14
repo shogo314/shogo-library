@@ -19,13 +19,15 @@
 #include <utility>
 #include <vector>
 
+#include "../utility/traits.hpp"
+
 /**
  * @brief 幾何学としてのベクトル
  *
  * @tparam T 型 省略したらdouble
  * @tparam Dim 次元 省略したら2
  */
-template <typename T = double, int Dim = 2, std::enable_if_t<std::is_scalar_v<T> && (Dim > 0)>* = nullptr>
+template <typename T = double, int Dim = 2, ENABLE_IF_T(std::is_scalar_v<T> && (Dim > 0))>
 struct Vector {
     std::array<T, Dim> v;  //!< ベクトルの成分表示
 

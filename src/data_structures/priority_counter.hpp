@@ -11,7 +11,9 @@
 #include <type_traits>
 #include <utility>
 
-template <typename T, std::size_t K = 1, class Compare = std::less<T>, std::enable_if_t<(K >= 1), std::nullptr_t> = nullptr>
+#include "../utility/traits.hpp"
+
+template <typename T, std::size_t K = 1, class Compare = std::less<T>, ENABLE_IF_T(K >= 1)>
 struct PriorityCounter {
     using key_type = T;
     using mapped_type = long long;

@@ -147,7 +147,7 @@ struct RHString {
     /**
      * @brief vectorなどで初期化する
      */
-    template <class R, std::enable_if_t<is_range_v<R> && !std::is_convertible_v<R, std::string_view>, std::nullptr_t> = nullptr>
+    template <class R, ENABLE_IF_T(is_range_v<R> && !std::is_convertible_v<R, std::string_view>)>
     RHString(RollingHash& rh, R&& v) : rh(rh) {
         using std::begin, std::end, std::rbegin, std::rend;
         sz = static_cast<int>(std::distance(begin(v), end(v)));
@@ -157,7 +157,7 @@ struct RHString {
     /**
      * @brief charやunsigned long longなどで初期化する
      */
-    template <class T, std::enable_if_t<std::is_convertible_v<T, unsigned long long> && !std::is_convertible_v<T, std::string_view>, std::nullptr_t> = nullptr>
+    template <class T, ENABLE_IF_T(std::is_convertible_v<T, unsigned long long> && !std::is_convertible_v<T, std::string_view>)>
     RHString(RollingHash& rh, T&& x) : rh(rh) {
         sz = 1;
         hash1 = RollingHash::to_value(x);
@@ -211,7 +211,7 @@ struct RHString {
     /**
      * @brief vectorなどを再代入する
      */
-    template <class R, std::enable_if_t<is_range_v<R> && !std::is_convertible_v<R, std::string_view>, std::nullptr_t> = nullptr>
+    template <class R, ENABLE_IF_T(is_range_v<R> && !std::is_convertible_v<R, std::string_view>)>
     void assign(R&& v) {
         using std::begin, std::end, std::rbegin, std::rend;
         sz = static_cast<int>(std::distance(begin(v), end(v)));
@@ -221,7 +221,7 @@ struct RHString {
     /**
      * @brief charやunsigned long longなどを再代入する
      */
-    template <class T, std::enable_if_t<std::is_convertible_v<T, unsigned long long> && !std::is_convertible_v<T, std::string_view>, std::nullptr_t> = nullptr>
+    template <class T, ENABLE_IF_T(std::is_convertible_v<T, unsigned long long> && !std::is_convertible_v<T, std::string_view>)>
     void assign(T&& x) {
         sz = 1;
         hash1 = RollingHash::to_value(x);
@@ -246,7 +246,7 @@ struct RHString {
     /**
      * @brief vectorなどを再代入する
      */
-    template <class R, std::enable_if_t<is_range_v<R> && !std::is_convertible_v<R, std::string_view>, std::nullptr_t> = nullptr>
+    template <class R, ENABLE_IF_T(is_range_v<R> && !std::is_convertible_v<R, std::string_view>)>
     RHString& operator=(R&& v) {
         assign(v);
         return *this;
@@ -254,7 +254,7 @@ struct RHString {
     /**
      * @brief charやunsigned long longなどを再代入する
      */
-    template <class T, std::enable_if_t<std::is_convertible_v<T, unsigned long long> && !std::is_convertible_v<T, std::string_view>, std::nullptr_t> = nullptr>
+    template <class T, ENABLE_IF_T(std::is_convertible_v<T, unsigned long long> && !std::is_convertible_v<T, std::string_view>)>
     RHString& operator=(T&& x) {
         assign(x);
         return *this;

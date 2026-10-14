@@ -41,5 +41,6 @@ long long s = seg[r].prod(d, u) - seg[l].prod(d, u);
 ## 関連
 
 - 過去の版が要らないなら [セグメント木](segtree.hpp)
+- 区間作用も必要なら [永続遅延伝搬セグメント木](persistent-lazy-segtree.hpp)
 - 値を持つだけでよいなら [永続配列](persistent-array.hpp)
 - 静的な矩形和だけなら [マージソートツリー](merge-sort-tree.hpp)

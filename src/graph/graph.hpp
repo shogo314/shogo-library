@@ -79,6 +79,10 @@ class Graph {
      */
     explicit Graph(int n) : n(n), m(0), g(n) {}
     /**
+     * @brief 頂点数
+     */
+    int size() const { return n; }
+    /**
      * @brief 無向辺を追加する
      * @param u 始点
      * @param v 終点

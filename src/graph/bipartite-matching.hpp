@@ -57,6 +57,15 @@ class BipartiteMatching {
     BipartiteMatching(int l, int r) : l(l), r(r), g(l), match_l(l, -1), match_r(r, -1) {}
 
     /**
+     * @brief 左側の頂点数
+     */
+    int left_size() const { return l; }
+    /**
+     * @brief 右側の頂点数
+     */
+    int right_size() const { return r; }
+
+    /**
      * @brief 左側の頂点 u と右側の頂点 v の間に辺を追加する
      */
     void add_edge(int u, int v) {

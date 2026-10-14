@@ -94,6 +94,11 @@ class LowLink {
     }
 
     /**
+     * @brief 頂点数
+     */
+    int size() const { return n; }
+
+    /**
      * @brief v が関節点 (取り除くと連結成分が増える頂点) か
      */
     bool is_articulation_point(int v) const {

@@ -31,6 +31,7 @@ struct Tree : private Graph<Cost> {
     // 回避するためprivate継承にして、メンバをすべてusing宣言
     using Edge = typename Graph<Cost>::Edge;
     using Graph<Cost>::n;
+    using Graph<Cost>::size;
     using Graph<Cost>::m;
     using Graph<Cost>::g;
     using Graph<Cost>::Graph;
@@ -126,6 +127,7 @@ class RootedTree : private Tree<Cost> {
    public:
     using Edge = typename Tree<Cost>::Edge;
     using Tree<Cost>::n;
+    using Tree<Cost>::size;
     using Tree<Cost>::m;
     using Tree<Cost>::g;
     using Tree<Cost>::operator[];
@@ -257,6 +259,7 @@ class DoublingClimbTree : private RootedTree<Cost> {
    public:
     using Edge = typename RootedTree<Cost>::Edge;
     using RootedTree<Cost>::n;
+    using RootedTree<Cost>::size;
     using RootedTree<Cost>::m;
     using RootedTree<Cost>::g;
     using RootedTree<Cost>::operator[];

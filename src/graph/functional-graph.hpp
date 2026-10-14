@@ -112,6 +112,10 @@ struct FunctionalGraph {
         build();
     }
     /**
+     * @brief 頂点数
+     */
+    int size() const { return n; }
+    /**
      * @brief 辺の情報を標準入力から受け取って追加する
      * @param padding 頂点番号を入力からいくつずらすか 省略したら-1
      */

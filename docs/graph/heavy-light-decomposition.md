@@ -31,9 +31,9 @@ for (auto [a, b] : hld.path(u, v)) x = a <= b ? forward.prod(a, b + 1)(x) : back
 
 `edge = true` にすると辺についてのパスになります。辺 (`parent(v)`, `v`) の値を `index(v)` 番目に置き、`lca` の位置を含めません。
 
-## メンバ
+## メンバ関数
 
-| メンバ | 説明 | 計算量 |
+| 関数 | 説明 | 計算量 |
 |---|---|---|
 | `HeavyLightDecomposition(tree, root = 0)` | 木 `tree` を根 `root` で分解する。`tree.n` が頂点数で、`for (int u : tree[v])` で隣接する頂点を列挙できればよい | $O(n)$ |
 | `index(v)` / `vertex(i)` | 頂点 `v` の列での位置 / 列の `i` 番目の頂点 | $O(1)$ |

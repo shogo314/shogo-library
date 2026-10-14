@@ -45,22 +45,22 @@ seg.prod(0, 4).sum;   // 13
 
 ## メンバ関数
 
-計算量は、作用素付きモノイドが Segment Tree Beats の条件を満たす場合のならし計算量です (区間 chmin・chmax・加算・区間和なら $O(\log^2 n)$)。
+※ は、作用素付きモノイドが Segment Tree Beats の条件を満たす場合のならし計算量で、区間 chmin・chmax・加算・区間和の場合の値です。作用の伝搬が失敗すると子に降りて計算し直すので、作用を伝搬する操作はすべてこの計算量になります。
 
-| 関数 | 説明 |
-|---|---|
-| `SegTreeBeats(n, a = A())` | 要素数 `n`、すべて単位元で初期化 |
-| `SegTreeBeats(v, a = A())` | `v` で初期化 |
-| `size()` | 要素数 |
-| `get(k)` / `seg[k]` | `k` 番目の値 |
-| `set(k, x)` / `seg[k] = x` | `k` 番目を `x` に更新 |
-| `prod(l, r)` | 区間 $[l, r)$ の積 |
-| `all_prod()` | 全体の積 |
-| `apply(k, f)` | `k` 番目に `f` を作用 |
-| `apply(l, r, f)` | 区間 $[l, r)$ に `f` を作用 |
-| `max_right(l, g)` | `g(prod(l, r))` が真となる最大の `r` (`g` は単調) |
-| `min_left(r, g)` | `g(prod(l, r))` が真となる最小の `l` (`g` は単調) |
-| `os << seg` | 全要素を空白区切りで出力 |
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `SegTreeBeats(n, a = A())` | 要素数 `n`、すべて単位元で初期化 | $O(n)$ |
+| `SegTreeBeats(v, a = A())` | `v` で初期化 | $O(n)$ |
+| `size()` | 要素数 | $O(1)$ |
+| `get(k)` / `seg[k]` | `k` 番目の値 | 償却 $O(\log^2 n)$ ※ |
+| `set(k, x)` / `seg[k] = x` | `k` 番目を `x` に更新 | 償却 $O(\log^2 n)$ ※ |
+| `prod(l, r)` | 区間 $[l, r)$ の積 | 償却 $O(\log^2 n)$ ※ |
+| `all_prod()` | 全体の積 | $O(1)$ |
+| `apply(k, f)` | `k` 番目に `f` を作用 | 償却 $O(\log^2 n)$ ※ |
+| `apply(l, r, f)` | 区間 $[l, r)$ に `f` を作用 | 償却 $O(\log^2 n)$ ※ |
+| `max_right(l, g)` | `g(prod(l, r))` が真となる最大の `r` (`g` は単調) | 償却 $O(\log^2 n)$ ※ |
+| `min_left(r, g)` | `g(prod(l, r))` が真となる最小の `l` (`g` は単調) | 償却 $O(\log^2 n)$ ※ |
+| `os << seg` | 全要素を空白区切りで出力 | 償却 $O(\log^2 n)$ ※ の $n$ 倍 |
 
 ## 関連
 

@@ -27,3 +27,7 @@ $n$ を `xs` の長さとします。
 | `add_line(a, b)` | 直線 $y = ax + b$ を追加 | $O(\log n)$ |
 | `add_segment(a, b, l, r)` | 線分 $y = ax + b$ ($x \in [\mathrm{xs}_l, \mathrm{xs}_r)$) を追加 | $O(\log^2 n)$ |
 | `get_min(i)` | $x = \mathrm{xs}_i$ での最小値 (`std::optional<T>`)。$x = \mathrm{xs}_i$ を含む直線・線分がなければ `std::nullopt` | $O(\log n)$ |
+
+## 関連
+
+- 直線ではなく値の区間最小値なら [セグメント木](segtree.hpp)

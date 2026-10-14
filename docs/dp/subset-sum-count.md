@@ -11,9 +11,11 @@ std::vector<long long> a = {1, 2, 3, 5};
 auto c = subset_sum_count<mint>(a, 5);   // {1, 1, 1, 2, 1, 2}
 ```
 
+## 関数
+
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `subset_sum_count<mint>(a, S)` | 下の 2 つのうち、計算量が小さい方を選ぶ | |
+| `subset_sum_count<mint>(a, S)` | 下の 2 つのうち、計算量が小さい方を選ぶ | $O(\min(NS, S \log S))$ |
 | `subset_sum_count_dp<T>(a, S)` | DP。`T` は `long long` などでもよい | $O(NS)$ |
 | `subset_sum_count_fps<mint>(a, S)` | $\prod_i (1 + x^{a_i}) = \exp\left(\sum_i \log(1 + x^{a_i})\right)$ を使う。mod は $S$ より大きい素数であること | $O(S \log S)$ |
 

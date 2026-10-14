@@ -27,3 +27,8 @@ s.covered_by(5);                                // なし (std::nullopt)
 | `covered_by(l, r)` | $[l, r)$ を丸ごと含む区間 (`std::optional`) | $O(\log n)$ |
 | `size()` | 区間の個数 | $O(1)$ |
 | `to_vector()` | 区間の一覧 (左端の昇順) | $O(n)$ |
+
+## 関連
+
+- 区間への作用と 1 点取得なら [imos 法](imos.hpp)
+- 値の多重集合なら [Counter](counter.hpp)

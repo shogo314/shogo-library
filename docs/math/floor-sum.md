@@ -10,6 +10,8 @@ long long s = floor_sum(4, 10, 6, 3);  // floor(3/10) + floor(9/10) + floor(15/1
 long long t = floor_sum(3, 2, -1, 0);  // 0 + (-1) + (-1) = -2
 ```
 
+## 関数
+
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `floor_sum(n, m, a, b)` | 上の和。$n \ge 0$、$m \ge 1$。`a`、`b` は負でもよい (床関数は $-\infty$ 方向への切り捨て) | $O(\log m)$ |

@@ -13,14 +13,14 @@ if (inrect(i, j, h, w)) { /* グリッドの範囲内 */ }
 
 ## 関数
 
-| 関数 | 説明 |
-|---|---|
-| `chmin(a, b)` / `chmax(a, b)` | `a` を `min(a, b)` / `max(a, b)` に更新し、更新したら `true` |
-| `extgcd(a, b, x, y)` | $ax + by = \gcd(a, b)$ となる `x`、`y` を求め、$\gcd(a, b)$ を返す |
-| `inrange(x, a)` | $0 \le x < a$ か |
-| `inrange(x, a, b)` | $a \le x < b$ か |
-| `inrect(x, y, a, b)` | $0 \le x < a$ かつ $0 \le y < b$ か |
-| `max(a, b)` / `min(a, b)` | `long long` に揃えて比較する (`int` と `long long` を混ぜて渡せる) |
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `chmin(a, b)` / `chmax(a, b)` | `a` を `min(a, b)` / `max(a, b)` に更新し、更新したら `true` | $O(1)$ |
+| `extgcd(a, b, x, y)` | $ax + by = \gcd(a, b)$ となる `x`、`y` を求め、$\gcd(a, b)$ を返す | $O(\log \max(\lvert a \rvert, \lvert b \rvert))$ |
+| `inrange(x, a)` | $0 \le x < a$ か | $O(1)$ |
+| `inrange(x, a, b)` | $a \le x < b$ か | $O(1)$ |
+| `inrect(x, y, a, b)` | $0 \le x < a$ かつ $0 \le y < b$ か | $O(1)$ |
+| `max(a, b)` / `min(a, b)` | `long long` に揃えて比較する (`int` と `long long` を混ぜて渡せる) | $O(1)$ |
 
 `std::abs`、`std::gcd`、`std::lcm`、`std::size` は `using` 宣言してあるので、`std::` なしで使えます。
 

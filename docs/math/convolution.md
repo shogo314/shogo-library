@@ -10,6 +10,8 @@ auto c = convolution(a, b);                 // a, b は std::vector<mint>
 auto d = convolution_ll({1, 2}, {3, 4});    // {3, 10, 8}
 ```
 
+## 関数
+
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `convolution(a, b)` | `std::vector<mint>` の畳み込み。mod は任意 (998244353 なら NTT 1 回、それ以外は 3 つの mod の NTT と CRT) | $O(n \log n)$ |

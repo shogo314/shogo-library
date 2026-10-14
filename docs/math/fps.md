@@ -13,7 +13,7 @@ auto h = pow(f, 10, n);        // (1 + x)^10 の x^n 未満
 mint y = f.eval(2);            // f(2)
 ```
 
-`deg` を取る関数は、結果の $x^{\mathrm{deg}}$ 未満の項を返します。`deg` を省略すると `f.size()` になります。
+`deg` を取る関数は、結果の $x^{\mathrm{deg}}$ 未満の項を返します。`deg` を省略するか負の値を渡すと `f.size()` になります。
 
 ## 演算子
 
@@ -24,7 +24,7 @@ mint y = f.eval(2);            // f(2)
 | `f * c`、`f / c` | 定数倍 | $O(n)$ |
 | `f * g` | 積 | $O(n \log n)$ |
 | `f / g`、`f % g` | 多項式としての商・余り (`g` の最高次の係数は 0 でないこと) | $O(n \log n)$ |
-| `f << k` / `f >> k` | $x^k$ を掛ける / $x^k$ で割って低次の項を捨てる | $O(n)$ |
+| `f << k` / `f >> k` | $x^k$ を掛ける / $x^k$ で割って低次の項を捨てる (`f >> k` は長さが $k$ 以下なら `{0}` になる) | $O(n)$ |
 
 ## メンバ関数
 
@@ -33,7 +33,7 @@ mint y = f.eval(2);            // f(2)
 | `f.pre(k)` | $x^k$ 未満の項 | $O(k)$ |
 | `f.rev()` | 係数を逆順にしたもの | $O(n)$ |
 | `f.normalize()` | 末尾の 0 を取り除く (その場で) | $O(n)$ |
-| `f.eval(a)` | $f(a)$ | $O(n)$ |
+| `f.eval(a)` | $f(a)$ (const でないメンバ関数なので、const な `FPS` には使えない) | $O(n)$ |
 
 ## 関数
 
@@ -48,3 +48,8 @@ mint y = f.eval(2);            // f(2)
 | `taylor_shift(f, a)` | $f(x + a)$ | $n$ が mod より小さい | $O(n \log n)$ |
 | `gcd(f, g)` | 多項式の gcd | | $O(n^2 \log n)$ |
 | `modpow(f, e, m)` | $f^e \bmod m$ (多項式の余り) | | $O(\lvert m \rvert \log \lvert m \rvert \log e)$ |
+
+## 関連
+
+- 積に使う畳み込みは [畳み込み](convolution.hpp)
+- 係数の型は [modint](modint.hpp)、`taylor_shift` の階乗は [組み合わせ](combinatorics.hpp)

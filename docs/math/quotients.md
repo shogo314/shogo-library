@@ -21,6 +21,8 @@ for (auto [q, l, r] : enumerate_quotients(10)) {
 }
 ```
 
+## 関数
+
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `for_each_quotient(n, f)` | 区間ごとに `f(q, l, r)` を呼ぶ。$l \le i \le r$ なら $\lfloor n/i \rfloor = q$ | $O(\sqrt{n})$ |

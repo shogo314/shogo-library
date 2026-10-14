@@ -25,7 +25,7 @@ bool b = fg.is_cycle[3];     // false
 
 ## メンバ変数
 
-| 変数 | 内容 |
+| 変数 | 説明 |
 |---|---|
 | `n` / `g` | 頂点数 / 各頂点の行き先 |
 | `is_cycle[v]` | `v` がサイクル上にあるか |
@@ -35,3 +35,9 @@ bool b = fg.is_cycle[3];     // false
 | `groups[c]` | 連結成分 `c` の頂点のリスト |
 | `cycles[c]` | 連結成分 `c` のサイクルの頂点を、辺をたどる順に並べたリスト |
 | `root_index[v]` | `root[v]` の `cycles` 上の位置 |
+| `doubling[v][j]` | サイクル上にない頂点 `v` から $2^j$ 回移動した頂点。サイクルに着くまでの分だけ持つ (`hop` が内部で使う) |
+
+## 関連
+
+- 根付き木の祖先への移動は [木](tree.hpp) の `DoublingClimbTree`
+- 一般の有向グラフは [グラフ](graph.hpp)

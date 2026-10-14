@@ -13,6 +13,12 @@ documentation_of: //src/algebra/acted-monoid.hpp
 - `F id()`: 恒等写像
 - `F inv(const F& f)`: 逆作用素 ([imos法](../data_structures/imos.hpp) で使う場合のみ)
 
+```cpp
+LazySegTree<acted_monoid::AddMin<long long>> seg(v);  // 区間加算・区間最小値
+seg.apply(l, r, x);                                   // [l, r) に x を足す
+long long m = seg.prod(l, r);                         // [l, r) の最小値
+```
+
 ## 一覧 (`namespace acted_monoid`)
 
 | 作用素付きモノイド | 作用 | 取得 | 作用素の型 `F` | `inv` |
@@ -39,3 +45,8 @@ documentation_of: //src/algebra/acted-monoid.hpp
 ## ラムダ式から作る
 
 `ActedMonoid(op, e, mapping, composition, id)` で、関数オブジェクトから作用素付きモノイドを作れます。`mapping` の引数は `(f, x)`、`(f, x, sz)`、`(f, x, l, r)` のいずれでもかまいません。
+
+## 関連
+
+- 作用素を持たないものは [モノイド](monoid.hpp)
+- 作用素付きモノイドを渡して使うデータ構造は [遅延伝搬セグメント木](../data_structures/lazy-segtree.hpp)、[双対セグメント木](../data_structures/dual-segtree.hpp)、[imos法](../data_structures/imos.hpp)、[Segment Tree Beats](../data_structures/segtree-beats.hpp)

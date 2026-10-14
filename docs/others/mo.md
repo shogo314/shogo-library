@@ -15,14 +15,18 @@ for (auto [l, r] : queries) mo.query(l, r);
 std::vector<int> ans = mo.solve<int>([](int& kinds) { return kinds; });  // クエリ順の答え
 ```
 
-## 使い方
+## メンバ関数
 
-| 関数 | 説明 |
-|---|---|
-| `Mo(n, e, add_left, delete_left, add_right, delete_right)` | 要素数 `n`、状態の初期値 `e` (型 `U`) と 4 つの操作で作る |
-| `Mo(n, e, add, del)` | 左端と右端で操作が同じ場合 |
-| `query(l, r)` | クエリ $[l, r)$ を追加する |
-| `solve<T>(f)` | すべてのクエリを処理し、各クエリで `f(state)` が返した値 (型 `T`) を、`query` を呼んだ順に並べて返す |
+$q$ はクエリ数です。`solve` の計算量は、操作が $O(1)$ のときのものです。
+
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `Mo(n, e, add_left, delete_left, add_right, delete_right)` | 要素数 `n`、状態の初期値 `e` (型 `U`) と 4 つの操作で作る | $O(1)$ |
+| `Mo(n, e, add, del)` | 左端と右端で操作が同じ場合 | $O(1)$ |
+| `query(l, r)` | クエリ $[l, r)$ を追加する | $O(1)$ |
+| `solve<T>(f)` | すべてのクエリを処理し、各クエリで `f(state)` が返した値 (型 `T`) を、`query` を呼んだ順に並べて返す | $O(n \sqrt{q} + q \log q)$ |
+
+## 渡す操作
 
 操作はいずれも `(U& state, int i)` を受け取り、`state` を書き換えます。
 
@@ -33,4 +37,7 @@ std::vector<int> ans = mo.solve<int>([](int& kinds) { return kinds; });  // ク�
 | `add_right(state, i)` | 区間の右に要素 `i` を追加する |
 | `delete_right(state, i)` | 区間の右端の要素 `i` を削除する |
 
-操作が $O(1)$ のとき、全体の計算量は $O(n \sqrt{q} + q \log q)$ です ($q$ はクエリ数)。
+## 関連
+
+- 操作に $O(\log n)$ かかる例 (区間の転倒数など) では、状態に [Fenwick Tree](../data_structures/fenwick-tree.hpp) を持たせます
+

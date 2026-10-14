@@ -26,7 +26,7 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 
 ## `Tree<Cost = int>` (根なし木)
 
-| メンバ | 説明 | 計算量 |
+| 関数 | 説明 | 計算量 |
 |---|---|---|
 | `Tree(n)` | 頂点数 `n` の空の木 | $O(n)$ |
 | `add_edge(u, v, w = 1)` | 辺を追加 | $O(1)$ |
@@ -37,9 +37,15 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 
 ## `RootedTree<Cost = int>` (根付き木)
 
-`Tree` の `set_root(r)` か、コンストラクタ `RootedTree(tree, r)` で作ります。`RootedTree(par, padding = -1)` で、頂点 1, ..., n-1 の親のリストから根が 0 の木を作ることもできます。構築は $O(n)$ です。
+`Tree` の `set_root(r)` か、次のコンストラクタで作ります。
 
-| メンバ変数 | 内容 |
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `RootedTree(tree, r)` | 木 `tree` の根を `r` にする | $O(n)$ |
+| `RootedTree(par, padding = -1)` | 頂点 1, ..., n-1 の親のリスト `par` から、根が 0 の木を作る。頂点番号に `padding` を足す | $O(n)$ |
+| `build_lca()` | `DoublingClimbTree` に変換する | $O(n \log n)$ |
+
+| 変数 | 説明 |
 |---|---|
 | `root` | 根 |
 | `par[v]` | 親へ向かう辺 (根では `dst == -1`) |
@@ -50,18 +56,19 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 | `preorder` / `postorder` | 行きがけ順 / 帰りがけ順 |
 | `euler_tour` | オイラーツアー。DFS で通った `(頂点, その頂点を通った回数)` の列 |
 
-`build_lca()` で `DoublingClimbTree` に変換できます。
-
 ## `DoublingClimbTree<Cost = int>` (ダブリング済み根付き木)
 
 `Tree` の `build_lca(r)`、`RootedTree` の `build_lca()`、またはコンストラクタ (`RootedTree` から、`Tree` と根から、親のリストから) で作ります。構築は $O(n \log n)$ です。
 
-| メンバ | 説明 | 計算量 |
+| 関数 | 説明 | 計算量 |
 |---|---|---|
 | `hop(u, k)` | `u` から `k` 個上の祖先 (存在しなければ `-1`) | $O(\log n)$ |
 | `lca(u, v)` | 最小共通祖先 | $O(\log n)$ |
 | `dist(u, v)` | 2頂点間の距離 (重み付き) | $O(\log n)$ |
-| `doubling_par[i][v]` | `v` から $2^i$ 個上の祖先 (存在しなければ `-1`) | |
+
+| 変数 | 説明 |
+|---|---|
+| `doubling_par[i][v]` | `v` から $2^i$ 個上の祖先 (存在しなければ `-1`) |
 
 ## 関連
 

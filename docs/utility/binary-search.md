@@ -12,8 +12,12 @@ double s = binary_search(0.0, 10.0, [](double m) { return m * m <= 2; });       
 
 ## 関数
 
-| 関数 | 説明 |
-|---|---|
-| `binary_search(ok, ng, f)` | `f(ok)` が真、`f(ng)` が偽として、境界で `f` が真になる側の値を返す。整数なら `ok` と `ng` の差が 1 になるまで、浮動小数点数なら 100 回二分する |
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `binary_search(ok, ng, f)` | `f(ok)` が真、`f(ng)` が偽として、境界で `f` が真になる側の値を返す。整数なら `ok` と `ng` の差が 1 になるまで、浮動小数点数なら 100 回二分する | `f` の呼び出し $O(\log \lvert ok - ng \rvert)$ 回 (浮動小数点数なら 100 回) |
 
 `ok` と `ng` はどちらが大きくてもかまいません。型が違う場合は `std::common_type_t` にそろえます。
+
+## 関連
+
+- ソート済みの列で値を探すなら [コンテナに対する関数](container_func.hpp) の `bisect_left(c, x)` / `lower_bound(c, x)`

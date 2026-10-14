@@ -18,6 +18,8 @@ swag.pop();               // 先頭を削除
 
 キューを 2 つのスタックで表し、前半のスタックには先頭側からの積を持たせます。前半が空のときに `pop` すると、後半をまとめて前半へ移します。
 
+### メンバ関数
+
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `SlidingWindowAggregation<M>()` | 空のキュー | $O(1)$ |
@@ -30,7 +32,7 @@ swag.pop();               // 先頭を削除
 
 ## スライド最小値
 
-配列 `a` の長さ `k` の各区間 $[i, i + k)$ の最小値・最大値を、単調な deque で $O(n)$ で求めます。返り値の長さは $n - k + 1$ です ($1 \le k \le n$)。
+配列 `a` の長さ `k` の各区間 $[i, i + k)$ の最小値・最大値を、単調な deque で求めます。返り値の長さは $n - k + 1$ です ($1 \le k \le n$)。
 
 ```cpp
 std::vector<int> a = {1, 7, 7, 4, 8, 1, 6};
@@ -38,10 +40,12 @@ auto mn = sliding_window_min(a, 3);  // {1, 4, 4, 1, 1}
 auto mx = sliding_window_max(a, 3);  // {7, 7, 8, 8, 8}
 ```
 
-| 関数 | 説明 |
-|---|---|
-| `sliding_window_min(a, k, comp = std::less<T>())` | 各区間の最小値。`comp` を渡すとその順序での最小値 |
-| `sliding_window_max(a, k)` | 各区間の最大値 |
+### 関数
+
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `sliding_window_min(a, k, comp = std::less<T>())` | 各区間の最小値。`comp` を渡すとその順序での最小値 | $O(n)$ |
+| `sliding_window_max(a, k)` | 各区間の最大値 | $O(n)$ |
 
 ## 関連
 

@@ -60,3 +60,8 @@ void solve() {
 | `Yes` / `No` | `Yes` / `No` |
 | `YES` / `NO` | `YES` / `NO` |
 | `Takahashi` / `Aoki` | `Takahashi` / `Aoki` |
+
+## 関連
+
+- マクロで使う型の別名 (`ll`、`vl` など) は [型の別名](type_alias.hpp)
+- コンテナの入出力と `print` は [入出力](io.hpp)

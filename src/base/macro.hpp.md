@@ -107,35 +107,37 @@ data:
     \n * @param tail 2\u3064\u76EE\u4EE5\u964D\u306E\u8981\u7D20\n */\ntemplate <typename\
     \ T, typename... Tail>\nvoid err(const T& x, const Tail&... tail) {\n    std::cerr\
     \ << x << ' ';\n    err(tail...);\n}\n#line 2 \"src/base/type_alias.hpp\"\n\n\
-    /**\n * @file type_alias.hpp\n * @brief \u578B\u306E\u5225\u540D\n */\n\n#include\
-    \ <bits/stdc++.h>\n\nusing ll = long long;\nusing ull = unsigned long long;\n\
-    using ld = long double;\n\ntemplate <typename T>\nusing vec = std::vector<T>;\n\
-    template <typename T, int N>\nusing ary = std::array<T, N>;\nusing str = std::string;\n\
-    using std::deque;\nusing std::list;\nusing std::map;\nusing std::multimap;\nusing\
-    \ std::multiset;\nusing std::pair;\nusing std::set;\n\nusing pl = pair<ll, ll>;\n\
-    using pd = pair<ld, ld>;\n\ntemplate <typename T>\nusing vv = vec<vec<T>>;\ntemplate\
-    \ <typename T>\nusing vvv = vec<vec<vec<T>>>;\nusing vl = vec<ll>;\nusing vvl\
-    \ = vv<ll>;\nusing vvvl = vvv<ll>;\nusing vs = vec<str>;\nusing vc = vec<char>;\n\
-    using vi = vec<int>;\nusing vb = vec<bool>;\n\ntemplate <typename T1, typename\
-    \ T2>\nusing vp = vec<pair<T1, T2>>;\nusing vpl = vec<pl>;\nusing vvpl = vv<pl>;\n\
-    using vd = vec<ld>;\nusing vpd = vec<pd>;\n\ntemplate <int N>\nusing al = ary<ll,\
-    \ N>;\ntemplate <int N1, int N2>\nusing aal = ary<ary<ll, N2>, N1>;\ntemplate\
-    \ <int N>\nusing val = vec<al<N>>;\ntemplate <int N>\nusing avl = ary<vl,N>;\n\
-    \ntemplate <typename T>\nusing ml = std::map<ll, T>;\nusing mll = std::map<ll,\
-    \ ll>;\nusing sl = std::set<ll>;\nusing spl = set<pl>;\ntemplate <int N>\nusing\
-    \ sal = set<al<N>>;\ntemplate <int N>\nusing asl = ary<sl,N>;\n\ntemplate <typename\
-    \ T>\nusing heap_max = std::priority_queue<T, std::vector<T>, std::less<T>>;\n\
-    template <typename T>\nusing heap_min = std::priority_queue<T, std::vector<T>,\
-    \ std::greater<T>>;\n#line 10 \"src/base/macro.hpp\"\n\n#pragma GCC target(\"\
-    avx2\")\n#pragma GCC optimize(\"O3\")\n#pragma GCC optimize(\"unroll-loops\")\n\
-    \n#define all(obj) (obj).begin(), (obj).end()\n\n#define CONCAT_IMPL2(x, y) x##y\n\
-    #define CONCAT_IMPL(x, y) CONCAT_IMPL2(x, y)\n#define UNIQUE_ID(base) CONCAT_IMPL(base,\
-    \ __COUNTER__)\n\n#define GET_MACRO(_1, _2, _3, _4, NAME, ...) NAME\n\n#define\
-    \ rep4(i, a, n, t) for (long long i = static_cast<long long>(a), i##_loop_end\
-    \ = static_cast<long long>(n), i##_loop_step = static_cast<long long>(t); i <\
-    \ i##_loop_end; i += i##_loop_step)\n#define rep3(i, a, n) for (long long i =\
-    \ static_cast<long long>(a), i##_loop_end = static_cast<long long>(n); i < i##_loop_end;\
-    \ ++i)\n#define rep2(i, n) rep3(i, 0, n)\n#define rep1(n) rep2(UNIQUE_ID(loop_counter_),\
+    /**\n * @file type_alias.hpp\n * @brief \u578B\u306E\u5225\u540D\n */\n\n#line\
+    \ 9 \"src/base/type_alias.hpp\"\n#include <deque>\n#include <functional>\n#include\
+    \ <list>\n#include <map>\n#include <queue>\n#line 15 \"src/base/type_alias.hpp\"\
+    \n#include <string>\n#line 18 \"src/base/type_alias.hpp\"\n\nusing ll = long long;\n\
+    using ull = unsigned long long;\nusing ld = long double;\n\ntemplate <typename\
+    \ T>\nusing vec = std::vector<T>;\ntemplate <typename T, int N>\nusing ary = std::array<T,\
+    \ N>;\nusing str = std::string;\nusing std::deque;\nusing std::list;\nusing std::map;\n\
+    using std::multimap;\nusing std::multiset;\nusing std::pair;\nusing std::set;\n\
+    \nusing pl = pair<ll, ll>;\nusing pd = pair<ld, ld>;\n\ntemplate <typename T>\n\
+    using vv = vec<vec<T>>;\ntemplate <typename T>\nusing vvv = vec<vec<vec<T>>>;\n\
+    using vl = vec<ll>;\nusing vvl = vv<ll>;\nusing vvvl = vvv<ll>;\nusing vs = vec<str>;\n\
+    using vc = vec<char>;\nusing vi = vec<int>;\nusing vb = vec<bool>;\n\ntemplate\
+    \ <typename T1, typename T2>\nusing vp = vec<pair<T1, T2>>;\nusing vpl = vec<pl>;\n\
+    using vvpl = vv<pl>;\nusing vd = vec<ld>;\nusing vpd = vec<pd>;\n\ntemplate <int\
+    \ N>\nusing al = ary<ll, N>;\ntemplate <int N1, int N2>\nusing aal = ary<ary<ll,\
+    \ N2>, N1>;\ntemplate <int N>\nusing val = vec<al<N>>;\ntemplate <int N>\nusing\
+    \ avl = ary<vl,N>;\n\ntemplate <typename T>\nusing ml = std::map<ll, T>;\nusing\
+    \ mll = std::map<ll, ll>;\nusing sl = std::set<ll>;\nusing spl = set<pl>;\ntemplate\
+    \ <int N>\nusing sal = set<al<N>>;\ntemplate <int N>\nusing asl = ary<sl,N>;\n\
+    \ntemplate <typename T>\nusing heap_max = std::priority_queue<T, std::vector<T>,\
+    \ std::less<T>>;\ntemplate <typename T>\nusing heap_min = std::priority_queue<T,\
+    \ std::vector<T>, std::greater<T>>;\n#line 10 \"src/base/macro.hpp\"\n\n#pragma\
+    \ GCC target(\"avx2\")\n#pragma GCC optimize(\"O3\")\n#pragma GCC optimize(\"\
+    unroll-loops\")\n\n#define all(obj) (obj).begin(), (obj).end()\n\n#define CONCAT_IMPL2(x,\
+    \ y) x##y\n#define CONCAT_IMPL(x, y) CONCAT_IMPL2(x, y)\n#define UNIQUE_ID(base)\
+    \ CONCAT_IMPL(base, __COUNTER__)\n\n#define GET_MACRO(_1, _2, _3, _4, NAME, ...)\
+    \ NAME\n\n#define rep4(i, a, n, t) for (long long i = static_cast<long long>(a),\
+    \ i##_loop_end = static_cast<long long>(n), i##_loop_step = static_cast<long long>(t);\
+    \ i < i##_loop_end; i += i##_loop_step)\n#define rep3(i, a, n) for (long long\
+    \ i = static_cast<long long>(a), i##_loop_end = static_cast<long long>(n); i <\
+    \ i##_loop_end; ++i)\n#define rep2(i, n) rep3(i, 0, n)\n#define rep1(n) rep2(UNIQUE_ID(loop_counter_),\
     \ n)\n#define rep(...) GET_MACRO(__VA_ARGS__, rep4, rep3, rep2, rep1)(__VA_ARGS__)\n\
     \n#define repd4(i, a, n, t) for (long long i = static_cast<long long>(n) - 1,\
     \ i##_loop_end = static_cast<long long>(a), i##_loop_step = static_cast<long long>(t);\
@@ -195,7 +197,7 @@ data:
   isVerificationFile: false
   path: src/base/macro.hpp
   requiredBy: []
-  timestamp: '2026-10-13 12:42:03+09:00'
+  timestamp: '2026-10-14 07:05:08+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/macro.test.cpp

@@ -27,8 +27,8 @@ data:
   attributes:
     document_title: "\u30CA\u30C3\u30D7\u30B5\u30C3\u30AF\u554F\u984C"
     links: []
-  bundledCode: "#line 2 \"src/others/knapsack.hpp\"\n\n/**\n * @file knapsack.hpp\n\
-    \ * @brief \u30CA\u30C3\u30D7\u30B5\u30C3\u30AF\u554F\u984C\n */\n\n#include <algorithm>\n\
+  bundledCode: "#line 2 \"src/dp/knapsack.hpp\"\n\n/**\n * @file knapsack.hpp\n *\
+    \ @brief \u30CA\u30C3\u30D7\u30B5\u30C3\u30AF\u554F\u984C\n */\n\n#include <algorithm>\n\
     #include <cassert>\n#include <deque>\n#include <limits>\n#include <utility>\n\
     #include <vector>\n\n/*\n * \u54C1\u7269 i \u306F\u4FA1\u5024 v[i] \u3068\u91CD\
     \u3055 w[i] \u3092\u6301\u3061 (\u3069\u3061\u3089\u3082 0 \u4EE5\u4E0A)\u3001\
@@ -325,9 +325,9 @@ data:
     \ w2, W);\n}\n"
   dependsOn: []
   isVerificationFile: false
-  path: src/others/knapsack.hpp
+  path: src/dp/knapsack.hpp
   requiredBy: []
-  timestamp: '2026-10-14 02:00:02+09:00'
+  timestamp: '2026-10-14 06:57:58+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/knapsack.test.cpp
@@ -336,7 +336,7 @@ data:
   - test/aoj/dpl-1-b.test.cpp
   - test/aoj/dpl-1-h.test.cpp
   - test/aoj/dpl-1-g.test.cpp
-documentation_of: src/others/knapsack.hpp
+documentation_of: src/dp/knapsack.hpp
 layout: document
 title: "\u30CA\u30C3\u30D7\u30B5\u30C3\u30AF\u554F\u984C"
 ---
@@ -364,7 +364,7 @@ $N$ は品物の個数、$V$ は価値の和です。
 | `knapsack_by_value(v, w, W)` | $O(NV)$ | 価値の和が小さい (重さは大きくてよい) |
 | `knapsack_meet_in_the_middle(v, w, W)` | $O(2^{N/2} N)$ | $N$ が 40 程度まで (重さも価値も大きくてよい) |
 
-`knapsack` は、$(N + 1)(W + 1)$、$(N + 1)(V + 1)$、$(N + 1) 2^{\lceil N/2 \rceil}$ を比べて最も小さいものを選びます。
+`knapsack` は、$(N + 1)(W + 1)$、$(N + 1)(V + 1)$、$(N + 1) 2^{\lceil N/2 \rceil}$ を比べて最も小さいものを選びます。$N > 80$ のときは半分全列挙を候補から外します。
 
 ## 個数制限なし (同じ品物を何個でも選べる)
 
@@ -388,5 +388,4 @@ $N$ は品物の個数、$V$ は価値の和です。
 
 ## 関連
 
-- 最長増加部分列は [LIS](longest-increasing-subsequence.hpp)
 - 価値を考えずに作れる和だけを求めるなら [部分和問題](subset-sum.hpp)

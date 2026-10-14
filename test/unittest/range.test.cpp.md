@@ -162,13 +162,14 @@ data:
     \ {\n        if (step > 0) {\n            return {start, norm_stop, step, norm_stop};\n\
     \        } else {\n            return {norm_stop - step, start - step, -step,\
     \ start - step};\n        }\n    }\n    /**\n     * @brief \u8981\u7D20\u304C\
-    \ [l,r] \u3067\u3042\u308B\u7BC4\u56F2\u3092\u8FD4\u3059\n     */\n    constexpr\
-    \ Range clipped(value_type l, value_type r) const {\n        if (l > r) return\
-    \ {};\n        if (step > 0) {\n            value_type _start = [&] {\n      \
-    \          if (norm_stop <= l) {\n                    return norm_stop;\n    \
-    \            } else if (l < start) {\n                    return start;\n    \
-    \            } else {\n                    return start + (l - start + step -\
-    \ 1) / step * step;\n                }\n            }();\n            value_type\
+    \ [l, r) \u3067\u3042\u308B\u7BC4\u56F2\u3092\u8FD4\u3059\n     */\n    constexpr\
+    \ Range clipped(value_type l, value_type r) const {\n        if (l >= r) return\
+    \ {};\n        r--;  // \u4EE5\u4E0B\u3067\u306F r \u3092\u542B\u3080 [l, r] \u3068\
+    \u3057\u3066\u6271\u3046\n        if (step > 0) {\n            value_type _start\
+    \ = [&] {\n                if (norm_stop <= l) {\n                    return norm_stop;\n\
+    \                } else if (l < start) {\n                    return start;\n\
+    \                } else {\n                    return start + (l - start + step\
+    \ - 1) / step * step;\n                }\n            }();\n            value_type\
     \ _stop = [&] {\n                if (norm_stop <= r) {\n                    return\
     \ norm_stop;\n                } else if (r < start) {\n                    return\
     \ start;\n                } else {\n                    return start + (r - start\
@@ -187,9 +188,9 @@ data:
     \u6307\u5B9A\u3057\u305F\u30B3\u30F3\u30C6\u30CA\n     */\n    constexpr Range\
     \ slice(const Range& r) const {\n        if (r.empty()) return {};\n        if\
     \ (r.max() < 0) return {};\n        if (r.min() >= static_cast<Range::value_type>(size()))\
-    \ return {};\n        Range trimmed_range(r.clipped(0, static_cast<Range::value_type>(size())\
-    \ - 1));\n        if (trimmed_range.empty()) return {};\n        value_type _step\
-    \ = step * trimmed_range.step;\n        value_type _start = at(trimmed_range.start);\n\
+    \ return {};\n        Range trimmed_range(r.clipped(0, static_cast<Range::value_type>(size())));\n\
+    \        if (trimmed_range.empty()) return {};\n        value_type _step = step\
+    \ * trimmed_range.step;\n        value_type _start = at(trimmed_range.start);\n\
     \        value_type _stop = _start + _step * static_cast<Range::value_type>(trimmed_range.size());\n\
     \        return {_start, _stop, _step, _stop};\n    }\n\n    static std::string\
     \ type_str() {\n        return \"Range\";\n    }\n    std::string initializer_str()\
@@ -259,20 +260,19 @@ data:
     \ rv(v.rbegin(), v.rend()), sv = v;\n        std::sort(sv.begin(), sv.end());\n\
     \        check(by_iteration(r.reversed()) == rv && r.reversed().size() == (size_t)n,\
     \ \"reversed\");\n        check(by_iteration(r.sorted()) == sv && r.sorted().size()\
-    \ == (size_t)n, \"sorted\");\n\n        // clipped: \u5024\u304C [l, r] \u306E\
+    \ == (size_t)n, \"sorted\");\n\n        // clipped: \u5024\u304C [l, r) \u306E\
     \u8981\u7D20\u3060\u3051\u3092\u9806\u756A\u3092\u4FDD\u3063\u3066\u6B8B\u3059\
     \n        {\n            ll l = rnd(-25, 25), rr = rnd(-25, 25);\n           \
-    \ std::vector<ll> expect;\n            if (l <= rr) {\n                for (ll\
-    \ x : v)\n                    if (l <= x && x <= rr) expect.push_back(x);\n  \
-    \          }\n            Range c = r.clipped(l, rr);\n            check(by_iteration(c)\
-    \ == expect && c.size() == expect.size(), \"clipped\");\n        }\n\n       \
-    \ // slice: \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\u3092 Range \u3067\u6307\u5B9A\
-    \u3059\u308B (\u7BC4\u56F2\u5916\u306E\u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\u306F\
-    \u7121\u8996)\n        {\n            ll s2 = rnd(-25, 25), t2 = rnd(-25, 25),\
-    \ st2 = rnd(1, 5) * (rng() % 2 ? 1 : -1);\n            Range idx(s2, t2, st2);\n\
-    \            std::vector<ll> expect;\n            for (ll i : naive_range(s2,\
-    \ t2, st2))\n                if (0 <= i && i < n) expect.push_back(v[i]);\n  \
-    \          Range s = r.slice(idx);\n            check(by_iteration(s) == expect\
+    \ std::vector<ll> expect;\n            for (ll x : v)\n                if (l <=\
+    \ x && x < rr) expect.push_back(x);\n            Range c = r.clipped(l, rr);\n\
+    \            check(by_iteration(c) == expect && c.size() == expect.size(), \"\
+    clipped\");\n        }\n\n        // slice: \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\
+    \u3092 Range \u3067\u6307\u5B9A\u3059\u308B (\u7BC4\u56F2\u5916\u306E\u30A4\u30F3\
+    \u30C7\u30C3\u30AF\u30B9\u306F\u7121\u8996)\n        {\n            ll s2 = rnd(-25,\
+    \ 25), t2 = rnd(-25, 25), st2 = rnd(1, 5) * (rng() % 2 ? 1 : -1);\n          \
+    \  Range idx(s2, t2, st2);\n            std::vector<ll> expect;\n            for\
+    \ (ll i : naive_range(s2, t2, st2))\n                if (0 <= i && i < n) expect.push_back(v[i]);\n\
+    \            Range s = r.slice(idx);\n            check(by_iteration(s) == expect\
     \ && s.size() == expect.size(), \"slice\");\n        }\n\n        // ==, != \u306F\
     \u5217\u3068\u3057\u3066\u7B49\u3057\u3044\u304B\n        {\n            ll start2\
     \ = rng() % 4 == 0 ? start : rnd(-20, 20);\n            ll stop2 = rng() % 2 ==\
@@ -370,20 +370,19 @@ data:
     \ rv(v.rbegin(), v.rend()), sv = v;\n        std::sort(sv.begin(), sv.end());\n\
     \        check(by_iteration(r.reversed()) == rv && r.reversed().size() == (size_t)n,\
     \ \"reversed\");\n        check(by_iteration(r.sorted()) == sv && r.sorted().size()\
-    \ == (size_t)n, \"sorted\");\n\n        // clipped: \u5024\u304C [l, r] \u306E\
+    \ == (size_t)n, \"sorted\");\n\n        // clipped: \u5024\u304C [l, r) \u306E\
     \u8981\u7D20\u3060\u3051\u3092\u9806\u756A\u3092\u4FDD\u3063\u3066\u6B8B\u3059\
     \n        {\n            ll l = rnd(-25, 25), rr = rnd(-25, 25);\n           \
-    \ std::vector<ll> expect;\n            if (l <= rr) {\n                for (ll\
-    \ x : v)\n                    if (l <= x && x <= rr) expect.push_back(x);\n  \
-    \          }\n            Range c = r.clipped(l, rr);\n            check(by_iteration(c)\
-    \ == expect && c.size() == expect.size(), \"clipped\");\n        }\n\n       \
-    \ // slice: \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\u3092 Range \u3067\u6307\u5B9A\
-    \u3059\u308B (\u7BC4\u56F2\u5916\u306E\u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\u306F\
-    \u7121\u8996)\n        {\n            ll s2 = rnd(-25, 25), t2 = rnd(-25, 25),\
-    \ st2 = rnd(1, 5) * (rng() % 2 ? 1 : -1);\n            Range idx(s2, t2, st2);\n\
-    \            std::vector<ll> expect;\n            for (ll i : naive_range(s2,\
-    \ t2, st2))\n                if (0 <= i && i < n) expect.push_back(v[i]);\n  \
-    \          Range s = r.slice(idx);\n            check(by_iteration(s) == expect\
+    \ std::vector<ll> expect;\n            for (ll x : v)\n                if (l <=\
+    \ x && x < rr) expect.push_back(x);\n            Range c = r.clipped(l, rr);\n\
+    \            check(by_iteration(c) == expect && c.size() == expect.size(), \"\
+    clipped\");\n        }\n\n        // slice: \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\
+    \u3092 Range \u3067\u6307\u5B9A\u3059\u308B (\u7BC4\u56F2\u5916\u306E\u30A4\u30F3\
+    \u30C7\u30C3\u30AF\u30B9\u306F\u7121\u8996)\n        {\n            ll s2 = rnd(-25,\
+    \ 25), t2 = rnd(-25, 25), st2 = rnd(1, 5) * (rng() % 2 ? 1 : -1);\n          \
+    \  Range idx(s2, t2, st2);\n            std::vector<ll> expect;\n            for\
+    \ (ll i : naive_range(s2, t2, st2))\n                if (0 <= i && i < n) expect.push_back(v[i]);\n\
+    \            Range s = r.slice(idx);\n            check(by_iteration(s) == expect\
     \ && s.size() == expect.size(), \"slice\");\n        }\n\n        // ==, != \u306F\
     \u5217\u3068\u3057\u3066\u7B49\u3057\u3044\u304B\n        {\n            ll start2\
     \ = rng() % 4 == 0 ? start : rnd(-20, 20);\n            ll stop2 = rng() % 2 ==\
@@ -429,7 +428,7 @@ data:
   isVerificationFile: true
   path: test/unittest/range.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 13:03:23+09:00'
+  timestamp: '2026-10-14 07:03:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/range.test.cpp

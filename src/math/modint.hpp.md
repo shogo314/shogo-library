@@ -3,18 +3,14 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
-    path: src/math/combinatorics.hpp
-    title: "\u7D44\u307F\u5408\u308F\u305B"
+    path: src/dp/subset-sum-count.hpp
+    title: "\u90E8\u5206\u548C\u306E\u500B\u6570"
+  - icon: ':heavy_check_mark:'
+    path: src/math/convolution.hpp
+    title: "\u7573\u307F\u8FBC\u307F (NTT)"
   - icon: ':heavy_check_mark:'
     path: src/math/fps.hpp
     title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570"
-  - icon: ':heavy_check_mark:'
-    path: src/math/number-theory.hpp
-    title: "\u6570\u8AD6 (\u9006\u5143\u3001\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\u3001\
-      \u7573\u307F\u8FBC\u307F\u306A\u3069)"
-  - icon: ':heavy_check_mark:'
-    path: src/others/subset-sum-count.hpp
-    title: "\u90E8\u5206\u548C\u306E\u500B\u6570"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/dpl-5-b.1.test.cpp
@@ -73,9 +69,6 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/binomial-coefficient-prime-mod.2.test.cpp
     title: test/yosupo/binomial-coefficient-prime-mod.2.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/yosupo/binomial-coefficient.test.cpp
-    title: test/yosupo/binomial-coefficient.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/convolution-mod-1000000007.test.cpp
     title: test/yosupo/convolution-mod-1000000007.test.cpp
@@ -170,12 +163,6 @@ data:
     path: test/yukicoder/117.test.cpp
     title: test/yukicoder/117.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yukicoder/186.test.cpp
-    title: test/yukicoder/186.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/yukicoder/187.test.cpp
-    title: test/yukicoder/187.test.cpp
-  - icon: ':heavy_check_mark:'
     path: test/yukicoder/search-oji.test.cpp
     title: test/yukicoder/search-oji.test.cpp
   _isVerificationFailed: false
@@ -253,7 +240,7 @@ data:
     \ value) noexcept\n        : m_value{ static_cast<value_type>(value % Modint::mod())\
     \ } {}\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092\u53D6\
     \u5F97\u3057\u307E\u3059\u3002\n    /// @return \u4FDD\u6301\u3057\u3066\u3044\
-    \u308B\u5024\n    [[nodiscard]]\n    constexpr value_type value() const noexcept\
+    \u308B\u5024\n    [[nodiscard]]\n    constexpr value_type val() const noexcept\
     \ {\n        return m_value;\n    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\
     \u3044\u308B\u5024\u3092\u30A4\u30F3\u30AF\u30EA\u30E1\u30F3\u30C8\u3057\u3066\
     \u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @return @c *this\n\
@@ -375,7 +362,7 @@ data:
     \u30C8\u30EA\u30FC\u30E0\n    /// @param x \u51FA\u529B\u3059\u308B\u30AA\u30D6\
     \u30B8\u30A7\u30AF\u30C8\n    /// @return @c os\n    template <class CharT, class\
     \ Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
-    \ Traits>& os, const Modint& x) {\n        os << x.value();\n        return os;\n\
+    \ Traits>& os, const Modint& x) {\n        os << x.val();\n        return os;\n\
     \    }\n\nprotected:\n    value_type m_value;\n};\n\n/// @brief \u30B3\u30F3\u30D1\
     \u30A4\u30EB\u6642\u306B\u6CD5\u304C\u6C7A\u307E\u308B\u3068\u304D\u3001\u56DB\
     \u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\
@@ -487,7 +474,7 @@ data:
     \ value) noexcept\n        : m_value{ static_cast<value_type>(value % Modint::mod())\
     \ } {}\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092\u53D6\
     \u5F97\u3057\u307E\u3059\u3002\n    /// @return \u4FDD\u6301\u3057\u3066\u3044\
-    \u308B\u5024\n    [[nodiscard]]\n    constexpr value_type value() const noexcept\
+    \u308B\u5024\n    [[nodiscard]]\n    constexpr value_type val() const noexcept\
     \ {\n        return m_value;\n    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\
     \u3044\u308B\u5024\u3092\u30A4\u30F3\u30AF\u30EA\u30E1\u30F3\u30C8\u3057\u3066\
     \u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @return @c *this\n\
@@ -609,7 +596,7 @@ data:
     \u30C8\u30EA\u30FC\u30E0\n    /// @param x \u51FA\u529B\u3059\u308B\u30AA\u30D6\
     \u30B8\u30A7\u30AF\u30C8\n    /// @return @c os\n    template <class CharT, class\
     \ Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
-    \ Traits>& os, const Modint& x) {\n        os << x.value();\n        return os;\n\
+    \ Traits>& os, const Modint& x) {\n        os << x.val();\n        return os;\n\
     \    }\n\nprotected:\n    value_type m_value;\n};\n\n/// @brief \u30B3\u30F3\u30D1\
     \u30A4\u30EB\u6642\u306B\u6CD5\u304C\u6C7A\u307E\u308B\u3068\u304D\u3001\u56DB\
     \u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\
@@ -657,11 +644,10 @@ data:
   isVerificationFile: false
   path: src/math/modint.hpp
   requiredBy:
+  - src/dp/subset-sum-count.hpp
+  - src/math/convolution.hpp
   - src/math/fps.hpp
-  - src/math/combinatorics.hpp
-  - src/math/number-theory.hpp
-  - src/others/subset-sum-count.hpp
-  timestamp: '2026-10-12 20:24:58+09:00'
+  timestamp: '2026-10-14 07:01:49+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/modint.test.cpp
@@ -692,7 +678,6 @@ data:
   - test/yosupo/partition-function_2.test.cpp
   - test/yosupo/inv-of-fps.test.cpp
   - test/yosupo/division-of-polynomials.test.cpp
-  - test/yosupo/binomial-coefficient.test.cpp
   - test/yosupo/pow-of-fps.test.cpp
   - test/yosupo/point-set-range-composite.3.test.cpp
   - test/yosupo/vertex-set-path-composite.test.cpp
@@ -714,10 +699,8 @@ data:
   - test/yosupo/range-affine-range-sum.1.test.cpp
   - test/yosupo/convolution-mod.test.cpp
   - test/yosupo/matrix-det.test.cpp
-  - test/yukicoder/187.test.cpp
   - test/yukicoder/117.test.cpp
   - test/yukicoder/search-oji.test.cpp
-  - test/yukicoder/186.test.cpp
 documentation_of: src/math/modint.hpp
 layout: document
 title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\
@@ -750,7 +733,7 @@ modint x = 20;                            // 7
 | メンバ | 説明 | 計算量 |
 |---|---|---|
 | `mint(x)` | 整数 `x` の剰余で初期化 (負でもよい) | $O(1)$ |
-| `x.value()` | 保持している値 ($0$ 以上 mod 未満) | $O(1)$ |
+| `x.val()` | 保持している値 ($0$ 以上 mod 未満) | $O(1)$ |
 | `mint::mod()` | 法 | $O(1)$ |
 | `mint::set_mod(m)` | 法を設定 (`dynamic_modint` のみ) | $O(1)$ |
 | `+`、`-`、`*`、`+=`、`-=`、`*=`、単項 `+` `-`、`++`、`--` | 演算 | $O(1)$ |
@@ -762,5 +745,5 @@ modint x = 20;                            // 7
 
 ## 関連
 
-- 逆元・累乗・畳み込みなどの関数は [数論](number-theory.hpp)
+- `long long` の逆元・累乗は [mod 演算](modular-arithmetic.hpp)、畳み込みは [畳み込み](convolution.hpp)
 - 二項係数は [組み合わせ](combinatorics.hpp)

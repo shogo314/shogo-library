@@ -17,9 +17,9 @@ data:
   bundledCode: "#line 1 \"test/aoj/alds1-11-c.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_11_C\"\
     \n\n// \u30B3\u30B9\u30C8\u304C\u3059\u3079\u3066 1 \u306E\u6709\u5411\u30B0\u30E9\
     \u30D5\u3067 Graph::shortest_path_01bfs \u3092\u4F7F\u3046\n\n#include <iostream>\n\
-    \n#line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file graph.hpp\n * @brief \u30B0\
-    \u30E9\u30D5\n */\n\n#include <algorithm>\n#include <cassert>\n#include <deque>\n\
-    #include <functional>\n#line 13 \"src/graph/graph.hpp\"\n#include <limits>\n#include\
+    #include <limits>\n\n#line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file graph.hpp\n\
+    \ * @brief \u30B0\u30E9\u30D5\n */\n\n#include <algorithm>\n#include <cassert>\n\
+    #include <deque>\n#include <functional>\n#line 14 \"src/graph/graph.hpp\"\n#include\
     \ <queue>\n#include <utility>\n#include <vector>\n\n/**\n * @brief \u30B0\u30E9\
     \u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\u30B3\
     \u30B9\u30C8\u306E\u578B\n */\ntemplate <typename Cost = int>\nstruct Graph {\n\
@@ -65,50 +65,53 @@ data:
     \u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n     * @param u \u59CB\u70B9\n   \
     \  * @param v \u7D42\u70B9\n     * @param w \u30B3\u30B9\u30C8 \u7701\u7565\u3057\
     \u305F\u30891\n     */\n    void add_edge(int u, int v, Cost w = 1) {\n      \
-    \  g[u].push_back({u, v, w, m});\n        g[v].push_back({v, u, w, m++});\n  \
-    \  }\n    /**\n     * @brief \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n\
-    \     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n     * @param w \u30B3\
-    \u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n    void add_directed_edge(int\
-    \ u, int v, Cost w = 1) {\n        g[u].push_back({u, v, w, m++});\n    }\n  \
-    \  /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\u529B\u304B\
-    \u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\u308B\n     * @param m\
-    \ \u8FBA\u306E\u6570\n     * @param padding \u9802\u70B9\u756A\u53F7\u3092\u5165\
-    \u529B\u304B\u3089\u3044\u304F\u3064\u305A\u3089\u3059\u304B \u7701\u7565\u3057\
-    \u305F\u3089-1\n     * @param weighted \u8FBA\u306E\u91CD\u307F\u304C\u5165\u529B\
-    \u3055\u308C\u308B\u304B \u7701\u7565\u3057\u305F\u3089false\u3068\u306A\u308A\
-    \u3001\u91CD\u307F1\u3067\u8FBA\u304C\u8FFD\u52A0\u3055\u308C\u308B\n     * @param\
-    \ directed \u6709\u5411\u30B0\u30E9\u30D5\u304B\u3069\u3046\u304B \u7701\u7565\
-    \u3057\u305F\u3089false\n     */\n    void read(int m, int padding = -1, bool\
-    \ weighted = false, bool directed = false) {\n        for (int i = 0; i < m; i++)\
-    \ {\n            int u, v;\n            std::cin >> u >> v;\n            u +=\
-    \ padding, v += padding;\n            Cost c(1);\n            if (weighted)\n\
-    \                std::cin >> c;\n            if (directed)\n                add_directed_edge(u,\
-    \ v, c);\n            else\n                add_edge(u, v, c);\n        }\n  \
-    \  }\n    /**\n     * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u51FA\u308B\u8FBA\
-    \u3092\u5217\u6319\u3059\u308B\n     * @param v \u9802\u70B9\u756A\u53F7\n   \
-    \  * @return std::vector<Edge>& v\u304B\u3089\u51FA\u308B\u8FBA\u306E\u30EA\u30B9\
-    \u30C8\n     */\n    std::vector<Edge> &operator[](int v) {\n        return g[v];\n\
-    \    }\n    /**\n     * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u51FA\u308B\
-    \u8FBA\u3092\u5217\u6319\u3059\u308B\n     * @param v \u9802\u70B9\u756A\u53F7\
-    \n     * @return const std::vector<Edge>& v\u304B\u3089\u51FA\u308B\u8FBA\u306E\
-    \u30EA\u30B9\u30C8\n     */\n    const std::vector<Edge> &operator[](int v) const\
-    \ {\n        return g[v];\n    }\n    /**\n     * @brief \u8FBA\u306E\u30EA\u30B9\
-    \u30C8\n     * @return std::vector<Edge> \u8FBA\u306E\u30EA\u30B9\u30C8(id\u306E\
-    \u6607\u9806)\n     *\n     * \u7121\u5411\u8FBA\u306F\u4EE3\u8868\u3057\u3066\
-    1\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\n     */\n    std::vector<Edge>\
-    \ edges() const {\n        std::vector<Edge> res(m);\n        for (int i = 0;\
-    \ i < n; i++) {\n            for (auto &e : g[i]) {\n                res[e.id]\
-    \ = e;\n            }\n        }\n        return res;\n    }\n    /**\n     *\
-    \ @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\
-    \u77ED\u8DEF\n     *\n     * @param s \u59CB\u70B9\n     * @param weighted 1\u4EE5\
-    \u5916\u306E\u30B3\u30B9\u30C8\u306E\u8FBA\u304C\u5B58\u5728\u3059\u308B\u304B\
-    \ \u7701\u7565\u3059\u308B\u3068true\n     * @param inf \u30B3\u30B9\u30C8\u306E\
-    min\u306E\u5358\u4F4D\u5143 \u672A\u5230\u9054\u306E\u9802\u70B9\u3078\u306E\u8DDD\
-    \u96E2\u306Finf\u306B\u306A\u308B \u7701\u7565\u3059\u308B\u3068\n     * @return\
-    \ ShortestPath \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u9577 (dist) \u3068\
-    \u3001\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\u306E\u76F4\u524D\
-    \u306E\u8FBA (prev)\n     */\n    ShortestPath shortest_path(int s, bool weighted\
-    \ = true, Cost inf = -1) const {\n        if (weighted)\n            return shortest_path_dijkstra(s,\
+    \  assert(0 <= u && u < n && 0 <= v && v < n);\n        g[u].push_back({u, v,\
+    \ w, m});\n        g[v].push_back({v, u, w, m++});\n    }\n    /**\n     * @brief\
+    \ \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n     * @param u \u59CB\u70B9\
+    \n     * @param v \u7D42\u70B9\n     * @param w \u30B3\u30B9\u30C8 \u7701\u7565\
+    \u3057\u305F\u30891\n     */\n    void add_directed_edge(int u, int v, Cost w\
+    \ = 1) {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n        g[u].push_back({u,\
+    \ v, w, m++});\n    }\n    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\
+    \u6E96\u5165\u529B\u304B\u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\
+    \u308B\n     * @param m \u8FBA\u306E\u6570\n     * @param padding \u9802\u70B9\
+    \u756A\u53F7\u3092\u5165\u529B\u304B\u3089\u3044\u304F\u3064\u305A\u3089\u3059\
+    \u304B \u7701\u7565\u3057\u305F\u3089-1\n     * @param weighted \u8FBA\u306E\u91CD\
+    \u307F\u304C\u5165\u529B\u3055\u308C\u308B\u304B \u7701\u7565\u3057\u305F\u3089\
+    false\u3068\u306A\u308A\u3001\u91CD\u307F1\u3067\u8FBA\u304C\u8FFD\u52A0\u3055\
+    \u308C\u308B\n     * @param directed \u6709\u5411\u30B0\u30E9\u30D5\u304B\u3069\
+    \u3046\u304B \u7701\u7565\u3057\u305F\u3089false\n     */\n    void read(int m,\
+    \ int padding = -1, bool weighted = false, bool directed = false) {\n        for\
+    \ (int i = 0; i < m; i++) {\n            int u, v;\n            std::cin >> u\
+    \ >> v;\n            u += padding, v += padding;\n            Cost c(1);\n   \
+    \         if (weighted)\n                std::cin >> c;\n            if (directed)\n\
+    \                add_directed_edge(u, v, c);\n            else\n             \
+    \   add_edge(u, v, c);\n        }\n    }\n    /**\n     * @brief \u3042\u308B\u9802\
+    \u70B9\u304B\u3089\u51FA\u308B\u8FBA\u3092\u5217\u6319\u3059\u308B\n     * @param\
+    \ v \u9802\u70B9\u756A\u53F7\n     * @return std::vector<Edge>& v\u304B\u3089\u51FA\
+    \u308B\u8FBA\u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<Edge> &operator[](int\
+    \ v) {\n        return g[v];\n    }\n    /**\n     * @brief \u3042\u308B\u9802\
+    \u70B9\u304B\u3089\u51FA\u308B\u8FBA\u3092\u5217\u6319\u3059\u308B\n     * @param\
+    \ v \u9802\u70B9\u756A\u53F7\n     * @return const std::vector<Edge>& v\u304B\u3089\
+    \u51FA\u308B\u8FBA\u306E\u30EA\u30B9\u30C8\n     */\n    const std::vector<Edge>\
+    \ &operator[](int v) const {\n        return g[v];\n    }\n    /**\n     * @brief\
+    \ \u8FBA\u306E\u30EA\u30B9\u30C8\n     * @return std::vector<Edge> \u8FBA\u306E\
+    \u30EA\u30B9\u30C8(id\u306E\u6607\u9806)\n     *\n     * \u7121\u5411\u8FBA\u306F\
+    \u4EE3\u8868\u3057\u30661\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\n  \
+    \   */\n    std::vector<Edge> edges() const {\n        std::vector<Edge> res(m);\n\
+    \        for (int i = 0; i < n; i++) {\n            for (auto &e : g[i]) {\n \
+    \               res[e.id] = e;\n            }\n        }\n        return res;\n\
+    \    }\n    /**\n     * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\
+    \u70B9\u3078\u306E\u6700\u77ED\u8DEF\n     *\n     * @param s \u59CB\u70B9\n \
+    \    * @param weighted 1\u4EE5\u5916\u306E\u30B3\u30B9\u30C8\u306E\u8FBA\u304C\
+    \u5B58\u5728\u3059\u308B\u304B \u7701\u7565\u3059\u308B\u3068true\n     * @param\
+    \ inf \u30B3\u30B9\u30C8\u306Emin\u306E\u5358\u4F4D\u5143 \u672A\u5230\u9054\u306E\
+    \u9802\u70B9\u3078\u306E\u8DDD\u96E2\u306Finf\u306B\u306A\u308B \u7701\u7565\u3059\
+    \u308B\u3068 std::numeric_limits<Cost>::max() / 4\n     * @return ShortestPath\
+    \ \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u9577 (dist) \u3068\u3001\u5404\
+    \u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA\
+    \ (prev)\n     */\n    ShortestPath shortest_path(int s, bool weighted = true,\
+    \ Cost inf = std::numeric_limits<Cost>::max() / 4) const {\n        assert(0 <=\
+    \ s && s < n);\n        if (weighted)\n            return shortest_path_dijkstra(s,\
     \ inf);\n        return shortest_path_bfs(s, inf);\n    }\n    /**\n     * @brief\
     \ \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\
     \u8DEF\n     *\n     * @param s \u59CB\u70B9\n     * @param inf \u30B3\u30B9\u30C8\
@@ -118,44 +121,45 @@ data:
     \ -inf\n     * @return ShortestPath \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\
     \u8DEF\u9577 (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\
     \u4E0A\u306E\u76F4\u524D\u306E\u8FBA (prev)\n     */\n    ShortestPath bellman_ford(int\
-    \ s, Cost inf = std::numeric_limits<Cost>::max() / 4) const {\n        std::vector<Cost>\
-    \ dist(n, inf);\n        std::vector<Edge> prev(n);\n        dist[s] = Cost{};\n\
-    \n        for (int i = 1; i < n; i++) {\n            bool changed = false;\n \
-    \           for (int j = 0; j < n; j++)\n                for (const auto &e :\
-    \ g[j]) {\n                    if (dist[e.src] == inf)\n                     \
-    \   continue;\n                    if (dist[e.dst] > dist[e.src] + e.cost) {\n\
-    \                        dist[e.dst] = dist[e.src] + e.cost;\n               \
-    \         if (dist[e.dst] < -inf)\n                            dist[e.dst] = -inf;\n\
-    \                        prev[e.dst] = e;\n                        changed = true;\n\
-    \                    }\n                }\n            if (!changed)\n       \
-    \         break;\n        }\n        for (int i = 0; i < n; i++) {\n         \
-    \   bool changed = false;\n            for (int j = 0; j < n; j++)\n         \
-    \       for (const auto &e : g[j]) {\n                    if (dist[e.src] == inf)\n\
-    \                        continue;\n                    if (dist[e.dst] > dist[e.src]\
-    \ + e.cost) {\n                        dist[e.dst] = -inf;\n                 \
-    \       prev[e.dst] = e;\n                        changed = true;\n          \
-    \          }\n                }\n            if (!changed)\n                break;\n\
-    \        }\n        return {dist, prev};\n    }\n    /**\n     * @brief \u8FBA\
-    \u306E\u30B3\u30B9\u30C8\u304C 0 \u304B 1 \u3060\u3051\u306E\u30B0\u30E9\u30D5\
-    \u3067\u3001\u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\
-    \u6700\u77ED\u8DEF (01-BFS) O(n + m)\n     *\n     * @param s \u59CB\u70B9\n \
-    \    * @param inf \u672A\u5230\u9054\u306E\u9802\u70B9\u3078\u306E\u8DDD\u96E2\
-    \ \u7701\u7565\u3059\u308B\u3068 -1\n     * @return ShortestPath \u5404\u9802\u70B9\
-    \u3078\u306E\u6700\u77ED\u8DEF\u9577 (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\
-    \u306E\u6700\u77ED\u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA (prev)\n     */\n\
-    \    ShortestPath shortest_path_01bfs(int s, Cost inf = -1) const {\n        std::vector<Cost>\
-    \ dist(n, inf);\n        std::vector<Edge> prev(n);\n        std::deque<int> que;\n\
-    \        dist[s] = 0;\n        que.push_back(s);\n        while (!que.empty())\
-    \ {\n            int u = que.front();\n            que.pop_front();\n        \
-    \    for (auto &e : g[u]) {\n                assert(e.cost == 0 || e.cost == 1);\n\
-    \                if (dist[e.dst] == inf || dist[e.dst] > dist[u] + e.cost) {\n\
-    \                    dist[e.dst] = dist[u] + e.cost;\n                    prev[e.dst]\
-    \ = e;\n                    if (e.cost == 0) que.push_front(e.dst);\n        \
-    \            else que.push_back(e.dst);\n                }\n            }\n  \
-    \      }\n        return {dist, prev};\n    }\n    /**\n     * @brief \u5168\u70B9\
-    \u5BFE\u9593\u306E\u6700\u77ED\u8DEF\u9577 (Floyd-Warshall) O(n^3)\n     *\n \
-    \    * @param inf \u672A\u5230\u9054\u3092\u8868\u3059\u5024 \u7701\u7565\u3059\
-    \u308B\u3068 std::numeric_limits<Cost>::max() / 4\n     * @return std::vector<std::vector<Cost>>\
+    \ s, Cost inf = std::numeric_limits<Cost>::max() / 4) const {\n        assert(0\
+    \ <= s && s < n);\n        std::vector<Cost> dist(n, inf);\n        std::vector<Edge>\
+    \ prev(n);\n        dist[s] = Cost{};\n\n        for (int i = 1; i < n; i++) {\n\
+    \            bool changed = false;\n            for (int j = 0; j < n; j++)\n\
+    \                for (const auto &e : g[j]) {\n                    if (dist[e.src]\
+    \ == inf)\n                        continue;\n                    if (dist[e.dst]\
+    \ > dist[e.src] + e.cost) {\n                        dist[e.dst] = dist[e.src]\
+    \ + e.cost;\n                        if (dist[e.dst] < -inf)\n               \
+    \             dist[e.dst] = -inf;\n                        prev[e.dst] = e;\n\
+    \                        changed = true;\n                    }\n            \
+    \    }\n            if (!changed)\n                break;\n        }\n       \
+    \ for (int i = 0; i < n; i++) {\n            bool changed = false;\n         \
+    \   for (int j = 0; j < n; j++)\n                for (const auto &e : g[j]) {\n\
+    \                    if (dist[e.src] == inf)\n                        continue;\n\
+    \                    if (dist[e.dst] > dist[e.src] + e.cost) {\n             \
+    \           dist[e.dst] = -inf;\n                        prev[e.dst] = e;\n  \
+    \                      changed = true;\n                    }\n              \
+    \  }\n            if (!changed)\n                break;\n        }\n        return\
+    \ {dist, prev};\n    }\n    /**\n     * @brief \u8FBA\u306E\u30B3\u30B9\u30C8\u304C\
+    \ 0 \u304B 1 \u3060\u3051\u306E\u30B0\u30E9\u30D5\u3067\u3001\u3042\u308B\u9802\
+    \u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF (01-BFS) O(n\
+    \ + m)\n     *\n     * @param s \u59CB\u70B9\n     * @param inf \u672A\u5230\u9054\
+    \u306E\u9802\u70B9\u3078\u306E\u8DDD\u96E2 \u7701\u7565\u3059\u308B\u3068 std::numeric_limits<Cost>::max()\
+    \ / 4\n     * @return ShortestPath \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\
+    \u9577 (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\
+    \u306E\u76F4\u524D\u306E\u8FBA (prev)\n     */\n    ShortestPath shortest_path_01bfs(int\
+    \ s, Cost inf = std::numeric_limits<Cost>::max() / 4) const {\n        assert(0\
+    \ <= s && s < n);\n        std::vector<Cost> dist(n, inf);\n        std::vector<Edge>\
+    \ prev(n);\n        std::deque<int> que;\n        dist[s] = 0;\n        que.push_back(s);\n\
+    \        while (!que.empty()) {\n            int u = que.front();\n          \
+    \  que.pop_front();\n            for (auto &e : g[u]) {\n                assert(e.cost\
+    \ == 0 || e.cost == 1);\n                if (dist[e.dst] == inf || dist[e.dst]\
+    \ > dist[u] + e.cost) {\n                    dist[e.dst] = dist[u] + e.cost;\n\
+    \                    prev[e.dst] = e;\n                    if (e.cost == 0) que.push_front(e.dst);\n\
+    \                    else que.push_back(e.dst);\n                }\n         \
+    \   }\n        }\n        return {dist, prev};\n    }\n    /**\n     * @brief\
+    \ \u5168\u70B9\u5BFE\u9593\u306E\u6700\u77ED\u8DEF\u9577 (Floyd-Warshall) O(n^3)\n\
+    \     *\n     * @param inf \u672A\u5230\u9054\u3092\u8868\u3059\u5024 \u7701\u7565\
+    \u3059\u308B\u3068 std::numeric_limits<Cost>::max() / 4\n     * @return std::vector<std::vector<Cost>>\
     \ dist[i][j] \u304C i \u304B\u3089 j \u3078\u306E\u6700\u77ED\u8DEF\u9577 (\u5230\
     \u9054\u3067\u304D\u306A\u3051\u308C\u3070 inf)\n     * @note \u8CA0\u306E\u8FBA\
     \u304C\u3042\u3063\u3066\u3082\u3088\u3044\u3002dist[i][i] < 0 \u3068\u306A\u308B\
@@ -187,29 +191,31 @@ data:
     \ dist[e.dst] > dist[e.src] + e.cost) {\n                    dist[e.dst] = dist[e.src]\
     \ + e.cost;\n                    prev[e.dst] = e;\n                    que.push({dist[e.dst],\
     \ e.dst});\n                }\n            }\n        }\n        return {dist,\
-    \ prev};\n    }\n};\n#line 8 \"test/aoj/alds1-11-c.test.cpp\"\n\nint main() {\n\
+    \ prev};\n    }\n};\n#line 9 \"test/aoj/alds1-11-c.test.cpp\"\n\nint main() {\n\
     \    int n;\n    std::cin >> n;\n    Graph<int> g(n);\n    for (int i = 0; i <\
     \ n; i++) {\n        int u, k;\n        std::cin >> u >> k;\n        for (int\
     \ j = 0; j < k; j++) {\n            int v;\n            std::cin >> v;\n     \
-    \       g.add_directed_edge(u - 1, v - 1, 1);\n        }\n    }\n    auto dist\
-    \ = g.shortest_path_01bfs(0).dist;\n    for (int v = 0; v < n; v++) std::cout\
-    \ << v + 1 << ' ' << dist[v] << '\\n';\n}\n"
+    \       g.add_directed_edge(u - 1, v - 1, 1);\n        }\n    }\n    const int\
+    \ inf = std::numeric_limits<int>::max() / 4;\n    auto dist = g.shortest_path_01bfs(0,\
+    \ inf).dist;\n    for (int v = 0; v < n; v++) std::cout << v + 1 << ' ' << (dist[v]\
+    \ == inf ? -1 : dist[v]) << '\\n';\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_11_C\"\
     \n\n// \u30B3\u30B9\u30C8\u304C\u3059\u3079\u3066 1 \u306E\u6709\u5411\u30B0\u30E9\
     \u30D5\u3067 Graph::shortest_path_01bfs \u3092\u4F7F\u3046\n\n#include <iostream>\n\
-    \n#include \"../../src/graph/graph.hpp\"\n\nint main() {\n    int n;\n    std::cin\
-    \ >> n;\n    Graph<int> g(n);\n    for (int i = 0; i < n; i++) {\n        int\
-    \ u, k;\n        std::cin >> u >> k;\n        for (int j = 0; j < k; j++) {\n\
-    \            int v;\n            std::cin >> v;\n            g.add_directed_edge(u\
-    \ - 1, v - 1, 1);\n        }\n    }\n    auto dist = g.shortest_path_01bfs(0).dist;\n\
-    \    for (int v = 0; v < n; v++) std::cout << v + 1 << ' ' << dist[v] << '\\n';\n\
-    }\n"
+    #include <limits>\n\n#include \"../../src/graph/graph.hpp\"\n\nint main() {\n\
+    \    int n;\n    std::cin >> n;\n    Graph<int> g(n);\n    for (int i = 0; i <\
+    \ n; i++) {\n        int u, k;\n        std::cin >> u >> k;\n        for (int\
+    \ j = 0; j < k; j++) {\n            int v;\n            std::cin >> v;\n     \
+    \       g.add_directed_edge(u - 1, v - 1, 1);\n        }\n    }\n    const int\
+    \ inf = std::numeric_limits<int>::max() / 4;\n    auto dist = g.shortest_path_01bfs(0,\
+    \ inf).dist;\n    for (int v = 0; v < n; v++) std::cout << v + 1 << ' ' << (dist[v]\
+    \ == inf ? -1 : dist[v]) << '\\n';\n}\n"
   dependsOn:
   - src/graph/graph.hpp
   isVerificationFile: true
   path: test/aoj/alds1-11-c.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 20:34:04+09:00'
+  timestamp: '2026-10-14 07:05:41+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/alds1-11-c.test.cpp

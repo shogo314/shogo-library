@@ -101,4 +101,4 @@ if (inrect(i, j, h, w)) { /* グリッドの範囲内 */ }
 ## 関連
 
 - 二分探索 `binary_search` は [二分探索](../utility/binary-search.hpp)
-- `std::array<T, 2>` の偏角ソート `argcmp` は [偏角ソートの比較関数](../geometry/argcmp.hpp)
+- 偏角ソートは [偏角](../geometry/angle.hpp) の `Angle`

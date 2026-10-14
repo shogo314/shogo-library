@@ -78,38 +78,38 @@ data:
     \ : std::true_type {};\n}  // namespace detail\ntemplate <class T>\nstruct is_sorted_container\
     \ : detail::is_sorted_container_impl<T>::type {};\ntemplate <class T>\ninline\
     \ constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n#line\
-    \ 17 \"src/utility/vector_func.hpp\"\n\ntemplate <typename T>\nstd::vector<std::ptrdiff_t>\
-    \ sorted_idx(const std::vector<T> &v, bool reverse = false) {\n    std::vector<std::ptrdiff_t>\
+    \ 17 \"src/utility/vector_func.hpp\"\n\ntemplate <typename T>\nstd::vector<int>\
+    \ sorted_idx(const std::vector<T> &v, bool reverse = false) {\n    std::vector<int>\
     \ ret(v.size());\n    std::iota(ret.begin(), ret.end(), 0);\n    std::sort(ret.begin(),\
-    \ ret.end(), [&](std::ptrdiff_t i, std::ptrdiff_t j) {\n        return v[i] <\
-    \ v[j];\n    });\n    if (reverse) std::reverse(ret.begin(), ret.end());\n   \
-    \ return ret;\n}\n\ntemplate <typename T>\ninline std::vector<T> &operator++(std::vector<T>\
-    \ &v) {\n    for (auto &e : v) e++;\n    return v;\n}\ntemplate <typename T>\n\
-    inline std::vector<T> operator++(std::vector<T> &v, int) {\n    auto res = v;\n\
-    \    for (auto &e : v) e++;\n    return res;\n}\ntemplate <typename T>\ninline\
-    \ std::vector<T> &operator--(std::vector<T> &v) {\n    for (auto &e : v) e--;\n\
-    \    return v;\n}\ntemplate <typename T>\ninline std::vector<T> operator--(std::vector<T>\
-    \ &v, int) {\n    auto res = v;\n    for (auto &e : v) e--;\n    return res;\n\
-    }\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\n\
-    inline std::vector<T> &operator+=(std::vector<T> &v1, const std::vector<U> &v2)\
-    \ {\n    if (v2.size() > v1.size()) {\n        v1.resize(v2.size());\n    }\n\
-    \    for (std::size_t i = 0; i < v2.size(); i++) {\n        v1[i] += v2[i];\n\
-    \    }\n    return v1;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
-    \ T>)>\ninline std::vector<T> operator+(const std::vector<T> &v1, const std::vector<U>\
-    \ &v2) {\n    std::vector<T> res(v1);\n    return res += v2;\n}\n\ntemplate <typename\
+    \ ret.end(), [&](int i, int j) {\n        return v[i] < v[j];\n    });\n    if\
+    \ (reverse) std::reverse(ret.begin(), ret.end());\n    return ret;\n}\n\ntemplate\
+    \ <typename T>\ninline std::vector<T> &operator++(std::vector<T> &v) {\n    for\
+    \ (auto &e : v) e++;\n    return v;\n}\ntemplate <typename T>\ninline std::vector<T>\
+    \ operator++(std::vector<T> &v, int) {\n    auto res = v;\n    for (auto &e :\
+    \ v) e++;\n    return res;\n}\ntemplate <typename T>\ninline std::vector<T> &operator--(std::vector<T>\
+    \ &v) {\n    for (auto &e : v) e--;\n    return v;\n}\ntemplate <typename T>\n\
+    inline std::vector<T> operator--(std::vector<T> &v, int) {\n    auto res = v;\n\
+    \    for (auto &e : v) e--;\n    return res;\n}\n\ntemplate <typename T, typename\
+    \ U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T> &operator+=(std::vector<T>\
+    \ &v1, const std::vector<U> &v2) {\n    if (v2.size() > v1.size()) {\n       \
+    \ v1.resize(v2.size());\n    }\n    for (std::size_t i = 0; i < v2.size(); i++)\
+    \ {\n        v1[i] += v2[i];\n    }\n    return v1;\n}\n\ntemplate <typename T,\
+    \ typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>\
+    \ operator+(const std::vector<T> &v1, const std::vector<U> &v2) {\n    std::vector<T>\
+    \ res(v1);\n    return res += v2;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
+    \ T>)>\ninline std::vector<T> &operator+=(std::vector<T> &v, const U &u) {\n \
+    \   for (T &e : v) {\n        e += u;\n    }\n    return v;\n}\n\ntemplate <typename\
     \ T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>\
-    \ &operator+=(std::vector<T> &v, const U &u) {\n    for (T &e : v) {\n       \
-    \ e += u;\n    }\n    return v;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
-    \ T>)>\ninline std::vector<T> operator+(const std::vector<T> &v, const U &u) {\n\
+    \ operator+(const std::vector<T> &v, const U &u) {\n    std::vector<T> res(v);\n\
+    \    return res += u;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
+    \ T>)>\ninline std::vector<T> operator+(const U &u, const std::vector<T> &v) {\n\
     \    std::vector<T> res(v);\n    return res += u;\n}\n\ntemplate <typename T,\
     \ typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>\
-    \ operator+(const U &u, const std::vector<T> &v) {\n    std::vector<T> res(v);\n\
-    \    return res += u;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
-    \ T>)>\ninline std::vector<T> &operator*=(std::vector<T> &v1, const std::vector<U>\
-    \ &v2) {\n    if (v2.size() > v1.size()) {\n        v1.resize(v2.size());\n  \
-    \  }\n    for (std::size_t i = 0; i < v2.size(); i++) {\n        v1[i] *= v2[i];\n\
-    \    }\n    for (std::size_t i = v2.size(); i < v1.size(); i++) {\n        v1[i]\
-    \ *= U(0);\n    }\n    return v1;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
+    \ &operator*=(std::vector<T> &v1, const std::vector<U> &v2) {\n    if (v2.size()\
+    \ > v1.size()) {\n        v1.resize(v2.size());\n    }\n    for (std::size_t i\
+    \ = 0; i < v2.size(); i++) {\n        v1[i] *= v2[i];\n    }\n    for (std::size_t\
+    \ i = v2.size(); i < v1.size(); i++) {\n        v1[i] *= U(0);\n    }\n    return\
+    \ v1;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
     \ T>)>\ninline std::vector<T> operator*(const std::vector<T> &v1, const std::vector<U>\
     \ &v2) {\n    std::vector<T> res(v1);\n    return res *= v2;\n}\n\ntemplate <typename\
     \ T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>\
@@ -154,22 +154,21 @@ data:
     \u3059\u308B\u6F14\u7B97\u5B50\u3068\u95A2\u6570\n */\n\n#include <algorithm>\n\
     #include <cassert>\n#include <cmath>\n#include <cstddef>\n#include <numeric>\n\
     #include <type_traits>\n#include <vector>\n\n#include \"traits.hpp\"\n\ntemplate\
-    \ <typename T>\nstd::vector<std::ptrdiff_t> sorted_idx(const std::vector<T> &v,\
-    \ bool reverse = false) {\n    std::vector<std::ptrdiff_t> ret(v.size());\n  \
-    \  std::iota(ret.begin(), ret.end(), 0);\n    std::sort(ret.begin(), ret.end(),\
-    \ [&](std::ptrdiff_t i, std::ptrdiff_t j) {\n        return v[i] < v[j];\n   \
-    \ });\n    if (reverse) std::reverse(ret.begin(), ret.end());\n    return ret;\n\
-    }\n\ntemplate <typename T>\ninline std::vector<T> &operator++(std::vector<T> &v)\
-    \ {\n    for (auto &e : v) e++;\n    return v;\n}\ntemplate <typename T>\ninline\
-    \ std::vector<T> operator++(std::vector<T> &v, int) {\n    auto res = v;\n   \
-    \ for (auto &e : v) e++;\n    return res;\n}\ntemplate <typename T>\ninline std::vector<T>\
-    \ &operator--(std::vector<T> &v) {\n    for (auto &e : v) e--;\n    return v;\n\
-    }\ntemplate <typename T>\ninline std::vector<T> operator--(std::vector<T> &v,\
-    \ int) {\n    auto res = v;\n    for (auto &e : v) e--;\n    return res;\n}\n\n\
-    template <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\n\
-    inline std::vector<T> &operator+=(std::vector<T> &v1, const std::vector<U> &v2)\
-    \ {\n    if (v2.size() > v1.size()) {\n        v1.resize(v2.size());\n    }\n\
-    \    for (std::size_t i = 0; i < v2.size(); i++) {\n        v1[i] += v2[i];\n\
+    \ <typename T>\nstd::vector<int> sorted_idx(const std::vector<T> &v, bool reverse\
+    \ = false) {\n    std::vector<int> ret(v.size());\n    std::iota(ret.begin(),\
+    \ ret.end(), 0);\n    std::sort(ret.begin(), ret.end(), [&](int i, int j) {\n\
+    \        return v[i] < v[j];\n    });\n    if (reverse) std::reverse(ret.begin(),\
+    \ ret.end());\n    return ret;\n}\n\ntemplate <typename T>\ninline std::vector<T>\
+    \ &operator++(std::vector<T> &v) {\n    for (auto &e : v) e++;\n    return v;\n\
+    }\ntemplate <typename T>\ninline std::vector<T> operator++(std::vector<T> &v,\
+    \ int) {\n    auto res = v;\n    for (auto &e : v) e++;\n    return res;\n}\n\
+    template <typename T>\ninline std::vector<T> &operator--(std::vector<T> &v) {\n\
+    \    for (auto &e : v) e--;\n    return v;\n}\ntemplate <typename T>\ninline std::vector<T>\
+    \ operator--(std::vector<T> &v, int) {\n    auto res = v;\n    for (auto &e :\
+    \ v) e--;\n    return res;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
+    \ T>)>\ninline std::vector<T> &operator+=(std::vector<T> &v1, const std::vector<U>\
+    \ &v2) {\n    if (v2.size() > v1.size()) {\n        v1.resize(v2.size());\n  \
+    \  }\n    for (std::size_t i = 0; i < v2.size(); i++) {\n        v1[i] += v2[i];\n\
     \    }\n    return v1;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
     \ T>)>\ninline std::vector<T> operator+(const std::vector<T> &v1, const std::vector<U>\
     \ &v2) {\n    std::vector<T> res(v1);\n    return res += v2;\n}\n\ntemplate <typename\
@@ -231,7 +230,7 @@ data:
   isVerificationFile: false
   path: src/utility/vector_func.hpp
   requiredBy: []
-  timestamp: '2026-10-13 13:03:23+09:00'
+  timestamp: '2026-10-14 07:02:47+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/vector-func.test.cpp

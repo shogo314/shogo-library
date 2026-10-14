@@ -36,7 +36,7 @@ data:
     \ x <= n) {\n            int xx = x;\n            auto itr = m.find(xx);\n   \
     \         if (itr == m.end()) {\n                m[xx]++;\n                s.erase(xx);\n\
     \            } else {\n                itr->second++;\n            }\n       \
-    \ }\n        v[k] = x;\n    }\n    value_type prod() const {\n        return *s.begin();\n\
+    \ }\n        v[k] = x;\n    }\n    value_type mex() const {\n        return *s.begin();\n\
     \    }\n};\n"
   code: "#pragma once\n\n/**\n * @file mex-update.hpp\n * @brief 1\u70B9\u66F4\u65B0\
     \u30FB\u5168\u4F53\u306E mex \u53D6\u5F97\n */\n\n#include <cassert>\n#include\
@@ -62,12 +62,12 @@ data:
     \            auto itr = m.find(xx);\n            if (itr == m.end()) {\n     \
     \           m[xx]++;\n                s.erase(xx);\n            } else {\n   \
     \             itr->second++;\n            }\n        }\n        v[k] = x;\n  \
-    \  }\n    value_type prod() const {\n        return *s.begin();\n    }\n};\n"
+    \  }\n    value_type mex() const {\n        return *s.begin();\n    }\n};\n"
   dependsOn: []
   isVerificationFile: false
   path: src/data_structures/mex-update.hpp
   requiredBy: []
-  timestamp: '2026-10-13 12:42:03+09:00'
+  timestamp: '2026-10-14 07:04:30+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/mex-update.test.cpp
@@ -79,10 +79,10 @@ title: "1\u70B9\u66F4\u65B0\u30FB\u5168\u4F53\u306E mex \u53D6\u5F97"
 長さ $n$ の数列について、1点更新と、全体の mex (含まれない最小の非負整数) の取得を行います。
 
 ```cpp
-MexUpdate<int> mex(std::vector<int>{0, 1, 3});
-int a = mex.prod();   // 2
-mex.set(1, 5);        // {0, 5, 3}
-int b = mex.prod();   // 1
+MexUpdate<int> mu(std::vector<int>{0, 1, 3});
+int a = mu.mex();     // 2
+mu.set(1, 5);         // {0, 5, 3}
+int b = mu.mex();     // 1
 ```
 
 ## メンバ関数
@@ -92,6 +92,6 @@ int b = mex.prod();   // 1
 | `MexUpdate<T>(n)` | 長さ `n` で、どの要素もまだ値を持たない (mex は 0) | $O(n)$ |
 | `MexUpdate<T>(v)` | `v` で初期化 | $O(n \log n)$ |
 | `set(k, x)` | `k` 番目を `x` に更新 | $O(\log n)$ |
-| `prod()` | 全体の mex | $O(1)$ |
+| `mex()` | 全体の mex | $O(1)$ |
 
 負の値や $n$ より大きい値も入れられます (mex には影響しません)。

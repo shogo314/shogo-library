@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: src/others/knapsack.hpp
+    path: src/dp/knapsack.hpp
     title: "\u30CA\u30C3\u30D7\u30B5\u30C3\u30AF\u554F\u984C"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -20,10 +20,10 @@ data:
     \u6CD5\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\
     \u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\
     \u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include <algorithm>\n\
-    #include <iostream>\n#include <random>\n#include <vector>\n\n#line 2 \"src/others/knapsack.hpp\"\
+    #include <iostream>\n#include <random>\n#include <vector>\n\n#line 2 \"src/dp/knapsack.hpp\"\
     \n\n/**\n * @file knapsack.hpp\n * @brief \u30CA\u30C3\u30D7\u30B5\u30C3\u30AF\
-    \u554F\u984C\n */\n\n#line 9 \"src/others/knapsack.hpp\"\n#include <cassert>\n\
-    #include <deque>\n#include <limits>\n#include <utility>\n#line 14 \"src/others/knapsack.hpp\"\
+    \u554F\u984C\n */\n\n#line 9 \"src/dp/knapsack.hpp\"\n#include <cassert>\n#include\
+    \ <deque>\n#include <limits>\n#include <utility>\n#line 14 \"src/dp/knapsack.hpp\"\
     \n\n/*\n * \u54C1\u7269 i \u306F\u4FA1\u5024 v[i] \u3068\u91CD\u3055 w[i] \u3092\
     \u6301\u3061 (\u3069\u3061\u3089\u3082 0 \u4EE5\u4E0A)\u3001\u91CD\u3055\u306E\
     \u548C\u304C W \u4EE5\u4E0B\u306B\u306A\u308B\u3088\u3046\u306B\u9078\u3093\u3067\
@@ -216,7 +216,7 @@ data:
     \u6CD5\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\
     \u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\
     \u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include <algorithm>\n\
-    #include <iostream>\n#include <random>\n#include <vector>\n\n#include \"../../src/others/knapsack.hpp\"\
+    #include <iostream>\n#include <random>\n#include <vector>\n\n#include \"../../src/dp/knapsack.hpp\"\
     \n\n// \u54C1\u7269 i \u3092 0 \u500B\u4EE5\u4E0A m[i] \u500B\u4EE5\u4E0B\u9078\
     \u3076\u3059\u3079\u3066\u306E\u65B9\u6CD5\u3092\u8A66\u3059\nlong long naive(const\
     \ std::vector<long long>& v, const std::vector<long long>& w, const std::vector<long\
@@ -259,11 +259,11 @@ data:
     \ bw, bm, 10000000000000LL) == 30;\n\n    if (ok) std::cout << \"Hello World\"\
     \ << std::endl;\n    else std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
-  - src/others/knapsack.hpp
+  - src/dp/knapsack.hpp
   isVerificationFile: true
   path: test/unittest/knapsack.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 02:00:02+09:00'
+  timestamp: '2026-10-14 06:57:58+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/knapsack.test.cpp

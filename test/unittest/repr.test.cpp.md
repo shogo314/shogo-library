@@ -175,13 +175,14 @@ data:
     \ {\n        if (step > 0) {\n            return {start, norm_stop, step, norm_stop};\n\
     \        } else {\n            return {norm_stop - step, start - step, -step,\
     \ start - step};\n        }\n    }\n    /**\n     * @brief \u8981\u7D20\u304C\
-    \ [l,r] \u3067\u3042\u308B\u7BC4\u56F2\u3092\u8FD4\u3059\n     */\n    constexpr\
-    \ Range clipped(value_type l, value_type r) const {\n        if (l > r) return\
-    \ {};\n        if (step > 0) {\n            value_type _start = [&] {\n      \
-    \          if (norm_stop <= l) {\n                    return norm_stop;\n    \
-    \            } else if (l < start) {\n                    return start;\n    \
-    \            } else {\n                    return start + (l - start + step -\
-    \ 1) / step * step;\n                }\n            }();\n            value_type\
+    \ [l, r) \u3067\u3042\u308B\u7BC4\u56F2\u3092\u8FD4\u3059\n     */\n    constexpr\
+    \ Range clipped(value_type l, value_type r) const {\n        if (l >= r) return\
+    \ {};\n        r--;  // \u4EE5\u4E0B\u3067\u306F r \u3092\u542B\u3080 [l, r] \u3068\
+    \u3057\u3066\u6271\u3046\n        if (step > 0) {\n            value_type _start\
+    \ = [&] {\n                if (norm_stop <= l) {\n                    return norm_stop;\n\
+    \                } else if (l < start) {\n                    return start;\n\
+    \                } else {\n                    return start + (l - start + step\
+    \ - 1) / step * step;\n                }\n            }();\n            value_type\
     \ _stop = [&] {\n                if (norm_stop <= r) {\n                    return\
     \ norm_stop;\n                } else if (r < start) {\n                    return\
     \ start;\n                } else {\n                    return start + (r - start\
@@ -200,9 +201,9 @@ data:
     \u6307\u5B9A\u3057\u305F\u30B3\u30F3\u30C6\u30CA\n     */\n    constexpr Range\
     \ slice(const Range& r) const {\n        if (r.empty()) return {};\n        if\
     \ (r.max() < 0) return {};\n        if (r.min() >= static_cast<Range::value_type>(size()))\
-    \ return {};\n        Range trimmed_range(r.clipped(0, static_cast<Range::value_type>(size())\
-    \ - 1));\n        if (trimmed_range.empty()) return {};\n        value_type _step\
-    \ = step * trimmed_range.step;\n        value_type _start = at(trimmed_range.start);\n\
+    \ return {};\n        Range trimmed_range(r.clipped(0, static_cast<Range::value_type>(size())));\n\
+    \        if (trimmed_range.empty()) return {};\n        value_type _step = step\
+    \ * trimmed_range.step;\n        value_type _start = at(trimmed_range.start);\n\
     \        value_type _stop = _start + _step * static_cast<Range::value_type>(trimmed_range.size());\n\
     \        return {_start, _stop, _step, _stop};\n    }\n\n    static std::string\
     \ type_str() {\n        return \"Range\";\n    }\n    std::string initializer_str()\
@@ -609,7 +610,7 @@ data:
   isVerificationFile: true
   path: test/unittest/repr.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 13:03:23+09:00'
+  timestamp: '2026-10-14 07:03:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/repr.test.cpp

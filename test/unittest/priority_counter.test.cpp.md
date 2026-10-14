@@ -35,25 +35,25 @@ data:
     \u671F\u5316\u3057\u3066\u304A\u304F\n    std::array<value_type, K> data{};\n\n\
     \    constexpr PriorityCounter() {}\n    constexpr PriorityCounter(const key_type&\
     \ x) : PriorityCounter() {\n        data[0].first = x;\n        data[0].second\
-    \ = 1;\n    }\n\n    constexpr std::size_t size() const {\n        for (std::size_t\
-    \ i = 0; i < k; i++) {\n            if (data[i].second == 0) {\n             \
-    \   return i;\n            }\n        }\n        return k;\n    }\n\n    constexpr\
-    \ void inc(const key_type& x, const mapped_type& c = 1) {\n        bool f = false;\n\
-    \        key_type pre_key{};\n        mapped_type pre_mapped{};\n        for (std::size_t\
-    \ i = 0; i < k; i++) {\n            if (f) {\n                // std::swap \u306F\
-    \ C++17 \u3067\u306F constexpr \u3067\u306A\u3044\u306E\u3067\u624B\u3067\u5165\
-    \u308C\u66FF\u3048\u308B\n                key_type tmp_key = data[i].first;\n\
-    \                data[i].first = pre_key;\n                pre_key = tmp_key;\n\
-    \                mapped_type tmp_mapped = data[i].second;\n                data[i].second\
-    \ = pre_mapped;\n                pre_mapped = tmp_mapped;\n                continue;\n\
-    \            }\n            if (data[i].second == 0) {\n                data[i].first\
-    \ = x;\n                data[i].second += c;\n                return;\n      \
-    \      }\n            if (Compare()(data[i].first, x)) {\n                pre_key\
-    \ = data[i].first;\n                pre_mapped = data[i].second;\n           \
-    \     data[i].first = x;\n                data[i].second = c;\n              \
-    \  f = true;\n            } else if (not Compare()(x, data[i].first)) {\n    \
-    \            data[i].second += c;\n                return;\n            }\n  \
-    \      }\n    }\n\n    constexpr PriorityCounter& operator+=(const PriorityCounter&\
+    \ = 1;\n    }\n\n    constexpr int size() const {\n        for (std::size_t i\
+    \ = 0; i < k; i++) {\n            if (data[i].second == 0) {\n               \
+    \ return static_cast<int>(i);\n            }\n        }\n        return k;\n \
+    \   }\n\n    constexpr void inc(const key_type& x, const mapped_type& c = 1) {\n\
+    \        bool f = false;\n        key_type pre_key{};\n        mapped_type pre_mapped{};\n\
+    \        for (std::size_t i = 0; i < k; i++) {\n            if (f) {\n       \
+    \         // std::swap \u306F C++17 \u3067\u306F constexpr \u3067\u306A\u3044\u306E\
+    \u3067\u624B\u3067\u5165\u308C\u66FF\u3048\u308B\n                key_type tmp_key\
+    \ = data[i].first;\n                data[i].first = pre_key;\n               \
+    \ pre_key = tmp_key;\n                mapped_type tmp_mapped = data[i].second;\n\
+    \                data[i].second = pre_mapped;\n                pre_mapped = tmp_mapped;\n\
+    \                continue;\n            }\n            if (data[i].second == 0)\
+    \ {\n                data[i].first = x;\n                data[i].second += c;\n\
+    \                return;\n            }\n            if (Compare()(data[i].first,\
+    \ x)) {\n                pre_key = data[i].first;\n                pre_mapped\
+    \ = data[i].second;\n                data[i].first = x;\n                data[i].second\
+    \ = c;\n                f = true;\n            } else if (not Compare()(x, data[i].first))\
+    \ {\n                data[i].second += c;\n                return;\n         \
+    \   }\n        }\n    }\n\n    constexpr PriorityCounter& operator+=(const PriorityCounter&\
     \ o) {\n        for (std::size_t i = 0; i < k; i++) {\n            if (o.data[i].second\
     \ == 0) break;\n            this->inc(o.data[i].first, o.data[i].second);\n  \
     \      }\n        return *this;\n    }\n    constexpr friend PriorityCounter operator+(const\
@@ -70,8 +70,8 @@ data:
     \ a.first); });\n    if (v.size() > K) v.resize(K);\n    return v;\n}\n\ntemplate\
     \ <size_t K, class Compare>\nbool same(const PriorityCounter<int, K, Compare>&\
     \ pc, const std::map<int, long long>& m) {\n    auto expect = top_k<K, Compare>(m);\n\
-    \    if (pc.size() != expect.size()) return false;\n    for (size_t i = 0; i <\
-    \ expect.size(); i++) {\n        if (pc.data[i] != expect[i]) return false;\n\
+    \    if (pc.size() != (int)expect.size()) return false;\n    for (size_t i = 0;\
+    \ i < expect.size(); i++) {\n        if (pc.data[i] != expect[i]) return false;\n\
     \    }\n    // \u4F7F\u308F\u308C\u3066\u3044\u306A\u3044\u5834\u6240\u306E\u500B\
     \u6570\u306F 0\n    for (size_t i = expect.size(); i < K; i++) {\n        if (pc.data[i].second\
     \ != 0) return false;\n    }\n    return true;\n}\n\ntemplate <size_t K, class\
@@ -126,7 +126,7 @@ data:
     \ auto& a, const auto& b) { return Compare()(b.first, a.first); });\n    if (v.size()\
     \ > K) v.resize(K);\n    return v;\n}\n\ntemplate <size_t K, class Compare>\n\
     bool same(const PriorityCounter<int, K, Compare>& pc, const std::map<int, long\
-    \ long>& m) {\n    auto expect = top_k<K, Compare>(m);\n    if (pc.size() != expect.size())\
+    \ long>& m) {\n    auto expect = top_k<K, Compare>(m);\n    if (pc.size() != (int)expect.size())\
     \ return false;\n    for (size_t i = 0; i < expect.size(); i++) {\n        if\
     \ (pc.data[i] != expect[i]) return false;\n    }\n    // \u4F7F\u308F\u308C\u3066\
     \u3044\u306A\u3044\u5834\u6240\u306E\u500B\u6570\u306F 0\n    for (size_t i =\
@@ -173,7 +173,7 @@ data:
   isVerificationFile: true
   path: test/unittest/priority_counter.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 12:42:03+09:00'
+  timestamp: '2026-10-14 07:02:47+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/priority_counter.test.cpp

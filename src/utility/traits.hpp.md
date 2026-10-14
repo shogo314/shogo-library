@@ -3,9 +3,6 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
-    path: src/geometry/argcmp.hpp
-    title: "\u504F\u89D2\u30BD\u30FC\u30C8\u306E\u6BD4\u8F03\u95A2\u6570"
-  - icon: ':heavy_check_mark:'
     path: src/string/rolling-hash.hpp
     title: "\u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5"
   - icon: ':heavy_check_mark:'
@@ -86,9 +83,6 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/enumerate-palindromes.1.test.cpp
     title: test/yosupo/enumerate-palindromes.1.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/yosupo/sort-points-by-argument.2.test.cpp
-    title: test/yosupo/sort-points-by-argument.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/static-range-sum.test.cpp
     title: test/yosupo/static-range-sum.test.cpp
@@ -208,7 +202,6 @@ data:
   - src/utility/vector_func.hpp
   - src/utility/container_func.hpp
   - src/utility/binary-search.hpp
-  - src/geometry/argcmp.hpp
   - src/string/rolling-hash.hpp
   timestamp: '2026-10-13 13:03:23+09:00'
   verificationStatus: LIBRARY_ALL_AC
@@ -235,7 +228,6 @@ data:
   - test/aoj/itp1-2-c.test.cpp
   - test/yosupo/static-range-sum.test.cpp
   - test/yosupo/enumerate-palindromes.1.test.cpp
-  - test/yosupo/sort-points-by-argument.2.test.cpp
 documentation_of: src/utility/traits.hpp
 layout: document
 title: "\u578B\u7279\u6027"

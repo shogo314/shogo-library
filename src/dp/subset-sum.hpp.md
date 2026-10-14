@@ -16,7 +16,7 @@ data:
     document_title: "\u90E8\u5206\u548C\u554F\u984C (\u4F5C\u308C\u308B\u548C\u306E\
       \u5224\u5B9A\u3068\u5FA9\u5143)"
     links: []
-  bundledCode: "#line 2 \"src/others/subset-sum.hpp\"\n\n/**\n * @file subset-sum.hpp\n\
+  bundledCode: "#line 2 \"src/dp/subset-sum.hpp\"\n\n/**\n * @file subset-sum.hpp\n\
     \ * @brief \u90E8\u5206\u548C\u554F\u984C (\u4F5C\u308C\u308B\u548C\u306E\u5224\
     \u5B9A\u3068\u5FA9\u5143)\n */\n\n#include <algorithm>\n#include <cassert>\n#include\
     \ <limits>\n#include <optional>\n#include <utility>\n#include <vector>\n\nnamespace\
@@ -263,14 +263,14 @@ data:
     \ }\n    return res;\n}\n"
   dependsOn: []
   isVerificationFile: false
-  path: src/others/subset-sum.hpp
+  path: src/dp/subset-sum.hpp
   requiredBy: []
-  timestamp: '2026-10-14 03:16:03+09:00'
+  timestamp: '2026-10-14 06:57:58+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/subset-sum.test.cpp
   - test/aoj/alds1-5-a.test.cpp
-documentation_of: src/others/subset-sum.hpp
+documentation_of: src/dp/subset-sum.hpp
 layout: document
 title: "\u90E8\u5206\u548C\u554F\u984C (\u4F5C\u308C\u308B\u548C\u306E\u5224\u5B9A\
   \u3001S \u4EE5\u4E0B\u306E\u6700\u5927\u5024\u3068\u5FA9\u5143)"
@@ -302,12 +302,12 @@ auto idx = subset_sum_max_restore(a, 13);    // {0, 2} (3 + 9)
 |---|---|---|
 | `subset_sum_max(a, S)` | 作れる和のうち `S` 以下の最大値。下の 2 つのうち計算量が小さい方を選ぶ | |
 | `subset_sum_max_bitset(a, S)` | bitset で作れる和を求め、`S` から下へ探す | $O(NS / 64)$ |
-| `subset_sum_max_meet_in_the_middle(a, S)` | 半分全列挙。$N$ が 40 程度までなら、`S` や要素が大きくてもよい | $O(2^{N/2})$ |
+| `subset_sum_max_meet_in_the_middle(a, S)` | 半分全列挙。$N$ が 40 程度までなら、`S` や要素が大きくてもよい。$N \le 128$ (超えると assert で止まる) | $O(2^{N/2})$ |
 | `subset_sum_max_restore(a, S)` | 和が `S` 以下で最大になる選び方を 1 つ求め、添字を昇順に並べたものを返す。`subset_sum_max` と同じく計算量が小さい方を選ぶ | |
 
 - 何も選ばなければ和は 0 なので、`subset_sum_max` は常に 0 以上の値を返し、`subset_sum_max_restore` は空のリストを返すこともあります。
 - 半分全列挙では、前半と後半それぞれの (和, 選んだ要素のビット列) を和の昇順に列挙し、前半の和を小さい順に見ながら後半の添字を後ろから動かします。
-- `subset_sum_max` は $(N + 1)(S / 64 + 1)$ と $4 \cdot 2^{\lceil N/2 \rceil}$ を比べて選びます。
+- `subset_sum_max` は $(N + 1)(S / 64 + 1)$ と $4 \cdot 2^{\lceil N/2 \rceil}$ を比べて選びます。$N > 120$ のときは半分全列挙を候補から外します。
 
 ## 注意
 

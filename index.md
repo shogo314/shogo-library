@@ -3,13 +3,13 @@ data:
   libraryCategories:
   - name: src/algebra
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: src/algebra/acted-monoid.hpp
       title: "\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
     - icon: ':heavy_check_mark:'
       path: src/algebra/group.hpp
       title: "\u7FA4\u306E\u5B9A\u7FA9"
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: src/algebra/monoid.hpp
       title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   - name: src/base
@@ -46,7 +46,7 @@ data:
       path: src/data_structures/counter.hpp
       title: "\u5024\u306E\u500B\u6570\u3092\u6570\u3048\u308B\u591A\u91CD\u96C6\u5408\
         \ (Counter)"
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: src/data_structures/dual-segtree.hpp
       title: "\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u533A\u9593\u4F5C\
         \u7528\u30011\u70B9\u53D6\u5F97)"
@@ -103,11 +103,26 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/data_structures/unionfind.hpp
       title: UnionFind
+  - name: src/dp
+    pages:
+    - icon: ':heavy_check_mark:'
+      path: src/dp/knapsack.hpp
+      title: "\u30CA\u30C3\u30D7\u30B5\u30C3\u30AF\u554F\u984C"
+    - icon: ':heavy_check_mark:'
+      path: src/dp/longest-increasing-subsequence.hpp
+      title: "\u6700\u9577\u5897\u52A0\u90E8\u5206\u5217 (LIS)"
+    - icon: ':heavy_check_mark:'
+      path: src/dp/subset-sum-count.hpp
+      title: "\u90E8\u5206\u548C\u306E\u500B\u6570"
+    - icon: ':heavy_check_mark:'
+      path: src/dp/subset-sum.hpp
+      title: "\u90E8\u5206\u548C\u554F\u984C (\u4F5C\u308C\u308B\u548C\u306E\u5224\
+        \u5B9A\u3001S \u4EE5\u4E0B\u306E\u6700\u5927\u5024\u3068\u5FA9\u5143)"
   - name: src/geometry
     pages:
     - icon: ':heavy_check_mark:'
-      path: src/geometry/argcmp.hpp
-      title: "\u504F\u89D2\u30BD\u30FC\u30C8\u306E\u6BD4\u8F03\u95A2\u6570"
+      path: src/geometry/angle.hpp
+      title: "\u504F\u89D2"
     - icon: ':heavy_check_mark:'
       path: src/geometry/circle.hpp
       title: "\u5186 (\u4F4D\u7F6E\u95A2\u4FC2\u3001\u4EA4\u70B9\u3001\u63A5\u7DDA\
@@ -158,6 +173,9 @@ data:
       path: src/math/combinatorics.hpp
       title: "\u7D44\u307F\u5408\u308F\u305B"
     - icon: ':heavy_check_mark:'
+      path: src/math/convolution.hpp
+      title: "\u7573\u307F\u8FBC\u307F (NTT)"
+    - icon: ':heavy_check_mark:'
       path: src/math/divisor-transform.hpp
       title: "\u7D04\u6570\u30FB\u500D\u6570\u306E\u30BC\u30FC\u30BF\u5909\u63DB\u3001\
         \u30E1\u30D3\u30A6\u30B9\u5909\u63DB\u3068 GCD\u30FBLCM \u7573\u307F\u8FBC\
@@ -180,9 +198,11 @@ data:
       title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
         \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9"
     - icon: ':heavy_check_mark:'
+      path: src/math/modular-arithmetic.hpp
+      title: "mod \u6F14\u7B97 (\u7A4D\u3001\u51AA\u4E57\u3001\u9006\u5143)"
+    - icon: ':heavy_check_mark:'
       path: src/math/number-theory.hpp
-      title: "\u6570\u8AD6 (\u9006\u5143\u3001\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\
-        \u3001\u7573\u307F\u8FBC\u307F\u306A\u3069)"
+      title: "\u6570\u8AD6 (\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406)"
     - icon: ':heavy_check_mark:'
       path: src/math/prime.hpp
       title: "\u7D20\u6570 (\u7D20\u6570\u5224\u5B9A\u3001\u7D20\u56E0\u6570\u5206\
@@ -205,21 +225,8 @@ data:
       path: src/others/inversion-number.hpp
       title: "\u8EE2\u5012\u6570"
     - icon: ':heavy_check_mark:'
-      path: src/others/knapsack.hpp
-      title: "\u30CA\u30C3\u30D7\u30B5\u30C3\u30AF\u554F\u984C"
-    - icon: ':heavy_check_mark:'
-      path: src/others/longest-increasing-subsequence.hpp
-      title: "\u6700\u9577\u5897\u52A0\u90E8\u5206\u5217 (LIS)"
-    - icon: ':heavy_check_mark:'
       path: src/others/mo.hpp
       title: Mo's algorithm
-    - icon: ':heavy_check_mark:'
-      path: src/others/subset-sum-count.hpp
-      title: "\u90E8\u5206\u548C\u306E\u500B\u6570"
-    - icon: ':heavy_check_mark:'
-      path: src/others/subset-sum.hpp
-      title: "\u90E8\u5206\u548C\u554F\u984C (\u4F5C\u308C\u308B\u548C\u306E\u5224\
-        \u5B9A\u3001S \u4EE5\u4E0B\u306E\u6700\u5927\u5024\u3068\u5FA9\u5143)"
   - name: src/string
     pages:
     - icon: ':heavy_check_mark:'
@@ -431,7 +438,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/aoj/dsl-2-b.2.test.cpp
       title: test/aoj/dsl-2-b.2.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/aoj/dsl-2-d.test.cpp
       title: test/aoj/dsl-2-d.test.cpp
     - icon: ':heavy_check_mark:'
@@ -572,6 +579,9 @@ data:
       path: test/unittest/acted-monoid.test.cpp
       title: test/unittest/acted-monoid.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/angle.test.cpp
+      title: test/unittest/angle.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/binary-trie.test.cpp
       title: test/unittest/binary-trie.test.cpp
     - icon: ':heavy_check_mark:'
@@ -692,11 +702,17 @@ data:
       path: test/unittest/modint.test.cpp
       title: test/unittest/modint.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/modular-arithmetic.test.cpp
+      title: test/unittest/modular-arithmetic.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/monoid-unionfind.test.cpp
       title: test/unittest/monoid-unionfind.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/monoid.test.cpp
       title: test/unittest/monoid.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/number-theory.test.cpp
+      title: test/unittest/number-theory.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/potentialized-unionfind.test.cpp
       title: test/unittest/potentialized-unionfind.test.cpp
@@ -733,6 +749,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/sparse-table.test.cpp
       title: test/unittest/sparse-table.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/sqrt.test.cpp
+      title: test/unittest/sqrt.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/string.test.cpp
       title: test/unittest/string.test.cpp

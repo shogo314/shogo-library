@@ -70,50 +70,53 @@ data:
     \u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n     * @param u \u59CB\u70B9\n   \
     \  * @param v \u7D42\u70B9\n     * @param w \u30B3\u30B9\u30C8 \u7701\u7565\u3057\
     \u305F\u30891\n     */\n    void add_edge(int u, int v, Cost w = 1) {\n      \
-    \  g[u].push_back({u, v, w, m});\n        g[v].push_back({v, u, w, m++});\n  \
-    \  }\n    /**\n     * @brief \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n\
-    \     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n     * @param w \u30B3\
-    \u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n    void add_directed_edge(int\
-    \ u, int v, Cost w = 1) {\n        g[u].push_back({u, v, w, m++});\n    }\n  \
-    \  /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\u529B\u304B\
-    \u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\u308B\n     * @param m\
-    \ \u8FBA\u306E\u6570\n     * @param padding \u9802\u70B9\u756A\u53F7\u3092\u5165\
-    \u529B\u304B\u3089\u3044\u304F\u3064\u305A\u3089\u3059\u304B \u7701\u7565\u3057\
-    \u305F\u3089-1\n     * @param weighted \u8FBA\u306E\u91CD\u307F\u304C\u5165\u529B\
-    \u3055\u308C\u308B\u304B \u7701\u7565\u3057\u305F\u3089false\u3068\u306A\u308A\
-    \u3001\u91CD\u307F1\u3067\u8FBA\u304C\u8FFD\u52A0\u3055\u308C\u308B\n     * @param\
-    \ directed \u6709\u5411\u30B0\u30E9\u30D5\u304B\u3069\u3046\u304B \u7701\u7565\
-    \u3057\u305F\u3089false\n     */\n    void read(int m, int padding = -1, bool\
-    \ weighted = false, bool directed = false) {\n        for (int i = 0; i < m; i++)\
-    \ {\n            int u, v;\n            std::cin >> u >> v;\n            u +=\
-    \ padding, v += padding;\n            Cost c(1);\n            if (weighted)\n\
-    \                std::cin >> c;\n            if (directed)\n                add_directed_edge(u,\
-    \ v, c);\n            else\n                add_edge(u, v, c);\n        }\n  \
-    \  }\n    /**\n     * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u51FA\u308B\u8FBA\
-    \u3092\u5217\u6319\u3059\u308B\n     * @param v \u9802\u70B9\u756A\u53F7\n   \
-    \  * @return std::vector<Edge>& v\u304B\u3089\u51FA\u308B\u8FBA\u306E\u30EA\u30B9\
-    \u30C8\n     */\n    std::vector<Edge> &operator[](int v) {\n        return g[v];\n\
-    \    }\n    /**\n     * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u51FA\u308B\
-    \u8FBA\u3092\u5217\u6319\u3059\u308B\n     * @param v \u9802\u70B9\u756A\u53F7\
-    \n     * @return const std::vector<Edge>& v\u304B\u3089\u51FA\u308B\u8FBA\u306E\
-    \u30EA\u30B9\u30C8\n     */\n    const std::vector<Edge> &operator[](int v) const\
-    \ {\n        return g[v];\n    }\n    /**\n     * @brief \u8FBA\u306E\u30EA\u30B9\
-    \u30C8\n     * @return std::vector<Edge> \u8FBA\u306E\u30EA\u30B9\u30C8(id\u306E\
-    \u6607\u9806)\n     *\n     * \u7121\u5411\u8FBA\u306F\u4EE3\u8868\u3057\u3066\
-    1\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\n     */\n    std::vector<Edge>\
-    \ edges() const {\n        std::vector<Edge> res(m);\n        for (int i = 0;\
-    \ i < n; i++) {\n            for (auto &e : g[i]) {\n                res[e.id]\
-    \ = e;\n            }\n        }\n        return res;\n    }\n    /**\n     *\
-    \ @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\
-    \u77ED\u8DEF\n     *\n     * @param s \u59CB\u70B9\n     * @param weighted 1\u4EE5\
-    \u5916\u306E\u30B3\u30B9\u30C8\u306E\u8FBA\u304C\u5B58\u5728\u3059\u308B\u304B\
-    \ \u7701\u7565\u3059\u308B\u3068true\n     * @param inf \u30B3\u30B9\u30C8\u306E\
-    min\u306E\u5358\u4F4D\u5143 \u672A\u5230\u9054\u306E\u9802\u70B9\u3078\u306E\u8DDD\
-    \u96E2\u306Finf\u306B\u306A\u308B \u7701\u7565\u3059\u308B\u3068\n     * @return\
-    \ ShortestPath \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u9577 (dist) \u3068\
-    \u3001\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\u306E\u76F4\u524D\
-    \u306E\u8FBA (prev)\n     */\n    ShortestPath shortest_path(int s, bool weighted\
-    \ = true, Cost inf = -1) const {\n        if (weighted)\n            return shortest_path_dijkstra(s,\
+    \  assert(0 <= u && u < n && 0 <= v && v < n);\n        g[u].push_back({u, v,\
+    \ w, m});\n        g[v].push_back({v, u, w, m++});\n    }\n    /**\n     * @brief\
+    \ \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n     * @param u \u59CB\u70B9\
+    \n     * @param v \u7D42\u70B9\n     * @param w \u30B3\u30B9\u30C8 \u7701\u7565\
+    \u3057\u305F\u30891\n     */\n    void add_directed_edge(int u, int v, Cost w\
+    \ = 1) {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n        g[u].push_back({u,\
+    \ v, w, m++});\n    }\n    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\
+    \u6E96\u5165\u529B\u304B\u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\
+    \u308B\n     * @param m \u8FBA\u306E\u6570\n     * @param padding \u9802\u70B9\
+    \u756A\u53F7\u3092\u5165\u529B\u304B\u3089\u3044\u304F\u3064\u305A\u3089\u3059\
+    \u304B \u7701\u7565\u3057\u305F\u3089-1\n     * @param weighted \u8FBA\u306E\u91CD\
+    \u307F\u304C\u5165\u529B\u3055\u308C\u308B\u304B \u7701\u7565\u3057\u305F\u3089\
+    false\u3068\u306A\u308A\u3001\u91CD\u307F1\u3067\u8FBA\u304C\u8FFD\u52A0\u3055\
+    \u308C\u308B\n     * @param directed \u6709\u5411\u30B0\u30E9\u30D5\u304B\u3069\
+    \u3046\u304B \u7701\u7565\u3057\u305F\u3089false\n     */\n    void read(int m,\
+    \ int padding = -1, bool weighted = false, bool directed = false) {\n        for\
+    \ (int i = 0; i < m; i++) {\n            int u, v;\n            std::cin >> u\
+    \ >> v;\n            u += padding, v += padding;\n            Cost c(1);\n   \
+    \         if (weighted)\n                std::cin >> c;\n            if (directed)\n\
+    \                add_directed_edge(u, v, c);\n            else\n             \
+    \   add_edge(u, v, c);\n        }\n    }\n    /**\n     * @brief \u3042\u308B\u9802\
+    \u70B9\u304B\u3089\u51FA\u308B\u8FBA\u3092\u5217\u6319\u3059\u308B\n     * @param\
+    \ v \u9802\u70B9\u756A\u53F7\n     * @return std::vector<Edge>& v\u304B\u3089\u51FA\
+    \u308B\u8FBA\u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<Edge> &operator[](int\
+    \ v) {\n        return g[v];\n    }\n    /**\n     * @brief \u3042\u308B\u9802\
+    \u70B9\u304B\u3089\u51FA\u308B\u8FBA\u3092\u5217\u6319\u3059\u308B\n     * @param\
+    \ v \u9802\u70B9\u756A\u53F7\n     * @return const std::vector<Edge>& v\u304B\u3089\
+    \u51FA\u308B\u8FBA\u306E\u30EA\u30B9\u30C8\n     */\n    const std::vector<Edge>\
+    \ &operator[](int v) const {\n        return g[v];\n    }\n    /**\n     * @brief\
+    \ \u8FBA\u306E\u30EA\u30B9\u30C8\n     * @return std::vector<Edge> \u8FBA\u306E\
+    \u30EA\u30B9\u30C8(id\u306E\u6607\u9806)\n     *\n     * \u7121\u5411\u8FBA\u306F\
+    \u4EE3\u8868\u3057\u30661\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\n  \
+    \   */\n    std::vector<Edge> edges() const {\n        std::vector<Edge> res(m);\n\
+    \        for (int i = 0; i < n; i++) {\n            for (auto &e : g[i]) {\n \
+    \               res[e.id] = e;\n            }\n        }\n        return res;\n\
+    \    }\n    /**\n     * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\
+    \u70B9\u3078\u306E\u6700\u77ED\u8DEF\n     *\n     * @param s \u59CB\u70B9\n \
+    \    * @param weighted 1\u4EE5\u5916\u306E\u30B3\u30B9\u30C8\u306E\u8FBA\u304C\
+    \u5B58\u5728\u3059\u308B\u304B \u7701\u7565\u3059\u308B\u3068true\n     * @param\
+    \ inf \u30B3\u30B9\u30C8\u306Emin\u306E\u5358\u4F4D\u5143 \u672A\u5230\u9054\u306E\
+    \u9802\u70B9\u3078\u306E\u8DDD\u96E2\u306Finf\u306B\u306A\u308B \u7701\u7565\u3059\
+    \u308B\u3068 std::numeric_limits<Cost>::max() / 4\n     * @return ShortestPath\
+    \ \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u9577 (dist) \u3068\u3001\u5404\
+    \u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA\
+    \ (prev)\n     */\n    ShortestPath shortest_path(int s, bool weighted = true,\
+    \ Cost inf = std::numeric_limits<Cost>::max() / 4) const {\n        assert(0 <=\
+    \ s && s < n);\n        if (weighted)\n            return shortest_path_dijkstra(s,\
     \ inf);\n        return shortest_path_bfs(s, inf);\n    }\n    /**\n     * @brief\
     \ \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\
     \u8DEF\n     *\n     * @param s \u59CB\u70B9\n     * @param inf \u30B3\u30B9\u30C8\
@@ -123,44 +126,45 @@ data:
     \ -inf\n     * @return ShortestPath \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\
     \u8DEF\u9577 (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\
     \u4E0A\u306E\u76F4\u524D\u306E\u8FBA (prev)\n     */\n    ShortestPath bellman_ford(int\
-    \ s, Cost inf = std::numeric_limits<Cost>::max() / 4) const {\n        std::vector<Cost>\
-    \ dist(n, inf);\n        std::vector<Edge> prev(n);\n        dist[s] = Cost{};\n\
-    \n        for (int i = 1; i < n; i++) {\n            bool changed = false;\n \
-    \           for (int j = 0; j < n; j++)\n                for (const auto &e :\
-    \ g[j]) {\n                    if (dist[e.src] == inf)\n                     \
-    \   continue;\n                    if (dist[e.dst] > dist[e.src] + e.cost) {\n\
-    \                        dist[e.dst] = dist[e.src] + e.cost;\n               \
-    \         if (dist[e.dst] < -inf)\n                            dist[e.dst] = -inf;\n\
-    \                        prev[e.dst] = e;\n                        changed = true;\n\
-    \                    }\n                }\n            if (!changed)\n       \
-    \         break;\n        }\n        for (int i = 0; i < n; i++) {\n         \
-    \   bool changed = false;\n            for (int j = 0; j < n; j++)\n         \
-    \       for (const auto &e : g[j]) {\n                    if (dist[e.src] == inf)\n\
-    \                        continue;\n                    if (dist[e.dst] > dist[e.src]\
-    \ + e.cost) {\n                        dist[e.dst] = -inf;\n                 \
-    \       prev[e.dst] = e;\n                        changed = true;\n          \
-    \          }\n                }\n            if (!changed)\n                break;\n\
-    \        }\n        return {dist, prev};\n    }\n    /**\n     * @brief \u8FBA\
-    \u306E\u30B3\u30B9\u30C8\u304C 0 \u304B 1 \u3060\u3051\u306E\u30B0\u30E9\u30D5\
-    \u3067\u3001\u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\
-    \u6700\u77ED\u8DEF (01-BFS) O(n + m)\n     *\n     * @param s \u59CB\u70B9\n \
-    \    * @param inf \u672A\u5230\u9054\u306E\u9802\u70B9\u3078\u306E\u8DDD\u96E2\
-    \ \u7701\u7565\u3059\u308B\u3068 -1\n     * @return ShortestPath \u5404\u9802\u70B9\
-    \u3078\u306E\u6700\u77ED\u8DEF\u9577 (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\
-    \u306E\u6700\u77ED\u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA (prev)\n     */\n\
-    \    ShortestPath shortest_path_01bfs(int s, Cost inf = -1) const {\n        std::vector<Cost>\
-    \ dist(n, inf);\n        std::vector<Edge> prev(n);\n        std::deque<int> que;\n\
-    \        dist[s] = 0;\n        que.push_back(s);\n        while (!que.empty())\
-    \ {\n            int u = que.front();\n            que.pop_front();\n        \
-    \    for (auto &e : g[u]) {\n                assert(e.cost == 0 || e.cost == 1);\n\
-    \                if (dist[e.dst] == inf || dist[e.dst] > dist[u] + e.cost) {\n\
-    \                    dist[e.dst] = dist[u] + e.cost;\n                    prev[e.dst]\
-    \ = e;\n                    if (e.cost == 0) que.push_front(e.dst);\n        \
-    \            else que.push_back(e.dst);\n                }\n            }\n  \
-    \      }\n        return {dist, prev};\n    }\n    /**\n     * @brief \u5168\u70B9\
-    \u5BFE\u9593\u306E\u6700\u77ED\u8DEF\u9577 (Floyd-Warshall) O(n^3)\n     *\n \
-    \    * @param inf \u672A\u5230\u9054\u3092\u8868\u3059\u5024 \u7701\u7565\u3059\
-    \u308B\u3068 std::numeric_limits<Cost>::max() / 4\n     * @return std::vector<std::vector<Cost>>\
+    \ s, Cost inf = std::numeric_limits<Cost>::max() / 4) const {\n        assert(0\
+    \ <= s && s < n);\n        std::vector<Cost> dist(n, inf);\n        std::vector<Edge>\
+    \ prev(n);\n        dist[s] = Cost{};\n\n        for (int i = 1; i < n; i++) {\n\
+    \            bool changed = false;\n            for (int j = 0; j < n; j++)\n\
+    \                for (const auto &e : g[j]) {\n                    if (dist[e.src]\
+    \ == inf)\n                        continue;\n                    if (dist[e.dst]\
+    \ > dist[e.src] + e.cost) {\n                        dist[e.dst] = dist[e.src]\
+    \ + e.cost;\n                        if (dist[e.dst] < -inf)\n               \
+    \             dist[e.dst] = -inf;\n                        prev[e.dst] = e;\n\
+    \                        changed = true;\n                    }\n            \
+    \    }\n            if (!changed)\n                break;\n        }\n       \
+    \ for (int i = 0; i < n; i++) {\n            bool changed = false;\n         \
+    \   for (int j = 0; j < n; j++)\n                for (const auto &e : g[j]) {\n\
+    \                    if (dist[e.src] == inf)\n                        continue;\n\
+    \                    if (dist[e.dst] > dist[e.src] + e.cost) {\n             \
+    \           dist[e.dst] = -inf;\n                        prev[e.dst] = e;\n  \
+    \                      changed = true;\n                    }\n              \
+    \  }\n            if (!changed)\n                break;\n        }\n        return\
+    \ {dist, prev};\n    }\n    /**\n     * @brief \u8FBA\u306E\u30B3\u30B9\u30C8\u304C\
+    \ 0 \u304B 1 \u3060\u3051\u306E\u30B0\u30E9\u30D5\u3067\u3001\u3042\u308B\u9802\
+    \u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF (01-BFS) O(n\
+    \ + m)\n     *\n     * @param s \u59CB\u70B9\n     * @param inf \u672A\u5230\u9054\
+    \u306E\u9802\u70B9\u3078\u306E\u8DDD\u96E2 \u7701\u7565\u3059\u308B\u3068 std::numeric_limits<Cost>::max()\
+    \ / 4\n     * @return ShortestPath \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\
+    \u9577 (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\
+    \u306E\u76F4\u524D\u306E\u8FBA (prev)\n     */\n    ShortestPath shortest_path_01bfs(int\
+    \ s, Cost inf = std::numeric_limits<Cost>::max() / 4) const {\n        assert(0\
+    \ <= s && s < n);\n        std::vector<Cost> dist(n, inf);\n        std::vector<Edge>\
+    \ prev(n);\n        std::deque<int> que;\n        dist[s] = 0;\n        que.push_back(s);\n\
+    \        while (!que.empty()) {\n            int u = que.front();\n          \
+    \  que.pop_front();\n            for (auto &e : g[u]) {\n                assert(e.cost\
+    \ == 0 || e.cost == 1);\n                if (dist[e.dst] == inf || dist[e.dst]\
+    \ > dist[u] + e.cost) {\n                    dist[e.dst] = dist[u] + e.cost;\n\
+    \                    prev[e.dst] = e;\n                    if (e.cost == 0) que.push_front(e.dst);\n\
+    \                    else que.push_back(e.dst);\n                }\n         \
+    \   }\n        }\n        return {dist, prev};\n    }\n    /**\n     * @brief\
+    \ \u5168\u70B9\u5BFE\u9593\u306E\u6700\u77ED\u8DEF\u9577 (Floyd-Warshall) O(n^3)\n\
+    \     *\n     * @param inf \u672A\u5230\u9054\u3092\u8868\u3059\u5024 \u7701\u7565\
+    \u3059\u308B\u3068 std::numeric_limits<Cost>::max() / 4\n     * @return std::vector<std::vector<Cost>>\
     \ dist[i][j] \u304C i \u304B\u3089 j \u3078\u306E\u6700\u77ED\u8DEF\u9577 (\u5230\
     \u9054\u3067\u304D\u306A\u3051\u308C\u3070 inf)\n     * @note \u8CA0\u306E\u8FBA\
     \u304C\u3042\u3063\u3066\u3082\u3088\u3044\u3002dist[i][i] < 0 \u3068\u306A\u308B\
@@ -224,24 +228,25 @@ data:
     \        if (a.dist != b.dist) ok = false;\n            // prev \u3092\u305F\u3069\
     \u3063\u305F\u7D4C\u8DEF\u306E\u9577\u3055\u304C dist \u3068\u4E00\u81F4\u3059\
     \u308B\n            for (int t = 0; t < n; t++) {\n                if (a.dist[t]\
-    \ == -1) continue;\n                int len = 0;\n                for (auto& e\
-    \ : a.path(t)) len += e.cost;\n                if (len != a.dist[t]) ok = false;\n\
-    \            }\n        }\n    }\n\n    // floyd_warshall: \u8CA0\u306E\u8FBA\u3092\
-    \u542B\u3080\u6709\u5411\u30B0\u30E9\u30D5\u3067\u3001\u5404\u59CB\u70B9\u304B\
-    \u3089\u306E Bellman-Ford \u3068\u6BD4\u3079\u308B\n    for (int rep = 0; rep\
-    \ < 2000 && ok; rep++) {\n        int n = rng() % 8 + 1, m = rng() % 20;\n   \
-    \     Graph<long long> g(n);\n        for (int i = 0; i < m; i++) {\n        \
-    \    int u = rng() % n, v = rng() % n;\n            long long w = (long long)(rng()\
-    \ % 21) - 3;\n            g.add_directed_edge(u, v, w);\n        }\n        const\
-    \ long long inf = std::numeric_limits<long long>::max() / 4;\n        auto d =\
-    \ g.floyd_warshall();\n        bool negative = false;\n        for (int s = 0;\
-    \ s < n; s++) {\n            auto b = g.bellman_ford(s);\n            for (int\
-    \ t = 0; t < n; t++) negative |= b.dist[t] == -inf;\n        }\n        bool negative_fw\
-    \ = false;\n        for (int i = 0; i < n; i++) negative_fw |= d[i][i] < 0;\n\
-    \        if (negative != negative_fw) ok = false;\n        if (!negative) {\n\
-    \            for (int s = 0; s < n; s++) {\n                auto b = g.bellman_ford(s);\n\
-    \                if (d[s] != b.dist) ok = false;\n            }\n        }\n \
-    \   }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \ == std::numeric_limits<int>::max() / 4) continue;\n                int len =\
+    \ 0;\n                for (auto& e : a.path(t)) len += e.cost;\n             \
+    \   if (len != a.dist[t]) ok = false;\n            }\n        }\n    }\n\n   \
+    \ // floyd_warshall: \u8CA0\u306E\u8FBA\u3092\u542B\u3080\u6709\u5411\u30B0\u30E9\
+    \u30D5\u3067\u3001\u5404\u59CB\u70B9\u304B\u3089\u306E Bellman-Ford \u3068\u6BD4\
+    \u3079\u308B\n    for (int rep = 0; rep < 2000 && ok; rep++) {\n        int n\
+    \ = rng() % 8 + 1, m = rng() % 20;\n        Graph<long long> g(n);\n        for\
+    \ (int i = 0; i < m; i++) {\n            int u = rng() % n, v = rng() % n;\n \
+    \           long long w = (long long)(rng() % 21) - 3;\n            g.add_directed_edge(u,\
+    \ v, w);\n        }\n        const long long inf = std::numeric_limits<long long>::max()\
+    \ / 4;\n        auto d = g.floyd_warshall();\n        bool negative = false;\n\
+    \        for (int s = 0; s < n; s++) {\n            auto b = g.bellman_ford(s);\n\
+    \            for (int t = 0; t < n; t++) negative |= b.dist[t] == -inf;\n    \
+    \    }\n        bool negative_fw = false;\n        for (int i = 0; i < n; i++)\
+    \ negative_fw |= d[i][i] < 0;\n        if (negative != negative_fw) ok = false;\n\
+    \        if (!negative) {\n            for (int s = 0; s < n; s++) {\n       \
+    \         auto b = g.bellman_ford(s);\n                if (d[s] != b.dist) ok\
+    \ = false;\n            }\n        }\n    }\n\n    if (ok) std::cout << \"Hello\
+    \ World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// graph.hpp \u306E Graph \u306E\u30C7\u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\
     \u30B9\u30C8\u30E9\u30AF\u30BF\u3068\u3001const \u3067\u306A\u3044 operator[]\
@@ -281,31 +286,31 @@ data:
     \            auto b = g.shortest_path(s);\n            if (a.dist != b.dist) ok\
     \ = false;\n            // prev \u3092\u305F\u3069\u3063\u305F\u7D4C\u8DEF\u306E\
     \u9577\u3055\u304C dist \u3068\u4E00\u81F4\u3059\u308B\n            for (int t\
-    \ = 0; t < n; t++) {\n                if (a.dist[t] == -1) continue;\n       \
-    \         int len = 0;\n                for (auto& e : a.path(t)) len += e.cost;\n\
-    \                if (len != a.dist[t]) ok = false;\n            }\n        }\n\
-    \    }\n\n    // floyd_warshall: \u8CA0\u306E\u8FBA\u3092\u542B\u3080\u6709\u5411\
-    \u30B0\u30E9\u30D5\u3067\u3001\u5404\u59CB\u70B9\u304B\u3089\u306E Bellman-Ford\
-    \ \u3068\u6BD4\u3079\u308B\n    for (int rep = 0; rep < 2000 && ok; rep++) {\n\
-    \        int n = rng() % 8 + 1, m = rng() % 20;\n        Graph<long long> g(n);\n\
-    \        for (int i = 0; i < m; i++) {\n            int u = rng() % n, v = rng()\
-    \ % n;\n            long long w = (long long)(rng() % 21) - 3;\n            g.add_directed_edge(u,\
-    \ v, w);\n        }\n        const long long inf = std::numeric_limits<long long>::max()\
-    \ / 4;\n        auto d = g.floyd_warshall();\n        bool negative = false;\n\
-    \        for (int s = 0; s < n; s++) {\n            auto b = g.bellman_ford(s);\n\
-    \            for (int t = 0; t < n; t++) negative |= b.dist[t] == -inf;\n    \
-    \    }\n        bool negative_fw = false;\n        for (int i = 0; i < n; i++)\
-    \ negative_fw |= d[i][i] < 0;\n        if (negative != negative_fw) ok = false;\n\
-    \        if (!negative) {\n            for (int s = 0; s < n; s++) {\n       \
-    \         auto b = g.bellman_ford(s);\n                if (d[s] != b.dist) ok\
-    \ = false;\n            }\n        }\n    }\n\n    if (ok) std::cout << \"Hello\
-    \ World\" << std::endl;\n}\n"
+    \ = 0; t < n; t++) {\n                if (a.dist[t] == std::numeric_limits<int>::max()\
+    \ / 4) continue;\n                int len = 0;\n                for (auto& e :\
+    \ a.path(t)) len += e.cost;\n                if (len != a.dist[t]) ok = false;\n\
+    \            }\n        }\n    }\n\n    // floyd_warshall: \u8CA0\u306E\u8FBA\u3092\
+    \u542B\u3080\u6709\u5411\u30B0\u30E9\u30D5\u3067\u3001\u5404\u59CB\u70B9\u304B\
+    \u3089\u306E Bellman-Ford \u3068\u6BD4\u3079\u308B\n    for (int rep = 0; rep\
+    \ < 2000 && ok; rep++) {\n        int n = rng() % 8 + 1, m = rng() % 20;\n   \
+    \     Graph<long long> g(n);\n        for (int i = 0; i < m; i++) {\n        \
+    \    int u = rng() % n, v = rng() % n;\n            long long w = (long long)(rng()\
+    \ % 21) - 3;\n            g.add_directed_edge(u, v, w);\n        }\n        const\
+    \ long long inf = std::numeric_limits<long long>::max() / 4;\n        auto d =\
+    \ g.floyd_warshall();\n        bool negative = false;\n        for (int s = 0;\
+    \ s < n; s++) {\n            auto b = g.bellman_ford(s);\n            for (int\
+    \ t = 0; t < n; t++) negative |= b.dist[t] == -inf;\n        }\n        bool negative_fw\
+    \ = false;\n        for (int i = 0; i < n; i++) negative_fw |= d[i][i] < 0;\n\
+    \        if (negative != negative_fw) ok = false;\n        if (!negative) {\n\
+    \            for (int s = 0; s < n; s++) {\n                auto b = g.bellman_ford(s);\n\
+    \                if (d[s] != b.dist) ok = false;\n            }\n        }\n \
+    \   }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/graph/graph.hpp
   isVerificationFile: true
   path: test/unittest/graph.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 20:34:04+09:00'
+  timestamp: '2026-10-14 07:05:41+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/graph.test.cpp

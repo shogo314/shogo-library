@@ -4,7 +4,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/algebra/group.hpp
     title: "\u7FA4\u306E\u5B9A\u7FA9"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: src/algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   - icon: ':heavy_check_mark:'
@@ -91,26 +91,30 @@ data:
     \ 1, ..., N-1} \u304B\u3089\u81EA\u5206\u81EA\u8EAB\u3078\u306E\u5199\u50CF\u306E\
     \u5408\u6210 (\u5909\u63DB\u30E2\u30CE\u30A4\u30C9)\n *\n * \u8981\u7D20 f \u306F\
     \ f[x] \u304C x \u306E\u884C\u304D\u5148\u3092\u8868\u3059 std::array<int, N>\u3002\
-    \u5168\u5358\u5C04\u3067\u306A\u304F\u3066\u3088\u3044\n * op(f, g) = g\u2218\
-    f (\u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\u3059\u308B)\u3002\u533A\u9593 [l,\
-    \ r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x)) \u3092\u8868\u3059\n * \u4F8B: SegTree<monoid::Mapping<3>>\
-    \ seg(n); seg.set(i, {0, 2, 1});\n * swap(i, j) \u3067 i \u3068 j \u3092\u5165\
-    \u308C\u66FF\u3048\u308B\u5199\u50CF\u3092\u4F5C\u308C\u308B\n *\n * @tparam N\
-    \ \u5199\u50CF\u306E\u5B9A\u7FA9\u57DF\u30FB\u5024\u57DF\u306E\u5927\u304D\u3055\
-    \n */\ntemplate <std::size_t N>\nstruct Mapping {\n    using S = std::array<int,\
-    \ N>;\n    static constexpr S op(const S& f, const S& g) {\n        S h{};\n \
-    \       for (std::size_t x = 0; x < N; x++) h[x] = g[f[x]];\n        return h;\n\
-    \    }\n    static constexpr S e() {\n        S h{};\n        for (std::size_t\
-    \ x = 0; x < N; x++) h[x] = static_cast<int>(x);\n        return h;\n    }\n \
-    \   // i \u3068 j \u3092\u5165\u308C\u66FF\u3048\u3001\u307B\u304B\u306F\u52D5\
-    \u304B\u3055\u306A\u3044\u5199\u50CF (\u4E92\u63DB)\n    static constexpr S swap(int\
-    \ i, int j) {\n        S h = e();\n        h[i] = j;\n        h[j] = i;\n    \
-    \    return h;\n    }\n};\n\n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\
-    \u5408\u6210\n * op(f, g) = g\u2218f (\u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\
-    \u3059\u308B)\n * \u533A\u9593 [l, r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x)) \u3092\
-    \u8868\u3059\n */\ntemplate <typename T>\nstruct Composite {\n    using S = Affine<T>;\n\
-    \    static constexpr S op(const S& f, const S& g) { return {g.a * f.a, g.a *\
-    \ f.b + g.b}; }\n    static constexpr S e() { return {T(1), T(0)}; }\n};\n\n/**\n\
+    \u5168\u5358\u5C04\u3067\u306A\u304F\u3066\u3088\u3044\n * op(f, g) = f\u2218\
+    g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B)\u3002\u533A\u9593 [l, r) \u306E\
+    \u7A4D\u306F f_l(...f_{r-1}(x)) \u3092\u8868\u3059\n * \u5DE6\u304B\u3089\u9806\
+    \u306B\u9069\u7528\u3057\u305F\u3044\u5834\u5408\u306F monoid::Reverse<monoid::Mapping<N>>\
+    \ \u3092\u4F7F\u3046\n * \u4F8B: SegTree<monoid::Mapping<3>> seg(n); seg.set(i,\
+    \ {0, 2, 1});\n * swap(i, j) \u3067 i \u3068 j \u3092\u5165\u308C\u66FF\u3048\u308B\
+    \u5199\u50CF\u3092\u4F5C\u308C\u308B\n *\n * @tparam N \u5199\u50CF\u306E\u5B9A\
+    \u7FA9\u57DF\u30FB\u5024\u57DF\u306E\u5927\u304D\u3055\n */\ntemplate <std::size_t\
+    \ N>\nstruct Mapping {\n    using S = std::array<int, N>;\n    static constexpr\
+    \ S op(const S& f, const S& g) {\n        S h{};\n        for (std::size_t x =\
+    \ 0; x < N; x++) h[x] = f[g[x]];\n        return h;\n    }\n    static constexpr\
+    \ S e() {\n        S h{};\n        for (std::size_t x = 0; x < N; x++) h[x] =\
+    \ static_cast<int>(x);\n        return h;\n    }\n    // i \u3068 j \u3092\u5165\
+    \u308C\u66FF\u3048\u3001\u307B\u304B\u306F\u52D5\u304B\u3055\u306A\u3044\u5199\
+    \u50CF (\u4E92\u63DB)\n    static constexpr S swap(int i, int j) {\n        S\
+    \ h = e();\n        h[i] = j;\n        h[j] = i;\n        return h;\n    }\n};\n\
+    \n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\u5408\u6210\n * op(f, g)\
+    \ = f\u2218g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B)\n * \u533A\u9593 [l,\
+    \ r) \u306E\u7A4D\u306F f_l(...f_{r-1}(x)) \u3092\u8868\u3059\n * \u5DE6\u304B\
+    \u3089\u9806\u306B\u9069\u7528\u3057\u305F\u3044 (f_{r-1}(...f_l(x)) \u3092\u6C42\
+    \u3081\u305F\u3044) \u5834\u5408\u306F monoid::Reverse<monoid::Composite<T>> \u3092\
+    \u4F7F\u3046\n */\ntemplate <typename T>\nstruct Composite {\n    using S = Affine<T>;\n\
+    \    static constexpr S op(const S& f, const S& g) { return {f.a * g.a, f.a *\
+    \ g.b + f.b}; }\n    static constexpr S e() { return {T(1), T(0)}; }\n};\n\n/**\n\
     \ * @brief \u62EC\u5F27\u5217 \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\
     \u3044 ')' \u3068 '(' \u306E\u500B\u6570\n */\nstruct Parenthesis {\n    struct\
     \ S {\n        long long close; // \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\
@@ -148,99 +152,106 @@ data:
     \ S = std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n\
     \        if(a.first < b.first) return b;\n        if(b.first < a.first) return\
     \ a;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
-    \ S e() { return {std::numeric_limits<T>::lowest(), U(0)}; }\n};\n\n} // namespace\
-    \ monoid\n\n/**\n * @brief \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3068\
-    \u5358\u4F4D\u5143\u304B\u3089\u5B9F\u884C\u6642\u306B\u4F5C\u308B\u30E2\u30CE\
-    \u30A4\u30C9\n * \u30E9\u30E0\u30C0\u5F0F\u3092\u4F7F\u3048\u308B\n *\n * \u4F8B\
-    : SegTree seg(v, Monoid([](int a, int b) { return std::max(a, b); }, -1));\n *\n\
-    \ * @tparam T \u8981\u7D20\u306E\u578B\n * @tparam Op \u7A4D\u306E\u95A2\u6570\
+    \ S e() { return {std::numeric_limits<T>::lowest(), U(0)}; }\n};\n\n/**\n * @brief\
+    \ \u7A4D\u306E\u9806\u5E8F\u3092\u9006\u306B\u3057\u305F\u30E2\u30CE\u30A4\u30C9\
+    \ op(a, b) = M::op(b, a)\n *\n * \u4F8B: SegTree<monoid::Reverse<monoid::Composite<mint>>>\
+    \ seg(v); \u306E\u533A\u9593 [l, r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x))\n *\n\
+    \ * @tparam M \u3082\u3068\u306E\u30E2\u30CE\u30A4\u30C9\n */\ntemplate <typename\
+    \ M>\nstruct Reverse {\n    using S = typename M::S;\n    M m;\n    constexpr\
+    \ Reverse() : m() {}\n    constexpr explicit Reverse(M m) : m(std::move(m)) {}\n\
+    \    constexpr S op(const S& a, const S& b) const { return m.op(b, a); }\n   \
+    \ constexpr S e() const { return m.e(); }\n};\n\n} // namespace monoid\n\n/**\n\
+    \ * @brief \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3068\u5358\u4F4D\u5143\
+    \u304B\u3089\u5B9F\u884C\u6642\u306B\u4F5C\u308B\u30E2\u30CE\u30A4\u30C9\n * \u30E9\
+    \u30E0\u30C0\u5F0F\u3092\u4F7F\u3048\u308B\n *\n * \u4F8B: SegTree seg(v, Monoid([](int\
+    \ a, int b) { return std::max(a, b); }, -1));\n *\n * @tparam T \u8981\u7D20\u306E\
+    \u578B\n * @tparam Op \u7A4D\u306E\u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\
+    \u306E\u578B\n */\ntemplate <typename T, typename Op>\nstruct Monoid {\n    using\
+    \ S = T;\n    Op op_object;\n    S identity;\n    Monoid() = default;\n    constexpr\
+    \ Monoid(Op op, const S& e) : op_object(std::move(op)), identity(e) {}\n    constexpr\
+    \ S op(const S& a, const S& b) const { return op_object(a, b); }\n    constexpr\
+    \ S e() const { return identity; }\n};\ntemplate <typename Op, typename T>\nMonoid(Op,\
+    \ T) -> Monoid<T, Op>;\n#line 15 \"src/algebra/group.hpp\"\n\nnamespace group\
+    \ {\n\n/**\n * @brief \u52A0\u6CD5\u7FA4\n */\ntemplate <typename T>\nstruct Sum\
+    \ : monoid::Sum<T> {\n    using S = T;\n    static constexpr S inv(const S& a)\
+    \ { return -a; }\n};\n\n/**\n * @brief \u4E57\u6CD5\u7FA4 (0\u3092\u542B\u307E\
+    \u306A\u3044\u4F53\u306E\u5143\u306A\u3069)\n */\ntemplate <typename T>\nstruct\
+    \ Prod : monoid::Prod<T> {\n    using S = T;\n    static constexpr S inv(const\
+    \ S& a) { return S(1) / a; }\n};\n\n/**\n * @brief \u6392\u4ED6\u7684\u8AD6\u7406\
+    \u548C\n */\ntemplate <typename T>\nstruct Xor : monoid::Xor<T> {\n    using S\
+    \ = T;\n    static constexpr S inv(const S& a) { return a; }\n};\n\n/**\n * @brief\
+    \ {0, 1, ..., N-1} \u306E\u7F6E\u63DB (\u5168\u5358\u5C04) \u306E\u5408\u6210\n\
+    \ *\n * monoid::Mapping<N> \u306B\u9006\u7F6E\u63DB\u3092\u52A0\u3048\u305F\u3082\
+    \u306E\u3002\u8981\u7D20\u306F\u7F6E\u63DB\u3067\u3042\u308B\u3053\u3068\n * op(f,\
+    \ g) = f\u2218g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B)\n *\n * @tparam\
+    \ N \u7F6E\u63DB\u3059\u308B\u8981\u7D20\u306E\u500B\u6570\n */\ntemplate <std::size_t\
+    \ N>\nstruct Permutation : monoid::Mapping<N> {\n    using S = std::array<int,\
+    \ N>;\n    static constexpr S inv(const S& f) {\n        S h{};\n        for (std::size_t\
+    \ x = 0; x < N; x++) h[f[x]] = static_cast<int>(x);\n        return h;\n    }\n\
+    };\n\n} // namespace group\n\n/**\n * @brief \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\
+    \u30AF\u30C8\u3068\u5358\u4F4D\u5143\u304B\u3089\u5B9F\u884C\u6642\u306B\u4F5C\
+    \u308B\u7FA4\n * \u30E9\u30E0\u30C0\u5F0F\u3092\u4F7F\u3048\u308B\n *\n * @tparam\
+    \ T \u8981\u7D20\u306E\u578B\n * @tparam Op \u7A4D\u306E\u95A2\u6570\u30AA\u30D6\
+    \u30B8\u30A7\u30AF\u30C8\u306E\u578B\n * @tparam Inv \u9006\u5143\u306E\u95A2\u6570\
     \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306E\u578B\n */\ntemplate <typename T, typename\
-    \ Op>\nstruct Monoid {\n    using S = T;\n    Op op_object;\n    S identity;\n\
-    \    Monoid() = default;\n    constexpr Monoid(Op op, const S& e) : op_object(std::move(op)),\
-    \ identity(e) {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a,\
-    \ b); }\n    constexpr S e() const { return identity; }\n};\ntemplate <typename\
-    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 15 \"src/algebra/group.hpp\"\
-    \n\nnamespace group {\n\n/**\n * @brief \u52A0\u6CD5\u7FA4\n */\ntemplate <typename\
-    \ T>\nstruct Sum : monoid::Sum<T> {\n    using S = T;\n    static constexpr S\
-    \ inv(const S& a) { return -a; }\n};\n\n/**\n * @brief \u4E57\u6CD5\u7FA4 (0\u3092\
-    \u542B\u307E\u306A\u3044\u4F53\u306E\u5143\u306A\u3069)\n */\ntemplate <typename\
-    \ T>\nstruct Prod : monoid::Prod<T> {\n    using S = T;\n    static constexpr\
-    \ S inv(const S& a) { return S(1) / a; }\n};\n\n/**\n * @brief \u6392\u4ED6\u7684\
-    \u8AD6\u7406\u548C\n */\ntemplate <typename T>\nstruct Xor : monoid::Xor<T> {\n\
-    \    using S = T;\n    static constexpr S inv(const S& a) { return a; }\n};\n\n\
-    /**\n * @brief {0, 1, ..., N-1} \u306E\u7F6E\u63DB (\u5168\u5358\u5C04) \u306E\
-    \u5408\u6210\n *\n * monoid::Mapping<N> \u306B\u9006\u7F6E\u63DB\u3092\u52A0\u3048\
-    \u305F\u3082\u306E\u3002\u8981\u7D20\u306F\u7F6E\u63DB\u3067\u3042\u308B\u3053\
-    \u3068\n * op(f, g) = g\u2218f (\u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\u3059\
-    \u308B)\n *\n * @tparam N \u7F6E\u63DB\u3059\u308B\u8981\u7D20\u306E\u500B\u6570\
-    \n */\ntemplate <std::size_t N>\nstruct Permutation : monoid::Mapping<N> {\n \
-    \   using S = std::array<int, N>;\n    static constexpr S inv(const S& f) {\n\
-    \        S h{};\n        for (std::size_t x = 0; x < N; x++) h[f[x]] = static_cast<int>(x);\n\
-    \        return h;\n    }\n};\n\n} // namespace group\n\n/**\n * @brief \u95A2\
-    \u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3068\u5358\u4F4D\u5143\u304B\u3089\
-    \u5B9F\u884C\u6642\u306B\u4F5C\u308B\u7FA4\n * \u30E9\u30E0\u30C0\u5F0F\u3092\u4F7F\
-    \u3048\u308B\n *\n * @tparam T \u8981\u7D20\u306E\u578B\n * @tparam Op \u7A4D\u306E\
-    \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306E\u578B\n * @tparam Inv \u9006\
-    \u5143\u306E\u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306E\u578B\n */\n\
-    template <typename T, typename Op, typename Inv>\nstruct Group {\n    using S\
-    \ = T;\n    Op op_object;\n    S identity;\n    Inv inv_object;\n    Group() =\
-    \ default;\n    constexpr Group(Op op, const S& e, Inv inv) : op_object(std::move(op)),\
-    \ identity(e), inv_object(std::move(inv)) {}\n    constexpr S op(const S& a, const\
-    \ S& b) const { return op_object(a, b); }\n    constexpr S e() const { return\
-    \ identity; }\n    constexpr S inv(const S& a) const { return inv_object(a); }\n\
-    };\ntemplate <typename Op, typename T, typename Inv>\nGroup(Op, T, Inv) -> Group<T,\
-    \ Op, Inv>;\n#line 15 \"src/data_structures/merge-sort-tree.hpp\"\n\n/**\n * @brief\
-    \ \u533A\u9593\u306E\u95BE\u5024\u4EE5\u5185\u306E\u5024\u306E\u7A4D\n *\n * @tparam\
-    \ G \u5024\u306E\u53EF\u63DB\u7FA4 (algebra/group.hpp)\n * @tparam K key_type\
-    \ \u30BD\u30FC\u30C8\u306B\u4F7F\u3046\u578B\n * @tparam Comp K\u3092\u6BD4\u8F03\
-    \u3059\u308B\u30D5\u30A1\u30F3\u30AF\u30BF\n */\ntemplate <typename G = group::Sum<long\
-    \ long>,\n          typename K = long long,\n          class Comp = std::less<K>>\n\
-    class MergeSortTree {\n   public:\n    using value_type = typename G::S;\n   \
-    \ using key_type = K;\n\n    inline constexpr static auto comp = Comp();\n\n \
-    \  private:\n    G g;\n    value_type op(const value_type& x, const value_type&\
-    \ y) const { return g.op(x, y); }\n    value_type e() const { return g.e(); }\n\
-    \    value_type inv(const value_type& x) const { return g.inv(x); }\n\n   private:\n\
-    \    int n, sz, height;\n    std::vector<key_type> key_data;\n    std::vector<value_type>\
-    \ cumulative_value;\n\n    void initialize(const std::vector<value_type>& value,\
-    \ const std::vector<key_type>& key) {\n        n = key.size();\n        sz = 1;\n\
-    \        height = 1;\n        while (sz < n) {\n            sz <<= 1;\n      \
-    \      height++;\n        }\n        key_data.assign(sz * height, {});\n     \
-    \   std::vector<value_type> value_data(sz * height, e());\n        cumulative_value.assign(sz\
-    \ * height, {});\n        for (int i = 0; i < n; i++) {\n            key_data[(height\
-    \ - 1) * sz + i] = key[i];\n            value_data[(height - 1) * sz + i] = value[i];\n\
-    \            cumulative_value[(height - 1) * sz + i] = value[i];\n        }\n\
-    \        int t = 1;\n        for (int h = height - 1; h > 0; h--) {\n        \
-    \    for (int i = 0; i < n; i += t * 2) {\n                int j1 = h * sz + i;\n\
-    \                int j2 = h * sz + std::min(n, i + t);\n                int j0\
-    \ = (h - 1) * sz + i;\n                int last1 = j2;\n                int last2\
-    \ = h * sz + std::min(n, i + t * 2);\n                while (j1 != last1 || j2\
-    \ != last2) {\n                    if (j1 == last1 || (j2 < last2 && comp(key_data[j2],\
-    \ key_data[j1]))) {\n                        key_data[j0] = key_data[j2];\n  \
-    \                      value_data[j0] = value_data[j2];\n                    \
-    \    j0++;\n                        j2++;\n                    } else {\n    \
-    \                    key_data[j0] = key_data[j1];\n                        value_data[j0]\
-    \ = value_data[j1];\n                        j0++;\n                        j1++;\n\
-    \                    }\n                }\n                cumulative_value[(h\
-    \ - 1) * sz + i] = value_data[(h - 1) * sz + i];\n                for (int j =\
-    \ i + 1; j < std::min(n, i + t * 2); j++) {\n                    cumulative_value[(h\
-    \ - 1) * sz + j] = op(cumulative_value[(h - 1) * sz + j - 1], value_data[(h -\
-    \ 1) * sz + j]);\n                }\n            }\n            t <<= 1;\n   \
-    \     }\n    }\n\n    value_type prod_section(int l, int r, std::optional<key_type>\
-    \ a, std::optional<key_type> b) const {\n        value_type ret = cumulative_value[r\
-    \ - 1];\n        if (b.has_value()) {\n            int i = std::lower_bound(key_data.begin()\
-    \ + l, key_data.begin() + r, b.value(), comp) - key_data.begin();\n          \
-    \  if (i != l) {\n                ret = cumulative_value[i - 1];\n           \
-    \ } else {\n                ret = e();\n            }\n        }\n        if (a.has_value())\
-    \ {\n            int i = std::lower_bound(key_data.begin() + l, key_data.begin()\
-    \ + r, a.value(), comp) - key_data.begin();\n            if (i != l) {\n     \
-    \           ret = op(ret, inv(cumulative_value[i - 1]));\n            }\n    \
-    \    }\n        return ret;\n    }\n\n   public:\n    MergeSortTree() = default;\n\
-    \    /**\n     * @param value_key value\u3068key\u306Epair\u306Evector\n     */\n\
-    \    explicit MergeSortTree(const std::vector<std::pair<value_type, key_type>>&\
-    \ value_key, G g = G()) : g(std::move(g)) {\n        std::vector<key_type> key;\n\
-    \        std::vector<value_type> value;\n        key.reserve(value_key.size());\n\
-    \        value.reserve(value_key.size());\n        for (std::size_t i = 0; i <\
-    \ value_key.size(); i++) {\n            value.push_back(value_key[i].first);\n\
+    \ Op, typename Inv>\nstruct Group {\n    using S = T;\n    Op op_object;\n   \
+    \ S identity;\n    Inv inv_object;\n    Group() = default;\n    constexpr Group(Op\
+    \ op, const S& e, Inv inv) : op_object(std::move(op)), identity(e), inv_object(std::move(inv))\
+    \ {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a, b);\
+    \ }\n    constexpr S e() const { return identity; }\n    constexpr S inv(const\
+    \ S& a) const { return inv_object(a); }\n};\ntemplate <typename Op, typename T,\
+    \ typename Inv>\nGroup(Op, T, Inv) -> Group<T, Op, Inv>;\n#line 15 \"src/data_structures/merge-sort-tree.hpp\"\
+    \n\n/**\n * @brief \u533A\u9593\u306E\u95BE\u5024\u4EE5\u5185\u306E\u5024\u306E\
+    \u7A4D\n *\n * @tparam G \u5024\u306E\u53EF\u63DB\u7FA4 (algebra/group.hpp)\n\
+    \ * @tparam K key_type \u30BD\u30FC\u30C8\u306B\u4F7F\u3046\u578B\n * @tparam\
+    \ Comp K\u3092\u6BD4\u8F03\u3059\u308B\u30D5\u30A1\u30F3\u30AF\u30BF\n */\ntemplate\
+    \ <typename G = group::Sum<long long>,\n          typename K = long long,\n  \
+    \        class Comp = std::less<K>>\nclass MergeSortTree {\n   public:\n    using\
+    \ value_type = typename G::S;\n    using key_type = K;\n\n    inline constexpr\
+    \ static auto comp = Comp();\n\n   private:\n    G g;\n    value_type op(const\
+    \ value_type& x, const value_type& y) const { return g.op(x, y); }\n    value_type\
+    \ e() const { return g.e(); }\n    value_type inv(const value_type& x) const {\
+    \ return g.inv(x); }\n\n   private:\n    int n, sz, height;\n    std::vector<key_type>\
+    \ key_data;\n    std::vector<value_type> cumulative_value;\n\n    void initialize(const\
+    \ std::vector<value_type>& value, const std::vector<key_type>& key) {\n      \
+    \  n = key.size();\n        sz = 1;\n        height = 1;\n        while (sz <\
+    \ n) {\n            sz <<= 1;\n            height++;\n        }\n        key_data.assign(sz\
+    \ * height, {});\n        std::vector<value_type> value_data(sz * height, e());\n\
+    \        cumulative_value.assign(sz * height, {});\n        for (int i = 0; i\
+    \ < n; i++) {\n            key_data[(height - 1) * sz + i] = key[i];\n       \
+    \     value_data[(height - 1) * sz + i] = value[i];\n            cumulative_value[(height\
+    \ - 1) * sz + i] = value[i];\n        }\n        int t = 1;\n        for (int\
+    \ h = height - 1; h > 0; h--) {\n            for (int i = 0; i < n; i += t * 2)\
+    \ {\n                int j1 = h * sz + i;\n                int j2 = h * sz + std::min(n,\
+    \ i + t);\n                int j0 = (h - 1) * sz + i;\n                int last1\
+    \ = j2;\n                int last2 = h * sz + std::min(n, i + t * 2);\n      \
+    \          while (j1 != last1 || j2 != last2) {\n                    if (j1 ==\
+    \ last1 || (j2 < last2 && comp(key_data[j2], key_data[j1]))) {\n             \
+    \           key_data[j0] = key_data[j2];\n                        value_data[j0]\
+    \ = value_data[j2];\n                        j0++;\n                        j2++;\n\
+    \                    } else {\n                        key_data[j0] = key_data[j1];\n\
+    \                        value_data[j0] = value_data[j1];\n                  \
+    \      j0++;\n                        j1++;\n                    }\n         \
+    \       }\n                cumulative_value[(h - 1) * sz + i] = value_data[(h\
+    \ - 1) * sz + i];\n                for (int j = i + 1; j < std::min(n, i + t *\
+    \ 2); j++) {\n                    cumulative_value[(h - 1) * sz + j] = op(cumulative_value[(h\
+    \ - 1) * sz + j - 1], value_data[(h - 1) * sz + j]);\n                }\n    \
+    \        }\n            t <<= 1;\n        }\n    }\n\n    value_type prod_section(int\
+    \ l, int r, std::optional<key_type> a, std::optional<key_type> b) const {\n  \
+    \      value_type ret = cumulative_value[r - 1];\n        if (b.has_value()) {\n\
+    \            int i = std::lower_bound(key_data.begin() + l, key_data.begin() +\
+    \ r, b.value(), comp) - key_data.begin();\n            if (i != l) {\n       \
+    \         ret = cumulative_value[i - 1];\n            } else {\n             \
+    \   ret = e();\n            }\n        }\n        if (a.has_value()) {\n     \
+    \       int i = std::lower_bound(key_data.begin() + l, key_data.begin() + r, a.value(),\
+    \ comp) - key_data.begin();\n            if (i != l) {\n                ret =\
+    \ op(ret, inv(cumulative_value[i - 1]));\n            }\n        }\n        return\
+    \ ret;\n    }\n\n   public:\n    MergeSortTree() = default;\n    /**\n     * @param\
+    \ value_key value\u3068key\u306Epair\u306Evector\n     */\n    explicit MergeSortTree(const\
+    \ std::vector<std::pair<value_type, key_type>>& value_key, G g = G()) : g(std::move(g))\
+    \ {\n        std::vector<key_type> key;\n        std::vector<value_type> value;\n\
+    \        key.reserve(value_key.size());\n        value.reserve(value_key.size());\n\
+    \        for (std::size_t i = 0; i < value_key.size(); i++) {\n            value.push_back(value_key[i].first);\n\
     \            key.push_back(value_key[i].second);\n        }\n        this->initialize(value,\
     \ key);\n    }\n    /**\n     * @param value prod\u3067\u8A08\u7B97\u3059\u308B\
     \u5BFE\u8C61\n     * @param key \u30BD\u30FC\u30C8\u3059\u308B\u57FA\u6E96\n \
@@ -297,7 +308,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/rectangle-sum.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 12:42:03+09:00'
+  timestamp: '2026-10-14 06:59:39+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/rectangle-sum.2.test.cpp

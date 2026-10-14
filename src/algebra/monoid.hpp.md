@@ -2,13 +2,13 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: src/algebra/acted-monoid.hpp
     title: "\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   - icon: ':heavy_check_mark:'
     path: src/algebra/group.hpp
     title: "\u7FA4\u306E\u5B9A\u7FA9"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: src/data_structures/dual-segtree.hpp
     title: "\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u533A\u9593\u4F5C\u7528\
       \u30011\u70B9\u53D6\u5F97)"
@@ -61,7 +61,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj/dsl-2-b.2.test.cpp
     title: test/aoj/dsl-2-b.2.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/aoj/dsl-2-d.test.cpp
     title: test/aoj/dsl-2-d.test.cpp
   - icon: ':heavy_check_mark:'
@@ -244,9 +244,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/674.1.test.cpp
     title: test/yukicoder/674.1.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     document_title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
     links: []
@@ -311,26 +311,30 @@ data:
     \ 1, ..., N-1} \u304B\u3089\u81EA\u5206\u81EA\u8EAB\u3078\u306E\u5199\u50CF\u306E\
     \u5408\u6210 (\u5909\u63DB\u30E2\u30CE\u30A4\u30C9)\n *\n * \u8981\u7D20 f \u306F\
     \ f[x] \u304C x \u306E\u884C\u304D\u5148\u3092\u8868\u3059 std::array<int, N>\u3002\
-    \u5168\u5358\u5C04\u3067\u306A\u304F\u3066\u3088\u3044\n * op(f, g) = g\u2218\
-    f (\u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\u3059\u308B)\u3002\u533A\u9593 [l,\
-    \ r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x)) \u3092\u8868\u3059\n * \u4F8B: SegTree<monoid::Mapping<3>>\
-    \ seg(n); seg.set(i, {0, 2, 1});\n * swap(i, j) \u3067 i \u3068 j \u3092\u5165\
-    \u308C\u66FF\u3048\u308B\u5199\u50CF\u3092\u4F5C\u308C\u308B\n *\n * @tparam N\
-    \ \u5199\u50CF\u306E\u5B9A\u7FA9\u57DF\u30FB\u5024\u57DF\u306E\u5927\u304D\u3055\
-    \n */\ntemplate <std::size_t N>\nstruct Mapping {\n    using S = std::array<int,\
-    \ N>;\n    static constexpr S op(const S& f, const S& g) {\n        S h{};\n \
-    \       for (std::size_t x = 0; x < N; x++) h[x] = g[f[x]];\n        return h;\n\
-    \    }\n    static constexpr S e() {\n        S h{};\n        for (std::size_t\
-    \ x = 0; x < N; x++) h[x] = static_cast<int>(x);\n        return h;\n    }\n \
-    \   // i \u3068 j \u3092\u5165\u308C\u66FF\u3048\u3001\u307B\u304B\u306F\u52D5\
-    \u304B\u3055\u306A\u3044\u5199\u50CF (\u4E92\u63DB)\n    static constexpr S swap(int\
-    \ i, int j) {\n        S h = e();\n        h[i] = j;\n        h[j] = i;\n    \
-    \    return h;\n    }\n};\n\n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\
-    \u5408\u6210\n * op(f, g) = g\u2218f (\u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\
-    \u3059\u308B)\n * \u533A\u9593 [l, r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x)) \u3092\
-    \u8868\u3059\n */\ntemplate <typename T>\nstruct Composite {\n    using S = Affine<T>;\n\
-    \    static constexpr S op(const S& f, const S& g) { return {g.a * f.a, g.a *\
-    \ f.b + g.b}; }\n    static constexpr S e() { return {T(1), T(0)}; }\n};\n\n/**\n\
+    \u5168\u5358\u5C04\u3067\u306A\u304F\u3066\u3088\u3044\n * op(f, g) = f\u2218\
+    g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B)\u3002\u533A\u9593 [l, r) \u306E\
+    \u7A4D\u306F f_l(...f_{r-1}(x)) \u3092\u8868\u3059\n * \u5DE6\u304B\u3089\u9806\
+    \u306B\u9069\u7528\u3057\u305F\u3044\u5834\u5408\u306F monoid::Reverse<monoid::Mapping<N>>\
+    \ \u3092\u4F7F\u3046\n * \u4F8B: SegTree<monoid::Mapping<3>> seg(n); seg.set(i,\
+    \ {0, 2, 1});\n * swap(i, j) \u3067 i \u3068 j \u3092\u5165\u308C\u66FF\u3048\u308B\
+    \u5199\u50CF\u3092\u4F5C\u308C\u308B\n *\n * @tparam N \u5199\u50CF\u306E\u5B9A\
+    \u7FA9\u57DF\u30FB\u5024\u57DF\u306E\u5927\u304D\u3055\n */\ntemplate <std::size_t\
+    \ N>\nstruct Mapping {\n    using S = std::array<int, N>;\n    static constexpr\
+    \ S op(const S& f, const S& g) {\n        S h{};\n        for (std::size_t x =\
+    \ 0; x < N; x++) h[x] = f[g[x]];\n        return h;\n    }\n    static constexpr\
+    \ S e() {\n        S h{};\n        for (std::size_t x = 0; x < N; x++) h[x] =\
+    \ static_cast<int>(x);\n        return h;\n    }\n    // i \u3068 j \u3092\u5165\
+    \u308C\u66FF\u3048\u3001\u307B\u304B\u306F\u52D5\u304B\u3055\u306A\u3044\u5199\
+    \u50CF (\u4E92\u63DB)\n    static constexpr S swap(int i, int j) {\n        S\
+    \ h = e();\n        h[i] = j;\n        h[j] = i;\n        return h;\n    }\n};\n\
+    \n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\u5408\u6210\n * op(f, g)\
+    \ = f\u2218g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B)\n * \u533A\u9593 [l,\
+    \ r) \u306E\u7A4D\u306F f_l(...f_{r-1}(x)) \u3092\u8868\u3059\n * \u5DE6\u304B\
+    \u3089\u9806\u306B\u9069\u7528\u3057\u305F\u3044 (f_{r-1}(...f_l(x)) \u3092\u6C42\
+    \u3081\u305F\u3044) \u5834\u5408\u306F monoid::Reverse<monoid::Composite<T>> \u3092\
+    \u4F7F\u3046\n */\ntemplate <typename T>\nstruct Composite {\n    using S = Affine<T>;\n\
+    \    static constexpr S op(const S& f, const S& g) { return {f.a * g.a, f.a *\
+    \ g.b + f.b}; }\n    static constexpr S e() { return {T(1), T(0)}; }\n};\n\n/**\n\
     \ * @brief \u62EC\u5F27\u5217 \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\
     \u3044 ')' \u3068 '(' \u306E\u500B\u6570\n */\nstruct Parenthesis {\n    struct\
     \ S {\n        long long close; // \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\
@@ -368,18 +372,26 @@ data:
     \ S = std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n\
     \        if(a.first < b.first) return b;\n        if(b.first < a.first) return\
     \ a;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
-    \ S e() { return {std::numeric_limits<T>::lowest(), U(0)}; }\n};\n\n} // namespace\
-    \ monoid\n\n/**\n * @brief \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3068\
-    \u5358\u4F4D\u5143\u304B\u3089\u5B9F\u884C\u6642\u306B\u4F5C\u308B\u30E2\u30CE\
-    \u30A4\u30C9\n * \u30E9\u30E0\u30C0\u5F0F\u3092\u4F7F\u3048\u308B\n *\n * \u4F8B\
-    : SegTree seg(v, Monoid([](int a, int b) { return std::max(a, b); }, -1));\n *\n\
-    \ * @tparam T \u8981\u7D20\u306E\u578B\n * @tparam Op \u7A4D\u306E\u95A2\u6570\
-    \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306E\u578B\n */\ntemplate <typename T, typename\
-    \ Op>\nstruct Monoid {\n    using S = T;\n    Op op_object;\n    S identity;\n\
-    \    Monoid() = default;\n    constexpr Monoid(Op op, const S& e) : op_object(std::move(op)),\
-    \ identity(e) {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a,\
-    \ b); }\n    constexpr S e() const { return identity; }\n};\ntemplate <typename\
-    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n"
+    \ S e() { return {std::numeric_limits<T>::lowest(), U(0)}; }\n};\n\n/**\n * @brief\
+    \ \u7A4D\u306E\u9806\u5E8F\u3092\u9006\u306B\u3057\u305F\u30E2\u30CE\u30A4\u30C9\
+    \ op(a, b) = M::op(b, a)\n *\n * \u4F8B: SegTree<monoid::Reverse<monoid::Composite<mint>>>\
+    \ seg(v); \u306E\u533A\u9593 [l, r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x))\n *\n\
+    \ * @tparam M \u3082\u3068\u306E\u30E2\u30CE\u30A4\u30C9\n */\ntemplate <typename\
+    \ M>\nstruct Reverse {\n    using S = typename M::S;\n    M m;\n    constexpr\
+    \ Reverse() : m() {}\n    constexpr explicit Reverse(M m) : m(std::move(m)) {}\n\
+    \    constexpr S op(const S& a, const S& b) const { return m.op(b, a); }\n   \
+    \ constexpr S e() const { return m.e(); }\n};\n\n} // namespace monoid\n\n/**\n\
+    \ * @brief \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3068\u5358\u4F4D\u5143\
+    \u304B\u3089\u5B9F\u884C\u6642\u306B\u4F5C\u308B\u30E2\u30CE\u30A4\u30C9\n * \u30E9\
+    \u30E0\u30C0\u5F0F\u3092\u4F7F\u3048\u308B\n *\n * \u4F8B: SegTree seg(v, Monoid([](int\
+    \ a, int b) { return std::max(a, b); }, -1));\n *\n * @tparam T \u8981\u7D20\u306E\
+    \u578B\n * @tparam Op \u7A4D\u306E\u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\
+    \u306E\u578B\n */\ntemplate <typename T, typename Op>\nstruct Monoid {\n    using\
+    \ S = T;\n    Op op_object;\n    S identity;\n    Monoid() = default;\n    constexpr\
+    \ Monoid(Op op, const S& e) : op_object(std::move(op)), identity(e) {}\n    constexpr\
+    \ S op(const S& a, const S& b) const { return op_object(a, b); }\n    constexpr\
+    \ S e() const { return identity; }\n};\ntemplate <typename Op, typename T>\nMonoid(Op,\
+    \ T) -> Monoid<T, Op>;\n"
   code: "#pragma once\n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\
     \u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\
     \u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\
@@ -440,26 +452,30 @@ data:
     \ 1, ..., N-1} \u304B\u3089\u81EA\u5206\u81EA\u8EAB\u3078\u306E\u5199\u50CF\u306E\
     \u5408\u6210 (\u5909\u63DB\u30E2\u30CE\u30A4\u30C9)\n *\n * \u8981\u7D20 f \u306F\
     \ f[x] \u304C x \u306E\u884C\u304D\u5148\u3092\u8868\u3059 std::array<int, N>\u3002\
-    \u5168\u5358\u5C04\u3067\u306A\u304F\u3066\u3088\u3044\n * op(f, g) = g\u2218\
-    f (\u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\u3059\u308B)\u3002\u533A\u9593 [l,\
-    \ r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x)) \u3092\u8868\u3059\n * \u4F8B: SegTree<monoid::Mapping<3>>\
-    \ seg(n); seg.set(i, {0, 2, 1});\n * swap(i, j) \u3067 i \u3068 j \u3092\u5165\
-    \u308C\u66FF\u3048\u308B\u5199\u50CF\u3092\u4F5C\u308C\u308B\n *\n * @tparam N\
-    \ \u5199\u50CF\u306E\u5B9A\u7FA9\u57DF\u30FB\u5024\u57DF\u306E\u5927\u304D\u3055\
-    \n */\ntemplate <std::size_t N>\nstruct Mapping {\n    using S = std::array<int,\
-    \ N>;\n    static constexpr S op(const S& f, const S& g) {\n        S h{};\n \
-    \       for (std::size_t x = 0; x < N; x++) h[x] = g[f[x]];\n        return h;\n\
-    \    }\n    static constexpr S e() {\n        S h{};\n        for (std::size_t\
-    \ x = 0; x < N; x++) h[x] = static_cast<int>(x);\n        return h;\n    }\n \
-    \   // i \u3068 j \u3092\u5165\u308C\u66FF\u3048\u3001\u307B\u304B\u306F\u52D5\
-    \u304B\u3055\u306A\u3044\u5199\u50CF (\u4E92\u63DB)\n    static constexpr S swap(int\
-    \ i, int j) {\n        S h = e();\n        h[i] = j;\n        h[j] = i;\n    \
-    \    return h;\n    }\n};\n\n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\
-    \u5408\u6210\n * op(f, g) = g\u2218f (\u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\
-    \u3059\u308B)\n * \u533A\u9593 [l, r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x)) \u3092\
-    \u8868\u3059\n */\ntemplate <typename T>\nstruct Composite {\n    using S = Affine<T>;\n\
-    \    static constexpr S op(const S& f, const S& g) { return {g.a * f.a, g.a *\
-    \ f.b + g.b}; }\n    static constexpr S e() { return {T(1), T(0)}; }\n};\n\n/**\n\
+    \u5168\u5358\u5C04\u3067\u306A\u304F\u3066\u3088\u3044\n * op(f, g) = f\u2218\
+    g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B)\u3002\u533A\u9593 [l, r) \u306E\
+    \u7A4D\u306F f_l(...f_{r-1}(x)) \u3092\u8868\u3059\n * \u5DE6\u304B\u3089\u9806\
+    \u306B\u9069\u7528\u3057\u305F\u3044\u5834\u5408\u306F monoid::Reverse<monoid::Mapping<N>>\
+    \ \u3092\u4F7F\u3046\n * \u4F8B: SegTree<monoid::Mapping<3>> seg(n); seg.set(i,\
+    \ {0, 2, 1});\n * swap(i, j) \u3067 i \u3068 j \u3092\u5165\u308C\u66FF\u3048\u308B\
+    \u5199\u50CF\u3092\u4F5C\u308C\u308B\n *\n * @tparam N \u5199\u50CF\u306E\u5B9A\
+    \u7FA9\u57DF\u30FB\u5024\u57DF\u306E\u5927\u304D\u3055\n */\ntemplate <std::size_t\
+    \ N>\nstruct Mapping {\n    using S = std::array<int, N>;\n    static constexpr\
+    \ S op(const S& f, const S& g) {\n        S h{};\n        for (std::size_t x =\
+    \ 0; x < N; x++) h[x] = f[g[x]];\n        return h;\n    }\n    static constexpr\
+    \ S e() {\n        S h{};\n        for (std::size_t x = 0; x < N; x++) h[x] =\
+    \ static_cast<int>(x);\n        return h;\n    }\n    // i \u3068 j \u3092\u5165\
+    \u308C\u66FF\u3048\u3001\u307B\u304B\u306F\u52D5\u304B\u3055\u306A\u3044\u5199\
+    \u50CF (\u4E92\u63DB)\n    static constexpr S swap(int i, int j) {\n        S\
+    \ h = e();\n        h[i] = j;\n        h[j] = i;\n        return h;\n    }\n};\n\
+    \n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\u5408\u6210\n * op(f, g)\
+    \ = f\u2218g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B)\n * \u533A\u9593 [l,\
+    \ r) \u306E\u7A4D\u306F f_l(...f_{r-1}(x)) \u3092\u8868\u3059\n * \u5DE6\u304B\
+    \u3089\u9806\u306B\u9069\u7528\u3057\u305F\u3044 (f_{r-1}(...f_l(x)) \u3092\u6C42\
+    \u3081\u305F\u3044) \u5834\u5408\u306F monoid::Reverse<monoid::Composite<T>> \u3092\
+    \u4F7F\u3046\n */\ntemplate <typename T>\nstruct Composite {\n    using S = Affine<T>;\n\
+    \    static constexpr S op(const S& f, const S& g) { return {f.a * g.a, f.a *\
+    \ g.b + f.b}; }\n    static constexpr S e() { return {T(1), T(0)}; }\n};\n\n/**\n\
     \ * @brief \u62EC\u5F27\u5217 \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\
     \u3044 ')' \u3068 '(' \u306E\u500B\u6570\n */\nstruct Parenthesis {\n    struct\
     \ S {\n        long long close; // \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\
@@ -497,18 +513,26 @@ data:
     \ S = std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n\
     \        if(a.first < b.first) return b;\n        if(b.first < a.first) return\
     \ a;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
-    \ S e() { return {std::numeric_limits<T>::lowest(), U(0)}; }\n};\n\n} // namespace\
-    \ monoid\n\n/**\n * @brief \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3068\
-    \u5358\u4F4D\u5143\u304B\u3089\u5B9F\u884C\u6642\u306B\u4F5C\u308B\u30E2\u30CE\
-    \u30A4\u30C9\n * \u30E9\u30E0\u30C0\u5F0F\u3092\u4F7F\u3048\u308B\n *\n * \u4F8B\
-    : SegTree seg(v, Monoid([](int a, int b) { return std::max(a, b); }, -1));\n *\n\
-    \ * @tparam T \u8981\u7D20\u306E\u578B\n * @tparam Op \u7A4D\u306E\u95A2\u6570\
-    \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306E\u578B\n */\ntemplate <typename T, typename\
-    \ Op>\nstruct Monoid {\n    using S = T;\n    Op op_object;\n    S identity;\n\
-    \    Monoid() = default;\n    constexpr Monoid(Op op, const S& e) : op_object(std::move(op)),\
-    \ identity(e) {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a,\
-    \ b); }\n    constexpr S e() const { return identity; }\n};\ntemplate <typename\
-    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n"
+    \ S e() { return {std::numeric_limits<T>::lowest(), U(0)}; }\n};\n\n/**\n * @brief\
+    \ \u7A4D\u306E\u9806\u5E8F\u3092\u9006\u306B\u3057\u305F\u30E2\u30CE\u30A4\u30C9\
+    \ op(a, b) = M::op(b, a)\n *\n * \u4F8B: SegTree<monoid::Reverse<monoid::Composite<mint>>>\
+    \ seg(v); \u306E\u533A\u9593 [l, r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x))\n *\n\
+    \ * @tparam M \u3082\u3068\u306E\u30E2\u30CE\u30A4\u30C9\n */\ntemplate <typename\
+    \ M>\nstruct Reverse {\n    using S = typename M::S;\n    M m;\n    constexpr\
+    \ Reverse() : m() {}\n    constexpr explicit Reverse(M m) : m(std::move(m)) {}\n\
+    \    constexpr S op(const S& a, const S& b) const { return m.op(b, a); }\n   \
+    \ constexpr S e() const { return m.e(); }\n};\n\n} // namespace monoid\n\n/**\n\
+    \ * @brief \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3068\u5358\u4F4D\u5143\
+    \u304B\u3089\u5B9F\u884C\u6642\u306B\u4F5C\u308B\u30E2\u30CE\u30A4\u30C9\n * \u30E9\
+    \u30E0\u30C0\u5F0F\u3092\u4F7F\u3048\u308B\n *\n * \u4F8B: SegTree seg(v, Monoid([](int\
+    \ a, int b) { return std::max(a, b); }, -1));\n *\n * @tparam T \u8981\u7D20\u306E\
+    \u578B\n * @tparam Op \u7A4D\u306E\u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\
+    \u306E\u578B\n */\ntemplate <typename T, typename Op>\nstruct Monoid {\n    using\
+    \ S = T;\n    Op op_object;\n    S identity;\n    Monoid() = default;\n    constexpr\
+    \ Monoid(Op op, const S& e) : op_object(std::move(op)), identity(e) {}\n    constexpr\
+    \ S op(const S& a, const S& b) const { return op_object(a, b); }\n    constexpr\
+    \ S e() const { return identity; }\n};\ntemplate <typename Op, typename T>\nMonoid(Op,\
+    \ T) -> Monoid<T, Op>;\n"
   dependsOn: []
   isVerificationFile: false
   path: src/algebra/monoid.hpp
@@ -527,8 +551,8 @@ data:
   - src/data_structures/monoid-unionfind.hpp
   - src/algebra/group.hpp
   - src/algebra/acted-monoid.hpp
-  timestamp: '2026-10-13 12:10:14+09:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2026-10-14 06:59:39+09:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/unittest/imos.test.cpp
   - test/unittest/segtree-beats.test.cpp
@@ -623,13 +647,14 @@ title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
 | `Or<T>` | `T` | `a | b` | `0` |
 | `Gcd<T>` | `T` | `gcd(a, b)` | `0` |
 | `Lcm<T>` | `T` | `lcm(a, b)` | `1` |
-| `Composite<T>` | `Affine<T>` | 1次関数 $f(x) = ax + b$ の合成 (左から順に適用) | 恒等写像 |
-| `Mapping<N>` | `std::array<int, N>` | $\lbrace 0, \dots, N-1 \rbrace$ から自分自身への写像の合成 (左から順に適用)。全単射でなくてよい | 恒等写像 |
+| `Composite<T>` | `Affine<T>` | 1次関数 $f(x) = ax + b$ の合成 $f \circ g$ ($g$ を先に適用) | 恒等写像 |
+| `Mapping<N>` | `std::array<int, N>` | $\lbrace 0, \dots, N-1 \rbrace$ から自分自身への写像の合成 $f \circ g$ ($g$ を先に適用)。全単射でなくてよい | 恒等写像 |
 | `Parenthesis` | `Parenthesis::S` | 括弧列の連結 (対応の取れていない `)` と `(` の個数) | 空の括弧列 |
 | `MinWith<T, U = int>` | `pair<T, U>` | 最小値とその位置 (同じ値なら左側) | |
 | `MaxWith<T, U = int>` | `pair<T, U>` | 最大値とその位置 (同じ値なら左側) | |
 | `MinCount<T, U = long long>` | `pair<T, U>` | 最小値とその個数 | |
 | `MaxCount<T, U = long long>` | `pair<T, U>` | 最大値とその個数 | |
+| `Reverse<M>` | `M::S` | `M::op(b, a)` (積の順序を逆にする) | `M::e()` |
 
 `Parenthesis::S` は文字 `'('`、`')'` から作れます。`is_valid()` で正しい括弧列かどうかを判定できます。
 
@@ -653,17 +678,28 @@ std::cout << f;         // "a b" を出力
 
 ## 写像のモノイド `Mapping<N>`
 
-要素 `f` は、`f[x]` が `x` の行き先を表す `std::array<int, N>` です。置換に限らず、どんな写像でもかまいません (変換モノイド)。`op(f, g)` は `f` を適用してから `g` を適用した写像で、区間 $[l, r)$ の積は、区間の写像を左から順に適用した結果になります。
+要素 `f` は、`f[x]` が `x` の行き先を表す `std::array<int, N>` です。置換に限らず、どんな写像でもかまいません (変換モノイド)。`op(f, g)` は $f \circ g$、つまり `g` を適用してから `f` を適用した写像で、区間 $[l, r)$ の積は $f_l \circ \dots \circ f_{r-1}$、つまり区間の写像を右から順に適用した結果になります。左から順に適用したい場合は `monoid::Reverse<monoid::Mapping<N>>` を使います。
 
 ```cpp
 SegTree<monoid::Mapping<3>> seg(n);  // 各要素は恒等写像 (0, 1, 2)
 seg.set(i, {0, 2, 1});               // 1 と 2 を入れ替える
-int y = seg.prod(l, r)[x];           // x に区間 [l, r) の写像を順に適用した行き先
+int y = seg.prod(l, r)[x];           // x に区間 [l, r) の写像を右から順に適用した行き先
 ```
 
 `Mapping<N>::swap(i, j)` は、`i` と `j` を入れ替えてほかは動かさない写像 (互換) を返します。上の `{0, 2, 1}` は `monoid::Mapping<3>::swap(1, 2)` と書けます。`group::Permutation<N>::swap(i, j)` でも使えます。
 
 `N` はコンパイル時に決める必要があります。置換に限って逆元も使いたい場合は、[群](group.hpp) の `group::Permutation<N>` を使います。
+
+## 合成の向きと `Reverse<M>`
+
+`Composite` と `Mapping` の積 `op(f, g)` は、数学の記法どおり $f \circ g$ ($g$ を先に適用) です。区間 $[l, r)$ の積は $f_l(\dots f_{r-1}(x))$ になります。[作用素付きモノイド](acted-monoid.hpp) の `composition(f, g)` も同じ向きです。
+
+$f_{r-1}(\dots f_l(x))$ のように左から順に適用したい場合は、積の順序を逆にした `Reverse<M>` を使います。
+
+```cpp
+SegTree<monoid::Reverse<monoid::Composite<mint>>> seg(v);
+mint y = seg.prod(l, r)(x);  // f_{r-1}(...f_l(x))
+```
 
 ## ラムダ式から作る
 

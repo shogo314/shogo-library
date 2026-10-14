@@ -2,6 +2,9 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
+    path: src/geometry/angle.hpp
+    title: "\u504F\u89D2"
+  - icon: ':heavy_check_mark:'
     path: src/geometry/vector.hpp
     title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"
   _extendedRequiredBy: []
@@ -16,54 +19,104 @@ data:
     - https://judge.yosupo.jp/problem/sort_points_by_argument
   bundledCode: "#line 1 \"test/yosupo/sort-points-by-argument.1.test.cpp\"\n#define\
     \ PROBLEM \"https://judge.yosupo.jp/problem/sort_points_by_argument\"\n\n#include\
-    \ <algorithm>\n#include <iostream>\n#include <vector>\n\n#line 2 \"src/geometry/vector.hpp\"\
-    \n\n/**\n * @file vector.hpp\n * @brief \u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB\n\
-    \ */\n\n#line 9 \"src/geometry/vector.hpp\"\n#include <array>\n#include <cassert>\n\
-    #include <cmath>\n#include <istream>\n#include <limits>\n#include <numeric>\n\
-    #include <optional>\n#include <ostream>\n#include <stack>\n#include <type_traits>\n\
-    #include <utility>\n#line 21 \"src/geometry/vector.hpp\"\n\n/**\n * @brief \u5E7E\
-    \u4F55\u5B66\u3068\u3057\u3066\u306E\u30D9\u30AF\u30C8\u30EB\n *\n * @tparam T\
-    \ \u578B \u7701\u7565\u3057\u305F\u3089double\n * @tparam Dim \u6B21\u5143 \u7701\
-    \u7565\u3057\u305F\u30892\n */\ntemplate <typename T = double, int Dim = 2, std::enable_if_t<std::is_scalar_v<T>\
-    \ && (Dim > 0)>* = nullptr>\nstruct Vector {\n    std::array<T, Dim> v; //!< \u30D9\
-    \u30AF\u30C8\u30EB\u306E\u6210\u5206\u8868\u793A\n\n    /**\n     * @brief \u30C7\
-    \u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * \u30BC\
-    \u30ED\u30D9\u30AF\u30C8\u30EB\n     */\n    constexpr Vector() noexcept : v()\
-    \ {}\n    /**\n     * @brief \u53EF\u5909\u9577\u5F15\u6570\u306B\u3088\u308B\u30B3\
-    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * \n     * @tparam Args \n     */\n\
-    \    template <typename... Args>\n    constexpr Vector(Args... args) noexcept\
-    \ : v{args...} {}\n\n    /**\n     * @brief i\u756A\u76EE\u306E\u6210\u5206\u3092\
-    \u8FD4\u3059\n     * \n     * @param i\n     * @return T& \n     */\n    constexpr\
-    \ T& operator[](int i) noexcept {\n        return v[i];\n    }\n    /**\n    \
-    \ * @brief i\u756A\u76EE\u306E\u6210\u5206\u3092\u8FD4\u3059\n     * \n     *\
-    \ @param i\n     * @return T& \n     */\n    constexpr const T& operator[](int\
-    \ i) const noexcept {\n        return v[i];\n    }\n\n    /**\n     * @brief \u52A0\
-    \u7B97\u4EE3\u5165\u6F14\u7B97\u5B50\n     * \n     * @param rhs \n     * @return\
-    \ Vector& \n     */\n    constexpr Vector& operator+=(const Vector& rhs) noexcept\
-    \ {\n        for(int i = 0; i < Dim; i++) v[i] += rhs[i];\n        return *this;\n\
-    \    }\n    /**\n     * @brief \u6E1B\u7B97\u4EE3\u5165\u6F14\u7B97\u5B50\n  \
-    \   * \n     * @param rhs \n     * @return Vector& \n     */\n    constexpr Vector&\
-    \ operator-=(const Vector& rhs) noexcept {\n        for(int i = 0; i < Dim; i++)\
-    \ v[i] -= rhs.v[i];\n        return *this;\n    }\n    /**\n     * @brief \u30B9\
-    \u30AB\u30E9\u30FC\u500D\u4EE3\u5165\u6F14\u7B97\u5B50\n     * \n     * @param\
-    \ coef \n     * @return Vector& \n     */\n    constexpr Vector& operator*=(const\
-    \ T& coef) noexcept {\n        for(int i = 0; i < Dim; i++) v[i] *= coef;\n  \
-    \      return *this;\n    }\n    /**\n     * @brief \u30B9\u30AB\u30E9\u30FC\u306E\
-    \u9006\u6570\u500D\u4EE3\u5165\u6F14\u7B97\u5B50\n     * \n     * @param coef\
-    \ \n     * @return Vector& \n     */\n    Vector& operator/=(const T& coef) {\n\
-    \        for(int i = 0; i < Dim; i++) {\n            if constexpr(std::is_integral_v<T>)\
-    \ {\n                assert(v[i] % coef == 0 && \"Vector::operator/= : coef must\
-    \ be a divisor of all elements\");\n            }\n            v[i] /= coef;\n\
-    \        }\n        return *this;\n    }\n\n    /**\n     * @brief \u5358\u9805\
-    \u30D7\u30E9\u30B9\u6F14\u7B97\u5B50\n     * \n     * @return Vector \n     */\n\
-    \    [[nodiscard]]\n    constexpr Vector operator+() const noexcept {\n      \
-    \  return *this;\n    }\n    /**\n     * @brief \u5358\u9805\u30DE\u30A4\u30CA\
+    \ <algorithm>\n#include <iostream>\n#include <vector>\n\n#line 2 \"src/geometry/angle.hpp\"\
+    \n\n/**\n * @file angle.hpp\n * @brief \u504F\u89D2\n */\n\n#include <cmath>\n\
+    #include <type_traits>\n#include <utility>\n\n/**\n * @brief 2 \u6B21\u5143\u30D9\
+    \u30AF\u30C8\u30EB (x, y) \u306E\u504F\u89D2\n *\n * x \u8EF8\u6B63\u65B9\u5411\
+    \u3092 0 \u3068\u3057\u3066\u53CD\u6642\u8A08\u56DE\u308A\u306B [0, 2\u03C0) \u3067\
+    \u6BD4\u3079\u308B\u3002\u96F6\u30D9\u30AF\u30C8\u30EB\u306F x \u8EF8\u6B63\u65B9\
+    \u5411\u3068\u540C\u3058\u504F\u89D2\u3068\u3057\u3066\u6271\u3046\n * \u5916\u7A4D\
+    \u3067\u6BD4\u3079\u308B\u306E\u3067\u3001\u6574\u6570\u578B\u306A\u3089\u8AA4\
+    \u5DEE\u306A\u304F\u6BD4\u3079\u3089\u308C\u308B (\u5EA7\u6A19\u306E\u7D76\u5BFE\
+    \u5024\u306E 2 \u4E57\u304C T \u306B\u53CE\u307E\u308B\u5FC5\u8981\u304C\u3042\
+    \u308B)\n *\n * std::sort(ps.begin(), ps.end(), [](const auto& a, const auto&\
+    \ b) { return Angle(a) < Angle(b); });\n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\
+    \n */\ntemplate <typename T>\nstruct Angle {\n    T x; //!< x \u5EA7\u6A19\n \
+    \   T y; //!< y \u5EA7\u6A19\n\n    /**\n     * @brief \u504F\u89D2 0 (\u96F6\u30D9\
+    \u30AF\u30C8\u30EB)\n     */\n    constexpr Angle() noexcept : x(), y() {}\n \
+    \   /**\n     * @brief \u30D9\u30AF\u30C8\u30EB (x, y) \u306E\u504F\u89D2\n  \
+    \   */\n    constexpr Angle(T x, T y) noexcept : x(x), y(y) {}\n    /**\n    \
+    \ * @brief p[0], p[1] \u3092 x, y \u3068\u3059\u308B (Vector<T, 2> \u3084 std::array<T,\
+    \ 2> \u304B\u3089\u4F5C\u308B)\n     */\n    template <typename P, typename =\
+    \ decltype(std::declval<const P&>()[0])>\n    constexpr explicit Angle(const P&\
+    \ p) noexcept : x(p[0]), y(p[1]) {}\n    /**\n     * @brief p.first, p.second\
+    \ \u3092 x, y \u3068\u3059\u308B\n     */\n    constexpr explicit Angle(const\
+    \ std::pair<T, T>& p) noexcept : x(p.first), y(p.second) {}\n\n    /**\n     *\
+    \ @brief \u96F6\u30D9\u30AF\u30C8\u30EB\u304B\n     */\n    constexpr bool is_zero()\
+    \ const noexcept { return x == 0 && y == 0; }\n    /**\n     * @brief \u504F\u89D2\
+    \u304C [0, \u03C0) \u306A\u3089 0\u3001[\u03C0, 2\u03C0) \u306A\u3089 1\n    \
+    \ */\n    constexpr int half() const noexcept { return y < 0 || (y == 0 && x <\
+    \ 0); }\n    /**\n     * @brief \u504F\u89D2 (\u30E9\u30B8\u30A2\u30F3\u3001[0,\
+    \ 2\u03C0))\n     */\n    double radian() const {\n        double t = std::atan2(static_cast<double>(y),\
+    \ static_cast<double>(x));\n        return t < 0 ? t + 2 * std::acos(-1.0) : t;\n\
+    \    }\n\n    friend constexpr bool operator<(const Angle& a, const Angle& b)\
+    \ noexcept {\n        // \u96F6\u30D9\u30AF\u30C8\u30EB\u306F\u5916\u7A4D\u3067\
+    \u6BD4\u3079\u3089\u308C\u306A\u3044\u306E\u3067\u3001\u504F\u89D2 0 (x \u8EF8\
+    \u6B63\u65B9\u5411) \u3068\u3057\u3066\u5148\u306B\u5224\u5B9A\u3059\u308B\n \
+    \       if (b.is_zero()) return false;  // \u504F\u89D2 0 \u3088\u308A\u5C0F\u3055\
+    \u3044\u3082\u306E\u306F\u306A\u3044\n        if (a.is_zero()) return !(b.y ==\
+    \ 0 && b.x > 0);  // b \u306E\u504F\u89D2\u304C 0 \u3088\u308A\u5927\u304D\u3044\
+    \u304B\n        if (a.half() != b.half()) return a.half() < b.half();\n      \
+    \  return b.x * a.y < a.x * b.y;\n    }\n    friend constexpr bool operator>(const\
+    \ Angle& a, const Angle& b) noexcept { return b < a; }\n    friend constexpr bool\
+    \ operator<=(const Angle& a, const Angle& b) noexcept { return !(b < a); }\n \
+    \   friend constexpr bool operator>=(const Angle& a, const Angle& b) noexcept\
+    \ { return !(a < b); }\n    /**\n     * @brief \u504F\u89D2\u304C\u7B49\u3057\u3044\
+    \u304B (\u30D9\u30AF\u30C8\u30EB\u3068\u3057\u3066\u7B49\u3057\u3044\u304B\u3067\
+    \u306F\u306A\u3044)\n     */\n    friend constexpr bool operator==(const Angle&\
+    \ a, const Angle& b) noexcept { return !(a < b) && !(b < a); }\n    friend constexpr\
+    \ bool operator!=(const Angle& a, const Angle& b) noexcept { return !(a == b);\
+    \ }\n};\n\ntemplate <typename P, typename = decltype(std::declval<const P&>()[0])>\n\
+    Angle(const P&) -> Angle<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<const\
+    \ P&>()[0])>>>;\ntemplate <typename T>\nAngle(const std::pair<T, T>&) -> Angle<T>;\n\
+    #line 2 \"src/geometry/vector.hpp\"\n\n/**\n * @file vector.hpp\n * @brief \u5E7E\
+    \u4F55\u30D9\u30AF\u30C8\u30EB\n */\n\n#line 9 \"src/geometry/vector.hpp\"\n#include\
+    \ <array>\n#include <cassert>\n#line 12 \"src/geometry/vector.hpp\"\n#include\
+    \ <istream>\n#include <limits>\n#include <numeric>\n#include <optional>\n#include\
+    \ <ostream>\n#include <stack>\n#line 21 \"src/geometry/vector.hpp\"\n\n/**\n *\
+    \ @brief \u5E7E\u4F55\u5B66\u3068\u3057\u3066\u306E\u30D9\u30AF\u30C8\u30EB\n\
+    \ *\n * @tparam T \u578B \u7701\u7565\u3057\u305F\u3089double\n * @tparam Dim\
+    \ \u6B21\u5143 \u7701\u7565\u3057\u305F\u30892\n */\ntemplate <typename T = double,\
+    \ int Dim = 2, std::enable_if_t<std::is_scalar_v<T> && (Dim > 0)>* = nullptr>\n\
+    struct Vector {\n    std::array<T, Dim> v; //!< \u30D9\u30AF\u30C8\u30EB\u306E\
+    \u6210\u5206\u8868\u793A\n\n    /**\n     * @brief \u30C7\u30D5\u30A9\u30EB\u30C8\
+    \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * \u30BC\u30ED\u30D9\u30AF\u30C8\
+    \u30EB\n     */\n    constexpr Vector() noexcept : v() {}\n    /**\n     * @brief\
+    \ \u53EF\u5909\u9577\u5F15\u6570\u306B\u3088\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\
+    \u30AF\u30BF\n     * \n     * @tparam Args \n     */\n    template <typename...\
+    \ Args>\n    constexpr Vector(Args... args) noexcept : v{args...} {}\n\n    /**\n\
+    \     * @brief i\u756A\u76EE\u306E\u6210\u5206\u3092\u8FD4\u3059\n     * \n  \
+    \   * @param i\n     * @return T& \n     */\n    constexpr T& operator[](int i)\
+    \ noexcept {\n        return v[i];\n    }\n    /**\n     * @brief i\u756A\u76EE\
+    \u306E\u6210\u5206\u3092\u8FD4\u3059\n     * \n     * @param i\n     * @return\
+    \ T& \n     */\n    constexpr const T& operator[](int i) const noexcept {\n  \
+    \      return v[i];\n    }\n\n    /**\n     * @brief \u52A0\u7B97\u4EE3\u5165\u6F14\
+    \u7B97\u5B50\n     * \n     * @param rhs \n     * @return Vector& \n     */\n\
+    \    constexpr Vector& operator+=(const Vector& rhs) noexcept {\n        for(int\
+    \ i = 0; i < Dim; i++) v[i] += rhs[i];\n        return *this;\n    }\n    /**\n\
+    \     * @brief \u6E1B\u7B97\u4EE3\u5165\u6F14\u7B97\u5B50\n     * \n     * @param\
+    \ rhs \n     * @return Vector& \n     */\n    constexpr Vector& operator-=(const\
+    \ Vector& rhs) noexcept {\n        for(int i = 0; i < Dim; i++) v[i] -= rhs.v[i];\n\
+    \        return *this;\n    }\n    /**\n     * @brief \u30B9\u30AB\u30E9\u30FC\
+    \u500D\u4EE3\u5165\u6F14\u7B97\u5B50\n     * \n     * @param coef \n     * @return\
+    \ Vector& \n     */\n    constexpr Vector& operator*=(const T& coef) noexcept\
+    \ {\n        for(int i = 0; i < Dim; i++) v[i] *= coef;\n        return *this;\n\
+    \    }\n    /**\n     * @brief \u30B9\u30AB\u30E9\u30FC\u306E\u9006\u6570\u500D\
+    \u4EE3\u5165\u6F14\u7B97\u5B50\n     * \n     * @param coef \n     * @return Vector&\
+    \ \n     */\n    Vector& operator/=(const T& coef) {\n        for(int i = 0; i\
+    \ < Dim; i++) {\n            if constexpr(std::is_integral_v<T>) {\n         \
+    \       assert(v[i] % coef == 0 && \"Vector::operator/= : coef must be a divisor\
+    \ of all elements\");\n            }\n            v[i] /= coef;\n        }\n \
+    \       return *this;\n    }\n\n    /**\n     * @brief \u5358\u9805\u30D7\u30E9\
     \u30B9\u6F14\u7B97\u5B50\n     * \n     * @return Vector \n     */\n    [[nodiscard]]\n\
-    \    constexpr Vector operator-() const noexcept {\n        return *this * (-1);\n\
-    \    }\n\n    /**\n     * @brief \u52A0\u7B97\u6F14\u7B97\u5B50\n     * \n   \
-    \  * @param lhs \n     * @param rhs \n     * @return Vector \n     */\n    [[nodiscard]]\n\
-    \    friend constexpr Vector operator+(const Vector& lhs, const Vector& rhs) noexcept\
-    \ {\n        return std::move(Vector(lhs) += rhs);\n    }\n\n    /**\n     * @brief\
+    \    constexpr Vector operator+() const noexcept {\n        return *this;\n  \
+    \  }\n    /**\n     * @brief \u5358\u9805\u30DE\u30A4\u30CA\u30B9\u6F14\u7B97\u5B50\
+    \n     * \n     * @return Vector \n     */\n    [[nodiscard]]\n    constexpr Vector\
+    \ operator-() const noexcept {\n        return *this * (-1);\n    }\n\n    /**\n\
+    \     * @brief \u52A0\u7B97\u6F14\u7B97\u5B50\n     * \n     * @param lhs \n \
+    \    * @param rhs \n     * @return Vector \n     */\n    [[nodiscard]]\n    friend\
+    \ constexpr Vector operator+(const Vector& lhs, const Vector& rhs) noexcept {\n\
+    \        return std::move(Vector(lhs) += rhs);\n    }\n\n    /**\n     * @brief\
     \ \u6E1B\u7B97\u6F14\u7B97\u5B50\n     * \n     * @param lhs \n     * @param rhs\
     \ \n     * @return Vector \n     */\n    [[nodiscard]]\n    friend constexpr Vector\
     \ operator-(const Vector& lhs, const Vector& rhs) noexcept {\n        return std::move(Vector(lhs)\
@@ -101,38 +154,20 @@ data:
     \u30A4\u30B3\u30FC\u30EB\u6F14\u7B97\u5B50\n     * \n     * @param lhs \n    \
     \ * @param rhs \n     * @return bool\n     */\n    [[nodiscard]]\n    friend constexpr\
     \ bool operator>=(const Vector& lhs, const Vector& rhs) noexcept {\n        return\
-    \ lhs.v >= rhs.v;\n    }\n\n    /**\n     * @brief \u504F\u89D2\u30BD\u30FC\u30C8\
-    \u306E\u30D5\u30A1\u30F3\u30AF\u30BF\n     * \n     * \u4E8C\u6B21\u5143\u9650\
-    \u5B9A\u3001\u53CD\u6642\u8A08\u56DE\u308A\n     * x\u8EF8\u6B63\u65B9\u5411\u3092\
-    \u59CB\u70B9\u3068\u3057\u3001\u96F6\u30D9\u30AF\u30C8\u30EB\u306Fx\u8EF8\u6B63\
-    \u65B9\u5411\u3068\u540C\u3058\u504F\u89D2\u3068\u3057\u3066\u6271\u3046\n   \
-    \  */\n    struct ArgSortComp {\n        constexpr bool operator()(const Vector&\
-    \ lhs, const Vector& rhs) const noexcept {\n            static_assert(Dim == 2,\
-    \ \"ArgSortComp: Dim must be 2\");\n            // \u96F6\u30D9\u30AF\u30C8\u30EB\
-    \u306F\u5916\u7A4D\u3067\u6BD4\u3079\u3089\u308C\u306A\u3044\u306E\u3067\u3001\
-    \u504F\u89D2 0 (x \u8EF8\u6B63\u65B9\u5411) \u3068\u3057\u3066\u5148\u306B\u5224\
-    \u5B9A\u3059\u308B\n            const bool l_zero = lhs[0] == 0 && lhs[1] == 0;\n\
-    \            const bool r_zero = rhs[0] == 0 && rhs[1] == 0;\n            if(r_zero)\
-    \ return false;  // \u504F\u89D2 0 \u3088\u308A\u5C0F\u3055\u3044\u3082\u306E\u306F\
-    \u306A\u3044\n            if(l_zero) return !(rhs[1] == 0 && rhs[0] > 0);  //\
-    \ rhs \u306E\u504F\u89D2\u304C 0 \u3088\u308A\u5927\u304D\u3044\u304B\n      \
-    \      int l_half = lhs[1] < 0 || (lhs[1] == 0 && lhs[0] < 0);\n            int\
-    \ r_half = rhs[1] < 0 || (rhs[1] == 0 && rhs[0] < 0);\n            if(l_half !=\
-    \ r_half) return l_half < r_half;\n            return rhs[0] * lhs[1] < lhs[0]\
-    \ * rhs[1];\n        }\n    };\n\n    /**\n     * @brief \u5165\u529B\u30B9\u30C8\
-    \u30EA\u30FC\u30E0\u304B\u3089\u306E\u8AAD\u307F\u8FBC\u307F\n     * \n     *\
-    \ @tparam CharT \u5165\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\
-    \n     * @tparam Traits \u5165\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\
-    \u5B57\u578B\u7279\u6027\n     * @param is \n     * @param rhs \n     * @return\
-    \ std::basic_istream<CharT, Traits>& \n     */\n    template <class CharT, class\
-    \ Traits>\n    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
-    \ Traits>& is, Vector& rhs) {\n        for(int i = 0; i < Dim; i++) is >> rhs.v[i];\n\
-    \        return is;\n    }\n    /**\n     * @brief \u51FA\u529B\u30B9\u30C8\u30EA\
-    \u30FC\u30E0\u3078\u306E\u66F8\u304D\u8FBC\u307F\n     * \n     * @tparam CharT\
-    \ \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n     * @tparam\
-    \ Traits \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\
-    \u6027\n     * @param is \n     * @param rhs \n     * @return std::basic_ostream<CharT,\
-    \ Traits>& \n     */\n    template <class CharT, class Traits>\n    friend std::basic_ostream<CharT,\
+    \ lhs.v >= rhs.v;\n    }\n\n    /**\n     * @brief \u5165\u529B\u30B9\u30C8\u30EA\
+    \u30FC\u30E0\u304B\u3089\u306E\u8AAD\u307F\u8FBC\u307F\n     * \n     * @tparam\
+    \ CharT \u5165\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n \
+    \    * @tparam Traits \u5165\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\
+    \u578B\u7279\u6027\n     * @param is \n     * @param rhs \n     * @return std::basic_istream<CharT,\
+    \ Traits>& \n     */\n    template <class CharT, class Traits>\n    friend std::basic_istream<CharT,\
+    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Vector& rhs) {\n\
+    \        for(int i = 0; i < Dim; i++) is >> rhs.v[i];\n        return is;\n  \
+    \  }\n    /**\n     * @brief \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u3078\u306E\
+    \u66F8\u304D\u8FBC\u307F\n     * \n     * @tparam CharT \u51FA\u529B\u30B9\u30C8\
+    \u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n     * @tparam Traits \u51FA\u529B\
+    \u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\u6027\n     * @param\
+    \ is \n     * @param rhs \n     * @return std::basic_ostream<CharT, Traits>& \n\
+    \     */\n    template <class CharT, class Traits>\n    friend std::basic_ostream<CharT,\
     \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const Vector& rhs)\
     \ {\n        for(int i = 0; i < Dim; i++) {\n            if(i != 0) os << CharT('\
     \ ');\n            os << rhs.v[i];\n        }\n        return os;\n    }\n\n \
@@ -191,9 +226,9 @@ data:
     \u70B92\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @return std::optional<Vector<T,\
     \ 2>> \u5171\u6709\u70B9\u306E1\u4F8B (\u5171\u6709\u70B9\u304C\u306A\u3051\u308C\
     \u3070 std::nullopt)\n */\ntemplate <typename T>\nconstexpr std::optional<Vector<T,\
-    \ 2>> segment_intersect(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const\
+    \ 2>> segment_intersection(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const\
     \ Vector<T, 2>& q1, const Vector<T, 2>& q2) {\n    static_assert(std::is_floating_point_v<T>,\
-    \ \"segment_intersect: T must be a floating point type (use segments_intersect\
+    \ \"segment_intersection: T must be a floating point type (use segments_intersect\
     \ for integers)\");\n    if(!segments_intersect(p1, p2, q1, q2)) return std::nullopt;\n\
     \    if(cross(p2 - p1, q1 - p1) == 0 && cross(p2 - p1, q2 - p1) == 0) {\n    \
     \    // 4\u70B9\u304C\u540C\u4E00\u76F4\u7DDA\u4E0A\u306B\u3042\u308B\u5834\u5408\
@@ -384,33 +419,35 @@ data:
     \u8AA4\u308A\u3092\u76F4\u3057\u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename\
     \ T>\n[[deprecated(\"use closest_point_pair_squared\")]] ClosestPairSquared<T>\
     \ closest_point_pair_squred(const std::vector<Vector<T, 2>>& points) {\n    return\
-    \ closest_point_pair_squared(points);\n}\n#line 8 \"test/yosupo/sort-points-by-argument.1.test.cpp\"\
+    \ closest_point_pair_squared(points);\n}\n#line 9 \"test/yosupo/sort-points-by-argument.1.test.cpp\"\
     \n\nint main() {\n    int n; std::cin >> n;\n    using P = Vector<long long>;\n\
-    \    std::vector<P> ps(n);\n    for (auto& p : ps) std::cin >> p;\n    // ArgSortComp\
+    \    std::vector<P> ps(n);\n    for (auto& p : ps) std::cin >> p;\n    // Angle\
     \ \u306F x \u8EF8\u6B63\u65B9\u5411\u304B\u3089\u53CD\u6642\u8A08\u56DE\u308A\
-    \ ([0, 2\u03C0)) \u306B\u4E26\u3079\u308B\n    std::sort(ps.begin(), ps.end(),\
-    \ P::ArgSortComp());\n    // \u554F\u984C\u306F x <= 0, y = 0 \u306E\u534A\u76F4\
-    \u7DDA\u306E\u76F4\u5F8C\u304B\u3089 ((-\u03C0, \u03C0]) \u306A\u306E\u3067\u3001\
-    y < 0 \u306E\u70B9\u3092\u5148\u982D\u306B\u79FB\u3059\n    std::stable_partition(ps.begin(),\
-    \ ps.end(), [](const P& p) { return p[1] < 0; });\n    for (const auto& p : ps)\
-    \ std::cout << p << '\\n';\n}\n"
+    \ ([0, 2\u03C0)) \u306B\u6BD4\u3079\u308B\n    std::sort(ps.begin(), ps.end(),\
+    \ [](const P& a, const P& b) { return Angle(a) < Angle(b); });\n    // \u554F\u984C\
+    \u306F x <= 0, y = 0 \u306E\u534A\u76F4\u7DDA\u306E\u76F4\u5F8C\u304B\u3089 ((-\u03C0\
+    , \u03C0]) \u306A\u306E\u3067\u3001y < 0 \u306E\u70B9\u3092\u5148\u982D\u306B\u79FB\
+    \u3059\n    std::stable_partition(ps.begin(), ps.end(), [](const P& p) { return\
+    \ p[1] < 0; });\n    for (const auto& p : ps) std::cout << p << '\\n';\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/sort_points_by_argument\"\
     \n\n#include <algorithm>\n#include <iostream>\n#include <vector>\n\n#include \"\
-    ../../src/geometry/vector.hpp\"\n\nint main() {\n    int n; std::cin >> n;\n \
-    \   using P = Vector<long long>;\n    std::vector<P> ps(n);\n    for (auto& p\
-    \ : ps) std::cin >> p;\n    // ArgSortComp \u306F x \u8EF8\u6B63\u65B9\u5411\u304B\
-    \u3089\u53CD\u6642\u8A08\u56DE\u308A ([0, 2\u03C0)) \u306B\u4E26\u3079\u308B\n\
-    \    std::sort(ps.begin(), ps.end(), P::ArgSortComp());\n    // \u554F\u984C\u306F\
-    \ x <= 0, y = 0 \u306E\u534A\u76F4\u7DDA\u306E\u76F4\u5F8C\u304B\u3089 ((-\u03C0\
+    ../../src/geometry/angle.hpp\"\n#include \"../../src/geometry/vector.hpp\"\n\n\
+    int main() {\n    int n; std::cin >> n;\n    using P = Vector<long long>;\n  \
+    \  std::vector<P> ps(n);\n    for (auto& p : ps) std::cin >> p;\n    // Angle\
+    \ \u306F x \u8EF8\u6B63\u65B9\u5411\u304B\u3089\u53CD\u6642\u8A08\u56DE\u308A\
+    \ ([0, 2\u03C0)) \u306B\u6BD4\u3079\u308B\n    std::sort(ps.begin(), ps.end(),\
+    \ [](const P& a, const P& b) { return Angle(a) < Angle(b); });\n    // \u554F\u984C\
+    \u306F x <= 0, y = 0 \u306E\u534A\u76F4\u7DDA\u306E\u76F4\u5F8C\u304B\u3089 ((-\u03C0\
     , \u03C0]) \u306A\u306E\u3067\u3001y < 0 \u306E\u70B9\u3092\u5148\u982D\u306B\u79FB\
     \u3059\n    std::stable_partition(ps.begin(), ps.end(), [](const P& p) { return\
     \ p[1] < 0; });\n    for (const auto& p : ps) std::cout << p << '\\n';\n}\n"
   dependsOn:
+  - src/geometry/angle.hpp
   - src/geometry/vector.hpp
   isVerificationFile: true
   path: test/yosupo/sort-points-by-argument.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 01:43:22+09:00'
+  timestamp: '2026-10-14 07:04:09+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/sort-points-by-argument.1.test.cpp

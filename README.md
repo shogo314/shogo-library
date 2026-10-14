@@ -16,10 +16,11 @@
 | `src/algebra/` | モノイド・群・作用素付きモノイドの定義 |
 | `src/data_structures/` | セグメント木各種 (モノイドを渡して使う)、Fenwick Tree、Sparse Table、Union-Find、マージソートツリー、Li Chao Tree、双対セグメント木、Sliding Window Aggregation (スライド最小値)、削除可能な優先度付きキューなど |
 | `src/graph/` | グラフ (最短路、全点対間最短路)、木、全方位木 DP、Functional Graph、強連結成分分解、閉路の検出と復元、最小全域木、lowlink (関節点・橋)、2-SAT、最大流、最小費用流、二部マッチング、HL 分解 |
-| `src/math/` | modint、行列、形式的冪級数、組み合わせ、数論、素数 (素数判定・素因数分解・篩)、無限大を持つ整数 (`infint`)、floor sum、商の列挙、有理数、約数・倍数のゼータ変換とメビウス変換 (GCD・LCM 畳み込み)、XOR 基底 |
+| `src/math/` | modint、mod 演算 (冪乗・逆元)、畳み込み、行列、形式的冪級数、組み合わせ、中国剰余定理、素数 (素数判定・素因数分解・篩)、無限大を持つ整数 (`infint`)、floor sum、商の列挙、有理数、約数・倍数のゼータ変換とメビウス変換 (GCD・LCM 畳み込み)、XOR 基底 |
 | `src/string/` | Z-algorithm、KMP、Manacher、Suffix Array と LCP 配列、ローリングハッシュ、Trie |
 | `src/geometry/` | 幾何 (ベクトル、凸包、偏角ソート、ccw、射影・反射、直線の交点、点・線分の距離、円の交点・接線・内接円・外接円など) |
-| `src/others/` | Mo's algorithm、最長増加部分列 (LIS)、転倒数、ナップサック問題、部分和問題 (判定・S 以下の最大値・復元・個数) |
+| `src/dp/` | 動的計画法 (ナップサック問題、部分和問題 (判定・S 以下の最大値・復元・個数)、最長増加部分列 (LIS)) |
+| `src/others/` | Mo's algorithm、転倒数 |
 | `test/` | 検証用テスト (ジャッジごとにディレクトリを分けています。`test/unittest/` は問題を使わない単体テスト) |
 | `docs/` | ドキュメントの各ページに埋め込む機能一覧 (`documentation_of` でヘッダに対応付け) |
 

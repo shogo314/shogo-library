@@ -93,6 +93,7 @@ for (auto [q, l, r] : enumerate_quotients(10)) {
 | `for_each_quotient(n, f)` | 区間ごとに `f(q, l, r)` を呼ぶ。$l \le i \le r$ なら $\lfloor n/i \rfloor = q$ | $O(\sqrt{n})$ |
 | `enumerate_quotients(n)` | 区間を `QuotientRange` (メンバ `q`、`l`、`r`) のリストで返す | $O(\sqrt{n})$ |
 
+- 区間 `[l, r]` は右端を含む閉区間です (このライブラリの他の区間は半開区間 `[l, r)` ですが、ここでは $r = \lfloor n/q \rfloor$ がそのまま求まるので閉区間にしています)。区間の長さは `r - l + 1` です。
 - どちらも $i$ の昇順 (商の降順) に並びます。商の昇順が欲しいときは逆にたどります。
 - 区間の右端は $r = \lfloor n / \lfloor n/l \rfloor \rfloor$ で求めています。
 

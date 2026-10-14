@@ -81,19 +81,19 @@ data:
     \u6587\u5B57\u5217\u306E\u9577\u3055)\n     */\n    int depth(int v) const { return\
     \ nodes[v].depth; }\n    /**\n     * @brief \u30CE\u30FC\u30C9 v \u3092\u901A\u308B\
     \ (v \u306E\u6587\u5B57\u5217\u3092\u63A5\u982D\u8F9E\u306B\u6301\u3064) \u6587\
-    \u5B57\u5217\u306E\u500B\u6570\n     */\n    int prefix_count(int v) const { return\
-    \ nodes[v].prefix_cnt; }\n    /**\n     * @brief \u30CE\u30FC\u30C9 v \u3067\u7D42\
-    \u308F\u308B\u6587\u5B57\u5217\u306E\u500B\u6570\n     */\n    int word_count(int\
-    \ v) const { return nodes[v].word_cnt; }\n\n    /**\n     * @brief s \u306E\u63A5\
-    \u982D\u8F9E\u306E\u3046\u3061\u3001\u8FFD\u52A0\u3057\u305F\u6587\u5B57\u5217\
-    \u306E\u3069\u308C\u304B\u306E\u63A5\u982D\u8F9E\u306B\u3082\u306A\u3063\u3066\
-    \u3044\u308B\u3082\u306E\u306E\u6700\u9577\u306E\u9577\u3055 O(|s|)\n     * \u8FFD\
-    \u52A0\u3057\u305F\u6587\u5B57\u5217 (\u53D6\u308A\u9664\u3044\u305F\u3082\u306E\
-    \u306F\u9664\u304F) \u306E\u3069\u308C\u304B\u3068\u306E\u6700\u9577\u5171\u901A\
-    \u63A5\u982D\u8F9E\u306E\u9577\u3055\u306E\u6700\u5927\u5024\u306B\u306A\u308B\
-    \n     */\n    template <typename R>\n    int longest_common_prefix(const R& s)\
-    \ const {\n        int v = 0, len = 0;\n        for (auto c : s) {\n         \
-    \   int u = nodes[v].next[index(c)];\n            if (u == -1 || nodes[u].prefix_cnt\
+    \u5B57\u5217\u306E\u500B\u6570\n     */\n    int count_prefix_at(int v) const\
+    \ { return nodes[v].prefix_cnt; }\n    /**\n     * @brief \u30CE\u30FC\u30C9 v\
+    \ \u3067\u7D42\u308F\u308B\u6587\u5B57\u5217\u306E\u500B\u6570\n     */\n    int\
+    \ count_at(int v) const { return nodes[v].word_cnt; }\n\n    /**\n     * @brief\
+    \ s \u306E\u63A5\u982D\u8F9E\u306E\u3046\u3061\u3001\u8FFD\u52A0\u3057\u305F\u6587\
+    \u5B57\u5217\u306E\u3069\u308C\u304B\u306E\u63A5\u982D\u8F9E\u306B\u3082\u306A\
+    \u3063\u3066\u3044\u308B\u3082\u306E\u306E\u6700\u9577\u306E\u9577\u3055 O(|s|)\n\
+    \     * \u8FFD\u52A0\u3057\u305F\u6587\u5B57\u5217 (\u53D6\u308A\u9664\u3044\u305F\
+    \u3082\u306E\u306F\u9664\u304F) \u306E\u3069\u308C\u304B\u3068\u306E\u6700\u9577\
+    \u5171\u901A\u63A5\u982D\u8F9E\u306E\u9577\u3055\u306E\u6700\u5927\u5024\u306B\
+    \u306A\u308B\n     */\n    template <typename R>\n    int longest_common_prefix(const\
+    \ R& s) const {\n        int v = 0, len = 0;\n        for (auto c : s) {\n   \
+    \         int u = nodes[v].next[index(c)];\n            if (u == -1 || nodes[u].prefix_cnt\
     \ == 0) break;\n            v = u;\n            len++;\n        }\n        return\
     \ len;\n    }\n};\n#line 8 \"test/aoj/alds1-4-c.test.cpp\"\n\nint main() {\n \
     \   std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n    int n;\n\
@@ -121,7 +121,7 @@ data:
   isVerificationFile: true
   path: test/aoj/alds1-4-c.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 01:43:22+09:00'
+  timestamp: '2026-10-14 06:59:14+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/alds1-4-c.test.cpp

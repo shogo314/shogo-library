@@ -18,32 +18,36 @@ data:
     \ * @brief \u304A\u305F\u307E\u3058\u3083\u304F\u3057\u914D\u5217\n * \u7279\u5B9A\
     \u306E\u4F4D\u7F6E\u3067\u30EB\u30FC\u30D7\u3059\u308B\u69CB\u9020\n * @tparam\
     \ T\n */\ntemplate <typename T>\nstruct TadpoleArray {\n   private:\n    std::vector<T>\
-    \ data;\n    std::size_t k;\n\n   public:\n    /**\n     * @brief \u6700\u5F8C\
-    \u306E\u6B21\u306E\u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\u304Ci\n     */\n    TadpoleArray(const\
+    \ data;\n    int k;\n\n   public:\n    /**\n     * @brief \u6700\u5F8C\u306E\u6B21\
+    \u306E\u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\u304Ci\n     */\n    TadpoleArray(const\
     \ std::vector<T>& v, int i) : data(v) {\n        assert(0 <= i and i < static_cast<int>(data.size()));\n\
-    \        k = static_cast<std::size_t>(i);\n    }\n    TadpoleArray() = default;\n\
-    \    TadpoleArray(const TadpoleArray&) = default;\n    T at(std::size_t i) const\
-    \ {\n        if (i < k) return data[i];\n        return data[(i - k) % (data.size()\
-    \ - k) + k];\n    }\n    T operator[](std::size_t i) const {\n        return at(i);\n\
-    \    }\n};\n"
+    \        k = i;\n    }\n    TadpoleArray() = default;\n    TadpoleArray(const\
+    \ TadpoleArray&) = default;\n    /**\n     * @brief i \u756A\u76EE\u306E\u8981\
+    \u7D20 (i \u306F\u914D\u5217\u306E\u9577\u3055\u3092\u8D85\u3048\u3066\u3082\u3088\
+    \u3044)\n     */\n    T at(long long i) const {\n        assert(i >= 0);\n   \
+    \     if (i < k) return data[i];\n        return data[(i - k) % (static_cast<long\
+    \ long>(data.size()) - k) + k];\n    }\n    T operator[](long long i) const {\n\
+    \        return at(i);\n    }\n};\n"
   code: "#pragma once\n\n/**\n * @file tadpole-array.hpp\n * @brief \u304A\u305F\u307E\
     \u3058\u3083\u304F\u3057\u914D\u5217\n */\n\n#include <cassert>\n#include <cstddef>\n\
     #include <vector>\n/**\n * @brief \u304A\u305F\u307E\u3058\u3083\u304F\u3057\u914D\
     \u5217\n * \u7279\u5B9A\u306E\u4F4D\u7F6E\u3067\u30EB\u30FC\u30D7\u3059\u308B\u69CB\
     \u9020\n * @tparam T\n */\ntemplate <typename T>\nstruct TadpoleArray {\n   private:\n\
-    \    std::vector<T> data;\n    std::size_t k;\n\n   public:\n    /**\n     * @brief\
-    \ \u6700\u5F8C\u306E\u6B21\u306E\u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\u304Ci\n\
-    \     */\n    TadpoleArray(const std::vector<T>& v, int i) : data(v) {\n     \
-    \   assert(0 <= i and i < static_cast<int>(data.size()));\n        k = static_cast<std::size_t>(i);\n\
-    \    }\n    TadpoleArray() = default;\n    TadpoleArray(const TadpoleArray&) =\
-    \ default;\n    T at(std::size_t i) const {\n        if (i < k) return data[i];\n\
-    \        return data[(i - k) % (data.size() - k) + k];\n    }\n    T operator[](std::size_t\
-    \ i) const {\n        return at(i);\n    }\n};\n"
+    \    std::vector<T> data;\n    int k;\n\n   public:\n    /**\n     * @brief \u6700\
+    \u5F8C\u306E\u6B21\u306E\u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\u304Ci\n     */\n\
+    \    TadpoleArray(const std::vector<T>& v, int i) : data(v) {\n        assert(0\
+    \ <= i and i < static_cast<int>(data.size()));\n        k = i;\n    }\n    TadpoleArray()\
+    \ = default;\n    TadpoleArray(const TadpoleArray&) = default;\n    /**\n    \
+    \ * @brief i \u756A\u76EE\u306E\u8981\u7D20 (i \u306F\u914D\u5217\u306E\u9577\u3055\
+    \u3092\u8D85\u3048\u3066\u3082\u3088\u3044)\n     */\n    T at(long long i) const\
+    \ {\n        assert(i >= 0);\n        if (i < k) return data[i];\n        return\
+    \ data[(i - k) % (static_cast<long long>(data.size()) - k) + k];\n    }\n    T\
+    \ operator[](long long i) const {\n        return at(i);\n    }\n};\n"
   dependsOn: []
   isVerificationFile: false
   path: src/data_structures/tadpole-array.hpp
   requiredBy: []
-  timestamp: '2026-10-13 12:42:03+09:00'
+  timestamp: '2026-10-14 07:02:47+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/tadpole-array.test.cpp
@@ -65,7 +69,7 @@ int b = t[1000000000000LL];   // 2
 | メンバ | 説明 | 計算量 |
 |---|---|---|
 | `TadpoleArray<T>(v, i)` | 配列 `v` の末尾の次を `v[i]` にする ($0 \le i < n$) | $O(n)$ |
-| `t[k]` / `t.at(k)` | 列の `k` 番目 (`size_t` の添字) | $O(1)$ |
+| `t[k]` / `t.at(k)` | 列の `k` 番目 (`long long` の添字。`k >= 0` で、配列の長さを超えてもよい) | $O(1)$ |
 
 ## 関連
 

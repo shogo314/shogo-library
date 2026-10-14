@@ -68,14 +68,14 @@ data:
     \        if (key_comp(r, std::prev(itr_r)->second)) tmp.push_back({r, std::prev(itr_r)->second});\n\
     \        data.erase(itr_l, itr_r);\n        while (not tmp.empty()) {\n      \
     \      data.insert(tmp.back());\n            tmp.pop_back();\n        }\n    }\n\
-    \    std::size_t size() const {\n        return data.size();\n    }\n    std::vector<value_type>\
-    \ to_vector() const {\n        return std::vector<value_type>(data.begin(), data.end());\n\
-    \    }\n};\n#line 13 \"test/unittest/interval-set.test.cpp\"\n\n// \u5EA7\u6A19\
-    \ [LO, HI) \u306E\u7BC4\u56F2\u3067\u64CD\u4F5C\u3059\u308B (\u8CA0\u306E\u5EA7\
-    \u6A19\u3082\u4F7F\u3046)\nconstexpr int LO = -5, HI = 20;\n\n// \u8986\u308F\u308C\
-    \u3066\u3044\u308B\u70B9\u306E\u6975\u5927\u306A\u9023\u7D9A\u90E8\u5206\u3092\
-    \u534A\u958B\u533A\u9593\u306E\u5217\u306B\u3059\u308B (\u63A5\u3059\u308B\u533A\
-    \u9593\u306F\u307E\u3068\u3081\u3089\u308C\u308B)\nstd::vector<std::pair<long\
+    \    int size() const {\n        return static_cast<int>(data.size());\n    }\n\
+    \    std::vector<value_type> to_vector() const {\n        return std::vector<value_type>(data.begin(),\
+    \ data.end());\n    }\n};\n#line 13 \"test/unittest/interval-set.test.cpp\"\n\n\
+    // \u5EA7\u6A19 [LO, HI) \u306E\u7BC4\u56F2\u3067\u64CD\u4F5C\u3059\u308B (\u8CA0\
+    \u306E\u5EA7\u6A19\u3082\u4F7F\u3046)\nconstexpr int LO = -5, HI = 20;\n\n// \u8986\
+    \u308F\u308C\u3066\u3044\u308B\u70B9\u306E\u6975\u5927\u306A\u9023\u7D9A\u90E8\
+    \u5206\u3092\u534A\u958B\u533A\u9593\u306E\u5217\u306B\u3059\u308B (\u63A5\u3059\
+    \u308B\u533A\u9593\u306F\u307E\u3068\u3081\u3089\u308C\u308B)\nstd::vector<std::pair<long\
     \ long, long long>> runs(const std::vector<bool>& cov) {\n    std::vector<std::pair<long\
     \ long, long long>> res;\n    for (int i = 0; i < (int)cov.size();) {\n      \
     \  if (!cov[i]) {\n            i++;\n            continue;\n        }\n      \
@@ -90,9 +90,9 @@ data:
     \ (long long x = l; x < r; x++) cov[x - LO] = true;\n            } else {\n  \
     \              st.erase(l, r);\n                for (long long x = l; x < r; x++)\
     \ cov[x - LO] = false;\n            }\n            auto expect = runs(cov);\n\
-    \            if (st.to_vector() != expect || st.size() != expect.size()) ok =\
-    \ false;\n\n            // covered_by(k): k \u3092\u542B\u3080\u533A\u9593\n \
-    \           for (long long k = LO; k < HI; k++) {\n                std::optional<std::pair<long\
+    \            if (st.to_vector() != expect || st.size() != (int)expect.size())\
+    \ ok = false;\n\n            // covered_by(k): k \u3092\u542B\u3080\u533A\u9593\
+    \n            for (long long k = LO; k < HI; k++) {\n                std::optional<std::pair<long\
     \ long, long long>> e;\n                for (auto& iv : expect) {\n          \
     \          if (iv.first <= k && k < iv.second) e = iv;\n                }\n  \
     \              if (st.covered_by(k) != e) ok = false;\n            }\n       \
@@ -132,9 +132,9 @@ data:
     \ (long long x = l; x < r; x++) cov[x - LO] = true;\n            } else {\n  \
     \              st.erase(l, r);\n                for (long long x = l; x < r; x++)\
     \ cov[x - LO] = false;\n            }\n            auto expect = runs(cov);\n\
-    \            if (st.to_vector() != expect || st.size() != expect.size()) ok =\
-    \ false;\n\n            // covered_by(k): k \u3092\u542B\u3080\u533A\u9593\n \
-    \           for (long long k = LO; k < HI; k++) {\n                std::optional<std::pair<long\
+    \            if (st.to_vector() != expect || st.size() != (int)expect.size())\
+    \ ok = false;\n\n            // covered_by(k): k \u3092\u542B\u3080\u533A\u9593\
+    \n            for (long long k = LO; k < HI; k++) {\n                std::optional<std::pair<long\
     \ long, long long>> e;\n                for (auto& iv : expect) {\n          \
     \          if (iv.first <= k && k < iv.second) e = iv;\n                }\n  \
     \              if (st.covered_by(k) != e) ok = false;\n            }\n       \
@@ -152,7 +152,7 @@ data:
   isVerificationFile: true
   path: test/unittest/interval-set.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 12:42:03+09:00'
+  timestamp: '2026-10-14 07:02:47+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/interval-set.test.cpp

@@ -161,9 +161,11 @@ data:
     \        return v[a] < v[b];\n    });\n    if (v.size() & 1) {\n        return\
     \ v[u[v.size() / 2]];\n    }\n    // C++20\n    // return std::midpoint(v[u[v.size()\
     \ / 2]], v[u[v.size() / 2 - 1]]);\n    return (v[u[v.size() / 2]] + v[u[v.size()\
-    \ / 2 - 1]]) / 2;\n}\n\ntemplate <class C, typename U>\ninline constexpr std::ptrdiff_t\
-    \ index(const C &v, const U &x) {\n    return std::distance(v.begin(), find(v,\
-    \ x));\n}\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
+    \ / 2 - 1]]) / 2;\n}\n\n// x \u304C\u6700\u521D\u306B\u73FE\u308C\u308B\u4F4D\u7F6E\
+    \u3002\u306A\u3051\u308C\u3070 -1\ntemplate <class C, typename U>\ninline constexpr\
+    \ int index(const C &v, const U &x) {\n    auto it = find(v, x);\n    if (it ==\
+    \ v.end()) return -1;\n    return static_cast<int>(std::distance(v.begin(), it));\n\
+    }\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
     inline constexpr mem_value_type<C> mex(const C &v) {\n    std::vector<bool> b(v.size()\
     \ + 1);\n    for (const auto &a : v) {\n        if (0 <= a and static_cast<std::size_t>(a)\
     \ < b.size()) {\n            b[a] = true;\n        }\n    }\n    mem_value_type<C>\
@@ -171,30 +173,29 @@ data:
     \u3067\u3001\u4E0B\u306E\u30EB\u30FC\u30D7\u3067\u5FC5\u305A\u898B\u3064\u304B\
     \u308B\n    for (std::size_t i = 0; i < b.size(); i++) {\n        if (not b[i])\
     \ {\n            ret = i;\n            break;\n        }\n    }\n    return ret;\n\
-    }\n\ntemplate <class C>\ninline constexpr mem_difference_type<C> bisect_left(const\
-    \ C &v, const mem_value_type<C> &x) {\n    return std::distance(v.begin(), lower_bound(v,\
-    \ x));\n}\ntemplate <class C>\ninline constexpr mem_difference_type<C> bisect_right(const\
-    \ C &v, const mem_value_type<C> &x) {\n    return std::distance(v.begin(), upper_bound(v,\
-    \ x));\n}\n#line 2 \"src/utility/vector_func.hpp\"\n\n/**\n * @file vector_func.hpp\n\
+    }\n\ntemplate <class C>\ninline constexpr int bisect_left(const C &v, const mem_value_type<C>\
+    \ &x) {\n    return static_cast<int>(std::distance(v.begin(), lower_bound(v, x)));\n\
+    }\ntemplate <class C>\ninline constexpr int bisect_right(const C &v, const mem_value_type<C>\
+    \ &x) {\n    return static_cast<int>(std::distance(v.begin(), upper_bound(v, x)));\n\
+    }\n#line 2 \"src/utility/vector_func.hpp\"\n\n/**\n * @file vector_func.hpp\n\
     \ * @brief vector \u306B\u5BFE\u3059\u308B\u6F14\u7B97\u5B50\u3068\u95A2\u6570\
     \n */\n\n#line 10 \"src/utility/vector_func.hpp\"\n#include <cmath>\n#line 15\
     \ \"src/utility/vector_func.hpp\"\n\n#line 17 \"src/utility/vector_func.hpp\"\n\
-    \ntemplate <typename T>\nstd::vector<std::ptrdiff_t> sorted_idx(const std::vector<T>\
-    \ &v, bool reverse = false) {\n    std::vector<std::ptrdiff_t> ret(v.size());\n\
-    \    std::iota(ret.begin(), ret.end(), 0);\n    std::sort(ret.begin(), ret.end(),\
-    \ [&](std::ptrdiff_t i, std::ptrdiff_t j) {\n        return v[i] < v[j];\n   \
-    \ });\n    if (reverse) std::reverse(ret.begin(), ret.end());\n    return ret;\n\
-    }\n\ntemplate <typename T>\ninline std::vector<T> &operator++(std::vector<T> &v)\
-    \ {\n    for (auto &e : v) e++;\n    return v;\n}\ntemplate <typename T>\ninline\
-    \ std::vector<T> operator++(std::vector<T> &v, int) {\n    auto res = v;\n   \
-    \ for (auto &e : v) e++;\n    return res;\n}\ntemplate <typename T>\ninline std::vector<T>\
-    \ &operator--(std::vector<T> &v) {\n    for (auto &e : v) e--;\n    return v;\n\
-    }\ntemplate <typename T>\ninline std::vector<T> operator--(std::vector<T> &v,\
-    \ int) {\n    auto res = v;\n    for (auto &e : v) e--;\n    return res;\n}\n\n\
-    template <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\n\
-    inline std::vector<T> &operator+=(std::vector<T> &v1, const std::vector<U> &v2)\
-    \ {\n    if (v2.size() > v1.size()) {\n        v1.resize(v2.size());\n    }\n\
-    \    for (std::size_t i = 0; i < v2.size(); i++) {\n        v1[i] += v2[i];\n\
+    \ntemplate <typename T>\nstd::vector<int> sorted_idx(const std::vector<T> &v,\
+    \ bool reverse = false) {\n    std::vector<int> ret(v.size());\n    std::iota(ret.begin(),\
+    \ ret.end(), 0);\n    std::sort(ret.begin(), ret.end(), [&](int i, int j) {\n\
+    \        return v[i] < v[j];\n    });\n    if (reverse) std::reverse(ret.begin(),\
+    \ ret.end());\n    return ret;\n}\n\ntemplate <typename T>\ninline std::vector<T>\
+    \ &operator++(std::vector<T> &v) {\n    for (auto &e : v) e++;\n    return v;\n\
+    }\ntemplate <typename T>\ninline std::vector<T> operator++(std::vector<T> &v,\
+    \ int) {\n    auto res = v;\n    for (auto &e : v) e++;\n    return res;\n}\n\
+    template <typename T>\ninline std::vector<T> &operator--(std::vector<T> &v) {\n\
+    \    for (auto &e : v) e--;\n    return v;\n}\ntemplate <typename T>\ninline std::vector<T>\
+    \ operator--(std::vector<T> &v, int) {\n    auto res = v;\n    for (auto &e :\
+    \ v) e--;\n    return res;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
+    \ T>)>\ninline std::vector<T> &operator+=(std::vector<T> &v1, const std::vector<U>\
+    \ &v2) {\n    if (v2.size() > v1.size()) {\n        v1.resize(v2.size());\n  \
+    \  }\n    for (std::size_t i = 0; i < v2.size(); i++) {\n        v1[i] += v2[i];\n\
     \    }\n    return v1;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
     \ T>)>\ninline std::vector<T> operator+(const std::vector<T> &v1, const std::vector<U>\
     \ &v2) {\n    std::vector<T> res(v1);\n    return res += v2;\n}\n\ntemplate <typename\
@@ -291,7 +292,7 @@ data:
   isVerificationFile: true
   path: test/aoj/dsl-4-a.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 20:17:40+09:00'
+  timestamp: '2026-10-14 07:02:47+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/dsl-4-a.1.test.cpp

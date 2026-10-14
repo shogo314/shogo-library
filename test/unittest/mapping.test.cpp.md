@@ -4,7 +4,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/algebra/group.hpp
     title: "\u7FA4\u306E\u5B9A\u7FA9"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: src/algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   - icon: ':heavy_check_mark:'
@@ -99,26 +99,30 @@ data:
     \ 1, ..., N-1} \u304B\u3089\u81EA\u5206\u81EA\u8EAB\u3078\u306E\u5199\u50CF\u306E\
     \u5408\u6210 (\u5909\u63DB\u30E2\u30CE\u30A4\u30C9)\n *\n * \u8981\u7D20 f \u306F\
     \ f[x] \u304C x \u306E\u884C\u304D\u5148\u3092\u8868\u3059 std::array<int, N>\u3002\
-    \u5168\u5358\u5C04\u3067\u306A\u304F\u3066\u3088\u3044\n * op(f, g) = g\u2218\
-    f (\u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\u3059\u308B)\u3002\u533A\u9593 [l,\
-    \ r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x)) \u3092\u8868\u3059\n * \u4F8B: SegTree<monoid::Mapping<3>>\
-    \ seg(n); seg.set(i, {0, 2, 1});\n * swap(i, j) \u3067 i \u3068 j \u3092\u5165\
-    \u308C\u66FF\u3048\u308B\u5199\u50CF\u3092\u4F5C\u308C\u308B\n *\n * @tparam N\
-    \ \u5199\u50CF\u306E\u5B9A\u7FA9\u57DF\u30FB\u5024\u57DF\u306E\u5927\u304D\u3055\
-    \n */\ntemplate <std::size_t N>\nstruct Mapping {\n    using S = std::array<int,\
-    \ N>;\n    static constexpr S op(const S& f, const S& g) {\n        S h{};\n \
-    \       for (std::size_t x = 0; x < N; x++) h[x] = g[f[x]];\n        return h;\n\
-    \    }\n    static constexpr S e() {\n        S h{};\n        for (std::size_t\
-    \ x = 0; x < N; x++) h[x] = static_cast<int>(x);\n        return h;\n    }\n \
-    \   // i \u3068 j \u3092\u5165\u308C\u66FF\u3048\u3001\u307B\u304B\u306F\u52D5\
-    \u304B\u3055\u306A\u3044\u5199\u50CF (\u4E92\u63DB)\n    static constexpr S swap(int\
-    \ i, int j) {\n        S h = e();\n        h[i] = j;\n        h[j] = i;\n    \
-    \    return h;\n    }\n};\n\n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\
-    \u5408\u6210\n * op(f, g) = g\u2218f (\u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\
-    \u3059\u308B)\n * \u533A\u9593 [l, r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x)) \u3092\
-    \u8868\u3059\n */\ntemplate <typename T>\nstruct Composite {\n    using S = Affine<T>;\n\
-    \    static constexpr S op(const S& f, const S& g) { return {g.a * f.a, g.a *\
-    \ f.b + g.b}; }\n    static constexpr S e() { return {T(1), T(0)}; }\n};\n\n/**\n\
+    \u5168\u5358\u5C04\u3067\u306A\u304F\u3066\u3088\u3044\n * op(f, g) = f\u2218\
+    g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B)\u3002\u533A\u9593 [l, r) \u306E\
+    \u7A4D\u306F f_l(...f_{r-1}(x)) \u3092\u8868\u3059\n * \u5DE6\u304B\u3089\u9806\
+    \u306B\u9069\u7528\u3057\u305F\u3044\u5834\u5408\u306F monoid::Reverse<monoid::Mapping<N>>\
+    \ \u3092\u4F7F\u3046\n * \u4F8B: SegTree<monoid::Mapping<3>> seg(n); seg.set(i,\
+    \ {0, 2, 1});\n * swap(i, j) \u3067 i \u3068 j \u3092\u5165\u308C\u66FF\u3048\u308B\
+    \u5199\u50CF\u3092\u4F5C\u308C\u308B\n *\n * @tparam N \u5199\u50CF\u306E\u5B9A\
+    \u7FA9\u57DF\u30FB\u5024\u57DF\u306E\u5927\u304D\u3055\n */\ntemplate <std::size_t\
+    \ N>\nstruct Mapping {\n    using S = std::array<int, N>;\n    static constexpr\
+    \ S op(const S& f, const S& g) {\n        S h{};\n        for (std::size_t x =\
+    \ 0; x < N; x++) h[x] = f[g[x]];\n        return h;\n    }\n    static constexpr\
+    \ S e() {\n        S h{};\n        for (std::size_t x = 0; x < N; x++) h[x] =\
+    \ static_cast<int>(x);\n        return h;\n    }\n    // i \u3068 j \u3092\u5165\
+    \u308C\u66FF\u3048\u3001\u307B\u304B\u306F\u52D5\u304B\u3055\u306A\u3044\u5199\
+    \u50CF (\u4E92\u63DB)\n    static constexpr S swap(int i, int j) {\n        S\
+    \ h = e();\n        h[i] = j;\n        h[j] = i;\n        return h;\n    }\n};\n\
+    \n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\u5408\u6210\n * op(f, g)\
+    \ = f\u2218g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B)\n * \u533A\u9593 [l,\
+    \ r) \u306E\u7A4D\u306F f_l(...f_{r-1}(x)) \u3092\u8868\u3059\n * \u5DE6\u304B\
+    \u3089\u9806\u306B\u9069\u7528\u3057\u305F\u3044 (f_{r-1}(...f_l(x)) \u3092\u6C42\
+    \u3081\u305F\u3044) \u5834\u5408\u306F monoid::Reverse<monoid::Composite<T>> \u3092\
+    \u4F7F\u3046\n */\ntemplate <typename T>\nstruct Composite {\n    using S = Affine<T>;\n\
+    \    static constexpr S op(const S& f, const S& g) { return {f.a * g.a, f.a *\
+    \ g.b + f.b}; }\n    static constexpr S e() { return {T(1), T(0)}; }\n};\n\n/**\n\
     \ * @brief \u62EC\u5F27\u5217 \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\
     \u3044 ')' \u3068 '(' \u306E\u500B\u6570\n */\nstruct Parenthesis {\n    struct\
     \ S {\n        long long close; // \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\
@@ -156,50 +160,57 @@ data:
     \ S = std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n\
     \        if(a.first < b.first) return b;\n        if(b.first < a.first) return\
     \ a;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
-    \ S e() { return {std::numeric_limits<T>::lowest(), U(0)}; }\n};\n\n} // namespace\
-    \ monoid\n\n/**\n * @brief \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3068\
-    \u5358\u4F4D\u5143\u304B\u3089\u5B9F\u884C\u6642\u306B\u4F5C\u308B\u30E2\u30CE\
-    \u30A4\u30C9\n * \u30E9\u30E0\u30C0\u5F0F\u3092\u4F7F\u3048\u308B\n *\n * \u4F8B\
-    : SegTree seg(v, Monoid([](int a, int b) { return std::max(a, b); }, -1));\n *\n\
-    \ * @tparam T \u8981\u7D20\u306E\u578B\n * @tparam Op \u7A4D\u306E\u95A2\u6570\
+    \ S e() { return {std::numeric_limits<T>::lowest(), U(0)}; }\n};\n\n/**\n * @brief\
+    \ \u7A4D\u306E\u9806\u5E8F\u3092\u9006\u306B\u3057\u305F\u30E2\u30CE\u30A4\u30C9\
+    \ op(a, b) = M::op(b, a)\n *\n * \u4F8B: SegTree<monoid::Reverse<monoid::Composite<mint>>>\
+    \ seg(v); \u306E\u533A\u9593 [l, r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x))\n *\n\
+    \ * @tparam M \u3082\u3068\u306E\u30E2\u30CE\u30A4\u30C9\n */\ntemplate <typename\
+    \ M>\nstruct Reverse {\n    using S = typename M::S;\n    M m;\n    constexpr\
+    \ Reverse() : m() {}\n    constexpr explicit Reverse(M m) : m(std::move(m)) {}\n\
+    \    constexpr S op(const S& a, const S& b) const { return m.op(b, a); }\n   \
+    \ constexpr S e() const { return m.e(); }\n};\n\n} // namespace monoid\n\n/**\n\
+    \ * @brief \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3068\u5358\u4F4D\u5143\
+    \u304B\u3089\u5B9F\u884C\u6642\u306B\u4F5C\u308B\u30E2\u30CE\u30A4\u30C9\n * \u30E9\
+    \u30E0\u30C0\u5F0F\u3092\u4F7F\u3048\u308B\n *\n * \u4F8B: SegTree seg(v, Monoid([](int\
+    \ a, int b) { return std::max(a, b); }, -1));\n *\n * @tparam T \u8981\u7D20\u306E\
+    \u578B\n * @tparam Op \u7A4D\u306E\u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\
+    \u306E\u578B\n */\ntemplate <typename T, typename Op>\nstruct Monoid {\n    using\
+    \ S = T;\n    Op op_object;\n    S identity;\n    Monoid() = default;\n    constexpr\
+    \ Monoid(Op op, const S& e) : op_object(std::move(op)), identity(e) {}\n    constexpr\
+    \ S op(const S& a, const S& b) const { return op_object(a, b); }\n    constexpr\
+    \ S e() const { return identity; }\n};\ntemplate <typename Op, typename T>\nMonoid(Op,\
+    \ T) -> Monoid<T, Op>;\n#line 15 \"src/algebra/group.hpp\"\n\nnamespace group\
+    \ {\n\n/**\n * @brief \u52A0\u6CD5\u7FA4\n */\ntemplate <typename T>\nstruct Sum\
+    \ : monoid::Sum<T> {\n    using S = T;\n    static constexpr S inv(const S& a)\
+    \ { return -a; }\n};\n\n/**\n * @brief \u4E57\u6CD5\u7FA4 (0\u3092\u542B\u307E\
+    \u306A\u3044\u4F53\u306E\u5143\u306A\u3069)\n */\ntemplate <typename T>\nstruct\
+    \ Prod : monoid::Prod<T> {\n    using S = T;\n    static constexpr S inv(const\
+    \ S& a) { return S(1) / a; }\n};\n\n/**\n * @brief \u6392\u4ED6\u7684\u8AD6\u7406\
+    \u548C\n */\ntemplate <typename T>\nstruct Xor : monoid::Xor<T> {\n    using S\
+    \ = T;\n    static constexpr S inv(const S& a) { return a; }\n};\n\n/**\n * @brief\
+    \ {0, 1, ..., N-1} \u306E\u7F6E\u63DB (\u5168\u5358\u5C04) \u306E\u5408\u6210\n\
+    \ *\n * monoid::Mapping<N> \u306B\u9006\u7F6E\u63DB\u3092\u52A0\u3048\u305F\u3082\
+    \u306E\u3002\u8981\u7D20\u306F\u7F6E\u63DB\u3067\u3042\u308B\u3053\u3068\n * op(f,\
+    \ g) = f\u2218g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B)\n *\n * @tparam\
+    \ N \u7F6E\u63DB\u3059\u308B\u8981\u7D20\u306E\u500B\u6570\n */\ntemplate <std::size_t\
+    \ N>\nstruct Permutation : monoid::Mapping<N> {\n    using S = std::array<int,\
+    \ N>;\n    static constexpr S inv(const S& f) {\n        S h{};\n        for (std::size_t\
+    \ x = 0; x < N; x++) h[f[x]] = static_cast<int>(x);\n        return h;\n    }\n\
+    };\n\n} // namespace group\n\n/**\n * @brief \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\
+    \u30AF\u30C8\u3068\u5358\u4F4D\u5143\u304B\u3089\u5B9F\u884C\u6642\u306B\u4F5C\
+    \u308B\u7FA4\n * \u30E9\u30E0\u30C0\u5F0F\u3092\u4F7F\u3048\u308B\n *\n * @tparam\
+    \ T \u8981\u7D20\u306E\u578B\n * @tparam Op \u7A4D\u306E\u95A2\u6570\u30AA\u30D6\
+    \u30B8\u30A7\u30AF\u30C8\u306E\u578B\n * @tparam Inv \u9006\u5143\u306E\u95A2\u6570\
     \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306E\u578B\n */\ntemplate <typename T, typename\
-    \ Op>\nstruct Monoid {\n    using S = T;\n    Op op_object;\n    S identity;\n\
-    \    Monoid() = default;\n    constexpr Monoid(Op op, const S& e) : op_object(std::move(op)),\
-    \ identity(e) {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a,\
-    \ b); }\n    constexpr S e() const { return identity; }\n};\ntemplate <typename\
-    \ Op, typename T>\nMonoid(Op, T) -> Monoid<T, Op>;\n#line 15 \"src/algebra/group.hpp\"\
-    \n\nnamespace group {\n\n/**\n * @brief \u52A0\u6CD5\u7FA4\n */\ntemplate <typename\
-    \ T>\nstruct Sum : monoid::Sum<T> {\n    using S = T;\n    static constexpr S\
-    \ inv(const S& a) { return -a; }\n};\n\n/**\n * @brief \u4E57\u6CD5\u7FA4 (0\u3092\
-    \u542B\u307E\u306A\u3044\u4F53\u306E\u5143\u306A\u3069)\n */\ntemplate <typename\
-    \ T>\nstruct Prod : monoid::Prod<T> {\n    using S = T;\n    static constexpr\
-    \ S inv(const S& a) { return S(1) / a; }\n};\n\n/**\n * @brief \u6392\u4ED6\u7684\
-    \u8AD6\u7406\u548C\n */\ntemplate <typename T>\nstruct Xor : monoid::Xor<T> {\n\
-    \    using S = T;\n    static constexpr S inv(const S& a) { return a; }\n};\n\n\
-    /**\n * @brief {0, 1, ..., N-1} \u306E\u7F6E\u63DB (\u5168\u5358\u5C04) \u306E\
-    \u5408\u6210\n *\n * monoid::Mapping<N> \u306B\u9006\u7F6E\u63DB\u3092\u52A0\u3048\
-    \u305F\u3082\u306E\u3002\u8981\u7D20\u306F\u7F6E\u63DB\u3067\u3042\u308B\u3053\
-    \u3068\n * op(f, g) = g\u2218f (\u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\u3059\
-    \u308B)\n *\n * @tparam N \u7F6E\u63DB\u3059\u308B\u8981\u7D20\u306E\u500B\u6570\
-    \n */\ntemplate <std::size_t N>\nstruct Permutation : monoid::Mapping<N> {\n \
-    \   using S = std::array<int, N>;\n    static constexpr S inv(const S& f) {\n\
-    \        S h{};\n        for (std::size_t x = 0; x < N; x++) h[f[x]] = static_cast<int>(x);\n\
-    \        return h;\n    }\n};\n\n} // namespace group\n\n/**\n * @brief \u95A2\
-    \u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3068\u5358\u4F4D\u5143\u304B\u3089\
-    \u5B9F\u884C\u6642\u306B\u4F5C\u308B\u7FA4\n * \u30E9\u30E0\u30C0\u5F0F\u3092\u4F7F\
-    \u3048\u308B\n *\n * @tparam T \u8981\u7D20\u306E\u578B\n * @tparam Op \u7A4D\u306E\
-    \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306E\u578B\n * @tparam Inv \u9006\
-    \u5143\u306E\u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306E\u578B\n */\n\
-    template <typename T, typename Op, typename Inv>\nstruct Group {\n    using S\
-    \ = T;\n    Op op_object;\n    S identity;\n    Inv inv_object;\n    Group() =\
-    \ default;\n    constexpr Group(Op op, const S& e, Inv inv) : op_object(std::move(op)),\
-    \ identity(e), inv_object(std::move(inv)) {}\n    constexpr S op(const S& a, const\
-    \ S& b) const { return op_object(a, b); }\n    constexpr S e() const { return\
-    \ identity; }\n    constexpr S inv(const S& a) const { return inv_object(a); }\n\
-    };\ntemplate <typename Op, typename T, typename Inv>\nGroup(Op, T, Inv) -> Group<T,\
-    \ Op, Inv>;\n#line 2 \"src/data_structures/potentialized-unionfind.hpp\"\n\n/**\n\
-    \ * @file potentialized-unionfind.hpp\n * @brief \u30DD\u30C6\u30F3\u30B7\u30E3\
-    \u30EB\u4ED8\u304DUnionFind\n */\n#line 8 \"src/data_structures/potentialized-unionfind.hpp\"\
+    \ Op, typename Inv>\nstruct Group {\n    using S = T;\n    Op op_object;\n   \
+    \ S identity;\n    Inv inv_object;\n    Group() = default;\n    constexpr Group(Op\
+    \ op, const S& e, Inv inv) : op_object(std::move(op)), identity(e), inv_object(std::move(inv))\
+    \ {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a, b);\
+    \ }\n    constexpr S e() const { return identity; }\n    constexpr S inv(const\
+    \ S& a) const { return inv_object(a); }\n};\ntemplate <typename Op, typename T,\
+    \ typename Inv>\nGroup(Op, T, Inv) -> Group<T, Op, Inv>;\n#line 2 \"src/data_structures/potentialized-unionfind.hpp\"\
+    \n\n/**\n * @file potentialized-unionfind.hpp\n * @brief \u30DD\u30C6\u30F3\u30B7\
+    \u30E3\u30EB\u4ED8\u304DUnionFind\n */\n#line 8 \"src/data_structures/potentialized-unionfind.hpp\"\
     \n#include <cassert>\n#include <stack>\n#line 2 \"src/data_structures/unionfind.hpp\"\
     \n\n/**\n * @file unionfind.hpp\n * @brief UnionFind\n */\n\n#line 12 \"src/data_structures/unionfind.hpp\"\
     \n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u5BFE\u3057\u3066\u300C\
@@ -419,9 +430,10 @@ data:
     \ N>\nconstexpr bool equal(const std::array<int, N>& a, const std::array<int,\
     \ N>& b) {\n    for (std::size_t i = 0; i < N; i++) {\n        if (a[i] != b[i])\
     \ return false;\n    }\n    return true;\n}\n// constexpr \u3067\u4F7F\u3048\u308B\
-    \u3053\u3068: (0, 2, 1) \u3092\u9069\u7528\u3057\u3066\u304B\u3089 (1, 1, 0) \u3092\
-    \u9069\u7528\u3059\u308B\u3068 (1, 0, 1)\nstatic_assert(equal(monoid::Mapping<3>::op({0,\
-    \ 2, 1}, {1, 1, 0}), {1, 0, 1}));\nstatic_assert(equal(monoid::Mapping<3>::e(),\
+    \u3053\u3068: op(f, g) = f\u2218g\u3002(1, 1, 0) \u3092\u9069\u7528\u3057\u3066\
+    \u304B\u3089 (0, 2, 1) \u3092\u9069\u7528\u3059\u308B\u3068 (2, 2, 0)\nstatic_assert(equal(monoid::Mapping<3>::op({0,\
+    \ 2, 1}, {1, 1, 0}), {2, 2, 0}));\nstatic_assert(equal(monoid::Reverse<monoid::Mapping<3>>().op({1,\
+    \ 1, 0}, {0, 2, 1}), {2, 2, 0}));\nstatic_assert(equal(monoid::Mapping<3>::e(),\
     \ {0, 1, 2}));\nstatic_assert(equal(group::Permutation<3>::inv({1, 2, 0}), {2,\
     \ 0, 1}));\nstatic_assert(equal(monoid::Mapping<3>::swap(1, 2), {0, 2, 1}));\n\
     static_assert(equal(monoid::Mapping<4>::swap(3, 0), {3, 1, 2, 0}));\nstatic_assert(equal(monoid::Mapping<3>::swap(1,\
@@ -431,7 +443,7 @@ data:
     \      std::iota(f.begin(), f.end(), 0);\n        std::shuffle(f.begin(), f.end(),\
     \ rng);\n    } else {\n        for (auto& v : f) v = rng() % N;\n    }\n    return\
     \ f;\n}\n\n// SegTree<monoid::Mapping<N>> \u306E\u533A\u9593\u7A4D\u304C\u3001\
-    \u533A\u9593\u306E\u5199\u50CF\u3092\u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\
+    \u533A\u9593\u306E\u5199\u50CF\u3092\u53F3\u304B\u3089\u9806\u306B\u9069\u7528\
     \u3057\u305F\u7D50\u679C\u3068\u4E00\u81F4\u3059\u308B\u304B\ntemplate <std::size_t\
     \ N>\nbool check_segtree(std::mt19937& rng) {\n    using S = std::array<int, N>;\n\
     \    for (int rep = 0; rep < 200; rep++) {\n        int n = rng() % 20 + 1;\n\
@@ -443,7 +455,7 @@ data:
     \ % (n + 1), r = rng() % (n + 1);\n                if (l > r) std::swap(l, r);\n\
     \                S got = seg.prod(l, r);\n                for (int x = 0; x <\
     \ (int)N; x++) {\n                    int y = x;\n                    for (int\
-    \ i = l; i < r; i++) y = a[i][y];\n                    if (got[x] != y) return\
+    \ i = r - 1; i >= l; i--) y = a[i][y];\n                    if (got[x] != y) return\
     \ false;\n                }\n            }\n        }\n    }\n    return true;\n\
     }\n\n// group::Permutation \u306E\u9006\u7F6E\u63DB\u3068\u3001\u975E\u53EF\u63DB\
     \u306A\u7FA4\u3068\u3057\u3066 PotentializedUnionFind \u306B\u4E57\u305B\u305F\
@@ -491,19 +503,20 @@ data:
     \ bool equal(const std::array<int, N>& a, const std::array<int, N>& b) {\n   \
     \ for (std::size_t i = 0; i < N; i++) {\n        if (a[i] != b[i]) return false;\n\
     \    }\n    return true;\n}\n// constexpr \u3067\u4F7F\u3048\u308B\u3053\u3068\
-    : (0, 2, 1) \u3092\u9069\u7528\u3057\u3066\u304B\u3089 (1, 1, 0) \u3092\u9069\u7528\
-    \u3059\u308B\u3068 (1, 0, 1)\nstatic_assert(equal(monoid::Mapping<3>::op({0, 2,\
-    \ 1}, {1, 1, 0}), {1, 0, 1}));\nstatic_assert(equal(monoid::Mapping<3>::e(), {0,\
-    \ 1, 2}));\nstatic_assert(equal(group::Permutation<3>::inv({1, 2, 0}), {2, 0,\
-    \ 1}));\nstatic_assert(equal(monoid::Mapping<3>::swap(1, 2), {0, 2, 1}));\nstatic_assert(equal(monoid::Mapping<4>::swap(3,\
-    \ 0), {3, 1, 2, 0}));\nstatic_assert(equal(monoid::Mapping<3>::swap(1, 1), {0,\
-    \ 1, 2}));\nstatic_assert(equal(group::Permutation<3>::swap(0, 1), {1, 0, 2}));\n\
-    \ntemplate <std::size_t N>\nstd::array<int, N> random_mapping(std::mt19937& rng,\
-    \ bool bijective) {\n    std::array<int, N> f;\n    if (bijective) {\n       \
-    \ std::iota(f.begin(), f.end(), 0);\n        std::shuffle(f.begin(), f.end(),\
+    : op(f, g) = f\u2218g\u3002(1, 1, 0) \u3092\u9069\u7528\u3057\u3066\u304B\u3089\
+    \ (0, 2, 1) \u3092\u9069\u7528\u3059\u308B\u3068 (2, 2, 0)\nstatic_assert(equal(monoid::Mapping<3>::op({0,\
+    \ 2, 1}, {1, 1, 0}), {2, 2, 0}));\nstatic_assert(equal(monoid::Reverse<monoid::Mapping<3>>().op({1,\
+    \ 1, 0}, {0, 2, 1}), {2, 2, 0}));\nstatic_assert(equal(monoid::Mapping<3>::e(),\
+    \ {0, 1, 2}));\nstatic_assert(equal(group::Permutation<3>::inv({1, 2, 0}), {2,\
+    \ 0, 1}));\nstatic_assert(equal(monoid::Mapping<3>::swap(1, 2), {0, 2, 1}));\n\
+    static_assert(equal(monoid::Mapping<4>::swap(3, 0), {3, 1, 2, 0}));\nstatic_assert(equal(monoid::Mapping<3>::swap(1,\
+    \ 1), {0, 1, 2}));\nstatic_assert(equal(group::Permutation<3>::swap(0, 1), {1,\
+    \ 0, 2}));\n\ntemplate <std::size_t N>\nstd::array<int, N> random_mapping(std::mt19937&\
+    \ rng, bool bijective) {\n    std::array<int, N> f;\n    if (bijective) {\n  \
+    \      std::iota(f.begin(), f.end(), 0);\n        std::shuffle(f.begin(), f.end(),\
     \ rng);\n    } else {\n        for (auto& v : f) v = rng() % N;\n    }\n    return\
     \ f;\n}\n\n// SegTree<monoid::Mapping<N>> \u306E\u533A\u9593\u7A4D\u304C\u3001\
-    \u533A\u9593\u306E\u5199\u50CF\u3092\u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\
+    \u533A\u9593\u306E\u5199\u50CF\u3092\u53F3\u304B\u3089\u9806\u306B\u9069\u7528\
     \u3057\u305F\u7D50\u679C\u3068\u4E00\u81F4\u3059\u308B\u304B\ntemplate <std::size_t\
     \ N>\nbool check_segtree(std::mt19937& rng) {\n    using S = std::array<int, N>;\n\
     \    for (int rep = 0; rep < 200; rep++) {\n        int n = rng() % 20 + 1;\n\
@@ -515,7 +528,7 @@ data:
     \ % (n + 1), r = rng() % (n + 1);\n                if (l > r) std::swap(l, r);\n\
     \                S got = seg.prod(l, r);\n                for (int x = 0; x <\
     \ (int)N; x++) {\n                    int y = x;\n                    for (int\
-    \ i = l; i < r; i++) y = a[i][y];\n                    if (got[x] != y) return\
+    \ i = r - 1; i >= l; i--) y = a[i][y];\n                    if (got[x] != y) return\
     \ false;\n                }\n            }\n        }\n    }\n    return true;\n\
     }\n\n// group::Permutation \u306E\u9006\u7F6E\u63DB\u3068\u3001\u975E\u53EF\u63DB\
     \u306A\u7FA4\u3068\u3057\u3066 PotentializedUnionFind \u306B\u4E57\u305B\u305F\
@@ -558,7 +571,7 @@ data:
   isVerificationFile: true
   path: test/unittest/mapping.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 12:42:03+09:00'
+  timestamp: '2026-10-14 06:59:39+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/mapping.test.cpp

@@ -337,7 +337,7 @@ data:
     \ value) noexcept\n        : m_value{ static_cast<value_type>(value % Modint::mod())\
     \ } {}\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092\u53D6\
     \u5F97\u3057\u307E\u3059\u3002\n    /// @return \u4FDD\u6301\u3057\u3066\u3044\
-    \u308B\u5024\n    [[nodiscard]]\n    constexpr value_type value() const noexcept\
+    \u308B\u5024\n    [[nodiscard]]\n    constexpr value_type val() const noexcept\
     \ {\n        return m_value;\n    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\
     \u3044\u308B\u5024\u3092\u30A4\u30F3\u30AF\u30EA\u30E1\u30F3\u30C8\u3057\u3066\
     \u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @return @c *this\n\
@@ -459,7 +459,7 @@ data:
     \u30C8\u30EA\u30FC\u30E0\n    /// @param x \u51FA\u529B\u3059\u308B\u30AA\u30D6\
     \u30B8\u30A7\u30AF\u30C8\n    /// @return @c os\n    template <class CharT, class\
     \ Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
-    \ Traits>& os, const Modint& x) {\n        os << x.value();\n        return os;\n\
+    \ Traits>& os, const Modint& x) {\n        os << x.val();\n        return os;\n\
     \    }\n\nprotected:\n    value_type m_value;\n};\n\n/// @brief \u30B3\u30F3\u30D1\
     \u30A4\u30EB\u6642\u306B\u6CD5\u304C\u6C7A\u307E\u308B\u3068\u304D\u3001\u56DB\
     \u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\
@@ -715,7 +715,7 @@ data:
   isVerificationFile: true
   path: test/unittest/matrix.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 12:42:03+09:00'
+  timestamp: '2026-10-14 07:01:49+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/matrix.test.cpp

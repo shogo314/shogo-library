@@ -87,19 +87,19 @@ data:
     \u6587\u5B57\u5217\u306E\u9577\u3055)\n     */\n    int depth(int v) const { return\
     \ nodes[v].depth; }\n    /**\n     * @brief \u30CE\u30FC\u30C9 v \u3092\u901A\u308B\
     \ (v \u306E\u6587\u5B57\u5217\u3092\u63A5\u982D\u8F9E\u306B\u6301\u3064) \u6587\
-    \u5B57\u5217\u306E\u500B\u6570\n     */\n    int prefix_count(int v) const { return\
-    \ nodes[v].prefix_cnt; }\n    /**\n     * @brief \u30CE\u30FC\u30C9 v \u3067\u7D42\
-    \u308F\u308B\u6587\u5B57\u5217\u306E\u500B\u6570\n     */\n    int word_count(int\
-    \ v) const { return nodes[v].word_cnt; }\n\n    /**\n     * @brief s \u306E\u63A5\
-    \u982D\u8F9E\u306E\u3046\u3061\u3001\u8FFD\u52A0\u3057\u305F\u6587\u5B57\u5217\
-    \u306E\u3069\u308C\u304B\u306E\u63A5\u982D\u8F9E\u306B\u3082\u306A\u3063\u3066\
-    \u3044\u308B\u3082\u306E\u306E\u6700\u9577\u306E\u9577\u3055 O(|s|)\n     * \u8FFD\
-    \u52A0\u3057\u305F\u6587\u5B57\u5217 (\u53D6\u308A\u9664\u3044\u305F\u3082\u306E\
-    \u306F\u9664\u304F) \u306E\u3069\u308C\u304B\u3068\u306E\u6700\u9577\u5171\u901A\
-    \u63A5\u982D\u8F9E\u306E\u9577\u3055\u306E\u6700\u5927\u5024\u306B\u306A\u308B\
-    \n     */\n    template <typename R>\n    int longest_common_prefix(const R& s)\
-    \ const {\n        int v = 0, len = 0;\n        for (auto c : s) {\n         \
-    \   int u = nodes[v].next[index(c)];\n            if (u == -1 || nodes[u].prefix_cnt\
+    \u5B57\u5217\u306E\u500B\u6570\n     */\n    int count_prefix_at(int v) const\
+    \ { return nodes[v].prefix_cnt; }\n    /**\n     * @brief \u30CE\u30FC\u30C9 v\
+    \ \u3067\u7D42\u308F\u308B\u6587\u5B57\u5217\u306E\u500B\u6570\n     */\n    int\
+    \ count_at(int v) const { return nodes[v].word_cnt; }\n\n    /**\n     * @brief\
+    \ s \u306E\u63A5\u982D\u8F9E\u306E\u3046\u3061\u3001\u8FFD\u52A0\u3057\u305F\u6587\
+    \u5B57\u5217\u306E\u3069\u308C\u304B\u306E\u63A5\u982D\u8F9E\u306B\u3082\u306A\
+    \u3063\u3066\u3044\u308B\u3082\u306E\u306E\u6700\u9577\u306E\u9577\u3055 O(|s|)\n\
+    \     * \u8FFD\u52A0\u3057\u305F\u6587\u5B57\u5217 (\u53D6\u308A\u9664\u3044\u305F\
+    \u3082\u306E\u306F\u9664\u304F) \u306E\u3069\u308C\u304B\u3068\u306E\u6700\u9577\
+    \u5171\u901A\u63A5\u982D\u8F9E\u306E\u9577\u3055\u306E\u6700\u5927\u5024\u306B\
+    \u306A\u308B\n     */\n    template <typename R>\n    int longest_common_prefix(const\
+    \ R& s) const {\n        int v = 0, len = 0;\n        for (auto c : s) {\n   \
+    \         int u = nodes[v].next[index(c)];\n            if (u == -1 || nodes[u].prefix_cnt\
     \ == 0) break;\n            v = u;\n            len++;\n        }\n        return\
     \ len;\n    }\n};\n#line 14 \"test/unittest/trie.test.cpp\"\n\nint main() {\n\
     \    std::mt19937 rng(314);\n    bool ok = true;\n    auto random_string = [&](int\
@@ -128,9 +128,9 @@ data:
     \            int v = trie.find(t);\n            ok = ok && (v != -1) == (node_of.count(t)\
     \ > 0);\n            ok = ok && trie.count(t) == cnt && trie.count_prefix(t) ==\
     \ pre && trie.total() == total;\n            ok = ok && trie.longest_common_prefix(t)\
-    \ == lcp;\n            if (v != -1) {\n                ok = ok && trie.word_count(v)\
-    \ == cnt && trie.prefix_count(v) == pre && trie.depth(v) == (int)t.size();\n \
-    \           }\n        }\n        // \u30CE\u30FC\u30C9\u306E\u6570\u3068\u3001\
+    \ == lcp;\n            if (v != -1) {\n                ok = ok && trie.count_at(v)\
+    \ == cnt && trie.count_prefix_at(v) == pre && trie.depth(v) == (int)t.size();\n\
+    \            }\n        }\n        // \u30CE\u30FC\u30C9\u306E\u6570\u3068\u3001\
     \u89AA\u5B50\u30FB\u6DF1\u3055\u306E\u95A2\u4FC2\n        ok = ok && trie.size()\
     \ == (int)node_of.size();\n        for (auto& [u, x] : node_of) {\n          \
     \  int v = trie.find(u);\n            if (u.empty()) {\n                ok = ok\
@@ -143,7 +143,7 @@ data:
     \u5B57\u5217\u306E\u7D44\u306E\u500B\u6570\u306E\u548C\n    Trie<26, 'a'> trie;\n\
     \    std::vector<std::string> words = {\"ab\", \"abc\", \"arc\"};\n    for (auto&\
     \ w : words) trie.insert(w);\n    long long sum = 0;\n    for (int v = 1; v <\
-    \ trie.size(); v++) sum += (long long)trie.prefix_count(v) * (trie.prefix_count(v)\
+    \ trie.size(); v++) sum += (long long)trie.count_prefix_at(v) * (trie.count_prefix_at(v)\
     \ - 1) / 2;\n    ok = ok && sum == 4;  // lcp(ab, abc) = 2, lcp(ab, arc) = 1,\
     \ lcp(abc, arc) = 1\n    // vector<int> \u3082\u8FFD\u52A0\u3067\u304D\u308B\n\
     \    Trie<10, 0> digits;\n    digits.insert(std::vector<int>{3, 1, 4});\n    ok\
@@ -184,9 +184,9 @@ data:
     \            int v = trie.find(t);\n            ok = ok && (v != -1) == (node_of.count(t)\
     \ > 0);\n            ok = ok && trie.count(t) == cnt && trie.count_prefix(t) ==\
     \ pre && trie.total() == total;\n            ok = ok && trie.longest_common_prefix(t)\
-    \ == lcp;\n            if (v != -1) {\n                ok = ok && trie.word_count(v)\
-    \ == cnt && trie.prefix_count(v) == pre && trie.depth(v) == (int)t.size();\n \
-    \           }\n        }\n        // \u30CE\u30FC\u30C9\u306E\u6570\u3068\u3001\
+    \ == lcp;\n            if (v != -1) {\n                ok = ok && trie.count_at(v)\
+    \ == cnt && trie.count_prefix_at(v) == pre && trie.depth(v) == (int)t.size();\n\
+    \            }\n        }\n        // \u30CE\u30FC\u30C9\u306E\u6570\u3068\u3001\
     \u89AA\u5B50\u30FB\u6DF1\u3055\u306E\u95A2\u4FC2\n        ok = ok && trie.size()\
     \ == (int)node_of.size();\n        for (auto& [u, x] : node_of) {\n          \
     \  int v = trie.find(u);\n            if (u.empty()) {\n                ok = ok\
@@ -199,7 +199,7 @@ data:
     \u5B57\u5217\u306E\u7D44\u306E\u500B\u6570\u306E\u548C\n    Trie<26, 'a'> trie;\n\
     \    std::vector<std::string> words = {\"ab\", \"abc\", \"arc\"};\n    for (auto&\
     \ w : words) trie.insert(w);\n    long long sum = 0;\n    for (int v = 1; v <\
-    \ trie.size(); v++) sum += (long long)trie.prefix_count(v) * (trie.prefix_count(v)\
+    \ trie.size(); v++) sum += (long long)trie.count_prefix_at(v) * (trie.count_prefix_at(v)\
     \ - 1) / 2;\n    ok = ok && sum == 4;  // lcp(ab, abc) = 2, lcp(ab, arc) = 1,\
     \ lcp(abc, arc) = 1\n    // vector<int> \u3082\u8FFD\u52A0\u3067\u304D\u308B\n\
     \    Trie<10, 0> digits;\n    digits.insert(std::vector<int>{3, 1, 4});\n    ok\
@@ -211,7 +211,7 @@ data:
   isVerificationFile: true
   path: test/unittest/trie.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 01:43:22+09:00'
+  timestamp: '2026-10-14 06:59:14+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/trie.test.cpp

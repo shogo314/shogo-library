@@ -68,61 +68,64 @@ data:
     \ m(0), g(n) {}\n    /**\n     * @brief \u7121\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\
     \u308B\n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n     * @param\
     \ w \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n    void add_edge(int\
-    \ u, int v, Cost w = 1) {\n        g[u].push_back({u, v, w, m});\n        g[v].push_back({v,\
-    \ u, w, m++});\n    }\n    /**\n     * @brief \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\
-    \u3059\u308B\n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n   \
-    \  * @param w \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n  \
-    \  void add_directed_edge(int u, int v, Cost w = 1) {\n        g[u].push_back({u,\
-    \ v, w, m++});\n    }\n    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\
-    \u6E96\u5165\u529B\u304B\u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\
-    \u308B\n     * @param m \u8FBA\u306E\u6570\n     * @param padding \u9802\u70B9\
-    \u756A\u53F7\u3092\u5165\u529B\u304B\u3089\u3044\u304F\u3064\u305A\u3089\u3059\
-    \u304B \u7701\u7565\u3057\u305F\u3089-1\n     * @param weighted \u8FBA\u306E\u91CD\
-    \u307F\u304C\u5165\u529B\u3055\u308C\u308B\u304B \u7701\u7565\u3057\u305F\u3089\
-    false\u3068\u306A\u308A\u3001\u91CD\u307F1\u3067\u8FBA\u304C\u8FFD\u52A0\u3055\
-    \u308C\u308B\n     * @param directed \u6709\u5411\u30B0\u30E9\u30D5\u304B\u3069\
-    \u3046\u304B \u7701\u7565\u3057\u305F\u3089false\n     */\n    void read(int m,\
-    \ int padding = -1, bool weighted = false, bool directed = false) {\n        for\
-    \ (int i = 0; i < m; i++) {\n            int u, v;\n            std::cin >> u\
-    \ >> v;\n            u += padding, v += padding;\n            Cost c(1);\n   \
-    \         if (weighted)\n                std::cin >> c;\n            if (directed)\n\
-    \                add_directed_edge(u, v, c);\n            else\n             \
-    \   add_edge(u, v, c);\n        }\n    }\n    /**\n     * @brief \u3042\u308B\u9802\
-    \u70B9\u304B\u3089\u51FA\u308B\u8FBA\u3092\u5217\u6319\u3059\u308B\n     * @param\
-    \ v \u9802\u70B9\u756A\u53F7\n     * @return std::vector<Edge>& v\u304B\u3089\u51FA\
-    \u308B\u8FBA\u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<Edge> &operator[](int\
-    \ v) {\n        return g[v];\n    }\n    /**\n     * @brief \u3042\u308B\u9802\
-    \u70B9\u304B\u3089\u51FA\u308B\u8FBA\u3092\u5217\u6319\u3059\u308B\n     * @param\
-    \ v \u9802\u70B9\u756A\u53F7\n     * @return const std::vector<Edge>& v\u304B\u3089\
-    \u51FA\u308B\u8FBA\u306E\u30EA\u30B9\u30C8\n     */\n    const std::vector<Edge>\
-    \ &operator[](int v) const {\n        return g[v];\n    }\n    /**\n     * @brief\
-    \ \u8FBA\u306E\u30EA\u30B9\u30C8\n     * @return std::vector<Edge> \u8FBA\u306E\
-    \u30EA\u30B9\u30C8(id\u306E\u6607\u9806)\n     *\n     * \u7121\u5411\u8FBA\u306F\
-    \u4EE3\u8868\u3057\u30661\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\n  \
-    \   */\n    std::vector<Edge> edges() const {\n        std::vector<Edge> res(m);\n\
-    \        for (int i = 0; i < n; i++) {\n            for (auto &e : g[i]) {\n \
-    \               res[e.id] = e;\n            }\n        }\n        return res;\n\
+    \ u, int v, Cost w = 1) {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n\
+    \        g[u].push_back({u, v, w, m});\n        g[v].push_back({v, u, w, m++});\n\
+    \    }\n    /**\n     * @brief \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\
+    \n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n     * @param w\
+    \ \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n    void add_directed_edge(int\
+    \ u, int v, Cost w = 1) {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n\
+    \        g[u].push_back({u, v, w, m++});\n    }\n    /**\n     * @brief \u8FBA\
+    \u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\u529B\u304B\u3089\u53D7\u3051\u53D6\
+    \u3063\u3066\u8FFD\u52A0\u3059\u308B\n     * @param m \u8FBA\u306E\u6570\n   \
+    \  * @param padding \u9802\u70B9\u756A\u53F7\u3092\u5165\u529B\u304B\u3089\u3044\
+    \u304F\u3064\u305A\u3089\u3059\u304B \u7701\u7565\u3057\u305F\u3089-1\n     *\
+    \ @param weighted \u8FBA\u306E\u91CD\u307F\u304C\u5165\u529B\u3055\u308C\u308B\
+    \u304B \u7701\u7565\u3057\u305F\u3089false\u3068\u306A\u308A\u3001\u91CD\u307F\
+    1\u3067\u8FBA\u304C\u8FFD\u52A0\u3055\u308C\u308B\n     * @param directed \u6709\
+    \u5411\u30B0\u30E9\u30D5\u304B\u3069\u3046\u304B \u7701\u7565\u3057\u305F\u3089\
+    false\n     */\n    void read(int m, int padding = -1, bool weighted = false,\
+    \ bool directed = false) {\n        for (int i = 0; i < m; i++) {\n          \
+    \  int u, v;\n            std::cin >> u >> v;\n            u += padding, v +=\
+    \ padding;\n            Cost c(1);\n            if (weighted)\n              \
+    \  std::cin >> c;\n            if (directed)\n                add_directed_edge(u,\
+    \ v, c);\n            else\n                add_edge(u, v, c);\n        }\n  \
+    \  }\n    /**\n     * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u51FA\u308B\u8FBA\
+    \u3092\u5217\u6319\u3059\u308B\n     * @param v \u9802\u70B9\u756A\u53F7\n   \
+    \  * @return std::vector<Edge>& v\u304B\u3089\u51FA\u308B\u8FBA\u306E\u30EA\u30B9\
+    \u30C8\n     */\n    std::vector<Edge> &operator[](int v) {\n        return g[v];\n\
+    \    }\n    /**\n     * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u51FA\u308B\
+    \u8FBA\u3092\u5217\u6319\u3059\u308B\n     * @param v \u9802\u70B9\u756A\u53F7\
+    \n     * @return const std::vector<Edge>& v\u304B\u3089\u51FA\u308B\u8FBA\u306E\
+    \u30EA\u30B9\u30C8\n     */\n    const std::vector<Edge> &operator[](int v) const\
+    \ {\n        return g[v];\n    }\n    /**\n     * @brief \u8FBA\u306E\u30EA\u30B9\
+    \u30C8\n     * @return std::vector<Edge> \u8FBA\u306E\u30EA\u30B9\u30C8(id\u306E\
+    \u6607\u9806)\n     *\n     * \u7121\u5411\u8FBA\u306F\u4EE3\u8868\u3057\u3066\
+    1\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\n     */\n    std::vector<Edge>\
+    \ edges() const {\n        std::vector<Edge> res(m);\n        for (int i = 0;\
+    \ i < n; i++) {\n            for (auto &e : g[i]) {\n                res[e.id]\
+    \ = e;\n            }\n        }\n        return res;\n    }\n    /**\n     *\
+    \ @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\
+    \u77ED\u8DEF\n     *\n     * @param s \u59CB\u70B9\n     * @param weighted 1\u4EE5\
+    \u5916\u306E\u30B3\u30B9\u30C8\u306E\u8FBA\u304C\u5B58\u5728\u3059\u308B\u304B\
+    \ \u7701\u7565\u3059\u308B\u3068true\n     * @param inf \u30B3\u30B9\u30C8\u306E\
+    min\u306E\u5358\u4F4D\u5143 \u672A\u5230\u9054\u306E\u9802\u70B9\u3078\u306E\u8DDD\
+    \u96E2\u306Finf\u306B\u306A\u308B \u7701\u7565\u3059\u308B\u3068 std::numeric_limits<Cost>::max()\
+    \ / 4\n     * @return ShortestPath \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\
+    \u9577 (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\
+    \u306E\u76F4\u524D\u306E\u8FBA (prev)\n     */\n    ShortestPath shortest_path(int\
+    \ s, bool weighted = true, Cost inf = std::numeric_limits<Cost>::max() / 4) const\
+    \ {\n        assert(0 <= s && s < n);\n        if (weighted)\n            return\
+    \ shortest_path_dijkstra(s, inf);\n        return shortest_path_bfs(s, inf);\n\
     \    }\n    /**\n     * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\
     \u70B9\u3078\u306E\u6700\u77ED\u8DEF\n     *\n     * @param s \u59CB\u70B9\n \
-    \    * @param weighted 1\u4EE5\u5916\u306E\u30B3\u30B9\u30C8\u306E\u8FBA\u304C\
-    \u5B58\u5728\u3059\u308B\u304B \u7701\u7565\u3059\u308B\u3068true\n     * @param\
-    \ inf \u30B3\u30B9\u30C8\u306Emin\u306E\u5358\u4F4D\u5143 \u672A\u5230\u9054\u306E\
-    \u9802\u70B9\u3078\u306E\u8DDD\u96E2\u306Finf\u306B\u306A\u308B \u7701\u7565\u3059\
-    \u308B\u3068\n     * @return ShortestPath \u5404\u9802\u70B9\u3078\u306E\u6700\
-    \u77ED\u8DEF\u9577 (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\
-    \u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA (prev)\n     */\n    ShortestPath shortest_path(int\
-    \ s, bool weighted = true, Cost inf = -1) const {\n        if (weighted)\n   \
-    \         return shortest_path_dijkstra(s, inf);\n        return shortest_path_bfs(s,\
-    \ inf);\n    }\n    /**\n     * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\
-    \u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\n     *\n     * @param s \u59CB\u70B9\
-    \n     * @param inf \u30B3\u30B9\u30C8\u306Emin\u306E\u5358\u4F4D\u5143 \u672A\
-    \u5230\u9054\u306E\u9802\u70B9\u3078\u306E\u8DDD\u96E2\u306Finf\u306B\u306A\u308B\
-    \ \u7701\u7565\u3059\u308B\u3068 std::numeric_limits<Cost>::max() / 4 \u8CA0\u9589\
-    \u8DEF\u306E\u5F71\u97FF\u3092\u53D7\u3051\u308B\u70B9\u306F -inf\n     * @return\
-    \ ShortestPath \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u9577 (dist) \u3068\
-    \u3001\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\u306E\u76F4\u524D\
-    \u306E\u8FBA (prev)\n     */\n    ShortestPath bellman_ford(int s, Cost inf =\
-    \ std::numeric_limits<Cost>::max() / 4) const {\n        std::vector<Cost> dist(n,\
+    \    * @param inf \u30B3\u30B9\u30C8\u306Emin\u306E\u5358\u4F4D\u5143 \u672A\u5230\
+    \u9054\u306E\u9802\u70B9\u3078\u306E\u8DDD\u96E2\u306Finf\u306B\u306A\u308B \u7701\
+    \u7565\u3059\u308B\u3068 std::numeric_limits<Cost>::max() / 4 \u8CA0\u9589\u8DEF\
+    \u306E\u5F71\u97FF\u3092\u53D7\u3051\u308B\u70B9\u306F -inf\n     * @return ShortestPath\
+    \ \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u9577 (dist) \u3068\u3001\u5404\
+    \u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA\
+    \ (prev)\n     */\n    ShortestPath bellman_ford(int s, Cost inf = std::numeric_limits<Cost>::max()\
+    \ / 4) const {\n        assert(0 <= s && s < n);\n        std::vector<Cost> dist(n,\
     \ inf);\n        std::vector<Edge> prev(n);\n        dist[s] = Cost{};\n\n   \
     \     for (int i = 1; i < n; i++) {\n            bool changed = false;\n     \
     \       for (int j = 0; j < n; j++)\n                for (const auto &e : g[j])\
@@ -144,16 +147,17 @@ data:
     \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\
     \u8DEF (01-BFS) O(n + m)\n     *\n     * @param s \u59CB\u70B9\n     * @param\
     \ inf \u672A\u5230\u9054\u306E\u9802\u70B9\u3078\u306E\u8DDD\u96E2 \u7701\u7565\
-    \u3059\u308B\u3068 -1\n     * @return ShortestPath \u5404\u9802\u70B9\u3078\u306E\
-    \u6700\u77ED\u8DEF\u9577 (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\u306E\u6700\
-    \u77ED\u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA (prev)\n     */\n    ShortestPath\
-    \ shortest_path_01bfs(int s, Cost inf = -1) const {\n        std::vector<Cost>\
-    \ dist(n, inf);\n        std::vector<Edge> prev(n);\n        std::deque<int> que;\n\
-    \        dist[s] = 0;\n        que.push_back(s);\n        while (!que.empty())\
-    \ {\n            int u = que.front();\n            que.pop_front();\n        \
-    \    for (auto &e : g[u]) {\n                assert(e.cost == 0 || e.cost == 1);\n\
-    \                if (dist[e.dst] == inf || dist[e.dst] > dist[u] + e.cost) {\n\
-    \                    dist[e.dst] = dist[u] + e.cost;\n                    prev[e.dst]\
+    \u3059\u308B\u3068 std::numeric_limits<Cost>::max() / 4\n     * @return ShortestPath\
+    \ \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u9577 (dist) \u3068\u3001\u5404\
+    \u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA\
+    \ (prev)\n     */\n    ShortestPath shortest_path_01bfs(int s, Cost inf = std::numeric_limits<Cost>::max()\
+    \ / 4) const {\n        assert(0 <= s && s < n);\n        std::vector<Cost> dist(n,\
+    \ inf);\n        std::vector<Edge> prev(n);\n        std::deque<int> que;\n  \
+    \      dist[s] = 0;\n        que.push_back(s);\n        while (!que.empty()) {\n\
+    \            int u = que.front();\n            que.pop_front();\n            for\
+    \ (auto &e : g[u]) {\n                assert(e.cost == 0 || e.cost == 1);\n  \
+    \              if (dist[e.dst] == inf || dist[e.dst] > dist[u] + e.cost) {\n \
+    \                   dist[e.dst] = dist[u] + e.cost;\n                    prev[e.dst]\
     \ = e;\n                    if (e.cost == 0) que.push_front(e.dst);\n        \
     \            else que.push_back(e.dst);\n                }\n            }\n  \
     \      }\n        return {dist, prev};\n    }\n    /**\n     * @brief \u5168\u70B9\
@@ -193,7 +197,7 @@ data:
     \ e.dst});\n                }\n            }\n        }\n        return {dist,\
     \ prev};\n    }\n};\n#line 2 \"src/graph/lowlink.hpp\"\n\n/**\n * @file lowlink.hpp\n\
     \ * @brief lowlink (\u95A2\u7BC0\u70B9\u3001\u6A4B\u3001\u4E8C\u91CD\u8FBA\u9023\
-    \u7D50\u6210\u5206\u5206\u89E3)\n */\n\n#line 11 \"src/graph/lowlink.hpp\"\n\n\
+    \u7D50\u6210\u5206\u5206\u89E3)\n */\n\n#line 12 \"src/graph/lowlink.hpp\"\n\n\
     /**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306E lowlink \u3092\u6C42\u3081\
     \u3001\u95A2\u7BC0\u70B9\u30FB\u6A4B\u30FB\u4E8C\u91CD\u8FBA\u9023\u7D50\u6210\
     \u5206\u3092\u6C42\u3081\u308B\n *\n * DFS \u3092\u518D\u5E30\u3092\u4F7F\u308F\
@@ -201,22 +205,22 @@ data:
     \u30EB\u30FC\u30D7\u304C\u3042\u3063\u3066\u3082\u3088\u3044 (\u89AA\u3078\u623B\
     \u308B\u8FBA\u306F\u9802\u70B9\u3067\u306F\u306A\u304F\u8FBA\u306E\u756A\u53F7\
     \u3067\u533A\u5225\u3059\u308B)\n * \u4F8B:\n * LowLink ll(g);\n * ll.articulation_points();\
-    \ ll.bridges(); ll.two_edge_connected_components();\n *\n * @tparam Cost \u8FBA\
-    \u306E\u30B3\u30B9\u30C8\u306E\u578B\n */\ntemplate <typename Cost = int>\nclass\
-    \ LowLink {\n    int n;\n    std::vector<bool> art, bridge;\n    std::vector<int>\
-    \ arts, bridge_ids;\n    std::vector<int> comp;\n    std::vector<std::vector<int>>\
-    \ groups;\n\npublic:\n    std::vector<int> ord;  //!< DFS \u3067\u8A2A\u308C\u305F\
-    \u9806\u756A\n    std::vector<int> low;  //!< DFS \u6728\u306E\u5B50\u5B6B\u304B\
-    \u3089\u3001\u6728\u306E\u8FBA\u3092\u9006\u306B\u305F\u3069\u3089\u305A\u306B\
-    \ 1 \u672C\u306E\u5F8C\u9000\u8FBA\u3067\u884C\u3051\u308B\u9802\u70B9\u306E ord\
-    \ \u306E\u6700\u5C0F\u5024\n\n    explicit LowLink(const Graph<Cost>& graph) :\
-    \ n(graph.n), art(n), bridge(graph.m), comp(n, -1), ord(n, -1), low(n) {\n   \
-    \     std::vector<int> parent(n, -1), parent_edge(n, -1), iter(n, 0);\n      \
-    \  std::vector<int> st;\n        int k = 0;\n        for (int root = 0; root <\
-    \ n; root++) {\n            if (ord[root] != -1) continue;\n            int root_children\
-    \ = 0;\n            ord[root] = low[root] = k++;\n            st.push_back(root);\n\
-    \            while (!st.empty()) {\n                int v = st.back();\n     \
-    \           if (iter[v] < (int)graph[v].size()) {\n                    const auto&\
+    \ ll.bridges(); ll.two_edge_connected_groups();\n *\n * @tparam Cost \u8FBA\u306E\
+    \u30B3\u30B9\u30C8\u306E\u578B\n */\ntemplate <typename Cost = int>\nclass LowLink\
+    \ {\n    int n;\n    std::vector<bool> art, bridge;\n    std::vector<int> arts,\
+    \ bridge_ids;\n    std::vector<int> comp;\n    std::vector<std::vector<int>> groups;\n\
+    \npublic:\n    std::vector<int> ord;  //!< DFS \u3067\u8A2A\u308C\u305F\u9806\u756A\
+    \n    std::vector<int> low;  //!< DFS \u6728\u306E\u5B50\u5B6B\u304B\u3089\u3001\
+    \u6728\u306E\u8FBA\u3092\u9006\u306B\u305F\u3069\u3089\u305A\u306B 1 \u672C\u306E\
+    \u5F8C\u9000\u8FBA\u3067\u884C\u3051\u308B\u9802\u70B9\u306E ord \u306E\u6700\u5C0F\
+    \u5024\n\n    explicit LowLink(const Graph<Cost>& graph) : n(graph.n), art(n),\
+    \ bridge(graph.m), comp(n, -1), ord(n, -1), low(n) {\n        std::vector<int>\
+    \ parent(n, -1), parent_edge(n, -1), iter(n, 0);\n        std::vector<int> st;\n\
+    \        int k = 0;\n        for (int root = 0; root < n; root++) {\n        \
+    \    if (ord[root] != -1) continue;\n            int root_children = 0;\n    \
+    \        ord[root] = low[root] = k++;\n            st.push_back(root);\n     \
+    \       while (!st.empty()) {\n                int v = st.back();\n          \
+    \      if (iter[v] < (int)graph[v].size()) {\n                    const auto&\
     \ e = graph[v][iter[v]++];\n                    if (e.id == parent_edge[v]) continue;\n\
     \                    int u = e.dst;\n                    if (ord[u] == -1) {\n\
     \                        parent[u] = v;\n                        parent_edge[u]\
@@ -241,25 +245,26 @@ data:
     \    groups.back().push_back(e.dst);\n                }\n            }\n     \
     \   }\n    }\n\n    /**\n     * @brief v \u304C\u95A2\u7BC0\u70B9 (\u53D6\u308A\
     \u9664\u304F\u3068\u9023\u7D50\u6210\u5206\u304C\u5897\u3048\u308B\u9802\u70B9\
-    ) \u304B\n     */\n    bool is_articulation_point(int v) const { return art[v];\
-    \ }\n    /**\n     * @brief \u756A\u53F7 id \u306E\u8FBA\u304C\u6A4B (\u53D6\u308A\
-    \u9664\u304F\u3068\u9023\u7D50\u6210\u5206\u304C\u5897\u3048\u308B\u8FBA) \u304B\
-    \n     */\n    bool is_bridge(int id) const { return bridge[id]; }\n    /**\n\
-    \     * @brief \u95A2\u7BC0\u70B9\u306E\u9802\u70B9\u756A\u53F7\u306E\u6607\u9806\
-    \u306E\u30EA\u30B9\u30C8\n     */\n    const std::vector<int>& articulation_points()\
-    \ const { return arts; }\n    /**\n     * @brief \u6A4B\u306E\u8FBA\u306E\u756A\
-    \u53F7\u306E\u6607\u9806\u306E\u30EA\u30B9\u30C8\n     */\n    const std::vector<int>&\
-    \ bridges() const { return bridge_ids; }\n    /**\n     * @brief \u9802\u70B9\
-    \ v \u304C\u5C5E\u3059\u308B\u4E8C\u91CD\u8FBA\u9023\u7D50\u6210\u5206\u306E\u756A\
-    \u53F7\n     */\n    int two_edge_connected_component_id(int v) const { return\
-    \ comp[v]; }\n    /**\n     * @brief \u4E8C\u91CD\u8FBA\u9023\u7D50\u6210\u5206\
-    \ (\u6A4B\u3092\u53D6\u308A\u9664\u3044\u305F\u3068\u304D\u306E\u9023\u7D50\u6210\
-    \u5206) \u3054\u3068\u306E\u9802\u70B9\u306E\u30EA\u30B9\u30C8\n     */\n    const\
-    \ std::vector<std::vector<int>>& two_edge_connected_components() const { return\
-    \ groups; }\n};\n#line 7 \"test/yosupo/two-edge-connected-components.test.cpp\"\
+    ) \u304B\n     */\n    bool is_articulation_point(int v) const {\n        assert(0\
+    \ <= v && v < n);\n        return art[v];\n    }\n    /**\n     * @brief \u756A\
+    \u53F7 id \u306E\u8FBA\u304C\u6A4B (\u53D6\u308A\u9664\u304F\u3068\u9023\u7D50\
+    \u6210\u5206\u304C\u5897\u3048\u308B\u8FBA) \u304B\n     */\n    bool is_bridge(int\
+    \ id) const {\n        assert(0 <= id && id < (int)bridge.size());\n        return\
+    \ bridge[id];\n    }\n    /**\n     * @brief \u95A2\u7BC0\u70B9\u306E\u9802\u70B9\
+    \u756A\u53F7\u306E\u6607\u9806\u306E\u30EA\u30B9\u30C8\n     */\n    const std::vector<int>&\
+    \ articulation_points() const { return arts; }\n    /**\n     * @brief \u6A4B\u306E\
+    \u8FBA\u306E\u756A\u53F7\u306E\u6607\u9806\u306E\u30EA\u30B9\u30C8\n     */\n\
+    \    const std::vector<int>& bridges() const { return bridge_ids; }\n    /**\n\
+    \     * @brief \u9802\u70B9 v \u304C\u5C5E\u3059\u308B\u4E8C\u91CD\u8FBA\u9023\
+    \u7D50\u6210\u5206\u306E\u756A\u53F7\n     */\n    int two_edge_connected_group_id(int\
+    \ v) const {\n        assert(0 <= v && v < n);\n        return comp[v];\n    }\n\
+    \    /**\n     * @brief \u4E8C\u91CD\u8FBA\u9023\u7D50\u6210\u5206 (\u6A4B\u3092\
+    \u53D6\u308A\u9664\u3044\u305F\u3068\u304D\u306E\u9023\u7D50\u6210\u5206) \u3054\
+    \u3068\u306E\u9802\u70B9\u306E\u30EA\u30B9\u30C8\n     */\n    const std::vector<std::vector<int>>&\
+    \ two_edge_connected_groups() const { return groups; }\n};\n#line 7 \"test/yosupo/two-edge-connected-components.test.cpp\"\
     \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
     \    int n, m;\n    std::cin >> n >> m;\n    Graph<int> g(n);\n    g.read(m, 0);\n\
-    \    LowLink ll(g);\n    const auto& groups = ll.two_edge_connected_components();\n\
+    \    LowLink ll(g);\n    const auto& groups = ll.two_edge_connected_groups();\n\
     \    std::cout << groups.size() << '\\n';\n    for (const auto& group : groups)\
     \ {\n        std::cout << group.size();\n        for (int v : group) std::cout\
     \ << ' ' << v;\n        std::cout << '\\n';\n    }\n}\n"
@@ -268,8 +273,8 @@ data:
     ../../src/graph/lowlink.hpp\"\n\nint main() {\n    std::cin.tie(nullptr);\n  \
     \  std::ios::sync_with_stdio(false);\n    int n, m;\n    std::cin >> n >> m;\n\
     \    Graph<int> g(n);\n    g.read(m, 0);\n    LowLink ll(g);\n    const auto&\
-    \ groups = ll.two_edge_connected_components();\n    std::cout << groups.size()\
-    \ << '\\n';\n    for (const auto& group : groups) {\n        std::cout << group.size();\n\
+    \ groups = ll.two_edge_connected_groups();\n    std::cout << groups.size() <<\
+    \ '\\n';\n    for (const auto& group : groups) {\n        std::cout << group.size();\n\
     \        for (int v : group) std::cout << ' ' << v;\n        std::cout << '\\\
     n';\n    }\n}\n"
   dependsOn:
@@ -278,7 +283,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/two-edge-connected-components.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 20:34:04+09:00'
+  timestamp: '2026-10-14 07:05:41+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/two-edge-connected-components.test.cpp

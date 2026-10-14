@@ -329,7 +329,7 @@ data:
     \ value) noexcept\n        : m_value{ static_cast<value_type>(value % Modint::mod())\
     \ } {}\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092\u53D6\
     \u5F97\u3057\u307E\u3059\u3002\n    /// @return \u4FDD\u6301\u3057\u3066\u3044\
-    \u308B\u5024\n    [[nodiscard]]\n    constexpr value_type value() const noexcept\
+    \u308B\u5024\n    [[nodiscard]]\n    constexpr value_type val() const noexcept\
     \ {\n        return m_value;\n    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\
     \u3044\u308B\u5024\u3092\u30A4\u30F3\u30AF\u30EA\u30E1\u30F3\u30C8\u3057\u3066\
     \u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @return @c *this\n\
@@ -451,7 +451,7 @@ data:
     \u30C8\u30EA\u30FC\u30E0\n    /// @param x \u51FA\u529B\u3059\u308B\u30AA\u30D6\
     \u30B8\u30A7\u30AF\u30C8\n    /// @return @c os\n    template <class CharT, class\
     \ Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
-    \ Traits>& os, const Modint& x) {\n        os << x.value();\n        return os;\n\
+    \ Traits>& os, const Modint& x) {\n        os << x.val();\n        return os;\n\
     \    }\n\nprotected:\n    value_type m_value;\n};\n\n/// @brief \u30B3\u30F3\u30D1\
     \u30A4\u30EB\u6642\u306B\u6CD5\u304C\u6C7A\u307E\u308B\u3068\u304D\u3001\u56DB\
     \u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\
@@ -504,9 +504,9 @@ data:
     \ v1(n, 0);\n    std::vector<modint998244353> v2(n, 0);\n    std::vector<mint3>\
     \ v3(n, 0);\n    v1[0] = 1;\n    v2[0] = 1;\n    v3[0] = 1;\n\n    v1 = mat1.pow(t)\
     \ * v1;\n    v2 = mat2.pow(t) * v2;\n    v3 = mat3.pow(t) * v3;\n\n    int ans\
-    \ = 0;\n    for(int i = 0; i < n; i ++) {\n        if(v1[i].value() || v2[i].value()\
-    \ || v3[i].value()) ans ++;\n    }\n    std::cout << ans << std::endl;\n\n   \
-    \ return 0;\n}\n\n"
+    \ = 0;\n    for(int i = 0; i < n; i ++) {\n        if(v1[i].val() || v2[i].val()\
+    \ || v3[i].val()) ans ++;\n    }\n    std::cout << ans << std::endl;\n\n    return\
+    \ 0;\n}\n\n"
   code: "#define PROBLEM \"https://yukicoder.me/problems/no/1340\"\n\n#include \"\
     ../../src/math/matrix.hpp\"\n#include \"../../src/math/modint.hpp\"\n#include\
     \ <iostream>\n\nusing mint3 = static_modint<57>;\n\nint main() {\n    long long\
@@ -518,15 +518,15 @@ data:
     \ v2(n, 0);\n    std::vector<mint3> v3(n, 0);\n    v1[0] = 1;\n    v2[0] = 1;\n\
     \    v3[0] = 1;\n\n    v1 = mat1.pow(t) * v1;\n    v2 = mat2.pow(t) * v2;\n  \
     \  v3 = mat3.pow(t) * v3;\n\n    int ans = 0;\n    for(int i = 0; i < n; i ++)\
-    \ {\n        if(v1[i].value() || v2[i].value() || v3[i].value()) ans ++;\n   \
-    \ }\n    std::cout << ans << std::endl;\n\n    return 0;\n}\n\n"
+    \ {\n        if(v1[i].val() || v2[i].val() || v3[i].val()) ans ++;\n    }\n  \
+    \  std::cout << ans << std::endl;\n\n    return 0;\n}\n\n"
   dependsOn:
   - src/math/matrix.hpp
   - src/math/modint.hpp
   isVerificationFile: true
   path: test/yukicoder/search-oji.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 12:42:03+09:00'
+  timestamp: '2026-10-14 07:01:49+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yukicoder/search-oji.test.cpp

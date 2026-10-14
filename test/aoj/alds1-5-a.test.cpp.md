@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: src/others/subset-sum.hpp
+    path: src/dp/subset-sum.hpp
     title: "\u90E8\u5206\u548C\u554F\u984C (\u4F5C\u308C\u308B\u548C\u306E\u5224\u5B9A\
       \u3001S \u4EE5\u4E0B\u306E\u6700\u5927\u5024\u3068\u5FA9\u5143)"
   _extendedRequiredBy: []
@@ -16,12 +16,12 @@ data:
     links:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_5_A
   bundledCode: "#line 1 \"test/aoj/alds1-5-a.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_5_A\"\
-    \n\n#include <iostream>\n#include <vector>\n\n#line 2 \"src/others/subset-sum.hpp\"\
+    \n\n#include <iostream>\n#include <vector>\n\n#line 2 \"src/dp/subset-sum.hpp\"\
     \n\n/**\n * @file subset-sum.hpp\n * @brief \u90E8\u5206\u548C\u554F\u984C (\u4F5C\
     \u308C\u308B\u548C\u306E\u5224\u5B9A\u3068\u5FA9\u5143)\n */\n\n#include <algorithm>\n\
     #include <cassert>\n#include <limits>\n#include <optional>\n#include <utility>\n\
-    #line 14 \"src/others/subset-sum.hpp\"\n\nnamespace internal_subset_sum {\n//\
-    \ bits (S + 1 \u30D3\u30C3\u30C8) \u306B\u3064\u3044\u3066 bits |= bits << s \u3092\
+    #line 14 \"src/dp/subset-sum.hpp\"\n\nnamespace internal_subset_sum {\n// bits\
+    \ (S + 1 \u30D3\u30C3\u30C8) \u306B\u3064\u3044\u3066 bits |= bits << s \u3092\
     \u884C\u3046\u3002\u65B0\u3057\u304F\u7ACB\u3063\u305F\u30D3\u30C3\u30C8\u3054\
     \u3068\u306B f(\u4F4D\u7F6E) \u3092\u547C\u3076\ntemplate <typename F>\nvoid shift_or(std::vector<unsigned\
     \ long long>& bits, long long S, long long s, F f) {\n    int words = bits.size();\n\
@@ -144,18 +144,18 @@ data:
     \    int q;\n    std::cin >> q;\n    while (q--) {\n        int m;\n        std::cin\
     \ >> m;\n        std::cout << (can[m] ? \"yes\" : \"no\") << '\\n';\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_5_A\"\
-    \n\n#include <iostream>\n#include <vector>\n\n#include \"../../src/others/subset-sum.hpp\"\
+    \n\n#include <iostream>\n#include <vector>\n\n#include \"../../src/dp/subset-sum.hpp\"\
     \n\nint main() {\n    int n;\n    std::cin >> n;\n    std::vector<long long> a(n);\n\
     \    for (auto& x : a) std::cin >> x;\n    std::vector<bool> can = subset_sum(a,\
     \ 2000);\n    int q;\n    std::cin >> q;\n    while (q--) {\n        int m;\n\
     \        std::cin >> m;\n        std::cout << (can[m] ? \"yes\" : \"no\") << '\\\
     n';\n    }\n}\n"
   dependsOn:
-  - src/others/subset-sum.hpp
+  - src/dp/subset-sum.hpp
   isVerificationFile: true
   path: test/aoj/alds1-5-a.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 03:16:03+09:00'
+  timestamp: '2026-10-14 06:57:58+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/alds1-5-a.test.cpp

@@ -55,17 +55,17 @@ data:
     \ b) {\n        Counter res(a);\n        return res -= b;\n    }\n    auto begin()\
     \ const { return data.begin(); }\n    auto end() const { return data.end(); }\n\
     \    /**\n     * @brief \u7570\u306A\u308B\u5024\u306E\u500B\u6570 (\u91CD\u8907\
-    \u306F\u6570\u3048\u306A\u3044)\n     */\n    std::size_t size() const {\n   \
-    \     return data.size();\n    }\n    /**\n     * @brief \u91CD\u8907\u3092\u542B\
-    \u3081\u305F\u8981\u7D20\u6570 (\u500B\u6570\u306E\u7DCF\u548C)\n     * @note\
-    \ Python \u306E collections.Counter.total() \u3068\u540C\u3058\u3002O(\u7570\u306A\
-    \u308B\u5024\u306E\u500B\u6570)\n     */\n    mapped_type total() const {\n  \
-    \      mapped_type ret = 0;\n        for (const auto& [key, cnt] : data) ret +=\
-    \ cnt;\n        return ret;\n    }\n    mapped_type get(const key_type& key) const\
-    \ {\n        auto itr = data.find(key);\n        if (itr == data.end()) return\
-    \ 0;\n        return itr->second;\n    }\n    void set(const key_type& key, const\
-    \ mapped_type& t) {\n        assert(t >= 0);\n        if (t > 0) {\n         \
-    \   data[key] = t;\n        } else {\n            auto itr = data.find(key);\n\
+    \u306F\u6570\u3048\u306A\u3044)\n     */\n    int size() const {\n        return\
+    \ static_cast<int>(data.size());\n    }\n    /**\n     * @brief \u91CD\u8907\u3092\
+    \u542B\u3081\u305F\u8981\u7D20\u6570 (\u500B\u6570\u306E\u7DCF\u548C)\n     *\
+    \ @note Python \u306E collections.Counter.total() \u3068\u540C\u3058\u3002O(\u7570\
+    \u306A\u308B\u5024\u306E\u500B\u6570)\n     */\n    mapped_type total() const\
+    \ {\n        mapped_type ret = 0;\n        for (const auto& [key, cnt] : data)\
+    \ ret += cnt;\n        return ret;\n    }\n    mapped_type get(const key_type&\
+    \ key) const {\n        auto itr = data.find(key);\n        if (itr == data.end())\
+    \ return 0;\n        return itr->second;\n    }\n    void set(const key_type&\
+    \ key, const mapped_type& t) {\n        assert(t >= 0);\n        if (t > 0) {\n\
+    \            data[key] = t;\n        } else {\n            auto itr = data.find(key);\n\
     \            if (itr != data.end()) {\n                data.erase(itr);\n    \
     \        }\n        }\n    }\n    std::vector<value_type> most_common() const\
     \ {\n        std::vector<value_type> ret;\n        ret.reserve(data.size());\n\
@@ -89,7 +89,7 @@ data:
     \ {\n    for (auto itr = m.begin(); itr != m.end();) {\n        if (itr->second\
     \ == 0) itr = m.erase(itr);\n        else ++itr;\n    }\n    return m;\n}\n\n\
     bool same(const Counter<int>& c, const Model& m) {\n    Model mm = normalize(m);\n\
-    \    if (c.size() != mm.size()) return false;\n    // total \u306F\u91CD\u8907\
+    \    if (c.size() != (int)mm.size()) return false;\n    // total \u306F\u91CD\u8907\
     \u3092\u542B\u3081\u305F\u8981\u7D20\u6570 (\u500B\u6570\u306E\u7DCF\u548C)\n\
     \    long long sum = 0;\n    for (auto [x, cnt] : mm) sum += cnt;\n    if (c.total()\
     \ != sum) return false;\n    // begin / end \u3067\u8D70\u67FB\u3057\u305F\u7D50\
@@ -171,11 +171,11 @@ data:
     \ (auto itr = m.begin(); itr != m.end();) {\n        if (itr->second == 0) itr\
     \ = m.erase(itr);\n        else ++itr;\n    }\n    return m;\n}\n\nbool same(const\
     \ Counter<int>& c, const Model& m) {\n    Model mm = normalize(m);\n    if (c.size()\
-    \ != mm.size()) return false;\n    // total \u306F\u91CD\u8907\u3092\u542B\u3081\
-    \u305F\u8981\u7D20\u6570 (\u500B\u6570\u306E\u7DCF\u548C)\n    long long sum =\
-    \ 0;\n    for (auto [x, cnt] : mm) sum += cnt;\n    if (c.total() != sum) return\
-    \ false;\n    // begin / end \u3067\u8D70\u67FB\u3057\u305F\u7D50\u679C\u304C\u5024\
-    \u306E\u6607\u9806\u306B\u4E00\u81F4\u3059\u308B\n    std::vector<std::pair<int,\
+    \ != (int)mm.size()) return false;\n    // total \u306F\u91CD\u8907\u3092\u542B\
+    \u3081\u305F\u8981\u7D20\u6570 (\u500B\u6570\u306E\u7DCF\u548C)\n    long long\
+    \ sum = 0;\n    for (auto [x, cnt] : mm) sum += cnt;\n    if (c.total() != sum)\
+    \ return false;\n    // begin / end \u3067\u8D70\u67FB\u3057\u305F\u7D50\u679C\
+    \u304C\u5024\u306E\u6607\u9806\u306B\u4E00\u81F4\u3059\u308B\n    std::vector<std::pair<int,\
     \ long long>> a(c.begin(), c.end()), b(mm.begin(), mm.end());\n    if (a != b)\
     \ return false;\n    // const \u306A [] \u3068 get\n    for (int x = -1; x <=\
     \ 10; x++) {\n        long long expect = mm.count(x) ? mm.at(x) : 0;\n       \
@@ -246,7 +246,7 @@ data:
   isVerificationFile: true
   path: test/unittest/counter.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 10:20:01+09:00'
+  timestamp: '2026-10-14 07:02:47+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/counter.test.cpp

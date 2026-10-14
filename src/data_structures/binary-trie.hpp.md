@@ -89,7 +89,7 @@ data:
     \     * @return \u63A2\u7D22\u3057\u305F\u5024\u304C\u6607\u9806\u3067\u4F55\u756A\
     \u76EE\u304B (0-indexed)\u3002\u8A72\u5F53\u3059\u308B\u8981\u7D20\u304C\u306A\
     \u3051\u308C\u3070trie\u6728\u306E\u30B5\u30A4\u30BA\u304C\u8FD4\u308B\n     */\n\
-    \    int lower_bound(T n) const {\n        if constexpr (d < std::numeric_limits<T>::digits)\
+    \    int bisect_left(T n) const {\n        if constexpr (d < std::numeric_limits<T>::digits)\
     \ {\n            if ((n >> d) != 0) return size();\n        }\n        int ret\
     \ = 0;\n        NodePtr cur_ptr = root_ptr;\n        while (!cur_ptr->is_leaf())\
     \ {\n            cur_ptr->affect_xor();\n            bool b = cur_ptr->get_bit(n);\n\
@@ -101,8 +101,8 @@ data:
     \u8981\u7D20\u3092\u63A2\u7D22 (O(d))\n     * @return \u63A2\u7D22\u3057\u305F\
     \u5024\u304C\u6607\u9806\u3067\u4F55\u756A\u76EE\u304B (0-indexed)\u3002\u8A72\
     \u5F53\u3059\u308B\u8981\u7D20\u304C\u306A\u3051\u308C\u3070trie\u6728\u306E\u30B5\
-    \u30A4\u30BA\u304C\u8FD4\u308B\n     */\n    int upper_bound(T n) const {\n  \
-    \      return (n < std::numeric_limits<T>::max() ? lower_bound(n + 1) : size());\n\
+    \u30A4\u30BA\u304C\u8FD4\u308B\n     */\n    int bisect_right(T n) const {\n \
+    \       return (n < std::numeric_limits<T>::max() ? bisect_left(n + 1) : size());\n\
     \    }\n\n    /**\n     * @brief \u96C6\u5408\u306E\u3059\u3079\u3066\u306E\u8981\
     \u7D20\u306Bxor\u3092\u4F5C\u7528\n     */\n    void apply_xor(T n) { root_ptr->xval\
     \ ^= n; }\n\n    /**\n     * @brief \u8981\u7D20\u3092\u3059\u3079\u3066\u524A\
@@ -180,7 +180,7 @@ data:
     \     * @return \u63A2\u7D22\u3057\u305F\u5024\u304C\u6607\u9806\u3067\u4F55\u756A\
     \u76EE\u304B (0-indexed)\u3002\u8A72\u5F53\u3059\u308B\u8981\u7D20\u304C\u306A\
     \u3051\u308C\u3070trie\u6728\u306E\u30B5\u30A4\u30BA\u304C\u8FD4\u308B\n     */\n\
-    \    int lower_bound(T n) const {\n        if constexpr (d < std::numeric_limits<T>::digits)\
+    \    int bisect_left(T n) const {\n        if constexpr (d < std::numeric_limits<T>::digits)\
     \ {\n            if ((n >> d) != 0) return size();\n        }\n        int ret\
     \ = 0;\n        NodePtr cur_ptr = root_ptr;\n        while (!cur_ptr->is_leaf())\
     \ {\n            cur_ptr->affect_xor();\n            bool b = cur_ptr->get_bit(n);\n\
@@ -192,8 +192,8 @@ data:
     \u8981\u7D20\u3092\u63A2\u7D22 (O(d))\n     * @return \u63A2\u7D22\u3057\u305F\
     \u5024\u304C\u6607\u9806\u3067\u4F55\u756A\u76EE\u304B (0-indexed)\u3002\u8A72\
     \u5F53\u3059\u308B\u8981\u7D20\u304C\u306A\u3051\u308C\u3070trie\u6728\u306E\u30B5\
-    \u30A4\u30BA\u304C\u8FD4\u308B\n     */\n    int upper_bound(T n) const {\n  \
-    \      return (n < std::numeric_limits<T>::max() ? lower_bound(n + 1) : size());\n\
+    \u30A4\u30BA\u304C\u8FD4\u308B\n     */\n    int bisect_right(T n) const {\n \
+    \       return (n < std::numeric_limits<T>::max() ? bisect_left(n + 1) : size());\n\
     \    }\n\n    /**\n     * @brief \u96C6\u5408\u306E\u3059\u3079\u3066\u306E\u8981\
     \u7D20\u306Bxor\u3092\u4F5C\u7528\n     */\n    void apply_xor(T n) { root_ptr->xval\
     \ ^= n; }\n\n    /**\n     * @brief \u8981\u7D20\u3092\u3059\u3079\u3066\u524A\
@@ -204,7 +204,7 @@ data:
   isVerificationFile: false
   path: src/data_structures/binary-trie.hpp
   requiredBy: []
-  timestamp: '2026-10-13 12:42:03+09:00'
+  timestamp: '2026-10-14 07:04:30+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/binary-trie.test.cpp
@@ -238,8 +238,8 @@ bt.nth_element(0);   // 3 (x との xor の最小値は apply_xor(x) してか�
 | `count(x)` | `x` の個数 |
 | `size()` | 要素数 |
 | `nth_element(k)` | 小さい方から `k` 番目 (0-indexed) の値 |
-| `lower_bound(x)` | `x` 以上の最小の要素が何番目か (0-indexed)。なければ `size()` |
-| `upper_bound(x)` | `x` より大きい最小の要素が何番目か (0-indexed)。なければ `size()` |
+| `bisect_left(x)` | `x` 未満の要素の個数 (`x` 以上の最小の要素が何番目か。なければ `size()`) |
+| `bisect_right(x)` | `x` 以下の要素の個数 (`x` より大きい最小の要素が何番目か。なければ `size()`) |
 | `apply_xor(x)` | 全要素を `x` と xor する |
 | `clear()` | 全要素を削除してメモリを解放 |
 

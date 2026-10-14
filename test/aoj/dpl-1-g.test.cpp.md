@@ -2,7 +2,7 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
-    path: src/others/knapsack.hpp
+    path: src/dp/knapsack.hpp
     title: "\u30CA\u30C3\u30D7\u30B5\u30C3\u30AF\u554F\u984C"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
@@ -15,26 +15,26 @@ data:
     links:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DPL_1_G
   bundledCode: "#line 1 \"test/aoj/dpl-1-g.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DPL_1_G\"\
-    \n\n#include <iostream>\n#include <vector>\n\n#line 2 \"src/others/knapsack.hpp\"\
-    \n\n/**\n * @file knapsack.hpp\n * @brief \u30CA\u30C3\u30D7\u30B5\u30C3\u30AF\
-    \u554F\u984C\n */\n\n#include <algorithm>\n#include <cassert>\n#include <deque>\n\
-    #include <limits>\n#include <utility>\n#line 14 \"src/others/knapsack.hpp\"\n\n\
-    /*\n * \u54C1\u7269 i \u306F\u4FA1\u5024 v[i] \u3068\u91CD\u3055 w[i] \u3092\u6301\
-    \u3061 (\u3069\u3061\u3089\u3082 0 \u4EE5\u4E0A)\u3001\u91CD\u3055\u306E\u548C\
-    \u304C W \u4EE5\u4E0B\u306B\u306A\u308B\u3088\u3046\u306B\u9078\u3093\u3067\u3001\
-    \u4FA1\u5024\u306E\u548C\u306E\u6700\u5927\u5024\u3092\u6C42\u3081\u308B\n * \u7B54\
-    \u3048 (\u4FA1\u5024\u306E\u548C\u306E\u6700\u5927\u5024) \u306F long long \u306B\
-    \u53CE\u307E\u308B\u3053\u3068\n */\n\nnamespace internal_knapsack {\ninline void\
-    \ check(const std::vector<long long>& v, const std::vector<long long>& w, long\
-    \ long W) {\n    assert(v.size() == w.size() && W >= 0);\n    for (int i = 0;\
-    \ i < (int)v.size(); i++) assert(v[i] >= 0 && w[i] >= 0);\n}\n\n// \u5404\u30A2\
-    \u30EB\u30B4\u30EA\u30BA\u30E0\u306E\u8A08\u7B97\u91CF\u306E\u898B\u7A4D\u3082\
-    \u308A (\u5927\u304D\u3059\u304E\u308B\u3082\u306E\u306F inf)\ninline long double\
-    \ cost_by_weight(int n, long long W) { return (long double)(n + 1) * ((long double)W\
-    \ + 1); }\ninline long double cost_by_value(int n, long double value_sum) { return\
-    \ (long double)(n + 1) * (value_sum + 1); }\ninline long double cost_meet_in_the_middle(int\
-    \ n) {\n    if (n > 80) return std::numeric_limits<long double>::infinity();\n\
-    \    return (long double)(n + 1) * (long double)(1ULL << ((n + 1) / 2));\n}\n\n\
+    \n\n#include <iostream>\n#include <vector>\n\n#line 2 \"src/dp/knapsack.hpp\"\n\
+    \n/**\n * @file knapsack.hpp\n * @brief \u30CA\u30C3\u30D7\u30B5\u30C3\u30AF\u554F\
+    \u984C\n */\n\n#include <algorithm>\n#include <cassert>\n#include <deque>\n#include\
+    \ <limits>\n#include <utility>\n#line 14 \"src/dp/knapsack.hpp\"\n\n/*\n * \u54C1\
+    \u7269 i \u306F\u4FA1\u5024 v[i] \u3068\u91CD\u3055 w[i] \u3092\u6301\u3061 (\u3069\
+    \u3061\u3089\u3082 0 \u4EE5\u4E0A)\u3001\u91CD\u3055\u306E\u548C\u304C W \u4EE5\
+    \u4E0B\u306B\u306A\u308B\u3088\u3046\u306B\u9078\u3093\u3067\u3001\u4FA1\u5024\
+    \u306E\u548C\u306E\u6700\u5927\u5024\u3092\u6C42\u3081\u308B\n * \u7B54\u3048\
+    \ (\u4FA1\u5024\u306E\u548C\u306E\u6700\u5927\u5024) \u306F long long \u306B\u53CE\
+    \u307E\u308B\u3053\u3068\n */\n\nnamespace internal_knapsack {\ninline void check(const\
+    \ std::vector<long long>& v, const std::vector<long long>& w, long long W) {\n\
+    \    assert(v.size() == w.size() && W >= 0);\n    for (int i = 0; i < (int)v.size();\
+    \ i++) assert(v[i] >= 0 && w[i] >= 0);\n}\n\n// \u5404\u30A2\u30EB\u30B4\u30EA\
+    \u30BA\u30E0\u306E\u8A08\u7B97\u91CF\u306E\u898B\u7A4D\u3082\u308A (\u5927\u304D\
+    \u3059\u304E\u308B\u3082\u306E\u306F inf)\ninline long double cost_by_weight(int\
+    \ n, long long W) { return (long double)(n + 1) * ((long double)W + 1); }\ninline\
+    \ long double cost_by_value(int n, long double value_sum) { return (long double)(n\
+    \ + 1) * (value_sum + 1); }\ninline long double cost_meet_in_the_middle(int n)\
+    \ {\n    if (n > 80) return std::numeric_limits<long double>::infinity();\n  \
+    \  return (long double)(n + 1) * (long double)(1ULL << ((n + 1) / 2));\n}\n\n\
     // \u500B\u6570\u5236\u9650\u4ED8\u304D\u306E\u54C1\u7269\u3092\u3001\u500B\u6570\
     \ 1, 2, 4, ..., \u6B8B\u308A \u306E\u7D44\u306B\u5206\u3051\u3066 0/1 \u306E\u54C1\
     \u7269\u306B\u3059\u308B\ninline void binary_split(const std::vector<long long>&\
@@ -168,17 +168,17 @@ data:
     \ m(n);\n    for (int i = 0; i < n; i++) std::cin >> v[i] >> w[i] >> m[i];\n \
     \   std::cout << bounded_knapsack_by_weight(v, w, m, W) << '\\n';\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DPL_1_G\"\
-    \n\n#include <iostream>\n#include <vector>\n\n#include \"../../src/others/knapsack.hpp\"\
+    \n\n#include <iostream>\n#include <vector>\n\n#include \"../../src/dp/knapsack.hpp\"\
     \n\nint main() {\n    int n;\n    long long W;\n    std::cin >> n >> W;\n    std::vector<long\
     \ long> v(n), w(n), m(n);\n    for (int i = 0; i < n; i++) std::cin >> v[i] >>\
     \ w[i] >> m[i];\n    std::cout << bounded_knapsack_by_weight(v, w, m, W) << '\\\
     n';\n}\n"
   dependsOn:
-  - src/others/knapsack.hpp
+  - src/dp/knapsack.hpp
   isVerificationFile: true
   path: test/aoj/dpl-1-g.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 02:00:02+09:00'
+  timestamp: '2026-10-14 06:57:58+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/dpl-1-g.test.cpp

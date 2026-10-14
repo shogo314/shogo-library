@@ -65,6 +65,9 @@ data:
     path: test/aoj/cgl-7-f.test.cpp
     title: test/aoj/cgl-7-f.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/angle.test.cpp
+    title: test/unittest/angle.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/circle.test.cpp
     title: test/unittest/circle.test.cpp
   - icon: ':heavy_check_mark:'
@@ -167,38 +170,20 @@ data:
     \u30A4\u30B3\u30FC\u30EB\u6F14\u7B97\u5B50\n     * \n     * @param lhs \n    \
     \ * @param rhs \n     * @return bool\n     */\n    [[nodiscard]]\n    friend constexpr\
     \ bool operator>=(const Vector& lhs, const Vector& rhs) noexcept {\n        return\
-    \ lhs.v >= rhs.v;\n    }\n\n    /**\n     * @brief \u504F\u89D2\u30BD\u30FC\u30C8\
-    \u306E\u30D5\u30A1\u30F3\u30AF\u30BF\n     * \n     * \u4E8C\u6B21\u5143\u9650\
-    \u5B9A\u3001\u53CD\u6642\u8A08\u56DE\u308A\n     * x\u8EF8\u6B63\u65B9\u5411\u3092\
-    \u59CB\u70B9\u3068\u3057\u3001\u96F6\u30D9\u30AF\u30C8\u30EB\u306Fx\u8EF8\u6B63\
-    \u65B9\u5411\u3068\u540C\u3058\u504F\u89D2\u3068\u3057\u3066\u6271\u3046\n   \
-    \  */\n    struct ArgSortComp {\n        constexpr bool operator()(const Vector&\
-    \ lhs, const Vector& rhs) const noexcept {\n            static_assert(Dim == 2,\
-    \ \"ArgSortComp: Dim must be 2\");\n            // \u96F6\u30D9\u30AF\u30C8\u30EB\
-    \u306F\u5916\u7A4D\u3067\u6BD4\u3079\u3089\u308C\u306A\u3044\u306E\u3067\u3001\
-    \u504F\u89D2 0 (x \u8EF8\u6B63\u65B9\u5411) \u3068\u3057\u3066\u5148\u306B\u5224\
-    \u5B9A\u3059\u308B\n            const bool l_zero = lhs[0] == 0 && lhs[1] == 0;\n\
-    \            const bool r_zero = rhs[0] == 0 && rhs[1] == 0;\n            if(r_zero)\
-    \ return false;  // \u504F\u89D2 0 \u3088\u308A\u5C0F\u3055\u3044\u3082\u306E\u306F\
-    \u306A\u3044\n            if(l_zero) return !(rhs[1] == 0 && rhs[0] > 0);  //\
-    \ rhs \u306E\u504F\u89D2\u304C 0 \u3088\u308A\u5927\u304D\u3044\u304B\n      \
-    \      int l_half = lhs[1] < 0 || (lhs[1] == 0 && lhs[0] < 0);\n            int\
-    \ r_half = rhs[1] < 0 || (rhs[1] == 0 && rhs[0] < 0);\n            if(l_half !=\
-    \ r_half) return l_half < r_half;\n            return rhs[0] * lhs[1] < lhs[0]\
-    \ * rhs[1];\n        }\n    };\n\n    /**\n     * @brief \u5165\u529B\u30B9\u30C8\
-    \u30EA\u30FC\u30E0\u304B\u3089\u306E\u8AAD\u307F\u8FBC\u307F\n     * \n     *\
-    \ @tparam CharT \u5165\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\
-    \n     * @tparam Traits \u5165\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\
-    \u5B57\u578B\u7279\u6027\n     * @param is \n     * @param rhs \n     * @return\
-    \ std::basic_istream<CharT, Traits>& \n     */\n    template <class CharT, class\
-    \ Traits>\n    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
-    \ Traits>& is, Vector& rhs) {\n        for(int i = 0; i < Dim; i++) is >> rhs.v[i];\n\
-    \        return is;\n    }\n    /**\n     * @brief \u51FA\u529B\u30B9\u30C8\u30EA\
-    \u30FC\u30E0\u3078\u306E\u66F8\u304D\u8FBC\u307F\n     * \n     * @tparam CharT\
-    \ \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n     * @tparam\
-    \ Traits \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\
-    \u6027\n     * @param is \n     * @param rhs \n     * @return std::basic_ostream<CharT,\
-    \ Traits>& \n     */\n    template <class CharT, class Traits>\n    friend std::basic_ostream<CharT,\
+    \ lhs.v >= rhs.v;\n    }\n\n    /**\n     * @brief \u5165\u529B\u30B9\u30C8\u30EA\
+    \u30FC\u30E0\u304B\u3089\u306E\u8AAD\u307F\u8FBC\u307F\n     * \n     * @tparam\
+    \ CharT \u5165\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n \
+    \    * @tparam Traits \u5165\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\
+    \u578B\u7279\u6027\n     * @param is \n     * @param rhs \n     * @return std::basic_istream<CharT,\
+    \ Traits>& \n     */\n    template <class CharT, class Traits>\n    friend std::basic_istream<CharT,\
+    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Vector& rhs) {\n\
+    \        for(int i = 0; i < Dim; i++) is >> rhs.v[i];\n        return is;\n  \
+    \  }\n    /**\n     * @brief \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u3078\u306E\
+    \u66F8\u304D\u8FBC\u307F\n     * \n     * @tparam CharT \u51FA\u529B\u30B9\u30C8\
+    \u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n     * @tparam Traits \u51FA\u529B\
+    \u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\u6027\n     * @param\
+    \ is \n     * @param rhs \n     * @return std::basic_ostream<CharT, Traits>& \n\
+    \     */\n    template <class CharT, class Traits>\n    friend std::basic_ostream<CharT,\
     \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const Vector& rhs)\
     \ {\n        for(int i = 0; i < Dim; i++) {\n            if(i != 0) os << CharT('\
     \ ');\n            os << rhs.v[i];\n        }\n        return os;\n    }\n\n \
@@ -257,9 +242,9 @@ data:
     \u70B92\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @return std::optional<Vector<T,\
     \ 2>> \u5171\u6709\u70B9\u306E1\u4F8B (\u5171\u6709\u70B9\u304C\u306A\u3051\u308C\
     \u3070 std::nullopt)\n */\ntemplate <typename T>\nconstexpr std::optional<Vector<T,\
-    \ 2>> segment_intersect(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const\
+    \ 2>> segment_intersection(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const\
     \ Vector<T, 2>& q1, const Vector<T, 2>& q2) {\n    static_assert(std::is_floating_point_v<T>,\
-    \ \"segment_intersect: T must be a floating point type (use segments_intersect\
+    \ \"segment_intersection: T must be a floating point type (use segments_intersect\
     \ for integers)\");\n    if(!segments_intersect(p1, p2, q1, q2)) return std::nullopt;\n\
     \    if(cross(p2 - p1, q1 - p1) == 0 && cross(p2 - p1, q2 - p1) == 0) {\n    \
     \    // 4\u70B9\u304C\u540C\u4E00\u76F4\u7DDA\u4E0A\u306B\u3042\u308B\u5834\u5408\
@@ -535,38 +520,20 @@ data:
     \u30A4\u30B3\u30FC\u30EB\u6F14\u7B97\u5B50\n     * \n     * @param lhs \n    \
     \ * @param rhs \n     * @return bool\n     */\n    [[nodiscard]]\n    friend constexpr\
     \ bool operator>=(const Vector& lhs, const Vector& rhs) noexcept {\n        return\
-    \ lhs.v >= rhs.v;\n    }\n\n    /**\n     * @brief \u504F\u89D2\u30BD\u30FC\u30C8\
-    \u306E\u30D5\u30A1\u30F3\u30AF\u30BF\n     * \n     * \u4E8C\u6B21\u5143\u9650\
-    \u5B9A\u3001\u53CD\u6642\u8A08\u56DE\u308A\n     * x\u8EF8\u6B63\u65B9\u5411\u3092\
-    \u59CB\u70B9\u3068\u3057\u3001\u96F6\u30D9\u30AF\u30C8\u30EB\u306Fx\u8EF8\u6B63\
-    \u65B9\u5411\u3068\u540C\u3058\u504F\u89D2\u3068\u3057\u3066\u6271\u3046\n   \
-    \  */\n    struct ArgSortComp {\n        constexpr bool operator()(const Vector&\
-    \ lhs, const Vector& rhs) const noexcept {\n            static_assert(Dim == 2,\
-    \ \"ArgSortComp: Dim must be 2\");\n            // \u96F6\u30D9\u30AF\u30C8\u30EB\
-    \u306F\u5916\u7A4D\u3067\u6BD4\u3079\u3089\u308C\u306A\u3044\u306E\u3067\u3001\
-    \u504F\u89D2 0 (x \u8EF8\u6B63\u65B9\u5411) \u3068\u3057\u3066\u5148\u306B\u5224\
-    \u5B9A\u3059\u308B\n            const bool l_zero = lhs[0] == 0 && lhs[1] == 0;\n\
-    \            const bool r_zero = rhs[0] == 0 && rhs[1] == 0;\n            if(r_zero)\
-    \ return false;  // \u504F\u89D2 0 \u3088\u308A\u5C0F\u3055\u3044\u3082\u306E\u306F\
-    \u306A\u3044\n            if(l_zero) return !(rhs[1] == 0 && rhs[0] > 0);  //\
-    \ rhs \u306E\u504F\u89D2\u304C 0 \u3088\u308A\u5927\u304D\u3044\u304B\n      \
-    \      int l_half = lhs[1] < 0 || (lhs[1] == 0 && lhs[0] < 0);\n            int\
-    \ r_half = rhs[1] < 0 || (rhs[1] == 0 && rhs[0] < 0);\n            if(l_half !=\
-    \ r_half) return l_half < r_half;\n            return rhs[0] * lhs[1] < lhs[0]\
-    \ * rhs[1];\n        }\n    };\n\n    /**\n     * @brief \u5165\u529B\u30B9\u30C8\
-    \u30EA\u30FC\u30E0\u304B\u3089\u306E\u8AAD\u307F\u8FBC\u307F\n     * \n     *\
-    \ @tparam CharT \u5165\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\
-    \n     * @tparam Traits \u5165\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\
-    \u5B57\u578B\u7279\u6027\n     * @param is \n     * @param rhs \n     * @return\
-    \ std::basic_istream<CharT, Traits>& \n     */\n    template <class CharT, class\
-    \ Traits>\n    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
-    \ Traits>& is, Vector& rhs) {\n        for(int i = 0; i < Dim; i++) is >> rhs.v[i];\n\
-    \        return is;\n    }\n    /**\n     * @brief \u51FA\u529B\u30B9\u30C8\u30EA\
-    \u30FC\u30E0\u3078\u306E\u66F8\u304D\u8FBC\u307F\n     * \n     * @tparam CharT\
-    \ \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n     * @tparam\
-    \ Traits \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\
-    \u6027\n     * @param is \n     * @param rhs \n     * @return std::basic_ostream<CharT,\
-    \ Traits>& \n     */\n    template <class CharT, class Traits>\n    friend std::basic_ostream<CharT,\
+    \ lhs.v >= rhs.v;\n    }\n\n    /**\n     * @brief \u5165\u529B\u30B9\u30C8\u30EA\
+    \u30FC\u30E0\u304B\u3089\u306E\u8AAD\u307F\u8FBC\u307F\n     * \n     * @tparam\
+    \ CharT \u5165\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n \
+    \    * @tparam Traits \u5165\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\
+    \u578B\u7279\u6027\n     * @param is \n     * @param rhs \n     * @return std::basic_istream<CharT,\
+    \ Traits>& \n     */\n    template <class CharT, class Traits>\n    friend std::basic_istream<CharT,\
+    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Vector& rhs) {\n\
+    \        for(int i = 0; i < Dim; i++) is >> rhs.v[i];\n        return is;\n  \
+    \  }\n    /**\n     * @brief \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u3078\u306E\
+    \u66F8\u304D\u8FBC\u307F\n     * \n     * @tparam CharT \u51FA\u529B\u30B9\u30C8\
+    \u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n     * @tparam Traits \u51FA\u529B\
+    \u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\u6027\n     * @param\
+    \ is \n     * @param rhs \n     * @return std::basic_ostream<CharT, Traits>& \n\
+    \     */\n    template <class CharT, class Traits>\n    friend std::basic_ostream<CharT,\
     \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const Vector& rhs)\
     \ {\n        for(int i = 0; i < Dim; i++) {\n            if(i != 0) os << CharT('\
     \ ');\n            os << rhs.v[i];\n        }\n        return os;\n    }\n\n \
@@ -625,9 +592,9 @@ data:
     \u70B92\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @return std::optional<Vector<T,\
     \ 2>> \u5171\u6709\u70B9\u306E1\u4F8B (\u5171\u6709\u70B9\u304C\u306A\u3051\u308C\
     \u3070 std::nullopt)\n */\ntemplate <typename T>\nconstexpr std::optional<Vector<T,\
-    \ 2>> segment_intersect(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const\
+    \ 2>> segment_intersection(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const\
     \ Vector<T, 2>& q1, const Vector<T, 2>& q2) {\n    static_assert(std::is_floating_point_v<T>,\
-    \ \"segment_intersect: T must be a floating point type (use segments_intersect\
+    \ \"segment_intersection: T must be a floating point type (use segments_intersect\
     \ for integers)\");\n    if(!segments_intersect(p1, p2, q1, q2)) return std::nullopt;\n\
     \    if(cross(p2 - p1, q1 - p1) == 0 && cross(p2 - p1, q2 - p1) == 0) {\n    \
     \    // 4\u70B9\u304C\u540C\u4E00\u76F4\u7DDA\u4E0A\u306B\u3042\u308B\u5834\u5408\
@@ -824,10 +791,11 @@ data:
   path: src/geometry/vector.hpp
   requiredBy:
   - src/geometry/circle.hpp
-  timestamp: '2026-10-14 01:43:22+09:00'
+  timestamp: '2026-10-14 07:04:09+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/circle.test.cpp
+  - test/unittest/angle.test.cpp
   - test/unittest/vector.test.cpp
   - test/unittest/vector-line.test.cpp
   - test/aoj/cgl-7-d.test.cpp
@@ -863,7 +831,7 @@ std::vector<P> ps(n);
 for (auto& p : ps) std::cin >> p;      // "x y" を読む
 auto hull = convex_hull(ps);           // 凸包 (反時計回り)
 long long s2 = polygon_area_doubled(hull);
-std::sort(ps.begin(), ps.end(), P::ArgSortComp());  // 偏角ソート
+std::sort(ps.begin(), ps.end(), [](const P& a, const P& b) { return Angle(a) < Angle(b); });  // 偏角ソート (angle.hpp)
 ```
 
 ## `Vector<T, Dim>` のメンバ
@@ -878,7 +846,6 @@ std::sort(ps.begin(), ps.end(), P::ArgSortComp());  // 偏角ソート
 | `dot(p, q)` | 内積 |
 | `p.squared_norm()` | 長さの2乗 |
 | `p.abs()` | 長さ (`double`) |
-| `Vector::ArgSortComp` | 偏角ソートの比較関数 (2次元、x 軸正方向から反時計回り、ゼロベクトルは x 軸正方向と同じ扱い) |
 | `is >> p`、`os << p` | 成分を空白区切りで入出力 |
 
 ## 関数
@@ -887,7 +854,7 @@ std::sort(ps.begin(), ps.end(), P::ArgSortComp());  // 偏角ソート
 |---|---|:-:|---|
 | `cross(p, q)` | 外積。2次元ではスカラー (符号付き面積)、3次元ではベクトル | ✓ | $O(1)$ |
 | `segments_intersect(p1, p2, q1, q2)` | 線分 $p_1 p_2$ と $q_1 q_2$ が共有点を持つか | ✓ | $O(1)$ |
-| `segment_intersect(p1, p2, q1, q2)` | 共有点の1つを `std::optional` で返す (共有点がなければ `std::nullopt`) | 浮動小数点型のみ | $O(1)$ |
+| `segment_intersection(p1, p2, q1, q2)` | 共有点の1つを `std::optional` で返す (共有点がなければ `std::nullopt`) | 浮動小数点型のみ | $O(1)$ |
 | `ccw(a, b, c)` | 3点の位置関係。1: $a \to b \to c$ が反時計回り、-1: 時計回り、2: $c, a, b$ の順に一直線上、-2: $a, b, c$ の順に一直線上、0: $c$ が線分 $ab$ 上 | ✓ | $O(1)$ |
 | `is_parallel(p1, p2, q1, q2)` / `is_orthogonal(p1, p2, q1, q2)` | 直線 $p_1 p_2$ と $q_1 q_2$ が平行か / 直交するか | ✓ | $O(1)$ |
 | `projection(p1, p2, p)` | 点 $p$ から直線 $p_1 p_2$ に下ろした垂線の足 | 浮動小数点型のみ | $O(1)$ |
@@ -910,4 +877,5 @@ std::sort(ps.begin(), ps.end(), P::ArgSortComp());  // 偏角ソート
 ## 関連
 
 - 円の交点・接線・内接円・外接円は [円](circle.hpp)
+- 偏角ソートは [偏角](angle.hpp) の `Angle` (`Angle(p) < Angle(q)` で比べる)
 - 傾きや比を誤差なく比べるには [有理数](../math/rational.hpp)

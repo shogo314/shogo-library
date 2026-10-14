@@ -45,26 +45,26 @@ data:
     \    }\n    /**\n     * @brief \u767B\u9332\u3057\u305F\u5024 x \u306E\u756A\u53F7\
     \ O(log n)\u3002\u767B\u9332\u3057\u3066\u3044\u306A\u3044\u5024\u306A\u3089 assert\
     \ \u3067\u843D\u3061\u308B\n     */\n    int id(const T& x) const {\n        int\
-    \ i = lower(x);\n        assert(i < size() && !(x < xs[i]));\n        return i;\n\
-    \    }\n    /**\n     * @brief x \u4EE5\u4E0A\u3067\u6700\u5C0F\u306E\u5024\u306E\
-    \u756A\u53F7 O(log n)\u3002\u306A\u3051\u308C\u3070 size()\n     */\n    int lower(const\
-    \ T& x) const {\n        assert(built);\n        return std::lower_bound(xs.begin(),\
-    \ xs.end(), x) - xs.begin();\n    }\n    /**\n     * @brief x \u3088\u308A\u5927\
-    \u304D\u3044\u6700\u5C0F\u306E\u5024\u306E\u756A\u53F7 O(log n)\u3002\u306A\u3051\
-    \u308C\u3070 size()\n     */\n    int upper(const T& x) const {\n        assert(built);\n\
-    \        return std::upper_bound(xs.begin(), xs.end(), x) - xs.begin();\n    }\n\
-    \    /**\n     * @brief x \u3092\u767B\u9332\u3057\u305F\u304B O(log n)\n    \
-    \ */\n    bool contains(const T& x) const {\n        int i = lower(x);\n     \
-    \   return i < size() && !(x < xs[i]);\n    }\n    /**\n     * @brief \u756A\u53F7\
-    \ i \u306E\u5024\n     */\n    const T& operator[](int i) const {\n        assert(built\
-    \ && 0 <= i && i < size());\n        return xs[i];\n    }\n    /**\n     * @brief\
-    \ v \u306E\u5404\u5024\u3092\u756A\u53F7\u306B\u7F6E\u304D\u63DB\u3048\u305F\u5217\
-    \n     */\n    std::vector<int> ids(const std::vector<T>& v) const {\n       \
-    \ std::vector<int> res(v.size());\n        for (std::size_t i = 0; i < v.size();\
-    \ i++) res[i] = id(v[i]);\n        return res;\n    }\n    /**\n     * @brief\
-    \ \u30BD\u30FC\u30C8\u6E08\u307F\u3067\u91CD\u8907\u306E\u306A\u3044\u5024\u306E\
-    \u5217\n     */\n    const std::vector<T>& values() const {\n        assert(built);\n\
-    \        return xs;\n    }\n};\n"
+    \ i = bisect_left(x);\n        assert(i < size() && !(x < xs[i]));\n        return\
+    \ i;\n    }\n    /**\n     * @brief x \u4EE5\u4E0A\u3067\u6700\u5C0F\u306E\u5024\
+    \u306E\u756A\u53F7 O(log n)\u3002\u306A\u3051\u308C\u3070 size()\n     */\n  \
+    \  int bisect_left(const T& x) const {\n        assert(built);\n        return\
+    \ std::lower_bound(xs.begin(), xs.end(), x) - xs.begin();\n    }\n    /**\n  \
+    \   * @brief x \u3088\u308A\u5927\u304D\u3044\u6700\u5C0F\u306E\u5024\u306E\u756A\
+    \u53F7 O(log n)\u3002\u306A\u3051\u308C\u3070 size()\n     */\n    int bisect_right(const\
+    \ T& x) const {\n        assert(built);\n        return std::upper_bound(xs.begin(),\
+    \ xs.end(), x) - xs.begin();\n    }\n    /**\n     * @brief x \u3092\u767B\u9332\
+    \u3057\u305F\u304B O(log n)\n     */\n    bool contains(const T& x) const {\n\
+    \        int i = bisect_left(x);\n        return i < size() && !(x < xs[i]);\n\
+    \    }\n    /**\n     * @brief \u756A\u53F7 i \u306E\u5024\n     */\n    const\
+    \ T& operator[](int i) const {\n        assert(built && 0 <= i && i < size());\n\
+    \        return xs[i];\n    }\n    /**\n     * @brief v \u306E\u5404\u5024\u3092\
+    \u756A\u53F7\u306B\u7F6E\u304D\u63DB\u3048\u305F\u5217\n     */\n    std::vector<int>\
+    \ ids(const std::vector<T>& v) const {\n        std::vector<int> res(v.size());\n\
+    \        for (std::size_t i = 0; i < v.size(); i++) res[i] = id(v[i]);\n     \
+    \   return res;\n    }\n    /**\n     * @brief \u30BD\u30FC\u30C8\u6E08\u307F\u3067\
+    \u91CD\u8907\u306E\u306A\u3044\u5024\u306E\u5217\n     */\n    const std::vector<T>&\
+    \ values() const {\n        assert(built);\n        return xs;\n    }\n};\n"
   code: "#pragma once\n\n/**\n * @file compress.hpp\n * @brief \u5EA7\u6A19\u5727\u7E2E\
     \n */\n\n#include <algorithm>\n#include <cassert>\n#include <cstddef>\n#include\
     \ <vector>\n\n/**\n * @brief \u5EA7\u6A19\u5727\u7E2E\n *\n * \u5024\u3092 add\
@@ -91,31 +91,32 @@ data:
     \        return xs.size();\n    }\n    /**\n     * @brief \u767B\u9332\u3057\u305F\
     \u5024 x \u306E\u756A\u53F7 O(log n)\u3002\u767B\u9332\u3057\u3066\u3044\u306A\
     \u3044\u5024\u306A\u3089 assert \u3067\u843D\u3061\u308B\n     */\n    int id(const\
-    \ T& x) const {\n        int i = lower(x);\n        assert(i < size() && !(x <\
-    \ xs[i]));\n        return i;\n    }\n    /**\n     * @brief x \u4EE5\u4E0A\u3067\
-    \u6700\u5C0F\u306E\u5024\u306E\u756A\u53F7 O(log n)\u3002\u306A\u3051\u308C\u3070\
-    \ size()\n     */\n    int lower(const T& x) const {\n        assert(built);\n\
+    \ T& x) const {\n        int i = bisect_left(x);\n        assert(i < size() &&\
+    \ !(x < xs[i]));\n        return i;\n    }\n    /**\n     * @brief x \u4EE5\u4E0A\
+    \u3067\u6700\u5C0F\u306E\u5024\u306E\u756A\u53F7 O(log n)\u3002\u306A\u3051\u308C\
+    \u3070 size()\n     */\n    int bisect_left(const T& x) const {\n        assert(built);\n\
     \        return std::lower_bound(xs.begin(), xs.end(), x) - xs.begin();\n    }\n\
     \    /**\n     * @brief x \u3088\u308A\u5927\u304D\u3044\u6700\u5C0F\u306E\u5024\
     \u306E\u756A\u53F7 O(log n)\u3002\u306A\u3051\u308C\u3070 size()\n     */\n  \
-    \  int upper(const T& x) const {\n        assert(built);\n        return std::upper_bound(xs.begin(),\
-    \ xs.end(), x) - xs.begin();\n    }\n    /**\n     * @brief x \u3092\u767B\u9332\
-    \u3057\u305F\u304B O(log n)\n     */\n    bool contains(const T& x) const {\n\
-    \        int i = lower(x);\n        return i < size() && !(x < xs[i]);\n    }\n\
-    \    /**\n     * @brief \u756A\u53F7 i \u306E\u5024\n     */\n    const T& operator[](int\
-    \ i) const {\n        assert(built && 0 <= i && i < size());\n        return xs[i];\n\
-    \    }\n    /**\n     * @brief v \u306E\u5404\u5024\u3092\u756A\u53F7\u306B\u7F6E\
-    \u304D\u63DB\u3048\u305F\u5217\n     */\n    std::vector<int> ids(const std::vector<T>&\
-    \ v) const {\n        std::vector<int> res(v.size());\n        for (std::size_t\
-    \ i = 0; i < v.size(); i++) res[i] = id(v[i]);\n        return res;\n    }\n \
-    \   /**\n     * @brief \u30BD\u30FC\u30C8\u6E08\u307F\u3067\u91CD\u8907\u306E\u306A\
-    \u3044\u5024\u306E\u5217\n     */\n    const std::vector<T>& values() const {\n\
-    \        assert(built);\n        return xs;\n    }\n};\n"
+    \  int bisect_right(const T& x) const {\n        assert(built);\n        return\
+    \ std::upper_bound(xs.begin(), xs.end(), x) - xs.begin();\n    }\n    /**\n  \
+    \   * @brief x \u3092\u767B\u9332\u3057\u305F\u304B O(log n)\n     */\n    bool\
+    \ contains(const T& x) const {\n        int i = bisect_left(x);\n        return\
+    \ i < size() && !(x < xs[i]);\n    }\n    /**\n     * @brief \u756A\u53F7 i \u306E\
+    \u5024\n     */\n    const T& operator[](int i) const {\n        assert(built\
+    \ && 0 <= i && i < size());\n        return xs[i];\n    }\n    /**\n     * @brief\
+    \ v \u306E\u5404\u5024\u3092\u756A\u53F7\u306B\u7F6E\u304D\u63DB\u3048\u305F\u5217\
+    \n     */\n    std::vector<int> ids(const std::vector<T>& v) const {\n       \
+    \ std::vector<int> res(v.size());\n        for (std::size_t i = 0; i < v.size();\
+    \ i++) res[i] = id(v[i]);\n        return res;\n    }\n    /**\n     * @brief\
+    \ \u30BD\u30FC\u30C8\u6E08\u307F\u3067\u91CD\u8907\u306E\u306A\u3044\u5024\u306E\
+    \u5217\n     */\n    const std::vector<T>& values() const {\n        assert(built);\n\
+    \        return xs;\n    }\n};\n"
   dependsOn: []
   isVerificationFile: false
   path: src/utility/compress.hpp
   requiredBy: []
-  timestamp: '2026-10-13 20:17:40+09:00'
+  timestamp: '2026-10-14 07:04:30+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/compress.test.cpp
@@ -138,7 +139,7 @@ Compress<long long> cq;            // 複数の列やクエリの値をまとめ
 cq.add(A);
 cq.add(x);
 cq.build();
-int l = cq.lower(d), r = cq.lower(u);  // 値が [d, u) の範囲は番号 [l, r)
+int l = cq.bisect_left(d), r = cq.bisect_left(u);  // 値が [d, u) の範囲は番号 [l, r)
 ```
 
 値をすべて登録してから `build` を呼び、そのあとで番号を求めます。`build` の後に `add` したり、`build` の前に番号を求めたりすると assert で落ちます。
@@ -153,14 +154,14 @@ int l = cq.lower(d), r = cq.lower(u);  // 値が [d, u) の範囲は番号 [l, r
 | `build()` | 登録した値をソートして重複を除く。$O(n \log n)$ |
 | `size()` | 異なる値の個数 |
 | `id(x)` | 値 `x` の番号。登録していない値なら assert で落ちる。$O(\log n)$ |
-| `lower(x)` | `x` 以上で最小の値の番号 (なければ `size()`)。$O(\log n)$ |
-| `upper(x)` | `x` より大きい最小の値の番号 (なければ `size()`)。$O(\log n)$ |
+| `bisect_left(x)` | `x` 以上で最小の値の番号 (なければ `size()`)。$O(\log n)$ |
+| `bisect_right(x)` | `x` より大きい最小の値の番号 (なければ `size()`)。$O(\log n)$ |
 | `contains(x)` | `x` を登録したか。$O(\log n)$ |
 | `cp[i]` | 番号 `i` の値 |
 | `ids(v)` | `v` の各値を番号に置き換えた列 |
 | `values()` | ソート済みで重複のない値の列 |
 
-`id` と `lower` の違いに注意してください。圧縮に含めた値の番号は `id` で求めると、登録し忘れた値に気づけます。クエリの範囲の端のように、登録していない値で境界を求めるときは `lower` / `upper` を使います。
+`id` と `bisect_left` の違いに注意してください。圧縮に含めた値の番号は `id` で求めると、登録し忘れた値に気づけます。クエリの範囲の端のように、登録していない値で境界を求めるときは `bisect_left` / `bisect_right` を使います。
 
 ## 関連
 

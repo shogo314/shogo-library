@@ -43,27 +43,28 @@ data:
     \ xs.size();\n    }\n    /**\n     * @brief \u767B\u9332\u3057\u305F\u5024 x \u306E\
     \u756A\u53F7 O(log n)\u3002\u767B\u9332\u3057\u3066\u3044\u306A\u3044\u5024\u306A\
     \u3089 assert \u3067\u843D\u3061\u308B\n     */\n    int id(const T& x) const\
-    \ {\n        int i = lower(x);\n        assert(i < size() && !(x < xs[i]));\n\
+    \ {\n        int i = bisect_left(x);\n        assert(i < size() && !(x < xs[i]));\n\
     \        return i;\n    }\n    /**\n     * @brief x \u4EE5\u4E0A\u3067\u6700\u5C0F\
     \u306E\u5024\u306E\u756A\u53F7 O(log n)\u3002\u306A\u3051\u308C\u3070 size()\n\
-    \     */\n    int lower(const T& x) const {\n        assert(built);\n        return\
-    \ std::lower_bound(xs.begin(), xs.end(), x) - xs.begin();\n    }\n    /**\n  \
-    \   * @brief x \u3088\u308A\u5927\u304D\u3044\u6700\u5C0F\u306E\u5024\u306E\u756A\
-    \u53F7 O(log n)\u3002\u306A\u3051\u308C\u3070 size()\n     */\n    int upper(const\
-    \ T& x) const {\n        assert(built);\n        return std::upper_bound(xs.begin(),\
-    \ xs.end(), x) - xs.begin();\n    }\n    /**\n     * @brief x \u3092\u767B\u9332\
-    \u3057\u305F\u304B O(log n)\n     */\n    bool contains(const T& x) const {\n\
-    \        int i = lower(x);\n        return i < size() && !(x < xs[i]);\n    }\n\
-    \    /**\n     * @brief \u756A\u53F7 i \u306E\u5024\n     */\n    const T& operator[](int\
-    \ i) const {\n        assert(built && 0 <= i && i < size());\n        return xs[i];\n\
-    \    }\n    /**\n     * @brief v \u306E\u5404\u5024\u3092\u756A\u53F7\u306B\u7F6E\
-    \u304D\u63DB\u3048\u305F\u5217\n     */\n    std::vector<int> ids(const std::vector<T>&\
-    \ v) const {\n        std::vector<int> res(v.size());\n        for (std::size_t\
-    \ i = 0; i < v.size(); i++) res[i] = id(v[i]);\n        return res;\n    }\n \
-    \   /**\n     * @brief \u30BD\u30FC\u30C8\u6E08\u307F\u3067\u91CD\u8907\u306E\u306A\
-    \u3044\u5024\u306E\u5217\n     */\n    const std::vector<T>& values() const {\n\
-    \        assert(built);\n        return xs;\n    }\n};\n#line 9 \"test/aoj/dsl-4-a.2.test.cpp\"\
-    \n\nint main() {\n    int n;\n    std::cin >> n;\n    std::vector<long long> x1(n),\
+    \     */\n    int bisect_left(const T& x) const {\n        assert(built);\n  \
+    \      return std::lower_bound(xs.begin(), xs.end(), x) - xs.begin();\n    }\n\
+    \    /**\n     * @brief x \u3088\u308A\u5927\u304D\u3044\u6700\u5C0F\u306E\u5024\
+    \u306E\u756A\u53F7 O(log n)\u3002\u306A\u3051\u308C\u3070 size()\n     */\n  \
+    \  int bisect_right(const T& x) const {\n        assert(built);\n        return\
+    \ std::upper_bound(xs.begin(), xs.end(), x) - xs.begin();\n    }\n    /**\n  \
+    \   * @brief x \u3092\u767B\u9332\u3057\u305F\u304B O(log n)\n     */\n    bool\
+    \ contains(const T& x) const {\n        int i = bisect_left(x);\n        return\
+    \ i < size() && !(x < xs[i]);\n    }\n    /**\n     * @brief \u756A\u53F7 i \u306E\
+    \u5024\n     */\n    const T& operator[](int i) const {\n        assert(built\
+    \ && 0 <= i && i < size());\n        return xs[i];\n    }\n    /**\n     * @brief\
+    \ v \u306E\u5404\u5024\u3092\u756A\u53F7\u306B\u7F6E\u304D\u63DB\u3048\u305F\u5217\
+    \n     */\n    std::vector<int> ids(const std::vector<T>& v) const {\n       \
+    \ std::vector<int> res(v.size());\n        for (std::size_t i = 0; i < v.size();\
+    \ i++) res[i] = id(v[i]);\n        return res;\n    }\n    /**\n     * @brief\
+    \ \u30BD\u30FC\u30C8\u6E08\u307F\u3067\u91CD\u8907\u306E\u306A\u3044\u5024\u306E\
+    \u5217\n     */\n    const std::vector<T>& values() const {\n        assert(built);\n\
+    \        return xs;\n    }\n};\n#line 9 \"test/aoj/dsl-4-a.2.test.cpp\"\n\nint\
+    \ main() {\n    int n;\n    std::cin >> n;\n    std::vector<long long> x1(n),\
     \ y1(n), x2(n), y2(n);\n    Compress<long long> cx, cy;\n    for (int i = 0; i\
     \ < n; i++) {\n        std::cin >> x1[i] >> y1[i] >> x2[i] >> y2[i];\n       \
     \ cx.add(x1[i]), cx.add(x2[i]);\n        cy.add(y1[i]), cy.add(y2[i]);\n    }\n\
@@ -99,7 +100,7 @@ data:
   isVerificationFile: true
   path: test/aoj/dsl-4-a.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 20:17:40+09:00'
+  timestamp: '2026-10-14 07:04:30+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/dsl-4-a.2.test.cpp

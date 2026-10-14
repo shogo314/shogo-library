@@ -2,6 +2,12 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
+    path: src/math/combinatorics.hpp
+    title: "\u7D44\u307F\u5408\u308F\u305B"
+  - icon: ':heavy_check_mark:'
+    path: src/math/convolution.hpp
+    title: "\u7573\u307F\u8FBC\u307F (NTT)"
+  - icon: ':heavy_check_mark:'
     path: src/math/fps.hpp
     title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570"
   - icon: ':heavy_check_mark:'
@@ -9,9 +15,8 @@ data:
     title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
       \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9"
   - icon: ':heavy_check_mark:'
-    path: src/math/number-theory.hpp
-    title: "\u6570\u8AD6 (\u9006\u5143\u3001\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\u3001\
-      \u7573\u307F\u8FBC\u307F\u306A\u3069)"
+    path: src/math/modular-arithmetic.hpp
+    title: "mod \u6F14\u7B97 (\u7A4D\u3001\u51AA\u4E57\u3001\u9006\u5143)"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
@@ -25,10 +30,124 @@ data:
   bundledCode: "#line 1 \"test/yosupo/pow-of-fps.test.cpp\"\n#define PROBLEM \"https://judge.yosupo.jp/problem/pow_of_formal_power_series\"\
     \n\n#line 2 \"src/math/fps.hpp\"\n\n/**\n * @file fps.hpp\n * @brief \u5F62\u5F0F\
     \u7684\u51AA\u7D1A\u6570\n */\n\n#include <algorithm>\n#include <cassert>\n#include\
-    \ <vector>\n#line 2 \"src/math/number-theory.hpp\"\n\n/**\n * @file number-theory.hpp\n\
-    \ * @brief \u6570\u8AD6 (\u9006\u5143\u3001\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\
-    \u3001\u7573\u307F\u8FBC\u307F\u306A\u3069)\n */\n\n#line 10 \"src/math/number-theory.hpp\"\
-    \n#include <numeric>\n#include <optional>\n#include <utility>\n#line 2 \"src/math/modint.hpp\"\
+    \ <vector>\n#line 2 \"src/math/combinatorics.hpp\"\n\n/**\n * @file combinatorics.hpp\n\
+    \ * @brief \u7D44\u307F\u5408\u308F\u305B\n */\n\n#line 9 \"src/math/combinatorics.hpp\"\
+    \n#include <numeric>\n#line 2 \"src/math/modular-arithmetic.hpp\"\n\n/**\n * @file\
+    \ modular-arithmetic.hpp\n * @brief mod \u6F14\u7B97 (\u7A4D\u3001\u51AA\u4E57\
+    \u3001\u9006\u5143)\n */\n\n#line 9 \"src/math/modular-arithmetic.hpp\"\n\n/**\n\
+    \ * @brief a * b mod m \u3092\u8FD4\u3059 (\u9014\u4E2D\u3067 __int128 \u3092\u4F7F\
+    \u3046\u306E\u3067 m < 2^63 \u306A\u3089\u3042\u3075\u308C\u306A\u3044)\n */\n\
+    constexpr long long modmul(long long a, long long b, long long m) {\n    long\
+    \ long res = static_cast<long long>(static_cast<__int128>(a) * b % m);\n    if\
+    \ (res < 0) res += m;\n    return res;\n}\n\n/**\n * @brief a^(-1) mod m \u3092\
+    \u8FD4\u3059\n * @note a \u3068 m \u306F\u4E92\u3044\u306B\u7D20\u3067\u3042\u308B\
+    \u3053\u3068\u3002O(log m)\n */\nconstexpr long long modinv(long long a, long\
+    \ long m) {\n    assert(m >= 1);\n    a %= m;\n    if (a < 0) a += m;\n    long\
+    \ long b = m, u = 1, v = 0;\n    while (b) {\n        // std::swap \u306F C++17\
+    \ \u3067\u306F constexpr \u3067\u306A\u3044\u306E\u3067\u3001\u4F7F\u308F\u305A\
+    \u306B\u66F8\u304F\n        long long t = a / b;\n        long long c = a - t\
+    \ * b;\n        a = b, b = c;\n        long long w = u - t * v;\n        u = v,\
+    \ v = w;\n    }\n    assert(a == 1 && \"a and m must be coprime\");\n    u %=\
+    \ m;\n    if (u < 0) u += m;\n    return u;\n}\n\n/**\n * @brief a^n mod m \u3092\
+    \u8FD4\u3059\n * @note n \u304C\u8CA0\u306A\u3089 a^(-1) \u306E -n \u4E57 (a \u3068\
+    \ m \u306F\u4E92\u3044\u306B\u7D20\u3067\u3042\u308B\u3053\u3068)\u3002O(log |n|)\n\
+    \ */\nconstexpr long long modpow(long long a, long long n, long long m) {\n  \
+    \  assert(m >= 1);\n    a %= m;\n    if (a < 0) a += m;\n    if (n < 0) {\n  \
+    \      n = -n;\n        a = modinv(a, m);\n    }\n    long long res = 1 % m;\n\
+    \    while (n > 0) {\n        if (n & 1) res = modmul(res, a, m);\n        a =\
+    \ modmul(a, a, m);\n        n >>= 1;\n    }\n    return res;\n}\n#line 12 \"src/math/combinatorics.hpp\"\
+    \n\n/**\n * @brief \u7D44\u307F\u5408\u308F\u305B\n */\ntemplate <typename Modint>\n\
+    class Combination {\n    static std::vector<Modint> fact, inv_fact;\n    static\
+    \ long long cached_mod; // dynamic_modint \u3067 mod \u304C\u5909\u308F\u3063\u305F\
+    \u3089\u524D\u8A08\u7B97\u3092\u3084\u308A\u76F4\u3059\n\npublic:\n    /**\n \
+    \    * @brief n \u307E\u3067\u306E\u968E\u4E57\u3068\u305D\u306E\u9006\u5143\u3092\
+    \u524D\u8A08\u7B97\u3059\u308B\n     * @param n\n     * @note O(n) \u5FC5\u8981\
+    \u306B\u306A\u3063\u305F\u3089\u547C\u3073\u51FA\u3055\u308C\u308B\u304C\u3001\
+    \u4E88\u3081\u5927\u304D\u306An\u306B\u5BFE\u3057\u3066\u547C\u3073\u51FA\u3057\
+    \u3066\u304A\u304F\u3053\u3068\u3067\u9006\u5143\u306E\u76F4\u63A5\u8A08\u7B97\
+    \u3092\u6E1B\u3089\u305B\u308B\n     */\n    inline static void extend(int n)\
+    \ {\n        if (cached_mod != (long long)Modint::mod()) {\n            cached_mod\
+    \ = Modint::mod();\n            fact = {1, 1};\n            inv_fact = {1, 1};\n\
+    \        }\n        int m = fact.size();\n        if (n < m) return;\n       \
+    \ fact.resize(n + 1);\n        inv_fact.resize(n + 1);\n        for (int i = m;\
+    \ i <= n; ++i) {\n            fact[i] = fact[i - 1] * i;\n        }\n        inv_fact[n]\
+    \ = fact[n].inv();\n        for (int i = n; i > m; --i) {\n            inv_fact[i\
+    \ - 1] = inv_fact[i] * i;\n        }\n    }\n    \n    /**\n     * @brief n \u306E\
+    \u968E\u4E57\u3092\u8FD4\u3059\n     * @param n\n     * @return n!\n     * @note\
+    \ extend(n), O(1)\n     */\n    inline static Modint factorial(int n) {\n    \
+    \    extend(n);\n        return fact[n];\n    }\n    /**\n     * @brief n \u306E\
+    \u968E\u4E57\u306E\u9006\u5143\u3092\u8FD4\u3059\n     * @param n\n     * @return\
+    \ n!^-1\n     * @note extend(n), O(1)\n     */\n    inline static Modint inverse_factorial(int\
+    \ n) {\n        extend(n);\n        return inv_fact[n];\n    }\n    /**\n    \
+    \ * @brief n \u306E\u9006\u5143\u3092\u8FD4\u3059\n     * @param n\n     * @return\
+    \ n^-1\n     * @note extend(n), O(1)\n     */\n    inline static Modint inv(int\
+    \ n) {\n        assert(n > 0);\n        extend(n);\n        return inv_fact[n]\
+    \ * fact[n - 1];\n    }\n\n    /**\n     * @brief nPr \u3092\u8FD4\u3059\n   \
+    \  * @param n\n     * @param r\n     * @return nPr\n     * @note extend(n), O(1)\n\
+    \     */\n    inline static Modint P(int n, int r) {\n        if (r < 0 || n <\
+    \ r) return 0;\n        extend(n);\n        return fact[n] * inv_fact[n - r];\n\
+    \    }\n    /**\n     * @brief nCr \u3092\u8FD4\u3059\n     * @param n\n     *\
+    \ @param r\n     * @return nCr\n     * @note extend(n), O(1)\n     */\n    inline\
+    \ static Modint C(int n, int r) {\n        if (r < 0 || n < r) return 0;\n   \
+    \     extend(n);\n        return fact[n] * inv_fact[r] * inv_fact[n - r];\n  \
+    \  }\n    /**\n     * @brief nHr \u3092\u8FD4\u3059\n     * @param n\n     * @param\
+    \ r\n     * @return nHr\n     * @note extend(n+r-1), O(1)\n     */\n    inline\
+    \ static Modint H(int n, int r) {\n        if (n < 0 || r < 0) return 0;\n   \
+    \     if (n == 0 && r == 0) return 1;\n        return C(n + r - 1, r);\n    }\n\
+    \n    /**\n     * @brief nPr \u3092\u5B9A\u7FA9\u3069\u304A\u308A\u8A08\u7B97\u3059\
+    \u308B\n     * @param n\n     * @param r\n     * @return nPr\n     * @note O(r)\n\
+    \     */\n    inline static Modint P_loop(long long n, int r) {\n        if (r\
+    \ < 0 || n < r) return 0;\n        Modint res = 1;\n        for (int i = 0; i\
+    \ < r; ++i) {\n            res *= n - i;\n        }\n        return res;\n   \
+    \ }\n    /**\n     * @brief nCr \u3092\u5B9A\u7FA9\u3069\u304A\u308A\u8A08\u7B97\
+    \u3059\u308B\n     * @param n\n     * @param r\n     * @return nCr\n     * @note\
+    \ O(min(r, n-r))\n     */\n    inline static Modint C_loop(long long n, long long\
+    \ r) {\n        if (r < 0 || n < r) return 0;\n        if(r > n - r) r = n - r;\n\
+    \        extend(r);\n        return P_loop(n, r) * inv_fact[r];\n    }\n    /**\n\
+    \     * @brief nHr \u3092\u5B9A\u7FA9\u3069\u304A\u308A\u8A08\u7B97\u3059\u308B\
+    \n     * @param n\n     * @param r\n     * @return nHr\n     * @note O(r)\n  \
+    \   */\n    inline static Modint H_loop(long long n, long long r) {\n        if\
+    \ (n < 0 || r < 0) return 0;\n        if (n == 0 && r == 0) return 1;\n      \
+    \  return C_loop(n + r - 1, r);\n    }\n\n    /**\n     * @brief nCr \u3092 Lucas\
+    \ \u306E\u5B9A\u7406\u3092\u7528\u3044\u3066\u8A08\u7B97\u3059\u308B\n     * @param\
+    \ n\n     * @param r\n     * @return nCr\n     * @note extend(Mod), O(log(r))\n\
+    \     */\n    inline static Modint C_lucas(long long n, long long r) {\n     \
+    \   if (r < 0 || n < r) return 0;\n        if (r == 0 || n == r) return 1;\n \
+    \       Modint res = 1;\n        while(r > 0) {\n            int ni = n % Modint::mod(),\
+    \ ri = r % Modint::mod();\n            if (ni < ri) return 0;\n            res\
+    \ *= C(ni, ri);\n            n /= Modint::mod();\n            r /= Modint::mod();\n\
+    \        }\n        return res;\n    }\n};\n\ntemplate <typename Modint>\nstd::vector<Modint>\
+    \ Combination<Modint>::fact{1, 1};\ntemplate <typename Modint>\nstd::vector<Modint>\
+    \ Combination<Modint>::inv_fact{1, 1};\ntemplate <typename Modint>\nlong long\
+    \ Combination<Modint>::cached_mod = 0;\n\n/**\n * @brief mod p^q \u3067\u306E\u4E8C\
+    \u9805\u4FC2\u6570\u3092\u6C42\u3081\u308B\u69CB\u9020\n * @note \u524D\u8A08\u7B97\
+    O(p^q) \u53C2\u8003: https://nyaannyaan.github.io/library/modulo/arbitrary-mod-binomial.hpp\n\
+    \ */\nstruct CombinationPQ {\n    int p, q;\n    int pq;\n    std::vector<int>\
+    \ fact_p, inv_fact_p;\n    int delta;\n    CombinationPQ(int p, int q) : p(p),\
+    \ q(q) {\n        pq = 1;\n        for(int i = 0; i < q; i++) pq *= p;\n     \
+    \   fact_p.resize(pq);\n        fact_p[0] = 1;\n        for(int i = 1; i < pq;\
+    \ i++) {\n            if(i % p == 0) fact_p[i] = fact_p[i - 1];\n            else\
+    \ fact_p[i] = (long long)fact_p[i - 1] * i % pq;\n        }\n        inv_fact_p.resize(pq);\n\
+    \        inv_fact_p[pq - 1] = modinv(fact_p[pq - 1], pq);\n        for(int i =\
+    \ pq - 1; i > 0; i--) {\n            if(i % p == 0) inv_fact_p[i - 1] = inv_fact_p[i];\n\
+    \            else inv_fact_p[i - 1] = (long long)inv_fact_p[i] * i % pq;\n   \
+    \     }\n        if(p == 2 && q >= 3) delta = 1;\n        else delta = -1;\n \
+    \   }\n    /**\n     * @brief nCr mod p^q \u3092\u8FD4\u3059\n     * @param n\
+    \ long long\n     * @param r long long\n     * @return nCr mod p^q\n     * @note\
+    \ O(log(n))\n     */\n    int C(long long n, long long r) {\n        if(r < 0\
+    \ || n < r) return 0;\n        long long m = n - r;\n        int ans = 1;\n  \
+    \      std::vector<int> epsilon;\n        while(n > 0) {\n            ans = (long\
+    \ long)ans * fact_p[n % pq] % pq;\n            ans = (long long)ans * inv_fact_p[m\
+    \ % pq] % pq;\n            ans = (long long)ans * inv_fact_p[r % pq] % pq;\n \
+    \           n /= p;\n            m /= p;\n            r /= p;\n            epsilon.push_back(n\
+    \ - m - r);\n        }\n        if(delta == -1 && (int)epsilon.size() >= q &&\
+    \ std::accumulate(epsilon.begin()+q-1, epsilon.end(), 0) % 2 == 1) ans = pq -\
+    \ ans;\n        if(ans == pq) ans = 0;\n        int e = std::accumulate(epsilon.begin(),\
+    \ epsilon.end(), 0);\n        if(e >= q) ans = 0;\n        else {\n          \
+    \  for(int i = 0; i < e; i++) {\n                ans = (long long)ans * p % pq;\n\
+    \            }\n        }\n        return ans;\n    }\n};\n#line 2 \"src/math/convolution.hpp\"\
+    \n\n/**\n * @file convolution.hpp\n * @brief \u7573\u307F\u8FBC\u307F (NTT)\n\
+    \ */\n\n#line 9 \"src/math/convolution.hpp\"\n#include <utility>\n#line 2 \"src/math/modint.hpp\"\
     \n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\
     \u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#include\
     \ <iostream>\n#line 10 \"src/math/modint.hpp\"\n#include <limits>\n#include <type_traits>\n\
@@ -97,7 +216,7 @@ data:
     \ value) noexcept\n        : m_value{ static_cast<value_type>(value % Modint::mod())\
     \ } {}\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092\u53D6\
     \u5F97\u3057\u307E\u3059\u3002\n    /// @return \u4FDD\u6301\u3057\u3066\u3044\
-    \u308B\u5024\n    [[nodiscard]]\n    constexpr value_type value() const noexcept\
+    \u308B\u5024\n    [[nodiscard]]\n    constexpr value_type val() const noexcept\
     \ {\n        return m_value;\n    }\n\n    /// @brief \u4FDD\u6301\u3057\u3066\
     \u3044\u308B\u5024\u3092\u30A4\u30F3\u30AF\u30EA\u30E1\u30F3\u30C8\u3057\u3066\
     \u3001\u5270\u4F59\u3092\u53D6\u308A\u307E\u3059\u3002\n    /// @return @c *this\n\
@@ -219,7 +338,7 @@ data:
     \u30C8\u30EA\u30FC\u30E0\n    /// @param x \u51FA\u529B\u3059\u308B\u30AA\u30D6\
     \u30B8\u30A7\u30AF\u30C8\n    /// @return @c os\n    template <class CharT, class\
     \ Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
-    \ Traits>& os, const Modint& x) {\n        os << x.value();\n        return os;\n\
+    \ Traits>& os, const Modint& x) {\n        os << x.val();\n        return os;\n\
     \    }\n\nprotected:\n    value_type m_value;\n};\n\n/// @brief \u30B3\u30F3\u30D1\
     \u30A4\u30EB\u6642\u306B\u6CD5\u304C\u6C7A\u307E\u308B\u3068\u304D\u3001\u56DB\
     \u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\
@@ -263,101 +382,43 @@ data:
     \      : base_type{value} {}\n\nprivate:\n    inline static value_type modulus\
     \ = 998244353;\n};\n\nusing modint998244353 = static_modint<998244353>;\nusing\
     \ modint1000000007 = static_modint<1000000007>;\nusing modint = dynamic_modint<-1>;\n\
-    #line 15 \"src/math/number-theory.hpp\"\n\n/**\n * @brief a^(-1) mod MOD\u3092\
-    \u8FD4\u3059\n * @param a long long\n * @param MOD long long\n * @return long\
-    \ long\n */\ninline long long modinv(long long a, long long MOD) {\n    a %= MOD;\n\
-    \    if (a < 0) a += MOD;\n    long long b = MOD, u = 1, v = 0;\n    while (b)\
-    \ {\n        long long t = a / b;\n        a -= t * b; std::swap(a, b);\n    \
-    \    u -= t * v; std::swap(u, v);\n    }\n    u %= MOD; \n    if (u < 0) u +=\
-    \ MOD;\n    return u;\n}\n\n/**\n * @brief a^n mod MOD\u3092\u8FD4\u3059\n * @param\
-    \ a long long\n * @param n long long\n * @param MOD long long\n * @return long\
-    \ long\n */\ninline long long modpow(long long a, long long n, long long MOD)\
-    \ {\n    long long res = 1 % MOD;\n    a %= MOD;\n    if (a < 0) a += MOD;\n \
-    \   if(n < 0) {\n        n = -n;\n        a = modinv(a, MOD);\n    }\n    while\
-    \ (n > 0) {\n        if (n & 1) res = res * a % MOD;\n        a = a * a % MOD;\n\
-    \        n >>= 1;\n    }\n    return res;\n}\n\n/**\n * @brief 2\u5F0F\u306E\u9023\
-    \u7ACB\u5408\u540C\u5F0F\u3092\u3001m\u304C\u4E92\u3044\u306B\u7D20\u306B\u306A\
-    \u308B\u3088\u3046\u306B\u5909\u5F62\u3059\u308B\n * @param r1 long long\n * @param\
-    \ m1 long long\n * @param r2 long long\n * @param m2 long long\n * @note \u77DB\
-    \u76FE\u3059\u308B\u5834\u5408\u3001r1 = r2 = m1 = m2 = -1\u3068\u306A\u308B\n\
-    \ */\ninline void coprimize_simulaneous_congruence_equation(long long& r1, long\
-    \ long& m1, long long& r2, long long& m2) {\n    long long g = std::gcd(m1, m2);\n\
-    \    if((r2 - r1) % g != 0) {\n        r1 = r2 = m1 = m2 = -1;\n        return;\n\
-    \    }\n    m1 /= g, m2 /= g;\n    long long gi = std::gcd(g, m1);\n    long long\
-    \ gj = g / gi;\n    do {\n        g = std::gcd(gi, gj);\n        gi *= g, gj /=\
-    \ g;\n    } while(g != 1);\n    m1 *= gi, m2 *= gj;\n    r1 %= m1, r2 %= m2;\n\
-    }\n\n/**\n * @brief crt \u306E\u623B\u308A\u5024\n *\n * \u89E3\u306F x + lcm\
-    \ * k (k \u306F\u6574\u6570) \u3068\u8868\u305B\u308B\n */\nstruct CRTResult {\n\
-    \    long long x;    //!< \u6700\u5C0F\u306E\u975E\u8CA0\u6574\u6570\u89E3\n \
-    \   long long lcm;  //!< m \u306E\u6700\u5C0F\u516C\u500D\u6570\n};\n\n/**\n *\
-    \ @brief \u9023\u7ACB\u5408\u540C\u5F0F\u3092\u89E3\u304F\n * @param r vector<long\
-    \ long> \u4F59\u308A\u306E\u914D\u5217\n * @param m vector<long long> mod\u306E\
-    \u914D\u5217\n * @return std::optional<CRTResult> (\u89E3, LCM) \u89E3\u306A\u3057\
-    \u306E\u3068\u304D\u306F std::nullopt\n */\ninline std::optional<CRTResult> crt(const\
-    \ std::vector<long long>& r, const std::vector<long long>& m) {\n    assert(r.size()\
-    \ == m.size());\n    if(r.size() == 0) return CRTResult{0, 1};\n    int n = (int)r.size();\n\
-    \    long long m_lcm = m[0];\n    long long ans = (r[0] % m[0] + m[0]) % m[0];\n\
-    \    for (int i = 1; i < n; i++) {\n        long long rr = (r[i] % m[i] + m[i])\
-    \ % m[i], mm = m[i];\n        coprimize_simulaneous_congruence_equation(ans, m_lcm,\
-    \ rr, mm);\n        if(m_lcm == -1) return std::nullopt;\n        long long t\
-    \ = ((rr - ans) * modinv(m_lcm, mm)) % mm;\n        if(t < 0) t += mm;\n     \
-    \   ans += t * m_lcm;\n        m_lcm *= mm;\n    }\n    return CRTResult{ans,\
-    \ m_lcm};\n}\n\n/**\n * @brief \u9023\u7ACB\u5408\u540C\u5F0F\u306E\u6700\u5C0F\
-    \u306E\u975E\u8CA0\u6574\u6570\u89E3 % MOD\u3092\u6C42\u3081\u308B\n * @param\
-    \ r vector<long long> \u4F59\u308A\u306E\u914D\u5217\n * @param m vector<long\
-    \ long> mod\u306E\u914D\u5217\n * @param MOD long long\n * @return std::optional<CRTResult>\
-    \ (\u6700\u5C0F\u89E3 % MOD, LCM % MOD) \u89E3\u306A\u3057\u306E\u3068\u304D\u306F\
-    \ std::nullopt\n */\ninline std::optional<CRTResult> crt(const std::vector<long\
-    \ long>& r, const std::vector<long long>& m, long long MOD) {\n    assert(r.size()\
-    \ == m.size());\n    if(r.size() == 0) return CRTResult{0, 1};\n    int n = (int)r.size();\n\
-    \    std::vector<long long> r2 = r, m2 = m;\n    // m\u3092\u4E92\u3044\u306B\u7D20\
-    \u306B\u3059\u308B\n    for(int i = 1; i < n; i++) {\n        for(int j = 0; j\
-    \ < i; j++) {\n            coprimize_simulaneous_congruence_equation(r2[i], m2[i],\
-    \ r2[j], m2[j]);\n            if(m2[i] == -1) return std::nullopt;\n        }\n\
-    \    }\n\n    m2.push_back(MOD);\n    std::vector<long long> prod(n+1, 1); //\
-    \ m2[0] * ... * m2[i - 1] mod m2[i]\n    std::vector<long long> x(n+1, 0); //\
-    \ i\u756A\u76EE\u307E\u3067\u306E\u89E3 mod m2[i]\n    for(int i = 0; i < n; i++)\
-    \ {\n        long long t = (r2[i] - x[i]) * modinv(prod[i], m2[i]) % m2[i];\n\
-    \        if(t < 0) t += m2[i];\n        for(int j = i + 1; j <= n; j++) {\n  \
-    \          (x[j] += t * prod[j]) %= m2[j];\n            (prod[j] *= m2[i]) %=\
-    \ m2[j];\n        }\n    }\n    return CRTResult{x[n], prod[n]};\n}\n\n/**\n *\
-    \ @brief \u7573\u307F\u8FBC\u307F\n */\nnamespace NTT {\n    /**\n     * @brief\
-    \ \u539F\u5B50\u6839\n     * @param MOD int\n     * @return int\n     */\n   \
-    \ inline int calc_primitive_root(int MOD) {\n        if (MOD == 2) return 1;\n\
-    \        if (MOD == 167772161) return 3;\n        if (MOD == 469762049) return\
-    \ 3;\n        if (MOD == 754974721) return 11;\n        if (MOD == 998244353)\
-    \ return 3;\n        int divs[20] = {};\n        divs[0] = 2;\n        int cnt\
-    \ = 1;\n        long long x = (MOD - 1) >> 1;\n        while (x % 2 == 0) x >>=\
-    \ 1;\n        for (long long i = 3; i * i <= x; i += 2) {\n            if (x %\
-    \ i == 0) {\n                divs[cnt ++] = i;\n                while (x % i ==\
-    \ 0) x /= i;\n            }\n        }\n        if (x > 1) divs[cnt++] = x;\n\
-    \        for (int g = 2;; ++ g) {\n            bool ok = true;\n            for\
-    \ (int i = 0; i < cnt; i++) {\n                if (modpow(g, (MOD - 1) / divs[i],\
-    \ MOD) == 1) {\n                    ok = false;\n                    break;\n\
-    \                }\n            }\n            if (ok) return g;\n        }\n\
-    \    }\n\n    /**\n     * @brief \u7573\u307F\u8FBC\u307F\u306E\u30B5\u30A4\u30BA\
-    \u30922\u306E\u3079\u304D\u4E57\u306B\u3059\u308B\n     */\n    inline int get_fft_size(int\
-    \ N, int M) {\n        int size = 1;\n        while (size < N + M - 1) size <<=\
-    \ 1;\n        return size;\n    }\n\n    /**\n     * @brief NTT\n     */\n   \
-    \ template<class mint> void trans(std::vector<mint>& v, bool inv = false) {\n\
-    \        if (v.empty()) return;\n        int N = (int) v.size();\n        int\
-    \ MOD = v[0].mod();\n        int PR = calc_primitive_root(MOD);\n        static\
-    \ bool first = true;\n        static std::vector<long long> vbw(30), vibw(30);\n\
-    \        if (first) {\n            first = false;\n            for (int k = 0;\
-    \ k < 30; ++ k) {\n                vbw[k] = modpow(PR, (MOD - 1) >> (k + 1), MOD);\n\
-    \                vibw[k] = modinv(vbw[k], MOD);\n            }\n        }\n  \
-    \      for (int i = 0, j = 1; j < N - 1; ++ j) {\n            for (int k = N >>\
-    \ 1; k > (i ^= k); k >>= 1);\n            if (i > j) std::swap(v[i], v[j]);\n\
-    \        }\n        for (int k = 0, t = 2; t <= N; ++ k, t <<= 1) {\n        \
-    \    long long bw = vbw[k];\n            if (inv) bw = vibw[k];\n            for\
-    \ (int i = 0; i < N; i += t) {\n                mint w = 1;\n                for\
-    \ (int j = 0; j < (t >> 1); ++ j) {\n                    int j1 = i + j, j2 =\
-    \ i + j + (t >> 1);\n                    mint c1 = v[j1], c2 = v[j2] * w;\n  \
-    \                  v[j1] = c1 + c2;\n                    v[j2] = c1 - c2;\n  \
-    \                  w *= bw;\n                }\n            }\n        }\n   \
-    \     if (inv) {\n            long long invN = modinv(N, MOD);\n            for\
-    \ (int i = 0; i < N; ++ i) v[i] = v[i] * invN;\n        }\n    }\n\n    static\
-    \ constexpr int MOD0 = 754974721;\n    static constexpr int MOD1 = 167772161;\n\
+    #line 13 \"src/math/convolution.hpp\"\n\n/**\n * @brief \u7573\u307F\u8FBC\u307F\
+    \n */\nnamespace NTT {\n    /**\n     * @brief \u539F\u5B50\u6839\n     * @param\
+    \ MOD int\n     * @return int\n     */\n    inline int calc_primitive_root(int\
+    \ MOD) {\n        if (MOD == 2) return 1;\n        if (MOD == 167772161) return\
+    \ 3;\n        if (MOD == 469762049) return 3;\n        if (MOD == 754974721) return\
+    \ 11;\n        if (MOD == 998244353) return 3;\n        int divs[20] = {};\n \
+    \       divs[0] = 2;\n        int cnt = 1;\n        long long x = (MOD - 1) >>\
+    \ 1;\n        while (x % 2 == 0) x >>= 1;\n        for (long long i = 3; i * i\
+    \ <= x; i += 2) {\n            if (x % i == 0) {\n                divs[cnt ++]\
+    \ = i;\n                while (x % i == 0) x /= i;\n            }\n        }\n\
+    \        if (x > 1) divs[cnt++] = x;\n        for (int g = 2;; ++ g) {\n     \
+    \       bool ok = true;\n            for (int i = 0; i < cnt; i++) {\n       \
+    \         if (modpow(g, (MOD - 1) / divs[i], MOD) == 1) {\n                  \
+    \  ok = false;\n                    break;\n                }\n            }\n\
+    \            if (ok) return g;\n        }\n    }\n\n    /**\n     * @brief \u7573\
+    \u307F\u8FBC\u307F\u306E\u30B5\u30A4\u30BA\u30922\u306E\u3079\u304D\u4E57\u306B\
+    \u3059\u308B\n     */\n    inline int get_fft_size(int N, int M) {\n        int\
+    \ size = 1;\n        while (size < N + M - 1) size <<= 1;\n        return size;\n\
+    \    }\n\n    /**\n     * @brief NTT\n     */\n    template<class mint> void trans(std::vector<mint>&\
+    \ v, bool inv = false) {\n        if (v.empty()) return;\n        int N = (int)\
+    \ v.size();\n        int MOD = v[0].mod();\n        int PR = calc_primitive_root(MOD);\n\
+    \        static bool first = true;\n        static std::vector<long long> vbw(30),\
+    \ vibw(30);\n        if (first) {\n            first = false;\n            for\
+    \ (int k = 0; k < 30; ++ k) {\n                vbw[k] = modpow(PR, (MOD - 1) >>\
+    \ (k + 1), MOD);\n                vibw[k] = modinv(vbw[k], MOD);\n           \
+    \ }\n        }\n        for (int i = 0, j = 1; j < N - 1; ++ j) {\n          \
+    \  for (int k = N >> 1; k > (i ^= k); k >>= 1);\n            if (i > j) std::swap(v[i],\
+    \ v[j]);\n        }\n        for (int k = 0, t = 2; t <= N; ++ k, t <<= 1) {\n\
+    \            long long bw = vbw[k];\n            if (inv) bw = vibw[k];\n    \
+    \        for (int i = 0; i < N; i += t) {\n                mint w = 1;\n     \
+    \           for (int j = 0; j < (t >> 1); ++ j) {\n                    int j1\
+    \ = i + j, j2 = i + j + (t >> 1);\n                    mint c1 = v[j1], c2 = v[j2]\
+    \ * w;\n                    v[j1] = c1 + c2;\n                    v[j2] = c1 -\
+    \ c2;\n                    w *= bw;\n                }\n            }\n      \
+    \  }\n        if (inv) {\n            long long invN = modinv(N, MOD);\n     \
+    \       for (int i = 0; i < N; ++ i) v[i] = v[i] * invN;\n        }\n    }\n\n\
+    \    static constexpr int MOD0 = 754974721;\n    static constexpr int MOD1 = 167772161;\n\
     \    static constexpr int MOD2 = 469762049;\n    using mint0 = static_modint<MOD0>;\n\
     \    using mint1 = static_modint<MOD1>;\n    using mint2 = static_modint<MOD2>;\n\
     \    static const mint1 imod0 = 95869806; // modinv(MOD0, MOD1);\n    static const\
@@ -385,20 +446,20 @@ data:
     \ a0(size_fft, 0), b0(size_fft, 0), c0(size_fft, 0);\n    std::vector<NTT::mint1>\
     \ a1(size_fft, 0), b1(size_fft, 0), c1(size_fft, 0);\n    std::vector<NTT::mint2>\
     \ a2(size_fft, 0), b2(size_fft, 0), c2(size_fft, 0);\n    for (int i = 0; i <\
-    \ N; ++ i) {\n        a0[i] = A[i].value();\n        a1[i] = A[i].value();\n \
-    \       a2[i] = A[i].value();\n    }\n    for (int i = 0; i < M; ++ i) {\n   \
-    \     b0[i] = B[i].value();\n        b1[i] = B[i].value();\n        b2[i] = B[i].value();\n\
-    \    }\n    NTT::trans(a0), NTT::trans(a1), NTT::trans(a2), \n    NTT::trans(b0),\
+    \ N; ++ i) {\n        a0[i] = A[i].val();\n        a1[i] = A[i].val();\n     \
+    \   a2[i] = A[i].val();\n    }\n    for (int i = 0; i < M; ++ i) {\n        b0[i]\
+    \ = B[i].val();\n        b1[i] = B[i].val();\n        b2[i] = B[i].val();\n  \
+    \  }\n    NTT::trans(a0), NTT::trans(a1), NTT::trans(a2), \n    NTT::trans(b0),\
     \ NTT::trans(b1), NTT::trans(b2);\n    for (int i = 0; i < size_fft; ++i) {\n\
     \        c0[i] = a0[i] * b0[i];\n        c1[i] = a1[i] * b1[i];\n        c2[i]\
     \ = a2[i] * b2[i];\n    }\n    NTT::trans(c0, true), NTT::trans(c1, true), NTT::trans(c2,\
     \ true);\n    const mint mod0 = NTT::MOD0, mod01 = mod0 * NTT::MOD1;\n    std::vector<mint>\
     \ res(N + M - 1);\n    for (int i = 0; i < N + M - 1; ++ i) {\n        int y0\
-    \ = c0[i].value();\n        int y1 = (NTT::imod0 * (c1[i] - y0)).value();\n  \
-    \      int y2 = (NTT::imod01 * (c2[i] - y0) - NTT::imod1 * y1).value();\n    \
-    \    res[i] = mod01 * y2 + mod0 * y1 + y0;\n    }\n    return res;\n}\n\n/**\n\
-    \ * @brief long long\u306E\u7573\u307F\u8FBC\u307F\n * @param A vector<long long>\n\
-    \ * @param B vector<long long>\n * @return vector<long long>\n */\ninline std::vector<long\
+    \ = c0[i].val();\n        int y1 = (NTT::imod0 * (c1[i] - y0)).val();\n      \
+    \  int y2 = (NTT::imod01 * (c2[i] - y0) - NTT::imod1 * y1).val();\n        res[i]\
+    \ = mod01 * y2 + mod0 * y1 + y0;\n    }\n    return res;\n}\n\n/**\n * @brief\
+    \ long long\u306E\u7573\u307F\u8FBC\u307F\n * @param A vector<long long>\n * @param\
+    \ B vector<long long>\n * @return vector<long long>\n */\ninline std::vector<long\
     \ long> convolution_ll\n(const std::vector<long long>& A, const std::vector<long\
     \ long>& B) {\n    if (A.empty() || B.empty()) return {};\n    int N = (int) A.size(),\
     \ M = (int) B.size();\n    if (std::min(N, M) < 30) return NTT::naive(A, B);\n\
@@ -415,11 +476,11 @@ data:
     \ true), NTT::trans(c2, true);\n    static const long long mod0 = NTT::MOD0, mod01\
     \ = mod0 * NTT::MOD1;\n    static const __int128_t mod012 = (__int128_t)mod01\
     \ * NTT::MOD2;\n    std::vector<long long> res(N + M - 1);\n    for (int i = 0;\
-    \ i < N + M - 1; ++ i) {\n        int y0 = c0[i].value();\n        int y1 = (NTT::imod0\
-    \ * (c1[i] - y0)).value();\n        int y2 = (NTT::imod01 * (c2[i] - y0) - NTT::imod1\
-    \ * y1).value();\n        __int128_t tmp = (__int128_t)mod01 * y2 + (__int128_t)mod0\
+    \ i < N + M - 1; ++ i) {\n        int y0 = c0[i].val();\n        int y1 = (NTT::imod0\
+    \ * (c1[i] - y0)).val();\n        int y2 = (NTT::imod01 * (c2[i] - y0) - NTT::imod1\
+    \ * y1).val();\n        __int128_t tmp = (__int128_t)mod01 * y2 + (__int128_t)mod0\
     \ * y1 + y0;\n        if(tmp < (mod012 >> 1)) res[i] = tmp;\n        else res[i]\
-    \ = tmp - mod012;\n    }\n    return res;\n}\n#line 12 \"src/math/fps.hpp\"\n\n\
+    \ = tmp - mod012;\n    }\n    return res;\n}\n#line 13 \"src/math/fps.hpp\"\n\n\
     template <typename mint> struct FPS : std::vector<mint> {\n    using std::vector<mint>::vector;\n\
     \ \n    // constructor\n    FPS(const std::vector<mint>& r) : std::vector<mint>(r)\
     \ {}\n \n    // core operator\n    inline FPS pre(int siz) const {\n        return\
@@ -504,20 +565,18 @@ data:
     \ res = exp(log((f >> i) / k, deg) * e, deg) * k.pow(e) << (e * i);\n        res.resize(deg);\n\
     \        return res;\n    }\n    inline friend FPS pow(const FPS& f, long long\
     \ e) {\n        return pow(f, e, f.size());\n    }\n\n    inline friend FPS taylor_shift(FPS\
-    \ f, mint a) {\n        int n = f.size();\n        std::vector<mint> fac(n, 1),\
-    \ inv(n, 1), finv(n, 1);\n        int mod = mint::mod();\n        for(int i =\
-    \ 2; i < n; i ++) {\n            fac[i] = fac[i - 1] * i;\n            inv[i]\
-    \ = -inv[mod % i] * (mod / i);\n            finv[i] = finv[i - 1] * inv[i];\n\
-    \        }\n        for(int i = 0; i < n; i ++) f[i] *= fac[i];\n        std::reverse(f.begin(),\
-    \ f.end());\n        FPS<mint> g(n, 1);\n        for(int i = 1; i < n; i ++) g[i]\
-    \ = g[i - 1] * a * inv[i];\n        f = (f * g).pre(n);\n        std::reverse(f.begin(),\
-    \ f.end());\n        for(int i = 0; i < n; i ++) f[i] *= finv[i];\n        return\
-    \ f;\n    }\n};\n\ntemplate <typename mint> FPS<mint> modpow(const FPS<mint> &f,\
-    \ long long n, const FPS<mint> &m) {\n    if (n == 0) return FPS<mint>(1, 1);\n\
-    \    auto t = modpow(f, n / 2, m);\n    t = (t * t) % m;\n    if (n & 1) t = (t\
-    \ * f) % m;\n    return t;\n}\n#line 4 \"test/yosupo/pow-of-fps.test.cpp\"\n\n\
-    using mint = modint998244353;\n\nint main() {\n    long long n, m;\n    std::cin\
-    \ >> n >> m;\n    FPS<mint> a(n);\n    for(auto& x : a) std::cin >> x;\n    auto\
+    \ f, mint a) {\n        using C = Combination<mint>;\n        int n = f.size();\n\
+    \        C::extend(n);\n        for(int i = 0; i < n; i ++) f[i] *= C::factorial(i);\n\
+    \        std::reverse(f.begin(), f.end());\n        FPS<mint> g(n, 1);\n     \
+    \   for(int i = 1; i < n; i ++) g[i] = g[i - 1] * a * C::inv(i);\n        f =\
+    \ (f * g).pre(n);\n        std::reverse(f.begin(), f.end());\n        for(int\
+    \ i = 0; i < n; i ++) f[i] *= C::inverse_factorial(i);\n        return f;\n  \
+    \  }\n};\n\ntemplate <typename mint> FPS<mint> modpow(const FPS<mint> &f, long\
+    \ long n, const FPS<mint> &m) {\n    if (n == 0) return FPS<mint>(1, 1);\n   \
+    \ auto t = modpow(f, n / 2, m);\n    t = (t * t) % m;\n    if (n & 1) t = (t *\
+    \ f) % m;\n    return t;\n}\n#line 4 \"test/yosupo/pow-of-fps.test.cpp\"\n\nusing\
+    \ mint = modint998244353;\n\nint main() {\n    long long n, m;\n    std::cin >>\
+    \ n >> m;\n    FPS<mint> a(n);\n    for(auto& x : a) std::cin >> x;\n    auto\
     \ f = pow(a, m);\n    for(auto e : f) std::cout << e << \" \";\n    std::cout\
     \ << std::endl;\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/pow_of_formal_power_series\"\
@@ -528,12 +587,14 @@ data:
     }\n"
   dependsOn:
   - src/math/fps.hpp
-  - src/math/number-theory.hpp
+  - src/math/combinatorics.hpp
+  - src/math/modular-arithmetic.hpp
+  - src/math/convolution.hpp
   - src/math/modint.hpp
   isVerificationFile: true
   path: test/yosupo/pow-of-fps.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 12:42:03+09:00'
+  timestamp: '2026-10-14 07:01:49+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/pow-of-fps.test.cpp

@@ -75,61 +75,64 @@ data:
     \ m(0), g(n) {}\n    /**\n     * @brief \u7121\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\
     \u308B\n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n     * @param\
     \ w \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n    void add_edge(int\
-    \ u, int v, Cost w = 1) {\n        g[u].push_back({u, v, w, m});\n        g[v].push_back({v,\
-    \ u, w, m++});\n    }\n    /**\n     * @brief \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\
-    \u3059\u308B\n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n   \
-    \  * @param w \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n  \
-    \  void add_directed_edge(int u, int v, Cost w = 1) {\n        g[u].push_back({u,\
-    \ v, w, m++});\n    }\n    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\
-    \u6E96\u5165\u529B\u304B\u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\
-    \u308B\n     * @param m \u8FBA\u306E\u6570\n     * @param padding \u9802\u70B9\
-    \u756A\u53F7\u3092\u5165\u529B\u304B\u3089\u3044\u304F\u3064\u305A\u3089\u3059\
-    \u304B \u7701\u7565\u3057\u305F\u3089-1\n     * @param weighted \u8FBA\u306E\u91CD\
-    \u307F\u304C\u5165\u529B\u3055\u308C\u308B\u304B \u7701\u7565\u3057\u305F\u3089\
-    false\u3068\u306A\u308A\u3001\u91CD\u307F1\u3067\u8FBA\u304C\u8FFD\u52A0\u3055\
-    \u308C\u308B\n     * @param directed \u6709\u5411\u30B0\u30E9\u30D5\u304B\u3069\
-    \u3046\u304B \u7701\u7565\u3057\u305F\u3089false\n     */\n    void read(int m,\
-    \ int padding = -1, bool weighted = false, bool directed = false) {\n        for\
-    \ (int i = 0; i < m; i++) {\n            int u, v;\n            std::cin >> u\
-    \ >> v;\n            u += padding, v += padding;\n            Cost c(1);\n   \
-    \         if (weighted)\n                std::cin >> c;\n            if (directed)\n\
-    \                add_directed_edge(u, v, c);\n            else\n             \
-    \   add_edge(u, v, c);\n        }\n    }\n    /**\n     * @brief \u3042\u308B\u9802\
-    \u70B9\u304B\u3089\u51FA\u308B\u8FBA\u3092\u5217\u6319\u3059\u308B\n     * @param\
-    \ v \u9802\u70B9\u756A\u53F7\n     * @return std::vector<Edge>& v\u304B\u3089\u51FA\
-    \u308B\u8FBA\u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<Edge> &operator[](int\
-    \ v) {\n        return g[v];\n    }\n    /**\n     * @brief \u3042\u308B\u9802\
-    \u70B9\u304B\u3089\u51FA\u308B\u8FBA\u3092\u5217\u6319\u3059\u308B\n     * @param\
-    \ v \u9802\u70B9\u756A\u53F7\n     * @return const std::vector<Edge>& v\u304B\u3089\
-    \u51FA\u308B\u8FBA\u306E\u30EA\u30B9\u30C8\n     */\n    const std::vector<Edge>\
-    \ &operator[](int v) const {\n        return g[v];\n    }\n    /**\n     * @brief\
-    \ \u8FBA\u306E\u30EA\u30B9\u30C8\n     * @return std::vector<Edge> \u8FBA\u306E\
-    \u30EA\u30B9\u30C8(id\u306E\u6607\u9806)\n     *\n     * \u7121\u5411\u8FBA\u306F\
-    \u4EE3\u8868\u3057\u30661\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\n  \
-    \   */\n    std::vector<Edge> edges() const {\n        std::vector<Edge> res(m);\n\
-    \        for (int i = 0; i < n; i++) {\n            for (auto &e : g[i]) {\n \
-    \               res[e.id] = e;\n            }\n        }\n        return res;\n\
+    \ u, int v, Cost w = 1) {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n\
+    \        g[u].push_back({u, v, w, m});\n        g[v].push_back({v, u, w, m++});\n\
+    \    }\n    /**\n     * @brief \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\
+    \n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n     * @param w\
+    \ \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n    void add_directed_edge(int\
+    \ u, int v, Cost w = 1) {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n\
+    \        g[u].push_back({u, v, w, m++});\n    }\n    /**\n     * @brief \u8FBA\
+    \u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\u529B\u304B\u3089\u53D7\u3051\u53D6\
+    \u3063\u3066\u8FFD\u52A0\u3059\u308B\n     * @param m \u8FBA\u306E\u6570\n   \
+    \  * @param padding \u9802\u70B9\u756A\u53F7\u3092\u5165\u529B\u304B\u3089\u3044\
+    \u304F\u3064\u305A\u3089\u3059\u304B \u7701\u7565\u3057\u305F\u3089-1\n     *\
+    \ @param weighted \u8FBA\u306E\u91CD\u307F\u304C\u5165\u529B\u3055\u308C\u308B\
+    \u304B \u7701\u7565\u3057\u305F\u3089false\u3068\u306A\u308A\u3001\u91CD\u307F\
+    1\u3067\u8FBA\u304C\u8FFD\u52A0\u3055\u308C\u308B\n     * @param directed \u6709\
+    \u5411\u30B0\u30E9\u30D5\u304B\u3069\u3046\u304B \u7701\u7565\u3057\u305F\u3089\
+    false\n     */\n    void read(int m, int padding = -1, bool weighted = false,\
+    \ bool directed = false) {\n        for (int i = 0; i < m; i++) {\n          \
+    \  int u, v;\n            std::cin >> u >> v;\n            u += padding, v +=\
+    \ padding;\n            Cost c(1);\n            if (weighted)\n              \
+    \  std::cin >> c;\n            if (directed)\n                add_directed_edge(u,\
+    \ v, c);\n            else\n                add_edge(u, v, c);\n        }\n  \
+    \  }\n    /**\n     * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u51FA\u308B\u8FBA\
+    \u3092\u5217\u6319\u3059\u308B\n     * @param v \u9802\u70B9\u756A\u53F7\n   \
+    \  * @return std::vector<Edge>& v\u304B\u3089\u51FA\u308B\u8FBA\u306E\u30EA\u30B9\
+    \u30C8\n     */\n    std::vector<Edge> &operator[](int v) {\n        return g[v];\n\
+    \    }\n    /**\n     * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u51FA\u308B\
+    \u8FBA\u3092\u5217\u6319\u3059\u308B\n     * @param v \u9802\u70B9\u756A\u53F7\
+    \n     * @return const std::vector<Edge>& v\u304B\u3089\u51FA\u308B\u8FBA\u306E\
+    \u30EA\u30B9\u30C8\n     */\n    const std::vector<Edge> &operator[](int v) const\
+    \ {\n        return g[v];\n    }\n    /**\n     * @brief \u8FBA\u306E\u30EA\u30B9\
+    \u30C8\n     * @return std::vector<Edge> \u8FBA\u306E\u30EA\u30B9\u30C8(id\u306E\
+    \u6607\u9806)\n     *\n     * \u7121\u5411\u8FBA\u306F\u4EE3\u8868\u3057\u3066\
+    1\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\n     */\n    std::vector<Edge>\
+    \ edges() const {\n        std::vector<Edge> res(m);\n        for (int i = 0;\
+    \ i < n; i++) {\n            for (auto &e : g[i]) {\n                res[e.id]\
+    \ = e;\n            }\n        }\n        return res;\n    }\n    /**\n     *\
+    \ @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\
+    \u77ED\u8DEF\n     *\n     * @param s \u59CB\u70B9\n     * @param weighted 1\u4EE5\
+    \u5916\u306E\u30B3\u30B9\u30C8\u306E\u8FBA\u304C\u5B58\u5728\u3059\u308B\u304B\
+    \ \u7701\u7565\u3059\u308B\u3068true\n     * @param inf \u30B3\u30B9\u30C8\u306E\
+    min\u306E\u5358\u4F4D\u5143 \u672A\u5230\u9054\u306E\u9802\u70B9\u3078\u306E\u8DDD\
+    \u96E2\u306Finf\u306B\u306A\u308B \u7701\u7565\u3059\u308B\u3068 std::numeric_limits<Cost>::max()\
+    \ / 4\n     * @return ShortestPath \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\
+    \u9577 (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\
+    \u306E\u76F4\u524D\u306E\u8FBA (prev)\n     */\n    ShortestPath shortest_path(int\
+    \ s, bool weighted = true, Cost inf = std::numeric_limits<Cost>::max() / 4) const\
+    \ {\n        assert(0 <= s && s < n);\n        if (weighted)\n            return\
+    \ shortest_path_dijkstra(s, inf);\n        return shortest_path_bfs(s, inf);\n\
     \    }\n    /**\n     * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\
     \u70B9\u3078\u306E\u6700\u77ED\u8DEF\n     *\n     * @param s \u59CB\u70B9\n \
-    \    * @param weighted 1\u4EE5\u5916\u306E\u30B3\u30B9\u30C8\u306E\u8FBA\u304C\
-    \u5B58\u5728\u3059\u308B\u304B \u7701\u7565\u3059\u308B\u3068true\n     * @param\
-    \ inf \u30B3\u30B9\u30C8\u306Emin\u306E\u5358\u4F4D\u5143 \u672A\u5230\u9054\u306E\
-    \u9802\u70B9\u3078\u306E\u8DDD\u96E2\u306Finf\u306B\u306A\u308B \u7701\u7565\u3059\
-    \u308B\u3068\n     * @return ShortestPath \u5404\u9802\u70B9\u3078\u306E\u6700\
-    \u77ED\u8DEF\u9577 (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\
-    \u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA (prev)\n     */\n    ShortestPath shortest_path(int\
-    \ s, bool weighted = true, Cost inf = -1) const {\n        if (weighted)\n   \
-    \         return shortest_path_dijkstra(s, inf);\n        return shortest_path_bfs(s,\
-    \ inf);\n    }\n    /**\n     * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\
-    \u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\n     *\n     * @param s \u59CB\u70B9\
-    \n     * @param inf \u30B3\u30B9\u30C8\u306Emin\u306E\u5358\u4F4D\u5143 \u672A\
-    \u5230\u9054\u306E\u9802\u70B9\u3078\u306E\u8DDD\u96E2\u306Finf\u306B\u306A\u308B\
-    \ \u7701\u7565\u3059\u308B\u3068 std::numeric_limits<Cost>::max() / 4 \u8CA0\u9589\
-    \u8DEF\u306E\u5F71\u97FF\u3092\u53D7\u3051\u308B\u70B9\u306F -inf\n     * @return\
-    \ ShortestPath \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u9577 (dist) \u3068\
-    \u3001\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\u306E\u76F4\u524D\
-    \u306E\u8FBA (prev)\n     */\n    ShortestPath bellman_ford(int s, Cost inf =\
-    \ std::numeric_limits<Cost>::max() / 4) const {\n        std::vector<Cost> dist(n,\
+    \    * @param inf \u30B3\u30B9\u30C8\u306Emin\u306E\u5358\u4F4D\u5143 \u672A\u5230\
+    \u9054\u306E\u9802\u70B9\u3078\u306E\u8DDD\u96E2\u306Finf\u306B\u306A\u308B \u7701\
+    \u7565\u3059\u308B\u3068 std::numeric_limits<Cost>::max() / 4 \u8CA0\u9589\u8DEF\
+    \u306E\u5F71\u97FF\u3092\u53D7\u3051\u308B\u70B9\u306F -inf\n     * @return ShortestPath\
+    \ \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u9577 (dist) \u3068\u3001\u5404\
+    \u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA\
+    \ (prev)\n     */\n    ShortestPath bellman_ford(int s, Cost inf = std::numeric_limits<Cost>::max()\
+    \ / 4) const {\n        assert(0 <= s && s < n);\n        std::vector<Cost> dist(n,\
     \ inf);\n        std::vector<Edge> prev(n);\n        dist[s] = Cost{};\n\n   \
     \     for (int i = 1; i < n; i++) {\n            bool changed = false;\n     \
     \       for (int j = 0; j < n; j++)\n                for (const auto &e : g[j])\
@@ -151,16 +154,17 @@ data:
     \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\
     \u8DEF (01-BFS) O(n + m)\n     *\n     * @param s \u59CB\u70B9\n     * @param\
     \ inf \u672A\u5230\u9054\u306E\u9802\u70B9\u3078\u306E\u8DDD\u96E2 \u7701\u7565\
-    \u3059\u308B\u3068 -1\n     * @return ShortestPath \u5404\u9802\u70B9\u3078\u306E\
-    \u6700\u77ED\u8DEF\u9577 (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\u306E\u6700\
-    \u77ED\u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA (prev)\n     */\n    ShortestPath\
-    \ shortest_path_01bfs(int s, Cost inf = -1) const {\n        std::vector<Cost>\
-    \ dist(n, inf);\n        std::vector<Edge> prev(n);\n        std::deque<int> que;\n\
-    \        dist[s] = 0;\n        que.push_back(s);\n        while (!que.empty())\
-    \ {\n            int u = que.front();\n            que.pop_front();\n        \
-    \    for (auto &e : g[u]) {\n                assert(e.cost == 0 || e.cost == 1);\n\
-    \                if (dist[e.dst] == inf || dist[e.dst] > dist[u] + e.cost) {\n\
-    \                    dist[e.dst] = dist[u] + e.cost;\n                    prev[e.dst]\
+    \u3059\u308B\u3068 std::numeric_limits<Cost>::max() / 4\n     * @return ShortestPath\
+    \ \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u9577 (dist) \u3068\u3001\u5404\
+    \u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA\
+    \ (prev)\n     */\n    ShortestPath shortest_path_01bfs(int s, Cost inf = std::numeric_limits<Cost>::max()\
+    \ / 4) const {\n        assert(0 <= s && s < n);\n        std::vector<Cost> dist(n,\
+    \ inf);\n        std::vector<Edge> prev(n);\n        std::deque<int> que;\n  \
+    \      dist[s] = 0;\n        que.push_back(s);\n        while (!que.empty()) {\n\
+    \            int u = que.front();\n            que.pop_front();\n            for\
+    \ (auto &e : g[u]) {\n                assert(e.cost == 0 || e.cost == 1);\n  \
+    \              if (dist[e.dst] == inf || dist[e.dst] > dist[u] + e.cost) {\n \
+    \                   dist[e.dst] = dist[u] + e.cost;\n                    prev[e.dst]\
     \ = e;\n                    if (e.cost == 0) que.push_front(e.dst);\n        \
     \            else que.push_back(e.dst);\n                }\n            }\n  \
     \      }\n        return {dist, prev};\n    }\n    /**\n     * @brief \u5168\u70B9\
@@ -257,40 +261,45 @@ data:
     \u5FDC\u3059\u308B\u533A\u9593 [l, r)\n     */\n    std::pair<int, int> subtree(int\
     \ v) const { return {in[v], in[v] + sz[v]}; }\n\n    /**\n     * @brief u \u3068\
     \ v \u306E\u6700\u5C0F\u5171\u901A\u7956\u5148 O(log n)\n     */\n    int lca(int\
-    \ u, int v) const {\n        while (head[u] != head[v]) {\n            if (dep[head[u]]\
-    \ < dep[head[v]]) std::swap(u, v);\n            u = par[head[u]];\n        }\n\
-    \        return dep[u] < dep[v] ? u : v;\n    }\n    /**\n     * @brief u \u3068\
-    \ v \u306E\u9593\u306E\u8FBA\u306E\u672C\u6570 O(log n)\n     */\n    int dist(int\
-    \ u, int v) const { return dep[u] + dep[v] - 2 * dep[lca(u, v)]; }\n    /**\n\
-    \     * @brief v \u304B\u3089\u6839\u306E\u65B9\u3078 k \u672C\u306E\u8FBA\u3092\
-    \u9032\u3093\u3060\u9802\u70B9 (k > depth(v) \u306A\u3089 -1) O(log n)\n     */\n\
-    \    int climb(int v, int k) const {\n        if (k < 0 || k > dep[v]) return\
-    \ -1;\n        while (true) {\n            int h = head[v];\n            if (in[v]\
-    \ - in[h] >= k) return order[in[v] - k];\n            k -= in[v] - in[h] + 1;\n\
-    \            v = par[h];\n        }\n    }\n    /**\n     * @brief u \u304B\u3089\
-    \ v \u3078\u306E\u30D1\u30B9\u3067\u3001u \u304B\u3089 k \u672C\u306E\u8FBA\u3092\
-    \u9032\u3093\u3060\u9802\u70B9 (k > dist(u, v) \u306A\u3089 -1) O(log n)\n   \
-    \  */\n    int jump(int u, int v, int k) const {\n        if (k < 0) return -1;\n\
-    \        int w = lca(u, v);\n        int du = dep[u] - dep[w], dv = dep[v] - dep[w];\n\
-    \        if (k <= du) return climb(u, k);\n        if (k <= du + dv) return climb(v,\
-    \ du + dv - k);\n        return -1;\n    }\n\n    /**\n     * @brief u \u304B\u3089\
-    \ v \u3078\u306E\u30D1\u30B9\u3092\u3001\u5217\u306E\u533A\u9593\u306B\u5206\u3051\
-    \u3066 u \u5074\u304B\u3089\u9806\u306B\u4E26\u3079\u308B O(log n)\n     *\n \
-    \    * \u5404\u8981\u7D20 (a, b) \u306F\u3001\u5217\u306E a \u756A\u76EE\u304B\
-    \u3089 b \u756A\u76EE\u307E\u3067 (\u4E21\u7AEF\u3092\u542B\u3080) \u3092\u3001\
-    a \u304B\u3089 b \u306E\u5411\u304D\u306B\u305F\u3069\u308B\u3053\u3068\u3092\u8868\
-    \u3059\n     * a > b \u306A\u3089 index \u304C\u6E1B\u308B\u5411\u304D (\u6839\
-    \u306B\u8FD1\u3065\u304F\u5411\u304D) \u306B\u305F\u3069\u308B\n     * \u4EA4\u63DB\
-    \u6CD5\u5247\u304C\u6210\u308A\u7ACB\u305F\u306A\u3044\u6F14\u7B97\u3067\u306F\
-    \u3001a > b \u306E\u533A\u9593\u306F\u9006\u9806\u306E\u7A4D\u3092\u4F7F\u3046\
-    \n     * @param edge true \u306A\u3089\u8FBA\u306B\u3064\u3044\u3066\u306E\u30D1\
-    \u30B9\u306B\u3059\u308B\u3002\u8FBA (parent(v), v) \u3092 index(v) \u756A\u76EE\
-    \u306B\u5BFE\u5FDC\u3055\u305B\u3001lca \u306E\u4F4D\u7F6E\u3092\u542B\u3081\u306A\
-    \u3044\n     */\n    std::vector<std::pair<int, int>> path(int u, int v, bool\
-    \ edge = false) const {\n        std::vector<std::pair<int, int>> up, down;\n\
-    \        while (head[u] != head[v]) {\n            if (dep[head[u]] >= dep[head[v]])\
-    \ {\n                up.emplace_back(in[u], in[head[u]]);\n                u =\
-    \ par[head[u]];\n            } else {\n                down.emplace_back(in[head[v]],\
+    \ u, int v) const {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n   \
+    \     while (head[u] != head[v]) {\n            if (dep[head[u]] < dep[head[v]])\
+    \ std::swap(u, v);\n            u = par[head[u]];\n        }\n        return dep[u]\
+    \ < dep[v] ? u : v;\n    }\n    /**\n     * @brief u \u3068 v \u306E\u9593\u306E\
+    \u8FBA\u306E\u672C\u6570 O(log n)\n     */\n    int dist(int u, int v) const {\
+    \ return dep[u] + dep[v] - 2 * dep[lca(u, v)]; }\n    /**\n     * @brief v \u304B\
+    \u3089\u6839\u306E\u65B9\u3078 k \u672C\u306E\u8FBA\u3092\u9032\u3093\u3060\u9802\
+    \u70B9 (k > depth(v) \u306A\u3089 -1) O(log n)\n     */\n    int hop(int v, int\
+    \ k) const {\n        assert(0 <= v && v < n && k >= 0);\n        if (k > dep[v])\
+    \ return -1;\n        while (true) {\n            int h = head[v];\n         \
+    \   if (in[v] - in[h] >= k) return order[in[v] - k];\n            k -= in[v] -\
+    \ in[h] + 1;\n            v = par[h];\n        }\n    }\n    /**\n     * @brief\
+    \ u \u304B\u3089 v \u3078\u306E\u30D1\u30B9\u3067\u3001u \u304B\u3089 k \u672C\
+    \u306E\u8FBA\u3092\u9032\u3093\u3060\u9802\u70B9 (k > dist(u, v) \u306A\u3089\
+    \ -1) O(log n)\n     */\n    int jump(int u, int v, int k) const {\n        assert(0\
+    \ <= u && u < n && 0 <= v && v < n && k >= 0);\n        int w = lca(u, v);\n \
+    \       int du = dep[u] - dep[w], dv = dep[v] - dep[w];\n        if (k <= du)\
+    \ return hop(u, k);\n        if (k <= du + dv) return hop(v, du + dv - k);\n \
+    \       return -1;\n    }\n\n    /**\n     * @brief u \u304B\u3089 v \u3078\u306E\
+    \u30D1\u30B9\u3092\u3001\u5217\u306E\u533A\u9593\u306B\u5206\u3051\u3066 u \u5074\
+    \u304B\u3089\u9806\u306B\u4E26\u3079\u308B O(log n)\n     *\n     * \u5404\u8981\
+    \u7D20 (a, b) \u306F\u3001\u5217\u306E a \u756A\u76EE\u304B\u3089 b \u756A\u76EE\
+    \u307E\u3067 (\u4E21\u7AEF\u3092\u542B\u3080) \u3092\u3001a \u304B\u3089 b \u306E\
+    \u5411\u304D\u306B\u305F\u3069\u308B\u3053\u3068\u3092\u8868\u3059\n     * \u5411\
+    \u304D\u3092\u8868\u3059\u305F\u3081\u3001\u3053\u306E\u30E9\u30A4\u30D6\u30E9\
+    \u30EA\u306E\u4ED6\u306E\u533A\u9593 (\u534A\u958B\u533A\u9593 [l, r)) \u3068\u9055\
+    \u3063\u3066\u9589\u533A\u9593\u306B\u306A\u3063\u3066\u3044\u308B\n     * a >\
+    \ b \u306A\u3089 index \u304C\u6E1B\u308B\u5411\u304D (\u6839\u306B\u8FD1\u3065\
+    \u304F\u5411\u304D) \u306B\u305F\u3069\u308B\n     * \u4EA4\u63DB\u6CD5\u5247\u304C\
+    \u6210\u308A\u7ACB\u305F\u306A\u3044\u6F14\u7B97\u3067\u306F\u3001a > b \u306E\
+    \u533A\u9593\u306F\u9006\u9806\u306E\u7A4D\u3092\u4F7F\u3046\n     * @param edge\
+    \ true \u306A\u3089\u8FBA\u306B\u3064\u3044\u3066\u306E\u30D1\u30B9\u306B\u3059\
+    \u308B\u3002\u8FBA (parent(v), v) \u3092 index(v) \u756A\u76EE\u306B\u5BFE\u5FDC\
+    \u3055\u305B\u3001lca \u306E\u4F4D\u7F6E\u3092\u542B\u3081\u306A\u3044\n     */\n\
+    \    std::vector<std::pair<int, int>> path(int u, int v, bool edge = false) const\
+    \ {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n        std::vector<std::pair<int,\
+    \ int>> up, down;\n        while (head[u] != head[v]) {\n            if (dep[head[u]]\
+    \ >= dep[head[v]]) {\n                up.emplace_back(in[u], in[head[u]]);\n \
+    \               u = par[head[u]];\n            } else {\n                down.emplace_back(in[head[v]],\
     \ in[v]);\n                v = par[head[v]];\n            }\n        }\n     \
     \   if (dep[u] >= dep[v]) {\n            // v \u304C lca\n            int l =\
     \ in[v] + edge;\n            if (l <= in[u]) up.emplace_back(in[u], l);\n    \
@@ -364,7 +373,7 @@ data:
     \ //!< \u91CD\u307F\u306A\u3057\u306E\u6DF1\u3055\u306E\u30EA\u30B9\u30C8\n  \
     \  std::vector<int> unweighted_height; //!< \u91CD\u307F\u306A\u3057\u306E\u90E8\
     \u5206\u6728\u306E\u9AD8\u3055\u306E\u30EA\u30B9\u30C8\n    std::vector<int> sz;\
-    \ //!< \u90E8\u5206\u671F\u306E\u9802\u70B9\u6570\u306E\u30EA\u30B9\u30C8\n  \
+    \ //!< \u90E8\u5206\u6728\u306E\u9802\u70B9\u6570\u306E\u30EA\u30B9\u30C8\n  \
     \  std::vector<int> preorder; //!< \u5148\u884C\u9806\u5DE1\u56DE\n    std::vector<int>\
     \ postorder; //!< \u5F8C\u884C\u9806\u5DE1\u56DE\n    std::vector<std::pair<int,\
     \ int>> euler_tour; //!< \u30AA\u30A4\u30E9\u30FC\u30C4\u30A2\u30FC DFS\u4E2D\u306B\
@@ -421,7 +430,7 @@ data:
     \ + 1;\n                stk.emplace(u, cnt + 1);\n                stk.emplace(e.dst,\
     \ 0);\n            }\n        }\n    }\n};\n\n/**\n * @brief \u89AA\u9802\u70B9\
     \u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\u307F\u6839\u4ED8\u304D\u6728\n * \n * @tparam\
-    \ Cost = int \u8FBA\u306E\u91CD\u307F(\u6CE8: climb\u3067\u306F\u6839\u306E\u91CD\
+    \ Cost = int \u8FBA\u306E\u91CD\u307F(\u6CE8: hop\u3067\u306F\u6839\u306E\u91CD\
     \u307F\u306F\u8003\u3048\u306A\u3044)\n */\ntemplate <typename Cost = int>\nstruct\
     \ DoublingClimbTree : private RootedTree<Cost> {\n    using Edge = typename RootedTree<Cost>::Edge;\n\
     \    using RootedTree<Cost>::n;\n    using RootedTree<Cost>::m;\n    using RootedTree<Cost>::g;\n\
@@ -465,31 +474,33 @@ data:
     \  }\n    \n    /**\n     * @brief \u9802\u70B9u\u304B\u3089k\u56DE\u3092\u6839\
     \u306E\u65B9\u5411\u306B\u9061\u3063\u305F\u9802\u70B9\n     * \n     * @param\
     \ u \u5143\u306E\u9802\u70B9\n     * @param k \u767B\u308B\u6BB5\u6570\n     *\
-    \ @return int k\u56DE\u767B\u3063\u305F\u9802\u70B9\n     */\n    int climb(int\
-    \ u, int k) const {\n        assert(k >= 0);\n        if(k > this->unweighted_depth[u])\
-    \ return -1;\n        for(int i = 0; i < h; i++) {\n            if(k >> i & 1)\
-    \ u = doubling_par[i][u];\n            if(u == -1) return -1;\n        }\n   \
-    \     return u;\n    }\n    \n    /**\n     * @brief \u6700\u5C0F\u5171\u901A\u7956\
-    \u5148\n     * \n     * @param u \u9802\u70B91\n     * @param v \u9802\u70B92\n\
-    \     * @return int LCA\u306E\u9802\u70B9\u756A\u53F7\n     */\n    int lca(int\
-    \ u, int v) const {\n        if(this->unweighted_depth[u] > this->unweighted_depth[v])\
-    \ std::swap(u, v);\n        v = climb(v, this->unweighted_depth[v] - this->unweighted_depth[u]);\n\
-    \        if(u == v) return u;\n        for(int i = h - 1; i >= 0; i--) {\n   \
-    \         int nu = doubling_par[i][u];\n            int nv = doubling_par[i][v];\n\
-    \            if(nu == -1) continue;\n            if(nu != nv) {\n            \
-    \    u = nu;\n                v = nv;\n            }\n        }\n        return\
-    \ this->par[u];\n    }\n    \n    /**\n     * @brief \u9802\u70B9\u9593\u8DDD\u96E2\
-    (\u91CD\u307F\u4ED8\u304D)\n     * \n     * @param u \u9802\u70B91\n     * @param\
-    \ v \u9802\u70B92\n     * @return Cost u\u3068v\u9593\u306E\u6700\u77ED\u7D4C\u8DEF\
-    \u306E\u8FBA\u306E\u91CD\u307F\u306E\u548C\n     */\n    Cost dist(int u, int\
-    \ v) const {\n        return this->depth[u] + this->depth[v] - this->depth[lca(u,\
-    \ v)] * 2;\n    }\n    \nprivate:\n    void build() {\n        int n = this->n;\n\
-    \        h = 1;\n        while((1 << h) < n) h++;\n        doubling_par.assign(h,\
-    \ std::vector<int>(n, -1));\n        for(int i = 0; i < n; i++) doubling_par[0][i]\
-    \ = this->par[i];\n        for(int i = 0; i < h - 1; i++) {\n            for(int\
-    \ j = 0; j < n; j++) {\n                if(doubling_par[i][j] != -1) {\n     \
-    \               doubling_par[i+1][j] = doubling_par[i][doubling_par[i][j]];\n\
-    \                }\n            }\n        }\n    }\n};\n#line 15 \"test/unittest/heavy-light-decomposition.test.cpp\"\
+    \ @return int k\u56DE\u767B\u3063\u305F\u9802\u70B9\n     */\n    int hop(int\
+    \ u, int k) const {\n        assert(0 <= u && u < this->n && k >= 0);\n      \
+    \  if(k > this->unweighted_depth[u]) return -1;\n        for(int i = 0; i < h;\
+    \ i++) {\n            if(k >> i & 1) u = doubling_par[i][u];\n            if(u\
+    \ == -1) return -1;\n        }\n        return u;\n    }\n    \n    /**\n    \
+    \ * @brief \u6700\u5C0F\u5171\u901A\u7956\u5148\n     * \n     * @param u \u9802\
+    \u70B91\n     * @param v \u9802\u70B92\n     * @return int LCA\u306E\u9802\u70B9\
+    \u756A\u53F7\n     */\n    int lca(int u, int v) const {\n        assert(0 <=\
+    \ u && u < this->n && 0 <= v && v < this->n);\n        if(this->unweighted_depth[u]\
+    \ > this->unweighted_depth[v]) std::swap(u, v);\n        v = hop(v, this->unweighted_depth[v]\
+    \ - this->unweighted_depth[u]);\n        if(u == v) return u;\n        for(int\
+    \ i = h - 1; i >= 0; i--) {\n            int nu = doubling_par[i][u];\n      \
+    \      int nv = doubling_par[i][v];\n            if(nu == -1) continue;\n    \
+    \        if(nu != nv) {\n                u = nu;\n                v = nv;\n  \
+    \          }\n        }\n        return this->par[u];\n    }\n    \n    /**\n\
+    \     * @brief \u9802\u70B9\u9593\u8DDD\u96E2(\u91CD\u307F\u4ED8\u304D)\n    \
+    \ * \n     * @param u \u9802\u70B91\n     * @param v \u9802\u70B92\n     * @return\
+    \ Cost u\u3068v\u9593\u306E\u6700\u77ED\u7D4C\u8DEF\u306E\u8FBA\u306E\u91CD\u307F\
+    \u306E\u548C\n     */\n    Cost dist(int u, int v) const {\n        return this->depth[u]\
+    \ + this->depth[v] - this->depth[lca(u, v)] * 2;\n    }\n    \nprivate:\n    void\
+    \ build() {\n        int n = this->n;\n        h = 1;\n        while((1 << h)\
+    \ < n) h++;\n        doubling_par.assign(h, std::vector<int>(n, -1));\n      \
+    \  for(int i = 0; i < n; i++) doubling_par[0][i] = this->par[i];\n        for(int\
+    \ i = 0; i < h - 1; i++) {\n            for(int j = 0; j < n; j++) {\n       \
+    \         if(doubling_par[i][j] != -1) {\n                    doubling_par[i+1][j]\
+    \ = doubling_par[i][doubling_par[i][j]];\n                }\n            }\n \
+    \       }\n    }\n};\n#line 15 \"test/unittest/heavy-light-decomposition.test.cpp\"\
     \n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int\
     \ rep = 0; rep < 500 && ok; rep++) {\n        int n = rng() % 30 + 1;\n      \
     \  int root = rng() % n;\n        // \u30E9\u30F3\u30C0\u30E0\u306A\u6728 (\u7D30\
@@ -526,34 +537,33 @@ data:
     \       int d = p.size() - 1;\n                int w = *std::min_element(p.begin(),\
     \ p.end(), [&](int a, int b) { return dep[a] < dep[b]; });\n                if\
     \ (hld.lca(u, v) != w || hld.dist(u, v) != d) ok = false;\n                for\
-    \ (int k = -1; k <= d + 1; k++) {\n                    int expect = 0 <= k &&\
-    \ k <= d ? p[k] : -1;\n                    if (hld.jump(u, v, k) != expect) ok\
-    \ = false;\n                }\n                // path \u304C\u8FD4\u3059\u533A\
-    \u9593\u3092\u3064\u306A\u3052\u308B\u3068\u3001u \u304B\u3089 v \u3078\u306E\u9802\
-    \u70B9\u306E\u5217\u306B\u306A\u308B\n                std::vector<int> got, got_edge;\n\
-    \                for (auto [a, b] : hld.path(u, v)) {\n                    int\
-    \ step = a <= b ? 1 : -1;\n                    for (int i = a;; i += step) {\n\
-    \                        got.push_back(hld.vertex(i));\n                     \
-    \   if (i == b) break;\n                    }\n                }\n           \
-    \     if (got != p) ok = false;\n                // \u8FBA\u306E\u30D1\u30B9:\
-    \ lca \u3092\u9664\u3044\u305F\u9802\u70B9 (\u305D\u306E\u9802\u70B9\u3068\u89AA\
-    \u3092\u7D50\u3076\u8FBA) \u306E\u5217\n                for (auto [a, b] : hld.path(u,\
-    \ v, true)) {\n                    int step = a <= b ? 1 : -1;\n             \
-    \       for (int i = a;; i += step) {\n                        got_edge.push_back(hld.vertex(i));\n\
+    \ (int k = 0; k <= d + 1; k++) {\n                    int expect = k <= d ? p[k]\
+    \ : -1;\n                    if (hld.jump(u, v, k) != expect) ok = false;\n  \
+    \              }\n                // path \u304C\u8FD4\u3059\u533A\u9593\u3092\
+    \u3064\u306A\u3052\u308B\u3068\u3001u \u304B\u3089 v \u3078\u306E\u9802\u70B9\u306E\
+    \u5217\u306B\u306A\u308B\n                std::vector<int> got, got_edge;\n  \
+    \              for (auto [a, b] : hld.path(u, v)) {\n                    int step\
+    \ = a <= b ? 1 : -1;\n                    for (int i = a;; i += step) {\n    \
+    \                    got.push_back(hld.vertex(i));\n                        if\
+    \ (i == b) break;\n                    }\n                }\n                if\
+    \ (got != p) ok = false;\n                // \u8FBA\u306E\u30D1\u30B9: lca \u3092\
+    \u9664\u3044\u305F\u9802\u70B9 (\u305D\u306E\u9802\u70B9\u3068\u89AA\u3092\u7D50\
+    \u3076\u8FBA) \u306E\u5217\n                for (auto [a, b] : hld.path(u, v,\
+    \ true)) {\n                    int step = a <= b ? 1 : -1;\n                \
+    \    for (int i = a;; i += step) {\n                        got_edge.push_back(hld.vertex(i));\n\
     \                        if (i == b) break;\n                    }\n         \
     \       }\n                std::vector<int> expect_edge;\n                for\
     \ (int x : p) {\n                    if (x != w) expect_edge.push_back(x);\n \
     \               }\n                if (got_edge != expect_edge) ok = false;\n\
-    \            }\n            for (int k = -1; k <= n; k++) {\n                int\
+    \            }\n            for (int k = 0; k <= n; k++) {\n                int\
     \ x = u;\n                for (int i = 0; i < k && x != -1; i++) x = par[x];\n\
-    \                if (hld.climb(u, k) != (k < 0 ? -1 : x)) ok = false;\n      \
-    \      }\n        }\n        // Tree \u3084 RootedTree \u304B\u3089\u3082\u540C\
-    \u3058\u3082\u306E\u304C\u4F5C\u308C\u308B\n        HeavyLightDecomposition h2(t,\
-    \ root);\n        HeavyLightDecomposition h3(t.set_root(root), root);\n      \
-    \  for (int v = 0; v < n; v++) {\n            if (h2.index(v) != hld.index(v)\
-    \ || h3.lca(v, root) != root) ok = false;\n        }\n    }\n\n    if (ok) std::cout\
-    \ << \"Hello World\" << std::endl;\n    else std::cerr << \"failed\" << std::endl;\n\
-    }\n"
+    \                if (hld.hop(u, k) != x) ok = false;\n            }\n        }\n\
+    \        // Tree \u3084 RootedTree \u304B\u3089\u3082\u540C\u3058\u3082\u306E\u304C\
+    \u4F5C\u308C\u308B\n        HeavyLightDecomposition h2(t, root);\n        HeavyLightDecomposition\
+    \ h3(t.set_root(root), root);\n        for (int v = 0; v < n; v++) {\n       \
+    \     if (h2.index(v) != hld.index(v) || h3.lca(v, root) != root) ok = false;\n\
+    \        }\n    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
+    \    else std::cerr << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// HeavyLightDecomposition \u3092\u3001\u89AA\u3092 1 \u3064\u305A\u3064\u305F\
     \u3069\u308B\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u30E9\u30F3\u30C0\u30E0\u306B\
@@ -598,34 +608,33 @@ data:
     \       int d = p.size() - 1;\n                int w = *std::min_element(p.begin(),\
     \ p.end(), [&](int a, int b) { return dep[a] < dep[b]; });\n                if\
     \ (hld.lca(u, v) != w || hld.dist(u, v) != d) ok = false;\n                for\
-    \ (int k = -1; k <= d + 1; k++) {\n                    int expect = 0 <= k &&\
-    \ k <= d ? p[k] : -1;\n                    if (hld.jump(u, v, k) != expect) ok\
-    \ = false;\n                }\n                // path \u304C\u8FD4\u3059\u533A\
-    \u9593\u3092\u3064\u306A\u3052\u308B\u3068\u3001u \u304B\u3089 v \u3078\u306E\u9802\
-    \u70B9\u306E\u5217\u306B\u306A\u308B\n                std::vector<int> got, got_edge;\n\
-    \                for (auto [a, b] : hld.path(u, v)) {\n                    int\
-    \ step = a <= b ? 1 : -1;\n                    for (int i = a;; i += step) {\n\
-    \                        got.push_back(hld.vertex(i));\n                     \
-    \   if (i == b) break;\n                    }\n                }\n           \
-    \     if (got != p) ok = false;\n                // \u8FBA\u306E\u30D1\u30B9:\
-    \ lca \u3092\u9664\u3044\u305F\u9802\u70B9 (\u305D\u306E\u9802\u70B9\u3068\u89AA\
-    \u3092\u7D50\u3076\u8FBA) \u306E\u5217\n                for (auto [a, b] : hld.path(u,\
-    \ v, true)) {\n                    int step = a <= b ? 1 : -1;\n             \
-    \       for (int i = a;; i += step) {\n                        got_edge.push_back(hld.vertex(i));\n\
+    \ (int k = 0; k <= d + 1; k++) {\n                    int expect = k <= d ? p[k]\
+    \ : -1;\n                    if (hld.jump(u, v, k) != expect) ok = false;\n  \
+    \              }\n                // path \u304C\u8FD4\u3059\u533A\u9593\u3092\
+    \u3064\u306A\u3052\u308B\u3068\u3001u \u304B\u3089 v \u3078\u306E\u9802\u70B9\u306E\
+    \u5217\u306B\u306A\u308B\n                std::vector<int> got, got_edge;\n  \
+    \              for (auto [a, b] : hld.path(u, v)) {\n                    int step\
+    \ = a <= b ? 1 : -1;\n                    for (int i = a;; i += step) {\n    \
+    \                    got.push_back(hld.vertex(i));\n                        if\
+    \ (i == b) break;\n                    }\n                }\n                if\
+    \ (got != p) ok = false;\n                // \u8FBA\u306E\u30D1\u30B9: lca \u3092\
+    \u9664\u3044\u305F\u9802\u70B9 (\u305D\u306E\u9802\u70B9\u3068\u89AA\u3092\u7D50\
+    \u3076\u8FBA) \u306E\u5217\n                for (auto [a, b] : hld.path(u, v,\
+    \ true)) {\n                    int step = a <= b ? 1 : -1;\n                \
+    \    for (int i = a;; i += step) {\n                        got_edge.push_back(hld.vertex(i));\n\
     \                        if (i == b) break;\n                    }\n         \
     \       }\n                std::vector<int> expect_edge;\n                for\
     \ (int x : p) {\n                    if (x != w) expect_edge.push_back(x);\n \
     \               }\n                if (got_edge != expect_edge) ok = false;\n\
-    \            }\n            for (int k = -1; k <= n; k++) {\n                int\
+    \            }\n            for (int k = 0; k <= n; k++) {\n                int\
     \ x = u;\n                for (int i = 0; i < k && x != -1; i++) x = par[x];\n\
-    \                if (hld.climb(u, k) != (k < 0 ? -1 : x)) ok = false;\n      \
-    \      }\n        }\n        // Tree \u3084 RootedTree \u304B\u3089\u3082\u540C\
-    \u3058\u3082\u306E\u304C\u4F5C\u308C\u308B\n        HeavyLightDecomposition h2(t,\
-    \ root);\n        HeavyLightDecomposition h3(t.set_root(root), root);\n      \
-    \  for (int v = 0; v < n; v++) {\n            if (h2.index(v) != hld.index(v)\
-    \ || h3.lca(v, root) != root) ok = false;\n        }\n    }\n\n    if (ok) std::cout\
-    \ << \"Hello World\" << std::endl;\n    else std::cerr << \"failed\" << std::endl;\n\
-    }\n"
+    \                if (hld.hop(u, k) != x) ok = false;\n            }\n        }\n\
+    \        // Tree \u3084 RootedTree \u304B\u3089\u3082\u540C\u3058\u3082\u306E\u304C\
+    \u4F5C\u308C\u308B\n        HeavyLightDecomposition h2(t, root);\n        HeavyLightDecomposition\
+    \ h3(t.set_root(root), root);\n        for (int v = 0; v < n; v++) {\n       \
+    \     if (h2.index(v) != hld.index(v) || h3.lca(v, root) != root) ok = false;\n\
+    \        }\n    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
+    \    else std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/graph/graph.hpp
   - src/graph/heavy-light-decomposition.hpp
@@ -633,7 +642,7 @@ data:
   isVerificationFile: true
   path: test/unittest/heavy-light-decomposition.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 20:58:56+09:00'
+  timestamp: '2026-10-14 07:05:41+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/heavy-light-decomposition.test.cpp

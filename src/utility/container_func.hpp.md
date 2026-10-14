@@ -193,9 +193,11 @@ data:
     \        return v[a] < v[b];\n    });\n    if (v.size() & 1) {\n        return\
     \ v[u[v.size() / 2]];\n    }\n    // C++20\n    // return std::midpoint(v[u[v.size()\
     \ / 2]], v[u[v.size() / 2 - 1]]);\n    return (v[u[v.size() / 2]] + v[u[v.size()\
-    \ / 2 - 1]]) / 2;\n}\n\ntemplate <class C, typename U>\ninline constexpr std::ptrdiff_t\
-    \ index(const C &v, const U &x) {\n    return std::distance(v.begin(), find(v,\
-    \ x));\n}\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
+    \ / 2 - 1]]) / 2;\n}\n\n// x \u304C\u6700\u521D\u306B\u73FE\u308C\u308B\u4F4D\u7F6E\
+    \u3002\u306A\u3051\u308C\u3070 -1\ntemplate <class C, typename U>\ninline constexpr\
+    \ int index(const C &v, const U &x) {\n    auto it = find(v, x);\n    if (it ==\
+    \ v.end()) return -1;\n    return static_cast<int>(std::distance(v.begin(), it));\n\
+    }\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
     inline constexpr mem_value_type<C> mex(const C &v) {\n    std::vector<bool> b(v.size()\
     \ + 1);\n    for (const auto &a : v) {\n        if (0 <= a and static_cast<std::size_t>(a)\
     \ < b.size()) {\n            b[a] = true;\n        }\n    }\n    mem_value_type<C>\
@@ -203,11 +205,11 @@ data:
     \u3067\u3001\u4E0B\u306E\u30EB\u30FC\u30D7\u3067\u5FC5\u305A\u898B\u3064\u304B\
     \u308B\n    for (std::size_t i = 0; i < b.size(); i++) {\n        if (not b[i])\
     \ {\n            ret = i;\n            break;\n        }\n    }\n    return ret;\n\
-    }\n\ntemplate <class C>\ninline constexpr mem_difference_type<C> bisect_left(const\
-    \ C &v, const mem_value_type<C> &x) {\n    return std::distance(v.begin(), lower_bound(v,\
-    \ x));\n}\ntemplate <class C>\ninline constexpr mem_difference_type<C> bisect_right(const\
-    \ C &v, const mem_value_type<C> &x) {\n    return std::distance(v.begin(), upper_bound(v,\
-    \ x));\n}\n"
+    }\n\ntemplate <class C>\ninline constexpr int bisect_left(const C &v, const mem_value_type<C>\
+    \ &x) {\n    return static_cast<int>(std::distance(v.begin(), lower_bound(v, x)));\n\
+    }\ntemplate <class C>\ninline constexpr int bisect_right(const C &v, const mem_value_type<C>\
+    \ &x) {\n    return static_cast<int>(std::distance(v.begin(), upper_bound(v, x)));\n\
+    }\n"
   code: "#pragma once\n\n/**\n * @file container_func.hpp\n * @brief \u30B3\u30F3\u30C6\
     \u30CA\u306B\u5BFE\u3059\u308B\u95A2\u6570 (sorted, max, sum \u306A\u3069)\n */\n\
     \n#include <algorithm>\n#include <cassert>\n#include <cstddef>\n#include <functional>\n\
@@ -294,9 +296,11 @@ data:
     \        return v[a] < v[b];\n    });\n    if (v.size() & 1) {\n        return\
     \ v[u[v.size() / 2]];\n    }\n    // C++20\n    // return std::midpoint(v[u[v.size()\
     \ / 2]], v[u[v.size() / 2 - 1]]);\n    return (v[u[v.size() / 2]] + v[u[v.size()\
-    \ / 2 - 1]]) / 2;\n}\n\ntemplate <class C, typename U>\ninline constexpr std::ptrdiff_t\
-    \ index(const C &v, const U &x) {\n    return std::distance(v.begin(), find(v,\
-    \ x));\n}\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
+    \ / 2 - 1]]) / 2;\n}\n\n// x \u304C\u6700\u521D\u306B\u73FE\u308C\u308B\u4F4D\u7F6E\
+    \u3002\u306A\u3051\u308C\u3070 -1\ntemplate <class C, typename U>\ninline constexpr\
+    \ int index(const C &v, const U &x) {\n    auto it = find(v, x);\n    if (it ==\
+    \ v.end()) return -1;\n    return static_cast<int>(std::distance(v.begin(), it));\n\
+    }\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
     inline constexpr mem_value_type<C> mex(const C &v) {\n    std::vector<bool> b(v.size()\
     \ + 1);\n    for (const auto &a : v) {\n        if (0 <= a and static_cast<std::size_t>(a)\
     \ < b.size()) {\n            b[a] = true;\n        }\n    }\n    mem_value_type<C>\
@@ -304,17 +308,17 @@ data:
     \u3067\u3001\u4E0B\u306E\u30EB\u30FC\u30D7\u3067\u5FC5\u305A\u898B\u3064\u304B\
     \u308B\n    for (std::size_t i = 0; i < b.size(); i++) {\n        if (not b[i])\
     \ {\n            ret = i;\n            break;\n        }\n    }\n    return ret;\n\
-    }\n\ntemplate <class C>\ninline constexpr mem_difference_type<C> bisect_left(const\
-    \ C &v, const mem_value_type<C> &x) {\n    return std::distance(v.begin(), lower_bound(v,\
-    \ x));\n}\ntemplate <class C>\ninline constexpr mem_difference_type<C> bisect_right(const\
-    \ C &v, const mem_value_type<C> &x) {\n    return std::distance(v.begin(), upper_bound(v,\
-    \ x));\n}\n"
+    }\n\ntemplate <class C>\ninline constexpr int bisect_left(const C &v, const mem_value_type<C>\
+    \ &x) {\n    return static_cast<int>(std::distance(v.begin(), lower_bound(v, x)));\n\
+    }\ntemplate <class C>\ninline constexpr int bisect_right(const C &v, const mem_value_type<C>\
+    \ &x) {\n    return static_cast<int>(std::distance(v.begin(), upper_bound(v, x)));\n\
+    }\n"
   dependsOn:
   - src/utility/traits.hpp
   isVerificationFile: false
   path: src/utility/container_func.hpp
   requiredBy: []
-  timestamp: '2026-10-13 13:03:23+09:00'
+  timestamp: '2026-10-14 07:02:47+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/container-func-member.test.cpp
@@ -381,7 +385,7 @@ bool b = contains(v, 4);       // true
 | `find(c, x)` | `x` を指すイテレータ |
 | `count(c, x)` | `x` の個数 |
 | `contains(c, x)` | `x` を含むか |
-| `index(c, x)` | `x` が最初に現れる位置 (なければ `size`) |
+| `index(c, x)` | `x` が最初に現れる位置 (なければ `-1`) |
 | `lower_bound(c, x)` / `upper_bound(c, x)` | イテレータを返す |
 | `bisect_left(c, x)` / `bisect_right(c, x)` | 添字を返す (Python の `bisect`) |
 

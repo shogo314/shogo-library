@@ -56,7 +56,7 @@ class Mo {
             return a[1] < b[1];
         });
         std::vector<T> res(lri.size());
-        long long tmpl = 0, tmpr = 0;
+        int tmpl = 0, tmpr = 0;
         U tmp = _e;
         for (auto [l, r, i] : lri) {
             while (tmpl > l) {

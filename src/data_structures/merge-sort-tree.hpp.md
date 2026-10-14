@@ -272,7 +272,10 @@ data:
     \ h * sz + l + t, a, b));\n                l += t;\n            }\n          \
     \  if (r & t) {\n                r -= t;\n                ret = op(ret, prod_section(h\
     \ * sz + r, h * sz + r + t, a, b));\n            }\n            h--;\n       \
-    \     t <<= 1;\n        }\n        return ret;\n    }\n};\n"
+    \     t <<= 1;\n        }\n        return ret;\n    }\n};\n\ntemplate <typename\
+    \ G, typename K>\nMergeSortTree(std::vector<std::pair<typename G::S, K>>, G) ->\
+    \ MergeSortTree<G, K>;\ntemplate <typename G, typename K>\nMergeSortTree(std::vector<typename\
+    \ G::S>, std::vector<K>, G) -> MergeSortTree<G, K>;\n"
   code: "#pragma once\n\n/**\n * @file merge-sort-tree.hpp\n * @brief \u30DE\u30FC\
     \u30B8\u30BD\u30FC\u30C8\u30C4\u30EA\u30FC\n */\n#include <algorithm>\n#include\
     \ <cassert>\n#include <cstddef>\n#include <functional>\n#include <optional>\n\
@@ -349,14 +352,17 @@ data:
     \ h * sz + l + t, a, b));\n                l += t;\n            }\n          \
     \  if (r & t) {\n                r -= t;\n                ret = op(ret, prod_section(h\
     \ * sz + r, h * sz + r + t, a, b));\n            }\n            h--;\n       \
-    \     t <<= 1;\n        }\n        return ret;\n    }\n};\n"
+    \     t <<= 1;\n        }\n        return ret;\n    }\n};\n\ntemplate <typename\
+    \ G, typename K>\nMergeSortTree(std::vector<std::pair<typename G::S, K>>, G) ->\
+    \ MergeSortTree<G, K>;\ntemplate <typename G, typename K>\nMergeSortTree(std::vector<typename\
+    \ G::S>, std::vector<K>, G) -> MergeSortTree<G, K>;\n"
   dependsOn:
   - src/algebra/group.hpp
   - src/algebra/monoid.hpp
   isVerificationFile: false
   path: src/data_structures/merge-sort-tree.hpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-14 16:37:39+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/yosupo/rectangle-sum.2.test.cpp
@@ -374,6 +380,7 @@ std::vector<long long> key   = {5, 1, 4, 2, 3};
 MergeSortTree<> mst(value, key);           // 値は long long の和
 mst.prod(1, 4, 2, 5);                      // i ∈ [1, 4) かつ key ∈ [2, 5) → 3 + 4 = 7
 mst.prod(0, 5, std::nullopt, 3);           // key < 3 → 2 + 4 = 6
+MergeSortTree mst2(value, key, group::Sum<long long>());  // 群の値と key の型から推論する
 ```
 
 点の重みの矩形和 (x を添字、y をキーにする) や、区間内で閾値未満の値の個数・和などに使えます。

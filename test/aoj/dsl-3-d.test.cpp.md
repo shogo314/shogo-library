@@ -204,25 +204,25 @@ data:
     \ back_prod);\n    }\n    /**\n     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\
     \u3092\u524A\u9664\u3059\u308B\n     */\n    void clear() {\n        front_vals.clear();\n\
     \        front_prod.clear();\n        back_vals.clear();\n        back_prod =\
-    \ e();\n    }\n};\n\n/**\n * @brief \u9577\u3055 k \u306E\u5404\u533A\u9593 [i,\
-    \ i + k) \u306E\u6700\u5C0F\u5024\u3092\u4E26\u3079\u305F\u3082\u306E (\u9577\u3055\
-    \ n - k + 1) O(n)\n *\n * \u5358\u8ABF\u306A deque \u3092\u4F7F\u3046\n * @param\
-    \ comp \u5927\u5C0F\u306E\u6BD4\u8F03\u3002std::greater<T>() \u3092\u6E21\u3059\
-    \u3068\u6700\u5927\u5024\u306B\u306A\u308B\n */\ntemplate <typename T, typename\
-    \ Compare = std::less<T>>\nstd::vector<T> sliding_window_min(const std::vector<T>&\
-    \ a, int k, Compare comp = Compare()) {\n    int n = a.size();\n    assert(1 <=\
-    \ k && k <= n);\n    std::vector<T> res;\n    res.reserve(n - k + 1);\n    //\
-    \ \u7A93\u306E\u4E2D\u3067\u3001\u5F8C\u308D\u306B\u305D\u308C\u4EE5\u4E0B\u306E\
-    \u5024\u304C\u306A\u3044\u6DFB\u5B57\u3092\u3001\u5024\u306E\u6607\u9806\u306B\
-    \u6301\u3064\n    std::deque<int> dq;\n    for (int i = 0; i < n; i++) {\n   \
-    \     while (!dq.empty() && !comp(a[dq.back()], a[i])) dq.pop_back();\n      \
-    \  dq.push_back(i);\n        if (dq.front() <= i - k) dq.pop_front();\n      \
-    \  if (i >= k - 1) res.push_back(a[dq.front()]);\n    }\n    return res;\n}\n\n\
-    /**\n * @brief \u9577\u3055 k \u306E\u5404\u533A\u9593 [i, i + k) \u306E\u6700\
-    \u5927\u5024\u3092\u4E26\u3079\u305F\u3082\u306E (\u9577\u3055 n - k + 1) O(n)\n\
-    \ */\ntemplate <typename T>\nstd::vector<T> sliding_window_max(const std::vector<T>&\
-    \ a, int k) {\n    return sliding_window_min(a, k, std::greater<T>());\n}\n#line\
-    \ 7 \"test/aoj/dsl-3-d.test.cpp\"\n\nint main() {\n    std::cin.tie(nullptr);\n\
+    \ e();\n    }\n};\n\ntemplate <typename M>\nSlidingWindowAggregation(M) -> SlidingWindowAggregation<M>;\n\
+    \n/**\n * @brief \u9577\u3055 k \u306E\u5404\u533A\u9593 [i, i + k) \u306E\u6700\
+    \u5C0F\u5024\u3092\u4E26\u3079\u305F\u3082\u306E (\u9577\u3055 n - k + 1) O(n)\n\
+    \ *\n * \u5358\u8ABF\u306A deque \u3092\u4F7F\u3046\n * @param comp \u5927\u5C0F\
+    \u306E\u6BD4\u8F03\u3002std::greater<T>() \u3092\u6E21\u3059\u3068\u6700\u5927\
+    \u5024\u306B\u306A\u308B\n */\ntemplate <typename T, typename Compare = std::less<T>>\n\
+    std::vector<T> sliding_window_min(const std::vector<T>& a, int k, Compare comp\
+    \ = Compare()) {\n    int n = a.size();\n    assert(1 <= k && k <= n);\n    std::vector<T>\
+    \ res;\n    res.reserve(n - k + 1);\n    // \u7A93\u306E\u4E2D\u3067\u3001\u5F8C\
+    \u308D\u306B\u305D\u308C\u4EE5\u4E0B\u306E\u5024\u304C\u306A\u3044\u6DFB\u5B57\
+    \u3092\u3001\u5024\u306E\u6607\u9806\u306B\u6301\u3064\n    std::deque<int> dq;\n\
+    \    for (int i = 0; i < n; i++) {\n        while (!dq.empty() && !comp(a[dq.back()],\
+    \ a[i])) dq.pop_back();\n        dq.push_back(i);\n        if (dq.front() <= i\
+    \ - k) dq.pop_front();\n        if (i >= k - 1) res.push_back(a[dq.front()]);\n\
+    \    }\n    return res;\n}\n\n/**\n * @brief \u9577\u3055 k \u306E\u5404\u533A\
+    \u9593 [i, i + k) \u306E\u6700\u5927\u5024\u3092\u4E26\u3079\u305F\u3082\u306E\
+    \ (\u9577\u3055 n - k + 1) O(n)\n */\ntemplate <typename T>\nstd::vector<T> sliding_window_max(const\
+    \ std::vector<T>& a, int k) {\n    return sliding_window_min(a, k, std::greater<T>());\n\
+    }\n#line 7 \"test/aoj/dsl-3-d.test.cpp\"\n\nint main() {\n    std::cin.tie(nullptr);\n\
     \    std::ios::sync_with_stdio(false);\n    int n, l;\n    std::cin >> n >> l;\n\
     \    std::vector<int> a(n);\n    for (auto& x : a) std::cin >> x;\n    std::vector<int>\
     \ res = sliding_window_min(a, l);\n    for (int i = 0; i < (int)res.size(); i++)\
@@ -240,7 +240,7 @@ data:
   isVerificationFile: true
   path: test/aoj/dsl-3-d.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-14 16:37:39+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/dsl-3-d.test.cpp

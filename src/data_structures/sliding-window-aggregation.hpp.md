@@ -207,24 +207,25 @@ data:
     \ back_prod);\n    }\n    /**\n     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\
     \u3092\u524A\u9664\u3059\u308B\n     */\n    void clear() {\n        front_vals.clear();\n\
     \        front_prod.clear();\n        back_vals.clear();\n        back_prod =\
-    \ e();\n    }\n};\n\n/**\n * @brief \u9577\u3055 k \u306E\u5404\u533A\u9593 [i,\
-    \ i + k) \u306E\u6700\u5C0F\u5024\u3092\u4E26\u3079\u305F\u3082\u306E (\u9577\u3055\
-    \ n - k + 1) O(n)\n *\n * \u5358\u8ABF\u306A deque \u3092\u4F7F\u3046\n * @param\
-    \ comp \u5927\u5C0F\u306E\u6BD4\u8F03\u3002std::greater<T>() \u3092\u6E21\u3059\
-    \u3068\u6700\u5927\u5024\u306B\u306A\u308B\n */\ntemplate <typename T, typename\
-    \ Compare = std::less<T>>\nstd::vector<T> sliding_window_min(const std::vector<T>&\
-    \ a, int k, Compare comp = Compare()) {\n    int n = a.size();\n    assert(1 <=\
-    \ k && k <= n);\n    std::vector<T> res;\n    res.reserve(n - k + 1);\n    //\
-    \ \u7A93\u306E\u4E2D\u3067\u3001\u5F8C\u308D\u306B\u305D\u308C\u4EE5\u4E0B\u306E\
-    \u5024\u304C\u306A\u3044\u6DFB\u5B57\u3092\u3001\u5024\u306E\u6607\u9806\u306B\
-    \u6301\u3064\n    std::deque<int> dq;\n    for (int i = 0; i < n; i++) {\n   \
-    \     while (!dq.empty() && !comp(a[dq.back()], a[i])) dq.pop_back();\n      \
-    \  dq.push_back(i);\n        if (dq.front() <= i - k) dq.pop_front();\n      \
-    \  if (i >= k - 1) res.push_back(a[dq.front()]);\n    }\n    return res;\n}\n\n\
-    /**\n * @brief \u9577\u3055 k \u306E\u5404\u533A\u9593 [i, i + k) \u306E\u6700\
-    \u5927\u5024\u3092\u4E26\u3079\u305F\u3082\u306E (\u9577\u3055 n - k + 1) O(n)\n\
-    \ */\ntemplate <typename T>\nstd::vector<T> sliding_window_max(const std::vector<T>&\
-    \ a, int k) {\n    return sliding_window_min(a, k, std::greater<T>());\n}\n"
+    \ e();\n    }\n};\n\ntemplate <typename M>\nSlidingWindowAggregation(M) -> SlidingWindowAggregation<M>;\n\
+    \n/**\n * @brief \u9577\u3055 k \u306E\u5404\u533A\u9593 [i, i + k) \u306E\u6700\
+    \u5C0F\u5024\u3092\u4E26\u3079\u305F\u3082\u306E (\u9577\u3055 n - k + 1) O(n)\n\
+    \ *\n * \u5358\u8ABF\u306A deque \u3092\u4F7F\u3046\n * @param comp \u5927\u5C0F\
+    \u306E\u6BD4\u8F03\u3002std::greater<T>() \u3092\u6E21\u3059\u3068\u6700\u5927\
+    \u5024\u306B\u306A\u308B\n */\ntemplate <typename T, typename Compare = std::less<T>>\n\
+    std::vector<T> sliding_window_min(const std::vector<T>& a, int k, Compare comp\
+    \ = Compare()) {\n    int n = a.size();\n    assert(1 <= k && k <= n);\n    std::vector<T>\
+    \ res;\n    res.reserve(n - k + 1);\n    // \u7A93\u306E\u4E2D\u3067\u3001\u5F8C\
+    \u308D\u306B\u305D\u308C\u4EE5\u4E0B\u306E\u5024\u304C\u306A\u3044\u6DFB\u5B57\
+    \u3092\u3001\u5024\u306E\u6607\u9806\u306B\u6301\u3064\n    std::deque<int> dq;\n\
+    \    for (int i = 0; i < n; i++) {\n        while (!dq.empty() && !comp(a[dq.back()],\
+    \ a[i])) dq.pop_back();\n        dq.push_back(i);\n        if (dq.front() <= i\
+    \ - k) dq.pop_front();\n        if (i >= k - 1) res.push_back(a[dq.front()]);\n\
+    \    }\n    return res;\n}\n\n/**\n * @brief \u9577\u3055 k \u306E\u5404\u533A\
+    \u9593 [i, i + k) \u306E\u6700\u5927\u5024\u3092\u4E26\u3079\u305F\u3082\u306E\
+    \ (\u9577\u3055 n - k + 1) O(n)\n */\ntemplate <typename T>\nstd::vector<T> sliding_window_max(const\
+    \ std::vector<T>& a, int k) {\n    return sliding_window_min(a, k, std::greater<T>());\n\
+    }\n"
   code: "#pragma once\n\n/**\n * @file sliding-window-aggregation.hpp\n * @brief Sliding\
     \ Window Aggregation (\u30E2\u30CE\u30A4\u30C9\u3092\u4E57\u305B\u305F\u30AD\u30E5\
     \u30FC) \u3068\u30B9\u30E9\u30A4\u30C9\u6700\u5C0F\u5024\n */\n\n#include <cassert>\n\
@@ -269,30 +270,31 @@ data:
     \ back_prod);\n    }\n    /**\n     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\
     \u3092\u524A\u9664\u3059\u308B\n     */\n    void clear() {\n        front_vals.clear();\n\
     \        front_prod.clear();\n        back_vals.clear();\n        back_prod =\
-    \ e();\n    }\n};\n\n/**\n * @brief \u9577\u3055 k \u306E\u5404\u533A\u9593 [i,\
-    \ i + k) \u306E\u6700\u5C0F\u5024\u3092\u4E26\u3079\u305F\u3082\u306E (\u9577\u3055\
-    \ n - k + 1) O(n)\n *\n * \u5358\u8ABF\u306A deque \u3092\u4F7F\u3046\n * @param\
-    \ comp \u5927\u5C0F\u306E\u6BD4\u8F03\u3002std::greater<T>() \u3092\u6E21\u3059\
-    \u3068\u6700\u5927\u5024\u306B\u306A\u308B\n */\ntemplate <typename T, typename\
-    \ Compare = std::less<T>>\nstd::vector<T> sliding_window_min(const std::vector<T>&\
-    \ a, int k, Compare comp = Compare()) {\n    int n = a.size();\n    assert(1 <=\
-    \ k && k <= n);\n    std::vector<T> res;\n    res.reserve(n - k + 1);\n    //\
-    \ \u7A93\u306E\u4E2D\u3067\u3001\u5F8C\u308D\u306B\u305D\u308C\u4EE5\u4E0B\u306E\
-    \u5024\u304C\u306A\u3044\u6DFB\u5B57\u3092\u3001\u5024\u306E\u6607\u9806\u306B\
-    \u6301\u3064\n    std::deque<int> dq;\n    for (int i = 0; i < n; i++) {\n   \
-    \     while (!dq.empty() && !comp(a[dq.back()], a[i])) dq.pop_back();\n      \
-    \  dq.push_back(i);\n        if (dq.front() <= i - k) dq.pop_front();\n      \
-    \  if (i >= k - 1) res.push_back(a[dq.front()]);\n    }\n    return res;\n}\n\n\
-    /**\n * @brief \u9577\u3055 k \u306E\u5404\u533A\u9593 [i, i + k) \u306E\u6700\
-    \u5927\u5024\u3092\u4E26\u3079\u305F\u3082\u306E (\u9577\u3055 n - k + 1) O(n)\n\
-    \ */\ntemplate <typename T>\nstd::vector<T> sliding_window_max(const std::vector<T>&\
-    \ a, int k) {\n    return sliding_window_min(a, k, std::greater<T>());\n}\n"
+    \ e();\n    }\n};\n\ntemplate <typename M>\nSlidingWindowAggregation(M) -> SlidingWindowAggregation<M>;\n\
+    \n/**\n * @brief \u9577\u3055 k \u306E\u5404\u533A\u9593 [i, i + k) \u306E\u6700\
+    \u5C0F\u5024\u3092\u4E26\u3079\u305F\u3082\u306E (\u9577\u3055 n - k + 1) O(n)\n\
+    \ *\n * \u5358\u8ABF\u306A deque \u3092\u4F7F\u3046\n * @param comp \u5927\u5C0F\
+    \u306E\u6BD4\u8F03\u3002std::greater<T>() \u3092\u6E21\u3059\u3068\u6700\u5927\
+    \u5024\u306B\u306A\u308B\n */\ntemplate <typename T, typename Compare = std::less<T>>\n\
+    std::vector<T> sliding_window_min(const std::vector<T>& a, int k, Compare comp\
+    \ = Compare()) {\n    int n = a.size();\n    assert(1 <= k && k <= n);\n    std::vector<T>\
+    \ res;\n    res.reserve(n - k + 1);\n    // \u7A93\u306E\u4E2D\u3067\u3001\u5F8C\
+    \u308D\u306B\u305D\u308C\u4EE5\u4E0B\u306E\u5024\u304C\u306A\u3044\u6DFB\u5B57\
+    \u3092\u3001\u5024\u306E\u6607\u9806\u306B\u6301\u3064\n    std::deque<int> dq;\n\
+    \    for (int i = 0; i < n; i++) {\n        while (!dq.empty() && !comp(a[dq.back()],\
+    \ a[i])) dq.pop_back();\n        dq.push_back(i);\n        if (dq.front() <= i\
+    \ - k) dq.pop_front();\n        if (i >= k - 1) res.push_back(a[dq.front()]);\n\
+    \    }\n    return res;\n}\n\n/**\n * @brief \u9577\u3055 k \u306E\u5404\u533A\
+    \u9593 [i, i + k) \u306E\u6700\u5927\u5024\u3092\u4E26\u3079\u305F\u3082\u306E\
+    \ (\u9577\u3055 n - k + 1) O(n)\n */\ntemplate <typename T>\nstd::vector<T> sliding_window_max(const\
+    \ std::vector<T>& a, int k) {\n    return sliding_window_min(a, k, std::greater<T>());\n\
+    }\n"
   dependsOn:
   - src/algebra/monoid.hpp
   isVerificationFile: false
   path: src/data_structures/sliding-window-aggregation.hpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-14 16:37:39+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/sliding-window-aggregation.test.cpp
@@ -314,6 +316,7 @@ swag.push(Affine<mint>{2, 3});
 swag.push(Affine<mint>{1, 5});
 mint y = swag.prod()(x);  // 先頭から順に適用した結果 (2x + 3) + 5
 swag.pop();               // 先頭を削除
+SlidingWindowAggregation swag2(Monoid([](int a, int b) { return std::min(a, b); }, INF));  // ラムダ式から作る
 ```
 
 キューを 2 つのスタックで表し、前半のスタックには先頭側からの積を持たせます。前半が空のときに `pop` すると、後半をまとめて前半へ移します。

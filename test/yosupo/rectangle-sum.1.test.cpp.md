@@ -273,7 +273,10 @@ data:
     \ h * sz + l + t, a, b));\n                l += t;\n            }\n          \
     \  if (r & t) {\n                r -= t;\n                ret = op(ret, prod_section(h\
     \ * sz + r, h * sz + r + t, a, b));\n            }\n            h--;\n       \
-    \     t <<= 1;\n        }\n        return ret;\n    }\n};\n#line 8 \"test/yosupo/rectangle-sum.1.test.cpp\"\
+    \     t <<= 1;\n        }\n        return ret;\n    }\n};\n\ntemplate <typename\
+    \ G, typename K>\nMergeSortTree(std::vector<std::pair<typename G::S, K>>, G) ->\
+    \ MergeSortTree<G, K>;\ntemplate <typename G, typename K>\nMergeSortTree(std::vector<typename\
+    \ G::S>, std::vector<K>, G) -> MergeSortTree<G, K>;\n#line 8 \"test/yosupo/rectangle-sum.1.test.cpp\"\
     \n\nint main() {\n    int N, Q;\n    std::cin >> N >> Q;\n    std::vector<std::array<int,\
     \ 3>> XYW(N);\n    for (auto& [X, Y, W] : XYW) {\n        std::cin >> X >> Y >>\
     \ W;\n    }\n    std::sort(XYW.begin(), XYW.end());\n    std::vector<int> v(N),\
@@ -303,7 +306,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/rectangle-sum.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-14 16:37:39+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/rectangle-sum.1.test.cpp

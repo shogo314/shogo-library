@@ -25,14 +25,14 @@ data:
     \ s, char one = '1') {\n    long long res = 0;\n    for (char c : s) {\n     \
     \   res <<= 1;\n        if (c == one) ++res;\n    }\n    return res;\n}\n\n#if\
     \ __cplusplus < 202000L\n\n/**\n * @brief \u7ACB\u3063\u3066\u3044\u308B\u30D3\
-    \u30C3\u30C8\u3092\u6570\u3048\u308B\n * __builtin_popcountll\n */\ninline int\
-    \ popcount(long long a) {\n    assert(a >= 0);\n    return __builtin_popcountll((unsigned\
+    \u30C3\u30C8\u3092\u6570\u3048\u308B\n * __builtin_popcountll\n */\ninline constexpr\
+    \ int popcount(long long a) {\n    assert(a >= 0);\n    return __builtin_popcountll((unsigned\
     \ long long)a);\n}\n/**\n * @brief \u5DE6\u304B\u3089\u9023\u7D9A\u3057\u305F\
     0\u306E\u30D3\u30C3\u30C8\u3092\u6570\u3048\u308B\n * __builtin_clzll\n */\ninline\
-    \ int countl_zero(long long a) {\n    assert(a >= 0);\n    return __builtin_clzll((unsigned\
+    \ constexpr int countl_zero(long long a) {\n    assert(a >= 0);\n    return __builtin_clzll((unsigned\
     \ long long)a);\n}\n/**\n * @brief \u53F3\u304B\u3089\u9023\u7D9A\u3057\u305F\
     0\u306E\u30D3\u30C3\u30C8\u3092\u6570\u3048\u308B\n * __builtin_ctzll\n */\ninline\
-    \ int countr_zero(long long a) {\n    assert(a >= 0);\n    return __builtin_ctzll((unsigned\
+    \ constexpr int countr_zero(long long a) {\n    assert(a >= 0);\n    return __builtin_ctzll((unsigned\
     \ long long)a);\n}\n\n#else\n\n#include <bit>\n#define BIT_FUNC_EXPAND(func) \
     \                     \\\n    inline constexpr long long func(long long a) { \\\
     \n        assert(a >= 0);                            \\\n        return std::func((unsigned\
@@ -109,7 +109,7 @@ data:
   isVerificationFile: true
   path: test/unittest/bit.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:33:42+09:00'
+  timestamp: '2026-10-14 16:39:21+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/bit.test.cpp

@@ -4,6 +4,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/data_structures/priority_counter.hpp
     title: "\u4E0A\u4F4D K \u500B\u306E\u5024\u3068\u305D\u306E\u500B\u6570"
+  - icon: ':heavy_check_mark:'
+    path: src/utility/traits.hpp
+    title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
@@ -22,36 +25,87 @@ data:
     \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/data_structures/priority_counter.hpp\"\
     \n\n/**\n * @file priority_counter.hpp\n * @brief \u4E0A\u4F4D K \u500B\u306E\u5024\
     \u3068\u305D\u306E\u500B\u6570\n */\n\n#include <array>\n#include <cstddef>\n\
-    #include <functional>\n#include <type_traits>\n#include <utility>\n\ntemplate\
-    \ <typename T, std::size_t K = 1, class Compare = std::less<T>, std::enable_if_t<(K\
-    \ >= 1), std::nullptr_t> = nullptr>\nstruct PriorityCounter {\n    using key_type\
-    \ = T;\n    using mapped_type = long long;\n    using value_type = std::pair<key_type,\
-    \ mapped_type>;\n    inline constexpr static std::size_t k = K;\n\n    // C++17\
-    \ \u306E constexpr \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u306F\u3059\
-    \u3079\u3066\u306E\u30E1\u30F3\u30D0\u306E\u521D\u671F\u5316\u304C\u5FC5\u8981\
-    \u306A\u306E\u3067\u3001\u5024\u521D\u671F\u5316\u3057\u3066\u304A\u304F\n   \
-    \ std::array<value_type, K> data{};\n\n    constexpr PriorityCounter() {}\n  \
-    \  constexpr PriorityCounter(const key_type& x) : PriorityCounter() {\n      \
-    \  data[0].first = x;\n        data[0].second = 1;\n    }\n\n    constexpr int\
-    \ size() const {\n        for (std::size_t i = 0; i < k; i++) {\n            if\
-    \ (data[i].second == 0) {\n                return static_cast<int>(i);\n     \
-    \       }\n        }\n        return k;\n    }\n\n    constexpr void inc(const\
-    \ key_type& x, const mapped_type& c = 1) {\n        bool f = false;\n        key_type\
-    \ pre_key{};\n        mapped_type pre_mapped{};\n        for (std::size_t i =\
-    \ 0; i < k; i++) {\n            if (f) {\n                // std::swap \u306F\
-    \ C++17 \u3067\u306F constexpr \u3067\u306A\u3044\u306E\u3067\u624B\u3067\u5165\
-    \u308C\u66FF\u3048\u308B\n                key_type tmp_key = data[i].first;\n\
-    \                data[i].first = pre_key;\n                pre_key = tmp_key;\n\
-    \                mapped_type tmp_mapped = data[i].second;\n                data[i].second\
-    \ = pre_mapped;\n                pre_mapped = tmp_mapped;\n                continue;\n\
-    \            }\n            if (data[i].second == 0) {\n                data[i].first\
-    \ = x;\n                data[i].second += c;\n                return;\n      \
-    \      }\n            if (Compare()(data[i].first, x)) {\n                pre_key\
-    \ = data[i].first;\n                pre_mapped = data[i].second;\n           \
-    \     data[i].first = x;\n                data[i].second = c;\n              \
-    \  f = true;\n            } else if (!Compare()(x, data[i].first)) {\n       \
-    \         data[i].second += c;\n                return;\n            }\n     \
-    \   }\n    }\n\n    constexpr PriorityCounter& operator+=(const PriorityCounter&\
+    #include <functional>\n#include <type_traits>\n#include <utility>\n\n#line 2 \"\
+    src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\
+    \n */\n\n#line 9 \"src/utility/traits.hpp\"\n#include <iterator>\n#include <set>\n\
+    #line 13 \"src/utility/traits.hpp\"\n\nnamespace internal_traits {\nusing std::begin,\
+    \ std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl : std::false_type\
+    \ {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
+    \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
+    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
+    \n#define HAS_METHOD(func_name)                                              \
+    \                \\\n    namespace internal_traits {                         \
+    \                                   \\\n    template <class T, class = void> \
+    \                                                      \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                    \\\n    template <class\
+    \ T>                                                                     \\\n\
+    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                    \\\n    }                                               \
+    \                                       \\\n    template <class T>           \
+    \                                                          \\\n    struct has_##func_name\
+    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
+    \ <class T>                                                                  \
+    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
+    \n#define HAS_METHOD_ARG(func_name)                                          \
+    \                                    \\\n    namespace internal_traits {     \
+    \                                                                           \\\
+    \n    template <class T, typename U, class = void>                           \
+    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                                        \\\n    template\
+    \ <class T, typename U>                                                      \
+    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                                        \\\n    }                           \
+    \                                                                            \
+    \   \\\n    template <class T, typename U>                                   \
+    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \ U>::type {};                           \\\n    template <class T, typename U>\
+    \                                                                            \
+    \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
+    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
+    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
+    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
+    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
+    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
+    \ntemplate <class C>\nusing mem_value_type = typename C::value_type;\ntemplate\
+    \ <class C>\nusing mem_difference_type = typename C::difference_type;\n\nnamespace\
+    \ internal_traits {\ntemplate <class T, class = void>\nstruct is_sorted_container_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_sorted_container_impl<std::set<T>>\
+    \ : std::true_type {};\ntemplate <class T>\nstruct is_sorted_container_impl<std::multiset<T>>\
+    \ : std::true_type {};\n}  // namespace internal_traits\ntemplate <class T>\n\
+    struct is_sorted_container : internal_traits::is_sorted_container_impl<T>::type\
+    \ {};\ntemplate <class T>\ninline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
+    #line 15 \"src/data_structures/priority_counter.hpp\"\n\ntemplate <typename T,\
+    \ std::size_t K = 1, class Compare = std::less<T>, ENABLE_IF_T(K >= 1)>\nstruct\
+    \ PriorityCounter {\n    using key_type = T;\n    using mapped_type = long long;\n\
+    \    using value_type = std::pair<key_type, mapped_type>;\n    inline constexpr\
+    \ static std::size_t k = K;\n\n    // C++17 \u306E constexpr \u30B3\u30F3\u30B9\
+    \u30C8\u30E9\u30AF\u30BF\u3067\u306F\u3059\u3079\u3066\u306E\u30E1\u30F3\u30D0\
+    \u306E\u521D\u671F\u5316\u304C\u5FC5\u8981\u306A\u306E\u3067\u3001\u5024\u521D\
+    \u671F\u5316\u3057\u3066\u304A\u304F\n    std::array<value_type, K> data{};\n\n\
+    \    constexpr PriorityCounter() {}\n    explicit constexpr PriorityCounter(const\
+    \ key_type& x) : PriorityCounter() {\n        data[0].first = x;\n        data[0].second\
+    \ = 1;\n    }\n\n    constexpr int size() const {\n        for (std::size_t i\
+    \ = 0; i < k; i++) {\n            if (data[i].second == 0) {\n               \
+    \ return static_cast<int>(i);\n            }\n        }\n        return k;\n \
+    \   }\n\n    constexpr void inc(const key_type& x, const mapped_type& c = 1) {\n\
+    \        bool f = false;\n        key_type pre_key{};\n        mapped_type pre_mapped{};\n\
+    \        for (std::size_t i = 0; i < k; i++) {\n            if (f) {\n       \
+    \         // std::swap \u306F C++17 \u3067\u306F constexpr \u3067\u306A\u3044\u306E\
+    \u3067\u624B\u3067\u5165\u308C\u66FF\u3048\u308B\n                key_type tmp_key\
+    \ = data[i].first;\n                data[i].first = pre_key;\n               \
+    \ pre_key = tmp_key;\n                mapped_type tmp_mapped = data[i].second;\n\
+    \                data[i].second = pre_mapped;\n                pre_mapped = tmp_mapped;\n\
+    \                continue;\n            }\n            if (data[i].second == 0)\
+    \ {\n                data[i].first = x;\n                data[i].second += c;\n\
+    \                return;\n            }\n            if (Compare()(data[i].first,\
+    \ x)) {\n                pre_key = data[i].first;\n                pre_mapped\
+    \ = data[i].second;\n                data[i].first = x;\n                data[i].second\
+    \ = c;\n                f = true;\n            } else if (!Compare()(x, data[i].first))\
+    \ {\n                data[i].second += c;\n                return;\n         \
+    \   }\n        }\n    }\n\n    constexpr PriorityCounter& operator+=(const PriorityCounter&\
     \ o) {\n        for (std::size_t i = 0; i < k; i++) {\n            if (o.data[i].second\
     \ == 0) break;\n            this->inc(o.data[i].first, o.data[i].second);\n  \
     \      }\n        return *this;\n    }\n    constexpr friend PriorityCounter operator+(const\
@@ -169,10 +223,11 @@ data:
     \        std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/data_structures/priority_counter.hpp
+  - src/utility/traits.hpp
   isVerificationFile: true
   path: test/unittest/priority_counter.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-14 16:41:25+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/priority_counter.test.cpp

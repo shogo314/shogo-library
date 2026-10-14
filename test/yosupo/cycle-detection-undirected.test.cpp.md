@@ -67,29 +67,30 @@ data:
     \u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     */\n    Graph() : n(0),\
     \ m(0), g(0) {}\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\
     \n     * @param n \u9802\u70B9\u6570\n     */\n    explicit Graph(int n) : n(n),\
-    \ m(0), g(n) {}\n    /**\n     * @brief \u7121\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\
-    \u308B\n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n     * @param\
-    \ w \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n    void add_edge(int\
-    \ u, int v, Cost w = 1) {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n\
-    \        g[u].push_back({u, v, w, m});\n        g[v].push_back({v, u, w, m++});\n\
-    \    }\n    /**\n     * @brief \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\
-    \n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n     * @param w\
-    \ \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n    void add_directed_edge(int\
-    \ u, int v, Cost w = 1) {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n\
-    \        g[u].push_back({u, v, w, m++});\n    }\n    /**\n     * @brief \u8FBA\
-    \u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\u529B\u304B\u3089\u53D7\u3051\u53D6\
-    \u3063\u3066\u8FFD\u52A0\u3059\u308B\n     * @param m \u8FBA\u306E\u6570\n   \
-    \  * @param padding \u9802\u70B9\u756A\u53F7\u3092\u5165\u529B\u304B\u3089\u3044\
-    \u304F\u3064\u305A\u3089\u3059\u304B \u7701\u7565\u3057\u305F\u3089-1\n     *\
-    \ @param weighted \u8FBA\u306E\u91CD\u307F\u304C\u5165\u529B\u3055\u308C\u308B\
-    \u304B \u7701\u7565\u3057\u305F\u3089false\u3068\u306A\u308A\u3001\u91CD\u307F\
-    1\u3067\u8FBA\u304C\u8FFD\u52A0\u3055\u308C\u308B\n     * @param directed \u6709\
-    \u5411\u30B0\u30E9\u30D5\u304B\u3069\u3046\u304B \u7701\u7565\u3057\u305F\u3089\
-    false\n     */\n    void read(int m, int padding = -1, bool weighted = false,\
-    \ bool directed = false) {\n        for (int i = 0; i < m; i++) {\n          \
-    \  int u, v;\n            std::cin >> u >> v;\n            u += padding, v +=\
-    \ padding;\n            Cost c(1);\n            if (weighted)\n              \
-    \  std::cin >> c;\n            if (directed)\n                add_directed_edge(u,\
+    \ m(0), g(n) {}\n    /**\n     * @brief \u9802\u70B9\u6570\n     */\n    int size()\
+    \ const { return n; }\n    /**\n     * @brief \u7121\u5411\u8FBA\u3092\u8FFD\u52A0\
+    \u3059\u308B\n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n   \
+    \  * @param w \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n  \
+    \  void add_edge(int u, int v, Cost w = 1) {\n        assert(0 <= u && u < n &&\
+    \ 0 <= v && v < n);\n        g[u].push_back({u, v, w, m});\n        g[v].push_back({v,\
+    \ u, w, m++});\n    }\n    /**\n     * @brief \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\
+    \u3059\u308B\n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n   \
+    \  * @param w \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n  \
+    \  void add_directed_edge(int u, int v, Cost w = 1) {\n        assert(0 <= u &&\
+    \ u < n && 0 <= v && v < n);\n        g[u].push_back({u, v, w, m++});\n    }\n\
+    \    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\u529B\
+    \u304B\u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\u308B\n     * @param\
+    \ m \u8FBA\u306E\u6570\n     * @param padding \u9802\u70B9\u756A\u53F7\u3092\u5165\
+    \u529B\u304B\u3089\u3044\u304F\u3064\u305A\u3089\u3059\u304B \u7701\u7565\u3057\
+    \u305F\u3089-1\n     * @param weighted \u8FBA\u306E\u91CD\u307F\u304C\u5165\u529B\
+    \u3055\u308C\u308B\u304B \u7701\u7565\u3057\u305F\u3089false\u3068\u306A\u308A\
+    \u3001\u91CD\u307F1\u3067\u8FBA\u304C\u8FFD\u52A0\u3055\u308C\u308B\n     * @param\
+    \ directed \u6709\u5411\u30B0\u30E9\u30D5\u304B\u3069\u3046\u304B \u7701\u7565\
+    \u3057\u305F\u3089false\n     */\n    void read(int m, int padding = -1, bool\
+    \ weighted = false, bool directed = false) {\n        for (int i = 0; i < m; i++)\
+    \ {\n            int u, v;\n            std::cin >> u >> v;\n            u +=\
+    \ padding, v += padding;\n            Cost c(1);\n            if (weighted)\n\
+    \                std::cin >> c;\n            if (directed)\n                add_directed_edge(u,\
     \ v, c);\n            else\n                add_edge(u, v, c);\n        }\n  \
     \  }\n    /**\n     * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u51FA\u308B\u8FBA\
     \u3092\u5217\u6319\u3059\u308B\n     * @param v \u9802\u70B9\u756A\u53F7\n   \
@@ -471,7 +472,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/cycle-detection-undirected.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-14 16:37:34+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/cycle-detection-undirected.test.cpp

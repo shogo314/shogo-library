@@ -130,29 +130,26 @@ data:
     template <typename T, std::size_t N>\ninline std::string repr(const std::array<T,\
     \ N>&);\n\n///////////////////////////////////////////////////////////////////\n\
     /////////////////////////// definition ////////////////////////////\n///////////////////////////////////////////////////////////////////\n\
-    \ntemplate <typename T, std::enable_if_t<!has_type_str_v<T>, std::nullptr_t> =\
-    \ nullptr>\ninline std::string type_str(const T& t) {\n    return \"T\";\n}\n\
-    template <typename T, std::enable_if_t<has_type_str_v<T>, std::nullptr_t> = nullptr>\n\
+    \ntemplate <typename T, ENABLE_IF_T(!has_type_str_v<T>)>\ninline std::string type_str(const\
+    \ T& t) {\n    return \"T\";\n}\ntemplate <typename T, ENABLE_IF_T(has_type_str_v<T>)>\n\
     inline std::string type_str(const T& t) {\n    return t.type_str();\n}\ntemplate\
-    \ <typename T, std::enable_if_t<!has_initializer_str_v<T>, std::nullptr_t> = nullptr>\n\
-    inline std::string initializer_str(const T& t) {\n    return \"{}\";\n}\ntemplate\
-    \ <typename T, std::enable_if_t<has_initializer_str_v<T>, std::nullptr_t> = nullptr>\n\
+    \ <typename T, ENABLE_IF_T(!has_initializer_str_v<T>)>\ninline std::string initializer_str(const\
+    \ T& t) {\n    return \"{}\";\n}\ntemplate <typename T, ENABLE_IF_T(has_initializer_str_v<T>)>\n\
     inline std::string initializer_str(const T& t) {\n    return t.initializer_str();\n\
-    }\ntemplate <typename T, std::enable_if_t<!has_repr_v<T>, std::nullptr_t> = nullptr>\n\
-    inline std::string repr(const T& t) {\n    return internal_repr::type_str(t) +\
-    \ internal_repr::initializer_str(t);\n}\ntemplate <typename T, std::enable_if_t<has_repr_v<T>,\
-    \ std::nullptr_t> = nullptr>\ninline std::string repr(const T& t) {\n    return\
-    \ t.repr();\n}\n\ninline std::string type_str(const char*) {\n    return \"char*\"\
-    ;\n}\ninline std::string initializer_str(const char* t) {\n    return \"\\\"\"\
-    \ + std::string(t) + \"\\\"\";\n}\ninline std::string repr(const char* t) {\n\
-    \    return internal_repr::initializer_str(t);\n}\n\ninline std::string type_str(const\
-    \ char&) {\n    return \"char\";\n}\ninline std::string initializer_str(const\
-    \ char& t) {\n    // char \u304C\u7B26\u53F7\u4ED8\u304D\u3067\u3082\u6DFB\u5B57\
-    \u304C\u8CA0\u306B\u306A\u3089\u306A\u3044\u3088\u3046\u306B unsigned char \u3067\
-    \u6271\u3046 (UTF-8 \u306E\u30D0\u30A4\u30C8\u306A\u3069)\n    const unsigned\
-    \ char u = static_cast<unsigned char>(t);\n    std::vector<std::string> v(128,\
-    \ \"\");\n    v['\\0'] = \"\\\\0\";\n    v['\\a'] = \"\\\\a\";\n    v['\\b'] =\
-    \ \"\\\\b\";\n    v['\\f'] = \"\\\\f\";\n    v['\\r'] = \"\\\\r\";\n    v['\\\
+    }\ntemplate <typename T, ENABLE_IF_T(!has_repr_v<T>)>\ninline std::string repr(const\
+    \ T& t) {\n    return internal_repr::type_str(t) + internal_repr::initializer_str(t);\n\
+    }\ntemplate <typename T, ENABLE_IF_T(has_repr_v<T>)>\ninline std::string repr(const\
+    \ T& t) {\n    return t.repr();\n}\n\ninline std::string type_str(const char*)\
+    \ {\n    return \"char*\";\n}\ninline std::string initializer_str(const char*\
+    \ t) {\n    return \"\\\"\" + std::string(t) + \"\\\"\";\n}\ninline std::string\
+    \ repr(const char* t) {\n    return internal_repr::initializer_str(t);\n}\n\n\
+    inline std::string type_str(const char&) {\n    return \"char\";\n}\ninline std::string\
+    \ initializer_str(const char& t) {\n    // char \u304C\u7B26\u53F7\u4ED8\u304D\
+    \u3067\u3082\u6DFB\u5B57\u304C\u8CA0\u306B\u306A\u3089\u306A\u3044\u3088\u3046\
+    \u306B unsigned char \u3067\u6271\u3046 (UTF-8 \u306E\u30D0\u30A4\u30C8\u306A\u3069\
+    )\n    const unsigned char u = static_cast<unsigned char>(t);\n    std::vector<std::string>\
+    \ v(128, \"\");\n    v['\\0'] = \"\\\\0\";\n    v['\\a'] = \"\\\\a\";\n    v['\\\
+    b'] = \"\\\\b\";\n    v['\\f'] = \"\\\\f\";\n    v['\\r'] = \"\\\\r\";\n    v['\\\
     n'] = \"\\\\n\";\n    v['\\v'] = \"\\\\v\";\n    v['\\''] = \"\\\\'\";\n    v['\\\
     \\'] = \"\\\\\\\\\";\n    if (u < 128 && !v[u].empty())\n        return \"'\"\
     \ + v[u] + \"'\";\n    if (32 <= u && u <= 126)\n        return \"'\" + std::string{t}\
@@ -264,9 +261,9 @@ data:
     \ value_type _stop, value_type _step)\n        : start(_start), stop(_stop), step(_step),\
     \ norm_stop(normalize(_start, _stop, _step)) {\n    }\n    constexpr Range(value_type\
     \ _start, value_type _stop)\n        : start(_start), stop(_stop), step(1), norm_stop(normalize(_start,\
-    \ _stop, 1)) {}\n    constexpr Range(value_type _stop)\n        : start(0), stop(_stop),\
-    \ step(1), norm_stop(normalize(0, _stop, 1)) {}\n    constexpr Range()\n     \
-    \   : start(0), stop(0), step(1), norm_stop(0) {\n    }\n    constexpr Range(const\
+    \ _stop, 1)) {}\n    explicit constexpr Range(value_type _stop)\n        : start(0),\
+    \ stop(_stop), step(1), norm_stop(normalize(0, _stop, 1)) {}\n    constexpr Range()\n\
+    \        : start(0), stop(0), step(1), norm_stop(0) {\n    }\n    constexpr Range(const\
     \ Range& o) = default;\n    Range& operator=(const Range& o) = delete;\n\n   \
     \ struct const_iterator {\n       public:\n        using difference_type = Range::difference_type;\n\
     \        using value_type = Range::value_type;\n        using pointer = const\
@@ -620,7 +617,7 @@ data:
   isVerificationFile: true
   path: test/unittest/repr.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-14 16:41:25+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/repr.test.cpp

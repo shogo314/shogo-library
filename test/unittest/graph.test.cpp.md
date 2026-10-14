@@ -65,16 +65,17 @@ data:
     \ * @brief \u30C7\u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\
     \n     */\n    Graph() : n(0), m(0), g(0) {}\n    /**\n     * @brief \u30B3\u30F3\
     \u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param n \u9802\u70B9\u6570\n     */\n\
-    \    explicit Graph(int n) : n(n), m(0), g(n) {}\n    /**\n     * @brief \u7121\
-    \u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n     * @param u \u59CB\u70B9\n   \
-    \  * @param v \u7D42\u70B9\n     * @param w \u30B3\u30B9\u30C8 \u7701\u7565\u3057\
-    \u305F\u30891\n     */\n    void add_edge(int u, int v, Cost w = 1) {\n      \
-    \  assert(0 <= u && u < n && 0 <= v && v < n);\n        g[u].push_back({u, v,\
-    \ w, m});\n        g[v].push_back({v, u, w, m++});\n    }\n    /**\n     * @brief\
-    \ \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n     * @param u \u59CB\u70B9\
+    \    explicit Graph(int n) : n(n), m(0), g(n) {}\n    /**\n     * @brief \u9802\
+    \u70B9\u6570\n     */\n    int size() const { return n; }\n    /**\n     * @brief\
+    \ \u7121\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n     * @param u \u59CB\u70B9\
     \n     * @param v \u7D42\u70B9\n     * @param w \u30B3\u30B9\u30C8 \u7701\u7565\
-    \u3057\u305F\u30891\n     */\n    void add_directed_edge(int u, int v, Cost w\
-    \ = 1) {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n        g[u].push_back({u,\
+    \u3057\u305F\u30891\n     */\n    void add_edge(int u, int v, Cost w = 1) {\n\
+    \        assert(0 <= u && u < n && 0 <= v && v < n);\n        g[u].push_back({u,\
+    \ v, w, m});\n        g[v].push_back({v, u, w, m++});\n    }\n    /**\n     *\
+    \ @brief \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n     * @param u \u59CB\
+    \u70B9\n     * @param v \u7D42\u70B9\n     * @param w \u30B3\u30B9\u30C8 \u7701\
+    \u7565\u3057\u305F\u30891\n     */\n    void add_directed_edge(int u, int v, Cost\
+    \ w = 1) {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n        g[u].push_back({u,\
     \ v, w, m++});\n    }\n    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\
     \u6E96\u5165\u529B\u304B\u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\
     \u308B\n     * @param m \u8FBA\u306E\u6570\n     * @param padding \u9802\u70B9\
@@ -312,7 +313,7 @@ data:
   isVerificationFile: true
   path: test/unittest/graph.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-14 16:37:34+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/graph.test.cpp

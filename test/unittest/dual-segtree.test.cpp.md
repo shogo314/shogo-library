@@ -15,6 +15,9 @@ data:
     path: src/math/modint.hpp
     title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
       \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9"
+  - icon: ':heavy_check_mark:'
+    path: src/utility/traits.hpp
+    title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
@@ -300,60 +303,61 @@ data:
     \u5024 x \u306E1\u8981\u7D20\u3092\u8868\u3059\u8981\u7D20\u3092\u4F5C\u308B\u3002\
     S::operator[](i) \u3067 i \u4E57\u548C\u3092\u53D6\u5F97\u3059\u308B\n */\ntemplate\
     \ <typename T, int K>\nstruct AddPowerSum {\n    struct S {\n        std::array<T,\
-    \ K + 1> val;\n        S() : val{} {}\n        S(const T& x) {\n            val[0]\
-    \ = T(1);\n            for (int i = 1; i <= K; i++) val[i] = val[i - 1] * x;\n\
-    \        }\n        const T& operator[](std::size_t i) const { return val[i];\
-    \ }\n    };\n    using F = T;\n    static S op(const S& a, const S& b) {\n   \
-    \     S ret;\n        for (int i = 0; i <= K; i++) ret.val[i] = a.val[i] + b.val[i];\n\
-    \        return ret;\n    }\n    static S e() { return S(); }\n    static S mapping(const\
-    \ F& f, const S& x) {\n        // sum (x+f)^i = sum_j binom(i, j) f^j x^(i-j)\n\
-    \        static const auto binom = [] {\n            std::array<std::array<T,\
-    \ K + 1>, K + 1> c{};\n            for (int i = 0; i <= K; i++) {\n          \
-    \      c[i][0] = c[i][i] = T(1);\n                for (int j = 1; j < i; j++)\
-    \ c[i][j] = c[i - 1][j - 1] + c[i - 1][j];\n            }\n            return\
-    \ c;\n        }();\n        std::array<T, K + 1> pw{};\n        pw[0] = T(1);\n\
-    \        for (int i = 1; i <= K; i++) pw[i] = pw[i - 1] * f;\n        S ret;\n\
-    \        for (int i = 0; i <= K; i++) {\n            for (int j = 0; j <= i; j++)\
-    \ ret.val[i] += binom[i][j] * pw[j] * x.val[i - j];\n        }\n        return\
-    \ ret;\n    }\n    static F composition(const F& f, const F& g) { return f + g;\
-    \ }\n    static F id() { return F(0); }\n};\n\n}  // namespace acted_monoid\n\n\
-    /**\n * @brief \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u304B\u3089\u5B9F\
-    \u884C\u6642\u306B\u4F5C\u308B\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\
-    \u30C9\n * \u30E9\u30E0\u30C0\u5F0F\u3092\u4F7F\u3048\u308B\n *\n * @tparam T\
-    \ \u8981\u7D20\u306E\u578B\n * @tparam Op \u7A4D\u306E\u95A2\u6570\u30AA\u30D6\
-    \u30B8\u30A7\u30AF\u30C8\u306E\u578B\n * @tparam U \u4F5C\u7528\u7D20\u306E\u578B\
-    \n * @tparam Mapping \u4F5C\u7528\u7D20\u3092\u9069\u7528\u3059\u308B\u95A2\u6570\
-    \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306E\u578B \u5F15\u6570\u306F (f, x), (f,\
-    \ x, sz), (f, x, l, r) \u306E\u3044\u305A\u308C\u304B\n * @tparam Composition\
-    \ \u4F5C\u7528\u7D20\u306E\u5408\u6210\u306E\u95A2\u6570\u30AA\u30D6\u30B8\u30A7\
-    \u30AF\u30C8\u306E\u578B\n */\ntemplate <typename T, typename Op, typename U,\
-    \ typename Mapping, typename Composition>\nstruct ActedMonoid {\n    using S =\
-    \ T;\n    using F = U;\n    Op op_object;\n    S identity;\n    Mapping mapping_object;\n\
-    \    Composition composition_object;\n    F lazy_identity;\n    ActedMonoid()\
-    \ = default;\n    constexpr ActedMonoid(Op op, const S& e, Mapping mapping, Composition\
-    \ composition, const F& id)\n        : op_object(std::move(op)), identity(e),\
-    \ mapping_object(std::move(mapping)), composition_object(std::move(composition)),\
-    \ lazy_identity(id) {}\n    constexpr S op(const S& a, const S& b) const { return\
-    \ op_object(a, b); }\n    constexpr S e() const { return identity; }\n    constexpr\
-    \ auto mapping(const F& f, const S& x, int l, int r) const {\n        if constexpr\
-    \ (std::is_invocable_v<const Mapping&, const F&, const S&, int, int>) {\n    \
-    \        return mapping_object(f, x, l, r);\n        } else if constexpr (std::is_invocable_v<const\
-    \ Mapping&, const F&, const S&, int>) {\n            return mapping_object(f,\
-    \ x, r - l);\n        } else {\n            return mapping_object(f, x);\n   \
-    \     }\n    }\n    constexpr F composition(const F& f, const F& g) const { return\
-    \ composition_object(f, g); }\n    constexpr F id() const { return lazy_identity;\
-    \ }\n};\ntemplate <typename Op, typename T, typename Mapping, typename Composition,\
-    \ typename U>\nActedMonoid(Op, T, Mapping, Composition, U) -> ActedMonoid<T, Op,\
-    \ U, Mapping, Composition>;\n#line 13 \"src/data_structures/dual-segtree.hpp\"\
-    \n\n/**\n * @brief \u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u533A\u9593\
-    \u4F5C\u7528\u30011\u70B9\u53D6\u5F97)\n *\n * \u533A\u9593\u3078\u306E\u4F5C\u7528\
-    \u7D20\u306E\u9069\u7528\u30681\u70B9\u306E\u53D6\u5F97\u3092 O(log n) \u3067\u884C\
-    \u3046\u3002\u4F5C\u7528\u7D20\u306F\u53EF\u63DB\u3067\u306A\u304F\u3066\u3082\
-    \u3088\u3044\n * \u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\u3068\
-    \u9055\u3044\u3001\u5024\u306E\u30E2\u30CE\u30A4\u30C9\u306E\u6F14\u7B97 (op\u3001\
-    e) \u306F\u4F7F\u308F\u306A\u3044\n * \u4F8B:\n * DualSegTree<acted_monoid::AffineSum<mint>>\
-    \ seg(v);\n * seg.apply(l, r, Affine<mint>{b, c});\n * mint x = seg.get(i);\n\
-    \ *\n * @tparam A \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9 (algebra/acted-monoid.hpp)\n\
+    \ K + 1> val;\n        constexpr S() : val{} {}\n        constexpr S(const T&\
+    \ x) : val{} {\n            val[0] = T(1);\n            for (int i = 1; i <= K;\
+    \ i++) val[i] = val[i - 1] * x;\n        }\n        constexpr const T& operator[](std::size_t\
+    \ i) const { return val[i]; }\n    };\n    using F = T;\n    static constexpr\
+    \ S op(const S& a, const S& b) {\n        S ret;\n        for (int i = 0; i <=\
+    \ K; i++) ret.val[i] = a.val[i] + b.val[i];\n        return ret;\n    }\n    static\
+    \ constexpr S e() { return S(); }\n    static S mapping(const F& f, const S& x)\
+    \ {\n        // sum (x+f)^i = sum_j binom(i, j) f^j x^(i-j)\n        static const\
+    \ auto binom = [] {\n            std::array<std::array<T, K + 1>, K + 1> c{};\n\
+    \            for (int i = 0; i <= K; i++) {\n                c[i][0] = c[i][i]\
+    \ = T(1);\n                for (int j = 1; j < i; j++) c[i][j] = c[i - 1][j -\
+    \ 1] + c[i - 1][j];\n            }\n            return c;\n        }();\n    \
+    \    std::array<T, K + 1> pw{};\n        pw[0] = T(1);\n        for (int i = 1;\
+    \ i <= K; i++) pw[i] = pw[i - 1] * f;\n        S ret;\n        for (int i = 0;\
+    \ i <= K; i++) {\n            for (int j = 0; j <= i; j++) ret.val[i] += binom[i][j]\
+    \ * pw[j] * x.val[i - j];\n        }\n        return ret;\n    }\n    static constexpr\
+    \ F composition(const F& f, const F& g) { return f + g; }\n    static constexpr\
+    \ F id() { return F(0); }\n};\n\n}  // namespace acted_monoid\n\n/**\n * @brief\
+    \ \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u304B\u3089\u5B9F\u884C\u6642\
+    \u306B\u4F5C\u308B\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n * \u30E9\
+    \u30E0\u30C0\u5F0F\u3092\u4F7F\u3048\u308B\n *\n * @tparam T \u8981\u7D20\u306E\
+    \u578B\n * @tparam Op \u7A4D\u306E\u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\
+    \u306E\u578B\n * @tparam U \u4F5C\u7528\u7D20\u306E\u578B\n * @tparam Mapping\
+    \ \u4F5C\u7528\u7D20\u3092\u9069\u7528\u3059\u308B\u95A2\u6570\u30AA\u30D6\u30B8\
+    \u30A7\u30AF\u30C8\u306E\u578B \u5F15\u6570\u306F (f, x), (f, x, sz), (f, x, l,\
+    \ r) \u306E\u3044\u305A\u308C\u304B\n * @tparam Composition \u4F5C\u7528\u7D20\
+    \u306E\u5408\u6210\u306E\u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306E\
+    \u578B\n */\ntemplate <typename T, typename Op, typename U, typename Mapping,\
+    \ typename Composition>\nstruct ActedMonoid {\n    using S = T;\n    using F =\
+    \ U;\n    Op op_object;\n    S identity;\n    Mapping mapping_object;\n    Composition\
+    \ composition_object;\n    F lazy_identity;\n    ActedMonoid() = default;\n  \
+    \  constexpr ActedMonoid(Op op, const S& e, Mapping mapping, Composition composition,\
+    \ const F& id)\n        : op_object(std::move(op)), identity(e), mapping_object(std::move(mapping)),\
+    \ composition_object(std::move(composition)), lazy_identity(id) {}\n    constexpr\
+    \ S op(const S& a, const S& b) const { return op_object(a, b); }\n    constexpr\
+    \ S e() const { return identity; }\n    constexpr auto mapping(const F& f, const\
+    \ S& x, int l, int r) const {\n        if constexpr (std::is_invocable_v<const\
+    \ Mapping&, const F&, const S&, int, int>) {\n            return mapping_object(f,\
+    \ x, l, r);\n        } else if constexpr (std::is_invocable_v<const Mapping&,\
+    \ const F&, const S&, int>) {\n            return mapping_object(f, x, r - l);\n\
+    \        } else {\n            return mapping_object(f, x);\n        }\n    }\n\
+    \    constexpr F composition(const F& f, const F& g) const { return composition_object(f,\
+    \ g); }\n    constexpr F id() const { return lazy_identity; }\n};\ntemplate <typename\
+    \ Op, typename T, typename Mapping, typename Composition, typename U>\nActedMonoid(Op,\
+    \ T, Mapping, Composition, U) -> ActedMonoid<T, Op, U, Mapping, Composition>;\n\
+    #line 13 \"src/data_structures/dual-segtree.hpp\"\n\n/**\n * @brief \u53CC\u5BFE\
+    \u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u533A\u9593\u4F5C\u7528\u30011\u70B9\u53D6\
+    \u5F97)\n *\n * \u533A\u9593\u3078\u306E\u4F5C\u7528\u7D20\u306E\u9069\u7528\u3068\
+    1\u70B9\u306E\u53D6\u5F97\u3092 O(log n) \u3067\u884C\u3046\u3002\u4F5C\u7528\u7D20\
+    \u306F\u53EF\u63DB\u3067\u306A\u304F\u3066\u3082\u3088\u3044\n * \u9045\u5EF6\u4F1D\
+    \u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\u3068\u9055\u3044\u3001\u5024\u306E\
+    \u30E2\u30CE\u30A4\u30C9\u306E\u6F14\u7B97 (op\u3001e) \u306F\u4F7F\u308F\u306A\
+    \u3044\n * \u4F8B:\n * DualSegTree<acted_monoid::AffineSum<mint>> seg(v);\n *\
+    \ seg.apply(l, r, Affine<mint>{b, c});\n * mint x = seg.get(i);\n *\n * @tparam\
+    \ A \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9 (algebra/acted-monoid.hpp)\n\
     \ */\ntemplate <typename A>\nclass DualSegTree {\n   public:\n    using S = typename\
     \ A::S;\n    using F = typename A::F;\n\n   private:\n    A a;\n    int n, sz,\
     \ height;\n    std::vector<S> data;  // \u8449\u306E\u5024 (\u4F5C\u7528\u7D20\
@@ -410,71 +414,125 @@ data:
     \ (int h = height; h > 0; h--) {\n            if (((l >> h) << h) != l) push(l\
     \ >> h);\n            if (((r >> h) << h) != r) push((r - 1) >> h);\n        }\n\
     \        for (; l < r; l >>= 1, r >>= 1) {\n            if (l & 1) apply_node(l++,\
-    \ f);\n            if (r & 1) apply_node(--r, f);\n        }\n    }\n};\n#line\
-    \ 8 \"test/unittest/dual-segtree.test.cpp\"\n\n#include <iostream>\n#include <random>\n\
-    #line 12 \"test/unittest/dual-segtree.test.cpp\"\n\n#line 2 \"src/math/modint.hpp\"\
-    \n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\
-    \u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line\
-    \ 9 \"src/math/modint.hpp\"\n#include <cstdint>\n#line 14 \"src/math/modint.hpp\"\
-    \n\nnamespace internal_modint {\n// clang-format off\nstatic constexpr std::uint16_t\
-    \ prime32_bases[] {\n    15591,  2018,  166, 7429,  8064, 16045, 10503,  4399,\
-    \  1949,  1295, 2776,  3620,   560,  3128,  5212,  2657,\n     2300,  2021, 4652,\
-    \ 1471,  9336,  4018,  2398, 20462, 10277,  8028, 2213,  6219,   620,  3763, \
-    \ 4852,  5012,\n     3185,  1333, 6227, 5298,  1074,  2391,  5113,  7061,   803,\
-    \  1269, 3875,   422,   751,   580,  4729, 10239,\n      746,  2951,  556, 2206,\
-    \  3778,   481,  1522,  3476,   481,  2487, 3266,  5633,   488,  3373,  6441,\
-    \  3344,\n       17, 15105, 1490, 4154,  2036,  1882,  1813,   467,  3307, 14042,\
-    \ 6371,   658,  1005,   903,   737,  1887,\n     7447,  1888, 2848, 1784,  7559,\
-    \  3400,   951, 13969,  4304,   177,   41, 19875,  3110, 13221,  8726,   571,\n\
-    \     7043,  6943, 1199,  352,  6435,   165,  1169,  3315,   978,   233, 3003,\
-    \  2562,  2994, 10587, 10030,  2377,\n     1902,  5354, 4447, 1555,   263, 27027,\
-    \  2283,   305,   669,  1912,  601,  6186,   429,  1930, 14873,  1784,\n     1661,\
-    \   524, 3577,  236,  2360,  6146,  2850, 55637,  1753,  4178, 8466,   222,  2579,\
-    \  2743,  2031,  2226,\n     2276,   374, 2132,  813, 23788,  1610,  4422,  5159,\
-    \  1725,  3597, 3366, 14336,   579,   165,  1375, 10018,\n    12616,  9816, 1371,\
-    \  536,  1867, 10864,   857,  2206,  5788,   434, 8085, 17618,   727,  3639, \
-    \ 1595,  4944,\n     2129,  2029, 8195, 8344,  6232,  9183,  8126,  1870,  3296,\
-    \  7455, 8947, 25017,   541, 19115,   368,   566,\n     5674,   411,  522, 1027,\
-    \  8215,  2050,  6544, 10049,   614,   774, 2333,  3007, 35201,  4706,  1152,\
-    \  1785,\n     1028,  1540, 3743,  493,  4474,  2521, 26845,  8354,   864, 18915,\
-    \ 5465,  2447,    42,  4511,  1660,   166,\n     1249,  6259, 2553,  304,   272,\
-    \  7286,    73,  6554,   899,  2816, 5197, 13330,  7054,  2818,  3199,   811,\n\
-    \      922,   350, 7514, 4452,  3449,  2663,  4708,   418,  1621,  1171, 3471,\
-    \    88, 11345,   412,  1559,   194,\n};\n// clang-format on\n\nstatic constexpr\
-    \ bool is_SPRP(std::uint32_t n, std::uint32_t a) noexcept {\n    std::uint32_t\
-    \ d = n - 1;\n    std::uint32_t s = 0;\n    while ((d & 1) == 0) {\n        ++s;\n\
-    \        d >>= 1;\n    }\n    std::uint64_t cur = 1;\n    std::uint64_t pw = d;\n\
-    \    while (pw) {\n        if (pw & 1) cur = (cur * a) % n;\n        a = (static_cast<std::uint64_t>(a)\
-    \ * a) % n;\n        pw >>= 1;\n    }\n    if (cur == 1) return true;\n    for\
-    \ (std::uint32_t r = 0; r < s; ++r) {\n        if (cur == n - 1) return true;\n\
-    \        cur = (cur * cur) % n;\n    }\n    return false;\n}\n\n// 32\u30D3\u30C3\
-    \u30C8\u7B26\u53F7\u306A\u3057\u6574\u6570\u306E\u7D20\u6570\u5224\u5B9A\n// \u53C2\
-    \u8003: M. Forisek and J. Jancina, \u201CFast Primality Testing for Integers That\
-    \ Fit into a Machine Word,\u201D presented at the Conference on Current Trends\
-    \ in Theory and Practice of Informatics, 2015.\n[[nodiscard]]\nstatic constexpr\
-    \ bool is_prime32(std::uint32_t x) noexcept {\n    if (x == 2 || x == 3 || x ==\
-    \ 5 || x == 7) return true;\n    if (x % 2 == 0 || x % 3 == 0 || x % 5 == 0 ||\
-    \ x % 7 == 0) return false;\n    if (x < 121) return (x > 1);\n    std::uint64_t\
-    \ h = x;\n    h = ((h >> 16) ^ h) * 0x45d9f3b;\n    h = ((h >> 16) ^ h) * 0x45d9f3b;\n\
-    \    h = ((h >> 16) ^ h) & 0xff;\n    return is_SPRP(x, prime32_bases[h]);\n}\n\
-    }  // namespace internal_modint\n\n/// @brief static_modint \u3068 dynamic_modint\
-    \ \u306E\u5B9F\u88C5\u3092 CRTP \u306B\u3088\u3063\u3066\u884C\u3046\u305F\u3081\
-    \u306E\u30AF\u30E9\u30B9\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n/// @tparam Modint\
-    \ \u3053\u306E\u30AF\u30E9\u30B9\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\u3092\u7D99\
-    \u627F\u3059\u308B\u30AF\u30E9\u30B9\ntemplate <class Modint>\nclass modint_base\
-    \ {\n   public:\n    /// @brief \u4FDD\u6301\u3059\u308B\u5024\u306E\u578B\n \
-    \   using value_type = std::uint32_t;\n\n    /// @brief 0 \u3067\u521D\u671F\u5316\
-    \u3057\u307E\u3059\u3002\n    constexpr modint_base() noexcept\n        : m_value{0}\
-    \ {}\n\n    /// @brief @c value \u306E\u5270\u4F59\u3067\u521D\u671F\u5316\u3057\
-    \u307E\u3059\u3002\n    /// @param value \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\
-    \n    template <class SignedIntegral, std::enable_if_t<std::is_integral_v<SignedIntegral>\
-    \ && std::is_signed_v<SignedIntegral>>* = nullptr>\n    constexpr modint_base(SignedIntegral\
-    \ value) noexcept\n        : m_value{static_cast<value_type>((static_cast<long\
+    \ f);\n            if (r & 1) apply_node(--r, f);\n        }\n    }\n};\n\ntemplate\
+    \ <typename A>\nDualSegTree(int, A) -> DualSegTree<A>;\ntemplate <typename A>\n\
+    DualSegTree(int, typename A::S, A) -> DualSegTree<A>;\ntemplate <typename A>\n\
+    DualSegTree(std::vector<typename A::S>, A) -> DualSegTree<A>;\n#line 8 \"test/unittest/dual-segtree.test.cpp\"\
+    \n\n#include <iostream>\n#include <random>\n#line 12 \"test/unittest/dual-segtree.test.cpp\"\
+    \n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\
+    \u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\
+    \u30AF\u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\n#include <cstdint>\n\
+    #line 14 \"src/math/modint.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n\
+    \ * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\
+    \n#include <iterator>\n#include <set>\n#line 13 \"src/utility/traits.hpp\"\n\n\
+    namespace internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T,\
+    \ class = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\n\
+    struct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
+    \ : std::true_type {};\n}  // namespace internal_traits\n\ntemplate <class T>\n\
+    struct is_range : internal_traits::is_range_impl<T>::type {};\ntemplate <class\
+    \ T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define HAS_METHOD(func_name)\
+    \                                                              \\\n    namespace\
+    \ internal_traits {                                                          \
+    \  \\\n    template <class T, class = void>                                  \
+    \                     \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                    \\\n    template <class T>          \
+    \                                                           \\\n    struct has_##func_name##_impl<T,\
+    \ std::void_t<decltype(std::declval<T>().func_name())>> \\\n        : std::true_type\
+    \ {};                                                               \\\n    }\
+    \                                                                            \
+    \          \\\n    template <class T>                                        \
+    \                             \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T>::type\
+    \ {};          \\\n    template <class T>                                    \
+    \                                 \\\n    inline constexpr bool has_##func_name##_v\
+    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
+    \                                                                    \\\n    namespace\
+    \ internal_traits {                                                          \
+    \                      \\\n    template <class T, typename U, class = void>  \
+    \                                                             \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                                      \
+    \  \\\n    template <class T, typename U>                                    \
+    \                                         \\\n    struct has_##func_name##_impl<T,\
+    \ U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>> \\\
+    \n        : std::true_type {};                                               \
+    \                                    \\\n    }                               \
+    \                                                                           \\\
+    \n    template <class T, typename U>                                         \
+    \                                    \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \ U>::type {};                           \\\n    template <class T, typename U>\
+    \                                                                            \
+    \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
+    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
+    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
+    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
+    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
+    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
+    \ntemplate <class C>\nusing mem_value_type = typename C::value_type;\ntemplate\
+    \ <class C>\nusing mem_difference_type = typename C::difference_type;\n\nnamespace\
+    \ internal_traits {\ntemplate <class T, class = void>\nstruct is_sorted_container_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_sorted_container_impl<std::set<T>>\
+    \ : std::true_type {};\ntemplate <class T>\nstruct is_sorted_container_impl<std::multiset<T>>\
+    \ : std::true_type {};\n}  // namespace internal_traits\ntemplate <class T>\n\
+    struct is_sorted_container : internal_traits::is_sorted_container_impl<T>::type\
+    \ {};\ntemplate <class T>\ninline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
+    #line 16 \"src/math/modint.hpp\"\n\nnamespace internal_modint {\n// clang-format\
+    \ off\nstatic constexpr std::uint16_t prime32_bases[] {\n    15591,  2018,  166,\
+    \ 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,  3620,   560,  3128, \
+    \ 5212,  2657,\n     2300,  2021, 4652, 1471,  9336,  4018,  2398, 20462, 10277,\
+    \  8028, 2213,  6219,   620,  3763,  4852,  5012,\n     3185,  1333, 6227, 5298,\
+    \  1074,  2391,  5113,  7061,   803,  1269, 3875,   422,   751,   580,  4729,\
+    \ 10239,\n      746,  2951,  556, 2206,  3778,   481,  1522,  3476,   481,  2487,\
+    \ 3266,  5633,   488,  3373,  6441,  3344,\n       17, 15105, 1490, 4154,  2036,\
+    \  1882,  1813,   467,  3307, 14042, 6371,   658,  1005,   903,   737,  1887,\n\
+    \     7447,  1888, 2848, 1784,  7559,  3400,   951, 13969,  4304,   177,   41,\
+    \ 19875,  3110, 13221,  8726,   571,\n     7043,  6943, 1199,  352,  6435,   165,\
+    \  1169,  3315,   978,   233, 3003,  2562,  2994, 10587, 10030,  2377,\n     1902,\
+    \  5354, 4447, 1555,   263, 27027,  2283,   305,   669,  1912,  601,  6186,  \
+    \ 429,  1930, 14873,  1784,\n     1661,   524, 3577,  236,  2360,  6146,  2850,\
+    \ 55637,  1753,  4178, 8466,   222,  2579,  2743,  2031,  2226,\n     2276,  \
+    \ 374, 2132,  813, 23788,  1610,  4422,  5159,  1725,  3597, 3366, 14336,   579,\
+    \   165,  1375, 10018,\n    12616,  9816, 1371,  536,  1867, 10864,   857,  2206,\
+    \  5788,   434, 8085, 17618,   727,  3639,  1595,  4944,\n     2129,  2029, 8195,\
+    \ 8344,  6232,  9183,  8126,  1870,  3296,  7455, 8947, 25017,   541, 19115, \
+    \  368,   566,\n     5674,   411,  522, 1027,  8215,  2050,  6544, 10049,   614,\
+    \   774, 2333,  3007, 35201,  4706,  1152,  1785,\n     1028,  1540, 3743,  493,\
+    \  4474,  2521, 26845,  8354,   864, 18915, 5465,  2447,    42,  4511,  1660,\
+    \   166,\n     1249,  6259, 2553,  304,   272,  7286,    73,  6554,   899,  2816,\
+    \ 5197, 13330,  7054,  2818,  3199,   811,\n      922,   350, 7514, 4452,  3449,\
+    \  2663,  4708,   418,  1621,  1171, 3471,    88, 11345,   412,  1559,   194,\n\
+    };\n// clang-format on\n\nstatic constexpr bool is_SPRP(std::uint32_t n, std::uint32_t\
+    \ a) noexcept {\n    std::uint32_t d = n - 1;\n    std::uint32_t s = 0;\n    while\
+    \ ((d & 1) == 0) {\n        ++s;\n        d >>= 1;\n    }\n    std::uint64_t cur\
+    \ = 1;\n    std::uint64_t pw = d;\n    while (pw) {\n        if (pw & 1) cur =\
+    \ (cur * a) % n;\n        a = (static_cast<std::uint64_t>(a) * a) % n;\n     \
+    \   pw >>= 1;\n    }\n    if (cur == 1) return true;\n    for (std::uint32_t r\
+    \ = 0; r < s; ++r) {\n        if (cur == n - 1) return true;\n        cur = (cur\
+    \ * cur) % n;\n    }\n    return false;\n}\n\n// 32\u30D3\u30C3\u30C8\u7B26\u53F7\
+    \u306A\u3057\u6574\u6570\u306E\u7D20\u6570\u5224\u5B9A\n// \u53C2\u8003: M. Forisek\
+    \ and J. Jancina, \u201CFast Primality Testing for Integers That Fit into a Machine\
+    \ Word,\u201D presented at the Conference on Current Trends in Theory and Practice\
+    \ of Informatics, 2015.\n[[nodiscard]]\nstatic constexpr bool is_prime32(std::uint32_t\
+    \ x) noexcept {\n    if (x == 2 || x == 3 || x == 5 || x == 7) return true;\n\
+    \    if (x % 2 == 0 || x % 3 == 0 || x % 5 == 0 || x % 7 == 0) return false;\n\
+    \    if (x < 121) return (x > 1);\n    std::uint64_t h = x;\n    h = ((h >> 16)\
+    \ ^ h) * 0x45d9f3b;\n    h = ((h >> 16) ^ h) * 0x45d9f3b;\n    h = ((h >> 16)\
+    \ ^ h) & 0xff;\n    return is_SPRP(x, prime32_bases[h]);\n}\n}  // namespace internal_modint\n\
+    \n/// @brief static_modint \u3068 dynamic_modint \u306E\u5B9F\u88C5\u3092 CRTP\
+    \ \u306B\u3088\u3063\u3066\u884C\u3046\u305F\u3081\u306E\u30AF\u30E9\u30B9\u30C6\
+    \u30F3\u30D7\u30EC\u30FC\u30C8\n/// @tparam Modint \u3053\u306E\u30AF\u30E9\u30B9\
+    \u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\u3092\u7D99\u627F\u3059\u308B\u30AF\u30E9\
+    \u30B9\ntemplate <class Modint>\nclass modint_base {\n   public:\n    /// @brief\
+    \ \u4FDD\u6301\u3059\u308B\u5024\u306E\u578B\n    using value_type = std::uint32_t;\n\
+    \n    /// @brief 0 \u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    constexpr\
+    \ modint_base() noexcept\n        : m_value{0} {}\n\n    /// @brief @c value \u306E\
+    \u5270\u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    /// @param value\
+    \ \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\n    template <class SignedIntegral,\
+    \ ENABLE_IF_T((std::is_integral_v<SignedIntegral> && std::is_signed_v<SignedIntegral>))>\n\
+    \    constexpr modint_base(SignedIntegral value) noexcept\n        : m_value{static_cast<value_type>((static_cast<long\
     \ long>(value) % Modint::mod() + Modint::mod()) % Modint::mod())} {}\n\n    ///\
     \ @brief @c value \u306E\u5270\u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\
     \u3002\n    /// @param value \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\n    template\
-    \ <class UnsignedIntegral, std::enable_if_t<std::is_integral_v<UnsignedIntegral>\
-    \ && std::is_unsigned_v<UnsignedIntegral>>* = nullptr>\n    constexpr modint_base(UnsignedIntegral\
+    \ <class UnsignedIntegral, ENABLE_IF_T((std::is_integral_v<UnsignedIntegral> &&\
+    \ std::is_unsigned_v<UnsignedIntegral>))>\n    constexpr modint_base(UnsignedIntegral\
     \ value) noexcept\n        : m_value{static_cast<value_type>(value % Modint::mod())}\
     \ {}\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092\u53D6\u5F97\
     \u3057\u307E\u3059\u3002\n    /// @return \u4FDD\u6301\u3057\u3066\u3044\u308B\
@@ -614,40 +672,39 @@ data:
     \ \u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    constexpr static_modint()\
     \ noexcept\n        : base_type{} {}\n\n    /// @brief @c value \u306E\u5270\u4F59\
     \u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    /// @param value \u521D\u671F\
-    \u5316\u306B\u4F7F\u3046\u5024\n    template <class SignedIntegral, std::enable_if_t<std::is_integral_v<SignedIntegral>>*\
-    \ = nullptr>\n    constexpr static_modint(SignedIntegral value) noexcept\n   \
-    \     : base_type{value} {}\n\n    /// @brief \u81EA\u8EAB\u306E\u9006\u6570\u3092\
-    \u8FD4\u3057\u307E\u3059\u3002\n    /// @remark \u6642\u9593\u8A08\u7B97\u91CF\
-    \uFF1A @f$O(\\log value)@f$\n    /// @return \u81EA\u8EAB\u306E\u9006\u6570\n\
-    \    [[nodiscard]]\n    constexpr static_modint inv() const noexcept {\n     \
-    \   if constexpr (internal_modint::is_prime32(Mod)) {\n            assert(this->m_value\
-    \ != 0 && \"The inverse element of zero does not exist.\");\n            return\
-    \ this->pow(Mod - 2);\n        } else {\n            return base_type::inv();\n\
-    \        }\n    }\n};\n\n/// @brief \u5B9F\u884C\u6642\u306B\u6CD5\u304C\u6C7A\
-    \u307E\u308B\u3068\u304D\u3001\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\
-    \u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n/// @tparam ID \u3053\
-    \u306EID\u3054\u3068\u306B\u6CD5\u3092\u8A2D\u5B9A\u3059\u308B\u3053\u3068\u304C\
-    \u3067\u304D\u307E\u3059\ntemplate <int ID>\nclass dynamic_modint : public modint_base<dynamic_modint<ID>>\
-    \ {\n   private:\n    using base_type = modint_base<dynamic_modint<ID>>;\n\n \
-    \  public:\n    using typename base_type::value_type;\n\n    /// @brief \u6CD5\
-    \u3092\u53D6\u5F97\u3057\u307E\u3059\u3002\n    /// @return \u6CD5\n    [[nodiscard]]\n\
-    \    static value_type mod() noexcept {\n        return modulus;\n    }\n\n  \
-    \  /// @brief \u6CD5\u3092\u8A2D\u5B9A\u3057\u307E\u3059\u3002\n    /// @param\
-    \ m \u65B0\u3057\u3044\u6CD5\n    static void set_mod(value_type m) noexcept {\n\
-    \        assert(m > 0 && m <= std::numeric_limits<value_type>::max() / 2);\n \
-    \       modulus = m;\n    }\n\n    /// @brief 0 \u3067\u521D\u671F\u5316\u3057\
-    \u307E\u3059\u3002\n    constexpr dynamic_modint() noexcept\n        : base_type{}\
-    \ {}\n\n    /// @brief @c value \u306E\u5270\u4F59\u3067\u521D\u671F\u5316\u3057\
-    \u307E\u3059\u3002\n    /// @param value \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\
-    \n    template <class SignedIntegral, std::enable_if_t<std::is_integral_v<SignedIntegral>>*\
-    \ = nullptr>\n    constexpr dynamic_modint(SignedIntegral value) noexcept\n  \
-    \      : base_type{value} {}\n\n   private:\n    inline static value_type modulus\
-    \ = 998244353;\n};\n\nusing modint998244353 = static_modint<998244353>;\nusing\
-    \ modint1000000007 = static_modint<1000000007>;\nusing modint = dynamic_modint<-1>;\n\
-    #line 14 \"test/unittest/dual-segtree.test.cpp\"\n\nusing mint = modint998244353;\n\
-    \nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int\
-    \ rep = 0; rep < 2000 && ok; rep++) {\n        int n = rng() % 12 + 1;\n     \
-    \   std::vector<mint> v(n);\n        DualSegTree<acted_monoid::AffineSum<mint>>\
+    \u5316\u306B\u4F7F\u3046\u5024\n    template <class SignedIntegral, ENABLE_IF_T(std::is_integral_v<SignedIntegral>)>\n\
+    \    constexpr static_modint(SignedIntegral value) noexcept\n        : base_type{value}\
+    \ {}\n\n    /// @brief \u81EA\u8EAB\u306E\u9006\u6570\u3092\u8FD4\u3057\u307E\u3059\
+    \u3002\n    /// @remark \u6642\u9593\u8A08\u7B97\u91CF\uFF1A @f$O(\\log value)@f$\n\
+    \    /// @return \u81EA\u8EAB\u306E\u9006\u6570\n    [[nodiscard]]\n    constexpr\
+    \ static_modint inv() const noexcept {\n        if constexpr (internal_modint::is_prime32(Mod))\
+    \ {\n            assert(this->m_value != 0 && \"The inverse element of zero does\
+    \ not exist.\");\n            return this->pow(Mod - 2);\n        } else {\n \
+    \           return base_type::inv();\n        }\n    }\n};\n\n/// @brief \u5B9F\
+    \u884C\u6642\u306B\u6CD5\u304C\u6C7A\u307E\u308B\u3068\u304D\u3001\u56DB\u5247\
+    \u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\
+    \u30E9\u30B9\n/// @tparam ID \u3053\u306EID\u3054\u3068\u306B\u6CD5\u3092\u8A2D\
+    \u5B9A\u3059\u308B\u3053\u3068\u304C\u3067\u304D\u307E\u3059\ntemplate <int ID>\n\
+    class dynamic_modint : public modint_base<dynamic_modint<ID>> {\n   private:\n\
+    \    using base_type = modint_base<dynamic_modint<ID>>;\n\n   public:\n    using\
+    \ typename base_type::value_type;\n\n    /// @brief \u6CD5\u3092\u53D6\u5F97\u3057\
+    \u307E\u3059\u3002\n    /// @return \u6CD5\n    [[nodiscard]]\n    static value_type\
+    \ mod() noexcept {\n        return modulus;\n    }\n\n    /// @brief \u6CD5\u3092\
+    \u8A2D\u5B9A\u3057\u307E\u3059\u3002\n    /// @param m \u65B0\u3057\u3044\u6CD5\
+    \n    static void set_mod(value_type m) noexcept {\n        assert(m > 0 && m\
+    \ <= std::numeric_limits<value_type>::max() / 2);\n        modulus = m;\n    }\n\
+    \n    /// @brief 0 \u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    constexpr\
+    \ dynamic_modint() noexcept\n        : base_type{} {}\n\n    /// @brief @c value\
+    \ \u306E\u5270\u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    ///\
+    \ @param value \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\n    template <class\
+    \ SignedIntegral, ENABLE_IF_T(std::is_integral_v<SignedIntegral>)>\n    constexpr\
+    \ dynamic_modint(SignedIntegral value) noexcept\n        : base_type{value} {}\n\
+    \n   private:\n    inline static value_type modulus = 998244353;\n};\n\nusing\
+    \ modint998244353 = static_modint<998244353>;\nusing modint1000000007 = static_modint<1000000007>;\n\
+    using modint = dynamic_modint<-1>;\n#line 14 \"test/unittest/dual-segtree.test.cpp\"\
+    \n\nusing mint = modint998244353;\n\nint main() {\n    std::mt19937 rng(314);\n\
+    \    bool ok = true;\n    for (int rep = 0; rep < 2000 && ok; rep++) {\n     \
+    \   int n = rng() % 12 + 1;\n        std::vector<mint> v(n);\n        DualSegTree<acted_monoid::AffineSum<mint>>\
     \ seg;\n        switch (rep % 3) {\n            case 0:\n                seg =\
     \ DualSegTree<acted_monoid::AffineSum<mint>>(n);\n                break;\n   \
     \         case 1: {\n                mint x = rng() % 10;\n                seg\
@@ -727,10 +784,11 @@ data:
   - src/algebra/acted-monoid.hpp
   - src/algebra/monoid.hpp
   - src/math/modint.hpp
+  - src/utility/traits.hpp
   isVerificationFile: true
   path: test/unittest/dual-segtree.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-14 16:41:25+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/dual-segtree.test.cpp

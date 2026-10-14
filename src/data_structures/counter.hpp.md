@@ -1,6 +1,9 @@
 ---
 data:
-  _extendedDependsOn: []
+  _extendedDependsOn:
+  - icon: ':heavy_check_mark:'
+    path: src/utility/traits.hpp
+    title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
@@ -26,21 +29,71 @@ data:
     \ * @brief \u5024\u306E\u500B\u6570\u3092\u6570\u3048\u308B\u591A\u91CD\u96C6\u5408\
     \ (Counter)\n */\n\n#include <algorithm>\n#include <cassert>\n#include <cstddef>\n\
     #include <initializer_list>\n#include <iterator>\n#include <map>\n#include <type_traits>\n\
-    #include <utility>\n#include <vector>\n\ntemplate <typename T>\nstruct Counter\
-    \ {\n    using key_type = T;\n    using mapped_type = long long;\n    using value_type\
-    \ = std::pair<key_type, mapped_type>;\n    std::map<key_type, mapped_type> data;\n\
-    \n    void inc(const key_type& key, const mapped_type& t) {\n        data[key]\
-    \ += t;\n        auto itr = data.find(key);\n        assert(itr->second >= 0);\n\
-    \        if (itr->second == 0) {\n            data.erase(itr);\n        }\n  \
-    \  }\n    Counter() = default;\n    explicit Counter(const key_type& x) : data{{x,\
-    \ 1}} {}\n    /**\n     * @brief \u7BC4\u56F2\u306E\u8981\u7D20\u3092\u6570\u3048\
-    \u308B\n     * Counter \u81EA\u8EAB\u3068 key_type (std::string \u306A\u3069\u7BC4\
-    \u56F2\u3067\u3082\u3042\u308B\u3082\u306E) \u306F\u3053\u3061\u3089\u3067\u53D7\
-    \u3051\u53D6\u3089\u306A\u3044\n     */\n    template <class C, std::enable_if_t<!std::is_same_v<std::decay_t<C>,\
-    \ Counter> && !std::is_convertible_v<C, key_type>, std::nullptr_t> = nullptr,\n\
-    \              class = decltype(std::begin(std::declval<C&>()), std::end(std::declval<C&>()))>\n\
-    \    explicit Counter(C&& v) {\n        for (const key_type& a : v) {\n      \
-    \      data[a]++;\n        }\n    }\n    Counter(std::initializer_list<value_type>\
+    #include <utility>\n#include <vector>\n\n#line 2 \"src/utility/traits.hpp\"\n\n\
+    /**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 10 \"src/utility/traits.hpp\"\
+    \n#include <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace internal_traits\
+    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
+    \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
+    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
+    \n#define HAS_METHOD(func_name)                                              \
+    \                \\\n    namespace internal_traits {                         \
+    \                                   \\\n    template <class T, class = void> \
+    \                                                      \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                    \\\n    template <class\
+    \ T>                                                                     \\\n\
+    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                    \\\n    }                                               \
+    \                                       \\\n    template <class T>           \
+    \                                                          \\\n    struct has_##func_name\
+    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
+    \ <class T>                                                                  \
+    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
+    \n#define HAS_METHOD_ARG(func_name)                                          \
+    \                                    \\\n    namespace internal_traits {     \
+    \                                                                           \\\
+    \n    template <class T, typename U, class = void>                           \
+    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                                        \\\n    template\
+    \ <class T, typename U>                                                      \
+    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                                        \\\n    }                           \
+    \                                                                            \
+    \   \\\n    template <class T, typename U>                                   \
+    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \ U>::type {};                           \\\n    template <class T, typename U>\
+    \                                                                            \
+    \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
+    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
+    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
+    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
+    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
+    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
+    \ntemplate <class C>\nusing mem_value_type = typename C::value_type;\ntemplate\
+    \ <class C>\nusing mem_difference_type = typename C::difference_type;\n\nnamespace\
+    \ internal_traits {\ntemplate <class T, class = void>\nstruct is_sorted_container_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_sorted_container_impl<std::set<T>>\
+    \ : std::true_type {};\ntemplate <class T>\nstruct is_sorted_container_impl<std::multiset<T>>\
+    \ : std::true_type {};\n}  // namespace internal_traits\ntemplate <class T>\n\
+    struct is_sorted_container : internal_traits::is_sorted_container_impl<T>::type\
+    \ {};\ntemplate <class T>\ninline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
+    #line 19 \"src/data_structures/counter.hpp\"\n\ntemplate <typename T>\nstruct\
+    \ Counter {\n    using key_type = T;\n    using mapped_type = long long;\n   \
+    \ using value_type = std::pair<key_type, mapped_type>;\n    std::map<key_type,\
+    \ mapped_type> data;\n\n    void inc(const key_type& key, const mapped_type& t)\
+    \ {\n        data[key] += t;\n        auto itr = data.find(key);\n        assert(itr->second\
+    \ >= 0);\n        if (itr->second == 0) {\n            data.erase(itr);\n    \
+    \    }\n    }\n    Counter() = default;\n    explicit Counter(const key_type&\
+    \ x) : data{{x, 1}} {}\n    /**\n     * @brief \u7BC4\u56F2\u306E\u8981\u7D20\u3092\
+    \u6570\u3048\u308B\n     * Counter \u81EA\u8EAB\u3068 key_type (std::string \u306A\
+    \u3069\u7BC4\u56F2\u3067\u3082\u3042\u308B\u3082\u306E) \u306F\u3053\u3061\u3089\
+    \u3067\u53D7\u3051\u53D6\u3089\u306A\u3044\n     */\n    template <class C, ENABLE_IF_T(!std::is_same_v<std::decay_t<C>,\
+    \ Counter> && !std::is_convertible_v<C, key_type>),\n              class = decltype(std::begin(std::declval<C&>()),\
+    \ std::end(std::declval<C&>()))>\n    explicit Counter(C&& v) {\n        for (const\
+    \ key_type& a : v) {\n            data[a]++;\n        }\n    }\n    Counter(std::initializer_list<value_type>\
     \ init) {\n        for (const auto& p : init) {\n            inc(p.first, p.second);\n\
     \        }\n    }\n    Counter& operator+=(const Counter& o) {\n        for (const\
     \ auto& [i, c] : o.data) {\n            data[i] += c;\n        }\n        return\
@@ -88,21 +141,20 @@ data:
     \u3092\u6570\u3048\u308B\u591A\u91CD\u96C6\u5408 (Counter)\n */\n\n#include <algorithm>\n\
     #include <cassert>\n#include <cstddef>\n#include <initializer_list>\n#include\
     \ <iterator>\n#include <map>\n#include <type_traits>\n#include <utility>\n#include\
-    \ <vector>\n\ntemplate <typename T>\nstruct Counter {\n    using key_type = T;\n\
-    \    using mapped_type = long long;\n    using value_type = std::pair<key_type,\
-    \ mapped_type>;\n    std::map<key_type, mapped_type> data;\n\n    void inc(const\
-    \ key_type& key, const mapped_type& t) {\n        data[key] += t;\n        auto\
-    \ itr = data.find(key);\n        assert(itr->second >= 0);\n        if (itr->second\
-    \ == 0) {\n            data.erase(itr);\n        }\n    }\n    Counter() = default;\n\
-    \    explicit Counter(const key_type& x) : data{{x, 1}} {}\n    /**\n     * @brief\
-    \ \u7BC4\u56F2\u306E\u8981\u7D20\u3092\u6570\u3048\u308B\n     * Counter \u81EA\
-    \u8EAB\u3068 key_type (std::string \u306A\u3069\u7BC4\u56F2\u3067\u3082\u3042\u308B\
-    \u3082\u306E) \u306F\u3053\u3061\u3089\u3067\u53D7\u3051\u53D6\u3089\u306A\u3044\
-    \n     */\n    template <class C, std::enable_if_t<!std::is_same_v<std::decay_t<C>,\
-    \ Counter> && !std::is_convertible_v<C, key_type>, std::nullptr_t> = nullptr,\n\
-    \              class = decltype(std::begin(std::declval<C&>()), std::end(std::declval<C&>()))>\n\
-    \    explicit Counter(C&& v) {\n        for (const key_type& a : v) {\n      \
-    \      data[a]++;\n        }\n    }\n    Counter(std::initializer_list<value_type>\
+    \ <vector>\n\n#include \"../utility/traits.hpp\"\n\ntemplate <typename T>\nstruct\
+    \ Counter {\n    using key_type = T;\n    using mapped_type = long long;\n   \
+    \ using value_type = std::pair<key_type, mapped_type>;\n    std::map<key_type,\
+    \ mapped_type> data;\n\n    void inc(const key_type& key, const mapped_type& t)\
+    \ {\n        data[key] += t;\n        auto itr = data.find(key);\n        assert(itr->second\
+    \ >= 0);\n        if (itr->second == 0) {\n            data.erase(itr);\n    \
+    \    }\n    }\n    Counter() = default;\n    explicit Counter(const key_type&\
+    \ x) : data{{x, 1}} {}\n    /**\n     * @brief \u7BC4\u56F2\u306E\u8981\u7D20\u3092\
+    \u6570\u3048\u308B\n     * Counter \u81EA\u8EAB\u3068 key_type (std::string \u306A\
+    \u3069\u7BC4\u56F2\u3067\u3082\u3042\u308B\u3082\u306E) \u306F\u3053\u3061\u3089\
+    \u3067\u53D7\u3051\u53D6\u3089\u306A\u3044\n     */\n    template <class C, ENABLE_IF_T(!std::is_same_v<std::decay_t<C>,\
+    \ Counter> && !std::is_convertible_v<C, key_type>),\n              class = decltype(std::begin(std::declval<C&>()),\
+    \ std::end(std::declval<C&>()))>\n    explicit Counter(C&& v) {\n        for (const\
+    \ key_type& a : v) {\n            data[a]++;\n        }\n    }\n    Counter(std::initializer_list<value_type>\
     \ init) {\n        for (const auto& p : init) {\n            inc(p.first, p.second);\n\
     \        }\n    }\n    Counter& operator+=(const Counter& o) {\n        for (const\
     \ auto& [i, c] : o.data) {\n            data[i] += c;\n        }\n        return\
@@ -146,11 +198,12 @@ data:
     \    mapped_type operator[](const key_type& key) const {\n        return get(key);\n\
     \    }\n    CounterReference operator[](const key_type& key) {\n        return\
     \ CounterReference(*this, key);\n    }\n};\n"
-  dependsOn: []
+  dependsOn:
+  - src/utility/traits.hpp
   isVerificationFile: false
   path: src/data_structures/counter.hpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-14 16:41:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/counter.test.cpp

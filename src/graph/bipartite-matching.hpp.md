@@ -44,14 +44,17 @@ data:
     \                }\n            }\n        }\n        return found;\n    }\n\n\
     \   public:\n    BipartiteMatching(int l, int r) : l(l), r(r), g(l), match_l(l,\
     \ -1), match_r(r, -1) {}\n\n    /**\n     * @brief \u5DE6\u5074\u306E\u9802\u70B9\
-    \ u \u3068\u53F3\u5074\u306E\u9802\u70B9 v \u306E\u9593\u306B\u8FBA\u3092\u8FFD\
-    \u52A0\u3059\u308B\n     */\n    void add_edge(int u, int v) {\n        assert(0\
-    \ <= u && u < l && 0 <= v && v < r);\n        g[u].push_back(v);\n    }\n\n  \
-    \  /**\n     * @brief \u6700\u5927\u30DE\u30C3\u30C1\u30F3\u30B0\u3092\u6C42\u3081\
-    \u3001\u305D\u306E\u8FBA\u306E\u6570\u3092\u8FD4\u3059\n     * \u8FBA\u3092\u8FFD\
-    \u52A0\u3057\u3066\u304B\u3089\u3082\u3046\u4E00\u5EA6\u547C\u3076\u3068\u3001\
-    \u524D\u56DE\u306E\u30DE\u30C3\u30C1\u30F3\u30B0\u3092\u5E83\u3052\u308B\n   \
-    \  */\n    int solve() {\n        std::vector<int> dist, iter(l);\n        std::vector<int>\
+    \u6570\n     */\n    int left_size() const { return l; }\n    /**\n     * @brief\
+    \ \u53F3\u5074\u306E\u9802\u70B9\u6570\n     */\n    int right_size() const {\
+    \ return r; }\n\n    /**\n     * @brief \u5DE6\u5074\u306E\u9802\u70B9 u \u3068\
+    \u53F3\u5074\u306E\u9802\u70B9 v \u306E\u9593\u306B\u8FBA\u3092\u8FFD\u52A0\u3059\
+    \u308B\n     */\n    void add_edge(int u, int v) {\n        assert(0 <= u && u\
+    \ < l && 0 <= v && v < r);\n        g[u].push_back(v);\n    }\n\n    /**\n   \
+    \  * @brief \u6700\u5927\u30DE\u30C3\u30C1\u30F3\u30B0\u3092\u6C42\u3081\u3001\
+    \u305D\u306E\u8FBA\u306E\u6570\u3092\u8FD4\u3059\n     * \u8FBA\u3092\u8FFD\u52A0\
+    \u3057\u3066\u304B\u3089\u3082\u3046\u4E00\u5EA6\u547C\u3076\u3068\u3001\u524D\
+    \u56DE\u306E\u30DE\u30C3\u30C1\u30F3\u30B0\u3092\u5E83\u3052\u308B\n     */\n\
+    \    int solve() {\n        std::vector<int> dist, iter(l);\n        std::vector<int>\
     \ st;\n        while (bfs(dist)) {\n            std::fill(iter.begin(), iter.end(),\
     \ 0);\n            for (int s = 0; s < l; s++) {\n                if (match_l[s]\
     \ != -1) continue;\n                // st \u306F s \u304B\u3089\u306E\u4EA4\u4E92\
@@ -114,14 +117,17 @@ data:
     \                }\n            }\n        }\n        return found;\n    }\n\n\
     \   public:\n    BipartiteMatching(int l, int r) : l(l), r(r), g(l), match_l(l,\
     \ -1), match_r(r, -1) {}\n\n    /**\n     * @brief \u5DE6\u5074\u306E\u9802\u70B9\
-    \ u \u3068\u53F3\u5074\u306E\u9802\u70B9 v \u306E\u9593\u306B\u8FBA\u3092\u8FFD\
-    \u52A0\u3059\u308B\n     */\n    void add_edge(int u, int v) {\n        assert(0\
-    \ <= u && u < l && 0 <= v && v < r);\n        g[u].push_back(v);\n    }\n\n  \
-    \  /**\n     * @brief \u6700\u5927\u30DE\u30C3\u30C1\u30F3\u30B0\u3092\u6C42\u3081\
-    \u3001\u305D\u306E\u8FBA\u306E\u6570\u3092\u8FD4\u3059\n     * \u8FBA\u3092\u8FFD\
-    \u52A0\u3057\u3066\u304B\u3089\u3082\u3046\u4E00\u5EA6\u547C\u3076\u3068\u3001\
-    \u524D\u56DE\u306E\u30DE\u30C3\u30C1\u30F3\u30B0\u3092\u5E83\u3052\u308B\n   \
-    \  */\n    int solve() {\n        std::vector<int> dist, iter(l);\n        std::vector<int>\
+    \u6570\n     */\n    int left_size() const { return l; }\n    /**\n     * @brief\
+    \ \u53F3\u5074\u306E\u9802\u70B9\u6570\n     */\n    int right_size() const {\
+    \ return r; }\n\n    /**\n     * @brief \u5DE6\u5074\u306E\u9802\u70B9 u \u3068\
+    \u53F3\u5074\u306E\u9802\u70B9 v \u306E\u9593\u306B\u8FBA\u3092\u8FFD\u52A0\u3059\
+    \u308B\n     */\n    void add_edge(int u, int v) {\n        assert(0 <= u && u\
+    \ < l && 0 <= v && v < r);\n        g[u].push_back(v);\n    }\n\n    /**\n   \
+    \  * @brief \u6700\u5927\u30DE\u30C3\u30C1\u30F3\u30B0\u3092\u6C42\u3081\u3001\
+    \u305D\u306E\u8FBA\u306E\u6570\u3092\u8FD4\u3059\n     * \u8FBA\u3092\u8FFD\u52A0\
+    \u3057\u3066\u304B\u3089\u3082\u3046\u4E00\u5EA6\u547C\u3076\u3068\u3001\u524D\
+    \u56DE\u306E\u30DE\u30C3\u30C1\u30F3\u30B0\u3092\u5E83\u3052\u308B\n     */\n\
+    \    int solve() {\n        std::vector<int> dist, iter(l);\n        std::vector<int>\
     \ st;\n        while (bfs(dist)) {\n            std::fill(iter.begin(), iter.end(),\
     \ 0);\n            for (int s = 0; s < l; s++) {\n                if (match_l[s]\
     \ != -1) continue;\n                // st \u306F s \u304B\u3089\u306E\u4EA4\u4E92\
@@ -163,7 +169,7 @@ data:
   isVerificationFile: false
   path: src/graph/bipartite-matching.hpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-14 16:37:34+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/bipartite-matching.test.cpp
@@ -189,6 +195,7 @@ for (auto [u, v] : bm.matching()) { /* 左 u と右 v がマッチした */ }
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `BipartiteMatching(l, r)` | 左側の頂点が `l` 個、右側の頂点が `r` 個で、辺のない状態 | $O(l + r)$ |
+| `left_size()` / `right_size()` | 左側 / 右側の頂点数 | $O(1)$ |
 | `add_edge(u, v)` | 左側の頂点 `u` と右側の頂点 `v` の間に辺を追加する | ならし $O(1)$ |
 | `solve()` | 最大マッチングを求め、その辺の本数を返す | $O(m \sqrt{n})$ ($n = l + r$) |
 | `matching()` | マッチングの辺 `(左側の頂点, 右側の頂点)` のリスト (左側の頂点の昇順) | $O(l)$ |

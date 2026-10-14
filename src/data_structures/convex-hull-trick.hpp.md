@@ -1,6 +1,9 @@
 ---
 data:
-  _extendedDependsOn: []
+  _extendedDependsOn:
+  - icon: ':heavy_check_mark:'
+    path: src/utility/traits.hpp
+    title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
@@ -21,10 +24,62 @@ data:
     \u306E\u96C6\u5408\u3092\u7BA1\u7406\u3057\u3001\u3042\u308Bx\u306B\u5BFE\u3059\
     \u308B\u6700\u5C0F\u5024\u3092\u6C42\u3081\u308B\n */\n\n#include <cassert>\n\
     #include <cstddef>\n#include <optional>\n#include <type_traits>\n#include <utility>\n\
-    #include <vector>\n\n/**\n * @brief \u8FFD\u52A0\u3055\u308C\u308B\u50BE\u304D\
-    \u304C\u5358\u8ABF\u3068\u306F\u9650\u3089\u306A\u3044\u5834\u5408\u306EConvex\
-    \ Hull Trick\n *\n * @tparam T \u5024\u306E\u578B\n */\ntemplate <typename T,\
-    \ std::enable_if_t<std::is_scalar_v<T>, std::nullptr_t> = nullptr>\nclass LiChaoTree\
+    #include <vector>\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n\
+    \ * @brief \u578B\u7279\u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\n#include\
+    \ <iterator>\n#include <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace\
+    \ internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T, class =\
+    \ void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct\
+    \ is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
+    \ : std::true_type {};\n}  // namespace internal_traits\n\ntemplate <class T>\n\
+    struct is_range : internal_traits::is_range_impl<T>::type {};\ntemplate <class\
+    \ T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define HAS_METHOD(func_name)\
+    \                                                              \\\n    namespace\
+    \ internal_traits {                                                          \
+    \  \\\n    template <class T, class = void>                                  \
+    \                     \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                    \\\n    template <class T>          \
+    \                                                           \\\n    struct has_##func_name##_impl<T,\
+    \ std::void_t<decltype(std::declval<T>().func_name())>> \\\n        : std::true_type\
+    \ {};                                                               \\\n    }\
+    \                                                                            \
+    \          \\\n    template <class T>                                        \
+    \                             \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T>::type\
+    \ {};          \\\n    template <class T>                                    \
+    \                                 \\\n    inline constexpr bool has_##func_name##_v\
+    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
+    \                                                                    \\\n    namespace\
+    \ internal_traits {                                                          \
+    \                      \\\n    template <class T, typename U, class = void>  \
+    \                                                             \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                                      \
+    \  \\\n    template <class T, typename U>                                    \
+    \                                         \\\n    struct has_##func_name##_impl<T,\
+    \ U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>> \\\
+    \n        : std::true_type {};                                               \
+    \                                    \\\n    }                               \
+    \                                                                           \\\
+    \n    template <class T, typename U>                                         \
+    \                                    \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \ U>::type {};                           \\\n    template <class T, typename U>\
+    \                                                                            \
+    \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
+    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
+    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
+    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
+    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
+    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
+    \ntemplate <class C>\nusing mem_value_type = typename C::value_type;\ntemplate\
+    \ <class C>\nusing mem_difference_type = typename C::difference_type;\n\nnamespace\
+    \ internal_traits {\ntemplate <class T, class = void>\nstruct is_sorted_container_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_sorted_container_impl<std::set<T>>\
+    \ : std::true_type {};\ntemplate <class T>\nstruct is_sorted_container_impl<std::multiset<T>>\
+    \ : std::true_type {};\n}  // namespace internal_traits\ntemplate <class T>\n\
+    struct is_sorted_container : internal_traits::is_sorted_container_impl<T>::type\
+    \ {};\ntemplate <class T>\ninline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
+    #line 18 \"src/data_structures/convex-hull-trick.hpp\"\n\n/**\n * @brief \u8FFD\
+    \u52A0\u3055\u308C\u308B\u50BE\u304D\u304C\u5358\u8ABF\u3068\u306F\u9650\u3089\
+    \u306A\u3044\u5834\u5408\u306EConvex Hull Trick\n *\n * @tparam T \u5024\u306E\
+    \u578B\n */\ntemplate <typename T, ENABLE_IF_T(std::is_scalar_v<T>)>\nclass LiChaoTree\
     \ {\n    int n, sz, height;\n    std::vector<T> xs, as, bs;\n    std::vector<bool>\
     \ exist;  // \u30CE\u30FC\u30C9\u304C\u76F4\u7DDA\u3092\u6301\u3064\u304B\n\n\
     \    void update(T a, T b, int k, int h) {\n        int l = (k << h) & (sz - 1);\n\
@@ -41,7 +96,7 @@ data:
     \u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @param xs \u6700\u5C0F\u5024\u30AF\
     \u30A8\u30EA\u306Ex\u5EA7\u6A19\u3084\u7DDA\u5206\u8FFD\u52A0\u30AF\u30A8\u30EA\
     \u306E\u4E21\u7AEF\u306Ex\u5EA7\u6A19\u3092\u5148\u8AAD\u307F\u3057\u3066\u30BD\
-    \u30FC\u30C8\u3057\u305F\u914D\u5217\n     */\n    LiChaoTree(const std::vector<T>&\
+    \u30FC\u30C8\u3057\u305F\u914D\u5217\n     */\n    explicit LiChaoTree(const std::vector<T>&\
     \ xs) : n(xs.size()), xs(xs) {\n        assert(!xs.empty());\n        sz = 1,\
     \ height = 0;\n        while (sz < (int)xs.size()) {\n            sz <<= 1;\n\
     \            height++;\n        }\n        this->xs.resize(sz, xs.back());\n \
@@ -71,19 +126,19 @@ data:
     \u307E\u305F\u306F\u7DDA\u5206\u306E\u96C6\u5408\u3092\u7BA1\u7406\u3057\u3001\
     \u3042\u308Bx\u306B\u5BFE\u3059\u308B\u6700\u5C0F\u5024\u3092\u6C42\u3081\u308B\
     \n */\n\n#include <cassert>\n#include <cstddef>\n#include <optional>\n#include\
-    \ <type_traits>\n#include <utility>\n#include <vector>\n\n/**\n * @brief \u8FFD\
-    \u52A0\u3055\u308C\u308B\u50BE\u304D\u304C\u5358\u8ABF\u3068\u306F\u9650\u3089\
-    \u306A\u3044\u5834\u5408\u306EConvex Hull Trick\n *\n * @tparam T \u5024\u306E\
-    \u578B\n */\ntemplate <typename T, std::enable_if_t<std::is_scalar_v<T>, std::nullptr_t>\
-    \ = nullptr>\nclass LiChaoTree {\n    int n, sz, height;\n    std::vector<T> xs,\
-    \ as, bs;\n    std::vector<bool> exist;  // \u30CE\u30FC\u30C9\u304C\u76F4\u7DDA\
-    \u3092\u6301\u3064\u304B\n\n    void update(T a, T b, int k, int h) {\n      \
-    \  int l = (k << h) & (sz - 1);\n        int r = l + (1 << h);\n\n        while\
-    \ (1) {\n            if (!exist[k]) {\n                as[k] = a, bs[k] = b, exist[k]\
-    \ = true;\n                return;\n            }\n            int m = (l + r)\
-    \ >> 1;\n            T xl = xs[l], xm = xs[m];\n            bool l_update = a\
-    \ * xl + b < as[k] * xl + bs[k];\n            bool m_update = a * xm + b < as[k]\
-    \ * xm + bs[k];\n\n            if (m_update) {\n                std::swap(as[k],\
+    \ <type_traits>\n#include <utility>\n#include <vector>\n\n#include \"../utility/traits.hpp\"\
+    \n\n/**\n * @brief \u8FFD\u52A0\u3055\u308C\u308B\u50BE\u304D\u304C\u5358\u8ABF\
+    \u3068\u306F\u9650\u3089\u306A\u3044\u5834\u5408\u306EConvex Hull Trick\n *\n\
+    \ * @tparam T \u5024\u306E\u578B\n */\ntemplate <typename T, ENABLE_IF_T(std::is_scalar_v<T>)>\n\
+    class LiChaoTree {\n    int n, sz, height;\n    std::vector<T> xs, as, bs;\n \
+    \   std::vector<bool> exist;  // \u30CE\u30FC\u30C9\u304C\u76F4\u7DDA\u3092\u6301\
+    \u3064\u304B\n\n    void update(T a, T b, int k, int h) {\n        int l = (k\
+    \ << h) & (sz - 1);\n        int r = l + (1 << h);\n\n        while (1) {\n  \
+    \          if (!exist[k]) {\n                as[k] = a, bs[k] = b, exist[k] =\
+    \ true;\n                return;\n            }\n            int m = (l + r) >>\
+    \ 1;\n            T xl = xs[l], xm = xs[m];\n            bool l_update = a * xl\
+    \ + b < as[k] * xl + bs[k];\n            bool m_update = a * xm + b < as[k] *\
+    \ xm + bs[k];\n\n            if (m_update) {\n                std::swap(as[k],\
     \ a);\n                std::swap(bs[k], b);\n            }\n            if (h\
     \ == 0) break;\n            if (l_update != m_update) {\n                k = k\
     \ * 2;\n                r = m;\n            } else {\n                k = k *\
@@ -92,7 +147,7 @@ data:
     \u30BF\n     *\n     * @param xs \u6700\u5C0F\u5024\u30AF\u30A8\u30EA\u306Ex\u5EA7\
     \u6A19\u3084\u7DDA\u5206\u8FFD\u52A0\u30AF\u30A8\u30EA\u306E\u4E21\u7AEF\u306E\
     x\u5EA7\u6A19\u3092\u5148\u8AAD\u307F\u3057\u3066\u30BD\u30FC\u30C8\u3057\u305F\
-    \u914D\u5217\n     */\n    LiChaoTree(const std::vector<T>& xs) : n(xs.size()),\
+    \u914D\u5217\n     */\n    explicit LiChaoTree(const std::vector<T>& xs) : n(xs.size()),\
     \ xs(xs) {\n        assert(!xs.empty());\n        sz = 1, height = 0;\n      \
     \  while (sz < (int)xs.size()) {\n            sz <<= 1;\n            height++;\n\
     \        }\n        this->xs.resize(sz, xs.back());\n        as.assign(sz * 2,\
@@ -117,11 +172,12 @@ data:
     \ res;\n        for (int k = i + sz; k >= 1; k >>= 1) {\n            if (!exist[k])\
     \ continue;\n            T tmp = as[k] * x + bs[k];\n            if (!res || tmp\
     \ < *res) res = tmp;\n        }\n        return res;\n    }\n};\n"
-  dependsOn: []
+  dependsOn:
+  - src/utility/traits.hpp
   isVerificationFile: false
   path: src/data_structures/convex-hull-trick.hpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-14 16:41:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/yosupo/segment-add-get-min.test.cpp

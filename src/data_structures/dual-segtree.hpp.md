@@ -295,60 +295,61 @@ data:
     \u5024 x \u306E1\u8981\u7D20\u3092\u8868\u3059\u8981\u7D20\u3092\u4F5C\u308B\u3002\
     S::operator[](i) \u3067 i \u4E57\u548C\u3092\u53D6\u5F97\u3059\u308B\n */\ntemplate\
     \ <typename T, int K>\nstruct AddPowerSum {\n    struct S {\n        std::array<T,\
-    \ K + 1> val;\n        S() : val{} {}\n        S(const T& x) {\n            val[0]\
-    \ = T(1);\n            for (int i = 1; i <= K; i++) val[i] = val[i - 1] * x;\n\
-    \        }\n        const T& operator[](std::size_t i) const { return val[i];\
-    \ }\n    };\n    using F = T;\n    static S op(const S& a, const S& b) {\n   \
-    \     S ret;\n        for (int i = 0; i <= K; i++) ret.val[i] = a.val[i] + b.val[i];\n\
-    \        return ret;\n    }\n    static S e() { return S(); }\n    static S mapping(const\
-    \ F& f, const S& x) {\n        // sum (x+f)^i = sum_j binom(i, j) f^j x^(i-j)\n\
-    \        static const auto binom = [] {\n            std::array<std::array<T,\
-    \ K + 1>, K + 1> c{};\n            for (int i = 0; i <= K; i++) {\n          \
-    \      c[i][0] = c[i][i] = T(1);\n                for (int j = 1; j < i; j++)\
-    \ c[i][j] = c[i - 1][j - 1] + c[i - 1][j];\n            }\n            return\
-    \ c;\n        }();\n        std::array<T, K + 1> pw{};\n        pw[0] = T(1);\n\
-    \        for (int i = 1; i <= K; i++) pw[i] = pw[i - 1] * f;\n        S ret;\n\
-    \        for (int i = 0; i <= K; i++) {\n            for (int j = 0; j <= i; j++)\
-    \ ret.val[i] += binom[i][j] * pw[j] * x.val[i - j];\n        }\n        return\
-    \ ret;\n    }\n    static F composition(const F& f, const F& g) { return f + g;\
-    \ }\n    static F id() { return F(0); }\n};\n\n}  // namespace acted_monoid\n\n\
-    /**\n * @brief \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u304B\u3089\u5B9F\
-    \u884C\u6642\u306B\u4F5C\u308B\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\
-    \u30C9\n * \u30E9\u30E0\u30C0\u5F0F\u3092\u4F7F\u3048\u308B\n *\n * @tparam T\
-    \ \u8981\u7D20\u306E\u578B\n * @tparam Op \u7A4D\u306E\u95A2\u6570\u30AA\u30D6\
-    \u30B8\u30A7\u30AF\u30C8\u306E\u578B\n * @tparam U \u4F5C\u7528\u7D20\u306E\u578B\
-    \n * @tparam Mapping \u4F5C\u7528\u7D20\u3092\u9069\u7528\u3059\u308B\u95A2\u6570\
-    \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306E\u578B \u5F15\u6570\u306F (f, x), (f,\
-    \ x, sz), (f, x, l, r) \u306E\u3044\u305A\u308C\u304B\n * @tparam Composition\
-    \ \u4F5C\u7528\u7D20\u306E\u5408\u6210\u306E\u95A2\u6570\u30AA\u30D6\u30B8\u30A7\
-    \u30AF\u30C8\u306E\u578B\n */\ntemplate <typename T, typename Op, typename U,\
-    \ typename Mapping, typename Composition>\nstruct ActedMonoid {\n    using S =\
-    \ T;\n    using F = U;\n    Op op_object;\n    S identity;\n    Mapping mapping_object;\n\
-    \    Composition composition_object;\n    F lazy_identity;\n    ActedMonoid()\
-    \ = default;\n    constexpr ActedMonoid(Op op, const S& e, Mapping mapping, Composition\
-    \ composition, const F& id)\n        : op_object(std::move(op)), identity(e),\
-    \ mapping_object(std::move(mapping)), composition_object(std::move(composition)),\
-    \ lazy_identity(id) {}\n    constexpr S op(const S& a, const S& b) const { return\
-    \ op_object(a, b); }\n    constexpr S e() const { return identity; }\n    constexpr\
-    \ auto mapping(const F& f, const S& x, int l, int r) const {\n        if constexpr\
-    \ (std::is_invocable_v<const Mapping&, const F&, const S&, int, int>) {\n    \
-    \        return mapping_object(f, x, l, r);\n        } else if constexpr (std::is_invocable_v<const\
-    \ Mapping&, const F&, const S&, int>) {\n            return mapping_object(f,\
-    \ x, r - l);\n        } else {\n            return mapping_object(f, x);\n   \
-    \     }\n    }\n    constexpr F composition(const F& f, const F& g) const { return\
-    \ composition_object(f, g); }\n    constexpr F id() const { return lazy_identity;\
-    \ }\n};\ntemplate <typename Op, typename T, typename Mapping, typename Composition,\
-    \ typename U>\nActedMonoid(Op, T, Mapping, Composition, U) -> ActedMonoid<T, Op,\
-    \ U, Mapping, Composition>;\n#line 13 \"src/data_structures/dual-segtree.hpp\"\
-    \n\n/**\n * @brief \u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u533A\u9593\
-    \u4F5C\u7528\u30011\u70B9\u53D6\u5F97)\n *\n * \u533A\u9593\u3078\u306E\u4F5C\u7528\
-    \u7D20\u306E\u9069\u7528\u30681\u70B9\u306E\u53D6\u5F97\u3092 O(log n) \u3067\u884C\
-    \u3046\u3002\u4F5C\u7528\u7D20\u306F\u53EF\u63DB\u3067\u306A\u304F\u3066\u3082\
-    \u3088\u3044\n * \u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\u3068\
-    \u9055\u3044\u3001\u5024\u306E\u30E2\u30CE\u30A4\u30C9\u306E\u6F14\u7B97 (op\u3001\
-    e) \u306F\u4F7F\u308F\u306A\u3044\n * \u4F8B:\n * DualSegTree<acted_monoid::AffineSum<mint>>\
-    \ seg(v);\n * seg.apply(l, r, Affine<mint>{b, c});\n * mint x = seg.get(i);\n\
-    \ *\n * @tparam A \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9 (algebra/acted-monoid.hpp)\n\
+    \ K + 1> val;\n        constexpr S() : val{} {}\n        constexpr S(const T&\
+    \ x) : val{} {\n            val[0] = T(1);\n            for (int i = 1; i <= K;\
+    \ i++) val[i] = val[i - 1] * x;\n        }\n        constexpr const T& operator[](std::size_t\
+    \ i) const { return val[i]; }\n    };\n    using F = T;\n    static constexpr\
+    \ S op(const S& a, const S& b) {\n        S ret;\n        for (int i = 0; i <=\
+    \ K; i++) ret.val[i] = a.val[i] + b.val[i];\n        return ret;\n    }\n    static\
+    \ constexpr S e() { return S(); }\n    static S mapping(const F& f, const S& x)\
+    \ {\n        // sum (x+f)^i = sum_j binom(i, j) f^j x^(i-j)\n        static const\
+    \ auto binom = [] {\n            std::array<std::array<T, K + 1>, K + 1> c{};\n\
+    \            for (int i = 0; i <= K; i++) {\n                c[i][0] = c[i][i]\
+    \ = T(1);\n                for (int j = 1; j < i; j++) c[i][j] = c[i - 1][j -\
+    \ 1] + c[i - 1][j];\n            }\n            return c;\n        }();\n    \
+    \    std::array<T, K + 1> pw{};\n        pw[0] = T(1);\n        for (int i = 1;\
+    \ i <= K; i++) pw[i] = pw[i - 1] * f;\n        S ret;\n        for (int i = 0;\
+    \ i <= K; i++) {\n            for (int j = 0; j <= i; j++) ret.val[i] += binom[i][j]\
+    \ * pw[j] * x.val[i - j];\n        }\n        return ret;\n    }\n    static constexpr\
+    \ F composition(const F& f, const F& g) { return f + g; }\n    static constexpr\
+    \ F id() { return F(0); }\n};\n\n}  // namespace acted_monoid\n\n/**\n * @brief\
+    \ \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u304B\u3089\u5B9F\u884C\u6642\
+    \u306B\u4F5C\u308B\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n * \u30E9\
+    \u30E0\u30C0\u5F0F\u3092\u4F7F\u3048\u308B\n *\n * @tparam T \u8981\u7D20\u306E\
+    \u578B\n * @tparam Op \u7A4D\u306E\u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\
+    \u306E\u578B\n * @tparam U \u4F5C\u7528\u7D20\u306E\u578B\n * @tparam Mapping\
+    \ \u4F5C\u7528\u7D20\u3092\u9069\u7528\u3059\u308B\u95A2\u6570\u30AA\u30D6\u30B8\
+    \u30A7\u30AF\u30C8\u306E\u578B \u5F15\u6570\u306F (f, x), (f, x, sz), (f, x, l,\
+    \ r) \u306E\u3044\u305A\u308C\u304B\n * @tparam Composition \u4F5C\u7528\u7D20\
+    \u306E\u5408\u6210\u306E\u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306E\
+    \u578B\n */\ntemplate <typename T, typename Op, typename U, typename Mapping,\
+    \ typename Composition>\nstruct ActedMonoid {\n    using S = T;\n    using F =\
+    \ U;\n    Op op_object;\n    S identity;\n    Mapping mapping_object;\n    Composition\
+    \ composition_object;\n    F lazy_identity;\n    ActedMonoid() = default;\n  \
+    \  constexpr ActedMonoid(Op op, const S& e, Mapping mapping, Composition composition,\
+    \ const F& id)\n        : op_object(std::move(op)), identity(e), mapping_object(std::move(mapping)),\
+    \ composition_object(std::move(composition)), lazy_identity(id) {}\n    constexpr\
+    \ S op(const S& a, const S& b) const { return op_object(a, b); }\n    constexpr\
+    \ S e() const { return identity; }\n    constexpr auto mapping(const F& f, const\
+    \ S& x, int l, int r) const {\n        if constexpr (std::is_invocable_v<const\
+    \ Mapping&, const F&, const S&, int, int>) {\n            return mapping_object(f,\
+    \ x, l, r);\n        } else if constexpr (std::is_invocable_v<const Mapping&,\
+    \ const F&, const S&, int>) {\n            return mapping_object(f, x, r - l);\n\
+    \        } else {\n            return mapping_object(f, x);\n        }\n    }\n\
+    \    constexpr F composition(const F& f, const F& g) const { return composition_object(f,\
+    \ g); }\n    constexpr F id() const { return lazy_identity; }\n};\ntemplate <typename\
+    \ Op, typename T, typename Mapping, typename Composition, typename U>\nActedMonoid(Op,\
+    \ T, Mapping, Composition, U) -> ActedMonoid<T, Op, U, Mapping, Composition>;\n\
+    #line 13 \"src/data_structures/dual-segtree.hpp\"\n\n/**\n * @brief \u53CC\u5BFE\
+    \u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u533A\u9593\u4F5C\u7528\u30011\u70B9\u53D6\
+    \u5F97)\n *\n * \u533A\u9593\u3078\u306E\u4F5C\u7528\u7D20\u306E\u9069\u7528\u3068\
+    1\u70B9\u306E\u53D6\u5F97\u3092 O(log n) \u3067\u884C\u3046\u3002\u4F5C\u7528\u7D20\
+    \u306F\u53EF\u63DB\u3067\u306A\u304F\u3066\u3082\u3088\u3044\n * \u9045\u5EF6\u4F1D\
+    \u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\u3068\u9055\u3044\u3001\u5024\u306E\
+    \u30E2\u30CE\u30A4\u30C9\u306E\u6F14\u7B97 (op\u3001e) \u306F\u4F7F\u308F\u306A\
+    \u3044\n * \u4F8B:\n * DualSegTree<acted_monoid::AffineSum<mint>> seg(v);\n *\
+    \ seg.apply(l, r, Affine<mint>{b, c});\n * mint x = seg.get(i);\n *\n * @tparam\
+    \ A \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9 (algebra/acted-monoid.hpp)\n\
     \ */\ntemplate <typename A>\nclass DualSegTree {\n   public:\n    using S = typename\
     \ A::S;\n    using F = typename A::F;\n\n   private:\n    A a;\n    int n, sz,\
     \ height;\n    std::vector<S> data;  // \u8449\u306E\u5024 (\u4F5C\u7528\u7D20\
@@ -405,7 +406,10 @@ data:
     \ (int h = height; h > 0; h--) {\n            if (((l >> h) << h) != l) push(l\
     \ >> h);\n            if (((r >> h) << h) != r) push((r - 1) >> h);\n        }\n\
     \        for (; l < r; l >>= 1, r >>= 1) {\n            if (l & 1) apply_node(l++,\
-    \ f);\n            if (r & 1) apply_node(--r, f);\n        }\n    }\n};\n"
+    \ f);\n            if (r & 1) apply_node(--r, f);\n        }\n    }\n};\n\ntemplate\
+    \ <typename A>\nDualSegTree(int, A) -> DualSegTree<A>;\ntemplate <typename A>\n\
+    DualSegTree(int, typename A::S, A) -> DualSegTree<A>;\ntemplate <typename A>\n\
+    DualSegTree(std::vector<typename A::S>, A) -> DualSegTree<A>;\n"
   code: "#pragma once\n\n/**\n * @file dual-segtree.hpp\n * @brief \u53CC\u5BFE\u30BB\
     \u30B0\u30E1\u30F3\u30C8\u6728 (\u533A\u9593\u4F5C\u7528\u30011\u70B9\u53D6\u5F97\
     )\n */\n\n#include <cassert>\n#include <utility>\n#include <vector>\n\n#include\
@@ -475,14 +479,17 @@ data:
     \ (int h = height; h > 0; h--) {\n            if (((l >> h) << h) != l) push(l\
     \ >> h);\n            if (((r >> h) << h) != r) push((r - 1) >> h);\n        }\n\
     \        for (; l < r; l >>= 1, r >>= 1) {\n            if (l & 1) apply_node(l++,\
-    \ f);\n            if (r & 1) apply_node(--r, f);\n        }\n    }\n};\n"
+    \ f);\n            if (r & 1) apply_node(--r, f);\n        }\n    }\n};\n\ntemplate\
+    \ <typename A>\nDualSegTree(int, A) -> DualSegTree<A>;\ntemplate <typename A>\n\
+    DualSegTree(int, typename A::S, A) -> DualSegTree<A>;\ntemplate <typename A>\n\
+    DualSegTree(std::vector<typename A::S>, A) -> DualSegTree<A>;\n"
   dependsOn:
   - src/algebra/acted-monoid.hpp
   - src/algebra/monoid.hpp
   isVerificationFile: false
   path: src/data_structures/dual-segtree.hpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-14 16:39:21+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/dual-segtree.test.cpp
@@ -506,6 +513,7 @@ mint x = seg.get(i);
 
 DualSegTree<acted_monoid::ChminMin<int>> seg2(n, INF);  // 区間 chmin、1点取得
 seg2.apply(l, r, 5);
+DualSegTree seg3(n, acted_monoid::AddSum<long long>());  // 作用素付きモノイドの値から型を推論する
 ```
 
 `mapping` が区間の長さを使う作用素付きモノイド (`AddSum` など) では、各要素に長さ 1 の区間として作用します。

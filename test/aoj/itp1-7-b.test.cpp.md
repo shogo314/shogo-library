@@ -38,9 +38,9 @@ data:
     \ value_type _stop, value_type _step)\n        : start(_start), stop(_stop), step(_step),\
     \ norm_stop(normalize(_start, _stop, _step)) {\n    }\n    constexpr Range(value_type\
     \ _start, value_type _stop)\n        : start(_start), stop(_stop), step(1), norm_stop(normalize(_start,\
-    \ _stop, 1)) {}\n    constexpr Range(value_type _stop)\n        : start(0), stop(_stop),\
-    \ step(1), norm_stop(normalize(0, _stop, 1)) {}\n    constexpr Range()\n     \
-    \   : start(0), stop(0), step(1), norm_stop(0) {\n    }\n    constexpr Range(const\
+    \ _stop, 1)) {}\n    explicit constexpr Range(value_type _stop)\n        : start(0),\
+    \ stop(_stop), step(1), norm_stop(normalize(0, _stop, 1)) {}\n    constexpr Range()\n\
+    \        : start(0), stop(0), step(1), norm_stop(0) {\n    }\n    constexpr Range(const\
     \ Range& o) = default;\n    Range& operator=(const Range& o) = delete;\n\n   \
     \ struct const_iterator {\n       public:\n        using difference_type = Range::difference_type;\n\
     \        using value_type = Range::value_type;\n        using pointer = const\
@@ -222,7 +222,7 @@ data:
   isVerificationFile: true
   path: test/aoj/itp1-7-b.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-14 16:36:18+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/itp1-7-b.test.cpp

@@ -292,56 +292,57 @@ data:
     \u5024 x \u306E1\u8981\u7D20\u3092\u8868\u3059\u8981\u7D20\u3092\u4F5C\u308B\u3002\
     S::operator[](i) \u3067 i \u4E57\u548C\u3092\u53D6\u5F97\u3059\u308B\n */\ntemplate\
     \ <typename T, int K>\nstruct AddPowerSum {\n    struct S {\n        std::array<T,\
-    \ K + 1> val;\n        S() : val{} {}\n        S(const T& x) {\n            val[0]\
-    \ = T(1);\n            for (int i = 1; i <= K; i++) val[i] = val[i - 1] * x;\n\
-    \        }\n        const T& operator[](std::size_t i) const { return val[i];\
-    \ }\n    };\n    using F = T;\n    static S op(const S& a, const S& b) {\n   \
-    \     S ret;\n        for (int i = 0; i <= K; i++) ret.val[i] = a.val[i] + b.val[i];\n\
-    \        return ret;\n    }\n    static S e() { return S(); }\n    static S mapping(const\
-    \ F& f, const S& x) {\n        // sum (x+f)^i = sum_j binom(i, j) f^j x^(i-j)\n\
-    \        static const auto binom = [] {\n            std::array<std::array<T,\
-    \ K + 1>, K + 1> c{};\n            for (int i = 0; i <= K; i++) {\n          \
-    \      c[i][0] = c[i][i] = T(1);\n                for (int j = 1; j < i; j++)\
-    \ c[i][j] = c[i - 1][j - 1] + c[i - 1][j];\n            }\n            return\
-    \ c;\n        }();\n        std::array<T, K + 1> pw{};\n        pw[0] = T(1);\n\
-    \        for (int i = 1; i <= K; i++) pw[i] = pw[i - 1] * f;\n        S ret;\n\
-    \        for (int i = 0; i <= K; i++) {\n            for (int j = 0; j <= i; j++)\
-    \ ret.val[i] += binom[i][j] * pw[j] * x.val[i - j];\n        }\n        return\
-    \ ret;\n    }\n    static F composition(const F& f, const F& g) { return f + g;\
-    \ }\n    static F id() { return F(0); }\n};\n\n}  // namespace acted_monoid\n\n\
-    /**\n * @brief \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u304B\u3089\u5B9F\
-    \u884C\u6642\u306B\u4F5C\u308B\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\
-    \u30C9\n * \u30E9\u30E0\u30C0\u5F0F\u3092\u4F7F\u3048\u308B\n *\n * @tparam T\
-    \ \u8981\u7D20\u306E\u578B\n * @tparam Op \u7A4D\u306E\u95A2\u6570\u30AA\u30D6\
-    \u30B8\u30A7\u30AF\u30C8\u306E\u578B\n * @tparam U \u4F5C\u7528\u7D20\u306E\u578B\
-    \n * @tparam Mapping \u4F5C\u7528\u7D20\u3092\u9069\u7528\u3059\u308B\u95A2\u6570\
-    \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306E\u578B \u5F15\u6570\u306F (f, x), (f,\
-    \ x, sz), (f, x, l, r) \u306E\u3044\u305A\u308C\u304B\n * @tparam Composition\
-    \ \u4F5C\u7528\u7D20\u306E\u5408\u6210\u306E\u95A2\u6570\u30AA\u30D6\u30B8\u30A7\
-    \u30AF\u30C8\u306E\u578B\n */\ntemplate <typename T, typename Op, typename U,\
-    \ typename Mapping, typename Composition>\nstruct ActedMonoid {\n    using S =\
-    \ T;\n    using F = U;\n    Op op_object;\n    S identity;\n    Mapping mapping_object;\n\
-    \    Composition composition_object;\n    F lazy_identity;\n    ActedMonoid()\
-    \ = default;\n    constexpr ActedMonoid(Op op, const S& e, Mapping mapping, Composition\
-    \ composition, const F& id)\n        : op_object(std::move(op)), identity(e),\
-    \ mapping_object(std::move(mapping)), composition_object(std::move(composition)),\
-    \ lazy_identity(id) {}\n    constexpr S op(const S& a, const S& b) const { return\
-    \ op_object(a, b); }\n    constexpr S e() const { return identity; }\n    constexpr\
-    \ auto mapping(const F& f, const S& x, int l, int r) const {\n        if constexpr\
-    \ (std::is_invocable_v<const Mapping&, const F&, const S&, int, int>) {\n    \
-    \        return mapping_object(f, x, l, r);\n        } else if constexpr (std::is_invocable_v<const\
-    \ Mapping&, const F&, const S&, int>) {\n            return mapping_object(f,\
-    \ x, r - l);\n        } else {\n            return mapping_object(f, x);\n   \
-    \     }\n    }\n    constexpr F composition(const F& f, const F& g) const { return\
-    \ composition_object(f, g); }\n    constexpr F id() const { return lazy_identity;\
-    \ }\n};\ntemplate <typename Op, typename T, typename Mapping, typename Composition,\
-    \ typename U>\nActedMonoid(Op, T, Mapping, Composition, U) -> ActedMonoid<T, Op,\
-    \ U, Mapping, Composition>;\n#line 13 \"src/data_structures/imos.hpp\"\n\n/**\n\
-    \ * @brief imos\u6CD5\u3067\u533A\u9593\u4F5C\u7528\u30011\u70B9\u53D6\u5F97\u3059\
-    \u308B\u3002\n *\n * \u4F8B: Imos<acted_monoid::AddSum<long long>> imos(n);\n\
-    \ *\n * @tparam A \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9 (algebra/acted-monoid.hpp)\n\
-    \ *           \u4F5C\u7528\u7D20\u306F\u30A2\u30FC\u30D9\u30EB\u7FA4(\u53EF\u63DB\
-    \u7FA4)\u3092\u306A\u3057\u3001inv \u3092\u6301\u3064\u5FC5\u8981\u304C\u3042\u308B\
+    \ K + 1> val;\n        constexpr S() : val{} {}\n        constexpr S(const T&\
+    \ x) : val{} {\n            val[0] = T(1);\n            for (int i = 1; i <= K;\
+    \ i++) val[i] = val[i - 1] * x;\n        }\n        constexpr const T& operator[](std::size_t\
+    \ i) const { return val[i]; }\n    };\n    using F = T;\n    static constexpr\
+    \ S op(const S& a, const S& b) {\n        S ret;\n        for (int i = 0; i <=\
+    \ K; i++) ret.val[i] = a.val[i] + b.val[i];\n        return ret;\n    }\n    static\
+    \ constexpr S e() { return S(); }\n    static S mapping(const F& f, const S& x)\
+    \ {\n        // sum (x+f)^i = sum_j binom(i, j) f^j x^(i-j)\n        static const\
+    \ auto binom = [] {\n            std::array<std::array<T, K + 1>, K + 1> c{};\n\
+    \            for (int i = 0; i <= K; i++) {\n                c[i][0] = c[i][i]\
+    \ = T(1);\n                for (int j = 1; j < i; j++) c[i][j] = c[i - 1][j -\
+    \ 1] + c[i - 1][j];\n            }\n            return c;\n        }();\n    \
+    \    std::array<T, K + 1> pw{};\n        pw[0] = T(1);\n        for (int i = 1;\
+    \ i <= K; i++) pw[i] = pw[i - 1] * f;\n        S ret;\n        for (int i = 0;\
+    \ i <= K; i++) {\n            for (int j = 0; j <= i; j++) ret.val[i] += binom[i][j]\
+    \ * pw[j] * x.val[i - j];\n        }\n        return ret;\n    }\n    static constexpr\
+    \ F composition(const F& f, const F& g) { return f + g; }\n    static constexpr\
+    \ F id() { return F(0); }\n};\n\n}  // namespace acted_monoid\n\n/**\n * @brief\
+    \ \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u304B\u3089\u5B9F\u884C\u6642\
+    \u306B\u4F5C\u308B\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n * \u30E9\
+    \u30E0\u30C0\u5F0F\u3092\u4F7F\u3048\u308B\n *\n * @tparam T \u8981\u7D20\u306E\
+    \u578B\n * @tparam Op \u7A4D\u306E\u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\
+    \u306E\u578B\n * @tparam U \u4F5C\u7528\u7D20\u306E\u578B\n * @tparam Mapping\
+    \ \u4F5C\u7528\u7D20\u3092\u9069\u7528\u3059\u308B\u95A2\u6570\u30AA\u30D6\u30B8\
+    \u30A7\u30AF\u30C8\u306E\u578B \u5F15\u6570\u306F (f, x), (f, x, sz), (f, x, l,\
+    \ r) \u306E\u3044\u305A\u308C\u304B\n * @tparam Composition \u4F5C\u7528\u7D20\
+    \u306E\u5408\u6210\u306E\u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306E\
+    \u578B\n */\ntemplate <typename T, typename Op, typename U, typename Mapping,\
+    \ typename Composition>\nstruct ActedMonoid {\n    using S = T;\n    using F =\
+    \ U;\n    Op op_object;\n    S identity;\n    Mapping mapping_object;\n    Composition\
+    \ composition_object;\n    F lazy_identity;\n    ActedMonoid() = default;\n  \
+    \  constexpr ActedMonoid(Op op, const S& e, Mapping mapping, Composition composition,\
+    \ const F& id)\n        : op_object(std::move(op)), identity(e), mapping_object(std::move(mapping)),\
+    \ composition_object(std::move(composition)), lazy_identity(id) {}\n    constexpr\
+    \ S op(const S& a, const S& b) const { return op_object(a, b); }\n    constexpr\
+    \ S e() const { return identity; }\n    constexpr auto mapping(const F& f, const\
+    \ S& x, int l, int r) const {\n        if constexpr (std::is_invocable_v<const\
+    \ Mapping&, const F&, const S&, int, int>) {\n            return mapping_object(f,\
+    \ x, l, r);\n        } else if constexpr (std::is_invocable_v<const Mapping&,\
+    \ const F&, const S&, int>) {\n            return mapping_object(f, x, r - l);\n\
+    \        } else {\n            return mapping_object(f, x);\n        }\n    }\n\
+    \    constexpr F composition(const F& f, const F& g) const { return composition_object(f,\
+    \ g); }\n    constexpr F id() const { return lazy_identity; }\n};\ntemplate <typename\
+    \ Op, typename T, typename Mapping, typename Composition, typename U>\nActedMonoid(Op,\
+    \ T, Mapping, Composition, U) -> ActedMonoid<T, Op, U, Mapping, Composition>;\n\
+    #line 13 \"src/data_structures/imos.hpp\"\n\n/**\n * @brief imos\u6CD5\u3067\u533A\
+    \u9593\u4F5C\u7528\u30011\u70B9\u53D6\u5F97\u3059\u308B\u3002\n *\n * \u4F8B:\
+    \ Imos<acted_monoid::AddSum<long long>> imos(n);\n *\n * @tparam A \u4F5C\u7528\
+    \u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9 (algebra/acted-monoid.hpp)\n *    \
+    \       \u4F5C\u7528\u7D20\u306F\u30A2\u30FC\u30D9\u30EB\u7FA4(\u53EF\u63DB\u7FA4\
+    )\u3092\u306A\u3057\u3001inv \u3092\u6301\u3064\u5FC5\u8981\u304C\u3042\u308B\
     \ \u5024\u306E\u30E2\u30CE\u30A4\u30C9\u306E\u6F14\u7B97\u306F\u4F7F\u308F\u306A\
     \u3044\n */\ntemplate <typename A>\nclass Imos {\n   public:\n    using S = typename\
     \ A::S;\n    using F = typename A::F;\n\n   private:\n    A a;\n    int _n, t;\n\
@@ -377,32 +378,34 @@ data:
     \    data[t] = mapping(lazy[t], data[t], t);\n            if (t + 1 < _n) {\n\
     \                lazy[t + 1] = composition(lazy[t], lazy[t + 1]);\n          \
     \  }\n            lazy[t] = id();\n            t++;\n        }\n        return\
-    \ data[k];\n    }\n};\n#line 8 \"test/unittest/imos.test.cpp\"\n\n#include <iostream>\n\
-    #include <random>\n#line 12 \"test/unittest/imos.test.cpp\"\n\nint main() {\n\
-    \    std::mt19937 rng(314);\n    bool ok = true;\n    for (int rep = 0; rep <\
-    \ 3000 && ok; rep++) {\n        int n = rng() % 10 + 1;\n        std::vector<long\
-    \ long> v(n);\n        Imos<acted_monoid::AddSum<long long>> imos;\n        switch\
-    \ (rep % 3) {\n            case 0:\n                // Imos(n): 0 \u3067\u521D\
-    \u671F\u5316\n                imos = Imos<acted_monoid::AddSum<long long>>(n);\n\
-    \                break;\n            case 1: {\n                // Imos(n, value)\n\
-    \                long long x = rng() % 10;\n                imos = Imos<acted_monoid::AddSum<long\
-    \ long>>(n, x);\n                v.assign(n, x);\n                break;\n   \
-    \         }\n            default:\n                // Imos(vector)\n         \
-    \       for (auto& x : v) x = static_cast<long long>(rng() % 21) - 10;\n     \
-    \           imos = Imos<acted_monoid::AddSum<long long>>(v);\n               \
-    \ break;\n        }\n        for (int t = 0; t < 30; t++) {\n            int op\
-    \ = rng() % 3;\n            if (op == 0) {\n                int l = rng() % (n\
-    \ + 1), r = rng() % (n + 1);\n                if (l > r) std::swap(l, r);\n  \
-    \              long long f = static_cast<long long>(rng() % 21) - 10;\n      \
-    \          imos.apply(l, r, f);\n                for (int i = l; i < r; i++) v[i]\
-    \ += f;\n            } else if (op == 1) {\n                int k = rng() % n;\n\
-    \                long long f = static_cast<long long>(rng() % 21) - 10;\n    \
-    \            imos.apply(k, f);\n                v[k] += f;\n            } else\
-    \ {\n                int k = rng() % n;\n                if (imos.get(k) != v[k])\
-    \ ok = false;\n            }\n        }\n        for (int k = n - 1; k >= 0; k--)\
-    \ {\n            if (imos.get(k) != v[k]) ok = false;\n        }\n    }\n    if\
-    \ (ok)\n        std::cout << \"Hello World\" << std::endl;\n    else\n       \
-    \ std::cerr << \"failed\" << std::endl;\n}\n"
+    \ data[k];\n    }\n};\n\ntemplate <typename A>\nImos(int, A) -> Imos<A>;\ntemplate\
+    \ <typename A>\nImos(int, typename A::S, A) -> Imos<A>;\ntemplate <typename A>\n\
+    Imos(std::vector<typename A::S>, A) -> Imos<A>;\n#line 8 \"test/unittest/imos.test.cpp\"\
+    \n\n#include <iostream>\n#include <random>\n#line 12 \"test/unittest/imos.test.cpp\"\
+    \n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int\
+    \ rep = 0; rep < 3000 && ok; rep++) {\n        int n = rng() % 10 + 1;\n     \
+    \   std::vector<long long> v(n);\n        Imos<acted_monoid::AddSum<long long>>\
+    \ imos;\n        switch (rep % 3) {\n            case 0:\n                // Imos(n):\
+    \ 0 \u3067\u521D\u671F\u5316\n                imos = Imos<acted_monoid::AddSum<long\
+    \ long>>(n);\n                break;\n            case 1: {\n                //\
+    \ Imos(n, value)\n                long long x = rng() % 10;\n                imos\
+    \ = Imos<acted_monoid::AddSum<long long>>(n, x);\n                v.assign(n,\
+    \ x);\n                break;\n            }\n            default:\n         \
+    \       // Imos(vector)\n                for (auto& x : v) x = static_cast<long\
+    \ long>(rng() % 21) - 10;\n                imos = Imos<acted_monoid::AddSum<long\
+    \ long>>(v);\n                break;\n        }\n        for (int t = 0; t < 30;\
+    \ t++) {\n            int op = rng() % 3;\n            if (op == 0) {\n      \
+    \          int l = rng() % (n + 1), r = rng() % (n + 1);\n                if (l\
+    \ > r) std::swap(l, r);\n                long long f = static_cast<long long>(rng()\
+    \ % 21) - 10;\n                imos.apply(l, r, f);\n                for (int\
+    \ i = l; i < r; i++) v[i] += f;\n            } else if (op == 1) {\n         \
+    \       int k = rng() % n;\n                long long f = static_cast<long long>(rng()\
+    \ % 21) - 10;\n                imos.apply(k, f);\n                v[k] += f;\n\
+    \            } else {\n                int k = rng() % n;\n                if\
+    \ (imos.get(k) != v[k]) ok = false;\n            }\n        }\n        for (int\
+    \ k = n - 1; k >= 0; k--) {\n            if (imos.get(k) != v[k]) ok = false;\n\
+    \        }\n    }\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
+    \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// Imos \u3092\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u30E9\u30F3\u30C0\u30E0\
     \u306B\u6BD4\u8F03\u3059\u308B\n// \u533A\u9593\u4F5C\u7528\u30FB1\u70B9\u4F5C\
@@ -441,7 +444,7 @@ data:
   isVerificationFile: true
   path: test/unittest/imos.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-14 16:39:21+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/imos.test.cpp

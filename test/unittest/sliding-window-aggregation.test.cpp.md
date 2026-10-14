@@ -11,6 +11,9 @@ data:
     path: src/math/modint.hpp
     title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
       \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9"
+  - icon: ':heavy_check_mark:'
+    path: src/utility/traits.hpp
+    title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
@@ -212,30 +215,83 @@ data:
     \ back_prod);\n    }\n    /**\n     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\
     \u3092\u524A\u9664\u3059\u308B\n     */\n    void clear() {\n        front_vals.clear();\n\
     \        front_prod.clear();\n        back_vals.clear();\n        back_prod =\
-    \ e();\n    }\n};\n\n/**\n * @brief \u9577\u3055 k \u306E\u5404\u533A\u9593 [i,\
-    \ i + k) \u306E\u6700\u5C0F\u5024\u3092\u4E26\u3079\u305F\u3082\u306E (\u9577\u3055\
-    \ n - k + 1) O(n)\n *\n * \u5358\u8ABF\u306A deque \u3092\u4F7F\u3046\n * @param\
-    \ comp \u5927\u5C0F\u306E\u6BD4\u8F03\u3002std::greater<T>() \u3092\u6E21\u3059\
-    \u3068\u6700\u5927\u5024\u306B\u306A\u308B\n */\ntemplate <typename T, typename\
-    \ Compare = std::less<T>>\nstd::vector<T> sliding_window_min(const std::vector<T>&\
-    \ a, int k, Compare comp = Compare()) {\n    int n = a.size();\n    assert(1 <=\
-    \ k && k <= n);\n    std::vector<T> res;\n    res.reserve(n - k + 1);\n    //\
-    \ \u7A93\u306E\u4E2D\u3067\u3001\u5F8C\u308D\u306B\u305D\u308C\u4EE5\u4E0B\u306E\
-    \u5024\u304C\u306A\u3044\u6DFB\u5B57\u3092\u3001\u5024\u306E\u6607\u9806\u306B\
-    \u6301\u3064\n    std::deque<int> dq;\n    for (int i = 0; i < n; i++) {\n   \
-    \     while (!dq.empty() && !comp(a[dq.back()], a[i])) dq.pop_back();\n      \
-    \  dq.push_back(i);\n        if (dq.front() <= i - k) dq.pop_front();\n      \
-    \  if (i >= k - 1) res.push_back(a[dq.front()]);\n    }\n    return res;\n}\n\n\
-    /**\n * @brief \u9577\u3055 k \u306E\u5404\u533A\u9593 [i, i + k) \u306E\u6700\
-    \u5927\u5024\u3092\u4E26\u3079\u305F\u3082\u306E (\u9577\u3055 n - k + 1) O(n)\n\
-    \ */\ntemplate <typename T>\nstd::vector<T> sliding_window_max(const std::vector<T>&\
-    \ a, int k) {\n    return sliding_window_min(a, k, std::greater<T>());\n}\n#line\
-    \ 7 \"test/unittest/sliding-window-aggregation.test.cpp\"\n\n#line 11 \"test/unittest/sliding-window-aggregation.test.cpp\"\
-    \n#include <iostream>\n#include <random>\n#line 14 \"test/unittest/sliding-window-aggregation.test.cpp\"\
-    \n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\
-    \u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\
-    \u30AF\u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\n#include <cstdint>\n\
-    #line 14 \"src/math/modint.hpp\"\n\nnamespace internal_modint {\n// clang-format\
+    \ e();\n    }\n};\n\ntemplate <typename M>\nSlidingWindowAggregation(M) -> SlidingWindowAggregation<M>;\n\
+    \n/**\n * @brief \u9577\u3055 k \u306E\u5404\u533A\u9593 [i, i + k) \u306E\u6700\
+    \u5C0F\u5024\u3092\u4E26\u3079\u305F\u3082\u306E (\u9577\u3055 n - k + 1) O(n)\n\
+    \ *\n * \u5358\u8ABF\u306A deque \u3092\u4F7F\u3046\n * @param comp \u5927\u5C0F\
+    \u306E\u6BD4\u8F03\u3002std::greater<T>() \u3092\u6E21\u3059\u3068\u6700\u5927\
+    \u5024\u306B\u306A\u308B\n */\ntemplate <typename T, typename Compare = std::less<T>>\n\
+    std::vector<T> sliding_window_min(const std::vector<T>& a, int k, Compare comp\
+    \ = Compare()) {\n    int n = a.size();\n    assert(1 <= k && k <= n);\n    std::vector<T>\
+    \ res;\n    res.reserve(n - k + 1);\n    // \u7A93\u306E\u4E2D\u3067\u3001\u5F8C\
+    \u308D\u306B\u305D\u308C\u4EE5\u4E0B\u306E\u5024\u304C\u306A\u3044\u6DFB\u5B57\
+    \u3092\u3001\u5024\u306E\u6607\u9806\u306B\u6301\u3064\n    std::deque<int> dq;\n\
+    \    for (int i = 0; i < n; i++) {\n        while (!dq.empty() && !comp(a[dq.back()],\
+    \ a[i])) dq.pop_back();\n        dq.push_back(i);\n        if (dq.front() <= i\
+    \ - k) dq.pop_front();\n        if (i >= k - 1) res.push_back(a[dq.front()]);\n\
+    \    }\n    return res;\n}\n\n/**\n * @brief \u9577\u3055 k \u306E\u5404\u533A\
+    \u9593 [i, i + k) \u306E\u6700\u5927\u5024\u3092\u4E26\u3079\u305F\u3082\u306E\
+    \ (\u9577\u3055 n - k + 1) O(n)\n */\ntemplate <typename T>\nstd::vector<T> sliding_window_max(const\
+    \ std::vector<T>& a, int k) {\n    return sliding_window_min(a, k, std::greater<T>());\n\
+    }\n#line 7 \"test/unittest/sliding-window-aggregation.test.cpp\"\n\n#line 11 \"\
+    test/unittest/sliding-window-aggregation.test.cpp\"\n#include <iostream>\n#include\
+    \ <random>\n#line 14 \"test/unittest/sliding-window-aggregation.test.cpp\"\n\n\
+    #line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\
+    \u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\
+    \u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\n#include <cstdint>\n#line\
+    \ 14 \"src/math/modint.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n *\
+    \ @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\
+    \n#include <iterator>\n#include <set>\n#line 13 \"src/utility/traits.hpp\"\n\n\
+    namespace internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T,\
+    \ class = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\n\
+    struct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
+    \ : std::true_type {};\n}  // namespace internal_traits\n\ntemplate <class T>\n\
+    struct is_range : internal_traits::is_range_impl<T>::type {};\ntemplate <class\
+    \ T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define HAS_METHOD(func_name)\
+    \                                                              \\\n    namespace\
+    \ internal_traits {                                                          \
+    \  \\\n    template <class T, class = void>                                  \
+    \                     \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                    \\\n    template <class T>          \
+    \                                                           \\\n    struct has_##func_name##_impl<T,\
+    \ std::void_t<decltype(std::declval<T>().func_name())>> \\\n        : std::true_type\
+    \ {};                                                               \\\n    }\
+    \                                                                            \
+    \          \\\n    template <class T>                                        \
+    \                             \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T>::type\
+    \ {};          \\\n    template <class T>                                    \
+    \                                 \\\n    inline constexpr bool has_##func_name##_v\
+    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
+    \                                                                    \\\n    namespace\
+    \ internal_traits {                                                          \
+    \                      \\\n    template <class T, typename U, class = void>  \
+    \                                                             \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                                      \
+    \  \\\n    template <class T, typename U>                                    \
+    \                                         \\\n    struct has_##func_name##_impl<T,\
+    \ U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>> \\\
+    \n        : std::true_type {};                                               \
+    \                                    \\\n    }                               \
+    \                                                                           \\\
+    \n    template <class T, typename U>                                         \
+    \                                    \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \ U>::type {};                           \\\n    template <class T, typename U>\
+    \                                                                            \
+    \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
+    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
+    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
+    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
+    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
+    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
+    \ntemplate <class C>\nusing mem_value_type = typename C::value_type;\ntemplate\
+    \ <class C>\nusing mem_difference_type = typename C::difference_type;\n\nnamespace\
+    \ internal_traits {\ntemplate <class T, class = void>\nstruct is_sorted_container_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_sorted_container_impl<std::set<T>>\
+    \ : std::true_type {};\ntemplate <class T>\nstruct is_sorted_container_impl<std::multiset<T>>\
+    \ : std::true_type {};\n}  // namespace internal_traits\ntemplate <class T>\n\
+    struct is_sorted_container : internal_traits::is_sorted_container_impl<T>::type\
+    \ {};\ntemplate <class T>\ninline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
+    #line 16 \"src/math/modint.hpp\"\n\nnamespace internal_modint {\n// clang-format\
     \ off\nstatic constexpr std::uint16_t prime32_bases[] {\n    15591,  2018,  166,\
     \ 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,  3620,   560,  3128, \
     \ 5212,  2657,\n     2300,  2021, 4652, 1471,  9336,  4018,  2398, 20462, 10277,\
@@ -287,13 +343,13 @@ data:
     \ modint_base() noexcept\n        : m_value{0} {}\n\n    /// @brief @c value \u306E\
     \u5270\u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    /// @param value\
     \ \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\n    template <class SignedIntegral,\
-    \ std::enable_if_t<std::is_integral_v<SignedIntegral> && std::is_signed_v<SignedIntegral>>*\
-    \ = nullptr>\n    constexpr modint_base(SignedIntegral value) noexcept\n     \
-    \   : m_value{static_cast<value_type>((static_cast<long long>(value) % Modint::mod()\
-    \ + Modint::mod()) % Modint::mod())} {}\n\n    /// @brief @c value \u306E\u5270\
-    \u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    /// @param value \u521D\
-    \u671F\u5316\u306B\u4F7F\u3046\u5024\n    template <class UnsignedIntegral, std::enable_if_t<std::is_integral_v<UnsignedIntegral>\
-    \ && std::is_unsigned_v<UnsignedIntegral>>* = nullptr>\n    constexpr modint_base(UnsignedIntegral\
+    \ ENABLE_IF_T((std::is_integral_v<SignedIntegral> && std::is_signed_v<SignedIntegral>))>\n\
+    \    constexpr modint_base(SignedIntegral value) noexcept\n        : m_value{static_cast<value_type>((static_cast<long\
+    \ long>(value) % Modint::mod() + Modint::mod()) % Modint::mod())} {}\n\n    ///\
+    \ @brief @c value \u306E\u5270\u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\
+    \u3002\n    /// @param value \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\n    template\
+    \ <class UnsignedIntegral, ENABLE_IF_T((std::is_integral_v<UnsignedIntegral> &&\
+    \ std::is_unsigned_v<UnsignedIntegral>))>\n    constexpr modint_base(UnsignedIntegral\
     \ value) noexcept\n        : m_value{static_cast<value_type>(value % Modint::mod())}\
     \ {}\n\n    /// @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u5024\u3092\u53D6\u5F97\
     \u3057\u307E\u3059\u3002\n    /// @return \u4FDD\u6301\u3057\u3066\u3044\u308B\
@@ -433,56 +489,56 @@ data:
     \ \u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    constexpr static_modint()\
     \ noexcept\n        : base_type{} {}\n\n    /// @brief @c value \u306E\u5270\u4F59\
     \u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    /// @param value \u521D\u671F\
-    \u5316\u306B\u4F7F\u3046\u5024\n    template <class SignedIntegral, std::enable_if_t<std::is_integral_v<SignedIntegral>>*\
-    \ = nullptr>\n    constexpr static_modint(SignedIntegral value) noexcept\n   \
-    \     : base_type{value} {}\n\n    /// @brief \u81EA\u8EAB\u306E\u9006\u6570\u3092\
-    \u8FD4\u3057\u307E\u3059\u3002\n    /// @remark \u6642\u9593\u8A08\u7B97\u91CF\
-    \uFF1A @f$O(\\log value)@f$\n    /// @return \u81EA\u8EAB\u306E\u9006\u6570\n\
-    \    [[nodiscard]]\n    constexpr static_modint inv() const noexcept {\n     \
-    \   if constexpr (internal_modint::is_prime32(Mod)) {\n            assert(this->m_value\
-    \ != 0 && \"The inverse element of zero does not exist.\");\n            return\
-    \ this->pow(Mod - 2);\n        } else {\n            return base_type::inv();\n\
-    \        }\n    }\n};\n\n/// @brief \u5B9F\u884C\u6642\u306B\u6CD5\u304C\u6C7A\
-    \u307E\u308B\u3068\u304D\u3001\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\
-    \u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n/// @tparam ID \u3053\
-    \u306EID\u3054\u3068\u306B\u6CD5\u3092\u8A2D\u5B9A\u3059\u308B\u3053\u3068\u304C\
-    \u3067\u304D\u307E\u3059\ntemplate <int ID>\nclass dynamic_modint : public modint_base<dynamic_modint<ID>>\
-    \ {\n   private:\n    using base_type = modint_base<dynamic_modint<ID>>;\n\n \
-    \  public:\n    using typename base_type::value_type;\n\n    /// @brief \u6CD5\
-    \u3092\u53D6\u5F97\u3057\u307E\u3059\u3002\n    /// @return \u6CD5\n    [[nodiscard]]\n\
-    \    static value_type mod() noexcept {\n        return modulus;\n    }\n\n  \
-    \  /// @brief \u6CD5\u3092\u8A2D\u5B9A\u3057\u307E\u3059\u3002\n    /// @param\
-    \ m \u65B0\u3057\u3044\u6CD5\n    static void set_mod(value_type m) noexcept {\n\
-    \        assert(m > 0 && m <= std::numeric_limits<value_type>::max() / 2);\n \
-    \       modulus = m;\n    }\n\n    /// @brief 0 \u3067\u521D\u671F\u5316\u3057\
-    \u307E\u3059\u3002\n    constexpr dynamic_modint() noexcept\n        : base_type{}\
-    \ {}\n\n    /// @brief @c value \u306E\u5270\u4F59\u3067\u521D\u671F\u5316\u3057\
-    \u307E\u3059\u3002\n    /// @param value \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\
-    \n    template <class SignedIntegral, std::enable_if_t<std::is_integral_v<SignedIntegral>>*\
-    \ = nullptr>\n    constexpr dynamic_modint(SignedIntegral value) noexcept\n  \
-    \      : base_type{value} {}\n\n   private:\n    inline static value_type modulus\
-    \ = 998244353;\n};\n\nusing modint998244353 = static_modint<998244353>;\nusing\
-    \ modint1000000007 = static_modint<1000000007>;\nusing modint = dynamic_modint<-1>;\n\
-    #line 16 \"test/unittest/sliding-window-aggregation.test.cpp\"\n\nusing mint =\
-    \ modint998244353;\n\nint main() {\n    std::mt19937 rng(314);\n    bool ok =\
-    \ true;\n    // \u53EF\u63DB\u3067\u306A\u3044\u30E2\u30CE\u30A4\u30C9 (1\u6B21\
-    \u95A2\u6570\u306E\u5408\u6210)\n    for (int rep = 0; rep < 500 && ok; rep++)\
-    \ {\n        SlidingWindowAggregation<monoid::Composite<mint>> swag;\n       \
-    \ std::deque<Affine<mint>> dq;\n        for (int t = 0; t < 100; t++) {\n    \
-    \        int op = rng() % 4;\n            if (op <= 1) {\n                Affine<mint>\
-    \ f{mint(rng() % 5), mint(rng() % 5)};\n                swag.push(f);\n      \
-    \          dq.push_back(f);\n            } else if (op == 2 && !dq.empty()) {\n\
-    \                swag.pop();\n                dq.pop_front();\n            } else\
-    \ if (op == 3 && rng() % 20 == 0) {\n                swag.clear();\n         \
-    \       dq.clear();\n            }\n            Affine<mint> expected = monoid::Composite<mint>::e();\n\
-    \            for (const auto& f : dq) expected = monoid::Composite<mint>::op(expected,\
-    \ f);\n            if (swag.size() != (int)dq.size() || swag.empty() != dq.empty()\
-    \ || swag.prod() != expected) ok = false;\n            if (!dq.empty() && swag.front()\
-    \ != dq.front()) ok = false;\n        }\n    }\n    // \u30B9\u30E9\u30A4\u30C9\
-    \u6700\u5C0F\u5024\u30FB\u6700\u5927\u5024\n    for (int rep = 0; rep < 2000 &&\
-    \ ok; rep++) {\n        int n = rng() % 20 + 1, k = rng() % n + 1;\n        std::vector<int>\
-    \ a(n);\n        for (auto& x : a) x = rng() % 10;\n        std::vector<int> mn,\
-    \ mx;\n        for (int i = 0; i + k <= n; i++) {\n            mn.push_back(*std::min_element(a.begin()\
+    \u5316\u306B\u4F7F\u3046\u5024\n    template <class SignedIntegral, ENABLE_IF_T(std::is_integral_v<SignedIntegral>)>\n\
+    \    constexpr static_modint(SignedIntegral value) noexcept\n        : base_type{value}\
+    \ {}\n\n    /// @brief \u81EA\u8EAB\u306E\u9006\u6570\u3092\u8FD4\u3057\u307E\u3059\
+    \u3002\n    /// @remark \u6642\u9593\u8A08\u7B97\u91CF\uFF1A @f$O(\\log value)@f$\n\
+    \    /// @return \u81EA\u8EAB\u306E\u9006\u6570\n    [[nodiscard]]\n    constexpr\
+    \ static_modint inv() const noexcept {\n        if constexpr (internal_modint::is_prime32(Mod))\
+    \ {\n            assert(this->m_value != 0 && \"The inverse element of zero does\
+    \ not exist.\");\n            return this->pow(Mod - 2);\n        } else {\n \
+    \           return base_type::inv();\n        }\n    }\n};\n\n/// @brief \u5B9F\
+    \u884C\u6642\u306B\u6CD5\u304C\u6C7A\u307E\u308B\u3068\u304D\u3001\u56DB\u5247\
+    \u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\
+    \u30E9\u30B9\n/// @tparam ID \u3053\u306EID\u3054\u3068\u306B\u6CD5\u3092\u8A2D\
+    \u5B9A\u3059\u308B\u3053\u3068\u304C\u3067\u304D\u307E\u3059\ntemplate <int ID>\n\
+    class dynamic_modint : public modint_base<dynamic_modint<ID>> {\n   private:\n\
+    \    using base_type = modint_base<dynamic_modint<ID>>;\n\n   public:\n    using\
+    \ typename base_type::value_type;\n\n    /// @brief \u6CD5\u3092\u53D6\u5F97\u3057\
+    \u307E\u3059\u3002\n    /// @return \u6CD5\n    [[nodiscard]]\n    static value_type\
+    \ mod() noexcept {\n        return modulus;\n    }\n\n    /// @brief \u6CD5\u3092\
+    \u8A2D\u5B9A\u3057\u307E\u3059\u3002\n    /// @param m \u65B0\u3057\u3044\u6CD5\
+    \n    static void set_mod(value_type m) noexcept {\n        assert(m > 0 && m\
+    \ <= std::numeric_limits<value_type>::max() / 2);\n        modulus = m;\n    }\n\
+    \n    /// @brief 0 \u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    constexpr\
+    \ dynamic_modint() noexcept\n        : base_type{} {}\n\n    /// @brief @c value\
+    \ \u306E\u5270\u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    ///\
+    \ @param value \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\n    template <class\
+    \ SignedIntegral, ENABLE_IF_T(std::is_integral_v<SignedIntegral>)>\n    constexpr\
+    \ dynamic_modint(SignedIntegral value) noexcept\n        : base_type{value} {}\n\
+    \n   private:\n    inline static value_type modulus = 998244353;\n};\n\nusing\
+    \ modint998244353 = static_modint<998244353>;\nusing modint1000000007 = static_modint<1000000007>;\n\
+    using modint = dynamic_modint<-1>;\n#line 16 \"test/unittest/sliding-window-aggregation.test.cpp\"\
+    \n\nusing mint = modint998244353;\n\nint main() {\n    std::mt19937 rng(314);\n\
+    \    bool ok = true;\n    // \u53EF\u63DB\u3067\u306A\u3044\u30E2\u30CE\u30A4\u30C9\
+    \ (1\u6B21\u95A2\u6570\u306E\u5408\u6210)\n    for (int rep = 0; rep < 500 &&\
+    \ ok; rep++) {\n        SlidingWindowAggregation<monoid::Composite<mint>> swag;\n\
+    \        std::deque<Affine<mint>> dq;\n        for (int t = 0; t < 100; t++) {\n\
+    \            int op = rng() % 4;\n            if (op <= 1) {\n               \
+    \ Affine<mint> f{mint(rng() % 5), mint(rng() % 5)};\n                swag.push(f);\n\
+    \                dq.push_back(f);\n            } else if (op == 2 && !dq.empty())\
+    \ {\n                swag.pop();\n                dq.pop_front();\n          \
+    \  } else if (op == 3 && rng() % 20 == 0) {\n                swag.clear();\n \
+    \               dq.clear();\n            }\n            Affine<mint> expected\
+    \ = monoid::Composite<mint>::e();\n            for (const auto& f : dq) expected\
+    \ = monoid::Composite<mint>::op(expected, f);\n            if (swag.size() !=\
+    \ (int)dq.size() || swag.empty() != dq.empty() || swag.prod() != expected) ok\
+    \ = false;\n            if (!dq.empty() && swag.front() != dq.front()) ok = false;\n\
+    \        }\n    }\n    // \u30B9\u30E9\u30A4\u30C9\u6700\u5C0F\u5024\u30FB\u6700\
+    \u5927\u5024\n    for (int rep = 0; rep < 2000 && ok; rep++) {\n        int n\
+    \ = rng() % 20 + 1, k = rng() % n + 1;\n        std::vector<int> a(n);\n     \
+    \   for (auto& x : a) x = rng() % 10;\n        std::vector<int> mn, mx;\n    \
+    \    for (int i = 0; i + k <= n; i++) {\n            mn.push_back(*std::min_element(a.begin()\
     \ + i, a.begin() + i + k));\n            mx.push_back(*std::max_element(a.begin()\
     \ + i, a.begin() + i + k));\n        }\n        ok = ok && sliding_window_min(a,\
     \ k) == mn && sliding_window_max(a, k) == mx;\n        ok = ok && sliding_window_min(a,\
@@ -527,10 +583,11 @@ data:
   - src/data_structures/sliding-window-aggregation.hpp
   - src/algebra/monoid.hpp
   - src/math/modint.hpp
+  - src/utility/traits.hpp
   isVerificationFile: true
   path: test/unittest/sliding-window-aggregation.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-14 16:41:25+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/sliding-window-aggregation.test.cpp

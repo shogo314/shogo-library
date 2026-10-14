@@ -29,114 +29,13 @@ data:
     \u3059\u308B\n\n#line 2 \"src/graph/heavy-light-decomposition.hpp\"\n\n/**\n *\
     \ @file heavy-light-decomposition.hpp\n * @brief HL \u5206\u89E3 (Heavy-Light\
     \ Decomposition)\n */\n\n#include <algorithm>\n#include <cassert>\n#include <utility>\n\
-    #include <vector>\n\n/**\n * @brief HL \u5206\u89E3 (Heavy-Light Decomposition)\n\
-    \ *\n * \u6728\u306E\u9802\u70B9\u3092\u3001\u3069\u306E\u30D1\u30B9\u3082 O(log\
-    \ n) \u500B\u306E\u533A\u9593\u306B\u5206\u304B\u308C\u3001\u3069\u306E\u90E8\u5206\
-    \u6728\u3082 1 \u3064\u306E\u533A\u9593\u306B\u306A\u308B\u3088\u3046\u306B\u4E26\
-    \u3079\u66FF\u3048\u308B\n * \u9802\u70B9 v \u306F\u5217\u306E index(v) \u756A\
-    \u76EE\u306B\u5BFE\u5FDC\u3059\u308B\u3002\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\
-    \u306A\u3069\u3068\u7D44\u307F\u5408\u308F\u305B\u3066\u3001\u30D1\u30B9\u3084\
-    \u90E8\u5206\u6728\u3078\u306E\u30AF\u30A8\u30EA\u3092\u884C\u3046\n * \u524D\u8A08\
-    \u7B97 O(n)\u3002DFS \u306F\u518D\u5E30\u3092\u4F7F\u308F\u306A\u3044\n * \u4F8B\
-    :\n * HeavyLightDecomposition hld(g, root);\n * for (auto [a, b] : hld.path(u,\
-    \ v)) sum += seg.prod(std::min(a, b), std::max(a, b) + 1);\n * auto [l, r] = hld.subtree(v);\
-    \  // \u90E8\u5206\u6728\u306F\u533A\u9593 [l, r)\n */\nclass HeavyLightDecomposition\
-    \ {\n    int n, root;\n    std::vector<int> par, dep, sz, heavy, head, in, order;\n\
-    \n   public:\n    /**\n     * @brief \u6728 tree \u3092\u6839 root \u3067 HL \u5206\
-    \u89E3\u3059\u308B\n     * @param tree Graph\u3001Tree\u3001RootedTree \u306A\u3069\
-    \u3002tree.n \u304C\u9802\u70B9\u6570\u3001for (int u : tree[v]) \u3067 v \u306B\
-    \u96A3\u63A5\u3059\u308B\u9802\u70B9\u3092\u5217\u6319\u3067\u304D\u308B\u3053\
-    \u3068\n     */\n    template <typename G>\n    explicit HeavyLightDecomposition(const\
-    \ G& tree, int root = 0)\n        : n(tree.n), root(root), par(n, -1), dep(n,\
-    \ 0), sz(n, 1), heavy(n, -1), head(n), in(n), order(n) {\n        assert(0 <=\
-    \ root && root < n);\n        // \u6839\u304B\u3089\u306E BFS \u9806\u3067\u89AA\
-    \u3068\u6DF1\u3055\u3092\u6C7A\u3081\u308B\n        std::vector<int> bfs = {root};\n\
-    \        bfs.reserve(n);\n        for (int i = 0; i < (int)bfs.size(); i++) {\n\
-    \            int v = bfs[i];\n            for (int u : tree[v]) {\n          \
-    \      if (u == par[v]) continue;\n                assert(u != root && par[u]\
-    \ == -1 && \"HeavyLightDecomposition: not a tree\");\n                par[u] =\
-    \ v;\n                dep[u] = dep[v] + 1;\n                bfs.push_back(u);\n\
-    \            }\n        }\n        assert((int)bfs.size() == n && \"HeavyLightDecomposition:\
-    \ not connected\");\n        // \u8449\u306E\u5074\u304B\u3089\u90E8\u5206\u6728\
-    \u306E\u5927\u304D\u3055\u3092\u6C42\u3081\u3001\u6700\u3082\u5927\u304D\u3044\
-    \u5B50\u3092 heavy \u306B\u3059\u308B\n        for (int i = n - 1; i > 0; i--)\
-    \ {\n            int v = bfs[i], p = par[v];\n            sz[p] += sz[v];\n  \
-    \          if (heavy[p] == -1 || sz[v] > sz[heavy[p]]) heavy[p] = v;\n       \
-    \ }\n        // heavy \u306A\u5B50\u3092\u6700\u5F8C\u306B\u7A4D\u3080\u3068\u3001\
-    \u6B21\u306B\u53D6\u308A\u51FA\u3055\u308C\u3066 index \u304C\u9023\u7D9A\u3059\
-    \u308B\n        std::vector<int> st = {root};\n        head[root] = root;\n  \
-    \      int k = 0;\n        while (!st.empty()) {\n            int v = st.back();\n\
-    \            st.pop_back();\n            in[v] = k;\n            order[k++] =\
-    \ v;\n            for (int u : tree[v]) {\n                if (u == par[v] ||\
-    \ u == heavy[v]) continue;\n                head[u] = u;\n                st.push_back(u);\n\
-    \            }\n            if (heavy[v] != -1) {\n                head[heavy[v]]\
-    \ = head[v];\n                st.push_back(heavy[v]);\n            }\n       \
-    \ }\n    }\n\n    int size() const { return n; }\n    /**\n     * @brief \u9802\
-    \u70B9 v \u306E\u5217\u3067\u306E\u4F4D\u7F6E\n     */\n    int index(int v) const\
-    \ { return in[v]; }\n    /**\n     * @brief \u5217\u306E i \u756A\u76EE\u306E\u9802\
-    \u70B9 (index \u306E\u9006)\n     */\n    int vertex(int i) const { return order[i];\
-    \ }\n    /**\n     * @brief v \u306E\u89AA (\u6839\u306A\u3089 -1)\n     */\n\
-    \    int parent(int v) const { return par[v]; }\n    /**\n     * @brief v \u306E\
-    \u6DF1\u3055 (\u6839\u306F 0\u3001\u8FBA\u306E\u672C\u6570)\n     */\n    int\
-    \ depth(int v) const { return dep[v]; }\n    /**\n     * @brief v \u3092\u6839\
-    \u3068\u3059\u308B\u90E8\u5206\u6728\u306E\u9802\u70B9\u306E\u500B\u6570\n   \
-    \  */\n    int subtree_size(int v) const { return sz[v]; }\n    /**\n     * @brief\
-    \ v \u3092\u6839\u3068\u3059\u308B\u90E8\u5206\u6728\u306E\u9802\u70B9\u306B\u5BFE\
-    \u5FDC\u3059\u308B\u533A\u9593 [l, r)\n     */\n    std::pair<int, int> subtree(int\
-    \ v) const { return {in[v], in[v] + sz[v]}; }\n\n    /**\n     * @brief u \u3068\
-    \ v \u306E\u6700\u5C0F\u5171\u901A\u7956\u5148 O(log n)\n     */\n    int lca(int\
-    \ u, int v) const {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n   \
-    \     while (head[u] != head[v]) {\n            if (dep[head[u]] < dep[head[v]])\
-    \ std::swap(u, v);\n            u = par[head[u]];\n        }\n        return dep[u]\
-    \ < dep[v] ? u : v;\n    }\n    /**\n     * @brief u \u3068 v \u306E\u9593\u306E\
-    \u8FBA\u306E\u672C\u6570 O(log n)\n     */\n    int dist(int u, int v) const {\
-    \ return dep[u] + dep[v] - 2 * dep[lca(u, v)]; }\n    /**\n     * @brief v \u304B\
-    \u3089\u6839\u306E\u65B9\u3078 k \u672C\u306E\u8FBA\u3092\u9032\u3093\u3060\u9802\
-    \u70B9 (k > depth(v) \u306A\u3089 -1) O(log n)\n     */\n    int hop(int v, int\
-    \ k) const {\n        assert(0 <= v && v < n && k >= 0);\n        if (k > dep[v])\
-    \ return -1;\n        while (true) {\n            int h = head[v];\n         \
-    \   if (in[v] - in[h] >= k) return order[in[v] - k];\n            k -= in[v] -\
-    \ in[h] + 1;\n            v = par[h];\n        }\n    }\n    /**\n     * @brief\
-    \ u \u304B\u3089 v \u3078\u306E\u30D1\u30B9\u3067\u3001u \u304B\u3089 k \u672C\
-    \u306E\u8FBA\u3092\u9032\u3093\u3060\u9802\u70B9 (k > dist(u, v) \u306A\u3089\
-    \ -1) O(log n)\n     */\n    int jump(int u, int v, int k) const {\n        assert(0\
-    \ <= u && u < n && 0 <= v && v < n && k >= 0);\n        int w = lca(u, v);\n \
-    \       int du = dep[u] - dep[w], dv = dep[v] - dep[w];\n        if (k <= du)\
-    \ return hop(u, k);\n        if (k <= du + dv) return hop(v, du + dv - k);\n \
-    \       return -1;\n    }\n\n    /**\n     * @brief u \u304B\u3089 v \u3078\u306E\
-    \u30D1\u30B9\u3092\u3001\u5217\u306E\u533A\u9593\u306B\u5206\u3051\u3066 u \u5074\
-    \u304B\u3089\u9806\u306B\u4E26\u3079\u308B O(log n)\n     *\n     * \u5404\u8981\
-    \u7D20 (a, b) \u306F\u3001\u5217\u306E a \u756A\u76EE\u304B\u3089 b \u756A\u76EE\
-    \u307E\u3067 (\u4E21\u7AEF\u3092\u542B\u3080) \u3092\u3001a \u304B\u3089 b \u306E\
-    \u5411\u304D\u306B\u305F\u3069\u308B\u3053\u3068\u3092\u8868\u3059\n     * \u5411\
-    \u304D\u3092\u8868\u3059\u305F\u3081\u3001\u3053\u306E\u30E9\u30A4\u30D6\u30E9\
-    \u30EA\u306E\u4ED6\u306E\u533A\u9593 (\u534A\u958B\u533A\u9593 [l, r)) \u3068\u9055\
-    \u3063\u3066\u9589\u533A\u9593\u306B\u306A\u3063\u3066\u3044\u308B\n     * a >\
-    \ b \u306A\u3089 index \u304C\u6E1B\u308B\u5411\u304D (\u6839\u306B\u8FD1\u3065\
-    \u304F\u5411\u304D) \u306B\u305F\u3069\u308B\n     * \u4EA4\u63DB\u6CD5\u5247\u304C\
-    \u6210\u308A\u7ACB\u305F\u306A\u3044\u6F14\u7B97\u3067\u306F\u3001a > b \u306E\
-    \u533A\u9593\u306F\u9006\u9806\u306E\u7A4D\u3092\u4F7F\u3046\n     * @param edge\
-    \ true \u306A\u3089\u8FBA\u306B\u3064\u3044\u3066\u306E\u30D1\u30B9\u306B\u3059\
-    \u308B\u3002\u8FBA (parent(v), v) \u3092 index(v) \u756A\u76EE\u306B\u5BFE\u5FDC\
-    \u3055\u305B\u3001lca \u306E\u4F4D\u7F6E\u3092\u542B\u3081\u306A\u3044\n     */\n\
-    \    std::vector<std::pair<int, int>> path(int u, int v, bool edge = false) const\
-    \ {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n        std::vector<std::pair<int,\
-    \ int>> up, down;\n        while (head[u] != head[v]) {\n            if (dep[head[u]]\
-    \ >= dep[head[v]]) {\n                up.emplace_back(in[u], in[head[u]]);\n \
-    \               u = par[head[u]];\n            } else {\n                down.emplace_back(in[head[v]],\
-    \ in[v]);\n                v = par[head[v]];\n            }\n        }\n     \
-    \   if (dep[u] >= dep[v]) {\n            // v \u304C lca\n            int l =\
-    \ in[v] + edge;\n            if (l <= in[u]) up.emplace_back(in[u], l);\n    \
-    \    } else {\n            // u \u304C lca\n            int l = in[u] + edge;\n\
-    \            if (l <= in[v]) down.emplace_back(l, in[v]);\n        }\n       \
-    \ up.insert(up.end(), down.rbegin(), down.rend());\n        return up;\n    }\n\
-    };\n#line 7 \"test/unittest/heavy-light-decomposition.test.cpp\"\n\n#line 9 \"\
-    test/unittest/heavy-light-decomposition.test.cpp\"\n#include <iostream>\n#include\
-    \ <random>\n#line 13 \"test/unittest/heavy-light-decomposition.test.cpp\"\n\n\
-    #line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file graph.hpp\n * @brief \u30B0\u30E9\
-    \u30D5\n */\n\n#line 10 \"src/graph/graph.hpp\"\n#include <deque>\n#include <functional>\n\
-    #line 13 \"src/graph/graph.hpp\"\n#include <limits>\n#include <queue>\n#line 17\
-    \ \"src/graph/graph.hpp\"\n\n/**\n * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\
+    #include <vector>\n\n#line 2 \"src/graph/tree.hpp\"\n\n/**\n * @file tree.hpp\n\
+    \ * @brief \u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n */\n\
+    \n#line 10 \"src/graph/tree.hpp\"\n#include <stack>\n#line 13 \"src/graph/tree.hpp\"\
+    \n\n#line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file graph.hpp\n * @brief \u30B0\
+    \u30E9\u30D5\n */\n\n#line 10 \"src/graph/graph.hpp\"\n#include <deque>\n#include\
+    \ <functional>\n#include <iostream>\n#include <limits>\n#include <queue>\n#line\
+    \ 17 \"src/graph/graph.hpp\"\n\n/**\n * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\
     \u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u578B\
     \n */\ntemplate <typename Cost = int>\nclass Graph {\n   public:\n    /**\n  \
     \   * @brief \u6709\u5411\u8FBA\u306E\u69CB\u9020\u4F53\n     *\n     * operator\
@@ -177,16 +76,17 @@ data:
     \ * @brief \u30C7\u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\
     \n     */\n    Graph() : n(0), m(0), g(0) {}\n    /**\n     * @brief \u30B3\u30F3\
     \u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param n \u9802\u70B9\u6570\n     */\n\
-    \    explicit Graph(int n) : n(n), m(0), g(n) {}\n    /**\n     * @brief \u7121\
-    \u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n     * @param u \u59CB\u70B9\n   \
-    \  * @param v \u7D42\u70B9\n     * @param w \u30B3\u30B9\u30C8 \u7701\u7565\u3057\
-    \u305F\u30891\n     */\n    void add_edge(int u, int v, Cost w = 1) {\n      \
-    \  assert(0 <= u && u < n && 0 <= v && v < n);\n        g[u].push_back({u, v,\
-    \ w, m});\n        g[v].push_back({v, u, w, m++});\n    }\n    /**\n     * @brief\
-    \ \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n     * @param u \u59CB\u70B9\
+    \    explicit Graph(int n) : n(n), m(0), g(n) {}\n    /**\n     * @brief \u9802\
+    \u70B9\u6570\n     */\n    int size() const { return n; }\n    /**\n     * @brief\
+    \ \u7121\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n     * @param u \u59CB\u70B9\
     \n     * @param v \u7D42\u70B9\n     * @param w \u30B3\u30B9\u30C8 \u7701\u7565\
-    \u3057\u305F\u30891\n     */\n    void add_directed_edge(int u, int v, Cost w\
-    \ = 1) {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n        g[u].push_back({u,\
+    \u3057\u305F\u30891\n     */\n    void add_edge(int u, int v, Cost w = 1) {\n\
+    \        assert(0 <= u && u < n && 0 <= v && v < n);\n        g[u].push_back({u,\
+    \ v, w, m});\n        g[v].push_back({v, u, w, m++});\n    }\n    /**\n     *\
+    \ @brief \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n     * @param u \u59CB\
+    \u70B9\n     * @param v \u7D42\u70B9\n     * @param w \u30B3\u30B9\u30C8 \u7701\
+    \u7565\u3057\u305F\u30891\n     */\n    void add_directed_edge(int u, int v, Cost\
+    \ w = 1) {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n        g[u].push_back({u,\
     \ v, w, m++});\n    }\n    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\
     \u6E96\u5165\u529B\u304B\u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\
     \u308B\n     * @param m \u8FBA\u306E\u6570\n     * @param padding \u9802\u70B9\
@@ -308,31 +208,28 @@ data:
     \ dist[e.dst] > dist[e.src] + e.cost) {\n                    dist[e.dst] = dist[e.src]\
     \ + e.cost;\n                    prev[e.dst] = e;\n                    que.push({dist[e.dst],\
     \ e.dst});\n                }\n            }\n        }\n        return {dist,\
-    \ prev};\n    }\n};\n#line 2 \"src/graph/tree.hpp\"\n\n/**\n * @file tree.hpp\n\
-    \ * @brief \u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n */\n\
-    \n#line 10 \"src/graph/tree.hpp\"\n#include <stack>\n#line 13 \"src/graph/tree.hpp\"\
-    \n\n#line 15 \"src/graph/tree.hpp\"\n\ntemplate <typename>\nclass RootedTree;\n\
-    template <typename>\nclass DoublingClimbTree;\n\n/**\n * @brief \u6839\u306A\u3057\
-    \u6728\n *\n * @tparam Cost = int \u8FBA\u306E\u91CD\u307F\n *\n * Graph<Cost>\u3092\
-    \u7D99\u627F\u3057\u3001\u3059\u3079\u3066\u7121\u5411\u8FBA\u3067\u8868\u3059\
-    \n */\ntemplate <typename Cost = int>\nstruct Tree : private Graph<Cost> {\n \
-    \   // Graph<Cost>* g = new Tree<Cost>(); \u304C\u3067\u304D\u3066\u3057\u307E\
-    \u3046\u3068\u3001delete\u6642\u306B\u30E1\u30E2\u30EA\u30EA\u30FC\u30AF\u304C\
-    \u767A\u751F\n    // \u56DE\u907F\u3059\u308B\u305F\u3081private\u7D99\u627F\u306B\
-    \u3057\u3066\u3001\u30E1\u30F3\u30D0\u3092\u3059\u3079\u3066using\u5BA3\u8A00\n\
-    \    using Edge = typename Graph<Cost>::Edge;\n    using Graph<Cost>::n;\n   \
-    \ using Graph<Cost>::m;\n    using Graph<Cost>::g;\n    using Graph<Cost>::Graph;\n\
-    \    using Graph<Cost>::add_edge;\n    using Graph<Cost>::add_directed_edge;\n\
+    \ prev};\n    }\n};\n#line 15 \"src/graph/tree.hpp\"\n\ntemplate <typename>\n\
+    class RootedTree;\ntemplate <typename>\nclass DoublingClimbTree;\n\n/**\n * @brief\
+    \ \u6839\u306A\u3057\u6728\n *\n * @tparam Cost = int \u8FBA\u306E\u91CD\u307F\
+    \n *\n * Graph<Cost>\u3092\u7D99\u627F\u3057\u3001\u3059\u3079\u3066\u7121\u5411\
+    \u8FBA\u3067\u8868\u3059\n */\ntemplate <typename Cost = int>\nstruct Tree : private\
+    \ Graph<Cost> {\n    // Graph<Cost>* g = new Tree<Cost>(); \u304C\u3067\u304D\u3066\
+    \u3057\u307E\u3046\u3068\u3001delete\u6642\u306B\u30E1\u30E2\u30EA\u30EA\u30FC\
+    \u30AF\u304C\u767A\u751F\n    // \u56DE\u907F\u3059\u308B\u305F\u3081private\u7D99\
+    \u627F\u306B\u3057\u3066\u3001\u30E1\u30F3\u30D0\u3092\u3059\u3079\u3066using\u5BA3\
+    \u8A00\n    using Edge = typename Graph<Cost>::Edge;\n    using Graph<Cost>::n;\n\
+    \    using Graph<Cost>::size;\n    using Graph<Cost>::m;\n    using Graph<Cost>::g;\n\
+    \    using Graph<Cost>::Graph;\n    using Graph<Cost>::add_edge;\n    using Graph<Cost>::add_directed_edge;\n\
     \    using Graph<Cost>::operator[];\n    using Graph<Cost>::edges;\n    using\
     \ Graph<Cost>::shortest_path;\n    using ShortestPath = typename Graph<Cost>::ShortestPath;\n\
     \n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n\
-    \     * @param n \u30CE\u30FC\u30C9\u6570\n     */\n    Tree(int n = 0) : Graph<Cost>(n)\
-    \ {}\n\n    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\
-    \u529B\u304B\u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\u308B\n   \
-    \  * @param padding  = -1 \u9802\u70B9\u756A\u53F7\u3092\u5165\u529B\u304B\u3089\
-    \u3044\u304F\u3064\u305A\u3089\u3059\u304B\n     * @param weighted = false \u8FBA\
-    \u306E\u91CD\u307F\u304C\u5165\u529B\u3055\u308C\u308B\u304B\n     */\n    void\
-    \ read(int padding = -1, bool weighted = false) {\n        Graph<Cost>::read(this->n\
+    \     * @param n \u30CE\u30FC\u30C9\u6570\n     */\n    explicit Tree(int n =\
+    \ 0) : Graph<Cost>(n) {}\n\n    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\
+    \u6A19\u6E96\u5165\u529B\u304B\u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\
+    \u3059\u308B\n     * @param padding  = -1 \u9802\u70B9\u756A\u53F7\u3092\u5165\
+    \u529B\u304B\u3089\u3044\u304F\u3064\u305A\u3089\u3059\u304B\n     * @param weighted\
+    \ = false \u8FBA\u306E\u91CD\u307F\u304C\u5165\u529B\u3055\u308C\u308B\u304B\n\
+    \     */\n    void read(int padding = -1, bool weighted = false) {\n        Graph<Cost>::read(this->n\
     \ - 1, padding, weighted, false);\n    }\n\n    /**\n     * @brief \u6728\u306E\
     \u76F4\u5F84\n     *\n     * @param weighted = true \u91CD\u307F\u4ED8\u304D\u304B\
     \n     * @return std::vector<Edge> \u76F4\u5F84\u3092\u69CB\u6210\u3059\u308B\u8FBA\
@@ -365,11 +262,11 @@ data:
     /**\n * @brief \u6839\u4ED8\u304D\u6728\n *\n * @tparam Cost = int \u8FBA\u306E\
     \u30B3\u30B9\u30C8\n */\ntemplate <typename Cost = int>\nclass RootedTree : private\
     \ Tree<Cost> {\n   public:\n    using Edge = typename Tree<Cost>::Edge;\n    using\
-    \ Tree<Cost>::n;\n    using Tree<Cost>::m;\n    using Tree<Cost>::g;\n    using\
-    \ Tree<Cost>::operator[];\n    using Tree<Cost>::edges;\n    using Tree<Cost>::shortest_path;\n\
-    \    using ShortestPath = typename Tree<Cost>::ShortestPath;\n\n    int root;\
-    \                                     //!< \u6839\n    std::vector<Edge> par;\
-    \                        //!< \u89AA\u3078\u5411\u304B\u3046\u8FBA\n    std::vector<std::vector<Edge>>\
+    \ Tree<Cost>::n;\n    using Tree<Cost>::size;\n    using Tree<Cost>::m;\n    using\
+    \ Tree<Cost>::g;\n    using Tree<Cost>::operator[];\n    using Tree<Cost>::edges;\n\
+    \    using Tree<Cost>::shortest_path;\n    using ShortestPath = typename Tree<Cost>::ShortestPath;\n\
+    \n    int root;                                     //!< \u6839\n    std::vector<Edge>\
+    \ par;                        //!< \u89AA\u3078\u5411\u304B\u3046\u8FBA\n    std::vector<std::vector<Edge>>\
     \ child;         //!< \u5B50\u3078\u5411\u304B\u3046\u8FBA\u306E\u30EA\u30B9\u30C8\
     \n    std::vector<Cost> depth;                      //!< \u6DF1\u3055\u306E\u30EA\
     \u30B9\u30C8\n    std::vector<Cost> height;                     //!< \u90E8\u5206\
@@ -389,14 +286,14 @@ data:
     \u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n   \
     \  *\n     * @param par_ \u9802\u70B90\u4EE5\u5916\u306E\u89AA\u306E\u9802\u70B9\
     \u306E\u30EA\u30B9\u30C8\n     * @param padding = -1 par\u306E\u9802\u70B9\u756A\
-    \u53F7\u3092\u3044\u304F\u3064\u305A\u3089\u3059\u304B\n     */\n    RootedTree(const\
-    \ std::vector<int>& par_, int padding = -1) : Tree<Cost>(par_.size() + 1), root(0)\
-    \ {\n        for (int i = 0; i < (int)par_.size(); i++) {\n            this->add_edge(i\
-    \ + 1, par_[i] + padding);\n        }\n        build();\n    }\n    /**\n    \
-    \ * @brief Tree\u304B\u3089\u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\
-    \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF(\u30B3\u30D4\u30FC)\n     *\n     *\
-    \ @param tree Tree \u9802\u70B9\u65701\u4EE5\u4E0A\n     * @param root \u6839\n\
-    \     */\n    RootedTree(const Tree<Cost>& tree, int root) : Tree<Cost>(tree),\
+    \u53F7\u3092\u3044\u304F\u3064\u305A\u3089\u3059\u304B\n     */\n    explicit\
+    \ RootedTree(const std::vector<int>& par_, int padding = -1) : Tree<Cost>(par_.size()\
+    \ + 1), root(0) {\n        for (int i = 0; i < (int)par_.size(); i++) {\n    \
+    \        this->add_edge(i + 1, par_[i] + padding);\n        }\n        build();\n\
+    \    }\n    /**\n     * @brief Tree\u304B\u3089\u6839\u4ED8\u304D\u6728\u3092\u69CB\
+    \u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF(\u30B3\u30D4\u30FC\
+    )\n     *\n     * @param tree Tree \u9802\u70B9\u65701\u4EE5\u4E0A\n     * @param\
+    \ root \u6839\n     */\n    RootedTree(const Tree<Cost>& tree, int root) : Tree<Cost>(tree),\
     \ root(root) {\n        build();\n    }\n    /**\n     * @brief Tree\u304B\u3089\
     \u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\
     \u30E9\u30AF\u30BF(\u30E0\u30FC\u30D6)\n     *\n     * @param tree Tree\n    \
@@ -439,73 +336,175 @@ data:
     \u307F\u306F\u8003\u3048\u306A\u3044)\n */\ntemplate <typename Cost = int>\nclass\
     \ DoublingClimbTree : private RootedTree<Cost> {\n   public:\n    using Edge =\
     \ typename RootedTree<Cost>::Edge;\n    using RootedTree<Cost>::n;\n    using\
-    \ RootedTree<Cost>::m;\n    using RootedTree<Cost>::g;\n    using RootedTree<Cost>::operator[];\n\
-    \    using RootedTree<Cost>::edges;\n    using RootedTree<Cost>::shortest_path;\n\
-    \    using ShortestPath = typename RootedTree<Cost>::ShortestPath;\n    using\
-    \ RootedTree<Cost>::root;\n    using RootedTree<Cost>::par;\n    using RootedTree<Cost>::child;\n\
-    \    using RootedTree<Cost>::depth;\n    using RootedTree<Cost>::height;\n   \
-    \ using RootedTree<Cost>::unweighted_depth;\n    using RootedTree<Cost>::unweighted_height;\n\
-    \    using RootedTree<Cost>::sz;\n    using RootedTree<Cost>::preorder;\n    using\
-    \ RootedTree<Cost>::postorder;\n    using RootedTree<Cost>::euler_tour;\n\n  \
-    \  int h;                                       //!< \u30C0\u30D6\u30EA\u30F3\u30B0\
-    \u306E\u56DE\u6570\n    std::vector<std::vector<int>> doubling_par;  //!< j\u304B\
-    \u3089(1<<i)\u9802\u70B9\u767B\u3063\u305F\u9802\u70B9(\u5B58\u5728\u3057\u306A\
-    \u3044\u5834\u5408\u306F-1)\n\n    DoublingClimbTree() = delete;\n\n    /**\n\
-    \     * @brief RootedTree\u304B\u3089\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\u307F\
-    \u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\
-    \u30E9\u30AF\u30BF(\u30B3\u30D4\u30FC)\n     *\n     * @param tree RootedTree\n\
-    \     */\n    DoublingClimbTree(const RootedTree<Cost>& tree) : RootedTree<Cost>(tree)\
-    \ {\n        build();\n    }\n\n    /**\n     * @brief RootedTree\u304B\u3089\u30C0\
-    \u30D6\u30EA\u30F3\u30B0\u6E08\u307F\u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\
-    \u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF(\u30E0\u30FC\u30D6)\n \
-    \    *\n     * @param tree RootedTree\n     */\n    DoublingClimbTree(RootedTree<Cost>&&\
-    \ tree) : RootedTree<Cost>(std::move(tree)) {\n        build();\n    }\n\n   \
-    \ /**\n     * @brief \u89AA\u306E\u9802\u70B9\u306E\u30EA\u30B9\u30C8\u304B\u3089\
-    \u6839\u304C0\u306E\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\u307F\u6839\u4ED8\u304D\
-    \u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\
-    \n     *\n     * @param par_ \u9802\u70B90\u4EE5\u5916\u306E\u89AA\u306E\u9802\
-    \u70B9\u306E\u30EA\u30B9\u30C8\n     * @param padding = -1 par\u306E\u9802\u70B9\
-    \u756A\u53F7\u3092\u3044\u304F\u3064\u305A\u3089\u3059\u304B\n     */\n    DoublingClimbTree(const\
-    \ std::vector<int>& par_, int padding = -1) : RootedTree<Cost>(par_, padding)\
-    \ {\n        build();\n    }\n    /**\n     * @brief Tree\u304B\u3089\u30C0\u30D6\
-    \u30EA\u30F3\u30B0\u6E08\u307F\u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\
-    \u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF(\u30B3\u30D4\u30FC)\n     *\n\
-    \     * @param tree Tree\n     * @param root \u6839\n     */\n    DoublingClimbTree(const\
-    \ Tree<Cost>& tree, int root) : RootedTree<Cost>(tree, root) {\n        build();\n\
+    \ RootedTree<Cost>::size;\n    using RootedTree<Cost>::m;\n    using RootedTree<Cost>::g;\n\
+    \    using RootedTree<Cost>::operator[];\n    using RootedTree<Cost>::edges;\n\
+    \    using RootedTree<Cost>::shortest_path;\n    using ShortestPath = typename\
+    \ RootedTree<Cost>::ShortestPath;\n    using RootedTree<Cost>::root;\n    using\
+    \ RootedTree<Cost>::par;\n    using RootedTree<Cost>::child;\n    using RootedTree<Cost>::depth;\n\
+    \    using RootedTree<Cost>::height;\n    using RootedTree<Cost>::unweighted_depth;\n\
+    \    using RootedTree<Cost>::unweighted_height;\n    using RootedTree<Cost>::sz;\n\
+    \    using RootedTree<Cost>::preorder;\n    using RootedTree<Cost>::postorder;\n\
+    \    using RootedTree<Cost>::euler_tour;\n\n    int h;                       \
+    \                //!< \u30C0\u30D6\u30EA\u30F3\u30B0\u306E\u56DE\u6570\n    std::vector<std::vector<int>>\
+    \ doubling_par;  //!< j\u304B\u3089(1<<i)\u9802\u70B9\u767B\u3063\u305F\u9802\u70B9\
+    (\u5B58\u5728\u3057\u306A\u3044\u5834\u5408\u306F-1)\n\n    DoublingClimbTree()\
+    \ = delete;\n\n    /**\n     * @brief RootedTree\u304B\u3089\u30C0\u30D6\u30EA\
+    \u30F3\u30B0\u6E08\u307F\u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\
+    \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF(\u30B3\u30D4\u30FC)\n     *\n     *\
+    \ @param tree RootedTree\n     */\n    explicit DoublingClimbTree(const RootedTree<Cost>&\
+    \ tree) : RootedTree<Cost>(tree) {\n        build();\n    }\n\n    /**\n     *\
+    \ @brief RootedTree\u304B\u3089\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\u307F\u6839\
+    \u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\
+    \u30AF\u30BF(\u30E0\u30FC\u30D6)\n     *\n     * @param tree RootedTree\n    \
+    \ */\n    DoublingClimbTree(RootedTree<Cost>&& tree) : RootedTree<Cost>(std::move(tree))\
+    \ {\n        build();\n    }\n\n    /**\n     * @brief \u89AA\u306E\u9802\u70B9\
+    \u306E\u30EA\u30B9\u30C8\u304B\u3089\u6839\u304C0\u306E\u30C0\u30D6\u30EA\u30F3\
+    \u30B0\u6E08\u307F\u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\
+    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @param par_ \u9802\u70B9\
+    0\u4EE5\u5916\u306E\u89AA\u306E\u9802\u70B9\u306E\u30EA\u30B9\u30C8\n     * @param\
+    \ padding = -1 par\u306E\u9802\u70B9\u756A\u53F7\u3092\u3044\u304F\u3064\u305A\
+    \u3089\u3059\u304B\n     */\n    explicit DoublingClimbTree(const std::vector<int>&\
+    \ par_, int padding = -1) : RootedTree<Cost>(par_, padding) {\n        build();\n\
     \    }\n    /**\n     * @brief Tree\u304B\u3089\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\
     \u307F\u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\
-    \u30C8\u30E9\u30AF\u30BF(\u30E0\u30FC\u30D6)\n     *\n     * @param tree Tree\n\
-    \     * @param root \u6839\n     */\n    DoublingClimbTree(Tree<Cost>&& tree,\
-    \ int root) : RootedTree<Cost>(std::move(tree), root) {\n        build();\n  \
-    \  }\n\n    /**\n     * @brief \u9802\u70B9u\u304B\u3089k\u56DE\u3092\u6839\u306E\
-    \u65B9\u5411\u306B\u9061\u3063\u305F\u9802\u70B9\n     *\n     * @param u \u5143\
-    \u306E\u9802\u70B9\n     * @param k \u767B\u308B\u6BB5\u6570\n     * @return int\
-    \ k\u56DE\u767B\u3063\u305F\u9802\u70B9\n     */\n    int hop(int u, int k) const\
-    \ {\n        assert(0 <= u && u < this->n && k >= 0);\n        if (k > this->unweighted_depth[u])\
-    \ return -1;\n        for (int i = 0; i < h; i++) {\n            if (k >> i &\
-    \ 1) u = doubling_par[i][u];\n            if (u == -1) return -1;\n        }\n\
-    \        return u;\n    }\n\n    /**\n     * @brief \u6700\u5C0F\u5171\u901A\u7956\
-    \u5148\n     *\n     * @param u \u9802\u70B91\n     * @param v \u9802\u70B92\n\
-    \     * @return int LCA\u306E\u9802\u70B9\u756A\u53F7\n     */\n    int lca(int\
-    \ u, int v) const {\n        assert(0 <= u && u < this->n && 0 <= v && v < this->n);\n\
-    \        if (this->unweighted_depth[u] > this->unweighted_depth[v]) std::swap(u,\
-    \ v);\n        v = hop(v, this->unweighted_depth[v] - this->unweighted_depth[u]);\n\
-    \        if (u == v) return u;\n        for (int i = h - 1; i >= 0; i--) {\n \
-    \           int nu = doubling_par[i][u];\n            int nv = doubling_par[i][v];\n\
-    \            if (nu == -1) continue;\n            if (nu != nv) {\n          \
-    \      u = nu;\n                v = nv;\n            }\n        }\n        return\
-    \ this->par[u];\n    }\n\n    /**\n     * @brief \u9802\u70B9\u9593\u8DDD\u96E2\
-    (\u91CD\u307F\u4ED8\u304D)\n     *\n     * @param u \u9802\u70B91\n     * @param\
-    \ v \u9802\u70B92\n     * @return Cost u\u3068v\u9593\u306E\u6700\u77ED\u7D4C\u8DEF\
-    \u306E\u8FBA\u306E\u91CD\u307F\u306E\u548C\n     */\n    Cost dist(int u, int\
-    \ v) const {\n        return this->depth[u] + this->depth[v] - this->depth[lca(u,\
-    \ v)] * 2;\n    }\n\n   private:\n    void build() {\n        int n = this->n;\n\
-    \        h = 1;\n        while ((1 << h) < n) h++;\n        doubling_par.assign(h,\
-    \ std::vector<int>(n, -1));\n        for (int i = 0; i < n; i++) doubling_par[0][i]\
-    \ = this->par[i];\n        for (int i = 0; i < h - 1; i++) {\n            for\
-    \ (int j = 0; j < n; j++) {\n                if (doubling_par[i][j] != -1) {\n\
-    \                    doubling_par[i + 1][j] = doubling_par[i][doubling_par[i][j]];\n\
-    \                }\n            }\n        }\n    }\n};\n#line 16 \"test/unittest/heavy-light-decomposition.test.cpp\"\
+    \u30C8\u30E9\u30AF\u30BF(\u30B3\u30D4\u30FC)\n     *\n     * @param tree Tree\n\
+    \     * @param root \u6839\n     */\n    DoublingClimbTree(const Tree<Cost>& tree,\
+    \ int root) : RootedTree<Cost>(tree, root) {\n        build();\n    }\n    /**\n\
+    \     * @brief Tree\u304B\u3089\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\u307F\u6839\
+    \u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\
+    \u30AF\u30BF(\u30E0\u30FC\u30D6)\n     *\n     * @param tree Tree\n     * @param\
+    \ root \u6839\n     */\n    DoublingClimbTree(Tree<Cost>&& tree, int root) : RootedTree<Cost>(std::move(tree),\
+    \ root) {\n        build();\n    }\n\n    /**\n     * @brief \u9802\u70B9u\u304B\
+    \u3089k\u56DE\u3092\u6839\u306E\u65B9\u5411\u306B\u9061\u3063\u305F\u9802\u70B9\
+    \n     *\n     * @param u \u5143\u306E\u9802\u70B9\n     * @param k \u767B\u308B\
+    \u6BB5\u6570\n     * @return int k\u56DE\u767B\u3063\u305F\u9802\u70B9\n     */\n\
+    \    int hop(int u, int k) const {\n        assert(0 <= u && u < this->n && k\
+    \ >= 0);\n        if (k > this->unweighted_depth[u]) return -1;\n        for (int\
+    \ i = 0; i < h; i++) {\n            if (k >> i & 1) u = doubling_par[i][u];\n\
+    \            if (u == -1) return -1;\n        }\n        return u;\n    }\n\n\
+    \    /**\n     * @brief \u6700\u5C0F\u5171\u901A\u7956\u5148\n     *\n     * @param\
+    \ u \u9802\u70B91\n     * @param v \u9802\u70B92\n     * @return int LCA\u306E\
+    \u9802\u70B9\u756A\u53F7\n     */\n    int lca(int u, int v) const {\n       \
+    \ assert(0 <= u && u < this->n && 0 <= v && v < this->n);\n        if (this->unweighted_depth[u]\
+    \ > this->unweighted_depth[v]) std::swap(u, v);\n        v = hop(v, this->unweighted_depth[v]\
+    \ - this->unweighted_depth[u]);\n        if (u == v) return u;\n        for (int\
+    \ i = h - 1; i >= 0; i--) {\n            int nu = doubling_par[i][u];\n      \
+    \      int nv = doubling_par[i][v];\n            if (nu == -1) continue;\n   \
+    \         if (nu != nv) {\n                u = nu;\n                v = nv;\n\
+    \            }\n        }\n        return this->par[u];\n    }\n\n    /**\n  \
+    \   * @brief \u9802\u70B9\u9593\u8DDD\u96E2(\u91CD\u307F\u4ED8\u304D)\n     *\n\
+    \     * @param u \u9802\u70B91\n     * @param v \u9802\u70B92\n     * @return\
+    \ Cost u\u3068v\u9593\u306E\u6700\u77ED\u7D4C\u8DEF\u306E\u8FBA\u306E\u91CD\u307F\
+    \u306E\u548C\n     */\n    Cost dist(int u, int v) const {\n        return this->depth[u]\
+    \ + this->depth[v] - this->depth[lca(u, v)] * 2;\n    }\n\n   private:\n    void\
+    \ build() {\n        int n = this->n;\n        h = 1;\n        while ((1 << h)\
+    \ < n) h++;\n        doubling_par.assign(h, std::vector<int>(n, -1));\n      \
+    \  for (int i = 0; i < n; i++) doubling_par[0][i] = this->par[i];\n        for\
+    \ (int i = 0; i < h - 1; i++) {\n            for (int j = 0; j < n; j++) {\n \
+    \               if (doubling_par[i][j] != -1) {\n                    doubling_par[i\
+    \ + 1][j] = doubling_par[i][doubling_par[i][j]];\n                }\n        \
+    \    }\n        }\n    }\n};\n#line 14 \"src/graph/heavy-light-decomposition.hpp\"\
+    \n\n/**\n * @brief HL \u5206\u89E3 (Heavy-Light Decomposition)\n *\n * \u6728\u306E\
+    \u9802\u70B9\u3092\u3001\u3069\u306E\u30D1\u30B9\u3082 O(log n) \u500B\u306E\u533A\
+    \u9593\u306B\u5206\u304B\u308C\u3001\u3069\u306E\u90E8\u5206\u6728\u3082 1 \u3064\
+    \u306E\u533A\u9593\u306B\u306A\u308B\u3088\u3046\u306B\u4E26\u3079\u66FF\u3048\
+    \u308B\n * \u9802\u70B9 v \u306F\u5217\u306E index(v) \u756A\u76EE\u306B\u5BFE\
+    \u5FDC\u3059\u308B\u3002\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\u306A\u3069\u3068\
+    \u7D44\u307F\u5408\u308F\u305B\u3066\u3001\u30D1\u30B9\u3084\u90E8\u5206\u6728\
+    \u3078\u306E\u30AF\u30A8\u30EA\u3092\u884C\u3046\n * \u524D\u8A08\u7B97 O(n)\u3002\
+    DFS \u306F\u518D\u5E30\u3092\u4F7F\u308F\u306A\u3044\n * \u4F8B:\n * HeavyLightDecomposition\
+    \ hld(tree, root);  // tree \u306F Tree<Cost>\n * for (auto [a, b] : hld.path(u,\
+    \ v)) sum += seg.prod(std::min(a, b), std::max(a, b) + 1);\n * auto [l, r] = hld.subtree(v);\
+    \  // \u90E8\u5206\u6728\u306F\u533A\u9593 [l, r)\n */\nclass HeavyLightDecomposition\
+    \ {\n    int n, root;\n    std::vector<int> par, dep, sz, heavy, head, in, order;\n\
+    \n   public:\n    /**\n     * @brief \u6728 tree \u3092\u6839 root \u3067 HL \u5206\
+    \u89E3\u3059\u308B\n     */\n    template <typename Cost>\n    explicit HeavyLightDecomposition(const\
+    \ Tree<Cost>& tree, int root = 0)\n        : n(tree.size()), root(root), par(n,\
+    \ -1), dep(n, 0), sz(n, 1), heavy(n, -1), head(n), in(n), order(n) {\n       \
+    \ assert(0 <= root && root < n);\n        // \u6839\u304B\u3089\u306E BFS \u9806\
+    \u3067\u89AA\u3068\u6DF1\u3055\u3092\u6C7A\u3081\u308B\n        std::vector<int>\
+    \ bfs = {root};\n        bfs.reserve(n);\n        for (int i = 0; i < (int)bfs.size();\
+    \ i++) {\n            int v = bfs[i];\n            for (int u : tree[v]) {\n \
+    \               if (u == par[v]) continue;\n                assert(u != root &&\
+    \ par[u] == -1 && \"HeavyLightDecomposition: not a tree\");\n                par[u]\
+    \ = v;\n                dep[u] = dep[v] + 1;\n                bfs.push_back(u);\n\
+    \            }\n        }\n        assert((int)bfs.size() == n && \"HeavyLightDecomposition:\
+    \ not connected\");\n        // \u8449\u306E\u5074\u304B\u3089\u90E8\u5206\u6728\
+    \u306E\u5927\u304D\u3055\u3092\u6C42\u3081\u3001\u6700\u3082\u5927\u304D\u3044\
+    \u5B50\u3092 heavy \u306B\u3059\u308B\n        for (int i = n - 1; i > 0; i--)\
+    \ {\n            int v = bfs[i], p = par[v];\n            sz[p] += sz[v];\n  \
+    \          if (heavy[p] == -1 || sz[v] > sz[heavy[p]]) heavy[p] = v;\n       \
+    \ }\n        // heavy \u306A\u5B50\u3092\u6700\u5F8C\u306B\u7A4D\u3080\u3068\u3001\
+    \u6B21\u306B\u53D6\u308A\u51FA\u3055\u308C\u3066 index \u304C\u9023\u7D9A\u3059\
+    \u308B\n        std::vector<int> st = {root};\n        head[root] = root;\n  \
+    \      int k = 0;\n        while (!st.empty()) {\n            int v = st.back();\n\
+    \            st.pop_back();\n            in[v] = k;\n            order[k++] =\
+    \ v;\n            for (int u : tree[v]) {\n                if (u == par[v] ||\
+    \ u == heavy[v]) continue;\n                head[u] = u;\n                st.push_back(u);\n\
+    \            }\n            if (heavy[v] != -1) {\n                head[heavy[v]]\
+    \ = head[v];\n                st.push_back(heavy[v]);\n            }\n       \
+    \ }\n    }\n\n    int size() const { return n; }\n    /**\n     * @brief \u9802\
+    \u70B9 v \u306E\u5217\u3067\u306E\u4F4D\u7F6E\n     */\n    int index(int v) const\
+    \ { return in[v]; }\n    /**\n     * @brief \u5217\u306E i \u756A\u76EE\u306E\u9802\
+    \u70B9 (index \u306E\u9006)\n     */\n    int vertex(int i) const { return order[i];\
+    \ }\n    /**\n     * @brief v \u306E\u89AA (\u6839\u306A\u3089 -1)\n     */\n\
+    \    int parent(int v) const { return par[v]; }\n    /**\n     * @brief v \u306E\
+    \u6DF1\u3055 (\u6839\u306F 0\u3001\u8FBA\u306E\u672C\u6570)\n     */\n    int\
+    \ depth(int v) const { return dep[v]; }\n    /**\n     * @brief v \u3092\u6839\
+    \u3068\u3059\u308B\u90E8\u5206\u6728\u306E\u9802\u70B9\u306E\u500B\u6570\n   \
+    \  */\n    int subtree_size(int v) const { return sz[v]; }\n    /**\n     * @brief\
+    \ v \u3092\u6839\u3068\u3059\u308B\u90E8\u5206\u6728\u306E\u9802\u70B9\u306B\u5BFE\
+    \u5FDC\u3059\u308B\u533A\u9593 [l, r)\n     */\n    std::pair<int, int> subtree(int\
+    \ v) const { return {in[v], in[v] + sz[v]}; }\n\n    /**\n     * @brief u \u3068\
+    \ v \u306E\u6700\u5C0F\u5171\u901A\u7956\u5148 O(log n)\n     */\n    int lca(int\
+    \ u, int v) const {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n   \
+    \     while (head[u] != head[v]) {\n            if (dep[head[u]] < dep[head[v]])\
+    \ std::swap(u, v);\n            u = par[head[u]];\n        }\n        return dep[u]\
+    \ < dep[v] ? u : v;\n    }\n    /**\n     * @brief u \u3068 v \u306E\u9593\u306E\
+    \u8FBA\u306E\u672C\u6570 O(log n)\n     */\n    int dist(int u, int v) const {\
+    \ return dep[u] + dep[v] - 2 * dep[lca(u, v)]; }\n    /**\n     * @brief v \u304B\
+    \u3089\u6839\u306E\u65B9\u3078 k \u672C\u306E\u8FBA\u3092\u9032\u3093\u3060\u9802\
+    \u70B9 (k > depth(v) \u306A\u3089 -1) O(log n)\n     */\n    int hop(int v, int\
+    \ k) const {\n        assert(0 <= v && v < n && k >= 0);\n        if (k > dep[v])\
+    \ return -1;\n        while (true) {\n            int h = head[v];\n         \
+    \   if (in[v] - in[h] >= k) return order[in[v] - k];\n            k -= in[v] -\
+    \ in[h] + 1;\n            v = par[h];\n        }\n    }\n    /**\n     * @brief\
+    \ u \u304B\u3089 v \u3078\u306E\u30D1\u30B9\u3067\u3001u \u304B\u3089 k \u672C\
+    \u306E\u8FBA\u3092\u9032\u3093\u3060\u9802\u70B9 (k > dist(u, v) \u306A\u3089\
+    \ -1) O(log n)\n     */\n    int jump(int u, int v, int k) const {\n        assert(0\
+    \ <= u && u < n && 0 <= v && v < n && k >= 0);\n        int w = lca(u, v);\n \
+    \       int du = dep[u] - dep[w], dv = dep[v] - dep[w];\n        if (k <= du)\
+    \ return hop(u, k);\n        if (k <= du + dv) return hop(v, du + dv - k);\n \
+    \       return -1;\n    }\n\n    /**\n     * @brief u \u304B\u3089 v \u3078\u306E\
+    \u30D1\u30B9\u3092\u3001\u5217\u306E\u533A\u9593\u306B\u5206\u3051\u3066 u \u5074\
+    \u304B\u3089\u9806\u306B\u4E26\u3079\u308B O(log n)\n     *\n     * \u5404\u8981\
+    \u7D20 (a, b) \u306F\u3001\u5217\u306E a \u756A\u76EE\u304B\u3089 b \u756A\u76EE\
+    \u307E\u3067 (\u4E21\u7AEF\u3092\u542B\u3080) \u3092\u3001a \u304B\u3089 b \u306E\
+    \u5411\u304D\u306B\u305F\u3069\u308B\u3053\u3068\u3092\u8868\u3059\n     * \u5411\
+    \u304D\u3092\u8868\u3059\u305F\u3081\u3001\u3053\u306E\u30E9\u30A4\u30D6\u30E9\
+    \u30EA\u306E\u4ED6\u306E\u533A\u9593 (\u534A\u958B\u533A\u9593 [l, r)) \u3068\u9055\
+    \u3063\u3066\u9589\u533A\u9593\u306B\u306A\u3063\u3066\u3044\u308B\n     * a >\
+    \ b \u306A\u3089 index \u304C\u6E1B\u308B\u5411\u304D (\u6839\u306B\u8FD1\u3065\
+    \u304F\u5411\u304D) \u306B\u305F\u3069\u308B\n     * \u4EA4\u63DB\u6CD5\u5247\u304C\
+    \u6210\u308A\u7ACB\u305F\u306A\u3044\u6F14\u7B97\u3067\u306F\u3001a > b \u306E\
+    \u533A\u9593\u306F\u9006\u9806\u306E\u7A4D\u3092\u4F7F\u3046\n     * @param edge\
+    \ true \u306A\u3089\u8FBA\u306B\u3064\u3044\u3066\u306E\u30D1\u30B9\u306B\u3059\
+    \u308B\u3002\u8FBA (parent(v), v) \u3092 index(v) \u756A\u76EE\u306B\u5BFE\u5FDC\
+    \u3055\u305B\u3001lca \u306E\u4F4D\u7F6E\u3092\u542B\u3081\u306A\u3044\n     */\n\
+    \    std::vector<std::pair<int, int>> path(int u, int v, bool edge = false) const\
+    \ {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n        std::vector<std::pair<int,\
+    \ int>> up, down;\n        while (head[u] != head[v]) {\n            if (dep[head[u]]\
+    \ >= dep[head[v]]) {\n                up.emplace_back(in[u], in[head[u]]);\n \
+    \               u = par[head[u]];\n            } else {\n                down.emplace_back(in[head[v]],\
+    \ in[v]);\n                v = par[head[v]];\n            }\n        }\n     \
+    \   if (dep[u] >= dep[v]) {\n            // v \u304C lca\n            int l =\
+    \ in[v] + edge;\n            if (l <= in[u]) up.emplace_back(in[u], l);\n    \
+    \    } else {\n            // u \u304C lca\n            int l = in[u] + edge;\n\
+    \            if (l <= in[v]) down.emplace_back(l, in[v]);\n        }\n       \
+    \ up.insert(up.end(), down.rbegin(), down.rend());\n        return up;\n    }\n\
+    };\n#line 7 \"test/unittest/heavy-light-decomposition.test.cpp\"\n\n#line 10 \"\
+    test/unittest/heavy-light-decomposition.test.cpp\"\n#include <random>\n#line 13\
+    \ \"test/unittest/heavy-light-decomposition.test.cpp\"\n\n#line 16 \"test/unittest/heavy-light-decomposition.test.cpp\"\
     \n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int\
     \ rep = 0; rep < 500 && ok; rep++) {\n        int n = rng() % 30 + 1;\n      \
     \  int root = rng() % n;\n        // \u30E9\u30F3\u30C0\u30E0\u306A\u6728 (\u7D30\
@@ -515,7 +514,7 @@ data:
     \   bool line = rng() % 4 == 0;\n        for (int i = 1; i < n; i++) {\n     \
     \       int p = line ? i - 1 : rng() % i;\n            g.add_edge(perm[i], perm[p]);\n\
     \            t.add_edge(perm[i], perm[p]);\n        }\n        HeavyLightDecomposition\
-    \ hld(g, root);\n\n        // \u611A\u76F4: \u6839\u304B\u3089\u306E\u89AA\u3068\
+    \ hld(t, root);\n\n        // \u611A\u76F4: \u6839\u304B\u3089\u306E\u89AA\u3068\
     \u6DF1\u3055\n        std::vector<int> par(n, -1), dep(n, 0), bfs = {root};\n\
     \        for (int i = 0; i < (int)bfs.size(); i++) {\n            int v = bfs[i];\n\
     \            for (int u : g[v]) {\n                if (u == par[v]) continue;\n\
@@ -564,12 +563,8 @@ data:
     \            }\n            for (int k = 0; k <= n; k++) {\n                int\
     \ x = u;\n                for (int i = 0; i < k && x != -1; i++) x = par[x];\n\
     \                if (hld.hop(u, k) != x) ok = false;\n            }\n        }\n\
-    \        // Tree \u3084 RootedTree \u304B\u3089\u3082\u540C\u3058\u3082\u306E\u304C\
-    \u4F5C\u308C\u308B\n        HeavyLightDecomposition h2(t, root);\n        HeavyLightDecomposition\
-    \ h3(t.set_root(root), root);\n        for (int v = 0; v < n; v++) {\n       \
-    \     if (h2.index(v) != hld.index(v) || h3.lca(v, root) != root) ok = false;\n\
-    \        }\n    }\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
-    \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
+    \    }\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n  \
+    \  else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// HeavyLightDecomposition \u3092\u3001\u89AA\u3092 1 \u3064\u305A\u3064\u305F\
     \u3069\u308B\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u30E9\u30F3\u30C0\u30E0\u306B\
@@ -587,7 +582,7 @@ data:
     \   bool line = rng() % 4 == 0;\n        for (int i = 1; i < n; i++) {\n     \
     \       int p = line ? i - 1 : rng() % i;\n            g.add_edge(perm[i], perm[p]);\n\
     \            t.add_edge(perm[i], perm[p]);\n        }\n        HeavyLightDecomposition\
-    \ hld(g, root);\n\n        // \u611A\u76F4: \u6839\u304B\u3089\u306E\u89AA\u3068\
+    \ hld(t, root);\n\n        // \u611A\u76F4: \u6839\u304B\u3089\u306E\u89AA\u3068\
     \u6DF1\u3055\n        std::vector<int> par(n, -1), dep(n, 0), bfs = {root};\n\
     \        for (int i = 0; i < (int)bfs.size(); i++) {\n            int v = bfs[i];\n\
     \            for (int u : g[v]) {\n                if (u == par[v]) continue;\n\
@@ -636,20 +631,16 @@ data:
     \            }\n            for (int k = 0; k <= n; k++) {\n                int\
     \ x = u;\n                for (int i = 0; i < k && x != -1; i++) x = par[x];\n\
     \                if (hld.hop(u, k) != x) ok = false;\n            }\n        }\n\
-    \        // Tree \u3084 RootedTree \u304B\u3089\u3082\u540C\u3058\u3082\u306E\u304C\
-    \u4F5C\u308C\u308B\n        HeavyLightDecomposition h2(t, root);\n        HeavyLightDecomposition\
-    \ h3(t.set_root(root), root);\n        for (int v = 0; v < n; v++) {\n       \
-    \     if (h2.index(v) != hld.index(v) || h3.lca(v, root) != root) ok = false;\n\
-    \        }\n    }\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
-    \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
+    \    }\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n  \
+    \  else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/graph/heavy-light-decomposition.hpp
-  - src/graph/graph.hpp
   - src/graph/tree.hpp
+  - src/graph/graph.hpp
   isVerificationFile: true
   path: test/unittest/heavy-light-decomposition.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-14 16:37:44+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/heavy-light-decomposition.test.cpp

@@ -80,18 +80,19 @@ data:
     \u30C8\u30E9\u30AF\u30BF\n     * @param n \u9802\u70B9\u6570\n     */\n    explicit\
     \ FunctionalGraph(int n) : n(n), g(n) {}\n    /**\n     * @brief \u30B3\u30F3\u30B9\
     \u30C8\u30E9\u30AF\u30BF\n     * @param g i -> g[i]\n     */\n    explicit FunctionalGraph(std::vector<int>\
-    \ g) : n(g.size()), g(g) {\n        build();\n    }\n    /**\n     * @brief \u8FBA\
-    \u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\u529B\u304B\u3089\u53D7\u3051\u53D6\
-    \u3063\u3066\u8FFD\u52A0\u3059\u308B\n     * @param padding \u9802\u70B9\u756A\
-    \u53F7\u3092\u5165\u529B\u304B\u3089\u3044\u304F\u3064\u305A\u3089\u3059\u304B\
-    \ \u7701\u7565\u3057\u305F\u3089-1\n     */\n    void read(int padding = -1) {\n\
-    \        for (int i = 0; i < n; i++) {\n            std::cin >> g[i];\n      \
-    \      g[i] += padding;\n        }\n        build();\n    }\n    /**\n     * @brief\
-    \ \u9802\u70B9x\u304B\u3089k\u56DE\u79FB\u52D5\u3057\u305F\u9802\u70B9\n     *\n\
-    \     * @param x 0 <= x < n\n     * @param k 0 <= k\n     * @return int \u9802\
-    \u70B9\u756A\u53F7\n     */\n    int hop(int x, long long k) const {\n       \
-    \ assert(0 <= x && x < n && k >= 0);\n        if (k >= depth[x]) {\n         \
-    \   k -= depth[x];\n            x = root[x];\n            k %= cycles[group_id[x]].size();\n\
+    \ g) : n(g.size()), g(g) {\n        build();\n    }\n    /**\n     * @brief \u9802\
+    \u70B9\u6570\n     */\n    int size() const { return n; }\n    /**\n     * @brief\
+    \ \u8FBA\u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\u529B\u304B\u3089\u53D7\u3051\
+    \u53D6\u3063\u3066\u8FFD\u52A0\u3059\u308B\n     * @param padding \u9802\u70B9\
+    \u756A\u53F7\u3092\u5165\u529B\u304B\u3089\u3044\u304F\u3064\u305A\u3089\u3059\
+    \u304B \u7701\u7565\u3057\u305F\u3089-1\n     */\n    void read(int padding =\
+    \ -1) {\n        for (int i = 0; i < n; i++) {\n            std::cin >> g[i];\n\
+    \            g[i] += padding;\n        }\n        build();\n    }\n    /**\n \
+    \    * @brief \u9802\u70B9x\u304B\u3089k\u56DE\u79FB\u52D5\u3057\u305F\u9802\u70B9\
+    \n     *\n     * @param x 0 <= x < n\n     * @param k 0 <= k\n     * @return int\
+    \ \u9802\u70B9\u756A\u53F7\n     */\n    int hop(int x, long long k) const {\n\
+    \        assert(0 <= x && x < n && k >= 0);\n        if (k >= depth[x]) {\n  \
+    \          k -= depth[x];\n            x = root[x];\n            k %= cycles[group_id[x]].size();\n\
     \            int y = root_index[x] + k;\n            if ((int)cycles[group_id[x]].size()\
     \ <= y) {\n                y -= cycles[group_id[x]].size();\n            }\n \
     \           return cycles[group_id[x]][y];\n        }\n        for (int i = 0;\
@@ -158,7 +159,7 @@ data:
   isVerificationFile: true
   path: test/unittest/functional-graph.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 13:30:25+09:00'
+  timestamp: '2026-10-14 16:37:34+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/functional-graph.2.test.cpp

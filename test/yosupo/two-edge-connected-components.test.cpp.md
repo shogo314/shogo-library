@@ -65,29 +65,30 @@ data:
     \u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     */\n    Graph() : n(0),\
     \ m(0), g(0) {}\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\
     \n     * @param n \u9802\u70B9\u6570\n     */\n    explicit Graph(int n) : n(n),\
-    \ m(0), g(n) {}\n    /**\n     * @brief \u7121\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\
-    \u308B\n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n     * @param\
-    \ w \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n    void add_edge(int\
-    \ u, int v, Cost w = 1) {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n\
-    \        g[u].push_back({u, v, w, m});\n        g[v].push_back({v, u, w, m++});\n\
-    \    }\n    /**\n     * @brief \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\
-    \n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n     * @param w\
-    \ \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n    void add_directed_edge(int\
-    \ u, int v, Cost w = 1) {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n\
-    \        g[u].push_back({u, v, w, m++});\n    }\n    /**\n     * @brief \u8FBA\
-    \u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\u529B\u304B\u3089\u53D7\u3051\u53D6\
-    \u3063\u3066\u8FFD\u52A0\u3059\u308B\n     * @param m \u8FBA\u306E\u6570\n   \
-    \  * @param padding \u9802\u70B9\u756A\u53F7\u3092\u5165\u529B\u304B\u3089\u3044\
-    \u304F\u3064\u305A\u3089\u3059\u304B \u7701\u7565\u3057\u305F\u3089-1\n     *\
-    \ @param weighted \u8FBA\u306E\u91CD\u307F\u304C\u5165\u529B\u3055\u308C\u308B\
-    \u304B \u7701\u7565\u3057\u305F\u3089false\u3068\u306A\u308A\u3001\u91CD\u307F\
-    1\u3067\u8FBA\u304C\u8FFD\u52A0\u3055\u308C\u308B\n     * @param directed \u6709\
-    \u5411\u30B0\u30E9\u30D5\u304B\u3069\u3046\u304B \u7701\u7565\u3057\u305F\u3089\
-    false\n     */\n    void read(int m, int padding = -1, bool weighted = false,\
-    \ bool directed = false) {\n        for (int i = 0; i < m; i++) {\n          \
-    \  int u, v;\n            std::cin >> u >> v;\n            u += padding, v +=\
-    \ padding;\n            Cost c(1);\n            if (weighted)\n              \
-    \  std::cin >> c;\n            if (directed)\n                add_directed_edge(u,\
+    \ m(0), g(n) {}\n    /**\n     * @brief \u9802\u70B9\u6570\n     */\n    int size()\
+    \ const { return n; }\n    /**\n     * @brief \u7121\u5411\u8FBA\u3092\u8FFD\u52A0\
+    \u3059\u308B\n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n   \
+    \  * @param w \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n  \
+    \  void add_edge(int u, int v, Cost w = 1) {\n        assert(0 <= u && u < n &&\
+    \ 0 <= v && v < n);\n        g[u].push_back({u, v, w, m});\n        g[v].push_back({v,\
+    \ u, w, m++});\n    }\n    /**\n     * @brief \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\
+    \u3059\u308B\n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n   \
+    \  * @param w \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n  \
+    \  void add_directed_edge(int u, int v, Cost w = 1) {\n        assert(0 <= u &&\
+    \ u < n && 0 <= v && v < n);\n        g[u].push_back({u, v, w, m++});\n    }\n\
+    \    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\u529B\
+    \u304B\u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\u308B\n     * @param\
+    \ m \u8FBA\u306E\u6570\n     * @param padding \u9802\u70B9\u756A\u53F7\u3092\u5165\
+    \u529B\u304B\u3089\u3044\u304F\u3064\u305A\u3089\u3059\u304B \u7701\u7565\u3057\
+    \u305F\u3089-1\n     * @param weighted \u8FBA\u306E\u91CD\u307F\u304C\u5165\u529B\
+    \u3055\u308C\u308B\u304B \u7701\u7565\u3057\u305F\u3089false\u3068\u306A\u308A\
+    \u3001\u91CD\u307F1\u3067\u8FBA\u304C\u8FFD\u52A0\u3055\u308C\u308B\n     * @param\
+    \ directed \u6709\u5411\u30B0\u30E9\u30D5\u304B\u3069\u3046\u304B \u7701\u7565\
+    \u3057\u305F\u3089false\n     */\n    void read(int m, int padding = -1, bool\
+    \ weighted = false, bool directed = false) {\n        for (int i = 0; i < m; i++)\
+    \ {\n            int u, v;\n            std::cin >> u >> v;\n            u +=\
+    \ padding, v += padding;\n            Cost c(1);\n            if (weighted)\n\
+    \                std::cin >> c;\n            if (directed)\n                add_directed_edge(u,\
     \ v, c);\n            else\n                add_edge(u, v, c);\n        }\n  \
     \  }\n    /**\n     * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u51FA\u308B\u8FBA\
     \u3092\u5217\u6319\u3059\u308B\n     * @param v \u9802\u70B9\u756A\u53F7\n   \
@@ -246,25 +247,26 @@ data:
     \                  if (bridge[e.id] || comp[e.dst] != -1) continue;\n        \
     \            comp[e.dst] = comp[s];\n                    groups.back().push_back(e.dst);\n\
     \                }\n            }\n        }\n    }\n\n    /**\n     * @brief\
-    \ v \u304C\u95A2\u7BC0\u70B9 (\u53D6\u308A\u9664\u304F\u3068\u9023\u7D50\u6210\
-    \u5206\u304C\u5897\u3048\u308B\u9802\u70B9) \u304B\n     */\n    bool is_articulation_point(int\
-    \ v) const {\n        assert(0 <= v && v < n);\n        return art[v];\n    }\n\
-    \    /**\n     * @brief \u756A\u53F7 id \u306E\u8FBA\u304C\u6A4B (\u53D6\u308A\
-    \u9664\u304F\u3068\u9023\u7D50\u6210\u5206\u304C\u5897\u3048\u308B\u8FBA) \u304B\
-    \n     */\n    bool is_bridge(int id) const {\n        assert(0 <= id && id <\
-    \ (int)bridge.size());\n        return bridge[id];\n    }\n    /**\n     * @brief\
-    \ \u95A2\u7BC0\u70B9\u306E\u9802\u70B9\u756A\u53F7\u306E\u6607\u9806\u306E\u30EA\
-    \u30B9\u30C8\n     */\n    const std::vector<int>& articulation_points() const\
-    \ { return arts; }\n    /**\n     * @brief \u6A4B\u306E\u8FBA\u306E\u756A\u53F7\
+    \ \u9802\u70B9\u6570\n     */\n    int size() const { return n; }\n\n    /**\n\
+    \     * @brief v \u304C\u95A2\u7BC0\u70B9 (\u53D6\u308A\u9664\u304F\u3068\u9023\
+    \u7D50\u6210\u5206\u304C\u5897\u3048\u308B\u9802\u70B9) \u304B\n     */\n    bool\
+    \ is_articulation_point(int v) const {\n        assert(0 <= v && v < n);\n   \
+    \     return art[v];\n    }\n    /**\n     * @brief \u756A\u53F7 id \u306E\u8FBA\
+    \u304C\u6A4B (\u53D6\u308A\u9664\u304F\u3068\u9023\u7D50\u6210\u5206\u304C\u5897\
+    \u3048\u308B\u8FBA) \u304B\n     */\n    bool is_bridge(int id) const {\n    \
+    \    assert(0 <= id && id < (int)bridge.size());\n        return bridge[id];\n\
+    \    }\n    /**\n     * @brief \u95A2\u7BC0\u70B9\u306E\u9802\u70B9\u756A\u53F7\
     \u306E\u6607\u9806\u306E\u30EA\u30B9\u30C8\n     */\n    const std::vector<int>&\
-    \ bridges() const { return bridge_ids; }\n    /**\n     * @brief \u9802\u70B9\
-    \ v \u304C\u5C5E\u3059\u308B\u4E8C\u91CD\u8FBA\u9023\u7D50\u6210\u5206\u306E\u756A\
-    \u53F7\n     */\n    int two_edge_connected_group_id(int v) const {\n        assert(0\
-    \ <= v && v < n);\n        return comp[v];\n    }\n    /**\n     * @brief \u4E8C\
-    \u91CD\u8FBA\u9023\u7D50\u6210\u5206 (\u6A4B\u3092\u53D6\u308A\u9664\u3044\u305F\
-    \u3068\u304D\u306E\u9023\u7D50\u6210\u5206) \u3054\u3068\u306E\u9802\u70B9\u306E\
-    \u30EA\u30B9\u30C8\n     */\n    const std::vector<std::vector<int>>& two_edge_connected_groups()\
-    \ const { return groups; }\n};\n#line 7 \"test/yosupo/two-edge-connected-components.test.cpp\"\
+    \ articulation_points() const { return arts; }\n    /**\n     * @brief \u6A4B\u306E\
+    \u8FBA\u306E\u756A\u53F7\u306E\u6607\u9806\u306E\u30EA\u30B9\u30C8\n     */\n\
+    \    const std::vector<int>& bridges() const { return bridge_ids; }\n    /**\n\
+    \     * @brief \u9802\u70B9 v \u304C\u5C5E\u3059\u308B\u4E8C\u91CD\u8FBA\u9023\
+    \u7D50\u6210\u5206\u306E\u756A\u53F7\n     */\n    int two_edge_connected_group_id(int\
+    \ v) const {\n        assert(0 <= v && v < n);\n        return comp[v];\n    }\n\
+    \    /**\n     * @brief \u4E8C\u91CD\u8FBA\u9023\u7D50\u6210\u5206 (\u6A4B\u3092\
+    \u53D6\u308A\u9664\u3044\u305F\u3068\u304D\u306E\u9023\u7D50\u6210\u5206) \u3054\
+    \u3068\u306E\u9802\u70B9\u306E\u30EA\u30B9\u30C8\n     */\n    const std::vector<std::vector<int>>&\
+    \ two_edge_connected_groups() const { return groups; }\n};\n#line 7 \"test/yosupo/two-edge-connected-components.test.cpp\"\
     \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
     \    int n, m;\n    std::cin >> n >> m;\n    Graph<int> g(n);\n    g.read(m, 0);\n\
     \    LowLink ll(g);\n    const auto& groups = ll.two_edge_connected_groups();\n\
@@ -286,7 +288,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/two-edge-connected-components.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-14 16:37:34+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/two-edge-connected-components.test.cpp

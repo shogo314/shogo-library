@@ -21,7 +21,7 @@ struct FunctionalGraph {
     std::vector<std::vector<int>> groups;    //!< 各連結成分のリスト
     std::vector<std::vector<int>> cycles;    //!< 各連結成分のサイクル
     std::vector<int> group_id;               //!< その頂点が属する連結成分のindex
-    std::vector<int> root_index;             //!< rootのcycle_list上のindex
+    std::vector<int> root_index;             //!< rootのcycles上のindex
     std::vector<std::vector<int>> doubling;  //!< DoublingClimbTree
 
     void build() {

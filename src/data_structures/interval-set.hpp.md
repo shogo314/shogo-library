@@ -115,8 +115,8 @@ data:
     \        if (key_comp(r, std::prev(itr_r)->second)) tmp.push_back({r, std::prev(itr_r)->second});\n\
     \        data.erase(itr_l, itr_r);\n        while (!tmp.empty()) {\n         \
     \   data.insert(tmp.back());\n            tmp.pop_back();\n        }\n    }\n\
-    \    int size() const {\n        return static_cast<int>(data.size());\n    }\n\
-    \    std::vector<value_type> to_vector() const {\n        return std::vector<value_type>(data.begin(),\
+    \    long long size() const {\n        return static_cast<long long>(data.size());\n\
+    \    }\n    std::vector<value_type> to_vector() const {\n        return std::vector<value_type>(data.begin(),\
     \ data.end());\n    }\n};\n"
   code: "#pragma once\n\n/**\n * @file interval-set.hpp\n * @brief \u534A\u958B\u533A\
     \u9593\u306E\u96C6\u5408\n */\n\n#include <cassert>\n#include <cstddef>\n#include\
@@ -164,15 +164,15 @@ data:
     \        if (key_comp(r, std::prev(itr_r)->second)) tmp.push_back({r, std::prev(itr_r)->second});\n\
     \        data.erase(itr_l, itr_r);\n        while (!tmp.empty()) {\n         \
     \   data.insert(tmp.back());\n            tmp.pop_back();\n        }\n    }\n\
-    \    int size() const {\n        return static_cast<int>(data.size());\n    }\n\
-    \    std::vector<value_type> to_vector() const {\n        return std::vector<value_type>(data.begin(),\
+    \    long long size() const {\n        return static_cast<long long>(data.size());\n\
+    \    }\n    std::vector<value_type> to_vector() const {\n        return std::vector<value_type>(data.begin(),\
     \ data.end());\n    }\n};\n"
   dependsOn:
   - src/utility/traits.hpp
   isVerificationFile: false
   path: src/data_structures/interval-set.hpp
   requiredBy: []
-  timestamp: '2026-10-14 16:41:25+09:00'
+  timestamp: '2026-10-15 07:35:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/interval-set.test.cpp

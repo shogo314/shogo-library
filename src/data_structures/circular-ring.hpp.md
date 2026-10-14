@@ -17,8 +17,8 @@ data:
     \ <cstddef>\n#include <vector>\n\n/**\n * @brief \u5186\u74B0\n * @tparam T\n\
     \ */\ntemplate <typename T>\nstruct CircularRing {\n    std::vector<T> data;\n\
     \    explicit CircularRing(const std::vector<T>& v) : data(v) {}\n    CircularRing(const\
-    \ CircularRing&) = default;\n    CircularRing() = default;\n    explicit CircularRing(int\
-    \ s) : data(s) {}\n    T at(long long i) const {\n        assert(!data.empty());\n\
+    \ CircularRing&) = default;\n    CircularRing() = default;\n    explicit CircularRing(long\
+    \ long s) : data(s) {}\n    T at(long long i) const {\n        assert(!data.empty());\n\
     \        i %= static_cast<long long>(data.size());\n        if (i < 0) i += static_cast<long\
     \ long>(data.size());\n        return data[i];\n    }\n    T& at(long long i)\
     \ {\n        assert(!data.empty());\n        i %= static_cast<long long>(data.size());\n\
@@ -30,10 +30,10 @@ data:
     \ \u5186\u74B0\n * @tparam T\n */\ntemplate <typename T>\nstruct CircularRing\
     \ {\n    std::vector<T> data;\n    explicit CircularRing(const std::vector<T>&\
     \ v) : data(v) {}\n    CircularRing(const CircularRing&) = default;\n    CircularRing()\
-    \ = default;\n    explicit CircularRing(int s) : data(s) {}\n    T at(long long\
-    \ i) const {\n        assert(!data.empty());\n        i %= static_cast<long long>(data.size());\n\
-    \        if (i < 0) i += static_cast<long long>(data.size());\n        return\
-    \ data[i];\n    }\n    T& at(long long i) {\n        assert(!data.empty());\n\
+    \ = default;\n    explicit CircularRing(long long s) : data(s) {}\n    T at(long\
+    \ long i) const {\n        assert(!data.empty());\n        i %= static_cast<long\
+    \ long>(data.size());\n        if (i < 0) i += static_cast<long long>(data.size());\n\
+    \        return data[i];\n    }\n    T& at(long long i) {\n        assert(!data.empty());\n\
     \        i %= static_cast<long long>(data.size());\n        if (i < 0) i += static_cast<long\
     \ long>(data.size());\n        return data[i];\n    }\n    T operator[](long long\
     \ i) const {\n        return at(i);\n    }\n    T& operator[](long long i) {\n\
@@ -42,7 +42,7 @@ data:
   isVerificationFile: false
   path: src/data_structures/circular-ring.hpp
   requiredBy: []
-  timestamp: '2026-10-14 16:36:18+09:00'
+  timestamp: '2026-10-15 07:35:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/circular-ring.test.cpp

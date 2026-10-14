@@ -46,12 +46,14 @@ data:
     \   return bits;\n}\ninline bool test(const std::vector<unsigned long long>& bits,\
     \ long long s) { return bits[s / 64] >> (s % 64) & 1; }\n// \u4F5C\u308C\u308B\
     \u548C s \u304B\u3089 from \u3092\u305F\u3069\u3063\u3066\u3001\u6DFB\u5B57\u306E\
-    \u6607\u9806\u306E\u30EA\u30B9\u30C8\u306B\u3059\u308B\n// s - a[from[s]] \u306F\
-    \ from[s] \u3088\u308A\u524D\u306E\u8981\u7D20\u3060\u3051\u3067\u4F5C\u308C\u3066\
-    \u3044\u305F\u306E\u3067\u3001\u6DFB\u5B57\u306F\u771F\u306B\u6E1B\u3063\u3066\
-    \u3044\u304F\ninline std::vector<int> trace(const std::vector<long long>& a, const\
-    \ std::vector<int>& from, long long s) {\n    std::vector<int> res;\n    for (;\
-    \ s > 0; s -= a[res.back()]) res.push_back(from[s]);\n    return std::vector<int>(res.rbegin(),\
+    \u6607\u9806\u306E\u30EA\u30B9\u30C8\u306B\u3059\u308B (from \u306F S + 1 \u500B\
+    \u3042\u308B\u306E\u3067 int \u3067\u6301\u3061\u3001\u8FD4\u3059\u3068\u304D\u306B\
+    \ long long \u306B\u3059\u308B)\n// s - a[from[s]] \u306F from[s] \u3088\u308A\
+    \u524D\u306E\u8981\u7D20\u3060\u3051\u3067\u4F5C\u308C\u3066\u3044\u305F\u306E\
+    \u3067\u3001\u6DFB\u5B57\u306F\u771F\u306B\u6E1B\u3063\u3066\u3044\u304F\ninline\
+    \ std::vector<long long> trace(const std::vector<long long>& a, const std::vector<int>&\
+    \ from, long long s) {\n    std::vector<long long> res;\n    for (; s > 0; s -=\
+    \ a[res.back()]) res.push_back(from[s]);\n    return std::vector<long long>(res.rbegin(),\
     \ res.rend());\n}\n// \u4F5C\u308C\u308B\u548C\u306E\u3046\u3061 S \u4EE5\u4E0B\
     \u306E\u6700\u5927\u5024\ninline long long max_bit(const std::vector<unsigned\
     \ long long>& bits, long long S) {\n    for (long long k = S / 64; k >= 0; k--)\
@@ -99,15 +101,16 @@ data:
     ) \u3067\u548C\u304C\u3061\u3087\u3046\u3069 S \u306B\u306A\u308B\u3082\u306E\u3092\
     \ 1 \u3064\u6C42\u3081\u3001\u305D\u306E\u6DFB\u5B57\u3092\u6607\u9806\u306B\u8FD4\
     \u3059 O(N S / 64 + S)\n * @param a 0 \u4EE5\u4E0A\u306E\u6574\u6570\u306E\u5217\
-    \n * @return \u4F5C\u308C\u306A\u3051\u308C\u3070 std::nullopt\n */\ninline std::optional<std::vector<int>>\
-    \ subset_sum_restore(const std::vector<long long>& a, long long S) {\n    std::vector<int>\
-    \ from;\n    auto bits = internal_subset_sum::build(a, S, &from);\n    if (!internal_subset_sum::test(bits,\
-    \ S)) return std::nullopt;\n    return internal_subset_sum::trace(a, from, S);\n\
-    }\n\n/**\n * @brief a \u306E\u90E8\u5206\u96C6\u5408 (\u5404\u8981\u7D20\u306F\
-    \ 1 \u56DE\u307E\u3067) \u306E\u548C\u306E\u3046\u3061\u3001S \u4EE5\u4E0B\u306E\
-    \u6700\u5927\u5024 (bitset) O(N S / 64)\n * @param a 0 \u4EE5\u4E0A\u306E\u6574\
-    \u6570\u306E\u5217\n */\ninline long long subset_sum_max_bitset(const std::vector<long\
-    \ long>& a, long long S) {\n    return internal_subset_sum::max_bit(internal_subset_sum::build(a,\
+    \n * @return \u4F5C\u308C\u306A\u3051\u308C\u3070 std::nullopt\n */\ninline std::optional<std::vector<long\
+    \ long>> subset_sum_restore(const std::vector<long long>& a, long long S) {\n\
+    \    std::vector<int> from;\n    auto bits = internal_subset_sum::build(a, S,\
+    \ &from);\n    if (!internal_subset_sum::test(bits, S)) return std::nullopt;\n\
+    \    return internal_subset_sum::trace(a, from, S);\n}\n\n/**\n * @brief a \u306E\
+    \u90E8\u5206\u96C6\u5408 (\u5404\u8981\u7D20\u306F 1 \u56DE\u307E\u3067) \u306E\
+    \u548C\u306E\u3046\u3061\u3001S \u4EE5\u4E0B\u306E\u6700\u5927\u5024 (bitset)\
+    \ O(N S / 64)\n * @param a 0 \u4EE5\u4E0A\u306E\u6574\u6570\u306E\u5217\n */\n\
+    inline long long subset_sum_max_bitset(const std::vector<long long>& a, long long\
+    \ S) {\n    return internal_subset_sum::max_bit(internal_subset_sum::build(a,\
     \ S, nullptr), S);\n}\n\n/**\n * @brief a \u306E\u90E8\u5206\u96C6\u5408 (\u5404\
     \u8981\u7D20\u306F 1 \u56DE\u307E\u3067) \u306E\u548C\u306E\u3046\u3061\u3001\
     S \u4EE5\u4E0B\u306E\u6700\u5927\u5024 (\u534A\u5206\u5168\u5217\u6319) O(2^(N/2))\n\
@@ -130,15 +133,15 @@ data:
     \ \u3068\u540C\u3058\u304F\u3001bitset O(N S / 64 + S) \u3068\u534A\u5206\u5168\
     \u5217\u6319 O(2^(N/2)) \u306E\u3046\u3061\u8A08\u7B97\u91CF\u304C\u5C0F\u3055\
     \u3044\u65B9\u3092\u9078\u3076\n * @param a 0 \u4EE5\u4E0A\u306E\u6574\u6570\u306E\
-    \u5217\n */\ninline std::vector<int> subset_sum_max_restore(const std::vector<long\
+    \u5217\n */\ninline std::vector<long long> subset_sum_max_restore(const std::vector<long\
     \ long>& a, long long S) {\n    using namespace internal_subset_sum;\n    int\
     \ n = a.size();\n    if (cost_bitset(n, S) <= cost_meet_in_the_middle(n)) {\n\
     \        std::vector<int> from;\n        auto bits = build(a, S, &from);\n   \
     \     return trace(a, from, max_bit(bits, S));\n    }\n    MitmResult r = meet_in_the_middle(a,\
-    \ S);\n    std::vector<int> res;\n    for (int i = 0; i < n / 2; i++) {\n    \
-    \    if (r.left >> i & 1) res.push_back(i);\n    }\n    for (int i = n / 2; i\
-    \ < n; i++) {\n        if (r.right >> (i - n / 2) & 1) res.push_back(i);\n   \
-    \ }\n    return res;\n}\n#line 7 \"test/aoj/alds1-5-a.test.cpp\"\n\nint main()\
+    \ S);\n    std::vector<long long> res;\n    for (long long i = 0; i < n / 2; i++)\
+    \ {\n        if (r.left >> i & 1) res.push_back(i);\n    }\n    for (long long\
+    \ i = n / 2; i < n; i++) {\n        if (r.right >> (i - n / 2) & 1) res.push_back(i);\n\
+    \    }\n    return res;\n}\n#line 7 \"test/aoj/alds1-5-a.test.cpp\"\n\nint main()\
     \ {\n    int n;\n    std::cin >> n;\n    std::vector<long long> a(n);\n    for\
     \ (auto& x : a) std::cin >> x;\n    std::vector<bool> can = subset_sum(a, 2000);\n\
     \    int q;\n    std::cin >> q;\n    while (q--) {\n        int m;\n        std::cin\
@@ -155,7 +158,7 @@ data:
   isVerificationFile: true
   path: test/aoj/alds1-5-a.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:33:42+09:00'
+  timestamp: '2026-10-15 03:36:18+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/alds1-5-a.test.cpp

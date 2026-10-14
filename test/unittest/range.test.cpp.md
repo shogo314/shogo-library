@@ -24,7 +24,7 @@ data:
     \ <cassert>\n#include <cstddef>\n#include <iterator>\n#include <string>\n#include\
     \ <type_traits>\n#include <utility>\n#include <vector>\n\nstruct Range {\n   public:\n\
     \    using value_type = long long;\n    using const_reference = const value_type&;\n\
-    \    using size_type = std::size_t;\n    using difference_type = std::ptrdiff_t;\n\
+    \    using size_type = long long;\n    using difference_type = std::ptrdiff_t;\n\
     \n    const value_type start;\n    const value_type stop;\n    const value_type\
     \ step;\n\n   private:\n    const value_type norm_stop;\n\n    constexpr static\
     \ value_type normalize(value_type _start, value_type _stop, value_type _step)\
@@ -91,7 +91,7 @@ data:
     \            }\n        }\n    };\n\n    constexpr const_iterator begin() const\
     \ noexcept {\n        return {*this, start};\n    }\n    constexpr const_iterator\
     \ end() const noexcept {\n        return {*this, norm_stop};\n    }\n    /**\n\
-    \     * @brief x \u306E\u500B\u6570 (0 \u304B 1)\n     */\n    constexpr difference_type\
+    \     * @brief x \u306E\u500B\u6570 (0 \u304B 1)\n     */\n    constexpr size_type\
     \ count(value_type x) const noexcept {\n        if (step > 0) {\n            if\
     \ (start <= x && x < stop) {\n                if ((x - start) % step == 0) {\n\
     \                    return 1;\n                }\n            }\n        } else\
@@ -125,13 +125,13 @@ data:
     \ constexpr size_type size() const noexcept {\n        if (step > 0) {\n     \
     \       return (norm_stop - start) / step;\n        } else {\n            return\
     \ (start - norm_stop) / (-step);\n        }\n    }\n    constexpr value_type at(size_type\
-    \ i) const {\n        assert(i < size());\n        return start + i * step;\n\
-    \    }\n    constexpr value_type operator[](size_type i) const {\n        return\
-    \ at(i);\n    }\n    constexpr bool empty() const noexcept {\n        return start\
-    \ == norm_stop;\n    }\n    constexpr value_type sum() const noexcept {\n    \
-    \    return static_cast<Range::value_type>(size()) * (norm_stop - step + start)\
-    \ / 2;\n    }\n    /**\n     * @brief \u6700\u5C0F\u5024\n     * \u7A7A\u3060\u3068\
-    \u30A8\u30E9\u30FC\n     */\n    constexpr value_type min() const {\n        assert(!empty());\n\
+    \ i) const {\n        assert(0 <= i && i < size());\n        return start + i\
+    \ * step;\n    }\n    constexpr value_type operator[](size_type i) const {\n \
+    \       return at(i);\n    }\n    constexpr bool empty() const noexcept {\n  \
+    \      return start == norm_stop;\n    }\n    constexpr value_type sum() const\
+    \ noexcept {\n        return size() * (norm_stop - step + start) / 2;\n    }\n\
+    \    /**\n     * @brief \u6700\u5C0F\u5024\n     * \u7A7A\u3060\u3068\u30A8\u30E9\
+    \u30FC\n     */\n    constexpr value_type min() const {\n        assert(!empty());\n\
     \        if (step > 0) {\n            return start;\n        } else {\n      \
     \      return norm_stop - step;\n        }\n    }\n    /**\n     * @brief \u6700\
     \u5927\u5024\n     * \u7A7A\u3060\u3068\u30A8\u30E9\u30FC\n     */\n    constexpr\
@@ -185,14 +185,13 @@ data:
     \        }\n    }\n    /**\n     * @brief \u8981\u7D20\u3092 Range \u3067\u6307\
     \u5B9A\u3057\u305F\u30B3\u30F3\u30C6\u30CA\n     */\n    constexpr Range slice(const\
     \ Range& r) const {\n        if (r.empty()) return {};\n        if (r.max() <\
-    \ 0) return {};\n        if (r.min() >= static_cast<Range::value_type>(size()))\
-    \ return {};\n        Range trimmed_range(r.clipped(0, static_cast<Range::value_type>(size())));\n\
-    \        if (trimmed_range.empty()) return {};\n        value_type _step = step\
-    \ * trimmed_range.step;\n        value_type _start = at(trimmed_range.start);\n\
-    \        value_type _stop = _start + _step * static_cast<Range::value_type>(trimmed_range.size());\n\
-    \        return {_start, _stop, _step, _stop};\n    }\n\n    static std::string\
-    \ type_str() {\n        return \"Range\";\n    }\n    std::string initializer_str()\
-    \ const {\n        return \"{\" + std::to_string(start) + \", \" + std::to_string(stop)\
+    \ 0) return {};\n        if (r.min() >= size()) return {};\n        Range trimmed_range(r.clipped(0,\
+    \ size()));\n        if (trimmed_range.empty()) return {};\n        value_type\
+    \ _step = step * trimmed_range.step;\n        value_type _start = at(trimmed_range.start);\n\
+    \        value_type _stop = _start + _step * trimmed_range.size();\n        return\
+    \ {_start, _stop, _step, _stop};\n    }\n\n    static std::string type_str() {\n\
+    \        return \"Range\";\n    }\n    std::string initializer_str() const {\n\
+    \        return \"{\" + std::to_string(start) + \", \" + std::to_string(stop)\
     \ + \", \" + std::to_string(step) + \"}\";\n    }\n    std::string repr() const\
     \ {\n        return \"Range(\" + std::to_string(start) + \", \" + std::to_string(stop)\
     \ + \", \" + std::to_string(step) + \")\";\n    }\n\n    std::vector<value_type>\
@@ -235,57 +234,57 @@ data:
     \ r.stop == stop && r.step == step, \"members\");\n        check(by_iteration(r)\
     \ == v, \"iteration\");\n        check(r.to_vector() == v, \"to_vector\");\n \
     \       check(std::vector<ll>(r.begin(), r.end()) == v, \"iterator range constructor\"\
-    );\n        check(r.size() == (size_t)n, \"size\");\n        check(r.empty() ==\
-    \ v.empty(), \"empty\");\n        check(r.end() - r.begin() == n, \"end - begin\"\
-    );\n        for (int i = 0; i < n; i++) {\n            check(r.at(i) == v[i] &&\
-    \ r[i] == v[i], \"at / []\");\n        }\n\n        // count, contains, index,\
-    \ find\n        for (ll x = -30; x <= 30; x++) {\n            int c = std::count(v.begin(),\
+    );\n        check(r.size() == n, \"size\");\n        check(r.empty() == v.empty(),\
+    \ \"empty\");\n        check(r.end() - r.begin() == n, \"end - begin\");\n   \
+    \     for (int i = 0; i < n; i++) {\n            check(r.at(i) == v[i] && r[i]\
+    \ == v[i], \"at / []\");\n        }\n\n        // count, contains, index, find\n\
+    \        for (ll x = -30; x <= 30; x++) {\n            int c = std::count(v.begin(),\
     \ v.end(), x);\n            check(r.count(x) == c, \"count\");\n            check(r.contains(x)\
     \ == (c > 0), \"contains\");\n            if (c > 0) {\n                int idx\
     \ = std::find(v.begin(), v.end(), x) - v.begin();\n                check(r.index(x)\
-    \ == (size_t)idx, \"index\");\n                check(*r.find(x) == x && r.find(x)\
-    \ - r.begin() == idx, \"find (found)\");\n            } else {\n             \
-    \   check(r.find(x) == r.end(), \"find (not found)\");\n            }\n      \
-    \  }\n\n        // lower_bound, upper_bound (step > 0 \u306E\u3068\u304D\u3060\
-    \u3051\u4F7F\u3048\u308B)\n        if (step > 0) {\n            for (ll x = -30;\
-    \ x <= 30; x++) {\n                check(r.lower_bound(x) - r.begin() == std::lower_bound(v.begin(),\
-    \ v.end(), x) - v.begin(), \"lower_bound\");\n                check(r.upper_bound(x)\
-    \ - r.begin() == std::upper_bound(v.begin(), v.end(), x) - v.begin(), \"upper_bound\"\
+    \ == idx, \"index\");\n                check(*r.find(x) == x && r.find(x) - r.begin()\
+    \ == idx, \"find (found)\");\n            } else {\n                check(r.find(x)\
+    \ == r.end(), \"find (not found)\");\n            }\n        }\n\n        // lower_bound,\
+    \ upper_bound (step > 0 \u306E\u3068\u304D\u3060\u3051\u4F7F\u3048\u308B)\n  \
+    \      if (step > 0) {\n            for (ll x = -30; x <= 30; x++) {\n       \
+    \         check(r.lower_bound(x) - r.begin() == std::lower_bound(v.begin(), v.end(),\
+    \ x) - v.begin(), \"lower_bound\");\n                check(r.upper_bound(x) -\
+    \ r.begin() == std::upper_bound(v.begin(), v.end(), x) - v.begin(), \"upper_bound\"\
     );\n            }\n        }\n\n        // sum, min, max\n        ll sum = 0;\n\
     \        for (ll x : v) sum += x;\n        check(r.sum() == sum, \"sum\");\n \
     \       if (n > 0) {\n            check(r.min() == *std::min_element(v.begin(),\
     \ v.end()), \"min\");\n            check(r.max() == *std::max_element(v.begin(),\
     \ v.end()), \"max\");\n        }\n\n        // reversed, sorted\n        std::vector<ll>\
     \ rv(v.rbegin(), v.rend()), sv = v;\n        std::sort(sv.begin(), sv.end());\n\
-    \        check(by_iteration(r.reversed()) == rv && r.reversed().size() == (size_t)n,\
-    \ \"reversed\");\n        check(by_iteration(r.sorted()) == sv && r.sorted().size()\
-    \ == (size_t)n, \"sorted\");\n\n        // clipped: \u5024\u304C [l, r) \u306E\
-    \u8981\u7D20\u3060\u3051\u3092\u9806\u756A\u3092\u4FDD\u3063\u3066\u6B8B\u3059\
-    \n        {\n            ll l = rnd(-25, 25), rr = rnd(-25, 25);\n           \
-    \ std::vector<ll> expect;\n            for (ll x : v)\n                if (l <=\
-    \ x && x < rr) expect.push_back(x);\n            Range c = r.clipped(l, rr);\n\
-    \            check(by_iteration(c) == expect && c.size() == expect.size(), \"\
-    clipped\");\n        }\n\n        // slice: \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\
-    \u3092 Range \u3067\u6307\u5B9A\u3059\u308B (\u7BC4\u56F2\u5916\u306E\u30A4\u30F3\
-    \u30C7\u30C3\u30AF\u30B9\u306F\u7121\u8996)\n        {\n            ll s2 = rnd(-25,\
-    \ 25), t2 = rnd(-25, 25), st2 = rnd(1, 5) * (rng() % 2 ? 1 : -1);\n          \
-    \  Range idx(s2, t2, st2);\n            std::vector<ll> expect;\n            for\
-    \ (ll i : naive_range(s2, t2, st2))\n                if (0 <= i && i < n) expect.push_back(v[i]);\n\
-    \            Range s = r.slice(idx);\n            check(by_iteration(s) == expect\
-    \ && s.size() == expect.size(), \"slice\");\n        }\n\n        // ==, != \u306F\
-    \u5217\u3068\u3057\u3066\u7B49\u3057\u3044\u304B\n        {\n            ll start2\
-    \ = rng() % 4 == 0 ? start : rnd(-20, 20);\n            ll stop2 = rng() % 2 ==\
-    \ 0 ? stop + rnd(-3, 3) : rnd(-20, 20);\n            ll step2 = rng() % 2 == 0\
-    \ ? step : rnd(1, 7) * (rng() % 2 ? 1 : -1);\n            Range r2(start2, stop2,\
-    \ step2);\n            bool same = v == naive_range(start2, stop2, step2);\n \
-    \           check((r == r2) == same && (r != r2) == !same, \"== / !=\");\n   \
-    \     }\n\n        // \u30A4\u30C6\u30EC\u30FC\u30BF\u306E\u5404\u6F14\u7B97\n\
-    \        if (n > 0) {\n            int i = rnd(0, n - 1), j = rnd(0, n - 1);\n\
-    \            auto it = r.begin() + i;\n            check(*it == v[i] && it.base()\
-    \ == v[i], \"begin + i\");\n            check(*(i + r.begin()) == v[i], \"i +\
-    \ begin\");\n            check(*(r.end() - (n - i)) == v[i], \"end - k\");\n \
-    \           check((r.begin() + j) - it == j - i, \"iterator difference\");\n \
-    \           auto it2 = it;  // \u30B3\u30D4\u30FC\u30B3\u30F3\u30B9\u30C8\u30E9\
+    \        check(by_iteration(r.reversed()) == rv && r.reversed().size() == n, \"\
+    reversed\");\n        check(by_iteration(r.sorted()) == sv && r.sorted().size()\
+    \ == n, \"sorted\");\n\n        // clipped: \u5024\u304C [l, r) \u306E\u8981\u7D20\
+    \u3060\u3051\u3092\u9806\u756A\u3092\u4FDD\u3063\u3066\u6B8B\u3059\n        {\n\
+    \            ll l = rnd(-25, 25), rr = rnd(-25, 25);\n            std::vector<ll>\
+    \ expect;\n            for (ll x : v)\n                if (l <= x && x < rr) expect.push_back(x);\n\
+    \            Range c = r.clipped(l, rr);\n            check(by_iteration(c) ==\
+    \ expect && c.size() == (long long)expect.size(), \"clipped\");\n        }\n\n\
+    \        // slice: \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\u3092 Range \u3067\u6307\
+    \u5B9A\u3059\u308B (\u7BC4\u56F2\u5916\u306E\u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\
+    \u306F\u7121\u8996)\n        {\n            ll s2 = rnd(-25, 25), t2 = rnd(-25,\
+    \ 25), st2 = rnd(1, 5) * (rng() % 2 ? 1 : -1);\n            Range idx(s2, t2,\
+    \ st2);\n            std::vector<ll> expect;\n            for (ll i : naive_range(s2,\
+    \ t2, st2))\n                if (0 <= i && i < n) expect.push_back(v[i]);\n  \
+    \          Range s = r.slice(idx);\n            check(by_iteration(s) == expect\
+    \ && s.size() == (long long)expect.size(), \"slice\");\n        }\n\n        //\
+    \ ==, != \u306F\u5217\u3068\u3057\u3066\u7B49\u3057\u3044\u304B\n        {\n \
+    \           ll start2 = rng() % 4 == 0 ? start : rnd(-20, 20);\n            ll\
+    \ stop2 = rng() % 2 == 0 ? stop + rnd(-3, 3) : rnd(-20, 20);\n            ll step2\
+    \ = rng() % 2 == 0 ? step : rnd(1, 7) * (rng() % 2 ? 1 : -1);\n            Range\
+    \ r2(start2, stop2, step2);\n            bool same = v == naive_range(start2,\
+    \ stop2, step2);\n            check((r == r2) == same && (r != r2) == !same, \"\
+    == / !=\");\n        }\n\n        // \u30A4\u30C6\u30EC\u30FC\u30BF\u306E\u5404\
+    \u6F14\u7B97\n        if (n > 0) {\n            int i = rnd(0, n - 1), j = rnd(0,\
+    \ n - 1);\n            auto it = r.begin() + i;\n            check(*it == v[i]\
+    \ && it.base() == v[i], \"begin + i\");\n            check(*(i + r.begin()) ==\
+    \ v[i], \"i + begin\");\n            check(*(r.end() - (n - i)) == v[i], \"end\
+    \ - k\");\n            check((r.begin() + j) - it == j - i, \"iterator difference\"\
+    );\n            auto it2 = it;  // \u30B3\u30D4\u30FC\u30B3\u30F3\u30B9\u30C8\u30E9\
     \u30AF\u30BF\n            check(it2 == it && !(it2 != it), \"copy / ==\");\n \
     \           it2 = r.begin();  // \u540C\u3058 Range \u306E\u30A4\u30C6\u30EC\u30FC\
     \u30BF\u306E\u4EE3\u5165\n            check(*it2 == v[0], \"operator=\");\n  \
@@ -346,57 +345,57 @@ data:
     \ r.stop == stop && r.step == step, \"members\");\n        check(by_iteration(r)\
     \ == v, \"iteration\");\n        check(r.to_vector() == v, \"to_vector\");\n \
     \       check(std::vector<ll>(r.begin(), r.end()) == v, \"iterator range constructor\"\
-    );\n        check(r.size() == (size_t)n, \"size\");\n        check(r.empty() ==\
-    \ v.empty(), \"empty\");\n        check(r.end() - r.begin() == n, \"end - begin\"\
-    );\n        for (int i = 0; i < n; i++) {\n            check(r.at(i) == v[i] &&\
-    \ r[i] == v[i], \"at / []\");\n        }\n\n        // count, contains, index,\
-    \ find\n        for (ll x = -30; x <= 30; x++) {\n            int c = std::count(v.begin(),\
+    );\n        check(r.size() == n, \"size\");\n        check(r.empty() == v.empty(),\
+    \ \"empty\");\n        check(r.end() - r.begin() == n, \"end - begin\");\n   \
+    \     for (int i = 0; i < n; i++) {\n            check(r.at(i) == v[i] && r[i]\
+    \ == v[i], \"at / []\");\n        }\n\n        // count, contains, index, find\n\
+    \        for (ll x = -30; x <= 30; x++) {\n            int c = std::count(v.begin(),\
     \ v.end(), x);\n            check(r.count(x) == c, \"count\");\n            check(r.contains(x)\
     \ == (c > 0), \"contains\");\n            if (c > 0) {\n                int idx\
     \ = std::find(v.begin(), v.end(), x) - v.begin();\n                check(r.index(x)\
-    \ == (size_t)idx, \"index\");\n                check(*r.find(x) == x && r.find(x)\
-    \ - r.begin() == idx, \"find (found)\");\n            } else {\n             \
-    \   check(r.find(x) == r.end(), \"find (not found)\");\n            }\n      \
-    \  }\n\n        // lower_bound, upper_bound (step > 0 \u306E\u3068\u304D\u3060\
-    \u3051\u4F7F\u3048\u308B)\n        if (step > 0) {\n            for (ll x = -30;\
-    \ x <= 30; x++) {\n                check(r.lower_bound(x) - r.begin() == std::lower_bound(v.begin(),\
-    \ v.end(), x) - v.begin(), \"lower_bound\");\n                check(r.upper_bound(x)\
-    \ - r.begin() == std::upper_bound(v.begin(), v.end(), x) - v.begin(), \"upper_bound\"\
+    \ == idx, \"index\");\n                check(*r.find(x) == x && r.find(x) - r.begin()\
+    \ == idx, \"find (found)\");\n            } else {\n                check(r.find(x)\
+    \ == r.end(), \"find (not found)\");\n            }\n        }\n\n        // lower_bound,\
+    \ upper_bound (step > 0 \u306E\u3068\u304D\u3060\u3051\u4F7F\u3048\u308B)\n  \
+    \      if (step > 0) {\n            for (ll x = -30; x <= 30; x++) {\n       \
+    \         check(r.lower_bound(x) - r.begin() == std::lower_bound(v.begin(), v.end(),\
+    \ x) - v.begin(), \"lower_bound\");\n                check(r.upper_bound(x) -\
+    \ r.begin() == std::upper_bound(v.begin(), v.end(), x) - v.begin(), \"upper_bound\"\
     );\n            }\n        }\n\n        // sum, min, max\n        ll sum = 0;\n\
     \        for (ll x : v) sum += x;\n        check(r.sum() == sum, \"sum\");\n \
     \       if (n > 0) {\n            check(r.min() == *std::min_element(v.begin(),\
     \ v.end()), \"min\");\n            check(r.max() == *std::max_element(v.begin(),\
     \ v.end()), \"max\");\n        }\n\n        // reversed, sorted\n        std::vector<ll>\
     \ rv(v.rbegin(), v.rend()), sv = v;\n        std::sort(sv.begin(), sv.end());\n\
-    \        check(by_iteration(r.reversed()) == rv && r.reversed().size() == (size_t)n,\
-    \ \"reversed\");\n        check(by_iteration(r.sorted()) == sv && r.sorted().size()\
-    \ == (size_t)n, \"sorted\");\n\n        // clipped: \u5024\u304C [l, r) \u306E\
-    \u8981\u7D20\u3060\u3051\u3092\u9806\u756A\u3092\u4FDD\u3063\u3066\u6B8B\u3059\
-    \n        {\n            ll l = rnd(-25, 25), rr = rnd(-25, 25);\n           \
-    \ std::vector<ll> expect;\n            for (ll x : v)\n                if (l <=\
-    \ x && x < rr) expect.push_back(x);\n            Range c = r.clipped(l, rr);\n\
-    \            check(by_iteration(c) == expect && c.size() == expect.size(), \"\
-    clipped\");\n        }\n\n        // slice: \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\
-    \u3092 Range \u3067\u6307\u5B9A\u3059\u308B (\u7BC4\u56F2\u5916\u306E\u30A4\u30F3\
-    \u30C7\u30C3\u30AF\u30B9\u306F\u7121\u8996)\n        {\n            ll s2 = rnd(-25,\
-    \ 25), t2 = rnd(-25, 25), st2 = rnd(1, 5) * (rng() % 2 ? 1 : -1);\n          \
-    \  Range idx(s2, t2, st2);\n            std::vector<ll> expect;\n            for\
-    \ (ll i : naive_range(s2, t2, st2))\n                if (0 <= i && i < n) expect.push_back(v[i]);\n\
-    \            Range s = r.slice(idx);\n            check(by_iteration(s) == expect\
-    \ && s.size() == expect.size(), \"slice\");\n        }\n\n        // ==, != \u306F\
-    \u5217\u3068\u3057\u3066\u7B49\u3057\u3044\u304B\n        {\n            ll start2\
-    \ = rng() % 4 == 0 ? start : rnd(-20, 20);\n            ll stop2 = rng() % 2 ==\
-    \ 0 ? stop + rnd(-3, 3) : rnd(-20, 20);\n            ll step2 = rng() % 2 == 0\
-    \ ? step : rnd(1, 7) * (rng() % 2 ? 1 : -1);\n            Range r2(start2, stop2,\
-    \ step2);\n            bool same = v == naive_range(start2, stop2, step2);\n \
-    \           check((r == r2) == same && (r != r2) == !same, \"== / !=\");\n   \
-    \     }\n\n        // \u30A4\u30C6\u30EC\u30FC\u30BF\u306E\u5404\u6F14\u7B97\n\
-    \        if (n > 0) {\n            int i = rnd(0, n - 1), j = rnd(0, n - 1);\n\
-    \            auto it = r.begin() + i;\n            check(*it == v[i] && it.base()\
-    \ == v[i], \"begin + i\");\n            check(*(i + r.begin()) == v[i], \"i +\
-    \ begin\");\n            check(*(r.end() - (n - i)) == v[i], \"end - k\");\n \
-    \           check((r.begin() + j) - it == j - i, \"iterator difference\");\n \
-    \           auto it2 = it;  // \u30B3\u30D4\u30FC\u30B3\u30F3\u30B9\u30C8\u30E9\
+    \        check(by_iteration(r.reversed()) == rv && r.reversed().size() == n, \"\
+    reversed\");\n        check(by_iteration(r.sorted()) == sv && r.sorted().size()\
+    \ == n, \"sorted\");\n\n        // clipped: \u5024\u304C [l, r) \u306E\u8981\u7D20\
+    \u3060\u3051\u3092\u9806\u756A\u3092\u4FDD\u3063\u3066\u6B8B\u3059\n        {\n\
+    \            ll l = rnd(-25, 25), rr = rnd(-25, 25);\n            std::vector<ll>\
+    \ expect;\n            for (ll x : v)\n                if (l <= x && x < rr) expect.push_back(x);\n\
+    \            Range c = r.clipped(l, rr);\n            check(by_iteration(c) ==\
+    \ expect && c.size() == (long long)expect.size(), \"clipped\");\n        }\n\n\
+    \        // slice: \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\u3092 Range \u3067\u6307\
+    \u5B9A\u3059\u308B (\u7BC4\u56F2\u5916\u306E\u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\
+    \u306F\u7121\u8996)\n        {\n            ll s2 = rnd(-25, 25), t2 = rnd(-25,\
+    \ 25), st2 = rnd(1, 5) * (rng() % 2 ? 1 : -1);\n            Range idx(s2, t2,\
+    \ st2);\n            std::vector<ll> expect;\n            for (ll i : naive_range(s2,\
+    \ t2, st2))\n                if (0 <= i && i < n) expect.push_back(v[i]);\n  \
+    \          Range s = r.slice(idx);\n            check(by_iteration(s) == expect\
+    \ && s.size() == (long long)expect.size(), \"slice\");\n        }\n\n        //\
+    \ ==, != \u306F\u5217\u3068\u3057\u3066\u7B49\u3057\u3044\u304B\n        {\n \
+    \           ll start2 = rng() % 4 == 0 ? start : rnd(-20, 20);\n            ll\
+    \ stop2 = rng() % 2 == 0 ? stop + rnd(-3, 3) : rnd(-20, 20);\n            ll step2\
+    \ = rng() % 2 == 0 ? step : rnd(1, 7) * (rng() % 2 ? 1 : -1);\n            Range\
+    \ r2(start2, stop2, step2);\n            bool same = v == naive_range(start2,\
+    \ stop2, step2);\n            check((r == r2) == same && (r != r2) == !same, \"\
+    == / !=\");\n        }\n\n        // \u30A4\u30C6\u30EC\u30FC\u30BF\u306E\u5404\
+    \u6F14\u7B97\n        if (n > 0) {\n            int i = rnd(0, n - 1), j = rnd(0,\
+    \ n - 1);\n            auto it = r.begin() + i;\n            check(*it == v[i]\
+    \ && it.base() == v[i], \"begin + i\");\n            check(*(i + r.begin()) ==\
+    \ v[i], \"i + begin\");\n            check(*(r.end() - (n - i)) == v[i], \"end\
+    \ - k\");\n            check((r.begin() + j) - it == j - i, \"iterator difference\"\
+    );\n            auto it2 = it;  // \u30B3\u30D4\u30FC\u30B3\u30F3\u30B9\u30C8\u30E9\
     \u30AF\u30BF\n            check(it2 == it && !(it2 != it), \"copy / ==\");\n \
     \           it2 = r.begin();  // \u540C\u3058 Range \u306E\u30A4\u30C6\u30EC\u30FC\
     \u30BF\u306E\u4EE3\u5165\n            check(*it2 == v[0], \"operator=\");\n  \
@@ -428,7 +427,7 @@ data:
   isVerificationFile: true
   path: test/unittest/range.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 16:36:18+09:00'
+  timestamp: '2026-10-15 07:27:48+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/range.test.cpp

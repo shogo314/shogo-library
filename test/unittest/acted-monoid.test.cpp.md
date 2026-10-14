@@ -55,18 +55,18 @@ data:
     )\n * - F id(): \u6052\u7B49\u5199\u50CF\n * \u4F5C\u7528\u7D20\u304C\u7FA4\u3092\
     \u306A\u3059\u5834\u5408 (imos.hpp \u3067\u4F7F\u3046) \u306F\n * - F inv(const\
     \ F& f): \u9006\u4F5C\u7528\u7D20\n */\n\n#include <algorithm>\n#include <array>\n\
-    #include <cstddef>\n#include <limits>\n#include <optional>\n#include <type_traits>\n\
-    #include <utility>\n\n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n\
-    \ * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\
-    \u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\
-    \u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S&\
-    \ a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n\
-    \ * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\
-    \u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\
-    \u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\
-    \n#line 17 \"src/algebra/monoid.hpp\"\n#include <istream>\n#line 19 \"src/algebra/monoid.hpp\"\
-    \n#include <numeric>\n#include <ostream>\n#line 23 \"src/algebra/monoid.hpp\"\n\
-    \n/**\n * @brief 1\u6B21\u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite\
+    #include <limits>\n#include <optional>\n#include <type_traits>\n#include <utility>\n\
+    \n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n * @brief \u30E2\
+    \u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\
+    \u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\
+    \n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S& a, const S& b): \u7A4D\
+    \ (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n * op, e \u306F static\
+    \ \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\
+    \u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\
+    \u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\n#line 16 \"src/algebra/monoid.hpp\"\
+    \n#include <cstddef>\n#include <istream>\n#line 19 \"src/algebra/monoid.hpp\"\n\
+    #include <numeric>\n#include <ostream>\n#line 23 \"src/algebra/monoid.hpp\"\n\n\
+    /**\n * @brief 1\u6B21\u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite\
     \ \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\
     \u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\
     \u3059\u308B\u3068\u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\n\
@@ -130,56 +130,57 @@ data:
     \ S e() {\n        S h{};\n        for (std::size_t x = 0; x < N; x++) h[x] =\
     \ static_cast<int>(x);\n        return h;\n    }\n    // i \u3068 j \u3092\u5165\
     \u308C\u66FF\u3048\u3001\u307B\u304B\u306F\u52D5\u304B\u3055\u306A\u3044\u5199\
-    \u50CF (\u4E92\u63DB)\n    static constexpr S swap(int i, int j) {\n        S\
-    \ h = e();\n        h[i] = j;\n        h[j] = i;\n        return h;\n    }\n};\n\
-    \n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\u5408\u6210\n * op(f, g)\
-    \ = f\u2218g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B)\n * \u533A\u9593 [l,\
-    \ r) \u306E\u7A4D\u306F f_l(...f_{r-1}(x)) \u3092\u8868\u3059\n * \u5DE6\u304B\
-    \u3089\u9806\u306B\u9069\u7528\u3057\u305F\u3044 (f_{r-1}(...f_l(x)) \u3092\u6C42\
-    \u3081\u305F\u3044) \u5834\u5408\u306F monoid::Reverse<monoid::Composite<T>> \u3092\
-    \u4F7F\u3046\n */\ntemplate <typename T>\nstruct Composite {\n    using S = Affine<T>;\n\
-    \    static constexpr S op(const S& f, const S& g) { return {f.a * g.a, f.a *\
-    \ g.b + f.b}; }\n    static constexpr S e() { return {T(1), T(0)}; }\n};\n\n/**\n\
-    \ * @brief \u62EC\u5F27\u5217 \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\
-    \u3044 ')' \u3068 '(' \u306E\u500B\u6570\n */\nstruct Parenthesis {\n    struct\
-    \ S {\n        long long close;  // \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\
-    \u306A\u3044 ')' \u306E\u500B\u6570\n        long long open;   // \u5BFE\u5FDC\
-    \u306E\u53D6\u308C\u3066\u3044\u306A\u3044 '(' \u306E\u500B\u6570\n        constexpr\
-    \ S(char c = 0) : close(c == ')'), open(c == '(') {}\n        constexpr S(long\
-    \ long close, long long open) : close(close), open(open) {}\n        /**\n   \
-    \      * @brief \u6B63\u3057\u3044\u62EC\u5F27\u5217\u304B\n         */\n    \
-    \    constexpr bool is_valid() const { return close == 0 && open == 0; }\n   \
-    \ };\n    static constexpr S op(const S& a, const S& b) {\n        if (a.open\
-    \ >= b.close) return S(a.close, a.open - b.close + b.open);\n        return S(a.close\
-    \ + b.close - a.open, b.open);\n    }\n    static constexpr S e() { return S();\
-    \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\
-    \u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\
-    \u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\
-    \u5024\u306E\u578B\n */\ntemplate <typename T, typename U = int>\nstruct MinWith\
-    \ {\n    using S = std::pair<T, U>;\n    static constexpr S op(const S& a, const\
-    \ S& b) { return b.first < a.first ? b : a; }\n    static constexpr S e() { return\
-    \ {std::numeric_limits<T>::max(), U{}}; }\n};\n\n/**\n * @brief \u6700\u5927\u5024\
-    \u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\
-    \u512A\u5148\n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\
-    \u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\u578B\n */\ntemplate <typename\
-    \ T, typename U = int>\nstruct MaxWith {\n    using S = std::pair<T, U>;\n   \
-    \ static constexpr S op(const S& a, const S& b) { return a.first < b.first ? b\
-    \ : a; }\n    static constexpr S e() { return {std::numeric_limits<T>::lowest(),\
-    \ U{}}; }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u500B\u6570\
+    \u50CF (\u4E92\u63DB)\n    static constexpr S swap(long long i, long long j) {\n\
+    \        S h = e();\n        h[i] = static_cast<int>(j);\n        h[j] = static_cast<int>(i);\n\
+    \        return h;\n    }\n};\n\n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\
+    \u5408\u6210\n * op(f, g) = f\u2218g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B\
+    )\n * \u533A\u9593 [l, r) \u306E\u7A4D\u306F f_l(...f_{r-1}(x)) \u3092\u8868\u3059\
+    \n * \u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\u3057\u305F\u3044 (f_{r-1}(...f_l(x))\
+    \ \u3092\u6C42\u3081\u305F\u3044) \u5834\u5408\u306F monoid::Reverse<monoid::Composite<T>>\
+    \ \u3092\u4F7F\u3046\n */\ntemplate <typename T>\nstruct Composite {\n    using\
+    \ S = Affine<T>;\n    static constexpr S op(const S& f, const S& g) { return {f.a\
+    \ * g.a, f.a * g.b + f.b}; }\n    static constexpr S e() { return {T(1), T(0)};\
+    \ }\n};\n\n/**\n * @brief \u62EC\u5F27\u5217 \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\
+    \u3044\u306A\u3044 ')' \u3068 '(' \u306E\u500B\u6570\n */\nstruct Parenthesis\
+    \ {\n    struct S {\n        long long close;  // \u5BFE\u5FDC\u306E\u53D6\u308C\
+    \u3066\u3044\u306A\u3044 ')' \u306E\u500B\u6570\n        long long open;   //\
+    \ \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\u3044 '(' \u306E\u500B\u6570\
+    \n        constexpr S(char c = 0) : close(c == ')'), open(c == '(') {}\n     \
+    \   constexpr S(long long close, long long open) : close(close), open(open) {}\n\
+    \        /**\n         * @brief \u6B63\u3057\u3044\u62EC\u5F27\u5217\u304B\n \
+    \        */\n        constexpr bool is_valid() const { return close == 0 && open\
+    \ == 0; }\n    };\n    static constexpr S op(const S& a, const S& b) {\n     \
+    \   if (a.open >= b.close) return S(a.close, a.open - b.close + b.open);\n   \
+    \     return S(a.close + b.close - a.open, b.open);\n    }\n    static constexpr\
+    \ S e() { return S(); }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\
+    \u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n\
+    \ * @tparam T \u5024\u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\
+    \u968F\u3059\u308B\u5024\u306E\u578B\n */\ntemplate <typename T, typename U =\
+    \ long long>\nstruct MinWith {\n    using S = std::pair<T, U>;\n    static constexpr\
+    \ S op(const S& a, const S& b) { return b.first < a.first ? b : a; }\n    static\
+    \ constexpr S e() { return {std::numeric_limits<T>::max(), U{}}; }\n};\n\n/**\n\
+    \ * @brief \u6700\u5927\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\
+    \u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\u306E\u578B\
+    \n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\
+    \u578B\n */\ntemplate <typename T, typename U = long long>\nstruct MaxWith {\n\
+    \    using S = std::pair<T, U>;\n    static constexpr S op(const S& a, const S&\
+    \ b) { return a.first < b.first ? b : a; }\n    static constexpr S e() { return\
+    \ {std::numeric_limits<T>::lowest(), U{}}; }\n};\n\n/**\n * @brief \u6700\u5C0F\
+    \u5024\u3068\u305D\u306E\u500B\u6570\n *\n * @tparam T \u5024\u306E\u578B\n *\
+    \ @tparam U \u500B\u6570\u306E\u578B\n */\ntemplate <typename T, typename U =\
+    \ long long>\nstruct MinCount {\n    using S = std::pair<T, U>;\n    static constexpr\
+    \ S op(const S& a, const S& b) {\n        if (a.first < b.first) return a;\n \
+    \       if (b.first < a.first) return b;\n        return {a.first, a.second +\
+    \ b.second};\n    }\n    static constexpr S e() { return {std::numeric_limits<T>::max(),\
+    \ U(0)}; }\n};\n\n/**\n * @brief \u6700\u5927\u5024\u3068\u305D\u306E\u500B\u6570\
     \n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u500B\u6570\u306E\u578B\n\
-    \ */\ntemplate <typename T, typename U = long long>\nstruct MinCount {\n    using\
+    \ */\ntemplate <typename T, typename U = long long>\nstruct MaxCount {\n    using\
     \ S = std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n\
-    \        if (a.first < b.first) return a;\n        if (b.first < a.first) return\
-    \ b;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
-    \ S e() { return {std::numeric_limits<T>::max(), U(0)}; }\n};\n\n/**\n * @brief\
-    \ \u6700\u5927\u5024\u3068\u305D\u306E\u500B\u6570\n *\n * @tparam T \u5024\u306E\
-    \u578B\n * @tparam U \u500B\u6570\u306E\u578B\n */\ntemplate <typename T, typename\
-    \ U = long long>\nstruct MaxCount {\n    using S = std::pair<T, U>;\n    static\
-    \ constexpr S op(const S& a, const S& b) {\n        if (a.first < b.first) return\
-    \ b;\n        if (b.first < a.first) return a;\n        return {a.first, a.second\
-    \ + b.second};\n    }\n    static constexpr S e() { return {std::numeric_limits<T>::lowest(),\
-    \ U(0)}; }\n};\n\n/**\n * @brief \u7A4D\u306E\u9806\u5E8F\u3092\u9006\u306B\u3057\
-    \u305F\u30E2\u30CE\u30A4\u30C9 op(a, b) = M::op(b, a)\n *\n * \u4F8B: SegTree<monoid::Reverse<monoid::Composite<mint>>>\
+    \        if (a.first < b.first) return b;\n        if (b.first < a.first) return\
+    \ a;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
+    \ S e() { return {std::numeric_limits<T>::lowest(), U(0)}; }\n};\n\n/**\n * @brief\
+    \ \u7A4D\u306E\u9806\u5E8F\u3092\u9006\u306B\u3057\u305F\u30E2\u30CE\u30A4\u30C9\
+    \ op(a, b) = M::op(b, a)\n *\n * \u4F8B: SegTree<monoid::Reverse<monoid::Composite<mint>>>\
     \ seg(v); \u306E\u533A\u9593 [l, r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x))\n *\n\
     \ * @tparam M \u3082\u3068\u306E\u30E2\u30CE\u30A4\u30C9\n */\ntemplate <typename\
     \ M>\nstruct Reverse {\n    using S = typename M::S;\n    M m;\n    constexpr\
@@ -196,7 +197,7 @@ data:
     \ Monoid(Op op, const S& e) : op_object(std::move(op)), identity(e) {}\n    constexpr\
     \ S op(const S& a, const S& b) const { return op_object(a, b); }\n    constexpr\
     \ S e() const { return identity; }\n};\ntemplate <typename Op, typename T>\nMonoid(Op,\
-    \ T) -> Monoid<T, Op>;\n#line 27 \"src/algebra/acted-monoid.hpp\"\n\nnamespace\
+    \ T) -> Monoid<T, Op>;\n#line 26 \"src/algebra/acted-monoid.hpp\"\n\nnamespace\
     \ internal_acted_monoid {\ntemplate <typename A, typename = void>\nstruct has_mapping_lr\
     \ : std::false_type {};\ntemplate <typename A>\nstruct has_mapping_lr<A, std::void_t<decltype(std::declval<const\
     \ A&>().mapping(std::declval<const typename A::F&>(), std::declval<const typename\
@@ -277,14 +278,14 @@ data:
     \ f ? f : g; }\n    static constexpr F id() { return std::nullopt; }\n};\n\n/**\n\
     \ * @brief \u533A\u9593\u52A0\u7B97\u3001\u533A\u9593\u6700\u5C0F\u5024\u3068\u305D\
     \u306E\u4F4D\u7F6E (monoid::MinWith)\n */\ntemplate <typename T, typename U =\
-    \ int>\nstruct AddMinWith : monoid::MinWith<T, U> {\n    using S = std::pair<T,\
+    \ long long>\nstruct AddMinWith : monoid::MinWith<T, U> {\n    using S = std::pair<T,\
     \ U>;\n    using F = T;\n    static constexpr S mapping(const F& f, const S& x)\
     \ { return {x.first + f, x.second}; }\n    static constexpr F composition(const\
     \ F& f, const F& g) { return f + g; }\n    static constexpr F id() { return F(0);\
     \ }\n};\n\n/**\n * @brief \u533A\u9593\u52A0\u7B97\u3001\u533A\u9593\u6700\u5927\
     \u5024\u3068\u305D\u306E\u4F4D\u7F6E (monoid::MaxWith)\n */\ntemplate <typename\
-    \ T, typename U = int>\nstruct AddMaxWith : monoid::MaxWith<T, U> {\n    using\
-    \ S = std::pair<T, U>;\n    using F = T;\n    static constexpr S mapping(const\
+    \ T, typename U = long long>\nstruct AddMaxWith : monoid::MaxWith<T, U> {\n  \
+    \  using S = std::pair<T, U>;\n    using F = T;\n    static constexpr S mapping(const\
     \ F& f, const S& x) { return {x.first + f, x.second}; }\n    static constexpr\
     \ F composition(const F& f, const F& g) { return f + g; }\n    static constexpr\
     \ F id() { return F(0); }\n};\n\n/**\n * @brief \u533A\u9593\u52A0\u7B97\u3001\
@@ -306,8 +307,8 @@ data:
     \ <typename T, int K>\nstruct AddPowerSum {\n    struct S {\n        std::array<T,\
     \ K + 1> val;\n        constexpr S() : val{} {}\n        constexpr S(const T&\
     \ x) : val{} {\n            val[0] = T(1);\n            for (int i = 1; i <= K;\
-    \ i++) val[i] = val[i - 1] * x;\n        }\n        constexpr const T& operator[](std::size_t\
-    \ i) const { return val[i]; }\n    };\n    using F = T;\n    static constexpr\
+    \ i++) val[i] = val[i - 1] * x;\n        }\n        constexpr const T& operator[](long\
+    \ long i) const { return val[i]; }\n    };\n    using F = T;\n    static constexpr\
     \ S op(const S& a, const S& b) {\n        S ret;\n        for (int i = 0; i <=\
     \ K; i++) ret.val[i] = a.val[i] + b.val[i];\n        return ret;\n    }\n    static\
     \ constexpr S e() { return S(); }\n    static S mapping(const F& f, const S& x)\
@@ -362,42 +363,43 @@ data:
     )\u3092\u306A\u3057\u3001inv \u3092\u6301\u3064\u5FC5\u8981\u304C\u3042\u308B\
     \ \u5024\u306E\u30E2\u30CE\u30A4\u30C9\u306E\u6F14\u7B97\u306F\u4F7F\u308F\u306A\
     \u3044\n */\ntemplate <typename A>\nclass Imos {\n   public:\n    using S = typename\
-    \ A::S;\n    using F = typename A::F;\n\n   private:\n    A a;\n    int _n, t;\n\
-    \    std::vector<S> data;\n    std::vector<F> lazy;\n\n    S mapping(const F&\
-    \ f, const S& x, int k) const { return acted_monoid::apply_mapping(a, f, x, k,\
-    \ k + 1); }\n    F composition(const F& f, const F& g) const { return a.composition(f,\
-    \ g); }\n    F id() const { return a.id(); }\n    F inv(const F& f) const { return\
-    \ a.inv(f); }\n\n   public:\n    /**\n     * @param n \u8981\u7D20\u6570 \u5404\
-    \u8981\u7D20\u306F S() \u3067\u521D\u671F\u5316\u3059\u308B\n     * @param a \u4F5C\
-    \u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n     */\n    explicit Imos(int\
-    \ n = 0, A a = A()) : Imos(n, S(), std::move(a)) {}\n    /**\n     * @param n\
-    \ \u8981\u7D20\u6570\n     * @param value \u5404\u8981\u7D20\u306E\u521D\u671F\
-    \u5024\n     * @param a \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\
-    \n     */\n    Imos(int n, const S& value, A a = A()) : a(std::move(a)), _n(n),\
-    \ t(n), data(n, value), lazy(n, this->a.id()) {}\n    /**\n     * @param value\
-    \ \u5404\u8981\u7D20\u306E\u521D\u671F\u5024\n     * @param a \u4F5C\u7528\u7D20\
-    \u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n     */\n    explicit Imos(const std::vector<S>&\
-    \ value, A a = A()) : a(std::move(a)), _n(value.size()), t(value.size()), data(value),\
-    \ lazy(value.size(), this->a.id()) {}\n\n    /**\n     * @brief 1\u70B9\u4F5C\u7528\
-    \n     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * @param f \u4F5C\
-    \u7528\u7D20\n     */\n    void apply(int k, const F& f) {\n        assert(0 <=\
-    \ k && k < _n);\n        data[k] = mapping(f, data[k], k);\n    }\n    /**\n \
-    \    * @brief [l, r)\u306E\u533A\u9593\u306E\u5024\u306Bf\u3092\u4F5C\u7528\u3055\
-    \u305B\u308B\n     * @param l \u534A\u958B\u533A\u9593\u306E\u958B\u59CB\n   \
-    \  * @param r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF 0<=l<=r<=n\n     * @param\
-    \ f \u4F5C\u7528\u7D20\n     */\n    void apply(int l, int r, const F& f) {\n\
-    \        assert(0 <= l && l <= r && r <= _n);\n        if (l < _n) lazy[l] = composition(lazy[l],\
+    \ A::S;\n    using F = typename A::F;\n\n   private:\n    A a;\n    long long\
+    \ _n, t;\n    std::vector<S> data;\n    std::vector<F> lazy;\n\n    S mapping(const\
+    \ F& f, const S& x, long long k) const { return acted_monoid::apply_mapping(a,\
+    \ f, x, k, k + 1); }\n    F composition(const F& f, const F& g) const { return\
+    \ a.composition(f, g); }\n    F id() const { return a.id(); }\n    F inv(const\
+    \ F& f) const { return a.inv(f); }\n\n   public:\n    /**\n     * @param n \u8981\
+    \u7D20\u6570 \u5404\u8981\u7D20\u306F S() \u3067\u521D\u671F\u5316\u3059\u308B\
+    \n     * @param a \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n   \
+    \  */\n    explicit Imos(long long n = 0, A a = A()) : Imos(n, S(), std::move(a))\
+    \ {}\n    /**\n     * @param n \u8981\u7D20\u6570\n     * @param value \u5404\u8981\
+    \u7D20\u306E\u521D\u671F\u5024\n     * @param a \u4F5C\u7528\u7D20\u4ED8\u304D\
+    \u30E2\u30CE\u30A4\u30C9\n     */\n    Imos(long long n, const S& value, A a =\
+    \ A()) : a(std::move(a)), _n(n), t(n), data(n, value), lazy(n, this->a.id()) {}\n\
+    \    /**\n     * @param value \u5404\u8981\u7D20\u306E\u521D\u671F\u5024\n   \
+    \  * @param a \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n     */\n\
+    \    explicit Imos(const std::vector<S>& value, A a = A()) : a(std::move(a)),\
+    \ _n(value.size()), t(value.size()), data(value), lazy(value.size(), this->a.id())\
+    \ {}\n\n    /**\n     * @brief 1\u70B9\u4F5C\u7528\n     * @param k \u30A4\u30F3\
+    \u30C7\u30C3\u30AF\u30B9\n     * @param f \u4F5C\u7528\u7D20\n     */\n    void\
+    \ apply(long long k, const F& f) {\n        assert(0 <= k && k < _n);\n      \
+    \  data[k] = mapping(f, data[k], k);\n    }\n    /**\n     * @brief [l, r)\u306E\
+    \u533A\u9593\u306E\u5024\u306Bf\u3092\u4F5C\u7528\u3055\u305B\u308B\n     * @param\
+    \ l \u534A\u958B\u533A\u9593\u306E\u958B\u59CB\n     * @param r \u534A\u958B\u533A\
+    \u9593\u306E\u7D42\u7AEF 0<=l<=r<=n\n     * @param f \u4F5C\u7528\u7D20\n    \
+    \ */\n    void apply(long long l, long long r, const F& f) {\n        assert(0\
+    \ <= l && l <= r && r <= _n);\n        if (l < _n) lazy[l] = composition(lazy[l],\
     \ f);\n        if (r < _n) lazy[r] = composition(lazy[r], inv(f));\n        if\
     \ (t > l) t = l;\n    }\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\
     \u8981\u7D20\u306E\u5024\u3092\u8FD4\u3059\n     * @param k \u30A4\u30F3\u30C7\
-    \u30C3\u30AF\u30B9\n     * @return const S& \u5024\n     */\n    const S& get(int\
-    \ k) {\n        assert(0 <= k && k < _n);\n        while (t <= k) {\n        \
-    \    data[t] = mapping(lazy[t], data[t], t);\n            if (t + 1 < _n) {\n\
-    \                lazy[t + 1] = composition(lazy[t], lazy[t + 1]);\n          \
-    \  }\n            lazy[t] = id();\n            t++;\n        }\n        return\
-    \ data[k];\n    }\n};\n\ntemplate <typename A>\nImos(int, A) -> Imos<A>;\ntemplate\
-    \ <typename A>\nImos(int, typename A::S, A) -> Imos<A>;\ntemplate <typename A>\n\
-    Imos(std::vector<typename A::S>, A) -> Imos<A>;\n#line 2 \"src/data_structures/lazy-segtree.hpp\"\
+    \u30C3\u30AF\u30B9\n     * @return const S& \u5024\n     */\n    const S& get(long\
+    \ long k) {\n        assert(0 <= k && k < _n);\n        while (t <= k) {\n   \
+    \         data[t] = mapping(lazy[t], data[t], t);\n            if (t + 1 < _n)\
+    \ {\n                lazy[t + 1] = composition(lazy[t], lazy[t + 1]);\n      \
+    \      }\n            lazy[t] = id();\n            t++;\n        }\n        return\
+    \ data[k];\n    }\n};\n\ntemplate <typename A>\nImos(long long, A) -> Imos<A>;\n\
+    template <typename A>\nImos(long long, typename A::S, A) -> Imos<A>;\ntemplate\
+    \ <typename A>\nImos(std::vector<typename A::S>, A) -> Imos<A>;\n#line 2 \"src/data_structures/lazy-segtree.hpp\"\
     \n\n/**\n * @file lazy-segtree.hpp\n * @brief \u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\
     \u30E1\u30F3\u30C8\u6728\n */\n\n#line 13 \"src/data_structures/lazy-segtree.hpp\"\
     \n\n#line 15 \"src/data_structures/lazy-segtree.hpp\"\n\n/**\n * @brief \u9045\
@@ -407,21 +409,22 @@ data:
     \   public:\n    using S = typename A::S;\n    using F = typename A::F;\n\n  \
     \ private:\n    A a;\n    S op(const S& x, const S& y) const { return a.op(x,\
     \ y); }\n    S e() const { return a.e(); }\n    S mapping(const F& f, const S&\
-    \ x, int l, int r) const { return acted_monoid::apply_mapping(a, f, x, l, r);\
-    \ }\n    F composition(const F& f, const F& g) const { return a.composition(f,\
-    \ g); }\n    F id() const { return a.id(); }\n\n    int n, sz, height;\n    std::vector<S>\
-    \ data;\n    std::vector<F> lazy;\n\n    void update(int k) { data[k] = op(data[2\
-    \ * k], data[2 * k + 1]); }\n    void apply_node(int k, int h, const F& f) {\n\
-    \        // \u672B\u5C3E\u306E\u8981\u7D20\u6570\u3092 2 \u3079\u304D\u306B\u305D\
-    \u308D\u3048\u308B\u305F\u3081\u306E\u4F59\u308A\u306E\u90E8\u5206\u306F\u533A\
-    \u9593\u306B\u542B\u3081\u306A\u3044\n        int l = std::min((k << h) & (sz\
-    \ - 1), n);\n        int r = std::min(((k << h) & (sz - 1)) + (1 << h), n);\n\
-    \        data[k] = mapping(f, data[k], l, r);\n        if (k < sz) lazy[k] = composition(f,\
-    \ lazy[k]);\n    }\n    void push(int k, int h) {\n        apply_node(2 * k, h\
-    \ - 1, lazy[k]);\n        apply_node(2 * k + 1, h - 1, lazy[k]);\n        lazy[k]\
-    \ = id();\n    }\n\n    class LazySegTreeReference {\n        LazySegTree& segtree;\n\
-    \        int k;\n\n       public:\n        LazySegTreeReference(LazySegTree& segtree,\
-    \ int k) : segtree(segtree), k(k) {}\n        LazySegTreeReference& operator=(const\
+    \ x, long long l, long long r) const { return acted_monoid::apply_mapping(a, f,\
+    \ x, l, r); }\n    F composition(const F& f, const F& g) const { return a.composition(f,\
+    \ g); }\n    F id() const { return a.id(); }\n\n    long long n, sz;\n    int\
+    \ height;\n    std::vector<S> data;\n    std::vector<F> lazy;\n\n    void update(long\
+    \ long k) { data[k] = op(data[2 * k], data[2 * k + 1]); }\n    void apply_node(long\
+    \ long k, int h, const F& f) {\n        // \u672B\u5C3E\u306E\u8981\u7D20\u6570\
+    \u3092 2 \u3079\u304D\u306B\u305D\u308D\u3048\u308B\u305F\u3081\u306E\u4F59\u308A\
+    \u306E\u90E8\u5206\u306F\u533A\u9593\u306B\u542B\u3081\u306A\u3044\n        long\
+    \ long l = std::min((k << h) & (sz - 1), n);\n        long long r = std::min(((k\
+    \ << h) & (sz - 1)) + (1LL << h), n);\n        data[k] = mapping(f, data[k], l,\
+    \ r);\n        if (k < sz) lazy[k] = composition(f, lazy[k]);\n    }\n    void\
+    \ push(long long k, int h) {\n        apply_node(2 * k, h - 1, lazy[k]);\n   \
+    \     apply_node(2 * k + 1, h - 1, lazy[k]);\n        lazy[k] = id();\n    }\n\
+    \n    class LazySegTreeReference {\n        LazySegTree& segtree;\n        long\
+    \ long k;\n\n       public:\n        LazySegTreeReference(LazySegTree& segtree,\
+    \ long long k) : segtree(segtree), k(k) {}\n        LazySegTreeReference& operator=(const\
     \ S& x) {\n            segtree.set(k, x);\n            return *this;\n       \
     \ }\n        operator S() { return segtree.get(k); }\n    };\n\n    void construct_data()\
     \ {\n        sz = 1;\n        height = 0;\n        while (sz < n) {\n        \
@@ -429,109 +432,111 @@ data:
     \ e());\n        lazy.assign(sz * 2, id());\n    }\n\n   public:\n    /**\n  \
     \   * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @param\
     \ n \u8981\u7D20\u6570\n     * @param a \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\
-    \u30A4\u30C9\n     */\n    explicit LazySegTree(int n = 0, A a = A()) : a(std::move(a)),\
-    \ n(n) {\n        construct_data();\n    }\n    /**\n     * @brief \u30B3\u30F3\
-    \u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @param v \u521D\u671F\u306E\u8981\
-    \u7D20\n     * @param a \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\
-    \n     */\n    explicit LazySegTree(const std::vector<S>& v, A a = A()) : LazySegTree(v.size(),\
-    \ std::move(a)) {\n        for (int i = 0; i < n; i++) data[sz + i] = v[i];\n\
-    \        for (int i = sz - 1; i > 0; i--) update(i);\n    }\n\n    /**\n     *\
-    \ @brief \u8981\u7D20\u6570\u3092\u8FD4\u3059\n     */\n    int size() const {\
-    \ return n; }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\
-    \u306E\u5024\u3092\u8FD4\u3059\n     *\n     * @param k \u30A4\u30F3\u30C7\u30C3\
-    \u30AF\u30B9\n     * @return S \u5024\n     */\n    S get(int k) {\n        assert(0\
-    \ <= k && k < n);\n        k += sz;\n        for (int h = height; h > 0; h--)\
-    \ {\n            push(k >> h, h);\n        }\n        return data[k];\n    }\n\
-    \    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u3078\u306E\
-    \u53C2\u7167\u3092\u8FD4\u3059\n     *\n     * @param k\n     * @return SegTreeReference\
-    \ \u8981\u7D20\u3078\u306E\u53C2\u7167 \u4EE3\u5165\u3055\u308C\u308B\u3068set()\u304C\
-    \u547C\u3070\u308C\u308B\n     */\n    LazySegTreeReference operator[](int k)\
-    \ { return LazySegTreeReference(*this, k); }\n\n    /**\n     * @brief \u5185\u5BB9\
-    \u3092\u51FA\u529B\u3059\u308B\n     *\n     * @tparam CharT \u51FA\u529B\u30B9\
-    \u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n     * @tparam Traits \u51FA\
-    \u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\u6027\n   \
-    \  * @param os \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\n     * @param rhs \u30BB\
-    \u30B0\u30E1\u30F3\u30C8\u6728\n     * @return std::basic_ostream<CharT, Traits>&\
-    \ \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\n     */\n    template <class CharT,\
-    \ class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
-    \ Traits>& os, LazySegTree& rhs) {\n        for (int i = 0; i < rhs.n; i++) {\n\
-    \            if (i != 0) os << CharT(' ');\n            os << rhs[i];\n      \
-    \  }\n        return os;\n    }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\
-    \u305F\u8981\u7D20\u306E\u5024\u3092x\u306B\u66F4\u65B0\u3059\u308B\n     *\n\
-    \     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * @param x \u65B0\u3057\
-    \u3044\u5024\n     */\n    void set(int k, const S& x) {\n        assert(0 <=\
-    \ k && k < n);\n        k += sz;\n        for (int h = height; h > 0; h--) {\n\
-    \            push(k >> h, h);\n        }\n        data[k] = x;\n        while\
-    \ (k >>= 1) update(k);\n    }\n\n    /**\n     * @brief [l, r)\u306E\u533A\u9593\
-    \u306E\u7DCF\u7A4D\u3092\u8FD4\u3059\n     *\n     * @param l \u534A\u958B\u533A\
-    \u9593\u306E\u958B\u59CB\n     * @param r \u534A\u958B\u533A\u9593\u306E\u7D42\
-    \u7AEF 0<=l<=r<=n\n     * @return S \u7DCF\u7A4D\n     */\n    S prod(int l, int\
-    \ r) {\n        assert(0 <= l && l <= r && r <= n);\n        l += sz;\n      \
-    \  r += sz;\n        for (int h = height; h > 0; h--) {\n            if (((l >>\
-    \ h) << h) != l) push(l >> h, h);\n            if (((r >> h) << h) != r) push(r\
-    \ >> h, h);\n        }\n        S left_prod = e(), right_prod = e();\n       \
-    \ while (l < r) {\n            if (l & 1) left_prod = op(left_prod, data[l++]);\n\
-    \            if (r & 1) right_prod = op(data[--r], right_prod);\n            l\
-    \ >>= 1;\n            r >>= 1;\n        }\n        return op(left_prod, right_prod);\n\
-    \    }\n    /**\n     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\u306E\u7DCF\
-    \u7A4D\u3092\u8FD4\u3059\n     *\n     * @return S \u7DCF\u7A4D\n     */\n   \
-    \ S all_prod() const { return data[1]; }\n\n    /**\n     * @brief \u6307\u5B9A\
-    \u3055\u308C\u305F\u8981\u7D20\u306E\u5024\u306Bf\u3092\u4F5C\u7528\u3055\u305B\
-    \u308B\n     *\n     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * @param\
-    \ f \u4F5C\u7528\u7D20\n     */\n    void apply(int k, const F& f) {\n       \
+    \u30A4\u30C9\n     */\n    explicit LazySegTree(long long n = 0, A a = A()) :\
+    \ a(std::move(a)), n(n) {\n        construct_data();\n    }\n    /**\n     * @brief\
+    \ \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @param v \u521D\u671F\
+    \u306E\u8981\u7D20\n     * @param a \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\
+    \u30A4\u30C9\n     */\n    explicit LazySegTree(const std::vector<S>& v, A a =\
+    \ A()) : LazySegTree(v.size(), std::move(a)) {\n        for (long long i = 0;\
+    \ i < n; i++) data[sz + i] = v[i];\n        for (long long i = sz - 1; i > 0;\
+    \ i--) update(i);\n    }\n\n    /**\n     * @brief \u8981\u7D20\u6570\u3092\u8FD4\
+    \u3059\n     */\n    long long size() const { return n; }\n\n    /**\n     * @brief\
+    \ \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\u5024\u3092\u8FD4\u3059\n \
+    \    *\n     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * @return S\
+    \ \u5024\n     */\n    S get(long long k) {\n        assert(0 <= k && k < n);\n\
+    \        k += sz;\n        for (int h = height; h > 0; h--) {\n            push(k\
+    \ >> h, h);\n        }\n        return data[k];\n    }\n    /**\n     * @brief\
+    \ \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u3078\u306E\u53C2\u7167\u3092\u8FD4\
+    \u3059\n     *\n     * @param k\n     * @return SegTreeReference \u8981\u7D20\u3078\
+    \u306E\u53C2\u7167 \u4EE3\u5165\u3055\u308C\u308B\u3068set()\u304C\u547C\u3070\
+    \u308C\u308B\n     */\n    LazySegTreeReference operator[](long long k) { return\
+    \ LazySegTreeReference(*this, k); }\n\n    /**\n     * @brief \u5185\u5BB9\u3092\
+    \u51FA\u529B\u3059\u308B\n     *\n     * @tparam CharT \u51FA\u529B\u30B9\u30C8\
+    \u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n     * @tparam Traits \u51FA\u529B\
+    \u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\u6027\n     * @param\
+    \ os \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\n     * @param rhs \u30BB\u30B0\
+    \u30E1\u30F3\u30C8\u6728\n     * @return std::basic_ostream<CharT, Traits>& \u51FA\
+    \u529B\u30B9\u30C8\u30EA\u30FC\u30E0\n     */\n    template <class CharT, class\
+    \ Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \ Traits>& os, LazySegTree& rhs) {\n        for (long long i = 0; i < rhs.n; i++)\
+    \ {\n            if (i != 0) os << CharT(' ');\n            os << rhs[i];\n  \
+    \      }\n        return os;\n    }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\
+    \u308C\u305F\u8981\u7D20\u306E\u5024\u3092x\u306B\u66F4\u65B0\u3059\u308B\n  \
+    \   *\n     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * @param x \u65B0\
+    \u3057\u3044\u5024\n     */\n    void set(long long k, const S& x) {\n       \
     \ assert(0 <= k && k < n);\n        k += sz;\n        for (int h = height; h >\
-    \ 0; h--) {\n            push(k >> h, h);\n        }\n        data[k] = mapping(f,\
-    \ data[k], k - sz, k - sz + 1);\n        while (k >>= 1) update(k);\n    }\n \
-    \   /**\n     * @brief [l, r)\u306E\u533A\u9593\u306E\u5024\u306Bx\u3092\u4F5C\
-    \u7528\u3055\u305B\u308B\n     *\n     * @param l \u534A\u958B\u533A\u9593\u306E\
-    \u958B\u59CB\n     * @param r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF 0<=l<=r<=n\n\
-    \     * @param f \u4F5C\u7528\u7D20\n     */\n    void apply(int l, int r, const\
-    \ F& f) {\n        assert(0 <= l && l <= r && r <= n);\n        if (l == r) return;\n\
-    \        l += sz;\n        r += sz;\n        for (int h = height; h > 0; h--)\
-    \ {\n            if (((l >> h) << h) != l) push(l >> h, h);\n            if (((r\
-    \ >> h) << h) != r) push(r >> h, h);\n        }\n        {\n            int l2\
-    \ = l, r2 = r;\n            int h = 0;\n            while (l < r) {\n        \
-    \        if (l & 1) apply_node(l++, h, f);\n                if (r & 1) apply_node(--r,\
-    \ h, f);\n                l >>= 1;\n                r >>= 1;\n               \
-    \ h++;\n            }\n            l = l2;\n            r = r2;\n        }\n \
-    \       for (int h = 1; h <= height; h++) {\n            if (((l >> h) << h) !=\
-    \ l) update(l >> h);\n            if (((r >> h) << h) != r) update((r - 1) >>\
-    \ h);\n        }\n    }\n\n    /**\n     * @brief (r = l or g(prod([l, r))) =\
-    \ true) and (r = n or g(prod([l, r+1))) = false)\u3068\u306A\u308Br\u3092\u8FD4\
-    \u3059\n     * g\u304C\u5358\u8ABF\u306A\u3089\u3001g(prod([l, r))) = true\u3068\
-    \u306A\u308B\u6700\u5927\u306Er\n     *\n     * @tparam G\n     * @param l \u534A\
-    \u958B\u533A\u9593\u306E\u958B\u59CB 0<=l<=n\n     * @param g \u5224\u5B9A\u95A2\
-    \u6570 g(e) = true\n     * @return int\n     */\n    template <typename G>\n \
-    \   int max_right(int l, G g) {\n        assert(g(e()));\n        assert(0 <=\
-    \ l && l <= n);\n        if (l == n) return n;\n        l += sz;\n        for\
-    \ (int h = height; h > 0; h--) {\n            push(l >> h, h);\n        }\n  \
-    \      int h = 0;\n        while (l % 2 == 0) {\n            l >>= 1;\n      \
-    \      h++;\n        }\n        S sum = e();\n        while (g(op(sum, data[l])))\
-    \ {\n            sum = op(sum, data[l]);\n            l++;\n            while\
-    \ (l % 2 == 0) {\n                l >>= 1;\n                h++;\n           \
-    \ }\n            if (l == 1) return n;\n        }\n        while (l < sz) {\n\
-    \            push(l, h);\n            if (!g(op(sum, data[l * 2]))) {\n      \
-    \          l = l * 2;\n            } else {\n                sum = op(sum, data[l\
-    \ * 2]);\n                l = l * 2 + 1;\n            }\n            h--;\n  \
-    \      }\n        return l - sz;\n    }\n    /**\n     * @brief (l = 0 or g(prod([l,\
-    \ r))) = true) and (l = r or g(prod([l-1, r))) = false)\u3068\u306A\u308Bl\u3092\
-    \u8FD4\u3059\n     * g\u304C\u5358\u8ABF\u306A\u3089\u3001g(prod([l, r))) = true\u3068\
-    \u306A\u308B\u6700\u5C0F\u306El\n     *\n     * @tparam G\n     * @param r \u534A\
-    \u958B\u533A\u9593\u306E\u7D42\u7AEF 0<=r<=n\n     * @param g \u5224\u5B9A\u95A2\
-    \u6570 g(e) = true\n     * @return int\n     */\n    template <typename G>\n \
-    \   int min_left(int r, G g) {\n        assert(g(e()));\n        assert(0 <= r\
-    \ && r <= n);\n        if (r == 0) return 0;\n        r += sz;\n        for (int\
-    \ h = height; h > 0; h--) {\n            push((r - 1) >> h, h);\n        }\n \
-    \       int h = 0;\n        S sum = e();\n        do {\n            r--;\n   \
-    \         while (r > 1 && r % 2 == 1) {\n                r >>= 1;\n          \
-    \      h++;\n            }\n            if (!g(op(data[r], sum))) {\n        \
-    \        while (r < sz) {\n                    push(r, h);\n                 \
-    \   r = r * 2 + 1;\n                    h--;\n                    if (g(op(data[r],\
+    \ 0; h--) {\n            push(k >> h, h);\n        }\n        data[k] = x;\n \
+    \       while (k >>= 1) update(k);\n    }\n\n    /**\n     * @brief [l, r)\u306E\
+    \u533A\u9593\u306E\u7DCF\u7A4D\u3092\u8FD4\u3059\n     *\n     * @param l \u534A\
+    \u958B\u533A\u9593\u306E\u958B\u59CB\n     * @param r \u534A\u958B\u533A\u9593\
+    \u306E\u7D42\u7AEF 0<=l<=r<=n\n     * @return S \u7DCF\u7A4D\n     */\n    S prod(long\
+    \ long l, long long r) {\n        assert(0 <= l && l <= r && r <= n);\n      \
+    \  l += sz;\n        r += sz;\n        for (int h = height; h > 0; h--) {\n  \
+    \          if (((l >> h) << h) != l) push(l >> h, h);\n            if (((r >>\
+    \ h) << h) != r) push(r >> h, h);\n        }\n        S left_prod = e(), right_prod\
+    \ = e();\n        while (l < r) {\n            if (l & 1) left_prod = op(left_prod,\
+    \ data[l++]);\n            if (r & 1) right_prod = op(data[--r], right_prod);\n\
+    \            l >>= 1;\n            r >>= 1;\n        }\n        return op(left_prod,\
+    \ right_prod);\n    }\n    /**\n     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\
+    \u306E\u7DCF\u7A4D\u3092\u8FD4\u3059\n     *\n     * @return S \u7DCF\u7A4D\n\
+    \     */\n    S all_prod() const { return data[1]; }\n\n    /**\n     * @brief\
+    \ \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\u5024\u306Bf\u3092\u4F5C\u7528\
+    \u3055\u305B\u308B\n     *\n     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\
+    \n     * @param f \u4F5C\u7528\u7D20\n     */\n    void apply(long long k, const\
+    \ F& f) {\n        assert(0 <= k && k < n);\n        k += sz;\n        for (int\
+    \ h = height; h > 0; h--) {\n            push(k >> h, h);\n        }\n       \
+    \ data[k] = mapping(f, data[k], k - sz, k - sz + 1);\n        while (k >>= 1)\
+    \ update(k);\n    }\n    /**\n     * @brief [l, r)\u306E\u533A\u9593\u306E\u5024\
+    \u306Bx\u3092\u4F5C\u7528\u3055\u305B\u308B\n     *\n     * @param l \u534A\u958B\
+    \u533A\u9593\u306E\u958B\u59CB\n     * @param r \u534A\u958B\u533A\u9593\u306E\
+    \u7D42\u7AEF 0<=l<=r<=n\n     * @param f \u4F5C\u7528\u7D20\n     */\n    void\
+    \ apply(long long l, long long r, const F& f) {\n        assert(0 <= l && l <=\
+    \ r && r <= n);\n        if (l == r) return;\n        l += sz;\n        r += sz;\n\
+    \        for (int h = height; h > 0; h--) {\n            if (((l >> h) << h) !=\
+    \ l) push(l >> h, h);\n            if (((r >> h) << h) != r) push(r >> h, h);\n\
+    \        }\n        {\n            long long l2 = l, r2 = r;\n            int\
+    \ h = 0;\n            while (l < r) {\n                if (l & 1) apply_node(l++,\
+    \ h, f);\n                if (r & 1) apply_node(--r, h, f);\n                l\
+    \ >>= 1;\n                r >>= 1;\n                h++;\n            }\n    \
+    \        l = l2;\n            r = r2;\n        }\n        for (int h = 1; h <=\
+    \ height; h++) {\n            if (((l >> h) << h) != l) update(l >> h);\n    \
+    \        if (((r >> h) << h) != r) update((r - 1) >> h);\n        }\n    }\n\n\
+    \    /**\n     * @brief (r = l or g(prod([l, r))) = true) and (r = n or g(prod([l,\
+    \ r+1))) = false)\u3068\u306A\u308Br\u3092\u8FD4\u3059\n     * g\u304C\u5358\u8ABF\
+    \u306A\u3089\u3001g(prod([l, r))) = true\u3068\u306A\u308B\u6700\u5927\u306Er\n\
+    \     *\n     * @tparam G\n     * @param l \u534A\u958B\u533A\u9593\u306E\u958B\
+    \u59CB 0<=l<=n\n     * @param g \u5224\u5B9A\u95A2\u6570 g(e) = true\n     * @return\
+    \ long long\n     */\n    template <typename G>\n    long long max_right(long\
+    \ long l, G g) {\n        assert(g(e()));\n        assert(0 <= l && l <= n);\n\
+    \        if (l == n) return n;\n        l += sz;\n        for (int h = height;\
+    \ h > 0; h--) {\n            push(l >> h, h);\n        }\n        int h = 0;\n\
+    \        while (l % 2 == 0) {\n            l >>= 1;\n            h++;\n      \
+    \  }\n        S sum = e();\n        while (g(op(sum, data[l]))) {\n          \
+    \  sum = op(sum, data[l]);\n            l++;\n            while (l % 2 == 0) {\n\
+    \                l >>= 1;\n                h++;\n            }\n            if\
+    \ (l == 1) return n;\n        }\n        while (l < sz) {\n            push(l,\
+    \ h);\n            if (!g(op(sum, data[l * 2]))) {\n                l = l * 2;\n\
+    \            } else {\n                sum = op(sum, data[l * 2]);\n         \
+    \       l = l * 2 + 1;\n            }\n            h--;\n        }\n        return\
+    \ l - sz;\n    }\n    /**\n     * @brief (l = 0 or g(prod([l, r))) = true) and\
+    \ (l = r or g(prod([l-1, r))) = false)\u3068\u306A\u308Bl\u3092\u8FD4\u3059\n\
+    \     * g\u304C\u5358\u8ABF\u306A\u3089\u3001g(prod([l, r))) = true\u3068\u306A\
+    \u308B\u6700\u5C0F\u306El\n     *\n     * @tparam G\n     * @param r \u534A\u958B\
+    \u533A\u9593\u306E\u7D42\u7AEF 0<=r<=n\n     * @param g \u5224\u5B9A\u95A2\u6570\
+    \ g(e) = true\n     * @return long long\n     */\n    template <typename G>\n\
+    \    long long min_left(long long r, G g) {\n        assert(g(e()));\n       \
+    \ assert(0 <= r && r <= n);\n        if (r == 0) return 0;\n        r += sz;\n\
+    \        for (int h = height; h > 0; h--) {\n            push((r - 1) >> h, h);\n\
+    \        }\n        int h = 0;\n        S sum = e();\n        do {\n         \
+    \   r--;\n            while (r > 1 && r % 2 == 1) {\n                r >>= 1;\n\
+    \                h++;\n            }\n            if (!g(op(data[r], sum))) {\n\
+    \                while (r < sz) {\n                    push(r, h);\n         \
+    \           r = r * 2 + 1;\n                    h--;\n                    if (g(op(data[r],\
     \ sum))) {\n                        sum = op(data[r], sum);\n                \
     \        r--;\n                    }\n                }\n                return\
     \ r + 1 - sz;\n            }\n            sum = op(data[r], sum);\n        } while\
-    \ ((r & -r) != r);\n        return 0;\n    }\n};\n\ntemplate <typename A>\nLazySegTree(int,\
-    \ A) -> LazySegTree<A>;\ntemplate <typename A>\nLazySegTree(std::vector<typename\
+    \ ((r & -r) != r);\n        return 0;\n    }\n};\n\ntemplate <typename A>\nLazySegTree(long\
+    \ long, A) -> LazySegTree<A>;\ntemplate <typename A>\nLazySegTree(std::vector<typename\
     \ A::S>, A) -> LazySegTree<A>;\n\n/**\n * @brief \u533A\u9593\u6700\u5C0F\u5024\
     \u66F4\u65B0\u3001\u533A\u9593\u6700\u5C0F\u5024\n *\n * @tparam S \u578B\n */\n\
     template <typename S>\nusing RChminMinQ = LazySegTree<acted_monoid::ChminMin<S>>;\n\
@@ -1062,7 +1067,7 @@ data:
   isVerificationFile: true
   path: test/unittest/acted-monoid.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 02:41:03+09:00'
+  timestamp: '2026-10-15 07:27:48+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/acted-monoid.test.cpp

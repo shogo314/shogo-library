@@ -97,15 +97,15 @@ data:
     \   template <typename... Args>\n    constexpr Vector(Args... args) noexcept :\
     \ v{args...} {}\n\n    /**\n     * @brief i\u756A\u76EE\u306E\u6210\u5206\u3092\
     \u8FD4\u3059\n     *\n     * @param i\n     * @return T&\n     */\n    constexpr\
-    \ T& operator[](int i) noexcept {\n        return v[i];\n    }\n    /**\n    \
-    \ * @brief i\u756A\u76EE\u306E\u6210\u5206\u3092\u8FD4\u3059\n     *\n     * @param\
-    \ i\n     * @return T&\n     */\n    constexpr const T& operator[](int i) const\
-    \ noexcept {\n        return v[i];\n    }\n\n    /**\n     * @brief \u52A0\u7B97\
-    \u4EE3\u5165\u6F14\u7B97\u5B50\n     *\n     * @param rhs\n     * @return Vector&\n\
-    \     */\n    constexpr Vector& operator+=(const Vector& rhs) noexcept {\n   \
-    \     for (int i = 0; i < Dim; i++) v[i] += rhs[i];\n        return *this;\n \
-    \   }\n    /**\n     * @brief \u6E1B\u7B97\u4EE3\u5165\u6F14\u7B97\u5B50\n   \
-    \  *\n     * @param rhs\n     * @return Vector&\n     */\n    constexpr Vector&\
+    \ T& operator[](long long i) noexcept {\n        return v[i];\n    }\n    /**\n\
+    \     * @brief i\u756A\u76EE\u306E\u6210\u5206\u3092\u8FD4\u3059\n     *\n   \
+    \  * @param i\n     * @return T&\n     */\n    constexpr const T& operator[](long\
+    \ long i) const noexcept {\n        return v[i];\n    }\n\n    /**\n     * @brief\
+    \ \u52A0\u7B97\u4EE3\u5165\u6F14\u7B97\u5B50\n     *\n     * @param rhs\n    \
+    \ * @return Vector&\n     */\n    constexpr Vector& operator+=(const Vector& rhs)\
+    \ noexcept {\n        for (int i = 0; i < Dim; i++) v[i] += rhs[i];\n        return\
+    \ *this;\n    }\n    /**\n     * @brief \u6E1B\u7B97\u4EE3\u5165\u6F14\u7B97\u5B50\
+    \n     *\n     * @param rhs\n     * @return Vector&\n     */\n    constexpr Vector&\
     \ operator-=(const Vector& rhs) noexcept {\n        for (int i = 0; i < Dim; i++)\
     \ v[i] -= rhs.v[i];\n        return *this;\n    }\n    /**\n     * @brief \u30B9\
     \u30AB\u30E9\u30FC\u500D\u4EE3\u5165\u6F14\u7B97\u5B50\n     *\n     * @param\
@@ -375,30 +375,31 @@ data:
     \ ret.push_back(tmp[i]);\n    return ret;\n}\n\n/**\n * @brief closest_point_pair_squared\
     \ \u306E\u623B\u308A\u5024\n */\ntemplate <typename T>\nstruct ClosestPairSquared\
     \ {\n    T squared_dist;  //!< \u6700\u8FD1\u70B9\u5BFE\u306E\u8DDD\u96E2\u306E\
-    2\u4E57\n    int i, j;        //!< \u6700\u8FD1\u70B9\u5BFE\u306E\u6DFB\u5B57\n\
+    2\u4E57\n    long long i, j;  //!< \u6700\u8FD1\u70B9\u5BFE\u306E\u6DFB\u5B57\n\
     };\n/**\n * @brief closest_point_pair \u306E\u623B\u308A\u5024\n */\nstruct ClosestPair\
-    \ {\n    double dist;  //!< \u6700\u8FD1\u70B9\u5BFE\u306E\u8DDD\u96E2\n    int\
-    \ i, j;     //!< \u6700\u8FD1\u70B9\u5BFE\u306E\u6DFB\u5B57\n};\n\n/**\n * @brief\
-    \ \u6700\u8FD1\u70B9\u5BFE\n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param\
-    \ points \u9802\u70B9\u30EA\u30B9\u30C8\n * @return ClosestPairSquared<T> \u6700\
-    \u8FD1\u70B9\u5BFE\u306E\u8DDD\u96E2\u306E2\u4E57\u3068\u6DFB\u5B57\n */\ntemplate\
-    \ <typename T>\nClosestPairSquared<T> closest_point_pair_squared(const std::vector<Vector<T,\
-    \ 2>>& points) {\n    std::vector<int> sorted_idx(points.size());\n    std::iota(sorted_idx.begin(),\
-    \ sorted_idx.end(), 0);\n    std::sort(sorted_idx.begin(), sorted_idx.end(), [&](int\
-    \ i, int j) {\n        return points[i][0] < points[j][0];\n    });\n    std::vector<int>\
-    \ left(1, 0);                                        // \u5DE6\u7AEF\n    std::vector<int>\
-    \ right(1, points.size());                           // \u53F3\u7AEF\n    std::vector<int>\
-    \ mid(1, points.size() / 2);                         // \u4E2D\u592E\n    std::vector<int>\
-    \ par(1, -1);                                        // \u89AA\n    std::vector<T>\
-    \ min_dist_squared(1, std::numeric_limits<T>::max());  // \u6700\u5C0F\u8DDD\u96E2\
-    \u306E2\u4E57\n    std::vector<std::pair<int, int>> min_dist_pair(1, {-1, -1});\
-    \        // \u6700\u5C0F\u8DDD\u96E2\u306E\u70B9\u5BFE\n    std::stack<int> stk;\n\
-    \    stk.push(~0);\n    stk.push(0);\n    while (!stk.empty()) {\n        int\
-    \ u = stk.top();\n        stk.pop();\n        if (u >= 0) {\n            // \u884C\
-    \u304D\u304C\u3051\n            if (left[u] + 1 < mid[u]) {\n                int\
-    \ v = left.size();\n                left.push_back(left[u]);\n               \
-    \ right.push_back(mid[u]);\n                mid.push_back((left[u] + mid[u]) /\
-    \ 2);\n                par.push_back(u);\n                min_dist_squared.push_back(std::numeric_limits<T>::max());\n\
+    \ {\n    double dist;     //!< \u6700\u8FD1\u70B9\u5BFE\u306E\u8DDD\u96E2\n  \
+    \  long long i, j;  //!< \u6700\u8FD1\u70B9\u5BFE\u306E\u6DFB\u5B57\n};\n\n/**\n\
+    \ * @brief \u6700\u8FD1\u70B9\u5BFE\n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\
+    \n * @param points \u9802\u70B9\u30EA\u30B9\u30C8\n * @return ClosestPairSquared<T>\
+    \ \u6700\u8FD1\u70B9\u5BFE\u306E\u8DDD\u96E2\u306E2\u4E57\u3068\u6DFB\u5B57\n\
+    \ */\ntemplate <typename T>\nClosestPairSquared<T> closest_point_pair_squared(const\
+    \ std::vector<Vector<T, 2>>& points) {\n    std::vector<int> sorted_idx(points.size());\n\
+    \    std::iota(sorted_idx.begin(), sorted_idx.end(), 0);\n    std::sort(sorted_idx.begin(),\
+    \ sorted_idx.end(), [&](int i, int j) {\n        return points[i][0] < points[j][0];\n\
+    \    });\n    std::vector<int> left(1, 0);                                   \
+    \     // \u5DE6\u7AEF\n    std::vector<int> right(1, points.size());         \
+    \                  // \u53F3\u7AEF\n    std::vector<int> mid(1, points.size()\
+    \ / 2);                         // \u4E2D\u592E\n    std::vector<int> par(1, -1);\
+    \                                        // \u89AA\n    std::vector<T> min_dist_squared(1,\
+    \ std::numeric_limits<T>::max());  // \u6700\u5C0F\u8DDD\u96E2\u306E2\u4E57\n\
+    \    std::vector<std::pair<int, int>> min_dist_pair(1, {-1, -1});        // \u6700\
+    \u5C0F\u8DDD\u96E2\u306E\u70B9\u5BFE\n    std::stack<int> stk;\n    stk.push(~0);\n\
+    \    stk.push(0);\n    while (!stk.empty()) {\n        int u = stk.top();\n  \
+    \      stk.pop();\n        if (u >= 0) {\n            // \u884C\u304D\u304C\u3051\
+    \n            if (left[u] + 1 < mid[u]) {\n                int v = left.size();\n\
+    \                left.push_back(left[u]);\n                right.push_back(mid[u]);\n\
+    \                mid.push_back((left[u] + mid[u]) / 2);\n                par.push_back(u);\n\
+    \                min_dist_squared.push_back(std::numeric_limits<T>::max());\n\
     \                min_dist_pair.push_back({-1, -1});\n                stk.push(~v);\n\
     \                stk.push(v);\n            }\n            if (mid[u] + 1 < right[u])\
     \ {\n                int v = left.size();\n                left.push_back(mid[u]);\n\
@@ -538,7 +539,7 @@ data:
   isVerificationFile: true
   path: test/aoj/cgl-7-b.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 16:41:25+09:00'
+  timestamp: '2026-10-15 07:27:48+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/cgl-7-b.test.cpp

@@ -35,10 +35,10 @@ data:
     \ top_node(top_node), n(n) {}\n\n   public:\n    /**\n     * @brief \u7A7A\u306E\
     \u30B9\u30BF\u30C3\u30AF\u3092\u4F5C\u308B\n     */\n    PersistentStack() : pool(nullptr),\
     \ top_node(-1), n(0) {}\n\n    /**\n     * @brief \u8981\u7D20\u6570\u3092\u8FD4\
-    \u3059\n     */\n    int size() const { return n; }\n    /**\n     * @brief \u7A7A\
-    \u304B\u3069\u3046\u304B\u3092\u8FD4\u3059\n     */\n    bool empty() const {\
-    \ return n == 0; }\n\n    /**\n     * @brief \u4E00\u756A\u4E0A\u306E\u8981\u7D20\
-    \u3092\u8FD4\u3059\n     */\n    T top() const {\n        assert(!empty());\n\
+    \u3059\n     */\n    long long size() const { return n; }\n    /**\n     * @brief\
+    \ \u7A7A\u304B\u3069\u3046\u304B\u3092\u8FD4\u3059\n     */\n    bool empty()\
+    \ const { return n == 0; }\n\n    /**\n     * @brief \u4E00\u756A\u4E0A\u306E\u8981\
+    \u7D20\u3092\u8FD4\u3059\n     */\n    T top() const {\n        assert(!empty());\n\
     \        return pool->val[top_node];\n    }\n    /**\n     * @brief x\u3092\u7A4D\
     \u3093\u3060\u65B0\u3057\u3044\u7248\u3092\u8FD4\u3059\n     *\n     * @param\
     \ x \u7A4D\u3080\u5024\n     * @return PersistentStack \u65B0\u3057\u3044\u7248\
@@ -79,15 +79,15 @@ data:
     \ {}\n\n   public:\n    /**\n     * @brief \u7A7A\u306E\u30B9\u30BF\u30C3\u30AF\
     \u3092\u4F5C\u308B\n     */\n    PersistentStack() : pool(nullptr), top_node(-1),\
     \ n(0) {}\n\n    /**\n     * @brief \u8981\u7D20\u6570\u3092\u8FD4\u3059\n   \
-    \  */\n    int size() const { return n; }\n    /**\n     * @brief \u7A7A\u304B\
-    \u3069\u3046\u304B\u3092\u8FD4\u3059\n     */\n    bool empty() const { return\
-    \ n == 0; }\n\n    /**\n     * @brief \u4E00\u756A\u4E0A\u306E\u8981\u7D20\u3092\
-    \u8FD4\u3059\n     */\n    T top() const {\n        assert(!empty());\n      \
-    \  return pool->val[top_node];\n    }\n    /**\n     * @brief x\u3092\u7A4D\u3093\
-    \u3060\u65B0\u3057\u3044\u7248\u3092\u8FD4\u3059\n     *\n     * @param x \u7A4D\
-    \u3080\u5024\n     * @return PersistentStack \u65B0\u3057\u3044\u7248 (\u81EA\u8EAB\
-    \u306F\u5909\u308F\u3089\u306A\u3044)\n     */\n    PersistentStack push(const\
-    \ T& x) const {\n        std::shared_ptr<Pool> p = pool ? pool : std::make_shared<Pool>();\n\
+    \  */\n    long long size() const { return n; }\n    /**\n     * @brief \u7A7A\
+    \u304B\u3069\u3046\u304B\u3092\u8FD4\u3059\n     */\n    bool empty() const {\
+    \ return n == 0; }\n\n    /**\n     * @brief \u4E00\u756A\u4E0A\u306E\u8981\u7D20\
+    \u3092\u8FD4\u3059\n     */\n    T top() const {\n        assert(!empty());\n\
+    \        return pool->val[top_node];\n    }\n    /**\n     * @brief x\u3092\u7A4D\
+    \u3093\u3060\u65B0\u3057\u3044\u7248\u3092\u8FD4\u3059\n     *\n     * @param\
+    \ x \u7A4D\u3080\u5024\n     * @return PersistentStack \u65B0\u3057\u3044\u7248\
+    \ (\u81EA\u8EAB\u306F\u5909\u308F\u3089\u306A\u3044)\n     */\n    PersistentStack\
+    \ push(const T& x) const {\n        std::shared_ptr<Pool> p = pool ? pool : std::make_shared<Pool>();\n\
     \        int t = p->make_node(x, top_node);\n        return PersistentStack(std::move(p),\
     \ t, n + 1);\n    }\n    /**\n     * @brief \u4E00\u756A\u4E0A\u306E\u8981\u7D20\
     \u3092\u53D6\u308A\u9664\u3044\u305F\u65B0\u3057\u3044\u7248\u3092\u8FD4\u3059\
@@ -104,7 +104,7 @@ data:
   isVerificationFile: false
   path: src/data_structures/persistent-stack.hpp
   requiredBy: []
-  timestamp: '2026-10-15 02:10:34+09:00'
+  timestamp: '2026-10-15 07:35:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/persistent-stack.test.cpp

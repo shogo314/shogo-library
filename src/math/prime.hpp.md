@@ -115,83 +115,87 @@ data:
     \u56E0\u6570, \u6307\u6570) \u3092\u7D20\u56E0\u6570\u306E\u6607\u9806\u306B\u4E26\
     \u3079\u3066\u8FD4\u3059\n * Pollard \u306E \u03C1 \u6CD5\u3092\u4F7F\u3046\u3002\
     \u671F\u5F85 O(n^(1/4)) \u7A0B\u5EA6\n */\ninline std::vector<std::pair<long long,\
-    \ int>> factorize(long long n) {\n    assert(n >= 1);\n    std::vector<long long>\
-    \ ps;\n    // \u5C0F\u3055\u3044\u7D20\u56E0\u6570\u306F\u5272\u308A\u7B97\u3067\
-    \u53D6\u308A\u9664\u304F\n    for (long long p : {2, 3, 5, 7, 11, 13, 17, 19,\
-    \ 23, 29, 31, 37}) {\n        while (n % p == 0) {\n            ps.push_back(p);\n\
+    \ long long>> factorize(long long n) {\n    assert(n >= 1);\n    std::vector<long\
+    \ long> ps;\n    // \u5C0F\u3055\u3044\u7D20\u56E0\u6570\u306F\u5272\u308A\u7B97\
+    \u3067\u53D6\u308A\u9664\u304F\n    for (long long p : {2, 3, 5, 7, 11, 13, 17,\
+    \ 19, 23, 29, 31, 37}) {\n        while (n % p == 0) {\n            ps.push_back(p);\n\
     \            n /= p;\n        }\n    }\n    std::vector<long long> st;\n    if\
     \ (n > 1) st.push_back(n);\n    while (!st.empty()) {\n        long long x = st.back();\n\
     \        st.pop_back();\n        if (is_prime(x)) {\n            ps.push_back(x);\n\
     \            continue;\n        }\n        long long d = internal_prime::find_factor(x);\n\
     \        st.push_back(d);\n        st.push_back(x / d);\n    }\n    std::sort(ps.begin(),\
-    \ ps.end());\n    std::vector<std::pair<long long, int>> res;\n    for (long long\
-    \ p : ps) {\n        if (!res.empty() && res.back().first == p)\n            res.back().second++;\n\
-    \        else\n            res.emplace_back(p, 1);\n    }\n    return res;\n}\n\
-    \n/**\n * @brief n (>= 1) \u306E\u6B63\u306E\u7D04\u6570\u3092\u6607\u9806\u306B\
-    \u4E26\u3079\u3066\u8FD4\u3059\n */\ninline std::vector<long long> divisors(long\
-    \ long n) {\n    std::vector<long long> res = {1};\n    for (auto [p, e] : factorize(n))\
-    \ {\n        int sz = res.size();\n        long long pw = 1;\n        for (int\
-    \ i = 0; i < e; i++) {\n            pw *= p;\n            for (int j = 0; j <\
-    \ sz; j++) res.push_back(res[j] * pw);\n        }\n    }\n    std::sort(res.begin(),\
-    \ res.end());\n    return res;\n}\n\n/**\n * @brief \u30AA\u30A4\u30E9\u30FC\u306E\
-    \ \u03C6 \u95A2\u6570 (1 \u4EE5\u4E0A n \u4EE5\u4E0B\u3067 n \u3068\u4E92\u3044\
-    \u306B\u7D20\u306A\u6574\u6570\u306E\u500B\u6570)\n */\ninline long long totient(long\
-    \ long n) {\n    long long res = n;\n    for (auto [p, e] : factorize(n)) res\
-    \ = res / p * (p - 1);\n    return res;\n}\n\n/**\n * @brief n \u4EE5\u4E0B\u306E\
-    \u7D20\u6570\u3092\u6607\u9806\u306B\u4E26\u3079\u3066\u8FD4\u3059\n * \u5947\u6570\
-    \u3060\u3051\u3092\u533A\u9593\u3054\u3068\u306B\u7BE9\u3046\u3002O(n log log\
-    \ n)\u3001\u30E1\u30E2\u30EA\u306F O(\u221An + \u7D20\u6570\u306E\u500B\u6570\
-    )\n */\ninline std::vector<int> enumerate_primes(int n) {\n    std::vector<int>\
-    \ res;\n    if (n < 2) return res;\n    res.push_back(2);\n    int r = 1;\n  \
-    \  while (static_cast<long long>(r + 1) * (r + 1) <= n) r++;\n    // \u221An \u4EE5\
-    \u4E0B\u306E\u5947\u7D20\u6570 p \u3068\u3001\u6B21\u306B\u7BE9\u3046 p \u306E\
-    \u500D\u6570 (\u5947\u6570)\n    std::vector<char> small(r + 1, 1);\n    std::vector<std::pair<int,\
-    \ long long>> sp;\n    for (int i = 3; i <= r; i += 2) {\n        if (!small[i])\
-    \ continue;\n        for (int j = i * i; j <= r; j += 2 * i) small[j] = 0;\n \
-    \       sp.emplace_back(i, static_cast<long long>(i) * i);\n    }\n    // \u5947\
-    \u6570 2k+1 (1 <= k <= kmax) \u3092\u3001k \u306E\u9577\u3055 B \u306E\u533A\u9593\
-    \u3054\u3068\u306B\u7BE9\u3046\n    constexpr int B = 1 << 16;\n    std::vector<char>\
-    \ block(B);\n    const long long kmax = (n - 1) / 2;\n    for (long long lo =\
-    \ 1; lo <= kmax; lo += B) {\n        const long long hi = std::min(lo + B, kmax\
-    \ + 1);\n        std::fill(block.begin(), block.begin() + (hi - lo), 1);\n   \
-    \     for (auto& [p, m] : sp) {\n            long long k = (m - 1) / 2;\n    \
-    \        for (; k < hi; k += p) block[k - lo] = 0;\n            m = 2 * k + 1;\n\
-    \        }\n        for (long long k = lo; k < hi; k++) {\n            if (block[k\
-    \ - lo]) res.push_back(2 * k + 1);\n        }\n    }\n    return res;\n}\n\n/**\n\
-    \ * @brief n \u4EE5\u4E0B\u306E\u6574\u6570\u306E\u6700\u5C0F\u7D20\u56E0\u6570\
-    \u3092\u524D\u8A08\u7B97\u3059\u308B\u7BE9 (\u7DDA\u5F62\u7BE9)\n *\n * \u524D\
-    \u8A08\u7B97 O(n)\u3001\u7D20\u6570\u5224\u5B9A O(1)\u3001\u7D20\u56E0\u6570\u5206\
-    \u89E3 O(log x)\n * \u4F8B:\n * Sieve sv(1000000);\n * sv.is_prime(x); sv.factorize(x);\n\
-    \ */\nclass Sieve {\n    int n;\n    std::vector<int> lpf;  // \u6700\u5C0F\u7D20\
-    \u56E0\u6570\n    std::vector<int> ps;\n\n   public:\n    explicit Sieve(int n)\
-    \ : n(n), lpf(n + 1, 0) {\n        assert(n >= 0);\n        for (int i = 2; i\
-    \ <= n; i++) {\n            if (lpf[i] == 0) {\n                lpf[i] = i;\n\
-    \                ps.push_back(i);\n            }\n            for (int p : ps)\
-    \ {\n                if (p > lpf[i] || static_cast<long long>(p) * i > n) break;\n\
-    \                lpf[p * i] = p;\n            }\n        }\n    }\n\n    /**\n\
-    \     * @brief \u524D\u8A08\u7B97\u3057\u305F\u7BC4\u56F2\u306E\u4E0A\u9650 n\n\
-    \     */\n    int limit() const { return n; }\n    /**\n     * @brief x (0 <=\
-    \ x <= n) \u304C\u7D20\u6570\u304B O(1)\n     */\n    bool is_prime(int x) const\
+    \ ps.end());\n    std::vector<std::pair<long long, long long>> res;\n    for (long\
+    \ long p : ps) {\n        if (!res.empty() && res.back().first == p)\n       \
+    \     res.back().second++;\n        else\n            res.emplace_back(p, 1);\n\
+    \    }\n    return res;\n}\n\n/**\n * @brief n (>= 1) \u306E\u6B63\u306E\u7D04\
+    \u6570\u3092\u6607\u9806\u306B\u4E26\u3079\u3066\u8FD4\u3059\n */\ninline std::vector<long\
+    \ long> divisors(long long n) {\n    std::vector<long long> res = {1};\n    for\
+    \ (auto [p, e] : factorize(n)) {\n        const long long sz = res.size();\n \
+    \       long long pw = 1;\n        for (long long i = 0; i < e; i++) {\n     \
+    \       pw *= p;\n            for (long long j = 0; j < sz; j++) res.push_back(res[j]\
+    \ * pw);\n        }\n    }\n    std::sort(res.begin(), res.end());\n    return\
+    \ res;\n}\n\n/**\n * @brief \u30AA\u30A4\u30E9\u30FC\u306E \u03C6 \u95A2\u6570\
+    \ (1 \u4EE5\u4E0A n \u4EE5\u4E0B\u3067 n \u3068\u4E92\u3044\u306B\u7D20\u306A\u6574\
+    \u6570\u306E\u500B\u6570)\n */\ninline long long totient(long long n) {\n    long\
+    \ long res = n;\n    for (auto [p, e] : factorize(n)) res = res / p * (p - 1);\n\
+    \    return res;\n}\n\n/**\n * @brief n \u4EE5\u4E0B\u306E\u7D20\u6570\u3092\u6607\
+    \u9806\u306B\u4E26\u3079\u3066\u8FD4\u3059\n * \u5947\u6570\u3060\u3051\u3092\u533A\
+    \u9593\u3054\u3068\u306B\u7BE9\u3046\u3002O(n log log n)\u3001\u30E1\u30E2\u30EA\
+    \u306F O(\u221An + \u7D20\u6570\u306E\u500B\u6570)\n */\ninline std::vector<long\
+    \ long> enumerate_primes(long long n) {\n    std::vector<long long> res;\n   \
+    \ if (n < 2) return res;\n    res.push_back(2);\n    long long r = 1;\n    while\
+    \ ((r + 1) * (r + 1) <= n) r++;\n    // \u221An \u4EE5\u4E0B\u306E\u5947\u7D20\
+    \u6570 p \u3068\u3001\u6B21\u306B\u7BE9\u3046 p \u306E\u500D\u6570 (\u5947\u6570\
+    )\n    std::vector<char> small(r + 1, 1);\n    std::vector<std::pair<long long,\
+    \ long long>> sp;\n    for (long long i = 3; i <= r; i += 2) {\n        if (!small[i])\
+    \ continue;\n        for (long long j = i * i; j <= r; j += 2 * i) small[j] =\
+    \ 0;\n        sp.emplace_back(i, i * i);\n    }\n    // \u5947\u6570 2k+1 (1 <=\
+    \ k <= kmax) \u3092\u3001k \u306E\u9577\u3055 B \u306E\u533A\u9593\u3054\u3068\
+    \u306B\u7BE9\u3046\n    constexpr int B = 1 << 16;\n    std::vector<char> block(B);\n\
+    \    const long long kmax = (n - 1) / 2;\n    for (long long lo = 1; lo <= kmax;\
+    \ lo += B) {\n        const long long hi = std::min(lo + B, kmax + 1);\n     \
+    \   std::fill(block.begin(), block.begin() + (hi - lo), 1);\n        for (auto&\
+    \ [p, m] : sp) {\n            long long k = (m - 1) / 2;\n            for (; k\
+    \ < hi; k += p) block[k - lo] = 0;\n            m = 2 * k + 1;\n        }\n  \
+    \      for (long long k = lo; k < hi; k++) {\n            if (block[k - lo]) res.push_back(2\
+    \ * k + 1);\n        }\n    }\n    return res;\n}\n\n/**\n * @brief n \u4EE5\u4E0B\
+    \u306E\u6574\u6570\u306E\u6700\u5C0F\u7D20\u56E0\u6570\u3092\u524D\u8A08\u7B97\
+    \u3059\u308B\u7BE9 (\u7DDA\u5F62\u7BE9)\n *\n * \u524D\u8A08\u7B97 O(n)\u3001\u7D20\
+    \u6570\u5224\u5B9A O(1)\u3001\u7D20\u56E0\u6570\u5206\u89E3 O(log x)\n * \u4F8B\
+    :\n * Sieve sv(1000000);\n * sv.is_prime(x); sv.factorize(x);\n */\nclass Sieve\
+    \ {\n    long long n;\n    std::vector<int> lpf;  // \u6700\u5C0F\u7D20\u56E0\u6570\
+    \ (\u30E1\u30E2\u30EA\u3092\u6291\u3048\u308B\u305F\u3081 int \u3067\u6301\u3064\
+    )\n    std::vector<long long> ps;\n\n   public:\n    explicit Sieve(long long\
+    \ n) : n(n), lpf(n + 1, 0) {\n        assert(n >= 0);\n        for (int i = 2;\
+    \ i <= n; i++) {\n            if (lpf[i] == 0) {\n                lpf[i] = i;\n\
+    \                ps.push_back(i);\n            }\n            for (long long p\
+    \ : ps) {\n                if (p > lpf[i] || p * i > n) break;\n             \
+    \   lpf[p * i] = p;\n            }\n        }\n    }\n\n    /**\n     * @brief\
+    \ \u524D\u8A08\u7B97\u3057\u305F\u7BC4\u56F2\u306E\u4E0A\u9650 n\n     */\n  \
+    \  long long limit() const { return n; }\n    /**\n     * @brief x (0 <= x <=\
+    \ n) \u304C\u7D20\u6570\u304B O(1)\n     */\n    bool is_prime(long long x) const\
     \ {\n        assert(0 <= x && x <= n);\n        return x >= 2 && lpf[x] == x;\n\
     \    }\n    /**\n     * @brief x (2 <= x <= n) \u306E\u6700\u5C0F\u7D20\u56E0\u6570\
-    \ O(1)\n     */\n    int min_factor(int x) const {\n        assert(2 <= x && x\
-    \ <= n);\n        return lpf[x];\n    }\n    /**\n     * @brief n \u4EE5\u4E0B\
-    \u306E\u7D20\u6570\u3092\u6607\u9806\u306B\u4E26\u3079\u305F\u3082\u306E\n   \
-    \  */\n    const std::vector<int>& primes() const { return ps; }\n    /**\n  \
-    \   * @brief x (1 <= x <= n) \u3092\u7D20\u56E0\u6570\u5206\u89E3\u3057\u3001\
-    (\u7D20\u56E0\u6570, \u6307\u6570) \u3092\u7D20\u56E0\u6570\u306E\u6607\u9806\u306B\
-    \u4E26\u3079\u3066\u8FD4\u3059 O(log x)\n     */\n    std::vector<std::pair<int,\
-    \ int>> factorize(int x) const {\n        assert(1 <= x && x <= n);\n        std::vector<std::pair<int,\
-    \ int>> res;\n        while (x > 1) {\n            int p = lpf[x], e = 0;\n  \
-    \          while (x % p == 0) x /= p, e++;\n            res.emplace_back(p, e);\n\
-    \        }\n        return res;\n    }\n    /**\n     * @brief x (1 <= x <= n)\
-    \ \u306E\u6B63\u306E\u7D04\u6570\u3092\u6607\u9806\u306B\u4E26\u3079\u3066\u8FD4\
-    \u3059\n     */\n    std::vector<int> divisors(int x) const {\n        std::vector<int>\
-    \ res = {1};\n        for (auto [p, e] : factorize(x)) {\n            int sz =\
-    \ res.size();\n            int pw = 1;\n            for (int i = 0; i < e; i++)\
-    \ {\n                pw *= p;\n                for (int j = 0; j < sz; j++) res.push_back(res[j]\
-    \ * pw);\n            }\n        }\n        std::sort(res.begin(), res.end());\n\
-    \        return res;\n    }\n};\n"
+    \ O(1)\n     */\n    long long min_factor(long long x) const {\n        assert(2\
+    \ <= x && x <= n);\n        return lpf[x];\n    }\n    /**\n     * @brief n \u4EE5\
+    \u4E0B\u306E\u7D20\u6570\u3092\u6607\u9806\u306B\u4E26\u3079\u305F\u3082\u306E\
+    \n     */\n    const std::vector<long long>& primes() const { return ps; }\n \
+    \   /**\n     * @brief x (1 <= x <= n) \u3092\u7D20\u56E0\u6570\u5206\u89E3\u3057\
+    \u3001(\u7D20\u56E0\u6570, \u6307\u6570) \u3092\u7D20\u56E0\u6570\u306E\u6607\u9806\
+    \u306B\u4E26\u3079\u3066\u8FD4\u3059 O(log x)\n     */\n    std::vector<std::pair<long\
+    \ long, long long>> factorize(long long x) const {\n        assert(1 <= x && x\
+    \ <= n);\n        std::vector<std::pair<long long, long long>> res;\n        while\
+    \ (x > 1) {\n            long long p = lpf[x], e = 0;\n            while (x %\
+    \ p == 0) x /= p, e++;\n            res.emplace_back(p, e);\n        }\n     \
+    \   return res;\n    }\n    /**\n     * @brief x (1 <= x <= n) \u306E\u6B63\u306E\
+    \u7D04\u6570\u3092\u6607\u9806\u306B\u4E26\u3079\u3066\u8FD4\u3059\n     */\n\
+    \    std::vector<long long> divisors(long long x) const {\n        std::vector<long\
+    \ long> res = {1};\n        for (auto [p, e] : factorize(x)) {\n            const\
+    \ long long sz = res.size();\n            long long pw = 1;\n            for (long\
+    \ long i = 0; i < e; i++) {\n                pw *= p;\n                for (long\
+    \ long j = 0; j < sz; j++) res.push_back(res[j] * pw);\n            }\n      \
+    \  }\n        std::sort(res.begin(), res.end());\n        return res;\n    }\n\
+    };\n"
   code: "#pragma once\n\n/**\n * @file prime.hpp\n * @brief \u7D20\u6570 (\u7D20\u6570\
     \u5224\u5B9A\u3001\u7D20\u56E0\u6570\u5206\u89E3\u3001\u7D04\u6570\u5217\u6319\
     \u3001\u7BE9)\n */\n\n#include <algorithm>\n#include <cassert>\n#include <initializer_list>\n\
@@ -230,91 +234,95 @@ data:
     \u6570\u5206\u89E3\u3057\u3001(\u7D20\u56E0\u6570, \u6307\u6570) \u3092\u7D20\u56E0\
     \u6570\u306E\u6607\u9806\u306B\u4E26\u3079\u3066\u8FD4\u3059\n * Pollard \u306E\
     \ \u03C1 \u6CD5\u3092\u4F7F\u3046\u3002\u671F\u5F85 O(n^(1/4)) \u7A0B\u5EA6\n\
-    \ */\ninline std::vector<std::pair<long long, int>> factorize(long long n) {\n\
-    \    assert(n >= 1);\n    std::vector<long long> ps;\n    // \u5C0F\u3055\u3044\
-    \u7D20\u56E0\u6570\u306F\u5272\u308A\u7B97\u3067\u53D6\u308A\u9664\u304F\n   \
-    \ for (long long p : {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}) {\n       \
-    \ while (n % p == 0) {\n            ps.push_back(p);\n            n /= p;\n  \
-    \      }\n    }\n    std::vector<long long> st;\n    if (n > 1) st.push_back(n);\n\
+    \ */\ninline std::vector<std::pair<long long, long long>> factorize(long long\
+    \ n) {\n    assert(n >= 1);\n    std::vector<long long> ps;\n    // \u5C0F\u3055\
+    \u3044\u7D20\u56E0\u6570\u306F\u5272\u308A\u7B97\u3067\u53D6\u308A\u9664\u304F\
+    \n    for (long long p : {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}) {\n   \
+    \     while (n % p == 0) {\n            ps.push_back(p);\n            n /= p;\n\
+    \        }\n    }\n    std::vector<long long> st;\n    if (n > 1) st.push_back(n);\n\
     \    while (!st.empty()) {\n        long long x = st.back();\n        st.pop_back();\n\
     \        if (is_prime(x)) {\n            ps.push_back(x);\n            continue;\n\
     \        }\n        long long d = internal_prime::find_factor(x);\n        st.push_back(d);\n\
     \        st.push_back(x / d);\n    }\n    std::sort(ps.begin(), ps.end());\n \
-    \   std::vector<std::pair<long long, int>> res;\n    for (long long p : ps) {\n\
-    \        if (!res.empty() && res.back().first == p)\n            res.back().second++;\n\
+    \   std::vector<std::pair<long long, long long>> res;\n    for (long long p :\
+    \ ps) {\n        if (!res.empty() && res.back().first == p)\n            res.back().second++;\n\
     \        else\n            res.emplace_back(p, 1);\n    }\n    return res;\n}\n\
     \n/**\n * @brief n (>= 1) \u306E\u6B63\u306E\u7D04\u6570\u3092\u6607\u9806\u306B\
     \u4E26\u3079\u3066\u8FD4\u3059\n */\ninline std::vector<long long> divisors(long\
     \ long n) {\n    std::vector<long long> res = {1};\n    for (auto [p, e] : factorize(n))\
-    \ {\n        int sz = res.size();\n        long long pw = 1;\n        for (int\
-    \ i = 0; i < e; i++) {\n            pw *= p;\n            for (int j = 0; j <\
-    \ sz; j++) res.push_back(res[j] * pw);\n        }\n    }\n    std::sort(res.begin(),\
-    \ res.end());\n    return res;\n}\n\n/**\n * @brief \u30AA\u30A4\u30E9\u30FC\u306E\
-    \ \u03C6 \u95A2\u6570 (1 \u4EE5\u4E0A n \u4EE5\u4E0B\u3067 n \u3068\u4E92\u3044\
-    \u306B\u7D20\u306A\u6574\u6570\u306E\u500B\u6570)\n */\ninline long long totient(long\
-    \ long n) {\n    long long res = n;\n    for (auto [p, e] : factorize(n)) res\
-    \ = res / p * (p - 1);\n    return res;\n}\n\n/**\n * @brief n \u4EE5\u4E0B\u306E\
-    \u7D20\u6570\u3092\u6607\u9806\u306B\u4E26\u3079\u3066\u8FD4\u3059\n * \u5947\u6570\
-    \u3060\u3051\u3092\u533A\u9593\u3054\u3068\u306B\u7BE9\u3046\u3002O(n log log\
-    \ n)\u3001\u30E1\u30E2\u30EA\u306F O(\u221An + \u7D20\u6570\u306E\u500B\u6570\
-    )\n */\ninline std::vector<int> enumerate_primes(int n) {\n    std::vector<int>\
-    \ res;\n    if (n < 2) return res;\n    res.push_back(2);\n    int r = 1;\n  \
-    \  while (static_cast<long long>(r + 1) * (r + 1) <= n) r++;\n    // \u221An \u4EE5\
-    \u4E0B\u306E\u5947\u7D20\u6570 p \u3068\u3001\u6B21\u306B\u7BE9\u3046 p \u306E\
-    \u500D\u6570 (\u5947\u6570)\n    std::vector<char> small(r + 1, 1);\n    std::vector<std::pair<int,\
-    \ long long>> sp;\n    for (int i = 3; i <= r; i += 2) {\n        if (!small[i])\
-    \ continue;\n        for (int j = i * i; j <= r; j += 2 * i) small[j] = 0;\n \
-    \       sp.emplace_back(i, static_cast<long long>(i) * i);\n    }\n    // \u5947\
-    \u6570 2k+1 (1 <= k <= kmax) \u3092\u3001k \u306E\u9577\u3055 B \u306E\u533A\u9593\
-    \u3054\u3068\u306B\u7BE9\u3046\n    constexpr int B = 1 << 16;\n    std::vector<char>\
-    \ block(B);\n    const long long kmax = (n - 1) / 2;\n    for (long long lo =\
-    \ 1; lo <= kmax; lo += B) {\n        const long long hi = std::min(lo + B, kmax\
-    \ + 1);\n        std::fill(block.begin(), block.begin() + (hi - lo), 1);\n   \
-    \     for (auto& [p, m] : sp) {\n            long long k = (m - 1) / 2;\n    \
-    \        for (; k < hi; k += p) block[k - lo] = 0;\n            m = 2 * k + 1;\n\
-    \        }\n        for (long long k = lo; k < hi; k++) {\n            if (block[k\
-    \ - lo]) res.push_back(2 * k + 1);\n        }\n    }\n    return res;\n}\n\n/**\n\
-    \ * @brief n \u4EE5\u4E0B\u306E\u6574\u6570\u306E\u6700\u5C0F\u7D20\u56E0\u6570\
-    \u3092\u524D\u8A08\u7B97\u3059\u308B\u7BE9 (\u7DDA\u5F62\u7BE9)\n *\n * \u524D\
-    \u8A08\u7B97 O(n)\u3001\u7D20\u6570\u5224\u5B9A O(1)\u3001\u7D20\u56E0\u6570\u5206\
-    \u89E3 O(log x)\n * \u4F8B:\n * Sieve sv(1000000);\n * sv.is_prime(x); sv.factorize(x);\n\
-    \ */\nclass Sieve {\n    int n;\n    std::vector<int> lpf;  // \u6700\u5C0F\u7D20\
-    \u56E0\u6570\n    std::vector<int> ps;\n\n   public:\n    explicit Sieve(int n)\
-    \ : n(n), lpf(n + 1, 0) {\n        assert(n >= 0);\n        for (int i = 2; i\
-    \ <= n; i++) {\n            if (lpf[i] == 0) {\n                lpf[i] = i;\n\
-    \                ps.push_back(i);\n            }\n            for (int p : ps)\
-    \ {\n                if (p > lpf[i] || static_cast<long long>(p) * i > n) break;\n\
-    \                lpf[p * i] = p;\n            }\n        }\n    }\n\n    /**\n\
-    \     * @brief \u524D\u8A08\u7B97\u3057\u305F\u7BC4\u56F2\u306E\u4E0A\u9650 n\n\
-    \     */\n    int limit() const { return n; }\n    /**\n     * @brief x (0 <=\
-    \ x <= n) \u304C\u7D20\u6570\u304B O(1)\n     */\n    bool is_prime(int x) const\
-    \ {\n        assert(0 <= x && x <= n);\n        return x >= 2 && lpf[x] == x;\n\
-    \    }\n    /**\n     * @brief x (2 <= x <= n) \u306E\u6700\u5C0F\u7D20\u56E0\u6570\
-    \ O(1)\n     */\n    int min_factor(int x) const {\n        assert(2 <= x && x\
-    \ <= n);\n        return lpf[x];\n    }\n    /**\n     * @brief n \u4EE5\u4E0B\
-    \u306E\u7D20\u6570\u3092\u6607\u9806\u306B\u4E26\u3079\u305F\u3082\u306E\n   \
-    \  */\n    const std::vector<int>& primes() const { return ps; }\n    /**\n  \
+    \ {\n        const long long sz = res.size();\n        long long pw = 1;\n   \
+    \     for (long long i = 0; i < e; i++) {\n            pw *= p;\n            for\
+    \ (long long j = 0; j < sz; j++) res.push_back(res[j] * pw);\n        }\n    }\n\
+    \    std::sort(res.begin(), res.end());\n    return res;\n}\n\n/**\n * @brief\
+    \ \u30AA\u30A4\u30E9\u30FC\u306E \u03C6 \u95A2\u6570 (1 \u4EE5\u4E0A n \u4EE5\u4E0B\
+    \u3067 n \u3068\u4E92\u3044\u306B\u7D20\u306A\u6574\u6570\u306E\u500B\u6570)\n\
+    \ */\ninline long long totient(long long n) {\n    long long res = n;\n    for\
+    \ (auto [p, e] : factorize(n)) res = res / p * (p - 1);\n    return res;\n}\n\n\
+    /**\n * @brief n \u4EE5\u4E0B\u306E\u7D20\u6570\u3092\u6607\u9806\u306B\u4E26\u3079\
+    \u3066\u8FD4\u3059\n * \u5947\u6570\u3060\u3051\u3092\u533A\u9593\u3054\u3068\u306B\
+    \u7BE9\u3046\u3002O(n log log n)\u3001\u30E1\u30E2\u30EA\u306F O(\u221An + \u7D20\
+    \u6570\u306E\u500B\u6570)\n */\ninline std::vector<long long> enumerate_primes(long\
+    \ long n) {\n    std::vector<long long> res;\n    if (n < 2) return res;\n   \
+    \ res.push_back(2);\n    long long r = 1;\n    while ((r + 1) * (r + 1) <= n)\
+    \ r++;\n    // \u221An \u4EE5\u4E0B\u306E\u5947\u7D20\u6570 p \u3068\u3001\u6B21\
+    \u306B\u7BE9\u3046 p \u306E\u500D\u6570 (\u5947\u6570)\n    std::vector<char>\
+    \ small(r + 1, 1);\n    std::vector<std::pair<long long, long long>> sp;\n   \
+    \ for (long long i = 3; i <= r; i += 2) {\n        if (!small[i]) continue;\n\
+    \        for (long long j = i * i; j <= r; j += 2 * i) small[j] = 0;\n       \
+    \ sp.emplace_back(i, i * i);\n    }\n    // \u5947\u6570 2k+1 (1 <= k <= kmax)\
+    \ \u3092\u3001k \u306E\u9577\u3055 B \u306E\u533A\u9593\u3054\u3068\u306B\u7BE9\
+    \u3046\n    constexpr int B = 1 << 16;\n    std::vector<char> block(B);\n    const\
+    \ long long kmax = (n - 1) / 2;\n    for (long long lo = 1; lo <= kmax; lo +=\
+    \ B) {\n        const long long hi = std::min(lo + B, kmax + 1);\n        std::fill(block.begin(),\
+    \ block.begin() + (hi - lo), 1);\n        for (auto& [p, m] : sp) {\n        \
+    \    long long k = (m - 1) / 2;\n            for (; k < hi; k += p) block[k -\
+    \ lo] = 0;\n            m = 2 * k + 1;\n        }\n        for (long long k =\
+    \ lo; k < hi; k++) {\n            if (block[k - lo]) res.push_back(2 * k + 1);\n\
+    \        }\n    }\n    return res;\n}\n\n/**\n * @brief n \u4EE5\u4E0B\u306E\u6574\
+    \u6570\u306E\u6700\u5C0F\u7D20\u56E0\u6570\u3092\u524D\u8A08\u7B97\u3059\u308B\
+    \u7BE9 (\u7DDA\u5F62\u7BE9)\n *\n * \u524D\u8A08\u7B97 O(n)\u3001\u7D20\u6570\u5224\
+    \u5B9A O(1)\u3001\u7D20\u56E0\u6570\u5206\u89E3 O(log x)\n * \u4F8B:\n * Sieve\
+    \ sv(1000000);\n * sv.is_prime(x); sv.factorize(x);\n */\nclass Sieve {\n    long\
+    \ long n;\n    std::vector<int> lpf;  // \u6700\u5C0F\u7D20\u56E0\u6570 (\u30E1\
+    \u30E2\u30EA\u3092\u6291\u3048\u308B\u305F\u3081 int \u3067\u6301\u3064)\n   \
+    \ std::vector<long long> ps;\n\n   public:\n    explicit Sieve(long long n) :\
+    \ n(n), lpf(n + 1, 0) {\n        assert(n >= 0);\n        for (int i = 2; i <=\
+    \ n; i++) {\n            if (lpf[i] == 0) {\n                lpf[i] = i;\n   \
+    \             ps.push_back(i);\n            }\n            for (long long p :\
+    \ ps) {\n                if (p > lpf[i] || p * i > n) break;\n               \
+    \ lpf[p * i] = p;\n            }\n        }\n    }\n\n    /**\n     * @brief \u524D\
+    \u8A08\u7B97\u3057\u305F\u7BC4\u56F2\u306E\u4E0A\u9650 n\n     */\n    long long\
+    \ limit() const { return n; }\n    /**\n     * @brief x (0 <= x <= n) \u304C\u7D20\
+    \u6570\u304B O(1)\n     */\n    bool is_prime(long long x) const {\n        assert(0\
+    \ <= x && x <= n);\n        return x >= 2 && lpf[x] == x;\n    }\n    /**\n  \
+    \   * @brief x (2 <= x <= n) \u306E\u6700\u5C0F\u7D20\u56E0\u6570 O(1)\n     */\n\
+    \    long long min_factor(long long x) const {\n        assert(2 <= x && x <=\
+    \ n);\n        return lpf[x];\n    }\n    /**\n     * @brief n \u4EE5\u4E0B\u306E\
+    \u7D20\u6570\u3092\u6607\u9806\u306B\u4E26\u3079\u305F\u3082\u306E\n     */\n\
+    \    const std::vector<long long>& primes() const { return ps; }\n    /**\n  \
     \   * @brief x (1 <= x <= n) \u3092\u7D20\u56E0\u6570\u5206\u89E3\u3057\u3001\
     (\u7D20\u56E0\u6570, \u6307\u6570) \u3092\u7D20\u56E0\u6570\u306E\u6607\u9806\u306B\
-    \u4E26\u3079\u3066\u8FD4\u3059 O(log x)\n     */\n    std::vector<std::pair<int,\
-    \ int>> factorize(int x) const {\n        assert(1 <= x && x <= n);\n        std::vector<std::pair<int,\
-    \ int>> res;\n        while (x > 1) {\n            int p = lpf[x], e = 0;\n  \
-    \          while (x % p == 0) x /= p, e++;\n            res.emplace_back(p, e);\n\
-    \        }\n        return res;\n    }\n    /**\n     * @brief x (1 <= x <= n)\
-    \ \u306E\u6B63\u306E\u7D04\u6570\u3092\u6607\u9806\u306B\u4E26\u3079\u3066\u8FD4\
-    \u3059\n     */\n    std::vector<int> divisors(int x) const {\n        std::vector<int>\
-    \ res = {1};\n        for (auto [p, e] : factorize(x)) {\n            int sz =\
-    \ res.size();\n            int pw = 1;\n            for (int i = 0; i < e; i++)\
-    \ {\n                pw *= p;\n                for (int j = 0; j < sz; j++) res.push_back(res[j]\
-    \ * pw);\n            }\n        }\n        std::sort(res.begin(), res.end());\n\
-    \        return res;\n    }\n};\n"
+    \u4E26\u3079\u3066\u8FD4\u3059 O(log x)\n     */\n    std::vector<std::pair<long\
+    \ long, long long>> factorize(long long x) const {\n        assert(1 <= x && x\
+    \ <= n);\n        std::vector<std::pair<long long, long long>> res;\n        while\
+    \ (x > 1) {\n            long long p = lpf[x], e = 0;\n            while (x %\
+    \ p == 0) x /= p, e++;\n            res.emplace_back(p, e);\n        }\n     \
+    \   return res;\n    }\n    /**\n     * @brief x (1 <= x <= n) \u306E\u6B63\u306E\
+    \u7D04\u6570\u3092\u6607\u9806\u306B\u4E26\u3079\u3066\u8FD4\u3059\n     */\n\
+    \    std::vector<long long> divisors(long long x) const {\n        std::vector<long\
+    \ long> res = {1};\n        for (auto [p, e] : factorize(x)) {\n            const\
+    \ long long sz = res.size();\n            long long pw = 1;\n            for (long\
+    \ long i = 0; i < e; i++) {\n                pw *= p;\n                for (long\
+    \ long j = 0; j < sz; j++) res.push_back(res[j] * pw);\n            }\n      \
+    \  }\n        std::sort(res.begin(), res.end());\n        return res;\n    }\n\
+    };\n"
   dependsOn:
   - src/math/modular-arithmetic.hpp
   isVerificationFile: false
   path: src/math/prime.hpp
   requiredBy:
   - src/math/divisor-transform.hpp
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-15 07:27:48+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/prime.test.cpp
@@ -342,7 +350,7 @@ is_prime(998244353);                 // true (Miller-Rabin、10^18 程度まで)
 auto f = factorize(360);             // {(2, 3), (3, 2), (5, 1)}
 auto d = divisors(12);               // {1, 2, 3, 4, 6, 12}
 long long phi = totient(10);         // 4
-std::vector<int> ps = enumerate_primes(100);  // {2, 3, 5, ..., 97}
+std::vector<long long> ps = enumerate_primes(100);  // {2, 3, 5, ..., 97}
 
 Sieve sv(1000000);                   // 10^6 以下の最小素因数を前計算する
 sv.is_prime(x);                      // O(1)
@@ -356,22 +364,22 @@ $d(n)$ は $n$ の約数の個数です。
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `is_prime(n)` | `n` が素数か。64 bit の範囲で決定的な Miller-Rabin。`constexpr` で使える | $O(\log n)$ |
-| `factorize(n)` | `n` ($\ge 1$) を素因数分解し、`(素因数, 指数)` を素因数の昇順に並べた `std::vector<std::pair<long long, int>>` を返す。Pollard の ρ 法 | 期待 $O(n^{1/4})$ 程度 |
+| `factorize(n)` | `n` ($\ge 1$) を素因数分解し、`(素因数, 指数)` を素因数の昇順に並べた `std::vector<std::pair<long long, long long>>` を返す。Pollard の ρ 法 | 期待 $O(n^{1/4})$ 程度 |
 | `divisors(n)` | `n` ($\ge 1$) の正の約数を昇順に並べて返す | `factorize(n)` + $O(d(n) \log d(n))$ |
 | `totient(n)` | オイラーの $\varphi$ 関数 ($1$ 以上 $n$ 以下で $n$ と互いに素な整数の個数) | `factorize(n)` と同じ |
-| `enumerate_primes(n)` | `n` 以下の素数を昇順に並べて返す。奇数だけを区間ごとに篩うので、$n = 5 \times 10^8$ でも 1 秒かからない | $O(n \log \log n)$ |
+| `enumerate_primes(n)` | `n` 以下の素数を昇順に並べた `std::vector<long long>` を返す。奇数だけを区間ごとに篩うので、$n = 5 \times 10^8$ でも 1 秒かからない | $O(n \log \log n)$ |
 
 ## `Sieve` のメンバ関数
 
-`Sieve(n)` で `n` 以下の整数の最小素因数を前計算します (線形篩)。同じ範囲の数をたくさん素因数分解するときに使います。`n` が $10^7$ を大きく超えるときは、メモリを抑えた `enumerate_primes` を使います。
+`Sieve(n)` で `n` 以下の整数の最小素因数を前計算します (線形篩)。引数と戻り値の整数は `long long` です (内部の最小素因数の表だけは、メモリを抑えるため `int` で持ちます)。同じ範囲の数をたくさん素因数分解するときに使います。`n` が $10^7$ を大きく超えるときは、メモリを抑えた `enumerate_primes` を使います。
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `Sieve(n)` | `n` 以下の最小素因数を前計算する。メモリは `int` が $n + 1$ 個 | $O(n)$ |
 | `is_prime(x)` | `x` ($0 \le x \le n$) が素数か | $O(1)$ |
 | `min_factor(x)` | `x` ($2 \le x \le n$) の最小素因数 | $O(1)$ |
-| `primes()` | `n` 以下の素数を昇順に並べたもの (参照を返す) | $O(1)$ |
-| `factorize(x)` | `x` ($1 \le x \le n$) を素因数分解する。戻り値の形は `factorize(n)` と同じ (型は `int`) | $O(\log x)$ |
+| `primes()` | `n` 以下の素数を昇順に並べた `std::vector<long long>` (参照を返す) | $O(1)$ |
+| `factorize(x)` | `x` ($1 \le x \le n$) を素因数分解する。戻り値の形は `factorize(n)` と同じ | $O(\log x)$ |
 | `divisors(x)` | `x` ($1 \le x \le n$) の正の約数を昇順に並べて返す | $O(\log x + d(x) \log d(x))$ |
 | `limit()` | 前計算した範囲の上限 `n` | $O(1)$ |
 

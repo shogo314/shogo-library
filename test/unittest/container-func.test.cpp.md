@@ -167,9 +167,9 @@ data:
     \ / 2]], v[u[v.size() / 2 - 1]]);\n    return (v[u[v.size() / 2]] + v[u[v.size()\
     \ / 2 - 1]]) / 2;\n}\n\n// x \u304C\u6700\u521D\u306B\u73FE\u308C\u308B\u4F4D\u7F6E\
     \u3002\u306A\u3051\u308C\u3070 -1\ntemplate <class C, typename U>\ninline constexpr\
-    \ int index(const C& v, const U& x) {\n    auto it = find(v, x);\n    if (it ==\
-    \ v.end()) return -1;\n    return static_cast<int>(std::distance(v.begin(), it));\n\
-    }\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
+    \ long long index(const C& v, const U& x) {\n    auto it = find(v, x);\n    if\
+    \ (it == v.end()) return -1;\n    return static_cast<long long>(std::distance(v.begin(),\
+    \ it));\n}\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
     inline constexpr mem_value_type<C> mex(const C& v) {\n    std::vector<bool> b(v.size()\
     \ + 1);\n    for (const auto& a : v) {\n        if (0 <= a && static_cast<std::size_t>(a)\
     \ < b.size()) {\n            b[a] = true;\n        }\n    }\n    mem_value_type<C>\
@@ -177,78 +177,78 @@ data:
     \u3067\u3001\u4E0B\u306E\u30EB\u30FC\u30D7\u3067\u5FC5\u305A\u898B\u3064\u304B\
     \u308B\n    for (std::size_t i = 0; i < b.size(); i++) {\n        if (!b[i]) {\n\
     \            ret = i;\n            break;\n        }\n    }\n    return ret;\n\
-    }\n\ntemplate <class C>\ninline constexpr int bisect_left(const C& v, const mem_value_type<C>&\
-    \ x) {\n    return static_cast<int>(std::distance(v.begin(), lower_bound(v, x)));\n\
-    }\ntemplate <class C>\ninline constexpr int bisect_right(const C& v, const mem_value_type<C>&\
-    \ x) {\n    return static_cast<int>(std::distance(v.begin(), upper_bound(v, x)));\n\
-    }\n#line 16 \"test/unittest/container-func.test.cpp\"\n\nbool ok = true;\n\nvoid\
-    \ check(bool cond, const char* what) {\n    if (!cond) {\n        if (ok) std::cerr\
-    \ << \"failed: \" << what << std::endl;\n        ok = false;\n    }\n}\n\nint\
-    \ main() {\n    std::mt19937_64 rng(314);\n    auto rand_vec = [&](int n, long\
-    \ long lo, long long hi) {\n        std::vector<long long> v(n);\n        for\
-    \ (auto& x : v) x = lo + (long long)(rng() % (unsigned long long)(hi - lo + 1));\n\
-    \        return v;\n    };\n\n    for (int rep = 0; rep < 2000 && ok; rep++) {\n\
-    \        int n = rng() % 10 + 1;\n        std::vector<long long> v = rand_vec(n,\
-    \ -5, 5);\n\n        // sorted / sort (\u6BD4\u8F03\u95A2\u6570\u3064\u304D)\n\
-    \        {\n            std::vector<long long> expect = v;\n            std::sort(expect.begin(),\
-    \ expect.end(), std::greater<long long>());\n            check(sorted(v, std::greater<long\
-    \ long>()) == expect, \"sorted(c, f)\");\n            std::vector<long long> w\
-    \ = v;\n            sort(w, std::greater<long long>());\n            check(w ==\
-    \ expect, \"sort(c, f)\");\n        }\n\n        // set / multiset \u306B\u5BFE\
-    \u3059\u308B max / min (\u30BD\u30FC\u30C8\u6E08\u307F\u306E\u30B3\u30F3\u30C6\
-    \u30CA\u306F\u5148\u982D\u3068\u672B\u5C3E)\n        {\n            std::set<long\
-    \ long> s(v.begin(), v.end());\n            std::multiset<long long> ms(v.begin(),\
-    \ v.end());\n            long long mx = *std::max_element(v.begin(), v.end());\n\
-    \            long long mn = *std::min_element(v.begin(), v.end());\n         \
-    \   check(max(s) == mx && min(s) == mn, \"max/min(set)\");\n            check(max(ms)\
-    \ == mx && min(ms) == mn, \"max/min(multiset)\");\n            check(max(v) ==\
-    \ mx && min(v) == mn, \"max/min(vector)\");\n        }\n\n        // product /\
-    \ product_xor\n        {\n            std::vector<long long> small = rand_vec(n,\
-    \ -3, 3);\n            long long p = 1, x = 0;\n            for (long long a :\
-    \ small) p *= a, x ^= a;\n            check(product(small) == p, \"product(c)\"\
-    );\n            check(product_xor(small) == x, \"product_xor(c)\");\n        \
-    \    std::vector<long long> nonneg = rand_vec(n, 0, 1000000);\n            long\
-    \ long y = 0;\n            for (long long a : nonneg) y ^= a;\n            check(product_xor(nonneg)\
-    \ == y, \"product_xor(c) large\");\n        }\n\n        // maximum_subarray (\u7A7A\
-    \u306E\u90E8\u5206\u5217\u3092\u8A31\u3059\u7248): \u5168\u533A\u9593\u306E\u548C\
-    \u306E\u6700\u5927\u5024\u3068 init \u306E\u5927\u304D\u3044\u65B9\n        {\n\
-    \            long long init = (long long)(rng() % 7) - 3;\n            long long\
-    \ best = init;\n            for (int l = 0; l < n; l++) {\n                long\
-    \ long s = init;\n                for (int r = l; r < n; r++) {\n            \
-    \        s += v[r];\n                    best = std::max(best, s);\n         \
-    \       }\n            }\n            check(maximum_subarray(v, init) == best,\
-    \ \"maximum_subarray(c, init)\");\n            // \u7A7A\u3067\u306A\u3044\u7248\
-    \u3082\u5408\u308F\u305B\u3066\u78BA\u304B\u3081\u308B\n            long long\
-    \ best_nonempty = v[0];\n            for (int l = 0; l < n; l++) {\n         \
-    \       long long s = 0;\n                for (int r = l; r < n; r++) {\n    \
-    \                s += v[r];\n                    best_nonempty = std::max(best_nonempty,\
-    \ s);\n                }\n            }\n            check(maximum_subarray(v)\
-    \ == best_nonempty, \"maximum_subarray(c)\");\n        }\n\n        // median:\
-    \ \u5076\u6570\u500B\u306A\u3089\u4E2D\u592E 2 \u3064\u306E\u5E73\u5747 (\u6574\
-    \u6570\u578B\u306F 0 \u65B9\u5411\u306B\u5207\u308A\u6368\u3066)\n        {\n\
-    \            std::vector<long long> w = v;\n            std::sort(w.begin(), w.end());\n\
-    \            long long expect = n % 2 ? w[n / 2] : (w[n / 2 - 1] + w[n / 2]) /\
-    \ 2;\n            check(median(v) == expect, \"median(vector<long long>)\");\n\
-    \            std::vector<double> d(v.begin(), v.end());\n            std::vector<double>\
-    \ dw = d;\n            std::sort(dw.begin(), dw.end());\n            double dexp\
-    \ = n % 2 ? dw[n / 2] : (dw[n / 2 - 1] + dw[n / 2]) / 2;\n            check(median(d)\
-    \ == dexp, \"median(vector<double>)\");\n        }\n\n        // index: \u6700\
-    \u521D\u306B\u73FE\u308C\u308B\u4F4D\u7F6E\u3001\u306A\u3051\u308C\u3070 -1\n\
-    \        {\n            long long x = (long long)(rng() % 13) - 6;\n         \
-    \   long long expect = std::find(v.begin(), v.end(), x) - v.begin();\n       \
-    \     if (expect == (long long)v.size()) expect = -1;\n            check(index(v,\
-    \ x) == expect, \"index(c, x)\");\n        }\n\n        // mex: \u542B\u307E\u308C\
-    \u306A\u3044\u6700\u5C0F\u306E\u975E\u8CA0\u6574\u6570\n        {\n          \
-    \  std::vector<int> w(n);\n            for (auto& a : w) a = (int)(rng() % 8)\
-    \ - 2;\n            int expect = 0;\n            while (std::find(w.begin(), w.end(),\
-    \ expect) != w.end()) expect++;\n            check(mex(w) == expect, \"mex(c)\"\
-    );\n        }\n\n        // count / find / lower_bound / upper_bound (set \u306F\
-    \u30E1\u30F3\u30D0\u95A2\u6570\u3001vector \u306F std:: \u306E\u30A2\u30EB\u30B4\
-    \u30EA\u30BA\u30E0)\n        {\n            long long x = (long long)(rng() %\
-    \ 13) - 6;\n            std::multiset<long long> ms(v.begin(), v.end());\n   \
-    \         std::vector<long long> w = v;\n            std::sort(w.begin(), w.end());\n\
-    \            check(count(ms, x) == (std::size_t)std::count(v.begin(), v.end(),\
-    \ x), \"count(multiset, x)\");\n            check(count(v, x) == std::count(v.begin(),\
+    }\n\ntemplate <class C>\ninline constexpr long long bisect_left(const C& v, const\
+    \ mem_value_type<C>& x) {\n    return static_cast<long long>(std::distance(v.begin(),\
+    \ lower_bound(v, x)));\n}\ntemplate <class C>\ninline constexpr long long bisect_right(const\
+    \ C& v, const mem_value_type<C>& x) {\n    return static_cast<long long>(std::distance(v.begin(),\
+    \ upper_bound(v, x)));\n}\n#line 16 \"test/unittest/container-func.test.cpp\"\n\
+    \nbool ok = true;\n\nvoid check(bool cond, const char* what) {\n    if (!cond)\
+    \ {\n        if (ok) std::cerr << \"failed: \" << what << std::endl;\n       \
+    \ ok = false;\n    }\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n    auto\
+    \ rand_vec = [&](int n, long long lo, long long hi) {\n        std::vector<long\
+    \ long> v(n);\n        for (auto& x : v) x = lo + (long long)(rng() % (unsigned\
+    \ long long)(hi - lo + 1));\n        return v;\n    };\n\n    for (int rep = 0;\
+    \ rep < 2000 && ok; rep++) {\n        int n = rng() % 10 + 1;\n        std::vector<long\
+    \ long> v = rand_vec(n, -5, 5);\n\n        // sorted / sort (\u6BD4\u8F03\u95A2\
+    \u6570\u3064\u304D)\n        {\n            std::vector<long long> expect = v;\n\
+    \            std::sort(expect.begin(), expect.end(), std::greater<long long>());\n\
+    \            check(sorted(v, std::greater<long long>()) == expect, \"sorted(c,\
+    \ f)\");\n            std::vector<long long> w = v;\n            sort(w, std::greater<long\
+    \ long>());\n            check(w == expect, \"sort(c, f)\");\n        }\n\n  \
+    \      // set / multiset \u306B\u5BFE\u3059\u308B max / min (\u30BD\u30FC\u30C8\
+    \u6E08\u307F\u306E\u30B3\u30F3\u30C6\u30CA\u306F\u5148\u982D\u3068\u672B\u5C3E\
+    )\n        {\n            std::set<long long> s(v.begin(), v.end());\n       \
+    \     std::multiset<long long> ms(v.begin(), v.end());\n            long long\
+    \ mx = *std::max_element(v.begin(), v.end());\n            long long mn = *std::min_element(v.begin(),\
+    \ v.end());\n            check(max(s) == mx && min(s) == mn, \"max/min(set)\"\
+    );\n            check(max(ms) == mx && min(ms) == mn, \"max/min(multiset)\");\n\
+    \            check(max(v) == mx && min(v) == mn, \"max/min(vector)\");\n     \
+    \   }\n\n        // product / product_xor\n        {\n            std::vector<long\
+    \ long> small = rand_vec(n, -3, 3);\n            long long p = 1, x = 0;\n   \
+    \         for (long long a : small) p *= a, x ^= a;\n            check(product(small)\
+    \ == p, \"product(c)\");\n            check(product_xor(small) == x, \"product_xor(c)\"\
+    );\n            std::vector<long long> nonneg = rand_vec(n, 0, 1000000);\n   \
+    \         long long y = 0;\n            for (long long a : nonneg) y ^= a;\n \
+    \           check(product_xor(nonneg) == y, \"product_xor(c) large\");\n     \
+    \   }\n\n        // maximum_subarray (\u7A7A\u306E\u90E8\u5206\u5217\u3092\u8A31\
+    \u3059\u7248): \u5168\u533A\u9593\u306E\u548C\u306E\u6700\u5927\u5024\u3068 init\
+    \ \u306E\u5927\u304D\u3044\u65B9\n        {\n            long long init = (long\
+    \ long)(rng() % 7) - 3;\n            long long best = init;\n            for (int\
+    \ l = 0; l < n; l++) {\n                long long s = init;\n                for\
+    \ (int r = l; r < n; r++) {\n                    s += v[r];\n                \
+    \    best = std::max(best, s);\n                }\n            }\n           \
+    \ check(maximum_subarray(v, init) == best, \"maximum_subarray(c, init)\");\n \
+    \           // \u7A7A\u3067\u306A\u3044\u7248\u3082\u5408\u308F\u305B\u3066\u78BA\
+    \u304B\u3081\u308B\n            long long best_nonempty = v[0];\n            for\
+    \ (int l = 0; l < n; l++) {\n                long long s = 0;\n              \
+    \  for (int r = l; r < n; r++) {\n                    s += v[r];\n           \
+    \         best_nonempty = std::max(best_nonempty, s);\n                }\n   \
+    \         }\n            check(maximum_subarray(v) == best_nonempty, \"maximum_subarray(c)\"\
+    );\n        }\n\n        // median: \u5076\u6570\u500B\u306A\u3089\u4E2D\u592E\
+    \ 2 \u3064\u306E\u5E73\u5747 (\u6574\u6570\u578B\u306F 0 \u65B9\u5411\u306B\u5207\
+    \u308A\u6368\u3066)\n        {\n            std::vector<long long> w = v;\n  \
+    \          std::sort(w.begin(), w.end());\n            long long expect = n %\
+    \ 2 ? w[n / 2] : (w[n / 2 - 1] + w[n / 2]) / 2;\n            check(median(v) ==\
+    \ expect, \"median(vector<long long>)\");\n            std::vector<double> d(v.begin(),\
+    \ v.end());\n            std::vector<double> dw = d;\n            std::sort(dw.begin(),\
+    \ dw.end());\n            double dexp = n % 2 ? dw[n / 2] : (dw[n / 2 - 1] + dw[n\
+    \ / 2]) / 2;\n            check(median(d) == dexp, \"median(vector<double>)\"\
+    );\n        }\n\n        // index: \u6700\u521D\u306B\u73FE\u308C\u308B\u4F4D\u7F6E\
+    \u3001\u306A\u3051\u308C\u3070 -1\n        {\n            long long x = (long\
+    \ long)(rng() % 13) - 6;\n            long long expect = std::find(v.begin(),\
+    \ v.end(), x) - v.begin();\n            if (expect == (long long)v.size()) expect\
+    \ = -1;\n            check(index(v, x) == expect, \"index(c, x)\");\n        }\n\
+    \n        // mex: \u542B\u307E\u308C\u306A\u3044\u6700\u5C0F\u306E\u975E\u8CA0\
+    \u6574\u6570\n        {\n            std::vector<int> w(n);\n            for (auto&\
+    \ a : w) a = (int)(rng() % 8) - 2;\n            int expect = 0;\n            while\
+    \ (std::find(w.begin(), w.end(), expect) != w.end()) expect++;\n            check(mex(w)\
+    \ == expect, \"mex(c)\");\n        }\n\n        // count / find / lower_bound\
+    \ / upper_bound (set \u306F\u30E1\u30F3\u30D0\u95A2\u6570\u3001vector \u306F std::\
+    \ \u306E\u30A2\u30EB\u30B4\u30EA\u30BA\u30E0)\n        {\n            long long\
+    \ x = (long long)(rng() % 13) - 6;\n            std::multiset<long long> ms(v.begin(),\
+    \ v.end());\n            std::vector<long long> w = v;\n            std::sort(w.begin(),\
+    \ w.end());\n            check(count(ms, x) == (std::size_t)std::count(v.begin(),\
+    \ v.end(), x), \"count(multiset, x)\");\n            check(count(v, x) == std::count(v.begin(),\
     \ v.end(), x), \"count(vector, x)\");\n            check((find(ms, x) != ms.end())\
     \ == (std::find(v.begin(), v.end(), x) != v.end()), \"find(multiset, x)\");\n\
     \            check(find(v, x) == std::find(v.begin(), v.end(), x), \"find(vector,\
@@ -397,7 +397,7 @@ data:
   isVerificationFile: true
   path: test/unittest/container-func.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 03:13:14+09:00'
+  timestamp: '2026-10-15 07:27:48+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/container-func.test.cpp

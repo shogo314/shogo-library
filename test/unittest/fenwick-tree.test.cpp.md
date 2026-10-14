@@ -107,56 +107,57 @@ data:
     \ S e() {\n        S h{};\n        for (std::size_t x = 0; x < N; x++) h[x] =\
     \ static_cast<int>(x);\n        return h;\n    }\n    // i \u3068 j \u3092\u5165\
     \u308C\u66FF\u3048\u3001\u307B\u304B\u306F\u52D5\u304B\u3055\u306A\u3044\u5199\
-    \u50CF (\u4E92\u63DB)\n    static constexpr S swap(int i, int j) {\n        S\
-    \ h = e();\n        h[i] = j;\n        h[j] = i;\n        return h;\n    }\n};\n\
-    \n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\u5408\u6210\n * op(f, g)\
-    \ = f\u2218g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B)\n * \u533A\u9593 [l,\
-    \ r) \u306E\u7A4D\u306F f_l(...f_{r-1}(x)) \u3092\u8868\u3059\n * \u5DE6\u304B\
-    \u3089\u9806\u306B\u9069\u7528\u3057\u305F\u3044 (f_{r-1}(...f_l(x)) \u3092\u6C42\
-    \u3081\u305F\u3044) \u5834\u5408\u306F monoid::Reverse<monoid::Composite<T>> \u3092\
-    \u4F7F\u3046\n */\ntemplate <typename T>\nstruct Composite {\n    using S = Affine<T>;\n\
-    \    static constexpr S op(const S& f, const S& g) { return {f.a * g.a, f.a *\
-    \ g.b + f.b}; }\n    static constexpr S e() { return {T(1), T(0)}; }\n};\n\n/**\n\
-    \ * @brief \u62EC\u5F27\u5217 \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\
-    \u3044 ')' \u3068 '(' \u306E\u500B\u6570\n */\nstruct Parenthesis {\n    struct\
-    \ S {\n        long long close;  // \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\
-    \u306A\u3044 ')' \u306E\u500B\u6570\n        long long open;   // \u5BFE\u5FDC\
-    \u306E\u53D6\u308C\u3066\u3044\u306A\u3044 '(' \u306E\u500B\u6570\n        constexpr\
-    \ S(char c = 0) : close(c == ')'), open(c == '(') {}\n        constexpr S(long\
-    \ long close, long long open) : close(close), open(open) {}\n        /**\n   \
-    \      * @brief \u6B63\u3057\u3044\u62EC\u5F27\u5217\u304B\n         */\n    \
-    \    constexpr bool is_valid() const { return close == 0 && open == 0; }\n   \
-    \ };\n    static constexpr S op(const S& a, const S& b) {\n        if (a.open\
-    \ >= b.close) return S(a.close, a.open - b.close + b.open);\n        return S(a.close\
-    \ + b.close - a.open, b.open);\n    }\n    static constexpr S e() { return S();\
-    \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\
-    \u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\
-    \u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\
-    \u5024\u306E\u578B\n */\ntemplate <typename T, typename U = int>\nstruct MinWith\
-    \ {\n    using S = std::pair<T, U>;\n    static constexpr S op(const S& a, const\
-    \ S& b) { return b.first < a.first ? b : a; }\n    static constexpr S e() { return\
-    \ {std::numeric_limits<T>::max(), U{}}; }\n};\n\n/**\n * @brief \u6700\u5927\u5024\
-    \u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\
-    \u512A\u5148\n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\
-    \u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\u578B\n */\ntemplate <typename\
-    \ T, typename U = int>\nstruct MaxWith {\n    using S = std::pair<T, U>;\n   \
-    \ static constexpr S op(const S& a, const S& b) { return a.first < b.first ? b\
-    \ : a; }\n    static constexpr S e() { return {std::numeric_limits<T>::lowest(),\
-    \ U{}}; }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u500B\u6570\
+    \u50CF (\u4E92\u63DB)\n    static constexpr S swap(long long i, long long j) {\n\
+    \        S h = e();\n        h[i] = static_cast<int>(j);\n        h[j] = static_cast<int>(i);\n\
+    \        return h;\n    }\n};\n\n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\
+    \u5408\u6210\n * op(f, g) = f\u2218g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B\
+    )\n * \u533A\u9593 [l, r) \u306E\u7A4D\u306F f_l(...f_{r-1}(x)) \u3092\u8868\u3059\
+    \n * \u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\u3057\u305F\u3044 (f_{r-1}(...f_l(x))\
+    \ \u3092\u6C42\u3081\u305F\u3044) \u5834\u5408\u306F monoid::Reverse<monoid::Composite<T>>\
+    \ \u3092\u4F7F\u3046\n */\ntemplate <typename T>\nstruct Composite {\n    using\
+    \ S = Affine<T>;\n    static constexpr S op(const S& f, const S& g) { return {f.a\
+    \ * g.a, f.a * g.b + f.b}; }\n    static constexpr S e() { return {T(1), T(0)};\
+    \ }\n};\n\n/**\n * @brief \u62EC\u5F27\u5217 \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\
+    \u3044\u306A\u3044 ')' \u3068 '(' \u306E\u500B\u6570\n */\nstruct Parenthesis\
+    \ {\n    struct S {\n        long long close;  // \u5BFE\u5FDC\u306E\u53D6\u308C\
+    \u3066\u3044\u306A\u3044 ')' \u306E\u500B\u6570\n        long long open;   //\
+    \ \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\u3044 '(' \u306E\u500B\u6570\
+    \n        constexpr S(char c = 0) : close(c == ')'), open(c == '(') {}\n     \
+    \   constexpr S(long long close, long long open) : close(close), open(open) {}\n\
+    \        /**\n         * @brief \u6B63\u3057\u3044\u62EC\u5F27\u5217\u304B\n \
+    \        */\n        constexpr bool is_valid() const { return close == 0 && open\
+    \ == 0; }\n    };\n    static constexpr S op(const S& a, const S& b) {\n     \
+    \   if (a.open >= b.close) return S(a.close, a.open - b.close + b.open);\n   \
+    \     return S(a.close + b.close - a.open, b.open);\n    }\n    static constexpr\
+    \ S e() { return S(); }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\
+    \u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n\
+    \ * @tparam T \u5024\u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\
+    \u968F\u3059\u308B\u5024\u306E\u578B\n */\ntemplate <typename T, typename U =\
+    \ long long>\nstruct MinWith {\n    using S = std::pair<T, U>;\n    static constexpr\
+    \ S op(const S& a, const S& b) { return b.first < a.first ? b : a; }\n    static\
+    \ constexpr S e() { return {std::numeric_limits<T>::max(), U{}}; }\n};\n\n/**\n\
+    \ * @brief \u6700\u5927\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\
+    \u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\u306E\u578B\
+    \n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\
+    \u578B\n */\ntemplate <typename T, typename U = long long>\nstruct MaxWith {\n\
+    \    using S = std::pair<T, U>;\n    static constexpr S op(const S& a, const S&\
+    \ b) { return a.first < b.first ? b : a; }\n    static constexpr S e() { return\
+    \ {std::numeric_limits<T>::lowest(), U{}}; }\n};\n\n/**\n * @brief \u6700\u5C0F\
+    \u5024\u3068\u305D\u306E\u500B\u6570\n *\n * @tparam T \u5024\u306E\u578B\n *\
+    \ @tparam U \u500B\u6570\u306E\u578B\n */\ntemplate <typename T, typename U =\
+    \ long long>\nstruct MinCount {\n    using S = std::pair<T, U>;\n    static constexpr\
+    \ S op(const S& a, const S& b) {\n        if (a.first < b.first) return a;\n \
+    \       if (b.first < a.first) return b;\n        return {a.first, a.second +\
+    \ b.second};\n    }\n    static constexpr S e() { return {std::numeric_limits<T>::max(),\
+    \ U(0)}; }\n};\n\n/**\n * @brief \u6700\u5927\u5024\u3068\u305D\u306E\u500B\u6570\
     \n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u500B\u6570\u306E\u578B\n\
-    \ */\ntemplate <typename T, typename U = long long>\nstruct MinCount {\n    using\
+    \ */\ntemplate <typename T, typename U = long long>\nstruct MaxCount {\n    using\
     \ S = std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n\
-    \        if (a.first < b.first) return a;\n        if (b.first < a.first) return\
-    \ b;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
-    \ S e() { return {std::numeric_limits<T>::max(), U(0)}; }\n};\n\n/**\n * @brief\
-    \ \u6700\u5927\u5024\u3068\u305D\u306E\u500B\u6570\n *\n * @tparam T \u5024\u306E\
-    \u578B\n * @tparam U \u500B\u6570\u306E\u578B\n */\ntemplate <typename T, typename\
-    \ U = long long>\nstruct MaxCount {\n    using S = std::pair<T, U>;\n    static\
-    \ constexpr S op(const S& a, const S& b) {\n        if (a.first < b.first) return\
-    \ b;\n        if (b.first < a.first) return a;\n        return {a.first, a.second\
-    \ + b.second};\n    }\n    static constexpr S e() { return {std::numeric_limits<T>::lowest(),\
-    \ U(0)}; }\n};\n\n/**\n * @brief \u7A4D\u306E\u9806\u5E8F\u3092\u9006\u306B\u3057\
-    \u305F\u30E2\u30CE\u30A4\u30C9 op(a, b) = M::op(b, a)\n *\n * \u4F8B: SegTree<monoid::Reverse<monoid::Composite<mint>>>\
+    \        if (a.first < b.first) return b;\n        if (b.first < a.first) return\
+    \ a;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
+    \ S e() { return {std::numeric_limits<T>::lowest(), U(0)}; }\n};\n\n/**\n * @brief\
+    \ \u7A4D\u306E\u9806\u5E8F\u3092\u9006\u306B\u3057\u305F\u30E2\u30CE\u30A4\u30C9\
+    \ op(a, b) = M::op(b, a)\n *\n * \u4F8B: SegTree<monoid::Reverse<monoid::Composite<mint>>>\
     \ seg(v); \u306E\u533A\u9593 [l, r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x))\n *\n\
     \ * @tparam M \u3082\u3068\u306E\u30E2\u30CE\u30A4\u30C9\n */\ntemplate <typename\
     \ M>\nstruct Reverse {\n    using S = typename M::S;\n    M m;\n    constexpr\
@@ -210,47 +211,48 @@ data:
     \u306A\u7FA4 (algebra/group.hpp)\u3002prefix_prod \u3068 max_right \u3060\u3051\
     \u306A\u3089\u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\u3067\u3082\u3088\u3044\n */\n\
     template <typename G>\nclass FenwickTree {\n   public:\n    using S = typename\
-    \ G::S;\n\n   private:\n    G g;\n    int n;\n    // data[i] \u306F a[i - (i &\
-    \ -i)] \u304B\u3089 a[i-1] \u307E\u3067\u306E\u7A4D (1-indexed)\n    std::vector<S>\
+    \ G::S;\n\n   private:\n    G g;\n    long long n;\n    // data[i] \u306F a[i\
+    \ - (i & -i)] \u304B\u3089 a[i-1] \u307E\u3067\u306E\u7A4D (1-indexed)\n    std::vector<S>\
     \ data;\n    S op(const S& a, const S& b) const { return g.op(a, b); }\n    S\
     \ e() const { return g.e(); }\n    S inv(const S& a) const { return g.inv(a);\
     \ }\n\n   public:\n    /**\n     * @brief \u8981\u7D20\u6570 n \u3067\u3001\u3059\
     \u3079\u3066\u306E\u8981\u7D20\u304C\u5358\u4F4D\u5143\u306E Fenwick Tree \u3092\
-    \u4F5C\u308B\n     */\n    explicit FenwickTree(int n = 0, G g = G()) : g(std::move(g)),\
-    \ n(n), data(n + 1, e()) {}\n    /**\n     * @brief v \u3092\u521D\u671F\u5024\
-    \u3068\u3059\u308B Fenwick Tree \u3092\u4F5C\u308B O(n)\n     */\n    explicit\
-    \ FenwickTree(const std::vector<S>& v, G g = G()) : FenwickTree(v.size(), std::move(g))\
-    \ {\n        for (int i = 1; i <= n; i++) {\n            data[i] = op(data[i],\
-    \ v[i - 1]);\n            int j = i + (i & -i);\n            if (j <= n) data[j]\
-    \ = op(data[j], data[i]);\n        }\n    }\n\n    int size() const { return n;\
-    \ }\n\n    /**\n     * @brief a[k] \u3092 op(a[k], x) \u306B\u3059\u308B O(log\
-    \ n)\n     */\n    void apply(int k, const S& x) {\n        assert(0 <= k && k\
-    \ < n);\n        for (k++; k <= n; k += k & -k) data[k] = op(data[k], x);\n  \
-    \  }\n    /**\n     * @brief a[0] \u304B\u3089 a[r-1] \u307E\u3067\u306E\u7A4D\
-    \ O(log n)\n     */\n    S prefix_prod(int r) const {\n        assert(0 <= r &&\
-    \ r <= n);\n        S res = e();\n        for (; r > 0; r -= r & -r) res = op(data[r],\
-    \ res);\n        return res;\n    }\n    /**\n     * @brief a[l] \u304B\u3089\
-    \ a[r-1] \u307E\u3067\u306E\u7A4D O(log n)\u3002\u9006\u5143\u3092\u4F7F\u3046\
-    \n     */\n    S prod(int l, int r) const {\n        assert(0 <= l && l <= r &&\
-    \ r <= n);\n        return op(inv(prefix_prod(l)), prefix_prod(r));\n    }\n \
-    \   S all_prod() const { return prefix_prod(n); }\n    /**\n     * @brief a[k]\
-    \ O(log n)\u3002\u9006\u5143\u3092\u4F7F\u3046\n     */\n    S get(int k) const\
-    \ {\n        assert(0 <= k && k < n);\n        return prod(k, k + 1);\n    }\n\
-    \    /**\n     * @brief a[k] \u3092 x \u306B\u3059\u308B O(log n)\u3002\u9006\u5143\
-    \u3092\u4F7F\u3046\n     */\n    void set(int k, const S& x) { apply(k, op(inv(get(k)),\
-    \ x)); }\n\n    /**\n     * @brief f(prefix_prod(r)) = true \u3068\u306A\u308B\
-    \u6700\u5927\u306E r \u3092\u8FD4\u3059 O(log n)\n     * f \u306F\u5358\u8ABF\
-    \ (\u3042\u308B r \u307E\u3067\u306F true \u3067\u305D\u308C\u4EE5\u964D\u306F\
-    \ false) \u3067\u3042\u308B\u3053\u3068\u3002f(e()) = true\n     */\n    template\
-    \ <typename F>\n    int max_right(F f) const {\n        assert(f(e()));\n    \
-    \    int r = 0;\n        S sum = e();\n        int step = 1;\n        while (step\
-    \ * 2 <= n) step *= 2;\n        for (; step > 0; step /= 2) {\n            if\
-    \ (r + step <= n && f(op(sum, data[r + step]))) {\n                r += step;\n\
-    \                sum = op(sum, data[r]);\n            }\n        }\n        return\
-    \ r;\n    }\n};\n\ntemplate <typename G>\nFenwickTree(int, G) -> FenwickTree<G>;\n\
-    template <typename G>\nFenwickTree(std::vector<typename G::S>, G) -> FenwickTree<G>;\n\
-    #line 7 \"test/unittest/fenwick-tree.test.cpp\"\n\n#include <iostream>\n#include\
-    \ <random>\n#line 11 \"test/unittest/fenwick-tree.test.cpp\"\n\n#line 13 \"test/unittest/fenwick-tree.test.cpp\"\
+    \u4F5C\u308B\n     */\n    explicit FenwickTree(long long n = 0, G g = G()) :\
+    \ g(std::move(g)), n(n), data(n + 1, e()) {}\n    /**\n     * @brief v \u3092\u521D\
+    \u671F\u5024\u3068\u3059\u308B Fenwick Tree \u3092\u4F5C\u308B O(n)\n     */\n\
+    \    explicit FenwickTree(const std::vector<S>& v, G g = G()) : FenwickTree(v.size(),\
+    \ std::move(g)) {\n        for (long long i = 1; i <= n; i++) {\n            data[i]\
+    \ = op(data[i], v[i - 1]);\n            long long j = i + (i & -i);\n        \
+    \    if (j <= n) data[j] = op(data[j], data[i]);\n        }\n    }\n\n    long\
+    \ long size() const { return n; }\n\n    /**\n     * @brief a[k] \u3092 op(a[k],\
+    \ x) \u306B\u3059\u308B O(log n)\n     */\n    void apply(long long k, const S&\
+    \ x) {\n        assert(0 <= k && k < n);\n        for (k++; k <= n; k += k & -k)\
+    \ data[k] = op(data[k], x);\n    }\n    /**\n     * @brief a[0] \u304B\u3089 a[r-1]\
+    \ \u307E\u3067\u306E\u7A4D O(log n)\n     */\n    S prefix_prod(long long r) const\
+    \ {\n        assert(0 <= r && r <= n);\n        S res = e();\n        for (; r\
+    \ > 0; r -= r & -r) res = op(data[r], res);\n        return res;\n    }\n    /**\n\
+    \     * @brief a[l] \u304B\u3089 a[r-1] \u307E\u3067\u306E\u7A4D O(log n)\u3002\
+    \u9006\u5143\u3092\u4F7F\u3046\n     */\n    S prod(long long l, long long r)\
+    \ const {\n        assert(0 <= l && l <= r && r <= n);\n        return op(inv(prefix_prod(l)),\
+    \ prefix_prod(r));\n    }\n    S all_prod() const { return prefix_prod(n); }\n\
+    \    /**\n     * @brief a[k] O(log n)\u3002\u9006\u5143\u3092\u4F7F\u3046\n  \
+    \   */\n    S get(long long k) const {\n        assert(0 <= k && k < n);\n   \
+    \     return prod(k, k + 1);\n    }\n    /**\n     * @brief a[k] \u3092 x \u306B\
+    \u3059\u308B O(log n)\u3002\u9006\u5143\u3092\u4F7F\u3046\n     */\n    void set(long\
+    \ long k, const S& x) { apply(k, op(inv(get(k)), x)); }\n\n    /**\n     * @brief\
+    \ f(prefix_prod(r)) = true \u3068\u306A\u308B\u6700\u5927\u306E r \u3092\u8FD4\
+    \u3059 O(log n)\n     * f \u306F\u5358\u8ABF (\u3042\u308B r \u307E\u3067\u306F\
+    \ true \u3067\u305D\u308C\u4EE5\u964D\u306F false) \u3067\u3042\u308B\u3053\u3068\
+    \u3002f(e()) = true\n     */\n    template <typename F>\n    long long max_right(F\
+    \ f) const {\n        assert(f(e()));\n        long long r = 0;\n        S sum\
+    \ = e();\n        long long step = 1;\n        while (step * 2 <= n) step *= 2;\n\
+    \        for (; step > 0; step /= 2) {\n            if (r + step <= n && f(op(sum,\
+    \ data[r + step]))) {\n                r += step;\n                sum = op(sum,\
+    \ data[r]);\n            }\n        }\n        return r;\n    }\n};\n\ntemplate\
+    \ <typename G>\nFenwickTree(long long, G) -> FenwickTree<G>;\ntemplate <typename\
+    \ G>\nFenwickTree(std::vector<typename G::S>, G) -> FenwickTree<G>;\n#line 7 \"\
+    test/unittest/fenwick-tree.test.cpp\"\n\n#include <iostream>\n#include <random>\n\
+    #line 11 \"test/unittest/fenwick-tree.test.cpp\"\n\n#line 13 \"test/unittest/fenwick-tree.test.cpp\"\
     \n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int\
     \ rep = 0; rep < 300 && ok; rep++) {\n        int n = rng() % 30;\n        std::vector<long\
     \ long> a(n);\n        for (auto& x : a) x = (long long)(rng() % 21) - 10;\n \
@@ -338,7 +340,7 @@ data:
   isVerificationFile: true
   path: test/unittest/fenwick-tree.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-15 07:27:48+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/fenwick-tree.test.cpp

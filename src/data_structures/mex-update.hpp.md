@@ -17,57 +17,58 @@ data:
     \n#include <cassert>\n#include <cstddef>\n#include <limits>\n#include <map>\n\
     #include <set>\n#include <vector>\n\ntemplate <typename T>\nclass MexUpdate {\n\
     \   public:\n    using value_type = T;\n\n   private:\n    inline constexpr static\
-    \ value_type e = std::numeric_limits<value_type>::max();\n\n    int n;\n    std::vector<value_type>\
-    \ v;\n    std::set<int> s;\n    std::map<int, std::size_t> m;\n\n   public:\n\
-    \    MexUpdate() = default;\n    explicit MexUpdate(int n) : n(n), v(n, e) {\n\
-    \        assert(n > 0);\n        assert(n + 1 < e);\n        std::set<int>::iterator\
-    \ hint = s.end();\n        for (int i = n; i >= 0; --i) {\n            hint =\
-    \ s.emplace_hint(hint, i);\n        }\n    }\n    explicit MexUpdate(const std::vector<value_type>&\
-    \ init) : n(init.size()), v(init) {\n        assert(n > 0);\n        assert(n\
-    \ + 1 < e);\n        std::set<int>::iterator hint = s.end();\n        for (int\
-    \ i = n; i >= 0; --i) {\n            hint = s.emplace_hint(hint, i);\n       \
-    \ }\n        for (const auto& i : init) {\n            if (0 <= i && i <= n) {\n\
-    \                m[i]++;\n                s.erase(i);\n            }\n       \
-    \ }\n    }\n    void set(int k, const value_type& x) {\n        assert(0 <= k\
-    \ && k < n);\n        if (0 <= v[k] && v[k] <= n) {\n            int v_k = v[k];\n\
-    \            auto itr = m.find(v_k);\n            if (itr->second > 1) {\n   \
-    \             itr->second--;\n            } else {\n                m.erase(itr);\n\
-    \                s.insert(v_k);\n            }\n        }\n        if (0 <= x\
-    \ && x <= n) {\n            int xx = x;\n            auto itr = m.find(xx);\n\
-    \            if (itr == m.end()) {\n                m[xx]++;\n               \
-    \ s.erase(xx);\n            } else {\n                itr->second++;\n       \
-    \     }\n        }\n        v[k] = x;\n    }\n    value_type mex() const {\n \
-    \       return *s.begin();\n    }\n};\n"
+    \ value_type e = std::numeric_limits<value_type>::max();\n\n    long long n;\n\
+    \    std::vector<value_type> v;\n    std::set<int> s;\n    std::map<int, std::size_t>\
+    \ m;\n\n   public:\n    MexUpdate() = default;\n    explicit MexUpdate(long long\
+    \ n) : n(n), v(n, e) {\n        assert(n > 0);\n        assert(n + 1 < e);\n \
+    \       std::set<int>::iterator hint = s.end();\n        for (long long i = n;\
+    \ i >= 0; --i) {\n            hint = s.emplace_hint(hint, int(i));\n        }\n\
+    \    }\n    explicit MexUpdate(const std::vector<value_type>& init) : n(init.size()),\
+    \ v(init) {\n        assert(n > 0);\n        assert(n + 1 < e);\n        std::set<int>::iterator\
+    \ hint = s.end();\n        for (long long i = n; i >= 0; --i) {\n            hint\
+    \ = s.emplace_hint(hint, int(i));\n        }\n        for (const auto& i : init)\
+    \ {\n            if (0 <= i && i <= n) {\n                m[i]++;\n          \
+    \      s.erase(i);\n            }\n        }\n    }\n    void set(long long k,\
+    \ const value_type& x) {\n        assert(0 <= k && k < n);\n        if (0 <= v[k]\
+    \ && v[k] <= n) {\n            int v_k = v[k];\n            auto itr = m.find(v_k);\n\
+    \            if (itr->second > 1) {\n                itr->second--;\n        \
+    \    } else {\n                m.erase(itr);\n                s.insert(v_k);\n\
+    \            }\n        }\n        if (0 <= x && x <= n) {\n            int xx\
+    \ = x;\n            auto itr = m.find(xx);\n            if (itr == m.end()) {\n\
+    \                m[xx]++;\n                s.erase(xx);\n            } else {\n\
+    \                itr->second++;\n            }\n        }\n        v[k] = x;\n\
+    \    }\n    value_type mex() const {\n        return *s.begin();\n    }\n};\n"
   code: "#pragma once\n\n/**\n * @file mex-update.hpp\n * @brief 1\u70B9\u66F4\u65B0\
     \u30FB\u5168\u4F53\u306E mex \u53D6\u5F97\n */\n\n#include <cassert>\n#include\
     \ <cstddef>\n#include <limits>\n#include <map>\n#include <set>\n#include <vector>\n\
     \ntemplate <typename T>\nclass MexUpdate {\n   public:\n    using value_type =\
     \ T;\n\n   private:\n    inline constexpr static value_type e = std::numeric_limits<value_type>::max();\n\
-    \n    int n;\n    std::vector<value_type> v;\n    std::set<int> s;\n    std::map<int,\
-    \ std::size_t> m;\n\n   public:\n    MexUpdate() = default;\n    explicit MexUpdate(int\
-    \ n) : n(n), v(n, e) {\n        assert(n > 0);\n        assert(n + 1 < e);\n \
-    \       std::set<int>::iterator hint = s.end();\n        for (int i = n; i >=\
-    \ 0; --i) {\n            hint = s.emplace_hint(hint, i);\n        }\n    }\n \
-    \   explicit MexUpdate(const std::vector<value_type>& init) : n(init.size()),\
-    \ v(init) {\n        assert(n > 0);\n        assert(n + 1 < e);\n        std::set<int>::iterator\
-    \ hint = s.end();\n        for (int i = n; i >= 0; --i) {\n            hint =\
-    \ s.emplace_hint(hint, i);\n        }\n        for (const auto& i : init) {\n\
-    \            if (0 <= i && i <= n) {\n                m[i]++;\n              \
-    \  s.erase(i);\n            }\n        }\n    }\n    void set(int k, const value_type&\
-    \ x) {\n        assert(0 <= k && k < n);\n        if (0 <= v[k] && v[k] <= n)\
-    \ {\n            int v_k = v[k];\n            auto itr = m.find(v_k);\n      \
-    \      if (itr->second > 1) {\n                itr->second--;\n            } else\
-    \ {\n                m.erase(itr);\n                s.insert(v_k);\n         \
-    \   }\n        }\n        if (0 <= x && x <= n) {\n            int xx = x;\n \
-    \           auto itr = m.find(xx);\n            if (itr == m.end()) {\n      \
-    \          m[xx]++;\n                s.erase(xx);\n            } else {\n    \
-    \            itr->second++;\n            }\n        }\n        v[k] = x;\n   \
-    \ }\n    value_type mex() const {\n        return *s.begin();\n    }\n};\n"
+    \n    long long n;\n    std::vector<value_type> v;\n    std::set<int> s;\n   \
+    \ std::map<int, std::size_t> m;\n\n   public:\n    MexUpdate() = default;\n  \
+    \  explicit MexUpdate(long long n) : n(n), v(n, e) {\n        assert(n > 0);\n\
+    \        assert(n + 1 < e);\n        std::set<int>::iterator hint = s.end();\n\
+    \        for (long long i = n; i >= 0; --i) {\n            hint = s.emplace_hint(hint,\
+    \ int(i));\n        }\n    }\n    explicit MexUpdate(const std::vector<value_type>&\
+    \ init) : n(init.size()), v(init) {\n        assert(n > 0);\n        assert(n\
+    \ + 1 < e);\n        std::set<int>::iterator hint = s.end();\n        for (long\
+    \ long i = n; i >= 0; --i) {\n            hint = s.emplace_hint(hint, int(i));\n\
+    \        }\n        for (const auto& i : init) {\n            if (0 <= i && i\
+    \ <= n) {\n                m[i]++;\n                s.erase(i);\n            }\n\
+    \        }\n    }\n    void set(long long k, const value_type& x) {\n        assert(0\
+    \ <= k && k < n);\n        if (0 <= v[k] && v[k] <= n) {\n            int v_k\
+    \ = v[k];\n            auto itr = m.find(v_k);\n            if (itr->second >\
+    \ 1) {\n                itr->second--;\n            } else {\n               \
+    \ m.erase(itr);\n                s.insert(v_k);\n            }\n        }\n  \
+    \      if (0 <= x && x <= n) {\n            int xx = x;\n            auto itr\
+    \ = m.find(xx);\n            if (itr == m.end()) {\n                m[xx]++;\n\
+    \                s.erase(xx);\n            } else {\n                itr->second++;\n\
+    \            }\n        }\n        v[k] = x;\n    }\n    value_type mex() const\
+    \ {\n        return *s.begin();\n    }\n};\n"
   dependsOn: []
   isVerificationFile: false
   path: src/data_structures/mex-update.hpp
   requiredBy: []
-  timestamp: '2026-10-14 16:36:18+09:00'
+  timestamp: '2026-10-15 07:35:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/mex-update.test.cpp

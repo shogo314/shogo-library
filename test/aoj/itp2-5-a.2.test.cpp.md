@@ -161,9 +161,9 @@ data:
     \ / 2]], v[u[v.size() / 2 - 1]]);\n    return (v[u[v.size() / 2]] + v[u[v.size()\
     \ / 2 - 1]]) / 2;\n}\n\n// x \u304C\u6700\u521D\u306B\u73FE\u308C\u308B\u4F4D\u7F6E\
     \u3002\u306A\u3051\u308C\u3070 -1\ntemplate <class C, typename U>\ninline constexpr\
-    \ int index(const C& v, const U& x) {\n    auto it = find(v, x);\n    if (it ==\
-    \ v.end()) return -1;\n    return static_cast<int>(std::distance(v.begin(), it));\n\
-    }\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
+    \ long long index(const C& v, const U& x) {\n    auto it = find(v, x);\n    if\
+    \ (it == v.end()) return -1;\n    return static_cast<long long>(std::distance(v.begin(),\
+    \ it));\n}\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
     inline constexpr mem_value_type<C> mex(const C& v) {\n    std::vector<bool> b(v.size()\
     \ + 1);\n    for (const auto& a : v) {\n        if (0 <= a && static_cast<std::size_t>(a)\
     \ < b.size()) {\n            b[a] = true;\n        }\n    }\n    mem_value_type<C>\
@@ -171,17 +171,18 @@ data:
     \u3067\u3001\u4E0B\u306E\u30EB\u30FC\u30D7\u3067\u5FC5\u305A\u898B\u3064\u304B\
     \u308B\n    for (std::size_t i = 0; i < b.size(); i++) {\n        if (!b[i]) {\n\
     \            ret = i;\n            break;\n        }\n    }\n    return ret;\n\
-    }\n\ntemplate <class C>\ninline constexpr int bisect_left(const C& v, const mem_value_type<C>&\
-    \ x) {\n    return static_cast<int>(std::distance(v.begin(), lower_bound(v, x)));\n\
-    }\ntemplate <class C>\ninline constexpr int bisect_right(const C& v, const mem_value_type<C>&\
-    \ x) {\n    return static_cast<int>(std::distance(v.begin(), upper_bound(v, x)));\n\
-    }\n#line 8 \"test/aoj/itp2-5-a.2.test.cpp\"\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
-    \    std::cin.tie(nullptr);\n    int n;\n    std::cin >> n;\n    std::vector<std::pair<long\
-    \ long, long long>> p(n);\n    for (auto& [x, y] : p) std::cin >> x >> y;\n  \
-    \  // x \u3092\u512A\u5148\u3057\u3001\u540C\u3058\u306A\u3089 y \u3067\u6BD4\u3079\
-    \u308B\u30AD\u30FC\u3067\u4E26\u3079\u308B\n    sort_by_key(p, [](const std::pair<long\
-    \ long, long long>& e) { return std::make_pair(e.first, e.second); });\n    for\
-    \ (const auto& [x, y] : p) std::cout << x << ' ' << y << '\\n';\n}\n"
+    }\n\ntemplate <class C>\ninline constexpr long long bisect_left(const C& v, const\
+    \ mem_value_type<C>& x) {\n    return static_cast<long long>(std::distance(v.begin(),\
+    \ lower_bound(v, x)));\n}\ntemplate <class C>\ninline constexpr long long bisect_right(const\
+    \ C& v, const mem_value_type<C>& x) {\n    return static_cast<long long>(std::distance(v.begin(),\
+    \ upper_bound(v, x)));\n}\n#line 8 \"test/aoj/itp2-5-a.2.test.cpp\"\n\nint main()\
+    \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    int\
+    \ n;\n    std::cin >> n;\n    std::vector<std::pair<long long, long long>> p(n);\n\
+    \    for (auto& [x, y] : p) std::cin >> x >> y;\n    // x \u3092\u512A\u5148\u3057\
+    \u3001\u540C\u3058\u306A\u3089 y \u3067\u6BD4\u3079\u308B\u30AD\u30FC\u3067\u4E26\
+    \u3079\u308B\n    sort_by_key(p, [](const std::pair<long long, long long>& e)\
+    \ { return std::make_pair(e.first, e.second); });\n    for (const auto& [x, y]\
+    \ : p) std::cout << x << ' ' << y << '\\n';\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP2_5_A\"\
     \n\n#include <iostream>\n#include <utility>\n#include <vector>\n\n#include \"\
     ../../src/utility/container_func.hpp\"\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
@@ -197,7 +198,7 @@ data:
   isVerificationFile: true
   path: test/aoj/itp2-5-a.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 03:13:14+09:00'
+  timestamp: '2026-10-15 07:27:48+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/itp2-5-a.2.test.cpp

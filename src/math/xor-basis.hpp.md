@@ -42,10 +42,10 @@ data:
     \ ^= x;\n        }\n        b[t] = x;\n        r++;\n        return true;\n  \
     \  }\n\n    /**\n     * @brief \u57FA\u5E95\u306E\u500B\u6570 (\u7A7A\u9593\u306E\
     \u6B21\u5143)\u3002\u4F5C\u308C\u308B\u5024\u306F 2^rank() \u500B\n     */\n \
-    \   int rank() const { return r; }\n\n    /**\n     * @brief x \u3092\u4F5C\u308C\
-    \u308B\u304B\n     */\n    bool contains(T x) const { return min(x) == 0; }\n\n\
-    \    /**\n     * @brief \u4F5C\u308C\u308B\u5024 y \u306B\u3064\u3044\u3066 x\
-    \ ^ y \u306E\u6700\u5927\u5024 (x = 0 \u306A\u3089\u4F5C\u308C\u308B\u5024\u306E\
+    \   long long rank() const { return r; }\n\n    /**\n     * @brief x \u3092\u4F5C\
+    \u308C\u308B\u304B\n     */\n    bool contains(T x) const { return min(x) == 0;\
+    \ }\n\n    /**\n     * @brief \u4F5C\u308C\u308B\u5024 y \u306B\u3064\u3044\u3066\
+    \ x ^ y \u306E\u6700\u5927\u5024 (x = 0 \u306A\u3089\u4F5C\u308C\u308B\u5024\u306E\
     \u6700\u5927\u5024)\n     */\n    T max(T x = 0) const {\n        for (int i =\
     \ B - 1; i >= 0; i--) {\n            if (b[i] && !(x >> i & 1)) x ^= b[i];\n \
     \       }\n        return x;\n    }\n\n    /**\n     * @brief \u4F5C\u308C\u308B\
@@ -111,10 +111,10 @@ data:
     \ ^= x;\n        }\n        b[t] = x;\n        r++;\n        return true;\n  \
     \  }\n\n    /**\n     * @brief \u57FA\u5E95\u306E\u500B\u6570 (\u7A7A\u9593\u306E\
     \u6B21\u5143)\u3002\u4F5C\u308C\u308B\u5024\u306F 2^rank() \u500B\n     */\n \
-    \   int rank() const { return r; }\n\n    /**\n     * @brief x \u3092\u4F5C\u308C\
-    \u308B\u304B\n     */\n    bool contains(T x) const { return min(x) == 0; }\n\n\
-    \    /**\n     * @brief \u4F5C\u308C\u308B\u5024 y \u306B\u3064\u3044\u3066 x\
-    \ ^ y \u306E\u6700\u5927\u5024 (x = 0 \u306A\u3089\u4F5C\u308C\u308B\u5024\u306E\
+    \   long long rank() const { return r; }\n\n    /**\n     * @brief x \u3092\u4F5C\
+    \u308C\u308B\u304B\n     */\n    bool contains(T x) const { return min(x) == 0;\
+    \ }\n\n    /**\n     * @brief \u4F5C\u308C\u308B\u5024 y \u306B\u3064\u3044\u3066\
+    \ x ^ y \u306E\u6700\u5927\u5024 (x = 0 \u306A\u3089\u4F5C\u308C\u308B\u5024\u306E\
     \u6700\u5927\u5024)\n     */\n    T max(T x = 0) const {\n        for (int i =\
     \ B - 1; i >= 0; i--) {\n            if (b[i] && !(x >> i & 1)) x ^= b[i];\n \
     \       }\n        return x;\n    }\n\n    /**\n     * @brief \u4F5C\u308C\u308B\
@@ -155,7 +155,7 @@ data:
   isVerificationFile: false
   path: src/math/xor-basis.hpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-15 07:27:48+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/xor-basis.test.cpp
@@ -184,7 +184,7 @@ xb.kth(2);           // 5 (小さい方から 0-indexed で 2 番目)
 |---|---|---|
 | `XorBasis<T>()` | 空の状態 (作れる値は 0 だけ) | $O(B)$ |
 | `add(x)` | `x` を追加する。`x` がまだ作れない値なら (基底が増えたら) `true` | $O(B)$ |
-| `rank()` | 基底の個数。作れる値は $2^{\mathrm{rank}}$ 個 (0 を含む) | $O(1)$ |
+| `rank()` | 基底の個数 (`long long`)。作れる値は $2^{\mathrm{rank}}$ 個 (0 を含む) | $O(1)$ |
 | `contains(x)` | `x` を作れるか | $O(B)$ |
 | `max(x = 0)` | 作れる値 `y` についての `x ^ y` の最大値。`x = 0` なら作れる値の最大値 | $O(B)$ |
 | `min(x)` | 作れる値 `y` についての `x ^ y` の最小値 | $O(B)$ |

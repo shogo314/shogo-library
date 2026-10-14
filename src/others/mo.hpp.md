@@ -19,36 +19,38 @@ data:
     \ algorithm\n */\n\n#include <algorithm>\n#include <array>\n#include <cassert>\n\
     #include <cmath>\n#include <type_traits>\n#include <vector>\n\ntemplate <typename\
     \ U, class ADD_LEFT, class DELETE_LEFT, class ADD_RIGHT = ADD_LEFT, class DELETE_RIGHT\
-    \ = DELETE_LEFT>\nclass Mo {\n   private:\n    int _n;\n    std::vector<std::array<int,\
-    \ 3>> lri;\n    U _e;\n    ADD_LEFT _add_left;\n    DELETE_LEFT _delete_left;\n\
+    \ = DELETE_LEFT>\nclass Mo {\n   private:\n    long long _n;\n    std::vector<std::array<long\
+    \ long, 3>> lri;\n    U _e;\n    ADD_LEFT _add_left;\n    DELETE_LEFT _delete_left;\n\
     \    ADD_RIGHT _add_right;\n    DELETE_RIGHT _delete_right;\n\n    static_assert(std::is_invocable_r_v<void,\
-    \ ADD_LEFT, U&, int>, \"ADD_LEFT must be callable with (U&, int)\");\n    static_assert(std::is_invocable_r_v<void,\
-    \ DELETE_LEFT, U&, int>, \"DELETE_LEFT must be callable with (U&, int)\");\n \
-    \   static_assert(std::is_invocable_r_v<void, ADD_RIGHT, U&, int>, \"ADD_RIGHT\
-    \ must be callable with (U&, int)\");\n    static_assert(std::is_invocable_r_v<void,\
-    \ DELETE_RIGHT, U&, int>, \"DELETE_RIGHT must be callable with (U&, int)\");\n\
-    \n   public:\n    Mo(int n,\n       const U& e,\n       const ADD_LEFT& add_left,\n\
-    \       const DELETE_LEFT& delete_left,\n       const ADD_RIGHT& add_right,\n\
-    \       const DELETE_RIGHT& delete_right) : _n(n), lri(), _e(e), _add_left(add_left),\
+    \ ADD_LEFT, U&, long long>, \"ADD_LEFT must be callable with (U&, long long)\"\
+    );\n    static_assert(std::is_invocable_r_v<void, DELETE_LEFT, U&, long long>,\
+    \ \"DELETE_LEFT must be callable with (U&, long long)\");\n    static_assert(std::is_invocable_r_v<void,\
+    \ ADD_RIGHT, U&, long long>, \"ADD_RIGHT must be callable with (U&, long long)\"\
+    );\n    static_assert(std::is_invocable_r_v<void, DELETE_RIGHT, U&, long long>,\
+    \ \"DELETE_RIGHT must be callable with (U&, long long)\");\n\n   public:\n   \
+    \ Mo(long long n,\n       const U& e,\n       const ADD_LEFT& add_left,\n    \
+    \   const DELETE_LEFT& delete_left,\n       const ADD_RIGHT& add_right,\n    \
+    \   const DELETE_RIGHT& delete_right) : _n(n), lri(), _e(e), _add_left(add_left),\
     \ _delete_left(delete_left), _add_right(add_right), _delete_right(delete_right)\
-    \ {}\n    Mo(int n,\n       const U& e,\n       const ADD_LEFT& add_left,\n  \
-    \     const DELETE_LEFT& delete_left) : _n(n), lri(), _e(e), _add_left(add_left),\
+    \ {}\n    Mo(long long n,\n       const U& e,\n       const ADD_LEFT& add_left,\n\
+    \       const DELETE_LEFT& delete_left) : _n(n), lri(), _e(e), _add_left(add_left),\
     \ _delete_left(delete_left), _add_right(add_left), _delete_right(delete_left)\
-    \ {}\n    void query(int l, int r) {\n        assert(0 <= l && l <= r && r <=\
-    \ _n);\n        lri.push_back({l, r, (int)lri.size()});\n    }\n    template <typename\
-    \ T, class F>\n    std::vector<T> solve(const F& f) {\n        static_assert(std::is_invocable_r_v<T,\
-    \ F, U&>, \"The function passed to solve must be callable with (U&) and return\
-    \ T\");\n\n        const int w = std::max<int>(1, 1.0 * _n / std::max<double>(1.0,\
-    \ std::sqrt(lri.size() * 2.0 / 3.0)));\n        std::sort(lri.begin(), lri.end(),\
-    \ [=](const std::array<int, 3>& a, const std::array<int, 3>& b) {\n          \
-    \  int aw = a[0] / w;\n            int bw = b[0] / w;\n            if (aw != bw)\
+    \ {}\n    void query(long long l, long long r) {\n        assert(0 <= l && l <=\
+    \ r && r <= _n);\n        lri.push_back({l, r, (long long)lri.size()});\n    }\n\
+    \    template <typename T, class F>\n    std::vector<T> solve(const F& f) {\n\
+    \        static_assert(std::is_invocable_r_v<T, F, U&>, \"The function passed\
+    \ to solve must be callable with (U&) and return T\");\n\n        const long long\
+    \ w = std::max<long long>(1, 1.0 * _n / std::max<double>(1.0, std::sqrt(lri.size()\
+    \ * 2.0 / 3.0)));\n        std::sort(lri.begin(), lri.end(), [=](const std::array<long\
+    \ long, 3>& a, const std::array<long long, 3>& b) {\n            long long aw\
+    \ = a[0] / w;\n            long long bw = b[0] / w;\n            if (aw != bw)\
     \ return aw < bw;\n            if (aw & 1) return a[1] > b[1];\n            return\
     \ a[1] < b[1];\n        });\n        std::vector<T> res(lri.size());\n       \
-    \ int tmpl = 0, tmpr = 0;\n        U tmp = _e;\n        for (auto [l, r, i] :\
-    \ lri) {\n            while (tmpl > l) {\n                tmpl--;\n          \
-    \      _add_left(tmp, tmpl);\n            }\n            while (tmpr < r) {\n\
-    \                _add_right(tmp, tmpr);\n                tmpr++;\n           \
-    \ }\n            while (tmpl < l) {\n                _delete_left(tmp, tmpl);\n\
+    \ long long tmpl = 0, tmpr = 0;\n        U tmp = _e;\n        for (auto [l, r,\
+    \ i] : lri) {\n            while (tmpl > l) {\n                tmpl--;\n     \
+    \           _add_left(tmp, tmpl);\n            }\n            while (tmpr < r)\
+    \ {\n                _add_right(tmp, tmpr);\n                tmpr++;\n       \
+    \     }\n            while (tmpl < l) {\n                _delete_left(tmp, tmpl);\n\
     \                tmpl++;\n            }\n            while (tmpr > r) {\n    \
     \            tmpr--;\n                _delete_right(tmp, tmpr);\n            }\n\
     \            res[i] = f(tmp);\n        }\n        return res;\n    }\n};\n"
@@ -56,36 +58,38 @@ data:
     \ <algorithm>\n#include <array>\n#include <cassert>\n#include <cmath>\n#include\
     \ <type_traits>\n#include <vector>\n\ntemplate <typename U, class ADD_LEFT, class\
     \ DELETE_LEFT, class ADD_RIGHT = ADD_LEFT, class DELETE_RIGHT = DELETE_LEFT>\n\
-    class Mo {\n   private:\n    int _n;\n    std::vector<std::array<int, 3>> lri;\n\
-    \    U _e;\n    ADD_LEFT _add_left;\n    DELETE_LEFT _delete_left;\n    ADD_RIGHT\
-    \ _add_right;\n    DELETE_RIGHT _delete_right;\n\n    static_assert(std::is_invocable_r_v<void,\
-    \ ADD_LEFT, U&, int>, \"ADD_LEFT must be callable with (U&, int)\");\n    static_assert(std::is_invocable_r_v<void,\
-    \ DELETE_LEFT, U&, int>, \"DELETE_LEFT must be callable with (U&, int)\");\n \
-    \   static_assert(std::is_invocable_r_v<void, ADD_RIGHT, U&, int>, \"ADD_RIGHT\
-    \ must be callable with (U&, int)\");\n    static_assert(std::is_invocable_r_v<void,\
-    \ DELETE_RIGHT, U&, int>, \"DELETE_RIGHT must be callable with (U&, int)\");\n\
-    \n   public:\n    Mo(int n,\n       const U& e,\n       const ADD_LEFT& add_left,\n\
-    \       const DELETE_LEFT& delete_left,\n       const ADD_RIGHT& add_right,\n\
-    \       const DELETE_RIGHT& delete_right) : _n(n), lri(), _e(e), _add_left(add_left),\
+    class Mo {\n   private:\n    long long _n;\n    std::vector<std::array<long long,\
+    \ 3>> lri;\n    U _e;\n    ADD_LEFT _add_left;\n    DELETE_LEFT _delete_left;\n\
+    \    ADD_RIGHT _add_right;\n    DELETE_RIGHT _delete_right;\n\n    static_assert(std::is_invocable_r_v<void,\
+    \ ADD_LEFT, U&, long long>, \"ADD_LEFT must be callable with (U&, long long)\"\
+    );\n    static_assert(std::is_invocable_r_v<void, DELETE_LEFT, U&, long long>,\
+    \ \"DELETE_LEFT must be callable with (U&, long long)\");\n    static_assert(std::is_invocable_r_v<void,\
+    \ ADD_RIGHT, U&, long long>, \"ADD_RIGHT must be callable with (U&, long long)\"\
+    );\n    static_assert(std::is_invocable_r_v<void, DELETE_RIGHT, U&, long long>,\
+    \ \"DELETE_RIGHT must be callable with (U&, long long)\");\n\n   public:\n   \
+    \ Mo(long long n,\n       const U& e,\n       const ADD_LEFT& add_left,\n    \
+    \   const DELETE_LEFT& delete_left,\n       const ADD_RIGHT& add_right,\n    \
+    \   const DELETE_RIGHT& delete_right) : _n(n), lri(), _e(e), _add_left(add_left),\
     \ _delete_left(delete_left), _add_right(add_right), _delete_right(delete_right)\
-    \ {}\n    Mo(int n,\n       const U& e,\n       const ADD_LEFT& add_left,\n  \
-    \     const DELETE_LEFT& delete_left) : _n(n), lri(), _e(e), _add_left(add_left),\
+    \ {}\n    Mo(long long n,\n       const U& e,\n       const ADD_LEFT& add_left,\n\
+    \       const DELETE_LEFT& delete_left) : _n(n), lri(), _e(e), _add_left(add_left),\
     \ _delete_left(delete_left), _add_right(add_left), _delete_right(delete_left)\
-    \ {}\n    void query(int l, int r) {\n        assert(0 <= l && l <= r && r <=\
-    \ _n);\n        lri.push_back({l, r, (int)lri.size()});\n    }\n    template <typename\
-    \ T, class F>\n    std::vector<T> solve(const F& f) {\n        static_assert(std::is_invocable_r_v<T,\
-    \ F, U&>, \"The function passed to solve must be callable with (U&) and return\
-    \ T\");\n\n        const int w = std::max<int>(1, 1.0 * _n / std::max<double>(1.0,\
-    \ std::sqrt(lri.size() * 2.0 / 3.0)));\n        std::sort(lri.begin(), lri.end(),\
-    \ [=](const std::array<int, 3>& a, const std::array<int, 3>& b) {\n          \
-    \  int aw = a[0] / w;\n            int bw = b[0] / w;\n            if (aw != bw)\
+    \ {}\n    void query(long long l, long long r) {\n        assert(0 <= l && l <=\
+    \ r && r <= _n);\n        lri.push_back({l, r, (long long)lri.size()});\n    }\n\
+    \    template <typename T, class F>\n    std::vector<T> solve(const F& f) {\n\
+    \        static_assert(std::is_invocable_r_v<T, F, U&>, \"The function passed\
+    \ to solve must be callable with (U&) and return T\");\n\n        const long long\
+    \ w = std::max<long long>(1, 1.0 * _n / std::max<double>(1.0, std::sqrt(lri.size()\
+    \ * 2.0 / 3.0)));\n        std::sort(lri.begin(), lri.end(), [=](const std::array<long\
+    \ long, 3>& a, const std::array<long long, 3>& b) {\n            long long aw\
+    \ = a[0] / w;\n            long long bw = b[0] / w;\n            if (aw != bw)\
     \ return aw < bw;\n            if (aw & 1) return a[1] > b[1];\n            return\
     \ a[1] < b[1];\n        });\n        std::vector<T> res(lri.size());\n       \
-    \ int tmpl = 0, tmpr = 0;\n        U tmp = _e;\n        for (auto [l, r, i] :\
-    \ lri) {\n            while (tmpl > l) {\n                tmpl--;\n          \
-    \      _add_left(tmp, tmpl);\n            }\n            while (tmpr < r) {\n\
-    \                _add_right(tmp, tmpr);\n                tmpr++;\n           \
-    \ }\n            while (tmpl < l) {\n                _delete_left(tmp, tmpl);\n\
+    \ long long tmpl = 0, tmpr = 0;\n        U tmp = _e;\n        for (auto [l, r,\
+    \ i] : lri) {\n            while (tmpl > l) {\n                tmpl--;\n     \
+    \           _add_left(tmp, tmpl);\n            }\n            while (tmpr < r)\
+    \ {\n                _add_right(tmp, tmpr);\n                tmpr++;\n       \
+    \     }\n            while (tmpl < l) {\n                _delete_left(tmp, tmpl);\n\
     \                tmpl++;\n            }\n            while (tmpr > r) {\n    \
     \            tmpr--;\n                _delete_right(tmp, tmpr);\n            }\n\
     \            res[i] = f(tmp);\n        }\n        return res;\n    }\n};\n"
@@ -93,7 +97,7 @@ data:
   isVerificationFile: false
   path: src/others/mo.hpp
   requiredBy: []
-  timestamp: '2026-10-15 03:13:14+09:00'
+  timestamp: '2026-10-15 03:36:18+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/mo.test.cpp
@@ -108,8 +112,8 @@ title: Mo's algorithm
 ```cpp
 // 各クエリ [l, r) の、区間内の異なる値の個数
 std::vector<int> cnt(MAXA);
-auto add = [&](int& kinds, int i) { if (cnt[a[i]]++ == 0) kinds++; };
-auto del = [&](int& kinds, int i) { if (--cnt[a[i]] == 0) kinds--; };
+auto add = [&](int& kinds, long long i) { if (cnt[a[i]]++ == 0) kinds++; };
+auto del = [&](int& kinds, long long i) { if (--cnt[a[i]] == 0) kinds--; };
 Mo mo(n, 0, add, del);                  // 左右で同じ操作なら 2 つ渡せばよい
 for (auto [l, r] : queries) mo.query(l, r);
 std::vector<int> ans = mo.solve<int>([](int& kinds) { return kinds; });  // クエリ順の答え
@@ -121,14 +125,14 @@ $q$ はクエリ数です。`solve` の計算量は、操作が $O(1)$ のとき
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `Mo(n, e, add_left, delete_left, add_right, delete_right)` | 要素数 `n`、状態の初期値 `e` (型 `U`) と 4 つの操作で作る | $O(1)$ |
+| `Mo(n, e, add_left, delete_left, add_right, delete_right)` | 要素数 `n` (`long long`)、状態の初期値 `e` (型 `U`) と 4 つの操作で作る | $O(1)$ |
 | `Mo(n, e, add, del)` | 左端と右端で操作が同じ場合 | $O(1)$ |
-| `query(l, r)` | クエリ $[l, r)$ を追加する | $O(1)$ |
+| `query(l, r)` | クエリ $[l, r)$ を追加する (`l`、`r` は `long long`) | $O(1)$ |
 | `solve<T>(f)` | すべてのクエリを処理し、各クエリで `f(state)` が返した値 (型 `T`) を、`query` を呼んだ順に並べて返す | $O(n \sqrt{q} + q \log q)$ |
 
 ## 渡す操作
 
-操作はいずれも `(U& state, int i)` を受け取り、`state` を書き換えます。
+操作はいずれも `(U& state, long long i)` を受け取り、`state` を書き換えます。位置 `i` は `long long` で渡すので、`int i` で受け取る操作も使えます。
 
 | 操作 | 呼ばれるとき |
 |---|---|

@@ -95,56 +95,57 @@ data:
     \ S e() {\n        S h{};\n        for (std::size_t x = 0; x < N; x++) h[x] =\
     \ static_cast<int>(x);\n        return h;\n    }\n    // i \u3068 j \u3092\u5165\
     \u308C\u66FF\u3048\u3001\u307B\u304B\u306F\u52D5\u304B\u3055\u306A\u3044\u5199\
-    \u50CF (\u4E92\u63DB)\n    static constexpr S swap(int i, int j) {\n        S\
-    \ h = e();\n        h[i] = j;\n        h[j] = i;\n        return h;\n    }\n};\n\
-    \n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\u5408\u6210\n * op(f, g)\
-    \ = f\u2218g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B)\n * \u533A\u9593 [l,\
-    \ r) \u306E\u7A4D\u306F f_l(...f_{r-1}(x)) \u3092\u8868\u3059\n * \u5DE6\u304B\
-    \u3089\u9806\u306B\u9069\u7528\u3057\u305F\u3044 (f_{r-1}(...f_l(x)) \u3092\u6C42\
-    \u3081\u305F\u3044) \u5834\u5408\u306F monoid::Reverse<monoid::Composite<T>> \u3092\
-    \u4F7F\u3046\n */\ntemplate <typename T>\nstruct Composite {\n    using S = Affine<T>;\n\
-    \    static constexpr S op(const S& f, const S& g) { return {f.a * g.a, f.a *\
-    \ g.b + f.b}; }\n    static constexpr S e() { return {T(1), T(0)}; }\n};\n\n/**\n\
-    \ * @brief \u62EC\u5F27\u5217 \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\
-    \u3044 ')' \u3068 '(' \u306E\u500B\u6570\n */\nstruct Parenthesis {\n    struct\
-    \ S {\n        long long close;  // \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\
-    \u306A\u3044 ')' \u306E\u500B\u6570\n        long long open;   // \u5BFE\u5FDC\
-    \u306E\u53D6\u308C\u3066\u3044\u306A\u3044 '(' \u306E\u500B\u6570\n        constexpr\
-    \ S(char c = 0) : close(c == ')'), open(c == '(') {}\n        constexpr S(long\
-    \ long close, long long open) : close(close), open(open) {}\n        /**\n   \
-    \      * @brief \u6B63\u3057\u3044\u62EC\u5F27\u5217\u304B\n         */\n    \
-    \    constexpr bool is_valid() const { return close == 0 && open == 0; }\n   \
-    \ };\n    static constexpr S op(const S& a, const S& b) {\n        if (a.open\
-    \ >= b.close) return S(a.close, a.open - b.close + b.open);\n        return S(a.close\
-    \ + b.close - a.open, b.open);\n    }\n    static constexpr S e() { return S();\
-    \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\
-    \u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\
-    \u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\
-    \u5024\u306E\u578B\n */\ntemplate <typename T, typename U = int>\nstruct MinWith\
-    \ {\n    using S = std::pair<T, U>;\n    static constexpr S op(const S& a, const\
-    \ S& b) { return b.first < a.first ? b : a; }\n    static constexpr S e() { return\
-    \ {std::numeric_limits<T>::max(), U{}}; }\n};\n\n/**\n * @brief \u6700\u5927\u5024\
-    \u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\
-    \u512A\u5148\n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\
-    \u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\u578B\n */\ntemplate <typename\
-    \ T, typename U = int>\nstruct MaxWith {\n    using S = std::pair<T, U>;\n   \
-    \ static constexpr S op(const S& a, const S& b) { return a.first < b.first ? b\
-    \ : a; }\n    static constexpr S e() { return {std::numeric_limits<T>::lowest(),\
-    \ U{}}; }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u500B\u6570\
+    \u50CF (\u4E92\u63DB)\n    static constexpr S swap(long long i, long long j) {\n\
+    \        S h = e();\n        h[i] = static_cast<int>(j);\n        h[j] = static_cast<int>(i);\n\
+    \        return h;\n    }\n};\n\n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\
+    \u5408\u6210\n * op(f, g) = f\u2218g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B\
+    )\n * \u533A\u9593 [l, r) \u306E\u7A4D\u306F f_l(...f_{r-1}(x)) \u3092\u8868\u3059\
+    \n * \u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\u3057\u305F\u3044 (f_{r-1}(...f_l(x))\
+    \ \u3092\u6C42\u3081\u305F\u3044) \u5834\u5408\u306F monoid::Reverse<monoid::Composite<T>>\
+    \ \u3092\u4F7F\u3046\n */\ntemplate <typename T>\nstruct Composite {\n    using\
+    \ S = Affine<T>;\n    static constexpr S op(const S& f, const S& g) { return {f.a\
+    \ * g.a, f.a * g.b + f.b}; }\n    static constexpr S e() { return {T(1), T(0)};\
+    \ }\n};\n\n/**\n * @brief \u62EC\u5F27\u5217 \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\
+    \u3044\u306A\u3044 ')' \u3068 '(' \u306E\u500B\u6570\n */\nstruct Parenthesis\
+    \ {\n    struct S {\n        long long close;  // \u5BFE\u5FDC\u306E\u53D6\u308C\
+    \u3066\u3044\u306A\u3044 ')' \u306E\u500B\u6570\n        long long open;   //\
+    \ \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\u3044 '(' \u306E\u500B\u6570\
+    \n        constexpr S(char c = 0) : close(c == ')'), open(c == '(') {}\n     \
+    \   constexpr S(long long close, long long open) : close(close), open(open) {}\n\
+    \        /**\n         * @brief \u6B63\u3057\u3044\u62EC\u5F27\u5217\u304B\n \
+    \        */\n        constexpr bool is_valid() const { return close == 0 && open\
+    \ == 0; }\n    };\n    static constexpr S op(const S& a, const S& b) {\n     \
+    \   if (a.open >= b.close) return S(a.close, a.open - b.close + b.open);\n   \
+    \     return S(a.close + b.close - a.open, b.open);\n    }\n    static constexpr\
+    \ S e() { return S(); }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\
+    \u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n\
+    \ * @tparam T \u5024\u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\
+    \u968F\u3059\u308B\u5024\u306E\u578B\n */\ntemplate <typename T, typename U =\
+    \ long long>\nstruct MinWith {\n    using S = std::pair<T, U>;\n    static constexpr\
+    \ S op(const S& a, const S& b) { return b.first < a.first ? b : a; }\n    static\
+    \ constexpr S e() { return {std::numeric_limits<T>::max(), U{}}; }\n};\n\n/**\n\
+    \ * @brief \u6700\u5927\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\
+    \u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\u306E\u578B\
+    \n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\
+    \u578B\n */\ntemplate <typename T, typename U = long long>\nstruct MaxWith {\n\
+    \    using S = std::pair<T, U>;\n    static constexpr S op(const S& a, const S&\
+    \ b) { return a.first < b.first ? b : a; }\n    static constexpr S e() { return\
+    \ {std::numeric_limits<T>::lowest(), U{}}; }\n};\n\n/**\n * @brief \u6700\u5C0F\
+    \u5024\u3068\u305D\u306E\u500B\u6570\n *\n * @tparam T \u5024\u306E\u578B\n *\
+    \ @tparam U \u500B\u6570\u306E\u578B\n */\ntemplate <typename T, typename U =\
+    \ long long>\nstruct MinCount {\n    using S = std::pair<T, U>;\n    static constexpr\
+    \ S op(const S& a, const S& b) {\n        if (a.first < b.first) return a;\n \
+    \       if (b.first < a.first) return b;\n        return {a.first, a.second +\
+    \ b.second};\n    }\n    static constexpr S e() { return {std::numeric_limits<T>::max(),\
+    \ U(0)}; }\n};\n\n/**\n * @brief \u6700\u5927\u5024\u3068\u305D\u306E\u500B\u6570\
     \n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u500B\u6570\u306E\u578B\n\
-    \ */\ntemplate <typename T, typename U = long long>\nstruct MinCount {\n    using\
+    \ */\ntemplate <typename T, typename U = long long>\nstruct MaxCount {\n    using\
     \ S = std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n\
-    \        if (a.first < b.first) return a;\n        if (b.first < a.first) return\
-    \ b;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
-    \ S e() { return {std::numeric_limits<T>::max(), U(0)}; }\n};\n\n/**\n * @brief\
-    \ \u6700\u5927\u5024\u3068\u305D\u306E\u500B\u6570\n *\n * @tparam T \u5024\u306E\
-    \u578B\n * @tparam U \u500B\u6570\u306E\u578B\n */\ntemplate <typename T, typename\
-    \ U = long long>\nstruct MaxCount {\n    using S = std::pair<T, U>;\n    static\
-    \ constexpr S op(const S& a, const S& b) {\n        if (a.first < b.first) return\
-    \ b;\n        if (b.first < a.first) return a;\n        return {a.first, a.second\
-    \ + b.second};\n    }\n    static constexpr S e() { return {std::numeric_limits<T>::lowest(),\
-    \ U(0)}; }\n};\n\n/**\n * @brief \u7A4D\u306E\u9806\u5E8F\u3092\u9006\u306B\u3057\
-    \u305F\u30E2\u30CE\u30A4\u30C9 op(a, b) = M::op(b, a)\n *\n * \u4F8B: SegTree<monoid::Reverse<monoid::Composite<mint>>>\
+    \        if (a.first < b.first) return b;\n        if (b.first < a.first) return\
+    \ a;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
+    \ S e() { return {std::numeric_limits<T>::lowest(), U(0)}; }\n};\n\n/**\n * @brief\
+    \ \u7A4D\u306E\u9806\u5E8F\u3092\u9006\u306B\u3057\u305F\u30E2\u30CE\u30A4\u30C9\
+    \ op(a, b) = M::op(b, a)\n *\n * \u4F8B: SegTree<monoid::Reverse<monoid::Composite<mint>>>\
     \ seg(v); \u306E\u533A\u9593 [l, r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x))\n *\n\
     \ * @tparam M \u3082\u3068\u306E\u30E2\u30CE\u30A4\u30C9\n */\ntemplate <typename\
     \ M>\nstruct Reverse {\n    using S = typename M::S;\n    M m;\n    constexpr\
@@ -169,25 +170,25 @@ data:
     \u30A4\u30C9 (op(x, x) = x \u3068\u306A\u308B\u3082\u306E\u3002monoid::Min\u3001\
     Max\u3001Gcd\u3001And\u3001Or \u306A\u3069)\n */\ntemplate <typename M>\nclass\
     \ SparseTable {\n   public:\n    using S = typename M::S;\n\n   private:\n   \
-    \ M m;\n    int n;\n    // table[k][i] \u306F v[i] \u304B\u3089 v[i + 2^k - 1]\
-    \ \u307E\u3067\u306E\u7A4D\n    std::vector<std::vector<S>> table;\n    std::vector<int>\
+    \ M m;\n    long long n;\n    // table[k][i] \u306F v[i] \u304B\u3089 v[i + 2^k\
+    \ - 1] \u307E\u3067\u306E\u7A4D\n    std::vector<std::vector<S>> table;\n    std::vector<int>\
     \ lg;  // lg[x] = floor(log2(x))\n    S op(const S& a, const S& b) const { return\
     \ m.op(a, b); }\n    S e() const { return m.e(); }\n\n   public:\n    explicit\
     \ SparseTable(const std::vector<S>& v = {}, M m = M()) : m(std::move(m)), n(v.size()),\
-    \ table(1, v), lg(n + 1, 0) {\n        for (int x = 2; x <= n; x++) lg[x] = lg[x\
-    \ / 2] + 1;\n        for (int k = 1; (1 << k) <= n; k++) {\n            const\
-    \ auto& prev = table[k - 1];\n            std::vector<S> cur(n - (1 << k) + 1);\n\
-    \            for (int i = 0; i + (1 << k) <= n; i++) cur[i] = op(prev[i], prev[i\
-    \ + (1 << (k - 1))]);\n            table.push_back(std::move(cur));\n        }\n\
-    \    }\n\n    int size() const { return n; }\n\n    /**\n     * @brief v[k]\n\
-    \     */\n    S get(int k) const {\n        assert(0 <= k && k < n);\n       \
-    \ return table[0][k];\n    }\n    /**\n     * @brief v[l] \u304B\u3089 v[r-1]\
-    \ \u307E\u3067\u306E\u7A4D O(1)\u3002l = r \u306A\u3089\u5358\u4F4D\u5143\n  \
-    \   */\n    S prod(int l, int r) const {\n        assert(0 <= l && l <= r && r\
-    \ <= n);\n        if (l == r) return e();\n        int k = lg[r - l];\n      \
-    \  return op(table[k][l], table[k][r - (1 << k)]);\n    }\n    S all_prod() const\
-    \ { return prod(0, n); }\n};\n\ntemplate <typename M>\nSparseTable(std::vector<typename\
-    \ M::S>, M) -> SparseTable<M>;\n"
+    \ table(1, v), lg(n + 1, 0) {\n        for (long long x = 2; x <= n; x++) lg[x]\
+    \ = lg[x / 2] + 1;\n        for (int k = 1; (1LL << k) <= n; k++) {\n        \
+    \    const auto& prev = table[k - 1];\n            std::vector<S> cur(n - (1LL\
+    \ << k) + 1);\n            for (long long i = 0; i + (1LL << k) <= n; i++) cur[i]\
+    \ = op(prev[i], prev[i + (1LL << (k - 1))]);\n            table.push_back(std::move(cur));\n\
+    \        }\n    }\n\n    long long size() const { return n; }\n\n    /**\n   \
+    \  * @brief v[k]\n     */\n    S get(long long k) const {\n        assert(0 <=\
+    \ k && k < n);\n        return table[0][k];\n    }\n    /**\n     * @brief v[l]\
+    \ \u304B\u3089 v[r-1] \u307E\u3067\u306E\u7A4D O(1)\u3002l = r \u306A\u3089\u5358\
+    \u4F4D\u5143\n     */\n    S prod(long long l, long long r) const {\n        assert(0\
+    \ <= l && l <= r && r <= n);\n        if (l == r) return e();\n        int k =\
+    \ lg[r - l];\n        return op(table[k][l], table[k][r - (1LL << k)]);\n    }\n\
+    \    S all_prod() const { return prod(0, n); }\n};\n\ntemplate <typename M>\n\
+    SparseTable(std::vector<typename M::S>, M) -> SparseTable<M>;\n"
   code: "#pragma once\n\n/**\n * @file sparse-table.hpp\n * @brief Sparse Table\n\
     \ */\n\n#include <cassert>\n#include <utility>\n#include <vector>\n\n#include\
     \ \"../algebra/monoid.hpp\"\n\n/**\n * @brief Sparse Table\n *\n * \u9759\u7684\
@@ -197,31 +198,32 @@ data:
     \u7B49\u306A\u30E2\u30CE\u30A4\u30C9 (op(x, x) = x \u3068\u306A\u308B\u3082\u306E\
     \u3002monoid::Min\u3001Max\u3001Gcd\u3001And\u3001Or \u306A\u3069)\n */\ntemplate\
     \ <typename M>\nclass SparseTable {\n   public:\n    using S = typename M::S;\n\
-    \n   private:\n    M m;\n    int n;\n    // table[k][i] \u306F v[i] \u304B\u3089\
-    \ v[i + 2^k - 1] \u307E\u3067\u306E\u7A4D\n    std::vector<std::vector<S>> table;\n\
-    \    std::vector<int> lg;  // lg[x] = floor(log2(x))\n    S op(const S& a, const\
-    \ S& b) const { return m.op(a, b); }\n    S e() const { return m.e(); }\n\n  \
-    \ public:\n    explicit SparseTable(const std::vector<S>& v = {}, M m = M()) :\
-    \ m(std::move(m)), n(v.size()), table(1, v), lg(n + 1, 0) {\n        for (int\
-    \ x = 2; x <= n; x++) lg[x] = lg[x / 2] + 1;\n        for (int k = 1; (1 << k)\
-    \ <= n; k++) {\n            const auto& prev = table[k - 1];\n            std::vector<S>\
-    \ cur(n - (1 << k) + 1);\n            for (int i = 0; i + (1 << k) <= n; i++)\
-    \ cur[i] = op(prev[i], prev[i + (1 << (k - 1))]);\n            table.push_back(std::move(cur));\n\
-    \        }\n    }\n\n    int size() const { return n; }\n\n    /**\n     * @brief\
-    \ v[k]\n     */\n    S get(int k) const {\n        assert(0 <= k && k < n);\n\
-    \        return table[0][k];\n    }\n    /**\n     * @brief v[l] \u304B\u3089\
-    \ v[r-1] \u307E\u3067\u306E\u7A4D O(1)\u3002l = r \u306A\u3089\u5358\u4F4D\u5143\
-    \n     */\n    S prod(int l, int r) const {\n        assert(0 <= l && l <= r &&\
-    \ r <= n);\n        if (l == r) return e();\n        int k = lg[r - l];\n    \
-    \    return op(table[k][l], table[k][r - (1 << k)]);\n    }\n    S all_prod()\
-    \ const { return prod(0, n); }\n};\n\ntemplate <typename M>\nSparseTable(std::vector<typename\
+    \n   private:\n    M m;\n    long long n;\n    // table[k][i] \u306F v[i] \u304B\
+    \u3089 v[i + 2^k - 1] \u307E\u3067\u306E\u7A4D\n    std::vector<std::vector<S>>\
+    \ table;\n    std::vector<int> lg;  // lg[x] = floor(log2(x))\n    S op(const\
+    \ S& a, const S& b) const { return m.op(a, b); }\n    S e() const { return m.e();\
+    \ }\n\n   public:\n    explicit SparseTable(const std::vector<S>& v = {}, M m\
+    \ = M()) : m(std::move(m)), n(v.size()), table(1, v), lg(n + 1, 0) {\n       \
+    \ for (long long x = 2; x <= n; x++) lg[x] = lg[x / 2] + 1;\n        for (int\
+    \ k = 1; (1LL << k) <= n; k++) {\n            const auto& prev = table[k - 1];\n\
+    \            std::vector<S> cur(n - (1LL << k) + 1);\n            for (long long\
+    \ i = 0; i + (1LL << k) <= n; i++) cur[i] = op(prev[i], prev[i + (1LL << (k -\
+    \ 1))]);\n            table.push_back(std::move(cur));\n        }\n    }\n\n \
+    \   long long size() const { return n; }\n\n    /**\n     * @brief v[k]\n    \
+    \ */\n    S get(long long k) const {\n        assert(0 <= k && k < n);\n     \
+    \   return table[0][k];\n    }\n    /**\n     * @brief v[l] \u304B\u3089 v[r-1]\
+    \ \u307E\u3067\u306E\u7A4D O(1)\u3002l = r \u306A\u3089\u5358\u4F4D\u5143\n  \
+    \   */\n    S prod(long long l, long long r) const {\n        assert(0 <= l &&\
+    \ l <= r && r <= n);\n        if (l == r) return e();\n        int k = lg[r -\
+    \ l];\n        return op(table[k][l], table[k][r - (1LL << k)]);\n    }\n    S\
+    \ all_prod() const { return prod(0, n); }\n};\n\ntemplate <typename M>\nSparseTable(std::vector<typename\
     \ M::S>, M) -> SparseTable<M>;\n"
   dependsOn:
   - src/algebra/monoid.hpp
   isVerificationFile: false
   path: src/data_structures/sparse-table.hpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-15 07:27:48+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/sparse-table.test.cpp

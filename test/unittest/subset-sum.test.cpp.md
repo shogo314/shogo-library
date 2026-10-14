@@ -73,12 +73,14 @@ data:
     \   return bits;\n}\ninline bool test(const std::vector<unsigned long long>& bits,\
     \ long long s) { return bits[s / 64] >> (s % 64) & 1; }\n// \u4F5C\u308C\u308B\
     \u548C s \u304B\u3089 from \u3092\u305F\u3069\u3063\u3066\u3001\u6DFB\u5B57\u306E\
-    \u6607\u9806\u306E\u30EA\u30B9\u30C8\u306B\u3059\u308B\n// s - a[from[s]] \u306F\
-    \ from[s] \u3088\u308A\u524D\u306E\u8981\u7D20\u3060\u3051\u3067\u4F5C\u308C\u3066\
-    \u3044\u305F\u306E\u3067\u3001\u6DFB\u5B57\u306F\u771F\u306B\u6E1B\u3063\u3066\
-    \u3044\u304F\ninline std::vector<int> trace(const std::vector<long long>& a, const\
-    \ std::vector<int>& from, long long s) {\n    std::vector<int> res;\n    for (;\
-    \ s > 0; s -= a[res.back()]) res.push_back(from[s]);\n    return std::vector<int>(res.rbegin(),\
+    \u6607\u9806\u306E\u30EA\u30B9\u30C8\u306B\u3059\u308B (from \u306F S + 1 \u500B\
+    \u3042\u308B\u306E\u3067 int \u3067\u6301\u3061\u3001\u8FD4\u3059\u3068\u304D\u306B\
+    \ long long \u306B\u3059\u308B)\n// s - a[from[s]] \u306F from[s] \u3088\u308A\
+    \u524D\u306E\u8981\u7D20\u3060\u3051\u3067\u4F5C\u308C\u3066\u3044\u305F\u306E\
+    \u3067\u3001\u6DFB\u5B57\u306F\u771F\u306B\u6E1B\u3063\u3066\u3044\u304F\ninline\
+    \ std::vector<long long> trace(const std::vector<long long>& a, const std::vector<int>&\
+    \ from, long long s) {\n    std::vector<long long> res;\n    for (; s > 0; s -=\
+    \ a[res.back()]) res.push_back(from[s]);\n    return std::vector<long long>(res.rbegin(),\
     \ res.rend());\n}\n// \u4F5C\u308C\u308B\u548C\u306E\u3046\u3061 S \u4EE5\u4E0B\
     \u306E\u6700\u5927\u5024\ninline long long max_bit(const std::vector<unsigned\
     \ long long>& bits, long long S) {\n    for (long long k = S / 64; k >= 0; k--)\
@@ -126,15 +128,16 @@ data:
     ) \u3067\u548C\u304C\u3061\u3087\u3046\u3069 S \u306B\u306A\u308B\u3082\u306E\u3092\
     \ 1 \u3064\u6C42\u3081\u3001\u305D\u306E\u6DFB\u5B57\u3092\u6607\u9806\u306B\u8FD4\
     \u3059 O(N S / 64 + S)\n * @param a 0 \u4EE5\u4E0A\u306E\u6574\u6570\u306E\u5217\
-    \n * @return \u4F5C\u308C\u306A\u3051\u308C\u3070 std::nullopt\n */\ninline std::optional<std::vector<int>>\
-    \ subset_sum_restore(const std::vector<long long>& a, long long S) {\n    std::vector<int>\
-    \ from;\n    auto bits = internal_subset_sum::build(a, S, &from);\n    if (!internal_subset_sum::test(bits,\
-    \ S)) return std::nullopt;\n    return internal_subset_sum::trace(a, from, S);\n\
-    }\n\n/**\n * @brief a \u306E\u90E8\u5206\u96C6\u5408 (\u5404\u8981\u7D20\u306F\
-    \ 1 \u56DE\u307E\u3067) \u306E\u548C\u306E\u3046\u3061\u3001S \u4EE5\u4E0B\u306E\
-    \u6700\u5927\u5024 (bitset) O(N S / 64)\n * @param a 0 \u4EE5\u4E0A\u306E\u6574\
-    \u6570\u306E\u5217\n */\ninline long long subset_sum_max_bitset(const std::vector<long\
-    \ long>& a, long long S) {\n    return internal_subset_sum::max_bit(internal_subset_sum::build(a,\
+    \n * @return \u4F5C\u308C\u306A\u3051\u308C\u3070 std::nullopt\n */\ninline std::optional<std::vector<long\
+    \ long>> subset_sum_restore(const std::vector<long long>& a, long long S) {\n\
+    \    std::vector<int> from;\n    auto bits = internal_subset_sum::build(a, S,\
+    \ &from);\n    if (!internal_subset_sum::test(bits, S)) return std::nullopt;\n\
+    \    return internal_subset_sum::trace(a, from, S);\n}\n\n/**\n * @brief a \u306E\
+    \u90E8\u5206\u96C6\u5408 (\u5404\u8981\u7D20\u306F 1 \u56DE\u307E\u3067) \u306E\
+    \u548C\u306E\u3046\u3061\u3001S \u4EE5\u4E0B\u306E\u6700\u5927\u5024 (bitset)\
+    \ O(N S / 64)\n * @param a 0 \u4EE5\u4E0A\u306E\u6574\u6570\u306E\u5217\n */\n\
+    inline long long subset_sum_max_bitset(const std::vector<long long>& a, long long\
+    \ S) {\n    return internal_subset_sum::max_bit(internal_subset_sum::build(a,\
     \ S, nullptr), S);\n}\n\n/**\n * @brief a \u306E\u90E8\u5206\u96C6\u5408 (\u5404\
     \u8981\u7D20\u306F 1 \u56DE\u307E\u3067) \u306E\u548C\u306E\u3046\u3061\u3001\
     S \u4EE5\u4E0B\u306E\u6700\u5927\u5024 (\u534A\u5206\u5168\u5217\u6319) O(2^(N/2))\n\
@@ -157,16 +160,16 @@ data:
     \ \u3068\u540C\u3058\u304F\u3001bitset O(N S / 64 + S) \u3068\u534A\u5206\u5168\
     \u5217\u6319 O(2^(N/2)) \u306E\u3046\u3061\u8A08\u7B97\u91CF\u304C\u5C0F\u3055\
     \u3044\u65B9\u3092\u9078\u3076\n * @param a 0 \u4EE5\u4E0A\u306E\u6574\u6570\u306E\
-    \u5217\n */\ninline std::vector<int> subset_sum_max_restore(const std::vector<long\
+    \u5217\n */\ninline std::vector<long long> subset_sum_max_restore(const std::vector<long\
     \ long>& a, long long S) {\n    using namespace internal_subset_sum;\n    int\
     \ n = a.size();\n    if (cost_bitset(n, S) <= cost_meet_in_the_middle(n)) {\n\
     \        std::vector<int> from;\n        auto bits = build(a, S, &from);\n   \
     \     return trace(a, from, max_bit(bits, S));\n    }\n    MitmResult r = meet_in_the_middle(a,\
-    \ S);\n    std::vector<int> res;\n    for (int i = 0; i < n / 2; i++) {\n    \
-    \    if (r.left >> i & 1) res.push_back(i);\n    }\n    for (int i = n / 2; i\
-    \ < n; i++) {\n        if (r.right >> (i - n / 2) & 1) res.push_back(i);\n   \
-    \ }\n    return res;\n}\n#line 7 \"test/unittest/subset-sum.test.cpp\"\n\n#line\
-    \ 9 \"test/unittest/subset-sum.test.cpp\"\n#include <iostream>\n#include <random>\n\
+    \ S);\n    std::vector<long long> res;\n    for (long long i = 0; i < n / 2; i++)\
+    \ {\n        if (r.left >> i & 1) res.push_back(i);\n    }\n    for (long long\
+    \ i = n / 2; i < n; i++) {\n        if (r.right >> (i - n / 2) & 1) res.push_back(i);\n\
+    \    }\n    return res;\n}\n#line 7 \"test/unittest/subset-sum.test.cpp\"\n\n\
+    #line 9 \"test/unittest/subset-sum.test.cpp\"\n#include <iostream>\n#include <random>\n\
     #line 12 \"test/unittest/subset-sum.test.cpp\"\n\n#line 2 \"src/dp/subset-sum-count.hpp\"\
     \n\n/**\n * @file subset-sum-count.hpp\n * @brief \u90E8\u5206\u548C\u306E\u500B\
     \u6570 (\u548C\u304C s \u306B\u306A\u308B\u90E8\u5206\u96C6\u5408\u306E\u500B\u6570\
@@ -209,63 +212,64 @@ data:
     \u3073\u51FA\u3055\u308C\u308B\u304C\u3001\u4E88\u3081\u5927\u304D\u306An\u306B\
     \u5BFE\u3057\u3066\u547C\u3073\u51FA\u3057\u3066\u304A\u304F\u3053\u3068\u3067\
     \u9006\u5143\u306E\u76F4\u63A5\u8A08\u7B97\u3092\u6E1B\u3089\u305B\u308B\n   \
-    \  */\n    inline static void extend(int n) {\n        if (cached_mod != (long\
-    \ long)Modint::mod()) {\n            cached_mod = Modint::mod();\n           \
-    \ fact = {1, 1};\n            inv_fact = {1, 1};\n        }\n        int m = fact.size();\n\
-    \        if (n < m) return;\n        fact.resize(n + 1);\n        inv_fact.resize(n\
-    \ + 1);\n        for (int i = m; i <= n; ++i) {\n            fact[i] = fact[i\
-    \ - 1] * i;\n        }\n        inv_fact[n] = fact[n].inv();\n        for (int\
-    \ i = n; i > m; --i) {\n            inv_fact[i - 1] = inv_fact[i] * i;\n     \
-    \   }\n    }\n\n    /**\n     * @brief n \u306E\u968E\u4E57\u3092\u8FD4\u3059\n\
-    \     * @param n\n     * @return n!\n     * @note extend(n), O(1)\n     */\n \
-    \   inline static Modint factorial(int n) {\n        extend(n);\n        return\
-    \ fact[n];\n    }\n    /**\n     * @brief n \u306E\u968E\u4E57\u306E\u9006\u5143\
-    \u3092\u8FD4\u3059\n     * @param n\n     * @return n!^-1\n     * @note extend(n),\
-    \ O(1)\n     */\n    inline static Modint inverse_factorial(int n) {\n       \
-    \ extend(n);\n        return inv_fact[n];\n    }\n    /**\n     * @brief n \u306E\
-    \u9006\u5143\u3092\u8FD4\u3059\n     * @param n\n     * @return n^-1\n     * @note\
-    \ extend(n), O(1)\n     */\n    inline static Modint inv(int n) {\n        assert(n\
-    \ > 0);\n        extend(n);\n        return inv_fact[n] * fact[n - 1];\n    }\n\
-    \n    /**\n     * @brief nPr \u3092\u8FD4\u3059\n     * @param n\n     * @param\
-    \ r\n     * @return nPr\n     * @note extend(n), O(1)\n     */\n    inline static\
-    \ Modint P(int n, int r) {\n        if (r < 0 || n < r) return 0;\n        extend(n);\n\
-    \        return fact[n] * inv_fact[n - r];\n    }\n    /**\n     * @brief nCr\
-    \ \u3092\u8FD4\u3059\n     * @param n\n     * @param r\n     * @return nCr\n \
-    \    * @note extend(n), O(1)\n     */\n    inline static Modint C(int n, int r)\
-    \ {\n        if (r < 0 || n < r) return 0;\n        extend(n);\n        return\
-    \ fact[n] * inv_fact[r] * inv_fact[n - r];\n    }\n    /**\n     * @brief nHr\
-    \ \u3092\u8FD4\u3059\n     * @param n\n     * @param r\n     * @return nHr\n \
-    \    * @note extend(n+r-1), O(1)\n     */\n    inline static Modint H(int n, int\
-    \ r) {\n        if (n < 0 || r < 0) return 0;\n        if (n == 0 && r == 0) return\
-    \ 1;\n        return C(n + r - 1, r);\n    }\n\n    /**\n     * @brief nPr \u3092\
-    \u5B9A\u7FA9\u3069\u304A\u308A\u8A08\u7B97\u3059\u308B\n     * @param n\n    \
-    \ * @param r\n     * @return nPr\n     * @note O(r)\n     */\n    inline static\
-    \ Modint P_loop(long long n, int r) {\n        if (r < 0 || n < r) return 0;\n\
-    \        Modint res = 1;\n        for (int i = 0; i < r; ++i) {\n            res\
-    \ *= n - i;\n        }\n        return res;\n    }\n    /**\n     * @brief nCr\
-    \ \u3092\u5B9A\u7FA9\u3069\u304A\u308A\u8A08\u7B97\u3059\u308B\n     * @param\
-    \ n\n     * @param r\n     * @return nCr\n     * @note O(min(r, n-r))\n     */\n\
-    \    inline static Modint C_loop(long long n, long long r) {\n        if (r <\
-    \ 0 || n < r) return 0;\n        if (r > n - r) r = n - r;\n        extend(r);\n\
-    \        return P_loop(n, r) * inv_fact[r];\n    }\n    /**\n     * @brief nHr\
-    \ \u3092\u5B9A\u7FA9\u3069\u304A\u308A\u8A08\u7B97\u3059\u308B\n     * @param\
-    \ n\n     * @param r\n     * @return nHr\n     * @note O(r)\n     */\n    inline\
-    \ static Modint H_loop(long long n, long long r) {\n        if (n < 0 || r < 0)\
-    \ return 0;\n        if (n == 0 && r == 0) return 1;\n        return C_loop(n\
-    \ + r - 1, r);\n    }\n\n    /**\n     * @brief nCr \u3092 Lucas \u306E\u5B9A\u7406\
-    \u3092\u7528\u3044\u3066\u8A08\u7B97\u3059\u308B\n     * @param n\n     * @param\
-    \ r\n     * @return nCr\n     * @note extend(Mod), O(log(r))\n     */\n    inline\
-    \ static Modint C_lucas(long long n, long long r) {\n        if (r < 0 || n <\
-    \ r) return 0;\n        if (r == 0 || n == r) return 1;\n        Modint res =\
-    \ 1;\n        while (r > 0) {\n            int ni = n % Modint::mod(), ri = r\
-    \ % Modint::mod();\n            if (ni < ri) return 0;\n            res *= C(ni,\
-    \ ri);\n            n /= Modint::mod();\n            r /= Modint::mod();\n   \
-    \     }\n        return res;\n    }\n};\n\ntemplate <typename Modint>\nstd::vector<Modint>\
-    \ Combination<Modint>::fact{1, 1};\ntemplate <typename Modint>\nstd::vector<Modint>\
-    \ Combination<Modint>::inv_fact{1, 1};\ntemplate <typename Modint>\nlong long\
-    \ Combination<Modint>::cached_mod = 0;\n\n/**\n * @brief mod p^q \u3067\u306E\u4E8C\
-    \u9805\u4FC2\u6570\u3092\u6C42\u3081\u308B\u69CB\u9020\n * @note \u524D\u8A08\u7B97\
-    O(p^q) \u53C2\u8003: https://nyaannyaan.github.io/library/modulo/arbitrary-mod-binomial.hpp\n\
+    \  */\n    inline static void extend(long long n) {\n        if (cached_mod !=\
+    \ (long long)Modint::mod()) {\n            cached_mod = Modint::mod();\n     \
+    \       fact = {1, 1};\n            inv_fact = {1, 1};\n        }\n        const\
+    \ long long m = fact.size();\n        if (n < m) return;\n        fact.resize(n\
+    \ + 1);\n        inv_fact.resize(n + 1);\n        for (long long i = m; i <= n;\
+    \ ++i) {\n            fact[i] = fact[i - 1] * i;\n        }\n        inv_fact[n]\
+    \ = fact[n].inv();\n        for (long long i = n; i > m; --i) {\n            inv_fact[i\
+    \ - 1] = inv_fact[i] * i;\n        }\n    }\n\n    /**\n     * @brief n \u306E\
+    \u968E\u4E57\u3092\u8FD4\u3059\n     * @param n\n     * @return n!\n     * @note\
+    \ extend(n), O(1)\n     */\n    inline static Modint factorial(long long n) {\n\
+    \        extend(n);\n        return fact[n];\n    }\n    /**\n     * @brief n\
+    \ \u306E\u968E\u4E57\u306E\u9006\u5143\u3092\u8FD4\u3059\n     * @param n\n  \
+    \   * @return n!^-1\n     * @note extend(n), O(1)\n     */\n    inline static\
+    \ Modint inverse_factorial(long long n) {\n        extend(n);\n        return\
+    \ inv_fact[n];\n    }\n    /**\n     * @brief n \u306E\u9006\u5143\u3092\u8FD4\
+    \u3059\n     * @param n\n     * @return n^-1\n     * @note extend(n), O(1)\n \
+    \    */\n    inline static Modint inv(long long n) {\n        assert(n > 0);\n\
+    \        extend(n);\n        return inv_fact[n] * fact[n - 1];\n    }\n\n    /**\n\
+    \     * @brief nPr \u3092\u8FD4\u3059\n     * @param n\n     * @param r\n    \
+    \ * @return nPr\n     * @note extend(n), O(1)\n     */\n    inline static Modint\
+    \ P(long long n, long long r) {\n        if (r < 0 || n < r) return 0;\n     \
+    \   extend(n);\n        return fact[n] * inv_fact[n - r];\n    }\n    /**\n  \
+    \   * @brief nCr \u3092\u8FD4\u3059\n     * @param n\n     * @param r\n     *\
+    \ @return nCr\n     * @note extend(n), O(1)\n     */\n    inline static Modint\
+    \ C(long long n, long long r) {\n        if (r < 0 || n < r) return 0;\n     \
+    \   extend(n);\n        return fact[n] * inv_fact[r] * inv_fact[n - r];\n    }\n\
+    \    /**\n     * @brief nHr \u3092\u8FD4\u3059\n     * @param n\n     * @param\
+    \ r\n     * @return nHr\n     * @note extend(n+r-1), O(1)\n     */\n    inline\
+    \ static Modint H(long long n, long long r) {\n        if (n < 0 || r < 0) return\
+    \ 0;\n        if (n == 0 && r == 0) return 1;\n        return C(n + r - 1, r);\n\
+    \    }\n\n    /**\n     * @brief nPr \u3092\u5B9A\u7FA9\u3069\u304A\u308A\u8A08\
+    \u7B97\u3059\u308B\n     * @param n\n     * @param r\n     * @return nPr\n   \
+    \  * @note O(r)\n     */\n    inline static Modint P_loop(long long n, long long\
+    \ r) {\n        if (r < 0 || n < r) return 0;\n        Modint res = 1;\n     \
+    \   for (long long i = 0; i < r; ++i) {\n            res *= n - i;\n        }\n\
+    \        return res;\n    }\n    /**\n     * @brief nCr \u3092\u5B9A\u7FA9\u3069\
+    \u304A\u308A\u8A08\u7B97\u3059\u308B\n     * @param n\n     * @param r\n     *\
+    \ @return nCr\n     * @note O(min(r, n-r))\n     */\n    inline static Modint\
+    \ C_loop(long long n, long long r) {\n        if (r < 0 || n < r) return 0;\n\
+    \        if (r > n - r) r = n - r;\n        extend(r);\n        return P_loop(n,\
+    \ r) * inv_fact[r];\n    }\n    /**\n     * @brief nHr \u3092\u5B9A\u7FA9\u3069\
+    \u304A\u308A\u8A08\u7B97\u3059\u308B\n     * @param n\n     * @param r\n     *\
+    \ @return nHr\n     * @note O(r)\n     */\n    inline static Modint H_loop(long\
+    \ long n, long long r) {\n        if (n < 0 || r < 0) return 0;\n        if (n\
+    \ == 0 && r == 0) return 1;\n        return C_loop(n + r - 1, r);\n    }\n\n \
+    \   /**\n     * @brief nCr \u3092 Lucas \u306E\u5B9A\u7406\u3092\u7528\u3044\u3066\
+    \u8A08\u7B97\u3059\u308B\n     * @param n\n     * @param r\n     * @return nCr\n\
+    \     * @note extend(Mod), O(log(r))\n     */\n    inline static Modint C_lucas(long\
+    \ long n, long long r) {\n        if (r < 0 || n < r) return 0;\n        if (r\
+    \ == 0 || n == r) return 1;\n        Modint res = 1;\n        while (r > 0) {\n\
+    \            int ni = n % Modint::mod(), ri = r % Modint::mod();\n           \
+    \ if (ni < ri) return 0;\n            res *= C(ni, ri);\n            n /= Modint::mod();\n\
+    \            r /= Modint::mod();\n        }\n        return res;\n    }\n};\n\n\
+    template <typename Modint>\nstd::vector<Modint> Combination<Modint>::fact{1, 1};\n\
+    template <typename Modint>\nstd::vector<Modint> Combination<Modint>::inv_fact{1,\
+    \ 1};\ntemplate <typename Modint>\nlong long Combination<Modint>::cached_mod =\
+    \ 0;\n\n/**\n * @brief mod p^q \u3067\u306E\u4E8C\u9805\u4FC2\u6570\u3092\u6C42\
+    \u3081\u308B\u69CB\u9020\n * @note \u524D\u8A08\u7B97O(p^q) \u53C2\u8003: https://nyaannyaan.github.io/library/modulo/arbitrary-mod-binomial.hpp\n\
     \ */\nstruct CombinationPQ {\n    int p, q;\n    int pq;\n    std::vector<int>\
     \ fact_p, inv_fact_p;\n    int delta;\n    CombinationPQ(int p, int q) : p(p),\
     \ q(q) {\n        pq = 1;\n        for (int i = 0; i < q; i++) pq *= p;\n    \
@@ -680,13 +684,13 @@ data:
     \ 14 \"src/math/fps.hpp\"\n\ntemplate <typename mint>\nstruct FPS : std::vector<mint>\
     \ {\n    using std::vector<mint>::vector;\n\n    // constructor\n    FPS(const\
     \ std::vector<mint>& r) : std::vector<mint>(r) {}\n\n    // core operator\n  \
-    \  inline FPS pre(int siz) const {\n        return FPS(begin(*this), begin(*this)\
-    \ + std::min((int)this->size(), siz));\n    }\n    inline FPS rev() const {\n\
-    \        FPS res = *this;\n        reverse(begin(res), end(res));\n        return\
-    \ res;\n    }\n    inline FPS& normalize() {\n        while (!this->empty() &&\
-    \ this->back() == 0) this->pop_back();\n        return *this;\n    }\n\n    //\
-    \ basic operator\n    inline FPS operator-() const noexcept {\n        FPS res\
-    \ = (*this);\n        for (int i = 0; i < (int)res.size(); ++i) res[i] = -res[i];\n\
+    \  inline FPS pre(long long siz) const {\n        return FPS(begin(*this), begin(*this)\
+    \ + std::min((long long)this->size(), siz));\n    }\n    inline FPS rev() const\
+    \ {\n        FPS res = *this;\n        reverse(begin(res), end(res));\n      \
+    \  return res;\n    }\n    inline FPS& normalize() {\n        while (!this->empty()\
+    \ && this->back() == 0) this->pop_back();\n        return *this;\n    }\n\n  \
+    \  // basic operator\n    inline FPS operator-() const noexcept {\n        FPS\
+    \ res = (*this);\n        for (int i = 0; i < (int)res.size(); ++i) res[i] = -res[i];\n\
     \        return res;\n    }\n    inline FPS operator+(const mint& v) const { return\
     \ FPS(*this) += v; }\n    inline FPS operator+(const FPS& r) const { return FPS(*this)\
     \ += r; }\n    inline FPS operator-(const mint& v) const { return FPS(*this) -=\
@@ -694,73 +698,75 @@ data:
     \ }\n    inline FPS operator*(const mint& v) const { return FPS(*this) *= v; }\n\
     \    inline FPS operator*(const FPS& r) const { return FPS(*this) *= r; }\n  \
     \  inline FPS operator/(const mint& v) const { return FPS(*this) /= v; }\n   \
-    \ inline FPS operator<<(int x) const { return FPS(*this) <<= x; }\n    inline\
-    \ FPS operator>>(int x) const { return FPS(*this) >>= x; }\n    inline FPS& operator+=(const\
-    \ mint& v) {\n        if (this->empty()) this->resize(1);\n        (*this)[0]\
-    \ += v;\n        return *this;\n    }\n    inline FPS& operator+=(const FPS& r)\
-    \ {\n        if (r.size() > this->size()) this->resize(r.size());\n        for\
-    \ (int i = 0; i < (int)r.size(); ++i) (*this)[i] += r[i];\n        return this->normalize();\n\
-    \    }\n    inline FPS& operator-=(const mint& v) {\n        if (this->empty())\
-    \ this->resize(1);\n        (*this)[0] -= v;\n        return *this;\n    }\n \
-    \   inline FPS& operator-=(const FPS& r) {\n        if (r.size() > this->size())\
-    \ this->resize(r.size());\n        for (int i = 0; i < (int)r.size(); ++i) (*this)[i]\
-    \ -= r[i];\n        return this->normalize();\n    }\n    inline FPS& operator*=(const\
-    \ mint& v) {\n        for (int i = 0; i < (int)this->size(); ++i) (*this)[i] *=\
-    \ v;\n        return *this;\n    }\n    inline FPS& operator*=(const FPS& r) {\n\
-    \        return *this = convolution((*this), r);\n    }\n    inline FPS& operator/=(const\
-    \ mint& v) {\n        assert(v != 0);\n        mint iv = v.inv();\n        for\
-    \ (int i = 0; i < (int)this->size(); ++i) (*this)[i] *= iv;\n        return *this;\n\
-    \    }\n    inline FPS& operator<<=(int x) {\n        FPS res(x, 0);\n       \
-    \ res.insert(res.end(), begin(*this), end(*this));\n        return *this = res;\n\
-    \    }\n    inline FPS& operator>>=(int x) {\n        if ((int)this->size() <=\
-    \ x) return *this = FPS<mint>(1, 0);\n        FPS res;\n        res.insert(res.end(),\
-    \ begin(*this) + x, end(*this));\n        return *this = res;\n    }\n    inline\
-    \ mint eval(const mint& v) {\n        mint res = 0;\n        for (int i = (int)this->size()\
-    \ - 1; i >= 0; --i) {\n            res *= v;\n            res += (*this)[i];\n\
-    \        }\n        return res;\n    }\n    inline friend FPS gcd(const FPS& f,\
-    \ const FPS& g) {\n        if (g.empty()) return f;\n        return gcd(g, f %\
-    \ g);\n    }\n\n    // advanced operation\n    // df/dx\n    inline friend FPS\
-    \ diff(const FPS& f) {\n        int n = (int)f.size();\n        if (n == 0) return\
-    \ FPS();\n        FPS res(n - 1);\n        for (int i = 1; i < n; ++i) res[i -\
-    \ 1] = f[i] * i;\n        return res;\n    }\n\n    // \\int f dx\n    inline\
-    \ friend FPS intg(const FPS& f) {\n        int n = (int)f.size();\n        FPS\
-    \ res(n + 1, 0);\n        for (int i = 0; i < n; ++i) res[i + 1] = f[i] / (i +\
-    \ 1);\n        return res;\n    }\n\n    // inv(f), f[0] must not be 0\n    inline\
-    \ friend FPS inv(const FPS& f, int deg) {\n        assert(!f.empty() && f[0] !=\
-    \ 0);\n        if (deg < 0) deg = (int)f.size();\n        if (deg == 0) return\
-    \ FPS();\n        FPS res({mint(1) / f[0]});\n        for (int i = 1; i < deg;\
-    \ i <<= 1) {\n            res = (res + res - res * res * f.pre(i << 1)).pre(i\
-    \ << 1);\n        }\n        res.resize(deg);\n        return res;\n    }\n  \
-    \  inline friend FPS inv(const FPS& f) {\n        return inv(f, f.size());\n \
-    \   }\n\n    // division, r must be normalized (r.back() must not be 0)\n    inline\
-    \ FPS& operator/=(const FPS& r) {\n        assert(!r.empty());\n        assert(r.back()\
-    \ != 0);\n        this->normalize();\n        if (this->size() < r.size()) {\n\
-    \            this->clear();\n            return *this;\n        }\n        int\
-    \ need = (int)this->size() - (int)r.size() + 1;\n        *this = ((*this).rev().pre(need)\
-    \ * inv(r.rev(), need)).pre(need).rev();\n        return *this;\n    }\n    inline\
-    \ FPS& operator%=(const FPS& r) {\n        assert(!r.empty());\n        assert(r.back()\
-    \ != 0);\n        this->normalize();\n        FPS q = (*this) / r;\n        return\
-    \ *this -= q * r;\n    }\n    inline FPS operator/(const FPS& r) const { return\
-    \ FPS(*this) /= r; }\n    inline FPS operator%(const FPS& r) const { return FPS(*this)\
-    \ %= r; }\n\n    // log(f) = \\int f'/f dx, f[0] must be 1\n    inline friend\
-    \ FPS log(const FPS& f, int deg) {\n        assert(!f.empty() && f[0] == 1);\n\
-    \        FPS res = intg(diff(f) * inv(f, deg));\n        res.resize(deg);\n  \
-    \      return res;\n    }\n    inline friend FPS log(const FPS& f) {\n       \
-    \ return log(f, f.size());\n    }\n\n    // exp(f), f[0] must be 0\n    inline\
-    \ friend FPS exp(const FPS& f, int deg) {\n        assert(f.empty() || f[0] ==\
-    \ 0);\n        FPS res(1, 1);\n        for (int i = 1; i < deg; i <<= 1) {\n \
-    \           res = res * (f.pre(i << 1) - log(res, i << 1) + 1).pre(i << 1);\n\
-    \        }\n        res.resize(deg);\n        return res;\n    }\n    inline friend\
-    \ FPS exp(const FPS& f) {\n        return exp(f, f.size());\n    }\n\n    // pow(f)\
-    \ = exp(e * log f)\n    inline friend FPS pow(const FPS& f, long long e, int deg)\
-    \ {\n        if (e == 0) {\n            auto ret = FPS(deg, 0);\n            if\
-    \ (deg > 0) ret[0] = 1;\n            return ret;\n        }\n        long long\
-    \ i = 0;\n        while (i < (int)f.size() && f[i] == 0) ++i;\n        if (i ==\
-    \ (int)f.size()) return FPS(deg, 0);\n        if ((i >= 1 && e >= deg) || i *\
-    \ e >= deg) return FPS(deg, 0);\n        mint k = f[i];\n        FPS res = exp(log((f\
-    \ >> i) / k, deg) * e, deg) * k.pow(e) << (e * i);\n        res.resize(deg);\n\
-    \        return res;\n    }\n    inline friend FPS pow(const FPS& f, long long\
-    \ e) {\n        return pow(f, e, f.size());\n    }\n\n    inline friend FPS taylor_shift(FPS\
+    \ inline FPS operator<<(long long x) const { return FPS(*this) <<= x; }\n    inline\
+    \ FPS operator>>(long long x) const { return FPS(*this) >>= x; }\n    inline FPS&\
+    \ operator+=(const mint& v) {\n        if (this->empty()) this->resize(1);\n \
+    \       (*this)[0] += v;\n        return *this;\n    }\n    inline FPS& operator+=(const\
+    \ FPS& r) {\n        if (r.size() > this->size()) this->resize(r.size());\n  \
+    \      for (int i = 0; i < (int)r.size(); ++i) (*this)[i] += r[i];\n        return\
+    \ this->normalize();\n    }\n    inline FPS& operator-=(const mint& v) {\n   \
+    \     if (this->empty()) this->resize(1);\n        (*this)[0] -= v;\n        return\
+    \ *this;\n    }\n    inline FPS& operator-=(const FPS& r) {\n        if (r.size()\
+    \ > this->size()) this->resize(r.size());\n        for (int i = 0; i < (int)r.size();\
+    \ ++i) (*this)[i] -= r[i];\n        return this->normalize();\n    }\n    inline\
+    \ FPS& operator*=(const mint& v) {\n        for (int i = 0; i < (int)this->size();\
+    \ ++i) (*this)[i] *= v;\n        return *this;\n    }\n    inline FPS& operator*=(const\
+    \ FPS& r) {\n        return *this = convolution((*this), r);\n    }\n    inline\
+    \ FPS& operator/=(const mint& v) {\n        assert(v != 0);\n        mint iv =\
+    \ v.inv();\n        for (int i = 0; i < (int)this->size(); ++i) (*this)[i] *=\
+    \ iv;\n        return *this;\n    }\n    inline FPS& operator<<=(long long x)\
+    \ {\n        FPS res(x, 0);\n        res.insert(res.end(), begin(*this), end(*this));\n\
+    \        return *this = res;\n    }\n    inline FPS& operator>>=(long long x)\
+    \ {\n        if ((long long)this->size() <= x) return *this = FPS<mint>(1, 0);\n\
+    \        FPS res;\n        res.insert(res.end(), begin(*this) + x, end(*this));\n\
+    \        return *this = res;\n    }\n    inline mint eval(const mint& v) {\n \
+    \       mint res = 0;\n        for (int i = (int)this->size() - 1; i >= 0; --i)\
+    \ {\n            res *= v;\n            res += (*this)[i];\n        }\n      \
+    \  return res;\n    }\n    inline friend FPS gcd(const FPS& f, const FPS& g) {\n\
+    \        if (g.empty()) return f;\n        return gcd(g, f % g);\n    }\n\n  \
+    \  // advanced operation\n    // df/dx\n    inline friend FPS diff(const FPS&\
+    \ f) {\n        int n = (int)f.size();\n        if (n == 0) return FPS();\n  \
+    \      FPS res(n - 1);\n        for (int i = 1; i < n; ++i) res[i - 1] = f[i]\
+    \ * i;\n        return res;\n    }\n\n    // \\int f dx\n    inline friend FPS\
+    \ intg(const FPS& f) {\n        int n = (int)f.size();\n        FPS res(n + 1,\
+    \ 0);\n        for (int i = 0; i < n; ++i) res[i + 1] = f[i] / (i + 1);\n    \
+    \    return res;\n    }\n\n    // inv(f), f[0] must not be 0\n    inline friend\
+    \ FPS inv(const FPS& f, long long deg) {\n        assert(!f.empty() && f[0] !=\
+    \ 0);\n        if (deg < 0) deg = (long long)f.size();\n        if (deg == 0)\
+    \ return FPS();\n        FPS res({mint(1) / f[0]});\n        for (long long i\
+    \ = 1; i < deg; i <<= 1) {\n            res = (res + res - res * res * f.pre(i\
+    \ << 1)).pre(i << 1);\n        }\n        res.resize(deg);\n        return res;\n\
+    \    }\n    inline friend FPS inv(const FPS& f) {\n        return inv(f, f.size());\n\
+    \    }\n\n    // division, r must be normalized (r.back() must not be 0)\n   \
+    \ inline FPS& operator/=(const FPS& r) {\n        assert(!r.empty());\n      \
+    \  assert(r.back() != 0);\n        this->normalize();\n        if (this->size()\
+    \ < r.size()) {\n            this->clear();\n            return *this;\n     \
+    \   }\n        const long long need = (long long)this->size() - (long long)r.size()\
+    \ + 1;\n        *this = ((*this).rev().pre(need) * inv(r.rev(), need)).pre(need).rev();\n\
+    \        return *this;\n    }\n    inline FPS& operator%=(const FPS& r) {\n  \
+    \      assert(!r.empty());\n        assert(r.back() != 0);\n        this->normalize();\n\
+    \        FPS q = (*this) / r;\n        return *this -= q * r;\n    }\n    inline\
+    \ FPS operator/(const FPS& r) const { return FPS(*this) /= r; }\n    inline FPS\
+    \ operator%(const FPS& r) const { return FPS(*this) %= r; }\n\n    // log(f) =\
+    \ \\int f'/f dx, f[0] must be 1\n    inline friend FPS log(const FPS& f, long\
+    \ long deg) {\n        assert(!f.empty() && f[0] == 1);\n        FPS res = intg(diff(f)\
+    \ * inv(f, deg));\n        res.resize(deg);\n        return res;\n    }\n    inline\
+    \ friend FPS log(const FPS& f) {\n        return log(f, f.size());\n    }\n\n\
+    \    // exp(f), f[0] must be 0\n    inline friend FPS exp(const FPS& f, long long\
+    \ deg) {\n        assert(f.empty() || f[0] == 0);\n        FPS res(1, 1);\n  \
+    \      for (long long i = 1; i < deg; i <<= 1) {\n            res = res * (f.pre(i\
+    \ << 1) - log(res, i << 1) + 1).pre(i << 1);\n        }\n        res.resize(deg);\n\
+    \        return res;\n    }\n    inline friend FPS exp(const FPS& f) {\n     \
+    \   return exp(f, f.size());\n    }\n\n    // pow(f) = exp(e * log f)\n    inline\
+    \ friend FPS pow(const FPS& f, long long e, long long deg) {\n        if (e ==\
+    \ 0) {\n            auto ret = FPS(deg, 0);\n            if (deg > 0) ret[0] =\
+    \ 1;\n            return ret;\n        }\n        long long i = 0;\n        while\
+    \ (i < (long long)f.size() && f[i] == 0) ++i;\n        if (i == (long long)f.size())\
+    \ return FPS(deg, 0);\n        if ((i >= 1 && e >= deg) || i * e >= deg) return\
+    \ FPS(deg, 0);\n        mint k = f[i];\n        FPS res = exp(log((f >> i) / k,\
+    \ deg) * e, deg) * k.pow(e) << (e * i);\n        res.resize(deg);\n        return\
+    \ res;\n    }\n    inline friend FPS pow(const FPS& f, long long e) {\n      \
+    \  return pow(f, e, f.size());\n    }\n\n    inline friend FPS taylor_shift(FPS\
     \ f, mint a) {\n        using C = Combination<mint>;\n        int n = f.size();\n\
     \        C::extend(n);\n        for (int i = 0; i < n; i++) f[i] *= C::factorial(i);\n\
     \        std::reverse(f.begin(), f.end());\n        FPS<mint> g(n, 1);\n     \
@@ -862,10 +868,10 @@ data:
     \ (k && mr[k - 1] >= mr[k]) ok = false;\n            ms += a[mr[k]];\n       \
     \ }\n        ok = ok && ms == best;\n    }\n\n    // \u4F8B\n    std::vector<long\
     \ long> a = {3, 5, 9};\n    auto r = subset_sum_restore(a, 14);\n    ok = ok &&\
-    \ r && *r == std::vector<int>{1, 2};\n    ok = ok && !subset_sum_restore(a, 13);\n\
-    \    ok = ok && subset_sum_restore(a, 0) == std::vector<int>{};\n\n    if (ok)\n\
-    \        std::cout << \"Hello World\" << std::endl;\n    else\n        std::cerr\
-    \ << \"failed\" << std::endl;\n}\n"
+    \ r && *r == std::vector<long long>{1, 2};\n    ok = ok && !subset_sum_restore(a,\
+    \ 13);\n    ok = ok && subset_sum_restore(a, 0) == std::vector<long long>{};\n\
+    \n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n    else\n\
+    \        std::cerr << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// subset_sum\u3001subset_sum_restore\u3001subset_sum_max*\u3001subset_sum_count_*\
     \ \u3092\u3001\u90E8\u5206\u96C6\u5408\u3092\u3059\u3079\u3066\u8A66\u3059\u611A\
@@ -920,10 +926,10 @@ data:
     \ (k && mr[k - 1] >= mr[k]) ok = false;\n            ms += a[mr[k]];\n       \
     \ }\n        ok = ok && ms == best;\n    }\n\n    // \u4F8B\n    std::vector<long\
     \ long> a = {3, 5, 9};\n    auto r = subset_sum_restore(a, 14);\n    ok = ok &&\
-    \ r && *r == std::vector<int>{1, 2};\n    ok = ok && !subset_sum_restore(a, 13);\n\
-    \    ok = ok && subset_sum_restore(a, 0) == std::vector<int>{};\n\n    if (ok)\n\
-    \        std::cout << \"Hello World\" << std::endl;\n    else\n        std::cerr\
-    \ << \"failed\" << std::endl;\n}\n"
+    \ r && *r == std::vector<long long>{1, 2};\n    ok = ok && !subset_sum_restore(a,\
+    \ 13);\n    ok = ok && subset_sum_restore(a, 0) == std::vector<long long>{};\n\
+    \n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n    else\n\
+    \        std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/dp/subset-sum.hpp
   - src/dp/subset-sum-count.hpp
@@ -936,7 +942,7 @@ data:
   isVerificationFile: true
   path: test/unittest/subset-sum.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 16:41:25+09:00'
+  timestamp: '2026-10-15 07:27:48+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/subset-sum.test.cpp

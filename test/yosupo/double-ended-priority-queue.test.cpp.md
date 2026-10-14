@@ -39,15 +39,15 @@ data:
     \ && equivalent(que.top(), del.top())) {\n            que.pop();\n           \
     \ del.pop();\n        }\n    }\n\n   public:\n    explicit ErasablePriorityQueue(Compare\
     \ comp = Compare()) : que(comp), del(comp), comp(comp) {}\n\n    /**\n     * @brief\
-    \ \u8981\u7D20\u6570\n     */\n    int size() const { return que.size() - del.size();\
-    \ }\n    bool empty() const { return size() == 0; }\n\n    /**\n     * @brief\
-    \ x \u3092\u8FFD\u52A0\u3059\u308B\n     */\n    void push(const T& x) {\n   \
-    \     que.push(x);\n        normalize();\n    }\n    /**\n     * @brief x \u3092\
-    \ 1 \u3064\u524A\u9664\u3059\u308B\u3002x \u306F\u542B\u307E\u308C\u3066\u3044\
-    \u308B\u3053\u3068 (\u542B\u307E\u308C\u3066\u3044\u306A\u3044\u8981\u7D20\u3092\
-    \u524A\u9664\u3059\u308B\u3068\u58CA\u308C\u308B)\n     * \u6BD4\u8F03\u95A2\u6570\
-    \u3067\u7B49\u3057\u3044\u8981\u7D20\u306F\u533A\u5225\u3057\u306A\u3044\n   \
-    \  */\n    void erase(const T& x) {\n        del.push(x);\n        normalize();\n\
+    \ \u8981\u7D20\u6570\n     */\n    long long size() const { return que.size()\
+    \ - del.size(); }\n    bool empty() const { return size() == 0; }\n\n    /**\n\
+    \     * @brief x \u3092\u8FFD\u52A0\u3059\u308B\n     */\n    void push(const\
+    \ T& x) {\n        que.push(x);\n        normalize();\n    }\n    /**\n     *\
+    \ @brief x \u3092 1 \u3064\u524A\u9664\u3059\u308B\u3002x \u306F\u542B\u307E\u308C\
+    \u3066\u3044\u308B\u3053\u3068 (\u542B\u307E\u308C\u3066\u3044\u306A\u3044\u8981\
+    \u7D20\u3092\u524A\u9664\u3059\u308B\u3068\u58CA\u308C\u308B)\n     * \u6BD4\u8F03\
+    \u95A2\u6570\u3067\u7B49\u3057\u3044\u8981\u7D20\u306F\u533A\u5225\u3057\u306A\
+    \u3044\n     */\n    void erase(const T& x) {\n        del.push(x);\n        normalize();\n\
     \    }\n    /**\n     * @brief \u5148\u982D (\u65E2\u5B9A\u3067\u306F\u6700\u5927\
     ) \u306E\u8981\u7D20\n     */\n    const T& top() const {\n        assert(!empty());\n\
     \        return que.top();\n    }\n    /**\n     * @brief \u5148\u982D\u306E\u8981\
@@ -88,7 +88,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/double-ended-priority-queue.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-15 07:35:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/double-ended-priority-queue.test.cpp

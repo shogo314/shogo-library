@@ -167,9 +167,9 @@ data:
     \ / 2]], v[u[v.size() / 2 - 1]]);\n    return (v[u[v.size() / 2]] + v[u[v.size()\
     \ / 2 - 1]]) / 2;\n}\n\n// x \u304C\u6700\u521D\u306B\u73FE\u308C\u308B\u4F4D\u7F6E\
     \u3002\u306A\u3051\u308C\u3070 -1\ntemplate <class C, typename U>\ninline constexpr\
-    \ int index(const C& v, const U& x) {\n    auto it = find(v, x);\n    if (it ==\
-    \ v.end()) return -1;\n    return static_cast<int>(std::distance(v.begin(), it));\n\
-    }\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
+    \ long long index(const C& v, const U& x) {\n    auto it = find(v, x);\n    if\
+    \ (it == v.end()) return -1;\n    return static_cast<long long>(std::distance(v.begin(),\
+    \ it));\n}\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
     inline constexpr mem_value_type<C> mex(const C& v) {\n    std::vector<bool> b(v.size()\
     \ + 1);\n    for (const auto& a : v) {\n        if (0 <= a && static_cast<std::size_t>(a)\
     \ < b.size()) {\n            b[a] = true;\n        }\n    }\n    mem_value_type<C>\
@@ -177,27 +177,27 @@ data:
     \u3067\u3001\u4E0B\u306E\u30EB\u30FC\u30D7\u3067\u5FC5\u305A\u898B\u3064\u304B\
     \u308B\n    for (std::size_t i = 0; i < b.size(); i++) {\n        if (!b[i]) {\n\
     \            ret = i;\n            break;\n        }\n    }\n    return ret;\n\
-    }\n\ntemplate <class C>\ninline constexpr int bisect_left(const C& v, const mem_value_type<C>&\
-    \ x) {\n    return static_cast<int>(std::distance(v.begin(), lower_bound(v, x)));\n\
-    }\ntemplate <class C>\ninline constexpr int bisect_right(const C& v, const mem_value_type<C>&\
-    \ x) {\n    return static_cast<int>(std::distance(v.begin(), upper_bound(v, x)));\n\
-    }\n#line 10 \"test/unittest/container-func-member.test.cpp\"\n\n// \u8981\u7D20\
-    \u306F {3, 1, 2} \u3060\u304C\u3001\u30E1\u30F3\u30D0\u95A2\u6570\u306F\u76EE\u5370\
-    \u306E\u5024\u3092\u8FD4\u3059\nstruct Base {\n    using value_type = int;\n \
-    \   std::vector<int> v{3, 1, 2};\n    auto begin() const { return v.begin(); }\n\
-    \    auto end() const { return v.end(); }\n};\nstruct WithMax : Base {\n    int\
-    \ max() const { return 100; }\n};\nstruct WithMin : Base {\n    int min() const\
-    \ { return -100; }\n};\nstruct WithMaxMin : Base {\n    int max() const { return\
-    \ 100; }\n    int min() const { return -100; }\n};\nstruct WithSum : Base {\n\
-    \    int sum() const { return 1000; }\n};\nstruct WithProduct : Base {\n    int\
-    \ product() const { return 2000; }\n};\nstruct WithProductXor : Base {\n    int\
-    \ product_xor() const { return 3000; }\n};\nstruct WithSorted : Base {\n    std::vector<int>\
-    \ sorted() const { return {42}; }\n};\nstruct WithReversed : Base {\n    std::vector<int>\
-    \ reversed() const { return {43}; }\n};\n\nint main() {\n    bool ok = true;\n\
-    \    auto check = [&](bool cond, const char* what) {\n        if (!cond) {\n \
-    \           std::cerr << \"failed: \" << what << std::endl;\n            ok =\
-    \ false;\n        }\n    };\n\n    check(max(WithMax{}) == 100, \"max \u306F\u30E1\
-    \u30F3\u30D0\u95A2\u6570 max \u3092\u547C\u3076\");\n    check(min(WithMax{})\
+    }\n\ntemplate <class C>\ninline constexpr long long bisect_left(const C& v, const\
+    \ mem_value_type<C>& x) {\n    return static_cast<long long>(std::distance(v.begin(),\
+    \ lower_bound(v, x)));\n}\ntemplate <class C>\ninline constexpr long long bisect_right(const\
+    \ C& v, const mem_value_type<C>& x) {\n    return static_cast<long long>(std::distance(v.begin(),\
+    \ upper_bound(v, x)));\n}\n#line 10 \"test/unittest/container-func-member.test.cpp\"\
+    \n\n// \u8981\u7D20\u306F {3, 1, 2} \u3060\u304C\u3001\u30E1\u30F3\u30D0\u95A2\
+    \u6570\u306F\u76EE\u5370\u306E\u5024\u3092\u8FD4\u3059\nstruct Base {\n    using\
+    \ value_type = int;\n    std::vector<int> v{3, 1, 2};\n    auto begin() const\
+    \ { return v.begin(); }\n    auto end() const { return v.end(); }\n};\nstruct\
+    \ WithMax : Base {\n    int max() const { return 100; }\n};\nstruct WithMin :\
+    \ Base {\n    int min() const { return -100; }\n};\nstruct WithMaxMin : Base {\n\
+    \    int max() const { return 100; }\n    int min() const { return -100; }\n};\n\
+    struct WithSum : Base {\n    int sum() const { return 1000; }\n};\nstruct WithProduct\
+    \ : Base {\n    int product() const { return 2000; }\n};\nstruct WithProductXor\
+    \ : Base {\n    int product_xor() const { return 3000; }\n};\nstruct WithSorted\
+    \ : Base {\n    std::vector<int> sorted() const { return {42}; }\n};\nstruct WithReversed\
+    \ : Base {\n    std::vector<int> reversed() const { return {43}; }\n};\n\nint\
+    \ main() {\n    bool ok = true;\n    auto check = [&](bool cond, const char* what)\
+    \ {\n        if (!cond) {\n            std::cerr << \"failed: \" << what << std::endl;\n\
+    \            ok = false;\n        }\n    };\n\n    check(max(WithMax{}) == 100,\
+    \ \"max \u306F\u30E1\u30F3\u30D0\u95A2\u6570 max \u3092\u547C\u3076\");\n    check(min(WithMax{})\
     \ == 1, \"max \u3060\u3051\u3092\u6301\u3064\u578B\u306E min \u306F\u8981\u7D20\
     \u306E\u6700\u5C0F\u5024\");\n    check(min(WithMin{}) == -100, \"min \u306F\u30E1\
     \u30F3\u30D0\u95A2\u6570 min \u3092\u547C\u3076\");\n    check(max(WithMin{})\
@@ -261,7 +261,7 @@ data:
   isVerificationFile: true
   path: test/unittest/container-func-member.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 03:13:14+09:00'
+  timestamp: '2026-10-15 07:27:48+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/container-func-member.test.cpp

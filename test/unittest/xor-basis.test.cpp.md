@@ -49,10 +49,10 @@ data:
     \ ^= x;\n        }\n        b[t] = x;\n        r++;\n        return true;\n  \
     \  }\n\n    /**\n     * @brief \u57FA\u5E95\u306E\u500B\u6570 (\u7A7A\u9593\u306E\
     \u6B21\u5143)\u3002\u4F5C\u308C\u308B\u5024\u306F 2^rank() \u500B\n     */\n \
-    \   int rank() const { return r; }\n\n    /**\n     * @brief x \u3092\u4F5C\u308C\
-    \u308B\u304B\n     */\n    bool contains(T x) const { return min(x) == 0; }\n\n\
-    \    /**\n     * @brief \u4F5C\u308C\u308B\u5024 y \u306B\u3064\u3044\u3066 x\
-    \ ^ y \u306E\u6700\u5927\u5024 (x = 0 \u306A\u3089\u4F5C\u308C\u308B\u5024\u306E\
+    \   long long rank() const { return r; }\n\n    /**\n     * @brief x \u3092\u4F5C\
+    \u308C\u308B\u304B\n     */\n    bool contains(T x) const { return min(x) == 0;\
+    \ }\n\n    /**\n     * @brief \u4F5C\u308C\u308B\u5024 y \u306B\u3064\u3044\u3066\
+    \ x ^ y \u306E\u6700\u5927\u5024 (x = 0 \u306A\u3089\u4F5C\u308C\u308B\u5024\u306E\
     \u6700\u5927\u5024)\n     */\n    T max(T x = 0) const {\n        for (int i =\
     \ B - 1; i >= 0; i--) {\n            if (b[i] && !(x >> i & 1)) x ^= b[i];\n \
     \       }\n        return x;\n    }\n\n    /**\n     * @brief \u4F5C\u308C\u308B\
@@ -176,7 +176,7 @@ data:
   isVerificationFile: true
   path: test/unittest/xor-basis.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-15 07:27:48+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/xor-basis.test.cpp

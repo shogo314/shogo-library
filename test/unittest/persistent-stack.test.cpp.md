@@ -45,10 +45,10 @@ data:
     \ top_node(top_node), n(n) {}\n\n   public:\n    /**\n     * @brief \u7A7A\u306E\
     \u30B9\u30BF\u30C3\u30AF\u3092\u4F5C\u308B\n     */\n    PersistentStack() : pool(nullptr),\
     \ top_node(-1), n(0) {}\n\n    /**\n     * @brief \u8981\u7D20\u6570\u3092\u8FD4\
-    \u3059\n     */\n    int size() const { return n; }\n    /**\n     * @brief \u7A7A\
-    \u304B\u3069\u3046\u304B\u3092\u8FD4\u3059\n     */\n    bool empty() const {\
-    \ return n == 0; }\n\n    /**\n     * @brief \u4E00\u756A\u4E0A\u306E\u8981\u7D20\
-    \u3092\u8FD4\u3059\n     */\n    T top() const {\n        assert(!empty());\n\
+    \u3059\n     */\n    long long size() const { return n; }\n    /**\n     * @brief\
+    \ \u7A7A\u304B\u3069\u3046\u304B\u3092\u8FD4\u3059\n     */\n    bool empty()\
+    \ const { return n == 0; }\n\n    /**\n     * @brief \u4E00\u756A\u4E0A\u306E\u8981\
+    \u7D20\u3092\u8FD4\u3059\n     */\n    T top() const {\n        assert(!empty());\n\
     \        return pool->val[top_node];\n    }\n    /**\n     * @brief x\u3092\u7A4D\
     \u3093\u3060\u65B0\u3057\u3044\u7248\u3092\u8FD4\u3059\n     *\n     * @param\
     \ x \u7A4D\u3080\u5024\n     * @return PersistentStack \u65B0\u3057\u3044\u7248\
@@ -115,7 +115,7 @@ data:
   isVerificationFile: true
   path: test/unittest/persistent-stack.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 02:10:34+09:00'
+  timestamp: '2026-10-15 07:35:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/persistent-stack.test.cpp

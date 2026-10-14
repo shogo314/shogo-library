@@ -45,17 +45,17 @@ data:
     \u7528\u3059\u308B)\n * - F id(): \u6052\u7B49\u5199\u50CF\n * \u4F5C\u7528\u7D20\
     \u304C\u7FA4\u3092\u306A\u3059\u5834\u5408 (imos.hpp \u3067\u4F7F\u3046) \u306F\
     \n * - F inv(const F& f): \u9006\u4F5C\u7528\u7D20\n */\n\n#include <algorithm>\n\
-    #include <array>\n#include <cstddef>\n#include <limits>\n#include <optional>\n\
-    #include <type_traits>\n#line 25 \"src/algebra/acted-monoid.hpp\"\n\n#line 2 \"\
-    src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\
-    \u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\
-    \u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using\
-    \ S: \u8981\u7D20\u306E\u578B\n * - S op(const S& a, const S& b): \u7A4D (\u7D50\
-    \u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n * op, e \u306F static \u3067\u3082\
-    \u975E static \u3067\u3082\u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\
-    \u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\
-    \u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\n#line 17 \"src/algebra/monoid.hpp\"\
-    \n#include <istream>\n#line 19 \"src/algebra/monoid.hpp\"\n#include <numeric>\n\
+    #include <array>\n#include <limits>\n#include <optional>\n#include <type_traits>\n\
+    #line 24 \"src/algebra/acted-monoid.hpp\"\n\n#line 2 \"src/algebra/monoid.hpp\"\
+    \n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
+    \n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
+    \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\
+    \n * - S op(const S& a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e():\
+    \ \u5358\u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\
+    \u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\
+    \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\
+    \u51FA\u3059)\n */\n\n#line 16 \"src/algebra/monoid.hpp\"\n#include <cstddef>\n\
+    #include <istream>\n#line 19 \"src/algebra/monoid.hpp\"\n#include <numeric>\n\
     #include <ostream>\n#line 23 \"src/algebra/monoid.hpp\"\n\n/**\n * @brief 1\u6B21\
     \u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\u3084\
     \ acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n * \u4F8B\
@@ -121,56 +121,57 @@ data:
     \ S e() {\n        S h{};\n        for (std::size_t x = 0; x < N; x++) h[x] =\
     \ static_cast<int>(x);\n        return h;\n    }\n    // i \u3068 j \u3092\u5165\
     \u308C\u66FF\u3048\u3001\u307B\u304B\u306F\u52D5\u304B\u3055\u306A\u3044\u5199\
-    \u50CF (\u4E92\u63DB)\n    static constexpr S swap(int i, int j) {\n        S\
-    \ h = e();\n        h[i] = j;\n        h[j] = i;\n        return h;\n    }\n};\n\
-    \n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\u5408\u6210\n * op(f, g)\
-    \ = f\u2218g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B)\n * \u533A\u9593 [l,\
-    \ r) \u306E\u7A4D\u306F f_l(...f_{r-1}(x)) \u3092\u8868\u3059\n * \u5DE6\u304B\
-    \u3089\u9806\u306B\u9069\u7528\u3057\u305F\u3044 (f_{r-1}(...f_l(x)) \u3092\u6C42\
-    \u3081\u305F\u3044) \u5834\u5408\u306F monoid::Reverse<monoid::Composite<T>> \u3092\
-    \u4F7F\u3046\n */\ntemplate <typename T>\nstruct Composite {\n    using S = Affine<T>;\n\
-    \    static constexpr S op(const S& f, const S& g) { return {f.a * g.a, f.a *\
-    \ g.b + f.b}; }\n    static constexpr S e() { return {T(1), T(0)}; }\n};\n\n/**\n\
-    \ * @brief \u62EC\u5F27\u5217 \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\
-    \u3044 ')' \u3068 '(' \u306E\u500B\u6570\n */\nstruct Parenthesis {\n    struct\
-    \ S {\n        long long close;  // \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\
-    \u306A\u3044 ')' \u306E\u500B\u6570\n        long long open;   // \u5BFE\u5FDC\
-    \u306E\u53D6\u308C\u3066\u3044\u306A\u3044 '(' \u306E\u500B\u6570\n        constexpr\
-    \ S(char c = 0) : close(c == ')'), open(c == '(') {}\n        constexpr S(long\
-    \ long close, long long open) : close(close), open(open) {}\n        /**\n   \
-    \      * @brief \u6B63\u3057\u3044\u62EC\u5F27\u5217\u304B\n         */\n    \
-    \    constexpr bool is_valid() const { return close == 0 && open == 0; }\n   \
-    \ };\n    static constexpr S op(const S& a, const S& b) {\n        if (a.open\
-    \ >= b.close) return S(a.close, a.open - b.close + b.open);\n        return S(a.close\
-    \ + b.close - a.open, b.open);\n    }\n    static constexpr S e() { return S();\
-    \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\
-    \u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\
-    \u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\
-    \u5024\u306E\u578B\n */\ntemplate <typename T, typename U = int>\nstruct MinWith\
-    \ {\n    using S = std::pair<T, U>;\n    static constexpr S op(const S& a, const\
-    \ S& b) { return b.first < a.first ? b : a; }\n    static constexpr S e() { return\
-    \ {std::numeric_limits<T>::max(), U{}}; }\n};\n\n/**\n * @brief \u6700\u5927\u5024\
-    \u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\
-    \u512A\u5148\n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\
-    \u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\u578B\n */\ntemplate <typename\
-    \ T, typename U = int>\nstruct MaxWith {\n    using S = std::pair<T, U>;\n   \
-    \ static constexpr S op(const S& a, const S& b) { return a.first < b.first ? b\
-    \ : a; }\n    static constexpr S e() { return {std::numeric_limits<T>::lowest(),\
-    \ U{}}; }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u500B\u6570\
+    \u50CF (\u4E92\u63DB)\n    static constexpr S swap(long long i, long long j) {\n\
+    \        S h = e();\n        h[i] = static_cast<int>(j);\n        h[j] = static_cast<int>(i);\n\
+    \        return h;\n    }\n};\n\n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\
+    \u5408\u6210\n * op(f, g) = f\u2218g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B\
+    )\n * \u533A\u9593 [l, r) \u306E\u7A4D\u306F f_l(...f_{r-1}(x)) \u3092\u8868\u3059\
+    \n * \u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\u3057\u305F\u3044 (f_{r-1}(...f_l(x))\
+    \ \u3092\u6C42\u3081\u305F\u3044) \u5834\u5408\u306F monoid::Reverse<monoid::Composite<T>>\
+    \ \u3092\u4F7F\u3046\n */\ntemplate <typename T>\nstruct Composite {\n    using\
+    \ S = Affine<T>;\n    static constexpr S op(const S& f, const S& g) { return {f.a\
+    \ * g.a, f.a * g.b + f.b}; }\n    static constexpr S e() { return {T(1), T(0)};\
+    \ }\n};\n\n/**\n * @brief \u62EC\u5F27\u5217 \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\
+    \u3044\u306A\u3044 ')' \u3068 '(' \u306E\u500B\u6570\n */\nstruct Parenthesis\
+    \ {\n    struct S {\n        long long close;  // \u5BFE\u5FDC\u306E\u53D6\u308C\
+    \u3066\u3044\u306A\u3044 ')' \u306E\u500B\u6570\n        long long open;   //\
+    \ \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\u3044 '(' \u306E\u500B\u6570\
+    \n        constexpr S(char c = 0) : close(c == ')'), open(c == '(') {}\n     \
+    \   constexpr S(long long close, long long open) : close(close), open(open) {}\n\
+    \        /**\n         * @brief \u6B63\u3057\u3044\u62EC\u5F27\u5217\u304B\n \
+    \        */\n        constexpr bool is_valid() const { return close == 0 && open\
+    \ == 0; }\n    };\n    static constexpr S op(const S& a, const S& b) {\n     \
+    \   if (a.open >= b.close) return S(a.close, a.open - b.close + b.open);\n   \
+    \     return S(a.close + b.close - a.open, b.open);\n    }\n    static constexpr\
+    \ S e() { return S(); }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\
+    \u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n\
+    \ * @tparam T \u5024\u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\
+    \u968F\u3059\u308B\u5024\u306E\u578B\n */\ntemplate <typename T, typename U =\
+    \ long long>\nstruct MinWith {\n    using S = std::pair<T, U>;\n    static constexpr\
+    \ S op(const S& a, const S& b) { return b.first < a.first ? b : a; }\n    static\
+    \ constexpr S e() { return {std::numeric_limits<T>::max(), U{}}; }\n};\n\n/**\n\
+    \ * @brief \u6700\u5927\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\
+    \u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\u306E\u578B\
+    \n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\
+    \u578B\n */\ntemplate <typename T, typename U = long long>\nstruct MaxWith {\n\
+    \    using S = std::pair<T, U>;\n    static constexpr S op(const S& a, const S&\
+    \ b) { return a.first < b.first ? b : a; }\n    static constexpr S e() { return\
+    \ {std::numeric_limits<T>::lowest(), U{}}; }\n};\n\n/**\n * @brief \u6700\u5C0F\
+    \u5024\u3068\u305D\u306E\u500B\u6570\n *\n * @tparam T \u5024\u306E\u578B\n *\
+    \ @tparam U \u500B\u6570\u306E\u578B\n */\ntemplate <typename T, typename U =\
+    \ long long>\nstruct MinCount {\n    using S = std::pair<T, U>;\n    static constexpr\
+    \ S op(const S& a, const S& b) {\n        if (a.first < b.first) return a;\n \
+    \       if (b.first < a.first) return b;\n        return {a.first, a.second +\
+    \ b.second};\n    }\n    static constexpr S e() { return {std::numeric_limits<T>::max(),\
+    \ U(0)}; }\n};\n\n/**\n * @brief \u6700\u5927\u5024\u3068\u305D\u306E\u500B\u6570\
     \n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u500B\u6570\u306E\u578B\n\
-    \ */\ntemplate <typename T, typename U = long long>\nstruct MinCount {\n    using\
+    \ */\ntemplate <typename T, typename U = long long>\nstruct MaxCount {\n    using\
     \ S = std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n\
-    \        if (a.first < b.first) return a;\n        if (b.first < a.first) return\
-    \ b;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
-    \ S e() { return {std::numeric_limits<T>::max(), U(0)}; }\n};\n\n/**\n * @brief\
-    \ \u6700\u5927\u5024\u3068\u305D\u306E\u500B\u6570\n *\n * @tparam T \u5024\u306E\
-    \u578B\n * @tparam U \u500B\u6570\u306E\u578B\n */\ntemplate <typename T, typename\
-    \ U = long long>\nstruct MaxCount {\n    using S = std::pair<T, U>;\n    static\
-    \ constexpr S op(const S& a, const S& b) {\n        if (a.first < b.first) return\
-    \ b;\n        if (b.first < a.first) return a;\n        return {a.first, a.second\
-    \ + b.second};\n    }\n    static constexpr S e() { return {std::numeric_limits<T>::lowest(),\
-    \ U(0)}; }\n};\n\n/**\n * @brief \u7A4D\u306E\u9806\u5E8F\u3092\u9006\u306B\u3057\
-    \u305F\u30E2\u30CE\u30A4\u30C9 op(a, b) = M::op(b, a)\n *\n * \u4F8B: SegTree<monoid::Reverse<monoid::Composite<mint>>>\
+    \        if (a.first < b.first) return b;\n        if (b.first < a.first) return\
+    \ a;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
+    \ S e() { return {std::numeric_limits<T>::lowest(), U(0)}; }\n};\n\n/**\n * @brief\
+    \ \u7A4D\u306E\u9806\u5E8F\u3092\u9006\u306B\u3057\u305F\u30E2\u30CE\u30A4\u30C9\
+    \ op(a, b) = M::op(b, a)\n *\n * \u4F8B: SegTree<monoid::Reverse<monoid::Composite<mint>>>\
     \ seg(v); \u306E\u533A\u9593 [l, r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x))\n *\n\
     \ * @tparam M \u3082\u3068\u306E\u30E2\u30CE\u30A4\u30C9\n */\ntemplate <typename\
     \ M>\nstruct Reverse {\n    using S = typename M::S;\n    M m;\n    constexpr\
@@ -187,7 +188,7 @@ data:
     \ Monoid(Op op, const S& e) : op_object(std::move(op)), identity(e) {}\n    constexpr\
     \ S op(const S& a, const S& b) const { return op_object(a, b); }\n    constexpr\
     \ S e() const { return identity; }\n};\ntemplate <typename Op, typename T>\nMonoid(Op,\
-    \ T) -> Monoid<T, Op>;\n#line 27 \"src/algebra/acted-monoid.hpp\"\n\nnamespace\
+    \ T) -> Monoid<T, Op>;\n#line 26 \"src/algebra/acted-monoid.hpp\"\n\nnamespace\
     \ internal_acted_monoid {\ntemplate <typename A, typename = void>\nstruct has_mapping_lr\
     \ : std::false_type {};\ntemplate <typename A>\nstruct has_mapping_lr<A, std::void_t<decltype(std::declval<const\
     \ A&>().mapping(std::declval<const typename A::F&>(), std::declval<const typename\
@@ -268,14 +269,14 @@ data:
     \ f ? f : g; }\n    static constexpr F id() { return std::nullopt; }\n};\n\n/**\n\
     \ * @brief \u533A\u9593\u52A0\u7B97\u3001\u533A\u9593\u6700\u5C0F\u5024\u3068\u305D\
     \u306E\u4F4D\u7F6E (monoid::MinWith)\n */\ntemplate <typename T, typename U =\
-    \ int>\nstruct AddMinWith : monoid::MinWith<T, U> {\n    using S = std::pair<T,\
+    \ long long>\nstruct AddMinWith : monoid::MinWith<T, U> {\n    using S = std::pair<T,\
     \ U>;\n    using F = T;\n    static constexpr S mapping(const F& f, const S& x)\
     \ { return {x.first + f, x.second}; }\n    static constexpr F composition(const\
     \ F& f, const F& g) { return f + g; }\n    static constexpr F id() { return F(0);\
     \ }\n};\n\n/**\n * @brief \u533A\u9593\u52A0\u7B97\u3001\u533A\u9593\u6700\u5927\
     \u5024\u3068\u305D\u306E\u4F4D\u7F6E (monoid::MaxWith)\n */\ntemplate <typename\
-    \ T, typename U = int>\nstruct AddMaxWith : monoid::MaxWith<T, U> {\n    using\
-    \ S = std::pair<T, U>;\n    using F = T;\n    static constexpr S mapping(const\
+    \ T, typename U = long long>\nstruct AddMaxWith : monoid::MaxWith<T, U> {\n  \
+    \  using S = std::pair<T, U>;\n    using F = T;\n    static constexpr S mapping(const\
     \ F& f, const S& x) { return {x.first + f, x.second}; }\n    static constexpr\
     \ F composition(const F& f, const F& g) { return f + g; }\n    static constexpr\
     \ F id() { return F(0); }\n};\n\n/**\n * @brief \u533A\u9593\u52A0\u7B97\u3001\
@@ -297,8 +298,8 @@ data:
     \ <typename T, int K>\nstruct AddPowerSum {\n    struct S {\n        std::array<T,\
     \ K + 1> val;\n        constexpr S() : val{} {}\n        constexpr S(const T&\
     \ x) : val{} {\n            val[0] = T(1);\n            for (int i = 1; i <= K;\
-    \ i++) val[i] = val[i - 1] * x;\n        }\n        constexpr const T& operator[](std::size_t\
-    \ i) const { return val[i]; }\n    };\n    using F = T;\n    static constexpr\
+    \ i++) val[i] = val[i - 1] * x;\n        }\n        constexpr const T& operator[](long\
+    \ long i) const { return val[i]; }\n    };\n    using F = T;\n    static constexpr\
     \ S op(const S& a, const S& b) {\n        S ret;\n        for (int i = 0; i <=\
     \ K; i++) ret.val[i] = a.val[i] + b.val[i];\n        return ret;\n    }\n    static\
     \ constexpr S e() { return S(); }\n    static S mapping(const F& f, const S& x)\
@@ -348,42 +349,43 @@ data:
     )\u3092\u306A\u3057\u3001inv \u3092\u6301\u3064\u5FC5\u8981\u304C\u3042\u308B\
     \ \u5024\u306E\u30E2\u30CE\u30A4\u30C9\u306E\u6F14\u7B97\u306F\u4F7F\u308F\u306A\
     \u3044\n */\ntemplate <typename A>\nclass Imos {\n   public:\n    using S = typename\
-    \ A::S;\n    using F = typename A::F;\n\n   private:\n    A a;\n    int _n, t;\n\
-    \    std::vector<S> data;\n    std::vector<F> lazy;\n\n    S mapping(const F&\
-    \ f, const S& x, int k) const { return acted_monoid::apply_mapping(a, f, x, k,\
-    \ k + 1); }\n    F composition(const F& f, const F& g) const { return a.composition(f,\
-    \ g); }\n    F id() const { return a.id(); }\n    F inv(const F& f) const { return\
-    \ a.inv(f); }\n\n   public:\n    /**\n     * @param n \u8981\u7D20\u6570 \u5404\
-    \u8981\u7D20\u306F S() \u3067\u521D\u671F\u5316\u3059\u308B\n     * @param a \u4F5C\
-    \u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n     */\n    explicit Imos(int\
-    \ n = 0, A a = A()) : Imos(n, S(), std::move(a)) {}\n    /**\n     * @param n\
-    \ \u8981\u7D20\u6570\n     * @param value \u5404\u8981\u7D20\u306E\u521D\u671F\
-    \u5024\n     * @param a \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\
-    \n     */\n    Imos(int n, const S& value, A a = A()) : a(std::move(a)), _n(n),\
-    \ t(n), data(n, value), lazy(n, this->a.id()) {}\n    /**\n     * @param value\
-    \ \u5404\u8981\u7D20\u306E\u521D\u671F\u5024\n     * @param a \u4F5C\u7528\u7D20\
-    \u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n     */\n    explicit Imos(const std::vector<S>&\
-    \ value, A a = A()) : a(std::move(a)), _n(value.size()), t(value.size()), data(value),\
-    \ lazy(value.size(), this->a.id()) {}\n\n    /**\n     * @brief 1\u70B9\u4F5C\u7528\
-    \n     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * @param f \u4F5C\
-    \u7528\u7D20\n     */\n    void apply(int k, const F& f) {\n        assert(0 <=\
-    \ k && k < _n);\n        data[k] = mapping(f, data[k], k);\n    }\n    /**\n \
-    \    * @brief [l, r)\u306E\u533A\u9593\u306E\u5024\u306Bf\u3092\u4F5C\u7528\u3055\
-    \u305B\u308B\n     * @param l \u534A\u958B\u533A\u9593\u306E\u958B\u59CB\n   \
-    \  * @param r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF 0<=l<=r<=n\n     * @param\
-    \ f \u4F5C\u7528\u7D20\n     */\n    void apply(int l, int r, const F& f) {\n\
-    \        assert(0 <= l && l <= r && r <= _n);\n        if (l < _n) lazy[l] = composition(lazy[l],\
+    \ A::S;\n    using F = typename A::F;\n\n   private:\n    A a;\n    long long\
+    \ _n, t;\n    std::vector<S> data;\n    std::vector<F> lazy;\n\n    S mapping(const\
+    \ F& f, const S& x, long long k) const { return acted_monoid::apply_mapping(a,\
+    \ f, x, k, k + 1); }\n    F composition(const F& f, const F& g) const { return\
+    \ a.composition(f, g); }\n    F id() const { return a.id(); }\n    F inv(const\
+    \ F& f) const { return a.inv(f); }\n\n   public:\n    /**\n     * @param n \u8981\
+    \u7D20\u6570 \u5404\u8981\u7D20\u306F S() \u3067\u521D\u671F\u5316\u3059\u308B\
+    \n     * @param a \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n   \
+    \  */\n    explicit Imos(long long n = 0, A a = A()) : Imos(n, S(), std::move(a))\
+    \ {}\n    /**\n     * @param n \u8981\u7D20\u6570\n     * @param value \u5404\u8981\
+    \u7D20\u306E\u521D\u671F\u5024\n     * @param a \u4F5C\u7528\u7D20\u4ED8\u304D\
+    \u30E2\u30CE\u30A4\u30C9\n     */\n    Imos(long long n, const S& value, A a =\
+    \ A()) : a(std::move(a)), _n(n), t(n), data(n, value), lazy(n, this->a.id()) {}\n\
+    \    /**\n     * @param value \u5404\u8981\u7D20\u306E\u521D\u671F\u5024\n   \
+    \  * @param a \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n     */\n\
+    \    explicit Imos(const std::vector<S>& value, A a = A()) : a(std::move(a)),\
+    \ _n(value.size()), t(value.size()), data(value), lazy(value.size(), this->a.id())\
+    \ {}\n\n    /**\n     * @brief 1\u70B9\u4F5C\u7528\n     * @param k \u30A4\u30F3\
+    \u30C7\u30C3\u30AF\u30B9\n     * @param f \u4F5C\u7528\u7D20\n     */\n    void\
+    \ apply(long long k, const F& f) {\n        assert(0 <= k && k < _n);\n      \
+    \  data[k] = mapping(f, data[k], k);\n    }\n    /**\n     * @brief [l, r)\u306E\
+    \u533A\u9593\u306E\u5024\u306Bf\u3092\u4F5C\u7528\u3055\u305B\u308B\n     * @param\
+    \ l \u534A\u958B\u533A\u9593\u306E\u958B\u59CB\n     * @param r \u534A\u958B\u533A\
+    \u9593\u306E\u7D42\u7AEF 0<=l<=r<=n\n     * @param f \u4F5C\u7528\u7D20\n    \
+    \ */\n    void apply(long long l, long long r, const F& f) {\n        assert(0\
+    \ <= l && l <= r && r <= _n);\n        if (l < _n) lazy[l] = composition(lazy[l],\
     \ f);\n        if (r < _n) lazy[r] = composition(lazy[r], inv(f));\n        if\
     \ (t > l) t = l;\n    }\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\
     \u8981\u7D20\u306E\u5024\u3092\u8FD4\u3059\n     * @param k \u30A4\u30F3\u30C7\
-    \u30C3\u30AF\u30B9\n     * @return const S& \u5024\n     */\n    const S& get(int\
-    \ k) {\n        assert(0 <= k && k < _n);\n        while (t <= k) {\n        \
-    \    data[t] = mapping(lazy[t], data[t], t);\n            if (t + 1 < _n) {\n\
-    \                lazy[t + 1] = composition(lazy[t], lazy[t + 1]);\n          \
-    \  }\n            lazy[t] = id();\n            t++;\n        }\n        return\
-    \ data[k];\n    }\n};\n\ntemplate <typename A>\nImos(int, A) -> Imos<A>;\ntemplate\
-    \ <typename A>\nImos(int, typename A::S, A) -> Imos<A>;\ntemplate <typename A>\n\
-    Imos(std::vector<typename A::S>, A) -> Imos<A>;\n#line 8 \"test/unittest/imos.test.cpp\"\
+    \u30C3\u30AF\u30B9\n     * @return const S& \u5024\n     */\n    const S& get(long\
+    \ long k) {\n        assert(0 <= k && k < _n);\n        while (t <= k) {\n   \
+    \         data[t] = mapping(lazy[t], data[t], t);\n            if (t + 1 < _n)\
+    \ {\n                lazy[t + 1] = composition(lazy[t], lazy[t + 1]);\n      \
+    \      }\n            lazy[t] = id();\n            t++;\n        }\n        return\
+    \ data[k];\n    }\n};\n\ntemplate <typename A>\nImos(long long, A) -> Imos<A>;\n\
+    template <typename A>\nImos(long long, typename A::S, A) -> Imos<A>;\ntemplate\
+    \ <typename A>\nImos(std::vector<typename A::S>, A) -> Imos<A>;\n#line 8 \"test/unittest/imos.test.cpp\"\
     \n\n#include <iostream>\n#include <random>\n#line 12 \"test/unittest/imos.test.cpp\"\
     \n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int\
     \ rep = 0; rep < 3000 && ok; rep++) {\n        int n = rng() % 10 + 1;\n     \
@@ -447,7 +449,7 @@ data:
   isVerificationFile: true
   path: test/unittest/imos.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 02:41:03+09:00'
+  timestamp: '2026-10-15 07:27:48+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/imos.test.cpp

@@ -106,56 +106,57 @@ data:
     \ S e() {\n        S h{};\n        for (std::size_t x = 0; x < N; x++) h[x] =\
     \ static_cast<int>(x);\n        return h;\n    }\n    // i \u3068 j \u3092\u5165\
     \u308C\u66FF\u3048\u3001\u307B\u304B\u306F\u52D5\u304B\u3055\u306A\u3044\u5199\
-    \u50CF (\u4E92\u63DB)\n    static constexpr S swap(int i, int j) {\n        S\
-    \ h = e();\n        h[i] = j;\n        h[j] = i;\n        return h;\n    }\n};\n\
-    \n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\u5408\u6210\n * op(f, g)\
-    \ = f\u2218g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B)\n * \u533A\u9593 [l,\
-    \ r) \u306E\u7A4D\u306F f_l(...f_{r-1}(x)) \u3092\u8868\u3059\n * \u5DE6\u304B\
-    \u3089\u9806\u306B\u9069\u7528\u3057\u305F\u3044 (f_{r-1}(...f_l(x)) \u3092\u6C42\
-    \u3081\u305F\u3044) \u5834\u5408\u306F monoid::Reverse<monoid::Composite<T>> \u3092\
-    \u4F7F\u3046\n */\ntemplate <typename T>\nstruct Composite {\n    using S = Affine<T>;\n\
-    \    static constexpr S op(const S& f, const S& g) { return {f.a * g.a, f.a *\
-    \ g.b + f.b}; }\n    static constexpr S e() { return {T(1), T(0)}; }\n};\n\n/**\n\
-    \ * @brief \u62EC\u5F27\u5217 \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\
-    \u3044 ')' \u3068 '(' \u306E\u500B\u6570\n */\nstruct Parenthesis {\n    struct\
-    \ S {\n        long long close;  // \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\
-    \u306A\u3044 ')' \u306E\u500B\u6570\n        long long open;   // \u5BFE\u5FDC\
-    \u306E\u53D6\u308C\u3066\u3044\u306A\u3044 '(' \u306E\u500B\u6570\n        constexpr\
-    \ S(char c = 0) : close(c == ')'), open(c == '(') {}\n        constexpr S(long\
-    \ long close, long long open) : close(close), open(open) {}\n        /**\n   \
-    \      * @brief \u6B63\u3057\u3044\u62EC\u5F27\u5217\u304B\n         */\n    \
-    \    constexpr bool is_valid() const { return close == 0 && open == 0; }\n   \
-    \ };\n    static constexpr S op(const S& a, const S& b) {\n        if (a.open\
-    \ >= b.close) return S(a.close, a.open - b.close + b.open);\n        return S(a.close\
-    \ + b.close - a.open, b.open);\n    }\n    static constexpr S e() { return S();\
-    \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\
-    \u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\
-    \u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\
-    \u5024\u306E\u578B\n */\ntemplate <typename T, typename U = int>\nstruct MinWith\
-    \ {\n    using S = std::pair<T, U>;\n    static constexpr S op(const S& a, const\
-    \ S& b) { return b.first < a.first ? b : a; }\n    static constexpr S e() { return\
-    \ {std::numeric_limits<T>::max(), U{}}; }\n};\n\n/**\n * @brief \u6700\u5927\u5024\
-    \u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\
-    \u512A\u5148\n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\
-    \u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\u578B\n */\ntemplate <typename\
-    \ T, typename U = int>\nstruct MaxWith {\n    using S = std::pair<T, U>;\n   \
-    \ static constexpr S op(const S& a, const S& b) { return a.first < b.first ? b\
-    \ : a; }\n    static constexpr S e() { return {std::numeric_limits<T>::lowest(),\
-    \ U{}}; }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u500B\u6570\
+    \u50CF (\u4E92\u63DB)\n    static constexpr S swap(long long i, long long j) {\n\
+    \        S h = e();\n        h[i] = static_cast<int>(j);\n        h[j] = static_cast<int>(i);\n\
+    \        return h;\n    }\n};\n\n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\
+    \u5408\u6210\n * op(f, g) = f\u2218g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B\
+    )\n * \u533A\u9593 [l, r) \u306E\u7A4D\u306F f_l(...f_{r-1}(x)) \u3092\u8868\u3059\
+    \n * \u5DE6\u304B\u3089\u9806\u306B\u9069\u7528\u3057\u305F\u3044 (f_{r-1}(...f_l(x))\
+    \ \u3092\u6C42\u3081\u305F\u3044) \u5834\u5408\u306F monoid::Reverse<monoid::Composite<T>>\
+    \ \u3092\u4F7F\u3046\n */\ntemplate <typename T>\nstruct Composite {\n    using\
+    \ S = Affine<T>;\n    static constexpr S op(const S& f, const S& g) { return {f.a\
+    \ * g.a, f.a * g.b + f.b}; }\n    static constexpr S e() { return {T(1), T(0)};\
+    \ }\n};\n\n/**\n * @brief \u62EC\u5F27\u5217 \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\
+    \u3044\u306A\u3044 ')' \u3068 '(' \u306E\u500B\u6570\n */\nstruct Parenthesis\
+    \ {\n    struct S {\n        long long close;  // \u5BFE\u5FDC\u306E\u53D6\u308C\
+    \u3066\u3044\u306A\u3044 ')' \u306E\u500B\u6570\n        long long open;   //\
+    \ \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\u3044 '(' \u306E\u500B\u6570\
+    \n        constexpr S(char c = 0) : close(c == ')'), open(c == '(') {}\n     \
+    \   constexpr S(long long close, long long open) : close(close), open(open) {}\n\
+    \        /**\n         * @brief \u6B63\u3057\u3044\u62EC\u5F27\u5217\u304B\n \
+    \        */\n        constexpr bool is_valid() const { return close == 0 && open\
+    \ == 0; }\n    };\n    static constexpr S op(const S& a, const S& b) {\n     \
+    \   if (a.open >= b.close) return S(a.close, a.open - b.close + b.open);\n   \
+    \     return S(a.close + b.close - a.open, b.open);\n    }\n    static constexpr\
+    \ S e() { return S(); }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\
+    \u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n\
+    \ * @tparam T \u5024\u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\
+    \u968F\u3059\u308B\u5024\u306E\u578B\n */\ntemplate <typename T, typename U =\
+    \ long long>\nstruct MinWith {\n    using S = std::pair<T, U>;\n    static constexpr\
+    \ S op(const S& a, const S& b) { return b.first < a.first ? b : a; }\n    static\
+    \ constexpr S e() { return {std::numeric_limits<T>::max(), U{}}; }\n};\n\n/**\n\
+    \ * @brief \u6700\u5927\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\
+    \u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\u306E\u578B\
+    \n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\
+    \u578B\n */\ntemplate <typename T, typename U = long long>\nstruct MaxWith {\n\
+    \    using S = std::pair<T, U>;\n    static constexpr S op(const S& a, const S&\
+    \ b) { return a.first < b.first ? b : a; }\n    static constexpr S e() { return\
+    \ {std::numeric_limits<T>::lowest(), U{}}; }\n};\n\n/**\n * @brief \u6700\u5C0F\
+    \u5024\u3068\u305D\u306E\u500B\u6570\n *\n * @tparam T \u5024\u306E\u578B\n *\
+    \ @tparam U \u500B\u6570\u306E\u578B\n */\ntemplate <typename T, typename U =\
+    \ long long>\nstruct MinCount {\n    using S = std::pair<T, U>;\n    static constexpr\
+    \ S op(const S& a, const S& b) {\n        if (a.first < b.first) return a;\n \
+    \       if (b.first < a.first) return b;\n        return {a.first, a.second +\
+    \ b.second};\n    }\n    static constexpr S e() { return {std::numeric_limits<T>::max(),\
+    \ U(0)}; }\n};\n\n/**\n * @brief \u6700\u5927\u5024\u3068\u305D\u306E\u500B\u6570\
     \n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u500B\u6570\u306E\u578B\n\
-    \ */\ntemplate <typename T, typename U = long long>\nstruct MinCount {\n    using\
+    \ */\ntemplate <typename T, typename U = long long>\nstruct MaxCount {\n    using\
     \ S = std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n\
-    \        if (a.first < b.first) return a;\n        if (b.first < a.first) return\
-    \ b;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
-    \ S e() { return {std::numeric_limits<T>::max(), U(0)}; }\n};\n\n/**\n * @brief\
-    \ \u6700\u5927\u5024\u3068\u305D\u306E\u500B\u6570\n *\n * @tparam T \u5024\u306E\
-    \u578B\n * @tparam U \u500B\u6570\u306E\u578B\n */\ntemplate <typename T, typename\
-    \ U = long long>\nstruct MaxCount {\n    using S = std::pair<T, U>;\n    static\
-    \ constexpr S op(const S& a, const S& b) {\n        if (a.first < b.first) return\
-    \ b;\n        if (b.first < a.first) return a;\n        return {a.first, a.second\
-    \ + b.second};\n    }\n    static constexpr S e() { return {std::numeric_limits<T>::lowest(),\
-    \ U(0)}; }\n};\n\n/**\n * @brief \u7A4D\u306E\u9806\u5E8F\u3092\u9006\u306B\u3057\
-    \u305F\u30E2\u30CE\u30A4\u30C9 op(a, b) = M::op(b, a)\n *\n * \u4F8B: SegTree<monoid::Reverse<monoid::Composite<mint>>>\
+    \        if (a.first < b.first) return b;\n        if (b.first < a.first) return\
+    \ a;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
+    \ S e() { return {std::numeric_limits<T>::lowest(), U(0)}; }\n};\n\n/**\n * @brief\
+    \ \u7A4D\u306E\u9806\u5E8F\u3092\u9006\u306B\u3057\u305F\u30E2\u30CE\u30A4\u30C9\
+    \ op(a, b) = M::op(b, a)\n *\n * \u4F8B: SegTree<monoid::Reverse<monoid::Composite<mint>>>\
     \ seg(v); \u306E\u533A\u9593 [l, r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x))\n *\n\
     \ * @tparam M \u3082\u3068\u306E\u30E2\u30CE\u30A4\u30C9\n */\ntemplate <typename\
     \ M>\nstruct Reverse {\n    using S = typename M::S;\n    M m;\n    constexpr\
@@ -212,47 +213,49 @@ data:
     \ static auto comp = Comp();\n\n   private:\n    G g;\n    value_type op(const\
     \ value_type& x, const value_type& y) const { return g.op(x, y); }\n    value_type\
     \ e() const { return g.e(); }\n    value_type inv(const value_type& x) const {\
-    \ return g.inv(x); }\n\n   private:\n    int n, sz, height;\n    std::vector<key_type>\
-    \ key_data;\n    std::vector<value_type> cumulative_value;\n\n    void initialize(const\
-    \ std::vector<value_type>& value, const std::vector<key_type>& key) {\n      \
-    \  n = key.size();\n        sz = 1;\n        height = 1;\n        while (sz <\
-    \ n) {\n            sz <<= 1;\n            height++;\n        }\n        key_data.assign(sz\
-    \ * height, {});\n        std::vector<value_type> value_data(sz * height, e());\n\
-    \        cumulative_value.assign(sz * height, {});\n        for (int i = 0; i\
-    \ < n; i++) {\n            key_data[(height - 1) * sz + i] = key[i];\n       \
-    \     value_data[(height - 1) * sz + i] = value[i];\n            cumulative_value[(height\
-    \ - 1) * sz + i] = value[i];\n        }\n        int t = 1;\n        for (int\
-    \ h = height - 1; h > 0; h--) {\n            for (int i = 0; i < n; i += t * 2)\
-    \ {\n                int j1 = h * sz + i;\n                int j2 = h * sz + std::min(n,\
-    \ i + t);\n                int j0 = (h - 1) * sz + i;\n                int last1\
-    \ = j2;\n                int last2 = h * sz + std::min(n, i + t * 2);\n      \
-    \          while (j1 != last1 || j2 != last2) {\n                    if (j1 ==\
-    \ last1 || (j2 < last2 && comp(key_data[j2], key_data[j1]))) {\n             \
-    \           key_data[j0] = key_data[j2];\n                        value_data[j0]\
+    \ return g.inv(x); }\n\n   private:\n    long long n, sz;\n    int height;\n \
+    \   std::vector<key_type> key_data;\n    std::vector<value_type> cumulative_value;\n\
+    \n    void initialize(const std::vector<value_type>& value, const std::vector<key_type>&\
+    \ key) {\n        n = key.size();\n        sz = 1;\n        height = 1;\n    \
+    \    while (sz < n) {\n            sz <<= 1;\n            height++;\n        }\n\
+    \        key_data.assign(sz * height, {});\n        std::vector<value_type> value_data(sz\
+    \ * height, e());\n        cumulative_value.assign(sz * height, {});\n       \
+    \ for (long long i = 0; i < n; i++) {\n            key_data[(height - 1) * sz\
+    \ + i] = key[i];\n            value_data[(height - 1) * sz + i] = value[i];\n\
+    \            cumulative_value[(height - 1) * sz + i] = value[i];\n        }\n\
+    \        long long t = 1;\n        for (int h = height - 1; h > 0; h--) {\n  \
+    \          for (long long i = 0; i < n; i += t * 2) {\n                long long\
+    \ j1 = h * sz + i;\n                long long j2 = h * sz + std::min(n, i + t);\n\
+    \                long long j0 = (h - 1) * sz + i;\n                long long last1\
+    \ = j2;\n                long long last2 = h * sz + std::min(n, i + t * 2);\n\
+    \                while (j1 != last1 || j2 != last2) {\n                    if\
+    \ (j1 == last1 || (j2 < last2 && comp(key_data[j2], key_data[j1]))) {\n      \
+    \                  key_data[j0] = key_data[j2];\n                        value_data[j0]\
     \ = value_data[j2];\n                        j0++;\n                        j2++;\n\
     \                    } else {\n                        key_data[j0] = key_data[j1];\n\
     \                        value_data[j0] = value_data[j1];\n                  \
     \      j0++;\n                        j1++;\n                    }\n         \
     \       }\n                cumulative_value[(h - 1) * sz + i] = value_data[(h\
-    \ - 1) * sz + i];\n                for (int j = i + 1; j < std::min(n, i + t *\
-    \ 2); j++) {\n                    cumulative_value[(h - 1) * sz + j] = op(cumulative_value[(h\
+    \ - 1) * sz + i];\n                for (long long j = i + 1; j < std::min(n, i\
+    \ + t * 2); j++) {\n                    cumulative_value[(h - 1) * sz + j] = op(cumulative_value[(h\
     \ - 1) * sz + j - 1], value_data[(h - 1) * sz + j]);\n                }\n    \
-    \        }\n            t <<= 1;\n        }\n    }\n\n    value_type prod_section(int\
-    \ l, int r, std::optional<key_type> a, std::optional<key_type> b) const {\n  \
-    \      value_type ret = cumulative_value[r - 1];\n        if (b.has_value()) {\n\
-    \            int i = std::lower_bound(key_data.begin() + l, key_data.begin() +\
-    \ r, b.value(), comp) - key_data.begin();\n            if (i != l) {\n       \
-    \         ret = cumulative_value[i - 1];\n            } else {\n             \
-    \   ret = e();\n            }\n        }\n        if (a.has_value()) {\n     \
-    \       int i = std::lower_bound(key_data.begin() + l, key_data.begin() + r, a.value(),\
-    \ comp) - key_data.begin();\n            if (i != l) {\n                ret =\
-    \ op(ret, inv(cumulative_value[i - 1]));\n            }\n        }\n        return\
-    \ ret;\n    }\n\n   public:\n    MergeSortTree() = default;\n    /**\n     * @param\
-    \ value_key value\u3068key\u306Epair\u306Evector\n     */\n    explicit MergeSortTree(const\
-    \ std::vector<std::pair<value_type, key_type>>& value_key, G g = G()) : g(std::move(g))\
-    \ {\n        std::vector<key_type> key;\n        std::vector<value_type> value;\n\
-    \        key.reserve(value_key.size());\n        value.reserve(value_key.size());\n\
-    \        for (std::size_t i = 0; i < value_key.size(); i++) {\n            value.push_back(value_key[i].first);\n\
+    \        }\n            t <<= 1;\n        }\n    }\n\n    value_type prod_section(long\
+    \ long l, long long r, std::optional<key_type> a, std::optional<key_type> b) const\
+    \ {\n        value_type ret = cumulative_value[r - 1];\n        if (b.has_value())\
+    \ {\n            long long i = std::lower_bound(key_data.begin() + l, key_data.begin()\
+    \ + r, b.value(), comp) - key_data.begin();\n            if (i != l) {\n     \
+    \           ret = cumulative_value[i - 1];\n            } else {\n           \
+    \     ret = e();\n            }\n        }\n        if (a.has_value()) {\n   \
+    \         long long i = std::lower_bound(key_data.begin() + l, key_data.begin()\
+    \ + r, a.value(), comp) - key_data.begin();\n            if (i != l) {\n     \
+    \           ret = op(ret, inv(cumulative_value[i - 1]));\n            }\n    \
+    \    }\n        return ret;\n    }\n\n   public:\n    MergeSortTree() = default;\n\
+    \    /**\n     * @param value_key value\u3068key\u306Epair\u306Evector\n     */\n\
+    \    explicit MergeSortTree(const std::vector<std::pair<value_type, key_type>>&\
+    \ value_key, G g = G()) : g(std::move(g)) {\n        std::vector<key_type> key;\n\
+    \        std::vector<value_type> value;\n        key.reserve(value_key.size());\n\
+    \        value.reserve(value_key.size());\n        for (std::size_t i = 0; i <\
+    \ value_key.size(); i++) {\n            value.push_back(value_key[i].first);\n\
     \            key.push_back(value_key[i].second);\n        }\n        this->initialize(value,\
     \ key);\n    }\n    /**\n     * @param value prod\u3067\u8A08\u7B97\u3059\u308B\
     \u5BFE\u8C61\n     * @param key \u30BD\u30FC\u30C8\u3059\u308B\u57FA\u6E96\n \
@@ -264,19 +267,19 @@ data:
     \ r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF 0<=l<=r<=n nullopt\u306E\u5834\u5408\
     \u306Fn\n     * @param a nullopt\u306E\u5834\u5408\u306F\u8CA0\u306E\u7121\u9650\
     \u5927\n     * @param b nullopt\u306E\u5834\u5408\u306F\u6B63\u306E\u7121\u9650\
-    \u5927\n     */\n    value_type prod(std::optional<int> l_ = std::nullopt, std::optional<int>\
-    \ r_ = std::nullopt, std::optional<key_type> a = std::nullopt, std::optional<key_type>\
-    \ b = std::nullopt) const {\n        int l = l_.value_or(0), r = r_.value_or(n);\n\
-    \        assert(0 <= l && l <= r && r <= n);\n        if (a.has_value() && b.has_value()\
-    \ && !comp(a.value(), b.value())) return e();\n        value_type ret = e();\n\
-    \        int h = height - 1;\n        int t = 1;\n        while (l < r) {\n  \
-    \          if (l & t) {\n                ret = op(ret, prod_section(h * sz + l,\
-    \ h * sz + l + t, a, b));\n                l += t;\n            }\n          \
-    \  if (r & t) {\n                r -= t;\n                ret = op(ret, prod_section(h\
-    \ * sz + r, h * sz + r + t, a, b));\n            }\n            h--;\n       \
-    \     t <<= 1;\n        }\n        return ret;\n    }\n};\n\ntemplate <typename\
-    \ G, typename K>\nMergeSortTree(std::vector<std::pair<typename G::S, K>>, G) ->\
-    \ MergeSortTree<G, K>;\ntemplate <typename G, typename K>\nMergeSortTree(std::vector<typename\
+    \u5927\n     */\n    value_type prod(std::optional<long long> l_ = std::nullopt,\
+    \ std::optional<long long> r_ = std::nullopt, std::optional<key_type> a = std::nullopt,\
+    \ std::optional<key_type> b = std::nullopt) const {\n        long long l = l_.value_or(0),\
+    \ r = r_.value_or(n);\n        assert(0 <= l && l <= r && r <= n);\n        if\
+    \ (a.has_value() && b.has_value() && !comp(a.value(), b.value())) return e();\n\
+    \        value_type ret = e();\n        int h = height - 1;\n        long long\
+    \ t = 1;\n        while (l < r) {\n            if (l & t) {\n                ret\
+    \ = op(ret, prod_section(h * sz + l, h * sz + l + t, a, b));\n               \
+    \ l += t;\n            }\n            if (r & t) {\n                r -= t;\n\
+    \                ret = op(ret, prod_section(h * sz + r, h * sz + r + t, a, b));\n\
+    \            }\n            h--;\n            t <<= 1;\n        }\n        return\
+    \ ret;\n    }\n};\n\ntemplate <typename G, typename K>\nMergeSortTree(std::vector<std::pair<typename\
+    \ G::S, K>>, G) -> MergeSortTree<G, K>;\ntemplate <typename G, typename K>\nMergeSortTree(std::vector<typename\
     \ G::S>, std::vector<K>, G) -> MergeSortTree<G, K>;\n#line 10 \"test/yosupo/rectangle-sum.2.test.cpp\"\
     \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
     \    int N, Q;\n    std::cin >> N >> Q;\n    std::vector<std::array<int, 3>> XYW(N);\n\
@@ -312,7 +315,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/rectangle-sum.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 16:37:39+09:00'
+  timestamp: '2026-10-15 07:27:48+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/rectangle-sum.2.test.cpp

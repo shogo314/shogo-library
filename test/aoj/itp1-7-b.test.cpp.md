@@ -20,7 +20,7 @@ data:
     \u5217\n */\n\n#include <cassert>\n#include <cstddef>\n#include <iterator>\n#include\
     \ <string>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\n\
     struct Range {\n   public:\n    using value_type = long long;\n    using const_reference\
-    \ = const value_type&;\n    using size_type = std::size_t;\n    using difference_type\
+    \ = const value_type&;\n    using size_type = long long;\n    using difference_type\
     \ = std::ptrdiff_t;\n\n    const value_type start;\n    const value_type stop;\n\
     \    const value_type step;\n\n   private:\n    const value_type norm_stop;\n\n\
     \    constexpr static value_type normalize(value_type _start, value_type _stop,\
@@ -87,7 +87,7 @@ data:
     \            }\n        }\n    };\n\n    constexpr const_iterator begin() const\
     \ noexcept {\n        return {*this, start};\n    }\n    constexpr const_iterator\
     \ end() const noexcept {\n        return {*this, norm_stop};\n    }\n    /**\n\
-    \     * @brief x \u306E\u500B\u6570 (0 \u304B 1)\n     */\n    constexpr difference_type\
+    \     * @brief x \u306E\u500B\u6570 (0 \u304B 1)\n     */\n    constexpr size_type\
     \ count(value_type x) const noexcept {\n        if (step > 0) {\n            if\
     \ (start <= x && x < stop) {\n                if ((x - start) % step == 0) {\n\
     \                    return 1;\n                }\n            }\n        } else\
@@ -121,13 +121,13 @@ data:
     \ constexpr size_type size() const noexcept {\n        if (step > 0) {\n     \
     \       return (norm_stop - start) / step;\n        } else {\n            return\
     \ (start - norm_stop) / (-step);\n        }\n    }\n    constexpr value_type at(size_type\
-    \ i) const {\n        assert(i < size());\n        return start + i * step;\n\
-    \    }\n    constexpr value_type operator[](size_type i) const {\n        return\
-    \ at(i);\n    }\n    constexpr bool empty() const noexcept {\n        return start\
-    \ == norm_stop;\n    }\n    constexpr value_type sum() const noexcept {\n    \
-    \    return static_cast<Range::value_type>(size()) * (norm_stop - step + start)\
-    \ / 2;\n    }\n    /**\n     * @brief \u6700\u5C0F\u5024\n     * \u7A7A\u3060\u3068\
-    \u30A8\u30E9\u30FC\n     */\n    constexpr value_type min() const {\n        assert(!empty());\n\
+    \ i) const {\n        assert(0 <= i && i < size());\n        return start + i\
+    \ * step;\n    }\n    constexpr value_type operator[](size_type i) const {\n \
+    \       return at(i);\n    }\n    constexpr bool empty() const noexcept {\n  \
+    \      return start == norm_stop;\n    }\n    constexpr value_type sum() const\
+    \ noexcept {\n        return size() * (norm_stop - step + start) / 2;\n    }\n\
+    \    /**\n     * @brief \u6700\u5C0F\u5024\n     * \u7A7A\u3060\u3068\u30A8\u30E9\
+    \u30FC\n     */\n    constexpr value_type min() const {\n        assert(!empty());\n\
     \        if (step > 0) {\n            return start;\n        } else {\n      \
     \      return norm_stop - step;\n        }\n    }\n    /**\n     * @brief \u6700\
     \u5927\u5024\n     * \u7A7A\u3060\u3068\u30A8\u30E9\u30FC\n     */\n    constexpr\
@@ -181,14 +181,13 @@ data:
     \        }\n    }\n    /**\n     * @brief \u8981\u7D20\u3092 Range \u3067\u6307\
     \u5B9A\u3057\u305F\u30B3\u30F3\u30C6\u30CA\n     */\n    constexpr Range slice(const\
     \ Range& r) const {\n        if (r.empty()) return {};\n        if (r.max() <\
-    \ 0) return {};\n        if (r.min() >= static_cast<Range::value_type>(size()))\
-    \ return {};\n        Range trimmed_range(r.clipped(0, static_cast<Range::value_type>(size())));\n\
-    \        if (trimmed_range.empty()) return {};\n        value_type _step = step\
-    \ * trimmed_range.step;\n        value_type _start = at(trimmed_range.start);\n\
-    \        value_type _stop = _start + _step * static_cast<Range::value_type>(trimmed_range.size());\n\
-    \        return {_start, _stop, _step, _stop};\n    }\n\n    static std::string\
-    \ type_str() {\n        return \"Range\";\n    }\n    std::string initializer_str()\
-    \ const {\n        return \"{\" + std::to_string(start) + \", \" + std::to_string(stop)\
+    \ 0) return {};\n        if (r.min() >= size()) return {};\n        Range trimmed_range(r.clipped(0,\
+    \ size()));\n        if (trimmed_range.empty()) return {};\n        value_type\
+    \ _step = step * trimmed_range.step;\n        value_type _start = at(trimmed_range.start);\n\
+    \        value_type _stop = _start + _step * trimmed_range.size();\n        return\
+    \ {_start, _stop, _step, _stop};\n    }\n\n    static std::string type_str() {\n\
+    \        return \"Range\";\n    }\n    std::string initializer_str() const {\n\
+    \        return \"{\" + std::to_string(start) + \", \" + std::to_string(stop)\
     \ + \", \" + std::to_string(step) + \"}\";\n    }\n    std::string repr() const\
     \ {\n        return \"Range(\" + std::to_string(start) + \", \" + std::to_string(stop)\
     \ + \", \" + std::to_string(step) + \")\";\n    }\n\n    std::vector<value_type>\
@@ -222,7 +221,7 @@ data:
   isVerificationFile: true
   path: test/aoj/itp1-7-b.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 16:36:18+09:00'
+  timestamp: '2026-10-15 07:27:48+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/itp1-7-b.test.cpp

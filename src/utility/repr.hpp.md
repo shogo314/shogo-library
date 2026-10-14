@@ -115,10 +115,10 @@ data:
     \ N>&);\n\n///////////////////////////////////////////////////////////////////\n\
     /////////////////////////// definition ////////////////////////////\n///////////////////////////////////////////////////////////////////\n\
     \ntemplate <typename T, ENABLE_IF_T(!has_type_str_v<T>)>\ninline std::string type_str(const\
-    \ T& t) {\n    return \"T\";\n}\ntemplate <typename T, ENABLE_IF_T(has_type_str_v<T>)>\n\
+    \ T&) {\n    return \"T\";\n}\ntemplate <typename T, ENABLE_IF_T(has_type_str_v<T>)>\n\
     inline std::string type_str(const T& t) {\n    return t.type_str();\n}\ntemplate\
     \ <typename T, ENABLE_IF_T(!has_initializer_str_v<T>)>\ninline std::string initializer_str(const\
-    \ T& t) {\n    return \"{}\";\n}\ntemplate <typename T, ENABLE_IF_T(has_initializer_str_v<T>)>\n\
+    \ T&) {\n    return \"{}\";\n}\ntemplate <typename T, ENABLE_IF_T(has_initializer_str_v<T>)>\n\
     inline std::string initializer_str(const T& t) {\n    return t.initializer_str();\n\
     }\ntemplate <typename T, ENABLE_IF_T(!has_repr_v<T>)>\ninline std::string repr(const\
     \ T& t) {\n    return internal_repr::type_str(t) + internal_repr::initializer_str(t);\n\
@@ -269,10 +269,10 @@ data:
     \ N>&);\n\n///////////////////////////////////////////////////////////////////\n\
     /////////////////////////// definition ////////////////////////////\n///////////////////////////////////////////////////////////////////\n\
     \ntemplate <typename T, ENABLE_IF_T(!has_type_str_v<T>)>\ninline std::string type_str(const\
-    \ T& t) {\n    return \"T\";\n}\ntemplate <typename T, ENABLE_IF_T(has_type_str_v<T>)>\n\
+    \ T&) {\n    return \"T\";\n}\ntemplate <typename T, ENABLE_IF_T(has_type_str_v<T>)>\n\
     inline std::string type_str(const T& t) {\n    return t.type_str();\n}\ntemplate\
     \ <typename T, ENABLE_IF_T(!has_initializer_str_v<T>)>\ninline std::string initializer_str(const\
-    \ T& t) {\n    return \"{}\";\n}\ntemplate <typename T, ENABLE_IF_T(has_initializer_str_v<T>)>\n\
+    \ T&) {\n    return \"{}\";\n}\ntemplate <typename T, ENABLE_IF_T(has_initializer_str_v<T>)>\n\
     inline std::string initializer_str(const T& t) {\n    return t.initializer_str();\n\
     }\ntemplate <typename T, ENABLE_IF_T(!has_repr_v<T>)>\ninline std::string repr(const\
     \ T& t) {\n    return internal_repr::type_str(t) + internal_repr::initializer_str(t);\n\
@@ -380,7 +380,7 @@ data:
   isVerificationFile: false
   path: src/utility/repr.hpp
   requiredBy: []
-  timestamp: '2026-10-14 16:41:25+09:00'
+  timestamp: '2026-10-15 07:27:48+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/repr.test.cpp

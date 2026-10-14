@@ -57,31 +57,31 @@ data:
     \ {}\n\n   public:\n    /**\n     * @brief \u7A7A\u306E\u30AD\u30E5\u30FC\u3092\
     \u4F5C\u308B\n     */\n    PersistentQueue() : pool(nullptr), back_node(0), n(0)\
     \ {}\n\n    /**\n     * @brief \u8981\u7D20\u6570\u3092\u8FD4\u3059\n     */\n\
-    \    int size() const { return n; }\n    /**\n     * @brief \u7A7A\u304B\u3069\
-    \u3046\u304B\u3092\u8FD4\u3059\n     */\n    bool empty() const { return n ==\
-    \ 0; }\n\n    /**\n     * @brief \u5148\u982D\u306E\u8981\u7D20\u3092\u8FD4\u3059\
-    \n     */\n    T front() const {\n        assert(!empty());\n        return pool->val[pool->ancestor(back_node,\
-    \ pool->depth[back_node] - n + 1)];\n    }\n    /**\n     * @brief \u672B\u5C3E\
-    \u306E\u8981\u7D20\u3092\u8FD4\u3059\n     */\n    T back() const {\n        assert(!empty());\n\
-    \        return pool->val[back_node];\n    }\n    /**\n     * @brief \u672B\u5C3E\
-    \u306Bx\u3092\u52A0\u3048\u305F\u65B0\u3057\u3044\u7248\u3092\u8FD4\u3059\n  \
-    \   *\n     * @param x \u52A0\u3048\u308B\u5024\n     * @return PersistentQueue\
-    \ \u65B0\u3057\u3044\u7248 (\u81EA\u8EAB\u306F\u5909\u308F\u3089\u306A\u3044)\n\
-    \     */\n    PersistentQueue push(const T& x) const {\n        std::shared_ptr<Pool>\
-    \ p = pool ? pool : std::make_shared<Pool>();\n        int t = p->make_node(x,\
-    \ back_node);\n        return PersistentQueue(std::move(p), t, n + 1);\n    }\n\
-    \    /**\n     * @brief \u5148\u982D\u306E\u8981\u7D20\u3092\u53D6\u308A\u9664\
-    \u3044\u305F\u65B0\u3057\u3044\u7248\u3092\u8FD4\u3059\n     *\n     * @return\
-    \ PersistentQueue \u65B0\u3057\u3044\u7248 (\u81EA\u8EAB\u306F\u5909\u308F\u3089\
-    \u306A\u3044)\n     */\n    PersistentQueue pop() const {\n        assert(!empty());\n\
-    \        return PersistentQueue(pool, back_node, n - 1);\n    }\n\n    /**\n \
-    \    * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\u3092\u5148\u982D\u304B\u3089\
-    \u9806\u306B\u4E26\u3079\u305F\u5217\u3092\u8FD4\u3059\n     */\n    std::vector<T>\
-    \ to_vector() const {\n        std::vector<T> res(n);\n        int t = back_node;\n\
-    \        for (int i = n - 1; i >= 0; i--) {\n            res[i] = pool->val[t];\n\
-    \            t = pool->parent[t];\n        }\n        return res;\n    }\n};\n\
-    #line 8 \"test/unittest/persistent-queue.test.cpp\"\n\n#include <deque>\n#include\
-    \ <iostream>\n#include <random>\n#line 13 \"test/unittest/persistent-queue.test.cpp\"\
+    \    long long size() const { return n; }\n    /**\n     * @brief \u7A7A\u304B\
+    \u3069\u3046\u304B\u3092\u8FD4\u3059\n     */\n    bool empty() const { return\
+    \ n == 0; }\n\n    /**\n     * @brief \u5148\u982D\u306E\u8981\u7D20\u3092\u8FD4\
+    \u3059\n     */\n    T front() const {\n        assert(!empty());\n        return\
+    \ pool->val[pool->ancestor(back_node, pool->depth[back_node] - n + 1)];\n    }\n\
+    \    /**\n     * @brief \u672B\u5C3E\u306E\u8981\u7D20\u3092\u8FD4\u3059\n   \
+    \  */\n    T back() const {\n        assert(!empty());\n        return pool->val[back_node];\n\
+    \    }\n    /**\n     * @brief \u672B\u5C3E\u306Bx\u3092\u52A0\u3048\u305F\u65B0\
+    \u3057\u3044\u7248\u3092\u8FD4\u3059\n     *\n     * @param x \u52A0\u3048\u308B\
+    \u5024\n     * @return PersistentQueue \u65B0\u3057\u3044\u7248 (\u81EA\u8EAB\u306F\
+    \u5909\u308F\u3089\u306A\u3044)\n     */\n    PersistentQueue push(const T& x)\
+    \ const {\n        std::shared_ptr<Pool> p = pool ? pool : std::make_shared<Pool>();\n\
+    \        int t = p->make_node(x, back_node);\n        return PersistentQueue(std::move(p),\
+    \ t, n + 1);\n    }\n    /**\n     * @brief \u5148\u982D\u306E\u8981\u7D20\u3092\
+    \u53D6\u308A\u9664\u3044\u305F\u65B0\u3057\u3044\u7248\u3092\u8FD4\u3059\n   \
+    \  *\n     * @return PersistentQueue \u65B0\u3057\u3044\u7248 (\u81EA\u8EAB\u306F\
+    \u5909\u308F\u3089\u306A\u3044)\n     */\n    PersistentQueue pop() const {\n\
+    \        assert(!empty());\n        return PersistentQueue(pool, back_node, n\
+    \ - 1);\n    }\n\n    /**\n     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\u3092\
+    \u5148\u982D\u304B\u3089\u9806\u306B\u4E26\u3079\u305F\u5217\u3092\u8FD4\u3059\
+    \n     */\n    std::vector<T> to_vector() const {\n        std::vector<T> res(n);\n\
+    \        int t = back_node;\n        for (int i = n - 1; i >= 0; i--) {\n    \
+    \        res[i] = pool->val[t];\n            t = pool->parent[t];\n        }\n\
+    \        return res;\n    }\n};\n#line 8 \"test/unittest/persistent-queue.test.cpp\"\
+    \n\n#include <deque>\n#include <iostream>\n#include <random>\n#line 13 \"test/unittest/persistent-queue.test.cpp\"\
     \n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int\
     \ rep = 0; rep < 2000 && ok; rep++) {\n        std::vector<PersistentQueue<int>>\
     \ que(1);\n        std::vector<std::deque<int>> naive(1);\n        for (int t\
@@ -152,7 +152,7 @@ data:
   isVerificationFile: true
   path: test/unittest/persistent-queue.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 02:10:34+09:00'
+  timestamp: '2026-10-15 07:35:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/persistent-queue.test.cpp

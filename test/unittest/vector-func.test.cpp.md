@@ -80,21 +80,22 @@ data:
     \ : std::true_type {};\n}  // namespace internal_traits\ntemplate <class T>\n\
     struct is_sorted_container : internal_traits::is_sorted_container_impl<T>::type\
     \ {};\ntemplate <class T>\ninline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
-    #line 17 \"src/utility/vector_func.hpp\"\n\ntemplate <typename T>\nstd::vector<int>\
-    \ sorted_idx(const std::vector<T>& v, bool reverse = false) {\n    std::vector<int>\
-    \ ret(v.size());\n    std::iota(ret.begin(), ret.end(), 0);\n    std::sort(ret.begin(),\
-    \ ret.end(), [&](int i, int j) {\n        return v[i] < v[j];\n    });\n    if\
-    \ (reverse) std::reverse(ret.begin(), ret.end());\n    return ret;\n}\n\ntemplate\
-    \ <typename T>\ninline std::vector<T>& operator++(std::vector<T>& v) {\n    for\
-    \ (auto& e : v) e++;\n    return v;\n}\ntemplate <typename T>\ninline std::vector<T>\
-    \ operator++(std::vector<T>& v, int) {\n    auto res = v;\n    for (auto& e :\
-    \ v) e++;\n    return res;\n}\ntemplate <typename T>\ninline std::vector<T>& operator--(std::vector<T>&\
-    \ v) {\n    for (auto& e : v) e--;\n    return v;\n}\ntemplate <typename T>\n\
-    inline std::vector<T> operator--(std::vector<T>& v, int) {\n    auto res = v;\n\
-    \    for (auto& e : v) e--;\n    return res;\n}\n\ntemplate <typename T, typename\
-    \ U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>& operator+=(std::vector<T>&\
-    \ v1, const std::vector<U>& v2) {\n    if (v2.size() > v1.size()) {\n        v1.resize(v2.size());\n\
-    \    }\n    for (std::size_t i = 0; i < v2.size(); i++) {\n        v1[i] += v2[i];\n\
+    #line 17 \"src/utility/vector_func.hpp\"\n\ntemplate <typename T>\nstd::vector<long\
+    \ long> sorted_idx(const std::vector<T>& v, bool reverse = false) {\n    std::vector<long\
+    \ long> ret(v.size());\n    std::iota(ret.begin(), ret.end(), 0LL);\n    std::sort(ret.begin(),\
+    \ ret.end(), [&](long long i, long long j) {\n        return v[i] < v[j];\n  \
+    \  });\n    if (reverse) std::reverse(ret.begin(), ret.end());\n    return ret;\n\
+    }\n\ntemplate <typename T>\ninline std::vector<T>& operator++(std::vector<T>&\
+    \ v) {\n    for (auto& e : v) e++;\n    return v;\n}\ntemplate <typename T>\n\
+    inline std::vector<T> operator++(std::vector<T>& v, int) {\n    auto res = v;\n\
+    \    for (auto& e : v) e++;\n    return res;\n}\ntemplate <typename T>\ninline\
+    \ std::vector<T>& operator--(std::vector<T>& v) {\n    for (auto& e : v) e--;\n\
+    \    return v;\n}\ntemplate <typename T>\ninline std::vector<T> operator--(std::vector<T>&\
+    \ v, int) {\n    auto res = v;\n    for (auto& e : v) e--;\n    return res;\n\
+    }\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\n\
+    inline std::vector<T>& operator+=(std::vector<T>& v1, const std::vector<U>& v2)\
+    \ {\n    if (v2.size() > v1.size()) {\n        v1.resize(v2.size());\n    }\n\
+    \    for (std::size_t i = 0; i < v2.size(); i++) {\n        v1[i] += v2[i];\n\
     \    }\n    return v1;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
     \ T>)>\ninline std::vector<T> operator+(const std::vector<T>& v1, const std::vector<U>&\
     \ v2) {\n    std::vector<T> res(v1);\n    return res += v2;\n}\n\ntemplate <typename\
@@ -201,11 +202,11 @@ data:
     \     check(abs(a) == expect, \"abs\");\n        }\n\n        // sorted_idx: \u5024\
     \u306E\u6607\u9806 (\u964D\u9806) \u306B\u4E26\u3079\u305F\u6DFB\u5B57\u306E\u4E26\
     \u3073\u66FF\u3048\n        {\n            for (bool rev : {false, true}) {\n\
-    \                auto idx = sorted_idx(a, rev);\n                std::vector<int>\
-    \ perm = idx;\n                std::sort(perm.begin(), perm.end());\n        \
-    \        bool is_perm = (int)perm.size() == n;\n                for (int i = 0;\
-    \ i < (int)perm.size() && is_perm; i++) is_perm = perm[i] == i;\n            \
-    \    bool is_sorted = true;\n                for (int i = 0; i + 1 < (int)idx.size();\
+    \                auto idx = sorted_idx(a, rev);\n                std::vector<long\
+    \ long> perm = idx;\n                std::sort(perm.begin(), perm.end());\n  \
+    \              bool is_perm = (int)perm.size() == n;\n                for (int\
+    \ i = 0; i < (int)perm.size() && is_perm; i++) is_perm = perm[i] == i;\n     \
+    \           bool is_sorted = true;\n                for (int i = 0; i + 1 < (int)idx.size();\
     \ i++) {\n                    if (rev ? a[idx[i]] < a[idx[i + 1]] : a[idx[i]]\
     \ > a[idx[i + 1]]) is_sorted = false;\n                }\n                check(is_perm\
     \ && is_sorted, \"sorted_idx\");\n            }\n        }\n\n        // iota\n\
@@ -282,11 +283,11 @@ data:
     \     check(abs(a) == expect, \"abs\");\n        }\n\n        // sorted_idx: \u5024\
     \u306E\u6607\u9806 (\u964D\u9806) \u306B\u4E26\u3079\u305F\u6DFB\u5B57\u306E\u4E26\
     \u3073\u66FF\u3048\n        {\n            for (bool rev : {false, true}) {\n\
-    \                auto idx = sorted_idx(a, rev);\n                std::vector<int>\
-    \ perm = idx;\n                std::sort(perm.begin(), perm.end());\n        \
-    \        bool is_perm = (int)perm.size() == n;\n                for (int i = 0;\
-    \ i < (int)perm.size() && is_perm; i++) is_perm = perm[i] == i;\n            \
-    \    bool is_sorted = true;\n                for (int i = 0; i + 1 < (int)idx.size();\
+    \                auto idx = sorted_idx(a, rev);\n                std::vector<long\
+    \ long> perm = idx;\n                std::sort(perm.begin(), perm.end());\n  \
+    \              bool is_perm = (int)perm.size() == n;\n                for (int\
+    \ i = 0; i < (int)perm.size() && is_perm; i++) is_perm = perm[i] == i;\n     \
+    \           bool is_sorted = true;\n                for (int i = 0; i + 1 < (int)idx.size();\
     \ i++) {\n                    if (rev ? a[idx[i]] < a[idx[i + 1]] : a[idx[i]]\
     \ > a[idx[i + 1]]) is_sorted = false;\n                }\n                check(is_perm\
     \ && is_sorted, \"sorted_idx\");\n            }\n        }\n\n        // iota\n\
@@ -312,7 +313,7 @@ data:
   isVerificationFile: true
   path: test/unittest/vector-func.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-15 07:27:48+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/vector-func.test.cpp

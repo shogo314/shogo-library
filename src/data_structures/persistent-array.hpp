@@ -1,0 +1,162 @@
+#pragma once
+
+/**
+ * @file persistent-array.hpp
+ * @brief 永続配列
+ */
+
+#include <array>
+#include <cassert>
+#include <memory>
+#include <ostream>
+#include <utility>
+#include <vector>
+
+/**
+ * @brief 永続配列
+ *
+ * 更新すると新しい版を返し、元の版は変わらない。同じ配列から作った版はノードを共有する
+ * 例:
+ * PersistentArray<int> a0(n, -1);
+ * auto a1 = a0.set(3, 10);  // a0 はそのまま
+ * a1[3];                    // 10
+ *
+ * @tparam T 要素の型
+ */
+template <typename T>
+class PersistentArray {
+    // すべての版のノードを持つ。ノードは削除しない
+    struct Pool {
+        std::vector<std::array<int, 2>> child;  // 内部ノードの子 (最下段の内部ノードでは葉の番号)
+        std::vector<T> leaf;
+        int make_leaf(const T& x) {
+            leaf.push_back(x);
+            return int(leaf.size()) - 1;
+        }
+        int make_node(int l, int r) {
+            child.push_back({l, r});
+            return int(child.size()) - 1;
+        }
+    };
+
+    std::shared_ptr<Pool> pool;  // 要素数 0 なら nullptr
+    int n, height, root;         // height = 0 なら root は葉の番号
+
+    PersistentArray(std::shared_ptr<Pool> pool, int n, int height, int root) : pool(std::move(pool)), n(n), height(height), root(root) {}
+
+    void init_height() {
+        height = 0;
+        while ((1 << height) < n) height++;
+    }
+    int build(const std::vector<T>& v, int a, int h) {
+        if (h == 0) return pool->make_leaf(a < n ? v[a] : T());
+        int l = build(v, a, h - 1);
+        int r = build(v, a + (1 << (h - 1)), h - 1);
+        return pool->make_node(l, r);
+    }
+
+   public:
+    /**
+     * @brief コンストラクタ
+     *
+     * 同じ値の部分木は共有するので、n が大きくても O(log n) で作れる
+     *
+     * @param n 要素数
+     * @param x 初期値
+     */
+    explicit PersistentArray(int n = 0, const T& x = T()) : pool(nullptr), n(n), height(0), root(-1) {
+        assert(0 <= n);
+        if (n == 0) return;
+        pool = std::make_shared<Pool>();
+        init_height();
+        root = pool->make_leaf(x);
+        for (int h = 0; h < height; h++) root = pool->make_node(root, root);
+    }
+    /**
+     * @brief コンストラクタ
+     *
+     * @param v 初期の要素
+     */
+    explicit PersistentArray(const std::vector<T>& v) : pool(nullptr), n(v.size()), height(0), root(-1) {
+        if (n == 0) return;
+        pool = std::make_shared<Pool>();
+        init_height();
+        root = build(v, 0, height);
+    }
+
+    /**
+     * @brief 要素数を返す
+     */
+    int size() const { return n; }
+
+    /**
+     * @brief 指定された要素の値を返す
+     *
+     * @param k インデックス
+     * @return T 値
+     */
+    T get(int k) const {
+        assert(0 <= k && k < n);
+        int t = root;
+        for (int h = height - 1; h >= 0; h--) t = pool->child[t][k >> h & 1];
+        return pool->leaf[t];
+    }
+    /**
+     * @brief 指定された要素の値を返す
+     *
+     * @param k インデックス
+     * @return T 値
+     */
+    T operator[](int k) const { return get(k); }
+
+    /**
+     * @brief 指定された要素の値をxにした新しい版を返す
+     *
+     * @param k インデックス
+     * @param x 新しい値
+     * @return PersistentArray 新しい版 (自身は変わらない)
+     */
+    PersistentArray set(int k, const T& x) const {
+        assert(0 <= k && k < n);
+        std::vector<int> path(height);
+        int t = root;
+        for (int h = height - 1; h >= 0; h--) {
+            path[h] = t;
+            t = pool->child[t][k >> h & 1];
+        }
+        t = pool->make_leaf(x);
+        for (int h = 0; h < height; h++) {
+            std::array<int, 2> c = pool->child[path[h]];
+            c[k >> h & 1] = t;
+            t = pool->make_node(c[0], c[1]);
+        }
+        return PersistentArray(pool, n, height, t);
+    }
+
+    /**
+     * @brief 内容を出力する
+     *
+     * @tparam CharT 出力ストリームの文字型
+     * @tparam Traits 出力ストリームの文字型特性
+     * @param os 出力ストリーム
+     * @param rhs 永続配列
+     * @return std::basic_ostream<CharT, Traits>& 出力ストリーム
+     */
+    template <class CharT, class Traits>
+    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const PersistentArray& rhs) {
+        for (int i = 0; i < rhs.n; i++) {
+            if (i != 0) os << CharT(' ');
+            os << rhs[i];
+        }
+        return os;
+    }
+
+    /**
+     * @brief すべての要素を並べた列を返す
+     */
+    std::vector<T> to_vector() const {
+        std::vector<T> res(n);
+        for (int i = 0; i < n; i++) res[i] = get(i);
+        return res;
+    }
+};

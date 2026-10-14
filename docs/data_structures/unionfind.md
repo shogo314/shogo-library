@@ -46,3 +46,4 @@ auto [r, merged] = uf.merge(u, v);  // 代表元も受け取る
 
 - 連結成分ごとに値 (和・最小値など) を持つなら [可換モノイドを乗せるUnionFind](monoid-unionfind.hpp)
 - 頂点間のポテンシャルの差を管理するなら [ポテンシャル付きUnionFind](potentialized-unionfind.hpp)
+- 過去の版も使うなら [永続UnionFind](persistent-unionfind.hpp)

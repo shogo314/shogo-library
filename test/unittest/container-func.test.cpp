@@ -149,6 +149,11 @@ int main() {
     check(max({5}) == 5 && min({5}) == 5, "max/min(initializer_list) 1 要素");
 
     // 境界: 1 要素、空
+    // average: 和が負でも正しく割る (整数型は 0 方向に切り捨て)
+    check(average(std::vector<long long>{-2, -4}) == -3, "average 負の和");
+    check(average(std::vector<int>{-1, -2}) == -1, "average 負の和、切り捨て");
+    check(average(std::vector<int>{1, 2, 4}) == 2, "average 正の和");
+    check(average(std::vector<double>{-1, -2}) == -1.5, "average(vector<double>)");
     check(median(std::vector<int>{4}) == 4, "median 1 要素");
     check(median(std::vector<int>{1, 4}) == 2, "median 2 要素");
     check(mex(std::vector<int>{}) == 0, "mex 空");

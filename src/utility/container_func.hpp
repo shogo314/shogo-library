@@ -183,7 +183,8 @@ inline constexpr mem_value_type<C> gcd(const C& v) {
 template <class C>
 inline constexpr mem_value_type<C> average(const C& v) {
     assert(v.size());
-    return sum(v) / v.size();
+    // v.size() は符号なしなので、そのまま割ると負の和が符号なしに変換されて壊れる
+    return sum(v) / static_cast<mem_value_type<C>>(v.size());
 }
 
 template <class C>

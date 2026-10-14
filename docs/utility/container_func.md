@@ -34,7 +34,7 @@ bool b = contains(v, 4);       // true
 | `product(c)` | 総積 | $O(n)$ |
 | `product_xor(c)` | 総 xor | $O(n)$ |
 | `gcd(c)` | 全要素の gcd (空なら 0) | $O(n \log \max)$ |
-| `average(c)` | 平均 (`sum(c) / size`、整数型なら切り捨て) | $O(n)$ |
+| `average(c)` | 平均 (`sum(c) / size`、整数型なら 0 方向に切り捨て) | $O(n)$ |
 | `median(c)` | 中央値 (要素数が偶数なら中央 2 つの平均) | $O(n \log n)$ |
 | `mex(c)` | 含まれない最小の非負整数 | $O(n)$ |
 | `maximum_subarray(c)` | 空でない連続部分列の和の最大値 | $O(n)$ |

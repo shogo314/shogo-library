@@ -51,6 +51,12 @@ data:
       title: "\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u533A\u9593\u4F5C\
         \u7528\u30011\u70B9\u53D6\u5F97)"
     - icon: ':heavy_check_mark:'
+      path: src/data_structures/dynamic-lazy-segtree.hpp
+      title: "\u52D5\u7684\u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
+    - icon: ':heavy_check_mark:'
+      path: src/data_structures/dynamic-segtree.hpp
+      title: "\u52D5\u7684\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
+    - icon: ':heavy_check_mark:'
       path: src/data_structures/erasable-priority-queue.hpp
       title: "\u524A\u9664\u53EF\u80FD\u306A\u512A\u5148\u5EA6\u4ED8\u304D\u30AD\u30E5\
         \u30FC"
@@ -639,6 +645,12 @@ data:
       path: test/unittest/dual-segtree.test.cpp
       title: test/unittest/dual-segtree.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/dynamic-lazy-segtree.test.cpp
+      title: test/unittest/dynamic-lazy-segtree.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/dynamic-segtree.test.cpp
+      title: test/unittest/dynamic-segtree.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/erasable-priority-queue.test.cpp
       title: test/unittest/erasable-priority-queue.test.cpp
     - icon: ':heavy_check_mark:'
@@ -971,6 +983,9 @@ data:
       path: test/yosupo/point-add-rectangle-sum.test.cpp
       title: test/yosupo/point-add-rectangle-sum.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/point-set-range-composite-large-array.test.cpp
+      title: test/yosupo/point-set-range-composite-large-array.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/point-set-range-composite.1.test.cpp
       title: test/yosupo/point-set-range-composite.1.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1003,6 +1018,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/range-affine-point-get.2.test.cpp
       title: test/yosupo/range-affine-point-get.2.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/range-affine-range-sum-large-array.test.cpp
+      title: test/yosupo/range-affine-range-sum-large-array.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/range-affine-range-sum.1.test.cpp
       title: test/yosupo/range-affine-range-sum.1.test.cpp

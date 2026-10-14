@@ -52,6 +52,12 @@ data:
     path: test/unittest/dual-segtree.test.cpp
     title: test/unittest/dual-segtree.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/dynamic-lazy-segtree.test.cpp
+    title: test/unittest/dynamic-lazy-segtree.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/dynamic-segtree.test.cpp
+    title: test/unittest/dynamic-segtree.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/fps.test.cpp
     title: test/unittest/fps.test.cpp
   - icon: ':heavy_check_mark:'
@@ -121,6 +127,9 @@ data:
     path: test/yosupo/persistent-range-affine-range-sum.test.cpp
     title: test/yosupo/persistent-range-affine-range-sum.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/point-set-range-composite-large-array.test.cpp
+    title: test/yosupo/point-set-range-composite-large-array.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/point-set-range-composite.1.test.cpp
     title: test/yosupo/point-set-range-composite.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -147,6 +156,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/range-affine-point-get.2.test.cpp
     title: test/yosupo/range-affine-point-get.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/range-affine-range-sum-large-array.test.cpp
+    title: test/yosupo/range-affine-range-sum-large-array.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/range-affine-range-sum.1.test.cpp
     title: test/yosupo/range-affine-range-sum.1.test.cpp
@@ -714,8 +726,10 @@ data:
   - test/unittest/combinatorics.test.cpp
   - test/unittest/persistent-lazy-segtree.test.cpp
   - test/unittest/dual-segtree.test.cpp
+  - test/unittest/dynamic-segtree.test.cpp
   - test/unittest/persistent-segtree.test.cpp
   - test/unittest/sliding-window-aggregation.test.cpp
+  - test/unittest/dynamic-lazy-segtree.test.cpp
   - test/unittest/acted-monoid.test.cpp
   - test/unittest/divisor-transform.test.cpp
   - test/unittest/matrix.test.cpp
@@ -737,6 +751,7 @@ data:
   - test/yosupo/point-set-range-composite.4.test.cpp
   - test/yosupo/range-affine-range-sum.2.test.cpp
   - test/yosupo/range-affine-range-sum.3.test.cpp
+  - test/yosupo/range-affine-range-sum-large-array.test.cpp
   - test/yosupo/range-affine-point-get.1.test.cpp
   - test/yosupo/partition-function_2.test.cpp
   - test/yosupo/inv-of-fps.test.cpp
@@ -755,6 +770,7 @@ data:
   - test/yosupo/convolution-mod-1000000007.test.cpp
   - test/yosupo/log-of-fps.test.cpp
   - test/yosupo/binomial-coefficient-prime-mod.2.test.cpp
+  - test/yosupo/point-set-range-composite-large-array.test.cpp
   - test/yosupo/lcm-convolution.test.cpp
   - test/yosupo/sharp-p-subset-sum.2.test.cpp
   - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp

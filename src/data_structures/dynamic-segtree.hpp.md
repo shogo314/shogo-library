@@ -1,0 +1,437 @@
+---
+data:
+  _extendedDependsOn:
+  - icon: ':heavy_check_mark:'
+    path: src/algebra/monoid.hpp
+    title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
+  _extendedRequiredBy: []
+  _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/dynamic-segtree.test.cpp
+    title: test/unittest/dynamic-segtree.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/point-set-range-composite-large-array.test.cpp
+    title: test/yosupo/point-set-range-composite-large-array.test.cpp
+  _isVerificationFailed: false
+  _pathExtension: hpp
+  _verificationStatusIcon: ':heavy_check_mark:'
+  attributes:
+    document_title: "\u52D5\u7684\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
+    links: []
+  bundledCode: "#line 2 \"src/data_structures/dynamic-segtree.hpp\"\n\n/**\n * @file\
+    \ dynamic-segtree.hpp\n * @brief \u52D5\u7684\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\
+    \n */\n\n#include <cassert>\n#include <utility>\n#include <vector>\n\n#line 2\
+    \ \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\
+    \u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\
+    \u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * -\
+    \ using S: \u8981\u7D20\u306E\u578B\n * - S op(const S& a, const S& b): \u7A4D\
+    \ (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n * op, e \u306F static\
+    \ \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\
+    \u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\
+    \u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\n#include <algorithm>\n\
+    #include <array>\n#include <cstddef>\n#include <istream>\n#include <limits>\n\
+    #include <numeric>\n#include <ostream>\n#include <type_traits>\n#line 23 \"src/algebra/monoid.hpp\"\
+    \n\n/**\n * @brief 1\u6B21\u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite\
+    \ \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\
+    \u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\
+    \u3059\u308B\u3068\u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\n\
+    struct Affine {\n    T a = T(1);  //!< \u50BE\u304D\n    T b = T(0);  //!< \u5207\
+    \u7247\n    constexpr T operator()(const T& x) const { return a * x + b; }\n \
+    \   friend constexpr bool operator==(const Affine& f, const Affine& g) { return\
+    \ f.a == g.a && f.b == g.b; }\n    friend constexpr bool operator!=(const Affine&\
+    \ f, const Affine& g) { return !(f == g); }\n    template <class CharT, class\
+    \ Traits>\n    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    \ Traits>& is, Affine& f) {\n        return is >> f.a >> f.b;\n    }\n    template\
+    \ <class CharT, class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \ Traits>& os, const Affine& f) {\n        return os << f.a << CharT(' ') << f.b;\n\
+    \    }\n};\n\nnamespace monoid {\n\n/**\n * @brief \u548C\n */\ntemplate <typename\
+    \ T>\nstruct Sum {\n    using S = T;\n    static constexpr S op(const S& a, const\
+    \ S& b) { return a + b; }\n    static constexpr S e() { return S(0); }\n};\n\n\
+    /**\n * @brief \u7A4D\n */\ntemplate <typename T>\nstruct Prod {\n    using S\
+    \ = T;\n    static constexpr S op(const S& a, const S& b) { return a * b; }\n\
+    \    static constexpr S e() { return S(1); }\n};\n\n/**\n * @brief \u6700\u5927\
+    \u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\u6700\u5C0F\u5024\n */\ntemplate <typename\
+    \ T>\nstruct Max {\n    using S = T;\n    static constexpr S op(const S& a, const\
+    \ S& b) { return std::max(a, b); }\n    static constexpr S e() { return std::numeric_limits<S>::lowest();\
+    \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\
+    \u6700\u5927\u5024\n */\ntemplate <typename T>\nstruct Min {\n    using S = T;\n\
+    \    static constexpr S op(const S& a, const S& b) { return std::min(a, b); }\n\
+    \    static constexpr S e() { return std::numeric_limits<S>::max(); }\n};\n\n\
+    /**\n * @brief \u6700\u5C0F\u5024\u3068\u6700\u5927\u5024\u306E\u7D44 {min, max}\n\
+    \ */\ntemplate <typename T>\nstruct MinMax {\n    using S = std::pair<T, T>;\n\
+    \    static constexpr S op(const S& a, const S& b) { return {std::min(a.first,\
+    \ b.first), std::max(a.second, b.second)}; }\n    static constexpr S e() { return\
+    \ {std::numeric_limits<T>::max(), std::numeric_limits<T>::lowest()}; }\n};\n\n\
+    /**\n * @brief \u6392\u4ED6\u7684\u8AD6\u7406\u548C\n */\ntemplate <typename T>\n\
+    struct Xor {\n    using S = T;\n    static constexpr S op(const S& a, const S&\
+    \ b) { return a ^ b; }\n    static constexpr S e() { return S(0); }\n};\n\n/**\n\
+    \ * @brief \u8AD6\u7406\u7A4D\n */\ntemplate <typename T>\nstruct And {\n    using\
+    \ S = T;\n    static constexpr S op(const S& a, const S& b) { return a & b; }\n\
+    \    static constexpr S e() { return ~S(0); }\n};\n\n/**\n * @brief \u8AD6\u7406\
+    \u548C\n */\ntemplate <typename T>\nstruct Or {\n    using S = T;\n    static\
+    \ constexpr S op(const S& a, const S& b) { return a | b; }\n    static constexpr\
+    \ S e() { return S(0); }\n};\n\n/**\n * @brief \u6700\u5927\u516C\u7D04\u6570\
+    \ \u5358\u4F4D\u5143\u306F0\n */\ntemplate <typename T>\nstruct Gcd {\n    static_assert(std::is_integral_v<T>);\n\
+    \    using S = T;\n    static constexpr S op(const S& a, const S& b) { return\
+    \ std::gcd(a, b); }\n    static constexpr S e() { return S(0); }\n};\n\n/**\n\
+    \ * @brief \u6700\u5C0F\u516C\u500D\u6570 \u5358\u4F4D\u5143\u306F1\n */\ntemplate\
+    \ <typename T>\nstruct Lcm {\n    static_assert(std::is_integral_v<T>);\n    using\
+    \ S = T;\n    static constexpr S op(const S& a, const S& b) { return std::lcm(a,\
+    \ b); }\n    static constexpr S e() { return S(1); }\n};\n\n/**\n * @brief {0,\
+    \ 1, ..., N-1} \u304B\u3089\u81EA\u5206\u81EA\u8EAB\u3078\u306E\u5199\u50CF\u306E\
+    \u5408\u6210 (\u5909\u63DB\u30E2\u30CE\u30A4\u30C9)\n *\n * \u8981\u7D20 f \u306F\
+    \ f[x] \u304C x \u306E\u884C\u304D\u5148\u3092\u8868\u3059 std::array<int, N>\u3002\
+    \u5168\u5358\u5C04\u3067\u306A\u304F\u3066\u3088\u3044\n * op(f, g) = f\u2218\
+    g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B)\u3002\u533A\u9593 [l, r) \u306E\
+    \u7A4D\u306F f_l(...f_{r-1}(x)) \u3092\u8868\u3059\n * \u5DE6\u304B\u3089\u9806\
+    \u306B\u9069\u7528\u3057\u305F\u3044\u5834\u5408\u306F monoid::Reverse<monoid::Mapping<N>>\
+    \ \u3092\u4F7F\u3046\n * \u4F8B: SegTree<monoid::Mapping<3>> seg(n); seg.set(i,\
+    \ {0, 2, 1});\n * swap(i, j) \u3067 i \u3068 j \u3092\u5165\u308C\u66FF\u3048\u308B\
+    \u5199\u50CF\u3092\u4F5C\u308C\u308B\n *\n * @tparam N \u5199\u50CF\u306E\u5B9A\
+    \u7FA9\u57DF\u30FB\u5024\u57DF\u306E\u5927\u304D\u3055\n */\ntemplate <std::size_t\
+    \ N>\nstruct Mapping {\n    using S = std::array<int, N>;\n    static constexpr\
+    \ S op(const S& f, const S& g) {\n        S h{};\n        for (std::size_t x =\
+    \ 0; x < N; x++) h[x] = f[g[x]];\n        return h;\n    }\n    static constexpr\
+    \ S e() {\n        S h{};\n        for (std::size_t x = 0; x < N; x++) h[x] =\
+    \ static_cast<int>(x);\n        return h;\n    }\n    // i \u3068 j \u3092\u5165\
+    \u308C\u66FF\u3048\u3001\u307B\u304B\u306F\u52D5\u304B\u3055\u306A\u3044\u5199\
+    \u50CF (\u4E92\u63DB)\n    static constexpr S swap(int i, int j) {\n        S\
+    \ h = e();\n        h[i] = j;\n        h[j] = i;\n        return h;\n    }\n};\n\
+    \n/**\n * @brief 1\u6B21\u95A2\u6570 (Affine) \u306E\u5408\u6210\n * op(f, g)\
+    \ = f\u2218g (g \u3092\u5148\u306B\u9069\u7528\u3059\u308B)\n * \u533A\u9593 [l,\
+    \ r) \u306E\u7A4D\u306F f_l(...f_{r-1}(x)) \u3092\u8868\u3059\n * \u5DE6\u304B\
+    \u3089\u9806\u306B\u9069\u7528\u3057\u305F\u3044 (f_{r-1}(...f_l(x)) \u3092\u6C42\
+    \u3081\u305F\u3044) \u5834\u5408\u306F monoid::Reverse<monoid::Composite<T>> \u3092\
+    \u4F7F\u3046\n */\ntemplate <typename T>\nstruct Composite {\n    using S = Affine<T>;\n\
+    \    static constexpr S op(const S& f, const S& g) { return {f.a * g.a, f.a *\
+    \ g.b + f.b}; }\n    static constexpr S e() { return {T(1), T(0)}; }\n};\n\n/**\n\
+    \ * @brief \u62EC\u5F27\u5217 \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\
+    \u3044 ')' \u3068 '(' \u306E\u500B\u6570\n */\nstruct Parenthesis {\n    struct\
+    \ S {\n        long long close;  // \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\
+    \u306A\u3044 ')' \u306E\u500B\u6570\n        long long open;   // \u5BFE\u5FDC\
+    \u306E\u53D6\u308C\u3066\u3044\u306A\u3044 '(' \u306E\u500B\u6570\n        constexpr\
+    \ S(char c = 0) : close(c == ')'), open(c == '(') {}\n        constexpr S(long\
+    \ long close, long long open) : close(close), open(open) {}\n        /**\n   \
+    \      * @brief \u6B63\u3057\u3044\u62EC\u5F27\u5217\u304B\n         */\n    \
+    \    constexpr bool is_valid() const { return close == 0 && open == 0; }\n   \
+    \ };\n    static constexpr S op(const S& a, const S& b) {\n        if (a.open\
+    \ >= b.close) return S(a.close, a.open - b.close + b.open);\n        return S(a.close\
+    \ + b.close - a.open, b.open);\n    }\n    static constexpr S e() { return S();\
+    \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\
+    \u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\
+    \u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\
+    \u5024\u306E\u578B\n */\ntemplate <typename T, typename U = int>\nstruct MinWith\
+    \ {\n    using S = std::pair<T, U>;\n    static constexpr S op(const S& a, const\
+    \ S& b) { return b.first < a.first ? b : a; }\n    static constexpr S e() { return\
+    \ {std::numeric_limits<T>::max(), U{}}; }\n};\n\n/**\n * @brief \u6700\u5927\u5024\
+    \u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\
+    \u512A\u5148\n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\
+    \u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\u578B\n */\ntemplate <typename\
+    \ T, typename U = int>\nstruct MaxWith {\n    using S = std::pair<T, U>;\n   \
+    \ static constexpr S op(const S& a, const S& b) { return a.first < b.first ? b\
+    \ : a; }\n    static constexpr S e() { return {std::numeric_limits<T>::lowest(),\
+    \ U{}}; }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u500B\u6570\
+    \n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u500B\u6570\u306E\u578B\n\
+    \ */\ntemplate <typename T, typename U = long long>\nstruct MinCount {\n    using\
+    \ S = std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n\
+    \        if (a.first < b.first) return a;\n        if (b.first < a.first) return\
+    \ b;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
+    \ S e() { return {std::numeric_limits<T>::max(), U(0)}; }\n};\n\n/**\n * @brief\
+    \ \u6700\u5927\u5024\u3068\u305D\u306E\u500B\u6570\n *\n * @tparam T \u5024\u306E\
+    \u578B\n * @tparam U \u500B\u6570\u306E\u578B\n */\ntemplate <typename T, typename\
+    \ U = long long>\nstruct MaxCount {\n    using S = std::pair<T, U>;\n    static\
+    \ constexpr S op(const S& a, const S& b) {\n        if (a.first < b.first) return\
+    \ b;\n        if (b.first < a.first) return a;\n        return {a.first, a.second\
+    \ + b.second};\n    }\n    static constexpr S e() { return {std::numeric_limits<T>::lowest(),\
+    \ U(0)}; }\n};\n\n/**\n * @brief \u7A4D\u306E\u9806\u5E8F\u3092\u9006\u306B\u3057\
+    \u305F\u30E2\u30CE\u30A4\u30C9 op(a, b) = M::op(b, a)\n *\n * \u4F8B: SegTree<monoid::Reverse<monoid::Composite<mint>>>\
+    \ seg(v); \u306E\u533A\u9593 [l, r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x))\n *\n\
+    \ * @tparam M \u3082\u3068\u306E\u30E2\u30CE\u30A4\u30C9\n */\ntemplate <typename\
+    \ M>\nstruct Reverse {\n    using S = typename M::S;\n    M m;\n    constexpr\
+    \ Reverse() : m() {}\n    constexpr explicit Reverse(M m) : m(std::move(m)) {}\n\
+    \    constexpr S op(const S& a, const S& b) const { return m.op(b, a); }\n   \
+    \ constexpr S e() const { return m.e(); }\n};\n\n}  // namespace monoid\n\n/**\n\
+    \ * @brief \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3068\u5358\u4F4D\u5143\
+    \u304B\u3089\u5B9F\u884C\u6642\u306B\u4F5C\u308B\u30E2\u30CE\u30A4\u30C9\n * \u30E9\
+    \u30E0\u30C0\u5F0F\u3092\u4F7F\u3048\u308B\n *\n * \u4F8B: SegTree seg(v, Monoid([](int\
+    \ a, int b) { return std::max(a, b); }, -1));\n *\n * @tparam T \u8981\u7D20\u306E\
+    \u578B\n * @tparam Op \u7A4D\u306E\u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\
+    \u306E\u578B\n */\ntemplate <typename T, typename Op>\nstruct Monoid {\n    using\
+    \ S = T;\n    Op op_object;\n    S identity;\n    Monoid() = default;\n    constexpr\
+    \ Monoid(Op op, const S& e) : op_object(std::move(op)), identity(e) {}\n    constexpr\
+    \ S op(const S& a, const S& b) const { return op_object(a, b); }\n    constexpr\
+    \ S e() const { return identity; }\n};\ntemplate <typename Op, typename T>\nMonoid(Op,\
+    \ T) -> Monoid<T, Op>;\n#line 13 \"src/data_structures/dynamic-segtree.hpp\"\n\
+    \n/**\n * @brief \u52D5\u7684\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n *\n * \u8981\
+    \u7D20\u6570\u304C\u5927\u304D\u304F\u3066\u3082\u4F7F\u3048\u308B\u30BB\u30B0\
+    \u30E1\u30F3\u30C8\u6728\u3002\u6700\u521D\u306F\u3059\u3079\u3066\u5358\u4F4D\
+    \u5143\u3067\u3001\u66F4\u65B0\u3057\u305F\u3068\u3053\u308D\u306E\u30CE\u30FC\
+    \u30C9\u3060\u3051\u3092\u4F5C\u308B\n * \u4F8B:\n * DynamicSegTree<monoid::Sum<long\
+    \ long>> seg(1000000000000000000);\n * seg.set(123456789012, 5);\n * seg.prod(0,\
+    \ 1000000000000000000);  // 5\n *\n * @tparam M \u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\n\
+    \ */\ntemplate <typename M>\nclass DynamicSegTree {\n   public:\n    using S =\
+    \ typename M::S;\n\n   private:\n    M m;\n    S op(const S& a, const S& b) const\
+    \ { return m.op(a, b); }\n    S e() const { return m.e(); }\n\n    long long n;\n\
+    \    int root;  // \u307E\u3060\u4F5C\u3063\u3066\u3044\u306A\u3044\u30CE\u30FC\
+    \u30C9\u306F -1 \u3067\u3001\u533A\u9593\u306E\u3059\u3079\u3066\u306E\u8981\u7D20\
+    \u304C\u5358\u4F4D\u5143\u3067\u3042\u308B\u3053\u3068\u3092\u8868\u3059\n   \
+    \ std::vector<S> val;\n    std::vector<int> left, right;\n\n    S value(int t)\
+    \ const { return t == -1 ? e() : val[t]; }\n    int make_node() {\n        val.push_back(e());\n\
+    \        left.push_back(-1);\n        right.push_back(-1);\n        return int(val.size())\
+    \ - 1;\n    }\n\n    class DynamicSegTreeReference {\n        DynamicSegTree&\
+    \ segtree;\n        long long k;\n\n       public:\n        DynamicSegTreeReference(DynamicSegTree&\
+    \ segtree, long long k) : segtree(segtree), k(k) {}\n        DynamicSegTreeReference&\
+    \ operator=(const S& x) {\n            segtree.set(k, x);\n            return\
+    \ *this;\n        }\n        operator S() const { return segtree.get(k); }\n \
+    \   };\n\n    int set_rec(int t, long long a, long long b, long long k, const\
+    \ S& x) {\n        if (t == -1) t = make_node();\n        if (b - a == 1) {\n\
+    \            val[t] = x;\n            return t;\n        }\n        long long\
+    \ mid = (a + b) / 2;\n        if (k < mid) {\n            int c = set_rec(left[t],\
+    \ a, mid, k, x);\n            left[t] = c;\n        } else {\n            int\
+    \ c = set_rec(right[t], mid, b, k, x);\n            right[t] = c;\n        }\n\
+    \        val[t] = op(value(left[t]), value(right[t]));\n        return t;\n  \
+    \  }\n    S prod_rec(int t, long long a, long long b, long long l, long long r)\
+    \ const {\n        if (t == -1 || r <= a || b <= l) return e();\n        if (l\
+    \ <= a && b <= r) return val[t];\n        long long mid = (a + b) / 2;\n     \
+    \   return op(prod_rec(left[t], a, mid, l, r), prod_rec(right[t], mid, b, l, r));\n\
+    \    }\n    // [a, b) \u306E\u3046\u3061 l \u4EE5\u964D\u3067\u3001sum \u306B\u639B\
+    \u3051\u308B\u3068 f \u304C\u507D\u306B\u306A\u308B\u6700\u521D\u306E\u4F4D\u7F6E\
+    \ (\u306A\u3051\u308C\u3070 b)\n    template <typename F>\n    long long max_right_rec(int\
+    \ t, long long a, long long b, long long l, F& f, S& sum) const {\n        //\
+    \ \u4F5C\u3063\u3066\u3044\u306A\u3044\u30CE\u30FC\u30C9\u306F\u5358\u4F4D\u5143\
+    \u3060\u3051\u306A\u306E\u3067\u3001f \u306F\u507D\u306B\u306A\u3089\u306A\u3044\
+    \n        if (t == -1 || b <= l) return b;\n        if (l <= a) {\n          \
+    \  S s = op(sum, val[t]);\n            if (f(s)) {\n                sum = s;\n\
+    \                return b;\n            }\n            if (b - a == 1) return\
+    \ a;\n        }\n        long long mid = (a + b) / 2;\n        long long x = max_right_rec(left[t],\
+    \ a, mid, l, f, sum);\n        if (x < mid) return x;\n        return max_right_rec(right[t],\
+    \ mid, b, l, f, sum);\n    }\n    // [a, b) \u306E\u3046\u3061 r \u3088\u308A\u524D\
+    \u3067\u3001sum \u306B\u5DE6\u304B\u3089\u639B\u3051\u308B\u3068 f \u304C\u507D\
+    \u306B\u306A\u308B\u6700\u5F8C\u306E\u4F4D\u7F6E + 1 (\u306A\u3051\u308C\u3070\
+    \ a)\n    template <typename F>\n    long long min_left_rec(int t, long long a,\
+    \ long long b, long long r, F& f, S& sum) const {\n        if (t == -1 || r <=\
+    \ a) return a;\n        if (b <= r) {\n            S s = op(val[t], sum);\n  \
+    \          if (f(s)) {\n                sum = s;\n                return a;\n\
+    \            }\n            if (b - a == 1) return b;\n        }\n        long\
+    \ long mid = (a + b) / 2;\n        long long x = min_left_rec(right[t], mid, b,\
+    \ r, f, sum);\n        if (x > mid) return x;\n        return min_left_rec(left[t],\
+    \ a, mid, r, f, sum);\n    }\n\n   public:\n    /**\n     * @brief \u30B3\u30F3\
+    \u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * \u3059\u3079\u3066\u306E\u8981\u7D20\
+    \u3092\u5358\u4F4D\u5143\u3067\u521D\u671F\u5316\u3059\u308B\u3002\u30CE\u30FC\
+    \u30C9\u306F\u66F4\u65B0\u3057\u305F\u3068\u304D\u306B\u4F5C\u308B\u306E\u3067\
+    \ O(1)\n     *\n     * @param n \u8981\u7D20\u6570\n     * @param m \u30E2\u30CE\
+    \u30A4\u30C9\n     */\n    explicit DynamicSegTree(long long n = 0, M m = M())\
+    \ : m(std::move(m)), n(n), root(-1) {\n        assert(0 <= n);\n    }\n\n    /**\n\
+    \     * @brief \u8981\u7D20\u6570\u3092\u8FD4\u3059\n     */\n    long long size()\
+    \ const { return n; }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\
+    \u8981\u7D20\u306E\u5024\u3092\u8FD4\u3059\n     *\n     * @param k \u30A4\u30F3\
+    \u30C7\u30C3\u30AF\u30B9\n     * @return S \u5024\n     */\n    S get(long long\
+    \ k) const {\n        assert(0 <= k && k < n);\n        int t = root;\n      \
+    \  long long a = 0, b = n;\n        while (t != -1 && b - a > 1) {\n         \
+    \   long long mid = (a + b) / 2;\n            if (k < mid) {\n               \
+    \ t = left[t];\n                b = mid;\n            } else {\n             \
+    \   t = right[t];\n                a = mid;\n            }\n        }\n      \
+    \  return value(t);\n    }\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\
+    \u8981\u7D20\u306E\u5024\u3092\u8FD4\u3059\n     *\n     * @param k \u30A4\u30F3\
+    \u30C7\u30C3\u30AF\u30B9\n     * @return S \u5024\n     */\n    S operator[](long\
+    \ long k) const { return get(k); }\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\
+    \u305F\u8981\u7D20\u3078\u306E\u53C2\u7167\u3092\u8FD4\u3059\n     *\n     * @param\
+    \ k\n     * @return DynamicSegTreeReference \u8981\u7D20\u3078\u306E\u53C2\u7167\
+    \ \u4EE3\u5165\u3055\u308C\u308B\u3068set()\u304C\u547C\u3070\u308C\u308B\n  \
+    \   */\n    DynamicSegTreeReference operator[](long long k) { return DynamicSegTreeReference(*this,\
+    \ k); }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\
+    \u5024\u3092x\u306B\u66F4\u65B0\u3059\u308B\n     *\n     * @param k \u30A4\u30F3\
+    \u30C7\u30C3\u30AF\u30B9\n     * @param x \u65B0\u3057\u3044\u5024\n     */\n\
+    \    void set(long long k, const S& x) {\n        assert(0 <= k && k < n);\n \
+    \       root = set_rec(root, 0, n, k, x);\n    }\n    /**\n     * @brief \u6307\
+    \u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\u5024\u306Bx\u3092\u4F5C\u7528\u3055\
+    \u305B\u308B\n     *\n     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n \
+    \    * @param x \u4F5C\u7528\u7D20\n     */\n    void apply(long long k, const\
+    \ S& x) { set(k, op(get(k), x)); }\n\n    /**\n     * @brief [l, r)\u306E\u533A\
+    \u9593\u306E\u7DCF\u7A4D\u3092\u8FD4\u3059\n     *\n     * @param l \u534A\u958B\
+    \u533A\u9593\u306E\u958B\u59CB\n     * @param r \u534A\u958B\u533A\u9593\u306E\
+    \u7D42\u7AEF 0<=l<=r<=n\n     * @return S \u7DCF\u7A4D\n     */\n    S prod(long\
+    \ long l, long long r) const {\n        assert(0 <= l && l <= r && r <= n);\n\
+    \        return prod_rec(root, 0, n, l, r);\n    }\n    /**\n     * @brief \u3059\
+    \u3079\u3066\u306E\u8981\u7D20\u306E\u7DCF\u7A4D\u3092\u8FD4\u3059\n     *\n \
+    \    * @return S \u7DCF\u7A4D\n     */\n    S all_prod() const { return value(root);\
+    \ }\n\n    /**\n     * @brief (r = l or f(prod([l, r))) = true) and (r = n or\
+    \ f(prod([l, r+1))) = false)\u3068\u306A\u308Br\u3092\u8FD4\u3059\n     * f\u304C\
+    \u5358\u8ABF\u306A\u3089\u3001f(prod([l, r))) = true\u3068\u306A\u308B\u6700\u5927\
+    \u306Er\n     *\n     * @tparam F\n     * @param l \u534A\u958B\u533A\u9593\u306E\
+    \u958B\u59CB 0<=l<=n\n     * @param f \u5224\u5B9A\u95A2\u6570 f(e) = true\n \
+    \    * @return long long\n     */\n    template <typename F>\n    long long max_right(long\
+    \ long l, F f) const {\n        assert(f(e()));\n        assert(0 <= l && l <=\
+    \ n);\n        if (l == n) return n;\n        S sum = e();\n        return max_right_rec(root,\
+    \ 0, n, l, f, sum);\n    }\n    /**\n     * @brief (l = 0 or f(prod([l, r))) =\
+    \ true) and (l = r or f(prod([l-1, r))) = false)\u3068\u306A\u308Bl\u3092\u8FD4\
+    \u3059\n     * f\u304C\u5358\u8ABF\u306A\u3089\u3001f(prod([l, r))) = true\u3068\
+    \u306A\u308B\u6700\u5C0F\u306El\n     *\n     * @tparam F\n     * @param r \u534A\
+    \u958B\u533A\u9593\u306E\u7D42\u7AEF 0<=r<=n\n     * @param f \u5224\u5B9A\u95A2\
+    \u6570 f(e) = true\n     * @return long long\n     */\n    template <typename\
+    \ F>\n    long long min_left(long long r, F f) const {\n        assert(f(e()));\n\
+    \        assert(0 <= r && r <= n);\n        if (r == 0) return 0;\n        S sum\
+    \ = e();\n        return min_left_rec(root, 0, n, r, f, sum);\n    }\n};\n\ntemplate\
+    \ <typename M>\nDynamicSegTree(long long, M) -> DynamicSegTree<M>;\n"
+  code: "#pragma once\n\n/**\n * @file dynamic-segtree.hpp\n * @brief \u52D5\u7684\
+    \u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n */\n\n#include <cassert>\n#include <utility>\n\
+    #include <vector>\n\n#include \"../algebra/monoid.hpp\"\n\n/**\n * @brief \u52D5\
+    \u7684\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n *\n * \u8981\u7D20\u6570\u304C\u5927\
+    \u304D\u304F\u3066\u3082\u4F7F\u3048\u308B\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\
+    \u3002\u6700\u521D\u306F\u3059\u3079\u3066\u5358\u4F4D\u5143\u3067\u3001\u66F4\
+    \u65B0\u3057\u305F\u3068\u3053\u308D\u306E\u30CE\u30FC\u30C9\u3060\u3051\u3092\
+    \u4F5C\u308B\n * \u4F8B:\n * DynamicSegTree<monoid::Sum<long long>> seg(1000000000000000000);\n\
+    \ * seg.set(123456789012, 5);\n * seg.prod(0, 1000000000000000000);  // 5\n *\n\
+    \ * @tparam M \u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\n */\ntemplate <typename\
+    \ M>\nclass DynamicSegTree {\n   public:\n    using S = typename M::S;\n\n   private:\n\
+    \    M m;\n    S op(const S& a, const S& b) const { return m.op(a, b); }\n   \
+    \ S e() const { return m.e(); }\n\n    long long n;\n    int root;  // \u307E\u3060\
+    \u4F5C\u3063\u3066\u3044\u306A\u3044\u30CE\u30FC\u30C9\u306F -1 \u3067\u3001\u533A\
+    \u9593\u306E\u3059\u3079\u3066\u306E\u8981\u7D20\u304C\u5358\u4F4D\u5143\u3067\
+    \u3042\u308B\u3053\u3068\u3092\u8868\u3059\n    std::vector<S> val;\n    std::vector<int>\
+    \ left, right;\n\n    S value(int t) const { return t == -1 ? e() : val[t]; }\n\
+    \    int make_node() {\n        val.push_back(e());\n        left.push_back(-1);\n\
+    \        right.push_back(-1);\n        return int(val.size()) - 1;\n    }\n\n\
+    \    class DynamicSegTreeReference {\n        DynamicSegTree& segtree;\n     \
+    \   long long k;\n\n       public:\n        DynamicSegTreeReference(DynamicSegTree&\
+    \ segtree, long long k) : segtree(segtree), k(k) {}\n        DynamicSegTreeReference&\
+    \ operator=(const S& x) {\n            segtree.set(k, x);\n            return\
+    \ *this;\n        }\n        operator S() const { return segtree.get(k); }\n \
+    \   };\n\n    int set_rec(int t, long long a, long long b, long long k, const\
+    \ S& x) {\n        if (t == -1) t = make_node();\n        if (b - a == 1) {\n\
+    \            val[t] = x;\n            return t;\n        }\n        long long\
+    \ mid = (a + b) / 2;\n        if (k < mid) {\n            int c = set_rec(left[t],\
+    \ a, mid, k, x);\n            left[t] = c;\n        } else {\n            int\
+    \ c = set_rec(right[t], mid, b, k, x);\n            right[t] = c;\n        }\n\
+    \        val[t] = op(value(left[t]), value(right[t]));\n        return t;\n  \
+    \  }\n    S prod_rec(int t, long long a, long long b, long long l, long long r)\
+    \ const {\n        if (t == -1 || r <= a || b <= l) return e();\n        if (l\
+    \ <= a && b <= r) return val[t];\n        long long mid = (a + b) / 2;\n     \
+    \   return op(prod_rec(left[t], a, mid, l, r), prod_rec(right[t], mid, b, l, r));\n\
+    \    }\n    // [a, b) \u306E\u3046\u3061 l \u4EE5\u964D\u3067\u3001sum \u306B\u639B\
+    \u3051\u308B\u3068 f \u304C\u507D\u306B\u306A\u308B\u6700\u521D\u306E\u4F4D\u7F6E\
+    \ (\u306A\u3051\u308C\u3070 b)\n    template <typename F>\n    long long max_right_rec(int\
+    \ t, long long a, long long b, long long l, F& f, S& sum) const {\n        //\
+    \ \u4F5C\u3063\u3066\u3044\u306A\u3044\u30CE\u30FC\u30C9\u306F\u5358\u4F4D\u5143\
+    \u3060\u3051\u306A\u306E\u3067\u3001f \u306F\u507D\u306B\u306A\u3089\u306A\u3044\
+    \n        if (t == -1 || b <= l) return b;\n        if (l <= a) {\n          \
+    \  S s = op(sum, val[t]);\n            if (f(s)) {\n                sum = s;\n\
+    \                return b;\n            }\n            if (b - a == 1) return\
+    \ a;\n        }\n        long long mid = (a + b) / 2;\n        long long x = max_right_rec(left[t],\
+    \ a, mid, l, f, sum);\n        if (x < mid) return x;\n        return max_right_rec(right[t],\
+    \ mid, b, l, f, sum);\n    }\n    // [a, b) \u306E\u3046\u3061 r \u3088\u308A\u524D\
+    \u3067\u3001sum \u306B\u5DE6\u304B\u3089\u639B\u3051\u308B\u3068 f \u304C\u507D\
+    \u306B\u306A\u308B\u6700\u5F8C\u306E\u4F4D\u7F6E + 1 (\u306A\u3051\u308C\u3070\
+    \ a)\n    template <typename F>\n    long long min_left_rec(int t, long long a,\
+    \ long long b, long long r, F& f, S& sum) const {\n        if (t == -1 || r <=\
+    \ a) return a;\n        if (b <= r) {\n            S s = op(val[t], sum);\n  \
+    \          if (f(s)) {\n                sum = s;\n                return a;\n\
+    \            }\n            if (b - a == 1) return b;\n        }\n        long\
+    \ long mid = (a + b) / 2;\n        long long x = min_left_rec(right[t], mid, b,\
+    \ r, f, sum);\n        if (x > mid) return x;\n        return min_left_rec(left[t],\
+    \ a, mid, r, f, sum);\n    }\n\n   public:\n    /**\n     * @brief \u30B3\u30F3\
+    \u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * \u3059\u3079\u3066\u306E\u8981\u7D20\
+    \u3092\u5358\u4F4D\u5143\u3067\u521D\u671F\u5316\u3059\u308B\u3002\u30CE\u30FC\
+    \u30C9\u306F\u66F4\u65B0\u3057\u305F\u3068\u304D\u306B\u4F5C\u308B\u306E\u3067\
+    \ O(1)\n     *\n     * @param n \u8981\u7D20\u6570\n     * @param m \u30E2\u30CE\
+    \u30A4\u30C9\n     */\n    explicit DynamicSegTree(long long n = 0, M m = M())\
+    \ : m(std::move(m)), n(n), root(-1) {\n        assert(0 <= n);\n    }\n\n    /**\n\
+    \     * @brief \u8981\u7D20\u6570\u3092\u8FD4\u3059\n     */\n    long long size()\
+    \ const { return n; }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\
+    \u8981\u7D20\u306E\u5024\u3092\u8FD4\u3059\n     *\n     * @param k \u30A4\u30F3\
+    \u30C7\u30C3\u30AF\u30B9\n     * @return S \u5024\n     */\n    S get(long long\
+    \ k) const {\n        assert(0 <= k && k < n);\n        int t = root;\n      \
+    \  long long a = 0, b = n;\n        while (t != -1 && b - a > 1) {\n         \
+    \   long long mid = (a + b) / 2;\n            if (k < mid) {\n               \
+    \ t = left[t];\n                b = mid;\n            } else {\n             \
+    \   t = right[t];\n                a = mid;\n            }\n        }\n      \
+    \  return value(t);\n    }\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\
+    \u8981\u7D20\u306E\u5024\u3092\u8FD4\u3059\n     *\n     * @param k \u30A4\u30F3\
+    \u30C7\u30C3\u30AF\u30B9\n     * @return S \u5024\n     */\n    S operator[](long\
+    \ long k) const { return get(k); }\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\
+    \u305F\u8981\u7D20\u3078\u306E\u53C2\u7167\u3092\u8FD4\u3059\n     *\n     * @param\
+    \ k\n     * @return DynamicSegTreeReference \u8981\u7D20\u3078\u306E\u53C2\u7167\
+    \ \u4EE3\u5165\u3055\u308C\u308B\u3068set()\u304C\u547C\u3070\u308C\u308B\n  \
+    \   */\n    DynamicSegTreeReference operator[](long long k) { return DynamicSegTreeReference(*this,\
+    \ k); }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\
+    \u5024\u3092x\u306B\u66F4\u65B0\u3059\u308B\n     *\n     * @param k \u30A4\u30F3\
+    \u30C7\u30C3\u30AF\u30B9\n     * @param x \u65B0\u3057\u3044\u5024\n     */\n\
+    \    void set(long long k, const S& x) {\n        assert(0 <= k && k < n);\n \
+    \       root = set_rec(root, 0, n, k, x);\n    }\n    /**\n     * @brief \u6307\
+    \u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\u5024\u306Bx\u3092\u4F5C\u7528\u3055\
+    \u305B\u308B\n     *\n     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n \
+    \    * @param x \u4F5C\u7528\u7D20\n     */\n    void apply(long long k, const\
+    \ S& x) { set(k, op(get(k), x)); }\n\n    /**\n     * @brief [l, r)\u306E\u533A\
+    \u9593\u306E\u7DCF\u7A4D\u3092\u8FD4\u3059\n     *\n     * @param l \u534A\u958B\
+    \u533A\u9593\u306E\u958B\u59CB\n     * @param r \u534A\u958B\u533A\u9593\u306E\
+    \u7D42\u7AEF 0<=l<=r<=n\n     * @return S \u7DCF\u7A4D\n     */\n    S prod(long\
+    \ long l, long long r) const {\n        assert(0 <= l && l <= r && r <= n);\n\
+    \        return prod_rec(root, 0, n, l, r);\n    }\n    /**\n     * @brief \u3059\
+    \u3079\u3066\u306E\u8981\u7D20\u306E\u7DCF\u7A4D\u3092\u8FD4\u3059\n     *\n \
+    \    * @return S \u7DCF\u7A4D\n     */\n    S all_prod() const { return value(root);\
+    \ }\n\n    /**\n     * @brief (r = l or f(prod([l, r))) = true) and (r = n or\
+    \ f(prod([l, r+1))) = false)\u3068\u306A\u308Br\u3092\u8FD4\u3059\n     * f\u304C\
+    \u5358\u8ABF\u306A\u3089\u3001f(prod([l, r))) = true\u3068\u306A\u308B\u6700\u5927\
+    \u306Er\n     *\n     * @tparam F\n     * @param l \u534A\u958B\u533A\u9593\u306E\
+    \u958B\u59CB 0<=l<=n\n     * @param f \u5224\u5B9A\u95A2\u6570 f(e) = true\n \
+    \    * @return long long\n     */\n    template <typename F>\n    long long max_right(long\
+    \ long l, F f) const {\n        assert(f(e()));\n        assert(0 <= l && l <=\
+    \ n);\n        if (l == n) return n;\n        S sum = e();\n        return max_right_rec(root,\
+    \ 0, n, l, f, sum);\n    }\n    /**\n     * @brief (l = 0 or f(prod([l, r))) =\
+    \ true) and (l = r or f(prod([l-1, r))) = false)\u3068\u306A\u308Bl\u3092\u8FD4\
+    \u3059\n     * f\u304C\u5358\u8ABF\u306A\u3089\u3001f(prod([l, r))) = true\u3068\
+    \u306A\u308B\u6700\u5C0F\u306El\n     *\n     * @tparam F\n     * @param r \u534A\
+    \u958B\u533A\u9593\u306E\u7D42\u7AEF 0<=r<=n\n     * @param f \u5224\u5B9A\u95A2\
+    \u6570 f(e) = true\n     * @return long long\n     */\n    template <typename\
+    \ F>\n    long long min_left(long long r, F f) const {\n        assert(f(e()));\n\
+    \        assert(0 <= r && r <= n);\n        if (r == 0) return 0;\n        S sum\
+    \ = e();\n        return min_left_rec(root, 0, n, r, f, sum);\n    }\n};\n\ntemplate\
+    \ <typename M>\nDynamicSegTree(long long, M) -> DynamicSegTree<M>;\n"
+  dependsOn:
+  - src/algebra/monoid.hpp
+  isVerificationFile: false
+  path: src/data_structures/dynamic-segtree.hpp
+  requiredBy: []
+  timestamp: '2026-10-15 02:41:03+09:00'
+  verificationStatus: LIBRARY_ALL_AC
+  verifiedWith:
+  - test/unittest/dynamic-segtree.test.cpp
+  - test/yosupo/point-set-range-composite-large-array.test.cpp
+documentation_of: src/data_structures/dynamic-segtree.hpp
+layout: document
+title: "\u52D5\u7684\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
+---
+
+要素数が大きくても使えるセグメント木です。最初はすべて単位元で、更新したところのノードだけを作ります。添字は `long long` で、要素数が $10^{18}$ でも使えます。座標圧縮ができない (クエリがオンラインで来る) ときに使います。
+
+```cpp
+DynamicSegTree<monoid::Sum<long long>> seg(1000000000000000000);
+seg.set(123456789012, 5);
+seg[3] = 2;
+seg.prod(0, 1000000000000000000);   // 7
+long long r = seg.max_right(0, [](long long s) { return s < 7; });  // 123456789012
+```
+
+負の添字を使いたいときは、その分ずらして使います。
+
+$N$ を要素数とします。ノードは `set` 1 回につき $O(\log N)$ 個まで作るので、メモリは更新の回数 × $O(\log N)$ です。
+
+## メンバ関数
+
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `DynamicSegTree(n, m = M())` | 要素数 `n` (`long long`)、すべて単位元で初期化 | $O(1)$ |
+| `size()` | 要素数 (`long long`) | $O(1)$ |
+| `get(k)` / `seg[k]` | `k` 番目の値 | $O(\log N)$ |
+| `set(k, x)` / `seg[k] = x` | `k` 番目を `x` に更新 | $O(\log N)$ |
+| `apply(k, x)` | `k` 番目を `op(seg[k], x)` に更新 | $O(\log N)$ |
+| `prod(l, r)` | 区間 $[l, r)$ の積 | $O(\log N)$ |
+| `all_prod()` | 全体の積 | $O(1)$ |
+| `max_right(l, f)` | `f(prod(l, r))` が真となる最大の `r` (`f` は単調) | $O(\log N)$ |
+| `min_left(r, f)` | `f(prod(l, r))` が真となる最小の `l` (`f` は単調) | $O(\log N)$ |
+
+## 関連
+
+- 要素数が小さいなら [セグメント木](segtree.hpp) の方が速い
+- 区間作用が必要なら [動的遅延伝搬セグメント木](dynamic-lazy-segtree.hpp)
+- 過去の版も使うなら [永続セグメント木](persistent-segtree.hpp) (添字は `int`)

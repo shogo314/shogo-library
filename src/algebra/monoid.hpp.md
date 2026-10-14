@@ -13,6 +13,12 @@ data:
     title: "\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u533A\u9593\u4F5C\u7528\
       \u30011\u70B9\u53D6\u5F97)"
   - icon: ':heavy_check_mark:'
+    path: src/data_structures/dynamic-lazy-segtree.hpp
+    title: "\u52D5\u7684\u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
+  - icon: ':heavy_check_mark:'
+    path: src/data_structures/dynamic-segtree.hpp
+    title: "\u52D5\u7684\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
+  - icon: ':heavy_check_mark:'
     path: src/data_structures/fenwick-tree.hpp
     title: Fenwick Tree (Binary Indexed Tree)
   - icon: ':heavy_check_mark:'
@@ -119,6 +125,12 @@ data:
     path: test/unittest/dual-segtree.test.cpp
     title: test/unittest/dual-segtree.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/dynamic-lazy-segtree.test.cpp
+    title: test/unittest/dynamic-lazy-segtree.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/dynamic-segtree.test.cpp
+    title: test/unittest/dynamic-segtree.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/fenwick-tree.test.cpp
     title: test/unittest/fenwick-tree.test.cpp
   - icon: ':heavy_check_mark:'
@@ -176,6 +188,9 @@ data:
     path: test/yosupo/point-add-rectangle-sum.test.cpp
     title: test/yosupo/point-add-rectangle-sum.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/point-set-range-composite-large-array.test.cpp
+    title: test/yosupo/point-set-range-composite-large-array.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/point-set-range-composite.1.test.cpp
     title: test/yosupo/point-set-range-composite.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -196,6 +211,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/range-affine-point-get.2.test.cpp
     title: test/yosupo/range-affine-point-get.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/range-affine-range-sum-large-array.test.cpp
+    title: test/yosupo/range-affine-range-sum-large-array.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/range-affine-range-sum.1.test.cpp
     title: test/yosupo/range-affine-range-sum.1.test.cpp
@@ -556,8 +574,10 @@ data:
   path: src/algebra/monoid.hpp
   requiredBy:
   - src/data_structures/sparse-table.hpp
+  - src/data_structures/dynamic-segtree.hpp
   - src/data_structures/fenwick-tree.hpp
   - src/data_structures/persistent-lazy-segtree.hpp
+  - src/data_structures/dynamic-lazy-segtree.hpp
   - src/data_structures/persistent-segtree.hpp
   - src/data_structures/lazy-segtree.hpp
   - src/data_structures/segtree-beats.hpp
@@ -578,10 +598,12 @@ data:
   - test/unittest/segtree-beats.test.cpp
   - test/unittest/persistent-lazy-segtree.test.cpp
   - test/unittest/dual-segtree.test.cpp
+  - test/unittest/dynamic-segtree.test.cpp
   - test/unittest/persistent-segtree.test.cpp
   - test/unittest/mapping.test.cpp
   - test/unittest/sliding-window-aggregation.test.cpp
   - test/unittest/monoid-unionfind.test.cpp
+  - test/unittest/dynamic-lazy-segtree.test.cpp
   - test/unittest/monoid.test.cpp
   - test/unittest/potentialized-unionfind.test.cpp
   - test/unittest/fenwick-tree.test.cpp
@@ -616,6 +638,7 @@ data:
   - test/yosupo/vertex-add-subtree-sum.1.test.cpp
   - test/yosupo/range-affine-range-sum.2.test.cpp
   - test/yosupo/range-affine-range-sum.3.test.cpp
+  - test/yosupo/range-affine-range-sum-large-array.test.cpp
   - test/yosupo/range-affine-point-get.1.test.cpp
   - test/yosupo/rectangle-sum.4.test.cpp
   - test/yosupo/rectangle-sum.2.test.cpp
@@ -633,6 +656,7 @@ data:
   - test/yosupo/point-set-range-composite.2.test.cpp
   - test/yosupo/range-chmin-chmax-add-range-sum.1.test.cpp
   - test/yosupo/area-of-union-of-rectangles.1.test.cpp
+  - test/yosupo/point-set-range-composite-large-array.test.cpp
   - test/yosupo/rectangle-sum.1.test.cpp
   - test/yosupo/point-add-range-sum.2.test.cpp
   - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp

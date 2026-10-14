@@ -19,7 +19,7 @@ struct CircularRing {
     explicit CircularRing(const std::vector<T>& v) : data(v) {}
     CircularRing(const CircularRing&) = default;
     CircularRing() = default;
-    explicit CircularRing(int s) : data(s) {}
+    explicit CircularRing(long long s) : data(s) {}
     T at(long long i) const {
         assert(!data.empty());
         i %= static_cast<long long>(data.size());

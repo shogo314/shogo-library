@@ -42,7 +42,7 @@ class ErasablePriorityQueue {
     /**
      * @brief 要素数
      */
-    int size() const { return que.size() - del.size(); }
+    long long size() const { return que.size() - del.size(); }
     bool empty() const { return size() == 0; }
 
     /**

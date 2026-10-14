@@ -80,8 +80,8 @@ struct Counter {
     /**
      * @brief 異なる値の個数 (重複は数えない)
      */
-    int size() const {
-        return static_cast<int>(data.size());
+    long long size() const {
+        return static_cast<long long>(data.size());
     }
     /**
      * @brief 重複を含めた要素数 (個数の総和)

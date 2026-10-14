@@ -61,7 +61,7 @@ class PersistentQueue {
     /**
      * @brief 要素数を返す
      */
-    int size() const { return n; }
+    long long size() const { return n; }
     /**
      * @brief 空かどうかを返す
      */

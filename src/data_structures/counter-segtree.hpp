@@ -15,11 +15,12 @@ template <typename T>
 class CounterSegTree {
    public:
     using key_type = T;
-    using mapped_type = int;
+    using mapped_type = long long;
 
    private:
-    int n, sz, height;
-    std::vector<std::map<key_type, mapped_type>> data;
+    long long n, sz;
+    int height;
+    std::vector<std::map<key_type, int>> data;  // 各ノードの値ごとの個数 (メモリを抑えるため int で持つ)
 
    public:
     explicit CounterSegTree(const std::vector<key_type>& v) {
@@ -31,21 +32,21 @@ class CounterSegTree {
             height++;
         }
         data.assign(sz * 2, {});
-        for (int i = 0; i < n; i++) {
+        for (long long i = 0; i < n; i++) {
             data[i + sz][v[i]] = 1;
         }
-        for (int i = sz - 1; i > 0; i--) {
+        for (long long i = sz - 1; i > 0; i--) {
             data[i] = data[2 * i];
             for (auto [s, c] : data[2 * i + 1]) {
                 data[i][s] += c;
             }
         }
     }
-    key_type get(int k) const {
+    key_type get(long long k) const {
         assert(0 <= k && k < n);
         return data[k + sz].begin()->first;
     }
-    void set(int k, const key_type& x) {
+    void set(long long k, const key_type& x) {
         assert(0 <= k && k < n);
         k += sz;
         key_type y = data[k].begin()->first;
@@ -63,7 +64,7 @@ class CounterSegTree {
     /**
      * @brief 区間 [l, r) で x 以上の最小の値とその個数。なければ std::nullopt
      */
-    std::optional<std::pair<key_type, mapped_type>> lower_bound(int l, int r, key_type x) const {
+    std::optional<std::pair<key_type, mapped_type>> lower_bound(long long l, long long r, key_type x) const {
         assert(0 <= l && l <= r && r <= n);
         std::pair<key_type, mapped_type> ret = {{}, 0};
         l += sz;
@@ -104,7 +105,7 @@ class CounterSegTree {
     /**
      * @brief {x, 区間 [l, r) の x の個数}
      */
-    std::pair<key_type, mapped_type> find(int l, int r, key_type x) const {
+    std::pair<key_type, mapped_type> find(long long l, long long r, key_type x) const {
         assert(0 <= l && l <= r && r <= n);
         std::pair<key_type, mapped_type> ret = {x, 0};
         l += sz;

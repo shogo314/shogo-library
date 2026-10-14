@@ -110,8 +110,8 @@ class IntervalSet {
             tmp.pop_back();
         }
     }
-    int size() const {
-        return static_cast<int>(data.size());
+    long long size() const {
+        return static_cast<long long>(data.size());
     }
     std::vector<value_type> to_vector() const {
         return std::vector<value_type>(data.begin(), data.end());

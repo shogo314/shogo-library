@@ -51,27 +51,28 @@ class PersistentSegTree {
     };
 
     std::shared_ptr<Pool> pool;
-    int n, sz, root;
+    long long n, sz;
+    int root;
 
     S op(const S& a, const S& b) const { return pool->m.op(a, b); }
     S e() const { return pool->m.e(); }
 
-    PersistentSegTree(std::shared_ptr<Pool> pool, int n, int sz, int root) : pool(std::move(pool)), n(n), sz(sz), root(root) {}
+    PersistentSegTree(std::shared_ptr<Pool> pool, long long n, long long sz, int root) : pool(std::move(pool)), n(n), sz(sz), root(root) {}
 
     void init_size() {
         sz = 1;
         while (sz < n) sz <<= 1;
     }
-    int build(const std::vector<S>& v, int a, int b) {
+    int build(const std::vector<S>& v, long long a, long long b) {
         if (b - a == 1) return pool->make_leaf(a < n ? v[a] : e());
-        int mid = (a + b) / 2;
+        long long mid = (a + b) / 2;
         int l = build(v, a, mid);
         int r = build(v, mid, b);
         return pool->make_node(l, r);
     }
-    int set_rec(int t, int a, int b, int k, const S& x) const {
+    int set_rec(int t, long long a, long long b, long long k, const S& x) const {
         if (b - a == 1) return pool->make_leaf(x);
-        int mid = (a + b) / 2;
+        long long mid = (a + b) / 2;
         int l = pool->left[t], r = pool->right[t];
         if (k < mid)
             l = set_rec(l, a, mid, k, x);
@@ -80,23 +81,23 @@ class PersistentSegTree {
         return pool->make_node(l, r);
     }
     // t の [l, r) を u に置き換える
-    int copy_rec(int t, int u, int a, int b, int l, int r) const {
+    int copy_rec(int t, int u, long long a, long long b, long long l, long long r) const {
         if (r <= a || b <= l) return t;
         if (l <= a && b <= r) return u;
-        int mid = (a + b) / 2;
+        long long mid = (a + b) / 2;
         int lc = copy_rec(pool->left[t], pool->left[u], a, mid, l, r);
         int rc = copy_rec(pool->right[t], pool->right[u], mid, b, l, r);
         return pool->make_node(lc, rc);
     }
-    S prod_rec(int t, int a, int b, int l, int r) const {
+    S prod_rec(int t, long long a, long long b, long long l, long long r) const {
         if (r <= a || b <= l) return e();
         if (l <= a && b <= r) return pool->val[t];
-        int mid = (a + b) / 2;
+        long long mid = (a + b) / 2;
         return op(prod_rec(pool->left[t], a, mid, l, r), prod_rec(pool->right[t], mid, b, l, r));
     }
     // [a, b) のうち l 以降で、sum に掛けると f が偽になる最初の位置 (なければ b)
     template <typename F>
-    int max_right_rec(int t, int a, int b, int l, F& f, S& sum) const {
+    long long max_right_rec(int t, long long a, long long b, long long l, F& f, S& sum) const {
         if (b <= l) return b;
         if (l <= a) {
             S s = op(sum, pool->val[t]);
@@ -106,14 +107,14 @@ class PersistentSegTree {
             }
             if (b - a == 1) return a;
         }
-        int mid = (a + b) / 2;
-        int x = max_right_rec(pool->left[t], a, mid, l, f, sum);
+        long long mid = (a + b) / 2;
+        long long x = max_right_rec(pool->left[t], a, mid, l, f, sum);
         if (x < mid) return x;
         return max_right_rec(pool->right[t], mid, b, l, f, sum);
     }
     // [a, b) のうち r より前で、sum に左から掛けると f が偽になる最後の位置 + 1 (なければ a)
     template <typename F>
-    int min_left_rec(int t, int a, int b, int r, F& f, S& sum) const {
+    long long min_left_rec(int t, long long a, long long b, long long r, F& f, S& sum) const {
         if (r <= a) return a;
         if (b <= r) {
             S s = op(pool->val[t], sum);
@@ -123,8 +124,8 @@ class PersistentSegTree {
             }
             if (b - a == 1) return b;
         }
-        int mid = (a + b) / 2;
-        int x = min_left_rec(pool->right[t], mid, b, r, f, sum);
+        long long mid = (a + b) / 2;
+        long long x = min_left_rec(pool->right[t], mid, b, r, f, sum);
         if (x > mid) return x;
         return min_left_rec(pool->left[t], a, mid, r, f, sum);
     }
@@ -138,11 +139,11 @@ class PersistentSegTree {
      * @param n 要素数
      * @param m モノイド
      */
-    explicit PersistentSegTree(int n = 0, M m = M()) : pool(std::make_shared<Pool>(std::move(m))), n(n) {
+    explicit PersistentSegTree(long long n = 0, M m = M()) : pool(std::make_shared<Pool>(std::move(m))), n(n) {
         assert(0 <= n);
         init_size();
         root = pool->make_leaf(e());
-        for (int w = 1; w < sz; w <<= 1) root = pool->make_node(root, root);
+        for (long long w = 1; w < sz; w <<= 1) root = pool->make_node(root, root);
     }
     /**
      * @brief コンストラクタ
@@ -158,7 +159,7 @@ class PersistentSegTree {
     /**
      * @brief 要素数を返す
      */
-    int size() const { return n; }
+    long long size() const { return n; }
 
     /**
      * @brief 指定された要素の値を返す
@@ -166,11 +167,12 @@ class PersistentSegTree {
      * @param k インデックス
      * @return S 値
      */
-    S get(int k) const {
+    S get(long long k) const {
         assert(0 <= k && k < n);
-        int t = root, a = 0, b = sz;
+        int t = root;
+        long long a = 0, b = sz;
         while (b - a > 1) {
-            int mid = (a + b) / 2;
+            long long mid = (a + b) / 2;
             if (k < mid) {
                 t = pool->left[t];
                 b = mid;
@@ -187,7 +189,7 @@ class PersistentSegTree {
      * @param k インデックス
      * @return S 値
      */
-    S operator[](int k) const { return get(k); }
+    S operator[](long long k) const { return get(k); }
 
     /**
      * @brief 内容を出力する
@@ -200,7 +202,7 @@ class PersistentSegTree {
      */
     template <class CharT, class Traits>
     friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const PersistentSegTree& rhs) {
-        for (int i = 0; i < rhs.n; i++) {
+        for (long long i = 0; i < rhs.n; i++) {
             if (i != 0) os << CharT(' ');
             os << rhs[i];
         }
@@ -214,7 +216,7 @@ class PersistentSegTree {
      * @param x 新しい値
      * @return PersistentSegTree 新しい版 (自身は変わらない)
      */
-    PersistentSegTree set(int k, const S& x) const {
+    PersistentSegTree set(long long k, const S& x) const {
         assert(0 <= k && k < n);
         return PersistentSegTree(pool, n, sz, set_rec(root, 0, sz, k, x));
     }
@@ -225,7 +227,7 @@ class PersistentSegTree {
      * @param x 作用素
      * @return PersistentSegTree 新しい版 (自身は変わらない)
      */
-    PersistentSegTree apply(int k, const S& x) const { return set(k, op(get(k), x)); }
+    PersistentSegTree apply(long long k, const S& x) const { return set(k, op(get(k), x)); }
 
     /**
      * @brief [l, r)の区間を別の版の値にした新しい版を返す
@@ -235,7 +237,7 @@ class PersistentSegTree {
      * @param r 半開区間の終端 0<=l<=r<=n
      * @return PersistentSegTree 新しい版 (自身も other も変わらない)
      */
-    PersistentSegTree copy(const PersistentSegTree& other, int l, int r) const {
+    PersistentSegTree copy(const PersistentSegTree& other, long long l, long long r) const {
         assert(pool == other.pool);
         assert(0 <= l && l <= r && r <= n);
         if (l == r) return *this;
@@ -249,7 +251,7 @@ class PersistentSegTree {
      * @param r 半開区間の終端 0<=l<=r<=n
      * @return S 総積
      */
-    S prod(int l, int r) const {
+    S prod(long long l, long long r) const {
         assert(0 <= l && l <= r && r <= n);
         return prod_rec(root, 0, sz, l, r);
     }
@@ -267,15 +269,15 @@ class PersistentSegTree {
      * @tparam F
      * @param l 半開区間の開始 0<=l<=n
      * @param f 判定関数 f(e) = true
-     * @return int
+     * @return long long
      */
     template <typename F>
-    int max_right(int l, F f) const {
+    long long max_right(long long l, F f) const {
         assert(f(e()));
         assert(0 <= l && l <= n);
         if (l == n) return n;
         S sum = e();
-        int r = max_right_rec(root, 0, sz, l, f, sum);
+        long long r = max_right_rec(root, 0, sz, l, f, sum);
         return r < n ? r : n;
     }
     /**
@@ -285,10 +287,10 @@ class PersistentSegTree {
      * @tparam F
      * @param r 半開区間の終端 0<=r<=n
      * @param f 判定関数 f(e) = true
-     * @return int
+     * @return long long
      */
     template <typename F>
-    int min_left(int r, F f) const {
+    long long min_left(long long r, F f) const {
         assert(f(e()));
         assert(0 <= r && r <= n);
         if (r == 0) return 0;
@@ -301,12 +303,12 @@ class PersistentSegTree {
      */
     std::vector<S> to_vector() const {
         std::vector<S> res(n);
-        for (int i = 0; i < n; i++) res[i] = get(i);
+        for (long long i = 0; i < n; i++) res[i] = get(i);
         return res;
     }
 };
 
 template <typename M>
-PersistentSegTree(int, M) -> PersistentSegTree<M>;
+PersistentSegTree(long long, M) -> PersistentSegTree<M>;
 template <typename M>
 PersistentSegTree(std::vector<typename M::S>, M) -> PersistentSegTree<M>;

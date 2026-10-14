@@ -6,9 +6,9 @@ documentation_of: //src/data_structures/segtree-2d.hpp
 可換モノイド ([algebra/monoid.hpp](../algebra/monoid.hpp)) を乗せる2次元セグメント木です。更新する座標と取得する範囲をすべて先読みして、必要なノードだけを持ちます。
 
 ```cpp
-std::vector<std::tuple<int, int>> sets = { {0, 1}, {2, 3} };        // set/apply する座標 (x, y)
-std::vector<std::tuple<int, int, int, int>> prods = { {0, 3, 0, 4} }; // prod する範囲 (lx, rx, ly, ry)
-RSumQ2D<long long> seg(3, 4, sets, prods);                         // x は [0, 3)、y は [0, 4)
+std::vector<std::tuple<long long, long long>> sets = { {0, 1}, {2, 3} };                    // set/apply する座標 (x, y)
+std::vector<std::tuple<long long, long long, long long, long long>> prods = { {0, 3, 0, 4} }; // prod する範囲 (lx, rx, ly, ry)
+RSumQ2D<long long> seg(3, 4, sets, prods);                                                    // x は [0, 3)、y は [0, 4)
 seg.apply(0, 1, 5);
 seg.apply(2, 3, 7);
 seg.prod(0, 3, 0, 4);  // 12

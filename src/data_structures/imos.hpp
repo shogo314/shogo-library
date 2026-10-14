@@ -27,11 +27,11 @@ class Imos {
 
    private:
     A a;
-    int _n, t;
+    long long _n, t;
     std::vector<S> data;
     std::vector<F> lazy;
 
-    S mapping(const F& f, const S& x, int k) const { return acted_monoid::apply_mapping(a, f, x, k, k + 1); }
+    S mapping(const F& f, const S& x, long long k) const { return acted_monoid::apply_mapping(a, f, x, k, k + 1); }
     F composition(const F& f, const F& g) const { return a.composition(f, g); }
     F id() const { return a.id(); }
     F inv(const F& f) const { return a.inv(f); }
@@ -41,13 +41,13 @@ class Imos {
      * @param n 要素数 各要素は S() で初期化する
      * @param a 作用素付きモノイド
      */
-    explicit Imos(int n = 0, A a = A()) : Imos(n, S(), std::move(a)) {}
+    explicit Imos(long long n = 0, A a = A()) : Imos(n, S(), std::move(a)) {}
     /**
      * @param n 要素数
      * @param value 各要素の初期値
      * @param a 作用素付きモノイド
      */
-    Imos(int n, const S& value, A a = A()) : a(std::move(a)), _n(n), t(n), data(n, value), lazy(n, this->a.id()) {}
+    Imos(long long n, const S& value, A a = A()) : a(std::move(a)), _n(n), t(n), data(n, value), lazy(n, this->a.id()) {}
     /**
      * @param value 各要素の初期値
      * @param a 作用素付きモノイド
@@ -59,7 +59,7 @@ class Imos {
      * @param k インデックス
      * @param f 作用素
      */
-    void apply(int k, const F& f) {
+    void apply(long long k, const F& f) {
         assert(0 <= k && k < _n);
         data[k] = mapping(f, data[k], k);
     }
@@ -69,7 +69,7 @@ class Imos {
      * @param r 半開区間の終端 0<=l<=r<=n
      * @param f 作用素
      */
-    void apply(int l, int r, const F& f) {
+    void apply(long long l, long long r, const F& f) {
         assert(0 <= l && l <= r && r <= _n);
         if (l < _n) lazy[l] = composition(lazy[l], f);
         if (r < _n) lazy[r] = composition(lazy[r], inv(f));
@@ -80,7 +80,7 @@ class Imos {
      * @param k インデックス
      * @return const S& 値
      */
-    const S& get(int k) {
+    const S& get(long long k) {
         assert(0 <= k && k < _n);
         while (t <= k) {
             data[t] = mapping(lazy[t], data[t], t);
@@ -95,8 +95,8 @@ class Imos {
 };
 
 template <typename A>
-Imos(int, A) -> Imos<A>;
+Imos(long long, A) -> Imos<A>;
 template <typename A>
-Imos(int, typename A::S, A) -> Imos<A>;
+Imos(long long, typename A::S, A) -> Imos<A>;
 template <typename A>
 Imos(std::vector<typename A::S>, A) -> Imos<A>;

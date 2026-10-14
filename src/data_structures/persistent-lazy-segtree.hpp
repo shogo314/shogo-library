@@ -58,30 +58,31 @@ class PersistentLazySegTree {
     };
 
     std::shared_ptr<Pool> pool;
-    int n, sz, root;
+    long long n, sz;
+    int root;
 
     S op(const S& x, const S& y) const { return pool->a.op(x, y); }
     S e() const { return pool->a.e(); }
     // 末尾の要素数を 2 べきにそろえるための余りの部分は区間に含めない
-    S mapping(const F& f, const S& x, int a, int b) const { return acted_monoid::apply_mapping(pool->a, f, x, std::min(a, n), std::min(b, n)); }
+    S mapping(const F& f, const S& x, long long a, long long b) const { return acted_monoid::apply_mapping(pool->a, f, x, std::min(a, n), std::min(b, n)); }
     F composition(const F& f, const F& g) const { return pool->a.composition(f, g); }
     F id() const { return pool->a.id(); }
 
-    PersistentLazySegTree(std::shared_ptr<Pool> pool, int n, int sz, int root) : pool(std::move(pool)), n(n), sz(sz), root(root) {}
+    PersistentLazySegTree(std::shared_ptr<Pool> pool, long long n, long long sz, int root) : pool(std::move(pool)), n(n), sz(sz), root(root) {}
 
     void init_size() {
         sz = 1;
         while (sz < n) sz <<= 1;
     }
-    int build(const std::vector<S>& v, int a, int b) {
+    int build(const std::vector<S>& v, long long a, long long b) {
         if (b - a == 1) return pool->make_leaf(a < n ? v[a] : e());
-        int mid = (a + b) / 2;
+        long long mid = (a + b) / 2;
         int l = build(v, a, mid);
         int r = build(v, mid, b);
         return pool->make_node(l, r);
     }
     // ノード t ([a, b)) に f を作用させた新しいノード
-    int apply_node(int t, int a, int b, const F& f) const {
+    int apply_node(int t, long long a, long long b, const F& f) const {
         S x = mapping(f, pool->val[t], a, b);
         if (b - a == 1) return pool->make_leaf(x);
         F g = composition(f, pool->lazy[t]);
@@ -93,16 +94,16 @@ class PersistentLazySegTree {
         return int(pool->val.size()) - 1;
     }
     // ノード t ([a, b)) の lazy を子に伝えた、新しい子の組
-    std::pair<int, int> push(int t, int a, int b) const {
-        int mid = (a + b) / 2;
+    std::pair<int, int> push(int t, long long a, long long b) const {
+        long long mid = (a + b) / 2;
         const F f = pool->lazy[t];
         int l = apply_node(pool->left[t], a, mid, f);
         int r = apply_node(pool->right[t], mid, b, f);
         return {l, r};
     }
-    int set_rec(int t, int a, int b, int k, const S& x) const {
+    int set_rec(int t, long long a, long long b, long long k, const S& x) const {
         if (b - a == 1) return pool->make_leaf(x);
-        int mid = (a + b) / 2;
+        long long mid = (a + b) / 2;
         auto [l, r] = push(t, a, b);
         if (k < mid)
             l = set_rec(l, a, mid, k, x);
@@ -110,20 +111,20 @@ class PersistentLazySegTree {
             r = set_rec(r, mid, b, k, x);
         return pool->make_node(l, r);
     }
-    int apply_rec(int t, int a, int b, int l, int r, const F& f) const {
+    int apply_rec(int t, long long a, long long b, long long l, long long r, const F& f) const {
         if (r <= a || b <= l) return t;
         if (l <= a && b <= r) return apply_node(t, a, b, f);
-        int mid = (a + b) / 2;
+        long long mid = (a + b) / 2;
         auto [lc, rc] = push(t, a, b);
         lc = apply_rec(lc, a, mid, l, r, f);
         rc = apply_rec(rc, mid, b, l, r, f);
         return pool->make_node(lc, rc);
     }
     // t の [l, r) を u に置き換える。f は u の祖先にあって、まだ u に適用していない作用素
-    int copy_rec(int t, int u, int a, int b, int l, int r, const F& f) const {
+    int copy_rec(int t, int u, long long a, long long b, long long l, long long r, const F& f) const {
         if (r <= a || b <= l) return t;
         if (l <= a && b <= r) return apply_node(u, a, b, f);
-        int mid = (a + b) / 2;
+        long long mid = (a + b) / 2;
         auto [lc, rc] = push(t, a, b);
         F g = composition(f, pool->lazy[u]);
         lc = copy_rec(lc, pool->left[u], a, mid, l, r, g);
@@ -131,16 +132,16 @@ class PersistentLazySegTree {
         return pool->make_node(lc, rc);
     }
     // f はノード t の祖先にあって、まだ t に適用していない作用素
-    S prod_rec(int t, int a, int b, int l, int r, const F& f) const {
+    S prod_rec(int t, long long a, long long b, long long l, long long r, const F& f) const {
         if (r <= a || b <= l) return e();
         if (l <= a && b <= r) return mapping(f, pool->val[t], a, b);
-        int mid = (a + b) / 2;
+        long long mid = (a + b) / 2;
         F g = composition(f, pool->lazy[t]);
         return op(prod_rec(pool->left[t], a, mid, l, r, g), prod_rec(pool->right[t], mid, b, l, r, g));
     }
     // [a, b) のうち l 以降で、sum に掛けると g が偽になる最初の位置 (なければ b)
     template <typename G>
-    int max_right_rec(int t, int a, int b, int l, G& g, S& sum, const F& f) const {
+    long long max_right_rec(int t, long long a, long long b, long long l, G& g, S& sum, const F& f) const {
         if (b <= l) return b;
         if (l <= a) {
             S s = op(sum, mapping(f, pool->val[t], a, b));
@@ -150,15 +151,15 @@ class PersistentLazySegTree {
             }
             if (b - a == 1) return a;
         }
-        int mid = (a + b) / 2;
+        long long mid = (a + b) / 2;
         F h = composition(f, pool->lazy[t]);
-        int x = max_right_rec(pool->left[t], a, mid, l, g, sum, h);
+        long long x = max_right_rec(pool->left[t], a, mid, l, g, sum, h);
         if (x < mid) return x;
         return max_right_rec(pool->right[t], mid, b, l, g, sum, h);
     }
     // [a, b) のうち r より前で、sum に左から掛けると g が偽になる最後の位置 + 1 (なければ a)
     template <typename G>
-    int min_left_rec(int t, int a, int b, int r, G& g, S& sum, const F& f) const {
+    long long min_left_rec(int t, long long a, long long b, long long r, G& g, S& sum, const F& f) const {
         if (r <= a) return a;
         if (b <= r) {
             S s = op(mapping(f, pool->val[t], a, b), sum);
@@ -168,9 +169,9 @@ class PersistentLazySegTree {
             }
             if (b - a == 1) return b;
         }
-        int mid = (a + b) / 2;
+        long long mid = (a + b) / 2;
         F h = composition(f, pool->lazy[t]);
-        int x = min_left_rec(pool->right[t], mid, b, r, g, sum, h);
+        long long x = min_left_rec(pool->right[t], mid, b, r, g, sum, h);
         if (x > mid) return x;
         return min_left_rec(pool->left[t], a, mid, r, g, sum, h);
     }
@@ -184,11 +185,11 @@ class PersistentLazySegTree {
      * @param n 要素数
      * @param a 作用素付きモノイド
      */
-    explicit PersistentLazySegTree(int n = 0, A a = A()) : pool(std::make_shared<Pool>(std::move(a))), n(n) {
+    explicit PersistentLazySegTree(long long n = 0, A a = A()) : pool(std::make_shared<Pool>(std::move(a))), n(n) {
         assert(0 <= n);
         init_size();
         root = pool->make_leaf(e());
-        for (int w = 1; w < sz; w <<= 1) root = pool->make_node(root, root);
+        for (long long w = 1; w < sz; w <<= 1) root = pool->make_node(root, root);
     }
     /**
      * @brief コンストラクタ
@@ -204,7 +205,7 @@ class PersistentLazySegTree {
     /**
      * @brief 要素数を返す
      */
-    int size() const { return n; }
+    long long size() const { return n; }
 
     /**
      * @brief 指定された要素の値を返す
@@ -212,13 +213,14 @@ class PersistentLazySegTree {
      * @param k インデックス
      * @return S 値
      */
-    S get(int k) const {
+    S get(long long k) const {
         assert(0 <= k && k < n);
-        int t = root, a = 0, b = sz;
+        int t = root;
+        long long a = 0, b = sz;
         F f = id();
         while (b - a > 1) {
             f = composition(f, pool->lazy[t]);
-            int mid = (a + b) / 2;
+            long long mid = (a + b) / 2;
             if (k < mid) {
                 t = pool->left[t];
                 b = mid;
@@ -235,7 +237,7 @@ class PersistentLazySegTree {
      * @param k インデックス
      * @return S 値
      */
-    S operator[](int k) const { return get(k); }
+    S operator[](long long k) const { return get(k); }
 
     /**
      * @brief 内容を出力する
@@ -248,7 +250,7 @@ class PersistentLazySegTree {
      */
     template <class CharT, class Traits>
     friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const PersistentLazySegTree& rhs) {
-        for (int i = 0; i < rhs.n; i++) {
+        for (long long i = 0; i < rhs.n; i++) {
             if (i != 0) os << CharT(' ');
             os << rhs[i];
         }
@@ -262,7 +264,7 @@ class PersistentLazySegTree {
      * @param x 新しい値
      * @return PersistentLazySegTree 新しい版 (自身は変わらない)
      */
-    PersistentLazySegTree set(int k, const S& x) const {
+    PersistentLazySegTree set(long long k, const S& x) const {
         assert(0 <= k && k < n);
         return PersistentLazySegTree(pool, n, sz, set_rec(root, 0, sz, k, x));
     }
@@ -274,7 +276,7 @@ class PersistentLazySegTree {
      * @param r 半開区間の終端 0<=l<=r<=n
      * @return S 総積
      */
-    S prod(int l, int r) const {
+    S prod(long long l, long long r) const {
         assert(0 <= l && l <= r && r <= n);
         return prod_rec(root, 0, sz, l, r, id());
     }
@@ -292,7 +294,7 @@ class PersistentLazySegTree {
      * @param f 作用素
      * @return PersistentLazySegTree 新しい版 (自身は変わらない)
      */
-    PersistentLazySegTree apply(int k, const F& f) const {
+    PersistentLazySegTree apply(long long k, const F& f) const {
         assert(0 <= k && k < n);
         return apply(k, k + 1, f);
     }
@@ -304,7 +306,7 @@ class PersistentLazySegTree {
      * @param f 作用素
      * @return PersistentLazySegTree 新しい版 (自身は変わらない)
      */
-    PersistentLazySegTree apply(int l, int r, const F& f) const {
+    PersistentLazySegTree apply(long long l, long long r, const F& f) const {
         assert(0 <= l && l <= r && r <= n);
         if (l == r) return *this;
         return PersistentLazySegTree(pool, n, sz, apply_rec(root, 0, sz, l, r, f));
@@ -318,7 +320,7 @@ class PersistentLazySegTree {
      * @param r 半開区間の終端 0<=l<=r<=n
      * @return PersistentLazySegTree 新しい版 (自身も other も変わらない)
      */
-    PersistentLazySegTree copy(const PersistentLazySegTree& other, int l, int r) const {
+    PersistentLazySegTree copy(const PersistentLazySegTree& other, long long l, long long r) const {
         assert(pool == other.pool);
         assert(0 <= l && l <= r && r <= n);
         if (l == r) return *this;
@@ -332,15 +334,15 @@ class PersistentLazySegTree {
      * @tparam G
      * @param l 半開区間の開始 0<=l<=n
      * @param g 判定関数 g(e) = true
-     * @return int
+     * @return long long
      */
     template <typename G>
-    int max_right(int l, G g) const {
+    long long max_right(long long l, G g) const {
         assert(g(e()));
         assert(0 <= l && l <= n);
         if (l == n) return n;
         S sum = e();
-        int r = max_right_rec(root, 0, sz, l, g, sum, id());
+        long long r = max_right_rec(root, 0, sz, l, g, sum, id());
         return r < n ? r : n;
     }
     /**
@@ -350,10 +352,10 @@ class PersistentLazySegTree {
      * @tparam G
      * @param r 半開区間の終端 0<=r<=n
      * @param g 判定関数 g(e) = true
-     * @return int
+     * @return long long
      */
     template <typename G>
-    int min_left(int r, G g) const {
+    long long min_left(long long r, G g) const {
         assert(g(e()));
         assert(0 <= r && r <= n);
         if (r == 0) return 0;
@@ -366,12 +368,12 @@ class PersistentLazySegTree {
      */
     std::vector<S> to_vector() const {
         std::vector<S> res(n);
-        for (int i = 0; i < n; i++) res[i] = get(i);
+        for (long long i = 0; i < n; i++) res[i] = get(i);
         return res;
     }
 };
 
 template <typename A>
-PersistentLazySegTree(int, A) -> PersistentLazySegTree<A>;
+PersistentLazySegTree(long long, A) -> PersistentLazySegTree<A>;
 template <typename A>
 PersistentLazySegTree(std::vector<typename A::S>, A) -> PersistentLazySegTree<A>;

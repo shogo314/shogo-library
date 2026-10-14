@@ -10,8 +10,8 @@ int main(void) {
 
     int n, q;
     std::cin >> n >> q;
-    std::vector<std::tuple<int, int>> set_queries;
-    std::vector<std::tuple<int, int, int, int>> prod_queries;
+    std::vector<std::tuple<long long, long long>> set_queries;
+    std::vector<std::tuple<long long, long long, long long, long long>> prod_queries;
     std::vector<std::tuple<int, int, int, int, int>> queries;
     std::vector<int> xs, ys;
     for (int i = 0; i < n; i++) {

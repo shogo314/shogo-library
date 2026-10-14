@@ -17,14 +17,14 @@ template <typename T>
 class TadpoleArray {
    private:
     std::vector<T> data;
-    int k;
+    long long k;
 
    public:
     /**
      * @brief 最後の次のインデックスがi
      */
-    TadpoleArray(const std::vector<T>& v, int i) : data(v) {
-        assert(0 <= i && i < static_cast<int>(data.size()));
+    TadpoleArray(const std::vector<T>& v, long long i) : data(v) {
+        assert(0 <= i && i < static_cast<long long>(data.size()));
         k = i;
     }
     TadpoleArray() = default;

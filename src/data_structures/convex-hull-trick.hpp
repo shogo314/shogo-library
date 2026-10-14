@@ -23,20 +23,21 @@
  */
 template <typename T, ENABLE_IF_T(std::is_scalar_v<T>)>
 class LiChaoTree {
-    int n, sz, height;
+    long long n, sz;
+    int height;
     std::vector<T> xs, as, bs;
     std::vector<bool> exist;  // ノードが直線を持つか
 
-    void update(T a, T b, int k, int h) {
-        int l = (k << h) & (sz - 1);
-        int r = l + (1 << h);
+    void update(T a, T b, long long k, int h) {
+        long long l = (k << h) & (sz - 1);
+        long long r = l + (1LL << h);
 
         while (1) {
             if (!exist[k]) {
                 as[k] = a, bs[k] = b, exist[k] = true;
                 return;
             }
-            int m = (l + r) >> 1;
+            long long m = (l + r) >> 1;
             T xl = xs[l], xm = xs[m];
             bool l_update = a * xl + b < as[k] * xl + bs[k];
             bool m_update = a * xm + b < as[k] * xm + bs[k];
@@ -66,7 +67,7 @@ class LiChaoTree {
     explicit LiChaoTree(const std::vector<T>& xs) : n(xs.size()), xs(xs) {
         assert(!xs.empty());
         sz = 1, height = 0;
-        while (sz < (int)xs.size()) {
+        while (sz < (long long)xs.size()) {
             sz <<= 1;
             height++;
         }
@@ -93,7 +94,7 @@ class LiChaoTree {
      * @param l 左端(xsのインデックス)
      * @param r xの上限(xsのインデックス)
      */
-    void add_segment(T a, T b, int l, int r) {
+    void add_segment(T a, T b, long long l, long long r) {
         assert(0 <= l && l <= r && r <= n);
         if (l == r) return;
         l += sz, r += sz;
@@ -111,11 +112,11 @@ class LiChaoTree {
      * @param i x座標(xsのインデックス)
      * @return std::optional<T> 最小値。直線がなければ std::nullopt
      */
-    std::optional<T> get_min(int i) const {
+    std::optional<T> get_min(long long i) const {
         assert(0 <= i && i < n);
         T x = xs[i];
         std::optional<T> res;
-        for (int k = i + sz; k >= 1; k >>= 1) {
+        for (long long k = i + sz; k >= 1; k >>= 1) {
             if (!exist[k]) continue;
             T tmp = as[k] * x + bs[k];
             if (!res || tmp < *res) res = tmp;

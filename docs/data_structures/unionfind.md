@@ -10,7 +10,7 @@ UnionFind uf(n);
 uf.merge(0, 1);
 uf.merge(1, 2);
 bool b = uf.same(0, 2);   // true
-int s = uf.size(0);       // 3
+long long s = uf.size(0); // 3
 auto g = uf.groups();     // 連結成分ごとの頂点のリスト
 
 // Kruskal 法: 新しく統合できた辺だけ使う

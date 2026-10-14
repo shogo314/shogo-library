@@ -20,7 +20,7 @@ int main() {
         CounterSegTree<int> seg(v);
         // key_type / mapped_type は外から使える
         static_assert(std::is_same_v<CounterSegTree<int>::key_type, int>);
-        static_assert(std::is_same_v<CounterSegTree<int>::mapped_type, int>);
+        static_assert(std::is_same_v<CounterSegTree<int>::mapped_type, long long>);
         for (int t = 0; t < 20; t++) {
             if (rng() % 2) {
                 int k = rng() % n, x = rng() % 6;

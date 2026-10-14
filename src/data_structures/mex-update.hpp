@@ -20,27 +20,27 @@ class MexUpdate {
    private:
     inline constexpr static value_type e = std::numeric_limits<value_type>::max();
 
-    int n;
+    long long n;
     std::vector<value_type> v;
     std::set<int> s;
     std::map<int, std::size_t> m;
 
    public:
     MexUpdate() = default;
-    explicit MexUpdate(int n) : n(n), v(n, e) {
+    explicit MexUpdate(long long n) : n(n), v(n, e) {
         assert(n > 0);
         assert(n + 1 < e);
         std::set<int>::iterator hint = s.end();
-        for (int i = n; i >= 0; --i) {
-            hint = s.emplace_hint(hint, i);
+        for (long long i = n; i >= 0; --i) {
+            hint = s.emplace_hint(hint, int(i));
         }
     }
     explicit MexUpdate(const std::vector<value_type>& init) : n(init.size()), v(init) {
         assert(n > 0);
         assert(n + 1 < e);
         std::set<int>::iterator hint = s.end();
-        for (int i = n; i >= 0; --i) {
-            hint = s.emplace_hint(hint, i);
+        for (long long i = n; i >= 0; --i) {
+            hint = s.emplace_hint(hint, int(i));
         }
         for (const auto& i : init) {
             if (0 <= i && i <= n) {
@@ -49,7 +49,7 @@ class MexUpdate {
             }
         }
     }
-    void set(int k, const value_type& x) {
+    void set(long long k, const value_type& x) {
         assert(0 <= k && k < n);
         if (0 <= v[k] && v[k] <= n) {
             int v_k = v[k];

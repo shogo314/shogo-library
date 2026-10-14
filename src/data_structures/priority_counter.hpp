@@ -29,10 +29,10 @@ struct PriorityCounter {
         data[0].second = 1;
     }
 
-    constexpr int size() const {
+    constexpr long long size() const {
         for (std::size_t i = 0; i < k; i++) {
             if (data[i].second == 0) {
-                return static_cast<int>(i);
+                return static_cast<long long>(i);
             }
         }
         return k;

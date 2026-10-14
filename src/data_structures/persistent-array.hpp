@@ -40,26 +40,27 @@ class PersistentArray {
     };
 
     std::shared_ptr<Pool> pool;  // 要素数 0 なら nullptr
-    int n, height, root;         // height = 0 なら root は葉の番号
+    long long n;
+    int height, root;  // height = 0 なら root は葉の番号
 
-    PersistentArray(std::shared_ptr<Pool> pool, int n, int height, int root) : pool(std::move(pool)), n(n), height(height), root(root) {}
+    PersistentArray(std::shared_ptr<Pool> pool, long long n, int height, int root) : pool(std::move(pool)), n(n), height(height), root(root) {}
 
     void init_height() {
         height = 0;
-        while ((1 << height) < n) height++;
+        while ((1LL << height) < n) height++;
     }
     // t ([a, a + 2^h)) の [l, r) を u に置き換える
-    int copy_rec(int t, int u, int a, int h, int l, int r) const {
-        if (r <= a || a + (1 << h) <= l) return t;
-        if (l <= a && a + (1 << h) <= r) return u;
+    int copy_rec(int t, int u, long long a, int h, long long l, long long r) const {
+        if (r <= a || a + (1LL << h) <= l) return t;
+        if (l <= a && a + (1LL << h) <= r) return u;
         int lc = copy_rec(pool->child[t][0], pool->child[u][0], a, h - 1, l, r);
-        int rc = copy_rec(pool->child[t][1], pool->child[u][1], a + (1 << (h - 1)), h - 1, l, r);
+        int rc = copy_rec(pool->child[t][1], pool->child[u][1], a + (1LL << (h - 1)), h - 1, l, r);
         return pool->make_node(lc, rc);
     }
-    int build(const std::vector<T>& v, int a, int h) {
+    int build(const std::vector<T>& v, long long a, int h) {
         if (h == 0) return pool->make_leaf(a < n ? v[a] : T());
         int l = build(v, a, h - 1);
-        int r = build(v, a + (1 << (h - 1)), h - 1);
+        int r = build(v, a + (1LL << (h - 1)), h - 1);
         return pool->make_node(l, r);
     }
 
@@ -72,7 +73,7 @@ class PersistentArray {
      * @param n 要素数
      * @param x 初期値
      */
-    explicit PersistentArray(int n = 0, const T& x = T()) : pool(nullptr), n(n), height(0), root(-1) {
+    explicit PersistentArray(long long n = 0, const T& x = T()) : pool(nullptr), n(n), height(0), root(-1) {
         assert(0 <= n);
         if (n == 0) return;
         pool = std::make_shared<Pool>();
@@ -95,7 +96,7 @@ class PersistentArray {
     /**
      * @brief 要素数を返す
      */
-    int size() const { return n; }
+    long long size() const { return n; }
 
     /**
      * @brief 指定された要素の値を返す
@@ -103,7 +104,7 @@ class PersistentArray {
      * @param k インデックス
      * @return T 値
      */
-    T get(int k) const {
+    T get(long long k) const {
         assert(0 <= k && k < n);
         int t = root;
         for (int h = height - 1; h >= 0; h--) t = pool->child[t][k >> h & 1];
@@ -115,7 +116,7 @@ class PersistentArray {
      * @param k インデックス
      * @return T 値
      */
-    T operator[](int k) const { return get(k); }
+    T operator[](long long k) const { return get(k); }
 
     /**
      * @brief 指定された要素の値をxにした新しい版を返す
@@ -124,7 +125,7 @@ class PersistentArray {
      * @param x 新しい値
      * @return PersistentArray 新しい版 (自身は変わらない)
      */
-    PersistentArray set(int k, const T& x) const {
+    PersistentArray set(long long k, const T& x) const {
         assert(0 <= k && k < n);
         std::vector<int> path(height);
         int t = root;
@@ -148,7 +149,7 @@ class PersistentArray {
      * @param r 半開区間の終端 0<=l<=r<=n
      * @return PersistentArray 新しい版 (自身も other も変わらない)
      */
-    PersistentArray copy(const PersistentArray& other, int l, int r) const {
+    PersistentArray copy(const PersistentArray& other, long long l, long long r) const {
         assert(pool == other.pool);
         assert(0 <= l && l <= r && r <= n);
         if (l == r) return *this;
@@ -166,7 +167,7 @@ class PersistentArray {
      */
     template <class CharT, class Traits>
     friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const PersistentArray& rhs) {
-        for (int i = 0; i < rhs.n; i++) {
+        for (long long i = 0; i < rhs.n; i++) {
             if (i != 0) os << CharT(' ');
             os << rhs[i];
         }
@@ -178,7 +179,7 @@ class PersistentArray {
      */
     std::vector<T> to_vector() const {
         std::vector<T> res(n);
-        for (int i = 0; i < n; i++) res[i] = get(i);
+        for (long long i = 0; i < n; i++) res[i] = get(i);
         return res;
     }
 };

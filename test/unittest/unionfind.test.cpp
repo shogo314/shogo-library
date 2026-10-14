@@ -35,7 +35,7 @@ int main() {
                 if (uf.size(x) != (int)std::count(comp.begin(), comp.end(), comp[x])) ok = false;
             }
             // groups: 連結成分ごとの頂点のリスト (各リストは昇順)
-            std::vector<std::vector<int>> expect;
+            std::vector<std::vector<long long>> expect;
             std::vector<int> seen(n, -1);
             for (int x = 0; x < n; x++) {
                 if (seen[comp[x]] == -1) {

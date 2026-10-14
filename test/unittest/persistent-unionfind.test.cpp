@@ -51,9 +51,9 @@ int main() {
             }
             // groups は代表元の小さい順とは限らないので、各グループの中身だけ比べる
             auto g = uf[i].groups();
-            std::vector<std::vector<int>> expect;
+            std::vector<std::vector<long long>> expect;
             for (int a = 0; a < n; a++) {
-                std::vector<int> group;
+                std::vector<long long> group;
                 for (int b = 0; b < n; b++) {
                     if (c[b] == c[a]) group.push_back(b);
                 }

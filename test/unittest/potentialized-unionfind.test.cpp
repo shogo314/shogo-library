@@ -35,7 +35,7 @@ int main() {
                     if (comp[x] == comp[y] && uf.diff(x, y) != p[y] - p[x]) ok = false;
                 }
             }
-            std::vector<std::vector<int>> expect;
+            std::vector<std::vector<long long>> expect;
             std::vector<int> seen(n, -1);
             for (int x = 0; x < n; x++) {
                 if (seen[comp[x]] == -1) {

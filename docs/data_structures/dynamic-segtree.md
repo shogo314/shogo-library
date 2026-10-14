@@ -35,4 +35,4 @@ $N$ を要素数とします。ノードは `set` 1 回につき $O(\log N)$ 個
 
 - 要素数が小さいなら [セグメント木](segtree.hpp) の方が速い
 - 区間作用が必要なら [動的遅延伝搬セグメント木](dynamic-lazy-segtree.hpp)
-- 過去の版も使うなら [永続セグメント木](persistent-segtree.hpp) (添字は `int`)
+- 過去の版も使うなら [永続セグメント木](persistent-segtree.hpp)

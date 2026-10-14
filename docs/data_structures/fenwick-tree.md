@@ -10,7 +10,7 @@ FenwickTree<group::Sum<long long>> ft(n);   // すべて 0
 FenwickTree<group::Sum<long long>> ft2(a);  // a で初期化する (O(n))
 ft.apply(i, x);                             // a[i] += x
 long long s = ft.prod(l, r);                // a[l] + ... + a[r-1]
-int k = ft.max_right([&](long long v) { return v <= w; });  // 先頭からの和が w 以下になる最大の長さ
+long long k = ft.max_right([&](long long v) { return v <= w; });  // 先頭からの和が w 以下になる最大の長さ
 ```
 
 ## メンバ関数

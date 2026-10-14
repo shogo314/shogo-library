@@ -40,4 +40,4 @@ $N$ を要素数とします。メモリは更新の回数 × $O(\log N)$ です
 
 - 要素数が小さいなら [遅延伝搬セグメント木](lazy-segtree.hpp) の方が速い
 - 1点更新だけなら [動的セグメント木](dynamic-segtree.hpp)
-- 過去の版も使うなら [永続遅延伝搬セグメント木](persistent-lazy-segtree.hpp) (添字は `int`)
+- 過去の版も使うなら [永続遅延伝搬セグメント木](persistent-lazy-segtree.hpp)

@@ -25,7 +25,7 @@ data:
     \u9332\u3057\u3066 build \u307E\u3067\u884C\u3046\n * int i = cp.id(A[0]);   \
     \     // 0 <= i < cp.size()\n *\n * @tparam T \u5024\u306E\u578B (< \u3067\u6BD4\
     \u8F03\u3067\u304D\u308B\u3053\u3068)\n */\ntemplate <typename T>\nclass Compress\
-    \ {\n    std::vector<T> xs;\n    bool built = false;\n\npublic:\n    Compress()\
+    \ {\n    std::vector<T> xs;\n    bool built = false;\n\n   public:\n    Compress()\
     \ = default;\n    /**\n     * @brief v \u306E\u5024\u3092\u767B\u9332\u3057\u3066\
     \ build \u3059\u308B\n     */\n    explicit Compress(const std::vector<T>& v)\
     \ : xs(v) { build(); }\n\n    /**\n     * @brief \u5024\u3092 1 \u3064\u767B\u9332\
@@ -72,12 +72,13 @@ data:
     \ std::vector<std::vector<int>> imos(w, std::vector<int>(h));\n    for (int i\
     \ = 0; i < n; i++) {\n        int a = cx.id(x1[i]), b = cx.id(x2[i]);\n      \
     \  int c = cy.id(y1[i]), d = cy.id(y2[i]);\n        imos[a][c]++, imos[a][d]--,\
-    \ imos[b][c]--, imos[b][d]++;\n    }\n    for (int i = 0; i < w; i++) for (int\
-    \ j = 1; j < h; j++) imos[i][j] += imos[i][j - 1];\n    for (int i = 1; i < w;\
-    \ i++) for (int j = 0; j < h; j++) imos[i][j] += imos[i - 1][j];\n    long long\
-    \ ans = 0;\n    for (int i = 0; i + 1 < w; i++) for (int j = 0; j + 1 < h; j++)\
-    \ {\n        if (imos[i][j] > 0) ans += (cx[i + 1] - cx[i]) * (cy[j + 1] - cy[j]);\n\
-    \    }\n    std::cout << ans << '\\n';\n}\n"
+    \ imos[b][c]--, imos[b][d]++;\n    }\n    for (int i = 0; i < w; i++)\n      \
+    \  for (int j = 1; j < h; j++) imos[i][j] += imos[i][j - 1];\n    for (int i =\
+    \ 1; i < w; i++)\n        for (int j = 0; j < h; j++) imos[i][j] += imos[i - 1][j];\n\
+    \    long long ans = 0;\n    for (int i = 0; i + 1 < w; i++)\n        for (int\
+    \ j = 0; j + 1 < h; j++) {\n            if (imos[i][j] > 0) ans += (cx[i + 1]\
+    \ - cx[i]) * (cy[j + 1] - cy[j]);\n        }\n    std::cout << ans << '\\n';\n\
+    }\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_4_A\"\
     \n\n// Compress \u3067\u5EA7\u6A19\u5727\u7E2E\u3059\u308B\n\n#include <iostream>\n\
     #include <vector>\n\n#include \"../../src/utility/compress.hpp\"\n\nint main()\
@@ -89,18 +90,18 @@ data:
     \ imos(w, std::vector<int>(h));\n    for (int i = 0; i < n; i++) {\n        int\
     \ a = cx.id(x1[i]), b = cx.id(x2[i]);\n        int c = cy.id(y1[i]), d = cy.id(y2[i]);\n\
     \        imos[a][c]++, imos[a][d]--, imos[b][c]--, imos[b][d]++;\n    }\n    for\
-    \ (int i = 0; i < w; i++) for (int j = 1; j < h; j++) imos[i][j] += imos[i][j\
-    \ - 1];\n    for (int i = 1; i < w; i++) for (int j = 0; j < h; j++) imos[i][j]\
-    \ += imos[i - 1][j];\n    long long ans = 0;\n    for (int i = 0; i + 1 < w; i++)\
-    \ for (int j = 0; j + 1 < h; j++) {\n        if (imos[i][j] > 0) ans += (cx[i\
-    \ + 1] - cx[i]) * (cy[j + 1] - cy[j]);\n    }\n    std::cout << ans << '\\n';\n\
-    }\n"
+    \ (int i = 0; i < w; i++)\n        for (int j = 1; j < h; j++) imos[i][j] += imos[i][j\
+    \ - 1];\n    for (int i = 1; i < w; i++)\n        for (int j = 0; j < h; j++)\
+    \ imos[i][j] += imos[i - 1][j];\n    long long ans = 0;\n    for (int i = 0; i\
+    \ + 1 < w; i++)\n        for (int j = 0; j + 1 < h; j++) {\n            if (imos[i][j]\
+    \ > 0) ans += (cx[i + 1] - cx[i]) * (cy[j + 1] - cy[j]);\n        }\n    std::cout\
+    \ << ans << '\\n';\n}\n"
   dependsOn:
   - src/utility/compress.hpp
   isVerificationFile: true
   path: test/aoj/dsl-4-a.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 07:04:30+09:00'
+  timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/dsl-4-a.2.test.cpp

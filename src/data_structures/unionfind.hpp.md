@@ -101,7 +101,7 @@ data:
     \ <utility>\n#include <vector>\n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\
     \u306B\u5BFE\u3057\u3066\u300C\u8FBA\u306E\u8FFD\u52A0\u300D\u3001\u300C2\u9802\
     \u70B9\u304C\u9023\u7D50\u304B\u306E\u5224\u5B9A\u300D\u3092\u3059\u308B\n */\n\
-    struct UnionFind {\n   protected:\n    int _n;\n    // \u8CA0\u306A\u3089\u30B5\
+    class UnionFind {\n   protected:\n    int _n;\n    // \u8CA0\u306A\u3089\u30B5\
     \u30A4\u30BA\u3001\u975E\u8CA0\u306A\u3089\u89AA\n    std::vector<int> parent_or_size;\n\
     \n   public:\n    /**\n     * @brief merge \u306E\u623B\u308A\u5024\n     *\n\
     \     * if (uf.merge(a, b)) \u3067\u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B\
@@ -148,7 +148,7 @@ data:
     #include <algorithm>\n#include <cassert>\n#include <utility>\n#include <vector>\n\
     \n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u5BFE\u3057\u3066\u300C\u8FBA\
     \u306E\u8FFD\u52A0\u300D\u3001\u300C2\u9802\u70B9\u304C\u9023\u7D50\u304B\u306E\
-    \u5224\u5B9A\u300D\u3092\u3059\u308B\n */\nstruct UnionFind {\n   protected:\n\
+    \u5224\u5B9A\u300D\u3092\u3059\u308B\n */\nclass UnionFind {\n   protected:\n\
     \    int _n;\n    // \u8CA0\u306A\u3089\u30B5\u30A4\u30BA\u3001\u975E\u8CA0\u306A\
     \u3089\u89AA\n    std::vector<int> parent_or_size;\n\n   public:\n    /**\n  \
     \   * @brief merge \u306E\u623B\u308A\u5024\n     *\n     * if (uf.merge(a, b))\
@@ -200,7 +200,7 @@ data:
   - src/graph/two-sat.hpp
   - src/data_structures/potentialized-unionfind.hpp
   - src/data_structures/monoid-unionfind.hpp
-  timestamp: '2026-10-13 12:42:03+09:00'
+  timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/unionfind.test.cpp

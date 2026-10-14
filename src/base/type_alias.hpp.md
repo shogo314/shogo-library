@@ -34,10 +34,10 @@ data:
     \ T2>>;\nusing vpl = vec<pl>;\nusing vvpl = vv<pl>;\nusing vd = vec<ld>;\nusing\
     \ vpd = vec<pd>;\n\ntemplate <int N>\nusing al = ary<ll, N>;\ntemplate <int N1,\
     \ int N2>\nusing aal = ary<ary<ll, N2>, N1>;\ntemplate <int N>\nusing val = vec<al<N>>;\n\
-    template <int N>\nusing avl = ary<vl,N>;\n\ntemplate <typename T>\nusing ml =\
+    template <int N>\nusing avl = ary<vl, N>;\n\ntemplate <typename T>\nusing ml =\
     \ std::map<ll, T>;\nusing mll = std::map<ll, ll>;\nusing sl = std::set<ll>;\n\
     using spl = set<pl>;\ntemplate <int N>\nusing sal = set<al<N>>;\ntemplate <int\
-    \ N>\nusing asl = ary<sl,N>;\n\ntemplate <typename T>\nusing heap_max = std::priority_queue<T,\
+    \ N>\nusing asl = ary<sl, N>;\n\ntemplate <typename T>\nusing heap_max = std::priority_queue<T,\
     \ std::vector<T>, std::less<T>>;\ntemplate <typename T>\nusing heap_min = std::priority_queue<T,\
     \ std::vector<T>, std::greater<T>>;\n"
   code: "#pragma once\n\n/**\n * @file type_alias.hpp\n * @brief \u578B\u306E\u5225\
@@ -55,10 +55,10 @@ data:
     \ T2>\nusing vp = vec<pair<T1, T2>>;\nusing vpl = vec<pl>;\nusing vvpl = vv<pl>;\n\
     using vd = vec<ld>;\nusing vpd = vec<pd>;\n\ntemplate <int N>\nusing al = ary<ll,\
     \ N>;\ntemplate <int N1, int N2>\nusing aal = ary<ary<ll, N2>, N1>;\ntemplate\
-    \ <int N>\nusing val = vec<al<N>>;\ntemplate <int N>\nusing avl = ary<vl,N>;\n\
+    \ <int N>\nusing val = vec<al<N>>;\ntemplate <int N>\nusing avl = ary<vl, N>;\n\
     \ntemplate <typename T>\nusing ml = std::map<ll, T>;\nusing mll = std::map<ll,\
     \ ll>;\nusing sl = std::set<ll>;\nusing spl = set<pl>;\ntemplate <int N>\nusing\
-    \ sal = set<al<N>>;\ntemplate <int N>\nusing asl = ary<sl,N>;\n\ntemplate <typename\
+    \ sal = set<al<N>>;\ntemplate <int N>\nusing asl = ary<sl, N>;\n\ntemplate <typename\
     \ T>\nusing heap_max = std::priority_queue<T, std::vector<T>, std::less<T>>;\n\
     template <typename T>\nusing heap_min = std::priority_queue<T, std::vector<T>,\
     \ std::greater<T>>;\n"
@@ -67,7 +67,7 @@ data:
   path: src/base/type_alias.hpp
   requiredBy:
   - src/base/macro.hpp
-  timestamp: '2026-10-14 07:05:08+09:00'
+  timestamp: '2026-10-14 11:33:42+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/macro.test.cpp

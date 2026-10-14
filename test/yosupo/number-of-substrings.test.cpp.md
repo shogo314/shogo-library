@@ -31,15 +31,15 @@ data:
     \u304C\u5165\u308B\u4F4D\u7F6E\u306E\u59CB\u307E\u308A\u3001sum_s[c]: \u5148\u982D\
     \u304C c \u306E S \u578B\u306E\u63A5\u5C3E\u8F9E\u304C\u5165\u308B\u4F4D\u7F6E\
     \u306E\u59CB\u307E\u308A\n    std::vector<int> sum_l(upper + 1), sum_s(upper +\
-    \ 1);\n    for (int i = 0; i < n; i++) {\n        if (!ls[i]) sum_s[s[i]]++;\n\
-    \        else sum_l[s[i] + 1]++;\n    }\n    for (int i = 0; i <= upper; i++)\
-    \ {\n        sum_s[i] += sum_l[i];\n        if (i < upper) sum_l[i + 1] += sum_s[i];\n\
-    \    }\n    // LMS \u306E\u4E26\u3073 lms \u304B\u3089\u3001\u8A98\u5C0E\u30BD\
-    \u30FC\u30C8\u3067\u5168\u4F53\u3092\u4E26\u3079\u308B\n    auto induce = [&](const\
-    \ std::vector<int>& lms) {\n        std::fill(sa.begin(), sa.end(), -1);\n   \
-    \     std::vector<int> buf(upper + 1);\n        std::copy(sum_s.begin(), sum_s.end(),\
-    \ buf.begin());\n        for (int d : lms) {\n            if (d == n) continue;\n\
-    \            sa[buf[s[d]]++] = d;\n        }\n        std::copy(sum_l.begin(),\
+    \ 1);\n    for (int i = 0; i < n; i++) {\n        if (!ls[i])\n            sum_s[s[i]]++;\n\
+    \        else\n            sum_l[s[i] + 1]++;\n    }\n    for (int i = 0; i <=\
+    \ upper; i++) {\n        sum_s[i] += sum_l[i];\n        if (i < upper) sum_l[i\
+    \ + 1] += sum_s[i];\n    }\n    // LMS \u306E\u4E26\u3073 lms \u304B\u3089\u3001\
+    \u8A98\u5C0E\u30BD\u30FC\u30C8\u3067\u5168\u4F53\u3092\u4E26\u3079\u308B\n   \
+    \ auto induce = [&](const std::vector<int>& lms) {\n        std::fill(sa.begin(),\
+    \ sa.end(), -1);\n        std::vector<int> buf(upper + 1);\n        std::copy(sum_s.begin(),\
+    \ sum_s.end(), buf.begin());\n        for (int d : lms) {\n            if (d ==\
+    \ n) continue;\n            sa[buf[s[d]]++] = d;\n        }\n        std::copy(sum_l.begin(),\
     \ sum_l.end(), buf.begin());\n        sa[buf[s[n - 1]]++] = n - 1;\n        for\
     \ (int i = 0; i < n; i++) {\n            int v = sa[i];\n            if (v >=\
     \ 1 && !ls[v - 1]) sa[buf[s[v - 1]]++] = v - 1;\n        }\n        std::copy(sum_l.begin(),\
@@ -125,7 +125,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/number-of-substrings.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 00:42:16+09:00'
+  timestamp: '2026-10-14 11:33:42+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/number-of-substrings.test.cpp

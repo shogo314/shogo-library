@@ -21,18 +21,18 @@ data:
     \u30BF\u306B\u4F7F\u3048\u308B\u6587\u5B57\u5217\u5316 (repr)\n */\n\n#include\
     \ <array>\n#include <cstddef>\n#include <iostream>\n#include <map>\n#include <set>\n\
     #include <string>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\
-    #line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\
+    \n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\
     \u7279\u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\n#include <iterator>\n\
-    #line 13 \"src/utility/traits.hpp\"\n\nnamespace detail {\nusing std::begin, std::end;\n\
-    \ntemplate <class T, class = void>\nstruct is_range_impl : std::false_type {};\n\
-    template <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
-    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace detail\n\n\
-    template <class T>\nstruct is_range : detail::is_range_impl<T>::type {};\ntemplate\
-    \ <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define\
-    \ HAS_METHOD(func_name)                                                      \
-    \        \\\n    namespace detail {                                          \
-    \                           \\\n    template <class T, class = void>         \
-    \                                              \\\n    struct has_##func_name##_impl\
+    #line 13 \"src/utility/traits.hpp\"\n\nnamespace internal_traits {\nusing std::begin,\
+    \ std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl : std::false_type\
+    \ {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
+    \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
+    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
+    \n#define HAS_METHOD(func_name)                                              \
+    \                \\\n    namespace internal_traits {                         \
+    \                                   \\\n    template <class T, class = void> \
+    \                                                      \\\n    struct has_##func_name##_impl\
     \ : std::false_type {};                                    \\\n    template <class\
     \ T>                                                                     \\\n\
     \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
@@ -40,11 +40,11 @@ data:
     \                    \\\n    }                                               \
     \                                       \\\n    template <class T>           \
     \                                                          \\\n    struct has_##func_name\
-    \ : detail::has_##func_name##_impl<T>::type {};                   \\\n    template\
+    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
     \ <class T>                                                                  \
     \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
     \n#define HAS_METHOD_ARG(func_name)                                          \
-    \                                    \\\n    namespace detail {              \
+    \                                    \\\n    namespace internal_traits {     \
     \                                                                           \\\
     \n    template <class T, typename U, class = void>                           \
     \                                    \\\n    struct has_##func_name##_impl : std::false_type\
@@ -55,10 +55,10 @@ data:
     \                                        \\\n    }                           \
     \                                                                            \
     \   \\\n    template <class T, typename U>                                   \
-    \                                          \\\n    struct has_##func_name : detail::has_##func_name##_impl<T,\
-    \ U>::type {};                                    \\\n    template <class T, typename\
-    \ U>                                                                         \
-    \    \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
+    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \ U>::type {};                           \\\n    template <class T, typename U>\
+    \                                                                            \
+    \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
     \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
     HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
     HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
@@ -66,13 +66,13 @@ data:
     \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
     \ntemplate <class C>\nusing mem_value_type = typename C::value_type;\ntemplate\
     \ <class C>\nusing mem_difference_type = typename C::difference_type;\n\nnamespace\
-    \ detail {\ntemplate <class T, class = void>\nstruct is_sorted_container_impl\
+    \ internal_traits {\ntemplate <class T, class = void>\nstruct is_sorted_container_impl\
     \ : std::false_type {};\ntemplate <class T>\nstruct is_sorted_container_impl<std::set<T>>\
     \ : std::true_type {};\ntemplate <class T>\nstruct is_sorted_container_impl<std::multiset<T>>\
-    \ : std::true_type {};\n}  // namespace detail\ntemplate <class T>\nstruct is_sorted_container\
-    \ : detail::is_sorted_container_impl<T>::type {};\ntemplate <class T>\ninline\
-    \ constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n#line\
-    \ 18 \"src/utility/repr.hpp\"\n\nnamespace detail {\n\n///////////////////////////////////////////////////////////////////\n\
+    \ : std::true_type {};\n}  // namespace internal_traits\ntemplate <class T>\n\
+    struct is_sorted_container : internal_traits::is_sorted_container_impl<T>::type\
+    \ {};\ntemplate <class T>\ninline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
+    #line 19 \"src/utility/repr.hpp\"\n\nnamespace internal_repr {\n\n///////////////////////////////////////////////////////////////////\n\
     /////////////////////////// declaration ///////////////////////////\n///////////////////////////////////////////////////////////////////\n\
     \ninline std::string type_str(const char*);\ninline std::string initializer_str(const\
     \ char*);\ninline std::string repr(const char*);\n\ninline std::string type_str(const\
@@ -114,22 +114,22 @@ data:
     template <typename T, std::size_t N>\ninline std::string repr(const std::array<T,\
     \ N>&);\n\n///////////////////////////////////////////////////////////////////\n\
     /////////////////////////// definition ////////////////////////////\n///////////////////////////////////////////////////////////////////\n\
-    \ntemplate <typename T, std::enable_if_t<not has_type_str_v<T>, std::nullptr_t>\
-    \ = nullptr>\ninline std::string type_str(const T& t) {\n    return \"T\";\n}\n\
+    \ntemplate <typename T, std::enable_if_t<!has_type_str_v<T>, std::nullptr_t> =\
+    \ nullptr>\ninline std::string type_str(const T& t) {\n    return \"T\";\n}\n\
     template <typename T, std::enable_if_t<has_type_str_v<T>, std::nullptr_t> = nullptr>\n\
     inline std::string type_str(const T& t) {\n    return t.type_str();\n}\ntemplate\
-    \ <typename T, std::enable_if_t<not has_initializer_str_v<T>, std::nullptr_t>\
-    \ = nullptr>\ninline std::string initializer_str(const T& t) {\n    return \"\
-    {}\";\n}\ntemplate <typename T, std::enable_if_t<has_initializer_str_v<T>, std::nullptr_t>\
-    \ = nullptr>\ninline std::string initializer_str(const T& t) {\n    return t.initializer_str();\n\
-    }\ntemplate <typename T, std::enable_if_t<not has_repr_v<T>, std::nullptr_t> =\
-    \ nullptr>\ninline std::string repr(const T& t) {\n    return detail::type_str(t)\
-    \ + detail::initializer_str(t);\n}\ntemplate <typename T, std::enable_if_t<has_repr_v<T>,\
+    \ <typename T, std::enable_if_t<!has_initializer_str_v<T>, std::nullptr_t> = nullptr>\n\
+    inline std::string initializer_str(const T& t) {\n    return \"{}\";\n}\ntemplate\
+    \ <typename T, std::enable_if_t<has_initializer_str_v<T>, std::nullptr_t> = nullptr>\n\
+    inline std::string initializer_str(const T& t) {\n    return t.initializer_str();\n\
+    }\ntemplate <typename T, std::enable_if_t<!has_repr_v<T>, std::nullptr_t> = nullptr>\n\
+    inline std::string repr(const T& t) {\n    return internal_repr::type_str(t) +\
+    \ internal_repr::initializer_str(t);\n}\ntemplate <typename T, std::enable_if_t<has_repr_v<T>,\
     \ std::nullptr_t> = nullptr>\ninline std::string repr(const T& t) {\n    return\
     \ t.repr();\n}\n\ninline std::string type_str(const char*) {\n    return \"char*\"\
     ;\n}\ninline std::string initializer_str(const char* t) {\n    return \"\\\"\"\
     \ + std::string(t) + \"\\\"\";\n}\ninline std::string repr(const char* t) {\n\
-    \    return detail::initializer_str(t);\n}\n\ninline std::string type_str(const\
+    \    return internal_repr::initializer_str(t);\n}\n\ninline std::string type_str(const\
     \ char&) {\n    return \"char\";\n}\ninline std::string initializer_str(const\
     \ char& t) {\n    // char \u304C\u7B26\u53F7\u4ED8\u304D\u3067\u3082\u6DFB\u5B57\
     \u304C\u8CA0\u306B\u306A\u3089\u306A\u3044\u3088\u3046\u306B unsigned char \u3067\
@@ -138,96 +138,98 @@ data:
     \ \"\");\n    v['\\0'] = \"\\\\0\";\n    v['\\a'] = \"\\\\a\";\n    v['\\b'] =\
     \ \"\\\\b\";\n    v['\\f'] = \"\\\\f\";\n    v['\\r'] = \"\\\\r\";\n    v['\\\
     n'] = \"\\\\n\";\n    v['\\v'] = \"\\\\v\";\n    v['\\''] = \"\\\\'\";\n    v['\\\
-    \\'] = \"\\\\\\\\\";\n    if (u < 128 and !v[u].empty())\n        return \"'\"\
-    \ + v[u] + \"'\";\n    if (32 <= u and u <= 126)\n        return \"'\" + std::string{t}\
+    \\'] = \"\\\\\\\\\";\n    if (u < 128 && !v[u].empty())\n        return \"'\"\
+    \ + v[u] + \"'\";\n    if (32 <= u && u <= 126)\n        return \"'\" + std::string{t}\
     \ + \"'\";\n    return \"'\\\\\" + std::to_string(u / 64) + std::to_string(u /\
     \ 8 % 8) + std::to_string(u % 8) + \"'\";\n}\ninline std::string repr(const char&\
-    \ t) {\n    return detail::initializer_str(t);\n}\n\ninline std::string type_str(const\
-    \ int&) {\n    return \"int\";\n}\ninline std::string initializer_str(const int&\
-    \ t) {\n    return std::to_string(t);\n}\ninline std::string repr(const int& t)\
-    \ {\n    return detail::initializer_str(t);\n}\n\ninline std::string type_str(const\
-    \ long&) {\n    return \"long\";\n}\ninline std::string initializer_str(const\
+    \ t) {\n    return internal_repr::initializer_str(t);\n}\n\ninline std::string\
+    \ type_str(const int&) {\n    return \"int\";\n}\ninline std::string initializer_str(const\
+    \ int& t) {\n    return std::to_string(t);\n}\ninline std::string repr(const int&\
+    \ t) {\n    return internal_repr::initializer_str(t);\n}\n\ninline std::string\
+    \ type_str(const long&) {\n    return \"long\";\n}\ninline std::string initializer_str(const\
     \ long& t) {\n    return std::to_string(t) + \"l\";\n}\ninline std::string repr(const\
-    \ long& t) {\n    return detail::initializer_str(t);\n}\n\ninline std::string\
+    \ long& t) {\n    return internal_repr::initializer_str(t);\n}\n\ninline std::string\
     \ type_str(const long long&) {\n    return \"long long\";\n}\ninline std::string\
     \ initializer_str(const long long& t) {\n    return std::to_string(t) + \"ll\"\
-    ;\n}\ninline std::string repr(const long long& t) {\n    return detail::initializer_str(t);\n\
+    ;\n}\ninline std::string repr(const long long& t) {\n    return internal_repr::initializer_str(t);\n\
     }\n\ninline std::string type_str(const unsigned int&) {\n    return \"unsigned\
     \ int\";\n}\ninline std::string initializer_str(const unsigned int& t) {\n   \
     \ return std::to_string(t) + \"u\";\n}\ninline std::string repr(const unsigned\
-    \ int& t) {\n    return detail::initializer_str(t);\n}\n\ninline std::string type_str(const\
-    \ unsigned long&) {\n    return \"unsigned long\";\n}\ninline std::string initializer_str(const\
-    \ unsigned long& t) {\n    return std::to_string(t) + \"ul\";\n}\ninline std::string\
-    \ repr(const unsigned long& t) {\n    return detail::initializer_str(t);\n}\n\n\
-    inline std::string type_str(const unsigned long long&) {\n    return \"unsigned\
+    \ int& t) {\n    return internal_repr::initializer_str(t);\n}\n\ninline std::string\
+    \ type_str(const unsigned long&) {\n    return \"unsigned long\";\n}\ninline std::string\
+    \ initializer_str(const unsigned long& t) {\n    return std::to_string(t) + \"\
+    ul\";\n}\ninline std::string repr(const unsigned long& t) {\n    return internal_repr::initializer_str(t);\n\
+    }\n\ninline std::string type_str(const unsigned long long&) {\n    return \"unsigned\
     \ long long\";\n}\ninline std::string initializer_str(const unsigned long long&\
     \ t) {\n    return std::to_string(t) + \"ull\";\n}\ninline std::string repr(const\
-    \ unsigned long long& t) {\n    return detail::initializer_str(t);\n}\n\ninline\
-    \ std::string type_str(const std::string&) {\n    return \"std::string\";\n}\n\
-    inline std::string initializer_str(const std::string& t) {\n    return \"\\\"\"\
-    \ + t + \"\\\"\";\n}\ninline std::string repr(const std::string& t) {\n    return\
-    \ detail::type_str(t) + \"{\" + detail::initializer_str(t) + \"}\";\n}\n\ninline\
-    \ std::string type_str(const float&) {\n    return \"float\";\n}\ninline std::string\
-    \ initializer_str(const float& t) {\n    return std::to_string(t) + \"f\";\n}\n\
-    inline std::string repr(const float& t) {\n    return detail::initializer_str(t);\n\
+    \ unsigned long long& t) {\n    return internal_repr::initializer_str(t);\n}\n\
+    \ninline std::string type_str(const std::string&) {\n    return \"std::string\"\
+    ;\n}\ninline std::string initializer_str(const std::string& t) {\n    return \"\
+    \\\"\" + t + \"\\\"\";\n}\ninline std::string repr(const std::string& t) {\n \
+    \   return internal_repr::type_str(t) + \"{\" + internal_repr::initializer_str(t)\
+    \ + \"}\";\n}\n\ninline std::string type_str(const float&) {\n    return \"float\"\
+    ;\n}\ninline std::string initializer_str(const float& t) {\n    return std::to_string(t)\
+    \ + \"f\";\n}\ninline std::string repr(const float& t) {\n    return internal_repr::initializer_str(t);\n\
     }\n\ninline std::string type_str(const double&) {\n    return \"double\";\n}\n\
     inline std::string initializer_str(const double& t) {\n    return std::to_string(t);\n\
-    }\ninline std::string repr(const double& t) {\n    return detail::initializer_str(t);\n\
+    }\ninline std::string repr(const double& t) {\n    return internal_repr::initializer_str(t);\n\
     }\n\ninline std::string type_str(const long double&) {\n    return \"long double\"\
     ;\n}\ninline std::string initializer_str(const long double& t) {\n    return std::to_string(t)\
-    \ + \"l\";\n}\ninline std::string repr(const long double& t) {\n    return detail::initializer_str(t);\n\
+    \ + \"l\";\n}\ninline std::string repr(const long double& t) {\n    return internal_repr::initializer_str(t);\n\
     }\n\ntemplate <typename T>\ninline std::string type_str(const std::vector<T>&)\
-    \ {\n    T t;\n    return \"std::vector<\" + detail::type_str(t) + \">\";\n}\n\
-    template <typename T>\ninline std::string initializer_str(const std::vector<T>&\
+    \ {\n    T t;\n    return \"std::vector<\" + internal_repr::type_str(t) + \">\"\
+    ;\n}\ntemplate <typename T>\ninline std::string initializer_str(const std::vector<T>&\
     \ t) {\n    std::string ret;\n    ret += \"{\";\n    for (auto itr = t.begin();\
     \ itr != t.end(); itr++) {\n        if (itr != t.begin()) ret += \", \";\n   \
-    \     ret += detail::initializer_str(*itr);\n    }\n    ret += \"}\";\n    return\
-    \ ret;\n}\ntemplate <typename T>\ninline std::string repr(const std::vector<T>&\
-    \ t) {\n    return detail::type_str(t) + detail::initializer_str(t);\n}\n\ntemplate\
-    \ <typename T>\ninline std::string type_str(const std::set<T>&) {\n    T t;\n\
-    \    return \"std::set<\" + detail::type_str(t) + \">\";\n}\ntemplate <typename\
-    \ T>\ninline std::string initializer_str(const std::set<T>& t) {\n    std::string\
-    \ ret;\n    ret += \"{\";\n    for (auto itr = t.begin(); itr != t.end(); itr++)\
-    \ {\n        if (itr != t.begin()) ret += \", \";\n        ret += detail::initializer_str(*itr);\n\
-    \    }\n    ret += \"}\";\n    return ret;\n}\ntemplate <typename T>\ninline std::string\
-    \ repr(const std::set<T>& t) {\n    return detail::type_str(t) + detail::initializer_str(t);\n\
+    \     ret += internal_repr::initializer_str(*itr);\n    }\n    ret += \"}\";\n\
+    \    return ret;\n}\ntemplate <typename T>\ninline std::string repr(const std::vector<T>&\
+    \ t) {\n    return internal_repr::type_str(t) + internal_repr::initializer_str(t);\n\
+    }\n\ntemplate <typename T>\ninline std::string type_str(const std::set<T>&) {\n\
+    \    T t;\n    return \"std::set<\" + internal_repr::type_str(t) + \">\";\n}\n\
+    template <typename T>\ninline std::string initializer_str(const std::set<T>& t)\
+    \ {\n    std::string ret;\n    ret += \"{\";\n    for (auto itr = t.begin(); itr\
+    \ != t.end(); itr++) {\n        if (itr != t.begin()) ret += \", \";\n       \
+    \ ret += internal_repr::initializer_str(*itr);\n    }\n    ret += \"}\";\n   \
+    \ return ret;\n}\ntemplate <typename T>\ninline std::string repr(const std::set<T>&\
+    \ t) {\n    return internal_repr::type_str(t) + internal_repr::initializer_str(t);\n\
     }\n\ntemplate <typename T1, typename T2>\ninline std::string type_str(const std::pair<T1,\
-    \ T2>&) {\n    T1 t1;\n    T2 t2;\n    return \"std::pair<\" + detail::type_str(t1)\
-    \ + \", \" + detail::type_str(t2) + \">\";\n}\ntemplate <typename T1, typename\
+    \ T2>&) {\n    T1 t1;\n    T2 t2;\n    return \"std::pair<\" + internal_repr::type_str(t1)\
+    \ + \", \" + internal_repr::type_str(t2) + \">\";\n}\ntemplate <typename T1, typename\
     \ T2>\ninline std::string initializer_str(const std::pair<T1, T2>& t) {\n    return\
-    \ \"{\" + detail::initializer_str(t.first) + \", \" + detail::initializer_str(t.second)\
+    \ \"{\" + internal_repr::initializer_str(t.first) + \", \" + internal_repr::initializer_str(t.second)\
     \ + \"}\";\n}\ntemplate <typename T1, typename T2>\ninline std::string repr(const\
-    \ std::pair<T1, T2>& t) {\n    return detail::type_str(t) + detail::initializer_str(t);\n\
+    \ std::pair<T1, T2>& t) {\n    return internal_repr::type_str(t) + internal_repr::initializer_str(t);\n\
     }\n\ntemplate <typename T1, typename T2>\ninline std::string type_str(const std::map<T1,\
-    \ T2>&) {\n    T1 t1;\n    T2 t2;\n    return \"std::map<\" + detail::type_str(t1)\
-    \ + \", \" + detail::type_str(t2) + \">\";\n}\ntemplate <typename T1, typename\
+    \ T2>&) {\n    T1 t1;\n    T2 t2;\n    return \"std::map<\" + internal_repr::type_str(t1)\
+    \ + \", \" + internal_repr::type_str(t2) + \">\";\n}\ntemplate <typename T1, typename\
     \ T2>\ninline std::string initializer_str(const std::map<T1, T2>& t) {\n    std::string\
     \ ret;\n    ret += \"{\";\n    for (auto itr = t.begin(); itr != t.end(); itr++)\
     \ {\n        if (itr != t.begin()) ret += \", \";\n        ret += \"{\";\n   \
-    \     ret += detail::initializer_str(itr->first);\n        ret += \", \";\n  \
-    \      ret += detail::initializer_str(itr->second);\n        ret += \"}\";\n \
-    \   }\n    ret += \"}\";\n    return ret;\n}\ntemplate <typename T1, typename\
-    \ T2>\ninline std::string repr(const std::map<T1, T2>& t) {\n    return detail::type_str(t)\
-    \ + detail::initializer_str(t);\n}\n\ntemplate <typename T, std::size_t N>\ninline\
-    \ std::string type_str(const std::array<T, N>&) {\n    T t;\n    return \"std::array<\"\
-    \ + detail::type_str(t) + \", \" + std::to_string(N) + \">\";\n}\ntemplate <typename\
-    \ T, std::size_t N>\ninline std::string initializer_str(const std::array<T, N>&\
-    \ t) {\n    std::string ret;\n    ret += \"{\";\n    for (auto itr = t.begin();\
-    \ itr != t.end(); itr++) {\n        if (itr != t.begin()) ret += \", \";\n   \
-    \     ret += detail::initializer_str(*itr);\n    }\n    ret += \"}\";\n    return\
-    \ ret;\n}\ntemplate <typename T, std::size_t N>\ninline std::string repr(const\
-    \ std::array<T, N>& t) {\n    return detail::type_str(t) + detail::initializer_str(t);\n\
-    }\n\n}  // namespace detail\n\ntemplate <typename T>\ninline std::string type_str(const\
-    \ T& t) {\n    return detail::type_str(t);\n}\ntemplate <typename T>\ninline std::string\
-    \ initializer_str(const T& t) {\n    return detail::initializer_str(t);\n}\ntemplate\
-    \ <typename T>\ninline std::string repr(const T& t) {\n    return detail::repr(t);\n\
-    }\n\n#define DEBUG(x) { std::cerr << #x << \" = \" << repr(x) << std::endl; }\n"
+    \     ret += internal_repr::initializer_str(itr->first);\n        ret += \", \"\
+    ;\n        ret += internal_repr::initializer_str(itr->second);\n        ret +=\
+    \ \"}\";\n    }\n    ret += \"}\";\n    return ret;\n}\ntemplate <typename T1,\
+    \ typename T2>\ninline std::string repr(const std::map<T1, T2>& t) {\n    return\
+    \ internal_repr::type_str(t) + internal_repr::initializer_str(t);\n}\n\ntemplate\
+    \ <typename T, std::size_t N>\ninline std::string type_str(const std::array<T,\
+    \ N>&) {\n    T t;\n    return \"std::array<\" + internal_repr::type_str(t) +\
+    \ \", \" + std::to_string(N) + \">\";\n}\ntemplate <typename T, std::size_t N>\n\
+    inline std::string initializer_str(const std::array<T, N>& t) {\n    std::string\
+    \ ret;\n    ret += \"{\";\n    for (auto itr = t.begin(); itr != t.end(); itr++)\
+    \ {\n        if (itr != t.begin()) ret += \", \";\n        ret += internal_repr::initializer_str(*itr);\n\
+    \    }\n    ret += \"}\";\n    return ret;\n}\ntemplate <typename T, std::size_t\
+    \ N>\ninline std::string repr(const std::array<T, N>& t) {\n    return internal_repr::type_str(t)\
+    \ + internal_repr::initializer_str(t);\n}\n\n}  // namespace internal_repr\n\n\
+    template <typename T>\ninline std::string type_str(const T& t) {\n    return internal_repr::type_str(t);\n\
+    }\ntemplate <typename T>\ninline std::string initializer_str(const T& t) {\n \
+    \   return internal_repr::initializer_str(t);\n}\ntemplate <typename T>\ninline\
+    \ std::string repr(const T& t) {\n    return internal_repr::repr(t);\n}\n\n#define\
+    \ DEBUG(x) \\\n    { std::cerr << #x << \" = \" << repr(x) << std::endl; }\n"
   code: "#pragma once\n\n/**\n * @file repr.hpp\n * @brief \u51FA\u529B\u3092\u305D\
     \u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u306B\u4F7F\u3048\
     \u308B\u6587\u5B57\u5217\u5316 (repr)\n */\n\n#include <array>\n#include <cstddef>\n\
     #include <iostream>\n#include <map>\n#include <set>\n#include <string>\n#include\
-    \ <type_traits>\n#include <utility>\n#include <vector>\n#include \"traits.hpp\"\
-    \n\nnamespace detail {\n\n///////////////////////////////////////////////////////////////////\n\
+    \ <type_traits>\n#include <utility>\n#include <vector>\n\n#include \"traits.hpp\"\
+    \n\nnamespace internal_repr {\n\n///////////////////////////////////////////////////////////////////\n\
     /////////////////////////// declaration ///////////////////////////\n///////////////////////////////////////////////////////////////////\n\
     \ninline std::string type_str(const char*);\ninline std::string initializer_str(const\
     \ char*);\ninline std::string repr(const char*);\n\ninline std::string type_str(const\
@@ -269,22 +271,22 @@ data:
     template <typename T, std::size_t N>\ninline std::string repr(const std::array<T,\
     \ N>&);\n\n///////////////////////////////////////////////////////////////////\n\
     /////////////////////////// definition ////////////////////////////\n///////////////////////////////////////////////////////////////////\n\
-    \ntemplate <typename T, std::enable_if_t<not has_type_str_v<T>, std::nullptr_t>\
-    \ = nullptr>\ninline std::string type_str(const T& t) {\n    return \"T\";\n}\n\
+    \ntemplate <typename T, std::enable_if_t<!has_type_str_v<T>, std::nullptr_t> =\
+    \ nullptr>\ninline std::string type_str(const T& t) {\n    return \"T\";\n}\n\
     template <typename T, std::enable_if_t<has_type_str_v<T>, std::nullptr_t> = nullptr>\n\
     inline std::string type_str(const T& t) {\n    return t.type_str();\n}\ntemplate\
-    \ <typename T, std::enable_if_t<not has_initializer_str_v<T>, std::nullptr_t>\
-    \ = nullptr>\ninline std::string initializer_str(const T& t) {\n    return \"\
-    {}\";\n}\ntemplate <typename T, std::enable_if_t<has_initializer_str_v<T>, std::nullptr_t>\
-    \ = nullptr>\ninline std::string initializer_str(const T& t) {\n    return t.initializer_str();\n\
-    }\ntemplate <typename T, std::enable_if_t<not has_repr_v<T>, std::nullptr_t> =\
-    \ nullptr>\ninline std::string repr(const T& t) {\n    return detail::type_str(t)\
-    \ + detail::initializer_str(t);\n}\ntemplate <typename T, std::enable_if_t<has_repr_v<T>,\
+    \ <typename T, std::enable_if_t<!has_initializer_str_v<T>, std::nullptr_t> = nullptr>\n\
+    inline std::string initializer_str(const T& t) {\n    return \"{}\";\n}\ntemplate\
+    \ <typename T, std::enable_if_t<has_initializer_str_v<T>, std::nullptr_t> = nullptr>\n\
+    inline std::string initializer_str(const T& t) {\n    return t.initializer_str();\n\
+    }\ntemplate <typename T, std::enable_if_t<!has_repr_v<T>, std::nullptr_t> = nullptr>\n\
+    inline std::string repr(const T& t) {\n    return internal_repr::type_str(t) +\
+    \ internal_repr::initializer_str(t);\n}\ntemplate <typename T, std::enable_if_t<has_repr_v<T>,\
     \ std::nullptr_t> = nullptr>\ninline std::string repr(const T& t) {\n    return\
     \ t.repr();\n}\n\ninline std::string type_str(const char*) {\n    return \"char*\"\
     ;\n}\ninline std::string initializer_str(const char* t) {\n    return \"\\\"\"\
     \ + std::string(t) + \"\\\"\";\n}\ninline std::string repr(const char* t) {\n\
-    \    return detail::initializer_str(t);\n}\n\ninline std::string type_str(const\
+    \    return internal_repr::initializer_str(t);\n}\n\ninline std::string type_str(const\
     \ char&) {\n    return \"char\";\n}\ninline std::string initializer_str(const\
     \ char& t) {\n    // char \u304C\u7B26\u53F7\u4ED8\u304D\u3067\u3082\u6DFB\u5B57\
     \u304C\u8CA0\u306B\u306A\u3089\u306A\u3044\u3088\u3046\u306B unsigned char \u3067\
@@ -293,96 +295,98 @@ data:
     \ \"\");\n    v['\\0'] = \"\\\\0\";\n    v['\\a'] = \"\\\\a\";\n    v['\\b'] =\
     \ \"\\\\b\";\n    v['\\f'] = \"\\\\f\";\n    v['\\r'] = \"\\\\r\";\n    v['\\\
     n'] = \"\\\\n\";\n    v['\\v'] = \"\\\\v\";\n    v['\\''] = \"\\\\'\";\n    v['\\\
-    \\'] = \"\\\\\\\\\";\n    if (u < 128 and !v[u].empty())\n        return \"'\"\
-    \ + v[u] + \"'\";\n    if (32 <= u and u <= 126)\n        return \"'\" + std::string{t}\
+    \\'] = \"\\\\\\\\\";\n    if (u < 128 && !v[u].empty())\n        return \"'\"\
+    \ + v[u] + \"'\";\n    if (32 <= u && u <= 126)\n        return \"'\" + std::string{t}\
     \ + \"'\";\n    return \"'\\\\\" + std::to_string(u / 64) + std::to_string(u /\
     \ 8 % 8) + std::to_string(u % 8) + \"'\";\n}\ninline std::string repr(const char&\
-    \ t) {\n    return detail::initializer_str(t);\n}\n\ninline std::string type_str(const\
-    \ int&) {\n    return \"int\";\n}\ninline std::string initializer_str(const int&\
-    \ t) {\n    return std::to_string(t);\n}\ninline std::string repr(const int& t)\
-    \ {\n    return detail::initializer_str(t);\n}\n\ninline std::string type_str(const\
-    \ long&) {\n    return \"long\";\n}\ninline std::string initializer_str(const\
+    \ t) {\n    return internal_repr::initializer_str(t);\n}\n\ninline std::string\
+    \ type_str(const int&) {\n    return \"int\";\n}\ninline std::string initializer_str(const\
+    \ int& t) {\n    return std::to_string(t);\n}\ninline std::string repr(const int&\
+    \ t) {\n    return internal_repr::initializer_str(t);\n}\n\ninline std::string\
+    \ type_str(const long&) {\n    return \"long\";\n}\ninline std::string initializer_str(const\
     \ long& t) {\n    return std::to_string(t) + \"l\";\n}\ninline std::string repr(const\
-    \ long& t) {\n    return detail::initializer_str(t);\n}\n\ninline std::string\
+    \ long& t) {\n    return internal_repr::initializer_str(t);\n}\n\ninline std::string\
     \ type_str(const long long&) {\n    return \"long long\";\n}\ninline std::string\
     \ initializer_str(const long long& t) {\n    return std::to_string(t) + \"ll\"\
-    ;\n}\ninline std::string repr(const long long& t) {\n    return detail::initializer_str(t);\n\
+    ;\n}\ninline std::string repr(const long long& t) {\n    return internal_repr::initializer_str(t);\n\
     }\n\ninline std::string type_str(const unsigned int&) {\n    return \"unsigned\
     \ int\";\n}\ninline std::string initializer_str(const unsigned int& t) {\n   \
     \ return std::to_string(t) + \"u\";\n}\ninline std::string repr(const unsigned\
-    \ int& t) {\n    return detail::initializer_str(t);\n}\n\ninline std::string type_str(const\
-    \ unsigned long&) {\n    return \"unsigned long\";\n}\ninline std::string initializer_str(const\
-    \ unsigned long& t) {\n    return std::to_string(t) + \"ul\";\n}\ninline std::string\
-    \ repr(const unsigned long& t) {\n    return detail::initializer_str(t);\n}\n\n\
-    inline std::string type_str(const unsigned long long&) {\n    return \"unsigned\
+    \ int& t) {\n    return internal_repr::initializer_str(t);\n}\n\ninline std::string\
+    \ type_str(const unsigned long&) {\n    return \"unsigned long\";\n}\ninline std::string\
+    \ initializer_str(const unsigned long& t) {\n    return std::to_string(t) + \"\
+    ul\";\n}\ninline std::string repr(const unsigned long& t) {\n    return internal_repr::initializer_str(t);\n\
+    }\n\ninline std::string type_str(const unsigned long long&) {\n    return \"unsigned\
     \ long long\";\n}\ninline std::string initializer_str(const unsigned long long&\
     \ t) {\n    return std::to_string(t) + \"ull\";\n}\ninline std::string repr(const\
-    \ unsigned long long& t) {\n    return detail::initializer_str(t);\n}\n\ninline\
-    \ std::string type_str(const std::string&) {\n    return \"std::string\";\n}\n\
-    inline std::string initializer_str(const std::string& t) {\n    return \"\\\"\"\
-    \ + t + \"\\\"\";\n}\ninline std::string repr(const std::string& t) {\n    return\
-    \ detail::type_str(t) + \"{\" + detail::initializer_str(t) + \"}\";\n}\n\ninline\
-    \ std::string type_str(const float&) {\n    return \"float\";\n}\ninline std::string\
-    \ initializer_str(const float& t) {\n    return std::to_string(t) + \"f\";\n}\n\
-    inline std::string repr(const float& t) {\n    return detail::initializer_str(t);\n\
+    \ unsigned long long& t) {\n    return internal_repr::initializer_str(t);\n}\n\
+    \ninline std::string type_str(const std::string&) {\n    return \"std::string\"\
+    ;\n}\ninline std::string initializer_str(const std::string& t) {\n    return \"\
+    \\\"\" + t + \"\\\"\";\n}\ninline std::string repr(const std::string& t) {\n \
+    \   return internal_repr::type_str(t) + \"{\" + internal_repr::initializer_str(t)\
+    \ + \"}\";\n}\n\ninline std::string type_str(const float&) {\n    return \"float\"\
+    ;\n}\ninline std::string initializer_str(const float& t) {\n    return std::to_string(t)\
+    \ + \"f\";\n}\ninline std::string repr(const float& t) {\n    return internal_repr::initializer_str(t);\n\
     }\n\ninline std::string type_str(const double&) {\n    return \"double\";\n}\n\
     inline std::string initializer_str(const double& t) {\n    return std::to_string(t);\n\
-    }\ninline std::string repr(const double& t) {\n    return detail::initializer_str(t);\n\
+    }\ninline std::string repr(const double& t) {\n    return internal_repr::initializer_str(t);\n\
     }\n\ninline std::string type_str(const long double&) {\n    return \"long double\"\
     ;\n}\ninline std::string initializer_str(const long double& t) {\n    return std::to_string(t)\
-    \ + \"l\";\n}\ninline std::string repr(const long double& t) {\n    return detail::initializer_str(t);\n\
+    \ + \"l\";\n}\ninline std::string repr(const long double& t) {\n    return internal_repr::initializer_str(t);\n\
     }\n\ntemplate <typename T>\ninline std::string type_str(const std::vector<T>&)\
-    \ {\n    T t;\n    return \"std::vector<\" + detail::type_str(t) + \">\";\n}\n\
-    template <typename T>\ninline std::string initializer_str(const std::vector<T>&\
+    \ {\n    T t;\n    return \"std::vector<\" + internal_repr::type_str(t) + \">\"\
+    ;\n}\ntemplate <typename T>\ninline std::string initializer_str(const std::vector<T>&\
     \ t) {\n    std::string ret;\n    ret += \"{\";\n    for (auto itr = t.begin();\
     \ itr != t.end(); itr++) {\n        if (itr != t.begin()) ret += \", \";\n   \
-    \     ret += detail::initializer_str(*itr);\n    }\n    ret += \"}\";\n    return\
-    \ ret;\n}\ntemplate <typename T>\ninline std::string repr(const std::vector<T>&\
-    \ t) {\n    return detail::type_str(t) + detail::initializer_str(t);\n}\n\ntemplate\
-    \ <typename T>\ninline std::string type_str(const std::set<T>&) {\n    T t;\n\
-    \    return \"std::set<\" + detail::type_str(t) + \">\";\n}\ntemplate <typename\
-    \ T>\ninline std::string initializer_str(const std::set<T>& t) {\n    std::string\
-    \ ret;\n    ret += \"{\";\n    for (auto itr = t.begin(); itr != t.end(); itr++)\
-    \ {\n        if (itr != t.begin()) ret += \", \";\n        ret += detail::initializer_str(*itr);\n\
-    \    }\n    ret += \"}\";\n    return ret;\n}\ntemplate <typename T>\ninline std::string\
-    \ repr(const std::set<T>& t) {\n    return detail::type_str(t) + detail::initializer_str(t);\n\
+    \     ret += internal_repr::initializer_str(*itr);\n    }\n    ret += \"}\";\n\
+    \    return ret;\n}\ntemplate <typename T>\ninline std::string repr(const std::vector<T>&\
+    \ t) {\n    return internal_repr::type_str(t) + internal_repr::initializer_str(t);\n\
+    }\n\ntemplate <typename T>\ninline std::string type_str(const std::set<T>&) {\n\
+    \    T t;\n    return \"std::set<\" + internal_repr::type_str(t) + \">\";\n}\n\
+    template <typename T>\ninline std::string initializer_str(const std::set<T>& t)\
+    \ {\n    std::string ret;\n    ret += \"{\";\n    for (auto itr = t.begin(); itr\
+    \ != t.end(); itr++) {\n        if (itr != t.begin()) ret += \", \";\n       \
+    \ ret += internal_repr::initializer_str(*itr);\n    }\n    ret += \"}\";\n   \
+    \ return ret;\n}\ntemplate <typename T>\ninline std::string repr(const std::set<T>&\
+    \ t) {\n    return internal_repr::type_str(t) + internal_repr::initializer_str(t);\n\
     }\n\ntemplate <typename T1, typename T2>\ninline std::string type_str(const std::pair<T1,\
-    \ T2>&) {\n    T1 t1;\n    T2 t2;\n    return \"std::pair<\" + detail::type_str(t1)\
-    \ + \", \" + detail::type_str(t2) + \">\";\n}\ntemplate <typename T1, typename\
+    \ T2>&) {\n    T1 t1;\n    T2 t2;\n    return \"std::pair<\" + internal_repr::type_str(t1)\
+    \ + \", \" + internal_repr::type_str(t2) + \">\";\n}\ntemplate <typename T1, typename\
     \ T2>\ninline std::string initializer_str(const std::pair<T1, T2>& t) {\n    return\
-    \ \"{\" + detail::initializer_str(t.first) + \", \" + detail::initializer_str(t.second)\
+    \ \"{\" + internal_repr::initializer_str(t.first) + \", \" + internal_repr::initializer_str(t.second)\
     \ + \"}\";\n}\ntemplate <typename T1, typename T2>\ninline std::string repr(const\
-    \ std::pair<T1, T2>& t) {\n    return detail::type_str(t) + detail::initializer_str(t);\n\
+    \ std::pair<T1, T2>& t) {\n    return internal_repr::type_str(t) + internal_repr::initializer_str(t);\n\
     }\n\ntemplate <typename T1, typename T2>\ninline std::string type_str(const std::map<T1,\
-    \ T2>&) {\n    T1 t1;\n    T2 t2;\n    return \"std::map<\" + detail::type_str(t1)\
-    \ + \", \" + detail::type_str(t2) + \">\";\n}\ntemplate <typename T1, typename\
+    \ T2>&) {\n    T1 t1;\n    T2 t2;\n    return \"std::map<\" + internal_repr::type_str(t1)\
+    \ + \", \" + internal_repr::type_str(t2) + \">\";\n}\ntemplate <typename T1, typename\
     \ T2>\ninline std::string initializer_str(const std::map<T1, T2>& t) {\n    std::string\
     \ ret;\n    ret += \"{\";\n    for (auto itr = t.begin(); itr != t.end(); itr++)\
     \ {\n        if (itr != t.begin()) ret += \", \";\n        ret += \"{\";\n   \
-    \     ret += detail::initializer_str(itr->first);\n        ret += \", \";\n  \
-    \      ret += detail::initializer_str(itr->second);\n        ret += \"}\";\n \
-    \   }\n    ret += \"}\";\n    return ret;\n}\ntemplate <typename T1, typename\
-    \ T2>\ninline std::string repr(const std::map<T1, T2>& t) {\n    return detail::type_str(t)\
-    \ + detail::initializer_str(t);\n}\n\ntemplate <typename T, std::size_t N>\ninline\
-    \ std::string type_str(const std::array<T, N>&) {\n    T t;\n    return \"std::array<\"\
-    \ + detail::type_str(t) + \", \" + std::to_string(N) + \">\";\n}\ntemplate <typename\
-    \ T, std::size_t N>\ninline std::string initializer_str(const std::array<T, N>&\
-    \ t) {\n    std::string ret;\n    ret += \"{\";\n    for (auto itr = t.begin();\
-    \ itr != t.end(); itr++) {\n        if (itr != t.begin()) ret += \", \";\n   \
-    \     ret += detail::initializer_str(*itr);\n    }\n    ret += \"}\";\n    return\
-    \ ret;\n}\ntemplate <typename T, std::size_t N>\ninline std::string repr(const\
-    \ std::array<T, N>& t) {\n    return detail::type_str(t) + detail::initializer_str(t);\n\
-    }\n\n}  // namespace detail\n\ntemplate <typename T>\ninline std::string type_str(const\
-    \ T& t) {\n    return detail::type_str(t);\n}\ntemplate <typename T>\ninline std::string\
-    \ initializer_str(const T& t) {\n    return detail::initializer_str(t);\n}\ntemplate\
-    \ <typename T>\ninline std::string repr(const T& t) {\n    return detail::repr(t);\n\
-    }\n\n#define DEBUG(x) { std::cerr << #x << \" = \" << repr(x) << std::endl; }\n"
+    \     ret += internal_repr::initializer_str(itr->first);\n        ret += \", \"\
+    ;\n        ret += internal_repr::initializer_str(itr->second);\n        ret +=\
+    \ \"}\";\n    }\n    ret += \"}\";\n    return ret;\n}\ntemplate <typename T1,\
+    \ typename T2>\ninline std::string repr(const std::map<T1, T2>& t) {\n    return\
+    \ internal_repr::type_str(t) + internal_repr::initializer_str(t);\n}\n\ntemplate\
+    \ <typename T, std::size_t N>\ninline std::string type_str(const std::array<T,\
+    \ N>&) {\n    T t;\n    return \"std::array<\" + internal_repr::type_str(t) +\
+    \ \", \" + std::to_string(N) + \">\";\n}\ntemplate <typename T, std::size_t N>\n\
+    inline std::string initializer_str(const std::array<T, N>& t) {\n    std::string\
+    \ ret;\n    ret += \"{\";\n    for (auto itr = t.begin(); itr != t.end(); itr++)\
+    \ {\n        if (itr != t.begin()) ret += \", \";\n        ret += internal_repr::initializer_str(*itr);\n\
+    \    }\n    ret += \"}\";\n    return ret;\n}\ntemplate <typename T, std::size_t\
+    \ N>\ninline std::string repr(const std::array<T, N>& t) {\n    return internal_repr::type_str(t)\
+    \ + internal_repr::initializer_str(t);\n}\n\n}  // namespace internal_repr\n\n\
+    template <typename T>\ninline std::string type_str(const T& t) {\n    return internal_repr::type_str(t);\n\
+    }\ntemplate <typename T>\ninline std::string initializer_str(const T& t) {\n \
+    \   return internal_repr::initializer_str(t);\n}\ntemplate <typename T>\ninline\
+    \ std::string repr(const T& t) {\n    return internal_repr::repr(t);\n}\n\n#define\
+    \ DEBUG(x) \\\n    { std::cerr << #x << \" = \" << repr(x) << std::endl; }\n"
   dependsOn:
   - src/utility/traits.hpp
   isVerificationFile: false
   path: src/utility/repr.hpp
   requiredBy: []
-  timestamp: '2026-10-13 13:03:23+09:00'
+  timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/repr.test.cpp

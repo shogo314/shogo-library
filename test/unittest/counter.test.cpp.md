@@ -19,24 +19,22 @@ data:
     \n\n// Counter \u3092 std::map \u306B\u3088\u308B\u611A\u76F4\u306A\u5B9F\u88C5\
     \u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\
     \u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\
-    \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include <algorithm>\n\
-    #include <iostream>\n#include <map>\n#include <random>\n#include <string>\n#include\
-    \ <vector>\n\n#line 2 \"src/data_structures/counter.hpp\"\n\n/**\n * @file counter.hpp\n\
-    \ * @brief \u5024\u306E\u500B\u6570\u3092\u6570\u3048\u308B\u591A\u91CD\u96C6\u5408\
-    \ (Counter)\n */\n\n#line 9 \"src/data_structures/counter.hpp\"\n#include <cassert>\n\
-    #include <cstddef>\n#include <initializer_list>\n#include <iterator>\n#line 14\
-    \ \"src/data_structures/counter.hpp\"\n#include <type_traits>\n#include <utility>\n\
-    #line 17 \"src/data_structures/counter.hpp\"\n\ntemplate <typename T>\nstruct\
-    \ Counter {\n    using key_type = T;\n    using mapped_type = long long;\n   \
-    \ using value_type = std::pair<key_type, mapped_type>;\n    std::map<key_type,\
-    \ mapped_type> data;\n\n    void inc(const key_type& key, const mapped_type& t)\
-    \ {\n        data[key] += t;\n        auto itr = data.find(key);\n        assert(itr->second\
-    \ >= 0);\n        if (itr->second == 0) {\n            data.erase(itr);\n    \
-    \    }\n    }\n    Counter() = default;\n    explicit Counter(const key_type&\
-    \ x) : data{{x, 1}} {}\n    /**\n     * @brief \u7BC4\u56F2\u306E\u8981\u7D20\u3092\
-    \u6570\u3048\u308B\n     * Counter \u81EA\u8EAB\u3068 key_type (std::string \u306A\
-    \u3069\u7BC4\u56F2\u3067\u3082\u3042\u308B\u3082\u306E) \u306F\u3053\u3061\u3089\
-    \u3067\u53D7\u3051\u53D6\u3089\u306A\u3044\n     */\n    template <class C, std::enable_if_t<!std::is_same_v<std::decay_t<C>,\
+    \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/data_structures/counter.hpp\"\
+    \n\n/**\n * @file counter.hpp\n * @brief \u5024\u306E\u500B\u6570\u3092\u6570\u3048\
+    \u308B\u591A\u91CD\u96C6\u5408 (Counter)\n */\n\n#include <algorithm>\n#include\
+    \ <cassert>\n#include <cstddef>\n#include <initializer_list>\n#include <iterator>\n\
+    #include <map>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\
+    \ntemplate <typename T>\nstruct Counter {\n    using key_type = T;\n    using\
+    \ mapped_type = long long;\n    using value_type = std::pair<key_type, mapped_type>;\n\
+    \    std::map<key_type, mapped_type> data;\n\n    void inc(const key_type& key,\
+    \ const mapped_type& t) {\n        data[key] += t;\n        auto itr = data.find(key);\n\
+    \        assert(itr->second >= 0);\n        if (itr->second == 0) {\n        \
+    \    data.erase(itr);\n        }\n    }\n    Counter() = default;\n    explicit\
+    \ Counter(const key_type& x) : data{{x, 1}} {}\n    /**\n     * @brief \u7BC4\u56F2\
+    \u306E\u8981\u7D20\u3092\u6570\u3048\u308B\n     * Counter \u81EA\u8EAB\u3068\
+    \ key_type (std::string \u306A\u3069\u7BC4\u56F2\u3067\u3082\u3042\u308B\u3082\
+    \u306E) \u306F\u3053\u3061\u3089\u3067\u53D7\u3051\u53D6\u3089\u306A\u3044\n \
+    \    */\n    template <class C, std::enable_if_t<!std::is_same_v<std::decay_t<C>,\
     \ Counter> && !std::is_convertible_v<C, key_type>, std::nullptr_t> = nullptr,\n\
     \              class = decltype(std::begin(std::declval<C&>()), std::end(std::declval<C&>()))>\n\
     \    explicit Counter(C&& v) {\n        for (const key_type& a : v) {\n      \
@@ -71,7 +69,7 @@ data:
     \ {\n        std::vector<value_type> ret;\n        ret.reserve(data.size());\n\
     \        for (const auto& [i, c] : data) {\n            ret.push_back({i, c});\n\
     \        }\n        std::sort(ret.begin(), ret.end(), [](const value_type& a,\
-    \ const value_type& b) { return a.second > b.second or (a.second == b.second and\
+    \ const value_type& b) { return a.second > b.second || (a.second == b.second &&\
     \ a.first < b.first); });\n        return ret;\n    }\n    class CounterReference\
     \ {\n        Counter& base;\n        key_type key;\n\n       public:\n       \
     \ CounterReference(Counter& base, key_type key) : base(base), key(key) {}\n  \
@@ -83,17 +81,20 @@ data:
     \ mapped_type() const {\n            return base.get(key);\n        }\n    };\n\
     \    mapped_type operator[](const key_type& key) const {\n        return get(key);\n\
     \    }\n    CounterReference operator[](const key_type& key) {\n        return\
-    \ CounterReference(*this, key);\n    }\n};\n#line 14 \"test/unittest/counter.test.cpp\"\
-    \n\nusing Model = std::map<int, long long>;\n\n// \u500B\u6570 0 \u306E\u5024\u3092\
-    \u53D6\u308A\u9664\u3044\u305F map \u306B\u3059\u308B\nModel normalize(Model m)\
-    \ {\n    for (auto itr = m.begin(); itr != m.end();) {\n        if (itr->second\
-    \ == 0) itr = m.erase(itr);\n        else ++itr;\n    }\n    return m;\n}\n\n\
-    bool same(const Counter<int>& c, const Model& m) {\n    Model mm = normalize(m);\n\
-    \    if (c.size() != (int)mm.size()) return false;\n    // total \u306F\u91CD\u8907\
-    \u3092\u542B\u3081\u305F\u8981\u7D20\u6570 (\u500B\u6570\u306E\u7DCF\u548C)\n\
-    \    long long sum = 0;\n    for (auto [x, cnt] : mm) sum += cnt;\n    if (c.total()\
-    \ != sum) return false;\n    // begin / end \u3067\u8D70\u67FB\u3057\u305F\u7D50\
-    \u679C\u304C\u5024\u306E\u6607\u9806\u306B\u4E00\u81F4\u3059\u308B\n    std::vector<std::pair<int,\
+    \ CounterReference(*this, key);\n    }\n};\n#line 7 \"test/unittest/counter.test.cpp\"\
+    \n\n#line 9 \"test/unittest/counter.test.cpp\"\n#include <iostream>\n#line 11\
+    \ \"test/unittest/counter.test.cpp\"\n#include <random>\n#include <string>\n#line\
+    \ 14 \"test/unittest/counter.test.cpp\"\n\nusing Model = std::map<int, long long>;\n\
+    \n// \u500B\u6570 0 \u306E\u5024\u3092\u53D6\u308A\u9664\u3044\u305F map \u306B\
+    \u3059\u308B\nModel normalize(Model m) {\n    for (auto itr = m.begin(); itr !=\
+    \ m.end();) {\n        if (itr->second == 0)\n            itr = m.erase(itr);\n\
+    \        else\n            ++itr;\n    }\n    return m;\n}\n\nbool same(const\
+    \ Counter<int>& c, const Model& m) {\n    Model mm = normalize(m);\n    if (c.size()\
+    \ != (int)mm.size()) return false;\n    // total \u306F\u91CD\u8907\u3092\u542B\
+    \u3081\u305F\u8981\u7D20\u6570 (\u500B\u6570\u306E\u7DCF\u548C)\n    long long\
+    \ sum = 0;\n    for (auto [x, cnt] : mm) sum += cnt;\n    if (c.total() != sum)\
+    \ return false;\n    // begin / end \u3067\u8D70\u67FB\u3057\u305F\u7D50\u679C\
+    \u304C\u5024\u306E\u6607\u9806\u306B\u4E00\u81F4\u3059\u308B\n    std::vector<std::pair<int,\
     \ long long>> a(c.begin(), c.end()), b(mm.begin(), mm.end());\n    if (a != b)\
     \ return false;\n    // const \u306A [] \u3068 get\n    for (int x = -1; x <=\
     \ 10; x++) {\n        long long expect = mm.count(x) ? mm.at(x) : 0;\n       \
@@ -163,13 +164,13 @@ data:
     \n\n// Counter \u3092 std::map \u306B\u3088\u308B\u611A\u76F4\u306A\u5B9F\u88C5\
     \u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\
     \u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\
-    \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include <algorithm>\n\
-    #include <iostream>\n#include <map>\n#include <random>\n#include <string>\n#include\
-    \ <vector>\n\n#include \"../../src/data_structures/counter.hpp\"\n\nusing Model\
-    \ = std::map<int, long long>;\n\n// \u500B\u6570 0 \u306E\u5024\u3092\u53D6\u308A\
-    \u9664\u3044\u305F map \u306B\u3059\u308B\nModel normalize(Model m) {\n    for\
-    \ (auto itr = m.begin(); itr != m.end();) {\n        if (itr->second == 0) itr\
-    \ = m.erase(itr);\n        else ++itr;\n    }\n    return m;\n}\n\nbool same(const\
+    \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../src/data_structures/counter.hpp\"\
+    \n\n#include <algorithm>\n#include <iostream>\n#include <map>\n#include <random>\n\
+    #include <string>\n#include <vector>\n\nusing Model = std::map<int, long long>;\n\
+    \n// \u500B\u6570 0 \u306E\u5024\u3092\u53D6\u308A\u9664\u3044\u305F map \u306B\
+    \u3059\u308B\nModel normalize(Model m) {\n    for (auto itr = m.begin(); itr !=\
+    \ m.end();) {\n        if (itr->second == 0)\n            itr = m.erase(itr);\n\
+    \        else\n            ++itr;\n    }\n    return m;\n}\n\nbool same(const\
     \ Counter<int>& c, const Model& m) {\n    Model mm = normalize(m);\n    if (c.size()\
     \ != (int)mm.size()) return false;\n    // total \u306F\u91CD\u8907\u3092\u542B\
     \u3081\u305F\u8981\u7D20\u6570 (\u500B\u6570\u306E\u7DCF\u548C)\n    long long\
@@ -246,7 +247,7 @@ data:
   isVerificationFile: true
   path: test/unittest/counter.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 07:02:47+09:00'
+  timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/counter.test.cpp

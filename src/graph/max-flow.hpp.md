@@ -26,12 +26,12 @@ data:
     \u3068\u304C\u591A\u3044\u3002\u5BB9\u91CF\u304C\u3059\u3079\u3066 1 \u306A\u3089\
     \ O(m min(m^(1/2), n^(2/3)))\n * \u4F8B:\n * MaxFlow<long long> mf(n);\n * mf.add_edge(0,\
     \ 1, 5);\n * long long f = mf.flow(s, t);\n *\n * @tparam Cap \u5BB9\u91CF\u306E\
-    \u578B\n */\ntemplate <typename Cap>\nclass MaxFlow {\npublic:\n    /**\n    \
-    \ * @brief \u8FBA\u306E\u60C5\u5831\n     */\n    struct Edge {\n        int from,\
-    \ to;\n        Cap cap;   //!< \u5BB9\u91CF\n        Cap flow;  //!< \u6D41\u308C\
-    \u3066\u3044\u308B\u91CF\n    };\n\nprivate:\n    struct InnerEdge {\n       \
-    \ int to, rev;\n        Cap cap;  // \u6B8B\u308A\u306E\u5BB9\u91CF\n    };\n\
-    \    int n;\n    std::vector<std::vector<InnerEdge>> g;\n    std::vector<std::pair<int,\
+    \u578B\n */\ntemplate <typename Cap>\nclass MaxFlow {\n   public:\n    /**\n \
+    \    * @brief \u8FBA\u306E\u60C5\u5831\n     */\n    struct Edge {\n        int\
+    \ from, to;\n        Cap cap;   //!< \u5BB9\u91CF\n        Cap flow;  //!< \u6D41\
+    \u308C\u3066\u3044\u308B\u91CF\n    };\n\n   private:\n    struct InnerEdge {\n\
+    \        int to, rev;\n        Cap cap;  // \u6B8B\u308A\u306E\u5BB9\u91CF\n \
+    \   };\n    int n;\n    std::vector<std::vector<InnerEdge>> g;\n    std::vector<std::pair<int,\
     \ int>> pos;  // \u8FFD\u52A0\u3057\u305F\u8FBA\u304C g \u306E\u3069\u3053\u306B\
     \u3042\u308B\u304B\n    std::vector<int> level, iter;\n\n    bool bfs(int s, int\
     \ t) {\n        level.assign(n, -1);\n        level[s] = 0;\n        std::queue<int>\
@@ -50,13 +50,13 @@ data:
     \ += d;\n            res += d;\n            if (res == up) return res;\n     \
     \   }\n        // \u3053\u308C\u4EE5\u4E0A\u6D41\u305B\u306A\u3044\u306E\u3067\
     \u3001\u3053\u306E\u30D5\u30A7\u30FC\u30BA\u3067\u306F\u4F7F\u308F\u306A\u3044\
-    \n        level[v] = n;\n        return res;\n    }\n\npublic:\n    explicit MaxFlow(int\
-    \ n = 0) : n(n), g(n) {}\n\n    int size() const { return n; }\n\n    /**\n  \
-    \   * @brief from \u304B\u3089 to \u3078\u306E\u5BB9\u91CF cap \u306E\u8FBA\u3092\
-    \u8FFD\u52A0\u3057\u3001\u8FBA\u306E\u756A\u53F7 (\u8FFD\u52A0\u3057\u305F\u9806\
-    \u306B 0, 1, ...) \u3092\u8FD4\u3059\n     */\n    int add_edge(int from, int\
-    \ to, Cap cap) {\n        assert(0 <= from && from < n && 0 <= to && to < n &&\
-    \ cap >= 0);\n        int id = pos.size();\n        int from_id = g[from].size();\n\
+    \n        level[v] = n;\n        return res;\n    }\n\n   public:\n    explicit\
+    \ MaxFlow(int n = 0) : n(n), g(n) {}\n\n    int size() const { return n; }\n\n\
+    \    /**\n     * @brief from \u304B\u3089 to \u3078\u306E\u5BB9\u91CF cap \u306E\
+    \u8FBA\u3092\u8FFD\u52A0\u3057\u3001\u8FBA\u306E\u756A\u53F7 (\u8FFD\u52A0\u3057\
+    \u305F\u9806\u306B 0, 1, ...) \u3092\u8FD4\u3059\n     */\n    int add_edge(int\
+    \ from, int to, Cap cap) {\n        assert(0 <= from && from < n && 0 <= to &&\
+    \ to < n && cap >= 0);\n        int id = pos.size();\n        int from_id = g[from].size();\n\
     \        int to_id = g[to].size() + (from == to);\n        pos.emplace_back(from,\
     \ from_id);\n        g[from].push_back({to, to_id, cap});\n        g[to].push_back({from,\
     \ from_id, 0});\n        return id;\n    }\n\n    /**\n     * @brief s \u304B\u3089\
@@ -104,11 +104,11 @@ data:
     \u91CF\u304C\u3059\u3079\u3066 1 \u306A\u3089 O(m min(m^(1/2), n^(2/3)))\n * \u4F8B\
     :\n * MaxFlow<long long> mf(n);\n * mf.add_edge(0, 1, 5);\n * long long f = mf.flow(s,\
     \ t);\n *\n * @tparam Cap \u5BB9\u91CF\u306E\u578B\n */\ntemplate <typename Cap>\n\
-    class MaxFlow {\npublic:\n    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\n  \
-    \   */\n    struct Edge {\n        int from, to;\n        Cap cap;   //!< \u5BB9\
+    class MaxFlow {\n   public:\n    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\n\
+    \     */\n    struct Edge {\n        int from, to;\n        Cap cap;   //!< \u5BB9\
     \u91CF\n        Cap flow;  //!< \u6D41\u308C\u3066\u3044\u308B\u91CF\n    };\n\
-    \nprivate:\n    struct InnerEdge {\n        int to, rev;\n        Cap cap;  //\
-    \ \u6B8B\u308A\u306E\u5BB9\u91CF\n    };\n    int n;\n    std::vector<std::vector<InnerEdge>>\
+    \n   private:\n    struct InnerEdge {\n        int to, rev;\n        Cap cap;\
+    \  // \u6B8B\u308A\u306E\u5BB9\u91CF\n    };\n    int n;\n    std::vector<std::vector<InnerEdge>>\
     \ g;\n    std::vector<std::pair<int, int>> pos;  // \u8FFD\u52A0\u3057\u305F\u8FBA\
     \u304C g \u306E\u3069\u3053\u306B\u3042\u308B\u304B\n    std::vector<int> level,\
     \ iter;\n\n    bool bfs(int s, int t) {\n        level.assign(n, -1);\n      \
@@ -127,7 +127,7 @@ data:
     \       g[e.to][e.rev].cap += d;\n            res += d;\n            if (res ==\
     \ up) return res;\n        }\n        // \u3053\u308C\u4EE5\u4E0A\u6D41\u305B\u306A\
     \u3044\u306E\u3067\u3001\u3053\u306E\u30D5\u30A7\u30FC\u30BA\u3067\u306F\u4F7F\
-    \u308F\u306A\u3044\n        level[v] = n;\n        return res;\n    }\n\npublic:\n\
+    \u308F\u306A\u3044\n        level[v] = n;\n        return res;\n    }\n\n   public:\n\
     \    explicit MaxFlow(int n = 0) : n(n), g(n) {}\n\n    int size() const { return\
     \ n; }\n\n    /**\n     * @brief from \u304B\u3089 to \u3078\u306E\u5BB9\u91CF\
     \ cap \u306E\u8FBA\u3092\u8FFD\u52A0\u3057\u3001\u8FBA\u306E\u756A\u53F7 (\u8FFD\
@@ -178,7 +178,7 @@ data:
   isVerificationFile: false
   path: src/graph/max-flow.hpp
   requiredBy: []
-  timestamp: '2026-10-14 00:48:32+09:00'
+  timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/bipartite-matching.test.cpp

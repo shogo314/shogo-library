@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: src/algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   _extendedRequiredBy: []
@@ -26,7 +26,7 @@ data:
     /**\n * @file sliding-window-aggregation.hpp\n * @brief Sliding Window Aggregation\
     \ (\u30E2\u30CE\u30A4\u30C9\u3092\u4E57\u305B\u305F\u30AD\u30E5\u30FC) \u3068\u30B9\
     \u30E9\u30A4\u30C9\u6700\u5C0F\u5024\n */\n\n#include <cassert>\n#include <deque>\n\
-    #include <functional>\n#include <utility>\n#include <vector>\n#line 2 \"src/algebra/monoid.hpp\"\
+    #include <functional>\n#include <utility>\n#include <vector>\n\n#line 2 \"src/algebra/monoid.hpp\"\
     \n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
     \n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
     \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\
@@ -113,50 +113,50 @@ data:
     \ g.b + f.b}; }\n    static constexpr S e() { return {T(1), T(0)}; }\n};\n\n/**\n\
     \ * @brief \u62EC\u5F27\u5217 \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\
     \u3044 ')' \u3068 '(' \u306E\u500B\u6570\n */\nstruct Parenthesis {\n    struct\
-    \ S {\n        long long close; // \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\
-    \u3044 ')' \u306E\u500B\u6570\n        long long open;  // \u5BFE\u5FDC\u306E\u53D6\
-    \u308C\u3066\u3044\u306A\u3044 '(' \u306E\u500B\u6570\n        constexpr S(char\
-    \ c = 0) : close(c == ')'), open(c == '(') {}\n        constexpr S(long long close,\
-    \ long long open) : close(close), open(open) {}\n        /**\n         * @brief\
-    \ \u6B63\u3057\u3044\u62EC\u5F27\u5217\u304B\n         */\n        constexpr bool\
-    \ is_valid() const { return close == 0 && open == 0; }\n    };\n    static constexpr\
-    \ S op(const S& a, const S& b) {\n        if(a.open >= b.close) return S(a.close,\
-    \ a.open - b.close + b.open);\n        return S(a.close + b.close - a.open, b.open);\n\
-    \    }\n    static constexpr S e() { return S(); }\n};\n\n/**\n * @brief \u6700\
-    \u5C0F\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\
-    \u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u4F4D\
-    \u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\u578B\n */\ntemplate\
-    \ <typename T, typename U = int>\nstruct MinWith {\n    using S = std::pair<T,\
-    \ U>;\n    static constexpr S op(const S& a, const S& b) { return b.first < a.first\
-    \ ? b : a; }\n    static constexpr S e() { return {std::numeric_limits<T>::max(),\
-    \ U{}}; }\n};\n\n/**\n * @brief \u6700\u5927\u5024\u3068\u305D\u306E\u4F4D\u7F6E\
-    \ \u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n * @tparam\
-    \ T \u5024\u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\
-    \u3059\u308B\u5024\u306E\u578B\n */\ntemplate <typename T, typename U = int>\n\
-    struct MaxWith {\n    using S = std::pair<T, U>;\n    static constexpr S op(const\
-    \ S& a, const S& b) { return a.first < b.first ? b : a; }\n    static constexpr\
-    \ S e() { return {std::numeric_limits<T>::lowest(), U{}}; }\n};\n\n/**\n * @brief\
-    \ \u6700\u5C0F\u5024\u3068\u305D\u306E\u500B\u6570\n *\n * @tparam T \u5024\u306E\
-    \u578B\n * @tparam U \u500B\u6570\u306E\u578B\n */\ntemplate <typename T, typename\
-    \ U = long long>\nstruct MinCount {\n    using S = std::pair<T, U>;\n    static\
-    \ constexpr S op(const S& a, const S& b) {\n        if(a.first < b.first) return\
-    \ a;\n        if(b.first < a.first) return b;\n        return {a.first, a.second\
-    \ + b.second};\n    }\n    static constexpr S e() { return {std::numeric_limits<T>::max(),\
-    \ U(0)}; }\n};\n\n/**\n * @brief \u6700\u5927\u5024\u3068\u305D\u306E\u500B\u6570\
+    \ S {\n        long long close;  // \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\
+    \u306A\u3044 ')' \u306E\u500B\u6570\n        long long open;   // \u5BFE\u5FDC\
+    \u306E\u53D6\u308C\u3066\u3044\u306A\u3044 '(' \u306E\u500B\u6570\n        constexpr\
+    \ S(char c = 0) : close(c == ')'), open(c == '(') {}\n        constexpr S(long\
+    \ long close, long long open) : close(close), open(open) {}\n        /**\n   \
+    \      * @brief \u6B63\u3057\u3044\u62EC\u5F27\u5217\u304B\n         */\n    \
+    \    constexpr bool is_valid() const { return close == 0 && open == 0; }\n   \
+    \ };\n    static constexpr S op(const S& a, const S& b) {\n        if (a.open\
+    \ >= b.close) return S(a.close, a.open - b.close + b.open);\n        return S(a.close\
+    \ + b.close - a.open, b.open);\n    }\n    static constexpr S e() { return S();\
+    \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\
+    \u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\
+    \u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\
+    \u5024\u306E\u578B\n */\ntemplate <typename T, typename U = int>\nstruct MinWith\
+    \ {\n    using S = std::pair<T, U>;\n    static constexpr S op(const S& a, const\
+    \ S& b) { return b.first < a.first ? b : a; }\n    static constexpr S e() { return\
+    \ {std::numeric_limits<T>::max(), U{}}; }\n};\n\n/**\n * @brief \u6700\u5927\u5024\
+    \u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\
+    \u512A\u5148\n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\
+    \u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\u578B\n */\ntemplate <typename\
+    \ T, typename U = int>\nstruct MaxWith {\n    using S = std::pair<T, U>;\n   \
+    \ static constexpr S op(const S& a, const S& b) { return a.first < b.first ? b\
+    \ : a; }\n    static constexpr S e() { return {std::numeric_limits<T>::lowest(),\
+    \ U{}}; }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u500B\u6570\
     \n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u500B\u6570\u306E\u578B\n\
-    \ */\ntemplate <typename T, typename U = long long>\nstruct MaxCount {\n    using\
+    \ */\ntemplate <typename T, typename U = long long>\nstruct MinCount {\n    using\
     \ S = std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n\
-    \        if(a.first < b.first) return b;\n        if(b.first < a.first) return\
-    \ a;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
-    \ S e() { return {std::numeric_limits<T>::lowest(), U(0)}; }\n};\n\n/**\n * @brief\
-    \ \u7A4D\u306E\u9806\u5E8F\u3092\u9006\u306B\u3057\u305F\u30E2\u30CE\u30A4\u30C9\
-    \ op(a, b) = M::op(b, a)\n *\n * \u4F8B: SegTree<monoid::Reverse<monoid::Composite<mint>>>\
+    \        if (a.first < b.first) return a;\n        if (b.first < a.first) return\
+    \ b;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
+    \ S e() { return {std::numeric_limits<T>::max(), U(0)}; }\n};\n\n/**\n * @brief\
+    \ \u6700\u5927\u5024\u3068\u305D\u306E\u500B\u6570\n *\n * @tparam T \u5024\u306E\
+    \u578B\n * @tparam U \u500B\u6570\u306E\u578B\n */\ntemplate <typename T, typename\
+    \ U = long long>\nstruct MaxCount {\n    using S = std::pair<T, U>;\n    static\
+    \ constexpr S op(const S& a, const S& b) {\n        if (a.first < b.first) return\
+    \ b;\n        if (b.first < a.first) return a;\n        return {a.first, a.second\
+    \ + b.second};\n    }\n    static constexpr S e() { return {std::numeric_limits<T>::lowest(),\
+    \ U(0)}; }\n};\n\n/**\n * @brief \u7A4D\u306E\u9806\u5E8F\u3092\u9006\u306B\u3057\
+    \u305F\u30E2\u30CE\u30A4\u30C9 op(a, b) = M::op(b, a)\n *\n * \u4F8B: SegTree<monoid::Reverse<monoid::Composite<mint>>>\
     \ seg(v); \u306E\u533A\u9593 [l, r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x))\n *\n\
     \ * @tparam M \u3082\u3068\u306E\u30E2\u30CE\u30A4\u30C9\n */\ntemplate <typename\
     \ M>\nstruct Reverse {\n    using S = typename M::S;\n    M m;\n    constexpr\
     \ Reverse() : m() {}\n    constexpr explicit Reverse(M m) : m(std::move(m)) {}\n\
     \    constexpr S op(const S& a, const S& b) const { return m.op(b, a); }\n   \
-    \ constexpr S e() const { return m.e(); }\n};\n\n} // namespace monoid\n\n/**\n\
+    \ constexpr S e() const { return m.e(); }\n};\n\n}  // namespace monoid\n\n/**\n\
     \ * @brief \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3068\u5358\u4F4D\u5143\
     \u304B\u3089\u5B9F\u884C\u6642\u306B\u4F5C\u308B\u30E2\u30CE\u30A4\u30C9\n * \u30E9\
     \u30E0\u30C0\u5F0F\u3092\u4F7F\u3048\u308B\n *\n * \u4F8B: SegTree seg(v, Monoid([](int\
@@ -167,7 +167,7 @@ data:
     \ Monoid(Op op, const S& e) : op_object(std::move(op)), identity(e) {}\n    constexpr\
     \ S op(const S& a, const S& b) const { return op_object(a, b); }\n    constexpr\
     \ S e() const { return identity; }\n};\ntemplate <typename Op, typename T>\nMonoid(Op,\
-    \ T) -> Monoid<T, Op>;\n#line 14 \"src/data_structures/sliding-window-aggregation.hpp\"\
+    \ T) -> Monoid<T, Op>;\n#line 15 \"src/data_structures/sliding-window-aggregation.hpp\"\
     \n\n/**\n * @brief Sliding Window Aggregation (\u30E2\u30CE\u30A4\u30C9\u3092\u4E57\
     \u305B\u305F\u30AD\u30E5\u30FC)\n *\n * \u672B\u5C3E\u3078\u306E\u8FFD\u52A0\u3001\
     \u5148\u982D\u306E\u524A\u9664\u3001\u5168\u4F53\u306E\u7A4D\u3092\u511F\u5374\
@@ -175,41 +175,41 @@ data:
     \u306A\u304F\u3066\u3082\u3088\u3044\n * \u4F8B:\n * SlidingWindowAggregation<monoid::Reverse<monoid::Composite<mint>>>\
     \ swag;  // \u5148\u982D\u304B\u3089\u9806\u306B\u9069\u7528\n * swag.push(f);\
     \ swag.pop(); swag.prod();\n *\n * @tparam M \u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\n\
-    \ */\ntemplate <typename M>\nclass SlidingWindowAggregation {\npublic:\n    using\
-    \ S = typename M::S;\n\nprivate:\n    M m;\n    // \u30AD\u30E5\u30FC\u306E\u524D\
-    \u534A\u3092\u30B9\u30BF\u30C3\u30AF front_vals (\u672B\u5C3E\u304C\u30AD\u30E5\
-    \u30FC\u306E\u5148\u982D) \u3067\u3001\u5F8C\u534A\u3092 back_vals (\u672B\u5C3E\
-    \u304C\u30AD\u30E5\u30FC\u306E\u672B\u5C3E) \u3067\u6301\u3064\n    std::vector<S>\
-    \ front_vals, front_prod;  // front_prod[i] \u306F front_vals[i], front_vals[i\
-    \ - 1], ..., front_vals[0] \u306E\u7A4D\n    std::vector<S> back_vals;\n    S\
-    \ back_prod;  // back_vals \u306E\u5148\u982D\u304B\u3089\u306E\u7A4D\n\n    S\
-    \ op(const S& x, const S& y) const { return m.op(x, y); }\n    S e() const { return\
-    \ m.e(); }\n\npublic:\n    explicit SlidingWindowAggregation(M m = M()) : m(std::move(m)),\
-    \ back_prod(this->m.e()) {}\n\n    /**\n     * @brief \u8981\u7D20\u6570\n   \
-    \  */\n    int size() const { return front_vals.size() + back_vals.size(); }\n\
-    \    bool empty() const { return size() == 0; }\n\n    /**\n     * @brief \u672B\
-    \u5C3E\u306B x \u3092\u8FFD\u52A0\u3059\u308B O(1)\n     */\n    void push(const\
-    \ S& x) {\n        back_vals.push_back(x);\n        back_prod = op(back_prod,\
-    \ x);\n    }\n    /**\n     * @brief \u5148\u982D\u306E\u8981\u7D20\u3092\u524A\
-    \u9664\u3059\u308B \u511F\u5374 O(1)\n     */\n    void pop() {\n        assert(!empty());\n\
-    \        if (front_vals.empty()) {\n            // \u5F8C\u534A\u3092\u3059\u3079\
-    \u3066\u524D\u534A\u3078\u79FB\u3059\n            while (!back_vals.empty()) {\n\
-    \                S x = std::move(back_vals.back());\n                back_vals.pop_back();\n\
-    \                front_prod.push_back(front_vals.empty() ? x : op(x, front_prod.back()));\n\
-    \                front_vals.push_back(std::move(x));\n            }\n        \
-    \    back_prod = e();\n        }\n        front_vals.pop_back();\n        front_prod.pop_back();\n\
-    \    }\n    /**\n     * @brief \u5148\u982D\u306E\u8981\u7D20 O(1)\n     */\n\
-    \    const S& front() const {\n        assert(!empty());\n        return front_vals.empty()\
-    \ ? back_vals.front() : front_vals.back();\n    }\n    /**\n     * @brief \u5148\
-    \u982D\u304B\u3089\u672B\u5C3E\u307E\u3067\u306E\u7A4D (\u7A7A\u306A\u3089\u5358\
-    \u4F4D\u5143) O(1)\n     */\n    S prod() const {\n        if (front_vals.empty())\
-    \ return back_prod;\n        return op(front_prod.back(), back_prod);\n    }\n\
-    \    /**\n     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\u3092\u524A\u9664\
-    \u3059\u308B\n     */\n    void clear() {\n        front_vals.clear();\n     \
-    \   front_prod.clear();\n        back_vals.clear();\n        back_prod = e();\n\
-    \    }\n};\n\n/**\n * @brief \u9577\u3055 k \u306E\u5404\u533A\u9593 [i, i + k)\
-    \ \u306E\u6700\u5C0F\u5024\u3092\u4E26\u3079\u305F\u3082\u306E (\u9577\u3055 n\
-    \ - k + 1) O(n)\n *\n * \u5358\u8ABF\u306A deque \u3092\u4F7F\u3046\n * @param\
+    \ */\ntemplate <typename M>\nclass SlidingWindowAggregation {\n   public:\n  \
+    \  using S = typename M::S;\n\n   private:\n    M m;\n    // \u30AD\u30E5\u30FC\
+    \u306E\u524D\u534A\u3092\u30B9\u30BF\u30C3\u30AF front_vals (\u672B\u5C3E\u304C\
+    \u30AD\u30E5\u30FC\u306E\u5148\u982D) \u3067\u3001\u5F8C\u534A\u3092 back_vals\
+    \ (\u672B\u5C3E\u304C\u30AD\u30E5\u30FC\u306E\u672B\u5C3E) \u3067\u6301\u3064\n\
+    \    std::vector<S> front_vals, front_prod;  // front_prod[i] \u306F front_vals[i],\
+    \ front_vals[i - 1], ..., front_vals[0] \u306E\u7A4D\n    std::vector<S> back_vals;\n\
+    \    S back_prod;  // back_vals \u306E\u5148\u982D\u304B\u3089\u306E\u7A4D\n\n\
+    \    S op(const S& x, const S& y) const { return m.op(x, y); }\n    S e() const\
+    \ { return m.e(); }\n\n   public:\n    explicit SlidingWindowAggregation(M m =\
+    \ M()) : m(std::move(m)), back_prod(this->m.e()) {}\n\n    /**\n     * @brief\
+    \ \u8981\u7D20\u6570\n     */\n    int size() const { return front_vals.size()\
+    \ + back_vals.size(); }\n    bool empty() const { return size() == 0; }\n\n  \
+    \  /**\n     * @brief \u672B\u5C3E\u306B x \u3092\u8FFD\u52A0\u3059\u308B O(1)\n\
+    \     */\n    void push(const S& x) {\n        back_vals.push_back(x);\n     \
+    \   back_prod = op(back_prod, x);\n    }\n    /**\n     * @brief \u5148\u982D\u306E\
+    \u8981\u7D20\u3092\u524A\u9664\u3059\u308B \u511F\u5374 O(1)\n     */\n    void\
+    \ pop() {\n        assert(!empty());\n        if (front_vals.empty()) {\n    \
+    \        // \u5F8C\u534A\u3092\u3059\u3079\u3066\u524D\u534A\u3078\u79FB\u3059\
+    \n            while (!back_vals.empty()) {\n                S x = std::move(back_vals.back());\n\
+    \                back_vals.pop_back();\n                front_prod.push_back(front_vals.empty()\
+    \ ? x : op(x, front_prod.back()));\n                front_vals.push_back(std::move(x));\n\
+    \            }\n            back_prod = e();\n        }\n        front_vals.pop_back();\n\
+    \        front_prod.pop_back();\n    }\n    /**\n     * @brief \u5148\u982D\u306E\
+    \u8981\u7D20 O(1)\n     */\n    const S& front() const {\n        assert(!empty());\n\
+    \        return front_vals.empty() ? back_vals.front() : front_vals.back();\n\
+    \    }\n    /**\n     * @brief \u5148\u982D\u304B\u3089\u672B\u5C3E\u307E\u3067\
+    \u306E\u7A4D (\u7A7A\u306A\u3089\u5358\u4F4D\u5143) O(1)\n     */\n    S prod()\
+    \ const {\n        if (front_vals.empty()) return back_prod;\n        return op(front_prod.back(),\
+    \ back_prod);\n    }\n    /**\n     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\
+    \u3092\u524A\u9664\u3059\u308B\n     */\n    void clear() {\n        front_vals.clear();\n\
+    \        front_prod.clear();\n        back_vals.clear();\n        back_prod =\
+    \ e();\n    }\n};\n\n/**\n * @brief \u9577\u3055 k \u306E\u5404\u533A\u9593 [i,\
+    \ i + k) \u306E\u6700\u5C0F\u5024\u3092\u4E26\u3079\u305F\u3082\u306E (\u9577\u3055\
+    \ n - k + 1) O(n)\n *\n * \u5358\u8ABF\u306A deque \u3092\u4F7F\u3046\n * @param\
     \ comp \u5927\u5C0F\u306E\u6BD4\u8F03\u3002std::greater<T>() \u3092\u6E21\u3059\
     \u3068\u6700\u5927\u5024\u306B\u306A\u308B\n */\ntemplate <typename T, typename\
     \ Compare = std::less<T>>\nstd::vector<T> sliding_window_min(const std::vector<T>&\
@@ -229,7 +229,7 @@ data:
     \ Window Aggregation (\u30E2\u30CE\u30A4\u30C9\u3092\u4E57\u305B\u305F\u30AD\u30E5\
     \u30FC) \u3068\u30B9\u30E9\u30A4\u30C9\u6700\u5C0F\u5024\n */\n\n#include <cassert>\n\
     #include <deque>\n#include <functional>\n#include <utility>\n#include <vector>\n\
-    #include \"../algebra/monoid.hpp\"\n\n/**\n * @brief Sliding Window Aggregation\
+    \n#include \"../algebra/monoid.hpp\"\n\n/**\n * @brief Sliding Window Aggregation\
     \ (\u30E2\u30CE\u30A4\u30C9\u3092\u4E57\u305B\u305F\u30AD\u30E5\u30FC)\n *\n *\
     \ \u672B\u5C3E\u3078\u306E\u8FFD\u52A0\u3001\u5148\u982D\u306E\u524A\u9664\u3001\
     \u5168\u4F53\u306E\u7A4D\u3092\u511F\u5374 O(1) \u3067\u884C\u3046\u3002\u30E2\
@@ -237,41 +237,41 @@ data:
     \n * \u4F8B:\n * SlidingWindowAggregation<monoid::Reverse<monoid::Composite<mint>>>\
     \ swag;  // \u5148\u982D\u304B\u3089\u9806\u306B\u9069\u7528\n * swag.push(f);\
     \ swag.pop(); swag.prod();\n *\n * @tparam M \u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\n\
-    \ */\ntemplate <typename M>\nclass SlidingWindowAggregation {\npublic:\n    using\
-    \ S = typename M::S;\n\nprivate:\n    M m;\n    // \u30AD\u30E5\u30FC\u306E\u524D\
-    \u534A\u3092\u30B9\u30BF\u30C3\u30AF front_vals (\u672B\u5C3E\u304C\u30AD\u30E5\
-    \u30FC\u306E\u5148\u982D) \u3067\u3001\u5F8C\u534A\u3092 back_vals (\u672B\u5C3E\
-    \u304C\u30AD\u30E5\u30FC\u306E\u672B\u5C3E) \u3067\u6301\u3064\n    std::vector<S>\
-    \ front_vals, front_prod;  // front_prod[i] \u306F front_vals[i], front_vals[i\
-    \ - 1], ..., front_vals[0] \u306E\u7A4D\n    std::vector<S> back_vals;\n    S\
-    \ back_prod;  // back_vals \u306E\u5148\u982D\u304B\u3089\u306E\u7A4D\n\n    S\
-    \ op(const S& x, const S& y) const { return m.op(x, y); }\n    S e() const { return\
-    \ m.e(); }\n\npublic:\n    explicit SlidingWindowAggregation(M m = M()) : m(std::move(m)),\
-    \ back_prod(this->m.e()) {}\n\n    /**\n     * @brief \u8981\u7D20\u6570\n   \
-    \  */\n    int size() const { return front_vals.size() + back_vals.size(); }\n\
-    \    bool empty() const { return size() == 0; }\n\n    /**\n     * @brief \u672B\
-    \u5C3E\u306B x \u3092\u8FFD\u52A0\u3059\u308B O(1)\n     */\n    void push(const\
-    \ S& x) {\n        back_vals.push_back(x);\n        back_prod = op(back_prod,\
-    \ x);\n    }\n    /**\n     * @brief \u5148\u982D\u306E\u8981\u7D20\u3092\u524A\
-    \u9664\u3059\u308B \u511F\u5374 O(1)\n     */\n    void pop() {\n        assert(!empty());\n\
-    \        if (front_vals.empty()) {\n            // \u5F8C\u534A\u3092\u3059\u3079\
-    \u3066\u524D\u534A\u3078\u79FB\u3059\n            while (!back_vals.empty()) {\n\
-    \                S x = std::move(back_vals.back());\n                back_vals.pop_back();\n\
-    \                front_prod.push_back(front_vals.empty() ? x : op(x, front_prod.back()));\n\
-    \                front_vals.push_back(std::move(x));\n            }\n        \
-    \    back_prod = e();\n        }\n        front_vals.pop_back();\n        front_prod.pop_back();\n\
-    \    }\n    /**\n     * @brief \u5148\u982D\u306E\u8981\u7D20 O(1)\n     */\n\
-    \    const S& front() const {\n        assert(!empty());\n        return front_vals.empty()\
-    \ ? back_vals.front() : front_vals.back();\n    }\n    /**\n     * @brief \u5148\
-    \u982D\u304B\u3089\u672B\u5C3E\u307E\u3067\u306E\u7A4D (\u7A7A\u306A\u3089\u5358\
-    \u4F4D\u5143) O(1)\n     */\n    S prod() const {\n        if (front_vals.empty())\
-    \ return back_prod;\n        return op(front_prod.back(), back_prod);\n    }\n\
-    \    /**\n     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\u3092\u524A\u9664\
-    \u3059\u308B\n     */\n    void clear() {\n        front_vals.clear();\n     \
-    \   front_prod.clear();\n        back_vals.clear();\n        back_prod = e();\n\
-    \    }\n};\n\n/**\n * @brief \u9577\u3055 k \u306E\u5404\u533A\u9593 [i, i + k)\
-    \ \u306E\u6700\u5C0F\u5024\u3092\u4E26\u3079\u305F\u3082\u306E (\u9577\u3055 n\
-    \ - k + 1) O(n)\n *\n * \u5358\u8ABF\u306A deque \u3092\u4F7F\u3046\n * @param\
+    \ */\ntemplate <typename M>\nclass SlidingWindowAggregation {\n   public:\n  \
+    \  using S = typename M::S;\n\n   private:\n    M m;\n    // \u30AD\u30E5\u30FC\
+    \u306E\u524D\u534A\u3092\u30B9\u30BF\u30C3\u30AF front_vals (\u672B\u5C3E\u304C\
+    \u30AD\u30E5\u30FC\u306E\u5148\u982D) \u3067\u3001\u5F8C\u534A\u3092 back_vals\
+    \ (\u672B\u5C3E\u304C\u30AD\u30E5\u30FC\u306E\u672B\u5C3E) \u3067\u6301\u3064\n\
+    \    std::vector<S> front_vals, front_prod;  // front_prod[i] \u306F front_vals[i],\
+    \ front_vals[i - 1], ..., front_vals[0] \u306E\u7A4D\n    std::vector<S> back_vals;\n\
+    \    S back_prod;  // back_vals \u306E\u5148\u982D\u304B\u3089\u306E\u7A4D\n\n\
+    \    S op(const S& x, const S& y) const { return m.op(x, y); }\n    S e() const\
+    \ { return m.e(); }\n\n   public:\n    explicit SlidingWindowAggregation(M m =\
+    \ M()) : m(std::move(m)), back_prod(this->m.e()) {}\n\n    /**\n     * @brief\
+    \ \u8981\u7D20\u6570\n     */\n    int size() const { return front_vals.size()\
+    \ + back_vals.size(); }\n    bool empty() const { return size() == 0; }\n\n  \
+    \  /**\n     * @brief \u672B\u5C3E\u306B x \u3092\u8FFD\u52A0\u3059\u308B O(1)\n\
+    \     */\n    void push(const S& x) {\n        back_vals.push_back(x);\n     \
+    \   back_prod = op(back_prod, x);\n    }\n    /**\n     * @brief \u5148\u982D\u306E\
+    \u8981\u7D20\u3092\u524A\u9664\u3059\u308B \u511F\u5374 O(1)\n     */\n    void\
+    \ pop() {\n        assert(!empty());\n        if (front_vals.empty()) {\n    \
+    \        // \u5F8C\u534A\u3092\u3059\u3079\u3066\u524D\u534A\u3078\u79FB\u3059\
+    \n            while (!back_vals.empty()) {\n                S x = std::move(back_vals.back());\n\
+    \                back_vals.pop_back();\n                front_prod.push_back(front_vals.empty()\
+    \ ? x : op(x, front_prod.back()));\n                front_vals.push_back(std::move(x));\n\
+    \            }\n            back_prod = e();\n        }\n        front_vals.pop_back();\n\
+    \        front_prod.pop_back();\n    }\n    /**\n     * @brief \u5148\u982D\u306E\
+    \u8981\u7D20 O(1)\n     */\n    const S& front() const {\n        assert(!empty());\n\
+    \        return front_vals.empty() ? back_vals.front() : front_vals.back();\n\
+    \    }\n    /**\n     * @brief \u5148\u982D\u304B\u3089\u672B\u5C3E\u307E\u3067\
+    \u306E\u7A4D (\u7A7A\u306A\u3089\u5358\u4F4D\u5143) O(1)\n     */\n    S prod()\
+    \ const {\n        if (front_vals.empty()) return back_prod;\n        return op(front_prod.back(),\
+    \ back_prod);\n    }\n    /**\n     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\
+    \u3092\u524A\u9664\u3059\u308B\n     */\n    void clear() {\n        front_vals.clear();\n\
+    \        front_prod.clear();\n        back_vals.clear();\n        back_prod =\
+    \ e();\n    }\n};\n\n/**\n * @brief \u9577\u3055 k \u306E\u5404\u533A\u9593 [i,\
+    \ i + k) \u306E\u6700\u5C0F\u5024\u3092\u4E26\u3079\u305F\u3082\u306E (\u9577\u3055\
+    \ n - k + 1) O(n)\n *\n * \u5358\u8ABF\u306A deque \u3092\u4F7F\u3046\n * @param\
     \ comp \u5927\u5C0F\u306E\u6BD4\u8F03\u3002std::greater<T>() \u3092\u6E21\u3059\
     \u3068\u6700\u5927\u5024\u306B\u306A\u308B\n */\ntemplate <typename T, typename\
     \ Compare = std::less<T>>\nstd::vector<T> sliding_window_min(const std::vector<T>&\
@@ -292,7 +292,7 @@ data:
   isVerificationFile: false
   path: src/data_structures/sliding-window-aggregation.hpp
   requiredBy: []
-  timestamp: '2026-10-14 06:59:39+09:00'
+  timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/sliding-window-aggregation.test.cpp

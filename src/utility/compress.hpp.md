@@ -27,9 +27,9 @@ data:
     \ build \u307E\u3067\u884C\u3046\n * int i = cp.id(A[0]);        // 0 <= i < cp.size()\n\
     \ *\n * @tparam T \u5024\u306E\u578B (< \u3067\u6BD4\u8F03\u3067\u304D\u308B\u3053\
     \u3068)\n */\ntemplate <typename T>\nclass Compress {\n    std::vector<T> xs;\n\
-    \    bool built = false;\n\npublic:\n    Compress() = default;\n    /**\n    \
-    \ * @brief v \u306E\u5024\u3092\u767B\u9332\u3057\u3066 build \u3059\u308B\n \
-    \    */\n    explicit Compress(const std::vector<T>& v) : xs(v) { build(); }\n\
+    \    bool built = false;\n\n   public:\n    Compress() = default;\n    /**\n \
+    \    * @brief v \u306E\u5024\u3092\u767B\u9332\u3057\u3066 build \u3059\u308B\n\
+    \     */\n    explicit Compress(const std::vector<T>& v) : xs(v) { build(); }\n\
     \n    /**\n     * @brief \u5024\u3092 1 \u3064\u767B\u9332\u3059\u308B\u3002build\
     \ \u306E\u524D\u306B\u547C\u3076\n     */\n    void add(const T& x) {\n      \
     \  assert(!built);\n        xs.push_back(x);\n    }\n    /**\n     * @brief v\
@@ -74,8 +74,8 @@ data:
     \n * int i = cp.id(A[0]);        // 0 <= i < cp.size()\n *\n * @tparam T \u5024\
     \u306E\u578B (< \u3067\u6BD4\u8F03\u3067\u304D\u308B\u3053\u3068)\n */\ntemplate\
     \ <typename T>\nclass Compress {\n    std::vector<T> xs;\n    bool built = false;\n\
-    \npublic:\n    Compress() = default;\n    /**\n     * @brief v \u306E\u5024\u3092\
-    \u767B\u9332\u3057\u3066 build \u3059\u308B\n     */\n    explicit Compress(const\
+    \n   public:\n    Compress() = default;\n    /**\n     * @brief v \u306E\u5024\
+    \u3092\u767B\u9332\u3057\u3066 build \u3059\u308B\n     */\n    explicit Compress(const\
     \ std::vector<T>& v) : xs(v) { build(); }\n\n    /**\n     * @brief \u5024\u3092\
     \ 1 \u3064\u767B\u9332\u3059\u308B\u3002build \u306E\u524D\u306B\u547C\u3076\n\
     \     */\n    void add(const T& x) {\n        assert(!built);\n        xs.push_back(x);\n\
@@ -116,7 +116,7 @@ data:
   isVerificationFile: false
   path: src/utility/compress.hpp
   requiredBy: []
-  timestamp: '2026-10-14 07:04:30+09:00'
+  timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/compress.test.cpp

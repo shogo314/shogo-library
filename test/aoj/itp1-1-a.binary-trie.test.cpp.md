@@ -15,8 +15,8 @@ data:
     links:
     - https://onlinejudge.u-aizu.ac.jp/problems/ITP1_1_A
   bundledCode: "#line 1 \"test/aoj/itp1-1-a.binary-trie.test.cpp\"\n#define PROBLEM\
-    \ \"https://onlinejudge.u-aizu.ac.jp/problems/ITP1_1_A\"\n\n#include <algorithm>\n\
-    #include <vector>\n#include <assert.h>\n#include <iostream>\n#include <random>\n\
+    \ \"https://onlinejudge.u-aizu.ac.jp/problems/ITP1_1_A\"\n\n#include <assert.h>\n\
+    \n#include <algorithm>\n#include <iostream>\n#include <random>\n#include <vector>\n\
     \n#line 2 \"src/data_structures/binary-trie.hpp\"\n\n/**\n * @file binary-trie.hpp\n\
     \ * @brief Binary Trie\n */\n\n#include <cassert>\n#include <limits>\n#include\
     \ <memory>\n#include <utility>\n\n/**\n * @brief \u7B26\u53F7\u306A\u3057\u6574\
@@ -39,11 +39,11 @@ data:
     \     if (children[0])\n                children[0]->xval ^= xval;\n         \
     \   if (children[1])\n                children[1]->xval ^= xval;\n           \
     \ xval = 0;\n        }\n    };\n    using NodePtr = std::shared_ptr<BinaryTrieNode>;\n\
-    \    NodePtr root_ptr = std::make_shared<BinaryTrieNode>(d);\n\n  public:\n  \
-    \  /**\n     * @brief \u96C6\u5408\u306Bn\u3092\u8FFD\u52A0 (O(d))\n     */\n\
+    \    NodePtr root_ptr = std::make_shared<BinaryTrieNode>(d);\n\n   public:\n \
+    \   /**\n     * @brief \u96C6\u5408\u306Bn\u3092\u8FFD\u52A0 (O(d))\n     */\n\
     \    void insert(T n) {\n        NodePtr cur_ptr = root_ptr;\n        while (!cur_ptr->is_leaf())\
     \ {\n            cur_ptr->affect_xor();\n            cur_ptr->subcnt += 1;\n \
-    \           NodePtr &nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n     \
+    \           NodePtr& nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n     \
     \       if (!nxt_ptr) {\n                nxt_ptr = std::make_shared<BinaryTrieNode>(cur_ptr->level\
     \ - 1);\n            }\n            cur_ptr = nxt_ptr;\n        }\n        assert(cur_ptr->is_leaf());\n\
     \        cur_ptr->subcnt += 1;\n    }\n\n    int size() const { return root_ptr->subcnt;\
@@ -51,7 +51,7 @@ data:
     \u3001\u898B\u3064\u304B\u3063\u305F\u6570\u3092\u6C42\u3081\u308B (O(d))\n  \
     \   */\n    int count(T n) const {\n        NodePtr cur_ptr = root_ptr;\n    \
     \    while (!cur_ptr->is_leaf()) {\n            cur_ptr->affect_xor();\n     \
-    \       NodePtr &nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n         \
+    \       NodePtr& nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n         \
     \   if (!nxt_ptr) {\n                return 0;\n            }\n            cur_ptr\
     \ = nxt_ptr;\n        }\n        return (cur_ptr ? cur_ptr->subcnt : 0);\n   \
     \ }\n\n    /**\n     * @brief \u96C6\u5408\u304B\u3089n\u3092\u524A\u9664 (O(d))\n\
@@ -60,7 +60,7 @@ data:
     \    void erase(T n) {\n        unsigned int cnt = count(n);\n        if (cnt\
     \ == 0)\n            return;\n        NodePtr cur_ptr = root_ptr;\n        while\
     \ (true) {\n            cur_ptr->affect_xor();\n            cur_ptr->subcnt -=\
-    \ cnt;\n            NodePtr &nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n\
+    \ cnt;\n            NodePtr& nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n\
     \            if (nxt_ptr->subcnt == cnt) {\n                nxt_ptr = nullptr;\n\
     \                return;\n            }\n            cur_ptr = nxt_ptr;\n    \
     \    }\n    }\n\n    /**\n     * @brief \u96C6\u5408\u304B\u3089n\u3092\u4E00\u3064\
@@ -69,7 +69,7 @@ data:
     \u3089\u306A\u3044\n     */\n    void erase_one_element(T n) {\n        if (count(n)\
     \ == 0)\n            return;\n        NodePtr cur_ptr = root_ptr;\n        while\
     \ (!cur_ptr->is_leaf()) {\n            cur_ptr->affect_xor();\n            cur_ptr->subcnt\
-    \ -= 1;\n            NodePtr &nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n\
+    \ -= 1;\n            NodePtr& nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n\
     \            if (nxt_ptr->subcnt == 1) {\n                nxt_ptr = nullptr;\n\
     \                return;\n            }\n            cur_ptr = nxt_ptr;\n    \
     \    }\n        cur_ptr->subcnt -= 1;\n    }\n\n    /**\n     * @brief \u6607\u9806\
@@ -78,8 +78,8 @@ data:
     \     */\n    T nth_element(int n) const {\n        assert(0 <= n && n < size());\n\
     \        T ret = 0;\n        NodePtr cur_ptr = root_ptr;\n        while (!cur_ptr->is_leaf())\
     \ {\n            cur_ptr->affect_xor();\n            ret <<= 1;\n            int\
-    \ state = cur_ptr->state_children();\n            NodePtr &z_ptr = cur_ptr->children[0];\n\
-    \            NodePtr &o_ptr = cur_ptr->children[1];\n            assert(state\
+    \ state = cur_ptr->state_children();\n            NodePtr& z_ptr = cur_ptr->children[0];\n\
+    \            NodePtr& o_ptr = cur_ptr->children[1];\n            assert(state\
     \ > 0);\n            if (state == 1 || (state == 3 && n < (int)z_ptr->subcnt))\
     \ {\n                cur_ptr = z_ptr;\n            } else {\n                n\
     \ -= (state & 1 ? z_ptr->subcnt : 0);\n                ret |= 1;\n           \
@@ -92,7 +92,7 @@ data:
     \ {\n            if ((n >> d) != 0) return size();\n        }\n        int ret\
     \ = 0;\n        NodePtr cur_ptr = root_ptr;\n        while (!cur_ptr->is_leaf())\
     \ {\n            cur_ptr->affect_xor();\n            bool b = cur_ptr->get_bit(n);\n\
-    \            NodePtr &nxt_ptr = cur_ptr->children[b];\n            NodePtr &z_ptr\
+    \            NodePtr& nxt_ptr = cur_ptr->children[b];\n            NodePtr& z_ptr\
     \ = cur_ptr->children[0];\n            if (b && z_ptr) {\n                ret\
     \ += z_ptr->subcnt;\n            }\n            if (!nxt_ptr) {\n            \
     \    break;\n            }\n            cur_ptr = nxt_ptr;\n        }\n      \
@@ -107,68 +107,72 @@ data:
     \ ^= n; }\n\n    /**\n     * @brief \u8981\u7D20\u3092\u3059\u3079\u3066\u524A\
     \u9664\u3059\u308B\u3002\u78BA\u4FDD\u3057\u305F\u30E1\u30E2\u30EA\u9818\u57DF\
     \u3082\u524A\u9664\u3055\u308C\u308B\n     */\n    void clear() {\n        root_ptr\
-    \ = std::make_shared<BinaryTrieNode>(d);\n    }\n};\n#line 10 \"test/aoj/itp1-1-a.binary-trie.test.cpp\"\
-    \n\nusing namespace std;\n\nint main(void) {\n\n    std::random_device rd;\n \
-    \   std::mt19937 gen(rd());\n    std::uniform_int_distribution<unsigned long long>\
+    \ = std::make_shared<BinaryTrieNode>(d);\n    }\n};\n#line 11 \"test/aoj/itp1-1-a.binary-trie.test.cpp\"\
+    \n\nusing namespace std;\n\nint main(void) {\n    std::random_device rd;\n   \
+    \ std::mt19937 gen(rd());\n    std::uniform_int_distribution<unsigned long long>\
     \ dist(0, UINT64_MAX);\n    std::vector<unsigned long long> pool;\n    for (int\
-    \ i = 0; i < 24; ++i) {\n        pool.push_back(dist(gen));    \n    }\n    pool.push_back(UINT64_MAX);\n\
+    \ i = 0; i < 24; ++i) {\n        pool.push_back(dist(gen));\n    }\n    pool.push_back(UINT64_MAX);\n\
     \n    auto randgen_from_pool = [&]() {\n        return pool[dist(gen) % pool.size()];\n\
     \    };\n\n    std::vector<unsigned long long> A;\n    BinaryTrie<64> BT;\n  \
     \  for (int i = 0; i < 10000; ++i) {\n        unsigned long long x = randgen_from_pool();\n\
     \        A.push_back(x);\n        BT.insert(x);\n    }\n    for (int i = 0; i\
     \ < 10000; ++i) {\n        int q = dist(gen) % 8;\n        unsigned long long\
-    \ x = randgen_from_pool();\n        switch (q) {\n        case 0:\n          \
-    \  A.push_back(x);\n            BT.insert(x);   \n            break;\n       \
-    \ case 1:\n            A.erase(std::remove_if(A.begin(), A.end(), [&](unsigned\
-    \ long long a) { return a == x; }), A.end());\n            BT.erase(x);\n    \
-    \        break;\n        case 2:\n            if (std::find(A.begin(), A.end(),\
-    \ x) != A.end()) {\n                A.erase(std::find(A.begin(), A.end(), x));\
-    \    \n            }\n            BT.erase_one_element(x);\n            break;\n\
-    \        case 3:\n            for (auto& a : A) a ^= x;\n            BT.apply_xor(x);\n\
-    \            break;\n        case 4:\n            std::sort(A.begin(), A.end());\n\
-    \            assert(std::lower_bound(A.begin(), A.end(), x) - A.begin() == BT.bisect_left(x));\n\
-    \            assert(std::upper_bound(A.begin(), A.end(), x) - A.begin() == BT.bisect_right(x));\n\
-    \            break;\n        case 5:\n            if (x >= A.size()) break;\n\
-    \            std::sort(A.begin(), A.end());\n            assert(A[x] == BT.nth_element(x));\n\
-    \            break;\n        case 6:\n            assert((int)std::count(A.begin(),\
-    \ A.end(), x) == BT.count(x));\n            break;\n        case 7:\n        \
-    \    assert((int)A.size() == BT.size());\n        default:\n            break;\n\
-    \        }\n    }\n    std::cout << \"Hello World\\n\";\n\n}\n"
+    \ x = randgen_from_pool();\n        switch (q) {\n            case 0:\n      \
+    \          A.push_back(x);\n                BT.insert(x);\n                break;\n\
+    \            case 1:\n                A.erase(std::remove_if(A.begin(), A.end(),\
+    \ [&](unsigned long long a) { return a == x; }), A.end());\n                BT.erase(x);\n\
+    \                break;\n            case 2:\n                if (std::find(A.begin(),\
+    \ A.end(), x) != A.end()) {\n                    A.erase(std::find(A.begin(),\
+    \ A.end(), x));\n                }\n                BT.erase_one_element(x);\n\
+    \                break;\n            case 3:\n                for (auto& a : A)\
+    \ a ^= x;\n                BT.apply_xor(x);\n                break;\n        \
+    \    case 4:\n                std::sort(A.begin(), A.end());\n               \
+    \ assert(std::lower_bound(A.begin(), A.end(), x) - A.begin() == BT.bisect_left(x));\n\
+    \                assert(std::upper_bound(A.begin(), A.end(), x) - A.begin() ==\
+    \ BT.bisect_right(x));\n                break;\n            case 5:\n        \
+    \        if (x >= A.size()) break;\n                std::sort(A.begin(), A.end());\n\
+    \                assert(A[x] == BT.nth_element(x));\n                break;\n\
+    \            case 6:\n                assert((int)std::count(A.begin(), A.end(),\
+    \ x) == BT.count(x));\n                break;\n            case 7:\n         \
+    \       assert((int)A.size() == BT.size());\n            default:\n          \
+    \      break;\n        }\n    }\n    std::cout << \"Hello World\\n\";\n}\n"
   code: "#define PROBLEM \"https://onlinejudge.u-aizu.ac.jp/problems/ITP1_1_A\"\n\n\
-    #include <algorithm>\n#include <vector>\n#include <assert.h>\n#include <iostream>\n\
-    #include <random>\n\n#include \"../../src/data_structures/binary-trie.hpp\"\n\n\
-    using namespace std;\n\nint main(void) {\n\n    std::random_device rd;\n    std::mt19937\
+    #include <assert.h>\n\n#include <algorithm>\n#include <iostream>\n#include <random>\n\
+    #include <vector>\n\n#include \"../../src/data_structures/binary-trie.hpp\"\n\n\
+    using namespace std;\n\nint main(void) {\n    std::random_device rd;\n    std::mt19937\
     \ gen(rd());\n    std::uniform_int_distribution<unsigned long long> dist(0, UINT64_MAX);\n\
     \    std::vector<unsigned long long> pool;\n    for (int i = 0; i < 24; ++i) {\n\
-    \        pool.push_back(dist(gen));    \n    }\n    pool.push_back(UINT64_MAX);\n\
-    \n    auto randgen_from_pool = [&]() {\n        return pool[dist(gen) % pool.size()];\n\
+    \        pool.push_back(dist(gen));\n    }\n    pool.push_back(UINT64_MAX);\n\n\
+    \    auto randgen_from_pool = [&]() {\n        return pool[dist(gen) % pool.size()];\n\
     \    };\n\n    std::vector<unsigned long long> A;\n    BinaryTrie<64> BT;\n  \
     \  for (int i = 0; i < 10000; ++i) {\n        unsigned long long x = randgen_from_pool();\n\
     \        A.push_back(x);\n        BT.insert(x);\n    }\n    for (int i = 0; i\
     \ < 10000; ++i) {\n        int q = dist(gen) % 8;\n        unsigned long long\
-    \ x = randgen_from_pool();\n        switch (q) {\n        case 0:\n          \
-    \  A.push_back(x);\n            BT.insert(x);   \n            break;\n       \
-    \ case 1:\n            A.erase(std::remove_if(A.begin(), A.end(), [&](unsigned\
-    \ long long a) { return a == x; }), A.end());\n            BT.erase(x);\n    \
-    \        break;\n        case 2:\n            if (std::find(A.begin(), A.end(),\
-    \ x) != A.end()) {\n                A.erase(std::find(A.begin(), A.end(), x));\
-    \    \n            }\n            BT.erase_one_element(x);\n            break;\n\
-    \        case 3:\n            for (auto& a : A) a ^= x;\n            BT.apply_xor(x);\n\
-    \            break;\n        case 4:\n            std::sort(A.begin(), A.end());\n\
-    \            assert(std::lower_bound(A.begin(), A.end(), x) - A.begin() == BT.bisect_left(x));\n\
-    \            assert(std::upper_bound(A.begin(), A.end(), x) - A.begin() == BT.bisect_right(x));\n\
-    \            break;\n        case 5:\n            if (x >= A.size()) break;\n\
-    \            std::sort(A.begin(), A.end());\n            assert(A[x] == BT.nth_element(x));\n\
-    \            break;\n        case 6:\n            assert((int)std::count(A.begin(),\
-    \ A.end(), x) == BT.count(x));\n            break;\n        case 7:\n        \
-    \    assert((int)A.size() == BT.size());\n        default:\n            break;\n\
-    \        }\n    }\n    std::cout << \"Hello World\\n\";\n\n}\n"
+    \ x = randgen_from_pool();\n        switch (q) {\n            case 0:\n      \
+    \          A.push_back(x);\n                BT.insert(x);\n                break;\n\
+    \            case 1:\n                A.erase(std::remove_if(A.begin(), A.end(),\
+    \ [&](unsigned long long a) { return a == x; }), A.end());\n                BT.erase(x);\n\
+    \                break;\n            case 2:\n                if (std::find(A.begin(),\
+    \ A.end(), x) != A.end()) {\n                    A.erase(std::find(A.begin(),\
+    \ A.end(), x));\n                }\n                BT.erase_one_element(x);\n\
+    \                break;\n            case 3:\n                for (auto& a : A)\
+    \ a ^= x;\n                BT.apply_xor(x);\n                break;\n        \
+    \    case 4:\n                std::sort(A.begin(), A.end());\n               \
+    \ assert(std::lower_bound(A.begin(), A.end(), x) - A.begin() == BT.bisect_left(x));\n\
+    \                assert(std::upper_bound(A.begin(), A.end(), x) - A.begin() ==\
+    \ BT.bisect_right(x));\n                break;\n            case 5:\n        \
+    \        if (x >= A.size()) break;\n                std::sort(A.begin(), A.end());\n\
+    \                assert(A[x] == BT.nth_element(x));\n                break;\n\
+    \            case 6:\n                assert((int)std::count(A.begin(), A.end(),\
+    \ x) == BT.count(x));\n                break;\n            case 7:\n         \
+    \       assert((int)A.size() == BT.size());\n            default:\n          \
+    \      break;\n        }\n    }\n    std::cout << \"Hello World\\n\";\n}\n"
   dependsOn:
   - src/data_structures/binary-trie.hpp
   isVerificationFile: true
   path: test/aoj/itp1-1-a.binary-trie.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 07:04:30+09:00'
+  timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/itp1-1-a.binary-trie.test.cpp

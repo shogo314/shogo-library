@@ -30,13 +30,13 @@ data:
     \ T \u306B\u53CE\u307E\u308B\u5FC5\u8981\u304C\u3042\u308B)\n *\n * std::sort(ps.begin(),\
     \ ps.end(), [](const auto& a, const auto& b) { return Angle(a) < Angle(b); });\n\
     \ *\n * @tparam T \u5EA7\u6A19\u306E\u578B\n */\ntemplate <typename T>\nstruct\
-    \ Angle {\n    T x; //!< x \u5EA7\u6A19\n    T y; //!< y \u5EA7\u6A19\n\n    /**\n\
-    \     * @brief \u504F\u89D2 0 (\u96F6\u30D9\u30AF\u30C8\u30EB)\n     */\n    constexpr\
-    \ Angle() noexcept : x(), y() {}\n    /**\n     * @brief \u30D9\u30AF\u30C8\u30EB\
-    \ (x, y) \u306E\u504F\u89D2\n     */\n    constexpr Angle(T x, T y) noexcept :\
-    \ x(x), y(y) {}\n    /**\n     * @brief p[0], p[1] \u3092 x, y \u3068\u3059\u308B\
-    \ (Vector<T, 2> \u3084 std::array<T, 2> \u304B\u3089\u4F5C\u308B)\n     */\n \
-    \   template <typename P, typename = decltype(std::declval<const P&>()[0])>\n\
+    \ Angle {\n    T x;  //!< x \u5EA7\u6A19\n    T y;  //!< y \u5EA7\u6A19\n\n  \
+    \  /**\n     * @brief \u504F\u89D2 0 (\u96F6\u30D9\u30AF\u30C8\u30EB)\n     */\n\
+    \    constexpr Angle() noexcept : x(), y() {}\n    /**\n     * @brief \u30D9\u30AF\
+    \u30C8\u30EB (x, y) \u306E\u504F\u89D2\n     */\n    constexpr Angle(T x, T y)\
+    \ noexcept : x(x), y(y) {}\n    /**\n     * @brief p[0], p[1] \u3092 x, y \u3068\
+    \u3059\u308B (Vector<T, 2> \u3084 std::array<T, 2> \u304B\u3089\u4F5C\u308B)\n\
+    \     */\n    template <typename P, typename = decltype(std::declval<const P&>()[0])>\n\
     \    constexpr explicit Angle(const P& p) noexcept : x(p[0]), y(p[1]) {}\n   \
     \ /**\n     * @brief p.first, p.second \u3092 x, y \u3068\u3059\u308B\n     */\n\
     \    constexpr explicit Angle(const std::pair<T, T>& p) noexcept : x(p.first),\
@@ -52,20 +52,20 @@ data:
     \u30D9\u30AF\u30C8\u30EB\u306F\u5916\u7A4D\u3067\u6BD4\u3079\u3089\u308C\u306A\
     \u3044\u306E\u3067\u3001\u504F\u89D2 0 (x \u8EF8\u6B63\u65B9\u5411) \u3068\u3057\
     \u3066\u5148\u306B\u5224\u5B9A\u3059\u308B\n        if (b.is_zero()) return false;\
-    \  // \u504F\u89D2 0 \u3088\u308A\u5C0F\u3055\u3044\u3082\u306E\u306F\u306A\u3044\
-    \n        if (a.is_zero()) return !(b.y == 0 && b.x > 0);  // b \u306E\u504F\u89D2\
-    \u304C 0 \u3088\u308A\u5927\u304D\u3044\u304B\n        if (a.half() != b.half())\
-    \ return a.half() < b.half();\n        return b.x * a.y < a.x * b.y;\n    }\n\
-    \    friend constexpr bool operator>(const Angle& a, const Angle& b) noexcept\
-    \ { return b < a; }\n    friend constexpr bool operator<=(const Angle& a, const\
-    \ Angle& b) noexcept { return !(b < a); }\n    friend constexpr bool operator>=(const\
-    \ Angle& a, const Angle& b) noexcept { return !(a < b); }\n    /**\n     * @brief\
-    \ \u504F\u89D2\u304C\u7B49\u3057\u3044\u304B (\u30D9\u30AF\u30C8\u30EB\u3068\u3057\
-    \u3066\u7B49\u3057\u3044\u304B\u3067\u306F\u306A\u3044)\n     */\n    friend constexpr\
-    \ bool operator==(const Angle& a, const Angle& b) noexcept { return !(a < b) &&\
-    \ !(b < a); }\n    friend constexpr bool operator!=(const Angle& a, const Angle&\
-    \ b) noexcept { return !(a == b); }\n};\n\ntemplate <typename P, typename = decltype(std::declval<const\
-    \ P&>()[0])>\nAngle(const P&) -> Angle<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<const\
+    \                   // \u504F\u89D2 0 \u3088\u308A\u5C0F\u3055\u3044\u3082\u306E\
+    \u306F\u306A\u3044\n        if (a.is_zero()) return !(b.y == 0 && b.x > 0);  //\
+    \ b \u306E\u504F\u89D2\u304C 0 \u3088\u308A\u5927\u304D\u3044\u304B\n        if\
+    \ (a.half() != b.half()) return a.half() < b.half();\n        return b.x * a.y\
+    \ < a.x * b.y;\n    }\n    friend constexpr bool operator>(const Angle& a, const\
+    \ Angle& b) noexcept { return b < a; }\n    friend constexpr bool operator<=(const\
+    \ Angle& a, const Angle& b) noexcept { return !(b < a); }\n    friend constexpr\
+    \ bool operator>=(const Angle& a, const Angle& b) noexcept { return !(a < b);\
+    \ }\n    /**\n     * @brief \u504F\u89D2\u304C\u7B49\u3057\u3044\u304B (\u30D9\
+    \u30AF\u30C8\u30EB\u3068\u3057\u3066\u7B49\u3057\u3044\u304B\u3067\u306F\u306A\
+    \u3044)\n     */\n    friend constexpr bool operator==(const Angle& a, const Angle&\
+    \ b) noexcept { return !(a < b) && !(b < a); }\n    friend constexpr bool operator!=(const\
+    \ Angle& a, const Angle& b) noexcept { return !(a == b); }\n};\n\ntemplate <typename\
+    \ P, typename = decltype(std::declval<const P&>()[0])>\nAngle(const P&) -> Angle<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<const\
     \ P&>()[0])>>>;\ntemplate <typename T>\nAngle(const std::pair<T, T>&) -> Angle<T>;\n"
   code: "#pragma once\n\n/**\n * @file angle.hpp\n * @brief \u504F\u89D2\n */\n\n\
     #include <cmath>\n#include <type_traits>\n#include <utility>\n\n/**\n * @brief\
@@ -78,8 +78,8 @@ data:
     \u306E\u7D76\u5BFE\u5024\u306E 2 \u4E57\u304C T \u306B\u53CE\u307E\u308B\u5FC5\
     \u8981\u304C\u3042\u308B)\n *\n * std::sort(ps.begin(), ps.end(), [](const auto&\
     \ a, const auto& b) { return Angle(a) < Angle(b); });\n *\n * @tparam T \u5EA7\
-    \u6A19\u306E\u578B\n */\ntemplate <typename T>\nstruct Angle {\n    T x; //!<\
-    \ x \u5EA7\u6A19\n    T y; //!< y \u5EA7\u6A19\n\n    /**\n     * @brief \u504F\
+    \u6A19\u306E\u578B\n */\ntemplate <typename T>\nstruct Angle {\n    T x;  //!<\
+    \ x \u5EA7\u6A19\n    T y;  //!< y \u5EA7\u6A19\n\n    /**\n     * @brief \u504F\
     \u89D2 0 (\u96F6\u30D9\u30AF\u30C8\u30EB)\n     */\n    constexpr Angle() noexcept\
     \ : x(), y() {}\n    /**\n     * @brief \u30D9\u30AF\u30C8\u30EB (x, y) \u306E\
     \u504F\u89D2\n     */\n    constexpr Angle(T x, T y) noexcept : x(x), y(y) {}\n\
@@ -100,27 +100,27 @@ data:
     \ noexcept {\n        // \u96F6\u30D9\u30AF\u30C8\u30EB\u306F\u5916\u7A4D\u3067\
     \u6BD4\u3079\u3089\u308C\u306A\u3044\u306E\u3067\u3001\u504F\u89D2 0 (x \u8EF8\
     \u6B63\u65B9\u5411) \u3068\u3057\u3066\u5148\u306B\u5224\u5B9A\u3059\u308B\n \
-    \       if (b.is_zero()) return false;  // \u504F\u89D2 0 \u3088\u308A\u5C0F\u3055\
-    \u3044\u3082\u306E\u306F\u306A\u3044\n        if (a.is_zero()) return !(b.y ==\
-    \ 0 && b.x > 0);  // b \u306E\u504F\u89D2\u304C 0 \u3088\u308A\u5927\u304D\u3044\
-    \u304B\n        if (a.half() != b.half()) return a.half() < b.half();\n      \
-    \  return b.x * a.y < a.x * b.y;\n    }\n    friend constexpr bool operator>(const\
-    \ Angle& a, const Angle& b) noexcept { return b < a; }\n    friend constexpr bool\
-    \ operator<=(const Angle& a, const Angle& b) noexcept { return !(b < a); }\n \
-    \   friend constexpr bool operator>=(const Angle& a, const Angle& b) noexcept\
-    \ { return !(a < b); }\n    /**\n     * @brief \u504F\u89D2\u304C\u7B49\u3057\u3044\
-    \u304B (\u30D9\u30AF\u30C8\u30EB\u3068\u3057\u3066\u7B49\u3057\u3044\u304B\u3067\
-    \u306F\u306A\u3044)\n     */\n    friend constexpr bool operator==(const Angle&\
-    \ a, const Angle& b) noexcept { return !(a < b) && !(b < a); }\n    friend constexpr\
-    \ bool operator!=(const Angle& a, const Angle& b) noexcept { return !(a == b);\
-    \ }\n};\n\ntemplate <typename P, typename = decltype(std::declval<const P&>()[0])>\n\
-    Angle(const P&) -> Angle<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<const\
+    \       if (b.is_zero()) return false;                   // \u504F\u89D2 0 \u3088\
+    \u308A\u5C0F\u3055\u3044\u3082\u306E\u306F\u306A\u3044\n        if (a.is_zero())\
+    \ return !(b.y == 0 && b.x > 0);  // b \u306E\u504F\u89D2\u304C 0 \u3088\u308A\
+    \u5927\u304D\u3044\u304B\n        if (a.half() != b.half()) return a.half() <\
+    \ b.half();\n        return b.x * a.y < a.x * b.y;\n    }\n    friend constexpr\
+    \ bool operator>(const Angle& a, const Angle& b) noexcept { return b < a; }\n\
+    \    friend constexpr bool operator<=(const Angle& a, const Angle& b) noexcept\
+    \ { return !(b < a); }\n    friend constexpr bool operator>=(const Angle& a, const\
+    \ Angle& b) noexcept { return !(a < b); }\n    /**\n     * @brief \u504F\u89D2\
+    \u304C\u7B49\u3057\u3044\u304B (\u30D9\u30AF\u30C8\u30EB\u3068\u3057\u3066\u7B49\
+    \u3057\u3044\u304B\u3067\u306F\u306A\u3044)\n     */\n    friend constexpr bool\
+    \ operator==(const Angle& a, const Angle& b) noexcept { return !(a < b) && !(b\
+    \ < a); }\n    friend constexpr bool operator!=(const Angle& a, const Angle& b)\
+    \ noexcept { return !(a == b); }\n};\n\ntemplate <typename P, typename = decltype(std::declval<const\
+    \ P&>()[0])>\nAngle(const P&) -> Angle<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<const\
     \ P&>()[0])>>>;\ntemplate <typename T>\nAngle(const std::pair<T, T>&) -> Angle<T>;\n"
   dependsOn: []
   isVerificationFile: false
   path: src/geometry/angle.hpp
   requiredBy: []
-  timestamp: '2026-10-14 07:04:09+09:00'
+  timestamp: '2026-10-14 11:33:42+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/angle.test.cpp

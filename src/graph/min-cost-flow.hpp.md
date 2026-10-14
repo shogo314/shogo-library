@@ -30,13 +30,13 @@ data:
     \ t, limit);\n *\n * @tparam Cap \u5BB9\u91CF\u306E\u578B\n * @tparam Cost \u30B3\
     \u30B9\u30C8\u306E\u578B\u3002\u30B3\u30B9\u30C8\u306E\u7DCF\u548C\u304C\u53CE\
     \u307E\u308B\u3053\u3068\n */\ntemplate <typename Cap, typename Cost>\nclass MinCostFlow\
-    \ {\npublic:\n    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\n     */\n    struct\
-    \ Edge {\n        int from, to;\n        Cap cap;    //!< \u5BB9\u91CF\n     \
-    \   Cap flow;   //!< \u6D41\u308C\u3066\u3044\u308B\u91CF\n        Cost cost;\
-    \  //!< 1 \u3060\u3051\u6D41\u3057\u305F\u3068\u304D\u306E\u30B3\u30B9\u30C8\n\
-    \    };\n\nprivate:\n    struct InnerEdge {\n        int to, rev;\n        Cap\
-    \ cap;  // \u6B8B\u308A\u306E\u5BB9\u91CF\n        Cost cost;\n    };\n    int\
-    \ n;\n    std::vector<std::vector<InnerEdge>> g;\n    std::vector<std::pair<int,\
+    \ {\n   public:\n    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\n     */\n  \
+    \  struct Edge {\n        int from, to;\n        Cap cap;    //!< \u5BB9\u91CF\
+    \n        Cap flow;   //!< \u6D41\u308C\u3066\u3044\u308B\u91CF\n        Cost\
+    \ cost;  //!< 1 \u3060\u3051\u6D41\u3057\u305F\u3068\u304D\u306E\u30B3\u30B9\u30C8\
+    \n    };\n\n   private:\n    struct InnerEdge {\n        int to, rev;\n      \
+    \  Cap cap;  // \u6B8B\u308A\u306E\u5BB9\u91CF\n        Cost cost;\n    };\n \
+    \   int n;\n    std::vector<std::vector<InnerEdge>> g;\n    std::vector<std::pair<int,\
     \ int>> pos;  // \u8FFD\u52A0\u3057\u305F\u8FBA\u304C g \u306E\u3069\u3053\u306B\
     \u3042\u308B\u304B\n    // \u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u3002\u5BB9\u91CF\
     \u304C\u6B8B\u3063\u3066\u3044\u308B\u3059\u3079\u3066\u306E\u8FBA (v, u) \u3067\
@@ -62,7 +62,7 @@ data:
     \u5B9A\u3057\u3066\u3044\u306A\u3044\u9802\u70B9 u \u306F dist[u] >= dist[t] \u306A\
     \u306E\u3067\u3001\u6761\u4EF6\u306F\u4FDD\u305F\u308C\u308B\n        for (int\
     \ v = 0; v < n; v++) {\n            if (vis[v]) dual[v] -= dist[t] - dist[v];\n\
-    \        }\n        return true;\n    }\n\npublic:\n    explicit MinCostFlow(int\
+    \        }\n        return true;\n    }\n\n   public:\n    explicit MinCostFlow(int\
     \ n = 0) : n(n), g(n), dual(n), dist(n), prev_v(n), prev_e(n), vis(n) {}\n\n \
     \   int size() const { return n; }\n\n    /**\n     * @brief from \u304B\u3089\
     \ to \u3078\u306E\u5BB9\u91CF cap\u3001\u30B3\u30B9\u30C8 cost \u306E\u8FBA\u3092\
@@ -131,13 +131,13 @@ data:
     \ 1, 5, 3);\n * auto [f, c] = mcf.flow(s, t, limit);\n *\n * @tparam Cap \u5BB9\
     \u91CF\u306E\u578B\n * @tparam Cost \u30B3\u30B9\u30C8\u306E\u578B\u3002\u30B3\
     \u30B9\u30C8\u306E\u7DCF\u548C\u304C\u53CE\u307E\u308B\u3053\u3068\n */\ntemplate\
-    \ <typename Cap, typename Cost>\nclass MinCostFlow {\npublic:\n    /**\n     *\
-    \ @brief \u8FBA\u306E\u60C5\u5831\n     */\n    struct Edge {\n        int from,\
-    \ to;\n        Cap cap;    //!< \u5BB9\u91CF\n        Cap flow;   //!< \u6D41\u308C\
-    \u3066\u3044\u308B\u91CF\n        Cost cost;  //!< 1 \u3060\u3051\u6D41\u3057\u305F\
-    \u3068\u304D\u306E\u30B3\u30B9\u30C8\n    };\n\nprivate:\n    struct InnerEdge\
-    \ {\n        int to, rev;\n        Cap cap;  // \u6B8B\u308A\u306E\u5BB9\u91CF\
-    \n        Cost cost;\n    };\n    int n;\n    std::vector<std::vector<InnerEdge>>\
+    \ <typename Cap, typename Cost>\nclass MinCostFlow {\n   public:\n    /**\n  \
+    \   * @brief \u8FBA\u306E\u60C5\u5831\n     */\n    struct Edge {\n        int\
+    \ from, to;\n        Cap cap;    //!< \u5BB9\u91CF\n        Cap flow;   //!< \u6D41\
+    \u308C\u3066\u3044\u308B\u91CF\n        Cost cost;  //!< 1 \u3060\u3051\u6D41\u3057\
+    \u305F\u3068\u304D\u306E\u30B3\u30B9\u30C8\n    };\n\n   private:\n    struct\
+    \ InnerEdge {\n        int to, rev;\n        Cap cap;  // \u6B8B\u308A\u306E\u5BB9\
+    \u91CF\n        Cost cost;\n    };\n    int n;\n    std::vector<std::vector<InnerEdge>>\
     \ g;\n    std::vector<std::pair<int, int>> pos;  // \u8FFD\u52A0\u3057\u305F\u8FBA\
     \u304C g \u306E\u3069\u3053\u306B\u3042\u308B\u304B\n    // \u30DD\u30C6\u30F3\
     \u30B7\u30E3\u30EB\u3002\u5BB9\u91CF\u304C\u6B8B\u3063\u3066\u3044\u308B\u3059\
@@ -164,7 +164,7 @@ data:
     \u5B9A\u3057\u3066\u3044\u306A\u3044\u9802\u70B9 u \u306F dist[u] >= dist[t] \u306A\
     \u306E\u3067\u3001\u6761\u4EF6\u306F\u4FDD\u305F\u308C\u308B\n        for (int\
     \ v = 0; v < n; v++) {\n            if (vis[v]) dual[v] -= dist[t] - dist[v];\n\
-    \        }\n        return true;\n    }\n\npublic:\n    explicit MinCostFlow(int\
+    \        }\n        return true;\n    }\n\n   public:\n    explicit MinCostFlow(int\
     \ n = 0) : n(n), g(n), dual(n), dist(n), prev_v(n), prev_e(n), vis(n) {}\n\n \
     \   int size() const { return n; }\n\n    /**\n     * @brief from \u304B\u3089\
     \ to \u3078\u306E\u5BB9\u91CF cap\u3001\u30B3\u30B9\u30C8 cost \u306E\u8FBA\u3092\
@@ -223,7 +223,7 @@ data:
   isVerificationFile: false
   path: src/graph/min-cost-flow.hpp
   requiredBy: []
-  timestamp: '2026-10-14 00:48:32+09:00'
+  timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/min-cost-flow.test.cpp

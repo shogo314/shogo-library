@@ -35,8 +35,8 @@ data:
     \ T& y) const { return !comp(x, y) && !comp(y, x); }\n    // \u5148\u982D\u304C\
     \u524A\u9664\u4E88\u5B9A\u306A\u3089\u53D6\u308A\u9664\u304F\n    void normalize()\
     \ {\n        while (!del.empty() && equivalent(que.top(), del.top())) {\n    \
-    \        que.pop();\n            del.pop();\n        }\n    }\n\npublic:\n   \
-    \ explicit ErasablePriorityQueue(Compare comp = Compare()) : que(comp), del(comp),\
+    \        que.pop();\n            del.pop();\n        }\n    }\n\n   public:\n\
+    \    explicit ErasablePriorityQueue(Compare comp = Compare()) : que(comp), del(comp),\
     \ comp(comp) {}\n\n    /**\n     * @brief \u8981\u7D20\u6570\n     */\n    int\
     \ size() const { return que.size() - del.size(); }\n    bool empty() const { return\
     \ size() == 0; }\n\n    /**\n     * @brief x \u3092\u8FFD\u52A0\u3059\u308B\n\
@@ -70,7 +70,7 @@ data:
     \ T& x, const T& y) const { return !comp(x, y) && !comp(y, x); }\n    // \u5148\
     \u982D\u304C\u524A\u9664\u4E88\u5B9A\u306A\u3089\u53D6\u308A\u9664\u304F\n   \
     \ void normalize() {\n        while (!del.empty() && equivalent(que.top(), del.top()))\
-    \ {\n            que.pop();\n            del.pop();\n        }\n    }\n\npublic:\n\
+    \ {\n            que.pop();\n            del.pop();\n        }\n    }\n\n   public:\n\
     \    explicit ErasablePriorityQueue(Compare comp = Compare()) : que(comp), del(comp),\
     \ comp(comp) {}\n\n    /**\n     * @brief \u8981\u7D20\u6570\n     */\n    int\
     \ size() const { return que.size() - del.size(); }\n    bool empty() const { return\
@@ -91,7 +91,7 @@ data:
   isVerificationFile: false
   path: src/data_structures/erasable-priority-queue.hpp
   requiredBy: []
-  timestamp: '2026-10-14 01:43:22+09:00'
+  timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/erasable-priority-queue.test.cpp

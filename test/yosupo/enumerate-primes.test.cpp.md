@@ -24,15 +24,16 @@ data:
     \ * @brief \u7D20\u6570 (\u7D20\u6570\u5224\u5B9A\u3001\u7D20\u56E0\u6570\u5206\
     \u89E3\u3001\u7D04\u6570\u5217\u6319\u3001\u7BE9)\n */\n\n#include <algorithm>\n\
     #include <cassert>\n#include <initializer_list>\n#include <numeric>\n#include\
-    \ <utility>\n#line 2 \"src/math/modular-arithmetic.hpp\"\n\n/**\n * @file modular-arithmetic.hpp\n\
-    \ * @brief mod \u6F14\u7B97 (\u7A4D\u3001\u51AA\u4E57\u3001\u9006\u5143)\n */\n\
-    \n#line 9 \"src/math/modular-arithmetic.hpp\"\n\n/**\n * @brief a * b mod m \u3092\
-    \u8FD4\u3059 (\u9014\u4E2D\u3067 __int128 \u3092\u4F7F\u3046\u306E\u3067 m < 2^63\
-    \ \u306A\u3089\u3042\u3075\u308C\u306A\u3044)\n */\nconstexpr long long modmul(long\
-    \ long a, long long b, long long m) {\n    long long res = static_cast<long long>(static_cast<__int128>(a)\
-    \ * b % m);\n    if (res < 0) res += m;\n    return res;\n}\n\n/**\n * @brief\
-    \ a^(-1) mod m \u3092\u8FD4\u3059\n * @note a \u3068 m \u306F\u4E92\u3044\u306B\
-    \u7D20\u3067\u3042\u308B\u3053\u3068\u3002O(log m)\n */\nconstexpr long long modinv(long\
+    \ <utility>\n#line 14 \"src/math/prime.hpp\"\n\n#line 2 \"src/math/modular-arithmetic.hpp\"\
+    \n\n/**\n * @file modular-arithmetic.hpp\n * @brief mod \u6F14\u7B97 (\u7A4D\u3001\
+    \u51AA\u4E57\u3001\u9006\u5143)\n */\n\n#line 9 \"src/math/modular-arithmetic.hpp\"\
+    \n\n/**\n * @brief a * b mod m \u3092\u8FD4\u3059 (\u9014\u4E2D\u3067 __int128\
+    \ \u3092\u4F7F\u3046\u306E\u3067 m < 2^63 \u306A\u3089\u3042\u3075\u308C\u306A\
+    \u3044)\n */\nconstexpr long long modmul(long long a, long long b, long long m)\
+    \ {\n    long long res = static_cast<long long>(static_cast<__int128>(a) * b %\
+    \ m);\n    if (res < 0) res += m;\n    return res;\n}\n\n/**\n * @brief a^(-1)\
+    \ mod m \u3092\u8FD4\u3059\n * @note a \u3068 m \u306F\u4E92\u3044\u306B\u7D20\
+    \u3067\u3042\u308B\u3053\u3068\u3002O(log m)\n */\nconstexpr long long modinv(long\
     \ long a, long long m) {\n    assert(m >= 1);\n    a %= m;\n    if (a < 0) a +=\
     \ m;\n    long long b = m, u = 1, v = 0;\n    while (b) {\n        // std::swap\
     \ \u306F C++17 \u3067\u306F constexpr \u3067\u306A\u3044\u306E\u3067\u3001\u4F7F\
@@ -47,29 +48,29 @@ data:
     \    if (n < 0) {\n        n = -n;\n        a = modinv(a, m);\n    }\n    long\
     \ long res = 1 % m;\n    while (n > 0) {\n        if (n & 1) res = modmul(res,\
     \ a, m);\n        a = modmul(a, a, m);\n        n >>= 1;\n    }\n    return res;\n\
-    }\n#line 15 \"src/math/prime.hpp\"\n\nnamespace prime_detail {\n\nusing u64 =\
-    \ unsigned long long;\n\n/**\n * @brief Pollard \u306E \u03C1 \u6CD5 (Brent \u306E\
-    \u6539\u826F) \u3067\u5408\u6210\u6570 n \u306E 1 \u3067\u3082 n \u3067\u3082\u306A\
-    \u3044\u7D04\u6570\u3092 1 \u3064\u898B\u3064\u3051\u308B\n */\ninline u64 find_factor(u64\
-    \ n) {\n    if (n % 2 == 0) return 2;\n    constexpr u64 m = 128;\n    for (u64\
-    \ c = 1;; c++) {\n        auto f = [&](u64 x) { return (modmul(x, x, n) + c) %\
-    \ n; };\n        auto diff = [](u64 x, u64 y) { return x > y ? x - y : y - x;\
-    \ };\n        u64 x = 0, y = 2, ys = 2, q = 1, g = 1;\n        for (u64 r = 1;\
-    \ g == 1; r <<= 1) {\n            x = y;\n            for (u64 i = 0; i < r; i++)\
-    \ y = f(y);\n            for (u64 k = 0; k < r && g == 1; k += m) {\n        \
-    \        ys = y;\n                for (u64 i = 0; i < m && i < r - k; i++) {\n\
-    \                    y = f(y);\n                    q = modmul(q, diff(x, y),\
-    \ n);\n                }\n                g = std::gcd(q, n);\n            }\n\
-    \        }\n        if (g == n) {\n            // \u307E\u3068\u3081\u3066\u639B\
-    \u3051\u305F\u305B\u3044\u3067 n \u306B\u306A\u3063\u305F\u306E\u3067\u30011 \u3064\
-    \u305A\u3064\u623B\u3063\u3066\u78BA\u304B\u3081\u308B\n            do {\n   \
-    \             ys = f(ys);\n                g = std::gcd(diff(x, ys), n);\n   \
-    \         } while (g == 1);\n        }\n        if (g != n) return g;\n    }\n\
-    }\n\n}  // namespace prime_detail\n\n/**\n * @brief n \u304C\u7D20\u6570\u304B\
-    \ (Miller-Rabin\u300164 bit \u3067\u6C7A\u5B9A\u7684) O(log n)\n */\nconstexpr\
-    \ bool is_prime(long long n) {\n    using namespace prime_detail;\n    if (n <\
-    \ 2) return false;\n    for (u64 p : {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31,\
-    \ 37}) {\n        if (static_cast<u64>(n) % p == 0) return static_cast<u64>(n)\
+    }\n#line 16 \"src/math/prime.hpp\"\n\nnamespace internal_prime {\n\nusing u64\
+    \ = unsigned long long;\n\n/**\n * @brief Pollard \u306E \u03C1 \u6CD5 (Brent\
+    \ \u306E\u6539\u826F) \u3067\u5408\u6210\u6570 n \u306E 1 \u3067\u3082 n \u3067\
+    \u3082\u306A\u3044\u7D04\u6570\u3092 1 \u3064\u898B\u3064\u3051\u308B\n */\ninline\
+    \ u64 find_factor(u64 n) {\n    if (n % 2 == 0) return 2;\n    constexpr u64 m\
+    \ = 128;\n    for (u64 c = 1;; c++) {\n        auto f = [&](u64 x) { return (modmul(x,\
+    \ x, n) + c) % n; };\n        auto diff = [](u64 x, u64 y) { return x > y ? x\
+    \ - y : y - x; };\n        u64 x = 0, y = 2, ys = 2, q = 1, g = 1;\n        for\
+    \ (u64 r = 1; g == 1; r <<= 1) {\n            x = y;\n            for (u64 i =\
+    \ 0; i < r; i++) y = f(y);\n            for (u64 k = 0; k < r && g == 1; k +=\
+    \ m) {\n                ys = y;\n                for (u64 i = 0; i < m && i <\
+    \ r - k; i++) {\n                    y = f(y);\n                    q = modmul(q,\
+    \ diff(x, y), n);\n                }\n                g = std::gcd(q, n);\n  \
+    \          }\n        }\n        if (g == n) {\n            // \u307E\u3068\u3081\
+    \u3066\u639B\u3051\u305F\u305B\u3044\u3067 n \u306B\u306A\u3063\u305F\u306E\u3067\
+    \u30011 \u3064\u305A\u3064\u623B\u3063\u3066\u78BA\u304B\u3081\u308B\n       \
+    \     do {\n                ys = f(ys);\n                g = std::gcd(diff(x,\
+    \ ys), n);\n            } while (g == 1);\n        }\n        if (g != n) return\
+    \ g;\n    }\n}\n\n}  // namespace internal_prime\n\n/**\n * @brief n \u304C\u7D20\
+    \u6570\u304B (Miller-Rabin\u300164 bit \u3067\u6C7A\u5B9A\u7684) O(log n)\n */\n\
+    constexpr bool is_prime(long long n) {\n    using namespace internal_prime;\n\
+    \    if (n < 2) return false;\n    for (u64 p : {2, 3, 5, 7, 11, 13, 17, 19, 23,\
+    \ 29, 31, 37}) {\n        if (static_cast<u64>(n) % p == 0) return static_cast<u64>(n)\
     \ == p;\n    }\n    const u64 m = n;\n    u64 d = m - 1;\n    int s = 0;\n   \
     \ while (d % 2 == 0) d /= 2, s++;\n    for (u64 a : {2ULL, 325ULL, 9375ULL, 28178ULL,\
     \ 450775ULL, 9780504ULL, 1795265022ULL}) {\n        a %= m;\n        if (a ==\
@@ -89,17 +90,17 @@ data:
     \            n /= p;\n        }\n    }\n    std::vector<long long> st;\n    if\
     \ (n > 1) st.push_back(n);\n    while (!st.empty()) {\n        long long x = st.back();\n\
     \        st.pop_back();\n        if (is_prime(x)) {\n            ps.push_back(x);\n\
-    \            continue;\n        }\n        long long d = prime_detail::find_factor(x);\n\
+    \            continue;\n        }\n        long long d = internal_prime::find_factor(x);\n\
     \        st.push_back(d);\n        st.push_back(x / d);\n    }\n    std::sort(ps.begin(),\
     \ ps.end());\n    std::vector<std::pair<long long, int>> res;\n    for (long long\
-    \ p : ps) {\n        if (!res.empty() && res.back().first == p) res.back().second++;\n\
-    \        else res.emplace_back(p, 1);\n    }\n    return res;\n}\n\n/**\n * @brief\
-    \ n (>= 1) \u306E\u6B63\u306E\u7D04\u6570\u3092\u6607\u9806\u306B\u4E26\u3079\u3066\
-    \u8FD4\u3059\n */\ninline std::vector<long long> divisors(long long n) {\n   \
-    \ std::vector<long long> res = {1};\n    for (auto [p, e] : factorize(n)) {\n\
-    \        int sz = res.size();\n        long long pw = 1;\n        for (int i =\
-    \ 0; i < e; i++) {\n            pw *= p;\n            for (int j = 0; j < sz;\
-    \ j++) res.push_back(res[j] * pw);\n        }\n    }\n    std::sort(res.begin(),\
+    \ p : ps) {\n        if (!res.empty() && res.back().first == p)\n            res.back().second++;\n\
+    \        else\n            res.emplace_back(p, 1);\n    }\n    return res;\n}\n\
+    \n/**\n * @brief n (>= 1) \u306E\u6B63\u306E\u7D04\u6570\u3092\u6607\u9806\u306B\
+    \u4E26\u3079\u3066\u8FD4\u3059\n */\ninline std::vector<long long> divisors(long\
+    \ long n) {\n    std::vector<long long> res = {1};\n    for (auto [p, e] : factorize(n))\
+    \ {\n        int sz = res.size();\n        long long pw = 1;\n        for (int\
+    \ i = 0; i < e; i++) {\n            pw *= p;\n            for (int j = 0; j <\
+    \ sz; j++) res.push_back(res[j] * pw);\n        }\n    }\n    std::sort(res.begin(),\
     \ res.end());\n    return res;\n}\n\n/**\n * @brief \u30AA\u30A4\u30E9\u30FC\u306E\
     \ \u03C6 \u95A2\u6570 (1 \u4EE5\u4E0A n \u4EE5\u4E0B\u3067 n \u3068\u4E92\u3044\
     \u306B\u7D20\u306A\u6574\u6570\u306E\u500B\u6570)\n */\ninline long long totient(long\
@@ -130,11 +131,11 @@ data:
     \u8A08\u7B97 O(n)\u3001\u7D20\u6570\u5224\u5B9A O(1)\u3001\u7D20\u56E0\u6570\u5206\
     \u89E3 O(log x)\n * \u4F8B:\n * Sieve sv(1000000);\n * sv.is_prime(x); sv.factorize(x);\n\
     \ */\nclass Sieve {\n    int n;\n    std::vector<int> lpf;  // \u6700\u5C0F\u7D20\
-    \u56E0\u6570\n    std::vector<int> ps;\n\npublic:\n    explicit Sieve(int n) :\
-    \ n(n), lpf(n + 1, 0) {\n        assert(n >= 0);\n        for (int i = 2; i <=\
-    \ n; i++) {\n            if (lpf[i] == 0) {\n                lpf[i] = i;\n   \
-    \             ps.push_back(i);\n            }\n            for (int p : ps) {\n\
-    \                if (p > lpf[i] || static_cast<long long>(p) * i > n) break;\n\
+    \u56E0\u6570\n    std::vector<int> ps;\n\n   public:\n    explicit Sieve(int n)\
+    \ : n(n), lpf(n + 1, 0) {\n        assert(n >= 0);\n        for (int i = 2; i\
+    \ <= n; i++) {\n            if (lpf[i] == 0) {\n                lpf[i] = i;\n\
+    \                ps.push_back(i);\n            }\n            for (int p : ps)\
+    \ {\n                if (p > lpf[i] || static_cast<long long>(p) * i > n) break;\n\
     \                lpf[p * i] = p;\n            }\n        }\n    }\n\n    /**\n\
     \     * @brief \u524D\u8A08\u7B97\u3057\u305F\u7BC4\u56F2\u306E\u4E0A\u9650 n\n\
     \     */\n    int limit() const { return n; }\n    /**\n     * @brief x (0 <=\
@@ -179,7 +180,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/enumerate-primes.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 07:00:26+09:00'
+  timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/enumerate-primes.test.cpp

@@ -18,12 +18,12 @@ data:
     \ PROBLEM \"https://judge.yosupo.jp/problem/static_range_inversions_query\"\n\n\
     #include <algorithm>\n#include <iostream>\n#include <vector>\n\n#line 2 \"src/others/mo.hpp\"\
     \n\n/**\n * @file mo.hpp\n * @brief Mo's algorithm\n */\n\n#line 9 \"src/others/mo.hpp\"\
-    \n#include <array>\n#include <type_traits>\n#line 12 \"src/others/mo.hpp\"\n#include\
-    \ <cassert>\n#include <cmath>\n\ntemplate <typename U, class ADD_LEFT, class DELETE_LEFT,\
-    \ class ADD_RIGHT = ADD_LEFT, class DELETE_RIGHT = DELETE_LEFT>\nstruct Mo {\n\
-    \   private:\n    int _n;\n    std::vector<std::array<int, 3>> lri;\n    U _e;\n\
-    \    ADD_LEFT _add_left;\n    DELETE_LEFT _delete_left;\n    ADD_RIGHT _add_right;\n\
-    \    DELETE_RIGHT _delete_right;\n\n    static_assert(std::is_invocable_r_v<void,\
+    \n#include <array>\n#include <cassert>\n#include <cmath>\n#include <type_traits>\n\
+    #line 14 \"src/others/mo.hpp\"\n\ntemplate <typename U, class ADD_LEFT, class\
+    \ DELETE_LEFT, class ADD_RIGHT = ADD_LEFT, class DELETE_RIGHT = DELETE_LEFT>\n\
+    class Mo {\n   private:\n    int _n;\n    std::vector<std::array<int, 3>> lri;\n\
+    \    U _e;\n    ADD_LEFT _add_left;\n    DELETE_LEFT _delete_left;\n    ADD_RIGHT\
+    \ _add_right;\n    DELETE_RIGHT _delete_right;\n\n    static_assert(std::is_invocable_r_v<void,\
     \ ADD_LEFT, U&, int>, \"ADD_LEFT must be callable with (U&, int)\");\n    static_assert(std::is_invocable_r_v<void,\
     \ DELETE_LEFT, U&, int>, \"DELETE_LEFT must be callable with (U&, int)\");\n \
     \   static_assert(std::is_invocable_r_v<void, ADD_RIGHT, U&, int>, \"ADD_RIGHT\
@@ -40,7 +40,7 @@ data:
     \ _n);\n        lri.push_back({l, r, (int)lri.size()});\n    }\n    template <typename\
     \ T, class F>\n    std::vector<T> solve(const F& f) {\n        static_assert(std::is_invocable_r_v<T,\
     \ F, U&>, \"The function passed to solve must be callable with (U&) and return\
-    \ T\");\n        \n        const int w = std::max<int>(1, 1.0 * _n / std::max<double>(1.0,\
+    \ T\");\n\n        const int w = std::max<int>(1, 1.0 * _n / std::max<double>(1.0,\
     \ std::sqrt(lri.size() * 2.0 / 3.0)));\n        std::sort(lri.begin(), lri.end(),\
     \ [=](const std::array<int, 3>& a, const std::array<int, 3>& b) {\n          \
     \  int aw = a[0] / w;\n            int bw = b[0] / w;\n            if (aw != bw)\
@@ -56,29 +56,28 @@ data:
     \            res[i] = f(tmp);\n        }\n        return res;\n    }\n};\n#line\
     \ 8 \"test/yosupo/static-range-inversions-query.test.cpp\"\n\nint main() {\n \
     \   std::cin.tie(nullptr);\n    std::ios_base::sync_with_stdio(false);\n    int\
-    \ n, q; std::cin >> n >> q;\n    std::vector<int> a(n);\n    for (int& x : a)\
-    \ std::cin >> x;\n    // \u5EA7\u6A19\u5727\u7E2E\n    std::vector<int> xs = a;\n\
-    \    std::sort(xs.begin(), xs.end());\n    xs.erase(std::unique(xs.begin(), xs.end()),\
-    \ xs.end());\n    for (int& x : a) x = std::lower_bound(xs.begin(), xs.end(),\
-    \ x) - xs.begin();\n    int m = xs.size();\n\n    // \u533A\u9593\u5185\u306E\u5024\
-    \u306E\u500B\u6570\u3092\u6301\u3064 Fenwick Tree\n    std::vector<int> bit(m\
-    \ + 1);\n    int total = 0;\n    auto add = [&](int i, int v) {\n        total\
-    \ += v;\n        for (i++; i <= m; i += i & -i) bit[i] += v;\n    };\n    auto\
-    \ count_less = [&](int i) {\n        int ret = 0;\n        for (; i > 0; i -=\
-    \ i & -i) ret += bit[i];\n        return ret;\n    };\n    auto count_greater\
-    \ = [&](int i) { return total - count_less(i + 1); };\n\n    Mo mo(n, 0LL,\n \
-    \       [&](long long& inv, int i) { inv += count_less(a[i]); add(a[i], 1); },\n\
-    \        [&](long long& inv, int i) { add(a[i], -1); inv -= count_less(a[i]);\
-    \ },\n        [&](long long& inv, int i) { inv += count_greater(a[i]); add(a[i],\
-    \ 1); },\n        [&](long long& inv, int i) { add(a[i], -1); inv -= count_greater(a[i]);\
-    \ });\n    for (int i = 0; i < q; i++) {\n        int l, r; std::cin >> l >> r;\n\
-    \        mo.query(l, r);\n    }\n    for (long long ans : mo.solve<long long>([](long\
-    \ long& inv) { return inv; })) {\n        std::cout << ans << '\\n';\n    }\n\
-    }\n"
+    \ n, q;\n    std::cin >> n >> q;\n    std::vector<int> a(n);\n    for (int& x\
+    \ : a) std::cin >> x;\n    // \u5EA7\u6A19\u5727\u7E2E\n    std::vector<int> xs\
+    \ = a;\n    std::sort(xs.begin(), xs.end());\n    xs.erase(std::unique(xs.begin(),\
+    \ xs.end()), xs.end());\n    for (int& x : a) x = std::lower_bound(xs.begin(),\
+    \ xs.end(), x) - xs.begin();\n    int m = xs.size();\n\n    // \u533A\u9593\u5185\
+    \u306E\u5024\u306E\u500B\u6570\u3092\u6301\u3064 Fenwick Tree\n    std::vector<int>\
+    \ bit(m + 1);\n    int total = 0;\n    auto add = [&](int i, int v) {\n      \
+    \  total += v;\n        for (i++; i <= m; i += i & -i) bit[i] += v;\n    };\n\
+    \    auto count_less = [&](int i) {\n        int ret = 0;\n        for (; i >\
+    \ 0; i -= i & -i) ret += bit[i];\n        return ret;\n    };\n    auto count_greater\
+    \ = [&](int i) { return total - count_less(i + 1); };\n\n    Mo mo(n, 0LL, [&](long\
+    \ long& inv, int i) { inv += count_less(a[i]); add(a[i], 1); }, [&](long long&\
+    \ inv, int i) { add(a[i], -1); inv -= count_less(a[i]); }, [&](long long& inv,\
+    \ int i) { inv += count_greater(a[i]); add(a[i], 1); }, [&](long long& inv, int\
+    \ i) { add(a[i], -1); inv -= count_greater(a[i]); });\n    for (int i = 0; i <\
+    \ q; i++) {\n        int l, r;\n        std::cin >> l >> r;\n        mo.query(l,\
+    \ r);\n    }\n    for (long long ans : mo.solve<long long>([](long long& inv)\
+    \ { return inv; })) {\n        std::cout << ans << '\\n';\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/static_range_inversions_query\"\
     \n\n#include <algorithm>\n#include <iostream>\n#include <vector>\n\n#include \"\
     ../../src/others/mo.hpp\"\n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios_base::sync_with_stdio(false);\n\
-    \    int n, q; std::cin >> n >> q;\n    std::vector<int> a(n);\n    for (int&\
+    \    int n, q;\n    std::cin >> n >> q;\n    std::vector<int> a(n);\n    for (int&\
     \ x : a) std::cin >> x;\n    // \u5EA7\u6A19\u5727\u7E2E\n    std::vector<int>\
     \ xs = a;\n    std::sort(xs.begin(), xs.end());\n    xs.erase(std::unique(xs.begin(),\
     \ xs.end()), xs.end());\n    for (int& x : a) x = std::lower_bound(xs.begin(),\
@@ -88,21 +87,20 @@ data:
     \  total += v;\n        for (i++; i <= m; i += i & -i) bit[i] += v;\n    };\n\
     \    auto count_less = [&](int i) {\n        int ret = 0;\n        for (; i >\
     \ 0; i -= i & -i) ret += bit[i];\n        return ret;\n    };\n    auto count_greater\
-    \ = [&](int i) { return total - count_less(i + 1); };\n\n    Mo mo(n, 0LL,\n \
-    \       [&](long long& inv, int i) { inv += count_less(a[i]); add(a[i], 1); },\n\
-    \        [&](long long& inv, int i) { add(a[i], -1); inv -= count_less(a[i]);\
-    \ },\n        [&](long long& inv, int i) { inv += count_greater(a[i]); add(a[i],\
-    \ 1); },\n        [&](long long& inv, int i) { add(a[i], -1); inv -= count_greater(a[i]);\
-    \ });\n    for (int i = 0; i < q; i++) {\n        int l, r; std::cin >> l >> r;\n\
-    \        mo.query(l, r);\n    }\n    for (long long ans : mo.solve<long long>([](long\
-    \ long& inv) { return inv; })) {\n        std::cout << ans << '\\n';\n    }\n\
-    }\n"
+    \ = [&](int i) { return total - count_less(i + 1); };\n\n    Mo mo(n, 0LL, [&](long\
+    \ long& inv, int i) { inv += count_less(a[i]); add(a[i], 1); }, [&](long long&\
+    \ inv, int i) { add(a[i], -1); inv -= count_less(a[i]); }, [&](long long& inv,\
+    \ int i) { inv += count_greater(a[i]); add(a[i], 1); }, [&](long long& inv, int\
+    \ i) { add(a[i], -1); inv -= count_greater(a[i]); });\n    for (int i = 0; i <\
+    \ q; i++) {\n        int l, r;\n        std::cin >> l >> r;\n        mo.query(l,\
+    \ r);\n    }\n    for (long long ans : mo.solve<long long>([](long long& inv)\
+    \ { return inv; })) {\n        std::cout << ans << '\\n';\n    }\n}\n"
   dependsOn:
   - src/others/mo.hpp
   isVerificationFile: true
   path: test/yosupo/static-range-inversions-query.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 06:59:46+09:00'
+  timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/static-range-inversions-query.test.cpp

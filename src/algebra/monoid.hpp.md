@@ -2,13 +2,13 @@
 data:
   _extendedDependsOn: []
   _extendedRequiredBy:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: src/algebra/acted-monoid.hpp
     title: "\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   - icon: ':heavy_check_mark:'
     path: src/algebra/group.hpp
     title: "\u7FA4\u306E\u5B9A\u7FA9"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: src/data_structures/dual-segtree.hpp
     title: "\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u533A\u9593\u4F5C\u7528\
       \u30011\u70B9\u53D6\u5F97)"
@@ -61,7 +61,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj/dsl-2-b.2.test.cpp
     title: test/aoj/dsl-2-b.2.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/aoj/dsl-2-d.test.cpp
     title: test/aoj/dsl-2-d.test.cpp
   - icon: ':heavy_check_mark:'
@@ -244,9 +244,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/674.1.test.cpp
     title: test/yukicoder/674.1.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
     links: []
@@ -337,50 +337,50 @@ data:
     \ g.b + f.b}; }\n    static constexpr S e() { return {T(1), T(0)}; }\n};\n\n/**\n\
     \ * @brief \u62EC\u5F27\u5217 \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\
     \u3044 ')' \u3068 '(' \u306E\u500B\u6570\n */\nstruct Parenthesis {\n    struct\
-    \ S {\n        long long close; // \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\
-    \u3044 ')' \u306E\u500B\u6570\n        long long open;  // \u5BFE\u5FDC\u306E\u53D6\
-    \u308C\u3066\u3044\u306A\u3044 '(' \u306E\u500B\u6570\n        constexpr S(char\
-    \ c = 0) : close(c == ')'), open(c == '(') {}\n        constexpr S(long long close,\
-    \ long long open) : close(close), open(open) {}\n        /**\n         * @brief\
-    \ \u6B63\u3057\u3044\u62EC\u5F27\u5217\u304B\n         */\n        constexpr bool\
-    \ is_valid() const { return close == 0 && open == 0; }\n    };\n    static constexpr\
-    \ S op(const S& a, const S& b) {\n        if(a.open >= b.close) return S(a.close,\
-    \ a.open - b.close + b.open);\n        return S(a.close + b.close - a.open, b.open);\n\
-    \    }\n    static constexpr S e() { return S(); }\n};\n\n/**\n * @brief \u6700\
-    \u5C0F\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\
-    \u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u4F4D\
-    \u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\u578B\n */\ntemplate\
-    \ <typename T, typename U = int>\nstruct MinWith {\n    using S = std::pair<T,\
-    \ U>;\n    static constexpr S op(const S& a, const S& b) { return b.first < a.first\
-    \ ? b : a; }\n    static constexpr S e() { return {std::numeric_limits<T>::max(),\
-    \ U{}}; }\n};\n\n/**\n * @brief \u6700\u5927\u5024\u3068\u305D\u306E\u4F4D\u7F6E\
-    \ \u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n * @tparam\
-    \ T \u5024\u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\
-    \u3059\u308B\u5024\u306E\u578B\n */\ntemplate <typename T, typename U = int>\n\
-    struct MaxWith {\n    using S = std::pair<T, U>;\n    static constexpr S op(const\
-    \ S& a, const S& b) { return a.first < b.first ? b : a; }\n    static constexpr\
-    \ S e() { return {std::numeric_limits<T>::lowest(), U{}}; }\n};\n\n/**\n * @brief\
-    \ \u6700\u5C0F\u5024\u3068\u305D\u306E\u500B\u6570\n *\n * @tparam T \u5024\u306E\
-    \u578B\n * @tparam U \u500B\u6570\u306E\u578B\n */\ntemplate <typename T, typename\
-    \ U = long long>\nstruct MinCount {\n    using S = std::pair<T, U>;\n    static\
-    \ constexpr S op(const S& a, const S& b) {\n        if(a.first < b.first) return\
-    \ a;\n        if(b.first < a.first) return b;\n        return {a.first, a.second\
-    \ + b.second};\n    }\n    static constexpr S e() { return {std::numeric_limits<T>::max(),\
-    \ U(0)}; }\n};\n\n/**\n * @brief \u6700\u5927\u5024\u3068\u305D\u306E\u500B\u6570\
+    \ S {\n        long long close;  // \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\
+    \u306A\u3044 ')' \u306E\u500B\u6570\n        long long open;   // \u5BFE\u5FDC\
+    \u306E\u53D6\u308C\u3066\u3044\u306A\u3044 '(' \u306E\u500B\u6570\n        constexpr\
+    \ S(char c = 0) : close(c == ')'), open(c == '(') {}\n        constexpr S(long\
+    \ long close, long long open) : close(close), open(open) {}\n        /**\n   \
+    \      * @brief \u6B63\u3057\u3044\u62EC\u5F27\u5217\u304B\n         */\n    \
+    \    constexpr bool is_valid() const { return close == 0 && open == 0; }\n   \
+    \ };\n    static constexpr S op(const S& a, const S& b) {\n        if (a.open\
+    \ >= b.close) return S(a.close, a.open - b.close + b.open);\n        return S(a.close\
+    \ + b.close - a.open, b.open);\n    }\n    static constexpr S e() { return S();\
+    \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\
+    \u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\
+    \u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\
+    \u5024\u306E\u578B\n */\ntemplate <typename T, typename U = int>\nstruct MinWith\
+    \ {\n    using S = std::pair<T, U>;\n    static constexpr S op(const S& a, const\
+    \ S& b) { return b.first < a.first ? b : a; }\n    static constexpr S e() { return\
+    \ {std::numeric_limits<T>::max(), U{}}; }\n};\n\n/**\n * @brief \u6700\u5927\u5024\
+    \u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\
+    \u512A\u5148\n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\
+    \u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\u578B\n */\ntemplate <typename\
+    \ T, typename U = int>\nstruct MaxWith {\n    using S = std::pair<T, U>;\n   \
+    \ static constexpr S op(const S& a, const S& b) { return a.first < b.first ? b\
+    \ : a; }\n    static constexpr S e() { return {std::numeric_limits<T>::lowest(),\
+    \ U{}}; }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u500B\u6570\
     \n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u500B\u6570\u306E\u578B\n\
-    \ */\ntemplate <typename T, typename U = long long>\nstruct MaxCount {\n    using\
+    \ */\ntemplate <typename T, typename U = long long>\nstruct MinCount {\n    using\
     \ S = std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n\
-    \        if(a.first < b.first) return b;\n        if(b.first < a.first) return\
-    \ a;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
-    \ S e() { return {std::numeric_limits<T>::lowest(), U(0)}; }\n};\n\n/**\n * @brief\
-    \ \u7A4D\u306E\u9806\u5E8F\u3092\u9006\u306B\u3057\u305F\u30E2\u30CE\u30A4\u30C9\
-    \ op(a, b) = M::op(b, a)\n *\n * \u4F8B: SegTree<monoid::Reverse<monoid::Composite<mint>>>\
+    \        if (a.first < b.first) return a;\n        if (b.first < a.first) return\
+    \ b;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
+    \ S e() { return {std::numeric_limits<T>::max(), U(0)}; }\n};\n\n/**\n * @brief\
+    \ \u6700\u5927\u5024\u3068\u305D\u306E\u500B\u6570\n *\n * @tparam T \u5024\u306E\
+    \u578B\n * @tparam U \u500B\u6570\u306E\u578B\n */\ntemplate <typename T, typename\
+    \ U = long long>\nstruct MaxCount {\n    using S = std::pair<T, U>;\n    static\
+    \ constexpr S op(const S& a, const S& b) {\n        if (a.first < b.first) return\
+    \ b;\n        if (b.first < a.first) return a;\n        return {a.first, a.second\
+    \ + b.second};\n    }\n    static constexpr S e() { return {std::numeric_limits<T>::lowest(),\
+    \ U(0)}; }\n};\n\n/**\n * @brief \u7A4D\u306E\u9806\u5E8F\u3092\u9006\u306B\u3057\
+    \u305F\u30E2\u30CE\u30A4\u30C9 op(a, b) = M::op(b, a)\n *\n * \u4F8B: SegTree<monoid::Reverse<monoid::Composite<mint>>>\
     \ seg(v); \u306E\u533A\u9593 [l, r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x))\n *\n\
     \ * @tparam M \u3082\u3068\u306E\u30E2\u30CE\u30A4\u30C9\n */\ntemplate <typename\
     \ M>\nstruct Reverse {\n    using S = typename M::S;\n    M m;\n    constexpr\
     \ Reverse() : m() {}\n    constexpr explicit Reverse(M m) : m(std::move(m)) {}\n\
     \    constexpr S op(const S& a, const S& b) const { return m.op(b, a); }\n   \
-    \ constexpr S e() const { return m.e(); }\n};\n\n} // namespace monoid\n\n/**\n\
+    \ constexpr S e() const { return m.e(); }\n};\n\n}  // namespace monoid\n\n/**\n\
     \ * @brief \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3068\u5358\u4F4D\u5143\
     \u304B\u3089\u5B9F\u884C\u6642\u306B\u4F5C\u308B\u30E2\u30CE\u30A4\u30C9\n * \u30E9\
     \u30E0\u30C0\u5F0F\u3092\u4F7F\u3048\u308B\n *\n * \u4F8B: SegTree seg(v, Monoid([](int\
@@ -478,50 +478,50 @@ data:
     \ g.b + f.b}; }\n    static constexpr S e() { return {T(1), T(0)}; }\n};\n\n/**\n\
     \ * @brief \u62EC\u5F27\u5217 \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\
     \u3044 ')' \u3068 '(' \u306E\u500B\u6570\n */\nstruct Parenthesis {\n    struct\
-    \ S {\n        long long close; // \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\u306A\
-    \u3044 ')' \u306E\u500B\u6570\n        long long open;  // \u5BFE\u5FDC\u306E\u53D6\
-    \u308C\u3066\u3044\u306A\u3044 '(' \u306E\u500B\u6570\n        constexpr S(char\
-    \ c = 0) : close(c == ')'), open(c == '(') {}\n        constexpr S(long long close,\
-    \ long long open) : close(close), open(open) {}\n        /**\n         * @brief\
-    \ \u6B63\u3057\u3044\u62EC\u5F27\u5217\u304B\n         */\n        constexpr bool\
-    \ is_valid() const { return close == 0 && open == 0; }\n    };\n    static constexpr\
-    \ S op(const S& a, const S& b) {\n        if(a.open >= b.close) return S(a.close,\
-    \ a.open - b.close + b.open);\n        return S(a.close + b.close - a.open, b.open);\n\
-    \    }\n    static constexpr S e() { return S(); }\n};\n\n/**\n * @brief \u6700\
-    \u5C0F\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\
-    \u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u4F4D\
-    \u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\u578B\n */\ntemplate\
-    \ <typename T, typename U = int>\nstruct MinWith {\n    using S = std::pair<T,\
-    \ U>;\n    static constexpr S op(const S& a, const S& b) { return b.first < a.first\
-    \ ? b : a; }\n    static constexpr S e() { return {std::numeric_limits<T>::max(),\
-    \ U{}}; }\n};\n\n/**\n * @brief \u6700\u5927\u5024\u3068\u305D\u306E\u4F4D\u7F6E\
-    \ \u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n * @tparam\
-    \ T \u5024\u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\
-    \u3059\u308B\u5024\u306E\u578B\n */\ntemplate <typename T, typename U = int>\n\
-    struct MaxWith {\n    using S = std::pair<T, U>;\n    static constexpr S op(const\
-    \ S& a, const S& b) { return a.first < b.first ? b : a; }\n    static constexpr\
-    \ S e() { return {std::numeric_limits<T>::lowest(), U{}}; }\n};\n\n/**\n * @brief\
-    \ \u6700\u5C0F\u5024\u3068\u305D\u306E\u500B\u6570\n *\n * @tparam T \u5024\u306E\
-    \u578B\n * @tparam U \u500B\u6570\u306E\u578B\n */\ntemplate <typename T, typename\
-    \ U = long long>\nstruct MinCount {\n    using S = std::pair<T, U>;\n    static\
-    \ constexpr S op(const S& a, const S& b) {\n        if(a.first < b.first) return\
-    \ a;\n        if(b.first < a.first) return b;\n        return {a.first, a.second\
-    \ + b.second};\n    }\n    static constexpr S e() { return {std::numeric_limits<T>::max(),\
-    \ U(0)}; }\n};\n\n/**\n * @brief \u6700\u5927\u5024\u3068\u305D\u306E\u500B\u6570\
+    \ S {\n        long long close;  // \u5BFE\u5FDC\u306E\u53D6\u308C\u3066\u3044\
+    \u306A\u3044 ')' \u306E\u500B\u6570\n        long long open;   // \u5BFE\u5FDC\
+    \u306E\u53D6\u308C\u3066\u3044\u306A\u3044 '(' \u306E\u500B\u6570\n        constexpr\
+    \ S(char c = 0) : close(c == ')'), open(c == '(') {}\n        constexpr S(long\
+    \ long close, long long open) : close(close), open(open) {}\n        /**\n   \
+    \      * @brief \u6B63\u3057\u3044\u62EC\u5F27\u5217\u304B\n         */\n    \
+    \    constexpr bool is_valid() const { return close == 0 && open == 0; }\n   \
+    \ };\n    static constexpr S op(const S& a, const S& b) {\n        if (a.open\
+    \ >= b.close) return S(a.close, a.open - b.close + b.open);\n        return S(a.close\
+    \ + b.close - a.open, b.open);\n    }\n    static constexpr S e() { return S();\
+    \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\
+    \u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\
+    \u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\
+    \u5024\u306E\u578B\n */\ntemplate <typename T, typename U = int>\nstruct MinWith\
+    \ {\n    using S = std::pair<T, U>;\n    static constexpr S op(const S& a, const\
+    \ S& b) { return b.first < a.first ? b : a; }\n    static constexpr S e() { return\
+    \ {std::numeric_limits<T>::max(), U{}}; }\n};\n\n/**\n * @brief \u6700\u5927\u5024\
+    \u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\
+    \u512A\u5148\n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\
+    \u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\u578B\n */\ntemplate <typename\
+    \ T, typename U = int>\nstruct MaxWith {\n    using S = std::pair<T, U>;\n   \
+    \ static constexpr S op(const S& a, const S& b) { return a.first < b.first ? b\
+    \ : a; }\n    static constexpr S e() { return {std::numeric_limits<T>::lowest(),\
+    \ U{}}; }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u500B\u6570\
     \n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u500B\u6570\u306E\u578B\n\
-    \ */\ntemplate <typename T, typename U = long long>\nstruct MaxCount {\n    using\
+    \ */\ntemplate <typename T, typename U = long long>\nstruct MinCount {\n    using\
     \ S = std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n\
-    \        if(a.first < b.first) return b;\n        if(b.first < a.first) return\
-    \ a;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
-    \ S e() { return {std::numeric_limits<T>::lowest(), U(0)}; }\n};\n\n/**\n * @brief\
-    \ \u7A4D\u306E\u9806\u5E8F\u3092\u9006\u306B\u3057\u305F\u30E2\u30CE\u30A4\u30C9\
-    \ op(a, b) = M::op(b, a)\n *\n * \u4F8B: SegTree<monoid::Reverse<monoid::Composite<mint>>>\
+    \        if (a.first < b.first) return a;\n        if (b.first < a.first) return\
+    \ b;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
+    \ S e() { return {std::numeric_limits<T>::max(), U(0)}; }\n};\n\n/**\n * @brief\
+    \ \u6700\u5927\u5024\u3068\u305D\u306E\u500B\u6570\n *\n * @tparam T \u5024\u306E\
+    \u578B\n * @tparam U \u500B\u6570\u306E\u578B\n */\ntemplate <typename T, typename\
+    \ U = long long>\nstruct MaxCount {\n    using S = std::pair<T, U>;\n    static\
+    \ constexpr S op(const S& a, const S& b) {\n        if (a.first < b.first) return\
+    \ b;\n        if (b.first < a.first) return a;\n        return {a.first, a.second\
+    \ + b.second};\n    }\n    static constexpr S e() { return {std::numeric_limits<T>::lowest(),\
+    \ U(0)}; }\n};\n\n/**\n * @brief \u7A4D\u306E\u9806\u5E8F\u3092\u9006\u306B\u3057\
+    \u305F\u30E2\u30CE\u30A4\u30C9 op(a, b) = M::op(b, a)\n *\n * \u4F8B: SegTree<monoid::Reverse<monoid::Composite<mint>>>\
     \ seg(v); \u306E\u533A\u9593 [l, r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x))\n *\n\
     \ * @tparam M \u3082\u3068\u306E\u30E2\u30CE\u30A4\u30C9\n */\ntemplate <typename\
     \ M>\nstruct Reverse {\n    using S = typename M::S;\n    M m;\n    constexpr\
     \ Reverse() : m() {}\n    constexpr explicit Reverse(M m) : m(std::move(m)) {}\n\
     \    constexpr S op(const S& a, const S& b) const { return m.op(b, a); }\n   \
-    \ constexpr S e() const { return m.e(); }\n};\n\n} // namespace monoid\n\n/**\n\
+    \ constexpr S e() const { return m.e(); }\n};\n\n}  // namespace monoid\n\n/**\n\
     \ * @brief \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3068\u5358\u4F4D\u5143\
     \u304B\u3089\u5B9F\u884C\u6642\u306B\u4F5C\u308B\u30E2\u30CE\u30A4\u30C9\n * \u30E9\
     \u30E0\u30C0\u5F0F\u3092\u4F7F\u3048\u308B\n *\n * \u4F8B: SegTree seg(v, Monoid([](int\
@@ -551,8 +551,8 @@ data:
   - src/data_structures/monoid-unionfind.hpp
   - src/algebra/group.hpp
   - src/algebra/acted-monoid.hpp
-  timestamp: '2026-10-14 06:59:39+09:00'
-  verificationStatus: LIBRARY_SOME_WA
+  timestamp: '2026-10-14 11:33:42+09:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/imos.test.cpp
   - test/unittest/segtree-beats.test.cpp

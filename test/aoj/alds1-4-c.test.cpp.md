@@ -37,11 +37,11 @@ data:
     \ = depth;\n        node.prefix_cnt = node.word_cnt = 0;\n        nodes.push_back(node);\n\
     \        return nodes.size() - 1;\n    }\n    static int index(int c) {\n    \
     \    assert(0 <= c - Base && c - Base < K);\n        return c - Base;\n    }\n\
-    \npublic:\n    Trie() { add_node(-1, 0); }\n\n    /**\n     * @brief \u30CE\u30FC\
-    \u30C9\u306E\u500B\u6570 (\u6839\u3092\u542B\u3080)\n     */\n    int size() const\
-    \ { return nodes.size(); }\n\n    /**\n     * @brief \u6587\u5B57\u5217 s \u3092\
-    \ 1 \u500B\u8FFD\u52A0\u3057\u3001s \u306B\u5BFE\u5FDC\u3059\u308B\u30CE\u30FC\
-    \u30C9\u3092\u8FD4\u3059 O(|s|)\n     * @param s std::string \u3084 std::vector<int>\
+    \n   public:\n    Trie() { add_node(-1, 0); }\n\n    /**\n     * @brief \u30CE\
+    \u30FC\u30C9\u306E\u500B\u6570 (\u6839\u3092\u542B\u3080)\n     */\n    int size()\
+    \ const { return nodes.size(); }\n\n    /**\n     * @brief \u6587\u5B57\u5217\
+    \ s \u3092 1 \u500B\u8FFD\u52A0\u3057\u3001s \u306B\u5BFE\u5FDC\u3059\u308B\u30CE\
+    \u30FC\u30C9\u3092\u8FD4\u3059 O(|s|)\n     * @param s std::string \u3084 std::vector<int>\
     \ \u306A\u3069\u3001\u8981\u7D20\u3092\u6574\u6570\u306B\u5909\u63DB\u3067\u304D\
     \u308B\u5217\n     */\n    template <typename R>\n    int insert(const R& s) {\n\
     \        int v = 0;\n        nodes[v].prefix_cnt++;\n        for (auto c : s)\
@@ -101,10 +101,12 @@ data:
     \u3067\u30010, 1, 2, 3 \u306B\u76F4\u3057\u3066\u30CE\u30FC\u30C9\u3092\u5C0F\u3055\
     \u304F\u3059\u308B\n    Trie<4, 0> trie;\n    auto convert = [](const std::string&\
     \ s) {\n        std::vector<int> res;\n        for (char c : s) res.push_back(c\
-    \ == 'A' ? 0 : c == 'C' ? 1 : c == 'G' ? 2 : 3);\n        return res;\n    };\n\
-    \    while (n--) {\n        std::string op, s;\n        std::cin >> op >> s;\n\
-    \        if (op == \"insert\") trie.insert(convert(s));\n        else std::cout\
-    \ << (trie.count(convert(s)) > 0 ? \"yes\" : \"no\") << '\\n';\n    }\n}\n"
+    \ == 'A' ? 0 : c == 'C' ? 1\n                                                \
+    \  : c == 'G'   ? 2\n                                                        \
+    \       : 3);\n        return res;\n    };\n    while (n--) {\n        std::string\
+    \ op, s;\n        std::cin >> op >> s;\n        if (op == \"insert\")\n      \
+    \      trie.insert(convert(s));\n        else\n            std::cout << (trie.count(convert(s))\
+    \ > 0 ? \"yes\" : \"no\") << '\\n';\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_4_C\"\
     \n\n#include <iostream>\n#include <string>\n#include <vector>\n\n#include \"../../src/string/trie.hpp\"\
     \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
@@ -112,16 +114,18 @@ data:
     \u306A\u306E\u3067\u30010, 1, 2, 3 \u306B\u76F4\u3057\u3066\u30CE\u30FC\u30C9\u3092\
     \u5C0F\u3055\u304F\u3059\u308B\n    Trie<4, 0> trie;\n    auto convert = [](const\
     \ std::string& s) {\n        std::vector<int> res;\n        for (char c : s) res.push_back(c\
-    \ == 'A' ? 0 : c == 'C' ? 1 : c == 'G' ? 2 : 3);\n        return res;\n    };\n\
-    \    while (n--) {\n        std::string op, s;\n        std::cin >> op >> s;\n\
-    \        if (op == \"insert\") trie.insert(convert(s));\n        else std::cout\
-    \ << (trie.count(convert(s)) > 0 ? \"yes\" : \"no\") << '\\n';\n    }\n}\n"
+    \ == 'A' ? 0 : c == 'C' ? 1\n                                                \
+    \  : c == 'G'   ? 2\n                                                        \
+    \       : 3);\n        return res;\n    };\n    while (n--) {\n        std::string\
+    \ op, s;\n        std::cin >> op >> s;\n        if (op == \"insert\")\n      \
+    \      trie.insert(convert(s));\n        else\n            std::cout << (trie.count(convert(s))\
+    \ > 0 ? \"yes\" : \"no\") << '\\n';\n    }\n}\n"
   dependsOn:
   - src/string/trie.hpp
   isVerificationFile: true
   path: test/aoj/alds1-4-c.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 06:59:14+09:00'
+  timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/alds1-4-c.test.cpp

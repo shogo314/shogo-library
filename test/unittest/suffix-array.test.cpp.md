@@ -20,12 +20,10 @@ data:
     \u308B\u611A\u76F4\u306A\u65B9\u6CD5\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\
     \u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\
     \u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\
-    \u3059\u308B\n\n#include <algorithm>\n#include <iostream>\n#include <random>\n\
-    #include <string>\n#include <vector>\n\n#line 2 \"src/string/suffix-array.hpp\"\
-    \n\n/**\n * @file suffix-array.hpp\n * @brief Suffix Array (SA-IS) \u3068 LCP\
-    \ \u914D\u5217\n */\n\n#line 9 \"src/string/suffix-array.hpp\"\n#include <cassert>\n\
-    #line 12 \"src/string/suffix-array.hpp\"\n\nnamespace internal_suffix_array {\n\
-    // s \u306E\u5024\u306F 0 \u4EE5\u4E0A upper \u4EE5\u4E0B\ninline std::vector<int>\
+    \u3059\u308B\n\n#line 2 \"src/string/suffix-array.hpp\"\n\n/**\n * @file suffix-array.hpp\n\
+    \ * @brief Suffix Array (SA-IS) \u3068 LCP \u914D\u5217\n */\n\n#include <algorithm>\n\
+    #include <cassert>\n#include <string>\n#include <vector>\n\nnamespace internal_suffix_array\
+    \ {\n// s \u306E\u5024\u306F 0 \u4EE5\u4E0A upper \u4EE5\u4E0B\ninline std::vector<int>\
     \ sa_is(const std::vector<int>& s, int upper) {\n    int n = s.size();\n    if\
     \ (n == 0) return {};\n    if (n == 1) return {0};\n    if (n == 2) return s[0]\
     \ < s[1] ? std::vector<int>{0, 1} : std::vector<int>{1, 0};\n    std::vector<int>\
@@ -36,15 +34,15 @@ data:
     \u5C3E\u8F9E\u304C\u5165\u308B\u4F4D\u7F6E\u306E\u59CB\u307E\u308A\u3001sum_s[c]:\
     \ \u5148\u982D\u304C c \u306E S \u578B\u306E\u63A5\u5C3E\u8F9E\u304C\u5165\u308B\
     \u4F4D\u7F6E\u306E\u59CB\u307E\u308A\n    std::vector<int> sum_l(upper + 1), sum_s(upper\
-    \ + 1);\n    for (int i = 0; i < n; i++) {\n        if (!ls[i]) sum_s[s[i]]++;\n\
-    \        else sum_l[s[i] + 1]++;\n    }\n    for (int i = 0; i <= upper; i++)\
-    \ {\n        sum_s[i] += sum_l[i];\n        if (i < upper) sum_l[i + 1] += sum_s[i];\n\
-    \    }\n    // LMS \u306E\u4E26\u3073 lms \u304B\u3089\u3001\u8A98\u5C0E\u30BD\
-    \u30FC\u30C8\u3067\u5168\u4F53\u3092\u4E26\u3079\u308B\n    auto induce = [&](const\
-    \ std::vector<int>& lms) {\n        std::fill(sa.begin(), sa.end(), -1);\n   \
-    \     std::vector<int> buf(upper + 1);\n        std::copy(sum_s.begin(), sum_s.end(),\
-    \ buf.begin());\n        for (int d : lms) {\n            if (d == n) continue;\n\
-    \            sa[buf[s[d]]++] = d;\n        }\n        std::copy(sum_l.begin(),\
+    \ + 1);\n    for (int i = 0; i < n; i++) {\n        if (!ls[i])\n            sum_s[s[i]]++;\n\
+    \        else\n            sum_l[s[i] + 1]++;\n    }\n    for (int i = 0; i <=\
+    \ upper; i++) {\n        sum_s[i] += sum_l[i];\n        if (i < upper) sum_l[i\
+    \ + 1] += sum_s[i];\n    }\n    // LMS \u306E\u4E26\u3073 lms \u304B\u3089\u3001\
+    \u8A98\u5C0E\u30BD\u30FC\u30C8\u3067\u5168\u4F53\u3092\u4E26\u3079\u308B\n   \
+    \ auto induce = [&](const std::vector<int>& lms) {\n        std::fill(sa.begin(),\
+    \ sa.end(), -1);\n        std::vector<int> buf(upper + 1);\n        std::copy(sum_s.begin(),\
+    \ sum_s.end(), buf.begin());\n        for (int d : lms) {\n            if (d ==\
+    \ n) continue;\n            sa[buf[s[d]]++] = d;\n        }\n        std::copy(sum_l.begin(),\
     \ sum_l.end(), buf.begin());\n        sa[buf[s[n - 1]]++] = n - 1;\n        for\
     \ (int i = 0; i < n; i++) {\n            int v = sa[i];\n            if (v >=\
     \ 1 && !ls[v - 1]) sa[buf[s[v - 1]]++] = v - 1;\n        }\n        std::copy(sum_l.begin(),\
@@ -108,47 +106,49 @@ data:
     \ (int i = 0, h = 0; i < n; i++) {\n        if (h > 0) h--;\n        if (rank[i]\
     \ == 0) continue;\n        int j = sa[rank[i] - 1];\n        while (j + h < n\
     \ && i + h < n && s[j + h] == s[i + h]) h++;\n        lcp[rank[i] - 1] = h;\n\
-    \    }\n    return lcp;\n}\n#line 13 \"test/unittest/suffix-array.test.cpp\"\n\
-    \ntemplate <typename R>\nbool check(const R& s, const std::vector<int>& sa) {\n\
-    \    int n = s.size();\n    std::vector<int> expected(n);\n    for (int i = 0;\
-    \ i < n; i++) expected[i] = i;\n    std::sort(expected.begin(), expected.end(),\
-    \ [&](int a, int b) {\n        return std::lexicographical_compare(s.begin() +\
-    \ a, s.end(), s.begin() + b, s.end());\n    });\n    if (sa != expected) return\
-    \ false;\n    std::vector<int> lcp = lcp_array(s, sa);\n    if ((int)lcp.size()\
-    \ != std::max(n - 1, 0)) return false;\n    for (int i = 0; i + 1 < n; i++) {\n\
-    \        int h = 0;\n        while (sa[i] + h < n && sa[i + 1] + h < n && s[sa[i]\
-    \ + h] == s[sa[i + 1] + h]) h++;\n        if (lcp[i] != h) return false;\n   \
-    \ }\n    return true;\n}\n\nint main() {\n    std::mt19937 rng(314);\n    bool\
-    \ ok = true;\n    for (int rep = 0; rep < 3000 && ok; rep++) {\n        int n\
-    \ = rng() % 40;\n        int upper = rng() % 4;\n        std::vector<int> a(n);\n\
-    \        for (auto& v : a) v = rng() % (upper + 1);\n        ok = ok && check(a,\
-    \ suffix_array(a, upper));\n        ok = ok && check(a, suffix_array(a));\n\n\
-    \        std::string s(n, 'a');\n        for (auto& c : s) c = 'a' + rng() % (upper\
-    \ + 1);\n        ok = ok && check(s, suffix_array(s));\n\n        std::vector<long\
-    \ long> b(n);\n        for (auto& v : b) v = (long long)(rng() % 3) * 1000000000000LL\
-    \ - 1000000000000LL;\n        ok = ok && check(b, suffix_array(b));\n    }\n \
-    \   // \u9577\u3044\u5217 (\u518D\u5E30\u304C\u4F55\u6BB5\u3082\u8D77\u3053\u308B\
-    )\n    for (int rep = 0; rep < 20 && ok; rep++) {\n        int n = rng() % 2000\
-    \ + 1000;\n        std::string s(n, 'a');\n        int k = rng() % 3 + 1;\n  \
-    \      for (auto& c : s) c = 'a' + rng() % k;\n        if (rep % 2) {\n      \
-    \      // \u5468\u671F\u7684\u306A\u6587\u5B57\u5217\n            int p = rng()\
-    \ % 10 + 1;\n            for (int i = p; i < n; i++) s[i] = s[i - p];\n      \
-    \  }\n        ok = ok && check(s, suffix_array(s));\n    }\n\n    // \u4F8B\n\
-    \    ok = ok && suffix_array(std::string(\"abracadabra\")) == std::vector<int>{10,\
-    \ 7, 0, 3, 5, 8, 1, 4, 6, 9, 2};\n    ok = ok && lcp_array(std::string(\"abracadabra\"\
-    ), suffix_array(std::string(\"abracadabra\"))) == std::vector<int>{1, 4, 1, 1,\
-    \ 0, 3, 0, 0, 0, 2};\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
-    \    else std::cerr << \"failed\" << std::endl;\n}\n"
+    \    }\n    return lcp;\n}\n#line 7 \"test/unittest/suffix-array.test.cpp\"\n\n\
+    #line 9 \"test/unittest/suffix-array.test.cpp\"\n#include <iostream>\n#include\
+    \ <random>\n#line 13 \"test/unittest/suffix-array.test.cpp\"\n\ntemplate <typename\
+    \ R>\nbool check(const R& s, const std::vector<int>& sa) {\n    int n = s.size();\n\
+    \    std::vector<int> expected(n);\n    for (int i = 0; i < n; i++) expected[i]\
+    \ = i;\n    std::sort(expected.begin(), expected.end(), [&](int a, int b) {\n\
+    \        return std::lexicographical_compare(s.begin() + a, s.end(), s.begin()\
+    \ + b, s.end());\n    });\n    if (sa != expected) return false;\n    std::vector<int>\
+    \ lcp = lcp_array(s, sa);\n    if ((int)lcp.size() != std::max(n - 1, 0)) return\
+    \ false;\n    for (int i = 0; i + 1 < n; i++) {\n        int h = 0;\n        while\
+    \ (sa[i] + h < n && sa[i + 1] + h < n && s[sa[i] + h] == s[sa[i + 1] + h]) h++;\n\
+    \        if (lcp[i] != h) return false;\n    }\n    return true;\n}\n\nint main()\
+    \ {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int rep = 0; rep\
+    \ < 3000 && ok; rep++) {\n        int n = rng() % 40;\n        int upper = rng()\
+    \ % 4;\n        std::vector<int> a(n);\n        for (auto& v : a) v = rng() %\
+    \ (upper + 1);\n        ok = ok && check(a, suffix_array(a, upper));\n       \
+    \ ok = ok && check(a, suffix_array(a));\n\n        std::string s(n, 'a');\n  \
+    \      for (auto& c : s) c = 'a' + rng() % (upper + 1);\n        ok = ok && check(s,\
+    \ suffix_array(s));\n\n        std::vector<long long> b(n);\n        for (auto&\
+    \ v : b) v = (long long)(rng() % 3) * 1000000000000LL - 1000000000000LL;\n   \
+    \     ok = ok && check(b, suffix_array(b));\n    }\n    // \u9577\u3044\u5217\
+    \ (\u518D\u5E30\u304C\u4F55\u6BB5\u3082\u8D77\u3053\u308B)\n    for (int rep =\
+    \ 0; rep < 20 && ok; rep++) {\n        int n = rng() % 2000 + 1000;\n        std::string\
+    \ s(n, 'a');\n        int k = rng() % 3 + 1;\n        for (auto& c : s) c = 'a'\
+    \ + rng() % k;\n        if (rep % 2) {\n            // \u5468\u671F\u7684\u306A\
+    \u6587\u5B57\u5217\n            int p = rng() % 10 + 1;\n            for (int\
+    \ i = p; i < n; i++) s[i] = s[i - p];\n        }\n        ok = ok && check(s,\
+    \ suffix_array(s));\n    }\n\n    // \u4F8B\n    ok = ok && suffix_array(std::string(\"\
+    abracadabra\")) == std::vector<int>{10, 7, 0, 3, 5, 8, 1, 4, 6, 9, 2};\n    ok\
+    \ = ok && lcp_array(std::string(\"abracadabra\"), suffix_array(std::string(\"\
+    abracadabra\"))) == std::vector<int>{1, 4, 1, 1, 0, 3, 0, 0, 0, 2};\n\n    if\
+    \ (ok)\n        std::cout << \"Hello World\" << std::endl;\n    else\n       \
+    \ std::cerr << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// suffix_array \u3068 lcp_array \u3092\u3001\u63A5\u5C3E\u8F9E\u3092\u30BD\
     \u30FC\u30C8\u3059\u308B\u611A\u76F4\u306A\u65B9\u6CD5\u3068\u30E9\u30F3\u30C0\
     \u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\
     \u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World\
-    \ \u3092\u51FA\u529B\u3059\u308B\n\n#include <algorithm>\n#include <iostream>\n\
-    #include <random>\n#include <string>\n#include <vector>\n\n#include \"../../src/string/suffix-array.hpp\"\
-    \n\ntemplate <typename R>\nbool check(const R& s, const std::vector<int>& sa)\
-    \ {\n    int n = s.size();\n    std::vector<int> expected(n);\n    for (int i\
-    \ = 0; i < n; i++) expected[i] = i;\n    std::sort(expected.begin(), expected.end(),\
+    \ \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../src/string/suffix-array.hpp\"\
+    \n\n#include <algorithm>\n#include <iostream>\n#include <random>\n#include <string>\n\
+    #include <vector>\n\ntemplate <typename R>\nbool check(const R& s, const std::vector<int>&\
+    \ sa) {\n    int n = s.size();\n    std::vector<int> expected(n);\n    for (int\
+    \ i = 0; i < n; i++) expected[i] = i;\n    std::sort(expected.begin(), expected.end(),\
     \ [&](int a, int b) {\n        return std::lexicographical_compare(s.begin() +\
     \ a, s.end(), s.begin() + b, s.end());\n    });\n    if (sa != expected) return\
     \ false;\n    std::vector<int> lcp = lcp_array(s, sa);\n    if ((int)lcp.size()\
@@ -174,14 +174,14 @@ data:
     \    ok = ok && suffix_array(std::string(\"abracadabra\")) == std::vector<int>{10,\
     \ 7, 0, 3, 5, 8, 1, 4, 6, 9, 2};\n    ok = ok && lcp_array(std::string(\"abracadabra\"\
     ), suffix_array(std::string(\"abracadabra\"))) == std::vector<int>{1, 4, 1, 1,\
-    \ 0, 3, 0, 0, 0, 2};\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
-    \    else std::cerr << \"failed\" << std::endl;\n}\n"
+    \ 0, 3, 0, 0, 0, 2};\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
+    \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/string/suffix-array.hpp
   isVerificationFile: true
   path: test/unittest/suffix-array.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 00:42:16+09:00'
+  timestamp: '2026-10-14 11:33:42+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/suffix-array.test.cpp

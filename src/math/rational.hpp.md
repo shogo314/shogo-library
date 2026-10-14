@@ -37,31 +37,32 @@ data:
     \u3057\u3051\u308C\u3070 0\u3001\u5927\u304D\u3051\u308C\u3070\u6B63\u3092\u8FD4\
     \u3059\n    static int compare(T a, T b, T c, T d) {\n        if constexpr (sizeof(T)\
     \ <= 8) {\n            __int128 x = (__int128)a * d, y = (__int128)c * b;\n  \
-    \          return x < y ? -1 : x > y ? 1 : 0;\n        } else {\n            //\
-    \ \u6574\u6570\u90E8\u5206\u3092\u6BD4\u3079\u3001\u540C\u3058\u306A\u3089\u5C0F\
-    \u6570\u90E8\u5206\u306E\u9006\u6570\u3092\u6BD4\u3079\u308B (\u5927\u5C0F\u304C\
-    \u9006\u306B\u306A\u308B)\n            int sign = 1;\n            while (true)\
-    \ {\n                T x = floor_div(a, b), y = floor_div(c, d);\n           \
-    \     if (x != y) return x < y ? -sign : sign;\n                a -= x * b, c\
-    \ -= y * d;\n                if (a == 0 || c == 0) {\n                    if (a\
-    \ == 0 && c == 0) return 0;\n                    return a == 0 ? -sign : sign;\n\
-    \                }\n                std::swap(a, b);\n                std::swap(c,\
-    \ d);\n                sign = -sign;\n            }\n        }\n    }\n\npublic:\n\
-    \    /**\n     * @brief \u6574\u6570 n\n     */\n    Rational(T n = 0) : p(n),\
-    \ q(1) {}\n    /**\n     * @brief num / den (den != 0)\n     */\n    Rational(T\
-    \ num, T den) : p(num), q(den) {\n        assert(den != 0 && \"Rational: division\
-    \ by zero\");\n        if (q < 0) p = -p, q = -q;\n        T g = gcd_(p, q);\n\
-    \        p /= g, q /= g;\n    }\n\n    /**\n     * @brief \u5206\u5B50\n     */\n\
-    \    T num() const { return p; }\n    /**\n     * @brief \u5206\u6BCD (\u6B63\
-    )\n     */\n    T den() const { return q; }\n\n    /**\n     * @brief \u4EE5\u4E0B\
-    \u3067\u6700\u5927\u306E\u6574\u6570\n     */\n    T floor() const { return floor_div(p,\
-    \ q); }\n    /**\n     * @brief \u4EE5\u4E0A\u3067\u6700\u5C0F\u306E\u6574\u6570\
-    \n     */\n    T ceil() const { return -floor_div(-p, q); }\n    /**\n     * @brief\
-    \ \u6574\u6570\u304B\n     */\n    bool is_integer() const { return q == 1; }\n\
-    \    /**\n     * @brief double \u306B\u76F4\u3057\u305F\u5024\n     */\n    double\
-    \ to_double() const { return (double)p / (double)q; }\n    /**\n     * @brief\
-    \ long double \u306B\u76F4\u3057\u305F\u5024\n     */\n    long double to_long_double()\
-    \ const { return (long double)p / (long double)q; }\n    explicit operator double()\
+    \          return x < y ? -1 : x > y ? 1\n                                   \
+    \   : 0;\n        } else {\n            // \u6574\u6570\u90E8\u5206\u3092\u6BD4\
+    \u3079\u3001\u540C\u3058\u306A\u3089\u5C0F\u6570\u90E8\u5206\u306E\u9006\u6570\
+    \u3092\u6BD4\u3079\u308B (\u5927\u5C0F\u304C\u9006\u306B\u306A\u308B)\n      \
+    \      int sign = 1;\n            while (true) {\n                T x = floor_div(a,\
+    \ b), y = floor_div(c, d);\n                if (x != y) return x < y ? -sign :\
+    \ sign;\n                a -= x * b, c -= y * d;\n                if (a == 0 ||\
+    \ c == 0) {\n                    if (a == 0 && c == 0) return 0;\n           \
+    \         return a == 0 ? -sign : sign;\n                }\n                std::swap(a,\
+    \ b);\n                std::swap(c, d);\n                sign = -sign;\n     \
+    \       }\n        }\n    }\n\n   public:\n    /**\n     * @brief \u6574\u6570\
+    \ n\n     */\n    Rational(T n = 0) : p(n), q(1) {}\n    /**\n     * @brief num\
+    \ / den (den != 0)\n     */\n    Rational(T num, T den) : p(num), q(den) {\n \
+    \       assert(den != 0 && \"Rational: division by zero\");\n        if (q < 0)\
+    \ p = -p, q = -q;\n        T g = gcd_(p, q);\n        p /= g, q /= g;\n    }\n\
+    \n    /**\n     * @brief \u5206\u5B50\n     */\n    T num() const { return p;\
+    \ }\n    /**\n     * @brief \u5206\u6BCD (\u6B63)\n     */\n    T den() const\
+    \ { return q; }\n\n    /**\n     * @brief \u4EE5\u4E0B\u3067\u6700\u5927\u306E\
+    \u6574\u6570\n     */\n    T floor() const { return floor_div(p, q); }\n    /**\n\
+    \     * @brief \u4EE5\u4E0A\u3067\u6700\u5C0F\u306E\u6574\u6570\n     */\n   \
+    \ T ceil() const { return -floor_div(-p, q); }\n    /**\n     * @brief \u6574\u6570\
+    \u304B\n     */\n    bool is_integer() const { return q == 1; }\n    /**\n   \
+    \  * @brief double \u306B\u76F4\u3057\u305F\u5024\n     */\n    double to_double()\
+    \ const { return (double)p / (double)q; }\n    /**\n     * @brief long double\
+    \ \u306B\u76F4\u3057\u305F\u5024\n     */\n    long double to_long_double() const\
+    \ { return (long double)p / (long double)q; }\n    explicit operator double()\
     \ const { return to_double(); }\n\n    /**\n     * @brief \u9006\u6570 (0 \u3067\
     \u306A\u3044\u3053\u3068)\n     */\n    Rational inv() const {\n        assert(p\
     \ != 0 && \"Rational: division by zero\");\n        return p > 0 ? Rational(q,\
@@ -109,9 +110,9 @@ data:
     \ i = 0;\n            if (i < t.size() && (t[i] == '-' || t[i] == '+')) neg =\
     \ t[i++] == '-';\n            for (; i < t.size(); i++) x = x * 10 + (t[i] - '0');\n\
     \            return neg ? -x : x;\n        };\n        auto pos = s.find('/');\n\
-    \        if (pos == std::string::npos) r = Rational(parse(s));\n        else r\
-    \ = Rational(parse(s.substr(0, pos)), parse(s.substr(pos + 1)));\n        return\
-    \ is;\n    }\n};\n"
+    \        if (pos == std::string::npos)\n            r = Rational(parse(s));\n\
+    \        else\n            r = Rational(parse(s.substr(0, pos)), parse(s.substr(pos\
+    \ + 1)));\n        return is;\n    }\n};\n"
   code: "#pragma once\n\n/**\n * @file rational.hpp\n * @brief \u6709\u7406\u6570\n\
     \ */\n\n#include <cassert>\n#include <cstddef>\n#include <istream>\n#include <ostream>\n\
     #include <string>\n#include <utility>\n\n/**\n * @brief \u6709\u7406\u6570 (\u5206\
@@ -137,86 +138,86 @@ data:
     \u304D\u3051\u308C\u3070\u6B63\u3092\u8FD4\u3059\n    static int compare(T a,\
     \ T b, T c, T d) {\n        if constexpr (sizeof(T) <= 8) {\n            __int128\
     \ x = (__int128)a * d, y = (__int128)c * b;\n            return x < y ? -1 : x\
-    \ > y ? 1 : 0;\n        } else {\n            // \u6574\u6570\u90E8\u5206\u3092\
-    \u6BD4\u3079\u3001\u540C\u3058\u306A\u3089\u5C0F\u6570\u90E8\u5206\u306E\u9006\
-    \u6570\u3092\u6BD4\u3079\u308B (\u5927\u5C0F\u304C\u9006\u306B\u306A\u308B)\n\
-    \            int sign = 1;\n            while (true) {\n                T x =\
-    \ floor_div(a, b), y = floor_div(c, d);\n                if (x != y) return x\
-    \ < y ? -sign : sign;\n                a -= x * b, c -= y * d;\n             \
-    \   if (a == 0 || c == 0) {\n                    if (a == 0 && c == 0) return\
-    \ 0;\n                    return a == 0 ? -sign : sign;\n                }\n \
-    \               std::swap(a, b);\n                std::swap(c, d);\n         \
-    \       sign = -sign;\n            }\n        }\n    }\n\npublic:\n    /**\n \
-    \    * @brief \u6574\u6570 n\n     */\n    Rational(T n = 0) : p(n), q(1) {}\n\
-    \    /**\n     * @brief num / den (den != 0)\n     */\n    Rational(T num, T den)\
-    \ : p(num), q(den) {\n        assert(den != 0 && \"Rational: division by zero\"\
-    );\n        if (q < 0) p = -p, q = -q;\n        T g = gcd_(p, q);\n        p /=\
-    \ g, q /= g;\n    }\n\n    /**\n     * @brief \u5206\u5B50\n     */\n    T num()\
-    \ const { return p; }\n    /**\n     * @brief \u5206\u6BCD (\u6B63)\n     */\n\
-    \    T den() const { return q; }\n\n    /**\n     * @brief \u4EE5\u4E0B\u3067\u6700\
-    \u5927\u306E\u6574\u6570\n     */\n    T floor() const { return floor_div(p, q);\
-    \ }\n    /**\n     * @brief \u4EE5\u4E0A\u3067\u6700\u5C0F\u306E\u6574\u6570\n\
-    \     */\n    T ceil() const { return -floor_div(-p, q); }\n    /**\n     * @brief\
-    \ \u6574\u6570\u304B\n     */\n    bool is_integer() const { return q == 1; }\n\
-    \    /**\n     * @brief double \u306B\u76F4\u3057\u305F\u5024\n     */\n    double\
-    \ to_double() const { return (double)p / (double)q; }\n    /**\n     * @brief\
-    \ long double \u306B\u76F4\u3057\u305F\u5024\n     */\n    long double to_long_double()\
-    \ const { return (long double)p / (long double)q; }\n    explicit operator double()\
-    \ const { return to_double(); }\n\n    /**\n     * @brief \u9006\u6570 (0 \u3067\
-    \u306A\u3044\u3053\u3068)\n     */\n    Rational inv() const {\n        assert(p\
-    \ != 0 && \"Rational: division by zero\");\n        return p > 0 ? Rational(q,\
-    \ p, Raw{}) : Rational(-q, -p, Raw{});\n    }\n    /**\n     * @brief \u7D76\u5BFE\
-    \u5024\n     */\n    Rational abs() const { return Rational(abs_(p), q, Raw{});\
-    \ }\n\n    Rational operator+() const { return *this; }\n    Rational operator-()\
-    \ const { return Rational(-p, q, Raw{}); }\n\n    Rational& operator+=(const Rational&\
-    \ r) {\n        // p / q + r.p / r.q \u3092\u3001\u5206\u6BCD\u306E gcd \u3067\
-    \u5272\u3063\u3066\u304B\u3089\u901A\u5206\u3059\u308B\n        T g = gcd_(q,\
-    \ r.q);\n        T qg = q / g;\n        T t = p * (r.q / g) + r.p * qg;\n    \
-    \    T g2 = gcd_(t, g);\n        p = t / g2;\n        q = qg * (r.q / g2);\n \
-    \       return *this;\n    }\n    Rational& operator-=(const Rational& r) { return\
-    \ *this += -r; }\n    Rational& operator*=(const Rational& r) {\n        // \u639B\
-    \u3051\u308B\u524D\u306B\u3001\u5206\u5B50\u3068\u76F8\u624B\u306E\u5206\u6BCD\
-    \u306E gcd \u3067\u5272\u308B\n        T g1 = gcd_(p, r.q), g2 = gcd_(r.p, q);\n\
-    \        p = (p / g1) * (r.p / g2);\n        q = (q / g2) * (r.q / g1);\n    \
-    \    return *this;\n    }\n    Rational& operator/=(const Rational& r) { return\
-    \ *this *= r.inv(); }\n\n    friend Rational operator+(Rational a, const Rational&\
-    \ b) { return a += b; }\n    friend Rational operator-(Rational a, const Rational&\
-    \ b) { return a -= b; }\n    friend Rational operator*(Rational a, const Rational&\
-    \ b) { return a *= b; }\n    friend Rational operator/(Rational a, const Rational&\
-    \ b) { return a /= b; }\n\n    friend bool operator==(const Rational& a, const\
-    \ Rational& b) { return a.p == b.p && a.q == b.q; }\n    friend bool operator!=(const\
-    \ Rational& a, const Rational& b) { return !(a == b); }\n    friend bool operator<(const\
-    \ Rational& a, const Rational& b) { return compare(a.p, a.q, b.p, b.q) < 0; }\n\
-    \    friend bool operator>(const Rational& a, const Rational& b) { return b <\
-    \ a; }\n    friend bool operator<=(const Rational& a, const Rational& b) { return\
-    \ !(b < a); }\n    friend bool operator>=(const Rational& a, const Rational& b)\
-    \ { return !(a < b); }\n\n    /**\n     * @brief \"p/q\" \u306E\u5F62\u306E\u6587\
-    \u5B57\u5217 (\u6574\u6570\u306A\u3089 \"p\")\n     */\n    std::string to_string()\
-    \ const {\n        auto str = [](T x) {\n            if (x == 0) return std::string(\"\
-    0\");\n            bool neg = x < 0;\n            std::string s;\n           \
-    \ // \u8CA0\u306E\u307E\u307E 1 \u6841\u305A\u3064\u53D6\u308A\u51FA\u3059 (\u6700\
-    \u5C0F\u5024\u3067\u3082\u30AA\u30FC\u30D0\u30FC\u30D5\u30ED\u30FC\u3057\u306A\
-    \u3044)\n            while (x != 0) {\n                T d = x % 10;\n       \
-    \         s += char('0' + (d < 0 ? -d : d));\n                x /= 10;\n     \
-    \       }\n            if (neg) s += '-';\n            return std::string(s.rbegin(),\
-    \ s.rend());\n        };\n        return q == 1 ? str(p) : str(p) + \"/\" + str(q);\n\
-    \    }\n\n    friend std::ostream& operator<<(std::ostream& os, const Rational&\
-    \ r) { return os << r.to_string(); }\n    /**\n     * @brief \"p/q\" \u307E\u305F\
-    \u306F \"p\" \u306E\u5F62\u3067\u8AAD\u3080\n     */\n    friend std::istream&\
-    \ operator>>(std::istream& is, Rational& r) {\n        std::string s;\n      \
-    \  if (!(is >> s)) return is;\n        auto parse = [](const std::string& t) {\n\
-    \            T x = 0;\n            bool neg = false;\n            std::size_t\
-    \ i = 0;\n            if (i < t.size() && (t[i] == '-' || t[i] == '+')) neg =\
-    \ t[i++] == '-';\n            for (; i < t.size(); i++) x = x * 10 + (t[i] - '0');\n\
-    \            return neg ? -x : x;\n        };\n        auto pos = s.find('/');\n\
-    \        if (pos == std::string::npos) r = Rational(parse(s));\n        else r\
-    \ = Rational(parse(s.substr(0, pos)), parse(s.substr(pos + 1)));\n        return\
-    \ is;\n    }\n};\n"
+    \ > y ? 1\n                                      : 0;\n        } else {\n    \
+    \        // \u6574\u6570\u90E8\u5206\u3092\u6BD4\u3079\u3001\u540C\u3058\u306A\
+    \u3089\u5C0F\u6570\u90E8\u5206\u306E\u9006\u6570\u3092\u6BD4\u3079\u308B (\u5927\
+    \u5C0F\u304C\u9006\u306B\u306A\u308B)\n            int sign = 1;\n           \
+    \ while (true) {\n                T x = floor_div(a, b), y = floor_div(c, d);\n\
+    \                if (x != y) return x < y ? -sign : sign;\n                a -=\
+    \ x * b, c -= y * d;\n                if (a == 0 || c == 0) {\n              \
+    \      if (a == 0 && c == 0) return 0;\n                    return a == 0 ? -sign\
+    \ : sign;\n                }\n                std::swap(a, b);\n             \
+    \   std::swap(c, d);\n                sign = -sign;\n            }\n        }\n\
+    \    }\n\n   public:\n    /**\n     * @brief \u6574\u6570 n\n     */\n    Rational(T\
+    \ n = 0) : p(n), q(1) {}\n    /**\n     * @brief num / den (den != 0)\n     */\n\
+    \    Rational(T num, T den) : p(num), q(den) {\n        assert(den != 0 && \"\
+    Rational: division by zero\");\n        if (q < 0) p = -p, q = -q;\n        T\
+    \ g = gcd_(p, q);\n        p /= g, q /= g;\n    }\n\n    /**\n     * @brief \u5206\
+    \u5B50\n     */\n    T num() const { return p; }\n    /**\n     * @brief \u5206\
+    \u6BCD (\u6B63)\n     */\n    T den() const { return q; }\n\n    /**\n     * @brief\
+    \ \u4EE5\u4E0B\u3067\u6700\u5927\u306E\u6574\u6570\n     */\n    T floor() const\
+    \ { return floor_div(p, q); }\n    /**\n     * @brief \u4EE5\u4E0A\u3067\u6700\
+    \u5C0F\u306E\u6574\u6570\n     */\n    T ceil() const { return -floor_div(-p,\
+    \ q); }\n    /**\n     * @brief \u6574\u6570\u304B\n     */\n    bool is_integer()\
+    \ const { return q == 1; }\n    /**\n     * @brief double \u306B\u76F4\u3057\u305F\
+    \u5024\n     */\n    double to_double() const { return (double)p / (double)q;\
+    \ }\n    /**\n     * @brief long double \u306B\u76F4\u3057\u305F\u5024\n     */\n\
+    \    long double to_long_double() const { return (long double)p / (long double)q;\
+    \ }\n    explicit operator double() const { return to_double(); }\n\n    /**\n\
+    \     * @brief \u9006\u6570 (0 \u3067\u306A\u3044\u3053\u3068)\n     */\n    Rational\
+    \ inv() const {\n        assert(p != 0 && \"Rational: division by zero\");\n \
+    \       return p > 0 ? Rational(q, p, Raw{}) : Rational(-q, -p, Raw{});\n    }\n\
+    \    /**\n     * @brief \u7D76\u5BFE\u5024\n     */\n    Rational abs() const\
+    \ { return Rational(abs_(p), q, Raw{}); }\n\n    Rational operator+() const {\
+    \ return *this; }\n    Rational operator-() const { return Rational(-p, q, Raw{});\
+    \ }\n\n    Rational& operator+=(const Rational& r) {\n        // p / q + r.p /\
+    \ r.q \u3092\u3001\u5206\u6BCD\u306E gcd \u3067\u5272\u3063\u3066\u304B\u3089\u901A\
+    \u5206\u3059\u308B\n        T g = gcd_(q, r.q);\n        T qg = q / g;\n     \
+    \   T t = p * (r.q / g) + r.p * qg;\n        T g2 = gcd_(t, g);\n        p = t\
+    \ / g2;\n        q = qg * (r.q / g2);\n        return *this;\n    }\n    Rational&\
+    \ operator-=(const Rational& r) { return *this += -r; }\n    Rational& operator*=(const\
+    \ Rational& r) {\n        // \u639B\u3051\u308B\u524D\u306B\u3001\u5206\u5B50\u3068\
+    \u76F8\u624B\u306E\u5206\u6BCD\u306E gcd \u3067\u5272\u308B\n        T g1 = gcd_(p,\
+    \ r.q), g2 = gcd_(r.p, q);\n        p = (p / g1) * (r.p / g2);\n        q = (q\
+    \ / g2) * (r.q / g1);\n        return *this;\n    }\n    Rational& operator/=(const\
+    \ Rational& r) { return *this *= r.inv(); }\n\n    friend Rational operator+(Rational\
+    \ a, const Rational& b) { return a += b; }\n    friend Rational operator-(Rational\
+    \ a, const Rational& b) { return a -= b; }\n    friend Rational operator*(Rational\
+    \ a, const Rational& b) { return a *= b; }\n    friend Rational operator/(Rational\
+    \ a, const Rational& b) { return a /= b; }\n\n    friend bool operator==(const\
+    \ Rational& a, const Rational& b) { return a.p == b.p && a.q == b.q; }\n    friend\
+    \ bool operator!=(const Rational& a, const Rational& b) { return !(a == b); }\n\
+    \    friend bool operator<(const Rational& a, const Rational& b) { return compare(a.p,\
+    \ a.q, b.p, b.q) < 0; }\n    friend bool operator>(const Rational& a, const Rational&\
+    \ b) { return b < a; }\n    friend bool operator<=(const Rational& a, const Rational&\
+    \ b) { return !(b < a); }\n    friend bool operator>=(const Rational& a, const\
+    \ Rational& b) { return !(a < b); }\n\n    /**\n     * @brief \"p/q\" \u306E\u5F62\
+    \u306E\u6587\u5B57\u5217 (\u6574\u6570\u306A\u3089 \"p\")\n     */\n    std::string\
+    \ to_string() const {\n        auto str = [](T x) {\n            if (x == 0) return\
+    \ std::string(\"0\");\n            bool neg = x < 0;\n            std::string\
+    \ s;\n            // \u8CA0\u306E\u307E\u307E 1 \u6841\u305A\u3064\u53D6\u308A\
+    \u51FA\u3059 (\u6700\u5C0F\u5024\u3067\u3082\u30AA\u30FC\u30D0\u30FC\u30D5\u30ED\
+    \u30FC\u3057\u306A\u3044)\n            while (x != 0) {\n                T d =\
+    \ x % 10;\n                s += char('0' + (d < 0 ? -d : d));\n              \
+    \  x /= 10;\n            }\n            if (neg) s += '-';\n            return\
+    \ std::string(s.rbegin(), s.rend());\n        };\n        return q == 1 ? str(p)\
+    \ : str(p) + \"/\" + str(q);\n    }\n\n    friend std::ostream& operator<<(std::ostream&\
+    \ os, const Rational& r) { return os << r.to_string(); }\n    /**\n     * @brief\
+    \ \"p/q\" \u307E\u305F\u306F \"p\" \u306E\u5F62\u3067\u8AAD\u3080\n     */\n \
+    \   friend std::istream& operator>>(std::istream& is, Rational& r) {\n       \
+    \ std::string s;\n        if (!(is >> s)) return is;\n        auto parse = [](const\
+    \ std::string& t) {\n            T x = 0;\n            bool neg = false;\n   \
+    \         std::size_t i = 0;\n            if (i < t.size() && (t[i] == '-' ||\
+    \ t[i] == '+')) neg = t[i++] == '-';\n            for (; i < t.size(); i++) x\
+    \ = x * 10 + (t[i] - '0');\n            return neg ? -x : x;\n        };\n   \
+    \     auto pos = s.find('/');\n        if (pos == std::string::npos)\n       \
+    \     r = Rational(parse(s));\n        else\n            r = Rational(parse(s.substr(0,\
+    \ pos)), parse(s.substr(pos + 1)));\n        return is;\n    }\n};\n"
   dependsOn: []
   isVerificationFile: false
   path: src/math/rational.hpp
   requiredBy: []
-  timestamp: '2026-10-14 01:43:22+09:00'
+  timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/rational.test.cpp

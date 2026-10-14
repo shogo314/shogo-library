@@ -3,13 +3,13 @@ data:
   libraryCategories:
   - name: src/algebra
     pages:
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: src/algebra/acted-monoid.hpp
       title: "\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
     - icon: ':heavy_check_mark:'
       path: src/algebra/group.hpp
       title: "\u7FA4\u306E\u5B9A\u7FA9"
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: src/algebra/monoid.hpp
       title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   - name: src/base
@@ -46,7 +46,7 @@ data:
       path: src/data_structures/counter.hpp
       title: "\u5024\u306E\u500B\u6570\u3092\u6570\u3048\u308B\u591A\u91CD\u96C6\u5408\
         \ (Counter)"
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: src/data_structures/dual-segtree.hpp
       title: "\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u533A\u9593\u4F5C\
         \u7528\u30011\u70B9\u53D6\u5F97)"
@@ -438,7 +438,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/aoj/dsl-2-b.2.test.cpp
       title: test/aoj/dsl-2-b.2.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/aoj/dsl-2-d.test.cpp
       title: test/aoj/dsl-2-d.test.cpp
     - icon: ':heavy_check_mark:'

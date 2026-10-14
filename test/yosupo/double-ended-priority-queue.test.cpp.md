@@ -37,7 +37,7 @@ data:
     \ y) && !comp(y, x); }\n    // \u5148\u982D\u304C\u524A\u9664\u4E88\u5B9A\u306A\
     \u3089\u53D6\u308A\u9664\u304F\n    void normalize() {\n        while (!del.empty()\
     \ && equivalent(que.top(), del.top())) {\n            que.pop();\n           \
-    \ del.pop();\n        }\n    }\n\npublic:\n    explicit ErasablePriorityQueue(Compare\
+    \ del.pop();\n        }\n    }\n\n   public:\n    explicit ErasablePriorityQueue(Compare\
     \ comp = Compare()) : que(comp), del(comp), comp(comp) {}\n\n    /**\n     * @brief\
     \ \u8981\u7D20\u6570\n     */\n    int size() const { return que.size() - del.size();\
     \ }\n    bool empty() const { return size() == 0; }\n\n    /**\n     * @brief\
@@ -88,7 +88,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/double-ended-priority-queue.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 01:43:22+09:00'
+  timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/double-ended-priority-queue.test.cpp

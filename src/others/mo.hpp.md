@@ -16,10 +16,10 @@ data:
     document_title: Mo's algorithm
     links: []
   bundledCode: "#line 2 \"src/others/mo.hpp\"\n\n/**\n * @file mo.hpp\n * @brief Mo's\
-    \ algorithm\n */\n\n#include <vector>\n#include <array>\n#include <type_traits>\n\
-    #include <algorithm>\n#include <cassert>\n#include <cmath>\n\ntemplate <typename\
+    \ algorithm\n */\n\n#include <algorithm>\n#include <array>\n#include <cassert>\n\
+    #include <cmath>\n#include <type_traits>\n#include <vector>\n\ntemplate <typename\
     \ U, class ADD_LEFT, class DELETE_LEFT, class ADD_RIGHT = ADD_LEFT, class DELETE_RIGHT\
-    \ = DELETE_LEFT>\nstruct Mo {\n   private:\n    int _n;\n    std::vector<std::array<int,\
+    \ = DELETE_LEFT>\nclass Mo {\n   private:\n    int _n;\n    std::vector<std::array<int,\
     \ 3>> lri;\n    U _e;\n    ADD_LEFT _add_left;\n    DELETE_LEFT _delete_left;\n\
     \    ADD_RIGHT _add_right;\n    DELETE_RIGHT _delete_right;\n\n    static_assert(std::is_invocable_r_v<void,\
     \ ADD_LEFT, U&, int>, \"ADD_LEFT must be callable with (U&, int)\");\n    static_assert(std::is_invocable_r_v<void,\
@@ -38,7 +38,7 @@ data:
     \ _n);\n        lri.push_back({l, r, (int)lri.size()});\n    }\n    template <typename\
     \ T, class F>\n    std::vector<T> solve(const F& f) {\n        static_assert(std::is_invocable_r_v<T,\
     \ F, U&>, \"The function passed to solve must be callable with (U&) and return\
-    \ T\");\n        \n        const int w = std::max<int>(1, 1.0 * _n / std::max<double>(1.0,\
+    \ T\");\n\n        const int w = std::max<int>(1, 1.0 * _n / std::max<double>(1.0,\
     \ std::sqrt(lri.size() * 2.0 / 3.0)));\n        std::sort(lri.begin(), lri.end(),\
     \ [=](const std::array<int, 3>& a, const std::array<int, 3>& b) {\n          \
     \  int aw = a[0] / w;\n            int bw = b[0] / w;\n            if (aw != bw)\
@@ -53,12 +53,12 @@ data:
     \            tmpr--;\n                _delete_right(tmp, tmpr);\n            }\n\
     \            res[i] = f(tmp);\n        }\n        return res;\n    }\n};\n"
   code: "#pragma once\n\n/**\n * @file mo.hpp\n * @brief Mo's algorithm\n */\n\n#include\
-    \ <vector>\n#include <array>\n#include <type_traits>\n#include <algorithm>\n#include\
-    \ <cassert>\n#include <cmath>\n\ntemplate <typename U, class ADD_LEFT, class DELETE_LEFT,\
-    \ class ADD_RIGHT = ADD_LEFT, class DELETE_RIGHT = DELETE_LEFT>\nstruct Mo {\n\
-    \   private:\n    int _n;\n    std::vector<std::array<int, 3>> lri;\n    U _e;\n\
-    \    ADD_LEFT _add_left;\n    DELETE_LEFT _delete_left;\n    ADD_RIGHT _add_right;\n\
-    \    DELETE_RIGHT _delete_right;\n\n    static_assert(std::is_invocable_r_v<void,\
+    \ <algorithm>\n#include <array>\n#include <cassert>\n#include <cmath>\n#include\
+    \ <type_traits>\n#include <vector>\n\ntemplate <typename U, class ADD_LEFT, class\
+    \ DELETE_LEFT, class ADD_RIGHT = ADD_LEFT, class DELETE_RIGHT = DELETE_LEFT>\n\
+    class Mo {\n   private:\n    int _n;\n    std::vector<std::array<int, 3>> lri;\n\
+    \    U _e;\n    ADD_LEFT _add_left;\n    DELETE_LEFT _delete_left;\n    ADD_RIGHT\
+    \ _add_right;\n    DELETE_RIGHT _delete_right;\n\n    static_assert(std::is_invocable_r_v<void,\
     \ ADD_LEFT, U&, int>, \"ADD_LEFT must be callable with (U&, int)\");\n    static_assert(std::is_invocable_r_v<void,\
     \ DELETE_LEFT, U&, int>, \"DELETE_LEFT must be callable with (U&, int)\");\n \
     \   static_assert(std::is_invocable_r_v<void, ADD_RIGHT, U&, int>, \"ADD_RIGHT\
@@ -75,7 +75,7 @@ data:
     \ _n);\n        lri.push_back({l, r, (int)lri.size()});\n    }\n    template <typename\
     \ T, class F>\n    std::vector<T> solve(const F& f) {\n        static_assert(std::is_invocable_r_v<T,\
     \ F, U&>, \"The function passed to solve must be callable with (U&) and return\
-    \ T\");\n        \n        const int w = std::max<int>(1, 1.0 * _n / std::max<double>(1.0,\
+    \ T\");\n\n        const int w = std::max<int>(1, 1.0 * _n / std::max<double>(1.0,\
     \ std::sqrt(lri.size() * 2.0 / 3.0)));\n        std::sort(lri.begin(), lri.end(),\
     \ [=](const std::array<int, 3>& a, const std::array<int, 3>& b) {\n          \
     \  int aw = a[0] / w;\n            int bw = b[0] / w;\n            if (aw != bw)\
@@ -93,7 +93,7 @@ data:
   isVerificationFile: false
   path: src/others/mo.hpp
   requiredBy: []
-  timestamp: '2026-10-14 06:59:46+09:00'
+  timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/mo.test.cpp

@@ -46,7 +46,7 @@ data:
     \ v)) sum += seg.prod(std::min(a, b), std::max(a, b) + 1);\n * auto [l, r] = hld.subtree(v);\
     \  // \u90E8\u5206\u6728\u306F\u533A\u9593 [l, r)\n */\nclass HeavyLightDecomposition\
     \ {\n    int n, root;\n    std::vector<int> par, dep, sz, heavy, head, in, order;\n\
-    \npublic:\n    /**\n     * @brief \u6728 tree \u3092\u6839 root \u3067 HL \u5206\
+    \n   public:\n    /**\n     * @brief \u6728 tree \u3092\u6839 root \u3067 HL \u5206\
     \u89E3\u3059\u308B\n     * @param tree Graph\u3001Tree\u3001RootedTree \u306A\u3069\
     \u3002tree.n \u304C\u9802\u70B9\u6570\u3001for (int u : tree[v]) \u3067 v \u306B\
     \u96A3\u63A5\u3059\u308B\u9802\u70B9\u3092\u5217\u6319\u3067\u304D\u308B\u3053\
@@ -150,16 +150,16 @@ data:
     \ root);\n * for (auto [a, b] : hld.path(u, v)) sum += seg.prod(std::min(a, b),\
     \ std::max(a, b) + 1);\n * auto [l, r] = hld.subtree(v);  // \u90E8\u5206\u6728\
     \u306F\u533A\u9593 [l, r)\n */\nclass HeavyLightDecomposition {\n    int n, root;\n\
-    \    std::vector<int> par, dep, sz, heavy, head, in, order;\n\npublic:\n    /**\n\
-    \     * @brief \u6728 tree \u3092\u6839 root \u3067 HL \u5206\u89E3\u3059\u308B\
-    \n     * @param tree Graph\u3001Tree\u3001RootedTree \u306A\u3069\u3002tree.n\
-    \ \u304C\u9802\u70B9\u6570\u3001for (int u : tree[v]) \u3067 v \u306B\u96A3\u63A5\
-    \u3059\u308B\u9802\u70B9\u3092\u5217\u6319\u3067\u304D\u308B\u3053\u3068\n   \
-    \  */\n    template <typename G>\n    explicit HeavyLightDecomposition(const G&\
-    \ tree, int root = 0)\n        : n(tree.n), root(root), par(n, -1), dep(n, 0),\
-    \ sz(n, 1), heavy(n, -1), head(n), in(n), order(n) {\n        assert(0 <= root\
-    \ && root < n);\n        // \u6839\u304B\u3089\u306E BFS \u9806\u3067\u89AA\u3068\
-    \u6DF1\u3055\u3092\u6C7A\u3081\u308B\n        std::vector<int> bfs = {root};\n\
+    \    std::vector<int> par, dep, sz, heavy, head, in, order;\n\n   public:\n  \
+    \  /**\n     * @brief \u6728 tree \u3092\u6839 root \u3067 HL \u5206\u89E3\u3059\
+    \u308B\n     * @param tree Graph\u3001Tree\u3001RootedTree \u306A\u3069\u3002\
+    tree.n \u304C\u9802\u70B9\u6570\u3001for (int u : tree[v]) \u3067 v \u306B\u96A3\
+    \u63A5\u3059\u308B\u9802\u70B9\u3092\u5217\u6319\u3067\u304D\u308B\u3053\u3068\
+    \n     */\n    template <typename G>\n    explicit HeavyLightDecomposition(const\
+    \ G& tree, int root = 0)\n        : n(tree.n), root(root), par(n, -1), dep(n,\
+    \ 0), sz(n, 1), heavy(n, -1), head(n), in(n), order(n) {\n        assert(0 <=\
+    \ root && root < n);\n        // \u6839\u304B\u3089\u306E BFS \u9806\u3067\u89AA\
+    \u3068\u6DF1\u3055\u3092\u6C7A\u3081\u308B\n        std::vector<int> bfs = {root};\n\
     \        bfs.reserve(n);\n        for (int i = 0; i < (int)bfs.size(); i++) {\n\
     \            int v = bfs[i];\n            for (int u : tree[v]) {\n          \
     \      if (u == par[v]) continue;\n                assert(u != root && par[u]\
@@ -244,7 +244,7 @@ data:
   isVerificationFile: false
   path: src/graph/heavy-light-decomposition.hpp
   requiredBy: []
-  timestamp: '2026-10-14 07:05:41+09:00'
+  timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/heavy-light-decomposition.test.cpp

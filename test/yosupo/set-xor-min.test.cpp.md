@@ -37,11 +37,11 @@ data:
     \            }\n            if (children[0])\n                children[0]->xval\
     \ ^= xval;\n            if (children[1])\n                children[1]->xval ^=\
     \ xval;\n            xval = 0;\n        }\n    };\n    using NodePtr = std::shared_ptr<BinaryTrieNode>;\n\
-    \    NodePtr root_ptr = std::make_shared<BinaryTrieNode>(d);\n\n  public:\n  \
-    \  /**\n     * @brief \u96C6\u5408\u306Bn\u3092\u8FFD\u52A0 (O(d))\n     */\n\
+    \    NodePtr root_ptr = std::make_shared<BinaryTrieNode>(d);\n\n   public:\n \
+    \   /**\n     * @brief \u96C6\u5408\u306Bn\u3092\u8FFD\u52A0 (O(d))\n     */\n\
     \    void insert(T n) {\n        NodePtr cur_ptr = root_ptr;\n        while (!cur_ptr->is_leaf())\
     \ {\n            cur_ptr->affect_xor();\n            cur_ptr->subcnt += 1;\n \
-    \           NodePtr &nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n     \
+    \           NodePtr& nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n     \
     \       if (!nxt_ptr) {\n                nxt_ptr = std::make_shared<BinaryTrieNode>(cur_ptr->level\
     \ - 1);\n            }\n            cur_ptr = nxt_ptr;\n        }\n        assert(cur_ptr->is_leaf());\n\
     \        cur_ptr->subcnt += 1;\n    }\n\n    int size() const { return root_ptr->subcnt;\
@@ -49,7 +49,7 @@ data:
     \u3001\u898B\u3064\u304B\u3063\u305F\u6570\u3092\u6C42\u3081\u308B (O(d))\n  \
     \   */\n    int count(T n) const {\n        NodePtr cur_ptr = root_ptr;\n    \
     \    while (!cur_ptr->is_leaf()) {\n            cur_ptr->affect_xor();\n     \
-    \       NodePtr &nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n         \
+    \       NodePtr& nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n         \
     \   if (!nxt_ptr) {\n                return 0;\n            }\n            cur_ptr\
     \ = nxt_ptr;\n        }\n        return (cur_ptr ? cur_ptr->subcnt : 0);\n   \
     \ }\n\n    /**\n     * @brief \u96C6\u5408\u304B\u3089n\u3092\u524A\u9664 (O(d))\n\
@@ -58,7 +58,7 @@ data:
     \    void erase(T n) {\n        unsigned int cnt = count(n);\n        if (cnt\
     \ == 0)\n            return;\n        NodePtr cur_ptr = root_ptr;\n        while\
     \ (true) {\n            cur_ptr->affect_xor();\n            cur_ptr->subcnt -=\
-    \ cnt;\n            NodePtr &nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n\
+    \ cnt;\n            NodePtr& nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n\
     \            if (nxt_ptr->subcnt == cnt) {\n                nxt_ptr = nullptr;\n\
     \                return;\n            }\n            cur_ptr = nxt_ptr;\n    \
     \    }\n    }\n\n    /**\n     * @brief \u96C6\u5408\u304B\u3089n\u3092\u4E00\u3064\
@@ -67,7 +67,7 @@ data:
     \u3089\u306A\u3044\n     */\n    void erase_one_element(T n) {\n        if (count(n)\
     \ == 0)\n            return;\n        NodePtr cur_ptr = root_ptr;\n        while\
     \ (!cur_ptr->is_leaf()) {\n            cur_ptr->affect_xor();\n            cur_ptr->subcnt\
-    \ -= 1;\n            NodePtr &nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n\
+    \ -= 1;\n            NodePtr& nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n\
     \            if (nxt_ptr->subcnt == 1) {\n                nxt_ptr = nullptr;\n\
     \                return;\n            }\n            cur_ptr = nxt_ptr;\n    \
     \    }\n        cur_ptr->subcnt -= 1;\n    }\n\n    /**\n     * @brief \u6607\u9806\
@@ -76,8 +76,8 @@ data:
     \     */\n    T nth_element(int n) const {\n        assert(0 <= n && n < size());\n\
     \        T ret = 0;\n        NodePtr cur_ptr = root_ptr;\n        while (!cur_ptr->is_leaf())\
     \ {\n            cur_ptr->affect_xor();\n            ret <<= 1;\n            int\
-    \ state = cur_ptr->state_children();\n            NodePtr &z_ptr = cur_ptr->children[0];\n\
-    \            NodePtr &o_ptr = cur_ptr->children[1];\n            assert(state\
+    \ state = cur_ptr->state_children();\n            NodePtr& z_ptr = cur_ptr->children[0];\n\
+    \            NodePtr& o_ptr = cur_ptr->children[1];\n            assert(state\
     \ > 0);\n            if (state == 1 || (state == 3 && n < (int)z_ptr->subcnt))\
     \ {\n                cur_ptr = z_ptr;\n            } else {\n                n\
     \ -= (state & 1 ? z_ptr->subcnt : 0);\n                ret |= 1;\n           \
@@ -90,7 +90,7 @@ data:
     \ {\n            if ((n >> d) != 0) return size();\n        }\n        int ret\
     \ = 0;\n        NodePtr cur_ptr = root_ptr;\n        while (!cur_ptr->is_leaf())\
     \ {\n            cur_ptr->affect_xor();\n            bool b = cur_ptr->get_bit(n);\n\
-    \            NodePtr &nxt_ptr = cur_ptr->children[b];\n            NodePtr &z_ptr\
+    \            NodePtr& nxt_ptr = cur_ptr->children[b];\n            NodePtr& z_ptr\
     \ = cur_ptr->children[0];\n            if (b && z_ptr) {\n                ret\
     \ += z_ptr->subcnt;\n            }\n            if (!nxt_ptr) {\n            \
     \    break;\n            }\n            cur_ptr = nxt_ptr;\n        }\n      \
@@ -106,28 +106,30 @@ data:
     \u9664\u3059\u308B\u3002\u78BA\u4FDD\u3057\u305F\u30E1\u30E2\u30EA\u9818\u57DF\
     \u3082\u524A\u9664\u3055\u308C\u308B\n     */\n    void clear() {\n        root_ptr\
     \ = std::make_shared<BinaryTrieNode>(d);\n    }\n};\n#line 6 \"test/yosupo/set-xor-min.test.cpp\"\
-    \n\nint main(void) {\n    \n    int Q;\n    std::cin >> Q;\n    BinaryTrie<30>\
-    \ A;\n    while (Q--) {\n        int q, x;\n        std::cin >> q >> x;\n    \
-    \    switch (q) {\n        case 0:\n            if (A.count(x) == 0) {\n     \
-    \           A.insert(x);\n            }\n            break;\n        case 1:\n\
-    \            A.erase(x);\n            break;\n        case 2:\n            A.apply_xor(x);\n\
-    \            std::cout << A.nth_element(0) << std::endl;\n            A.apply_xor(x);\n\
-    \            break;\n        }\n    }\n\n}\n"
+    \n\nint main(void) {\n    int Q;\n    std::cin >> Q;\n    BinaryTrie<30> A;\n\
+    \    while (Q--) {\n        int q, x;\n        std::cin >> q >> x;\n        switch\
+    \ (q) {\n            case 0:\n                if (A.count(x) == 0) {\n       \
+    \             A.insert(x);\n                }\n                break;\n      \
+    \      case 1:\n                A.erase(x);\n                break;\n        \
+    \    case 2:\n                A.apply_xor(x);\n                std::cout << A.nth_element(0)\
+    \ << std::endl;\n                A.apply_xor(x);\n                break;\n   \
+    \     }\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/set_xor_min\"\n\n#include\
     \ <iostream>\n\n#include \"../../src/data_structures/binary-trie.hpp\"\n\nint\
-    \ main(void) {\n    \n    int Q;\n    std::cin >> Q;\n    BinaryTrie<30> A;\n\
-    \    while (Q--) {\n        int q, x;\n        std::cin >> q >> x;\n        switch\
-    \ (q) {\n        case 0:\n            if (A.count(x) == 0) {\n               \
-    \ A.insert(x);\n            }\n            break;\n        case 1:\n         \
-    \   A.erase(x);\n            break;\n        case 2:\n            A.apply_xor(x);\n\
-    \            std::cout << A.nth_element(0) << std::endl;\n            A.apply_xor(x);\n\
-    \            break;\n        }\n    }\n\n}"
+    \ main(void) {\n    int Q;\n    std::cin >> Q;\n    BinaryTrie<30> A;\n    while\
+    \ (Q--) {\n        int q, x;\n        std::cin >> q >> x;\n        switch (q)\
+    \ {\n            case 0:\n                if (A.count(x) == 0) {\n           \
+    \         A.insert(x);\n                }\n                break;\n          \
+    \  case 1:\n                A.erase(x);\n                break;\n            case\
+    \ 2:\n                A.apply_xor(x);\n                std::cout << A.nth_element(0)\
+    \ << std::endl;\n                A.apply_xor(x);\n                break;\n   \
+    \     }\n    }\n}"
   dependsOn:
   - src/data_structures/binary-trie.hpp
   isVerificationFile: true
   path: test/yosupo/set-xor-min.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 07:04:30+09:00'
+  timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/set-xor-min.test.cpp

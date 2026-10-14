@@ -30,7 +30,7 @@ data:
     \ be unsigned\");\n    static constexpr int B = std::numeric_limits<T>::digits;\n\
     \    static_assert(B <= 64, \"XorBasis: T must be at most 64 bits\");\n    T b[B]\
     \ = {};  // b[i] \u306F\u6700\u4E0A\u4F4D\u30D3\u30C3\u30C8\u304C i \u306E\u57FA\
-    \u5E95 (\u306A\u3051\u308C\u3070 0)\n    int r = 0;\n\npublic:\n    XorBasis()\
+    \u5E95 (\u306A\u3051\u308C\u3070 0)\n    int r = 0;\n\n   public:\n    XorBasis()\
     \ = default;\n\n    /**\n     * @brief x \u3092\u8FFD\u52A0\u3059\u308B\u3002\
     x \u304C\u4ECA\u306E\u7A7A\u9593\u306B\u542B\u307E\u308C\u3066\u3044\u306A\u3051\
     \u308C\u3070 (\u57FA\u5E95\u304C\u5897\u3048\u308C\u3070) true\n     */\n    bool\
@@ -99,7 +99,7 @@ data:
     \ \"XorBasis: T must be unsigned\");\n    static constexpr int B = std::numeric_limits<T>::digits;\n\
     \    static_assert(B <= 64, \"XorBasis: T must be at most 64 bits\");\n    T b[B]\
     \ = {};  // b[i] \u306F\u6700\u4E0A\u4F4D\u30D3\u30C3\u30C8\u304C i \u306E\u57FA\
-    \u5E95 (\u306A\u3051\u308C\u3070 0)\n    int r = 0;\n\npublic:\n    XorBasis()\
+    \u5E95 (\u306A\u3051\u308C\u3070 0)\n    int r = 0;\n\n   public:\n    XorBasis()\
     \ = default;\n\n    /**\n     * @brief x \u3092\u8FFD\u52A0\u3059\u308B\u3002\
     x \u304C\u4ECA\u306E\u7A7A\u9593\u306B\u542B\u307E\u308C\u3066\u3044\u306A\u3051\
     \u308C\u3070 (\u57FA\u5E95\u304C\u5897\u3048\u308C\u3070) true\n     */\n    bool\
@@ -155,7 +155,7 @@ data:
   isVerificationFile: false
   path: src/math/xor-basis.hpp
   requiredBy: []
-  timestamp: '2026-10-14 01:43:22+09:00'
+  timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/xor-basis.test.cpp

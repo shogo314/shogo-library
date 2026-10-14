@@ -20,7 +20,7 @@ data:
     #include <cassert>\n#include <utility>\n#line 12 \"src/data_structures/unionfind.hpp\"\
     \n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u5BFE\u3057\u3066\u300C\
     \u8FBA\u306E\u8FFD\u52A0\u300D\u3001\u300C2\u9802\u70B9\u304C\u9023\u7D50\u304B\
-    \u306E\u5224\u5B9A\u300D\u3092\u3059\u308B\n */\nstruct UnionFind {\n   protected:\n\
+    \u306E\u5224\u5B9A\u300D\u3092\u3059\u308B\n */\nclass UnionFind {\n   protected:\n\
     \    int _n;\n    // \u8CA0\u306A\u3089\u30B5\u30A4\u30BA\u3001\u975E\u8CA0\u306A\
     \u3089\u89AA\n    std::vector<int> parent_or_size;\n\n   public:\n    /**\n  \
     \   * @brief merge \u306E\u623B\u308A\u5024\n     *\n     * if (uf.merge(a, b))\
@@ -64,31 +64,31 @@ data:
     \ result.end(),\n                           [&](const std::vector<int>& v) { return\
     \ v.empty(); }),\n            result.end());\n        return result;\n    }\n\
     };\n#line 7 \"test/aoj/alds1-11-d.2.test.cpp\"\n\nint main() {\n    std::cin.tie(nullptr);\n\
-    \    std::ios_base::sync_with_stdio(false);\n    int n, m; std::cin >> n >> m;\n\
-    \    UnionFind uf(n);\n    for (int i = 0; i < m; i++) {\n        int s, t; std::cin\
-    \ >> s >> t;\n        uf.merge(s, t);\n    }\n    // \u9023\u7D50\u6210\u5206\u3054\
-    \u3068\u306B\u756A\u53F7\u3092\u632F\u308B\n    std::vector<int> id(n);\n    auto\
-    \ groups = uf.groups();\n    for (int i = 0; i < (int)groups.size(); i++) {\n\
-    \        for (int v : groups[i]) id[v] = i;\n    }\n    int q; std::cin >> q;\n\
-    \    while (q--) {\n        int s, t; std::cin >> s >> t;\n        std::cout <<\
-    \ (id[s] == id[t] ? \"yes\" : \"no\") << '\\n';\n    }\n}\n"
+    \    std::ios_base::sync_with_stdio(false);\n    int n, m;\n    std::cin >> n\
+    \ >> m;\n    UnionFind uf(n);\n    for (int i = 0; i < m; i++) {\n        int\
+    \ s, t;\n        std::cin >> s >> t;\n        uf.merge(s, t);\n    }\n    // \u9023\
+    \u7D50\u6210\u5206\u3054\u3068\u306B\u756A\u53F7\u3092\u632F\u308B\n    std::vector<int>\
+    \ id(n);\n    auto groups = uf.groups();\n    for (int i = 0; i < (int)groups.size();\
+    \ i++) {\n        for (int v : groups[i]) id[v] = i;\n    }\n    int q;\n    std::cin\
+    \ >> q;\n    while (q--) {\n        int s, t;\n        std::cin >> s >> t;\n \
+    \       std::cout << (id[s] == id[t] ? \"yes\" : \"no\") << '\\n';\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_11_D\"\
     \n\n#include <iostream>\n#include <vector>\n\n#include \"../../src/data_structures/unionfind.hpp\"\
     \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios_base::sync_with_stdio(false);\n\
-    \    int n, m; std::cin >> n >> m;\n    UnionFind uf(n);\n    for (int i = 0;\
-    \ i < m; i++) {\n        int s, t; std::cin >> s >> t;\n        uf.merge(s, t);\n\
-    \    }\n    // \u9023\u7D50\u6210\u5206\u3054\u3068\u306B\u756A\u53F7\u3092\u632F\
-    \u308B\n    std::vector<int> id(n);\n    auto groups = uf.groups();\n    for (int\
-    \ i = 0; i < (int)groups.size(); i++) {\n        for (int v : groups[i]) id[v]\
-    \ = i;\n    }\n    int q; std::cin >> q;\n    while (q--) {\n        int s, t;\
-    \ std::cin >> s >> t;\n        std::cout << (id[s] == id[t] ? \"yes\" : \"no\"\
-    ) << '\\n';\n    }\n}\n"
+    \    int n, m;\n    std::cin >> n >> m;\n    UnionFind uf(n);\n    for (int i\
+    \ = 0; i < m; i++) {\n        int s, t;\n        std::cin >> s >> t;\n       \
+    \ uf.merge(s, t);\n    }\n    // \u9023\u7D50\u6210\u5206\u3054\u3068\u306B\u756A\
+    \u53F7\u3092\u632F\u308B\n    std::vector<int> id(n);\n    auto groups = uf.groups();\n\
+    \    for (int i = 0; i < (int)groups.size(); i++) {\n        for (int v : groups[i])\
+    \ id[v] = i;\n    }\n    int q;\n    std::cin >> q;\n    while (q--) {\n     \
+    \   int s, t;\n        std::cin >> s >> t;\n        std::cout << (id[s] == id[t]\
+    \ ? \"yes\" : \"no\") << '\\n';\n    }\n}\n"
   dependsOn:
   - src/data_structures/unionfind.hpp
   isVerificationFile: true
   path: test/aoj/alds1-11-d.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-13 12:42:03+09:00'
+  timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/alds1-11-d.2.test.cpp

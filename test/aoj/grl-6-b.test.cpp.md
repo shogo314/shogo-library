@@ -30,39 +30,40 @@ data:
     \ 3);\n * auto [f, c] = mcf.flow(s, t, limit);\n *\n * @tparam Cap \u5BB9\u91CF\
     \u306E\u578B\n * @tparam Cost \u30B3\u30B9\u30C8\u306E\u578B\u3002\u30B3\u30B9\
     \u30C8\u306E\u7DCF\u548C\u304C\u53CE\u307E\u308B\u3053\u3068\n */\ntemplate <typename\
-    \ Cap, typename Cost>\nclass MinCostFlow {\npublic:\n    /**\n     * @brief \u8FBA\
-    \u306E\u60C5\u5831\n     */\n    struct Edge {\n        int from, to;\n      \
-    \  Cap cap;    //!< \u5BB9\u91CF\n        Cap flow;   //!< \u6D41\u308C\u3066\u3044\
-    \u308B\u91CF\n        Cost cost;  //!< 1 \u3060\u3051\u6D41\u3057\u305F\u3068\u304D\
-    \u306E\u30B3\u30B9\u30C8\n    };\n\nprivate:\n    struct InnerEdge {\n       \
-    \ int to, rev;\n        Cap cap;  // \u6B8B\u308A\u306E\u5BB9\u91CF\n        Cost\
-    \ cost;\n    };\n    int n;\n    std::vector<std::vector<InnerEdge>> g;\n    std::vector<std::pair<int,\
-    \ int>> pos;  // \u8FFD\u52A0\u3057\u305F\u8FBA\u304C g \u306E\u3069\u3053\u306B\
-    \u3042\u308B\u304B\n    // \u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u3002\u5BB9\u91CF\
-    \u304C\u6B8B\u3063\u3066\u3044\u308B\u3059\u3079\u3066\u306E\u8FBA (v, u) \u3067\
-    \ cost - dual[u] + dual[v] >= 0 \u3092\u4FDD\u3064\n    std::vector<Cost> dual;\n\
-    \    std::vector<Cost> dist;\n    std::vector<int> prev_v, prev_e;\n    std::vector<bool>\
-    \ vis;\n    bool flowed = false;\n\n    // s \u304B\u3089 t \u3078\u306E\u6700\
-    \u77ED\u8DEF\u3092\u6C42\u3081\u3001\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u3092\
-    \u66F4\u65B0\u3059\u308B\u3002t \u306B\u884C\u3051\u306A\u3051\u308C\u3070 false\n\
-    \    bool dual_ref(int s, int t) {\n        std::fill(dist.begin(), dist.end(),\
-    \ std::numeric_limits<Cost>::max());\n        std::fill(vis.begin(), vis.end(),\
-    \ false);\n        using P = std::pair<Cost, int>;\n        std::priority_queue<P,\
-    \ std::vector<P>, std::greater<P>> que;\n        dist[s] = 0;\n        que.emplace(0,\
-    \ s);\n        while (!que.empty()) {\n            int v = que.top().second;\n\
-    \            que.pop();\n            if (vis[v]) continue;\n            vis[v]\
-    \ = true;\n            if (v == t) break;\n            for (int i = 0; i < (int)g[v].size();\
-    \ i++) {\n                const auto& e = g[v][i];\n                if (vis[e.to]\
-    \ || e.cap == 0) continue;\n                Cost c = e.cost - dual[e.to] + dual[v];\n\
-    \                if (dist[e.to] - dist[v] > c) {\n                    dist[e.to]\
-    \ = dist[v] + c;\n                    prev_v[e.to] = v;\n                    prev_e[e.to]\
+    \ Cap, typename Cost>\nclass MinCostFlow {\n   public:\n    /**\n     * @brief\
+    \ \u8FBA\u306E\u60C5\u5831\n     */\n    struct Edge {\n        int from, to;\n\
+    \        Cap cap;    //!< \u5BB9\u91CF\n        Cap flow;   //!< \u6D41\u308C\u3066\
+    \u3044\u308B\u91CF\n        Cost cost;  //!< 1 \u3060\u3051\u6D41\u3057\u305F\u3068\
+    \u304D\u306E\u30B3\u30B9\u30C8\n    };\n\n   private:\n    struct InnerEdge {\n\
+    \        int to, rev;\n        Cap cap;  // \u6B8B\u308A\u306E\u5BB9\u91CF\n \
+    \       Cost cost;\n    };\n    int n;\n    std::vector<std::vector<InnerEdge>>\
+    \ g;\n    std::vector<std::pair<int, int>> pos;  // \u8FFD\u52A0\u3057\u305F\u8FBA\
+    \u304C g \u306E\u3069\u3053\u306B\u3042\u308B\u304B\n    // \u30DD\u30C6\u30F3\
+    \u30B7\u30E3\u30EB\u3002\u5BB9\u91CF\u304C\u6B8B\u3063\u3066\u3044\u308B\u3059\
+    \u3079\u3066\u306E\u8FBA (v, u) \u3067 cost - dual[u] + dual[v] >= 0 \u3092\u4FDD\
+    \u3064\n    std::vector<Cost> dual;\n    std::vector<Cost> dist;\n    std::vector<int>\
+    \ prev_v, prev_e;\n    std::vector<bool> vis;\n    bool flowed = false;\n\n  \
+    \  // s \u304B\u3089 t \u3078\u306E\u6700\u77ED\u8DEF\u3092\u6C42\u3081\u3001\u30DD\
+    \u30C6\u30F3\u30B7\u30E3\u30EB\u3092\u66F4\u65B0\u3059\u308B\u3002t \u306B\u884C\
+    \u3051\u306A\u3051\u308C\u3070 false\n    bool dual_ref(int s, int t) {\n    \
+    \    std::fill(dist.begin(), dist.end(), std::numeric_limits<Cost>::max());\n\
+    \        std::fill(vis.begin(), vis.end(), false);\n        using P = std::pair<Cost,\
+    \ int>;\n        std::priority_queue<P, std::vector<P>, std::greater<P>> que;\n\
+    \        dist[s] = 0;\n        que.emplace(0, s);\n        while (!que.empty())\
+    \ {\n            int v = que.top().second;\n            que.pop();\n         \
+    \   if (vis[v]) continue;\n            vis[v] = true;\n            if (v == t)\
+    \ break;\n            for (int i = 0; i < (int)g[v].size(); i++) {\n         \
+    \       const auto& e = g[v][i];\n                if (vis[e.to] || e.cap == 0)\
+    \ continue;\n                Cost c = e.cost - dual[e.to] + dual[v];\n       \
+    \         if (dist[e.to] - dist[v] > c) {\n                    dist[e.to] = dist[v]\
+    \ + c;\n                    prev_v[e.to] = v;\n                    prev_e[e.to]\
     \ = i;\n                    que.emplace(dist[e.to], e.to);\n                }\n\
     \            }\n        }\n        if (!vis[t]) return false;\n        // \u78BA\
     \u5B9A\u3057\u305F\u9802\u70B9\u3060\u3051\u66F4\u65B0\u3059\u308B\u3002\u78BA\
     \u5B9A\u3057\u3066\u3044\u306A\u3044\u9802\u70B9 u \u306F dist[u] >= dist[t] \u306A\
     \u306E\u3067\u3001\u6761\u4EF6\u306F\u4FDD\u305F\u308C\u308B\n        for (int\
     \ v = 0; v < n; v++) {\n            if (vis[v]) dual[v] -= dist[t] - dist[v];\n\
-    \        }\n        return true;\n    }\n\npublic:\n    explicit MinCostFlow(int\
+    \        }\n        return true;\n    }\n\n   public:\n    explicit MinCostFlow(int\
     \ n = 0) : n(n), g(n), dual(n), dist(n), prev_v(n), prev_e(n), vis(n) {}\n\n \
     \   int size() const { return n; }\n\n    /**\n     * @brief from \u304B\u3089\
     \ to \u3078\u306E\u5BB9\u91CF cap\u3001\u30B3\u30B9\u30C8 cost \u306E\u8FBA\u3092\
@@ -134,7 +135,7 @@ data:
   isVerificationFile: true
   path: test/aoj/grl-6-b.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 00:48:32+09:00'
+  timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/grl-6-b.test.cpp

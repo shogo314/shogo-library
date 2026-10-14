@@ -41,7 +41,7 @@ data:
     \                return;\n            }\n            if (Compare()(data[i].first,\
     \ x)) {\n                pre_key = data[i].first;\n                pre_mapped\
     \ = data[i].second;\n                data[i].first = x;\n                data[i].second\
-    \ = c;\n                f = true;\n            } else if (not Compare()(x, data[i].first))\
+    \ = c;\n                f = true;\n            } else if (!Compare()(x, data[i].first))\
     \ {\n                data[i].second += c;\n                return;\n         \
     \   }\n        }\n    }\n\n    constexpr PriorityCounter& operator+=(const PriorityCounter&\
     \ o) {\n        for (std::size_t i = 0; i < k; i++) {\n            if (o.data[i].second\
@@ -80,9 +80,9 @@ data:
     \      }\n            if (Compare()(data[i].first, x)) {\n                pre_key\
     \ = data[i].first;\n                pre_mapped = data[i].second;\n           \
     \     data[i].first = x;\n                data[i].second = c;\n              \
-    \  f = true;\n            } else if (not Compare()(x, data[i].first)) {\n    \
-    \            data[i].second += c;\n                return;\n            }\n  \
-    \      }\n    }\n\n    constexpr PriorityCounter& operator+=(const PriorityCounter&\
+    \  f = true;\n            } else if (!Compare()(x, data[i].first)) {\n       \
+    \         data[i].second += c;\n                return;\n            }\n     \
+    \   }\n    }\n\n    constexpr PriorityCounter& operator+=(const PriorityCounter&\
     \ o) {\n        for (std::size_t i = 0; i < k; i++) {\n            if (o.data[i].second\
     \ == 0) break;\n            this->inc(o.data[i].first, o.data[i].second);\n  \
     \      }\n        return *this;\n    }\n    constexpr friend PriorityCounter operator+(const\
@@ -94,7 +94,7 @@ data:
   isVerificationFile: false
   path: src/data_structures/priority_counter.hpp
   requiredBy: []
-  timestamp: '2026-10-14 07:02:47+09:00'
+  timestamp: '2026-10-14 11:34:34+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/priority_counter.test.cpp

@@ -71,7 +71,7 @@ data:
     \ {\n        std::vector<value_type> ret;\n        ret.reserve(data.size());\n\
     \        for (const auto& [i, c] : data) {\n            ret.push_back({i, c});\n\
     \        }\n        std::sort(ret.begin(), ret.end(), [](const value_type& a,\
-    \ const value_type& b) { return a.second > b.second or (a.second == b.second and\
+    \ const value_type& b) { return a.second > b.second || (a.second == b.second &&\
     \ a.first < b.first); });\n        return ret;\n    }\n    class CounterReference\
     \ {\n        Counter& base;\n        key_type key;\n\n       public:\n       \
     \ CounterReference(Counter& base, key_type key) : base(base), key(key) {}\n  \
@@ -133,7 +133,7 @@ data:
     \ {\n        std::vector<value_type> ret;\n        ret.reserve(data.size());\n\
     \        for (const auto& [i, c] : data) {\n            ret.push_back({i, c});\n\
     \        }\n        std::sort(ret.begin(), ret.end(), [](const value_type& a,\
-    \ const value_type& b) { return a.second > b.second or (a.second == b.second and\
+    \ const value_type& b) { return a.second > b.second || (a.second == b.second &&\
     \ a.first < b.first); });\n        return ret;\n    }\n    class CounterReference\
     \ {\n        Counter& base;\n        key_type key;\n\n       public:\n       \
     \ CounterReference(Counter& base, key_type key) : base(base), key(key) {}\n  \
@@ -150,7 +150,7 @@ data:
   isVerificationFile: false
   path: src/data_structures/counter.hpp
   requiredBy: []
-  timestamp: '2026-10-14 07:02:47+09:00'
+  timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/counter.test.cpp

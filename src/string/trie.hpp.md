@@ -36,40 +36,40 @@ data:
     \    node.parent = parent;\n        node.depth = depth;\n        node.prefix_cnt\
     \ = node.word_cnt = 0;\n        nodes.push_back(node);\n        return nodes.size()\
     \ - 1;\n    }\n    static int index(int c) {\n        assert(0 <= c - Base &&\
-    \ c - Base < K);\n        return c - Base;\n    }\n\npublic:\n    Trie() { add_node(-1,\
-    \ 0); }\n\n    /**\n     * @brief \u30CE\u30FC\u30C9\u306E\u500B\u6570 (\u6839\
-    \u3092\u542B\u3080)\n     */\n    int size() const { return nodes.size(); }\n\n\
-    \    /**\n     * @brief \u6587\u5B57\u5217 s \u3092 1 \u500B\u8FFD\u52A0\u3057\
-    \u3001s \u306B\u5BFE\u5FDC\u3059\u308B\u30CE\u30FC\u30C9\u3092\u8FD4\u3059 O(|s|)\n\
-    \     * @param s std::string \u3084 std::vector<int> \u306A\u3069\u3001\u8981\u7D20\
-    \u3092\u6574\u6570\u306B\u5909\u63DB\u3067\u304D\u308B\u5217\n     */\n    template\
-    \ <typename R>\n    int insert(const R& s) {\n        int v = 0;\n        nodes[v].prefix_cnt++;\n\
-    \        for (auto c : s) {\n            int i = index(c);\n            if (nodes[v].next[i]\
-    \ == -1) {\n                int u = add_node(v, nodes[v].depth + 1);\n       \
-    \         nodes[v].next[i] = u;\n            }\n            v = nodes[v].next[i];\n\
-    \            nodes[v].prefix_cnt++;\n        }\n        nodes[v].word_cnt++;\n\
-    \        return v;\n    }\n\n    /**\n     * @brief \u6587\u5B57\u5217 s \u3092\
-    \ 1 \u500B\u53D6\u308A\u9664\u304F\u3002s \u304C\u306A\u3051\u308C\u3070\u4F55\
-    \u3082\u305B\u305A false \u3092\u8FD4\u3059 O(|s|)\n     * \u30CE\u30FC\u30C9\u306F\
-    \u524A\u9664\u3057\u306A\u3044\u306E\u3067\u3001\u30CE\u30FC\u30C9\u306E\u756A\
-    \u53F7\u306F\u5909\u308F\u3089\u306A\u3044\n     */\n    template <typename R>\n\
-    \    bool erase(const R& s) {\n        int v = find(s);\n        if (v == -1 ||\
-    \ nodes[v].word_cnt == 0) return false;\n        nodes[v].word_cnt--;\n      \
-    \  for (; v != -1; v = nodes[v].parent) nodes[v].prefix_cnt--;\n        return\
-    \ true;\n    }\n\n    /**\n     * @brief \u6587\u5B57\u5217 s \u306B\u5BFE\u5FDC\
-    \u3059\u308B\u30CE\u30FC\u30C9 (\u306A\u3051\u308C\u3070 -1) O(|s|)\n     * s\
-    \ \u3092\u63A5\u982D\u8F9E\u306B\u6301\u3064\u6587\u5B57\u5217\u3092\u8FFD\u52A0\
-    \u3057\u305F\u3053\u3068\u304C\u3042\u308C\u3070\u3001\u53D6\u308A\u9664\u3044\
-    \u305F\u5F8C\u3067\u3082\u30CE\u30FC\u30C9\u306F\u6B8B\u308B\n     */\n    template\
-    \ <typename R>\n    int find(const R& s) const {\n        int v = 0;\n       \
-    \ for (auto c : s) {\n            v = nodes[v].next[index(c)];\n            if\
-    \ (v == -1) return -1;\n        }\n        return v;\n    }\n\n    /**\n     *\
-    \ @brief \u6587\u5B57\u5217 s \u306E\u500B\u6570 O(|s|)\n     */\n    template\
-    \ <typename R>\n    int count(const R& s) const {\n        int v = find(s);\n\
-    \        return v == -1 ? 0 : nodes[v].word_cnt;\n    }\n    /**\n     * @brief\
-    \ s \u3092\u63A5\u982D\u8F9E\u306B\u6301\u3064\u6587\u5B57\u5217\u306E\u500B\u6570\
-    \ O(|s|)\n     */\n    template <typename R>\n    int count_prefix(const R& s)\
-    \ const {\n        int v = find(s);\n        return v == -1 ? 0 : nodes[v].prefix_cnt;\n\
+    \ c - Base < K);\n        return c - Base;\n    }\n\n   public:\n    Trie() {\
+    \ add_node(-1, 0); }\n\n    /**\n     * @brief \u30CE\u30FC\u30C9\u306E\u500B\u6570\
+    \ (\u6839\u3092\u542B\u3080)\n     */\n    int size() const { return nodes.size();\
+    \ }\n\n    /**\n     * @brief \u6587\u5B57\u5217 s \u3092 1 \u500B\u8FFD\u52A0\
+    \u3057\u3001s \u306B\u5BFE\u5FDC\u3059\u308B\u30CE\u30FC\u30C9\u3092\u8FD4\u3059\
+    \ O(|s|)\n     * @param s std::string \u3084 std::vector<int> \u306A\u3069\u3001\
+    \u8981\u7D20\u3092\u6574\u6570\u306B\u5909\u63DB\u3067\u304D\u308B\u5217\n   \
+    \  */\n    template <typename R>\n    int insert(const R& s) {\n        int v\
+    \ = 0;\n        nodes[v].prefix_cnt++;\n        for (auto c : s) {\n         \
+    \   int i = index(c);\n            if (nodes[v].next[i] == -1) {\n           \
+    \     int u = add_node(v, nodes[v].depth + 1);\n                nodes[v].next[i]\
+    \ = u;\n            }\n            v = nodes[v].next[i];\n            nodes[v].prefix_cnt++;\n\
+    \        }\n        nodes[v].word_cnt++;\n        return v;\n    }\n\n    /**\n\
+    \     * @brief \u6587\u5B57\u5217 s \u3092 1 \u500B\u53D6\u308A\u9664\u304F\u3002\
+    s \u304C\u306A\u3051\u308C\u3070\u4F55\u3082\u305B\u305A false \u3092\u8FD4\u3059\
+    \ O(|s|)\n     * \u30CE\u30FC\u30C9\u306F\u524A\u9664\u3057\u306A\u3044\u306E\u3067\
+    \u3001\u30CE\u30FC\u30C9\u306E\u756A\u53F7\u306F\u5909\u308F\u3089\u306A\u3044\
+    \n     */\n    template <typename R>\n    bool erase(const R& s) {\n        int\
+    \ v = find(s);\n        if (v == -1 || nodes[v].word_cnt == 0) return false;\n\
+    \        nodes[v].word_cnt--;\n        for (; v != -1; v = nodes[v].parent) nodes[v].prefix_cnt--;\n\
+    \        return true;\n    }\n\n    /**\n     * @brief \u6587\u5B57\u5217 s \u306B\
+    \u5BFE\u5FDC\u3059\u308B\u30CE\u30FC\u30C9 (\u306A\u3051\u308C\u3070 -1) O(|s|)\n\
+    \     * s \u3092\u63A5\u982D\u8F9E\u306B\u6301\u3064\u6587\u5B57\u5217\u3092\u8FFD\
+    \u52A0\u3057\u305F\u3053\u3068\u304C\u3042\u308C\u3070\u3001\u53D6\u308A\u9664\
+    \u3044\u305F\u5F8C\u3067\u3082\u30CE\u30FC\u30C9\u306F\u6B8B\u308B\n     */\n\
+    \    template <typename R>\n    int find(const R& s) const {\n        int v =\
+    \ 0;\n        for (auto c : s) {\n            v = nodes[v].next[index(c)];\n \
+    \           if (v == -1) return -1;\n        }\n        return v;\n    }\n\n \
+    \   /**\n     * @brief \u6587\u5B57\u5217 s \u306E\u500B\u6570 O(|s|)\n     */\n\
+    \    template <typename R>\n    int count(const R& s) const {\n        int v =\
+    \ find(s);\n        return v == -1 ? 0 : nodes[v].word_cnt;\n    }\n    /**\n\
+    \     * @brief s \u3092\u63A5\u982D\u8F9E\u306B\u6301\u3064\u6587\u5B57\u5217\u306E\
+    \u500B\u6570 O(|s|)\n     */\n    template <typename R>\n    int count_prefix(const\
+    \ R& s) const {\n        int v = find(s);\n        return v == -1 ? 0 : nodes[v].prefix_cnt;\n\
     \    }\n    /**\n     * @brief \u6587\u5B57\u5217\u306E\u500B\u6570 (\u91CD\u8907\
     \u3092\u542B\u3080)\n     */\n    int total() const { return nodes[0].prefix_cnt;\
     \ }\n\n    /**\n     * @brief \u30CE\u30FC\u30C9 v \u304B\u3089\u6587\u5B57 c\
@@ -117,11 +117,11 @@ data:
     \ = depth;\n        node.prefix_cnt = node.word_cnt = 0;\n        nodes.push_back(node);\n\
     \        return nodes.size() - 1;\n    }\n    static int index(int c) {\n    \
     \    assert(0 <= c - Base && c - Base < K);\n        return c - Base;\n    }\n\
-    \npublic:\n    Trie() { add_node(-1, 0); }\n\n    /**\n     * @brief \u30CE\u30FC\
-    \u30C9\u306E\u500B\u6570 (\u6839\u3092\u542B\u3080)\n     */\n    int size() const\
-    \ { return nodes.size(); }\n\n    /**\n     * @brief \u6587\u5B57\u5217 s \u3092\
-    \ 1 \u500B\u8FFD\u52A0\u3057\u3001s \u306B\u5BFE\u5FDC\u3059\u308B\u30CE\u30FC\
-    \u30C9\u3092\u8FD4\u3059 O(|s|)\n     * @param s std::string \u3084 std::vector<int>\
+    \n   public:\n    Trie() { add_node(-1, 0); }\n\n    /**\n     * @brief \u30CE\
+    \u30FC\u30C9\u306E\u500B\u6570 (\u6839\u3092\u542B\u3080)\n     */\n    int size()\
+    \ const { return nodes.size(); }\n\n    /**\n     * @brief \u6587\u5B57\u5217\
+    \ s \u3092 1 \u500B\u8FFD\u52A0\u3057\u3001s \u306B\u5BFE\u5FDC\u3059\u308B\u30CE\
+    \u30FC\u30C9\u3092\u8FD4\u3059 O(|s|)\n     * @param s std::string \u3084 std::vector<int>\
     \ \u306A\u3069\u3001\u8981\u7D20\u3092\u6574\u6570\u306B\u5909\u63DB\u3067\u304D\
     \u308B\u5217\n     */\n    template <typename R>\n    int insert(const R& s) {\n\
     \        int v = 0;\n        nodes[v].prefix_cnt++;\n        for (auto c : s)\
@@ -180,7 +180,7 @@ data:
   isVerificationFile: false
   path: src/string/trie.hpp
   requiredBy: []
-  timestamp: '2026-10-14 06:59:14+09:00'
+  timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/trie.test.cpp

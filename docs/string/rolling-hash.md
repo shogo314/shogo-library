@@ -23,7 +23,7 @@ bool p = (t + u).is_palindrome();              // "aba" は回文: true
 |---|---|---|
 | `RollingHash(base = 0)` | 基数を指定して作る (0 ならランダム) | $O(1)$ |
 | `build(s)` / `build(first, last)` | 長さ $n + 1$ の配列 `h` (`h[i]` は先頭 `i` 文字のハッシュ) | $O(n)$ |
-| `query(h, l, r)` | $[l, r)$ のハッシュ | $O(1)$ (初回は $O(r - l)$) |
+| `query(h, l, r)` | $[l, r)$ のハッシュ (`l`、`r` は `long long`) | $O(1)$ (初回は $O(r - l)$) |
 | `RollingHash::to_value(x)` | 要素を $[0, 2^{61} - 1)$ の値に変換する (static) | $O(1)$ |
 
 ## `RollingHash` のメンバ変数
@@ -45,14 +45,14 @@ bool p = (t + u).is_palindrome();              // "aba" は回文: true
 | `t == u`、`t != u` | 一致判定 | $O(1)$ |
 | `t = s`、`t.assign(s)` | 再代入 | $O(n)$ |
 | `t.is_palindrome()` | 回文か | $O(1)$ |
-| `t.size()`、`t.empty()`、`t.clear()` | 長さ・空か・空にする | $O(1)$ |
+| `t.size()`、`t.empty()`、`t.clear()` | 長さ (`long long`)・空か・空にする | $O(1)$ |
 
 ## `RHString` のメンバ変数
 
 | 変数 | 説明 |
 |---|---|
 | `rh` | 使う `RollingHash` への参照 |
-| `sz` | 長さ |
+| `sz` | 長さ (`long long`) |
 | `hash1` | 正順のハッシュ |
 | `hash2` | 逆順のハッシュ (回文判定に使う) |
 

@@ -6,13 +6,13 @@ documentation_of: //src/string/trie.hpp
 文字列の集合 (多重集合) を、接頭辞の木で管理する `Trie<K, Base>` です。文字 `c` は `c - Base` として $0$ 以上 $K$ 未満の番号に直します。根はノード 0 で、空文字列に対応します。文字列の操作は、文字列の長さを $L$ として $O(L)$ です。
 
 ```cpp
-Trie<26, 'a'> trie;              // 英小文字
-int v = trie.insert("abc");      // 追加して、"abc" のノードを返す
+Trie<26, 'a'> trie;                // 英小文字
+long long v = trie.insert("abc");  // 追加して、"abc" のノードを返す
 trie.insert("abd");
-trie.count_prefix("ab");         // 2 ("ab" で始まる文字列の個数)
-trie.count("abc");               // 1
-trie.erase("abc");               // 1 個取り除く
-trie.find("x");                  // -1 (ノードがない)
+trie.count_prefix("ab");           // 2 ("ab" で始まる文字列の個数)
+trie.count("abc");                 // 1
+trie.erase("abc");                 // 1 個取り除く
+trie.find("x");                    // -1 (ノードがない)
 ```
 
 ## メンバ関数
@@ -34,6 +34,7 @@ trie.find("x");                  // -1 (ノードがない)
 | `count_prefix_at(v)` | ノード `v` を通る (`v` の文字列で始まる) 文字列の個数 | $O(1)$ |
 | `count_at(v)` | ノード `v` で終わる文字列の個数 | $O(1)$ |
 
+- ノードの番号・個数・深さ・長さは `long long` で返し、ノードの番号も `long long` で受け取ります。文字 `c` は `int` です。
 - `s` は `std::string` のほか、`std::vector<int>` などの整数の列でもかまいません (`Trie<10, 0>` に数字の列を入れるなど)。
 - ノードは子の番号を `K` 個の配列で持つので、メモリは「ノード数 × (4K + 16) バイト」ほど使います。文字の種類が少ないときは `K` を小さくしてください。
 - ノードの番号は追加した順に付き、親の番号は子より小さくなります。そのため、番号の大きい順に処理すれば葉から根へ向かう DP ができます。
@@ -44,7 +45,7 @@ trie.find("x");                  // -1 (ノードがない)
 
 ```cpp
 long long sum = 0;
-for (int v = 1; v < trie.size(); v++) {
+for (long long v = 1; v < trie.size(); v++) {
     long long c = trie.count_prefix_at(v);
     sum += c * (c - 1) / 2;
 }

@@ -11,6 +11,6 @@ int main() {
     std::ios::sync_with_stdio(false);
     std::string s;
     std::cin >> s;
-    std::vector<int> len = palindrome_lengths(s);
-    for (int i = 0; i < (int)len.size(); i++) std::cout << len[i] << " \n"[i + 1 == (int)len.size()];
+    std::vector<long long> len = palindrome_lengths(s);
+    for (long long i = 0; i < (long long)len.size(); i++) std::cout << len[i] << " \n"[i + 1 == (long long)len.size()];
 }

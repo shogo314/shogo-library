@@ -27,7 +27,7 @@ int main() {
         std::string s(n, 'a');
         for (auto& c : s) c = 'a' + rng() % k;
 
-        std::vector<int> z(n), pi(n), r(n), len(std::max(2 * n - 1, 0));
+        std::vector<long long> z(n), pi(n), r(n), len(std::max(2 * n - 1, 0));
         for (int i = 0; i < n; i++) {
             while (i + z[i] < n && s[z[i]] == s[i + z[i]]) z[i]++;
             for (int l = 1; l <= i; l++) {
@@ -48,7 +48,7 @@ int main() {
         int m = rng() % 4;
         std::string p(m, 'a');
         for (auto& c : p) c = 'a' + rng() % k;
-        std::vector<int> occ;
+        std::vector<long long> occ;
         for (int i = 0; i + m <= n; i++) {
             if (s.substr(i, m) == p) occ.push_back(i);
         }
@@ -56,11 +56,11 @@ int main() {
     }
 
     // 例
-    ok = ok && prefix_function(std::string("aabaaab")) == std::vector<int>{0, 1, 0, 1, 2, 2, 3};
-    ok = ok && kmp_search(std::string("aaaa"), std::string("aa")) == std::vector<int>{0, 1, 2};
-    ok = ok && kmp_search(std::vector<int>{1, 2, 1, 2, 1}, std::vector<int>{1, 2, 1}) == std::vector<int>{0, 2};
-    ok = ok && manacher(std::string("abaaba")) == std::vector<int>{1, 2, 1, 1, 2, 1};
-    ok = ok && palindrome_lengths(std::string("abaaba")) == std::vector<int>{1, 0, 3, 0, 1, 6, 1, 0, 3, 0, 1};
+    ok = ok && prefix_function(std::string("aabaaab")) == std::vector<long long>{0, 1, 0, 1, 2, 2, 3};
+    ok = ok && kmp_search(std::string("aaaa"), std::string("aa")) == std::vector<long long>{0, 1, 2};
+    ok = ok && kmp_search(std::vector<int>{1, 2, 1, 2, 1}, std::vector<int>{1, 2, 1}) == std::vector<long long>{0, 2};
+    ok = ok && manacher(std::string("abaaba")) == std::vector<long long>{1, 2, 1, 1, 2, 1};
+    ok = ok && palindrome_lengths(std::string("abaaba")) == std::vector<long long>{1, 0, 3, 0, 1, 6, 1, 0, 3, 0, 1};
 
     if (ok)
         std::cout << "Hello World" << std::endl;

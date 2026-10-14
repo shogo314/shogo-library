@@ -28,10 +28,10 @@ int main() {
             std::string s = random_string(5);
             int type = rng() % 3;
             if (type == 0) {
-                int v = trie.insert(s);
+                long long v = trie.insert(s);
                 ms[s]++;
                 for (int len = 0; len <= (int)s.size(); len++) node_of.emplace(s.substr(0, len), -1);
-                ok = ok && trie.depth(v) == (int)s.size();
+                ok = ok && trie.depth(v) == (long long)s.size();
             } else if (type == 1) {
                 bool expected = ms.count(s) && ms[s] > 0;
                 ok = ok && trie.erase(s) == expected;
@@ -39,33 +39,33 @@ int main() {
             }
             // すべての問い合わせを愚直な結果と比べる
             std::string t = random_string(5);
-            int cnt = ms.count(t) ? ms[t] : 0, pre = 0, total = 0, lcp = 0;
+            long long cnt = ms.count(t) ? ms[t] : 0, pre = 0, total = 0, lcp = 0;
             for (auto& [u, c] : ms) {
                 total += c;
                 if (u.compare(0, t.size(), t) == 0 && u.size() >= t.size()) pre += c;
                 if (c > 0) {
-                    int l = 0;
-                    while (l < (int)std::min(u.size(), t.size()) && u[l] == t[l]) l++;
+                    long long l = 0;
+                    while (l < (long long)std::min(u.size(), t.size()) && u[l] == t[l]) l++;
                     lcp = std::max(lcp, l);
                 }
             }
-            int v = trie.find(t);
+            long long v = trie.find(t);
             ok = ok && (v != -1) == (node_of.count(t) > 0);
             ok = ok && trie.count(t) == cnt && trie.count_prefix(t) == pre && trie.total() == total;
             ok = ok && trie.longest_common_prefix(t) == lcp;
             if (v != -1) {
-                ok = ok && trie.count_at(v) == cnt && trie.count_prefix_at(v) == pre && trie.depth(v) == (int)t.size();
+                ok = ok && trie.count_at(v) == cnt && trie.count_prefix_at(v) == pre && trie.depth(v) == (long long)t.size();
             }
         }
         // ノードの数と、親子・深さの関係
-        ok = ok && trie.size() == (int)node_of.size();
+        ok = ok && trie.size() == (long long)node_of.size();
         for (auto& [u, x] : node_of) {
-            int v = trie.find(u);
+            long long v = trie.find(u);
             if (u.empty()) {
                 ok = ok && v == 0 && trie.parent(v) == -1;
             } else {
-                int p = trie.find(u.substr(0, u.size() - 1));
-                ok = ok && trie.parent(v) == p && trie.child(p, u.back()) == v && trie.depth(v) == (int)u.size();
+                long long p = trie.find(u.substr(0, u.size() - 1));
+                ok = ok && trie.parent(v) == p && trie.child(p, u.back()) == v && trie.depth(v) == (long long)u.size();
             }
         }
     }
@@ -75,7 +75,7 @@ int main() {
     std::vector<std::string> words = {"ab", "abc", "arc"};
     for (auto& w : words) trie.insert(w);
     long long sum = 0;
-    for (int v = 1; v < trie.size(); v++) sum += (long long)trie.count_prefix_at(v) * (trie.count_prefix_at(v) - 1) / 2;
+    for (long long v = 1; v < trie.size(); v++) sum += trie.count_prefix_at(v) * (trie.count_prefix_at(v) - 1) / 2;
     ok = ok && sum == 4;  // lcp(ab, abc) = 2, lcp(ab, arc) = 1, lcp(abc, arc) = 1
     // vector<int> も追加できる
     Trie<10, 0> digits;

@@ -12,18 +12,20 @@
 #include <vector>
 
 template <typename R>
-bool check(const R& s, const std::vector<int>& sa) {
-    int n = s.size();
-    std::vector<int> expected(n);
-    for (int i = 0; i < n; i++) expected[i] = i;
-    std::sort(expected.begin(), expected.end(), [&](int a, int b) {
+bool check(const R& s, const std::vector<long long>& sa) {
+    long long n = s.size();
+    std::vector<long long> expected(n);
+    for (long long i = 0; i < n; i++) expected[i] = i;
+    std::sort(expected.begin(), expected.end(), [&](long long a, long long b) {
         return std::lexicographical_compare(s.begin() + a, s.end(), s.begin() + b, s.end());
     });
     if (sa != expected) return false;
-    std::vector<int> lcp = lcp_array(s, sa);
-    if ((int)lcp.size() != std::max(n - 1, 0)) return false;
-    for (int i = 0; i + 1 < n; i++) {
-        int h = 0;
+    std::vector<long long> lcp = lcp_array(s, sa);
+    if ((long long)lcp.size() != std::max(n - 1, 0LL)) return false;
+    // int の Suffix Array を渡しても同じ LCP 配列になる
+    if (lcp_array(s, std::vector<int>(sa.begin(), sa.end())) != lcp) return false;
+    for (long long i = 0; i + 1 < n; i++) {
+        long long h = 0;
         while (sa[i] + h < n && sa[i + 1] + h < n && s[sa[i] + h] == s[sa[i + 1] + h]) h++;
         if (lcp[i] != h) return false;
     }
@@ -40,6 +42,9 @@ int main() {
         for (auto& v : a) v = rng() % (upper + 1);
         ok = ok && check(a, suffix_array(a, upper));
         ok = ok && check(a, suffix_array(a));
+        // long long の列でも、値の上限を渡す版と座標圧縮する版が使える
+        std::vector<long long> a2(a.begin(), a.end());
+        ok = ok && check(a2, suffix_array(a2, upper)) && check(a2, suffix_array(a2));
 
         std::string s(n, 'a');
         for (auto& c : s) c = 'a' + rng() % (upper + 1);
@@ -64,8 +69,8 @@ int main() {
     }
 
     // 例
-    ok = ok && suffix_array(std::string("abracadabra")) == std::vector<int>{10, 7, 0, 3, 5, 8, 1, 4, 6, 9, 2};
-    ok = ok && lcp_array(std::string("abracadabra"), suffix_array(std::string("abracadabra"))) == std::vector<int>{1, 4, 1, 1, 0, 3, 0, 0, 0, 2};
+    ok = ok && suffix_array(std::string("abracadabra")) == std::vector<long long>{10, 7, 0, 3, 5, 8, 1, 4, 6, 9, 2};
+    ok = ok && lcp_array(std::string("abracadabra"), suffix_array(std::string("abracadabra"))) == std::vector<long long>{1, 4, 1, 1, 0, 3, 0, 0, 0, 2};
 
     if (ok)
         std::cout << "Hello World" << std::endl;

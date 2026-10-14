@@ -16,9 +16,11 @@ auto lcp = lcp_array(s, sa);    // {1, 4, 1, 1, 0, 3, 0, 0, 0, 2}
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `suffix_array(s)` (`s` は `std::string`) | Suffix Array | $O(n)$ |
-| `suffix_array(s, upper)` (`s` は `std::vector<int>`) | 値が $0$ 以上 `upper` 以下の列の Suffix Array | $O(n + \mathrm{upper})$ |
+| `suffix_array(s, upper)` (`s` は `std::vector<int>` や `std::vector<long long>` など整数の列) | 値が $0$ 以上 `upper` 以下の列の Suffix Array。`upper` は `int` に収まること | $O(n + \mathrm{upper})$ |
 | `suffix_array(s)` (`s` は `std::vector<T>`) | `operator<` で比べられる値の列の Suffix Array。値を座標圧縮してから求める | $O(n \log n)$ |
-| `lcp_array(s, sa)` | 長さ $n - 1$ の `lcp`。`lcp[i]` は `s[sa[i]:]` と `s[sa[i + 1]:]` の最長共通接頭辞の長さ (Kasai 法) | $O(n)$ |
+| `lcp_array(s, sa)` | 長さ $n - 1$ の `lcp`。`sa` は `std::vector<long long>` (`suffix_array` の返り値) でも `std::vector<int>` でもよい。`lcp[i]` は `s[sa[i]:]` と `s[sa[i + 1]:]` の最長共通接頭辞の長さ (Kasai 法) | $O(n)$ |
+
+`suffix_array` と `lcp_array` は `std::vector<long long>` を返します。
 
 `s[sa[i]:]` と `s[sa[j]:]` ($i < j$) の最長共通接頭辞の長さは、`lcp[i], ..., lcp[j - 1]` の最小値です。[Sparse Table](../data_structures/sparse-table.hpp) と組み合わせれば $O(1)$ で求められます。
 
@@ -28,7 +30,7 @@ auto lcp = lcp_array(s, sa);    // {1, 4, 1, 1, 0, 3, 0, 0, 0, 2}
 
 ```cpp
 long long n = s.size(), ans = n * (n + 1) / 2;
-for (int h : lcp_array(s, suffix_array(s))) ans -= h;
+for (long long h : lcp_array(s, suffix_array(s))) ans -= h;
 ```
 
 ## 関連

@@ -31,7 +31,7 @@ int main() {
     // RHString の中身が s と一致するか (長さ・正順のハッシュ・逆順のハッシュ)
     auto same = [&](const RHString& t, const std::string& s) {
         std::string r(s.rbegin(), s.rend());
-        return t.size() == (int)s.size() && t.hash1 == rh.build(s).back() && t.hash2 == rh.build(r).back();
+        return t.size() == (long long)s.size() && t.hash1 == rh.build(s).back() && t.hash2 == rh.build(r).back();
     };
 
     for (int rep = 0; rep < 3000 && ok; rep++) {
@@ -71,7 +71,7 @@ int main() {
         check((a + b).is_palindrome() == is_palindrome(s + t), "is_palindrome concat");
 
         // size, empty, clear
-        check(a.size() == (int)s.size() && a.empty() == s.empty(), "size/empty");
+        check(a.size() == (long long)s.size() && a.empty() == s.empty(), "size/empty");
         RHString e = a;
         e.clear();
         check(e.empty() && e.size() == 0 && e == empty, "clear");

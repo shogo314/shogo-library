@@ -3,7 +3,7 @@ title: 文字列アルゴリズム (Z-algorithm、KMP、Manacher)
 documentation_of: //src/string/string.hpp
 ---
 
-Z-algorithm・KMP 法・Manacher 法を $O(n)$ で行います。文字列のほか、`vector` などの列にも使えます (要素は `==` で比べます)。
+Z-algorithm・KMP 法・Manacher 法を $O(n)$ で行います。文字列のほか、`vector` などの列にも使えます (要素は `==` で比べます)。結果はどれも `std::vector<long long>` で返します。
 
 ```cpp
 auto z = z_algorithm(std::string("aabaab"));        // {6, 1, 0, 3, 1, 0}
@@ -17,7 +17,7 @@ auto len = palindrome_lengths(std::string("abaaba"));  // {1, 0, 3, 0, 1, 6, 1, 
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `z_algorithm(s)` / `z_algorithm(begin, end)` | 各 $i$ について、`s` と `s[i:]` の最長共通接頭辞の長さ `z[i]` を並べた `vector<int>` (`z[0]` は `s` の長さ) | $O(n)$ |
+| `z_algorithm(s)` / `z_algorithm(begin, end)` | 各 $i$ について、`s` と `s[i:]` の最長共通接頭辞の長さ `z[i]` を並べた `vector<long long>` (`z[0]` は `s` の長さ) | $O(n)$ |
 | `prefix_function(s)` / `prefix_function(begin, end)` | 各 $i$ について、`s[0, i]` (両端を含む) の接頭辞であり接尾辞でもある部分のうち、`s[0, i]` 自身を除いた最長の長さ `pi[i]` (KMP 法の失敗関数) | $O(n)$ |
 | `kmp_search(text, pattern)` | `text` の中で `pattern` が現れる開始位置を昇順に並べたもの (KMP 法)。$n$、$m$ は `text`、`pattern` の長さ。`pattern` が空なら $0, 1, \dots, n$ | $O(n + m)$ |
 | `manacher(s)` / `manacher(begin, end)` | 各 $i$ について、`s[i]` を中心とする奇数長の回文の最大の半径 `r[i]` (`s[i - r[i] + 1, i + r[i])` が回文、長さは `2 * r[i] - 1`) | $O(n)$ |

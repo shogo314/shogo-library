@@ -10,5 +10,5 @@ int main() {
     std::cin.tie(nullptr);
     std::string t, p;
     std::cin >> t >> p;
-    for (int i : kmp_search(t, p)) std::cout << i << '\n';
+    for (long long i : kmp_search(t, p)) std::cout << i << '\n';
 }

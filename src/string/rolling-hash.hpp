@@ -41,8 +41,8 @@ class RollingHash {
         return add(static_cast<unsigned long long>(c >> 61), static_cast<unsigned long long>(c & MOD));
     }
 
-    void expand(int n) {
-        while (static_cast<int>(power.size()) <= n) power.push_back(mul(power.back(), base));
+    void expand(long long n) {
+        while (static_cast<long long>(power.size()) <= n) power.push_back(mul(power.back(), base));
     }
 
    public:
@@ -120,8 +120,8 @@ class RollingHash {
      * @param r 区間の右端
      * @return unsigned long long [l,r)のハッシュ
      */
-    unsigned long long query(const std::vector<unsigned long long>& hash, int l, int r) {
-        assert(0 <= l && l <= r && r < static_cast<int>(hash.size()));
+    unsigned long long query(const std::vector<unsigned long long>& hash, long long l, long long r) {
+        assert(0 <= l && l <= r && r < static_cast<long long>(hash.size()));
         expand(r - l);
         return add(hash[r], MOD - mul(hash[l], power[r - l]));
     }
@@ -134,7 +134,7 @@ class RollingHash {
  */
 struct RHString {
     RollingHash& rh;
-    int sz;
+    long long sz;              //!< 長さ
     unsigned long long hash1;  //!< 正順
     unsigned long long hash2;  //!< 逆順
     /**
@@ -142,7 +142,7 @@ struct RHString {
      * 予めRollingHashをインスタンス化しておく必要がある
      */
     explicit RHString(RollingHash& rh) : rh(rh), sz(0), hash1(0), hash2(0) {}
-    RHString(RollingHash& rh, int sz, unsigned long long hash1, unsigned long long hash2) : rh(rh), sz(sz), hash1(hash1), hash2(hash2) {}
+    RHString(RollingHash& rh, long long sz, unsigned long long hash1, unsigned long long hash2) : rh(rh), sz(sz), hash1(hash1), hash2(hash2) {}
     RHString(const RHString& o) : rh(o.rh), sz(o.sz), hash1(o.hash1), hash2(o.hash2) {}
     /**
      * @brief vectorなどで初期化する
@@ -150,7 +150,7 @@ struct RHString {
     template <class R, ENABLE_IF_T(is_range_v<R> && !std::is_convertible_v<R, std::string_view>)>
     RHString(RollingHash& rh, R&& v) : rh(rh) {
         using std::begin, std::end, std::rbegin, std::rend;
-        sz = static_cast<int>(std::distance(begin(v), end(v)));
+        sz = static_cast<long long>(std::distance(begin(v), end(v)));
         hash1 = rh.build(begin(v), end(v)).back();
         hash2 = rh.build(rbegin(v), rend(v)).back();
     }
@@ -167,7 +167,7 @@ struct RHString {
      * @brief 文字列(string, const char*, string_view)で初期化する
      */
     RHString(RollingHash& rh, std::string_view s) : rh(rh) {
-        sz = static_cast<int>(s.size());
+        sz = static_cast<long long>(s.size());
         hash1 = rh.build(s.begin(), s.end()).back();
         hash2 = rh.build(s.rbegin(), s.rend()).back();
     }
@@ -178,7 +178,7 @@ struct RHString {
     bool is_palindrome() const {
         return hash1 == hash2;
     }
-    int size() const {
+    long long size() const {
         return sz;
     }
     void clear() {
@@ -214,7 +214,7 @@ struct RHString {
     template <class R, ENABLE_IF_T(is_range_v<R> && !std::is_convertible_v<R, std::string_view>)>
     void assign(R&& v) {
         using std::begin, std::end, std::rbegin, std::rend;
-        sz = static_cast<int>(std::distance(begin(v), end(v)));
+        sz = static_cast<long long>(std::distance(begin(v), end(v)));
         hash1 = rh.build(begin(v), end(v)).back();
         hash2 = rh.build(rbegin(v), rend(v)).back();
     }
@@ -231,7 +231,7 @@ struct RHString {
      * @brief 文字列(string, const char*, string_view)を再代入する
      */
     void assign(std::string_view s) {
-        sz = static_cast<int>(s.size());
+        sz = static_cast<long long>(s.size());
         hash1 = rh.build(s.begin(), s.end()).back();
         hash2 = rh.build(s.rbegin(), s.rend()).back();
     }

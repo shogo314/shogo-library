@@ -14,6 +14,6 @@ int main() {
     long long n = s.size();
     // 部分文字列は接尾辞の接頭辞。辞書順で前の接尾辞と共通する接頭辞を除いて数える
     long long ans = n * (n + 1) / 2;
-    for (int h : lcp_array(s, suffix_array(s))) ans -= h;
+    for (long long h : lcp_array(s, suffix_array(s))) ans -= h;
     std::cout << ans << '\n';
 }

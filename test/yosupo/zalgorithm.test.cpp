@@ -8,8 +8,8 @@
 int main(void) {
     std::string s;
     std::cin >> s;
-    std::vector<int> z = z_algorithm(s);
-    for (int i = 0; i < (int)z.size(); i++) {
-        std::cout << z[i] << " \n"[i + 1 == (int)z.size()];
+    std::vector<long long> z = z_algorithm(s);
+    for (long long i = 0; i < (long long)z.size(); i++) {
+        std::cout << z[i] << " \n"[i + 1 == (long long)z.size()];
     }
 }

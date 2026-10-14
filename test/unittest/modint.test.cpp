@@ -3,11 +3,11 @@
 // modint の ++・--・単項の +、合成数の法での逆元、素数判定 (detail::is_prime32) を愚直な計算と比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/math/modint.hpp"
+
 #include <cstdint>
 #include <iostream>
 #include <random>
-
-#include "../../src/math/modint.hpp"
 
 bool naive_is_prime(std::uint32_t x) {
     if (x < 2) return false;

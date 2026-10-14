@@ -3,11 +3,11 @@
 // geometry/circle.hpp の関数を、定義から確かめる
 // 問題の入力は使わず、すべて成り立ったら Hello World を出力する
 
+#include "../../src/geometry/circle.hpp"
+
 #include <cmath>
 #include <iostream>
 #include <random>
-
-#include "../../src/geometry/circle.hpp"
 
 int main() {
     std::mt19937 rng(314);
@@ -28,7 +28,8 @@ int main() {
         if (ci1.c == ci2.c) {
             ok = ok && ps.empty();
         } else {
-            int expected = rel == 4 || rel == 0 ? 0 : rel == 2 ? 2 : 1;
+            int expected = rel == 4 || rel == 0 ? 0 : rel == 2 ? 2
+                                                               : 1;
             ok = ok && (int)ps.size() == expected;
         }
         for (const auto& p : ps) ok = ok && on_circle(c1, p) && on_circle(c2, p);
@@ -38,7 +39,8 @@ int main() {
         if (p1 != p2) {
             auto qs = circle_line_intersection(c1, p1, p2);
             double d = distance_point_line(p1, p2, c1.c);
-            int expected = d > c1.r + 1e-9 ? 0 : d > c1.r - 1e-9 ? 1 : 2;
+            int expected = d > c1.r + 1e-9 ? 0 : d > c1.r - 1e-9 ? 1
+                                                                 : 2;
             ok = ok && (int)qs.size() == expected;
             for (const auto& q : qs) ok = ok && on_circle(c1, q) && near(cross(p2 - p1, q - p1), 0);
         }
@@ -47,7 +49,8 @@ int main() {
         P p(rndd(), rndd());
         auto ts = tangent_points(c1, p);
         double dp = (p - c1.c).abs();
-        ok = ok && (int)ts.size() == (dp > c1.r + 1e-9 ? 2 : dp > c1.r - 1e-9 ? 1 : 0);
+        ok = ok && (int)ts.size() == (dp > c1.r + 1e-9 ? 2 : dp > c1.r - 1e-9 ? 1
+                                                                              : 0);
         for (const auto& t : ts) ok = ok && on_circle(c1, t) && near(dot(t - c1.c, p - t), 0);
 
         // 内接円は 3 辺に接し、外接円は 3 頂点を通る
@@ -59,6 +62,8 @@ int main() {
         }
     }
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

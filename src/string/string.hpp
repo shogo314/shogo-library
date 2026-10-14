@@ -24,16 +24,16 @@ std::vector<int> z_algorithm(It begin, It end) {
     if (n == 0) return {};
     std::vector<int> z(n);
     z[0] = n;
-    for(int i = 1, j = 0; i < n;) {
+    for (int i = 1, j = 0; i < n;) {
         // [0, j)と[i, i + j)が一致している
-        while(i + j < n && begin[j] == begin[i + j]) j++;
+        while (i + j < n && begin[j] == begin[i + j]) j++;
         z[i] = j;
-        int k = 1; // [k,)と[i+k,)はLCPが等しいと確定している
-        for(; k < j && k + z[k] < j; k++) {
+        int k = 1;  // [k,)と[i+k,)はLCPが等しいと確定している
+        for (; k < j && k + z[k] < j; k++) {
             z[i + k] = z[k];
         }
         i += k;
-        if(j) j -= k;
+        if (j) j -= k;
     }
     return z;
 }

@@ -5,8 +5,8 @@
 #include <utility>
 #include <vector>
 
-#include "../../src/math/modint.hpp"
 #include "../../src/data_structures/lazy-segtree.hpp"
+#include "../../src/math/modint.hpp"
 
 // Composite の積は f∘g (右の関数を先に適用する) なので、添字を反転して i 番目を n - 1 - i 番目に置く
 int main() {

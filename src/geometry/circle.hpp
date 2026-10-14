@@ -11,6 +11,7 @@
 #include <istream>
 #include <type_traits>
 #include <vector>
+
 #include "vector.hpp"
 
 /**
@@ -43,10 +44,10 @@ template <typename T>
 constexpr int circle_relation(const Circle<T>& c1, const Circle<T>& c2) {
     T d2 = (c1.c - c2.c).squared_norm();
     T s = c1.r + c2.r, t = c1.r - c2.r;
-    if(d2 > s * s) return 4;
-    if(d2 == s * s) return 3;
-    if(d2 > t * t) return 2;
-    if(d2 == t * t) return 1;
+    if (d2 > s * s) return 4;
+    if (d2 == s * s) return 3;
+    if (d2 > t * t) return 2;
+    if (d2 == t * t) return 1;
     return 0;
 }
 
@@ -87,9 +88,9 @@ std::vector<Vector<T, 2>> circle_line_intersection(const Circle<T>& c, const Vec
     static_assert(std::is_floating_point_v<T>, "circle_line_intersection: T must be a floating point type");
     Vector<T, 2> h = projection(p1, p2, c.c);
     T d = (h - c.c).abs();
-    if(d > c.r + eps) return {};
+    if (d > c.r + eps) return {};
     // 接するかどうかは、中心と直線の距離と半径の差で判定する
-    if(d >= c.r - eps) return {h};
+    if (d >= c.r - eps) return {h};
     T t = std::sqrt(c.r * c.r - d * d);
     Vector<T, 2> u = (p2 - p1) / static_cast<T>((p2 - p1).abs());
     std::vector<Vector<T, 2>> res = {h - u * t, h + u * t};
@@ -106,15 +107,15 @@ std::vector<Vector<T, 2>> circle_circle_intersection(const Circle<T>& c1, const 
     static_assert(std::is_floating_point_v<T>, "circle_circle_intersection: T must be a floating point type");
     Vector<T, 2> v = c2.c - c1.c;
     T d = v.abs();
-    if(d <= eps) return {};
+    if (d <= eps) return {};
     T s = c1.r + c2.r, t = std::abs(c1.r - c2.r);
-    if(d > s + eps || d < t - eps) return {};
+    if (d > s + eps || d < t - eps) return {};
     // c1 の中心から、2つの交点を結ぶ線分の中点までの距離
     T a = (d * d + c1.r * c1.r - c2.r * c2.r) / (2 * d);
     Vector<T, 2> u = v / d;
     Vector<T, 2> m = c1.c + u * a, n(-u[1], u[0]);
     // 接するかどうかは、中心間の距離と半径の和・差で判定する
-    if(d >= s - eps || d <= t + eps) return {m};
+    if (d >= s - eps || d <= t + eps) return {m};
     T h = std::sqrt(std::max<T>(c1.r * c1.r - a * a, 0));
     std::vector<Vector<T, 2>> res = {m + n * h, m - n * h};
     std::sort(res.begin(), res.end());
@@ -133,8 +134,8 @@ std::vector<Vector<T, 2>> tangent_points(const Circle<T>& c, const Vector<T, 2>&
     Vector<T, 2> v = p - c.c;
     T d2 = v.squared_norm(), r2 = c.r * c.r;
     T d = std::sqrt(d2);
-    if(std::abs(d - c.r) <= eps) return {p};
-    if(d < c.r) return {};
+    if (std::abs(d - c.r) <= eps) return {p};
+    if (d < c.r) return {};
     // 接点は c.c + (v r^2 ± v の法線 r sqrt(d^2 - r^2)) / d^2
     T s = c.r * std::sqrt(d2 - r2);
     Vector<T, 2> n(-v[1], v[0]);

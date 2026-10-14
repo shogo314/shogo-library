@@ -3,14 +3,14 @@
 // RHString を std::string で愚直に計算した結果とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/string/rolling-hash.hpp"
+
 #include <algorithm>
 #include <iostream>
 #include <random>
 #include <string>
 #include <string_view>
 #include <vector>
-
-#include "../../src/string/rolling-hash.hpp"
 
 int main() {
     std::mt19937_64 rng(314);

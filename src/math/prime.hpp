@@ -11,6 +11,7 @@
 #include <numeric>
 #include <utility>
 #include <vector>
+
 #include "modular-arithmetic.hpp"
 
 namespace prime_detail {
@@ -113,8 +114,10 @@ inline std::vector<std::pair<long long, int>> factorize(long long n) {
     std::sort(ps.begin(), ps.end());
     std::vector<std::pair<long long, int>> res;
     for (long long p : ps) {
-        if (!res.empty() && res.back().first == p) res.back().second++;
-        else res.emplace_back(p, 1);
+        if (!res.empty() && res.back().first == p)
+            res.back().second++;
+        else
+            res.emplace_back(p, 1);
     }
     return res;
 }

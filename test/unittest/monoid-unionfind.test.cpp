@@ -4,12 +4,12 @@
 // 要素数だけを渡すコンストラクタ (各要素は単位元) と、初期値を渡すコンストラクタの両方を使う
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/data_structures/monoid-unionfind.hpp"
+
 #include <algorithm>
 #include <iostream>
 #include <random>
 #include <vector>
-
-#include "../../src/data_structures/monoid-unionfind.hpp"
 
 int main() {
     std::mt19937 rng(314);
@@ -47,6 +47,8 @@ int main() {
             }
         }
     }
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

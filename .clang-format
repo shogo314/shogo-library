@@ -1,0 +1,56 @@
+# src/ と test/ の書式。多数派の書き方に合わせている
+# 行の折り返しは手で決める (ColumnLimit: 0 で clang-format は折り返しを変えない)
+BasedOnStyle: Google
+Language: Cpp
+Standard: c++17
+IndentWidth: 4
+ContinuationIndentWidth: 4
+ColumnLimit: 0
+AccessModifierOffset: -4
+IndentAccessModifiers: false
+PointerAlignment: Left
+DerivePointerAlignment: false
+ReferenceAlignment: Pointer
+SpaceBeforeParens: ControlStatements
+AllowShortFunctionsOnASingleLine: All
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortLoopsOnASingleLine: true
+AllowShortBlocksOnASingleLine: Empty
+AllowShortLambdasOnASingleLine: All
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortEnumsOnASingleLine: true
+AlwaysBreakTemplateDeclarations: Yes
+BreakBeforeBraces: Attach
+IndentCaseLabels: true
+NamespaceIndentation: None
+FixNamespaceComments: true
+SpacesBeforeTrailingComments: 2
+# 標準ヘッダ (<...>) を先に、ライブラリのヘッダ ("...") を後に並べる
+SortIncludes: CaseSensitive
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex: '^<'
+    Priority: 1
+  - Regex: '^"'
+    Priority: 2
+AlignTrailingComments: true
+AlignConsecutiveMacros: None
+AlignConsecutiveAssignments: None
+AlignConsecutiveDeclarations: None
+AlignOperands: DontAlign
+AllowAllArgumentsOnNextLine: true
+AllowAllParametersOfDeclarationOnNextLine: true
+BinPackArguments: true
+BinPackParameters: true
+Cpp11BracedListStyle: true
+KeepEmptyLinesAtTheStartOfBlocks: false
+MaxEmptyLinesToKeep: 1
+SpaceAfterCStyleCast: false
+SpaceAfterTemplateKeyword: true
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCpp11BracedList: false
+SpaceInEmptyParentheses: false
+SpacesInAngles: Never
+SpacesInParens: Never
+SpacesInSquareBrackets: false
+EmptyLineBeforeAccessModifier: Leave

@@ -3,13 +3,13 @@
 // inversion_number を、すべての組を調べる愚直な方法とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/others/inversion-number.hpp"
+
 #include <functional>
 #include <iostream>
 #include <random>
 #include <string>
 #include <vector>
-
-#include "../../src/others/inversion-number.hpp"
 
 int main() {
     std::mt19937 rng(314);
@@ -38,6 +38,8 @@ int main() {
     for (int i = 0; i < 100000; i++) rev[i] = 100000 - i;
     ok = ok && inversion_number(rev) == 100000LL * 99999 / 2;
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

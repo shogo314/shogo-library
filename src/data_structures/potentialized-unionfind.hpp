@@ -9,8 +9,9 @@
 #include <stack>
 #include <utility>
 #include <vector>
-#include "unionfind.hpp"
+
 #include "../algebra/group.hpp"
+#include "unionfind.hpp"
 
 /**
  * @brief ポテンシャル付きUnionFind
@@ -18,11 +19,11 @@
  */
 template <typename G>
 class PotentializedUnionFind {
-   public:
+public:
     using S = typename G::S;
     using MergeResult = UnionFind::MergeResult;
 
-   private:
+private:
     G g;
     int _n;
     // 負ならサイズ、非負なら親
@@ -34,7 +35,7 @@ class PotentializedUnionFind {
     S e() const { return g.e(); }
     S inv(const S& a) const { return g.inv(a); }
 
-   public:
+public:
     /**
      * @param n 要素数
      * @param g ポテンシャルの群
@@ -133,7 +134,7 @@ class PotentializedUnionFind {
         return result;
     }
 
-   private:
+private:
     S weight(int a) {
         leader(a);
         return diff_weight[a];

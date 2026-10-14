@@ -4,12 +4,12 @@
 // 左端と右端で別の操作を渡すコンストラクタ (6 引数) を、区間を deque のまま持つ形で確かめる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/others/mo.hpp"
+
 #include <deque>
 #include <iostream>
 #include <random>
 #include <vector>
-
-#include "../../src/others/mo.hpp"
 
 // 区間の要素を順番込みで区別するハッシュ
 long long ordered_hash(const std::deque<int>& d) {
@@ -52,6 +52,8 @@ int main() {
             if (res[i] != ordered_hash(expect)) ok = false;
         }
     }
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

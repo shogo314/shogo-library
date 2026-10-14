@@ -7,8 +7,9 @@
 #include "../../src/geometry/vector.hpp"
 
 int main(void) {
-    int n; std::cin >> n;
+    int n;
+    std::cin >> n;
     std::vector<Vector<double>> points(n);
-    for(int i = 0; i < n; i++) std::cin >> points[i];
+    for (int i = 0; i < n; i++) std::cin >> points[i];
     std::cout << std::fixed << std::setprecision(7) << closest_point_pair(points).dist << std::endl;
 }

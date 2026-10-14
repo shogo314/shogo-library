@@ -3,13 +3,13 @@
 // Compress を愚直な実装とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/utility/compress.hpp"
+
 #include <algorithm>
 #include <iostream>
 #include <random>
 #include <string>
 #include <vector>
-
-#include "../../src/utility/compress.hpp"
 
 int main() {
     std::mt19937 rng(314);
@@ -52,6 +52,8 @@ int main() {
     Compress<std::string> cs(std::vector<std::string>{"b", "a", "c", "a"});
     ok = ok && cs.size() == 3 && cs.id("c") == 2 && cs[0] == "a" && !cs.contains("d") && cs.bisect_left("bb") == 2;
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

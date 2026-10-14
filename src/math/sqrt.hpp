@@ -15,11 +15,13 @@
 inline long long sqrtll(long long n) {
     assert(n >= 0);
     // 3037000500 = ceil(sqrt(2^63))
-    long long le = 0, ri = 3037000500; 
-    while(ri - le > 1) {
+    long long le = 0, ri = 3037000500;
+    while (ri - le > 1) {
         long long mid = (le + ri) / 2;
-        if(mid * mid <= n) le = mid;
-        else ri = mid;
+        if (mid * mid <= n)
+            le = mid;
+        else
+            ri = mid;
     }
     return le;
 }

@@ -4,12 +4,13 @@
 // 可換でない作用 (アフィン変換) と、区間の長さを使う作用 (区間加算・区間和) で確かめる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/data_structures/dual-segtree.hpp"
+
 #include <iostream>
 #include <random>
 #include <vector>
 
 #include "../../src/math/modint.hpp"
-#include "../../src/data_structures/dual-segtree.hpp"
 
 using mint = modint998244353;
 
@@ -80,6 +81,8 @@ int main() {
         }
     }
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

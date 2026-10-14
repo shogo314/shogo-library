@@ -3,6 +3,8 @@
 // SparseTable を愚直な実装とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/data_structures/sparse-table.hpp"
+
 #include <algorithm>
 #include <iostream>
 #include <numeric>
@@ -10,7 +12,6 @@
 #include <vector>
 
 #include "../../src/algebra/monoid.hpp"
-#include "../../src/data_structures/sparse-table.hpp"
 
 // 列 a の区間積を、すべての区間で愚直な積と比べる
 template <typename M>
@@ -53,6 +54,8 @@ int main() {
     ok = ok && st.prod(0, 3) == 8 && st.prod(3, 6) == 9 && st.prod(2, 2) == 0;
     ok = ok && SparseTable<monoid::Min<int>>().size() == 0;
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

@@ -3,11 +3,11 @@
 // BinaryTrie の clear を、操作列の途中で呼んで std::multiset による愚直な実装と比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/data_structures/binary-trie.hpp"
+
 #include <iostream>
 #include <random>
 #include <set>
-
-#include "../../src/data_structures/binary-trie.hpp"
 
 int main() {
     std::mt19937 rng(314);
@@ -44,6 +44,8 @@ int main() {
             }
         }
     }
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

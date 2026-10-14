@@ -4,11 +4,12 @@
 // dynamic_modint で法を変えたときに前計算がやり直されることも確かめる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/math/combinatorics.hpp"
+
 #include <iostream>
 #include <random>
 #include <vector>
 
-#include "../../src/math/combinatorics.hpp"
 #include "../../src/math/modint.hpp"
 
 // 愚直: パスカルの三角形 (mod m)

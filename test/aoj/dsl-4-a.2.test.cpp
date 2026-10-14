@@ -26,11 +26,14 @@ int main() {
         int c = cy.id(y1[i]), d = cy.id(y2[i]);
         imos[a][c]++, imos[a][d]--, imos[b][c]--, imos[b][d]++;
     }
-    for (int i = 0; i < w; i++) for (int j = 1; j < h; j++) imos[i][j] += imos[i][j - 1];
-    for (int i = 1; i < w; i++) for (int j = 0; j < h; j++) imos[i][j] += imos[i - 1][j];
+    for (int i = 0; i < w; i++)
+        for (int j = 1; j < h; j++) imos[i][j] += imos[i][j - 1];
+    for (int i = 1; i < w; i++)
+        for (int j = 0; j < h; j++) imos[i][j] += imos[i - 1][j];
     long long ans = 0;
-    for (int i = 0; i + 1 < w; i++) for (int j = 0; j + 1 < h; j++) {
-        if (imos[i][j] > 0) ans += (cx[i + 1] - cx[i]) * (cy[j + 1] - cy[j]);
-    }
+    for (int i = 0; i + 1 < w; i++)
+        for (int j = 0; j + 1 < h; j++) {
+            if (imos[i][j] > 0) ans += (cx[i + 1] - cx[i]) * (cy[j + 1] - cy[j]);
+        }
     std::cout << ans << '\n';
 }

@@ -3,14 +3,14 @@
 // PriorityCounter (MaxCounter / MinCounter) を愚直な実装とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/data_structures/priority_counter.hpp"
+
 #include <algorithm>
 #include <functional>
 #include <iostream>
 #include <map>
 #include <random>
 #include <vector>
-
-#include "../../src/data_structures/priority_counter.hpp"
 
 // 全体の個数から、Compare で大きい方から K 個の値とその個数を求める
 template <size_t K, class Compare>
@@ -83,8 +83,8 @@ constexpr bool constexpr_check() {
     MaxCounter<int, 2> b(7);
     MaxCounter<int, 2> c = a + b;  // {9, 7}
     return a.size() == 2 && a.data[0] == std::pair<int, long long>(9, 1) && a.data[1] == std::pair<int, long long>(5, 3) &&
-           c.data[0] == std::pair<int, long long>(9, 1) && c.data[1] == std::pair<int, long long>(7, 1) &&
-           MinCounter<int, 3>().size() == 0;
+        c.data[0] == std::pair<int, long long>(9, 1) && c.data[1] == std::pair<int, long long>(7, 1) &&
+        MinCounter<int, 3>().size() == 0;
 }
 static_assert(constexpr_check());
 
@@ -108,6 +108,8 @@ int main() {
     ok = ok && mx.size() == 2 && mx.data[0] == std::make_pair(9, 1LL) && mx.data[1] == std::make_pair(5, 2LL);
     ok = ok && mn.size() == 2 && mn.data[0] == std::make_pair(1, 1LL) && mn.data[1] == std::make_pair(3, 1LL);
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

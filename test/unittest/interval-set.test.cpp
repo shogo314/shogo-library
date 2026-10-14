@@ -3,13 +3,13 @@
 // IntervalSet を「各整数点が覆われているか」の配列による愚直な実装とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/data_structures/interval-set.hpp"
+
 #include <iostream>
 #include <optional>
 #include <random>
 #include <utility>
 #include <vector>
-
-#include "../../src/data_structures/interval-set.hpp"
 
 // 座標 [LO, HI) の範囲で操作する (負の座標も使う)
 constexpr int LO = -5, HI = 20;
@@ -70,6 +70,8 @@ int main() {
             }
         }
     }
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

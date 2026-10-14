@@ -41,8 +41,10 @@ inline std::vector<unsigned long long> build(const std::vector<long long>& a, lo
     for (int i = 0; i < (int)a.size(); i++) {
         assert(a[i] >= 0);
         if (a[i] == 0 || a[i] > S) continue;
-        if (from) shift_or(bits, S, a[i], [&](long long s) { (*from)[s] = i; });
-        else shift_or(bits, S, a[i], [](long long) {});
+        if (from)
+            shift_or(bits, S, a[i], [&](long long s) { (*from)[s] = i; });
+        else
+            shift_or(bits, S, a[i], [](long long) {});
     }
     return bits;
 }

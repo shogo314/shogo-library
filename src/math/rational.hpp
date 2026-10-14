@@ -50,7 +50,8 @@ class Rational {
     static int compare(T a, T b, T c, T d) {
         if constexpr (sizeof(T) <= 8) {
             __int128 x = (__int128)a * d, y = (__int128)c * b;
-            return x < y ? -1 : x > y ? 1 : 0;
+            return x < y ? -1 : x > y ? 1
+                                      : 0;
         } else {
             // 整数部分を比べ、同じなら小数部分の逆数を比べる (大小が逆になる)
             int sign = 1;
@@ -198,8 +199,10 @@ public:
             return neg ? -x : x;
         };
         auto pos = s.find('/');
-        if (pos == std::string::npos) r = Rational(parse(s));
-        else r = Rational(parse(s.substr(0, pos)), parse(s.substr(pos + 1)));
+        if (pos == std::string::npos)
+            r = Rational(parse(s));
+        else
+            r = Rational(parse(s.substr(0, pos)), parse(s.substr(pos + 1)));
         return is;
     }
 };

@@ -5,13 +5,13 @@
  * @brief ローリングハッシュ
  */
 
-#include <iterator>
-#include <string>
-#include <vector>
-#include <random>
 #include <cassert>
+#include <iterator>
+#include <random>
+#include <string>
 #include <string_view>
 #include <type_traits>
+#include <vector>
 
 #include "../utility/traits.hpp"
 
@@ -31,7 +31,7 @@ class RollingHash {
 
     // a < MOD, b < MOD必須
     constexpr static unsigned long long add(unsigned long long a, unsigned long long b) {
-        if((a += b) >= MOD) a -= MOD;
+        if ((a += b) >= MOD) a -= MOD;
         return a;
     }
 
@@ -42,7 +42,7 @@ class RollingHash {
     }
 
     void expand(int n) {
-        while(static_cast<int>(power.size()) <= n) power.push_back(mul(power.back(), base));
+        while (static_cast<int>(power.size()) <= n) power.push_back(mul(power.back(), base));
     }
 
 public:
@@ -63,8 +63,8 @@ public:
         }
     }
 
-    unsigned int base; //!< ハッシュの基数
-    std::vector<unsigned long long> power; //!< baseの累乗
+    unsigned int base;                      //!< ハッシュの基数
+    std::vector<unsigned long long> power;  //!< baseの累乗
 
     /**
      * @brief コンストラクタ
@@ -72,7 +72,7 @@ public:
      * @param base ハッシュの基数 省略するとランダム
      */
     RollingHash(unsigned int base = 0) : base(base) {
-        if(base == 0) {
+        if (base == 0) {
             std::mt19937 mt(std::random_device{}());
             this->base = std::uniform_int_distribution<unsigned int>(129, ~0U)(mt);
         }
@@ -94,7 +94,7 @@ public:
             res.reserve(last - first + 1);
         }
         res.push_back(0);
-        for(; first != last; ++first) {
+        for (; first != last; ++first) {
             res.push_back(add(mul(res.back(), base), to_value(*first)));
         }
         return res;
@@ -123,7 +123,7 @@ public:
     unsigned long long query(const std::vector<unsigned long long>& hash, int l, int r) {
         assert(0 <= l && l <= r && r < static_cast<int>(hash.size()));
         expand(r - l);
-        return add(hash[r], MOD - mul(hash[l], power[r-l]));
+        return add(hash[r], MOD - mul(hash[l], power[r - l]));
     }
 
     friend RHString;

@@ -8,9 +8,9 @@ int main() {
     long long n;
     std::cin >> n;
     FPS<mint> a(n);
-    for(auto& x : a) std::cin >> x;
+    for (auto& x : a) std::cin >> x;
     auto f = exp(a);
-    for(auto e : f) std::cout << e << " ";
+    for (auto e : f) std::cout << e << " ";
     std::cout << std::endl;
     return 0;
 }

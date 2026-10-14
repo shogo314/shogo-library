@@ -4,6 +4,8 @@
 // print / err は std::cout / std::cerr の出力先を一時的に差し替えて検証する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/base/io.hpp"
+
 #include <array>
 #include <iostream>
 #include <random>
@@ -13,8 +15,6 @@
 #include <tuple>
 #include <utility>
 #include <vector>
-
-#include "../../src/base/io.hpp"
 
 // std::cout (または std::cerr) に書かれた内容を文字列で受け取る
 template <class F>

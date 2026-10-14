@@ -14,12 +14,12 @@
  * @brief 無向グラフに対して「辺の追加」、「2頂点が連結かの判定」をする
  */
 struct UnionFind {
-   protected:
+protected:
     int _n;
     // 負ならサイズ、非負なら親
     std::vector<int> parent_or_size;
 
-   public:
+public:
     /**
      * @brief merge の戻り値
      *

@@ -8,8 +8,9 @@
 #include <cassert>
 #include <utility>
 #include <vector>
-#include "unionfind.hpp"
+
 #include "../algebra/monoid.hpp"
+#include "unionfind.hpp"
 
 /**
  * @brief 可換モノイドを乗せるUnionFind
@@ -18,16 +19,16 @@
  */
 template <typename M>
 class MonoidUnionFind : private UnionFind {
-   public:
+public:
     using S = typename M::S;
 
-   private:
+private:
     M m;
     std::vector<S> val;
     using UnionFind::_n;
     using UnionFind::parent_or_size;
 
-   public:
+public:
     /**
      * @param n 要素数 各要素の値は単位元で初期化する
      * @param m 可換モノイド

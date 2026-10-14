@@ -39,7 +39,8 @@ int main() {
         std::vector<int> color = bipartite_coloring(graph);
         if (bipartite != !color.empty() || bipartite != is_bipartite(graph)) ok = false;
         if (!color.empty()) {
-            for (auto [u, v] : edges) if (color[u] == color[v]) ok = false;
+            for (auto [u, v] : edges)
+                if (color[u] == color[v]) ok = false;
         }
 
         // 連結成分を Union-Find 風に愚直に求める
@@ -93,11 +94,13 @@ int main() {
         if (has_cycle(graph) == dag) ok = false;
         std::vector<int> order = topological_sort(graph);
         if (dag) {
-            if ((int)order.size() != n) ok = false;
+            if ((int)order.size() != n)
+                ok = false;
             else {
                 std::vector<int> pos(n, -1);
                 for (int i = 0; i < n; i++) pos[order[i]] = i;
-                for (auto [u, v] : edges) if (!(pos[u] < pos[v])) ok = false;
+                for (auto [u, v] : edges)
+                    if (!(pos[u] < pos[v])) ok = false;
             }
         } else if (!order.empty()) {
             ok = false;
@@ -169,7 +172,8 @@ int main() {
         Graph<int> graph(n);
         for (auto [u, v, w] : edges) graph.add_edge(u, v, w);
         std::vector<int> terminals;
-        for (int v = 0; v < n; v++) if (rng() % 2) terminals.push_back(v);
+        for (int v = 0; v < n; v++)
+            if (rng() % 2) terminals.push_back(v);
 
         int best = -1;
         int m = edges.size();
@@ -177,7 +181,8 @@ int main() {
             std::vector<int> label(n);
             std::iota(label.begin(), label.end(), 0);
             int cost = 0;
-            for (int i = 0; i < m; i++) if (mask >> i & 1) cost += std::get<2>(edges[i]);
+            for (int i = 0; i < m; i++)
+                if (mask >> i & 1) cost += std::get<2>(edges[i]);
             for (int t = 0; t < n; t++) {
                 for (int i = 0; i < m; i++) {
                     if (!(mask >> i & 1)) continue;

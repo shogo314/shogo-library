@@ -31,10 +31,10 @@ struct Graph {
      * for (int dst : g[v]) とすると、vから出る辺の行き先が列挙される
      */
     struct Edge {
-        int src = -1;   //!< 始点
-        int dst = -1;   //!< 終点
-        Cost cost = {}; //!< コスト
-        int id = -1;    //!< 辺の番号(追加された順、無向辺の場合はidが同じで方向が逆のものが2つ存在する)
+        int src = -1;    //!< 始点
+        int dst = -1;    //!< 終点
+        Cost cost = {};  //!< コスト
+        int id = -1;     //!< 辺の番号(追加された順、無向辺の場合はidが同じで方向が逆のものが2つ存在する)
         Edge() = default;
         Edge(int src, int dst, Cost cost = 1, int id = -1) : src(src), dst(dst), cost(cost), id(id) {}
         operator int() const { return dst; }
@@ -64,9 +64,9 @@ struct Graph {
         }
     };
 
-    int n;                            //!< 頂点数
-    int m;                            //!< 辺数
-    std::vector<std::vector<Edge>> g; //!< グラフの隣接リスト表現
+    int n;                             //!< 頂点数
+    int m;                             //!< 辺数
+    std::vector<std::vector<Edge>> g;  //!< グラフの隣接リスト表現
 
     /**
      * @brief デフォルトコンストラクタ
@@ -124,7 +124,7 @@ struct Graph {
      * @param v 頂点番号
      * @return std::vector<Edge>& vから出る辺のリスト
      */
-    std::vector<Edge> &operator[](int v) {
+    std::vector<Edge>& operator[](int v) {
         return g[v];
     }
     /**
@@ -132,7 +132,7 @@ struct Graph {
      * @param v 頂点番号
      * @return const std::vector<Edge>& vから出る辺のリスト
      */
-    const std::vector<Edge> &operator[](int v) const {
+    const std::vector<Edge>& operator[](int v) const {
         return g[v];
     }
     /**
@@ -144,7 +144,7 @@ struct Graph {
     std::vector<Edge> edges() const {
         std::vector<Edge> res(m);
         for (int i = 0; i < n; i++) {
-            for (auto &e : g[i]) {
+            for (auto& e : g[i]) {
                 res[e.id] = e;
             }
         }
@@ -180,7 +180,7 @@ struct Graph {
         for (int i = 1; i < n; i++) {
             bool changed = false;
             for (int j = 0; j < n; j++)
-                for (const auto &e : g[j]) {
+                for (const auto& e : g[j]) {
                     if (dist[e.src] == inf)
                         continue;
                     if (dist[e.dst] > dist[e.src] + e.cost) {
@@ -197,7 +197,7 @@ struct Graph {
         for (int i = 0; i < n; i++) {
             bool changed = false;
             for (int j = 0; j < n; j++)
-                for (const auto &e : g[j]) {
+                for (const auto& e : g[j]) {
                     if (dist[e.src] == inf)
                         continue;
                     if (dist[e.dst] > dist[e.src] + e.cost) {
@@ -228,13 +228,15 @@ struct Graph {
         while (!que.empty()) {
             int u = que.front();
             que.pop_front();
-            for (auto &e : g[u]) {
+            for (auto& e : g[u]) {
                 assert(e.cost == 0 || e.cost == 1);
                 if (dist[e.dst] == inf || dist[e.dst] > dist[u] + e.cost) {
                     dist[e.dst] = dist[u] + e.cost;
                     prev[e.dst] = e;
-                    if (e.cost == 0) que.push_front(e.dst);
-                    else que.push_back(e.dst);
+                    if (e.cost == 0)
+                        que.push_front(e.dst);
+                    else
+                        que.push_back(e.dst);
                 }
             }
         }
@@ -251,7 +253,7 @@ struct Graph {
         std::vector<std::vector<Cost>> dist(n, std::vector<Cost>(n, inf));
         for (int i = 0; i < n; i++) dist[i][i] = Cost{};
         for (int i = 0; i < n; i++) {
-            for (auto &e : g[i]) dist[i][e.dst] = std::min(dist[i][e.dst], e.cost);
+            for (auto& e : g[i]) dist[i][e.dst] = std::min(dist[i][e.dst], e.cost);
         }
         for (int k = 0; k < n; k++) {
             for (int i = 0; i < n; i++) {
@@ -265,7 +267,7 @@ struct Graph {
         return dist;
     }
 
-  private:
+private:
     ShortestPath shortest_path_bfs(int s, Cost inf) const {
         std::vector<Cost> dist(n, inf);
         std::vector<Edge> prev(n);
@@ -275,7 +277,7 @@ struct Graph {
         while (!que.empty()) {
             int u = que.front();
             que.pop();
-            for (auto &e : g[u]) {
+            for (auto& e : g[u]) {
                 if (dist[e.dst] == inf) {
                     dist[e.dst] = dist[e.src] + 1;
                     prev[e.dst] = e;
@@ -297,7 +299,7 @@ struct Graph {
             que.pop();
             if (d > dist[u])
                 continue;
-            for (auto &e : g[u]) {
+            for (auto& e : g[u]) {
                 if (dist[e.dst] == inf || dist[e.dst] > dist[e.src] + e.cost) {
                     dist[e.dst] = dist[e.src] + e.cost;
                     prev[e.dst] = e;

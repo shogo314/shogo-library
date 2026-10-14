@@ -3,13 +3,13 @@
 // longest_increasing_subsequence とその復元、長さの列を、すべての部分列を調べる愚直な方法とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/dp/longest-increasing-subsequence.hpp"
+
 #include <algorithm>
 #include <functional>
 #include <iostream>
 #include <random>
 #include <vector>
-
-#include "../../src/dp/longest-increasing-subsequence.hpp"
 
 template <typename Compare>
 bool check(const std::vector<int>& a, bool strict, Compare comp) {
@@ -57,6 +57,8 @@ int main() {
     ok = ok && longest_increasing_subsequence(std::vector<int>{2, 2, 2}) == 1;
     ok = ok && longest_increasing_subsequence(a, true, std::greater<int>()) == 2;
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

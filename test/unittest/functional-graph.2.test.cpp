@@ -4,13 +4,13 @@
 // read() は std::cin を文字列に差し替えて読ませ、vector から作ったものと結果を比べる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/graph/functional-graph.hpp"
+
 #include <iostream>
 #include <random>
 #include <sstream>
 #include <string>
 #include <vector>
-
-#include "../../src/graph/functional-graph.hpp"
 
 int main() {
     std::mt19937_64 rng(314);
@@ -34,8 +34,10 @@ int main() {
             std::cin.rdbuf(iss.rdbuf());
             FunctionalGraph fg(n);
             if (fg.n != n || (int)fg.g.size() != n) ok = false;
-            if (padding == -1) fg.read();
-            else fg.read(padding);
+            if (padding == -1)
+                fg.read();
+            else
+                fg.read(padding);
             std::cin.rdbuf(original);
 
             if (fg.g != g) ok = false;

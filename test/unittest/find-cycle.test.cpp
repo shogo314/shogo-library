@@ -65,6 +65,8 @@ int main() {
     h.add_edge(0, 1);
     ok = ok && find_cycle_undirected(h).size() == 2;
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

@@ -4,12 +4,14 @@
 #include <iostream>
 #include <vector>
 
-#include "../../src/graph/graph.hpp"
 #include "../../src/data_structures/unionfind.hpp"
+#include "../../src/graph/graph.hpp"
 
 int main() {
-    int n, m; std::cin >> n >> m;
-    Graph<long long> g(n); g.read(m, 0, true);
+    int n, m;
+    std::cin >> n >> m;
+    Graph<long long> g(n);
+    g.read(m, 0, true);
     // edges() は辺の番号順 (入力順) に並ぶ
     auto es = g.edges();
     std::stable_sort(es.begin(), es.end(), [](const auto& a, const auto& b) { return a.cost < b.cost; });

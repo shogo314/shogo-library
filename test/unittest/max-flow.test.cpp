@@ -3,12 +3,12 @@
 // MaxFlow を、頂点の分け方をすべて試して求めた最小カットと比べる。change_edge も確かめる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/graph/max-flow.hpp"
+
 #include <iostream>
 #include <random>
 #include <tuple>
 #include <vector>
-
-#include "../../src/graph/max-flow.hpp"
 
 int main() {
     std::mt19937 rng(314);
@@ -80,6 +80,8 @@ int main() {
         }
     }
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

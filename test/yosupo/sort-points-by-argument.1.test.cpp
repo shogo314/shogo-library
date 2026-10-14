@@ -8,7 +8,8 @@
 #include "../../src/geometry/vector.hpp"
 
 int main() {
-    int n; std::cin >> n;
+    int n;
+    std::cin >> n;
     using P = Vector<long long>;
     std::vector<P> ps(n);
     for (auto& p : ps) std::cin >> p;

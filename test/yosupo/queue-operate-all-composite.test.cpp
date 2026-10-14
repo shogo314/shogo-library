@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "../../src/math/modint.hpp"
 #include "../../src/data_structures/sliding-window-aggregation.hpp"
+#include "../../src/math/modint.hpp"
 
 int main() {
     std::cin.tie(nullptr);

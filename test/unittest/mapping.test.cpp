@@ -96,7 +96,8 @@ bool check_permutation(std::mt19937& rng) {
             S w = G::op(G::inv(p[a]), p[b]);
             uf.merge(a, b, w);
             int ra = root[a], rb = root[b];
-            for (int& r : root) if (r == rb) r = ra;
+            for (int& r : root)
+                if (r == rb) r = ra;
             for (int u = 0; u < n; u++) {
                 for (int v = 0; v < n; v++) {
                     bool same = root[u] == root[v];
@@ -124,6 +125,8 @@ int main() {
     ok = ok && seg.prod(0, 4) == std::array<int, 3>{0, 1, 2};
     ok = ok && seg.prod(1, 4) == std::array<int, 3>{0, 2, 1};
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

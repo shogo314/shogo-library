@@ -3,12 +3,13 @@
 // FenwickTree を愚直な実装とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/data_structures/fenwick-tree.hpp"
+
 #include <iostream>
 #include <random>
 #include <vector>
 
 #include "../../src/algebra/group.hpp"
-#include "../../src/data_structures/fenwick-tree.hpp"
 
 int main() {
     std::mt19937 rng(314);
@@ -74,6 +75,8 @@ int main() {
         ok = ok && fg.prod(0, 3) == 0 && fg.prod(1, 3) == 4 && fg.get(2) == 6;
     }
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

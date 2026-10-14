@@ -11,6 +11,7 @@
 #include <array>
 #include <cstddef>
 #include <utility>
+
 #include "monoid.hpp"
 
 namespace group {
@@ -60,7 +61,7 @@ struct Permutation : monoid::Mapping<N> {
     }
 };
 
-} // namespace group
+}  // namespace group
 
 /**
  * @brief 関数オブジェクトと単位元から実行時に作る群

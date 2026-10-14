@@ -3,13 +3,14 @@
 // geometry/angle.hpp の Angle を、atan2 で求めた偏角と比べて確かめる
 // 問題の入力は使わず、すべて成り立ったら Hello World を出力する
 
+#include "../../src/geometry/angle.hpp"
+
 #include <array>
 #include <cmath>
 #include <iostream>
 #include <utility>
 #include <vector>
 
-#include "../../src/geometry/angle.hpp"
 #include "../../src/geometry/vector.hpp"
 
 int main() {
@@ -49,6 +50,8 @@ int main() {
     // 浮動小数点型でも使える
     ok = ok && Angle(1.0, 1.0) < Angle(-1.0, 0.0) && !(Angle(0.0, 0.0) < Angle(2.0, 0.0));
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

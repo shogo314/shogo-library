@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cassert>
 #include <vector>
+
 #include "graph.hpp"
 
 /**
@@ -63,8 +64,10 @@ public:
                 int p = parent[v];
                 low[p] = std::min(low[p], low[v]);
                 if (low[v] > ord[p]) bridge[parent_edge[v]] = true;
-                if (p == root) root_children++;
-                else if (low[v] >= ord[p]) art[p] = true;
+                if (p == root)
+                    root_children++;
+                else if (low[v] >= ord[p])
+                    art[p] = true;
             }
             if (root_children >= 2) art[root] = true;
         }

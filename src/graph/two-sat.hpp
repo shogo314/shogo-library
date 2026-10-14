@@ -7,6 +7,7 @@
 
 #include <cassert>
 #include <vector>
+
 #include "graph.hpp"
 #include "graph_util.hpp"
 

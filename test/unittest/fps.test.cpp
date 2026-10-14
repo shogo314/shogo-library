@@ -4,11 +4,11 @@
 // FPS の + と - は結果の末尾の 0 を取り除く (仕様) ので、多項式としての比較は末尾の 0 を除いて行う
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/math/fps.hpp"
+
 #include <iostream>
 #include <random>
 #include <vector>
-
-#include "../../src/math/fps.hpp"
 
 using mint = static_modint<998244353>;
 using F = FPS<mint>;

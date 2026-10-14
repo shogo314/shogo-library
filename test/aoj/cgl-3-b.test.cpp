@@ -4,7 +4,9 @@
 #include "../../src/geometry/vector.hpp"
 
 int main(void) {
-    int n; std::cin >> n;
-    std::vector<Vector<>> polygon(n); std::cin >> polygon;
+    int n;
+    std::cin >> n;
+    std::vector<Vector<>> polygon(n);
+    std::cin >> polygon;
     std::cout << polygon_is_convex(polygon) << std::endl;
 }

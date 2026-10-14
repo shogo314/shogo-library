@@ -5,6 +5,8 @@
 // (式はこのファイルで C++ としてコンパイルされるので、repr の出力が C++ の式として正しいことも確かめられる)
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/utility/repr.hpp"
+
 #include <array>
 #include <iostream>
 #include <map>
@@ -16,7 +18,6 @@
 #include <vector>
 
 #include "../../src/utility/range.hpp"
-#include "../../src/utility/repr.hpp"
 
 bool ok = true;
 void check(bool cond, const std::string& what) {
@@ -26,11 +27,11 @@ void check(bool cond, const std::string& what) {
     }
 }
 
-#define CHECK_REPR(value, ...)                                                         \
-    do {                                                                               \
-        const auto& value_ = (value);                                                  \
+#define CHECK_REPR(value, ...)                                                                                  \
+    do {                                                                                                        \
+        const auto& value_ = (value);                                                                           \
         check(repr(value_) == #__VA_ARGS__, "repr(" #value ") == " #__VA_ARGS__ " (got " + repr(value_) + ")"); \
-        check(value_ == (__VA_ARGS__), "evaluating " #__VA_ARGS__);                    \
+        check(value_ == (__VA_ARGS__), "evaluating " #__VA_ARGS__);                                             \
     } while (0)
 
 // repr などのメンバ関数を持たない型

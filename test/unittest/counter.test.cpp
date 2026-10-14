@@ -3,6 +3,8 @@
 // Counter を std::map による愚直な実装とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/data_structures/counter.hpp"
+
 #include <algorithm>
 #include <iostream>
 #include <map>
@@ -10,15 +12,15 @@
 #include <string>
 #include <vector>
 
-#include "../../src/data_structures/counter.hpp"
-
 using Model = std::map<int, long long>;
 
 // 個数 0 の値を取り除いた map にする
 Model normalize(Model m) {
     for (auto itr = m.begin(); itr != m.end();) {
-        if (itr->second == 0) itr = m.erase(itr);
-        else ++itr;
+        if (itr->second == 0)
+            itr = m.erase(itr);
+        else
+            ++itr;
     }
     return m;
 }

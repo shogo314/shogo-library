@@ -3,12 +3,12 @@
 // tree.hpp の DoublingClimbTree(Tree&&, root) (ムーブで作るコンストラクタ) を愚直な実装とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/graph/tree.hpp"
+
 #include <iostream>
 #include <random>
 #include <utility>
 #include <vector>
-
-#include "../../src/graph/tree.hpp"
 
 int main() {
     std::mt19937_64 rng(314);

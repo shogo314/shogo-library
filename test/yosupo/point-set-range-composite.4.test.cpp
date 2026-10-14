@@ -3,8 +3,8 @@
 #include <iostream>
 #include <vector>
 
-#include "../../src/math/modint.hpp"
 #include "../../src/data_structures/lazy-segtree.hpp"
+#include "../../src/math/modint.hpp"
 
 // 区間代入できる遅延伝搬セグメント木で、1 点の更新を set と seg[k] = x で行う
 // Composite の積は f∘g (右の関数を先に適用する) なので、添字を反転して i 番目を n - 1 - i 番目に置く

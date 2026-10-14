@@ -14,6 +14,7 @@
 #include <type_traits>
 #include <utility>
 #include <vector>
+
 #include "traits.hpp"
 
 namespace detail {
@@ -389,4 +390,5 @@ inline std::string repr(const T& t) {
     return detail::repr(t);
 }
 
-#define DEBUG(x) { std::cerr << #x << " = " << repr(x) << std::endl; }
+#define DEBUG(x) \
+    { std::cerr << #x << " = " << repr(x) << std::endl; }

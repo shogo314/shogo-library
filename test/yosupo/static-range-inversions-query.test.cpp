@@ -9,7 +9,8 @@
 int main() {
     std::cin.tie(nullptr);
     std::ios_base::sync_with_stdio(false);
-    int n, q; std::cin >> n >> q;
+    int n, q;
+    std::cin >> n >> q;
     std::vector<int> a(n);
     for (int& x : a) std::cin >> x;
     // 座標圧縮
@@ -33,13 +34,10 @@ int main() {
     };
     auto count_greater = [&](int i) { return total - count_less(i + 1); };
 
-    Mo mo(n, 0LL,
-        [&](long long& inv, int i) { inv += count_less(a[i]); add(a[i], 1); },
-        [&](long long& inv, int i) { add(a[i], -1); inv -= count_less(a[i]); },
-        [&](long long& inv, int i) { inv += count_greater(a[i]); add(a[i], 1); },
-        [&](long long& inv, int i) { add(a[i], -1); inv -= count_greater(a[i]); });
+    Mo mo(n, 0LL, [&](long long& inv, int i) { inv += count_less(a[i]); add(a[i], 1); }, [&](long long& inv, int i) { add(a[i], -1); inv -= count_less(a[i]); }, [&](long long& inv, int i) { inv += count_greater(a[i]); add(a[i], 1); }, [&](long long& inv, int i) { add(a[i], -1); inv -= count_greater(a[i]); });
     for (int i = 0; i < q; i++) {
-        int l, r; std::cin >> l >> r;
+        int l, r;
+        std::cin >> l >> r;
         mo.query(l, r);
     }
     for (long long ans : mo.solve<long long>([](long long& inv) { return inv; })) {

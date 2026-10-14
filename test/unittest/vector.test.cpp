@@ -3,11 +3,11 @@
 // geometry/vector.hpp の Vector の演算子を、成分の配列で愚直に計算した結果とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/geometry/vector.hpp"
+
 #include <array>
 #include <iostream>
 #include <random>
-
-#include "../../src/geometry/vector.hpp"
 
 int main() {
     std::mt19937_64 rng(314);

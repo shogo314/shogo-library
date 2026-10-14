@@ -3,12 +3,13 @@
 // LowLink を、頂点や辺を 1 つ取り除いて連結成分の数を数える愚直な実装とランダムに比べる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/graph/lowlink.hpp"
+
 #include <iostream>
 #include <random>
 #include <vector>
 
 #include "../../src/data_structures/unionfind.hpp"
-#include "../../src/graph/lowlink.hpp"
 
 // 頂点 skip_v と辺 skip_e を使わないときの連結成分の数 (skip_v 自身は数えない)
 int count_components(int n, const std::vector<std::pair<int, int>>& es, int skip_v, int skip_e) {
@@ -73,6 +74,8 @@ int main() {
         if (total != n || (int)groups.size() != uf_groups) ok = false;
     }
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

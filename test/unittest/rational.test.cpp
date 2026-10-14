@@ -3,6 +3,8 @@
 // Rational を、__int128 で通分して計算する愚直な方法とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/math/rational.hpp"
+
 #include <iostream>
 #include <map>
 #include <random>
@@ -10,8 +12,6 @@
 #include <sstream>
 #include <string>
 #include <vector>
-
-#include "../../src/math/rational.hpp"
 
 using i128 = __int128;
 
@@ -106,6 +106,8 @@ int main() {
     ss >> a >> b >> c;
     ok = ok && a == Q(1, 2) && b == Q(-4) && c == Q(-1, 2);
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

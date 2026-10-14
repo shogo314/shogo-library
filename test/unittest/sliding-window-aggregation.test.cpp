@@ -3,6 +3,8 @@
 // SlidingWindowAggregation と sliding_window_min / max を愚直な実装とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/data_structures/sliding-window-aggregation.hpp"
+
 #include <algorithm>
 #include <deque>
 #include <functional>
@@ -11,7 +13,6 @@
 #include <vector>
 
 #include "../../src/math/modint.hpp"
-#include "../../src/data_structures/sliding-window-aggregation.hpp"
 
 using mint = modint998244353;
 
@@ -55,6 +56,8 @@ int main() {
         ok = ok && sliding_window_min(a, k, std::greater<int>()) == mx;
     }
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

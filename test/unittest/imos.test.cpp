@@ -4,11 +4,11 @@
 // 区間作用・1点作用・1点取得を任意の順に混ぜる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/data_structures/imos.hpp"
+
 #include <iostream>
 #include <random>
 #include <vector>
-
-#include "../../src/data_structures/imos.hpp"
 
 int main() {
     std::mt19937 rng(314);
@@ -57,6 +57,8 @@ int main() {
             if (imos.get(k) != v[k]) ok = false;
         }
     }
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

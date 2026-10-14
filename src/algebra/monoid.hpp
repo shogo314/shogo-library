@@ -199,8 +199,8 @@ struct Composite {
  */
 struct Parenthesis {
     struct S {
-        long long close; // 対応の取れていない ')' の個数
-        long long open;  // 対応の取れていない '(' の個数
+        long long close;  // 対応の取れていない ')' の個数
+        long long open;   // 対応の取れていない '(' の個数
         constexpr S(char c = 0) : close(c == ')'), open(c == '(') {}
         constexpr S(long long close, long long open) : close(close), open(open) {}
         /**
@@ -209,7 +209,7 @@ struct Parenthesis {
         constexpr bool is_valid() const { return close == 0 && open == 0; }
     };
     static constexpr S op(const S& a, const S& b) {
-        if(a.open >= b.close) return S(a.close, a.open - b.close + b.open);
+        if (a.open >= b.close) return S(a.close, a.open - b.close + b.open);
         return S(a.close + b.close - a.open, b.open);
     }
     static constexpr S e() { return S(); }
@@ -251,8 +251,8 @@ template <typename T, typename U = long long>
 struct MinCount {
     using S = std::pair<T, U>;
     static constexpr S op(const S& a, const S& b) {
-        if(a.first < b.first) return a;
-        if(b.first < a.first) return b;
+        if (a.first < b.first) return a;
+        if (b.first < a.first) return b;
         return {a.first, a.second + b.second};
     }
     static constexpr S e() { return {std::numeric_limits<T>::max(), U(0)}; }
@@ -268,8 +268,8 @@ template <typename T, typename U = long long>
 struct MaxCount {
     using S = std::pair<T, U>;
     static constexpr S op(const S& a, const S& b) {
-        if(a.first < b.first) return b;
-        if(b.first < a.first) return a;
+        if (a.first < b.first) return b;
+        if (b.first < a.first) return a;
         return {a.first, a.second + b.second};
     }
     static constexpr S e() { return {std::numeric_limits<T>::lowest(), U(0)}; }
@@ -292,7 +292,7 @@ struct Reverse {
     constexpr S e() const { return m.e(); }
 };
 
-} // namespace monoid
+}  // namespace monoid
 
 /**
  * @brief 関数オブジェクトと単位元から実行時に作るモノイド

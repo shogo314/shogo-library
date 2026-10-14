@@ -3,10 +3,10 @@
 // floor_sum を愚直な計算とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/math/floor-sum.hpp"
+
 #include <iostream>
 #include <random>
-
-#include "../../src/math/floor-sum.hpp"
 
 long long floor_div(long long a, long long b) { return a / b - ((a % b != 0) && ((a < 0) != (b < 0))); }
 
@@ -27,6 +27,8 @@ int main() {
     ok = ok && floor_sum(0, 5, 3, 2) == 0;
     ok = ok && floor_sum(4, 10, 6, 3) == 3;
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

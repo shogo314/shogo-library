@@ -20,10 +20,12 @@ int main(void) {
         // clamp(x + add, lb, ub)
         long long lb, ub, add;
     };
-    int n, q; std::cin >> n >> q;
+    int n, q;
+    std::cin >> n >> q;
     std::vector<S> v(n);
-    for(int i = 0; i < n; i++) {
-        long long a; std::cin >> a;
+    for (int i = 0; i < n; i++) {
+        long long a;
+        std::cin >> a;
         v[i] = S(a);
     }
     S e;
@@ -60,8 +62,7 @@ int main(void) {
             res.min2 = std::min(l.min1, r.min2);
         }
         res.sum = l.sum + r.sum;
-        return res;
-    }, e, [&](const F& f, const S& x, int sz) -> std::pair<bool, S> {
+        return res; }, e, [&](const F& f, const S& x, int sz) -> std::pair<bool, S> {
         S res = x;
         res.max1 += f.add;
         res.max2 += f.add;
@@ -107,27 +108,33 @@ int main(void) {
             res.sum += (f.lb - res.min1) * res.min1_num;
             res.min1 = f.lb;
         }
-        return {false, res};
-    }, [&](const F& f, const F& g) {
+        return {false, res}; }, [&](const F& f, const F& g) {
         F res;
         res.lb = std::clamp(g.lb + f.add, f.lb, f.ub);
         res.ub = std::clamp(g.ub + f.add, f.lb, f.ub);
         res.add = f.add + g.add;
-        return res;
-    }, id));
-    while(q--) {
-        int op; std::cin >> op;
-        if(op == 0) {
-            int l, r; long long b; std::cin >> l >> r >> b;
+        return res; }, id));
+    while (q--) {
+        int op;
+        std::cin >> op;
+        if (op == 0) {
+            int l, r;
+            long long b;
+            std::cin >> l >> r >> b;
             seg.apply(l, r, F{-inf, b, 0});
-        } else if(op == 1) {
-            int l, r; long long b; std::cin >> l >> r >> b;
+        } else if (op == 1) {
+            int l, r;
+            long long b;
+            std::cin >> l >> r >> b;
             seg.apply(l, r, F{b, inf, 0});
-        } else if(op == 2) {
-            int l, r; long long b; std::cin >> l >> r >> b;
+        } else if (op == 2) {
+            int l, r;
+            long long b;
+            std::cin >> l >> r >> b;
             seg.apply(l, r, F{-inf, inf, b});
         } else {
-            int l, r; std::cin >> l >> r;
+            int l, r;
+            std::cin >> l >> r;
             std::cout << seg.prod(l, r).sum << std::endl;
         }
     }

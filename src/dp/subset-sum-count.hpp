@@ -9,6 +9,7 @@
 #include <climits>
 #include <cmath>
 #include <vector>
+
 #include "../math/fps.hpp"
 
 /**
@@ -50,8 +51,10 @@ std::vector<mint> subset_sum_count_fps(const std::vector<long long>& a, long lon
     mint zero_factor = 1;  // 0 の要素は、選ぶか選ばないかで 2 倍
     for (long long x : a) {
         assert(x >= 0);
-        if (x == 0) zero_factor += zero_factor;
-        else if (x <= t) cnt[x]++;
+        if (x == 0)
+            zero_factor += zero_factor;
+        else if (x <= t)
+            cnt[x]++;
     }
     std::vector<mint> inv(t + 1, mint(1));
     for (int i = 2; i <= t; i++) inv[i] = -inv[mint::mod() % i] * mint(mint::mod() / i);
@@ -60,8 +63,10 @@ std::vector<mint> subset_sum_count_fps(const std::vector<long long>& a, long lon
     for (int k = 1; k <= t; k++) {
         if (cnt[k] == 0) continue;
         for (int j = 1; k * j <= t; j++) {
-            if (j & 1) f[k * j] += mint(cnt[k]) * inv[j];
-            else f[k * j] -= mint(cnt[k]) * inv[j];
+            if (j & 1)
+                f[k * j] += mint(cnt[k]) * inv[j];
+            else
+                f[k * j] -= mint(cnt[k]) * inv[j];
         }
     }
     FPS<mint> g = exp(f, t + 1);

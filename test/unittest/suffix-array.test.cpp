@@ -3,13 +3,13 @@
 // suffix_array と lcp_array を、接尾辞をソートする愚直な方法とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/string/suffix-array.hpp"
+
 #include <algorithm>
 #include <iostream>
 #include <random>
 #include <string>
 #include <vector>
-
-#include "../../src/string/suffix-array.hpp"
 
 template <typename R>
 bool check(const R& s, const std::vector<int>& sa) {
@@ -67,6 +67,8 @@ int main() {
     ok = ok && suffix_array(std::string("abracadabra")) == std::vector<int>{10, 7, 0, 3, 5, 8, 1, 4, 6, 9, 2};
     ok = ok && lcp_array(std::string("abracadabra"), suffix_array(std::string("abracadabra"))) == std::vector<int>{1, 4, 1, 1, 0, 3, 0, 0, 0, 2};
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

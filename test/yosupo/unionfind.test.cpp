@@ -1,8 +1,8 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/unionfind"
 
-#include <iostream>
-
 #include "../../src/data_structures/unionfind.hpp"
+
+#include <iostream>
 
 int main() {
     int N, Q;

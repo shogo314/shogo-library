@@ -3,14 +3,14 @@
 // ErasablePriorityQueue を std::multiset とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/data_structures/erasable-priority-queue.hpp"
+
 #include <functional>
 #include <iostream>
 #include <iterator>
 #include <random>
 #include <set>
 #include <vector>
-
-#include "../../src/data_structures/erasable-priority-queue.hpp"
 
 int main() {
     std::mt19937 rng(314);
@@ -49,6 +49,8 @@ int main() {
         }
     }
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

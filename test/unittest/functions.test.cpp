@@ -3,12 +3,13 @@
 // functions.hpp と binary-search.hpp の関数を愚直な実装とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/base/functions.hpp"
+
 #include <algorithm>
 #include <cmath>
 #include <iostream>
 #include <random>
 
-#include "../../src/base/functions.hpp"
 #include "../../src/utility/binary-search.hpp"
 
 bool ok = true;

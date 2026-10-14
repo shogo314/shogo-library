@@ -1,10 +1,10 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/two_sat"
 
+#include "../../src/graph/two-sat.hpp"
+
 #include <cstdlib>
 #include <iostream>
 #include <string>
-
-#include "../../src/graph/two-sat.hpp"
 
 int main() {
     std::cin.tie(nullptr);

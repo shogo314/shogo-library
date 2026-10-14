@@ -27,7 +27,7 @@
  */
 template <typename T = double, int Dim = 2, std::enable_if_t<std::is_scalar_v<T> && (Dim > 0)>* = nullptr>
 struct Vector {
-    std::array<T, Dim> v; //!< ベクトルの成分表示
+    std::array<T, Dim> v;  //!< ベクトルの成分表示
 
     /**
      * @brief デフォルトコンストラクタ
@@ -36,26 +36,26 @@ struct Vector {
     constexpr Vector() noexcept : v() {}
     /**
      * @brief 可変長引数によるコンストラクタ
-     * 
-     * @tparam Args 
+     *
+     * @tparam Args
      */
     template <typename... Args>
     constexpr Vector(Args... args) noexcept : v{args...} {}
 
     /**
      * @brief i番目の成分を返す
-     * 
+     *
      * @param i
-     * @return T& 
+     * @return T&
      */
     constexpr T& operator[](int i) noexcept {
         return v[i];
     }
     /**
      * @brief i番目の成分を返す
-     * 
+     *
      * @param i
-     * @return T& 
+     * @return T&
      */
     constexpr const T& operator[](int i) const noexcept {
         return v[i];
@@ -63,43 +63,43 @@ struct Vector {
 
     /**
      * @brief 加算代入演算子
-     * 
-     * @param rhs 
-     * @return Vector& 
+     *
+     * @param rhs
+     * @return Vector&
      */
     constexpr Vector& operator+=(const Vector& rhs) noexcept {
-        for(int i = 0; i < Dim; i++) v[i] += rhs[i];
+        for (int i = 0; i < Dim; i++) v[i] += rhs[i];
         return *this;
     }
     /**
      * @brief 減算代入演算子
-     * 
-     * @param rhs 
-     * @return Vector& 
+     *
+     * @param rhs
+     * @return Vector&
      */
     constexpr Vector& operator-=(const Vector& rhs) noexcept {
-        for(int i = 0; i < Dim; i++) v[i] -= rhs.v[i];
+        for (int i = 0; i < Dim; i++) v[i] -= rhs.v[i];
         return *this;
     }
     /**
      * @brief スカラー倍代入演算子
-     * 
-     * @param coef 
-     * @return Vector& 
+     *
+     * @param coef
+     * @return Vector&
      */
     constexpr Vector& operator*=(const T& coef) noexcept {
-        for(int i = 0; i < Dim; i++) v[i] *= coef;
+        for (int i = 0; i < Dim; i++) v[i] *= coef;
         return *this;
     }
     /**
      * @brief スカラーの逆数倍代入演算子
-     * 
-     * @param coef 
-     * @return Vector& 
+     *
+     * @param coef
+     * @return Vector&
      */
     Vector& operator/=(const T& coef) {
-        for(int i = 0; i < Dim; i++) {
-            if constexpr(std::is_integral_v<T>) {
+        for (int i = 0; i < Dim; i++) {
+            if constexpr (std::is_integral_v<T>) {
                 assert(v[i] % coef == 0 && "Vector::operator/= : coef must be a divisor of all elements");
             }
             v[i] /= coef;
@@ -109,8 +109,8 @@ struct Vector {
 
     /**
      * @brief 単項プラス演算子
-     * 
-     * @return Vector 
+     *
+     * @return Vector
      */
     [[nodiscard]]
     constexpr Vector operator+() const noexcept {
@@ -118,8 +118,8 @@ struct Vector {
     }
     /**
      * @brief 単項マイナス演算子
-     * 
-     * @return Vector 
+     *
+     * @return Vector
      */
     [[nodiscard]]
     constexpr Vector operator-() const noexcept {
@@ -128,10 +128,10 @@ struct Vector {
 
     /**
      * @brief 加算演算子
-     * 
-     * @param lhs 
-     * @param rhs 
-     * @return Vector 
+     *
+     * @param lhs
+     * @param rhs
+     * @return Vector
      */
     [[nodiscard]]
     friend constexpr Vector operator+(const Vector& lhs, const Vector& rhs) noexcept {
@@ -140,10 +140,10 @@ struct Vector {
 
     /**
      * @brief 減算演算子
-     * 
-     * @param lhs 
-     * @param rhs 
-     * @return Vector 
+     *
+     * @param lhs
+     * @param rhs
+     * @return Vector
      */
     [[nodiscard]]
     friend constexpr Vector operator-(const Vector& lhs, const Vector& rhs) noexcept {
@@ -152,10 +152,10 @@ struct Vector {
 
     /**
      * @brief スカラー倍演算子
-     * 
-     * @param lhs 
-     * @param coef 
-     * @return Vector 
+     *
+     * @param lhs
+     * @param coef
+     * @return Vector
      */
     [[nodiscard]]
     friend constexpr Vector operator*(const Vector& lhs, const T& coef) noexcept {
@@ -164,10 +164,10 @@ struct Vector {
 
     /**
      * @brief スカラー倍演算子
-     * 
-     * @param coef 
-     * @param rhs 
-     * @return Vector 
+     *
+     * @param coef
+     * @param rhs
+     * @return Vector
      */
     [[nodiscard]]
     friend constexpr Vector operator*(const T& coef, const Vector& rhs) noexcept {
@@ -176,10 +176,10 @@ struct Vector {
 
     /**
      * @brief スカラーの逆数倍演算子
-     * 
-     * @param lhs 
-     * @param coef 
-     * @return Vector 
+     *
+     * @param lhs
+     * @param coef
+     * @return Vector
      */
     [[nodiscard]]
     friend Vector operator/(const Vector& lhs, const T& coef) {
@@ -188,9 +188,9 @@ struct Vector {
 
     /**
      * @brief 等価演算子
-     * 
-     * @param lhs 
-     * @param rhs 
+     *
+     * @param lhs
+     * @param rhs
      * @return bool
      */
     [[nodiscard]]
@@ -200,10 +200,10 @@ struct Vector {
 
     /**
      * @brief 非等価演算子
-     * 
-     * @param lhs 
-     * @param rhs 
-     * @return bool 
+     *
+     * @param lhs
+     * @param rhs
+     * @return bool
      */
     [[nodiscard]]
     friend constexpr bool operator!=(const Vector& lhs, const Vector& rhs) noexcept {
@@ -212,20 +212,20 @@ struct Vector {
 
     /**
      * @brief 小なり演算子
-     * 
-     * @param lhs 
-     * @param rhs 
-     * @return bool 
-     */ 
+     *
+     * @param lhs
+     * @param rhs
+     * @return bool
+     */
     [[nodiscard]]
     friend constexpr bool operator<(const Vector& lhs, const Vector& rhs) noexcept {
         return lhs.v < rhs.v;
     }
     /**
      * @brief 大なり演算子
-     * 
-     * @param lhs 
-     * @param rhs 
+     *
+     * @param lhs
+     * @param rhs
      * @return bool
      */
     [[nodiscard]]
@@ -234,10 +234,10 @@ struct Vector {
     }
     /**
      * @brief 小なりイコール演算子
-     * 
-     * @param lhs 
-     * @param rhs 
-     * @return bool 
+     *
+     * @param lhs
+     * @param rhs
+     * @return bool
      */
     [[nodiscard]]
     friend constexpr bool operator<=(const Vector& lhs, const Vector& rhs) noexcept {
@@ -245,9 +245,9 @@ struct Vector {
     }
     /**
      * @brief 大なりイコール演算子
-     * 
-     * @param lhs 
-     * @param rhs 
+     *
+     * @param lhs
+     * @param rhs
      * @return bool
      */
     [[nodiscard]]
@@ -257,31 +257,31 @@ struct Vector {
 
     /**
      * @brief 入力ストリームからの読み込み
-     * 
+     *
      * @tparam CharT 入力ストリームの文字型
      * @tparam Traits 入力ストリームの文字型特性
-     * @param is 
-     * @param rhs 
-     * @return std::basic_istream<CharT, Traits>& 
+     * @param is
+     * @param rhs
+     * @return std::basic_istream<CharT, Traits>&
      */
     template <class CharT, class Traits>
     friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Vector& rhs) {
-        for(int i = 0; i < Dim; i++) is >> rhs.v[i];
+        for (int i = 0; i < Dim; i++) is >> rhs.v[i];
         return is;
     }
     /**
      * @brief 出力ストリームへの書き込み
-     * 
+     *
      * @tparam CharT 出力ストリームの文字型
      * @tparam Traits 出力ストリームの文字型特性
-     * @param is 
-     * @param rhs 
-     * @return std::basic_ostream<CharT, Traits>& 
+     * @param is
+     * @param rhs
+     * @return std::basic_ostream<CharT, Traits>&
      */
     template <class CharT, class Traits>
     friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const Vector& rhs) {
-        for(int i = 0; i < Dim; i++) {
-            if(i != 0) os << CharT(' ');
+        for (int i = 0; i < Dim; i++) {
+            if (i != 0) os << CharT(' ');
             os << rhs.v[i];
         }
         return os;
@@ -289,29 +289,29 @@ struct Vector {
 
     /**
      * @brief 内積
-     * 
-     * @param lhs 
-     * @param rhs 
-     * @return T 
+     *
+     * @param lhs
+     * @param rhs
+     * @return T
      */
     friend constexpr T dot(const Vector& lhs, const Vector& rhs) noexcept {
         T ret = 0;
-        for(int i = 0; i < Dim; i++) ret += lhs[i] * rhs[i];
+        for (int i = 0; i < Dim; i++) ret += lhs[i] * rhs[i];
         return ret;
     }
 
     /**
      * @brief 絶対値の2乗
-     * 
-     * @return T 
+     *
+     * @return T
      */
     constexpr T squared_norm() const noexcept {
         return dot(*this, *this);
     }
     /**
      * @brief 絶対値
-     * 
-     * @return double 
+     *
+     * @return double
      */
     constexpr double abs() const noexcept {
         return std::sqrt(squared_norm());
@@ -320,23 +320,23 @@ struct Vector {
 
 /**
  * @brief 二次元ベクトルどうしの外積(平行四辺形の符号付き面積)
- * 
- * @param lhs 
- * @param rhs 
+ *
+ * @param lhs
+ * @param rhs
  * @tparam T 座標の型
- * @return T 
+ * @return T
  */
 template <typename T>
 constexpr T cross(const Vector<T, 2>& lhs, const Vector<T, 2>& rhs) noexcept {
     return lhs[0] * rhs[1] - lhs[1] * rhs[0];
 }
 /**
-* @brief 三次元ベクトルどうしの外積
- * 
- * @param lhs 
- * @param rhs 
+ * @brief 三次元ベクトルどうしの外積
+ *
+ * @param lhs
+ * @param rhs
  * @tparam T 座標の型
- * @return Vector<T, 3> 
+ * @return Vector<T, 3>
  */
 template <typename T>
 constexpr Vector<T, 3> cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs) noexcept {
@@ -349,9 +349,9 @@ constexpr Vector<T, 3> cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs) n
 
 /**
  * @brief 線分の交差判定
- * 
+ *
  * 整数型でも使える。外積を計算するため、座標の絶対値の2乗の数倍がTに収まる必要がある
- * 
+ *
  * @param p1 1本目の線分の端点1
  * @param p2 1本目の線分の端点2
  * @param q1 2本目の線分の端点1
@@ -363,23 +363,23 @@ template <typename T>
 constexpr bool segments_intersect(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& q1, const Vector<T, 2>& q2) {
     assert(p1 != p2 && q1 != q2 && "segments_intersect: degenerate segment");
     auto sign = [](T x) { return (x > 0) - (x < 0); };
-    int q1_section = sign(cross(p2 - p1, q1 - p1)); // 直線p1p2に対してq1がどの位置にあるか
-    int q2_section = sign(cross(p2 - p1, q2 - p1)); // 直線p1p2に対してq2がどの位置にあるか
-    int p1_section = sign(cross(q2 - q1, p1 - q1)); // 直線q1q2に対してp1がどの位置にあるか
-    int p2_section = sign(cross(q2 - q1, p2 - q1)); // 直線q1q2に対してp2がどの位置にあるか
-    if(q1_section == 0 && q2_section == 0) {
+    int q1_section = sign(cross(p2 - p1, q1 - p1));  // 直線p1p2に対してq1がどの位置にあるか
+    int q2_section = sign(cross(p2 - p1, q2 - p1));  // 直線p1p2に対してq2がどの位置にあるか
+    int p1_section = sign(cross(q2 - q1, p1 - q1));  // 直線q1q2に対してp1がどの位置にあるか
+    int p2_section = sign(cross(q2 - q1, p2 - q1));  // 直線q1q2に対してp2がどの位置にあるか
+    if (q1_section == 0 && q2_section == 0) {
         // 4点が同一直線上にある場合
-        return dot(q1-p1, q2-p1) <= 0 || dot(q1-p2, q2-p2) <= 0 || dot(p1-q1, p2-q1) <= 0;
+        return dot(q1 - p1, q2 - p1) <= 0 || dot(q1 - p2, q2 - p2) <= 0 || dot(p1 - q1, p2 - q1) <= 0;
     }
     return q1_section * q2_section <= 0 && p1_section * p2_section <= 0;
 }
 
 /**
  * @brief 線分の交差判定と共有点の計算
- * 
+ *
  * 共有点の座標は一般に整数にならないため、浮動小数点型限定
  * 整数座標で交差判定だけしたい場合は segments_intersect を使う
- * 
+ *
  * @param p1 1本目の線分の端点1
  * @param p2 1本目の線分の端点2
  * @param q1 2本目の線分の端点1
@@ -390,15 +390,15 @@ constexpr bool segments_intersect(const Vector<T, 2>& p1, const Vector<T, 2>& p2
 template <typename T>
 constexpr std::optional<Vector<T, 2>> segment_intersection(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& q1, const Vector<T, 2>& q2) {
     static_assert(std::is_floating_point_v<T>, "segment_intersection: T must be a floating point type (use segments_intersect for integers)");
-    if(!segments_intersect(p1, p2, q1, q2)) return std::nullopt;
-    if(cross(p2 - p1, q1 - p1) == 0 && cross(p2 - p1, q2 - p1) == 0) {
+    if (!segments_intersect(p1, p2, q1, q2)) return std::nullopt;
+    if (cross(p2 - p1, q1 - p1) == 0 && cross(p2 - p1, q2 - p1) == 0) {
         // 4点が同一直線上にある場合
-        if(dot(q1-p1, q2-p1) <= 0) return p1;
-        if(dot(q1-p2, q2-p2) <= 0) return p2;
+        if (dot(q1 - p1, q2 - p1) <= 0) return p1;
+        if (dot(q1 - p2, q2 - p2) <= 0) return p2;
         return q1;
     }
-    T area = cross(p2 - p1, q2 - q1); // 4点を頂点とする四角形の符号付き面積
-    T partial_area = cross(q2 - q1, p1 - q1); // 三角形q1q2p1の符号付き面積
+    T area = cross(p2 - p1, q2 - q1);          // 4点を頂点とする四角形の符号付き面積
+    T partial_area = cross(q2 - q1, p1 - q1);  // 三角形q1q2p1の符号付き面積
     return p1 + (p2 - p1) * partial_area / area;
 }
 
@@ -414,10 +414,10 @@ template <typename T>
 constexpr int ccw(const Vector<T, 2>& a, const Vector<T, 2>& b, const Vector<T, 2>& c) {
     Vector<T, 2> u = b - a, v = c - a;
     T cr = cross(u, v);
-    if(cr > 0) return 1;
-    if(cr < 0) return -1;
-    if(dot(u, v) < 0) return 2;
-    if(u.squared_norm() < v.squared_norm()) return -2;
+    if (cr > 0) return 1;
+    if (cr < 0) return -1;
+    if (dot(u, v) < 0) return 2;
+    if (u.squared_norm() < v.squared_norm()) return -2;
     return 0;
 }
 
@@ -463,7 +463,7 @@ constexpr std::optional<Vector<T, 2>> line_intersection(const Vector<T, 2>& p1, 
     static_assert(std::is_floating_point_v<T>, "line_intersection: T must be a floating point type");
     Vector<T, 2> d = p2 - p1, e = q2 - q1;
     T c = cross(e, d);
-    if(c == 0) return std::nullopt;
+    if (c == 0) return std::nullopt;
     // p1 + d t が直線 q1q2 上にある t
     return p1 + d * (cross(e, q1 - p1) / c);
 }
@@ -481,10 +481,10 @@ double distance_point_line(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const
  */
 template <typename T>
 double distance_point_segment(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& p) {
-    if(p1 == p2) return (p - p1).abs();
+    if (p1 == p2) return (p - p1).abs();
     // 垂線の足が線分の外なら、近い方の端点との距離
-    if(dot(p2 - p1, p - p1) < 0) return (p - p1).abs();
-    if(dot(p1 - p2, p - p2) < 0) return (p - p2).abs();
+    if (dot(p2 - p1, p - p1) < 0) return (p - p1).abs();
+    if (dot(p1 - p2, p - p2) < 0) return (p - p2).abs();
     return distance_point_line(p1, p2, p);
 }
 /**
@@ -492,14 +492,14 @@ double distance_point_segment(const Vector<T, 2>& p1, const Vector<T, 2>& p2, co
  */
 template <typename T>
 double distance_segments(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& q1, const Vector<T, 2>& q2) {
-    if(p1 != p2 && q1 != q2 && segments_intersect(p1, p2, q1, q2)) return 0;
+    if (p1 != p2 && q1 != q2 && segments_intersect(p1, p2, q1, q2)) return 0;
     return std::min({distance_point_segment(p1, p2, q1), distance_point_segment(p1, p2, q2),
                      distance_point_segment(q1, q2, p1), distance_point_segment(q1, q2, p2)});
 }
 
 /**
  * @brief 多角形の符号付き面積の2倍
- * 
+ *
  * @tparam T 座標の型
  * @param polygon 頂点の座標
  * @return T 面積の2倍(反時計回りなら正、時計回りなら負)
@@ -507,8 +507,9 @@ double distance_segments(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const V
 template <typename T>
 T polygon_area_doubled(const std::vector<Vector<T, 2>>& polygon) {
     T ret = 0;
-    for(int i = 0; i < (int)polygon.size(); i++) {
-        int j = i+1; if(j == (int)polygon.size()) j = 0;
+    for (int i = 0; i < (int)polygon.size(); i++) {
+        int j = i + 1;
+        if (j == (int)polygon.size()) j = 0;
         ret += cross(polygon[i], polygon[j]);
     }
     return ret;
@@ -516,7 +517,7 @@ T polygon_area_doubled(const std::vector<Vector<T, 2>>& polygon) {
 
 /**
  * @brief 多角形の面積
- * 
+ *
  * @tparam T 座標の型
  * @param polygon 頂点の座標(順番、反時計回りか時計回りかは問わない)
  * @return double 面積
@@ -528,7 +529,7 @@ double polygon_area(const std::vector<Vector<T, 2>>& polygon) {
 
 /**
  * @brief 多角形の凸性判定
- * 
+ *
  * @tparam T 座標の型
  * @param polygon 頂点の座標(反時計回り)
  * @return true 凸
@@ -537,17 +538,19 @@ double polygon_area(const std::vector<Vector<T, 2>>& polygon) {
 template <typename T>
 bool polygon_is_convex(const std::vector<Vector<T, 2>>& polygon) {
     int n = polygon.size();
-    for(int i = 0; i < n; i++) {
-        int j = i+1; if(j == n) j = 0;
-        int k = j+1; if(k == n) k = 0;
-        if(cross(polygon[j] - polygon[i], polygon[k] - polygon[j]) < 0) return false;
+    for (int i = 0; i < n; i++) {
+        int j = i + 1;
+        if (j == n) j = 0;
+        int k = j + 1;
+        if (k == n) k = 0;
+        if (cross(polygon[j] - polygon[i], polygon[k] - polygon[j]) < 0) return false;
     }
     return true;
 }
 
 /**
  * @brief 点の多角形内包含判定
- * 
+ *
  * @tparam T 座標の型
  * @param polygon 頂点の座標(反時計回り)
  * @param p 点の座標
@@ -556,13 +559,14 @@ bool polygon_is_convex(const std::vector<Vector<T, 2>>& polygon) {
 template <typename T>
 int polygon_contains(const std::vector<Vector<T, 2>>& polygon, const Vector<T, 2>& p) {
     bool in = false;
-    for(int i = 0; i < (int)polygon.size(); i++) {
-        int j = i+1; if(j == (int)polygon.size()) j = 0;
+    for (int i = 0; i < (int)polygon.size(); i++) {
+        int j = i + 1;
+        if (j == (int)polygon.size()) j = 0;
         Vector<T> v1 = polygon[i] - p, v2 = polygon[j] - p;
-        if(v1[1] > v2[1]) std::swap(v1, v2);
+        if (v1[1] > v2[1]) std::swap(v1, v2);
         T c = cross(v1, v2);
-        if(v1[1] <= 0 && v2[1] > 0 && c < 0) in = !in;
-        if(c == 0 && dot(v1, v2) <= 0) return 1;
+        if (v1[1] <= 0 && v2[1] > 0 && c < 0) in = !in;
+        if (c == 0 && dot(v1, v2) <= 0) return 1;
     }
     return in ? 2 : 0;
 }
@@ -571,7 +575,7 @@ int polygon_contains(const std::vector<Vector<T, 2>>& polygon, const Vector<T, 2
  * @brief 多角形の半凸包
  * 与えられた頂点リストの順番を保って反時計回りに凸包を構成する
  * xの昇順にソートされていれば下凸包、xの降順にソートされていれば上凸包が得られる
- * 
+ *
  * @tparam T 座標の型
  * @param points 頂点リスト
  * @param include_straight 内角が180度の頂点を含むかどうか
@@ -580,10 +584,10 @@ int polygon_contains(const std::vector<Vector<T, 2>>& polygon, const Vector<T, 2
 template <typename T>
 std::vector<Vector<T, 2>> select_convex(const std::vector<Vector<T, 2>>& points, bool include_straight = false) {
     std::vector<Vector<T, 2>> ret;
-    for(auto& p : points) {
-        while((int)ret.size() >= 2) {
-            T c = cross(ret.back() - ret[(int)ret.size()-2], p - ret.back());
-            if(c > 0 || (c == 0 && include_straight)) break;
+    for (auto& p : points) {
+        while ((int)ret.size() >= 2) {
+            T c = cross(ret.back() - ret[(int)ret.size() - 2], p - ret.back());
+            if (c > 0 || (c == 0 && include_straight)) break;
             ret.pop_back();
         }
         ret.push_back(p);
@@ -593,7 +597,7 @@ std::vector<Vector<T, 2>> select_convex(const std::vector<Vector<T, 2>>& points,
 
 /**
  * @brief 多角形の凸包
- * 
+ *
  * @tparam T 座標の型
  * @param points 頂点リスト
  * @param include_straight 内角が180度の頂点を含むかどうか
@@ -608,8 +612,8 @@ std::vector<Vector<T, 2>> convex_hull(const std::vector<Vector<T, 2>>& _points, 
     std::reverse(points.begin(), points.end());
     std::vector<Vector<T, 2>> tmp = select_convex(points, include_straight);
     // 全点が一直線上にある場合、下側と上側が同じ点列になるので片方だけ使う
-    if(ret.size() == points.size() && tmp.size() == points.size()) return ret;
-    for(int i = 1; i < (int)tmp.size()-1; i++) ret.push_back(tmp[i]);
+    if (ret.size() == points.size() && tmp.size() == points.size()) return ret;
+    for (int i = 1; i < (int)tmp.size() - 1; i++) ret.push_back(tmp[i]);
     return ret;
 }
 
@@ -631,7 +635,7 @@ struct ClosestPair {
 
 /**
  * @brief 最近点対
- * 
+ *
  * @tparam T 座標の型
  * @param points 頂点リスト
  * @return ClosestPairSquared<T> 最近点対の距離の2乗と添字
@@ -643,20 +647,21 @@ ClosestPairSquared<T> closest_point_pair_squared(const std::vector<Vector<T, 2>>
     std::sort(sorted_idx.begin(), sorted_idx.end(), [&](int i, int j) {
         return points[i][0] < points[j][0];
     });
-    std::vector<int> left(1, 0); // 左端
-    std::vector<int> right(1, points.size()); // 右端
-    std::vector<int> mid(1, points.size()/2); // 中央
-    std::vector<int> par(1, -1); // 親
-    std::vector<T> min_dist_squared(1, std::numeric_limits<T>::max()); // 最小距離の2乗
-    std::vector<std::pair<int, int>> min_dist_pair(1, {-1, -1}); // 最小距離の点対
+    std::vector<int> left(1, 0);                                        // 左端
+    std::vector<int> right(1, points.size());                           // 右端
+    std::vector<int> mid(1, points.size() / 2);                         // 中央
+    std::vector<int> par(1, -1);                                        // 親
+    std::vector<T> min_dist_squared(1, std::numeric_limits<T>::max());  // 最小距離の2乗
+    std::vector<std::pair<int, int>> min_dist_pair(1, {-1, -1});        // 最小距離の点対
     std::stack<int> stk;
     stk.push(~0);
     stk.push(0);
-    while(!stk.empty()) {
-        int u = stk.top(); stk.pop();
-        if(u >= 0) {
+    while (!stk.empty()) {
+        int u = stk.top();
+        stk.pop();
+        if (u >= 0) {
             // 行きがけ
-            if(left[u] + 1 < mid[u]) {
+            if (left[u] + 1 < mid[u]) {
                 int v = left.size();
                 left.push_back(left[u]);
                 right.push_back(mid[u]);
@@ -667,7 +672,7 @@ ClosestPairSquared<T> closest_point_pair_squared(const std::vector<Vector<T, 2>>
                 stk.push(~v);
                 stk.push(v);
             }
-            if(mid[u] + 1 < right[u]) {
+            if (mid[u] + 1 < right[u]) {
                 int v = left.size();
                 left.push_back(mid[u]);
                 right.push_back(right[u]);
@@ -682,26 +687,26 @@ ClosestPairSquared<T> closest_point_pair_squared(const std::vector<Vector<T, 2>>
             // 帰りがけ
             u = ~u;
             std::vector<int> cand;
-            for(int i = left[u]; i < right[u]; i++) {
+            for (int i = left[u]; i < right[u]; i++) {
                 T dx = points[sorted_idx[i]][0] - points[sorted_idx[mid[u]]][0];
-                if(dx * dx < min_dist_squared[u]) cand.push_back(i);
+                if (dx * dx < min_dist_squared[u]) cand.push_back(i);
             }
             std::sort(cand.begin(), cand.end(), [&](int i, int j) {
                 return points[sorted_idx[i]][1] < points[sorted_idx[j]][1];
             });
-            for(int i = 0; i < (int)cand.size(); i++) {
-                for(int j = i+1; j < (int)cand.size(); j++) {
+            for (int i = 0; i < (int)cand.size(); i++) {
+                for (int j = i + 1; j < (int)cand.size(); j++) {
                     T dx = points[sorted_idx[cand[j]]][0] - points[sorted_idx[cand[i]]][0];
                     T dy = points[sorted_idx[cand[j]]][1] - points[sorted_idx[cand[i]]][1];
-                    if(dy * dy >= min_dist_squared[u]) break;
+                    if (dy * dy >= min_dist_squared[u]) break;
                     T d = dx * dx + dy * dy;
-                    if(d < min_dist_squared[u]) {
+                    if (d < min_dist_squared[u]) {
                         min_dist_squared[u] = d;
                         min_dist_pair[u] = {sorted_idx[cand[i]], sorted_idx[cand[j]]};
                     }
                 }
             }
-            if(par[u] != -1 && min_dist_squared[u] < min_dist_squared[par[u]]) {
+            if (par[u] != -1 && min_dist_squared[u] < min_dist_squared[par[u]]) {
                 min_dist_squared[par[u]] = min_dist_squared[u];
                 min_dist_pair[par[u]] = min_dist_pair[u];
             }
@@ -712,7 +717,7 @@ ClosestPairSquared<T> closest_point_pair_squared(const std::vector<Vector<T, 2>>
 
 /**
  * @brief 最近点対
- * 
+ *
  * @tparam T 座標の型
  * @param points 頂点リスト
  * @return ClosestPair 最近点対の距離と添字

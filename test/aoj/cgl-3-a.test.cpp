@@ -6,7 +6,9 @@
 #include "../../src/geometry/vector.hpp"
 
 int main(void) {
-    int n; std::cin >> n;
-    std::vector<Vector<>> polygon(n); std::cin >> polygon;
+    int n;
+    std::cin >> n;
+    std::vector<Vector<>> polygon(n);
+    std::cin >> polygon;
     std::cout << std::fixed << std::setprecision(1) << polygon_area(polygon) << std::endl;
 }

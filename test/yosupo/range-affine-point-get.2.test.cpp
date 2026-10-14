@@ -3,8 +3,8 @@
 #include <iostream>
 #include <vector>
 
-#include "../../src/math/modint.hpp"
 #include "../../src/data_structures/dual-segtree.hpp"
+#include "../../src/math/modint.hpp"
 
 int main() {
     std::cin.tie(nullptr);

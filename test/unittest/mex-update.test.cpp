@@ -3,12 +3,12 @@
 // MexUpdate を愚直な実装とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/data_structures/mex-update.hpp"
+
 #include <iostream>
 #include <random>
 #include <set>
 #include <vector>
-
-#include "../../src/data_structures/mex-update.hpp"
 
 // v に含まれない最小の非負整数
 template <typename T>
@@ -57,6 +57,8 @@ int main() {
     ok = ok && full.mex() == 3;
     full.set(1, 3);
     ok = ok && full.mex() == 0;
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

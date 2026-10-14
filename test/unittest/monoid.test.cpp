@@ -3,6 +3,8 @@
 // monoid.hpp / group.hpp のモノイド・群と SegTree の細かい機能を愚直な実装とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/algebra/monoid.hpp"
+
 #include <iostream>
 #include <random>
 #include <sstream>
@@ -10,7 +12,6 @@
 #include <vector>
 
 #include "../../src/algebra/group.hpp"
-#include "../../src/algebra/monoid.hpp"
 #include "../../src/data_structures/potentialized-unionfind.hpp"
 #include "../../src/data_structures/segtree.hpp"
 
@@ -132,7 +133,8 @@ int main() {
             if (rng() % 2) {
                 uf.merge(a, b, pot[a] ^ pot[b]);
                 int ca = comp[a], cb = comp[b];
-                for (int& c : comp) if (c == cb) c = ca;
+                for (int& c : comp)
+                    if (c == cb) c = ca;
             } else {
                 check(uf.same(a, b) == (comp[a] == comp[b]), "group::Xor same");
                 if (comp[a] == comp[b]) check(uf.diff(a, b) == (pot[a] ^ pot[b]), "group::Xor diff");

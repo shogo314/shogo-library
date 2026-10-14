@@ -3,12 +3,13 @@
 // 約数・倍数のゼータ変換、メビウス変換と GCD・LCM 畳み込みを愚直な計算とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/math/divisor-transform.hpp"
+
 #include <iostream>
 #include <numeric>
 #include <random>
 #include <vector>
 
-#include "../../src/math/divisor-transform.hpp"
 #include "../../src/math/modint.hpp"
 
 int main() {
@@ -54,6 +55,8 @@ int main() {
     auto l = lcm_convolution(a, b);
     ok = ok && l[1] == mint(5) && l[2] == mint(1 * 6 + 2 * 5 + 2 * 6) && l[4] == mint(1 * 8 + 2 * 8 + 4 * 5 + 4 * 6 + 4 * 8);
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

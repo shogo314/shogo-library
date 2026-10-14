@@ -119,7 +119,7 @@ struct Counter {
         Counter& base;
         key_type key;
 
-       public:
+    public:
         CounterReference(Counter& base, key_type key) : base(base), key(key) {}
         CounterReference& operator=(const mapped_type& x) {
             base.set(key, x);

@@ -3,11 +3,11 @@
 // sqrtll を、小さい n では全部、大きい n では境界の前後で確かめる
 // 問題の入力は使わず、すべて正しければ Hello World を出力する
 
+#include "../../src/math/sqrt.hpp"
+
 #include <iostream>
 #include <limits>
 #include <random>
-
-#include "../../src/math/sqrt.hpp"
 
 // s = floor(sqrt(n)) か (__int128 で 2 乗してあふれないように比べる)
 bool is_floor_sqrt(long long n, long long s) {

@@ -4,13 +4,13 @@
 // 区間 chmin / chmax / 加算、1 点の apply / set / get / seg[k]、prod、all_prod、max_right、min_left、size、os << seg
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/data_structures/segtree-beats.hpp"
+
 #include <algorithm>
 #include <iostream>
 #include <random>
 #include <sstream>
 #include <vector>
-
-#include "../../src/data_structures/segtree-beats.hpp"
 
 constexpr long long inf = 2e18;
 
@@ -31,10 +31,10 @@ struct ChminChmaxAddSum {
     S op(const S& l, const S& r) const {
         S res;
         res.max1 = std::max(l.max1, r.max1);
-        if(l.max1 == r.max1) {
+        if (l.max1 == r.max1) {
             res.max1_num = l.max1_num + r.max1_num;
             res.max2 = std::max(l.max2, r.max2);
-        } else if(l.max1 > r.max1) {
+        } else if (l.max1 > r.max1) {
             res.max1_num = l.max1_num;
             res.max2 = std::max(l.max2, r.max1);
         } else {
@@ -42,10 +42,10 @@ struct ChminChmaxAddSum {
             res.max2 = std::max(l.max1, r.max2);
         }
         res.min1 = std::min(l.min1, r.min1);
-        if(l.min1 == r.min1) {
+        if (l.min1 == r.min1) {
             res.min1_num = l.min1_num + r.min1_num;
             res.min2 = std::min(l.min2, r.min2);
-        } else if(l.min1 < r.min1) {
+        } else if (l.min1 < r.min1) {
             res.min1_num = l.min1_num;
             res.min2 = std::min(l.min2, r.min1);
         } else {
@@ -73,7 +73,7 @@ struct ChminChmaxAddSum {
         res.min1 += f.add;
         res.min2 += f.add;
         res.sum += f.add * sz;
-        if(res.max1 == res.min1) {
+        if (res.max1 == res.min1) {
             long long x = std::clamp(res.max1, f.lb, f.ub);
             res.max1 = x;
             res.max2 = -inf;
@@ -82,10 +82,10 @@ struct ChminChmaxAddSum {
             res.sum = x * sz;
             return {false, res};
         }
-        if(res.max1 == res.min2) {
+        if (res.max1 == res.min2) {
             long long xr = std::clamp(res.max1, f.lb, f.ub);
             long long xl = std::clamp(res.min1, f.lb, f.ub);
-            if(xr == xl) {
+            if (xr == xl) {
                 res.max1 = xr;
                 res.max1_num = sz;
                 res.max2 = -inf;
@@ -102,13 +102,13 @@ struct ChminChmaxAddSum {
             res.sum = xr * res.max1_num + xl * res.min1_num;
             return {false, res};
         }
-        if(f.ub <= res.max2) return {true, res};
-        if(f.lb >= res.min2) return {true, res};
-        if(f.ub < res.max1) {
+        if (f.ub <= res.max2) return {true, res};
+        if (f.lb >= res.min2) return {true, res};
+        if (f.ub < res.max1) {
             res.sum -= (res.max1 - f.ub) * res.max1_num;
             res.max1 = f.ub;
         }
-        if(f.lb > res.min1) {
+        if (f.lb > res.min1) {
             res.sum += (f.lb - res.min1) * res.min1_num;
             res.min1 = f.lb;
         }
@@ -144,8 +144,8 @@ int main() {
     auto gen_f = [&]() -> Clamp {
         long long b = small();
         switch (rng() % 3) {
-            case 0: return Clamp{-inf, b, 0};   // chmin
-            case 1: return Clamp{b, inf, 0};    // chmax
+            case 0: return Clamp{-inf, b, 0};     // chmin
+            case 1: return Clamp{b, inf, 0};      // chmax
             default: return Clamp{-inf, inf, b};  // add
         }
     };
@@ -171,8 +171,10 @@ int main() {
                 a[k] = clamp_apply(f, a[k]);
             } else if (t == 2) {
                 long long x = small();
-                if (rng() % 2) seg.set(k, Node(x));
-                else seg[k] = Node(x);
+                if (rng() % 2)
+                    seg.set(k, Node(x));
+                else
+                    seg[k] = Node(x);
                 a[k] = x;
             } else if (t == 3) {
                 check(seg.get(k).sum == a[k], "get");

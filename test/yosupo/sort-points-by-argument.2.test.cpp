@@ -10,7 +10,8 @@
 int main() {
     std::cin.tie(nullptr);
     std::ios::sync_with_stdio(false);
-    int n; std::cin >> n;
+    int n;
+    std::cin >> n;
     std::vector<std::array<long long, 2>> ps(n);
     for (auto& [x, y] : ps) std::cin >> x >> y;
     // Angle は x 軸正方向から反時計回り ([0, 2π)) に比べる

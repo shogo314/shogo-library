@@ -15,15 +15,25 @@ struct Base {
     auto begin() const { return v.begin(); }
     auto end() const { return v.end(); }
 };
-struct WithMax : Base { int max() const { return 100; } };
-struct WithMin : Base { int min() const { return -100; } };
+struct WithMax : Base {
+    int max() const { return 100; }
+};
+struct WithMin : Base {
+    int min() const { return -100; }
+};
 struct WithMaxMin : Base {
     int max() const { return 100; }
     int min() const { return -100; }
 };
-struct WithSum : Base { int sum() const { return 1000; } };
-struct WithProduct : Base { int product() const { return 2000; } };
-struct WithProductXor : Base { int product_xor() const { return 3000; } };
+struct WithSum : Base {
+    int sum() const { return 1000; }
+};
+struct WithProduct : Base {
+    int product() const { return 2000; }
+};
+struct WithProductXor : Base {
+    int product_xor() const { return 3000; }
+};
 struct WithSorted : Base {
     std::vector<int> sorted() const { return {42}; }
 };

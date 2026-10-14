@@ -3,11 +3,11 @@
 // TadpoleArray を愚直な実装とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/data_structures/tadpole-array.hpp"
+
 #include <iostream>
 #include <random>
 #include <vector>
-
-#include "../../src/data_structures/tadpole-array.hpp"
 
 int main() {
     std::mt19937_64 rng(314);
@@ -38,6 +38,8 @@ int main() {
             if (copy[i] != ta[i]) ok = false;
         }
     }
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

@@ -3,6 +3,8 @@
 // HeavyLightDecomposition を、親を 1 つずつたどる愚直な実装とランダムに比べる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/graph/heavy-light-decomposition.hpp"
+
 #include <algorithm>
 #include <iostream>
 #include <random>
@@ -10,7 +12,6 @@
 #include <vector>
 
 #include "../../src/graph/graph.hpp"
-#include "../../src/graph/heavy-light-decomposition.hpp"
 #include "../../src/graph/tree.hpp"
 
 int main() {
@@ -46,8 +47,10 @@ int main() {
         auto naive_path = [&](int u, int v) {
             std::vector<int> a, b;
             while (u != v) {
-                if (dep[u] >= dep[v]) a.push_back(u), u = par[u];
-                else b.push_back(v), v = par[v];
+                if (dep[u] >= dep[v])
+                    a.push_back(u), u = par[u];
+                else
+                    b.push_back(v), v = par[v];
             }
             a.push_back(u);
             a.insert(a.end(), b.rbegin(), b.rend());
@@ -58,8 +61,10 @@ int main() {
         std::vector<bool> seen(n);
         for (int v = 0; v < n; v++) {
             int i = hld.index(v);
-            if (i < 0 || i >= n || seen[i] || hld.vertex(i) != v) ok = false;
-            else seen[i] = true;
+            if (i < 0 || i >= n || seen[i] || hld.vertex(i) != v)
+                ok = false;
+            else
+                seen[i] = true;
             if (hld.parent(v) != par[v] || hld.depth(v) != dep[v]) ok = false;
         }
         // 部分木: 区間 [l, r) の頂点が v の子孫と一致する
@@ -121,6 +126,8 @@ int main() {
         }
     }
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

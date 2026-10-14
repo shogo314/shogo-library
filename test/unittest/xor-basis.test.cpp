@@ -3,13 +3,13 @@
 // XorBasis を、作れる値をすべて列挙する愚直な方法とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/math/xor-basis.hpp"
+
 #include <algorithm>
 #include <iostream>
 #include <random>
 #include <set>
 #include <vector>
-
-#include "../../src/math/xor-basis.hpp"
 
 int main() {
     std::mt19937 rng(314);
@@ -36,7 +36,7 @@ int main() {
                 for (int v : vals) mx = std::max(mx, y ^ v), mn = std::min(mn, y ^ v);
                 int less = std::lower_bound(vals.begin(), vals.end(), y) - vals.begin();
                 ok = ok && xb.contains(y) == (span.count(y) > 0) && xb.max(y) == mx && xb.min(y) == mn &&
-                     xb.count_less(y) == (unsigned long long)less;
+                    xb.count_less(y) == (unsigned long long)less;
             }
             // 基底の最上位ビットは降順で異なり、ほかの基底のそのビットは 0
             auto bs = xb.basis();
@@ -64,6 +64,8 @@ int main() {
         ok = ok && xb.kth(0) == 0 && xb.kth(1) == 3 && xb.kth(2) == 5 && xb.kth(3) == 6;
     }
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

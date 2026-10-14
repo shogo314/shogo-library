@@ -3,14 +3,14 @@
 // Trie を、文字列の多重集合を愚直に調べる方法とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/string/trie.hpp"
+
 #include <algorithm>
 #include <iostream>
 #include <map>
 #include <random>
 #include <string>
 #include <vector>
-
-#include "../../src/string/trie.hpp"
 
 int main() {
     std::mt19937 rng(314);
@@ -22,7 +22,7 @@ int main() {
     };
     for (int rep = 0; rep < 300 && ok; rep++) {
         Trie<3, 'a'> trie;
-        std::map<std::string, int> ms;  // 文字列 -> 個数
+        std::map<std::string, int> ms;                   // 文字列 -> 個数
         std::map<std::string, int> node_of = {{"", 0}};  // ノードがある文字列 (根と、一度でも追加した文字列の接頭辞)
         for (int q = 0; q < 200 && ok; q++) {
             std::string s = random_string(5);
@@ -82,6 +82,8 @@ int main() {
     digits.insert(std::vector<int>{3, 1, 4});
     ok = ok && digits.count_prefix(std::vector<int>{3, 1}) == 1 && digits.find(std::vector<int>{1}) == -1;
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

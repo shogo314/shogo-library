@@ -1,9 +1,9 @@
 #define PROBLEM "https://yukicoder.me/problems/no/674"
 
-#include "../../src/data_structures/monoid-unionfind.hpp"
-
 #include <iostream>
 #include <set>
+
+#include "../../src/data_structures/monoid-unionfind.hpp"
 
 using ll = long long;
 

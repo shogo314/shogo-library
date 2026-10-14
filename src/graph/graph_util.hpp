@@ -14,8 +14,8 @@
 #include <utility>
 #include <vector>
 
-#include "graph.hpp"
 #include "../data_structures/unionfind.hpp"
+#include "graph.hpp"
 
 /**
  * @brief 無向グラフについて、二部グラフなら0と1に彩色した結果をひとつ返し、二部グラフでないなら空のvectorを返す。

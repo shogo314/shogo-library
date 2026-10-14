@@ -8,6 +8,7 @@
 #include <cassert>
 #include <utility>
 #include <vector>
+
 #include "../algebra/monoid.hpp"
 
 /**

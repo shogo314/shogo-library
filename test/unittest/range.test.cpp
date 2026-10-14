@@ -3,14 +3,14 @@
 // Range を愚直に作った std::vector (Python の range と同じ列) とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/utility/range.hpp"
+
 #include <algorithm>
 #include <iostream>
 #include <iterator>
 #include <random>
 #include <string>
 #include <vector>
-
-#include "../../src/utility/range.hpp"
 
 using ll = long long;
 

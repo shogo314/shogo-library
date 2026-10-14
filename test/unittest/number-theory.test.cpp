@@ -4,12 +4,12 @@
 // 解がないときに std::nullopt になることも確かめる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/math/number-theory.hpp"
+
 #include <iostream>
 #include <numeric>
 #include <random>
 #include <vector>
-
-#include "../../src/math/number-theory.hpp"
 
 int main() {
     bool ok = true;

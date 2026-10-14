@@ -21,6 +21,7 @@
 #include <optional>
 #include <type_traits>
 #include <utility>
+
 #include "monoid.hpp"
 
 namespace acted_monoid {
@@ -34,7 +35,7 @@ template <typename A, typename = void>
 struct has_mapping_sz : std::false_type {};
 template <typename A>
 struct has_mapping_sz<A, std::void_t<decltype(std::declval<const A&>().mapping(std::declval<const typename A::F&>(), std::declval<const typename A::S&>(), 0))>> : std::true_type {};
-} // namespace detail
+}  // namespace detail
 
 /**
  * @brief 区間 [l, r) を表す要素に作用素を適用する
@@ -42,9 +43,9 @@ struct has_mapping_sz<A, std::void_t<decltype(std::declval<const A&>().mapping(s
  */
 template <typename A>
 constexpr auto apply_mapping(const A& a, const typename A::F& f, const typename A::S& x, int l, int r) {
-    if constexpr(detail::has_mapping_lr<A>::value) {
+    if constexpr (detail::has_mapping_lr<A>::value) {
         return a.mapping(f, x, l, r);
-    } else if constexpr(detail::has_mapping_sz<A>::value) {
+    } else if constexpr (detail::has_mapping_sz<A>::value) {
         return a.mapping(f, x, r - l);
     } else {
         return a.mapping(f, x);
@@ -181,11 +182,11 @@ struct UpdateComposite : monoid::Composite<T> {
     using S = Affine<T>;
     using F = std::optional<S>;
     static constexpr S mapping(const F& f, const S& x, int sz) {
-        if(!f) return x;
+        if (!f) return x;
         // f を sz 回合成する
         S ret = monoid::Composite<T>::e(), p = *f;
-        for(; sz > 0; sz >>= 1) {
-            if(sz & 1) ret = monoid::Composite<T>::op(ret, p);
+        for (; sz > 0; sz >>= 1) {
+            if (sz & 1) ret = monoid::Composite<T>::op(ret, p);
             p = monoid::Composite<T>::op(p, p);
         }
         return ret;
@@ -254,14 +255,14 @@ struct AddPowerSum {
         S() : val{} {}
         S(const T& x) {
             val[0] = T(1);
-            for(int i = 1; i <= K; i++) val[i] = val[i - 1] * x;
+            for (int i = 1; i <= K; i++) val[i] = val[i - 1] * x;
         }
         const T& operator[](std::size_t i) const { return val[i]; }
     };
     using F = T;
     static S op(const S& a, const S& b) {
         S ret;
-        for(int i = 0; i <= K; i++) ret.val[i] = a.val[i] + b.val[i];
+        for (int i = 0; i <= K; i++) ret.val[i] = a.val[i] + b.val[i];
         return ret;
     }
     static S e() { return S(); }
@@ -269,18 +270,18 @@ struct AddPowerSum {
         // sum (x+f)^i = sum_j binom(i, j) f^j x^(i-j)
         static const auto binom = [] {
             std::array<std::array<T, K + 1>, K + 1> c{};
-            for(int i = 0; i <= K; i++) {
+            for (int i = 0; i <= K; i++) {
                 c[i][0] = c[i][i] = T(1);
-                for(int j = 1; j < i; j++) c[i][j] = c[i - 1][j - 1] + c[i - 1][j];
+                for (int j = 1; j < i; j++) c[i][j] = c[i - 1][j - 1] + c[i - 1][j];
             }
             return c;
         }();
         std::array<T, K + 1> pw{};
         pw[0] = T(1);
-        for(int i = 1; i <= K; i++) pw[i] = pw[i - 1] * f;
+        for (int i = 1; i <= K; i++) pw[i] = pw[i - 1] * f;
         S ret;
-        for(int i = 0; i <= K; i++) {
-            for(int j = 0; j <= i; j++) ret.val[i] += binom[i][j] * pw[j] * x.val[i - j];
+        for (int i = 0; i <= K; i++) {
+            for (int j = 0; j <= i; j++) ret.val[i] += binom[i][j] * pw[j] * x.val[i - j];
         }
         return ret;
     }
@@ -288,7 +289,7 @@ struct AddPowerSum {
     static F id() { return F(0); }
 };
 
-} // namespace acted_monoid
+}  // namespace acted_monoid
 
 /**
  * @brief 関数オブジェクトから実行時に作る作用素付きモノイド
@@ -315,9 +316,9 @@ struct ActedMonoid {
     constexpr S op(const S& a, const S& b) const { return op_object(a, b); }
     constexpr S e() const { return identity; }
     constexpr auto mapping(const F& f, const S& x, int l, int r) const {
-        if constexpr(std::is_invocable_v<const Mapping&, const F&, const S&, int, int>) {
+        if constexpr (std::is_invocable_v<const Mapping&, const F&, const S&, int, int>) {
             return mapping_object(f, x, l, r);
-        } else if constexpr(std::is_invocable_v<const Mapping&, const F&, const S&, int>) {
+        } else if constexpr (std::is_invocable_v<const Mapping&, const F&, const S&, int>) {
             return mapping_object(f, x, r - l);
         } else {
             return mapping_object(f, x);

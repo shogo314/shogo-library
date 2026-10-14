@@ -3,11 +3,11 @@
 // bit.hpp の関数を愚直な実装とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/utility/bit.hpp"
+
 #include <iostream>
 #include <random>
 #include <string>
-
-#include "../../src/utility/bit.hpp"
 
 bool ok = true;
 

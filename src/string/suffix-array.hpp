@@ -24,8 +24,10 @@ inline std::vector<int> sa_is(const std::vector<int>& s, int upper) {
     // sum_l[c]: 先頭が c の L 型の接尾辞が入る位置の始まり、sum_s[c]: 先頭が c の S 型の接尾辞が入る位置の始まり
     std::vector<int> sum_l(upper + 1), sum_s(upper + 1);
     for (int i = 0; i < n; i++) {
-        if (!ls[i]) sum_s[s[i]]++;
-        else sum_l[s[i] + 1]++;
+        if (!ls[i])
+            sum_s[s[i]]++;
+        else
+            sum_l[s[i] + 1]++;
     }
     for (int i = 0; i <= upper; i++) {
         sum_s[i] += sum_l[i];

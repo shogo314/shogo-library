@@ -15,11 +15,11 @@
  */
 template <typename T>
 struct TadpoleArray {
-   private:
+private:
     std::vector<T> data;
     int k;
 
-   public:
+public:
     /**
      * @brief 最後の次のインデックスがi
      */

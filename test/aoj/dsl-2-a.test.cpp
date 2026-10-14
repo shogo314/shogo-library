@@ -5,11 +5,15 @@
 #include "../../src/data_structures/segtree.hpp"
 
 int main(void) {
-    int n, q; std::cin >> n >> q;
+    int n, q;
+    std::cin >> n >> q;
     SegTree<monoid::Min<int>> seg(n);
-    while(q--) {
-        int com, x, y; std::cin >> com >> x >> y;
-        if(com == 0) seg.set(x, y);
-        else std::cout << seg.prod(x, y + 1) << '\n';
+    while (q--) {
+        int com, x, y;
+        std::cin >> com >> x >> y;
+        if (com == 0)
+            seg.set(x, y);
+        else
+            std::cout << seg.prod(x, y + 1) << '\n';
     }
 }

@@ -3,11 +3,11 @@
 // modmul・modpow・modinv を愚直な計算と比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/math/modular-arithmetic.hpp"
+
 #include <iostream>
 #include <numeric>
 #include <random>
-
-#include "../../src/math/modular-arithmetic.hpp"
 
 static_assert(modpow(2, 10, 1000) == 24);
 static_assert(modinv(3, 7) == 5);

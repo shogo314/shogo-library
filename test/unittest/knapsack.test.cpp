@@ -3,12 +3,12 @@
 // ナップサックの各関数を、選び方をすべて試す愚直な方法とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/dp/knapsack.hpp"
+
 #include <algorithm>
 #include <iostream>
 #include <random>
 #include <vector>
-
-#include "../../src/dp/knapsack.hpp"
 
 // 品物 i を 0 個以上 m[i] 個以下選ぶすべての方法を試す
 long long naive(const std::vector<long long>& v, const std::vector<long long>& w, const std::vector<long long>& m,
@@ -70,6 +70,8 @@ int main() {
     // 重さの単位を 10^12 とすると容量 10 で、1 つ目を 10 個選ぶのが最適
     ok = ok && bounded_knapsack(bv, bw, bm, 10000000000000LL) == 30;
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

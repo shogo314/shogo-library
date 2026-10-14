@@ -10,6 +10,7 @@
 #include <functional>
 #include <utility>
 #include <vector>
+
 #include "../algebra/monoid.hpp"
 
 /**

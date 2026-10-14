@@ -5,7 +5,8 @@
 #include "../../src/graph/graph_util.hpp"
 
 int main() {
-    int n, m; std::cin >> n >> m;
+    int n, m;
+    std::cin >> n >> m;
     Graph<int> graph(n);
     graph.read(m, 0, false, true);
     std::cout << (has_cycle(graph) ? 1 : 0) << std::endl;

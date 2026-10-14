@@ -31,7 +31,8 @@ int main() {
             if (cr == 0) {
                 // a を 0、b を 1 としたときの c の位置 t
                 long long t = dot(c - a, b - a), len = (b - a).squared_norm();
-                ok = ok && r == (t < 0 ? 2 : t > len ? -2 : 0);
+                ok = ok && r == (t < 0 ? 2 : t > len ? -2
+                                                     : 0);
             }
             ok = ok && ccw(pa, pb, pc) == r;
         }
@@ -80,6 +81,8 @@ int main() {
     ok = ok && near(h[0], 3.12) && near(h[1], 4.16);
     ok = ok && near(distance_point_line(L(0, 0), L(2, 0), L(5, 3)), 3) && near(distance_point_segment(L(0, 0), L(2, 0), L(5, 4)), 5);
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

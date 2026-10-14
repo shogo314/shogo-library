@@ -11,7 +11,7 @@
 
 /**
  * @brief 円環
- * @tparam T 
+ * @tparam T
  */
 template <typename T>
 struct CircularRing {

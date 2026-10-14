@@ -14,22 +14,23 @@
 #include <numeric>
 #include <type_traits>
 #include <vector>
+
 #include "traits.hpp"
 
 #define METHOD_EXPAND(func)                                        \
     template <typename T, ENABLE_IF_T(has_##func##_v<T>)>          \
-    inline constexpr auto func(const T &t) -> decltype(t.func()) { \
+    inline constexpr auto func(const T& t) -> decltype(t.func()) { \
         return t.func();                                           \
     }
 
 #define METHOD_AND_FUNC_ARG_EXPAND(func)                                     \
     template <typename T, typename U, ENABLE_IF_T(has_##func##_v<T, U>)>     \
-    inline constexpr auto func(const T &t, const U &u)                       \
+    inline constexpr auto func(const T& t, const U& u)                       \
         -> decltype(t.func(u)) {                                             \
         return t.func(u);                                                    \
     }                                                                        \
     template <typename T, typename U, ENABLE_IF_T(not has_##func##_v<T, U>)> \
-    inline constexpr auto func(const T &t, const U &u)                       \
+    inline constexpr auto func(const T& t, const U& u)                       \
         -> decltype(std::func(t.begin(), t.end(), u)) {                      \
         return std::func(t.begin(), t.end(), u);                             \
     }
@@ -55,90 +56,90 @@ inline constexpr C sorted(C t, F f) {
 }
 
 template <class C>
-inline constexpr void sort(C &t, bool reverse = false) {
+inline constexpr void sort(C& t, bool reverse = false) {
     std::sort(t.begin(), t.end());
     if (reverse) std::reverse(t.begin(), t.end());
 }
 template <class C, class F, ENABLE_IF_T(std::is_invocable_r_v<bool, F, mem_value_type<C>, mem_value_type<C>>)>
-inline constexpr void sort(C &t, F f) {
+inline constexpr void sort(C& t, F f) {
     std::sort(t.begin(), t.end(), f);
 }
 template <class C, class F, ENABLE_IF_T(std::is_invocable_v<F, mem_value_type<C>>)>
-inline constexpr void sort_by_key(C &t, F f) {
-    std::sort(t.begin(), t.end(), [&](const mem_value_type<C> &left, const mem_value_type<C> &right) {
+inline constexpr void sort_by_key(C& t, F f) {
+    std::sort(t.begin(), t.end(), [&](const mem_value_type<C>& left, const mem_value_type<C>& right) {
         return f(left) < f(right);
     });
 }
 
 template <class C>
-inline constexpr void reverse(C &t) {
+inline constexpr void reverse(C& t) {
     std::reverse(t.begin(), t.end());
 }
 
 METHOD_EXPAND(max)
 template <class C, ENABLE_IF_T(not has_max_v<C> and is_sorted_container_v<C>)>
-inline constexpr mem_value_type<C> max(const C &v) {
+inline constexpr mem_value_type<C> max(const C& v) {
     assert(v.begin() != v.end());
     return *v.rbegin();
 }
 template <class C, ENABLE_IF_T(not has_max_v<C> and not is_sorted_container_v<C>)>
-inline constexpr mem_value_type<C> max(const C &v) {
+inline constexpr mem_value_type<C> max(const C& v) {
     assert(v.begin() != v.end());
     return *std::max_element(v.begin(), v.end());
 }
 template <typename T>
-inline constexpr T max(const std::initializer_list<T> &v) {
+inline constexpr T max(const std::initializer_list<T>& v) {
     return std::max(v);
 }
 
 METHOD_EXPAND(min)
 template <class C, ENABLE_IF_T(not has_min_v<C> and is_sorted_container_v<C>)>
-inline constexpr mem_value_type<C> min(const C &v) {
+inline constexpr mem_value_type<C> min(const C& v) {
     assert(v.begin() != v.end());
     return *v.begin();
 }
 template <class C, ENABLE_IF_T(not has_min_v<C> and not is_sorted_container_v<C>)>
-inline constexpr mem_value_type<C> min(const C &v) {
+inline constexpr mem_value_type<C> min(const C& v) {
     assert(v.begin() != v.end());
     return *std::min_element(v.begin(), v.end());
 }
 template <typename T>
-inline constexpr T min(const std::initializer_list<T> &v) {
+inline constexpr T min(const std::initializer_list<T>& v) {
     return std::min(v);
 }
 
 METHOD_EXPAND(sum)
 template <class C, ENABLE_IF_T(not has_sum_v<C>)>
-inline constexpr mem_value_type<C> sum(const C &v) {
+inline constexpr mem_value_type<C> sum(const C& v) {
     return std::accumulate(v.begin(), v.end(), mem_value_type<C>{});
 }
 template <typename T>
-inline constexpr T sum(const std::initializer_list<T> &v) {
+inline constexpr T sum(const std::initializer_list<T>& v) {
     return std::accumulate(v.begin(), v.end(), T{});
 }
 
 METHOD_EXPAND(product)
 template <class C, ENABLE_IF_T(not has_product_v<C>)>
-inline constexpr mem_value_type<C> product(const C &v) {
+inline constexpr mem_value_type<C> product(const C& v) {
     return std::accumulate(v.begin(), v.end(), mem_value_type<C>{1}, std::multiplies<mem_value_type<C>>());
 }
 template <typename T>
-inline constexpr T product(const std::initializer_list<T> &v) {
+inline constexpr T product(const std::initializer_list<T>& v) {
     return std::accumulate(v.begin(), v.end(), T{1}, std::multiplies<T>());
 }
 
 METHOD_EXPAND(product_xor)
 template <class C, ENABLE_IF_T(not has_product_xor_v<C>)>
-inline constexpr mem_value_type<C> product_xor(const C &v) {
+inline constexpr mem_value_type<C> product_xor(const C& v) {
     return std::accumulate(v.begin(), v.end(), mem_value_type<C>{0}, std::bit_xor<mem_value_type<C>>());
 }
 template <typename T>
-inline constexpr T product_xor(const std::initializer_list<T> &v) {
+inline constexpr T product_xor(const std::initializer_list<T>& v) {
     return std::accumulate(v.begin(), v.end(), T{0}, std::bit_xor<T>());
 }
 
 template <class C>
-inline constexpr mem_value_type<C> maximum_subarray(const C &v) {
+inline constexpr mem_value_type<C> maximum_subarray(const C& v) {
     assert(not v.empty());
     auto itr = v.begin();
     mem_value_type<C> tmp = *itr++;
@@ -152,9 +153,9 @@ inline constexpr mem_value_type<C> maximum_subarray(const C &v) {
     return res;
 }
 template <class C>
-inline constexpr mem_value_type<C> maximum_subarray(const C &v, mem_value_type<C> init) {
+inline constexpr mem_value_type<C> maximum_subarray(const C& v, mem_value_type<C> init) {
     mem_value_type<C> res = init, tmp = init;
-    for (const auto &a : v) {
+    for (const auto& a : v) {
         tmp += a;
         if (tmp < init) tmp = init;
         if (res < tmp) res = tmp;
@@ -168,25 +169,25 @@ METHOD_AND_FUNC_ARG_EXPAND(lower_bound)
 METHOD_AND_FUNC_ARG_EXPAND(upper_bound)
 
 template <class C, typename T>
-inline constexpr bool contains(const C &c, const T &t) {
+inline constexpr bool contains(const C& c, const T& t) {
     return find(c, t) != c.end();
 }
 
 template <class C>
-inline constexpr mem_value_type<C> gcd(const C &v) {
+inline constexpr mem_value_type<C> gcd(const C& v) {
     mem_value_type<C> init(0);
-    for (const auto &e : v) init = std::gcd(init, e);
+    for (const auto& e : v) init = std::gcd(init, e);
     return init;
 }
 
 template <class C>
-inline constexpr mem_value_type<C> average(const C &v) {
+inline constexpr mem_value_type<C> average(const C& v) {
     assert(v.size());
     return sum(v) / v.size();
 }
 
 template <class C>
-inline constexpr mem_value_type<C> median(const C &v) {
+inline constexpr mem_value_type<C> median(const C& v) {
     assert(not v.empty());
     std::vector<std::size_t> u(v.size());
     std::iota(u.begin(), u.end(), 0);
@@ -203,16 +204,16 @@ inline constexpr mem_value_type<C> median(const C &v) {
 
 // x が最初に現れる位置。なければ -1
 template <class C, typename U>
-inline constexpr int index(const C &v, const U &x) {
+inline constexpr int index(const C& v, const U& x) {
     auto it = find(v, x);
     if (it == v.end()) return -1;
     return static_cast<int>(std::distance(v.begin(), it));
 }
 
 template <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>
-inline constexpr mem_value_type<C> mex(const C &v) {
+inline constexpr mem_value_type<C> mex(const C& v) {
     std::vector<bool> b(v.size() + 1);
-    for (const auto &a : v) {
+    for (const auto& a : v) {
         if (0 <= a and static_cast<std::size_t>(a) < b.size()) {
             b[a] = true;
         }
@@ -228,10 +229,10 @@ inline constexpr mem_value_type<C> mex(const C &v) {
 }
 
 template <class C>
-inline constexpr int bisect_left(const C &v, const mem_value_type<C> &x) {
+inline constexpr int bisect_left(const C& v, const mem_value_type<C>& x) {
     return static_cast<int>(std::distance(v.begin(), lower_bound(v, x)));
 }
 template <class C>
-inline constexpr int bisect_right(const C &v, const mem_value_type<C> &x) {
+inline constexpr int bisect_right(const C& v, const mem_value_type<C>& x) {
     return static_cast<int>(std::distance(v.begin(), upper_bound(v, x)));
 }

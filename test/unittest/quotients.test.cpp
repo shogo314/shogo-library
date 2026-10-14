@@ -3,10 +3,10 @@
 // enumerate_quotients と for_each_quotient を、i ごとに商を計算する愚直な方法と比べる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/math/quotients.hpp"
+
 #include <iostream>
 #include <vector>
-
-#include "../../src/math/quotients.hpp"
 
 int main() {
     bool ok = true;
@@ -41,6 +41,8 @@ int main() {
     // 大きい n でも区間の個数は 2 sqrt(n) 程度
     ok = ok && enumerate_quotients(1000000000000LL).size() == 1999999;
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

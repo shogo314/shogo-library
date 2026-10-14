@@ -4,11 +4,15 @@
 #include "../../src/geometry/vector.hpp"
 
 int main(void) {
-    int n; std::cin >> n;
-    std::vector<Vector<int>> polygon(n); std::cin >> polygon;
-    int q; std::cin >> q;
-    while(q--) {
-        Vector<int> p; std::cin >> p;
+    int n;
+    std::cin >> n;
+    std::vector<Vector<int>> polygon(n);
+    std::cin >> polygon;
+    int q;
+    std::cin >> q;
+    while (q--) {
+        Vector<int> p;
+        std::cin >> p;
         std::cout << polygon_contains(polygon, p) << '\n';
     }
 }

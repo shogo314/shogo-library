@@ -1,9 +1,9 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/longest_increasing_subsequence"
 
+#include "../../src/dp/longest-increasing-subsequence.hpp"
+
 #include <iostream>
 #include <vector>
-
-#include "../../src/dp/longest-increasing-subsequence.hpp"
 
 int main() {
     std::cin.tie(nullptr);

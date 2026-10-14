@@ -6,8 +6,9 @@
  */
 
 #include <cassert>
-#include <vector>
 #include <utility>
+#include <vector>
+
 #include "../algebra/acted-monoid.hpp"
 
 /**
@@ -20,11 +21,11 @@
  */
 template <typename A>
 class Imos {
-   public:
+public:
     using S = typename A::S;
     using F = typename A::F;
 
-   private:
+private:
     A a;
     int _n, t;
     std::vector<S> data;
@@ -35,7 +36,7 @@ class Imos {
     F id() const { return a.id(); }
     F inv(const F& f) const { return a.inv(f); }
 
-   public:
+public:
     /**
      * @param n 要素数 各要素は S() で初期化する
      * @param a 作用素付きモノイド

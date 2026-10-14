@@ -4,13 +4,13 @@
 // 入力マクロは std::cin の入力元を、出力マクロは std::cout の出力先を一時的に差し替えて検証する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/base/macro.hpp"
+
 #include <algorithm>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
-
-#include "../../src/base/macro.hpp"
 
 bool ok = true;
 void check(bool cond, const char* what) {
@@ -132,19 +132,19 @@ int main() {
     // 入力マクロ
     {
         std::istringstream in(
-            "1 -2 "            // LL(a, b)
-            "hello world "     // STR(s, t)
-            "7 "               // IN(int, x)
-            "z "               // CHAR(c)
-            "3 4 5 "           // VL(v, 3)
-            "6 7 "             // AL(arr, 2)
-            "1 2 3 4 5 6 "     // AAL(aa, 2, 3)
-            "x y "             // VC(vc_, 2)
-            "ab cd "           // VS(vs_, 2)
-            "1 2 3 4 "         // VPL(vp, 2)
-            "1 2 3 4 5 6 "     // VAL(va, 2, 3)
-            "9 8 7 6 "         // VVL(vv_, 2, 2)
-            "5 3 5 1 ");       // SL(st, 4)
+            "1 -2 "         // LL(a, b)
+            "hello world "  // STR(s, t)
+            "7 "            // IN(int, x)
+            "z "            // CHAR(c)
+            "3 4 5 "        // VL(v, 3)
+            "6 7 "          // AL(arr, 2)
+            "1 2 3 4 5 6 "  // AAL(aa, 2, 3)
+            "x y "          // VC(vc_, 2)
+            "ab cd "        // VS(vs_, 2)
+            "1 2 3 4 "      // VPL(vp, 2)
+            "1 2 3 4 5 6 "  // VAL(va, 2, 3)
+            "9 8 7 6 "      // VVL(vv_, 2, 2)
+            "5 3 5 1 ");    // SL(st, 4)
         std::streambuf* old = std::cin.rdbuf(in.rdbuf());
         LL(a, b);
         STR(s, t);

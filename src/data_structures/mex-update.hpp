@@ -16,7 +16,7 @@ template <typename T>
 struct MexUpdate {
     using value_type = T;
 
-   private:
+private:
     inline constexpr static value_type e = std::numeric_limits<value_type>::max();
 
     int n;
@@ -24,7 +24,7 @@ struct MexUpdate {
     std::set<int> s;
     std::map<int, std::size_t> m;
 
-   public:
+public:
     MexUpdate() = default;
     MexUpdate(int n) : n(n), v(n, e) {
         assert(n > 0);

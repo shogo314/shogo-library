@@ -3,11 +3,11 @@
 // CircularRing を愚直な実装とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/data_structures/circular-ring.hpp"
+
 #include <iostream>
 #include <random>
 #include <vector>
-
-#include "../../src/data_structures/circular-ring.hpp"
 
 // i を n で割った非負の余り
 long long pos(long long i, long long n) {
@@ -39,13 +39,17 @@ int main() {
             if (zeros[i] != 0) ok = false;
             // 参照を返す at / [] で書き換えると、同じ位置のすべての添字に反映される
             int x = rng() % 100;
-            if (rng() % 2) ring[i] = x;
-            else ring.at(i) = x;
+            if (rng() % 2)
+                ring[i] = x;
+            else
+                ring.at(i) = x;
             v[p] = x;
             if (ring[i + n] != x || ring[i - 3LL * n] != x) ok = false;
             if (ring.data != v) ok = false;
         }
     }
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

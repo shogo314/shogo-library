@@ -3,13 +3,14 @@
 #include <iostream>
 #include <vector>
 
-#include "../../src/graph/tree.hpp"
 #include "../../src/data_structures/segtree.hpp"
+#include "../../src/graph/tree.hpp"
 
 int main() {
     std::cin.tie(nullptr);
     std::ios::sync_with_stdio(false);
-    int n, q; std::cin >> n >> q;
+    int n, q;
+    std::cin >> n >> q;
     std::vector<long long> a(n);
     for (auto& x : a) std::cin >> x;
     std::vector<int> par(n - 1);
@@ -23,9 +24,11 @@ int main() {
     for (int u = 0; u < n; u++) init[in[u]] = a[u];
     RSumQ<long long> seg(init);
     while (q--) {
-        int t, u; std::cin >> t >> u;
+        int t, u;
+        std::cin >> t >> u;
         if (t == 0) {
-            long long x; std::cin >> x;
+            long long x;
+            std::cin >> x;
             seg.apply(in[u], x);
         } else {
             std::cout << seg.prod(in[u], in[u] + tree.sz[u]) << '\n';

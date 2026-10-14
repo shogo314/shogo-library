@@ -11,6 +11,7 @@
 #include <tuple>
 #include <utility>
 #include <vector>
+
 #include "../algebra/acted-monoid.hpp"
 
 /**
@@ -50,17 +51,17 @@ private:
         int l = std::min((k << h) & (sz - 1), n);
         int r = std::min(((k << h) & (sz - 1)) + (1 << h), n);
         std::tie(fail[k], data[k]) = mapping(f, data[k], l, r);
-        if(k < sz) {
+        if (k < sz) {
             lazy[k] = composition(f, lazy[k]);
-            if(fail[k]) {
+            if (fail[k]) {
                 push(k, h);
                 update(k);
             }
         }
     }
     void push(int k, int h) {
-        apply_node(2 * k, h-1, lazy[k]);
-        apply_node(2 * k + 1, h-1, lazy[k]);
+        apply_node(2 * k, h - 1, lazy[k]);
+        apply_node(2 * k + 1, h - 1, lazy[k]);
         lazy[k] = id();
     }
 
@@ -115,39 +116,39 @@ public:
 
     /**
      * @brief 指定された要素の値を返す
-     * 
+     *
      * @param k インデックス
      * @return S 値
      */
     S get(int k) {
         assert(0 <= k && k < n);
         k += sz;
-        for(int h = height; h > 0; h--) {
+        for (int h = height; h > 0; h--) {
             push(k >> h, h);
         }
         return data[k];
     }
     /**
      * @brief 指定された要素への参照を返す
-     * 
-     * @param k 
+     *
+     * @param k
      * @return SegTreeReference 要素への参照 代入されるとset()が呼ばれる
      */
-    SegTreeBeatsReference operator[] (int k) { return SegTreeBeatsReference(*this, k); }
+    SegTreeBeatsReference operator[](int k) { return SegTreeBeatsReference(*this, k); }
 
     /**
      * @brief 内容を出力する
-     * 
+     *
      * @tparam CharT 出力ストリームの文字型
      * @tparam Traits 出力ストリームの文字型特性
      * @param os 出力ストリーム
      * @param rhs セグメント木
-     * @return std::basic_ostream<CharT, Traits>& 出力ストリーム 
+     * @return std::basic_ostream<CharT, Traits>& 出力ストリーム
      */
     template <class CharT, class Traits>
     friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, SegTreeBeats& rhs) {
-        for(int i = 0; i < rhs.n; i++) {
-            if(i != 0) os << CharT(' ');
+        for (int i = 0; i < rhs.n; i++) {
+            if (i != 0) os << CharT(' ');
             os << rhs[i];
         }
         return os;
@@ -155,100 +156,105 @@ public:
 
     /**
      * @brief 指定された要素の値をxに更新する
-     * 
+     *
      * @param k インデックス
      * @param x 新しい値
      */
     void set(int k, const S& x) {
         assert(0 <= k && k < n);
         k += sz;
-        for(int h = height; h > 0; h--) {
+        for (int h = height; h > 0; h--) {
             push(k >> h, h);
         }
         data[k] = x;
-        while(k >>= 1) update(k);
+        while (k >>= 1) update(k);
     }
 
     /**
      * @brief [l, r)の区間の総積を返す
-     * 
+     *
      * @param l 半開区間の開始
      * @param r 半開区間の終端
      * @return S 総積
      */
     S prod(int l, int r) {
         assert(0 <= l && l <= r && r <= n);
-        l += sz; r += sz;
-        for(int h = height; h > 0; h--) {
-            if(((l >> h) << h) != l) push(l >> h, h);
-            if(((r >> h) << h) != r) push(r >> h, h);
+        l += sz;
+        r += sz;
+        for (int h = height; h > 0; h--) {
+            if (((l >> h) << h) != l) push(l >> h, h);
+            if (((r >> h) << h) != r) push(r >> h, h);
         }
         S left_prod = e(), right_prod = e();
-        while(l < r) {
-            if(l & 1) left_prod = op(left_prod, data[l++]);
-            if(r & 1) right_prod = op(data[--r], right_prod);
-            l >>= 1; r >>= 1;
+        while (l < r) {
+            if (l & 1) left_prod = op(left_prod, data[l++]);
+            if (r & 1) right_prod = op(data[--r], right_prod);
+            l >>= 1;
+            r >>= 1;
         }
         return op(left_prod, right_prod);
     }
     /**
      * @brief すべての要素の総積を返す
-     * 
+     *
      * @return S 総積
      */
     S all_prod() const { return data[1]; }
-    
+
     /**
      * @brief 指定された要素の値にxを作用させる
-     * 
+     *
      * @param k インデックス
      * @param x 作用素
      */
     void apply(int k, const F& f) {
         assert(0 <= k && k < n);
         k += sz;
-        for(int h = height; h > 0; h--) {
+        for (int h = height; h > 0; h--) {
             push(k >> h, h);
         }
         data[k] = mapping(f, data[k], k - sz, k - sz + 1).second;
-        while(k >>= 1) update(k);
+        while (k >>= 1) update(k);
     }
     /**
      * @brief [l, r)の区間の値にxを作用させる
-     * 
+     *
      * @param l 半開区間の開始
      * @param r 半開区間の終端
      * @param f 作用素
      */
     void apply(int l, int r, const F& f) {
         assert(0 <= l && l <= r && r <= n);
-        if(l == r) return;
-        l += sz; r += sz;
-        for(int h = height; h > 0; h--) {
-            if(((l >> h) << h) != l) push(l >> h, h);
-            if(((r >> h) << h) != r) push(r >> h, h);
+        if (l == r) return;
+        l += sz;
+        r += sz;
+        for (int h = height; h > 0; h--) {
+            if (((l >> h) << h) != l) push(l >> h, h);
+            if (((r >> h) << h) != r) push(r >> h, h);
         }
         {
             int l2 = l, r2 = r;
             int h = 0;
-            while(l < r) {
-                if(l & 1) apply_node(l++, h, f);
-                if(r & 1) apply_node(--r, h, f);
-                l >>= 1; r >>= 1;
+            while (l < r) {
+                if (l & 1) apply_node(l++, h, f);
+                if (r & 1) apply_node(--r, h, f);
+                l >>= 1;
+                r >>= 1;
                 h++;
             }
-            l = l2; r = r2;
+            l = l2;
+            r = r2;
         }
-        for(int h = 1; h <= height; h++) {
-            if(((l >> h) << h) != l) update(l >> h);
-            if(((r >> h) << h) != r) update((r - 1) >> h);
+        for (int h = 1; h <= height; h++) {
+            if (((l >> h) << h) != l) update(l >> h);
+            if (((r >> h) << h) != r) update((r - 1) >> h);
         }
     }
 
     /**
      * @brief (r = l or g(prod([l, r))) = true) and (r = n or g(prod([l, r+1))) = false)となるrを返す
      * gが単調なら、g(prod([l, r))) = trueとなる最大のr
-     * 
+     *
      * @tparam G
      * @param l 半開区間の開始
      * @param g 判定関数 g(e) = true
@@ -258,33 +264,33 @@ public:
     int max_right(int l, G g) {
         assert(g(e()));
         assert(0 <= l && l <= n);
-        if(l == n) return n;
+        if (l == n) return n;
         l += sz;
-        for(int h = height; h > 0; h--) {
+        for (int h = height; h > 0; h--) {
             push(l >> h, h);
         }
         int h = 0;
-        while(l % 2 == 0) {
+        while (l % 2 == 0) {
             l >>= 1;
             h++;
         }
         S sum = e();
-        while(g(op(sum, data[l]))) {
+        while (g(op(sum, data[l]))) {
             sum = op(sum, data[l]);
             l++;
-            while(l % 2 == 0) {
+            while (l % 2 == 0) {
                 l >>= 1;
                 h++;
             }
-            if(l == 1) return n;
+            if (l == 1) return n;
         }
-        while(l < sz) {
+        while (l < sz) {
             push(l, h);
-            if(!g(op(sum, data[l*2]))) {
-                l = l*2;
+            if (!g(op(sum, data[l * 2]))) {
+                l = l * 2;
             } else {
-                sum = op(sum, data[l*2]);
-                l = l*2+1;
+                sum = op(sum, data[l * 2]);
+                l = l * 2 + 1;
             }
             h--;
         }
@@ -293,7 +299,7 @@ public:
     /**
      * @brief (l = 0 or g(prod([l, r))) = true) and (l = r or g(prod([l-1, r))) = false)となるlを返す
      * gが単調なら、g(prod([l, r))) = trueとなる最小のl
-     * 
+     *
      * @tparam G
      * @param r 半開区間の終端
      * @param g 判定関数 g(e) = true
@@ -305,23 +311,23 @@ public:
         assert(0 <= r && r <= n);
         if (r == 0) return 0;
         r += sz;
-        for(int h = height; h > 0; h--) {
+        for (int h = height; h > 0; h--) {
             push((r - 1) >> h, h);
         }
         int h = 0;
         S sum = e();
         do {
             r--;
-            while(r > 1 && r % 2 == 1) {
+            while (r > 1 && r % 2 == 1) {
                 r >>= 1;
                 h++;
             }
-            if(!g(op(data[r], sum))) {
-                while(r < sz) {
+            if (!g(op(data[r], sum))) {
+                while (r < sz) {
                     push(r, h);
-                    r = r*2 + 1;
+                    r = r * 2 + 1;
                     h--;
-                    if(g(op(data[r], sum))) {
+                    if (g(op(data[r], sum))) {
                         sum = op(data[r], sum);
                         r--;
                     }
@@ -329,7 +335,7 @@ public:
                 return r + 1 - sz;
             }
             sum = op(data[r], sum);
-        } while((r & -r) != r);
+        } while ((r & -r) != r);
         return 0;
     }
 };

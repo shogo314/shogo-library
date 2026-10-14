@@ -16,7 +16,7 @@
  */
 template <typename T, typename Compare = std::less<T>>
 std::vector<int> longest_increasing_subsequence_lengths(const std::vector<T>& a, bool strict = true,
-                                                         Compare comp = Compare()) {
+                                                        Compare comp = Compare()) {
     // tail[k] は、長さ k + 1 の増加部分列の末尾として最も小さい値
     std::vector<T> tail;
     std::vector<int> res(a.size());
@@ -24,8 +24,10 @@ std::vector<int> longest_increasing_subsequence_lengths(const std::vector<T>& a,
         auto it = strict ? std::lower_bound(tail.begin(), tail.end(), a[i], comp)
                          : std::upper_bound(tail.begin(), tail.end(), a[i], comp);
         res[i] = it - tail.begin() + 1;
-        if (it == tail.end()) tail.push_back(a[i]);
-        else *it = a[i];
+        if (it == tail.end())
+            tail.push_back(a[i]);
+        else
+            *it = a[i];
     }
     return res;
 }
@@ -42,8 +44,10 @@ int longest_increasing_subsequence(const std::vector<T>& a, bool strict = true, 
     for (const T& x : a) {
         auto it = strict ? std::lower_bound(tail.begin(), tail.end(), x, comp)
                          : std::upper_bound(tail.begin(), tail.end(), x, comp);
-        if (it == tail.end()) tail.push_back(x);
-        else *it = x;
+        if (it == tail.end())
+            tail.push_back(x);
+        else
+            *it = x;
     }
     return tail.size();
 }
@@ -55,7 +59,7 @@ int longest_increasing_subsequence(const std::vector<T>& a, bool strict = true, 
  */
 template <typename T, typename Compare = std::less<T>>
 std::vector<int> longest_increasing_subsequence_restore(const std::vector<T>& a, bool strict = true,
-                                                         Compare comp = Compare()) {
+                                                        Compare comp = Compare()) {
     std::vector<int> len = longest_increasing_subsequence_lengths(a, strict, comp);
     int k = len.empty() ? 0 : *std::max_element(len.begin(), len.end());
     // 後ろから、長さが 1 ずつ減り、値が条件を満たす添字を選ぶ

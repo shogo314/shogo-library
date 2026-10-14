@@ -1,27 +1,28 @@
 #define PROBLEM "https://yukicoder.me/problems/no/1340"
 
+#include <iostream>
+
 #include "../../src/math/matrix.hpp"
 #include "../../src/math/modint.hpp"
-#include <iostream>
 
 using mint3 = static_modint<57>;
 
 int main() {
     long long n, m, t;
     std::cin >> n >> m >> t;
-    
+
     Matrix<modint1000000007> mat1(n, n, 0);
     Matrix<modint998244353> mat2(n, n, 0);
     Matrix<mint3> mat3(n, n, 0);
 
-    for(int i = 0; i < m; i ++) {
+    for (int i = 0; i < m; i++) {
         int a, b;
         std::cin >> a >> b;
         mat1[b][a] = 1;
         mat2[b][a] = 1;
         mat3[b][a] = 1;
     }
-    
+
     std::vector<modint1000000007> v1(n, 0);
     std::vector<modint998244353> v2(n, 0);
     std::vector<mint3> v3(n, 0);
@@ -34,11 +35,10 @@ int main() {
     v3 = mat3.pow(t) * v3;
 
     int ans = 0;
-    for(int i = 0; i < n; i ++) {
-        if(v1[i].val() || v2[i].val() || v3[i].val()) ans ++;
+    for (int i = 0; i < n; i++) {
+        if (v1[i].val() || v2[i].val() || v3[i].val()) ans++;
     }
     std::cout << ans << std::endl;
 
     return 0;
 }
-

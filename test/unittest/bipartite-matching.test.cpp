@@ -3,13 +3,14 @@
 // BipartiteMatching の大きさを MaxFlow と比べ、返すマッチングが正しいかを調べる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/graph/bipartite-matching.hpp"
+
 #include <iostream>
 #include <random>
 #include <set>
 #include <utility>
 #include <vector>
 
-#include "../../src/graph/bipartite-matching.hpp"
 #include "../../src/graph/max-flow.hpp"
 
 int main() {
@@ -49,6 +50,8 @@ int main() {
         }
     }
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

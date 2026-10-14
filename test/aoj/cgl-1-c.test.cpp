@@ -13,7 +13,10 @@ int main() {
         Vector<long long> p2;
         std::cin >> p2;
         int r = ccw(p0, p1, p2);
-        std::string s = r == 1 ? "COUNTER_CLOCKWISE" : r == -1 ? "CLOCKWISE" : r == 2 ? "ONLINE_BACK" : r == -2 ? "ONLINE_FRONT" : "ON_SEGMENT";
+        std::string s = r == 1 ? "COUNTER_CLOCKWISE" : r == -1 ? "CLOCKWISE"
+            : r == 2                                           ? "ONLINE_BACK"
+            : r == -2                                          ? "ONLINE_FRONT"
+                                                               : "ON_SEGMENT";
         std::cout << s << '\n';
     }
 }

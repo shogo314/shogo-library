@@ -13,16 +13,16 @@
  * @brief N頂点N辺の有向グラフで、すべての頂点の出次数が1
  */
 struct FunctionalGraph {
-    int n;                                         //!< 頂点数
-    std::vector<int> g;                            //!< グラフ
-    std::vector<bool> is_cycle;                    //!< サイクル上の頂点か
-    std::vector<int> depth;                        //!< サイクル上の頂点までの距離
-    std::vector<int> root;                         //!< 最も近いサイクル上の頂点
-    std::vector<std::vector<int>> groups;  //!< 各連結成分のリスト
-    std::vector<std::vector<int>> cycles;      //!< 各連結成分のサイクル
-    std::vector<int> group_id;                 //!< その頂点が属する連結成分のindex
-    std::vector<int> root_index;                     //!< rootのcycle_list上のindex
-    std::vector<std::vector<int>> doubling;        //!< DoublingClimbTree
+    int n;                                   //!< 頂点数
+    std::vector<int> g;                      //!< グラフ
+    std::vector<bool> is_cycle;              //!< サイクル上の頂点か
+    std::vector<int> depth;                  //!< サイクル上の頂点までの距離
+    std::vector<int> root;                   //!< 最も近いサイクル上の頂点
+    std::vector<std::vector<int>> groups;    //!< 各連結成分のリスト
+    std::vector<std::vector<int>> cycles;    //!< 各連結成分のサイクル
+    std::vector<int> group_id;               //!< その頂点が属する連結成分のindex
+    std::vector<int> root_index;             //!< rootのcycle_list上のindex
+    std::vector<std::vector<int>> doubling;  //!< DoublingClimbTree
 
     void build() {
         assert((int)g.size() == n);

@@ -3,14 +3,15 @@
 // subset_sum、subset_sum_restore、subset_sum_max*、subset_sum_count_* を、部分集合をすべて試す愚直な方法とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/dp/subset-sum.hpp"
+
 #include <algorithm>
 #include <iostream>
 #include <random>
 #include <vector>
 
-#include "../../src/math/modint.hpp"
 #include "../../src/dp/subset-sum-count.hpp"
-#include "../../src/dp/subset-sum.hpp"
+#include "../../src/math/modint.hpp"
 
 using mint = modint998244353;
 
@@ -40,8 +41,10 @@ int main() {
         if (ok && r) {
             long long s = 0;
             for (int k = 0; k < (int)r->size(); k++) {
-                if ((*r)[k] < 0 || (*r)[k] >= n || (k && (*r)[k - 1] >= (*r)[k])) ok = false;
-                else s += a[(*r)[k]];
+                if ((*r)[k] < 0 || (*r)[k] >= n || (k && (*r)[k - 1] >= (*r)[k]))
+                    ok = false;
+                else
+                    s += a[(*r)[k]];
             }
             ok = ok && s == S;
         }
@@ -55,8 +58,10 @@ int main() {
         auto mr = subset_sum_max_restore(a, S);
         long long ms = 0;
         for (int k = 0; k < (int)mr.size(); k++) {
-            if (mr[k] < 0 || mr[k] >= n || (k && mr[k - 1] >= mr[k])) ok = false;
-            else ms += a[mr[k]];
+            if (mr[k] < 0 || mr[k] >= n || (k && mr[k - 1] >= mr[k]))
+                ok = false;
+            else
+                ms += a[mr[k]];
         }
         ok = ok && ms == best;
         // 個数
@@ -98,6 +103,8 @@ int main() {
     ok = ok && !subset_sum_restore(a, 13);
     ok = ok && subset_sum_restore(a, 0) == std::vector<int>{};
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

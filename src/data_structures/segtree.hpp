@@ -9,6 +9,7 @@
 #include <ostream>
 #include <utility>
 #include <vector>
+
 #include "../algebra/monoid.hpp"
 
 /**
@@ -84,7 +85,7 @@ public:
 
     /**
      * @brief 指定された要素の値を返す
-     * 
+     *
      * @param k インデックス
      * @return S 値
      */
@@ -94,32 +95,32 @@ public:
     }
     /**
      * @brief 指定された要素の値を返す
-     * 
+     *
      * @param k インデックス
      * @return S 値
      */
-    S operator[] (int k) const { return get(k); }
+    S operator[](int k) const { return get(k); }
     /**
      * @brief 指定された要素への参照を返す
-     * 
-     * @param k 
+     *
+     * @param k
      * @return SegTreeReference 要素への参照 代入されるとset()が呼ばれる
      */
-    SegTreeReference operator[] (int k) { return SegTreeReference(*this, k); }
+    SegTreeReference operator[](int k) { return SegTreeReference(*this, k); }
 
     /**
      * @brief 内容を出力する
-     * 
+     *
      * @tparam CharT 出力ストリームの文字型
      * @tparam Traits 出力ストリームの文字型特性
      * @param os 出力ストリーム
      * @param rhs セグメント木
-     * @return std::basic_ostream<CharT, Traits>& 出力ストリーム 
+     * @return std::basic_ostream<CharT, Traits>& 出力ストリーム
      */
     template <class CharT, class Traits>
     friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const SegTree& rhs) {
-        for(int i = 0; i < rhs.n; i++) {
-            if(i != 0) os << CharT(' ');
+        for (int i = 0; i < rhs.n; i++) {
+            if (i != 0) os << CharT(' ');
             os << rhs[i];
         }
         return os;
@@ -127,7 +128,7 @@ public:
 
     /**
      * @brief 指定された要素の値をxに更新する
-     * 
+     *
      * @param k インデックス
      * @param x 新しい値
      */
@@ -139,7 +140,7 @@ public:
     }
     /**
      * @brief 指定された要素の値にxを作用させる
-     * 
+     *
      * @param k インデックス
      * @param x 作用素
      */
@@ -147,7 +148,7 @@ public:
 
     /**
      * @brief [l, r)の区間の総積を返す
-     * 
+     *
      * @param l 半開区間の開始
      * @param r 半開区間の終端 0<=l<=r<=n
      * @return S 総積
@@ -167,7 +168,7 @@ public:
     }
     /**
      * @brief すべての要素の総積を返す
-     * 
+     *
      * @return S 総積
      */
     S all_prod() const { return data[1]; }
@@ -175,7 +176,7 @@ public:
     /**
      * @brief (r = l or f(prod([l, r))) = true) and (r = n or f(prod([l, r+1))) = false)となるrを返す
      * fが単調なら、f(prod([l, r))) = trueとなる最大のr
-     * 
+     *
      * @tparam F
      * @param l 半開区間の開始 0<=l<=n
      * @param f 判定関数 f(e) = true
@@ -189,14 +190,15 @@ public:
         l += sz;
         while (l % 2 == 0) l >>= 1;
         S sum = e();
-        while(f(op(sum, data[l]))) {
+        while (f(op(sum, data[l]))) {
             sum = op(sum, data[l]);
             l++;
             while (l % 2 == 0) l >>= 1;
             if (l == 1) return n;
         }
         while (l < sz) {
-            if (!f(op(sum, data[l * 2]))) l *= 2;
+            if (!f(op(sum, data[l * 2])))
+                l *= 2;
             else {
                 sum = op(sum, data[l * 2]);
                 l = l * 2 + 1;
@@ -207,7 +209,7 @@ public:
     /**
      * @brief (l = 0 or f(prod([l, r))) = true) and (l = r or f(prod([l-1, r))) = false)となるlを返す
      * fが単調なら、f(prod([l, r))) = trueとなる最小のl
-     * 
+     *
      * @tparam F
      * @param r 半開区間の終端 0<=r<=n
      * @param f 判定関数 f(e) = true

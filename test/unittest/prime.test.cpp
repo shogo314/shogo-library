@@ -3,12 +3,12 @@
 // prime.hpp の関数と Sieve を愚直な実装とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/math/prime.hpp"
+
 #include <iostream>
 #include <random>
 #include <utility>
 #include <vector>
-
-#include "../../src/math/prime.hpp"
 
 // constexpr で使えること
 static_assert(is_prime(998244353));
@@ -99,6 +99,8 @@ int main() {
         ok = ok && divisors(p * q).size() == (p == q ? 3u : 4u);
     }
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

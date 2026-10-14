@@ -3,13 +3,13 @@
 // z_algorithm、prefix_function、kmp_search、manacher、palindrome_lengths を愚直な方法とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/string/string.hpp"
+
 #include <algorithm>
 #include <iostream>
 #include <random>
 #include <string>
 #include <vector>
-
-#include "../../src/string/string.hpp"
 
 bool is_palindrome(const std::string& s, int l, int r) {
     for (int i = l, j = r - 1; i < j; i++, j--) {
@@ -62,6 +62,8 @@ int main() {
     ok = ok && manacher(std::string("abaaba")) == std::vector<int>{1, 2, 1, 1, 2, 1};
     ok = ok && palindrome_lengths(std::string("abaaba")) == std::vector<int>{1, 0, 3, 0, 1, 6, 1, 0, 3, 0, 1};
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

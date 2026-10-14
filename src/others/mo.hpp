@@ -5,16 +5,16 @@
  * @brief Mo's algorithm
  */
 
-#include <vector>
-#include <array>
-#include <type_traits>
 #include <algorithm>
+#include <array>
 #include <cassert>
 #include <cmath>
+#include <type_traits>
+#include <vector>
 
 template <typename U, class ADD_LEFT, class DELETE_LEFT, class ADD_RIGHT = ADD_LEFT, class DELETE_RIGHT = DELETE_LEFT>
 struct Mo {
-   private:
+private:
     int _n;
     std::vector<std::array<int, 3>> lri;
     U _e;
@@ -28,7 +28,7 @@ struct Mo {
     static_assert(std::is_invocable_r_v<void, ADD_RIGHT, U&, int>, "ADD_RIGHT must be callable with (U&, int)");
     static_assert(std::is_invocable_r_v<void, DELETE_RIGHT, U&, int>, "DELETE_RIGHT must be callable with (U&, int)");
 
-   public:
+public:
     Mo(int n,
        const U& e,
        const ADD_LEFT& add_left,
@@ -46,7 +46,7 @@ struct Mo {
     template <typename T, class F>
     std::vector<T> solve(const F& f) {
         static_assert(std::is_invocable_r_v<T, F, U&>, "The function passed to solve must be callable with (U&) and return T");
-        
+
         const int w = std::max<int>(1, 1.0 * _n / std::max<double>(1.0, std::sqrt(lri.size() * 2.0 / 3.0)));
         std::sort(lri.begin(), lri.end(), [=](const std::array<int, 3>& a, const std::array<int, 3>& b) {
             int aw = a[0] / w;

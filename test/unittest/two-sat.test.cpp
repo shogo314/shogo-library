@@ -3,11 +3,11 @@
 // TwoSat をすべての割り当てを試す愚直な実装とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/graph/two-sat.hpp"
+
 #include <iostream>
 #include <random>
 #include <vector>
-
-#include "../../src/graph/two-sat.hpp"
 
 // 条件の種類: 0 = clause, 1 = imply, 2 = fix, 3 = nand
 struct Cond {
@@ -59,6 +59,8 @@ int main() {
     // 充足可能な場合と不可能な場合の両方を試せていること
     ok = ok && 100 < sat_count && sat_count < 2900;
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

@@ -3,12 +3,12 @@
 // MinCostFlow を、Bellman-Ford 法で 1 ずつ流す愚直な方法と比べる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/graph/min-cost-flow.hpp"
+
 #include <iostream>
 #include <random>
 #include <tuple>
 #include <vector>
-
-#include "../../src/graph/min-cost-flow.hpp"
 
 // Bellman-Ford 法で 1 ずつ流す愚直な最小費用流
 struct Naive {
@@ -117,7 +117,8 @@ int main() {
             total += (long long)e.flow * d;
         }
         for (int v = 0; v < n; v++) {
-            long long want = v == s ? -max_flow : v == t ? max_flow : 0;
+            long long want = v == s ? -max_flow : v == t ? max_flow
+                                                         : 0;
             if (balance[v] != want) ok = false;
         }
         if (total != expected[max_flow]) ok = false;
@@ -153,6 +154,8 @@ int main() {
     mcf.add_edge(2, 3, 2, 1);
     ok = ok && mcf.slope(0, 3) == std::vector<std::pair<int, int>>{{0, 0}, {2, 6}, {3, 10}};
 
-    if (ok) std::cout << "Hello World" << std::endl;
-    else std::cerr << "failed" << std::endl;
+    if (ok)
+        std::cout << "Hello World" << std::endl;
+    else
+        std::cerr << "failed" << std::endl;
 }

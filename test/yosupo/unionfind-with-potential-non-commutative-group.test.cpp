@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "../../src/math/modint.hpp"
 #include "../../src/data_structures/potentialized-unionfind.hpp"
+#include "../../src/math/modint.hpp"
 
 using mint = modint998244353;
 struct Matrix_2x2 {

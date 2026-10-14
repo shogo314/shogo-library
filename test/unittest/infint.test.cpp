@@ -4,6 +4,8 @@
 // 境界の値 (max()、min() とその前後) を含む値の全組で、四則演算・剰余・比較・符号反転を確かめる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/math/infint.hpp"
+
 #include <iostream>
 #include <limits>
 #include <random>
@@ -11,11 +13,12 @@
 #include <string>
 #include <vector>
 
-#include "../../src/math/infint.hpp"
-
 // 愚直な値: 種類と、有限のときの値
 struct Naive {
-    enum Kind { Finite, PlusInf, MinusInf, NaN } kind;
+    enum Kind { Finite,
+                PlusInf,
+                MinusInf,
+                NaN } kind;
     __int128 v;
 };
 

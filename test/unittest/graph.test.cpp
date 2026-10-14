@@ -4,12 +4,12 @@
 // 01-BFS と Floyd-Warshall を、Dijkstra と Bellman-Ford の結果と比べる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/graph/graph.hpp"
+
 #include <iostream>
 #include <limits>
 #include <random>
 #include <vector>
-
-#include "../../src/graph/graph.hpp"
 
 int main() {
     std::mt19937_64 rng(314);
@@ -54,8 +54,10 @@ int main() {
         Graph<int> g(n);
         for (int i = 0; i < m; i++) {
             int u = rng() % n, v = rng() % n, w = rng() % 2;
-            if (rng() % 2) g.add_edge(u, v, w);
-            else g.add_directed_edge(u, v, w);
+            if (rng() % 2)
+                g.add_edge(u, v, w);
+            else
+                g.add_directed_edge(u, v, w);
         }
         for (int s = 0; s < n; s++) {
             auto a = g.shortest_path_01bfs(s);

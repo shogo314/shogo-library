@@ -3,13 +3,13 @@
 // FunctionalGraph を愚直な実装とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/graph/functional-graph.hpp"
+
 #include <algorithm>
 #include <iostream>
 #include <random>
 #include <set>
 #include <vector>
-
-#include "../../src/graph/functional-graph.hpp"
 
 // x から k 回移動した頂点 (周期を見つけて k を縮める)
 int naive_hop(const std::vector<int>& g, int x, long long k) {

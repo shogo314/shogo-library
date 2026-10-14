@@ -6,7 +6,8 @@
 #include "../../src/graph/tree.hpp"
 
 int main() {
-    int n; std::cin >> n;
+    int n;
+    std::cin >> n;
     Tree<long long> tree(n);
     tree.read(0, true);
     auto path = tree.diameter();

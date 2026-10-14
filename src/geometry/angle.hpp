@@ -21,8 +21,8 @@
  */
 template <typename T>
 struct Angle {
-    T x; //!< x 座標
-    T y; //!< y 座標
+    T x;  //!< x 座標
+    T y;  //!< y 座標
 
     /**
      * @brief 偏角 0 (零ベクトル)
@@ -60,7 +60,7 @@ struct Angle {
 
     friend constexpr bool operator<(const Angle& a, const Angle& b) noexcept {
         // 零ベクトルは外積で比べられないので、偏角 0 (x 軸正方向) として先に判定する
-        if (b.is_zero()) return false;  // 偏角 0 より小さいものはない
+        if (b.is_zero()) return false;                   // 偏角 0 より小さいものはない
         if (a.is_zero()) return !(b.y == 0 && b.x > 0);  // b の偏角が 0 より大きいか
         if (a.half() != b.half()) return a.half() < b.half();
         return b.x * a.y < a.x * b.y;

@@ -4,6 +4,8 @@
 // LazySegTree の get / set / seg[k] / 1 点の apply / size / os << seg も確かめる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/algebra/acted-monoid.hpp"
+
 #include <algorithm>
 #include <iostream>
 #include <optional>
@@ -11,7 +13,6 @@
 #include <sstream>
 #include <vector>
 
-#include "../../src/algebra/acted-monoid.hpp"
 #include "../../src/data_structures/imos.hpp"
 #include "../../src/data_structures/lazy-segtree.hpp"
 #include "../../src/math/modint.hpp"
@@ -54,8 +55,10 @@ void test_lazy(GenV gen_v, GenF gen_f, ToS to_s, Fold fold, Act act, Eq eq, std:
                 a[k] = act(f, a[k]);
             } else if (t == 2) {
                 V x = gen_v();
-                if (rng() % 2) seg.set(k, to_s(x, k));
-                else seg[k] = to_s(x, k);
+                if (rng() % 2)
+                    seg.set(k, to_s(x, k));
+                else
+                    seg[k] = to_s(x, k);
                 a[k] = x;
             } else if (t == 3) {
                 check(eq(seg.get(k), fold(a, k, k + 1)), name);
@@ -136,7 +139,8 @@ int main() {
             [](P x, int i) { return P(x.first, i); },
             [](const std::vector<P>& a, int l, int r) {
                 P best(std::numeric_limits<long long>::lowest(), 0);
-                for (int i = l; i < r; i++) if (a[i].first > best.first) best = P(a[i].first, i);
+                for (int i = l; i < r; i++)
+                    if (a[i].first > best.first) best = P(a[i].first, i);
                 return best;
             },
             [](long long f, P x) { return P(x.first + f, x.second); },
@@ -165,7 +169,8 @@ int main() {
             },
             [](mint f, mint x) { return x + f; },
             [](const A::S& x, const A::S& y) {
-                for (int i = 0; i <= K; i++) if (x[i] != y[i]) return false;
+                for (int i = 0; i <= K; i++)
+                    if (x[i] != y[i]) return false;
                 return true;
             },
             rng, "AddPowerSum");

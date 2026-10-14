@@ -4,12 +4,13 @@
 // OperatorProperty を自分で定義した場合 (GF(2) と、既定の演算を継承したもの) の det と inv を愚直な計算と比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/math/matrix.hpp"
+
 #include <iostream>
 #include <random>
 #include <string>
 #include <vector>
 
-#include "../../src/math/matrix.hpp"
 #include "../../src/math/modint.hpp"
 
 using mint = static_modint<998244353>;

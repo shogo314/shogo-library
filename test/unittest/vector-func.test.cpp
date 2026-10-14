@@ -115,7 +115,7 @@ int main() {
         {
             for (bool rev : {false, true}) {
                 auto idx = sorted_idx(a, rev);
-                std::vector<int> perm = idx;
+                std::vector<long long> perm = idx;
                 std::sort(perm.begin(), perm.end());
                 bool is_perm = (int)perm.size() == n;
                 for (int i = 0; i < (int)perm.size() && is_perm; i++) is_perm = perm[i] == i;

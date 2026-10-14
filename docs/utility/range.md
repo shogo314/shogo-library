@@ -25,10 +25,10 @@ Range(10).product_xor();  // 0 ^ 1 ^ ... ^ 9 = 1
 | `Range(start, stop)` | `start, start+1, ..., stop-1` | $O(1)$ |
 | `Range(start, stop, step)` | `start, start+step, ...` (`stop` の手前まで)。`step` は負でもよいが 0 は不可 | $O(1)$ |
 | `begin()` / `end()` | ランダムアクセスイテレータ | $O(1)$ |
-| `size()` / `empty()` | 要素数 / 空か | $O(1)$ |
-| `r[i]` / `at(i)` | `i` 番目の要素 | $O(1)$ |
+| `size()` / `empty()` | 要素数 (`long long`) / 空か | $O(1)$ |
+| `r[i]` / `at(i)` | `i` 番目の要素 (`i` は `long long`) | $O(1)$ |
 | `count(x)` / `contains(x)` | `x` の個数 (0 か 1) / `x` を含むか | $O(1)$ |
-| `index(x)` | `x` の位置 (含まなければ assert で落ちる) | $O(1)$ |
+| `index(x)` | `x` の位置 (`long long`。含まなければ assert で落ちる) | $O(1)$ |
 | `find(x)` | `x` を指すイテレータ (なければ `end()`) | $O(1)$ |
 | `lower_bound(x)` / `upper_bound(x)` | `x` 以上 / `x` より大きい最初の要素 (`step > 0` のみ) | $O(1)$ |
 | `sum()` | 総和 | $O(1)$ |

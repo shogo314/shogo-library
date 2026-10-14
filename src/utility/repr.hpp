@@ -111,7 +111,7 @@ inline std::string repr(const std::array<T, N>&);
 ///////////////////////////////////////////////////////////////////
 
 template <typename T, ENABLE_IF_T(!has_type_str_v<T>)>
-inline std::string type_str(const T& t) {
+inline std::string type_str(const T&) {
     return "T";
 }
 template <typename T, ENABLE_IF_T(has_type_str_v<T>)>
@@ -119,7 +119,7 @@ inline std::string type_str(const T& t) {
     return t.type_str();
 }
 template <typename T, ENABLE_IF_T(!has_initializer_str_v<T>)>
-inline std::string initializer_str(const T& t) {
+inline std::string initializer_str(const T&) {
     return "{}";
 }
 template <typename T, ENABLE_IF_T(has_initializer_str_v<T>)>

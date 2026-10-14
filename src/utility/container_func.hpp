@@ -205,10 +205,10 @@ inline constexpr mem_value_type<C> median(const C& v) {
 
 // x が最初に現れる位置。なければ -1
 template <class C, typename U>
-inline constexpr int index(const C& v, const U& x) {
+inline constexpr long long index(const C& v, const U& x) {
     auto it = find(v, x);
     if (it == v.end()) return -1;
-    return static_cast<int>(std::distance(v.begin(), it));
+    return static_cast<long long>(std::distance(v.begin(), it));
 }
 
 template <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>
@@ -230,10 +230,10 @@ inline constexpr mem_value_type<C> mex(const C& v) {
 }
 
 template <class C>
-inline constexpr int bisect_left(const C& v, const mem_value_type<C>& x) {
-    return static_cast<int>(std::distance(v.begin(), lower_bound(v, x)));
+inline constexpr long long bisect_left(const C& v, const mem_value_type<C>& x) {
+    return static_cast<long long>(std::distance(v.begin(), lower_bound(v, x)));
 }
 template <class C>
-inline constexpr int bisect_right(const C& v, const mem_value_type<C>& x) {
-    return static_cast<int>(std::distance(v.begin(), upper_bound(v, x)));
+inline constexpr long long bisect_right(const C& v, const mem_value_type<C>& x) {
+    return static_cast<long long>(std::distance(v.begin(), upper_bound(v, x)));
 }

@@ -11,7 +11,7 @@ documentation_of: //src/utility/container_func.hpp
 std::vector<int> v = {3, 1, 4, 1, 5};
 auto w = sorted(v);            // {1, 1, 3, 4, 5}
 int s = sum(v), mx = max(v);   // 14, 5
-int i = bisect_left(w, 3);     // 2
+long long i = bisect_left(w, 3);  // 2
 bool b = contains(v, 4);       // true
 ```
 
@@ -47,9 +47,9 @@ bool b = contains(v, 4);       // true
 | `find(c, x)` | `x` を指すイテレータ (なければ `end()`) | $O(n)$ (`set` などでは $O(\log n)$) |
 | `count(c, x)` | `x` の個数 | $O(n)$ (`multiset` などでは $O(\log n + k)$、$k$ は個数) |
 | `contains(c, x)` | `x` を含むか | `find` と同じ |
-| `index(c, x)` | `x` が最初に現れる位置 (なければ `-1`) | $O(n)$ |
+| `index(c, x)` | `x` が最初に現れる位置 (`long long`。なければ `-1`) | $O(n)$ |
 | `lower_bound(c, x)` / `upper_bound(c, x)` | イテレータを返す | $O(\log n)$ |
-| `bisect_left(c, x)` / `bisect_right(c, x)` | 添字を返す (Python の `bisect`) | $O(\log n)$ (`set` などでは位置を数えるので $O(n)$) |
+| `bisect_left(c, x)` / `bisect_right(c, x)` | 添字を `long long` で返す (Python の `bisect`) | $O(\log n)$ (`set` などでは位置を数えるので $O(n)$) |
 
 ## 関連
 

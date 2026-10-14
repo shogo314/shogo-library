@@ -7,22 +7,22 @@ documentation_of: //src/utility/compress.hpp
 
 ```cpp
 Compress<long long> cp(A);         // A の値を登録して build まで行う
-int i = cp.id(A[0]);               // A[0] の番号 (0 <= i < cp.size())
+long long i = cp.id(A[0]);         // A[0] の番号 (0 <= i < cp.size())
 long long v = cp[i];               // 番号から元の値
-std::vector<int> B = cp.ids(A);    // A の各値を番号に置き換えた列
+std::vector<long long> B = cp.ids(A);  // A の各値を番号に置き換えた列
 
 Compress<long long> cq;            // 複数の列やクエリの値をまとめて登録する場合
 cq.add(A);
 cq.add(x);
 cq.build();
-int l = cq.bisect_left(d), r = cq.bisect_left(u);  // 値が [d, u) の範囲は番号 [l, r)
+long long l = cq.bisect_left(d), r = cq.bisect_left(u);  // 値が [d, u) の範囲は番号 [l, r)
 ```
 
 値をすべて登録してから `build` を呼び、そのあとで番号を求めます。`build` の後に `add` したり、`build` の前に番号を求めたりすると assert で落ちます。
 
 ## メンバ関数
 
-$n$ は登録した値の個数、$m$ は渡した列の長さです。
+$n$ は登録した値の個数、$m$ は渡した列の長さです。番号と個数は `long long` で返します。
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|

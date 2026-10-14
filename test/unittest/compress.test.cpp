@@ -43,7 +43,7 @@ int main() {
                 bool has = std::count(a.begin(), a.end(), x) > 0;
                 ok = ok && c->bisect_left(x) == lo && c->bisect_right(x) == up && c->contains(x) == has;
             }
-            std::vector<int> ids = c->ids(a);
+            std::vector<long long> ids = c->ids(a);
             for (int i = 0; i < n; i++) ok = ok && xs[ids[i]] == a[i];
         }
     }

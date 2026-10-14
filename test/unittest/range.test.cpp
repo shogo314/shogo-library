@@ -68,7 +68,7 @@ int main() {
         check(by_iteration(r) == v, "iteration");
         check(r.to_vector() == v, "to_vector");
         check(std::vector<ll>(r.begin(), r.end()) == v, "iterator range constructor");
-        check(r.size() == (size_t)n, "size");
+        check(r.size() == n, "size");
         check(r.empty() == v.empty(), "empty");
         check(r.end() - r.begin() == n, "end - begin");
         for (int i = 0; i < n; i++) {
@@ -82,7 +82,7 @@ int main() {
             check(r.contains(x) == (c > 0), "contains");
             if (c > 0) {
                 int idx = std::find(v.begin(), v.end(), x) - v.begin();
-                check(r.index(x) == (size_t)idx, "index");
+                check(r.index(x) == idx, "index");
                 check(*r.find(x) == x && r.find(x) - r.begin() == idx, "find (found)");
             } else {
                 check(r.find(x) == r.end(), "find (not found)");
@@ -109,8 +109,8 @@ int main() {
         // reversed, sorted
         std::vector<ll> rv(v.rbegin(), v.rend()), sv = v;
         std::sort(sv.begin(), sv.end());
-        check(by_iteration(r.reversed()) == rv && r.reversed().size() == (size_t)n, "reversed");
-        check(by_iteration(r.sorted()) == sv && r.sorted().size() == (size_t)n, "sorted");
+        check(by_iteration(r.reversed()) == rv && r.reversed().size() == n, "reversed");
+        check(by_iteration(r.sorted()) == sv && r.sorted().size() == n, "sorted");
 
         // clipped: 値が [l, r) の要素だけを順番を保って残す
         {
@@ -119,7 +119,7 @@ int main() {
             for (ll x : v)
                 if (l <= x && x < rr) expect.push_back(x);
             Range c = r.clipped(l, rr);
-            check(by_iteration(c) == expect && c.size() == expect.size(), "clipped");
+            check(by_iteration(c) == expect && c.size() == (long long)expect.size(), "clipped");
         }
 
         // slice: インデックスを Range で指定する (範囲外のインデックスは無視)
@@ -130,7 +130,7 @@ int main() {
             for (ll i : naive_range(s2, t2, st2))
                 if (0 <= i && i < n) expect.push_back(v[i]);
             Range s = r.slice(idx);
-            check(by_iteration(s) == expect && s.size() == expect.size(), "slice");
+            check(by_iteration(s) == expect && s.size() == (long long)expect.size(), "slice");
         }
 
         // ==, != は列として等しいか

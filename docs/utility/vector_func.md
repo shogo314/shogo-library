@@ -29,7 +29,7 @@ auto idx = sorted_idx(a, true);   // 値の降順に並べた添字
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `sorted_idx(v, reverse = false)` | 値の昇順 (降順) に並べた添字のリスト | $O(n \log n)$ |
+| `sorted_idx(v, reverse = false)` | 値の昇順 (降順) に並べた添字のリスト (`std::vector<long long>`) | $O(n \log n)$ |
 | `cumulative_sum(v)` | 先頭に 0 を付けた累積和 (長さ `size + 1`) | $O(n)$ |
 | `iota(n)` | `{0, 1, ..., n-1}` | $O(n)$ |
 | `unique(v)` | ソートして重複を除いたコピー | $O(n \log n)$ |

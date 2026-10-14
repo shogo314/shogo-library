@@ -6,7 +6,7 @@ documentation_of: //src/graph/heavy-light-decomposition.hpp
 木の頂点を一列に並べ替えて、どのパスも $O(\log n)$ 個の区間に、どの部分木も 1 つの区間になるようにします。頂点 `v` は列の `index(v)` 番目に対応します。[セグメント木](../data_structures/segtree.hpp)・[遅延伝搬セグメント木](../data_structures/lazy-segtree.hpp)・[Fenwick Tree](../data_structures/fenwick-tree.hpp) と組み合わせて、パスや部分木への更新とクエリを行います。前計算は $O(n)$ で、DFS は再帰を使いません。
 
 ```cpp
-HeavyLightDecomposition hld(g, root);  // Graph、Tree、RootedTree から作れる
+HeavyLightDecomposition hld(tree, root);  // tree は Tree<Cost>
 std::vector<long long> init(n);
 for (int v = 0; v < n; v++) init[hld.index(v)] = a[v];
 FenwickTree<group::Sum<long long>> ft(init);
@@ -35,7 +35,7 @@ for (auto [a, b] : hld.path(u, v)) x = a <= b ? forward.prod(a, b + 1)(x) : back
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `HeavyLightDecomposition(tree, root = 0)` | 木 `tree` を根 `root` で分解する。`tree.n` が頂点数で、`for (int u : tree[v])` で隣接する頂点を列挙できればよい | $O(n)$ |
+| `HeavyLightDecomposition(tree, root = 0)` | 木 `tree` (`Tree<Cost>`) を根 `root` で分解する | $O(n)$ |
 | `index(v)` / `vertex(i)` | 頂点 `v` の列での位置 / 列の `i` 番目の頂点 | $O(1)$ |
 | `parent(v)` / `depth(v)` / `subtree_size(v)` | 親 (根は `-1`) / 深さ (辺の本数) / 部分木の頂点数 | $O(1)$ |
 | `subtree(v)` | `v` の部分木に対応する区間 `[l, r)` | $O(1)$ |

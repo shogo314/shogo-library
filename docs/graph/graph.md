@@ -18,6 +18,7 @@ for (auto& e : g[u]) { /* e.src, e.dst, e.cost, e.id */ }
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `Graph(n)` | 頂点数 `n` の空グラフ | $O(n)$ |
+| `size()` | 頂点数 | $O(1)$ |
 | `add_edge(u, v, w = 1)` | 無向辺を追加 | ならし $O(1)$ |
 | `add_directed_edge(u, v, w = 1)` | 有向辺を追加 | ならし $O(1)$ |
 | `read(m, padding = -1, weighted = false, directed = false)` | 標準入力から `m` 本の辺を読む。頂点番号に `padding` を足す | $O(m)$ |
@@ -30,7 +31,7 @@ for (auto& e : g[u]) { /* e.src, e.dst, e.cost, e.id */ }
 
 | 変数 | 説明 |
 |---|---|
-| `n` / `m` | 頂点数 / 辺数 |
+| `n` / `m` | 頂点数 (`size()` と同じ) / 辺数 |
 | `g` | 隣接リスト (`g[v]` は `v` から出る辺のリスト) |
 
 ## 最短路
@@ -64,7 +65,7 @@ for (auto& e : g[u]) { /* e.src, e.dst, e.cost, e.id */ }
 ```cpp
 auto d = g.floyd_warshall();
 bool negative_cycle = false;
-for (int i = 0; i < g.n; i++) negative_cycle |= d[i][i] < 0;
+for (int i = 0; i < g.size(); i++) negative_cycle |= d[i][i] < 0;
 ```
 
 ## 関連

@@ -29,6 +29,7 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `Tree(n)` | 頂点数 `n` の空の木 | $O(n)$ |
+| `size()` | 頂点数 (`RootedTree`・`DoublingClimbTree` でも使える) | $O(1)$ |
 | `add_edge(u, v, w = 1)` | 辺を追加 | $O(1)$ |
 | `read(padding = -1, weighted = false)` | 標準入力から `n - 1` 本の辺を読む | $O(n)$ |
 | `diameter(weighted = true)` | 直径を構成する辺のリスト (端点から順に) | $O(n \log n)$ |

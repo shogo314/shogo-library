@@ -34,7 +34,7 @@ auto [cost, edges] = minimum_spanning_tree(g);
 
 ```cpp
 auto groups = strongly_connected_components(g);
-std::vector<int> id(g.n);
+std::vector<int> id(g.size());
 for (int i = 0; i < (int)groups.size(); i++) {
     for (int v : groups[i]) id[v] = i;
 }
@@ -49,7 +49,7 @@ if (!c.empty()) {
 }
 ```
 
-最小全域木は `auto [cost, edges] = minimum_spanning_tree(g);` のように受け取れます。`edges` はコストの昇順 (同じなら辺の番号順) に並びます。グラフが連結かどうかは `edges.size() == g.n - 1` で判定できます。
+最小全域木は `auto [cost, edges] = minimum_spanning_tree(g);` のように受け取れます。`edges` はコストの昇順 (同じなら辺の番号順) に並びます。グラフが連結かどうかは `edges.size() == g.size() - 1` で判定できます。
 
 ## 関連
 

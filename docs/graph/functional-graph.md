@@ -20,6 +20,7 @@ bool b = fg.is_cycle[3];     // false
 |---|---|---|
 | `FunctionalGraph(g)` | 頂点 `i` から `g[i]` への辺を持つグラフを作る | $O(n \log n)$ |
 | `FunctionalGraph(n)` + `read(padding = -1)` | 標準入力から `g[0], ..., g[n-1]` を読む。頂点番号に `padding` を足す | $O(n \log n)$ |
+| `size()` | 頂点数 | $O(1)$ |
 | `hop(x, k)` | `x` から `k` 回移動した頂点 (`k` は `long long` でよい) | $O(\log n)$ |
 | `hopable(x)` | `x` から 0 回以上の移動で到達できる頂点の個数 | $O(1)$ |
 
@@ -27,7 +28,7 @@ bool b = fg.is_cycle[3];     // false
 
 | 変数 | 説明 |
 |---|---|
-| `n` / `g` | 頂点数 / 各頂点の行き先 |
+| `n` / `g` | 頂点数 (`size()` と同じ) / 各頂点の行き先 |
 | `is_cycle[v]` | `v` がサイクル上にあるか |
 | `depth[v]` | `v` からサイクルに入るまでの距離 (サイクル上なら 0) |
 | `root[v]` | `v` から進んで最初に着くサイクル上の頂点 |

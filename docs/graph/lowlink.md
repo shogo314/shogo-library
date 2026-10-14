@@ -21,6 +21,7 @@ auto groups = ll.two_edge_connected_groups();
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `LowLink(g)` | 無向グラフ `g` から求める | $O(n + m)$ |
+| `size()` | 頂点数 | $O(1)$ |
 | `articulation_points()` | 関節点 (取り除くと連結成分が増える頂点) の番号の昇順のリスト | $O(1)$ |
 | `is_articulation_point(v)` | `v` が関節点か | $O(1)$ |
 | `bridges()` | 橋 (取り除くと連結成分が増える辺) の辺の番号 (`Edge::id`) の昇順のリスト | $O(1)$ |

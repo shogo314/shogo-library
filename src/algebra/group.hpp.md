@@ -313,6 +313,11 @@ title: "\u7FA4\u306E\u5B9A\u7FA9"
 
 - `S inv(const S& a)`: 逆元
 
+```cpp
+PotentializedUnionFind<group::Sum<long long>> uf(n);  // 差を和の群で管理する
+FenwickTree<group::Xor<int>> ft(n);                   // 区間 xor
+```
+
 ## 一覧 (`namespace group`)
 
 | 群 | 要素の型 `S` | 積 | 単位元 | 逆元 |
@@ -336,3 +341,4 @@ PotentializedUnionFind uf(n, g);
 ## 関連
 
 - 逆元を持たない場合は [モノイド](monoid.hpp)
+- 群を渡して使うデータ構造は [Fenwick Tree](../data_structures/fenwick-tree.hpp)、[ポテンシャル付きUnionFind](../data_structures/potentialized-unionfind.hpp)、[マージソートツリー](../data_structures/merge-sort-tree.hpp)

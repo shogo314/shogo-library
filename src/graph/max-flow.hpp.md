@@ -199,19 +199,19 @@ auto e = mf.get_edge(id);           // e.from, e.to, e.cap, e.flow
 std::vector<bool> S = mf.min_cut(s);  // 最小カットの s 側
 ```
 
-## メンバ
+## メンバ関数
 
-| メンバ | 説明 |
-|---|---|
-| `MaxFlow(n)` | 頂点数 `n`、辺のない状態 |
-| `size()` | 頂点数 |
-| `add_edge(from, to, cap)` | `from` から `to` へ容量 `cap` の辺を追加し、辺の番号 (追加した順に 0, 1, ...) を返す |
-| `flow(s, t)` | `s` から `t` へできるだけ流し、流した量を返す |
-| `flow(s, t, limit)` | 流す量の上限を `limit` にする |
-| `get_edge(i)` | 番号 `i` の辺の `from`、`to`、`cap` (容量)、`flow` (流れている量) |
-| `edges()` | すべての辺の情報 (追加した順) |
-| `change_edge(i, new_cap, new_flow)` | 番号 `i` の辺の容量を `new_cap`、流れている量を `new_flow` に変える ($0 \le$ `new_flow` $\le$ `new_cap`)。ほかの辺の流量は変えないので、流量の保存則が崩れることがある |
-| `min_cut(s)` | 残余グラフで `s` から行ける頂点か。`flow(s, t)` で流しきった後なら、`true` の頂点の集合が最小カットの `s` 側になる |
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `MaxFlow(n)` | 頂点数 `n`、辺のない状態 | $O(n)$ |
+| `size()` | 頂点数 | $O(1)$ |
+| `add_edge(from, to, cap)` | `from` から `to` へ容量 `cap` の辺を追加し、辺の番号 (追加した順に 0, 1, ...) を返す | ならし $O(1)$ |
+| `flow(s, t)` | `s` から `t` へできるだけ流し、流した量を返す | $O(n^2 m)$ |
+| `flow(s, t, limit)` | 流す量の上限を `limit` にする | $O(n^2 m)$ |
+| `get_edge(i)` | 番号 `i` の辺の `from`、`to`、`cap` (容量)、`flow` (流れている量) | $O(1)$ |
+| `edges()` | すべての辺の情報 (追加した順) | $O(m)$ |
+| `change_edge(i, new_cap, new_flow)` | 番号 `i` の辺の容量を `new_cap`、流れている量を `new_flow` に変える ($0 \le$ `new_flow` $\le$ `new_cap`)。ほかの辺の流量は変えないので、流量の保存則が崩れることがある | $O(1)$ |
+| `min_cut(s)` | 残余グラフで `s` から行ける頂点か。`flow(s, t)` で流しきった後なら、`true` の頂点の集合が最小カットの `s` 側になる | $O(n + m)$ |
 
 `flow` を何度も呼ぶと、前回までの流れに追加して流します。辺を追加してから、もう一度 `flow` を呼ぶこともできます。
 

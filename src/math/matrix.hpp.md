@@ -550,21 +550,27 @@ auto t = g.rotate(1).vstr();          // 時計回りに 90 度回して vector<
 
 ## コンストラクタ・アクセス
 
-| メンバ | 説明 |
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `Matrix({ {a, b}, {c, d} })` | 初期化子リストから作る | $O(nm)$ |
+| `Matrix(v)` | `vector<vector<T>>` や `vector<string>` から作る | $O(nm)$ |
+| `Matrix(n, m, val = 0)` | `n` 行 `m` 列で、要素はすべて `val` | $O(nm)$ |
+| `A.size()` | 行数 | $O(1)$ |
+| `A[i][j]` | 要素 | $O(1)$ |
+| `for (auto& row : A)` | 各行を走査 | $O(n)$ |
+| `A.col(j)` | `j` 列目 | $O(n)$ |
+| `A.str(i)` / `A.vstr()` | `i` 行目を `string` で / 全体を `vector<string>` で返す | $O(m)$ / $O(nm)$ |
+| `==`、`!=` | 比較 | $O(nm)$ |
+
+## メンバ変数
+
+| 変数 | 説明 |
 |---|---|
-| `Matrix({ {a, b}, {c, d} })` | 初期化子リストから作る |
-| `Matrix(v)` | `vector<vector<T>>` や `vector<string>` から作る |
-| `Matrix(n, m, val = 0)` | `n` 行 `m` 列で、要素はすべて `val` |
 | `n` / `m` | 行数 / 列数 |
-| `A[i][j]` | 要素 |
-| `for (auto& row : A)` | 各行を走査 |
-| `A.col(j)` | `j` 列目 |
-| `A.str(i)` / `A.vstr()` | `i` 行目を `string` で / 全体を `vector<string>` で返す |
-| `==`、`!=` | 比較 |
 
 ## 線形代数
 
-| メンバ | 説明 | 計算量 |
+| 関数 | 説明 | 計算量 |
 |---|---|---|
 | `A + B`、`A - B`、`+=`、`-=` | 和・差 | $O(nm)$ |
 | `A * B`、`*=` | 積 | $O(nmp)$ |
@@ -581,10 +587,15 @@ auto t = g.rotate(1).vstr();          // 時計回りに 90 度回して vector<
 
 いずれも新しい行列を返します。
 
-| メンバ | 説明 |
-|---|---|
-| `A.transpose()` | 転置 |
-| `A.rev_lr()` / `A.rev_ud()` | 左右反転 / 上下反転 |
-| `A.rotate(k)` | 時計回りに 90 度を `k` 回 (負なら反時計回り) |
-| `A.shift(dy, dx)` | $(i, j)$ を $((i + dy) \bmod n, (j + dx) \bmod m)$ に巡回シフト |
-| `A.shift_l(k)`、`shift_r(k)`、`shift_u(k)`、`shift_d(k)` | 左・右・上・下に `k` 回巡回シフト |
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `A.transpose()` | 転置 | $O(nm)$ |
+| `A.rev_lr()` / `A.rev_ud()` | 左右反転 / 上下反転 | $O(nm)$ |
+| `A.rotate(k)` | 時計回りに 90 度を `k` 回 (負なら反時計回り) | $O(nm)$ |
+| `A.shift(dy, dx)` | $(i, j)$ を $((i + dy) \bmod n, (j + dx) \bmod m)$ に巡回シフト | $O(nm)$ |
+| `A.shift_l(k)`、`shift_r(k)`、`shift_u(k)`、`shift_d(k)` | 左・右・上・下に `k` 回巡回シフト | $O(nm)$ |
+
+## 関連
+
+- `det`、`inv` で使う体の要素は [modint](modint.hpp)
+- 行列累乗の代わりに漸化式を多項式で扱うなら [形式的冪級数](fps.hpp)

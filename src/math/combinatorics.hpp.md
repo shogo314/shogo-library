@@ -357,7 +357,7 @@ CombinationPQ cpq(2, 3);                 // mod 2^3 = 8
 int d = cpq.C(5, 2);                     // 10 mod 8 = 2
 ```
 
-## `Combination<Modint>`
+## `Combination<Modint>` のメンバ関数
 
 static メンバ関数だけのクラスです。階乗とその逆元を必要になった分だけ前計算して使い回します。mod は素数で、使う $n$ より大きいこと。`dynamic_modint` で mod を変えた場合は前計算をやり直します。
 
@@ -375,7 +375,7 @@ static メンバ関数だけのクラスです。階乗とその逆元を必要�
 | `C_lucas(n, r)` | ${}_n C_r$ を Lucas の定理で計算 (`n` が mod 以上でもよい) | 前計算 $O(\mathrm{mod})$、以降 $O(\log n)$ |
 | `extend(n)` | $n$ までの階乗を前計算しておく | $O(n)$ |
 
-## `CombinationPQ`
+## `CombinationPQ` のメンバ関数
 
 素数 $p$ について、${}_n C_r \bmod p^q$ を求めます。素数でない mod の二項係数は、mod を素因数分解して各 $p^q$ で求め、[中国剰余定理](number-theory.hpp) でまとめます。
 
@@ -383,3 +383,15 @@ static メンバ関数だけのクラスです。階乗とその逆元を必要�
 |---|---|---|
 | `CombinationPQ(p, q)` | 前計算 | $O(p^q)$ |
 | `C(n, r)` | ${}_n C_r \bmod p^q$ (`int` で返す) | $O(\log n)$ |
+
+## `CombinationPQ` のメンバ変数
+
+| 変数 | 説明 |
+|---|---|
+| `p`, `q` | 作るときに渡した $p$、$q$ |
+| `pq` | $p^q$ |
+
+## 関連
+
+- mod を表す型は [modint](modint.hpp)、mod の逆元・冪は [mod 演算](modular-arithmetic.hpp)
+- `CombinationPQ` の結果をまとめる中国剰余定理は [数論](number-theory.hpp)

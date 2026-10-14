@@ -252,15 +252,7 @@ title: "\u6587\u5B57\u5217\u30A2\u30EB\u30B4\u30EA\u30BA\u30E0 (Z-algorithm\u300
   KMP\u3001Manacher)"
 ---
 
-文字列のほか、`vector` などの列にも使えます (要素は `==` で比べます)。どれも $O(n)$ です (`kmp_search` はテキストとパターンの長さの和)。
-
-| 関数 | 説明 |
-|---|---|
-| `z_algorithm(s)` / `z_algorithm(begin, end)` | 各 $i$ について、`s` と `s[i:]` の最長共通接頭辞の長さ `z[i]` を並べた `vector<int>` (`z[0]` は `s` の長さ) |
-| `prefix_function(s)` / `prefix_function(begin, end)` | 各 $i$ について、`s[0, i]` (両端を含む) の接頭辞であり接尾辞でもある部分のうち、`s[0, i]` 自身を除いた最長の長さ `pi[i]` (KMP 法の失敗関数) |
-| `kmp_search(text, pattern)` | `text` の中で `pattern` が現れる開始位置を昇順に並べたもの (KMP 法)。`pattern` が空なら $0, 1, \dots, n$ |
-| `manacher(s)` / `manacher(begin, end)` | 各 $i$ について、`s[i]` を中心とする奇数長の回文の最大の半径 `r[i]` (`s[i - r[i] + 1, i + r[i])` が回文、長さは `2 * r[i] - 1`) |
-| `palindrome_lengths(s)` / `palindrome_lengths(begin, end)` | 長さ $2n - 1$ の `len`。`len[2 * i]` は `s[i]` を中心とする最長の回文の長さ、`len[2 * i + 1]` は `s[i]` と `s[i + 1]` の間を中心とする最長の回文の長さ (なければ 0) |
+Z-algorithm・KMP 法・Manacher 法を $O(n)$ で行います。文字列のほか、`vector` などの列にも使えます (要素は `==` で比べます)。
 
 ```cpp
 auto z = z_algorithm(std::string("aabaab"));        // {6, 1, 0, 3, 1, 0}
@@ -269,6 +261,16 @@ auto pos = kmp_search(std::string("aaaa"), std::string("aa"));  // {0, 1, 2}
 auto r = manacher(std::string("abaaba"));           // {1, 2, 1, 1, 2, 1}
 auto len = palindrome_lengths(std::string("abaaba"));  // {1, 0, 3, 0, 1, 6, 1, 0, 3, 0, 1}
 ```
+
+## 関数
+
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `z_algorithm(s)` / `z_algorithm(begin, end)` | 各 $i$ について、`s` と `s[i:]` の最長共通接頭辞の長さ `z[i]` を並べた `vector<int>` (`z[0]` は `s` の長さ) | $O(n)$ |
+| `prefix_function(s)` / `prefix_function(begin, end)` | 各 $i$ について、`s[0, i]` (両端を含む) の接頭辞であり接尾辞でもある部分のうち、`s[0, i]` 自身を除いた最長の長さ `pi[i]` (KMP 法の失敗関数) | $O(n)$ |
+| `kmp_search(text, pattern)` | `text` の中で `pattern` が現れる開始位置を昇順に並べたもの (KMP 法)。$n$、$m$ は `text`、`pattern` の長さ。`pattern` が空なら $0, 1, \dots, n$ | $O(n + m)$ |
+| `manacher(s)` / `manacher(begin, end)` | 各 $i$ について、`s[i]` を中心とする奇数長の回文の最大の半径 `r[i]` (`s[i - r[i] + 1, i + r[i])` が回文、長さは `2 * r[i] - 1`) | $O(n)$ |
+| `palindrome_lengths(s)` / `palindrome_lengths(begin, end)` | 長さ $2n - 1$ の `len`。`len[2 * i]` は `s[i]` を中心とする最長の回文の長さ、`len[2 * i + 1]` は `s[i]` と `s[i + 1]` の間を中心とする最長の回文の長さ (なければ 0) | $O(n)$ |
 
 - `s[l, r)` が回文かどうかは、`palindrome_lengths(s)[l + r - 1] >= r - l` で判定できます。
 - 文字列の周期 (`s[i] == s[i + p]` がすべての i で成り立つ最小の `p`) は `n - pi[n - 1]` です。

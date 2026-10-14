@@ -215,6 +215,8 @@ auto sa = suffix_array(s);      // {10, 7, 0, 3, 5, 8, 1, 4, 6, 9, 2}
 auto lcp = lcp_array(s, sa);    // {1, 4, 1, 1, 0, 3, 0, 0, 0, 2}
 ```
 
+## 関数
+
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `suffix_array(s)` (`s` は `std::string`) | Suffix Array | $O(n)$ |

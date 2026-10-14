@@ -116,3 +116,7 @@ al<3> t;                    // std::array<long long, 3>
 | `avl<N>` / `asl<N>` | `ary<vl, N>` / `ary<sl, N>` |
 | `ml<T>` / `mll` | `map<ll, T>` / `map<ll, ll>` |
 | `sl` / `spl` / `sal<N>` | `set<ll>` / `set<pl>` / `set<al<N>>` |
+
+## 関連
+
+- これらの別名で変数を宣言して読み込むマクロ (`LL`、`VL` など) は [マクロ](macro.hpp)

@@ -423,20 +423,13 @@ Range(10).product_xor();  // 0 ^ 1 ^ ... ^ 9 = 1
 
 `sum`、`max` などのメンバ関数を持つので、[コンテナに対する関数](container_func.hpp) の `sum(r)`、`max(r)` などから呼ぶと $O(1)$ で計算されます。
 
-## コンストラクタ
-
-| コンストラクタ | 列 |
-|---|---|
-| `Range(stop)` | `0, 1, ..., stop-1` |
-| `Range(start, stop)` | `start, start+1, ..., stop-1` |
-| `Range(start, stop, step)` | `start, start+step, ...` (`stop` の手前まで)。`step` は負でもよいが 0 は不可 |
-
-`start`、`stop`、`step` はメンバ変数として読めます。代入はできません。
-
 ## メンバ関数
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
+| `Range(stop)` | `0, 1, ..., stop-1` | $O(1)$ |
+| `Range(start, stop)` | `start, start+1, ..., stop-1` | $O(1)$ |
+| `Range(start, stop, step)` | `start, start+step, ...` (`stop` の手前まで)。`step` は負でもよいが 0 は不可 | $O(1)$ |
 | `begin()` / `end()` | ランダムアクセスイテレータ | $O(1)$ |
 | `size()` / `empty()` | 要素数 / 空か | $O(1)$ |
 | `r[i]` / `at(i)` | `i` 番目の要素 | $O(1)$ |
@@ -453,4 +446,15 @@ Range(10).product_xor();  // 0 ^ 1 ^ ... ^ 9 = 1
 | `slice(s)` | 位置を `Range` `s` で選んだ `Range` (Python の `r[a:b:c]`) | $O(1)$ |
 | `to_vector()` | `std::vector<long long>` にする | $O(n)$ |
 | `==`、`!=` | 要素の列として等しいか (`Range(0, 5, 2) == Range(0, 6, 2)`) | $O(1)$ |
-| `repr()` | `"Range(start, stop, step)"` ([repr](repr.hpp) 用) | |
+| `repr()` | `"Range(start, stop, step)"` ([repr](repr.hpp) 用) | $O(1)$ |
+
+## メンバ変数
+
+| 変数 | 説明 |
+|---|---|
+| `start` / `stop` / `step` | コンストラクタに渡した値 (`const` なので読むだけ) |
+
+## 関連
+
+- `sum(r)`、`max(r)` などのコンテナ全般の関数は [コンテナに対する関数](container_func.hpp)
+- `repr(r)` で文字列にするなら [repr](repr.hpp)

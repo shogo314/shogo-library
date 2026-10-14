@@ -36,7 +36,7 @@ data:
     \ cycles;    //!< \u5404\u9023\u7D50\u6210\u5206\u306E\u30B5\u30A4\u30AF\u30EB\
     \n    std::vector<int> group_id;               //!< \u305D\u306E\u9802\u70B9\u304C\
     \u5C5E\u3059\u308B\u9023\u7D50\u6210\u5206\u306Eindex\n    std::vector<int> root_index;\
-    \             //!< root\u306Ecycle_list\u4E0A\u306Eindex\n    std::vector<std::vector<int>>\
+    \             //!< root\u306Ecycles\u4E0A\u306Eindex\n    std::vector<std::vector<int>>\
     \ doubling;  //!< DoublingClimbTree\n\n    void build() {\n        assert((int)g.size()\
     \ == n);\n        for (int i = 0; i < n; i++) assert(0 <= g[i] && g[i] < n);\n\
     \        is_cycle.assign(n, false);\n        depth.assign(n, 0);\n        root.assign(n,\
@@ -180,7 +180,7 @@ data:
   isVerificationFile: true
   path: test/unittest/functional-graph.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:33:42+09:00'
+  timestamp: '2026-10-14 13:30:25+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/functional-graph.test.cpp

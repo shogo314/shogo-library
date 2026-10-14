@@ -152,3 +152,8 @@ cs.set(2, 5);
 | `lower_bound(l, r, x)` | 区間 $[l, r)$ で `x` 以上の最小の値と、その個数の `pair` (`std::optional`)。なければ `std::nullopt` | $O(\log^2 n)$ |
 
 メモリは $O(n \log n)$ 使います。
+
+## 関連
+
+- 区間内でキーが範囲に入る要素の積を求めるなら [マージソートツリー](merge-sort-tree.hpp)
+- 全体の値の個数を数えるだけなら [Counter](counter.hpp)

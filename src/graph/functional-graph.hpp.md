@@ -32,9 +32,9 @@ data:
     \u9023\u7D50\u6210\u5206\u306E\u30B5\u30A4\u30AF\u30EB\n    std::vector<int> group_id;\
     \               //!< \u305D\u306E\u9802\u70B9\u304C\u5C5E\u3059\u308B\u9023\u7D50\
     \u6210\u5206\u306Eindex\n    std::vector<int> root_index;             //!< root\u306E\
-    cycle_list\u4E0A\u306Eindex\n    std::vector<std::vector<int>> doubling;  //!<\
-    \ DoublingClimbTree\n\n    void build() {\n        assert((int)g.size() == n);\n\
-    \        for (int i = 0; i < n; i++) assert(0 <= g[i] && g[i] < n);\n        is_cycle.assign(n,\
+    cycles\u4E0A\u306Eindex\n    std::vector<std::vector<int>> doubling;  //!< DoublingClimbTree\n\
+    \n    void build() {\n        assert((int)g.size() == n);\n        for (int i\
+    \ = 0; i < n; i++) assert(0 <= g[i] && g[i] < n);\n        is_cycle.assign(n,\
     \ false);\n        depth.assign(n, 0);\n        root.assign(n, -1);\n        group_id.assign(n,\
     \ 0);\n        root_index.assign(n, 0);\n        groups.clear();\n        cycles.clear();\n\
     \        std::vector<bool> visited(n);\n        for (int i = 0; i < n; i++) {\n\
@@ -109,7 +109,7 @@ data:
     \ cycles;    //!< \u5404\u9023\u7D50\u6210\u5206\u306E\u30B5\u30A4\u30AF\u30EB\
     \n    std::vector<int> group_id;               //!< \u305D\u306E\u9802\u70B9\u304C\
     \u5C5E\u3059\u308B\u9023\u7D50\u6210\u5206\u306Eindex\n    std::vector<int> root_index;\
-    \             //!< root\u306Ecycle_list\u4E0A\u306Eindex\n    std::vector<std::vector<int>>\
+    \             //!< root\u306Ecycles\u4E0A\u306Eindex\n    std::vector<std::vector<int>>\
     \ doubling;  //!< DoublingClimbTree\n\n    void build() {\n        assert((int)g.size()\
     \ == n);\n        for (int i = 0; i < n; i++) assert(0 <= g[i] && g[i] < n);\n\
     \        is_cycle.assign(n, false);\n        depth.assign(n, 0);\n        root.assign(n,\
@@ -174,7 +174,7 @@ data:
   isVerificationFile: false
   path: src/graph/functional-graph.hpp
   requiredBy: []
-  timestamp: '2026-10-14 11:33:42+09:00'
+  timestamp: '2026-10-14 13:30:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/functional-graph.test.cpp
@@ -206,7 +206,7 @@ bool b = fg.is_cycle[3];     // false
 
 ## メンバ変数
 
-| 変数 | 内容 |
+| 変数 | 説明 |
 |---|---|
 | `n` / `g` | 頂点数 / 各頂点の行き先 |
 | `is_cycle[v]` | `v` がサイクル上にあるか |
@@ -216,3 +216,9 @@ bool b = fg.is_cycle[3];     // false
 | `groups[c]` | 連結成分 `c` の頂点のリスト |
 | `cycles[c]` | 連結成分 `c` のサイクルの頂点を、辺をたどる順に並べたリスト |
 | `root_index[v]` | `root[v]` の `cycles` 上の位置 |
+| `doubling[v][j]` | サイクル上にない頂点 `v` から $2^j$ 回移動した頂点。サイクルに着くまでの分だけ持つ (`hop` が内部で使う) |
+
+## 関連
+
+- 根付き木の祖先への移動は [木](tree.hpp) の `DoublingClimbTree`
+- 一般の有向グラフは [グラフ](graph.hpp)

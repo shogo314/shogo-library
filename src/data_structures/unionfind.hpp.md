@@ -265,11 +265,12 @@ auto [r, merged] = uf.merge(u, v);  // 代表元も受け取る
 
 `merge` の戻り値です。`std::set::insert` と同じく、統合の途中で分かる 2 つの情報をどちらも返します。
 
-| メンバ | 内容 |
+| 変数 | 説明 |
 |---|---|
 | `leader` | 統合後の代表元 |
 | `merged` | 新しく統合したか (もともと同じ連結成分なら `false`) |
-| `explicit operator bool` | `merged` を返す。`if (uf.merge(a, b))` と書ける |
+
+`explicit operator bool` が `merged` を返すので、`if (uf.merge(a, b))` と書けます。
 
 ## 関連
 

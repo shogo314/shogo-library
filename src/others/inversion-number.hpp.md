@@ -82,9 +82,11 @@ title: "\u8EE2\u5012\u6570"
 long long k = inversion_number(std::vector<int>{3, 1, 4, 1, 5});  // 3 ((3, 1), (3, 1), (4, 1))
 ```
 
-| 関数 | 説明 |
-|---|---|
-| `inversion_number(a, comp = std::less<T>())` | $i < j$ かつ `comp(a[j], a[i])` となる組の個数。答えは `long long` |
+## 関数
+
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `inversion_number(a, comp = std::less<T>())` | $i < j$ かつ `comp(a[j], a[i])` となる組の個数。答えは `long long` | $O(n \log n)$ |
 
 - 値は `comp` で比べられれば何でもよく、座標圧縮はいりません。等しい値の組は数えません。
 - `comp` に `std::greater<T>()` を渡すと、$i < j$ かつ $a_i < a_j$ となる組の個数になります。

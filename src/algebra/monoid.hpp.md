@@ -633,6 +633,11 @@ title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
 - `S op(const S& a, const S& b)`: 積 (結合的)
 - `S e()`: 単位元
 
+```cpp
+SegTree<monoid::Max<int>> seg(n);                                // 区間最大値
+SegTree seg2(v, Monoid([](int a, int b) { return a + b; }, 0));  // ラムダ式から作る
+```
+
 ## 一覧 (`namespace monoid`)
 
 | モノイド | 要素の型 `S` | 積 | 単位元 |
@@ -650,10 +655,10 @@ title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
 | `Composite<T>` | `Affine<T>` | 1次関数 $f(x) = ax + b$ の合成 $f \circ g$ ($g$ を先に適用) | 恒等写像 |
 | `Mapping<N>` | `std::array<int, N>` | $\lbrace 0, \dots, N-1 \rbrace$ から自分自身への写像の合成 $f \circ g$ ($g$ を先に適用)。全単射でなくてよい | 恒等写像 |
 | `Parenthesis` | `Parenthesis::S` | 括弧列の連結 (対応の取れていない `)` と `(` の個数) | 空の括弧列 |
-| `MinWith<T, U = int>` | `pair<T, U>` | 最小値とその位置 (同じ値なら左側) | |
-| `MaxWith<T, U = int>` | `pair<T, U>` | 最大値とその位置 (同じ値なら左側) | |
-| `MinCount<T, U = long long>` | `pair<T, U>` | 最小値とその個数 | |
-| `MaxCount<T, U = long long>` | `pair<T, U>` | 最大値とその個数 | |
+| `MinWith<T, U = int>` | `pair<T, U>` | 最小値とその位置 (同じ値なら左側) | `{型の最大値, U{}}` |
+| `MaxWith<T, U = int>` | `pair<T, U>` | 最大値とその位置 (同じ値なら左側) | `{型の最小値, U{}}` |
+| `MinCount<T, U = long long>` | `pair<T, U>` | 最小値とその個数 | `{型の最大値, 0}` |
+| `MaxCount<T, U = long long>` | `pair<T, U>` | 最大値とその個数 | `{型の最小値, 0}` |
 | `Reverse<M>` | `M::S` | `M::op(b, a)` (積の順序を逆にする) | `M::e()` |
 
 `Parenthesis::S` は文字 `'('`、`')'` から作れます。`is_valid()` で正しい括弧列かどうかを判定できます。
@@ -669,12 +674,19 @@ std::cin >> f;          // "a b" を読む
 std::cout << f;         // "a b" を出力
 ```
 
-| メンバ | 説明 |
+### メンバ関数
+
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `f(x)` | $ax + b$ | $O(1)$ |
+| `==`、`!=` | 比較 | $O(1)$ |
+| `is >> f`、`os << f` | `a` と `b` を空白区切りで入出力 | $O(1)$ |
+
+### メンバ変数
+
+| 変数 | 説明 |
 |---|---|
 | `a` / `b` | 傾き / 切片 |
-| `f(x)` | $ax + b$ |
-| `==`、`!=` | 比較 |
-| `is >> f`、`os << f` | `a` と `b` を空白区切りで入出力 |
 
 ## 写像のモノイド `Mapping<N>`
 

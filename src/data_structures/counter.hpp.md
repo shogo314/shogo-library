@@ -174,15 +174,15 @@ for (auto [x, cnt] : c) { }       // 値の昇順に走査
 Counter<int> d = c + Counter<int>(3);  // 3 を 1 個足した Counter
 ```
 
-## メンバ
+## メンバ関数
 
 `n` は異なる値の個数です。
 
-| メンバ | 説明 | 計算量 |
+| 関数 | 説明 | 計算量 |
 |---|---|---|
 | `Counter<T> c` | 空の Counter | $O(1)$ |
 | `Counter<T> c(x)` | 値 `x` が 1 個 | $O(1)$ |
-| `Counter<T> c{ {x, k}, ... }` | 値 `x` が `k` 個、… で初期化 | |
+| `Counter<T> c{ {x, k}, ... }` | 値 `x` が `k` 個、… で初期化 | $O(m \log m)$ ($m$ は組の数) |
 | `Counter<T> c(v)` | コンテナ `v` の要素を数える | $O(\lvert v \rvert \log n)$ |
 | `c[x]` / `c.get(x)` | `x` の個数 (なければ 0) | $O(\log n)$ |
 | `c[x] = k` / `c.set(x, k)` | `x` の個数を `k` にする (`k >= 0`) | $O(\log n)$ |
@@ -193,7 +193,12 @@ Counter<int> d = c + Counter<int>(3);  // 3 を 1 個足した Counter
 | `c.size()` | 異なる値の個数 (重複は数えない) | $O(1)$ |
 | `c.total()` | 重複を含めた要素数 (個数の総和。Python の `Counter.total()` と同じ) | $O(n)$ |
 | `c.most_common()` | `{値, 個数}` のリスト。個数の降順、同数なら値の昇順 | $O(n \log n)$ |
-| `c.data` | 中身の `std::map<T, long long>` (値の昇順に走査できる) | |
+
+## メンバ変数
+
+| 変数 | 説明 |
+|---|---|
+| `data` | 中身の `std::map<T, long long>` (値の昇順に走査できる) |
 
 ## 関連
 

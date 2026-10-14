@@ -261,3 +261,7 @@ T twice(T x) { return x * 2; }
 | `ENABLE_IF_T(cond)` | テンプレート引数に書く SFINAE。`std::enable_if_t<cond, std::nullptr_t> = nullptr` になる |
 | `HAS_METHOD(f)` | 引数なしのメンバ関数 `f` を持つかを調べる `has_f` / `has_f_v` を定義する |
 | `HAS_METHOD_ARG(f)` | 引数を 1 つ取るメンバ関数 `f` を持つかを調べる `has_f` / `has_f_v` を定義する |
+
+## 関連
+
+- これらの型特性で呼び分けている関数は [コンテナに対する関数](container_func.hpp) と [repr](repr.hpp)

@@ -76,6 +76,21 @@ data:
       path: src/data_structures/monoid-unionfind.hpp
       title: "\u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\u3092\u4E57\u305B\u308BUnionFind"
     - icon: ':heavy_check_mark:'
+      path: src/data_structures/persistent-array.hpp
+      title: "\u6C38\u7D9A\u914D\u5217"
+    - icon: ':heavy_check_mark:'
+      path: src/data_structures/persistent-queue.hpp
+      title: "\u6C38\u7D9A\u30AD\u30E5\u30FC"
+    - icon: ':heavy_check_mark:'
+      path: src/data_structures/persistent-segtree.hpp
+      title: "\u6C38\u7D9A\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
+    - icon: ':heavy_check_mark:'
+      path: src/data_structures/persistent-stack.hpp
+      title: "\u6C38\u7D9A\u30B9\u30BF\u30C3\u30AF"
+    - icon: ':heavy_check_mark:'
+      path: src/data_structures/persistent-unionfind.hpp
+      title: "\u6C38\u7D9AUnionFind"
+    - icon: ':heavy_check_mark:'
       path: src/data_structures/potentialized-unionfind.hpp
       title: "\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind"
     - icon: ':heavy_check_mark:'
@@ -714,6 +729,21 @@ data:
       path: test/unittest/number-theory.test.cpp
       title: test/unittest/number-theory.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/persistent-array.test.cpp
+      title: test/unittest/persistent-array.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/persistent-queue.test.cpp
+      title: test/unittest/persistent-queue.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/persistent-segtree.test.cpp
+      title: test/unittest/persistent-segtree.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/persistent-stack.test.cpp
+      title: test/unittest/persistent-stack.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/persistent-unionfind.test.cpp
+      title: test/unittest/persistent-unionfind.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/potentialized-unionfind.test.cpp
       title: test/unittest/potentialized-unionfind.test.cpp
     - icon: ':heavy_check_mark:'
@@ -914,6 +944,12 @@ data:
       path: test/yosupo/partition-function_2.test.cpp
       title: test/yosupo/partition-function_2.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/persistent-queue.test.cpp
+      title: test/yosupo/persistent-queue.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/persistent-unionfind.test.cpp
+      title: test/yosupo/persistent-unionfind.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/point-add-range-sum.1.test.cpp
       title: test/yosupo/point-add-range-sum.1.test.cpp
     - icon: ':heavy_check_mark:'
@@ -985,6 +1021,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/rectangle-sum.3.test.cpp
       title: test/yosupo/rectangle-sum.3.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/rectangle-sum.4.test.cpp
+      title: test/yosupo/rectangle-sum.4.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/scc.test.cpp
       title: test/yosupo/scc.test.cpp

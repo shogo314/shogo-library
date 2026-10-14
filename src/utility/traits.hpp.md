@@ -225,6 +225,9 @@ data:
     path: test/unittest/modint.test.cpp
     title: test/unittest/modint.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/persistent-segtree.test.cpp
+    title: test/unittest/persistent-segtree.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/priority_counter.test.cpp
     title: test/unittest/priority_counter.test.cpp
   - icon: ':heavy_check_mark:'
@@ -510,6 +513,7 @@ data:
   - test/unittest/dual-segtree.test.cpp
   - test/unittest/functions.test.cpp
   - test/unittest/container-func-member.test.cpp
+  - test/unittest/persistent-segtree.test.cpp
   - test/unittest/priority_counter.test.cpp
   - test/unittest/circle.test.cpp
   - test/unittest/sliding-window-aggregation.test.cpp

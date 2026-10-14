@@ -502,3 +502,4 @@ RMinQ<long long> seg3(v);                                        // 別名を使
 - 区間作用が必要なら [遅延伝搬セグメント木](lazy-segtree.hpp)
 - 2次元なら [2次元セグメント木](segtree-2d.hpp)
 - chmin/chmax と区間和を同時に扱うなら [Segment Tree Beats](segtree-beats.hpp)
+- 過去の版も使うなら [永続セグメント木](persistent-segtree.hpp)

@@ -6,6 +6,9 @@ data:
     path: src/data_structures/monoid-unionfind.hpp
     title: "\u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\u3092\u4E57\u305B\u308BUnionFind"
   - icon: ':heavy_check_mark:'
+    path: src/data_structures/persistent-unionfind.hpp
+    title: "\u6C38\u7D9AUnionFind"
+  - icon: ':heavy_check_mark:'
     path: src/data_structures/potentialized-unionfind.hpp
     title: "\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind"
   - icon: ':heavy_check_mark:'
@@ -55,6 +58,9 @@ data:
     path: test/unittest/monoid.test.cpp
     title: test/unittest/monoid.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/persistent-unionfind.test.cpp
+    title: test/unittest/persistent-unionfind.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/potentialized-unionfind.test.cpp
     title: test/unittest/potentialized-unionfind.test.cpp
   - icon: ':heavy_check_mark:'
@@ -75,6 +81,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/minimum-spanning-tree.2.test.cpp
     title: test/yosupo/minimum-spanning-tree.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/persistent-unionfind.test.cpp
+    title: test/yosupo/persistent-unionfind.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/scc.test.cpp
     title: test/yosupo/scc.test.cpp
@@ -207,12 +216,14 @@ data:
   requiredBy:
   - src/graph/graph_util.hpp
   - src/graph/two-sat.hpp
+  - src/data_structures/persistent-unionfind.hpp
   - src/data_structures/potentialized-unionfind.hpp
   - src/data_structures/monoid-unionfind.hpp
   timestamp: '2026-10-14 21:19:13+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/unionfind.test.cpp
+  - test/unittest/persistent-unionfind.test.cpp
   - test/unittest/two-sat.test.cpp
   - test/unittest/lowlink.test.cpp
   - test/unittest/mapping.test.cpp
@@ -229,6 +240,7 @@ data:
   - test/aoj/dsl-1-b.1.test.cpp
   - test/aoj/alds1-11-d.1.test.cpp
   - test/yosupo/unionfind.test.cpp
+  - test/yosupo/persistent-unionfind.test.cpp
   - test/yosupo/cycle-detection-undirected.test.cpp
   - test/yosupo/two-sat.test.cpp
   - test/yosupo/minimum-spanning-tree.2.test.cpp
@@ -285,3 +297,4 @@ auto [r, merged] = uf.merge(u, v);  // 代表元も受け取る
 
 - 連結成分ごとに値 (和・最小値など) を持つなら [可換モノイドを乗せるUnionFind](monoid-unionfind.hpp)
 - 頂点間のポテンシャルの差を管理するなら [ポテンシャル付きUnionFind](potentialized-unionfind.hpp)
+- 過去の版も使うなら [永続UnionFind](persistent-unionfind.hpp)

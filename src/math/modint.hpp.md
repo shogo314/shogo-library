@@ -61,6 +61,9 @@ data:
     path: test/unittest/modint.test.cpp
     title: test/unittest/modint.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/persistent-segtree.test.cpp
+    title: test/unittest/persistent-segtree.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/sliding-window-aggregation.test.cpp
     title: test/unittest/sliding-window-aggregation.test.cpp
   - icon: ':heavy_check_mark:'
@@ -704,6 +707,7 @@ data:
   - test/unittest/modint.test.cpp
   - test/unittest/combinatorics.test.cpp
   - test/unittest/dual-segtree.test.cpp
+  - test/unittest/persistent-segtree.test.cpp
   - test/unittest/sliding-window-aggregation.test.cpp
   - test/unittest/acted-monoid.test.cpp
   - test/unittest/divisor-transform.test.cpp

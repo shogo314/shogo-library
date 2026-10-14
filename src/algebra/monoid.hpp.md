@@ -28,6 +28,9 @@ data:
     path: src/data_structures/monoid-unionfind.hpp
     title: "\u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\u3092\u4E57\u305B\u308BUnionFind"
   - icon: ':heavy_check_mark:'
+    path: src/data_structures/persistent-segtree.hpp
+    title: "\u6C38\u7D9A\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
+  - icon: ':heavy_check_mark:'
     path: src/data_structures/potentialized-unionfind.hpp
     title: "\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind"
   - icon: ':heavy_check_mark:'
@@ -128,6 +131,9 @@ data:
     path: test/unittest/monoid.test.cpp
     title: test/unittest/monoid.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/persistent-segtree.test.cpp
+    title: test/unittest/persistent-segtree.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/potentialized-unionfind.test.cpp
     title: test/unittest/potentialized-unionfind.test.cpp
   - icon: ':heavy_check_mark:'
@@ -208,6 +214,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/rectangle-sum.3.test.cpp
     title: test/yosupo/rectangle-sum.3.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/rectangle-sum.4.test.cpp
+    title: test/yosupo/rectangle-sum.4.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/staticrmq.test.cpp
     title: test/yosupo/staticrmq.test.cpp
@@ -539,6 +548,7 @@ data:
   requiredBy:
   - src/data_structures/sparse-table.hpp
   - src/data_structures/fenwick-tree.hpp
+  - src/data_structures/persistent-segtree.hpp
   - src/data_structures/lazy-segtree.hpp
   - src/data_structures/segtree-beats.hpp
   - src/data_structures/potentialized-unionfind.hpp
@@ -557,6 +567,7 @@ data:
   - test/unittest/imos.test.cpp
   - test/unittest/segtree-beats.test.cpp
   - test/unittest/dual-segtree.test.cpp
+  - test/unittest/persistent-segtree.test.cpp
   - test/unittest/mapping.test.cpp
   - test/unittest/sliding-window-aggregation.test.cpp
   - test/unittest/monoid-unionfind.test.cpp
@@ -594,6 +605,7 @@ data:
   - test/yosupo/range-affine-range-sum.2.test.cpp
   - test/yosupo/range-affine-range-sum.3.test.cpp
   - test/yosupo/range-affine-point-get.1.test.cpp
+  - test/yosupo/rectangle-sum.4.test.cpp
   - test/yosupo/rectangle-sum.2.test.cpp
   - test/yosupo/point-add-range-sum.3.test.cpp
   - test/yosupo/area-of-union-of-rectangles.2.test.cpp

@@ -32,7 +32,7 @@ std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>&
 template <typename T, typename CharT, typename Traits>
 std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const std::set<T>& s);
 
-namespace tuple_io {
+namespace internal_io {
 template <typename Tuple, std::size_t I, typename CharT, typename Traits>
 std::basic_istream<CharT, Traits>& read_tuple(std::basic_istream<CharT, Traits>& is, Tuple& t) {
     is >> std::get<I>(t);
@@ -50,7 +50,7 @@ std::basic_ostream<CharT, Traits>& write_tuple(std::basic_ostream<CharT, Traits>
     }
     return os;
 }
-};  // namespace tuple_io
+};  // namespace internal_io
 
 template <typename T1, typename T2, typename CharT, typename Traits>
 std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT, Traits>& is, std::pair<T1, T2>& p) {
@@ -59,7 +59,7 @@ std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT, Traits>&
 }
 template <typename... Types, typename CharT, typename Traits>
 std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT, Traits>& is, std::tuple<Types...>& p) {
-    return tuple_io::read_tuple<std::tuple<Types...>, 0>(is, p);
+    return internal_io::read_tuple<std::tuple<Types...>, 0>(is, p);
 }
 template <typename T, std::size_t N, typename CharT, typename Traits>
 std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT, Traits>& is, std::array<T, N>& a) {
@@ -79,7 +79,7 @@ std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>&
 }
 template <typename... Types, typename CharT, typename Traits>
 std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const std::tuple<Types...>& p) {
-    return tuple_io::write_tuple<std::tuple<Types...>, 0>(os, p);
+    return internal_io::write_tuple<std::tuple<Types...>, 0>(os, p);
 }
 template <typename T, std::size_t N, typename CharT, typename Traits>
 std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const std::array<T, N>& a) {

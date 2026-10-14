@@ -24,9 +24,7 @@
 
 #include "monoid.hpp"
 
-namespace acted_monoid {
-
-namespace detail {
+namespace internal_acted_monoid {
 template <typename A, typename = void>
 struct has_mapping_lr : std::false_type {};
 template <typename A>
@@ -35,7 +33,9 @@ template <typename A, typename = void>
 struct has_mapping_sz : std::false_type {};
 template <typename A>
 struct has_mapping_sz<A, std::void_t<decltype(std::declval<const A&>().mapping(std::declval<const typename A::F&>(), std::declval<const typename A::S&>(), 0))>> : std::true_type {};
-}  // namespace detail
+}  // namespace internal_acted_monoid
+
+namespace acted_monoid {
 
 /**
  * @brief 区間 [l, r) を表す要素に作用素を適用する
@@ -43,9 +43,9 @@ struct has_mapping_sz<A, std::void_t<decltype(std::declval<const A&>().mapping(s
  */
 template <typename A>
 constexpr auto apply_mapping(const A& a, const typename A::F& f, const typename A::S& x, int l, int r) {
-    if constexpr (detail::has_mapping_lr<A>::value) {
+    if constexpr (internal_acted_monoid::has_mapping_lr<A>::value) {
         return a.mapping(f, x, l, r);
-    } else if constexpr (detail::has_mapping_sz<A>::value) {
+    } else if constexpr (internal_acted_monoid::has_mapping_sz<A>::value) {
         return a.mapping(f, x, r - l);
     } else {
         return a.mapping(f, x);

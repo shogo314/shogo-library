@@ -17,7 +17,7 @@
 
 #include "traits.hpp"
 
-namespace detail {
+namespace internal_repr {
 
 ///////////////////////////////////////////////////////////////////
 /////////////////////////// declaration ///////////////////////////
@@ -128,7 +128,7 @@ inline std::string initializer_str(const T& t) {
 }
 template <typename T, std::enable_if_t<!has_repr_v<T>, std::nullptr_t> = nullptr>
 inline std::string repr(const T& t) {
-    return detail::type_str(t) + detail::initializer_str(t);
+    return internal_repr::type_str(t) + internal_repr::initializer_str(t);
 }
 template <typename T, std::enable_if_t<has_repr_v<T>, std::nullptr_t> = nullptr>
 inline std::string repr(const T& t) {
@@ -142,7 +142,7 @@ inline std::string initializer_str(const char* t) {
     return "\"" + std::string(t) + "\"";
 }
 inline std::string repr(const char* t) {
-    return detail::initializer_str(t);
+    return internal_repr::initializer_str(t);
 }
 
 inline std::string type_str(const char&) {
@@ -168,7 +168,7 @@ inline std::string initializer_str(const char& t) {
     return "'\\" + std::to_string(u / 64) + std::to_string(u / 8 % 8) + std::to_string(u % 8) + "'";
 }
 inline std::string repr(const char& t) {
-    return detail::initializer_str(t);
+    return internal_repr::initializer_str(t);
 }
 
 inline std::string type_str(const int&) {
@@ -178,7 +178,7 @@ inline std::string initializer_str(const int& t) {
     return std::to_string(t);
 }
 inline std::string repr(const int& t) {
-    return detail::initializer_str(t);
+    return internal_repr::initializer_str(t);
 }
 
 inline std::string type_str(const long&) {
@@ -188,7 +188,7 @@ inline std::string initializer_str(const long& t) {
     return std::to_string(t) + "l";
 }
 inline std::string repr(const long& t) {
-    return detail::initializer_str(t);
+    return internal_repr::initializer_str(t);
 }
 
 inline std::string type_str(const long long&) {
@@ -198,7 +198,7 @@ inline std::string initializer_str(const long long& t) {
     return std::to_string(t) + "ll";
 }
 inline std::string repr(const long long& t) {
-    return detail::initializer_str(t);
+    return internal_repr::initializer_str(t);
 }
 
 inline std::string type_str(const unsigned int&) {
@@ -208,7 +208,7 @@ inline std::string initializer_str(const unsigned int& t) {
     return std::to_string(t) + "u";
 }
 inline std::string repr(const unsigned int& t) {
-    return detail::initializer_str(t);
+    return internal_repr::initializer_str(t);
 }
 
 inline std::string type_str(const unsigned long&) {
@@ -218,7 +218,7 @@ inline std::string initializer_str(const unsigned long& t) {
     return std::to_string(t) + "ul";
 }
 inline std::string repr(const unsigned long& t) {
-    return detail::initializer_str(t);
+    return internal_repr::initializer_str(t);
 }
 
 inline std::string type_str(const unsigned long long&) {
@@ -228,7 +228,7 @@ inline std::string initializer_str(const unsigned long long& t) {
     return std::to_string(t) + "ull";
 }
 inline std::string repr(const unsigned long long& t) {
-    return detail::initializer_str(t);
+    return internal_repr::initializer_str(t);
 }
 
 inline std::string type_str(const std::string&) {
@@ -238,7 +238,7 @@ inline std::string initializer_str(const std::string& t) {
     return "\"" + t + "\"";
 }
 inline std::string repr(const std::string& t) {
-    return detail::type_str(t) + "{" + detail::initializer_str(t) + "}";
+    return internal_repr::type_str(t) + "{" + internal_repr::initializer_str(t) + "}";
 }
 
 inline std::string type_str(const float&) {
@@ -248,7 +248,7 @@ inline std::string initializer_str(const float& t) {
     return std::to_string(t) + "f";
 }
 inline std::string repr(const float& t) {
-    return detail::initializer_str(t);
+    return internal_repr::initializer_str(t);
 }
 
 inline std::string type_str(const double&) {
@@ -258,7 +258,7 @@ inline std::string initializer_str(const double& t) {
     return std::to_string(t);
 }
 inline std::string repr(const double& t) {
-    return detail::initializer_str(t);
+    return internal_repr::initializer_str(t);
 }
 
 inline std::string type_str(const long double&) {
@@ -268,13 +268,13 @@ inline std::string initializer_str(const long double& t) {
     return std::to_string(t) + "l";
 }
 inline std::string repr(const long double& t) {
-    return detail::initializer_str(t);
+    return internal_repr::initializer_str(t);
 }
 
 template <typename T>
 inline std::string type_str(const std::vector<T>&) {
     T t;
-    return "std::vector<" + detail::type_str(t) + ">";
+    return "std::vector<" + internal_repr::type_str(t) + ">";
 }
 template <typename T>
 inline std::string initializer_str(const std::vector<T>& t) {
@@ -282,20 +282,20 @@ inline std::string initializer_str(const std::vector<T>& t) {
     ret += "{";
     for (auto itr = t.begin(); itr != t.end(); itr++) {
         if (itr != t.begin()) ret += ", ";
-        ret += detail::initializer_str(*itr);
+        ret += internal_repr::initializer_str(*itr);
     }
     ret += "}";
     return ret;
 }
 template <typename T>
 inline std::string repr(const std::vector<T>& t) {
-    return detail::type_str(t) + detail::initializer_str(t);
+    return internal_repr::type_str(t) + internal_repr::initializer_str(t);
 }
 
 template <typename T>
 inline std::string type_str(const std::set<T>&) {
     T t;
-    return "std::set<" + detail::type_str(t) + ">";
+    return "std::set<" + internal_repr::type_str(t) + ">";
 }
 template <typename T>
 inline std::string initializer_str(const std::set<T>& t) {
@@ -303,36 +303,36 @@ inline std::string initializer_str(const std::set<T>& t) {
     ret += "{";
     for (auto itr = t.begin(); itr != t.end(); itr++) {
         if (itr != t.begin()) ret += ", ";
-        ret += detail::initializer_str(*itr);
+        ret += internal_repr::initializer_str(*itr);
     }
     ret += "}";
     return ret;
 }
 template <typename T>
 inline std::string repr(const std::set<T>& t) {
-    return detail::type_str(t) + detail::initializer_str(t);
+    return internal_repr::type_str(t) + internal_repr::initializer_str(t);
 }
 
 template <typename T1, typename T2>
 inline std::string type_str(const std::pair<T1, T2>&) {
     T1 t1;
     T2 t2;
-    return "std::pair<" + detail::type_str(t1) + ", " + detail::type_str(t2) + ">";
+    return "std::pair<" + internal_repr::type_str(t1) + ", " + internal_repr::type_str(t2) + ">";
 }
 template <typename T1, typename T2>
 inline std::string initializer_str(const std::pair<T1, T2>& t) {
-    return "{" + detail::initializer_str(t.first) + ", " + detail::initializer_str(t.second) + "}";
+    return "{" + internal_repr::initializer_str(t.first) + ", " + internal_repr::initializer_str(t.second) + "}";
 }
 template <typename T1, typename T2>
 inline std::string repr(const std::pair<T1, T2>& t) {
-    return detail::type_str(t) + detail::initializer_str(t);
+    return internal_repr::type_str(t) + internal_repr::initializer_str(t);
 }
 
 template <typename T1, typename T2>
 inline std::string type_str(const std::map<T1, T2>&) {
     T1 t1;
     T2 t2;
-    return "std::map<" + detail::type_str(t1) + ", " + detail::type_str(t2) + ">";
+    return "std::map<" + internal_repr::type_str(t1) + ", " + internal_repr::type_str(t2) + ">";
 }
 template <typename T1, typename T2>
 inline std::string initializer_str(const std::map<T1, T2>& t) {
@@ -341,9 +341,9 @@ inline std::string initializer_str(const std::map<T1, T2>& t) {
     for (auto itr = t.begin(); itr != t.end(); itr++) {
         if (itr != t.begin()) ret += ", ";
         ret += "{";
-        ret += detail::initializer_str(itr->first);
+        ret += internal_repr::initializer_str(itr->first);
         ret += ", ";
-        ret += detail::initializer_str(itr->second);
+        ret += internal_repr::initializer_str(itr->second);
         ret += "}";
     }
     ret += "}";
@@ -351,13 +351,13 @@ inline std::string initializer_str(const std::map<T1, T2>& t) {
 }
 template <typename T1, typename T2>
 inline std::string repr(const std::map<T1, T2>& t) {
-    return detail::type_str(t) + detail::initializer_str(t);
+    return internal_repr::type_str(t) + internal_repr::initializer_str(t);
 }
 
 template <typename T, std::size_t N>
 inline std::string type_str(const std::array<T, N>&) {
     T t;
-    return "std::array<" + detail::type_str(t) + ", " + std::to_string(N) + ">";
+    return "std::array<" + internal_repr::type_str(t) + ", " + std::to_string(N) + ">";
 }
 template <typename T, std::size_t N>
 inline std::string initializer_str(const std::array<T, N>& t) {
@@ -365,29 +365,29 @@ inline std::string initializer_str(const std::array<T, N>& t) {
     ret += "{";
     for (auto itr = t.begin(); itr != t.end(); itr++) {
         if (itr != t.begin()) ret += ", ";
-        ret += detail::initializer_str(*itr);
+        ret += internal_repr::initializer_str(*itr);
     }
     ret += "}";
     return ret;
 }
 template <typename T, std::size_t N>
 inline std::string repr(const std::array<T, N>& t) {
-    return detail::type_str(t) + detail::initializer_str(t);
+    return internal_repr::type_str(t) + internal_repr::initializer_str(t);
 }
 
-}  // namespace detail
+}  // namespace internal_repr
 
 template <typename T>
 inline std::string type_str(const T& t) {
-    return detail::type_str(t);
+    return internal_repr::type_str(t);
 }
 template <typename T>
 inline std::string initializer_str(const T& t) {
-    return detail::initializer_str(t);
+    return internal_repr::initializer_str(t);
 }
 template <typename T>
 inline std::string repr(const T& t) {
-    return detail::repr(t);
+    return internal_repr::repr(t);
 }
 
 #define DEBUG(x) \

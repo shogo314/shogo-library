@@ -15,7 +15,7 @@
 /**
  * @brief 畳み込み
  */
-namespace NTT {
+namespace internal_convolution {
 /**
  * @brief 原子根
  * @param MOD int
@@ -129,7 +129,7 @@ std::vector<T> naive(const std::vector<T>& A, const std::vector<T>& B) {
             res[i + j] += A[i] * B[j];
     return res;
 }
-};  // namespace NTT
+};  // namespace internal_convolution
 
 /**
  * @brief modintの畳み込み
@@ -141,23 +141,23 @@ template <class mint>
 std::vector<mint> convolution(const std::vector<mint>& A, const std::vector<mint>& B) {
     if (A.empty() || B.empty()) return {};
     int N = (int)A.size(), M = (int)B.size();
-    if (std::min(N, M) < 30) return NTT::naive(A, B);
+    if (std::min(N, M) < 30) return internal_convolution::naive(A, B);
     int MOD = A[0].mod();
-    int size_fft = NTT::get_fft_size(N, M);
+    int size_fft = internal_convolution::get_fft_size(N, M);
     if (MOD == 998244353) {
         std::vector<mint> a(size_fft), b(size_fft), c(size_fft);
         for (int i = 0; i < N; ++i) a[i] = A[i];
         for (int i = 0; i < M; ++i) b[i] = B[i];
-        NTT::trans(a), NTT::trans(b);
+        internal_convolution::trans(a), internal_convolution::trans(b);
         std::vector<mint> res(size_fft);
         for (int i = 0; i < size_fft; ++i) res[i] = a[i] * b[i];
-        NTT::trans(res, true);
+        internal_convolution::trans(res, true);
         res.resize(N + M - 1);
         return res;
     }
-    std::vector<NTT::mint0> a0(size_fft, 0), b0(size_fft, 0), c0(size_fft, 0);
-    std::vector<NTT::mint1> a1(size_fft, 0), b1(size_fft, 0), c1(size_fft, 0);
-    std::vector<NTT::mint2> a2(size_fft, 0), b2(size_fft, 0), c2(size_fft, 0);
+    std::vector<internal_convolution::mint0> a0(size_fft, 0), b0(size_fft, 0), c0(size_fft, 0);
+    std::vector<internal_convolution::mint1> a1(size_fft, 0), b1(size_fft, 0), c1(size_fft, 0);
+    std::vector<internal_convolution::mint2> a2(size_fft, 0), b2(size_fft, 0), c2(size_fft, 0);
     for (int i = 0; i < N; ++i) {
         a0[i] = A[i].val();
         a1[i] = A[i].val();
@@ -168,20 +168,20 @@ std::vector<mint> convolution(const std::vector<mint>& A, const std::vector<mint
         b1[i] = B[i].val();
         b2[i] = B[i].val();
     }
-    NTT::trans(a0), NTT::trans(a1), NTT::trans(a2),
-        NTT::trans(b0), NTT::trans(b1), NTT::trans(b2);
+    internal_convolution::trans(a0), internal_convolution::trans(a1), internal_convolution::trans(a2),
+        internal_convolution::trans(b0), internal_convolution::trans(b1), internal_convolution::trans(b2);
     for (int i = 0; i < size_fft; ++i) {
         c0[i] = a0[i] * b0[i];
         c1[i] = a1[i] * b1[i];
         c2[i] = a2[i] * b2[i];
     }
-    NTT::trans(c0, true), NTT::trans(c1, true), NTT::trans(c2, true);
-    const mint mod0 = NTT::MOD0, mod01 = mod0 * NTT::MOD1;
+    internal_convolution::trans(c0, true), internal_convolution::trans(c1, true), internal_convolution::trans(c2, true);
+    const mint mod0 = internal_convolution::MOD0, mod01 = mod0 * internal_convolution::MOD1;
     std::vector<mint> res(N + M - 1);
     for (int i = 0; i < N + M - 1; ++i) {
         int y0 = c0[i].val();
-        int y1 = (NTT::imod0 * (c1[i] - y0)).val();
-        int y2 = (NTT::imod01 * (c2[i] - y0) - NTT::imod1 * y1).val();
+        int y1 = (internal_convolution::imod0 * (c1[i] - y0)).val();
+        int y2 = (internal_convolution::imod01 * (c2[i] - y0) - internal_convolution::imod1 * y1).val();
         res[i] = mod01 * y2 + mod0 * y1 + y0;
     }
     return res;
@@ -196,11 +196,11 @@ std::vector<mint> convolution(const std::vector<mint>& A, const std::vector<mint
 inline std::vector<long long> convolution_ll(const std::vector<long long>& A, const std::vector<long long>& B) {
     if (A.empty() || B.empty()) return {};
     int N = (int)A.size(), M = (int)B.size();
-    if (std::min(N, M) < 30) return NTT::naive(A, B);
-    int size_fft = NTT::get_fft_size(N, M);
-    std::vector<NTT::mint0> a0(size_fft, 0), b0(size_fft, 0), c0(size_fft, 0);
-    std::vector<NTT::mint1> a1(size_fft, 0), b1(size_fft, 0), c1(size_fft, 0);
-    std::vector<NTT::mint2> a2(size_fft, 0), b2(size_fft, 0), c2(size_fft, 0);
+    if (std::min(N, M) < 30) return internal_convolution::naive(A, B);
+    int size_fft = internal_convolution::get_fft_size(N, M);
+    std::vector<internal_convolution::mint0> a0(size_fft, 0), b0(size_fft, 0), c0(size_fft, 0);
+    std::vector<internal_convolution::mint1> a1(size_fft, 0), b1(size_fft, 0), c1(size_fft, 0);
+    std::vector<internal_convolution::mint2> a2(size_fft, 0), b2(size_fft, 0), c2(size_fft, 0);
     for (int i = 0; i < N; ++i) {
         a0[i] = A[i];
         a1[i] = A[i];
@@ -211,21 +211,21 @@ inline std::vector<long long> convolution_ll(const std::vector<long long>& A, co
         b1[i] = B[i];
         b2[i] = B[i];
     }
-    NTT::trans(a0), NTT::trans(a1), NTT::trans(a2),
-        NTT::trans(b0), NTT::trans(b1), NTT::trans(b2);
+    internal_convolution::trans(a0), internal_convolution::trans(a1), internal_convolution::trans(a2),
+        internal_convolution::trans(b0), internal_convolution::trans(b1), internal_convolution::trans(b2);
     for (int i = 0; i < size_fft; ++i) {
         c0[i] = a0[i] * b0[i];
         c1[i] = a1[i] * b1[i];
         c2[i] = a2[i] * b2[i];
     }
-    NTT::trans(c0, true), NTT::trans(c1, true), NTT::trans(c2, true);
-    static const long long mod0 = NTT::MOD0, mod01 = mod0 * NTT::MOD1;
-    static const __int128_t mod012 = (__int128_t)mod01 * NTT::MOD2;
+    internal_convolution::trans(c0, true), internal_convolution::trans(c1, true), internal_convolution::trans(c2, true);
+    static const long long mod0 = internal_convolution::MOD0, mod01 = mod0 * internal_convolution::MOD1;
+    static const __int128_t mod012 = (__int128_t)mod01 * internal_convolution::MOD2;
     std::vector<long long> res(N + M - 1);
     for (int i = 0; i < N + M - 1; ++i) {
         int y0 = c0[i].val();
-        int y1 = (NTT::imod0 * (c1[i] - y0)).val();
-        int y2 = (NTT::imod01 * (c2[i] - y0) - NTT::imod1 * y1).val();
+        int y1 = (internal_convolution::imod0 * (c1[i] - y0)).val();
+        int y2 = (internal_convolution::imod01 * (c2[i] - y0) - internal_convolution::imod1 * y1).val();
         __int128_t tmp = (__int128_t)mod01 * y2 + (__int128_t)mod0 * y1 + y0;
         if (tmp < (mod012 >> 1))
             res[i] = tmp;

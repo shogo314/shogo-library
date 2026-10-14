@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
-// modint の ++・--・単項の +、合成数の法での逆元、素数判定 (detail::is_prime32) を愚直な計算と比較する
+// modint の ++・--・単項の +、合成数の法での逆元、素数判定 (internal_modint::is_prime32) を愚直な計算と比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../src/math/modint.hpp"
@@ -69,22 +69,22 @@ int main() {
 
     // 素数判定: 小さい数はすべて、大きい数は 2^32 付近と乱数で確かめる
     for (std::uint32_t x = 0; x < 200000; x++) {
-        if (detail::is_prime32(x) != naive_is_prime(x)) ok = false, std::cerr << "is_prime32 " << x << std::endl;
+        if (internal_modint::is_prime32(x) != naive_is_prime(x)) ok = false, std::cerr << "is_prime32 " << x << std::endl;
     }
     for (std::uint32_t x = 4294967295u; x > 4294967295u - 3000; x--) {
-        if (detail::is_prime32(x) != naive_is_prime(x)) ok = false, std::cerr << "is_prime32 " << x << std::endl;
+        if (internal_modint::is_prime32(x) != naive_is_prime(x)) ok = false, std::cerr << "is_prime32 " << x << std::endl;
     }
     for (int rep = 0; rep < 3000; rep++) {
         std::uint32_t x = static_cast<std::uint32_t>(rng());
-        if (detail::is_prime32(x) != naive_is_prime(x)) ok = false, std::cerr << "is_prime32 " << x << std::endl;
+        if (internal_modint::is_prime32(x) != naive_is_prime(x)) ok = false, std::cerr << "is_prime32 " << x << std::endl;
     }
     // 強擬素数 (小さい底では素数と誤判定されやすい合成数) も含める
     for (std::uint32_t x : {2047u, 3215031751u, 1373653u, 25326001u, 3825123056u, 464155845u, 1122004669u, 1795265022u, 998244353u, 1000000007u, 4294967291u}) {
-        if (detail::is_prime32(x) != naive_is_prime(x)) ok = false, std::cerr << "is_prime32 " << x << std::endl;
+        if (internal_modint::is_prime32(x) != naive_is_prime(x)) ok = false, std::cerr << "is_prime32 " << x << std::endl;
     }
     // コンパイル時にも使える
-    static_assert(detail::is_prime32(998244353u));
-    static_assert(!detail::is_prime32(1000000000u));
+    static_assert(internal_modint::is_prime32(998244353u));
+    static_assert(!internal_modint::is_prime32(1000000000u));
 
     // 合成数の法の static_modint では、拡張ユークリッドで逆元を求める
     {

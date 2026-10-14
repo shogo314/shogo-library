@@ -14,7 +14,7 @@
 
 #include "modular-arithmetic.hpp"
 
-namespace prime_detail {
+namespace internal_prime {
 
 using u64 = unsigned long long;
 
@@ -51,13 +51,13 @@ inline u64 find_factor(u64 n) {
     }
 }
 
-}  // namespace prime_detail
+}  // namespace internal_prime
 
 /**
  * @brief n が素数か (Miller-Rabin、64 bit で決定的) O(log n)
  */
 constexpr bool is_prime(long long n) {
-    using namespace prime_detail;
+    using namespace internal_prime;
     if (n < 2) return false;
     for (u64 p : {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}) {
         if (static_cast<u64>(n) % p == 0) return static_cast<u64>(n) == p;
@@ -107,7 +107,7 @@ inline std::vector<std::pair<long long, int>> factorize(long long n) {
             ps.push_back(x);
             continue;
         }
-        long long d = prime_detail::find_factor(x);
+        long long d = internal_prime::find_factor(x);
         st.push_back(d);
         st.push_back(x / d);
     }

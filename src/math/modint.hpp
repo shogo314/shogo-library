@@ -12,7 +12,7 @@
 #include <type_traits>
 #include <utility>
 
-namespace detail {
+namespace internal_modint {
 // clang-format off
 static constexpr std::uint16_t prime32_bases[] {
     15591,  2018,  166, 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,  3620,   560,  3128,  5212,  2657,
@@ -69,7 +69,7 @@ static constexpr bool is_prime32(std::uint32_t x) noexcept {
     h = ((h >> 16) ^ h) & 0xff;
     return is_SPRP(x, prime32_bases[h]);
 }
-}  // namespace detail
+}  // namespace internal_modint
 
 /// @brief static_modint と dynamic_modint の実装を CRTP によって行うためのクラステンプレート
 /// @tparam Modint このクラステンプレートを継承するクラス
@@ -348,7 +348,7 @@ public:
     /// @return 自身の逆数
     [[nodiscard]]
     constexpr static_modint inv() const noexcept {
-        if constexpr (detail::is_prime32(Mod)) {
+        if constexpr (internal_modint::is_prime32(Mod)) {
             assert(this->m_value != 0 && "The inverse element of zero does not exist.");
             return this->pow(Mod - 2);
         } else {

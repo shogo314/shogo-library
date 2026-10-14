@@ -47,7 +47,7 @@ struct Tree : private Graph<Cost> {
      *
      * @param n ノード数
      */
-    Tree(int n = 0) : Graph<Cost>(n) {}
+    explicit Tree(int n = 0) : Graph<Cost>(n) {}
 
     /**
      * @brief 辺の情報を標準入力から受け取って追加する
@@ -155,7 +155,7 @@ class RootedTree : private Tree<Cost> {
      * @param par_ 頂点0以外の親の頂点のリスト
      * @param padding = -1 parの頂点番号をいくつずらすか
      */
-    RootedTree(const std::vector<int>& par_, int padding = -1) : Tree<Cost>(par_.size() + 1), root(0) {
+    explicit RootedTree(const std::vector<int>& par_, int padding = -1) : Tree<Cost>(par_.size() + 1), root(0) {
         for (int i = 0; i < (int)par_.size(); i++) {
             this->add_edge(i + 1, par_[i] + padding);
         }
@@ -288,7 +288,7 @@ class DoublingClimbTree : private RootedTree<Cost> {
      *
      * @param tree RootedTree
      */
-    DoublingClimbTree(const RootedTree<Cost>& tree) : RootedTree<Cost>(tree) {
+    explicit DoublingClimbTree(const RootedTree<Cost>& tree) : RootedTree<Cost>(tree) {
         build();
     }
 
@@ -307,7 +307,7 @@ class DoublingClimbTree : private RootedTree<Cost> {
      * @param par_ 頂点0以外の親の頂点のリスト
      * @param padding = -1 parの頂点番号をいくつずらすか
      */
-    DoublingClimbTree(const std::vector<int>& par_, int padding = -1) : RootedTree<Cost>(par_, padding) {
+    explicit DoublingClimbTree(const std::vector<int>& par_, int padding = -1) : RootedTree<Cost>(par_, padding) {
         build();
     }
     /**

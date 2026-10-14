@@ -13,7 +13,7 @@
 /**
  * @brief 無向グラフに対して「辺の追加」、「2頂点が連結かの判定」をする
  */
-struct UnionFind {
+class UnionFind {
 protected:
     int _n;
     // 負ならサイズ、非負なら親

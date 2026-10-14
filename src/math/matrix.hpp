@@ -47,7 +47,8 @@ struct OperatorPropertyDefault {
  * constexprである必要はなく、またinvなど使わないものは定義しなくてもよい（必要なものがなかったらコンパイルエラーが発生する）
  */
 template <class T, class OperatorProperty = matrix::OperatorPropertyDefault<T>>
-struct Matrix {
+class Matrix {
+public:
     int n, m;
     std::vector<std::vector<T>> v;
 

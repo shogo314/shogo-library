@@ -13,7 +13,8 @@
 #include <vector>
 
 template <typename T>
-struct MexUpdate {
+class MexUpdate {
+public:
     using value_type = T;
 
 private:

@@ -14,7 +14,7 @@
  * @tparam T
  */
 template <typename T>
-struct TadpoleArray {
+class TadpoleArray {
 private:
     std::vector<T> data;
     int k;

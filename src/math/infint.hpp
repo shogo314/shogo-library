@@ -19,7 +19,7 @@
  * Tは符号付き整数であり、2の補数表現で表されることを期待する
  */
 template <typename T = long long>
-struct infint {
+class infint {
 private:
     static_assert(std::is_integral_v<T> && std::is_signed_v<T>);
     static_assert(std::numeric_limits<T>::min() + 1 == -std::numeric_limits<T>::max());

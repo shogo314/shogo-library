@@ -14,9 +14,9 @@
 #include "graph.hpp"
 
 template <typename>
-struct RootedTree;
+class RootedTree;
 template <typename>
-struct DoublingClimbTree;
+class DoublingClimbTree;
 
 /**
  * @brief 根なし木
@@ -122,7 +122,8 @@ struct Tree : private Graph<Cost> {
  * @tparam Cost = int 辺のコスト
  */
 template <typename Cost = int>
-struct RootedTree : private Tree<Cost> {
+class RootedTree : private Tree<Cost> {
+public:
     using Edge = typename Tree<Cost>::Edge;
     using Tree<Cost>::n;
     using Tree<Cost>::m;
@@ -252,7 +253,8 @@ private:
  * @tparam Cost = int 辺の重み(注: hopでは根の重みは考えない)
  */
 template <typename Cost = int>
-struct DoublingClimbTree : private RootedTree<Cost> {
+class DoublingClimbTree : private RootedTree<Cost> {
+public:
     using Edge = typename RootedTree<Cost>::Edge;
     using RootedTree<Cost>::n;
     using RootedTree<Cost>::m;

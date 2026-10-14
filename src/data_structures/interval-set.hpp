@@ -19,7 +19,7 @@
  * @tparam T スカラー
  */
 template <typename T = long long, class Compare = std::less<T>, std::enable_if_t<std::is_scalar_v<T>>* = nullptr>
-struct IntervalSet {
+class IntervalSet {
 public:
     using key_type = T;
     using value_type = std::pair<key_type, key_type>;

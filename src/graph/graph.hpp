@@ -21,7 +21,8 @@
  * @tparam Cost 辺のコストの型
  */
 template <typename Cost = int>
-struct Graph {
+class Graph {
+public:
     /**
      * @brief 有向辺の構造体
      *

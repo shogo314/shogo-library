@@ -13,7 +13,7 @@
 #include <vector>
 
 template <typename U, class ADD_LEFT, class DELETE_LEFT, class ADD_RIGHT = ADD_LEFT, class DELETE_RIGHT = DELETE_LEFT>
-struct Mo {
+class Mo {
 private:
     int _n;
     std::vector<std::array<int, 3>> lri;

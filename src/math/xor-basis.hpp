@@ -56,7 +56,7 @@ class XorBasis {
     /**
      * @brief 基底の個数 (空間の次元)。作れる値は 2^rank() 個
      */
-    int rank() const { return r; }
+    long long rank() const { return r; }
 
     /**
      * @brief x を作れるか

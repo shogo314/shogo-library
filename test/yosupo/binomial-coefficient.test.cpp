@@ -24,7 +24,7 @@ int main() {
         if (mm > 1) factors.emplace_back(mm, 1);
     }
     std::vector<CombinationPQ> combpq;
-    for (int i = 0; i < factors.size(); ++i) {
+    for (long long i = 0; i < (long long)factors.size(); ++i) {
         auto [p, e] = factors[i];
         combpq.emplace_back(p, e);
     }
@@ -32,8 +32,7 @@ int main() {
         long long n, k;
         std::cin >> n >> k;
         std::vector<long long> x, y;
-        for (int i = 0; i < factors.size(); ++i) {
-            auto [p, e] = factors[i];
+        for (long long i = 0; i < (long long)factors.size(); ++i) {
             x.push_back(combpq[i].C(n, k));
             y.push_back(combpq[i].pq);
         }

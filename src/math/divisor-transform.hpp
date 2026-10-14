@@ -17,7 +17,7 @@
 template <typename T>
 void divisor_zeta(std::vector<T>& a) {
     int n = (int)a.size() - 1;
-    for (int p : enumerate_primes(n)) {
+    for (long long p : enumerate_primes(n)) {
         for (int i = 1; i <= n / p; i++) a[i * p] += a[i];
     }
 }
@@ -29,7 +29,7 @@ void divisor_zeta(std::vector<T>& a) {
 template <typename T>
 void divisor_mobius(std::vector<T>& a) {
     int n = (int)a.size() - 1;
-    for (int p : enumerate_primes(n)) {
+    for (long long p : enumerate_primes(n)) {
         for (int i = n / p; i >= 1; i--) a[i * p] -= a[i];
     }
 }
@@ -41,7 +41,7 @@ void divisor_mobius(std::vector<T>& a) {
 template <typename T>
 void multiple_zeta(std::vector<T>& a) {
     int n = (int)a.size() - 1;
-    for (int p : enumerate_primes(n)) {
+    for (long long p : enumerate_primes(n)) {
         for (int i = n / p; i >= 1; i--) a[i] += a[i * p];
     }
 }
@@ -53,7 +53,7 @@ void multiple_zeta(std::vector<T>& a) {
 template <typename T>
 void multiple_mobius(std::vector<T>& a) {
     int n = (int)a.size() - 1;
-    for (int p : enumerate_primes(n)) {
+    for (long long p : enumerate_primes(n)) {
         for (int i = 1; i <= n / p; i++) a[i] -= a[i * p];
     }
 }

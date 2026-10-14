@@ -23,7 +23,7 @@ auto t = g.rotate(1).vstr();          // 時計回りに 90 度回して vector<
 | `Matrix({ {a, b}, {c, d} })` | 初期化子リストから作る | $O(nm)$ |
 | `Matrix(v)` | `vector<vector<T>>` や `vector<string>` から作る | $O(nm)$ |
 | `Matrix(n, m, val = 0)` | `n` 行 `m` 列で、要素はすべて `val` | $O(nm)$ |
-| `A.size()` | 行数 | $O(1)$ |
+| `A.size()` | 行数 (`long long`) | $O(1)$ |
 | `A[i][j]` | 要素 | $O(1)$ |
 | `for (auto& row : A)` | 各行を走査 | $O(n)$ |
 | `A.col(j)` | `j` 列目 | $O(n)$ |
@@ -34,7 +34,7 @@ auto t = g.rotate(1).vstr();          // 時計回りに 90 度回して vector<
 
 | 変数 | 説明 |
 |---|---|
-| `n` / `m` | 行数 / 列数 |
+| `n` / `m` | 行数 / 列数 (`long long`) |
 
 ## 線形代数
 

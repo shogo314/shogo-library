@@ -25,21 +25,21 @@ class Combination {
      * @param n
      * @note O(n) 必要になったら呼び出されるが、予め大きなnに対して呼び出しておくことで逆元の直接計算を減らせる
      */
-    inline static void extend(int n) {
+    inline static void extend(long long n) {
         if (cached_mod != (long long)Modint::mod()) {
             cached_mod = Modint::mod();
             fact = {1, 1};
             inv_fact = {1, 1};
         }
-        int m = fact.size();
+        const long long m = fact.size();
         if (n < m) return;
         fact.resize(n + 1);
         inv_fact.resize(n + 1);
-        for (int i = m; i <= n; ++i) {
+        for (long long i = m; i <= n; ++i) {
             fact[i] = fact[i - 1] * i;
         }
         inv_fact[n] = fact[n].inv();
-        for (int i = n; i > m; --i) {
+        for (long long i = n; i > m; --i) {
             inv_fact[i - 1] = inv_fact[i] * i;
         }
     }
@@ -50,7 +50,7 @@ class Combination {
      * @return n!
      * @note extend(n), O(1)
      */
-    inline static Modint factorial(int n) {
+    inline static Modint factorial(long long n) {
         extend(n);
         return fact[n];
     }
@@ -60,7 +60,7 @@ class Combination {
      * @return n!^-1
      * @note extend(n), O(1)
      */
-    inline static Modint inverse_factorial(int n) {
+    inline static Modint inverse_factorial(long long n) {
         extend(n);
         return inv_fact[n];
     }
@@ -70,7 +70,7 @@ class Combination {
      * @return n^-1
      * @note extend(n), O(1)
      */
-    inline static Modint inv(int n) {
+    inline static Modint inv(long long n) {
         assert(n > 0);
         extend(n);
         return inv_fact[n] * fact[n - 1];
@@ -83,7 +83,7 @@ class Combination {
      * @return nPr
      * @note extend(n), O(1)
      */
-    inline static Modint P(int n, int r) {
+    inline static Modint P(long long n, long long r) {
         if (r < 0 || n < r) return 0;
         extend(n);
         return fact[n] * inv_fact[n - r];
@@ -95,7 +95,7 @@ class Combination {
      * @return nCr
      * @note extend(n), O(1)
      */
-    inline static Modint C(int n, int r) {
+    inline static Modint C(long long n, long long r) {
         if (r < 0 || n < r) return 0;
         extend(n);
         return fact[n] * inv_fact[r] * inv_fact[n - r];
@@ -107,7 +107,7 @@ class Combination {
      * @return nHr
      * @note extend(n+r-1), O(1)
      */
-    inline static Modint H(int n, int r) {
+    inline static Modint H(long long n, long long r) {
         if (n < 0 || r < 0) return 0;
         if (n == 0 && r == 0) return 1;
         return C(n + r - 1, r);
@@ -120,10 +120,10 @@ class Combination {
      * @return nPr
      * @note O(r)
      */
-    inline static Modint P_loop(long long n, int r) {
+    inline static Modint P_loop(long long n, long long r) {
         if (r < 0 || n < r) return 0;
         Modint res = 1;
-        for (int i = 0; i < r; ++i) {
+        for (long long i = 0; i < r; ++i) {
             res *= n - i;
         }
         return res;

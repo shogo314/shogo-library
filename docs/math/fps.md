@@ -13,7 +13,7 @@ auto h = pow(f, 10, n);        // (1 + x)^10 の x^n 未満
 mint y = f.eval(2);            // f(2)
 ```
 
-`deg` を取る関数は、結果の $x^{\mathrm{deg}}$ 未満の項を返します。`deg` を省略するか負の値を渡すと `f.size()` になります。
+`deg` を取る関数は、結果の $x^{\mathrm{deg}}$ 未満の項を返します。`deg`、`pre(k)` の `k`、シフト量 `k` は `long long` です。`deg` を省略するか負の値を渡すと `f.size()` になります。
 
 ## 演算子
 

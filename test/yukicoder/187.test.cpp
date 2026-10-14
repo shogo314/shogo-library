@@ -17,7 +17,7 @@ int main() {
         std::cout << -1 << std::endl;
         return 0;
     }
-    auto [ans, l] = *res;
+    const long long ans = res->x, l = res->lcm;
     if ([&] {
             long long tmp = l * MOD;
             for (int i = 0; i < N; ++i) {

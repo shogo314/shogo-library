@@ -53,7 +53,7 @@ int main() {
     // 小さい数はすべて愚直と比べる
     const int N = 3000;
     Sieve sv(N);
-    std::vector<int> naive_primes;
+    std::vector<long long> naive_primes;
     for (int n = 0; n <= N; n++) {
         bool p = naive_is_prime(n);
         if (p) naive_primes.push_back(n);

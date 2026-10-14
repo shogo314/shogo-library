@@ -7,6 +7,8 @@
 #include "../../src/base/macro.hpp"
 
 #include <algorithm>
+#include <array>
+#include <cstddef>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -19,6 +21,12 @@ void check(bool cond, const char* what) {
         ok = false;
     }
 }
+
+// al<N>・aal<N1, N2> で受け取る関数が、std::array から N を推論できるか
+template <std::size_t N>
+constexpr std::size_t al_size(const al<N>&) { return N; }
+template <std::size_t N1, std::size_t N2>
+constexpr std::size_t aal_size(const aal<N1, N2>&) { return N1 * 10 + N2; }
 
 // for 文で愚直に作った列
 std::vector<ll> naive_up(ll a, ll n, ll t) {
@@ -167,6 +175,7 @@ int main() {
         check(v == vl({3, 4, 5}), "VL");
         check(arr == al<2>{6, 7}, "AL");
         check(aa == aal<2, 3>{{{1, 2, 3}, {4, 5, 6}}}, "AAL");
+        check(al_size(arr) == 2 && al_size(std::array<ll, 3>{}) == 3 && aal_size(aa) == 23, "al<N>・aal<N1, N2> の推論");
         check(vc_ == vc({'x', 'y'}), "VC");
         check(vs_ == vs({"ab", "cd"}), "VS");
         check(vp == vpl({{1, 2}, {3, 4}}), "VPL");

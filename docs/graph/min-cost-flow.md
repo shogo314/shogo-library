@@ -9,7 +9,7 @@ documentation_of: //src/graph/min-cost-flow.hpp
 
 ```cpp
 MinCostFlow<int, long long> mcf(n);
-int id = mcf.add_edge(0, 1, 5, 3);      // 0 から 1 へ容量 5、コスト 3 の辺。辺の番号を返す
+long long id = mcf.add_edge(0, 1, 5, 3);  // 0 から 1 へ容量 5、コスト 3 の辺。辺の番号を返す
 auto [f, c] = mcf.flow(s, t, limit);   // limit を上限として流量が最大になるまで流す。f は流量、c は最小コスト
 auto e = mcf.get_edge(id);              // e.from, e.to, e.cap, e.flow, e.cost
 ```
@@ -26,6 +26,7 @@ auto e = mcf.get_edge(id);              // e.from, e.to, e.cap, e.flow, e.cost
 | `get_edge(i)` | 番号 `i` の辺の `from`、`to`、`cap` (容量)、`flow` (流れている量)、`cost` | $O(1)$ |
 | `edges()` | すべての辺の情報 (追加した順) | $O(m)$ |
 
+- 頂点番号と辺の番号 (`add_edge` の戻り値、`Edge` の `from`・`to`) は `long long` です。
 - `slope` の返す折れ線は (0, 0) から始まり、傾きが変わる点だけを並べます。流量 $x$ を流すときの最小コストは、折れ線の $x$ での値です。傾き (1 あたりのコスト) は単調に増えます。
 - `flow` と `slope` は何度も呼べます。前回までの流れに追加して流し、返す値はその呼び出しの中で流した量とコストです。`s` と `t` が前回と違ってもかまいません。
 - `flow` や `slope` を呼んだ後に `add_edge` はできません。

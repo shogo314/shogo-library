@@ -16,11 +16,11 @@ int main(void) {
         std::cout << 0 << std::endl;
         return 0;
     }
-    std::vector<std::vector<int>> groups = connected_components(graph);
+    std::vector<std::vector<long long>> groups = connected_components(graph);
     long long ans = (long long)N * (N - 1) / 2 - M;
-    for (const std::vector<int>& group : groups) {
+    for (const std::vector<long long>& group : groups) {
         std::array<long long, 2> wb = {};
-        std::for_each(group.begin(), group.end(), [&](int x) { wb[c[x]]++; });
+        std::for_each(group.begin(), group.end(), [&](long long x) { wb[c[x]]++; });
         auto [w, b] = wb;
         ans -= w * (w - 1) / 2 + b * (b - 1) / 2;
     }

@@ -39,7 +39,7 @@ int main() {
         }
         LowLink ll(g);
         int base = count_components(n, es, -1, -1);
-        std::vector<int> arts, bridges;
+        std::vector<long long> arts, bridges;
         for (int v = 0; v < n; v++) {
             // v を取り除いたとき、残りの頂点の連結成分が増えるか
             // (v がほかの頂点とつながっていなければ、v の分だけ 1 減るのが普通)

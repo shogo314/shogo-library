@@ -7,12 +7,14 @@ $n$ 頂点 $n$ 辺で、すべての頂点の出次数が 1 の有向グラフ (
 
 ```cpp
 FunctionalGraph fg(std::vector<int>{1, 2, 0, 0, 3});  // 0→1→2→0 のサイクルに 4→3→0 が流れ込む
-int v = fg.hop(4, 10);       // 4 から 10 回移動した頂点: 2
-int c = fg.hopable(4);       // 4 から到達できる頂点の個数: 5
+long long v = fg.hop(4, 10); // 4 から 10 回移動した頂点: 2
+long long c = fg.hopable(4); // 4 から到達できる頂点の個数: 5
 bool b = fg.is_cycle[3];     // false
 ```
 
 `FunctionalGraph(n)` で作った場合は、`read()` で入力するまで前計算が行われません。
+
+頂点番号・個数・距離は `long long` で、メンバ変数も `long long` で持ちます。`FunctionalGraph(g)` の `g` は `std::vector<long long>` でも `std::vector<int>` でもかまいません。
 
 ## メンバ関数
 
@@ -21,7 +23,7 @@ bool b = fg.is_cycle[3];     // false
 | `FunctionalGraph(g)` | 頂点 `i` から `g[i]` への辺を持つグラフを作る | $O(n \log n)$ |
 | `FunctionalGraph(n)` + `read(padding = -1)` | 標準入力から `g[0], ..., g[n-1]` を読む。頂点番号に `padding` を足す | $O(n \log n)$ |
 | `size()` | 頂点数 | $O(1)$ |
-| `hop(x, k)` | `x` から `k` 回移動した頂点 (`k` は `long long` でよい) | $O(\log n)$ |
+| `hop(x, k)` | `x` から `k` 回移動した頂点 | $O(\log n)$ |
 | `hopable(x)` | `x` から 0 回以上の移動で到達できる頂点の個数 | $O(1)$ |
 
 ## メンバ変数

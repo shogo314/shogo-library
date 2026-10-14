@@ -45,6 +45,8 @@ for (auto [a, b] : hld.path(u, v)) x = a <= b ? forward.prod(a, b + 1)(x) : back
 | `hop(v, k)` | `v` から根の方へ `k` 本進んだ頂点 (なければ `-1`) | $O(\log n)$ |
 | `jump(u, v, k)` | `u` から `v` へのパスで、`u` から `k` 本進んだ頂点 (なければ `-1`) | $O(\log n)$ |
 
+頂点番号・列での位置・深さ・個数は `long long` で受け取り、`long long` で返します (`path` と `subtree` の区間の端も `long long`)。
+
 ## 関連
 
 - LCA やダブリングだけなら [木の汎用テンプレート](tree.hpp) の `DoublingClimbTree`

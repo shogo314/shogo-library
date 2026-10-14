@@ -8,7 +8,7 @@ documentation_of: //src/graph/bipartite-matching.hpp
 ```cpp
 BipartiteMatching bm(l, r);
 bm.add_edge(0, 1);                  // 左 0 と右 1 の間の辺
-int k = bm.solve();                 // 最大マッチングの大きさ
+long long k = bm.solve();           // 最大マッチングの大きさ
 for (auto [u, v] : bm.matching()) { /* 左 u と右 v がマッチした */ }
 ```
 
@@ -25,6 +25,8 @@ for (auto [u, v] : bm.matching()) { /* 左 u と右 v がマッチした */ }
 | `right_match(v)` | 右側の頂点 `v` とマッチした左側の頂点 (なければ `-1`) | $O(1)$ |
 
 辺を追加してからもう一度 `solve()` を呼ぶと、前回のマッチングを広げます。
+
+頂点番号・頂点数・マッチングの大きさは `long long` です (`matching()` の要素も `std::pair<long long, long long>`)。
 
 ## 関連
 

@@ -92,7 +92,7 @@ int main() {
             dag |= good;
         } while (!dag && std::next_permutation(perm.begin(), perm.end()));
         if (has_cycle(graph) == dag) ok = false;
-        std::vector<int> order = topological_sort(graph);
+        std::vector<long long> order = topological_sort(graph);
         if (dag) {
             if ((int)order.size() != n)
                 ok = false;
@@ -134,7 +134,7 @@ int main() {
                 }
             }
         }
-        std::vector<std::vector<int>> groups = strongly_connected_components(graph);
+        std::vector<std::vector<long long>> groups = strongly_connected_components(graph);
         std::vector<int> id(n, -1);
         int total = 0;
         for (int i = 0; i < (int)groups.size(); i++) {

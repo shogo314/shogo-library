@@ -7,7 +7,7 @@ documentation_of: //src/graph/max-flow.hpp
 
 ```cpp
 MaxFlow<long long> mf(n);
-int id = mf.add_edge(0, 1, 5);      // 0 から 1 へ容量 5 の辺。辺の番号を返す
+long long id = mf.add_edge(0, 1, 5);  // 0 から 1 へ容量 5 の辺。辺の番号を返す
 long long f = mf.flow(s, t);        // s から t へ流せるだけ流す
 auto e = mf.get_edge(id);           // e.from, e.to, e.cap, e.flow
 std::vector<bool> S = mf.min_cut(s);  // 最小カットの s 側
@@ -26,6 +26,8 @@ std::vector<bool> S = mf.min_cut(s);  // 最小カットの s 側
 | `edges()` | すべての辺の情報 (追加した順) | $O(m)$ |
 | `change_edge(i, new_cap, new_flow)` | 番号 `i` の辺の容量を `new_cap`、流れている量を `new_flow` に変える ($0 \le$ `new_flow` $\le$ `new_cap`)。ほかの辺の流量は変えないので、流量の保存則が崩れることがある | $O(1)$ |
 | `min_cut(s)` | 残余グラフで `s` から行ける頂点か。`flow(s, t)` で流しきった後なら、`true` の頂点の集合が最小カットの `s` 側になる | $O(n + m)$ |
+
+頂点番号と辺の番号 (`add_edge` の戻り値、`Edge` の `from`・`to`) は `long long` です。
 
 `flow` を何度も呼ぶと、前回までの流れに追加して流します。辺を追加してから、もう一度 `flow` を呼ぶこともできます。
 

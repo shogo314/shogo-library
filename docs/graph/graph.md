@@ -9,7 +9,7 @@ documentation_of: //src/graph/graph.hpp
 Graph<long long> g(n);
 g.read(m, -1, true);                // 1-indexed、重み付き、無向の辺を m 本読む
 auto sp = g.shortest_path(0);        // sp.dist[v] が距離、sp.path(v) が経路
-for (int v : g[u]) { /* u から出る辺の行き先 */ }
+for (long long v : g[u]) { /* u から出る辺の行き先 */ }
 for (auto& e : g[u]) { /* e.src, e.dst, e.cost, e.id */ }
 ```
 
@@ -25,7 +25,9 @@ for (auto& e : g[u]) { /* e.src, e.dst, e.cost, e.id */ }
 | `g[v]` | `v` から出る辺 (`Edge`) のリスト | $O(1)$ |
 | `edges()` | 全辺のリスト (`id` 順、無向辺は 1 本だけ) | $O(n + m)$ |
 
-`Edge` は `src`、`dst`、`cost`、`id` (追加順の番号、無向辺は両方向で同じ) を持ち、`int` に変換すると `dst` になります。
+`Edge` は `src`、`dst`、`cost`、`id` (追加順の番号、無向辺は両方向で同じ) を持ち、`long long` に変換すると `dst` になります。`src`・`dst`・`id` は `long long` です。
+
+頂点番号・辺の番号・頂点数 (`n`・`m`・`size()`) は `long long` です。
 
 ## メンバ変数
 

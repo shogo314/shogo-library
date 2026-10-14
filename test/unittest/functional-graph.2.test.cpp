@@ -40,7 +40,7 @@ int main() {
                 fg.read(padding);
             std::cin.rdbuf(original);
 
-            if (fg.g != g) ok = false;
+            if (fg.g != std::vector<long long>(g.begin(), g.end())) ok = false;
             for (int x = 0; x < n; x++) {
                 if (fg.is_cycle[x] != expected.is_cycle[x]) ok = false;
                 if (fg.hopable(x) != expected.hopable(x)) ok = false;

@@ -35,6 +35,9 @@ int main() {
         std::vector<int> g(n);
         for (int& v : g) v = rng() % n;
         FunctionalGraph fg(g);
+        // std::vector<long long> から作っても同じになる
+        FunctionalGraph fg_ll(std::vector<long long>(g.begin(), g.end()));
+        if (fg_ll.g != fg.g || fg_ll.depth != fg.depth || fg_ll.cycles != fg.cycles) ok = false;
 
         // サイクル上の頂点: ある 1 <= j <= n で g^j(x) = x
         std::vector<bool> on_cycle(n);

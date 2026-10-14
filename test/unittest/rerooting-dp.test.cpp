@@ -1,10 +1,12 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
 // rerooting-dp.hpp の distance_sums と connected_subgraph_count を愚直な実装とランダムに比較する
+// 辺の番号と頂点番号を int で受け取る関数を渡しても使えることも確かめる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../src/graph/rerooting-dp.hpp"
 
+#include <algorithm>
 #include <iostream>
 #include <random>
 #include <vector>
@@ -44,6 +46,15 @@ int main() {
             }
             if (ds[s] != sum) ok = false;
         }
+
+        // 辺の番号と頂点番号を int で受け取る関数でも、farthest_node_dist と同じになる
+        std::vector<long long> far = rerooting_dp(
+            tree,
+            0LL,
+            [](long long a, long long b) { return std::max(a, b); },
+            [](long long x, long long c, int) { return x + c; },
+            [](long long a, int) { return a; });
+        if (far != farthest_node_dist(tree)) ok = false;
 
         // connected_subgraph_count: 頂点集合を全列挙し、その頂点を含む連結なものを数える
         std::vector<long long> cs = connected_subgraph_count<long long>(tree);

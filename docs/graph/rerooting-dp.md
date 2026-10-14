@@ -13,8 +13,8 @@ t.read(-1, true);
 auto dp = rerooting_dp(
     t, 0LL,
     [](long long a, long long b) { return std::max(a, b); },  // merge: 子の中で最大
-    [](long long x, long long c, int) { return x + c; },      // addedge: 辺の重みを足す
-    [](long long a, int) { return a; });                      // addnode: そのまま
+    [](long long x, long long c, long long) { return x + c; },  // addedge: 辺の重みを足す
+    [](long long a, long long) { return a; });                  // addnode: そのまま
 ```
 
 ## `rerooting_dp<E, V = E>(tree, e, merge, addedge, addnode)` の引数
@@ -27,8 +27,10 @@ $$\mathrm{dp}[u] = \mathrm{addnode}(\mathrm{merge}(\mathrm{addedge}(\mathrm{dp}[
 |---|---|---|
 | `e` | `E` | `merge` の単位元 (子がないときの値) |
 | `merge(a, b)` | `(E, E) -> E` | 子からの値をまとめる。可換かつ結合的であること |
-| `addedge(x, cost, id)` | `(V, Cost, int) -> E` | 子の DP 値 `x` に、子へ向かう辺 (重み `cost`、番号 `id`) の分を加える |
-| `addnode(a, u)` | `(E, int) -> V` | まとめた値 `a` に頂点 `u` の分を加えて、`u` の DP 値にする |
+| `addedge(x, cost, id)` | `(V, Cost, long long) -> E` | 子の DP 値 `x` に、子へ向かう辺 (重み `cost`、番号 `id`) の分を加える |
+| `addnode(a, u)` | `(E, long long) -> V` | まとめた値 `a` に頂点 `u` の分を加えて、`u` の DP 値にする |
+
+辺の番号 `id` と頂点 `u` は `long long` で渡します。`int` で受け取る関数でもかまいません。
 
 ## 関数
 

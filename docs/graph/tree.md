@@ -43,7 +43,7 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `RootedTree(tree, r)` | 木 `tree` の根を `r` にする | $O(n)$ |
-| `RootedTree(par, padding = -1)` | 頂点 1, ..., n-1 の親のリスト `par` から、根が 0 の木を作る。頂点番号に `padding` を足す | $O(n)$ |
+| `RootedTree(par, padding = -1)` | 頂点 1, ..., n-1 の親のリスト `par` (`std::vector<long long>` か `std::vector<int>`) から、根が 0 の木を作る。頂点番号に `padding` を足す | $O(n)$ |
 | `build_lca()` | `DoublingClimbTree` に変換する | $O(n \log n)$ |
 
 | 変数 | 説明 |
@@ -57,6 +57,8 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 | `preorder` / `postorder` | 行きがけ順 / 帰りがけ順 |
 | `euler_tour` | オイラーツアー。DFS で通った `(頂点, その頂点を通った回数)` の列 |
 
+`root` と、`unweighted_depth`・`unweighted_height`・`sz`・`preorder`・`postorder`・`euler_tour` の要素は `long long` です。
+
 ## `DoublingClimbTree<Cost = int>` (ダブリング済み根付き木)
 
 `Tree` の `build_lca(r)`、`RootedTree` の `build_lca()`、またはコンストラクタ (`RootedTree` から、`Tree` と根から、親のリストから) で作ります。構築は $O(n \log n)$ です。
@@ -69,7 +71,10 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 
 | 変数 | 説明 |
 |---|---|
+| `h` | ダブリングの段数 |
 | `doubling_par[i][v]` | `v` から $2^i$ 個上の祖先 (存在しなければ `-1`) |
+
+頂点番号・段数は `long long` です。
 
 ## 関連
 

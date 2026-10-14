@@ -28,6 +28,8 @@ if (ts.satisfiable()) {
 | `satisfiable()` | すべての条件を満たす割り当てがあるか | $O(n + m)$ ($m$ は条件の個数) |
 | `answer()` | 直前の `satisfiable()` が `true` のとき、条件を満たす割り当ての 1 つ | $O(1)$ |
 
+変数の番号と個数は `long long` です。
+
 `satisfiable()` を呼んだ後に条件を加えて、もう一度 `satisfiable()` を呼ぶこともできます。
 
 ## 関連

@@ -11,8 +11,8 @@ documentation_of: //src/graph/lowlink.hpp
 Graph<int> g(n);
 g.read(m, 0);
 LowLink ll(g);
-for (int v : ll.articulation_points()) { /* 関節点 */ }
-for (int id : ll.bridges()) { auto e = g.edges()[id]; /* 橋 e.src - e.dst */ }
+for (long long v : ll.articulation_points()) { /* 関節点 */ }
+for (long long id : ll.bridges()) { auto e = g.edges()[id]; /* 橋 e.src - e.dst */ }
 auto groups = ll.two_edge_connected_groups();
 ```
 
@@ -28,6 +28,8 @@ auto groups = ll.two_edge_connected_groups();
 | `is_bridge(id)` | 番号 `id` の辺が橋か | $O(1)$ |
 | `two_edge_connected_groups()` | 二重辺連結成分 (橋をすべて取り除いたときの連結成分) ごとの頂点のリスト | $O(1)$ |
 | `two_edge_connected_group_id(v)` | `v` が属する二重辺連結成分の番号 (`two_edge_connected_groups()` の添字) | $O(1)$ |
+
+頂点番号・辺の番号・成分の番号は `long long` です。
 
 ## メンバ変数
 

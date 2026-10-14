@@ -50,7 +50,7 @@ struct Vector {
      * @param i
      * @return T&
      */
-    constexpr T& operator[](int i) noexcept {
+    constexpr T& operator[](long long i) noexcept {
         return v[i];
     }
     /**
@@ -59,7 +59,7 @@ struct Vector {
      * @param i
      * @return T&
      */
-    constexpr const T& operator[](int i) const noexcept {
+    constexpr const T& operator[](long long i) const noexcept {
         return v[i];
     }
 
@@ -625,14 +625,14 @@ std::vector<Vector<T, 2>> convex_hull(const std::vector<Vector<T, 2>>& _points, 
 template <typename T>
 struct ClosestPairSquared {
     T squared_dist;  //!< 最近点対の距離の2乗
-    int i, j;        //!< 最近点対の添字
+    long long i, j;  //!< 最近点対の添字
 };
 /**
  * @brief closest_point_pair の戻り値
  */
 struct ClosestPair {
-    double dist;  //!< 最近点対の距離
-    int i, j;     //!< 最近点対の添字
+    double dist;     //!< 最近点対の距離
+    long long i, j;  //!< 最近点対の添字
 };
 
 /**

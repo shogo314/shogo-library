@@ -54,29 +54,35 @@ data:
     \ root \u306F\u8449\u306E\u756A\u53F7\n\n    PersistentArray(std::shared_ptr<Pool>\
     \ pool, int n, int height, int root) : pool(std::move(pool)), n(n), height(height),\
     \ root(root) {}\n\n    void init_height() {\n        height = 0;\n        while\
-    \ ((1 << height) < n) height++;\n    }\n    int build(const std::vector<T>& v,\
-    \ int a, int h) {\n        if (h == 0) return pool->make_leaf(a < n ? v[a] : T());\n\
-    \        int l = build(v, a, h - 1);\n        int r = build(v, a + (1 << (h -\
-    \ 1)), h - 1);\n        return pool->make_node(l, r);\n    }\n\n   public:\n \
-    \   /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n  \
-    \   * \u540C\u3058\u5024\u306E\u90E8\u5206\u6728\u306F\u5171\u6709\u3059\u308B\
-    \u306E\u3067\u3001n \u304C\u5927\u304D\u304F\u3066\u3082 O(log n) \u3067\u4F5C\
-    \u308C\u308B\n     *\n     * @param n \u8981\u7D20\u6570\n     * @param x \u521D\
-    \u671F\u5024\n     */\n    explicit PersistentArray(int n = 0, const T& x = T())\
-    \ : pool(nullptr), n(n), height(0), root(-1) {\n        assert(0 <= n);\n    \
-    \    if (n == 0) return;\n        pool = std::make_shared<Pool>();\n        init_height();\n\
-    \        root = pool->make_leaf(x);\n        for (int h = 0; h < height; h++)\
-    \ root = pool->make_node(root, root);\n    }\n    /**\n     * @brief \u30B3\u30F3\
-    \u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @param v \u521D\u671F\u306E\u8981\
-    \u7D20\n     */\n    explicit PersistentArray(const std::vector<T>& v) : pool(nullptr),\
-    \ n(v.size()), height(0), root(-1) {\n        if (n == 0) return;\n        pool\
-    \ = std::make_shared<Pool>();\n        init_height();\n        root = build(v,\
-    \ 0, height);\n    }\n\n    /**\n     * @brief \u8981\u7D20\u6570\u3092\u8FD4\u3059\
-    \n     */\n    int size() const { return n; }\n\n    /**\n     * @brief \u6307\
-    \u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\u5024\u3092\u8FD4\u3059\n     *\n \
-    \    * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * @return T \u5024\n\
-    \     */\n    T get(int k) const {\n        assert(0 <= k && k < n);\n       \
-    \ int t = root;\n        for (int h = height - 1; h >= 0; h--) t = pool->child[t][k\
+    \ ((1 << height) < n) height++;\n    }\n    // t ([a, a + 2^h)) \u306E [l, r)\
+    \ \u3092 u \u306B\u7F6E\u304D\u63DB\u3048\u308B\n    int copy_rec(int t, int u,\
+    \ int a, int h, int l, int r) const {\n        if (r <= a || a + (1 << h) <= l)\
+    \ return t;\n        if (l <= a && a + (1 << h) <= r) return u;\n        int lc\
+    \ = copy_rec(pool->child[t][0], pool->child[u][0], a, h - 1, l, r);\n        int\
+    \ rc = copy_rec(pool->child[t][1], pool->child[u][1], a + (1 << (h - 1)), h -\
+    \ 1, l, r);\n        return pool->make_node(lc, rc);\n    }\n    int build(const\
+    \ std::vector<T>& v, int a, int h) {\n        if (h == 0) return pool->make_leaf(a\
+    \ < n ? v[a] : T());\n        int l = build(v, a, h - 1);\n        int r = build(v,\
+    \ a + (1 << (h - 1)), h - 1);\n        return pool->make_node(l, r);\n    }\n\n\
+    \   public:\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\
+    \n     *\n     * \u540C\u3058\u5024\u306E\u90E8\u5206\u6728\u306F\u5171\u6709\u3059\
+    \u308B\u306E\u3067\u3001n \u304C\u5927\u304D\u304F\u3066\u3082 O(log n) \u3067\
+    \u4F5C\u308C\u308B\n     *\n     * @param n \u8981\u7D20\u6570\n     * @param\
+    \ x \u521D\u671F\u5024\n     */\n    explicit PersistentArray(int n = 0, const\
+    \ T& x = T()) : pool(nullptr), n(n), height(0), root(-1) {\n        assert(0 <=\
+    \ n);\n        if (n == 0) return;\n        pool = std::make_shared<Pool>();\n\
+    \        init_height();\n        root = pool->make_leaf(x);\n        for (int\
+    \ h = 0; h < height; h++) root = pool->make_node(root, root);\n    }\n    /**\n\
+    \     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @param\
+    \ v \u521D\u671F\u306E\u8981\u7D20\n     */\n    explicit PersistentArray(const\
+    \ std::vector<T>& v) : pool(nullptr), n(v.size()), height(0), root(-1) {\n   \
+    \     if (n == 0) return;\n        pool = std::make_shared<Pool>();\n        init_height();\n\
+    \        root = build(v, 0, height);\n    }\n\n    /**\n     * @brief \u8981\u7D20\
+    \u6570\u3092\u8FD4\u3059\n     */\n    int size() const { return n; }\n\n    /**\n\
+    \     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\u5024\u3092\u8FD4\
+    \u3059\n     *\n     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * @return\
+    \ T \u5024\n     */\n    T get(int k) const {\n        assert(0 <= k && k < n);\n\
+    \        int t = root;\n        for (int h = height - 1; h >= 0; h--) t = pool->child[t][k\
     \ >> h & 1];\n        return pool->leaf[t];\n    }\n    /**\n     * @brief \u6307\
     \u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\u5024\u3092\u8FD4\u3059\n     *\n \
     \    * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * @return T \u5024\n\
@@ -92,30 +98,41 @@ data:
     \        t = pool->make_leaf(x);\n        for (int h = 0; h < height; h++) {\n\
     \            std::array<int, 2> c = pool->child[path[h]];\n            c[k >>\
     \ h & 1] = t;\n            t = pool->make_node(c[0], c[1]);\n        }\n     \
-    \   return PersistentArray(pool, n, height, t);\n    }\n\n    /**\n     * @brief\
-    \ \u5185\u5BB9\u3092\u51FA\u529B\u3059\u308B\n     *\n     * @tparam CharT \u51FA\
-    \u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n     * @tparam Traits\
-    \ \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\u6027\
-    \n     * @param os \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\n     * @param rhs\
-    \ \u6C38\u7D9A\u914D\u5217\n     * @return std::basic_ostream<CharT, Traits>&\
-    \ \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\n     */\n    template <class CharT,\
-    \ class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
-    \ Traits>& os, const PersistentArray& rhs) {\n        for (int i = 0; i < rhs.n;\
-    \ i++) {\n            if (i != 0) os << CharT(' ');\n            os << rhs[i];\n\
-    \        }\n        return os;\n    }\n\n    /**\n     * @brief \u3059\u3079\u3066\
-    \u306E\u8981\u7D20\u3092\u4E26\u3079\u305F\u5217\u3092\u8FD4\u3059\n     */\n\
-    \    std::vector<T> to_vector() const {\n        std::vector<T> res(n);\n    \
-    \    for (int i = 0; i < n; i++) res[i] = get(i);\n        return res;\n    }\n\
-    };\n#line 2 \"src/data_structures/unionfind.hpp\"\n\n/**\n * @file unionfind.hpp\n\
-    \ * @brief UnionFind\n */\n\n#include <algorithm>\n#line 12 \"src/data_structures/unionfind.hpp\"\
-    \n\nnamespace internal_unionfind {\n/**\n * @brief \u5404\u8981\u7D20\u306E\u4EE3\
-    \u8868\u5143\u304B\u3089\u3001\u9023\u7D50\u6210\u5206\u3054\u3068\u306E\u8981\
-    \u7D20\u306E\u30EA\u30B9\u30C8\u3092\u4F5C\u308B\n * @param leader \u8981\u7D20\
-    \ a \u306E\u4EE3\u8868\u5143\u3092\u8FD4\u3059\u95A2\u6570\n */\ntemplate <typename\
-    \ F>\nstd::vector<std::vector<int>> groups(int n, F leader) {\n    std::vector<int>\
-    \ leader_buf(n), group_size(n);\n    for (int i = 0; i < n; i++) {\n        leader_buf[i]\
-    \ = leader(i);\n        group_size[leader_buf[i]]++;\n    }\n    std::vector<std::vector<int>>\
-    \ result(n);\n    for (int i = 0; i < n; i++) {\n        result[i].reserve(group_size[i]);\n\
+    \   return PersistentArray(pool, n, height, t);\n    }\n    /**\n     * @brief\
+    \ [l, r)\u306E\u533A\u9593\u3092\u5225\u306E\u7248\u306E\u5024\u306B\u3057\u305F\
+    \u65B0\u3057\u3044\u7248\u3092\u8FD4\u3059\n     *\n     * @param other \u5199\
+    \u3059\u5143\u306E\u7248 (\u81EA\u8EAB\u3068\u540C\u3058\u914D\u5217\u304B\u3089\
+    \u4F5C\u3063\u305F\u3082\u306E)\n     * @param l \u534A\u958B\u533A\u9593\u306E\
+    \u958B\u59CB\n     * @param r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF 0<=l<=r<=n\n\
+    \     * @return PersistentArray \u65B0\u3057\u3044\u7248 (\u81EA\u8EAB\u3082 other\
+    \ \u3082\u5909\u308F\u3089\u306A\u3044)\n     */\n    PersistentArray copy(const\
+    \ PersistentArray& other, int l, int r) const {\n        assert(pool == other.pool);\n\
+    \        assert(0 <= l && l <= r && r <= n);\n        if (l == r) return *this;\n\
+    \        return PersistentArray(pool, n, height, copy_rec(root, other.root, 0,\
+    \ height, l, r));\n    }\n\n    /**\n     * @brief \u5185\u5BB9\u3092\u51FA\u529B\
+    \u3059\u308B\n     *\n     * @tparam CharT \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\
+    \u30E0\u306E\u6587\u5B57\u578B\n     * @tparam Traits \u51FA\u529B\u30B9\u30C8\
+    \u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\u6027\n     * @param os \u51FA\
+    \u529B\u30B9\u30C8\u30EA\u30FC\u30E0\n     * @param rhs \u6C38\u7D9A\u914D\u5217\
+    \n     * @return std::basic_ostream<CharT, Traits>& \u51FA\u529B\u30B9\u30C8\u30EA\
+    \u30FC\u30E0\n     */\n    template <class CharT, class Traits>\n    friend std::basic_ostream<CharT,\
+    \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const PersistentArray&\
+    \ rhs) {\n        for (int i = 0; i < rhs.n; i++) {\n            if (i != 0) os\
+    \ << CharT(' ');\n            os << rhs[i];\n        }\n        return os;\n \
+    \   }\n\n    /**\n     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\u3092\u4E26\
+    \u3079\u305F\u5217\u3092\u8FD4\u3059\n     */\n    std::vector<T> to_vector()\
+    \ const {\n        std::vector<T> res(n);\n        for (int i = 0; i < n; i++)\
+    \ res[i] = get(i);\n        return res;\n    }\n};\n#line 2 \"src/data_structures/unionfind.hpp\"\
+    \n\n/**\n * @file unionfind.hpp\n * @brief UnionFind\n */\n\n#include <algorithm>\n\
+    #line 12 \"src/data_structures/unionfind.hpp\"\n\nnamespace internal_unionfind\
+    \ {\n/**\n * @brief \u5404\u8981\u7D20\u306E\u4EE3\u8868\u5143\u304B\u3089\u3001\
+    \u9023\u7D50\u6210\u5206\u3054\u3068\u306E\u8981\u7D20\u306E\u30EA\u30B9\u30C8\
+    \u3092\u4F5C\u308B\n * @param leader \u8981\u7D20 a \u306E\u4EE3\u8868\u5143\u3092\
+    \u8FD4\u3059\u95A2\u6570\n */\ntemplate <typename F>\nstd::vector<std::vector<int>>\
+    \ groups(int n, F leader) {\n    std::vector<int> leader_buf(n), group_size(n);\n\
+    \    for (int i = 0; i < n; i++) {\n        leader_buf[i] = leader(i);\n     \
+    \   group_size[leader_buf[i]]++;\n    }\n    std::vector<std::vector<int>> result(n);\n\
+    \    for (int i = 0; i < n; i++) {\n        result[i].reserve(group_size[i]);\n\
     \    }\n    for (int i = 0; i < n; i++) {\n        result[leader_buf[i]].push_back(i);\n\
     \    }\n    result.erase(std::remove_if(result.begin(), result.end(), [&](const\
     \ std::vector<int>& v) { return v.empty(); }), result.end());\n    return result;\n\
@@ -275,7 +292,7 @@ data:
   isVerificationFile: true
   path: test/unittest/persistent-unionfind.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 02:10:34+09:00'
+  timestamp: '2026-10-15 02:28:51+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/persistent-unionfind.test.cpp

@@ -28,6 +28,9 @@ data:
     path: src/data_structures/monoid-unionfind.hpp
     title: "\u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\u3092\u4E57\u305B\u308BUnionFind"
   - icon: ':heavy_check_mark:'
+    path: src/data_structures/persistent-lazy-segtree.hpp
+    title: "\u6C38\u7D9A\u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
+  - icon: ':heavy_check_mark:'
     path: src/data_structures/persistent-segtree.hpp
     title: "\u6C38\u7D9A\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
   - icon: ':heavy_check_mark:'
@@ -131,6 +134,9 @@ data:
     path: test/unittest/monoid.test.cpp
     title: test/unittest/monoid.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/persistent-lazy-segtree.test.cpp
+    title: test/unittest/persistent-lazy-segtree.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/persistent-segtree.test.cpp
     title: test/unittest/persistent-segtree.test.cpp
   - icon: ':heavy_check_mark:'
@@ -154,6 +160,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/lca.2.test.cpp
     title: test/yosupo/lca.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/persistent-range-affine-range-sum.test.cpp
+    title: test/yosupo/persistent-range-affine-range-sum.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/point-add-range-sum.1.test.cpp
     title: test/yosupo/point-add-range-sum.1.test.cpp
@@ -548,6 +557,7 @@ data:
   requiredBy:
   - src/data_structures/sparse-table.hpp
   - src/data_structures/fenwick-tree.hpp
+  - src/data_structures/persistent-lazy-segtree.hpp
   - src/data_structures/persistent-segtree.hpp
   - src/data_structures/lazy-segtree.hpp
   - src/data_structures/segtree-beats.hpp
@@ -566,6 +576,7 @@ data:
   verifiedWith:
   - test/unittest/imos.test.cpp
   - test/unittest/segtree-beats.test.cpp
+  - test/unittest/persistent-lazy-segtree.test.cpp
   - test/unittest/dual-segtree.test.cpp
   - test/unittest/persistent-segtree.test.cpp
   - test/unittest/mapping.test.cpp
@@ -598,6 +609,7 @@ data:
   - test/aoj/dsl-2-h.2.test.cpp
   - test/yosupo/queue-operate-all-composite.test.cpp
   - test/yosupo/point-add-range-sum.1.test.cpp
+  - test/yosupo/persistent-range-affine-range-sum.test.cpp
   - test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
   - test/yosupo/staticrmq.test.cpp
   - test/yosupo/point-set-range-composite.4.test.cpp

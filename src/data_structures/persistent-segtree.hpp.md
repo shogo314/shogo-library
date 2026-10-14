@@ -193,36 +193,42 @@ data:
     \        int mid = (a + b) / 2;\n        int l = pool->left[t], r = pool->right[t];\n\
     \        if (k < mid)\n            l = set_rec(l, a, mid, k, x);\n        else\n\
     \            r = set_rec(r, mid, b, k, x);\n        return pool->make_node(l,\
-    \ r);\n    }\n    S prod_rec(int t, int a, int b, int l, int r) const {\n    \
-    \    if (r <= a || b <= l) return e();\n        if (l <= a && b <= r) return pool->val[t];\n\
-    \        int mid = (a + b) / 2;\n        return op(prod_rec(pool->left[t], a,\
-    \ mid, l, r), prod_rec(pool->right[t], mid, b, l, r));\n    }\n    // [a, b) \u306E\
-    \u3046\u3061 l \u4EE5\u964D\u3067\u3001sum \u306B\u639B\u3051\u308B\u3068 f \u304C\
-    \u507D\u306B\u306A\u308B\u6700\u521D\u306E\u4F4D\u7F6E (\u306A\u3051\u308C\u3070\
-    \ b)\n    template <typename F>\n    int max_right_rec(int t, int a, int b, int\
-    \ l, F& f, S& sum) const {\n        if (b <= l) return b;\n        if (l <= a)\
-    \ {\n            S s = op(sum, pool->val[t]);\n            if (f(s)) {\n     \
-    \           sum = s;\n                return b;\n            }\n            if\
-    \ (b - a == 1) return a;\n        }\n        int mid = (a + b) / 2;\n        int\
-    \ x = max_right_rec(pool->left[t], a, mid, l, f, sum);\n        if (x < mid) return\
-    \ x;\n        return max_right_rec(pool->right[t], mid, b, l, f, sum);\n    }\n\
-    \    // [a, b) \u306E\u3046\u3061 r \u3088\u308A\u524D\u3067\u3001sum \u306B\u5DE6\
-    \u304B\u3089\u639B\u3051\u308B\u3068 f \u304C\u507D\u306B\u306A\u308B\u6700\u5F8C\
-    \u306E\u4F4D\u7F6E + 1 (\u306A\u3051\u308C\u3070 a)\n    template <typename F>\n\
-    \    int min_left_rec(int t, int a, int b, int r, F& f, S& sum) const {\n    \
-    \    if (r <= a) return a;\n        if (b <= r) {\n            S s = op(pool->val[t],\
-    \ sum);\n            if (f(s)) {\n                sum = s;\n                return\
-    \ a;\n            }\n            if (b - a == 1) return b;\n        }\n      \
-    \  int mid = (a + b) / 2;\n        int x = min_left_rec(pool->right[t], mid, b,\
-    \ r, f, sum);\n        if (x > mid) return x;\n        return min_left_rec(pool->left[t],\
-    \ a, mid, r, f, sum);\n    }\n\n   public:\n    /**\n     * @brief \u30B3\u30F3\
-    \u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * \u3059\u3079\u3066\u306E\u8981\u7D20\
-    \u3092\u5358\u4F4D\u5143\u3067\u521D\u671F\u5316\u3059\u308B\u3002\u5358\u4F4D\
-    \u5143\u306E\u90E8\u5206\u6728\u306F\u5171\u6709\u3059\u308B\u306E\u3067\u3001\
-    n \u304C\u5927\u304D\u304F\u3066\u3082 O(log n) \u3067\u4F5C\u308C\u308B\n   \
-    \  *\n     * @param n \u8981\u7D20\u6570\n     * @param m \u30E2\u30CE\u30A4\u30C9\
-    \n     */\n    explicit PersistentSegTree(int n = 0, M m = M()) : pool(std::make_shared<Pool>(std::move(m))),\
-    \ n(n) {\n        assert(0 <= n);\n        init_size();\n        root = pool->make_leaf(e());\n\
+    \ r);\n    }\n    // t \u306E [l, r) \u3092 u \u306B\u7F6E\u304D\u63DB\u3048\u308B\
+    \n    int copy_rec(int t, int u, int a, int b, int l, int r) const {\n       \
+    \ if (r <= a || b <= l) return t;\n        if (l <= a && b <= r) return u;\n \
+    \       int mid = (a + b) / 2;\n        int lc = copy_rec(pool->left[t], pool->left[u],\
+    \ a, mid, l, r);\n        int rc = copy_rec(pool->right[t], pool->right[u], mid,\
+    \ b, l, r);\n        return pool->make_node(lc, rc);\n    }\n    S prod_rec(int\
+    \ t, int a, int b, int l, int r) const {\n        if (r <= a || b <= l) return\
+    \ e();\n        if (l <= a && b <= r) return pool->val[t];\n        int mid =\
+    \ (a + b) / 2;\n        return op(prod_rec(pool->left[t], a, mid, l, r), prod_rec(pool->right[t],\
+    \ mid, b, l, r));\n    }\n    // [a, b) \u306E\u3046\u3061 l \u4EE5\u964D\u3067\
+    \u3001sum \u306B\u639B\u3051\u308B\u3068 f \u304C\u507D\u306B\u306A\u308B\u6700\
+    \u521D\u306E\u4F4D\u7F6E (\u306A\u3051\u308C\u3070 b)\n    template <typename\
+    \ F>\n    int max_right_rec(int t, int a, int b, int l, F& f, S& sum) const {\n\
+    \        if (b <= l) return b;\n        if (l <= a) {\n            S s = op(sum,\
+    \ pool->val[t]);\n            if (f(s)) {\n                sum = s;\n        \
+    \        return b;\n            }\n            if (b - a == 1) return a;\n   \
+    \     }\n        int mid = (a + b) / 2;\n        int x = max_right_rec(pool->left[t],\
+    \ a, mid, l, f, sum);\n        if (x < mid) return x;\n        return max_right_rec(pool->right[t],\
+    \ mid, b, l, f, sum);\n    }\n    // [a, b) \u306E\u3046\u3061 r \u3088\u308A\u524D\
+    \u3067\u3001sum \u306B\u5DE6\u304B\u3089\u639B\u3051\u308B\u3068 f \u304C\u507D\
+    \u306B\u306A\u308B\u6700\u5F8C\u306E\u4F4D\u7F6E + 1 (\u306A\u3051\u308C\u3070\
+    \ a)\n    template <typename F>\n    int min_left_rec(int t, int a, int b, int\
+    \ r, F& f, S& sum) const {\n        if (r <= a) return a;\n        if (b <= r)\
+    \ {\n            S s = op(pool->val[t], sum);\n            if (f(s)) {\n     \
+    \           sum = s;\n                return a;\n            }\n            if\
+    \ (b - a == 1) return b;\n        }\n        int mid = (a + b) / 2;\n        int\
+    \ x = min_left_rec(pool->right[t], mid, b, r, f, sum);\n        if (x > mid) return\
+    \ x;\n        return min_left_rec(pool->left[t], a, mid, r, f, sum);\n    }\n\n\
+    \   public:\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\
+    \n     *\n     * \u3059\u3079\u3066\u306E\u8981\u7D20\u3092\u5358\u4F4D\u5143\u3067\
+    \u521D\u671F\u5316\u3059\u308B\u3002\u5358\u4F4D\u5143\u306E\u90E8\u5206\u6728\
+    \u306F\u5171\u6709\u3059\u308B\u306E\u3067\u3001n \u304C\u5927\u304D\u304F\u3066\
+    \u3082 O(log n) \u3067\u4F5C\u308C\u308B\n     *\n     * @param n \u8981\u7D20\
+    \u6570\n     * @param m \u30E2\u30CE\u30A4\u30C9\n     */\n    explicit PersistentSegTree(int\
+    \ n = 0, M m = M()) : pool(std::make_shared<Pool>(std::move(m))), n(n) {\n   \
+    \     assert(0 <= n);\n        init_size();\n        root = pool->make_leaf(e());\n\
     \        for (int w = 1; w < sz; w <<= 1) root = pool->make_node(root, root);\n\
     \    }\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n  \
     \   *\n     * @param v \u521D\u671F\u306E\u8981\u7D20\n     * @param m \u30E2\u30CE\
@@ -264,36 +270,46 @@ data:
     \u7528\u7D20\n     * @return PersistentSegTree \u65B0\u3057\u3044\u7248 (\u81EA\
     \u8EAB\u306F\u5909\u308F\u3089\u306A\u3044)\n     */\n    PersistentSegTree apply(int\
     \ k, const S& x) const { return set(k, op(get(k), x)); }\n\n    /**\n     * @brief\
-    \ [l, r)\u306E\u533A\u9593\u306E\u7DCF\u7A4D\u3092\u8FD4\u3059\n     *\n     *\
-    \ @param l \u534A\u958B\u533A\u9593\u306E\u958B\u59CB\n     * @param r \u534A\u958B\
-    \u533A\u9593\u306E\u7D42\u7AEF 0<=l<=r<=n\n     * @return S \u7DCF\u7A4D\n   \
-    \  */\n    S prod(int l, int r) const {\n        assert(0 <= l && l <= r && r\
-    \ <= n);\n        return prod_rec(root, 0, sz, l, r);\n    }\n    /**\n     *\
-    \ @brief \u3059\u3079\u3066\u306E\u8981\u7D20\u306E\u7DCF\u7A4D\u3092\u8FD4\u3059\
-    \n     *\n     * @return S \u7DCF\u7A4D\n     */\n    S all_prod() const { return\
-    \ pool->val[root]; }\n\n    /**\n     * @brief (r = l or f(prod([l, r))) = true)\
-    \ and (r = n or f(prod([l, r+1))) = false)\u3068\u306A\u308Br\u3092\u8FD4\u3059\
-    \n     * f\u304C\u5358\u8ABF\u306A\u3089\u3001f(prod([l, r))) = true\u3068\u306A\
-    \u308B\u6700\u5927\u306Er\n     *\n     * @tparam F\n     * @param l \u534A\u958B\
-    \u533A\u9593\u306E\u958B\u59CB 0<=l<=n\n     * @param f \u5224\u5B9A\u95A2\u6570\
-    \ f(e) = true\n     * @return int\n     */\n    template <typename F>\n    int\
-    \ max_right(int l, F f) const {\n        assert(f(e()));\n        assert(0 <=\
-    \ l && l <= n);\n        if (l == n) return n;\n        S sum = e();\n       \
-    \ int r = max_right_rec(root, 0, sz, l, f, sum);\n        return r < n ? r : n;\n\
-    \    }\n    /**\n     * @brief (l = 0 or f(prod([l, r))) = true) and (l = r or\
-    \ f(prod([l-1, r))) = false)\u3068\u306A\u308Bl\u3092\u8FD4\u3059\n     * f\u304C\
-    \u5358\u8ABF\u306A\u3089\u3001f(prod([l, r))) = true\u3068\u306A\u308B\u6700\u5C0F\
-    \u306El\n     *\n     * @tparam F\n     * @param r \u534A\u958B\u533A\u9593\u306E\
-    \u7D42\u7AEF 0<=r<=n\n     * @param f \u5224\u5B9A\u95A2\u6570 f(e) = true\n \
-    \    * @return int\n     */\n    template <typename F>\n    int min_left(int r,\
-    \ F f) const {\n        assert(f(e()));\n        assert(0 <= r && r <= n);\n \
-    \       if (r == 0) return 0;\n        S sum = e();\n        return min_left_rec(root,\
-    \ 0, sz, r, f, sum);\n    }\n\n    /**\n     * @brief \u3059\u3079\u3066\u306E\
-    \u8981\u7D20\u3092\u4E26\u3079\u305F\u5217\u3092\u8FD4\u3059\n     */\n    std::vector<S>\
-    \ to_vector() const {\n        std::vector<S> res(n);\n        for (int i = 0;\
-    \ i < n; i++) res[i] = get(i);\n        return res;\n    }\n};\n\ntemplate <typename\
-    \ M>\nPersistentSegTree(int, M) -> PersistentSegTree<M>;\ntemplate <typename M>\n\
-    PersistentSegTree(std::vector<typename M::S>, M) -> PersistentSegTree<M>;\n"
+    \ [l, r)\u306E\u533A\u9593\u3092\u5225\u306E\u7248\u306E\u5024\u306B\u3057\u305F\
+    \u65B0\u3057\u3044\u7248\u3092\u8FD4\u3059\n     *\n     * @param other \u5199\
+    \u3059\u5143\u306E\u7248 (\u81EA\u8EAB\u3068\u540C\u3058\u6728\u304B\u3089\u4F5C\
+    \u3063\u305F\u3082\u306E)\n     * @param l \u534A\u958B\u533A\u9593\u306E\u958B\
+    \u59CB\n     * @param r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF 0<=l<=r<=n\n\
+    \     * @return PersistentSegTree \u65B0\u3057\u3044\u7248 (\u81EA\u8EAB\u3082\
+    \ other \u3082\u5909\u308F\u3089\u306A\u3044)\n     */\n    PersistentSegTree\
+    \ copy(const PersistentSegTree& other, int l, int r) const {\n        assert(pool\
+    \ == other.pool);\n        assert(0 <= l && l <= r && r <= n);\n        if (l\
+    \ == r) return *this;\n        return PersistentSegTree(pool, n, sz, copy_rec(root,\
+    \ other.root, 0, sz, l, r));\n    }\n\n    /**\n     * @brief [l, r)\u306E\u533A\
+    \u9593\u306E\u7DCF\u7A4D\u3092\u8FD4\u3059\n     *\n     * @param l \u534A\u958B\
+    \u533A\u9593\u306E\u958B\u59CB\n     * @param r \u534A\u958B\u533A\u9593\u306E\
+    \u7D42\u7AEF 0<=l<=r<=n\n     * @return S \u7DCF\u7A4D\n     */\n    S prod(int\
+    \ l, int r) const {\n        assert(0 <= l && l <= r && r <= n);\n        return\
+    \ prod_rec(root, 0, sz, l, r);\n    }\n    /**\n     * @brief \u3059\u3079\u3066\
+    \u306E\u8981\u7D20\u306E\u7DCF\u7A4D\u3092\u8FD4\u3059\n     *\n     * @return\
+    \ S \u7DCF\u7A4D\n     */\n    S all_prod() const { return pool->val[root]; }\n\
+    \n    /**\n     * @brief (r = l or f(prod([l, r))) = true) and (r = n or f(prod([l,\
+    \ r+1))) = false)\u3068\u306A\u308Br\u3092\u8FD4\u3059\n     * f\u304C\u5358\u8ABF\
+    \u306A\u3089\u3001f(prod([l, r))) = true\u3068\u306A\u308B\u6700\u5927\u306Er\n\
+    \     *\n     * @tparam F\n     * @param l \u534A\u958B\u533A\u9593\u306E\u958B\
+    \u59CB 0<=l<=n\n     * @param f \u5224\u5B9A\u95A2\u6570 f(e) = true\n     * @return\
+    \ int\n     */\n    template <typename F>\n    int max_right(int l, F f) const\
+    \ {\n        assert(f(e()));\n        assert(0 <= l && l <= n);\n        if (l\
+    \ == n) return n;\n        S sum = e();\n        int r = max_right_rec(root, 0,\
+    \ sz, l, f, sum);\n        return r < n ? r : n;\n    }\n    /**\n     * @brief\
+    \ (l = 0 or f(prod([l, r))) = true) and (l = r or f(prod([l-1, r))) = false)\u3068\
+    \u306A\u308Bl\u3092\u8FD4\u3059\n     * f\u304C\u5358\u8ABF\u306A\u3089\u3001\
+    f(prod([l, r))) = true\u3068\u306A\u308B\u6700\u5C0F\u306El\n     *\n     * @tparam\
+    \ F\n     * @param r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF 0<=r<=n\n    \
+    \ * @param f \u5224\u5B9A\u95A2\u6570 f(e) = true\n     * @return int\n     */\n\
+    \    template <typename F>\n    int min_left(int r, F f) const {\n        assert(f(e()));\n\
+    \        assert(0 <= r && r <= n);\n        if (r == 0) return 0;\n        S sum\
+    \ = e();\n        return min_left_rec(root, 0, sz, r, f, sum);\n    }\n\n    /**\n\
+    \     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\u3092\u4E26\u3079\u305F\u5217\
+    \u3092\u8FD4\u3059\n     */\n    std::vector<S> to_vector() const {\n        std::vector<S>\
+    \ res(n);\n        for (int i = 0; i < n; i++) res[i] = get(i);\n        return\
+    \ res;\n    }\n};\n\ntemplate <typename M>\nPersistentSegTree(int, M) -> PersistentSegTree<M>;\n\
+    template <typename M>\nPersistentSegTree(std::vector<typename M::S>, M) -> PersistentSegTree<M>;\n"
   code: "#pragma once\n\n/**\n * @file persistent-segtree.hpp\n * @brief \u6C38\u7D9A\
     \u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n */\n\n#include <cassert>\n#include <memory>\n\
     #include <ostream>\n#include <utility>\n#include <vector>\n\n#include \"../algebra/monoid.hpp\"\
@@ -327,36 +343,42 @@ data:
     \        int mid = (a + b) / 2;\n        int l = pool->left[t], r = pool->right[t];\n\
     \        if (k < mid)\n            l = set_rec(l, a, mid, k, x);\n        else\n\
     \            r = set_rec(r, mid, b, k, x);\n        return pool->make_node(l,\
-    \ r);\n    }\n    S prod_rec(int t, int a, int b, int l, int r) const {\n    \
-    \    if (r <= a || b <= l) return e();\n        if (l <= a && b <= r) return pool->val[t];\n\
-    \        int mid = (a + b) / 2;\n        return op(prod_rec(pool->left[t], a,\
-    \ mid, l, r), prod_rec(pool->right[t], mid, b, l, r));\n    }\n    // [a, b) \u306E\
-    \u3046\u3061 l \u4EE5\u964D\u3067\u3001sum \u306B\u639B\u3051\u308B\u3068 f \u304C\
-    \u507D\u306B\u306A\u308B\u6700\u521D\u306E\u4F4D\u7F6E (\u306A\u3051\u308C\u3070\
-    \ b)\n    template <typename F>\n    int max_right_rec(int t, int a, int b, int\
-    \ l, F& f, S& sum) const {\n        if (b <= l) return b;\n        if (l <= a)\
-    \ {\n            S s = op(sum, pool->val[t]);\n            if (f(s)) {\n     \
-    \           sum = s;\n                return b;\n            }\n            if\
-    \ (b - a == 1) return a;\n        }\n        int mid = (a + b) / 2;\n        int\
-    \ x = max_right_rec(pool->left[t], a, mid, l, f, sum);\n        if (x < mid) return\
-    \ x;\n        return max_right_rec(pool->right[t], mid, b, l, f, sum);\n    }\n\
-    \    // [a, b) \u306E\u3046\u3061 r \u3088\u308A\u524D\u3067\u3001sum \u306B\u5DE6\
-    \u304B\u3089\u639B\u3051\u308B\u3068 f \u304C\u507D\u306B\u306A\u308B\u6700\u5F8C\
-    \u306E\u4F4D\u7F6E + 1 (\u306A\u3051\u308C\u3070 a)\n    template <typename F>\n\
-    \    int min_left_rec(int t, int a, int b, int r, F& f, S& sum) const {\n    \
-    \    if (r <= a) return a;\n        if (b <= r) {\n            S s = op(pool->val[t],\
-    \ sum);\n            if (f(s)) {\n                sum = s;\n                return\
-    \ a;\n            }\n            if (b - a == 1) return b;\n        }\n      \
-    \  int mid = (a + b) / 2;\n        int x = min_left_rec(pool->right[t], mid, b,\
-    \ r, f, sum);\n        if (x > mid) return x;\n        return min_left_rec(pool->left[t],\
-    \ a, mid, r, f, sum);\n    }\n\n   public:\n    /**\n     * @brief \u30B3\u30F3\
-    \u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * \u3059\u3079\u3066\u306E\u8981\u7D20\
-    \u3092\u5358\u4F4D\u5143\u3067\u521D\u671F\u5316\u3059\u308B\u3002\u5358\u4F4D\
-    \u5143\u306E\u90E8\u5206\u6728\u306F\u5171\u6709\u3059\u308B\u306E\u3067\u3001\
-    n \u304C\u5927\u304D\u304F\u3066\u3082 O(log n) \u3067\u4F5C\u308C\u308B\n   \
-    \  *\n     * @param n \u8981\u7D20\u6570\n     * @param m \u30E2\u30CE\u30A4\u30C9\
-    \n     */\n    explicit PersistentSegTree(int n = 0, M m = M()) : pool(std::make_shared<Pool>(std::move(m))),\
-    \ n(n) {\n        assert(0 <= n);\n        init_size();\n        root = pool->make_leaf(e());\n\
+    \ r);\n    }\n    // t \u306E [l, r) \u3092 u \u306B\u7F6E\u304D\u63DB\u3048\u308B\
+    \n    int copy_rec(int t, int u, int a, int b, int l, int r) const {\n       \
+    \ if (r <= a || b <= l) return t;\n        if (l <= a && b <= r) return u;\n \
+    \       int mid = (a + b) / 2;\n        int lc = copy_rec(pool->left[t], pool->left[u],\
+    \ a, mid, l, r);\n        int rc = copy_rec(pool->right[t], pool->right[u], mid,\
+    \ b, l, r);\n        return pool->make_node(lc, rc);\n    }\n    S prod_rec(int\
+    \ t, int a, int b, int l, int r) const {\n        if (r <= a || b <= l) return\
+    \ e();\n        if (l <= a && b <= r) return pool->val[t];\n        int mid =\
+    \ (a + b) / 2;\n        return op(prod_rec(pool->left[t], a, mid, l, r), prod_rec(pool->right[t],\
+    \ mid, b, l, r));\n    }\n    // [a, b) \u306E\u3046\u3061 l \u4EE5\u964D\u3067\
+    \u3001sum \u306B\u639B\u3051\u308B\u3068 f \u304C\u507D\u306B\u306A\u308B\u6700\
+    \u521D\u306E\u4F4D\u7F6E (\u306A\u3051\u308C\u3070 b)\n    template <typename\
+    \ F>\n    int max_right_rec(int t, int a, int b, int l, F& f, S& sum) const {\n\
+    \        if (b <= l) return b;\n        if (l <= a) {\n            S s = op(sum,\
+    \ pool->val[t]);\n            if (f(s)) {\n                sum = s;\n        \
+    \        return b;\n            }\n            if (b - a == 1) return a;\n   \
+    \     }\n        int mid = (a + b) / 2;\n        int x = max_right_rec(pool->left[t],\
+    \ a, mid, l, f, sum);\n        if (x < mid) return x;\n        return max_right_rec(pool->right[t],\
+    \ mid, b, l, f, sum);\n    }\n    // [a, b) \u306E\u3046\u3061 r \u3088\u308A\u524D\
+    \u3067\u3001sum \u306B\u5DE6\u304B\u3089\u639B\u3051\u308B\u3068 f \u304C\u507D\
+    \u306B\u306A\u308B\u6700\u5F8C\u306E\u4F4D\u7F6E + 1 (\u306A\u3051\u308C\u3070\
+    \ a)\n    template <typename F>\n    int min_left_rec(int t, int a, int b, int\
+    \ r, F& f, S& sum) const {\n        if (r <= a) return a;\n        if (b <= r)\
+    \ {\n            S s = op(pool->val[t], sum);\n            if (f(s)) {\n     \
+    \           sum = s;\n                return a;\n            }\n            if\
+    \ (b - a == 1) return b;\n        }\n        int mid = (a + b) / 2;\n        int\
+    \ x = min_left_rec(pool->right[t], mid, b, r, f, sum);\n        if (x > mid) return\
+    \ x;\n        return min_left_rec(pool->left[t], a, mid, r, f, sum);\n    }\n\n\
+    \   public:\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\
+    \n     *\n     * \u3059\u3079\u3066\u306E\u8981\u7D20\u3092\u5358\u4F4D\u5143\u3067\
+    \u521D\u671F\u5316\u3059\u308B\u3002\u5358\u4F4D\u5143\u306E\u90E8\u5206\u6728\
+    \u306F\u5171\u6709\u3059\u308B\u306E\u3067\u3001n \u304C\u5927\u304D\u304F\u3066\
+    \u3082 O(log n) \u3067\u4F5C\u308C\u308B\n     *\n     * @param n \u8981\u7D20\
+    \u6570\n     * @param m \u30E2\u30CE\u30A4\u30C9\n     */\n    explicit PersistentSegTree(int\
+    \ n = 0, M m = M()) : pool(std::make_shared<Pool>(std::move(m))), n(n) {\n   \
+    \     assert(0 <= n);\n        init_size();\n        root = pool->make_leaf(e());\n\
     \        for (int w = 1; w < sz; w <<= 1) root = pool->make_node(root, root);\n\
     \    }\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n  \
     \   *\n     * @param v \u521D\u671F\u306E\u8981\u7D20\n     * @param m \u30E2\u30CE\
@@ -398,42 +420,52 @@ data:
     \u7528\u7D20\n     * @return PersistentSegTree \u65B0\u3057\u3044\u7248 (\u81EA\
     \u8EAB\u306F\u5909\u308F\u3089\u306A\u3044)\n     */\n    PersistentSegTree apply(int\
     \ k, const S& x) const { return set(k, op(get(k), x)); }\n\n    /**\n     * @brief\
-    \ [l, r)\u306E\u533A\u9593\u306E\u7DCF\u7A4D\u3092\u8FD4\u3059\n     *\n     *\
-    \ @param l \u534A\u958B\u533A\u9593\u306E\u958B\u59CB\n     * @param r \u534A\u958B\
-    \u533A\u9593\u306E\u7D42\u7AEF 0<=l<=r<=n\n     * @return S \u7DCF\u7A4D\n   \
-    \  */\n    S prod(int l, int r) const {\n        assert(0 <= l && l <= r && r\
-    \ <= n);\n        return prod_rec(root, 0, sz, l, r);\n    }\n    /**\n     *\
-    \ @brief \u3059\u3079\u3066\u306E\u8981\u7D20\u306E\u7DCF\u7A4D\u3092\u8FD4\u3059\
-    \n     *\n     * @return S \u7DCF\u7A4D\n     */\n    S all_prod() const { return\
-    \ pool->val[root]; }\n\n    /**\n     * @brief (r = l or f(prod([l, r))) = true)\
-    \ and (r = n or f(prod([l, r+1))) = false)\u3068\u306A\u308Br\u3092\u8FD4\u3059\
-    \n     * f\u304C\u5358\u8ABF\u306A\u3089\u3001f(prod([l, r))) = true\u3068\u306A\
-    \u308B\u6700\u5927\u306Er\n     *\n     * @tparam F\n     * @param l \u534A\u958B\
-    \u533A\u9593\u306E\u958B\u59CB 0<=l<=n\n     * @param f \u5224\u5B9A\u95A2\u6570\
-    \ f(e) = true\n     * @return int\n     */\n    template <typename F>\n    int\
-    \ max_right(int l, F f) const {\n        assert(f(e()));\n        assert(0 <=\
-    \ l && l <= n);\n        if (l == n) return n;\n        S sum = e();\n       \
-    \ int r = max_right_rec(root, 0, sz, l, f, sum);\n        return r < n ? r : n;\n\
-    \    }\n    /**\n     * @brief (l = 0 or f(prod([l, r))) = true) and (l = r or\
-    \ f(prod([l-1, r))) = false)\u3068\u306A\u308Bl\u3092\u8FD4\u3059\n     * f\u304C\
-    \u5358\u8ABF\u306A\u3089\u3001f(prod([l, r))) = true\u3068\u306A\u308B\u6700\u5C0F\
-    \u306El\n     *\n     * @tparam F\n     * @param r \u534A\u958B\u533A\u9593\u306E\
-    \u7D42\u7AEF 0<=r<=n\n     * @param f \u5224\u5B9A\u95A2\u6570 f(e) = true\n \
-    \    * @return int\n     */\n    template <typename F>\n    int min_left(int r,\
-    \ F f) const {\n        assert(f(e()));\n        assert(0 <= r && r <= n);\n \
-    \       if (r == 0) return 0;\n        S sum = e();\n        return min_left_rec(root,\
-    \ 0, sz, r, f, sum);\n    }\n\n    /**\n     * @brief \u3059\u3079\u3066\u306E\
-    \u8981\u7D20\u3092\u4E26\u3079\u305F\u5217\u3092\u8FD4\u3059\n     */\n    std::vector<S>\
-    \ to_vector() const {\n        std::vector<S> res(n);\n        for (int i = 0;\
-    \ i < n; i++) res[i] = get(i);\n        return res;\n    }\n};\n\ntemplate <typename\
-    \ M>\nPersistentSegTree(int, M) -> PersistentSegTree<M>;\ntemplate <typename M>\n\
-    PersistentSegTree(std::vector<typename M::S>, M) -> PersistentSegTree<M>;\n"
+    \ [l, r)\u306E\u533A\u9593\u3092\u5225\u306E\u7248\u306E\u5024\u306B\u3057\u305F\
+    \u65B0\u3057\u3044\u7248\u3092\u8FD4\u3059\n     *\n     * @param other \u5199\
+    \u3059\u5143\u306E\u7248 (\u81EA\u8EAB\u3068\u540C\u3058\u6728\u304B\u3089\u4F5C\
+    \u3063\u305F\u3082\u306E)\n     * @param l \u534A\u958B\u533A\u9593\u306E\u958B\
+    \u59CB\n     * @param r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF 0<=l<=r<=n\n\
+    \     * @return PersistentSegTree \u65B0\u3057\u3044\u7248 (\u81EA\u8EAB\u3082\
+    \ other \u3082\u5909\u308F\u3089\u306A\u3044)\n     */\n    PersistentSegTree\
+    \ copy(const PersistentSegTree& other, int l, int r) const {\n        assert(pool\
+    \ == other.pool);\n        assert(0 <= l && l <= r && r <= n);\n        if (l\
+    \ == r) return *this;\n        return PersistentSegTree(pool, n, sz, copy_rec(root,\
+    \ other.root, 0, sz, l, r));\n    }\n\n    /**\n     * @brief [l, r)\u306E\u533A\
+    \u9593\u306E\u7DCF\u7A4D\u3092\u8FD4\u3059\n     *\n     * @param l \u534A\u958B\
+    \u533A\u9593\u306E\u958B\u59CB\n     * @param r \u534A\u958B\u533A\u9593\u306E\
+    \u7D42\u7AEF 0<=l<=r<=n\n     * @return S \u7DCF\u7A4D\n     */\n    S prod(int\
+    \ l, int r) const {\n        assert(0 <= l && l <= r && r <= n);\n        return\
+    \ prod_rec(root, 0, sz, l, r);\n    }\n    /**\n     * @brief \u3059\u3079\u3066\
+    \u306E\u8981\u7D20\u306E\u7DCF\u7A4D\u3092\u8FD4\u3059\n     *\n     * @return\
+    \ S \u7DCF\u7A4D\n     */\n    S all_prod() const { return pool->val[root]; }\n\
+    \n    /**\n     * @brief (r = l or f(prod([l, r))) = true) and (r = n or f(prod([l,\
+    \ r+1))) = false)\u3068\u306A\u308Br\u3092\u8FD4\u3059\n     * f\u304C\u5358\u8ABF\
+    \u306A\u3089\u3001f(prod([l, r))) = true\u3068\u306A\u308B\u6700\u5927\u306Er\n\
+    \     *\n     * @tparam F\n     * @param l \u534A\u958B\u533A\u9593\u306E\u958B\
+    \u59CB 0<=l<=n\n     * @param f \u5224\u5B9A\u95A2\u6570 f(e) = true\n     * @return\
+    \ int\n     */\n    template <typename F>\n    int max_right(int l, F f) const\
+    \ {\n        assert(f(e()));\n        assert(0 <= l && l <= n);\n        if (l\
+    \ == n) return n;\n        S sum = e();\n        int r = max_right_rec(root, 0,\
+    \ sz, l, f, sum);\n        return r < n ? r : n;\n    }\n    /**\n     * @brief\
+    \ (l = 0 or f(prod([l, r))) = true) and (l = r or f(prod([l-1, r))) = false)\u3068\
+    \u306A\u308Bl\u3092\u8FD4\u3059\n     * f\u304C\u5358\u8ABF\u306A\u3089\u3001\
+    f(prod([l, r))) = true\u3068\u306A\u308B\u6700\u5C0F\u306El\n     *\n     * @tparam\
+    \ F\n     * @param r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF 0<=r<=n\n    \
+    \ * @param f \u5224\u5B9A\u95A2\u6570 f(e) = true\n     * @return int\n     */\n\
+    \    template <typename F>\n    int min_left(int r, F f) const {\n        assert(f(e()));\n\
+    \        assert(0 <= r && r <= n);\n        if (r == 0) return 0;\n        S sum\
+    \ = e();\n        return min_left_rec(root, 0, sz, r, f, sum);\n    }\n\n    /**\n\
+    \     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\u3092\u4E26\u3079\u305F\u5217\
+    \u3092\u8FD4\u3059\n     */\n    std::vector<S> to_vector() const {\n        std::vector<S>\
+    \ res(n);\n        for (int i = 0; i < n; i++) res[i] = get(i);\n        return\
+    \ res;\n    }\n};\n\ntemplate <typename M>\nPersistentSegTree(int, M) -> PersistentSegTree<M>;\n\
+    template <typename M>\nPersistentSegTree(std::vector<typename M::S>, M) -> PersistentSegTree<M>;\n"
   dependsOn:
   - src/algebra/monoid.hpp
   isVerificationFile: false
   path: src/data_structures/persistent-segtree.hpp
   requiredBy: []
-  timestamp: '2026-10-15 02:10:34+09:00'
+  timestamp: '2026-10-15 02:28:51+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/persistent-segtree.test.cpp
@@ -451,6 +483,7 @@ auto s1 = s0.set(3, 10);     // s0 はそのまま
 auto s2 = s1.apply(5, 2);    // s1 もそのまま
 s2.prod(0, n);               // 12
 s1.prod(0, n);               // 10
+auto s3 = s2.copy(s0, 0, 4); // [0, 4) を s0 の値に戻した版
 
 // 版を配列に並べる (矩形和: x 座標の順に点を足していき、2 つの版の差を取る)
 std::vector<PersistentSegTree<monoid::Sum<long long>>> seg(N + 1);
@@ -458,6 +491,8 @@ seg[0] = PersistentSegTree<monoid::Sum<long long>>(m);
 for (int i = 0; i < N; i++) seg[i + 1] = seg[i].apply(y[i], w[i]);
 long long s = seg[r].prod(d, u) - seg[l].prod(d, u);
 ```
+
+`copy(other, l, r)` の `other` は、自身と同じ木 (同じコンストラクタの呼び出しから更新して作った版) でなければなりません。ノードを共有するので、区間の長さによらず $O(\log n)$ です。
 
 同じ木から作った版はノードを共有します。ノードは削除しないので、メモリは更新の回数に比例して増えます。
 
@@ -471,6 +506,7 @@ long long s = seg[r].prod(d, u) - seg[l].prod(d, u);
 | `get(k)` / `seg[k]` | `k` 番目の値 | $O(\log n)$ |
 | `set(k, x)` | `k` 番目を `x` にした新しい版を返す | $O(\log n)$ |
 | `apply(k, x)` | `k` 番目を `op(seg[k], x)` にした新しい版を返す | $O(\log n)$ |
+| `copy(other, l, r)` | 区間 $[l, r)$ を `other` の値にした新しい版を返す | $O(\log n)$ |
 | `prod(l, r)` | 区間 $[l, r)$ の積 | $O(\log n)$ |
 | `all_prod()` | 全体の積 | $O(1)$ |
 | `max_right(l, f)` | `f(prod(l, r))` が真となる最大の `r` (`f` は単調) | $O(\log n)$ |
@@ -481,5 +517,6 @@ long long s = seg[r].prod(d, u) - seg[l].prod(d, u);
 ## 関連
 
 - 過去の版が要らないなら [セグメント木](segtree.hpp)
+- 区間作用も必要なら [永続遅延伝搬セグメント木](persistent-lazy-segtree.hpp)
 - 値を持つだけでよいなら [永続配列](persistent-array.hpp)
 - 静的な矩形和だけなら [マージソートツリー](merge-sort-tree.hpp)

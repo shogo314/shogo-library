@@ -61,6 +61,9 @@ data:
     path: test/unittest/modint.test.cpp
     title: test/unittest/modint.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/persistent-lazy-segtree.test.cpp
+    title: test/unittest/persistent-lazy-segtree.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/persistent-segtree.test.cpp
     title: test/unittest/persistent-segtree.test.cpp
   - icon: ':heavy_check_mark:'
@@ -114,6 +117,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/partition-function_2.test.cpp
     title: test/yosupo/partition-function_2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/persistent-range-affine-range-sum.test.cpp
+    title: test/yosupo/persistent-range-affine-range-sum.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/point-set-range-composite.1.test.cpp
     title: test/yosupo/point-set-range-composite.1.test.cpp
@@ -706,6 +712,7 @@ data:
   verifiedWith:
   - test/unittest/modint.test.cpp
   - test/unittest/combinatorics.test.cpp
+  - test/unittest/persistent-lazy-segtree.test.cpp
   - test/unittest/dual-segtree.test.cpp
   - test/unittest/persistent-segtree.test.cpp
   - test/unittest/sliding-window-aggregation.test.cpp
@@ -724,6 +731,7 @@ data:
   - test/aoj/dpl-5-b.2.test.cpp
   - test/yosupo/queue-operate-all-composite.test.cpp
   - test/yosupo/gcd-convolution.test.cpp
+  - test/yosupo/persistent-range-affine-range-sum.test.cpp
   - test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
   - test/yosupo/exp-of-fps.test.cpp
   - test/yosupo/point-set-range-composite.4.test.cpp

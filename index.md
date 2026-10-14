@@ -79,6 +79,9 @@ data:
       path: src/data_structures/persistent-array.hpp
       title: "\u6C38\u7D9A\u914D\u5217"
     - icon: ':heavy_check_mark:'
+      path: src/data_structures/persistent-lazy-segtree.hpp
+      title: "\u6C38\u7D9A\u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
+    - icon: ':heavy_check_mark:'
       path: src/data_structures/persistent-queue.hpp
       title: "\u6C38\u7D9A\u30AD\u30E5\u30FC"
     - icon: ':heavy_check_mark:'
@@ -732,6 +735,9 @@ data:
       path: test/unittest/persistent-array.test.cpp
       title: test/unittest/persistent-array.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/persistent-lazy-segtree.test.cpp
+      title: test/unittest/persistent-lazy-segtree.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/persistent-queue.test.cpp
       title: test/unittest/persistent-queue.test.cpp
     - icon: ':heavy_check_mark:'
@@ -946,6 +952,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/persistent-queue.test.cpp
       title: test/yosupo/persistent-queue.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/persistent-range-affine-range-sum.test.cpp
+      title: test/yosupo/persistent-range-affine-range-sum.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/persistent-unionfind.test.cpp
       title: test/yosupo/persistent-unionfind.test.cpp

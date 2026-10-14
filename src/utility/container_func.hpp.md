@@ -184,8 +184,11 @@ data:
     \ constexpr mem_value_type<C> gcd(const C& v) {\n    mem_value_type<C> init(0);\n\
     \    for (const auto& e : v) init = std::gcd(init, e);\n    return init;\n}\n\n\
     template <class C>\ninline constexpr mem_value_type<C> average(const C& v) {\n\
-    \    assert(v.size());\n    return sum(v) / v.size();\n}\n\ntemplate <class C>\n\
-    inline constexpr mem_value_type<C> median(const C& v) {\n    assert(!v.empty());\n\
+    \    assert(v.size());\n    // v.size() \u306F\u7B26\u53F7\u306A\u3057\u306A\u306E\
+    \u3067\u3001\u305D\u306E\u307E\u307E\u5272\u308B\u3068\u8CA0\u306E\u548C\u304C\
+    \u7B26\u53F7\u306A\u3057\u306B\u5909\u63DB\u3055\u308C\u3066\u58CA\u308C\u308B\
+    \n    return sum(v) / static_cast<mem_value_type<C>>(v.size());\n}\n\ntemplate\
+    \ <class C>\ninline constexpr mem_value_type<C> median(const C& v) {\n    assert(!v.empty());\n\
     \    std::vector<std::size_t> u(v.size());\n    std::iota(u.begin(), u.end(),\
     \ 0);\n    std::sort(u.begin(), u.end(), [&](std::size_t a, std::size_t b) {\n\
     \        return v[a] < v[b];\n    });\n    if (v.size() & 1) {\n        return\
@@ -285,8 +288,11 @@ data:
     \ constexpr mem_value_type<C> gcd(const C& v) {\n    mem_value_type<C> init(0);\n\
     \    for (const auto& e : v) init = std::gcd(init, e);\n    return init;\n}\n\n\
     template <class C>\ninline constexpr mem_value_type<C> average(const C& v) {\n\
-    \    assert(v.size());\n    return sum(v) / v.size();\n}\n\ntemplate <class C>\n\
-    inline constexpr mem_value_type<C> median(const C& v) {\n    assert(!v.empty());\n\
+    \    assert(v.size());\n    // v.size() \u306F\u7B26\u53F7\u306A\u3057\u306A\u306E\
+    \u3067\u3001\u305D\u306E\u307E\u307E\u5272\u308B\u3068\u8CA0\u306E\u548C\u304C\
+    \u7B26\u53F7\u306A\u3057\u306B\u5909\u63DB\u3055\u308C\u3066\u58CA\u308C\u308B\
+    \n    return sum(v) / static_cast<mem_value_type<C>>(v.size());\n}\n\ntemplate\
+    \ <class C>\ninline constexpr mem_value_type<C> median(const C& v) {\n    assert(!v.empty());\n\
     \    std::vector<std::size_t> u(v.size());\n    std::iota(u.begin(), u.end(),\
     \ 0);\n    std::sort(u.begin(), u.end(), [&](std::size_t a, std::size_t b) {\n\
     \        return v[a] < v[b];\n    });\n    if (v.size() & 1) {\n        return\
@@ -314,7 +320,7 @@ data:
   isVerificationFile: false
   path: src/utility/container_func.hpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-15 03:13:14+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/container-func-member.test.cpp
@@ -368,7 +374,7 @@ bool b = contains(v, 4);       // true
 | `product(c)` | 総積 | $O(n)$ |
 | `product_xor(c)` | 総 xor | $O(n)$ |
 | `gcd(c)` | 全要素の gcd (空なら 0) | $O(n \log \max)$ |
-| `average(c)` | 平均 (`sum(c) / size`、整数型なら切り捨て) | $O(n)$ |
+| `average(c)` | 平均 (`sum(c) / size`、整数型なら 0 方向に切り捨て) | $O(n)$ |
 | `median(c)` | 中央値 (要素数が偶数なら中央 2 つの平均) | $O(n \log n)$ |
 | `mex(c)` | 含まれない最小の非負整数 | $O(n)$ |
 | `maximum_subarray(c)` | 空でない連続部分列の和の最大値 | $O(n)$ |

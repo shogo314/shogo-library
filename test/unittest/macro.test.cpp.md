@@ -114,26 +114,27 @@ data:
     \ T, typename... Tail>\nvoid err(const T& x, const Tail&... tail) {\n    std::cerr\
     \ << x << ' ';\n    err(tail...);\n}\n#line 2 \"src/base/type_alias.hpp\"\n\n\
     /**\n * @file type_alias.hpp\n * @brief \u578B\u306E\u5225\u540D\n */\n\n#line\
-    \ 9 \"src/base/type_alias.hpp\"\n#include <deque>\n#include <functional>\n#include\
-    \ <list>\n#include <map>\n#include <queue>\n#line 15 \"src/base/type_alias.hpp\"\
-    \n#include <string>\n#line 18 \"src/base/type_alias.hpp\"\n\nusing ll = long long;\n\
+    \ 10 \"src/base/type_alias.hpp\"\n#include <deque>\n#include <functional>\n#include\
+    \ <list>\n#include <map>\n#include <queue>\n#line 16 \"src/base/type_alias.hpp\"\
+    \n#include <string>\n#line 19 \"src/base/type_alias.hpp\"\n\nusing ll = long long;\n\
     using ull = unsigned long long;\nusing ld = long double;\n\ntemplate <typename\
-    \ T>\nusing vec = std::vector<T>;\ntemplate <typename T, int N>\nusing ary = std::array<T,\
-    \ N>;\nusing str = std::string;\nusing std::deque;\nusing std::list;\nusing std::map;\n\
-    using std::multimap;\nusing std::multiset;\nusing std::pair;\nusing std::set;\n\
-    \nusing pl = pair<ll, ll>;\nusing pd = pair<ld, ld>;\n\ntemplate <typename T>\n\
-    using vv = vec<vec<T>>;\ntemplate <typename T>\nusing vvv = vec<vec<vec<T>>>;\n\
-    using vl = vec<ll>;\nusing vvl = vv<ll>;\nusing vvvl = vvv<ll>;\nusing vs = vec<str>;\n\
-    using vc = vec<char>;\nusing vi = vec<int>;\nusing vb = vec<bool>;\n\ntemplate\
-    \ <typename T1, typename T2>\nusing vp = vec<pair<T1, T2>>;\nusing vpl = vec<pl>;\n\
-    using vvpl = vv<pl>;\nusing vd = vec<ld>;\nusing vpd = vec<pd>;\n\ntemplate <int\
-    \ N>\nusing al = ary<ll, N>;\ntemplate <int N1, int N2>\nusing aal = ary<ary<ll,\
-    \ N2>, N1>;\ntemplate <int N>\nusing val = vec<al<N>>;\ntemplate <int N>\nusing\
-    \ avl = ary<vl, N>;\n\ntemplate <typename T>\nusing ml = std::map<ll, T>;\nusing\
-    \ mll = std::map<ll, ll>;\nusing sl = std::set<ll>;\nusing spl = set<pl>;\ntemplate\
-    \ <int N>\nusing sal = set<al<N>>;\ntemplate <int N>\nusing asl = ary<sl, N>;\n\
-    \ntemplate <typename T>\nusing heap_max = std::priority_queue<T, std::vector<T>,\
-    \ std::less<T>>;\ntemplate <typename T>\nusing heap_min = std::priority_queue<T,\
+    \ T>\nusing vec = std::vector<T>;\ntemplate <typename T, std::size_t N>\nusing\
+    \ ary = std::array<T, N>;\nusing str = std::string;\nusing std::deque;\nusing\
+    \ std::list;\nusing std::map;\nusing std::multimap;\nusing std::multiset;\nusing\
+    \ std::pair;\nusing std::set;\n\nusing pl = pair<ll, ll>;\nusing pd = pair<ld,\
+    \ ld>;\n\ntemplate <typename T>\nusing vv = vec<vec<T>>;\ntemplate <typename T>\n\
+    using vvv = vec<vec<vec<T>>>;\nusing vl = vec<ll>;\nusing vvl = vv<ll>;\nusing\
+    \ vvvl = vvv<ll>;\nusing vs = vec<str>;\nusing vc = vec<char>;\nusing vi = vec<int>;\n\
+    using vb = vec<bool>;\n\ntemplate <typename T1, typename T2>\nusing vp = vec<pair<T1,\
+    \ T2>>;\nusing vpl = vec<pl>;\nusing vvpl = vv<pl>;\nusing vd = vec<ld>;\nusing\
+    \ vpd = vec<pd>;\n\ntemplate <std::size_t N>\nusing al = ary<ll, N>;\ntemplate\
+    \ <std::size_t N1, std::size_t N2>\nusing aal = ary<ary<ll, N2>, N1>;\ntemplate\
+    \ <std::size_t N>\nusing val = vec<al<N>>;\ntemplate <std::size_t N>\nusing avl\
+    \ = ary<vl, N>;\n\ntemplate <typename T>\nusing ml = std::map<ll, T>;\nusing mll\
+    \ = std::map<ll, ll>;\nusing sl = std::set<ll>;\nusing spl = set<pl>;\ntemplate\
+    \ <std::size_t N>\nusing sal = set<al<N>>;\ntemplate <std::size_t N>\nusing asl\
+    \ = ary<sl, N>;\n\ntemplate <typename T>\nusing heap_max = std::priority_queue<T,\
+    \ std::vector<T>, std::less<T>>;\ntemplate <typename T>\nusing heap_min = std::priority_queue<T,\
     \ std::vector<T>, std::greater<T>>;\n#line 10 \"src/base/macro.hpp\"\n\n#pragma\
     \ GCC target(\"avx2\")\n#pragma GCC optimize(\"O3\")\n#pragma GCC optimize(\"\
     unroll-loops\")\n\n#define all(obj) (obj).begin(), (obj).end()\n\n#define CONCAT_IMPL2(x,\
@@ -168,45 +169,49 @@ data:
     \ return;\n#define Yes std::cout << \"Yes\" << std::endl; return;\n#define Takahashi\
     \ std::cout << \"Takahashi\" << std::endl; return;\n#define Aoki std::cout <<\
     \ \"Aoki\" << std::endl; return;\n// clang-format on\n#line 8 \"test/unittest/macro.test.cpp\"\
-    \n\n#include <algorithm>\n#line 11 \"test/unittest/macro.test.cpp\"\n#include\
-    \ <sstream>\n#line 14 \"test/unittest/macro.test.cpp\"\n\nbool ok = true;\nvoid\
+    \n\n#include <algorithm>\n#line 13 \"test/unittest/macro.test.cpp\"\n#include\
+    \ <sstream>\n#line 16 \"test/unittest/macro.test.cpp\"\n\nbool ok = true;\nvoid\
     \ check(bool cond, const char* what) {\n    if (!cond) {\n        if (ok) std::cerr\
-    \ << \"failed: \" << what << std::endl;\n        ok = false;\n    }\n}\n\n// for\
-    \ \u6587\u3067\u611A\u76F4\u306B\u4F5C\u3063\u305F\u5217\nstd::vector<ll> naive_up(ll\
-    \ a, ll n, ll t) {\n    std::vector<ll> v;\n    for (ll i = a; i < n; i += t)\
-    \ v.push_back(i);\n    return v;\n}\nstd::vector<ll> naive_down(ll a, ll n, ll\
-    \ t) {\n    std::vector<ll> v;\n    for (ll i = n - 1; i >= a; i -= t) v.push_back(i);\n\
-    \    return v;\n}\n\n// \u51FA\u529B\u30DE\u30AF\u30ED\u306F return \u3059\u308B\
-    \u306E\u3067 void \u95A2\u6570\u306E\u4E2D\u3067\u4F7F\u3046\n// after \u304C\u66F8\
-    \u304D\u63DB\u308F\u3089\u306A\u3051\u308C\u3070\u3001\u30DE\u30AF\u30ED\u306E\
-    \u5F8C\u308D\u306F\u5B9F\u884C\u3055\u308C\u3066\u3044\u306A\u3044\nint after\
-    \ = 0;\nvoid yes_upper() { YES after = 1; }\nvoid no_upper() { NO after = 1; }\n\
-    void yes_lower() { Yes after = 1; }\nvoid no_lower() { No after = 1; }\nvoid takahashi()\
-    \ { Takahashi after = 1; }\nvoid aoki() { Aoki after = 1; }\n\ntemplate <class\
-    \ F>\nstd::string capture_cout(F f) {\n    std::ostringstream buf;\n    std::streambuf*\
-    \ old = std::cout.rdbuf(buf.rdbuf());\n    f();\n    std::cout.rdbuf(old);\n \
-    \   return buf.str();\n}\n\nint calls = 0;\nll counted(ll x) {\n    calls++;\n\
-    \    return x;\n}\n\nint main() {\n    // all\n    {\n        std::vector<int>\
-    \ v{3, 1, 2};\n        std::sort(all(v));\n        check(v == std::vector<int>({1,\
-    \ 2, 3}), \"all\");\n    }\n\n    // rep (1\u301C4 \u5F15\u6570)\n    for (ll\
-    \ a = -3; a <= 6; a++) {\n        for (ll n = -3; n <= 8; n++) {\n           \
-    \ {\n                int cnt = 0;\n                rep(n) cnt++;\n           \
-    \     check(cnt == std::max<ll>(n, 0), \"rep(n)\");\n            }\n         \
-    \   {\n                std::vector<ll> v;\n                rep(i, n) v.push_back(i);\n\
-    \                check(v == naive_up(0, n, 1), \"rep(i, n)\");\n            }\n\
-    \            {\n                std::vector<ll> v;\n                rep(i, a,\
-    \ n) v.push_back(i);\n                check(v == naive_up(a, n, 1), \"rep(i, a,\
-    \ n)\");\n            }\n            for (ll t = 1; t <= 4; t++) {\n         \
-    \       std::vector<ll> v;\n                rep(i, a, n, t) v.push_back(i);\n\
-    \                check(v == naive_up(a, n, t), \"rep(i, a, n, t)\");\n       \
-    \     }\n            {\n                std::vector<ll> v;\n                repd(i,\
-    \ n) v.push_back(i);\n                check(v == naive_down(0, n, 1), \"repd(i,\
-    \ n)\");\n            }\n            {\n                std::vector<ll> v;\n \
-    \               repd(i, a, n) v.push_back(i);\n                check(v == naive_down(a,\
-    \ n, 1), \"repd(i, a, n)\");\n            }\n            for (ll t = 1; t <= 4;\
-    \ t++) {\n                std::vector<ll> v;\n                repd(i, a, n, t)\
-    \ v.push_back(i);\n                check(v == naive_down(a, n, t), \"repd(i, a,\
-    \ n, t)\");\n            }\n        }\n        {\n            std::vector<ll>\
+    \ << \"failed: \" << what << std::endl;\n        ok = false;\n    }\n}\n\n// al<N>\u30FB\
+    aal<N1, N2> \u3067\u53D7\u3051\u53D6\u308B\u95A2\u6570\u304C\u3001std::array \u304B\
+    \u3089 N \u3092\u63A8\u8AD6\u3067\u304D\u308B\u304B\ntemplate <std::size_t N>\n\
+    constexpr std::size_t al_size(const al<N>&) { return N; }\ntemplate <std::size_t\
+    \ N1, std::size_t N2>\nconstexpr std::size_t aal_size(const aal<N1, N2>&) { return\
+    \ N1 * 10 + N2; }\n\n// for \u6587\u3067\u611A\u76F4\u306B\u4F5C\u3063\u305F\u5217\
+    \nstd::vector<ll> naive_up(ll a, ll n, ll t) {\n    std::vector<ll> v;\n    for\
+    \ (ll i = a; i < n; i += t) v.push_back(i);\n    return v;\n}\nstd::vector<ll>\
+    \ naive_down(ll a, ll n, ll t) {\n    std::vector<ll> v;\n    for (ll i = n -\
+    \ 1; i >= a; i -= t) v.push_back(i);\n    return v;\n}\n\n// \u51FA\u529B\u30DE\
+    \u30AF\u30ED\u306F return \u3059\u308B\u306E\u3067 void \u95A2\u6570\u306E\u4E2D\
+    \u3067\u4F7F\u3046\n// after \u304C\u66F8\u304D\u63DB\u308F\u3089\u306A\u3051\u308C\
+    \u3070\u3001\u30DE\u30AF\u30ED\u306E\u5F8C\u308D\u306F\u5B9F\u884C\u3055\u308C\
+    \u3066\u3044\u306A\u3044\nint after = 0;\nvoid yes_upper() { YES after = 1; }\n\
+    void no_upper() { NO after = 1; }\nvoid yes_lower() { Yes after = 1; }\nvoid no_lower()\
+    \ { No after = 1; }\nvoid takahashi() { Takahashi after = 1; }\nvoid aoki() {\
+    \ Aoki after = 1; }\n\ntemplate <class F>\nstd::string capture_cout(F f) {\n \
+    \   std::ostringstream buf;\n    std::streambuf* old = std::cout.rdbuf(buf.rdbuf());\n\
+    \    f();\n    std::cout.rdbuf(old);\n    return buf.str();\n}\n\nint calls =\
+    \ 0;\nll counted(ll x) {\n    calls++;\n    return x;\n}\n\nint main() {\n   \
+    \ // all\n    {\n        std::vector<int> v{3, 1, 2};\n        std::sort(all(v));\n\
+    \        check(v == std::vector<int>({1, 2, 3}), \"all\");\n    }\n\n    // rep\
+    \ (1\u301C4 \u5F15\u6570)\n    for (ll a = -3; a <= 6; a++) {\n        for (ll\
+    \ n = -3; n <= 8; n++) {\n            {\n                int cnt = 0;\n      \
+    \          rep(n) cnt++;\n                check(cnt == std::max<ll>(n, 0), \"\
+    rep(n)\");\n            }\n            {\n                std::vector<ll> v;\n\
+    \                rep(i, n) v.push_back(i);\n                check(v == naive_up(0,\
+    \ n, 1), \"rep(i, n)\");\n            }\n            {\n                std::vector<ll>\
+    \ v;\n                rep(i, a, n) v.push_back(i);\n                check(v ==\
+    \ naive_up(a, n, 1), \"rep(i, a, n)\");\n            }\n            for (ll t\
+    \ = 1; t <= 4; t++) {\n                std::vector<ll> v;\n                rep(i,\
+    \ a, n, t) v.push_back(i);\n                check(v == naive_up(a, n, t), \"rep(i,\
+    \ a, n, t)\");\n            }\n            {\n                std::vector<ll>\
+    \ v;\n                repd(i, n) v.push_back(i);\n                check(v == naive_down(0,\
+    \ n, 1), \"repd(i, n)\");\n            }\n            {\n                std::vector<ll>\
+    \ v;\n                repd(i, a, n) v.push_back(i);\n                check(v ==\
+    \ naive_down(a, n, 1), \"repd(i, a, n)\");\n            }\n            for (ll\
+    \ t = 1; t <= 4; t++) {\n                std::vector<ll> v;\n                repd(i,\
+    \ a, n, t) v.push_back(i);\n                check(v == naive_down(a, n, t), \"\
+    repd(i, a, n, t)\");\n            }\n        }\n        {\n            std::vector<ll>\
     \ v;\n            rrep(i, a) v.push_back(i);\n            check(v == naive_up(1,\
     \ a + 1, 1), \"rrep(i, n)\");\n        }\n        {\n            std::vector<ll>\
     \ v;\n            rrepd(i, a) v.push_back(i);\n            check(v == naive_down(1,\
@@ -237,24 +242,25 @@ data:
     \ && t == \"world\", \"STR\");\n        check(x == 7 && std::is_same_v<decltype(x),\
     \ int>, \"IN\");\n        check(c == 'z', \"CHAR\");\n        check(v == vl({3,\
     \ 4, 5}), \"VL\");\n        check(arr == al<2>{6, 7}, \"AL\");\n        check(aa\
-    \ == aal<2, 3>{{{1, 2, 3}, {4, 5, 6}}}, \"AAL\");\n        check(vc_ == vc({'x',\
-    \ 'y'}), \"VC\");\n        check(vs_ == vs({\"ab\", \"cd\"}), \"VS\");\n     \
-    \   check(vp == vpl({{1, 2}, {3, 4}}), \"VPL\");\n        check(va == val<3>({{1,\
-    \ 2, 3}, {4, 5, 6}}), \"VAL\");\n        check(vv_ == vvl({{9, 8}, {7, 6}}), \"\
-    VVL\");\n        check(st == sl({1, 3, 5}), \"SL\");\n        check(bool(in),\
-    \ \"input stream state\");\n    }\n    {\n        // scan \u3092\u76F4\u63A5\u4F7F\
-    \u3046\n        std::istringstream in(\"10 abc 2.5\");\n        std::streambuf*\
-    \ old = std::cin.rdbuf(in.rdbuf());\n        int p;\n        std::string q;\n\
-    \        double r;\n        scan(p, q, r);\n        scan();\n        std::cin.rdbuf(old);\n\
-    \        check(p == 10 && q == \"abc\" && r == 2.5, \"scan\");\n    }\n\n    //\
-    \ \u51FA\u529B\u30DE\u30AF\u30ED (\u51FA\u529B\u3057\u3066 return \u3059\u308B\
-    )\n    after = 0;\n    check(capture_cout(yes_upper) == \"YES\\n\", \"YES\");\n\
-    \    check(capture_cout(no_upper) == \"NO\\n\", \"NO\");\n    check(capture_cout(yes_lower)\
-    \ == \"Yes\\n\", \"Yes\");\n    check(capture_cout(no_lower) == \"No\\n\", \"\
-    No\");\n    check(capture_cout(takahashi) == \"Takahashi\\n\", \"Takahashi\");\n\
-    \    check(capture_cout(aoki) == \"Aoki\\n\", \"Aoki\");\n    check(after == 0,\
-    \ \"output macros return\");\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
-    }\n"
+    \ == aal<2, 3>{{{1, 2, 3}, {4, 5, 6}}}, \"AAL\");\n        check(al_size(arr)\
+    \ == 2 && al_size(std::array<ll, 3>{}) == 3 && aal_size(aa) == 23, \"al<N>\u30FB\
+    aal<N1, N2> \u306E\u63A8\u8AD6\");\n        check(vc_ == vc({'x', 'y'}), \"VC\"\
+    );\n        check(vs_ == vs({\"ab\", \"cd\"}), \"VS\");\n        check(vp == vpl({{1,\
+    \ 2}, {3, 4}}), \"VPL\");\n        check(va == val<3>({{1, 2, 3}, {4, 5, 6}}),\
+    \ \"VAL\");\n        check(vv_ == vvl({{9, 8}, {7, 6}}), \"VVL\");\n        check(st\
+    \ == sl({1, 3, 5}), \"SL\");\n        check(bool(in), \"input stream state\");\n\
+    \    }\n    {\n        // scan \u3092\u76F4\u63A5\u4F7F\u3046\n        std::istringstream\
+    \ in(\"10 abc 2.5\");\n        std::streambuf* old = std::cin.rdbuf(in.rdbuf());\n\
+    \        int p;\n        std::string q;\n        double r;\n        scan(p, q,\
+    \ r);\n        scan();\n        std::cin.rdbuf(old);\n        check(p == 10 &&\
+    \ q == \"abc\" && r == 2.5, \"scan\");\n    }\n\n    // \u51FA\u529B\u30DE\u30AF\
+    \u30ED (\u51FA\u529B\u3057\u3066 return \u3059\u308B)\n    after = 0;\n    check(capture_cout(yes_upper)\
+    \ == \"YES\\n\", \"YES\");\n    check(capture_cout(no_upper) == \"NO\\n\", \"\
+    NO\");\n    check(capture_cout(yes_lower) == \"Yes\\n\", \"Yes\");\n    check(capture_cout(no_lower)\
+    \ == \"No\\n\", \"No\");\n    check(capture_cout(takahashi) == \"Takahashi\\n\"\
+    , \"Takahashi\");\n    check(capture_cout(aoki) == \"Aoki\\n\", \"Aoki\");\n \
+    \   check(after == 0, \"output macros return\");\n\n    if (ok) std::cout << \"\
+    Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// macro.hpp \u306E\u30DE\u30AF\u30ED\u306E\u52D5\u4F5C\u3092\u691C\u8A3C\u3059\
     \u308B\n// \u5165\u529B\u30DE\u30AF\u30ED\u306F std::cin \u306E\u5165\u529B\u5143\
@@ -262,10 +268,15 @@ data:
     \u3092\u4E00\u6642\u7684\u306B\u5DEE\u3057\u66FF\u3048\u3066\u691C\u8A3C\u3059\
     \u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\
     \u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\
-    \n\n#include \"../../src/base/macro.hpp\"\n\n#include <algorithm>\n#include <iostream>\n\
-    #include <sstream>\n#include <string>\n#include <vector>\n\nbool ok = true;\n\
-    void check(bool cond, const char* what) {\n    if (!cond) {\n        if (ok) std::cerr\
-    \ << \"failed: \" << what << std::endl;\n        ok = false;\n    }\n}\n\n// for\
+    \n\n#include \"../../src/base/macro.hpp\"\n\n#include <algorithm>\n#include <array>\n\
+    #include <cstddef>\n#include <iostream>\n#include <sstream>\n#include <string>\n\
+    #include <vector>\n\nbool ok = true;\nvoid check(bool cond, const char* what)\
+    \ {\n    if (!cond) {\n        if (ok) std::cerr << \"failed: \" << what << std::endl;\n\
+    \        ok = false;\n    }\n}\n\n// al<N>\u30FBaal<N1, N2> \u3067\u53D7\u3051\
+    \u53D6\u308B\u95A2\u6570\u304C\u3001std::array \u304B\u3089 N \u3092\u63A8\u8AD6\
+    \u3067\u304D\u308B\u304B\ntemplate <std::size_t N>\nconstexpr std::size_t al_size(const\
+    \ al<N>&) { return N; }\ntemplate <std::size_t N1, std::size_t N2>\nconstexpr\
+    \ std::size_t aal_size(const aal<N1, N2>&) { return N1 * 10 + N2; }\n\n// for\
     \ \u6587\u3067\u611A\u76F4\u306B\u4F5C\u3063\u305F\u5217\nstd::vector<ll> naive_up(ll\
     \ a, ll n, ll t) {\n    std::vector<ll> v;\n    for (ll i = a; i < n; i += t)\
     \ v.push_back(i);\n    return v;\n}\nstd::vector<ll> naive_down(ll a, ll n, ll\
@@ -331,24 +342,25 @@ data:
     \ && t == \"world\", \"STR\");\n        check(x == 7 && std::is_same_v<decltype(x),\
     \ int>, \"IN\");\n        check(c == 'z', \"CHAR\");\n        check(v == vl({3,\
     \ 4, 5}), \"VL\");\n        check(arr == al<2>{6, 7}, \"AL\");\n        check(aa\
-    \ == aal<2, 3>{{{1, 2, 3}, {4, 5, 6}}}, \"AAL\");\n        check(vc_ == vc({'x',\
-    \ 'y'}), \"VC\");\n        check(vs_ == vs({\"ab\", \"cd\"}), \"VS\");\n     \
-    \   check(vp == vpl({{1, 2}, {3, 4}}), \"VPL\");\n        check(va == val<3>({{1,\
-    \ 2, 3}, {4, 5, 6}}), \"VAL\");\n        check(vv_ == vvl({{9, 8}, {7, 6}}), \"\
-    VVL\");\n        check(st == sl({1, 3, 5}), \"SL\");\n        check(bool(in),\
-    \ \"input stream state\");\n    }\n    {\n        // scan \u3092\u76F4\u63A5\u4F7F\
-    \u3046\n        std::istringstream in(\"10 abc 2.5\");\n        std::streambuf*\
-    \ old = std::cin.rdbuf(in.rdbuf());\n        int p;\n        std::string q;\n\
-    \        double r;\n        scan(p, q, r);\n        scan();\n        std::cin.rdbuf(old);\n\
-    \        check(p == 10 && q == \"abc\" && r == 2.5, \"scan\");\n    }\n\n    //\
-    \ \u51FA\u529B\u30DE\u30AF\u30ED (\u51FA\u529B\u3057\u3066 return \u3059\u308B\
-    )\n    after = 0;\n    check(capture_cout(yes_upper) == \"YES\\n\", \"YES\");\n\
-    \    check(capture_cout(no_upper) == \"NO\\n\", \"NO\");\n    check(capture_cout(yes_lower)\
-    \ == \"Yes\\n\", \"Yes\");\n    check(capture_cout(no_lower) == \"No\\n\", \"\
-    No\");\n    check(capture_cout(takahashi) == \"Takahashi\\n\", \"Takahashi\");\n\
-    \    check(capture_cout(aoki) == \"Aoki\\n\", \"Aoki\");\n    check(after == 0,\
-    \ \"output macros return\");\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
-    }\n"
+    \ == aal<2, 3>{{{1, 2, 3}, {4, 5, 6}}}, \"AAL\");\n        check(al_size(arr)\
+    \ == 2 && al_size(std::array<ll, 3>{}) == 3 && aal_size(aa) == 23, \"al<N>\u30FB\
+    aal<N1, N2> \u306E\u63A8\u8AD6\");\n        check(vc_ == vc({'x', 'y'}), \"VC\"\
+    );\n        check(vs_ == vs({\"ab\", \"cd\"}), \"VS\");\n        check(vp == vpl({{1,\
+    \ 2}, {3, 4}}), \"VPL\");\n        check(va == val<3>({{1, 2, 3}, {4, 5, 6}}),\
+    \ \"VAL\");\n        check(vv_ == vvl({{9, 8}, {7, 6}}), \"VVL\");\n        check(st\
+    \ == sl({1, 3, 5}), \"SL\");\n        check(bool(in), \"input stream state\");\n\
+    \    }\n    {\n        // scan \u3092\u76F4\u63A5\u4F7F\u3046\n        std::istringstream\
+    \ in(\"10 abc 2.5\");\n        std::streambuf* old = std::cin.rdbuf(in.rdbuf());\n\
+    \        int p;\n        std::string q;\n        double r;\n        scan(p, q,\
+    \ r);\n        scan();\n        std::cin.rdbuf(old);\n        check(p == 10 &&\
+    \ q == \"abc\" && r == 2.5, \"scan\");\n    }\n\n    // \u51FA\u529B\u30DE\u30AF\
+    \u30ED (\u51FA\u529B\u3057\u3066 return \u3059\u308B)\n    after = 0;\n    check(capture_cout(yes_upper)\
+    \ == \"YES\\n\", \"YES\");\n    check(capture_cout(no_upper) == \"NO\\n\", \"\
+    NO\");\n    check(capture_cout(yes_lower) == \"Yes\\n\", \"Yes\");\n    check(capture_cout(no_lower)\
+    \ == \"No\\n\", \"No\");\n    check(capture_cout(takahashi) == \"Takahashi\\n\"\
+    , \"Takahashi\");\n    check(capture_cout(aoki) == \"Aoki\\n\", \"Aoki\");\n \
+    \   check(after == 0, \"output macros return\");\n\n    if (ok) std::cout << \"\
+    Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/base/macro.hpp
   - src/base/io.hpp
@@ -356,7 +368,7 @@ data:
   isVerificationFile: true
   path: test/unittest/macro.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-15 03:13:14+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/macro.test.cpp

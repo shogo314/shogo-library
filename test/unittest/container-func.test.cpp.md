@@ -155,8 +155,11 @@ data:
     \ constexpr mem_value_type<C> gcd(const C& v) {\n    mem_value_type<C> init(0);\n\
     \    for (const auto& e : v) init = std::gcd(init, e);\n    return init;\n}\n\n\
     template <class C>\ninline constexpr mem_value_type<C> average(const C& v) {\n\
-    \    assert(v.size());\n    return sum(v) / v.size();\n}\n\ntemplate <class C>\n\
-    inline constexpr mem_value_type<C> median(const C& v) {\n    assert(!v.empty());\n\
+    \    assert(v.size());\n    // v.size() \u306F\u7B26\u53F7\u306A\u3057\u306A\u306E\
+    \u3067\u3001\u305D\u306E\u307E\u307E\u5272\u308B\u3068\u8CA0\u306E\u548C\u304C\
+    \u7B26\u53F7\u306A\u3057\u306B\u5909\u63DB\u3055\u308C\u3066\u58CA\u308C\u308B\
+    \n    return sum(v) / static_cast<mem_value_type<C>>(v.size());\n}\n\ntemplate\
+    \ <class C>\ninline constexpr mem_value_type<C> median(const C& v) {\n    assert(!v.empty());\n\
     \    std::vector<std::size_t> u(v.size());\n    std::iota(u.begin(), u.end(),\
     \ 0);\n    std::sort(u.begin(), u.end(), [&](std::size_t a, std::size_t b) {\n\
     \        return v[a] < v[b];\n    });\n    if (v.size() & 1) {\n        return\
@@ -261,11 +264,17 @@ data:
     );\n    check(product({3, -1, 7, 2}) == -42, \"product(initializer_list)\");\n\
     \    check(product_xor({3, 5, 6}) == 0, \"product_xor(initializer_list)\");\n\
     \    check(max({5}) == 5 && min({5}) == 5, \"max/min(initializer_list) 1 \u8981\
-    \u7D20\");\n\n    // \u5883\u754C: 1 \u8981\u7D20\u3001\u7A7A\n    check(median(std::vector<int>{4})\
-    \ == 4, \"median 1 \u8981\u7D20\");\n    check(median(std::vector<int>{1, 4})\
-    \ == 2, \"median 2 \u8981\u7D20\");\n    check(mex(std::vector<int>{}) == 0, \"\
-    mex \u7A7A\");\n    check(mex(std::vector<int>{0, 1, 2}) == 3, \"mex 0..n-1 \u3092\
-    \u3059\u3079\u3066\u542B\u3080\");\n    check(maximum_subarray(std::vector<int>{},\
+    \u7D20\");\n\n    // \u5883\u754C: 1 \u8981\u7D20\u3001\u7A7A\n    // average:\
+    \ \u548C\u304C\u8CA0\u3067\u3082\u6B63\u3057\u304F\u5272\u308B (\u6574\u6570\u578B\
+    \u306F 0 \u65B9\u5411\u306B\u5207\u308A\u6368\u3066)\n    check(average(std::vector<long\
+    \ long>{-2, -4}) == -3, \"average \u8CA0\u306E\u548C\");\n    check(average(std::vector<int>{-1,\
+    \ -2}) == -1, \"average \u8CA0\u306E\u548C\u3001\u5207\u308A\u6368\u3066\");\n\
+    \    check(average(std::vector<int>{1, 2, 4}) == 2, \"average \u6B63\u306E\u548C\
+    \");\n    check(average(std::vector<double>{-1, -2}) == -1.5, \"average(vector<double>)\"\
+    );\n    check(median(std::vector<int>{4}) == 4, \"median 1 \u8981\u7D20\");\n\
+    \    check(median(std::vector<int>{1, 4}) == 2, \"median 2 \u8981\u7D20\");\n\
+    \    check(mex(std::vector<int>{}) == 0, \"mex \u7A7A\");\n    check(mex(std::vector<int>{0,\
+    \ 1, 2}) == 3, \"mex 0..n-1 \u3092\u3059\u3079\u3066\u542B\u3080\");\n    check(maximum_subarray(std::vector<int>{},\
     \ 0) == 0, \"maximum_subarray \u7A7A\");\n    check(maximum_subarray(std::vector<int>{-5,\
     \ -2, -9}) == -2, \"maximum_subarray \u3059\u3079\u3066\u8CA0\");\n    check(maximum_subarray(std::vector<int>{-5,\
     \ -2, -9}, 0) == 0, \"maximum_subarray \u3059\u3079\u3066\u8CA0\u3001\u7A7A\u3092\
@@ -363,11 +372,17 @@ data:
     );\n    check(product({3, -1, 7, 2}) == -42, \"product(initializer_list)\");\n\
     \    check(product_xor({3, 5, 6}) == 0, \"product_xor(initializer_list)\");\n\
     \    check(max({5}) == 5 && min({5}) == 5, \"max/min(initializer_list) 1 \u8981\
-    \u7D20\");\n\n    // \u5883\u754C: 1 \u8981\u7D20\u3001\u7A7A\n    check(median(std::vector<int>{4})\
-    \ == 4, \"median 1 \u8981\u7D20\");\n    check(median(std::vector<int>{1, 4})\
-    \ == 2, \"median 2 \u8981\u7D20\");\n    check(mex(std::vector<int>{}) == 0, \"\
-    mex \u7A7A\");\n    check(mex(std::vector<int>{0, 1, 2}) == 3, \"mex 0..n-1 \u3092\
-    \u3059\u3079\u3066\u542B\u3080\");\n    check(maximum_subarray(std::vector<int>{},\
+    \u7D20\");\n\n    // \u5883\u754C: 1 \u8981\u7D20\u3001\u7A7A\n    // average:\
+    \ \u548C\u304C\u8CA0\u3067\u3082\u6B63\u3057\u304F\u5272\u308B (\u6574\u6570\u578B\
+    \u306F 0 \u65B9\u5411\u306B\u5207\u308A\u6368\u3066)\n    check(average(std::vector<long\
+    \ long>{-2, -4}) == -3, \"average \u8CA0\u306E\u548C\");\n    check(average(std::vector<int>{-1,\
+    \ -2}) == -1, \"average \u8CA0\u306E\u548C\u3001\u5207\u308A\u6368\u3066\");\n\
+    \    check(average(std::vector<int>{1, 2, 4}) == 2, \"average \u6B63\u306E\u548C\
+    \");\n    check(average(std::vector<double>{-1, -2}) == -1.5, \"average(vector<double>)\"\
+    );\n    check(median(std::vector<int>{4}) == 4, \"median 1 \u8981\u7D20\");\n\
+    \    check(median(std::vector<int>{1, 4}) == 2, \"median 2 \u8981\u7D20\");\n\
+    \    check(mex(std::vector<int>{}) == 0, \"mex \u7A7A\");\n    check(mex(std::vector<int>{0,\
+    \ 1, 2}) == 3, \"mex 0..n-1 \u3092\u3059\u3079\u3066\u542B\u3080\");\n    check(maximum_subarray(std::vector<int>{},\
     \ 0) == 0, \"maximum_subarray \u7A7A\");\n    check(maximum_subarray(std::vector<int>{-5,\
     \ -2, -9}) == -2, \"maximum_subarray \u3059\u3079\u3066\u8CA0\");\n    check(maximum_subarray(std::vector<int>{-5,\
     \ -2, -9}, 0) == 0, \"maximum_subarray \u3059\u3079\u3066\u8CA0\u3001\u7A7A\u3092\
@@ -382,7 +397,7 @@ data:
   isVerificationFile: true
   path: test/unittest/container-func.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-15 03:13:14+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/container-func.test.cpp

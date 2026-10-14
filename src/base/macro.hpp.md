@@ -108,26 +108,27 @@ data:
     \ T, typename... Tail>\nvoid err(const T& x, const Tail&... tail) {\n    std::cerr\
     \ << x << ' ';\n    err(tail...);\n}\n#line 2 \"src/base/type_alias.hpp\"\n\n\
     /**\n * @file type_alias.hpp\n * @brief \u578B\u306E\u5225\u540D\n */\n\n#line\
-    \ 9 \"src/base/type_alias.hpp\"\n#include <deque>\n#include <functional>\n#include\
-    \ <list>\n#include <map>\n#include <queue>\n#line 15 \"src/base/type_alias.hpp\"\
-    \n#include <string>\n#line 18 \"src/base/type_alias.hpp\"\n\nusing ll = long long;\n\
+    \ 10 \"src/base/type_alias.hpp\"\n#include <deque>\n#include <functional>\n#include\
+    \ <list>\n#include <map>\n#include <queue>\n#line 16 \"src/base/type_alias.hpp\"\
+    \n#include <string>\n#line 19 \"src/base/type_alias.hpp\"\n\nusing ll = long long;\n\
     using ull = unsigned long long;\nusing ld = long double;\n\ntemplate <typename\
-    \ T>\nusing vec = std::vector<T>;\ntemplate <typename T, int N>\nusing ary = std::array<T,\
-    \ N>;\nusing str = std::string;\nusing std::deque;\nusing std::list;\nusing std::map;\n\
-    using std::multimap;\nusing std::multiset;\nusing std::pair;\nusing std::set;\n\
-    \nusing pl = pair<ll, ll>;\nusing pd = pair<ld, ld>;\n\ntemplate <typename T>\n\
-    using vv = vec<vec<T>>;\ntemplate <typename T>\nusing vvv = vec<vec<vec<T>>>;\n\
-    using vl = vec<ll>;\nusing vvl = vv<ll>;\nusing vvvl = vvv<ll>;\nusing vs = vec<str>;\n\
-    using vc = vec<char>;\nusing vi = vec<int>;\nusing vb = vec<bool>;\n\ntemplate\
-    \ <typename T1, typename T2>\nusing vp = vec<pair<T1, T2>>;\nusing vpl = vec<pl>;\n\
-    using vvpl = vv<pl>;\nusing vd = vec<ld>;\nusing vpd = vec<pd>;\n\ntemplate <int\
-    \ N>\nusing al = ary<ll, N>;\ntemplate <int N1, int N2>\nusing aal = ary<ary<ll,\
-    \ N2>, N1>;\ntemplate <int N>\nusing val = vec<al<N>>;\ntemplate <int N>\nusing\
-    \ avl = ary<vl, N>;\n\ntemplate <typename T>\nusing ml = std::map<ll, T>;\nusing\
-    \ mll = std::map<ll, ll>;\nusing sl = std::set<ll>;\nusing spl = set<pl>;\ntemplate\
-    \ <int N>\nusing sal = set<al<N>>;\ntemplate <int N>\nusing asl = ary<sl, N>;\n\
-    \ntemplate <typename T>\nusing heap_max = std::priority_queue<T, std::vector<T>,\
-    \ std::less<T>>;\ntemplate <typename T>\nusing heap_min = std::priority_queue<T,\
+    \ T>\nusing vec = std::vector<T>;\ntemplate <typename T, std::size_t N>\nusing\
+    \ ary = std::array<T, N>;\nusing str = std::string;\nusing std::deque;\nusing\
+    \ std::list;\nusing std::map;\nusing std::multimap;\nusing std::multiset;\nusing\
+    \ std::pair;\nusing std::set;\n\nusing pl = pair<ll, ll>;\nusing pd = pair<ld,\
+    \ ld>;\n\ntemplate <typename T>\nusing vv = vec<vec<T>>;\ntemplate <typename T>\n\
+    using vvv = vec<vec<vec<T>>>;\nusing vl = vec<ll>;\nusing vvl = vv<ll>;\nusing\
+    \ vvvl = vvv<ll>;\nusing vs = vec<str>;\nusing vc = vec<char>;\nusing vi = vec<int>;\n\
+    using vb = vec<bool>;\n\ntemplate <typename T1, typename T2>\nusing vp = vec<pair<T1,\
+    \ T2>>;\nusing vpl = vec<pl>;\nusing vvpl = vv<pl>;\nusing vd = vec<ld>;\nusing\
+    \ vpd = vec<pd>;\n\ntemplate <std::size_t N>\nusing al = ary<ll, N>;\ntemplate\
+    \ <std::size_t N1, std::size_t N2>\nusing aal = ary<ary<ll, N2>, N1>;\ntemplate\
+    \ <std::size_t N>\nusing val = vec<al<N>>;\ntemplate <std::size_t N>\nusing avl\
+    \ = ary<vl, N>;\n\ntemplate <typename T>\nusing ml = std::map<ll, T>;\nusing mll\
+    \ = std::map<ll, ll>;\nusing sl = std::set<ll>;\nusing spl = set<pl>;\ntemplate\
+    \ <std::size_t N>\nusing sal = set<al<N>>;\ntemplate <std::size_t N>\nusing asl\
+    \ = ary<sl, N>;\n\ntemplate <typename T>\nusing heap_max = std::priority_queue<T,\
+    \ std::vector<T>, std::less<T>>;\ntemplate <typename T>\nusing heap_min = std::priority_queue<T,\
     \ std::vector<T>, std::greater<T>>;\n#line 10 \"src/base/macro.hpp\"\n\n#pragma\
     \ GCC target(\"avx2\")\n#pragma GCC optimize(\"O3\")\n#pragma GCC optimize(\"\
     unroll-loops\")\n\n#define all(obj) (obj).begin(), (obj).end()\n\n#define CONCAT_IMPL2(x,\
@@ -203,7 +204,7 @@ data:
   isVerificationFile: false
   path: src/base/macro.hpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-15 03:13:14+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/macro.test.cpp

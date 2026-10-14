@@ -46,11 +46,11 @@ data:
     \  int aw = a[0] / w;\n            int bw = b[0] / w;\n            if (aw != bw)\
     \ return aw < bw;\n            if (aw & 1) return a[1] > b[1];\n            return\
     \ a[1] < b[1];\n        });\n        std::vector<T> res(lri.size());\n       \
-    \ long long tmpl = 0, tmpr = 0;\n        U tmp = _e;\n        for (auto [l, r,\
-    \ i] : lri) {\n            while (tmpl > l) {\n                tmpl--;\n     \
-    \           _add_left(tmp, tmpl);\n            }\n            while (tmpr < r)\
-    \ {\n                _add_right(tmp, tmpr);\n                tmpr++;\n       \
-    \     }\n            while (tmpl < l) {\n                _delete_left(tmp, tmpl);\n\
+    \ int tmpl = 0, tmpr = 0;\n        U tmp = _e;\n        for (auto [l, r, i] :\
+    \ lri) {\n            while (tmpl > l) {\n                tmpl--;\n          \
+    \      _add_left(tmp, tmpl);\n            }\n            while (tmpr < r) {\n\
+    \                _add_right(tmp, tmpr);\n                tmpr++;\n           \
+    \ }\n            while (tmpl < l) {\n                _delete_left(tmp, tmpl);\n\
     \                tmpl++;\n            }\n            while (tmpr > r) {\n    \
     \            tmpr--;\n                _delete_right(tmp, tmpr);\n            }\n\
     \            res[i] = f(tmp);\n        }\n        return res;\n    }\n};\n#line\
@@ -100,7 +100,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/static-range-inversions-query.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-15 03:13:14+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/static-range-inversions-query.test.cpp

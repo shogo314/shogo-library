@@ -58,7 +58,7 @@ int main() {
                 int k = rng() % n;
                 if (seg.get(k) != v[k]) ok = false;
             } else {
-                if (seg.all() != v) ok = false;
+                if (seg.to_vector() != v) ok = false;
             }
         }
         for (int k = 0; k < n; k++) {

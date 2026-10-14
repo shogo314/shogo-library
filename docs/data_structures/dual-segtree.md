@@ -31,7 +31,7 @@ DualSegTree seg3(n, acted_monoid::AddSum<long long>());  // 作用素付きモ�
 | `apply(k, f)` | `k` 番目の値に `f` を作用 | $O(\log n)$ |
 | `get(k)` | `k` 番目の値 | $O(\log n)$ |
 | `set(k, x)` | `k` 番目の値を `x` にする | $O(\log n)$ |
-| `all()` | すべての値を並べた `std::vector<S>` | $O(n)$ |
+| `to_vector()` | すべての値を並べた `std::vector<S>` | $O(n)$ |
 
 ## 関連
 

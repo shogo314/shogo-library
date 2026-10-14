@@ -96,7 +96,7 @@ class DualSegTree {
     /**
      * @brief すべての要素の値を返す O(n)
      */
-    std::vector<S> all() {
+    std::vector<S> to_vector() {
         for (int k = 1; k < sz; k++) push(k);
         std::vector<S> res(n);
         for (int k = 0; k < n; k++) res[k] = mapping(lazy[k + sz], data[k], k);

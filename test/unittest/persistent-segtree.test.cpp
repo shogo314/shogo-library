@@ -1,7 +1,7 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
 // PersistentSegTree を愚直な実装 (版ごとに配列を持つ) とランダムに比較する
-// 古い版から更新しても、ほかの版が変わらないことを確かめる
+// 古い版から更新しても、ほかの版が変わらないことを確かめる (区間コピーを含む)
 // 可換でないモノイド (1次関数の合成) と、ラムダ式から作るモノイドを使う
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
@@ -40,8 +40,15 @@ int main() {
         }
         for (int t = 0; t < 40 && ok; t++) {
             int ver = rng() % seg.size();
-            int op = rng() % 6;
-            if (op == 0) {
+            int op = rng() % 7;
+            if (op == 6) {
+                int src = rng() % seg.size();
+                int l = rng() % (n + 1), r = rng() % (n + 1);
+                if (l > r) std::swap(l, r);
+                seg.push_back(seg[ver].copy(seg[src], l, r));
+                naive.push_back(naive[ver]);
+                for (int i = l; i < r; i++) naive.back()[i] = naive[src][i];
+            } else if (op == 0) {
                 int k = rng() % n;
                 S x = random_affine();
                 seg.push_back(seg[ver].set(k, x));
@@ -126,6 +133,7 @@ int main() {
         PersistentSegTree<monoid::Sum<long long>> big(1000000000);
         auto b1 = big.set(999999999, 5).set(0, 3);
         if (big.all_prod() != 0 || b1.all_prod() != 8 || b1.prod(1, 999999999) != 0) ok = false;
+        if (b1.copy(big, 1, 1000000000).all_prod() != 3 || big.copy(b1, 0, 1).all_prod() != 3) ok = false;
         if (b1.max_right(0, [](long long s) { return s < 8; }) != 999999999) ok = false;
         PersistentSegTree<monoid::Sum<long long>> empty;
         if (empty.size() != 0 || empty.prod(0, 0) != 0) ok = false;

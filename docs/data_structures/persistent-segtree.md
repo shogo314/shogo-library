@@ -11,6 +11,7 @@ auto s1 = s0.set(3, 10);     // s0 はそのまま
 auto s2 = s1.apply(5, 2);    // s1 もそのまま
 s2.prod(0, n);               // 12
 s1.prod(0, n);               // 10
+auto s3 = s2.copy(s0, 0, 4); // [0, 4) を s0 の値に戻した版
 
 // 版を配列に並べる (矩形和: x 座標の順に点を足していき、2 つの版の差を取る)
 std::vector<PersistentSegTree<monoid::Sum<long long>>> seg(N + 1);
@@ -18,6 +19,8 @@ seg[0] = PersistentSegTree<monoid::Sum<long long>>(m);
 for (int i = 0; i < N; i++) seg[i + 1] = seg[i].apply(y[i], w[i]);
 long long s = seg[r].prod(d, u) - seg[l].prod(d, u);
 ```
+
+`copy(other, l, r)` の `other` は、自身と同じ木 (同じコンストラクタの呼び出しから更新して作った版) でなければなりません。ノードを共有するので、区間の長さによらず $O(\log n)$ です。
 
 同じ木から作った版はノードを共有します。ノードは削除しないので、メモリは更新の回数に比例して増えます。
 
@@ -31,6 +34,7 @@ long long s = seg[r].prod(d, u) - seg[l].prod(d, u);
 | `get(k)` / `seg[k]` | `k` 番目の値 | $O(\log n)$ |
 | `set(k, x)` | `k` 番目を `x` にした新しい版を返す | $O(\log n)$ |
 | `apply(k, x)` | `k` 番目を `op(seg[k], x)` にした新しい版を返す | $O(\log n)$ |
+| `copy(other, l, r)` | 区間 $[l, r)$ を `other` の値にした新しい版を返す | $O(\log n)$ |
 | `prod(l, r)` | 区間 $[l, r)$ の積 | $O(\log n)$ |
 | `all_prod()` | 全体の積 | $O(1)$ |
 | `max_right(l, f)` | `f(prod(l, r))` が真となる最大の `r` (`f` は単調) | $O(\log n)$ |

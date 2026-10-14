@@ -79,6 +79,15 @@ class PersistentSegTree {
             r = set_rec(r, mid, b, k, x);
         return pool->make_node(l, r);
     }
+    // t の [l, r) を u に置き換える
+    int copy_rec(int t, int u, int a, int b, int l, int r) const {
+        if (r <= a || b <= l) return t;
+        if (l <= a && b <= r) return u;
+        int mid = (a + b) / 2;
+        int lc = copy_rec(pool->left[t], pool->left[u], a, mid, l, r);
+        int rc = copy_rec(pool->right[t], pool->right[u], mid, b, l, r);
+        return pool->make_node(lc, rc);
+    }
     S prod_rec(int t, int a, int b, int l, int r) const {
         if (r <= a || b <= l) return e();
         if (l <= a && b <= r) return pool->val[t];
@@ -217,6 +226,21 @@ class PersistentSegTree {
      * @return PersistentSegTree 新しい版 (自身は変わらない)
      */
     PersistentSegTree apply(int k, const S& x) const { return set(k, op(get(k), x)); }
+
+    /**
+     * @brief [l, r)の区間を別の版の値にした新しい版を返す
+     *
+     * @param other 写す元の版 (自身と同じ木から作ったもの)
+     * @param l 半開区間の開始
+     * @param r 半開区間の終端 0<=l<=r<=n
+     * @return PersistentSegTree 新しい版 (自身も other も変わらない)
+     */
+    PersistentSegTree copy(const PersistentSegTree& other, int l, int r) const {
+        assert(pool == other.pool);
+        assert(0 <= l && l <= r && r <= n);
+        if (l == r) return *this;
+        return PersistentSegTree(pool, n, sz, copy_rec(root, other.root, 0, sz, l, r));
+    }
 
     /**
      * @brief [l, r)の区間の総積を返す

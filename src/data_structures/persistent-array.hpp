@@ -48,6 +48,14 @@ class PersistentArray {
         height = 0;
         while ((1 << height) < n) height++;
     }
+    // t ([a, a + 2^h)) の [l, r) を u に置き換える
+    int copy_rec(int t, int u, int a, int h, int l, int r) const {
+        if (r <= a || a + (1 << h) <= l) return t;
+        if (l <= a && a + (1 << h) <= r) return u;
+        int lc = copy_rec(pool->child[t][0], pool->child[u][0], a, h - 1, l, r);
+        int rc = copy_rec(pool->child[t][1], pool->child[u][1], a + (1 << (h - 1)), h - 1, l, r);
+        return pool->make_node(lc, rc);
+    }
     int build(const std::vector<T>& v, int a, int h) {
         if (h == 0) return pool->make_leaf(a < n ? v[a] : T());
         int l = build(v, a, h - 1);
@@ -131,6 +139,20 @@ class PersistentArray {
             t = pool->make_node(c[0], c[1]);
         }
         return PersistentArray(pool, n, height, t);
+    }
+    /**
+     * @brief [l, r)の区間を別の版の値にした新しい版を返す
+     *
+     * @param other 写す元の版 (自身と同じ配列から作ったもの)
+     * @param l 半開区間の開始
+     * @param r 半開区間の終端 0<=l<=r<=n
+     * @return PersistentArray 新しい版 (自身も other も変わらない)
+     */
+    PersistentArray copy(const PersistentArray& other, int l, int r) const {
+        assert(pool == other.pool);
+        assert(0 <= l && l <= r && r <= n);
+        if (l == r) return *this;
+        return PersistentArray(pool, n, height, copy_rec(root, other.root, 0, height, l, r));
     }
 
     /**

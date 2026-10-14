@@ -1,7 +1,7 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
 // PersistentArray を愚直な実装 (版ごとに配列を持つ) とランダムに比較する
-// 古い版から更新しても、ほかの版が変わらないことを確かめる
+// 古い版から更新しても、ほかの版が変わらないことを確かめる (区間コピーを含む)
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../src/data_structures/persistent-array.hpp"
@@ -10,6 +10,7 @@
 #include <random>
 #include <sstream>
 #include <string>
+#include <utility>
 #include <vector>
 
 int main() {
@@ -39,11 +40,19 @@ int main() {
         for (int t = 0; t < 40; t++) {
             int ver = rng() % arr.size();
             int k = rng() % n;
-            if (rng() % 2) {
+            int op = rng() % 3;
+            if (op == 0) {
                 std::string x = std::to_string(rng() % 100);
                 arr.push_back(arr[ver].set(k, x));
                 naive.push_back(naive[ver]);
                 naive.back()[k] = x;
+            } else if (op == 1) {
+                int src = rng() % arr.size();
+                int l = rng() % (n + 1), r = rng() % (n + 1);
+                if (l > r) std::swap(l, r);
+                arr.push_back(arr[ver].copy(arr[src], l, r));
+                naive.push_back(naive[ver]);
+                for (int i = l; i < r; i++) naive.back()[i] = naive[src][i];
             } else {
                 if (arr[ver].get(k) != naive[ver][k] || arr[ver][k] != naive[ver][k]) ok = false;
             }
@@ -64,6 +73,8 @@ int main() {
         PersistentArray<int> big(1000000000, 7);
         auto b1 = big.set(123456789, 1);
         if (big[123456789] != 7 || b1[123456789] != 1 || b1[123456788] != 7 || b1.size() != 1000000000) ok = false;
+        auto b2 = big.set(5, 0).copy(b1, 0, 1000000000);
+        if (b2[5] != 7 || b2[123456789] != 1) ok = false;
         PersistentArray<int> empty;
         if (empty.size() != 0 || !empty.to_vector().empty()) ok = false;
         PersistentArray<int> empty2(std::vector<int>{});

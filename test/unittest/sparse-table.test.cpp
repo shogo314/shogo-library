@@ -43,7 +43,7 @@ int main() {
         ok = ok && check(a, SparseTable<monoid::Gcd<int>>(a));
         ok = ok && check(a, SparseTable<monoid::And<int>>(a));
         ok = ok && check(a, SparseTable<monoid::Or<int>>(a));
-        std::vector<std::pair<int, int>> b(n);
+        std::vector<std::pair<int, long long>> b(n);
         for (int i = 0; i < n; i++) b[i] = {a[i], i};
         ok = ok && check(b, SparseTable<monoid::MinWith<int>>(b));
     }

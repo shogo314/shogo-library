@@ -17,7 +17,6 @@
 
 #include <algorithm>
 #include <array>
-#include <cstddef>
 #include <limits>
 #include <optional>
 #include <type_traits>
@@ -199,7 +198,7 @@ struct UpdateComposite : monoid::Composite<T> {
 /**
  * @brief 区間加算、区間最小値とその位置 (monoid::MinWith)
  */
-template <typename T, typename U = int>
+template <typename T, typename U = long long>
 struct AddMinWith : monoid::MinWith<T, U> {
     using S = std::pair<T, U>;
     using F = T;
@@ -211,7 +210,7 @@ struct AddMinWith : monoid::MinWith<T, U> {
 /**
  * @brief 区間加算、区間最大値とその位置 (monoid::MaxWith)
  */
-template <typename T, typename U = int>
+template <typename T, typename U = long long>
 struct AddMaxWith : monoid::MaxWith<T, U> {
     using S = std::pair<T, U>;
     using F = T;
@@ -258,7 +257,7 @@ struct AddPowerSum {
             val[0] = T(1);
             for (int i = 1; i <= K; i++) val[i] = val[i - 1] * x;
         }
-        constexpr const T& operator[](std::size_t i) const { return val[i]; }
+        constexpr const T& operator[](long long i) const { return val[i]; }
     };
     using F = T;
     static constexpr S op(const S& a, const S& b) {

@@ -33,8 +33,8 @@ SegTree seg2(v, Monoid([](int a, int b) { return a + b; }, 0));  // ラムダ式
 | `Composite<T>` | `Affine<T>` | 1次関数 $f(x) = ax + b$ の合成 $f \circ g$ ($g$ を先に適用) | 恒等写像 |
 | `Mapping<N>` | `std::array<int, N>` | $\lbrace 0, \dots, N-1 \rbrace$ から自分自身への写像の合成 $f \circ g$ ($g$ を先に適用)。全単射でなくてよい | 恒等写像 |
 | `Parenthesis` | `Parenthesis::S` | 括弧列の連結 (対応の取れていない `)` と `(` の個数) | 空の括弧列 |
-| `MinWith<T, U = int>` | `pair<T, U>` | 最小値とその位置 (同じ値なら左側) | `{型の最大値, U{}}` |
-| `MaxWith<T, U = int>` | `pair<T, U>` | 最大値とその位置 (同じ値なら左側) | `{型の最小値, U{}}` |
+| `MinWith<T, U = long long>` | `pair<T, U>` | 最小値とその位置 (同じ値なら左側) | `{型の最大値, U{}}` |
+| `MaxWith<T, U = long long>` | `pair<T, U>` | 最大値とその位置 (同じ値なら左側) | `{型の最小値, U{}}` |
 | `MinCount<T, U = long long>` | `pair<T, U>` | 最小値とその個数 | `{型の最大値, 0}` |
 | `MaxCount<T, U = long long>` | `pair<T, U>` | 最大値とその個数 | `{型の最小値, 0}` |
 | `Reverse<M>` | `M::S` | `M::op(b, a)` (積の順序を逆にする) | `M::e()` |

@@ -173,10 +173,10 @@ struct Mapping {
         return h;
     }
     // i と j を入れ替え、ほかは動かさない写像 (互換)
-    static constexpr S swap(int i, int j) {
+    static constexpr S swap(long long i, long long j) {
         S h = e();
-        h[i] = j;
-        h[j] = i;
+        h[i] = static_cast<int>(j);
+        h[j] = static_cast<int>(i);
         return h;
     }
 };
@@ -221,7 +221,7 @@ struct Parenthesis {
  * @tparam T 値の型
  * @tparam U 位置などの付随する値の型
  */
-template <typename T, typename U = int>
+template <typename T, typename U = long long>
 struct MinWith {
     using S = std::pair<T, U>;
     static constexpr S op(const S& a, const S& b) { return b.first < a.first ? b : a; }
@@ -234,7 +234,7 @@ struct MinWith {
  * @tparam T 値の型
  * @tparam U 位置などの付随する値の型
  */
-template <typename T, typename U = int>
+template <typename T, typename U = long long>
 struct MaxWith {
     using S = std::pair<T, U>;
     static constexpr S op(const S& a, const S& b) { return a.first < b.first ? b : a; }

@@ -99,9 +99,9 @@ int main() {
     // 例
     std::vector<long long> a = {3, 5, 9};
     auto r = subset_sum_restore(a, 14);
-    ok = ok && r && *r == std::vector<int>{1, 2};
+    ok = ok && r && *r == std::vector<long long>{1, 2};
     ok = ok && !subset_sum_restore(a, 13);
-    ok = ok && subset_sum_restore(a, 0) == std::vector<int>{};
+    ok = ok && subset_sum_restore(a, 0) == std::vector<long long>{};
 
     if (ok)
         std::cout << "Hello World" << std::endl;

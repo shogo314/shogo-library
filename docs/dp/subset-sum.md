@@ -18,8 +18,9 @@ auto idx = subset_sum_max_restore(a, 13);    // {0, 2} (3 + 9)
 
 ## 注意
 
+- 添字のリストは `std::vector<long long>` で返します。
 - `S` を超える要素は使えないので無視します。
-- `subset_sum_restore` の結果は、変数に受けてから使います。`for (int i : *subset_sum_restore(a, S))` と書くと、一時オブジェクトの `std::optional` が先に破棄され、壊れた値を読みます。
+- `subset_sum_restore` の結果は、変数に受けてから使います。`for (long long i : *subset_sum_restore(a, S))` と書くと、一時オブジェクトの `std::optional` が先に破棄され、壊れた値を読みます。
 - bitset での復元では、和 `s` を初めて作れるようになったときに使った要素の添字 `from[s]` を覚えておき、復元する和から逆にたどります。メモリは $O(S)$ です。
 
 ## 作れるかの判定

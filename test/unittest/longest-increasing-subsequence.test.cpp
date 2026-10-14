@@ -14,21 +14,21 @@
 template <typename Compare>
 bool check(const std::vector<int>& a, bool strict, Compare comp) {
     int n = a.size();
-    auto ok_pair = [&](int i, int j) { return strict ? comp(a[i], a[j]) : !comp(a[j], a[i]); };
+    auto ok_pair = [&](long long i, long long j) { return strict ? comp(a[i], a[j]) : !comp(a[j], a[i]); };
     // 愚直に a[i] で終わる最長の長さを求める
-    std::vector<int> len(n);
+    std::vector<long long> len(n);
     for (int j = 0; j < n; j++) {
         len[j] = 1;
         for (int i = 0; i < j; i++) {
             if (ok_pair(i, j)) len[j] = std::max(len[j], len[i] + 1);
         }
     }
-    int best = n == 0 ? 0 : *std::max_element(len.begin(), len.end());
+    long long best = n == 0 ? 0 : *std::max_element(len.begin(), len.end());
     if (longest_increasing_subsequence_lengths(a, strict, comp) != len) return false;
     if (longest_increasing_subsequence(a, strict, comp) != best) return false;
-    std::vector<int> idx = longest_increasing_subsequence_restore(a, strict, comp);
-    if ((int)idx.size() != best) return false;
-    for (int k = 0; k < (int)idx.size(); k++) {
+    std::vector<long long> idx = longest_increasing_subsequence_restore(a, strict, comp);
+    if ((long long)idx.size() != best) return false;
+    for (long long k = 0; k < (long long)idx.size(); k++) {
         if (idx[k] < 0 || idx[k] >= n) return false;
         if (k > 0 && (idx[k - 1] >= idx[k] || !ok_pair(idx[k - 1], idx[k]))) return false;
     }

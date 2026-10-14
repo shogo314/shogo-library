@@ -12,7 +12,7 @@ int main() {
     std::cin >> n;
     std::vector<int> a(n);
     for (auto& x : a) std::cin >> x;
-    std::vector<int> idx = longest_increasing_subsequence_restore(a);
+    std::vector<long long> idx = longest_increasing_subsequence_restore(a);
     std::cout << idx.size() << '\n';
-    for (int i = 0; i < (int)idx.size(); i++) std::cout << idx[i] << " \n"[i + 1 == (int)idx.size()];
+    for (long long i = 0; i < (long long)idx.size(); i++) std::cout << idx[i] << " \n"[i + 1 == (long long)idx.size()];
 }

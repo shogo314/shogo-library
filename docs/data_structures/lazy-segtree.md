@@ -57,3 +57,4 @@ LazySegTree seg(v, ActedMonoid(
 - 区間作用・1点取得だけなら [imos法](imos.hpp) (作用素が逆元を持つ場合) か [双対セグメント木](dual-segtree.hpp)
 - 区間 chmin/chmax・区間加算・区間和なら [Segment Tree Beats](segtree-beats.hpp)
 - 過去の版も使うなら [永続遅延伝搬セグメント木](persistent-lazy-segtree.hpp)
+- 要素数が大きい ($10^9$ を超えるなど) なら [動的遅延伝搬セグメント木](dynamic-lazy-segtree.hpp)

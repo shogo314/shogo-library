@@ -58,7 +58,7 @@ struct Range {
     }
     constexpr Range(value_type _start, value_type _stop)
         : start(_start), stop(_stop), step(1), norm_stop(normalize(_start, _stop, 1)) {}
-    constexpr Range(value_type _stop)
+    explicit constexpr Range(value_type _stop)
         : start(0), stop(_stop), step(1), norm_stop(normalize(0, _stop, 1)) {}
     constexpr Range()
         : start(0), stop(0), step(1), norm_stop(0) {

@@ -22,7 +22,7 @@ struct PriorityCounter {
     std::array<value_type, K> data{};
 
     constexpr PriorityCounter() {}
-    constexpr PriorityCounter(const key_type& x) : PriorityCounter() {
+    explicit constexpr PriorityCounter(const key_type& x) : PriorityCounter() {
         data[0].first = x;
         data[0].second = 1;
     }

@@ -24,7 +24,7 @@ class BinaryTrie {
         unsigned int level, subcnt = 0;
         T xval = 0;
 
-        BinaryTrieNode(int lvl) : level(lvl) {}
+        explicit BinaryTrieNode(int lvl) : level(lvl) {}
         bool get_bit(T v) const { return ((v >> (level - 1)) & 1) > 0; }
         bool is_leaf() const { return level == 0; }
         // 子の状態がvalidかどうか

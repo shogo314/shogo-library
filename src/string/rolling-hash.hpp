@@ -71,7 +71,7 @@ class RollingHash {
      *
      * @param base ハッシュの基数 省略するとランダム
      */
-    RollingHash(unsigned int base = 0) : base(base) {
+    explicit RollingHash(unsigned int base = 0) : base(base) {
         if (base == 0) {
             std::mt19937 mt(std::random_device{}());
             this->base = std::uniform_int_distribution<unsigned int>(129, ~0U)(mt);
@@ -141,7 +141,7 @@ struct RHString {
      * @brief コンストラクタ
      * 予めRollingHashをインスタンス化しておく必要がある
      */
-    RHString(RollingHash& rh) : rh(rh), sz(0), hash1(0), hash2(0) {}
+    explicit RHString(RollingHash& rh) : rh(rh), sz(0), hash1(0), hash2(0) {}
     RHString(RollingHash& rh, int sz, unsigned long long hash1, unsigned long long hash2) : rh(rh), sz(sz), hash1(hash1), hash2(hash2) {}
     RHString(const RHString& o) : rh(o.rh), sz(o.sz), hash1(o.hash1), hash2(o.hash2) {}
     /**

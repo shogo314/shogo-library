@@ -27,7 +27,7 @@ class MexUpdate {
 
    public:
     MexUpdate() = default;
-    MexUpdate(int n) : n(n), v(n, e) {
+    explicit MexUpdate(int n) : n(n), v(n, e) {
         assert(n > 0);
         assert(n + 1 < e);
         std::set<int>::iterator hint = s.end();
@@ -35,7 +35,7 @@ class MexUpdate {
             hint = s.emplace_hint(hint, i);
         }
     }
-    MexUpdate(const std::vector<value_type>& init) : n(init.size()), v(init) {
+    explicit MexUpdate(const std::vector<value_type>& init) : n(init.size()), v(init) {
         assert(n > 0);
         assert(n + 1 < e);
         std::set<int>::iterator hint = s.end();

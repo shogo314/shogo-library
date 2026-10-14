@@ -16,10 +16,10 @@
 template <typename T>
 struct CircularRing {
     std::vector<T> data;
-    CircularRing(const std::vector<T>& v) : data(v) {}
+    explicit CircularRing(const std::vector<T>& v) : data(v) {}
     CircularRing(const CircularRing&) = default;
     CircularRing() = default;
-    CircularRing(int s) : data(s) {}
+    explicit CircularRing(int s) : data(s) {}
     T at(long long i) const {
         assert(!data.empty());
         i %= static_cast<long long>(data.size());

@@ -61,7 +61,7 @@ class LiChaoTree {
      *
      * @param xs 最小値クエリのx座標や線分追加クエリの両端のx座標を先読みしてソートした配列
      */
-    LiChaoTree(const std::vector<T>& xs) : n(xs.size()), xs(xs) {
+    explicit LiChaoTree(const std::vector<T>& xs) : n(xs.size()), xs(xs) {
         assert(!xs.empty());
         sz = 1, height = 0;
         while (sz < (int)xs.size()) {

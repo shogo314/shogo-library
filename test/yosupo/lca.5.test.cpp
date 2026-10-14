@@ -4,15 +4,15 @@
 
 #include <iostream>
 
-#include "../../src/graph/graph.hpp"
 #include "../../src/graph/heavy-light-decomposition.hpp"
+#include "../../src/graph/tree.hpp"
 
 int main() {
     std::cin.tie(nullptr);
     std::ios::sync_with_stdio(false);
     int n, q;
     std::cin >> n >> q;
-    Graph<int> g(n);
+    Tree<int> g(n);
     for (int i = 1; i < n; i++) {
         int p;
         std::cin >> p;

@@ -32,7 +32,7 @@ int main() {
             g.add_edge(perm[i], perm[p]);
             t.add_edge(perm[i], perm[p]);
         }
-        HeavyLightDecomposition hld(g, root);
+        HeavyLightDecomposition hld(t, root);
 
         // 愚直: 根からの親と深さ
         std::vector<int> par(n, -1), dep(n, 0), bfs = {root};
@@ -117,12 +117,6 @@ int main() {
                 for (int i = 0; i < k && x != -1; i++) x = par[x];
                 if (hld.hop(u, k) != x) ok = false;
             }
-        }
-        // Tree や RootedTree からも同じものが作れる
-        HeavyLightDecomposition h2(t, root);
-        HeavyLightDecomposition h3(t.set_root(root), root);
-        for (int v = 0; v < n; v++) {
-            if (h2.index(v) != hld.index(v) || h3.lca(v, root) != root) ok = false;
         }
     }
 

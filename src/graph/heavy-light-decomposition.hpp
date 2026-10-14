@@ -10,6 +10,8 @@
 #include <utility>
 #include <vector>
 
+#include "tree.hpp"
+
 /**
  * @brief HL 分解 (Heavy-Light Decomposition)
  *
@@ -17,7 +19,7 @@
  * 頂点 v は列の index(v) 番目に対応する。セグメント木などと組み合わせて、パスや部分木へのクエリを行う
  * 前計算 O(n)。DFS は再帰を使わない
  * 例:
- * HeavyLightDecomposition hld(g, root);
+ * HeavyLightDecomposition hld(tree, root);  // tree は Tree<Cost>
  * for (auto [a, b] : hld.path(u, v)) sum += seg.prod(std::min(a, b), std::max(a, b) + 1);
  * auto [l, r] = hld.subtree(v);  // 部分木は区間 [l, r)
  */
@@ -28,11 +30,10 @@ class HeavyLightDecomposition {
    public:
     /**
      * @brief 木 tree を根 root で HL 分解する
-     * @param tree Graph、Tree、RootedTree など。tree.n が頂点数、for (int u : tree[v]) で v に隣接する頂点を列挙できること
      */
-    template <typename G>
-    explicit HeavyLightDecomposition(const G& tree, int root = 0)
-        : n(tree.n), root(root), par(n, -1), dep(n, 0), sz(n, 1), heavy(n, -1), head(n), in(n), order(n) {
+    template <typename Cost>
+    explicit HeavyLightDecomposition(const Tree<Cost>& tree, int root = 0)
+        : n(tree.size()), root(root), par(n, -1), dep(n, 0), sz(n, 1), heavy(n, -1), head(n), in(n), order(n) {
         assert(0 <= root && root < n);
         // 根からの BFS 順で親と深さを決める
         std::vector<int> bfs = {root};

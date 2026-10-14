@@ -8,8 +8,8 @@
 
 #include "../../src/algebra/monoid.hpp"
 #include "../../src/data_structures/segtree.hpp"
-#include "../../src/graph/graph.hpp"
 #include "../../src/graph/heavy-light-decomposition.hpp"
+#include "../../src/graph/tree.hpp"
 #include "../../src/math/modint.hpp"
 
 using mint = modint998244353;
@@ -22,8 +22,8 @@ int main() {
     std::cin >> n >> q;
     std::vector<F> f(n);
     for (auto& x : f) std::cin >> x;
-    Graph<int> g(n);
-    g.read(n - 1, 0);
+    Tree<int> g(n);
+    g.read(0);
     HeavyLightDecomposition hld(g);
     std::vector<F> init(n);
     for (int v = 0; v < n; v++) init[hld.index(v)] = f[v];

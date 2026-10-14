@@ -7,8 +7,8 @@
 
 #include "../../src/algebra/group.hpp"
 #include "../../src/data_structures/fenwick-tree.hpp"
-#include "../../src/graph/graph.hpp"
 #include "../../src/graph/heavy-light-decomposition.hpp"
+#include "../../src/graph/tree.hpp"
 
 int main() {
     std::cin.tie(nullptr);
@@ -17,7 +17,7 @@ int main() {
     std::cin >> n >> q;
     std::vector<long long> a(n);
     for (auto& x : a) std::cin >> x;
-    Graph<int> g(n);
+    Tree<int> g(n);
     for (int i = 1; i < n; i++) {
         int p;
         std::cin >> p;

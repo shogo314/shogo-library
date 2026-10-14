@@ -8,8 +8,8 @@
 
 #include "../../src/algebra/group.hpp"
 #include "../../src/data_structures/fenwick-tree.hpp"
-#include "../../src/graph/graph.hpp"
 #include "../../src/graph/heavy-light-decomposition.hpp"
+#include "../../src/graph/tree.hpp"
 
 int main() {
     std::cin.tie(nullptr);
@@ -18,8 +18,8 @@ int main() {
     std::cin >> n >> q;
     std::vector<long long> a(n);
     for (auto& x : a) std::cin >> x;
-    Graph<int> g(n);
-    g.read(n - 1, 0);
+    Tree<int> g(n);
+    g.read(0);
     HeavyLightDecomposition hld(g);
     std::vector<long long> init(n);
     for (int v = 0; v < n; v++) init[hld.index(v)] = a[v];

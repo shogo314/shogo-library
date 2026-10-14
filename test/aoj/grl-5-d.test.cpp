@@ -8,15 +8,15 @@
 
 #include "../../src/algebra/group.hpp"
 #include "../../src/data_structures/fenwick-tree.hpp"
-#include "../../src/graph/graph.hpp"
 #include "../../src/graph/heavy-light-decomposition.hpp"
+#include "../../src/graph/tree.hpp"
 
 int main() {
     std::cin.tie(nullptr);
     std::ios::sync_with_stdio(false);
     int n;
     std::cin >> n;
-    Graph<int> g(n);
+    Tree<int> g(n);
     for (int v = 0; v < n; v++) {
         int k;
         std::cin >> k;

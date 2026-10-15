@@ -17,6 +17,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cstddef>
 #include <limits>
 #include <optional>
 #include <type_traits>
@@ -287,6 +288,43 @@ struct AddPowerSum {
     }
     static constexpr F composition(const F& f, const F& g) { return f + g; }
     static constexpr F id() { return F(0); }
+};
+
+/**
+ * @brief 成分の並べ替え (monoid::Mapping)、モノイド M の N 個の直積
+ *
+ * 要素は M の要素を N 個並べた std::array で、積は成分ごとに M::op をとる
+ * 作用素 f は monoid::Mapping<N> の要素で、mapping(f, x)[i] = x[f[i]] (成分 i に x の成分 f[i] を持ってくる)
+ * f は全単射でなくてよい。例えば N = 3 で f = {1, 1, 2} は成分 0 を成分 1 で上書きする
+ * 積が成分ごとなので、M によらず作用は積と可換になる
+ *
+ * @tparam M static な op, e を持つモノイド
+ * @tparam N 成分の個数
+ */
+template <typename M, std::size_t N>
+struct Rearrange {
+    using S = std::array<typename M::S, N>;
+    using F = typename monoid::Mapping<N>::S;
+    static constexpr S op(const S& a, const S& b) {
+        S res{};
+        for (std::size_t i = 0; i < N; i++) res[i] = M::op(a[i], b[i]);
+        return res;
+    }
+    static constexpr S e() {
+        S res{};
+        for (std::size_t i = 0; i < N; i++) res[i] = M::e();
+        return res;
+    }
+    static constexpr S mapping(const F& f, const S& x) {
+        S res{};
+        for (std::size_t i = 0; i < N; i++) res[i] = x[f[i]];
+        return res;
+    }
+    // mapping(f, mapping(g, x))[i] = x[g[f[i]]] なので、Mapping の積としては g∘f になる
+    static constexpr F composition(const F& f, const F& g) { return monoid::Mapping<N>::op(g, f); }
+    static constexpr F id() { return monoid::Mapping<N>::e(); }
+    // 成分 i と j を入れ替える作用素
+    static constexpr F swap(long long i, long long j) { return monoid::Mapping<N>::swap(i, j); }
 };
 
 }  // namespace acted_monoid

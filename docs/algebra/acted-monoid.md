@@ -39,8 +39,25 @@ long long m = seg.prod(l, r);                         // [l, r) の最小値
 | `AddMinCount<T, U = long long>` | 区間加算 | 区間最小値とその個数 | `T` | |
 | `AddMaxCount<T, U = long long>` | 区間加算 | 区間最大値とその個数 | `T` | |
 | `AddPowerSum<T, K>` | 区間加算 | 区間の 0 乗和から K 乗和 | `T` | |
+| `Rearrange<M, N>` | 区間の成分の並べ替え (写像) | 成分ごとのモノイド `M` の積 | `std::array<int, N>` ([`Mapping<N>`](monoid.hpp)) | |
 
 `AddPowerSum` の要素は `S(x)` で値 `x` の1要素から作り、`s[i]` で `i` 乗和を取得します。
+
+## 成分の並べ替え `Rearrange<M, N>`
+
+モノイド `M` の要素を `N` 個並べた `std::array<M::S, N>` を要素とし、積は成分ごとに `M::op` をとります。作用素 `f` は [`monoid::Mapping<N>`](monoid.hpp) の要素で、`mapping(f, x)[i] = x[f[i]]`、つまり成分 `i` に `x` の成分 `f[i]` を持ってきます。積が成分ごとなので、`M` が何でも遅延伝搬セグメント木に乗ります。`M` は `monoid::Sum` などのように `op`、`e` を static に持つ必要があります。
+
+- `f` は全単射でなくてもかまいません。例えば `N = 3` で `f = {1, 1, 2}` は、成分 0 を成分 1 の値で上書きします。
+- `swap(i, j)` で成分 `i` と `j` を入れ替える作用素を作れます。
+- `composition(f, g)` は他の作用素付きモノイドと同じく「`g` を適用した後に `f` を適用する」作用素で、`Mapping` の積としては $g \circ f$ になります。
+
+```cpp
+// 区間の 0 と 1 を反転し、区間の 1 の個数を求める
+using A = acted_monoid::Rearrange<monoid::Sum<long long>, 2>;
+LazySegTree<A> seg(std::vector<A::S>(n, {1, 0}));  // {0 の個数, 1 の個数}
+seg.apply(l, r, A::swap(0, 1));                    // [l, r) を反転
+long long c = seg.prod(l, r)[1];                   // [l, r) の 1 の個数
+```
 
 ## ラムダ式から作る
 

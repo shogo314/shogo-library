@@ -181,6 +181,52 @@ int main() {
         check(A::id() == 0 && A::composition(2, 3) == 5, "AddPowerSum::composition");
     }
 
+    // Rearrange: 成分の並べ替え (全単射とは限らない写像)・成分ごとの積
+    auto test_rearrange = [&](auto m, auto n, const char* name) {
+        using M = decltype(m);
+        constexpr std::size_t N = decltype(n)::value;
+        using A = acted_monoid::Rearrange<M, N>;
+        using V = typename A::S;
+        using F = typename A::F;
+        test_lazy<A, V>(
+            [&] {
+                V x;
+                for (auto& y : x) y = small();
+                return x;
+            },
+            [&] {
+                F f;
+                for (auto& y : f) y = rng() % N;
+                return f;
+            },
+            [](V x, int) { return x; },
+            [](const std::vector<V>& a, int l, int r) {
+                V s;
+                for (std::size_t j = 0; j < N; j++) {
+                    s[j] = M::e();
+                    for (int i = l; i < r; i++) s[j] = M::op(s[j], a[i][j]);
+                }
+                return s;
+            },
+            [](F f, V x) {
+                V y;
+                for (std::size_t j = 0; j < N; j++) y[j] = x[f[j]];
+                return y;
+            },
+            [](const V& x, const V& y) { return x == y; }, rng, name);
+    };
+    test_rearrange(monoid::Sum<long long>(), std::integral_constant<std::size_t, 3>(), "Rearrange<Sum, 3>");
+    test_rearrange(monoid::Min<long long>(), std::integral_constant<std::size_t, 4>(), "Rearrange<Min, 4>");
+    {
+        using A = acted_monoid::Rearrange<monoid::Sum<long long>, 3>;
+        // swap(0, 1) の後に swap(1, 2) を適用すると、成分 0 には元の成分 1、成分 1 には元の成分 2 が来る
+        A::F f = A::composition(A::swap(1, 2), A::swap(0, 1));
+        check(A::mapping(f, A::S{10, 20, 30}) == A::S{20, 30, 10}, "Rearrange::composition");
+        // {1, 1, 2} は成分 0 を成分 1 で上書きする
+        check(A::mapping({1, 1, 2}, A::S{10, 20, 30}) == A::S{20, 20, 30}, "Rearrange 上書き");
+        check(A::mapping(A::id(), A::S{10, 20, 30}) == A::S{10, 20, 30}, "Rearrange::id");
+    }
+
     // LazySegTree の出力
     {
         LazySegTree<acted_monoid::AddMax<long long>> seg(std::vector<long long>{3, 1, 4});

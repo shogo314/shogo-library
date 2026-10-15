@@ -30,7 +30,7 @@ bool run(std::mt19937& rng) {
         if (rep % 2 == 0) {
             // MexUpdate(n): 値はどれも mex に影響しない値で初期化される
             mu = MexUpdate<T>(n);
-            v.assign(n, -1);
+            v.assign(n, static_cast<T>(-1));
             if (mu.mex() != 0) return false;
         } else {
             v.resize(n);
@@ -51,7 +51,8 @@ bool run(std::mt19937& rng) {
 
 int main() {
     std::mt19937 rng(314);
-    bool ok = run<int>(rng) && run<long long>(rng);
+    // 符号なしの型では、負の値は大きな値になる (範囲外の値として扱われる)
+    bool ok = run<int>(rng) && run<long long>(rng) && run<unsigned int>(rng) && run<unsigned long long>(rng);
     // 0..n-1 がすべて揃うと mex は n
     MexUpdate<int> full(std::vector<int>{2, 0, 1});
     ok = ok && full.mex() == 3;

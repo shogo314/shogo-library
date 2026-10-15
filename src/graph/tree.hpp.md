@@ -6,6 +6,9 @@ data:
     title: "\u30B0\u30E9\u30D5"
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
+    path: src/graph/centroid-decomposition.hpp
+    title: "\u91CD\u5FC3\u5206\u89E3"
+  - icon: ':heavy_check_mark:'
     path: src/graph/heavy-light-decomposition.hpp
     title: "HL \u5206\u89E3 (Heavy-Light Decomposition)"
   - icon: ':heavy_check_mark:'
@@ -28,6 +31,9 @@ data:
     path: test/aoj/grl-5-d.test.cpp
     title: test/aoj/grl-5-d.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/centroid-decomposition.test.cpp
+    title: test/unittest/centroid-decomposition.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/heavy-light-decomposition.test.cpp
     title: test/unittest/heavy-light-decomposition.test.cpp
   - icon: ':heavy_check_mark:'
@@ -36,6 +42,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/tree.test.cpp
     title: test/unittest/tree.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/frequency-table-of-tree-distance.test.cpp
+    title: test/yosupo/frequency-table-of-tree-distance.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/jump-on-tree.1.test.cpp
     title: test/yosupo/jump-on-tree.1.test.cpp
@@ -688,10 +697,12 @@ data:
   path: src/graph/tree.hpp
   requiredBy:
   - src/graph/rerooting-dp.hpp
+  - src/graph/centroid-decomposition.hpp
   - src/graph/heavy-light-decomposition.hpp
   timestamp: '2026-10-15 07:27:29+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/centroid-decomposition.test.cpp
   - test/unittest/rerooting-dp.test.cpp
   - test/unittest/tree.test.cpp
   - test/unittest/heavy-light-decomposition.test.cpp
@@ -700,6 +711,7 @@ data:
   - test/aoj/grl-5-a.test.cpp
   - test/aoj/grl-5-b.test.cpp
   - test/aoj/3372.test.cpp
+  - test/yosupo/frequency-table-of-tree-distance.test.cpp
   - test/yosupo/lca.4.test.cpp
   - test/yosupo/vertex-add-subtree-sum.1.test.cpp
   - test/yosupo/jump-on-tree.1.test.cpp

@@ -127,6 +127,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/data_structures/unionfind.hpp
       title: UnionFind
+    - icon: ':heavy_check_mark:'
+      path: src/data_structures/wavelet-matrix.hpp
+      title: Wavelet Matrix
   - name: src/dp
     pages:
     - icon: ':heavy_check_mark:'
@@ -160,6 +163,9 @@ data:
       path: src/graph/bipartite-matching.hpp
       title: "\u4E8C\u90E8\u30B0\u30E9\u30D5\u306E\u6700\u5927\u30DE\u30C3\u30C1\u30F3\
         \u30B0 (Hopcroft-Karp \u6CD5)"
+    - icon: ':heavy_check_mark:'
+      path: src/graph/centroid-decomposition.hpp
+      title: "\u91CD\u5FC3\u5206\u89E3"
     - icon: ':heavy_check_mark:'
       path: src/graph/functional-graph.hpp
       title: "\u30D5\u30A1\u30F3\u30AF\u30B7\u30E7\u30CA\u30EB\u30B0\u30E9\u30D5"
@@ -254,6 +260,9 @@ data:
   - name: src/string
     pages:
     - icon: ':heavy_check_mark:'
+      path: src/string/aho-corasick.hpp
+      title: Aho-Corasick
+    - icon: ':heavy_check_mark:'
       path: src/string/rolling-hash.hpp
       title: "\u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5"
     - icon: ':heavy_check_mark:'
@@ -312,6 +321,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/aoj/1595.test.cpp
       title: test/aoj/1595.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/2873.test.cpp
+      title: test/aoj/2873.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/aoj/3314.test.cpp
       title: test/aoj/3314.test.cpp
@@ -603,6 +615,9 @@ data:
       path: test/unittest/acted-monoid.test.cpp
       title: test/unittest/acted-monoid.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/aho-corasick.test.cpp
+      title: test/unittest/aho-corasick.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/angle.test.cpp
       title: test/unittest/angle.test.cpp
     - icon: ':heavy_check_mark:'
@@ -614,6 +629,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/bit.test.cpp
       title: test/unittest/bit.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/centroid-decomposition.test.cpp
+      title: test/unittest/centroid-decomposition.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/circle.test.cpp
       title: test/unittest/circle.test.cpp
@@ -834,10 +852,16 @@ data:
       path: test/unittest/vector.test.cpp
       title: test/unittest/vector.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/wavelet-matrix.test.cpp
+      title: test/unittest/wavelet-matrix.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/xor-basis.test.cpp
       title: test/unittest/xor-basis.test.cpp
   - name: test/yosupo
     pages:
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/aho-corasick.test.cpp
+      title: test/yosupo/aho-corasick.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/area-of-union-of-rectangles.1.test.cpp
       title: test/yosupo/area-of-union-of-rectangles.1.test.cpp
@@ -904,6 +928,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/factorize.test.cpp
       title: test/yosupo/factorize.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/frequency-table-of-tree-distance.test.cpp
+      title: test/yosupo/frequency-table-of-tree-distance.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/gcd-convolution.test.cpp
       title: test/yosupo/gcd-convolution.test.cpp
@@ -1037,6 +1064,9 @@ data:
       path: test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
       title: test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/range-kth-smallest.test.cpp
+      title: test/yosupo/range-kth-smallest.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/range-set-range-composite.test.cpp
       title: test/yosupo/range-set-range-composite.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1051,6 +1081,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/rectangle-sum.4.test.cpp
       title: test/yosupo/rectangle-sum.4.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/rectangle-sum.5.test.cpp
+      title: test/yosupo/rectangle-sum.5.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/scc.test.cpp
       title: test/yosupo/scc.test.cpp
@@ -1075,6 +1108,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/sort-points-by-argument.2.test.cpp
       title: test/yosupo/sort-points-by-argument.2.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/static-range-frequency.test.cpp
+      title: test/yosupo/static-range-frequency.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/static-range-inversions-query.test.cpp
       title: test/yosupo/static-range-inversions-query.test.cpp

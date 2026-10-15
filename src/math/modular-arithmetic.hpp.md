@@ -114,6 +114,9 @@ data:
     path: test/yosupo/factorize.test.cpp
     title: test/yosupo/factorize.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/frequency-table-of-tree-distance.test.cpp
+    title: test/yosupo/frequency-table-of-tree-distance.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/gcd-convolution.test.cpp
     title: test/yosupo/gcd-convolution.test.cpp
   - icon: ':heavy_check_mark:'
@@ -244,6 +247,7 @@ data:
   - test/yosupo/gcd-convolution.test.cpp
   - test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
   - test/yosupo/exp-of-fps.test.cpp
+  - test/yosupo/frequency-table-of-tree-distance.test.cpp
   - test/yosupo/partition-function_2.test.cpp
   - test/yosupo/inv-of-fps.test.cpp
   - test/yosupo/division-of-polynomials.test.cpp

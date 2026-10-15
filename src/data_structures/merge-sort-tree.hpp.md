@@ -410,3 +410,4 @@ MergeSortTree mst2(value, key, group::Sum<long long>());  // 群の値と key �
 ## 関連
 
 - 更新もしたい場合は [2次元セグメント木](segtree-2d.hpp)
+- 区間の $k$ 番目の値や、値の範囲にある要素の個数・和を $O(\log \sigma)$ で求めるなら [Wavelet Matrix](wavelet-matrix.hpp)

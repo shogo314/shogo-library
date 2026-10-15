@@ -103,6 +103,9 @@ data:
     path: test/yosupo/exp-of-fps.test.cpp
     title: test/yosupo/exp-of-fps.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/frequency-table-of-tree-distance.test.cpp
+    title: test/yosupo/frequency-table-of-tree-distance.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/gcd-convolution.test.cpp
     title: test/yosupo/gcd-convolution.test.cpp
   - icon: ':heavy_check_mark:'
@@ -749,6 +752,7 @@ data:
   - test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
   - test/yosupo/exp-of-fps.test.cpp
   - test/yosupo/point-set-range-composite.4.test.cpp
+  - test/yosupo/frequency-table-of-tree-distance.test.cpp
   - test/yosupo/range-affine-range-sum.2.test.cpp
   - test/yosupo/range-affine-range-sum.3.test.cpp
   - test/yosupo/range-affine-range-sum-large-array.test.cpp

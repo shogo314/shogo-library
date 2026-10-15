@@ -41,6 +41,9 @@ data:
     path: test/yosupo/exp-of-fps.test.cpp
     title: test/yosupo/exp-of-fps.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/frequency-table-of-tree-distance.test.cpp
+    title: test/yosupo/frequency-table-of-tree-distance.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/inv-of-fps.test.cpp
     title: test/yosupo/inv-of-fps.test.cpp
   - icon: ':heavy_check_mark:'
@@ -596,6 +599,7 @@ data:
   - test/unittest/subset-sum.test.cpp
   - test/unittest/fps.test.cpp
   - test/yosupo/exp-of-fps.test.cpp
+  - test/yosupo/frequency-table-of-tree-distance.test.cpp
   - test/yosupo/partition-function_2.test.cpp
   - test/yosupo/inv-of-fps.test.cpp
   - test/yosupo/division-of-polynomials.test.cpp

@@ -3,6 +3,9 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
+    path: src/graph/centroid-decomposition.hpp
+    title: "\u91CD\u5FC3\u5206\u89E3"
+  - icon: ':heavy_check_mark:'
     path: src/graph/graph_util.hpp
     title: "\u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570"
   - icon: ':heavy_check_mark:'
@@ -62,6 +65,9 @@ data:
     path: test/aoj/grl-5-d.test.cpp
     title: test/aoj/grl-5-d.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/centroid-decomposition.test.cpp
+    title: test/unittest/centroid-decomposition.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/find-cycle.test.cpp
     title: test/unittest/find-cycle.test.cpp
   - icon: ':heavy_check_mark:'
@@ -91,6 +97,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/cycle-detection.test.cpp
     title: test/yosupo/cycle-detection.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/frequency-table-of-tree-distance.test.cpp
+    title: test/yosupo/frequency-table-of-tree-distance.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/jump-on-tree.1.test.cpp
     title: test/yosupo/jump-on-tree.1.test.cpp
@@ -527,12 +536,14 @@ data:
   - src/graph/tree.hpp
   - src/graph/rerooting-dp.hpp
   - src/graph/graph_util.hpp
+  - src/graph/centroid-decomposition.hpp
   - src/graph/lowlink.hpp
   - src/graph/heavy-light-decomposition.hpp
   - src/graph/two-sat.hpp
   timestamp: '2026-10-15 07:27:29+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/centroid-decomposition.test.cpp
   - test/unittest/two-sat.test.cpp
   - test/unittest/lowlink.test.cpp
   - test/unittest/rerooting-dp.test.cpp
@@ -556,6 +567,7 @@ data:
   - test/aoj/alds1-11-d.1.test.cpp
   - test/yosupo/cycle-detection-undirected.test.cpp
   - test/yosupo/two-sat.test.cpp
+  - test/yosupo/frequency-table-of-tree-distance.test.cpp
   - test/yosupo/lca.4.test.cpp
   - test/yosupo/vertex-add-subtree-sum.1.test.cpp
   - test/yosupo/jump-on-tree.1.test.cpp

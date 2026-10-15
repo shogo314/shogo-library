@@ -257,3 +257,4 @@ for (long long v = 1; v < trie.size(); v++) {
 
 - 整数を 2 進数で入れる Trie は [Binary Trie](../data_structures/binary-trie.hpp)
 - 1 つのパターンの検索は [文字列アルゴリズム](string.hpp) の KMP 法
+- 複数のパターンを文字列の中から一度に探すなら [Aho-Corasick](aho-corasick.hpp)

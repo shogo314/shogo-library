@@ -158,8 +158,85 @@ data:
     \        if (a.first < b.first) return b;\n        if (b.first < a.first) return\
     \ a;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
     \ S e() { return {std::numeric_limits<T>::lowest(), U(0)}; }\n};\n\n/**\n * @brief\
-    \ \u7A4D\u306E\u9806\u5E8F\u3092\u9006\u306B\u3057\u305F\u30E2\u30CE\u30A4\u30C9\
-    \ op(a, b) = M::op(b, a)\n *\n * \u4F8B: SegTree<monoid::Reverse<monoid::Composite<mint>>>\
+    \ \u533A\u9593\u306E\u548C\u3068\u3001\u7A7A\u3092\u542B\u3080 prefix \u306E\u548C\
+    \u306E\u6700\u5927\u5024\n * S(x) \u3067\u5024 x \u306E1\u8981\u7D20\u3092\u8868\
+    \u3059\u8981\u7D20\u3092\u4F5C\u308B\u3002\u5358\u4F4D\u5143\u306F\u7A7A\u306E\
+    \u533A\u9593 {0, 0}\n */\ntemplate <typename T>\nstruct PrefixSumMax {\n    struct\
+    \ S {\n        T sum;  // \u533A\u9593\u306E\u548C\n        T max;  // \u7A7A\u3092\
+    \u542B\u3080 prefix \u306E\u548C\u306E\u6700\u5927\u5024 (0 \u4EE5\u4E0A)\n  \
+    \      constexpr S() : sum(0), max(0) {}\n        constexpr S(const T& x) : sum(x),\
+    \ max(x < T(0) ? T(0) : x) {}\n        constexpr S(const T& sum, const T& max)\
+    \ : sum(sum), max(max) {}\n        friend constexpr bool operator==(const S& a,\
+    \ const S& b) { return a.sum == b.sum && a.max == b.max; }\n        friend constexpr\
+    \ bool operator!=(const S& a, const S& b) { return !(a == b); }\n    };\n    static\
+    \ constexpr S op(const S& a, const S& b) { return S(a.sum + b.sum, std::max(a.max,\
+    \ a.sum + b.max)); }\n    static constexpr S e() { return S(); }\n};\n\n/**\n\
+    \ * @brief \u533A\u9593\u306E\u548C\u3068\u3001\u7A7A\u3092\u542B\u3080 prefix\
+    \ \u306E\u548C\u306E\u6700\u5C0F\u5024\n * S(x) \u3067\u5024 x \u306E1\u8981\u7D20\
+    \u3092\u8868\u3059\u8981\u7D20\u3092\u4F5C\u308B\u3002\u5358\u4F4D\u5143\u306F\
+    \u7A7A\u306E\u533A\u9593 {0, 0}\n */\ntemplate <typename T>\nstruct PrefixSumMin\
+    \ {\n    struct S {\n        T sum;  // \u533A\u9593\u306E\u548C\n        T min;\
+    \  // \u7A7A\u3092\u542B\u3080 prefix \u306E\u548C\u306E\u6700\u5C0F\u5024 (0\
+    \ \u4EE5\u4E0B)\n        constexpr S() : sum(0), min(0) {}\n        constexpr\
+    \ S(const T& x) : sum(x), min(T(0) < x ? T(0) : x) {}\n        constexpr S(const\
+    \ T& sum, const T& min) : sum(sum), min(min) {}\n        friend constexpr bool\
+    \ operator==(const S& a, const S& b) { return a.sum == b.sum && a.min == b.min;\
+    \ }\n        friend constexpr bool operator!=(const S& a, const S& b) { return\
+    \ !(a == b); }\n    };\n    static constexpr S op(const S& a, const S& b) { return\
+    \ S(a.sum + b.sum, std::min(a.min, a.sum + b.min)); }\n    static constexpr S\
+    \ e() { return S(); }\n};\n\n/**\n * @brief \u533A\u9593\u306E\u548C\u3068\u3001\
+    \u7A7A\u3092\u542B\u3080 suffix \u306E\u548C\u306E\u6700\u5927\u5024\n * S(x)\
+    \ \u3067\u5024 x \u306E1\u8981\u7D20\u3092\u8868\u3059\u8981\u7D20\u3092\u4F5C\
+    \u308B\u3002\u5358\u4F4D\u5143\u306F\u7A7A\u306E\u533A\u9593 {0, 0}\n */\ntemplate\
+    \ <typename T>\nstruct SuffixSumMax {\n    struct S {\n        T sum;  // \u533A\
+    \u9593\u306E\u548C\n        T max;  // \u7A7A\u3092\u542B\u3080 suffix \u306E\u548C\
+    \u306E\u6700\u5927\u5024 (0 \u4EE5\u4E0A)\n        constexpr S() : sum(0), max(0)\
+    \ {}\n        constexpr S(const T& x) : sum(x), max(x < T(0) ? T(0) : x) {}\n\
+    \        constexpr S(const T& sum, const T& max) : sum(sum), max(max) {}\n   \
+    \     friend constexpr bool operator==(const S& a, const S& b) { return a.sum\
+    \ == b.sum && a.max == b.max; }\n        friend constexpr bool operator!=(const\
+    \ S& a, const S& b) { return !(a == b); }\n    };\n    static constexpr S op(const\
+    \ S& a, const S& b) { return S(a.sum + b.sum, std::max(b.max, a.max + b.sum));\
+    \ }\n    static constexpr S e() { return S(); }\n};\n\n/**\n * @brief \u533A\u9593\
+    \u306E\u548C\u3068\u3001\u7A7A\u3092\u542B\u3080 suffix \u306E\u548C\u306E\u6700\
+    \u5C0F\u5024\n * S(x) \u3067\u5024 x \u306E1\u8981\u7D20\u3092\u8868\u3059\u8981\
+    \u7D20\u3092\u4F5C\u308B\u3002\u5358\u4F4D\u5143\u306F\u7A7A\u306E\u533A\u9593\
+    \ {0, 0}\n */\ntemplate <typename T>\nstruct SuffixSumMin {\n    struct S {\n\
+    \        T sum;  // \u533A\u9593\u306E\u548C\n        T min;  // \u7A7A\u3092\u542B\
+    \u3080 suffix \u306E\u548C\u306E\u6700\u5C0F\u5024 (0 \u4EE5\u4E0B)\n        constexpr\
+    \ S() : sum(0), min(0) {}\n        constexpr S(const T& x) : sum(x), min(T(0)\
+    \ < x ? T(0) : x) {}\n        constexpr S(const T& sum, const T& min) : sum(sum),\
+    \ min(min) {}\n        friend constexpr bool operator==(const S& a, const S& b)\
+    \ { return a.sum == b.sum && a.min == b.min; }\n        friend constexpr bool\
+    \ operator!=(const S& a, const S& b) { return !(a == b); }\n    };\n    static\
+    \ constexpr S op(const S& a, const S& b) { return S(a.sum + b.sum, std::min(b.min,\
+    \ a.min + b.sum)); }\n    static constexpr S e() { return S(); }\n};\n\n/**\n\
+    \ * @brief \u533A\u9593\u306E\u548C\u3001\u7A7A\u3092\u542B\u3080 prefix\u30FB\
+    suffix \u306E\u548C\u306E\u6700\u5927\u5024\u3001\u7A7A\u3092\u542B\u3080\u9023\
+    \u7D9A\u90E8\u5206\u5217\u306E\u548C\u306E\u6700\u5927\u5024\n * S(x) \u3067\u5024\
+    \ x \u306E1\u8981\u7D20\u3092\u8868\u3059\u8981\u7D20\u3092\u4F5C\u308B\u3002\u5358\
+    \u4F4D\u5143\u306F\u7A7A\u306E\u533A\u9593 {0, 0, 0, 0}\n * \u9759\u7684\u306A\
+    \u5217\u306B\u5BFE\u3057\u3066\u4E00\u5EA6\u3060\u3051\u6C42\u3081\u308B\u306A\
+    \u3089 dp/maximum-subarray.hpp \u306E maximum_subarray\n */\ntemplate <typename\
+    \ T>\nstruct MaxSubarraySum {\n    struct S {\n        T sum;     // \u533A\u9593\
+    \u306E\u548C\n        T prefix;  // \u7A7A\u3092\u542B\u3080 prefix \u306E\u548C\
+    \u306E\u6700\u5927\u5024 (0 \u4EE5\u4E0A)\n        T suffix;  // \u7A7A\u3092\u542B\
+    \u3080 suffix \u306E\u548C\u306E\u6700\u5927\u5024 (0 \u4EE5\u4E0A)\n        T\
+    \ best;    // \u7A7A\u3092\u542B\u3080\u9023\u7D9A\u90E8\u5206\u5217\u306E\u548C\
+    \u306E\u6700\u5927\u5024 (0 \u4EE5\u4E0A)\n        constexpr S() : sum(0), prefix(0),\
+    \ suffix(0), best(0) {}\n        constexpr S(const T& x) : sum(x), prefix(x <\
+    \ T(0) ? T(0) : x), suffix(prefix), best(prefix) {}\n        constexpr S(const\
+    \ T& sum, const T& prefix, const T& suffix, const T& best)\n            : sum(sum),\
+    \ prefix(prefix), suffix(suffix), best(best) {}\n        friend constexpr bool\
+    \ operator==(const S& a, const S& b) {\n            return a.sum == b.sum && a.prefix\
+    \ == b.prefix && a.suffix == b.suffix && a.best == b.best;\n        }\n      \
+    \  friend constexpr bool operator!=(const S& a, const S& b) { return !(a == b);\
+    \ }\n    };\n    static constexpr S op(const S& a, const S& b) {\n        return\
+    \ S(a.sum + b.sum, std::max(a.prefix, a.sum + b.prefix), std::max(b.suffix, a.suffix\
+    \ + b.sum),\n                 std::max({a.best, b.best, a.suffix + b.prefix}));\n\
+    \    }\n    static constexpr S e() { return S(); }\n};\n\n/**\n * @brief \u7A4D\
+    \u306E\u9806\u5E8F\u3092\u9006\u306B\u3057\u305F\u30E2\u30CE\u30A4\u30C9 op(a,\
+    \ b) = M::op(b, a)\n *\n * \u4F8B: SegTree<monoid::Reverse<monoid::Composite<mint>>>\
     \ seg(v); \u306E\u533A\u9593 [l, r) \u306E\u7A4D\u306F f_{r-1}(...f_l(x))\n *\n\
     \ * @tparam M \u3082\u3068\u306E\u30E2\u30CE\u30A4\u30C9\n */\ntemplate <typename\
     \ M>\nstruct Reverse {\n    using S = typename M::S;\n    M m;\n    constexpr\
@@ -743,7 +820,7 @@ data:
   isVerificationFile: true
   path: test/unittest/dynamic-segtree.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:27:48+09:00'
+  timestamp: '2026-10-15 23:44:15+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/dynamic-segtree.test.cpp

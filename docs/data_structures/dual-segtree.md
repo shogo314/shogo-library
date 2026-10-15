@@ -19,6 +19,25 @@ DualSegTree seg3(n, acted_monoid::AddSum<long long>());  // 作用素付きモ�
 
 `mapping` が区間の長さを使う作用素付きモノイド (`AddSum` など) では、各要素に長さ 1 の区間として作用します。
 
+## 別名
+
+| 別名 | 実体 | 作用 |
+|---|---|---|
+| `RAddQ<S>` | `DualSegTree<acted_monoid::AddMin<S>>` | 区間加算 |
+| `RUpdateQ<S>` | `DualSegTree<acted_monoid::UpdateMin<S>>` | 区間代入 |
+| `RChminQ<S>` | `DualSegTree<acted_monoid::ChminMin<S>>` | 区間 chmin |
+| `RChmaxQ<S>` | `DualSegTree<acted_monoid::ChmaxMax<S>>` | 区間 chmax |
+| `RAffineQ<S>` | `DualSegTree<acted_monoid::AffineSum<S>>` | 区間アフィン変換 |
+
+`op`、`e` を使わないので、遅延伝搬セグメント木の別名 (`RAddSumQ` など) と違って取得の部分を名前に含めません。
+
+実体には、`mapping` が区間の長さを使わない `Min` 系を選んでいます。`AddSum`、`UpdateSum` の `mapping` は `S(sz)` との掛け算を使うので、`std::string` や `Vector` のような型では使えません。`Min` 系の `op`、`e` (`std::min`、`numeric_limits`) は呼ばれないので、値の型に順序がなくてもかまいません。`RAffineQ` だけは `S(1)` との掛け算を使うので、数の型で使います。
+
+```cpp
+RUpdateQ<std::string> seg(n, "");
+seg.apply(l, r, "abc");  // [l, r) を "abc" にする
+```
+
 ## メンバ関数
 
 | 関数 | 説明 | 計算量 |

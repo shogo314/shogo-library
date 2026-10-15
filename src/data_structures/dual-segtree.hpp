@@ -147,3 +147,42 @@ template <typename A>
 DualSegTree(long long, typename A::S, A) -> DualSegTree<A>;
 template <typename A>
 DualSegTree(std::vector<typename A::S>, A) -> DualSegTree<A>;
+
+// 別名 双対セグメント木は op, e を使わないので、取得の部分を名前に含めない
+// mapping が区間の長さを使わない Min 系を実体にする (値の型に S(sz) や掛け算を求めない)
+
+/**
+ * @brief 区間加算、1点取得
+ *
+ * @tparam S 型
+ */
+template <typename S>
+using RAddQ = DualSegTree<acted_monoid::AddMin<S>>;
+/**
+ * @brief 区間代入、1点取得
+ *
+ * @tparam S 型
+ */
+template <typename S>
+using RUpdateQ = DualSegTree<acted_monoid::UpdateMin<S>>;
+/**
+ * @brief 区間 chmin、1点取得
+ *
+ * @tparam S 型
+ */
+template <typename S>
+using RChminQ = DualSegTree<acted_monoid::ChminMin<S>>;
+/**
+ * @brief 区間 chmax、1点取得
+ *
+ * @tparam S 型
+ */
+template <typename S>
+using RChmaxQ = DualSegTree<acted_monoid::ChmaxMax<S>>;
+/**
+ * @brief 区間アフィン変換 x <- a * x + b (Affine)、1点取得
+ *
+ * @tparam S 型
+ */
+template <typename S>
+using RAffineQ = DualSegTree<acted_monoid::AffineSum<S>>;

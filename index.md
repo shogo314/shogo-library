@@ -7,6 +7,10 @@ data:
       path: src/algebra/acted-monoid.hpp
       title: "\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
     - icon: ':heavy_check_mark:'
+      path: src/algebra/beats-acted-monoid.hpp
+      title: "Segment Tree Beats \u7528\u306E\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\
+        \u30A4\u30C9"
+    - icon: ':heavy_check_mark:'
       path: src/algebra/group.hpp
       title: "\u7FA4\u306E\u5B9A\u7FA9"
     - icon: ':heavy_check_mark:'
@@ -625,6 +629,9 @@ data:
       path: test/unittest/angle.test.cpp
       title: test/unittest/angle.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/beats-acted-monoid.test.cpp
+      title: test/unittest/beats-acted-monoid.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/binary-trie.test.cpp
       title: test/unittest/binary-trie.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1070,6 +1077,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
       title: test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/range-chmin-chmax-add-range-sum.3.test.cpp
+      title: test/yosupo/range-chmin-chmax-add-range-sum.3.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/range-kth-smallest.test.cpp
       title: test/yosupo/range-kth-smallest.test.cpp

@@ -53,6 +53,9 @@ data:
     path: test/unittest/acted-monoid.test.cpp
     title: test/unittest/acted-monoid.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/beats-acted-monoid.test.cpp
+    title: test/unittest/beats-acted-monoid.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/dual-segtree.test.cpp
     title: test/unittest/dual-segtree.test.cpp
   - icon: ':heavy_check_mark:'
@@ -106,6 +109,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
     title: test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/range-chmin-chmax-add-range-sum.3.test.cpp
+    title: test/yosupo/range-chmin-chmax-add-range-sum.3.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/range-set-range-composite.test.cpp
     title: test/yosupo/range-set-range-composite.test.cpp
@@ -752,6 +758,7 @@ data:
   - test/unittest/dual-segtree.test.cpp
   - test/unittest/dynamic-lazy-segtree.test.cpp
   - test/unittest/acted-monoid.test.cpp
+  - test/unittest/beats-acted-monoid.test.cpp
   - test/aoj/dsl-2-h.1.test.cpp
   - test/aoj/dsl-2-d.test.cpp
   - test/aoj/dsl-2-i.test.cpp
@@ -769,6 +776,7 @@ data:
   - test/yosupo/range-affine-range-sum-large-array.test.cpp
   - test/yosupo/range-affine-point-get.1.test.cpp
   - test/yosupo/area-of-union-of-rectangles.2.test.cpp
+  - test/yosupo/range-chmin-chmax-add-range-sum.3.test.cpp
   - test/yosupo/range-set-range-composite.test.cpp
   - test/yosupo/range-affine-point-get.2.test.cpp
   - test/yosupo/range-chmin-chmax-add-range-sum.1.test.cpp
@@ -846,3 +854,4 @@ long long c = seg.prod(l, r)[1];                   // [l, r) の 1 の個数
 
 - 作用素を持たないものは [モノイド](monoid.hpp)
 - 作用素付きモノイドを渡して使うデータ構造は [遅延伝搬セグメント木](../data_structures/lazy-segtree.hpp)、[双対セグメント木](../data_structures/dual-segtree.hpp)、[imos法](../data_structures/imos.hpp)、[Segment Tree Beats](../data_structures/segtree-beats.hpp)
+- Segment Tree Beats に渡すもの (`mapping` が失敗を返せる) は [Beats 用の作用素付きモノイド](beats-acted-monoid.hpp)

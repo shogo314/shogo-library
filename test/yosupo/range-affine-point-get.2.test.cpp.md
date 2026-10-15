@@ -522,15 +522,31 @@ data:
     \ apply_node(--r, f);\n        }\n    }\n};\n\ntemplate <typename A>\nDualSegTree(long\
     \ long, A) -> DualSegTree<A>;\ntemplate <typename A>\nDualSegTree(long long, typename\
     \ A::S, A) -> DualSegTree<A>;\ntemplate <typename A>\nDualSegTree(std::vector<typename\
-    \ A::S>, A) -> DualSegTree<A>;\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file\
-    \ modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\
-    \u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\
-    \n#include <cstdint>\n#line 14 \"src/math/modint.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\
-    \n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 9 \"\
-    src/utility/traits.hpp\"\n#include <iterator>\n#include <set>\n#line 13 \"src/utility/traits.hpp\"\
-    \n\nnamespace internal_traits {\nusing std::begin, std::end;\n\ntemplate <class\
-    \ T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class\
-    \ T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ A::S>, A) -> DualSegTree<A>;\n\n// \u5225\u540D \u53CC\u5BFE\u30BB\u30B0\u30E1\
+    \u30F3\u30C8\u6728\u306F op, e \u3092\u4F7F\u308F\u306A\u3044\u306E\u3067\u3001\
+    \u53D6\u5F97\u306E\u90E8\u5206\u3092\u540D\u524D\u306B\u542B\u3081\u306A\u3044\
+    \n// mapping \u304C\u533A\u9593\u306E\u9577\u3055\u3092\u4F7F\u308F\u306A\u3044\
+    \ Min \u7CFB\u3092\u5B9F\u4F53\u306B\u3059\u308B (\u5024\u306E\u578B\u306B S(sz)\
+    \ \u3084\u639B\u3051\u7B97\u3092\u6C42\u3081\u306A\u3044)\n\n/**\n * @brief \u533A\
+    \u9593\u52A0\u7B97\u30011\u70B9\u53D6\u5F97\n *\n * @tparam S \u578B\n */\ntemplate\
+    \ <typename S>\nusing RAddQ = DualSegTree<acted_monoid::AddMin<S>>;\n/**\n * @brief\
+    \ \u533A\u9593\u4EE3\u5165\u30011\u70B9\u53D6\u5F97\n *\n * @tparam S \u578B\n\
+    \ */\ntemplate <typename S>\nusing RUpdateQ = DualSegTree<acted_monoid::UpdateMin<S>>;\n\
+    /**\n * @brief \u533A\u9593 chmin\u30011\u70B9\u53D6\u5F97\n *\n * @tparam S \u578B\
+    \n */\ntemplate <typename S>\nusing RChminQ = DualSegTree<acted_monoid::ChminMin<S>>;\n\
+    /**\n * @brief \u533A\u9593 chmax\u30011\u70B9\u53D6\u5F97\n *\n * @tparam S \u578B\
+    \n */\ntemplate <typename S>\nusing RChmaxQ = DualSegTree<acted_monoid::ChmaxMax<S>>;\n\
+    /**\n * @brief \u533A\u9593\u30A2\u30D5\u30A3\u30F3\u5909\u63DB x <- a * x + b\
+    \ (Affine)\u30011\u70B9\u53D6\u5F97\n *\n * @tparam S \u578B\n */\ntemplate <typename\
+    \ S>\nusing RAffineQ = DualSegTree<acted_monoid::AffineSum<S>>;\n#line 2 \"src/math/modint.hpp\"\
+    \n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\
+    \u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line\
+    \ 9 \"src/math/modint.hpp\"\n#include <cstdint>\n#line 14 \"src/math/modint.hpp\"\
+    \n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief\
+    \ \u578B\u7279\u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\n#include <iterator>\n\
+    #include <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace internal_traits\
+    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
     \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
     \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
     \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
@@ -833,7 +849,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/range-affine-point-get.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 23:44:15+09:00'
+  timestamp: '2026-10-16 03:54:29+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/range-affine-point-get.2.test.cpp

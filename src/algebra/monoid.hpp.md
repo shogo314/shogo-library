@@ -122,6 +122,9 @@ data:
     path: test/unittest/acted-monoid.test.cpp
     title: test/unittest/acted-monoid.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/beats-acted-monoid.test.cpp
+    title: test/unittest/beats-acted-monoid.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/dual-segtree.test.cpp
     title: test/unittest/dual-segtree.test.cpp
   - icon: ':heavy_check_mark:'
@@ -229,6 +232,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
     title: test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/range-chmin-chmax-add-range-sum.3.test.cpp
+    title: test/yosupo/range-chmin-chmax-add-range-sum.3.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/range-set-range-composite.test.cpp
     title: test/yosupo/range-set-range-composite.test.cpp
@@ -765,6 +771,7 @@ data:
   - test/unittest/fenwick-tree.test.cpp
   - test/unittest/acted-monoid.test.cpp
   - test/unittest/sparse-table.test.cpp
+  - test/unittest/beats-acted-monoid.test.cpp
   - test/aoj/dsl-2-h.1.test.cpp
   - test/aoj/dsl-3-d.test.cpp
   - test/aoj/itp2-3-b.1.test.cpp
@@ -803,6 +810,7 @@ data:
   - test/yosupo/vertex-add-path-sum.test.cpp
   - test/yosupo/point-set-range-composite.3.test.cpp
   - test/yosupo/vertex-set-path-composite.test.cpp
+  - test/yosupo/range-chmin-chmax-add-range-sum.3.test.cpp
   - test/yosupo/vertex-add-subtree-sum.2.test.cpp
   - test/yosupo/point-add-rectangle-sum.test.cpp
   - test/yosupo/range-set-range-composite.test.cpp

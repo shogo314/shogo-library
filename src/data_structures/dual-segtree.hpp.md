@@ -519,7 +519,23 @@ data:
     \ apply_node(--r, f);\n        }\n    }\n};\n\ntemplate <typename A>\nDualSegTree(long\
     \ long, A) -> DualSegTree<A>;\ntemplate <typename A>\nDualSegTree(long long, typename\
     \ A::S, A) -> DualSegTree<A>;\ntemplate <typename A>\nDualSegTree(std::vector<typename\
-    \ A::S>, A) -> DualSegTree<A>;\n"
+    \ A::S>, A) -> DualSegTree<A>;\n\n// \u5225\u540D \u53CC\u5BFE\u30BB\u30B0\u30E1\
+    \u30F3\u30C8\u6728\u306F op, e \u3092\u4F7F\u308F\u306A\u3044\u306E\u3067\u3001\
+    \u53D6\u5F97\u306E\u90E8\u5206\u3092\u540D\u524D\u306B\u542B\u3081\u306A\u3044\
+    \n// mapping \u304C\u533A\u9593\u306E\u9577\u3055\u3092\u4F7F\u308F\u306A\u3044\
+    \ Min \u7CFB\u3092\u5B9F\u4F53\u306B\u3059\u308B (\u5024\u306E\u578B\u306B S(sz)\
+    \ \u3084\u639B\u3051\u7B97\u3092\u6C42\u3081\u306A\u3044)\n\n/**\n * @brief \u533A\
+    \u9593\u52A0\u7B97\u30011\u70B9\u53D6\u5F97\n *\n * @tparam S \u578B\n */\ntemplate\
+    \ <typename S>\nusing RAddQ = DualSegTree<acted_monoid::AddMin<S>>;\n/**\n * @brief\
+    \ \u533A\u9593\u4EE3\u5165\u30011\u70B9\u53D6\u5F97\n *\n * @tparam S \u578B\n\
+    \ */\ntemplate <typename S>\nusing RUpdateQ = DualSegTree<acted_monoid::UpdateMin<S>>;\n\
+    /**\n * @brief \u533A\u9593 chmin\u30011\u70B9\u53D6\u5F97\n *\n * @tparam S \u578B\
+    \n */\ntemplate <typename S>\nusing RChminQ = DualSegTree<acted_monoid::ChminMin<S>>;\n\
+    /**\n * @brief \u533A\u9593 chmax\u30011\u70B9\u53D6\u5F97\n *\n * @tparam S \u578B\
+    \n */\ntemplate <typename S>\nusing RChmaxQ = DualSegTree<acted_monoid::ChmaxMax<S>>;\n\
+    /**\n * @brief \u533A\u9593\u30A2\u30D5\u30A3\u30F3\u5909\u63DB x <- a * x + b\
+    \ (Affine)\u30011\u70B9\u53D6\u5F97\n *\n * @tparam S \u578B\n */\ntemplate <typename\
+    \ S>\nusing RAffineQ = DualSegTree<acted_monoid::AffineSum<S>>;\n"
   code: "#pragma once\n\n/**\n * @file dual-segtree.hpp\n * @brief \u53CC\u5BFE\u30BB\
     \u30B0\u30E1\u30F3\u30C8\u6728 (\u533A\u9593\u4F5C\u7528\u30011\u70B9\u53D6\u5F97\
     )\n */\n\n#include <cassert>\n#include <utility>\n#include <vector>\n\n#include\
@@ -593,14 +609,30 @@ data:
     \    if (l & 1) apply_node(l++, f);\n            if (r & 1) apply_node(--r, f);\n\
     \        }\n    }\n};\n\ntemplate <typename A>\nDualSegTree(long long, A) -> DualSegTree<A>;\n\
     template <typename A>\nDualSegTree(long long, typename A::S, A) -> DualSegTree<A>;\n\
-    template <typename A>\nDualSegTree(std::vector<typename A::S>, A) -> DualSegTree<A>;\n"
+    template <typename A>\nDualSegTree(std::vector<typename A::S>, A) -> DualSegTree<A>;\n\
+    \n// \u5225\u540D \u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\u306F op, e\
+    \ \u3092\u4F7F\u308F\u306A\u3044\u306E\u3067\u3001\u53D6\u5F97\u306E\u90E8\u5206\
+    \u3092\u540D\u524D\u306B\u542B\u3081\u306A\u3044\n// mapping \u304C\u533A\u9593\
+    \u306E\u9577\u3055\u3092\u4F7F\u308F\u306A\u3044 Min \u7CFB\u3092\u5B9F\u4F53\u306B\
+    \u3059\u308B (\u5024\u306E\u578B\u306B S(sz) \u3084\u639B\u3051\u7B97\u3092\u6C42\
+    \u3081\u306A\u3044)\n\n/**\n * @brief \u533A\u9593\u52A0\u7B97\u30011\u70B9\u53D6\
+    \u5F97\n *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RAddQ = DualSegTree<acted_monoid::AddMin<S>>;\n\
+    /**\n * @brief \u533A\u9593\u4EE3\u5165\u30011\u70B9\u53D6\u5F97\n *\n * @tparam\
+    \ S \u578B\n */\ntemplate <typename S>\nusing RUpdateQ = DualSegTree<acted_monoid::UpdateMin<S>>;\n\
+    /**\n * @brief \u533A\u9593 chmin\u30011\u70B9\u53D6\u5F97\n *\n * @tparam S \u578B\
+    \n */\ntemplate <typename S>\nusing RChminQ = DualSegTree<acted_monoid::ChminMin<S>>;\n\
+    /**\n * @brief \u533A\u9593 chmax\u30011\u70B9\u53D6\u5F97\n *\n * @tparam S \u578B\
+    \n */\ntemplate <typename S>\nusing RChmaxQ = DualSegTree<acted_monoid::ChmaxMax<S>>;\n\
+    /**\n * @brief \u533A\u9593\u30A2\u30D5\u30A3\u30F3\u5909\u63DB x <- a * x + b\
+    \ (Affine)\u30011\u70B9\u53D6\u5F97\n *\n * @tparam S \u578B\n */\ntemplate <typename\
+    \ S>\nusing RAffineQ = DualSegTree<acted_monoid::AffineSum<S>>;\n"
   dependsOn:
   - src/algebra/acted-monoid.hpp
   - src/algebra/monoid.hpp
   isVerificationFile: false
   path: src/data_structures/dual-segtree.hpp
   requiredBy: []
-  timestamp: '2026-10-15 23:44:15+09:00'
+  timestamp: '2026-10-16 03:54:29+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/dual-segtree.test.cpp
@@ -628,6 +660,25 @@ DualSegTree seg3(n, acted_monoid::AddSum<long long>());  // 作用素付きモ�
 ```
 
 `mapping` が区間の長さを使う作用素付きモノイド (`AddSum` など) では、各要素に長さ 1 の区間として作用します。
+
+## 別名
+
+| 別名 | 実体 | 作用 |
+|---|---|---|
+| `RAddQ<S>` | `DualSegTree<acted_monoid::AddMin<S>>` | 区間加算 |
+| `RUpdateQ<S>` | `DualSegTree<acted_monoid::UpdateMin<S>>` | 区間代入 |
+| `RChminQ<S>` | `DualSegTree<acted_monoid::ChminMin<S>>` | 区間 chmin |
+| `RChmaxQ<S>` | `DualSegTree<acted_monoid::ChmaxMax<S>>` | 区間 chmax |
+| `RAffineQ<S>` | `DualSegTree<acted_monoid::AffineSum<S>>` | 区間アフィン変換 |
+
+`op`、`e` を使わないので、遅延伝搬セグメント木の別名 (`RAddSumQ` など) と違って取得の部分を名前に含めません。
+
+実体には、`mapping` が区間の長さを使わない `Min` 系を選んでいます。`AddSum`、`UpdateSum` の `mapping` は `S(sz)` との掛け算を使うので、`std::string` や `Vector` のような型では使えません。`Min` 系の `op`、`e` (`std::min`、`numeric_limits`) は呼ばれないので、値の型に順序がなくてもかまいません。`RAffineQ` だけは `S(1)` との掛け算を使うので、数の型で使います。
+
+```cpp
+RUpdateQ<std::string> seg(n, "");
+seg.apply(l, r, "abc");  // [l, r) を "abc" にする
+```
 
 ## メンバ関数
 

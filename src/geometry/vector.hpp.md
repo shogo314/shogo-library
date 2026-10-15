@@ -74,6 +74,9 @@ data:
     path: test/unittest/circle.test.cpp
     title: test/unittest/circle.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/dual-segtree.test.cpp
+    title: test/unittest/dual-segtree.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/vector-line.test.cpp
     title: test/unittest/vector-line.test.cpp
   - icon: ':heavy_check_mark:'
@@ -861,6 +864,7 @@ data:
   timestamp: '2026-10-15 07:27:48+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/dual-segtree.test.cpp
   - test/unittest/circle.test.cpp
   - test/unittest/angle.test.cpp
   - test/unittest/vector.test.cpp

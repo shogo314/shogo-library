@@ -25,6 +25,9 @@ data:
     path: test/aoj/ntl-1-c.test.cpp
     title: test/aoj/ntl-1-c.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/dual-segtree.test.cpp
+    title: test/unittest/dual-segtree.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/mapping.test.cpp
     title: test/unittest/mapping.test.cpp
   - icon: ':heavy_check_mark:'
@@ -517,6 +520,7 @@ data:
   timestamp: '2026-10-15 23:44:15+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/dual-segtree.test.cpp
   - test/unittest/mapping.test.cpp
   - test/unittest/monoid.test.cpp
   - test/aoj/itp2-3-b.1.test.cpp

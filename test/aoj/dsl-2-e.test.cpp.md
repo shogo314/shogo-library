@@ -513,14 +513,30 @@ data:
     \ apply_node(--r, f);\n        }\n    }\n};\n\ntemplate <typename A>\nDualSegTree(long\
     \ long, A) -> DualSegTree<A>;\ntemplate <typename A>\nDualSegTree(long long, typename\
     \ A::S, A) -> DualSegTree<A>;\ntemplate <typename A>\nDualSegTree(std::vector<typename\
-    \ A::S>, A) -> DualSegTree<A>;\n#line 6 \"test/aoj/dsl-2-e.test.cpp\"\n\nint main()\
-    \ {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n    int\
-    \ n, q;\n    std::cin >> n >> q;\n    DualSegTree<acted_monoid::AddSum<long long>>\
-    \ seg(n);\n    while (q--) {\n        int t;\n        std::cin >> t;\n       \
-    \ if (t == 0) {\n            int s, u;\n            long long x;\n           \
-    \ std::cin >> s >> u >> x;\n            seg.apply(s - 1, u, x);\n        } else\
-    \ {\n            int i;\n            std::cin >> i;\n            std::cout <<\
-    \ seg.get(i - 1) << '\\n';\n        }\n    }\n}\n"
+    \ A::S>, A) -> DualSegTree<A>;\n\n// \u5225\u540D \u53CC\u5BFE\u30BB\u30B0\u30E1\
+    \u30F3\u30C8\u6728\u306F op, e \u3092\u4F7F\u308F\u306A\u3044\u306E\u3067\u3001\
+    \u53D6\u5F97\u306E\u90E8\u5206\u3092\u540D\u524D\u306B\u542B\u3081\u306A\u3044\
+    \n// mapping \u304C\u533A\u9593\u306E\u9577\u3055\u3092\u4F7F\u308F\u306A\u3044\
+    \ Min \u7CFB\u3092\u5B9F\u4F53\u306B\u3059\u308B (\u5024\u306E\u578B\u306B S(sz)\
+    \ \u3084\u639B\u3051\u7B97\u3092\u6C42\u3081\u306A\u3044)\n\n/**\n * @brief \u533A\
+    \u9593\u52A0\u7B97\u30011\u70B9\u53D6\u5F97\n *\n * @tparam S \u578B\n */\ntemplate\
+    \ <typename S>\nusing RAddQ = DualSegTree<acted_monoid::AddMin<S>>;\n/**\n * @brief\
+    \ \u533A\u9593\u4EE3\u5165\u30011\u70B9\u53D6\u5F97\n *\n * @tparam S \u578B\n\
+    \ */\ntemplate <typename S>\nusing RUpdateQ = DualSegTree<acted_monoid::UpdateMin<S>>;\n\
+    /**\n * @brief \u533A\u9593 chmin\u30011\u70B9\u53D6\u5F97\n *\n * @tparam S \u578B\
+    \n */\ntemplate <typename S>\nusing RChminQ = DualSegTree<acted_monoid::ChminMin<S>>;\n\
+    /**\n * @brief \u533A\u9593 chmax\u30011\u70B9\u53D6\u5F97\n *\n * @tparam S \u578B\
+    \n */\ntemplate <typename S>\nusing RChmaxQ = DualSegTree<acted_monoid::ChmaxMax<S>>;\n\
+    /**\n * @brief \u533A\u9593\u30A2\u30D5\u30A3\u30F3\u5909\u63DB x <- a * x + b\
+    \ (Affine)\u30011\u70B9\u53D6\u5F97\n *\n * @tparam S \u578B\n */\ntemplate <typename\
+    \ S>\nusing RAffineQ = DualSegTree<acted_monoid::AffineSum<S>>;\n#line 6 \"test/aoj/dsl-2-e.test.cpp\"\
+    \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
+    \    int n, q;\n    std::cin >> n >> q;\n    DualSegTree<acted_monoid::AddSum<long\
+    \ long>> seg(n);\n    while (q--) {\n        int t;\n        std::cin >> t;\n\
+    \        if (t == 0) {\n            int s, u;\n            long long x;\n    \
+    \        std::cin >> s >> u >> x;\n            seg.apply(s - 1, u, x);\n     \
+    \   } else {\n            int i;\n            std::cin >> i;\n            std::cout\
+    \ << seg.get(i - 1) << '\\n';\n        }\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_E\"\
     \n\n#include <iostream>\n\n#include \"../../src/data_structures/dual-segtree.hpp\"\
     \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
@@ -537,7 +553,7 @@ data:
   isVerificationFile: true
   path: test/aoj/dsl-2-e.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 23:44:15+09:00'
+  timestamp: '2026-10-16 03:54:29+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/dsl-2-e.test.cpp

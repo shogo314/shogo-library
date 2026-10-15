@@ -22,3 +22,7 @@ int u = maximum_subarray(w, 0); // 0 (空の部分列を許す)
 
 - `c` は `begin()`、`end()` を持つコンテナで、戻り値の型は要素の型です。
 - `maximum_subarray(c)` では `c` が空であってはいけません。
+
+## 関連
+
+- 値の更新があったり、区間ごとに求めたりする場合は、[モノイド](../algebra/monoid.hpp) の `MaxSubarraySum` をセグメント木に乗せる

@@ -144,5 +144,58 @@ int main() {
         check(group::Xor<int>::inv(x) == x, "group::Xor::inv");
     }
 
+    // PrefixSumMax / PrefixSumMin / SuffixSumMax / SuffixSumMin / MaxSubarraySum: 空を含む prefix・suffix・連続部分列の和
+    for (int rep = 0; rep < 300 && ok; rep++) {
+        int n = rng() % 12 + 1;
+        std::vector<long long> a(n);
+        for (auto& x : a) x = (long long)(rng() % 21) - 10;
+        SegTree<monoid::PrefixSumMax<long long>> pmax(std::vector<monoid::PrefixSumMax<long long>::S>(a.begin(), a.end()));
+        SegTree<monoid::PrefixSumMin<long long>> pmin(std::vector<monoid::PrefixSumMin<long long>::S>(a.begin(), a.end()));
+        SegTree<monoid::SuffixSumMax<long long>> smax(std::vector<monoid::SuffixSumMax<long long>::S>(a.begin(), a.end()));
+        SegTree<monoid::SuffixSumMin<long long>> smin(std::vector<monoid::SuffixSumMin<long long>::S>(a.begin(), a.end()));
+        SegTree<monoid::MaxSubarraySum<long long>> msub(std::vector<monoid::MaxSubarraySum<long long>::S>(a.begin(), a.end()));
+        for (int q = 0; q < 10 && ok; q++) {
+            int k = rng() % n;
+            a[k] = (long long)(rng() % 21) - 10;
+            pmax.set(k, a[k]), pmin.set(k, a[k]), smax.set(k, a[k]), smin.set(k, a[k]), msub.set(k, a[k]);
+            for (int l = 0; l <= n; l++) {
+                for (int r = l; r <= n; r++) {
+                    long long sum = 0, pre_max = 0, pre_min = 0, suf_max = 0, suf_min = 0, best = 0;
+                    for (int i = l; i < r; i++) {
+                        sum += a[i];
+                        pre_max = std::max(pre_max, sum), pre_min = std::min(pre_min, sum);
+                        long long s = 0;
+                        for (int j = i; j < r; j++) {
+                            s += a[j];
+                            best = std::max(best, s);
+                        }
+                    }
+                    long long s = 0;
+                    for (int i = r - 1; i >= l; i--) {
+                        s += a[i];
+                        suf_max = std::max(suf_max, s), suf_min = std::min(suf_min, s);
+                    }
+                    check(pmax.prod(l, r) == monoid::PrefixSumMax<long long>::S(sum, pre_max), "PrefixSumMax");
+                    check(pmin.prod(l, r) == monoid::PrefixSumMin<long long>::S(sum, pre_min), "PrefixSumMin");
+                    check(smax.prod(l, r) == monoid::SuffixSumMax<long long>::S(sum, suf_max), "SuffixSumMax");
+                    check(smin.prod(l, r) == monoid::SuffixSumMin<long long>::S(sum, suf_min), "SuffixSumMin");
+                    check(msub.prod(l, r) == monoid::MaxSubarraySum<long long>::S(sum, pre_max, suf_max, best), "MaxSubarraySum");
+                }
+            }
+            // max_right: l から始めて和が初めて正になる位置
+            int l = rng() % (n + 1);
+            long long sum = 0;
+            int expect = n;
+            for (int i = l; i < n; i++) {
+                sum += a[i];
+                if (sum > 0) {
+                    expect = i;
+                    break;
+                }
+            }
+            check(pmax.max_right(l, [](const auto& s) { return s.max <= 0; }) == expect, "PrefixSumMax max_right");
+        }
+    }
+
     if (ok) std::cout << "Hello World" << std::endl;
 }

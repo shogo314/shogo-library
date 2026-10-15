@@ -1,32 +1,23 @@
 #define PROBLEM "https://atcoder.jp/contests/aalc001/tasks/aalc001_l"
 #define IGNORE
 
-#include <algorithm>
 #include <iostream>
 #include <vector>
 
 #include "../../src/data_structures/lazy-segtree.hpp"
 
-// 和と、空を含む prefix の和の最大値
-struct PrefixMax {
-    struct S {
-        long long sum, max;
-    };
-    static constexpr S op(const S& a, const S& b) { return {a.sum + b.sum, std::max(a.max, a.sum + b.max)}; }
-    static constexpr S e() { return {0, 0}; }
-};
-
 int main(void) {
     int n, q;
     std::cin >> n >> q;
     // 成分 0, 1, 2 が配列 A, B, C で、入れ替えは成分の入れ替え
-    using A = acted_monoid::Rearrange<PrefixMax, 3>;
+    using M = monoid::PrefixSumMax<long long>;
+    using A = acted_monoid::Rearrange<M, 3>;
     std::vector<A::S> init(n);
     for (int j = 0; j < 3; j++) {
         for (int i = 0; i < n; i++) {
             long long x;
             std::cin >> x;
-            init[i][j] = {x, std::max(x, 0LL)};
+            init[i][j] = M::S(x);
         }
     }
     LazySegTree<A> seg(init);

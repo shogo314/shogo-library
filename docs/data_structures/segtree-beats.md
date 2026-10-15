@@ -5,7 +5,24 @@ documentation_of: //src/data_structures/segtree-beats.hpp
 
 区間 chmin/chmax などを扱う Segment Tree Beats です。[遅延伝搬セグメント木](lazy-segtree.hpp) と同じ形の作用素付きモノイド ([algebra/acted-monoid.hpp](../algebra/acted-monoid.hpp)) を受け取りますが、`mapping` は `std::pair<bool, S>` (作用に失敗したか, 作用後の値) を返します。失敗を返したノードは、子に作用を伝搬してから値を計算し直します。
 
-ライブラリには Beats 用の作用素付きモノイドは用意していないので、自分で定義します。区間 chmin・区間和の例です。
+区間 chmin・chmax・加算・代入と区間和・最大値・最小値は、[Beats 用の作用素付きモノイド](../algebra/beats-acted-monoid.hpp) と下の別名がそのまま使えます。
+
+```cpp
+using A = beats_acted_monoid::ChminChmaxAddSum<long long>;
+RChminChmaxAddSumQ<long long> seg(std::vector<A::S>(a.begin(), a.end()));  // a は std::vector<long long>
+seg.apply(l, r, A::chmin(x));  // 区間 chmin
+seg.prod(l, r).sum;            // 区間和
+```
+
+## 別名
+
+| 別名 | 実体 | 作用 | 取得 |
+|---|---|---|---|
+| `RChminChmaxAddSumQ<S>` | `SegTreeBeats<beats_acted_monoid::ChminChmaxAddSum<S>>` | 区間 chmin・chmax・加算・代入 | 区間和・最大値・最小値 |
+
+## 自分で定義する
+
+それ以外は自分で定義します。区間 chmin・区間和の例です。
 
 ```cpp
 struct Node {
@@ -41,7 +58,7 @@ seg.apply(0, 4, 4);   // 区間 chmin
 seg.prod(0, 4).sum;   // 13
 ```
 
-`mapping` は `(f, x)`、`(f, x, sz)`、`(f, x, l, r)` のどの形でもかまいません。ラムダ式から作る場合は `ActedMonoid(op, e, mapping, composition, id)` を渡します。区間 chmin・chmax・加算・区間和をまとめて扱う例は、テスト `test/yosupo/range-chmin-chmax-add-range-sum.*.test.cpp` にあります。
+`mapping` は `(f, x)`、`(f, x, sz)`、`(f, x, l, r)` のどの形でもかまいません。ラムダ式から作る場合は `ActedMonoid(op, e, mapping, composition, id)` を渡します。区間 chmin・chmax・加算・区間和を自分で定義する例は、テスト `test/yosupo/range-chmin-chmax-add-range-sum.1.test.cpp`、`.2.test.cpp` にあります。
 
 ## メンバ関数
 
@@ -65,3 +82,4 @@ seg.prod(0, 4).sum;   // 13
 ## 関連
 
 - 作用が常に成功する場合は [遅延伝搬セグメント木](lazy-segtree.hpp)
+- よく使う作用素付きモノイドは [Beats 用の作用素付きモノイド](../algebra/beats-acted-monoid.hpp)

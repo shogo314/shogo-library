@@ -69,3 +69,4 @@ long long c = seg.prod(l, r)[1];                   // [l, r) の 1 の個数
 
 - 作用素を持たないものは [モノイド](monoid.hpp)
 - 作用素付きモノイドを渡して使うデータ構造は [遅延伝搬セグメント木](../data_structures/lazy-segtree.hpp)、[双対セグメント木](../data_structures/dual-segtree.hpp)、[imos法](../data_structures/imos.hpp)、[Segment Tree Beats](../data_structures/segtree-beats.hpp)
+- Segment Tree Beats に渡すもの (`mapping` が失敗を返せる) は [Beats 用の作用素付きモノイド](beats-acted-monoid.hpp)

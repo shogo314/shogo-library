@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "../algebra/acted-monoid.hpp"
+#include "../algebra/beats-acted-monoid.hpp"
 
 /**
  * @brief Segment Tree Beats
@@ -347,3 +348,11 @@ template <typename A>
 SegTreeBeats(long long, A) -> SegTreeBeats<A>;
 template <typename A>
 SegTreeBeats(std::vector<typename A::S>, A) -> SegTreeBeats<A>;
+
+/**
+ * @brief 区間 chmin・chmax・加算・代入、区間和・最大値・最小値
+ *
+ * @tparam S 型
+ */
+template <typename S>
+using RChminChmaxAddSumQ = SegTreeBeats<beats_acted_monoid::ChminChmaxAddSum<S>>;

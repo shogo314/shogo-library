@@ -15,6 +15,8 @@ Imos imos2(5, acted_monoid::AddSum<long long>());  // 作用素付きモノイ�
 
 作用素付きモノイド ([algebra/acted-monoid.hpp](../algebra/acted-monoid.hpp)) を渡します。作用素はアーベル群 (可換群) をなし、逆作用素 `inv` を持つ必要があります (`AddSum`、`MulSum` など)。値のモノイドの演算 (`op`、`e`) は使いません。
 
+`MulSum<T>` の `inv` は `T(1) / f` なので、`T` は modint や浮動小数点数などの体の型にしてください。`MulSum<long long>` はコンパイルは通りますが、整数除算になるので結果が正しくなりません。
+
 ## メンバ関数
 
 | 関数 | 説明 | 計算量 |

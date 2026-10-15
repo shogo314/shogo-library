@@ -41,6 +41,8 @@ long long m = seg.prod(l, r);                         // [l, r) の最小値
 | `AddPowerSum<T, K>` | 区間加算 | 区間の 0 乗和から K 乗和 | `T` | |
 | `Rearrange<M, N>` | 区間の成分の並べ替え (写像) | 成分ごとのモノイド `M` の積 | `std::array<int, N>` ([`Mapping<N>`](monoid.hpp)) | |
 
+`MulSum<T>::inv` は `T(1) / f` を返します。`T` が `long long` などの整数型だと整数除算になって正しい逆元にならないので、[imos法](../data_structures/imos.hpp) に渡すときは `T` を modint や浮動小数点数などの体の型にしてください。
+
 `AddPowerSum` の要素は `S(x)` で値 `x` の1要素から作り、`s[i]` で `i` 乗和を取得します。
 
 ## 成分の並べ替え `Rearrange<M, N>`

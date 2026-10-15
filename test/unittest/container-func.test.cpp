@@ -69,30 +69,6 @@ int main() {
             check(product_xor(nonneg) == y, "product_xor(c) large");
         }
 
-        // maximum_subarray (空の部分列を許す版): 全区間の和の最大値と init の大きい方
-        {
-            long long init = (long long)(rng() % 7) - 3;
-            long long best = init;
-            for (int l = 0; l < n; l++) {
-                long long s = init;
-                for (int r = l; r < n; r++) {
-                    s += v[r];
-                    best = std::max(best, s);
-                }
-            }
-            check(maximum_subarray(v, init) == best, "maximum_subarray(c, init)");
-            // 空でない版も合わせて確かめる
-            long long best_nonempty = v[0];
-            for (int l = 0; l < n; l++) {
-                long long s = 0;
-                for (int r = l; r < n; r++) {
-                    s += v[r];
-                    best_nonempty = std::max(best_nonempty, s);
-                }
-            }
-            check(maximum_subarray(v) == best_nonempty, "maximum_subarray(c)");
-        }
-
         // median: 偶数個なら中央 2 つの平均 (整数型は 0 方向に切り捨て)
         {
             std::vector<long long> w = v;
@@ -158,9 +134,6 @@ int main() {
     check(median(std::vector<int>{1, 4}) == 2, "median 2 要素");
     check(mex(std::vector<int>{}) == 0, "mex 空");
     check(mex(std::vector<int>{0, 1, 2}) == 3, "mex 0..n-1 をすべて含む");
-    check(maximum_subarray(std::vector<int>{}, 0) == 0, "maximum_subarray 空");
-    check(maximum_subarray(std::vector<int>{-5, -2, -9}) == -2, "maximum_subarray すべて負");
-    check(maximum_subarray(std::vector<int>{-5, -2, -9}, 0) == 0, "maximum_subarray すべて負、空を許す");
     check(product(std::vector<int>{}) == 1 && product_xor(std::vector<int>{}) == 0, "product 空");
     check(index(std::vector<int>{}, 3) == -1, "index 空");
     check(sorted(std::string("bca"), std::greater<char>()) == "cba", "sorted(string, f)");

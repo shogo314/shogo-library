@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../../src/utility/container_func.hpp"
+#include "../../src/dp/maximum-subarray.hpp"
 
 int main() {
     int n;

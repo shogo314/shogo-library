@@ -138,31 +138,6 @@ inline constexpr T product_xor(const std::initializer_list<T>& v) {
     return std::accumulate(v.begin(), v.end(), T{0}, std::bit_xor<T>());
 }
 
-template <class C>
-inline constexpr mem_value_type<C> maximum_subarray(const C& v) {
-    assert(!v.empty());
-    auto itr = v.begin();
-    mem_value_type<C> tmp = *itr++;
-    mem_value_type<C> res = tmp;
-    while (itr != v.end()) {
-        tmp += *itr;
-        if (tmp < *itr) tmp = *itr;
-        if (res < tmp) res = tmp;
-        ++itr;
-    }
-    return res;
-}
-template <class C>
-inline constexpr mem_value_type<C> maximum_subarray(const C& v, mem_value_type<C> init) {
-    mem_value_type<C> res = init, tmp = init;
-    for (const auto& a : v) {
-        tmp += a;
-        if (tmp < init) tmp = init;
-        if (res < tmp) res = tmp;
-    }
-    return res;
-}
-
 METHOD_AND_FUNC_ARG_EXPAND(count)
 METHOD_AND_FUNC_ARG_EXPAND(find)
 METHOD_AND_FUNC_ARG_EXPAND(lower_bound)

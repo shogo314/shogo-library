@@ -18,11 +18,13 @@ seg.prod(l, r).sum;            // 区間和
 
 | 別名 | 実体 | 作用 | 取得 |
 |---|---|---|---|
+| `RChminSumQ<S>` | `SegTreeBeats<beats_acted_monoid::ChminSum<S>>` | 区間 chmin | 区間和・最大値 |
+| `RChmaxSumQ<S>` | `SegTreeBeats<beats_acted_monoid::ChmaxSum<S>>` | 区間 chmax | 区間和・最小値 |
 | `RChminChmaxAddSumQ<S>` | `SegTreeBeats<beats_acted_monoid::ChminChmaxAddSum<S>>` | 区間 chmin・chmax・加算・代入 | 区間和・最大値・最小値 |
 
 ## 自分で定義する
 
-それ以外は自分で定義します。区間 chmin・区間和の例です。
+それ以外は自分で定義します。例として、区間 chmin・区間和 (`ChminSum` と同じもの) を書くと次のようになります。
 
 ```cpp
 struct Node {

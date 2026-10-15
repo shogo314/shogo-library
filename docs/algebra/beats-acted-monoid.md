@@ -18,7 +18,17 @@ s.sum; s.max1; s.min1;          // [l, r) の和、最大値、最小値
 
 | 作用素付きモノイド | 作用 | 取得 | 作用素の型 `F` |
 |---|---|---|---|
+| `ChminSum<T>` | 区間 chmin | 区間和・最大値 | `T` |
+| `ChmaxSum<T>` | 区間 chmax | 区間和・最小値 | `T` |
 | `ChminChmaxAddSum<T>` | 区間 chmin・chmax・加算・代入 | 区間和・最大値・最小値 | `F{lb, ub, add}` |
+
+## 区間 chmin `ChminSum<T>`・区間 chmax `ChmaxSum<T>`
+
+作用素は chmin (chmax) する値そのものです。`seg.apply(l, r, x)` で $[l, r)$ の各値を $\min(a_i, x)$ ($\max(a_i, x)$) にします。
+
+要素 `S` は `S(x)` で値 `x` の 1 要素から作ります。`ChminSum` のメンバ `sum`、`max1` が区間和・最大値です。ほかに 2 番目の最大値 `max2`、最大値の個数 `max_cnt` を持ちます。`ChmaxSum` は同様に `sum`、`min1`、`min2`、`min_cnt` を持ちます。空の区間では `max1` が `numeric_limits<T>::lowest()`、`min1` が `numeric_limits<T>::max()` です。
+
+作用が chmin だけ (chmax だけ) なら、`ChminChmaxAddSum` より 3〜4 倍ほど速く動きます。計算量は償却 $O(\log n)$ です。
 
 ## 区間 chmin・chmax・加算・代入 `ChminChmaxAddSum<T>`
 

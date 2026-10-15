@@ -16,6 +16,120 @@
 namespace beats_acted_monoid {
 
 /**
+ * @brief 区間 chmin、区間和・最大値
+ *
+ * 作用素は chmin する値 (x <- min(x, f))
+ * S(x) で値 x の1要素から作り、sum, max1 で区間和・最大値を取得する
+ * 空の区間では max1 = numeric_limits<T>::lowest()
+ * ChminChmaxAddSum より軽い
+ *
+ * @tparam T 値の型
+ */
+template <typename T>
+struct ChminSum {
+    static constexpr T lowest = std::numeric_limits<T>::lowest();
+
+    struct S {
+        T sum;
+        T max1, max2;      // 最大値、2番目の最大値 (なければ lowest)
+        long long max_cnt;  // 最大値の個数
+        constexpr S() : sum(0), max1(lowest), max2(lowest), max_cnt(0) {}
+        constexpr S(const T& x) : sum(x), max1(x), max2(lowest), max_cnt(1) {}
+    };
+    using F = T;
+
+    static constexpr S op(const S& a, const S& b) {
+        S res;
+        res.sum = a.sum + b.sum;
+        if (a.max1 == b.max1) {
+            res.max1 = a.max1;
+            res.max_cnt = a.max_cnt + b.max_cnt;
+            res.max2 = std::max(a.max2, b.max2);
+        } else if (a.max1 > b.max1) {
+            res.max1 = a.max1;
+            res.max_cnt = a.max_cnt;
+            res.max2 = std::max(a.max2, b.max1);
+        } else {
+            res.max1 = b.max1;
+            res.max_cnt = b.max_cnt;
+            res.max2 = std::max(a.max1, b.max2);
+        }
+        return res;
+    }
+    static constexpr S e() { return S(); }
+    static constexpr std::pair<bool, S> mapping(const F& f, const S& x) {
+        if (x.max1 <= f) return {false, x};
+        // 最大値だけが変わる (値が 1 種類なら f = lowest でも成功させる)
+        if (x.max2 < f || x.max2 == lowest) {
+            S res = x;
+            res.sum -= (x.max1 - f) * T(x.max_cnt);
+            res.max1 = f;
+            return {false, res};
+        }
+        return {true, x};
+    }
+    static constexpr F composition(const F& f, const F& g) { return std::min(f, g); }
+    static constexpr F id() { return std::numeric_limits<T>::max(); }
+};
+
+/**
+ * @brief 区間 chmax、区間和・最小値
+ *
+ * 作用素は chmax する値 (x <- max(x, f))
+ * S(x) で値 x の1要素から作り、sum, min1 で区間和・最小値を取得する
+ * 空の区間では min1 = numeric_limits<T>::max()
+ * ChminChmaxAddSum より軽い
+ *
+ * @tparam T 値の型
+ */
+template <typename T>
+struct ChmaxSum {
+    static constexpr T highest = std::numeric_limits<T>::max();
+
+    struct S {
+        T sum;
+        T min1, min2;      // 最小値、2番目の最小値 (なければ highest)
+        long long min_cnt;  // 最小値の個数
+        constexpr S() : sum(0), min1(highest), min2(highest), min_cnt(0) {}
+        constexpr S(const T& x) : sum(x), min1(x), min2(highest), min_cnt(1) {}
+    };
+    using F = T;
+
+    static constexpr S op(const S& a, const S& b) {
+        S res;
+        res.sum = a.sum + b.sum;
+        if (a.min1 == b.min1) {
+            res.min1 = a.min1;
+            res.min_cnt = a.min_cnt + b.min_cnt;
+            res.min2 = std::min(a.min2, b.min2);
+        } else if (a.min1 < b.min1) {
+            res.min1 = a.min1;
+            res.min_cnt = a.min_cnt;
+            res.min2 = std::min(a.min2, b.min1);
+        } else {
+            res.min1 = b.min1;
+            res.min_cnt = b.min_cnt;
+            res.min2 = std::min(a.min1, b.min2);
+        }
+        return res;
+    }
+    static constexpr S e() { return S(); }
+    static constexpr std::pair<bool, S> mapping(const F& f, const S& x) {
+        if (x.min1 >= f) return {false, x};
+        // 最小値だけが変わる (値が 1 種類なら f = highest でも成功させる)
+        if (x.min2 > f || x.min2 == highest) {
+            S res = x;
+            res.sum += (f - x.min1) * T(x.min_cnt);
+            res.min1 = f;
+            return {false, res};
+        }
+        return {true, x};
+    }
+    static constexpr F composition(const F& f, const F& g) { return std::max(f, g); }
+    static constexpr F id() { return std::numeric_limits<T>::lowest(); }
+};
+
+/**
  * @brief 区間 chmin・chmax・加算・代入、区間和・最大値・最小値
  *
  * 作用素 F{lb, ub, add} は x <- clamp(x + add, lb, ub) を表す (lb <= ub)

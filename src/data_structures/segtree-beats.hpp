@@ -350,6 +350,20 @@ template <typename A>
 SegTreeBeats(std::vector<typename A::S>, A) -> SegTreeBeats<A>;
 
 /**
+ * @brief 区間 chmin、区間和・最大値
+ *
+ * @tparam S 型
+ */
+template <typename S>
+using RChminSumQ = SegTreeBeats<beats_acted_monoid::ChminSum<S>>;
+/**
+ * @brief 区間 chmax、区間和・最小値
+ *
+ * @tparam S 型
+ */
+template <typename S>
+using RChmaxSumQ = SegTreeBeats<beats_acted_monoid::ChmaxSum<S>>;
+/**
  * @brief 区間 chmin・chmax・加算・代入、区間和・最大値・最小値
  *
  * @tparam S 型

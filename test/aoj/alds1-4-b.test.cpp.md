@@ -134,30 +134,21 @@ data:
     \ v.end(), mem_value_type<C>{0}, std::bit_xor<mem_value_type<C>>());\n}\ntemplate\
     \ <typename T>\ninline constexpr T product_xor(const std::initializer_list<T>&\
     \ v) {\n    return std::accumulate(v.begin(), v.end(), T{0}, std::bit_xor<T>());\n\
-    }\n\ntemplate <class C>\ninline constexpr mem_value_type<C> maximum_subarray(const\
-    \ C& v) {\n    assert(!v.empty());\n    auto itr = v.begin();\n    mem_value_type<C>\
-    \ tmp = *itr++;\n    mem_value_type<C> res = tmp;\n    while (itr != v.end())\
-    \ {\n        tmp += *itr;\n        if (tmp < *itr) tmp = *itr;\n        if (res\
-    \ < tmp) res = tmp;\n        ++itr;\n    }\n    return res;\n}\ntemplate <class\
-    \ C>\ninline constexpr mem_value_type<C> maximum_subarray(const C& v, mem_value_type<C>\
-    \ init) {\n    mem_value_type<C> res = init, tmp = init;\n    for (const auto&\
-    \ a : v) {\n        tmp += a;\n        if (tmp < init) tmp = init;\n        if\
-    \ (res < tmp) res = tmp;\n    }\n    return res;\n}\n\nMETHOD_AND_FUNC_ARG_EXPAND(count)\n\
-    METHOD_AND_FUNC_ARG_EXPAND(find)\nMETHOD_AND_FUNC_ARG_EXPAND(lower_bound)\nMETHOD_AND_FUNC_ARG_EXPAND(upper_bound)\n\
-    \ntemplate <class C, typename T>\ninline constexpr bool contains(const C& c, const\
-    \ T& t) {\n    return find(c, t) != c.end();\n}\n\ntemplate <class C>\ninline\
-    \ constexpr mem_value_type<C> gcd(const C& v) {\n    mem_value_type<C> init(0);\n\
-    \    for (const auto& e : v) init = std::gcd(init, e);\n    return init;\n}\n\n\
-    template <class C>\ninline constexpr mem_value_type<C> average(const C& v) {\n\
-    \    assert(v.size());\n    // v.size() \u306F\u7B26\u53F7\u306A\u3057\u306A\u306E\
-    \u3067\u3001\u305D\u306E\u307E\u307E\u5272\u308B\u3068\u8CA0\u306E\u548C\u304C\
-    \u7B26\u53F7\u306A\u3057\u306B\u5909\u63DB\u3055\u308C\u3066\u58CA\u308C\u308B\
-    \n    return sum(v) / static_cast<mem_value_type<C>>(v.size());\n}\n\ntemplate\
-    \ <class C>\ninline constexpr mem_value_type<C> median(const C& v) {\n    assert(!v.empty());\n\
-    \    std::vector<std::size_t> u(v.size());\n    std::iota(u.begin(), u.end(),\
-    \ 0);\n    std::sort(u.begin(), u.end(), [&](std::size_t a, std::size_t b) {\n\
-    \        return v[a] < v[b];\n    });\n    if (v.size() & 1) {\n        return\
-    \ v[u[v.size() / 2]];\n    }\n    // C++20\n    // return std::midpoint(v[u[v.size()\
+    }\n\nMETHOD_AND_FUNC_ARG_EXPAND(count)\nMETHOD_AND_FUNC_ARG_EXPAND(find)\nMETHOD_AND_FUNC_ARG_EXPAND(lower_bound)\n\
+    METHOD_AND_FUNC_ARG_EXPAND(upper_bound)\n\ntemplate <class C, typename T>\ninline\
+    \ constexpr bool contains(const C& c, const T& t) {\n    return find(c, t) !=\
+    \ c.end();\n}\n\ntemplate <class C>\ninline constexpr mem_value_type<C> gcd(const\
+    \ C& v) {\n    mem_value_type<C> init(0);\n    for (const auto& e : v) init =\
+    \ std::gcd(init, e);\n    return init;\n}\n\ntemplate <class C>\ninline constexpr\
+    \ mem_value_type<C> average(const C& v) {\n    assert(v.size());\n    // v.size()\
+    \ \u306F\u7B26\u53F7\u306A\u3057\u306A\u306E\u3067\u3001\u305D\u306E\u307E\u307E\
+    \u5272\u308B\u3068\u8CA0\u306E\u548C\u304C\u7B26\u53F7\u306A\u3057\u306B\u5909\
+    \u63DB\u3055\u308C\u3066\u58CA\u308C\u308B\n    return sum(v) / static_cast<mem_value_type<C>>(v.size());\n\
+    }\n\ntemplate <class C>\ninline constexpr mem_value_type<C> median(const C& v)\
+    \ {\n    assert(!v.empty());\n    std::vector<std::size_t> u(v.size());\n    std::iota(u.begin(),\
+    \ u.end(), 0);\n    std::sort(u.begin(), u.end(), [&](std::size_t a, std::size_t\
+    \ b) {\n        return v[a] < v[b];\n    });\n    if (v.size() & 1) {\n      \
+    \  return v[u[v.size() / 2]];\n    }\n    // C++20\n    // return std::midpoint(v[u[v.size()\
     \ / 2]], v[u[v.size() / 2 - 1]]);\n    return (v[u[v.size() / 2]] + v[u[v.size()\
     \ / 2 - 1]]) / 2;\n}\n\n// x \u304C\u6700\u521D\u306B\u73FE\u308C\u308B\u4F4D\u7F6E\
     \u3002\u306A\u3051\u308C\u3070 -1\ntemplate <class C, typename U>\ninline constexpr\
@@ -205,7 +196,7 @@ data:
   isVerificationFile: true
   path: test/aoj/alds1-4-b.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:27:48+09:00'
+  timestamp: '2026-10-15 23:11:36+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/alds1-4-b.test.cpp

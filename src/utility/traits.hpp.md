@@ -54,9 +54,6 @@ data:
     title: "vector \u306B\u5BFE\u3059\u308B\u6F14\u7B97\u5B50\u3068\u95A2\u6570"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/0022.test.cpp
-    title: test/aoj/0022.test.cpp
-  - icon: ':heavy_check_mark:'
     path: test/aoj/0029.test.cpp
     title: test/aoj/0029.test.cpp
   - icon: ':heavy_check_mark:'
@@ -555,7 +552,6 @@ data:
   - test/aoj/cgl-7-f.test.cpp
   - test/aoj/dpl-5-d.1.test.cpp
   - test/aoj/cgl-1-a.test.cpp
-  - test/aoj/0022.test.cpp
   - test/aoj/alds1-1-b.test.cpp
   - test/aoj/cgl-7-c.test.cpp
   - test/aoj/jag-summer-2971.test.cpp

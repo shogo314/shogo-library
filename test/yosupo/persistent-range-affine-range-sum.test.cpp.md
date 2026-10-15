@@ -50,17 +50,17 @@ data:
     \u7528\u3059\u308B)\n * - F id(): \u6052\u7B49\u5199\u50CF\n * \u4F5C\u7528\u7D20\
     \u304C\u7FA4\u3092\u306A\u3059\u5834\u5408 (imos.hpp \u3067\u4F7F\u3046) \u306F\
     \n * - F inv(const F& f): \u9006\u4F5C\u7528\u7D20\n */\n\n#line 19 \"src/algebra/acted-monoid.hpp\"\
-    \n#include <array>\n#include <limits>\n#include <optional>\n#include <type_traits>\n\
-    #line 24 \"src/algebra/acted-monoid.hpp\"\n\n#line 2 \"src/algebra/monoid.hpp\"\
-    \n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
-    \n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
-    \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\
-    \n * - S op(const S& a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e():\
-    \ \u5358\u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\
-    \u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\
-    \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\
-    \u51FA\u3059)\n */\n\n#line 16 \"src/algebra/monoid.hpp\"\n#include <cstddef>\n\
-    #include <istream>\n#line 19 \"src/algebra/monoid.hpp\"\n#include <numeric>\n\
+    \n#include <array>\n#include <cstddef>\n#include <limits>\n#include <optional>\n\
+    #include <type_traits>\n#line 25 \"src/algebra/acted-monoid.hpp\"\n\n#line 2 \"\
+    src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\
+    \u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\
+    \u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using\
+    \ S: \u8981\u7D20\u306E\u578B\n * - S op(const S& a, const S& b): \u7A4D (\u7D50\
+    \u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n * op, e \u306F static \u3067\u3082\
+    \u975E static \u3067\u3082\u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\
+    \u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\
+    \u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\n#line 17 \"src/algebra/monoid.hpp\"\
+    \n#include <istream>\n#line 19 \"src/algebra/monoid.hpp\"\n#include <numeric>\n\
     #line 23 \"src/algebra/monoid.hpp\"\n\n/**\n * @brief 1\u6B21\u95A2\u6570 f(x)\
     \ = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum\
     \ \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3};\
@@ -193,7 +193,7 @@ data:
     \ Monoid(Op op, const S& e) : op_object(std::move(op)), identity(e) {}\n    constexpr\
     \ S op(const S& a, const S& b) const { return op_object(a, b); }\n    constexpr\
     \ S e() const { return identity; }\n};\ntemplate <typename Op, typename T>\nMonoid(Op,\
-    \ T) -> Monoid<T, Op>;\n#line 26 \"src/algebra/acted-monoid.hpp\"\n\nnamespace\
+    \ T) -> Monoid<T, Op>;\n#line 27 \"src/algebra/acted-monoid.hpp\"\n\nnamespace\
     \ internal_acted_monoid {\ntemplate <typename A, typename = void>\nstruct has_mapping_lr\
     \ : std::false_type {};\ntemplate <typename A>\nstruct has_mapping_lr<A, std::void_t<decltype(std::declval<const\
     \ A&>().mapping(std::declval<const typename A::F&>(), std::declval<const typename\
@@ -318,32 +318,59 @@ data:
     \ i <= K; i++) {\n            for (int j = 0; j <= i; j++) ret.val[i] += binom[i][j]\
     \ * pw[j] * x.val[i - j];\n        }\n        return ret;\n    }\n    static constexpr\
     \ F composition(const F& f, const F& g) { return f + g; }\n    static constexpr\
-    \ F id() { return F(0); }\n};\n\n}  // namespace acted_monoid\n\n/**\n * @brief\
-    \ \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u304B\u3089\u5B9F\u884C\u6642\
-    \u306B\u4F5C\u308B\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n * \u30E9\
-    \u30E0\u30C0\u5F0F\u3092\u4F7F\u3048\u308B\n *\n * @tparam T \u8981\u7D20\u306E\
-    \u578B\n * @tparam Op \u7A4D\u306E\u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\
-    \u306E\u578B\n * @tparam U \u4F5C\u7528\u7D20\u306E\u578B\n * @tparam Mapping\
-    \ \u4F5C\u7528\u7D20\u3092\u9069\u7528\u3059\u308B\u95A2\u6570\u30AA\u30D6\u30B8\
-    \u30A7\u30AF\u30C8\u306E\u578B \u5F15\u6570\u306F (f, x), (f, x, sz), (f, x, l,\
-    \ r) \u306E\u3044\u305A\u308C\u304B\n * @tparam Composition \u4F5C\u7528\u7D20\
-    \u306E\u5408\u6210\u306E\u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306E\
-    \u578B\n */\ntemplate <typename T, typename Op, typename U, typename Mapping,\
-    \ typename Composition>\nstruct ActedMonoid {\n    using S = T;\n    using F =\
-    \ U;\n    Op op_object;\n    S identity;\n    Mapping mapping_object;\n    Composition\
-    \ composition_object;\n    F lazy_identity;\n    ActedMonoid() = default;\n  \
-    \  constexpr ActedMonoid(Op op, const S& e, Mapping mapping, Composition composition,\
-    \ const F& id)\n        : op_object(std::move(op)), identity(e), mapping_object(std::move(mapping)),\
-    \ composition_object(std::move(composition)), lazy_identity(id) {}\n    constexpr\
-    \ S op(const S& a, const S& b) const { return op_object(a, b); }\n    constexpr\
-    \ S e() const { return identity; }\n    constexpr auto mapping(const F& f, const\
-    \ S& x, long long l, long long r) const {\n        if constexpr (std::is_invocable_v<const\
-    \ Mapping&, const F&, const S&, long long, long long>) {\n            return mapping_object(f,\
-    \ x, l, r);\n        } else if constexpr (std::is_invocable_v<const Mapping&,\
-    \ const F&, const S&, long long>) {\n            return mapping_object(f, x, r\
-    \ - l);\n        } else {\n            return mapping_object(f, x);\n        }\n\
-    \    }\n    constexpr F composition(const F& f, const F& g) const { return composition_object(f,\
-    \ g); }\n    constexpr F id() const { return lazy_identity; }\n};\ntemplate <typename\
+    \ F id() { return F(0); }\n};\n\n/**\n * @brief \u6210\u5206\u306E\u4E26\u3079\
+    \u66FF\u3048 (monoid::Mapping)\u3001\u30E2\u30CE\u30A4\u30C9 M \u306E N \u500B\
+    \u306E\u76F4\u7A4D\n *\n * \u8981\u7D20\u306F M \u306E\u8981\u7D20\u3092 N \u500B\
+    \u4E26\u3079\u305F std::array \u3067\u3001\u7A4D\u306F\u6210\u5206\u3054\u3068\
+    \u306B M::op \u3092\u3068\u308B\n * \u4F5C\u7528\u7D20 f \u306F monoid::Mapping<N>\
+    \ \u306E\u8981\u7D20\u3067\u3001mapping(f, x)[i] = x[f[i]] (\u6210\u5206 i \u306B\
+    \ x \u306E\u6210\u5206 f[i] \u3092\u6301\u3063\u3066\u304F\u308B)\n * f \u306F\
+    \u5168\u5358\u5C04\u3067\u306A\u304F\u3066\u3088\u3044\u3002\u4F8B\u3048\u3070\
+    \ N = 3 \u3067 f = {1, 1, 2} \u306F\u6210\u5206 0 \u3092\u6210\u5206 1 \u3067\u4E0A\
+    \u66F8\u304D\u3059\u308B\n * \u7A4D\u304C\u6210\u5206\u3054\u3068\u306A\u306E\u3067\
+    \u3001M \u306B\u3088\u3089\u305A\u4F5C\u7528\u306F\u7A4D\u3068\u53EF\u63DB\u306B\
+    \u306A\u308B\n *\n * @tparam M static \u306A op, e \u3092\u6301\u3064\u30E2\u30CE\
+    \u30A4\u30C9\n * @tparam N \u6210\u5206\u306E\u500B\u6570\n */\ntemplate <typename\
+    \ M, std::size_t N>\nstruct Rearrange {\n    using S = std::array<typename M::S,\
+    \ N>;\n    using F = typename monoid::Mapping<N>::S;\n    static constexpr S op(const\
+    \ S& a, const S& b) {\n        S res{};\n        for (std::size_t i = 0; i < N;\
+    \ i++) res[i] = M::op(a[i], b[i]);\n        return res;\n    }\n    static constexpr\
+    \ S e() {\n        S res{};\n        for (std::size_t i = 0; i < N; i++) res[i]\
+    \ = M::e();\n        return res;\n    }\n    static constexpr S mapping(const\
+    \ F& f, const S& x) {\n        S res{};\n        for (std::size_t i = 0; i < N;\
+    \ i++) res[i] = x[f[i]];\n        return res;\n    }\n    // mapping(f, mapping(g,\
+    \ x))[i] = x[g[f[i]]] \u306A\u306E\u3067\u3001Mapping \u306E\u7A4D\u3068\u3057\
+    \u3066\u306F g\u2218f \u306B\u306A\u308B\n    static constexpr F composition(const\
+    \ F& f, const F& g) { return monoid::Mapping<N>::op(g, f); }\n    static constexpr\
+    \ F id() { return monoid::Mapping<N>::e(); }\n    // \u6210\u5206 i \u3068 j \u3092\
+    \u5165\u308C\u66FF\u3048\u308B\u4F5C\u7528\u7D20\n    static constexpr F swap(long\
+    \ long i, long long j) { return monoid::Mapping<N>::swap(i, j); }\n};\n\n}  //\
+    \ namespace acted_monoid\n\n/**\n * @brief \u95A2\u6570\u30AA\u30D6\u30B8\u30A7\
+    \u30AF\u30C8\u304B\u3089\u5B9F\u884C\u6642\u306B\u4F5C\u308B\u4F5C\u7528\u7D20\
+    \u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n * \u30E9\u30E0\u30C0\u5F0F\u3092\u4F7F\u3048\
+    \u308B\n *\n * @tparam T \u8981\u7D20\u306E\u578B\n * @tparam Op \u7A4D\u306E\u95A2\
+    \u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306E\u578B\n * @tparam U \u4F5C\u7528\
+    \u7D20\u306E\u578B\n * @tparam Mapping \u4F5C\u7528\u7D20\u3092\u9069\u7528\u3059\
+    \u308B\u95A2\u6570\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u306E\u578B \u5F15\u6570\
+    \u306F (f, x), (f, x, sz), (f, x, l, r) \u306E\u3044\u305A\u308C\u304B\n * @tparam\
+    \ Composition \u4F5C\u7528\u7D20\u306E\u5408\u6210\u306E\u95A2\u6570\u30AA\u30D6\
+    \u30B8\u30A7\u30AF\u30C8\u306E\u578B\n */\ntemplate <typename T, typename Op,\
+    \ typename U, typename Mapping, typename Composition>\nstruct ActedMonoid {\n\
+    \    using S = T;\n    using F = U;\n    Op op_object;\n    S identity;\n    Mapping\
+    \ mapping_object;\n    Composition composition_object;\n    F lazy_identity;\n\
+    \    ActedMonoid() = default;\n    constexpr ActedMonoid(Op op, const S& e, Mapping\
+    \ mapping, Composition composition, const F& id)\n        : op_object(std::move(op)),\
+    \ identity(e), mapping_object(std::move(mapping)), composition_object(std::move(composition)),\
+    \ lazy_identity(id) {}\n    constexpr S op(const S& a, const S& b) const { return\
+    \ op_object(a, b); }\n    constexpr S e() const { return identity; }\n    constexpr\
+    \ auto mapping(const F& f, const S& x, long long l, long long r) const {\n   \
+    \     if constexpr (std::is_invocable_v<const Mapping&, const F&, const S&, long\
+    \ long, long long>) {\n            return mapping_object(f, x, l, r);\n      \
+    \  } else if constexpr (std::is_invocable_v<const Mapping&, const F&, const S&,\
+    \ long long>) {\n            return mapping_object(f, x, r - l);\n        } else\
+    \ {\n            return mapping_object(f, x);\n        }\n    }\n    constexpr\
+    \ F composition(const F& f, const F& g) const { return composition_object(f, g);\
+    \ }\n    constexpr F id() const { return lazy_identity; }\n};\ntemplate <typename\
     \ Op, typename T, typename Mapping, typename Composition, typename U>\nActedMonoid(Op,\
     \ T, Mapping, Composition, U) -> ActedMonoid<T, Op, U, Mapping, Composition>;\n\
     #line 16 \"src/data_structures/persistent-lazy-segtree.hpp\"\n\n/**\n * @brief\
@@ -869,7 +896,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/persistent-range-affine-range-sum.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:27:48+09:00'
+  timestamp: '2026-10-15 23:11:36+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/persistent-range-affine-range-sum.test.cpp

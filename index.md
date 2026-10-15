@@ -139,6 +139,10 @@ data:
       path: src/dp/longest-increasing-subsequence.hpp
       title: "\u6700\u9577\u5897\u52A0\u90E8\u5206\u5217 (LIS)"
     - icon: ':heavy_check_mark:'
+      path: src/dp/maximum-subarray.hpp
+      title: "\u9023\u7D9A\u90E8\u5206\u5217\u306E\u548C\u306E\u6700\u5927\u5024 (Kadane\
+        \ \u306E\u30A2\u30EB\u30B4\u30EA\u30BA\u30E0)"
+    - icon: ':heavy_check_mark:'
       path: src/dp/subset-sum-count.hpp
       title: "\u90E8\u5206\u548C\u306E\u500B\u6570"
     - icon: ':heavy_check_mark:'
@@ -737,6 +741,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/max-flow.test.cpp
       title: test/unittest/max-flow.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/maximum-subarray.test.cpp
+      title: test/unittest/maximum-subarray.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/mex-update.test.cpp
       title: test/unittest/mex-update.test.cpp

@@ -27,63 +27,69 @@ data:
     \u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n\
     #line 2 \"src/base/functions.hpp\"\n\n/**\n * @file functions.hpp\n * @brief \u6C4E\
     \u7528\u95A2\u6570 (chmin, chmax \u306A\u3069)\n */\n\n#include <algorithm>\n\
-    #include <cmath>\n#include <iterator>\n#include <numeric>\n\ntemplate <typename\
-    \ T1, typename T2>\ninline constexpr bool chmin(T1& a, T2 b) {\n    if (a > b)\
-    \ {\n        a = b;\n        return true;\n    }\n    return false;\n}\n\ntemplate\
-    \ <typename T1, typename T2>\ninline constexpr bool chmax(T1& a, T2 b) {\n   \
-    \ if (a < b) {\n        a = b;\n        return true;\n    }\n    return false;\n\
-    }\n\ninline constexpr long long max(const long long& t1, const long long& t2)\
-    \ {\n    return std::max<long long>(t1, t2);\n}\n\ninline constexpr long long\
-    \ min(const long long& t1, const long long& t2) {\n    return std::min<long long>(t1,\
-    \ t2);\n}\n\nusing std::abs;\nusing std::gcd;\nusing std::lcm;\nusing std::size;\n\
-    \ntemplate <typename T>\nconstexpr T extgcd(const T& a, const T& b, T& x, T& y)\
-    \ {\n    T d = a;\n    if (b != 0) {\n        d = extgcd(b, a % b, y, x);\n  \
-    \      y -= (a / b) * x;\n    } else {\n        x = 1;\n        y = 0;\n    }\n\
-    \    return d;\n}\n\n/**\n * 0 <= x < a\n */\ninline constexpr bool inrange(long\
-    \ long x, long long a) {\n    return 0 <= x && x < a;\n}\n/**\n * a <= x < b\n\
-    \ */\ninline constexpr bool inrange(long long x, long long a, long long b) {\n\
-    \    return a <= x && x < b;\n}\n/**\n * 0 <= x < a and 0 <= y < b\n */\ninline\
-    \ constexpr bool inrect(long long x, long long y, long long a, long long b) {\n\
-    \    return 0 <= x && x < a && 0 <= y && y < b;\n}\n#line 7 \"test/unittest/functions.test.cpp\"\
+    #include <cmath>\n#include <iterator>\n#include <numeric>\n#include <type_traits>\n\
+    \ntemplate <typename T1, typename T2>\ninline constexpr bool chmin(T1& a, T2 b)\
+    \ {\n    if (a > b) {\n        a = b;\n        return true;\n    }\n    return\
+    \ false;\n}\n\ntemplate <typename T1, typename T2>\ninline constexpr bool chmax(T1&\
+    \ a, T2 b) {\n    if (a < b) {\n        a = b;\n        return true;\n    }\n\
+    \    return false;\n}\n\ninline constexpr long long max(const long long& t1, const\
+    \ long long& t2) {\n    return std::max<long long>(t1, t2);\n}\n\ninline constexpr\
+    \ long long min(const long long& t1, const long long& t2) {\n    return std::min<long\
+    \ long>(t1, t2);\n}\n\nusing std::abs;\nusing std::gcd;\nusing std::lcm;\nusing\
+    \ std::size;\n\ntemplate <typename T>\nconstexpr T extgcd(const T& a, const T&\
+    \ b, T& x, T& y) {\n    T d = a;\n    if (b != 0) {\n        d = extgcd(b, a %\
+    \ b, y, x);\n        y -= (a / b) * x;\n    } else {\n        x = 1;\n       \
+    \ y = 0;\n    }\n    return d;\n}\n\n/**\n * floor(a / b) (b != 0\u3001\u8CA0\u306E\
+    \u6570\u3082\u53EF)\n */\ntemplate <typename T1, typename T2>\ninline constexpr\
+    \ std::common_type_t<T1, T2> floordiv(T1 a, T2 b) {\n    return a / b - (a % b\
+    \ != 0 && (a < 0) != (b < 0));\n}\n/**\n * ceil(a / b) (b != 0\u3001\u8CA0\u306E\
+    \u6570\u3082\u53EF)\n */\ntemplate <typename T1, typename T2>\ninline constexpr\
+    \ std::common_type_t<T1, T2> ceildiv(T1 a, T2 b) {\n    return a / b + (a % b\
+    \ != 0 && (a < 0) == (b < 0));\n}\n\n/**\n * 0 <= x < a\n */\ninline constexpr\
+    \ bool inrange(long long x, long long a) {\n    return 0 <= x && x < a;\n}\n/**\n\
+    \ * a <= x < b\n */\ninline constexpr bool inrange(long long x, long long a, long\
+    \ long b) {\n    return a <= x && x < b;\n}\n/**\n * 0 <= x < a and 0 <= y < b\n\
+    \ */\ninline constexpr bool inrect(long long x, long long y, long long a, long\
+    \ long b) {\n    return 0 <= x && x < a && 0 <= y && y < b;\n}\n#line 7 \"test/unittest/functions.test.cpp\"\
     \n\n#line 10 \"test/unittest/functions.test.cpp\"\n#include <iostream>\n#include\
     \ <random>\n\n#line 2 \"src/utility/binary-search.hpp\"\n\n/**\n * @file binary-search.hpp\n\
-    \ * @brief \u4E8C\u5206\u63A2\u7D22\n */\n\n#line 9 \"src/utility/binary-search.hpp\"\
-    \n#include <type_traits>\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file\
-    \ traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n#line 10\
-    \ \"src/utility/traits.hpp\"\n#include <set>\n#line 12 \"src/utility/traits.hpp\"\
-    \n#include <utility>\n\nnamespace internal_traits {\nusing std::begin, std::end;\n\
-    \ntemplate <class T, class = void>\nstruct is_range_impl : std::false_type {};\n\
-    template <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
-    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
-    \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
-    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
-    \n#define HAS_METHOD(func_name)                                              \
-    \                \\\n    namespace internal_traits {                         \
-    \                                   \\\n    template <class T, class = void> \
-    \                                                      \\\n    struct has_##func_name##_impl\
-    \ : std::false_type {};                                    \\\n    template <class\
-    \ T>                                                                     \\\n\
-    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
-    \ \\\n        : std::true_type {};                                           \
-    \                    \\\n    }                                               \
-    \                                       \\\n    template <class T>           \
-    \                                                          \\\n    struct has_##func_name\
-    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
-    \ <class T>                                                                  \
-    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
-    \n#define HAS_METHOD_ARG(func_name)                                          \
-    \                                    \\\n    namespace internal_traits {     \
-    \                                                                           \\\
-    \n    template <class T, typename U, class = void>                           \
-    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
-    \ {};                                                        \\\n    template\
-    \ <class T, typename U>                                                      \
-    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
-    \ \\\n        : std::true_type {};                                           \
-    \                                        \\\n    }                           \
+    \ * @brief \u4E8C\u5206\u63A2\u7D22\n */\n\n#line 10 \"src/utility/binary-search.hpp\"\
+    \n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief\
+    \ \u578B\u7279\u6027\n */\n\n#include <cstddef>\n#line 10 \"src/utility/traits.hpp\"\
+    \n#include <set>\n#line 12 \"src/utility/traits.hpp\"\n#include <utility>\n\n\
+    namespace internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T,\
+    \ class = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\n\
+    struct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
+    \ : std::true_type {};\n}  // namespace internal_traits\n\ntemplate <class T>\n\
+    struct is_range : internal_traits::is_range_impl<T>::type {};\ntemplate <class\
+    \ T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define HAS_METHOD(func_name)\
+    \                                                              \\\n    namespace\
+    \ internal_traits {                                                          \
+    \  \\\n    template <class T, class = void>                                  \
+    \                     \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                    \\\n    template <class T>          \
+    \                                                           \\\n    struct has_##func_name##_impl<T,\
+    \ std::void_t<decltype(std::declval<T>().func_name())>> \\\n        : std::true_type\
+    \ {};                                                               \\\n    }\
     \                                                                            \
-    \   \\\n    template <class T, typename U>                                   \
-    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \          \\\n    template <class T>                                        \
+    \                             \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T>::type\
+    \ {};          \\\n    template <class T>                                    \
+    \                                 \\\n    inline constexpr bool has_##func_name##_v\
+    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
+    \                                                                    \\\n    namespace\
+    \ internal_traits {                                                          \
+    \                      \\\n    template <class T, typename U, class = void>  \
+    \                                                             \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                                      \
+    \  \\\n    template <class T, typename U>                                    \
+    \                                         \\\n    struct has_##func_name##_impl<T,\
+    \ U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>> \\\
+    \n        : std::true_type {};                                               \
+    \                                    \\\n    }                               \
+    \                                                                           \\\
+    \n    template <class T, typename U>                                         \
+    \                                    \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
     \ U>::type {};                           \\\n    template <class T, typename U>\
     \                                                                            \
     \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
@@ -133,17 +139,21 @@ data:
     \ max / min\n        check(max(a, b) == std::max(a, b) && min(a, b) == std::min(a,\
     \ b), \"max/min(long long, long long)\");\n        check(max(a, 3) == std::max(a,\
     \ 3LL) && min(2, b) == std::min(2LL, b), \"max/min (int \u3068 long long \u306E\
-    \u6DF7\u5728)\");\n\n        // inrange / inrect\n        {\n            long\
-    \ long x = (long long)(rng() % 15) - 5;\n            check(inrange(x, a) == (0\
-    \ <= x && x < a), \"inrange(x, a)\");\n            check(inrange(x, a, b) == (a\
-    \ <= x && x < b), \"inrange(x, a, b)\");\n            long long y = (long long)(rng()\
-    \ % 15) - 5;\n            check(inrect(x, y, a, b) == (0 <= x && x < a && 0 <=\
-    \ y && y < b), \"inrect\");\n        }\n\n        // \u6574\u6570\u306E\u4E8C\u5206\
-    \u63A2\u7D22: f(ok) \u304C\u771F\u3001f(ng) \u304C\u507D\u3067\u5358\u8ABF\u306A\
-    \u3068\u304D\u3001\u5883\u754C\u306E ok \u5074\u3092\u8FD4\u3059\n        {\n\
-    \            long long t = (long long)(rng() % 2001) - 1000;\n            long\
-    \ long lo = t - (long long)(rng() % 1000) - 1, hi = t + (long long)(rng() % 1000)\
-    \ + 1;\n            // f(x) = x <= t (ok = lo, ng = hi) -> t\n            check(binary_search(lo,\
+    \u6DF7\u5728)\");\n\n        // floordiv / ceildiv: \u5B9F\u6570\u306E floor /\
+    \ ceil \u3068\u6BD4\u3079\u308B\n        if (b != 0) {\n            check(floordiv(a,\
+    \ b) == (long long)std::floor((double)a / b), \"floordiv\");\n            check(ceildiv(a,\
+    \ b) == (long long)std::ceil((double)a / b), \"ceildiv\");\n        }\n\n    \
+    \    // inrange / inrect\n        {\n            long long x = (long long)(rng()\
+    \ % 15) - 5;\n            check(inrange(x, a) == (0 <= x && x < a), \"inrange(x,\
+    \ a)\");\n            check(inrange(x, a, b) == (a <= x && x < b), \"inrange(x,\
+    \ a, b)\");\n            long long y = (long long)(rng() % 15) - 5;\n        \
+    \    check(inrect(x, y, a, b) == (0 <= x && x < a && 0 <= y && y < b), \"inrect\"\
+    );\n        }\n\n        // \u6574\u6570\u306E\u4E8C\u5206\u63A2\u7D22: f(ok)\
+    \ \u304C\u771F\u3001f(ng) \u304C\u507D\u3067\u5358\u8ABF\u306A\u3068\u304D\u3001\
+    \u5883\u754C\u306E ok \u5074\u3092\u8FD4\u3059\n        {\n            long long\
+    \ t = (long long)(rng() % 2001) - 1000;\n            long long lo = t - (long\
+    \ long)(rng() % 1000) - 1, hi = t + (long long)(rng() % 1000) + 1;\n         \
+    \   // f(x) = x <= t (ok = lo, ng = hi) -> t\n            check(binary_search(lo,\
     \ hi, [&](long long x) { return x <= t; }) == t, \"binary_search \u6574\u6570\
     \ (ok < ng)\");\n            // f(x) = x >= t (ok = hi, ng = lo) -> t\n      \
     \      check(binary_search(hi, lo, [&](long long x) { return x >= t; }) == t,\
@@ -161,7 +171,15 @@ data:
     \u5024\n    check(binary_search(0, 1000000000, [](int x) { return (long long)x\
     \ * x <= 1000000000; }) == 31622, \"binary_search sqrt(1e9)\");\n    check(!inrange(0,\
     \ 0) && inrange(0, 1) && !inrange(-1, 1), \"inrange \u5883\u754C\");\n    check(inrange(5,\
-    \ 5, 6) && !inrange(6, 5, 6), \"inrange(x, a, b) \u5883\u754C\");\n\n    if (ok)\
+    \ 5, 6) && !inrange(6, 5, 6), \"inrange(x, a, b) \u5883\u754C\");\n    check(floordiv(7,\
+    \ 2) == 3 && floordiv(-7, 2) == -4 && floordiv(7, -2) == -4 && floordiv(-7, -2)\
+    \ == 3, \"floordiv \u6C7A\u307E\u3063\u305F\u5024\");\n    check(ceildiv(7, 2)\
+    \ == 4 && ceildiv(-7, 2) == -3 && ceildiv(7, -2) == -3 && ceildiv(-7, -2) == 4,\
+    \ \"ceildiv \u6C7A\u307E\u3063\u305F\u5024\");\n    check(floordiv(-6, 3) == -2\
+    \ && ceildiv(-6, 3) == -2, \"\u5272\u308A\u5207\u308C\u308B\u5834\u5408\");\n\
+    \    {\n        long long n = -7;\n        check(floordiv(n, 2) == -4 && ceildiv(n,\
+    \ 2) == -3, \"long long \u3068 int \u306E\u6DF7\u5728\");\n    }\n    static_assert(floordiv(-1LL,\
+    \ 1000000000000LL) == -1 && ceildiv(1LL, 1000000000000LL) == 1);\n\n    if (ok)\
     \ std::cout << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// functions.hpp \u3068 binary-search.hpp \u306E\u95A2\u6570\u3092\u611A\u76F4\
@@ -185,17 +203,21 @@ data:
     \ max / min\n        check(max(a, b) == std::max(a, b) && min(a, b) == std::min(a,\
     \ b), \"max/min(long long, long long)\");\n        check(max(a, 3) == std::max(a,\
     \ 3LL) && min(2, b) == std::min(2LL, b), \"max/min (int \u3068 long long \u306E\
-    \u6DF7\u5728)\");\n\n        // inrange / inrect\n        {\n            long\
-    \ long x = (long long)(rng() % 15) - 5;\n            check(inrange(x, a) == (0\
-    \ <= x && x < a), \"inrange(x, a)\");\n            check(inrange(x, a, b) == (a\
-    \ <= x && x < b), \"inrange(x, a, b)\");\n            long long y = (long long)(rng()\
-    \ % 15) - 5;\n            check(inrect(x, y, a, b) == (0 <= x && x < a && 0 <=\
-    \ y && y < b), \"inrect\");\n        }\n\n        // \u6574\u6570\u306E\u4E8C\u5206\
-    \u63A2\u7D22: f(ok) \u304C\u771F\u3001f(ng) \u304C\u507D\u3067\u5358\u8ABF\u306A\
-    \u3068\u304D\u3001\u5883\u754C\u306E ok \u5074\u3092\u8FD4\u3059\n        {\n\
-    \            long long t = (long long)(rng() % 2001) - 1000;\n            long\
-    \ long lo = t - (long long)(rng() % 1000) - 1, hi = t + (long long)(rng() % 1000)\
-    \ + 1;\n            // f(x) = x <= t (ok = lo, ng = hi) -> t\n            check(binary_search(lo,\
+    \u6DF7\u5728)\");\n\n        // floordiv / ceildiv: \u5B9F\u6570\u306E floor /\
+    \ ceil \u3068\u6BD4\u3079\u308B\n        if (b != 0) {\n            check(floordiv(a,\
+    \ b) == (long long)std::floor((double)a / b), \"floordiv\");\n            check(ceildiv(a,\
+    \ b) == (long long)std::ceil((double)a / b), \"ceildiv\");\n        }\n\n    \
+    \    // inrange / inrect\n        {\n            long long x = (long long)(rng()\
+    \ % 15) - 5;\n            check(inrange(x, a) == (0 <= x && x < a), \"inrange(x,\
+    \ a)\");\n            check(inrange(x, a, b) == (a <= x && x < b), \"inrange(x,\
+    \ a, b)\");\n            long long y = (long long)(rng() % 15) - 5;\n        \
+    \    check(inrect(x, y, a, b) == (0 <= x && x < a && 0 <= y && y < b), \"inrect\"\
+    );\n        }\n\n        // \u6574\u6570\u306E\u4E8C\u5206\u63A2\u7D22: f(ok)\
+    \ \u304C\u771F\u3001f(ng) \u304C\u507D\u3067\u5358\u8ABF\u306A\u3068\u304D\u3001\
+    \u5883\u754C\u306E ok \u5074\u3092\u8FD4\u3059\n        {\n            long long\
+    \ t = (long long)(rng() % 2001) - 1000;\n            long long lo = t - (long\
+    \ long)(rng() % 1000) - 1, hi = t + (long long)(rng() % 1000) + 1;\n         \
+    \   // f(x) = x <= t (ok = lo, ng = hi) -> t\n            check(binary_search(lo,\
     \ hi, [&](long long x) { return x <= t; }) == t, \"binary_search \u6574\u6570\
     \ (ok < ng)\");\n            // f(x) = x >= t (ok = hi, ng = lo) -> t\n      \
     \      check(binary_search(hi, lo, [&](long long x) { return x >= t; }) == t,\
@@ -213,7 +235,15 @@ data:
     \u5024\n    check(binary_search(0, 1000000000, [](int x) { return (long long)x\
     \ * x <= 1000000000; }) == 31622, \"binary_search sqrt(1e9)\");\n    check(!inrange(0,\
     \ 0) && inrange(0, 1) && !inrange(-1, 1), \"inrange \u5883\u754C\");\n    check(inrange(5,\
-    \ 5, 6) && !inrange(6, 5, 6), \"inrange(x, a, b) \u5883\u754C\");\n\n    if (ok)\
+    \ 5, 6) && !inrange(6, 5, 6), \"inrange(x, a, b) \u5883\u754C\");\n    check(floordiv(7,\
+    \ 2) == 3 && floordiv(-7, 2) == -4 && floordiv(7, -2) == -4 && floordiv(-7, -2)\
+    \ == 3, \"floordiv \u6C7A\u307E\u3063\u305F\u5024\");\n    check(ceildiv(7, 2)\
+    \ == 4 && ceildiv(-7, 2) == -3 && ceildiv(7, -2) == -3 && ceildiv(-7, -2) == 4,\
+    \ \"ceildiv \u6C7A\u307E\u3063\u305F\u5024\");\n    check(floordiv(-6, 3) == -2\
+    \ && ceildiv(-6, 3) == -2, \"\u5272\u308A\u5207\u308C\u308B\u5834\u5408\");\n\
+    \    {\n        long long n = -7;\n        check(floordiv(n, 2) == -4 && ceildiv(n,\
+    \ 2) == -3, \"long long \u3068 int \u306E\u6DF7\u5728\");\n    }\n    static_assert(floordiv(-1LL,\
+    \ 1000000000000LL) == -1 && ceildiv(1LL, 1000000000000LL) == 1);\n\n    if (ok)\
     \ std::cout << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/base/functions.hpp
@@ -222,7 +252,7 @@ data:
   isVerificationFile: true
   path: test/unittest/functions.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-17 23:17:18+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/functions.test.cpp

@@ -1,11 +1,20 @@
 ---
 data:
   _extendedDependsOn: []
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':heavy_check_mark:'
+    path: src/string/longest-common-substring.hpp
+    title: "\u6700\u9577\u5171\u901A\u90E8\u5206\u6587\u5B57\u5217"
   _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/longest-common-substring.test.cpp
+    title: test/unittest/longest-common-substring.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/suffix-array.test.cpp
     title: test/unittest/suffix-array.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/longest-common-substring.test.cpp
+    title: test/yosupo/longest-common-substring.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/number-of-substrings.test.cpp
     title: test/yosupo/number-of-substrings.test.cpp
@@ -217,12 +226,15 @@ data:
   dependsOn: []
   isVerificationFile: false
   path: src/string/suffix-array.hpp
-  requiredBy: []
+  requiredBy:
+  - src/string/longest-common-substring.hpp
   timestamp: '2026-10-15 03:36:18+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/longest-common-substring.test.cpp
   - test/unittest/suffix-array.test.cpp
   - test/yosupo/number-of-substrings.test.cpp
+  - test/yosupo/longest-common-substring.test.cpp
   - test/yosupo/suffixarray.test.cpp
 documentation_of: src/string/suffix-array.hpp
 layout: document
@@ -261,4 +273,5 @@ for (long long h : lcp_array(s, suffix_array(s))) ans -= h;
 
 ## 関連
 
+- 2 つの列の最長共通部分文字列は [最長共通部分文字列](longest-common-substring.hpp)
 - Z-algorithm・KMP・Manacher は [文字列アルゴリズム](string.hpp)

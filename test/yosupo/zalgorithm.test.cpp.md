@@ -19,24 +19,24 @@ data:
     \n\n#include <iostream>\n#include <string>\n\n#line 2 \"src/string/string.hpp\"\
     \n\n/**\n * @file string.hpp\n * @brief \u6587\u5B57\u5217\u30A2\u30EB\u30B4\u30EA\
     \u30BA\u30E0 (Z-algorithm\u3001KMP\u3001Manacher)\n */\n\n#include <algorithm>\n\
-    #include <iterator>\n#include <vector>\n\n/**\n * @brief Z-algorithm\n * s[0:]\u3068\
-    s[i:]\u306ELCP\u306E\u9577\u3055\u3092\u5404i\u306B\u3064\u3044\u3066\u6C42\u3081\
-    \u308B \u5168\u4F53\u3067O(N)\n *\n * @tparam It \u914D\u5217\u306E\u30A4\u30C6\
-    \u30EC\u30FC\u30BF\n * @param begin \u914D\u5217\u306E\u958B\u59CB\u30A4\u30C6\
-    \u30EC\u30FC\u30BF\n * @param end \u914D\u5217\u306E\u7D42\u4E86\u30A4\u30C6\u30EC\
-    \u30FC\u30BF\n * @return std::vector<long long> z\n */\ntemplate <typename It>\n\
-    std::vector<long long> z_algorithm(It begin, It end) {\n    long long n = end\
-    \ - begin;\n    if (n == 0) return {};\n    std::vector<long long> z(n);\n   \
-    \ z[0] = n;\n    for (long long i = 1, j = 0; i < n;) {\n        // [0, j)\u3068\
-    [i, i + j)\u304C\u4E00\u81F4\u3057\u3066\u3044\u308B\n        while (i + j < n\
-    \ && begin[j] == begin[i + j]) j++;\n        z[i] = j;\n        long long k =\
-    \ 1;  // [k,)\u3068[i+k,)\u306FLCP\u304C\u7B49\u3057\u3044\u3068\u78BA\u5B9A\u3057\
-    \u3066\u3044\u308B\n        for (; k < j && k + z[k] < j; k++) {\n           \
-    \ z[i + k] = z[k];\n        }\n        i += k;\n        if (j) j -= k;\n    }\n\
-    \    return z;\n}\n\n/**\n * @brief Z-algorithm\n * s[0:]\u3068s[i:]\u306ELCP\u306E\
-    \u9577\u3055\u3092\u5404i\u306B\u3064\u3044\u3066\u6C42\u3081\u308B \u5168\u4F53\
-    \u3067O(N)\n *\n * @tparam R \u914D\u5217\u306E\u578B\n * @param s \u914D\u5217\
-    \n * @return std::vector<long long> z\n */\ntemplate <typename R>\nstd::vector<long\
+    #include <cassert>\n#include <iterator>\n#include <vector>\n\n/**\n * @brief Z-algorithm\n\
+    \ * s[0:]\u3068s[i:]\u306ELCP\u306E\u9577\u3055\u3092\u5404i\u306B\u3064\u3044\
+    \u3066\u6C42\u3081\u308B \u5168\u4F53\u3067O(N)\n *\n * @tparam It \u914D\u5217\
+    \u306E\u30A4\u30C6\u30EC\u30FC\u30BF\n * @param begin \u914D\u5217\u306E\u958B\
+    \u59CB\u30A4\u30C6\u30EC\u30FC\u30BF\n * @param end \u914D\u5217\u306E\u7D42\u4E86\
+    \u30A4\u30C6\u30EC\u30FC\u30BF\n * @return std::vector<long long> z\n */\ntemplate\
+    \ <typename It>\nstd::vector<long long> z_algorithm(It begin, It end) {\n    long\
+    \ long n = end - begin;\n    if (n == 0) return {};\n    std::vector<long long>\
+    \ z(n);\n    z[0] = n;\n    for (long long i = 1, j = 0; i < n;) {\n        //\
+    \ [0, j)\u3068[i, i + j)\u304C\u4E00\u81F4\u3057\u3066\u3044\u308B\n        while\
+    \ (i + j < n && begin[j] == begin[i + j]) j++;\n        z[i] = j;\n        long\
+    \ long k = 1;  // [k,)\u3068[i+k,)\u306FLCP\u304C\u7B49\u3057\u3044\u3068\u78BA\
+    \u5B9A\u3057\u3066\u3044\u308B\n        for (; k < j && k + z[k] < j; k++) {\n\
+    \            z[i + k] = z[k];\n        }\n        i += k;\n        if (j) j -=\
+    \ k;\n    }\n    return z;\n}\n\n/**\n * @brief Z-algorithm\n * s[0:]\u3068s[i:]\u306E\
+    LCP\u306E\u9577\u3055\u3092\u5404i\u306B\u3064\u3044\u3066\u6C42\u3081\u308B \u5168\
+    \u4F53\u3067O(N)\n *\n * @tparam R \u914D\u5217\u306E\u578B\n * @param s \u914D\
+    \u5217\n * @return std::vector<long long> z\n */\ntemplate <typename R>\nstd::vector<long\
     \ long> z_algorithm(const R& s) {\n    return z_algorithm(std::begin(s), std::end(s));\n\
     }\n\n/**\n * @brief \u63A5\u982D\u8F9E\u95A2\u6570 (KMP \u6CD5\u306E\u5931\u6557\
     \u95A2\u6570)\n * s[0, i] \u306E\u63A5\u982D\u8F9E\u3067\u3042\u308A\u63A5\u5C3E\
@@ -125,11 +125,21 @@ data:
     \u56DE\u6587\u306E\u6700\u9577\u306E\u9577\u3055\n *\n * @tparam R \u914D\u5217\
     \u306E\u578B\n * @param s \u914D\u5217\n * @return std::vector<long long> len\n\
     \ */\ntemplate <typename R>\nstd::vector<long long> palindrome_lengths(const R&\
-    \ s) {\n    return palindrome_lengths(std::begin(s), std::end(s));\n}\n#line 7\
-    \ \"test/yosupo/zalgorithm.test.cpp\"\n\nint main(void) {\n    std::string s;\n\
-    \    std::cin >> s;\n    std::vector<long long> z = z_algorithm(s);\n    for (long\
-    \ long i = 0; i < (long long)z.size(); i++) {\n        std::cout << z[i] << \"\
-    \ \\n\"[i + 1 == (long long)z.size()];\n    }\n}\n"
+    \ s) {\n    return palindrome_lengths(std::begin(s), std::end(s));\n}\n\n/**\n\
+    \ * @brief \u540C\u3058\u9577\u3055\u306E 2 \u3064\u306E\u5217\u306E\u30CF\u30DF\
+    \u30F3\u30B0\u8DDD\u96E2 (\u8981\u7D20\u304C\u7570\u306A\u308B\u4F4D\u7F6E\u306E\
+    \u6570) O(N)\n *\n * @tparam R1 \u914D\u5217\u306E\u578B\n * @tparam R2 \u914D\
+    \u5217\u306E\u578B\n * @param s \u914D\u5217\n * @param t \u914D\u5217 (s \u3068\
+    \u540C\u3058\u9577\u3055)\n * @return long long \u30CF\u30DF\u30F3\u30B0\u8DDD\
+    \u96E2\n */\ntemplate <typename R1, typename R2>\nauto hamming_distance(const\
+    \ R1& s, const R2& t) -> decltype(std::begin(s), std::begin(t), 0LL) {\n    auto\
+    \ a = std::begin(s);\n    auto b = std::begin(t);\n    long long n = std::end(s)\
+    \ - a;\n    assert(n == std::end(t) - b);\n    long long res = 0;\n    for (long\
+    \ long i = 0; i < n; i++) {\n        if (!(a[i] == b[i])) res++;\n    }\n    return\
+    \ res;\n}\n#line 7 \"test/yosupo/zalgorithm.test.cpp\"\n\nint main(void) {\n \
+    \   std::string s;\n    std::cin >> s;\n    std::vector<long long> z = z_algorithm(s);\n\
+    \    for (long long i = 0; i < (long long)z.size(); i++) {\n        std::cout\
+    \ << z[i] << \" \\n\"[i + 1 == (long long)z.size()];\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/zalgorithm\"\n\n#include\
     \ <iostream>\n#include <string>\n\n#include \"../../src/string/string.hpp\"\n\n\
     int main(void) {\n    std::string s;\n    std::cin >> s;\n    std::vector<long\
@@ -141,7 +151,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/zalgorithm.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 03:36:18+09:00'
+  timestamp: '2026-10-17 23:17:18+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/zalgorithm.test.cpp

@@ -69,22 +69,25 @@ data:
     \u308A\u4E0B\u3052\u308B\n */\nBIT_FUNC_EXPAND(bit_floor)\n/**\n * @brief \u5024\
     \u3092\u8868\u73FE\u3059\u308B\u305F\u3081\u306B\u5FC5\u8981\u306A\u30D3\u30C3\
     \u30C8\u5E45\u3092\u6C42\u3081\u308B\n */\nBIT_FUNC_EXPAND(bit_width)\n\n#endif\n\
-    #line 6 \"test/aoj/itp2-10-c.test.cpp\"\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
-    \    std::cin.tie(nullptr);\n    int q;\n    std::cin >> q;\n    unsigned long\
-    \ long s = 0;\n    while (q--) {\n        int op;\n        std::cin >> op;\n \
-    \       if (op <= 3) {\n            int i;\n            std::cin >> i;\n     \
-    \       unsigned long long b = 1ULL << i;\n            if (op == 0) std::cout\
-    \ << ((s & b) ? 1 : 0) << '\\n';\n            if (op == 1) s |= b;\n         \
-    \   if (op == 2) s &= ~b;\n            if (op == 3) s ^= b;\n        } else if\
-    \ (op == 4) {\n            std::cout << (s == ~0ULL ? 1 : 0) << '\\n';\n     \
-    \   } else if (op == 5) {\n            std::cout << (s != 0 ? 1 : 0) << '\\n';\n\
-    \        } else if (op == 6) {\n            std::cout << (s == 0 ? 1 : 0) << '\\\
-    n';\n        } else if (op == 7) {\n            // popcount \u306F\u975E\u8CA0\
-    \u306E long long \u3092\u53D7\u3051\u53D6\u308B\u306E\u3067\u3001\u4E0A\u4F4D\
-    \ 1 \u30D3\u30C3\u30C8\u3068\u6B8B\u308A\u306B\u5206\u3051\u3066\u6570\u3048\u308B\
-    \n            std::cout << popcount(static_cast<long long>(s >> 1)) + static_cast<int>(s\
-    \ & 1) << '\\n';\n        } else {\n            std::cout << s << '\\n';\n   \
-    \     }\n    }\n}\n"
+    \n/**\n * @brief 2 \u3064\u306E\u6574\u6570\u306E\u30CF\u30DF\u30F3\u30B0\u8DDD\
+    \u96E2 (\u30D3\u30C3\u30C8\u304C\u7570\u306A\u308B\u4F4D\u7F6E\u306E\u6570)\n\
+    \ */\ninline constexpr long long hamming_distance(long long a, long long b) {\n\
+    \    assert(a >= 0 && b >= 0);\n    return popcount(a ^ b);\n}\n#line 6 \"test/aoj/itp2-10-c.test.cpp\"\
+    \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    int q;\n    std::cin >> q;\n    unsigned long long s = 0;\n    while (q--)\
+    \ {\n        int op;\n        std::cin >> op;\n        if (op <= 3) {\n      \
+    \      int i;\n            std::cin >> i;\n            unsigned long long b =\
+    \ 1ULL << i;\n            if (op == 0) std::cout << ((s & b) ? 1 : 0) << '\\n';\n\
+    \            if (op == 1) s |= b;\n            if (op == 2) s &= ~b;\n       \
+    \     if (op == 3) s ^= b;\n        } else if (op == 4) {\n            std::cout\
+    \ << (s == ~0ULL ? 1 : 0) << '\\n';\n        } else if (op == 5) {\n         \
+    \   std::cout << (s != 0 ? 1 : 0) << '\\n';\n        } else if (op == 6) {\n \
+    \           std::cout << (s == 0 ? 1 : 0) << '\\n';\n        } else if (op ==\
+    \ 7) {\n            // popcount \u306F\u975E\u8CA0\u306E long long \u3092\u53D7\
+    \u3051\u53D6\u308B\u306E\u3067\u3001\u4E0A\u4F4D 1 \u30D3\u30C3\u30C8\u3068\u6B8B\
+    \u308A\u306B\u5206\u3051\u3066\u6570\u3048\u308B\n            std::cout << popcount(static_cast<long\
+    \ long>(s >> 1)) + static_cast<int>(s & 1) << '\\n';\n        } else {\n     \
+    \       std::cout << s << '\\n';\n        }\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP2_10_C\"\
     \n\n#include <iostream>\n\n#include \"../../src/utility/bit.hpp\"\n\nint main()\
     \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    int\
@@ -107,7 +110,7 @@ data:
   isVerificationFile: true
   path: test/aoj/itp2-10-c.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 03:13:14+09:00'
+  timestamp: '2026-10-17 23:17:18+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/itp2-10-c.test.cpp

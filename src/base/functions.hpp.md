@@ -23,49 +23,62 @@ data:
     links: []
   bundledCode: "#line 2 \"src/base/functions.hpp\"\n\n/**\n * @file functions.hpp\n\
     \ * @brief \u6C4E\u7528\u95A2\u6570 (chmin, chmax \u306A\u3069)\n */\n\n#include\
-    \ <algorithm>\n#include <cmath>\n#include <iterator>\n#include <numeric>\n\ntemplate\
-    \ <typename T1, typename T2>\ninline constexpr bool chmin(T1& a, T2 b) {\n   \
-    \ if (a > b) {\n        a = b;\n        return true;\n    }\n    return false;\n\
-    }\n\ntemplate <typename T1, typename T2>\ninline constexpr bool chmax(T1& a, T2\
-    \ b) {\n    if (a < b) {\n        a = b;\n        return true;\n    }\n    return\
-    \ false;\n}\n\ninline constexpr long long max(const long long& t1, const long\
-    \ long& t2) {\n    return std::max<long long>(t1, t2);\n}\n\ninline constexpr\
-    \ long long min(const long long& t1, const long long& t2) {\n    return std::min<long\
-    \ long>(t1, t2);\n}\n\nusing std::abs;\nusing std::gcd;\nusing std::lcm;\nusing\
-    \ std::size;\n\ntemplate <typename T>\nconstexpr T extgcd(const T& a, const T&\
-    \ b, T& x, T& y) {\n    T d = a;\n    if (b != 0) {\n        d = extgcd(b, a %\
-    \ b, y, x);\n        y -= (a / b) * x;\n    } else {\n        x = 1;\n       \
-    \ y = 0;\n    }\n    return d;\n}\n\n/**\n * 0 <= x < a\n */\ninline constexpr\
-    \ bool inrange(long long x, long long a) {\n    return 0 <= x && x < a;\n}\n/**\n\
-    \ * a <= x < b\n */\ninline constexpr bool inrange(long long x, long long a, long\
-    \ long b) {\n    return a <= x && x < b;\n}\n/**\n * 0 <= x < a and 0 <= y < b\n\
-    \ */\ninline constexpr bool inrect(long long x, long long y, long long a, long\
-    \ long b) {\n    return 0 <= x && x < a && 0 <= y && y < b;\n}\n"
+    \ <algorithm>\n#include <cmath>\n#include <iterator>\n#include <numeric>\n#include\
+    \ <type_traits>\n\ntemplate <typename T1, typename T2>\ninline constexpr bool\
+    \ chmin(T1& a, T2 b) {\n    if (a > b) {\n        a = b;\n        return true;\n\
+    \    }\n    return false;\n}\n\ntemplate <typename T1, typename T2>\ninline constexpr\
+    \ bool chmax(T1& a, T2 b) {\n    if (a < b) {\n        a = b;\n        return\
+    \ true;\n    }\n    return false;\n}\n\ninline constexpr long long max(const long\
+    \ long& t1, const long long& t2) {\n    return std::max<long long>(t1, t2);\n\
+    }\n\ninline constexpr long long min(const long long& t1, const long long& t2)\
+    \ {\n    return std::min<long long>(t1, t2);\n}\n\nusing std::abs;\nusing std::gcd;\n\
+    using std::lcm;\nusing std::size;\n\ntemplate <typename T>\nconstexpr T extgcd(const\
+    \ T& a, const T& b, T& x, T& y) {\n    T d = a;\n    if (b != 0) {\n        d\
+    \ = extgcd(b, a % b, y, x);\n        y -= (a / b) * x;\n    } else {\n       \
+    \ x = 1;\n        y = 0;\n    }\n    return d;\n}\n\n/**\n * floor(a / b) (b !=\
+    \ 0\u3001\u8CA0\u306E\u6570\u3082\u53EF)\n */\ntemplate <typename T1, typename\
+    \ T2>\ninline constexpr std::common_type_t<T1, T2> floordiv(T1 a, T2 b) {\n  \
+    \  return a / b - (a % b != 0 && (a < 0) != (b < 0));\n}\n/**\n * ceil(a / b)\
+    \ (b != 0\u3001\u8CA0\u306E\u6570\u3082\u53EF)\n */\ntemplate <typename T1, typename\
+    \ T2>\ninline constexpr std::common_type_t<T1, T2> ceildiv(T1 a, T2 b) {\n   \
+    \ return a / b + (a % b != 0 && (a < 0) == (b < 0));\n}\n\n/**\n * 0 <= x < a\n\
+    \ */\ninline constexpr bool inrange(long long x, long long a) {\n    return 0\
+    \ <= x && x < a;\n}\n/**\n * a <= x < b\n */\ninline constexpr bool inrange(long\
+    \ long x, long long a, long long b) {\n    return a <= x && x < b;\n}\n/**\n *\
+    \ 0 <= x < a and 0 <= y < b\n */\ninline constexpr bool inrect(long long x, long\
+    \ long y, long long a, long long b) {\n    return 0 <= x && x < a && 0 <= y &&\
+    \ y < b;\n}\n"
   code: "#pragma once\n\n/**\n * @file functions.hpp\n * @brief \u6C4E\u7528\u95A2\
     \u6570 (chmin, chmax \u306A\u3069)\n */\n\n#include <algorithm>\n#include <cmath>\n\
-    #include <iterator>\n#include <numeric>\n\ntemplate <typename T1, typename T2>\n\
-    inline constexpr bool chmin(T1& a, T2 b) {\n    if (a > b) {\n        a = b;\n\
-    \        return true;\n    }\n    return false;\n}\n\ntemplate <typename T1, typename\
-    \ T2>\ninline constexpr bool chmax(T1& a, T2 b) {\n    if (a < b) {\n        a\
-    \ = b;\n        return true;\n    }\n    return false;\n}\n\ninline constexpr\
-    \ long long max(const long long& t1, const long long& t2) {\n    return std::max<long\
-    \ long>(t1, t2);\n}\n\ninline constexpr long long min(const long long& t1, const\
-    \ long long& t2) {\n    return std::min<long long>(t1, t2);\n}\n\nusing std::abs;\n\
-    using std::gcd;\nusing std::lcm;\nusing std::size;\n\ntemplate <typename T>\n\
-    constexpr T extgcd(const T& a, const T& b, T& x, T& y) {\n    T d = a;\n    if\
-    \ (b != 0) {\n        d = extgcd(b, a % b, y, x);\n        y -= (a / b) * x;\n\
-    \    } else {\n        x = 1;\n        y = 0;\n    }\n    return d;\n}\n\n/**\n\
-    \ * 0 <= x < a\n */\ninline constexpr bool inrange(long long x, long long a) {\n\
-    \    return 0 <= x && x < a;\n}\n/**\n * a <= x < b\n */\ninline constexpr bool\
-    \ inrange(long long x, long long a, long long b) {\n    return a <= x && x < b;\n\
-    }\n/**\n * 0 <= x < a and 0 <= y < b\n */\ninline constexpr bool inrect(long long\
-    \ x, long long y, long long a, long long b) {\n    return 0 <= x && x < a && 0\
-    \ <= y && y < b;\n}\n"
+    #include <iterator>\n#include <numeric>\n#include <type_traits>\n\ntemplate <typename\
+    \ T1, typename T2>\ninline constexpr bool chmin(T1& a, T2 b) {\n    if (a > b)\
+    \ {\n        a = b;\n        return true;\n    }\n    return false;\n}\n\ntemplate\
+    \ <typename T1, typename T2>\ninline constexpr bool chmax(T1& a, T2 b) {\n   \
+    \ if (a < b) {\n        a = b;\n        return true;\n    }\n    return false;\n\
+    }\n\ninline constexpr long long max(const long long& t1, const long long& t2)\
+    \ {\n    return std::max<long long>(t1, t2);\n}\n\ninline constexpr long long\
+    \ min(const long long& t1, const long long& t2) {\n    return std::min<long long>(t1,\
+    \ t2);\n}\n\nusing std::abs;\nusing std::gcd;\nusing std::lcm;\nusing std::size;\n\
+    \ntemplate <typename T>\nconstexpr T extgcd(const T& a, const T& b, T& x, T& y)\
+    \ {\n    T d = a;\n    if (b != 0) {\n        d = extgcd(b, a % b, y, x);\n  \
+    \      y -= (a / b) * x;\n    } else {\n        x = 1;\n        y = 0;\n    }\n\
+    \    return d;\n}\n\n/**\n * floor(a / b) (b != 0\u3001\u8CA0\u306E\u6570\u3082\
+    \u53EF)\n */\ntemplate <typename T1, typename T2>\ninline constexpr std::common_type_t<T1,\
+    \ T2> floordiv(T1 a, T2 b) {\n    return a / b - (a % b != 0 && (a < 0) != (b\
+    \ < 0));\n}\n/**\n * ceil(a / b) (b != 0\u3001\u8CA0\u306E\u6570\u3082\u53EF)\n\
+    \ */\ntemplate <typename T1, typename T2>\ninline constexpr std::common_type_t<T1,\
+    \ T2> ceildiv(T1 a, T2 b) {\n    return a / b + (a % b != 0 && (a < 0) == (b <\
+    \ 0));\n}\n\n/**\n * 0 <= x < a\n */\ninline constexpr bool inrange(long long\
+    \ x, long long a) {\n    return 0 <= x && x < a;\n}\n/**\n * a <= x < b\n */\n\
+    inline constexpr bool inrange(long long x, long long a, long long b) {\n    return\
+    \ a <= x && x < b;\n}\n/**\n * 0 <= x < a and 0 <= y < b\n */\ninline constexpr\
+    \ bool inrect(long long x, long long y, long long a, long long b) {\n    return\
+    \ 0 <= x && x < a && 0 <= y && y < b;\n}\n"
   dependsOn: []
   isVerificationFile: false
   path: src/base/functions.hpp
   requiredBy: []
-  timestamp: '2026-10-14 11:34:34+09:00'
+  timestamp: '2026-10-17 23:17:18+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/functions.test.cpp
@@ -91,6 +104,7 @@ if (inrect(i, j, h, w)) { /* グリッドの範囲内 */ }
 |---|---|---|
 | `chmin(a, b)` / `chmax(a, b)` | `a` を `min(a, b)` / `max(a, b)` に更新し、更新したら `true` | $O(1)$ |
 | `extgcd(a, b, x, y)` | $ax + by = \gcd(a, b)$ となる `x`、`y` を求め、$\gcd(a, b)$ を返す | $O(\log \max(\lvert a \rvert, \lvert b \rvert))$ |
+| `floordiv(a, b)` / `ceildiv(a, b)` | $\lfloor a / b \rfloor$ / $\lceil a / b \rceil$ ($b \ne 0$、負の数も可) | $O(1)$ |
 | `inrange(x, a)` | $0 \le x < a$ か | $O(1)$ |
 | `inrange(x, a, b)` | $a \le x < b$ か | $O(1)$ |
 | `inrect(x, y, a, b)` | $0 \le x < a$ かつ $0 \le y < b$ か | $O(1)$ |

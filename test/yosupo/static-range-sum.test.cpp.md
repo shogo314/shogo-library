@@ -138,20 +138,24 @@ data:
     \ v.end(), ret.begin());\n    return ret;\n}\n\ntemplate <typename T, ENABLE_IF_T(std::is_integral_v<T>)>\n\
     std::vector<T> iota(T n) {\n    assert(n >= 0);\n    std::vector<T> ret(n);\n\
     \    std::iota(ret.begin(), ret.end(), 0);\n    return ret;\n}\n\ntemplate <typename\
-    \ T>\nstd::vector<T> unique(const std::vector<T>& v) {\n    std::vector<T> res(v);\n\
-    \    std::sort(res.begin(), res.end());\n    res.erase(std::unique(res.begin(),\
-    \ res.end()), res.end());\n    return res;\n}\n\ninline long long radix_convert(const\
-    \ std::vector<long long>& v, int base = 10) {\n    long long res = 0;\n    for\
-    \ (long long d : v) {\n        res = res * base + d;\n    }\n    return res;\n\
-    }\n\ninline std::vector<long long> radix_convert(long long v, int base = 10) {\n\
-    \    std::vector<long long> res;\n    while (v > 0) {\n        res.push_back(v\
-    \ % base);\n        v /= base;\n    }\n    std::reverse(res.begin(), res.end());\n\
-    \    return res;\n}\n#line 7 \"test/yosupo/static-range-sum.test.cpp\"\n\nint\
-    \ main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
-    \    int n, q;\n    std::cin >> n >> q;\n    std::vector<long long> a(n);\n  \
-    \  for (auto& x : a) std::cin >> x;\n    // s[i] = a[0] + ... + a[i-1]\n    std::vector<long\
-    \ long> s = cumulative_sum(a);\n    while (q--) {\n        int l, r;\n       \
-    \ std::cin >> l >> r;\n        std::cout << s[r] - s[l] << '\\n';\n    }\n}\n"
+    \ T, typename U>\nlong long hamming_distance(const std::vector<T>& v1, const std::vector<U>&\
+    \ v2) {\n    assert(v1.size() == v2.size());\n    long long res = 0;\n    for\
+    \ (std::size_t i = 0; i < v1.size(); i++) {\n        if (!(v1[i] == v2[i])) res++;\n\
+    \    }\n    return res;\n}\n\ntemplate <typename T>\nstd::vector<T> unique(const\
+    \ std::vector<T>& v) {\n    std::vector<T> res(v);\n    std::sort(res.begin(),\
+    \ res.end());\n    res.erase(std::unique(res.begin(), res.end()), res.end());\n\
+    \    return res;\n}\n\ninline long long radix_convert(const std::vector<long long>&\
+    \ v, int base = 10) {\n    long long res = 0;\n    for (long long d : v) {\n \
+    \       res = res * base + d;\n    }\n    return res;\n}\n\ninline std::vector<long\
+    \ long> radix_convert(long long v, int base = 10) {\n    std::vector<long long>\
+    \ res;\n    while (v > 0) {\n        res.push_back(v % base);\n        v /= base;\n\
+    \    }\n    std::reverse(res.begin(), res.end());\n    return res;\n}\n#line 7\
+    \ \"test/yosupo/static-range-sum.test.cpp\"\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
+    \    std::cin.tie(nullptr);\n    int n, q;\n    std::cin >> n >> q;\n    std::vector<long\
+    \ long> a(n);\n    for (auto& x : a) std::cin >> x;\n    // s[i] = a[0] + ...\
+    \ + a[i-1]\n    std::vector<long long> s = cumulative_sum(a);\n    while (q--)\
+    \ {\n        int l, r;\n        std::cin >> l >> r;\n        std::cout << s[r]\
+    \ - s[l] << '\\n';\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/static_range_sum\"\n\n\
     #include <iostream>\n#include <vector>\n\n#include \"../../src/utility/vector_func.hpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
@@ -165,7 +169,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/static-range-sum.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:27:48+09:00'
+  timestamp: '2026-10-17 23:17:18+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/static-range-sum.test.cpp

@@ -137,8 +137,15 @@ data:
   - name: src/dp
     pages:
     - icon: ':heavy_check_mark:'
+      path: src/dp/edit-distance.hpp
+      title: "\u7DE8\u96C6\u8DDD\u96E2 (\u30EC\u30FC\u30D9\u30F3\u30B7\u30E5\u30BF\
+        \u30A4\u30F3\u8DDD\u96E2)"
+    - icon: ':heavy_check_mark:'
       path: src/dp/knapsack.hpp
       title: "\u30CA\u30C3\u30D7\u30B5\u30C3\u30AF\u554F\u984C"
+    - icon: ':heavy_check_mark:'
+      path: src/dp/longest-common-subsequence.hpp
+      title: "\u6700\u9577\u5171\u901A\u90E8\u5206\u5217 (LCS)"
     - icon: ':heavy_check_mark:'
       path: src/dp/longest-increasing-subsequence.hpp
       title: "\u6700\u9577\u5897\u52A0\u90E8\u5206\u5217 (LIS)"
@@ -271,6 +278,9 @@ data:
       path: src/string/aho-corasick.hpp
       title: Aho-Corasick
     - icon: ':heavy_check_mark:'
+      path: src/string/longest-common-substring.hpp
+      title: "\u6700\u9577\u5171\u901A\u90E8\u5206\u6587\u5B57\u5217"
+    - icon: ':heavy_check_mark:'
       path: src/string/rolling-hash.hpp
       title: "\u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5"
     - icon: ':heavy_check_mark:'
@@ -344,6 +354,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/aoj/alds1-1-c.test.cpp
       title: test/aoj/alds1-1-c.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/alds1-10-c.test.cpp
+      title: test/aoj/alds1-10-c.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/aoj/alds1-11-c.test.cpp
       title: test/aoj/alds1-11-c.test.cpp
@@ -437,6 +450,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/aoj/dpl-1-d.test.cpp
       title: test/aoj/dpl-1-d.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/aoj/dpl-1-e.test.cpp
+      title: test/aoj/dpl-1-e.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/aoj/dpl-1-f.test.cpp
       title: test/aoj/dpl-1-f.test.cpp
@@ -680,6 +696,9 @@ data:
       path: test/unittest/dynamic-segtree.test.cpp
       title: test/unittest/dynamic-segtree.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/edit-distance.test.cpp
+      title: test/unittest/edit-distance.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/erasable-priority-queue.test.cpp
       title: test/unittest/erasable-priority-queue.test.cpp
     - icon: ':heavy_check_mark:'
@@ -730,6 +749,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/knapsack.test.cpp
       title: test/unittest/knapsack.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/longest-common-substring.test.cpp
+      title: test/unittest/longest-common-substring.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/longest-increasing-subsequence.test.cpp
       title: test/unittest/longest-increasing-subsequence.test.cpp
@@ -981,6 +1003,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/log-of-fps.test.cpp
       title: test/yosupo/log-of-fps.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/longest-common-substring.test.cpp
+      title: test/yosupo/longest-common-substring.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/longest-increasing-subsequence.test.cpp
       title: test/yosupo/longest-increasing-subsequence.test.cpp

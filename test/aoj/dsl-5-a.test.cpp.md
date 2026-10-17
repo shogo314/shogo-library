@@ -27,33 +27,39 @@ data:
     \n\n#include <iostream>\n\n#line 2 \"src/base/functions.hpp\"\n\n/**\n * @file\
     \ functions.hpp\n * @brief \u6C4E\u7528\u95A2\u6570 (chmin, chmax \u306A\u3069\
     )\n */\n\n#include <algorithm>\n#include <cmath>\n#include <iterator>\n#include\
-    \ <numeric>\n\ntemplate <typename T1, typename T2>\ninline constexpr bool chmin(T1&\
-    \ a, T2 b) {\n    if (a > b) {\n        a = b;\n        return true;\n    }\n\
-    \    return false;\n}\n\ntemplate <typename T1, typename T2>\ninline constexpr\
-    \ bool chmax(T1& a, T2 b) {\n    if (a < b) {\n        a = b;\n        return\
-    \ true;\n    }\n    return false;\n}\n\ninline constexpr long long max(const long\
-    \ long& t1, const long long& t2) {\n    return std::max<long long>(t1, t2);\n\
-    }\n\ninline constexpr long long min(const long long& t1, const long long& t2)\
-    \ {\n    return std::min<long long>(t1, t2);\n}\n\nusing std::abs;\nusing std::gcd;\n\
-    using std::lcm;\nusing std::size;\n\ntemplate <typename T>\nconstexpr T extgcd(const\
-    \ T& a, const T& b, T& x, T& y) {\n    T d = a;\n    if (b != 0) {\n        d\
-    \ = extgcd(b, a % b, y, x);\n        y -= (a / b) * x;\n    } else {\n       \
-    \ x = 1;\n        y = 0;\n    }\n    return d;\n}\n\n/**\n * 0 <= x < a\n */\n\
-    inline constexpr bool inrange(long long x, long long a) {\n    return 0 <= x &&\
-    \ x < a;\n}\n/**\n * a <= x < b\n */\ninline constexpr bool inrange(long long\
-    \ x, long long a, long long b) {\n    return a <= x && x < b;\n}\n/**\n * 0 <=\
-    \ x < a and 0 <= y < b\n */\ninline constexpr bool inrect(long long x, long long\
-    \ y, long long a, long long b) {\n    return 0 <= x && x < a && 0 <= y && y <\
-    \ b;\n}\n#line 2 \"src/data_structures/imos.hpp\"\n\n/**\n * @file imos.hpp\n\
-    \ * @brief imos\u6CD5\u3067\u533A\u9593\u4F5C\u7528\u30011\u70B9\u53D6\u5F97\n\
-    \ */\n\n#include <cassert>\n#include <utility>\n#include <vector>\n\n#line 2 \"\
-    src/algebra/acted-monoid.hpp\"\n\n/**\n * @file acted-monoid.hpp\n * @brief \u4F5C\
-    \u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u4F5C\
-    \u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306F\u30E2\u30CE\u30A4\u30C9\
-    \ (algebra/monoid.hpp) \u306E\u30E1\u30F3\u30D0\u306B\u52A0\u3048\u3066\u6B21\u306E\
-    \u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * -\
-    \ using F: \u4F5C\u7528\u7D20\u306E\u578B\n * - S mapping(const F& f, const S&\
-    \ x): \u4F5C\u7528\u7D20\u306E\u9069\u7528 f(x)\n *   \u533A\u9593\u306E\u60C5\
+    \ <numeric>\n#include <type_traits>\n\ntemplate <typename T1, typename T2>\ninline\
+    \ constexpr bool chmin(T1& a, T2 b) {\n    if (a > b) {\n        a = b;\n    \
+    \    return true;\n    }\n    return false;\n}\n\ntemplate <typename T1, typename\
+    \ T2>\ninline constexpr bool chmax(T1& a, T2 b) {\n    if (a < b) {\n        a\
+    \ = b;\n        return true;\n    }\n    return false;\n}\n\ninline constexpr\
+    \ long long max(const long long& t1, const long long& t2) {\n    return std::max<long\
+    \ long>(t1, t2);\n}\n\ninline constexpr long long min(const long long& t1, const\
+    \ long long& t2) {\n    return std::min<long long>(t1, t2);\n}\n\nusing std::abs;\n\
+    using std::gcd;\nusing std::lcm;\nusing std::size;\n\ntemplate <typename T>\n\
+    constexpr T extgcd(const T& a, const T& b, T& x, T& y) {\n    T d = a;\n    if\
+    \ (b != 0) {\n        d = extgcd(b, a % b, y, x);\n        y -= (a / b) * x;\n\
+    \    } else {\n        x = 1;\n        y = 0;\n    }\n    return d;\n}\n\n/**\n\
+    \ * floor(a / b) (b != 0\u3001\u8CA0\u306E\u6570\u3082\u53EF)\n */\ntemplate <typename\
+    \ T1, typename T2>\ninline constexpr std::common_type_t<T1, T2> floordiv(T1 a,\
+    \ T2 b) {\n    return a / b - (a % b != 0 && (a < 0) != (b < 0));\n}\n/**\n *\
+    \ ceil(a / b) (b != 0\u3001\u8CA0\u306E\u6570\u3082\u53EF)\n */\ntemplate <typename\
+    \ T1, typename T2>\ninline constexpr std::common_type_t<T1, T2> ceildiv(T1 a,\
+    \ T2 b) {\n    return a / b + (a % b != 0 && (a < 0) == (b < 0));\n}\n\n/**\n\
+    \ * 0 <= x < a\n */\ninline constexpr bool inrange(long long x, long long a) {\n\
+    \    return 0 <= x && x < a;\n}\n/**\n * a <= x < b\n */\ninline constexpr bool\
+    \ inrange(long long x, long long a, long long b) {\n    return a <= x && x < b;\n\
+    }\n/**\n * 0 <= x < a and 0 <= y < b\n */\ninline constexpr bool inrect(long long\
+    \ x, long long y, long long a, long long b) {\n    return 0 <= x && x < a && 0\
+    \ <= y && y < b;\n}\n#line 2 \"src/data_structures/imos.hpp\"\n\n/**\n * @file\
+    \ imos.hpp\n * @brief imos\u6CD5\u3067\u533A\u9593\u4F5C\u7528\u30011\u70B9\u53D6\
+    \u5F97\n */\n\n#include <cassert>\n#include <utility>\n#include <vector>\n\n#line\
+    \ 2 \"src/algebra/acted-monoid.hpp\"\n\n/**\n * @file acted-monoid.hpp\n * @brief\
+    \ \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n\
+    \ * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306F\u30E2\u30CE\u30A4\
+    \u30C9 (algebra/monoid.hpp) \u306E\u30E1\u30F3\u30D0\u306B\u52A0\u3048\u3066\u6B21\
+    \u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\
+    \n * - using F: \u4F5C\u7528\u7D20\u306E\u578B\n * - S mapping(const F& f, const\
+    \ S& x): \u4F5C\u7528\u7D20\u306E\u9069\u7528 f(x)\n *   \u533A\u9593\u306E\u60C5\
     \u5831\u304C\u5FC5\u8981\u306A\u5834\u5408\u306F mapping(f, x, sz) (sz \u306F\u533A\
     \u9593\u306E\u9577\u3055) \u3084 mapping(f, x, l, r) (\u533A\u9593 [l, r)) \u3067\
     \u3082\u3088\u3044\n *   sz, l, r \u306F long long \u3067\u6E21\u3059 (\u52D5\u7684\
@@ -64,29 +70,29 @@ data:
     \u50CF\n * \u4F5C\u7528\u7D20\u304C\u7FA4\u3092\u306A\u3059\u5834\u5408 (imos.hpp\
     \ \u3067\u4F7F\u3046) \u306F\n * - F inv(const F& f): \u9006\u4F5C\u7528\u7D20\
     \n */\n\n#line 19 \"src/algebra/acted-monoid.hpp\"\n#include <array>\n#include\
-    \ <cstddef>\n#include <limits>\n#include <optional>\n#include <type_traits>\n\
-    #line 25 \"src/algebra/acted-monoid.hpp\"\n\n#line 2 \"src/algebra/monoid.hpp\"\
-    \n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
-    \n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
-    \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\
-    \n * - S op(const S& a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e():\
-    \ \u5358\u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\
-    \u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\
-    \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\
-    \u51FA\u3059)\n */\n\n#line 17 \"src/algebra/monoid.hpp\"\n#include <istream>\n\
-    #line 20 \"src/algebra/monoid.hpp\"\n#include <ostream>\n#line 23 \"src/algebra/monoid.hpp\"\
-    \n\n/**\n * @brief 1\u6B21\u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite\
-    \ \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\
-    \u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\
-    \u3059\u308B\u3068\u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\n\
-    struct Affine {\n    T a = T(1);  //!< \u50BE\u304D\n    T b = T(0);  //!< \u5207\
-    \u7247\n    constexpr T operator()(const T& x) const { return a * x + b; }\n \
-    \   friend constexpr bool operator==(const Affine& f, const Affine& g) { return\
-    \ f.a == g.a && f.b == g.b; }\n    friend constexpr bool operator!=(const Affine&\
-    \ f, const Affine& g) { return !(f == g); }\n    template <class CharT, class\
-    \ Traits>\n    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
-    \ Traits>& is, Affine& f) {\n        return is >> f.a >> f.b;\n    }\n    template\
-    \ <class CharT, class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \ <cstddef>\n#include <limits>\n#include <optional>\n#line 25 \"src/algebra/acted-monoid.hpp\"\
+    \n\n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n * @brief\
+    \ \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\
+    \u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\
+    \u3059\n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S& a, const S&\
+    \ b): \u7A4D (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n * op, e \u306F\
+    \ static \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\u30FC\u30BF\
+    \u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\
+    \u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\n#line 17\
+    \ \"src/algebra/monoid.hpp\"\n#include <istream>\n#line 20 \"src/algebra/monoid.hpp\"\
+    \n#include <ostream>\n#line 23 \"src/algebra/monoid.hpp\"\n\n/**\n * @brief 1\u6B21\
+    \u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\u3084\
+    \ acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n * \u4F8B\
+    : Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\u3059\u308B\u3068\
+    \u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\nstruct Affine {\n\
+    \    T a = T(1);  //!< \u50BE\u304D\n    T b = T(0);  //!< \u5207\u7247\n    constexpr\
+    \ T operator()(const T& x) const { return a * x + b; }\n    friend constexpr bool\
+    \ operator==(const Affine& f, const Affine& g) { return f.a == g.a && f.b == g.b;\
+    \ }\n    friend constexpr bool operator!=(const Affine& f, const Affine& g) {\
+    \ return !(f == g); }\n    template <class CharT, class Traits>\n    friend std::basic_istream<CharT,\
+    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Affine& f) {\n  \
+    \      return is >> f.a >> f.b;\n    }\n    template <class CharT, class Traits>\n\
+    \    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const Affine& f) {\n        return os << f.a << CharT(' ') << f.b;\n\
     \    }\n};\n\nnamespace monoid {\n\n/**\n * @brief \u548C\n */\ntemplate <typename\
     \ T>\nstruct Sum {\n    using S = T;\n    static constexpr S op(const S& a, const\
@@ -530,7 +536,7 @@ data:
   isVerificationFile: true
   path: test/aoj/dsl-5-a.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 23:44:15+09:00'
+  timestamp: '2026-10-17 23:17:18+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/dsl-5-a.test.cpp

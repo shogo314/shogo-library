@@ -68,7 +68,11 @@ data:
     }\n/**\n * @brief \u6574\u6570\u5024\u30922\u306E\u7D2F\u4E57\u5024\u306B\u5207\
     \u308A\u4E0B\u3052\u308B\n */\nBIT_FUNC_EXPAND(bit_floor)\n/**\n * @brief \u5024\
     \u3092\u8868\u73FE\u3059\u308B\u305F\u3081\u306B\u5FC5\u8981\u306A\u30D3\u30C3\
-    \u30C8\u5E45\u3092\u6C42\u3081\u308B\n */\nBIT_FUNC_EXPAND(bit_width)\n\n#endif\n"
+    \u30C8\u5E45\u3092\u6C42\u3081\u308B\n */\nBIT_FUNC_EXPAND(bit_width)\n\n#endif\n\
+    \n/**\n * @brief 2 \u3064\u306E\u6574\u6570\u306E\u30CF\u30DF\u30F3\u30B0\u8DDD\
+    \u96E2 (\u30D3\u30C3\u30C8\u304C\u7570\u306A\u308B\u4F4D\u7F6E\u306E\u6570)\n\
+    \ */\ninline constexpr long long hamming_distance(long long a, long long b) {\n\
+    \    assert(a >= 0 && b >= 0);\n    return popcount(a ^ b);\n}\n"
   code: "#pragma once\n\n/**\n * @file bit.hpp\n * @brief \u30D3\u30C3\u30C8\u6F14\
     \u7B97\n */\n\n#include <cassert>\n#include <string>\n\n/**\n * @brief 2\u9032\
     \u6570\u306E\u6587\u5B57\u5217\u3092long long\u306B\u3059\u308B\n */\ninline long\
@@ -122,12 +126,15 @@ data:
     \u5024\u306B\u5207\u308A\u4E0B\u3052\u308B\n */\nBIT_FUNC_EXPAND(bit_floor)\n\
     /**\n * @brief \u5024\u3092\u8868\u73FE\u3059\u308B\u305F\u3081\u306B\u5FC5\u8981\
     \u306A\u30D3\u30C3\u30C8\u5E45\u3092\u6C42\u3081\u308B\n */\nBIT_FUNC_EXPAND(bit_width)\n\
-    \n#endif\n"
+    \n#endif\n\n/**\n * @brief 2 \u3064\u306E\u6574\u6570\u306E\u30CF\u30DF\u30F3\u30B0\
+    \u8DDD\u96E2 (\u30D3\u30C3\u30C8\u304C\u7570\u306A\u308B\u4F4D\u7F6E\u306E\u6570\
+    )\n */\ninline constexpr long long hamming_distance(long long a, long long b)\
+    \ {\n    assert(a >= 0 && b >= 0);\n    return popcount(a ^ b);\n}\n"
   dependsOn: []
   isVerificationFile: false
   path: src/utility/bit.hpp
   requiredBy: []
-  timestamp: '2026-10-15 03:13:14+09:00'
+  timestamp: '2026-10-17 23:17:18+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/bit.test.cpp
@@ -145,6 +152,7 @@ btoll("#.#", '#');      // 5 ('#' を 1 とみなす)
 popcount(13);           // 3
 countl_zero(1);         // 63
 countr_zero(8);         // 3
+hamming_distance(5, 3);  // 2 (101 と 011)
 ```
 
 ## 関数
@@ -162,7 +170,9 @@ countr_zero(8);         // 3
 | `bit_ceil(a)` | `a` 以上の最小の 2 の累乗 (`a` は $2^{62}$ 以下) | $O(1)$ |
 | `bit_floor(a)` | `a` 以下の最大の 2 の累乗 | $O(1)$ |
 | `bit_width(a)` | `a` を表すのに必要なビット数 | $O(1)$ |
+| `hamming_distance(a, b)` | `a` と `b` でビットが異なる位置の数 (`popcount(a ^ b)`) | $O(1)$ |
 
 ## 関連
 
+- 文字列や配列のハミング距離は [文字列アルゴリズム](../string/string.hpp) の `hamming_distance`
 - 2 進数以外の桁への変換は [vector に対する演算子と関数](vector_func.hpp) の `radix_convert`

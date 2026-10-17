@@ -143,38 +143,42 @@ data:
     \ v.end(), ret.begin());\n    return ret;\n}\n\ntemplate <typename T, ENABLE_IF_T(std::is_integral_v<T>)>\n\
     std::vector<T> iota(T n) {\n    assert(n >= 0);\n    std::vector<T> ret(n);\n\
     \    std::iota(ret.begin(), ret.end(), 0);\n    return ret;\n}\n\ntemplate <typename\
-    \ T>\nstd::vector<T> unique(const std::vector<T>& v) {\n    std::vector<T> res(v);\n\
-    \    std::sort(res.begin(), res.end());\n    res.erase(std::unique(res.begin(),\
-    \ res.end()), res.end());\n    return res;\n}\n\ninline long long radix_convert(const\
-    \ std::vector<long long>& v, int base = 10) {\n    long long res = 0;\n    for\
-    \ (long long d : v) {\n        res = res * base + d;\n    }\n    return res;\n\
-    }\n\ninline std::vector<long long> radix_convert(long long v, int base = 10) {\n\
-    \    std::vector<long long> res;\n    while (v > 0) {\n        res.push_back(v\
-    \ % base);\n        v /= base;\n    }\n    std::reverse(res.begin(), res.end());\n\
-    \    return res;\n}\n#line 13 \"test/unittest/vector-func.test.cpp\"\n\nbool ok\
-    \ = true;\n\nvoid check(bool cond, const char* what) {\n    if (!cond) {\n   \
-    \     if (ok) std::cerr << \"failed: \" << what << std::endl;\n        ok = false;\n\
-    \    }\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n    auto rand_vec =\
-    \ [&](int n) {\n        std::vector<long long> v(n);\n        for (auto& x : v)\
-    \ x = (long long)(rng() % 21) - 10;\n        return v;\n    };\n\n    for (int\
-    \ rep = 0; rep < 2000 && ok; rep++) {\n        int n = rng() % 8, m = rng() %\
-    \ 8;\n        std::vector<long long> a = rand_vec(n), b = rand_vec(m);\n     \
-    \   long long c = (long long)(rng() % 11) - 5;\n\n        // ++ / -- (\u524D\u7F6E\
-    \u306F\u5909\u66F4\u5F8C\u3001\u5F8C\u7F6E\u306F\u5909\u66F4\u524D\u3092\u8FD4\
-    \u3059)\n        {\n            std::vector<long long> x = a, inc = a, dec = a;\n\
-    \            for (auto& e : inc) e++;\n            for (auto& e : dec) e--;\n\
-    \            check(++x == inc && x == inc, \"\u524D\u7F6E ++\");\n           \
-    \ check(x-- == inc && x == a, \"\u5F8C\u7F6E --\");\n            check(--x ==\
-    \ dec && x == dec, \"\u524D\u7F6E --\");\n            check(x++ == dec && x ==\
-    \ a, \"\u5F8C\u7F6E ++\");\n        }\n\n        // \u8981\u7D20\u3054\u3068\u306E\
-    \u548C (\u77ED\u3044\u65B9\u306F 0 \u3067\u57CB\u3081\u308B)\n        {\n    \
-    \        std::vector<long long> expect(std::max(n, m));\n            for (int\
-    \ i = 0; i < (int)expect.size(); i++) expect[i] = (i < n ? a[i] : 0) + (i < m\
-    \ ? b[i] : 0);\n            check(a + b == expect, \"v + w\");\n            std::vector<long\
-    \ long> x = a;\n            x += b;\n            check(x == expect, \"v += w\"\
-    );\n        }\n\n        // \u8981\u7D20\u3054\u3068\u306E\u7A4D (\u3069\u3061\
-    \u3089\u304B\u306B\u306A\u3044\u4F4D\u7F6E\u306F 0)\n        {\n            std::vector<long\
-    \ long> expect(std::max(n, m));\n            for (int i = 0; i < (int)expect.size();\
+    \ T, typename U>\nlong long hamming_distance(const std::vector<T>& v1, const std::vector<U>&\
+    \ v2) {\n    assert(v1.size() == v2.size());\n    long long res = 0;\n    for\
+    \ (std::size_t i = 0; i < v1.size(); i++) {\n        if (!(v1[i] == v2[i])) res++;\n\
+    \    }\n    return res;\n}\n\ntemplate <typename T>\nstd::vector<T> unique(const\
+    \ std::vector<T>& v) {\n    std::vector<T> res(v);\n    std::sort(res.begin(),\
+    \ res.end());\n    res.erase(std::unique(res.begin(), res.end()), res.end());\n\
+    \    return res;\n}\n\ninline long long radix_convert(const std::vector<long long>&\
+    \ v, int base = 10) {\n    long long res = 0;\n    for (long long d : v) {\n \
+    \       res = res * base + d;\n    }\n    return res;\n}\n\ninline std::vector<long\
+    \ long> radix_convert(long long v, int base = 10) {\n    std::vector<long long>\
+    \ res;\n    while (v > 0) {\n        res.push_back(v % base);\n        v /= base;\n\
+    \    }\n    std::reverse(res.begin(), res.end());\n    return res;\n}\n#line 13\
+    \ \"test/unittest/vector-func.test.cpp\"\n\nbool ok = true;\n\nvoid check(bool\
+    \ cond, const char* what) {\n    if (!cond) {\n        if (ok) std::cerr << \"\
+    failed: \" << what << std::endl;\n        ok = false;\n    }\n}\n\nint main()\
+    \ {\n    std::mt19937_64 rng(314);\n    auto rand_vec = [&](int n) {\n       \
+    \ std::vector<long long> v(n);\n        for (auto& x : v) x = (long long)(rng()\
+    \ % 21) - 10;\n        return v;\n    };\n\n    for (int rep = 0; rep < 2000 &&\
+    \ ok; rep++) {\n        int n = rng() % 8, m = rng() % 8;\n        std::vector<long\
+    \ long> a = rand_vec(n), b = rand_vec(m);\n        long long c = (long long)(rng()\
+    \ % 11) - 5;\n\n        // ++ / -- (\u524D\u7F6E\u306F\u5909\u66F4\u5F8C\u3001\
+    \u5F8C\u7F6E\u306F\u5909\u66F4\u524D\u3092\u8FD4\u3059)\n        {\n         \
+    \   std::vector<long long> x = a, inc = a, dec = a;\n            for (auto& e\
+    \ : inc) e++;\n            for (auto& e : dec) e--;\n            check(++x ==\
+    \ inc && x == inc, \"\u524D\u7F6E ++\");\n            check(x-- == inc && x ==\
+    \ a, \"\u5F8C\u7F6E --\");\n            check(--x == dec && x == dec, \"\u524D\
+    \u7F6E --\");\n            check(x++ == dec && x == a, \"\u5F8C\u7F6E ++\");\n\
+    \        }\n\n        // \u8981\u7D20\u3054\u3068\u306E\u548C (\u77ED\u3044\u65B9\
+    \u306F 0 \u3067\u57CB\u3081\u308B)\n        {\n            std::vector<long long>\
+    \ expect(std::max(n, m));\n            for (int i = 0; i < (int)expect.size();\
+    \ i++) expect[i] = (i < n ? a[i] : 0) + (i < m ? b[i] : 0);\n            check(a\
+    \ + b == expect, \"v + w\");\n            std::vector<long long> x = a;\n    \
+    \        x += b;\n            check(x == expect, \"v += w\");\n        }\n\n \
+    \       // \u8981\u7D20\u3054\u3068\u306E\u7A4D (\u3069\u3061\u3089\u304B\u306B\
+    \u306A\u3044\u4F4D\u7F6E\u306F 0)\n        {\n            std::vector<long long>\
+    \ expect(std::max(n, m));\n            for (int i = 0; i < (int)expect.size();\
     \ i++) expect[i] = (i < n && i < m) ? a[i] * b[i] : 0;\n            check(a *\
     \ b == expect, \"v * w\");\n            std::vector<long long> x = a;\n      \
     \      x *= b;\n            check(x == expect, \"v *= w\");\n        }\n\n   \
@@ -209,23 +213,29 @@ data:
     \           bool is_sorted = true;\n                for (int i = 0; i + 1 < (int)idx.size();\
     \ i++) {\n                    if (rev ? a[idx[i]] < a[idx[i + 1]] : a[idx[i]]\
     \ > a[idx[i + 1]]) is_sorted = false;\n                }\n                check(is_perm\
-    \ && is_sorted, \"sorted_idx\");\n            }\n        }\n\n        // iota\n\
-    \        {\n            std::vector<int> expect(n);\n            for (int i =\
-    \ 0; i < n; i++) expect[i] = i;\n            check(iota(n) == expect, \"iota\"\
-    );\n        }\n\n        // radix_convert: \u6574\u6570 -> \u6841 (\u4E0A\u4F4D\
-    \u304B\u3089) -> \u6574\u6570\n        {\n            int base = rng() % 15 +\
-    \ 2;\n            long long x = rng() % 1000000000000LL;\n            std::vector<long\
-    \ long> digits;\n            for (long long y = x; y > 0; y /= base) digits.push_back(y\
-    \ % base);\n            std::reverse(digits.begin(), digits.end());\n        \
-    \    check(radix_convert(x, base) == digits, \"radix_convert(x, base)\");\n  \
-    \          check(radix_convert(digits, base) == x, \"radix_convert(digits, base)\"\
-    );\n        }\n    }\n\n    // \u6C7A\u307E\u3063\u305F\u5024\n    check(radix_convert(123,\
+    \ && is_sorted, \"sorted_idx\");\n            }\n        }\n\n        // hamming_distance\
+    \ (\u540C\u3058\u9577\u3055\u3069\u3046\u3057\u3001\u578B\u304C\u7570\u306A\u3063\
+    \u3066\u3082\u3088\u3044)\n        {\n            std::vector<long long> d = rand_vec(n);\n\
+    \            std::vector<int> e(d.begin(), d.end());\n            long long hd\
+    \ = 0;\n            for (int i = 0; i < n; i++) hd += a[i] != d[i];\n        \
+    \    check(hamming_distance(a, d) == hd && hamming_distance(a, e) == hd, \"hamming_distance\"\
+    );\n        }\n\n        // iota\n        {\n            std::vector<int> expect(n);\n\
+    \            for (int i = 0; i < n; i++) expect[i] = i;\n            check(iota(n)\
+    \ == expect, \"iota\");\n        }\n\n        // radix_convert: \u6574\u6570 ->\
+    \ \u6841 (\u4E0A\u4F4D\u304B\u3089) -> \u6574\u6570\n        {\n            int\
+    \ base = rng() % 15 + 2;\n            long long x = rng() % 1000000000000LL;\n\
+    \            std::vector<long long> digits;\n            for (long long y = x;\
+    \ y > 0; y /= base) digits.push_back(y % base);\n            std::reverse(digits.begin(),\
+    \ digits.end());\n            check(radix_convert(x, base) == digits, \"radix_convert(x,\
+    \ base)\");\n            check(radix_convert(digits, base) == x, \"radix_convert(digits,\
+    \ base)\");\n        }\n    }\n\n    // \u6C7A\u307E\u3063\u305F\u5024\n    check(radix_convert(123,\
     \ 10) == std::vector<long long>{1, 2, 3}, \"radix_convert(123)\");\n    check(radix_convert(std::vector<long\
     \ long>{1, 0, 1, 1}, 2) == 11, \"radix_convert({1,0,1,1}, 2)\");\n    check(radix_convert(0,\
     \ 10).empty() && radix_convert(std::vector<long long>{}, 10) == 0, \"radix_convert\
-    \ 0\");\n    check(iota(0).empty(), \"iota(0)\");\n    check((std::vector<int>{1,\
-    \ 2} | 0).empty(), \"v | 0\");\n\n    if (ok) std::cout << \"Hello World\" <<\
-    \ std::endl;\n}\n"
+    \ 0\");\n    check(iota(0).empty(), \"iota(0)\");\n    check(hamming_distance(std::vector<int>{1,\
+    \ 2, 3}, std::vector<int>{1, 0, 0}) == 2, \"hamming_distance \u6C7A\u307E\u3063\
+    \u305F\u5024\");\n    check((std::vector<int>{1, 2} | 0).empty(), \"v | 0\");\n\
+    \n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// vector_func.hpp \u306E\u6F14\u7B97\u5B50\u3068\u95A2\u6570\u3092\u611A\u76F4\
     \u306A\u5B9F\u88C5\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\
@@ -290,30 +300,36 @@ data:
     \           bool is_sorted = true;\n                for (int i = 0; i + 1 < (int)idx.size();\
     \ i++) {\n                    if (rev ? a[idx[i]] < a[idx[i + 1]] : a[idx[i]]\
     \ > a[idx[i + 1]]) is_sorted = false;\n                }\n                check(is_perm\
-    \ && is_sorted, \"sorted_idx\");\n            }\n        }\n\n        // iota\n\
-    \        {\n            std::vector<int> expect(n);\n            for (int i =\
-    \ 0; i < n; i++) expect[i] = i;\n            check(iota(n) == expect, \"iota\"\
-    );\n        }\n\n        // radix_convert: \u6574\u6570 -> \u6841 (\u4E0A\u4F4D\
-    \u304B\u3089) -> \u6574\u6570\n        {\n            int base = rng() % 15 +\
-    \ 2;\n            long long x = rng() % 1000000000000LL;\n            std::vector<long\
-    \ long> digits;\n            for (long long y = x; y > 0; y /= base) digits.push_back(y\
-    \ % base);\n            std::reverse(digits.begin(), digits.end());\n        \
-    \    check(radix_convert(x, base) == digits, \"radix_convert(x, base)\");\n  \
-    \          check(radix_convert(digits, base) == x, \"radix_convert(digits, base)\"\
-    );\n        }\n    }\n\n    // \u6C7A\u307E\u3063\u305F\u5024\n    check(radix_convert(123,\
+    \ && is_sorted, \"sorted_idx\");\n            }\n        }\n\n        // hamming_distance\
+    \ (\u540C\u3058\u9577\u3055\u3069\u3046\u3057\u3001\u578B\u304C\u7570\u306A\u3063\
+    \u3066\u3082\u3088\u3044)\n        {\n            std::vector<long long> d = rand_vec(n);\n\
+    \            std::vector<int> e(d.begin(), d.end());\n            long long hd\
+    \ = 0;\n            for (int i = 0; i < n; i++) hd += a[i] != d[i];\n        \
+    \    check(hamming_distance(a, d) == hd && hamming_distance(a, e) == hd, \"hamming_distance\"\
+    );\n        }\n\n        // iota\n        {\n            std::vector<int> expect(n);\n\
+    \            for (int i = 0; i < n; i++) expect[i] = i;\n            check(iota(n)\
+    \ == expect, \"iota\");\n        }\n\n        // radix_convert: \u6574\u6570 ->\
+    \ \u6841 (\u4E0A\u4F4D\u304B\u3089) -> \u6574\u6570\n        {\n            int\
+    \ base = rng() % 15 + 2;\n            long long x = rng() % 1000000000000LL;\n\
+    \            std::vector<long long> digits;\n            for (long long y = x;\
+    \ y > 0; y /= base) digits.push_back(y % base);\n            std::reverse(digits.begin(),\
+    \ digits.end());\n            check(radix_convert(x, base) == digits, \"radix_convert(x,\
+    \ base)\");\n            check(radix_convert(digits, base) == x, \"radix_convert(digits,\
+    \ base)\");\n        }\n    }\n\n    // \u6C7A\u307E\u3063\u305F\u5024\n    check(radix_convert(123,\
     \ 10) == std::vector<long long>{1, 2, 3}, \"radix_convert(123)\");\n    check(radix_convert(std::vector<long\
     \ long>{1, 0, 1, 1}, 2) == 11, \"radix_convert({1,0,1,1}, 2)\");\n    check(radix_convert(0,\
     \ 10).empty() && radix_convert(std::vector<long long>{}, 10) == 0, \"radix_convert\
-    \ 0\");\n    check(iota(0).empty(), \"iota(0)\");\n    check((std::vector<int>{1,\
-    \ 2} | 0).empty(), \"v | 0\");\n\n    if (ok) std::cout << \"Hello World\" <<\
-    \ std::endl;\n}\n"
+    \ 0\");\n    check(iota(0).empty(), \"iota(0)\");\n    check(hamming_distance(std::vector<int>{1,\
+    \ 2, 3}, std::vector<int>{1, 0, 0}) == 2, \"hamming_distance \u6C7A\u307E\u3063\
+    \u305F\u5024\");\n    check((std::vector<int>{1, 2} | 0).empty(), \"v | 0\");\n\
+    \n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/utility/vector_func.hpp
   - src/utility/traits.hpp
   isVerificationFile: true
   path: test/unittest/vector-func.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:27:48+09:00'
+  timestamp: '2026-10-17 23:17:18+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/vector-func.test.cpp

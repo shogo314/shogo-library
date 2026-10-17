@@ -153,6 +153,15 @@
         list.hidden = false;
     }
 
+    // トップページの検索例を押すと、その語で検索する
+    for (const button of root.querySelectorAll('button[data-query]')) {
+        button.addEventListener('click', () => {
+            input.value = button.dataset.query;
+            input.focus();
+            load().then(render);
+        });
+    }
+
     input.addEventListener('focus', load);
     input.addEventListener('input', () => load().then(render));
     input.addEventListener('keydown', (e) => {

@@ -43,6 +43,12 @@ int main() {
         check(max(a, b) == std::max(a, b) && min(a, b) == std::min(a, b), "max/min(long long, long long)");
         check(max(a, 3) == std::max(a, 3LL) && min(2, b) == std::min(2LL, b), "max/min (int と long long の混在)");
 
+        // floordiv / ceildiv: 実数の floor / ceil と比べる
+        if (b != 0) {
+            check(floordiv(a, b) == (long long)std::floor((double)a / b), "floordiv");
+            check(ceildiv(a, b) == (long long)std::ceil((double)a / b), "ceildiv");
+        }
+
         // inrange / inrect
         {
             long long x = (long long)(rng() % 15) - 5;
@@ -78,6 +84,14 @@ int main() {
     check(binary_search(0, 1000000000, [](int x) { return (long long)x * x <= 1000000000; }) == 31622, "binary_search sqrt(1e9)");
     check(!inrange(0, 0) && inrange(0, 1) && !inrange(-1, 1), "inrange 境界");
     check(inrange(5, 5, 6) && !inrange(6, 5, 6), "inrange(x, a, b) 境界");
+    check(floordiv(7, 2) == 3 && floordiv(-7, 2) == -4 && floordiv(7, -2) == -4 && floordiv(-7, -2) == 3, "floordiv 決まった値");
+    check(ceildiv(7, 2) == 4 && ceildiv(-7, 2) == -3 && ceildiv(7, -2) == -3 && ceildiv(-7, -2) == 4, "ceildiv 決まった値");
+    check(floordiv(-6, 3) == -2 && ceildiv(-6, 3) == -2, "割り切れる場合");
+    {
+        long long n = -7;
+        check(floordiv(n, 2) == -4 && ceildiv(n, 2) == -3, "long long と int の混在");
+    }
+    static_assert(floordiv(-1LL, 1000000000000LL) == -1 && ceildiv(1LL, 1000000000000LL) == 1);
 
     if (ok) std::cout << "Hello World" << std::endl;
 }

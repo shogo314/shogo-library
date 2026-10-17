@@ -9,6 +9,7 @@
 #include <cmath>
 #include <iterator>
 #include <numeric>
+#include <type_traits>
 
 template <typename T1, typename T2>
 inline constexpr bool chmin(T1& a, T2 b) {
@@ -52,6 +53,21 @@ constexpr T extgcd(const T& a, const T& b, T& x, T& y) {
         y = 0;
     }
     return d;
+}
+
+/**
+ * floor(a / b) (b != 0、負の数も可)
+ */
+template <typename T1, typename T2>
+inline constexpr std::common_type_t<T1, T2> floordiv(T1 a, T2 b) {
+    return a / b - (a % b != 0 && (a < 0) != (b < 0));
+}
+/**
+ * ceil(a / b) (b != 0、負の数も可)
+ */
+template <typename T1, typename T2>
+inline constexpr std::common_type_t<T1, T2> ceildiv(T1 a, T2 b) {
+    return a / b + (a % b != 0 && (a < 0) == (b < 0));
 }
 
 /**

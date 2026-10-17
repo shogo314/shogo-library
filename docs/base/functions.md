@@ -17,6 +17,7 @@ if (inrect(i, j, h, w)) { /* グリッドの範囲内 */ }
 |---|---|---|
 | `chmin(a, b)` / `chmax(a, b)` | `a` を `min(a, b)` / `max(a, b)` に更新し、更新したら `true` | $O(1)$ |
 | `extgcd(a, b, x, y)` | $ax + by = \gcd(a, b)$ となる `x`、`y` を求め、$\gcd(a, b)$ を返す | $O(\log \max(\lvert a \rvert, \lvert b \rvert))$ |
+| `floordiv(a, b)` / `ceildiv(a, b)` | $\lfloor a / b \rfloor$ / $\lceil a / b \rceil$ ($b \ne 0$、負の数も可) | $O(1)$ |
 | `inrange(x, a)` | $0 \le x < a$ か | $O(1)$ |
 | `inrange(x, a, b)` | $a \le x < b$ か | $O(1)$ |
 | `inrect(x, y, a, b)` | $0 \le x < a$ かつ $0 \le y < b$ か | $O(1)$ |

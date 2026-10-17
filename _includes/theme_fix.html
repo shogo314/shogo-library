@@ -1,3 +1,7 @@
+{% comment %}
+online-judge-verify-helper の _includes/theme_fix.html を上書きする
+元の内容に、検索ボックス (search.html) を加えたもの。全ページの先頭で読み込まれる
+{% endcomment %}
 {% if site.theme == "jekyll-theme-minimal" %}
 <style type="text/css">
 @media screen and (min-width: 900px) {
@@ -23,3 +27,5 @@ h1 a:focus {
 }
 </style>
 {% endif %}
+
+{% include search.html %}

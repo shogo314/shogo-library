@@ -39,3 +39,4 @@ multiple_mobius(cnt);  // cnt[k] = gcd(x, y) = k となる組の個数
 ## 関連
 
 - 素数の列挙や素因数分解は [素数](prime.hpp)
+- 添字を集合とみた部分集合・上位集合についての変換は [部分集合・上位集合のゼータ変換、メビウス変換とビット演算の畳み込み](bitwise-transform.hpp)

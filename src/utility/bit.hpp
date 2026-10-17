@@ -133,3 +133,11 @@ BIT_FUNC_EXPAND(bit_floor)
 BIT_FUNC_EXPAND(bit_width)
 
 #endif
+
+/**
+ * @brief 2 つの整数のハミング距離 (ビットが異なる位置の数)
+ */
+inline constexpr long long hamming_distance(long long a, long long b) {
+    assert(a >= 0 && b >= 0);
+    return popcount(a ^ b);
+}

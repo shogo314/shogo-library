@@ -34,6 +34,7 @@ auto idx = sorted_idx(a, true);   // 値の降順に並べた添字
 | `iota(n)` | `{0, 1, ..., n-1}` | $O(n)$ |
 | `unique(v)` | ソートして重複を除いたコピー | $O(n \log n)$ |
 | `abs(v)` | 全要素の絶対値 | $O(n)$ |
+| `hamming_distance(v, w)` | 同じ長さの `v` と `w` で要素が異なる位置の数 (長さが違うと assert で落ちる) | $O(n)$ |
 | `extend(v, w)` | `w` を末尾に連結 | $O(m)$ |
 | `assign(v, w)` | `w` の内容で置き換える (型の変換つき) | $O(m)$ |
 | `radix_convert(x, base = 10)` | 整数 `x` を `base` 進数の桁のリスト (上位桁から) にする。`x = 0` なら空のリスト | $O(\log_{base} x)$ |
@@ -41,4 +42,5 @@ auto idx = sorted_idx(a, true);   // 値の降順に並べた添字
 
 ## 関連
 
+- 文字列などの列のハミング距離は [文字列アルゴリズム](../string/string.hpp)、整数のハミング距離は [ビット演算](bit.hpp) の `hamming_distance`
 - コンテナ全般に使える関数 (`sorted`、`sum`、`bisect_left` など) は [コンテナに対する関数](container_func.hpp)

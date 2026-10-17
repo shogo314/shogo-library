@@ -47,6 +47,12 @@ int main() {
         std::string t = s;
         for (char& c : t) c = (c == '1') ? '#' : '.';
         check(btoll(t, '#') == a, "btoll(s, one)");
+
+        // hamming_distance: ビットごとに比べる
+        long long b = (long long)(rng() >> (64 - width));
+        int hd = 0;
+        for (int i = 0; i < 63; i++) hd += (a >> i & 1) != (b >> i & 1);
+        check(hamming_distance(a, b) == hd, "hamming_distance");
     }
 
     // countl_one / countr_one / bit_width / bit_ceil / bit_floor を愚直な実装と比べる
@@ -94,6 +100,7 @@ int main() {
     // 決まった値
     check(popcount(0) == 0 && popcount((1LL << 62) - 1) == 62, "popcount 境界");
     check(countl_zero(1) == 63 && countr_zero(1LL << 62) == 62, "countl_zero / countr_zero 境界");
+    check(hamming_distance(5, 3) == 2 && hamming_distance(7, 7) == 0, "hamming_distance 決まった値");
     check(btoll("") == 0 && btoll("0") == 0 && btoll("101") == 5, "btoll 決まった値");
 
     if (ok) std::cout << "Hello World" << std::endl;

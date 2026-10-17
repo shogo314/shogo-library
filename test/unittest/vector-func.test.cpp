@@ -127,6 +127,15 @@ int main() {
             }
         }
 
+        // hamming_distance (同じ長さどうし、型が異なってもよい)
+        {
+            std::vector<long long> d = rand_vec(n);
+            std::vector<int> e(d.begin(), d.end());
+            long long hd = 0;
+            for (int i = 0; i < n; i++) hd += a[i] != d[i];
+            check(hamming_distance(a, d) == hd && hamming_distance(a, e) == hd, "hamming_distance");
+        }
+
         // iota
         {
             std::vector<int> expect(n);
@@ -151,6 +160,7 @@ int main() {
     check(radix_convert(std::vector<long long>{1, 0, 1, 1}, 2) == 11, "radix_convert({1,0,1,1}, 2)");
     check(radix_convert(0, 10).empty() && radix_convert(std::vector<long long>{}, 10) == 0, "radix_convert 0");
     check(iota(0).empty(), "iota(0)");
+    check(hamming_distance(std::vector<int>{1, 2, 3}, std::vector<int>{1, 0, 0}) == 2, "hamming_distance 決まった値");
     check((std::vector<int>{1, 2} | 0).empty(), "v | 0");
 
     if (ok) std::cout << "Hello World" << std::endl;

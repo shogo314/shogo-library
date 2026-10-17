@@ -11,6 +11,7 @@ btoll("#.#", '#');      // 5 ('#' を 1 とみなす)
 popcount(13);           // 3
 countl_zero(1);         // 63
 countr_zero(8);         // 3
+hamming_distance(5, 3);  // 2 (101 と 011)
 ```
 
 ## 関数
@@ -28,7 +29,9 @@ countr_zero(8);         // 3
 | `bit_ceil(a)` | `a` 以上の最小の 2 の累乗 (`a` は $2^{62}$ 以下) | $O(1)$ |
 | `bit_floor(a)` | `a` 以下の最大の 2 の累乗 | $O(1)$ |
 | `bit_width(a)` | `a` を表すのに必要なビット数 | $O(1)$ |
+| `hamming_distance(a, b)` | `a` と `b` でビットが異なる位置の数 (`popcount(a ^ b)`) | $O(1)$ |
 
 ## 関連
 
+- 文字列や配列のハミング距離は [文字列アルゴリズム](../string/string.hpp) の `hamming_distance`
 - 2 進数以外の桁への変換は [vector に対する演算子と関数](vector_func.hpp) の `radix_convert`

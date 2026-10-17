@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
-// z_algorithm、prefix_function、kmp_search、manacher、palindrome_lengths を愚直な方法とランダムに比較する
+// z_algorithm、prefix_function、kmp_search、manacher、palindrome_lengths、hamming_distance を愚直な方法とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../src/string/string.hpp"
@@ -53,6 +53,12 @@ int main() {
             if (s.substr(i, m) == p) occ.push_back(i);
         }
         ok = ok && kmp_search(s, p) == occ;
+
+        std::string u(n, 'a');
+        for (auto& c : u) c = 'a' + rng() % k;
+        long long hd = 0;
+        for (int i = 0; i < n; i++) hd += s[i] != u[i];
+        ok = ok && hamming_distance(s, u) == hd;
     }
 
     // 例
@@ -60,6 +66,9 @@ int main() {
     ok = ok && kmp_search(std::string("aaaa"), std::string("aa")) == std::vector<long long>{0, 1, 2};
     ok = ok && kmp_search(std::vector<int>{1, 2, 1, 2, 1}, std::vector<int>{1, 2, 1}) == std::vector<long long>{0, 2};
     ok = ok && manacher(std::string("abaaba")) == std::vector<long long>{1, 2, 1, 1, 2, 1};
+    ok = ok && hamming_distance(std::string("karolin"), std::string("kathrin")) == 3;
+    ok = ok && hamming_distance(std::vector<int>{1, 2, 3}, std::vector<long long>{1, 0, 3}) == 1;
+    ok = ok && hamming_distance(std::string(""), std::string("")) == 0;
     ok = ok && palindrome_lengths(std::string("abaaba")) == std::vector<long long>{1, 0, 3, 0, 1, 6, 1, 0, 3, 0, 1};
 
     if (ok)

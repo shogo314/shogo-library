@@ -6,6 +6,7 @@
  */
 
 #include <algorithm>
+#include <cassert>
 #include <iterator>
 #include <vector>
 
@@ -200,4 +201,26 @@ std::vector<long long> palindrome_lengths(It begin, It end) {
 template <typename R>
 std::vector<long long> palindrome_lengths(const R& s) {
     return palindrome_lengths(std::begin(s), std::end(s));
+}
+
+/**
+ * @brief 同じ長さの 2 つの列のハミング距離 (要素が異なる位置の数) O(N)
+ *
+ * @tparam R1 配列の型
+ * @tparam R2 配列の型
+ * @param s 配列
+ * @param t 配列 (s と同じ長さ)
+ * @return long long ハミング距離
+ */
+template <typename R1, typename R2>
+auto hamming_distance(const R1& s, const R2& t) -> decltype(std::begin(s), std::begin(t), 0LL) {
+    auto a = std::begin(s);
+    auto b = std::begin(t);
+    long long n = std::end(s) - a;
+    assert(n == std::end(t) - b);
+    long long res = 0;
+    for (long long i = 0; i < n; i++) {
+        if (!(a[i] == b[i])) res++;
+    }
+    return res;
 }

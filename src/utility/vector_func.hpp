@@ -189,6 +189,16 @@ std::vector<T> iota(T n) {
     return ret;
 }
 
+template <typename T, typename U>
+long long hamming_distance(const std::vector<T>& v1, const std::vector<U>& v2) {
+    assert(v1.size() == v2.size());
+    long long res = 0;
+    for (std::size_t i = 0; i < v1.size(); i++) {
+        if (!(v1[i] == v2[i])) res++;
+    }
+    return res;
+}
+
 template <typename T>
 std::vector<T> unique(const std::vector<T>& v) {
     std::vector<T> res(v);

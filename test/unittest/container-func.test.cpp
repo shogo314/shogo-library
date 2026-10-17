@@ -90,6 +90,23 @@ int main() {
             check(index(v, x) == expect, "index(c, x)");
         }
 
+        // index_if / indices_if / count_if: f(x) が true になる位置と個数 (vector と set)
+        {
+            long long x = (long long)(rng() % 13) - 6;
+            auto f = [&](long long e) { return e >= x; };
+            std::vector<long long> pos;
+            for (long long i = 0; i < (long long)v.size(); i++) {
+                if (f(v[i])) pos.push_back(i);
+            }
+            check(indices_if(v, f) == pos, "indices_if(vector, f)");
+            check(index_if(v, f) == (pos.empty() ? -1 : pos[0]), "index_if(vector, f)");
+            check(count_if(v, f) == (long long)pos.size(), "count_if(vector, f)");
+            std::set<long long> st(v.begin(), v.end());
+            long long first = std::find_if(st.begin(), st.end(), f) == st.end() ? -1 : std::distance(st.begin(), std::find_if(st.begin(), st.end(), f));
+            check(index_if(st, f) == first, "index_if(set, f)");
+            check(count_if(st, f) == std::count_if(st.begin(), st.end(), f), "count_if(set, f)");
+        }
+
         // mex: 含まれない最小の非負整数
         {
             std::vector<int> w(n);
@@ -114,6 +131,21 @@ int main() {
             check(upper_bound(w, x) == std::upper_bound(w.begin(), w.end(), x), "upper_bound(vector, x)");
             check(contains(v, x) == (std::find(v.begin(), v.end(), x) != v.end()), "contains(vector, x)");
         }
+    }
+
+    // ABC480 B のように、条件を満たす候補がちょうど 1 つか調べる
+    {
+        std::vector<std::string> names = {"alice", "bob", "carol"};
+        auto one_diff = [](const std::string& s, const std::string& t) {
+            if (s.size() != t.size()) return false;
+            int d = 0;
+            for (std::size_t i = 0; i < s.size(); i++) d += s[i] != t[i];
+            return d == 1;
+        };
+        std::string t = "bab";
+        check(indices_if(names, [&](const std::string& s) { return one_diff(s, t); }) == std::vector<long long>{1}, "indices_if(vector<string>)");
+        check(index_if(names, [](const std::string& s) { return s.size() > 10; }) == -1, "index_if 見つからない");
+        check(count_if(std::vector<int>{}, [](int) { return true; }) == 0 && indices_if(std::vector<int>{}, [](int) { return true; }).empty(), "空のコンテナ");
     }
 
     // 初期化子リスト版

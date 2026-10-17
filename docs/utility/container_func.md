@@ -13,6 +13,7 @@ auto w = sorted(v);            // {1, 1, 3, 4, 5}
 int s = sum(v), mx = max(v);   // 14, 5
 long long i = bisect_left(w, 3);  // 2
 bool b = contains(v, 4);       // true
+auto odd = indices_if(v, [](int x) { return x % 2 == 1; });  // {0, 1, 3, 4}
 ```
 
 ## 並べ替え
@@ -46,9 +47,23 @@ bool b = contains(v, 4);       // true
 | `count(c, x)` | `x` の個数 | $O(n)$ (`multiset` などでは $O(\log n + k)$、$k$ は個数) |
 | `contains(c, x)` | `x` を含むか | `find` と同じ |
 | `index(c, x)` | `x` が最初に現れる位置 (`long long`。なければ `-1`) | $O(n)$ |
+| `index_if(c, f)` | `f(x)` が `true` になる最初の位置 (`long long`。なければ `-1`) | $O(n)$ |
+| `indices_if(c, f)` | `f(x)` が `true` になる位置を昇順に並べたもの (`std::vector<long long>`) | $O(n)$ |
+| `count_if(c, f)` | `f(x)` が `true` になる要素の個数 (`long long`) | $O(n)$ |
 | `lower_bound(c, x)` / `upper_bound(c, x)` | イテレータを返す | $O(\log n)$ |
 | `bisect_left(c, x)` / `bisect_right(c, x)` | 添字を `long long` で返す (Python の `bisect`) | $O(\log n)$ (`set` などでは位置を数えるので $O(n)$) |
 
+位置は、`set` などでは先頭から数えた順番です。
+
+条件を満たす候補が 1 つだけのときに選ぶ、といった処理は `indices_if` で書けます。
+
+```cpp
+// t と長さが同じで 1 文字だけ違う名前が、ちょうど 1 つあればその位置
+auto cand = indices_if(names, [&](const std::string& s) { return s.size() == t.size() && hamming_distance(s, t) == 1; });
+if (cand.size() == 1) vote[cand[0]]++;
+```
+
 ## 関連
 
+- `hamming_distance` は [文字列アルゴリズム](../string/string.hpp)
 - `std::vector` に対する演算子と関数は [vector に対する演算子と関数](vector_func.hpp)

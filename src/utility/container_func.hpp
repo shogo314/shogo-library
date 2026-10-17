@@ -186,6 +186,39 @@ inline constexpr long long index(const C& v, const U& x) {
     return static_cast<long long>(std::distance(v.begin(), it));
 }
 
+// f(x) が true になる最初の位置。なければ -1
+template <class C, class F>
+inline constexpr long long index_if(const C& v, F f) {
+    long long i = 0;
+    for (const auto& e : v) {
+        if (f(e)) return i;
+        i++;
+    }
+    return -1;
+}
+
+// f(x) が true になる位置を昇順に並べたもの
+template <class C, class F>
+inline std::vector<long long> indices_if(const C& v, F f) {
+    std::vector<long long> res;
+    long long i = 0;
+    for (const auto& e : v) {
+        if (f(e)) res.push_back(i);
+        i++;
+    }
+    return res;
+}
+
+// f(x) が true になる要素の個数
+template <class C, class F>
+inline constexpr long long count_if(const C& v, F f) {
+    long long res = 0;
+    for (const auto& e : v) {
+        if (f(e)) res++;
+    }
+    return res;
+}
+
 template <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>
 inline constexpr mem_value_type<C> mex(const C& v) {
     std::vector<bool> b(v.size() + 1);

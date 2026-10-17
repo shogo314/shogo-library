@@ -186,6 +186,9 @@ data:
     path: test/unittest/angle.test.cpp
     title: test/unittest/angle.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/bitwise-transform.test.cpp
+    title: test/unittest/bitwise-transform.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/circle.test.cpp
     title: test/unittest/circle.test.cpp
   - icon: ':heavy_check_mark:'
@@ -266,6 +269,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/binomial-coefficient-prime-mod.2.test.cpp
     title: test/yosupo/binomial-coefficient-prime-mod.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/bitwise-and-convolution.test.cpp
+    title: test/yosupo/bitwise-and-convolution.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/bitwise-xor-convolution.test.cpp
+    title: test/yosupo/bitwise-xor-convolution.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/convolution-mod-1000000007.test.cpp
     title: test/yosupo/convolution-mod-1000000007.test.cpp
@@ -541,6 +550,7 @@ data:
   - test/unittest/rolling-hash.test.cpp
   - test/unittest/container-func.test.cpp
   - test/unittest/dynamic-lazy-segtree.test.cpp
+  - test/unittest/bitwise-transform.test.cpp
   - test/unittest/acted-monoid.test.cpp
   - test/unittest/divisor-transform.test.cpp
   - test/unittest/vector.test.cpp
@@ -615,6 +625,7 @@ data:
   - test/yosupo/range-set-range-composite.test.cpp
   - test/yosupo/partition-function_1.test.cpp
   - test/yosupo/range-affine-point-get.2.test.cpp
+  - test/yosupo/bitwise-xor-convolution.test.cpp
   - test/yosupo/line-add-get-min.test.cpp
   - test/yosupo/point-set-range-composite.1.test.cpp
   - test/yosupo/point-set-range-composite.2.test.cpp
@@ -626,6 +637,7 @@ data:
   - test/yosupo/lcm-convolution.test.cpp
   - test/yosupo/sort-points-by-argument.1.test.cpp
   - test/yosupo/sharp-p-subset-sum.2.test.cpp
+  - test/yosupo/bitwise-and-convolution.test.cpp
   - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
   - test/yosupo/associative-array.test.cpp
   - test/yosupo/sharp-p-subset-sum.1.test.cpp

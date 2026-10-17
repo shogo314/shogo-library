@@ -215,6 +215,11 @@ data:
   - name: src/math
     pages:
     - icon: ':heavy_check_mark:'
+      path: src/math/bitwise-transform.hpp
+      title: "\u90E8\u5206\u96C6\u5408\u30FB\u4E0A\u4F4D\u96C6\u5408\u306E\u30BC\u30FC\
+        \u30BF\u5909\u63DB\u3001\u30E1\u30D3\u30A6\u30B9\u5909\u63DB\u3068\u30D3\u30C3\
+        \u30C8\u6F14\u7B97 (AND\u30FBOR\u30FBXOR) \u306E\u7573\u307F\u8FBC\u307F"
+    - icon: ':heavy_check_mark:'
       path: src/math/combinatorics.hpp
       title: "\u7D44\u307F\u5408\u308F\u305B"
     - icon: ':heavy_check_mark:'
@@ -657,6 +662,9 @@ data:
       path: test/unittest/bit.test.cpp
       title: test/unittest/bit.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/bitwise-transform.test.cpp
+      title: test/unittest/bitwise-transform.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/centroid-decomposition.test.cpp
       title: test/unittest/centroid-decomposition.test.cpp
     - icon: ':heavy_check_mark:'
@@ -919,6 +927,12 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/bipartitematching.test.cpp
       title: test/yosupo/bipartitematching.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/bitwise-and-convolution.test.cpp
+      title: test/yosupo/bitwise-and-convolution.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/bitwise-xor-convolution.test.cpp
+      title: test/yosupo/bitwise-xor-convolution.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/convolution-mod-1000000007.test.cpp
       title: test/yosupo/convolution-mod-1000000007.test.cpp

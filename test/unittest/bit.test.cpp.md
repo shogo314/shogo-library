@@ -15,12 +15,12 @@ data:
     links:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
   bundledCode: "#line 1 \"test/unittest/bit.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
-    \n\n// bit.hpp \u306E\u95A2\u6570\u3092\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u30E9\
-    \u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// C++17 (__builtin_* \u3067\
-    \u5B9F\u88C5) \u3068 C++20 (<bit> \u3092\u547C\u3076) \u306E\u3069\u3061\u3089\
-    \u3067\u3082\u540C\u3058\u7D50\u679C\u306B\u306A\u308B\n// \u554F\u984C\u306E\u5165\
-    \u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\
-    \u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/utility/bit.hpp\"\
+    \n\n// bit.hpp \u306E\u95A2\u6570\u3068\u5217\u6319\u3092\u611A\u76F4\u306A\u5B9F\
+    \u88C5\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// C++17 (__builtin_*\
+    \ \u3067\u5B9F\u88C5) \u3068 C++20 (<bit> \u3092\u547C\u3076) \u306E\u3069\u3061\
+    \u3089\u3067\u3082\u540C\u3058\u7D50\u679C\u306B\u306A\u308B\n// \u554F\u984C\u306E\
+    \u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\
+    \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/utility/bit.hpp\"\
     \n\n/**\n * @file bit.hpp\n * @brief \u30D3\u30C3\u30C8\u6F14\u7B97\n */\n\n#include\
     \ <cassert>\n#include <string>\n\n/**\n * @brief 2\u9032\u6570\u306E\u6587\u5B57\
     \u5217\u3092long long\u306B\u3059\u308B\n */\ninline long long btoll(std::string\
@@ -77,55 +77,139 @@ data:
     \n/**\n * @brief 2 \u3064\u306E\u6574\u6570\u306E\u30CF\u30DF\u30F3\u30B0\u8DDD\
     \u96E2 (\u30D3\u30C3\u30C8\u304C\u7570\u306A\u308B\u4F4D\u7F6E\u306E\u6570)\n\
     \ */\ninline constexpr long long hamming_distance(long long a, long long b) {\n\
-    \    assert(a >= 0 && b >= 0);\n    return popcount(a ^ b);\n}\n#line 8 \"test/unittest/bit.test.cpp\"\
-    \n\n#include <iostream>\n#include <limits>\n#include <random>\n#line 13 \"test/unittest/bit.test.cpp\"\
-    \n#include <type_traits>\n\nbool ok = true;\n\nvoid check(bool cond, const char*\
-    \ what) {\n    if (!cond) {\n        if (ok) std::cerr << \"failed: \" << what\
-    \ << std::endl;\n        ok = false;\n    }\n}\n\nint main() {\n    std::mt19937_64\
-    \ rng(314);\n\n    for (int rep = 0; rep < 100000 && ok; rep++) {\n        //\
-    \ 0 \u4EE5\u4E0A\u306E long long (\u30D3\u30C3\u30C8\u6570\u3082\u3070\u3089\u3064\
-    \u304B\u305B\u308B)\n        int width = rng() % 63 + 1;\n        long long a\
-    \ = (long long)(rng() >> (64 - width));\n\n        int pc = 0, clz = 0, ctz =\
-    \ 0;\n        for (int i = 0; i < 63; i++) pc += a >> i & 1;\n        for (int\
-    \ i = 63; i >= 0 && !(a >> i & 1); i--) clz++;\n        for (int i = 0; i < 64\
-    \ && !(a >> i & 1); i++) ctz++;\n        check(popcount(a) == pc, \"popcount\"\
-    );\n        if (a > 0) {\n            check(countl_zero(a) == clz, \"countl_zero\"\
-    );\n            check(countr_zero(a) == ctz, \"countr_zero\");\n        }\n\n\
-    \        // btoll: 2 \u9032\u6570\u306E\u6587\u5B57\u5217 (\u4E0A\u4F4D\u6841\u304B\
-    \u3089)\n        std::string s;\n        for (int i = width - 1; i >= 0; i--)\
-    \ s += (a >> i & 1) ? '1' : '0';\n        check(btoll(s) == a, \"btoll\");\n \
-    \       // 1 \u3092\u8868\u3059\u6587\u5B57\u3092\u6307\u5B9A\u3059\u308B\n  \
-    \      std::string t = s;\n        for (char& c : t) c = (c == '1') ? '#' : '.';\n\
-    \        check(btoll(t, '#') == a, \"btoll(s, one)\");\n\n        // hamming_distance:\
-    \ \u30D3\u30C3\u30C8\u3054\u3068\u306B\u6BD4\u3079\u308B\n        long long b\
-    \ = (long long)(rng() >> (64 - width));\n        int hd = 0;\n        for (int\
-    \ i = 0; i < 63; i++) hd += (a >> i & 1) != (b >> i & 1);\n        check(hamming_distance(a,\
-    \ b) == hd, \"hamming_distance\");\n    }\n\n    // countl_one / countr_one /\
-    \ bit_width / bit_ceil / bit_floor \u3092\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u6BD4\
-    \u3079\u308B\n    for (int rep = 0; rep < 100000 && ok; rep++) {\n        int\
-    \ width = rng() % 64;\n        long long a = width == 0 ? 0 : (long long)(rng()\
-    \ >> (64 - width));\n        if (rep % 4 == 0) a = (1LL << (rng() % 63)) - rng()\
-    \ % 2;  // 2 \u306E\u7D2F\u4E57\u3068\u305D\u306E\u524D\u5F8C\n        if (a <\
-    \ 0) a = 0;\n        int clo = 0, cto = 0, bw = 0;\n        for (int i = 63; i\
-    \ >= 0 && (a >> i & 1); i--) clo++;\n        for (int i = 0; i < 64 && (a >> i\
-    \ & 1); i++) cto++;\n        for (int i = 0; i < 63; i++) {\n            if (a\
-    \ >> i & 1) bw = i + 1;\n        }\n        long long ceil = 1, floor = 0;\n \
-    \       while (ceil < a && ceil <= (1LL << 61)) ceil *= 2;  // a > 2^62 \u306A\
-    \u3089\u4F7F\u308F\u306A\u3044\n        for (int i = 0; i < 63; i++) {\n     \
-    \       if ((1LL << i) <= a) floor = 1LL << i;\n        }\n        check(countl_one(a)\
-    \ == clo, \"countl_one\");\n        check(countr_one(a) == cto, \"countr_one\"\
-    );\n        check(bit_width(a) == bw, \"bit_width\");\n        if (a <= (1LL <<\
-    \ 62)) check(bit_ceil(a) == ceil, \"bit_ceil\");\n        check(bit_floor(a) ==\
-    \ floor, \"bit_floor\");\n    }\n\n    // 0 \u306E\u3068\u304D\u306F C++20 \u306E\
-    \ <bit> \u3068\u540C\u3058\u5024\n    check(countl_zero(0) == 64 && countr_zero(0)\
-    \ == 64, \"countl_zero / countr_zero(0)\");\n    check(countl_one(0) == 0 && countr_one(0)\
-    \ == 0, \"countl_one / countr_one(0)\");\n    check(bit_width(0) == 0 && bit_ceil(0)\
-    \ == 1 && bit_floor(0) == 0, \"bit_width / bit_ceil / bit_floor(0)\");\n    check(bit_ceil(1LL\
-    \ << 62) == (1LL << 62) && bit_ceil((1LL << 61) + 1) == (1LL << 62), \"bit_ceil\
-    \ \u4E0A\u9650\");\n    check(countr_one(std::numeric_limits<long long>::max())\
-    \ == 63 && bit_width(std::numeric_limits<long long>::max()) == 63, \"\u6700\u5927\
-    \u5024\");\n\n    // \u623B\u308A\u5024\u306E\u578B\u306F C++17 \u3067\u3082 C++20\
-    \ \u3067\u3082 long long\n    static_assert(std::is_same_v<decltype(popcount(1)),\
+    \    assert(a >= 0 && b >= 0);\n    return popcount(a ^ b);\n}\n\nnamespace internal_bit\
+    \ {\n// \u7BC4\u56F2 for \u3067\u4F7F\u3046\u5217\u6319\u3002next \u3067\u6B21\
+    \u306E\u5024\u306B\u9032\u307F\u3001done \u306B\u306A\u3063\u305F\u3089\u7D42\u308F\
+    \u308B\ntemplate <class Next>\nstruct BitEnumeration {\n    long long first;\n\
+    \    bool empty;\n    Next next;  // next(s) \u306F\u6B21\u306E\u5024\u3001\u7D42\
+    \u308F\u308A\u306A\u3089 -1\n    struct iterator {\n        long long s;\n   \
+    \     const Next* next;\n        constexpr long long operator*() const { return\
+    \ s; }\n        constexpr iterator& operator++() {\n            s = (*next)(s);\n\
+    \            return *this;\n        }\n        constexpr bool operator!=(const\
+    \ iterator& other) const { return s != other.s; }\n        constexpr bool operator==(const\
+    \ iterator& other) const { return s == other.s; }\n    };\n    constexpr iterator\
+    \ begin() const { return {empty ? -1 : first, &next}; }\n    constexpr iterator\
+    \ end() const { return {-1, &next}; }\n};\ntemplate <class Next>\nconstexpr BitEnumeration<Next>\
+    \ make_bit_enumeration(long long first, bool empty, Next next) {\n    return {first,\
+    \ empty, next};\n}\n}  // namespace internal_bit\n\n/**\n * @brief mask \u306E\
+    \u90E8\u5206\u96C6\u5408\u3092 mask \u304B\u3089 0 \u307E\u3067\u964D\u9806\u306B\
+    \u5217\u6319\u3059\u308B (0 \u3068 mask \u3092\u542B\u3080) \u5168\u4F53\u3067\
+    \ O(2^popcount(mask))\n */\ninline constexpr auto subsets(long long mask) {\n\
+    \    assert(mask >= 0);\n    return internal_bit::make_bit_enumeration(mask, false,\
+    \ [mask](long long s) { return s == 0 ? -1 : (s - 1) & mask; });\n}\n/**\n * @brief\
+    \ n \u30D3\u30C3\u30C8\u306E\u96C6\u5408\u306E\u3046\u3061 mask \u3092\u542B\u3080\
+    \u3082\u306E\u3092 mask \u304B\u3089\u6607\u9806\u306B\u5217\u6319\u3059\u308B\
+    \ (mask \u3068 2^n - 1 \u3092\u542B\u3080) \u5168\u4F53\u3067 O(2^(n - popcount(mask)))\n\
+    \ */\ninline constexpr auto supersets(long long mask, long long n) {\n    assert(0\
+    \ <= n && n <= 62 && 0 <= mask && mask < (1LL << n));\n    long long full = (1LL\
+    \ << n) - 1;\n    return internal_bit::make_bit_enumeration(mask, false, [mask,\
+    \ full](long long s) { return s == full ? -1 : (s + 1) | mask; });\n}\n/**\n *\
+    \ @brief mask \u306E\u7ACB\u3063\u3066\u3044\u308B\u30D3\u30C3\u30C8\u306E\u4F4D\
+    \u7F6E\u3092\u6607\u9806\u306B\u5217\u6319\u3059\u308B \u5168\u4F53\u3067 O(popcount(mask))\n\
+    \ */\ninline constexpr auto bits(long long mask) {\n    assert(mask >= 0);\n \
+    \   // \u5185\u90E8\u3067\u306F\u6B8B\u308A\u306E\u30D3\u30C3\u30C8\u3092\u6301\
+    \u3061\u3001* \u3067\u6700\u4E0B\u4F4D\u30D3\u30C3\u30C8\u306E\u4F4D\u7F6E\u3092\
+    \u8FD4\u3059\n    struct Bits {\n        long long mask;\n        struct iterator\
+    \ {\n            long long s;\n            constexpr long long operator*() const\
+    \ { return countr_zero(s); }\n            constexpr iterator& operator++() {\n\
+    \                s &= s - 1;\n                return *this;\n            }\n \
+    \           constexpr bool operator!=(const iterator& other) const { return s\
+    \ != other.s; }\n            constexpr bool operator==(const iterator& other)\
+    \ const { return s == other.s; }\n        };\n        constexpr iterator begin()\
+    \ const { return {mask}; }\n        constexpr iterator end() const { return {0};\
+    \ }\n    };\n    return Bits{mask};\n}\n/**\n * @brief n \u30D3\u30C3\u30C8\u306E\
+    \u96C6\u5408\u306E\u3046\u3061\u3001\u3061\u3087\u3046\u3069 k \u500B\u306E\u30D3\
+    \u30C3\u30C8\u304C\u7ACB\u3064\u3082\u306E\u3092\u6607\u9806\u306B\u5217\u6319\
+    \u3059\u308B (Gosper's hack) \u5168\u4F53\u3067 O(C(n, k))\n * k > n \u306A\u3089\
+    \u4F55\u3082\u5217\u6319\u3057\u306A\u3044\n */\ninline constexpr auto combinations_mask(long\
+    \ long n, long long k) {\n    assert(0 <= n && n <= 62 && 0 <= k);\n    long long\
+    \ limit = 1LL << n;\n    return internal_bit::make_bit_enumeration(k > n ? -1\
+    \ : (1LL << k) - 1, k > n, [limit](long long s) {\n        if (s == 0) return\
+    \ -1LL;  // k = 0 \u306E\u3068\u304D\u306F 0 \u3060\u3051\n        long long c\
+    \ = s & -s, r = s + c;\n        long long t = (((r ^ s) >> 2) / c) | r;\n    \
+    \    return t >= limit ? -1 : t;\n    });\n}\n#line 8 \"test/unittest/bit.test.cpp\"\
+    \n\n#include <algorithm>\n#include <iostream>\n#include <limits>\n#include <random>\n\
+    #line 14 \"test/unittest/bit.test.cpp\"\n#include <type_traits>\n#include <vector>\n\
+    \nbool ok = true;\n\nvoid check(bool cond, const char* what) {\n    if (!cond)\
+    \ {\n        if (ok) std::cerr << \"failed: \" << what << std::endl;\n       \
+    \ ok = false;\n    }\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n\n   \
+    \ for (int rep = 0; rep < 100000 && ok; rep++) {\n        // 0 \u4EE5\u4E0A\u306E\
+    \ long long (\u30D3\u30C3\u30C8\u6570\u3082\u3070\u3089\u3064\u304B\u305B\u308B\
+    )\n        int width = rng() % 63 + 1;\n        long long a = (long long)(rng()\
+    \ >> (64 - width));\n\n        int pc = 0, clz = 0, ctz = 0;\n        for (int\
+    \ i = 0; i < 63; i++) pc += a >> i & 1;\n        for (int i = 63; i >= 0 && !(a\
+    \ >> i & 1); i--) clz++;\n        for (int i = 0; i < 64 && !(a >> i & 1); i++)\
+    \ ctz++;\n        check(popcount(a) == pc, \"popcount\");\n        if (a > 0)\
+    \ {\n            check(countl_zero(a) == clz, \"countl_zero\");\n            check(countr_zero(a)\
+    \ == ctz, \"countr_zero\");\n        }\n\n        // btoll: 2 \u9032\u6570\u306E\
+    \u6587\u5B57\u5217 (\u4E0A\u4F4D\u6841\u304B\u3089)\n        std::string s;\n\
+    \        for (int i = width - 1; i >= 0; i--) s += (a >> i & 1) ? '1' : '0';\n\
+    \        check(btoll(s) == a, \"btoll\");\n        // 1 \u3092\u8868\u3059\u6587\
+    \u5B57\u3092\u6307\u5B9A\u3059\u308B\n        std::string t = s;\n        for\
+    \ (char& c : t) c = (c == '1') ? '#' : '.';\n        check(btoll(t, '#') == a,\
+    \ \"btoll(s, one)\");\n\n        // hamming_distance: \u30D3\u30C3\u30C8\u3054\
+    \u3068\u306B\u6BD4\u3079\u308B\n        long long b = (long long)(rng() >> (64\
+    \ - width));\n        int hd = 0;\n        for (int i = 0; i < 63; i++) hd +=\
+    \ (a >> i & 1) != (b >> i & 1);\n        check(hamming_distance(a, b) == hd, \"\
+    hamming_distance\");\n    }\n\n    // countl_one / countr_one / bit_width / bit_ceil\
+    \ / bit_floor \u3092\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u6BD4\u3079\u308B\n \
+    \   for (int rep = 0; rep < 100000 && ok; rep++) {\n        int width = rng()\
+    \ % 64;\n        long long a = width == 0 ? 0 : (long long)(rng() >> (64 - width));\n\
+    \        if (rep % 4 == 0) a = (1LL << (rng() % 63)) - rng() % 2;  // 2 \u306E\
+    \u7D2F\u4E57\u3068\u305D\u306E\u524D\u5F8C\n        if (a < 0) a = 0;\n      \
+    \  int clo = 0, cto = 0, bw = 0;\n        for (int i = 63; i >= 0 && (a >> i &\
+    \ 1); i--) clo++;\n        for (int i = 0; i < 64 && (a >> i & 1); i++) cto++;\n\
+    \        for (int i = 0; i < 63; i++) {\n            if (a >> i & 1) bw = i +\
+    \ 1;\n        }\n        long long ceil = 1, floor = 0;\n        while (ceil <\
+    \ a && ceil <= (1LL << 61)) ceil *= 2;  // a > 2^62 \u306A\u3089\u4F7F\u308F\u306A\
+    \u3044\n        for (int i = 0; i < 63; i++) {\n            if ((1LL << i) <=\
+    \ a) floor = 1LL << i;\n        }\n        check(countl_one(a) == clo, \"countl_one\"\
+    );\n        check(countr_one(a) == cto, \"countr_one\");\n        check(bit_width(a)\
+    \ == bw, \"bit_width\");\n        if (a <= (1LL << 62)) check(bit_ceil(a) == ceil,\
+    \ \"bit_ceil\");\n        check(bit_floor(a) == floor, \"bit_floor\");\n    }\n\
+    \n    // subsets / supersets / bits / combinations_mask \u3092\u3001\u3059\u3079\
+    \u3066\u306E\u5024\u3092\u8ABF\u3079\u308B\u611A\u76F4\u306A\u65B9\u6CD5\u3068\
+    \u6BD4\u3079\u308B\n    for (int rep = 0; rep < 300 && ok; rep++) {\n        int\
+    \ n = rng() % 9;\n        long long mask = (long long)(rng() % (1ULL << n));\n\
+    \        std::vector<long long> sub, sup, pos, got;\n        for (long long s\
+    \ = (1LL << n) - 1; s >= 0; s--) {\n            if ((s & mask) == s) sub.push_back(s);\
+    \  // \u964D\u9806\n        }\n        for (long long s = 0; s < (1LL << n); s++)\
+    \ {\n            if ((s & mask) == mask) sup.push_back(s);  // \u6607\u9806\n\
+    \        }\n        for (int i = 0; i < n; i++) {\n            if (mask >> i &\
+    \ 1) pos.push_back(i);\n        }\n        got.clear();\n        for (long long\
+    \ s : subsets(mask)) got.push_back(s);\n        check(got == sub, \"subsets\"\
+    );\n        got.clear();\n        for (long long s : supersets(mask, n)) got.push_back(s);\n\
+    \        check(got == sup, \"supersets\");\n        got.clear();\n        for\
+    \ (long long i : bits(mask)) got.push_back(i);\n        check(got == pos, \"bits\"\
+    );\n        for (int k = 0; k <= n + 1; k++) {\n            std::vector<long long>\
+    \ comb;\n            for (long long s = 0; s < (1LL << n); s++) {\n          \
+    \      if (__builtin_popcountll(s) == k) comb.push_back(s);\n            }\n \
+    \           got.clear();\n            for (long long s : combinations_mask(n,\
+    \ k)) got.push_back(s);\n            check(got == comb, \"combinations_mask\"\
+    );\n        }\n    }\n    {\n        // \u5927\u304D\u3044\u30D3\u30C3\u30C8\u5E45\
+    \u3068\u5883\u754C\n        long long cnt = 0, last = -1;\n        for (long long\
+    \ s : combinations_mask(62, 61)) cnt++, last = s;\n        check(cnt == 62 &&\
+    \ last == (1LL << 62) - 2, \"combinations_mask(62, 61)\");\n        cnt = 0;\n\
+    \        for (long long s : supersets((1LL << 62) - 2, 62)) cnt += s;\n      \
+    \  check(cnt == 2 * ((1LL << 62) - 2) + 1, \"supersets 62 \u30D3\u30C3\u30C8\"\
+    );\n        std::vector<long long> got;\n        for (long long i : bits(std::numeric_limits<long\
+    \ long>::max())) got.push_back(i);\n        check((long long)got.size() == 63\
+    \ && got.back() == 62, \"bits(\u6700\u5927\u5024)\");\n        got.clear();\n\
+    \        for (long long s : subsets(0)) got.push_back(s);\n        check(got ==\
+    \ std::vector<long long>{0}, \"subsets(0)\");\n        // constexpr \u3067\u3082\
+    \u4F7F\u3048\u308B\n        constexpr long long sum = [] {\n            long long\
+    \ r = 0;\n            for (long long s : subsets(0b1011)) r += s;\n          \
+    \  for (long long i : bits(0b1011)) r += i;\n            return r;\n        }();\n\
+    \        static_assert(sum == 44 + 4);\n    }\n\n    // 0 \u306E\u3068\u304D\u306F\
+    \ C++20 \u306E <bit> \u3068\u540C\u3058\u5024\n    check(countl_zero(0) == 64\
+    \ && countr_zero(0) == 64, \"countl_zero / countr_zero(0)\");\n    check(countl_one(0)\
+    \ == 0 && countr_one(0) == 0, \"countl_one / countr_one(0)\");\n    check(bit_width(0)\
+    \ == 0 && bit_ceil(0) == 1 && bit_floor(0) == 0, \"bit_width / bit_ceil / bit_floor(0)\"\
+    );\n    check(bit_ceil(1LL << 62) == (1LL << 62) && bit_ceil((1LL << 61) + 1)\
+    \ == (1LL << 62), \"bit_ceil \u4E0A\u9650\");\n    check(countr_one(std::numeric_limits<long\
+    \ long>::max()) == 63 && bit_width(std::numeric_limits<long long>::max()) == 63,\
+    \ \"\u6700\u5927\u5024\");\n\n    // \u623B\u308A\u5024\u306E\u578B\u306F C++17\
+    \ \u3067\u3082 C++20 \u3067\u3082 long long\n    static_assert(std::is_same_v<decltype(popcount(1)),\
     \ long long>);\n    static_assert(std::is_same_v<decltype(countl_zero(1)), long\
     \ long>);\n    static_assert(std::is_same_v<decltype(countr_zero(1)), long long>);\n\
     \    static_assert(std::is_same_v<decltype(countl_one(1)), long long>);\n    static_assert(std::is_same_v<decltype(countr_one(1)),\
@@ -141,60 +225,94 @@ data:
     \ 0 && btoll(\"0\") == 0 && btoll(\"101\") == 5, \"btoll \u6C7A\u307E\u3063\u305F\
     \u5024\");\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
-    \n\n// bit.hpp \u306E\u95A2\u6570\u3092\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u30E9\
-    \u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// C++17 (__builtin_* \u3067\
-    \u5B9F\u88C5) \u3068 C++20 (<bit> \u3092\u547C\u3076) \u306E\u3069\u3061\u3089\
-    \u3067\u3082\u540C\u3058\u7D50\u679C\u306B\u306A\u308B\n// \u554F\u984C\u306E\u5165\
-    \u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\
-    \u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../src/utility/bit.hpp\"\
-    \n\n#include <iostream>\n#include <limits>\n#include <random>\n#include <string>\n\
-    #include <type_traits>\n\nbool ok = true;\n\nvoid check(bool cond, const char*\
-    \ what) {\n    if (!cond) {\n        if (ok) std::cerr << \"failed: \" << what\
-    \ << std::endl;\n        ok = false;\n    }\n}\n\nint main() {\n    std::mt19937_64\
-    \ rng(314);\n\n    for (int rep = 0; rep < 100000 && ok; rep++) {\n        //\
-    \ 0 \u4EE5\u4E0A\u306E long long (\u30D3\u30C3\u30C8\u6570\u3082\u3070\u3089\u3064\
-    \u304B\u305B\u308B)\n        int width = rng() % 63 + 1;\n        long long a\
-    \ = (long long)(rng() >> (64 - width));\n\n        int pc = 0, clz = 0, ctz =\
-    \ 0;\n        for (int i = 0; i < 63; i++) pc += a >> i & 1;\n        for (int\
-    \ i = 63; i >= 0 && !(a >> i & 1); i--) clz++;\n        for (int i = 0; i < 64\
-    \ && !(a >> i & 1); i++) ctz++;\n        check(popcount(a) == pc, \"popcount\"\
-    );\n        if (a > 0) {\n            check(countl_zero(a) == clz, \"countl_zero\"\
-    );\n            check(countr_zero(a) == ctz, \"countr_zero\");\n        }\n\n\
-    \        // btoll: 2 \u9032\u6570\u306E\u6587\u5B57\u5217 (\u4E0A\u4F4D\u6841\u304B\
-    \u3089)\n        std::string s;\n        for (int i = width - 1; i >= 0; i--)\
-    \ s += (a >> i & 1) ? '1' : '0';\n        check(btoll(s) == a, \"btoll\");\n \
-    \       // 1 \u3092\u8868\u3059\u6587\u5B57\u3092\u6307\u5B9A\u3059\u308B\n  \
-    \      std::string t = s;\n        for (char& c : t) c = (c == '1') ? '#' : '.';\n\
-    \        check(btoll(t, '#') == a, \"btoll(s, one)\");\n\n        // hamming_distance:\
-    \ \u30D3\u30C3\u30C8\u3054\u3068\u306B\u6BD4\u3079\u308B\n        long long b\
-    \ = (long long)(rng() >> (64 - width));\n        int hd = 0;\n        for (int\
-    \ i = 0; i < 63; i++) hd += (a >> i & 1) != (b >> i & 1);\n        check(hamming_distance(a,\
-    \ b) == hd, \"hamming_distance\");\n    }\n\n    // countl_one / countr_one /\
-    \ bit_width / bit_ceil / bit_floor \u3092\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u6BD4\
-    \u3079\u308B\n    for (int rep = 0; rep < 100000 && ok; rep++) {\n        int\
-    \ width = rng() % 64;\n        long long a = width == 0 ? 0 : (long long)(rng()\
-    \ >> (64 - width));\n        if (rep % 4 == 0) a = (1LL << (rng() % 63)) - rng()\
-    \ % 2;  // 2 \u306E\u7D2F\u4E57\u3068\u305D\u306E\u524D\u5F8C\n        if (a <\
-    \ 0) a = 0;\n        int clo = 0, cto = 0, bw = 0;\n        for (int i = 63; i\
-    \ >= 0 && (a >> i & 1); i--) clo++;\n        for (int i = 0; i < 64 && (a >> i\
-    \ & 1); i++) cto++;\n        for (int i = 0; i < 63; i++) {\n            if (a\
-    \ >> i & 1) bw = i + 1;\n        }\n        long long ceil = 1, floor = 0;\n \
-    \       while (ceil < a && ceil <= (1LL << 61)) ceil *= 2;  // a > 2^62 \u306A\
-    \u3089\u4F7F\u308F\u306A\u3044\n        for (int i = 0; i < 63; i++) {\n     \
-    \       if ((1LL << i) <= a) floor = 1LL << i;\n        }\n        check(countl_one(a)\
-    \ == clo, \"countl_one\");\n        check(countr_one(a) == cto, \"countr_one\"\
-    );\n        check(bit_width(a) == bw, \"bit_width\");\n        if (a <= (1LL <<\
-    \ 62)) check(bit_ceil(a) == ceil, \"bit_ceil\");\n        check(bit_floor(a) ==\
-    \ floor, \"bit_floor\");\n    }\n\n    // 0 \u306E\u3068\u304D\u306F C++20 \u306E\
-    \ <bit> \u3068\u540C\u3058\u5024\n    check(countl_zero(0) == 64 && countr_zero(0)\
-    \ == 64, \"countl_zero / countr_zero(0)\");\n    check(countl_one(0) == 0 && countr_one(0)\
-    \ == 0, \"countl_one / countr_one(0)\");\n    check(bit_width(0) == 0 && bit_ceil(0)\
-    \ == 1 && bit_floor(0) == 0, \"bit_width / bit_ceil / bit_floor(0)\");\n    check(bit_ceil(1LL\
-    \ << 62) == (1LL << 62) && bit_ceil((1LL << 61) + 1) == (1LL << 62), \"bit_ceil\
-    \ \u4E0A\u9650\");\n    check(countr_one(std::numeric_limits<long long>::max())\
-    \ == 63 && bit_width(std::numeric_limits<long long>::max()) == 63, \"\u6700\u5927\
-    \u5024\");\n\n    // \u623B\u308A\u5024\u306E\u578B\u306F C++17 \u3067\u3082 C++20\
-    \ \u3067\u3082 long long\n    static_assert(std::is_same_v<decltype(popcount(1)),\
+    \n\n// bit.hpp \u306E\u95A2\u6570\u3068\u5217\u6319\u3092\u611A\u76F4\u306A\u5B9F\
+    \u88C5\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// C++17 (__builtin_*\
+    \ \u3067\u5B9F\u88C5) \u3068 C++20 (<bit> \u3092\u547C\u3076) \u306E\u3069\u3061\
+    \u3089\u3067\u3082\u540C\u3058\u7D50\u679C\u306B\u306A\u308B\n// \u554F\u984C\u306E\
+    \u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\
+    \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../src/utility/bit.hpp\"\
+    \n\n#include <algorithm>\n#include <iostream>\n#include <limits>\n#include <random>\n\
+    #include <string>\n#include <type_traits>\n#include <vector>\n\nbool ok = true;\n\
+    \nvoid check(bool cond, const char* what) {\n    if (!cond) {\n        if (ok)\
+    \ std::cerr << \"failed: \" << what << std::endl;\n        ok = false;\n    }\n\
+    }\n\nint main() {\n    std::mt19937_64 rng(314);\n\n    for (int rep = 0; rep\
+    \ < 100000 && ok; rep++) {\n        // 0 \u4EE5\u4E0A\u306E long long (\u30D3\u30C3\
+    \u30C8\u6570\u3082\u3070\u3089\u3064\u304B\u305B\u308B)\n        int width = rng()\
+    \ % 63 + 1;\n        long long a = (long long)(rng() >> (64 - width));\n\n   \
+    \     int pc = 0, clz = 0, ctz = 0;\n        for (int i = 0; i < 63; i++) pc +=\
+    \ a >> i & 1;\n        for (int i = 63; i >= 0 && !(a >> i & 1); i--) clz++;\n\
+    \        for (int i = 0; i < 64 && !(a >> i & 1); i++) ctz++;\n        check(popcount(a)\
+    \ == pc, \"popcount\");\n        if (a > 0) {\n            check(countl_zero(a)\
+    \ == clz, \"countl_zero\");\n            check(countr_zero(a) == ctz, \"countr_zero\"\
+    );\n        }\n\n        // btoll: 2 \u9032\u6570\u306E\u6587\u5B57\u5217 (\u4E0A\
+    \u4F4D\u6841\u304B\u3089)\n        std::string s;\n        for (int i = width\
+    \ - 1; i >= 0; i--) s += (a >> i & 1) ? '1' : '0';\n        check(btoll(s) ==\
+    \ a, \"btoll\");\n        // 1 \u3092\u8868\u3059\u6587\u5B57\u3092\u6307\u5B9A\
+    \u3059\u308B\n        std::string t = s;\n        for (char& c : t) c = (c ==\
+    \ '1') ? '#' : '.';\n        check(btoll(t, '#') == a, \"btoll(s, one)\");\n\n\
+    \        // hamming_distance: \u30D3\u30C3\u30C8\u3054\u3068\u306B\u6BD4\u3079\
+    \u308B\n        long long b = (long long)(rng() >> (64 - width));\n        int\
+    \ hd = 0;\n        for (int i = 0; i < 63; i++) hd += (a >> i & 1) != (b >> i\
+    \ & 1);\n        check(hamming_distance(a, b) == hd, \"hamming_distance\");\n\
+    \    }\n\n    // countl_one / countr_one / bit_width / bit_ceil / bit_floor \u3092\
+    \u611A\u76F4\u306A\u5B9F\u88C5\u3068\u6BD4\u3079\u308B\n    for (int rep = 0;\
+    \ rep < 100000 && ok; rep++) {\n        int width = rng() % 64;\n        long\
+    \ long a = width == 0 ? 0 : (long long)(rng() >> (64 - width));\n        if (rep\
+    \ % 4 == 0) a = (1LL << (rng() % 63)) - rng() % 2;  // 2 \u306E\u7D2F\u4E57\u3068\
+    \u305D\u306E\u524D\u5F8C\n        if (a < 0) a = 0;\n        int clo = 0, cto\
+    \ = 0, bw = 0;\n        for (int i = 63; i >= 0 && (a >> i & 1); i--) clo++;\n\
+    \        for (int i = 0; i < 64 && (a >> i & 1); i++) cto++;\n        for (int\
+    \ i = 0; i < 63; i++) {\n            if (a >> i & 1) bw = i + 1;\n        }\n\
+    \        long long ceil = 1, floor = 0;\n        while (ceil < a && ceil <= (1LL\
+    \ << 61)) ceil *= 2;  // a > 2^62 \u306A\u3089\u4F7F\u308F\u306A\u3044\n     \
+    \   for (int i = 0; i < 63; i++) {\n            if ((1LL << i) <= a) floor = 1LL\
+    \ << i;\n        }\n        check(countl_one(a) == clo, \"countl_one\");\n   \
+    \     check(countr_one(a) == cto, \"countr_one\");\n        check(bit_width(a)\
+    \ == bw, \"bit_width\");\n        if (a <= (1LL << 62)) check(bit_ceil(a) == ceil,\
+    \ \"bit_ceil\");\n        check(bit_floor(a) == floor, \"bit_floor\");\n    }\n\
+    \n    // subsets / supersets / bits / combinations_mask \u3092\u3001\u3059\u3079\
+    \u3066\u306E\u5024\u3092\u8ABF\u3079\u308B\u611A\u76F4\u306A\u65B9\u6CD5\u3068\
+    \u6BD4\u3079\u308B\n    for (int rep = 0; rep < 300 && ok; rep++) {\n        int\
+    \ n = rng() % 9;\n        long long mask = (long long)(rng() % (1ULL << n));\n\
+    \        std::vector<long long> sub, sup, pos, got;\n        for (long long s\
+    \ = (1LL << n) - 1; s >= 0; s--) {\n            if ((s & mask) == s) sub.push_back(s);\
+    \  // \u964D\u9806\n        }\n        for (long long s = 0; s < (1LL << n); s++)\
+    \ {\n            if ((s & mask) == mask) sup.push_back(s);  // \u6607\u9806\n\
+    \        }\n        for (int i = 0; i < n; i++) {\n            if (mask >> i &\
+    \ 1) pos.push_back(i);\n        }\n        got.clear();\n        for (long long\
+    \ s : subsets(mask)) got.push_back(s);\n        check(got == sub, \"subsets\"\
+    );\n        got.clear();\n        for (long long s : supersets(mask, n)) got.push_back(s);\n\
+    \        check(got == sup, \"supersets\");\n        got.clear();\n        for\
+    \ (long long i : bits(mask)) got.push_back(i);\n        check(got == pos, \"bits\"\
+    );\n        for (int k = 0; k <= n + 1; k++) {\n            std::vector<long long>\
+    \ comb;\n            for (long long s = 0; s < (1LL << n); s++) {\n          \
+    \      if (__builtin_popcountll(s) == k) comb.push_back(s);\n            }\n \
+    \           got.clear();\n            for (long long s : combinations_mask(n,\
+    \ k)) got.push_back(s);\n            check(got == comb, \"combinations_mask\"\
+    );\n        }\n    }\n    {\n        // \u5927\u304D\u3044\u30D3\u30C3\u30C8\u5E45\
+    \u3068\u5883\u754C\n        long long cnt = 0, last = -1;\n        for (long long\
+    \ s : combinations_mask(62, 61)) cnt++, last = s;\n        check(cnt == 62 &&\
+    \ last == (1LL << 62) - 2, \"combinations_mask(62, 61)\");\n        cnt = 0;\n\
+    \        for (long long s : supersets((1LL << 62) - 2, 62)) cnt += s;\n      \
+    \  check(cnt == 2 * ((1LL << 62) - 2) + 1, \"supersets 62 \u30D3\u30C3\u30C8\"\
+    );\n        std::vector<long long> got;\n        for (long long i : bits(std::numeric_limits<long\
+    \ long>::max())) got.push_back(i);\n        check((long long)got.size() == 63\
+    \ && got.back() == 62, \"bits(\u6700\u5927\u5024)\");\n        got.clear();\n\
+    \        for (long long s : subsets(0)) got.push_back(s);\n        check(got ==\
+    \ std::vector<long long>{0}, \"subsets(0)\");\n        // constexpr \u3067\u3082\
+    \u4F7F\u3048\u308B\n        constexpr long long sum = [] {\n            long long\
+    \ r = 0;\n            for (long long s : subsets(0b1011)) r += s;\n          \
+    \  for (long long i : bits(0b1011)) r += i;\n            return r;\n        }();\n\
+    \        static_assert(sum == 44 + 4);\n    }\n\n    // 0 \u306E\u3068\u304D\u306F\
+    \ C++20 \u306E <bit> \u3068\u540C\u3058\u5024\n    check(countl_zero(0) == 64\
+    \ && countr_zero(0) == 64, \"countl_zero / countr_zero(0)\");\n    check(countl_one(0)\
+    \ == 0 && countr_one(0) == 0, \"countl_one / countr_one(0)\");\n    check(bit_width(0)\
+    \ == 0 && bit_ceil(0) == 1 && bit_floor(0) == 0, \"bit_width / bit_ceil / bit_floor(0)\"\
+    );\n    check(bit_ceil(1LL << 62) == (1LL << 62) && bit_ceil((1LL << 61) + 1)\
+    \ == (1LL << 62), \"bit_ceil \u4E0A\u9650\");\n    check(countr_one(std::numeric_limits<long\
+    \ long>::max()) == 63 && bit_width(std::numeric_limits<long long>::max()) == 63,\
+    \ \"\u6700\u5927\u5024\");\n\n    // \u623B\u308A\u5024\u306E\u578B\u306F C++17\
+    \ \u3067\u3082 C++20 \u3067\u3082 long long\n    static_assert(std::is_same_v<decltype(popcount(1)),\
     \ long long>);\n    static_assert(std::is_same_v<decltype(countl_zero(1)), long\
     \ long>);\n    static_assert(std::is_same_v<decltype(countr_zero(1)), long long>);\n\
     \    static_assert(std::is_same_v<decltype(countl_one(1)), long long>);\n    static_assert(std::is_same_v<decltype(countr_one(1)),\
@@ -214,7 +332,7 @@ data:
   isVerificationFile: true
   path: test/unittest/bit.test.cpp
   requiredBy: []
-  timestamp: '2026-10-17 23:17:18+09:00'
+  timestamp: '2026-10-18 01:45:30+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/bit.test.cpp

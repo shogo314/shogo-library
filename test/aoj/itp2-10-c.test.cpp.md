@@ -72,7 +72,57 @@ data:
     \n/**\n * @brief 2 \u3064\u306E\u6574\u6570\u306E\u30CF\u30DF\u30F3\u30B0\u8DDD\
     \u96E2 (\u30D3\u30C3\u30C8\u304C\u7570\u306A\u308B\u4F4D\u7F6E\u306E\u6570)\n\
     \ */\ninline constexpr long long hamming_distance(long long a, long long b) {\n\
-    \    assert(a >= 0 && b >= 0);\n    return popcount(a ^ b);\n}\n#line 6 \"test/aoj/itp2-10-c.test.cpp\"\
+    \    assert(a >= 0 && b >= 0);\n    return popcount(a ^ b);\n}\n\nnamespace internal_bit\
+    \ {\n// \u7BC4\u56F2 for \u3067\u4F7F\u3046\u5217\u6319\u3002next \u3067\u6B21\
+    \u306E\u5024\u306B\u9032\u307F\u3001done \u306B\u306A\u3063\u305F\u3089\u7D42\u308F\
+    \u308B\ntemplate <class Next>\nstruct BitEnumeration {\n    long long first;\n\
+    \    bool empty;\n    Next next;  // next(s) \u306F\u6B21\u306E\u5024\u3001\u7D42\
+    \u308F\u308A\u306A\u3089 -1\n    struct iterator {\n        long long s;\n   \
+    \     const Next* next;\n        constexpr long long operator*() const { return\
+    \ s; }\n        constexpr iterator& operator++() {\n            s = (*next)(s);\n\
+    \            return *this;\n        }\n        constexpr bool operator!=(const\
+    \ iterator& other) const { return s != other.s; }\n        constexpr bool operator==(const\
+    \ iterator& other) const { return s == other.s; }\n    };\n    constexpr iterator\
+    \ begin() const { return {empty ? -1 : first, &next}; }\n    constexpr iterator\
+    \ end() const { return {-1, &next}; }\n};\ntemplate <class Next>\nconstexpr BitEnumeration<Next>\
+    \ make_bit_enumeration(long long first, bool empty, Next next) {\n    return {first,\
+    \ empty, next};\n}\n}  // namespace internal_bit\n\n/**\n * @brief mask \u306E\
+    \u90E8\u5206\u96C6\u5408\u3092 mask \u304B\u3089 0 \u307E\u3067\u964D\u9806\u306B\
+    \u5217\u6319\u3059\u308B (0 \u3068 mask \u3092\u542B\u3080) \u5168\u4F53\u3067\
+    \ O(2^popcount(mask))\n */\ninline constexpr auto subsets(long long mask) {\n\
+    \    assert(mask >= 0);\n    return internal_bit::make_bit_enumeration(mask, false,\
+    \ [mask](long long s) { return s == 0 ? -1 : (s - 1) & mask; });\n}\n/**\n * @brief\
+    \ n \u30D3\u30C3\u30C8\u306E\u96C6\u5408\u306E\u3046\u3061 mask \u3092\u542B\u3080\
+    \u3082\u306E\u3092 mask \u304B\u3089\u6607\u9806\u306B\u5217\u6319\u3059\u308B\
+    \ (mask \u3068 2^n - 1 \u3092\u542B\u3080) \u5168\u4F53\u3067 O(2^(n - popcount(mask)))\n\
+    \ */\ninline constexpr auto supersets(long long mask, long long n) {\n    assert(0\
+    \ <= n && n <= 62 && 0 <= mask && mask < (1LL << n));\n    long long full = (1LL\
+    \ << n) - 1;\n    return internal_bit::make_bit_enumeration(mask, false, [mask,\
+    \ full](long long s) { return s == full ? -1 : (s + 1) | mask; });\n}\n/**\n *\
+    \ @brief mask \u306E\u7ACB\u3063\u3066\u3044\u308B\u30D3\u30C3\u30C8\u306E\u4F4D\
+    \u7F6E\u3092\u6607\u9806\u306B\u5217\u6319\u3059\u308B \u5168\u4F53\u3067 O(popcount(mask))\n\
+    \ */\ninline constexpr auto bits(long long mask) {\n    assert(mask >= 0);\n \
+    \   // \u5185\u90E8\u3067\u306F\u6B8B\u308A\u306E\u30D3\u30C3\u30C8\u3092\u6301\
+    \u3061\u3001* \u3067\u6700\u4E0B\u4F4D\u30D3\u30C3\u30C8\u306E\u4F4D\u7F6E\u3092\
+    \u8FD4\u3059\n    struct Bits {\n        long long mask;\n        struct iterator\
+    \ {\n            long long s;\n            constexpr long long operator*() const\
+    \ { return countr_zero(s); }\n            constexpr iterator& operator++() {\n\
+    \                s &= s - 1;\n                return *this;\n            }\n \
+    \           constexpr bool operator!=(const iterator& other) const { return s\
+    \ != other.s; }\n            constexpr bool operator==(const iterator& other)\
+    \ const { return s == other.s; }\n        };\n        constexpr iterator begin()\
+    \ const { return {mask}; }\n        constexpr iterator end() const { return {0};\
+    \ }\n    };\n    return Bits{mask};\n}\n/**\n * @brief n \u30D3\u30C3\u30C8\u306E\
+    \u96C6\u5408\u306E\u3046\u3061\u3001\u3061\u3087\u3046\u3069 k \u500B\u306E\u30D3\
+    \u30C3\u30C8\u304C\u7ACB\u3064\u3082\u306E\u3092\u6607\u9806\u306B\u5217\u6319\
+    \u3059\u308B (Gosper's hack) \u5168\u4F53\u3067 O(C(n, k))\n * k > n \u306A\u3089\
+    \u4F55\u3082\u5217\u6319\u3057\u306A\u3044\n */\ninline constexpr auto combinations_mask(long\
+    \ long n, long long k) {\n    assert(0 <= n && n <= 62 && 0 <= k);\n    long long\
+    \ limit = 1LL << n;\n    return internal_bit::make_bit_enumeration(k > n ? -1\
+    \ : (1LL << k) - 1, k > n, [limit](long long s) {\n        if (s == 0) return\
+    \ -1LL;  // k = 0 \u306E\u3068\u304D\u306F 0 \u3060\u3051\n        long long c\
+    \ = s & -s, r = s + c;\n        long long t = (((r ^ s) >> 2) / c) | r;\n    \
+    \    return t >= limit ? -1 : t;\n    });\n}\n#line 6 \"test/aoj/itp2-10-c.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    int q;\n    std::cin >> q;\n    unsigned long long s = 0;\n    while (q--)\
     \ {\n        int op;\n        std::cin >> op;\n        if (op <= 3) {\n      \
@@ -110,7 +160,7 @@ data:
   isVerificationFile: true
   path: test/aoj/itp2-10-c.test.cpp
   requiredBy: []
-  timestamp: '2026-10-17 23:17:18+09:00'
+  timestamp: '2026-10-18 01:45:30+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/itp2-10-c.test.cpp

@@ -26,3 +26,4 @@ for (auto [i, j] : idx) lcs += s[i];                   // 共通部分列の 1 �
 
 - 1 つの列の最長増加部分列は [最長増加部分列 (LIS)](longest-increasing-subsequence.hpp)
 - 挿入・削除・置換の最小回数は [編集距離](edit-distance.hpp)
+- 連続する共通部分 (部分文字列) の最長は [最長共通部分文字列](../string/longest-common-substring.hpp)

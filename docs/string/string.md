@@ -33,4 +33,5 @@ long long d = hamming_distance(std::string("karolin"), std::string("kathrin")); 
 - 接尾辞を辞書順に並べるには [Suffix Array と LCP 配列](suffix-array.hpp)
 - 部分文字列の一致判定をハッシュで行うには [ローリングハッシュ](rolling-hash.hpp)
 - 複数の文字列の接頭辞を扱うには [Trie](trie.hpp)
+- 2 つの列の最長共通部分文字列は [最長共通部分文字列](longest-common-substring.hpp)
 - 整数のハミング距離は [ビット演算](../utility/bit.hpp) の `hamming_distance`

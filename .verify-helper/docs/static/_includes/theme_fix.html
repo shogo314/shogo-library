@@ -1,0 +1,31 @@
+{% comment %}
+online-judge-verify-helper の _includes/theme_fix.html を上書きする
+元の内容に、検索ボックス (search.html) を加えたもの。全ページの先頭で読み込まれる
+{% endcomment %}
+{% if site.theme == "jekyll-theme-minimal" %}
+<style type="text/css">
+@media screen and (min-width: 900px) {
+    div.wrapper {
+        width: 100%;
+    }
+    div.wrapper > header {
+        width: 280px;
+    }
+    div.wrapper > section {
+        width: calc(100% - 300px);
+    }
+}
+a:hover, a:focus {
+    font-weight: normal;
+    text-decoration: underline;
+}
+h1 a:hover {
+    font-weight: bold;
+}
+h1 a:focus {
+    font-weight: bold;
+}
+</style>
+{% endif %}
+
+{% include search.html %}

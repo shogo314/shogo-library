@@ -1,0 +1,19 @@
+---
+layout: null
+---
+{%- comment -%}
+ライブラリのページ (src/ の .hpp) のタイトル・パス・docs の本文を並べた検索用の索引
+assets/js/search.js が読み込む
+本文は、ほかのページの描画の順番によって Markdown のことも HTML のこともある。
+strip_html は Markdown の vector<long long> なども消してしまうので、テキストにするのは search.js で行う
+{%- endcomment -%}
+[
+{%- assign first = true -%}
+{%- for p in site.pages -%}
+{%- if p.data._pathExtension == "hpp" -%}
+{%- unless first %},{% endunless -%}
+{%- assign first = false %}
+{"title": {{ p.title | jsonify }}, "path": {{ p.data.path | jsonify }}, "url": {{ p.url | relative_url | jsonify }}, "text": {{ p.content | jsonify }}}
+{%- endif -%}
+{%- endfor %}
+]

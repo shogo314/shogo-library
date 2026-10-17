@@ -1,7 +1,10 @@
 ---
 data:
   _extendedDependsOn: []
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':heavy_check_mark:'
+    path: src/math/rational.hpp
+    title: "\u6709\u7406\u6570"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/1160.test.cpp
@@ -15,6 +18,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/functions.test.cpp
     title: test/unittest/functions.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/rational.test.cpp
+    title: test/unittest/rational.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -77,10 +83,12 @@ data:
   dependsOn: []
   isVerificationFile: false
   path: src/base/functions.hpp
-  requiredBy: []
+  requiredBy:
+  - src/math/rational.hpp
   timestamp: '2026-10-17 23:17:18+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/rational.test.cpp
   - test/unittest/functions.test.cpp
   - test/aoj/1160.test.cpp
   - test/aoj/ntl-1-e.test.cpp

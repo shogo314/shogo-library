@@ -1,6 +1,9 @@
 ---
 data:
-  _extendedDependsOn: []
+  _extendedDependsOn:
+  - icon: ':heavy_check_mark:'
+    path: src/base/functions.hpp
+    title: "\u6C4E\u7528\u95A2\u6570 (chmin, chmax \u306A\u3069)"
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
@@ -15,69 +18,93 @@ data:
   bundledCode: "#line 2 \"src/math/rational.hpp\"\n\n/**\n * @file rational.hpp\n\
     \ * @brief \u6709\u7406\u6570\n */\n\n#include <cassert>\n#include <cstddef>\n\
     #include <istream>\n#include <ostream>\n#include <string>\n#include <utility>\n\
-    \n/**\n * @brief \u6709\u7406\u6570 (\u5206\u6570)\n *\n * \u5E38\u306B\u65E2\u7D04\
-    \u3067\u3001\u5206\u6BCD\u306F\u6B63\u30020 \u306F 0/1\n * \u6F14\u7B97\u306E\u9014\
-    \u4E2D\u3067\u3082\u3001\u65E2\u7D04\u306B\u3057\u3066\u304B\u3089\u639B\u3051\
-    \u308B\u306E\u3067\u30AA\u30FC\u30D0\u30FC\u30D5\u30ED\u30FC\u3057\u306B\u304F\
-    \u3044\u3002\u6BD4\u8F03\u306F T \u304C 64 bit \u4EE5\u4E0B\u306A\u3089 __int128\
-    \ \u3067\u3001\u305D\u3046\u3067\u306A\u3051\u308C\u3070\u9023\u5206\u6570\u5C55\
-    \u958B\u3067\u884C\u3046\n * std::map \u3084 std::set \u306E\u30AD\u30FC\u306B\
-    \u4F7F\u3048\u308B\n * \u4F8B:\n * Rational<> a(1, 3), b(1, 6);\n * a + b;   //\
-    \ 1/2\n * a < b;   // false\n *\n * @tparam T \u6574\u6570\u578B (long long \u3084\
-    \ __int128 \u306A\u3069)\n */\ntemplate <typename T = long long>\nclass Rational\
-    \ {\n    T p, q;  // p / q (q > 0\u3001gcd(p, q) = 1)\n\n    static constexpr\
-    \ T abs_(T x) { return x < 0 ? -x : x; }\n    static constexpr T gcd_(T a, T b)\
-    \ {\n        a = abs_(a), b = abs_(b);\n        while (b != 0) {\n           \
-    \ T t = a % b;\n            a = b;\n            b = t;\n        }\n        return\
-    \ a;\n    }\n    // \u5207\u308A\u6368\u3066\u9664\u7B97 (b > 0)\n    static constexpr\
-    \ T floor_div(T a, T b) { return a / b - (a % b < 0); }\n\n    struct Raw {};\n\
-    \    // \u3059\u3067\u306B\u65E2\u7D04\u3067 q > 0 \u3068\u308F\u304B\u3063\u3066\
-    \u3044\u308B\u5834\u5408\n    constexpr Rational(T p, T q, Raw) : p(p), q(q) {}\n\
-    \n    // a / b \u3068 c / d (b, d > 0) \u3092\u6BD4\u3079\u3001\u5C0F\u3055\u3051\
-    \u308C\u3070\u8CA0\u3001\u7B49\u3057\u3051\u308C\u3070 0\u3001\u5927\u304D\u3051\
-    \u308C\u3070\u6B63\u3092\u8FD4\u3059\n    static constexpr int compare(T a, T\
-    \ b, T c, T d) {\n        if constexpr (sizeof(T) <= 8) {\n            __int128\
-    \ x = (__int128)a * d, y = (__int128)c * b;\n            return x < y ? -1 : x\
-    \ > y ? 1\n                                      : 0;\n        } else {\n    \
-    \        // \u6574\u6570\u90E8\u5206\u3092\u6BD4\u3079\u3001\u540C\u3058\u306A\
-    \u3089\u5C0F\u6570\u90E8\u5206\u306E\u9006\u6570\u3092\u6BD4\u3079\u308B (\u5927\
-    \u5C0F\u304C\u9006\u306B\u306A\u308B)\n            int sign = 1;\n           \
-    \ while (true) {\n                T x = floor_div(a, b), y = floor_div(c, d);\n\
-    \                if (x != y) return x < y ? -sign : sign;\n                a -=\
-    \ x * b, c -= y * d;\n                if (a == 0 || c == 0) {\n              \
-    \      if (a == 0 && c == 0) return 0;\n                    return a == 0 ? -sign\
-    \ : sign;\n                }\n                T t = a;\n                a = b,\
-    \ b = t;\n                t = c;\n                c = d, d = t;\n            \
-    \    sign = -sign;\n            }\n        }\n    }\n\n   public:\n    /**\n \
-    \    * @brief \u6574\u6570 n\n     */\n    constexpr Rational(T n = 0) : p(n),\
-    \ q(1) {}\n    /**\n     * @brief num / den (den != 0)\n     */\n    constexpr\
-    \ Rational(T num, T den) : p(num), q(den) {\n        assert(den != 0 && \"Rational:\
-    \ division by zero\");\n        if (q < 0) p = -p, q = -q;\n        T g = gcd_(p,\
-    \ q);\n        p /= g, q /= g;\n    }\n\n    /**\n     * @brief \u5206\u5B50\n\
-    \     */\n    constexpr T num() const { return p; }\n    /**\n     * @brief \u5206\
-    \u6BCD (\u6B63)\n     */\n    constexpr T den() const { return q; }\n\n    /**\n\
-    \     * @brief \u4EE5\u4E0B\u3067\u6700\u5927\u306E\u6574\u6570\n     */\n   \
-    \ constexpr T floor() const { return floor_div(p, q); }\n    /**\n     * @brief\
-    \ \u4EE5\u4E0A\u3067\u6700\u5C0F\u306E\u6574\u6570\n     */\n    constexpr T ceil()\
-    \ const { return -floor_div(-p, q); }\n    /**\n     * @brief \u6574\u6570\u304B\
-    \n     */\n    constexpr bool is_integer() const { return q == 1; }\n    /**\n\
-    \     * @brief double \u306B\u76F4\u3057\u305F\u5024\n     */\n    constexpr double\
-    \ to_double() const { return (double)p / (double)q; }\n    /**\n     * @brief\
-    \ long double \u306B\u76F4\u3057\u305F\u5024\n     */\n    constexpr long double\
-    \ to_long_double() const { return (long double)p / (long double)q; }\n    explicit\
-    \ constexpr operator double() const { return to_double(); }\n\n    /**\n     *\
-    \ @brief \u9006\u6570 (0 \u3067\u306A\u3044\u3053\u3068)\n     */\n    constexpr\
-    \ Rational inv() const {\n        assert(p != 0 && \"Rational: division by zero\"\
-    );\n        return p > 0 ? Rational(q, p, Raw{}) : Rational(-q, -p, Raw{});\n\
-    \    }\n    /**\n     * @brief \u7D76\u5BFE\u5024\n     */\n    constexpr Rational\
-    \ abs() const { return Rational(abs_(p), q, Raw{}); }\n\n    constexpr Rational\
-    \ operator+() const { return *this; }\n    constexpr Rational operator-() const\
-    \ { return Rational(-p, q, Raw{}); }\n\n    constexpr Rational& operator+=(const\
-    \ Rational& r) {\n        // p / q + r.p / r.q \u3092\u3001\u5206\u6BCD\u306E\
-    \ gcd \u3067\u5272\u3063\u3066\u304B\u3089\u901A\u5206\u3059\u308B\n        T\
-    \ g = gcd_(q, r.q);\n        T qg = q / g;\n        T t = p * (r.q / g) + r.p\
-    \ * qg;\n        T g2 = gcd_(t, g);\n        p = t / g2;\n        q = qg * (r.q\
-    \ / g2);\n        return *this;\n    }\n    constexpr Rational& operator-=(const\
+    \n#line 2 \"src/base/functions.hpp\"\n\n/**\n * @file functions.hpp\n * @brief\
+    \ \u6C4E\u7528\u95A2\u6570 (chmin, chmax \u306A\u3069)\n */\n\n#include <algorithm>\n\
+    #include <cmath>\n#include <iterator>\n#include <numeric>\n#include <type_traits>\n\
+    \ntemplate <typename T1, typename T2>\ninline constexpr bool chmin(T1& a, T2 b)\
+    \ {\n    if (a > b) {\n        a = b;\n        return true;\n    }\n    return\
+    \ false;\n}\n\ntemplate <typename T1, typename T2>\ninline constexpr bool chmax(T1&\
+    \ a, T2 b) {\n    if (a < b) {\n        a = b;\n        return true;\n    }\n\
+    \    return false;\n}\n\ninline constexpr long long max(const long long& t1, const\
+    \ long long& t2) {\n    return std::max<long long>(t1, t2);\n}\n\ninline constexpr\
+    \ long long min(const long long& t1, const long long& t2) {\n    return std::min<long\
+    \ long>(t1, t2);\n}\n\nusing std::abs;\nusing std::gcd;\nusing std::lcm;\nusing\
+    \ std::size;\n\ntemplate <typename T>\nconstexpr T extgcd(const T& a, const T&\
+    \ b, T& x, T& y) {\n    T d = a;\n    if (b != 0) {\n        d = extgcd(b, a %\
+    \ b, y, x);\n        y -= (a / b) * x;\n    } else {\n        x = 1;\n       \
+    \ y = 0;\n    }\n    return d;\n}\n\n/**\n * floor(a / b) (b != 0\u3001\u8CA0\u306E\
+    \u6570\u3082\u53EF)\n */\ntemplate <typename T1, typename T2>\ninline constexpr\
+    \ std::common_type_t<T1, T2> floordiv(T1 a, T2 b) {\n    return a / b - (a % b\
+    \ != 0 && (a < 0) != (b < 0));\n}\n/**\n * ceil(a / b) (b != 0\u3001\u8CA0\u306E\
+    \u6570\u3082\u53EF)\n */\ntemplate <typename T1, typename T2>\ninline constexpr\
+    \ std::common_type_t<T1, T2> ceildiv(T1 a, T2 b) {\n    return a / b + (a % b\
+    \ != 0 && (a < 0) == (b < 0));\n}\n\n/**\n * 0 <= x < a\n */\ninline constexpr\
+    \ bool inrange(long long x, long long a) {\n    return 0 <= x && x < a;\n}\n/**\n\
+    \ * a <= x < b\n */\ninline constexpr bool inrange(long long x, long long a, long\
+    \ long b) {\n    return a <= x && x < b;\n}\n/**\n * 0 <= x < a and 0 <= y < b\n\
+    \ */\ninline constexpr bool inrect(long long x, long long y, long long a, long\
+    \ long b) {\n    return 0 <= x && x < a && 0 <= y && y < b;\n}\n#line 16 \"src/math/rational.hpp\"\
+    \n\n/**\n * @brief \u6709\u7406\u6570 (\u5206\u6570)\n *\n * \u5E38\u306B\u65E2\
+    \u7D04\u3067\u3001\u5206\u6BCD\u306F\u6B63\u30020 \u306F 0/1\n * \u6F14\u7B97\u306E\
+    \u9014\u4E2D\u3067\u3082\u3001\u65E2\u7D04\u306B\u3057\u3066\u304B\u3089\u639B\
+    \u3051\u308B\u306E\u3067\u30AA\u30FC\u30D0\u30FC\u30D5\u30ED\u30FC\u3057\u306B\
+    \u304F\u3044\u3002\u6BD4\u8F03\u306F T \u304C 64 bit \u4EE5\u4E0B\u306A\u3089\
+    \ __int128 \u3067\u3001\u305D\u3046\u3067\u306A\u3051\u308C\u3070\u9023\u5206\u6570\
+    \u5C55\u958B\u3067\u884C\u3046\n * std::map \u3084 std::set \u306E\u30AD\u30FC\
+    \u306B\u4F7F\u3048\u308B\n * \u4F8B:\n * Rational<> a(1, 3), b(1, 6);\n * a +\
+    \ b;   // 1/2\n * a < b;   // false\n *\n * @tparam T \u6574\u6570\u578B (long\
+    \ long \u3084 __int128 \u306A\u3069)\n */\ntemplate <typename T = long long>\n\
+    class Rational {\n    T p, q;  // p / q (q > 0\u3001gcd(p, q) = 1)\n\n    static\
+    \ constexpr T abs_(T x) { return x < 0 ? -x : x; }\n    static constexpr T gcd_(T\
+    \ a, T b) {\n        a = abs_(a), b = abs_(b);\n        while (b != 0) {\n   \
+    \         T t = a % b;\n            a = b;\n            b = t;\n        }\n  \
+    \      return a;\n    }\n    struct Raw {};\n    // \u3059\u3067\u306B\u65E2\u7D04\
+    \u3067 q > 0 \u3068\u308F\u304B\u3063\u3066\u3044\u308B\u5834\u5408\n    constexpr\
+    \ Rational(T p, T q, Raw) : p(p), q(q) {}\n\n    // a / b \u3068 c / d (b, d >\
+    \ 0) \u3092\u6BD4\u3079\u3001\u5C0F\u3055\u3051\u308C\u3070\u8CA0\u3001\u7B49\u3057\
+    \u3051\u308C\u3070 0\u3001\u5927\u304D\u3051\u308C\u3070\u6B63\u3092\u8FD4\u3059\
+    \n    static constexpr int compare(T a, T b, T c, T d) {\n        if constexpr\
+    \ (sizeof(T) <= 8) {\n            __int128 x = (__int128)a * d, y = (__int128)c\
+    \ * b;\n            return x < y ? -1 : x > y ? 1\n                          \
+    \            : 0;\n        } else {\n            // \u6574\u6570\u90E8\u5206\u3092\
+    \u6BD4\u3079\u3001\u540C\u3058\u306A\u3089\u5C0F\u6570\u90E8\u5206\u306E\u9006\
+    \u6570\u3092\u6BD4\u3079\u308B (\u5927\u5C0F\u304C\u9006\u306B\u306A\u308B)\n\
+    \            int sign = 1;\n            while (true) {\n                T x =\
+    \ floordiv(a, b), y = floordiv(c, d);\n                if (x != y) return x <\
+    \ y ? -sign : sign;\n                a -= x * b, c -= y * d;\n               \
+    \ if (a == 0 || c == 0) {\n                    if (a == 0 && c == 0) return 0;\n\
+    \                    return a == 0 ? -sign : sign;\n                }\n      \
+    \          T t = a;\n                a = b, b = t;\n                t = c;\n \
+    \               c = d, d = t;\n                sign = -sign;\n            }\n\
+    \        }\n    }\n\n   public:\n    /**\n     * @brief \u6574\u6570 n\n     */\n\
+    \    constexpr Rational(T n = 0) : p(n), q(1) {}\n    /**\n     * @brief num /\
+    \ den (den != 0)\n     */\n    constexpr Rational(T num, T den) : p(num), q(den)\
+    \ {\n        assert(den != 0 && \"Rational: division by zero\");\n        if (q\
+    \ < 0) p = -p, q = -q;\n        T g = gcd_(p, q);\n        p /= g, q /= g;\n \
+    \   }\n\n    /**\n     * @brief \u5206\u5B50\n     */\n    constexpr T num() const\
+    \ { return p; }\n    /**\n     * @brief \u5206\u6BCD (\u6B63)\n     */\n    constexpr\
+    \ T den() const { return q; }\n\n    /**\n     * @brief \u4EE5\u4E0B\u3067\u6700\
+    \u5927\u306E\u6574\u6570\n     */\n    constexpr T floor() const { return floordiv(p,\
+    \ q); }\n    /**\n     * @brief \u4EE5\u4E0A\u3067\u6700\u5C0F\u306E\u6574\u6570\
+    \n     */\n    constexpr T ceil() const { return ceildiv(p, q); }\n    /**\n \
+    \    * @brief \u6574\u6570\u304B\n     */\n    constexpr bool is_integer() const\
+    \ { return q == 1; }\n    /**\n     * @brief double \u306B\u76F4\u3057\u305F\u5024\
+    \n     */\n    constexpr double to_double() const { return (double)p / (double)q;\
+    \ }\n    /**\n     * @brief long double \u306B\u76F4\u3057\u305F\u5024\n     */\n\
+    \    constexpr long double to_long_double() const { return (long double)p / (long\
+    \ double)q; }\n    explicit constexpr operator double() const { return to_double();\
+    \ }\n\n    /**\n     * @brief \u9006\u6570 (0 \u3067\u306A\u3044\u3053\u3068)\n\
+    \     */\n    constexpr Rational inv() const {\n        assert(p != 0 && \"Rational:\
+    \ division by zero\");\n        return p > 0 ? Rational(q, p, Raw{}) : Rational(-q,\
+    \ -p, Raw{});\n    }\n    /**\n     * @brief \u7D76\u5BFE\u5024\n     */\n   \
+    \ constexpr Rational abs() const { return Rational(abs_(p), q, Raw{}); }\n\n \
+    \   constexpr Rational operator+() const { return *this; }\n    constexpr Rational\
+    \ operator-() const { return Rational(-p, q, Raw{}); }\n\n    constexpr Rational&\
+    \ operator+=(const Rational& r) {\n        // p / q + r.p / r.q \u3092\u3001\u5206\
+    \u6BCD\u306E gcd \u3067\u5272\u3063\u3066\u304B\u3089\u901A\u5206\u3059\u308B\n\
+    \        T g = gcd_(q, r.q);\n        T qg = q / g;\n        T t = p * (r.q /\
+    \ g) + r.p * qg;\n        T g2 = gcd_(t, g);\n        p = t / g2;\n        q =\
+    \ qg * (r.q / g2);\n        return *this;\n    }\n    constexpr Rational& operator-=(const\
     \ Rational& r) { return *this += -r; }\n    constexpr Rational& operator*=(const\
     \ Rational& r) {\n        // \u639B\u3051\u308B\u524D\u306B\u3001\u5206\u5B50\u3068\
     \u76F8\u624B\u306E\u5206\u6BCD\u306E gcd \u3067\u5272\u308B\n        T g1 = gcd_(p,\
@@ -119,76 +146,74 @@ data:
     \ + 1)));\n        return is;\n    }\n};\n"
   code: "#pragma once\n\n/**\n * @file rational.hpp\n * @brief \u6709\u7406\u6570\n\
     \ */\n\n#include <cassert>\n#include <cstddef>\n#include <istream>\n#include <ostream>\n\
-    #include <string>\n#include <utility>\n\n/**\n * @brief \u6709\u7406\u6570 (\u5206\
-    \u6570)\n *\n * \u5E38\u306B\u65E2\u7D04\u3067\u3001\u5206\u6BCD\u306F\u6B63\u3002\
-    0 \u306F 0/1\n * \u6F14\u7B97\u306E\u9014\u4E2D\u3067\u3082\u3001\u65E2\u7D04\u306B\
-    \u3057\u3066\u304B\u3089\u639B\u3051\u308B\u306E\u3067\u30AA\u30FC\u30D0\u30FC\
-    \u30D5\u30ED\u30FC\u3057\u306B\u304F\u3044\u3002\u6BD4\u8F03\u306F T \u304C 64\
-    \ bit \u4EE5\u4E0B\u306A\u3089 __int128 \u3067\u3001\u305D\u3046\u3067\u306A\u3051\
-    \u308C\u3070\u9023\u5206\u6570\u5C55\u958B\u3067\u884C\u3046\n * std::map \u3084\
-    \ std::set \u306E\u30AD\u30FC\u306B\u4F7F\u3048\u308B\n * \u4F8B:\n * Rational<>\
-    \ a(1, 3), b(1, 6);\n * a + b;   // 1/2\n * a < b;   // false\n *\n * @tparam\
-    \ T \u6574\u6570\u578B (long long \u3084 __int128 \u306A\u3069)\n */\ntemplate\
-    \ <typename T = long long>\nclass Rational {\n    T p, q;  // p / q (q > 0\u3001\
-    gcd(p, q) = 1)\n\n    static constexpr T abs_(T x) { return x < 0 ? -x : x; }\n\
-    \    static constexpr T gcd_(T a, T b) {\n        a = abs_(a), b = abs_(b);\n\
-    \        while (b != 0) {\n            T t = a % b;\n            a = b;\n    \
-    \        b = t;\n        }\n        return a;\n    }\n    // \u5207\u308A\u6368\
-    \u3066\u9664\u7B97 (b > 0)\n    static constexpr T floor_div(T a, T b) { return\
-    \ a / b - (a % b < 0); }\n\n    struct Raw {};\n    // \u3059\u3067\u306B\u65E2\
-    \u7D04\u3067 q > 0 \u3068\u308F\u304B\u3063\u3066\u3044\u308B\u5834\u5408\n  \
-    \  constexpr Rational(T p, T q, Raw) : p(p), q(q) {}\n\n    // a / b \u3068 c\
-    \ / d (b, d > 0) \u3092\u6BD4\u3079\u3001\u5C0F\u3055\u3051\u308C\u3070\u8CA0\u3001\
-    \u7B49\u3057\u3051\u308C\u3070 0\u3001\u5927\u304D\u3051\u308C\u3070\u6B63\u3092\
-    \u8FD4\u3059\n    static constexpr int compare(T a, T b, T c, T d) {\n       \
-    \ if constexpr (sizeof(T) <= 8) {\n            __int128 x = (__int128)a * d, y\
-    \ = (__int128)c * b;\n            return x < y ? -1 : x > y ? 1\n            \
-    \                          : 0;\n        } else {\n            // \u6574\u6570\
-    \u90E8\u5206\u3092\u6BD4\u3079\u3001\u540C\u3058\u306A\u3089\u5C0F\u6570\u90E8\
-    \u5206\u306E\u9006\u6570\u3092\u6BD4\u3079\u308B (\u5927\u5C0F\u304C\u9006\u306B\
-    \u306A\u308B)\n            int sign = 1;\n            while (true) {\n       \
-    \         T x = floor_div(a, b), y = floor_div(c, d);\n                if (x !=\
-    \ y) return x < y ? -sign : sign;\n                a -= x * b, c -= y * d;\n \
-    \               if (a == 0 || c == 0) {\n                    if (a == 0 && c ==\
-    \ 0) return 0;\n                    return a == 0 ? -sign : sign;\n          \
-    \      }\n                T t = a;\n                a = b, b = t;\n          \
-    \      t = c;\n                c = d, d = t;\n                sign = -sign;\n\
-    \            }\n        }\n    }\n\n   public:\n    /**\n     * @brief \u6574\u6570\
-    \ n\n     */\n    constexpr Rational(T n = 0) : p(n), q(1) {}\n    /**\n     *\
-    \ @brief num / den (den != 0)\n     */\n    constexpr Rational(T num, T den) :\
-    \ p(num), q(den) {\n        assert(den != 0 && \"Rational: division by zero\"\
-    );\n        if (q < 0) p = -p, q = -q;\n        T g = gcd_(p, q);\n        p /=\
-    \ g, q /= g;\n    }\n\n    /**\n     * @brief \u5206\u5B50\n     */\n    constexpr\
-    \ T num() const { return p; }\n    /**\n     * @brief \u5206\u6BCD (\u6B63)\n\
-    \     */\n    constexpr T den() const { return q; }\n\n    /**\n     * @brief\
-    \ \u4EE5\u4E0B\u3067\u6700\u5927\u306E\u6574\u6570\n     */\n    constexpr T floor()\
-    \ const { return floor_div(p, q); }\n    /**\n     * @brief \u4EE5\u4E0A\u3067\
-    \u6700\u5C0F\u306E\u6574\u6570\n     */\n    constexpr T ceil() const { return\
-    \ -floor_div(-p, q); }\n    /**\n     * @brief \u6574\u6570\u304B\n     */\n \
-    \   constexpr bool is_integer() const { return q == 1; }\n    /**\n     * @brief\
-    \ double \u306B\u76F4\u3057\u305F\u5024\n     */\n    constexpr double to_double()\
-    \ const { return (double)p / (double)q; }\n    /**\n     * @brief long double\
-    \ \u306B\u76F4\u3057\u305F\u5024\n     */\n    constexpr long double to_long_double()\
-    \ const { return (long double)p / (long double)q; }\n    explicit constexpr operator\
-    \ double() const { return to_double(); }\n\n    /**\n     * @brief \u9006\u6570\
-    \ (0 \u3067\u306A\u3044\u3053\u3068)\n     */\n    constexpr Rational inv() const\
-    \ {\n        assert(p != 0 && \"Rational: division by zero\");\n        return\
-    \ p > 0 ? Rational(q, p, Raw{}) : Rational(-q, -p, Raw{});\n    }\n    /**\n \
-    \    * @brief \u7D76\u5BFE\u5024\n     */\n    constexpr Rational abs() const\
-    \ { return Rational(abs_(p), q, Raw{}); }\n\n    constexpr Rational operator+()\
-    \ const { return *this; }\n    constexpr Rational operator-() const { return Rational(-p,\
-    \ q, Raw{}); }\n\n    constexpr Rational& operator+=(const Rational& r) {\n  \
-    \      // p / q + r.p / r.q \u3092\u3001\u5206\u6BCD\u306E gcd \u3067\u5272\u3063\
-    \u3066\u304B\u3089\u901A\u5206\u3059\u308B\n        T g = gcd_(q, r.q);\n    \
-    \    T qg = q / g;\n        T t = p * (r.q / g) + r.p * qg;\n        T g2 = gcd_(t,\
-    \ g);\n        p = t / g2;\n        q = qg * (r.q / g2);\n        return *this;\n\
-    \    }\n    constexpr Rational& operator-=(const Rational& r) { return *this +=\
-    \ -r; }\n    constexpr Rational& operator*=(const Rational& r) {\n        // \u639B\
-    \u3051\u308B\u524D\u306B\u3001\u5206\u5B50\u3068\u76F8\u624B\u306E\u5206\u6BCD\
-    \u306E gcd \u3067\u5272\u308B\n        T g1 = gcd_(p, r.q), g2 = gcd_(r.p, q);\n\
-    \        p = (p / g1) * (r.p / g2);\n        q = (q / g2) * (r.q / g1);\n    \
-    \    return *this;\n    }\n    constexpr Rational& operator/=(const Rational&\
-    \ r) { return *this *= r.inv(); }\n\n    friend constexpr Rational operator+(Rational\
+    #include <string>\n#include <utility>\n\n#include \"../base/functions.hpp\"\n\n\
+    /**\n * @brief \u6709\u7406\u6570 (\u5206\u6570)\n *\n * \u5E38\u306B\u65E2\u7D04\
+    \u3067\u3001\u5206\u6BCD\u306F\u6B63\u30020 \u306F 0/1\n * \u6F14\u7B97\u306E\u9014\
+    \u4E2D\u3067\u3082\u3001\u65E2\u7D04\u306B\u3057\u3066\u304B\u3089\u639B\u3051\
+    \u308B\u306E\u3067\u30AA\u30FC\u30D0\u30FC\u30D5\u30ED\u30FC\u3057\u306B\u304F\
+    \u3044\u3002\u6BD4\u8F03\u306F T \u304C 64 bit \u4EE5\u4E0B\u306A\u3089 __int128\
+    \ \u3067\u3001\u305D\u3046\u3067\u306A\u3051\u308C\u3070\u9023\u5206\u6570\u5C55\
+    \u958B\u3067\u884C\u3046\n * std::map \u3084 std::set \u306E\u30AD\u30FC\u306B\
+    \u4F7F\u3048\u308B\n * \u4F8B:\n * Rational<> a(1, 3), b(1, 6);\n * a + b;   //\
+    \ 1/2\n * a < b;   // false\n *\n * @tparam T \u6574\u6570\u578B (long long \u3084\
+    \ __int128 \u306A\u3069)\n */\ntemplate <typename T = long long>\nclass Rational\
+    \ {\n    T p, q;  // p / q (q > 0\u3001gcd(p, q) = 1)\n\n    static constexpr\
+    \ T abs_(T x) { return x < 0 ? -x : x; }\n    static constexpr T gcd_(T a, T b)\
+    \ {\n        a = abs_(a), b = abs_(b);\n        while (b != 0) {\n           \
+    \ T t = a % b;\n            a = b;\n            b = t;\n        }\n        return\
+    \ a;\n    }\n    struct Raw {};\n    // \u3059\u3067\u306B\u65E2\u7D04\u3067 q\
+    \ > 0 \u3068\u308F\u304B\u3063\u3066\u3044\u308B\u5834\u5408\n    constexpr Rational(T\
+    \ p, T q, Raw) : p(p), q(q) {}\n\n    // a / b \u3068 c / d (b, d > 0) \u3092\u6BD4\
+    \u3079\u3001\u5C0F\u3055\u3051\u308C\u3070\u8CA0\u3001\u7B49\u3057\u3051\u308C\
+    \u3070 0\u3001\u5927\u304D\u3051\u308C\u3070\u6B63\u3092\u8FD4\u3059\n    static\
+    \ constexpr int compare(T a, T b, T c, T d) {\n        if constexpr (sizeof(T)\
+    \ <= 8) {\n            __int128 x = (__int128)a * d, y = (__int128)c * b;\n  \
+    \          return x < y ? -1 : x > y ? 1\n                                   \
+    \   : 0;\n        } else {\n            // \u6574\u6570\u90E8\u5206\u3092\u6BD4\
+    \u3079\u3001\u540C\u3058\u306A\u3089\u5C0F\u6570\u90E8\u5206\u306E\u9006\u6570\
+    \u3092\u6BD4\u3079\u308B (\u5927\u5C0F\u304C\u9006\u306B\u306A\u308B)\n      \
+    \      int sign = 1;\n            while (true) {\n                T x = floordiv(a,\
+    \ b), y = floordiv(c, d);\n                if (x != y) return x < y ? -sign :\
+    \ sign;\n                a -= x * b, c -= y * d;\n                if (a == 0 ||\
+    \ c == 0) {\n                    if (a == 0 && c == 0) return 0;\n           \
+    \         return a == 0 ? -sign : sign;\n                }\n                T\
+    \ t = a;\n                a = b, b = t;\n                t = c;\n            \
+    \    c = d, d = t;\n                sign = -sign;\n            }\n        }\n\
+    \    }\n\n   public:\n    /**\n     * @brief \u6574\u6570 n\n     */\n    constexpr\
+    \ Rational(T n = 0) : p(n), q(1) {}\n    /**\n     * @brief num / den (den !=\
+    \ 0)\n     */\n    constexpr Rational(T num, T den) : p(num), q(den) {\n     \
+    \   assert(den != 0 && \"Rational: division by zero\");\n        if (q < 0) p\
+    \ = -p, q = -q;\n        T g = gcd_(p, q);\n        p /= g, q /= g;\n    }\n\n\
+    \    /**\n     * @brief \u5206\u5B50\n     */\n    constexpr T num() const { return\
+    \ p; }\n    /**\n     * @brief \u5206\u6BCD (\u6B63)\n     */\n    constexpr T\
+    \ den() const { return q; }\n\n    /**\n     * @brief \u4EE5\u4E0B\u3067\u6700\
+    \u5927\u306E\u6574\u6570\n     */\n    constexpr T floor() const { return floordiv(p,\
+    \ q); }\n    /**\n     * @brief \u4EE5\u4E0A\u3067\u6700\u5C0F\u306E\u6574\u6570\
+    \n     */\n    constexpr T ceil() const { return ceildiv(p, q); }\n    /**\n \
+    \    * @brief \u6574\u6570\u304B\n     */\n    constexpr bool is_integer() const\
+    \ { return q == 1; }\n    /**\n     * @brief double \u306B\u76F4\u3057\u305F\u5024\
+    \n     */\n    constexpr double to_double() const { return (double)p / (double)q;\
+    \ }\n    /**\n     * @brief long double \u306B\u76F4\u3057\u305F\u5024\n     */\n\
+    \    constexpr long double to_long_double() const { return (long double)p / (long\
+    \ double)q; }\n    explicit constexpr operator double() const { return to_double();\
+    \ }\n\n    /**\n     * @brief \u9006\u6570 (0 \u3067\u306A\u3044\u3053\u3068)\n\
+    \     */\n    constexpr Rational inv() const {\n        assert(p != 0 && \"Rational:\
+    \ division by zero\");\n        return p > 0 ? Rational(q, p, Raw{}) : Rational(-q,\
+    \ -p, Raw{});\n    }\n    /**\n     * @brief \u7D76\u5BFE\u5024\n     */\n   \
+    \ constexpr Rational abs() const { return Rational(abs_(p), q, Raw{}); }\n\n \
+    \   constexpr Rational operator+() const { return *this; }\n    constexpr Rational\
+    \ operator-() const { return Rational(-p, q, Raw{}); }\n\n    constexpr Rational&\
+    \ operator+=(const Rational& r) {\n        // p / q + r.p / r.q \u3092\u3001\u5206\
+    \u6BCD\u306E gcd \u3067\u5272\u3063\u3066\u304B\u3089\u901A\u5206\u3059\u308B\n\
+    \        T g = gcd_(q, r.q);\n        T qg = q / g;\n        T t = p * (r.q /\
+    \ g) + r.p * qg;\n        T g2 = gcd_(t, g);\n        p = t / g2;\n        q =\
+    \ qg * (r.q / g2);\n        return *this;\n    }\n    constexpr Rational& operator-=(const\
+    \ Rational& r) { return *this += -r; }\n    constexpr Rational& operator*=(const\
+    \ Rational& r) {\n        // \u639B\u3051\u308B\u524D\u306B\u3001\u5206\u5B50\u3068\
+    \u76F8\u624B\u306E\u5206\u6BCD\u306E gcd \u3067\u5272\u308B\n        T g1 = gcd_(p,\
+    \ r.q), g2 = gcd_(r.p, q);\n        p = (p / g1) * (r.p / g2);\n        q = (q\
+    \ / g2) * (r.q / g1);\n        return *this;\n    }\n    constexpr Rational& operator/=(const\
+    \ Rational& r) { return *this *= r.inv(); }\n\n    friend constexpr Rational operator+(Rational\
     \ a, const Rational& b) { return a += b; }\n    friend constexpr Rational operator-(Rational\
     \ a, const Rational& b) { return a -= b; }\n    friend constexpr Rational operator*(Rational\
     \ a, const Rational& b) { return a *= b; }\n    friend constexpr Rational operator/(Rational\
@@ -222,11 +247,12 @@ data:
     \        if (pos == std::string::npos)\n            r = Rational(parse(s));\n\
     \        else\n            r = Rational(parse(s.substr(0, pos)), parse(s.substr(pos\
     \ + 1)));\n        return is;\n    }\n};\n"
-  dependsOn: []
+  dependsOn:
+  - src/base/functions.hpp
   isVerificationFile: false
   path: src/math/rational.hpp
   requiredBy: []
-  timestamp: '2026-10-14 16:39:21+09:00'
+  timestamp: '2026-10-18 00:37:06+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/rational.test.cpp

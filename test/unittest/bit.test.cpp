@@ -1,16 +1,18 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
-// bit.hpp の関数を愚直な実装とランダムに比較する
+// bit.hpp の関数と列挙を愚直な実装とランダムに比較する
 // C++17 (__builtin_* で実装) と C++20 (<bit> を呼ぶ) のどちらでも同じ結果になる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../src/utility/bit.hpp"
 
+#include <algorithm>
 #include <iostream>
 #include <limits>
 #include <random>
 #include <string>
 #include <type_traits>
+#include <vector>
 
 bool ok = true;
 
@@ -77,6 +79,63 @@ int main() {
         check(bit_width(a) == bw, "bit_width");
         if (a <= (1LL << 62)) check(bit_ceil(a) == ceil, "bit_ceil");
         check(bit_floor(a) == floor, "bit_floor");
+    }
+
+    // subsets / supersets / bits / combinations_mask を、すべての値を調べる愚直な方法と比べる
+    for (int rep = 0; rep < 300 && ok; rep++) {
+        int n = rng() % 9;
+        long long mask = (long long)(rng() % (1ULL << n));
+        std::vector<long long> sub, sup, pos, got;
+        for (long long s = (1LL << n) - 1; s >= 0; s--) {
+            if ((s & mask) == s) sub.push_back(s);  // 降順
+        }
+        for (long long s = 0; s < (1LL << n); s++) {
+            if ((s & mask) == mask) sup.push_back(s);  // 昇順
+        }
+        for (int i = 0; i < n; i++) {
+            if (mask >> i & 1) pos.push_back(i);
+        }
+        got.clear();
+        for (long long s : subsets(mask)) got.push_back(s);
+        check(got == sub, "subsets");
+        got.clear();
+        for (long long s : supersets(mask, n)) got.push_back(s);
+        check(got == sup, "supersets");
+        got.clear();
+        for (long long i : bits(mask)) got.push_back(i);
+        check(got == pos, "bits");
+        for (int k = 0; k <= n + 1; k++) {
+            std::vector<long long> comb;
+            for (long long s = 0; s < (1LL << n); s++) {
+                if (__builtin_popcountll(s) == k) comb.push_back(s);
+            }
+            got.clear();
+            for (long long s : combinations_mask(n, k)) got.push_back(s);
+            check(got == comb, "combinations_mask");
+        }
+    }
+    {
+        // 大きいビット幅と境界
+        long long cnt = 0, last = -1;
+        for (long long s : combinations_mask(62, 61)) cnt++, last = s;
+        check(cnt == 62 && last == (1LL << 62) - 2, "combinations_mask(62, 61)");
+        cnt = 0;
+        for (long long s : supersets((1LL << 62) - 2, 62)) cnt += s;
+        check(cnt == 2 * ((1LL << 62) - 2) + 1, "supersets 62 ビット");
+        std::vector<long long> got;
+        for (long long i : bits(std::numeric_limits<long long>::max())) got.push_back(i);
+        check((long long)got.size() == 63 && got.back() == 62, "bits(最大値)");
+        got.clear();
+        for (long long s : subsets(0)) got.push_back(s);
+        check(got == std::vector<long long>{0}, "subsets(0)");
+        // constexpr でも使える
+        constexpr long long sum = [] {
+            long long r = 0;
+            for (long long s : subsets(0b1011)) r += s;
+            for (long long i : bits(0b1011)) r += i;
+            return r;
+        }();
+        static_assert(sum == 44 + 4);
     }
 
     // 0 のときは C++20 の <bit> と同じ値

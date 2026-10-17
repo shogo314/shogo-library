@@ -12,6 +12,9 @@ popcount(13);           // 3
 countl_zero(1);         // 63
 countr_zero(8);         // 3
 hamming_distance(5, 3);  // 2 (101 と 011)
+for (long long s : subsets(0b101)) { }       // 5, 4, 1, 0
+for (long long i : bits(0b10110)) { }        // 1, 2, 4
+for (long long s : combinations_mask(4, 2)) { }  // 3, 5, 6, 9, 10, 12
 ```
 
 ## 関数
@@ -31,7 +34,28 @@ hamming_distance(5, 3);  // 2 (101 と 011)
 | `bit_width(a)` | `a` を表すのに必要なビット数 | $O(1)$ |
 | `hamming_distance(a, b)` | `a` と `b` でビットが異なる位置の数 (`popcount(a ^ b)`) | $O(1)$ |
 
+## 列挙
+
+範囲 for で使える列挙です。値はどれも `long long` で、`constexpr` の中でも使えます。
+
+| 関数 | 列挙するもの | 計算量 (全体) |
+|---|---|---|
+| `subsets(mask)` | `mask` の部分集合を `mask` から 0 まで降順に (0 と `mask` を含む) | $O(2^{\mathrm{popcount}(mask)})$ |
+| `supersets(mask, n)` | $n$ ビットの集合のうち `mask` を含むものを `mask` から昇順に ($2^n - 1$ を含む)。$n \le 62$ | $O(2^{n - \mathrm{popcount}(mask)})$ |
+| `bits(mask)` | `mask` の立っているビットの位置を昇順に | $O(\mathrm{popcount}(mask))$ |
+| `combinations_mask(n, k)` | $n$ ビットの集合のうち、ちょうど $k$ 個のビットが立つものを昇順に (Gosper's hack)。$n \le 62$、$k > n$ なら何も列挙しない | $O(\binom{n}{k})$ |
+
+すべての集合について部分集合を列挙すると、全体で $O(3^n)$ です。
+
+```cpp
+// dp[S] = S を 2 つに分けたときの最小値
+for (long long S = 0; S < (1LL << n); S++) {
+    for (long long T : subsets(S)) chmin(dp[S], cost[T] + cost[S ^ T]);
+}
+```
+
 ## 関連
+
 
 - 文字列や配列のハミング距離は [文字列アルゴリズム](../string/string.hpp) の `hamming_distance`
 - 2 進数以外の桁への変換は [vector に対する演算子と関数](vector_func.hpp) の `radix_convert`

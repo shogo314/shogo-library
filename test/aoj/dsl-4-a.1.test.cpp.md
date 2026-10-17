@@ -157,9 +157,21 @@ data:
     \u3002\u306A\u3051\u308C\u3070 -1\ntemplate <class C, typename U>\ninline constexpr\
     \ long long index(const C& v, const U& x) {\n    auto it = find(v, x);\n    if\
     \ (it == v.end()) return -1;\n    return static_cast<long long>(std::distance(v.begin(),\
-    \ it));\n}\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
-    inline constexpr mem_value_type<C> mex(const C& v) {\n    std::vector<bool> b(v.size()\
-    \ + 1);\n    for (const auto& a : v) {\n        if (0 <= a && static_cast<std::size_t>(a)\
+    \ it));\n}\n\n// f(x) \u304C true \u306B\u306A\u308B\u6700\u521D\u306E\u4F4D\u7F6E\
+    \u3002\u306A\u3051\u308C\u3070 -1\ntemplate <class C, class F>\ninline constexpr\
+    \ long long index_if(const C& v, F f) {\n    long long i = 0;\n    for (const\
+    \ auto& e : v) {\n        if (f(e)) return i;\n        i++;\n    }\n    return\
+    \ -1;\n}\n\n// f(x) \u304C true \u306B\u306A\u308B\u4F4D\u7F6E\u3092\u6607\u9806\
+    \u306B\u4E26\u3079\u305F\u3082\u306E\ntemplate <class C, class F>\ninline std::vector<long\
+    \ long> indices_if(const C& v, F f) {\n    std::vector<long long> res;\n    long\
+    \ long i = 0;\n    for (const auto& e : v) {\n        if (f(e)) res.push_back(i);\n\
+    \        i++;\n    }\n    return res;\n}\n\n// f(x) \u304C true \u306B\u306A\u308B\
+    \u8981\u7D20\u306E\u500B\u6570\ntemplate <class C, class F>\ninline constexpr\
+    \ long long count_if(const C& v, F f) {\n    long long res = 0;\n    for (const\
+    \ auto& e : v) {\n        if (f(e)) res++;\n    }\n    return res;\n}\n\ntemplate\
+    \ <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\ninline constexpr\
+    \ mem_value_type<C> mex(const C& v) {\n    std::vector<bool> b(v.size() + 1);\n\
+    \    for (const auto& a : v) {\n        if (0 <= a && static_cast<std::size_t>(a)\
     \ < b.size()) {\n            b[a] = true;\n        }\n    }\n    mem_value_type<C>\
     \ ret = 0;  // b \u306E\u8981\u7D20\u6570\u306F v \u3088\u308A 1 \u591A\u3044\u306E\
     \u3067\u3001\u4E0B\u306E\u30EB\u30FC\u30D7\u3067\u5FC5\u305A\u898B\u3064\u304B\
@@ -288,7 +300,7 @@ data:
   isVerificationFile: true
   path: test/aoj/dsl-4-a.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-17 23:17:18+09:00'
+  timestamp: '2026-10-18 01:03:35+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/dsl-4-a.1.test.cpp

@@ -186,9 +186,21 @@ data:
     \u3002\u306A\u3051\u308C\u3070 -1\ntemplate <class C, typename U>\ninline constexpr\
     \ long long index(const C& v, const U& x) {\n    auto it = find(v, x);\n    if\
     \ (it == v.end()) return -1;\n    return static_cast<long long>(std::distance(v.begin(),\
-    \ it));\n}\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
-    inline constexpr mem_value_type<C> mex(const C& v) {\n    std::vector<bool> b(v.size()\
-    \ + 1);\n    for (const auto& a : v) {\n        if (0 <= a && static_cast<std::size_t>(a)\
+    \ it));\n}\n\n// f(x) \u304C true \u306B\u306A\u308B\u6700\u521D\u306E\u4F4D\u7F6E\
+    \u3002\u306A\u3051\u308C\u3070 -1\ntemplate <class C, class F>\ninline constexpr\
+    \ long long index_if(const C& v, F f) {\n    long long i = 0;\n    for (const\
+    \ auto& e : v) {\n        if (f(e)) return i;\n        i++;\n    }\n    return\
+    \ -1;\n}\n\n// f(x) \u304C true \u306B\u306A\u308B\u4F4D\u7F6E\u3092\u6607\u9806\
+    \u306B\u4E26\u3079\u305F\u3082\u306E\ntemplate <class C, class F>\ninline std::vector<long\
+    \ long> indices_if(const C& v, F f) {\n    std::vector<long long> res;\n    long\
+    \ long i = 0;\n    for (const auto& e : v) {\n        if (f(e)) res.push_back(i);\n\
+    \        i++;\n    }\n    return res;\n}\n\n// f(x) \u304C true \u306B\u306A\u308B\
+    \u8981\u7D20\u306E\u500B\u6570\ntemplate <class C, class F>\ninline constexpr\
+    \ long long count_if(const C& v, F f) {\n    long long res = 0;\n    for (const\
+    \ auto& e : v) {\n        if (f(e)) res++;\n    }\n    return res;\n}\n\ntemplate\
+    \ <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\ninline constexpr\
+    \ mem_value_type<C> mex(const C& v) {\n    std::vector<bool> b(v.size() + 1);\n\
+    \    for (const auto& a : v) {\n        if (0 <= a && static_cast<std::size_t>(a)\
     \ < b.size()) {\n            b[a] = true;\n        }\n    }\n    mem_value_type<C>\
     \ ret = 0;  // b \u306E\u8981\u7D20\u6570\u306F v \u3088\u308A 1 \u591A\u3044\u306E\
     \u3067\u3001\u4E0B\u306E\u30EB\u30FC\u30D7\u3067\u5FC5\u305A\u898B\u3064\u304B\
@@ -281,9 +293,21 @@ data:
     \u3002\u306A\u3051\u308C\u3070 -1\ntemplate <class C, typename U>\ninline constexpr\
     \ long long index(const C& v, const U& x) {\n    auto it = find(v, x);\n    if\
     \ (it == v.end()) return -1;\n    return static_cast<long long>(std::distance(v.begin(),\
-    \ it));\n}\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
-    inline constexpr mem_value_type<C> mex(const C& v) {\n    std::vector<bool> b(v.size()\
-    \ + 1);\n    for (const auto& a : v) {\n        if (0 <= a && static_cast<std::size_t>(a)\
+    \ it));\n}\n\n// f(x) \u304C true \u306B\u306A\u308B\u6700\u521D\u306E\u4F4D\u7F6E\
+    \u3002\u306A\u3051\u308C\u3070 -1\ntemplate <class C, class F>\ninline constexpr\
+    \ long long index_if(const C& v, F f) {\n    long long i = 0;\n    for (const\
+    \ auto& e : v) {\n        if (f(e)) return i;\n        i++;\n    }\n    return\
+    \ -1;\n}\n\n// f(x) \u304C true \u306B\u306A\u308B\u4F4D\u7F6E\u3092\u6607\u9806\
+    \u306B\u4E26\u3079\u305F\u3082\u306E\ntemplate <class C, class F>\ninline std::vector<long\
+    \ long> indices_if(const C& v, F f) {\n    std::vector<long long> res;\n    long\
+    \ long i = 0;\n    for (const auto& e : v) {\n        if (f(e)) res.push_back(i);\n\
+    \        i++;\n    }\n    return res;\n}\n\n// f(x) \u304C true \u306B\u306A\u308B\
+    \u8981\u7D20\u306E\u500B\u6570\ntemplate <class C, class F>\ninline constexpr\
+    \ long long count_if(const C& v, F f) {\n    long long res = 0;\n    for (const\
+    \ auto& e : v) {\n        if (f(e)) res++;\n    }\n    return res;\n}\n\ntemplate\
+    \ <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\ninline constexpr\
+    \ mem_value_type<C> mex(const C& v) {\n    std::vector<bool> b(v.size() + 1);\n\
+    \    for (const auto& a : v) {\n        if (0 <= a && static_cast<std::size_t>(a)\
     \ < b.size()) {\n            b[a] = true;\n        }\n    }\n    mem_value_type<C>\
     \ ret = 0;  // b \u306E\u8981\u7D20\u6570\u306F v \u3088\u308A 1 \u591A\u3044\u306E\
     \u3067\u3001\u4E0B\u306E\u30EB\u30FC\u30D7\u3067\u5FC5\u305A\u898B\u3064\u304B\
@@ -299,7 +323,7 @@ data:
   isVerificationFile: false
   path: src/utility/container_func.hpp
   requiredBy: []
-  timestamp: '2026-10-15 23:11:36+09:00'
+  timestamp: '2026-10-18 01:03:35+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/container-func-member.test.cpp
@@ -331,6 +355,7 @@ auto w = sorted(v);            // {1, 1, 3, 4, 5}
 int s = sum(v), mx = max(v);   // 14, 5
 long long i = bisect_left(w, 3);  // 2
 bool b = contains(v, 4);       // true
+auto odd = indices_if(v, [](int x) { return x % 2 == 1; });  // {0, 1, 3, 4}
 ```
 
 ## 並べ替え
@@ -364,9 +389,23 @@ bool b = contains(v, 4);       // true
 | `count(c, x)` | `x` の個数 | $O(n)$ (`multiset` などでは $O(\log n + k)$、$k$ は個数) |
 | `contains(c, x)` | `x` を含むか | `find` と同じ |
 | `index(c, x)` | `x` が最初に現れる位置 (`long long`。なければ `-1`) | $O(n)$ |
+| `index_if(c, f)` | `f(x)` が `true` になる最初の位置 (`long long`。なければ `-1`) | $O(n)$ |
+| `indices_if(c, f)` | `f(x)` が `true` になる位置を昇順に並べたもの (`std::vector<long long>`) | $O(n)$ |
+| `count_if(c, f)` | `f(x)` が `true` になる要素の個数 (`long long`) | $O(n)$ |
 | `lower_bound(c, x)` / `upper_bound(c, x)` | イテレータを返す | $O(\log n)$ |
 | `bisect_left(c, x)` / `bisect_right(c, x)` | 添字を `long long` で返す (Python の `bisect`) | $O(\log n)$ (`set` などでは位置を数えるので $O(n)$) |
 
+位置は、`set` などでは先頭から数えた順番です。
+
+条件を満たす候補が 1 つだけのときに選ぶ、といった処理は `indices_if` で書けます。
+
+```cpp
+// t と長さが同じで 1 文字だけ違う名前が、ちょうど 1 つあればその位置
+auto cand = indices_if(names, [&](const std::string& s) { return s.size() == t.size() && hamming_distance(s, t) == 1; });
+if (cand.size() == 1) vote[cand[0]]++;
+```
+
 ## 関連
 
+- `hamming_distance` は [文字列アルゴリズム](../string/string.hpp)
 - `std::vector` に対する演算子と関数は [vector に対する演算子と関数](vector_func.hpp)

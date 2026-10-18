@@ -56,6 +56,7 @@ C++20 の `<bit>` にはない関数です。ビットの位置 `i` は $0 \le i
 | `gray_code(a)` | グレイコード `a ^ (a >> 1)`。隣り合う整数で 1 ビットだけ変わる | $O(1)$ |
 | `inverse_gray_code(g)` | グレイコードから元の値に戻す | $O(\log 64)$ |
 | `kth_set_bit(mask, k)` | `mask` の立っているビットのうち、下から $k$ 番目 (0-indexed) の位置 ($k <$ `popcount(mask)`) | $O(\log 64)$ |
+| `next_combination_mask(s)` | 立っているビットの数が `s` と同じで、`s` より大きい最小の値 (Gosper's hack)。`long long` に収まらなければ -1。$s > 0$ | $O(1)$ |
 | `xor_upto(n)` | $0 \oplus 1 \oplus \cdots \oplus n$ | $O(1)$ |
 | `count_bit_upto(n, i)` | $0$ 以上 $n$ 以下の整数のうち、`i` ビット目が立っているものの数 | $O(1)$ |
 
@@ -79,6 +80,8 @@ for (long long i = 0; i < 63; i++) sum += count_bit_upto(n, i);
 | `add_one(mask, n)` | $n$ ビットのうち `mask` に含まれない位置 $i$ を昇順に、$i$ と `mask | 1 << i` の組 (`std::pair<long long, long long>`) で | $O(n - \mathrm{popcount}(mask))$ |
 | `remove_one(mask)` | `mask` に含まれる位置 $i$ を昇順に、$i$ と `mask ^ 1 << i` の組 (`std::pair<long long, long long>`) で | $O(\mathrm{popcount}(mask))$ |
 | `combinations_mask(n, k)` | $n$ ビットの集合のうち、ちょうど $k$ 個のビットが立つものを昇順に (Gosper's hack)。$n \le 62$、$k > n$ なら何も列挙しない | $O(\binom{n}{k})$ |
+| `subsets_of_size(mask, k)` | `mask` の部分集合のうち、ちょうど $k$ 個のビットが立つものを昇順に。$k >$ `popcount(mask)` なら何も列挙しない | $O(k \binom{\mathrm{popcount}(mask)}{k})$ |
+| `subset_pairs(n)` | $n$ ビットのすべての集合 $S$ と、その部分集合 $T$ の組 $(S, T)$ (`std::pair<long long, long long>`) を、$S$ は 0 から昇順、各 $S$ の中で $T$ は $S$ から 0 まで降順に。$n \le 62$ | $O(3^n)$ |
 
 `add_one` と `remove_one` は、構造化束縛で位置と集合を受け取れます。巡回セールスマン問題のように、1 つずつ要素を足していく bit DP の遷移に使えます。
 
@@ -98,6 +101,8 @@ for (long long S = 0; S < (1LL << n); S++) {
 for (long long S = 0; S < (1LL << n); S++) {
     for (long long T : subsets(S)) chmin(dp[S], cost[T] + cost[S ^ T]);
 }
+// subset_pairs で 1 重のループにしても同じ
+for (auto [S, T] : subset_pairs(n)) chmin(dp[S], cost[T] + cost[S ^ T]);
 ```
 
 ## 関連

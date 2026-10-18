@@ -215,6 +215,27 @@ int main() {
         gp.clear();
         for (auto [i, t] : remove_one(mask)) gp.emplace_back(i, t);
         check(gp == rem, "remove_one");
+        // subsets_of_size: mask の部分集合で要素数 k のもの (昇順)
+        for (int k = 0; k <= n + 1; k++) {
+            std::vector<long long> want;
+            for (long long s = 0; s < (1LL << n); s++) {
+                if ((s & mask) == s && __builtin_popcountll(s) == k) want.push_back(s);
+            }
+            got.clear();
+            for (long long s : subsets_of_size(mask, k)) got.push_back(s);
+            check(got == want, "subsets_of_size");
+        }
+        // next_combination_mask: 立っているビットの数が同じで次に大きい値
+        if (mask > 0) {
+            long long want = -1;
+            for (long long s = mask + 1; s < (1LL << 12); s++) {
+                if (__builtin_popcountll(s) == __builtin_popcountll(mask)) {
+                    want = s;
+                    break;
+                }
+            }
+            check(next_combination_mask(mask) == want, "next_combination_mask");
+        }
         for (int k = 0; k <= n + 1; k++) {
             std::vector<long long> comb;
             for (long long s = 0; s < (1LL << n); s++) {
@@ -260,13 +281,39 @@ int main() {
     }
 
     {
-        // 63 ビットの境界と決まった値
+        // subset_pairs: すべての (S, T ⊆ S) を S の昇順、T の降順に
+        for (int n = 0; n <= 6 && ok; n++) {
+            std::vector<std::pair<long long, long long>> want, gp;
+            for (long long s = 0; s < (1LL << n); s++) {
+                for (long long t = s; t >= 0; t--) {
+                    if ((t & s) == t) want.emplace_back(s, t);
+                }
+            }
+            for (auto [s, t] : subset_pairs(n)) gp.emplace_back(s, t);
+            check(gp == want, "subset_pairs");
+        }
+        // 大きいビット幅と境界
         long long mx = std::numeric_limits<long long>::max();
+        check(next_combination_mask(mx) == -1 && next_combination_mask(1LL << 62) == -1, "next_combination_mask 上限");
+        check(next_combination_mask((1LL << 62) - 2) == (1LL << 62) + (1LL << 60) - 1, "next_combination_mask 62 ビット");
+        std::vector<long long> got;
+        for (long long s : subsets_of_size(mx, 62)) got.push_back(s);
+        check((long long)got.size() == 63 && got.front() == (1LL << 62) - 1 && got.back() == mx - 1, "subsets_of_size 63 ビット");
+        got.clear();
+        for (long long s : subsets_of_size(0b1010, 0)) got.push_back(s);
+        check(got == std::vector<long long>{0}, "subsets_of_size(k = 0)");
         check(rotate_left(1, 1, 63) == 2 && rotate_left(1LL << 62, 1, 63) == 1 && rotate_right(1, 1, 63) == (1LL << 62), "rotate 63 ビット");
         check(reverse_bits(1, 63) == (1LL << 62) && inverse_gray_code(gray_code(mx)) == mx, "63 ビット");
         check(kth_set_bit(mx, 62) == 62 && kth_set_bit(1LL << 62, 0) == 62, "kth_set_bit 63 ビット");
         check(lltob(0) == "0" && lltob(5) == "101" && lltob(5, 5) == "00101" && lltob(0, 3, '#', '.') == "...", "lltob 決まった値");
         check(msb(0) == -1 && lsb(0) == -1 && lowbit(0) == 0 && msb(mx) == 62, "msb / lsb / lowbit 境界");
+        constexpr long long sum = [] {
+            long long r = 0;
+            for (long long s : subsets_of_size(0b1101, 2)) r += s;  // 0101, 1001, 1100
+            for (auto [s, t] : subset_pairs(2)) r += s * 10 + t;   // 3^2 = 9 組
+            return r;
+        }();
+        static_assert(sum == (5 + 9 + 12) + (0 + 11 + 10 + 22 + 20 + 33 + 32 + 31 + 30));
         static_assert(has_single_bit(64) && !has_single_bit(0) && !has_single_bit(6));
         static_assert(gray_code(5) == 7 && inverse_gray_code(7) == 5 && rotate_left(0b0011, 3, 4) == 0b1001);
     }

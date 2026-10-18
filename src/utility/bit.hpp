@@ -368,6 +368,16 @@ inline constexpr auto bits(long long mask) {
     return Bits{mask};
 }
 /**
+ * @brief s と立っているビットの数が同じで、s より大きい最小の値 (Gosper's hack)
+ * long long に収まらなければ -1
+ */
+inline constexpr long long next_combination_mask(long long s) {
+    assert(s > 0);
+    unsigned long long u = s, c = u & -u, r = u + c;
+    unsigned long long t = (((r ^ u) >> 2) / c) | r;
+    return t > 0x7fffffffffffffffULL ? -1 : (long long)t;
+}
+/**
  * @brief n ビットの集合のうち、ちょうど k 個のビットが立つものを昇順に列挙する (Gosper's hack) 全体で O(C(n, k))
  * k > n なら何も列挙しない
  */
@@ -376,9 +386,33 @@ inline constexpr auto combinations_mask(long long n, long long k) {
     long long limit = 1LL << n;
     return internal_bit::make_bit_enumeration(k > n ? -1 : (1LL << k) - 1, k > n, [limit](long long s) {
         if (s == 0) return -1LL;  // k = 0 のときは 0 だけ
-        long long c = s & -s, r = s + c;
-        long long t = (((r ^ s) >> 2) / c) | r;
+        long long t = next_combination_mask(s);
         return t >= limit ? -1 : t;
+    });
+}
+/**
+ * @brief mask の部分集合のうち、ちょうど k 個のビットが立つものを昇順に列挙する 1 つあたり O(k)
+ * k > popcount(mask) なら何も列挙しない
+ */
+inline constexpr auto subsets_of_size(long long mask, long long k) {
+    assert(mask >= 0 && 0 <= k);
+    // mask の下位 cnt 個の立っているビット
+    auto lowest = [mask](long long cnt) {
+        long long res = 0, rest = mask;
+        for (long long j = 0; j < cnt; j++) {
+            res |= rest & -rest;
+            rest &= rest - 1;
+        }
+        return res;
+    };
+    bool empty = k > popcount(mask);
+    return internal_bit::make_bit_enumeration(empty ? -1 : lowest(k), empty, [mask, k, lowest](long long s) {
+        if (s == 0) return -1LL;  // k = 0 のときは 0 だけ
+        // mask の外のビットを 1 とみなして最下位ビットを足すと、繰り上がりが mask の中だけを進む
+        unsigned long long c = s & -s, r = (((unsigned long long)s | ~(unsigned long long)mask) + c) & (unsigned long long)mask;
+        if (r == 0) return -1LL;  // 繰り上がりが mask の最上位を越えた
+        // 繰り上がりで消えたビットを mask の下位に詰め直す
+        return (long long)r | lowest(k - popcount((long long)r));
     });
 }
 
@@ -419,4 +453,32 @@ inline constexpr internal_bit::ToggleOneBit add_one(long long mask, long long n)
 inline constexpr internal_bit::ToggleOneBit remove_one(long long mask) {
     assert(mask >= 0);
     return {mask, mask};
+}
+
+/**
+ * @brief n ビットのすべての集合 S と、その部分集合 T の組 (S, T) を列挙する 全体で O(3^n)
+ * S は 0 から昇順、各 S の中で T は S から 0 まで降順
+ */
+inline constexpr auto subset_pairs(long long n) {
+    assert(0 <= n && n <= 62);
+    struct SubsetPairs {
+        long long n;
+        struct iterator {
+            long long s, t;
+            constexpr std::pair<long long, long long> operator*() const { return {s, t}; }
+            constexpr iterator& operator++() {
+                if (t == 0) {
+                    t = ++s;
+                } else {
+                    t = (t - 1) & s;
+                }
+                return *this;
+            }
+            constexpr bool operator!=(const iterator& other) const { return s != other.s || t != other.t; }
+            constexpr bool operator==(const iterator& other) const { return s == other.s && t == other.t; }
+        };
+        constexpr iterator begin() const { return {0, 0}; }
+        constexpr iterator end() const { return {1LL << n, 1LL << n}; }
+    };
+    return SubsetPairs{n};
 }

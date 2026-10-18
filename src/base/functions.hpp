@@ -10,6 +10,9 @@
 #include <iterator>
 #include <limits>
 #include <numeric>
+#if __cplusplus >= 202002L
+#include <ranges>
+#endif
 #include <type_traits>
 #include <utility>
 
@@ -67,6 +70,21 @@ inline constexpr std::enable_if_t<std::is_floating_point_v<T>, T> midpoint(T a, 
 template <typename T>
 inline constexpr std::enable_if_t<std::is_object_v<T>, T*> midpoint(T* a, T* b) noexcept {
     return a + (b - a) / 2;
+}
+#endif
+
+/**
+ * 要素数を long long で返す (std::ssize の long long 版)
+ */
+#if __cplusplus >= 202002L
+template <std::ranges::sized_range R>
+inline constexpr long long len(R&& r) {
+    return static_cast<long long>(std::ranges::size(r));
+}
+#else
+template <typename C>
+inline constexpr auto len(const C& c) -> decltype(static_cast<long long>(std::size(c))) {
+    return static_cast<long long>(std::size(c));
 }
 #endif
 

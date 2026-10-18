@@ -6,11 +6,17 @@
 #include "../../src/base/functions.hpp"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <cstdint>
+#include <forward_list>
 #include <iostream>
 #include <limits>
+#include <list>
 #include <random>
+#include <set>
+#include <string>
+#include <string_view>
 #include <type_traits>
 #include <utility>
 #include <vector>
@@ -41,6 +47,14 @@ void check_midpoint(std::mt19937_64& rng) {
         for (T b : xs) check(midpoint(a, b) == naive_midpoint(a, b), "midpoint 整数");
     static_assert(std::is_same_v<decltype(midpoint(T(), T())), T>);
 }
+
+// len は要素数の分からないもの (forward_list や整数) を渡すと候補から外れる
+template <typename C, typename = void>
+struct has_len : std::false_type {};
+template <typename C>
+struct has_len<C, std::void_t<decltype(len(std::declval<C&>()))>> : std::true_type {};
+static_assert(has_len<std::vector<int>>::value && has_len<int[3]>::value && has_len<std::list<int>>::value);
+static_assert(!has_len<std::forward_list<int>>::value && !has_len<int>::value);
 
 int main() {
     std::mt19937_64 rng(314);
@@ -148,6 +162,22 @@ int main() {
     static_assert(midpoint(std::numeric_limits<long long>::max(), std::numeric_limits<long long>::max() - 2) == std::numeric_limits<long long>::max() - 1);
     static_assert(midpoint(0u, 4294967295u) == 2147483647u && midpoint(4294967295u, 0u) == 2147483648u);
     static_assert(midpoint(1.0, 2.0) == 1.5);
+
+    // len: 要素数を long long で返す
+    {
+        std::vector<int> v(5);
+        const std::string str = "abcd";
+        std::set<int> st = {3, 1, 4, 1, 5};
+        int carr[7] = {};
+        check(len(v) == 5 && len(str) == 4 && len(st) == 4 && len(carr) == 7, "len");
+        check(len(std::vector<int>()) == 0 && len(std::string_view("xy")) == 2 && len("abc") == 4, "len 空・一時オブジェクト・文字列リテラル");
+        check(len(v) - 6 == -1, "len は符号付き");
+        static_assert(std::is_same_v<decltype(len(v)), long long>);
+        static_assert(len(std::array<int, 3>{}) == 3);
+#if __cplusplus >= 202002L
+        check(len(std::views::iota(2, 9)) == 7, "len views::iota");
+#endif
+    }
 
     if (ok) std::cout << "Hello World" << std::endl;
 }

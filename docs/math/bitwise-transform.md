@@ -1,5 +1,5 @@
 ---
-title: 部分集合・上位集合のゼータ変換、メビウス変換とビット演算 (AND・OR・XOR) の畳み込み
+title: 部分集合・上位集合のゼータ変換、メビウス変換とビット演算 (AND・OR・XOR) の畳み込み、部分集合畳み込み
 documentation_of: //src/math/bitwise-transform.hpp
 ---
 
@@ -12,6 +12,7 @@ std::vector<long long> a = {1, 2, 3, 4}, b = {5, 6, 7, 8};
 auto c = and_convolution(a, b);  // {103, 52, 73, 32}
 auto d = or_convolution(a, b);   // {5, 28, 43, 184}
 auto e = xor_convolution(a, b);  // {70, 68, 62, 60}
+auto f = subset_convolution(a, b);  // {5, 16, 22, 60}
 ```
 
 ## 関数
@@ -26,6 +27,7 @@ auto e = xor_convolution(a, b);  // {70, 68, 62, 60}
 | `and_convolution(a, b)` | $c_k = \sum_{i \mathbin{\&} j = k} a_i b_j$ を返す | $O(N \log N)$ |
 | `or_convolution(a, b)` | $c_k = \sum_{i \mid j = k} a_i b_j$ を返す | $O(N \log N)$ |
 | `xor_convolution(a, b)` | $c_k = \sum_{i \oplus j = k} a_i b_j$ を返す | $O(N \log N)$ |
+| `subset_convolution(a, b)` | $c_k = \sum_{i \mid j = k,\ i \mathbin{\&} j = 0} a_i b_j$ を返す ($k$ を 2 つの交わらない集合に分ける) | 時間 $O(N \log^2 N)$、メモリ $O(N \log N)$ |
 
 - `a` と `b` は同じ長さで、長さが 2 の累乗でないと assert で落ちます。
 - `xor_convolution` と `walsh_hadamard(a, true)` は最後に $N$ で割ります。modint や浮動小数点数では $N$ の逆数を掛け、整数型では $N$ で割ります (結果が整数なので割り切れます)。
@@ -41,6 +43,17 @@ subset_zeta(f);  // f[S] = sum_{T ⊆ S} f[T]
 ```
 
 上位集合についての和は `superset_zeta` です。「ちょうど $S$」の値が欲しいときは、「$S$ の部分集合 (上位集合) すべて」の値を求めてからメビウス変換をします (包除原理)。
+
+## 部分集合畳み込みの仕組み
+
+$i \mathbin{\&} j = 0$ かつ $i \mid j = k$ は、$\lvert i \rvert + \lvert j \rvert = \lvert k \rvert$ かつ $i \mid j = k$ と同じです。そこで、各集合 $S$ について要素数ごとに値を分け (`f[S][|S|] = a[S]`)、要素数ごとに部分集合のゼータ変換をしてから、$S$ ごとに要素数についての多項式として掛けます。最後にメビウス変換をして、$S$ の要素数の位置の値を取り出します (ランク付きゼータ変換)。
+
+$n = 20$ ($N = 2^{20}$) のとき、`T` が 4 バイトの modint なら、内部の表は 2 つで約 180 MB です。
+
+```cpp
+// dp[S] = S を交わらない 2 つの集合に分けたときの、cost の積の和
+auto dp = subset_convolution(cost, cost);
+```
 
 ## 関連
 

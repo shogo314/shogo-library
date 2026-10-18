@@ -2,7 +2,7 @@
 
 /**
  * @file bitwise-transform.hpp
- * @brief 部分集合・上位集合のゼータ変換、メビウス変換とビット演算 (AND・OR・XOR) の畳み込み
+ * @brief 部分集合・上位集合のゼータ変換、メビウス変換とビット演算 (AND・OR・XOR) の畳み込み、部分集合畳み込み
  */
 
 #include <cassert>
@@ -142,4 +142,60 @@ std::vector<T> xor_convolution(std::vector<T> a, std::vector<T> b) {
     for (int i = 0; i < (int)a.size(); i++) a[i] *= b[i];
     walsh_hadamard(a, true);
     return a;
+}
+
+/**
+ * @brief 部分集合畳み込み c[k] = sum_{i | j = k, i & j = 0} a[i] b[j] O(N log^2 N)
+ * a と b は同じ長さ N で、N は 2 の累乗。メモリは O(N log N)
+ */
+template <typename T>
+std::vector<T> subset_convolution(const std::vector<T>& a, const std::vector<T>& b) {
+    int len = a.size();
+    assert(a.size() == b.size() && internal_bitwise_transform::is_power_of_two(len));
+    int n = 0;
+    while ((1 << n) < len) n++;
+    int w = n + 1;
+    // f[s * w + k] は、要素数 k の集合だけを残したものの値 (ランク付きゼータ変換)
+    std::vector<T> fa((long long)len * w), fb((long long)len * w);
+    for (int s = 0; s < len; s++) {
+        int k = __builtin_popcount(s);
+        fa[(long long)s * w + k] = a[s];
+        fb[(long long)s * w + k] = b[s];
+    }
+    for (int bit = 1; bit < len; bit <<= 1) {
+        for (int s = 0; s < len; s++) {
+            if (!(s & bit)) continue;
+            T* x = &fa[(long long)s * w];
+            T* y = &fb[(long long)s * w];
+            const T* px = &fa[(long long)(s ^ bit) * w];
+            const T* py = &fb[(long long)(s ^ bit) * w];
+            for (int k = 0; k < w; k++) {
+                x[k] += px[k];
+                y[k] += py[k];
+            }
+        }
+    }
+    // 集合ごとに、要素数についての多項式として掛ける
+    std::vector<T> tmp(w);
+    for (int s = 0; s < len; s++) {
+        T* x = &fa[(long long)s * w];
+        const T* y = &fb[(long long)s * w];
+        for (int k = 0; k < w; k++) {
+            T sum = T();
+            for (int i = 0; i <= k; i++) sum += x[i] * y[k - i];
+            tmp[k] = sum;
+        }
+        for (int k = 0; k < w; k++) x[k] = tmp[k];
+    }
+    for (int bit = 1; bit < len; bit <<= 1) {
+        for (int s = 0; s < len; s++) {
+            if (!(s & bit)) continue;
+            T* x = &fa[(long long)s * w];
+            const T* px = &fa[(long long)(s ^ bit) * w];
+            for (int k = 0; k < w; k++) x[k] -= px[k];
+        }
+    }
+    std::vector<T> c(len);
+    for (int s = 0; s < len; s++) c[s] = fa[(long long)s * w + __builtin_popcount(s)];
+    return c;
 }

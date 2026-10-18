@@ -48,7 +48,7 @@ class PotentializedUnionFind {
         assert(0 <= a && a < _n);
         if (parent_or_size[a] < 0) return a;
         std::stack<int> stk;
-        stk.push(int(a));
+        stk.push(static_cast<int>(a));
         while (parent_or_size[stk.top()] >= 0) {
             stk.push(parent_or_size[stk.top()]);
         }
@@ -82,7 +82,7 @@ class PotentializedUnionFind {
             w = inv(w);
         }
         parent_or_size[x] += parent_or_size[y];
-        parent_or_size[y] = int(x);
+        parent_or_size[y] = static_cast<int>(x);
         diff_weight[y] = w;
         return {x, true};
     }

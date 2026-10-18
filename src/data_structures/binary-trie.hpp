@@ -30,7 +30,7 @@ class BinaryTrie {
         // 子の状態がvalidかどうか
         // 0: xx, 1: xo, 2: ox, 3: oo
         int state_children() const {
-            return ((bool)children[1] << 1) | (bool)children[0];
+            return (static_cast<bool>(children[1]) << 1) | static_cast<bool>(children[0]);
         }
         // xorの値を子ノードに伝播する
         void affect_xor() {
@@ -141,7 +141,7 @@ class BinaryTrie {
             NodePtr& z_ptr = cur_ptr->children[0];
             NodePtr& o_ptr = cur_ptr->children[1];
             assert(state > 0);
-            if (state == 1 || (state == 3 && n < (long long)z_ptr->subcnt)) {
+            if (state == 1 || (state == 3 && n < static_cast<long long>(z_ptr->subcnt))) {
                 cur_ptr = z_ptr;
             } else {
                 n -= (state & 1 ? z_ptr->subcnt : 0);

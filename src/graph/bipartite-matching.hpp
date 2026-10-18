@@ -89,7 +89,7 @@ class BipartiteMatching {
                 st.assign(1, s);
                 while (!st.empty()) {
                     int u = st.back();
-                    if (iter[u] == (int)g[u].size()) {
+                    if (iter[u] == static_cast<int>(g[u].size())) {
                         // u からは増加路がないので、このフェーズでは使わない
                         dist[u] = -1;
                         st.pop_back();

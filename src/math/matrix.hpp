@@ -347,7 +347,7 @@ class Matrix {
      */
     [[nodiscard]]
     friend std::vector<T> operator*(const Matrix& A, const std::vector<T>& B) {
-        assert(A.m == (long long)B.size());
+        assert(A.m == static_cast<long long>(B.size()));
         std::vector<T> ret(A.n, OperatorProperty::zero());
         for (long long i = 0; i < A.n; i++) {
             for (long long j = 0; j < A.m; j++) {
@@ -365,7 +365,7 @@ class Matrix {
      */
     [[nodiscard]]
     friend std::vector<T> operator*(const std::vector<T>& A, const Matrix& B) {
-        assert((long long)A.size() == B.n);
+        assert(static_cast<long long>(A.size()) == B.n);
         std::vector<T> ret(B.m, OperatorProperty::zero());
         for (long long i = 0; i < B.n; i++) {
             for (long long j = 0; j < B.m; j++) {

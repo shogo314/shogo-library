@@ -92,7 +92,7 @@ class AhoCorasick {
     void build() {
         assert(!built);
         built = true;
-        for (int v = 0; v < int(nodes.size()); v++) {
+        for (int v = 0; v < static_cast<int>(nodes.size()); v++) {
             // 同じノードで終わるパターンのリストを、追加した順に並べ直す
             int rev = -1;
             for (int id = nodes[v].head; id != -1;) {
@@ -106,7 +106,7 @@ class AhoCorasick {
         }
         bfs_order.reserve(nodes.size());
         bfs_order.push_back(0);
-        for (int i = 0; i < int(bfs_order.size()); i++) {
+        for (int i = 0; i < static_cast<int>(bfs_order.size()); i++) {
             int v = bfs_order[i];
             for (int c = 0; c < K; c++) {
                 int u = nodes[v].next[c];
@@ -197,12 +197,12 @@ class AhoCorasick {
             visit[v]++;
         }
         // 失敗リンクの木で、葉の方から回数を足し上げる
-        for (int i = int(bfs_order.size()) - 1; i > 0; i--) {
+        for (int i = static_cast<int>(bfs_order.size()) - 1; i > 0; i--) {
             int u = bfs_order[i];
             visit[nodes[u].link] += visit[u];
         }
         std::vector<long long> res(pattern_node.size());
-        for (int i = 0; i < int(pattern_node.size()); i++) res[i] = visit[pattern_node[i]];
+        for (int i = 0; i < static_cast<int>(pattern_node.size()); i++) res[i] = visit[pattern_node[i]];
         return res;
     }
     /**

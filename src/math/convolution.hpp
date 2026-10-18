@@ -66,7 +66,7 @@ inline int get_fft_size(int N, int M) {
 template <class mint>
 void trans(std::vector<mint>& v, bool inv = false) {
     if (v.empty()) return;
-    int N = (int)v.size();
+    int N = static_cast<int>(v.size());
     int MOD = v[0].mod();
     int PR = calc_primitive_root(MOD);
     static bool first = true;
@@ -122,7 +122,7 @@ static const mint2 imod01 = 187290749;  // imod1 / MOD0;
 template <class T>
 std::vector<T> naive(const std::vector<T>& A, const std::vector<T>& B) {
     if (A.empty() || B.empty()) return {};
-    int N = (int)A.size(), M = (int)B.size();
+    int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());
     std::vector<T> res(N + M - 1);
     for (int i = 0; i < N; ++i)
         for (int j = 0; j < M; ++j)
@@ -140,7 +140,7 @@ std::vector<T> naive(const std::vector<T>& A, const std::vector<T>& B) {
 template <class mint>
 std::vector<mint> convolution(const std::vector<mint>& A, const std::vector<mint>& B) {
     if (A.empty() || B.empty()) return {};
-    int N = (int)A.size(), M = (int)B.size();
+    int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());
     if (std::min(N, M) < 30) return internal_convolution::naive(A, B);
     int MOD = A[0].mod();
     int size_fft = internal_convolution::get_fft_size(N, M);
@@ -195,7 +195,7 @@ std::vector<mint> convolution(const std::vector<mint>& A, const std::vector<mint
  */
 inline std::vector<long long> convolution_ll(const std::vector<long long>& A, const std::vector<long long>& B) {
     if (A.empty() || B.empty()) return {};
-    int N = (int)A.size(), M = (int)B.size();
+    int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());
     if (std::min(N, M) < 30) return internal_convolution::naive(A, B);
     int size_fft = internal_convolution::get_fft_size(N, M);
     std::vector<internal_convolution::mint0> a0(size_fft, 0), b0(size_fft, 0), c0(size_fft, 0);

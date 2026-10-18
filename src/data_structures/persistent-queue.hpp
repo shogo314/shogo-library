@@ -38,7 +38,7 @@ class PersistentQueue {
             parent.push_back(p);
             jump.push_back(nj);
             depth.push_back(depth[p] + 1);
-            return int(val.size()) - 1;
+            return static_cast<int>(val.size()) - 1;
         }
         // t の祖先で深さが d のもの
         int ancestor(int t, int d) const {

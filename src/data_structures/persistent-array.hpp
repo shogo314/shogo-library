@@ -31,11 +31,11 @@ class PersistentArray {
         std::vector<T> leaf;
         int make_leaf(const T& x) {
             leaf.push_back(x);
-            return int(leaf.size()) - 1;
+            return static_cast<int>(leaf.size()) - 1;
         }
         int make_node(int l, int r) {
             child.push_back({l, r});
-            return int(child.size()) - 1;
+            return static_cast<int>(child.size()) - 1;
         }
     };
 

@@ -42,7 +42,7 @@ class DynamicSegTree {
         val.push_back(e());
         left.push_back(-1);
         right.push_back(-1);
-        return int(val.size()) - 1;
+        return static_cast<int>(val.size()) - 1;
     }
 
     class DynamicSegTreeReference {

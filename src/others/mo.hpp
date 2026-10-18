@@ -41,7 +41,7 @@ class Mo {
        const DELETE_LEFT& delete_left) : _n(n), lri(), _e(e), _add_left(add_left), _delete_left(delete_left), _add_right(add_left), _delete_right(delete_left) {}
     void query(long long l, long long r) {
         assert(0 <= l && l <= r && r <= _n);
-        lri.push_back({l, r, (long long)lri.size()});
+        lri.push_back({l, r, static_cast<long long>(lri.size())});
     }
     template <typename T, class F>
     std::vector<T> solve(const F& f) {

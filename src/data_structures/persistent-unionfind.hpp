@@ -43,7 +43,7 @@ class PersistentUnionFind {
         if (x == y) return *this;
         int sx = parent_or_size[x], sy = parent_or_size[y];
         if (-sx < -sy) std::swap(x, y);
-        return PersistentUnionFind(_n, parent_or_size.set(x, sx + sy).set(y, int(x)));
+        return PersistentUnionFind(_n, parent_or_size.set(x, sx + sy).set(y, static_cast<int>(x)));
     }
     /**
      * @brief 頂点a,bが連結かどうか

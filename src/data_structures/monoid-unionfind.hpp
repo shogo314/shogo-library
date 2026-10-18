@@ -55,7 +55,7 @@ class MonoidUnionFind : private UnionFind {
         if (x == y) return {x, false};
         if (-parent_or_size[x] < -parent_or_size[y]) std::swap(x, y);
         parent_or_size[x] += parent_or_size[y];
-        parent_or_size[y] = int(x);
+        parent_or_size[y] = static_cast<int>(x);
         val[x] = m.op(val[x], val[y]);
         return {x, true};
     }

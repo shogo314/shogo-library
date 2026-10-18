@@ -40,13 +40,13 @@ class PersistentSegTree {
             val.push_back(x);
             left.push_back(-1);
             right.push_back(-1);
-            return int(val.size()) - 1;
+            return static_cast<int>(val.size()) - 1;
         }
         int make_node(int l, int r) {
             val.push_back(m.op(val[l], val[r]));
             left.push_back(l);
             right.push_back(r);
-            return int(val.size()) - 1;
+            return static_cast<int>(val.size()) - 1;
         }
     };
 

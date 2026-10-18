@@ -103,7 +103,7 @@ class Compress {
      */
     std::vector<long long> ids(const std::vector<T>& v) const {
         std::vector<long long> res(v.size());
-        for (long long i = 0; i < (long long)v.size(); i++) res[i] = id(v[i]);
+        for (long long i = 0; i < static_cast<long long>(v.size()); i++) res[i] = id(v[i]);
         return res;
     }
     /**

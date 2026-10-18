@@ -26,7 +26,7 @@ class Combination {
      * @note O(n) 必要になったら呼び出されるが、予め大きなnに対して呼び出しておくことで逆元の直接計算を減らせる
      */
     inline static void extend(long long n) {
-        if (cached_mod != (long long)Modint::mod()) {
+        if (cached_mod != static_cast<long long>(Modint::mod())) {
             cached_mod = Modint::mod();
             fact = {1, 1};
             inv_fact = {1, 1};
@@ -201,7 +201,7 @@ struct CombinationPQ {
             if (i % p == 0)
                 fact_p[i] = fact_p[i - 1];
             else
-                fact_p[i] = (long long)fact_p[i - 1] * i % pq;
+                fact_p[i] = static_cast<long long>(fact_p[i - 1]) * i % pq;
         }
         inv_fact_p.resize(pq);
         inv_fact_p[pq - 1] = modinv(fact_p[pq - 1], pq);
@@ -209,7 +209,7 @@ struct CombinationPQ {
             if (i % p == 0)
                 inv_fact_p[i - 1] = inv_fact_p[i];
             else
-                inv_fact_p[i - 1] = (long long)inv_fact_p[i] * i % pq;
+                inv_fact_p[i - 1] = static_cast<long long>(inv_fact_p[i]) * i % pq;
         }
         if (p == 2 && q >= 3)
             delta = 1;
@@ -229,22 +229,22 @@ struct CombinationPQ {
         int ans = 1;
         std::vector<int> epsilon;
         while (n > 0) {
-            ans = (long long)ans * fact_p[n % pq] % pq;
-            ans = (long long)ans * inv_fact_p[m % pq] % pq;
-            ans = (long long)ans * inv_fact_p[r % pq] % pq;
+            ans = static_cast<long long>(ans) * fact_p[n % pq] % pq;
+            ans = static_cast<long long>(ans) * inv_fact_p[m % pq] % pq;
+            ans = static_cast<long long>(ans) * inv_fact_p[r % pq] % pq;
             n /= p;
             m /= p;
             r /= p;
             epsilon.push_back(n - m - r);
         }
-        if (delta == -1 && (int)epsilon.size() >= q && std::accumulate(epsilon.begin() + q - 1, epsilon.end(), 0) % 2 == 1) ans = pq - ans;
+        if (delta == -1 && static_cast<int>(epsilon.size()) >= q && std::accumulate(epsilon.begin() + q - 1, epsilon.end(), 0) % 2 == 1) ans = pq - ans;
         if (ans == pq) ans = 0;
         int e = std::accumulate(epsilon.begin(), epsilon.end(), 0);
         if (e >= q)
             ans = 0;
         else {
             for (int i = 0; i < e; i++) {
-                ans = (long long)ans * p % pq;
+                ans = static_cast<long long>(ans) * p % pq;
             }
         }
         return ans;

@@ -48,7 +48,7 @@ class Rational {
     // a / b と c / d (b, d > 0) を比べ、小さければ負、等しければ 0、大きければ正を返す
     static constexpr int compare(T a, T b, T c, T d) {
         if constexpr (sizeof(T) <= 8) {
-            __int128 x = (__int128)a * d, y = (__int128)c * b;
+            __int128 x = static_cast<__int128>(a) * d, y = static_cast<__int128>(c) * b;
             return x < y ? -1 : x > y ? 1
                                       : 0;
         } else {
@@ -110,11 +110,11 @@ class Rational {
     /**
      * @brief double に直した値
      */
-    constexpr double to_double() const { return (double)p / (double)q; }
+    constexpr double to_double() const { return static_cast<double>(p) / static_cast<double>(q); }
     /**
      * @brief long double に直した値
      */
-    constexpr long double to_long_double() const { return (long double)p / (long double)q; }
+    constexpr long double to_long_double() const { return static_cast<long double>(p) / static_cast<long double>(q); }
     explicit constexpr operator double() const { return to_double(); }
 
     /**
@@ -175,7 +175,7 @@ class Rational {
             // 負のまま 1 桁ずつ取り出す (最小値でもオーバーフローしない)
             while (x != 0) {
                 T d = x % 10;
-                s += char('0' + (d < 0 ? -d : d));
+                s += static_cast<char>('0' + (d < 0 ? -d : d));
                 x /= 10;
             }
             if (neg) s += '-';

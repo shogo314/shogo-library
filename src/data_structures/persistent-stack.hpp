@@ -31,7 +31,7 @@ class PersistentStack {
         int make_node(const T& x, int p) {
             val.push_back(x);
             parent.push_back(p);
-            return int(val.size()) - 1;
+            return static_cast<int>(val.size()) - 1;
         }
     };
 

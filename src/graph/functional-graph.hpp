@@ -26,7 +26,7 @@ struct FunctionalGraph {
     std::vector<std::vector<long long>> doubling;  //!< DoublingClimbTree
 
     void build() {
-        assert((long long)g.size() == n);
+        assert(static_cast<long long>(g.size()) == n);
         for (long long i = 0; i < n; i++) assert(0 <= g[i] && g[i] < n);
         is_cycle.assign(n, false);
         depth.assign(n, 0);
@@ -57,7 +57,7 @@ struct FunctionalGraph {
                     depth[v[j]] = k - j;
                     groups.back().push_back(v[j]);
                 }
-                for (long long j = k; j < (long long)v.size(); j++) {
+                for (long long j = k; j < static_cast<long long>(v.size()); j++) {
                     is_cycle[v[j]] = true;
                     root[v[j]] = v[j];
                     cycles.back().push_back(v[j]);
@@ -67,12 +67,12 @@ struct FunctionalGraph {
                     groups.back().push_back(v[j]);
                 }
             } else {
-                for (long long j = 0; j < (long long)v.size(); j++) {
+                for (long long j = 0; j < static_cast<long long>(v.size()); j++) {
                     is_cycle[v[j]] = false;
                     root[v[j]] = root[u];
                     root_index[v[j]] = root_index[u];
                     group_id[v[j]] = group_id[u];
-                    depth[v[j]] = depth[u] + (long long)v.size() - j;
+                    depth[v[j]] = depth[u] + static_cast<long long>(v.size()) - j;
                     groups[group_id[u]].push_back(v[j]);
                 }
             }
@@ -87,7 +87,7 @@ struct FunctionalGraph {
         for (int k = 0; !tmp.empty(); k++) {
             std::vector<long long> next_tmp;
             for (long long i : tmp) {
-                if (k < (int)doubling[doubling[i][k]].size()) {
+                if (k < static_cast<int>(doubling[doubling[i][k]].size())) {
                     doubling[i].push_back(doubling[doubling[i][k]][k]);
                     next_tmp.push_back(i);
                 }
@@ -144,7 +144,7 @@ struct FunctionalGraph {
             x = root[x];
             k %= cycles[group_id[x]].size();
             long long y = root_index[x] + k;
-            if ((long long)cycles[group_id[x]].size() <= y) {
+            if (static_cast<long long>(cycles[group_id[x]].size()) <= y) {
                 y -= cycles[group_id[x]].size();
             }
             return cycles[group_id[x]][y];
@@ -162,6 +162,6 @@ struct FunctionalGraph {
      */
     long long hopable(long long x) const {
         assert(0 <= x && x < n);
-        return depth[x] + (long long)cycles[group_id[x]].size();
+        return depth[x] + static_cast<long long>(cycles[group_id[x]].size());
     }
 };

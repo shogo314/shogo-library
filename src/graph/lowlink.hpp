@@ -45,7 +45,7 @@ class LowLink {
             st.push_back(root);
             while (!st.empty()) {
                 long long v = st.back();
-                if (iter[v] < (int)graph[v].size()) {
+                if (iter[v] < static_cast<int>(graph[v].size())) {
                     const auto& e = graph[v][iter[v]++];
                     if (e.id == parent_edge[v]) continue;
                     long long u = e.dst;
@@ -82,7 +82,7 @@ class LowLink {
             if (comp[s] != -1) continue;
             comp[s] = groups.size();
             groups.push_back({s});
-            for (long long i = 0; i < (long long)groups.back().size(); i++) {
+            for (long long i = 0; i < static_cast<long long>(groups.back().size()); i++) {
                 long long v = groups.back()[i];
                 for (const auto& e : graph[v]) {
                     if (bridge[e.id] || comp[e.dst] != -1) continue;
@@ -109,7 +109,7 @@ class LowLink {
      * @brief 番号 id の辺が橋 (取り除くと連結成分が増える辺) か
      */
     bool is_bridge(long long id) const {
-        assert(0 <= id && id < (long long)bridge.size());
+        assert(0 <= id && id < static_cast<long long>(bridge.size()));
         return bridge[id];
     }
     /**

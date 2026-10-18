@@ -46,14 +46,14 @@ class PersistentLazySegTree {
             lazy.push_back(a.id());
             left.push_back(-1);
             right.push_back(-1);
-            return int(val.size()) - 1;
+            return static_cast<int>(val.size()) - 1;
         }
         int make_node(int l, int r) {
             val.push_back(a.op(val[l], val[r]));
             lazy.push_back(a.id());
             left.push_back(l);
             right.push_back(r);
-            return int(val.size()) - 1;
+            return static_cast<int>(val.size()) - 1;
         }
     };
 
@@ -91,7 +91,7 @@ class PersistentLazySegTree {
         pool->lazy.push_back(g);
         pool->left.push_back(l);
         pool->right.push_back(r);
-        return int(pool->val.size()) - 1;
+        return static_cast<int>(pool->val.size()) - 1;
     }
     // ノード t ([a, b)) の lazy を子に伝えた、新しい子の組
     std::pair<int, int> push(int t, long long a, long long b) const {

@@ -67,7 +67,7 @@ class LiChaoTree {
     explicit LiChaoTree(const std::vector<T>& xs) : n(xs.size()), xs(xs) {
         assert(!xs.empty());
         sz = 1, height = 0;
-        while (sz < (long long)xs.size()) {
+        while (sz < static_cast<long long>(xs.size())) {
             sz <<= 1;
             height++;
         }

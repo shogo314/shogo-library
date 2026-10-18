@@ -54,7 +54,7 @@ struct CRTResult {
 inline std::optional<CRTResult> crt(const std::vector<long long>& r, const std::vector<long long>& m) {
     assert(r.size() == m.size());
     if (r.size() == 0) return CRTResult{0, 1};
-    int n = (int)r.size();
+    int n = static_cast<int>(r.size());
     long long m_lcm = m[0];
     long long ans = (r[0] % m[0] + m[0]) % m[0];
     for (int i = 1; i < n; i++) {
@@ -78,7 +78,7 @@ inline std::optional<CRTResult> crt(const std::vector<long long>& r, const std::
 inline std::optional<CRTResult> crt(const std::vector<long long>& r, const std::vector<long long>& m, long long MOD) {
     assert(r.size() == m.size());
     if (r.size() == 0) return CRTResult{0, 1};
-    int n = (int)r.size();
+    int n = static_cast<int>(r.size());
     std::vector<long long> r2 = r, m2 = m;
     // mを互いに素にする
     for (int i = 1; i < n; i++) {

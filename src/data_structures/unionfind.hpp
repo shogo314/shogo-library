@@ -70,7 +70,7 @@ class UnionFind {
         if (x == y) return {x, false};
         if (-parent_or_size[x] < -parent_or_size[y]) std::swap(x, y);
         parent_or_size[x] += parent_or_size[y];
-        parent_or_size[y] = int(x);
+        parent_or_size[y] = static_cast<int>(x);
         return {x, true};
     }
     /**
@@ -87,7 +87,7 @@ class UnionFind {
     long long leader(long long a) {
         assert(0 <= a && a < _n);
         if (parent_or_size[a] < 0) return a;
-        int x = int(a);
+        int x = static_cast<int>(a);
         while (parent_or_size[x] >= 0) {
             x = parent_or_size[x];
         }

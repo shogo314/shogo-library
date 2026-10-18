@@ -31,7 +31,7 @@ inline long long btoll(std::string s, char one = '1') {
  */
 inline constexpr long long popcount(long long a) {
     assert(a >= 0);
-    return __builtin_popcountll((unsigned long long)a);
+    return __builtin_popcountll(static_cast<unsigned long long>(a));
 }
 /**
  * @brief 左から連続した0のビットを数える
@@ -39,14 +39,14 @@ inline constexpr long long popcount(long long a) {
  */
 inline constexpr long long countl_zero(long long a) {
     assert(a >= 0);
-    return a == 0 ? 64 : __builtin_clzll((unsigned long long)a);
+    return a == 0 ? 64 : __builtin_clzll(static_cast<unsigned long long>(a));
 }
 /**
  * @brief 左から連続した1のビットを数える
  */
 inline constexpr long long countl_one(long long a) {
     assert(a >= 0);
-    unsigned long long x = ~(unsigned long long)a;
+    unsigned long long x = ~static_cast<unsigned long long>(a);
     return x == 0 ? 64 : __builtin_clzll(x);
 }
 /**
@@ -55,14 +55,14 @@ inline constexpr long long countl_one(long long a) {
  */
 inline constexpr long long countr_zero(long long a) {
     assert(a >= 0);
-    return a == 0 ? 64 : __builtin_ctzll((unsigned long long)a);
+    return a == 0 ? 64 : __builtin_ctzll(static_cast<unsigned long long>(a));
 }
 /**
  * @brief 右から連続した1のビットを数える
  */
 inline constexpr long long countr_one(long long a) {
     assert(a >= 0);
-    unsigned long long x = ~(unsigned long long)a;
+    unsigned long long x = ~static_cast<unsigned long long>(a);
     return x == 0 ? 64 : __builtin_ctzll(x);
 }
 /**
@@ -97,10 +97,10 @@ inline constexpr bool has_single_bit(long long a) {
 #else
 
 #include <bit>
-#define BIT_FUNC_EXPAND(func)                      \
-    inline constexpr long long func(long long a) { \
-        assert(a >= 0);                            \
-        return std::func((unsigned long long)a);   \
+#define BIT_FUNC_EXPAND(func)                                 \
+    inline constexpr long long func(long long a) {            \
+        assert(a >= 0);                                       \
+        return std::func(static_cast<unsigned long long>(a)); \
     }
 
 /**
@@ -129,7 +129,7 @@ BIT_FUNC_EXPAND(countr_one)
 inline constexpr long long bit_ceil(long long a) {
     // 結果が long long に収まる範囲に限る
     assert(0 <= a && a <= (1LL << 62));
-    return std::bit_ceil((unsigned long long)a);
+    return std::bit_ceil(static_cast<unsigned long long>(a));
 }
 /**
  * @brief 整数値を2の累乗値に切り下げる
@@ -144,7 +144,7 @@ BIT_FUNC_EXPAND(bit_width)
  */
 inline constexpr bool has_single_bit(long long a) {
     assert(a >= 0);
-    return std::has_single_bit((unsigned long long)a);
+    return std::has_single_bit(static_cast<unsigned long long>(a));
 }
 
 #endif
@@ -241,7 +241,7 @@ inline constexpr long long rotate_left(long long a, long long k, long long n) {
     if (k < 0) k += n;
     if (k == 0) return a;
     unsigned long long full = (1ULL << n) - 1;
-    return (long long)(((unsigned long long)a << k & full) | (unsigned long long)a >> (n - k));
+    return static_cast<long long>((static_cast<unsigned long long>(a) << k & full) | static_cast<unsigned long long>(a) >> (n - k));
 }
 /**
  * @brief 下位 n ビットを右に k ビット巡回シフトする (a < 2^n、k は負でもよい)
@@ -297,9 +297,9 @@ inline constexpr long long xor_upto(long long n) {
 inline constexpr long long count_bit_upto(long long n, long long i) {
     assert(0 <= n && n < 0x7fffffffffffffffLL && 0 <= i && i < 63);
     // 2^(i + 1) ごとに、後半の 2^i 個で立つ
-    unsigned long long m = (unsigned long long)n + 1, half = 1ULL << i, cycle = half << 1;
+    unsigned long long m = static_cast<unsigned long long>(n) + 1, half = 1ULL << i, cycle = half << 1;
     unsigned long long r = m % cycle;
-    return (long long)(m / cycle * half + (r > half ? r - half : 0));
+    return static_cast<long long>(m / cycle * half + (r > half ? r - half : 0));
 }
 
 namespace internal_bit {
@@ -375,7 +375,7 @@ inline constexpr long long next_combination_mask(long long s) {
     assert(s > 0);
     unsigned long long u = s, c = u & -u, r = u + c;
     unsigned long long t = (((r ^ u) >> 2) / c) | r;
-    return t > 0x7fffffffffffffffULL ? -1 : (long long)t;
+    return t > 0x7fffffffffffffffULL ? -1 : static_cast<long long>(t);
 }
 /**
  * @brief n ビットの集合のうち、ちょうど k 個のビットが立つものを昇順に列挙する (Gosper's hack) 全体で O(C(n, k))
@@ -409,10 +409,10 @@ inline constexpr auto subsets_of_size(long long mask, long long k) {
     return internal_bit::make_bit_enumeration(empty ? -1 : lowest(k), empty, [mask, k, lowest](long long s) {
         if (s == 0) return -1LL;  // k = 0 のときは 0 だけ
         // mask の外のビットを 1 とみなして最下位ビットを足すと、繰り上がりが mask の中だけを進む
-        unsigned long long c = s & -s, r = (((unsigned long long)s | ~(unsigned long long)mask) + c) & (unsigned long long)mask;
+        unsigned long long c = s & -s, r = ((static_cast<unsigned long long>(s) | ~static_cast<unsigned long long>(mask)) + c) & static_cast<unsigned long long>(mask);
         if (r == 0) return -1LL;  // 繰り上がりが mask の最上位を越えた
         // 繰り上がりで消えたビットを mask の下位に詰め直す
-        return (long long)r | lowest(k - popcount((long long)r));
+        return static_cast<long long>(r) | lowest(k - popcount(static_cast<long long>(r)));
     });
 }
 

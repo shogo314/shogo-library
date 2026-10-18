@@ -39,7 +39,7 @@ std::tuple<long long, long long, long long> longest_common_substring(const R1& s
     std::vector<long long> lcp = lcp_array(u, sa);
     // 辞書順で隣り合う接尾辞のうち、片方が s、もう片方が t から始まるものの LCP の最大
     long long i = 0, j = 0, len = 0;
-    for (long long k = 0; k + 1 < (long long)sa.size(); k++) {
+    for (long long k = 0; k + 1 < static_cast<long long>(sa.size()); k++) {
         long long a = sa[k], b = sa[k + 1];
         if (a > b) std::swap(a, b);
         if (a < n && n < b && lcp[k] > len) {

@@ -111,7 +111,7 @@ std::vector<T> and_convolution(std::vector<T> a, std::vector<T> b) {
     assert(a.size() == b.size());
     superset_zeta(a);
     superset_zeta(b);
-    for (int i = 0; i < (int)a.size(); i++) a[i] *= b[i];
+    for (int i = 0; i < static_cast<int>(a.size()); i++) a[i] *= b[i];
     superset_mobius(a);
     return a;
 }
@@ -125,7 +125,7 @@ std::vector<T> or_convolution(std::vector<T> a, std::vector<T> b) {
     assert(a.size() == b.size());
     subset_zeta(a);
     subset_zeta(b);
-    for (int i = 0; i < (int)a.size(); i++) a[i] *= b[i];
+    for (int i = 0; i < static_cast<int>(a.size()); i++) a[i] *= b[i];
     subset_mobius(a);
     return a;
 }
@@ -139,7 +139,7 @@ std::vector<T> xor_convolution(std::vector<T> a, std::vector<T> b) {
     assert(a.size() == b.size());
     walsh_hadamard(a);
     walsh_hadamard(b);
-    for (int i = 0; i < (int)a.size(); i++) a[i] *= b[i];
+    for (int i = 0; i < static_cast<int>(a.size()); i++) a[i] *= b[i];
     walsh_hadamard(a, true);
     return a;
 }
@@ -156,19 +156,19 @@ std::vector<T> subset_convolution(const std::vector<T>& a, const std::vector<T>&
     while ((1 << n) < len) n++;
     int w = n + 1;
     // f[s * w + k] は、要素数 k の集合だけを残したものの値 (ランク付きゼータ変換)
-    std::vector<T> fa((long long)len * w), fb((long long)len * w);
+    std::vector<T> fa(static_cast<long long>(len) * w), fb(static_cast<long long>(len) * w);
     for (int s = 0; s < len; s++) {
         int k = __builtin_popcount(s);
-        fa[(long long)s * w + k] = a[s];
-        fb[(long long)s * w + k] = b[s];
+        fa[static_cast<long long>(s) * w + k] = a[s];
+        fb[static_cast<long long>(s) * w + k] = b[s];
     }
     for (int bit = 1; bit < len; bit <<= 1) {
         for (int s = 0; s < len; s++) {
             if (!(s & bit)) continue;
-            T* x = &fa[(long long)s * w];
-            T* y = &fb[(long long)s * w];
-            const T* px = &fa[(long long)(s ^ bit) * w];
-            const T* py = &fb[(long long)(s ^ bit) * w];
+            T* x = &fa[static_cast<long long>(s) * w];
+            T* y = &fb[static_cast<long long>(s) * w];
+            const T* px = &fa[static_cast<long long>(s ^ bit) * w];
+            const T* py = &fb[static_cast<long long>(s ^ bit) * w];
             for (int k = 0; k < w; k++) {
                 x[k] += px[k];
                 y[k] += py[k];
@@ -178,8 +178,8 @@ std::vector<T> subset_convolution(const std::vector<T>& a, const std::vector<T>&
     // 集合ごとに、要素数についての多項式として掛ける
     std::vector<T> tmp(w);
     for (int s = 0; s < len; s++) {
-        T* x = &fa[(long long)s * w];
-        const T* y = &fb[(long long)s * w];
+        T* x = &fa[static_cast<long long>(s) * w];
+        const T* y = &fb[static_cast<long long>(s) * w];
         for (int k = 0; k < w; k++) {
             T sum = T();
             for (int i = 0; i <= k; i++) sum += x[i] * y[k - i];
@@ -190,12 +190,12 @@ std::vector<T> subset_convolution(const std::vector<T>& a, const std::vector<T>&
     for (int bit = 1; bit < len; bit <<= 1) {
         for (int s = 0; s < len; s++) {
             if (!(s & bit)) continue;
-            T* x = &fa[(long long)s * w];
-            const T* px = &fa[(long long)(s ^ bit) * w];
+            T* x = &fa[static_cast<long long>(s) * w];
+            const T* px = &fa[static_cast<long long>(s ^ bit) * w];
             for (int k = 0; k < w; k++) x[k] -= px[k];
         }
     }
     std::vector<T> c(len);
-    for (int s = 0; s < len; s++) c[s] = fa[(long long)s * w + __builtin_popcount(s)];
+    for (int s = 0; s < len; s++) c[s] = fa[static_cast<long long>(s) * w + __builtin_popcount(s)];
     return c;
 }

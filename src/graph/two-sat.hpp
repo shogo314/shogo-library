@@ -63,7 +63,7 @@ class TwoSat {
         auto groups = strongly_connected_components(graph);
         // 成分のトポロジカル順での番号
         std::vector<int> id(2 * n);
-        for (int k = 0; k < (int)groups.size(); k++) {
+        for (int k = 0; k < static_cast<int>(groups.size()); k++) {
             for (long long v : groups[k]) id[v] = k;
         }
         for (long long i = 0; i < n; i++) {

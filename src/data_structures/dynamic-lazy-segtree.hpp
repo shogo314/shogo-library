@@ -62,7 +62,7 @@ class DynamicLazySegTree {
         lazy.push_back(f);
         left.push_back(-1);
         right.push_back(-1);
-        return int(val.size()) - 1;
+        return static_cast<int>(val.size()) - 1;
     }
     // ノード t ([a, b)) に f を作用させる。t が -1 ならノードを作る
     int apply_node(int t, long long a, long long b, const F& f) {

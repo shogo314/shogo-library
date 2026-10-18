@@ -319,7 +319,8 @@ data:
         \ max, sum \u306A\u3069)"
     - icon: ':heavy_check_mark:'
       path: src/utility/range.hpp
-      title: "Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\u5217"
+      title: "Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\u5217\u3068\
+        \u3001\u305D\u306E\u76F4\u7A4D\u306E Rect"
     - icon: ':heavy_check_mark:'
       path: src/utility/repr.hpp
       title: "\u51FA\u529B\u3092\u305D\u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\u30E9\
@@ -839,6 +840,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/quotients.test.cpp
       title: test/unittest/quotients.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/range-rect.test.cpp
+      title: test/unittest/range-rect.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/range.test.cpp
       title: test/unittest/range.test.cpp

@@ -165,6 +165,8 @@ struct Range {
      * @brief x の個数 (0 か 1)
      */
     constexpr size_type count(value_type x) const noexcept {
+        // step がコンパイル時に分からないときも、よく使う step = 1 では割り算をしない
+        if (step == 1) return start <= x && x < stop;
         if (step > 0) {
             if (start <= x && x < stop) {
                 if ((x - start) % step == 0) {
@@ -192,6 +194,7 @@ struct Range {
      */
     constexpr size_type index(value_type x) const {
         assert(contains(x));
+        if (step == 1) return x - start;
         return (x - start) / step;
     }
     /**

@@ -164,6 +164,43 @@ struct ChmaxMax : monoid::Max<T> {
 };
 
 /**
+ * @brief 区間 clamp x <- min(max(x, lb), ub) (Clamp)、区間最小値
+ * clamp は単調非減少なので、最小値に適用すればよい
+ */
+template <typename T>
+struct ClampMin : monoid::Min<T> {
+    using S = T;
+    using F = Clamp<T>;
+    static constexpr S mapping(const F& f, const S& x) { return f(x); }
+    static constexpr F composition(const F& f, const F& g) { return monoid::ClampComposite<T>::op(f, g); }
+    static constexpr F id() { return {}; }
+};
+
+/**
+ * @brief 区間 clamp x <- min(max(x, lb), ub) (Clamp)、区間最大値
+ */
+template <typename T>
+struct ClampMax : monoid::Max<T> {
+    using S = T;
+    using F = Clamp<T>;
+    static constexpr S mapping(const F& f, const S& x) { return f(x); }
+    static constexpr F composition(const F& f, const F& g) { return monoid::ClampComposite<T>::op(f, g); }
+    static constexpr F id() { return {}; }
+};
+
+/**
+ * @brief 区間 clamp x <- min(max(x, lb), ub) (Clamp)、区間最小値と最大値の組 {min, max} (monoid::MinMax)
+ */
+template <typename T>
+struct ClampMinMax : monoid::MinMax<T> {
+    using S = std::pair<T, T>;
+    using F = Clamp<T>;
+    static constexpr S mapping(const F& f, const S& x) { return {f(x.first), f(x.second)}; }
+    static constexpr F composition(const F& f, const F& g) { return monoid::ClampComposite<T>::op(f, g); }
+    static constexpr F id() { return {}; }
+};
+
+/**
  * @brief 区間アフィン変換 x <- a * x + b (Affine)、区間和
  */
 template <typename T>

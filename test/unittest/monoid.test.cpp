@@ -6,6 +6,7 @@
 #include "../../src/algebra/monoid.hpp"
 
 #include <iostream>
+#include <limits>
 #include <random>
 #include <sstream>
 #include <string>
@@ -118,6 +119,45 @@ int main() {
             auto d = monoid::Reverse<monoid::Composite<long long>>().op(a, b);
             check(d(x) == b(a(x)), "Reverse<Composite> op");
         }
+    }
+
+    // Clamp: ==, !=, 入出力, 既定値は恒等写像
+    {
+        Clamp<long long> f{2, 5}, g{2, 5}, h{2, 6}, id;
+        check(f == g && !(f != g), "Clamp ==");
+        check(f != h && !(f == h), "Clamp !=");
+        check(id(std::numeric_limits<long long>::lowest()) == std::numeric_limits<long long>::lowest() && id(std::numeric_limits<long long>::max()) == std::numeric_limits<long long>::max(), "Clamp default");
+        check(f(1) == 2 && f(3) == 3 && f(9) == 5, "Clamp ()");
+        std::ostringstream os;
+        os << f;
+        check(os.str() == "2 5", "Clamp <<");
+        std::istringstream is("-3 4");
+        is >> f;
+        check(f == Clamp<long long>{-3, 4}, "Clamp >>");
+        // ClampComposite で合成した結果が関数の合成 a∘b と一致する。Reverse は b∘a
+        auto gen_clamp = [&] {
+            long long lb = static_cast<long long>(rng() % 11) - 5, ub = static_cast<long long>(rng() % 11) - 5;
+            if (lb > ub) std::swap(lb, ub);
+            if (rng() % 4 == 0) lb = std::numeric_limits<long long>::lowest();
+            if (rng() % 4 == 0) ub = std::numeric_limits<long long>::max();
+            return Clamp<long long>{lb, ub};
+        };
+        for (int rep = 0; rep < 1000 && ok; rep++) {
+            auto a = gen_clamp(), b = gen_clamp();
+            auto c = monoid::ClampComposite<long long>::op(a, b);
+            auto d = monoid::Reverse<monoid::ClampComposite<long long>>().op(a, b);
+            check(c.lb <= c.ub, "ClampComposite lb <= ub");
+            check(monoid::ClampComposite<long long>::op(a, monoid::ClampComposite<long long>::e()) == a, "ClampComposite e");
+            check(monoid::ClampComposite<long long>::op(monoid::ClampComposite<long long>::e(), a) == a, "ClampComposite e");
+            for (long long x = -7; x <= 7; x++) {
+                check(c(x) == a(b(x)), "ClampComposite op");
+                check(d(x) == b(a(x)), "Reverse<ClampComposite> op");
+            }
+        }
+        // SegTree に乗せて、区間の関数を右から順に適用した結果と比べる
+        test_segtree<monoid::ClampComposite<long long>>(
+            [](const Clamp<long long>& a, const Clamp<long long>& b) { return monoid::ClampComposite<long long>::op(a, b); },
+            Clamp<long long>{}, gen_clamp, rng, "ClampComposite");
     }
 
     // group::Xor: inv は自分自身。PotentializedUnionFind に乗せて xor のポテンシャルと比べる

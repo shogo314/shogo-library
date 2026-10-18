@@ -44,6 +44,30 @@ struct Affine {
     }
 };
 
+/**
+ * @brief clamp する関数 f(x) = min(max(x, lb), ub)
+ *
+ * monoid::ClampComposite の要素や acted_monoid::ClampMin などの作用素に使う
+ * 例: Clamp<int> f{0, 10}; f(x) は x を [0, 10] に収める。省略すると恒等写像 {型の最小値, 型の最大値}
+ * lb <= ub でなければならない
+ */
+template <typename T>
+struct Clamp {
+    T lb = std::numeric_limits<T>::lowest();  //!< 下限
+    T ub = std::numeric_limits<T>::max();     //!< 上限
+    constexpr T operator()(const T& x) const { return std::min(std::max(x, lb), ub); }
+    friend constexpr bool operator==(const Clamp& f, const Clamp& g) { return f.lb == g.lb && f.ub == g.ub; }
+    friend constexpr bool operator!=(const Clamp& f, const Clamp& g) { return !(f == g); }
+    template <class CharT, class Traits>
+    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Clamp& f) {
+        return is >> f.lb >> f.ub;
+    }
+    template <class CharT, class Traits>
+    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const Clamp& f) {
+        return os << f.lb << CharT(' ') << f.ub;
+    }
+};
+
 namespace monoid {
 
 /**
@@ -192,6 +216,18 @@ struct Composite {
     using S = Affine<T>;
     static constexpr S op(const S& f, const S& g) { return {f.a * g.a, f.a * g.b + f.b}; }
     static constexpr S e() { return {T(1), T(0)}; }
+};
+
+/**
+ * @brief clamp する関数 (Clamp) の合成
+ * op(f, g) = f∘g (g を先に適用する)
+ * clamp(clamp(x, a, b), c, d) = clamp(x, clamp(a, c, d), clamp(b, c, d)) なので、合成も Clamp になる
+ */
+template <typename T>
+struct ClampComposite {
+    using S = Clamp<T>;
+    static constexpr S op(const S& f, const S& g) { return {f(g.lb), f(g.ub)}; }
+    static constexpr S e() { return {}; }
 };
 
 /**

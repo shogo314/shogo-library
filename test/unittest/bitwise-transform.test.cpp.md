@@ -5,7 +5,8 @@ data:
     path: src/math/bitwise-transform.hpp
     title: "\u90E8\u5206\u96C6\u5408\u30FB\u4E0A\u4F4D\u96C6\u5408\u306E\u30BC\u30FC\
       \u30BF\u5909\u63DB\u3001\u30E1\u30D3\u30A6\u30B9\u5909\u63DB\u3068\u30D3\u30C3\
-      \u30C8\u6F14\u7B97 (AND\u30FBOR\u30FBXOR) \u306E\u7573\u307F\u8FBC\u307F"
+      \u30C8\u6F14\u7B97 (AND\u30FBOR\u30FBXOR) \u306E\u7573\u307F\u8FBC\u307F\u3001\
+      \u90E8\u5206\u96C6\u5408\u7573\u307F\u8FBC\u307F"
   - icon: ':heavy_check_mark:'
     path: src/math/modint.hpp
     title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
@@ -27,46 +28,47 @@ data:
     \ \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\n\n//\
     \ \u90E8\u5206\u96C6\u5408\u30FB\u4E0A\u4F4D\u96C6\u5408\u306E\u30BC\u30FC\u30BF\
     \u5909\u63DB\u3001\u30E1\u30D3\u30A6\u30B9\u5909\u63DB\u3001\u30A2\u30C0\u30DE\
-    \u30FC\u30EB\u5909\u63DB\u3068 AND\u30FBOR\u30FBXOR \u7573\u307F\u8FBC\u307F\u3092\
-    \u611A\u76F4\u306A\u8A08\u7B97\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\
-    \u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\
-    \u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\
-    \u308B\n\n#line 2 \"src/math/bitwise-transform.hpp\"\n\n/**\n * @file bitwise-transform.hpp\n\
-    \ * @brief \u90E8\u5206\u96C6\u5408\u30FB\u4E0A\u4F4D\u96C6\u5408\u306E\u30BC\u30FC\
-    \u30BF\u5909\u63DB\u3001\u30E1\u30D3\u30A6\u30B9\u5909\u63DB\u3068\u30D3\u30C3\
-    \u30C8\u6F14\u7B97 (AND\u30FBOR\u30FBXOR) \u306E\u7573\u307F\u8FBC\u307F\n */\n\
-    \n#include <cassert>\n#include <type_traits>\n#include <vector>\n\nnamespace internal_bitwise_transform\
-    \ {\n// \u9577\u3055\u304C 2 \u306E\u7D2F\u4E57\u304B\ninline bool is_power_of_two(long\
-    \ long n) { return n > 0 && (n & (n - 1)) == 0; }\n}  // namespace internal_bitwise_transform\n\
-    \n/**\n * @brief \u90E8\u5206\u96C6\u5408\u306E\u30BC\u30FC\u30BF\u5909\u63DB\
-    \ a[S] <- sum_{T \u2286 S} a[T] O(N log N)\n * N = a.size() \u306F 2 \u306E\u7D2F\
-    \u4E57\n */\ntemplate <typename T>\nvoid subset_zeta(std::vector<T>& a) {\n  \
-    \  int n = a.size();\n    assert(internal_bitwise_transform::is_power_of_two(n));\n\
-    \    for (int w = 1; w < n; w <<= 1) {\n        for (int s = 0; s < n; s++) {\n\
-    \            if (s & w) a[s] += a[s ^ w];\n        }\n    }\n}\n\n/**\n * @brief\
-    \ \u90E8\u5206\u96C6\u5408\u306E\u30E1\u30D3\u30A6\u30B9\u5909\u63DB (subset_zeta\
-    \ \u306E\u9006\u5909\u63DB) O(N log N)\n * N = a.size() \u306F 2 \u306E\u7D2F\u4E57\
-    \n */\ntemplate <typename T>\nvoid subset_mobius(std::vector<T>& a) {\n    int\
-    \ n = a.size();\n    assert(internal_bitwise_transform::is_power_of_two(n));\n\
-    \    for (int w = 1; w < n; w <<= 1) {\n        for (int s = 0; s < n; s++) {\n\
-    \            if (s & w) a[s] -= a[s ^ w];\n        }\n    }\n}\n\n/**\n * @brief\
-    \ \u4E0A\u4F4D\u96C6\u5408\u306E\u30BC\u30FC\u30BF\u5909\u63DB a[S] <- sum_{S\
-    \ \u2286 T} a[T] O(N log N)\n * N = a.size() \u306F 2 \u306E\u7D2F\u4E57\n */\n\
-    template <typename T>\nvoid superset_zeta(std::vector<T>& a) {\n    int n = a.size();\n\
+    \u30FC\u30EB\u5909\u63DB\u3068 AND\u30FBOR\u30FBXOR \u7573\u307F\u8FBC\u307F\u3001\
+    \u90E8\u5206\u96C6\u5408\u7573\u307F\u8FBC\u307F\u3092\u611A\u76F4\u306A\u8A08\
+    \u7B97\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\
+    \u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\
+    \u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/math/bitwise-transform.hpp\"\
+    \n\n/**\n * @file bitwise-transform.hpp\n * @brief \u90E8\u5206\u96C6\u5408\u30FB\
+    \u4E0A\u4F4D\u96C6\u5408\u306E\u30BC\u30FC\u30BF\u5909\u63DB\u3001\u30E1\u30D3\
+    \u30A6\u30B9\u5909\u63DB\u3068\u30D3\u30C3\u30C8\u6F14\u7B97 (AND\u30FBOR\u30FB\
+    XOR) \u306E\u7573\u307F\u8FBC\u307F\u3001\u90E8\u5206\u96C6\u5408\u7573\u307F\u8FBC\
+    \u307F\n */\n\n#include <cassert>\n#include <type_traits>\n#include <vector>\n\
+    \nnamespace internal_bitwise_transform {\n// \u9577\u3055\u304C 2 \u306E\u7D2F\
+    \u4E57\u304B\ninline bool is_power_of_two(long long n) { return n > 0 && (n &\
+    \ (n - 1)) == 0; }\n}  // namespace internal_bitwise_transform\n\n/**\n * @brief\
+    \ \u90E8\u5206\u96C6\u5408\u306E\u30BC\u30FC\u30BF\u5909\u63DB a[S] <- sum_{T\
+    \ \u2286 S} a[T] O(N log N)\n * N = a.size() \u306F 2 \u306E\u7D2F\u4E57\n */\n\
+    template <typename T>\nvoid subset_zeta(std::vector<T>& a) {\n    int n = a.size();\n\
     \    assert(internal_bitwise_transform::is_power_of_two(n));\n    for (int w =\
     \ 1; w < n; w <<= 1) {\n        for (int s = 0; s < n; s++) {\n            if\
-    \ (s & w) a[s ^ w] += a[s];\n        }\n    }\n}\n\n/**\n * @brief \u4E0A\u4F4D\
-    \u96C6\u5408\u306E\u30E1\u30D3\u30A6\u30B9\u5909\u63DB (superset_zeta \u306E\u9006\
+    \ (s & w) a[s] += a[s ^ w];\n        }\n    }\n}\n\n/**\n * @brief \u90E8\u5206\
+    \u96C6\u5408\u306E\u30E1\u30D3\u30A6\u30B9\u5909\u63DB (subset_zeta \u306E\u9006\
     \u5909\u63DB) O(N log N)\n * N = a.size() \u306F 2 \u306E\u7D2F\u4E57\n */\ntemplate\
-    \ <typename T>\nvoid superset_mobius(std::vector<T>& a) {\n    int n = a.size();\n\
+    \ <typename T>\nvoid subset_mobius(std::vector<T>& a) {\n    int n = a.size();\n\
     \    assert(internal_bitwise_transform::is_power_of_two(n));\n    for (int w =\
     \ 1; w < n; w <<= 1) {\n        for (int s = 0; s < n; s++) {\n            if\
-    \ (s & w) a[s ^ w] -= a[s];\n        }\n    }\n}\n\n/**\n * @brief \u30A2\u30C0\
-    \u30DE\u30FC\u30EB\u5909\u63DB a[S] <- sum_T (-1)^popcount(S & T) a[T] O(N log\
-    \ N)\n * N = a.size() \u306F 2 \u306E\u7D2F\u4E57\u3002inverse = true \u306A\u3089\
-    \u9006\u5909\u63DB (\u6700\u5F8C\u306B N \u3067\u5272\u308B)\n */\ntemplate <typename\
-    \ T>\nvoid walsh_hadamard(std::vector<T>& a, bool inverse = false) {\n    int\
+    \ (s & w) a[s] -= a[s ^ w];\n        }\n    }\n}\n\n/**\n * @brief \u4E0A\u4F4D\
+    \u96C6\u5408\u306E\u30BC\u30FC\u30BF\u5909\u63DB a[S] <- sum_{S \u2286 T} a[T]\
+    \ O(N log N)\n * N = a.size() \u306F 2 \u306E\u7D2F\u4E57\n */\ntemplate <typename\
+    \ T>\nvoid superset_zeta(std::vector<T>& a) {\n    int n = a.size();\n    assert(internal_bitwise_transform::is_power_of_two(n));\n\
+    \    for (int w = 1; w < n; w <<= 1) {\n        for (int s = 0; s < n; s++) {\n\
+    \            if (s & w) a[s ^ w] += a[s];\n        }\n    }\n}\n\n/**\n * @brief\
+    \ \u4E0A\u4F4D\u96C6\u5408\u306E\u30E1\u30D3\u30A6\u30B9\u5909\u63DB (superset_zeta\
+    \ \u306E\u9006\u5909\u63DB) O(N log N)\n * N = a.size() \u306F 2 \u306E\u7D2F\u4E57\
+    \n */\ntemplate <typename T>\nvoid superset_mobius(std::vector<T>& a) {\n    int\
     \ n = a.size();\n    assert(internal_bitwise_transform::is_power_of_two(n));\n\
+    \    for (int w = 1; w < n; w <<= 1) {\n        for (int s = 0; s < n; s++) {\n\
+    \            if (s & w) a[s ^ w] -= a[s];\n        }\n    }\n}\n\n/**\n * @brief\
+    \ \u30A2\u30C0\u30DE\u30FC\u30EB\u5909\u63DB a[S] <- sum_T (-1)^popcount(S & T)\
+    \ a[T] O(N log N)\n * N = a.size() \u306F 2 \u306E\u7D2F\u4E57\u3002inverse =\
+    \ true \u306A\u3089\u9006\u5909\u63DB (\u6700\u5F8C\u306B N \u3067\u5272\u308B\
+    )\n */\ntemplate <typename T>\nvoid walsh_hadamard(std::vector<T>& a, bool inverse\
+    \ = false) {\n    int n = a.size();\n    assert(internal_bitwise_transform::is_power_of_two(n));\n\
     \    for (int w = 1; w < n; w <<= 1) {\n        for (int s = 0; s < n; s++) {\n\
     \            if (s & w) {\n                T x = a[s ^ w], y = a[s];\n       \
     \         a[s ^ w] = x + y;\n                a[s] = x - y;\n            }\n  \
@@ -92,8 +94,39 @@ data:
     \u52D5\u5C0F\u6570\u70B9\u6570)\n */\ntemplate <typename T>\nstd::vector<T> xor_convolution(std::vector<T>\
     \ a, std::vector<T> b) {\n    assert(a.size() == b.size());\n    walsh_hadamard(a);\n\
     \    walsh_hadamard(b);\n    for (int i = 0; i < (int)a.size(); i++) a[i] *= b[i];\n\
-    \    walsh_hadamard(a, true);\n    return a;\n}\n#line 7 \"test/unittest/bitwise-transform.test.cpp\"\
-    \n\n#include <cmath>\n#include <iostream>\n#include <random>\n#line 12 \"test/unittest/bitwise-transform.test.cpp\"\
+    \    walsh_hadamard(a, true);\n    return a;\n}\n\n/**\n * @brief \u90E8\u5206\
+    \u96C6\u5408\u7573\u307F\u8FBC\u307F c[k] = sum_{i | j = k, i & j = 0} a[i] b[j]\
+    \ O(N log^2 N)\n * a \u3068 b \u306F\u540C\u3058\u9577\u3055 N \u3067\u3001N \u306F\
+    \ 2 \u306E\u7D2F\u4E57\u3002\u30E1\u30E2\u30EA\u306F O(N log N)\n */\ntemplate\
+    \ <typename T>\nstd::vector<T> subset_convolution(const std::vector<T>& a, const\
+    \ std::vector<T>& b) {\n    int len = a.size();\n    assert(a.size() == b.size()\
+    \ && internal_bitwise_transform::is_power_of_two(len));\n    int n = 0;\n    while\
+    \ ((1 << n) < len) n++;\n    int w = n + 1;\n    // f[s * w + k] \u306F\u3001\u8981\
+    \u7D20\u6570 k \u306E\u96C6\u5408\u3060\u3051\u3092\u6B8B\u3057\u305F\u3082\u306E\
+    \u306E\u5024 (\u30E9\u30F3\u30AF\u4ED8\u304D\u30BC\u30FC\u30BF\u5909\u63DB)\n\
+    \    std::vector<T> fa((long long)len * w), fb((long long)len * w);\n    for (int\
+    \ s = 0; s < len; s++) {\n        int k = __builtin_popcount(s);\n        fa[(long\
+    \ long)s * w + k] = a[s];\n        fb[(long long)s * w + k] = b[s];\n    }\n \
+    \   for (int bit = 1; bit < len; bit <<= 1) {\n        for (int s = 0; s < len;\
+    \ s++) {\n            if (!(s & bit)) continue;\n            T* x = &fa[(long\
+    \ long)s * w];\n            T* y = &fb[(long long)s * w];\n            const T*\
+    \ px = &fa[(long long)(s ^ bit) * w];\n            const T* py = &fb[(long long)(s\
+    \ ^ bit) * w];\n            for (int k = 0; k < w; k++) {\n                x[k]\
+    \ += px[k];\n                y[k] += py[k];\n            }\n        }\n    }\n\
+    \    // \u96C6\u5408\u3054\u3068\u306B\u3001\u8981\u7D20\u6570\u306B\u3064\u3044\
+    \u3066\u306E\u591A\u9805\u5F0F\u3068\u3057\u3066\u639B\u3051\u308B\n    std::vector<T>\
+    \ tmp(w);\n    for (int s = 0; s < len; s++) {\n        T* x = &fa[(long long)s\
+    \ * w];\n        const T* y = &fb[(long long)s * w];\n        for (int k = 0;\
+    \ k < w; k++) {\n            T sum = T();\n            for (int i = 0; i <= k;\
+    \ i++) sum += x[i] * y[k - i];\n            tmp[k] = sum;\n        }\n       \
+    \ for (int k = 0; k < w; k++) x[k] = tmp[k];\n    }\n    for (int bit = 1; bit\
+    \ < len; bit <<= 1) {\n        for (int s = 0; s < len; s++) {\n            if\
+    \ (!(s & bit)) continue;\n            T* x = &fa[(long long)s * w];\n        \
+    \    const T* px = &fa[(long long)(s ^ bit) * w];\n            for (int k = 0;\
+    \ k < w; k++) x[k] -= px[k];\n        }\n    }\n    std::vector<T> c(len);\n \
+    \   for (int s = 0; s < len; s++) c[s] = fa[(long long)s * w + __builtin_popcount(s)];\n\
+    \    return c;\n}\n#line 7 \"test/unittest/bitwise-transform.test.cpp\"\n\n#include\
+    \ <cmath>\n#include <iostream>\n#include <random>\n#line 12 \"test/unittest/bitwise-transform.test.cpp\"\
     \n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\
     \u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\
     \u30AF\u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\n#include <cstdint>\n\
@@ -382,77 +415,87 @@ data:
     \ n = 1 << k;\n        std::vector<long long> a(n), b(n);\n        for (auto&\
     \ x : a) x = (long long)(rng() % 21) - 10;\n        for (auto& x : b) x = (long\
     \ long)(rng() % 21) - 10;\n\n        std::vector<long long> sub(n), sup(n), had(n),\
-    \ ca(n), co(n), cx(n);\n        for (int s = 0; s < n; s++) {\n            for\
-    \ (int t = 0; t < n; t++) {\n                if ((t & s) == t) sub[s] += a[t];\n\
-    \                if ((s & t) == s) sup[s] += a[t];\n                had[s] +=\
-    \ (__builtin_popcount(s & t) % 2 ? -1 : 1) * a[t];\n                ca[s & t]\
-    \ += a[s] * b[t];\n                co[s | t] += a[s] * b[t];\n               \
-    \ cx[s ^ t] += a[s] * b[t];\n            }\n        }\n        auto c = a;\n \
-    \       subset_zeta(c);\n        ok = ok && c == sub;\n        subset_mobius(c);\n\
+    \ ca(n), co(n), cx(n), cs(n);\n        for (int s = 0; s < n; s++) {\n       \
+    \     for (int t = 0; t < n; t++) {\n                if ((t & s) == t) sub[s]\
+    \ += a[t];\n                if ((s & t) == s) sup[s] += a[t];\n              \
+    \  had[s] += (__builtin_popcount(s & t) % 2 ? -1 : 1) * a[t];\n              \
+    \  ca[s & t] += a[s] * b[t];\n                co[s | t] += a[s] * b[t];\n    \
+    \            cx[s ^ t] += a[s] * b[t];\n                if ((s & t) == 0) cs[s\
+    \ | t] += a[s] * b[t];\n            }\n        }\n        auto c = a;\n      \
+    \  subset_zeta(c);\n        ok = ok && c == sub;\n        subset_mobius(c);\n\
     \        ok = ok && c == a;\n        c = a;\n        superset_zeta(c);\n     \
     \   ok = ok && c == sup;\n        superset_mobius(c);\n        ok = ok && c ==\
     \ a;\n        c = a;\n        walsh_hadamard(c);\n        ok = ok && c == had;\n\
     \        walsh_hadamard(c, true);\n        ok = ok && c == a;\n        ok = ok\
     \ && and_convolution(a, b) == ca && or_convolution(a, b) == co && xor_convolution(a,\
-    \ b) == cx;\n\n        // modint \u3067\u3082\u540C\u3058\u7D50\u679C\u306B\u306A\
-    \u308B (XOR \u306E\u9006\u5909\u63DB\u306F N \u306E\u9006\u5143\u3092\u639B\u3051\
-    \u308B)\n        using mint = modint998244353;\n        std::vector<mint> ma(a.begin(),\
-    \ a.end()), mb(b.begin(), b.end());\n        std::vector<mint> mx = xor_convolution(ma,\
-    \ mb), mand = and_convolution(ma, mb), mor = or_convolution(ma, mb);\n       \
-    \ for (int i = 0; i < n; i++) {\n            ok = ok && mx[i] == mint(cx[i]) &&\
-    \ mand[i] == mint(ca[i]) && mor[i] == mint(co[i]);\n        }\n\n        // double\
-    \ \u306E XOR \u7573\u307F\u8FBC\u307F\n        std::vector<double> da(a.begin(),\
-    \ a.end()), db(b.begin(), b.end());\n        std::vector<double> dx = xor_convolution(da,\
-    \ db);\n        for (int i = 0; i < n; i++) ok = ok && std::abs(dx[i] - cx[i])\
-    \ < 1e-6;\n    }\n\n    // \u4F8B\n    ok = ok && xor_convolution(std::vector<long\
+    \ b) == cx;\n        ok = ok && subset_convolution(a, b) == cs;\n\n        //\
+    \ modint \u3067\u3082\u540C\u3058\u7D50\u679C\u306B\u306A\u308B (XOR \u306E\u9006\
+    \u5909\u63DB\u306F N \u306E\u9006\u5143\u3092\u639B\u3051\u308B)\n        using\
+    \ mint = modint998244353;\n        std::vector<mint> ma(a.begin(), a.end()), mb(b.begin(),\
+    \ b.end());\n        std::vector<mint> mx = xor_convolution(ma, mb), mand = and_convolution(ma,\
+    \ mb), mor = or_convolution(ma, mb), msub = subset_convolution(ma, mb);\n    \
+    \    for (int i = 0; i < n; i++) {\n            ok = ok && mx[i] == mint(cx[i])\
+    \ && mand[i] == mint(ca[i]) && mor[i] == mint(co[i]) && msub[i] == mint(cs[i]);\n\
+    \        }\n\n        // double \u306E XOR \u7573\u307F\u8FBC\u307F\n        std::vector<double>\
+    \ da(a.begin(), a.end()), db(b.begin(), b.end());\n        std::vector<double>\
+    \ dx = xor_convolution(da, db);\n        for (int i = 0; i < n; i++) ok = ok &&\
+    \ std::abs(dx[i] - cx[i]) < 1e-6;\n    }\n\n    // \u4F8B\n    ok = ok && xor_convolution(std::vector<long\
     \ long>{1, 2, 3, 4}, std::vector<long long>{5, 6, 7, 8}) == std::vector<long long>{70,\
     \ 68, 62, 60};\n    ok = ok && or_convolution(std::vector<long long>{1, 2}, std::vector<long\
-    \ long>{3, 4}) == std::vector<long long>{3, 18};\n\n    if (ok)\n        std::cout\
-    \ << \"Hello World\" << std::endl;\n    else\n        std::cerr << \"failed\"\
-    \ << std::endl;\n}\n"
+    \ long>{3, 4}) == std::vector<long long>{3, 18};\n    ok = ok && subset_convolution(std::vector<long\
+    \ long>{1, 2, 3, 4}, std::vector<long long>{5, 6, 7, 8}) == std::vector<long long>{5,\
+    \ 16, 22, 60};\n    ok = ok && subset_convolution(std::vector<long long>{3}, std::vector<long\
+    \ long>{4}) == std::vector<long long>{12};\n\n    if (ok)\n        std::cout <<\
+    \ \"Hello World\" << std::endl;\n    else\n        std::cerr << \"failed\" <<\
+    \ std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// \u90E8\u5206\u96C6\u5408\u30FB\u4E0A\u4F4D\u96C6\u5408\u306E\u30BC\u30FC\
     \u30BF\u5909\u63DB\u3001\u30E1\u30D3\u30A6\u30B9\u5909\u63DB\u3001\u30A2\u30C0\
     \u30DE\u30FC\u30EB\u5909\u63DB\u3068 AND\u30FBOR\u30FBXOR \u7573\u307F\u8FBC\u307F\
-    \u3092\u611A\u76F4\u306A\u8A08\u7B97\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\
-    \u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\
-    \u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\
-    \u3059\u308B\n\n#include \"../../src/math/bitwise-transform.hpp\"\n\n#include\
-    \ <cmath>\n#include <iostream>\n#include <random>\n#include <vector>\n\n#include\
-    \ \"../../src/math/modint.hpp\"\n\nint main() {\n    std::mt19937 rng(314);\n\
-    \    bool ok = true;\n    for (int rep = 0; rep < 500 && ok; rep++) {\n      \
-    \  int k = rng() % 7;\n        int n = 1 << k;\n        std::vector<long long>\
-    \ a(n), b(n);\n        for (auto& x : a) x = (long long)(rng() % 21) - 10;\n \
-    \       for (auto& x : b) x = (long long)(rng() % 21) - 10;\n\n        std::vector<long\
-    \ long> sub(n), sup(n), had(n), ca(n), co(n), cx(n);\n        for (int s = 0;\
-    \ s < n; s++) {\n            for (int t = 0; t < n; t++) {\n                if\
-    \ ((t & s) == t) sub[s] += a[t];\n                if ((s & t) == s) sup[s] +=\
-    \ a[t];\n                had[s] += (__builtin_popcount(s & t) % 2 ? -1 : 1) *\
-    \ a[t];\n                ca[s & t] += a[s] * b[t];\n                co[s | t]\
-    \ += a[s] * b[t];\n                cx[s ^ t] += a[s] * b[t];\n            }\n\
-    \        }\n        auto c = a;\n        subset_zeta(c);\n        ok = ok && c\
-    \ == sub;\n        subset_mobius(c);\n        ok = ok && c == a;\n        c =\
-    \ a;\n        superset_zeta(c);\n        ok = ok && c == sup;\n        superset_mobius(c);\n\
-    \        ok = ok && c == a;\n        c = a;\n        walsh_hadamard(c);\n    \
-    \    ok = ok && c == had;\n        walsh_hadamard(c, true);\n        ok = ok &&\
-    \ c == a;\n        ok = ok && and_convolution(a, b) == ca && or_convolution(a,\
-    \ b) == co && xor_convolution(a, b) == cx;\n\n        // modint \u3067\u3082\u540C\
-    \u3058\u7D50\u679C\u306B\u306A\u308B (XOR \u306E\u9006\u5909\u63DB\u306F N \u306E\
-    \u9006\u5143\u3092\u639B\u3051\u308B)\n        using mint = modint998244353;\n\
-    \        std::vector<mint> ma(a.begin(), a.end()), mb(b.begin(), b.end());\n \
-    \       std::vector<mint> mx = xor_convolution(ma, mb), mand = and_convolution(ma,\
-    \ mb), mor = or_convolution(ma, mb);\n        for (int i = 0; i < n; i++) {\n\
-    \            ok = ok && mx[i] == mint(cx[i]) && mand[i] == mint(ca[i]) && mor[i]\
-    \ == mint(co[i]);\n        }\n\n        // double \u306E XOR \u7573\u307F\u8FBC\
-    \u307F\n        std::vector<double> da(a.begin(), a.end()), db(b.begin(), b.end());\n\
-    \        std::vector<double> dx = xor_convolution(da, db);\n        for (int i\
-    \ = 0; i < n; i++) ok = ok && std::abs(dx[i] - cx[i]) < 1e-6;\n    }\n\n    //\
-    \ \u4F8B\n    ok = ok && xor_convolution(std::vector<long long>{1, 2, 3, 4}, std::vector<long\
-    \ long>{5, 6, 7, 8}) == std::vector<long long>{70, 68, 62, 60};\n    ok = ok &&\
-    \ or_convolution(std::vector<long long>{1, 2}, std::vector<long long>{3, 4}) ==\
-    \ std::vector<long long>{3, 18};\n\n    if (ok)\n        std::cout << \"Hello\
-    \ World\" << std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n\
-    }\n"
+    \u3001\u90E8\u5206\u96C6\u5408\u7573\u307F\u8FBC\u307F\u3092\u611A\u76F4\u306A\
+    \u8A08\u7B97\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\
+    \u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\
+    \u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include\
+    \ \"../../src/math/bitwise-transform.hpp\"\n\n#include <cmath>\n#include <iostream>\n\
+    #include <random>\n#include <vector>\n\n#include \"../../src/math/modint.hpp\"\
+    \n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int\
+    \ rep = 0; rep < 500 && ok; rep++) {\n        int k = rng() % 7;\n        int\
+    \ n = 1 << k;\n        std::vector<long long> a(n), b(n);\n        for (auto&\
+    \ x : a) x = (long long)(rng() % 21) - 10;\n        for (auto& x : b) x = (long\
+    \ long)(rng() % 21) - 10;\n\n        std::vector<long long> sub(n), sup(n), had(n),\
+    \ ca(n), co(n), cx(n), cs(n);\n        for (int s = 0; s < n; s++) {\n       \
+    \     for (int t = 0; t < n; t++) {\n                if ((t & s) == t) sub[s]\
+    \ += a[t];\n                if ((s & t) == s) sup[s] += a[t];\n              \
+    \  had[s] += (__builtin_popcount(s & t) % 2 ? -1 : 1) * a[t];\n              \
+    \  ca[s & t] += a[s] * b[t];\n                co[s | t] += a[s] * b[t];\n    \
+    \            cx[s ^ t] += a[s] * b[t];\n                if ((s & t) == 0) cs[s\
+    \ | t] += a[s] * b[t];\n            }\n        }\n        auto c = a;\n      \
+    \  subset_zeta(c);\n        ok = ok && c == sub;\n        subset_mobius(c);\n\
+    \        ok = ok && c == a;\n        c = a;\n        superset_zeta(c);\n     \
+    \   ok = ok && c == sup;\n        superset_mobius(c);\n        ok = ok && c ==\
+    \ a;\n        c = a;\n        walsh_hadamard(c);\n        ok = ok && c == had;\n\
+    \        walsh_hadamard(c, true);\n        ok = ok && c == a;\n        ok = ok\
+    \ && and_convolution(a, b) == ca && or_convolution(a, b) == co && xor_convolution(a,\
+    \ b) == cx;\n        ok = ok && subset_convolution(a, b) == cs;\n\n        //\
+    \ modint \u3067\u3082\u540C\u3058\u7D50\u679C\u306B\u306A\u308B (XOR \u306E\u9006\
+    \u5909\u63DB\u306F N \u306E\u9006\u5143\u3092\u639B\u3051\u308B)\n        using\
+    \ mint = modint998244353;\n        std::vector<mint> ma(a.begin(), a.end()), mb(b.begin(),\
+    \ b.end());\n        std::vector<mint> mx = xor_convolution(ma, mb), mand = and_convolution(ma,\
+    \ mb), mor = or_convolution(ma, mb), msub = subset_convolution(ma, mb);\n    \
+    \    for (int i = 0; i < n; i++) {\n            ok = ok && mx[i] == mint(cx[i])\
+    \ && mand[i] == mint(ca[i]) && mor[i] == mint(co[i]) && msub[i] == mint(cs[i]);\n\
+    \        }\n\n        // double \u306E XOR \u7573\u307F\u8FBC\u307F\n        std::vector<double>\
+    \ da(a.begin(), a.end()), db(b.begin(), b.end());\n        std::vector<double>\
+    \ dx = xor_convolution(da, db);\n        for (int i = 0; i < n; i++) ok = ok &&\
+    \ std::abs(dx[i] - cx[i]) < 1e-6;\n    }\n\n    // \u4F8B\n    ok = ok && xor_convolution(std::vector<long\
+    \ long>{1, 2, 3, 4}, std::vector<long long>{5, 6, 7, 8}) == std::vector<long long>{70,\
+    \ 68, 62, 60};\n    ok = ok && or_convolution(std::vector<long long>{1, 2}, std::vector<long\
+    \ long>{3, 4}) == std::vector<long long>{3, 18};\n    ok = ok && subset_convolution(std::vector<long\
+    \ long>{1, 2, 3, 4}, std::vector<long long>{5, 6, 7, 8}) == std::vector<long long>{5,\
+    \ 16, 22, 60};\n    ok = ok && subset_convolution(std::vector<long long>{3}, std::vector<long\
+    \ long>{4}) == std::vector<long long>{12};\n\n    if (ok)\n        std::cout <<\
+    \ \"Hello World\" << std::endl;\n    else\n        std::cerr << \"failed\" <<\
+    \ std::endl;\n}\n"
   dependsOn:
   - src/math/bitwise-transform.hpp
   - src/math/modint.hpp
@@ -460,7 +503,7 @@ data:
   isVerificationFile: true
   path: test/unittest/bitwise-transform.test.cpp
   requiredBy: []
-  timestamp: '2026-10-18 01:45:30+09:00'
+  timestamp: '2026-10-18 09:45:09+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/bitwise-transform.test.cpp

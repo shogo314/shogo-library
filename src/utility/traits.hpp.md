@@ -387,6 +387,9 @@ data:
     path: test/yosupo/static-range-sum.test.cpp
     title: test/yosupo/static-range-sum.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/subset-convolution.test.cpp
+    title: test/yosupo/subset-convolution.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
     title: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
   - icon: ':heavy_check_mark:'
@@ -638,6 +641,7 @@ data:
   - test/yosupo/sort-points-by-argument.1.test.cpp
   - test/yosupo/sharp-p-subset-sum.2.test.cpp
   - test/yosupo/bitwise-and-convolution.test.cpp
+  - test/yosupo/subset-convolution.test.cpp
   - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
   - test/yosupo/associative-array.test.cpp
   - test/yosupo/sharp-p-subset-sum.1.test.cpp

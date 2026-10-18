@@ -5,7 +5,8 @@ data:
     path: src/math/bitwise-transform.hpp
     title: "\u90E8\u5206\u96C6\u5408\u30FB\u4E0A\u4F4D\u96C6\u5408\u306E\u30BC\u30FC\
       \u30BF\u5909\u63DB\u3001\u30E1\u30D3\u30A6\u30B9\u5909\u63DB\u3068\u30D3\u30C3\
-      \u30C8\u6F14\u7B97 (AND\u30FBOR\u30FBXOR) \u306E\u7573\u307F\u8FBC\u307F"
+      \u30C8\u6F14\u7B97 (AND\u30FBOR\u30FBXOR) \u306E\u7573\u307F\u8FBC\u307F\u3001\
+      \u90E8\u5206\u96C6\u5408\u7573\u307F\u8FBC\u307F"
   - icon: ':heavy_check_mark:'
     path: src/math/modint.hpp
     title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
@@ -29,39 +30,39 @@ data:
     \n/**\n * @file bitwise-transform.hpp\n * @brief \u90E8\u5206\u96C6\u5408\u30FB\
     \u4E0A\u4F4D\u96C6\u5408\u306E\u30BC\u30FC\u30BF\u5909\u63DB\u3001\u30E1\u30D3\
     \u30A6\u30B9\u5909\u63DB\u3068\u30D3\u30C3\u30C8\u6F14\u7B97 (AND\u30FBOR\u30FB\
-    XOR) \u306E\u7573\u307F\u8FBC\u307F\n */\n\n#include <cassert>\n#include <type_traits>\n\
-    #line 11 \"src/math/bitwise-transform.hpp\"\n\nnamespace internal_bitwise_transform\
-    \ {\n// \u9577\u3055\u304C 2 \u306E\u7D2F\u4E57\u304B\ninline bool is_power_of_two(long\
-    \ long n) { return n > 0 && (n & (n - 1)) == 0; }\n}  // namespace internal_bitwise_transform\n\
-    \n/**\n * @brief \u90E8\u5206\u96C6\u5408\u306E\u30BC\u30FC\u30BF\u5909\u63DB\
-    \ a[S] <- sum_{T \u2286 S} a[T] O(N log N)\n * N = a.size() \u306F 2 \u306E\u7D2F\
-    \u4E57\n */\ntemplate <typename T>\nvoid subset_zeta(std::vector<T>& a) {\n  \
-    \  int n = a.size();\n    assert(internal_bitwise_transform::is_power_of_two(n));\n\
-    \    for (int w = 1; w < n; w <<= 1) {\n        for (int s = 0; s < n; s++) {\n\
-    \            if (s & w) a[s] += a[s ^ w];\n        }\n    }\n}\n\n/**\n * @brief\
-    \ \u90E8\u5206\u96C6\u5408\u306E\u30E1\u30D3\u30A6\u30B9\u5909\u63DB (subset_zeta\
-    \ \u306E\u9006\u5909\u63DB) O(N log N)\n * N = a.size() \u306F 2 \u306E\u7D2F\u4E57\
-    \n */\ntemplate <typename T>\nvoid subset_mobius(std::vector<T>& a) {\n    int\
-    \ n = a.size();\n    assert(internal_bitwise_transform::is_power_of_two(n));\n\
-    \    for (int w = 1; w < n; w <<= 1) {\n        for (int s = 0; s < n; s++) {\n\
-    \            if (s & w) a[s] -= a[s ^ w];\n        }\n    }\n}\n\n/**\n * @brief\
-    \ \u4E0A\u4F4D\u96C6\u5408\u306E\u30BC\u30FC\u30BF\u5909\u63DB a[S] <- sum_{S\
-    \ \u2286 T} a[T] O(N log N)\n * N = a.size() \u306F 2 \u306E\u7D2F\u4E57\n */\n\
-    template <typename T>\nvoid superset_zeta(std::vector<T>& a) {\n    int n = a.size();\n\
+    XOR) \u306E\u7573\u307F\u8FBC\u307F\u3001\u90E8\u5206\u96C6\u5408\u7573\u307F\u8FBC\
+    \u307F\n */\n\n#include <cassert>\n#include <type_traits>\n#line 11 \"src/math/bitwise-transform.hpp\"\
+    \n\nnamespace internal_bitwise_transform {\n// \u9577\u3055\u304C 2 \u306E\u7D2F\
+    \u4E57\u304B\ninline bool is_power_of_two(long long n) { return n > 0 && (n &\
+    \ (n - 1)) == 0; }\n}  // namespace internal_bitwise_transform\n\n/**\n * @brief\
+    \ \u90E8\u5206\u96C6\u5408\u306E\u30BC\u30FC\u30BF\u5909\u63DB a[S] <- sum_{T\
+    \ \u2286 S} a[T] O(N log N)\n * N = a.size() \u306F 2 \u306E\u7D2F\u4E57\n */\n\
+    template <typename T>\nvoid subset_zeta(std::vector<T>& a) {\n    int n = a.size();\n\
     \    assert(internal_bitwise_transform::is_power_of_two(n));\n    for (int w =\
     \ 1; w < n; w <<= 1) {\n        for (int s = 0; s < n; s++) {\n            if\
-    \ (s & w) a[s ^ w] += a[s];\n        }\n    }\n}\n\n/**\n * @brief \u4E0A\u4F4D\
-    \u96C6\u5408\u306E\u30E1\u30D3\u30A6\u30B9\u5909\u63DB (superset_zeta \u306E\u9006\
+    \ (s & w) a[s] += a[s ^ w];\n        }\n    }\n}\n\n/**\n * @brief \u90E8\u5206\
+    \u96C6\u5408\u306E\u30E1\u30D3\u30A6\u30B9\u5909\u63DB (subset_zeta \u306E\u9006\
     \u5909\u63DB) O(N log N)\n * N = a.size() \u306F 2 \u306E\u7D2F\u4E57\n */\ntemplate\
-    \ <typename T>\nvoid superset_mobius(std::vector<T>& a) {\n    int n = a.size();\n\
+    \ <typename T>\nvoid subset_mobius(std::vector<T>& a) {\n    int n = a.size();\n\
     \    assert(internal_bitwise_transform::is_power_of_two(n));\n    for (int w =\
     \ 1; w < n; w <<= 1) {\n        for (int s = 0; s < n; s++) {\n            if\
-    \ (s & w) a[s ^ w] -= a[s];\n        }\n    }\n}\n\n/**\n * @brief \u30A2\u30C0\
-    \u30DE\u30FC\u30EB\u5909\u63DB a[S] <- sum_T (-1)^popcount(S & T) a[T] O(N log\
-    \ N)\n * N = a.size() \u306F 2 \u306E\u7D2F\u4E57\u3002inverse = true \u306A\u3089\
-    \u9006\u5909\u63DB (\u6700\u5F8C\u306B N \u3067\u5272\u308B)\n */\ntemplate <typename\
-    \ T>\nvoid walsh_hadamard(std::vector<T>& a, bool inverse = false) {\n    int\
+    \ (s & w) a[s] -= a[s ^ w];\n        }\n    }\n}\n\n/**\n * @brief \u4E0A\u4F4D\
+    \u96C6\u5408\u306E\u30BC\u30FC\u30BF\u5909\u63DB a[S] <- sum_{S \u2286 T} a[T]\
+    \ O(N log N)\n * N = a.size() \u306F 2 \u306E\u7D2F\u4E57\n */\ntemplate <typename\
+    \ T>\nvoid superset_zeta(std::vector<T>& a) {\n    int n = a.size();\n    assert(internal_bitwise_transform::is_power_of_two(n));\n\
+    \    for (int w = 1; w < n; w <<= 1) {\n        for (int s = 0; s < n; s++) {\n\
+    \            if (s & w) a[s ^ w] += a[s];\n        }\n    }\n}\n\n/**\n * @brief\
+    \ \u4E0A\u4F4D\u96C6\u5408\u306E\u30E1\u30D3\u30A6\u30B9\u5909\u63DB (superset_zeta\
+    \ \u306E\u9006\u5909\u63DB) O(N log N)\n * N = a.size() \u306F 2 \u306E\u7D2F\u4E57\
+    \n */\ntemplate <typename T>\nvoid superset_mobius(std::vector<T>& a) {\n    int\
     \ n = a.size();\n    assert(internal_bitwise_transform::is_power_of_two(n));\n\
+    \    for (int w = 1; w < n; w <<= 1) {\n        for (int s = 0; s < n; s++) {\n\
+    \            if (s & w) a[s ^ w] -= a[s];\n        }\n    }\n}\n\n/**\n * @brief\
+    \ \u30A2\u30C0\u30DE\u30FC\u30EB\u5909\u63DB a[S] <- sum_T (-1)^popcount(S & T)\
+    \ a[T] O(N log N)\n * N = a.size() \u306F 2 \u306E\u7D2F\u4E57\u3002inverse =\
+    \ true \u306A\u3089\u9006\u5909\u63DB (\u6700\u5F8C\u306B N \u3067\u5272\u308B\
+    )\n */\ntemplate <typename T>\nvoid walsh_hadamard(std::vector<T>& a, bool inverse\
+    \ = false) {\n    int n = a.size();\n    assert(internal_bitwise_transform::is_power_of_two(n));\n\
     \    for (int w = 1; w < n; w <<= 1) {\n        for (int s = 0; s < n; s++) {\n\
     \            if (s & w) {\n                T x = a[s ^ w], y = a[s];\n       \
     \         a[s ^ w] = x + y;\n                a[s] = x - y;\n            }\n  \
@@ -87,46 +88,77 @@ data:
     \u52D5\u5C0F\u6570\u70B9\u6570)\n */\ntemplate <typename T>\nstd::vector<T> xor_convolution(std::vector<T>\
     \ a, std::vector<T> b) {\n    assert(a.size() == b.size());\n    walsh_hadamard(a);\n\
     \    walsh_hadamard(b);\n    for (int i = 0; i < (int)a.size(); i++) a[i] *= b[i];\n\
-    \    walsh_hadamard(a, true);\n    return a;\n}\n#line 2 \"src/math/modint.hpp\"\
-    \n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\
-    \u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line\
-    \ 9 \"src/math/modint.hpp\"\n#include <cstdint>\n#line 11 \"src/math/modint.hpp\"\
-    \n#include <limits>\n#line 13 \"src/math/modint.hpp\"\n#include <utility>\n\n\
-    #line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\
-    \u7279\u6027\n */\n\n#include <cstddef>\n#include <iterator>\n#include <set>\n\
-    #line 13 \"src/utility/traits.hpp\"\n\nnamespace internal_traits {\nusing std::begin,\
-    \ std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl : std::false_type\
-    \ {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
-    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
-    \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
-    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
-    \n#define HAS_METHOD(func_name)                                              \
-    \                \\\n    namespace internal_traits {                         \
-    \                                   \\\n    template <class T, class = void> \
-    \                                                      \\\n    struct has_##func_name##_impl\
-    \ : std::false_type {};                                    \\\n    template <class\
-    \ T>                                                                     \\\n\
-    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
-    \ \\\n        : std::true_type {};                                           \
-    \                    \\\n    }                                               \
-    \                                       \\\n    template <class T>           \
-    \                                                          \\\n    struct has_##func_name\
-    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
-    \ <class T>                                                                  \
-    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
-    \n#define HAS_METHOD_ARG(func_name)                                          \
-    \                                    \\\n    namespace internal_traits {     \
-    \                                                                           \\\
-    \n    template <class T, typename U, class = void>                           \
-    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
-    \ {};                                                        \\\n    template\
-    \ <class T, typename U>                                                      \
-    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
-    \ \\\n        : std::true_type {};                                           \
-    \                                        \\\n    }                           \
+    \    walsh_hadamard(a, true);\n    return a;\n}\n\n/**\n * @brief \u90E8\u5206\
+    \u96C6\u5408\u7573\u307F\u8FBC\u307F c[k] = sum_{i | j = k, i & j = 0} a[i] b[j]\
+    \ O(N log^2 N)\n * a \u3068 b \u306F\u540C\u3058\u9577\u3055 N \u3067\u3001N \u306F\
+    \ 2 \u306E\u7D2F\u4E57\u3002\u30E1\u30E2\u30EA\u306F O(N log N)\n */\ntemplate\
+    \ <typename T>\nstd::vector<T> subset_convolution(const std::vector<T>& a, const\
+    \ std::vector<T>& b) {\n    int len = a.size();\n    assert(a.size() == b.size()\
+    \ && internal_bitwise_transform::is_power_of_two(len));\n    int n = 0;\n    while\
+    \ ((1 << n) < len) n++;\n    int w = n + 1;\n    // f[s * w + k] \u306F\u3001\u8981\
+    \u7D20\u6570 k \u306E\u96C6\u5408\u3060\u3051\u3092\u6B8B\u3057\u305F\u3082\u306E\
+    \u306E\u5024 (\u30E9\u30F3\u30AF\u4ED8\u304D\u30BC\u30FC\u30BF\u5909\u63DB)\n\
+    \    std::vector<T> fa((long long)len * w), fb((long long)len * w);\n    for (int\
+    \ s = 0; s < len; s++) {\n        int k = __builtin_popcount(s);\n        fa[(long\
+    \ long)s * w + k] = a[s];\n        fb[(long long)s * w + k] = b[s];\n    }\n \
+    \   for (int bit = 1; bit < len; bit <<= 1) {\n        for (int s = 0; s < len;\
+    \ s++) {\n            if (!(s & bit)) continue;\n            T* x = &fa[(long\
+    \ long)s * w];\n            T* y = &fb[(long long)s * w];\n            const T*\
+    \ px = &fa[(long long)(s ^ bit) * w];\n            const T* py = &fb[(long long)(s\
+    \ ^ bit) * w];\n            for (int k = 0; k < w; k++) {\n                x[k]\
+    \ += px[k];\n                y[k] += py[k];\n            }\n        }\n    }\n\
+    \    // \u96C6\u5408\u3054\u3068\u306B\u3001\u8981\u7D20\u6570\u306B\u3064\u3044\
+    \u3066\u306E\u591A\u9805\u5F0F\u3068\u3057\u3066\u639B\u3051\u308B\n    std::vector<T>\
+    \ tmp(w);\n    for (int s = 0; s < len; s++) {\n        T* x = &fa[(long long)s\
+    \ * w];\n        const T* y = &fb[(long long)s * w];\n        for (int k = 0;\
+    \ k < w; k++) {\n            T sum = T();\n            for (int i = 0; i <= k;\
+    \ i++) sum += x[i] * y[k - i];\n            tmp[k] = sum;\n        }\n       \
+    \ for (int k = 0; k < w; k++) x[k] = tmp[k];\n    }\n    for (int bit = 1; bit\
+    \ < len; bit <<= 1) {\n        for (int s = 0; s < len; s++) {\n            if\
+    \ (!(s & bit)) continue;\n            T* x = &fa[(long long)s * w];\n        \
+    \    const T* px = &fa[(long long)(s ^ bit) * w];\n            for (int k = 0;\
+    \ k < w; k++) x[k] -= px[k];\n        }\n    }\n    std::vector<T> c(len);\n \
+    \   for (int s = 0; s < len; s++) c[s] = fa[(long long)s * w + __builtin_popcount(s)];\n\
+    \    return c;\n}\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n\
+    \ * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067\
+    \ mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\
+    \n#include <cstdint>\n#line 11 \"src/math/modint.hpp\"\n#include <limits>\n#line\
+    \ 13 \"src/math/modint.hpp\"\n#include <utility>\n\n#line 2 \"src/utility/traits.hpp\"\
+    \n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n\
+    #include <iterator>\n#include <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace\
+    \ internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T, class =\
+    \ void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct\
+    \ is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
+    \ : std::true_type {};\n}  // namespace internal_traits\n\ntemplate <class T>\n\
+    struct is_range : internal_traits::is_range_impl<T>::type {};\ntemplate <class\
+    \ T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define HAS_METHOD(func_name)\
+    \                                                              \\\n    namespace\
+    \ internal_traits {                                                          \
+    \  \\\n    template <class T, class = void>                                  \
+    \                     \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                    \\\n    template <class T>          \
+    \                                                           \\\n    struct has_##func_name##_impl<T,\
+    \ std::void_t<decltype(std::declval<T>().func_name())>> \\\n        : std::true_type\
+    \ {};                                                               \\\n    }\
     \                                                                            \
-    \   \\\n    template <class T, typename U>                                   \
-    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \          \\\n    template <class T>                                        \
+    \                             \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T>::type\
+    \ {};          \\\n    template <class T>                                    \
+    \                                 \\\n    inline constexpr bool has_##func_name##_v\
+    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
+    \                                                                    \\\n    namespace\
+    \ internal_traits {                                                          \
+    \                      \\\n    template <class T, typename U, class = void>  \
+    \                                                             \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                                      \
+    \  \\\n    template <class T, typename U>                                    \
+    \                                         \\\n    struct has_##func_name##_impl<T,\
+    \ U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>> \\\
+    \n        : std::true_type {};                                               \
+    \                                    \\\n    }                               \
+    \                                                                           \\\
+    \n    template <class T, typename U>                                         \
+    \                                    \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
     \ U>::type {};                           \\\n    template <class T, typename U>\
     \                                                                            \
     \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
@@ -392,7 +424,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/bitwise-xor-convolution.test.cpp
   requiredBy: []
-  timestamp: '2026-10-18 01:45:30+09:00'
+  timestamp: '2026-10-18 09:45:09+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/bitwise-xor-convolution.test.cpp

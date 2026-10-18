@@ -218,7 +218,8 @@ data:
       path: src/math/bitwise-transform.hpp
       title: "\u90E8\u5206\u96C6\u5408\u30FB\u4E0A\u4F4D\u96C6\u5408\u306E\u30BC\u30FC\
         \u30BF\u5909\u63DB\u3001\u30E1\u30D3\u30A6\u30B9\u5909\u63DB\u3068\u30D3\u30C3\
-        \u30C8\u6F14\u7B97 (AND\u30FBOR\u30FBXOR) \u306E\u7573\u307F\u8FBC\u307F"
+        \u30C8\u6F14\u7B97 (AND\u30FBOR\u30FBXOR) \u306E\u7573\u307F\u8FBC\u307F\u3001\
+        \u90E8\u5206\u96C6\u5408\u7573\u307F\u8FBC\u307F"
     - icon: ':heavy_check_mark:'
       path: src/math/combinatorics.hpp
       title: "\u7D44\u307F\u5408\u308F\u305B"
@@ -1176,6 +1177,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/staticrmq.test.cpp
       title: test/yosupo/staticrmq.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/subset-convolution.test.cpp
+      title: test/yosupo/subset-convolution.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/suffixarray.test.cpp
       title: test/yosupo/suffixarray.test.cpp

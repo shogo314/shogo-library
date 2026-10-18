@@ -21,13 +21,13 @@ struct Node {
     Node(long long x = 0) : max1(x), max1_num(1), max2(-inf), min1(x), min1_num(1), min2(inf), sum(x) {}
 };
 std::ostream& operator<<(std::ostream& os, const Node& x) { return os << x.sum; }
-struct ClampAdd {
+struct ClampAddOp {
     // clamp(x + add, lb, ub)
     long long lb, ub, add;
 };
 struct ChminChmaxAddSum {
     using S = Node;
-    using F = ClampAdd;
+    using F = ClampAddOp;
     S op(const S& l, const S& r) const {
         S res;
         res.max1 = std::max(l.max1, r.max1);
@@ -136,20 +136,20 @@ void check(bool cond, const char* what) {
     if (!cond) ok = false;
 }
 
-long long clamp_apply(const ClampAdd& f, long long x) { return std::clamp(x + f.add, f.lb, f.ub); }
+long long clamp_apply(const ClampAddOp& f, long long x) { return std::clamp(x + f.add, f.lb, f.ub); }
 
 int main() {
     std::mt19937_64 rng(314);
     auto small = [&] { return (long long)(rng() % 41) - 20; };
-    auto gen_f = [&]() -> ClampAdd {
+    auto gen_f = [&]() -> ClampAddOp {
         long long b = small();
         switch (rng() % 3) {
             case 0:
-                return ClampAdd{-inf, b, 0};  // chmin
+                return ClampAddOp{-inf, b, 0};  // chmin
             case 1:
-                return ClampAdd{b, inf, 0};  // chmax
+                return ClampAddOp{b, inf, 0};  // chmax
             default:
-                return ClampAdd{-inf, inf, b};  // add
+                return ClampAddOp{-inf, inf, b};  // add
         }
     };
     for (int rep = 0; rep < 300 && ok; rep++) {
@@ -165,11 +165,11 @@ int main() {
             if (l > r) std::swap(l, r);
             int k = rng() % n;
             if (t == 0) {
-                ClampAdd f = gen_f();
+                ClampAddOp f = gen_f();
                 seg.apply(l, r, f);
                 for (int i = l; i < r; i++) a[i] = clamp_apply(f, a[i]);
             } else if (t == 1) {
-                ClampAdd f = gen_f();
+                ClampAddOp f = gen_f();
                 seg.apply(k, f);
                 a[k] = clamp_apply(f, a[k]);
             } else if (t == 2) {

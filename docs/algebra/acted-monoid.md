@@ -35,6 +35,9 @@ long long m = seg.prod(l, r);                         // [l, r) の最小値
 | `ClampMin<T>` | 区間 clamp $x \leftarrow \min(\max(x, \mathit{lb}), \mathit{ub})$ | 区間最小値 | [`Clamp<T>`](monoid.hpp) | |
 | `ClampMax<T>` | 区間 clamp | 区間最大値 | [`Clamp<T>`](monoid.hpp) | |
 | `ClampMinMax<T>` | 区間 clamp | 区間最小値と最大値の組 `{min, max}` | [`Clamp<T>`](monoid.hpp) | |
+| `ClampAddMin<T>` | 区間 加算と clamp $x \leftarrow \min(\max(x + \mathit{add}, \mathit{lb}), \mathit{ub})$ | 区間最小値 | [`ClampAdd<T>`](monoid.hpp) | |
+| `ClampAddMax<T>` | 区間 加算と clamp | 区間最大値 | [`ClampAdd<T>`](monoid.hpp) | |
+| `ClampAddMinMax<T>` | 区間 加算と clamp | 区間最小値と最大値の組 `{min, max}` | [`ClampAdd<T>`](monoid.hpp) | |
 | `AffineSum<T>` | 区間アフィン変換 $x \leftarrow ax + b$ | 区間和 | [`Affine<T>`](monoid.hpp) | |
 | `UpdateComposite<T>` | 区間代入 | 1次関数の合成 (`monoid::Composite`) | `optional<Affine<T>>` | |
 | `AddMinWith<T, U = long long>` | 区間加算 | 区間最小値とその位置 | `T` | |
@@ -46,7 +49,7 @@ long long m = seg.prod(l, r);                         // [l, r) の最小値
 
 `MulSum<T>::inv` は `T(1) / f` を返します。`T` が `long long` などの整数型だと整数除算になって正しい逆元にならないので、[imos法](../data_structures/imos.hpp) に渡すときは `T` を modint や浮動小数点数などの体の型にしてください。
 
-`ClampMin`・`ClampMax`・`ClampMinMax` の作用素は、chmin (`{型の最小値, x}`)・chmax (`{x, 型の最大値}`)・代入 (`{x, x}`) をまとめて表せます。clamp は単調非減少なので最小値・最大値にはそのまま作用しますが、区間和には作用しません。区間和が欲しい場合は [Beats 用の作用素付きモノイド](beats-acted-monoid.hpp) の `ChminChmaxAddSum` を使います。
+`ClampMin`・`ClampMax`・`ClampMinMax` の作用素は、chmin (`{型の最小値, x}`)・chmax (`{x, 型の最大値}`)・代入 (`{x, x}`) をまとめて表せます。`ClampAddMin`・`ClampAddMax`・`ClampAddMinMax` の作用素は、さらに加算もまとめて表せます (書き方は [`ClampAdd<T>`](monoid.hpp))。どちらも単調非減少なので最小値・最大値にはそのまま作用しますが、区間和には作用しません。区間和が欲しい場合は [Beats 用の作用素付きモノイド](beats-acted-monoid.hpp) の `ChminChmaxAddSum` を使います。
 
 `AddPowerSum` の要素は `S(x)` で値 `x` の1要素から作り、`s[i]` で `i` 乗和を取得します。
 

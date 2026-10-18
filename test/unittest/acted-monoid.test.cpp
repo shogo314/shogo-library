@@ -150,6 +150,25 @@ int main() {
             clamp_act, [](const P& x, const P& y) { return x == y; }, rng, "ClampMinMax");
     }
 
+    // ClampAddMin / ClampAddMax / ClampAddMinMax: 区間 加算と clamp・区間最小値 / 最大値 / 組
+    {
+        auto gen_clamp_add = [&] {
+            long long lb = small(), ub = small();
+            if (lb > ub) std::swap(lb, ub);
+            if (rng() % 3 == 0) lb = std::numeric_limits<long long>::lowest();
+            if (rng() % 3 == 0) ub = std::numeric_limits<long long>::max();
+            return ClampAdd<long long>{lb, ub, small()};
+        };
+        auto clamp_add_act = [](const ClampAdd<long long>& f, long long x) { return std::min(std::max(x + f.add, f.lb), f.ub); };
+        test_lazy<acted_monoid::ClampAddMin<long long>, long long>(small, gen_clamp_add, id_s, min_fold, clamp_add_act, same, rng, "ClampAddMin");
+        test_lazy<acted_monoid::ClampAddMax<long long>, long long>(small, gen_clamp_add, id_s, max_fold, clamp_add_act, same, rng, "ClampAddMax");
+        using P = std::pair<long long, long long>;
+        test_lazy<acted_monoid::ClampAddMinMax<long long>, long long>(
+            small, gen_clamp_add, [](long long x, int) { return P{x, x}; },
+            [&](const std::vector<long long>& a, int l, int r) { return P{min_fold(a, l, r), max_fold(a, l, r)}; },
+            clamp_add_act, [](const P& x, const P& y) { return x == y; }, rng, "ClampAddMinMax");
+    }
+
     // AddMaxWith: 区間加算・区間最大値とその位置 (同じ値なら左側)
     {
         using P = std::pair<long long, int>;

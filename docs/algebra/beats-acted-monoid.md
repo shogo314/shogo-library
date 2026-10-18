@@ -20,7 +20,7 @@ s.sum; s.max1; s.min1;          // [l, r) の和、最大値、最小値
 |---|---|---|---|
 | `ChminSum<T>` | 区間 chmin | 区間和・最大値 | `T` |
 | `ChmaxSum<T>` | 区間 chmax | 区間和・最小値 | `T` |
-| `ChminChmaxAddSum<T>` | 区間 chmin・chmax・加算・代入 | 区間和・最大値・最小値 | `F{lb, ub, add}` |
+| `ChminChmaxAddSum<T>` | 区間 chmin・chmax・加算・代入 | 区間和・最大値・最小値 | [`ClampAdd<T>`](monoid.hpp) |
 
 ## 区間 chmin `ChminSum<T>`・区間 chmax `ChmaxSum<T>`
 
@@ -32,7 +32,7 @@ s.sum; s.max1; s.min1;          // [l, r) の和、最大値、最小値
 
 ## 区間 chmin・chmax・加算・代入 `ChminChmaxAddSum<T>`
 
-作用素 `F{lb, ub, add}` は $x \leftarrow \mathrm{clamp}(x + \mathit{add}, \mathit{lb}, \mathit{ub})$ を表します ($\mathit{lb} \le \mathit{ub}$)。次の static 関数で作ります。
+作用素 `F` は [`ClampAdd<T>`](monoid.hpp) で、`F{lb, ub, add}` は $x \leftarrow \mathrm{clamp}(x + \mathit{add}, \mathit{lb}, \mathit{ub})$ を表します ($\mathit{lb} \le \mathit{ub}$)。次の static 関数で作ります。
 
 | 関数 | 作用 |
 |---|---|

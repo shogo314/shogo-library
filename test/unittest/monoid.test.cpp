@@ -160,6 +160,47 @@ int main() {
             Clamp<long long>{}, gen_clamp, rng, "ClampComposite");
     }
 
+    // ClampAdd: ==, !=, 入出力, 既定値は恒等写像
+    {
+        constexpr long long lowest = std::numeric_limits<long long>::lowest(), highest = std::numeric_limits<long long>::max();
+        ClampAdd<long long> f{2, 5, 1}, g{2, 5, 1}, h{2, 5, 0}, id;
+        check(f == g && !(f != g), "ClampAdd ==");
+        check(f != h && !(f == h), "ClampAdd !=");
+        check(id == ClampAdd<long long>{lowest, highest, 0} && id(lowest) == lowest && id(highest) == highest, "ClampAdd default");
+        check(f(0) == 2 && f(2) == 3 && f(9) == 5, "ClampAdd ()");
+        std::ostringstream os;
+        os << f;
+        check(os.str() == "2 5 1", "ClampAdd <<");
+        std::istringstream is("-3 4 -1");
+        is >> f;
+        check(f == ClampAdd<long long>{-3, 4, -1}, "ClampAdd >>");
+        // ClampAddComposite で合成した結果が関数の合成 a∘b と一致する。Reverse は b∘a
+        // 下限・上限なし (型の最小値・最大値) に足してもあふれない (UBSan で確かめる)
+        auto gen_clamp_add = [&] {
+            long long lb = static_cast<long long>(rng() % 11) - 5, ub = static_cast<long long>(rng() % 11) - 5;
+            if (lb > ub) std::swap(lb, ub);
+            if (rng() % 3 == 0) lb = lowest;
+            if (rng() % 3 == 0) ub = highest;
+            return ClampAdd<long long>{lb, ub, static_cast<long long>(rng() % 7) - 3};
+        };
+        for (int rep = 0; rep < 1000 && ok; rep++) {
+            auto a = gen_clamp_add(), b = gen_clamp_add();
+            auto c = monoid::ClampAddComposite<long long>::op(a, b);
+            auto d = monoid::Reverse<monoid::ClampAddComposite<long long>>().op(a, b);
+            check(c.lb <= c.ub, "ClampAddComposite lb <= ub");
+            check(monoid::ClampAddComposite<long long>::op(a, monoid::ClampAddComposite<long long>::e()) == a, "ClampAddComposite e");
+            check(monoid::ClampAddComposite<long long>::op(monoid::ClampAddComposite<long long>::e(), a) == a, "ClampAddComposite e");
+            for (long long x = -9; x <= 9; x++) {
+                check(c(x) == a(b(x)), "ClampAddComposite op");
+                check(d(x) == b(a(x)), "Reverse<ClampAddComposite> op");
+            }
+        }
+        // SegTree に乗せる (加算が積み重なってもあふれない範囲で)
+        test_segtree<monoid::ClampAddComposite<long long>>(
+            [](const ClampAdd<long long>& a, const ClampAdd<long long>& b) { return monoid::ClampAddComposite<long long>::op(a, b); },
+            ClampAdd<long long>{}, gen_clamp_add, rng, "ClampAddComposite");
+    }
+
     // group::Xor: inv は自分自身。PotentializedUnionFind に乗せて xor のポテンシャルと比べる
     for (int rep = 0; rep < 300 && ok; rep++) {
         int n = rng() % 12 + 1;

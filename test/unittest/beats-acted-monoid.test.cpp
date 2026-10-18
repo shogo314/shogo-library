@@ -18,6 +18,7 @@
 static_assert(std::is_same_v<RChminSumQ<long long>, SegTreeBeats<beats_acted_monoid::ChminSum<long long>>>);
 static_assert(std::is_same_v<RChmaxSumQ<long long>, SegTreeBeats<beats_acted_monoid::ChmaxSum<long long>>>);
 static_assert(std::is_same_v<RChminChmaxAddSumQ<long long>, SegTreeBeats<beats_acted_monoid::ChminChmaxAddSum<long long>>>);
+static_assert(std::is_same_v<beats_acted_monoid::ChminChmaxAddSum<long long>::F, ClampAdd<long long>>);
 
 bool ok = true;
 void check(bool cond, const char* what) {

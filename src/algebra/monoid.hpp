@@ -68,6 +68,31 @@ struct Clamp {
     }
 };
 
+/**
+ * @brief 足してから clamp する関数 f(x) = min(max(x + add, lb), ub)
+ *
+ * monoid::ClampAddComposite の要素や acted_monoid::ClampAddMin、beats_acted_monoid::ChminChmaxAddSum の作用素に使う
+ * 例: ClampAdd<long long> f{0, 10, 3}; f(x) は x + 3 を [0, 10] に収める。省略すると恒等写像 {型の最小値, 型の最大値, 0}
+ * lb <= ub でなければならない。lb が型の最小値、ub が型の最大値のときは、それぞれ下限・上限がないことを表す
+ */
+template <typename T>
+struct ClampAdd {
+    T lb = std::numeric_limits<T>::lowest();  //!< 下限
+    T ub = std::numeric_limits<T>::max();     //!< 上限
+    T add = T(0);                             //!< clamp の前に足す値
+    constexpr T operator()(const T& x) const { return std::min(std::max(x + add, lb), ub); }
+    friend constexpr bool operator==(const ClampAdd& f, const ClampAdd& g) { return f.lb == g.lb && f.ub == g.ub && f.add == g.add; }
+    friend constexpr bool operator!=(const ClampAdd& f, const ClampAdd& g) { return !(f == g); }
+    template <class CharT, class Traits>
+    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT, Traits>& is, ClampAdd& f) {
+        return is >> f.lb >> f.ub >> f.add;
+    }
+    template <class CharT, class Traits>
+    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const ClampAdd& f) {
+        return os << f.lb << CharT(' ') << f.ub << CharT(' ') << f.add;
+    }
+};
+
 namespace monoid {
 
 /**
@@ -227,6 +252,23 @@ template <typename T>
 struct ClampComposite {
     using S = Clamp<T>;
     static constexpr S op(const S& f, const S& g) { return {f(g.lb), f(g.ub)}; }
+    static constexpr S e() { return {}; }
+};
+
+/**
+ * @brief 足してから clamp する関数 (ClampAdd) の合成
+ * op(f, g) = f∘g (g を先に適用する)
+ * f(g(x)) = clamp(x + g.add + f.add, f(g.lb), f(g.ub)) なので、合成も ClampAdd になる
+ * 型の最小値・最大値の lb・ub は下限・上限なしとして扱い、足してもあふれないようにする
+ */
+template <typename T>
+struct ClampAddComposite {
+    using S = ClampAdd<T>;
+    static constexpr S op(const S& f, const S& g) {
+        T lb = g.lb == std::numeric_limits<T>::lowest() ? f.lb : f(g.lb);
+        T ub = g.ub == std::numeric_limits<T>::max() ? f.ub : f(g.ub);
+        return {lb, ub, g.add + f.add};
+    }
     static constexpr S e() { return {}; }
 };
 

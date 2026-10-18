@@ -39,10 +39,10 @@ data:
     \u3068\n * @param n 0 \u4EE5\u4E0A\n * @param m 1 \u4EE5\u4E0A\n */\ninline long\
     \ long floor_sum(long long n, long long m, long long a, long long b) {\n    assert(0\
     \ <= n && 1 <= m);\n    unsigned long long res = 0;\n    if (a < 0) {\n      \
-    \  long long a2 = a % m + m;\n        res -= (unsigned long long)n * (n - 1) /\
-    \ 2 * ((a2 - a) / m);\n        a = a2;\n    }\n    if (b < 0) {\n        long\
-    \ long b2 = b % m + m;\n        res -= (unsigned long long)n * ((b2 - b) / m);\n\
-    \        b = b2;\n    }\n    return res + internal_floor_sum::floor_sum_unsigned(n,\
+    \  long long a2 = a % m + m;\n        res -= static_cast<unsigned long long>(n)\
+    \ * (n - 1) / 2 * ((a2 - a) / m);\n        a = a2;\n    }\n    if (b < 0) {\n\
+    \        long long b2 = b % m + m;\n        res -= static_cast<unsigned long long>(n)\
+    \ * ((b2 - b) / m);\n        b = b2;\n    }\n    return res + internal_floor_sum::floor_sum_unsigned(n,\
     \ m, a, b);\n}\n#line 6 \"test/yosupo/sum-of-floor-of-linear.test.cpp\"\n\nint\
     \ main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
     \    int t;\n    std::cin >> t;\n    while (t--) {\n        long long n, m, a,\
@@ -59,7 +59,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/sum-of-floor-of-linear.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 00:37:13+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/sum-of-floor-of-linear.test.cpp

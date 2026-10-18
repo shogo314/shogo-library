@@ -331,15 +331,15 @@ data:
     \ <= a && a < _n);\n        assert(0 <= b && b < _n);\n        long long x = leader(a),\
     \ y = leader(b);\n        if (x == y) return {x, false};\n        if (-parent_or_size[x]\
     \ < -parent_or_size[y]) std::swap(x, y);\n        parent_or_size[x] += parent_or_size[y];\n\
-    \        parent_or_size[y] = int(x);\n        return {x, true};\n    }\n    /**\n\
-    \     * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\u304B\n   \
-    \  */\n    bool same(long long a, long long b) {\n        assert(0 <= a && a <\
-    \ _n);\n        assert(0 <= b && b < _n);\n        return leader(a) == leader(b);\n\
-    \    }\n    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\
-    \u6210\u5206\u306E\u4EE3\u8868\u5143\n     */\n    long long leader(long long\
-    \ a) {\n        assert(0 <= a && a < _n);\n        if (parent_or_size[a] < 0)\
-    \ return a;\n        int x = int(a);\n        while (parent_or_size[x] >= 0) {\n\
-    \            x = parent_or_size[x];\n        }\n        while (parent_or_size[a]\
+    \        parent_or_size[y] = static_cast<int>(x);\n        return {x, true};\n\
+    \    }\n    /**\n     * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\
+    \u304B\n     */\n    bool same(long long a, long long b) {\n        assert(0 <=\
+    \ a && a < _n);\n        assert(0 <= b && b < _n);\n        return leader(a) ==\
+    \ leader(b);\n    }\n    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\
+    \u9023\u7D50\u6210\u5206\u306E\u4EE3\u8868\u5143\n     */\n    long long leader(long\
+    \ long a) {\n        assert(0 <= a && a < _n);\n        if (parent_or_size[a]\
+    \ < 0) return a;\n        int x = static_cast<int>(a);\n        while (parent_or_size[x]\
+    \ >= 0) {\n            x = parent_or_size[x];\n        }\n        while (parent_or_size[a]\
     \ >= 0) {\n            int t = parent_or_size[a];\n            parent_or_size[a]\
     \ = x;\n            a = t;\n        }\n        return x;\n    }\n    /**\n   \
     \  * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\u6210\u5206\u306E\
@@ -367,8 +367,8 @@ data:
     \ e()) {}\n\n    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\
     \u7D50\u6210\u5206\u306E\u4EE3\u8868\u5143\n     */\n    long long leader(long\
     \ long a) {\n        assert(0 <= a && a < _n);\n        if (parent_or_size[a]\
-    \ < 0) return a;\n        std::stack<int> stk;\n        stk.push(int(a));\n  \
-    \      while (parent_or_size[stk.top()] >= 0) {\n            stk.push(parent_or_size[stk.top()]);\n\
+    \ < 0) return a;\n        std::stack<int> stk;\n        stk.push(static_cast<int>(a));\n\
+    \        while (parent_or_size[stk.top()] >= 0) {\n            stk.push(parent_or_size[stk.top()]);\n\
     \        }\n        const int root = stk.top();\n        stk.pop();\n        stk.pop();\n\
     \        while (!stk.empty()) {\n            diff_weight[stk.top()] = op(diff_weight[parent_or_size[stk.top()]],\
     \ diff_weight[stk.top()]);\n            parent_or_size[stk.top()] = root;\n  \
@@ -387,7 +387,7 @@ data:
     \        w = op(w, inv(weight(b)));\n        long long x = leader(a), y = leader(b);\n\
     \        if (x == y) return {x, false};\n        if (-parent_or_size[x] < -parent_or_size[y])\
     \ {\n            std::swap(x, y);\n            w = inv(w);\n        }\n      \
-    \  parent_or_size[x] += parent_or_size[y];\n        parent_or_size[y] = int(x);\n\
+    \  parent_or_size[x] += parent_or_size[y];\n        parent_or_size[y] = static_cast<int>(x);\n\
     \        diff_weight[y] = w;\n        return {x, true};\n    }\n\n    /**\n  \
     \   * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\u304B\n     */\n\
     \    bool same(long long a, long long b) {\n        assert(0 <= a && a < _n);\n\
@@ -426,10 +426,10 @@ data:
     \ \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\u6210\u5206\u306E\u4EE3\u8868\
     \u5143\n     */\n    long long leader(long long a) {\n        assert(0 <= a &&\
     \ a < _n);\n        if (parent_or_size[a] < 0) return a;\n        std::stack<int>\
-    \ stk;\n        stk.push(int(a));\n        while (parent_or_size[stk.top()] >=\
-    \ 0) {\n            stk.push(parent_or_size[stk.top()]);\n        }\n        const\
-    \ int root = stk.top();\n        stk.pop();\n        stk.pop();\n        while\
-    \ (!stk.empty()) {\n            diff_weight[stk.top()] = op(diff_weight[parent_or_size[stk.top()]],\
+    \ stk;\n        stk.push(static_cast<int>(a));\n        while (parent_or_size[stk.top()]\
+    \ >= 0) {\n            stk.push(parent_or_size[stk.top()]);\n        }\n     \
+    \   const int root = stk.top();\n        stk.pop();\n        stk.pop();\n    \
+    \    while (!stk.empty()) {\n            diff_weight[stk.top()] = op(diff_weight[parent_or_size[stk.top()]],\
     \ diff_weight[stk.top()]);\n            parent_or_size[stk.top()] = root;\n  \
     \          stk.pop();\n        }\n        return root;\n    }\n\n    /**\n   \
     \  * @brief a \u306E\u30B0\u30EB\u30FC\u30D7\u3068 b \u306E\u30B0\u30EB\u30FC\u30D7\
@@ -446,7 +446,7 @@ data:
     \        w = op(w, inv(weight(b)));\n        long long x = leader(a), y = leader(b);\n\
     \        if (x == y) return {x, false};\n        if (-parent_or_size[x] < -parent_or_size[y])\
     \ {\n            std::swap(x, y);\n            w = inv(w);\n        }\n      \
-    \  parent_or_size[x] += parent_or_size[y];\n        parent_or_size[y] = int(x);\n\
+    \  parent_or_size[x] += parent_or_size[y];\n        parent_or_size[y] = static_cast<int>(x);\n\
     \        diff_weight[y] = w;\n        return {x, true};\n    }\n\n    /**\n  \
     \   * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\u304B\n     */\n\
     \    bool same(long long a, long long b) {\n        assert(0 <= a && a < _n);\n\
@@ -472,7 +472,7 @@ data:
   isVerificationFile: false
   path: src/data_structures/potentialized-unionfind.hpp
   requiredBy: []
-  timestamp: '2026-10-15 23:44:15+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/mapping.test.cpp

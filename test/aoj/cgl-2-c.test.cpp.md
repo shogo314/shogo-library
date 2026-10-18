@@ -304,65 +304,65 @@ data:
     (\u53CD\u6642\u8A08\u56DE\u308A\u306A\u3089\u6B63\u3001\u6642\u8A08\u56DE\u308A\
     \u306A\u3089\u8CA0)\n */\ntemplate <typename T>\nT polygon_area_doubled(const\
     \ std::vector<Vector<T, 2>>& polygon) {\n    T ret = 0;\n    for (int i = 0; i\
-    \ < (int)polygon.size(); i++) {\n        int j = i + 1;\n        if (j == (int)polygon.size())\
-    \ j = 0;\n        ret += cross(polygon[i], polygon[j]);\n    }\n    return ret;\n\
-    }\n\n/**\n * @brief \u591A\u89D2\u5F62\u306E\u9762\u7A4D\n *\n * @tparam T \u5EA7\
-    \u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19(\u9806\u756A\
-    \u3001\u53CD\u6642\u8A08\u56DE\u308A\u304B\u6642\u8A08\u56DE\u308A\u304B\u306F\
-    \u554F\u308F\u306A\u3044)\n * @return double \u9762\u7A4D\n */\ntemplate <typename\
-    \ T>\ndouble polygon_area(const std::vector<Vector<T, 2>>& polygon) {\n    return\
-    \ std::abs(polygon_area_doubled(polygon)) / 2.;\n}\n\n/**\n * @brief \u591A\u89D2\
-    \u5F62\u306E\u51F8\u6027\u5224\u5B9A\n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\
-    \n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19(\u53CD\u6642\u8A08\u56DE\u308A\
-    )\n * @return true \u51F8\n * @return false \u51F9\n */\ntemplate <typename T>\n\
-    bool polygon_is_convex(const std::vector<Vector<T, 2>>& polygon) {\n    int n\
-    \ = polygon.size();\n    for (int i = 0; i < n; i++) {\n        int j = i + 1;\n\
-    \        if (j == n) j = 0;\n        int k = j + 1;\n        if (k == n) k = 0;\n\
-    \        if (cross(polygon[j] - polygon[i], polygon[k] - polygon[j]) < 0) return\
-    \ false;\n    }\n    return true;\n}\n\n/**\n * @brief \u70B9\u306E\u591A\u89D2\
-    \u5F62\u5185\u5305\u542B\u5224\u5B9A\n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\
-    \n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19(\u53CD\u6642\u8A08\u56DE\u308A\
-    )\n * @param p \u70B9\u306E\u5EA7\u6A19\n * @return int 0: \u5916\u90E8, 1: \u8FBA\
-    \u4E0A, 2: \u5185\u90E8\n */\ntemplate <typename T>\nint polygon_contains(const\
-    \ std::vector<Vector<T, 2>>& polygon, const Vector<T, 2>& p) {\n    bool in =\
-    \ false;\n    for (int i = 0; i < (int)polygon.size(); i++) {\n        int j =\
-    \ i + 1;\n        if (j == (int)polygon.size()) j = 0;\n        Vector<T> v1 =\
-    \ polygon[i] - p, v2 = polygon[j] - p;\n        if (v1[1] > v2[1]) std::swap(v1,\
-    \ v2);\n        T c = cross(v1, v2);\n        if (v1[1] <= 0 && v2[1] > 0 && c\
-    \ < 0) in = !in;\n        if (c == 0 && dot(v1, v2) <= 0) return 1;\n    }\n \
-    \   return in ? 2 : 0;\n}\n\n/**\n * @brief \u591A\u89D2\u5F62\u306E\u534A\u51F8\
-    \u5305\n * \u4E0E\u3048\u3089\u308C\u305F\u9802\u70B9\u30EA\u30B9\u30C8\u306E\u9806\
-    \u756A\u3092\u4FDD\u3063\u3066\u53CD\u6642\u8A08\u56DE\u308A\u306B\u51F8\u5305\
-    \u3092\u69CB\u6210\u3059\u308B\n * x\u306E\u6607\u9806\u306B\u30BD\u30FC\u30C8\
-    \u3055\u308C\u3066\u3044\u308C\u3070\u4E0B\u51F8\u5305\u3001x\u306E\u964D\u9806\
-    \u306B\u30BD\u30FC\u30C8\u3055\u308C\u3066\u3044\u308C\u3070\u4E0A\u51F8\u5305\
-    \u304C\u5F97\u3089\u308C\u308B\n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\n *\
-    \ @param points \u9802\u70B9\u30EA\u30B9\u30C8\n * @param include_straight \u5185\
-    \u89D2\u304C180\u5EA6\u306E\u9802\u70B9\u3092\u542B\u3080\u304B\u3069\u3046\u304B\
-    \n * @return std::vector<Vector<T, 2>> \u534A\u51F8\u5305\u306E\u9802\u70B9\u306E\
-    \u5EA7\u6A19(\u53CD\u6642\u8A08\u56DE\u308A)\n */\ntemplate <typename T>\nstd::vector<Vector<T,\
-    \ 2>> select_convex(const std::vector<Vector<T, 2>>& points, bool include_straight\
-    \ = false) {\n    std::vector<Vector<T, 2>> ret;\n    for (auto& p : points) {\n\
-    \        while ((int)ret.size() >= 2) {\n            T c = cross(ret.back() -\
-    \ ret[(int)ret.size() - 2], p - ret.back());\n            if (c > 0 || (c == 0\
-    \ && include_straight)) break;\n            ret.pop_back();\n        }\n     \
-    \   ret.push_back(p);\n    }\n    return ret;\n}\n\n/**\n * @brief \u591A\u89D2\
-    \u5F62\u306E\u51F8\u5305\n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param\
-    \ points \u9802\u70B9\u30EA\u30B9\u30C8\n * @param include_straight \u5185\u89D2\
-    \u304C180\u5EA6\u306E\u9802\u70B9\u3092\u542B\u3080\u304B\u3069\u3046\u304B\n\
-    \ * @return std::vector<Vector<T, 2>> \u51F8\u5305\u306E\u9802\u70B9\u306E\u5EA7\
-    \u6A19(\u53CD\u6642\u8A08\u56DE\u308A)\n */\ntemplate <typename T>\nstd::vector<Vector<T,\
-    \ 2>> convex_hull(const std::vector<Vector<T, 2>>& _points, bool include_straight\
-    \ = false) {\n    std::vector<Vector<T, 2>> points = _points;\n    std::sort(points.begin(),\
-    \ points.end());\n    points.erase(std::unique(points.begin(), points.end()),\
-    \ points.end());\n    std::vector<Vector<T, 2>> ret = select_convex(points, include_straight);\n\
-    \    std::reverse(points.begin(), points.end());\n    std::vector<Vector<T, 2>>\
-    \ tmp = select_convex(points, include_straight);\n    // \u5168\u70B9\u304C\u4E00\
-    \u76F4\u7DDA\u4E0A\u306B\u3042\u308B\u5834\u5408\u3001\u4E0B\u5074\u3068\u4E0A\
-    \u5074\u304C\u540C\u3058\u70B9\u5217\u306B\u306A\u308B\u306E\u3067\u7247\u65B9\
-    \u3060\u3051\u4F7F\u3046\n    if (ret.size() == points.size() && tmp.size() ==\
-    \ points.size()) return ret;\n    for (int i = 1; i < (int)tmp.size() - 1; i++)\
-    \ ret.push_back(tmp[i]);\n    return ret;\n}\n\n/**\n * @brief closest_point_pair_squared\
+    \ < static_cast<int>(polygon.size()); i++) {\n        int j = i + 1;\n       \
+    \ if (j == static_cast<int>(polygon.size())) j = 0;\n        ret += cross(polygon[i],\
+    \ polygon[j]);\n    }\n    return ret;\n}\n\n/**\n * @brief \u591A\u89D2\u5F62\
+    \u306E\u9762\u7A4D\n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon\
+    \ \u9802\u70B9\u306E\u5EA7\u6A19(\u9806\u756A\u3001\u53CD\u6642\u8A08\u56DE\u308A\
+    \u304B\u6642\u8A08\u56DE\u308A\u304B\u306F\u554F\u308F\u306A\u3044)\n * @return\
+    \ double \u9762\u7A4D\n */\ntemplate <typename T>\ndouble polygon_area(const std::vector<Vector<T,\
+    \ 2>>& polygon) {\n    return std::abs(polygon_area_doubled(polygon)) / 2.;\n\
+    }\n\n/**\n * @brief \u591A\u89D2\u5F62\u306E\u51F8\u6027\u5224\u5B9A\n *\n * @tparam\
+    \ T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19\
+    (\u53CD\u6642\u8A08\u56DE\u308A)\n * @return true \u51F8\n * @return false \u51F9\
+    \n */\ntemplate <typename T>\nbool polygon_is_convex(const std::vector<Vector<T,\
+    \ 2>>& polygon) {\n    int n = polygon.size();\n    for (int i = 0; i < n; i++)\
+    \ {\n        int j = i + 1;\n        if (j == n) j = 0;\n        int k = j + 1;\n\
+    \        if (k == n) k = 0;\n        if (cross(polygon[j] - polygon[i], polygon[k]\
+    \ - polygon[j]) < 0) return false;\n    }\n    return true;\n}\n\n/**\n * @brief\
+    \ \u70B9\u306E\u591A\u89D2\u5F62\u5185\u5305\u542B\u5224\u5B9A\n *\n * @tparam\
+    \ T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19\
+    (\u53CD\u6642\u8A08\u56DE\u308A)\n * @param p \u70B9\u306E\u5EA7\u6A19\n * @return\
+    \ int 0: \u5916\u90E8, 1: \u8FBA\u4E0A, 2: \u5185\u90E8\n */\ntemplate <typename\
+    \ T>\nint polygon_contains(const std::vector<Vector<T, 2>>& polygon, const Vector<T,\
+    \ 2>& p) {\n    bool in = false;\n    for (int i = 0; i < static_cast<int>(polygon.size());\
+    \ i++) {\n        int j = i + 1;\n        if (j == static_cast<int>(polygon.size()))\
+    \ j = 0;\n        Vector<T> v1 = polygon[i] - p, v2 = polygon[j] - p;\n      \
+    \  if (v1[1] > v2[1]) std::swap(v1, v2);\n        T c = cross(v1, v2);\n     \
+    \   if (v1[1] <= 0 && v2[1] > 0 && c < 0) in = !in;\n        if (c == 0 && dot(v1,\
+    \ v2) <= 0) return 1;\n    }\n    return in ? 2 : 0;\n}\n\n/**\n * @brief \u591A\
+    \u89D2\u5F62\u306E\u534A\u51F8\u5305\n * \u4E0E\u3048\u3089\u308C\u305F\u9802\u70B9\
+    \u30EA\u30B9\u30C8\u306E\u9806\u756A\u3092\u4FDD\u3063\u3066\u53CD\u6642\u8A08\
+    \u56DE\u308A\u306B\u51F8\u5305\u3092\u69CB\u6210\u3059\u308B\n * x\u306E\u6607\
+    \u9806\u306B\u30BD\u30FC\u30C8\u3055\u308C\u3066\u3044\u308C\u3070\u4E0B\u51F8\
+    \u5305\u3001x\u306E\u964D\u9806\u306B\u30BD\u30FC\u30C8\u3055\u308C\u3066\u3044\
+    \u308C\u3070\u4E0A\u51F8\u5305\u304C\u5F97\u3089\u308C\u308B\n *\n * @tparam T\
+    \ \u5EA7\u6A19\u306E\u578B\n * @param points \u9802\u70B9\u30EA\u30B9\u30C8\n\
+    \ * @param include_straight \u5185\u89D2\u304C180\u5EA6\u306E\u9802\u70B9\u3092\
+    \u542B\u3080\u304B\u3069\u3046\u304B\n * @return std::vector<Vector<T, 2>> \u534A\
+    \u51F8\u5305\u306E\u9802\u70B9\u306E\u5EA7\u6A19(\u53CD\u6642\u8A08\u56DE\u308A\
+    )\n */\ntemplate <typename T>\nstd::vector<Vector<T, 2>> select_convex(const std::vector<Vector<T,\
+    \ 2>>& points, bool include_straight = false) {\n    std::vector<Vector<T, 2>>\
+    \ ret;\n    for (auto& p : points) {\n        while (static_cast<int>(ret.size())\
+    \ >= 2) {\n            T c = cross(ret.back() - ret[static_cast<int>(ret.size())\
+    \ - 2], p - ret.back());\n            if (c > 0 || (c == 0 && include_straight))\
+    \ break;\n            ret.pop_back();\n        }\n        ret.push_back(p);\n\
+    \    }\n    return ret;\n}\n\n/**\n * @brief \u591A\u89D2\u5F62\u306E\u51F8\u5305\
+    \n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param points \u9802\u70B9\u30EA\
+    \u30B9\u30C8\n * @param include_straight \u5185\u89D2\u304C180\u5EA6\u306E\u9802\
+    \u70B9\u3092\u542B\u3080\u304B\u3069\u3046\u304B\n * @return std::vector<Vector<T,\
+    \ 2>> \u51F8\u5305\u306E\u9802\u70B9\u306E\u5EA7\u6A19(\u53CD\u6642\u8A08\u56DE\
+    \u308A)\n */\ntemplate <typename T>\nstd::vector<Vector<T, 2>> convex_hull(const\
+    \ std::vector<Vector<T, 2>>& _points, bool include_straight = false) {\n    std::vector<Vector<T,\
+    \ 2>> points = _points;\n    std::sort(points.begin(), points.end());\n    points.erase(std::unique(points.begin(),\
+    \ points.end()), points.end());\n    std::vector<Vector<T, 2>> ret = select_convex(points,\
+    \ include_straight);\n    std::reverse(points.begin(), points.end());\n    std::vector<Vector<T,\
+    \ 2>> tmp = select_convex(points, include_straight);\n    // \u5168\u70B9\u304C\
+    \u4E00\u76F4\u7DDA\u4E0A\u306B\u3042\u308B\u5834\u5408\u3001\u4E0B\u5074\u3068\
+    \u4E0A\u5074\u304C\u540C\u3058\u70B9\u5217\u306B\u306A\u308B\u306E\u3067\u7247\
+    \u65B9\u3060\u3051\u4F7F\u3046\n    if (ret.size() == points.size() && tmp.size()\
+    \ == points.size()) return ret;\n    for (int i = 1; i < static_cast<int>(tmp.size())\
+    \ - 1; i++) ret.push_back(tmp[i]);\n    return ret;\n}\n\n/**\n * @brief closest_point_pair_squared\
     \ \u306E\u623B\u308A\u5024\n */\ntemplate <typename T>\nstruct ClosestPairSquared\
     \ {\n    T squared_dist;  //!< \u6700\u8FD1\u70B9\u5BFE\u306E\u8DDD\u96E2\u306E\
     2\u4E57\n    long long i, j;  //!< \u6700\u8FD1\u70B9\u5BFE\u306E\u6DFB\u5B57\n\
@@ -403,9 +403,9 @@ data:
     \          if (dx * dx < min_dist_squared[u]) cand.push_back(i);\n           \
     \ }\n            std::sort(cand.begin(), cand.end(), [&](int i, int j) {\n   \
     \             return points[sorted_idx[i]][1] < points[sorted_idx[j]][1];\n  \
-    \          });\n            for (int i = 0; i < (int)cand.size(); i++) {\n   \
-    \             for (int j = i + 1; j < (int)cand.size(); j++) {\n             \
-    \       T dx = points[sorted_idx[cand[j]]][0] - points[sorted_idx[cand[i]]][0];\n\
+    \          });\n            for (int i = 0; i < static_cast<int>(cand.size());\
+    \ i++) {\n                for (int j = i + 1; j < static_cast<int>(cand.size());\
+    \ j++) {\n                    T dx = points[sorted_idx[cand[j]]][0] - points[sorted_idx[cand[i]]][0];\n\
     \                    T dy = points[sorted_idx[cand[j]]][1] - points[sorted_idx[cand[i]]][1];\n\
     \                    if (dy * dy >= min_dist_squared[u]) break;\n            \
     \        T d = dx * dx + dy * dy;\n                    if (d < min_dist_squared[u])\
@@ -442,7 +442,7 @@ data:
   isVerificationFile: true
   path: test/aoj/cgl-2-c.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:27:48+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/cgl-2-c.test.cpp

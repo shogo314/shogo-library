@@ -32,7 +32,7 @@ data:
     \ v) const { return ((v >> (level - 1)) & 1) > 0; }\n        bool is_leaf() const\
     \ { return level == 0; }\n        // \u5B50\u306E\u72B6\u614B\u304Cvalid\u304B\
     \u3069\u3046\u304B\n        // 0: xx, 1: xo, 2: ox, 3: oo\n        int state_children()\
-    \ const {\n            return ((bool)children[1] << 1) | (bool)children[0];\n\
+    \ const {\n            return (static_cast<bool>(children[1]) << 1) | static_cast<bool>(children[0]);\n\
     \        }\n        // xor\u306E\u5024\u3092\u5B50\u30CE\u30FC\u30C9\u306B\u4F1D\
     \u64AD\u3059\u308B\n        void affect_xor() {\n            if (get_bit(xval))\
     \ {\n                std::swap(children[0], children[1]);\n            }\n   \
@@ -81,18 +81,18 @@ data:
     \ <<= 1;\n            int state = cur_ptr->state_children();\n            NodePtr&\
     \ z_ptr = cur_ptr->children[0];\n            NodePtr& o_ptr = cur_ptr->children[1];\n\
     \            assert(state > 0);\n            if (state == 1 || (state == 3 &&\
-    \ n < (long long)z_ptr->subcnt)) {\n                cur_ptr = z_ptr;\n       \
-    \     } else {\n                n -= (state & 1 ? z_ptr->subcnt : 0);\n      \
-    \          ret |= 1;\n                cur_ptr = o_ptr;\n            }\n      \
-    \  }\n        return ret;\n    }\n\n    /**\n     * @brief n\u4EE5\u4E0A\u306E\
-    \u8981\u7D20\u3092\u63A2\u7D22 (O(d))\n     * @return \u63A2\u7D22\u3057\u305F\
-    \u5024\u304C\u6607\u9806\u3067\u4F55\u756A\u76EE\u304B (0-indexed)\u3002\u8A72\
-    \u5F53\u3059\u308B\u8981\u7D20\u304C\u306A\u3051\u308C\u3070trie\u6728\u306E\u30B5\
-    \u30A4\u30BA\u304C\u8FD4\u308B\n     */\n    long long bisect_left(T n) const\
-    \ {\n        if constexpr (d < std::numeric_limits<T>::digits) {\n           \
-    \ if ((n >> d) != 0) return size();\n        }\n        long long ret = 0;\n \
-    \       NodePtr cur_ptr = root_ptr;\n        while (!cur_ptr->is_leaf()) {\n \
-    \           cur_ptr->affect_xor();\n            bool b = cur_ptr->get_bit(n);\n\
+    \ n < static_cast<long long>(z_ptr->subcnt))) {\n                cur_ptr = z_ptr;\n\
+    \            } else {\n                n -= (state & 1 ? z_ptr->subcnt : 0);\n\
+    \                ret |= 1;\n                cur_ptr = o_ptr;\n            }\n\
+    \        }\n        return ret;\n    }\n\n    /**\n     * @brief n\u4EE5\u4E0A\
+    \u306E\u8981\u7D20\u3092\u63A2\u7D22 (O(d))\n     * @return \u63A2\u7D22\u3057\
+    \u305F\u5024\u304C\u6607\u9806\u3067\u4F55\u756A\u76EE\u304B (0-indexed)\u3002\
+    \u8A72\u5F53\u3059\u308B\u8981\u7D20\u304C\u306A\u3051\u308C\u3070trie\u6728\u306E\
+    \u30B5\u30A4\u30BA\u304C\u8FD4\u308B\n     */\n    long long bisect_left(T n)\
+    \ const {\n        if constexpr (d < std::numeric_limits<T>::digits) {\n     \
+    \       if ((n >> d) != 0) return size();\n        }\n        long long ret =\
+    \ 0;\n        NodePtr cur_ptr = root_ptr;\n        while (!cur_ptr->is_leaf())\
+    \ {\n            cur_ptr->affect_xor();\n            bool b = cur_ptr->get_bit(n);\n\
     \            NodePtr& nxt_ptr = cur_ptr->children[b];\n            NodePtr& z_ptr\
     \ = cur_ptr->children[0];\n            if (b && z_ptr) {\n                ret\
     \ += z_ptr->subcnt;\n            }\n            if (!nxt_ptr) {\n            \
@@ -174,7 +174,7 @@ data:
   isVerificationFile: true
   path: test/aoj/itp1-1-a.binary-trie.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:35:57+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/itp1-1-a.binary-trie.test.cpp

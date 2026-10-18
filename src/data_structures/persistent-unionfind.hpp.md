@@ -40,11 +40,11 @@ data:
     \u30FC\u30C9\u306E\u5B50 (\u6700\u4E0B\u6BB5\u306E\u5185\u90E8\u30CE\u30FC\u30C9\
     \u3067\u306F\u8449\u306E\u756A\u53F7)\n        std::vector<T> leaf;\n        int\
     \ make_leaf(const T& x) {\n            leaf.push_back(x);\n            return\
-    \ int(leaf.size()) - 1;\n        }\n        int make_node(int l, int r) {\n  \
-    \          child.push_back({l, r});\n            return int(child.size()) - 1;\n\
-    \        }\n    };\n\n    std::shared_ptr<Pool> pool;  // \u8981\u7D20\u6570 0\
-    \ \u306A\u3089 nullptr\n    long long n;\n    int height, root;  // height = 0\
-    \ \u306A\u3089 root \u306F\u8449\u306E\u756A\u53F7\n\n    PersistentArray(std::shared_ptr<Pool>\
+    \ static_cast<int>(leaf.size()) - 1;\n        }\n        int make_node(int l,\
+    \ int r) {\n            child.push_back({l, r});\n            return static_cast<int>(child.size())\
+    \ - 1;\n        }\n    };\n\n    std::shared_ptr<Pool> pool;  // \u8981\u7D20\u6570\
+    \ 0 \u306A\u3089 nullptr\n    long long n;\n    int height, root;  // height =\
+    \ 0 \u306A\u3089 root \u306F\u8449\u306E\u756A\u53F7\n\n    PersistentArray(std::shared_ptr<Pool>\
     \ pool, long long n, int height, int root) : pool(std::move(pool)), n(n), height(height),\
     \ root(root) {}\n\n    void init_height() {\n        height = 0;\n        while\
     \ ((1LL << height) < n) height++;\n    }\n    // t ([a, a + 2^h)) \u306E [l, r)\
@@ -152,15 +152,15 @@ data:
     \ <= a && a < _n);\n        assert(0 <= b && b < _n);\n        long long x = leader(a),\
     \ y = leader(b);\n        if (x == y) return {x, false};\n        if (-parent_or_size[x]\
     \ < -parent_or_size[y]) std::swap(x, y);\n        parent_or_size[x] += parent_or_size[y];\n\
-    \        parent_or_size[y] = int(x);\n        return {x, true};\n    }\n    /**\n\
-    \     * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\u304B\n   \
-    \  */\n    bool same(long long a, long long b) {\n        assert(0 <= a && a <\
-    \ _n);\n        assert(0 <= b && b < _n);\n        return leader(a) == leader(b);\n\
-    \    }\n    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\
-    \u6210\u5206\u306E\u4EE3\u8868\u5143\n     */\n    long long leader(long long\
-    \ a) {\n        assert(0 <= a && a < _n);\n        if (parent_or_size[a] < 0)\
-    \ return a;\n        int x = int(a);\n        while (parent_or_size[x] >= 0) {\n\
-    \            x = parent_or_size[x];\n        }\n        while (parent_or_size[a]\
+    \        parent_or_size[y] = static_cast<int>(x);\n        return {x, true};\n\
+    \    }\n    /**\n     * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\
+    \u304B\n     */\n    bool same(long long a, long long b) {\n        assert(0 <=\
+    \ a && a < _n);\n        assert(0 <= b && b < _n);\n        return leader(a) ==\
+    \ leader(b);\n    }\n    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\
+    \u9023\u7D50\u6210\u5206\u306E\u4EE3\u8868\u5143\n     */\n    long long leader(long\
+    \ long a) {\n        assert(0 <= a && a < _n);\n        if (parent_or_size[a]\
+    \ < 0) return a;\n        int x = static_cast<int>(a);\n        while (parent_or_size[x]\
+    \ >= 0) {\n            x = parent_or_size[x];\n        }\n        while (parent_or_size[a]\
     \ >= 0) {\n            int t = parent_or_size[a];\n            parent_or_size[a]\
     \ = x;\n            a = t;\n        }\n        return x;\n    }\n    /**\n   \
     \  * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\u6210\u5206\u306E\
@@ -191,8 +191,8 @@ data:
     \ <= a && a < _n);\n        assert(0 <= b && b < _n);\n        long long x = leader(a),\
     \ y = leader(b);\n        if (x == y) return *this;\n        int sx = parent_or_size[x],\
     \ sy = parent_or_size[y];\n        if (-sx < -sy) std::swap(x, y);\n        return\
-    \ PersistentUnionFind(_n, parent_or_size.set(x, sx + sy).set(y, int(x)));\n  \
-    \  }\n    /**\n     * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\
+    \ PersistentUnionFind(_n, parent_or_size.set(x, sx + sy).set(y, static_cast<int>(x)));\n\
+    \    }\n    /**\n     * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\
     \u304B\n     */\n    bool same(long long a, long long b) const {\n        assert(0\
     \ <= a && a < _n);\n        assert(0 <= b && b < _n);\n        return leader(a)\
     \ == leader(b);\n    }\n    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\
@@ -231,8 +231,8 @@ data:
     \ <= a && a < _n);\n        assert(0 <= b && b < _n);\n        long long x = leader(a),\
     \ y = leader(b);\n        if (x == y) return *this;\n        int sx = parent_or_size[x],\
     \ sy = parent_or_size[y];\n        if (-sx < -sy) std::swap(x, y);\n        return\
-    \ PersistentUnionFind(_n, parent_or_size.set(x, sx + sy).set(y, int(x)));\n  \
-    \  }\n    /**\n     * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\
+    \ PersistentUnionFind(_n, parent_or_size.set(x, sx + sy).set(y, static_cast<int>(x)));\n\
+    \    }\n    /**\n     * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\
     \u304B\n     */\n    bool same(long long a, long long b) const {\n        assert(0\
     \ <= a && a < _n);\n        assert(0 <= b && b < _n);\n        return leader(a)\
     \ == leader(b);\n    }\n    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\
@@ -255,7 +255,7 @@ data:
   isVerificationFile: false
   path: src/data_structures/persistent-unionfind.hpp
   requiredBy: []
-  timestamp: '2026-10-15 07:35:57+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/persistent-unionfind.test.cpp

@@ -60,9 +60,9 @@ data:
     \    /**\n     * @brief v \u306E\u5404\u5024\u3092\u756A\u53F7\u306B\u7F6E\u304D\
     \u63DB\u3048\u305F\u5217\n     */\n    std::vector<long long> ids(const std::vector<T>&\
     \ v) const {\n        std::vector<long long> res(v.size());\n        for (long\
-    \ long i = 0; i < (long long)v.size(); i++) res[i] = id(v[i]);\n        return\
-    \ res;\n    }\n    /**\n     * @brief \u30BD\u30FC\u30C8\u6E08\u307F\u3067\u91CD\
-    \u8907\u306E\u306A\u3044\u5024\u306E\u5217\n     */\n    const std::vector<T>&\
+    \ long i = 0; i < static_cast<long long>(v.size()); i++) res[i] = id(v[i]);\n\
+    \        return res;\n    }\n    /**\n     * @brief \u30BD\u30FC\u30C8\u6E08\u307F\
+    \u3067\u91CD\u8907\u306E\u306A\u3044\u5024\u306E\u5217\n     */\n    const std::vector<T>&\
     \ values() const {\n        assert(built);\n        return xs;\n    }\n};\n#line\
     \ 9 \"test/aoj/dsl-4-a.2.test.cpp\"\n\nint main() {\n    int n;\n    std::cin\
     \ >> n;\n    std::vector<long long> x1(n), y1(n), x2(n), y2(n);\n    Compress<long\
@@ -101,7 +101,7 @@ data:
   isVerificationFile: true
   path: test/aoj/dsl-4-a.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:27:48+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/dsl-4-a.2.test.cpp

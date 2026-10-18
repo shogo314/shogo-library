@@ -100,16 +100,16 @@ data:
     \u4E21\u7AEF\u306Ex\u5EA7\u6A19\u3092\u5148\u8AAD\u307F\u3057\u3066\u30BD\u30FC\
     \u30C8\u3057\u305F\u914D\u5217\n     */\n    explicit LiChaoTree(const std::vector<T>&\
     \ xs) : n(xs.size()), xs(xs) {\n        assert(!xs.empty());\n        sz = 1,\
-    \ height = 0;\n        while (sz < (long long)xs.size()) {\n            sz <<=\
-    \ 1;\n            height++;\n        }\n        this->xs.resize(sz, xs.back());\n\
-    \        as.assign(sz * 2, 0);\n        bs.assign(sz * 2, 0);\n        exist.assign(sz\
-    \ * 2, false);\n    }\n\n    /**\n     * @brief \u76F4\u7DDAy=ax+b\u306E\u8FFD\
-    \u52A0\n     *\n     * @param a \u50BE\u304D\n     * @param b \u5207\u7247\n \
-    \    */\n    void add_line(T a, T b) {\n        update(a, b, 1, height);\n   \
-    \ }\n    /**\n     * @brief \u7DDA\u5206y=ax+b , x\u2208[xs[l],xs[r])\u306E\u8FFD\
-    \u52A0\n     *\n     * @param a \u50BE\u304D\n     * @param b \u5207\u7247\n \
-    \    * @param l \u5DE6\u7AEF(xs\u306E\u30A4\u30F3\u30C7\u30C3\u30AF\u30B9)\n \
-    \    * @param r x\u306E\u4E0A\u9650(xs\u306E\u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\
+    \ height = 0;\n        while (sz < static_cast<long long>(xs.size())) {\n    \
+    \        sz <<= 1;\n            height++;\n        }\n        this->xs.resize(sz,\
+    \ xs.back());\n        as.assign(sz * 2, 0);\n        bs.assign(sz * 2, 0);\n\
+    \        exist.assign(sz * 2, false);\n    }\n\n    /**\n     * @brief \u76F4\u7DDA\
+    y=ax+b\u306E\u8FFD\u52A0\n     *\n     * @param a \u50BE\u304D\n     * @param\
+    \ b \u5207\u7247\n     */\n    void add_line(T a, T b) {\n        update(a, b,\
+    \ 1, height);\n    }\n    /**\n     * @brief \u7DDA\u5206y=ax+b , x\u2208[xs[l],xs[r])\u306E\
+    \u8FFD\u52A0\n     *\n     * @param a \u50BE\u304D\n     * @param b \u5207\u7247\
+    \n     * @param l \u5DE6\u7AEF(xs\u306E\u30A4\u30F3\u30C7\u30C3\u30AF\u30B9)\n\
+    \     * @param r x\u306E\u4E0A\u9650(xs\u306E\u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\
     )\n     */\n    void add_segment(T a, T b, long long l, long long r) {\n     \
     \   assert(0 <= l && l <= r && r <= n);\n        if (l == r) return;\n       \
     \ l += sz, r += sz;\n        int h = 0;\n        while (l < r) {\n           \
@@ -173,7 +173,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/segment-add-get-min.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:35:57+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/segment-add-get-min.test.cpp

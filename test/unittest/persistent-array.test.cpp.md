@@ -39,11 +39,11 @@ data:
     \u30FC\u30C9\u306E\u5B50 (\u6700\u4E0B\u6BB5\u306E\u5185\u90E8\u30CE\u30FC\u30C9\
     \u3067\u306F\u8449\u306E\u756A\u53F7)\n        std::vector<T> leaf;\n        int\
     \ make_leaf(const T& x) {\n            leaf.push_back(x);\n            return\
-    \ int(leaf.size()) - 1;\n        }\n        int make_node(int l, int r) {\n  \
-    \          child.push_back({l, r});\n            return int(child.size()) - 1;\n\
-    \        }\n    };\n\n    std::shared_ptr<Pool> pool;  // \u8981\u7D20\u6570 0\
-    \ \u306A\u3089 nullptr\n    long long n;\n    int height, root;  // height = 0\
-    \ \u306A\u3089 root \u306F\u8449\u306E\u756A\u53F7\n\n    PersistentArray(std::shared_ptr<Pool>\
+    \ static_cast<int>(leaf.size()) - 1;\n        }\n        int make_node(int l,\
+    \ int r) {\n            child.push_back({l, r});\n            return static_cast<int>(child.size())\
+    \ - 1;\n        }\n    };\n\n    std::shared_ptr<Pool> pool;  // \u8981\u7D20\u6570\
+    \ 0 \u306A\u3089 nullptr\n    long long n;\n    int height, root;  // height =\
+    \ 0 \u306A\u3089 root \u306F\u8449\u306E\u756A\u53F7\n\n    PersistentArray(std::shared_ptr<Pool>\
     \ pool, long long n, int height, int root) : pool(std::move(pool)), n(n), height(height),\
     \ root(root) {}\n\n    void init_height() {\n        height = 0;\n        while\
     \ ((1LL << height) < n) height++;\n    }\n    // t ([a, a + 2^h)) \u306E [l, r)\
@@ -206,7 +206,7 @@ data:
   isVerificationFile: true
   path: test/unittest/persistent-array.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:35:57+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/persistent-array.test.cpp

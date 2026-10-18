@@ -272,27 +272,28 @@ data:
     \        std::vector<int> left, right;  // \u8449\u3067\u306F -1\n        explicit\
     \ Pool(M m) : m(std::move(m)) {}\n        int make_leaf(const S& x) {\n      \
     \      val.push_back(x);\n            left.push_back(-1);\n            right.push_back(-1);\n\
-    \            return int(val.size()) - 1;\n        }\n        int make_node(int\
-    \ l, int r) {\n            val.push_back(m.op(val[l], val[r]));\n            left.push_back(l);\n\
-    \            right.push_back(r);\n            return int(val.size()) - 1;\n  \
-    \      }\n    };\n\n    std::shared_ptr<Pool> pool;\n    long long n, sz;\n  \
-    \  int root;\n\n    S op(const S& a, const S& b) const { return pool->m.op(a,\
-    \ b); }\n    S e() const { return pool->m.e(); }\n\n    PersistentSegTree(std::shared_ptr<Pool>\
-    \ pool, long long n, long long sz, int root) : pool(std::move(pool)), n(n), sz(sz),\
-    \ root(root) {}\n\n    void init_size() {\n        sz = 1;\n        while (sz\
-    \ < n) sz <<= 1;\n    }\n    int build(const std::vector<S>& v, long long a, long\
-    \ long b) {\n        if (b - a == 1) return pool->make_leaf(a < n ? v[a] : e());\n\
-    \        long long mid = (a + b) / 2;\n        int l = build(v, a, mid);\n   \
-    \     int r = build(v, mid, b);\n        return pool->make_node(l, r);\n    }\n\
-    \    int set_rec(int t, long long a, long long b, long long k, const S& x) const\
-    \ {\n        if (b - a == 1) return pool->make_leaf(x);\n        long long mid\
-    \ = (a + b) / 2;\n        int l = pool->left[t], r = pool->right[t];\n       \
-    \ if (k < mid)\n            l = set_rec(l, a, mid, k, x);\n        else\n    \
-    \        r = set_rec(r, mid, b, k, x);\n        return pool->make_node(l, r);\n\
-    \    }\n    // t \u306E [l, r) \u3092 u \u306B\u7F6E\u304D\u63DB\u3048\u308B\n\
-    \    int copy_rec(int t, int u, long long a, long long b, long long l, long long\
-    \ r) const {\n        if (r <= a || b <= l) return t;\n        if (l <= a && b\
-    \ <= r) return u;\n        long long mid = (a + b) / 2;\n        int lc = copy_rec(pool->left[t],\
+    \            return static_cast<int>(val.size()) - 1;\n        }\n        int\
+    \ make_node(int l, int r) {\n            val.push_back(m.op(val[l], val[r]));\n\
+    \            left.push_back(l);\n            right.push_back(r);\n           \
+    \ return static_cast<int>(val.size()) - 1;\n        }\n    };\n\n    std::shared_ptr<Pool>\
+    \ pool;\n    long long n, sz;\n    int root;\n\n    S op(const S& a, const S&\
+    \ b) const { return pool->m.op(a, b); }\n    S e() const { return pool->m.e();\
+    \ }\n\n    PersistentSegTree(std::shared_ptr<Pool> pool, long long n, long long\
+    \ sz, int root) : pool(std::move(pool)), n(n), sz(sz), root(root) {}\n\n    void\
+    \ init_size() {\n        sz = 1;\n        while (sz < n) sz <<= 1;\n    }\n  \
+    \  int build(const std::vector<S>& v, long long a, long long b) {\n        if\
+    \ (b - a == 1) return pool->make_leaf(a < n ? v[a] : e());\n        long long\
+    \ mid = (a + b) / 2;\n        int l = build(v, a, mid);\n        int r = build(v,\
+    \ mid, b);\n        return pool->make_node(l, r);\n    }\n    int set_rec(int\
+    \ t, long long a, long long b, long long k, const S& x) const {\n        if (b\
+    \ - a == 1) return pool->make_leaf(x);\n        long long mid = (a + b) / 2;\n\
+    \        int l = pool->left[t], r = pool->right[t];\n        if (k < mid)\n  \
+    \          l = set_rec(l, a, mid, k, x);\n        else\n            r = set_rec(r,\
+    \ mid, b, k, x);\n        return pool->make_node(l, r);\n    }\n    // t \u306E\
+    \ [l, r) \u3092 u \u306B\u7F6E\u304D\u63DB\u3048\u308B\n    int copy_rec(int t,\
+    \ int u, long long a, long long b, long long l, long long r) const {\n       \
+    \ if (r <= a || b <= l) return t;\n        if (l <= a && b <= r) return u;\n \
+    \       long long mid = (a + b) / 2;\n        int lc = copy_rec(pool->left[t],\
     \ pool->left[u], a, mid, l, r);\n        int rc = copy_rec(pool->right[t], pool->right[u],\
     \ mid, b, l, r);\n        return pool->make_node(lc, rc);\n    }\n    S prod_rec(int\
     \ t, long long a, long long b, long long l, long long r) const {\n        if (r\
@@ -861,7 +862,7 @@ data:
   isVerificationFile: true
   path: test/unittest/persistent-segtree.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 23:44:15+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/persistent-segtree.test.cpp

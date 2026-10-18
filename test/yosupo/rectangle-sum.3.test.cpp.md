@@ -398,9 +398,9 @@ data:
     \    /**\n     * @brief v \u306E\u5404\u5024\u3092\u756A\u53F7\u306B\u7F6E\u304D\
     \u63DB\u3048\u305F\u5217\n     */\n    std::vector<long long> ids(const std::vector<T>&\
     \ v) const {\n        std::vector<long long> res(v.size());\n        for (long\
-    \ long i = 0; i < (long long)v.size(); i++) res[i] = id(v[i]);\n        return\
-    \ res;\n    }\n    /**\n     * @brief \u30BD\u30FC\u30C8\u6E08\u307F\u3067\u91CD\
-    \u8907\u306E\u306A\u3044\u5024\u306E\u5217\n     */\n    const std::vector<T>&\
+    \ long i = 0; i < static_cast<long long>(v.size()); i++) res[i] = id(v[i]);\n\
+    \        return res;\n    }\n    /**\n     * @brief \u30BD\u30FC\u30C8\u6E08\u307F\
+    \u3067\u91CD\u8907\u306E\u306A\u3044\u5024\u306E\u5217\n     */\n    const std::vector<T>&\
     \ values() const {\n        assert(built);\n        return xs;\n    }\n};\n#line\
     \ 14 \"test/yosupo/rectangle-sum.3.test.cpp\"\n\nint main() {\n    std::cin.tie(nullptr);\n\
     \    std::ios::sync_with_stdio(false);\n    int n, q;\n    std::cin >> n >> q;\n\
@@ -456,7 +456,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/rectangle-sum.3.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 23:44:15+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/rectangle-sum.3.test.cpp

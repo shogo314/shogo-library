@@ -255,7 +255,7 @@ data:
     \u304C\u5358\u4F4D\u5143\u3067\u3042\u308B\u3053\u3068\u3092\u8868\u3059\n   \
     \ std::vector<S> val;\n    std::vector<int> left, right;\n\n    S value(int t)\
     \ const { return t == -1 ? e() : val[t]; }\n    int make_node() {\n        val.push_back(e());\n\
-    \        left.push_back(-1);\n        right.push_back(-1);\n        return int(val.size())\
+    \        left.push_back(-1);\n        right.push_back(-1);\n        return static_cast<int>(val.size())\
     \ - 1;\n    }\n\n    class DynamicSegTreeReference {\n        DynamicSegTree&\
     \ segtree;\n        long long k;\n\n       public:\n        DynamicSegTreeReference(DynamicSegTree&\
     \ segtree, long long k) : segtree(segtree), k(k) {}\n        DynamicSegTreeReference&\
@@ -369,9 +369,9 @@ data:
     \u3042\u308B\u3053\u3068\u3092\u8868\u3059\n    std::vector<S> val;\n    std::vector<int>\
     \ left, right;\n\n    S value(int t) const { return t == -1 ? e() : val[t]; }\n\
     \    int make_node() {\n        val.push_back(e());\n        left.push_back(-1);\n\
-    \        right.push_back(-1);\n        return int(val.size()) - 1;\n    }\n\n\
-    \    class DynamicSegTreeReference {\n        DynamicSegTree& segtree;\n     \
-    \   long long k;\n\n       public:\n        DynamicSegTreeReference(DynamicSegTree&\
+    \        right.push_back(-1);\n        return static_cast<int>(val.size()) - 1;\n\
+    \    }\n\n    class DynamicSegTreeReference {\n        DynamicSegTree& segtree;\n\
+    \        long long k;\n\n       public:\n        DynamicSegTreeReference(DynamicSegTree&\
     \ segtree, long long k) : segtree(segtree), k(k) {}\n        DynamicSegTreeReference&\
     \ operator=(const S& x) {\n            segtree.set(k, x);\n            return\
     \ *this;\n        }\n        operator S() const { return segtree.get(k); }\n \
@@ -470,7 +470,7 @@ data:
   isVerificationFile: false
   path: src/data_structures/dynamic-segtree.hpp
   requiredBy: []
-  timestamp: '2026-10-15 23:44:15+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/dynamic-segtree.test.cpp

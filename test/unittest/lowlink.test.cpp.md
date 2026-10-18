@@ -233,7 +233,7 @@ data:
     \ 0;\n        for (long long root = 0; root < n; root++) {\n            if (ord[root]\
     \ != -1) continue;\n            int root_children = 0;\n            ord[root]\
     \ = low[root] = k++;\n            st.push_back(root);\n            while (!st.empty())\
-    \ {\n                long long v = st.back();\n                if (iter[v] < (int)graph[v].size())\
+    \ {\n                long long v = st.back();\n                if (iter[v] < static_cast<int>(graph[v].size()))\
     \ {\n                    const auto& e = graph[v][iter[v]++];\n              \
     \      if (e.id == parent_edge[v]) continue;\n                    long long u\
     \ = e.dst;\n                    if (ord[u] == -1) {\n                        parent[u]\
@@ -253,45 +253,45 @@ data:
     \u901A\u3089\u305A\u306B\u884C\u3051\u308B\u9802\u70B9\u3092\u307E\u3068\u3081\
     \u308B\n        for (long long s = 0; s < n; s++) {\n            if (comp[s] !=\
     \ -1) continue;\n            comp[s] = groups.size();\n            groups.push_back({s});\n\
-    \            for (long long i = 0; i < (long long)groups.back().size(); i++) {\n\
-    \                long long v = groups.back()[i];\n                for (const auto&\
-    \ e : graph[v]) {\n                    if (bridge[e.id] || comp[e.dst] != -1)\
-    \ continue;\n                    comp[e.dst] = comp[s];\n                    groups.back().push_back(e.dst);\n\
-    \                }\n            }\n        }\n    }\n\n    /**\n     * @brief\
-    \ \u9802\u70B9\u6570\n     */\n    long long size() const { return n; }\n\n  \
-    \  /**\n     * @brief v \u304C\u95A2\u7BC0\u70B9 (\u53D6\u308A\u9664\u304F\u3068\
-    \u9023\u7D50\u6210\u5206\u304C\u5897\u3048\u308B\u9802\u70B9) \u304B\n     */\n\
-    \    bool is_articulation_point(long long v) const {\n        assert(0 <= v &&\
-    \ v < n);\n        return art[v];\n    }\n    /**\n     * @brief \u756A\u53F7\
-    \ id \u306E\u8FBA\u304C\u6A4B (\u53D6\u308A\u9664\u304F\u3068\u9023\u7D50\u6210\
-    \u5206\u304C\u5897\u3048\u308B\u8FBA) \u304B\n     */\n    bool is_bridge(long\
-    \ long id) const {\n        assert(0 <= id && id < (long long)bridge.size());\n\
-    \        return bridge[id];\n    }\n    /**\n     * @brief \u95A2\u7BC0\u70B9\u306E\
-    \u9802\u70B9\u756A\u53F7\u306E\u6607\u9806\u306E\u30EA\u30B9\u30C8\n     */\n\
-    \    const std::vector<long long>& articulation_points() const { return arts;\
-    \ }\n    /**\n     * @brief \u6A4B\u306E\u8FBA\u306E\u756A\u53F7\u306E\u6607\u9806\
-    \u306E\u30EA\u30B9\u30C8\n     */\n    const std::vector<long long>& bridges()\
-    \ const { return bridge_ids; }\n    /**\n     * @brief \u9802\u70B9 v \u304C\u5C5E\
-    \u3059\u308B\u4E8C\u91CD\u8FBA\u9023\u7D50\u6210\u5206\u306E\u756A\u53F7\n   \
-    \  */\n    long long two_edge_connected_group_id(long long v) const {\n      \
-    \  assert(0 <= v && v < n);\n        return comp[v];\n    }\n    /**\n     * @brief\
-    \ \u4E8C\u91CD\u8FBA\u9023\u7D50\u6210\u5206 (\u6A4B\u3092\u53D6\u308A\u9664\u3044\
-    \u305F\u3068\u304D\u306E\u9023\u7D50\u6210\u5206) \u3054\u3068\u306E\u9802\u70B9\
-    \u306E\u30EA\u30B9\u30C8\n     */\n    const std::vector<std::vector<long long>>&\
-    \ two_edge_connected_groups() const { return groups; }\n};\n#line 7 \"test/unittest/lowlink.test.cpp\"\
-    \n\n#line 9 \"test/unittest/lowlink.test.cpp\"\n#include <random>\n#line 11 \"\
-    test/unittest/lowlink.test.cpp\"\n\n#line 2 \"src/data_structures/unionfind.hpp\"\
-    \n\n/**\n * @file unionfind.hpp\n * @brief UnionFind\n */\n\n#line 12 \"src/data_structures/unionfind.hpp\"\
-    \n\nnamespace internal_unionfind {\n/**\n * @brief \u5404\u8981\u7D20\u306E\u4EE3\
-    \u8868\u5143\u304B\u3089\u3001\u9023\u7D50\u6210\u5206\u3054\u3068\u306E\u8981\
-    \u7D20\u306E\u30EA\u30B9\u30C8\u3092\u4F5C\u308B\n * @param leader \u8981\u7D20\
-    \ a \u306E\u4EE3\u8868\u5143\u3092\u8FD4\u3059\u95A2\u6570\n */\ntemplate <typename\
-    \ F>\nstd::vector<std::vector<long long>> groups(long long n, F leader) {\n  \
-    \  std::vector<long long> leader_buf(n), group_size(n);\n    for (long long i\
-    \ = 0; i < n; i++) {\n        leader_buf[i] = leader(i);\n        group_size[leader_buf[i]]++;\n\
-    \    }\n    std::vector<std::vector<long long>> result(n);\n    for (long long\
-    \ i = 0; i < n; i++) {\n        result[i].reserve(group_size[i]);\n    }\n   \
-    \ for (long long i = 0; i < n; i++) {\n        result[leader_buf[i]].push_back(i);\n\
+    \            for (long long i = 0; i < static_cast<long long>(groups.back().size());\
+    \ i++) {\n                long long v = groups.back()[i];\n                for\
+    \ (const auto& e : graph[v]) {\n                    if (bridge[e.id] || comp[e.dst]\
+    \ != -1) continue;\n                    comp[e.dst] = comp[s];\n             \
+    \       groups.back().push_back(e.dst);\n                }\n            }\n  \
+    \      }\n    }\n\n    /**\n     * @brief \u9802\u70B9\u6570\n     */\n    long\
+    \ long size() const { return n; }\n\n    /**\n     * @brief v \u304C\u95A2\u7BC0\
+    \u70B9 (\u53D6\u308A\u9664\u304F\u3068\u9023\u7D50\u6210\u5206\u304C\u5897\u3048\
+    \u308B\u9802\u70B9) \u304B\n     */\n    bool is_articulation_point(long long\
+    \ v) const {\n        assert(0 <= v && v < n);\n        return art[v];\n    }\n\
+    \    /**\n     * @brief \u756A\u53F7 id \u306E\u8FBA\u304C\u6A4B (\u53D6\u308A\
+    \u9664\u304F\u3068\u9023\u7D50\u6210\u5206\u304C\u5897\u3048\u308B\u8FBA) \u304B\
+    \n     */\n    bool is_bridge(long long id) const {\n        assert(0 <= id &&\
+    \ id < static_cast<long long>(bridge.size()));\n        return bridge[id];\n \
+    \   }\n    /**\n     * @brief \u95A2\u7BC0\u70B9\u306E\u9802\u70B9\u756A\u53F7\
+    \u306E\u6607\u9806\u306E\u30EA\u30B9\u30C8\n     */\n    const std::vector<long\
+    \ long>& articulation_points() const { return arts; }\n    /**\n     * @brief\
+    \ \u6A4B\u306E\u8FBA\u306E\u756A\u53F7\u306E\u6607\u9806\u306E\u30EA\u30B9\u30C8\
+    \n     */\n    const std::vector<long long>& bridges() const { return bridge_ids;\
+    \ }\n    /**\n     * @brief \u9802\u70B9 v \u304C\u5C5E\u3059\u308B\u4E8C\u91CD\
+    \u8FBA\u9023\u7D50\u6210\u5206\u306E\u756A\u53F7\n     */\n    long long two_edge_connected_group_id(long\
+    \ long v) const {\n        assert(0 <= v && v < n);\n        return comp[v];\n\
+    \    }\n    /**\n     * @brief \u4E8C\u91CD\u8FBA\u9023\u7D50\u6210\u5206 (\u6A4B\
+    \u3092\u53D6\u308A\u9664\u3044\u305F\u3068\u304D\u306E\u9023\u7D50\u6210\u5206\
+    ) \u3054\u3068\u306E\u9802\u70B9\u306E\u30EA\u30B9\u30C8\n     */\n    const std::vector<std::vector<long\
+    \ long>>& two_edge_connected_groups() const { return groups; }\n};\n#line 7 \"\
+    test/unittest/lowlink.test.cpp\"\n\n#line 9 \"test/unittest/lowlink.test.cpp\"\
+    \n#include <random>\n#line 11 \"test/unittest/lowlink.test.cpp\"\n\n#line 2 \"\
+    src/data_structures/unionfind.hpp\"\n\n/**\n * @file unionfind.hpp\n * @brief\
+    \ UnionFind\n */\n\n#line 12 \"src/data_structures/unionfind.hpp\"\n\nnamespace\
+    \ internal_unionfind {\n/**\n * @brief \u5404\u8981\u7D20\u306E\u4EE3\u8868\u5143\
+    \u304B\u3089\u3001\u9023\u7D50\u6210\u5206\u3054\u3068\u306E\u8981\u7D20\u306E\
+    \u30EA\u30B9\u30C8\u3092\u4F5C\u308B\n * @param leader \u8981\u7D20 a \u306E\u4EE3\
+    \u8868\u5143\u3092\u8FD4\u3059\u95A2\u6570\n */\ntemplate <typename F>\nstd::vector<std::vector<long\
+    \ long>> groups(long long n, F leader) {\n    std::vector<long long> leader_buf(n),\
+    \ group_size(n);\n    for (long long i = 0; i < n; i++) {\n        leader_buf[i]\
+    \ = leader(i);\n        group_size[leader_buf[i]]++;\n    }\n    std::vector<std::vector<long\
+    \ long>> result(n);\n    for (long long i = 0; i < n; i++) {\n        result[i].reserve(group_size[i]);\n\
+    \    }\n    for (long long i = 0; i < n; i++) {\n        result[leader_buf[i]].push_back(i);\n\
     \    }\n    result.erase(std::remove_if(result.begin(), result.end(), [&](const\
     \ std::vector<long long>& v) { return v.empty(); }), result.end());\n    return\
     \ result;\n}\n}  // namespace internal_unionfind\n\n/**\n * @brief \u7121\u5411\
@@ -316,15 +316,15 @@ data:
     \ <= a && a < _n);\n        assert(0 <= b && b < _n);\n        long long x = leader(a),\
     \ y = leader(b);\n        if (x == y) return {x, false};\n        if (-parent_or_size[x]\
     \ < -parent_or_size[y]) std::swap(x, y);\n        parent_or_size[x] += parent_or_size[y];\n\
-    \        parent_or_size[y] = int(x);\n        return {x, true};\n    }\n    /**\n\
-    \     * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\u304B\n   \
-    \  */\n    bool same(long long a, long long b) {\n        assert(0 <= a && a <\
-    \ _n);\n        assert(0 <= b && b < _n);\n        return leader(a) == leader(b);\n\
-    \    }\n    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\
-    \u6210\u5206\u306E\u4EE3\u8868\u5143\n     */\n    long long leader(long long\
-    \ a) {\n        assert(0 <= a && a < _n);\n        if (parent_or_size[a] < 0)\
-    \ return a;\n        int x = int(a);\n        while (parent_or_size[x] >= 0) {\n\
-    \            x = parent_or_size[x];\n        }\n        while (parent_or_size[a]\
+    \        parent_or_size[y] = static_cast<int>(x);\n        return {x, true};\n\
+    \    }\n    /**\n     * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\
+    \u304B\n     */\n    bool same(long long a, long long b) {\n        assert(0 <=\
+    \ a && a < _n);\n        assert(0 <= b && b < _n);\n        return leader(a) ==\
+    \ leader(b);\n    }\n    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\
+    \u9023\u7D50\u6210\u5206\u306E\u4EE3\u8868\u5143\n     */\n    long long leader(long\
+    \ long a) {\n        assert(0 <= a && a < _n);\n        if (parent_or_size[a]\
+    \ < 0) return a;\n        int x = static_cast<int>(a);\n        while (parent_or_size[x]\
+    \ >= 0) {\n            x = parent_or_size[x];\n        }\n        while (parent_or_size[a]\
     \ >= 0) {\n            int t = parent_or_size[a];\n            parent_or_size[a]\
     \ = x;\n            a = t;\n        }\n        return x;\n    }\n    /**\n   \
     \  * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\u6210\u5206\u306E\
@@ -433,7 +433,7 @@ data:
   isVerificationFile: true
   path: test/unittest/lowlink.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:27:29+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/lowlink.test.cpp

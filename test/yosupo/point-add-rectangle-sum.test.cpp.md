@@ -257,7 +257,7 @@ data:
     \  if (it == y_indices[kx].end() || *it != ky) return e();\n        return data_compressed[kx][it\
     \ - y_indices[kx].begin()];\n    }\n\n    S updated_y(long long kx, long long\
     \ ky, int child_y_idx, bool child_y_right, const S& child_val) {\n        if (!child_y_right\
-    \ && child_y_idx + 1 < (int)y_indices[kx].size() && y_indices[kx][child_y_idx\
+    \ && child_y_idx + 1 < static_cast<int>(y_indices[kx].size()) && y_indices[kx][child_y_idx\
     \ + 1] == ky * 2 + 1) {\n            return op(child_val, data_compressed[kx][child_y_idx\
     \ + 1]);\n        }\n        if (child_y_right && child_y_idx - 1 >= 0 && y_indices[kx][child_y_idx\
     \ - 1] == ky * 2) {\n            return op(data_compressed[kx][child_y_idx - 1],\
@@ -305,25 +305,25 @@ data:
     \ i <= height_x; ++i) {\n                x_indices_tmp.push_back(x);\n       \
     \         x >>= 1;\n            }\n            y += sz_y;\n            std::vector<int>\
     \ y_indices_tmp;\n            for (int i = 0; i <= height_y; ++i) {\n        \
-    \        y_indices_tmp.push_back(int(y));\n                y >>= 1;\n        \
-    \    }\n            for (long long x : x_indices_tmp) {\n                for (int\
-    \ y : y_indices_tmp) {\n                    y_indices[x].push_back(y);\n     \
-    \           }\n            }\n        }\n        for (auto [lx, rx, ly, ry] :\
-    \ prod_query_indices) {\n            std::vector<long long> x_indices_tmp;\n \
-    \           lx += sz_x;\n            rx += sz_x;\n            while (lx < rx)\
+    \        y_indices_tmp.push_back(static_cast<int>(y));\n                y >>=\
+    \ 1;\n            }\n            for (long long x : x_indices_tmp) {\n       \
+    \         for (int y : y_indices_tmp) {\n                    y_indices[x].push_back(y);\n\
+    \                }\n            }\n        }\n        for (auto [lx, rx, ly, ry]\
+    \ : prod_query_indices) {\n            std::vector<long long> x_indices_tmp;\n\
+    \            lx += sz_x;\n            rx += sz_x;\n            while (lx < rx)\
     \ {\n                if (lx & 1) x_indices_tmp.push_back(lx++);\n            \
     \    if (rx & 1) x_indices_tmp.push_back(--rx);\n                lx >>= 1;\n \
     \               rx >>= 1;\n            }\n            ly += sz_y;\n          \
     \  ry += sz_y;\n            std::vector<int> y_indices_tmp;\n            while\
-    \ (ly < ry) {\n                if (ly & 1) y_indices_tmp.push_back(int(ly++));\n\
-    \                if (ry & 1) y_indices_tmp.push_back(int(--ry));\n           \
-    \     ly >>= 1;\n                ry >>= 1;\n            }\n            for (long\
-    \ long x : x_indices_tmp) {\n                for (int y : y_indices_tmp) {\n \
-    \                   y_indices[x].push_back(y);\n                }\n          \
-    \  }\n        }\n\n        for (long long x = 1; x < sz_x * 2; x++) {\n      \
-    \      std::sort(y_indices[x].begin(), y_indices[x].end());\n            y_indices[x].erase(std::unique(y_indices[x].begin(),\
-    \ y_indices[x].end()), y_indices[x].end());\n        }\n        for (long long\
-    \ i = 1; i < sz_x * 2; ++i) {\n            data_compressed[i].assign(y_indices[i].size(),\
+    \ (ly < ry) {\n                if (ly & 1) y_indices_tmp.push_back(static_cast<int>(ly++));\n\
+    \                if (ry & 1) y_indices_tmp.push_back(static_cast<int>(--ry));\n\
+    \                ly >>= 1;\n                ry >>= 1;\n            }\n       \
+    \     for (long long x : x_indices_tmp) {\n                for (int y : y_indices_tmp)\
+    \ {\n                    y_indices[x].push_back(y);\n                }\n     \
+    \       }\n        }\n\n        for (long long x = 1; x < sz_x * 2; x++) {\n \
+    \           std::sort(y_indices[x].begin(), y_indices[x].end());\n           \
+    \ y_indices[x].erase(std::unique(y_indices[x].begin(), y_indices[x].end()), y_indices[x].end());\n\
+    \        }\n        for (long long i = 1; i < sz_x * 2; ++i) {\n            data_compressed[i].assign(y_indices[i].size(),\
     \ e());\n        }\n    }\n\n   public:\n    SegTree2D() = default;\n    /**\n\
     \     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @param\
     \ h x\u5EA7\u6A19\u306E\u7BC4\u56F2 [0, h)\n     * @param w y\u5EA7\u6A19\u306E\
@@ -438,7 +438,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/point-add-rectangle-sum.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 23:44:15+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/point-add-rectangle-sum.test.cpp

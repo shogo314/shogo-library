@@ -82,16 +82,16 @@ data:
     \ T, std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>\nstd::vector<long\
     \ long> suffix_array(const std::vector<T>& s, long long upper) {\n    assert(0\
     \ <= upper && upper < INT_MAX);\n    for ([[maybe_unused]] T x : s) assert(0 <=\
-    \ (long long)x && (long long)x <= upper);\n    if constexpr (std::is_same_v<T,\
-    \ int>) {\n        return internal_suffix_array::to_long_long(internal_suffix_array::sa_is(s,\
-    \ (int)upper));\n    } else {\n        std::vector<int> s2(s.begin(), s.end());\n\
-    \        return internal_suffix_array::to_long_long(internal_suffix_array::sa_is(s2,\
-    \ (int)upper));\n    }\n}\n\n/**\n * @brief Suffix Array \u3092\u6C42\u3081\u308B\
-    \ O(n log n)\n * \u63A5\u5C3E\u8F9E s[i:] \u3092\u8F9E\u66F8\u9806\u306B\u4E26\
-    \u3079\u305F\u3068\u304D\u306E\u958B\u59CB\u4F4D\u7F6E i \u306E\u30EA\u30B9\u30C8\
-    \u3002\u5024\u3092\u5EA7\u6A19\u5727\u7E2E\u3057\u3066\u304B\u3089\u6C42\u3081\
-    \u308B\n * @tparam T operator< \u3067\u6BD4\u8F03\u3067\u304D\u308B\u578B\n */\n\
-    template <typename T>\nstd::vector<long long> suffix_array(const std::vector<T>&\
+    \ static_cast<long long>(x) && static_cast<long long>(x) <= upper);\n    if constexpr\
+    \ (std::is_same_v<T, int>) {\n        return internal_suffix_array::to_long_long(internal_suffix_array::sa_is(s,\
+    \ static_cast<int>(upper)));\n    } else {\n        std::vector<int> s2(s.begin(),\
+    \ s.end());\n        return internal_suffix_array::to_long_long(internal_suffix_array::sa_is(s2,\
+    \ static_cast<int>(upper)));\n    }\n}\n\n/**\n * @brief Suffix Array \u3092\u6C42\
+    \u3081\u308B O(n log n)\n * \u63A5\u5C3E\u8F9E s[i:] \u3092\u8F9E\u66F8\u9806\u306B\
+    \u4E26\u3079\u305F\u3068\u304D\u306E\u958B\u59CB\u4F4D\u7F6E i \u306E\u30EA\u30B9\
+    \u30C8\u3002\u5024\u3092\u5EA7\u6A19\u5727\u7E2E\u3057\u3066\u304B\u3089\u6C42\
+    \u3081\u308B\n * @tparam T operator< \u3067\u6BD4\u8F03\u3067\u304D\u308B\u578B\
+    \n */\ntemplate <typename T>\nstd::vector<long long> suffix_array(const std::vector<T>&\
     \ s) {\n    int n = s.size();\n    std::vector<int> idx(n);\n    for (int i =\
     \ 0; i < n; i++) idx[i] = i;\n    std::sort(idx.begin(), idx.end(), [&](int a,\
     \ int b) { return s[a] < s[b]; });\n    std::vector<int> s2(n);\n    int now =\
@@ -102,7 +102,7 @@ data:
     \u3079\u305F\u3068\u304D\u306E\u958B\u59CB\u4F4D\u7F6E i \u306E\u30EA\u30B9\u30C8\
     \n */\ninline std::vector<long long> suffix_array(const std::string& s) {\n  \
     \  int n = s.size();\n    std::vector<int> s2(n);\n    for (int i = 0; i < n;\
-    \ i++) s2[i] = (unsigned char)s[i];\n    return internal_suffix_array::to_long_long(internal_suffix_array::sa_is(s2,\
+    \ i++) s2[i] = static_cast<unsigned char>(s[i]);\n    return internal_suffix_array::to_long_long(internal_suffix_array::sa_is(s2,\
     \ 255));\n}\n\n/**\n * @brief LCP \u914D\u5217\u3092\u6C42\u3081\u308B (Kasai\
     \ \u6CD5) O(n)\n * \u9577\u3055 n - 1 \u306E\u914D\u5217 lcp \u3092\u8FD4\u3059\
     \u3002lcp[i] \u306F s[sa[i]:] \u3068 s[sa[i + 1]:] \u306E\u6700\u9577\u5171\u901A\
@@ -111,23 +111,23 @@ data:
     \ I sa \u306E\u8981\u7D20\u306E\u578B (long long \u3084 int)\n * @param sa s \u306E\
     \ Suffix Array\n */\ntemplate <typename R, typename I>\nstd::vector<long long>\
     \ lcp_array(const R& s, const std::vector<I>& sa) {\n    long long n = s.size();\n\
-    \    assert((long long)sa.size() == n);\n    if (n == 0) return {};\n    std::vector<long\
-    \ long> rank(n);\n    for (long long i = 0; i < n; i++) rank[sa[i]] = i;\n   \
-    \ std::vector<long long> lcp(n - 1);\n    // s[i:] \u3068\u8F9E\u66F8\u9806\u3067\
-    \ 1 \u3064\u524D\u306E\u63A5\u5C3E\u8F9E\u3068\u306E LCP \u306F\u3001s[i - 1:]\
-    \ \u306E\u3068\u304D\u306E\u5024\u304B\u3089 1 \u3092\u5F15\u3044\u305F\u3082\u306E\
-    \u4EE5\u4E0A\u306B\u306A\u308B\n    for (long long i = 0, h = 0; i < n; i++) {\n\
-    \        if (h > 0) h--;\n        if (rank[i] == 0) continue;\n        long long\
-    \ j = sa[rank[i] - 1];\n        while (j + h < n && i + h < n && s[j + h] == s[i\
-    \ + h]) h++;\n        lcp[rank[i] - 1] = h;\n    }\n    return lcp;\n}\n#line\
-    \ 15 \"src/string/longest-common-substring.hpp\"\n\n/**\n * @brief s \u3068 t\
-    \ \u306E\u6700\u9577\u5171\u901A\u90E8\u5206\u6587\u5B57\u5217 (\u9023\u7D9A\u3059\
-    \u308B\u90E8\u5206\u5217) \u3092 1 \u3064\u6C42\u3081\u308B O((n + m) log(n +\
-    \ m))\n * s[i, i + len) == t[j, j + len) \u3068\u306A\u308B (i, j, len) \u3092\
-    \u8FD4\u3059\u3002\u5171\u901A\u90E8\u5206\u304C\u306A\u3051\u308C\u3070 (0, 0,\
-    \ 0)\n * \u8981\u7D20\u306F operator< \u3067\u6BD4\u3079\u308B\n */\ntemplate\
-    \ <typename R1, typename R2>\nstd::tuple<long long, long long, long long> longest_common_substring(const\
-    \ R1& s, const R2& t) {\n    using T = std::decay_t<decltype(*std::begin(s))>;\n\
+    \    assert(static_cast<long long>(sa.size()) == n);\n    if (n == 0) return {};\n\
+    \    std::vector<long long> rank(n);\n    for (long long i = 0; i < n; i++) rank[sa[i]]\
+    \ = i;\n    std::vector<long long> lcp(n - 1);\n    // s[i:] \u3068\u8F9E\u66F8\
+    \u9806\u3067 1 \u3064\u524D\u306E\u63A5\u5C3E\u8F9E\u3068\u306E LCP \u306F\u3001\
+    s[i - 1:] \u306E\u3068\u304D\u306E\u5024\u304B\u3089 1 \u3092\u5F15\u3044\u305F\
+    \u3082\u306E\u4EE5\u4E0A\u306B\u306A\u308B\n    for (long long i = 0, h = 0; i\
+    \ < n; i++) {\n        if (h > 0) h--;\n        if (rank[i] == 0) continue;\n\
+    \        long long j = sa[rank[i] - 1];\n        while (j + h < n && i + h < n\
+    \ && s[j + h] == s[i + h]) h++;\n        lcp[rank[i] - 1] = h;\n    }\n    return\
+    \ lcp;\n}\n#line 15 \"src/string/longest-common-substring.hpp\"\n\n/**\n * @brief\
+    \ s \u3068 t \u306E\u6700\u9577\u5171\u901A\u90E8\u5206\u6587\u5B57\u5217 (\u9023\
+    \u7D9A\u3059\u308B\u90E8\u5206\u5217) \u3092 1 \u3064\u6C42\u3081\u308B O((n +\
+    \ m) log(n + m))\n * s[i, i + len) == t[j, j + len) \u3068\u306A\u308B (i, j,\
+    \ len) \u3092\u8FD4\u3059\u3002\u5171\u901A\u90E8\u5206\u304C\u306A\u3051\u308C\
+    \u3070 (0, 0, 0)\n * \u8981\u7D20\u306F operator< \u3067\u6BD4\u3079\u308B\n */\n\
+    template <typename R1, typename R2>\nstd::tuple<long long, long long, long long>\
+    \ longest_common_substring(const R1& s, const R2& t) {\n    using T = std::decay_t<decltype(*std::begin(s))>;\n\
     \    std::vector<T> vs(std::begin(s), std::end(s)), vt(std::begin(t), std::end(t));\n\
     \    long long n = vs.size(), m = vt.size();\n    // \u5EA7\u6A19\u5727\u7E2E\u3057\
     \u3066\u3001s\u3001\u533A\u5207\u308A\u3001t \u306E\u9806\u306B\u4E26\u3079\u308B\
@@ -145,10 +145,10 @@ data:
     \u63A5\u5C3E\u8F9E\u306E\u3046\u3061\u3001\u7247\u65B9\u304C s\u3001\u3082\u3046\
     \u7247\u65B9\u304C t \u304B\u3089\u59CB\u307E\u308B\u3082\u306E\u306E LCP \u306E\
     \u6700\u5927\n    long long i = 0, j = 0, len = 0;\n    for (long long k = 0;\
-    \ k + 1 < (long long)sa.size(); k++) {\n        long long a = sa[k], b = sa[k\
-    \ + 1];\n        if (a > b) std::swap(a, b);\n        if (a < n && n < b && lcp[k]\
-    \ > len) {\n            i = a, j = b - n - 1, len = lcp[k];\n        }\n    }\n\
-    \    return {i, j, len};\n}\n"
+    \ k + 1 < static_cast<long long>(sa.size()); k++) {\n        long long a = sa[k],\
+    \ b = sa[k + 1];\n        if (a > b) std::swap(a, b);\n        if (a < n && n\
+    \ < b && lcp[k] > len) {\n            i = a, j = b - n - 1, len = lcp[k];\n  \
+    \      }\n    }\n    return {i, j, len};\n}\n"
   code: "#pragma once\n\n/**\n * @file longest-common-substring.hpp\n * @brief \u6700\
     \u9577\u5171\u901A\u90E8\u5206\u6587\u5B57\u5217\n */\n\n#include <algorithm>\n\
     #include <iterator>\n#include <tuple>\n#include <type_traits>\n#include <vector>\n\
@@ -177,16 +177,16 @@ data:
     \u63A5\u5C3E\u8F9E\u306E\u3046\u3061\u3001\u7247\u65B9\u304C s\u3001\u3082\u3046\
     \u7247\u65B9\u304C t \u304B\u3089\u59CB\u307E\u308B\u3082\u306E\u306E LCP \u306E\
     \u6700\u5927\n    long long i = 0, j = 0, len = 0;\n    for (long long k = 0;\
-    \ k + 1 < (long long)sa.size(); k++) {\n        long long a = sa[k], b = sa[k\
-    \ + 1];\n        if (a > b) std::swap(a, b);\n        if (a < n && n < b && lcp[k]\
-    \ > len) {\n            i = a, j = b - n - 1, len = lcp[k];\n        }\n    }\n\
-    \    return {i, j, len};\n}\n"
+    \ k + 1 < static_cast<long long>(sa.size()); k++) {\n        long long a = sa[k],\
+    \ b = sa[k + 1];\n        if (a > b) std::swap(a, b);\n        if (a < n && n\
+    \ < b && lcp[k] > len) {\n            i = a, j = b - n - 1, len = lcp[k];\n  \
+    \      }\n    }\n    return {i, j, len};\n}\n"
   dependsOn:
   - src/string/suffix-array.hpp
   isVerificationFile: false
   path: src/string/longest-common-substring.hpp
   requiredBy: []
-  timestamp: '2026-10-17 23:17:28+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/longest-common-substring.test.cpp

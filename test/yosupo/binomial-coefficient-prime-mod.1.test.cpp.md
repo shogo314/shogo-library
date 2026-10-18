@@ -63,9 +63,9 @@ data:
     \u5BFE\u3057\u3066\u547C\u3073\u51FA\u3057\u3066\u304A\u304F\u3053\u3068\u3067\
     \u9006\u5143\u306E\u76F4\u63A5\u8A08\u7B97\u3092\u6E1B\u3089\u305B\u308B\n   \
     \  */\n    inline static void extend(long long n) {\n        if (cached_mod !=\
-    \ (long long)Modint::mod()) {\n            cached_mod = Modint::mod();\n     \
-    \       fact = {1, 1};\n            inv_fact = {1, 1};\n        }\n        const\
-    \ long long m = fact.size();\n        if (n < m) return;\n        fact.resize(n\
+    \ static_cast<long long>(Modint::mod())) {\n            cached_mod = Modint::mod();\n\
+    \            fact = {1, 1};\n            inv_fact = {1, 1};\n        }\n     \
+    \   const long long m = fact.size();\n        if (n < m) return;\n        fact.resize(n\
     \ + 1);\n        inv_fact.resize(n + 1);\n        for (long long i = m; i <= n;\
     \ ++i) {\n            fact[i] = fact[i - 1] * i;\n        }\n        inv_fact[n]\
     \ = fact[n].inv();\n        for (long long i = n; i > m; --i) {\n            inv_fact[i\
@@ -125,36 +125,36 @@ data:
     \ q(q) {\n        pq = 1;\n        for (int i = 0; i < q; i++) pq *= p;\n    \
     \    fact_p.resize(pq);\n        fact_p[0] = 1;\n        for (int i = 1; i < pq;\
     \ i++) {\n            if (i % p == 0)\n                fact_p[i] = fact_p[i -\
-    \ 1];\n            else\n                fact_p[i] = (long long)fact_p[i - 1]\
-    \ * i % pq;\n        }\n        inv_fact_p.resize(pq);\n        inv_fact_p[pq\
+    \ 1];\n            else\n                fact_p[i] = static_cast<long long>(fact_p[i\
+    \ - 1]) * i % pq;\n        }\n        inv_fact_p.resize(pq);\n        inv_fact_p[pq\
     \ - 1] = modinv(fact_p[pq - 1], pq);\n        for (int i = pq - 1; i > 0; i--)\
     \ {\n            if (i % p == 0)\n                inv_fact_p[i - 1] = inv_fact_p[i];\n\
-    \            else\n                inv_fact_p[i - 1] = (long long)inv_fact_p[i]\
+    \            else\n                inv_fact_p[i - 1] = static_cast<long long>(inv_fact_p[i])\
     \ * i % pq;\n        }\n        if (p == 2 && q >= 3)\n            delta = 1;\n\
     \        else\n            delta = -1;\n    }\n    /**\n     * @brief nCr mod\
     \ p^q \u3092\u8FD4\u3059\n     * @param n long long\n     * @param r long long\n\
     \     * @return nCr mod p^q\n     * @note O(log(n))\n     */\n    int C(long long\
     \ n, long long r) {\n        if (r < 0 || n < r) return 0;\n        long long\
     \ m = n - r;\n        int ans = 1;\n        std::vector<int> epsilon;\n      \
-    \  while (n > 0) {\n            ans = (long long)ans * fact_p[n % pq] % pq;\n\
-    \            ans = (long long)ans * inv_fact_p[m % pq] % pq;\n            ans\
-    \ = (long long)ans * inv_fact_p[r % pq] % pq;\n            n /= p;\n         \
-    \   m /= p;\n            r /= p;\n            epsilon.push_back(n - m - r);\n\
-    \        }\n        if (delta == -1 && (int)epsilon.size() >= q && std::accumulate(epsilon.begin()\
-    \ + q - 1, epsilon.end(), 0) % 2 == 1) ans = pq - ans;\n        if (ans == pq)\
-    \ ans = 0;\n        int e = std::accumulate(epsilon.begin(), epsilon.end(), 0);\n\
-    \        if (e >= q)\n            ans = 0;\n        else {\n            for (int\
-    \ i = 0; i < e; i++) {\n                ans = (long long)ans * p % pq;\n     \
-    \       }\n        }\n        return ans;\n    }\n};\n#line 2 \"src/math/modint.hpp\"\
-    \n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\
-    \u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line\
-    \ 9 \"src/math/modint.hpp\"\n#include <cstdint>\n#line 11 \"src/math/modint.hpp\"\
-    \n#include <limits>\n#include <type_traits>\n#include <utility>\n\n#line 2 \"\
-    src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\
-    \n */\n\n#include <cstddef>\n#include <iterator>\n#include <set>\n#line 13 \"\
-    src/utility/traits.hpp\"\n\nnamespace internal_traits {\nusing std::begin, std::end;\n\
-    \ntemplate <class T, class = void>\nstruct is_range_impl : std::false_type {};\n\
-    template <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \  while (n > 0) {\n            ans = static_cast<long long>(ans) * fact_p[n %\
+    \ pq] % pq;\n            ans = static_cast<long long>(ans) * inv_fact_p[m % pq]\
+    \ % pq;\n            ans = static_cast<long long>(ans) * inv_fact_p[r % pq] %\
+    \ pq;\n            n /= p;\n            m /= p;\n            r /= p;\n       \
+    \     epsilon.push_back(n - m - r);\n        }\n        if (delta == -1 && static_cast<int>(epsilon.size())\
+    \ >= q && std::accumulate(epsilon.begin() + q - 1, epsilon.end(), 0) % 2 == 1)\
+    \ ans = pq - ans;\n        if (ans == pq) ans = 0;\n        int e = std::accumulate(epsilon.begin(),\
+    \ epsilon.end(), 0);\n        if (e >= q)\n            ans = 0;\n        else\
+    \ {\n            for (int i = 0; i < e; i++) {\n                ans = static_cast<long\
+    \ long>(ans) * p % pq;\n            }\n        }\n        return ans;\n    }\n\
+    };\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\
+    \u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\
+    \u30AF\u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\n#include <cstdint>\n\
+    #line 11 \"src/math/modint.hpp\"\n#include <limits>\n#include <type_traits>\n\
+    #include <utility>\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n\
+    \ * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n#include <iterator>\n\
+    #include <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace internal_traits\
+    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
     \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
     \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
     \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
@@ -451,7 +451,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:27:48+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/binomial-coefficient-prime-mod.1.test.cpp

@@ -64,15 +64,15 @@ data:
     \ <= a && a < _n);\n        assert(0 <= b && b < _n);\n        long long x = leader(a),\
     \ y = leader(b);\n        if (x == y) return {x, false};\n        if (-parent_or_size[x]\
     \ < -parent_or_size[y]) std::swap(x, y);\n        parent_or_size[x] += parent_or_size[y];\n\
-    \        parent_or_size[y] = int(x);\n        return {x, true};\n    }\n    /**\n\
-    \     * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\u304B\n   \
-    \  */\n    bool same(long long a, long long b) {\n        assert(0 <= a && a <\
-    \ _n);\n        assert(0 <= b && b < _n);\n        return leader(a) == leader(b);\n\
-    \    }\n    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\
-    \u6210\u5206\u306E\u4EE3\u8868\u5143\n     */\n    long long leader(long long\
-    \ a) {\n        assert(0 <= a && a < _n);\n        if (parent_or_size[a] < 0)\
-    \ return a;\n        int x = int(a);\n        while (parent_or_size[x] >= 0) {\n\
-    \            x = parent_or_size[x];\n        }\n        while (parent_or_size[a]\
+    \        parent_or_size[y] = static_cast<int>(x);\n        return {x, true};\n\
+    \    }\n    /**\n     * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\
+    \u304B\n     */\n    bool same(long long a, long long b) {\n        assert(0 <=\
+    \ a && a < _n);\n        assert(0 <= b && b < _n);\n        return leader(a) ==\
+    \ leader(b);\n    }\n    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\
+    \u9023\u7D50\u6210\u5206\u306E\u4EE3\u8868\u5143\n     */\n    long long leader(long\
+    \ long a) {\n        assert(0 <= a && a < _n);\n        if (parent_or_size[a]\
+    \ < 0) return a;\n        int x = static_cast<int>(a);\n        while (parent_or_size[x]\
+    \ >= 0) {\n            x = parent_or_size[x];\n        }\n        while (parent_or_size[a]\
     \ >= 0) {\n            int t = parent_or_size[a];\n            parent_or_size[a]\
     \ = x;\n            a = t;\n        }\n        return x;\n    }\n    /**\n   \
     \  * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\u6210\u5206\u306E\
@@ -324,7 +324,7 @@ data:
     \ i = 0; i < graph.n; i++) {\n        if (!indeg[i]) q.push(i);\n    }\n    while\
     \ (!q.empty()) {\n        long long cur = q.front();\n        q.pop();\n     \
     \   for (long long dst : graph[cur]) {\n            if (!--indeg[dst]) q.push(dst);\n\
-    \        }\n        sorted.push_back(cur);\n    }\n    if ((long long)sorted.size()\
+    \        }\n        sorted.push_back(cur);\n    }\n    if (static_cast<long long>(sorted.size())\
     \ < graph.n) return {};\n    return sorted;\n}\n\n/**\n * @brief \u6709\u5411\u30B0\
     \u30E9\u30D5\u306B\u3064\u3044\u3066\u3001\u30B5\u30A4\u30AF\u30EB\u3092\u3082\
     \u3064\u304B\u3069\u3046\u304B\u3092\u5224\u5B9A\u3059\u308B\u3002\n * @return\
@@ -352,11 +352,11 @@ data:
     \ long root = 0; root < graph.n; root++) {\n        if (state[root]) continue;\n\
     \        std::vector<long long> st = {root};\n        state[root] = 1;\n     \
     \   while (!st.empty()) {\n            long long v = st.back();\n            if\
-    \ (iter[v] == (int)graph[v].size()) {\n                state[v] = 2;\n       \
-    \         st.pop_back();\n                continue;\n            }\n         \
-    \   const Edge& e = graph[v][iter[v]++];\n            long long u = e.dst;\n \
-    \           if (state[u] == 0) {\n                state[u] = 1;\n            \
-    \    in[u] = e;\n                st.push_back(u);\n            } else if (state[u]\
+    \ (iter[v] == static_cast<int>(graph[v].size())) {\n                state[v] =\
+    \ 2;\n                st.pop_back();\n                continue;\n            }\n\
+    \            const Edge& e = graph[v][iter[v]++];\n            long long u = e.dst;\n\
+    \            if (state[u] == 0) {\n                state[u] = 1;\n           \
+    \     in[u] = e;\n                st.push_back(u);\n            } else if (state[u]\
     \ == 1) {\n                // u \u306F\u30B9\u30BF\u30C3\u30AF\u4E0A\u306B\u3042\
     \u308B\u306E\u3067\u3001u \u304B\u3089 v \u3078\u306E\u6728\u306E\u8FBA\u3068\
     \ e \u3067\u9589\u8DEF\u306B\u306A\u308B\n                std::vector<Edge> res\
@@ -378,7 +378,7 @@ data:
     \    std::vector<Edge> in(graph.n);\n    for (long long root = 0; root < graph.n;\
     \ root++) {\n        if (state[root]) continue;\n        std::vector<long long>\
     \ st = {root};\n        state[root] = 1;\n        while (!st.empty()) {\n    \
-    \        long long v = st.back();\n            if (iter[v] == (int)graph[v].size())\
+    \        long long v = st.back();\n            if (iter[v] == static_cast<int>(graph[v].size()))\
     \ {\n                state[v] = 2;\n                st.pop_back();\n         \
     \       continue;\n            }\n            const Edge& e = graph[v][iter[v]++];\n\
     \            // \u89AA\u3078\u623B\u308B\u8FBA\u306F\u3001\u9802\u70B9\u3067\u306F\
@@ -412,11 +412,11 @@ data:
     \ = 0, k = 0;\n    for (long long s = 0; s < n; s++) {\n        if (ord[s] !=\
     \ -1) continue;\n        ord[s] = low[s] = now++;\n        visiting.push_back(s);\n\
     \        call.push_back(s);\n        while (!call.empty()) {\n            long\
-    \ long v = call.back();\n            if (iter[v] < (int)graph[v].size()) {\n \
-    \               long long to = graph[v][iter[v]++].dst;\n                if (ord[to]\
-    \ == -1) {\n                    ord[to] = low[to] = now++;\n                 \
-    \   visiting.push_back(to);\n                    call.push_back(to);\n       \
-    \         } else if (comp[to] == -1) {\n                    low[v] = std::min(low[v],\
+    \ long v = call.back();\n            if (iter[v] < static_cast<int>(graph[v].size()))\
+    \ {\n                long long to = graph[v][iter[v]++].dst;\n               \
+    \ if (ord[to] == -1) {\n                    ord[to] = low[to] = now++;\n     \
+    \               visiting.push_back(to);\n                    call.push_back(to);\n\
+    \                } else if (comp[to] == -1) {\n                    low[v] = std::min(low[v],\
     \ ord[to]);\n                }\n                continue;\n            }\n   \
     \         call.pop_back();\n            if (!call.empty()) low[call.back()] =\
     \ std::min(low[call.back()], low[v]);\n            if (low[v] == ord[v]) {\n \
@@ -452,46 +452,46 @@ data:
     \ Graph<Cost>& graph, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max()\
     \ / 4) {\n    if (X.empty()) return Cost{};\n    for (const auto& x : X) assert(0\
     \ <= x && x < graph.n);\n    std::vector<std::vector<Cost>> dp(graph.n, std::vector<Cost>(1\
-    \ << X.size(), inf));\n    for (int p = 0; p < (int)X.size(); p++) dp[X[p]][1\
-    \ << p] = {};\n    for (int i = 0; i < (1 << X.size()); i++) {\n        for (int\
-    \ j = i; j > 0; j = (j - 1) & i) {\n            for (long long k = 0; k < graph.n;\
-    \ k++) {\n                if (dp[k][j] != inf && dp[k][i ^ j] != inf) {\n    \
-    \                if (dp[k][i] == inf || dp[k][i] > dp[k][j] + dp[k][i ^ j]) dp[k][i]\
-    \ = dp[k][j] + dp[k][i ^ j];\n                }\n            }\n        }\n  \
-    \      std::priority_queue<std::pair<Cost, long long>, std::vector<std::pair<Cost,\
-    \ long long>>, std::greater<std::pair<Cost, long long>>> que;\n        for (long\
-    \ long k = 0; k < graph.n; k++)\n            if (dp[k][i] != inf) que.emplace(dp[k][i],\
-    \ k);\n        while (que.size()) {\n            auto [d, u] = que.top();\n  \
-    \          que.pop();\n            if (d > dp[u][i]) continue;\n            for\
-    \ (auto e : graph[u]) {\n                if (dp[e.dst][i] == inf || dp[e.dst][i]\
-    \ > d + e.cost) {\n                    dp[e.dst][i] = d + e.cost;\n          \
-    \          que.emplace(d + e.cost, e.dst);\n                }\n            }\n\
-    \        }\n    }\n    Cost res = inf;\n    for (long long k = 0; k < graph.n;\
-    \ k++) {\n        if (dp[k].back() != inf && (res == inf || res > dp[k].back()))\
-    \ res = dp[k].back();\n    }\n    return res;\n}\n#line 15 \"test/unittest/graph-util.test.cpp\"\
-    \n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n\n    // \u7121\
-    \u5411\u30B0\u30E9\u30D5: bipartite_coloring, is_bipartite, connected_components,\
-    \ is_connected, is_tree\n    for (int rep = 0; rep < 3000 && ok; rep++) {\n  \
-    \      int n = rng() % 8 + 1;\n        std::vector<std::pair<int, int>> edges;\n\
-    \        for (int u = 0; u < n; u++) {\n            for (int v = u + 1; v < n;\
-    \ v++) {\n                if (rng() % 3 == 0) edges.emplace_back(u, v);\n    \
-    \        }\n        }\n        Graph<int> graph(n);\n        for (auto [u, v]\
-    \ : edges) graph.add_edge(u, v);\n\n        // \u4E8C\u90E8\u30B0\u30E9\u30D5\u304B\
-    \u3069\u3046\u304B\u3092\u5168\u5F69\u8272\u3067\u8ABF\u3079\u308B\n        bool\
-    \ bipartite = false;\n        for (int mask = 0; mask < (1 << n); mask++) {\n\
-    \            bool good = true;\n            for (auto [u, v] : edges) good &=\
-    \ ((mask >> u & 1) != (mask >> v & 1));\n            bipartite |= good;\n    \
-    \    }\n        std::vector<int> color = bipartite_coloring(graph);\n        if\
-    \ (bipartite != !color.empty() || bipartite != is_bipartite(graph)) ok = false;\n\
-    \        if (!color.empty()) {\n            for (auto [u, v] : edges)\n      \
-    \          if (color[u] == color[v]) ok = false;\n        }\n\n        // \u9023\
-    \u7D50\u6210\u5206\u3092 Union-Find \u98A8\u306B\u611A\u76F4\u306B\u6C42\u3081\
-    \u308B\n        std::vector<int> label(n);\n        std::iota(label.begin(), label.end(),\
-    \ 0);\n        for (int t = 0; t < n; t++) {\n            for (auto [u, v] : edges)\
-    \ label[u] = label[v] = std::min(label[u], label[v]);\n        }\n        auto\
-    \ groups = connected_components(graph);\n        std::vector<int> seen(n);\n \
-    \       for (const auto& group : groups) {\n            for (int v : group) {\n\
-    \                seen[v]++;\n                if (label[v] != label[group[0]])\
+    \ << X.size(), inf));\n    for (int p = 0; p < static_cast<int>(X.size()); p++)\
+    \ dp[X[p]][1 << p] = {};\n    for (int i = 0; i < (1 << X.size()); i++) {\n  \
+    \      for (int j = i; j > 0; j = (j - 1) & i) {\n            for (long long k\
+    \ = 0; k < graph.n; k++) {\n                if (dp[k][j] != inf && dp[k][i ^ j]\
+    \ != inf) {\n                    if (dp[k][i] == inf || dp[k][i] > dp[k][j] +\
+    \ dp[k][i ^ j]) dp[k][i] = dp[k][j] + dp[k][i ^ j];\n                }\n     \
+    \       }\n        }\n        std::priority_queue<std::pair<Cost, long long>,\
+    \ std::vector<std::pair<Cost, long long>>, std::greater<std::pair<Cost, long long>>>\
+    \ que;\n        for (long long k = 0; k < graph.n; k++)\n            if (dp[k][i]\
+    \ != inf) que.emplace(dp[k][i], k);\n        while (que.size()) {\n          \
+    \  auto [d, u] = que.top();\n            que.pop();\n            if (d > dp[u][i])\
+    \ continue;\n            for (auto e : graph[u]) {\n                if (dp[e.dst][i]\
+    \ == inf || dp[e.dst][i] > d + e.cost) {\n                    dp[e.dst][i] = d\
+    \ + e.cost;\n                    que.emplace(d + e.cost, e.dst);\n           \
+    \     }\n            }\n        }\n    }\n    Cost res = inf;\n    for (long long\
+    \ k = 0; k < graph.n; k++) {\n        if (dp[k].back() != inf && (res == inf ||\
+    \ res > dp[k].back())) res = dp[k].back();\n    }\n    return res;\n}\n#line 15\
+    \ \"test/unittest/graph-util.test.cpp\"\n\nint main() {\n    std::mt19937 rng(314);\n\
+    \    bool ok = true;\n\n    // \u7121\u5411\u30B0\u30E9\u30D5: bipartite_coloring,\
+    \ is_bipartite, connected_components, is_connected, is_tree\n    for (int rep\
+    \ = 0; rep < 3000 && ok; rep++) {\n        int n = rng() % 8 + 1;\n        std::vector<std::pair<int,\
+    \ int>> edges;\n        for (int u = 0; u < n; u++) {\n            for (int v\
+    \ = u + 1; v < n; v++) {\n                if (rng() % 3 == 0) edges.emplace_back(u,\
+    \ v);\n            }\n        }\n        Graph<int> graph(n);\n        for (auto\
+    \ [u, v] : edges) graph.add_edge(u, v);\n\n        // \u4E8C\u90E8\u30B0\u30E9\
+    \u30D5\u304B\u3069\u3046\u304B\u3092\u5168\u5F69\u8272\u3067\u8ABF\u3079\u308B\
+    \n        bool bipartite = false;\n        for (int mask = 0; mask < (1 << n);\
+    \ mask++) {\n            bool good = true;\n            for (auto [u, v] : edges)\
+    \ good &= ((mask >> u & 1) != (mask >> v & 1));\n            bipartite |= good;\n\
+    \        }\n        std::vector<int> color = bipartite_coloring(graph);\n    \
+    \    if (bipartite != !color.empty() || bipartite != is_bipartite(graph)) ok =\
+    \ false;\n        if (!color.empty()) {\n            for (auto [u, v] : edges)\n\
+    \                if (color[u] == color[v]) ok = false;\n        }\n\n        //\
+    \ \u9023\u7D50\u6210\u5206\u3092 Union-Find \u98A8\u306B\u611A\u76F4\u306B\u6C42\
+    \u3081\u308B\n        std::vector<int> label(n);\n        std::iota(label.begin(),\
+    \ label.end(), 0);\n        for (int t = 0; t < n; t++) {\n            for (auto\
+    \ [u, v] : edges) label[u] = label[v] = std::min(label[u], label[v]);\n      \
+    \  }\n        auto groups = connected_components(graph);\n        std::vector<int>\
+    \ seen(n);\n        for (const auto& group : groups) {\n            for (int v\
+    \ : group) {\n                seen[v]++;\n                if (label[v] != label[group[0]])\
     \ ok = false;\n            }\n        }\n        int num_components = 0;\n   \
     \     for (int v = 0; v < n; v++) {\n            if (seen[v] != 1) ok = false;\n\
     \            if (label[v] == v) num_components++;\n        }\n        if ((int)groups.size()\
@@ -723,7 +723,7 @@ data:
   isVerificationFile: true
   path: test/unittest/graph-util.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:27:29+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/graph-util.test.cpp

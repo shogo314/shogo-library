@@ -71,7 +71,7 @@ data:
     \u914D\u5217\n * @return std::optional<CRTResult> (\u89E3, LCM) \u89E3\u306A\u3057\
     \u306E\u3068\u304D\u306F std::nullopt\n */\ninline std::optional<CRTResult> crt(const\
     \ std::vector<long long>& r, const std::vector<long long>& m) {\n    assert(r.size()\
-    \ == m.size());\n    if (r.size() == 0) return CRTResult{0, 1};\n    int n = (int)r.size();\n\
+    \ == m.size());\n    if (r.size() == 0) return CRTResult{0, 1};\n    int n = static_cast<int>(r.size());\n\
     \    long long m_lcm = m[0];\n    long long ans = (r[0] % m[0] + m[0]) % m[0];\n\
     \    for (int i = 1; i < n; i++) {\n        long long rr = (r[i] % m[i] + m[i])\
     \ % m[i], mm = m[i];\n        if (!coprimize_simultaneous_congruence_equation(ans,\
@@ -85,12 +85,12 @@ data:
     \ LCM % MOD) \u89E3\u306A\u3057\u306E\u3068\u304D\u306F std::nullopt\n */\ninline\
     \ std::optional<CRTResult> crt(const std::vector<long long>& r, const std::vector<long\
     \ long>& m, long long MOD) {\n    assert(r.size() == m.size());\n    if (r.size()\
-    \ == 0) return CRTResult{0, 1};\n    int n = (int)r.size();\n    std::vector<long\
-    \ long> r2 = r, m2 = m;\n    // m\u3092\u4E92\u3044\u306B\u7D20\u306B\u3059\u308B\
-    \n    for (int i = 1; i < n; i++) {\n        for (int j = 0; j < i; j++) {\n \
-    \           if (!coprimize_simultaneous_congruence_equation(r2[i], m2[i], r2[j],\
-    \ m2[j])) return std::nullopt;\n        }\n    }\n\n    m2.push_back(MOD);\n \
-    \   std::vector<long long> prod(n + 1, 1);  // m2[0] * ... * m2[i - 1] mod m2[i]\n\
+    \ == 0) return CRTResult{0, 1};\n    int n = static_cast<int>(r.size());\n   \
+    \ std::vector<long long> r2 = r, m2 = m;\n    // m\u3092\u4E92\u3044\u306B\u7D20\
+    \u306B\u3059\u308B\n    for (int i = 1; i < n; i++) {\n        for (int j = 0;\
+    \ j < i; j++) {\n            if (!coprimize_simultaneous_congruence_equation(r2[i],\
+    \ m2[i], r2[j], m2[j])) return std::nullopt;\n        }\n    }\n\n    m2.push_back(MOD);\n\
+    \    std::vector<long long> prod(n + 1, 1);  // m2[0] * ... * m2[i - 1] mod m2[i]\n\
     \    std::vector<long long> x(n + 1, 0);     // i\u756A\u76EE\u307E\u3067\u306E\
     \u89E3 mod m2[i]\n    for (int i = 0; i < n; i++) {\n        long long t = (r2[i]\
     \ - x[i]) * modinv(prod[i], m2[i]) % m2[i];\n        if (t < 0) t += m2[i];\n\
@@ -145,7 +145,7 @@ data:
   isVerificationFile: true
   path: test/unittest/number-theory.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:33:42+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/number-theory.test.cpp

@@ -38,10 +38,10 @@ data:
     \u3068\n * @param n 0 \u4EE5\u4E0A\n * @param m 1 \u4EE5\u4E0A\n */\ninline long\
     \ long floor_sum(long long n, long long m, long long a, long long b) {\n    assert(0\
     \ <= n && 1 <= m);\n    unsigned long long res = 0;\n    if (a < 0) {\n      \
-    \  long long a2 = a % m + m;\n        res -= (unsigned long long)n * (n - 1) /\
-    \ 2 * ((a2 - a) / m);\n        a = a2;\n    }\n    if (b < 0) {\n        long\
-    \ long b2 = b % m + m;\n        res -= (unsigned long long)n * ((b2 - b) / m);\n\
-    \        b = b2;\n    }\n    return res + internal_floor_sum::floor_sum_unsigned(n,\
+    \  long long a2 = a % m + m;\n        res -= static_cast<unsigned long long>(n)\
+    \ * (n - 1) / 2 * ((a2 - a) / m);\n        a = a2;\n    }\n    if (b < 0) {\n\
+    \        long long b2 = b % m + m;\n        res -= static_cast<unsigned long long>(n)\
+    \ * ((b2 - b) / m);\n        b = b2;\n    }\n    return res + internal_floor_sum::floor_sum_unsigned(n,\
     \ m, a, b);\n}\n"
   code: "#pragma once\n\n/**\n * @file floor-sum.hpp\n * @brief floor sum (\u4E00\u6B21\
     \u95A2\u6570\u306E\u5E8A\u95A2\u6570\u306E\u548C)\n */\n\n#include <cassert>\n\
@@ -65,15 +65,16 @@ data:
     \u4E0A\n * @param m 1 \u4EE5\u4E0A\n */\ninline long long floor_sum(long long\
     \ n, long long m, long long a, long long b) {\n    assert(0 <= n && 1 <= m);\n\
     \    unsigned long long res = 0;\n    if (a < 0) {\n        long long a2 = a %\
-    \ m + m;\n        res -= (unsigned long long)n * (n - 1) / 2 * ((a2 - a) / m);\n\
-    \        a = a2;\n    }\n    if (b < 0) {\n        long long b2 = b % m + m;\n\
-    \        res -= (unsigned long long)n * ((b2 - b) / m);\n        b = b2;\n   \
-    \ }\n    return res + internal_floor_sum::floor_sum_unsigned(n, m, a, b);\n}\n"
+    \ m + m;\n        res -= static_cast<unsigned long long>(n) * (n - 1) / 2 * ((a2\
+    \ - a) / m);\n        a = a2;\n    }\n    if (b < 0) {\n        long long b2 =\
+    \ b % m + m;\n        res -= static_cast<unsigned long long>(n) * ((b2 - b) /\
+    \ m);\n        b = b2;\n    }\n    return res + internal_floor_sum::floor_sum_unsigned(n,\
+    \ m, a, b);\n}\n"
   dependsOn: []
   isVerificationFile: false
   path: src/math/floor-sum.hpp
   requiredBy: []
-  timestamp: '2026-10-14 00:37:13+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/floor-sum.test.cpp

@@ -295,8 +295,8 @@ data:
     \u3089\u3059\u304B\n     */\n    template <typename T = long long>\n    explicit\
     \ RootedTree(const std::vector<T>& par_, long long padding = -1) : Tree<Cost>(par_.size()\
     \ + 1), root(0) {\n        static_assert(std::is_integral_v<T>, \"RootedTree:\
-    \ par_ must be a vector of integers\");\n        for (long long i = 0; i < (long\
-    \ long)par_.size(); i++) {\n            this->add_edge(i + 1, par_[i] + padding);\n\
+    \ par_ must be a vector of integers\");\n        for (long long i = 0; i < static_cast<long\
+    \ long>(par_.size()); i++) {\n            this->add_edge(i + 1, par_[i] + padding);\n\
     \        }\n        build();\n    }\n    /**\n     * @brief Tree\u304B\u3089\u6839\
     \u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\
     \u30AF\u30BF(\u30B3\u30D4\u30FC)\n     *\n     * @param tree Tree \u9802\u70B9\
@@ -325,17 +325,18 @@ data:
     \ int>> stk;\n        stk.emplace(root, 0);\n        while (!stk.empty()) {\n\
     \            auto [u, cnt] = stk.top();\n            stk.pop();\n            euler_tour.emplace_back(u,\
     \ cnt);\n            if (iter[u] == 0) preorder.push_back(u);\n            while\
-    \ (iter[u] < (int)this->g[u].size() && this->g[u][iter[u]].dst == par[u]) iter[u]++;\n\
-    \            if (iter[u] == (int)this->g[u].size()) {\n                postorder.push_back(u);\n\
-    \                sz[u] = 1;\n                height[u] = 0;\n                unweighted_height[u]\
-    \ = 0;\n                for (auto& e : child[u]) {\n                    sz[u]\
-    \ += sz[e.dst];\n                    if (height[u] < height[e.dst] + e.cost) {\n\
-    \                        height[u] = height[e.dst] + e.cost;\n               \
-    \     }\n                    if (unweighted_height[u] < unweighted_height[e.dst]\
-    \ + 1) {\n                        unweighted_height[u] = unweighted_height[e.dst]\
-    \ + 1;\n                    }\n                }\n            } else {\n     \
-    \           auto& e = this->g[u][iter[u]++];\n                par[e.dst] = {e.dst,\
-    \ u, e.cost, e.id};\n                child[u].push_back(e);\n                depth[e.dst]\
+    \ (iter[u] < static_cast<int>(this->g[u].size()) && this->g[u][iter[u]].dst ==\
+    \ par[u]) iter[u]++;\n            if (iter[u] == static_cast<int>(this->g[u].size()))\
+    \ {\n                postorder.push_back(u);\n                sz[u] = 1;\n   \
+    \             height[u] = 0;\n                unweighted_height[u] = 0;\n    \
+    \            for (auto& e : child[u]) {\n                    sz[u] += sz[e.dst];\n\
+    \                    if (height[u] < height[e.dst] + e.cost) {\n             \
+    \           height[u] = height[e.dst] + e.cost;\n                    }\n     \
+    \               if (unweighted_height[u] < unweighted_height[e.dst] + 1) {\n \
+    \                       unweighted_height[u] = unweighted_height[e.dst] + 1;\n\
+    \                    }\n                }\n            } else {\n            \
+    \    auto& e = this->g[u][iter[u]++];\n                par[e.dst] = {e.dst, u,\
+    \ e.cost, e.id};\n                child[u].push_back(e);\n                depth[e.dst]\
     \ = depth[u] + e.cost;\n                unweighted_depth[e.dst] = unweighted_depth[u]\
     \ + 1;\n                stk.emplace(u, cnt + 1);\n                stk.emplace(e.dst,\
     \ 0);\n            }\n        }\n    }\n};\n\n/**\n * @brief \u89AA\u9802\u70B9\
@@ -436,24 +437,25 @@ data:
     \ par(n, -1), dep(n, 0), sz(n, 1), heavy(n, -1), head(n), in(n), order(n) {\n\
     \        assert(0 <= root && root < n);\n        // \u6839\u304B\u3089\u306E BFS\
     \ \u9806\u3067\u89AA\u3068\u6DF1\u3055\u3092\u6C7A\u3081\u308B\n        std::vector<int>\
-    \ bfs = {(int)root};\n        bfs.reserve(n);\n        for (int i = 0; i < (int)bfs.size();\
-    \ i++) {\n            int v = bfs[i];\n            for (long long u : tree[v])\
-    \ {\n                if (u == par[v]) continue;\n                assert(u != root\
-    \ && par[u] == -1 && \"HeavyLightDecomposition: not a tree\");\n             \
-    \   par[u] = v;\n                dep[u] = dep[v] + 1;\n                bfs.push_back(u);\n\
-    \            }\n        }\n        assert((long long)bfs.size() == n && \"HeavyLightDecomposition:\
-    \ not connected\");\n        // \u8449\u306E\u5074\u304B\u3089\u90E8\u5206\u6728\
-    \u306E\u5927\u304D\u3055\u3092\u6C42\u3081\u3001\u6700\u3082\u5927\u304D\u3044\
-    \u5B50\u3092 heavy \u306B\u3059\u308B\n        for (int i = n - 1; i > 0; i--)\
-    \ {\n            int v = bfs[i], p = par[v];\n            sz[p] += sz[v];\n  \
-    \          if (heavy[p] == -1 || sz[v] > sz[heavy[p]]) heavy[p] = v;\n       \
-    \ }\n        // heavy \u306A\u5B50\u3092\u6700\u5F8C\u306B\u7A4D\u3080\u3068\u3001\
-    \u6B21\u306B\u53D6\u308A\u51FA\u3055\u308C\u3066 index \u304C\u9023\u7D9A\u3059\
-    \u308B\n        std::vector<int> st = {(int)root};\n        head[root] = root;\n\
-    \        int k = 0;\n        while (!st.empty()) {\n            int v = st.back();\n\
-    \            st.pop_back();\n            in[v] = k;\n            order[k++] =\
-    \ v;\n            for (long long u : tree[v]) {\n                if (u == par[v]\
-    \ || u == heavy[v]) continue;\n                head[u] = u;\n                st.push_back(u);\n\
+    \ bfs = {static_cast<int>(root)};\n        bfs.reserve(n);\n        for (int i\
+    \ = 0; i < static_cast<int>(bfs.size()); i++) {\n            int v = bfs[i];\n\
+    \            for (long long u : tree[v]) {\n                if (u == par[v]) continue;\n\
+    \                assert(u != root && par[u] == -1 && \"HeavyLightDecomposition:\
+    \ not a tree\");\n                par[u] = v;\n                dep[u] = dep[v]\
+    \ + 1;\n                bfs.push_back(u);\n            }\n        }\n        assert(static_cast<long\
+    \ long>(bfs.size()) == n && \"HeavyLightDecomposition: not connected\");\n   \
+    \     // \u8449\u306E\u5074\u304B\u3089\u90E8\u5206\u6728\u306E\u5927\u304D\u3055\
+    \u3092\u6C42\u3081\u3001\u6700\u3082\u5927\u304D\u3044\u5B50\u3092 heavy \u306B\
+    \u3059\u308B\n        for (int i = n - 1; i > 0; i--) {\n            int v = bfs[i],\
+    \ p = par[v];\n            sz[p] += sz[v];\n            if (heavy[p] == -1 ||\
+    \ sz[v] > sz[heavy[p]]) heavy[p] = v;\n        }\n        // heavy \u306A\u5B50\
+    \u3092\u6700\u5F8C\u306B\u7A4D\u3080\u3068\u3001\u6B21\u306B\u53D6\u308A\u51FA\
+    \u3055\u308C\u3066 index \u304C\u9023\u7D9A\u3059\u308B\n        std::vector<int>\
+    \ st = {static_cast<int>(root)};\n        head[root] = root;\n        int k =\
+    \ 0;\n        while (!st.empty()) {\n            int v = st.back();\n        \
+    \    st.pop_back();\n            in[v] = k;\n            order[k++] = v;\n   \
+    \         for (long long u : tree[v]) {\n                if (u == par[v] || u\
+    \ == heavy[v]) continue;\n                head[u] = u;\n                st.push_back(u);\n\
     \            }\n            if (heavy[v] != -1) {\n                head[heavy[v]]\
     \ = head[v];\n                st.push_back(heavy[v]);\n            }\n       \
     \ }\n    }\n\n    long long size() const { return n; }\n    /**\n     * @brief\
@@ -538,7 +540,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/jump-on-tree.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:27:29+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/jump-on-tree.2.test.cpp

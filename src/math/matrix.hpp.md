@@ -177,15 +177,15 @@ data:
     \     * @param A Matrix\n     * @param B vector<T>\n     * @return vector<T> \u5217\
     \u30D9\u30AF\u30C8\u30EB\n     */\n    [[nodiscard]]\n    friend std::vector<T>\
     \ operator*(const Matrix& A, const std::vector<T>& B) {\n        assert(A.m ==\
-    \ (long long)B.size());\n        std::vector<T> ret(A.n, OperatorProperty::zero());\n\
+    \ static_cast<long long>(B.size()));\n        std::vector<T> ret(A.n, OperatorProperty::zero());\n\
     \        for (long long i = 0; i < A.n; i++) {\n            for (long long j =\
     \ 0; j < A.m; j++) {\n                ret[i] = OperatorProperty::add(ret[i], OperatorProperty::mul(A[i][j],\
     \ B[j]));\n            }\n        }\n        return ret;\n    }\n\n    /**\n \
     \    * @brief \u884C\u30D9\u30AF\u30C8\u30EBA\u3068\u884C\u5217B\u306E\u7A4D\n\
     \     * @param A vector<T>\n     * @param B Matrix\n     * @return vector<T> \u884C\
     \u30D9\u30AF\u30C8\u30EB\n     */\n    [[nodiscard]]\n    friend std::vector<T>\
-    \ operator*(const std::vector<T>& A, const Matrix& B) {\n        assert((long\
-    \ long)A.size() == B.n);\n        std::vector<T> ret(B.m, OperatorProperty::zero());\n\
+    \ operator*(const std::vector<T>& A, const Matrix& B) {\n        assert(static_cast<long\
+    \ long>(A.size()) == B.n);\n        std::vector<T> ret(B.m, OperatorProperty::zero());\n\
     \        for (long long i = 0; i < B.n; i++) {\n            for (long long j =\
     \ 0; j < B.m; j++) {\n                ret[j] = OperatorProperty::add(ret[j], OperatorProperty::mul(A[i],\
     \ B[i][j]));\n            }\n        }\n        return ret;\n    }\n\n    /**\n\
@@ -425,15 +425,15 @@ data:
     \     * @param A Matrix\n     * @param B vector<T>\n     * @return vector<T> \u5217\
     \u30D9\u30AF\u30C8\u30EB\n     */\n    [[nodiscard]]\n    friend std::vector<T>\
     \ operator*(const Matrix& A, const std::vector<T>& B) {\n        assert(A.m ==\
-    \ (long long)B.size());\n        std::vector<T> ret(A.n, OperatorProperty::zero());\n\
+    \ static_cast<long long>(B.size()));\n        std::vector<T> ret(A.n, OperatorProperty::zero());\n\
     \        for (long long i = 0; i < A.n; i++) {\n            for (long long j =\
     \ 0; j < A.m; j++) {\n                ret[i] = OperatorProperty::add(ret[i], OperatorProperty::mul(A[i][j],\
     \ B[j]));\n            }\n        }\n        return ret;\n    }\n\n    /**\n \
     \    * @brief \u884C\u30D9\u30AF\u30C8\u30EBA\u3068\u884C\u5217B\u306E\u7A4D\n\
     \     * @param A vector<T>\n     * @param B Matrix\n     * @return vector<T> \u884C\
     \u30D9\u30AF\u30C8\u30EB\n     */\n    [[nodiscard]]\n    friend std::vector<T>\
-    \ operator*(const std::vector<T>& A, const Matrix& B) {\n        assert((long\
-    \ long)A.size() == B.n);\n        std::vector<T> ret(B.m, OperatorProperty::zero());\n\
+    \ operator*(const std::vector<T>& A, const Matrix& B) {\n        assert(static_cast<long\
+    \ long>(A.size()) == B.n);\n        std::vector<T> ret(B.m, OperatorProperty::zero());\n\
     \        for (long long i = 0; i < B.n; i++) {\n            for (long long j =\
     \ 0; j < B.m; j++) {\n                ret[j] = OperatorProperty::add(ret[j], OperatorProperty::mul(A[i],\
     \ B[i][j]));\n            }\n        }\n        return ret;\n    }\n\n    /**\n\
@@ -530,7 +530,7 @@ data:
   isVerificationFile: false
   path: src/math/matrix.hpp
   requiredBy: []
-  timestamp: '2026-10-15 07:27:48+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/matrix.test.cpp

@@ -472,12 +472,12 @@ data:
     \   std::vector<int> left, right;  // \u8449\u3067\u306F -1\n        explicit\
     \ Pool(A a) : a(std::move(a)) {}\n        int make_leaf(const S& x) {\n      \
     \      val.push_back(x);\n            lazy.push_back(a.id());\n            left.push_back(-1);\n\
-    \            right.push_back(-1);\n            return int(val.size()) - 1;\n \
-    \       }\n        int make_node(int l, int r) {\n            val.push_back(a.op(val[l],\
+    \            right.push_back(-1);\n            return static_cast<int>(val.size())\
+    \ - 1;\n        }\n        int make_node(int l, int r) {\n            val.push_back(a.op(val[l],\
     \ val[r]));\n            lazy.push_back(a.id());\n            left.push_back(l);\n\
-    \            right.push_back(r);\n            return int(val.size()) - 1;\n  \
-    \      }\n    };\n\n    std::shared_ptr<Pool> pool;\n    long long n, sz;\n  \
-    \  int root;\n\n    S op(const S& x, const S& y) const { return pool->a.op(x,\
+    \            right.push_back(r);\n            return static_cast<int>(val.size())\
+    \ - 1;\n        }\n    };\n\n    std::shared_ptr<Pool> pool;\n    long long n,\
+    \ sz;\n    int root;\n\n    S op(const S& x, const S& y) const { return pool->a.op(x,\
     \ y); }\n    S e() const { return pool->a.e(); }\n    // \u672B\u5C3E\u306E\u8981\
     \u7D20\u6570\u3092 2 \u3079\u304D\u306B\u305D\u308D\u3048\u308B\u305F\u3081\u306E\
     \u4F59\u308A\u306E\u90E8\u5206\u306F\u533A\u9593\u306B\u542B\u3081\u306A\u3044\
@@ -497,11 +497,11 @@ data:
     \        if (b - a == 1) return pool->make_leaf(x);\n        F g = composition(f,\
     \ pool->lazy[t]);\n        int l = pool->left[t], r = pool->right[t];\n      \
     \  pool->val.push_back(x);\n        pool->lazy.push_back(g);\n        pool->left.push_back(l);\n\
-    \        pool->right.push_back(r);\n        return int(pool->val.size()) - 1;\n\
-    \    }\n    // \u30CE\u30FC\u30C9 t ([a, b)) \u306E lazy \u3092\u5B50\u306B\u4F1D\
-    \u3048\u305F\u3001\u65B0\u3057\u3044\u5B50\u306E\u7D44\n    std::pair<int, int>\
-    \ push(int t, long long a, long long b) const {\n        long long mid = (a +\
-    \ b) / 2;\n        const F f = pool->lazy[t];\n        int l = apply_node(pool->left[t],\
+    \        pool->right.push_back(r);\n        return static_cast<int>(pool->val.size())\
+    \ - 1;\n    }\n    // \u30CE\u30FC\u30C9 t ([a, b)) \u306E lazy \u3092\u5B50\u306B\
+    \u4F1D\u3048\u305F\u3001\u65B0\u3057\u3044\u5B50\u306E\u7D44\n    std::pair<int,\
+    \ int> push(int t, long long a, long long b) const {\n        long long mid =\
+    \ (a + b) / 2;\n        const F f = pool->lazy[t];\n        int l = apply_node(pool->left[t],\
     \ a, mid, f);\n        int r = apply_node(pool->right[t], mid, b, f);\n      \
     \  return {l, r};\n    }\n    int set_rec(int t, long long a, long long b, long\
     \ long k, const S& x) const {\n        if (b - a == 1) return pool->make_leaf(x);\n\
@@ -973,7 +973,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/persistent-range-affine-range-sum.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 23:44:15+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/persistent-range-affine-range-sum.test.cpp

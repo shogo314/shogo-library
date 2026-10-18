@@ -61,10 +61,10 @@ data:
     \u8DEF\u306E\u5DE6\u5074\u306E\u9802\u70B9\u3002st[k] \u306F g[st[k]][iter[st[k]]]\
     \ \u3092\u901A\u3063\u3066\u6B21\u3078\u9032\u3080\n                st.assign(1,\
     \ s);\n                while (!st.empty()) {\n                    int u = st.back();\n\
-    \                    if (iter[u] == (int)g[u].size()) {\n                    \
-    \    // u \u304B\u3089\u306F\u5897\u52A0\u8DEF\u304C\u306A\u3044\u306E\u3067\u3001\
-    \u3053\u306E\u30D5\u30A7\u30FC\u30BA\u3067\u306F\u4F7F\u308F\u306A\u3044\n   \
-    \                     dist[u] = -1;\n                        st.pop_back();\n\
+    \                    if (iter[u] == static_cast<int>(g[u].size())) {\n       \
+    \                 // u \u304B\u3089\u306F\u5897\u52A0\u8DEF\u304C\u306A\u3044\u306E\
+    \u3067\u3001\u3053\u306E\u30D5\u30A7\u30FC\u30BA\u3067\u306F\u4F7F\u308F\u306A\
+    \u3044\n                        dist[u] = -1;\n                        st.pop_back();\n\
     \                        if (!st.empty()) iter[st.back()]++;\n               \
     \         continue;\n                    }\n                    int v = g[u][iter[u]];\n\
     \                    int w = match_r[v];\n                    if (w == -1) {\n\
@@ -108,7 +108,7 @@ data:
   isVerificationFile: true
   path: test/aoj/grl-7-a.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:27:29+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/grl-7-a.test.cpp

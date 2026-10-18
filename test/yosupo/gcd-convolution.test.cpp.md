@@ -182,23 +182,23 @@ data:
     \u306E\u30BC\u30FC\u30BF\u5909\u63DB a[n] <- sum_{d | n} a[d] O(N log log N)\n\
     \ * \u6DFB\u5B57 1, ..., N (N = a.size() - 1) \u3092\u4F7F\u3046\u3002a[0] \u306F\
     \u5909\u3048\u306A\u3044\n */\ntemplate <typename T>\nvoid divisor_zeta(std::vector<T>&\
-    \ a) {\n    int n = (int)a.size() - 1;\n    for (long long p : enumerate_primes(n))\
+    \ a) {\n    int n = static_cast<int>(a.size()) - 1;\n    for (long long p : enumerate_primes(n))\
     \ {\n        for (int i = 1; i <= n / p; i++) a[i * p] += a[i];\n    }\n}\n\n\
     /**\n * @brief \u7D04\u6570\u306E\u30E1\u30D3\u30A6\u30B9\u5909\u63DB (divisor_zeta\
     \ \u306E\u9006\u5909\u63DB) O(N log log N)\n * \u6DFB\u5B57 1, ..., N (N = a.size()\
     \ - 1) \u3092\u4F7F\u3046\u3002a[0] \u306F\u5909\u3048\u306A\u3044\n */\ntemplate\
-    \ <typename T>\nvoid divisor_mobius(std::vector<T>& a) {\n    int n = (int)a.size()\
+    \ <typename T>\nvoid divisor_mobius(std::vector<T>& a) {\n    int n = static_cast<int>(a.size())\
     \ - 1;\n    for (long long p : enumerate_primes(n)) {\n        for (int i = n\
     \ / p; i >= 1; i--) a[i * p] -= a[i];\n    }\n}\n\n/**\n * @brief \u500D\u6570\
     \u306E\u30BC\u30FC\u30BF\u5909\u63DB a[n] <- sum_{n | m, m <= N} a[m] O(N log\
     \ log N)\n * \u6DFB\u5B57 1, ..., N (N = a.size() - 1) \u3092\u4F7F\u3046\u3002\
     a[0] \u306F\u5909\u3048\u306A\u3044\n */\ntemplate <typename T>\nvoid multiple_zeta(std::vector<T>&\
-    \ a) {\n    int n = (int)a.size() - 1;\n    for (long long p : enumerate_primes(n))\
+    \ a) {\n    int n = static_cast<int>(a.size()) - 1;\n    for (long long p : enumerate_primes(n))\
     \ {\n        for (int i = n / p; i >= 1; i--) a[i] += a[i * p];\n    }\n}\n\n\
     /**\n * @brief \u500D\u6570\u306E\u30E1\u30D3\u30A6\u30B9\u5909\u63DB (multiple_zeta\
     \ \u306E\u9006\u5909\u63DB) O(N log log N)\n * \u6DFB\u5B57 1, ..., N (N = a.size()\
     \ - 1) \u3092\u4F7F\u3046\u3002a[0] \u306F\u5909\u3048\u306A\u3044\n */\ntemplate\
-    \ <typename T>\nvoid multiple_mobius(std::vector<T>& a) {\n    int n = (int)a.size()\
+    \ <typename T>\nvoid multiple_mobius(std::vector<T>& a) {\n    int n = static_cast<int>(a.size())\
     \ - 1;\n    for (long long p : enumerate_primes(n)) {\n        for (int i = 1;\
     \ i <= n / p; i++) a[i] -= a[i * p];\n    }\n}\n\n/**\n * @brief GCD \u7573\u307F\
     \u8FBC\u307F c[k] = sum_{gcd(i, j) = k} a[i] b[j] (1 <= i, j <= N) O(N log log\
@@ -206,7 +206,7 @@ data:
     \ 0 \u306F\u4F7F\u308F\u306A\u3044\u3002c[0] \u306F T()\n */\ntemplate <typename\
     \ T>\nstd::vector<T> gcd_convolution(std::vector<T> a, std::vector<T> b) {\n \
     \   assert(a.size() == b.size());\n    multiple_zeta(a);\n    multiple_zeta(b);\n\
-    \    for (int i = 1; i < (int)a.size(); i++) a[i] *= b[i];\n    multiple_mobius(a);\n\
+    \    for (int i = 1; i < static_cast<int>(a.size()); i++) a[i] *= b[i];\n    multiple_mobius(a);\n\
     \    if (!a.empty()) a[0] = T();\n    return a;\n}\n\n/**\n * @brief LCM \u7573\
     \u307F\u8FBC\u307F c[k] = sum_{lcm(i, j) = k} a[i] b[j] (1 <= i, j <= N\u3001\
     k <= N) O(N log log N)\n * a \u3068 b \u306F\u540C\u3058\u9577\u3055 N + 1 \u3067\
@@ -214,7 +214,7 @@ data:
     lcm \u304C N \u3092\u8D85\u3048\u308B\u7D44\u306F\u6570\u3048\u306A\u3044\n */\n\
     template <typename T>\nstd::vector<T> lcm_convolution(std::vector<T> a, std::vector<T>\
     \ b) {\n    assert(a.size() == b.size());\n    divisor_zeta(a);\n    divisor_zeta(b);\n\
-    \    for (int i = 1; i < (int)a.size(); i++) a[i] *= b[i];\n    divisor_mobius(a);\n\
+    \    for (int i = 1; i < static_cast<int>(a.size()); i++) a[i] *= b[i];\n    divisor_mobius(a);\n\
     \    if (!a.empty()) a[0] = T();\n    return a;\n}\n#line 2 \"src/math/modint.hpp\"\
     \n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\
     \u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line\
@@ -522,7 +522,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/gcd-convolution.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:27:48+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/gcd-convolution.test.cpp

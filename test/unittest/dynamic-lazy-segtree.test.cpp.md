@@ -486,34 +486,34 @@ data:
     \ *this;\n        }\n        operator S() const { return segtree.get(k); }\n \
     \   };\n\n    int make_node(const S& x, const F& f) {\n        val.push_back(x);\n\
     \        lazy.push_back(f);\n        left.push_back(-1);\n        right.push_back(-1);\n\
-    \        return int(val.size()) - 1;\n    }\n    // \u30CE\u30FC\u30C9 t ([a,\
-    \ b)) \u306B f \u3092\u4F5C\u7528\u3055\u305B\u308B\u3002t \u304C -1 \u306A\u3089\
-    \u30CE\u30FC\u30C9\u3092\u4F5C\u308B\n    int apply_node(int t, long long a, long\
-    \ long b, const F& f) {\n        if (t == -1) return make_node(mapping(f, e(),\
-    \ a, b), f);\n        val[t] = mapping(f, val[t], a, b);\n        lazy[t] = composition(f,\
-    \ lazy[t]);\n        return t;\n    }\n    // \u30CE\u30FC\u30C9 t ([a, b)) \u306E\
-    \ lazy \u3092\u5B50\u306B\u4F1D\u3048\u308B\n    void push(int t, long long a,\
-    \ long long b) {\n        long long mid = (a + b) / 2;\n        const F f = lazy[t];\n\
-    \        int l = apply_node(left[t], a, mid, f);\n        left[t] = l;\n     \
-    \   int r = apply_node(right[t], mid, b, f);\n        right[t] = r;\n        lazy[t]\
-    \ = id();\n    }\n    S value(int t) const { return t == -1 ? e() : val[t]; }\n\
-    \    void update(int t) { val[t] = op(value(left[t]), value(right[t])); }\n\n\
-    \    int set_rec(int t, long long a, long long b, long long k, const S& x) {\n\
-    \        if (b - a == 1) {\n            if (t == -1) return make_node(x, id());\n\
-    \            val[t] = x;\n            return t;\n        }\n        long long\
-    \ mid = (a + b) / 2;\n        // \u4F5C\u3063\u305F\u3070\u304B\u308A\u306E\u30CE\
-    \u30FC\u30C9\u306F\u5B50\u304C\u306A\u304F lazy \u3082\u6052\u7B49\u5199\u50CF\
-    \u306A\u306E\u3067\u3001\u4F1D\u3048\u306A\u304F\u3066\u3088\u3044\n        if\
-    \ (t == -1)\n            t = make_node(e(), id());\n        else\n           \
-    \ push(t, a, b);\n        if (k < mid) {\n            int c = set_rec(left[t],\
-    \ a, mid, k, x);\n            left[t] = c;\n        } else {\n            int\
-    \ c = set_rec(right[t], mid, b, k, x);\n            right[t] = c;\n        }\n\
-    \        update(t);\n        return t;\n    }\n    int apply_rec(int t, long long\
-    \ a, long long b, long long l, long long r, const F& f) {\n        if (r <= a\
-    \ || b <= l) return t;\n        if (l <= a && b <= r) return apply_node(t, a,\
-    \ b, f);\n        long long mid = (a + b) / 2;\n        if (t == -1)\n       \
-    \     t = make_node(e(), id());\n        else\n            push(t, a, b);\n  \
-    \      int lc = apply_rec(left[t], a, mid, l, r, f);\n        left[t] = lc;\n\
+    \        return static_cast<int>(val.size()) - 1;\n    }\n    // \u30CE\u30FC\u30C9\
+    \ t ([a, b)) \u306B f \u3092\u4F5C\u7528\u3055\u305B\u308B\u3002t \u304C -1 \u306A\
+    \u3089\u30CE\u30FC\u30C9\u3092\u4F5C\u308B\n    int apply_node(int t, long long\
+    \ a, long long b, const F& f) {\n        if (t == -1) return make_node(mapping(f,\
+    \ e(), a, b), f);\n        val[t] = mapping(f, val[t], a, b);\n        lazy[t]\
+    \ = composition(f, lazy[t]);\n        return t;\n    }\n    // \u30CE\u30FC\u30C9\
+    \ t ([a, b)) \u306E lazy \u3092\u5B50\u306B\u4F1D\u3048\u308B\n    void push(int\
+    \ t, long long a, long long b) {\n        long long mid = (a + b) / 2;\n     \
+    \   const F f = lazy[t];\n        int l = apply_node(left[t], a, mid, f);\n  \
+    \      left[t] = l;\n        int r = apply_node(right[t], mid, b, f);\n      \
+    \  right[t] = r;\n        lazy[t] = id();\n    }\n    S value(int t) const { return\
+    \ t == -1 ? e() : val[t]; }\n    void update(int t) { val[t] = op(value(left[t]),\
+    \ value(right[t])); }\n\n    int set_rec(int t, long long a, long long b, long\
+    \ long k, const S& x) {\n        if (b - a == 1) {\n            if (t == -1) return\
+    \ make_node(x, id());\n            val[t] = x;\n            return t;\n      \
+    \  }\n        long long mid = (a + b) / 2;\n        // \u4F5C\u3063\u305F\u3070\
+    \u304B\u308A\u306E\u30CE\u30FC\u30C9\u306F\u5B50\u304C\u306A\u304F lazy \u3082\
+    \u6052\u7B49\u5199\u50CF\u306A\u306E\u3067\u3001\u4F1D\u3048\u306A\u304F\u3066\
+    \u3088\u3044\n        if (t == -1)\n            t = make_node(e(), id());\n  \
+    \      else\n            push(t, a, b);\n        if (k < mid) {\n            int\
+    \ c = set_rec(left[t], a, mid, k, x);\n            left[t] = c;\n        } else\
+    \ {\n            int c = set_rec(right[t], mid, b, k, x);\n            right[t]\
+    \ = c;\n        }\n        update(t);\n        return t;\n    }\n    int apply_rec(int\
+    \ t, long long a, long long b, long long l, long long r, const F& f) {\n     \
+    \   if (r <= a || b <= l) return t;\n        if (l <= a && b <= r) return apply_node(t,\
+    \ a, b, f);\n        long long mid = (a + b) / 2;\n        if (t == -1)\n    \
+    \        t = make_node(e(), id());\n        else\n            push(t, a, b);\n\
+    \        int lc = apply_rec(left[t], a, mid, l, r, f);\n        left[t] = lc;\n\
     \        int rc = apply_rec(right[t], mid, b, l, r, f);\n        right[t] = rc;\n\
     \        update(t);\n        return t;\n    }\n    // f \u306F\u30CE\u30FC\u30C9\
     \ t \u306E\u7956\u5148\u306B\u3042\u3063\u3066\u3001\u307E\u3060 t \u306B\u9069\
@@ -1127,7 +1127,7 @@ data:
   isVerificationFile: true
   path: test/unittest/dynamic-lazy-segtree.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 23:44:15+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/dynamic-lazy-segtree.test.cpp

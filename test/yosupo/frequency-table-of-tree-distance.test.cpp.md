@@ -308,8 +308,8 @@ data:
     \u3089\u3059\u304B\n     */\n    template <typename T = long long>\n    explicit\
     \ RootedTree(const std::vector<T>& par_, long long padding = -1) : Tree<Cost>(par_.size()\
     \ + 1), root(0) {\n        static_assert(std::is_integral_v<T>, \"RootedTree:\
-    \ par_ must be a vector of integers\");\n        for (long long i = 0; i < (long\
-    \ long)par_.size(); i++) {\n            this->add_edge(i + 1, par_[i] + padding);\n\
+    \ par_ must be a vector of integers\");\n        for (long long i = 0; i < static_cast<long\
+    \ long>(par_.size()); i++) {\n            this->add_edge(i + 1, par_[i] + padding);\n\
     \        }\n        build();\n    }\n    /**\n     * @brief Tree\u304B\u3089\u6839\
     \u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\
     \u30AF\u30BF(\u30B3\u30D4\u30FC)\n     *\n     * @param tree Tree \u9802\u70B9\
@@ -338,17 +338,18 @@ data:
     \ int>> stk;\n        stk.emplace(root, 0);\n        while (!stk.empty()) {\n\
     \            auto [u, cnt] = stk.top();\n            stk.pop();\n            euler_tour.emplace_back(u,\
     \ cnt);\n            if (iter[u] == 0) preorder.push_back(u);\n            while\
-    \ (iter[u] < (int)this->g[u].size() && this->g[u][iter[u]].dst == par[u]) iter[u]++;\n\
-    \            if (iter[u] == (int)this->g[u].size()) {\n                postorder.push_back(u);\n\
-    \                sz[u] = 1;\n                height[u] = 0;\n                unweighted_height[u]\
-    \ = 0;\n                for (auto& e : child[u]) {\n                    sz[u]\
-    \ += sz[e.dst];\n                    if (height[u] < height[e.dst] + e.cost) {\n\
-    \                        height[u] = height[e.dst] + e.cost;\n               \
-    \     }\n                    if (unweighted_height[u] < unweighted_height[e.dst]\
-    \ + 1) {\n                        unweighted_height[u] = unweighted_height[e.dst]\
-    \ + 1;\n                    }\n                }\n            } else {\n     \
-    \           auto& e = this->g[u][iter[u]++];\n                par[e.dst] = {e.dst,\
-    \ u, e.cost, e.id};\n                child[u].push_back(e);\n                depth[e.dst]\
+    \ (iter[u] < static_cast<int>(this->g[u].size()) && this->g[u][iter[u]].dst ==\
+    \ par[u]) iter[u]++;\n            if (iter[u] == static_cast<int>(this->g[u].size()))\
+    \ {\n                postorder.push_back(u);\n                sz[u] = 1;\n   \
+    \             height[u] = 0;\n                unweighted_height[u] = 0;\n    \
+    \            for (auto& e : child[u]) {\n                    sz[u] += sz[e.dst];\n\
+    \                    if (height[u] < height[e.dst] + e.cost) {\n             \
+    \           height[u] = height[e.dst] + e.cost;\n                    }\n     \
+    \               if (unweighted_height[u] < unweighted_height[e.dst] + 1) {\n \
+    \                       unweighted_height[u] = unweighted_height[e.dst] + 1;\n\
+    \                    }\n                }\n            } else {\n            \
+    \    auto& e = this->g[u][iter[u]++];\n                par[e.dst] = {e.dst, u,\
+    \ e.cost, e.id};\n                child[u].push_back(e);\n                depth[e.dst]\
     \ = depth[u] + e.cost;\n                unweighted_depth[e.dst] = unweighted_depth[u]\
     \ + 1;\n                stk.emplace(u, cnt + 1);\n                stk.emplace(e.dst,\
     \ 0);\n            }\n        }\n    }\n};\n\n/**\n * @brief \u89AA\u9802\u70B9\
@@ -458,60 +459,60 @@ data:
     \        // s \u3092\u542B\u3080\u6210\u5206\u3092 BFS \u3067\u5217\u6319\u3059\
     \u308B (\u53D6\u308A\u9664\u3044\u305F\u9802\u70B9\u306F lev \u304C\u6C7A\u307E\
     \u3063\u3066\u3044\u308B)\n            bfs.assign(1, s);\n            bfs_par[s]\
-    \ = -1;\n            for (int i = 0; i < (int)bfs.size(); i++) {\n           \
-    \     int v = bfs[i];\n                for (long long u : tree[v]) {\n       \
-    \             if (u == bfs_par[v] || lev[u] != -1) continue;\n               \
-    \     bfs_par[u] = v;\n                    bfs.push_back(u);\n               \
-    \ }\n            }\n            int total = bfs.size();\n            for (int\
-    \ i = total - 1; i >= 0; i--) {\n                int v = bfs[i];\n           \
-    \     sz[v] = 1;\n                for (long long u : tree[v]) {\n            \
-    \        if (u != bfs_par[v] && lev[u] == -1) sz[v] += sz[u];\n              \
-    \  }\n            }\n            // s \u304B\u3089\u3001\u5927\u304D\u3055\u304C\
-    \u534A\u5206\u3092\u8D85\u3048\u308B\u5B50\u306E\u65B9\u3078\u9032\u3080\u3002\
-    \u9032\u3081\u306A\u304F\u306A\u3063\u305F\u3068\u3053\u308D\u304C\u91CD\u5FC3\
-    \n            int c = s;\n            while (true) {\n                int next\
-    \ = -1;\n                for (long long u : tree[c]) {\n                    if\
-    \ (u != bfs_par[c] && lev[u] == -1 && sz[u] * 2 > total) next = u;\n         \
-    \       }\n                if (next == -1) break;\n                c = next;\n\
-    \            }\n            par[c] = p;\n            lev[c] = depth;\n       \
-    \     ord.push_back(c);\n            for (long long u : tree[c]) {\n         \
-    \       if (lev[u] == -1) st.emplace_back(u, c);\n            }\n        }\n \
-    \       assert((long long)ord.size() == n && \"CentroidDecomposition: not connected\"\
-    );\n    }\n\n    /**\n     * @brief \u9802\u70B9\u6570\u3092\u8FD4\u3059\n   \
-    \  */\n    long long size() const { return n; }\n    /**\n     * @brief \u91CD\
-    \u5FC3\u6728\u306E\u6839 (\u6700\u521D\u306B\u53D6\u308A\u9664\u3044\u305F\u91CD\
-    \u5FC3)\n     */\n    long long root() const {\n        assert(n > 0);\n     \
-    \   return ord[0];\n    }\n    /**\n     * @brief \u91CD\u5FC3\u6728\u3067\u306E\
-    \ v \u306E\u89AA (\u6839\u306A\u3089 -1)\n     */\n    long long parent(long long\
-    \ v) const {\n        assert(0 <= v && v < n);\n        return par[v];\n    }\n\
-    \    /**\n     * @brief \u91CD\u5FC3\u6728\u3067\u306E v \u306E\u6DF1\u3055 (\u6839\
-    \u306A\u3089 0)\u3002O(log n) \u4EE5\u4E0B\u306B\u306A\u308B\n     */\n    long\
-    \ long level(long long v) const {\n        assert(0 <= v && v < n);\n        return\
-    \ lev[v];\n    }\n    /**\n     * @brief \u91CD\u5FC3\u3092\u53D6\u308A\u9664\u3044\
-    \u305F\u9806\u306B\u4E26\u3079\u305F\u5217 (\u91CD\u5FC3\u6728\u306E\u89AA\u306F\
-    \u5B50\u3088\u308A\u524D\u306B\u3042\u308B)\n     */\n    const std::vector<long\
-    \ long>& order() const { return ord; }\n\n    /**\n     * @brief \u91CD\u5FC3\
-    \ c \u306E\u6210\u5206\u304B\u3089 c \u3092\u53D6\u308A\u9664\u3044\u305F\u3001\
-    \u305D\u308C\u305E\u308C\u306E\u90E8\u5206\u6728\u306E (\u9802\u70B9, c \u304B\
-    \u3089\u306E\u8DDD\u96E2) \u306E\u4E00\u89A7\u3092\u8FD4\u3059\n     *\n     *\
-    \ \u8DDD\u96E2\u306F\u8FBA\u306E\u91CD\u307F\u306E\u548C (\u91CD\u307F\u306A\u3057\
-    \u3067\u8AAD\u3093\u3060\u6728\u306A\u3089\u8FBA\u306E\u6570)\u3002\u3059\u3079\
-    \u3066\u306E c \u3067\u5408\u308F\u305B\u3066 O(n log n)\n     */\n    template\
-    \ <typename Cost>\n    std::vector<std::vector<std::pair<long long, Cost>>> subtrees(const\
-    \ Tree<Cost>& tree, long long c) const {\n        assert(0 <= c && c < n);\n \
-    \       std::vector<std::vector<std::pair<long long, Cost>>> res;\n        for\
-    \ (const auto& e : tree[c]) {\n            if (lev[e.dst] <= lev[c]) continue;\n\
-    \            // c \u306E\u5148\u306E\u90E8\u5206\u6728\u3092\u3001\u89AA\u3092\
-    \u305F\u3069\u3089\u306A\u3044\u3088\u3046\u306B BFS \u3059\u308B\n          \
-    \  std::vector<std::pair<long long, Cost>> sub = {{e.dst, e.cost}};\n        \
-    \    std::vector<long long> from = {c};\n            for (int i = 0; i < (int)sub.size();\
-    \ i++) {\n                auto [v, d] = sub[i];\n                for (const auto&\
-    \ f : tree[v]) {\n                    if (f.dst == from[i] || lev[f.dst] <= lev[c])\
-    \ continue;\n                    sub.emplace_back(f.dst, d + f.cost);\n      \
-    \              from.push_back(v);\n                }\n            }\n        \
-    \    res.push_back(std::move(sub));\n        }\n        return res;\n    }\n};\n\
-    #line 2 \"src/math/convolution.hpp\"\n\n/**\n * @file convolution.hpp\n * @brief\
-    \ \u7573\u307F\u8FBC\u307F (NTT)\n */\n\n#line 11 \"src/math/convolution.hpp\"\
+    \ = -1;\n            for (int i = 0; i < static_cast<int>(bfs.size()); i++) {\n\
+    \                int v = bfs[i];\n                for (long long u : tree[v])\
+    \ {\n                    if (u == bfs_par[v] || lev[u] != -1) continue;\n    \
+    \                bfs_par[u] = v;\n                    bfs.push_back(u);\n    \
+    \            }\n            }\n            int total = bfs.size();\n         \
+    \   for (int i = total - 1; i >= 0; i--) {\n                int v = bfs[i];\n\
+    \                sz[v] = 1;\n                for (long long u : tree[v]) {\n \
+    \                   if (u != bfs_par[v] && lev[u] == -1) sz[v] += sz[u];\n   \
+    \             }\n            }\n            // s \u304B\u3089\u3001\u5927\u304D\
+    \u3055\u304C\u534A\u5206\u3092\u8D85\u3048\u308B\u5B50\u306E\u65B9\u3078\u9032\
+    \u3080\u3002\u9032\u3081\u306A\u304F\u306A\u3063\u305F\u3068\u3053\u308D\u304C\
+    \u91CD\u5FC3\n            int c = s;\n            while (true) {\n           \
+    \     int next = -1;\n                for (long long u : tree[c]) {\n        \
+    \            if (u != bfs_par[c] && lev[u] == -1 && sz[u] * 2 > total) next =\
+    \ u;\n                }\n                if (next == -1) break;\n            \
+    \    c = next;\n            }\n            par[c] = p;\n            lev[c] = depth;\n\
+    \            ord.push_back(c);\n            for (long long u : tree[c]) {\n  \
+    \              if (lev[u] == -1) st.emplace_back(u, c);\n            }\n     \
+    \   }\n        assert(static_cast<long long>(ord.size()) == n && \"CentroidDecomposition:\
+    \ not connected\");\n    }\n\n    /**\n     * @brief \u9802\u70B9\u6570\u3092\u8FD4\
+    \u3059\n     */\n    long long size() const { return n; }\n    /**\n     * @brief\
+    \ \u91CD\u5FC3\u6728\u306E\u6839 (\u6700\u521D\u306B\u53D6\u308A\u9664\u3044\u305F\
+    \u91CD\u5FC3)\n     */\n    long long root() const {\n        assert(n > 0);\n\
+    \        return ord[0];\n    }\n    /**\n     * @brief \u91CD\u5FC3\u6728\u3067\
+    \u306E v \u306E\u89AA (\u6839\u306A\u3089 -1)\n     */\n    long long parent(long\
+    \ long v) const {\n        assert(0 <= v && v < n);\n        return par[v];\n\
+    \    }\n    /**\n     * @brief \u91CD\u5FC3\u6728\u3067\u306E v \u306E\u6DF1\u3055\
+    \ (\u6839\u306A\u3089 0)\u3002O(log n) \u4EE5\u4E0B\u306B\u306A\u308B\n     */\n\
+    \    long long level(long long v) const {\n        assert(0 <= v && v < n);\n\
+    \        return lev[v];\n    }\n    /**\n     * @brief \u91CD\u5FC3\u3092\u53D6\
+    \u308A\u9664\u3044\u305F\u9806\u306B\u4E26\u3079\u305F\u5217 (\u91CD\u5FC3\u6728\
+    \u306E\u89AA\u306F\u5B50\u3088\u308A\u524D\u306B\u3042\u308B)\n     */\n    const\
+    \ std::vector<long long>& order() const { return ord; }\n\n    /**\n     * @brief\
+    \ \u91CD\u5FC3 c \u306E\u6210\u5206\u304B\u3089 c \u3092\u53D6\u308A\u9664\u3044\
+    \u305F\u3001\u305D\u308C\u305E\u308C\u306E\u90E8\u5206\u6728\u306E (\u9802\u70B9\
+    , c \u304B\u3089\u306E\u8DDD\u96E2) \u306E\u4E00\u89A7\u3092\u8FD4\u3059\n   \
+    \  *\n     * \u8DDD\u96E2\u306F\u8FBA\u306E\u91CD\u307F\u306E\u548C (\u91CD\u307F\
+    \u306A\u3057\u3067\u8AAD\u3093\u3060\u6728\u306A\u3089\u8FBA\u306E\u6570)\u3002\
+    \u3059\u3079\u3066\u306E c \u3067\u5408\u308F\u305B\u3066 O(n log n)\n     */\n\
+    \    template <typename Cost>\n    std::vector<std::vector<std::pair<long long,\
+    \ Cost>>> subtrees(const Tree<Cost>& tree, long long c) const {\n        assert(0\
+    \ <= c && c < n);\n        std::vector<std::vector<std::pair<long long, Cost>>>\
+    \ res;\n        for (const auto& e : tree[c]) {\n            if (lev[e.dst] <=\
+    \ lev[c]) continue;\n            // c \u306E\u5148\u306E\u90E8\u5206\u6728\u3092\
+    \u3001\u89AA\u3092\u305F\u3069\u3089\u306A\u3044\u3088\u3046\u306B BFS \u3059\u308B\
+    \n            std::vector<std::pair<long long, Cost>> sub = {{e.dst, e.cost}};\n\
+    \            std::vector<long long> from = {c};\n            for (int i = 0; i\
+    \ < static_cast<int>(sub.size()); i++) {\n                auto [v, d] = sub[i];\n\
+    \                for (const auto& f : tree[v]) {\n                    if (f.dst\
+    \ == from[i] || lev[f.dst] <= lev[c]) continue;\n                    sub.emplace_back(f.dst,\
+    \ d + f.cost);\n                    from.push_back(v);\n                }\n  \
+    \          }\n            res.push_back(std::move(sub));\n        }\n        return\
+    \ res;\n    }\n};\n#line 2 \"src/math/convolution.hpp\"\n\n/**\n * @file convolution.hpp\n\
+    \ * @brief \u7573\u307F\u8FBC\u307F (NTT)\n */\n\n#line 11 \"src/math/convolution.hpp\"\
     \n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\
     \u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\
     \u30AF\u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\n#include <cstdint>\n\
@@ -835,7 +836,7 @@ data:
     2\u306E\u3079\u304D\u4E57\u306B\u3059\u308B\n */\ninline int get_fft_size(int\
     \ N, int M) {\n    int size = 1;\n    while (size < N + M - 1) size <<= 1;\n \
     \   return size;\n}\n\n/**\n * @brief NTT\n */\ntemplate <class mint>\nvoid trans(std::vector<mint>&\
-    \ v, bool inv = false) {\n    if (v.empty()) return;\n    int N = (int)v.size();\n\
+    \ v, bool inv = false) {\n    if (v.empty()) return;\n    int N = static_cast<int>(v.size());\n\
     \    int MOD = v[0].mod();\n    int PR = calc_primitive_root(MOD);\n    static\
     \ bool first = true;\n    static std::vector<long long> vbw(30), vibw(30);\n \
     \   if (first) {\n        first = false;\n        for (int k = 0; k < 30; ++k)\
@@ -860,15 +861,16 @@ data:
     \ long long\n * @param A vector<T>\n * @param B vector<T>\n * @return vector<T>\n\
     \ */\ntemplate <class T>\nstd::vector<T> naive(const std::vector<T>& A, const\
     \ std::vector<T>& B) {\n    if (A.empty() || B.empty()) return {};\n    int N\
-    \ = (int)A.size(), M = (int)B.size();\n    std::vector<T> res(N + M - 1);\n  \
-    \  for (int i = 0; i < N; ++i)\n        for (int j = 0; j < M; ++j)\n        \
-    \    res[i + j] += A[i] * B[j];\n    return res;\n}\n};  // namespace internal_convolution\n\
-    \n/**\n * @brief modint\u306E\u7573\u307F\u8FBC\u307F\n * @param A vector<mint>\n\
-    \ * @param B vector<mint>\n * @return vector<mint>\n */\ntemplate <class mint>\n\
-    std::vector<mint> convolution(const std::vector<mint>& A, const std::vector<mint>&\
-    \ B) {\n    if (A.empty() || B.empty()) return {};\n    int N = (int)A.size(),\
-    \ M = (int)B.size();\n    if (std::min(N, M) < 30) return internal_convolution::naive(A,\
-    \ B);\n    int MOD = A[0].mod();\n    int size_fft = internal_convolution::get_fft_size(N,\
+    \ = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n    std::vector<T>\
+    \ res(N + M - 1);\n    for (int i = 0; i < N; ++i)\n        for (int j = 0; j\
+    \ < M; ++j)\n            res[i + j] += A[i] * B[j];\n    return res;\n}\n};  //\
+    \ namespace internal_convolution\n\n/**\n * @brief modint\u306E\u7573\u307F\u8FBC\
+    \u307F\n * @param A vector<mint>\n * @param B vector<mint>\n * @return vector<mint>\n\
+    \ */\ntemplate <class mint>\nstd::vector<mint> convolution(const std::vector<mint>&\
+    \ A, const std::vector<mint>& B) {\n    if (A.empty() || B.empty()) return {};\n\
+    \    int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n   \
+    \ if (std::min(N, M) < 30) return internal_convolution::naive(A, B);\n    int\
+    \ MOD = A[0].mod();\n    int size_fft = internal_convolution::get_fft_size(N,\
     \ M);\n    if (MOD == 998244353) {\n        std::vector<mint> a(size_fft), b(size_fft),\
     \ c(size_fft);\n        for (int i = 0; i < N; ++i) a[i] = A[i];\n        for\
     \ (int i = 0; i < M; ++i) b[i] = B[i];\n        internal_convolution::trans(a),\
@@ -895,8 +897,8 @@ data:
     \u7573\u307F\u8FBC\u307F\n * @param A vector<long long>\n * @param B vector<long\
     \ long>\n * @return vector<long long>\n */\ninline std::vector<long long> convolution_ll(const\
     \ std::vector<long long>& A, const std::vector<long long>& B) {\n    if (A.empty()\
-    \ || B.empty()) return {};\n    int N = (int)A.size(), M = (int)B.size();\n  \
-    \  if (std::min(N, M) < 30) return internal_convolution::naive(A, B);\n    int\
+    \ || B.empty()) return {};\n    int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n\
+    \    if (std::min(N, M) < 30) return internal_convolution::naive(A, B);\n    int\
     \ size_fft = internal_convolution::get_fft_size(N, M);\n    std::vector<internal_convolution::mint0>\
     \ a0(size_fft, 0), b0(size_fft, 0), c0(size_fft, 0);\n    std::vector<internal_convolution::mint1>\
     \ a1(size_fft, 0), b1(size_fft, 0), c1(size_fft, 0);\n    std::vector<internal_convolution::mint2>\
@@ -973,7 +975,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/frequency-table-of-tree-distance.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 13:21:07+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/frequency-table-of-tree-distance.test.cpp

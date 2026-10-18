@@ -27,7 +27,7 @@ data:
     \u306E 1 \u306E\u500B\u6570\n\n   public:\n    BitVector() = default;\n    explicit\
     \ BitVector(int n) : bits(n / 64 + 1), count(n / 64 + 2) {}\n    void set(int\
     \ i) { bits[i >> 6] |= 1ULL << (i & 63); }\n    void build() {\n        for (int\
-    \ i = 0; i < int(bits.size()); i++) count[i + 1] = count[i] + __builtin_popcountll(bits[i]);\n\
+    \ i = 0; i < static_cast<int>(bits.size()); i++) count[i + 1] = count[i] + __builtin_popcountll(bits[i]);\n\
     \    }\n    bool get(int i) const { return bits[i >> 6] >> (i & 63) & 1; }\n \
     \   // [0, i) \u306E 1 \u306E\u500B\u6570\n    int rank1(int i) const { return\
     \ count[i >> 6] + __builtin_popcountll(bits[i >> 6] & ((1ULL << (i & 63)) - 1));\
@@ -73,34 +73,34 @@ data:
     \        vals.erase(std::unique(vals.begin(), vals.end()), vals.end());\n    \
     \    // \u5727\u7E2E\u5F8C\u306E\u756A\u53F7 0, ..., vals.size() \u306F\u3059\u3079\
     \u3066 height \u30D3\u30C3\u30C8\u3067\u8868\u305B\u308B\u3088\u3046\u306B\u3059\
-    \u308B\n        height = 1;\n        while ((1LL << height) <= (long long)vals.size())\
-    \ height++;\n        std::vector<int> cur(n), nxt(n);\n        for (int i = 0;\
-    \ i < n; i++) cur[i] = compressed_lower(v[i]);\n        bv.assign(height, internal_wavelet_matrix::BitVector(n));\n\
-    \        mid.assign(height, 0);\n        for (int d = 0; d < height; d++) {\n\
-    \            int h = height - 1 - d;\n            for (int i = 0; i < n; i++)\
-    \ {\n                if (cur[i] >> h & 1) bv[d].set(i);\n            }\n     \
-    \       bv[d].build();\n            mid[d] = bv[d].rank0(n);\n            // 0\
-    \ \u306E\u8981\u7D20\u3092\u524D\u306B\u30011 \u306E\u8981\u7D20\u3092\u5F8C\u308D\
-    \u306B\u3001\u9806\u5E8F\u3092\u4FDD\u3063\u3066\u4E26\u3079\u308B\n         \
-    \   int zero = 0, one = mid[d];\n            for (int i = 0; i < n; i++) {\n \
-    \               if (cur[i] >> h & 1)\n                    nxt[one++] = cur[i];\n\
-    \                else\n                    nxt[zero++] = cur[i];\n           \
-    \ }\n            std::swap(cur, nxt);\n        }\n    }\n\n    /**\n     * @brief\
-    \ \u8981\u7D20\u6570\u3092\u8FD4\u3059\n     */\n    long long size() const {\
-    \ return n; }\n\n    /**\n     * @brief k \u756A\u76EE\u306E\u5024\u3092\u8FD4\
-    \u3059\n     */\n    T get(long long k) const {\n        assert(0 <= k && k <\
-    \ n);\n        int i = k, c = 0;\n        for (int d = 0; d < height; d++) {\n\
-    \            bool b = bv[d].get(i);\n            if (b) c |= 1 << (height - 1\
-    \ - d);\n            i = b ? mid[d] + bv[d].rank1(i) : bv[d].rank0(i);\n     \
-    \   }\n        return vals[c];\n    }\n    /**\n     * @brief k \u756A\u76EE\u306E\
-    \u5024\u3092\u8FD4\u3059\n     */\n    T operator[](long long k) const { return\
-    \ get(k); }\n\n    /**\n     * @brief [l, r) \u306E\u8981\u7D20\u3092\u5C0F\u3055\
-    \u3044\u9806\u306B\u4E26\u3079\u305F\u3068\u304D\u306E k \u756A\u76EE (0-indexed)\
-    \ \u306E\u5024\u3092\u8FD4\u3059\n     */\n    T kth_smallest(long long l, long\
-    \ long r, long long k) const {\n        assert(0 <= l && l <= r && r <= n);\n\
-    \        assert(0 <= k && k < r - l);\n        return vals[kth_compressed(l, r,\
-    \ k)];\n    }\n    /**\n     * @brief [l, r) \u306E\u8981\u7D20\u3092\u5927\u304D\
-    \u3044\u9806\u306B\u4E26\u3079\u305F\u3068\u304D\u306E k \u756A\u76EE (0-indexed)\
+    \u308B\n        height = 1;\n        while ((1LL << height) <= static_cast<long\
+    \ long>(vals.size())) height++;\n        std::vector<int> cur(n), nxt(n);\n  \
+    \      for (int i = 0; i < n; i++) cur[i] = compressed_lower(v[i]);\n        bv.assign(height,\
+    \ internal_wavelet_matrix::BitVector(n));\n        mid.assign(height, 0);\n  \
+    \      for (int d = 0; d < height; d++) {\n            int h = height - 1 - d;\n\
+    \            for (int i = 0; i < n; i++) {\n                if (cur[i] >> h &\
+    \ 1) bv[d].set(i);\n            }\n            bv[d].build();\n            mid[d]\
+    \ = bv[d].rank0(n);\n            // 0 \u306E\u8981\u7D20\u3092\u524D\u306B\u3001\
+    1 \u306E\u8981\u7D20\u3092\u5F8C\u308D\u306B\u3001\u9806\u5E8F\u3092\u4FDD\u3063\
+    \u3066\u4E26\u3079\u308B\n            int zero = 0, one = mid[d];\n          \
+    \  for (int i = 0; i < n; i++) {\n                if (cur[i] >> h & 1)\n     \
+    \               nxt[one++] = cur[i];\n                else\n                 \
+    \   nxt[zero++] = cur[i];\n            }\n            std::swap(cur, nxt);\n \
+    \       }\n    }\n\n    /**\n     * @brief \u8981\u7D20\u6570\u3092\u8FD4\u3059\
+    \n     */\n    long long size() const { return n; }\n\n    /**\n     * @brief\
+    \ k \u756A\u76EE\u306E\u5024\u3092\u8FD4\u3059\n     */\n    T get(long long k)\
+    \ const {\n        assert(0 <= k && k < n);\n        int i = k, c = 0;\n     \
+    \   for (int d = 0; d < height; d++) {\n            bool b = bv[d].get(i);\n \
+    \           if (b) c |= 1 << (height - 1 - d);\n            i = b ? mid[d] + bv[d].rank1(i)\
+    \ : bv[d].rank0(i);\n        }\n        return vals[c];\n    }\n    /**\n    \
+    \ * @brief k \u756A\u76EE\u306E\u5024\u3092\u8FD4\u3059\n     */\n    T operator[](long\
+    \ long k) const { return get(k); }\n\n    /**\n     * @brief [l, r) \u306E\u8981\
+    \u7D20\u3092\u5C0F\u3055\u3044\u9806\u306B\u4E26\u3079\u305F\u3068\u304D\u306E\
+    \ k \u756A\u76EE (0-indexed) \u306E\u5024\u3092\u8FD4\u3059\n     */\n    T kth_smallest(long\
+    \ long l, long long r, long long k) const {\n        assert(0 <= l && l <= r &&\
+    \ r <= n);\n        assert(0 <= k && k < r - l);\n        return vals[kth_compressed(l,\
+    \ r, k)];\n    }\n    /**\n     * @brief [l, r) \u306E\u8981\u7D20\u3092\u5927\
+    \u304D\u3044\u9806\u306B\u4E26\u3079\u305F\u3068\u304D\u306E k \u756A\u76EE (0-indexed)\
     \ \u306E\u5024\u3092\u8FD4\u3059\n     */\n    T kth_largest(long long l, long\
     \ long r, long long k) const {\n        assert(0 <= l && l <= r && r <= n);\n\
     \        assert(0 <= k && k < r - l);\n        return kth_smallest(l, r, r - l\
@@ -108,38 +108,39 @@ data:
     \u3061\u3001\u5024\u304C x \u306E\u3082\u306E\u306E\u500B\u6570\u3092\u8FD4\u3059\
     \n     */\n    long long count(long long l, long long r, const T& x) const {\n\
     \        assert(0 <= l && l <= r && r <= n);\n        int c = compressed_lower(x);\n\
-    \        if (c == int(vals.size()) || x < vals[c]) return 0;\n        return count_less(l,\
-    \ r, c + 1) - count_less(l, r, c);\n    }\n    /**\n     * @brief [l, r) \u306E\
-    \u8981\u7D20\u306E\u3046\u3061\u3001\u5024\u304C [lower, upper) \u306B\u3042\u308B\
-    \u3082\u306E\u306E\u500B\u6570\u3092\u8FD4\u3059\n     */\n    long long count(long\
-    \ long l, long long r, const T& lower, const T& upper) const {\n        assert(0\
-    \ <= l && l <= r && r <= n);\n        if (!(lower < upper)) return 0;\n      \
-    \  return count_less(l, r, compressed_lower(upper)) - count_less(l, r, compressed_lower(lower));\n\
-    \    }\n\n    /**\n     * @brief [l, r) \u306E\u8981\u7D20\u306E\u3046\u3061\u3001\
-    upper \u672A\u6E80\u3067\u6700\u5927\u306E\u5024\u3092\u8FD4\u3059 (\u306A\u3051\
-    \u308C\u3070 std::nullopt)\n     */\n    std::optional<T> prev_value(long long\
-    \ l, long long r, const T& upper) const {\n        assert(0 <= l && l <= r &&\
-    \ r <= n);\n        int cnt = count_less(l, r, compressed_lower(upper));\n   \
-    \     if (cnt == 0) return std::nullopt;\n        return vals[kth_compressed(l,\
-    \ r, cnt - 1)];\n    }\n    /**\n     * @brief [l, r) \u306E\u8981\u7D20\u306E\
-    \u3046\u3061\u3001lower \u4EE5\u4E0A\u3067\u6700\u5C0F\u306E\u5024\u3092\u8FD4\
-    \u3059 (\u306A\u3051\u308C\u3070 std::nullopt)\n     */\n    std::optional<T>\
-    \ next_value(long long l, long long r, const T& lower) const {\n        assert(0\
-    \ <= l && l <= r && r <= n);\n        int cnt = count_less(l, r, compressed_lower(lower));\n\
-    \        if (cnt == r - l) return std::nullopt;\n        return vals[kth_compressed(l,\
-    \ r, cnt)];\n    }\n};\n\ntemplate <typename T>\nWaveletMatrix(std::vector<T>)\
-    \ -> WaveletMatrix<T>;\n\n/**\n * @brief \u91CD\u307F\u306E\u548C\u3082\u6C42\u3081\
-    \u3089\u308C\u308B Wavelet Matrix\n *\n * WaveletMatrix \u306E\u6A5F\u80FD\u306B\
-    \u52A0\u3048\u3066\u3001\u533A\u9593\u5185\u3067\u5024\u304C [lower, upper) \u306B\
-    \u3042\u308B\u8981\u7D20\u306E\u91CD\u307F\u306E\u548C\u3084\u3001\n * \u5024\u306E\
-    \u5C0F\u3055\u3044\u65B9\u304B\u3089 k \u500B\u306E\u91CD\u307F\u306E\u548C\u3092\
-    \ O(log \u03C3) \u3067\u6C42\u3081\u308B\u3002\u91CD\u307F\u3092\u7701\u304F\u3068\
-    \u5024\u305D\u306E\u3082\u306E\u3092\u91CD\u307F\u306B\u3059\u308B\n * \u30E1\u30E2\
-    \u30EA\u306F WaveletMatrix \u3088\u308A (log \u03C3 + 1) * (n + 1) \u500B\u306E\
-    \ W \u3060\u3051\u591A\u3044\n * \u4F8B:\n * WeightedWaveletMatrix wm(std::vector<long\
-    \ long>{3, 1, 4, 1, 5});\n * wm.sum(0, 5, 2, 5);           // 7 (3 + 4)\n * wm.sum_smallest(0,\
-    \ 5, 3);     // 5 (1 + 1 + 3)\n *\n * @tparam T \u5024\u306E\u578B (< \u3067\u6BD4\
-    \u8F03\u3067\u304D\u308B\u3053\u3068)\n * @tparam W \u91CD\u307F\u306E\u578B (\u548C\
+    \        if (c == static_cast<int>(vals.size()) || x < vals[c]) return 0;\n  \
+    \      return count_less(l, r, c + 1) - count_less(l, r, c);\n    }\n    /**\n\
+    \     * @brief [l, r) \u306E\u8981\u7D20\u306E\u3046\u3061\u3001\u5024\u304C [lower,\
+    \ upper) \u306B\u3042\u308B\u3082\u306E\u306E\u500B\u6570\u3092\u8FD4\u3059\n\
+    \     */\n    long long count(long long l, long long r, const T& lower, const\
+    \ T& upper) const {\n        assert(0 <= l && l <= r && r <= n);\n        if (!(lower\
+    \ < upper)) return 0;\n        return count_less(l, r, compressed_lower(upper))\
+    \ - count_less(l, r, compressed_lower(lower));\n    }\n\n    /**\n     * @brief\
+    \ [l, r) \u306E\u8981\u7D20\u306E\u3046\u3061\u3001upper \u672A\u6E80\u3067\u6700\
+    \u5927\u306E\u5024\u3092\u8FD4\u3059 (\u306A\u3051\u308C\u3070 std::nullopt)\n\
+    \     */\n    std::optional<T> prev_value(long long l, long long r, const T& upper)\
+    \ const {\n        assert(0 <= l && l <= r && r <= n);\n        int cnt = count_less(l,\
+    \ r, compressed_lower(upper));\n        if (cnt == 0) return std::nullopt;\n \
+    \       return vals[kth_compressed(l, r, cnt - 1)];\n    }\n    /**\n     * @brief\
+    \ [l, r) \u306E\u8981\u7D20\u306E\u3046\u3061\u3001lower \u4EE5\u4E0A\u3067\u6700\
+    \u5C0F\u306E\u5024\u3092\u8FD4\u3059 (\u306A\u3051\u308C\u3070 std::nullopt)\n\
+    \     */\n    std::optional<T> next_value(long long l, long long r, const T& lower)\
+    \ const {\n        assert(0 <= l && l <= r && r <= n);\n        int cnt = count_less(l,\
+    \ r, compressed_lower(lower));\n        if (cnt == r - l) return std::nullopt;\n\
+    \        return vals[kth_compressed(l, r, cnt)];\n    }\n};\n\ntemplate <typename\
+    \ T>\nWaveletMatrix(std::vector<T>) -> WaveletMatrix<T>;\n\n/**\n * @brief \u91CD\
+    \u307F\u306E\u548C\u3082\u6C42\u3081\u3089\u308C\u308B Wavelet Matrix\n *\n *\
+    \ WaveletMatrix \u306E\u6A5F\u80FD\u306B\u52A0\u3048\u3066\u3001\u533A\u9593\u5185\
+    \u3067\u5024\u304C [lower, upper) \u306B\u3042\u308B\u8981\u7D20\u306E\u91CD\u307F\
+    \u306E\u548C\u3084\u3001\n * \u5024\u306E\u5C0F\u3055\u3044\u65B9\u304B\u3089\
+    \ k \u500B\u306E\u91CD\u307F\u306E\u548C\u3092 O(log \u03C3) \u3067\u6C42\u3081\
+    \u308B\u3002\u91CD\u307F\u3092\u7701\u304F\u3068\u5024\u305D\u306E\u3082\u306E\
+    \u3092\u91CD\u307F\u306B\u3059\u308B\n * \u30E1\u30E2\u30EA\u306F WaveletMatrix\
+    \ \u3088\u308A (log \u03C3 + 1) * (n + 1) \u500B\u306E W \u3060\u3051\u591A\u3044\
+    \n * \u4F8B:\n * WeightedWaveletMatrix wm(std::vector<long long>{3, 1, 4, 1, 5});\n\
+    \ * wm.sum(0, 5, 2, 5);           // 7 (3 + 4)\n * wm.sum_smallest(0, 5, 3); \
+    \    // 5 (1 + 1 + 3)\n *\n * @tparam T \u5024\u306E\u578B (< \u3067\u6BD4\u8F03\
+    \u3067\u304D\u308B\u3053\u3068)\n * @tparam W \u91CD\u307F\u306E\u578B (\u548C\
     \u3092\u53D6\u308B)\u3002\u7701\u7565\u3059\u308B\u3068\u3001T \u304C\u6574\u6570\
     \u306A\u3089 long long\u3001\u305D\u3046\u3067\u306A\u3051\u308C\u3070 T\n */\n\
     template <typename T, typename W = std::conditional_t<std::is_integral_v<T>, long\
@@ -148,7 +149,7 @@ data:
     \ using Base::n;\n    // pre[d][i] \u306F\u3001\u4E0A\u304B\u3089 d \u6BB5\u76EE\
     \u307E\u3067\u5206\u3051\u305F\u5F8C\u306E\u5217 (d = 0 \u306A\u3089\u5143\u306E\
     \u5217) \u306E\u5148\u982D i \u500B\u306E\u91CD\u307F\u306E\u548C\n    std::vector<std::vector<W>>\
-    \ pre;\n\n    void build_sum(const std::vector<W>& w) {\n        assert(int(w.size())\
+    \ pre;\n\n    void build_sum(const std::vector<W>& w) {\n        assert(static_cast<int>(w.size())\
     \ == n);\n        std::vector<int> order(n), nxt(n);  // \u5404\u6BB5\u306E\u5217\
     \u306E\u3001\u5143\u306E\u5217\u3067\u306E\u4F4D\u7F6E\n        for (int i = 0;\
     \ i < n; i++) order[i] = i;\n        pre.assign(height + 1, std::vector<W>(n +\
@@ -220,7 +221,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/range-kth-smallest.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 08:19:57+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/range-kth-smallest.test.cpp

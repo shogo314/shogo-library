@@ -70,9 +70,9 @@ data:
     \u5BFE\u3057\u3066\u547C\u3073\u51FA\u3057\u3066\u304A\u304F\u3053\u3068\u3067\
     \u9006\u5143\u306E\u76F4\u63A5\u8A08\u7B97\u3092\u6E1B\u3089\u305B\u308B\n   \
     \  */\n    inline static void extend(long long n) {\n        if (cached_mod !=\
-    \ (long long)Modint::mod()) {\n            cached_mod = Modint::mod();\n     \
-    \       fact = {1, 1};\n            inv_fact = {1, 1};\n        }\n        const\
-    \ long long m = fact.size();\n        if (n < m) return;\n        fact.resize(n\
+    \ static_cast<long long>(Modint::mod())) {\n            cached_mod = Modint::mod();\n\
+    \            fact = {1, 1};\n            inv_fact = {1, 1};\n        }\n     \
+    \   const long long m = fact.size();\n        if (n < m) return;\n        fact.resize(n\
     \ + 1);\n        inv_fact.resize(n + 1);\n        for (long long i = m; i <= n;\
     \ ++i) {\n            fact[i] = fact[i - 1] * i;\n        }\n        inv_fact[n]\
     \ = fact[n].inv();\n        for (long long i = n; i > m; --i) {\n            inv_fact[i\
@@ -132,38 +132,38 @@ data:
     \ q(q) {\n        pq = 1;\n        for (int i = 0; i < q; i++) pq *= p;\n    \
     \    fact_p.resize(pq);\n        fact_p[0] = 1;\n        for (int i = 1; i < pq;\
     \ i++) {\n            if (i % p == 0)\n                fact_p[i] = fact_p[i -\
-    \ 1];\n            else\n                fact_p[i] = (long long)fact_p[i - 1]\
-    \ * i % pq;\n        }\n        inv_fact_p.resize(pq);\n        inv_fact_p[pq\
+    \ 1];\n            else\n                fact_p[i] = static_cast<long long>(fact_p[i\
+    \ - 1]) * i % pq;\n        }\n        inv_fact_p.resize(pq);\n        inv_fact_p[pq\
     \ - 1] = modinv(fact_p[pq - 1], pq);\n        for (int i = pq - 1; i > 0; i--)\
     \ {\n            if (i % p == 0)\n                inv_fact_p[i - 1] = inv_fact_p[i];\n\
-    \            else\n                inv_fact_p[i - 1] = (long long)inv_fact_p[i]\
+    \            else\n                inv_fact_p[i - 1] = static_cast<long long>(inv_fact_p[i])\
     \ * i % pq;\n        }\n        if (p == 2 && q >= 3)\n            delta = 1;\n\
     \        else\n            delta = -1;\n    }\n    /**\n     * @brief nCr mod\
     \ p^q \u3092\u8FD4\u3059\n     * @param n long long\n     * @param r long long\n\
     \     * @return nCr mod p^q\n     * @note O(log(n))\n     */\n    int C(long long\
     \ n, long long r) {\n        if (r < 0 || n < r) return 0;\n        long long\
     \ m = n - r;\n        int ans = 1;\n        std::vector<int> epsilon;\n      \
-    \  while (n > 0) {\n            ans = (long long)ans * fact_p[n % pq] % pq;\n\
-    \            ans = (long long)ans * inv_fact_p[m % pq] % pq;\n            ans\
-    \ = (long long)ans * inv_fact_p[r % pq] % pq;\n            n /= p;\n         \
-    \   m /= p;\n            r /= p;\n            epsilon.push_back(n - m - r);\n\
-    \        }\n        if (delta == -1 && (int)epsilon.size() >= q && std::accumulate(epsilon.begin()\
-    \ + q - 1, epsilon.end(), 0) % 2 == 1) ans = pq - ans;\n        if (ans == pq)\
-    \ ans = 0;\n        int e = std::accumulate(epsilon.begin(), epsilon.end(), 0);\n\
-    \        if (e >= q)\n            ans = 0;\n        else {\n            for (int\
-    \ i = 0; i < e; i++) {\n                ans = (long long)ans * p % pq;\n     \
-    \       }\n        }\n        return ans;\n    }\n};\n#line 2 \"src/math/convolution.hpp\"\
-    \n\n/**\n * @file convolution.hpp\n * @brief \u7573\u307F\u8FBC\u307F (NTT)\n\
-    \ */\n\n#line 11 \"src/math/convolution.hpp\"\n\n#line 2 \"src/math/modint.hpp\"\
-    \n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\
-    \u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line\
-    \ 9 \"src/math/modint.hpp\"\n#include <cstdint>\n#include <iostream>\n#include\
-    \ <limits>\n#include <type_traits>\n#line 14 \"src/math/modint.hpp\"\n\n#line\
-    \ 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\
-    \u6027\n */\n\n#include <cstddef>\n#include <iterator>\n#include <set>\n#line\
-    \ 13 \"src/utility/traits.hpp\"\n\nnamespace internal_traits {\nusing std::begin,\
-    \ std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl : std::false_type\
-    \ {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \  while (n > 0) {\n            ans = static_cast<long long>(ans) * fact_p[n %\
+    \ pq] % pq;\n            ans = static_cast<long long>(ans) * inv_fact_p[m % pq]\
+    \ % pq;\n            ans = static_cast<long long>(ans) * inv_fact_p[r % pq] %\
+    \ pq;\n            n /= p;\n            m /= p;\n            r /= p;\n       \
+    \     epsilon.push_back(n - m - r);\n        }\n        if (delta == -1 && static_cast<int>(epsilon.size())\
+    \ >= q && std::accumulate(epsilon.begin() + q - 1, epsilon.end(), 0) % 2 == 1)\
+    \ ans = pq - ans;\n        if (ans == pq) ans = 0;\n        int e = std::accumulate(epsilon.begin(),\
+    \ epsilon.end(), 0);\n        if (e >= q)\n            ans = 0;\n        else\
+    \ {\n            for (int i = 0; i < e; i++) {\n                ans = static_cast<long\
+    \ long>(ans) * p % pq;\n            }\n        }\n        return ans;\n    }\n\
+    };\n#line 2 \"src/math/convolution.hpp\"\n\n/**\n * @file convolution.hpp\n *\
+    \ @brief \u7573\u307F\u8FBC\u307F (NTT)\n */\n\n#line 11 \"src/math/convolution.hpp\"\
+    \n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\
+    \u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\
+    \u30AF\u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\n#include <cstdint>\n\
+    #include <iostream>\n#include <limits>\n#include <type_traits>\n#line 14 \"src/math/modint.hpp\"\
+    \n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief\
+    \ \u578B\u7279\u6027\n */\n\n#include <cstddef>\n#include <iterator>\n#include\
+    \ <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace internal_traits {\n\
+    using std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
     \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
     \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
     \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
@@ -455,23 +455,23 @@ data:
     inline int get_fft_size(int N, int M) {\n    int size = 1;\n    while (size <\
     \ N + M - 1) size <<= 1;\n    return size;\n}\n\n/**\n * @brief NTT\n */\ntemplate\
     \ <class mint>\nvoid trans(std::vector<mint>& v, bool inv = false) {\n    if (v.empty())\
-    \ return;\n    int N = (int)v.size();\n    int MOD = v[0].mod();\n    int PR =\
-    \ calc_primitive_root(MOD);\n    static bool first = true;\n    static std::vector<long\
-    \ long> vbw(30), vibw(30);\n    if (first) {\n        first = false;\n       \
-    \ for (int k = 0; k < 30; ++k) {\n            vbw[k] = modpow(PR, (MOD - 1) >>\
-    \ (k + 1), MOD);\n            vibw[k] = modinv(vbw[k], MOD);\n        }\n    }\n\
-    \    for (int i = 0, j = 1; j < N - 1; ++j) {\n        for (int k = N >> 1; k\
-    \ > (i ^= k); k >>= 1);\n        if (i > j) std::swap(v[i], v[j]);\n    }\n  \
-    \  for (int k = 0, t = 2; t <= N; ++k, t <<= 1) {\n        long long bw = vbw[k];\n\
-    \        if (inv) bw = vibw[k];\n        for (int i = 0; i < N; i += t) {\n  \
-    \          mint w = 1;\n            for (int j = 0; j < (t >> 1); ++j) {\n   \
-    \             int j1 = i + j, j2 = i + j + (t >> 1);\n                mint c1\
-    \ = v[j1], c2 = v[j2] * w;\n                v[j1] = c1 + c2;\n               \
-    \ v[j2] = c1 - c2;\n                w *= bw;\n            }\n        }\n    }\n\
-    \    if (inv) {\n        long long invN = modinv(N, MOD);\n        for (int i\
-    \ = 0; i < N; ++i) v[i] = v[i] * invN;\n    }\n}\n\nstatic constexpr int MOD0\
-    \ = 754974721;\nstatic constexpr int MOD1 = 167772161;\nstatic constexpr int MOD2\
-    \ = 469762049;\nusing mint0 = static_modint<MOD0>;\nusing mint1 = static_modint<MOD1>;\n\
+    \ return;\n    int N = static_cast<int>(v.size());\n    int MOD = v[0].mod();\n\
+    \    int PR = calc_primitive_root(MOD);\n    static bool first = true;\n    static\
+    \ std::vector<long long> vbw(30), vibw(30);\n    if (first) {\n        first =\
+    \ false;\n        for (int k = 0; k < 30; ++k) {\n            vbw[k] = modpow(PR,\
+    \ (MOD - 1) >> (k + 1), MOD);\n            vibw[k] = modinv(vbw[k], MOD);\n  \
+    \      }\n    }\n    for (int i = 0, j = 1; j < N - 1; ++j) {\n        for (int\
+    \ k = N >> 1; k > (i ^= k); k >>= 1);\n        if (i > j) std::swap(v[i], v[j]);\n\
+    \    }\n    for (int k = 0, t = 2; t <= N; ++k, t <<= 1) {\n        long long\
+    \ bw = vbw[k];\n        if (inv) bw = vibw[k];\n        for (int i = 0; i < N;\
+    \ i += t) {\n            mint w = 1;\n            for (int j = 0; j < (t >> 1);\
+    \ ++j) {\n                int j1 = i + j, j2 = i + j + (t >> 1);\n           \
+    \     mint c1 = v[j1], c2 = v[j2] * w;\n                v[j1] = c1 + c2;\n   \
+    \             v[j2] = c1 - c2;\n                w *= bw;\n            }\n    \
+    \    }\n    }\n    if (inv) {\n        long long invN = modinv(N, MOD);\n    \
+    \    for (int i = 0; i < N; ++i) v[i] = v[i] * invN;\n    }\n}\n\nstatic constexpr\
+    \ int MOD0 = 754974721;\nstatic constexpr int MOD1 = 167772161;\nstatic constexpr\
+    \ int MOD2 = 469762049;\nusing mint0 = static_modint<MOD0>;\nusing mint1 = static_modint<MOD1>;\n\
     using mint2 = static_modint<MOD2>;\nstatic const mint1 imod0 = 95869806;    //\
     \ modinv(MOD0, MOD1);\nstatic const mint2 imod1 = 104391568;   // modinv(MOD1,\
     \ MOD2);\nstatic const mint2 imod01 = 187290749;  // imod1 / MOD0;\n\n/**\n *\
@@ -479,22 +479,22 @@ data:
     \u306E\u7573\u307F\u8FBC\u307F\n * @param T mint, long long\n * @param A vector<T>\n\
     \ * @param B vector<T>\n * @return vector<T>\n */\ntemplate <class T>\nstd::vector<T>\
     \ naive(const std::vector<T>& A, const std::vector<T>& B) {\n    if (A.empty()\
-    \ || B.empty()) return {};\n    int N = (int)A.size(), M = (int)B.size();\n  \
-    \  std::vector<T> res(N + M - 1);\n    for (int i = 0; i < N; ++i)\n        for\
-    \ (int j = 0; j < M; ++j)\n            res[i + j] += A[i] * B[j];\n    return\
+    \ || B.empty()) return {};\n    int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n\
+    \    std::vector<T> res(N + M - 1);\n    for (int i = 0; i < N; ++i)\n       \
+    \ for (int j = 0; j < M; ++j)\n            res[i + j] += A[i] * B[j];\n    return\
     \ res;\n}\n};  // namespace internal_convolution\n\n/**\n * @brief modint\u306E\
     \u7573\u307F\u8FBC\u307F\n * @param A vector<mint>\n * @param B vector<mint>\n\
     \ * @return vector<mint>\n */\ntemplate <class mint>\nstd::vector<mint> convolution(const\
     \ std::vector<mint>& A, const std::vector<mint>& B) {\n    if (A.empty() || B.empty())\
-    \ return {};\n    int N = (int)A.size(), M = (int)B.size();\n    if (std::min(N,\
-    \ M) < 30) return internal_convolution::naive(A, B);\n    int MOD = A[0].mod();\n\
-    \    int size_fft = internal_convolution::get_fft_size(N, M);\n    if (MOD ==\
-    \ 998244353) {\n        std::vector<mint> a(size_fft), b(size_fft), c(size_fft);\n\
-    \        for (int i = 0; i < N; ++i) a[i] = A[i];\n        for (int i = 0; i <\
-    \ M; ++i) b[i] = B[i];\n        internal_convolution::trans(a), internal_convolution::trans(b);\n\
-    \        std::vector<mint> res(size_fft);\n        for (int i = 0; i < size_fft;\
-    \ ++i) res[i] = a[i] * b[i];\n        internal_convolution::trans(res, true);\n\
-    \        res.resize(N + M - 1);\n        return res;\n    }\n    std::vector<internal_convolution::mint0>\
+    \ return {};\n    int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n\
+    \    if (std::min(N, M) < 30) return internal_convolution::naive(A, B);\n    int\
+    \ MOD = A[0].mod();\n    int size_fft = internal_convolution::get_fft_size(N,\
+    \ M);\n    if (MOD == 998244353) {\n        std::vector<mint> a(size_fft), b(size_fft),\
+    \ c(size_fft);\n        for (int i = 0; i < N; ++i) a[i] = A[i];\n        for\
+    \ (int i = 0; i < M; ++i) b[i] = B[i];\n        internal_convolution::trans(a),\
+    \ internal_convolution::trans(b);\n        std::vector<mint> res(size_fft);\n\
+    \        for (int i = 0; i < size_fft; ++i) res[i] = a[i] * b[i];\n        internal_convolution::trans(res,\
+    \ true);\n        res.resize(N + M - 1);\n        return res;\n    }\n    std::vector<internal_convolution::mint0>\
     \ a0(size_fft, 0), b0(size_fft, 0), c0(size_fft, 0);\n    std::vector<internal_convolution::mint1>\
     \ a1(size_fft, 0), b1(size_fft, 0), c1(size_fft, 0);\n    std::vector<internal_convolution::mint2>\
     \ a2(size_fft, 0), b2(size_fft, 0), c2(size_fft, 0);\n    for (int i = 0; i <\
@@ -515,8 +515,8 @@ data:
     \u7573\u307F\u8FBC\u307F\n * @param A vector<long long>\n * @param B vector<long\
     \ long>\n * @return vector<long long>\n */\ninline std::vector<long long> convolution_ll(const\
     \ std::vector<long long>& A, const std::vector<long long>& B) {\n    if (A.empty()\
-    \ || B.empty()) return {};\n    int N = (int)A.size(), M = (int)B.size();\n  \
-    \  if (std::min(N, M) < 30) return internal_convolution::naive(A, B);\n    int\
+    \ || B.empty()) return {};\n    int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n\
+    \    if (std::min(N, M) < 30) return internal_convolution::naive(A, B);\n    int\
     \ size_fft = internal_convolution::get_fft_size(N, M);\n    std::vector<internal_convolution::mint0>\
     \ a0(size_fft, 0), b0(size_fft, 0), c0(size_fft, 0);\n    std::vector<internal_convolution::mint1>\
     \ a1(size_fft, 0), b1(size_fft, 0), c1(size_fft, 0);\n    std::vector<internal_convolution::mint2>\
@@ -542,74 +542,75 @@ data:
     \ {\n    using std::vector<mint>::vector;\n\n    // constructor\n    FPS(const\
     \ std::vector<mint>& r) : std::vector<mint>(r) {}\n\n    // core operator\n  \
     \  inline FPS pre(long long siz) const {\n        return FPS(begin(*this), begin(*this)\
-    \ + std::min((long long)this->size(), siz));\n    }\n    inline FPS rev() const\
-    \ {\n        FPS res = *this;\n        reverse(begin(res), end(res));\n      \
-    \  return res;\n    }\n    inline FPS& normalize() {\n        while (!this->empty()\
+    \ + std::min(static_cast<long long>(this->size()), siz));\n    }\n    inline FPS\
+    \ rev() const {\n        FPS res = *this;\n        reverse(begin(res), end(res));\n\
+    \        return res;\n    }\n    inline FPS& normalize() {\n        while (!this->empty()\
     \ && this->back() == 0) this->pop_back();\n        return *this;\n    }\n\n  \
     \  // basic operator\n    inline FPS operator-() const noexcept {\n        FPS\
-    \ res = (*this);\n        for (int i = 0; i < (int)res.size(); ++i) res[i] = -res[i];\n\
-    \        return res;\n    }\n    inline FPS operator+(const mint& v) const { return\
-    \ FPS(*this) += v; }\n    inline FPS operator+(const FPS& r) const { return FPS(*this)\
-    \ += r; }\n    inline FPS operator-(const mint& v) const { return FPS(*this) -=\
-    \ v; }\n    inline FPS operator-(const FPS& r) const { return FPS(*this) -= r;\
-    \ }\n    inline FPS operator*(const mint& v) const { return FPS(*this) *= v; }\n\
-    \    inline FPS operator*(const FPS& r) const { return FPS(*this) *= r; }\n  \
-    \  inline FPS operator/(const mint& v) const { return FPS(*this) /= v; }\n   \
-    \ inline FPS operator<<(long long x) const { return FPS(*this) <<= x; }\n    inline\
-    \ FPS operator>>(long long x) const { return FPS(*this) >>= x; }\n    inline FPS&\
-    \ operator+=(const mint& v) {\n        if (this->empty()) this->resize(1);\n \
-    \       (*this)[0] += v;\n        return *this;\n    }\n    inline FPS& operator+=(const\
+    \ res = (*this);\n        for (int i = 0; i < static_cast<int>(res.size()); ++i)\
+    \ res[i] = -res[i];\n        return res;\n    }\n    inline FPS operator+(const\
+    \ mint& v) const { return FPS(*this) += v; }\n    inline FPS operator+(const FPS&\
+    \ r) const { return FPS(*this) += r; }\n    inline FPS operator-(const mint& v)\
+    \ const { return FPS(*this) -= v; }\n    inline FPS operator-(const FPS& r) const\
+    \ { return FPS(*this) -= r; }\n    inline FPS operator*(const mint& v) const {\
+    \ return FPS(*this) *= v; }\n    inline FPS operator*(const FPS& r) const { return\
+    \ FPS(*this) *= r; }\n    inline FPS operator/(const mint& v) const { return FPS(*this)\
+    \ /= v; }\n    inline FPS operator<<(long long x) const { return FPS(*this) <<=\
+    \ x; }\n    inline FPS operator>>(long long x) const { return FPS(*this) >>= x;\
+    \ }\n    inline FPS& operator+=(const mint& v) {\n        if (this->empty()) this->resize(1);\n\
+    \        (*this)[0] += v;\n        return *this;\n    }\n    inline FPS& operator+=(const\
     \ FPS& r) {\n        if (r.size() > this->size()) this->resize(r.size());\n  \
-    \      for (int i = 0; i < (int)r.size(); ++i) (*this)[i] += r[i];\n        return\
-    \ this->normalize();\n    }\n    inline FPS& operator-=(const mint& v) {\n   \
-    \     if (this->empty()) this->resize(1);\n        (*this)[0] -= v;\n        return\
-    \ *this;\n    }\n    inline FPS& operator-=(const FPS& r) {\n        if (r.size()\
-    \ > this->size()) this->resize(r.size());\n        for (int i = 0; i < (int)r.size();\
-    \ ++i) (*this)[i] -= r[i];\n        return this->normalize();\n    }\n    inline\
-    \ FPS& operator*=(const mint& v) {\n        for (int i = 0; i < (int)this->size();\
-    \ ++i) (*this)[i] *= v;\n        return *this;\n    }\n    inline FPS& operator*=(const\
-    \ FPS& r) {\n        return *this = convolution((*this), r);\n    }\n    inline\
-    \ FPS& operator/=(const mint& v) {\n        assert(v != 0);\n        mint iv =\
-    \ v.inv();\n        for (int i = 0; i < (int)this->size(); ++i) (*this)[i] *=\
-    \ iv;\n        return *this;\n    }\n    inline FPS& operator<<=(long long x)\
-    \ {\n        FPS res(x, 0);\n        res.insert(res.end(), begin(*this), end(*this));\n\
+    \      for (int i = 0; i < static_cast<int>(r.size()); ++i) (*this)[i] += r[i];\n\
+    \        return this->normalize();\n    }\n    inline FPS& operator-=(const mint&\
+    \ v) {\n        if (this->empty()) this->resize(1);\n        (*this)[0] -= v;\n\
+    \        return *this;\n    }\n    inline FPS& operator-=(const FPS& r) {\n  \
+    \      if (r.size() > this->size()) this->resize(r.size());\n        for (int\
+    \ i = 0; i < static_cast<int>(r.size()); ++i) (*this)[i] -= r[i];\n        return\
+    \ this->normalize();\n    }\n    inline FPS& operator*=(const mint& v) {\n   \
+    \     for (int i = 0; i < static_cast<int>(this->size()); ++i) (*this)[i] *= v;\n\
+    \        return *this;\n    }\n    inline FPS& operator*=(const FPS& r) {\n  \
+    \      return *this = convolution((*this), r);\n    }\n    inline FPS& operator/=(const\
+    \ mint& v) {\n        assert(v != 0);\n        mint iv = v.inv();\n        for\
+    \ (int i = 0; i < static_cast<int>(this->size()); ++i) (*this)[i] *= iv;\n   \
+    \     return *this;\n    }\n    inline FPS& operator<<=(long long x) {\n     \
+    \   FPS res(x, 0);\n        res.insert(res.end(), begin(*this), end(*this));\n\
     \        return *this = res;\n    }\n    inline FPS& operator>>=(long long x)\
-    \ {\n        if ((long long)this->size() <= x) return *this = FPS<mint>(1, 0);\n\
-    \        FPS res;\n        res.insert(res.end(), begin(*this) + x, end(*this));\n\
+    \ {\n        if (static_cast<long long>(this->size()) <= x) return *this = FPS<mint>(1,\
+    \ 0);\n        FPS res;\n        res.insert(res.end(), begin(*this) + x, end(*this));\n\
     \        return *this = res;\n    }\n    inline mint eval(const mint& v) {\n \
-    \       mint res = 0;\n        for (int i = (int)this->size() - 1; i >= 0; --i)\
-    \ {\n            res *= v;\n            res += (*this)[i];\n        }\n      \
-    \  return res;\n    }\n    inline friend FPS gcd(const FPS& f, const FPS& g) {\n\
-    \        if (g.empty()) return f;\n        return gcd(g, f % g);\n    }\n\n  \
-    \  // advanced operation\n    // df/dx\n    inline friend FPS diff(const FPS&\
-    \ f) {\n        int n = (int)f.size();\n        if (n == 0) return FPS();\n  \
-    \      FPS res(n - 1);\n        for (int i = 1; i < n; ++i) res[i - 1] = f[i]\
-    \ * i;\n        return res;\n    }\n\n    // \\int f dx\n    inline friend FPS\
-    \ intg(const FPS& f) {\n        int n = (int)f.size();\n        FPS res(n + 1,\
-    \ 0);\n        for (int i = 0; i < n; ++i) res[i + 1] = f[i] / (i + 1);\n    \
-    \    return res;\n    }\n\n    // inv(f), f[0] must not be 0\n    inline friend\
-    \ FPS inv(const FPS& f, long long deg) {\n        assert(!f.empty() && f[0] !=\
-    \ 0);\n        if (deg < 0) deg = (long long)f.size();\n        if (deg == 0)\
-    \ return FPS();\n        FPS res({mint(1) / f[0]});\n        for (long long i\
-    \ = 1; i < deg; i <<= 1) {\n            res = (res + res - res * res * f.pre(i\
-    \ << 1)).pre(i << 1);\n        }\n        res.resize(deg);\n        return res;\n\
-    \    }\n    inline friend FPS inv(const FPS& f) {\n        return inv(f, f.size());\n\
-    \    }\n\n    // division, r must be normalized (r.back() must not be 0)\n   \
-    \ inline FPS& operator/=(const FPS& r) {\n        assert(!r.empty());\n      \
-    \  assert(r.back() != 0);\n        this->normalize();\n        if (this->size()\
+    \       mint res = 0;\n        for (int i = static_cast<int>(this->size()) - 1;\
+    \ i >= 0; --i) {\n            res *= v;\n            res += (*this)[i];\n    \
+    \    }\n        return res;\n    }\n    inline friend FPS gcd(const FPS& f, const\
+    \ FPS& g) {\n        if (g.empty()) return f;\n        return gcd(g, f % g);\n\
+    \    }\n\n    // advanced operation\n    // df/dx\n    inline friend FPS diff(const\
+    \ FPS& f) {\n        int n = static_cast<int>(f.size());\n        if (n == 0)\
+    \ return FPS();\n        FPS res(n - 1);\n        for (int i = 1; i < n; ++i)\
+    \ res[i - 1] = f[i] * i;\n        return res;\n    }\n\n    // \\int f dx\n  \
+    \  inline friend FPS intg(const FPS& f) {\n        int n = static_cast<int>(f.size());\n\
+    \        FPS res(n + 1, 0);\n        for (int i = 0; i < n; ++i) res[i + 1] =\
+    \ f[i] / (i + 1);\n        return res;\n    }\n\n    // inv(f), f[0] must not\
+    \ be 0\n    inline friend FPS inv(const FPS& f, long long deg) {\n        assert(!f.empty()\
+    \ && f[0] != 0);\n        if (deg < 0) deg = static_cast<long long>(f.size());\n\
+    \        if (deg == 0) return FPS();\n        FPS res({mint(1) / f[0]});\n   \
+    \     for (long long i = 1; i < deg; i <<= 1) {\n            res = (res + res\
+    \ - res * res * f.pre(i << 1)).pre(i << 1);\n        }\n        res.resize(deg);\n\
+    \        return res;\n    }\n    inline friend FPS inv(const FPS& f) {\n     \
+    \   return inv(f, f.size());\n    }\n\n    // division, r must be normalized (r.back()\
+    \ must not be 0)\n    inline FPS& operator/=(const FPS& r) {\n        assert(!r.empty());\n\
+    \        assert(r.back() != 0);\n        this->normalize();\n        if (this->size()\
     \ < r.size()) {\n            this->clear();\n            return *this;\n     \
-    \   }\n        const long long need = (long long)this->size() - (long long)r.size()\
-    \ + 1;\n        *this = ((*this).rev().pre(need) * inv(r.rev(), need)).pre(need).rev();\n\
-    \        return *this;\n    }\n    inline FPS& operator%=(const FPS& r) {\n  \
-    \      return *this = divmod(*this, r).second;\n    }\n    inline FPS operator/(const\
-    \ FPS& r) const { return FPS(*this) /= r; }\n    inline FPS operator%(const FPS&\
-    \ r) const { return FPS(*this) %= r; }\n    // {f / g, f % g}, g must be normalized\
-    \ (g.back() must not be 0)\n    inline friend std::pair<FPS, FPS> divmod(const\
-    \ FPS& f, const FPS& g) {\n        assert(!g.empty());\n        assert(g.back()\
-    \ != 0);\n        FPS q = f / g;\n        FPS r = f - q * g;\n        return {q,\
-    \ r};\n    }\n\n    // log(f) = \\int f'/f dx, f[0] must be 1\n    inline friend\
-    \ FPS log(const FPS& f, long long deg) {\n        assert(!f.empty() && f[0] ==\
-    \ 1);\n        FPS res = intg(diff(f) * inv(f, deg));\n        res.resize(deg);\n\
+    \   }\n        const long long need = static_cast<long long>(this->size()) - static_cast<long\
+    \ long>(r.size()) + 1;\n        *this = ((*this).rev().pre(need) * inv(r.rev(),\
+    \ need)).pre(need).rev();\n        return *this;\n    }\n    inline FPS& operator%=(const\
+    \ FPS& r) {\n        return *this = divmod(*this, r).second;\n    }\n    inline\
+    \ FPS operator/(const FPS& r) const { return FPS(*this) /= r; }\n    inline FPS\
+    \ operator%(const FPS& r) const { return FPS(*this) %= r; }\n    // {f / g, f\
+    \ % g}, g must be normalized (g.back() must not be 0)\n    inline friend std::pair<FPS,\
+    \ FPS> divmod(const FPS& f, const FPS& g) {\n        assert(!g.empty());\n   \
+    \     assert(g.back() != 0);\n        FPS q = f / g;\n        FPS r = f - q *\
+    \ g;\n        return {q, r};\n    }\n\n    // log(f) = \\int f'/f dx, f[0] must\
+    \ be 1\n    inline friend FPS log(const FPS& f, long long deg) {\n        assert(!f.empty()\
+    \ && f[0] == 1);\n        FPS res = intg(diff(f) * inv(f, deg));\n        res.resize(deg);\n\
     \        return res;\n    }\n    inline friend FPS log(const FPS& f) {\n     \
     \   return log(f, f.size());\n    }\n\n    // exp(f), f[0] must be 0\n    inline\
     \ friend FPS exp(const FPS& f, long long deg) {\n        assert(f.empty() || f[0]\
@@ -620,25 +621,26 @@ data:
     \    // pow(f) = exp(e * log f)\n    inline friend FPS pow(const FPS& f, long\
     \ long e, long long deg) {\n        if (e == 0) {\n            auto ret = FPS(deg,\
     \ 0);\n            if (deg > 0) ret[0] = 1;\n            return ret;\n       \
-    \ }\n        long long i = 0;\n        while (i < (long long)f.size() && f[i]\
-    \ == 0) ++i;\n        if (i == (long long)f.size()) return FPS(deg, 0);\n    \
-    \    if ((i >= 1 && e >= deg) || i * e >= deg) return FPS(deg, 0);\n        mint\
-    \ k = f[i];\n        FPS res = exp(log((f >> i) / k, deg) * e, deg) * k.pow(e)\
-    \ << (e * i);\n        res.resize(deg);\n        return res;\n    }\n    inline\
-    \ friend FPS pow(const FPS& f, long long e) {\n        return pow(f, e, f.size());\n\
-    \    }\n\n    inline friend FPS taylor_shift(FPS f, mint a) {\n        using C\
-    \ = Combination<mint>;\n        int n = f.size();\n        C::extend(n);\n   \
-    \     for (int i = 0; i < n; i++) f[i] *= C::factorial(i);\n        std::reverse(f.begin(),\
-    \ f.end());\n        FPS<mint> g(n, 1);\n        for (int i = 1; i < n; i++) g[i]\
-    \ = g[i - 1] * a * C::inv(i);\n        f = (f * g).pre(n);\n        std::reverse(f.begin(),\
-    \ f.end());\n        for (int i = 0; i < n; i++) f[i] *= C::inverse_factorial(i);\n\
-    \        return f;\n    }\n};\n\ntemplate <typename mint>\nFPS<mint> modpow(const\
-    \ FPS<mint>& f, long long n, const FPS<mint>& m) {\n    if (n == 0) return FPS<mint>(1,\
-    \ 1);\n    auto t = modpow(f, n / 2, m);\n    t = (t * t) % m;\n    if (n & 1)\
-    \ t = (t * f) % m;\n    return t;\n}\n#line 4 \"test/yosupo/log-of-fps.test.cpp\"\
-    \n\nusing mint = modint998244353;\n\nint main() {\n    long long n;\n    std::cin\
-    \ >> n;\n    FPS<mint> a(n);\n    for (auto& x : a) std::cin >> x;\n    auto f\
-    \ = log(a);\n    for (auto e : f) std::cout << e << \" \";\n    std::cout << std::endl;\n\
+    \ }\n        long long i = 0;\n        while (i < static_cast<long long>(f.size())\
+    \ && f[i] == 0) ++i;\n        if (i == static_cast<long long>(f.size())) return\
+    \ FPS(deg, 0);\n        if ((i >= 1 && e >= deg) || i * e >= deg) return FPS(deg,\
+    \ 0);\n        mint k = f[i];\n        FPS res = exp(log((f >> i) / k, deg) *\
+    \ e, deg) * k.pow(e) << (e * i);\n        res.resize(deg);\n        return res;\n\
+    \    }\n    inline friend FPS pow(const FPS& f, long long e) {\n        return\
+    \ pow(f, e, f.size());\n    }\n\n    inline friend FPS taylor_shift(FPS f, mint\
+    \ a) {\n        using C = Combination<mint>;\n        int n = f.size();\n    \
+    \    C::extend(n);\n        for (int i = 0; i < n; i++) f[i] *= C::factorial(i);\n\
+    \        std::reverse(f.begin(), f.end());\n        FPS<mint> g(n, 1);\n     \
+    \   for (int i = 1; i < n; i++) g[i] = g[i - 1] * a * C::inv(i);\n        f =\
+    \ (f * g).pre(n);\n        std::reverse(f.begin(), f.end());\n        for (int\
+    \ i = 0; i < n; i++) f[i] *= C::inverse_factorial(i);\n        return f;\n   \
+    \ }\n};\n\ntemplate <typename mint>\nFPS<mint> modpow(const FPS<mint>& f, long\
+    \ long n, const FPS<mint>& m) {\n    if (n == 0) return FPS<mint>(1, 1);\n   \
+    \ auto t = modpow(f, n / 2, m);\n    t = (t * t) % m;\n    if (n & 1) t = (t *\
+    \ f) % m;\n    return t;\n}\n#line 4 \"test/yosupo/log-of-fps.test.cpp\"\n\nusing\
+    \ mint = modint998244353;\n\nint main() {\n    long long n;\n    std::cin >> n;\n\
+    \    FPS<mint> a(n);\n    for (auto& x : a) std::cin >> x;\n    auto f = log(a);\n\
+    \    for (auto e : f) std::cout << e << \" \";\n    std::cout << std::endl;\n\
     \    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/log_of_formal_power_series\"\
     \n\n#include \"../../src/math/fps.hpp\"\n\nusing mint = modint998244353;\n\nint\
@@ -655,7 +657,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/log-of-fps.test.cpp
   requiredBy: []
-  timestamp: '2026-10-18 18:36:07+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/log-of-fps.test.cpp

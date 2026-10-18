@@ -61,10 +61,11 @@ data:
     \        return xs[i];\n    }\n    /**\n     * @brief v \u306E\u5404\u5024\u3092\
     \u756A\u53F7\u306B\u7F6E\u304D\u63DB\u3048\u305F\u5217\n     */\n    std::vector<long\
     \ long> ids(const std::vector<T>& v) const {\n        std::vector<long long> res(v.size());\n\
-    \        for (long long i = 0; i < (long long)v.size(); i++) res[i] = id(v[i]);\n\
-    \        return res;\n    }\n    /**\n     * @brief \u30BD\u30FC\u30C8\u6E08\u307F\
-    \u3067\u91CD\u8907\u306E\u306A\u3044\u5024\u306E\u5217\n     */\n    const std::vector<T>&\
-    \ values() const {\n        assert(built);\n        return xs;\n    }\n};\n"
+    \        for (long long i = 0; i < static_cast<long long>(v.size()); i++) res[i]\
+    \ = id(v[i]);\n        return res;\n    }\n    /**\n     * @brief \u30BD\u30FC\
+    \u30C8\u6E08\u307F\u3067\u91CD\u8907\u306E\u306A\u3044\u5024\u306E\u5217\n   \
+    \  */\n    const std::vector<T>& values() const {\n        assert(built);\n  \
+    \      return xs;\n    }\n};\n"
   code: "#pragma once\n\n/**\n * @file compress.hpp\n * @brief \u5EA7\u6A19\u5727\u7E2E\
     \n */\n\n#include <algorithm>\n#include <cassert>\n#include <vector>\n\n/**\n\
     \ * @brief \u5EA7\u6A19\u5727\u7E2E\n *\n * \u5024\u3092 add \u3067\u767B\u9332\
@@ -108,15 +109,16 @@ data:
     \        return xs[i];\n    }\n    /**\n     * @brief v \u306E\u5404\u5024\u3092\
     \u756A\u53F7\u306B\u7F6E\u304D\u63DB\u3048\u305F\u5217\n     */\n    std::vector<long\
     \ long> ids(const std::vector<T>& v) const {\n        std::vector<long long> res(v.size());\n\
-    \        for (long long i = 0; i < (long long)v.size(); i++) res[i] = id(v[i]);\n\
-    \        return res;\n    }\n    /**\n     * @brief \u30BD\u30FC\u30C8\u6E08\u307F\
-    \u3067\u91CD\u8907\u306E\u306A\u3044\u5024\u306E\u5217\n     */\n    const std::vector<T>&\
-    \ values() const {\n        assert(built);\n        return xs;\n    }\n};\n"
+    \        for (long long i = 0; i < static_cast<long long>(v.size()); i++) res[i]\
+    \ = id(v[i]);\n        return res;\n    }\n    /**\n     * @brief \u30BD\u30FC\
+    \u30C8\u6E08\u307F\u3067\u91CD\u8907\u306E\u306A\u3044\u5024\u306E\u5217\n   \
+    \  */\n    const std::vector<T>& values() const {\n        assert(built);\n  \
+    \      return xs;\n    }\n};\n"
   dependsOn: []
   isVerificationFile: false
   path: src/utility/compress.hpp
   requiredBy: []
-  timestamp: '2026-10-15 07:27:48+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/compress.test.cpp

@@ -97,35 +97,36 @@ data:
     \ 0) \u3092\u6BD4\u3079\u3001\u5C0F\u3055\u3051\u308C\u3070\u8CA0\u3001\u7B49\u3057\
     \u3051\u308C\u3070 0\u3001\u5927\u304D\u3051\u308C\u3070\u6B63\u3092\u8FD4\u3059\
     \n    static constexpr int compare(T a, T b, T c, T d) {\n        if constexpr\
-    \ (sizeof(T) <= 8) {\n            __int128 x = (__int128)a * d, y = (__int128)c\
-    \ * b;\n            return x < y ? -1 : x > y ? 1\n                          \
-    \            : 0;\n        } else {\n            // \u6574\u6570\u90E8\u5206\u3092\
-    \u6BD4\u3079\u3001\u540C\u3058\u306A\u3089\u5C0F\u6570\u90E8\u5206\u306E\u9006\
-    \u6570\u3092\u6BD4\u3079\u308B (\u5927\u5C0F\u304C\u9006\u306B\u306A\u308B)\n\
-    \            int sign = 1;\n            while (true) {\n                T x =\
-    \ floordiv(a, b), y = floordiv(c, d);\n                if (x != y) return x <\
-    \ y ? -sign : sign;\n                a -= x * b, c -= y * d;\n               \
-    \ if (a == 0 || c == 0) {\n                    if (a == 0 && c == 0) return 0;\n\
-    \                    return a == 0 ? -sign : sign;\n                }\n      \
-    \          T t = a;\n                a = b, b = t;\n                t = c;\n \
-    \               c = d, d = t;\n                sign = -sign;\n            }\n\
-    \        }\n    }\n\n   public:\n    /**\n     * @brief \u6574\u6570 n\n     */\n\
-    \    constexpr Rational(T n = 0) : p(n), q(1) {}\n    /**\n     * @brief num /\
-    \ den (den != 0)\n     */\n    constexpr Rational(T num, T den) : p(num), q(den)\
-    \ {\n        assert(den != 0 && \"Rational: division by zero\");\n        if (q\
-    \ < 0) p = -p, q = -q;\n        T g = gcd_(p, q);\n        p /= g, q /= g;\n \
-    \   }\n\n    /**\n     * @brief \u5206\u5B50\n     */\n    constexpr T num() const\
-    \ { return p; }\n    /**\n     * @brief \u5206\u6BCD (\u6B63)\n     */\n    constexpr\
-    \ T den() const { return q; }\n\n    /**\n     * @brief \u4EE5\u4E0B\u3067\u6700\
-    \u5927\u306E\u6574\u6570\n     */\n    constexpr T floor() const { return floordiv(p,\
-    \ q); }\n    /**\n     * @brief \u4EE5\u4E0A\u3067\u6700\u5C0F\u306E\u6574\u6570\
-    \n     */\n    constexpr T ceil() const { return ceildiv(p, q); }\n    /**\n \
-    \    * @brief \u6574\u6570\u304B\n     */\n    constexpr bool is_integer() const\
-    \ { return q == 1; }\n    /**\n     * @brief double \u306B\u76F4\u3057\u305F\u5024\
-    \n     */\n    constexpr double to_double() const { return (double)p / (double)q;\
-    \ }\n    /**\n     * @brief long double \u306B\u76F4\u3057\u305F\u5024\n     */\n\
-    \    constexpr long double to_long_double() const { return (long double)p / (long\
-    \ double)q; }\n    explicit constexpr operator double() const { return to_double();\
+    \ (sizeof(T) <= 8) {\n            __int128 x = static_cast<__int128>(a) * d, y\
+    \ = static_cast<__int128>(c) * b;\n            return x < y ? -1 : x > y ? 1\n\
+    \                                      : 0;\n        } else {\n            //\
+    \ \u6574\u6570\u90E8\u5206\u3092\u6BD4\u3079\u3001\u540C\u3058\u306A\u3089\u5C0F\
+    \u6570\u90E8\u5206\u306E\u9006\u6570\u3092\u6BD4\u3079\u308B (\u5927\u5C0F\u304C\
+    \u9006\u306B\u306A\u308B)\n            int sign = 1;\n            while (true)\
+    \ {\n                T x = floordiv(a, b), y = floordiv(c, d);\n             \
+    \   if (x != y) return x < y ? -sign : sign;\n                a -= x * b, c -=\
+    \ y * d;\n                if (a == 0 || c == 0) {\n                    if (a ==\
+    \ 0 && c == 0) return 0;\n                    return a == 0 ? -sign : sign;\n\
+    \                }\n                T t = a;\n                a = b, b = t;\n\
+    \                t = c;\n                c = d, d = t;\n                sign =\
+    \ -sign;\n            }\n        }\n    }\n\n   public:\n    /**\n     * @brief\
+    \ \u6574\u6570 n\n     */\n    constexpr Rational(T n = 0) : p(n), q(1) {}\n \
+    \   /**\n     * @brief num / den (den != 0)\n     */\n    constexpr Rational(T\
+    \ num, T den) : p(num), q(den) {\n        assert(den != 0 && \"Rational: division\
+    \ by zero\");\n        if (q < 0) p = -p, q = -q;\n        T g = gcd_(p, q);\n\
+    \        p /= g, q /= g;\n    }\n\n    /**\n     * @brief \u5206\u5B50\n     */\n\
+    \    constexpr T num() const { return p; }\n    /**\n     * @brief \u5206\u6BCD\
+    \ (\u6B63)\n     */\n    constexpr T den() const { return q; }\n\n    /**\n  \
+    \   * @brief \u4EE5\u4E0B\u3067\u6700\u5927\u306E\u6574\u6570\n     */\n    constexpr\
+    \ T floor() const { return floordiv(p, q); }\n    /**\n     * @brief \u4EE5\u4E0A\
+    \u3067\u6700\u5C0F\u306E\u6574\u6570\n     */\n    constexpr T ceil() const {\
+    \ return ceildiv(p, q); }\n    /**\n     * @brief \u6574\u6570\u304B\n     */\n\
+    \    constexpr bool is_integer() const { return q == 1; }\n    /**\n     * @brief\
+    \ double \u306B\u76F4\u3057\u305F\u5024\n     */\n    constexpr double to_double()\
+    \ const { return static_cast<double>(p) / static_cast<double>(q); }\n    /**\n\
+    \     * @brief long double \u306B\u76F4\u3057\u305F\u5024\n     */\n    constexpr\
+    \ long double to_long_double() const { return static_cast<long double>(p) / static_cast<long\
+    \ double>(q); }\n    explicit constexpr operator double() const { return to_double();\
     \ }\n\n    /**\n     * @brief \u9006\u6570 (0 \u3067\u306A\u3044\u3053\u3068)\n\
     \     */\n    constexpr Rational inv() const {\n        assert(p != 0 && \"Rational:\
     \ division by zero\");\n        return p > 0 ? Rational(q, p, Raw{}) : Rational(-q,\
@@ -162,8 +163,8 @@ data:
     \ // \u8CA0\u306E\u307E\u307E 1 \u6841\u305A\u3064\u53D6\u308A\u51FA\u3059 (\u6700\
     \u5C0F\u5024\u3067\u3082\u30AA\u30FC\u30D0\u30FC\u30D5\u30ED\u30FC\u3057\u306A\
     \u3044)\n            while (x != 0) {\n                T d = x % 10;\n       \
-    \         s += char('0' + (d < 0 ? -d : d));\n                x /= 10;\n     \
-    \       }\n            if (neg) s += '-';\n            return std::string(s.rbegin(),\
+    \         s += static_cast<char>('0' + (d < 0 ? -d : d));\n                x /=\
+    \ 10;\n            }\n            if (neg) s += '-';\n            return std::string(s.rbegin(),\
     \ s.rend());\n        };\n        return q == 1 ? str(p) : str(p) + \"/\" + str(q);\n\
     \    }\n\n    friend std::ostream& operator<<(std::ostream& os, const Rational&\
     \ r) { return os << r.to_string(); }\n    /**\n     * @brief \"p/q\" \u307E\u305F\
@@ -294,7 +295,7 @@ data:
   isVerificationFile: true
   path: test/unittest/rational.test.cpp
   requiredBy: []
-  timestamp: '2026-10-18 18:36:16+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/rational.test.cpp

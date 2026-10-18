@@ -33,8 +33,8 @@ data:
     \u30EB\n    std::vector<long long> group_id;               //!< \u305D\u306E\u9802\
     \u70B9\u304C\u5C5E\u3059\u308B\u9023\u7D50\u6210\u5206\u306Eindex\n    std::vector<long\
     \ long> root_index;             //!< root\u306Ecycles\u4E0A\u306Eindex\n    std::vector<std::vector<long\
-    \ long>> doubling;  //!< DoublingClimbTree\n\n    void build() {\n        assert((long\
-    \ long)g.size() == n);\n        for (long long i = 0; i < n; i++) assert(0 <=\
+    \ long>> doubling;  //!< DoublingClimbTree\n\n    void build() {\n        assert(static_cast<long\
+    \ long>(g.size()) == n);\n        for (long long i = 0; i < n; i++) assert(0 <=\
     \ g[i] && g[i] < n);\n        is_cycle.assign(n, false);\n        depth.assign(n,\
     \ 0);\n        root.assign(n, -1);\n        group_id.assign(n, 0);\n        root_index.assign(n,\
     \ 0);\n        groups.clear();\n        cycles.clear();\n        std::vector<bool>\
@@ -49,57 +49,58 @@ data:
     \ = u;\n                    root_index[v[j]] = 0;\n                    group_id[v[j]]\
     \ = cycles.size() - 1;\n                    depth[v[j]] = k - j;\n           \
     \         groups.back().push_back(v[j]);\n                }\n                for\
-    \ (long long j = k; j < (long long)v.size(); j++) {\n                    is_cycle[v[j]]\
-    \ = true;\n                    root[v[j]] = v[j];\n                    cycles.back().push_back(v[j]);\n\
-    \                    root_index[v[j]] = cycles.back().size() - 1;\n          \
-    \          group_id[v[j]] = cycles.size() - 1;\n                    depth[v[j]]\
-    \ = 0;\n                    groups.back().push_back(v[j]);\n                }\n\
-    \            } else {\n                for (long long j = 0; j < (long long)v.size();\
-    \ j++) {\n                    is_cycle[v[j]] = false;\n                    root[v[j]]\
-    \ = root[u];\n                    root_index[v[j]] = root_index[u];\n        \
-    \            group_id[v[j]] = group_id[u];\n                    depth[v[j]] =\
-    \ depth[u] + (long long)v.size() - j;\n                    groups[group_id[u]].push_back(v[j]);\n\
-    \                }\n            }\n        }\n        doubling.assign(n, {});\n\
-    \        std::vector<long long> tmp;\n        for (long long i = 0; i < n; i++)\
-    \ {\n            if (is_cycle[i]) continue;\n            tmp.push_back(i);\n \
-    \           doubling[i].push_back(g[i]);\n        }\n        for (int k = 0; !tmp.empty();\
-    \ k++) {\n            std::vector<long long> next_tmp;\n            for (long\
-    \ long i : tmp) {\n                if (k < (int)doubling[doubling[i][k]].size())\
-    \ {\n                    doubling[i].push_back(doubling[doubling[i][k]][k]);\n\
-    \                    next_tmp.push_back(i);\n                }\n            }\n\
-    \            tmp.swap(next_tmp);\n        }\n    }\n\n    /**\n     * @brief \u30C7\
-    \u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     */\n\
-    \    FunctionalGraph() : n(0), g(0) {}\n    /**\n     * @brief \u30B3\u30F3\u30B9\
-    \u30C8\u30E9\u30AF\u30BF\n     * @param n \u9802\u70B9\u6570\n     */\n    explicit\
-    \ FunctionalGraph(long long n) : n(n), g(n) {}\n    /**\n     * @brief \u30B3\u30F3\
-    \u30B9\u30C8\u30E9\u30AF\u30BF\n     * @tparam T \u9802\u70B9\u756A\u53F7\u306E\
-    \u6574\u6570\u578B (long long \u3084 int)\n     * @param g i -> g[i]\n     */\n\
-    \    template <typename T = long long>\n    explicit FunctionalGraph(const std::vector<T>&\
-    \ g) : n(g.size()), g(g.begin(), g.end()) {\n        static_assert(std::is_integral_v<T>,\
-    \ \"FunctionalGraph: g must be a vector of integers\");\n        build();\n  \
-    \  }\n    /**\n     * @brief \u9802\u70B9\u6570\n     */\n    long long size()\
-    \ const { return n; }\n    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\
-    \u6E96\u5165\u529B\u304B\u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\
-    \u308B\n     * @param padding \u9802\u70B9\u756A\u53F7\u3092\u5165\u529B\u304B\
-    \u3089\u3044\u304F\u3064\u305A\u3089\u3059\u304B \u7701\u7565\u3057\u305F\u3089\
-    -1\n     */\n    void read(long long padding = -1) {\n        for (long long i\
-    \ = 0; i < n; i++) {\n            std::cin >> g[i];\n            g[i] += padding;\n\
-    \        }\n        build();\n    }\n    /**\n     * @brief \u9802\u70B9x\u304B\
-    \u3089k\u56DE\u79FB\u52D5\u3057\u305F\u9802\u70B9\n     *\n     * @param x 0 <=\
-    \ x < n\n     * @param k 0 <= k\n     * @return long long \u9802\u70B9\u756A\u53F7\
-    \n     */\n    long long hop(long long x, long long k) const {\n        assert(0\
-    \ <= x && x < n && k >= 0);\n        if (k >= depth[x]) {\n            k -= depth[x];\n\
-    \            x = root[x];\n            k %= cycles[group_id[x]].size();\n    \
-    \        long long y = root_index[x] + k;\n            if ((long long)cycles[group_id[x]].size()\
-    \ <= y) {\n                y -= cycles[group_id[x]].size();\n            }\n \
-    \           return cycles[group_id[x]][y];\n        }\n        for (int i = 0;\
-    \ k; i++) {\n            if (k & 1) {\n                x = doubling[x][i];\n \
-    \           }\n            k >>= 1;\n        }\n        return x;\n    }\n   \
-    \ /**\n     * @brief \u9802\u70B9x\u304B\u30890\u56DE\u4EE5\u4E0A\u306E\u79FB\u52D5\
-    \u3067\u305F\u3069\u308A\u7740\u3051\u308B\u9802\u70B9\u306E\u500B\u6570\n   \
-    \  */\n    long long hopable(long long x) const {\n        assert(0 <= x && x\
-    \ < n);\n        return depth[x] + (long long)cycles[group_id[x]].size();\n  \
-    \  }\n};\n"
+    \ (long long j = k; j < static_cast<long long>(v.size()); j++) {\n           \
+    \         is_cycle[v[j]] = true;\n                    root[v[j]] = v[j];\n   \
+    \                 cycles.back().push_back(v[j]);\n                    root_index[v[j]]\
+    \ = cycles.back().size() - 1;\n                    group_id[v[j]] = cycles.size()\
+    \ - 1;\n                    depth[v[j]] = 0;\n                    groups.back().push_back(v[j]);\n\
+    \                }\n            } else {\n                for (long long j = 0;\
+    \ j < static_cast<long long>(v.size()); j++) {\n                    is_cycle[v[j]]\
+    \ = false;\n                    root[v[j]] = root[u];\n                    root_index[v[j]]\
+    \ = root_index[u];\n                    group_id[v[j]] = group_id[u];\n      \
+    \              depth[v[j]] = depth[u] + static_cast<long long>(v.size()) - j;\n\
+    \                    groups[group_id[u]].push_back(v[j]);\n                }\n\
+    \            }\n        }\n        doubling.assign(n, {});\n        std::vector<long\
+    \ long> tmp;\n        for (long long i = 0; i < n; i++) {\n            if (is_cycle[i])\
+    \ continue;\n            tmp.push_back(i);\n            doubling[i].push_back(g[i]);\n\
+    \        }\n        for (int k = 0; !tmp.empty(); k++) {\n            std::vector<long\
+    \ long> next_tmp;\n            for (long long i : tmp) {\n                if (k\
+    \ < static_cast<int>(doubling[doubling[i][k]].size())) {\n                   \
+    \ doubling[i].push_back(doubling[doubling[i][k]][k]);\n                    next_tmp.push_back(i);\n\
+    \                }\n            }\n            tmp.swap(next_tmp);\n        }\n\
+    \    }\n\n    /**\n     * @brief \u30C7\u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\
+    \u30C8\u30E9\u30AF\u30BF\n     */\n    FunctionalGraph() : n(0), g(0) {}\n   \
+    \ /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param\
+    \ n \u9802\u70B9\u6570\n     */\n    explicit FunctionalGraph(long long n) : n(n),\
+    \ g(n) {}\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n\
+    \     * @tparam T \u9802\u70B9\u756A\u53F7\u306E\u6574\u6570\u578B (long long\
+    \ \u3084 int)\n     * @param g i -> g[i]\n     */\n    template <typename T =\
+    \ long long>\n    explicit FunctionalGraph(const std::vector<T>& g) : n(g.size()),\
+    \ g(g.begin(), g.end()) {\n        static_assert(std::is_integral_v<T>, \"FunctionalGraph:\
+    \ g must be a vector of integers\");\n        build();\n    }\n    /**\n     *\
+    \ @brief \u9802\u70B9\u6570\n     */\n    long long size() const { return n; }\n\
+    \    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\u529B\
+    \u304B\u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\u308B\n     * @param\
+    \ padding \u9802\u70B9\u756A\u53F7\u3092\u5165\u529B\u304B\u3089\u3044\u304F\u3064\
+    \u305A\u3089\u3059\u304B \u7701\u7565\u3057\u305F\u3089-1\n     */\n    void read(long\
+    \ long padding = -1) {\n        for (long long i = 0; i < n; i++) {\n        \
+    \    std::cin >> g[i];\n            g[i] += padding;\n        }\n        build();\n\
+    \    }\n    /**\n     * @brief \u9802\u70B9x\u304B\u3089k\u56DE\u79FB\u52D5\u3057\
+    \u305F\u9802\u70B9\n     *\n     * @param x 0 <= x < n\n     * @param k 0 <= k\n\
+    \     * @return long long \u9802\u70B9\u756A\u53F7\n     */\n    long long hop(long\
+    \ long x, long long k) const {\n        assert(0 <= x && x < n && k >= 0);\n \
+    \       if (k >= depth[x]) {\n            k -= depth[x];\n            x = root[x];\n\
+    \            k %= cycles[group_id[x]].size();\n            long long y = root_index[x]\
+    \ + k;\n            if (static_cast<long long>(cycles[group_id[x]].size()) <=\
+    \ y) {\n                y -= cycles[group_id[x]].size();\n            }\n    \
+    \        return cycles[group_id[x]][y];\n        }\n        for (int i = 0; k;\
+    \ i++) {\n            if (k & 1) {\n                x = doubling[x][i];\n    \
+    \        }\n            k >>= 1;\n        }\n        return x;\n    }\n    /**\n\
+    \     * @brief \u9802\u70B9x\u304B\u30890\u56DE\u4EE5\u4E0A\u306E\u79FB\u52D5\u3067\
+    \u305F\u3069\u308A\u7740\u3051\u308B\u9802\u70B9\u306E\u500B\u6570\n     */\n\
+    \    long long hopable(long long x) const {\n        assert(0 <= x && x < n);\n\
+    \        return depth[x] + static_cast<long long>(cycles[group_id[x]].size());\n\
+    \    }\n};\n"
   code: "#pragma once\n\n/**\n * @file functional-graph.hpp\n * @brief \u30D5\u30A1\
     \u30F3\u30AF\u30B7\u30E7\u30CA\u30EB\u30B0\u30E9\u30D5\n */\n#include <algorithm>\n\
     #include <cassert>\n#include <iostream>\n#include <type_traits>\n#include <vector>\n\
@@ -118,8 +119,8 @@ data:
     \n    std::vector<long long> group_id;               //!< \u305D\u306E\u9802\u70B9\
     \u304C\u5C5E\u3059\u308B\u9023\u7D50\u6210\u5206\u306Eindex\n    std::vector<long\
     \ long> root_index;             //!< root\u306Ecycles\u4E0A\u306Eindex\n    std::vector<std::vector<long\
-    \ long>> doubling;  //!< DoublingClimbTree\n\n    void build() {\n        assert((long\
-    \ long)g.size() == n);\n        for (long long i = 0; i < n; i++) assert(0 <=\
+    \ long>> doubling;  //!< DoublingClimbTree\n\n    void build() {\n        assert(static_cast<long\
+    \ long>(g.size()) == n);\n        for (long long i = 0; i < n; i++) assert(0 <=\
     \ g[i] && g[i] < n);\n        is_cycle.assign(n, false);\n        depth.assign(n,\
     \ 0);\n        root.assign(n, -1);\n        group_id.assign(n, 0);\n        root_index.assign(n,\
     \ 0);\n        groups.clear();\n        cycles.clear();\n        std::vector<bool>\
@@ -134,62 +135,63 @@ data:
     \ = u;\n                    root_index[v[j]] = 0;\n                    group_id[v[j]]\
     \ = cycles.size() - 1;\n                    depth[v[j]] = k - j;\n           \
     \         groups.back().push_back(v[j]);\n                }\n                for\
-    \ (long long j = k; j < (long long)v.size(); j++) {\n                    is_cycle[v[j]]\
-    \ = true;\n                    root[v[j]] = v[j];\n                    cycles.back().push_back(v[j]);\n\
-    \                    root_index[v[j]] = cycles.back().size() - 1;\n          \
-    \          group_id[v[j]] = cycles.size() - 1;\n                    depth[v[j]]\
-    \ = 0;\n                    groups.back().push_back(v[j]);\n                }\n\
-    \            } else {\n                for (long long j = 0; j < (long long)v.size();\
-    \ j++) {\n                    is_cycle[v[j]] = false;\n                    root[v[j]]\
-    \ = root[u];\n                    root_index[v[j]] = root_index[u];\n        \
-    \            group_id[v[j]] = group_id[u];\n                    depth[v[j]] =\
-    \ depth[u] + (long long)v.size() - j;\n                    groups[group_id[u]].push_back(v[j]);\n\
-    \                }\n            }\n        }\n        doubling.assign(n, {});\n\
-    \        std::vector<long long> tmp;\n        for (long long i = 0; i < n; i++)\
-    \ {\n            if (is_cycle[i]) continue;\n            tmp.push_back(i);\n \
-    \           doubling[i].push_back(g[i]);\n        }\n        for (int k = 0; !tmp.empty();\
-    \ k++) {\n            std::vector<long long> next_tmp;\n            for (long\
-    \ long i : tmp) {\n                if (k < (int)doubling[doubling[i][k]].size())\
-    \ {\n                    doubling[i].push_back(doubling[doubling[i][k]][k]);\n\
-    \                    next_tmp.push_back(i);\n                }\n            }\n\
-    \            tmp.swap(next_tmp);\n        }\n    }\n\n    /**\n     * @brief \u30C7\
-    \u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     */\n\
-    \    FunctionalGraph() : n(0), g(0) {}\n    /**\n     * @brief \u30B3\u30F3\u30B9\
-    \u30C8\u30E9\u30AF\u30BF\n     * @param n \u9802\u70B9\u6570\n     */\n    explicit\
-    \ FunctionalGraph(long long n) : n(n), g(n) {}\n    /**\n     * @brief \u30B3\u30F3\
-    \u30B9\u30C8\u30E9\u30AF\u30BF\n     * @tparam T \u9802\u70B9\u756A\u53F7\u306E\
-    \u6574\u6570\u578B (long long \u3084 int)\n     * @param g i -> g[i]\n     */\n\
-    \    template <typename T = long long>\n    explicit FunctionalGraph(const std::vector<T>&\
-    \ g) : n(g.size()), g(g.begin(), g.end()) {\n        static_assert(std::is_integral_v<T>,\
-    \ \"FunctionalGraph: g must be a vector of integers\");\n        build();\n  \
-    \  }\n    /**\n     * @brief \u9802\u70B9\u6570\n     */\n    long long size()\
-    \ const { return n; }\n    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\
-    \u6E96\u5165\u529B\u304B\u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\
-    \u308B\n     * @param padding \u9802\u70B9\u756A\u53F7\u3092\u5165\u529B\u304B\
-    \u3089\u3044\u304F\u3064\u305A\u3089\u3059\u304B \u7701\u7565\u3057\u305F\u3089\
-    -1\n     */\n    void read(long long padding = -1) {\n        for (long long i\
-    \ = 0; i < n; i++) {\n            std::cin >> g[i];\n            g[i] += padding;\n\
-    \        }\n        build();\n    }\n    /**\n     * @brief \u9802\u70B9x\u304B\
-    \u3089k\u56DE\u79FB\u52D5\u3057\u305F\u9802\u70B9\n     *\n     * @param x 0 <=\
-    \ x < n\n     * @param k 0 <= k\n     * @return long long \u9802\u70B9\u756A\u53F7\
-    \n     */\n    long long hop(long long x, long long k) const {\n        assert(0\
-    \ <= x && x < n && k >= 0);\n        if (k >= depth[x]) {\n            k -= depth[x];\n\
-    \            x = root[x];\n            k %= cycles[group_id[x]].size();\n    \
-    \        long long y = root_index[x] + k;\n            if ((long long)cycles[group_id[x]].size()\
-    \ <= y) {\n                y -= cycles[group_id[x]].size();\n            }\n \
-    \           return cycles[group_id[x]][y];\n        }\n        for (int i = 0;\
-    \ k; i++) {\n            if (k & 1) {\n                x = doubling[x][i];\n \
-    \           }\n            k >>= 1;\n        }\n        return x;\n    }\n   \
-    \ /**\n     * @brief \u9802\u70B9x\u304B\u30890\u56DE\u4EE5\u4E0A\u306E\u79FB\u52D5\
-    \u3067\u305F\u3069\u308A\u7740\u3051\u308B\u9802\u70B9\u306E\u500B\u6570\n   \
-    \  */\n    long long hopable(long long x) const {\n        assert(0 <= x && x\
-    \ < n);\n        return depth[x] + (long long)cycles[group_id[x]].size();\n  \
-    \  }\n};\n"
+    \ (long long j = k; j < static_cast<long long>(v.size()); j++) {\n           \
+    \         is_cycle[v[j]] = true;\n                    root[v[j]] = v[j];\n   \
+    \                 cycles.back().push_back(v[j]);\n                    root_index[v[j]]\
+    \ = cycles.back().size() - 1;\n                    group_id[v[j]] = cycles.size()\
+    \ - 1;\n                    depth[v[j]] = 0;\n                    groups.back().push_back(v[j]);\n\
+    \                }\n            } else {\n                for (long long j = 0;\
+    \ j < static_cast<long long>(v.size()); j++) {\n                    is_cycle[v[j]]\
+    \ = false;\n                    root[v[j]] = root[u];\n                    root_index[v[j]]\
+    \ = root_index[u];\n                    group_id[v[j]] = group_id[u];\n      \
+    \              depth[v[j]] = depth[u] + static_cast<long long>(v.size()) - j;\n\
+    \                    groups[group_id[u]].push_back(v[j]);\n                }\n\
+    \            }\n        }\n        doubling.assign(n, {});\n        std::vector<long\
+    \ long> tmp;\n        for (long long i = 0; i < n; i++) {\n            if (is_cycle[i])\
+    \ continue;\n            tmp.push_back(i);\n            doubling[i].push_back(g[i]);\n\
+    \        }\n        for (int k = 0; !tmp.empty(); k++) {\n            std::vector<long\
+    \ long> next_tmp;\n            for (long long i : tmp) {\n                if (k\
+    \ < static_cast<int>(doubling[doubling[i][k]].size())) {\n                   \
+    \ doubling[i].push_back(doubling[doubling[i][k]][k]);\n                    next_tmp.push_back(i);\n\
+    \                }\n            }\n            tmp.swap(next_tmp);\n        }\n\
+    \    }\n\n    /**\n     * @brief \u30C7\u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\
+    \u30C8\u30E9\u30AF\u30BF\n     */\n    FunctionalGraph() : n(0), g(0) {}\n   \
+    \ /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param\
+    \ n \u9802\u70B9\u6570\n     */\n    explicit FunctionalGraph(long long n) : n(n),\
+    \ g(n) {}\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n\
+    \     * @tparam T \u9802\u70B9\u756A\u53F7\u306E\u6574\u6570\u578B (long long\
+    \ \u3084 int)\n     * @param g i -> g[i]\n     */\n    template <typename T =\
+    \ long long>\n    explicit FunctionalGraph(const std::vector<T>& g) : n(g.size()),\
+    \ g(g.begin(), g.end()) {\n        static_assert(std::is_integral_v<T>, \"FunctionalGraph:\
+    \ g must be a vector of integers\");\n        build();\n    }\n    /**\n     *\
+    \ @brief \u9802\u70B9\u6570\n     */\n    long long size() const { return n; }\n\
+    \    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\u529B\
+    \u304B\u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\u308B\n     * @param\
+    \ padding \u9802\u70B9\u756A\u53F7\u3092\u5165\u529B\u304B\u3089\u3044\u304F\u3064\
+    \u305A\u3089\u3059\u304B \u7701\u7565\u3057\u305F\u3089-1\n     */\n    void read(long\
+    \ long padding = -1) {\n        for (long long i = 0; i < n; i++) {\n        \
+    \    std::cin >> g[i];\n            g[i] += padding;\n        }\n        build();\n\
+    \    }\n    /**\n     * @brief \u9802\u70B9x\u304B\u3089k\u56DE\u79FB\u52D5\u3057\
+    \u305F\u9802\u70B9\n     *\n     * @param x 0 <= x < n\n     * @param k 0 <= k\n\
+    \     * @return long long \u9802\u70B9\u756A\u53F7\n     */\n    long long hop(long\
+    \ long x, long long k) const {\n        assert(0 <= x && x < n && k >= 0);\n \
+    \       if (k >= depth[x]) {\n            k -= depth[x];\n            x = root[x];\n\
+    \            k %= cycles[group_id[x]].size();\n            long long y = root_index[x]\
+    \ + k;\n            if (static_cast<long long>(cycles[group_id[x]].size()) <=\
+    \ y) {\n                y -= cycles[group_id[x]].size();\n            }\n    \
+    \        return cycles[group_id[x]][y];\n        }\n        for (int i = 0; k;\
+    \ i++) {\n            if (k & 1) {\n                x = doubling[x][i];\n    \
+    \        }\n            k >>= 1;\n        }\n        return x;\n    }\n    /**\n\
+    \     * @brief \u9802\u70B9x\u304B\u30890\u56DE\u4EE5\u4E0A\u306E\u79FB\u52D5\u3067\
+    \u305F\u3069\u308A\u7740\u3051\u308B\u9802\u70B9\u306E\u500B\u6570\n     */\n\
+    \    long long hopable(long long x) const {\n        assert(0 <= x && x < n);\n\
+    \        return depth[x] + static_cast<long long>(cycles[group_id[x]].size());\n\
+    \    }\n};\n"
   dependsOn: []
   isVerificationFile: false
   path: src/graph/functional-graph.hpp
   requiredBy: []
-  timestamp: '2026-10-15 07:27:29+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/functional-graph.test.cpp

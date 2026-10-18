@@ -245,15 +245,15 @@ data:
     \ <= a && a < _n);\n        assert(0 <= b && b < _n);\n        long long x = leader(a),\
     \ y = leader(b);\n        if (x == y) return {x, false};\n        if (-parent_or_size[x]\
     \ < -parent_or_size[y]) std::swap(x, y);\n        parent_or_size[x] += parent_or_size[y];\n\
-    \        parent_or_size[y] = int(x);\n        return {x, true};\n    }\n    /**\n\
-    \     * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\u304B\n   \
-    \  */\n    bool same(long long a, long long b) {\n        assert(0 <= a && a <\
-    \ _n);\n        assert(0 <= b && b < _n);\n        return leader(a) == leader(b);\n\
-    \    }\n    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\
-    \u6210\u5206\u306E\u4EE3\u8868\u5143\n     */\n    long long leader(long long\
-    \ a) {\n        assert(0 <= a && a < _n);\n        if (parent_or_size[a] < 0)\
-    \ return a;\n        int x = int(a);\n        while (parent_or_size[x] >= 0) {\n\
-    \            x = parent_or_size[x];\n        }\n        while (parent_or_size[a]\
+    \        parent_or_size[y] = static_cast<int>(x);\n        return {x, true};\n\
+    \    }\n    /**\n     * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\
+    \u304B\n     */\n    bool same(long long a, long long b) {\n        assert(0 <=\
+    \ a && a < _n);\n        assert(0 <= b && b < _n);\n        return leader(a) ==\
+    \ leader(b);\n    }\n    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\
+    \u9023\u7D50\u6210\u5206\u306E\u4EE3\u8868\u5143\n     */\n    long long leader(long\
+    \ long a) {\n        assert(0 <= a && a < _n);\n        if (parent_or_size[a]\
+    \ < 0) return a;\n        int x = static_cast<int>(a);\n        while (parent_or_size[x]\
+    \ >= 0) {\n            x = parent_or_size[x];\n        }\n        while (parent_or_size[a]\
     \ >= 0) {\n            int t = parent_or_size[a];\n            parent_or_size[a]\
     \ = x;\n            a = t;\n        }\n        return x;\n    }\n    /**\n   \
     \  * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\u6210\u5206\u306E\
@@ -322,7 +322,7 @@ data:
     \ i = 0; i < graph.n; i++) {\n        if (!indeg[i]) q.push(i);\n    }\n    while\
     \ (!q.empty()) {\n        long long cur = q.front();\n        q.pop();\n     \
     \   for (long long dst : graph[cur]) {\n            if (!--indeg[dst]) q.push(dst);\n\
-    \        }\n        sorted.push_back(cur);\n    }\n    if ((long long)sorted.size()\
+    \        }\n        sorted.push_back(cur);\n    }\n    if (static_cast<long long>(sorted.size())\
     \ < graph.n) return {};\n    return sorted;\n}\n\n/**\n * @brief \u6709\u5411\u30B0\
     \u30E9\u30D5\u306B\u3064\u3044\u3066\u3001\u30B5\u30A4\u30AF\u30EB\u3092\u3082\
     \u3064\u304B\u3069\u3046\u304B\u3092\u5224\u5B9A\u3059\u308B\u3002\n * @return\
@@ -350,11 +350,11 @@ data:
     \ long root = 0; root < graph.n; root++) {\n        if (state[root]) continue;\n\
     \        std::vector<long long> st = {root};\n        state[root] = 1;\n     \
     \   while (!st.empty()) {\n            long long v = st.back();\n            if\
-    \ (iter[v] == (int)graph[v].size()) {\n                state[v] = 2;\n       \
-    \         st.pop_back();\n                continue;\n            }\n         \
-    \   const Edge& e = graph[v][iter[v]++];\n            long long u = e.dst;\n \
-    \           if (state[u] == 0) {\n                state[u] = 1;\n            \
-    \    in[u] = e;\n                st.push_back(u);\n            } else if (state[u]\
+    \ (iter[v] == static_cast<int>(graph[v].size())) {\n                state[v] =\
+    \ 2;\n                st.pop_back();\n                continue;\n            }\n\
+    \            const Edge& e = graph[v][iter[v]++];\n            long long u = e.dst;\n\
+    \            if (state[u] == 0) {\n                state[u] = 1;\n           \
+    \     in[u] = e;\n                st.push_back(u);\n            } else if (state[u]\
     \ == 1) {\n                // u \u306F\u30B9\u30BF\u30C3\u30AF\u4E0A\u306B\u3042\
     \u308B\u306E\u3067\u3001u \u304B\u3089 v \u3078\u306E\u6728\u306E\u8FBA\u3068\
     \ e \u3067\u9589\u8DEF\u306B\u306A\u308B\n                std::vector<Edge> res\
@@ -376,7 +376,7 @@ data:
     \    std::vector<Edge> in(graph.n);\n    for (long long root = 0; root < graph.n;\
     \ root++) {\n        if (state[root]) continue;\n        std::vector<long long>\
     \ st = {root};\n        state[root] = 1;\n        while (!st.empty()) {\n    \
-    \        long long v = st.back();\n            if (iter[v] == (int)graph[v].size())\
+    \        long long v = st.back();\n            if (iter[v] == static_cast<int>(graph[v].size()))\
     \ {\n                state[v] = 2;\n                st.pop_back();\n         \
     \       continue;\n            }\n            const Edge& e = graph[v][iter[v]++];\n\
     \            // \u89AA\u3078\u623B\u308B\u8FBA\u306F\u3001\u9802\u70B9\u3067\u306F\
@@ -410,11 +410,11 @@ data:
     \ = 0, k = 0;\n    for (long long s = 0; s < n; s++) {\n        if (ord[s] !=\
     \ -1) continue;\n        ord[s] = low[s] = now++;\n        visiting.push_back(s);\n\
     \        call.push_back(s);\n        while (!call.empty()) {\n            long\
-    \ long v = call.back();\n            if (iter[v] < (int)graph[v].size()) {\n \
-    \               long long to = graph[v][iter[v]++].dst;\n                if (ord[to]\
-    \ == -1) {\n                    ord[to] = low[to] = now++;\n                 \
-    \   visiting.push_back(to);\n                    call.push_back(to);\n       \
-    \         } else if (comp[to] == -1) {\n                    low[v] = std::min(low[v],\
+    \ long v = call.back();\n            if (iter[v] < static_cast<int>(graph[v].size()))\
+    \ {\n                long long to = graph[v][iter[v]++].dst;\n               \
+    \ if (ord[to] == -1) {\n                    ord[to] = low[to] = now++;\n     \
+    \               visiting.push_back(to);\n                    call.push_back(to);\n\
+    \                } else if (comp[to] == -1) {\n                    low[v] = std::min(low[v],\
     \ ord[to]);\n                }\n                continue;\n            }\n   \
     \         call.pop_back();\n            if (!call.empty()) low[call.back()] =\
     \ std::min(low[call.back()], low[v]);\n            if (low[v] == ord[v]) {\n \
@@ -450,62 +450,62 @@ data:
     \ Graph<Cost>& graph, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max()\
     \ / 4) {\n    if (X.empty()) return Cost{};\n    for (const auto& x : X) assert(0\
     \ <= x && x < graph.n);\n    std::vector<std::vector<Cost>> dp(graph.n, std::vector<Cost>(1\
-    \ << X.size(), inf));\n    for (int p = 0; p < (int)X.size(); p++) dp[X[p]][1\
-    \ << p] = {};\n    for (int i = 0; i < (1 << X.size()); i++) {\n        for (int\
-    \ j = i; j > 0; j = (j - 1) & i) {\n            for (long long k = 0; k < graph.n;\
-    \ k++) {\n                if (dp[k][j] != inf && dp[k][i ^ j] != inf) {\n    \
-    \                if (dp[k][i] == inf || dp[k][i] > dp[k][j] + dp[k][i ^ j]) dp[k][i]\
-    \ = dp[k][j] + dp[k][i ^ j];\n                }\n            }\n        }\n  \
-    \      std::priority_queue<std::pair<Cost, long long>, std::vector<std::pair<Cost,\
-    \ long long>>, std::greater<std::pair<Cost, long long>>> que;\n        for (long\
-    \ long k = 0; k < graph.n; k++)\n            if (dp[k][i] != inf) que.emplace(dp[k][i],\
-    \ k);\n        while (que.size()) {\n            auto [d, u] = que.top();\n  \
-    \          que.pop();\n            if (d > dp[u][i]) continue;\n            for\
-    \ (auto e : graph[u]) {\n                if (dp[e.dst][i] == inf || dp[e.dst][i]\
-    \ > d + e.cost) {\n                    dp[e.dst][i] = d + e.cost;\n          \
-    \          que.emplace(d + e.cost, e.dst);\n                }\n            }\n\
-    \        }\n    }\n    Cost res = inf;\n    for (long long k = 0; k < graph.n;\
-    \ k++) {\n        if (dp[k].back() != inf && (res == inf || res > dp[k].back()))\
-    \ res = dp[k].back();\n    }\n    return res;\n}\n#line 13 \"src/graph/two-sat.hpp\"\
-    \n\n/**\n * @brief 2-SAT\n *\n * \u5909\u6570 x_0, ..., x_{n-1} \u306B\u3064\u3044\
-    \u3066\u306E\u300C(x_i = f) \u307E\u305F\u306F (x_j = g)\u300D\u3068\u3044\u3046\
-    \u5F62\u306E\u6761\u4EF6\u3092\u4E26\u3079\u3066\u3001\n * \u3059\u3079\u3066\u3092\
-    \u6E80\u305F\u3059\u5272\u308A\u5F53\u3066\u304C\u3042\u308B\u304B\u3092\u5224\
-    \u5B9A\u3059\u308B\n * \u5F37\u9023\u7D50\u6210\u5206\u5206\u89E3\u3092\u4F7F\u3046\
-    \u3002O(n + \u6761\u4EF6\u306E\u500B\u6570)\n * \u4F8B:\n * TwoSat ts(n);\n *\
-    \ ts.add_clause(0, true, 1, false);  // x_0 \u307E\u305F\u306F (not x_1)\n * if\
-    \ (ts.satisfiable()) auto ans = ts.answer();\n */\nclass TwoSat {\n    long long\
-    \ n;\n    // \u9802\u70B9 i \u306F\u300Cx_i = true\u300D\u3001\u9802\u70B9 n +\
-    \ i \u306F\u300Cx_i = false\u300D\u3092\u8868\u3059\n    Graph<int> graph;\n \
-    \   std::vector<bool> ans;\n    long long literal(long long i, bool f) const {\
-    \ return f ? i : n + i; }\n\n   public:\n    explicit TwoSat(long long n = 0)\
-    \ : n(n), graph(2 * n), ans(n) {}\n\n    long long size() const { return n; }\n\
-    \n    /**\n     * @brief \u6761\u4EF6\u300C(x_i = f) \u307E\u305F\u306F (x_j =\
-    \ g)\u300D\u3092\u52A0\u3048\u308B\n     */\n    void add_clause(long long i,\
-    \ bool f, long long j, bool g) {\n        assert(0 <= i && i < n && 0 <= j &&\
-    \ j < n);\n        // (x_i != f) \u306A\u3089 (x_j = g)\u3001(x_j != g) \u306A\
-    \u3089 (x_i = f)\n        graph.add_directed_edge(literal(i, !f), literal(j, g));\n\
-    \        graph.add_directed_edge(literal(j, !g), literal(i, f));\n    }\n    /**\n\
-    \     * @brief \u6761\u4EF6\u300C(x_i = f) \u306A\u3089\u3070 (x_j = g)\u300D\u3092\
-    \u52A0\u3048\u308B\n     */\n    void add_imply(long long i, bool f, long long\
-    \ j, bool g) { add_clause(i, !f, j, g); }\n    /**\n     * @brief \u6761\u4EF6\
-    \u300Cx_i = f\u300D\u3092\u52A0\u3048\u308B\n     */\n    void add_fix(long long\
-    \ i, bool f) { add_clause(i, f, i, f); }\n    /**\n     * @brief \u6761\u4EF6\u300C\
-    (x_i = f) \u3068 (x_j = g) \u306E\u5C11\u306A\u304F\u3068\u3082\u4E00\u65B9\u306F\
-    \u6210\u308A\u7ACB\u305F\u306A\u3044\u300D\u3092\u52A0\u3048\u308B\n     */\n\
-    \    void add_nand(long long i, bool f, long long j, bool g) { add_clause(i, !f,\
-    \ j, !g); }\n\n    /**\n     * @brief \u3059\u3079\u3066\u306E\u6761\u4EF6\u3092\
-    \u6E80\u305F\u3059\u5272\u308A\u5F53\u3066\u304C\u3042\u308B\u304B\u3002\u3042\
-    \u308C\u3070 answer() \u3067 1 \u3064\u5F97\u3089\u308C\u308B\n     */\n    bool\
-    \ satisfiable() {\n        auto groups = strongly_connected_components(graph);\n\
+    \ << X.size(), inf));\n    for (int p = 0; p < static_cast<int>(X.size()); p++)\
+    \ dp[X[p]][1 << p] = {};\n    for (int i = 0; i < (1 << X.size()); i++) {\n  \
+    \      for (int j = i; j > 0; j = (j - 1) & i) {\n            for (long long k\
+    \ = 0; k < graph.n; k++) {\n                if (dp[k][j] != inf && dp[k][i ^ j]\
+    \ != inf) {\n                    if (dp[k][i] == inf || dp[k][i] > dp[k][j] +\
+    \ dp[k][i ^ j]) dp[k][i] = dp[k][j] + dp[k][i ^ j];\n                }\n     \
+    \       }\n        }\n        std::priority_queue<std::pair<Cost, long long>,\
+    \ std::vector<std::pair<Cost, long long>>, std::greater<std::pair<Cost, long long>>>\
+    \ que;\n        for (long long k = 0; k < graph.n; k++)\n            if (dp[k][i]\
+    \ != inf) que.emplace(dp[k][i], k);\n        while (que.size()) {\n          \
+    \  auto [d, u] = que.top();\n            que.pop();\n            if (d > dp[u][i])\
+    \ continue;\n            for (auto e : graph[u]) {\n                if (dp[e.dst][i]\
+    \ == inf || dp[e.dst][i] > d + e.cost) {\n                    dp[e.dst][i] = d\
+    \ + e.cost;\n                    que.emplace(d + e.cost, e.dst);\n           \
+    \     }\n            }\n        }\n    }\n    Cost res = inf;\n    for (long long\
+    \ k = 0; k < graph.n; k++) {\n        if (dp[k].back() != inf && (res == inf ||\
+    \ res > dp[k].back())) res = dp[k].back();\n    }\n    return res;\n}\n#line 13\
+    \ \"src/graph/two-sat.hpp\"\n\n/**\n * @brief 2-SAT\n *\n * \u5909\u6570 x_0,\
+    \ ..., x_{n-1} \u306B\u3064\u3044\u3066\u306E\u300C(x_i = f) \u307E\u305F\u306F\
+    \ (x_j = g)\u300D\u3068\u3044\u3046\u5F62\u306E\u6761\u4EF6\u3092\u4E26\u3079\u3066\
+    \u3001\n * \u3059\u3079\u3066\u3092\u6E80\u305F\u3059\u5272\u308A\u5F53\u3066\u304C\
+    \u3042\u308B\u304B\u3092\u5224\u5B9A\u3059\u308B\n * \u5F37\u9023\u7D50\u6210\u5206\
+    \u5206\u89E3\u3092\u4F7F\u3046\u3002O(n + \u6761\u4EF6\u306E\u500B\u6570)\n *\
+    \ \u4F8B:\n * TwoSat ts(n);\n * ts.add_clause(0, true, 1, false);  // x_0 \u307E\
+    \u305F\u306F (not x_1)\n * if (ts.satisfiable()) auto ans = ts.answer();\n */\n\
+    class TwoSat {\n    long long n;\n    // \u9802\u70B9 i \u306F\u300Cx_i = true\u300D\
+    \u3001\u9802\u70B9 n + i \u306F\u300Cx_i = false\u300D\u3092\u8868\u3059\n   \
+    \ Graph<int> graph;\n    std::vector<bool> ans;\n    long long literal(long long\
+    \ i, bool f) const { return f ? i : n + i; }\n\n   public:\n    explicit TwoSat(long\
+    \ long n = 0) : n(n), graph(2 * n), ans(n) {}\n\n    long long size() const {\
+    \ return n; }\n\n    /**\n     * @brief \u6761\u4EF6\u300C(x_i = f) \u307E\u305F\
+    \u306F (x_j = g)\u300D\u3092\u52A0\u3048\u308B\n     */\n    void add_clause(long\
+    \ long i, bool f, long long j, bool g) {\n        assert(0 <= i && i < n && 0\
+    \ <= j && j < n);\n        // (x_i != f) \u306A\u3089 (x_j = g)\u3001(x_j != g)\
+    \ \u306A\u3089 (x_i = f)\n        graph.add_directed_edge(literal(i, !f), literal(j,\
+    \ g));\n        graph.add_directed_edge(literal(j, !g), literal(i, f));\n    }\n\
+    \    /**\n     * @brief \u6761\u4EF6\u300C(x_i = f) \u306A\u3089\u3070 (x_j =\
+    \ g)\u300D\u3092\u52A0\u3048\u308B\n     */\n    void add_imply(long long i, bool\
+    \ f, long long j, bool g) { add_clause(i, !f, j, g); }\n    /**\n     * @brief\
+    \ \u6761\u4EF6\u300Cx_i = f\u300D\u3092\u52A0\u3048\u308B\n     */\n    void add_fix(long\
+    \ long i, bool f) { add_clause(i, f, i, f); }\n    /**\n     * @brief \u6761\u4EF6\
+    \u300C(x_i = f) \u3068 (x_j = g) \u306E\u5C11\u306A\u304F\u3068\u3082\u4E00\u65B9\
+    \u306F\u6210\u308A\u7ACB\u305F\u306A\u3044\u300D\u3092\u52A0\u3048\u308B\n   \
+    \  */\n    void add_nand(long long i, bool f, long long j, bool g) { add_clause(i,\
+    \ !f, j, !g); }\n\n    /**\n     * @brief \u3059\u3079\u3066\u306E\u6761\u4EF6\
+    \u3092\u6E80\u305F\u3059\u5272\u308A\u5F53\u3066\u304C\u3042\u308B\u304B\u3002\
+    \u3042\u308C\u3070 answer() \u3067 1 \u3064\u5F97\u3089\u308C\u308B\n     */\n\
+    \    bool satisfiable() {\n        auto groups = strongly_connected_components(graph);\n\
     \        // \u6210\u5206\u306E\u30C8\u30DD\u30ED\u30B8\u30AB\u30EB\u9806\u3067\
     \u306E\u756A\u53F7\n        std::vector<int> id(2 * n);\n        for (int k =\
-    \ 0; k < (int)groups.size(); k++) {\n            for (long long v : groups[k])\
-    \ id[v] = k;\n        }\n        for (long long i = 0; i < n; i++) {\n       \
-    \     if (id[i] == id[n + i]) return false;\n            // \u30C8\u30DD\u30ED\
-    \u30B8\u30AB\u30EB\u9806\u3067\u5F8C\u308D\u306B\u3042\u308B\u65B9\u3092\u771F\
-    \u306B\u3059\u308B\n            ans[i] = id[i] > id[n + i];\n        }\n     \
-    \   return true;\n    }\n    /**\n     * @brief \u76F4\u524D\u306E satisfiable()\
+    \ 0; k < static_cast<int>(groups.size()); k++) {\n            for (long long v\
+    \ : groups[k]) id[v] = k;\n        }\n        for (long long i = 0; i < n; i++)\
+    \ {\n            if (id[i] == id[n + i]) return false;\n            // \u30C8\u30DD\
+    \u30ED\u30B8\u30AB\u30EB\u9806\u3067\u5F8C\u308D\u306B\u3042\u308B\u65B9\u3092\
+    \u771F\u306B\u3059\u308B\n            ans[i] = id[i] > id[n + i];\n        }\n\
+    \        return true;\n    }\n    /**\n     * @brief \u76F4\u524D\u306E satisfiable()\
     \ \u304C true \u306E\u3068\u304D\u3001\u6761\u4EF6\u3092\u6E80\u305F\u3059\u5272\
     \u308A\u5F53\u3066\n     */\n    const std::vector<bool>& answer() const { return\
     \ ans; }\n};\n"
@@ -544,12 +544,12 @@ data:
     \ satisfiable() {\n        auto groups = strongly_connected_components(graph);\n\
     \        // \u6210\u5206\u306E\u30C8\u30DD\u30ED\u30B8\u30AB\u30EB\u9806\u3067\
     \u306E\u756A\u53F7\n        std::vector<int> id(2 * n);\n        for (int k =\
-    \ 0; k < (int)groups.size(); k++) {\n            for (long long v : groups[k])\
-    \ id[v] = k;\n        }\n        for (long long i = 0; i < n; i++) {\n       \
-    \     if (id[i] == id[n + i]) return false;\n            // \u30C8\u30DD\u30ED\
-    \u30B8\u30AB\u30EB\u9806\u3067\u5F8C\u308D\u306B\u3042\u308B\u65B9\u3092\u771F\
-    \u306B\u3059\u308B\n            ans[i] = id[i] > id[n + i];\n        }\n     \
-    \   return true;\n    }\n    /**\n     * @brief \u76F4\u524D\u306E satisfiable()\
+    \ 0; k < static_cast<int>(groups.size()); k++) {\n            for (long long v\
+    \ : groups[k]) id[v] = k;\n        }\n        for (long long i = 0; i < n; i++)\
+    \ {\n            if (id[i] == id[n + i]) return false;\n            // \u30C8\u30DD\
+    \u30ED\u30B8\u30AB\u30EB\u9806\u3067\u5F8C\u308D\u306B\u3042\u308B\u65B9\u3092\
+    \u771F\u306B\u3059\u308B\n            ans[i] = id[i] > id[n + i];\n        }\n\
+    \        return true;\n    }\n    /**\n     * @brief \u76F4\u524D\u306E satisfiable()\
     \ \u304C true \u306E\u3068\u304D\u3001\u6761\u4EF6\u3092\u6E80\u305F\u3059\u5272\
     \u308A\u5F53\u3066\n     */\n    const std::vector<bool>& answer() const { return\
     \ ans; }\n};\n"
@@ -560,7 +560,7 @@ data:
   isVerificationFile: false
   path: src/graph/two-sat.hpp
   requiredBy: []
-  timestamp: '2026-10-15 07:27:29+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/two-sat.test.cpp

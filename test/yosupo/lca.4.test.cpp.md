@@ -289,8 +289,8 @@ data:
     \u3089\u3059\u304B\n     */\n    template <typename T = long long>\n    explicit\
     \ RootedTree(const std::vector<T>& par_, long long padding = -1) : Tree<Cost>(par_.size()\
     \ + 1), root(0) {\n        static_assert(std::is_integral_v<T>, \"RootedTree:\
-    \ par_ must be a vector of integers\");\n        for (long long i = 0; i < (long\
-    \ long)par_.size(); i++) {\n            this->add_edge(i + 1, par_[i] + padding);\n\
+    \ par_ must be a vector of integers\");\n        for (long long i = 0; i < static_cast<long\
+    \ long>(par_.size()); i++) {\n            this->add_edge(i + 1, par_[i] + padding);\n\
     \        }\n        build();\n    }\n    /**\n     * @brief Tree\u304B\u3089\u6839\
     \u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\
     \u30AF\u30BF(\u30B3\u30D4\u30FC)\n     *\n     * @param tree Tree \u9802\u70B9\
@@ -319,17 +319,18 @@ data:
     \ int>> stk;\n        stk.emplace(root, 0);\n        while (!stk.empty()) {\n\
     \            auto [u, cnt] = stk.top();\n            stk.pop();\n            euler_tour.emplace_back(u,\
     \ cnt);\n            if (iter[u] == 0) preorder.push_back(u);\n            while\
-    \ (iter[u] < (int)this->g[u].size() && this->g[u][iter[u]].dst == par[u]) iter[u]++;\n\
-    \            if (iter[u] == (int)this->g[u].size()) {\n                postorder.push_back(u);\n\
-    \                sz[u] = 1;\n                height[u] = 0;\n                unweighted_height[u]\
-    \ = 0;\n                for (auto& e : child[u]) {\n                    sz[u]\
-    \ += sz[e.dst];\n                    if (height[u] < height[e.dst] + e.cost) {\n\
-    \                        height[u] = height[e.dst] + e.cost;\n               \
-    \     }\n                    if (unweighted_height[u] < unweighted_height[e.dst]\
-    \ + 1) {\n                        unweighted_height[u] = unweighted_height[e.dst]\
-    \ + 1;\n                    }\n                }\n            } else {\n     \
-    \           auto& e = this->g[u][iter[u]++];\n                par[e.dst] = {e.dst,\
-    \ u, e.cost, e.id};\n                child[u].push_back(e);\n                depth[e.dst]\
+    \ (iter[u] < static_cast<int>(this->g[u].size()) && this->g[u][iter[u]].dst ==\
+    \ par[u]) iter[u]++;\n            if (iter[u] == static_cast<int>(this->g[u].size()))\
+    \ {\n                postorder.push_back(u);\n                sz[u] = 1;\n   \
+    \             height[u] = 0;\n                unweighted_height[u] = 0;\n    \
+    \            for (auto& e : child[u]) {\n                    sz[u] += sz[e.dst];\n\
+    \                    if (height[u] < height[e.dst] + e.cost) {\n             \
+    \           height[u] = height[e.dst] + e.cost;\n                    }\n     \
+    \               if (unweighted_height[u] < unweighted_height[e.dst] + 1) {\n \
+    \                       unweighted_height[u] = unweighted_height[e.dst] + 1;\n\
+    \                    }\n                }\n            } else {\n            \
+    \    auto& e = this->g[u][iter[u]++];\n                par[e.dst] = {e.dst, u,\
+    \ e.cost, e.id};\n                child[u].push_back(e);\n                depth[e.dst]\
     \ = depth[u] + e.cost;\n                unweighted_depth[e.dst] = unweighted_depth[u]\
     \ + 1;\n                stk.emplace(u, cnt + 1);\n                stk.emplace(e.dst,\
     \ 0);\n            }\n        }\n    }\n};\n\n/**\n * @brief \u89AA\u9802\u70B9\
@@ -433,7 +434,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/lca.4.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:27:29+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/lca.4.test.cpp

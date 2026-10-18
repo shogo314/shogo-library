@@ -36,11 +36,11 @@ data:
     \       const DELETE_LEFT& delete_left) : _n(n), lri(), _e(e), _add_left(add_left),\
     \ _delete_left(delete_left), _add_right(add_left), _delete_right(delete_left)\
     \ {}\n    void query(long long l, long long r) {\n        assert(0 <= l && l <=\
-    \ r && r <= _n);\n        lri.push_back({l, r, (long long)lri.size()});\n    }\n\
-    \    template <typename T, class F>\n    std::vector<T> solve(const F& f) {\n\
-    \        static_assert(std::is_invocable_r_v<T, F, U&>, \"The function passed\
-    \ to solve must be callable with (U&) and return T\");\n\n        const long long\
-    \ w = std::max<long long>(1, 1.0 * _n / std::max<double>(1.0, std::sqrt(lri.size()\
+    \ r && r <= _n);\n        lri.push_back({l, r, static_cast<long long>(lri.size())});\n\
+    \    }\n    template <typename T, class F>\n    std::vector<T> solve(const F&\
+    \ f) {\n        static_assert(std::is_invocable_r_v<T, F, U&>, \"The function\
+    \ passed to solve must be callable with (U&) and return T\");\n\n        const\
+    \ long long w = std::max<long long>(1, 1.0 * _n / std::max<double>(1.0, std::sqrt(lri.size()\
     \ * 2.0 / 3.0)));\n        std::sort(lri.begin(), lri.end(), [=](const std::array<long\
     \ long, 3>& a, const std::array<long long, 3>& b) {\n            long long aw\
     \ = a[0] / w;\n            long long bw = b[0] / w;\n            if (aw != bw)\
@@ -75,11 +75,11 @@ data:
     \       const DELETE_LEFT& delete_left) : _n(n), lri(), _e(e), _add_left(add_left),\
     \ _delete_left(delete_left), _add_right(add_left), _delete_right(delete_left)\
     \ {}\n    void query(long long l, long long r) {\n        assert(0 <= l && l <=\
-    \ r && r <= _n);\n        lri.push_back({l, r, (long long)lri.size()});\n    }\n\
-    \    template <typename T, class F>\n    std::vector<T> solve(const F& f) {\n\
-    \        static_assert(std::is_invocable_r_v<T, F, U&>, \"The function passed\
-    \ to solve must be callable with (U&) and return T\");\n\n        const long long\
-    \ w = std::max<long long>(1, 1.0 * _n / std::max<double>(1.0, std::sqrt(lri.size()\
+    \ r && r <= _n);\n        lri.push_back({l, r, static_cast<long long>(lri.size())});\n\
+    \    }\n    template <typename T, class F>\n    std::vector<T> solve(const F&\
+    \ f) {\n        static_assert(std::is_invocable_r_v<T, F, U&>, \"The function\
+    \ passed to solve must be callable with (U&) and return T\");\n\n        const\
+    \ long long w = std::max<long long>(1, 1.0 * _n / std::max<double>(1.0, std::sqrt(lri.size()\
     \ * 2.0 / 3.0)));\n        std::sort(lri.begin(), lri.end(), [=](const std::array<long\
     \ long, 3>& a, const std::array<long long, 3>& b) {\n            long long aw\
     \ = a[0] / w;\n            long long bw = b[0] / w;\n            if (aw != bw)\
@@ -97,7 +97,7 @@ data:
   isVerificationFile: false
   path: src/others/mo.hpp
   requiredBy: []
-  timestamp: '2026-10-15 03:36:18+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/mo.test.cpp

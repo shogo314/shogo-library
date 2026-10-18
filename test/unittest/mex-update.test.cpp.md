@@ -31,36 +31,37 @@ data:
     \ (T \u304C\u7B26\u53F7\u306A\u3057\u3067\u3082\u8B66\u544A\u304C\u51FA\u306A\u3044\
     \u3088\u3046\u306B\u6BD4\u3079\u308B)\n    bool in_range(const value_type& x)\
     \ const {\n        if constexpr (std::is_signed_v<value_type>) {\n           \
-    \ if (x < 0) return false;\n        }\n        return (unsigned long long)x <=\
-    \ (unsigned long long)n;\n    }\n\n   public:\n    MexUpdate() = default;\n  \
-    \  explicit MexUpdate(long long n) : n(n), v(n, e) {\n        assert(n > 0);\n\
-    \        assert((unsigned long long)n + 1 < (unsigned long long)e);\n        std::set<int>::iterator\
+    \ if (x < 0) return false;\n        }\n        return static_cast<unsigned long\
+    \ long>(x) <= static_cast<unsigned long long>(n);\n    }\n\n   public:\n    MexUpdate()\
+    \ = default;\n    explicit MexUpdate(long long n) : n(n), v(n, e) {\n        assert(n\
+    \ > 0);\n        assert(static_cast<unsigned long long>(n) + 1 < static_cast<unsigned\
+    \ long long>(e));\n        std::set<int>::iterator hint = s.end();\n        for\
+    \ (long long i = n; i >= 0; --i) {\n            hint = s.emplace_hint(hint, static_cast<int>(i));\n\
+    \        }\n    }\n    explicit MexUpdate(const std::vector<value_type>& init)\
+    \ : n(init.size()), v(init) {\n        assert(n > 0);\n        assert(static_cast<unsigned\
+    \ long long>(n) + 1 < static_cast<unsigned long long>(e));\n        std::set<int>::iterator\
     \ hint = s.end();\n        for (long long i = n; i >= 0; --i) {\n            hint\
-    \ = s.emplace_hint(hint, int(i));\n        }\n    }\n    explicit MexUpdate(const\
-    \ std::vector<value_type>& init) : n(init.size()), v(init) {\n        assert(n\
-    \ > 0);\n        assert((unsigned long long)n + 1 < (unsigned long long)e);\n\
-    \        std::set<int>::iterator hint = s.end();\n        for (long long i = n;\
-    \ i >= 0; --i) {\n            hint = s.emplace_hint(hint, int(i));\n        }\n\
-    \        for (const auto& i : init) {\n            if (in_range(i)) {\n      \
-    \          m[i]++;\n                s.erase(i);\n            }\n        }\n  \
-    \  }\n    void set(long long k, const value_type& x) {\n        assert(0 <= k\
-    \ && k < n);\n        if (in_range(v[k])) {\n            int v_k = v[k];\n   \
-    \         auto itr = m.find(v_k);\n            if (itr->second > 1) {\n      \
-    \          itr->second--;\n            } else {\n                m.erase(itr);\n\
-    \                s.insert(v_k);\n            }\n        }\n        if (in_range(x))\
-    \ {\n            int xx = x;\n            auto itr = m.find(xx);\n           \
-    \ if (itr == m.end()) {\n                m[xx]++;\n                s.erase(xx);\n\
-    \            } else {\n                itr->second++;\n            }\n       \
-    \ }\n        v[k] = x;\n    }\n    value_type mex() const {\n        return *s.begin();\n\
-    \    }\n};\n#line 7 \"test/unittest/mex-update.test.cpp\"\n\n#include <iostream>\n\
-    #include <random>\n#line 12 \"test/unittest/mex-update.test.cpp\"\n\n// v \u306B\
-    \u542B\u307E\u308C\u306A\u3044\u6700\u5C0F\u306E\u975E\u8CA0\u6574\u6570\ntemplate\
-    \ <typename T>\nT naive_mex(const std::vector<T>& v) {\n    std::set<T> s(v.begin(),\
-    \ v.end());\n    T x = 0;\n    while (s.count(x)) x++;\n    return x;\n}\n\ntemplate\
-    \ <typename T>\nbool run(std::mt19937& rng) {\n    for (int rep = 0; rep < 2000;\
-    \ rep++) {\n        int n = rng() % 8 + 1;\n        // \u7BC4\u56F2\u5916\u306E\
-    \u5024 (\u8CA0\u306E\u5024\u3084 n \u3088\u308A\u5927\u304D\u3044\u5024) \u3082\
-    \u6DF7\u305C\u308B\n        auto random_value = [&]() -> T { return static_cast<T>(static_cast<int>(rng()\
+    \ = s.emplace_hint(hint, static_cast<int>(i));\n        }\n        for (const\
+    \ auto& i : init) {\n            if (in_range(i)) {\n                m[i]++;\n\
+    \                s.erase(i);\n            }\n        }\n    }\n    void set(long\
+    \ long k, const value_type& x) {\n        assert(0 <= k && k < n);\n        if\
+    \ (in_range(v[k])) {\n            int v_k = v[k];\n            auto itr = m.find(v_k);\n\
+    \            if (itr->second > 1) {\n                itr->second--;\n        \
+    \    } else {\n                m.erase(itr);\n                s.insert(v_k);\n\
+    \            }\n        }\n        if (in_range(x)) {\n            int xx = x;\n\
+    \            auto itr = m.find(xx);\n            if (itr == m.end()) {\n     \
+    \           m[xx]++;\n                s.erase(xx);\n            } else {\n   \
+    \             itr->second++;\n            }\n        }\n        v[k] = x;\n  \
+    \  }\n    value_type mex() const {\n        return *s.begin();\n    }\n};\n#line\
+    \ 7 \"test/unittest/mex-update.test.cpp\"\n\n#include <iostream>\n#include <random>\n\
+    #line 12 \"test/unittest/mex-update.test.cpp\"\n\n// v \u306B\u542B\u307E\u308C\
+    \u306A\u3044\u6700\u5C0F\u306E\u975E\u8CA0\u6574\u6570\ntemplate <typename T>\n\
+    T naive_mex(const std::vector<T>& v) {\n    std::set<T> s(v.begin(), v.end());\n\
+    \    T x = 0;\n    while (s.count(x)) x++;\n    return x;\n}\n\ntemplate <typename\
+    \ T>\nbool run(std::mt19937& rng) {\n    for (int rep = 0; rep < 2000; rep++)\
+    \ {\n        int n = rng() % 8 + 1;\n        // \u7BC4\u56F2\u5916\u306E\u5024\
+    \ (\u8CA0\u306E\u5024\u3084 n \u3088\u308A\u5927\u304D\u3044\u5024) \u3082\u6DF7\
+    \u305C\u308B\n        auto random_value = [&]() -> T { return static_cast<T>(static_cast<int>(rng()\
     \ % (n + 6)) - 3); };\n        std::vector<T> v;\n        MexUpdate<T> mu;\n \
     \       if (rep % 2 == 0) {\n            // MexUpdate(n): \u5024\u306F\u3069\u308C\
     \u3082 mex \u306B\u5F71\u97FF\u3057\u306A\u3044\u5024\u3067\u521D\u671F\u5316\u3055\
@@ -118,7 +119,7 @@ data:
   isVerificationFile: true
   path: test/unittest/mex-update.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 15:02:52+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/mex-update.test.cpp

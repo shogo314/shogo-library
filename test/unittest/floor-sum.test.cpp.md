@@ -41,10 +41,10 @@ data:
     \u3068\n * @param n 0 \u4EE5\u4E0A\n * @param m 1 \u4EE5\u4E0A\n */\ninline long\
     \ long floor_sum(long long n, long long m, long long a, long long b) {\n    assert(0\
     \ <= n && 1 <= m);\n    unsigned long long res = 0;\n    if (a < 0) {\n      \
-    \  long long a2 = a % m + m;\n        res -= (unsigned long long)n * (n - 1) /\
-    \ 2 * ((a2 - a) / m);\n        a = a2;\n    }\n    if (b < 0) {\n        long\
-    \ long b2 = b % m + m;\n        res -= (unsigned long long)n * ((b2 - b) / m);\n\
-    \        b = b2;\n    }\n    return res + internal_floor_sum::floor_sum_unsigned(n,\
+    \  long long a2 = a % m + m;\n        res -= static_cast<unsigned long long>(n)\
+    \ * (n - 1) / 2 * ((a2 - a) / m);\n        a = a2;\n    }\n    if (b < 0) {\n\
+    \        long long b2 = b % m + m;\n        res -= static_cast<unsigned long long>(n)\
+    \ * ((b2 - b) / m);\n        b = b2;\n    }\n    return res + internal_floor_sum::floor_sum_unsigned(n,\
     \ m, a, b);\n}\n#line 7 \"test/unittest/floor-sum.test.cpp\"\n\n#include <iostream>\n\
     #include <random>\n\nlong long floor_div(long long a, long long b) { return a\
     \ / b - ((a % b != 0) && ((a < 0) != (b < 0))); }\n\nint main() {\n    std::mt19937\
@@ -82,7 +82,7 @@ data:
   isVerificationFile: true
   path: test/unittest/floor-sum.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:33:42+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/floor-sum.test.cpp

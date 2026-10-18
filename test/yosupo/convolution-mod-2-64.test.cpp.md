@@ -438,7 +438,7 @@ data:
     2\u306E\u3079\u304D\u4E57\u306B\u3059\u308B\n */\ninline int get_fft_size(int\
     \ N, int M) {\n    int size = 1;\n    while (size < N + M - 1) size <<= 1;\n \
     \   return size;\n}\n\n/**\n * @brief NTT\n */\ntemplate <class mint>\nvoid trans(std::vector<mint>&\
-    \ v, bool inv = false) {\n    if (v.empty()) return;\n    int N = (int)v.size();\n\
+    \ v, bool inv = false) {\n    if (v.empty()) return;\n    int N = static_cast<int>(v.size());\n\
     \    int MOD = v[0].mod();\n    int PR = calc_primitive_root(MOD);\n    static\
     \ bool first = true;\n    static std::vector<long long> vbw(30), vibw(30);\n \
     \   if (first) {\n        first = false;\n        for (int k = 0; k < 30; ++k)\
@@ -463,15 +463,16 @@ data:
     \ long long\n * @param A vector<T>\n * @param B vector<T>\n * @return vector<T>\n\
     \ */\ntemplate <class T>\nstd::vector<T> naive(const std::vector<T>& A, const\
     \ std::vector<T>& B) {\n    if (A.empty() || B.empty()) return {};\n    int N\
-    \ = (int)A.size(), M = (int)B.size();\n    std::vector<T> res(N + M - 1);\n  \
-    \  for (int i = 0; i < N; ++i)\n        for (int j = 0; j < M; ++j)\n        \
-    \    res[i + j] += A[i] * B[j];\n    return res;\n}\n};  // namespace internal_convolution\n\
-    \n/**\n * @brief modint\u306E\u7573\u307F\u8FBC\u307F\n * @param A vector<mint>\n\
-    \ * @param B vector<mint>\n * @return vector<mint>\n */\ntemplate <class mint>\n\
-    std::vector<mint> convolution(const std::vector<mint>& A, const std::vector<mint>&\
-    \ B) {\n    if (A.empty() || B.empty()) return {};\n    int N = (int)A.size(),\
-    \ M = (int)B.size();\n    if (std::min(N, M) < 30) return internal_convolution::naive(A,\
-    \ B);\n    int MOD = A[0].mod();\n    int size_fft = internal_convolution::get_fft_size(N,\
+    \ = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n    std::vector<T>\
+    \ res(N + M - 1);\n    for (int i = 0; i < N; ++i)\n        for (int j = 0; j\
+    \ < M; ++j)\n            res[i + j] += A[i] * B[j];\n    return res;\n}\n};  //\
+    \ namespace internal_convolution\n\n/**\n * @brief modint\u306E\u7573\u307F\u8FBC\
+    \u307F\n * @param A vector<mint>\n * @param B vector<mint>\n * @return vector<mint>\n\
+    \ */\ntemplate <class mint>\nstd::vector<mint> convolution(const std::vector<mint>&\
+    \ A, const std::vector<mint>& B) {\n    if (A.empty() || B.empty()) return {};\n\
+    \    int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n   \
+    \ if (std::min(N, M) < 30) return internal_convolution::naive(A, B);\n    int\
+    \ MOD = A[0].mod();\n    int size_fft = internal_convolution::get_fft_size(N,\
     \ M);\n    if (MOD == 998244353) {\n        std::vector<mint> a(size_fft), b(size_fft),\
     \ c(size_fft);\n        for (int i = 0; i < N; ++i) a[i] = A[i];\n        for\
     \ (int i = 0; i < M; ++i) b[i] = B[i];\n        internal_convolution::trans(a),\
@@ -498,8 +499,8 @@ data:
     \u7573\u307F\u8FBC\u307F\n * @param A vector<long long>\n * @param B vector<long\
     \ long>\n * @return vector<long long>\n */\ninline std::vector<long long> convolution_ll(const\
     \ std::vector<long long>& A, const std::vector<long long>& B) {\n    if (A.empty()\
-    \ || B.empty()) return {};\n    int N = (int)A.size(), M = (int)B.size();\n  \
-    \  if (std::min(N, M) < 30) return internal_convolution::naive(A, B);\n    int\
+    \ || B.empty()) return {};\n    int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n\
+    \    if (std::min(N, M) < 30) return internal_convolution::naive(A, B);\n    int\
     \ size_fft = internal_convolution::get_fft_size(N, M);\n    std::vector<internal_convolution::mint0>\
     \ a0(size_fft, 0), b0(size_fft, 0), c0(size_fft, 0);\n    std::vector<internal_convolution::mint1>\
     \ a1(size_fft, 0), b1(size_fft, 0), c1(size_fft, 0);\n    std::vector<internal_convolution::mint2>\
@@ -574,7 +575,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/convolution-mod-2-64.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 16:41:25+09:00'
+  timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/convolution-mod-2-64.test.cpp

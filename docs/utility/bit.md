@@ -12,6 +12,9 @@ popcount(13);           // 3
 countl_zero(1);         // 63
 countr_zero(8);         // 3
 hamming_distance(5, 3);  // 2 (101 と 011)
+lltob(5, 4);            // "0101"
+msb(12); lsb(12);       // 3, 2
+kth_set_bit(0b10110, 1);  // 2
 for (long long s : subsets(0b101)) { }       // 5, 4, 1, 0
 for (long long i : bits(0b10110)) { }        // 1, 2, 4
 for (long long s : combinations_mask(4, 2)) { }  // 3, 5, 6, 9, 10, 12
@@ -32,7 +35,37 @@ for (long long s : combinations_mask(4, 2)) { }  // 3, 5, 6, 9, 10, 12
 | `bit_ceil(a)` | `a` 以上の最小の 2 の累乗 (`a` は $2^{62}$ 以下) | $O(1)$ |
 | `bit_floor(a)` | `a` 以下の最大の 2 の累乗 | $O(1)$ |
 | `bit_width(a)` | `a` を表すのに必要なビット数 | $O(1)$ |
+| `has_single_bit(a)` | `a` が 2 の累乗か (`bool`)。C++20 では `std::has_single_bit` を呼ぶ | $O(1)$ |
 | `hamming_distance(a, b)` | `a` と `b` でビットが異なる位置の数 (`popcount(a ^ b)`) | $O(1)$ |
+
+### その他の関数
+
+C++20 の `<bit>` にはない関数です。ビットの位置 `i` は $0 \le i < 63$、桁数 `n` は 63 以下です。
+
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `msb(a)` | 最上位の立っているビットの位置。0 なら -1 | $O(1)$ |
+| `lsb(a)` | 最下位の立っているビットの位置。0 なら -1 | $O(1)$ |
+| `lowbit(a)` | 最下位の立っているビットだけを残した値 `a & -a` (位置ではなく値)。0 なら 0 | $O(1)$ |
+| `test_bit(a, i)` | `i` ビット目が立っているか (`bool`) | $O(1)$ |
+| `set_bit(a, i)` / `reset_bit(a, i)` / `flip_bit(a, i)` | `i` ビット目を 1 にした / 0 にした / 反転した値。`a` そのものは変えない | $O(1)$ |
+| `parity(a)` | 立っているビットの数の偶奇 (`popcount(a) % 2`) | $O(1)$ |
+| `lltob(a, n = -1, one = '1', zero = '0')` | `a` を $n$ 桁の 2 進数の文字列にする (`btoll` の逆)。`n` を省略すると `bit_width(a)` 桁 (0 なら `"0"`) | $O(n)$ |
+| `reverse_bits(a, n)` | 下位 $n$ ビットの並びを逆にする ($a < 2^n$) | $O(n)$ |
+| `rotate_left(a, k, n)` / `rotate_right(a, k, n)` | 下位 $n$ ビットを左 / 右に $k$ ビット巡回シフトする ($a < 2^n$、$k$ は負でもよい) | $O(1)$ |
+| `gray_code(a)` | グレイコード `a ^ (a >> 1)`。隣り合う整数で 1 ビットだけ変わる | $O(1)$ |
+| `inverse_gray_code(g)` | グレイコードから元の値に戻す | $O(\log 64)$ |
+| `kth_set_bit(mask, k)` | `mask` の立っているビットのうち、下から $k$ 番目 (0-indexed) の位置 ($k <$ `popcount(mask)`) | $O(\log 64)$ |
+| `xor_upto(n)` | $0 \oplus 1 \oplus \cdots \oplus n$ | $O(1)$ |
+| `count_bit_upto(n, i)` | $0$ 以上 $n$ 以下の整数のうち、`i` ビット目が立っているものの数 | $O(1)$ |
+
+`xor_upto` を使うと、区間 $[l, r]$ の XOR は `xor_upto(r) ^ xor_upto(l - 1)` ($l \ge 1$) です。`count_bit_upto` は、整数の範囲にわたるビットごとの寄与を数えるのに使えます。
+
+```cpp
+// 0 以上 n 以下の整数の popcount の和
+long long sum = 0;
+for (long long i = 0; i < 63; i++) sum += count_bit_upto(n, i);
+```
 
 ## 列挙
 

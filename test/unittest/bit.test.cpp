@@ -82,6 +82,103 @@ int main() {
         check(bit_floor(a) == floor, "bit_floor");
     }
 
+    // 1 ビットの操作・位置・変換を愚直な実装と比べる
+    for (int rep = 0; rep < 100000 && ok; rep++) {
+        int width = rng() % 64;
+        long long a = width == 0 ? 0 : (long long)(rng() >> (64 - width));
+        if (rep % 4 == 0) a = 1LL << (rng() % 63);
+        int top = -1, low = -1, pc = 0;
+        for (int i = 0; i < 63; i++) {
+            if (a >> i & 1) {
+                top = i;
+                if (low < 0) low = i;
+                pc++;
+            }
+        }
+        check(has_single_bit(a) == (pc == 1), "has_single_bit");
+        check(msb(a) == top && lsb(a) == low, "msb / lsb");
+        check(lowbit(a) == (low < 0 ? 0 : 1LL << low), "lowbit");
+        check(parity(a) == pc % 2, "parity");
+        long long i = rng() % 63;
+        bool on = a >> i & 1;
+        check(test_bit(a, i) == on, "test_bit");
+        check(set_bit(a, i) == (on ? a : a + (1LL << i)), "set_bit");
+        check(reset_bit(a, i) == (on ? a - (1LL << i) : a), "reset_bit");
+        check(flip_bit(a, i) == (on ? a - (1LL << i) : a + (1LL << i)), "flip_bit");
+
+        // lltob: 桁数を省略すると先頭に 0 を付けない
+        std::string s;
+        for (int j = std::max(top, 0); j >= 0; j--) s += (a >> j & 1) ? '1' : '0';
+        check(lltob(a) == s && btoll(lltob(a)) == a, "lltob");
+        long long n = std::max(top + 1, 0) + rng() % 3;
+        if (n > 63) n = 63;
+        if (n == 0) n = 1;
+        check(lltob(a, n) == std::string(n - s.size(), '0') + s, "lltob(a, n)");
+        std::string t = lltob(a, n, '#', '.');
+        check((long long)t.size() == n && btoll(t, '#') == a, "lltob(a, n, one, zero)");
+
+        // reverse_bits / rotate_left / rotate_right: n ビットの各位置を動かす
+        long long rev = 0, rl = 0, rr = 0, k = (long long)(rng() % 200) - 100;
+        long long km = ((k % n) + n) % n;
+        for (int j = 0; j < n; j++) {
+            if (a >> j & 1) {
+                rev |= 1LL << (n - 1 - j);
+                rl |= 1LL << ((j + km) % n);
+                rr |= 1LL << ((j - km + n) % n);
+            }
+        }
+        check(reverse_bits(a, n) == rev, "reverse_bits");
+        check(rotate_left(a, k, n) == rl, "rotate_left");
+        check(rotate_right(a, k, n) == rr, "rotate_right");
+
+        // gray_code: 逆変換で戻り、隣り合う値で 1 ビットだけ変わる
+        check(inverse_gray_code(gray_code(a)) == a, "inverse_gray_code");
+        if (a < std::numeric_limits<long long>::max()) check(popcount(gray_code(a) ^ gray_code(a + 1)) == 1, "gray_code");
+
+        // kth_set_bit
+        if (pc > 0) {
+            long long kk = rng() % pc, pos = -1;
+            for (int j = 0, c = 0; j < 63; j++) {
+                if (a >> j & 1) {
+                    if (c == kk) pos = j;
+                    c++;
+                }
+            }
+            check(kth_set_bit(a, kk) == pos, "kth_set_bit");
+        }
+    }
+    // xor_upto / count_bit_upto: 小さい n は 1 つずつ数える
+    {
+        long long x = 0;
+        std::vector<long long> cnt(63, 0);
+        for (long long n = 0; n < 5000 && ok; n++) {
+            x ^= n;
+            check(xor_upto(n) == x, "xor_upto");
+            for (int i = 0; i < 63; i++) {
+                cnt[i] += n >> i & 1;
+                check(count_bit_upto(n, i) == cnt[i], "count_bit_upto");
+            }
+        }
+        long long mx = std::numeric_limits<long long>::max();
+        // 大きい n: count_bit_upto の和は 0..n の popcount の和で、0..n を 2 つに分けて数えても同じ
+        for (int rep = 0; rep < 1000 && ok; rep++) {
+            long long n = (long long)(rng() >> 1);
+            if (n == mx) n--;
+            long long m = (long long)(rng() % 1000);
+            if (n < m) continue;
+            for (int i = 0; i < 63; i++) {
+                long long direct = 0;
+                for (long long v = n - m + 1; v <= n; v++) direct += v >> i & 1;
+                check(count_bit_upto(n, i) - (n - m < 0 ? 0 : count_bit_upto(n - m, i)) == direct, "count_bit_upto 大きい n");
+            }
+            long long xr = xor_upto(n - m);
+            for (long long v = n - m + 1; v <= n; v++) xr ^= v;
+            check(xor_upto(n) == xr, "xor_upto 大きい n");
+        }
+        check(count_bit_upto(mx - 1, 62) == mx - (1LL << 62), "count_bit_upto 上限");
+        check(xor_upto(0) == 0 && xor_upto(3) == 0 && xor_upto(mx - 1) == mx && xor_upto(mx) == 0, "xor_upto 境界");
+    }
+
     // subsets / supersets / bits / combinations_mask / add_one / remove_one を、すべての値を調べる愚直な方法と比べる
     for (int rep = 0; rep < 300 && ok; rep++) {
         int n = rng() % 9;
@@ -160,6 +257,18 @@ int main() {
         got.clear();
         for (auto [i, t] : add_one((1LL << 62) - 2, 62)) got.push_back(i), got.push_back(t);
         check(got == std::vector<long long>{0, (1LL << 62) - 1}, "add_one 62 ビット");
+    }
+
+    {
+        // 63 ビットの境界と決まった値
+        long long mx = std::numeric_limits<long long>::max();
+        check(rotate_left(1, 1, 63) == 2 && rotate_left(1LL << 62, 1, 63) == 1 && rotate_right(1, 1, 63) == (1LL << 62), "rotate 63 ビット");
+        check(reverse_bits(1, 63) == (1LL << 62) && inverse_gray_code(gray_code(mx)) == mx, "63 ビット");
+        check(kth_set_bit(mx, 62) == 62 && kth_set_bit(1LL << 62, 0) == 62, "kth_set_bit 63 ビット");
+        check(lltob(0) == "0" && lltob(5) == "101" && lltob(5, 5) == "00101" && lltob(0, 3, '#', '.') == "...", "lltob 決まった値");
+        check(msb(0) == -1 && lsb(0) == -1 && lowbit(0) == 0 && msb(mx) == 62, "msb / lsb / lowbit 境界");
+        static_assert(has_single_bit(64) && !has_single_bit(0) && !has_single_bit(6));
+        static_assert(gray_code(5) == 7 && inverse_gray_code(7) == 5 && rotate_left(0b0011, 3, 4) == 0b1001);
     }
 
     // 0 のときは C++20 の <bit> と同じ値

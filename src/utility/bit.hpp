@@ -86,6 +86,13 @@ inline constexpr long long bit_floor(long long a) {
     assert(a >= 0);
     return a == 0 ? 0 : 1LL << (bit_width(a) - 1);
 }
+/**
+ * @brief 2 の累乗か (ちょうど 1 つのビットが立っているか)
+ */
+inline constexpr bool has_single_bit(long long a) {
+    assert(a >= 0);
+    return a != 0 && (a & (a - 1)) == 0;
+}
 
 #else
 
@@ -132,6 +139,13 @@ BIT_FUNC_EXPAND(bit_floor)
  * @brief 値を表現するために必要なビット幅を求める
  */
 BIT_FUNC_EXPAND(bit_width)
+/**
+ * @brief 2 の累乗か (ちょうど 1 つのビットが立っているか)
+ */
+inline constexpr bool has_single_bit(long long a) {
+    assert(a >= 0);
+    return std::has_single_bit((unsigned long long)a);
+}
 
 #endif
 
@@ -141,6 +155,151 @@ BIT_FUNC_EXPAND(bit_width)
 inline constexpr long long hamming_distance(long long a, long long b) {
     assert(a >= 0 && b >= 0);
     return popcount(a ^ b);
+}
+
+/**
+ * @brief 最上位の立っているビットの位置 (0 なら -1)
+ */
+inline constexpr long long msb(long long a) { return bit_width(a) - 1; }
+/**
+ * @brief 最下位の立っているビットの位置 (0 なら -1)
+ */
+inline constexpr long long lsb(long long a) {
+    assert(a >= 0);
+    return a == 0 ? -1 : countr_zero(a);
+}
+/**
+ * @brief 最下位の立っているビットだけを残した値 a & -a (0 なら 0)
+ */
+inline constexpr long long lowbit(long long a) {
+    assert(a >= 0);
+    return a & -a;
+}
+/**
+ * @brief a の i ビット目が立っているか
+ */
+inline constexpr bool test_bit(long long a, long long i) {
+    assert(a >= 0 && 0 <= i && i < 63);
+    return a >> i & 1;
+}
+/**
+ * @brief a の i ビット目を 1 にした値
+ */
+inline constexpr long long set_bit(long long a, long long i) {
+    assert(a >= 0 && 0 <= i && i < 63);
+    return a | 1LL << i;
+}
+/**
+ * @brief a の i ビット目を 0 にした値
+ */
+inline constexpr long long reset_bit(long long a, long long i) {
+    assert(a >= 0 && 0 <= i && i < 63);
+    return a & ~(1LL << i);
+}
+/**
+ * @brief a の i ビット目を反転した値
+ */
+inline constexpr long long flip_bit(long long a, long long i) {
+    assert(a >= 0 && 0 <= i && i < 63);
+    return a ^ 1LL << i;
+}
+/**
+ * @brief 立っているビットの数の偶奇 (popcount(a) % 2)
+ */
+inline constexpr long long parity(long long a) { return popcount(a) & 1; }
+/**
+ * @brief long long を n 桁の 2 進数の文字列にする (btoll の逆)
+ * n を省略すると bit_width(a) 桁 (0 なら "0")
+ */
+inline std::string lltob(long long a, long long n = -1, char one = '1', char zero = '0') {
+    assert(a >= 0);
+    if (n < 0) n = a == 0 ? 1 : bit_width(a);
+    assert(n >= bit_width(a));
+    std::string res(n, zero);
+    for (long long i = 0; i < n && i < 63; i++) {
+        if (a >> i & 1) res[n - 1 - i] = one;
+    }
+    return res;
+}
+/**
+ * @brief 下位 n ビットの並びを逆にする (a < 2^n)
+ */
+inline constexpr long long reverse_bits(long long a, long long n) {
+    assert(0 <= n && n <= 63 && 0 <= a && bit_width(a) <= n);
+    long long res = 0;
+    for (long long i = 0; i < n; i++) {
+        if (a >> i & 1) res |= 1LL << (n - 1 - i);
+    }
+    return res;
+}
+/**
+ * @brief 下位 n ビットを左に k ビット巡回シフトする (a < 2^n、k は負でもよい)
+ */
+inline constexpr long long rotate_left(long long a, long long k, long long n) {
+    assert(1 <= n && n <= 63 && 0 <= a && bit_width(a) <= n);
+    k %= n;
+    if (k < 0) k += n;
+    if (k == 0) return a;
+    unsigned long long full = (1ULL << n) - 1;
+    return (long long)(((unsigned long long)a << k & full) | (unsigned long long)a >> (n - k));
+}
+/**
+ * @brief 下位 n ビットを右に k ビット巡回シフトする (a < 2^n、k は負でもよい)
+ */
+inline constexpr long long rotate_right(long long a, long long k, long long n) {
+    assert(1 <= n && n <= 63);
+    return rotate_left(a, -(k % n), n);
+}
+/**
+ * @brief グレイコード (隣り合う値で 1 ビットだけ変わる) a ^ (a >> 1)
+ */
+inline constexpr long long gray_code(long long a) {
+    assert(a >= 0);
+    return a ^ a >> 1;
+}
+/**
+ * @brief グレイコードから元の値に戻す (gray_code の逆)
+ */
+inline constexpr long long inverse_gray_code(long long g) {
+    assert(g >= 0);
+    for (long long s = 1; s < 64; s <<= 1) g ^= g >> s;
+    return g;
+}
+/**
+ * @brief mask の立っているビットのうち、下から k 番目 (0-indexed) の位置 O(log 64)
+ */
+inline constexpr long long kth_set_bit(long long mask, long long k) {
+    assert(mask >= 0 && 0 <= k && k < popcount(mask));
+    long long res = 0;
+    for (long long w = 32; w > 0; w >>= 1) {
+        // 下位 w ビットに立っているビットの数で、答えが上下どちらにあるかを決める
+        long long c = popcount(mask & ((1LL << w) - 1));
+        if (k >= c) {
+            k -= c;
+            mask >>= w;
+            res += w;
+        }
+    }
+    return res;
+}
+/**
+ * @brief 0 ^ 1 ^ ... ^ n
+ */
+inline constexpr long long xor_upto(long long n) {
+    assert(n >= 0);
+    // 4 つごとに周期的になる
+    long long r = n & 3;
+    return r == 0 ? n : r == 1 ? 1 : r == 2 ? n + 1 : 0;
+}
+/**
+ * @brief 0 以上 n 以下の整数のうち、i ビット目が立っているものの数
+ */
+inline constexpr long long count_bit_upto(long long n, long long i) {
+    assert(0 <= n && n < 0x7fffffffffffffffLL && 0 <= i && i < 63);
+    // 2^(i + 1) ごとに、後半の 2^i 個で立つ
+    unsigned long long m = (unsigned long long)n + 1, half = 1ULL << i, cycle = half << 1;
+    unsigned long long r = m % cycle;
+    return (long long)(m / cycle * half + (r > half ? r - half : 0));
 }
 
 namespace internal_bit {

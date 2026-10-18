@@ -32,19 +32,19 @@ data:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
   bundledCode: "#line 1 \"test/unittest/fps.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// FPS \u306E\u5358\u9805\u306E -\u3001\u5B9A\u6570\u3092\u5F15\u304F -\u3001\
-    eval\u3001gcd\u3001modpow \u3092\u611A\u76F4\u306A\u591A\u9805\u5F0F\u6F14\u7B97\
-    \u3068\u6BD4\u8F03\u3059\u308B\n// FPS \u306E + \u3068 - \u306F\u7D50\u679C\u306E\
-    \u672B\u5C3E\u306E 0 \u3092\u53D6\u308A\u9664\u304F (\u4ED5\u69D8) \u306E\u3067\
-    \u3001\u591A\u9805\u5F0F\u3068\u3057\u3066\u306E\u6BD4\u8F03\u306F\u672B\u5C3E\
-    \u306E 0 \u3092\u9664\u3044\u3066\u884C\u3046\n// \u554F\u984C\u306E\u5165\u529B\
-    \u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089\
-    \ Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/math/fps.hpp\"\n\
-    \n/**\n * @file fps.hpp\n * @brief \u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\n */\n\
-    \n#include <algorithm>\n#include <cassert>\n#include <vector>\n\n#line 2 \"src/math/combinatorics.hpp\"\
-    \n\n/**\n * @file combinatorics.hpp\n * @brief \u7D44\u307F\u5408\u308F\u305B\n\
-    \ */\n\n#line 9 \"src/math/combinatorics.hpp\"\n#include <numeric>\n#line 11 \"\
-    src/math/combinatorics.hpp\"\n\n#line 2 \"src/math/modular-arithmetic.hpp\"\n\n\
-    /**\n * @file modular-arithmetic.hpp\n * @brief mod \u6F14\u7B97 (\u7A4D\u3001\
+    eval\u3001gcd\u3001modpow\u3001divmod \u3092\u611A\u76F4\u306A\u591A\u9805\u5F0F\
+    \u6F14\u7B97\u3068\u6BD4\u8F03\u3059\u308B\n// FPS \u306E + \u3068 - \u306F\u7D50\
+    \u679C\u306E\u672B\u5C3E\u306E 0 \u3092\u53D6\u308A\u9664\u304F (\u4ED5\u69D8\
+    ) \u306E\u3067\u3001\u591A\u9805\u5F0F\u3068\u3057\u3066\u306E\u6BD4\u8F03\u306F\
+    \u672B\u5C3E\u306E 0 \u3092\u9664\u3044\u3066\u884C\u3046\n// \u554F\u984C\u306E\
+    \u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\
+    \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/math/fps.hpp\"\
+    \n\n/**\n * @file fps.hpp\n * @brief \u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\n */\n\
+    \n#include <algorithm>\n#include <cassert>\n#include <utility>\n#include <vector>\n\
+    \n#line 2 \"src/math/combinatorics.hpp\"\n\n/**\n * @file combinatorics.hpp\n\
+    \ * @brief \u7D44\u307F\u5408\u308F\u305B\n */\n\n#line 9 \"src/math/combinatorics.hpp\"\
+    \n#include <numeric>\n#line 11 \"src/math/combinatorics.hpp\"\n\n#line 2 \"src/math/modular-arithmetic.hpp\"\
+    \n\n/**\n * @file modular-arithmetic.hpp\n * @brief mod \u6F14\u7B97 (\u7A4D\u3001\
     \u51AA\u4E57\u3001\u9006\u5143)\n */\n\n#line 9 \"src/math/modular-arithmetic.hpp\"\
     \n\n/**\n * @brief a * b mod m \u3092\u8FD4\u3059 (\u9014\u4E2D\u3067 __int128\
     \ \u3092\u4F7F\u3046\u306E\u3067 m < 2^63 \u306A\u3089\u3042\u3075\u308C\u306A\
@@ -162,47 +162,46 @@ data:
     \ i = 0; i < e; i++) {\n                ans = (long long)ans * p % pq;\n     \
     \       }\n        }\n        return ans;\n    }\n};\n#line 2 \"src/math/convolution.hpp\"\
     \n\n/**\n * @file convolution.hpp\n * @brief \u7573\u307F\u8FBC\u307F (NTT)\n\
-    \ */\n\n#line 9 \"src/math/convolution.hpp\"\n#include <utility>\n#line 11 \"\
-    src/math/convolution.hpp\"\n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file\
-    \ modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\
-    \u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\
-    \n#include <cstdint>\n#include <iostream>\n#include <limits>\n#include <type_traits>\n\
-    #line 14 \"src/math/modint.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n\
-    \ * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n\
-    #include <iterator>\n#include <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace\
-    \ internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T, class =\
-    \ void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct\
-    \ is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
-    \ : std::true_type {};\n}  // namespace internal_traits\n\ntemplate <class T>\n\
-    struct is_range : internal_traits::is_range_impl<T>::type {};\ntemplate <class\
-    \ T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define HAS_METHOD(func_name)\
-    \                                                              \\\n    namespace\
-    \ internal_traits {                                                          \
-    \  \\\n    template <class T, class = void>                                  \
-    \                     \\\n    struct has_##func_name##_impl : std::false_type\
-    \ {};                                    \\\n    template <class T>          \
-    \                                                           \\\n    struct has_##func_name##_impl<T,\
-    \ std::void_t<decltype(std::declval<T>().func_name())>> \\\n        : std::true_type\
-    \ {};                                                               \\\n    }\
-    \                                                                            \
-    \          \\\n    template <class T>                                        \
-    \                             \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T>::type\
-    \ {};          \\\n    template <class T>                                    \
-    \                                 \\\n    inline constexpr bool has_##func_name##_v\
-    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
-    \                                                                    \\\n    namespace\
-    \ internal_traits {                                                          \
-    \                      \\\n    template <class T, typename U, class = void>  \
-    \                                                             \\\n    struct has_##func_name##_impl\
-    \ : std::false_type {};                                                      \
-    \  \\\n    template <class T, typename U>                                    \
-    \                                         \\\n    struct has_##func_name##_impl<T,\
-    \ U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>> \\\
-    \n        : std::true_type {};                                               \
-    \                                    \\\n    }                               \
+    \ */\n\n#line 11 \"src/math/convolution.hpp\"\n\n#line 2 \"src/math/modint.hpp\"\
+    \n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\
+    \u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line\
+    \ 9 \"src/math/modint.hpp\"\n#include <cstdint>\n#include <iostream>\n#include\
+    \ <limits>\n#include <type_traits>\n#line 14 \"src/math/modint.hpp\"\n\n#line\
+    \ 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\
+    \u6027\n */\n\n#include <cstddef>\n#include <iterator>\n#include <set>\n#line\
+    \ 13 \"src/utility/traits.hpp\"\n\nnamespace internal_traits {\nusing std::begin,\
+    \ std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl : std::false_type\
+    \ {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
+    \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
+    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
+    \n#define HAS_METHOD(func_name)                                              \
+    \                \\\n    namespace internal_traits {                         \
+    \                                   \\\n    template <class T, class = void> \
+    \                                                      \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                    \\\n    template <class\
+    \ T>                                                                     \\\n\
+    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                    \\\n    }                                               \
+    \                                       \\\n    template <class T>           \
+    \                                                          \\\n    struct has_##func_name\
+    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
+    \ <class T>                                                                  \
+    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
+    \n#define HAS_METHOD_ARG(func_name)                                          \
+    \                                    \\\n    namespace internal_traits {     \
     \                                                                           \\\
-    \n    template <class T, typename U>                                         \
-    \                                    \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \n    template <class T, typename U, class = void>                           \
+    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                                        \\\n    template\
+    \ <class T, typename U>                                                      \
+    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                                        \\\n    }                           \
+    \                                                                            \
+    \   \\\n    template <class T, typename U>                                   \
+    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
     \ U>::type {};                           \\\n    template <class T, typename U>\
     \                                                                            \
     \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
@@ -547,7 +546,7 @@ data:
     \ * y1).val();\n        __int128_t tmp = (__int128_t)mod01 * y2 + (__int128_t)mod0\
     \ * y1 + y0;\n        if (tmp < (mod012 >> 1))\n            res[i] = tmp;\n  \
     \      else\n            res[i] = tmp - mod012;\n    }\n    return res;\n}\n#line\
-    \ 14 \"src/math/fps.hpp\"\n\ntemplate <typename mint>\nstruct FPS : std::vector<mint>\
+    \ 15 \"src/math/fps.hpp\"\n\ntemplate <typename mint>\nstruct FPS : std::vector<mint>\
     \ {\n    using std::vector<mint>::vector;\n\n    // constructor\n    FPS(const\
     \ std::vector<mint>& r) : std::vector<mint>(r) {}\n\n    // core operator\n  \
     \  inline FPS pre(long long siz) const {\n        return FPS(begin(*this), begin(*this)\
@@ -610,40 +609,42 @@ data:
     \   }\n        const long long need = (long long)this->size() - (long long)r.size()\
     \ + 1;\n        *this = ((*this).rev().pre(need) * inv(r.rev(), need)).pre(need).rev();\n\
     \        return *this;\n    }\n    inline FPS& operator%=(const FPS& r) {\n  \
-    \      assert(!r.empty());\n        assert(r.back() != 0);\n        this->normalize();\n\
-    \        FPS q = (*this) / r;\n        return *this -= q * r;\n    }\n    inline\
-    \ FPS operator/(const FPS& r) const { return FPS(*this) /= r; }\n    inline FPS\
-    \ operator%(const FPS& r) const { return FPS(*this) %= r; }\n\n    // log(f) =\
-    \ \\int f'/f dx, f[0] must be 1\n    inline friend FPS log(const FPS& f, long\
-    \ long deg) {\n        assert(!f.empty() && f[0] == 1);\n        FPS res = intg(diff(f)\
-    \ * inv(f, deg));\n        res.resize(deg);\n        return res;\n    }\n    inline\
-    \ friend FPS log(const FPS& f) {\n        return log(f, f.size());\n    }\n\n\
-    \    // exp(f), f[0] must be 0\n    inline friend FPS exp(const FPS& f, long long\
-    \ deg) {\n        assert(f.empty() || f[0] == 0);\n        FPS res(1, 1);\n  \
-    \      for (long long i = 1; i < deg; i <<= 1) {\n            res = res * (f.pre(i\
-    \ << 1) - log(res, i << 1) + 1).pre(i << 1);\n        }\n        res.resize(deg);\n\
-    \        return res;\n    }\n    inline friend FPS exp(const FPS& f) {\n     \
-    \   return exp(f, f.size());\n    }\n\n    // pow(f) = exp(e * log f)\n    inline\
-    \ friend FPS pow(const FPS& f, long long e, long long deg) {\n        if (e ==\
-    \ 0) {\n            auto ret = FPS(deg, 0);\n            if (deg > 0) ret[0] =\
-    \ 1;\n            return ret;\n        }\n        long long i = 0;\n        while\
-    \ (i < (long long)f.size() && f[i] == 0) ++i;\n        if (i == (long long)f.size())\
-    \ return FPS(deg, 0);\n        if ((i >= 1 && e >= deg) || i * e >= deg) return\
-    \ FPS(deg, 0);\n        mint k = f[i];\n        FPS res = exp(log((f >> i) / k,\
-    \ deg) * e, deg) * k.pow(e) << (e * i);\n        res.resize(deg);\n        return\
-    \ res;\n    }\n    inline friend FPS pow(const FPS& f, long long e) {\n      \
-    \  return pow(f, e, f.size());\n    }\n\n    inline friend FPS taylor_shift(FPS\
-    \ f, mint a) {\n        using C = Combination<mint>;\n        int n = f.size();\n\
-    \        C::extend(n);\n        for (int i = 0; i < n; i++) f[i] *= C::factorial(i);\n\
-    \        std::reverse(f.begin(), f.end());\n        FPS<mint> g(n, 1);\n     \
-    \   for (int i = 1; i < n; i++) g[i] = g[i - 1] * a * C::inv(i);\n        f =\
-    \ (f * g).pre(n);\n        std::reverse(f.begin(), f.end());\n        for (int\
-    \ i = 0; i < n; i++) f[i] *= C::inverse_factorial(i);\n        return f;\n   \
-    \ }\n};\n\ntemplate <typename mint>\nFPS<mint> modpow(const FPS<mint>& f, long\
-    \ long n, const FPS<mint>& m) {\n    if (n == 0) return FPS<mint>(1, 1);\n   \
-    \ auto t = modpow(f, n / 2, m);\n    t = (t * t) % m;\n    if (n & 1) t = (t *\
-    \ f) % m;\n    return t;\n}\n#line 8 \"test/unittest/fps.test.cpp\"\n\n#line 10\
-    \ \"test/unittest/fps.test.cpp\"\n#include <random>\n#line 12 \"test/unittest/fps.test.cpp\"\
+    \      return *this = divmod(*this, r).second;\n    }\n    inline FPS operator/(const\
+    \ FPS& r) const { return FPS(*this) /= r; }\n    inline FPS operator%(const FPS&\
+    \ r) const { return FPS(*this) %= r; }\n    // {f / g, f % g}, g must be normalized\
+    \ (g.back() must not be 0)\n    inline friend std::pair<FPS, FPS> divmod(const\
+    \ FPS& f, const FPS& g) {\n        assert(!g.empty());\n        assert(g.back()\
+    \ != 0);\n        FPS q = f / g;\n        FPS r = f - q * g;\n        return {q,\
+    \ r};\n    }\n\n    // log(f) = \\int f'/f dx, f[0] must be 1\n    inline friend\
+    \ FPS log(const FPS& f, long long deg) {\n        assert(!f.empty() && f[0] ==\
+    \ 1);\n        FPS res = intg(diff(f) * inv(f, deg));\n        res.resize(deg);\n\
+    \        return res;\n    }\n    inline friend FPS log(const FPS& f) {\n     \
+    \   return log(f, f.size());\n    }\n\n    // exp(f), f[0] must be 0\n    inline\
+    \ friend FPS exp(const FPS& f, long long deg) {\n        assert(f.empty() || f[0]\
+    \ == 0);\n        FPS res(1, 1);\n        for (long long i = 1; i < deg; i <<=\
+    \ 1) {\n            res = res * (f.pre(i << 1) - log(res, i << 1) + 1).pre(i <<\
+    \ 1);\n        }\n        res.resize(deg);\n        return res;\n    }\n    inline\
+    \ friend FPS exp(const FPS& f) {\n        return exp(f, f.size());\n    }\n\n\
+    \    // pow(f) = exp(e * log f)\n    inline friend FPS pow(const FPS& f, long\
+    \ long e, long long deg) {\n        if (e == 0) {\n            auto ret = FPS(deg,\
+    \ 0);\n            if (deg > 0) ret[0] = 1;\n            return ret;\n       \
+    \ }\n        long long i = 0;\n        while (i < (long long)f.size() && f[i]\
+    \ == 0) ++i;\n        if (i == (long long)f.size()) return FPS(deg, 0);\n    \
+    \    if ((i >= 1 && e >= deg) || i * e >= deg) return FPS(deg, 0);\n        mint\
+    \ k = f[i];\n        FPS res = exp(log((f >> i) / k, deg) * e, deg) * k.pow(e)\
+    \ << (e * i);\n        res.resize(deg);\n        return res;\n    }\n    inline\
+    \ friend FPS pow(const FPS& f, long long e) {\n        return pow(f, e, f.size());\n\
+    \    }\n\n    inline friend FPS taylor_shift(FPS f, mint a) {\n        using C\
+    \ = Combination<mint>;\n        int n = f.size();\n        C::extend(n);\n   \
+    \     for (int i = 0; i < n; i++) f[i] *= C::factorial(i);\n        std::reverse(f.begin(),\
+    \ f.end());\n        FPS<mint> g(n, 1);\n        for (int i = 1; i < n; i++) g[i]\
+    \ = g[i - 1] * a * C::inv(i);\n        f = (f * g).pre(n);\n        std::reverse(f.begin(),\
+    \ f.end());\n        for (int i = 0; i < n; i++) f[i] *= C::inverse_factorial(i);\n\
+    \        return f;\n    }\n};\n\ntemplate <typename mint>\nFPS<mint> modpow(const\
+    \ FPS<mint>& f, long long n, const FPS<mint>& m) {\n    if (n == 0) return FPS<mint>(1,\
+    \ 1);\n    auto t = modpow(f, n / 2, m);\n    t = (t * t) % m;\n    if (n & 1)\
+    \ t = (t * f) % m;\n    return t;\n}\n#line 8 \"test/unittest/fps.test.cpp\"\n\
+    \n#line 10 \"test/unittest/fps.test.cpp\"\n#include <random>\n#line 12 \"test/unittest/fps.test.cpp\"\
     \n\nusing mint = static_modint<998244353>;\nusing F = FPS<mint>;\nusing P = std::vector<mint>;\n\
     \nP trim(P a) {\n    while (!a.empty() && a.back() == 0) a.pop_back();\n    return\
     \ a;\n}\nP naive_mul(const P& a, const P& b) {\n    if (a.empty() || b.empty())\
@@ -714,17 +715,32 @@ data:
     \ res = naive_mod(naive_mul(res, base), m);\n            base = naive_mod(naive_mul(base,\
     \ base), m);\n        }\n        if (trim(P(got)) != trim(res)) ok = false, std::cerr\
     \ << \"modpow \" << rep << std::endl;\n    }\n    // n = 0 \u306F 1\n    if (P(modpow(F(P{5,\
-    \ 6}), 0, F(P{1, 1, 1}))) != P{1}) ok = false;\n\n    if (ok) std::cout << \"\
-    Hello World\" << std::endl;\n}\n"
+    \ 6}), 0, F(P{1, 1, 1}))) != P{1}) ok = false;\n\n    // divmod: f = q g + r\u3001\
+    deg r < deg g \u3092\u6E80\u305F\u3057\u3001f / g\u3001f % g \u3068\u4E00\u81F4\
+    \u3059\u308B\u3002NTT \u3092\u4F7F\u3046\u9577\u3055\u3082\u542B\u3081\u308B\n\
+    \    for (int rep = 0; rep < 300 && ok; rep++) {\n        int big = (rep % 10\
+    \ == 0) ? 100 : 0;\n        P g = random_poly(rng, rng() % 6 + 1 + big / 2, true);\n\
+    \        P f = random_poly(rng, rng() % 12 + big, false);\n        auto [q, r]\
+    \ = divmod(F(f), F(g));\n        if (trim(P(r)) != naive_mod(f, g)) ok = false,\
+    \ std::cerr << \"divmod r \" << rep << std::endl;\n        if (trim(naive_mul(P(q),\
+    \ g)) != trim(P(F(f) - F(r)))) ok = false, std::cerr << \"divmod q \" << rep <<\
+    \ std::endl;\n        if (trim(P(q)) != trim(P(F(f) / F(g))) || trim(P(r)) !=\
+    \ trim(P(F(f) % F(g)))) ok = false;\n    }\n    // \u6B21\u6570\u304C g \u3088\
+    \u308A\u5C0F\u3055\u3051\u308C\u3070\u5546\u306F 0\u3001\u4F59\u308A\u306F f (\u672B\
+    \u5C3E\u306E 0 \u3092\u9664\u304F)\n    {\n        auto [q, r] = divmod(F(P{1,\
+    \ 2, 0}), F(P{3, 4, 5}));\n        if (!trim(P(q)).empty() || P(r) != P{1, 2})\
+    \ ok = false;\n        auto [q0, r0] = divmod(F(), F(P{3, 4}));\n        if (!trim(P(q0)).empty()\
+    \ || !trim(P(r0)).empty()) ok = false;\n    }\n\n    if (ok) std::cout << \"Hello\
+    \ World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// FPS \u306E\u5358\u9805\u306E -\u3001\u5B9A\u6570\u3092\u5F15\u304F -\u3001\
-    eval\u3001gcd\u3001modpow \u3092\u611A\u76F4\u306A\u591A\u9805\u5F0F\u6F14\u7B97\
-    \u3068\u6BD4\u8F03\u3059\u308B\n// FPS \u306E + \u3068 - \u306F\u7D50\u679C\u306E\
-    \u672B\u5C3E\u306E 0 \u3092\u53D6\u308A\u9664\u304F (\u4ED5\u69D8) \u306E\u3067\
-    \u3001\u591A\u9805\u5F0F\u3068\u3057\u3066\u306E\u6BD4\u8F03\u306F\u672B\u5C3E\
-    \u306E 0 \u3092\u9664\u3044\u3066\u884C\u3046\n// \u554F\u984C\u306E\u5165\u529B\
-    \u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089\
-    \ Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../src/math/fps.hpp\"\
+    eval\u3001gcd\u3001modpow\u3001divmod \u3092\u611A\u76F4\u306A\u591A\u9805\u5F0F\
+    \u6F14\u7B97\u3068\u6BD4\u8F03\u3059\u308B\n// FPS \u306E + \u3068 - \u306F\u7D50\
+    \u679C\u306E\u672B\u5C3E\u306E 0 \u3092\u53D6\u308A\u9664\u304F (\u4ED5\u69D8\
+    ) \u306E\u3067\u3001\u591A\u9805\u5F0F\u3068\u3057\u3066\u306E\u6BD4\u8F03\u306F\
+    \u672B\u5C3E\u306E 0 \u3092\u9664\u3044\u3066\u884C\u3046\n// \u554F\u984C\u306E\
+    \u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\
+    \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../src/math/fps.hpp\"\
     \n\n#include <iostream>\n#include <random>\n#include <vector>\n\nusing mint =\
     \ static_modint<998244353>;\nusing F = FPS<mint>;\nusing P = std::vector<mint>;\n\
     \nP trim(P a) {\n    while (!a.empty() && a.back() == 0) a.pop_back();\n    return\
@@ -796,8 +812,23 @@ data:
     \ res = naive_mod(naive_mul(res, base), m);\n            base = naive_mod(naive_mul(base,\
     \ base), m);\n        }\n        if (trim(P(got)) != trim(res)) ok = false, std::cerr\
     \ << \"modpow \" << rep << std::endl;\n    }\n    // n = 0 \u306F 1\n    if (P(modpow(F(P{5,\
-    \ 6}), 0, F(P{1, 1, 1}))) != P{1}) ok = false;\n\n    if (ok) std::cout << \"\
-    Hello World\" << std::endl;\n}\n"
+    \ 6}), 0, F(P{1, 1, 1}))) != P{1}) ok = false;\n\n    // divmod: f = q g + r\u3001\
+    deg r < deg g \u3092\u6E80\u305F\u3057\u3001f / g\u3001f % g \u3068\u4E00\u81F4\
+    \u3059\u308B\u3002NTT \u3092\u4F7F\u3046\u9577\u3055\u3082\u542B\u3081\u308B\n\
+    \    for (int rep = 0; rep < 300 && ok; rep++) {\n        int big = (rep % 10\
+    \ == 0) ? 100 : 0;\n        P g = random_poly(rng, rng() % 6 + 1 + big / 2, true);\n\
+    \        P f = random_poly(rng, rng() % 12 + big, false);\n        auto [q, r]\
+    \ = divmod(F(f), F(g));\n        if (trim(P(r)) != naive_mod(f, g)) ok = false,\
+    \ std::cerr << \"divmod r \" << rep << std::endl;\n        if (trim(naive_mul(P(q),\
+    \ g)) != trim(P(F(f) - F(r)))) ok = false, std::cerr << \"divmod q \" << rep <<\
+    \ std::endl;\n        if (trim(P(q)) != trim(P(F(f) / F(g))) || trim(P(r)) !=\
+    \ trim(P(F(f) % F(g)))) ok = false;\n    }\n    // \u6B21\u6570\u304C g \u3088\
+    \u308A\u5C0F\u3055\u3051\u308C\u3070\u5546\u306F 0\u3001\u4F59\u308A\u306F f (\u672B\
+    \u5C3E\u306E 0 \u3092\u9664\u304F)\n    {\n        auto [q, r] = divmod(F(P{1,\
+    \ 2, 0}), F(P{3, 4, 5}));\n        if (!trim(P(q)).empty() || P(r) != P{1, 2})\
+    \ ok = false;\n        auto [q0, r0] = divmod(F(), F(P{3, 4}));\n        if (!trim(P(q0)).empty()\
+    \ || !trim(P(r0)).empty()) ok = false;\n    }\n\n    if (ok) std::cout << \"Hello\
+    \ World\" << std::endl;\n}\n"
   dependsOn:
   - src/math/fps.hpp
   - src/math/combinatorics.hpp
@@ -808,7 +839,7 @@ data:
   isVerificationFile: true
   path: test/unittest/fps.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:27:48+09:00'
+  timestamp: '2026-10-18 18:36:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/fps.test.cpp

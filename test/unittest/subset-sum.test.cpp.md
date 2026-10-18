@@ -176,7 +176,7 @@ data:
     )\n */\n\n#line 9 \"src/dp/subset-sum-count.hpp\"\n#include <climits>\n#include\
     \ <cmath>\n#line 12 \"src/dp/subset-sum-count.hpp\"\n\n#line 2 \"src/math/fps.hpp\"\
     \n\n/**\n * @file fps.hpp\n * @brief \u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\n */\n\
-    \n#line 11 \"src/math/fps.hpp\"\n\n#line 2 \"src/math/combinatorics.hpp\"\n\n\
+    \n#line 12 \"src/math/fps.hpp\"\n\n#line 2 \"src/math/combinatorics.hpp\"\n\n\
     /**\n * @file combinatorics.hpp\n * @brief \u7D44\u307F\u5408\u308F\u305B\n */\n\
     \n#line 9 \"src/math/combinatorics.hpp\"\n#include <numeric>\n#line 11 \"src/math/combinatorics.hpp\"\
     \n\n#line 2 \"src/math/modular-arithmetic.hpp\"\n\n/**\n * @file modular-arithmetic.hpp\n\
@@ -681,7 +681,7 @@ data:
     \ * y1).val();\n        __int128_t tmp = (__int128_t)mod01 * y2 + (__int128_t)mod0\
     \ * y1 + y0;\n        if (tmp < (mod012 >> 1))\n            res[i] = tmp;\n  \
     \      else\n            res[i] = tmp - mod012;\n    }\n    return res;\n}\n#line\
-    \ 14 \"src/math/fps.hpp\"\n\ntemplate <typename mint>\nstruct FPS : std::vector<mint>\
+    \ 15 \"src/math/fps.hpp\"\n\ntemplate <typename mint>\nstruct FPS : std::vector<mint>\
     \ {\n    using std::vector<mint>::vector;\n\n    // constructor\n    FPS(const\
     \ std::vector<mint>& r) : std::vector<mint>(r) {}\n\n    // core operator\n  \
     \  inline FPS pre(long long siz) const {\n        return FPS(begin(*this), begin(*this)\
@@ -744,44 +744,46 @@ data:
     \   }\n        const long long need = (long long)this->size() - (long long)r.size()\
     \ + 1;\n        *this = ((*this).rev().pre(need) * inv(r.rev(), need)).pre(need).rev();\n\
     \        return *this;\n    }\n    inline FPS& operator%=(const FPS& r) {\n  \
-    \      assert(!r.empty());\n        assert(r.back() != 0);\n        this->normalize();\n\
-    \        FPS q = (*this) / r;\n        return *this -= q * r;\n    }\n    inline\
-    \ FPS operator/(const FPS& r) const { return FPS(*this) /= r; }\n    inline FPS\
-    \ operator%(const FPS& r) const { return FPS(*this) %= r; }\n\n    // log(f) =\
-    \ \\int f'/f dx, f[0] must be 1\n    inline friend FPS log(const FPS& f, long\
-    \ long deg) {\n        assert(!f.empty() && f[0] == 1);\n        FPS res = intg(diff(f)\
-    \ * inv(f, deg));\n        res.resize(deg);\n        return res;\n    }\n    inline\
-    \ friend FPS log(const FPS& f) {\n        return log(f, f.size());\n    }\n\n\
-    \    // exp(f), f[0] must be 0\n    inline friend FPS exp(const FPS& f, long long\
-    \ deg) {\n        assert(f.empty() || f[0] == 0);\n        FPS res(1, 1);\n  \
-    \      for (long long i = 1; i < deg; i <<= 1) {\n            res = res * (f.pre(i\
-    \ << 1) - log(res, i << 1) + 1).pre(i << 1);\n        }\n        res.resize(deg);\n\
-    \        return res;\n    }\n    inline friend FPS exp(const FPS& f) {\n     \
-    \   return exp(f, f.size());\n    }\n\n    // pow(f) = exp(e * log f)\n    inline\
-    \ friend FPS pow(const FPS& f, long long e, long long deg) {\n        if (e ==\
-    \ 0) {\n            auto ret = FPS(deg, 0);\n            if (deg > 0) ret[0] =\
-    \ 1;\n            return ret;\n        }\n        long long i = 0;\n        while\
-    \ (i < (long long)f.size() && f[i] == 0) ++i;\n        if (i == (long long)f.size())\
-    \ return FPS(deg, 0);\n        if ((i >= 1 && e >= deg) || i * e >= deg) return\
-    \ FPS(deg, 0);\n        mint k = f[i];\n        FPS res = exp(log((f >> i) / k,\
-    \ deg) * e, deg) * k.pow(e) << (e * i);\n        res.resize(deg);\n        return\
-    \ res;\n    }\n    inline friend FPS pow(const FPS& f, long long e) {\n      \
-    \  return pow(f, e, f.size());\n    }\n\n    inline friend FPS taylor_shift(FPS\
-    \ f, mint a) {\n        using C = Combination<mint>;\n        int n = f.size();\n\
-    \        C::extend(n);\n        for (int i = 0; i < n; i++) f[i] *= C::factorial(i);\n\
-    \        std::reverse(f.begin(), f.end());\n        FPS<mint> g(n, 1);\n     \
-    \   for (int i = 1; i < n; i++) g[i] = g[i - 1] * a * C::inv(i);\n        f =\
-    \ (f * g).pre(n);\n        std::reverse(f.begin(), f.end());\n        for (int\
-    \ i = 0; i < n; i++) f[i] *= C::inverse_factorial(i);\n        return f;\n   \
-    \ }\n};\n\ntemplate <typename mint>\nFPS<mint> modpow(const FPS<mint>& f, long\
-    \ long n, const FPS<mint>& m) {\n    if (n == 0) return FPS<mint>(1, 1);\n   \
-    \ auto t = modpow(f, n / 2, m);\n    t = (t * t) % m;\n    if (n & 1) t = (t *\
-    \ f) % m;\n    return t;\n}\n#line 14 \"src/dp/subset-sum-count.hpp\"\n\n/**\n\
-    \ * @brief \u548C\u304C s \u306B\u306A\u308B\u90E8\u5206\u96C6\u5408 (\u5404\u8981\
-    \u7D20\u306F 1 \u56DE\u307E\u3067) \u306E\u500B\u6570\u3092\u3001s = 0, 1, ...,\
-    \ S \u306B\u3064\u3044\u3066\u6C42\u3081\u308B (DP) O(N S)\n * @tparam T \u500B\
-    \u6570\u306E\u578B (modint \u3084 long long)\n * @param a 0 \u4EE5\u4E0A\u306E\
-    \u6574\u6570\u306E\u5217\n */\ntemplate <typename T>\nstd::vector<T> subset_sum_count_dp(const\
+    \      return *this = divmod(*this, r).second;\n    }\n    inline FPS operator/(const\
+    \ FPS& r) const { return FPS(*this) /= r; }\n    inline FPS operator%(const FPS&\
+    \ r) const { return FPS(*this) %= r; }\n    // {f / g, f % g}, g must be normalized\
+    \ (g.back() must not be 0)\n    inline friend std::pair<FPS, FPS> divmod(const\
+    \ FPS& f, const FPS& g) {\n        assert(!g.empty());\n        assert(g.back()\
+    \ != 0);\n        FPS q = f / g;\n        FPS r = f - q * g;\n        return {q,\
+    \ r};\n    }\n\n    // log(f) = \\int f'/f dx, f[0] must be 1\n    inline friend\
+    \ FPS log(const FPS& f, long long deg) {\n        assert(!f.empty() && f[0] ==\
+    \ 1);\n        FPS res = intg(diff(f) * inv(f, deg));\n        res.resize(deg);\n\
+    \        return res;\n    }\n    inline friend FPS log(const FPS& f) {\n     \
+    \   return log(f, f.size());\n    }\n\n    // exp(f), f[0] must be 0\n    inline\
+    \ friend FPS exp(const FPS& f, long long deg) {\n        assert(f.empty() || f[0]\
+    \ == 0);\n        FPS res(1, 1);\n        for (long long i = 1; i < deg; i <<=\
+    \ 1) {\n            res = res * (f.pre(i << 1) - log(res, i << 1) + 1).pre(i <<\
+    \ 1);\n        }\n        res.resize(deg);\n        return res;\n    }\n    inline\
+    \ friend FPS exp(const FPS& f) {\n        return exp(f, f.size());\n    }\n\n\
+    \    // pow(f) = exp(e * log f)\n    inline friend FPS pow(const FPS& f, long\
+    \ long e, long long deg) {\n        if (e == 0) {\n            auto ret = FPS(deg,\
+    \ 0);\n            if (deg > 0) ret[0] = 1;\n            return ret;\n       \
+    \ }\n        long long i = 0;\n        while (i < (long long)f.size() && f[i]\
+    \ == 0) ++i;\n        if (i == (long long)f.size()) return FPS(deg, 0);\n    \
+    \    if ((i >= 1 && e >= deg) || i * e >= deg) return FPS(deg, 0);\n        mint\
+    \ k = f[i];\n        FPS res = exp(log((f >> i) / k, deg) * e, deg) * k.pow(e)\
+    \ << (e * i);\n        res.resize(deg);\n        return res;\n    }\n    inline\
+    \ friend FPS pow(const FPS& f, long long e) {\n        return pow(f, e, f.size());\n\
+    \    }\n\n    inline friend FPS taylor_shift(FPS f, mint a) {\n        using C\
+    \ = Combination<mint>;\n        int n = f.size();\n        C::extend(n);\n   \
+    \     for (int i = 0; i < n; i++) f[i] *= C::factorial(i);\n        std::reverse(f.begin(),\
+    \ f.end());\n        FPS<mint> g(n, 1);\n        for (int i = 1; i < n; i++) g[i]\
+    \ = g[i - 1] * a * C::inv(i);\n        f = (f * g).pre(n);\n        std::reverse(f.begin(),\
+    \ f.end());\n        for (int i = 0; i < n; i++) f[i] *= C::inverse_factorial(i);\n\
+    \        return f;\n    }\n};\n\ntemplate <typename mint>\nFPS<mint> modpow(const\
+    \ FPS<mint>& f, long long n, const FPS<mint>& m) {\n    if (n == 0) return FPS<mint>(1,\
+    \ 1);\n    auto t = modpow(f, n / 2, m);\n    t = (t * t) % m;\n    if (n & 1)\
+    \ t = (t * f) % m;\n    return t;\n}\n#line 14 \"src/dp/subset-sum-count.hpp\"\
+    \n\n/**\n * @brief \u548C\u304C s \u306B\u306A\u308B\u90E8\u5206\u96C6\u5408 (\u5404\
+    \u8981\u7D20\u306F 1 \u56DE\u307E\u3067) \u306E\u500B\u6570\u3092\u3001s = 0,\
+    \ 1, ..., S \u306B\u3064\u3044\u3066\u6C42\u3081\u308B (DP) O(N S)\n * @tparam\
+    \ T \u500B\u6570\u306E\u578B (modint \u3084 long long)\n * @param a 0 \u4EE5\u4E0A\
+    \u306E\u6574\u6570\u306E\u5217\n */\ntemplate <typename T>\nstd::vector<T> subset_sum_count_dp(const\
     \ std::vector<long long>& a, long long S) {\n    assert(0 <= S && S < INT_MAX);\n\
     \    const int t = static_cast<int>(S);\n    std::vector<T> dp(t + 1, T(0));\n\
     \    dp[0] = T(1);\n    for (long long x : a) {\n        assert(x >= 0);\n   \
@@ -942,7 +944,7 @@ data:
   isVerificationFile: true
   path: test/unittest/subset-sum.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:27:48+09:00'
+  timestamp: '2026-10-18 18:36:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/subset-sum.test.cpp

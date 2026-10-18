@@ -265,6 +265,9 @@ data:
       path: src/math/rational.hpp
       title: "\u6709\u7406\u6570"
     - icon: ':heavy_check_mark:'
+      path: src/math/saturating.hpp
+      title: "\u98FD\u548C\u6F14\u7B97"
+    - icon: ':heavy_check_mark:'
       path: src/math/sqrt.hpp
       title: "\u6574\u6570\u306E\u5E73\u65B9\u6839"
     - icon: ':heavy_check_mark:'
@@ -851,6 +854,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/rolling-hash.test.cpp
       title: test/unittest/rolling-hash.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/saturating.test.cpp
+      title: test/unittest/saturating.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/segtree-beats.test.cpp
       title: test/unittest/segtree-beats.test.cpp

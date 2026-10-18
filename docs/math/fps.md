@@ -46,6 +46,7 @@ mint y = f.eval(2);            // f(2)
 | `exp(f, deg)` | $\exp f$ | $f_0 = 0$ | $O(n \log n)$ |
 | `pow(f, e, deg)` | $f^e$ | | $O(n \log n)$ |
 | `taylor_shift(f, a)` | $f(x + a)$ | $n$ が mod より小さい | $O(n \log n)$ |
+| `divmod(f, g)` | `std::pair` で商 `f / g` と余り `f % g` を返す (`/` と `%` を別々に使うより速い) | `g` の最高次の係数が 0 でない | $O(n \log n)$ |
 | `gcd(f, g)` | 多項式の gcd | | $O(n^2 \log n)$ |
 | `modpow(f, e, m)` | $f^e \bmod m$ (多項式の余り) | | $O(\lvert m \rvert \log \lvert m \rvert \log e)$ |
 

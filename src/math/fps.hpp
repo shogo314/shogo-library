@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <utility>
 #include <vector>
 
 #include "combinatorics.hpp"
@@ -153,14 +154,18 @@ struct FPS : std::vector<mint> {
         return *this;
     }
     inline FPS& operator%=(const FPS& r) {
-        assert(!r.empty());
-        assert(r.back() != 0);
-        this->normalize();
-        FPS q = (*this) / r;
-        return *this -= q * r;
+        return *this = divmod(*this, r).second;
     }
     inline FPS operator/(const FPS& r) const { return FPS(*this) /= r; }
     inline FPS operator%(const FPS& r) const { return FPS(*this) %= r; }
+    // {f / g, f % g}, g must be normalized (g.back() must not be 0)
+    inline friend std::pair<FPS, FPS> divmod(const FPS& f, const FPS& g) {
+        assert(!g.empty());
+        assert(g.back() != 0);
+        FPS q = f / g;
+        FPS r = f - q * g;
+        return {q, r};
+    }
 
     // log(f) = \int f'/f dx, f[0] must be 1
     inline friend FPS log(const FPS& f, long long deg) {

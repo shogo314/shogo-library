@@ -10,6 +10,7 @@
 #include <iterator>
 #include <numeric>
 #include <type_traits>
+#include <utility>
 
 template <typename T1, typename T2>
 inline constexpr bool chmin(T1& a, T2 b) {
@@ -68,6 +69,15 @@ inline constexpr std::common_type_t<T1, T2> floordiv(T1 a, T2 b) {
 template <typename T1, typename T2>
 inline constexpr std::common_type_t<T1, T2> ceildiv(T1 a, T2 b) {
     return a / b + (a % b != 0 && (a < 0) == (b < 0));
+}
+/**
+ * {floor(a / b), a - b * floor(a / b)} (b != 0、負の数も可)
+ * 余りは 0 または b と同じ符号になる
+ */
+template <typename T1, typename T2>
+inline constexpr std::pair<std::common_type_t<T1, T2>, std::common_type_t<T1, T2>> divmod(T1 a, T2 b) {
+    std::common_type_t<T1, T2> q = floordiv(a, b);
+    return {q, a - q * b};
 }
 
 /**

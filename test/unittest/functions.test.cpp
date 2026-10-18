@@ -9,6 +9,7 @@
 #include <cmath>
 #include <iostream>
 #include <random>
+#include <utility>
 
 #include "../../src/utility/binary-search.hpp"
 
@@ -47,6 +48,10 @@ int main() {
         if (b != 0) {
             check(floordiv(a, b) == (long long)std::floor((double)a / b), "floordiv");
             check(ceildiv(a, b) == (long long)std::ceil((double)a / b), "ceildiv");
+            auto [q, r] = divmod(a, b);
+            check(q == floordiv(a, b) && q * b + r == a, "divmod");
+            check(r == 0 || (r < 0) == (b < 0), "divmod 余りの符号");
+            check(std::abs(r) < std::abs(b), "divmod 余りの大きさ");
         }
 
         // inrange / inrect
@@ -91,7 +96,10 @@ int main() {
         long long n = -7;
         check(floordiv(n, 2) == -4 && ceildiv(n, 2) == -3, "long long と int の混在");
     }
+    check(divmod(7, 3) == std::pair(2, 1) && divmod(-7, 3) == std::pair(-3, 2), "divmod 決まった値");
+    check(divmod(7, -3) == std::pair(-3, -2) && divmod(-7, -3) == std::pair(2, -1), "divmod 決まった値 (b < 0)");
     static_assert(floordiv(-1LL, 1000000000000LL) == -1 && ceildiv(1LL, 1000000000000LL) == 1);
+    static_assert(divmod(-1LL, 1000000000000LL) == std::pair(-1LL, 999999999999LL));
 
     if (ok) std::cout << "Hello World" << std::endl;
 }

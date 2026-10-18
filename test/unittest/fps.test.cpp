@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
-// FPS の単項の -、定数を引く -、eval、gcd、modpow を愚直な多項式演算と比較する
+// FPS の単項の -、定数を引く -、eval、gcd、modpow、divmod を愚直な多項式演算と比較する
 // FPS の + と - は結果の末尾の 0 を取り除く (仕様) ので、多項式としての比較は末尾の 0 を除いて行う
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
@@ -135,6 +135,24 @@ int main() {
     }
     // n = 0 は 1
     if (P(modpow(F(P{5, 6}), 0, F(P{1, 1, 1}))) != P{1}) ok = false;
+
+    // divmod: f = q g + r、deg r < deg g を満たし、f / g、f % g と一致する。NTT を使う長さも含める
+    for (int rep = 0; rep < 300 && ok; rep++) {
+        int big = (rep % 10 == 0) ? 100 : 0;
+        P g = random_poly(rng, rng() % 6 + 1 + big / 2, true);
+        P f = random_poly(rng, rng() % 12 + big, false);
+        auto [q, r] = divmod(F(f), F(g));
+        if (trim(P(r)) != naive_mod(f, g)) ok = false, std::cerr << "divmod r " << rep << std::endl;
+        if (trim(naive_mul(P(q), g)) != trim(P(F(f) - F(r)))) ok = false, std::cerr << "divmod q " << rep << std::endl;
+        if (trim(P(q)) != trim(P(F(f) / F(g))) || trim(P(r)) != trim(P(F(f) % F(g)))) ok = false;
+    }
+    // 次数が g より小さければ商は 0、余りは f (末尾の 0 を除く)
+    {
+        auto [q, r] = divmod(F(P{1, 2, 0}), F(P{3, 4, 5}));
+        if (!trim(P(q)).empty() || P(r) != P{1, 2}) ok = false;
+        auto [q0, r0] = divmod(F(), F(P{3, 4}));
+        if (!trim(P(q0)).empty() || !trim(P(r0)).empty()) ok = false;
+    }
 
     if (ok) std::cout << "Hello World" << std::endl;
 }

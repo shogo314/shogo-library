@@ -43,7 +43,20 @@ for (long long s : combinations_mask(4, 2)) { }  // 3, 5, 6, 9, 10, 12
 | `subsets(mask)` | `mask` の部分集合を `mask` から 0 まで降順に (0 と `mask` を含む) | $O(2^{\mathrm{popcount}(mask)})$ |
 | `supersets(mask, n)` | $n$ ビットの集合のうち `mask` を含むものを `mask` から昇順に ($2^n - 1$ を含む)。$n \le 62$ | $O(2^{n - \mathrm{popcount}(mask)})$ |
 | `bits(mask)` | `mask` の立っているビットの位置を昇順に | $O(\mathrm{popcount}(mask))$ |
+| `add_one(mask, n)` | $n$ ビットのうち `mask` に含まれない位置 $i$ を昇順に、$i$ と `mask | 1 << i` の組 (`std::pair<long long, long long>`) で | $O(n - \mathrm{popcount}(mask))$ |
+| `remove_one(mask)` | `mask` に含まれる位置 $i$ を昇順に、$i$ と `mask ^ 1 << i` の組 (`std::pair<long long, long long>`) で | $O(\mathrm{popcount}(mask))$ |
 | `combinations_mask(n, k)` | $n$ ビットの集合のうち、ちょうど $k$ 個のビットが立つものを昇順に (Gosper's hack)。$n \le 62$、$k > n$ なら何も列挙しない | $O(\binom{n}{k})$ |
+
+`add_one` と `remove_one` は、構造化束縛で位置と集合を受け取れます。巡回セールスマン問題のように、1 つずつ要素を足していく bit DP の遷移に使えます。
+
+```cpp
+// dp[S][v] = S を訪れて v にいるときの最小コスト (配る DP)
+for (long long S = 0; S < (1LL << n); S++) {
+    for (long long v : bits(S)) {
+        for (auto [i, T] : add_one(S, n)) chmin(dp[T][i], dp[S][v] + dist[v][i]);
+    }
+}
+```
 
 すべての集合について部分集合を列挙すると、全体で $O(3^n)$ です。
 

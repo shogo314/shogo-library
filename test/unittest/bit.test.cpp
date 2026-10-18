@@ -12,6 +12,7 @@
 #include <random>
 #include <string>
 #include <type_traits>
+#include <utility>
 #include <vector>
 
 bool ok = true;
@@ -81,7 +82,7 @@ int main() {
         check(bit_floor(a) == floor, "bit_floor");
     }
 
-    // subsets / supersets / bits / combinations_mask を、すべての値を調べる愚直な方法と比べる
+    // subsets / supersets / bits / combinations_mask / add_one / remove_one を、すべての値を調べる愚直な方法と比べる
     for (int rep = 0; rep < 300 && ok; rep++) {
         int n = rng() % 9;
         long long mask = (long long)(rng() % (1ULL << n));
@@ -104,6 +105,19 @@ int main() {
         got.clear();
         for (long long i : bits(mask)) got.push_back(i);
         check(got == pos, "bits");
+        // add_one / remove_one: 1 つ足した (除いた) 集合と、その位置の組
+        std::vector<std::pair<long long, long long>> add, rem, gp;
+        for (int i = 0; i < n; i++) {
+            if (mask >> i & 1)
+                rem.emplace_back(i, mask ^ (1LL << i));
+            else
+                add.emplace_back(i, mask | (1LL << i));
+        }
+        for (auto [i, t] : add_one(mask, n)) gp.emplace_back(i, t);
+        check(gp == add, "add_one");
+        gp.clear();
+        for (auto [i, t] : remove_one(mask)) gp.emplace_back(i, t);
+        check(gp == rem, "remove_one");
         for (int k = 0; k <= n + 1; k++) {
             std::vector<long long> comb;
             for (long long s = 0; s < (1LL << n); s++) {
@@ -136,6 +150,16 @@ int main() {
             return r;
         }();
         static_assert(sum == 44 + 4);
+        constexpr long long sum2 = [] {
+            long long r = 0;
+            for (auto [i, t] : add_one(0b0101, 4)) r += i * 100 + t;  // (1, 0111), (3, 1101)
+            for (auto [i, t] : remove_one(0b0101)) r += i * 100 + t;  // (0, 0100), (2, 0001)
+            return r;
+        }();
+        static_assert(sum2 == (100 + 7) + (300 + 13) + (0 + 4) + (200 + 1));
+        got.clear();
+        for (auto [i, t] : add_one((1LL << 62) - 2, 62)) got.push_back(i), got.push_back(t);
+        check(got == std::vector<long long>{0, (1LL << 62) - 1}, "add_one 62 ビット");
     }
 
     // 0 のときは C++20 の <bit> と同じ値

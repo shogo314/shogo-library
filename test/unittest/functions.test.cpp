@@ -7,9 +7,13 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
 #include <iostream>
+#include <limits>
 #include <random>
+#include <type_traits>
 #include <utility>
+#include <vector>
 
 #include "../../src/utility/binary-search.hpp"
 
@@ -20,6 +24,22 @@ void check(bool cond, const char* what) {
         if (ok) std::cerr << "failed: " << what << std::endl;
         ok = false;
     }
+}
+
+// midpoint の答え: (a + b) / 2 を a の側に丸める。__int128 で計算する
+template <typename T>
+T naive_midpoint(T a, T b) {
+    __int128 s = (__int128)a + (__int128)b;
+    return (T)(a <= b ? floordiv(s, 2) : ceildiv(s, 2));
+}
+template <typename T>
+void check_midpoint(std::mt19937_64& rng) {
+    std::vector<T> xs = {std::numeric_limits<T>::min(), std::numeric_limits<T>::max(), 0, 1, (T)(std::numeric_limits<T>::max() - 1), (T)(std::numeric_limits<T>::min() + 1)};
+    if (std::is_signed_v<T>) xs.push_back((T)-1);
+    for (int i = 0; i < 30; i++) xs.push_back((T)rng()), xs.push_back((T)((T)rng() >> (rng() % (8 * sizeof(T)))));
+    for (T a : xs)
+        for (T b : xs) check(midpoint(a, b) == naive_midpoint(a, b), "midpoint 整数");
+    static_assert(std::is_same_v<decltype(midpoint(T(), T())), T>);
 }
 
 int main() {
@@ -100,6 +120,34 @@ int main() {
     check(divmod(7, -3) == std::pair(-3, -2) && divmod(-7, -3) == std::pair(2, -1), "divmod 決まった値 (b < 0)");
     static_assert(floordiv(-1LL, 1000000000000LL) == -1 && ceildiv(1LL, 1000000000000LL) == 1);
     static_assert(divmod(-1LL, 1000000000000LL) == std::pair(-1LL, 999999999999LL));
+
+    // midpoint: 整数は 8 ビットの型を全組、他は境界付近とランダム。浮動小数点数とポインタは決まった値
+    for (int a = -128; a < 128; a++)
+        for (int b = -128; b < 128; b++) check(midpoint((std::int8_t)a, (std::int8_t)b) == naive_midpoint((std::int8_t)a, (std::int8_t)b), "midpoint int8");
+    for (int a = 0; a < 256; a++)
+        for (int b = 0; b < 256; b++) check(midpoint((std::uint8_t)a, (std::uint8_t)b) == naive_midpoint((std::uint8_t)a, (std::uint8_t)b), "midpoint uint8");
+    check_midpoint<short>(rng);
+    check_midpoint<int>(rng);
+    check_midpoint<unsigned>(rng);
+    check_midpoint<long long>(rng);
+    check_midpoint<unsigned long long>(rng);
+    {
+        constexpr double M = std::numeric_limits<double>::max(), D = std::numeric_limits<double>::denorm_min();
+        check(midpoint(1.0, 4.0) == 2.5 && midpoint(-3.0, 1.0) == -1.0, "midpoint double");
+        check(midpoint(M, M) == M && midpoint(-M, M) == 0.0 && midpoint(M, M / 2) == M * 0.75, "midpoint double あふれない");
+        check(midpoint(D, 4.0) == 2.0 && midpoint(4.0, D) == 2.0 && midpoint(D, D) == D, "midpoint double 非正規化数");
+        check(midpoint(1.0f, 2.0f) == 1.5f && std::is_same_v<decltype(midpoint(1.0f, 2.0f)), float>, "midpoint float");
+        for (int rep = 0; rep < 1000; rep++) {
+            double a = (double)(long long)(rng() % 2000001 - 1000000) / 1024, b = (double)(long long)(rng() % 2000001 - 1000000) / 1024;
+            check(midpoint(a, b) == (a + b) / 2, "midpoint double ランダム");
+        }
+        static int arr[10];
+        check(midpoint(arr, arr + 9) == arr + 4 && midpoint(arr + 9, arr) == arr + 5 && midpoint(arr + 3, arr + 3) == arr + 3, "midpoint ポインタ");
+    }
+    static_assert(midpoint(1, 4) == 2 && midpoint(4, 1) == 3 && midpoint(-3, 0) == -2);
+    static_assert(midpoint(std::numeric_limits<long long>::max(), std::numeric_limits<long long>::max() - 2) == std::numeric_limits<long long>::max() - 1);
+    static_assert(midpoint(0u, 4294967295u) == 2147483647u && midpoint(4294967295u, 0u) == 2147483648u);
+    static_assert(midpoint(1.0, 2.0) == 1.5);
 
     if (ok) std::cout << "Hello World" << std::endl;
 }

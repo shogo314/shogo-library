@@ -23,8 +23,12 @@ if (inrect(i, j, h, w)) { /* グリッドの範囲内 */ }
 | `inrange(x, a, b)` | $a \le x < b$ か | $O(1)$ |
 | `inrect(x, y, a, b)` | $0 \le x < a$ かつ $0 \le y < b$ か | $O(1)$ |
 | `max(a, b)` / `min(a, b)` | `long long` に揃えて比較する (`int` と `long long` を混ぜて渡せる) | $O(1)$ |
+| `abs(x)` | `std::abs` | $O(1)$ |
+| `gcd(a, b)` / `lcm(a, b)` | `std::gcd` / `std::lcm` | $O(\log \max(\lvert a \rvert, \lvert b \rvert))$ |
+| `size(c)` | `std::size` (コンテナや配列の要素数) | $O(1)$ |
+| `midpoint(a, b)` | `std::midpoint`。$a$ と $b$ の中点をあふれずに求める (整数は $a$ の側に丸める)。ポインタも可 | $O(1)$ |
 
-`std::abs`、`std::gcd`、`std::lcm`、`std::size` は `using` 宣言してあるので、`std::` なしで使えます。
+`abs`、`gcd`、`lcm`、`size`、`midpoint` は `std::` 版を `using` 宣言したものなので、`std::` なしで使えます。`std::midpoint` は C++20 からなので、C++17 では同じ値を返すものを自前で用意しています。
 
 ## 関連
 

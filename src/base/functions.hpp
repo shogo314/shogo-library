@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cmath>
 #include <iterator>
+#include <limits>
 #include <numeric>
 #include <type_traits>
 #include <utility>
@@ -42,6 +43,32 @@ using std::abs;
 using std::gcd;
 using std::lcm;
 using std::size;
+
+#if __cplusplus >= 202002L
+using std::midpoint;
+#else
+// C++20 の std::midpoint と同じ (整数は a の側に丸め、あふれない)
+template <typename T>
+inline constexpr std::enable_if_t<std::is_integral_v<T> && !std::is_same_v<T, bool>, T> midpoint(T a, T b) noexcept {
+    using U = std::make_unsigned_t<T>;
+    if (a <= b) return static_cast<T>(a + static_cast<T>(static_cast<U>(static_cast<U>(b) - static_cast<U>(a)) >> 1));
+    return static_cast<T>(a - static_cast<T>(static_cast<U>(static_cast<U>(a) - static_cast<U>(b)) >> 1));
+}
+template <typename T>
+inline constexpr std::enable_if_t<std::is_floating_point_v<T>, T> midpoint(T a, T b) noexcept {
+    constexpr T lo = std::numeric_limits<T>::min() * 2;
+    constexpr T hi = std::numeric_limits<T>::max() / 2;
+    const T abs_a = a < 0 ? -a : a, abs_b = b < 0 ? -b : b;
+    if (abs_a <= hi && abs_b <= hi) return (a + b) / 2;
+    if (abs_a < lo) return a + b / 2;
+    if (abs_b < lo) return a / 2 + b;
+    return a / 2 + b / 2;
+}
+template <typename T>
+inline constexpr std::enable_if_t<std::is_object_v<T>, T*> midpoint(T* a, T* b) noexcept {
+    return a + (b - a) / 2;
+}
+#endif
 
 template <typename T>
 constexpr T extgcd(const T& a, const T& b, T& x, T& y) {

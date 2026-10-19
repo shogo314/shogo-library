@@ -39,3 +39,22 @@ jobs:
         GH_PAT: ${{ secrets.GITHUB_TOKEN }}
         YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
       run: oj-verify all -j $(nproc) --timeout=6000
+
+  # .clang-format で整形済みかだけを確かめる (整形はしない)
+  format:
+    runs-on: ubuntu-24.04
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Set up Python
+      uses: actions/setup-python@v7
+      with:
+        python-version: '3.11'
+
+    # 版によって整形の結果が変わることがあるので固定する
+    - name: Install clang-format
+      run: pip3 install clang-format==19.1.7
+
+    - name: Check formatting
+      run: find src test \( -name '*.hpp' -o -name '*.cpp' \) -print0 | xargs -0 clang-format --dry-run --Werror

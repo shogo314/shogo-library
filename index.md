@@ -271,6 +271,9 @@ data:
       path: src/math/sqrt.hpp
       title: "\u6574\u6570\u306E\u5E73\u65B9\u6839"
     - icon: ':heavy_check_mark:'
+      path: src/math/stern-brocot.hpp
+      title: "Stern\u2013Brocot \u6728\u3068\u9023\u5206\u6570"
+    - icon: ':heavy_check_mark:'
       path: src/math/xor-basis.hpp
       title: "XOR \u57FA\u5E95 (F2 \u4E0A\u306E\u7DDA\u5F62\u57FA\u5E95)"
   - name: src/others
@@ -874,6 +877,9 @@ data:
       path: test/unittest/sqrt.test.cpp
       title: test/unittest/sqrt.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/stern-brocot.test.cpp
+      title: test/unittest/stern-brocot.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/string.test.cpp
       title: test/unittest/string.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1187,6 +1193,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/staticrmq.test.cpp
       title: test/yosupo/staticrmq.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/stern-brocot-tree.test.cpp
+      title: test/yosupo/stern-brocot-tree.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/subset-convolution.test.cpp
       title: test/yosupo/subset-convolution.test.cpp

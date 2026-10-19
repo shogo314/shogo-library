@@ -5,6 +5,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/math/rational.hpp
     title: "\u6709\u7406\u6570"
+  - icon: ':heavy_check_mark:'
+    path: src/math/stern-brocot.hpp
+    title: "Stern\u2013Brocot \u6728\u3068\u9023\u5206\u6570"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/1160.test.cpp
@@ -21,6 +24,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/rational.test.cpp
     title: test/unittest/rational.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/stern-brocot.test.cpp
+    title: test/unittest/stern-brocot.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/stern-brocot-tree.test.cpp
+    title: test/yosupo/stern-brocot-tree.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -135,15 +144,18 @@ data:
   isVerificationFile: false
   path: src/base/functions.hpp
   requiredBy:
+  - src/math/stern-brocot.hpp
   - src/math/rational.hpp
   timestamp: '2026-10-18 18:36:16+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/rational.test.cpp
   - test/unittest/functions.test.cpp
+  - test/unittest/stern-brocot.test.cpp
   - test/aoj/1160.test.cpp
   - test/aoj/ntl-1-e.test.cpp
   - test/aoj/dsl-5-a.test.cpp
+  - test/yosupo/stern-brocot-tree.test.cpp
 documentation_of: src/base/functions.hpp
 layout: document
 title: "\u6C4E\u7528\u95A2\u6570 (chmin, chmax \u306A\u3069)"

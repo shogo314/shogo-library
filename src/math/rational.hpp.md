@@ -4,11 +4,20 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/base/functions.hpp
     title: "\u6C4E\u7528\u95A2\u6570 (chmin, chmax \u306A\u3069)"
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':heavy_check_mark:'
+    path: src/math/stern-brocot.hpp
+    title: "Stern\u2013Brocot \u6728\u3068\u9023\u5206\u6570"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/unittest/rational.test.cpp
     title: test/unittest/rational.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/stern-brocot.test.cpp
+    title: test/unittest/stern-brocot.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/stern-brocot-tree.test.cpp
+    title: test/yosupo/stern-brocot-tree.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -279,11 +288,14 @@ data:
   - src/base/functions.hpp
   isVerificationFile: false
   path: src/math/rational.hpp
-  requiredBy: []
+  requiredBy:
+  - src/math/stern-brocot.hpp
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/rational.test.cpp
+  - test/unittest/stern-brocot.test.cpp
+  - test/yosupo/stern-brocot-tree.test.cpp
 documentation_of: src/math/rational.hpp
 layout: document
 title: "\u6709\u7406\u6570"
@@ -329,3 +341,4 @@ std::cout << c << '\n';    // 1/2
 ## 関連
 
 - 偏角でソートするだけなら [偏角](../geometry/angle.hpp) の `Angle`
+- 区間に入る最も単純な分数・連分数・Stern–Brocot 木は [Stern–Brocot 木と連分数](stern-brocot.hpp)

@@ -302,7 +302,56 @@ data:
     \ = c == 'R' ? b.hi_den : b.lo_den, cur_den = c == 'R' ? b.lo_den : b.hi_den;\n\
     \        T step = add_den == 0 ? m : (n - cur_den) / add_den;\n        b.move(c,\
     \ std::min(m, step));\n        if (step < m) break;\n    }\n    return {Rational<T>(b.lo_num,\
-    \ b.lo_den) + k, Rational<T>(b.hi_num, b.hi_den) + k};\n}\n\n}  // namespace stern_brocot\n"
+    \ b.lo_den) + k, Rational<T>(b.hi_num, b.hi_den) + k};\n}\n\n/**\n * @brief \u5206\
+    \u6BCD\u304C max_den \u4EE5\u4E0B (max_num \u3092\u6E21\u3059\u3068\u5206\u5B50\
+    \u3082 max_num \u4EE5\u4E0B) \u306E 0 \u4EE5\u4E0A\u306E\u5206\u6570\u306E\u4E2D\
+    \u3067\u3001\u5358\u8ABF\u306A pred \u306E\u5883\u76EE\u3092\u6C42\u3081\u308B\
+    \n * pred(x) \u306F\u5C0F\u3055\u3044 x \u3067 true\u3001\u5927\u304D\u3044 x\
+    \ \u3067 false \u3068\u306A\u308B\u5358\u8ABF\u306A\u95A2\u6570\u3067\u3001pred(0)\
+    \ \u306F true \u3067\u3042\u308B\u3053\u3068\n * \u623B\u308A\u5024\u306F {{pred\
+    \ \u304C true \u306E\u6700\u5927\u306E\u5206\u6570\u306E\u5206\u5B50, \u5206\u6BCD\
+    }, {pred \u304C false \u306E\u6700\u5C0F\u306E\u5206\u6570\u306E\u5206\u5B50,\
+    \ \u5206\u6BCD}}\u3002false \u306E\u5074\u304C\u306A\u3051\u308C\u3070 {1, 0}\
+    \ (+\u221E)\n * max_num \u3092\u6E21\u3055\u306A\u3044\u306A\u3089\u3001pred \u306F\
+    \u3069\u3053\u304B\u3067 false \u306B\u306A\u308B\u3053\u3068 (\u305D\u3046\u3067\
+    \u306A\u3044\u3068\u7D42\u308F\u3089\u306A\u3044)\n * pred \u3092\u547C\u3076\u56DE\
+    \u6570\u306F O(log max_den) \u7A0B\u5EA6 (max_num \u3092\u6E21\u3055\u306A\u3044\
+    \u306A\u3089 O(log (max_den + \u5883\u76EE\u306E\u5024)))\n * @pre max_den >=\
+    \ 1\n */\ntemplate <typename T, typename Pred>\nstd::pair<std::pair<T, T>, std::pair<T,\
+    \ T>> binary_search(T max_den, Pred pred, std::optional<T> max_num = std::nullopt)\
+    \ {\n    assert(max_den >= 1);\n    assert(!max_num || *max_num >= 0);\n    assert(pred(Rational<T>(0)));\n\
+    \    internal::Bounds<T> b;\n    // \u5206\u5B50\u304C 0 \u4EE5\u4E0B\u306A\u3089\
+    \ 0 \u3057\u304B\u9078\u3079\u306A\u3044 (\u4E0A\u7AEF +\u221E \u304B\u3089\u5DE6\
+    \u3078\u9032\u3093\u3067\u3082\u5206\u5B50 1 \u306E\u307E\u307E\u306A\u306E\u3067\
+    \u3001\u4E0A\u9650\u3092\u6E80\u305F\u305B\u306A\u3044)\n    if (max_num && *max_num\
+    \ == 0) return {{0, 1}, {1, 0}};\n    // \u52D5\u304F\u65B9\u306E\u7AEF (num,\
+    \ den) \u306B k \u56DE\u3082\u3046\u4E00\u65B9\u306E\u7AEF (add_num, add_den)\
+    \ \u3092\u8DB3\u305B\u308B\u56DE\u6570\u306E\u4E0A\u9650 (\u306A\u3051\u308C\u3070\
+    \ -1)\n    auto limit = [&](T num, T den, T add_num, T add_den) -> T {\n     \
+    \   T res = -1;\n        if (add_den > 0) res = (max_den - den) / add_den;\n \
+    \       if (max_num && add_num > 0) {\n            T r = (*max_num - num) / add_num;\n\
+    \            res = res == -1 ? r : std::min(res, r);\n        }\n        return\
+    \ res;\n    };\n    // ok(k) \u304C k = 0 \u3067 true\u3001k \u304C\u5927\u304D\
+    \u3044\u3068 false \u306B\u306A\u308B\u3068\u304D\u3001ok(k) \u304C true \u306E\
+    \u6700\u5927\u306E k (k <= bound\u3001bound = -1 \u306A\u3089\u4E0A\u9650\u306A\
+    \u3057)\n    // \u500D\u3005\u306B\u9032\u3081\u3066\u304B\u3089\u3001\u901A\u308A\
+    \u904E\u304E\u305F\u5206\u3092\u4E8C\u5206\u63A2\u7D22\u3067\u623B\u3059\u3002\
+    ok \u3092\u547C\u3076\u56DE\u6570\u306F O(log k)\n    auto search = [](T bound,\
+    \ auto ok) -> T {\n        T k = 0, s = 1;\n        while ((bound == -1 || s <=\
+    \ bound - k) && ok(k + s)) k += s, s *= 2;\n        while (s > 1) {\n        \
+    \    s /= 2;\n            if ((bound == -1 || s <= bound - k) && ok(k + s)) k\
+    \ += s;\n        }\n        return k;\n    };\n    while (true) {\n        bool\
+    \ moved = false;\n        // \u4E0B\u7AEF\u3092\u4E0A\u3052\u308B: \u4E0B\u7AEF\
+    \ + k \u4E0A\u7AEF \u3067 pred \u304C true \u306E\u6700\u5927\u306E k\n      \
+    \  T k = search(limit(b.lo_num, b.lo_den, b.hi_num, b.hi_den), [&](T k) {\n  \
+    \          return pred(Rational<T>(b.lo_num + k * b.hi_num, b.lo_den + k * b.hi_den));\n\
+    \        });\n        if (k > 0) b.move('R', k), moved = true;\n        // \u4E0A\
+    \u7AEF\u3092\u4E0B\u3052\u308B: \u4E0A\u7AEF + k \u4E0B\u7AEF \u3067 pred \u304C\
+    \ false \u306E\u6700\u5927\u306E k\n        k = search(limit(b.hi_num, b.hi_den,\
+    \ b.lo_num, b.lo_den), [&](T k) {\n            return !pred(Rational<T>(b.hi_num\
+    \ + k * b.lo_num, b.hi_den + k * b.lo_den));\n        });\n        if (k > 0)\
+    \ b.move('L', k), moved = true;\n        if (!moved) break;\n    }\n    return\
+    \ {{b.lo_num, b.lo_den}, {b.hi_num, b.hi_den}};\n}\n\n}  // namespace stern_brocot\n"
   code: "#pragma once\n\n/**\n * @file stern-brocot.hpp\n * @brief Stern\u2013Brocot\
     \ \u6728\u3068\u9023\u5206\u6570\n */\n\n#include <algorithm>\n#include <cassert>\n\
     #include <optional>\n#include <utility>\n#include <vector>\n\n#include \"rational.hpp\"\
@@ -428,14 +477,63 @@ data:
     \ = c == 'R' ? b.hi_den : b.lo_den, cur_den = c == 'R' ? b.lo_den : b.hi_den;\n\
     \        T step = add_den == 0 ? m : (n - cur_den) / add_den;\n        b.move(c,\
     \ std::min(m, step));\n        if (step < m) break;\n    }\n    return {Rational<T>(b.lo_num,\
-    \ b.lo_den) + k, Rational<T>(b.hi_num, b.hi_den) + k};\n}\n\n}  // namespace stern_brocot\n"
+    \ b.lo_den) + k, Rational<T>(b.hi_num, b.hi_den) + k};\n}\n\n/**\n * @brief \u5206\
+    \u6BCD\u304C max_den \u4EE5\u4E0B (max_num \u3092\u6E21\u3059\u3068\u5206\u5B50\
+    \u3082 max_num \u4EE5\u4E0B) \u306E 0 \u4EE5\u4E0A\u306E\u5206\u6570\u306E\u4E2D\
+    \u3067\u3001\u5358\u8ABF\u306A pred \u306E\u5883\u76EE\u3092\u6C42\u3081\u308B\
+    \n * pred(x) \u306F\u5C0F\u3055\u3044 x \u3067 true\u3001\u5927\u304D\u3044 x\
+    \ \u3067 false \u3068\u306A\u308B\u5358\u8ABF\u306A\u95A2\u6570\u3067\u3001pred(0)\
+    \ \u306F true \u3067\u3042\u308B\u3053\u3068\n * \u623B\u308A\u5024\u306F {{pred\
+    \ \u304C true \u306E\u6700\u5927\u306E\u5206\u6570\u306E\u5206\u5B50, \u5206\u6BCD\
+    }, {pred \u304C false \u306E\u6700\u5C0F\u306E\u5206\u6570\u306E\u5206\u5B50,\
+    \ \u5206\u6BCD}}\u3002false \u306E\u5074\u304C\u306A\u3051\u308C\u3070 {1, 0}\
+    \ (+\u221E)\n * max_num \u3092\u6E21\u3055\u306A\u3044\u306A\u3089\u3001pred \u306F\
+    \u3069\u3053\u304B\u3067 false \u306B\u306A\u308B\u3053\u3068 (\u305D\u3046\u3067\
+    \u306A\u3044\u3068\u7D42\u308F\u3089\u306A\u3044)\n * pred \u3092\u547C\u3076\u56DE\
+    \u6570\u306F O(log max_den) \u7A0B\u5EA6 (max_num \u3092\u6E21\u3055\u306A\u3044\
+    \u306A\u3089 O(log (max_den + \u5883\u76EE\u306E\u5024)))\n * @pre max_den >=\
+    \ 1\n */\ntemplate <typename T, typename Pred>\nstd::pair<std::pair<T, T>, std::pair<T,\
+    \ T>> binary_search(T max_den, Pred pred, std::optional<T> max_num = std::nullopt)\
+    \ {\n    assert(max_den >= 1);\n    assert(!max_num || *max_num >= 0);\n    assert(pred(Rational<T>(0)));\n\
+    \    internal::Bounds<T> b;\n    // \u5206\u5B50\u304C 0 \u4EE5\u4E0B\u306A\u3089\
+    \ 0 \u3057\u304B\u9078\u3079\u306A\u3044 (\u4E0A\u7AEF +\u221E \u304B\u3089\u5DE6\
+    \u3078\u9032\u3093\u3067\u3082\u5206\u5B50 1 \u306E\u307E\u307E\u306A\u306E\u3067\
+    \u3001\u4E0A\u9650\u3092\u6E80\u305F\u305B\u306A\u3044)\n    if (max_num && *max_num\
+    \ == 0) return {{0, 1}, {1, 0}};\n    // \u52D5\u304F\u65B9\u306E\u7AEF (num,\
+    \ den) \u306B k \u56DE\u3082\u3046\u4E00\u65B9\u306E\u7AEF (add_num, add_den)\
+    \ \u3092\u8DB3\u305B\u308B\u56DE\u6570\u306E\u4E0A\u9650 (\u306A\u3051\u308C\u3070\
+    \ -1)\n    auto limit = [&](T num, T den, T add_num, T add_den) -> T {\n     \
+    \   T res = -1;\n        if (add_den > 0) res = (max_den - den) / add_den;\n \
+    \       if (max_num && add_num > 0) {\n            T r = (*max_num - num) / add_num;\n\
+    \            res = res == -1 ? r : std::min(res, r);\n        }\n        return\
+    \ res;\n    };\n    // ok(k) \u304C k = 0 \u3067 true\u3001k \u304C\u5927\u304D\
+    \u3044\u3068 false \u306B\u306A\u308B\u3068\u304D\u3001ok(k) \u304C true \u306E\
+    \u6700\u5927\u306E k (k <= bound\u3001bound = -1 \u306A\u3089\u4E0A\u9650\u306A\
+    \u3057)\n    // \u500D\u3005\u306B\u9032\u3081\u3066\u304B\u3089\u3001\u901A\u308A\
+    \u904E\u304E\u305F\u5206\u3092\u4E8C\u5206\u63A2\u7D22\u3067\u623B\u3059\u3002\
+    ok \u3092\u547C\u3076\u56DE\u6570\u306F O(log k)\n    auto search = [](T bound,\
+    \ auto ok) -> T {\n        T k = 0, s = 1;\n        while ((bound == -1 || s <=\
+    \ bound - k) && ok(k + s)) k += s, s *= 2;\n        while (s > 1) {\n        \
+    \    s /= 2;\n            if ((bound == -1 || s <= bound - k) && ok(k + s)) k\
+    \ += s;\n        }\n        return k;\n    };\n    while (true) {\n        bool\
+    \ moved = false;\n        // \u4E0B\u7AEF\u3092\u4E0A\u3052\u308B: \u4E0B\u7AEF\
+    \ + k \u4E0A\u7AEF \u3067 pred \u304C true \u306E\u6700\u5927\u306E k\n      \
+    \  T k = search(limit(b.lo_num, b.lo_den, b.hi_num, b.hi_den), [&](T k) {\n  \
+    \          return pred(Rational<T>(b.lo_num + k * b.hi_num, b.lo_den + k * b.hi_den));\n\
+    \        });\n        if (k > 0) b.move('R', k), moved = true;\n        // \u4E0A\
+    \u7AEF\u3092\u4E0B\u3052\u308B: \u4E0A\u7AEF + k \u4E0B\u7AEF \u3067 pred \u304C\
+    \ false \u306E\u6700\u5927\u306E k\n        k = search(limit(b.hi_num, b.hi_den,\
+    \ b.lo_num, b.lo_den), [&](T k) {\n            return !pred(Rational<T>(b.hi_num\
+    \ + k * b.lo_num, b.hi_den + k * b.lo_den));\n        });\n        if (k > 0)\
+    \ b.move('L', k), moved = true;\n        if (!moved) break;\n    }\n    return\
+    \ {{b.lo_num, b.lo_den}, {b.hi_num, b.hi_den}};\n}\n\n}  // namespace stern_brocot\n"
   dependsOn:
   - src/math/rational.hpp
   - src/base/functions.hpp
   isVerificationFile: false
   path: src/math/stern-brocot.hpp
   requiredBy: []
-  timestamp: '2026-10-19 19:44:32+09:00'
+  timestamp: '2026-10-19 20:17:54+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/stern-brocot.test.cpp
@@ -455,6 +553,10 @@ Q m = stern_brocot::lca(Q(3, 2), Q(5, 3));                     // 3/2
 Q s = stern_brocot::simplest_between(Q(60, 191), Q(11, 35));   // 71/226 (分母が最小の分数)
 auto [lo, hi] = stern_brocot::best_approximation(Q(314159, 100000), 10LL);  // 25/8 と 22/7
 auto a = stern_brocot::continued_fraction(Q(415, 93));         // {4, 2, 6, 7}
+
+// 分母 10^9 以下の分数で √2 を挟む 2 つ (pred は小さい側で true の単調な関数)
+auto [l, h] = stern_brocot::binary_search(1000000000LL, [](const Q& y) { return y.num() * y.num() <= 2 * y.den() * y.den(); });
+// l = {1086679440, 768398401}, h = {768398401, 543339720} ({分子, 分母} の組)
 ```
 
 Stern–Brocot 木は、根が $1/1$ で、頂点 $x$ の子孫がある開区間 $(l, h)$ を覆う二分木です ($l$、$h$ は $0/1$ や $1/0 = +\infty$ を含む分数)。頂点はその区間の両端の分子どうし・分母どうしを足した分数 (中間数) で、左の子は区間 $(l, x)$、右の子は区間 $(x, h)$ の頂点です。正の有理数はすべて、既約分数としてちょうど 1 回ずつ現れます。
@@ -475,10 +577,12 @@ Stern–Brocot 木は、根が $1/1$ で、頂点 $x$ の子孫がある開区�
 | `range(x)` | $x$ の子孫 ($x$ 自身を含む) が覆う開区間 `{ {下端の分子, 分母}, {上端の分子, 分母}}`。下端が 0 なら `{0, 1}`、上端が $+\infty$ なら `{1, 0}` | $O(\log N)$ |
 | `simplest_between(lo, hi, include_lo = false, include_hi = false)` | 区間に入る分数のうち、分母が最小で、その中で分子の絶対値が最小のもの。既定は開区間 $(lo, hi)$ で、`include_lo`・`include_hi` を `true` にするとその端を含める。負の区間や 0 をまたぐ区間でもよい | $O(\log N)$ |
 | `best_approximation(x, n)` | 分母が $n$ 以下の分数のうち、$x$ 以下で最大のものと $x$ 以上で最小のもの `{lower, upper}`。$x$ の分母が $n$ 以下なら `{x, x}` | $O(\log N)$ |
+| `binary_search(max_den, pred, max_num = nullopt)` | 分母が `max_den` 以下 (`max_num` を渡すと分子も `max_num` 以下) の 0 以上の分数の中での、単調な `pred` の境目。`{ {true の最大の分子, 分母}, {false の最小の分子, 分母} }` を返し、false の側がなければ後ろは `{1, 0}` ($+\infty$) | `pred` を $O(\log N)$ 回 |
 
 - `ancestor` と `best_approximation` の `k`、`n` は `T` 型です。`10LL` のように型を合わせて渡します。
 - 区間で分母が最小の分数は 1 つに決まり、その分子も最小になります (Stern–Brocot 木で区間に入る頂点のうち最も浅いもの)。
 - `simplest_between` は、ユークリッドの互除法のように整数部分を引いて逆数をとることを繰り返します。掛け算を使わないので、入力の分子・分母が $10^{18}$ 程度でもあふれません。答えの分子・分母も `T` に収まる必要があります。
+- `binary_search` の `pred` は `Rational<T>` を受け取り、小さい値で `true`、大きい値で `false` となる単調な関数です。`pred(0)` は `true` である必要があります。`max_num` を渡さないなら、`pred` はどこかで `false` になる必要があります (そうでないと上側へ進み続けて終わりません)。Stern–Brocot 木を根から下り、同じ向きに何歩進めるかを、倍々に進めてから二分探索して決めます。浮動小数点の二分探索と違い、誤差なく境目の分数が求まります。`best_approximation(x, n)` は `pred(y) = (y <= x)` の場合にあたります。
 - 道は連分数展開から作ります。$x = [a_0; a_1, \dots, a_n]$ への道は $R^{a_0} L^{a_1} R^{a_2} \cdots$ で、最後の項だけ 1 少なくなります。
 
 ## 関連

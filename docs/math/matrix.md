@@ -51,6 +51,30 @@ auto t = g.rotate(1).vstr();          // 時計回りに 90 度回して vector<
 
 浮動小数点型なら部分ピボット選択を行い、絶対値が $10^{-9}$ 未満を 0 とみなします。
 
+## 連立一次方程式
+
+```cpp
+Matrix<mint> A(n, m);       // n 本の式、m 個の変数
+std::vector<mint> b(n);
+auto sol = A.solve(b);      // Ax = b
+if (!sol) { /* 解なし */ }
+sol->x;                     // 解の 1 つ (特殊解)
+sol->basis;                 // Ax = 0 の解空間の基底。解全体は x + (basis の一次結合)
+long long r = A.rank();
+auto [R, pivots] = A.reduced_row_echelon();
+```
+
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `A.solve(b)` | 連立一次方程式 $Ax = b$ の解 `Solution` (`x` と `basis`)。解がなければ `std::nullopt` | $O(nm \min(n, m))$ |
+| `A.rank()` | ランク | $O(nm \min(n, m))$ |
+| `A.kernel()` | $Ax = 0$ の解空間の基底 (長さ $m$ のベクトルを $m - \mathrm{rank}$ 個) | $O(nm \min(n, m))$ |
+| `A.reduced_row_echelon()` | 簡約化した行列 (各行の主成分が 1 で、主成分のある列の他の成分が 0) と、各行の主成分の列 `{R, pivots}`。`pivots` の個数がランクで、0 だけの行は下にまとまる | $O(nm \min(n, m))$ |
+
+- 解は、主成分のない列 (自由変数) を 0 にした特殊解と、自由変数を 1 つだけ 1 にした基底で表します。mod $p$ なら解の個数は $p^{\lvert basis \rvert}$ で、解が 1 つに決まるのは `basis` が空のときです。
+- 要素は体である必要があり、`modint` を想定しています。浮動小数点型では 0 かどうかを `==` で判定するので、誤差のある計算には使えません。
+- mod 2 の連立一次方程式は、64 要素ずつまとめて計算する [F2 の行列](f2-matrix.hpp) のほうが速いです。
+
 ## グリッド操作
 
 いずれも新しい行列を返します。
@@ -65,5 +89,6 @@ auto t = g.rotate(1).vstr();          // 時計回りに 90 度回して vector<
 
 ## 関連
 
-- `det`、`inv` で使う体の要素は [modint](modint.hpp)
+- `det`、`inv`、`solve` で使う体の要素は [modint](modint.hpp)
+- mod 2 の行列は [F2 の行列](f2-matrix.hpp)
 - 行列累乗の代わりに漸化式を多項式で扱うなら [形式的冪級数](fps.hpp)

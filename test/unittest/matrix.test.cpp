@@ -2,6 +2,7 @@
 
 // Matrix の +・-・==・シフト系・col・str・初期化子リスト・代入・走査と、
 // OperatorProperty を自分で定義した場合 (GF(2) と、既定の演算を継承したもの) の det と inv を愚直な計算と比較する
+// solve・rank・kernel・reduced_row_echelon を、変数の値をすべて試す愚直な実装と比較する (mod 3 と GF(2))
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../src/math/matrix.hpp"
@@ -68,6 +69,75 @@ mint naive_det(const std::vector<std::vector<mint>>& a) {
         res += (j % 2 == 0) ? t : -t;
     }
     return res;
+}
+
+// 連立一次方程式: p^m 通りの x をすべて試して、解の集合と solve・rank・kernel の結果が合うか確かめる
+// T は mod p の要素 (P は演算)。to_t は整数から要素を作る
+template <typename T, typename P, typename ToT>
+bool check_linear(std::mt19937_64& rng, int p, ToT to_t) {
+    for (int rep = 0; rep < 500; rep++) {
+        int n = rng() % 5 + 1, m = rng() % 5 + 1;
+        std::vector<std::vector<T>> a(n, std::vector<T>(m));
+        for (auto& row : a)
+            for (auto& x : row) x = to_t(rng() % p);
+        // ランクが小さい行列も作る (ある行を別の行の定数倍にする)
+        if (n >= 2 && rng() % 2) {
+            int i = rng() % n, j = rng() % n;
+            T c = to_t(rng() % p);
+            for (int k = 0; k < m; k++) a[i][k] = P::mul(c, a[j][k]);
+        }
+        std::vector<T> b(n);
+        for (auto& x : b) x = to_t(rng() % p);
+        Matrix<T, P> A(a);
+        auto apply = [&](const std::vector<T>& x) {
+            std::vector<T> y(n, P::zero());
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < m; j++) y[i] = P::add(y[i], P::mul(a[i][j], x[j]));
+            return y;
+        };
+        // すべての x を試して、Ax = b と Ax = 0 の解を数える
+        long long total = 1;
+        for (int j = 0; j < m; j++) total *= p;
+        long long cnt_b = 0, cnt_0 = 0;
+        std::vector<T> zero(n, P::zero());
+        for (long long code = 0; code < total; code++) {
+            std::vector<T> x(m);
+            long long c = code;
+            for (int j = 0; j < m; j++) x[j] = to_t(c % p), c /= p;
+            auto y = apply(x);
+            cnt_b += y == b;
+            cnt_0 += y == zero;
+        }
+        // rank: Ax = 0 の解は p^(m - rank) 個
+        long long r = A.rank(), pw = 1;
+        for (int j = 0; j < m - r; j++) pw *= p;
+        if (pw != cnt_0) return false;
+        // kernel: m - rank 個で、どれも Ax = 0 を満たし、一次独立
+        auto ker = A.kernel();
+        if (static_cast<long long>(ker.size()) != m - r) return false;
+        for (const auto& v : ker)
+            if (apply(v) != zero) return false;
+        if (!ker.empty() && Matrix<T, P>(ker).rank() != static_cast<long long>(ker.size())) return false;
+        // solve: 解がなければ nullopt、あれば特殊解が解で、基底の個数から解の個数が合う
+        auto sol = A.solve(b);
+        if (!sol) {
+            if (cnt_b != 0) return false;
+        } else {
+            if (apply(sol->x) != b || sol->basis.size() != ker.size()) return false;
+            if (cnt_b != pw) return false;
+            for (const auto& v : sol->basis)
+                if (apply(v) != zero) return false;
+        }
+        // reduced_row_echelon: 主成分は 1 で、その列の他の成分は 0。主成分の列は増えていく
+        auto [R, piv] = A.reduced_row_echelon();
+        if (static_cast<long long>(piv.size()) != r) return false;
+        for (int i = 0; i < r; i++) {
+            if (i > 0 && piv[i] <= piv[i - 1]) return false;
+            for (int k = 0; k < n; k++)
+                if (R[k][piv[i]] != (k == i ? P::one() : P::zero())) return false;
+        }
+    }
+    return true;
 }
 
 int main() {
@@ -186,6 +256,18 @@ int main() {
         }
     }
     if (!ok) std::cerr << "mod" << std::endl;
+
+    // 連立一次方程式 (mod 3 と GF(2))
+    using mint3 = static_modint<3>;
+    if (!check_linear<mint3, matrix::OperatorPropertyDefault<mint3>>(rng, 3, [](long long x) { return mint3(x); })) ok = false, std::cerr << "linear mod 3" << std::endl;
+    if (!check_linear<int, GF2>(rng, 2, [](long long x) { return static_cast<int>(x); })) ok = false, std::cerr << "linear GF(2)" << std::endl;
+    // 0 行の方程式や、列のない行列
+    {
+        Matrix<mint> A(2, 3);
+        auto sol = A.solve({0, 0});
+        if (!sol || sol->basis.size() != 3 || A.rank() != 0) ok = false;
+        if (A.solve({1, 0})) ok = false;
+    }
 
     if (ok) std::cout << "Hello World" << std::endl;
 }

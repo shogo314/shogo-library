@@ -55,6 +55,11 @@ template <typename C>
 struct has_len<C, std::void_t<decltype(len(std::declval<C&>()))>> : std::true_type {};
 static_assert(has_len<std::vector<int>>::value && has_len<int[3]>::value && has_len<std::list<int>>::value);
 static_assert(!has_len<std::forward_list<int>>::value && !has_len<int>::value);
+// size() だけを持つ自作の型 (begin() と end() はない) にも、C++17 と C++20 のどちらでも使える
+struct OnlySize {
+    int size() const { return 5; }
+};
+static_assert(has_len<OnlySize>::value && has_len<const OnlySize>::value);
 
 int main() {
     std::mt19937_64 rng(314);
@@ -173,6 +178,9 @@ int main() {
         check(len(std::vector<int>()) == 0 && len(std::string_view("xy")) == 2 && len("abc") == 4, "len 空・一時オブジェクト・文字列リテラル");
         check(len(v) - 6 == -1, "len は符号付き");
         static_assert(std::is_same_v<decltype(len(v)), long long>);
+        OnlySize os;
+        check(len(os) == 5 && len(OnlySize{}) == 5, "len size() だけを持つ型");
+        static_assert(std::is_same_v<decltype(len(os)), long long>);
         static_assert(len(std::array<int, 3>{}) == 3);
 #if __cplusplus >= 202002L
         check(len(std::views::iota(2, 9)) == 7, "len views::iota");

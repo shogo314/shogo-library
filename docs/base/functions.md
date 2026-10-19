@@ -23,7 +23,7 @@ if (inrect(i, j, h, w)) { /* グリッドの範囲内 */ }
 | `inrange(x, a, b)` | $a \le x < b$ か | $O(1)$ |
 | `inrect(x, y, a, b)` | $0 \le x < a$ かつ $0 \le y < b$ か | $O(1)$ |
 | `max(a, b)` / `min(a, b)` | `long long` に揃えて比較する (`int` と `long long` を混ぜて渡せる) | $O(1)$ |
-| `len(c)` | 要素数を `long long` で返す (`std::ssize` の `long long` 版)。C++20 では `std::ranges::size` を使うので、`views::iota` など大きさの分かる range 全般に使える。文字列リテラルは終端の `'\0'` も数える | $O(1)$ |
+| `len(c)` | 要素数を `long long` で返す (`std::ssize` の `long long` 版)。`size()` を持つ型なら、`begin()`・`end()` のない自作の型 (ライブラリの `FastSet`・`RBST` など) にも使える。C++20 では `std::ranges::size` を使うので、`views::iota` など大きさの分かる range 全般にも使える。文字列リテラルは終端の `'\0'` も数える | $O(1)$ |
 | `abs(x)` | `std::abs` | $O(1)$ |
 | `gcd(a, b)` / `lcm(a, b)` | `std::gcd` / `std::lcm` | $O(\log \max(\lvert a \rvert, \lvert b \rvert))$ |
 | `size(c)` | `std::size` (コンテナや配列の要素数) | $O(1)$ |

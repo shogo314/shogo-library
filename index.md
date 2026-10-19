@@ -236,6 +236,9 @@ data:
         \u30E1\u30D3\u30A6\u30B9\u5909\u63DB\u3068 GCD\u30FBLCM \u7573\u307F\u8FBC\
         \u307F"
     - icon: ':heavy_check_mark:'
+      path: src/math/f2-matrix.hpp
+      title: "F2 \u306E\u884C\u5217 (mod 2)"
+    - icon: ':heavy_check_mark:'
       path: src/math/floor-sum.hpp
       title: "floor sum (\u4E00\u6B21\u95A2\u6570\u306E\u5E8A\u95A2\u6570\u306E\u548C\
         )"
@@ -722,6 +725,9 @@ data:
       path: test/unittest/erasable-priority-queue.test.cpp
       title: test/unittest/erasable-priority-queue.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/f2-matrix.test.cpp
+      title: test/unittest/f2-matrix.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/fenwick-tree.test.cpp
       title: test/unittest/fenwick-tree.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1018,6 +1024,9 @@ data:
       path: test/yosupo/inv-of-fps.test.cpp
       title: test/yosupo/inv-of-fps.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/inverse-matrix-mod-2.test.cpp
+      title: test/yosupo/inverse-matrix-mod-2.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/jump-on-tree.1.test.cpp
       title: test/yosupo/jump-on-tree.1.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1054,8 +1063,20 @@ data:
       path: test/yosupo/longest-increasing-subsequence.test.cpp
       title: test/yosupo/longest-increasing-subsequence.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/matrix-det-mod-2.test.cpp
+      title: test/yosupo/matrix-det-mod-2.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/matrix-det.test.cpp
       title: test/yosupo/matrix-det.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/matrix-product-mod-2.test.cpp
+      title: test/yosupo/matrix-product-mod-2.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/matrix-rank-mod-2.test.cpp
+      title: test/yosupo/matrix-rank-mod-2.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/matrix-rank.test.cpp
+      title: test/yosupo/matrix-rank.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/minimum-spanning-tree.1.test.cpp
       title: test/yosupo/minimum-spanning-tree.1.test.cpp
@@ -1218,6 +1239,12 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/sum-of-floor-of-linear.test.cpp
       title: test/yosupo/sum-of-floor-of-linear.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/system-of-linear-equations-mod-2.test.cpp
+      title: test/yosupo/system-of-linear-equations-mod-2.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/system-of-linear-equations.test.cpp
+      title: test/yosupo/system-of-linear-equations.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/tree-diameter.test.cpp
       title: test/yosupo/tree-diameter.test.cpp

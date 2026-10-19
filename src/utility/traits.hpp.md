@@ -324,6 +324,9 @@ data:
     path: test/yosupo/matrix-det.test.cpp
     title: test/yosupo/matrix-det.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/matrix-rank.test.cpp
+    title: test/yosupo/matrix-rank.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/partition-function_1.test.cpp
     title: test/yosupo/partition-function_1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -395,6 +398,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/subset-convolution.test.cpp
     title: test/yosupo/subset-convolution.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/system-of-linear-equations.test.cpp
+    title: test/yosupo/system-of-linear-equations.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
     title: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
@@ -653,6 +659,8 @@ data:
   - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
   - test/yosupo/associative-array.test.cpp
   - test/yosupo/sharp-p-subset-sum.1.test.cpp
+  - test/yosupo/matrix-rank.test.cpp
+  - test/yosupo/system-of-linear-equations.test.cpp
   - test/yosupo/range-affine-range-sum.1.test.cpp
   - test/yosupo/convolution-mod.test.cpp
   - test/yosupo/matrix-det.test.cpp

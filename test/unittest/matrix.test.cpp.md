@@ -27,11 +27,14 @@ data:
     \u67FB\u3068\u3001\n// OperatorProperty \u3092\u81EA\u5206\u3067\u5B9A\u7FA9\u3057\
     \u305F\u5834\u5408 (GF(2) \u3068\u3001\u65E2\u5B9A\u306E\u6F14\u7B97\u3092\u7D99\
     \u627F\u3057\u305F\u3082\u306E) \u306E det \u3068 inv \u3092\u611A\u76F4\u306A\
-    \u8A08\u7B97\u3068\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\
-    \u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello\
-    \ World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/math/matrix.hpp\"\n\n\
-    /**\n * @file matrix.hpp\n * @brief \u884C\u5217\n */\n\n#include <algorithm>\n\
-    #include <cassert>\n#include <cmath>\n#include <cstddef>\n#include <initializer_list>\n\
+    \u8A08\u7B97\u3068\u6BD4\u8F03\u3059\u308B\n// solve\u30FBrank\u30FBkernel\u30FB\
+    reduced_row_echelon \u3092\u3001\u5909\u6570\u306E\u5024\u3092\u3059\u3079\u3066\
+    \u8A66\u3059\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u6BD4\u8F03\u3059\u308B (mod\
+    \ 3 \u3068 GF(2))\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\
+    \u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\
+    \u3059\u308B\n\n#line 2 \"src/math/matrix.hpp\"\n\n/**\n * @file matrix.hpp\n\
+    \ * @brief \u884C\u5217\n */\n\n#include <algorithm>\n#include <cassert>\n#include\
+    \ <cmath>\n#include <cstddef>\n#include <initializer_list>\n#include <optional>\n\
     #include <string>\n#include <type_traits>\n#include <utility>\n#include <valarray>\n\
     #include <vector>\n\nnamespace matrix {\ntemplate <typename T>\nstruct OperatorPropertyDefault\
     \ {\n    constexpr static T zero() { return T(0); }\n    constexpr static T add(const\
@@ -227,14 +230,83 @@ data:
     \ A[j][i])));\n                    }\n                }\n            }\n     \
     \       Matrix ret(n, n);\n            for (long long i = 0; i < n; i++)\n   \
     \             for (long long j = 0; j < n; j++) ret[i][j] = A[i][n + j];\n   \
-    \         return ret;\n        }\n    }\n\n   private:\n    /**\n     * @brief\
-    \ \u30AC\u30A6\u30B9\u306E\u6D88\u53BB\u6CD5\u306E\u524D\u9032\u6D88\u53BB\u3092\
-    \u884C\u3063\u3066\u4E0A\u4E09\u89D2\u884C\u5217\u3092\u4F5C\u308A\u3001\u884C\
-    \u5217\u5F0F\u3092\u8FD4\u3059\n     * @param A \u884C\u5217\n     * @return \u884C\
-    \u5217\u5F0F\n     * @note\n     * rank(A) < n\u306E\u5834\u5408\u306F0\u3092\u8FD4\
-    \u3059\n     * \u6B63\u65B9\u884C\u5217\u3067\u306F\u306A\u3044\u5834\u5408\u3001\
-    0\u4EE5\u5916\u304C\u6B8B\u308B\u5DE6\u304B\u3089n\u500B\u306E\u5217\u3092\u4F7F\
-    \u3063\u3066\u884C\u5217\u5F0F\u3092\u8A08\u7B97\u3059\u308B\n     */\n    T forward_elimination(std::vector<std::valarray<T>>&\
+    \         return ret;\n        }\n    }\n\n    /**\n     * @brief \u9023\u7ACB\
+    \u4E00\u6B21\u65B9\u7A0B\u5F0F Ax = b \u306E\u89E3\n     * \u89E3\u5168\u4F53\u306F\
+    \ x + c_0 basis[0] + c_1 basis[1] + ... (c_i \u306F\u4EFB\u610F)\n     */\n  \
+    \  struct Solution {\n        std::vector<T> x;                   //!< \u89E3\u306E\
+    \ 1 \u3064 (\u7279\u6B8A\u89E3)\n        std::vector<std::vector<T>> basis;  //!<\
+    \ Ax = 0 \u306E\u89E3\u7A7A\u9593\u306E\u57FA\u5E95\n    };\n\n    /**\n     *\
+    \ @brief \u7C21\u7D04\u5316\u3057\u305F\u884C\u5217 (\u884C\u57FA\u672C\u5909\u5F62\
+    \u3067\u3001\u5404\u884C\u306E\u4E3B\u6210\u5206\u3092 1 \u306B\u3057\u3001\u4E3B\
+    \u6210\u5206\u306E\u3042\u308B\u5217\u306E\u4ED6\u306E\u6210\u5206\u3092 0 \u306B\
+    \u3057\u305F\u3082\u306E) \u3068\u3001\u5404\u884C\u306E\u4E3B\u6210\u5206\u306E\
+    \u5217\n     * \u4E3B\u6210\u5206\u306E\u5217\u306E\u500B\u6570\u304C\u30E9\u30F3\
+    \u30AF\u30020 \u3060\u3051\u306E\u884C\u306F\u4E0B\u306B\u307E\u3068\u307E\u308B\
+    \n     * @note \u5272\u308A\u7B97\u3092\u4F7F\u3046\u306E\u3067\u3001\u8981\u7D20\
+    \u306F\u4F53 (modint \u306A\u3069) \u3067\u3042\u308B\u3053\u3068\u3002\u6D6E\u52D5\
+    \u5C0F\u6570\u70B9\u578B\u306F\u8AA4\u5DEE\u3092\u8003\u3048\u306A\u3044\u306E\
+    \u3067\u4F7F\u3048\u306A\u3044\n     */\n    [[nodiscard]]\n    std::pair<Matrix,\
+    \ std::vector<long long>> reduced_row_echelon() const {\n        Matrix A = *this;\n\
+    \        std::vector<long long> pivots = reduce(A.v, m);\n        return {A, pivots};\n\
+    \    }\n    /**\n     * @brief \u30E9\u30F3\u30AF O(nm min(n, m))\n     */\n \
+    \   [[nodiscard]]\n    long long rank() const {\n        auto A = v;\n       \
+    \ return reduce(A, m).size();\n    }\n    /**\n     * @brief Ax = 0 \u306E\u89E3\
+    \u7A7A\u9593\u306E\u57FA\u5E95 (\u9577\u3055 m \u306E\u30D9\u30AF\u30C8\u30EB\u3092\
+    \ m - rank \u500B) O(nm min(n, m))\n     */\n    [[nodiscard]]\n    std::vector<std::vector<T>>\
+    \ kernel() const {\n        auto A = v;\n        std::vector<long long> pivots\
+    \ = reduce(A, m);\n        return kernel_from_reduced(A, pivots);\n    }\n   \
+    \ /**\n     * @brief \u9023\u7ACB\u4E00\u6B21\u65B9\u7A0B\u5F0F Ax = b \u3092\u89E3\
+    \u304F\u3002\u89E3\u304C\u306A\u3051\u308C\u3070 std::nullopt O(nm min(n, m))\n\
+    \     */\n    [[nodiscard]]\n    std::optional<Solution> solve(const std::vector<T>&\
+    \ b) const {\n        assert(static_cast<long long>(b.size()) == n);\n       \
+    \ // \u62E1\u5927\u4FC2\u6570\u884C\u5217 [A | b] \u3092\u3001A \u306E\u5217\u3060\
+    \u3051\u3067\u7C21\u7D04\u5316\u3059\u308B\n        std::vector<std::vector<T>>\
+    \ A(n);\n        for (long long i = 0; i < n; i++) {\n            A[i] = v[i];\n\
+    \            A[i].push_back(b[i]);\n        }\n        std::vector<long long>\
+    \ pivots = reduce(A, m);\n        const long long r = pivots.size();\n       \
+    \ // \u5DE6\u5074\u304C 0 \u306B\u306A\u3063\u305F\u884C\u306E\u53F3\u8FBA\u304C\
+    \ 0 \u3067\u306A\u3051\u308C\u3070\u89E3\u306A\u3057\n        for (long long i\
+    \ = r; i < n; i++) {\n            if (A[i][m] != OperatorProperty::zero()) return\
+    \ std::nullopt;\n        }\n        Solution sol;\n        sol.x.assign(m, OperatorProperty::zero());\n\
+    \        for (long long i = 0; i < r; i++) sol.x[pivots[i]] = A[i][m];\n     \
+    \   sol.basis = kernel_from_reduced(A, pivots);\n        return sol;\n    }\n\n\
+    \   private:\n    // A \u306E\u5DE6\u304B\u3089 cols \u5217\u3092\u4F7F\u3063\u3066\
+    \u7C21\u7D04\u5316\u3057\u3001\u5404\u884C\u306E\u4E3B\u6210\u5206\u306E\u5217\
+    \u3092\u8FD4\u3059 (\u5217\u304C cols \u3088\u308A\u591A\u3044\u90E8\u5206\u3082\
+    \u4E00\u7DD2\u306B\u5909\u5F62\u3059\u308B)\n    static std::vector<long long>\
+    \ reduce(std::vector<std::vector<T>>& A, long long cols) {\n        const long\
+    \ long rows = A.size();\n        std::vector<long long> pivots;\n        for (long\
+    \ long c = 0, r = 0; c < cols && r < rows; c++) {\n            long long p = r;\n\
+    \            while (p < rows && A[p][c] == OperatorProperty::zero()) p++;\n  \
+    \          if (p == rows) continue;\n            std::swap(A[r], A[p]);\n    \
+    \        const long long w = A[r].size();\n            T scale = OperatorProperty::inv(A[r][c]);\n\
+    \            for (long long k = c; k < w; k++) A[r][k] = OperatorProperty::mul(A[r][k],\
+    \ scale);\n            for (long long i = 0; i < rows; i++) {\n              \
+    \  if (i == r || A[i][c] == OperatorProperty::zero()) continue;\n            \
+    \    T f = A[i][c];\n                for (long long k = c; k < w; k++) {\n   \
+    \                 A[i][k] = OperatorProperty::add(A[i][k], OperatorProperty::neg(OperatorProperty::mul(f,\
+    \ A[r][k])));\n                }\n            }\n            pivots.push_back(c);\n\
+    \            r++;\n        }\n        return pivots;\n    }\n    // \u7C21\u7D04\
+    \u5316\u3057\u305F A (\u5DE6\u304B\u3089 m \u5217) \u304B\u3089\u3001Ax = 0 \u306E\
+    \u89E3\u7A7A\u9593\u306E\u57FA\u5E95\u3092\u4F5C\u308B\n    std::vector<std::vector<T>>\
+    \ kernel_from_reduced(const std::vector<std::vector<T>>& A, const std::vector<long\
+    \ long>& pivots) const {\n        std::vector<bool> is_pivot(m, false);\n    \
+    \    for (long long c : pivots) is_pivot[c] = true;\n        std::vector<std::vector<T>>\
+    \ res;\n        // \u4E3B\u6210\u5206\u306E\u306A\u3044\u5217 (\u81EA\u7531\u5909\
+    \u6570) f \u3054\u3068\u306B\u3001x_f = 1\u3001\u4ED6\u306E\u81EA\u7531\u5909\u6570\
+    \u306F 0 \u3068\u3057\u305F\u89E3\n        for (long long f = 0; f < m; f++) {\n\
+    \            if (is_pivot[f]) continue;\n            std::vector<T> x(m, OperatorProperty::zero());\n\
+    \            x[f] = OperatorProperty::one();\n            for (long long i = 0;\
+    \ i < static_cast<long long>(pivots.size()); i++) x[pivots[i]] = OperatorProperty::neg(A[i][f]);\n\
+    \            res.push_back(x);\n        }\n        return res;\n    }\n\n   private:\n\
+    \    /**\n     * @brief \u30AC\u30A6\u30B9\u306E\u6D88\u53BB\u6CD5\u306E\u524D\
+    \u9032\u6D88\u53BB\u3092\u884C\u3063\u3066\u4E0A\u4E09\u89D2\u884C\u5217\u3092\
+    \u4F5C\u308A\u3001\u884C\u5217\u5F0F\u3092\u8FD4\u3059\n     * @param A \u884C\
+    \u5217\n     * @return \u884C\u5217\u5F0F\n     * @note\n     * rank(A) < n\u306E\
+    \u5834\u5408\u306F0\u3092\u8FD4\u3059\n     * \u6B63\u65B9\u884C\u5217\u3067\u306F\
+    \u306A\u3044\u5834\u5408\u30010\u4EE5\u5916\u304C\u6B8B\u308B\u5DE6\u304B\u3089\
+    n\u500B\u306E\u5217\u3092\u4F7F\u3063\u3066\u884C\u5217\u5F0F\u3092\u8A08\u7B97\
+    \u3059\u308B\n     */\n    T forward_elimination(std::vector<std::valarray<T>>&\
     \ A) const {\n        std::vector<long long> pivot_col(n, 0);\n        T d(1);\n\
     \        for (long long i = 0; i < n; i++) {\n            if (i - 1 >= 0) pivot_col[i]\
     \ = pivot_col[i - 1] + 1;\n            while (pivot_col[i] < m) {\n          \
@@ -277,8 +349,8 @@ data:
     \                for (long long k = pivot_col[i]; k < w; k++) {\n            \
     \        A[j][k] = OperatorProperty::add(A[j][k], OperatorProperty::neg(OperatorProperty::mul(A[i][k],\
     \ scale)));\n                }\n            }\n        }\n        return d;\n\
-    \    }\n};\n#line 8 \"test/unittest/matrix.test.cpp\"\n\n#include <iostream>\n\
-    #include <random>\n#line 13 \"test/unittest/matrix.test.cpp\"\n\n#line 2 \"src/math/modint.hpp\"\
+    \    }\n};\n#line 9 \"test/unittest/matrix.test.cpp\"\n\n#include <iostream>\n\
+    #include <random>\n#line 14 \"test/unittest/matrix.test.cpp\"\n\n#line 2 \"src/math/modint.hpp\"\
     \n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\
     \u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line\
     \ 9 \"src/math/modint.hpp\"\n#include <cstdint>\n#line 11 \"src/math/modint.hpp\"\
@@ -561,7 +633,7 @@ data:
     \ dynamic_modint(SignedIntegral value) noexcept\n        : base_type{value} {}\n\
     \n   private:\n    inline static value_type modulus = 998244353;\n};\n\nusing\
     \ modint998244353 = static_modint<998244353>;\nusing modint1000000007 = static_modint<1000000007>;\n\
-    using modint = dynamic_modint<-1>;\n#line 15 \"test/unittest/matrix.test.cpp\"\
+    using modint = dynamic_modint<-1>;\n#line 16 \"test/unittest/matrix.test.cpp\"\
     \n\nusing mint = static_modint<998244353>;\nusing VV = std::vector<std::vector<long\
     \ long>>;\n\n// xor \u3068 and \u306B\u3088\u308B\u4F53 GF(2)\nstruct GF2 {\n\
     \    static int zero() { return 0; }\n    static int add(const int& a, const int&\
@@ -589,7 +661,55 @@ data:
     \ (int i = 1; i < n; i++) {\n            std::vector<mint> row;\n            for\
     \ (int k = 0; k < n; k++)\n                if (k != j) row.push_back(a[i][k]);\n\
     \            b.push_back(row);\n        }\n        mint t = a[0][j] * naive_det(b);\n\
-    \        res += (j % 2 == 0) ? t : -t;\n    }\n    return res;\n}\n\nint main()\
+    \        res += (j % 2 == 0) ? t : -t;\n    }\n    return res;\n}\n\n// \u9023\
+    \u7ACB\u4E00\u6B21\u65B9\u7A0B\u5F0F: p^m \u901A\u308A\u306E x \u3092\u3059\u3079\
+    \u3066\u8A66\u3057\u3066\u3001\u89E3\u306E\u96C6\u5408\u3068 solve\u30FBrank\u30FB\
+    kernel \u306E\u7D50\u679C\u304C\u5408\u3046\u304B\u78BA\u304B\u3081\u308B\n//\
+    \ T \u306F mod p \u306E\u8981\u7D20 (P \u306F\u6F14\u7B97)\u3002to_t \u306F\u6574\
+    \u6570\u304B\u3089\u8981\u7D20\u3092\u4F5C\u308B\ntemplate <typename T, typename\
+    \ P, typename ToT>\nbool check_linear(std::mt19937_64& rng, int p, ToT to_t) {\n\
+    \    for (int rep = 0; rep < 500; rep++) {\n        int n = rng() % 5 + 1, m =\
+    \ rng() % 5 + 1;\n        std::vector<std::vector<T>> a(n, std::vector<T>(m));\n\
+    \        for (auto& row : a)\n            for (auto& x : row) x = to_t(rng() %\
+    \ p);\n        // \u30E9\u30F3\u30AF\u304C\u5C0F\u3055\u3044\u884C\u5217\u3082\
+    \u4F5C\u308B (\u3042\u308B\u884C\u3092\u5225\u306E\u884C\u306E\u5B9A\u6570\u500D\
+    \u306B\u3059\u308B)\n        if (n >= 2 && rng() % 2) {\n            int i = rng()\
+    \ % n, j = rng() % n;\n            T c = to_t(rng() % p);\n            for (int\
+    \ k = 0; k < m; k++) a[i][k] = P::mul(c, a[j][k]);\n        }\n        std::vector<T>\
+    \ b(n);\n        for (auto& x : b) x = to_t(rng() % p);\n        Matrix<T, P>\
+    \ A(a);\n        auto apply = [&](const std::vector<T>& x) {\n            std::vector<T>\
+    \ y(n, P::zero());\n            for (int i = 0; i < n; i++)\n                for\
+    \ (int j = 0; j < m; j++) y[i] = P::add(y[i], P::mul(a[i][j], x[j]));\n      \
+    \      return y;\n        };\n        // \u3059\u3079\u3066\u306E x \u3092\u8A66\
+    \u3057\u3066\u3001Ax = b \u3068 Ax = 0 \u306E\u89E3\u3092\u6570\u3048\u308B\n\
+    \        long long total = 1;\n        for (int j = 0; j < m; j++) total *= p;\n\
+    \        long long cnt_b = 0, cnt_0 = 0;\n        std::vector<T> zero(n, P::zero());\n\
+    \        for (long long code = 0; code < total; code++) {\n            std::vector<T>\
+    \ x(m);\n            long long c = code;\n            for (int j = 0; j < m; j++)\
+    \ x[j] = to_t(c % p), c /= p;\n            auto y = apply(x);\n            cnt_b\
+    \ += y == b;\n            cnt_0 += y == zero;\n        }\n        // rank: Ax\
+    \ = 0 \u306E\u89E3\u306F p^(m - rank) \u500B\n        long long r = A.rank(),\
+    \ pw = 1;\n        for (int j = 0; j < m - r; j++) pw *= p;\n        if (pw !=\
+    \ cnt_0) return false;\n        // kernel: m - rank \u500B\u3067\u3001\u3069\u308C\
+    \u3082 Ax = 0 \u3092\u6E80\u305F\u3057\u3001\u4E00\u6B21\u72EC\u7ACB\n       \
+    \ auto ker = A.kernel();\n        if (static_cast<long long>(ker.size()) != m\
+    \ - r) return false;\n        for (const auto& v : ker)\n            if (apply(v)\
+    \ != zero) return false;\n        if (!ker.empty() && Matrix<T, P>(ker).rank()\
+    \ != static_cast<long long>(ker.size())) return false;\n        // solve: \u89E3\
+    \u304C\u306A\u3051\u308C\u3070 nullopt\u3001\u3042\u308C\u3070\u7279\u6B8A\u89E3\
+    \u304C\u89E3\u3067\u3001\u57FA\u5E95\u306E\u500B\u6570\u304B\u3089\u89E3\u306E\
+    \u500B\u6570\u304C\u5408\u3046\n        auto sol = A.solve(b);\n        if (!sol)\
+    \ {\n            if (cnt_b != 0) return false;\n        } else {\n           \
+    \ if (apply(sol->x) != b || sol->basis.size() != ker.size()) return false;\n \
+    \           if (cnt_b != pw) return false;\n            for (const auto& v : sol->basis)\n\
+    \                if (apply(v) != zero) return false;\n        }\n        // reduced_row_echelon:\
+    \ \u4E3B\u6210\u5206\u306F 1 \u3067\u3001\u305D\u306E\u5217\u306E\u4ED6\u306E\u6210\
+    \u5206\u306F 0\u3002\u4E3B\u6210\u5206\u306E\u5217\u306F\u5897\u3048\u3066\u3044\
+    \u304F\n        auto [R, piv] = A.reduced_row_echelon();\n        if (static_cast<long\
+    \ long>(piv.size()) != r) return false;\n        for (int i = 0; i < r; i++) {\n\
+    \            if (i > 0 && piv[i] <= piv[i - 1]) return false;\n            for\
+    \ (int k = 0; k < n; k++)\n                if (R[k][piv[i]] != (k == i ? P::one()\
+    \ : P::zero())) return false;\n        }\n    }\n    return true;\n}\n\nint main()\
     \ {\n    std::mt19937_64 rng(314);\n    bool ok = true;\n\n    // \u521D\u671F\
     \u5316\u5B50\u30EA\u30B9\u30C8\u30FB\u4EE3\u5165\u30FB\u8D70\u67FB\u30FB==\n \
     \   {\n        Matrix<long long> A({{1, 2, 3}, {4, 5, 6}});\n        if (A.n !=\
@@ -659,46 +779,105 @@ data:
     \ ok = false;\n                    mint s = 0;\n                    for (int t\
     \ = 0; t < n; t++) s += a[i][t] * Bi[t][j];\n                    if (s != (i ==\
     \ j ? 1 : 0)) ok = false;\n                }\n        }\n    }\n    if (!ok) std::cerr\
-    \ << \"mod\" << std::endl;\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
-    }\n"
+    \ << \"mod\" << std::endl;\n\n    // \u9023\u7ACB\u4E00\u6B21\u65B9\u7A0B\u5F0F\
+    \ (mod 3 \u3068 GF(2))\n    using mint3 = static_modint<3>;\n    if (!check_linear<mint3,\
+    \ matrix::OperatorPropertyDefault<mint3>>(rng, 3, [](long long x) { return mint3(x);\
+    \ })) ok = false, std::cerr << \"linear mod 3\" << std::endl;\n    if (!check_linear<int,\
+    \ GF2>(rng, 2, [](long long x) { return static_cast<int>(x); })) ok = false, std::cerr\
+    \ << \"linear GF(2)\" << std::endl;\n    // 0 \u884C\u306E\u65B9\u7A0B\u5F0F\u3084\
+    \u3001\u5217\u306E\u306A\u3044\u884C\u5217\n    {\n        Matrix<mint> A(2, 3);\n\
+    \        auto sol = A.solve({0, 0});\n        if (!sol || sol->basis.size() !=\
+    \ 3 || A.rank() != 0) ok = false;\n        if (A.solve({1, 0})) ok = false;\n\
+    \    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// Matrix \u306E +\u30FB-\u30FB==\u30FB\u30B7\u30D5\u30C8\u7CFB\u30FBcol\u30FB\
     str\u30FB\u521D\u671F\u5316\u5B50\u30EA\u30B9\u30C8\u30FB\u4EE3\u5165\u30FB\u8D70\
     \u67FB\u3068\u3001\n// OperatorProperty \u3092\u81EA\u5206\u3067\u5B9A\u7FA9\u3057\
     \u305F\u5834\u5408 (GF(2) \u3068\u3001\u65E2\u5B9A\u306E\u6F14\u7B97\u3092\u7D99\
     \u627F\u3057\u305F\u3082\u306E) \u306E det \u3068 inv \u3092\u611A\u76F4\u306A\
-    \u8A08\u7B97\u3068\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\
-    \u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello\
-    \ World \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../src/math/matrix.hpp\"\
-    \n\n#include <iostream>\n#include <random>\n#include <string>\n#include <vector>\n\
-    \n#include \"../../src/math/modint.hpp\"\n\nusing mint = static_modint<998244353>;\n\
-    using VV = std::vector<std::vector<long long>>;\n\n// xor \u3068 and \u306B\u3088\
-    \u308B\u4F53 GF(2)\nstruct GF2 {\n    static int zero() { return 0; }\n    static\
-    \ int add(const int& a, const int& b) { return a ^ b; }\n    static int neg(const\
-    \ int& a) { return a; }\n    static int one() { return 1; }\n    static int mul(const\
-    \ int& a, const int& b) { return a & b; }\n    static int inv(const int& a) {\
-    \ return a; }  // 0 \u3067\u306A\u3044\u5143\u306F 1 \u3060\u3051\n};\n// \u65E2\
-    \u5B9A\u306E\u6F14\u7B97\u3092\u7D99\u627F\u3057\u305F\u5225\u306E\u578B (\u884C\
-    \u5217\u5F0F\u30FB\u9006\u884C\u5217\u306F valarray \u3092\u4F7F\u308F\u306A\u3044\
-    \u6C4E\u7528\u306E\u7D4C\u8DEF\u3092\u901A\u308B)\nstruct ModProp : matrix::OperatorPropertyDefault<mint>\
-    \ {};\n\nVV random_vv(std::mt19937_64& rng, int n, int m, int lo, int hi) {\n\
-    \    VV a(n, std::vector<long long>(m));\n    for (auto& row : a)\n        for\
-    \ (auto& x : row) x = lo + static_cast<long long>(rng() % (hi - lo + 1));\n  \
-    \  return a;\n}\n\n// GF(2) \u306E\u884C\u5217\u5F0F (\u611A\u76F4\u306A\u30AC\
-    \u30A6\u30B9\u306E\u6D88\u53BB\u6CD5)\nint naive_det_gf2(std::vector<std::vector<int>>\
-    \ a) {\n    int n = a.size();\n    for (int c = 0, r = 0; c < n; c++) {\n    \
-    \    int p = r;\n        while (p < n && a[p][c] == 0) p++;\n        if (p ==\
-    \ n) return 0;\n        std::swap(a[p], a[r]);\n        for (int i = 0; i < n;\
-    \ i++)\n            if (i != r && a[i][c])\n                for (int j = 0; j\
-    \ < n; j++) a[i][j] ^= a[r][j];\n        r++;\n    }\n    return 1;\n}\n\n// mod\
-    \ p \u306E\u884C\u5217\u5F0F (\u4F59\u56E0\u5B50\u5C55\u958B\u3002n \u306F\u5C0F\
-    \u3055\u3044\u3053\u3068)\nmint naive_det(const std::vector<std::vector<mint>>&\
-    \ a) {\n    int n = a.size();\n    if (n == 0) return 1;\n    mint res = 0;\n\
-    \    for (int j = 0; j < n; j++) {\n        std::vector<std::vector<mint>> b;\n\
-    \        for (int i = 1; i < n; i++) {\n            std::vector<mint> row;\n \
-    \           for (int k = 0; k < n; k++)\n                if (k != j) row.push_back(a[i][k]);\n\
+    \u8A08\u7B97\u3068\u6BD4\u8F03\u3059\u308B\n// solve\u30FBrank\u30FBkernel\u30FB\
+    reduced_row_echelon \u3092\u3001\u5909\u6570\u306E\u5024\u3092\u3059\u3079\u3066\
+    \u8A66\u3059\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u6BD4\u8F03\u3059\u308B (mod\
+    \ 3 \u3068 GF(2))\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\
+    \u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\
+    \u3059\u308B\n\n#include \"../../src/math/matrix.hpp\"\n\n#include <iostream>\n\
+    #include <random>\n#include <string>\n#include <vector>\n\n#include \"../../src/math/modint.hpp\"\
+    \n\nusing mint = static_modint<998244353>;\nusing VV = std::vector<std::vector<long\
+    \ long>>;\n\n// xor \u3068 and \u306B\u3088\u308B\u4F53 GF(2)\nstruct GF2 {\n\
+    \    static int zero() { return 0; }\n    static int add(const int& a, const int&\
+    \ b) { return a ^ b; }\n    static int neg(const int& a) { return a; }\n    static\
+    \ int one() { return 1; }\n    static int mul(const int& a, const int& b) { return\
+    \ a & b; }\n    static int inv(const int& a) { return a; }  // 0 \u3067\u306A\u3044\
+    \u5143\u306F 1 \u3060\u3051\n};\n// \u65E2\u5B9A\u306E\u6F14\u7B97\u3092\u7D99\
+    \u627F\u3057\u305F\u5225\u306E\u578B (\u884C\u5217\u5F0F\u30FB\u9006\u884C\u5217\
+    \u306F valarray \u3092\u4F7F\u308F\u306A\u3044\u6C4E\u7528\u306E\u7D4C\u8DEF\u3092\
+    \u901A\u308B)\nstruct ModProp : matrix::OperatorPropertyDefault<mint> {};\n\n\
+    VV random_vv(std::mt19937_64& rng, int n, int m, int lo, int hi) {\n    VV a(n,\
+    \ std::vector<long long>(m));\n    for (auto& row : a)\n        for (auto& x :\
+    \ row) x = lo + static_cast<long long>(rng() % (hi - lo + 1));\n    return a;\n\
+    }\n\n// GF(2) \u306E\u884C\u5217\u5F0F (\u611A\u76F4\u306A\u30AC\u30A6\u30B9\u306E\
+    \u6D88\u53BB\u6CD5)\nint naive_det_gf2(std::vector<std::vector<int>> a) {\n  \
+    \  int n = a.size();\n    for (int c = 0, r = 0; c < n; c++) {\n        int p\
+    \ = r;\n        while (p < n && a[p][c] == 0) p++;\n        if (p == n) return\
+    \ 0;\n        std::swap(a[p], a[r]);\n        for (int i = 0; i < n; i++)\n  \
+    \          if (i != r && a[i][c])\n                for (int j = 0; j < n; j++)\
+    \ a[i][j] ^= a[r][j];\n        r++;\n    }\n    return 1;\n}\n\n// mod p \u306E\
+    \u884C\u5217\u5F0F (\u4F59\u56E0\u5B50\u5C55\u958B\u3002n \u306F\u5C0F\u3055\u3044\
+    \u3053\u3068)\nmint naive_det(const std::vector<std::vector<mint>>& a) {\n   \
+    \ int n = a.size();\n    if (n == 0) return 1;\n    mint res = 0;\n    for (int\
+    \ j = 0; j < n; j++) {\n        std::vector<std::vector<mint>> b;\n        for\
+    \ (int i = 1; i < n; i++) {\n            std::vector<mint> row;\n            for\
+    \ (int k = 0; k < n; k++)\n                if (k != j) row.push_back(a[i][k]);\n\
     \            b.push_back(row);\n        }\n        mint t = a[0][j] * naive_det(b);\n\
-    \        res += (j % 2 == 0) ? t : -t;\n    }\n    return res;\n}\n\nint main()\
+    \        res += (j % 2 == 0) ? t : -t;\n    }\n    return res;\n}\n\n// \u9023\
+    \u7ACB\u4E00\u6B21\u65B9\u7A0B\u5F0F: p^m \u901A\u308A\u306E x \u3092\u3059\u3079\
+    \u3066\u8A66\u3057\u3066\u3001\u89E3\u306E\u96C6\u5408\u3068 solve\u30FBrank\u30FB\
+    kernel \u306E\u7D50\u679C\u304C\u5408\u3046\u304B\u78BA\u304B\u3081\u308B\n//\
+    \ T \u306F mod p \u306E\u8981\u7D20 (P \u306F\u6F14\u7B97)\u3002to_t \u306F\u6574\
+    \u6570\u304B\u3089\u8981\u7D20\u3092\u4F5C\u308B\ntemplate <typename T, typename\
+    \ P, typename ToT>\nbool check_linear(std::mt19937_64& rng, int p, ToT to_t) {\n\
+    \    for (int rep = 0; rep < 500; rep++) {\n        int n = rng() % 5 + 1, m =\
+    \ rng() % 5 + 1;\n        std::vector<std::vector<T>> a(n, std::vector<T>(m));\n\
+    \        for (auto& row : a)\n            for (auto& x : row) x = to_t(rng() %\
+    \ p);\n        // \u30E9\u30F3\u30AF\u304C\u5C0F\u3055\u3044\u884C\u5217\u3082\
+    \u4F5C\u308B (\u3042\u308B\u884C\u3092\u5225\u306E\u884C\u306E\u5B9A\u6570\u500D\
+    \u306B\u3059\u308B)\n        if (n >= 2 && rng() % 2) {\n            int i = rng()\
+    \ % n, j = rng() % n;\n            T c = to_t(rng() % p);\n            for (int\
+    \ k = 0; k < m; k++) a[i][k] = P::mul(c, a[j][k]);\n        }\n        std::vector<T>\
+    \ b(n);\n        for (auto& x : b) x = to_t(rng() % p);\n        Matrix<T, P>\
+    \ A(a);\n        auto apply = [&](const std::vector<T>& x) {\n            std::vector<T>\
+    \ y(n, P::zero());\n            for (int i = 0; i < n; i++)\n                for\
+    \ (int j = 0; j < m; j++) y[i] = P::add(y[i], P::mul(a[i][j], x[j]));\n      \
+    \      return y;\n        };\n        // \u3059\u3079\u3066\u306E x \u3092\u8A66\
+    \u3057\u3066\u3001Ax = b \u3068 Ax = 0 \u306E\u89E3\u3092\u6570\u3048\u308B\n\
+    \        long long total = 1;\n        for (int j = 0; j < m; j++) total *= p;\n\
+    \        long long cnt_b = 0, cnt_0 = 0;\n        std::vector<T> zero(n, P::zero());\n\
+    \        for (long long code = 0; code < total; code++) {\n            std::vector<T>\
+    \ x(m);\n            long long c = code;\n            for (int j = 0; j < m; j++)\
+    \ x[j] = to_t(c % p), c /= p;\n            auto y = apply(x);\n            cnt_b\
+    \ += y == b;\n            cnt_0 += y == zero;\n        }\n        // rank: Ax\
+    \ = 0 \u306E\u89E3\u306F p^(m - rank) \u500B\n        long long r = A.rank(),\
+    \ pw = 1;\n        for (int j = 0; j < m - r; j++) pw *= p;\n        if (pw !=\
+    \ cnt_0) return false;\n        // kernel: m - rank \u500B\u3067\u3001\u3069\u308C\
+    \u3082 Ax = 0 \u3092\u6E80\u305F\u3057\u3001\u4E00\u6B21\u72EC\u7ACB\n       \
+    \ auto ker = A.kernel();\n        if (static_cast<long long>(ker.size()) != m\
+    \ - r) return false;\n        for (const auto& v : ker)\n            if (apply(v)\
+    \ != zero) return false;\n        if (!ker.empty() && Matrix<T, P>(ker).rank()\
+    \ != static_cast<long long>(ker.size())) return false;\n        // solve: \u89E3\
+    \u304C\u306A\u3051\u308C\u3070 nullopt\u3001\u3042\u308C\u3070\u7279\u6B8A\u89E3\
+    \u304C\u89E3\u3067\u3001\u57FA\u5E95\u306E\u500B\u6570\u304B\u3089\u89E3\u306E\
+    \u500B\u6570\u304C\u5408\u3046\n        auto sol = A.solve(b);\n        if (!sol)\
+    \ {\n            if (cnt_b != 0) return false;\n        } else {\n           \
+    \ if (apply(sol->x) != b || sol->basis.size() != ker.size()) return false;\n \
+    \           if (cnt_b != pw) return false;\n            for (const auto& v : sol->basis)\n\
+    \                if (apply(v) != zero) return false;\n        }\n        // reduced_row_echelon:\
+    \ \u4E3B\u6210\u5206\u306F 1 \u3067\u3001\u305D\u306E\u5217\u306E\u4ED6\u306E\u6210\
+    \u5206\u306F 0\u3002\u4E3B\u6210\u5206\u306E\u5217\u306F\u5897\u3048\u3066\u3044\
+    \u304F\n        auto [R, piv] = A.reduced_row_echelon();\n        if (static_cast<long\
+    \ long>(piv.size()) != r) return false;\n        for (int i = 0; i < r; i++) {\n\
+    \            if (i > 0 && piv[i] <= piv[i - 1]) return false;\n            for\
+    \ (int k = 0; k < n; k++)\n                if (R[k][piv[i]] != (k == i ? P::one()\
+    \ : P::zero())) return false;\n        }\n    }\n    return true;\n}\n\nint main()\
     \ {\n    std::mt19937_64 rng(314);\n    bool ok = true;\n\n    // \u521D\u671F\
     \u5316\u5B50\u30EA\u30B9\u30C8\u30FB\u4EE3\u5165\u30FB\u8D70\u67FB\u30FB==\n \
     \   {\n        Matrix<long long> A({{1, 2, 3}, {4, 5, 6}});\n        if (A.n !=\
@@ -768,8 +947,16 @@ data:
     \ ok = false;\n                    mint s = 0;\n                    for (int t\
     \ = 0; t < n; t++) s += a[i][t] * Bi[t][j];\n                    if (s != (i ==\
     \ j ? 1 : 0)) ok = false;\n                }\n        }\n    }\n    if (!ok) std::cerr\
-    \ << \"mod\" << std::endl;\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
-    }\n"
+    \ << \"mod\" << std::endl;\n\n    // \u9023\u7ACB\u4E00\u6B21\u65B9\u7A0B\u5F0F\
+    \ (mod 3 \u3068 GF(2))\n    using mint3 = static_modint<3>;\n    if (!check_linear<mint3,\
+    \ matrix::OperatorPropertyDefault<mint3>>(rng, 3, [](long long x) { return mint3(x);\
+    \ })) ok = false, std::cerr << \"linear mod 3\" << std::endl;\n    if (!check_linear<int,\
+    \ GF2>(rng, 2, [](long long x) { return static_cast<int>(x); })) ok = false, std::cerr\
+    \ << \"linear GF(2)\" << std::endl;\n    // 0 \u884C\u306E\u65B9\u7A0B\u5F0F\u3084\
+    \u3001\u5217\u306E\u306A\u3044\u884C\u5217\n    {\n        Matrix<mint> A(2, 3);\n\
+    \        auto sol = A.solve({0, 0});\n        if (!sol || sol->basis.size() !=\
+    \ 3 || A.rank() != 0) ok = false;\n        if (A.solve({1, 0})) ok = false;\n\
+    \    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/math/matrix.hpp
   - src/math/modint.hpp
@@ -777,7 +964,7 @@ data:
   isVerificationFile: true
   path: test/unittest/matrix.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 12:08:11+09:00'
+  timestamp: '2026-10-19 20:29:35+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/matrix.test.cpp

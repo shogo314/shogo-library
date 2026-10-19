@@ -25,10 +25,10 @@ data:
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/counting_spanning_tree_undirected\"\
     \n\n#include <iostream>\n\n#line 2 \"src/math/matrix.hpp\"\n\n/**\n * @file matrix.hpp\n\
     \ * @brief \u884C\u5217\n */\n\n#include <algorithm>\n#include <cassert>\n#include\
-    \ <cmath>\n#include <cstddef>\n#include <initializer_list>\n#include <string>\n\
-    #include <type_traits>\n#include <utility>\n#include <valarray>\n#include <vector>\n\
-    \nnamespace matrix {\ntemplate <typename T>\nstruct OperatorPropertyDefault {\n\
-    \    constexpr static T zero() { return T(0); }\n    constexpr static T add(const\
+    \ <cmath>\n#include <cstddef>\n#include <initializer_list>\n#include <optional>\n\
+    #include <string>\n#include <type_traits>\n#include <utility>\n#include <valarray>\n\
+    #include <vector>\n\nnamespace matrix {\ntemplate <typename T>\nstruct OperatorPropertyDefault\
+    \ {\n    constexpr static T zero() { return T(0); }\n    constexpr static T add(const\
     \ T& a, const T& b) { return a + b; }\n    constexpr static T neg(const T& a)\
     \ { return -a; }\n    constexpr static T one() { return T(1); }\n    constexpr\
     \ static T mul(const T& a, const T& b) { return a * b; }\n    constexpr static\
@@ -221,14 +221,83 @@ data:
     \ A[j][i])));\n                    }\n                }\n            }\n     \
     \       Matrix ret(n, n);\n            for (long long i = 0; i < n; i++)\n   \
     \             for (long long j = 0; j < n; j++) ret[i][j] = A[i][n + j];\n   \
-    \         return ret;\n        }\n    }\n\n   private:\n    /**\n     * @brief\
-    \ \u30AC\u30A6\u30B9\u306E\u6D88\u53BB\u6CD5\u306E\u524D\u9032\u6D88\u53BB\u3092\
-    \u884C\u3063\u3066\u4E0A\u4E09\u89D2\u884C\u5217\u3092\u4F5C\u308A\u3001\u884C\
-    \u5217\u5F0F\u3092\u8FD4\u3059\n     * @param A \u884C\u5217\n     * @return \u884C\
-    \u5217\u5F0F\n     * @note\n     * rank(A) < n\u306E\u5834\u5408\u306F0\u3092\u8FD4\
-    \u3059\n     * \u6B63\u65B9\u884C\u5217\u3067\u306F\u306A\u3044\u5834\u5408\u3001\
-    0\u4EE5\u5916\u304C\u6B8B\u308B\u5DE6\u304B\u3089n\u500B\u306E\u5217\u3092\u4F7F\
-    \u3063\u3066\u884C\u5217\u5F0F\u3092\u8A08\u7B97\u3059\u308B\n     */\n    T forward_elimination(std::vector<std::valarray<T>>&\
+    \         return ret;\n        }\n    }\n\n    /**\n     * @brief \u9023\u7ACB\
+    \u4E00\u6B21\u65B9\u7A0B\u5F0F Ax = b \u306E\u89E3\n     * \u89E3\u5168\u4F53\u306F\
+    \ x + c_0 basis[0] + c_1 basis[1] + ... (c_i \u306F\u4EFB\u610F)\n     */\n  \
+    \  struct Solution {\n        std::vector<T> x;                   //!< \u89E3\u306E\
+    \ 1 \u3064 (\u7279\u6B8A\u89E3)\n        std::vector<std::vector<T>> basis;  //!<\
+    \ Ax = 0 \u306E\u89E3\u7A7A\u9593\u306E\u57FA\u5E95\n    };\n\n    /**\n     *\
+    \ @brief \u7C21\u7D04\u5316\u3057\u305F\u884C\u5217 (\u884C\u57FA\u672C\u5909\u5F62\
+    \u3067\u3001\u5404\u884C\u306E\u4E3B\u6210\u5206\u3092 1 \u306B\u3057\u3001\u4E3B\
+    \u6210\u5206\u306E\u3042\u308B\u5217\u306E\u4ED6\u306E\u6210\u5206\u3092 0 \u306B\
+    \u3057\u305F\u3082\u306E) \u3068\u3001\u5404\u884C\u306E\u4E3B\u6210\u5206\u306E\
+    \u5217\n     * \u4E3B\u6210\u5206\u306E\u5217\u306E\u500B\u6570\u304C\u30E9\u30F3\
+    \u30AF\u30020 \u3060\u3051\u306E\u884C\u306F\u4E0B\u306B\u307E\u3068\u307E\u308B\
+    \n     * @note \u5272\u308A\u7B97\u3092\u4F7F\u3046\u306E\u3067\u3001\u8981\u7D20\
+    \u306F\u4F53 (modint \u306A\u3069) \u3067\u3042\u308B\u3053\u3068\u3002\u6D6E\u52D5\
+    \u5C0F\u6570\u70B9\u578B\u306F\u8AA4\u5DEE\u3092\u8003\u3048\u306A\u3044\u306E\
+    \u3067\u4F7F\u3048\u306A\u3044\n     */\n    [[nodiscard]]\n    std::pair<Matrix,\
+    \ std::vector<long long>> reduced_row_echelon() const {\n        Matrix A = *this;\n\
+    \        std::vector<long long> pivots = reduce(A.v, m);\n        return {A, pivots};\n\
+    \    }\n    /**\n     * @brief \u30E9\u30F3\u30AF O(nm min(n, m))\n     */\n \
+    \   [[nodiscard]]\n    long long rank() const {\n        auto A = v;\n       \
+    \ return reduce(A, m).size();\n    }\n    /**\n     * @brief Ax = 0 \u306E\u89E3\
+    \u7A7A\u9593\u306E\u57FA\u5E95 (\u9577\u3055 m \u306E\u30D9\u30AF\u30C8\u30EB\u3092\
+    \ m - rank \u500B) O(nm min(n, m))\n     */\n    [[nodiscard]]\n    std::vector<std::vector<T>>\
+    \ kernel() const {\n        auto A = v;\n        std::vector<long long> pivots\
+    \ = reduce(A, m);\n        return kernel_from_reduced(A, pivots);\n    }\n   \
+    \ /**\n     * @brief \u9023\u7ACB\u4E00\u6B21\u65B9\u7A0B\u5F0F Ax = b \u3092\u89E3\
+    \u304F\u3002\u89E3\u304C\u306A\u3051\u308C\u3070 std::nullopt O(nm min(n, m))\n\
+    \     */\n    [[nodiscard]]\n    std::optional<Solution> solve(const std::vector<T>&\
+    \ b) const {\n        assert(static_cast<long long>(b.size()) == n);\n       \
+    \ // \u62E1\u5927\u4FC2\u6570\u884C\u5217 [A | b] \u3092\u3001A \u306E\u5217\u3060\
+    \u3051\u3067\u7C21\u7D04\u5316\u3059\u308B\n        std::vector<std::vector<T>>\
+    \ A(n);\n        for (long long i = 0; i < n; i++) {\n            A[i] = v[i];\n\
+    \            A[i].push_back(b[i]);\n        }\n        std::vector<long long>\
+    \ pivots = reduce(A, m);\n        const long long r = pivots.size();\n       \
+    \ // \u5DE6\u5074\u304C 0 \u306B\u306A\u3063\u305F\u884C\u306E\u53F3\u8FBA\u304C\
+    \ 0 \u3067\u306A\u3051\u308C\u3070\u89E3\u306A\u3057\n        for (long long i\
+    \ = r; i < n; i++) {\n            if (A[i][m] != OperatorProperty::zero()) return\
+    \ std::nullopt;\n        }\n        Solution sol;\n        sol.x.assign(m, OperatorProperty::zero());\n\
+    \        for (long long i = 0; i < r; i++) sol.x[pivots[i]] = A[i][m];\n     \
+    \   sol.basis = kernel_from_reduced(A, pivots);\n        return sol;\n    }\n\n\
+    \   private:\n    // A \u306E\u5DE6\u304B\u3089 cols \u5217\u3092\u4F7F\u3063\u3066\
+    \u7C21\u7D04\u5316\u3057\u3001\u5404\u884C\u306E\u4E3B\u6210\u5206\u306E\u5217\
+    \u3092\u8FD4\u3059 (\u5217\u304C cols \u3088\u308A\u591A\u3044\u90E8\u5206\u3082\
+    \u4E00\u7DD2\u306B\u5909\u5F62\u3059\u308B)\n    static std::vector<long long>\
+    \ reduce(std::vector<std::vector<T>>& A, long long cols) {\n        const long\
+    \ long rows = A.size();\n        std::vector<long long> pivots;\n        for (long\
+    \ long c = 0, r = 0; c < cols && r < rows; c++) {\n            long long p = r;\n\
+    \            while (p < rows && A[p][c] == OperatorProperty::zero()) p++;\n  \
+    \          if (p == rows) continue;\n            std::swap(A[r], A[p]);\n    \
+    \        const long long w = A[r].size();\n            T scale = OperatorProperty::inv(A[r][c]);\n\
+    \            for (long long k = c; k < w; k++) A[r][k] = OperatorProperty::mul(A[r][k],\
+    \ scale);\n            for (long long i = 0; i < rows; i++) {\n              \
+    \  if (i == r || A[i][c] == OperatorProperty::zero()) continue;\n            \
+    \    T f = A[i][c];\n                for (long long k = c; k < w; k++) {\n   \
+    \                 A[i][k] = OperatorProperty::add(A[i][k], OperatorProperty::neg(OperatorProperty::mul(f,\
+    \ A[r][k])));\n                }\n            }\n            pivots.push_back(c);\n\
+    \            r++;\n        }\n        return pivots;\n    }\n    // \u7C21\u7D04\
+    \u5316\u3057\u305F A (\u5DE6\u304B\u3089 m \u5217) \u304B\u3089\u3001Ax = 0 \u306E\
+    \u89E3\u7A7A\u9593\u306E\u57FA\u5E95\u3092\u4F5C\u308B\n    std::vector<std::vector<T>>\
+    \ kernel_from_reduced(const std::vector<std::vector<T>>& A, const std::vector<long\
+    \ long>& pivots) const {\n        std::vector<bool> is_pivot(m, false);\n    \
+    \    for (long long c : pivots) is_pivot[c] = true;\n        std::vector<std::vector<T>>\
+    \ res;\n        // \u4E3B\u6210\u5206\u306E\u306A\u3044\u5217 (\u81EA\u7531\u5909\
+    \u6570) f \u3054\u3068\u306B\u3001x_f = 1\u3001\u4ED6\u306E\u81EA\u7531\u5909\u6570\
+    \u306F 0 \u3068\u3057\u305F\u89E3\n        for (long long f = 0; f < m; f++) {\n\
+    \            if (is_pivot[f]) continue;\n            std::vector<T> x(m, OperatorProperty::zero());\n\
+    \            x[f] = OperatorProperty::one();\n            for (long long i = 0;\
+    \ i < static_cast<long long>(pivots.size()); i++) x[pivots[i]] = OperatorProperty::neg(A[i][f]);\n\
+    \            res.push_back(x);\n        }\n        return res;\n    }\n\n   private:\n\
+    \    /**\n     * @brief \u30AC\u30A6\u30B9\u306E\u6D88\u53BB\u6CD5\u306E\u524D\
+    \u9032\u6D88\u53BB\u3092\u884C\u3063\u3066\u4E0A\u4E09\u89D2\u884C\u5217\u3092\
+    \u4F5C\u308A\u3001\u884C\u5217\u5F0F\u3092\u8FD4\u3059\n     * @param A \u884C\
+    \u5217\n     * @return \u884C\u5217\u5F0F\n     * @note\n     * rank(A) < n\u306E\
+    \u5834\u5408\u306F0\u3092\u8FD4\u3059\n     * \u6B63\u65B9\u884C\u5217\u3067\u306F\
+    \u306A\u3044\u5834\u5408\u30010\u4EE5\u5916\u304C\u6B8B\u308B\u5DE6\u304B\u3089\
+    n\u500B\u306E\u5217\u3092\u4F7F\u3063\u3066\u884C\u5217\u5F0F\u3092\u8A08\u7B97\
+    \u3059\u308B\n     */\n    T forward_elimination(std::vector<std::valarray<T>>&\
     \ A) const {\n        std::vector<long long> pivot_col(n, 0);\n        T d(1);\n\
     \        for (long long i = 0; i < n; i++) {\n            if (i - 1 >= 0) pivot_col[i]\
     \ = pivot_col[i - 1] + 1;\n            while (pivot_col[i] < m) {\n          \
@@ -587,7 +656,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/counting-spanning-tree-undirected.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 20:29:35+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/counting-spanning-tree-undirected.test.cpp

@@ -96,7 +96,7 @@ int main() {
         for (int t = 0; t < 5; t++) {
             std::string text = rng() % 5 == 0 ? std::string() : random_string(30);
             std::vector<long long> each(m, 0);
-            std::vector<std::pair<long long, long long>> all;  // (開始位置, 番号)
+            std::vector<std::pair<long long, long long>> all;                // (開始位置, 番号)
             std::vector<std::tuple<long long, long long, long long>> order;  // (終わる位置, -長さ, 番号) の順に並べる
             for (long long end = 1; end <= static_cast<long long>(text.size()); end++) {
                 for (int i = 0; i < m; i++) {

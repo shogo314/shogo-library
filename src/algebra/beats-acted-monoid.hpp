@@ -33,7 +33,7 @@ struct ChminSum {
 
     struct S {
         T sum;
-        T max1, max2;      // 最大値、2番目の最大値 (なければ lowest)
+        T max1, max2;       // 最大値、2番目の最大値 (なければ lowest)
         long long max_cnt;  // 最大値の個数
         constexpr S() : sum(0), max1(lowest), max2(lowest), max_cnt(0) {}
         constexpr S(const T& x) : sum(x), max1(x), max2(lowest), max_cnt(1) {}
@@ -90,7 +90,7 @@ struct ChmaxSum {
 
     struct S {
         T sum;
-        T min1, min2;      // 最小値、2番目の最小値 (なければ highest)
+        T min1, min2;       // 最小値、2番目の最小値 (なければ highest)
         long long min_cnt;  // 最小値の個数
         constexpr S() : sum(0), min1(highest), min2(highest), min_cnt(0) {}
         constexpr S(const T& x) : sum(x), min1(x), min2(highest), min_cnt(1) {}
@@ -148,8 +148,8 @@ struct ChminChmaxAddSum {
 
     struct S {
         T sum;
-        T max1, max2;  // 最大値、2番目の最大値 (なければ lowest)
-        T min1, min2;  // 最小値、2番目の最小値 (なければ highest)
+        T max1, max2;                // 最大値、2番目の最大値 (なければ lowest)
+        T min1, min2;                // 最小値、2番目の最小値 (なければ highest)
         long long max_cnt, min_cnt;  // 最大値・最小値の個数
         constexpr S() : sum(0), max1(lowest), max2(lowest), min1(highest), min2(highest), max_cnt(0), min_cnt(0) {}
         constexpr S(const T& x) : sum(x), max1(x), max2(lowest), min1(x), min2(highest), max_cnt(1), min_cnt(1) {}

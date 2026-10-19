@@ -289,7 +289,10 @@ inline constexpr long long xor_upto(long long n) {
     assert(n >= 0);
     // 4 つごとに周期的になる
     long long r = n & 3;
+    // r ごとの値の表として読めるように 1 行で書いているので整形しない
+    // clang-format off
     return r == 0 ? n : r == 1 ? 1 : r == 2 ? n + 1 : 0;
+    // clang-format on
 }
 /**
  * @brief 0 以上 n 以下の整数のうち、i ビット目が立っているものの数

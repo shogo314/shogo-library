@@ -310,7 +310,7 @@ int main() {
         constexpr long long sum = [] {
             long long r = 0;
             for (long long s : subsets_of_size(0b1101, 2)) r += s;  // 0101, 1001, 1100
-            for (auto [s, t] : subset_pairs(2)) r += s * 10 + t;   // 3^2 = 9 組
+            for (auto [s, t] : subset_pairs(2)) r += s * 10 + t;    // 3^2 = 9 組
             return r;
         }();
         static_assert(sum == (5 + 9 + 12) + (0 + 11 + 10 + 22 + 20 + 33 + 32 + 31 + 30));

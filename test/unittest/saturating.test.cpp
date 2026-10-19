@@ -31,7 +31,8 @@ i128 lo() { return static_cast<i128>(std::numeric_limits<T>::min()); }
 template <class T>
 i128 hi() { return static_cast<i128>(std::numeric_limits<T>::max()); }
 template <class T>
-T clamp128(i128 v) { return v < lo<T>() ? std::numeric_limits<T>::min() : v > hi<T>() ? std::numeric_limits<T>::max() : static_cast<T>(v); }
+T clamp128(i128 v) { return v < lo<T>() ? std::numeric_limits<T>::min() : v > hi<T>() ? std::numeric_limits<T>::max()
+                                                                                      : static_cast<T>(v); }
 
 // 境界付近の値とランダムな値
 template <class T>

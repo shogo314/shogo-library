@@ -5,14 +5,14 @@
 // Range::contains の step = 1 の近道も、愚直な判定と比べる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
-#include "../../src/utility/range.hpp"
-
 #include <cstdlib>
 #include <iostream>
 #include <iterator>
 #include <random>
 #include <utility>
 #include <vector>
+
+#include "../../src/utility/range.hpp"
 #if __cplusplus >= 202002L
 #include <ranges>
 #endif

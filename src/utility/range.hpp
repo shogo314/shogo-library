@@ -547,8 +547,11 @@ struct Rect {
 
    private:
     // 近傍の方向 (rows・cols の中での位置の差) を Rect の順に並べたもの。先頭 4 つは上下左右だけを並べた別の表
+    // 4 近傍と 8 近傍の境目が分かるように 2 行に分けているので整形しない
+    // clang-format off
     static constexpr int neighbor_dirs[12][2] = {{-1, 0}, {0, -1}, {0, 1}, {1, 0},
                                                  {-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
+    // clang-format on
 
    public:
     /**

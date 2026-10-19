@@ -390,5 +390,8 @@ inline std::string repr(const T& t) {
     return internal_repr::repr(t);
 }
 
+// clang-format の版によって 1 行のままか展開するかが変わるので整形しない
+// clang-format off
 #define DEBUG(x) \
     { std::cerr << #x << " = " << repr(x) << std::endl; }
+// clang-format on

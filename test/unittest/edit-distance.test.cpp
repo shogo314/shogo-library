@@ -3,13 +3,14 @@
 // edit_distance と longest_common_subsequence、その復元を、再帰による愚直な方法とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../src/dp/edit-distance.hpp"
+
 #include <algorithm>
 #include <iostream>
 #include <random>
 #include <string>
 #include <vector>
 
-#include "../../src/dp/edit-distance.hpp"
 #include "../../src/dp/longest-common-subsequence.hpp"
 
 // s[i:] と t[j:] の編集距離

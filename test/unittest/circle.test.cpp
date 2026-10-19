@@ -50,7 +50,7 @@ int main() {
         auto ts = tangent_points(c1, p);
         double dp = (p - c1.c).abs();
         ok = ok && static_cast<int>(ts.size()) == (dp > c1.r + 1e-9 ? 2 : dp > c1.r - 1e-9 ? 1
-                                                                              : 0);
+                                                                                           : 0);
         for (const auto& t : ts) ok = ok && on_circle(c1, t) && near(dot(t - c1.c, p - t), 0);
 
         // 内接円は 3 辺に接し、外接円は 3 頂点を通る

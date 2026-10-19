@@ -67,6 +67,9 @@ constexpr bool cmp_greater(T t, U u) noexcept {
 #define SATURATING_FUNC(cond, R) inline constexpr std::enable_if_t<(cond), R>
 #endif
 
+// clang-format は SATURATING_FUNC を戻り値の型と読めず、関数名の前で改行してしまうので整形しない
+// clang-format off
+
 /**
  * @brief x + y を T の範囲に丸める
  */
@@ -144,5 +147,7 @@ SATURATING_FUNC(internal_saturating::integer<R> && internal_saturating::integer<
     return static_cast<R>(x);
 #endif
 }
+
+// clang-format on
 
 #undef SATURATING_FUNC

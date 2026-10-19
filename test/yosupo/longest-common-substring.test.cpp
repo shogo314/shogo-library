@@ -1,9 +1,9 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/longest_common_substring"
 
+#include "../../src/string/longest-common-substring.hpp"
+
 #include <iostream>
 #include <string>
-
-#include "../../src/string/longest-common-substring.hpp"
 
 int main() {
     std::cin.tie(nullptr);

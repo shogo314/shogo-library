@@ -220,13 +220,13 @@ inline std::vector<long long> convolution_ll(const std::vector<long long>& A, co
     }
     internal_convolution::trans(c0, true), internal_convolution::trans(c1, true), internal_convolution::trans(c2, true);
     static const long long mod0 = internal_convolution::MOD0, mod01 = mod0 * internal_convolution::MOD1;
-    static const __int128_t mod012 = (__int128_t)mod01 * internal_convolution::MOD2;
+    static const __int128_t mod012 = static_cast<__int128_t>(mod01) * internal_convolution::MOD2;
     std::vector<long long> res(N + M - 1);
     for (int i = 0; i < N + M - 1; ++i) {
         int y0 = c0[i].val();
         int y1 = (internal_convolution::imod0 * (c1[i] - y0)).val();
         int y2 = (internal_convolution::imod01 * (c2[i] - y0) - internal_convolution::imod1 * y1).val();
-        __int128_t tmp = (__int128_t)mod01 * y2 + (__int128_t)mod0 * y1 + y0;
+        __int128_t tmp = static_cast<__int128_t>(mod01) * y2 + static_cast<__int128_t>(mod0) * y1 + y0;
         if (tmp < (mod012 >> 1))
             res[i] = tmp;
         else

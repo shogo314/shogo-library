@@ -43,3 +43,4 @@ std::cout << c << '\n';    // 1/2
 ## 関連
 
 - 偏角でソートするだけなら [偏角](../geometry/angle.hpp) の `Angle`
+- 区間に入る最も単純な分数・連分数・Stern–Brocot 木は [Stern–Brocot 木と連分数](stern-brocot.hpp)

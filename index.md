@@ -65,6 +65,9 @@ data:
       title: "\u524A\u9664\u53EF\u80FD\u306A\u512A\u5148\u5EA6\u4ED8\u304D\u30AD\u30E5\
         \u30FC"
     - icon: ':heavy_check_mark:'
+      path: src/data_structures/fast-set.hpp
+      title: "64 \u5206\u6728 (FastSet)"
+    - icon: ':heavy_check_mark:'
       path: src/data_structures/fenwick-tree.hpp
       title: Fenwick Tree (Binary Indexed Tree)
     - icon: ':heavy_check_mark:'
@@ -208,6 +211,9 @@ data:
       path: src/graph/min-cost-flow.hpp
       title: "\u6700\u5C0F\u8CBB\u7528\u6D41 (primal-dual \u6CD5)"
     - icon: ':heavy_check_mark:'
+      path: src/graph/project-selection.hpp
+      title: "\u71C3\u3084\u3059\u57CB\u3081\u308B (Project Selection Problem)"
+    - icon: ':heavy_check_mark:'
       path: src/graph/rerooting-dp.hpp
       title: "\u5168\u65B9\u4F4D\u6728DP"
     - icon: ':heavy_check_mark:'
@@ -262,6 +268,9 @@ data:
       path: src/math/number-theory.hpp
       title: "\u6570\u8AD6 (\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406)"
     - icon: ':heavy_check_mark:'
+      path: src/math/prime-counting.hpp
+      title: "\u7D20\u6570\u306E\u500B\u6570\u30FB\u7D20\u6570\u306E\u548C (Lucy DP)"
+    - icon: ':heavy_check_mark:'
       path: src/math/prime.hpp
       title: "\u7D20\u6570 (\u7D20\u6570\u5224\u5B9A\u3001\u7D20\u56E0\u6570\u5206\
         \u89E3\u3001\u7D04\u6570\u5217\u6319\u3001\u7BE9)"
@@ -300,6 +309,9 @@ data:
       path: src/string/longest-common-substring.hpp
       title: "\u6700\u9577\u5171\u901A\u90E8\u5206\u6587\u5B57\u5217"
     - icon: ':heavy_check_mark:'
+      path: src/string/palindromic-tree.hpp
+      title: "\u56DE\u6587\u6728 (Eertree)"
+    - icon: ':heavy_check_mark:'
       path: src/string/rolling-hash.hpp
       title: "\u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5"
     - icon: ':heavy_check_mark:'
@@ -309,6 +321,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/string/suffix-array.hpp
       title: "Suffix Array \u3068 LCP \u914D\u5217"
+    - icon: ':heavy_check_mark:'
+      path: src/string/suffix-automaton.hpp
+      title: Suffix Automaton
     - icon: ':heavy_check_mark:'
       path: src/string/trie.hpp
       title: Trie
@@ -728,6 +743,9 @@ data:
       path: test/unittest/f2-matrix.test.cpp
       title: test/unittest/f2-matrix.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/fast-set.test.cpp
+      title: test/unittest/fast-set.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/fenwick-tree.test.cpp
       title: test/unittest/fenwick-tree.test.cpp
     - icon: ':heavy_check_mark:'
@@ -824,6 +842,9 @@ data:
       path: test/unittest/number-theory.test.cpp
       title: test/unittest/number-theory.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/palindromic-tree.test.cpp
+      title: test/unittest/palindromic-tree.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/persistent-array.test.cpp
       title: test/unittest/persistent-array.test.cpp
     - icon: ':heavy_check_mark:'
@@ -845,11 +866,17 @@ data:
       path: test/unittest/potentialized-unionfind.test.cpp
       title: test/unittest/potentialized-unionfind.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/prime-counting.test.cpp
+      title: test/unittest/prime-counting.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/prime.test.cpp
       title: test/unittest/prime.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/priority_counter.test.cpp
       title: test/unittest/priority_counter.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/project-selection.test.cpp
+      title: test/unittest/project-selection.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/quotients.test.cpp
       title: test/unittest/quotients.test.cpp
@@ -901,6 +928,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/suffix-array.test.cpp
       title: test/unittest/suffix-array.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/suffix-automaton.test.cpp
+      title: test/unittest/suffix-automaton.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/tadpole-array.test.cpp
       title: test/unittest/tadpole-array.test.cpp
@@ -976,6 +1006,9 @@ data:
       path: test/yosupo/convolution-mod.test.cpp
       title: test/yosupo/convolution-mod.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/counting-primes.test.cpp
+      title: test/yosupo/counting-primes.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/counting-spanning-tree-undirected.test.cpp
       title: test/yosupo/counting-spanning-tree-undirected.test.cpp
     - icon: ':heavy_check_mark:'
@@ -993,6 +1026,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/dynamic-sequence-range-affine-range-sum.test.cpp
       title: test/yosupo/dynamic-sequence-range-affine-range-sum.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/eertree.test.cpp
+      title: test/yosupo/eertree.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/enumerate-palindromes.1.test.cpp
       title: test/yosupo/enumerate-palindromes.1.test.cpp
@@ -1084,8 +1120,11 @@ data:
       path: test/yosupo/minimum-spanning-tree.2.test.cpp
       title: test/yosupo/minimum-spanning-tree.2.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/yosupo/number-of-substrings.test.cpp
-      title: test/yosupo/number-of-substrings.test.cpp
+      path: test/yosupo/number-of-substrings.1.test.cpp
+      title: test/yosupo/number-of-substrings.1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/number-of-substrings.2.test.cpp
+      title: test/yosupo/number-of-substrings.2.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/partition-function_1.test.cpp
       title: test/yosupo/partition-function_1.test.cpp
@@ -1137,6 +1176,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/pow-of-fps.test.cpp
       title: test/yosupo/pow-of-fps.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/predecessor-problem.test.cpp
+      title: test/yosupo/predecessor-problem.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/primality-test.test.cpp
       title: test/yosupo/primality-test.test.cpp

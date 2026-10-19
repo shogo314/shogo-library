@@ -76,6 +76,9 @@ data:
     path: test/unittest/persistent-segtree.test.cpp
     title: test/unittest/persistent-segtree.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/prime-counting.test.cpp
+    title: test/unittest/prime-counting.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/rbst.test.cpp
     title: test/unittest/rbst.test.cpp
   - icon: ':heavy_check_mark:'
@@ -756,6 +759,7 @@ data:
   - test/unittest/dynamic-segtree.test.cpp
   - test/unittest/persistent-segtree.test.cpp
   - test/unittest/sliding-window-aggregation.test.cpp
+  - test/unittest/prime-counting.test.cpp
   - test/unittest/rbst.test.cpp
   - test/unittest/dynamic-lazy-segtree.test.cpp
   - test/unittest/bitwise-transform.test.cpp

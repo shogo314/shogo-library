@@ -237,6 +237,9 @@ data:
     path: test/unittest/persistent-segtree.test.cpp
     title: test/unittest/persistent-segtree.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/prime-counting.test.cpp
+    title: test/unittest/prime-counting.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/priority_counter.test.cpp
     title: test/unittest/priority_counter.test.cpp
   - icon: ':heavy_check_mark:'
@@ -561,6 +564,7 @@ data:
   - test/unittest/priority_counter.test.cpp
   - test/unittest/circle.test.cpp
   - test/unittest/sliding-window-aggregation.test.cpp
+  - test/unittest/prime-counting.test.cpp
   - test/unittest/angle.test.cpp
   - test/unittest/rolling-hash.test.cpp
   - test/unittest/rbst.test.cpp

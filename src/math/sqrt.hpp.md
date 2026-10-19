@@ -1,11 +1,20 @@
 ---
 data:
   _extendedDependsOn: []
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':heavy_check_mark:'
+    path: src/math/prime-counting.hpp
+    title: "\u7D20\u6570\u306E\u500B\u6570\u30FB\u7D20\u6570\u306E\u548C (Lucy DP)"
   _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/prime-counting.test.cpp
+    title: test/unittest/prime-counting.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/sqrt.test.cpp
     title: test/unittest/sqrt.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/counting-primes.test.cpp
+    title: test/yosupo/counting-primes.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/enumerate-quotients.1.test.cpp
     title: test/yosupo/enumerate-quotients.1.test.cpp
@@ -35,11 +44,14 @@ data:
   dependsOn: []
   isVerificationFile: false
   path: src/math/sqrt.hpp
-  requiredBy: []
+  requiredBy:
+  - src/math/prime-counting.hpp
   timestamp: '2026-10-14 11:33:42+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/sqrt.test.cpp
+  - test/unittest/prime-counting.test.cpp
+  - test/yosupo/counting-primes.test.cpp
   - test/yosupo/enumerate-quotients.1.test.cpp
 documentation_of: src/math/sqrt.hpp
 layout: document

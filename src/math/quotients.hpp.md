@@ -4,6 +4,9 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/unittest/prime-counting.test.cpp
+    title: test/unittest/prime-counting.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/quotients.test.cpp
     title: test/unittest/quotients.test.cpp
   - icon: ':heavy_check_mark:'
@@ -64,6 +67,7 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/quotients.test.cpp
+  - test/unittest/prime-counting.test.cpp
   - test/yosupo/enumerate-quotients.2.test.cpp
 documentation_of: src/math/quotients.hpp
 layout: document
@@ -107,3 +111,4 @@ for (auto [q, l, r] : enumerate_quotients(10)) {
 ## 関連
 
 - 一次関数の床関数の和 $\sum \lfloor (ai + b)/m \rfloor$ は [floor sum](floor-sum.hpp)
+- すべての $\lfloor n / k \rfloor$ について素数の個数・和を求めるには [素数の個数・素数の和](prime-counting.hpp)

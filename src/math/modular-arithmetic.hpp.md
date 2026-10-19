@@ -78,6 +78,9 @@ data:
     path: test/unittest/number-theory.test.cpp
     title: test/unittest/number-theory.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/prime-counting.test.cpp
+    title: test/unittest/prime-counting.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/prime.test.cpp
     title: test/unittest/prime.test.cpp
   - icon: ':heavy_check_mark:'
@@ -228,6 +231,7 @@ data:
   - test/unittest/combinatorics.test.cpp
   - test/unittest/number-theory.test.cpp
   - test/unittest/modular-arithmetic.test.cpp
+  - test/unittest/prime-counting.test.cpp
   - test/unittest/prime.test.cpp
   - test/unittest/divisor-transform.test.cpp
   - test/unittest/subset-sum.test.cpp

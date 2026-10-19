@@ -16,8 +16,8 @@ data:
     path: test/yosupo/longest-common-substring.test.cpp
     title: test/yosupo/longest-common-substring.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/number-of-substrings.test.cpp
-    title: test/yosupo/number-of-substrings.test.cpp
+    path: test/yosupo/number-of-substrings.1.test.cpp
+    title: test/yosupo/number-of-substrings.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/suffixarray.test.cpp
     title: test/yosupo/suffixarray.test.cpp
@@ -235,7 +235,7 @@ data:
   verifiedWith:
   - test/unittest/longest-common-substring.test.cpp
   - test/unittest/suffix-array.test.cpp
-  - test/yosupo/number-of-substrings.test.cpp
+  - test/yosupo/number-of-substrings.1.test.cpp
   - test/yosupo/longest-common-substring.test.cpp
   - test/yosupo/suffixarray.test.cpp
 documentation_of: src/string/suffix-array.hpp
@@ -277,3 +277,4 @@ for (long long h : lcp_array(s, suffix_array(s))) ans -= h;
 
 - 2 つの列の最長共通部分文字列は [最長共通部分文字列](longest-common-substring.hpp)
 - Z-algorithm・KMP・Manacher は [文字列アルゴリズム](string.hpp)
+- 部分文字列の判定・出現回数を 1 文字ずつ追加しながら求めるなら [Suffix Automaton](suffix-automaton.hpp)

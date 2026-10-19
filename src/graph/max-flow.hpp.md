@@ -1,7 +1,10 @@
 ---
 data:
   _extendedDependsOn: []
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':heavy_check_mark:'
+    path: src/graph/project-selection.hpp
+    title: "\u71C3\u3084\u3059\u57CB\u3081\u308B (Project Selection Problem)"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/grl-6-a.test.cpp
@@ -12,6 +15,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/max-flow.test.cpp
     title: test/unittest/max-flow.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/project-selection.test.cpp
+    title: test/unittest/project-selection.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -187,11 +193,13 @@ data:
   dependsOn: []
   isVerificationFile: false
   path: src/graph/max-flow.hpp
-  requiredBy: []
+  requiredBy:
+  - src/graph/project-selection.hpp
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/bipartite-matching.test.cpp
+  - test/unittest/project-selection.test.cpp
   - test/unittest/max-flow.test.cpp
   - test/aoj/grl-6-a.test.cpp
 documentation_of: src/graph/max-flow.hpp
@@ -233,3 +241,4 @@ std::vector<bool> S = mf.min_cut(s);  // 最小カットの s 側
 
 - 二部グラフの最大マッチングだけなら、より速い [二部マッチング](bipartite-matching.hpp)
 - 辺にコストがあるときは [最小費用流](min-cost-flow.hpp)
+- 0/1 変数の割り当ての最小コスト (燃やす埋める) は [燃やす埋める](project-selection.hpp)

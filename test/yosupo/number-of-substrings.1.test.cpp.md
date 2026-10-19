@@ -14,7 +14,7 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/number_of_substrings
     links:
     - https://judge.yosupo.jp/problem/number_of_substrings
-  bundledCode: "#line 1 \"test/yosupo/number-of-substrings.test.cpp\"\n#define PROBLEM\
+  bundledCode: "#line 1 \"test/yosupo/number-of-substrings.1.test.cpp\"\n#define PROBLEM\
     \ \"https://judge.yosupo.jp/problem/number_of_substrings\"\n\n#include <iostream>\n\
     #include <string>\n#include <vector>\n\n#line 2 \"src/string/suffix-array.hpp\"\
     \n\n/**\n * @file suffix-array.hpp\n * @brief Suffix Array (SA-IS) \u3068 LCP\
@@ -115,7 +115,7 @@ data:
     \ < n; i++) {\n        if (h > 0) h--;\n        if (rank[i] == 0) continue;\n\
     \        long long j = sa[rank[i] - 1];\n        while (j + h < n && i + h < n\
     \ && s[j + h] == s[i + h]) h++;\n        lcp[rank[i] - 1] = h;\n    }\n    return\
-    \ lcp;\n}\n#line 8 \"test/yosupo/number-of-substrings.test.cpp\"\n\nint main()\
+    \ lcp;\n}\n#line 8 \"test/yosupo/number-of-substrings.1.test.cpp\"\n\nint main()\
     \ {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n    std::string\
     \ s;\n    std::cin >> s;\n    long long n = s.size();\n    // \u90E8\u5206\u6587\
     \u5B57\u5217\u306F\u63A5\u5C3E\u8F9E\u306E\u63A5\u982D\u8F9E\u3002\u8F9E\u66F8\
@@ -135,15 +135,15 @@ data:
   dependsOn:
   - src/string/suffix-array.hpp
   isVerificationFile: true
-  path: test/yosupo/number-of-substrings.test.cpp
+  path: test/yosupo/number-of-substrings.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-20 00:25:26+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/yosupo/number-of-substrings.test.cpp
+documentation_of: test/yosupo/number-of-substrings.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/yosupo/number-of-substrings.test.cpp
-- /verify/test/yosupo/number-of-substrings.test.cpp.html
-title: test/yosupo/number-of-substrings.test.cpp
+- /verify/test/yosupo/number-of-substrings.1.test.cpp
+- /verify/test/yosupo/number-of-substrings.1.test.cpp.html
+title: test/yosupo/number-of-substrings.1.test.cpp
 ---

@@ -22,7 +22,7 @@ int main() {
     }
     std::sort(ys.begin(), ys.end());
     ys.erase(std::unique(ys.begin(), ys.end()), ys.end());
-    int m = (int)ys.size() - 1;
+    int m = static_cast<int>(ys.size()) - 1;
     using A = acted_monoid::AddMinCount<int, long long>;
     std::vector<A::S> init(m);
     for (int i = 0; i < m; i++) init[i] = {0, ys[i + 1] - ys[i]};
@@ -40,10 +40,10 @@ int main() {
     }
     std::sort(events.begin(), events.end());
     long long ans = 0;
-    for (int i = 0; i < (int)events.size(); i++) {
+    for (int i = 0; i < static_cast<int>(events.size()); i++) {
         auto [x, v, lo, hi] = events[i];
-        seg.apply((int)lo, (int)hi, (int)v);
-        if (i + 1 < (int)events.size()) {
+        seg.apply(static_cast<int>(lo), static_cast<int>(hi), static_cast<int>(v));
+        if (i + 1 < static_cast<int>(events.size())) {
             auto [mn, cnt] = seg.all_prod();
             long long covered = total - (mn == 0 ? cnt : 0);
             ans += covered * (events[i + 1][0] - x);

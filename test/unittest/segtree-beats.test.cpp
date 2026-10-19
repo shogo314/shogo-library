@@ -140,7 +140,7 @@ long long clamp_apply(const ClampAddOp& f, long long x) { return std::clamp(x + 
 
 int main() {
     std::mt19937_64 rng(314);
-    auto small = [&] { return (long long)(rng() % 41) - 20; };
+    auto small = [&] { return static_cast<long long>(rng() % 41) - 20; };
     auto gen_f = [&]() -> ClampAddOp {
         long long b = small();
         switch (rng() % 3) {

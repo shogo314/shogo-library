@@ -73,7 +73,7 @@ int main() {
         }
         if (mf.flow(s, t) != best) ok = false;
         // 容量を 0 にした辺には流れない
-        int k = m == 0 ? -1 : (int)(rng() % m);
+        int k = m == 0 ? -1 : static_cast<int>(rng() % m);
         if (k != -1) {
             mf.change_edge(k, 0, 0);
             if (mf.get_edge(k).cap != 0 || mf.get_edge(k).flow != 0) ok = false;

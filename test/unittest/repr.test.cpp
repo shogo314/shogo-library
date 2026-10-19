@@ -94,9 +94,9 @@ int main() {
     CHECK_REPR('\0', '\0');
     CHECK_REPR('\'', '\'');
     CHECK_REPR('\\', '\\');
-    CHECK_REPR(char(1), '\001');
-    CHECK_REPR(char(127), '\177');
-    CHECK_REPR(char(-61), '\303');  // UTF-8 の文字のバイトなど、負の値の char
+    CHECK_REPR(static_cast<char>(1), '\001');
+    CHECK_REPR(static_cast<char>(127), '\177');
+    CHECK_REPR(static_cast<char>(-61), '\303');  // UTF-8 の文字のバイトなど、負の値の char
     check(type_str('a') == "char" && initializer_str('a') == "'a'", "type_str / initializer_str (char)");
     for (int i = -128; i <= 127; i++) {
         char c = static_cast<char>(i);
@@ -142,7 +142,7 @@ int main() {
         std::vector<long long> v(n);
         std::string expect = "std::vector<long long>{";
         for (int i = 0; i < n; i++) {
-            v[i] = (long long)(rng() % 2001) - 1000;
+            v[i] = static_cast<long long>(rng() % 2001) - 1000;
             expect += (i ? ", " : "") + std::to_string(v[i]) + "ll";
         }
         expect += "}";

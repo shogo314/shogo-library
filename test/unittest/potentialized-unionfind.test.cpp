@@ -30,7 +30,7 @@ int main() {
                 if (c == cb) c = ca;
             }
             for (int x = 0; x < n; x++) {
-                if (uf.size(x) != (int)std::count(comp.begin(), comp.end(), comp[x])) ok = false;
+                if (uf.size(x) != static_cast<int>(std::count(comp.begin(), comp.end(), comp[x]))) ok = false;
                 for (int y = 0; y < n; y++) {
                     if (comp[x] == comp[y] && uf.diff(x, y) != p[y] - p[x]) ok = false;
                 }

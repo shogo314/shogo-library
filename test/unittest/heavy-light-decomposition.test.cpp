@@ -36,7 +36,7 @@ int main() {
 
         // 愚直: 根からの親と深さ
         std::vector<int> par(n, -1), dep(n, 0), bfs = {root};
-        for (int i = 0; i < (int)bfs.size(); i++) {
+        for (int i = 0; i < static_cast<int>(bfs.size()); i++) {
             int v = bfs[i];
             for (int u : g[v]) {
                 if (u == par[v]) continue;

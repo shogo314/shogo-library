@@ -24,14 +24,14 @@ int main() {
     std::mt19937_64 rng(314);
     auto rand_vec = [&](int n) {
         std::vector<long long> v(n);
-        for (auto& x : v) x = (long long)(rng() % 21) - 10;
+        for (auto& x : v) x = static_cast<long long>(rng() % 21) - 10;
         return v;
     };
 
     for (int rep = 0; rep < 2000 && ok; rep++) {
         int n = rng() % 8, m = rng() % 8;
         std::vector<long long> a = rand_vec(n), b = rand_vec(m);
-        long long c = (long long)(rng() % 11) - 5;
+        long long c = static_cast<long long>(rng() % 11) - 5;
 
         // ++ / -- (前置は変更後、後置は変更前を返す)
         {
@@ -47,7 +47,7 @@ int main() {
         // 要素ごとの和 (短い方は 0 で埋める)
         {
             std::vector<long long> expect(std::max(n, m));
-            for (int i = 0; i < (int)expect.size(); i++) expect[i] = (i < n ? a[i] : 0) + (i < m ? b[i] : 0);
+            for (int i = 0; i < static_cast<int>(expect.size()); i++) expect[i] = (i < n ? a[i] : 0) + (i < m ? b[i] : 0);
             check(a + b == expect, "v + w");
             std::vector<long long> x = a;
             x += b;
@@ -57,7 +57,7 @@ int main() {
         // 要素ごとの積 (どちらかにない位置は 0)
         {
             std::vector<long long> expect(std::max(n, m));
-            for (int i = 0; i < (int)expect.size(); i++) expect[i] = (i < n && i < m) ? a[i] * b[i] : 0;
+            for (int i = 0; i < static_cast<int>(expect.size()); i++) expect[i] = (i < n && i < m) ? a[i] * b[i] : 0;
             check(a * b == expect, "v * w");
             std::vector<long long> x = a;
             x *= b;
@@ -117,10 +117,10 @@ int main() {
                 auto idx = sorted_idx(a, rev);
                 std::vector<long long> perm = idx;
                 std::sort(perm.begin(), perm.end());
-                bool is_perm = (int)perm.size() == n;
-                for (int i = 0; i < (int)perm.size() && is_perm; i++) is_perm = perm[i] == i;
+                bool is_perm = static_cast<int>(perm.size()) == n;
+                for (int i = 0; i < static_cast<int>(perm.size()) && is_perm; i++) is_perm = perm[i] == i;
                 bool is_sorted = true;
-                for (int i = 0; i + 1 < (int)idx.size(); i++) {
+                for (int i = 0; i + 1 < static_cast<int>(idx.size()); i++) {
                     if (rev ? a[idx[i]] < a[idx[i + 1]] : a[idx[i]] > a[idx[i + 1]]) is_sorted = false;
                 }
                 check(is_perm && is_sorted, "sorted_idx");

@@ -38,7 +38,7 @@ static_assert(Range(5).max() == 4);
 
 int main() {
     std::mt19937_64 rng(314);
-    auto rnd = [&](ll lo, ll hi) { return lo + (ll)(rng() % (unsigned long long)(hi - lo + 1)); };
+    auto rnd = [&](ll lo, ll hi) { return lo + static_cast<ll>(rng() % static_cast<unsigned long long>(hi - lo + 1)); };
     bool ok = true;
     auto check = [&](bool cond, const char* what) {
         if (!cond) {
@@ -119,7 +119,7 @@ int main() {
             for (ll x : v)
                 if (l <= x && x < rr) expect.push_back(x);
             Range c = r.clipped(l, rr);
-            check(by_iteration(c) == expect && c.size() == (long long)expect.size(), "clipped");
+            check(by_iteration(c) == expect && c.size() == static_cast<long long>(expect.size()), "clipped");
         }
 
         // slice: インデックスを Range で指定する (範囲外のインデックスは無視)
@@ -130,7 +130,7 @@ int main() {
             for (ll i : naive_range(s2, t2, st2))
                 if (0 <= i && i < n) expect.push_back(v[i]);
             Range s = r.slice(idx);
-            check(by_iteration(s) == expect && s.size() == (long long)expect.size(), "slice");
+            check(by_iteration(s) == expect && s.size() == static_cast<long long>(expect.size()), "slice");
         }
 
         // ==, != は列として等しいか

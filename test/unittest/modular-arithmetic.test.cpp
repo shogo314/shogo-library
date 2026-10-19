@@ -45,7 +45,7 @@ int main() {
         if (modpow(a, P - 1, P) != 1) ok = false, std::cerr << "fermat " << a << std::endl;
         if (modmul(a, modinv(a, P), P) != 1) ok = false, std::cerr << "inv " << a << std::endl;
         long long b = rng() % P;
-        if (modmul(a, b, P) != (long long)((__int128)a * b % P)) ok = false, std::cerr << "mul " << a << std::endl;
+        if (modmul(a, b, P) != static_cast<long long>(static_cast<__int128>(a) * b % P)) ok = false, std::cerr << "mul " << a << std::endl;
     }
 
     if (ok) std::cout << "Hello World" << std::endl;

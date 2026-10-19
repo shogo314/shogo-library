@@ -11,5 +11,5 @@ int main() {
     auto qs = enumerate_quotients(n);
     // 商の昇順に出力する
     std::cout << qs.size() << '\n';
-    for (int i = (int)qs.size() - 1; i >= 0; i--) std::cout << qs[i].q << " \n"[i == 0];
+    for (int i = static_cast<int>(qs.size()) - 1; i >= 0; i--) std::cout << qs[i].q << " \n"[i == 0];
 }

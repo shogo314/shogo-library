@@ -14,5 +14,5 @@ int main() {
     for (auto& x : a) std::cin >> x;
     std::vector<long long> idx = longest_increasing_subsequence_restore(a);
     std::cout << idx.size() << '\n';
-    for (long long i = 0; i < (long long)idx.size(); i++) std::cout << idx[i] << " \n"[i + 1 == (long long)idx.size()];
+    for (long long i = 0; i < static_cast<long long>(idx.size()); i++) std::cout << idx[i] << " \n"[i + 1 == static_cast<long long>(idx.size())];
 }

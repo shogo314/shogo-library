@@ -13,5 +13,5 @@ int main() {
     std::vector<int> a(n);
     for (auto& x : a) std::cin >> x;
     std::vector<int> res = sliding_window_min(a, l);
-    for (int i = 0; i < (int)res.size(); i++) std::cout << res[i] << " \n"[i + 1 == (int)res.size()];
+    for (int i = 0; i < static_cast<int>(res.size()); i++) std::cout << res[i] << " \n"[i + 1 == static_cast<int>(res.size())];
 }

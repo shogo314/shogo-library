@@ -12,7 +12,7 @@ int main() {
     std::cin >> n >> a >> b;
     std::vector<long long> ps = enumerate_primes(n);
     std::vector<long long> ans;
-    for (int i = b; i < (int)ps.size(); i += a) ans.push_back(ps[i]);
+    for (int i = b; i < static_cast<int>(ps.size()); i += a) ans.push_back(ps[i]);
     std::cout << ps.size() << ' ' << ans.size() << '\n';
     for (std::size_t i = 0; i < ans.size(); i++) std::cout << ans[i] << " \n"[i + 1 == ans.size()];
     if (ans.empty()) std::cout << '\n';

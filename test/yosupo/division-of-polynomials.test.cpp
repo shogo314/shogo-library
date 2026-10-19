@@ -16,8 +16,8 @@ int main() {
     for (auto& x : g) std::cin >> x;
     FPS<mint> q = f / g, r = f % g;
     std::cout << q.size() << ' ' << r.size() << '\n';
-    for (int i = 0; i < (int)q.size(); i++) std::cout << q[i] << (i + 1 == (int)q.size() ? "" : " ");
+    for (int i = 0; i < static_cast<int>(q.size()); i++) std::cout << q[i] << (i + 1 == static_cast<int>(q.size()) ? "" : " ");
     std::cout << '\n';
-    for (int i = 0; i < (int)r.size(); i++) std::cout << r[i] << (i + 1 == (int)r.size() ? "" : " ");
+    for (int i = 0; i < static_cast<int>(r.size()); i++) std::cout << r[i] << (i + 1 == static_cast<int>(r.size()) ? "" : " ");
     std::cout << '\n';
 }

@@ -21,7 +21,7 @@ bool check(const R& s, const std::vector<long long>& sa) {
     });
     if (sa != expected) return false;
     std::vector<long long> lcp = lcp_array(s, sa);
-    if ((long long)lcp.size() != std::max(n - 1, 0LL)) return false;
+    if (static_cast<long long>(lcp.size()) != std::max(n - 1, 0LL)) return false;
     // int の Suffix Array を渡しても同じ LCP 配列になる
     if (lcp_array(s, std::vector<int>(sa.begin(), sa.end())) != lcp) return false;
     for (long long i = 0; i + 1 < n; i++) {
@@ -51,7 +51,7 @@ int main() {
         ok = ok && check(s, suffix_array(s));
 
         std::vector<long long> b(n);
-        for (auto& v : b) v = (long long)(rng() % 3) * 1000000000000LL - 1000000000000LL;
+        for (auto& v : b) v = static_cast<long long>(rng() % 3) * 1000000000000LL - 1000000000000LL;
         ok = ok && check(b, suffix_array(b));
     }
     // 長い列 (再帰が何段も起こる)

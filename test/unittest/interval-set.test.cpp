@@ -17,13 +17,13 @@ constexpr int LO = -5, HI = 20;
 // 覆われている点の極大な連続部分を半開区間の列にする (接する区間はまとめられる)
 std::vector<std::pair<long long, long long>> runs(const std::vector<bool>& cov) {
     std::vector<std::pair<long long, long long>> res;
-    for (int i = 0; i < (int)cov.size();) {
+    for (int i = 0; i < static_cast<int>(cov.size());) {
         if (!cov[i]) {
             i++;
             continue;
         }
         int j = i;
-        while (j < (int)cov.size() && cov[j]) j++;
+        while (j < static_cast<int>(cov.size()) && cov[j]) j++;
         res.push_back({i + LO, j + LO});
         i = j;
     }
@@ -48,7 +48,7 @@ int main() {
                 for (long long x = l; x < r; x++) cov[x - LO] = false;
             }
             auto expect = runs(cov);
-            if (st.to_vector() != expect || st.size() != (int)expect.size()) ok = false;
+            if (st.to_vector() != expect || st.size() != static_cast<int>(expect.size())) ok = false;
 
             // covered_by(k): k を含む区間
             for (long long k = LO; k < HI; k++) {

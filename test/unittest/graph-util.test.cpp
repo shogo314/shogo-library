@@ -62,9 +62,9 @@ int main() {
             if (seen[v] != 1) ok = false;
             if (label[v] == v) num_components++;
         }
-        if ((int)groups.size() != num_components) ok = false;
+        if (static_cast<int>(groups.size()) != num_components) ok = false;
         if (is_connected(graph) != (num_components == 1)) ok = false;
-        if (is_tree(graph) != (num_components == 1 && (int)edges.size() == n - 1)) ok = false;
+        if (is_tree(graph) != (num_components == 1 && static_cast<int>(edges.size()) == n - 1)) ok = false;
     }
 
     // 有向グラフ: topological_sort, has_cycle
@@ -94,7 +94,7 @@ int main() {
         if (has_cycle(graph) == dag) ok = false;
         std::vector<long long> order = topological_sort(graph);
         if (dag) {
-            if ((int)order.size() != n)
+            if (static_cast<int>(order.size()) != n)
                 ok = false;
             else {
                 std::vector<int> pos(n, -1);
@@ -137,7 +137,7 @@ int main() {
         std::vector<std::vector<long long>> groups = strongly_connected_components(graph);
         std::vector<int> id(n, -1);
         int total = 0;
-        for (int i = 0; i < (int)groups.size(); i++) {
+        for (int i = 0; i < static_cast<int>(groups.size()); i++) {
             for (int v : groups[i]) {
                 if (id[v] != -1) ok = false;  // 2 つの成分に入っている
                 id[v] = i;
@@ -205,7 +205,7 @@ int main() {
         for (int i = 0; i < m; i++) graph.add_edge(rng() % n, rng() % n, rng() % 10);
         auto es = graph.edges();
         auto comps = connected_components(graph);
-        int need = n - (int)comps.size();  // 全域森の辺の本数
+        int need = n - static_cast<int>(comps.size());  // 全域森の辺の本数
         int best = -1;
         for (int mask = 0; mask < (1 << m); mask++) {
             if (__builtin_popcount(mask) != need) continue;
@@ -220,7 +220,7 @@ int main() {
             if (forest && (best == -1 || cost < best)) best = cost;
         }
         auto mst = minimum_spanning_tree(graph);
-        if (mst.cost != best || (int)mst.edges.size() != need) ok = false;
+        if (mst.cost != best || static_cast<int>(mst.edges.size()) != need) ok = false;
         UnionFind uf(n);
         int sum = 0;
         for (const auto& e : mst.edges) {

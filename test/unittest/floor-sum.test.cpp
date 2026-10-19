@@ -16,8 +16,8 @@ int main() {
     for (int rep = 0; rep < 100000 && ok; rep++) {
         long long n = rng() % 30;
         long long m = rng() % 30 + 1;
-        long long a = (long long)(rng() % 201) - 100;
-        long long b = (long long)(rng() % 201) - 100;
+        long long a = static_cast<long long>(rng() % 201) - 100;
+        long long b = static_cast<long long>(rng() % 201) - 100;
         long long expected = 0;
         for (long long i = 0; i < n; i++) expected += floor_div(a * i + b, m);
         ok = ok && floor_sum(n, m, a, b) == expected;

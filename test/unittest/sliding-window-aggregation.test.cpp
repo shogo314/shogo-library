@@ -38,7 +38,7 @@ int main() {
             }
             Affine<mint> expected = monoid::Composite<mint>::e();
             for (const auto& f : dq) expected = monoid::Composite<mint>::op(expected, f);
-            if (swag.size() != (int)dq.size() || swag.empty() != dq.empty() || swag.prod() != expected) ok = false;
+            if (swag.size() != static_cast<int>(dq.size()) || swag.empty() != dq.empty() || swag.prod() != expected) ok = false;
             if (!dq.empty() && swag.front() != dq.front()) ok = false;
         }
     }

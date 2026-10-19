@@ -43,7 +43,7 @@ int main() {
                 }
                 if (uf.prod(x) != sum) ok = false;
                 if (muf.prod(x) != -1) ok = false;
-                if (uf.size(x) != (int)std::count(comp.begin(), comp.end(), comp[x])) ok = false;
+                if (uf.size(x) != static_cast<int>(std::count(comp.begin(), comp.end(), comp[x]))) ok = false;
             }
         }
     }

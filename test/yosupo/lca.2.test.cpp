@@ -15,9 +15,9 @@ int main(void) {
     RootedTree tree(par, 0);
     SegTree<monoid::Min<long long>> et_depth(tree.euler_tour.size());
     std::vector<int> pre_idx(n);
-    for (int i = 0; i < (int)tree.euler_tour.size(); i++) {
+    for (int i = 0; i < static_cast<int>(tree.euler_tour.size()); i++) {
         auto [u, cnt] = tree.euler_tour[i];
-        et_depth[i] = (long long)tree.depth[u] * n + u;
+        et_depth[i] = static_cast<long long>(tree.depth[u]) * n + u;
         if (cnt == 0) pre_idx[u] = i;
     }
     while (q--) {

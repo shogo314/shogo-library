@@ -38,9 +38,9 @@ int main() {
                 auto itr = ms.find(x ^ x_all);
                 if (itr != ms.end()) ms.erase(itr);
             }
-            if (bt.size() != (int)ms.size()) ok = false;
+            if (bt.size() != static_cast<int>(ms.size())) ok = false;
             for (unsigned x = 0; x < 16; x++) {
-                if (bt.count(x) != (int)ms.count(x ^ x_all)) ok = false;
+                if (bt.count(x) != static_cast<int>(ms.count(x ^ x_all))) ok = false;
             }
         }
     }

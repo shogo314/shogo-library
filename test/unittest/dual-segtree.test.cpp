@@ -87,7 +87,7 @@ int main() {
         for (int t = 0; t < 40; t++) {
             int l = rng() % (n + 1), r = rng() % (n + 1);
             if (l > r) std::swap(l, r);
-            long long x = (long long)(rng() % 21) - 10;
+            long long x = static_cast<long long>(rng() % 21) - 10;
             seg.apply(l, r, x);
             for (int i = l; i < r; i++) v[i] += x;
             int k = rng() % n;
@@ -98,7 +98,7 @@ int main() {
     for (int rep = 0; rep < 500 && ok; rep++) {
         int n = rng() % 12 + 1;
         std::vector<long long> v(n);
-        for (auto& x : v) x = (long long)(rng() % 21) - 10;
+        for (auto& x : v) x = static_cast<long long>(rng() % 21) - 10;
         RAddQ<long long> add(v);
         RUpdateQ<long long> upd(v);
         RChminQ<long long> chmin(v);
@@ -107,7 +107,7 @@ int main() {
         for (int t = 0; t < 40; t++) {
             int l = rng() % (n + 1), r = rng() % (n + 1);
             if (l > r) std::swap(l, r);
-            long long x = (long long)(rng() % 21) - 10;
+            long long x = static_cast<long long>(rng() % 21) - 10;
             add.apply(l, r, x);
             upd.apply(l, r, x);
             chmin.apply(l, r, x);

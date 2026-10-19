@@ -24,27 +24,27 @@ int main(void) {
     std::vector<unsigned long long> c(n + m - 1);
     std::vector<long long> c00 = convolution_ll(a0, b0);
     for (int i = 0; i < n + m - 1; i++) {
-        c[i] += (unsigned long long)c00[i];
+        c[i] += static_cast<unsigned long long>(c00[i]);
     }
     std::vector<long long> c01 = convolution_ll(a0, b1);
     for (int i = 0; i < n + m - 1; i++) {
-        c[i] += (unsigned long long)c01[i] << 31;
+        c[i] += static_cast<unsigned long long>(c01[i]) << 31;
     }
     std::vector<long long> c02 = convolution_ll(a0, b2);
     for (int i = 0; i < n + m - 1; i++) {
-        c[i] += (unsigned long long)c02[i] << 62;
+        c[i] += static_cast<unsigned long long>(c02[i]) << 62;
     }
     std::vector<long long> c10 = convolution_ll(a1, b0);
     for (int i = 0; i < n + m - 1; i++) {
-        c[i] += (unsigned long long)c10[i] << 31;
+        c[i] += static_cast<unsigned long long>(c10[i]) << 31;
     }
     std::vector<long long> c11 = convolution_ll(a1, b1);
     for (int i = 0; i < n + m - 1; i++) {
-        c[i] += (unsigned long long)c11[i] << 62;
+        c[i] += static_cast<unsigned long long>(c11[i]) << 62;
     }
     std::vector<long long> c20 = convolution_ll(a2, b0);
     for (int i = 0; i < n + m - 1; i++) {
-        c[i] += (unsigned long long)c20[i] << 62;
+        c[i] += static_cast<unsigned long long>(c20[i]) << 62;
     }
     std::cout << c << std::endl;
 }

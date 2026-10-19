@@ -18,8 +18,8 @@ int main() {
     for (int rep = 0; rep < 1000 && ok; rep++) {
         int n = rng() % 60;
         std::vector<long long> a(n + 1), b(n + 1);
-        for (auto& x : a) x = (long long)(rng() % 21) - 10;
-        for (auto& x : b) x = (long long)(rng() % 21) - 10;
+        for (auto& x : a) x = static_cast<long long>(rng() % 21) - 10;
+        for (auto& x : b) x = static_cast<long long>(rng() % 21) - 10;
 
         std::vector<long long> dz(n + 1), mz(n + 1), gc(n + 1), lc(n + 1);
         dz[0] = mz[0] = a[0];
@@ -28,7 +28,7 @@ int main() {
                 if (i % j == 0) dz[i] += a[j];
                 if (j % i == 0) mz[i] += a[j];
                 int g = std::gcd(i, j);
-                long long l = (long long)i / g * j;
+                long long l = static_cast<long long>(i) / g * j;
                 gc[g] += a[i] * b[j];
                 if (l <= n) lc[l] += a[i] * b[j];
             }

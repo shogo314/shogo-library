@@ -27,7 +27,7 @@ int main() {
     std::mt19937_64 rng(314);
     auto rand_vec = [&](int n, long long lo, long long hi) {
         std::vector<long long> v(n);
-        for (auto& x : v) x = lo + (long long)(rng() % (unsigned long long)(hi - lo + 1));
+        for (auto& x : v) x = lo + static_cast<long long>(rng() % static_cast<unsigned long long>(hi - lo + 1));
         return v;
     };
 
@@ -84,23 +84,23 @@ int main() {
 
         // index: 最初に現れる位置、なければ -1
         {
-            long long x = (long long)(rng() % 13) - 6;
+            long long x = static_cast<long long>(rng() % 13) - 6;
             long long expect = std::find(v.begin(), v.end(), x) - v.begin();
-            if (expect == (long long)v.size()) expect = -1;
+            if (expect == static_cast<long long>(v.size())) expect = -1;
             check(index(v, x) == expect, "index(c, x)");
         }
 
         // index_if / indices_if / count_if: f(x) が true になる位置と個数 (vector と set)
         {
-            long long x = (long long)(rng() % 13) - 6;
+            long long x = static_cast<long long>(rng() % 13) - 6;
             auto f = [&](long long e) { return e >= x; };
             std::vector<long long> pos;
-            for (long long i = 0; i < (long long)v.size(); i++) {
+            for (long long i = 0; i < static_cast<long long>(v.size()); i++) {
                 if (f(v[i])) pos.push_back(i);
             }
             check(indices_if(v, f) == pos, "indices_if(vector, f)");
             check(index_if(v, f) == (pos.empty() ? -1 : pos[0]), "index_if(vector, f)");
-            check(count_if(v, f) == (long long)pos.size(), "count_if(vector, f)");
+            check(count_if(v, f) == static_cast<long long>(pos.size()), "count_if(vector, f)");
             std::set<long long> st(v.begin(), v.end());
             long long first = std::find_if(st.begin(), st.end(), f) == st.end() ? -1 : std::distance(st.begin(), std::find_if(st.begin(), st.end(), f));
             check(index_if(st, f) == first, "index_if(set, f)");
@@ -110,7 +110,7 @@ int main() {
         // mex: 含まれない最小の非負整数
         {
             std::vector<int> w(n);
-            for (auto& a : w) a = (int)(rng() % 8) - 2;
+            for (auto& a : w) a = static_cast<int>(rng() % 8) - 2;
             int expect = 0;
             while (std::find(w.begin(), w.end(), expect) != w.end()) expect++;
             check(mex(w) == expect, "mex(c)");
@@ -118,11 +118,11 @@ int main() {
 
         // count / find / lower_bound / upper_bound (set はメンバ関数、vector は std:: のアルゴリズム)
         {
-            long long x = (long long)(rng() % 13) - 6;
+            long long x = static_cast<long long>(rng() % 13) - 6;
             std::multiset<long long> ms(v.begin(), v.end());
             std::vector<long long> w = v;
             std::sort(w.begin(), w.end());
-            check(count(ms, x) == (std::size_t)std::count(v.begin(), v.end(), x), "count(multiset, x)");
+            check(count(ms, x) == static_cast<std::size_t>(std::count(v.begin(), v.end(), x)), "count(multiset, x)");
             check(count(v, x) == std::count(v.begin(), v.end(), x), "count(vector, x)");
             check((find(ms, x) != ms.end()) == (std::find(v.begin(), v.end(), x) != v.end()), "find(multiset, x)");
             check(find(v, x) == std::find(v.begin(), v.end(), x), "find(vector, x)");

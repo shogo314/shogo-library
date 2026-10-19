@@ -11,7 +11,7 @@
 
 // s = floor(sqrt(n)) か (__int128 で 2 乗してあふれないように比べる)
 bool is_floor_sqrt(long long n, long long s) {
-    return s >= 0 && (__int128)s * s <= n && (__int128)(s + 1) * (s + 1) > n;
+    return s >= 0 && static_cast<__int128>(s) * s <= n && static_cast<__int128>(s + 1) * (s + 1) > n;
 }
 
 int main() {

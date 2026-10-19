@@ -14,7 +14,7 @@ int main() {
     graph.read(m, 0);
     std::vector<int> id(n);
     auto groups = connected_components(graph);
-    for (int i = 0; i < (int)groups.size(); i++) {
+    for (int i = 0; i < static_cast<int>(groups.size()); i++) {
         for (int v : groups[i]) id[v] = i;
     }
     int q;

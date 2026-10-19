@@ -86,10 +86,10 @@ int main() {
 
     // 要素数が大きい場合: 値を持つ位置だけを map で持って比べる (和のモノイド)
     for (int rep = 0; rep < 300 && ok; rep++) {
-        long long n = rep % 2 ? (long long)(rng() % 1000000000000000000ULL) + 1 : 1000000000000000000LL;
+        long long n = rep % 2 ? static_cast<long long>(rng() % 1000000000000000000ULL) + 1 : 1000000000000000000LL;
         DynamicSegTree seg(n, Monoid([](long long a, long long b) { return a + b; }, 0LL));
         std::map<long long, long long> v;
-        auto random_pos = [&]() { return (long long)(rng() % n); };
+        auto random_pos = [&]() { return static_cast<long long>(rng() % n); };
         auto naive_prod = [&](long long l, long long r) {
             long long s = 0;
             for (auto it = v.lower_bound(l); it != v.end() && it->first < r; ++it) s += it->second;

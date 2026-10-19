@@ -35,14 +35,14 @@ void check(bool cond, const char* what) {
 // midpoint の答え: (a + b) / 2 を a の側に丸める。__int128 で計算する
 template <typename T>
 T naive_midpoint(T a, T b) {
-    __int128 s = (__int128)a + (__int128)b;
-    return (T)(a <= b ? floordiv(s, 2) : ceildiv(s, 2));
+    __int128 s = static_cast<__int128>(a) + static_cast<__int128>(b);
+    return static_cast<T>(a <= b ? floordiv(s, 2) : ceildiv(s, 2));
 }
 template <typename T>
 void check_midpoint(std::mt19937_64& rng) {
-    std::vector<T> xs = {std::numeric_limits<T>::min(), std::numeric_limits<T>::max(), 0, 1, (T)(std::numeric_limits<T>::max() - 1), (T)(std::numeric_limits<T>::min() + 1)};
-    if (std::is_signed_v<T>) xs.push_back((T)-1);
-    for (int i = 0; i < 30; i++) xs.push_back((T)rng()), xs.push_back((T)((T)rng() >> (rng() % (8 * sizeof(T)))));
+    std::vector<T> xs = {std::numeric_limits<T>::min(), std::numeric_limits<T>::max(), 0, 1, static_cast<T>(std::numeric_limits<T>::max() - 1), static_cast<T>(std::numeric_limits<T>::min() + 1)};
+    if (std::is_signed_v<T>) xs.push_back(static_cast<T>(-1));
+    for (int i = 0; i < 30; i++) xs.push_back(static_cast<T>(rng())), xs.push_back(static_cast<T>(static_cast<T>(rng()) >> (rng() % (8 * sizeof(T)))));
     for (T a : xs)
         for (T b : xs) check(midpoint(a, b) == naive_midpoint(a, b), "midpoint 整数");
     static_assert(std::is_same_v<decltype(midpoint(T(), T())), T>);
@@ -60,7 +60,7 @@ int main() {
     std::mt19937_64 rng(314);
 
     for (int rep = 0; rep < 20000 && ok; rep++) {
-        long long a = (long long)(rng() % 21) - 10, b = (long long)(rng() % 21) - 10;
+        long long a = static_cast<long long>(rng() % 21) - 10, b = static_cast<long long>(rng() % 21) - 10;
 
         // chmin / chmax: 更新したかを返す
         {
@@ -80,8 +80,8 @@ int main() {
 
         // floordiv / ceildiv: 実数の floor / ceil と比べる
         if (b != 0) {
-            check(floordiv(a, b) == (long long)std::floor((double)a / b), "floordiv");
-            check(ceildiv(a, b) == (long long)std::ceil((double)a / b), "ceildiv");
+            check(floordiv(a, b) == static_cast<long long>(std::floor(static_cast<double>(a) / b)), "floordiv");
+            check(ceildiv(a, b) == static_cast<long long>(std::ceil(static_cast<double>(a) / b)), "ceildiv");
             auto [q, r] = divmod(a, b);
             check(q == floordiv(a, b) && q * b + r == a, "divmod");
             check(r == 0 || (r < 0) == (b < 0), "divmod 余りの符号");
@@ -90,17 +90,17 @@ int main() {
 
         // inrange / inrect
         {
-            long long x = (long long)(rng() % 15) - 5;
+            long long x = static_cast<long long>(rng() % 15) - 5;
             check(inrange(x, a) == (0 <= x && x < a), "inrange(x, a)");
             check(inrange(x, a, b) == (a <= x && x < b), "inrange(x, a, b)");
-            long long y = (long long)(rng() % 15) - 5;
+            long long y = static_cast<long long>(rng() % 15) - 5;
             check(inrect(x, y, a, b) == (0 <= x && x < a && 0 <= y && y < b), "inrect");
         }
 
         // 整数の二分探索: f(ok) が真、f(ng) が偽で単調なとき、境界の ok 側を返す
         {
-            long long t = (long long)(rng() % 2001) - 1000;
-            long long lo = t - (long long)(rng() % 1000) - 1, hi = t + (long long)(rng() % 1000) + 1;
+            long long t = static_cast<long long>(rng() % 2001) - 1000;
+            long long lo = t - static_cast<long long>(rng() % 1000) - 1, hi = t + static_cast<long long>(rng() % 1000) + 1;
             // f(x) = x <= t (ok = lo, ng = hi) -> t
             check(binary_search(lo, hi, [&](long long x) { return x <= t; }) == t, "binary_search 整数 (ok < ng)");
             // f(x) = x >= t (ok = hi, ng = lo) -> t
@@ -111,7 +111,7 @@ int main() {
 
         // 実数の二分探索 (100 回)
         {
-            double t = (double)(rng() % 2000001) / 1000.0;  // [0, 2000]
+            double t = static_cast<double>(rng() % 2000001) / 1000.0;  // [0, 2000]
             double r = binary_search(0.0, 3000.0, [&](double x) { return x * x <= t; });
             check(std::abs(r - std::sqrt(t)) < 1e-9, "binary_search 実数 sqrt");
             double r2 = binary_search(3000.0, 0.0, [&](double x) { return x * x >= t; });
@@ -120,7 +120,7 @@ int main() {
     }
 
     // 決まった値
-    check(binary_search(0, 1000000000, [](int x) { return (long long)x * x <= 1000000000; }) == 31622, "binary_search sqrt(1e9)");
+    check(binary_search(0, 1000000000, [](int x) { return static_cast<long long>(x) * x <= 1000000000; }) == 31622, "binary_search sqrt(1e9)");
     check(!inrange(0, 0) && inrange(0, 1) && !inrange(-1, 1), "inrange 境界");
     check(inrange(5, 5, 6) && !inrange(6, 5, 6), "inrange(x, a, b) 境界");
     check(floordiv(7, 2) == 3 && floordiv(-7, 2) == -4 && floordiv(7, -2) == -4 && floordiv(-7, -2) == 3, "floordiv 決まった値");
@@ -137,9 +137,9 @@ int main() {
 
     // midpoint: 整数は 8 ビットの型を全組、他は境界付近とランダム。浮動小数点数とポインタは決まった値
     for (int a = -128; a < 128; a++)
-        for (int b = -128; b < 128; b++) check(midpoint((std::int8_t)a, (std::int8_t)b) == naive_midpoint((std::int8_t)a, (std::int8_t)b), "midpoint int8");
+        for (int b = -128; b < 128; b++) check(midpoint(static_cast<std::int8_t>(a), static_cast<std::int8_t>(b)) == naive_midpoint(static_cast<std::int8_t>(a), static_cast<std::int8_t>(b)), "midpoint int8");
     for (int a = 0; a < 256; a++)
-        for (int b = 0; b < 256; b++) check(midpoint((std::uint8_t)a, (std::uint8_t)b) == naive_midpoint((std::uint8_t)a, (std::uint8_t)b), "midpoint uint8");
+        for (int b = 0; b < 256; b++) check(midpoint(static_cast<std::uint8_t>(a), static_cast<std::uint8_t>(b)) == naive_midpoint(static_cast<std::uint8_t>(a), static_cast<std::uint8_t>(b)), "midpoint uint8");
     check_midpoint<short>(rng);
     check_midpoint<int>(rng);
     check_midpoint<unsigned>(rng);
@@ -152,7 +152,7 @@ int main() {
         check(midpoint(D, 4.0) == 2.0 && midpoint(4.0, D) == 2.0 && midpoint(D, D) == D, "midpoint double 非正規化数");
         check(midpoint(1.0f, 2.0f) == 1.5f && std::is_same_v<decltype(midpoint(1.0f, 2.0f)), float>, "midpoint float");
         for (int rep = 0; rep < 1000; rep++) {
-            double a = (double)(long long)(rng() % 2000001 - 1000000) / 1024, b = (double)(long long)(rng() % 2000001 - 1000000) / 1024;
+            double a = static_cast<double>(static_cast<long long>(rng() % 2000001 - 1000000)) / 1024, b = static_cast<double>(static_cast<long long>(rng() % 2000001 - 1000000)) / 1024;
             check(midpoint(a, b) == (a + b) / 2, "midpoint double ランダム");
         }
         static int arr[10];

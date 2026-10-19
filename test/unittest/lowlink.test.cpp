@@ -14,7 +14,7 @@
 // 頂点 skip_v と辺 skip_e を使わないときの連結成分の数 (skip_v 自身は数えない)
 int count_components(int n, const std::vector<std::pair<int, int>>& es, int skip_v, int skip_e) {
     UnionFind uf(n);
-    for (int i = 0; i < (int)es.size(); i++) {
+    for (int i = 0; i < static_cast<int>(es.size()); i++) {
         if (i == skip_e) continue;
         auto [u, v] = es[i];
         if (u == skip_v || v == skip_v) continue;
@@ -63,7 +63,7 @@ int main() {
         }
         const auto& groups = ll.two_edge_connected_groups();
         int total = 0;
-        for (int k = 0; k < (int)groups.size(); k++) {
+        for (int k = 0; k < static_cast<int>(groups.size()); k++) {
             total += groups[k].size();
             for (int v : groups[k]) {
                 if (ll.two_edge_connected_group_id(v) != k || !uf.same(v, groups[k][0])) ok = false;
@@ -71,7 +71,7 @@ int main() {
         }
         int uf_groups = 0;
         for (int v = 0; v < n; v++) uf_groups += uf.leader(v) == v;
-        if (total != n || (int)groups.size() != uf_groups) ok = false;
+        if (total != n || static_cast<int>(groups.size()) != uf_groups) ok = false;
     }
 
     if (ok)

@@ -99,7 +99,7 @@ struct Checker {
             vals.push_back(I(static_cast<T>(MINV + 2 + d)));
         }
         // 積がちょうど境界になる付近
-        for (__int128 s : {(__int128)1 << (std::numeric_limits<T>::digits / 2), MAXV / 2, MAXV / 3}) {
+        for (__int128 s : {static_cast<__int128>(1) << (std::numeric_limits<T>::digits / 2), MAXV / 2, MAXV / 3}) {
             for (int d = -1; d <= 1; d++) {
                 vals.push_back(I(static_cast<T>(s + d)));
                 vals.push_back(I(static_cast<T>(-(s + d))));

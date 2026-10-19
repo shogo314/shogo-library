@@ -93,7 +93,7 @@ int main() {
             }
         }
         // すべての版が、作ったときの内容のままか
-        for (int i = 0; i < int(seg.size()); i++) {
+        for (int i = 0; i < static_cast<int>(seg.size()); i++) {
             if (seg[i].size() != n) ok = false;
             if (seg[i].to_vector() != naive[i]) ok = false;
             if (seg[i].all_prod() != naive_prod(naive[i], 0, n)) ok = false;

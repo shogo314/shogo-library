@@ -11,7 +11,7 @@ int main(void) {
     for (int i = 0; i < n; ++i) std::cin >> points[i];
     std::vector<Vector<int>> polygon = convex_hull(points, true);
     int j = 0;
-    for (int i = 0; i < (int)polygon.size(); i++) {
+    for (int i = 0; i < static_cast<int>(polygon.size()); i++) {
         if (polygon[i][1] < polygon[j][1]) j = i;
         if (polygon[i][1] == polygon[j][1] && polygon[i][0] < polygon[j][0]) j = i;
     }

@@ -16,7 +16,7 @@ int main() {
     using P3 = Vector<long long, 3>;
     for (int rep = 0; rep < 10000 && ok; rep++) {
         // 比較の結果が偏らないよう、成分は小さい範囲から選ぶ
-        auto rnd = [&] { return (long long)(rng() % 5) - 2; };
+        auto rnd = [&] { return static_cast<long long>(rng() % 5) - 2; };
         std::array<long long, 2> a = {rnd(), rnd()}, b = {rnd(), rnd()};
         P2 p(a[0], a[1]), q(b[0], b[1]);
         long long c = rnd();

@@ -33,14 +33,14 @@ int main() {
             if (s <= S) cnt[s]++;
         }
         std::vector<bool> can = subset_sum(a, S);
-        ok = ok && (long long)can.size() == S + 1;
+        ok = ok && static_cast<long long>(can.size()) == S + 1;
         for (long long s = 0; s <= S && ok; s++) ok = can[s] == (cnt[s] > 0);
         // 復元: 添字が昇順で重複がなく、和が S になる
         auto r = subset_sum_restore(a, S);
         ok = ok && r.has_value() == (cnt[S] > 0);
         if (ok && r) {
             long long s = 0;
-            for (int k = 0; k < (int)r->size(); k++) {
+            for (int k = 0; k < static_cast<int>(r->size()); k++) {
                 if ((*r)[k] < 0 || (*r)[k] >= n || (k && (*r)[k - 1] >= (*r)[k]))
                     ok = false;
                 else
@@ -57,7 +57,7 @@ int main() {
         ok = ok && subset_sum_max_meet_in_the_middle(a, S) == best;
         auto mr = subset_sum_max_restore(a, S);
         long long ms = 0;
-        for (int k = 0; k < (int)mr.size(); k++) {
+        for (int k = 0; k < static_cast<int>(mr.size()); k++) {
             if (mr[k] < 0 || mr[k] >= n || (k && mr[k - 1] >= mr[k]))
                 ok = false;
             else
@@ -89,7 +89,7 @@ int main() {
         ok = ok && subset_sum_max(a, S) == best;
         auto mr = subset_sum_max_restore(a, S);
         long long ms = 0;
-        for (int k = 0; k < (int)mr.size(); k++) {
+        for (int k = 0; k < static_cast<int>(mr.size()); k++) {
             if (k && mr[k - 1] >= mr[k]) ok = false;
             ms += a[mr[k]];
         }

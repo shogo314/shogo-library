@@ -18,7 +18,7 @@
 template <typename E>
 bool is_cycle(const std::vector<E>& c, const std::vector<std::tuple<int, int, int>>& es, bool directed) {
     std::set<int> ids;
-    for (int k = 0; k < (int)c.size(); k++) {
+    for (int k = 0; k < static_cast<int>(c.size()); k++) {
         if (c[k].dst != c[(k + 1) % c.size()].src) return false;
         if (!ids.insert(c[k].id).second) return false;
         auto [u, v, id] = es[c[k].id];

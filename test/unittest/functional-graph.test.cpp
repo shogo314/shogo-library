@@ -51,7 +51,7 @@ int main() {
         // cycles の各要素は g でつながったサイクルで、全体としてサイクル上の頂点をちょうど1回ずつ含む
         std::vector<int> cnt(n);
         for (const auto& cycle : fg.cycles) {
-            for (int i = 0; i < (int)cycle.size(); i++) {
+            for (int i = 0; i < static_cast<int>(cycle.size()); i++) {
                 if (g[cycle[i]] != cycle[(i + 1) % cycle.size()]) ok = false;
                 cnt[cycle[i]]++;
             }
@@ -69,7 +69,7 @@ int main() {
                 reach.insert(y);
                 y = g[y];
             }
-            if (fg.hopable(x) != (int)reach.size()) ok = false;
+            if (fg.hopable(x) != static_cast<int>(reach.size())) ok = false;
             // hop: 小さい k と大きい k
             for (long long k = 0; k <= 3 * n; k++) {
                 if (fg.hop(x, k) != naive_hop(g, x, k)) ok = false;

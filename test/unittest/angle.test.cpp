@@ -18,7 +18,7 @@ int main() {
     const double pi = std::acos(-1.0);
     // 偏角を [0, 2π) で返す。零ベクトルは 0
     auto arg = [&](int x, int y) {
-        double t = std::atan2((double)y, (double)x);
+        double t = std::atan2(static_cast<double>(y), static_cast<double>(x));
         return t < 0 ? t + 2 * pi : t;
     };
     std::vector<std::pair<int, int>> ps;

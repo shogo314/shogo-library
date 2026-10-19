@@ -48,9 +48,9 @@ int main() {
             long long p = ac.parent(v);
             check(0 <= p && p < v, "親は先に作られている");
             for (int c = 0; c < 3; c++) {
-                if (ac.next(p, 'a' + c) == v) str[v] = str[p] + char('a' + c);
+                if (ac.next(p, 'a' + c) == v) str[v] = str[p] + static_cast<char>('a' + c);
             }
-            check(ac.depth(v) == (long long)str[v].size(), "depth");
+            check(ac.depth(v) == static_cast<long long>(str[v].size()), "depth");
         }
         check(ac.parent(0) == -1 && ac.link(0) == -1 && ac.depth(0) == 0, "根");
         auto find_node = [&](const std::string& s) -> long long {
@@ -76,7 +76,7 @@ int main() {
             }
             // 遷移: s + c の接尾辞のうち、ノードのある最長のもの
             for (int c = 0; c < 3; c++) {
-                std::string t = s + char('a' + c);
+                std::string t = s + static_cast<char>('a' + c);
                 long long expect = 0;
                 for (size_t len = t.size(); len > 0; len--) {
                     long long u = find_node(t.substr(t.size() - len));
@@ -98,7 +98,7 @@ int main() {
             std::vector<long long> each(m, 0);
             std::vector<std::pair<long long, long long>> all;  // (開始位置, 番号)
             std::vector<std::tuple<long long, long long, long long>> order;  // (終わる位置, -長さ, 番号) の順に並べる
-            for (long long end = 1; end <= (long long)text.size(); end++) {
+            for (long long end = 1; end <= static_cast<long long>(text.size()); end++) {
                 for (int i = 0; i < m; i++) {
                     long long len = pats[i].size();
                     if (len <= end && text.compare(end - len, len, pats[i]) == 0) {

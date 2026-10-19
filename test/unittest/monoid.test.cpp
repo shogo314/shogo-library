@@ -75,7 +75,7 @@ int main() {
     // And / Or: 単位元はそれぞれ全ビット 1 と 0
     check(monoid::And<unsigned>::e() == ~0u, "And::e");
     check(monoid::Or<unsigned>::e() == 0u, "Or::e");
-    auto gen_bits = [&] { return (unsigned)(rng() % 64); };
+    auto gen_bits = [&] { return static_cast<unsigned>(rng() % 64); };
     test_segtree<monoid::And<unsigned>>([](unsigned a, unsigned b) { return a & b; }, ~0u, gen_bits, rng, "And");
     test_segtree<monoid::Or<unsigned>>([](unsigned a, unsigned b) { return a | b; }, 0u, gen_bits, rng, "Or");
 
@@ -111,9 +111,9 @@ int main() {
         check(os.str() == "2 3", "Affine <<");
         // Composite で合成した結果が関数の合成 a∘b と一致する。Reverse は b∘a
         for (int rep = 0; rep < 1000 && ok; rep++) {
-            Affine<long long> a{(long long)(rng() % 7) - 3, (long long)(rng() % 7) - 3};
-            Affine<long long> b{(long long)(rng() % 7) - 3, (long long)(rng() % 7) - 3};
-            long long x = (long long)(rng() % 7) - 3;
+            Affine<long long> a{static_cast<long long>(rng() % 7) - 3, static_cast<long long>(rng() % 7) - 3};
+            Affine<long long> b{static_cast<long long>(rng() % 7) - 3, static_cast<long long>(rng() % 7) - 3};
+            long long x = static_cast<long long>(rng() % 7) - 3;
             auto c = monoid::Composite<long long>::op(a, b);
             check(c(x) == a(b(x)), "Composite op");
             check(c == Affine<long long>{a.a * b.a, a.a * b.b + a.b}, "Affine == after op");
@@ -244,7 +244,7 @@ int main() {
     for (int rep = 0; rep < 300 && ok; rep++) {
         int n = rng() % 12 + 1;
         std::vector<long long> a(n);
-        for (auto& x : a) x = (long long)(rng() % 21) - 10;
+        for (auto& x : a) x = static_cast<long long>(rng() % 21) - 10;
         SegTree<monoid::PrefixSumMax<long long>> pmax(std::vector<monoid::PrefixSumMax<long long>::S>(a.begin(), a.end()));
         SegTree<monoid::PrefixSumMin<long long>> pmin(std::vector<monoid::PrefixSumMin<long long>::S>(a.begin(), a.end()));
         SegTree<monoid::SuffixSumMax<long long>> smax(std::vector<monoid::SuffixSumMax<long long>::S>(a.begin(), a.end()));
@@ -252,7 +252,7 @@ int main() {
         SegTree<monoid::MaxSubarraySum<long long>> msub(std::vector<monoid::MaxSubarraySum<long long>::S>(a.begin(), a.end()));
         for (int q = 0; q < 10 && ok; q++) {
             int k = rng() % n;
-            a[k] = (long long)(rng() % 21) - 10;
+            a[k] = static_cast<long long>(rng() % 21) - 10;
             pmax.set(k, a[k]), pmin.set(k, a[k]), smax.set(k, a[k]), smin.set(k, a[k]), msub.set(k, a[k]);
             for (int l = 0; l <= n; l++) {
                 for (int r = l; r <= n; r++) {

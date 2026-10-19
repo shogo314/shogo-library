@@ -182,7 +182,7 @@ int main() {
         check(va == val<3>({{1, 2, 3}, {4, 5, 6}}), "VAL");
         check(vv_ == vvl({{9, 8}, {7, 6}}), "VVL");
         check(st == sl({1, 3, 5}), "SL");
-        check(bool(in), "input stream state");
+        check(static_cast<bool>(in), "input stream state");
     }
     {
         // scan を直接使う

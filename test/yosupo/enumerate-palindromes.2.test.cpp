@@ -12,5 +12,5 @@ int main() {
     std::string s;
     std::cin >> s;
     std::vector<long long> len = palindrome_lengths(s);
-    for (long long i = 0; i < (long long)len.size(); i++) std::cout << len[i] << " \n"[i + 1 == (long long)len.size()];
+    for (long long i = 0; i < static_cast<long long>(len.size()); i++) std::cout << len[i] << " \n"[i + 1 == static_cast<long long>(len.size())];
 }

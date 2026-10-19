@@ -31,7 +31,7 @@ template <typename T>
 bool same(const Rational<T>& r, i128 p, i128 q) {
     if (q < 0) p = -p, q = -q;
     i128 g = gcd128(p, q);
-    return (i128)r.num() == p / g && (i128)r.den() == q / g;
+    return static_cast<i128>(r.num()) == p / g && static_cast<i128>(r.den()) == q / g;
 }
 
 template <typename T>
@@ -39,7 +39,7 @@ bool test(std::mt19937_64& rng, long long range) {
     bool ok = true;
     auto rnd = [&](bool nonzero) {
         while (true) {
-            long long x = (long long)(rng() % (2 * range + 1)) - range;
+            long long x = static_cast<long long>(rng() % (2 * range + 1)) - range;
             if (!nonzero || x != 0) return x;
         }
     };
@@ -47,18 +47,18 @@ bool test(std::mt19937_64& rng, long long range) {
         long long a = rnd(false), b = rnd(true), c = rnd(false), d = rnd(true);
         Rational<T> x(a, b), y(c, d);
         ok = ok && same(x, a, b) && x.den() > 0;
-        ok = ok && same(x + y, (i128)a * d + (i128)c * b, (i128)b * d);
-        ok = ok && same(x - y, (i128)a * d - (i128)c * b, (i128)b * d);
-        ok = ok && same(x * y, (i128)a * c, (i128)b * d);
-        if (c != 0) ok = ok && same(x / y, (i128)a * d, (i128)b * c);
+        ok = ok && same(x + y, static_cast<i128>(a) * d + static_cast<i128>(c) * b, static_cast<i128>(b) * d);
+        ok = ok && same(x - y, static_cast<i128>(a) * d - static_cast<i128>(c) * b, static_cast<i128>(b) * d);
+        ok = ok && same(x * y, static_cast<i128>(a) * c, static_cast<i128>(b) * d);
+        if (c != 0) ok = ok && same(x / y, static_cast<i128>(a) * d, static_cast<i128>(b) * c);
         // 比較
         int sgn = (b > 0) == (d > 0) ? 1 : -1;
-        i128 l = (i128)a * d * sgn, r = (i128)c * b * sgn;
+        i128 l = static_cast<i128>(a) * d * sgn, r = static_cast<i128>(c) * b * sgn;
         ok = ok && (x < y) == (l < r) && (x == y) == (l == r) && (x <= y) == (l <= r) && (x > y) == (l > r);
         // floor, ceil
         long long fl = a / b, rem = a % b;
         if (rem != 0 && ((rem < 0) != (b < 0))) fl--;
-        ok = ok && (long long)x.floor() == fl && (long long)x.ceil() == fl + (rem != 0);
+        ok = ok && static_cast<long long>(x.floor()) == fl && static_cast<long long>(x.ceil()) == fl + (rem != 0);
         ok = ok && x.is_integer() == (rem == 0);
         // 文字列にして読み直す
         std::stringstream ss;
@@ -82,7 +82,7 @@ int main() {
     // __int128 で、通分すると 128 bit に収まらない値どうしの比較 (連分数展開で比べる)
     {
         using R = Rational<__int128>;
-        i128 big = (i128)1 << 100;
+        i128 big = static_cast<i128>(1) << 100;
         R x(big + 1, big), y(big + 2, big + 1);  // 1 + 1/big > 1 + 1/(big+1)
         ok = ok && y < x && !(x < y) && x != y && R(big, 3) > R(big - 1, 3);
         ok = ok && R(-big, big + 1) < R(-big + 1, big) && R(-(big + 1), 7).floor() == -(big + 1) / 7 - 1;

@@ -27,11 +27,11 @@ void check(bool cond, const char* what) {
 }
 
 template <class T>
-i128 lo() { return (i128)std::numeric_limits<T>::min(); }
+i128 lo() { return static_cast<i128>(std::numeric_limits<T>::min()); }
 template <class T>
-i128 hi() { return (i128)std::numeric_limits<T>::max(); }
+i128 hi() { return static_cast<i128>(std::numeric_limits<T>::max()); }
 template <class T>
-T clamp128(i128 v) { return v < lo<T>() ? std::numeric_limits<T>::min() : v > hi<T>() ? std::numeric_limits<T>::max() : (T)v; }
+T clamp128(i128 v) { return v < lo<T>() ? std::numeric_limits<T>::min() : v > hi<T>() ? std::numeric_limits<T>::max() : static_cast<T>(v); }
 
 // 境界付近の値とランダムな値
 template <class T>
@@ -39,13 +39,13 @@ std::vector<T> samples(std::mt19937_64& rng) {
     std::vector<T> res;
     for (i128 d = 0; d < 4; d++) {
         for (i128 v : {lo<T>() + d, hi<T>() - d, d, -d, hi<T>() / 2 - 1 + d, lo<T>() / 2 - 1 + d}) {
-            if (lo<T>() <= v && v <= hi<T>()) res.push_back((T)v);
+            if (lo<T>() <= v && v <= hi<T>()) res.push_back(static_cast<T>(v));
         }
     }
     for (int i = 0; i < 40; i++) {
-        T v = (T)rng();
+        T v = static_cast<T>(rng());
         res.push_back(v);
-        res.push_back((T)(v >> (rng() % (8 * sizeof(T)))));  // 小さい値も混ぜる
+        res.push_back(static_cast<T>(v >> (rng() % (8 * sizeof(T)))));  // 小さい値も混ぜる
     }
     return res;
 }
@@ -54,15 +54,15 @@ template <class T>
 void check_arith(const std::vector<T>& xs) {
     for (T x : xs) {
         for (T y : xs) {
-            check(saturating_add(x, y) == clamp128<T>((i128)x + y), "saturating_add");
-            check(saturating_sub(x, y) == clamp128<T>((i128)x - y), "saturating_sub");
+            check(saturating_add(x, y) == clamp128<T>(static_cast<i128>(x) + y), "saturating_add");
+            check(saturating_sub(x, y) == clamp128<T>(static_cast<i128>(x) - y), "saturating_sub");
             if constexpr (std::is_unsigned_v<T> && sizeof(T) == 8) {
-                u128 p = (u128)x * y;
-                check(saturating_mul(x, y) == (p > (u128)std::numeric_limits<T>::max() ? std::numeric_limits<T>::max() : (T)p), "saturating_mul");
+                u128 p = static_cast<u128>(x) * y;
+                check(saturating_mul(x, y) == (p > static_cast<u128>(std::numeric_limits<T>::max()) ? std::numeric_limits<T>::max() : static_cast<T>(p)), "saturating_mul");
             } else {
-                check(saturating_mul(x, y) == clamp128<T>((i128)x * y), "saturating_mul");
+                check(saturating_mul(x, y) == clamp128<T>(static_cast<i128>(x) * y), "saturating_mul");
             }
-            if (y != 0) check(saturating_div(x, y) == clamp128<T>((i128)x / y), "saturating_div");
+            if (y != 0) check(saturating_div(x, y) == clamp128<T>(static_cast<i128>(x) / y), "saturating_div");
             static_assert(std::is_same_v<decltype(saturating_add(x, y)), T>);
         }
     }
@@ -70,7 +70,7 @@ void check_arith(const std::vector<T>& xs) {
 
 template <class R, class T>
 void check_cast(const std::vector<T>& xs) {
-    for (T x : xs) check(saturating_cast<R>(x) == clamp128<R>((i128)x), "saturating_cast");
+    for (T x : xs) check(saturating_cast<R>(x) == clamp128<R>(static_cast<i128>(x)), "saturating_cast");
     static_assert(std::is_same_v<decltype(saturating_cast<R>(T())), R>);
 }
 template <class T, class... Rs>
@@ -109,8 +109,8 @@ int main() {
     {
         std::vector<std::int8_t> s;
         std::vector<std::uint8_t> u;
-        for (int v = -128; v < 128; v++) s.push_back((std::int8_t)v);
-        for (int v = 0; v < 256; v++) u.push_back((std::uint8_t)v);
+        for (int v = -128; v < 128; v++) s.push_back(static_cast<std::int8_t>(v));
+        for (int v = 0; v < 256; v++) u.push_back(static_cast<std::uint8_t>(v));
         check_arith(s);
         check_arith(u);
     }

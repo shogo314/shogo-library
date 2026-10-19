@@ -25,6 +25,6 @@ int main() {
         }
     }
     std::cout << sum << '\n';
-    for (int i = 0; i < (int)ids.size(); i++) std::cout << ids[i] << " \n"[i + 1 == (int)ids.size()];
+    for (int i = 0; i < static_cast<int>(ids.size()); i++) std::cout << ids[i] << " \n"[i + 1 == static_cast<int>(ids.size())];
     if (ids.empty()) std::cout << '\n';
 }

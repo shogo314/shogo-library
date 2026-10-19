@@ -52,7 +52,7 @@ static_assert(std::ranges::forward_range<Rect> && std::ranges::sized_range<Rect>
 
 int main() {
     std::mt19937_64 rng(314);
-    auto rnd = [&](ll lo, ll hi) { return lo + (ll)(rng() % (unsigned long long)(hi - lo + 1)); };
+    auto rnd = [&](ll lo, ll hi) { return lo + static_cast<ll>(rng() % static_cast<unsigned long long>(hi - lo + 1)); };
     bool ok = true;
     auto check = [&](bool cond, const char* what) {
         if (!cond) {
@@ -80,8 +80,8 @@ int main() {
         for (auto [i, j] : rect) got.emplace_back(i, j);
         check(got == expected, "列挙");
         check(std::vector<P>(rect.begin(), rect.end()) == expected, "イテレータの範囲から vector を作る");
-        check(std::distance(rect.begin(), rect.end()) == (ll)expected.size(), "distance");
-        check(rect.size() == (ll)expected.size() && rect.empty() == expected.empty(), "size / empty");
+        check(std::distance(rect.begin(), rect.end()) == static_cast<ll>(expected.size()), "distance");
+        check(rect.size() == static_cast<ll>(expected.size()) && rect.empty() == expected.empty(), "size / empty");
         {
             auto it = rect.begin();
             auto old = it++;
@@ -89,7 +89,7 @@ int main() {
         }
 
         // at / index は互いに逆
-        for (ll k = 0; k < (ll)expected.size(); k++) {
+        for (ll k = 0; k < static_cast<ll>(expected.size()); k++) {
             check(rect[k] == expected[k] && rect.at(k) == expected[k], "at");
             check(rect.index(expected[k].first, expected[k].second) == k && rect.index(expected[k]) == k, "index");
         }
@@ -103,10 +103,10 @@ int main() {
         }
 
         // neighbors4 / neighbors8: 位置 (rows・cols の何番目か) の差が 1 以内のものを Rect の順に
-        for (ll k = 0; k < (ll)expected.size(); k++) {
-            const ll w = (ll)cv.size(), ki = k / w, kj = k % w;
+        for (ll k = 0; k < static_cast<ll>(expected.size()); k++) {
+            const ll w = static_cast<ll>(cv.size()), ki = k / w, kj = k % w;
             std::vector<P> e4, e8;
-            for (ll t = 0; t < (ll)expected.size(); t++) {
+            for (ll t = 0; t < static_cast<ll>(expected.size()); t++) {
                 const ll di = std::abs(t / w - ki), dj = std::abs(t % w - kj);
                 if (t == k || di > 1 || dj > 1) continue;
                 e8.push_back(expected[t]);
@@ -114,8 +114,8 @@ int main() {
             }
             auto [i, j] = expected[k];
             auto n4 = rect.neighbors4(i, j), n8 = rect.neighbors8(expected[k]);
-            check(std::vector<P>(n4.begin(), n4.end()) == e4 && n4.size() == (ll)e4.size(), "neighbors4");
-            check(std::vector<P>(n8.begin(), n8.end()) == e8 && n8.size() == (ll)e8.size() && n8.empty() == e8.empty(), "neighbors8");
+            check(std::vector<P>(n4.begin(), n4.end()) == e4 && n4.size() == static_cast<ll>(e4.size()), "neighbors4");
+            check(std::vector<P>(n8.begin(), n8.end()) == e8 && n8.size() == static_cast<ll>(e8.size()) && n8.empty() == e8.empty(), "neighbors8");
         }
 
         // ==: 要素の列として等しいか
@@ -133,7 +133,7 @@ int main() {
         for (ll x = -12; x <= 12; x++) {
             bool in = false;
             for (ll y : v) in |= y == x;
-            check(r.contains(x) == in && r.count(x) == (ll)in, "Range::contains");
+            check(r.contains(x) == in && r.count(x) == static_cast<ll>(in), "Range::contains");
         }
     }
 

@@ -14,7 +14,7 @@ int main() {
         auto qs = enumerate_quotients(n);
         // 区間が 1 から n までを隙間なく覆い、区間の中で商が q に等しく、隣の区間とは商が異なる
         long long next = 1;
-        for (int k = 0; k < (int)qs.size(); k++) {
+        for (int k = 0; k < static_cast<int>(qs.size()); k++) {
             auto [q, l, r] = qs[k];
             if (l != next || l > r) ok = false;
             if (n / l != q || n / r != q) ok = false;

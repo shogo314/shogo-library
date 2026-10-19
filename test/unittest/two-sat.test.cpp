@@ -34,7 +34,7 @@ int main() {
         std::vector<Cond> cs(m);
         TwoSat ts(n);
         for (auto& c : cs) {
-            c = {int(rng() % 4), int(rng() % n), bool(rng() % 2), int(rng() % n), bool(rng() % 2)};
+            c = {static_cast<int>(rng() % 4), static_cast<int>(rng() % n), static_cast<bool>(rng() % 2), static_cast<int>(rng() % n), static_cast<bool>(rng() % 2)};
             if (c.type == 0) ts.add_clause(c.i, c.f, c.j, c.g);
             if (c.type == 1) ts.add_imply(c.i, c.f, c.j, c.g);
             if (c.type == 2) ts.add_fix(c.i, c.f);

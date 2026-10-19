@@ -35,7 +35,7 @@ int main() {
         int k = bm.solve();
         if (k != mf.flow(s, t)) ok = false;
         auto match = bm.matching();
-        if ((int)match.size() != k) ok = false;
+        if (static_cast<int>(match.size()) != k) ok = false;
         std::vector<bool> used_l(l), used_r(r);
         for (auto [u, v] : match) {
             if (!es.count({u, v}) || used_l[u] || used_r[v]) ok = false;

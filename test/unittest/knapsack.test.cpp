@@ -13,7 +13,7 @@
 // 品物 i を 0 個以上 m[i] 個以下選ぶすべての方法を試す
 long long naive(const std::vector<long long>& v, const std::vector<long long>& w, const std::vector<long long>& m,
                 long long W, int i = 0) {
-    if (i == (int)v.size()) return 0;
+    if (i == static_cast<int>(v.size())) return 0;
     long long res = 0;
     for (long long c = 0; c <= m[i] && c * w[i] <= W; c++) {
         res = std::max(res, c * v[i] + naive(v, w, m, W - c * w[i], i + 1));

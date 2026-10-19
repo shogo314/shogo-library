@@ -17,7 +17,7 @@ int main() {
     for (int rep = 0; rep < 300 && ok; rep++) {
         int n = rng() % 30;
         std::vector<long long> a(n);
-        for (auto& x : a) x = (long long)(rng() % 21) - 10;
+        for (auto& x : a) x = static_cast<long long>(rng() % 21) - 10;
         // 配列から作る場合と、空から apply で作る場合
         FenwickTree<group::Sum<long long>> ft(a);
         FenwickTree<group::Sum<long long>> ft2(n);
@@ -27,13 +27,13 @@ int main() {
             int t = rng() % 3;
             if (n > 0 && t == 0) {
                 int i = rng() % n;
-                long long x = (long long)(rng() % 21) - 10;
+                long long x = static_cast<long long>(rng() % 21) - 10;
                 a[i] += x;
                 ft.apply(i, x);
                 ft2.apply(i, x);
             } else if (n > 0 && t == 1) {
                 int i = rng() % n;
-                long long x = (long long)(rng() % 21) - 10;
+                long long x = static_cast<long long>(rng() % 21) - 10;
                 a[i] = x;
                 ft.set(i, x);
                 ft2.set(i, x);

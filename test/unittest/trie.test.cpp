@@ -30,8 +30,8 @@ int main() {
             if (type == 0) {
                 long long v = trie.insert(s);
                 ms[s]++;
-                for (int len = 0; len <= (int)s.size(); len++) node_of.emplace(s.substr(0, len), -1);
-                ok = ok && trie.depth(v) == (long long)s.size();
+                for (int len = 0; len <= static_cast<int>(s.size()); len++) node_of.emplace(s.substr(0, len), -1);
+                ok = ok && trie.depth(v) == static_cast<long long>(s.size());
             } else if (type == 1) {
                 bool expected = ms.count(s) && ms[s] > 0;
                 ok = ok && trie.erase(s) == expected;
@@ -45,7 +45,7 @@ int main() {
                 if (u.compare(0, t.size(), t) == 0 && u.size() >= t.size()) pre += c;
                 if (c > 0) {
                     long long l = 0;
-                    while (l < (long long)std::min(u.size(), t.size()) && u[l] == t[l]) l++;
+                    while (l < static_cast<long long>(std::min(u.size(), t.size())) && u[l] == t[l]) l++;
                     lcp = std::max(lcp, l);
                 }
             }
@@ -54,18 +54,18 @@ int main() {
             ok = ok && trie.count(t) == cnt && trie.count_prefix(t) == pre && trie.total() == total;
             ok = ok && trie.longest_common_prefix(t) == lcp;
             if (v != -1) {
-                ok = ok && trie.count_at(v) == cnt && trie.count_prefix_at(v) == pre && trie.depth(v) == (long long)t.size();
+                ok = ok && trie.count_at(v) == cnt && trie.count_prefix_at(v) == pre && trie.depth(v) == static_cast<long long>(t.size());
             }
         }
         // ノードの数と、親子・深さの関係
-        ok = ok && trie.size() == (long long)node_of.size();
+        ok = ok && trie.size() == static_cast<long long>(node_of.size());
         for (auto& [u, x] : node_of) {
             long long v = trie.find(u);
             if (u.empty()) {
                 ok = ok && v == 0 && trie.parent(v) == -1;
             } else {
                 long long p = trie.find(u.substr(0, u.size() - 1));
-                ok = ok && trie.parent(v) == p && trie.child(p, u.back()) == v && trie.depth(v) == (long long)u.size();
+                ok = ok && trie.parent(v) == p && trie.child(p, u.back()) == v && trie.depth(v) == static_cast<long long>(u.size());
             }
         }
     }

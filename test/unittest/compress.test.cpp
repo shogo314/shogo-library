@@ -18,7 +18,7 @@ int main() {
         int n = rng() % 20;
         int range = rng() % 30 + 1;
         std::vector<int> a(n);
-        for (auto& v : a) v = (int)(rng() % range) - range / 2;
+        for (auto& v : a) v = static_cast<int>(rng() % range) - range / 2;
 
         // コンストラクタで作る場合と、add を混ぜて作る場合
         Compress<int> c1(a);

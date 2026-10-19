@@ -14,8 +14,8 @@
 
 // s[i:] と t[j:] の編集距離
 int naive_edit(const std::string& s, const std::string& t, int i, int j) {
-    if (i == (int)s.size()) return t.size() - j;
-    if (j == (int)t.size()) return s.size() - i;
+    if (i == static_cast<int>(s.size())) return t.size() - j;
+    if (j == static_cast<int>(t.size())) return s.size() - i;
     int res = naive_edit(s, t, i + 1, j + 1) + (s[i] != t[j]);
     res = std::min(res, naive_edit(s, t, i + 1, j) + 1);
     res = std::min(res, naive_edit(s, t, i, j + 1) + 1);
@@ -24,7 +24,7 @@ int naive_edit(const std::string& s, const std::string& t, int i, int j) {
 
 // s[i:] と t[j:] の LCS の長さ
 int naive_lcs(const std::string& s, const std::string& t, int i, int j) {
-    if (i == (int)s.size() || j == (int)t.size()) return 0;
+    if (i == static_cast<int>(s.size()) || j == static_cast<int>(t.size())) return 0;
     int res = std::max(naive_lcs(s, t, i + 1, j), naive_lcs(s, t, i, j + 1));
     if (s[i] == t[j]) res = std::max(res, naive_lcs(s, t, i + 1, j + 1) + 1);
     return res;
@@ -46,8 +46,8 @@ int main() {
 
         // 復元: 長さが最長で、添字が両方とも狭義単調増加し、要素が一致する
         auto idx = longest_common_subsequence_restore(s, t);
-        ok = ok && (int)idx.size() == len;
-        for (int p = 0; p < (int)idx.size() && ok; p++) {
+        ok = ok && static_cast<int>(idx.size()) == len;
+        for (int p = 0; p < static_cast<int>(idx.size()) && ok; p++) {
             auto [i, j] = idx[p];
             ok = 0 <= i && i < n && 0 <= j && j < m && s[i] == t[j];
             if (p > 0) ok = ok && idx[p - 1].first < i && idx[p - 1].second < j;

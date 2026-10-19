@@ -12,5 +12,5 @@ int main() {
     std::string s;
     std::cin >> s;
     std::vector<long long> sa = suffix_array(s);
-    for (long long i = 0; i < (long long)sa.size(); i++) std::cout << sa[i] << " \n"[i + 1 == (long long)sa.size()];
+    for (long long i = 0; i < static_cast<long long>(sa.size()); i++) std::cout << sa[i] << " \n"[i + 1 == static_cast<long long>(sa.size())];
 }

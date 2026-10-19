@@ -62,7 +62,7 @@ bool check_segtree(std::mt19937& rng) {
                 int l = rng() % (n + 1), r = rng() % (n + 1);
                 if (l > r) std::swap(l, r);
                 S got = seg.prod(l, r);
-                for (int x = 0; x < (int)N; x++) {
+                for (int x = 0; x < static_cast<int>(N); x++) {
                     int y = x;
                     for (int i = r - 1; i >= l; i--) y = a[i][y];
                     if (got[x] != y) return false;

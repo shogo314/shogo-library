@@ -34,9 +34,9 @@ int main() {
             }
         }
         // すべての版が、作ったときの内容のままか
-        for (int i = 0; i < int(que.size()); i++) {
+        for (int i = 0; i < static_cast<int>(que.size()); i++) {
             const auto& d = naive[i];
-            if (que[i].size() != int(d.size()) || que[i].empty() != d.empty()) ok = false;
+            if (que[i].size() != static_cast<int>(d.size()) || que[i].empty() != d.empty()) ok = false;
             if (que[i].to_vector() != std::vector<int>(d.begin(), d.end())) ok = false;
             if (!d.empty() && (que[i].front() != d.front() || que[i].back() != d.back())) ok = false;
         }

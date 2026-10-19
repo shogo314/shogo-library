@@ -58,7 +58,7 @@ int main() {
             }
         }
         // すべての版が、作ったときの内容のままか
-        for (int i = 0; i < int(arr.size()); i++) {
+        for (int i = 0; i < static_cast<int>(arr.size()); i++) {
             if (arr[i].size() != n) ok = false;
             if (arr[i].to_vector() != naive[i]) ok = false;
         }

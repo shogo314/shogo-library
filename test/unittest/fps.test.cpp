@@ -55,9 +55,9 @@ P naive_gcd(P a, P b) {
 }
 P random_poly(std::mt19937_64& rng, int n, bool nonzero_lead) {
     P a(n);
-    for (auto& x : a) x = (long long)(rng() % 998244353);
+    for (auto& x : a) x = static_cast<long long>(rng() % 998244353);
     if (rng() % 4 == 0)
-        for (auto& x : a) x = (long long)(rng() % 3);  // 0 を多めに含む
+        for (auto& x : a) x = static_cast<long long>(rng() % 3);  // 0 を多めに含む
     if (nonzero_lead && n > 0 && a.back() == 0) a.back() = 1;
     return a;
 }
@@ -76,7 +76,7 @@ int main() {
         for (size_t i = 0; i < a.size(); i++)
             if (g[i] != -a[i]) ok = false;
         // 定数を引く: 定数項から引く (空なら長さ 1 になる)。長さはそれ以外変わらない
-        mint c = (long long)(rng() % 998244353);
+        mint c = static_cast<long long>(rng() % 998244353);
         F h = f - c;
         P e = a.empty() ? P{-c} : a;
         if (!a.empty()) e[0] -= c;
@@ -88,7 +88,7 @@ int main() {
         if (P(f - c + c) != (a.empty() ? P{0} : a)) ok = false;
         // eval: f(x) を愚直に計算したものと一致する
         for (int t = 0; t < 5; t++) {
-            mint x = (t == 0) ? mint(0) : mint((long long)(rng() % 998244353));
+            mint x = (t == 0) ? mint(0) : mint(static_cast<long long>(rng() % 998244353));
             mint s = 0, pw = 1;
             for (auto& coef : a) s += coef * pw, pw *= x;
             if (f.eval(x) != s) ok = false;
@@ -123,7 +123,7 @@ int main() {
         if (rep % 10 == 0) deg_m = 40;
         P m = random_poly(rng, deg_m + 1, true);
         P f = random_poly(rng, rng() % 8, false);
-        long long n = (rep % 3 == 0) ? (long long)(rng() % 1000000000000LL) : (long long)(rng() % 20);
+        long long n = (rep % 3 == 0) ? static_cast<long long>(rng() % 1000000000000LL) : static_cast<long long>(rng() % 20);
         F got = modpow(F(f), n, F(m));
         // 愚直: 繰り返し二乗法を愚直な掛け算と余りで行う
         P res = naive_mod(P{1}, m), base = naive_mod(f, m);

@@ -32,7 +32,7 @@ int main() {
             if (uf.leader(a) != res.leader) ok = false;
             for (int x = 0; x < n; x++) {
                 // size: 同じ連結成分の頂点数
-                if (uf.size(x) != (int)std::count(comp.begin(), comp.end(), comp[x])) ok = false;
+                if (uf.size(x) != static_cast<int>(std::count(comp.begin(), comp.end(), comp[x]))) ok = false;
             }
             // groups: 連結成分ごとの頂点のリスト (各リストは昇順)
             std::vector<std::vector<long long>> expect;

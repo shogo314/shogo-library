@@ -23,5 +23,5 @@ int main() {
         }
     }
     std::cout << x << ' ' << vs.size() << '\n';
-    for (int i = 0; i < (int)vs.size(); i++) std::cout << vs[i] << " \n"[i + 1 == (int)vs.size()];
+    for (int i = 0; i < static_cast<int>(vs.size()); i++) std::cout << vs[i] << " \n"[i + 1 == static_cast<int>(vs.size())];
 }

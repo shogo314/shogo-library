@@ -18,7 +18,7 @@ int main() {
     for (int rep = 0; rep < 20000; rep++) {
         int k = rng() % 4 + 1;
         std::vector<long long> r(k), m(k);
-        for (int i = 0; i < k; i++) m[i] = rng() % 12 + 1, r[i] = (long long)(rng() % 30) - 10;
+        for (int i = 0; i < k; i++) m[i] = rng() % 12 + 1, r[i] = static_cast<long long>(rng() % 30) - 10;
         long long lcm = 1;
         for (long long x : m) lcm = std::lcm(lcm, x);
         long long best = -1;

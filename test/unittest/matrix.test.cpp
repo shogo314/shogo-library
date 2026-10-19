@@ -31,7 +31,7 @@ struct ModProp : matrix::OperatorPropertyDefault<mint> {};
 VV random_vv(std::mt19937_64& rng, int n, int m, int lo, int hi) {
     VV a(n, std::vector<long long>(m));
     for (auto& row : a)
-        for (auto& x : row) x = lo + (long long)(rng() % (hi - lo + 1));
+        for (auto& x : row) x = lo + static_cast<long long>(rng() % (hi - lo + 1));
     return a;
 }
 
@@ -110,7 +110,7 @@ int main() {
                 if (D[i][j] != a[i][j] - b[i][j] || D2[i][j] != D[i][j]) ok = false;
             }
         // shift: (i, j) を ((i + dy) mod n, (j + dx) mod m) に移す
-        int dy = (int)(rng() % 21) - 10, dx = (int)(rng() % 21) - 10;
+        int dy = static_cast<int>(rng() % 21) - 10, dx = static_cast<int>(rng() % 21) - 10;
         Matrix<long long> T = A.shift(dy, dx);
         for (int i = 0; i < n; i++)
             for (int j = 0; j < m; j++)
@@ -123,7 +123,7 @@ int main() {
         // col
         int j0 = rng() % m;
         std::vector<long long> col = A.col(j0);
-        if ((int)col.size() != n) ok = false;
+        if (static_cast<int>(col.size()) != n) ok = false;
         for (int i = 0; i < n; i++)
             if (col[i] != a[i][j0]) ok = false;
     }
@@ -168,7 +168,7 @@ int main() {
         std::vector<std::vector<mint>> a(n, std::vector<mint>(n));
         bool small = rng() % 2;
         for (auto& row : a)
-            for (auto& x : row) x = small ? (long long)(rng() % 3) : (long long)(rng() % 998244353);
+            for (auto& x : row) x = small ? static_cast<long long>(rng() % 3) : static_cast<long long>(rng() % 998244353);
         Matrix<mint> A(a);
         Matrix<mint, ModProp> B(a);
         mint e = naive_det(a);

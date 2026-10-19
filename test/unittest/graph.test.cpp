@@ -32,12 +32,12 @@ int main() {
             // const でない operator[] は隣接リストそのものへの参照を返す
             std::vector<Graph<long long>::Edge>& es = g[v];
             if (&es != &g.g[v] || es.size() != adj[v].size()) ok = false;
-            for (int i = 0; i < (int)es.size(); i++) {
-                if (es[i].src != v || es[i].dst != adj[v][i] || (int)es[i] != adj[v][i]) ok = false;
+            for (int i = 0; i < static_cast<int>(es.size()); i++) {
+                if (es[i].src != v || es[i].dst != adj[v][i] || static_cast<int>(es[i]) != adj[v][i]) ok = false;
             }
             // 参照を通して書き換えると、グラフに反映される
             for (auto& e : g[v]) e.cost += 1;
-            for (int i = 0; i < (int)es.size(); i++) {
+            for (int i = 0; i < static_cast<int>(es.size()); i++) {
                 if (g.g[v][i].cost != es[i].cost) ok = false;
             }
         }
@@ -79,7 +79,7 @@ int main() {
         Graph<long long> g(n);
         for (int i = 0; i < m; i++) {
             int u = rng() % n, v = rng() % n;
-            long long w = (long long)(rng() % 21) - 3;
+            long long w = static_cast<long long>(rng() % 21) - 3;
             g.add_directed_edge(u, v, w);
         }
         const long long inf = std::numeric_limits<long long>::max() / 4;

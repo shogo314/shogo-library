@@ -27,8 +27,8 @@ bool check(const std::vector<int>& a, bool strict, Compare comp) {
     if (longest_increasing_subsequence_lengths(a, strict, comp) != len) return false;
     if (longest_increasing_subsequence(a, strict, comp) != best) return false;
     std::vector<long long> idx = longest_increasing_subsequence_restore(a, strict, comp);
-    if ((long long)idx.size() != best) return false;
-    for (long long k = 0; k < (long long)idx.size(); k++) {
+    if (static_cast<long long>(idx.size()) != best) return false;
+    for (long long k = 0; k < static_cast<long long>(idx.size()); k++) {
         if (idx[k] < 0 || idx[k] >= n) return false;
         if (k > 0 && (idx[k - 1] >= idx[k] || !ok_pair(idx[k - 1], idx[k]))) return false;
     }

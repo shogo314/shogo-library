@@ -26,7 +26,7 @@ int main(void) {
     std::vector<A::S> init;
     for (std::size_t i = 0; i + 1 < xs.size(); i++) init.push_back({xs[i + 1] - xs[i], 0});
     LazySegTree<A> seg(init);
-    auto idx = [&](long long x) { return int(std::lower_bound(xs.begin(), xs.end(), x) - xs.begin()); };
+    auto idx = [&](long long x) { return static_cast<int>(std::lower_bound(xs.begin(), xs.end(), x) - xs.begin()); };
     for (auto [t, l, r] : qs) {
         if (t == 1) {
             seg.apply(idx(l), idx(r), A::swap(0, 1));

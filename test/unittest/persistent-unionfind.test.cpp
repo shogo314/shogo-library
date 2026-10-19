@@ -41,7 +41,7 @@ int main() {
             }
         }
         // すべての版が、作ったときの連結成分のままか
-        for (int i = 0; i < int(uf.size()); i++) {
+        for (int i = 0; i < static_cast<int>(uf.size()); i++) {
             const auto& c = comp[i];
             for (int a = 0; a < n; a++) {
                 if (uf[i].leader(uf[i].leader(a)) != uf[i].leader(a)) ok = false;

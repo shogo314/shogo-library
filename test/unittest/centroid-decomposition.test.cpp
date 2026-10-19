@@ -37,7 +37,7 @@ int main() {
         CentroidDecomposition cd(tree);
         check(cd.size() == n, "size");
         const auto& ord = cd.order();
-        check((long long)ord.size() == n, "order の長さ");
+        check(static_cast<long long>(ord.size()) == n, "order の長さ");
         std::vector<int> pos(n, -1);
         for (int i = 0; i < n; i++) pos[ord[i]] = i;
         check(std::count(pos.begin(), pos.end(), -1) == 0, "order はすべての頂点を含む");
@@ -48,7 +48,7 @@ int main() {
         for (int s = 0; s < n; s++) {
             std::vector<int> q = {s};
             dist[s][s] = 0;
-            for (int i = 0; i < (int)q.size(); i++) {
+            for (int i = 0; i < static_cast<int>(q.size()); i++) {
                 for (const auto& e : tree[q[i]]) {
                     if (dist[s][e.dst] == -1) dist[s][e.dst] = dist[s][q[i]] + e.cost, q.push_back(e.dst);
                 }
@@ -66,7 +66,7 @@ int main() {
             std::vector<int> comp = {c};
             std::vector<bool> in(n, false);
             in[c] = true;
-            for (int i = 0; i < (int)comp.size(); i++) {
+            for (int i = 0; i < static_cast<int>(comp.size()); i++) {
                 for (const auto& e : tree[comp[i]]) {
                     if (!in[e.dst] && cd.level(e.dst) > cd.level(c)) in[e.dst] = true, comp.push_back(e.dst);
                 }
@@ -85,7 +85,7 @@ int main() {
                 covered += sub.size();
                 for (auto [v, d] : sub) check(in[v] && v != c && d == dist[c][v], "subtrees の距離");
             }
-            check(covered == (long long)comp.size(), "subtrees は成分全体を覆う");
+            check(covered == static_cast<long long>(comp.size()), "subtrees は成分全体を覆う");
             // c を通るパス: c と部分木の頂点、違う部分木の頂点どうし
             for (size_t i = 0; i < subs.size(); i++) {
                 for (auto [v, d] : subs[i]) {

@@ -64,7 +64,7 @@ bool random_test(std::mt19937& rng, int n, Seg seg0, std::vector<typename Seg::S
         }
     }
     // すべての版が、作ったときの内容のままか
-    for (int i = 0; i < int(seg.size()); i++) {
+    for (int i = 0; i < static_cast<int>(seg.size()); i++) {
         if (seg[i].size() != n) ok = false;
         if (seg[i].to_vector() != naive[i]) ok = false;
         if (seg[i].all_prod() != naive_prod(naive[i], 0, n)) ok = false;
@@ -97,7 +97,7 @@ int main() {
     // a_i に f * i を足す作用と区間和 (mapping が区間の位置 [l, r) を使う)
     auto am = ActedMonoid(
         [](long long a, long long b) { return a + b; }, 0LL,
-        [](long long f, long long x, int l, int r) { return x + f * (long long)(l + r - 1) * (r - l) / 2; },
+        [](long long f, long long x, int l, int r) { return x + f * static_cast<long long>(l + r - 1) * (r - l) / 2; },
         [](long long f, long long g) { return f + g; }, 0LL);
     for (int rep = 0; rep < 1500 && ok; rep++) {
         int n = rng() % 12 + 1;
@@ -105,8 +105,8 @@ int main() {
         for (auto& x : v) x = rng() % 10;
         PersistentLazySegTree seg(v, am);
         ok &= random_test(
-            rng, n, seg, v, [&]() { return (long long)(rng() % 10); },
-            [&]() { return (long long)(rng() % 5); },
+            rng, n, seg, v, [&]() { return static_cast<long long>(rng() % 10); },
+            [&]() { return static_cast<long long>(rng() % 5); },
             [](long long f, long long x, int i) { return x + f * i; });
     }
 

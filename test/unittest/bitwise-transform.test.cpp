@@ -19,8 +19,8 @@ int main() {
         int k = rng() % 7;
         int n = 1 << k;
         std::vector<long long> a(n), b(n);
-        for (auto& x : a) x = (long long)(rng() % 21) - 10;
-        for (auto& x : b) x = (long long)(rng() % 21) - 10;
+        for (auto& x : a) x = static_cast<long long>(rng() % 21) - 10;
+        for (auto& x : b) x = static_cast<long long>(rng() % 21) - 10;
 
         std::vector<long long> sub(n), sup(n), had(n), ca(n), co(n), cx(n), cs(n);
         for (int s = 0; s < n; s++) {

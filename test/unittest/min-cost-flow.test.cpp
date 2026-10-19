@@ -35,7 +35,7 @@ struct Naive {
             for (int it = 0; it < n; it++) {
                 for (int v = 0; v < n; v++) {
                     if (dist[v] == INF) continue;
-                    for (int i = 0; i < (int)g[v].size(); i++) {
+                    for (int i = 0; i < static_cast<int>(g[v].size()); i++) {
                         auto& e = g[v][i];
                         if (e.cap > 0 && dist[v] + e.cost < dist[e.to]) {
                             dist[e.to] = dist[v] + e.cost;
@@ -60,16 +60,16 @@ struct Naive {
 // 折れ線 sl が、流量ごとの最小コスト expected[base + k] - expected[base] と一致し、傾きが真に増加するか
 bool check_slope(const std::vector<std::pair<int, long long>>& sl, const std::vector<long long>& expected, int base) {
     if (sl.empty() || sl[0] != std::make_pair(0, 0LL)) return false;
-    for (int i = 0; i + 1 < (int)sl.size(); i++) {
+    for (int i = 0; i + 1 < static_cast<int>(sl.size()); i++) {
         auto [f0, c0] = sl[i];
         auto [f1, c1] = sl[i + 1];
-        if (f0 >= f1 || base + f1 >= (int)expected.size()) return false;
+        if (f0 >= f1 || base + f1 >= static_cast<int>(expected.size())) return false;
         for (int k = f0; k <= f1; k++) {
             // 頂点の間は線形
-            long long num = (long long)(k - f0) * (c1 - c0);
+            long long num = static_cast<long long>(k - f0) * (c1 - c0);
             if (num % (f1 - f0) != 0 || c0 + num / (f1 - f0) != expected[base + k] - expected[base]) return false;
         }
-        if (i + 2 < (int)sl.size()) {
+        if (i + 2 < static_cast<int>(sl.size())) {
             auto [f2, c2] = sl[i + 2];
             if ((c1 - c0) * (f2 - f1) >= (c2 - c1) * (f1 - f0)) return false;
         }
@@ -114,7 +114,7 @@ int main() {
             if (edges[i].flow != e.flow) ok = false;
             balance[u] -= e.flow;
             balance[v] += e.flow;
-            total += (long long)e.flow * d;
+            total += static_cast<long long>(e.flow) * d;
         }
         for (int v = 0; v < n; v++) {
             long long want = v == s ? -max_flow : v == t ? max_flow
@@ -141,7 +141,7 @@ int main() {
             if (t >= s) t++;
             auto sl = mcf.slope(s, t);
             auto expected = nv.flow(s, t);
-            ok = ok && check_slope(sl, expected, 0) && sl.back().first == (int)expected.size() - 1;
+            ok = ok && check_slope(sl, expected, 0) && sl.back().first == static_cast<int>(expected.size()) - 1;
         }
     }
 

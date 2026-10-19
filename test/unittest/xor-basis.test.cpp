@@ -29,20 +29,20 @@ int main() {
             span = next;
 
             std::vector<int> vals(span.begin(), span.end());
-            ok = ok && (1 << xb.rank()) == (int)vals.size() && (int)xb.basis().size() == xb.rank();
-            for (int i = 0; i < (int)vals.size(); i++) ok = ok && xb.kth(i) == vals[i];
+            ok = ok && (1 << xb.rank()) == static_cast<int>(vals.size()) && static_cast<int>(xb.basis().size()) == xb.rank();
+            for (int i = 0; i < static_cast<int>(vals.size()); i++) ok = ok && xb.kth(i) == vals[i];
             for (int y = 0; y < 256; y++) {
                 int mx = 0, mn = 255;
                 for (int v : vals) mx = std::max(mx, y ^ v), mn = std::min(mn, y ^ v);
                 int less = std::lower_bound(vals.begin(), vals.end(), y) - vals.begin();
                 ok = ok && xb.contains(y) == (span.count(y) > 0) && xb.max(y) == mx && xb.min(y) == mn &&
-                     xb.count_less(y) == (unsigned long long)less;
+                     xb.count_less(y) == static_cast<unsigned long long>(less);
             }
             // 基底の最上位ビットは降順で異なり、ほかの基底のそのビットは 0
             auto bs = xb.basis();
-            for (int i = 0; i < (int)bs.size(); i++) {
+            for (int i = 0; i < static_cast<int>(bs.size()); i++) {
                 int t = 31 - __builtin_clz(bs[i]);
-                for (int j = 0; j < (int)bs.size(); j++) {
+                for (int j = 0; j < static_cast<int>(bs.size()); j++) {
                     if (i != j && (bs[j] >> t & 1)) ok = false;
                 }
                 if (i > 0 && bs[i - 1] <= bs[i]) ok = false;

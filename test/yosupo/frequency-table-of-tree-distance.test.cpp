@@ -18,15 +18,15 @@ int main() {
     // cnt[d] は距離 d の頂点の個数。自分自身との畳み込みで、距離の和ごとの組の個数になる
     auto add = [&](const std::vector<long long>& cnt, long long sign) {
         auto sq = convolution_ll(cnt, cnt);
-        for (long long d = 0; d < (long long)sq.size() && d < n; d++) ans[d] += sign * sq[d];
+        for (long long d = 0; d < static_cast<long long>(sq.size()) && d < n; d++) ans[d] += sign * sq[d];
     };
     for (long long c : cd.order()) {
         std::vector<long long> all = {1};  // c 自身
         for (const auto& sub : cd.subtrees(tree, c)) {
             std::vector<long long> cnt;
             for (auto [v, d] : sub) {
-                if ((long long)cnt.size() <= d) cnt.resize(d + 1);
-                if ((long long)all.size() <= d) all.resize(d + 1);
+                if (static_cast<long long>(cnt.size()) <= d) cnt.resize(d + 1);
+                if (static_cast<long long>(all.size()) <= d) all.resize(d + 1);
                 cnt[d]++;
                 all[d]++;
             }

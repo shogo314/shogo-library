@@ -33,7 +33,7 @@ int main() {
             std::istringstream iss(input);
             std::cin.rdbuf(iss.rdbuf());
             FunctionalGraph fg(n);
-            if (fg.n != n || (int)fg.g.size() != n) ok = false;
+            if (fg.n != n || static_cast<int>(fg.g.size()) != n) ok = false;
             if (padding == -1)
                 fg.read();
             else
@@ -44,7 +44,7 @@ int main() {
             for (int x = 0; x < n; x++) {
                 if (fg.is_cycle[x] != expected.is_cycle[x]) ok = false;
                 if (fg.hopable(x) != expected.hopable(x)) ok = false;
-                for (long long k : {0LL, 1LL, (long long)n, (long long)(rng() % 1000000000000LL)}) {
+                for (long long k : {0LL, 1LL, static_cast<long long>(n), static_cast<long long>(rng() % 1000000000000LL)}) {
                     if (fg.hop(x, k) != expected.hop(x, k)) ok = false;
                 }
             }

@@ -30,7 +30,7 @@ int main() {
     for (int rep = 0; rep < 100000 && ok; rep++) {
         // 0 以上の long long (ビット数もばらつかせる)
         int width = rng() % 63 + 1;
-        long long a = (long long)(rng() >> (64 - width));
+        long long a = static_cast<long long>(rng() >> (64 - width));
 
         int pc = 0, clz = 0, ctz = 0;
         for (int i = 0; i < 63; i++) pc += a >> i & 1;
@@ -52,7 +52,7 @@ int main() {
         check(btoll(t, '#') == a, "btoll(s, one)");
 
         // hamming_distance: ビットごとに比べる
-        long long b = (long long)(rng() >> (64 - width));
+        long long b = static_cast<long long>(rng() >> (64 - width));
         int hd = 0;
         for (int i = 0; i < 63; i++) hd += (a >> i & 1) != (b >> i & 1);
         check(hamming_distance(a, b) == hd, "hamming_distance");
@@ -61,7 +61,7 @@ int main() {
     // countl_one / countr_one / bit_width / bit_ceil / bit_floor を愚直な実装と比べる
     for (int rep = 0; rep < 100000 && ok; rep++) {
         int width = rng() % 64;
-        long long a = width == 0 ? 0 : (long long)(rng() >> (64 - width));
+        long long a = width == 0 ? 0 : static_cast<long long>(rng() >> (64 - width));
         if (rep % 4 == 0) a = (1LL << (rng() % 63)) - rng() % 2;  // 2 の累乗とその前後
         if (a < 0) a = 0;
         int clo = 0, cto = 0, bw = 0;
@@ -85,7 +85,7 @@ int main() {
     // 1 ビットの操作・位置・変換を愚直な実装と比べる
     for (int rep = 0; rep < 100000 && ok; rep++) {
         int width = rng() % 64;
-        long long a = width == 0 ? 0 : (long long)(rng() >> (64 - width));
+        long long a = width == 0 ? 0 : static_cast<long long>(rng() >> (64 - width));
         if (rep % 4 == 0) a = 1LL << (rng() % 63);
         int top = -1, low = -1, pc = 0;
         for (int i = 0; i < 63; i++) {
@@ -115,10 +115,10 @@ int main() {
         if (n == 0) n = 1;
         check(lltob(a, n) == std::string(n - s.size(), '0') + s, "lltob(a, n)");
         std::string t = lltob(a, n, '#', '.');
-        check((long long)t.size() == n && btoll(t, '#') == a, "lltob(a, n, one, zero)");
+        check(static_cast<long long>(t.size()) == n && btoll(t, '#') == a, "lltob(a, n, one, zero)");
 
         // reverse_bits / rotate_left / rotate_right: n ビットの各位置を動かす
-        long long rev = 0, rl = 0, rr = 0, k = (long long)(rng() % 200) - 100;
+        long long rev = 0, rl = 0, rr = 0, k = static_cast<long long>(rng() % 200) - 100;
         long long km = ((k % n) + n) % n;
         for (int j = 0; j < n; j++) {
             if (a >> j & 1) {
@@ -162,9 +162,9 @@ int main() {
         long long mx = std::numeric_limits<long long>::max();
         // 大きい n: count_bit_upto の和は 0..n の popcount の和で、0..n を 2 つに分けて数えても同じ
         for (int rep = 0; rep < 1000 && ok; rep++) {
-            long long n = (long long)(rng() >> 1);
+            long long n = static_cast<long long>(rng() >> 1);
             if (n == mx) n--;
-            long long m = (long long)(rng() % 1000);
+            long long m = static_cast<long long>(rng() % 1000);
             if (n < m) continue;
             for (int i = 0; i < 63; i++) {
                 long long direct = 0;
@@ -182,7 +182,7 @@ int main() {
     // subsets / supersets / bits / combinations_mask / add_one / remove_one を、すべての値を調べる愚直な方法と比べる
     for (int rep = 0; rep < 300 && ok; rep++) {
         int n = rng() % 9;
-        long long mask = (long long)(rng() % (1ULL << n));
+        long long mask = static_cast<long long>(rng() % (1ULL << n));
         std::vector<long long> sub, sup, pos, got;
         for (long long s = (1LL << n) - 1; s >= 0; s--) {
             if ((s & mask) == s) sub.push_back(s);  // 降順
@@ -256,7 +256,7 @@ int main() {
         check(cnt == 2 * ((1LL << 62) - 2) + 1, "supersets 62 ビット");
         std::vector<long long> got;
         for (long long i : bits(std::numeric_limits<long long>::max())) got.push_back(i);
-        check((long long)got.size() == 63 && got.back() == 62, "bits(最大値)");
+        check(static_cast<long long>(got.size()) == 63 && got.back() == 62, "bits(最大値)");
         got.clear();
         for (long long s : subsets(0)) got.push_back(s);
         check(got == std::vector<long long>{0}, "subsets(0)");
@@ -298,7 +298,7 @@ int main() {
         check(next_combination_mask((1LL << 62) - 2) == (1LL << 62) + (1LL << 60) - 1, "next_combination_mask 62 ビット");
         std::vector<long long> got;
         for (long long s : subsets_of_size(mx, 62)) got.push_back(s);
-        check((long long)got.size() == 63 && got.front() == (1LL << 62) - 1 && got.back() == mx - 1, "subsets_of_size 63 ビット");
+        check(static_cast<long long>(got.size()) == 63 && got.front() == (1LL << 62) - 1 && got.back() == mx - 1, "subsets_of_size 63 ビット");
         got.clear();
         for (long long s : subsets_of_size(0b1010, 0)) got.push_back(s);
         check(got == std::vector<long long>{0}, "subsets_of_size(k = 0)");

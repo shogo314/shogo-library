@@ -17,7 +17,7 @@ int main(void) {
         return 0;
     }
     std::vector<std::vector<long long>> groups = connected_components(graph);
-    long long ans = (long long)N * (N - 1) / 2 - M;
+    long long ans = static_cast<long long>(N) * (N - 1) / 2 - M;
     for (const std::vector<long long>& group : groups) {
         std::array<long long, 2> wb = {};
         std::for_each(group.begin(), group.end(), [&](long long x) { wb[c[x]]++; });

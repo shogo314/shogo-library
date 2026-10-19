@@ -31,7 +31,7 @@ int main() {
     // RHString の中身が s と一致するか (長さ・正順のハッシュ・逆順のハッシュ)
     auto same = [&](const RHString& t, const std::string& s) {
         std::string r(s.rbegin(), s.rend());
-        return t.size() == (long long)s.size() && t.hash1 == rh.build(s).back() && t.hash2 == rh.build(r).back();
+        return t.size() == static_cast<long long>(s.size()) && t.hash1 == rh.build(s).back() && t.hash2 == rh.build(r).back();
     };
 
     for (int rep = 0; rep < 3000 && ok; rep++) {
@@ -71,7 +71,7 @@ int main() {
         check((a + b).is_palindrome() == is_palindrome(s + t), "is_palindrome concat");
 
         // size, empty, clear
-        check(a.size() == (long long)s.size() && a.empty() == s.empty(), "size/empty");
+        check(a.size() == static_cast<long long>(s.size()) && a.empty() == s.empty(), "size/empty");
         RHString e = a;
         e.clear();
         check(e.empty() && e.size() == 0 && e == empty, "clear");
@@ -104,8 +104,8 @@ int main() {
     // 整数の列 (負の値を含む) でも、連結と比較が列としての一致と対応する
     for (int rep = 0; rep < 1000 && ok; rep++) {
         std::vector<long long> x(rng() % 6), y(rng() % 6);
-        for (auto& v : x) v = (long long)(rng() % 5) - 2;
-        for (auto& v : y) v = (long long)(rng() % 5) - 2;
+        for (auto& v : x) v = static_cast<long long>(rng() % 5) - 2;
+        for (auto& v : y) v = static_cast<long long>(rng() % 5) - 2;
         std::vector<long long> xy = x;
         xy.insert(xy.end(), y.begin(), y.end());
         RHString hx(rh, x), hy(rh, y), hxy(rh, xy);

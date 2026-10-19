@@ -43,7 +43,7 @@ int main() {
                     st.erase(st.begin());
                 }
             }
-            if (max_q.size() != (int)st.size() || min_q.size() != (int)st.size()) ok = false;
+            if (max_q.size() != static_cast<int>(st.size()) || min_q.size() != static_cast<int>(st.size())) ok = false;
             if (max_q.empty() != st.empty() || min_q.empty() != st.empty()) ok = false;
             if (!st.empty() && (max_q.top() != *st.rbegin() || min_q.top() != *st.begin())) ok = false;
         }

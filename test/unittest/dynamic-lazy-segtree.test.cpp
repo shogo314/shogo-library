@@ -101,7 +101,7 @@ int main() {
         [](mint f, mint x, long long l, long long r) { return x + f * index_sum(l, r); },
         [](mint f, mint g) { return f + g; }, mint(0));
     for (int rep = 0; rep < 300 && ok; rep++) {
-        long long n = rep % 2 ? (long long)(rng() % 1000000000000000000ULL) + 1 : 1000000000000000000LL;
+        long long n = rep % 2 ? static_cast<long long>(rng() % 1000000000000000000ULL) + 1 : 1000000000000000000LL;
         DynamicLazySegTree seg(n, am);
         std::vector<std::array<long long, 3>> ops;  // l, r, f
         auto naive_prod = [&](long long l, long long r) {
@@ -109,7 +109,7 @@ int main() {
             for (auto [a, b, f] : ops) s += mint(f) * index_sum(std::max(a, l), std::min(b, r));
             return s;
         };
-        auto random_pos = [&]() { return (long long)(rng() % n); };
+        auto random_pos = [&]() { return static_cast<long long>(rng() % n); };
         for (int t = 0; t < 40; t++) {
             long long l = random_pos(), r = random_pos();
             if (l > r) std::swap(l, r);
@@ -146,7 +146,7 @@ int main() {
             seg.apply(l, r, f);
             ops.push_back({l, r, f});
         }
-        long long l = rng() % 2 ? 0 : (long long)(rng() % n);
+        long long l = rng() % 2 ? 0 : static_cast<long long>(rng() % n);
         long long lim = rng() % 10;
         // 和が lim を超える最初の位置を、作用の端点を順に見て求める
         std::vector<long long> pts;

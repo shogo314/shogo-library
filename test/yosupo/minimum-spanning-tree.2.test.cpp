@@ -16,6 +16,6 @@ int main() {
     g.read(m, 0, true);
     auto mst = minimum_spanning_tree(g);
     std::cout << mst.cost << '\n';
-    for (int i = 0; i < (int)mst.edges.size(); i++) std::cout << mst.edges[i].id << " \n"[i + 1 == (int)mst.edges.size()];
+    for (int i = 0; i < static_cast<int>(mst.edges.size()); i++) std::cout << mst.edges[i].id << " \n"[i + 1 == static_cast<int>(mst.edges.size())];
     if (mst.edges.empty()) std::cout << '\n';
 }

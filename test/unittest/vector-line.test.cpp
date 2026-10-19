@@ -17,9 +17,9 @@ int main() {
     using L = Vector<long long>;
     auto near = [](double a, double b) { return std::abs(a - b) < 1e-7; };
     for (int rep = 0; rep < 20000 && ok; rep++) {
-        auto rnd = [&] { return (long long)(rng() % 11) - 5; };
+        auto rnd = [&] { return static_cast<long long>(rng() % 11) - 5; };
         L a(rnd(), rnd()), b(rnd(), rnd()), c(rnd(), rnd()), d(rnd(), rnd());
-        auto to_p = [](const L& l) { return P((double)l[0], (double)l[1]); };
+        auto to_p = [](const L& l) { return P(static_cast<double>(l[0]), static_cast<double>(l[1])); };
         P pa = to_p(a), pb = to_p(b), pc = to_p(c), pd = to_p(d);
 
         // ccw: 一直線上の場合は、c が直線上のどこにあるかで分ける

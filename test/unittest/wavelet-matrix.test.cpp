@@ -29,8 +29,8 @@ int main() {
         long long range = rep % 3 == 0 ? 3 : rep % 3 == 1 ? 20
                                                           : 2000000000000000000LL;
         std::vector<long long> v(n), w(n);
-        for (auto& x : v) x = (long long)(rng() % (2 * range + 1)) - range;
-        for (auto& x : w) x = (long long)(rng() % 100) - 50;
+        for (auto& x : v) x = static_cast<long long>(rng() % (2 * range + 1)) - range;
+        for (auto& x : w) x = static_cast<long long>(rng() % 100) - 50;
         WaveletMatrix wm(v);
         WeightedWaveletMatrix wv(v);     // 値そのものを重みにする
         WeightedWaveletMatrix ww(v, w);  // 値と別の重み
@@ -38,8 +38,8 @@ int main() {
         for (int i = 0; i < n; i++) check(wm.get(i) == v[i] && wm[i] == v[i] && ww[i] == v[i], "get");
 
         auto random_value = [&]() {
-            if (n > 0 && rng() % 2) return v[rng() % n] + (long long)(rng() % 3) - 1;
-            return (long long)(rng() % (2 * range + 3)) - range - 1;
+            if (n > 0 && rng() % 2) return v[rng() % n] + static_cast<long long>(rng() % 3) - 1;
+            return static_cast<long long>(rng() % (2 * range + 3)) - range - 1;
         };
         for (int t = 0; t < 30; t++) {
             long long l = rng() % (n + 1), r = rng() % (n + 1);

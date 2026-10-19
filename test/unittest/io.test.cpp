@@ -69,7 +69,7 @@ int main() {
         check(t == std::make_tuple('x', 2, std::string("yz"), 3.5), ">> tuple");
         check(a == std::array<int, 3>{4, 5, 6}, ">> array");
         check(v == std::vector<int>{7, 8, 9, 10}, ">> vector");
-        check(bool(is), "stream state");
+        check(static_cast<bool>(is), "stream state");
     }
     {
         // ネストした型
@@ -86,7 +86,7 @@ int main() {
     for (int rep = 0; rep < 2000 && ok; rep++) {
         int n = rng() % 6;
         std::vector<int> v(n);
-        for (int& x : v) x = (int)(rng() % 2001) - 1000;
+        for (int& x : v) x = static_cast<int>(rng() % 2001) - 1000;
         std::string expect;
         for (int i = 0; i < n; i++) expect += (i ? " " : "") + std::to_string(v[i]);
         check(to_str(v) == expect, "<< vector (random)");
@@ -99,12 +99,12 @@ int main() {
         is >> w;
         check(w == v, ">> vector (random)");
         std::array<int, 4> a;
-        for (int& x : a) x = (int)(rng() % 2001) - 1000;
+        for (int& x : a) x = static_cast<int>(rng() % 2001) - 1000;
         std::istringstream is2(to_str(a));
         std::array<int, 4> b;
         is2 >> b;
         check(a == b, "array round trip");
-        auto t = std::make_tuple((int)(rng() % 100), (long long)rng(), std::string(1 + rng() % 3, 'a' + rng() % 26));
+        auto t = std::make_tuple(static_cast<int>(rng() % 100), static_cast<long long>(rng()), std::string(1 + rng() % 3, 'a' + rng() % 26));
         std::istringstream is3(to_str(t));
         decltype(t) u;
         is3 >> u;

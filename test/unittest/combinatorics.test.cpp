@@ -30,25 +30,25 @@ bool check(long long m, int lim) {
     long long f = 1;
     for (int n = 0; n <= lim; n++) {
         if (n > 0) f = f * n % m;
-        if ((long long)C::factorial(n).val() != f) ok = false;
+        if (static_cast<long long>(C::factorial(n).val()) != f) ok = false;
         if ((C::factorial(n) * C::inverse_factorial(n)).val() != 1 % m) ok = false;
         if (n > 0 && (C::inv(n) * M(n)).val() != 1 % m) ok = false;
     }
     for (int n = 0; n <= lim; n++) {
         for (int r = -1; r <= lim + 1; r++) {
             long long ec = (r < 0 || r > n) ? 0 : c[n][r];
-            if ((long long)C::C(n, r).val() != ec) ok = false;
+            if (static_cast<long long>(C::C(n, r).val()) != ec) ok = false;
             // nPr = nCr * r!
             long long ep = 0;
             if (r >= 0 && r <= n) {
                 ep = ec;
                 for (int i = 1; i <= r; i++) ep = ep * i % m;
             }
-            if ((long long)C::P(n, r).val() != ep) ok = false;
+            if (static_cast<long long>(C::P(n, r).val()) != ep) ok = false;
             // nHr = (n+r-1)Cr (Combination は n < mod の範囲でのみ正しいので、n+r-1 < m に限る)
             if (n >= 1 && r >= 0 && r <= lim && n + r - 1 < m) {
                 long long eh = c[n + r - 1][r];
-                if ((long long)C::H(n, r).val() != eh) ok = false;
+                if (static_cast<long long>(C::H(n, r).val()) != eh) ok = false;
             }
         }
     }
@@ -64,7 +64,7 @@ int main() {
     using D = dynamic_modint<271>;
     for (long long m : {13LL, 1000000007LL, 7LL, 998244353LL, 101LL}) {
         D::set_mod(m);
-        int lim = (int)std::min<long long>(m - 1, 60);  // n < m の範囲で正しい
+        int lim = static_cast<int>(std::min<long long>(m - 1, 60));  // n < m の範囲で正しい
         if (!check<D>(m, lim)) ok = false, std::cerr << "dynamic " << m << std::endl;
     }
 

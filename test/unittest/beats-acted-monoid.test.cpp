@@ -33,7 +33,7 @@ void test_one_side(std::mt19937_64& rng) {
     for (int rep = 0; rep < 300 && ok; rep++) {
         int n = rng() % 30 + 1;
         long long w = rep % 2 ? 5 : 1000;
-        auto gen = [&] { return (long long)(rng() % (2 * w + 1)) - w; };
+        auto gen = [&] { return static_cast<long long>(rng() % (2 * w + 1)) - w; };
         std::vector<long long> a(n);
         for (auto& x : a) x = gen();
         using Seg = std::conditional_t<is_min, RChminSumQ<long long>, RChmaxSumQ<long long>>;
@@ -71,7 +71,7 @@ void test_chmin_chmax_add_sum(std::mt19937_64& rng) {
         int n = rng() % 30 + 1;
         // 値の幅を狭くして、値が 1 種類・2 種類のノードもよく現れるようにする
         long long w = rep % 2 ? 5 : 1000;
-        auto gen = [&] { return (long long)(rng() % (2 * w + 1)) - w; };
+        auto gen = [&] { return static_cast<long long>(rng() % (2 * w + 1)) - w; };
         std::vector<long long> a(n);
         for (auto& x : a) x = gen();
         RChminChmaxAddSumQ<long long> seg(std::vector<A::S>(a.begin(), a.end()));

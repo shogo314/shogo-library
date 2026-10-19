@@ -65,10 +65,10 @@ int main(void) {
                 assert(A[x] == BT.nth_element(x));
                 break;
             case 6:
-                assert((int)std::count(A.begin(), A.end(), x) == BT.count(x));
+                assert(static_cast<int>(std::count(A.begin(), A.end(), x)) == BT.count(x));
                 break;
             case 7:
-                assert((int)A.size() == BT.size());
+                assert(static_cast<int>(A.size()) == BT.size());
             default:
                 break;
         }

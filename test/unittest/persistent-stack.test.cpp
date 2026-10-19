@@ -33,9 +33,9 @@ int main() {
             }
         }
         // すべての版が、作ったときの内容のままか
-        for (int i = 0; i < int(st.size()); i++) {
+        for (int i = 0; i < static_cast<int>(st.size()); i++) {
             const auto& v = naive[i];
-            if (st[i].size() != int(v.size()) || st[i].empty() != v.empty()) ok = false;
+            if (st[i].size() != static_cast<int>(v.size()) || st[i].empty() != v.empty()) ok = false;
             if (st[i].to_vector() != v) ok = false;
             if (!v.empty() && st[i].top() != v.back()) ok = false;
         }

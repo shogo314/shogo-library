@@ -22,7 +22,7 @@ int main() {
     }
     std::sort(ys.begin(), ys.end());
     ys.erase(std::unique(ys.begin(), ys.end()), ys.end());
-    auto y_index = [&](int y) { return int(std::lower_bound(ys.begin(), ys.end(), y) - ys.begin()); };
+    auto y_index = [&](int y) { return static_cast<int>(std::lower_bound(ys.begin(), ys.end(), y) - ys.begin()); };
     // seg[i] は x 座標の小さい方から i 個の点を、y 座標の位置に足した版
     std::vector<PersistentSegTree<monoid::Sum<long long>>> seg(N + 1);
     seg[0] = PersistentSegTree<monoid::Sum<long long>>(ys.size());

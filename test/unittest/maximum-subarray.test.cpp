@@ -29,7 +29,7 @@ int main() {
     for (int rep = 0; rep < 1000; rep++) {
         int n = rng() % 10 + 1;
         std::vector<long long> v(n);
-        for (auto& x : v) x = (long long)(rng() % 21) - 10;
+        for (auto& x : v) x = static_cast<long long>(rng() % 21) - 10;
 
         // 空でない版
         long long best_nonempty = v[0];
@@ -43,7 +43,7 @@ int main() {
         check(maximum_subarray(v) == best_nonempty, "maximum_subarray(c)");
 
         // 空の部分列を許す版: 全区間の和の最大値と init の大きい方
-        long long init = (long long)(rng() % 7) - 3;
+        long long init = static_cast<long long>(rng() % 7) - 3;
         long long best = init;
         for (int l = 0; l < n; l++) {
             long long s = init;

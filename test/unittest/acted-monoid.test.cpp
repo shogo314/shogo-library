@@ -75,7 +75,7 @@ void test_lazy(GenV gen_v, GenF gen_f, ToS to_s, Fold fold, Act act, Eq eq, std:
 
 int main() {
     std::mt19937_64 rng(314);
-    auto small = [&] { return (long long)(rng() % 21) - 10; };
+    auto small = [&] { return static_cast<long long>(rng() % 21) - 10; };
 
     // MulSum: 区間乗算・区間和
     test_lazy<acted_monoid::MulSum<mint>, mint>(

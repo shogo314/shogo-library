@@ -240,6 +240,9 @@ data:
     path: test/unittest/priority_counter.test.cpp
     title: test/unittest/priority_counter.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/rbst.test.cpp
+    title: test/unittest/rbst.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/repr.test.cpp
     title: test/unittest/repr.test.cpp
   - icon: ':heavy_check_mark:'
@@ -290,6 +293,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/division-of-polynomials.test.cpp
     title: test/yosupo/division-of-polynomials.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/dynamic-sequence-range-affine-range-sum.test.cpp
+    title: test/yosupo/dynamic-sequence-range-affine-range-sum.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/enumerate-palindromes.1.test.cpp
     title: test/yosupo/enumerate-palindromes.1.test.cpp
@@ -551,6 +557,7 @@ data:
   - test/unittest/sliding-window-aggregation.test.cpp
   - test/unittest/angle.test.cpp
   - test/unittest/rolling-hash.test.cpp
+  - test/unittest/rbst.test.cpp
   - test/unittest/container-func.test.cpp
   - test/unittest/dynamic-lazy-segtree.test.cpp
   - test/unittest/bitwise-transform.test.cpp
@@ -639,6 +646,7 @@ data:
   - test/yosupo/point-set-range-composite-large-array.test.cpp
   - test/yosupo/lcm-convolution.test.cpp
   - test/yosupo/sort-points-by-argument.1.test.cpp
+  - test/yosupo/dynamic-sequence-range-affine-range-sum.test.cpp
   - test/yosupo/sharp-p-subset-sum.2.test.cpp
   - test/yosupo/bitwise-and-convolution.test.cpp
   - test/yosupo/subset-convolution.test.cpp

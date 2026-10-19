@@ -110,6 +110,9 @@ data:
       path: src/data_structures/priority_counter.hpp
       title: "\u4E0A\u4F4D K \u500B\u306E\u5024\u3068\u305D\u306E\u500B\u6570"
     - icon: ':heavy_check_mark:'
+      path: src/data_structures/rbst.hpp
+      title: "\u5E73\u8861\u4E8C\u5206\u6728 (RBST)"
+    - icon: ':heavy_check_mark:'
       path: src/data_structures/segtree-2d.hpp
       title: "2\u6B21\u5143\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
     - icon: ':heavy_check_mark:'
@@ -854,6 +857,9 @@ data:
       path: test/unittest/rational.test.cpp
       title: test/unittest/rational.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/rbst.test.cpp
+      title: test/unittest/rbst.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/repr.test.cpp
       title: test/unittest/repr.test.cpp
     - icon: ':heavy_check_mark:'
@@ -978,6 +984,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/double-ended-priority-queue.test.cpp
       title: test/yosupo/double-ended-priority-queue.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/dynamic-sequence-range-affine-range-sum.test.cpp
+      title: test/yosupo/dynamic-sequence-range-affine-range-sum.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/enumerate-palindromes.1.test.cpp
       title: test/yosupo/enumerate-palindromes.1.test.cpp

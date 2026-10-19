@@ -47,6 +47,9 @@ data:
     path: src/data_structures/potentialized-unionfind.hpp
     title: "\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind"
   - icon: ':heavy_check_mark:'
+    path: src/data_structures/rbst.hpp
+    title: "\u5E73\u8861\u4E8C\u5206\u6728 (RBST)"
+  - icon: ':heavy_check_mark:'
     path: src/data_structures/segtree-2d.hpp
     title: "2\u6B21\u5143\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
   - icon: ':heavy_check_mark:'
@@ -162,6 +165,9 @@ data:
     path: test/unittest/potentialized-unionfind.test.cpp
     title: test/unittest/potentialized-unionfind.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/rbst.test.cpp
+    title: test/unittest/rbst.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/segtree-beats.test.cpp
     title: test/unittest/segtree-beats.test.cpp
   - icon: ':heavy_check_mark:'
@@ -176,6 +182,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/area-of-union-of-rectangles.2.test.cpp
     title: test/yosupo/area-of-union-of-rectangles.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/dynamic-sequence-range-affine-range-sum.test.cpp
+    title: test/yosupo/dynamic-sequence-range-affine-range-sum.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/lca.2.test.cpp
     title: test/yosupo/lca.2.test.cpp
@@ -886,6 +895,7 @@ data:
   - src/data_structures/sparse-table.hpp
   - src/data_structures/dynamic-segtree.hpp
   - src/data_structures/fenwick-tree.hpp
+  - src/data_structures/rbst.hpp
   - src/data_structures/persistent-lazy-segtree.hpp
   - src/data_structures/dynamic-lazy-segtree.hpp
   - src/data_structures/persistent-segtree.hpp
@@ -914,6 +924,7 @@ data:
   - test/unittest/mapping.test.cpp
   - test/unittest/sliding-window-aggregation.test.cpp
   - test/unittest/monoid-unionfind.test.cpp
+  - test/unittest/rbst.test.cpp
   - test/unittest/dynamic-lazy-segtree.test.cpp
   - test/unittest/monoid.test.cpp
   - test/unittest/potentialized-unionfind.test.cpp
@@ -971,6 +982,7 @@ data:
   - test/yosupo/area-of-union-of-rectangles.1.test.cpp
   - test/yosupo/point-set-range-composite-large-array.test.cpp
   - test/yosupo/rectangle-sum.1.test.cpp
+  - test/yosupo/dynamic-sequence-range-affine-range-sum.test.cpp
   - test/yosupo/point-add-range-sum.2.test.cpp
   - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
   - test/yosupo/rectangle-sum.3.test.cpp

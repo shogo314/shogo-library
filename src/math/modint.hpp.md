@@ -76,6 +76,9 @@ data:
     path: test/unittest/persistent-segtree.test.cpp
     title: test/unittest/persistent-segtree.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/rbst.test.cpp
+    title: test/unittest/rbst.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/sliding-window-aggregation.test.cpp
     title: test/unittest/sliding-window-aggregation.test.cpp
   - icon: ':heavy_check_mark:'
@@ -108,6 +111,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/division-of-polynomials.test.cpp
     title: test/yosupo/division-of-polynomials.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/dynamic-sequence-range-affine-range-sum.test.cpp
+    title: test/yosupo/dynamic-sequence-range-affine-range-sum.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/exp-of-fps.test.cpp
     title: test/yosupo/exp-of-fps.test.cpp
@@ -744,6 +750,7 @@ data:
   - test/unittest/dynamic-segtree.test.cpp
   - test/unittest/persistent-segtree.test.cpp
   - test/unittest/sliding-window-aggregation.test.cpp
+  - test/unittest/rbst.test.cpp
   - test/unittest/dynamic-lazy-segtree.test.cpp
   - test/unittest/bitwise-transform.test.cpp
   - test/unittest/acted-monoid.test.cpp
@@ -790,6 +797,7 @@ data:
   - test/yosupo/binomial-coefficient-prime-mod.2.test.cpp
   - test/yosupo/point-set-range-composite-large-array.test.cpp
   - test/yosupo/lcm-convolution.test.cpp
+  - test/yosupo/dynamic-sequence-range-affine-range-sum.test.cpp
   - test/yosupo/sharp-p-subset-sum.2.test.cpp
   - test/yosupo/bitwise-and-convolution.test.cpp
   - test/yosupo/subset-convolution.test.cpp

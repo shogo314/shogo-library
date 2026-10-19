@@ -45,5 +45,6 @@ $d(n)$ は $n$ の約数の個数です。
 
 ## 関連
 
+- 篩を使わずに大きい $n$ ($10^{11}$ 程度) 以下の素数の個数や和を求めるなら [素数の個数・素数の和](prime-counting.hpp)
 - 約数・倍数のゼータ変換、メビウス変換と GCD・LCM 畳み込みは [約数変換](divisor-transform.hpp)
 - mod の冪乗・逆元は [mod 演算](modular-arithmetic.hpp)

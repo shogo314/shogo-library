@@ -40,3 +40,4 @@ for (auto [q, l, r] : enumerate_quotients(10)) {
 ## 関連
 
 - 一次関数の床関数の和 $\sum \lfloor (ai + b)/m \rfloor$ は [floor sum](floor-sum.hpp)
+- すべての $\lfloor n / k \rfloor$ について素数の個数・和を求めるには [素数の個数・素数の和](prime-counting.hpp)

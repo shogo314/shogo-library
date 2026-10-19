@@ -44,29 +44,33 @@ data:
     \u6574\u6570\u578B\u306B\u5236\u9650\u3059\u308B\n#if __cplusplus >= 202002L\n\
     #define SATURATING_FUNC(cond, R) requires(cond) inline constexpr R\n#else\n#define\
     \ SATURATING_FUNC(cond, R) inline constexpr std::enable_if_t<(cond), R>\n#endif\n\
-    \n/**\n * @brief x + y \u3092 T \u306E\u7BC4\u56F2\u306B\u4E38\u3081\u308B\n */\n\
-    template <class T>\nSATURATING_FUNC(internal_saturating::integer<T>, T) saturating_add(T\
-    \ x, T y) noexcept {\n#ifdef __cpp_lib_saturation_arithmetic\n    return std::add_sat(x,\
-    \ y);\n#else\n    T res{};\n    if (!__builtin_add_overflow(x, y, &res)) return\
-    \ res;\n    if constexpr (std::is_signed_v<T>) {\n        if (y < 0) return std::numeric_limits<T>::min();\n\
-    \    }\n    return std::numeric_limits<T>::max();\n#endif\n}\n/**\n * @brief x\
-    \ - y \u3092 T \u306E\u7BC4\u56F2\u306B\u4E38\u3081\u308B\n */\ntemplate <class\
-    \ T>\nSATURATING_FUNC(internal_saturating::integer<T>, T) saturating_sub(T x,\
-    \ T y) noexcept {\n#ifdef __cpp_lib_saturation_arithmetic\n    return std::sub_sat(x,\
-    \ y);\n#else\n    T res{};\n    if (!__builtin_sub_overflow(x, y, &res)) return\
-    \ res;\n    if constexpr (std::is_signed_v<T>) {\n        if (y < 0) return std::numeric_limits<T>::max();\n\
-    \    }\n    return std::numeric_limits<T>::min();\n#endif\n}\n/**\n * @brief x\
-    \ * y \u3092 T \u306E\u7BC4\u56F2\u306B\u4E38\u3081\u308B\n */\ntemplate <class\
-    \ T>\nSATURATING_FUNC(internal_saturating::integer<T>, T) saturating_mul(T x,\
-    \ T y) noexcept {\n#ifdef __cpp_lib_saturation_arithmetic\n    return std::mul_sat(x,\
-    \ y);\n#else\n    T res{};\n    if (!__builtin_mul_overflow(x, y, &res)) return\
-    \ res;\n    if constexpr (std::is_signed_v<T>) {\n        if ((x < 0) != (y <\
-    \ 0)) return std::numeric_limits<T>::min();\n    }\n    return std::numeric_limits<T>::max();\n\
-    #endif\n}\n/**\n * @brief x / y (0 \u65B9\u5411\u306B\u5207\u308A\u6368\u3066\
-    ) \u3092 T \u306E\u7BC4\u56F2\u306B\u4E38\u3081\u308B (y != 0)\n * \u3042\u3075\
-    \u308C\u308B\u306E\u306F\u7B26\u53F7\u4ED8\u304D\u306E min / -1 \u3060\u3051\u3067\
-    \u3001max \u3092\u8FD4\u3059\n */\ntemplate <class T>\nSATURATING_FUNC(internal_saturating::integer<T>,\
-    \ T) saturating_div(T x, T y) noexcept {\n    assert(y != 0);\n#ifdef __cpp_lib_saturation_arithmetic\n\
+    \n// clang-format \u306F SATURATING_FUNC \u3092\u623B\u308A\u5024\u306E\u578B\u3068\
+    \u8AAD\u3081\u305A\u3001\u95A2\u6570\u540D\u306E\u524D\u3067\u6539\u884C\u3057\
+    \u3066\u3057\u307E\u3046\u306E\u3067\u6574\u5F62\u3057\u306A\u3044\n// clang-format\
+    \ off\n\n/**\n * @brief x + y \u3092 T \u306E\u7BC4\u56F2\u306B\u4E38\u3081\u308B\
+    \n */\ntemplate <class T>\nSATURATING_FUNC(internal_saturating::integer<T>, T)\
+    \ saturating_add(T x, T y) noexcept {\n#ifdef __cpp_lib_saturation_arithmetic\n\
+    \    return std::add_sat(x, y);\n#else\n    T res{};\n    if (!__builtin_add_overflow(x,\
+    \ y, &res)) return res;\n    if constexpr (std::is_signed_v<T>) {\n        if\
+    \ (y < 0) return std::numeric_limits<T>::min();\n    }\n    return std::numeric_limits<T>::max();\n\
+    #endif\n}\n/**\n * @brief x - y \u3092 T \u306E\u7BC4\u56F2\u306B\u4E38\u3081\u308B\
+    \n */\ntemplate <class T>\nSATURATING_FUNC(internal_saturating::integer<T>, T)\
+    \ saturating_sub(T x, T y) noexcept {\n#ifdef __cpp_lib_saturation_arithmetic\n\
+    \    return std::sub_sat(x, y);\n#else\n    T res{};\n    if (!__builtin_sub_overflow(x,\
+    \ y, &res)) return res;\n    if constexpr (std::is_signed_v<T>) {\n        if\
+    \ (y < 0) return std::numeric_limits<T>::max();\n    }\n    return std::numeric_limits<T>::min();\n\
+    #endif\n}\n/**\n * @brief x * y \u3092 T \u306E\u7BC4\u56F2\u306B\u4E38\u3081\u308B\
+    \n */\ntemplate <class T>\nSATURATING_FUNC(internal_saturating::integer<T>, T)\
+    \ saturating_mul(T x, T y) noexcept {\n#ifdef __cpp_lib_saturation_arithmetic\n\
+    \    return std::mul_sat(x, y);\n#else\n    T res{};\n    if (!__builtin_mul_overflow(x,\
+    \ y, &res)) return res;\n    if constexpr (std::is_signed_v<T>) {\n        if\
+    \ ((x < 0) != (y < 0)) return std::numeric_limits<T>::min();\n    }\n    return\
+    \ std::numeric_limits<T>::max();\n#endif\n}\n/**\n * @brief x / y (0 \u65B9\u5411\
+    \u306B\u5207\u308A\u6368\u3066) \u3092 T \u306E\u7BC4\u56F2\u306B\u4E38\u3081\u308B\
+    \ (y != 0)\n * \u3042\u3075\u308C\u308B\u306E\u306F\u7B26\u53F7\u4ED8\u304D\u306E\
+    \ min / -1 \u3060\u3051\u3067\u3001max \u3092\u8FD4\u3059\n */\ntemplate <class\
+    \ T>\nSATURATING_FUNC(internal_saturating::integer<T>, T) saturating_div(T x,\
+    \ T y) noexcept {\n    assert(y != 0);\n#ifdef __cpp_lib_saturation_arithmetic\n\
     \    return std::div_sat(x, y);\n#else\n    if constexpr (std::is_signed_v<T>)\
     \ {\n        if (x == std::numeric_limits<T>::min() && y == -1) return std::numeric_limits<T>::max();\n\
     \    }\n    return x / y;\n#endif\n}\n/**\n * @brief \u6574\u6570 x \u3092 R \u306B\
@@ -78,7 +82,7 @@ data:
     \    if (internal_saturating::cmp_less(x, std::numeric_limits<R>::min())) return\
     \ std::numeric_limits<R>::min();\n    if (internal_saturating::cmp_greater(x,\
     \ std::numeric_limits<R>::max())) return std::numeric_limits<R>::max();\n    return\
-    \ static_cast<R>(x);\n#endif\n}\n\n#undef SATURATING_FUNC\n"
+    \ static_cast<R>(x);\n#endif\n}\n\n// clang-format on\n\n#undef SATURATING_FUNC\n"
   code: "#pragma once\n\n/**\n * @file saturating.hpp\n * @brief \u98FD\u548C\u6F14\
     \u7B97 (\u7D50\u679C\u304C\u578B\u306E\u7BC4\u56F2\u3092\u8D85\u3048\u305F\u3089\
     \u3001\u305D\u306E\u578B\u306E\u6700\u5927\u5024\u30FB\u6700\u5C0F\u5024\u306B\
@@ -108,8 +112,11 @@ data:
     \u306E enable_if \u3067\u6574\u6570\u578B\u306B\u5236\u9650\u3059\u308B\n#if __cplusplus\
     \ >= 202002L\n#define SATURATING_FUNC(cond, R) requires(cond) inline constexpr\
     \ R\n#else\n#define SATURATING_FUNC(cond, R) inline constexpr std::enable_if_t<(cond),\
-    \ R>\n#endif\n\n/**\n * @brief x + y \u3092 T \u306E\u7BC4\u56F2\u306B\u4E38\u3081\
-    \u308B\n */\ntemplate <class T>\nSATURATING_FUNC(internal_saturating::integer<T>,\
+    \ R>\n#endif\n\n// clang-format \u306F SATURATING_FUNC \u3092\u623B\u308A\u5024\
+    \u306E\u578B\u3068\u8AAD\u3081\u305A\u3001\u95A2\u6570\u540D\u306E\u524D\u3067\
+    \u6539\u884C\u3057\u3066\u3057\u307E\u3046\u306E\u3067\u6574\u5F62\u3057\u306A\
+    \u3044\n// clang-format off\n\n/**\n * @brief x + y \u3092 T \u306E\u7BC4\u56F2\
+    \u306B\u4E38\u3081\u308B\n */\ntemplate <class T>\nSATURATING_FUNC(internal_saturating::integer<T>,\
     \ T) saturating_add(T x, T y) noexcept {\n#ifdef __cpp_lib_saturation_arithmetic\n\
     \    return std::add_sat(x, y);\n#else\n    T res{};\n    if (!__builtin_add_overflow(x,\
     \ y, &res)) return res;\n    if constexpr (std::is_signed_v<T>) {\n        if\
@@ -143,12 +150,12 @@ data:
     \    if (internal_saturating::cmp_less(x, std::numeric_limits<R>::min())) return\
     \ std::numeric_limits<R>::min();\n    if (internal_saturating::cmp_greater(x,\
     \ std::numeric_limits<R>::max())) return std::numeric_limits<R>::max();\n    return\
-    \ static_cast<R>(x);\n#endif\n}\n\n#undef SATURATING_FUNC\n"
+    \ static_cast<R>(x);\n#endif\n}\n\n// clang-format on\n\n#undef SATURATING_FUNC\n"
   dependsOn: []
   isVerificationFile: false
   path: src/math/saturating.hpp
   requiredBy: []
-  timestamp: '2026-10-18 18:36:07+09:00'
+  timestamp: '2026-10-19 12:29:38+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/saturating.test.cpp

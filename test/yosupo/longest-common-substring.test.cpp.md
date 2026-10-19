@@ -18,14 +18,14 @@ data:
     links:
     - https://judge.yosupo.jp/problem/longest_common_substring
   bundledCode: "#line 1 \"test/yosupo/longest-common-substring.test.cpp\"\n#define\
-    \ PROBLEM \"https://judge.yosupo.jp/problem/longest_common_substring\"\n\n#include\
-    \ <iostream>\n#include <string>\n\n#line 2 \"src/string/longest-common-substring.hpp\"\
-    \n\n/**\n * @file longest-common-substring.hpp\n * @brief \u6700\u9577\u5171\u901A\
-    \u90E8\u5206\u6587\u5B57\u5217\n */\n\n#include <algorithm>\n#include <iterator>\n\
-    #include <tuple>\n#include <type_traits>\n#include <vector>\n\n#line 2 \"src/string/suffix-array.hpp\"\
-    \n\n/**\n * @file suffix-array.hpp\n * @brief Suffix Array (SA-IS) \u3068 LCP\
-    \ \u914D\u5217\n */\n\n#line 9 \"src/string/suffix-array.hpp\"\n#include <cassert>\n\
-    #include <climits>\n#include <cstddef>\n#line 15 \"src/string/suffix-array.hpp\"\
+    \ PROBLEM \"https://judge.yosupo.jp/problem/longest_common_substring\"\n\n#line\
+    \ 2 \"src/string/longest-common-substring.hpp\"\n\n/**\n * @file longest-common-substring.hpp\n\
+    \ * @brief \u6700\u9577\u5171\u901A\u90E8\u5206\u6587\u5B57\u5217\n */\n\n#include\
+    \ <algorithm>\n#include <iterator>\n#include <tuple>\n#include <type_traits>\n\
+    #include <vector>\n\n#line 2 \"src/string/suffix-array.hpp\"\n\n/**\n * @file\
+    \ suffix-array.hpp\n * @brief Suffix Array (SA-IS) \u3068 LCP \u914D\u5217\n */\n\
+    \n#line 9 \"src/string/suffix-array.hpp\"\n#include <cassert>\n#include <climits>\n\
+    #include <cstddef>\n#include <string>\n#line 15 \"src/string/suffix-array.hpp\"\
     \n\nnamespace internal_suffix_array {\n// s \u306E\u5024\u306F 0 \u4EE5\u4E0A\
     \ upper \u4EE5\u4E0B\ninline std::vector<int> sa_is(const std::vector<int>& s,\
     \ int upper) {\n    int n = s.size();\n    if (n == 0) return {};\n    if (n ==\
@@ -149,14 +149,15 @@ data:
     \ k + 1 < static_cast<long long>(sa.size()); k++) {\n        long long a = sa[k],\
     \ b = sa[k + 1];\n        if (a > b) std::swap(a, b);\n        if (a < n && n\
     \ < b && lcp[k] > len) {\n            i = a, j = b - n - 1, len = lcp[k];\n  \
-    \      }\n    }\n    return {i, j, len};\n}\n#line 7 \"test/yosupo/longest-common-substring.test.cpp\"\
+    \      }\n    }\n    return {i, j, len};\n}\n#line 4 \"test/yosupo/longest-common-substring.test.cpp\"\
+    \n\n#include <iostream>\n#line 7 \"test/yosupo/longest-common-substring.test.cpp\"\
     \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
     \    std::string s, t;\n    std::cin >> s >> t;\n    auto [i, j, len] = longest_common_substring(s,\
     \ t);\n    std::cout << i << ' ' << i + len << ' ' << j << ' ' << j + len << '\\\
     n';\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/longest_common_substring\"\
-    \n\n#include <iostream>\n#include <string>\n\n#include \"../../src/string/longest-common-substring.hpp\"\
-    \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
+    \n\n#include \"../../src/string/longest-common-substring.hpp\"\n\n#include <iostream>\n\
+    #include <string>\n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
     \    std::string s, t;\n    std::cin >> s >> t;\n    auto [i, j, len] = longest_common_substring(s,\
     \ t);\n    std::cout << i << ' ' << i + len << ' ' << j << ' ' << j + len << '\\\
     n';\n}\n"
@@ -166,7 +167,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/longest-common-substring.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:29:38+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/longest-common-substring.test.cpp

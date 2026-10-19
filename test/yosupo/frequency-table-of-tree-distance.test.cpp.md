@@ -912,35 +912,36 @@ data:
     \ a1[i] * b1[i];\n        c2[i] = a2[i] * b2[i];\n    }\n    internal_convolution::trans(c0,\
     \ true), internal_convolution::trans(c1, true), internal_convolution::trans(c2,\
     \ true);\n    static const long long mod0 = internal_convolution::MOD0, mod01\
-    \ = mod0 * internal_convolution::MOD1;\n    static const __int128_t mod012 = (__int128_t)mod01\
+    \ = mod0 * internal_convolution::MOD1;\n    static const __int128_t mod012 = static_cast<__int128_t>(mod01)\
     \ * internal_convolution::MOD2;\n    std::vector<long long> res(N + M - 1);\n\
     \    for (int i = 0; i < N + M - 1; ++i) {\n        int y0 = c0[i].val();\n  \
     \      int y1 = (internal_convolution::imod0 * (c1[i] - y0)).val();\n        int\
     \ y2 = (internal_convolution::imod01 * (c2[i] - y0) - internal_convolution::imod1\
-    \ * y1).val();\n        __int128_t tmp = (__int128_t)mod01 * y2 + (__int128_t)mod0\
-    \ * y1 + y0;\n        if (tmp < (mod012 >> 1))\n            res[i] = tmp;\n  \
-    \      else\n            res[i] = tmp - mod012;\n    }\n    return res;\n}\n#line\
-    \ 8 \"test/yosupo/frequency-table-of-tree-distance.test.cpp\"\n\nint main() {\n\
-    \    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    long long\
-    \ n;\n    std::cin >> n;\n    Tree<int> tree(n);\n    tree.read(0);\n    CentroidDecomposition\
-    \ cd(tree);\n    std::vector<long long> ans(n, 0);\n    // cnt[d] \u306F\u8DDD\
-    \u96E2 d \u306E\u9802\u70B9\u306E\u500B\u6570\u3002\u81EA\u5206\u81EA\u8EAB\u3068\
-    \u306E\u7573\u307F\u8FBC\u307F\u3067\u3001\u8DDD\u96E2\u306E\u548C\u3054\u3068\
-    \u306E\u7D44\u306E\u500B\u6570\u306B\u306A\u308B\n    auto add = [&](const std::vector<long\
-    \ long>& cnt, long long sign) {\n        auto sq = convolution_ll(cnt, cnt);\n\
-    \        for (long long d = 0; d < (long long)sq.size() && d < n; d++) ans[d]\
-    \ += sign * sq[d];\n    };\n    for (long long c : cd.order()) {\n        std::vector<long\
-    \ long> all = {1};  // c \u81EA\u8EAB\n        for (const auto& sub : cd.subtrees(tree,\
+    \ * y1).val();\n        __int128_t tmp = static_cast<__int128_t>(mod01) * y2 +\
+    \ static_cast<__int128_t>(mod0) * y1 + y0;\n        if (tmp < (mod012 >> 1))\n\
+    \            res[i] = tmp;\n        else\n            res[i] = tmp - mod012;\n\
+    \    }\n    return res;\n}\n#line 8 \"test/yosupo/frequency-table-of-tree-distance.test.cpp\"\
+    \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    long long n;\n    std::cin >> n;\n    Tree<int> tree(n);\n    tree.read(0);\n\
+    \    CentroidDecomposition cd(tree);\n    std::vector<long long> ans(n, 0);\n\
+    \    // cnt[d] \u306F\u8DDD\u96E2 d \u306E\u9802\u70B9\u306E\u500B\u6570\u3002\
+    \u81EA\u5206\u81EA\u8EAB\u3068\u306E\u7573\u307F\u8FBC\u307F\u3067\u3001\u8DDD\
+    \u96E2\u306E\u548C\u3054\u3068\u306E\u7D44\u306E\u500B\u6570\u306B\u306A\u308B\
+    \n    auto add = [&](const std::vector<long long>& cnt, long long sign) {\n  \
+    \      auto sq = convolution_ll(cnt, cnt);\n        for (long long d = 0; d <\
+    \ static_cast<long long>(sq.size()) && d < n; d++) ans[d] += sign * sq[d];\n \
+    \   };\n    for (long long c : cd.order()) {\n        std::vector<long long> all\
+    \ = {1};  // c \u81EA\u8EAB\n        for (const auto& sub : cd.subtrees(tree,\
     \ c)) {\n            std::vector<long long> cnt;\n            for (auto [v, d]\
-    \ : sub) {\n                if ((long long)cnt.size() <= d) cnt.resize(d + 1);\n\
-    \                if ((long long)all.size() <= d) all.resize(d + 1);\n        \
-    \        cnt[d]++;\n                all[d]++;\n            }\n            // \u540C\
-    \u3058\u90E8\u5206\u6728\u306E\u4E2D\u306E 2 \u9802\u70B9\u3092\u7D50\u3076\u30D1\
-    \u30B9\u306F c \u3092\u901A\u3089\u306A\u3044\u306E\u3067\u5F15\u304F\n      \
-    \      add(cnt, -1);\n        }\n        add(all, 1);\n    }\n    // \u9806\u5E8F\
-    \u4ED8\u304D\u306E\u7D44\u3092\u6570\u3048\u305F\u306E\u3067 2 \u3067\u5272\u308B\
-    \n    for (long long d = 1; d < n; d++) std::cout << ans[d] / 2 << \" \\n\"[d\
-    \ + 1 == n];\n}\n"
+    \ : sub) {\n                if (static_cast<long long>(cnt.size()) <= d) cnt.resize(d\
+    \ + 1);\n                if (static_cast<long long>(all.size()) <= d) all.resize(d\
+    \ + 1);\n                cnt[d]++;\n                all[d]++;\n            }\n\
+    \            // \u540C\u3058\u90E8\u5206\u6728\u306E\u4E2D\u306E 2 \u9802\u70B9\
+    \u3092\u7D50\u3076\u30D1\u30B9\u306F c \u3092\u901A\u3089\u306A\u3044\u306E\u3067\
+    \u5F15\u304F\n            add(cnt, -1);\n        }\n        add(all, 1);\n   \
+    \ }\n    // \u9806\u5E8F\u4ED8\u304D\u306E\u7D44\u3092\u6570\u3048\u305F\u306E\
+    \u3067 2 \u3067\u5272\u308B\n    for (long long d = 1; d < n; d++) std::cout <<\
+    \ ans[d] / 2 << \" \\n\"[d + 1 == n];\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/frequency_table_of_tree_distance\"\
     \n\n#include <iostream>\n#include <vector>\n\n#include \"../../src/graph/centroid-decomposition.hpp\"\
     \n#include \"../../src/math/convolution.hpp\"\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
@@ -951,19 +952,19 @@ data:
     \u3067\u3001\u8DDD\u96E2\u306E\u548C\u3054\u3068\u306E\u7D44\u306E\u500B\u6570\
     \u306B\u306A\u308B\n    auto add = [&](const std::vector<long long>& cnt, long\
     \ long sign) {\n        auto sq = convolution_ll(cnt, cnt);\n        for (long\
-    \ long d = 0; d < (long long)sq.size() && d < n; d++) ans[d] += sign * sq[d];\n\
-    \    };\n    for (long long c : cd.order()) {\n        std::vector<long long>\
-    \ all = {1};  // c \u81EA\u8EAB\n        for (const auto& sub : cd.subtrees(tree,\
+    \ long d = 0; d < static_cast<long long>(sq.size()) && d < n; d++) ans[d] += sign\
+    \ * sq[d];\n    };\n    for (long long c : cd.order()) {\n        std::vector<long\
+    \ long> all = {1};  // c \u81EA\u8EAB\n        for (const auto& sub : cd.subtrees(tree,\
     \ c)) {\n            std::vector<long long> cnt;\n            for (auto [v, d]\
-    \ : sub) {\n                if ((long long)cnt.size() <= d) cnt.resize(d + 1);\n\
-    \                if ((long long)all.size() <= d) all.resize(d + 1);\n        \
-    \        cnt[d]++;\n                all[d]++;\n            }\n            // \u540C\
-    \u3058\u90E8\u5206\u6728\u306E\u4E2D\u306E 2 \u9802\u70B9\u3092\u7D50\u3076\u30D1\
-    \u30B9\u306F c \u3092\u901A\u3089\u306A\u3044\u306E\u3067\u5F15\u304F\n      \
-    \      add(cnt, -1);\n        }\n        add(all, 1);\n    }\n    // \u9806\u5E8F\
-    \u4ED8\u304D\u306E\u7D44\u3092\u6570\u3048\u305F\u306E\u3067 2 \u3067\u5272\u308B\
-    \n    for (long long d = 1; d < n; d++) std::cout << ans[d] / 2 << \" \\n\"[d\
-    \ + 1 == n];\n}\n"
+    \ : sub) {\n                if (static_cast<long long>(cnt.size()) <= d) cnt.resize(d\
+    \ + 1);\n                if (static_cast<long long>(all.size()) <= d) all.resize(d\
+    \ + 1);\n                cnt[d]++;\n                all[d]++;\n            }\n\
+    \            // \u540C\u3058\u90E8\u5206\u6728\u306E\u4E2D\u306E 2 \u9802\u70B9\
+    \u3092\u7D50\u3076\u30D1\u30B9\u306F c \u3092\u901A\u3089\u306A\u3044\u306E\u3067\
+    \u5F15\u304F\n            add(cnt, -1);\n        }\n        add(all, 1);\n   \
+    \ }\n    // \u9806\u5E8F\u4ED8\u304D\u306E\u7D44\u3092\u6570\u3048\u305F\u306E\
+    \u3067 2 \u3067\u5272\u308B\n    for (long long d = 1; d < n; d++) std::cout <<\
+    \ ans[d] / 2 << \" \\n\"[d + 1 == n];\n}\n"
   dependsOn:
   - src/graph/centroid-decomposition.hpp
   - src/graph/tree.hpp
@@ -975,7 +976,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/frequency-table-of-tree-distance.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/frequency-table-of-tree-distance.test.cpp

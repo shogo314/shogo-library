@@ -494,9 +494,9 @@ data:
     \ : group) {\n                seen[v]++;\n                if (label[v] != label[group[0]])\
     \ ok = false;\n            }\n        }\n        int num_components = 0;\n   \
     \     for (int v = 0; v < n; v++) {\n            if (seen[v] != 1) ok = false;\n\
-    \            if (label[v] == v) num_components++;\n        }\n        if ((int)groups.size()\
+    \            if (label[v] == v) num_components++;\n        }\n        if (static_cast<int>(groups.size())\
     \ != num_components) ok = false;\n        if (is_connected(graph) != (num_components\
-    \ == 1)) ok = false;\n        if (is_tree(graph) != (num_components == 1 && (int)edges.size()\
+    \ == 1)) ok = false;\n        if (is_tree(graph) != (num_components == 1 && static_cast<int>(edges.size())\
     \ == n - 1)) ok = false;\n    }\n\n    // \u6709\u5411\u30B0\u30E9\u30D5: topological_sort,\
     \ has_cycle\n    for (int rep = 0; rep < 3000 && ok; rep++) {\n        int n =\
     \ rng() % 8 + 1;\n        Graph<int> graph(n);\n        std::vector<std::pair<int,\
@@ -513,7 +513,7 @@ data:
     \ [u, v] : edges) good &= pos[u] < pos[v];\n            dag |= good;\n       \
     \ } while (!dag && std::next_permutation(perm.begin(), perm.end()));\n       \
     \ if (has_cycle(graph) == dag) ok = false;\n        std::vector<long long> order\
-    \ = topological_sort(graph);\n        if (dag) {\n            if ((int)order.size()\
+    \ = topological_sort(graph);\n        if (dag) {\n            if (static_cast<int>(order.size())\
     \ != n)\n                ok = false;\n            else {\n                std::vector<int>\
     \ pos(n, -1);\n                for (int i = 0; i < n; i++) pos[order[i]] = i;\n\
     \                for (auto [u, v] : edges)\n                    if (!(pos[u] <\
@@ -535,7 +535,7 @@ data:
     \ = true;\n                        stk.push_back(b);\n                    }\n\
     \                }\n            }\n        }\n        std::vector<std::vector<long\
     \ long>> groups = strongly_connected_components(graph);\n        std::vector<int>\
-    \ id(n, -1);\n        int total = 0;\n        for (int i = 0; i < (int)groups.size();\
+    \ id(n, -1);\n        int total = 0;\n        for (int i = 0; i < static_cast<int>(groups.size());\
     \ i++) {\n            for (int v : groups[i]) {\n                if (id[v] !=\
     \ -1) ok = false;  // 2 \u3064\u306E\u6210\u5206\u306B\u5165\u3063\u3066\u3044\
     \u308B\n                id[v] = i;\n                total++;\n            }\n\
@@ -575,7 +575,7 @@ data:
     \ rep = 0; rep < 1000 && ok; rep++) {\n        int n = rng() % 6 + 1, m = rng()\
     \ % 9;\n        Graph<int> graph(n);\n        for (int i = 0; i < m; i++) graph.add_edge(rng()\
     \ % n, rng() % n, rng() % 10);\n        auto es = graph.edges();\n        auto\
-    \ comps = connected_components(graph);\n        int need = n - (int)comps.size();\
+    \ comps = connected_components(graph);\n        int need = n - static_cast<int>(comps.size());\
     \  // \u5168\u57DF\u68EE\u306E\u8FBA\u306E\u672C\u6570\n        int best = -1;\n\
     \        for (int mask = 0; mask < (1 << m); mask++) {\n            if (__builtin_popcount(mask)\
     \ != need) continue;\n            UnionFind uf(n);\n            bool forest =\
@@ -584,11 +584,11 @@ data:
     \ es[i].dst)) forest = false;\n                cost += es[i].cost;\n         \
     \   }\n            if (forest && (best == -1 || cost < best)) best = cost;\n \
     \       }\n        auto mst = minimum_spanning_tree(graph);\n        if (mst.cost\
-    \ != best || (int)mst.edges.size() != need) ok = false;\n        UnionFind uf(n);\n\
-    \        int sum = 0;\n        for (const auto& e : mst.edges) {\n           \
-    \ if (!uf.merge(e.src, e.dst)) ok = false;\n            sum += e.cost;\n     \
-    \   }\n        if (sum != mst.cost) ok = false;\n    }\n\n    if (ok) std::cout\
-    \ << \"Hello World\" << std::endl;\n}\n"
+    \ != best || static_cast<int>(mst.edges.size()) != need) ok = false;\n       \
+    \ UnionFind uf(n);\n        int sum = 0;\n        for (const auto& e : mst.edges)\
+    \ {\n            if (!uf.merge(e.src, e.dst)) ok = false;\n            sum +=\
+    \ e.cost;\n        }\n        if (sum != mst.cost) ok = false;\n    }\n\n    if\
+    \ (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// graph_util.hpp \u306E\u95A2\u6570\u3092\u611A\u76F4\u306A\u5B9F\u88C5\u3068\
     \u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\
@@ -621,9 +621,9 @@ data:
     \ : group) {\n                seen[v]++;\n                if (label[v] != label[group[0]])\
     \ ok = false;\n            }\n        }\n        int num_components = 0;\n   \
     \     for (int v = 0; v < n; v++) {\n            if (seen[v] != 1) ok = false;\n\
-    \            if (label[v] == v) num_components++;\n        }\n        if ((int)groups.size()\
+    \            if (label[v] == v) num_components++;\n        }\n        if (static_cast<int>(groups.size())\
     \ != num_components) ok = false;\n        if (is_connected(graph) != (num_components\
-    \ == 1)) ok = false;\n        if (is_tree(graph) != (num_components == 1 && (int)edges.size()\
+    \ == 1)) ok = false;\n        if (is_tree(graph) != (num_components == 1 && static_cast<int>(edges.size())\
     \ == n - 1)) ok = false;\n    }\n\n    // \u6709\u5411\u30B0\u30E9\u30D5: topological_sort,\
     \ has_cycle\n    for (int rep = 0; rep < 3000 && ok; rep++) {\n        int n =\
     \ rng() % 8 + 1;\n        Graph<int> graph(n);\n        std::vector<std::pair<int,\
@@ -640,7 +640,7 @@ data:
     \ [u, v] : edges) good &= pos[u] < pos[v];\n            dag |= good;\n       \
     \ } while (!dag && std::next_permutation(perm.begin(), perm.end()));\n       \
     \ if (has_cycle(graph) == dag) ok = false;\n        std::vector<long long> order\
-    \ = topological_sort(graph);\n        if (dag) {\n            if ((int)order.size()\
+    \ = topological_sort(graph);\n        if (dag) {\n            if (static_cast<int>(order.size())\
     \ != n)\n                ok = false;\n            else {\n                std::vector<int>\
     \ pos(n, -1);\n                for (int i = 0; i < n; i++) pos[order[i]] = i;\n\
     \                for (auto [u, v] : edges)\n                    if (!(pos[u] <\
@@ -662,7 +662,7 @@ data:
     \ = true;\n                        stk.push_back(b);\n                    }\n\
     \                }\n            }\n        }\n        std::vector<std::vector<long\
     \ long>> groups = strongly_connected_components(graph);\n        std::vector<int>\
-    \ id(n, -1);\n        int total = 0;\n        for (int i = 0; i < (int)groups.size();\
+    \ id(n, -1);\n        int total = 0;\n        for (int i = 0; i < static_cast<int>(groups.size());\
     \ i++) {\n            for (int v : groups[i]) {\n                if (id[v] !=\
     \ -1) ok = false;  // 2 \u3064\u306E\u6210\u5206\u306B\u5165\u3063\u3066\u3044\
     \u308B\n                id[v] = i;\n                total++;\n            }\n\
@@ -702,7 +702,7 @@ data:
     \ rep = 0; rep < 1000 && ok; rep++) {\n        int n = rng() % 6 + 1, m = rng()\
     \ % 9;\n        Graph<int> graph(n);\n        for (int i = 0; i < m; i++) graph.add_edge(rng()\
     \ % n, rng() % n, rng() % 10);\n        auto es = graph.edges();\n        auto\
-    \ comps = connected_components(graph);\n        int need = n - (int)comps.size();\
+    \ comps = connected_components(graph);\n        int need = n - static_cast<int>(comps.size());\
     \  // \u5168\u57DF\u68EE\u306E\u8FBA\u306E\u672C\u6570\n        int best = -1;\n\
     \        for (int mask = 0; mask < (1 << m); mask++) {\n            if (__builtin_popcount(mask)\
     \ != need) continue;\n            UnionFind uf(n);\n            bool forest =\
@@ -711,11 +711,11 @@ data:
     \ es[i].dst)) forest = false;\n                cost += es[i].cost;\n         \
     \   }\n            if (forest && (best == -1 || cost < best)) best = cost;\n \
     \       }\n        auto mst = minimum_spanning_tree(graph);\n        if (mst.cost\
-    \ != best || (int)mst.edges.size() != need) ok = false;\n        UnionFind uf(n);\n\
-    \        int sum = 0;\n        for (const auto& e : mst.edges) {\n           \
-    \ if (!uf.merge(e.src, e.dst)) ok = false;\n            sum += e.cost;\n     \
-    \   }\n        if (sum != mst.cost) ok = false;\n    }\n\n    if (ok) std::cout\
-    \ << \"Hello World\" << std::endl;\n}\n"
+    \ != best || static_cast<int>(mst.edges.size()) != need) ok = false;\n       \
+    \ UnionFind uf(n);\n        int sum = 0;\n        for (const auto& e : mst.edges)\
+    \ {\n            if (!uf.merge(e.src, e.dst)) ok = false;\n            sum +=\
+    \ e.cost;\n        }\n        if (sum != mst.cost) ok = false;\n    }\n\n    if\
+    \ (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/data_structures/unionfind.hpp
   - src/graph/graph_util.hpp
@@ -723,7 +723,7 @@ data:
   isVerificationFile: true
   path: test/unittest/graph-util.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/graph-util.test.cpp

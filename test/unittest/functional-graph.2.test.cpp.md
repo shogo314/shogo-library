@@ -122,17 +122,17 @@ data:
     \        for (int padding : {-1, 0}) {\n            std::string input;\n     \
     \       for (int v : g) input += std::to_string(v - padding) + \" \";\n      \
     \      std::istringstream iss(input);\n            std::cin.rdbuf(iss.rdbuf());\n\
-    \            FunctionalGraph fg(n);\n            if (fg.n != n || (int)fg.g.size()\
+    \            FunctionalGraph fg(n);\n            if (fg.n != n || static_cast<int>(fg.g.size())\
     \ != n) ok = false;\n            if (padding == -1)\n                fg.read();\n\
     \            else\n                fg.read(padding);\n            std::cin.rdbuf(original);\n\
     \n            if (fg.g != std::vector<long long>(g.begin(), g.end())) ok = false;\n\
     \            for (int x = 0; x < n; x++) {\n                if (fg.is_cycle[x]\
     \ != expected.is_cycle[x]) ok = false;\n                if (fg.hopable(x) != expected.hopable(x))\
-    \ ok = false;\n                for (long long k : {0LL, 1LL, (long long)n, (long\
-    \ long)(rng() % 1000000000000LL)}) {\n                    if (fg.hop(x, k) !=\
-    \ expected.hop(x, k)) ok = false;\n                }\n            }\n        }\n\
-    \    }\n    std::cin.rdbuf(original);\n    if (ok) std::cout << \"Hello World\"\
-    \ << std::endl;\n}\n"
+    \ ok = false;\n                for (long long k : {0LL, 1LL, static_cast<long\
+    \ long>(n), static_cast<long long>(rng() % 1000000000000LL)}) {\n            \
+    \        if (fg.hop(x, k) != expected.hop(x, k)) ok = false;\n               \
+    \ }\n            }\n        }\n    }\n    std::cin.rdbuf(original);\n    if (ok)\
+    \ std::cout << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// FunctionalGraph \u306E\u30C7\u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\
     \u30E9\u30AF\u30BF\u3001\u9802\u70B9\u6570\u3092\u6E21\u3059\u30B3\u30F3\u30B9\
@@ -153,23 +153,23 @@ data:
     \u8A66\u3059\n        for (int padding : {-1, 0}) {\n            std::string input;\n\
     \            for (int v : g) input += std::to_string(v - padding) + \" \";\n \
     \           std::istringstream iss(input);\n            std::cin.rdbuf(iss.rdbuf());\n\
-    \            FunctionalGraph fg(n);\n            if (fg.n != n || (int)fg.g.size()\
+    \            FunctionalGraph fg(n);\n            if (fg.n != n || static_cast<int>(fg.g.size())\
     \ != n) ok = false;\n            if (padding == -1)\n                fg.read();\n\
     \            else\n                fg.read(padding);\n            std::cin.rdbuf(original);\n\
     \n            if (fg.g != std::vector<long long>(g.begin(), g.end())) ok = false;\n\
     \            for (int x = 0; x < n; x++) {\n                if (fg.is_cycle[x]\
     \ != expected.is_cycle[x]) ok = false;\n                if (fg.hopable(x) != expected.hopable(x))\
-    \ ok = false;\n                for (long long k : {0LL, 1LL, (long long)n, (long\
-    \ long)(rng() % 1000000000000LL)}) {\n                    if (fg.hop(x, k) !=\
-    \ expected.hop(x, k)) ok = false;\n                }\n            }\n        }\n\
-    \    }\n    std::cin.rdbuf(original);\n    if (ok) std::cout << \"Hello World\"\
-    \ << std::endl;\n}\n"
+    \ ok = false;\n                for (long long k : {0LL, 1LL, static_cast<long\
+    \ long>(n), static_cast<long long>(rng() % 1000000000000LL)}) {\n            \
+    \        if (fg.hop(x, k) != expected.hop(x, k)) ok = false;\n               \
+    \ }\n            }\n        }\n    }\n    std::cin.rdbuf(original);\n    if (ok)\
+    \ std::cout << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/graph/functional-graph.hpp
   isVerificationFile: true
   path: test/unittest/functional-graph.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/functional-graph.2.test.cpp

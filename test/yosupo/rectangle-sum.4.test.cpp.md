@@ -473,10 +473,10 @@ data:
     \ XYW.end());\n    std::vector<int> xs(N), ys(N);\n    for (int i = 0; i < N;\
     \ i++) {\n        xs[i] = XYW[i][0];\n        ys[i] = XYW[i][1];\n    }\n    std::sort(ys.begin(),\
     \ ys.end());\n    ys.erase(std::unique(ys.begin(), ys.end()), ys.end());\n   \
-    \ auto y_index = [&](int y) { return int(std::lower_bound(ys.begin(), ys.end(),\
-    \ y) - ys.begin()); };\n    // seg[i] \u306F x \u5EA7\u6A19\u306E\u5C0F\u3055\u3044\
-    \u65B9\u304B\u3089 i \u500B\u306E\u70B9\u3092\u3001y \u5EA7\u6A19\u306E\u4F4D\u7F6E\
-    \u306B\u8DB3\u3057\u305F\u7248\n    std::vector<PersistentSegTree<monoid::Sum<long\
+    \ auto y_index = [&](int y) { return static_cast<int>(std::lower_bound(ys.begin(),\
+    \ ys.end(), y) - ys.begin()); };\n    // seg[i] \u306F x \u5EA7\u6A19\u306E\u5C0F\
+    \u3055\u3044\u65B9\u304B\u3089 i \u500B\u306E\u70B9\u3092\u3001y \u5EA7\u6A19\u306E\
+    \u4F4D\u7F6E\u306B\u8DB3\u3057\u305F\u7248\n    std::vector<PersistentSegTree<monoid::Sum<long\
     \ long>>> seg(N + 1);\n    seg[0] = PersistentSegTree<monoid::Sum<long long>>(ys.size());\n\
     \    for (int i = 0; i < N; i++) {\n        seg[i + 1] = seg[i].apply(y_index(XYW[i][1]),\
     \ XYW[i][2]);\n    }\n    while (Q--) {\n        int L, D, R, U;\n        std::cin\
@@ -492,7 +492,7 @@ data:
     \    std::sort(XYW.begin(), XYW.end());\n    std::vector<int> xs(N), ys(N);\n\
     \    for (int i = 0; i < N; i++) {\n        xs[i] = XYW[i][0];\n        ys[i]\
     \ = XYW[i][1];\n    }\n    std::sort(ys.begin(), ys.end());\n    ys.erase(std::unique(ys.begin(),\
-    \ ys.end()), ys.end());\n    auto y_index = [&](int y) { return int(std::lower_bound(ys.begin(),\
+    \ ys.end()), ys.end());\n    auto y_index = [&](int y) { return static_cast<int>(std::lower_bound(ys.begin(),\
     \ ys.end(), y) - ys.begin()); };\n    // seg[i] \u306F x \u5EA7\u6A19\u306E\u5C0F\
     \u3055\u3044\u65B9\u304B\u3089 i \u500B\u306E\u70B9\u3092\u3001y \u5EA7\u6A19\u306E\
     \u4F4D\u7F6E\u306B\u8DB3\u3057\u305F\u7248\n    std::vector<PersistentSegTree<monoid::Sum<long\
@@ -509,7 +509,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/rectangle-sum.4.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 12:03:10+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/rectangle-sum.4.test.cpp

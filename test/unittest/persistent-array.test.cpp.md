@@ -139,21 +139,21 @@ data:
     \                if (arr[ver].get(k) != naive[ver][k] || arr[ver][k] != naive[ver][k])\
     \ ok = false;\n            }\n        }\n        // \u3059\u3079\u3066\u306E\u7248\
     \u304C\u3001\u4F5C\u3063\u305F\u3068\u304D\u306E\u5185\u5BB9\u306E\u307E\u307E\
-    \u304B\n        for (int i = 0; i < int(arr.size()); i++) {\n            if (arr[i].size()\
-    \ != n) ok = false;\n            if (arr[i].to_vector() != naive[i]) ok = false;\n\
-    \        }\n        std::ostringstream os, expect;\n        os << arr.back();\n\
-    \        for (int i = 0; i < n; i++) expect << (i ? \" \" : \"\") << naive.back()[i];\n\
-    \        if (os.str() != expect.str()) ok = false;\n    }\n\n    // \u8981\u7D20\
-    \u6570\u304C\u5927\u304D\u304F\u3066\u3082\u540C\u3058\u5024\u306E\u6728\u306F\
-    \ O(log n) \u3067\u4F5C\u308C\u308B\n    {\n        PersistentArray<int> big(1000000000,\
-    \ 7);\n        auto b1 = big.set(123456789, 1);\n        if (big[123456789] !=\
-    \ 7 || b1[123456789] != 1 || b1[123456788] != 7 || b1.size() != 1000000000) ok\
-    \ = false;\n        auto b2 = big.set(5, 0).copy(b1, 0, 1000000000);\n       \
-    \ if (b2[5] != 7 || b2[123456789] != 1) ok = false;\n        PersistentArray<int>\
-    \ empty;\n        if (empty.size() != 0 || !empty.to_vector().empty()) ok = false;\n\
-    \        PersistentArray<int> empty2(std::vector<int>{});\n        if (empty2.size()\
-    \ != 0 || !empty2.to_vector().empty()) ok = false;\n    }\n\n    if (ok) std::cout\
-    \ << \"Hello World\" << std::endl;\n}\n"
+    \u304B\n        for (int i = 0; i < static_cast<int>(arr.size()); i++) {\n   \
+    \         if (arr[i].size() != n) ok = false;\n            if (arr[i].to_vector()\
+    \ != naive[i]) ok = false;\n        }\n        std::ostringstream os, expect;\n\
+    \        os << arr.back();\n        for (int i = 0; i < n; i++) expect << (i ?\
+    \ \" \" : \"\") << naive.back()[i];\n        if (os.str() != expect.str()) ok\
+    \ = false;\n    }\n\n    // \u8981\u7D20\u6570\u304C\u5927\u304D\u304F\u3066\u3082\
+    \u540C\u3058\u5024\u306E\u6728\u306F O(log n) \u3067\u4F5C\u308C\u308B\n    {\n\
+    \        PersistentArray<int> big(1000000000, 7);\n        auto b1 = big.set(123456789,\
+    \ 1);\n        if (big[123456789] != 7 || b1[123456789] != 1 || b1[123456788]\
+    \ != 7 || b1.size() != 1000000000) ok = false;\n        auto b2 = big.set(5, 0).copy(b1,\
+    \ 0, 1000000000);\n        if (b2[5] != 7 || b2[123456789] != 1) ok = false;\n\
+    \        PersistentArray<int> empty;\n        if (empty.size() != 0 || !empty.to_vector().empty())\
+    \ ok = false;\n        PersistentArray<int> empty2(std::vector<int>{});\n    \
+    \    if (empty2.size() != 0 || !empty2.to_vector().empty()) ok = false;\n    }\n\
+    \n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// PersistentArray \u3092\u611A\u76F4\u306A\u5B9F\u88C5 (\u7248\u3054\u3068\
     \u306B\u914D\u5217\u3092\u6301\u3064) \u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\
@@ -186,27 +186,27 @@ data:
     \                if (arr[ver].get(k) != naive[ver][k] || arr[ver][k] != naive[ver][k])\
     \ ok = false;\n            }\n        }\n        // \u3059\u3079\u3066\u306E\u7248\
     \u304C\u3001\u4F5C\u3063\u305F\u3068\u304D\u306E\u5185\u5BB9\u306E\u307E\u307E\
-    \u304B\n        for (int i = 0; i < int(arr.size()); i++) {\n            if (arr[i].size()\
-    \ != n) ok = false;\n            if (arr[i].to_vector() != naive[i]) ok = false;\n\
-    \        }\n        std::ostringstream os, expect;\n        os << arr.back();\n\
-    \        for (int i = 0; i < n; i++) expect << (i ? \" \" : \"\") << naive.back()[i];\n\
-    \        if (os.str() != expect.str()) ok = false;\n    }\n\n    // \u8981\u7D20\
-    \u6570\u304C\u5927\u304D\u304F\u3066\u3082\u540C\u3058\u5024\u306E\u6728\u306F\
-    \ O(log n) \u3067\u4F5C\u308C\u308B\n    {\n        PersistentArray<int> big(1000000000,\
-    \ 7);\n        auto b1 = big.set(123456789, 1);\n        if (big[123456789] !=\
-    \ 7 || b1[123456789] != 1 || b1[123456788] != 7 || b1.size() != 1000000000) ok\
-    \ = false;\n        auto b2 = big.set(5, 0).copy(b1, 0, 1000000000);\n       \
-    \ if (b2[5] != 7 || b2[123456789] != 1) ok = false;\n        PersistentArray<int>\
-    \ empty;\n        if (empty.size() != 0 || !empty.to_vector().empty()) ok = false;\n\
-    \        PersistentArray<int> empty2(std::vector<int>{});\n        if (empty2.size()\
-    \ != 0 || !empty2.to_vector().empty()) ok = false;\n    }\n\n    if (ok) std::cout\
-    \ << \"Hello World\" << std::endl;\n}\n"
+    \u304B\n        for (int i = 0; i < static_cast<int>(arr.size()); i++) {\n   \
+    \         if (arr[i].size() != n) ok = false;\n            if (arr[i].to_vector()\
+    \ != naive[i]) ok = false;\n        }\n        std::ostringstream os, expect;\n\
+    \        os << arr.back();\n        for (int i = 0; i < n; i++) expect << (i ?\
+    \ \" \" : \"\") << naive.back()[i];\n        if (os.str() != expect.str()) ok\
+    \ = false;\n    }\n\n    // \u8981\u7D20\u6570\u304C\u5927\u304D\u304F\u3066\u3082\
+    \u540C\u3058\u5024\u306E\u6728\u306F O(log n) \u3067\u4F5C\u308C\u308B\n    {\n\
+    \        PersistentArray<int> big(1000000000, 7);\n        auto b1 = big.set(123456789,\
+    \ 1);\n        if (big[123456789] != 7 || b1[123456789] != 1 || b1[123456788]\
+    \ != 7 || b1.size() != 1000000000) ok = false;\n        auto b2 = big.set(5, 0).copy(b1,\
+    \ 0, 1000000000);\n        if (b2[5] != 7 || b2[123456789] != 1) ok = false;\n\
+    \        PersistentArray<int> empty;\n        if (empty.size() != 0 || !empty.to_vector().empty())\
+    \ ok = false;\n        PersistentArray<int> empty2(std::vector<int>{});\n    \
+    \    if (empty2.size() != 0 || !empty2.to_vector().empty()) ok = false;\n    }\n\
+    \n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/data_structures/persistent-array.hpp
   isVerificationFile: true
   path: test/unittest/persistent-array.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/persistent-array.test.cpp

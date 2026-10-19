@@ -475,14 +475,15 @@ data:
     \ a1[i] * b1[i];\n        c2[i] = a2[i] * b2[i];\n    }\n    internal_convolution::trans(c0,\
     \ true), internal_convolution::trans(c1, true), internal_convolution::trans(c2,\
     \ true);\n    static const long long mod0 = internal_convolution::MOD0, mod01\
-    \ = mod0 * internal_convolution::MOD1;\n    static const __int128_t mod012 = (__int128_t)mod01\
+    \ = mod0 * internal_convolution::MOD1;\n    static const __int128_t mod012 = static_cast<__int128_t>(mod01)\
     \ * internal_convolution::MOD2;\n    std::vector<long long> res(N + M - 1);\n\
     \    for (int i = 0; i < N + M - 1; ++i) {\n        int y0 = c0[i].val();\n  \
     \      int y1 = (internal_convolution::imod0 * (c1[i] - y0)).val();\n        int\
     \ y2 = (internal_convolution::imod01 * (c2[i] - y0) - internal_convolution::imod1\
-    \ * y1).val();\n        __int128_t tmp = (__int128_t)mod01 * y2 + (__int128_t)mod0\
-    \ * y1 + y0;\n        if (tmp < (mod012 >> 1))\n            res[i] = tmp;\n  \
-    \      else\n            res[i] = tmp - mod012;\n    }\n    return res;\n}\n"
+    \ * y1).val();\n        __int128_t tmp = static_cast<__int128_t>(mod01) * y2 +\
+    \ static_cast<__int128_t>(mod0) * y1 + y0;\n        if (tmp < (mod012 >> 1))\n\
+    \            res[i] = tmp;\n        else\n            res[i] = tmp - mod012;\n\
+    \    }\n    return res;\n}\n"
   code: "#pragma once\n\n/**\n * @file convolution.hpp\n * @brief \u7573\u307F\u8FBC\
     \u307F (NTT)\n */\n\n#include <algorithm>\n#include <utility>\n#include <vector>\n\
     \n#include \"modint.hpp\"\n#include \"modular-arithmetic.hpp\"\n\n/**\n * @brief\
@@ -578,14 +579,15 @@ data:
     \ a1[i] * b1[i];\n        c2[i] = a2[i] * b2[i];\n    }\n    internal_convolution::trans(c0,\
     \ true), internal_convolution::trans(c1, true), internal_convolution::trans(c2,\
     \ true);\n    static const long long mod0 = internal_convolution::MOD0, mod01\
-    \ = mod0 * internal_convolution::MOD1;\n    static const __int128_t mod012 = (__int128_t)mod01\
+    \ = mod0 * internal_convolution::MOD1;\n    static const __int128_t mod012 = static_cast<__int128_t>(mod01)\
     \ * internal_convolution::MOD2;\n    std::vector<long long> res(N + M - 1);\n\
     \    for (int i = 0; i < N + M - 1; ++i) {\n        int y0 = c0[i].val();\n  \
     \      int y1 = (internal_convolution::imod0 * (c1[i] - y0)).val();\n        int\
     \ y2 = (internal_convolution::imod01 * (c2[i] - y0) - internal_convolution::imod1\
-    \ * y1).val();\n        __int128_t tmp = (__int128_t)mod01 * y2 + (__int128_t)mod0\
-    \ * y1 + y0;\n        if (tmp < (mod012 >> 1))\n            res[i] = tmp;\n  \
-    \      else\n            res[i] = tmp - mod012;\n    }\n    return res;\n}\n"
+    \ * y1).val();\n        __int128_t tmp = static_cast<__int128_t>(mod01) * y2 +\
+    \ static_cast<__int128_t>(mod0) * y1 + y0;\n        if (tmp < (mod012 >> 1))\n\
+    \            res[i] = tmp;\n        else\n            res[i] = tmp - mod012;\n\
+    \    }\n    return res;\n}\n"
   dependsOn:
   - src/math/modint.hpp
   - src/utility/traits.hpp
@@ -595,7 +597,7 @@ data:
   requiredBy:
   - src/dp/subset-sum-count.hpp
   - src/math/fps.hpp
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/subset-sum.test.cpp

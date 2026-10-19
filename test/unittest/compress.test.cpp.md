@@ -71,38 +71,7 @@ data:
     \n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int\
     \ rep = 0; rep < 1000 && ok; rep++) {\n        int n = rng() % 20;\n        int\
     \ range = rng() % 30 + 1;\n        std::vector<int> a(n);\n        for (auto&\
-    \ v : a) v = (int)(rng() % range) - range / 2;\n\n        // \u30B3\u30F3\u30B9\
-    \u30C8\u30E9\u30AF\u30BF\u3067\u4F5C\u308B\u5834\u5408\u3068\u3001add \u3092\u6DF7\
-    \u305C\u3066\u4F5C\u308B\u5834\u5408\n        Compress<int> c1(a);\n        Compress<int>\
-    \ c2;\n        int half = n / 2;\n        for (int i = 0; i < half; i++) c2.add(a[i]);\n\
-    \        c2.add(std::vector<int>(a.begin() + half, a.end()));\n        c2.build();\n\
-    \n        std::vector<int> xs = a;\n        std::sort(xs.begin(), xs.end());\n\
-    \        xs.erase(std::unique(xs.begin(), xs.end()), xs.end());\n        int m\
-    \ = xs.size();\n\n        for (const Compress<int>* c : {&c1, &c2}) {\n      \
-    \      ok = ok && c->size() == m && c->values() == xs;\n            for (int i\
-    \ = 0; i < m; i++) ok = ok && (*c)[i] == xs[i] && c->id(xs[i]) == i;\n       \
-    \     for (int x = -range; x <= range; x++) {\n                int lo = 0, up\
-    \ = 0;\n                while (lo < m && xs[lo] < x) lo++;\n                while\
-    \ (up < m && xs[up] <= x) up++;\n                bool has = std::count(a.begin(),\
-    \ a.end(), x) > 0;\n                ok = ok && c->bisect_left(x) == lo && c->bisect_right(x)\
-    \ == up && c->contains(x) == has;\n            }\n            std::vector<long\
-    \ long> ids = c->ids(a);\n            for (int i = 0; i < n; i++) ok = ok && xs[ids[i]]\
-    \ == a[i];\n        }\n    }\n\n    // \u4F8B: \u6587\u5B57\u5217\u3082\u5727\u7E2E\
-    \u3067\u304D\u308B\n    Compress<std::string> cs(std::vector<std::string>{\"b\"\
-    , \"a\", \"c\", \"a\"});\n    ok = ok && cs.size() == 3 && cs.id(\"c\") == 2 &&\
-    \ cs[0] == \"a\" && !cs.contains(\"d\") && cs.bisect_left(\"bb\") == 2;\n\n  \
-    \  if (ok)\n        std::cout << \"Hello World\" << std::endl;\n    else\n   \
-    \     std::cerr << \"failed\" << std::endl;\n}\n"
-  code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
-    \n\n// Compress \u3092\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u30E9\u30F3\u30C0\u30E0\
-    \u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\
-    \u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\
-    \u51FA\u529B\u3059\u308B\n\n#include \"../../src/utility/compress.hpp\"\n\n#include\
-    \ <algorithm>\n#include <iostream>\n#include <random>\n#include <string>\n#include\
-    \ <vector>\n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n\
-    \    for (int rep = 0; rep < 1000 && ok; rep++) {\n        int n = rng() % 20;\n\
-    \        int range = rng() % 30 + 1;\n        std::vector<int> a(n);\n       \
-    \ for (auto& v : a) v = (int)(rng() % range) - range / 2;\n\n        // \u30B3\
+    \ v : a) v = static_cast<int>(rng() % range) - range / 2;\n\n        // \u30B3\
     \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u4F5C\u308B\u5834\u5408\u3068\u3001\
     add \u3092\u6DF7\u305C\u3066\u4F5C\u308B\u5834\u5408\n        Compress<int> c1(a);\n\
     \        Compress<int> c2;\n        int half = n / 2;\n        for (int i = 0;\
@@ -124,12 +93,43 @@ data:
     \ == 3 && cs.id(\"c\") == 2 && cs[0] == \"a\" && !cs.contains(\"d\") && cs.bisect_left(\"\
     bb\") == 2;\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
     \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
+  code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
+    \n\n// Compress \u3092\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u30E9\u30F3\u30C0\u30E0\
+    \u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\
+    \u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\
+    \u51FA\u529B\u3059\u308B\n\n#include \"../../src/utility/compress.hpp\"\n\n#include\
+    \ <algorithm>\n#include <iostream>\n#include <random>\n#include <string>\n#include\
+    \ <vector>\n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n\
+    \    for (int rep = 0; rep < 1000 && ok; rep++) {\n        int n = rng() % 20;\n\
+    \        int range = rng() % 30 + 1;\n        std::vector<int> a(n);\n       \
+    \ for (auto& v : a) v = static_cast<int>(rng() % range) - range / 2;\n\n     \
+    \   // \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u4F5C\u308B\u5834\u5408\
+    \u3068\u3001add \u3092\u6DF7\u305C\u3066\u4F5C\u308B\u5834\u5408\n        Compress<int>\
+    \ c1(a);\n        Compress<int> c2;\n        int half = n / 2;\n        for (int\
+    \ i = 0; i < half; i++) c2.add(a[i]);\n        c2.add(std::vector<int>(a.begin()\
+    \ + half, a.end()));\n        c2.build();\n\n        std::vector<int> xs = a;\n\
+    \        std::sort(xs.begin(), xs.end());\n        xs.erase(std::unique(xs.begin(),\
+    \ xs.end()), xs.end());\n        int m = xs.size();\n\n        for (const Compress<int>*\
+    \ c : {&c1, &c2}) {\n            ok = ok && c->size() == m && c->values() == xs;\n\
+    \            for (int i = 0; i < m; i++) ok = ok && (*c)[i] == xs[i] && c->id(xs[i])\
+    \ == i;\n            for (int x = -range; x <= range; x++) {\n               \
+    \ int lo = 0, up = 0;\n                while (lo < m && xs[lo] < x) lo++;\n  \
+    \              while (up < m && xs[up] <= x) up++;\n                bool has =\
+    \ std::count(a.begin(), a.end(), x) > 0;\n                ok = ok && c->bisect_left(x)\
+    \ == lo && c->bisect_right(x) == up && c->contains(x) == has;\n            }\n\
+    \            std::vector<long long> ids = c->ids(a);\n            for (int i =\
+    \ 0; i < n; i++) ok = ok && xs[ids[i]] == a[i];\n        }\n    }\n\n    // \u4F8B\
+    : \u6587\u5B57\u5217\u3082\u5727\u7E2E\u3067\u304D\u308B\n    Compress<std::string>\
+    \ cs(std::vector<std::string>{\"b\", \"a\", \"c\", \"a\"});\n    ok = ok && cs.size()\
+    \ == 3 && cs.id(\"c\") == 2 && cs[0] == \"a\" && !cs.contains(\"d\") && cs.bisect_left(\"\
+    bb\") == 2;\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
+    \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/utility/compress.hpp
   isVerificationFile: true
   path: test/unittest/compress.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/compress.test.cpp

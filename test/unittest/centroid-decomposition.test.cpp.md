@@ -522,8 +522,8 @@ data:
     \ p = rep % 3 == 0 ? v - 1 : rep % 3 == 1 ? 0\n                              \
     \                          : rng() % v;\n            tree.add_edge(p, v, rng()\
     \ % 10 + 1);\n        }\n        CentroidDecomposition cd(tree);\n        check(cd.size()\
-    \ == n, \"size\");\n        const auto& ord = cd.order();\n        check((long\
-    \ long)ord.size() == n, \"order \u306E\u9577\u3055\");\n        std::vector<int>\
+    \ == n, \"size\");\n        const auto& ord = cd.order();\n        check(static_cast<long\
+    \ long>(ord.size()) == n, \"order \u306E\u9577\u3055\");\n        std::vector<int>\
     \ pos(n, -1);\n        for (int i = 0; i < n; i++) pos[ord[i]] = i;\n        check(std::count(pos.begin(),\
     \ pos.end(), -1) == 0, \"order \u306F\u3059\u3079\u3066\u306E\u9802\u70B9\u3092\
     \u542B\u3080\");\n        check(cd.parent(cd.root()) == -1 && cd.level(cd.root())\
@@ -531,7 +531,7 @@ data:
     \u8DDD\u96E2 (\u91CD\u307F\u3064\u304D) \u3092\u5168\u70B9\u304B\u3089\u6C42\u3081\
     \u308B\n        std::vector<std::vector<long long>> dist(n, std::vector<long long>(n,\
     \ -1));\n        for (int s = 0; s < n; s++) {\n            std::vector<int> q\
-    \ = {s};\n            dist[s][s] = 0;\n            for (int i = 0; i < (int)q.size();\
+    \ = {s};\n            dist[s][s] = 0;\n            for (int i = 0; i < static_cast<int>(q.size());\
     \ i++) {\n                for (const auto& e : tree[q[i]]) {\n               \
     \     if (dist[s][e.dst] == -1) dist[s][e.dst] = dist[s][q[i]] + e.cost, q.push_back(e.dst);\n\
     \                }\n            }\n        }\n        std::map<long long, long\
@@ -542,7 +542,7 @@ data:
     \ level \u3068 order\");\n            // c \u306E\u6210\u5206: c \u304B\u3089\
     \ level \u304C c \u3088\u308A\u5927\u304D\u3044\u9802\u70B9\u3092\u305F\u3069\u308B\
     \n            std::vector<int> comp = {c};\n            std::vector<bool> in(n,\
-    \ false);\n            in[c] = true;\n            for (int i = 0; i < (int)comp.size();\
+    \ false);\n            in[c] = true;\n            for (int i = 0; i < static_cast<int>(comp.size());\
     \ i++) {\n                for (const auto& e : tree[comp[i]]) {\n            \
     \        if (!in[e.dst] && cd.level(e.dst) > cd.level(c)) in[e.dst] = true, comp.push_back(e.dst);\n\
     \                }\n            }\n            // \u6210\u5206\u306E\u307B\u304B\
@@ -558,8 +558,8 @@ data:
     \ * 2 <= comp.size(), \"\u91CD\u5FC3 (\u90E8\u5206\u6728\u306F\u6210\u5206\u306E\
     \u534A\u5206\u4EE5\u4E0B)\");\n                covered += sub.size();\n      \
     \          for (auto [v, d] : sub) check(in[v] && v != c && d == dist[c][v], \"\
-    subtrees \u306E\u8DDD\u96E2\");\n            }\n            check(covered == (long\
-    \ long)comp.size(), \"subtrees \u306F\u6210\u5206\u5168\u4F53\u3092\u8986\u3046\
+    subtrees \u306E\u8DDD\u96E2\");\n            }\n            check(covered == static_cast<long\
+    \ long>(comp.size()), \"subtrees \u306F\u6210\u5206\u5168\u4F53\u3092\u8986\u3046\
     \");\n            // c \u3092\u901A\u308B\u30D1\u30B9: c \u3068\u90E8\u5206\u6728\
     \u306E\u9802\u70B9\u3001\u9055\u3046\u90E8\u5206\u6728\u306E\u9802\u70B9\u3069\
     \u3046\u3057\n            for (size_t i = 0; i < subs.size(); i++) {\n       \
@@ -599,16 +599,16 @@ data:
     \                                                     : rng() % v;\n         \
     \   tree.add_edge(p, v, rng() % 10 + 1);\n        }\n        CentroidDecomposition\
     \ cd(tree);\n        check(cd.size() == n, \"size\");\n        const auto& ord\
-    \ = cd.order();\n        check((long long)ord.size() == n, \"order \u306E\u9577\
-    \u3055\");\n        std::vector<int> pos(n, -1);\n        for (int i = 0; i <\
-    \ n; i++) pos[ord[i]] = i;\n        check(std::count(pos.begin(), pos.end(), -1)\
-    \ == 0, \"order \u306F\u3059\u3079\u3066\u306E\u9802\u70B9\u3092\u542B\u3080\"\
-    );\n        check(cd.parent(cd.root()) == -1 && cd.level(cd.root()) == 0 && ord[0]\
-    \ == cd.root(), \"root\");\n\n        // \u9802\u70B9\u9593\u306E\u8DDD\u96E2\
-    \ (\u91CD\u307F\u3064\u304D) \u3092\u5168\u70B9\u304B\u3089\u6C42\u3081\u308B\n\
-    \        std::vector<std::vector<long long>> dist(n, std::vector<long long>(n,\
+    \ = cd.order();\n        check(static_cast<long long>(ord.size()) == n, \"order\
+    \ \u306E\u9577\u3055\");\n        std::vector<int> pos(n, -1);\n        for (int\
+    \ i = 0; i < n; i++) pos[ord[i]] = i;\n        check(std::count(pos.begin(), pos.end(),\
+    \ -1) == 0, \"order \u306F\u3059\u3079\u3066\u306E\u9802\u70B9\u3092\u542B\u3080\
+    \");\n        check(cd.parent(cd.root()) == -1 && cd.level(cd.root()) == 0 &&\
+    \ ord[0] == cd.root(), \"root\");\n\n        // \u9802\u70B9\u9593\u306E\u8DDD\
+    \u96E2 (\u91CD\u307F\u3064\u304D) \u3092\u5168\u70B9\u304B\u3089\u6C42\u3081\u308B\
+    \n        std::vector<std::vector<long long>> dist(n, std::vector<long long>(n,\
     \ -1));\n        for (int s = 0; s < n; s++) {\n            std::vector<int> q\
-    \ = {s};\n            dist[s][s] = 0;\n            for (int i = 0; i < (int)q.size();\
+    \ = {s};\n            dist[s][s] = 0;\n            for (int i = 0; i < static_cast<int>(q.size());\
     \ i++) {\n                for (const auto& e : tree[q[i]]) {\n               \
     \     if (dist[s][e.dst] == -1) dist[s][e.dst] = dist[s][q[i]] + e.cost, q.push_back(e.dst);\n\
     \                }\n            }\n        }\n        std::map<long long, long\
@@ -619,7 +619,7 @@ data:
     \ level \u3068 order\");\n            // c \u306E\u6210\u5206: c \u304B\u3089\
     \ level \u304C c \u3088\u308A\u5927\u304D\u3044\u9802\u70B9\u3092\u305F\u3069\u308B\
     \n            std::vector<int> comp = {c};\n            std::vector<bool> in(n,\
-    \ false);\n            in[c] = true;\n            for (int i = 0; i < (int)comp.size();\
+    \ false);\n            in[c] = true;\n            for (int i = 0; i < static_cast<int>(comp.size());\
     \ i++) {\n                for (const auto& e : tree[comp[i]]) {\n            \
     \        if (!in[e.dst] && cd.level(e.dst) > cd.level(c)) in[e.dst] = true, comp.push_back(e.dst);\n\
     \                }\n            }\n            // \u6210\u5206\u306E\u307B\u304B\
@@ -635,8 +635,8 @@ data:
     \ * 2 <= comp.size(), \"\u91CD\u5FC3 (\u90E8\u5206\u6728\u306F\u6210\u5206\u306E\
     \u534A\u5206\u4EE5\u4E0B)\");\n                covered += sub.size();\n      \
     \          for (auto [v, d] : sub) check(in[v] && v != c && d == dist[c][v], \"\
-    subtrees \u306E\u8DDD\u96E2\");\n            }\n            check(covered == (long\
-    \ long)comp.size(), \"subtrees \u306F\u6210\u5206\u5168\u4F53\u3092\u8986\u3046\
+    subtrees \u306E\u8DDD\u96E2\");\n            }\n            check(covered == static_cast<long\
+    \ long>(comp.size()), \"subtrees \u306F\u6210\u5206\u5168\u4F53\u3092\u8986\u3046\
     \");\n            // c \u3092\u901A\u308B\u30D1\u30B9: c \u3068\u90E8\u5206\u6728\
     \u306E\u9802\u70B9\u3001\u9055\u3046\u90E8\u5206\u6728\u306E\u9802\u70B9\u3069\
     \u3046\u3057\n            for (size_t i = 0; i < subs.size(); i++) {\n       \
@@ -658,7 +658,7 @@ data:
   isVerificationFile: true
   path: test/unittest/centroid-decomposition.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/centroid-decomposition.test.cpp

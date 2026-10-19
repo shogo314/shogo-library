@@ -720,21 +720,21 @@ data:
     \    for (auto& [l, d, r, u] : rect) {\n        std::cin >> l >> d >> r >> u;\n\
     \        ys.push_back(d);\n        ys.push_back(u);\n    }\n    std::sort(ys.begin(),\
     \ ys.end());\n    ys.erase(std::unique(ys.begin(), ys.end()), ys.end());\n   \
-    \ int m = (int)ys.size() - 1;\n    using A = acted_monoid::AddMinCount<int, long\
-    \ long>;\n    std::vector<A::S> init(m);\n    for (int i = 0; i < m; i++) init[i]\
-    \ = {0, ys[i + 1] - ys[i]};\n    LazySegTree<A> seg(init);\n    const long long\
-    \ total = ys.back() - ys.front();\n\n    // (x, \u52A0\u3048\u308B\u5024, y \u306E\
-    \u533A\u9593 [lo, hi))\n    std::vector<std::array<long long, 4>> events;\n  \
-    \  events.reserve(2 * n);\n    for (auto [l, d, r, u] : rect) {\n        long\
+    \ int m = static_cast<int>(ys.size()) - 1;\n    using A = acted_monoid::AddMinCount<int,\
+    \ long long>;\n    std::vector<A::S> init(m);\n    for (int i = 0; i < m; i++)\
+    \ init[i] = {0, ys[i + 1] - ys[i]};\n    LazySegTree<A> seg(init);\n    const\
+    \ long long total = ys.back() - ys.front();\n\n    // (x, \u52A0\u3048\u308B\u5024\
+    , y \u306E\u533A\u9593 [lo, hi))\n    std::vector<std::array<long long, 4>> events;\n\
+    \    events.reserve(2 * n);\n    for (auto [l, d, r, u] : rect) {\n        long\
     \ long lo = std::lower_bound(ys.begin(), ys.end(), d) - ys.begin();\n        long\
     \ long hi = std::lower_bound(ys.begin(), ys.end(), u) - ys.begin();\n        events.push_back({l,\
     \ 1, lo, hi});\n        events.push_back({r, -1, lo, hi});\n    }\n    std::sort(events.begin(),\
-    \ events.end());\n    long long ans = 0;\n    for (int i = 0; i < (int)events.size();\
-    \ i++) {\n        auto [x, v, lo, hi] = events[i];\n        seg.apply((int)lo,\
-    \ (int)hi, (int)v);\n        if (i + 1 < (int)events.size()) {\n            auto\
-    \ [mn, cnt] = seg.all_prod();\n            long long covered = total - (mn ==\
-    \ 0 ? cnt : 0);\n            ans += covered * (events[i + 1][0] - x);\n      \
-    \  }\n    }\n    std::cout << ans << '\\n';\n}\n"
+    \ events.end());\n    long long ans = 0;\n    for (int i = 0; i < static_cast<int>(events.size());\
+    \ i++) {\n        auto [x, v, lo, hi] = events[i];\n        seg.apply(static_cast<int>(lo),\
+    \ static_cast<int>(hi), static_cast<int>(v));\n        if (i + 1 < static_cast<int>(events.size()))\
+    \ {\n            auto [mn, cnt] = seg.all_prod();\n            long long covered\
+    \ = total - (mn == 0 ? cnt : 0);\n            ans += covered * (events[i + 1][0]\
+    \ - x);\n        }\n    }\n    std::cout << ans << '\\n';\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/area_of_union_of_rectangles\"\
     \n\n#include <algorithm>\n#include <array>\n#include <iostream>\n#include <vector>\n\
     \n#include \"../../src/data_structures/lazy-segtree.hpp\"\n\n// x \u65B9\u5411\
@@ -748,21 +748,21 @@ data:
     \    for (auto& [l, d, r, u] : rect) {\n        std::cin >> l >> d >> r >> u;\n\
     \        ys.push_back(d);\n        ys.push_back(u);\n    }\n    std::sort(ys.begin(),\
     \ ys.end());\n    ys.erase(std::unique(ys.begin(), ys.end()), ys.end());\n   \
-    \ int m = (int)ys.size() - 1;\n    using A = acted_monoid::AddMinCount<int, long\
-    \ long>;\n    std::vector<A::S> init(m);\n    for (int i = 0; i < m; i++) init[i]\
-    \ = {0, ys[i + 1] - ys[i]};\n    LazySegTree<A> seg(init);\n    const long long\
-    \ total = ys.back() - ys.front();\n\n    // (x, \u52A0\u3048\u308B\u5024, y \u306E\
-    \u533A\u9593 [lo, hi))\n    std::vector<std::array<long long, 4>> events;\n  \
-    \  events.reserve(2 * n);\n    for (auto [l, d, r, u] : rect) {\n        long\
+    \ int m = static_cast<int>(ys.size()) - 1;\n    using A = acted_monoid::AddMinCount<int,\
+    \ long long>;\n    std::vector<A::S> init(m);\n    for (int i = 0; i < m; i++)\
+    \ init[i] = {0, ys[i + 1] - ys[i]};\n    LazySegTree<A> seg(init);\n    const\
+    \ long long total = ys.back() - ys.front();\n\n    // (x, \u52A0\u3048\u308B\u5024\
+    , y \u306E\u533A\u9593 [lo, hi))\n    std::vector<std::array<long long, 4>> events;\n\
+    \    events.reserve(2 * n);\n    for (auto [l, d, r, u] : rect) {\n        long\
     \ long lo = std::lower_bound(ys.begin(), ys.end(), d) - ys.begin();\n        long\
     \ long hi = std::lower_bound(ys.begin(), ys.end(), u) - ys.begin();\n        events.push_back({l,\
     \ 1, lo, hi});\n        events.push_back({r, -1, lo, hi});\n    }\n    std::sort(events.begin(),\
-    \ events.end());\n    long long ans = 0;\n    for (int i = 0; i < (int)events.size();\
-    \ i++) {\n        auto [x, v, lo, hi] = events[i];\n        seg.apply((int)lo,\
-    \ (int)hi, (int)v);\n        if (i + 1 < (int)events.size()) {\n            auto\
-    \ [mn, cnt] = seg.all_prod();\n            long long covered = total - (mn ==\
-    \ 0 ? cnt : 0);\n            ans += covered * (events[i + 1][0] - x);\n      \
-    \  }\n    }\n    std::cout << ans << '\\n';\n}\n"
+    \ events.end());\n    long long ans = 0;\n    for (int i = 0; i < static_cast<int>(events.size());\
+    \ i++) {\n        auto [x, v, lo, hi] = events[i];\n        seg.apply(static_cast<int>(lo),\
+    \ static_cast<int>(hi), static_cast<int>(v));\n        if (i + 1 < static_cast<int>(events.size()))\
+    \ {\n            auto [mn, cnt] = seg.all_prod();\n            long long covered\
+    \ = total - (mn == 0 ? cnt : 0);\n            ans += covered * (events[i + 1][0]\
+    \ - x);\n        }\n    }\n    std::cout << ans << '\\n';\n}\n"
   dependsOn:
   - src/data_structures/lazy-segtree.hpp
   - src/algebra/acted-monoid.hpp
@@ -770,7 +770,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/area-of-union-of-rectangles.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 12:03:10+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/area-of-union-of-rectangles.1.test.cpp

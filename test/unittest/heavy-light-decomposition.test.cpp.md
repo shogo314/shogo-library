@@ -538,14 +538,14 @@ data:
     \            t.add_edge(perm[i], perm[p]);\n        }\n        HeavyLightDecomposition\
     \ hld(t, root);\n\n        // \u611A\u76F4: \u6839\u304B\u3089\u306E\u89AA\u3068\
     \u6DF1\u3055\n        std::vector<int> par(n, -1), dep(n, 0), bfs = {root};\n\
-    \        for (int i = 0; i < (int)bfs.size(); i++) {\n            int v = bfs[i];\n\
-    \            for (int u : g[v]) {\n                if (u == par[v]) continue;\n\
-    \                par[u] = v, dep[u] = dep[v] + 1;\n                bfs.push_back(u);\n\
-    \            }\n        }\n        auto naive_path = [&](int u, int v) {\n   \
-    \         std::vector<int> a, b;\n            while (u != v) {\n             \
-    \   if (dep[u] >= dep[v])\n                    a.push_back(u), u = par[u];\n \
-    \               else\n                    b.push_back(v), v = par[v];\n      \
-    \      }\n            a.push_back(u);\n            a.insert(a.end(), b.rbegin(),\
+    \        for (int i = 0; i < static_cast<int>(bfs.size()); i++) {\n          \
+    \  int v = bfs[i];\n            for (int u : g[v]) {\n                if (u ==\
+    \ par[v]) continue;\n                par[u] = v, dep[u] = dep[v] + 1;\n      \
+    \          bfs.push_back(u);\n            }\n        }\n        auto naive_path\
+    \ = [&](int u, int v) {\n            std::vector<int> a, b;\n            while\
+    \ (u != v) {\n                if (dep[u] >= dep[v])\n                    a.push_back(u),\
+    \ u = par[u];\n                else\n                    b.push_back(v), v = par[v];\n\
+    \            }\n            a.push_back(u);\n            a.insert(a.end(), b.rbegin(),\
     \ b.rend());\n            return a;\n        };\n\n        // index \u306F 0,\
     \ ..., n-1 \u306E\u4E26\u3079\u66FF\u3048\u3067\u3001vertex \u304C\u305D\u306E\
     \u9006\n        std::vector<bool> seen(n);\n        for (int v = 0; v < n; v++)\
@@ -606,14 +606,14 @@ data:
     \            t.add_edge(perm[i], perm[p]);\n        }\n        HeavyLightDecomposition\
     \ hld(t, root);\n\n        // \u611A\u76F4: \u6839\u304B\u3089\u306E\u89AA\u3068\
     \u6DF1\u3055\n        std::vector<int> par(n, -1), dep(n, 0), bfs = {root};\n\
-    \        for (int i = 0; i < (int)bfs.size(); i++) {\n            int v = bfs[i];\n\
-    \            for (int u : g[v]) {\n                if (u == par[v]) continue;\n\
-    \                par[u] = v, dep[u] = dep[v] + 1;\n                bfs.push_back(u);\n\
-    \            }\n        }\n        auto naive_path = [&](int u, int v) {\n   \
-    \         std::vector<int> a, b;\n            while (u != v) {\n             \
-    \   if (dep[u] >= dep[v])\n                    a.push_back(u), u = par[u];\n \
-    \               else\n                    b.push_back(v), v = par[v];\n      \
-    \      }\n            a.push_back(u);\n            a.insert(a.end(), b.rbegin(),\
+    \        for (int i = 0; i < static_cast<int>(bfs.size()); i++) {\n          \
+    \  int v = bfs[i];\n            for (int u : g[v]) {\n                if (u ==\
+    \ par[v]) continue;\n                par[u] = v, dep[u] = dep[v] + 1;\n      \
+    \          bfs.push_back(u);\n            }\n        }\n        auto naive_path\
+    \ = [&](int u, int v) {\n            std::vector<int> a, b;\n            while\
+    \ (u != v) {\n                if (dep[u] >= dep[v])\n                    a.push_back(u),\
+    \ u = par[u];\n                else\n                    b.push_back(v), v = par[v];\n\
+    \            }\n            a.push_back(u);\n            a.insert(a.end(), b.rbegin(),\
     \ b.rend());\n            return a;\n        };\n\n        // index \u306F 0,\
     \ ..., n-1 \u306E\u4E26\u3079\u66FF\u3048\u3067\u3001vertex \u304C\u305D\u306E\
     \u9006\n        std::vector<bool> seen(n);\n        for (int v = 0; v < n; v++)\
@@ -662,7 +662,7 @@ data:
   isVerificationFile: true
   path: test/unittest/heavy-light-decomposition.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/heavy-light-decomposition.test.cpp

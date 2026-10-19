@@ -436,56 +436,57 @@ data:
     \n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    using P\
     \ = Vector<double>;\n    using L = Vector<long long>;\n    auto near = [](double\
     \ a, double b) { return std::abs(a - b) < 1e-7; };\n    for (int rep = 0; rep\
-    \ < 20000 && ok; rep++) {\n        auto rnd = [&] { return (long long)(rng() %\
-    \ 11) - 5; };\n        L a(rnd(), rnd()), b(rnd(), rnd()), c(rnd(), rnd()), d(rnd(),\
-    \ rnd());\n        auto to_p = [](const L& l) { return P((double)l[0], (double)l[1]);\
-    \ };\n        P pa = to_p(a), pb = to_p(b), pc = to_p(c), pd = to_p(d);\n\n  \
-    \      // ccw: \u4E00\u76F4\u7DDA\u4E0A\u306E\u5834\u5408\u306F\u3001c \u304C\u76F4\
-    \u7DDA\u4E0A\u306E\u3069\u3053\u306B\u3042\u308B\u304B\u3067\u5206\u3051\u308B\
-    \n        if (a != b) {\n            int r = ccw(a, b, c);\n            long long\
-    \ cr = cross(b - a, c - a);\n            if (cr > 0) ok = ok && r == 1;\n    \
-    \        if (cr < 0) ok = ok && r == -1;\n            if (cr == 0) {\n       \
-    \         // a \u3092 0\u3001b \u3092 1 \u3068\u3057\u305F\u3068\u304D\u306E c\
-    \ \u306E\u4F4D\u7F6E t\n                long long t = dot(c - a, b - a), len =\
-    \ (b - a).squared_norm();\n                ok = ok && r == (t < 0 ? 2 : t > len\
-    \ ? -2\n                                                     : 0);\n         \
-    \   }\n            ok = ok && ccw(pa, pb, pc) == r;\n        }\n        if (a\
-    \ == b || c == d) continue;\n\n        ok = ok && is_parallel(a, b, c, d) == (cross(b\
-    \ - a, d - c) == 0);\n        ok = ok && is_orthogonal(a, b, c, d) == (dot(b -\
-    \ a, d - c) == 0);\n\n        // \u5C04\u5F71\u306F\u76F4\u7DDA\u4E0A\u306B\u3042\
-    \u308A\u3001p \u3068\u306E\u5DEE\u304C\u76F4\u7DDA\u306B\u5782\u76F4\u3002\u53CD\
-    \u5C04\u306F\u5C04\u5F71\u3092\u4E2D\u70B9\u3068\u3059\u308B\n        P h = projection(pa,\
-    \ pb, pc);\n        ok = ok && near(cross(pb - pa, h - pa), 0) && near(dot(pb\
-    \ - pa, h - pc), 0);\n        P r = reflection(pa, pb, pc);\n        ok = ok &&\
-    \ near(r[0] + pc[0], 2 * h[0]) && near(r[1] + pc[1], 2 * h[1]);\n\n        //\
-    \ \u4EA4\u70B9\u306F\u4E21\u65B9\u306E\u76F4\u7DDA\u4E0A\u306B\u3042\u308B\n \
-    \       auto x = line_intersection(pa, pb, pc, pd);\n        if (is_parallel(a,\
-    \ b, c, d)) {\n            ok = ok && !x;\n        } else {\n            ok =\
-    \ ok && x && near(cross(pb - pa, *x - pa), 0) && near(cross(pd - pc, *x - pc),\
-    \ 0);\n        }\n\n        // \u70B9\u3068\u76F4\u7DDA\u306E\u8DDD\u96E2\u306F\
-    \u3001\u5C04\u5F71\u307E\u3067\u306E\u8DDD\u96E2\n        ok = ok && near(distance_point_line(a,\
-    \ b, c), (h - pc).abs());\n        // \u70B9\u3068\u7DDA\u5206\u306E\u8DDD\u96E2\
-    \u3092\u3001\u7DDA\u5206\u4E0A\u306E\u70B9\u3092\u7D30\u304B\u304F\u8ABF\u3079\
-    \u305F\u6700\u5C0F\u5024\u3068\u6BD4\u3079\u308B\n        auto brute_point_segment\
-    \ = [&](P p1, P p2, P p) {\n            double best = 1e18;\n            for (int\
-    \ i = 0; i <= 2000; i++) best = std::min(best, (p1 + (p2 - p1) * (i / 2000.0)\
-    \ - p).abs());\n            return best;\n        };\n        double dps = distance_point_segment(a,\
-    \ b, c);\n        ok = ok && dps <= brute_point_segment(pa, pb, pc) + 1e-9 &&\
-    \ dps >= brute_point_segment(pa, pb, pc) - 1e-2;\n        // \u7DDA\u5206\u3069\
-    \u3046\u3057\u306E\u8DDD\u96E2: \u4EA4\u308F\u308B\u306A\u3089 0\u3001\u305D\u3046\
-    \u3067\u306A\u3051\u308C\u3070\u7AEF\u70B9\u3068\u7DDA\u5206\u306E\u8DDD\u96E2\
-    \u306E\u6700\u5C0F\u5024\u4EE5\u4E0B\n        double dss = distance_segments(a,\
-    \ b, c, d);\n        if (segments_intersect(a, b, c, d)) {\n            ok = ok\
-    \ && dss == 0;\n        } else {\n            ok = ok && dss > 0 && near(dss,\
-    \ std::min({distance_point_segment(a, b, c), distance_point_segment(a, b, d),\
-    \ distance_point_segment(c, d, a), distance_point_segment(c, d, b)}));\n     \
-    \   }\n        ok = ok && near(distance_segments(pa, pb, pc, pd), dss);\n    }\n\
-    \n    // \u4F8B\n    ok = ok && ccw(L(0, 0), L(2, 0), L(1, 1)) == 1 && ccw(L(0,\
-    \ 0), L(2, 0), L(3, 0)) == -2;\n    P h = projection(P(0.0, 0.0), P(3.0, 4.0),\
-    \ P(2.0, 5.0));\n    ok = ok && near(h[0], 3.12) && near(h[1], 4.16);\n    ok\
-    \ = ok && near(distance_point_line(L(0, 0), L(2, 0), L(5, 3)), 3) && near(distance_point_segment(L(0,\
-    \ 0), L(2, 0), L(5, 4)), 5);\n\n    if (ok)\n        std::cout << \"Hello World\"\
-    \ << std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
+    \ < 20000 && ok; rep++) {\n        auto rnd = [&] { return static_cast<long long>(rng()\
+    \ % 11) - 5; };\n        L a(rnd(), rnd()), b(rnd(), rnd()), c(rnd(), rnd()),\
+    \ d(rnd(), rnd());\n        auto to_p = [](const L& l) { return P(static_cast<double>(l[0]),\
+    \ static_cast<double>(l[1])); };\n        P pa = to_p(a), pb = to_p(b), pc = to_p(c),\
+    \ pd = to_p(d);\n\n        // ccw: \u4E00\u76F4\u7DDA\u4E0A\u306E\u5834\u5408\u306F\
+    \u3001c \u304C\u76F4\u7DDA\u4E0A\u306E\u3069\u3053\u306B\u3042\u308B\u304B\u3067\
+    \u5206\u3051\u308B\n        if (a != b) {\n            int r = ccw(a, b, c);\n\
+    \            long long cr = cross(b - a, c - a);\n            if (cr > 0) ok =\
+    \ ok && r == 1;\n            if (cr < 0) ok = ok && r == -1;\n            if (cr\
+    \ == 0) {\n                // a \u3092 0\u3001b \u3092 1 \u3068\u3057\u305F\u3068\
+    \u304D\u306E c \u306E\u4F4D\u7F6E t\n                long long t = dot(c - a,\
+    \ b - a), len = (b - a).squared_norm();\n                ok = ok && r == (t <\
+    \ 0 ? 2 : t > len ? -2\n                                                     :\
+    \ 0);\n            }\n            ok = ok && ccw(pa, pb, pc) == r;\n        }\n\
+    \        if (a == b || c == d) continue;\n\n        ok = ok && is_parallel(a,\
+    \ b, c, d) == (cross(b - a, d - c) == 0);\n        ok = ok && is_orthogonal(a,\
+    \ b, c, d) == (dot(b - a, d - c) == 0);\n\n        // \u5C04\u5F71\u306F\u76F4\
+    \u7DDA\u4E0A\u306B\u3042\u308A\u3001p \u3068\u306E\u5DEE\u304C\u76F4\u7DDA\u306B\
+    \u5782\u76F4\u3002\u53CD\u5C04\u306F\u5C04\u5F71\u3092\u4E2D\u70B9\u3068\u3059\
+    \u308B\n        P h = projection(pa, pb, pc);\n        ok = ok && near(cross(pb\
+    \ - pa, h - pa), 0) && near(dot(pb - pa, h - pc), 0);\n        P r = reflection(pa,\
+    \ pb, pc);\n        ok = ok && near(r[0] + pc[0], 2 * h[0]) && near(r[1] + pc[1],\
+    \ 2 * h[1]);\n\n        // \u4EA4\u70B9\u306F\u4E21\u65B9\u306E\u76F4\u7DDA\u4E0A\
+    \u306B\u3042\u308B\n        auto x = line_intersection(pa, pb, pc, pd);\n    \
+    \    if (is_parallel(a, b, c, d)) {\n            ok = ok && !x;\n        } else\
+    \ {\n            ok = ok && x && near(cross(pb - pa, *x - pa), 0) && near(cross(pd\
+    \ - pc, *x - pc), 0);\n        }\n\n        // \u70B9\u3068\u76F4\u7DDA\u306E\u8DDD\
+    \u96E2\u306F\u3001\u5C04\u5F71\u307E\u3067\u306E\u8DDD\u96E2\n        ok = ok\
+    \ && near(distance_point_line(a, b, c), (h - pc).abs());\n        // \u70B9\u3068\
+    \u7DDA\u5206\u306E\u8DDD\u96E2\u3092\u3001\u7DDA\u5206\u4E0A\u306E\u70B9\u3092\
+    \u7D30\u304B\u304F\u8ABF\u3079\u305F\u6700\u5C0F\u5024\u3068\u6BD4\u3079\u308B\
+    \n        auto brute_point_segment = [&](P p1, P p2, P p) {\n            double\
+    \ best = 1e18;\n            for (int i = 0; i <= 2000; i++) best = std::min(best,\
+    \ (p1 + (p2 - p1) * (i / 2000.0) - p).abs());\n            return best;\n    \
+    \    };\n        double dps = distance_point_segment(a, b, c);\n        ok = ok\
+    \ && dps <= brute_point_segment(pa, pb, pc) + 1e-9 && dps >= brute_point_segment(pa,\
+    \ pb, pc) - 1e-2;\n        // \u7DDA\u5206\u3069\u3046\u3057\u306E\u8DDD\u96E2\
+    : \u4EA4\u308F\u308B\u306A\u3089 0\u3001\u305D\u3046\u3067\u306A\u3051\u308C\u3070\
+    \u7AEF\u70B9\u3068\u7DDA\u5206\u306E\u8DDD\u96E2\u306E\u6700\u5C0F\u5024\u4EE5\
+    \u4E0B\n        double dss = distance_segments(a, b, c, d);\n        if (segments_intersect(a,\
+    \ b, c, d)) {\n            ok = ok && dss == 0;\n        } else {\n          \
+    \  ok = ok && dss > 0 && near(dss, std::min({distance_point_segment(a, b, c),\
+    \ distance_point_segment(a, b, d), distance_point_segment(c, d, a), distance_point_segment(c,\
+    \ d, b)}));\n        }\n        ok = ok && near(distance_segments(pa, pb, pc,\
+    \ pd), dss);\n    }\n\n    // \u4F8B\n    ok = ok && ccw(L(0, 0), L(2, 0), L(1,\
+    \ 1)) == 1 && ccw(L(0, 0), L(2, 0), L(3, 0)) == -2;\n    P h = projection(P(0.0,\
+    \ 0.0), P(3.0, 4.0), P(2.0, 5.0));\n    ok = ok && near(h[0], 3.12) && near(h[1],\
+    \ 4.16);\n    ok = ok && near(distance_point_line(L(0, 0), L(2, 0), L(5, 3)),\
+    \ 3) && near(distance_point_segment(L(0, 0), L(2, 0), L(5, 4)), 5);\n\n    if\
+    \ (ok)\n        std::cout << \"Hello World\" << std::endl;\n    else\n       \
+    \ std::cerr << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// geometry/vector.hpp \u306E\u76F4\u7DDA\u30FB\u7DDA\u5206\u306E\u95A2\u6570\
     \ (ccw\u3001\u5E73\u884C\u30FB\u76F4\u4EA4\u3001\u5C04\u5F71\u3001\u53CD\u5C04\
@@ -497,13 +498,13 @@ data:
     \ {\n    std::mt19937 rng(314);\n    bool ok = true;\n    using P = Vector<double>;\n\
     \    using L = Vector<long long>;\n    auto near = [](double a, double b) { return\
     \ std::abs(a - b) < 1e-7; };\n    for (int rep = 0; rep < 20000 && ok; rep++)\
-    \ {\n        auto rnd = [&] { return (long long)(rng() % 11) - 5; };\n       \
-    \ L a(rnd(), rnd()), b(rnd(), rnd()), c(rnd(), rnd()), d(rnd(), rnd());\n    \
-    \    auto to_p = [](const L& l) { return P((double)l[0], (double)l[1]); };\n \
-    \       P pa = to_p(a), pb = to_p(b), pc = to_p(c), pd = to_p(d);\n\n        //\
-    \ ccw: \u4E00\u76F4\u7DDA\u4E0A\u306E\u5834\u5408\u306F\u3001c \u304C\u76F4\u7DDA\
-    \u4E0A\u306E\u3069\u3053\u306B\u3042\u308B\u304B\u3067\u5206\u3051\u308B\n   \
-    \     if (a != b) {\n            int r = ccw(a, b, c);\n            long long\
+    \ {\n        auto rnd = [&] { return static_cast<long long>(rng() % 11) - 5; };\n\
+    \        L a(rnd(), rnd()), b(rnd(), rnd()), c(rnd(), rnd()), d(rnd(), rnd());\n\
+    \        auto to_p = [](const L& l) { return P(static_cast<double>(l[0]), static_cast<double>(l[1]));\
+    \ };\n        P pa = to_p(a), pb = to_p(b), pc = to_p(c), pd = to_p(d);\n\n  \
+    \      // ccw: \u4E00\u76F4\u7DDA\u4E0A\u306E\u5834\u5408\u306F\u3001c \u304C\u76F4\
+    \u7DDA\u4E0A\u306E\u3069\u3053\u306B\u3042\u308B\u304B\u3067\u5206\u3051\u308B\
+    \n        if (a != b) {\n            int r = ccw(a, b, c);\n            long long\
     \ cr = cross(b - a, c - a);\n            if (cr > 0) ok = ok && r == 1;\n    \
     \        if (cr < 0) ok = ok && r == -1;\n            if (cr == 0) {\n       \
     \         // a \u3092 0\u3001b \u3092 1 \u3068\u3057\u305F\u3068\u304D\u306E c\
@@ -553,7 +554,7 @@ data:
   isVerificationFile: true
   path: test/unittest/vector-line.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/vector-line.test.cpp

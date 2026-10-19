@@ -74,21 +74,23 @@ data:
     \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
     \    int n;\n    std::cin >> n;\n    std::vector<int> a(n);\n    for (auto& x\
     \ : a) std::cin >> x;\n    std::vector<long long> idx = longest_increasing_subsequence_restore(a);\n\
-    \    std::cout << idx.size() << '\\n';\n    for (long long i = 0; i < (long long)idx.size();\
-    \ i++) std::cout << idx[i] << \" \\n\"[i + 1 == (long long)idx.size()];\n}\n"
+    \    std::cout << idx.size() << '\\n';\n    for (long long i = 0; i < static_cast<long\
+    \ long>(idx.size()); i++) std::cout << idx[i] << \" \\n\"[i + 1 == static_cast<long\
+    \ long>(idx.size())];\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/longest_increasing_subsequence\"\
     \n\n#include \"../../src/dp/longest-increasing-subsequence.hpp\"\n\n#include <iostream>\n\
     #include <vector>\n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
     \    int n;\n    std::cin >> n;\n    std::vector<int> a(n);\n    for (auto& x\
     \ : a) std::cin >> x;\n    std::vector<long long> idx = longest_increasing_subsequence_restore(a);\n\
-    \    std::cout << idx.size() << '\\n';\n    for (long long i = 0; i < (long long)idx.size();\
-    \ i++) std::cout << idx[i] << \" \\n\"[i + 1 == (long long)idx.size()];\n}\n"
+    \    std::cout << idx.size() << '\\n';\n    for (long long i = 0; i < static_cast<long\
+    \ long>(idx.size()); i++) std::cout << idx[i] << \" \\n\"[i + 1 == static_cast<long\
+    \ long>(idx.size())];\n}\n"
   dependsOn:
   - src/dp/longest-increasing-subsequence.hpp
   isVerificationFile: true
   path: test/yosupo/longest-increasing-subsequence.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/longest-increasing-subsequence.test.cpp

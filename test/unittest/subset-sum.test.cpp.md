@@ -673,25 +673,25 @@ data:
     \ a1[i] * b1[i];\n        c2[i] = a2[i] * b2[i];\n    }\n    internal_convolution::trans(c0,\
     \ true), internal_convolution::trans(c1, true), internal_convolution::trans(c2,\
     \ true);\n    static const long long mod0 = internal_convolution::MOD0, mod01\
-    \ = mod0 * internal_convolution::MOD1;\n    static const __int128_t mod012 = (__int128_t)mod01\
+    \ = mod0 * internal_convolution::MOD1;\n    static const __int128_t mod012 = static_cast<__int128_t>(mod01)\
     \ * internal_convolution::MOD2;\n    std::vector<long long> res(N + M - 1);\n\
     \    for (int i = 0; i < N + M - 1; ++i) {\n        int y0 = c0[i].val();\n  \
     \      int y1 = (internal_convolution::imod0 * (c1[i] - y0)).val();\n        int\
     \ y2 = (internal_convolution::imod01 * (c2[i] - y0) - internal_convolution::imod1\
-    \ * y1).val();\n        __int128_t tmp = (__int128_t)mod01 * y2 + (__int128_t)mod0\
-    \ * y1 + y0;\n        if (tmp < (mod012 >> 1))\n            res[i] = tmp;\n  \
-    \      else\n            res[i] = tmp - mod012;\n    }\n    return res;\n}\n#line\
-    \ 15 \"src/math/fps.hpp\"\n\ntemplate <typename mint>\nstruct FPS : std::vector<mint>\
-    \ {\n    using std::vector<mint>::vector;\n\n    // constructor\n    FPS(const\
-    \ std::vector<mint>& r) : std::vector<mint>(r) {}\n\n    // core operator\n  \
-    \  inline FPS pre(long long siz) const {\n        return FPS(begin(*this), begin(*this)\
-    \ + std::min(static_cast<long long>(this->size()), siz));\n    }\n    inline FPS\
-    \ rev() const {\n        FPS res = *this;\n        reverse(begin(res), end(res));\n\
-    \        return res;\n    }\n    inline FPS& normalize() {\n        while (!this->empty()\
-    \ && this->back() == 0) this->pop_back();\n        return *this;\n    }\n\n  \
-    \  // basic operator\n    inline FPS operator-() const noexcept {\n        FPS\
-    \ res = (*this);\n        for (int i = 0; i < static_cast<int>(res.size()); ++i)\
-    \ res[i] = -res[i];\n        return res;\n    }\n    inline FPS operator+(const\
+    \ * y1).val();\n        __int128_t tmp = static_cast<__int128_t>(mod01) * y2 +\
+    \ static_cast<__int128_t>(mod0) * y1 + y0;\n        if (tmp < (mod012 >> 1))\n\
+    \            res[i] = tmp;\n        else\n            res[i] = tmp - mod012;\n\
+    \    }\n    return res;\n}\n#line 15 \"src/math/fps.hpp\"\n\ntemplate <typename\
+    \ mint>\nstruct FPS : std::vector<mint> {\n    using std::vector<mint>::vector;\n\
+    \n    // constructor\n    FPS(const std::vector<mint>& r) : std::vector<mint>(r)\
+    \ {}\n\n    // core operator\n    inline FPS pre(long long siz) const {\n    \
+    \    return FPS(begin(*this), begin(*this) + std::min(static_cast<long long>(this->size()),\
+    \ siz));\n    }\n    inline FPS rev() const {\n        FPS res = *this;\n    \
+    \    reverse(begin(res), end(res));\n        return res;\n    }\n    inline FPS&\
+    \ normalize() {\n        while (!this->empty() && this->back() == 0) this->pop_back();\n\
+    \        return *this;\n    }\n\n    // basic operator\n    inline FPS operator-()\
+    \ const noexcept {\n        FPS res = (*this);\n        for (int i = 0; i < static_cast<int>(res.size());\
+    \ ++i) res[i] = -res[i];\n        return res;\n    }\n    inline FPS operator+(const\
     \ mint& v) const { return FPS(*this) += v; }\n    inline FPS operator+(const FPS&\
     \ r) const { return FPS(*this) += r; }\n    inline FPS operator-(const mint& v)\
     \ const { return FPS(*this) -= v; }\n    inline FPS operator-(const FPS& r) const\
@@ -837,12 +837,12 @@ data:
     \ < (1 << n); mask++) {\n            long long s = 0;\n            for (int i\
     \ = 0; i < n; i++) {\n                if (mask >> i & 1) s += a[i];\n        \
     \    }\n            if (s <= S) cnt[s]++;\n        }\n        std::vector<bool>\
-    \ can = subset_sum(a, S);\n        ok = ok && (long long)can.size() == S + 1;\n\
-    \        for (long long s = 0; s <= S && ok; s++) ok = can[s] == (cnt[s] > 0);\n\
-    \        // \u5FA9\u5143: \u6DFB\u5B57\u304C\u6607\u9806\u3067\u91CD\u8907\u304C\
-    \u306A\u304F\u3001\u548C\u304C S \u306B\u306A\u308B\n        auto r = subset_sum_restore(a,\
+    \ can = subset_sum(a, S);\n        ok = ok && static_cast<long long>(can.size())\
+    \ == S + 1;\n        for (long long s = 0; s <= S && ok; s++) ok = can[s] == (cnt[s]\
+    \ > 0);\n        // \u5FA9\u5143: \u6DFB\u5B57\u304C\u6607\u9806\u3067\u91CD\u8907\
+    \u304C\u306A\u304F\u3001\u548C\u304C S \u306B\u306A\u308B\n        auto r = subset_sum_restore(a,\
     \ S);\n        ok = ok && r.has_value() == (cnt[S] > 0);\n        if (ok && r)\
-    \ {\n            long long s = 0;\n            for (int k = 0; k < (int)r->size();\
+    \ {\n            long long s = 0;\n            for (int k = 0; k < static_cast<int>(r->size());\
     \ k++) {\n                if ((*r)[k] < 0 || (*r)[k] >= n || (k && (*r)[k - 1]\
     \ >= (*r)[k]))\n                    ok = false;\n                else\n      \
     \              s += a[(*r)[k]];\n            }\n            ok = ok && s == S;\n\
@@ -852,26 +852,26 @@ data:
     \ = ok && subset_sum_max(a, S) == best && subset_sum_max_bitset(a, S) == best;\n\
     \        ok = ok && subset_sum_max_meet_in_the_middle(a, S) == best;\n       \
     \ auto mr = subset_sum_max_restore(a, S);\n        long long ms = 0;\n       \
-    \ for (int k = 0; k < (int)mr.size(); k++) {\n            if (mr[k] < 0 || mr[k]\
-    \ >= n || (k && mr[k - 1] >= mr[k]))\n                ok = false;\n          \
-    \  else\n                ms += a[mr[k]];\n        }\n        ok = ok && ms ==\
-    \ best;\n        // \u500B\u6570\n        int t = S;\n        auto c1 = subset_sum_count_dp<long\
-    \ long>(a, t);\n        auto c2 = subset_sum_count_fps<mint>(a, t);\n        auto\
-    \ c3 = subset_sum_count<mint>(a, t);\n        for (int s = 0; s <= t && ok; s++)\
-    \ ok = c1[s] == cnt[s] && c2[s] == mint(cnt[s]) && c3[s] == mint(cnt[s]);\n  \
-    \  }\n\n    // \u8981\u7D20\u3082 S \u3082\u5927\u304D\u3044\u3068\u304D\u306F\
-    \u534A\u5206\u5168\u5217\u6319\u304C\u9078\u3070\u308C\u3001\u5FA9\u5143\u3082\
-    \u3067\u304D\u308B\n    for (int rep = 0; rep < 200 && ok; rep++) {\n        int\
-    \ n = rng() % 21;\n        long long S = rng() % 1000000000000000000LL;\n    \
-    \    std::vector<long long> a(n);\n        for (auto& x : a) x = rng() % 100000000000000000LL;\n\
+    \ for (int k = 0; k < static_cast<int>(mr.size()); k++) {\n            if (mr[k]\
+    \ < 0 || mr[k] >= n || (k && mr[k - 1] >= mr[k]))\n                ok = false;\n\
+    \            else\n                ms += a[mr[k]];\n        }\n        ok = ok\
+    \ && ms == best;\n        // \u500B\u6570\n        int t = S;\n        auto c1\
+    \ = subset_sum_count_dp<long long>(a, t);\n        auto c2 = subset_sum_count_fps<mint>(a,\
+    \ t);\n        auto c3 = subset_sum_count<mint>(a, t);\n        for (int s = 0;\
+    \ s <= t && ok; s++) ok = c1[s] == cnt[s] && c2[s] == mint(cnt[s]) && c3[s] ==\
+    \ mint(cnt[s]);\n    }\n\n    // \u8981\u7D20\u3082 S \u3082\u5927\u304D\u3044\
+    \u3068\u304D\u306F\u534A\u5206\u5168\u5217\u6319\u304C\u9078\u3070\u308C\u3001\
+    \u5FA9\u5143\u3082\u3067\u304D\u308B\n    for (int rep = 0; rep < 200 && ok; rep++)\
+    \ {\n        int n = rng() % 21;\n        long long S = rng() % 1000000000000000000LL;\n\
+    \        std::vector<long long> a(n);\n        for (auto& x : a) x = rng() % 100000000000000000LL;\n\
     \        long long best = 0;\n        for (int mask = 0; mask < (1 << n); mask++)\
     \ {\n            long long s = 0;\n            for (int i = 0; i < n; i++) {\n\
     \                if (mask >> i & 1) s += a[i];\n            }\n            if\
     \ (s <= S) best = std::max(best, s);\n        }\n        ok = ok && subset_sum_max(a,\
     \ S) == best;\n        auto mr = subset_sum_max_restore(a, S);\n        long long\
-    \ ms = 0;\n        for (int k = 0; k < (int)mr.size(); k++) {\n            if\
-    \ (k && mr[k - 1] >= mr[k]) ok = false;\n            ms += a[mr[k]];\n       \
-    \ }\n        ok = ok && ms == best;\n    }\n\n    // \u4F8B\n    std::vector<long\
+    \ ms = 0;\n        for (int k = 0; k < static_cast<int>(mr.size()); k++) {\n \
+    \           if (k && mr[k - 1] >= mr[k]) ok = false;\n            ms += a[mr[k]];\n\
+    \        }\n        ok = ok && ms == best;\n    }\n\n    // \u4F8B\n    std::vector<long\
     \ long> a = {3, 5, 9};\n    auto r = subset_sum_restore(a, 14);\n    ok = ok &&\
     \ r && *r == std::vector<long long>{1, 2};\n    ok = ok && !subset_sum_restore(a,\
     \ 13);\n    ok = ok && subset_sum_restore(a, 0) == std::vector<long long>{};\n\
@@ -895,12 +895,12 @@ data:
     \ < (1 << n); mask++) {\n            long long s = 0;\n            for (int i\
     \ = 0; i < n; i++) {\n                if (mask >> i & 1) s += a[i];\n        \
     \    }\n            if (s <= S) cnt[s]++;\n        }\n        std::vector<bool>\
-    \ can = subset_sum(a, S);\n        ok = ok && (long long)can.size() == S + 1;\n\
-    \        for (long long s = 0; s <= S && ok; s++) ok = can[s] == (cnt[s] > 0);\n\
-    \        // \u5FA9\u5143: \u6DFB\u5B57\u304C\u6607\u9806\u3067\u91CD\u8907\u304C\
-    \u306A\u304F\u3001\u548C\u304C S \u306B\u306A\u308B\n        auto r = subset_sum_restore(a,\
+    \ can = subset_sum(a, S);\n        ok = ok && static_cast<long long>(can.size())\
+    \ == S + 1;\n        for (long long s = 0; s <= S && ok; s++) ok = can[s] == (cnt[s]\
+    \ > 0);\n        // \u5FA9\u5143: \u6DFB\u5B57\u304C\u6607\u9806\u3067\u91CD\u8907\
+    \u304C\u306A\u304F\u3001\u548C\u304C S \u306B\u306A\u308B\n        auto r = subset_sum_restore(a,\
     \ S);\n        ok = ok && r.has_value() == (cnt[S] > 0);\n        if (ok && r)\
-    \ {\n            long long s = 0;\n            for (int k = 0; k < (int)r->size();\
+    \ {\n            long long s = 0;\n            for (int k = 0; k < static_cast<int>(r->size());\
     \ k++) {\n                if ((*r)[k] < 0 || (*r)[k] >= n || (k && (*r)[k - 1]\
     \ >= (*r)[k]))\n                    ok = false;\n                else\n      \
     \              s += a[(*r)[k]];\n            }\n            ok = ok && s == S;\n\
@@ -910,26 +910,26 @@ data:
     \ = ok && subset_sum_max(a, S) == best && subset_sum_max_bitset(a, S) == best;\n\
     \        ok = ok && subset_sum_max_meet_in_the_middle(a, S) == best;\n       \
     \ auto mr = subset_sum_max_restore(a, S);\n        long long ms = 0;\n       \
-    \ for (int k = 0; k < (int)mr.size(); k++) {\n            if (mr[k] < 0 || mr[k]\
-    \ >= n || (k && mr[k - 1] >= mr[k]))\n                ok = false;\n          \
-    \  else\n                ms += a[mr[k]];\n        }\n        ok = ok && ms ==\
-    \ best;\n        // \u500B\u6570\n        int t = S;\n        auto c1 = subset_sum_count_dp<long\
-    \ long>(a, t);\n        auto c2 = subset_sum_count_fps<mint>(a, t);\n        auto\
-    \ c3 = subset_sum_count<mint>(a, t);\n        for (int s = 0; s <= t && ok; s++)\
-    \ ok = c1[s] == cnt[s] && c2[s] == mint(cnt[s]) && c3[s] == mint(cnt[s]);\n  \
-    \  }\n\n    // \u8981\u7D20\u3082 S \u3082\u5927\u304D\u3044\u3068\u304D\u306F\
-    \u534A\u5206\u5168\u5217\u6319\u304C\u9078\u3070\u308C\u3001\u5FA9\u5143\u3082\
-    \u3067\u304D\u308B\n    for (int rep = 0; rep < 200 && ok; rep++) {\n        int\
-    \ n = rng() % 21;\n        long long S = rng() % 1000000000000000000LL;\n    \
-    \    std::vector<long long> a(n);\n        for (auto& x : a) x = rng() % 100000000000000000LL;\n\
+    \ for (int k = 0; k < static_cast<int>(mr.size()); k++) {\n            if (mr[k]\
+    \ < 0 || mr[k] >= n || (k && mr[k - 1] >= mr[k]))\n                ok = false;\n\
+    \            else\n                ms += a[mr[k]];\n        }\n        ok = ok\
+    \ && ms == best;\n        // \u500B\u6570\n        int t = S;\n        auto c1\
+    \ = subset_sum_count_dp<long long>(a, t);\n        auto c2 = subset_sum_count_fps<mint>(a,\
+    \ t);\n        auto c3 = subset_sum_count<mint>(a, t);\n        for (int s = 0;\
+    \ s <= t && ok; s++) ok = c1[s] == cnt[s] && c2[s] == mint(cnt[s]) && c3[s] ==\
+    \ mint(cnt[s]);\n    }\n\n    // \u8981\u7D20\u3082 S \u3082\u5927\u304D\u3044\
+    \u3068\u304D\u306F\u534A\u5206\u5168\u5217\u6319\u304C\u9078\u3070\u308C\u3001\
+    \u5FA9\u5143\u3082\u3067\u304D\u308B\n    for (int rep = 0; rep < 200 && ok; rep++)\
+    \ {\n        int n = rng() % 21;\n        long long S = rng() % 1000000000000000000LL;\n\
+    \        std::vector<long long> a(n);\n        for (auto& x : a) x = rng() % 100000000000000000LL;\n\
     \        long long best = 0;\n        for (int mask = 0; mask < (1 << n); mask++)\
     \ {\n            long long s = 0;\n            for (int i = 0; i < n; i++) {\n\
     \                if (mask >> i & 1) s += a[i];\n            }\n            if\
     \ (s <= S) best = std::max(best, s);\n        }\n        ok = ok && subset_sum_max(a,\
     \ S) == best;\n        auto mr = subset_sum_max_restore(a, S);\n        long long\
-    \ ms = 0;\n        for (int k = 0; k < (int)mr.size(); k++) {\n            if\
-    \ (k && mr[k - 1] >= mr[k]) ok = false;\n            ms += a[mr[k]];\n       \
-    \ }\n        ok = ok && ms == best;\n    }\n\n    // \u4F8B\n    std::vector<long\
+    \ ms = 0;\n        for (int k = 0; k < static_cast<int>(mr.size()); k++) {\n \
+    \           if (k && mr[k - 1] >= mr[k]) ok = false;\n            ms += a[mr[k]];\n\
+    \        }\n        ok = ok && ms == best;\n    }\n\n    // \u4F8B\n    std::vector<long\
     \ long> a = {3, 5, 9};\n    auto r = subset_sum_restore(a, 14);\n    ok = ok &&\
     \ r && *r == std::vector<long long>{1, 2};\n    ok = ok && !subset_sum_restore(a,\
     \ 13);\n    ok = ok && subset_sum_restore(a, 0) == std::vector<long long>{};\n\
@@ -947,7 +947,7 @@ data:
   isVerificationFile: true
   path: test/unittest/subset-sum.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/subset-sum.test.cpp

@@ -68,9 +68,9 @@ data:
     \ P) != 1) ok = false, std::cerr << \"fermat \" << a << std::endl;\n        if\
     \ (modmul(a, modinv(a, P), P) != 1) ok = false, std::cerr << \"inv \" << a <<\
     \ std::endl;\n        long long b = rng() % P;\n        if (modmul(a, b, P) !=\
-    \ (long long)((__int128)a * b % P)) ok = false, std::cerr << \"mul \" << a <<\
-    \ std::endl;\n    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
-    }\n"
+    \ static_cast<long long>(static_cast<__int128>(a) * b % P)) ok = false, std::cerr\
+    \ << \"mul \" << a << std::endl;\n    }\n\n    if (ok) std::cout << \"Hello World\"\
+    \ << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// modmul\u30FBmodpow\u30FBmodinv \u3092\u611A\u76F4\u306A\u8A08\u7B97\u3068\
     \u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\
@@ -101,15 +101,15 @@ data:
     \        if (modpow(a, P - 1, P) != 1) ok = false, std::cerr << \"fermat \" <<\
     \ a << std::endl;\n        if (modmul(a, modinv(a, P), P) != 1) ok = false, std::cerr\
     \ << \"inv \" << a << std::endl;\n        long long b = rng() % P;\n        if\
-    \ (modmul(a, b, P) != (long long)((__int128)a * b % P)) ok = false, std::cerr\
-    \ << \"mul \" << a << std::endl;\n    }\n\n    if (ok) std::cout << \"Hello World\"\
-    \ << std::endl;\n}\n"
+    \ (modmul(a, b, P) != static_cast<long long>(static_cast<__int128>(a) * b % P))\
+    \ ok = false, std::cerr << \"mul \" << a << std::endl;\n    }\n\n    if (ok) std::cout\
+    \ << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/math/modular-arithmetic.hpp
   isVerificationFile: true
   path: test/unittest/modular-arithmetic.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:33:42+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/modular-arithmetic.test.cpp

@@ -138,20 +138,21 @@ data:
     \ long i = 0; i < n; i++) {\n        if (!(a[i] == b[i])) res++;\n    }\n    return\
     \ res;\n}\n#line 7 \"test/yosupo/zalgorithm.test.cpp\"\n\nint main(void) {\n \
     \   std::string s;\n    std::cin >> s;\n    std::vector<long long> z = z_algorithm(s);\n\
-    \    for (long long i = 0; i < (long long)z.size(); i++) {\n        std::cout\
-    \ << z[i] << \" \\n\"[i + 1 == (long long)z.size()];\n    }\n}\n"
+    \    for (long long i = 0; i < static_cast<long long>(z.size()); i++) {\n    \
+    \    std::cout << z[i] << \" \\n\"[i + 1 == static_cast<long long>(z.size())];\n\
+    \    }\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/zalgorithm\"\n\n#include\
     \ <iostream>\n#include <string>\n\n#include \"../../src/string/string.hpp\"\n\n\
     int main(void) {\n    std::string s;\n    std::cin >> s;\n    std::vector<long\
-    \ long> z = z_algorithm(s);\n    for (long long i = 0; i < (long long)z.size();\
-    \ i++) {\n        std::cout << z[i] << \" \\n\"[i + 1 == (long long)z.size()];\n\
+    \ long> z = z_algorithm(s);\n    for (long long i = 0; i < static_cast<long long>(z.size());\
+    \ i++) {\n        std::cout << z[i] << \" \\n\"[i + 1 == static_cast<long long>(z.size())];\n\
     \    }\n}\n"
   dependsOn:
   - src/string/string.hpp
   isVerificationFile: true
   path: test/yosupo/zalgorithm.test.cpp
   requiredBy: []
-  timestamp: '2026-10-17 23:17:18+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/zalgorithm.test.cpp

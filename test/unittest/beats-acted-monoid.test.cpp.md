@@ -340,7 +340,7 @@ data:
     \ * ChminChmaxAddSum \u3088\u308A\u8EFD\u3044\n *\n * @tparam T \u5024\u306E\u578B\
     \n */\ntemplate <typename T>\nstruct ChminSum {\n    static constexpr T lowest\
     \ = std::numeric_limits<T>::lowest();\n\n    struct S {\n        T sum;\n    \
-    \    T max1, max2;      // \u6700\u5927\u5024\u30012\u756A\u76EE\u306E\u6700\u5927\
+    \    T max1, max2;       // \u6700\u5927\u5024\u30012\u756A\u76EE\u306E\u6700\u5927\
     \u5024 (\u306A\u3051\u308C\u3070 lowest)\n        long long max_cnt;  // \u6700\
     \u5927\u5024\u306E\u500B\u6570\n        constexpr S() : sum(0), max1(lowest),\
     \ max2(lowest), max_cnt(0) {}\n        constexpr S(const T& x) : sum(x), max1(x),\
@@ -369,7 +369,7 @@ data:
     \ * ChminChmaxAddSum \u3088\u308A\u8EFD\u3044\n *\n * @tparam T \u5024\u306E\u578B\
     \n */\ntemplate <typename T>\nstruct ChmaxSum {\n    static constexpr T highest\
     \ = std::numeric_limits<T>::max();\n\n    struct S {\n        T sum;\n       \
-    \ T min1, min2;      // \u6700\u5C0F\u5024\u30012\u756A\u76EE\u306E\u6700\u5C0F\
+    \ T min1, min2;       // \u6700\u5C0F\u5024\u30012\u756A\u76EE\u306E\u6700\u5C0F\
     \u5024 (\u306A\u3051\u308C\u3070 highest)\n        long long min_cnt;  // \u6700\
     \u5C0F\u5024\u306E\u500B\u6570\n        constexpr S() : sum(0), min1(highest),\
     \ min2(highest), min_cnt(0) {}\n        constexpr S(const T& x) : sum(x), min1(x),\
@@ -402,57 +402,58 @@ data:
     \u53F7\u4ED8\u304D\u6574\u6570\u3092\u60F3\u5B9A\u3059\u308B)\n */\ntemplate <typename\
     \ T>\nstruct ChminChmaxAddSum {\n    static constexpr T lowest = std::numeric_limits<T>::lowest();\n\
     \    static constexpr T highest = std::numeric_limits<T>::max();\n\n    struct\
-    \ S {\n        T sum;\n        T max1, max2;  // \u6700\u5927\u5024\u30012\u756A\
-    \u76EE\u306E\u6700\u5927\u5024 (\u306A\u3051\u308C\u3070 lowest)\n        T min1,\
-    \ min2;  // \u6700\u5C0F\u5024\u30012\u756A\u76EE\u306E\u6700\u5C0F\u5024 (\u306A\
-    \u3051\u308C\u3070 highest)\n        long long max_cnt, min_cnt;  // \u6700\u5927\
-    \u5024\u30FB\u6700\u5C0F\u5024\u306E\u500B\u6570\n        constexpr S() : sum(0),\
-    \ max1(lowest), max2(lowest), min1(highest), min2(highest), max_cnt(0), min_cnt(0)\
-    \ {}\n        constexpr S(const T& x) : sum(x), max1(x), max2(lowest), min1(x),\
-    \ min2(highest), max_cnt(1), min_cnt(1) {}\n    };\n    using F = ClampAdd<T>;\n\
-    \n    static constexpr F chmin(const T& b) { return {lowest, b, T(0)}; }\n   \
-    \ static constexpr F chmax(const T& b) { return {b, highest, T(0)}; }\n    static\
-    \ constexpr F add(const T& b) { return {lowest, highest, b}; }\n    static constexpr\
-    \ F update(const T& b) { return {b, b, T(0)}; }\n\n    static constexpr S op(const\
-    \ S& a, const S& b) {\n        S res;\n        res.sum = a.sum + b.sum;\n    \
-    \    if (a.max1 == b.max1) {\n            res.max1 = a.max1;\n            res.max_cnt\
-    \ = a.max_cnt + b.max_cnt;\n            res.max2 = std::max(a.max2, b.max2);\n\
-    \        } else if (a.max1 > b.max1) {\n            res.max1 = a.max1;\n     \
-    \       res.max_cnt = a.max_cnt;\n            res.max2 = std::max(a.max2, b.max1);\n\
-    \        } else {\n            res.max1 = b.max1;\n            res.max_cnt = b.max_cnt;\n\
-    \            res.max2 = std::max(a.max1, b.max2);\n        }\n        if (a.min1\
-    \ == b.min1) {\n            res.min1 = a.min1;\n            res.min_cnt = a.min_cnt\
-    \ + b.min_cnt;\n            res.min2 = std::min(a.min2, b.min2);\n        } else\
-    \ if (a.min1 < b.min1) {\n            res.min1 = a.min1;\n            res.min_cnt\
-    \ = a.min_cnt;\n            res.min2 = std::min(a.min2, b.min1);\n        } else\
-    \ {\n            res.min1 = b.min1;\n            res.min_cnt = b.min_cnt;\n  \
-    \          res.min2 = std::min(a.min1, b.min2);\n        }\n        return res;\n\
-    \    }\n    static constexpr S e() { return S(); }\n    static constexpr std::pair<bool,\
-    \ S> mapping(const F& f, const S& x, long long sz) {\n        if (x.max_cnt ==\
-    \ 0) return {false, x};\n        S res = x;\n        // \u52A0\u7B97 (\u756A\u5175\
-    \u306B\u306F\u8DB3\u3055\u306A\u3044)\n        res.sum += f.add * T(sz);\n   \
-    \     res.max1 += f.add;\n        res.min1 += f.add;\n        if (res.max2 !=\
-    \ lowest) res.max2 += f.add;\n        if (res.min2 != highest) res.min2 += f.add;\n\
-    \        // \u5024\u304C 1 \u7A2E\u985E\n        if (res.max1 == res.min1) {\n\
-    \            T v = std::clamp(res.max1, f.lb, f.ub);\n            res.max1 = res.min1\
-    \ = v;\n            res.sum = v * T(sz);\n            return {false, res};\n \
-    \       }\n        // \u5024\u304C 2 \u7A2E\u985E\n        if (res.max1 == res.min2)\
-    \ {\n            T hi = std::clamp(res.max1, f.lb, f.ub), lo = std::clamp(res.min1,\
-    \ f.lb, f.ub);\n            if (hi == lo) {\n                res.max1 = res.min1\
-    \ = hi;\n                res.max2 = lowest;\n                res.min2 = highest;\n\
-    \                res.max_cnt = res.min_cnt = sz;\n                res.sum = hi\
-    \ * T(sz);\n            } else {\n                res.max1 = res.min2 = hi;\n\
-    \                res.min1 = res.max2 = lo;\n                res.sum = hi * T(res.max_cnt)\
-    \ + lo * T(res.min_cnt);\n            }\n            return {false, res};\n  \
-    \      }\n        // \u5024\u304C 3 \u7A2E\u985E\u4EE5\u4E0A: \u6700\u5927\u5024\
-    \u3068\u6700\u5C0F\u5024\u3060\u3051\u304C\u5909\u308F\u308B\u5834\u5408\u4EE5\
-    \u5916\u306F\u5931\u6557\n        if (f.ub <= res.max2 || f.lb >= res.min2) return\
-    \ {true, res};\n        if (f.ub < res.max1) {\n            res.sum -= (res.max1\
-    \ - f.ub) * T(res.max_cnt);\n            res.max1 = f.ub;\n        }\n       \
-    \ if (f.lb > res.min1) {\n            res.sum += (f.lb - res.min1) * T(res.min_cnt);\n\
-    \            res.min1 = f.lb;\n        }\n        return {false, res};\n    }\n\
-    \    // g \u3092\u9069\u7528\u3057\u305F\u5F8C\u306B f \u3092\u9069\u7528\u3059\
-    \u308B\n    static constexpr F composition(const F& f, const F& g) { return monoid::ClampAddComposite<T>::op(f,\
+    \ S {\n        T sum;\n        T max1, max2;                // \u6700\u5927\u5024\
+    \u30012\u756A\u76EE\u306E\u6700\u5927\u5024 (\u306A\u3051\u308C\u3070 lowest)\n\
+    \        T min1, min2;                // \u6700\u5C0F\u5024\u30012\u756A\u76EE\
+    \u306E\u6700\u5C0F\u5024 (\u306A\u3051\u308C\u3070 highest)\n        long long\
+    \ max_cnt, min_cnt;  // \u6700\u5927\u5024\u30FB\u6700\u5C0F\u5024\u306E\u500B\
+    \u6570\n        constexpr S() : sum(0), max1(lowest), max2(lowest), min1(highest),\
+    \ min2(highest), max_cnt(0), min_cnt(0) {}\n        constexpr S(const T& x) :\
+    \ sum(x), max1(x), max2(lowest), min1(x), min2(highest), max_cnt(1), min_cnt(1)\
+    \ {}\n    };\n    using F = ClampAdd<T>;\n\n    static constexpr F chmin(const\
+    \ T& b) { return {lowest, b, T(0)}; }\n    static constexpr F chmax(const T& b)\
+    \ { return {b, highest, T(0)}; }\n    static constexpr F add(const T& b) { return\
+    \ {lowest, highest, b}; }\n    static constexpr F update(const T& b) { return\
+    \ {b, b, T(0)}; }\n\n    static constexpr S op(const S& a, const S& b) {\n   \
+    \     S res;\n        res.sum = a.sum + b.sum;\n        if (a.max1 == b.max1)\
+    \ {\n            res.max1 = a.max1;\n            res.max_cnt = a.max_cnt + b.max_cnt;\n\
+    \            res.max2 = std::max(a.max2, b.max2);\n        } else if (a.max1 >\
+    \ b.max1) {\n            res.max1 = a.max1;\n            res.max_cnt = a.max_cnt;\n\
+    \            res.max2 = std::max(a.max2, b.max1);\n        } else {\n        \
+    \    res.max1 = b.max1;\n            res.max_cnt = b.max_cnt;\n            res.max2\
+    \ = std::max(a.max1, b.max2);\n        }\n        if (a.min1 == b.min1) {\n  \
+    \          res.min1 = a.min1;\n            res.min_cnt = a.min_cnt + b.min_cnt;\n\
+    \            res.min2 = std::min(a.min2, b.min2);\n        } else if (a.min1 <\
+    \ b.min1) {\n            res.min1 = a.min1;\n            res.min_cnt = a.min_cnt;\n\
+    \            res.min2 = std::min(a.min2, b.min1);\n        } else {\n        \
+    \    res.min1 = b.min1;\n            res.min_cnt = b.min_cnt;\n            res.min2\
+    \ = std::min(a.min1, b.min2);\n        }\n        return res;\n    }\n    static\
+    \ constexpr S e() { return S(); }\n    static constexpr std::pair<bool, S> mapping(const\
+    \ F& f, const S& x, long long sz) {\n        if (x.max_cnt == 0) return {false,\
+    \ x};\n        S res = x;\n        // \u52A0\u7B97 (\u756A\u5175\u306B\u306F\u8DB3\
+    \u3055\u306A\u3044)\n        res.sum += f.add * T(sz);\n        res.max1 += f.add;\n\
+    \        res.min1 += f.add;\n        if (res.max2 != lowest) res.max2 += f.add;\n\
+    \        if (res.min2 != highest) res.min2 += f.add;\n        // \u5024\u304C\
+    \ 1 \u7A2E\u985E\n        if (res.max1 == res.min1) {\n            T v = std::clamp(res.max1,\
+    \ f.lb, f.ub);\n            res.max1 = res.min1 = v;\n            res.sum = v\
+    \ * T(sz);\n            return {false, res};\n        }\n        // \u5024\u304C\
+    \ 2 \u7A2E\u985E\n        if (res.max1 == res.min2) {\n            T hi = std::clamp(res.max1,\
+    \ f.lb, f.ub), lo = std::clamp(res.min1, f.lb, f.ub);\n            if (hi == lo)\
+    \ {\n                res.max1 = res.min1 = hi;\n                res.max2 = lowest;\n\
+    \                res.min2 = highest;\n                res.max_cnt = res.min_cnt\
+    \ = sz;\n                res.sum = hi * T(sz);\n            } else {\n       \
+    \         res.max1 = res.min2 = hi;\n                res.min1 = res.max2 = lo;\n\
+    \                res.sum = hi * T(res.max_cnt) + lo * T(res.min_cnt);\n      \
+    \      }\n            return {false, res};\n        }\n        // \u5024\u304C\
+    \ 3 \u7A2E\u985E\u4EE5\u4E0A: \u6700\u5927\u5024\u3068\u6700\u5C0F\u5024\u3060\
+    \u3051\u304C\u5909\u308F\u308B\u5834\u5408\u4EE5\u5916\u306F\u5931\u6557\n   \
+    \     if (f.ub <= res.max2 || f.lb >= res.min2) return {true, res};\n        if\
+    \ (f.ub < res.max1) {\n            res.sum -= (res.max1 - f.ub) * T(res.max_cnt);\n\
+    \            res.max1 = f.ub;\n        }\n        if (f.lb > res.min1) {\n   \
+    \         res.sum += (f.lb - res.min1) * T(res.min_cnt);\n            res.min1\
+    \ = f.lb;\n        }\n        return {false, res};\n    }\n    // g \u3092\u9069\
+    \u7528\u3057\u305F\u5F8C\u306B f \u3092\u9069\u7528\u3059\u308B\n    static constexpr\
+    \ F composition(const F& f, const F& g) { return monoid::ClampAddComposite<T>::op(f,\
     \ g); }\n    static constexpr F id() { return {lowest, highest, T(0)}; }\n};\n\
     \n}  // namespace beats_acted_monoid\n#line 8 \"test/unittest/beats-acted-monoid.test.cpp\"\
     \n\n#line 10 \"test/unittest/beats-acted-monoid.test.cpp\"\n#include <iostream>\n\
@@ -859,8 +860,8 @@ data:
     \ (is_min = false)\ntemplate <bool is_min>\nvoid test_one_side(std::mt19937_64&\
     \ rng) {\n    const char* name = is_min ? \"ChminSum\" : \"ChmaxSum\";\n    for\
     \ (int rep = 0; rep < 300 && ok; rep++) {\n        int n = rng() % 30 + 1;\n \
-    \       long long w = rep % 2 ? 5 : 1000;\n        auto gen = [&] { return (long\
-    \ long)(rng() % (2 * w + 1)) - w; };\n        std::vector<long long> a(n);\n \
+    \       long long w = rep % 2 ? 5 : 1000;\n        auto gen = [&] { return static_cast<long\
+    \ long>(rng() % (2 * w + 1)) - w; };\n        std::vector<long long> a(n);\n \
     \       for (auto& x : a) x = gen();\n        using Seg = std::conditional_t<is_min,\
     \ RChminSumQ<long long>, RChmaxSumQ<long long>>;\n        Seg seg(std::vector<typename\
     \ Seg::S>(a.begin(), a.end()));\n        for (int q = 0; q < 100 && ok; q++) {\n\
@@ -884,9 +885,9 @@ data:
     \  // \u5024\u306E\u5E45\u3092\u72ED\u304F\u3057\u3066\u3001\u5024\u304C 1 \u7A2E\
     \u985E\u30FB2 \u7A2E\u985E\u306E\u30CE\u30FC\u30C9\u3082\u3088\u304F\u73FE\u308C\
     \u308B\u3088\u3046\u306B\u3059\u308B\n        long long w = rep % 2 ? 5 : 1000;\n\
-    \        auto gen = [&] { return (long long)(rng() % (2 * w + 1)) - w; };\n  \
-    \      std::vector<long long> a(n);\n        for (auto& x : a) x = gen();\n  \
-    \      RChminChmaxAddSumQ<long long> seg(std::vector<A::S>(a.begin(), a.end()));\n\
+    \        auto gen = [&] { return static_cast<long long>(rng() % (2 * w + 1)) -\
+    \ w; };\n        std::vector<long long> a(n);\n        for (auto& x : a) x = gen();\n\
+    \        RChminChmaxAddSumQ<long long> seg(std::vector<A::S>(a.begin(), a.end()));\n\
     \        for (int q = 0; q < 100 && ok; q++) {\n            int t = rng() % 6;\n\
     \            int l = rng() % (n + 1), r = rng() % (n + 1);\n            if (l\
     \ > r) std::swap(l, r);\n            long long b = gen();\n            if (t ==\
@@ -928,8 +929,8 @@ data:
     \ (is_min = false)\ntemplate <bool is_min>\nvoid test_one_side(std::mt19937_64&\
     \ rng) {\n    const char* name = is_min ? \"ChminSum\" : \"ChmaxSum\";\n    for\
     \ (int rep = 0; rep < 300 && ok; rep++) {\n        int n = rng() % 30 + 1;\n \
-    \       long long w = rep % 2 ? 5 : 1000;\n        auto gen = [&] { return (long\
-    \ long)(rng() % (2 * w + 1)) - w; };\n        std::vector<long long> a(n);\n \
+    \       long long w = rep % 2 ? 5 : 1000;\n        auto gen = [&] { return static_cast<long\
+    \ long>(rng() % (2 * w + 1)) - w; };\n        std::vector<long long> a(n);\n \
     \       for (auto& x : a) x = gen();\n        using Seg = std::conditional_t<is_min,\
     \ RChminSumQ<long long>, RChmaxSumQ<long long>>;\n        Seg seg(std::vector<typename\
     \ Seg::S>(a.begin(), a.end()));\n        for (int q = 0; q < 100 && ok; q++) {\n\
@@ -953,9 +954,9 @@ data:
     \  // \u5024\u306E\u5E45\u3092\u72ED\u304F\u3057\u3066\u3001\u5024\u304C 1 \u7A2E\
     \u985E\u30FB2 \u7A2E\u985E\u306E\u30CE\u30FC\u30C9\u3082\u3088\u304F\u73FE\u308C\
     \u308B\u3088\u3046\u306B\u3059\u308B\n        long long w = rep % 2 ? 5 : 1000;\n\
-    \        auto gen = [&] { return (long long)(rng() % (2 * w + 1)) - w; };\n  \
-    \      std::vector<long long> a(n);\n        for (auto& x : a) x = gen();\n  \
-    \      RChminChmaxAddSumQ<long long> seg(std::vector<A::S>(a.begin(), a.end()));\n\
+    \        auto gen = [&] { return static_cast<long long>(rng() % (2 * w + 1)) -\
+    \ w; };\n        std::vector<long long> a(n);\n        for (auto& x : a) x = gen();\n\
+    \        RChminChmaxAddSumQ<long long> seg(std::vector<A::S>(a.begin(), a.end()));\n\
     \        for (int q = 0; q < 100 && ok; q++) {\n            int t = rng() % 6;\n\
     \            int l = rng() % (n + 1), r = rng() % (n + 1);\n            if (l\
     \ > r) std::swap(l, r);\n            long long b = gen();\n            if (t ==\
@@ -985,7 +986,7 @@ data:
   isVerificationFile: true
   path: test/unittest/beats-acted-monoid.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 12:03:10+09:00'
+  timestamp: '2026-10-19 12:29:38+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/beats-acted-monoid.test.cpp

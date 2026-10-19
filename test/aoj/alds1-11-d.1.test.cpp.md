@@ -467,19 +467,19 @@ data:
     \    std::ios_base::sync_with_stdio(false);\n    int n, m;\n    std::cin >> n\
     \ >> m;\n    Graph<int> graph(n);\n    graph.read(m, 0);\n    std::vector<int>\
     \ id(n);\n    auto groups = connected_components(graph);\n    for (int i = 0;\
-    \ i < (int)groups.size(); i++) {\n        for (int v : groups[i]) id[v] = i;\n\
-    \    }\n    int q;\n    std::cin >> q;\n    while (q--) {\n        int s, t;\n\
-    \        std::cin >> s >> t;\n        std::cout << (id[s] == id[t] ? \"yes\" :\
-    \ \"no\") << '\\n';\n    }\n}\n"
+    \ i < static_cast<int>(groups.size()); i++) {\n        for (int v : groups[i])\
+    \ id[v] = i;\n    }\n    int q;\n    std::cin >> q;\n    while (q--) {\n     \
+    \   int s, t;\n        std::cin >> s >> t;\n        std::cout << (id[s] == id[t]\
+    \ ? \"yes\" : \"no\") << '\\n';\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_11_D\"\
     \n\n#include <iostream>\n#include <vector>\n\n#include \"../../src/graph/graph_util.hpp\"\
     \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios_base::sync_with_stdio(false);\n\
     \    int n, m;\n    std::cin >> n >> m;\n    Graph<int> graph(n);\n    graph.read(m,\
     \ 0);\n    std::vector<int> id(n);\n    auto groups = connected_components(graph);\n\
-    \    for (int i = 0; i < (int)groups.size(); i++) {\n        for (int v : groups[i])\
-    \ id[v] = i;\n    }\n    int q;\n    std::cin >> q;\n    while (q--) {\n     \
-    \   int s, t;\n        std::cin >> s >> t;\n        std::cout << (id[s] == id[t]\
-    \ ? \"yes\" : \"no\") << '\\n';\n    }\n}\n"
+    \    for (int i = 0; i < static_cast<int>(groups.size()); i++) {\n        for\
+    \ (int v : groups[i]) id[v] = i;\n    }\n    int q;\n    std::cin >> q;\n    while\
+    \ (q--) {\n        int s, t;\n        std::cin >> s >> t;\n        std::cout <<\
+    \ (id[s] == id[t] ? \"yes\" : \"no\") << '\\n';\n    }\n}\n"
   dependsOn:
   - src/graph/graph_util.hpp
   - src/data_structures/unionfind.hpp
@@ -487,7 +487,7 @@ data:
   isVerificationFile: true
   path: test/aoj/alds1-11-d.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/alds1-11-d.1.test.cpp

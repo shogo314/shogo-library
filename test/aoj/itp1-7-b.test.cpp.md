@@ -265,11 +265,14 @@ data:
     \ (rows\u30FBcols \u306E\u4E2D\u3067\u306E\u4F4D\u7F6E\u306E\u5DEE) \u3092 Rect\
     \ \u306E\u9806\u306B\u4E26\u3079\u305F\u3082\u306E\u3002\u5148\u982D 4 \u3064\u306F\
     \u4E0A\u4E0B\u5DE6\u53F3\u3060\u3051\u3092\u4E26\u3079\u305F\u5225\u306E\u8868\
-    \n    static constexpr int neighbor_dirs[12][2] = {{-1, 0}, {0, -1}, {0, 1}, {1,\
-    \ 0},\n                                                 {-1, -1}, {-1, 0}, {-1,\
-    \ 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};\n\n   public:\n    /**\n    \
-    \ * @brief neighbors4 / neighbors8 \u306E\u623B\u308A\u5024 (\u7BC4\u56F2 for\
-    \ \u3067\u4F7F\u3046)\n     * \u4F5C\u308B\u3068\u304D\u306B Rect \u306B\u542B\
+    \n    // 4 \u8FD1\u508D\u3068 8 \u8FD1\u508D\u306E\u5883\u76EE\u304C\u5206\u304B\
+    \u308B\u3088\u3046\u306B 2 \u884C\u306B\u5206\u3051\u3066\u3044\u308B\u306E\u3067\
+    \u6574\u5F62\u3057\u306A\u3044\n    // clang-format off\n    static constexpr\
+    \ int neighbor_dirs[12][2] = {{-1, 0}, {0, -1}, {0, 1}, {1, 0},\n            \
+    \                                     {-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0,\
+    \ 1}, {1, -1}, {1, 0}, {1, 1}};\n    // clang-format on\n\n   public:\n    /**\n\
+    \     * @brief neighbors4 / neighbors8 \u306E\u623B\u308A\u5024 (\u7BC4\u56F2\
+    \ for \u3067\u4F7F\u3046)\n     * \u4F5C\u308B\u3068\u304D\u306B Rect \u306B\u542B\
     \u307E\u308C\u308B\u65B9\u5411\u3092\u30D3\u30C3\u30C8\u3067\u6301\u3063\u3066\
     \u304A\u304D\u3001\u7ACB\u3063\u3066\u3044\u308B\u30D3\u30C3\u30C8\u3092\u9806\
     \u306B\u8FD4\u3059\n     */\n    struct Neighbors {\n        long long i, j, row_step,\
@@ -341,7 +344,7 @@ data:
   isVerificationFile: true
   path: test/aoj/itp1-7-b.test.cpp
   requiredBy: []
-  timestamp: '2026-10-18 18:58:07+09:00'
+  timestamp: '2026-10-19 12:29:38+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/itp1-7-b.test.cpp

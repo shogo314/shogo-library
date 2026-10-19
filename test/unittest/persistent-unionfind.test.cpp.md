@@ -236,20 +236,21 @@ data:
     \               if (c[uf[ver].leader(a)] != c[a]) ok = false;\n            }\n\
     \        }\n        // \u3059\u3079\u3066\u306E\u7248\u304C\u3001\u4F5C\u3063\u305F\
     \u3068\u304D\u306E\u9023\u7D50\u6210\u5206\u306E\u307E\u307E\u304B\n        for\
-    \ (int i = 0; i < int(uf.size()); i++) {\n            const auto& c = comp[i];\n\
-    \            for (int a = 0; a < n; a++) {\n                if (uf[i].leader(uf[i].leader(a))\
-    \ != uf[i].leader(a)) ok = false;\n                for (int b = 0; b < n; b++)\
-    \ {\n                    if (uf[i].same(a, b) != (c[a] == c[b])) ok = false;\n\
-    \                }\n            }\n            // groups \u306F\u4EE3\u8868\u5143\
-    \u306E\u5C0F\u3055\u3044\u9806\u3068\u306F\u9650\u3089\u306A\u3044\u306E\u3067\
-    \u3001\u5404\u30B0\u30EB\u30FC\u30D7\u306E\u4E2D\u8EAB\u3060\u3051\u6BD4\u3079\
-    \u308B\n            auto g = uf[i].groups();\n            std::vector<std::vector<long\
-    \ long>> expect;\n            for (int a = 0; a < n; a++) {\n                std::vector<long\
-    \ long> group;\n                for (int b = 0; b < n; b++) {\n              \
-    \      if (c[b] == c[a]) group.push_back(b);\n                }\n            \
-    \    if (group[0] == a) expect.push_back(group);\n            }\n            std::sort(g.begin(),\
-    \ g.end());\n            if (g != expect) ok = false;\n        }\n    }\n    if\
-    \ (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \ (int i = 0; i < static_cast<int>(uf.size()); i++) {\n            const auto&\
+    \ c = comp[i];\n            for (int a = 0; a < n; a++) {\n                if\
+    \ (uf[i].leader(uf[i].leader(a)) != uf[i].leader(a)) ok = false;\n           \
+    \     for (int b = 0; b < n; b++) {\n                    if (uf[i].same(a, b)\
+    \ != (c[a] == c[b])) ok = false;\n                }\n            }\n         \
+    \   // groups \u306F\u4EE3\u8868\u5143\u306E\u5C0F\u3055\u3044\u9806\u3068\u306F\
+    \u9650\u3089\u306A\u3044\u306E\u3067\u3001\u5404\u30B0\u30EB\u30FC\u30D7\u306E\
+    \u4E2D\u8EAB\u3060\u3051\u6BD4\u3079\u308B\n            auto g = uf[i].groups();\n\
+    \            std::vector<std::vector<long long>> expect;\n            for (int\
+    \ a = 0; a < n; a++) {\n                std::vector<long long> group;\n      \
+    \          for (int b = 0; b < n; b++) {\n                    if (c[b] == c[a])\
+    \ group.push_back(b);\n                }\n                if (group[0] == a) expect.push_back(group);\n\
+    \            }\n            std::sort(g.begin(), g.end());\n            if (g\
+    \ != expect) ok = false;\n        }\n    }\n    if (ok) std::cout << \"Hello World\"\
+    \ << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// PersistentUnionFind \u3092\u611A\u76F4\u306A\u5B9F\u88C5 (\u7248\u3054\u3068\
     \u306B\u9023\u7D50\u6210\u5206\u306E\u756A\u53F7\u3092\u6301\u3064) \u3068\u30E9\
@@ -277,20 +278,21 @@ data:
     \               if (c[uf[ver].leader(a)] != c[a]) ok = false;\n            }\n\
     \        }\n        // \u3059\u3079\u3066\u306E\u7248\u304C\u3001\u4F5C\u3063\u305F\
     \u3068\u304D\u306E\u9023\u7D50\u6210\u5206\u306E\u307E\u307E\u304B\n        for\
-    \ (int i = 0; i < int(uf.size()); i++) {\n            const auto& c = comp[i];\n\
-    \            for (int a = 0; a < n; a++) {\n                if (uf[i].leader(uf[i].leader(a))\
-    \ != uf[i].leader(a)) ok = false;\n                for (int b = 0; b < n; b++)\
-    \ {\n                    if (uf[i].same(a, b) != (c[a] == c[b])) ok = false;\n\
-    \                }\n            }\n            // groups \u306F\u4EE3\u8868\u5143\
-    \u306E\u5C0F\u3055\u3044\u9806\u3068\u306F\u9650\u3089\u306A\u3044\u306E\u3067\
-    \u3001\u5404\u30B0\u30EB\u30FC\u30D7\u306E\u4E2D\u8EAB\u3060\u3051\u6BD4\u3079\
-    \u308B\n            auto g = uf[i].groups();\n            std::vector<std::vector<long\
-    \ long>> expect;\n            for (int a = 0; a < n; a++) {\n                std::vector<long\
-    \ long> group;\n                for (int b = 0; b < n; b++) {\n              \
-    \      if (c[b] == c[a]) group.push_back(b);\n                }\n            \
-    \    if (group[0] == a) expect.push_back(group);\n            }\n            std::sort(g.begin(),\
-    \ g.end());\n            if (g != expect) ok = false;\n        }\n    }\n    if\
-    \ (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \ (int i = 0; i < static_cast<int>(uf.size()); i++) {\n            const auto&\
+    \ c = comp[i];\n            for (int a = 0; a < n; a++) {\n                if\
+    \ (uf[i].leader(uf[i].leader(a)) != uf[i].leader(a)) ok = false;\n           \
+    \     for (int b = 0; b < n; b++) {\n                    if (uf[i].same(a, b)\
+    \ != (c[a] == c[b])) ok = false;\n                }\n            }\n         \
+    \   // groups \u306F\u4EE3\u8868\u5143\u306E\u5C0F\u3055\u3044\u9806\u3068\u306F\
+    \u9650\u3089\u306A\u3044\u306E\u3067\u3001\u5404\u30B0\u30EB\u30FC\u30D7\u306E\
+    \u4E2D\u8EAB\u3060\u3051\u6BD4\u3079\u308B\n            auto g = uf[i].groups();\n\
+    \            std::vector<std::vector<long long>> expect;\n            for (int\
+    \ a = 0; a < n; a++) {\n                std::vector<long long> group;\n      \
+    \          for (int b = 0; b < n; b++) {\n                    if (c[b] == c[a])\
+    \ group.push_back(b);\n                }\n                if (group[0] == a) expect.push_back(group);\n\
+    \            }\n            std::sort(g.begin(), g.end());\n            if (g\
+    \ != expect) ok = false;\n        }\n    }\n    if (ok) std::cout << \"Hello World\"\
+    \ << std::endl;\n}\n"
   dependsOn:
   - src/data_structures/persistent-unionfind.hpp
   - src/data_structures/persistent-array.hpp
@@ -298,7 +300,7 @@ data:
   isVerificationFile: true
   path: test/unittest/persistent-unionfind.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/persistent-unionfind.test.cpp

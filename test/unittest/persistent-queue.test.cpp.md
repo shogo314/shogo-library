@@ -96,21 +96,21 @@ data:
     \ || que[ver].back() != naive[ver].back()) ok = false;\n            }\n      \
     \  }\n        // \u3059\u3079\u3066\u306E\u7248\u304C\u3001\u4F5C\u3063\u305F\u3068\
     \u304D\u306E\u5185\u5BB9\u306E\u307E\u307E\u304B\n        for (int i = 0; i <\
-    \ int(que.size()); i++) {\n            const auto& d = naive[i];\n           \
-    \ if (que[i].size() != int(d.size()) || que[i].empty() != d.empty()) ok = false;\n\
-    \            if (que[i].to_vector() != std::vector<int>(d.begin(), d.end())) ok\
-    \ = false;\n            if (!d.empty() && (que[i].front() != d.front() || que[i].back()\
-    \ != d.back())) ok = false;\n        }\n    }\n\n    // \u9577\u3044\u30AD\u30E5\
-    \u30FC\u3067\u3001\u5148\u982D\u3092 1 \u3064\u305A\u3064\u53D6\u308A\u9664\u304D\
-    \u306A\u304C\u3089\u78BA\u304B\u3081\u308B\n    {\n        const int n = 200000;\n\
-    \        PersistentQueue<int> q;\n        for (int i = 0; i < n; i++) q = q.push(i);\n\
-    \        PersistentQueue<int> full = q;\n        for (int i = 0; i < n; i++) {\n\
-    \            if (q.front() != i) ok = false;\n            q = q.pop();\n     \
-    \   }\n        if (!q.empty() || full.size() != n || full.front() != 0 || full.back()\
-    \ != n - 1) ok = false;\n        // \u7A7A\u306B\u306A\u3063\u305F\u7248\u306B\
-    \u3082 push \u3067\u304D\u308B\n        q = q.push(-1);\n        if (q.front()\
-    \ != -1 || q.size() != 1) ok = false;\n    }\n\n    if (ok) std::cout << \"Hello\
-    \ World\" << std::endl;\n}\n"
+    \ static_cast<int>(que.size()); i++) {\n            const auto& d = naive[i];\n\
+    \            if (que[i].size() != static_cast<int>(d.size()) || que[i].empty()\
+    \ != d.empty()) ok = false;\n            if (que[i].to_vector() != std::vector<int>(d.begin(),\
+    \ d.end())) ok = false;\n            if (!d.empty() && (que[i].front() != d.front()\
+    \ || que[i].back() != d.back())) ok = false;\n        }\n    }\n\n    // \u9577\
+    \u3044\u30AD\u30E5\u30FC\u3067\u3001\u5148\u982D\u3092 1 \u3064\u305A\u3064\u53D6\
+    \u308A\u9664\u304D\u306A\u304C\u3089\u78BA\u304B\u3081\u308B\n    {\n        const\
+    \ int n = 200000;\n        PersistentQueue<int> q;\n        for (int i = 0; i\
+    \ < n; i++) q = q.push(i);\n        PersistentQueue<int> full = q;\n        for\
+    \ (int i = 0; i < n; i++) {\n            if (q.front() != i) ok = false;\n   \
+    \         q = q.pop();\n        }\n        if (!q.empty() || full.size() != n\
+    \ || full.front() != 0 || full.back() != n - 1) ok = false;\n        // \u7A7A\
+    \u306B\u306A\u3063\u305F\u7248\u306B\u3082 push \u3067\u304D\u308B\n        q\
+    \ = q.push(-1);\n        if (q.front() != -1 || q.size() != 1) ok = false;\n \
+    \   }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// PersistentQueue \u3092\u611A\u76F4\u306A\u5B9F\u88C5 (\u7248\u3054\u3068\
     \u306B std::deque \u3092\u6301\u3064) \u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\
@@ -133,27 +133,27 @@ data:
     \ || que[ver].back() != naive[ver].back()) ok = false;\n            }\n      \
     \  }\n        // \u3059\u3079\u3066\u306E\u7248\u304C\u3001\u4F5C\u3063\u305F\u3068\
     \u304D\u306E\u5185\u5BB9\u306E\u307E\u307E\u304B\n        for (int i = 0; i <\
-    \ int(que.size()); i++) {\n            const auto& d = naive[i];\n           \
-    \ if (que[i].size() != int(d.size()) || que[i].empty() != d.empty()) ok = false;\n\
-    \            if (que[i].to_vector() != std::vector<int>(d.begin(), d.end())) ok\
-    \ = false;\n            if (!d.empty() && (que[i].front() != d.front() || que[i].back()\
-    \ != d.back())) ok = false;\n        }\n    }\n\n    // \u9577\u3044\u30AD\u30E5\
-    \u30FC\u3067\u3001\u5148\u982D\u3092 1 \u3064\u305A\u3064\u53D6\u308A\u9664\u304D\
-    \u306A\u304C\u3089\u78BA\u304B\u3081\u308B\n    {\n        const int n = 200000;\n\
-    \        PersistentQueue<int> q;\n        for (int i = 0; i < n; i++) q = q.push(i);\n\
-    \        PersistentQueue<int> full = q;\n        for (int i = 0; i < n; i++) {\n\
-    \            if (q.front() != i) ok = false;\n            q = q.pop();\n     \
-    \   }\n        if (!q.empty() || full.size() != n || full.front() != 0 || full.back()\
-    \ != n - 1) ok = false;\n        // \u7A7A\u306B\u306A\u3063\u305F\u7248\u306B\
-    \u3082 push \u3067\u304D\u308B\n        q = q.push(-1);\n        if (q.front()\
-    \ != -1 || q.size() != 1) ok = false;\n    }\n\n    if (ok) std::cout << \"Hello\
-    \ World\" << std::endl;\n}\n"
+    \ static_cast<int>(que.size()); i++) {\n            const auto& d = naive[i];\n\
+    \            if (que[i].size() != static_cast<int>(d.size()) || que[i].empty()\
+    \ != d.empty()) ok = false;\n            if (que[i].to_vector() != std::vector<int>(d.begin(),\
+    \ d.end())) ok = false;\n            if (!d.empty() && (que[i].front() != d.front()\
+    \ || que[i].back() != d.back())) ok = false;\n        }\n    }\n\n    // \u9577\
+    \u3044\u30AD\u30E5\u30FC\u3067\u3001\u5148\u982D\u3092 1 \u3064\u305A\u3064\u53D6\
+    \u308A\u9664\u304D\u306A\u304C\u3089\u78BA\u304B\u3081\u308B\n    {\n        const\
+    \ int n = 200000;\n        PersistentQueue<int> q;\n        for (int i = 0; i\
+    \ < n; i++) q = q.push(i);\n        PersistentQueue<int> full = q;\n        for\
+    \ (int i = 0; i < n; i++) {\n            if (q.front() != i) ok = false;\n   \
+    \         q = q.pop();\n        }\n        if (!q.empty() || full.size() != n\
+    \ || full.front() != 0 || full.back() != n - 1) ok = false;\n        // \u7A7A\
+    \u306B\u306A\u3063\u305F\u7248\u306B\u3082 push \u3067\u304D\u308B\n        q\
+    \ = q.push(-1);\n        if (q.front() != -1 || q.size() != 1) ok = false;\n \
+    \   }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/data_structures/persistent-queue.hpp
   isVerificationFile: true
   path: test/unittest/persistent-queue.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/persistent-queue.test.cpp

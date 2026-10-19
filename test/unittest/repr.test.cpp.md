@@ -236,12 +236,15 @@ data:
     template <typename T>\ninline std::string type_str(const T& t) {\n    return internal_repr::type_str(t);\n\
     }\ntemplate <typename T>\ninline std::string initializer_str(const T& t) {\n \
     \   return internal_repr::initializer_str(t);\n}\ntemplate <typename T>\ninline\
-    \ std::string repr(const T& t) {\n    return internal_repr::repr(t);\n}\n\n#define\
-    \ DEBUG(x) \\\n    { std::cerr << #x << \" = \" << repr(x) << std::endl; }\n#line\
-    \ 9 \"test/unittest/repr.test.cpp\"\n\n#line 13 \"test/unittest/repr.test.cpp\"\
-    \n#include <random>\n#line 15 \"test/unittest/repr.test.cpp\"\n#include <sstream>\n\
-    #line 19 \"test/unittest/repr.test.cpp\"\n\n#line 2 \"src/utility/range.hpp\"\n\
-    \n/**\n * @file range.hpp\n * @brief Python \u306E range \u306E\u3088\u3046\u306A\
+    \ std::string repr(const T& t) {\n    return internal_repr::repr(t);\n}\n\n//\
+    \ clang-format \u306E\u7248\u306B\u3088\u3063\u3066 1 \u884C\u306E\u307E\u307E\
+    \u304B\u5C55\u958B\u3059\u308B\u304B\u304C\u5909\u308F\u308B\u306E\u3067\u6574\
+    \u5F62\u3057\u306A\u3044\n// clang-format off\n#define DEBUG(x) \\\n    { std::cerr\
+    \ << #x << \" = \" << repr(x) << std::endl; }\n// clang-format on\n#line 9 \"\
+    test/unittest/repr.test.cpp\"\n\n#line 13 \"test/unittest/repr.test.cpp\"\n#include\
+    \ <random>\n#line 15 \"test/unittest/repr.test.cpp\"\n#include <sstream>\n#line\
+    \ 19 \"test/unittest/repr.test.cpp\"\n\n#line 2 \"src/utility/range.hpp\"\n\n\
+    /**\n * @file range.hpp\n * @brief Python \u306E range \u306E\u3088\u3046\u306A\
     \u6574\u6570\u5217\u3068\u3001\u305D\u306E\u76F4\u7A4D\u306E Rect\n */\n\n#include\
     \ <cassert>\n#line 15 \"src/utility/range.hpp\"\n\nstruct Range {\n   public:\n\
     \    using value_type = long long;\n    using const_reference = const value_type&;\n\
@@ -488,11 +491,14 @@ data:
     \ (rows\u30FBcols \u306E\u4E2D\u3067\u306E\u4F4D\u7F6E\u306E\u5DEE) \u3092 Rect\
     \ \u306E\u9806\u306B\u4E26\u3079\u305F\u3082\u306E\u3002\u5148\u982D 4 \u3064\u306F\
     \u4E0A\u4E0B\u5DE6\u53F3\u3060\u3051\u3092\u4E26\u3079\u305F\u5225\u306E\u8868\
-    \n    static constexpr int neighbor_dirs[12][2] = {{-1, 0}, {0, -1}, {0, 1}, {1,\
-    \ 0},\n                                                 {-1, -1}, {-1, 0}, {-1,\
-    \ 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};\n\n   public:\n    /**\n    \
-    \ * @brief neighbors4 / neighbors8 \u306E\u623B\u308A\u5024 (\u7BC4\u56F2 for\
-    \ \u3067\u4F7F\u3046)\n     * \u4F5C\u308B\u3068\u304D\u306B Rect \u306B\u542B\
+    \n    // 4 \u8FD1\u508D\u3068 8 \u8FD1\u508D\u306E\u5883\u76EE\u304C\u5206\u304B\
+    \u308B\u3088\u3046\u306B 2 \u884C\u306B\u5206\u3051\u3066\u3044\u308B\u306E\u3067\
+    \u6574\u5F62\u3057\u306A\u3044\n    // clang-format off\n    static constexpr\
+    \ int neighbor_dirs[12][2] = {{-1, 0}, {0, -1}, {0, 1}, {1, 0},\n            \
+    \                                     {-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0,\
+    \ 1}, {1, -1}, {1, 0}, {1, 1}};\n    // clang-format on\n\n   public:\n    /**\n\
+    \     * @brief neighbors4 / neighbors8 \u306E\u623B\u308A\u5024 (\u7BC4\u56F2\
+    \ for \u3067\u4F7F\u3046)\n     * \u4F5C\u308B\u3068\u304D\u306B Rect \u306B\u542B\
     \u307E\u308C\u308B\u65B9\u5411\u3092\u30D3\u30C3\u30C8\u3067\u6301\u3063\u3066\
     \u304A\u304D\u3001\u7ACB\u3063\u3066\u3044\u308B\u30D3\u30C3\u30C8\u3092\u9806\
     \u306B\u8FD4\u3059\n     */\n    struct Neighbors {\n        long long i, j, row_step,\
@@ -583,10 +589,10 @@ data:
     \ (floating)\");\n    check(initializer_str(5LL) == \"5ll\" && initializer_str(1.5f)\
     \ == \"1.500000f\", \"initializer_str (number)\");\n\n    // char\n    CHECK_REPR('a',\
     \ 'a');\n    CHECK_REPR('\\n', '\\n');\n    CHECK_REPR('\\0', '\\0');\n    CHECK_REPR('\\\
-    '', '\\'');\n    CHECK_REPR('\\\\', '\\\\');\n    CHECK_REPR(char(1), '\\001');\n\
-    \    CHECK_REPR(char(127), '\\177');\n    CHECK_REPR(char(-61), '\\303');  //\
-    \ UTF-8 \u306E\u6587\u5B57\u306E\u30D0\u30A4\u30C8\u306A\u3069\u3001\u8CA0\u306E\
-    \u5024\u306E char\n    check(type_str('a') == \"char\" && initializer_str('a')\
+    '', '\\'');\n    CHECK_REPR('\\\\', '\\\\');\n    CHECK_REPR(static_cast<char>(1),\
+    \ '\\001');\n    CHECK_REPR(static_cast<char>(127), '\\177');\n    CHECK_REPR(static_cast<char>(-61),\
+    \ '\\303');  // UTF-8 \u306E\u6587\u5B57\u306E\u30D0\u30A4\u30C8\u306A\u3069\u3001\
+    \u8CA0\u306E\u5024\u306E char\n    check(type_str('a') == \"char\" && initializer_str('a')\
     \ == \"'a'\", \"type_str / initializer_str (char)\");\n    for (int i = -128;\
     \ i <= 127; i++) {\n        char c = static_cast<char>(i);\n        check(repr(c)\
     \ == naive_char_repr(c), \"repr(char) for all values\");\n    }\n\n    // \u6587\
@@ -621,14 +627,14 @@ data:
     \ \u6574\u6570\u306E vector\n    for (int rep = 0; rep < 1000 && ok; rep++) {\n\
     \        int n = rng() % 5;\n        std::vector<long long> v(n);\n        std::string\
     \ expect = \"std::vector<long long>{\";\n        for (int i = 0; i < n; i++) {\n\
-    \            v[i] = (long long)(rng() % 2001) - 1000;\n            expect += (i\
-    \ ? \", \" : \"\") + std::to_string(v[i]) + \"ll\";\n        }\n        expect\
-    \ += \"}\";\n        check(repr(v) == expect, \"repr(vector<long long>) (random)\"\
-    );\n    }\n\n    // DEBUG(x) \u306F std::cerr \u306B \"x = repr(x)\" \u3092\u51FA\
-    \u529B\u3059\u308B\n    {\n        std::ostringstream buf;\n        std::streambuf*\
-    \ old = std::cerr.rdbuf(buf.rdbuf());\n        std::vector<int> xs{1, 2};\n  \
-    \      DEBUG(xs);\n        std::cerr.rdbuf(old);\n        check(buf.str() == \"\
-    xs = std::vector<int>{1, 2}\\n\", \"DEBUG\");\n    }\n\n    if (ok) std::cout\
+    \            v[i] = static_cast<long long>(rng() % 2001) - 1000;\n           \
+    \ expect += (i ? \", \" : \"\") + std::to_string(v[i]) + \"ll\";\n        }\n\
+    \        expect += \"}\";\n        check(repr(v) == expect, \"repr(vector<long\
+    \ long>) (random)\");\n    }\n\n    // DEBUG(x) \u306F std::cerr \u306B \"x =\
+    \ repr(x)\" \u3092\u51FA\u529B\u3059\u308B\n    {\n        std::ostringstream\
+    \ buf;\n        std::streambuf* old = std::cerr.rdbuf(buf.rdbuf());\n        std::vector<int>\
+    \ xs{1, 2};\n        DEBUG(xs);\n        std::cerr.rdbuf(old);\n        check(buf.str()\
+    \ == \"xs = std::vector<int>{1, 2}\\n\", \"DEBUG\");\n    }\n\n    if (ok) std::cout\
     \ << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// repr.hpp \u306E\u6587\u5B57\u5217\u5316\u3092\u691C\u8A3C\u3059\u308B\n\
@@ -682,10 +688,10 @@ data:
     , \"type_str (floating)\");\n    check(initializer_str(5LL) == \"5ll\" && initializer_str(1.5f)\
     \ == \"1.500000f\", \"initializer_str (number)\");\n\n    // char\n    CHECK_REPR('a',\
     \ 'a');\n    CHECK_REPR('\\n', '\\n');\n    CHECK_REPR('\\0', '\\0');\n    CHECK_REPR('\\\
-    '', '\\'');\n    CHECK_REPR('\\\\', '\\\\');\n    CHECK_REPR(char(1), '\\001');\n\
-    \    CHECK_REPR(char(127), '\\177');\n    CHECK_REPR(char(-61), '\\303');  //\
-    \ UTF-8 \u306E\u6587\u5B57\u306E\u30D0\u30A4\u30C8\u306A\u3069\u3001\u8CA0\u306E\
-    \u5024\u306E char\n    check(type_str('a') == \"char\" && initializer_str('a')\
+    '', '\\'');\n    CHECK_REPR('\\\\', '\\\\');\n    CHECK_REPR(static_cast<char>(1),\
+    \ '\\001');\n    CHECK_REPR(static_cast<char>(127), '\\177');\n    CHECK_REPR(static_cast<char>(-61),\
+    \ '\\303');  // UTF-8 \u306E\u6587\u5B57\u306E\u30D0\u30A4\u30C8\u306A\u3069\u3001\
+    \u8CA0\u306E\u5024\u306E char\n    check(type_str('a') == \"char\" && initializer_str('a')\
     \ == \"'a'\", \"type_str / initializer_str (char)\");\n    for (int i = -128;\
     \ i <= 127; i++) {\n        char c = static_cast<char>(i);\n        check(repr(c)\
     \ == naive_char_repr(c), \"repr(char) for all values\");\n    }\n\n    // \u6587\
@@ -720,14 +726,14 @@ data:
     \ \u6574\u6570\u306E vector\n    for (int rep = 0; rep < 1000 && ok; rep++) {\n\
     \        int n = rng() % 5;\n        std::vector<long long> v(n);\n        std::string\
     \ expect = \"std::vector<long long>{\";\n        for (int i = 0; i < n; i++) {\n\
-    \            v[i] = (long long)(rng() % 2001) - 1000;\n            expect += (i\
-    \ ? \", \" : \"\") + std::to_string(v[i]) + \"ll\";\n        }\n        expect\
-    \ += \"}\";\n        check(repr(v) == expect, \"repr(vector<long long>) (random)\"\
-    );\n    }\n\n    // DEBUG(x) \u306F std::cerr \u306B \"x = repr(x)\" \u3092\u51FA\
-    \u529B\u3059\u308B\n    {\n        std::ostringstream buf;\n        std::streambuf*\
-    \ old = std::cerr.rdbuf(buf.rdbuf());\n        std::vector<int> xs{1, 2};\n  \
-    \      DEBUG(xs);\n        std::cerr.rdbuf(old);\n        check(buf.str() == \"\
-    xs = std::vector<int>{1, 2}\\n\", \"DEBUG\");\n    }\n\n    if (ok) std::cout\
+    \            v[i] = static_cast<long long>(rng() % 2001) - 1000;\n           \
+    \ expect += (i ? \", \" : \"\") + std::to_string(v[i]) + \"ll\";\n        }\n\
+    \        expect += \"}\";\n        check(repr(v) == expect, \"repr(vector<long\
+    \ long>) (random)\");\n    }\n\n    // DEBUG(x) \u306F std::cerr \u306B \"x =\
+    \ repr(x)\" \u3092\u51FA\u529B\u3059\u308B\n    {\n        std::ostringstream\
+    \ buf;\n        std::streambuf* old = std::cerr.rdbuf(buf.rdbuf());\n        std::vector<int>\
+    \ xs{1, 2};\n        DEBUG(xs);\n        std::cerr.rdbuf(old);\n        check(buf.str()\
+    \ == \"xs = std::vector<int>{1, 2}\\n\", \"DEBUG\");\n    }\n\n    if (ok) std::cout\
     \ << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/utility/repr.hpp
@@ -736,7 +742,7 @@ data:
   isVerificationFile: true
   path: test/unittest/repr.test.cpp
   requiredBy: []
-  timestamp: '2026-10-18 18:58:07+09:00'
+  timestamp: '2026-10-19 12:29:38+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/repr.test.cpp

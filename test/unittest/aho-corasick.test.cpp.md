@@ -180,56 +180,56 @@ data:
     \ v = 1; v < ac.size(); v++) {\n            long long p = ac.parent(v);\n    \
     \        check(0 <= p && p < v, \"\u89AA\u306F\u5148\u306B\u4F5C\u3089\u308C\u3066\
     \u3044\u308B\");\n            for (int c = 0; c < 3; c++) {\n                if\
-    \ (ac.next(p, 'a' + c) == v) str[v] = str[p] + char('a' + c);\n            }\n\
-    \            check(ac.depth(v) == (long long)str[v].size(), \"depth\");\n    \
-    \    }\n        check(ac.parent(0) == -1 && ac.link(0) == -1 && ac.depth(0) ==\
-    \ 0, \"\u6839\");\n        auto find_node = [&](const std::string& s) -> long\
-    \ long {\n            for (long long v = 0; v < ac.size(); v++) {\n          \
-    \      if (str[v] == s) return v;\n            }\n            return -1;\n   \
-    \     };\n        for (int i = 0; i < m; i++) check(str[ac.node(i)] == pats[i],\
-    \ \"node\");\n        for (long long v = 0; v < ac.size(); v++) {\n          \
-    \  const std::string& s = str[v];\n            // \u5931\u6557\u30EA\u30F3\u30AF\
-    : \u30CE\u30FC\u30C9\u306E\u3042\u308B\u6700\u9577\u306E\u771F\u306E\u63A5\u5C3E\
-    \u8F9E\n            if (v > 0) {\n                long long expect = 0;\n    \
-    \            for (size_t len = s.size() - 1; len > 0; len--) {\n             \
-    \       long long u = find_node(s.substr(s.size() - len));\n                 \
-    \   if (u != -1) {\n                        expect = u;\n                    \
-    \    break;\n                    }\n                }\n                check(ac.link(v)\
+    \ (ac.next(p, 'a' + c) == v) str[v] = str[p] + static_cast<char>('a' + c);\n \
+    \           }\n            check(ac.depth(v) == static_cast<long long>(str[v].size()),\
+    \ \"depth\");\n        }\n        check(ac.parent(0) == -1 && ac.link(0) == -1\
+    \ && ac.depth(0) == 0, \"\u6839\");\n        auto find_node = [&](const std::string&\
+    \ s) -> long long {\n            for (long long v = 0; v < ac.size(); v++) {\n\
+    \                if (str[v] == s) return v;\n            }\n            return\
+    \ -1;\n        };\n        for (int i = 0; i < m; i++) check(str[ac.node(i)] ==\
+    \ pats[i], \"node\");\n        for (long long v = 0; v < ac.size(); v++) {\n \
+    \           const std::string& s = str[v];\n            // \u5931\u6557\u30EA\u30F3\
+    \u30AF: \u30CE\u30FC\u30C9\u306E\u3042\u308B\u6700\u9577\u306E\u771F\u306E\u63A5\
+    \u5C3E\u8F9E\n            if (v > 0) {\n                long long expect = 0;\n\
+    \                for (size_t len = s.size() - 1; len > 0; len--) {\n         \
+    \           long long u = find_node(s.substr(s.size() - len));\n             \
+    \       if (u != -1) {\n                        expect = u;\n                \
+    \        break;\n                    }\n                }\n                check(ac.link(v)\
     \ == expect, \"link\");\n            }\n            // \u9077\u79FB: s + c \u306E\
     \u63A5\u5C3E\u8F9E\u306E\u3046\u3061\u3001\u30CE\u30FC\u30C9\u306E\u3042\u308B\
     \u6700\u9577\u306E\u3082\u306E\n            for (int c = 0; c < 3; c++) {\n  \
-    \              std::string t = s + char('a' + c);\n                long long expect\
-    \ = 0;\n                for (size_t len = t.size(); len > 0; len--) {\n      \
-    \              long long u = find_node(t.substr(t.size() - len));\n          \
-    \          if (u != -1) {\n                        expect = u;\n             \
-    \           break;\n                    }\n                }\n               \
-    \ check(ac.next(v, 'a' + c) == expect, \"next\");\n            }\n           \
-    \ long long mc = 0;\n            for (const auto& p : pats) mc += p.size() <=\
-    \ s.size() && s.compare(s.size() - p.size(), p.size(), p) == 0;\n            check(ac.match_count(v)\
-    \ == mc, \"match_count\");\n        }\n\n        // \u7167\u5408: \u611A\u76F4\
-    \u306B\u5168\u4F4D\u7F6E\u3067\u6BD4\u3079\u308B\n        for (int t = 0; t <\
-    \ 5; t++) {\n            std::string text = rng() % 5 == 0 ? std::string() : random_string(30);\n\
-    \            std::vector<long long> each(m, 0);\n            std::vector<std::pair<long\
-    \ long, long long>> all;  // (\u958B\u59CB\u4F4D\u7F6E, \u756A\u53F7)\n      \
-    \      std::vector<std::tuple<long long, long long, long long>> order;  // (\u7D42\
-    \u308F\u308B\u4F4D\u7F6E, -\u9577\u3055, \u756A\u53F7) \u306E\u9806\u306B\u4E26\
-    \u3079\u308B\n            for (long long end = 1; end <= (long long)text.size();\
-    \ end++) {\n                for (int i = 0; i < m; i++) {\n                  \
-    \  long long len = pats[i].size();\n                    if (len <= end && text.compare(end\
-    \ - len, len, pats[i]) == 0) {\n                        each[i]++;\n         \
-    \               order.emplace_back(end, -len, i);\n                    }\n   \
-    \             }\n            }\n            std::sort(order.begin(), order.end());\n\
-    \            for (auto [end, neg_len, i] : order) all.emplace_back(end + neg_len,\
-    \ i);\n            long long total = 0;\n            for (long long x : each)\
-    \ total += x;\n            check(ac.count(text) == total, \"count\");\n      \
-    \      check(ac.count_each(text) == each, \"count_each\");\n            check(ac.find_all(text)\
-    \ == all, \"find_all\");\n        }\n    }\n    // std::vector<int> \u306E\u6587\
-    \u5B57\u5217\u3068\u3001\u5225\u306E\u6587\u5B57\u306E\u7BC4\u56F2\n    {\n  \
-    \      AhoCorasick<10, 0> ac;\n        ac.add(std::vector<int>{1, 2});\n     \
-    \   ac.add(std::vector<int>{2});\n        ac.build();\n        std::vector<int>\
-    \ text = {1, 2, 2, 1, 2};\n        check(ac.count(text) == 5 && ac.count_each(text)\
-    \ == std::vector<long long>{2, 3}, \"std::vector<int>\");\n    }\n    if (ok)\
-    \ std::cout << \"Hello World\" << std::endl;\n}\n"
+    \              std::string t = s + static_cast<char>('a' + c);\n             \
+    \   long long expect = 0;\n                for (size_t len = t.size(); len > 0;\
+    \ len--) {\n                    long long u = find_node(t.substr(t.size() - len));\n\
+    \                    if (u != -1) {\n                        expect = u;\n   \
+    \                     break;\n                    }\n                }\n     \
+    \           check(ac.next(v, 'a' + c) == expect, \"next\");\n            }\n \
+    \           long long mc = 0;\n            for (const auto& p : pats) mc += p.size()\
+    \ <= s.size() && s.compare(s.size() - p.size(), p.size(), p) == 0;\n         \
+    \   check(ac.match_count(v) == mc, \"match_count\");\n        }\n\n        //\
+    \ \u7167\u5408: \u611A\u76F4\u306B\u5168\u4F4D\u7F6E\u3067\u6BD4\u3079\u308B\n\
+    \        for (int t = 0; t < 5; t++) {\n            std::string text = rng() %\
+    \ 5 == 0 ? std::string() : random_string(30);\n            std::vector<long long>\
+    \ each(m, 0);\n            std::vector<std::pair<long long, long long>> all; \
+    \               // (\u958B\u59CB\u4F4D\u7F6E, \u756A\u53F7)\n            std::vector<std::tuple<long\
+    \ long, long long, long long>> order;  // (\u7D42\u308F\u308B\u4F4D\u7F6E, -\u9577\
+    \u3055, \u756A\u53F7) \u306E\u9806\u306B\u4E26\u3079\u308B\n            for (long\
+    \ long end = 1; end <= static_cast<long long>(text.size()); end++) {\n       \
+    \         for (int i = 0; i < m; i++) {\n                    long long len = pats[i].size();\n\
+    \                    if (len <= end && text.compare(end - len, len, pats[i]) ==\
+    \ 0) {\n                        each[i]++;\n                        order.emplace_back(end,\
+    \ -len, i);\n                    }\n                }\n            }\n       \
+    \     std::sort(order.begin(), order.end());\n            for (auto [end, neg_len,\
+    \ i] : order) all.emplace_back(end + neg_len, i);\n            long long total\
+    \ = 0;\n            for (long long x : each) total += x;\n            check(ac.count(text)\
+    \ == total, \"count\");\n            check(ac.count_each(text) == each, \"count_each\"\
+    );\n            check(ac.find_all(text) == all, \"find_all\");\n        }\n  \
+    \  }\n    // std::vector<int> \u306E\u6587\u5B57\u5217\u3068\u3001\u5225\u306E\
+    \u6587\u5B57\u306E\u7BC4\u56F2\n    {\n        AhoCorasick<10, 0> ac;\n      \
+    \  ac.add(std::vector<int>{1, 2});\n        ac.add(std::vector<int>{2});\n   \
+    \     ac.build();\n        std::vector<int> text = {1, 2, 2, 1, 2};\n        check(ac.count(text)\
+    \ == 5 && ac.count_each(text) == std::vector<long long>{2, 3}, \"std::vector<int>\"\
+    );\n    }\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// AhoCorasick \u3092\u3001\u6587\u5B57\u5217\u3092\u611A\u76F4\u306B\u6BD4\
     \u3079\u308B\u5B9F\u88C5\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\
@@ -259,8 +259,8 @@ data:
     \        for (long long v = 1; v < ac.size(); v++) {\n            long long p\
     \ = ac.parent(v);\n            check(0 <= p && p < v, \"\u89AA\u306F\u5148\u306B\
     \u4F5C\u3089\u308C\u3066\u3044\u308B\");\n            for (int c = 0; c < 3; c++)\
-    \ {\n                if (ac.next(p, 'a' + c) == v) str[v] = str[p] + char('a'\
-    \ + c);\n            }\n            check(ac.depth(v) == (long long)str[v].size(),\
+    \ {\n                if (ac.next(p, 'a' + c) == v) str[v] = str[p] + static_cast<char>('a'\
+    \ + c);\n            }\n            check(ac.depth(v) == static_cast<long long>(str[v].size()),\
     \ \"depth\");\n        }\n        check(ac.parent(0) == -1 && ac.link(0) == -1\
     \ && ac.depth(0) == 0, \"\u6839\");\n        auto find_node = [&](const std::string&\
     \ s) -> long long {\n            for (long long v = 0; v < ac.size(); v++) {\n\
@@ -277,44 +277,44 @@ data:
     \ == expect, \"link\");\n            }\n            // \u9077\u79FB: s + c \u306E\
     \u63A5\u5C3E\u8F9E\u306E\u3046\u3061\u3001\u30CE\u30FC\u30C9\u306E\u3042\u308B\
     \u6700\u9577\u306E\u3082\u306E\n            for (int c = 0; c < 3; c++) {\n  \
-    \              std::string t = s + char('a' + c);\n                long long expect\
-    \ = 0;\n                for (size_t len = t.size(); len > 0; len--) {\n      \
-    \              long long u = find_node(t.substr(t.size() - len));\n          \
-    \          if (u != -1) {\n                        expect = u;\n             \
-    \           break;\n                    }\n                }\n               \
-    \ check(ac.next(v, 'a' + c) == expect, \"next\");\n            }\n           \
-    \ long long mc = 0;\n            for (const auto& p : pats) mc += p.size() <=\
-    \ s.size() && s.compare(s.size() - p.size(), p.size(), p) == 0;\n            check(ac.match_count(v)\
-    \ == mc, \"match_count\");\n        }\n\n        // \u7167\u5408: \u611A\u76F4\
-    \u306B\u5168\u4F4D\u7F6E\u3067\u6BD4\u3079\u308B\n        for (int t = 0; t <\
-    \ 5; t++) {\n            std::string text = rng() % 5 == 0 ? std::string() : random_string(30);\n\
-    \            std::vector<long long> each(m, 0);\n            std::vector<std::pair<long\
-    \ long, long long>> all;  // (\u958B\u59CB\u4F4D\u7F6E, \u756A\u53F7)\n      \
-    \      std::vector<std::tuple<long long, long long, long long>> order;  // (\u7D42\
-    \u308F\u308B\u4F4D\u7F6E, -\u9577\u3055, \u756A\u53F7) \u306E\u9806\u306B\u4E26\
-    \u3079\u308B\n            for (long long end = 1; end <= (long long)text.size();\
-    \ end++) {\n                for (int i = 0; i < m; i++) {\n                  \
-    \  long long len = pats[i].size();\n                    if (len <= end && text.compare(end\
-    \ - len, len, pats[i]) == 0) {\n                        each[i]++;\n         \
-    \               order.emplace_back(end, -len, i);\n                    }\n   \
-    \             }\n            }\n            std::sort(order.begin(), order.end());\n\
-    \            for (auto [end, neg_len, i] : order) all.emplace_back(end + neg_len,\
-    \ i);\n            long long total = 0;\n            for (long long x : each)\
-    \ total += x;\n            check(ac.count(text) == total, \"count\");\n      \
-    \      check(ac.count_each(text) == each, \"count_each\");\n            check(ac.find_all(text)\
-    \ == all, \"find_all\");\n        }\n    }\n    // std::vector<int> \u306E\u6587\
-    \u5B57\u5217\u3068\u3001\u5225\u306E\u6587\u5B57\u306E\u7BC4\u56F2\n    {\n  \
-    \      AhoCorasick<10, 0> ac;\n        ac.add(std::vector<int>{1, 2});\n     \
-    \   ac.add(std::vector<int>{2});\n        ac.build();\n        std::vector<int>\
-    \ text = {1, 2, 2, 1, 2};\n        check(ac.count(text) == 5 && ac.count_each(text)\
-    \ == std::vector<long long>{2, 3}, \"std::vector<int>\");\n    }\n    if (ok)\
-    \ std::cout << \"Hello World\" << std::endl;\n}\n"
+    \              std::string t = s + static_cast<char>('a' + c);\n             \
+    \   long long expect = 0;\n                for (size_t len = t.size(); len > 0;\
+    \ len--) {\n                    long long u = find_node(t.substr(t.size() - len));\n\
+    \                    if (u != -1) {\n                        expect = u;\n   \
+    \                     break;\n                    }\n                }\n     \
+    \           check(ac.next(v, 'a' + c) == expect, \"next\");\n            }\n \
+    \           long long mc = 0;\n            for (const auto& p : pats) mc += p.size()\
+    \ <= s.size() && s.compare(s.size() - p.size(), p.size(), p) == 0;\n         \
+    \   check(ac.match_count(v) == mc, \"match_count\");\n        }\n\n        //\
+    \ \u7167\u5408: \u611A\u76F4\u306B\u5168\u4F4D\u7F6E\u3067\u6BD4\u3079\u308B\n\
+    \        for (int t = 0; t < 5; t++) {\n            std::string text = rng() %\
+    \ 5 == 0 ? std::string() : random_string(30);\n            std::vector<long long>\
+    \ each(m, 0);\n            std::vector<std::pair<long long, long long>> all; \
+    \               // (\u958B\u59CB\u4F4D\u7F6E, \u756A\u53F7)\n            std::vector<std::tuple<long\
+    \ long, long long, long long>> order;  // (\u7D42\u308F\u308B\u4F4D\u7F6E, -\u9577\
+    \u3055, \u756A\u53F7) \u306E\u9806\u306B\u4E26\u3079\u308B\n            for (long\
+    \ long end = 1; end <= static_cast<long long>(text.size()); end++) {\n       \
+    \         for (int i = 0; i < m; i++) {\n                    long long len = pats[i].size();\n\
+    \                    if (len <= end && text.compare(end - len, len, pats[i]) ==\
+    \ 0) {\n                        each[i]++;\n                        order.emplace_back(end,\
+    \ -len, i);\n                    }\n                }\n            }\n       \
+    \     std::sort(order.begin(), order.end());\n            for (auto [end, neg_len,\
+    \ i] : order) all.emplace_back(end + neg_len, i);\n            long long total\
+    \ = 0;\n            for (long long x : each) total += x;\n            check(ac.count(text)\
+    \ == total, \"count\");\n            check(ac.count_each(text) == each, \"count_each\"\
+    );\n            check(ac.find_all(text) == all, \"find_all\");\n        }\n  \
+    \  }\n    // std::vector<int> \u306E\u6587\u5B57\u5217\u3068\u3001\u5225\u306E\
+    \u6587\u5B57\u306E\u7BC4\u56F2\n    {\n        AhoCorasick<10, 0> ac;\n      \
+    \  ac.add(std::vector<int>{1, 2});\n        ac.add(std::vector<int>{2});\n   \
+    \     ac.build();\n        std::vector<int> text = {1, 2, 2, 1, 2};\n        check(ac.count(text)\
+    \ == 5 && ac.count_each(text) == std::vector<long long>{2, 3}, \"std::vector<int>\"\
+    );\n    }\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/string/aho-corasick.hpp
   isVerificationFile: true
   path: test/unittest/aho-corasick.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:29:38+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/aho-corasick.test.cpp

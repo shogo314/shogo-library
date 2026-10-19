@@ -416,8 +416,8 @@ data:
     \  // n = 1\n    } else {\n        vs.push_back(path[0].src);\n        for (const\
     \ auto& e : path) {\n            x += e.cost;\n            vs.push_back(e.dst);\n\
     \        }\n    }\n    std::cout << x << ' ' << vs.size() << '\\n';\n    for (int\
-    \ i = 0; i < (int)vs.size(); i++) std::cout << vs[i] << \" \\n\"[i + 1 == (int)vs.size()];\n\
-    }\n"
+    \ i = 0; i < static_cast<int>(vs.size()); i++) std::cout << vs[i] << \" \\n\"\
+    [i + 1 == static_cast<int>(vs.size())];\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/tree_diameter\"\n\n#include\
     \ <iostream>\n#include <vector>\n\n#include \"../../src/graph/tree.hpp\"\n\nint\
     \ main() {\n    int n;\n    std::cin >> n;\n    Tree<long long> tree(n);\n   \
@@ -426,15 +426,15 @@ data:
     \ // n = 1\n    } else {\n        vs.push_back(path[0].src);\n        for (const\
     \ auto& e : path) {\n            x += e.cost;\n            vs.push_back(e.dst);\n\
     \        }\n    }\n    std::cout << x << ' ' << vs.size() << '\\n';\n    for (int\
-    \ i = 0; i < (int)vs.size(); i++) std::cout << vs[i] << \" \\n\"[i + 1 == (int)vs.size()];\n\
-    }\n"
+    \ i = 0; i < static_cast<int>(vs.size()); i++) std::cout << vs[i] << \" \\n\"\
+    [i + 1 == static_cast<int>(vs.size())];\n}\n"
   dependsOn:
   - src/graph/tree.hpp
   - src/graph/graph.hpp
   isVerificationFile: true
   path: test/yosupo/tree-diameter.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/tree-diameter.test.cpp

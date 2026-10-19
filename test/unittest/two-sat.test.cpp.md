@@ -522,41 +522,9 @@ data:
     \ main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    int sat_count\
     \ = 0;\n    for (int rep = 0; rep < 3000 && ok; rep++) {\n        int n = rng()\
     \ % 8 + 1;\n        int m = rng() % (3 * n);\n        std::vector<Cond> cs(m);\n\
-    \        TwoSat ts(n);\n        for (auto& c : cs) {\n            c = {int(rng()\
-    \ % 4), int(rng() % n), bool(rng() % 2), int(rng() % n), bool(rng() % 2)};\n \
-    \           if (c.type == 0) ts.add_clause(c.i, c.f, c.j, c.g);\n            if\
-    \ (c.type == 1) ts.add_imply(c.i, c.f, c.j, c.g);\n            if (c.type == 2)\
-    \ ts.add_fix(c.i, c.f);\n            if (c.type == 3) ts.add_nand(c.i, c.f, c.j,\
-    \ c.g);\n        }\n        bool expected = false;\n        for (int mask = 0;\
-    \ mask < (1 << n) && !expected; mask++) {\n            std::vector<bool> x(n);\n\
-    \            for (int k = 0; k < n; k++) x[k] = mask >> k & 1;\n            bool\
-    \ all = true;\n            for (const auto& c : cs) all = all && c.holds(x);\n\
-    \            expected = all;\n        }\n        bool got = ts.satisfiable();\n\
-    \        ok = ok && got == expected && ts.size() == n;\n        if (got) {\n \
-    \           sat_count++;\n            const auto& x = ts.answer();\n         \
-    \   for (const auto& c : cs) ok = ok && c.holds(x);\n        }\n    }\n    //\
-    \ \u5145\u8DB3\u53EF\u80FD\u306A\u5834\u5408\u3068\u4E0D\u53EF\u80FD\u306A\u5834\
-    \u5408\u306E\u4E21\u65B9\u3092\u8A66\u305B\u3066\u3044\u308B\u3053\u3068\n   \
-    \ ok = ok && 100 < sat_count && sat_count < 2900;\n\n    if (ok)\n        std::cout\
-    \ << \"Hello World\" << std::endl;\n    else\n        std::cerr << \"failed\"\
-    \ << std::endl;\n}\n"
-  code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
-    \n\n// TwoSat \u3092\u3059\u3079\u3066\u306E\u5272\u308A\u5F53\u3066\u3092\u8A66\
-    \u3059\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\
-    \u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\
-    \u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\
-    \u3059\u308B\n\n#include \"../../src/graph/two-sat.hpp\"\n\n#include <iostream>\n\
-    #include <random>\n#include <vector>\n\n// \u6761\u4EF6\u306E\u7A2E\u985E: 0 =\
-    \ clause, 1 = imply, 2 = fix, 3 = nand\nstruct Cond {\n    int type, i;\n    bool\
-    \ f;\n    int j;\n    bool g;\n    bool holds(const std::vector<bool>& x) const\
-    \ {\n        bool a = x[i] == f, b = x[j] == g;\n        if (type == 0) return\
-    \ a || b;\n        if (type == 1) return !a || b;\n        if (type == 2) return\
-    \ a;\n        return !(a && b);\n    }\n};\n\nint main() {\n    std::mt19937 rng(314);\n\
-    \    bool ok = true;\n    int sat_count = 0;\n    for (int rep = 0; rep < 3000\
-    \ && ok; rep++) {\n        int n = rng() % 8 + 1;\n        int m = rng() % (3\
-    \ * n);\n        std::vector<Cond> cs(m);\n        TwoSat ts(n);\n        for\
-    \ (auto& c : cs) {\n            c = {int(rng() % 4), int(rng() % n), bool(rng()\
-    \ % 2), int(rng() % n), bool(rng() % 2)};\n            if (c.type == 0) ts.add_clause(c.i,\
+    \        TwoSat ts(n);\n        for (auto& c : cs) {\n            c = {static_cast<int>(rng()\
+    \ % 4), static_cast<int>(rng() % n), static_cast<bool>(rng() % 2), static_cast<int>(rng()\
+    \ % n), static_cast<bool>(rng() % 2)};\n            if (c.type == 0) ts.add_clause(c.i,\
     \ c.f, c.j, c.g);\n            if (c.type == 1) ts.add_imply(c.i, c.f, c.j, c.g);\n\
     \            if (c.type == 2) ts.add_fix(c.i, c.f);\n            if (c.type ==\
     \ 3) ts.add_nand(c.i, c.f, c.j, c.g);\n        }\n        bool expected = false;\n\
@@ -572,6 +540,39 @@ data:
     \u308B\u3053\u3068\n    ok = ok && 100 < sat_count && sat_count < 2900;\n\n  \
     \  if (ok)\n        std::cout << \"Hello World\" << std::endl;\n    else\n   \
     \     std::cerr << \"failed\" << std::endl;\n}\n"
+  code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
+    \n\n// TwoSat \u3092\u3059\u3079\u3066\u306E\u5272\u308A\u5F53\u3066\u3092\u8A66\
+    \u3059\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\
+    \u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\
+    \u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\
+    \u3059\u308B\n\n#include \"../../src/graph/two-sat.hpp\"\n\n#include <iostream>\n\
+    #include <random>\n#include <vector>\n\n// \u6761\u4EF6\u306E\u7A2E\u985E: 0 =\
+    \ clause, 1 = imply, 2 = fix, 3 = nand\nstruct Cond {\n    int type, i;\n    bool\
+    \ f;\n    int j;\n    bool g;\n    bool holds(const std::vector<bool>& x) const\
+    \ {\n        bool a = x[i] == f, b = x[j] == g;\n        if (type == 0) return\
+    \ a || b;\n        if (type == 1) return !a || b;\n        if (type == 2) return\
+    \ a;\n        return !(a && b);\n    }\n};\n\nint main() {\n    std::mt19937 rng(314);\n\
+    \    bool ok = true;\n    int sat_count = 0;\n    for (int rep = 0; rep < 3000\
+    \ && ok; rep++) {\n        int n = rng() % 8 + 1;\n        int m = rng() % (3\
+    \ * n);\n        std::vector<Cond> cs(m);\n        TwoSat ts(n);\n        for\
+    \ (auto& c : cs) {\n            c = {static_cast<int>(rng() % 4), static_cast<int>(rng()\
+    \ % n), static_cast<bool>(rng() % 2), static_cast<int>(rng() % n), static_cast<bool>(rng()\
+    \ % 2)};\n            if (c.type == 0) ts.add_clause(c.i, c.f, c.j, c.g);\n  \
+    \          if (c.type == 1) ts.add_imply(c.i, c.f, c.j, c.g);\n            if\
+    \ (c.type == 2) ts.add_fix(c.i, c.f);\n            if (c.type == 3) ts.add_nand(c.i,\
+    \ c.f, c.j, c.g);\n        }\n        bool expected = false;\n        for (int\
+    \ mask = 0; mask < (1 << n) && !expected; mask++) {\n            std::vector<bool>\
+    \ x(n);\n            for (int k = 0; k < n; k++) x[k] = mask >> k & 1;\n     \
+    \       bool all = true;\n            for (const auto& c : cs) all = all && c.holds(x);\n\
+    \            expected = all;\n        }\n        bool got = ts.satisfiable();\n\
+    \        ok = ok && got == expected && ts.size() == n;\n        if (got) {\n \
+    \           sat_count++;\n            const auto& x = ts.answer();\n         \
+    \   for (const auto& c : cs) ok = ok && c.holds(x);\n        }\n    }\n    //\
+    \ \u5145\u8DB3\u53EF\u80FD\u306A\u5834\u5408\u3068\u4E0D\u53EF\u80FD\u306A\u5834\
+    \u5408\u306E\u4E21\u65B9\u3092\u8A66\u305B\u3066\u3044\u308B\u3053\u3068\n   \
+    \ ok = ok && 100 < sat_count && sat_count < 2900;\n\n    if (ok)\n        std::cout\
+    \ << \"Hello World\" << std::endl;\n    else\n        std::cerr << \"failed\"\
+    \ << std::endl;\n}\n"
   dependsOn:
   - src/graph/two-sat.hpp
   - src/graph/graph.hpp
@@ -580,7 +581,7 @@ data:
   isVerificationFile: true
   path: test/unittest/two-sat.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/two-sat.test.cpp

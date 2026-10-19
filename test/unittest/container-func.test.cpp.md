@@ -189,69 +189,70 @@ data:
     \ {\n        if (ok) std::cerr << \"failed: \" << what << std::endl;\n       \
     \ ok = false;\n    }\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n    auto\
     \ rand_vec = [&](int n, long long lo, long long hi) {\n        std::vector<long\
-    \ long> v(n);\n        for (auto& x : v) x = lo + (long long)(rng() % (unsigned\
-    \ long long)(hi - lo + 1));\n        return v;\n    };\n\n    for (int rep = 0;\
-    \ rep < 2000 && ok; rep++) {\n        int n = rng() % 10 + 1;\n        std::vector<long\
-    \ long> v = rand_vec(n, -5, 5);\n\n        // sorted / sort (\u6BD4\u8F03\u95A2\
-    \u6570\u3064\u304D)\n        {\n            std::vector<long long> expect = v;\n\
-    \            std::sort(expect.begin(), expect.end(), std::greater<long long>());\n\
-    \            check(sorted(v, std::greater<long long>()) == expect, \"sorted(c,\
-    \ f)\");\n            std::vector<long long> w = v;\n            sort(w, std::greater<long\
-    \ long>());\n            check(w == expect, \"sort(c, f)\");\n        }\n\n  \
-    \      // set / multiset \u306B\u5BFE\u3059\u308B max / min (\u30BD\u30FC\u30C8\
-    \u6E08\u307F\u306E\u30B3\u30F3\u30C6\u30CA\u306F\u5148\u982D\u3068\u672B\u5C3E\
-    )\n        {\n            std::set<long long> s(v.begin(), v.end());\n       \
-    \     std::multiset<long long> ms(v.begin(), v.end());\n            long long\
-    \ mx = *std::max_element(v.begin(), v.end());\n            long long mn = *std::min_element(v.begin(),\
-    \ v.end());\n            check(max(s) == mx && min(s) == mn, \"max/min(set)\"\
-    );\n            check(max(ms) == mx && min(ms) == mn, \"max/min(multiset)\");\n\
-    \            check(max(v) == mx && min(v) == mn, \"max/min(vector)\");\n     \
-    \   }\n\n        // product / product_xor\n        {\n            std::vector<long\
-    \ long> small = rand_vec(n, -3, 3);\n            long long p = 1, x = 0;\n   \
-    \         for (long long a : small) p *= a, x ^= a;\n            check(product(small)\
-    \ == p, \"product(c)\");\n            check(product_xor(small) == x, \"product_xor(c)\"\
-    );\n            std::vector<long long> nonneg = rand_vec(n, 0, 1000000);\n   \
-    \         long long y = 0;\n            for (long long a : nonneg) y ^= a;\n \
-    \           check(product_xor(nonneg) == y, \"product_xor(c) large\");\n     \
-    \   }\n\n        // median: \u5076\u6570\u500B\u306A\u3089\u4E2D\u592E 2 \u3064\
-    \u306E\u5E73\u5747 (\u6574\u6570\u578B\u306F 0 \u65B9\u5411\u306B\u5207\u308A\u6368\
-    \u3066)\n        {\n            std::vector<long long> w = v;\n            std::sort(w.begin(),\
-    \ w.end());\n            long long expect = n % 2 ? w[n / 2] : (w[n / 2 - 1] +\
-    \ w[n / 2]) / 2;\n            check(median(v) == expect, \"median(vector<long\
-    \ long>)\");\n            std::vector<double> d(v.begin(), v.end());\n       \
-    \     std::vector<double> dw = d;\n            std::sort(dw.begin(), dw.end());\n\
-    \            double dexp = n % 2 ? dw[n / 2] : (dw[n / 2 - 1] + dw[n / 2]) / 2;\n\
-    \            check(median(d) == dexp, \"median(vector<double>)\");\n        }\n\
-    \n        // index: \u6700\u521D\u306B\u73FE\u308C\u308B\u4F4D\u7F6E\u3001\u306A\
-    \u3051\u308C\u3070 -1\n        {\n            long long x = (long long)(rng()\
-    \ % 13) - 6;\n            long long expect = std::find(v.begin(), v.end(), x)\
-    \ - v.begin();\n            if (expect == (long long)v.size()) expect = -1;\n\
-    \            check(index(v, x) == expect, \"index(c, x)\");\n        }\n\n   \
-    \     // index_if / indices_if / count_if: f(x) \u304C true \u306B\u306A\u308B\
-    \u4F4D\u7F6E\u3068\u500B\u6570 (vector \u3068 set)\n        {\n            long\
-    \ long x = (long long)(rng() % 13) - 6;\n            auto f = [&](long long e)\
-    \ { return e >= x; };\n            std::vector<long long> pos;\n            for\
-    \ (long long i = 0; i < (long long)v.size(); i++) {\n                if (f(v[i]))\
-    \ pos.push_back(i);\n            }\n            check(indices_if(v, f) == pos,\
-    \ \"indices_if(vector, f)\");\n            check(index_if(v, f) == (pos.empty()\
-    \ ? -1 : pos[0]), \"index_if(vector, f)\");\n            check(count_if(v, f)\
-    \ == (long long)pos.size(), \"count_if(vector, f)\");\n            std::set<long\
-    \ long> st(v.begin(), v.end());\n            long long first = std::find_if(st.begin(),\
-    \ st.end(), f) == st.end() ? -1 : std::distance(st.begin(), std::find_if(st.begin(),\
-    \ st.end(), f));\n            check(index_if(st, f) == first, \"index_if(set,\
-    \ f)\");\n            check(count_if(st, f) == std::count_if(st.begin(), st.end(),\
-    \ f), \"count_if(set, f)\");\n        }\n\n        // mex: \u542B\u307E\u308C\u306A\
-    \u3044\u6700\u5C0F\u306E\u975E\u8CA0\u6574\u6570\n        {\n            std::vector<int>\
-    \ w(n);\n            for (auto& a : w) a = (int)(rng() % 8) - 2;\n           \
-    \ int expect = 0;\n            while (std::find(w.begin(), w.end(), expect) !=\
-    \ w.end()) expect++;\n            check(mex(w) == expect, \"mex(c)\");\n     \
-    \   }\n\n        // count / find / lower_bound / upper_bound (set \u306F\u30E1\
+    \ long> v(n);\n        for (auto& x : v) x = lo + static_cast<long long>(rng()\
+    \ % static_cast<unsigned long long>(hi - lo + 1));\n        return v;\n    };\n\
+    \n    for (int rep = 0; rep < 2000 && ok; rep++) {\n        int n = rng() % 10\
+    \ + 1;\n        std::vector<long long> v = rand_vec(n, -5, 5);\n\n        // sorted\
+    \ / sort (\u6BD4\u8F03\u95A2\u6570\u3064\u304D)\n        {\n            std::vector<long\
+    \ long> expect = v;\n            std::sort(expect.begin(), expect.end(), std::greater<long\
+    \ long>());\n            check(sorted(v, std::greater<long long>()) == expect,\
+    \ \"sorted(c, f)\");\n            std::vector<long long> w = v;\n            sort(w,\
+    \ std::greater<long long>());\n            check(w == expect, \"sort(c, f)\");\n\
+    \        }\n\n        // set / multiset \u306B\u5BFE\u3059\u308B max / min (\u30BD\
+    \u30FC\u30C8\u6E08\u307F\u306E\u30B3\u30F3\u30C6\u30CA\u306F\u5148\u982D\u3068\
+    \u672B\u5C3E)\n        {\n            std::set<long long> s(v.begin(), v.end());\n\
+    \            std::multiset<long long> ms(v.begin(), v.end());\n            long\
+    \ long mx = *std::max_element(v.begin(), v.end());\n            long long mn =\
+    \ *std::min_element(v.begin(), v.end());\n            check(max(s) == mx && min(s)\
+    \ == mn, \"max/min(set)\");\n            check(max(ms) == mx && min(ms) == mn,\
+    \ \"max/min(multiset)\");\n            check(max(v) == mx && min(v) == mn, \"\
+    max/min(vector)\");\n        }\n\n        // product / product_xor\n        {\n\
+    \            std::vector<long long> small = rand_vec(n, -3, 3);\n            long\
+    \ long p = 1, x = 0;\n            for (long long a : small) p *= a, x ^= a;\n\
+    \            check(product(small) == p, \"product(c)\");\n            check(product_xor(small)\
+    \ == x, \"product_xor(c)\");\n            std::vector<long long> nonneg = rand_vec(n,\
+    \ 0, 1000000);\n            long long y = 0;\n            for (long long a : nonneg)\
+    \ y ^= a;\n            check(product_xor(nonneg) == y, \"product_xor(c) large\"\
+    );\n        }\n\n        // median: \u5076\u6570\u500B\u306A\u3089\u4E2D\u592E\
+    \ 2 \u3064\u306E\u5E73\u5747 (\u6574\u6570\u578B\u306F 0 \u65B9\u5411\u306B\u5207\
+    \u308A\u6368\u3066)\n        {\n            std::vector<long long> w = v;\n  \
+    \          std::sort(w.begin(), w.end());\n            long long expect = n %\
+    \ 2 ? w[n / 2] : (w[n / 2 - 1] + w[n / 2]) / 2;\n            check(median(v) ==\
+    \ expect, \"median(vector<long long>)\");\n            std::vector<double> d(v.begin(),\
+    \ v.end());\n            std::vector<double> dw = d;\n            std::sort(dw.begin(),\
+    \ dw.end());\n            double dexp = n % 2 ? dw[n / 2] : (dw[n / 2 - 1] + dw[n\
+    \ / 2]) / 2;\n            check(median(d) == dexp, \"median(vector<double>)\"\
+    );\n        }\n\n        // index: \u6700\u521D\u306B\u73FE\u308C\u308B\u4F4D\u7F6E\
+    \u3001\u306A\u3051\u308C\u3070 -1\n        {\n            long long x = static_cast<long\
+    \ long>(rng() % 13) - 6;\n            long long expect = std::find(v.begin(),\
+    \ v.end(), x) - v.begin();\n            if (expect == static_cast<long long>(v.size()))\
+    \ expect = -1;\n            check(index(v, x) == expect, \"index(c, x)\");\n \
+    \       }\n\n        // index_if / indices_if / count_if: f(x) \u304C true \u306B\
+    \u306A\u308B\u4F4D\u7F6E\u3068\u500B\u6570 (vector \u3068 set)\n        {\n  \
+    \          long long x = static_cast<long long>(rng() % 13) - 6;\n           \
+    \ auto f = [&](long long e) { return e >= x; };\n            std::vector<long\
+    \ long> pos;\n            for (long long i = 0; i < static_cast<long long>(v.size());\
+    \ i++) {\n                if (f(v[i])) pos.push_back(i);\n            }\n    \
+    \        check(indices_if(v, f) == pos, \"indices_if(vector, f)\");\n        \
+    \    check(index_if(v, f) == (pos.empty() ? -1 : pos[0]), \"index_if(vector, f)\"\
+    );\n            check(count_if(v, f) == static_cast<long long>(pos.size()), \"\
+    count_if(vector, f)\");\n            std::set<long long> st(v.begin(), v.end());\n\
+    \            long long first = std::find_if(st.begin(), st.end(), f) == st.end()\
+    \ ? -1 : std::distance(st.begin(), std::find_if(st.begin(), st.end(), f));\n \
+    \           check(index_if(st, f) == first, \"index_if(set, f)\");\n         \
+    \   check(count_if(st, f) == std::count_if(st.begin(), st.end(), f), \"count_if(set,\
+    \ f)\");\n        }\n\n        // mex: \u542B\u307E\u308C\u306A\u3044\u6700\u5C0F\
+    \u306E\u975E\u8CA0\u6574\u6570\n        {\n            std::vector<int> w(n);\n\
+    \            for (auto& a : w) a = static_cast<int>(rng() % 8) - 2;\n        \
+    \    int expect = 0;\n            while (std::find(w.begin(), w.end(), expect)\
+    \ != w.end()) expect++;\n            check(mex(w) == expect, \"mex(c)\");\n  \
+    \      }\n\n        // count / find / lower_bound / upper_bound (set \u306F\u30E1\
     \u30F3\u30D0\u95A2\u6570\u3001vector \u306F std:: \u306E\u30A2\u30EB\u30B4\u30EA\
-    \u30BA\u30E0)\n        {\n            long long x = (long long)(rng() % 13) -\
-    \ 6;\n            std::multiset<long long> ms(v.begin(), v.end());\n         \
-    \   std::vector<long long> w = v;\n            std::sort(w.begin(), w.end());\n\
-    \            check(count(ms, x) == (std::size_t)std::count(v.begin(), v.end(),\
-    \ x), \"count(multiset, x)\");\n            check(count(v, x) == std::count(v.begin(),\
+    \u30BA\u30E0)\n        {\n            long long x = static_cast<long long>(rng()\
+    \ % 13) - 6;\n            std::multiset<long long> ms(v.begin(), v.end());\n \
+    \           std::vector<long long> w = v;\n            std::sort(w.begin(), w.end());\n\
+    \            check(count(ms, x) == static_cast<std::size_t>(std::count(v.begin(),\
+    \ v.end(), x)), \"count(multiset, x)\");\n            check(count(v, x) == std::count(v.begin(),\
     \ v.end(), x), \"count(vector, x)\");\n            check((find(ms, x) != ms.end())\
     \ == (std::find(v.begin(), v.end(), x) != v.end()), \"find(multiset, x)\");\n\
     \            check(find(v, x) == std::find(v.begin(), v.end(), x), \"find(vector,\
@@ -306,69 +307,70 @@ data:
     \ {\n        if (ok) std::cerr << \"failed: \" << what << std::endl;\n       \
     \ ok = false;\n    }\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n    auto\
     \ rand_vec = [&](int n, long long lo, long long hi) {\n        std::vector<long\
-    \ long> v(n);\n        for (auto& x : v) x = lo + (long long)(rng() % (unsigned\
-    \ long long)(hi - lo + 1));\n        return v;\n    };\n\n    for (int rep = 0;\
-    \ rep < 2000 && ok; rep++) {\n        int n = rng() % 10 + 1;\n        std::vector<long\
-    \ long> v = rand_vec(n, -5, 5);\n\n        // sorted / sort (\u6BD4\u8F03\u95A2\
-    \u6570\u3064\u304D)\n        {\n            std::vector<long long> expect = v;\n\
-    \            std::sort(expect.begin(), expect.end(), std::greater<long long>());\n\
-    \            check(sorted(v, std::greater<long long>()) == expect, \"sorted(c,\
-    \ f)\");\n            std::vector<long long> w = v;\n            sort(w, std::greater<long\
-    \ long>());\n            check(w == expect, \"sort(c, f)\");\n        }\n\n  \
-    \      // set / multiset \u306B\u5BFE\u3059\u308B max / min (\u30BD\u30FC\u30C8\
-    \u6E08\u307F\u306E\u30B3\u30F3\u30C6\u30CA\u306F\u5148\u982D\u3068\u672B\u5C3E\
-    )\n        {\n            std::set<long long> s(v.begin(), v.end());\n       \
-    \     std::multiset<long long> ms(v.begin(), v.end());\n            long long\
-    \ mx = *std::max_element(v.begin(), v.end());\n            long long mn = *std::min_element(v.begin(),\
-    \ v.end());\n            check(max(s) == mx && min(s) == mn, \"max/min(set)\"\
-    );\n            check(max(ms) == mx && min(ms) == mn, \"max/min(multiset)\");\n\
-    \            check(max(v) == mx && min(v) == mn, \"max/min(vector)\");\n     \
-    \   }\n\n        // product / product_xor\n        {\n            std::vector<long\
-    \ long> small = rand_vec(n, -3, 3);\n            long long p = 1, x = 0;\n   \
-    \         for (long long a : small) p *= a, x ^= a;\n            check(product(small)\
-    \ == p, \"product(c)\");\n            check(product_xor(small) == x, \"product_xor(c)\"\
-    );\n            std::vector<long long> nonneg = rand_vec(n, 0, 1000000);\n   \
-    \         long long y = 0;\n            for (long long a : nonneg) y ^= a;\n \
-    \           check(product_xor(nonneg) == y, \"product_xor(c) large\");\n     \
-    \   }\n\n        // median: \u5076\u6570\u500B\u306A\u3089\u4E2D\u592E 2 \u3064\
-    \u306E\u5E73\u5747 (\u6574\u6570\u578B\u306F 0 \u65B9\u5411\u306B\u5207\u308A\u6368\
-    \u3066)\n        {\n            std::vector<long long> w = v;\n            std::sort(w.begin(),\
-    \ w.end());\n            long long expect = n % 2 ? w[n / 2] : (w[n / 2 - 1] +\
-    \ w[n / 2]) / 2;\n            check(median(v) == expect, \"median(vector<long\
-    \ long>)\");\n            std::vector<double> d(v.begin(), v.end());\n       \
-    \     std::vector<double> dw = d;\n            std::sort(dw.begin(), dw.end());\n\
-    \            double dexp = n % 2 ? dw[n / 2] : (dw[n / 2 - 1] + dw[n / 2]) / 2;\n\
-    \            check(median(d) == dexp, \"median(vector<double>)\");\n        }\n\
-    \n        // index: \u6700\u521D\u306B\u73FE\u308C\u308B\u4F4D\u7F6E\u3001\u306A\
-    \u3051\u308C\u3070 -1\n        {\n            long long x = (long long)(rng()\
-    \ % 13) - 6;\n            long long expect = std::find(v.begin(), v.end(), x)\
-    \ - v.begin();\n            if (expect == (long long)v.size()) expect = -1;\n\
-    \            check(index(v, x) == expect, \"index(c, x)\");\n        }\n\n   \
-    \     // index_if / indices_if / count_if: f(x) \u304C true \u306B\u306A\u308B\
-    \u4F4D\u7F6E\u3068\u500B\u6570 (vector \u3068 set)\n        {\n            long\
-    \ long x = (long long)(rng() % 13) - 6;\n            auto f = [&](long long e)\
-    \ { return e >= x; };\n            std::vector<long long> pos;\n            for\
-    \ (long long i = 0; i < (long long)v.size(); i++) {\n                if (f(v[i]))\
-    \ pos.push_back(i);\n            }\n            check(indices_if(v, f) == pos,\
-    \ \"indices_if(vector, f)\");\n            check(index_if(v, f) == (pos.empty()\
-    \ ? -1 : pos[0]), \"index_if(vector, f)\");\n            check(count_if(v, f)\
-    \ == (long long)pos.size(), \"count_if(vector, f)\");\n            std::set<long\
-    \ long> st(v.begin(), v.end());\n            long long first = std::find_if(st.begin(),\
-    \ st.end(), f) == st.end() ? -1 : std::distance(st.begin(), std::find_if(st.begin(),\
-    \ st.end(), f));\n            check(index_if(st, f) == first, \"index_if(set,\
-    \ f)\");\n            check(count_if(st, f) == std::count_if(st.begin(), st.end(),\
-    \ f), \"count_if(set, f)\");\n        }\n\n        // mex: \u542B\u307E\u308C\u306A\
-    \u3044\u6700\u5C0F\u306E\u975E\u8CA0\u6574\u6570\n        {\n            std::vector<int>\
-    \ w(n);\n            for (auto& a : w) a = (int)(rng() % 8) - 2;\n           \
-    \ int expect = 0;\n            while (std::find(w.begin(), w.end(), expect) !=\
-    \ w.end()) expect++;\n            check(mex(w) == expect, \"mex(c)\");\n     \
-    \   }\n\n        // count / find / lower_bound / upper_bound (set \u306F\u30E1\
+    \ long> v(n);\n        for (auto& x : v) x = lo + static_cast<long long>(rng()\
+    \ % static_cast<unsigned long long>(hi - lo + 1));\n        return v;\n    };\n\
+    \n    for (int rep = 0; rep < 2000 && ok; rep++) {\n        int n = rng() % 10\
+    \ + 1;\n        std::vector<long long> v = rand_vec(n, -5, 5);\n\n        // sorted\
+    \ / sort (\u6BD4\u8F03\u95A2\u6570\u3064\u304D)\n        {\n            std::vector<long\
+    \ long> expect = v;\n            std::sort(expect.begin(), expect.end(), std::greater<long\
+    \ long>());\n            check(sorted(v, std::greater<long long>()) == expect,\
+    \ \"sorted(c, f)\");\n            std::vector<long long> w = v;\n            sort(w,\
+    \ std::greater<long long>());\n            check(w == expect, \"sort(c, f)\");\n\
+    \        }\n\n        // set / multiset \u306B\u5BFE\u3059\u308B max / min (\u30BD\
+    \u30FC\u30C8\u6E08\u307F\u306E\u30B3\u30F3\u30C6\u30CA\u306F\u5148\u982D\u3068\
+    \u672B\u5C3E)\n        {\n            std::set<long long> s(v.begin(), v.end());\n\
+    \            std::multiset<long long> ms(v.begin(), v.end());\n            long\
+    \ long mx = *std::max_element(v.begin(), v.end());\n            long long mn =\
+    \ *std::min_element(v.begin(), v.end());\n            check(max(s) == mx && min(s)\
+    \ == mn, \"max/min(set)\");\n            check(max(ms) == mx && min(ms) == mn,\
+    \ \"max/min(multiset)\");\n            check(max(v) == mx && min(v) == mn, \"\
+    max/min(vector)\");\n        }\n\n        // product / product_xor\n        {\n\
+    \            std::vector<long long> small = rand_vec(n, -3, 3);\n            long\
+    \ long p = 1, x = 0;\n            for (long long a : small) p *= a, x ^= a;\n\
+    \            check(product(small) == p, \"product(c)\");\n            check(product_xor(small)\
+    \ == x, \"product_xor(c)\");\n            std::vector<long long> nonneg = rand_vec(n,\
+    \ 0, 1000000);\n            long long y = 0;\n            for (long long a : nonneg)\
+    \ y ^= a;\n            check(product_xor(nonneg) == y, \"product_xor(c) large\"\
+    );\n        }\n\n        // median: \u5076\u6570\u500B\u306A\u3089\u4E2D\u592E\
+    \ 2 \u3064\u306E\u5E73\u5747 (\u6574\u6570\u578B\u306F 0 \u65B9\u5411\u306B\u5207\
+    \u308A\u6368\u3066)\n        {\n            std::vector<long long> w = v;\n  \
+    \          std::sort(w.begin(), w.end());\n            long long expect = n %\
+    \ 2 ? w[n / 2] : (w[n / 2 - 1] + w[n / 2]) / 2;\n            check(median(v) ==\
+    \ expect, \"median(vector<long long>)\");\n            std::vector<double> d(v.begin(),\
+    \ v.end());\n            std::vector<double> dw = d;\n            std::sort(dw.begin(),\
+    \ dw.end());\n            double dexp = n % 2 ? dw[n / 2] : (dw[n / 2 - 1] + dw[n\
+    \ / 2]) / 2;\n            check(median(d) == dexp, \"median(vector<double>)\"\
+    );\n        }\n\n        // index: \u6700\u521D\u306B\u73FE\u308C\u308B\u4F4D\u7F6E\
+    \u3001\u306A\u3051\u308C\u3070 -1\n        {\n            long long x = static_cast<long\
+    \ long>(rng() % 13) - 6;\n            long long expect = std::find(v.begin(),\
+    \ v.end(), x) - v.begin();\n            if (expect == static_cast<long long>(v.size()))\
+    \ expect = -1;\n            check(index(v, x) == expect, \"index(c, x)\");\n \
+    \       }\n\n        // index_if / indices_if / count_if: f(x) \u304C true \u306B\
+    \u306A\u308B\u4F4D\u7F6E\u3068\u500B\u6570 (vector \u3068 set)\n        {\n  \
+    \          long long x = static_cast<long long>(rng() % 13) - 6;\n           \
+    \ auto f = [&](long long e) { return e >= x; };\n            std::vector<long\
+    \ long> pos;\n            for (long long i = 0; i < static_cast<long long>(v.size());\
+    \ i++) {\n                if (f(v[i])) pos.push_back(i);\n            }\n    \
+    \        check(indices_if(v, f) == pos, \"indices_if(vector, f)\");\n        \
+    \    check(index_if(v, f) == (pos.empty() ? -1 : pos[0]), \"index_if(vector, f)\"\
+    );\n            check(count_if(v, f) == static_cast<long long>(pos.size()), \"\
+    count_if(vector, f)\");\n            std::set<long long> st(v.begin(), v.end());\n\
+    \            long long first = std::find_if(st.begin(), st.end(), f) == st.end()\
+    \ ? -1 : std::distance(st.begin(), std::find_if(st.begin(), st.end(), f));\n \
+    \           check(index_if(st, f) == first, \"index_if(set, f)\");\n         \
+    \   check(count_if(st, f) == std::count_if(st.begin(), st.end(), f), \"count_if(set,\
+    \ f)\");\n        }\n\n        // mex: \u542B\u307E\u308C\u306A\u3044\u6700\u5C0F\
+    \u306E\u975E\u8CA0\u6574\u6570\n        {\n            std::vector<int> w(n);\n\
+    \            for (auto& a : w) a = static_cast<int>(rng() % 8) - 2;\n        \
+    \    int expect = 0;\n            while (std::find(w.begin(), w.end(), expect)\
+    \ != w.end()) expect++;\n            check(mex(w) == expect, \"mex(c)\");\n  \
+    \      }\n\n        // count / find / lower_bound / upper_bound (set \u306F\u30E1\
     \u30F3\u30D0\u95A2\u6570\u3001vector \u306F std:: \u306E\u30A2\u30EB\u30B4\u30EA\
-    \u30BA\u30E0)\n        {\n            long long x = (long long)(rng() % 13) -\
-    \ 6;\n            std::multiset<long long> ms(v.begin(), v.end());\n         \
-    \   std::vector<long long> w = v;\n            std::sort(w.begin(), w.end());\n\
-    \            check(count(ms, x) == (std::size_t)std::count(v.begin(), v.end(),\
-    \ x), \"count(multiset, x)\");\n            check(count(v, x) == std::count(v.begin(),\
+    \u30BA\u30E0)\n        {\n            long long x = static_cast<long long>(rng()\
+    \ % 13) - 6;\n            std::multiset<long long> ms(v.begin(), v.end());\n \
+    \           std::vector<long long> w = v;\n            std::sort(w.begin(), w.end());\n\
+    \            check(count(ms, x) == static_cast<std::size_t>(std::count(v.begin(),\
+    \ v.end(), x)), \"count(multiset, x)\");\n            check(count(v, x) == std::count(v.begin(),\
     \ v.end(), x), \"count(vector, x)\");\n            check((find(ms, x) != ms.end())\
     \ == (std::find(v.begin(), v.end(), x) != v.end()), \"find(multiset, x)\");\n\
     \            check(find(v, x) == std::find(v.begin(), v.end(), x), \"find(vector,\
@@ -418,7 +420,7 @@ data:
   isVerificationFile: true
   path: test/unittest/container-func.test.cpp
   requiredBy: []
-  timestamp: '2026-10-18 01:03:35+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/container-func.test.cpp

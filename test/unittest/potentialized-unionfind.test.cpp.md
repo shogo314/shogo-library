@@ -482,18 +482,18 @@ data:
     \ (comp[a] != comp[b])) ok = false;\n            int ca = comp[a], cb = comp[b];\n\
     \            for (int& c : comp) {\n                if (c == cb) c = ca;\n   \
     \         }\n            for (int x = 0; x < n; x++) {\n                if (uf.size(x)\
-    \ != (int)std::count(comp.begin(), comp.end(), comp[x])) ok = false;\n       \
-    \         for (int y = 0; y < n; y++) {\n                    if (comp[x] == comp[y]\
-    \ && uf.diff(x, y) != p[y] - p[x]) ok = false;\n                }\n          \
-    \  }\n            std::vector<std::vector<long long>> expect;\n            std::vector<int>\
-    \ seen(n, -1);\n            for (int x = 0; x < n; x++) {\n                if\
-    \ (seen[comp[x]] == -1) {\n                    seen[comp[x]] = expect.size();\n\
-    \                    expect.push_back({});\n                }\n              \
-    \  expect[seen[comp[x]]].push_back(x);\n            }\n            auto g = uf.groups();\n\
-    \            std::sort(g.begin(), g.end());\n            std::sort(expect.begin(),\
-    \ expect.end());\n            if (g != expect) ok = false;\n        }\n    }\n\
-    \    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n    else\n \
-    \       std::cerr << \"failed\" << std::endl;\n}\n"
+    \ != static_cast<int>(std::count(comp.begin(), comp.end(), comp[x]))) ok = false;\n\
+    \                for (int y = 0; y < n; y++) {\n                    if (comp[x]\
+    \ == comp[y] && uf.diff(x, y) != p[y] - p[x]) ok = false;\n                }\n\
+    \            }\n            std::vector<std::vector<long long>> expect;\n    \
+    \        std::vector<int> seen(n, -1);\n            for (int x = 0; x < n; x++)\
+    \ {\n                if (seen[comp[x]] == -1) {\n                    seen[comp[x]]\
+    \ = expect.size();\n                    expect.push_back({});\n              \
+    \  }\n                expect[seen[comp[x]]].push_back(x);\n            }\n   \
+    \         auto g = uf.groups();\n            std::sort(g.begin(), g.end());\n\
+    \            std::sort(expect.begin(), expect.end());\n            if (g != expect)\
+    \ ok = false;\n        }\n    }\n    if (ok)\n        std::cout << \"Hello World\"\
+    \ << std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// PotentializedUnionFind \u306E size / groups \u3092\u611A\u76F4\u306A\u5B9F\
     \u88C5\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\
@@ -513,18 +513,18 @@ data:
     \ (comp[a] != comp[b])) ok = false;\n            int ca = comp[a], cb = comp[b];\n\
     \            for (int& c : comp) {\n                if (c == cb) c = ca;\n   \
     \         }\n            for (int x = 0; x < n; x++) {\n                if (uf.size(x)\
-    \ != (int)std::count(comp.begin(), comp.end(), comp[x])) ok = false;\n       \
-    \         for (int y = 0; y < n; y++) {\n                    if (comp[x] == comp[y]\
-    \ && uf.diff(x, y) != p[y] - p[x]) ok = false;\n                }\n          \
-    \  }\n            std::vector<std::vector<long long>> expect;\n            std::vector<int>\
-    \ seen(n, -1);\n            for (int x = 0; x < n; x++) {\n                if\
-    \ (seen[comp[x]] == -1) {\n                    seen[comp[x]] = expect.size();\n\
-    \                    expect.push_back({});\n                }\n              \
-    \  expect[seen[comp[x]]].push_back(x);\n            }\n            auto g = uf.groups();\n\
-    \            std::sort(g.begin(), g.end());\n            std::sort(expect.begin(),\
-    \ expect.end());\n            if (g != expect) ok = false;\n        }\n    }\n\
-    \    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n    else\n \
-    \       std::cerr << \"failed\" << std::endl;\n}\n"
+    \ != static_cast<int>(std::count(comp.begin(), comp.end(), comp[x]))) ok = false;\n\
+    \                for (int y = 0; y < n; y++) {\n                    if (comp[x]\
+    \ == comp[y] && uf.diff(x, y) != p[y] - p[x]) ok = false;\n                }\n\
+    \            }\n            std::vector<std::vector<long long>> expect;\n    \
+    \        std::vector<int> seen(n, -1);\n            for (int x = 0; x < n; x++)\
+    \ {\n                if (seen[comp[x]] == -1) {\n                    seen[comp[x]]\
+    \ = expect.size();\n                    expect.push_back({});\n              \
+    \  }\n                expect[seen[comp[x]]].push_back(x);\n            }\n   \
+    \         auto g = uf.groups();\n            std::sort(g.begin(), g.end());\n\
+    \            std::sort(expect.begin(), expect.end());\n            if (g != expect)\
+    \ ok = false;\n        }\n    }\n    if (ok)\n        std::cout << \"Hello World\"\
+    \ << std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/data_structures/potentialized-unionfind.hpp
   - src/algebra/group.hpp
@@ -533,7 +533,7 @@ data:
   isVerificationFile: true
   path: test/unittest/potentialized-unionfind.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 12:03:10+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/potentialized-unionfind.test.cpp

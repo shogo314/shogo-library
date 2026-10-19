@@ -185,45 +185,47 @@ data:
     \    a = b;\n        b = t;\n    }\n    return a;\n}\n\n// p / q \u3092\u65E2\u7D04\
     \u306B\u3057\u3066 Rational<T> \u3068\u4E00\u81F4\u3059\u308B\u304B\ntemplate\
     \ <typename T>\nbool same(const Rational<T>& r, i128 p, i128 q) {\n    if (q <\
-    \ 0) p = -p, q = -q;\n    i128 g = gcd128(p, q);\n    return (i128)r.num() ==\
-    \ p / g && (i128)r.den() == q / g;\n}\n\ntemplate <typename T>\nbool test(std::mt19937_64&\
-    \ rng, long long range) {\n    bool ok = true;\n    auto rnd = [&](bool nonzero)\
-    \ {\n        while (true) {\n            long long x = (long long)(rng() % (2\
-    \ * range + 1)) - range;\n            if (!nonzero || x != 0) return x;\n    \
-    \    }\n    };\n    for (int rep = 0; rep < 100000 && ok; rep++) {\n        long\
-    \ long a = rnd(false), b = rnd(true), c = rnd(false), d = rnd(true);\n       \
-    \ Rational<T> x(a, b), y(c, d);\n        ok = ok && same(x, a, b) && x.den() >\
-    \ 0;\n        ok = ok && same(x + y, (i128)a * d + (i128)c * b, (i128)b * d);\n\
-    \        ok = ok && same(x - y, (i128)a * d - (i128)c * b, (i128)b * d);\n   \
-    \     ok = ok && same(x * y, (i128)a * c, (i128)b * d);\n        if (c != 0) ok\
-    \ = ok && same(x / y, (i128)a * d, (i128)b * c);\n        // \u6BD4\u8F03\n  \
-    \      int sgn = (b > 0) == (d > 0) ? 1 : -1;\n        i128 l = (i128)a * d *\
-    \ sgn, r = (i128)c * b * sgn;\n        ok = ok && (x < y) == (l < r) && (x ==\
-    \ y) == (l == r) && (x <= y) == (l <= r) && (x > y) == (l > r);\n        // floor,\
-    \ ceil\n        long long fl = a / b, rem = a % b;\n        if (rem != 0 && ((rem\
-    \ < 0) != (b < 0))) fl--;\n        ok = ok && (long long)x.floor() == fl && (long\
-    \ long)x.ceil() == fl + (rem != 0);\n        ok = ok && x.is_integer() == (rem\
-    \ == 0);\n        // \u6587\u5B57\u5217\u306B\u3057\u3066\u8AAD\u307F\u76F4\u3059\
-    \n        std::stringstream ss;\n        ss << x;\n        Rational<T> z;\n  \
-    \      ss >> z;\n        ok = ok && z == x;\n    }\n    return ok;\n}\n\nint main()\
-    \ {\n    std::mt19937_64 rng(314);\n    bool ok = true;\n    ok = ok && test<long\
-    \ long>(rng, 20);\n    ok = ok && test<long long>(rng, 1000000000);\n    ok =\
-    \ ok && test<int>(rng, 30000);\n    ok = ok && test<__int128>(rng, 20);\n    ok\
-    \ = ok && test<__int128>(rng, 1000000000000000000LL);\n\n    // __int128 \u3067\
-    \u3001\u901A\u5206\u3059\u308B\u3068 128 bit \u306B\u53CE\u307E\u3089\u306A\u3044\
-    \u5024\u3069\u3046\u3057\u306E\u6BD4\u8F03 (\u9023\u5206\u6570\u5C55\u958B\u3067\
-    \u6BD4\u3079\u308B)\n    {\n        using R = Rational<__int128>;\n        i128\
-    \ big = (i128)1 << 100;\n        R x(big + 1, big), y(big + 2, big + 1);  // 1\
-    \ + 1/big > 1 + 1/(big+1)\n        ok = ok && y < x && !(x < y) && x != y && R(big,\
-    \ 3) > R(big - 1, 3);\n        ok = ok && R(-big, big + 1) < R(-big + 1, big)\
-    \ && R(-(big + 1), 7).floor() == -(big + 1) / 7 - 1;\n    }\n\n    // \u4F8B\n\
-    \    using Q = Rational<>;\n    ok = ok && Q(1, 3) + Q(1, 6) == Q(1, 2) && Q(2,\
-    \ -4) == Q(-1, 2) && Q(0, -5) == Q(0);\n    ok = ok && Q(3, 2) * 2 == 3 && 1 <\
-    \ Q(3, 2) && Q(-7, 2).floor() == -4 && Q(-7, 2).ceil() == -3;\n    ok = ok &&\
-    \ Q(-3, 4).inv() == Q(-4, 3) && Q(-3, 4).abs() == Q(3, 4) && -Q(1, 2) == Q(-1,\
-    \ 2);\n    ok = ok && Q(1, 3).to_string() == \"1/3\" && Q(-6, 3).to_string() ==\
-    \ \"-2\" && Q(1, 4).to_double() == 0.25;\n    // map \u3084 set \u306E\u30AD\u30FC\
-    \u306B\u3067\u304D\u308B (\u50BE\u304D\u3092\u6570\u3048\u308B)\n    std::set<Q>\
+    \ 0) p = -p, q = -q;\n    i128 g = gcd128(p, q);\n    return static_cast<i128>(r.num())\
+    \ == p / g && static_cast<i128>(r.den()) == q / g;\n}\n\ntemplate <typename T>\n\
+    bool test(std::mt19937_64& rng, long long range) {\n    bool ok = true;\n    auto\
+    \ rnd = [&](bool nonzero) {\n        while (true) {\n            long long x =\
+    \ static_cast<long long>(rng() % (2 * range + 1)) - range;\n            if (!nonzero\
+    \ || x != 0) return x;\n        }\n    };\n    for (int rep = 0; rep < 100000\
+    \ && ok; rep++) {\n        long long a = rnd(false), b = rnd(true), c = rnd(false),\
+    \ d = rnd(true);\n        Rational<T> x(a, b), y(c, d);\n        ok = ok && same(x,\
+    \ a, b) && x.den() > 0;\n        ok = ok && same(x + y, static_cast<i128>(a) *\
+    \ d + static_cast<i128>(c) * b, static_cast<i128>(b) * d);\n        ok = ok &&\
+    \ same(x - y, static_cast<i128>(a) * d - static_cast<i128>(c) * b, static_cast<i128>(b)\
+    \ * d);\n        ok = ok && same(x * y, static_cast<i128>(a) * c, static_cast<i128>(b)\
+    \ * d);\n        if (c != 0) ok = ok && same(x / y, static_cast<i128>(a) * d,\
+    \ static_cast<i128>(b) * c);\n        // \u6BD4\u8F03\n        int sgn = (b >\
+    \ 0) == (d > 0) ? 1 : -1;\n        i128 l = static_cast<i128>(a) * d * sgn, r\
+    \ = static_cast<i128>(c) * b * sgn;\n        ok = ok && (x < y) == (l < r) &&\
+    \ (x == y) == (l == r) && (x <= y) == (l <= r) && (x > y) == (l > r);\n      \
+    \  // floor, ceil\n        long long fl = a / b, rem = a % b;\n        if (rem\
+    \ != 0 && ((rem < 0) != (b < 0))) fl--;\n        ok = ok && static_cast<long long>(x.floor())\
+    \ == fl && static_cast<long long>(x.ceil()) == fl + (rem != 0);\n        ok =\
+    \ ok && x.is_integer() == (rem == 0);\n        // \u6587\u5B57\u5217\u306B\u3057\
+    \u3066\u8AAD\u307F\u76F4\u3059\n        std::stringstream ss;\n        ss << x;\n\
+    \        Rational<T> z;\n        ss >> z;\n        ok = ok && z == x;\n    }\n\
+    \    return ok;\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n    bool ok\
+    \ = true;\n    ok = ok && test<long long>(rng, 20);\n    ok = ok && test<long\
+    \ long>(rng, 1000000000);\n    ok = ok && test<int>(rng, 30000);\n    ok = ok\
+    \ && test<__int128>(rng, 20);\n    ok = ok && test<__int128>(rng, 1000000000000000000LL);\n\
+    \n    // __int128 \u3067\u3001\u901A\u5206\u3059\u308B\u3068 128 bit \u306B\u53CE\
+    \u307E\u3089\u306A\u3044\u5024\u3069\u3046\u3057\u306E\u6BD4\u8F03 (\u9023\u5206\
+    \u6570\u5C55\u958B\u3067\u6BD4\u3079\u308B)\n    {\n        using R = Rational<__int128>;\n\
+    \        i128 big = static_cast<i128>(1) << 100;\n        R x(big + 1, big), y(big\
+    \ + 2, big + 1);  // 1 + 1/big > 1 + 1/(big+1)\n        ok = ok && y < x && !(x\
+    \ < y) && x != y && R(big, 3) > R(big - 1, 3);\n        ok = ok && R(-big, big\
+    \ + 1) < R(-big + 1, big) && R(-(big + 1), 7).floor() == -(big + 1) / 7 - 1;\n\
+    \    }\n\n    // \u4F8B\n    using Q = Rational<>;\n    ok = ok && Q(1, 3) + Q(1,\
+    \ 6) == Q(1, 2) && Q(2, -4) == Q(-1, 2) && Q(0, -5) == Q(0);\n    ok = ok && Q(3,\
+    \ 2) * 2 == 3 && 1 < Q(3, 2) && Q(-7, 2).floor() == -4 && Q(-7, 2).ceil() == -3;\n\
+    \    ok = ok && Q(-3, 4).inv() == Q(-4, 3) && Q(-3, 4).abs() == Q(3, 4) && -Q(1,\
+    \ 2) == Q(-1, 2);\n    ok = ok && Q(1, 3).to_string() == \"1/3\" && Q(-6, 3).to_string()\
+    \ == \"-2\" && Q(1, 4).to_double() == 0.25;\n    // map \u3084 set \u306E\u30AD\
+    \u30FC\u306B\u3067\u304D\u308B (\u50BE\u304D\u3092\u6570\u3048\u308B)\n    std::set<Q>\
     \ slopes = {Q(1, 2), Q(2, 4), Q(-1, 3), Q(3, -9)};\n    ok = ok && slopes.size()\
     \ == 2 && *slopes.begin() == Q(-1, 3);\n    std::map<Q, int> mp;\n    mp[Q(2,\
     \ 6)]++, mp[Q(1, 3)]++;\n    ok = ok && mp[Q(1, 3)] == 2;\n    // \u5165\u529B\
@@ -244,41 +246,44 @@ data:
     }\n\n// p / q \u3092\u65E2\u7D04\u306B\u3057\u3066 Rational<T> \u3068\u4E00\u81F4\
     \u3059\u308B\u304B\ntemplate <typename T>\nbool same(const Rational<T>& r, i128\
     \ p, i128 q) {\n    if (q < 0) p = -p, q = -q;\n    i128 g = gcd128(p, q);\n \
-    \   return (i128)r.num() == p / g && (i128)r.den() == q / g;\n}\n\ntemplate <typename\
-    \ T>\nbool test(std::mt19937_64& rng, long long range) {\n    bool ok = true;\n\
-    \    auto rnd = [&](bool nonzero) {\n        while (true) {\n            long\
-    \ long x = (long long)(rng() % (2 * range + 1)) - range;\n            if (!nonzero\
-    \ || x != 0) return x;\n        }\n    };\n    for (int rep = 0; rep < 100000\
-    \ && ok; rep++) {\n        long long a = rnd(false), b = rnd(true), c = rnd(false),\
-    \ d = rnd(true);\n        Rational<T> x(a, b), y(c, d);\n        ok = ok && same(x,\
-    \ a, b) && x.den() > 0;\n        ok = ok && same(x + y, (i128)a * d + (i128)c\
-    \ * b, (i128)b * d);\n        ok = ok && same(x - y, (i128)a * d - (i128)c * b,\
-    \ (i128)b * d);\n        ok = ok && same(x * y, (i128)a * c, (i128)b * d);\n \
-    \       if (c != 0) ok = ok && same(x / y, (i128)a * d, (i128)b * c);\n      \
-    \  // \u6BD4\u8F03\n        int sgn = (b > 0) == (d > 0) ? 1 : -1;\n        i128\
-    \ l = (i128)a * d * sgn, r = (i128)c * b * sgn;\n        ok = ok && (x < y) ==\
-    \ (l < r) && (x == y) == (l == r) && (x <= y) == (l <= r) && (x > y) == (l > r);\n\
-    \        // floor, ceil\n        long long fl = a / b, rem = a % b;\n        if\
-    \ (rem != 0 && ((rem < 0) != (b < 0))) fl--;\n        ok = ok && (long long)x.floor()\
-    \ == fl && (long long)x.ceil() == fl + (rem != 0);\n        ok = ok && x.is_integer()\
-    \ == (rem == 0);\n        // \u6587\u5B57\u5217\u306B\u3057\u3066\u8AAD\u307F\u76F4\
-    \u3059\n        std::stringstream ss;\n        ss << x;\n        Rational<T> z;\n\
-    \        ss >> z;\n        ok = ok && z == x;\n    }\n    return ok;\n}\n\nint\
-    \ main() {\n    std::mt19937_64 rng(314);\n    bool ok = true;\n    ok = ok &&\
-    \ test<long long>(rng, 20);\n    ok = ok && test<long long>(rng, 1000000000);\n\
-    \    ok = ok && test<int>(rng, 30000);\n    ok = ok && test<__int128>(rng, 20);\n\
-    \    ok = ok && test<__int128>(rng, 1000000000000000000LL);\n\n    // __int128\
-    \ \u3067\u3001\u901A\u5206\u3059\u308B\u3068 128 bit \u306B\u53CE\u307E\u3089\u306A\
-    \u3044\u5024\u3069\u3046\u3057\u306E\u6BD4\u8F03 (\u9023\u5206\u6570\u5C55\u958B\
-    \u3067\u6BD4\u3079\u308B)\n    {\n        using R = Rational<__int128>;\n    \
-    \    i128 big = (i128)1 << 100;\n        R x(big + 1, big), y(big + 2, big + 1);\
-    \  // 1 + 1/big > 1 + 1/(big+1)\n        ok = ok && y < x && !(x < y) && x !=\
-    \ y && R(big, 3) > R(big - 1, 3);\n        ok = ok && R(-big, big + 1) < R(-big\
-    \ + 1, big) && R(-(big + 1), 7).floor() == -(big + 1) / 7 - 1;\n    }\n\n    //\
-    \ \u4F8B\n    using Q = Rational<>;\n    ok = ok && Q(1, 3) + Q(1, 6) == Q(1,\
-    \ 2) && Q(2, -4) == Q(-1, 2) && Q(0, -5) == Q(0);\n    ok = ok && Q(3, 2) * 2\
-    \ == 3 && 1 < Q(3, 2) && Q(-7, 2).floor() == -4 && Q(-7, 2).ceil() == -3;\n  \
-    \  ok = ok && Q(-3, 4).inv() == Q(-4, 3) && Q(-3, 4).abs() == Q(3, 4) && -Q(1,\
+    \   return static_cast<i128>(r.num()) == p / g && static_cast<i128>(r.den()) ==\
+    \ q / g;\n}\n\ntemplate <typename T>\nbool test(std::mt19937_64& rng, long long\
+    \ range) {\n    bool ok = true;\n    auto rnd = [&](bool nonzero) {\n        while\
+    \ (true) {\n            long long x = static_cast<long long>(rng() % (2 * range\
+    \ + 1)) - range;\n            if (!nonzero || x != 0) return x;\n        }\n \
+    \   };\n    for (int rep = 0; rep < 100000 && ok; rep++) {\n        long long\
+    \ a = rnd(false), b = rnd(true), c = rnd(false), d = rnd(true);\n        Rational<T>\
+    \ x(a, b), y(c, d);\n        ok = ok && same(x, a, b) && x.den() > 0;\n      \
+    \  ok = ok && same(x + y, static_cast<i128>(a) * d + static_cast<i128>(c) * b,\
+    \ static_cast<i128>(b) * d);\n        ok = ok && same(x - y, static_cast<i128>(a)\
+    \ * d - static_cast<i128>(c) * b, static_cast<i128>(b) * d);\n        ok = ok\
+    \ && same(x * y, static_cast<i128>(a) * c, static_cast<i128>(b) * d);\n      \
+    \  if (c != 0) ok = ok && same(x / y, static_cast<i128>(a) * d, static_cast<i128>(b)\
+    \ * c);\n        // \u6BD4\u8F03\n        int sgn = (b > 0) == (d > 0) ? 1 : -1;\n\
+    \        i128 l = static_cast<i128>(a) * d * sgn, r = static_cast<i128>(c) * b\
+    \ * sgn;\n        ok = ok && (x < y) == (l < r) && (x == y) == (l == r) && (x\
+    \ <= y) == (l <= r) && (x > y) == (l > r);\n        // floor, ceil\n        long\
+    \ long fl = a / b, rem = a % b;\n        if (rem != 0 && ((rem < 0) != (b < 0)))\
+    \ fl--;\n        ok = ok && static_cast<long long>(x.floor()) == fl && static_cast<long\
+    \ long>(x.ceil()) == fl + (rem != 0);\n        ok = ok && x.is_integer() == (rem\
+    \ == 0);\n        // \u6587\u5B57\u5217\u306B\u3057\u3066\u8AAD\u307F\u76F4\u3059\
+    \n        std::stringstream ss;\n        ss << x;\n        Rational<T> z;\n  \
+    \      ss >> z;\n        ok = ok && z == x;\n    }\n    return ok;\n}\n\nint main()\
+    \ {\n    std::mt19937_64 rng(314);\n    bool ok = true;\n    ok = ok && test<long\
+    \ long>(rng, 20);\n    ok = ok && test<long long>(rng, 1000000000);\n    ok =\
+    \ ok && test<int>(rng, 30000);\n    ok = ok && test<__int128>(rng, 20);\n    ok\
+    \ = ok && test<__int128>(rng, 1000000000000000000LL);\n\n    // __int128 \u3067\
+    \u3001\u901A\u5206\u3059\u308B\u3068 128 bit \u306B\u53CE\u307E\u3089\u306A\u3044\
+    \u5024\u3069\u3046\u3057\u306E\u6BD4\u8F03 (\u9023\u5206\u6570\u5C55\u958B\u3067\
+    \u6BD4\u3079\u308B)\n    {\n        using R = Rational<__int128>;\n        i128\
+    \ big = static_cast<i128>(1) << 100;\n        R x(big + 1, big), y(big + 2, big\
+    \ + 1);  // 1 + 1/big > 1 + 1/(big+1)\n        ok = ok && y < x && !(x < y) &&\
+    \ x != y && R(big, 3) > R(big - 1, 3);\n        ok = ok && R(-big, big + 1) <\
+    \ R(-big + 1, big) && R(-(big + 1), 7).floor() == -(big + 1) / 7 - 1;\n    }\n\
+    \n    // \u4F8B\n    using Q = Rational<>;\n    ok = ok && Q(1, 3) + Q(1, 6) ==\
+    \ Q(1, 2) && Q(2, -4) == Q(-1, 2) && Q(0, -5) == Q(0);\n    ok = ok && Q(3, 2)\
+    \ * 2 == 3 && 1 < Q(3, 2) && Q(-7, 2).floor() == -4 && Q(-7, 2).ceil() == -3;\n\
+    \    ok = ok && Q(-3, 4).inv() == Q(-4, 3) && Q(-3, 4).abs() == Q(3, 4) && -Q(1,\
     \ 2) == Q(-1, 2);\n    ok = ok && Q(1, 3).to_string() == \"1/3\" && Q(-6, 3).to_string()\
     \ == \"-2\" && Q(1, 4).to_double() == 0.25;\n    // map \u3084 set \u306E\u30AD\
     \u30FC\u306B\u3067\u304D\u308B (\u50BE\u304D\u3092\u6570\u3048\u308B)\n    std::set<Q>\
@@ -295,7 +300,7 @@ data:
   isVerificationFile: true
   path: test/unittest/rational.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/rational.test.cpp

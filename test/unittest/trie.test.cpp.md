@@ -119,45 +119,46 @@ data:
     \u5B57\u5217\u306E\u63A5\u982D\u8F9E)\n        for (int q = 0; q < 200 && ok;\
     \ q++) {\n            std::string s = random_string(5);\n            int type\
     \ = rng() % 3;\n            if (type == 0) {\n                long long v = trie.insert(s);\n\
-    \                ms[s]++;\n                for (int len = 0; len <= (int)s.size();\
+    \                ms[s]++;\n                for (int len = 0; len <= static_cast<int>(s.size());\
     \ len++) node_of.emplace(s.substr(0, len), -1);\n                ok = ok && trie.depth(v)\
-    \ == (long long)s.size();\n            } else if (type == 1) {\n             \
-    \   bool expected = ms.count(s) && ms[s] > 0;\n                ok = ok && trie.erase(s)\
-    \ == expected;\n                if (expected) ms[s]--;\n            }\n      \
-    \      // \u3059\u3079\u3066\u306E\u554F\u3044\u5408\u308F\u305B\u3092\u611A\u76F4\
-    \u306A\u7D50\u679C\u3068\u6BD4\u3079\u308B\n            std::string t = random_string(5);\n\
-    \            long long cnt = ms.count(t) ? ms[t] : 0, pre = 0, total = 0, lcp\
-    \ = 0;\n            for (auto& [u, c] : ms) {\n                total += c;\n \
-    \               if (u.compare(0, t.size(), t) == 0 && u.size() >= t.size()) pre\
-    \ += c;\n                if (c > 0) {\n                    long long l = 0;\n\
-    \                    while (l < (long long)std::min(u.size(), t.size()) && u[l]\
-    \ == t[l]) l++;\n                    lcp = std::max(lcp, l);\n               \
-    \ }\n            }\n            long long v = trie.find(t);\n            ok =\
-    \ ok && (v != -1) == (node_of.count(t) > 0);\n            ok = ok && trie.count(t)\
-    \ == cnt && trie.count_prefix(t) == pre && trie.total() == total;\n          \
-    \  ok = ok && trie.longest_common_prefix(t) == lcp;\n            if (v != -1)\
-    \ {\n                ok = ok && trie.count_at(v) == cnt && trie.count_prefix_at(v)\
-    \ == pre && trie.depth(v) == (long long)t.size();\n            }\n        }\n\
-    \        // \u30CE\u30FC\u30C9\u306E\u6570\u3068\u3001\u89AA\u5B50\u30FB\u6DF1\
-    \u3055\u306E\u95A2\u4FC2\n        ok = ok && trie.size() == (long long)node_of.size();\n\
-    \        for (auto& [u, x] : node_of) {\n            long long v = trie.find(u);\n\
-    \            if (u.empty()) {\n                ok = ok && v == 0 && trie.parent(v)\
-    \ == -1;\n            } else {\n                long long p = trie.find(u.substr(0,\
+    \ == static_cast<long long>(s.size());\n            } else if (type == 1) {\n\
+    \                bool expected = ms.count(s) && ms[s] > 0;\n                ok\
+    \ = ok && trie.erase(s) == expected;\n                if (expected) ms[s]--;\n\
+    \            }\n            // \u3059\u3079\u3066\u306E\u554F\u3044\u5408\u308F\
+    \u305B\u3092\u611A\u76F4\u306A\u7D50\u679C\u3068\u6BD4\u3079\u308B\n         \
+    \   std::string t = random_string(5);\n            long long cnt = ms.count(t)\
+    \ ? ms[t] : 0, pre = 0, total = 0, lcp = 0;\n            for (auto& [u, c] : ms)\
+    \ {\n                total += c;\n                if (u.compare(0, t.size(), t)\
+    \ == 0 && u.size() >= t.size()) pre += c;\n                if (c > 0) {\n    \
+    \                long long l = 0;\n                    while (l < static_cast<long\
+    \ long>(std::min(u.size(), t.size())) && u[l] == t[l]) l++;\n                \
+    \    lcp = std::max(lcp, l);\n                }\n            }\n            long\
+    \ long v = trie.find(t);\n            ok = ok && (v != -1) == (node_of.count(t)\
+    \ > 0);\n            ok = ok && trie.count(t) == cnt && trie.count_prefix(t) ==\
+    \ pre && trie.total() == total;\n            ok = ok && trie.longest_common_prefix(t)\
+    \ == lcp;\n            if (v != -1) {\n                ok = ok && trie.count_at(v)\
+    \ == cnt && trie.count_prefix_at(v) == pre && trie.depth(v) == static_cast<long\
+    \ long>(t.size());\n            }\n        }\n        // \u30CE\u30FC\u30C9\u306E\
+    \u6570\u3068\u3001\u89AA\u5B50\u30FB\u6DF1\u3055\u306E\u95A2\u4FC2\n        ok\
+    \ = ok && trie.size() == static_cast<long long>(node_of.size());\n        for\
+    \ (auto& [u, x] : node_of) {\n            long long v = trie.find(u);\n      \
+    \      if (u.empty()) {\n                ok = ok && v == 0 && trie.parent(v) ==\
+    \ -1;\n            } else {\n                long long p = trie.find(u.substr(0,\
     \ u.size() - 1));\n                ok = ok && trie.parent(v) == p && trie.child(p,\
-    \ u.back()) == v && trie.depth(v) == (long long)u.size();\n            }\n   \
-    \     }\n    }\n\n    // \u4F8B: \u3059\u3079\u3066\u306E\u7D44\u306E\u6700\u9577\
-    \u5171\u901A\u63A5\u982D\u8F9E\u306E\u9577\u3055\u306E\u548C\u306F\u3001\u6839\
-    \u4EE5\u5916\u306E\u30CE\u30FC\u30C9\u3092\u901A\u308B\u6587\u5B57\u5217\u306E\
-    \u7D44\u306E\u500B\u6570\u306E\u548C\n    Trie<26, 'a'> trie;\n    std::vector<std::string>\
-    \ words = {\"ab\", \"abc\", \"arc\"};\n    for (auto& w : words) trie.insert(w);\n\
-    \    long long sum = 0;\n    for (long long v = 1; v < trie.size(); v++) sum +=\
-    \ trie.count_prefix_at(v) * (trie.count_prefix_at(v) - 1) / 2;\n    ok = ok &&\
-    \ sum == 4;  // lcp(ab, abc) = 2, lcp(ab, arc) = 1, lcp(abc, arc) = 1\n    //\
-    \ vector<int> \u3082\u8FFD\u52A0\u3067\u304D\u308B\n    Trie<10, 0> digits;\n\
-    \    digits.insert(std::vector<int>{3, 1, 4});\n    ok = ok && digits.count_prefix(std::vector<int>{3,\
-    \ 1}) == 1 && digits.find(std::vector<int>{1}) == -1;\n\n    if (ok)\n       \
-    \ std::cout << \"Hello World\" << std::endl;\n    else\n        std::cerr << \"\
-    failed\" << std::endl;\n}\n"
+    \ u.back()) == v && trie.depth(v) == static_cast<long long>(u.size());\n     \
+    \       }\n        }\n    }\n\n    // \u4F8B: \u3059\u3079\u3066\u306E\u7D44\u306E\
+    \u6700\u9577\u5171\u901A\u63A5\u982D\u8F9E\u306E\u9577\u3055\u306E\u548C\u306F\
+    \u3001\u6839\u4EE5\u5916\u306E\u30CE\u30FC\u30C9\u3092\u901A\u308B\u6587\u5B57\
+    \u5217\u306E\u7D44\u306E\u500B\u6570\u306E\u548C\n    Trie<26, 'a'> trie;\n  \
+    \  std::vector<std::string> words = {\"ab\", \"abc\", \"arc\"};\n    for (auto&\
+    \ w : words) trie.insert(w);\n    long long sum = 0;\n    for (long long v = 1;\
+    \ v < trie.size(); v++) sum += trie.count_prefix_at(v) * (trie.count_prefix_at(v)\
+    \ - 1) / 2;\n    ok = ok && sum == 4;  // lcp(ab, abc) = 2, lcp(ab, arc) = 1,\
+    \ lcp(abc, arc) = 1\n    // vector<int> \u3082\u8FFD\u52A0\u3067\u304D\u308B\n\
+    \    Trie<10, 0> digits;\n    digits.insert(std::vector<int>{3, 1, 4});\n    ok\
+    \ = ok && digits.count_prefix(std::vector<int>{3, 1}) == 1 && digits.find(std::vector<int>{1})\
+    \ == -1;\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
+    \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// Trie \u3092\u3001\u6587\u5B57\u5217\u306E\u591A\u91CD\u96C6\u5408\u3092\
     \u611A\u76F4\u306B\u8ABF\u3079\u308B\u65B9\u6CD5\u3068\u30E9\u30F3\u30C0\u30E0\
@@ -176,51 +177,52 @@ data:
     \u5B57\u5217\u306E\u63A5\u982D\u8F9E)\n        for (int q = 0; q < 200 && ok;\
     \ q++) {\n            std::string s = random_string(5);\n            int type\
     \ = rng() % 3;\n            if (type == 0) {\n                long long v = trie.insert(s);\n\
-    \                ms[s]++;\n                for (int len = 0; len <= (int)s.size();\
+    \                ms[s]++;\n                for (int len = 0; len <= static_cast<int>(s.size());\
     \ len++) node_of.emplace(s.substr(0, len), -1);\n                ok = ok && trie.depth(v)\
-    \ == (long long)s.size();\n            } else if (type == 1) {\n             \
-    \   bool expected = ms.count(s) && ms[s] > 0;\n                ok = ok && trie.erase(s)\
-    \ == expected;\n                if (expected) ms[s]--;\n            }\n      \
-    \      // \u3059\u3079\u3066\u306E\u554F\u3044\u5408\u308F\u305B\u3092\u611A\u76F4\
-    \u306A\u7D50\u679C\u3068\u6BD4\u3079\u308B\n            std::string t = random_string(5);\n\
-    \            long long cnt = ms.count(t) ? ms[t] : 0, pre = 0, total = 0, lcp\
-    \ = 0;\n            for (auto& [u, c] : ms) {\n                total += c;\n \
-    \               if (u.compare(0, t.size(), t) == 0 && u.size() >= t.size()) pre\
-    \ += c;\n                if (c > 0) {\n                    long long l = 0;\n\
-    \                    while (l < (long long)std::min(u.size(), t.size()) && u[l]\
-    \ == t[l]) l++;\n                    lcp = std::max(lcp, l);\n               \
-    \ }\n            }\n            long long v = trie.find(t);\n            ok =\
-    \ ok && (v != -1) == (node_of.count(t) > 0);\n            ok = ok && trie.count(t)\
-    \ == cnt && trie.count_prefix(t) == pre && trie.total() == total;\n          \
-    \  ok = ok && trie.longest_common_prefix(t) == lcp;\n            if (v != -1)\
-    \ {\n                ok = ok && trie.count_at(v) == cnt && trie.count_prefix_at(v)\
-    \ == pre && trie.depth(v) == (long long)t.size();\n            }\n        }\n\
-    \        // \u30CE\u30FC\u30C9\u306E\u6570\u3068\u3001\u89AA\u5B50\u30FB\u6DF1\
-    \u3055\u306E\u95A2\u4FC2\n        ok = ok && trie.size() == (long long)node_of.size();\n\
-    \        for (auto& [u, x] : node_of) {\n            long long v = trie.find(u);\n\
-    \            if (u.empty()) {\n                ok = ok && v == 0 && trie.parent(v)\
-    \ == -1;\n            } else {\n                long long p = trie.find(u.substr(0,\
+    \ == static_cast<long long>(s.size());\n            } else if (type == 1) {\n\
+    \                bool expected = ms.count(s) && ms[s] > 0;\n                ok\
+    \ = ok && trie.erase(s) == expected;\n                if (expected) ms[s]--;\n\
+    \            }\n            // \u3059\u3079\u3066\u306E\u554F\u3044\u5408\u308F\
+    \u305B\u3092\u611A\u76F4\u306A\u7D50\u679C\u3068\u6BD4\u3079\u308B\n         \
+    \   std::string t = random_string(5);\n            long long cnt = ms.count(t)\
+    \ ? ms[t] : 0, pre = 0, total = 0, lcp = 0;\n            for (auto& [u, c] : ms)\
+    \ {\n                total += c;\n                if (u.compare(0, t.size(), t)\
+    \ == 0 && u.size() >= t.size()) pre += c;\n                if (c > 0) {\n    \
+    \                long long l = 0;\n                    while (l < static_cast<long\
+    \ long>(std::min(u.size(), t.size())) && u[l] == t[l]) l++;\n                \
+    \    lcp = std::max(lcp, l);\n                }\n            }\n            long\
+    \ long v = trie.find(t);\n            ok = ok && (v != -1) == (node_of.count(t)\
+    \ > 0);\n            ok = ok && trie.count(t) == cnt && trie.count_prefix(t) ==\
+    \ pre && trie.total() == total;\n            ok = ok && trie.longest_common_prefix(t)\
+    \ == lcp;\n            if (v != -1) {\n                ok = ok && trie.count_at(v)\
+    \ == cnt && trie.count_prefix_at(v) == pre && trie.depth(v) == static_cast<long\
+    \ long>(t.size());\n            }\n        }\n        // \u30CE\u30FC\u30C9\u306E\
+    \u6570\u3068\u3001\u89AA\u5B50\u30FB\u6DF1\u3055\u306E\u95A2\u4FC2\n        ok\
+    \ = ok && trie.size() == static_cast<long long>(node_of.size());\n        for\
+    \ (auto& [u, x] : node_of) {\n            long long v = trie.find(u);\n      \
+    \      if (u.empty()) {\n                ok = ok && v == 0 && trie.parent(v) ==\
+    \ -1;\n            } else {\n                long long p = trie.find(u.substr(0,\
     \ u.size() - 1));\n                ok = ok && trie.parent(v) == p && trie.child(p,\
-    \ u.back()) == v && trie.depth(v) == (long long)u.size();\n            }\n   \
-    \     }\n    }\n\n    // \u4F8B: \u3059\u3079\u3066\u306E\u7D44\u306E\u6700\u9577\
-    \u5171\u901A\u63A5\u982D\u8F9E\u306E\u9577\u3055\u306E\u548C\u306F\u3001\u6839\
-    \u4EE5\u5916\u306E\u30CE\u30FC\u30C9\u3092\u901A\u308B\u6587\u5B57\u5217\u306E\
-    \u7D44\u306E\u500B\u6570\u306E\u548C\n    Trie<26, 'a'> trie;\n    std::vector<std::string>\
-    \ words = {\"ab\", \"abc\", \"arc\"};\n    for (auto& w : words) trie.insert(w);\n\
-    \    long long sum = 0;\n    for (long long v = 1; v < trie.size(); v++) sum +=\
-    \ trie.count_prefix_at(v) * (trie.count_prefix_at(v) - 1) / 2;\n    ok = ok &&\
-    \ sum == 4;  // lcp(ab, abc) = 2, lcp(ab, arc) = 1, lcp(abc, arc) = 1\n    //\
-    \ vector<int> \u3082\u8FFD\u52A0\u3067\u304D\u308B\n    Trie<10, 0> digits;\n\
-    \    digits.insert(std::vector<int>{3, 1, 4});\n    ok = ok && digits.count_prefix(std::vector<int>{3,\
-    \ 1}) == 1 && digits.find(std::vector<int>{1}) == -1;\n\n    if (ok)\n       \
-    \ std::cout << \"Hello World\" << std::endl;\n    else\n        std::cerr << \"\
-    failed\" << std::endl;\n}\n"
+    \ u.back()) == v && trie.depth(v) == static_cast<long long>(u.size());\n     \
+    \       }\n        }\n    }\n\n    // \u4F8B: \u3059\u3079\u3066\u306E\u7D44\u306E\
+    \u6700\u9577\u5171\u901A\u63A5\u982D\u8F9E\u306E\u9577\u3055\u306E\u548C\u306F\
+    \u3001\u6839\u4EE5\u5916\u306E\u30CE\u30FC\u30C9\u3092\u901A\u308B\u6587\u5B57\
+    \u5217\u306E\u7D44\u306E\u500B\u6570\u306E\u548C\n    Trie<26, 'a'> trie;\n  \
+    \  std::vector<std::string> words = {\"ab\", \"abc\", \"arc\"};\n    for (auto&\
+    \ w : words) trie.insert(w);\n    long long sum = 0;\n    for (long long v = 1;\
+    \ v < trie.size(); v++) sum += trie.count_prefix_at(v) * (trie.count_prefix_at(v)\
+    \ - 1) / 2;\n    ok = ok && sum == 4;  // lcp(ab, abc) = 2, lcp(ab, arc) = 1,\
+    \ lcp(abc, arc) = 1\n    // vector<int> \u3082\u8FFD\u52A0\u3067\u304D\u308B\n\
+    \    Trie<10, 0> digits;\n    digits.insert(std::vector<int>{3, 1, 4});\n    ok\
+    \ = ok && digits.count_prefix(std::vector<int>{3, 1}) == 1 && digits.find(std::vector<int>{1})\
+    \ == -1;\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
+    \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/string/trie.hpp
   isVerificationFile: true
   path: test/unittest/trie.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 03:36:18+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/trie.test.cpp

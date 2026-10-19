@@ -50,22 +50,23 @@ data:
     static_assert(maximum_subarray(std::array<int, 3>{-5, -2, -9}, 0) == 0);\n\nint\
     \ main() {\n    std::mt19937_64 rng(314);\n    for (int rep = 0; rep < 1000; rep++)\
     \ {\n        int n = rng() % 10 + 1;\n        std::vector<long long> v(n);\n \
-    \       for (auto& x : v) x = (long long)(rng() % 21) - 10;\n\n        // \u7A7A\
-    \u3067\u306A\u3044\u7248\n        long long best_nonempty = v[0];\n        for\
-    \ (int l = 0; l < n; l++) {\n            long long s = 0;\n            for (int\
-    \ r = l; r < n; r++) {\n                s += v[r];\n                best_nonempty\
-    \ = std::max(best_nonempty, s);\n            }\n        }\n        check(maximum_subarray(v)\
-    \ == best_nonempty, \"maximum_subarray(c)\");\n\n        // \u7A7A\u306E\u90E8\
-    \u5206\u5217\u3092\u8A31\u3059\u7248: \u5168\u533A\u9593\u306E\u548C\u306E\u6700\
-    \u5927\u5024\u3068 init \u306E\u5927\u304D\u3044\u65B9\n        long long init\
-    \ = (long long)(rng() % 7) - 3;\n        long long best = init;\n        for (int\
-    \ l = 0; l < n; l++) {\n            long long s = init;\n            for (int\
-    \ r = l; r < n; r++) {\n                s += v[r];\n                best = std::max(best,\
-    \ s);\n            }\n        }\n        check(maximum_subarray(v, init) == best,\
-    \ \"maximum_subarray(c, init)\");\n    }\n\n    // \u5883\u754C: \u7A7A\u3001\u3059\
-    \u3079\u3066\u8CA0\n    check(maximum_subarray(std::vector<int>{}, 0) == 0, \"\
-    maximum_subarray \u7A7A\");\n    check(maximum_subarray(std::vector<int>{-5, -2,\
-    \ -9}) == -2, \"maximum_subarray \u3059\u3079\u3066\u8CA0\");\n    check(maximum_subarray(std::vector<int>{-5,\
+    \       for (auto& x : v) x = static_cast<long long>(rng() % 21) - 10;\n\n   \
+    \     // \u7A7A\u3067\u306A\u3044\u7248\n        long long best_nonempty = v[0];\n\
+    \        for (int l = 0; l < n; l++) {\n            long long s = 0;\n       \
+    \     for (int r = l; r < n; r++) {\n                s += v[r];\n            \
+    \    best_nonempty = std::max(best_nonempty, s);\n            }\n        }\n \
+    \       check(maximum_subarray(v) == best_nonempty, \"maximum_subarray(c)\");\n\
+    \n        // \u7A7A\u306E\u90E8\u5206\u5217\u3092\u8A31\u3059\u7248: \u5168\u533A\
+    \u9593\u306E\u548C\u306E\u6700\u5927\u5024\u3068 init \u306E\u5927\u304D\u3044\
+    \u65B9\n        long long init = static_cast<long long>(rng() % 7) - 3;\n    \
+    \    long long best = init;\n        for (int l = 0; l < n; l++) {\n         \
+    \   long long s = init;\n            for (int r = l; r < n; r++) {\n         \
+    \       s += v[r];\n                best = std::max(best, s);\n            }\n\
+    \        }\n        check(maximum_subarray(v, init) == best, \"maximum_subarray(c,\
+    \ init)\");\n    }\n\n    // \u5883\u754C: \u7A7A\u3001\u3059\u3079\u3066\u8CA0\
+    \n    check(maximum_subarray(std::vector<int>{}, 0) == 0, \"maximum_subarray \u7A7A\
+    \");\n    check(maximum_subarray(std::vector<int>{-5, -2, -9}) == -2, \"maximum_subarray\
+    \ \u3059\u3079\u3066\u8CA0\");\n    check(maximum_subarray(std::vector<int>{-5,\
     \ -2, -9}, 0) == 0, \"maximum_subarray \u3059\u3079\u3066\u8CA0\u3001\u7A7A\u3092\
     \u8A31\u3059\");\n    check(maximum_subarray(std::vector<int>{-2, 1, -3, 4, -1,\
     \ 2, 1, -5, 4}) == 6, \"maximum_subarray \u30C9\u30AD\u30E5\u30E1\u30F3\u30C8\u306E\
@@ -84,22 +85,23 @@ data:
     static_assert(maximum_subarray(std::array<int, 3>{-5, -2, -9}, 0) == 0);\n\nint\
     \ main() {\n    std::mt19937_64 rng(314);\n    for (int rep = 0; rep < 1000; rep++)\
     \ {\n        int n = rng() % 10 + 1;\n        std::vector<long long> v(n);\n \
-    \       for (auto& x : v) x = (long long)(rng() % 21) - 10;\n\n        // \u7A7A\
-    \u3067\u306A\u3044\u7248\n        long long best_nonempty = v[0];\n        for\
-    \ (int l = 0; l < n; l++) {\n            long long s = 0;\n            for (int\
-    \ r = l; r < n; r++) {\n                s += v[r];\n                best_nonempty\
-    \ = std::max(best_nonempty, s);\n            }\n        }\n        check(maximum_subarray(v)\
-    \ == best_nonempty, \"maximum_subarray(c)\");\n\n        // \u7A7A\u306E\u90E8\
-    \u5206\u5217\u3092\u8A31\u3059\u7248: \u5168\u533A\u9593\u306E\u548C\u306E\u6700\
-    \u5927\u5024\u3068 init \u306E\u5927\u304D\u3044\u65B9\n        long long init\
-    \ = (long long)(rng() % 7) - 3;\n        long long best = init;\n        for (int\
-    \ l = 0; l < n; l++) {\n            long long s = init;\n            for (int\
-    \ r = l; r < n; r++) {\n                s += v[r];\n                best = std::max(best,\
-    \ s);\n            }\n        }\n        check(maximum_subarray(v, init) == best,\
-    \ \"maximum_subarray(c, init)\");\n    }\n\n    // \u5883\u754C: \u7A7A\u3001\u3059\
-    \u3079\u3066\u8CA0\n    check(maximum_subarray(std::vector<int>{}, 0) == 0, \"\
-    maximum_subarray \u7A7A\");\n    check(maximum_subarray(std::vector<int>{-5, -2,\
-    \ -9}) == -2, \"maximum_subarray \u3059\u3079\u3066\u8CA0\");\n    check(maximum_subarray(std::vector<int>{-5,\
+    \       for (auto& x : v) x = static_cast<long long>(rng() % 21) - 10;\n\n   \
+    \     // \u7A7A\u3067\u306A\u3044\u7248\n        long long best_nonempty = v[0];\n\
+    \        for (int l = 0; l < n; l++) {\n            long long s = 0;\n       \
+    \     for (int r = l; r < n; r++) {\n                s += v[r];\n            \
+    \    best_nonempty = std::max(best_nonempty, s);\n            }\n        }\n \
+    \       check(maximum_subarray(v) == best_nonempty, \"maximum_subarray(c)\");\n\
+    \n        // \u7A7A\u306E\u90E8\u5206\u5217\u3092\u8A31\u3059\u7248: \u5168\u533A\
+    \u9593\u306E\u548C\u306E\u6700\u5927\u5024\u3068 init \u306E\u5927\u304D\u3044\
+    \u65B9\n        long long init = static_cast<long long>(rng() % 7) - 3;\n    \
+    \    long long best = init;\n        for (int l = 0; l < n; l++) {\n         \
+    \   long long s = init;\n            for (int r = l; r < n; r++) {\n         \
+    \       s += v[r];\n                best = std::max(best, s);\n            }\n\
+    \        }\n        check(maximum_subarray(v, init) == best, \"maximum_subarray(c,\
+    \ init)\");\n    }\n\n    // \u5883\u754C: \u7A7A\u3001\u3059\u3079\u3066\u8CA0\
+    \n    check(maximum_subarray(std::vector<int>{}, 0) == 0, \"maximum_subarray \u7A7A\
+    \");\n    check(maximum_subarray(std::vector<int>{-5, -2, -9}) == -2, \"maximum_subarray\
+    \ \u3059\u3079\u3066\u8CA0\");\n    check(maximum_subarray(std::vector<int>{-5,\
     \ -2, -9}, 0) == 0, \"maximum_subarray \u3059\u3079\u3066\u8CA0\u3001\u7A7A\u3092\
     \u8A31\u3059\");\n    check(maximum_subarray(std::vector<int>{-2, 1, -3, 4, -1,\
     \ 2, 1, -5, 4}) == 6, \"maximum_subarray \u30C9\u30AD\u30E5\u30E1\u30F3\u30C8\u306E\
@@ -109,7 +111,7 @@ data:
   isVerificationFile: true
   path: test/unittest/maximum-subarray.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 23:11:36+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/maximum-subarray.test.cpp

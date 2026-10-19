@@ -159,73 +159,75 @@ data:
     \ cond, const char* what) {\n    if (!cond) {\n        if (ok) std::cerr << \"\
     failed: \" << what << std::endl;\n        ok = false;\n    }\n}\n\nint main()\
     \ {\n    std::mt19937_64 rng(314);\n    auto rand_vec = [&](int n) {\n       \
-    \ std::vector<long long> v(n);\n        for (auto& x : v) x = (long long)(rng()\
-    \ % 21) - 10;\n        return v;\n    };\n\n    for (int rep = 0; rep < 2000 &&\
-    \ ok; rep++) {\n        int n = rng() % 8, m = rng() % 8;\n        std::vector<long\
-    \ long> a = rand_vec(n), b = rand_vec(m);\n        long long c = (long long)(rng()\
-    \ % 11) - 5;\n\n        // ++ / -- (\u524D\u7F6E\u306F\u5909\u66F4\u5F8C\u3001\
-    \u5F8C\u7F6E\u306F\u5909\u66F4\u524D\u3092\u8FD4\u3059)\n        {\n         \
-    \   std::vector<long long> x = a, inc = a, dec = a;\n            for (auto& e\
-    \ : inc) e++;\n            for (auto& e : dec) e--;\n            check(++x ==\
-    \ inc && x == inc, \"\u524D\u7F6E ++\");\n            check(x-- == inc && x ==\
-    \ a, \"\u5F8C\u7F6E --\");\n            check(--x == dec && x == dec, \"\u524D\
-    \u7F6E --\");\n            check(x++ == dec && x == a, \"\u5F8C\u7F6E ++\");\n\
-    \        }\n\n        // \u8981\u7D20\u3054\u3068\u306E\u548C (\u77ED\u3044\u65B9\
-    \u306F 0 \u3067\u57CB\u3081\u308B)\n        {\n            std::vector<long long>\
-    \ expect(std::max(n, m));\n            for (int i = 0; i < (int)expect.size();\
-    \ i++) expect[i] = (i < n ? a[i] : 0) + (i < m ? b[i] : 0);\n            check(a\
-    \ + b == expect, \"v + w\");\n            std::vector<long long> x = a;\n    \
-    \        x += b;\n            check(x == expect, \"v += w\");\n        }\n\n \
-    \       // \u8981\u7D20\u3054\u3068\u306E\u7A4D (\u3069\u3061\u3089\u304B\u306B\
-    \u306A\u3044\u4F4D\u7F6E\u306F 0)\n        {\n            std::vector<long long>\
-    \ expect(std::max(n, m));\n            for (int i = 0; i < (int)expect.size();\
-    \ i++) expect[i] = (i < n && i < m) ? a[i] * b[i] : 0;\n            check(a *\
-    \ b == expect, \"v * w\");\n            std::vector<long long> x = a;\n      \
-    \      x *= b;\n            check(x == expect, \"v *= w\");\n        }\n\n   \
-    \     // \u30B9\u30AB\u30E9\u30FC\u3068\u306E\u548C\u30FB\u7A4D\n        {\n \
-    \           std::vector<long long> plus = a, times = a;\n            for (auto&\
-    \ e : plus) e += c;\n            for (auto& e : times) e *= c;\n            check(a\
-    \ + c == plus && c + a == plus, \"v + c, c + v\");\n            check(a * c ==\
-    \ times && c * a == times, \"v * c, c * v\");\n            std::vector<long long>\
-    \ x = a;\n            x += c;\n            check(x == plus, \"v += c\");\n   \
-    \         x = a;\n            x *= c;\n            check(x == times, \"v *= c\"\
-    );\n        }\n\n        // \u9023\u7D50\u3068\u7E70\u308A\u8FD4\u3057\n     \
-    \   {\n            std::vector<long long> cat = a;\n            cat.insert(cat.end(),\
-    \ b.begin(), b.end());\n            std::vector<long long> x = a;\n          \
-    \  check(&extend(x, b) == &x && x == cat, \"extend\");\n            x = a;\n \
-    \           x |= b;\n            check(x == cat, \"v |= w\");\n            int\
-    \ k = rng() % 4;\n            std::vector<long long> rep_k;\n            for (int\
-    \ i = 0; i < k; i++) rep_k.insert(rep_k.end(), a.begin(), a.end());\n        \
-    \    check((a | k) == rep_k && (k | a) == rep_k, \"v | k, k | v\");\n        \
-    \    x = a;\n            x |= k;\n            check(x == rep_k, \"v |= k\");\n\
-    \        }\n\n        // assign (\u578B\u306E\u5909\u63DB\u3064\u304D)\n     \
-    \   {\n            std::vector<int> small(b.begin(), b.end());\n            std::vector<long\
-    \ long> x = a;\n            check(&assign(x, small) == &x && x == b, \"assign\"\
-    );\n        }\n\n        // abs\n        {\n            std::vector<long long>\
-    \ expect = a;\n            for (auto& e : expect) e = std::llabs(e);\n       \
-    \     check(abs(a) == expect, \"abs\");\n        }\n\n        // sorted_idx: \u5024\
-    \u306E\u6607\u9806 (\u964D\u9806) \u306B\u4E26\u3079\u305F\u6DFB\u5B57\u306E\u4E26\
-    \u3073\u66FF\u3048\n        {\n            for (bool rev : {false, true}) {\n\
-    \                auto idx = sorted_idx(a, rev);\n                std::vector<long\
-    \ long> perm = idx;\n                std::sort(perm.begin(), perm.end());\n  \
-    \              bool is_perm = (int)perm.size() == n;\n                for (int\
-    \ i = 0; i < (int)perm.size() && is_perm; i++) is_perm = perm[i] == i;\n     \
-    \           bool is_sorted = true;\n                for (int i = 0; i + 1 < (int)idx.size();\
-    \ i++) {\n                    if (rev ? a[idx[i]] < a[idx[i + 1]] : a[idx[i]]\
-    \ > a[idx[i + 1]]) is_sorted = false;\n                }\n                check(is_perm\
-    \ && is_sorted, \"sorted_idx\");\n            }\n        }\n\n        // hamming_distance\
-    \ (\u540C\u3058\u9577\u3055\u3069\u3046\u3057\u3001\u578B\u304C\u7570\u306A\u3063\
-    \u3066\u3082\u3088\u3044)\n        {\n            std::vector<long long> d = rand_vec(n);\n\
-    \            std::vector<int> e(d.begin(), d.end());\n            long long hd\
-    \ = 0;\n            for (int i = 0; i < n; i++) hd += a[i] != d[i];\n        \
-    \    check(hamming_distance(a, d) == hd && hamming_distance(a, e) == hd, \"hamming_distance\"\
-    );\n        }\n\n        // iota\n        {\n            std::vector<int> expect(n);\n\
-    \            for (int i = 0; i < n; i++) expect[i] = i;\n            check(iota(n)\
-    \ == expect, \"iota\");\n        }\n\n        // radix_convert: \u6574\u6570 ->\
-    \ \u6841 (\u4E0A\u4F4D\u304B\u3089) -> \u6574\u6570\n        {\n            int\
-    \ base = rng() % 15 + 2;\n            long long x = rng() % 1000000000000LL;\n\
-    \            std::vector<long long> digits;\n            for (long long y = x;\
-    \ y > 0; y /= base) digits.push_back(y % base);\n            std::reverse(digits.begin(),\
+    \ std::vector<long long> v(n);\n        for (auto& x : v) x = static_cast<long\
+    \ long>(rng() % 21) - 10;\n        return v;\n    };\n\n    for (int rep = 0;\
+    \ rep < 2000 && ok; rep++) {\n        int n = rng() % 8, m = rng() % 8;\n    \
+    \    std::vector<long long> a = rand_vec(n), b = rand_vec(m);\n        long long\
+    \ c = static_cast<long long>(rng() % 11) - 5;\n\n        // ++ / -- (\u524D\u7F6E\
+    \u306F\u5909\u66F4\u5F8C\u3001\u5F8C\u7F6E\u306F\u5909\u66F4\u524D\u3092\u8FD4\
+    \u3059)\n        {\n            std::vector<long long> x = a, inc = a, dec = a;\n\
+    \            for (auto& e : inc) e++;\n            for (auto& e : dec) e--;\n\
+    \            check(++x == inc && x == inc, \"\u524D\u7F6E ++\");\n           \
+    \ check(x-- == inc && x == a, \"\u5F8C\u7F6E --\");\n            check(--x ==\
+    \ dec && x == dec, \"\u524D\u7F6E --\");\n            check(x++ == dec && x ==\
+    \ a, \"\u5F8C\u7F6E ++\");\n        }\n\n        // \u8981\u7D20\u3054\u3068\u306E\
+    \u548C (\u77ED\u3044\u65B9\u306F 0 \u3067\u57CB\u3081\u308B)\n        {\n    \
+    \        std::vector<long long> expect(std::max(n, m));\n            for (int\
+    \ i = 0; i < static_cast<int>(expect.size()); i++) expect[i] = (i < n ? a[i] :\
+    \ 0) + (i < m ? b[i] : 0);\n            check(a + b == expect, \"v + w\");\n \
+    \           std::vector<long long> x = a;\n            x += b;\n            check(x\
+    \ == expect, \"v += w\");\n        }\n\n        // \u8981\u7D20\u3054\u3068\u306E\
+    \u7A4D (\u3069\u3061\u3089\u304B\u306B\u306A\u3044\u4F4D\u7F6E\u306F 0)\n    \
+    \    {\n            std::vector<long long> expect(std::max(n, m));\n         \
+    \   for (int i = 0; i < static_cast<int>(expect.size()); i++) expect[i] = (i <\
+    \ n && i < m) ? a[i] * b[i] : 0;\n            check(a * b == expect, \"v * w\"\
+    );\n            std::vector<long long> x = a;\n            x *= b;\n         \
+    \   check(x == expect, \"v *= w\");\n        }\n\n        // \u30B9\u30AB\u30E9\
+    \u30FC\u3068\u306E\u548C\u30FB\u7A4D\n        {\n            std::vector<long\
+    \ long> plus = a, times = a;\n            for (auto& e : plus) e += c;\n     \
+    \       for (auto& e : times) e *= c;\n            check(a + c == plus && c +\
+    \ a == plus, \"v + c, c + v\");\n            check(a * c == times && c * a ==\
+    \ times, \"v * c, c * v\");\n            std::vector<long long> x = a;\n     \
+    \       x += c;\n            check(x == plus, \"v += c\");\n            x = a;\n\
+    \            x *= c;\n            check(x == times, \"v *= c\");\n        }\n\n\
+    \        // \u9023\u7D50\u3068\u7E70\u308A\u8FD4\u3057\n        {\n          \
+    \  std::vector<long long> cat = a;\n            cat.insert(cat.end(), b.begin(),\
+    \ b.end());\n            std::vector<long long> x = a;\n            check(&extend(x,\
+    \ b) == &x && x == cat, \"extend\");\n            x = a;\n            x |= b;\n\
+    \            check(x == cat, \"v |= w\");\n            int k = rng() % 4;\n  \
+    \          std::vector<long long> rep_k;\n            for (int i = 0; i < k; i++)\
+    \ rep_k.insert(rep_k.end(), a.begin(), a.end());\n            check((a | k) ==\
+    \ rep_k && (k | a) == rep_k, \"v | k, k | v\");\n            x = a;\n        \
+    \    x |= k;\n            check(x == rep_k, \"v |= k\");\n        }\n\n      \
+    \  // assign (\u578B\u306E\u5909\u63DB\u3064\u304D)\n        {\n            std::vector<int>\
+    \ small(b.begin(), b.end());\n            std::vector<long long> x = a;\n    \
+    \        check(&assign(x, small) == &x && x == b, \"assign\");\n        }\n\n\
+    \        // abs\n        {\n            std::vector<long long> expect = a;\n \
+    \           for (auto& e : expect) e = std::llabs(e);\n            check(abs(a)\
+    \ == expect, \"abs\");\n        }\n\n        // sorted_idx: \u5024\u306E\u6607\
+    \u9806 (\u964D\u9806) \u306B\u4E26\u3079\u305F\u6DFB\u5B57\u306E\u4E26\u3073\u66FF\
+    \u3048\n        {\n            for (bool rev : {false, true}) {\n            \
+    \    auto idx = sorted_idx(a, rev);\n                std::vector<long long> perm\
+    \ = idx;\n                std::sort(perm.begin(), perm.end());\n             \
+    \   bool is_perm = static_cast<int>(perm.size()) == n;\n                for (int\
+    \ i = 0; i < static_cast<int>(perm.size()) && is_perm; i++) is_perm = perm[i]\
+    \ == i;\n                bool is_sorted = true;\n                for (int i =\
+    \ 0; i + 1 < static_cast<int>(idx.size()); i++) {\n                    if (rev\
+    \ ? a[idx[i]] < a[idx[i + 1]] : a[idx[i]] > a[idx[i + 1]]) is_sorted = false;\n\
+    \                }\n                check(is_perm && is_sorted, \"sorted_idx\"\
+    );\n            }\n        }\n\n        // hamming_distance (\u540C\u3058\u9577\
+    \u3055\u3069\u3046\u3057\u3001\u578B\u304C\u7570\u306A\u3063\u3066\u3082\u3088\
+    \u3044)\n        {\n            std::vector<long long> d = rand_vec(n);\n    \
+    \        std::vector<int> e(d.begin(), d.end());\n            long long hd = 0;\n\
+    \            for (int i = 0; i < n; i++) hd += a[i] != d[i];\n            check(hamming_distance(a,\
+    \ d) == hd && hamming_distance(a, e) == hd, \"hamming_distance\");\n        }\n\
+    \n        // iota\n        {\n            std::vector<int> expect(n);\n      \
+    \      for (int i = 0; i < n; i++) expect[i] = i;\n            check(iota(n) ==\
+    \ expect, \"iota\");\n        }\n\n        // radix_convert: \u6574\u6570 -> \u6841\
+    \ (\u4E0A\u4F4D\u304B\u3089) -> \u6574\u6570\n        {\n            int base\
+    \ = rng() % 15 + 2;\n            long long x = rng() % 1000000000000LL;\n    \
+    \        std::vector<long long> digits;\n            for (long long y = x; y >\
+    \ 0; y /= base) digits.push_back(y % base);\n            std::reverse(digits.begin(),\
     \ digits.end());\n            check(radix_convert(x, base) == digits, \"radix_convert(x,\
     \ base)\");\n            check(radix_convert(digits, base) == x, \"radix_convert(digits,\
     \ base)\");\n        }\n    }\n\n    // \u6C7A\u307E\u3063\u305F\u5024\n    check(radix_convert(123,\
@@ -247,72 +249,74 @@ data:
     \     if (ok) std::cerr << \"failed: \" << what << std::endl;\n        ok = false;\n\
     \    }\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n    auto rand_vec =\
     \ [&](int n) {\n        std::vector<long long> v(n);\n        for (auto& x : v)\
-    \ x = (long long)(rng() % 21) - 10;\n        return v;\n    };\n\n    for (int\
-    \ rep = 0; rep < 2000 && ok; rep++) {\n        int n = rng() % 8, m = rng() %\
-    \ 8;\n        std::vector<long long> a = rand_vec(n), b = rand_vec(m);\n     \
-    \   long long c = (long long)(rng() % 11) - 5;\n\n        // ++ / -- (\u524D\u7F6E\
-    \u306F\u5909\u66F4\u5F8C\u3001\u5F8C\u7F6E\u306F\u5909\u66F4\u524D\u3092\u8FD4\
-    \u3059)\n        {\n            std::vector<long long> x = a, inc = a, dec = a;\n\
-    \            for (auto& e : inc) e++;\n            for (auto& e : dec) e--;\n\
-    \            check(++x == inc && x == inc, \"\u524D\u7F6E ++\");\n           \
-    \ check(x-- == inc && x == a, \"\u5F8C\u7F6E --\");\n            check(--x ==\
-    \ dec && x == dec, \"\u524D\u7F6E --\");\n            check(x++ == dec && x ==\
-    \ a, \"\u5F8C\u7F6E ++\");\n        }\n\n        // \u8981\u7D20\u3054\u3068\u306E\
-    \u548C (\u77ED\u3044\u65B9\u306F 0 \u3067\u57CB\u3081\u308B)\n        {\n    \
-    \        std::vector<long long> expect(std::max(n, m));\n            for (int\
-    \ i = 0; i < (int)expect.size(); i++) expect[i] = (i < n ? a[i] : 0) + (i < m\
-    \ ? b[i] : 0);\n            check(a + b == expect, \"v + w\");\n            std::vector<long\
-    \ long> x = a;\n            x += b;\n            check(x == expect, \"v += w\"\
-    );\n        }\n\n        // \u8981\u7D20\u3054\u3068\u306E\u7A4D (\u3069\u3061\
-    \u3089\u304B\u306B\u306A\u3044\u4F4D\u7F6E\u306F 0)\n        {\n            std::vector<long\
-    \ long> expect(std::max(n, m));\n            for (int i = 0; i < (int)expect.size();\
-    \ i++) expect[i] = (i < n && i < m) ? a[i] * b[i] : 0;\n            check(a *\
-    \ b == expect, \"v * w\");\n            std::vector<long long> x = a;\n      \
-    \      x *= b;\n            check(x == expect, \"v *= w\");\n        }\n\n   \
-    \     // \u30B9\u30AB\u30E9\u30FC\u3068\u306E\u548C\u30FB\u7A4D\n        {\n \
-    \           std::vector<long long> plus = a, times = a;\n            for (auto&\
-    \ e : plus) e += c;\n            for (auto& e : times) e *= c;\n            check(a\
-    \ + c == plus && c + a == plus, \"v + c, c + v\");\n            check(a * c ==\
-    \ times && c * a == times, \"v * c, c * v\");\n            std::vector<long long>\
-    \ x = a;\n            x += c;\n            check(x == plus, \"v += c\");\n   \
-    \         x = a;\n            x *= c;\n            check(x == times, \"v *= c\"\
-    );\n        }\n\n        // \u9023\u7D50\u3068\u7E70\u308A\u8FD4\u3057\n     \
-    \   {\n            std::vector<long long> cat = a;\n            cat.insert(cat.end(),\
-    \ b.begin(), b.end());\n            std::vector<long long> x = a;\n          \
-    \  check(&extend(x, b) == &x && x == cat, \"extend\");\n            x = a;\n \
-    \           x |= b;\n            check(x == cat, \"v |= w\");\n            int\
-    \ k = rng() % 4;\n            std::vector<long long> rep_k;\n            for (int\
-    \ i = 0; i < k; i++) rep_k.insert(rep_k.end(), a.begin(), a.end());\n        \
-    \    check((a | k) == rep_k && (k | a) == rep_k, \"v | k, k | v\");\n        \
-    \    x = a;\n            x |= k;\n            check(x == rep_k, \"v |= k\");\n\
-    \        }\n\n        // assign (\u578B\u306E\u5909\u63DB\u3064\u304D)\n     \
-    \   {\n            std::vector<int> small(b.begin(), b.end());\n            std::vector<long\
-    \ long> x = a;\n            check(&assign(x, small) == &x && x == b, \"assign\"\
-    );\n        }\n\n        // abs\n        {\n            std::vector<long long>\
-    \ expect = a;\n            for (auto& e : expect) e = std::llabs(e);\n       \
-    \     check(abs(a) == expect, \"abs\");\n        }\n\n        // sorted_idx: \u5024\
-    \u306E\u6607\u9806 (\u964D\u9806) \u306B\u4E26\u3079\u305F\u6DFB\u5B57\u306E\u4E26\
-    \u3073\u66FF\u3048\n        {\n            for (bool rev : {false, true}) {\n\
-    \                auto idx = sorted_idx(a, rev);\n                std::vector<long\
-    \ long> perm = idx;\n                std::sort(perm.begin(), perm.end());\n  \
-    \              bool is_perm = (int)perm.size() == n;\n                for (int\
-    \ i = 0; i < (int)perm.size() && is_perm; i++) is_perm = perm[i] == i;\n     \
-    \           bool is_sorted = true;\n                for (int i = 0; i + 1 < (int)idx.size();\
-    \ i++) {\n                    if (rev ? a[idx[i]] < a[idx[i + 1]] : a[idx[i]]\
-    \ > a[idx[i + 1]]) is_sorted = false;\n                }\n                check(is_perm\
-    \ && is_sorted, \"sorted_idx\");\n            }\n        }\n\n        // hamming_distance\
-    \ (\u540C\u3058\u9577\u3055\u3069\u3046\u3057\u3001\u578B\u304C\u7570\u306A\u3063\
-    \u3066\u3082\u3088\u3044)\n        {\n            std::vector<long long> d = rand_vec(n);\n\
-    \            std::vector<int> e(d.begin(), d.end());\n            long long hd\
-    \ = 0;\n            for (int i = 0; i < n; i++) hd += a[i] != d[i];\n        \
-    \    check(hamming_distance(a, d) == hd && hamming_distance(a, e) == hd, \"hamming_distance\"\
-    );\n        }\n\n        // iota\n        {\n            std::vector<int> expect(n);\n\
-    \            for (int i = 0; i < n; i++) expect[i] = i;\n            check(iota(n)\
-    \ == expect, \"iota\");\n        }\n\n        // radix_convert: \u6574\u6570 ->\
-    \ \u6841 (\u4E0A\u4F4D\u304B\u3089) -> \u6574\u6570\n        {\n            int\
-    \ base = rng() % 15 + 2;\n            long long x = rng() % 1000000000000LL;\n\
-    \            std::vector<long long> digits;\n            for (long long y = x;\
-    \ y > 0; y /= base) digits.push_back(y % base);\n            std::reverse(digits.begin(),\
+    \ x = static_cast<long long>(rng() % 21) - 10;\n        return v;\n    };\n\n\
+    \    for (int rep = 0; rep < 2000 && ok; rep++) {\n        int n = rng() % 8,\
+    \ m = rng() % 8;\n        std::vector<long long> a = rand_vec(n), b = rand_vec(m);\n\
+    \        long long c = static_cast<long long>(rng() % 11) - 5;\n\n        // ++\
+    \ / -- (\u524D\u7F6E\u306F\u5909\u66F4\u5F8C\u3001\u5F8C\u7F6E\u306F\u5909\u66F4\
+    \u524D\u3092\u8FD4\u3059)\n        {\n            std::vector<long long> x = a,\
+    \ inc = a, dec = a;\n            for (auto& e : inc) e++;\n            for (auto&\
+    \ e : dec) e--;\n            check(++x == inc && x == inc, \"\u524D\u7F6E ++\"\
+    );\n            check(x-- == inc && x == a, \"\u5F8C\u7F6E --\");\n          \
+    \  check(--x == dec && x == dec, \"\u524D\u7F6E --\");\n            check(x++\
+    \ == dec && x == a, \"\u5F8C\u7F6E ++\");\n        }\n\n        // \u8981\u7D20\
+    \u3054\u3068\u306E\u548C (\u77ED\u3044\u65B9\u306F 0 \u3067\u57CB\u3081\u308B\
+    )\n        {\n            std::vector<long long> expect(std::max(n, m));\n   \
+    \         for (int i = 0; i < static_cast<int>(expect.size()); i++) expect[i]\
+    \ = (i < n ? a[i] : 0) + (i < m ? b[i] : 0);\n            check(a + b == expect,\
+    \ \"v + w\");\n            std::vector<long long> x = a;\n            x += b;\n\
+    \            check(x == expect, \"v += w\");\n        }\n\n        // \u8981\u7D20\
+    \u3054\u3068\u306E\u7A4D (\u3069\u3061\u3089\u304B\u306B\u306A\u3044\u4F4D\u7F6E\
+    \u306F 0)\n        {\n            std::vector<long long> expect(std::max(n, m));\n\
+    \            for (int i = 0; i < static_cast<int>(expect.size()); i++) expect[i]\
+    \ = (i < n && i < m) ? a[i] * b[i] : 0;\n            check(a * b == expect, \"\
+    v * w\");\n            std::vector<long long> x = a;\n            x *= b;\n  \
+    \          check(x == expect, \"v *= w\");\n        }\n\n        // \u30B9\u30AB\
+    \u30E9\u30FC\u3068\u306E\u548C\u30FB\u7A4D\n        {\n            std::vector<long\
+    \ long> plus = a, times = a;\n            for (auto& e : plus) e += c;\n     \
+    \       for (auto& e : times) e *= c;\n            check(a + c == plus && c +\
+    \ a == plus, \"v + c, c + v\");\n            check(a * c == times && c * a ==\
+    \ times, \"v * c, c * v\");\n            std::vector<long long> x = a;\n     \
+    \       x += c;\n            check(x == plus, \"v += c\");\n            x = a;\n\
+    \            x *= c;\n            check(x == times, \"v *= c\");\n        }\n\n\
+    \        // \u9023\u7D50\u3068\u7E70\u308A\u8FD4\u3057\n        {\n          \
+    \  std::vector<long long> cat = a;\n            cat.insert(cat.end(), b.begin(),\
+    \ b.end());\n            std::vector<long long> x = a;\n            check(&extend(x,\
+    \ b) == &x && x == cat, \"extend\");\n            x = a;\n            x |= b;\n\
+    \            check(x == cat, \"v |= w\");\n            int k = rng() % 4;\n  \
+    \          std::vector<long long> rep_k;\n            for (int i = 0; i < k; i++)\
+    \ rep_k.insert(rep_k.end(), a.begin(), a.end());\n            check((a | k) ==\
+    \ rep_k && (k | a) == rep_k, \"v | k, k | v\");\n            x = a;\n        \
+    \    x |= k;\n            check(x == rep_k, \"v |= k\");\n        }\n\n      \
+    \  // assign (\u578B\u306E\u5909\u63DB\u3064\u304D)\n        {\n            std::vector<int>\
+    \ small(b.begin(), b.end());\n            std::vector<long long> x = a;\n    \
+    \        check(&assign(x, small) == &x && x == b, \"assign\");\n        }\n\n\
+    \        // abs\n        {\n            std::vector<long long> expect = a;\n \
+    \           for (auto& e : expect) e = std::llabs(e);\n            check(abs(a)\
+    \ == expect, \"abs\");\n        }\n\n        // sorted_idx: \u5024\u306E\u6607\
+    \u9806 (\u964D\u9806) \u306B\u4E26\u3079\u305F\u6DFB\u5B57\u306E\u4E26\u3073\u66FF\
+    \u3048\n        {\n            for (bool rev : {false, true}) {\n            \
+    \    auto idx = sorted_idx(a, rev);\n                std::vector<long long> perm\
+    \ = idx;\n                std::sort(perm.begin(), perm.end());\n             \
+    \   bool is_perm = static_cast<int>(perm.size()) == n;\n                for (int\
+    \ i = 0; i < static_cast<int>(perm.size()) && is_perm; i++) is_perm = perm[i]\
+    \ == i;\n                bool is_sorted = true;\n                for (int i =\
+    \ 0; i + 1 < static_cast<int>(idx.size()); i++) {\n                    if (rev\
+    \ ? a[idx[i]] < a[idx[i + 1]] : a[idx[i]] > a[idx[i + 1]]) is_sorted = false;\n\
+    \                }\n                check(is_perm && is_sorted, \"sorted_idx\"\
+    );\n            }\n        }\n\n        // hamming_distance (\u540C\u3058\u9577\
+    \u3055\u3069\u3046\u3057\u3001\u578B\u304C\u7570\u306A\u3063\u3066\u3082\u3088\
+    \u3044)\n        {\n            std::vector<long long> d = rand_vec(n);\n    \
+    \        std::vector<int> e(d.begin(), d.end());\n            long long hd = 0;\n\
+    \            for (int i = 0; i < n; i++) hd += a[i] != d[i];\n            check(hamming_distance(a,\
+    \ d) == hd && hamming_distance(a, e) == hd, \"hamming_distance\");\n        }\n\
+    \n        // iota\n        {\n            std::vector<int> expect(n);\n      \
+    \      for (int i = 0; i < n; i++) expect[i] = i;\n            check(iota(n) ==\
+    \ expect, \"iota\");\n        }\n\n        // radix_convert: \u6574\u6570 -> \u6841\
+    \ (\u4E0A\u4F4D\u304B\u3089) -> \u6574\u6570\n        {\n            int base\
+    \ = rng() % 15 + 2;\n            long long x = rng() % 1000000000000LL;\n    \
+    \        std::vector<long long> digits;\n            for (long long y = x; y >\
+    \ 0; y /= base) digits.push_back(y % base);\n            std::reverse(digits.begin(),\
     \ digits.end());\n            check(radix_convert(x, base) == digits, \"radix_convert(x,\
     \ base)\");\n            check(radix_convert(digits, base) == x, \"radix_convert(digits,\
     \ base)\");\n        }\n    }\n\n    // \u6C7A\u307E\u3063\u305F\u5024\n    check(radix_convert(123,\
@@ -329,7 +333,7 @@ data:
   isVerificationFile: true
   path: test/unittest/vector-func.test.cpp
   requiredBy: []
-  timestamp: '2026-10-17 23:17:18+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/vector-func.test.cpp

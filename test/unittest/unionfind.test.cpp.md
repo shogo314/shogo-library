@@ -90,10 +90,10 @@ data:
     \         }\n            if (uf.leader(a) != res.leader) ok = false;\n       \
     \     for (int x = 0; x < n; x++) {\n                // size: \u540C\u3058\u9023\
     \u7D50\u6210\u5206\u306E\u9802\u70B9\u6570\n                if (uf.size(x) !=\
-    \ (int)std::count(comp.begin(), comp.end(), comp[x])) ok = false;\n          \
-    \  }\n            // groups: \u9023\u7D50\u6210\u5206\u3054\u3068\u306E\u9802\u70B9\
-    \u306E\u30EA\u30B9\u30C8 (\u5404\u30EA\u30B9\u30C8\u306F\u6607\u9806)\n      \
-    \      std::vector<std::vector<long long>> expect;\n            std::vector<int>\
+    \ static_cast<int>(std::count(comp.begin(), comp.end(), comp[x]))) ok = false;\n\
+    \            }\n            // groups: \u9023\u7D50\u6210\u5206\u3054\u3068\u306E\
+    \u9802\u70B9\u306E\u30EA\u30B9\u30C8 (\u5404\u30EA\u30B9\u30C8\u306F\u6607\u9806\
+    )\n            std::vector<std::vector<long long>> expect;\n            std::vector<int>\
     \ seen(n, -1);\n            for (int x = 0; x < n; x++) {\n                if\
     \ (seen[comp[x]] == -1) {\n                    seen[comp[x]] = expect.size();\n\
     \                    expect.push_back({});\n                }\n              \
@@ -122,24 +122,25 @@ data:
     \                if (c == cb) c = ca;\n            }\n            if (uf.leader(a)\
     \ != res.leader) ok = false;\n            for (int x = 0; x < n; x++) {\n    \
     \            // size: \u540C\u3058\u9023\u7D50\u6210\u5206\u306E\u9802\u70B9\u6570\
-    \n                if (uf.size(x) != (int)std::count(comp.begin(), comp.end(),\
-    \ comp[x])) ok = false;\n            }\n            // groups: \u9023\u7D50\u6210\
-    \u5206\u3054\u3068\u306E\u9802\u70B9\u306E\u30EA\u30B9\u30C8 (\u5404\u30EA\u30B9\
-    \u30C8\u306F\u6607\u9806)\n            std::vector<std::vector<long long>> expect;\n\
-    \            std::vector<int> seen(n, -1);\n            for (int x = 0; x < n;\
-    \ x++) {\n                if (seen[comp[x]] == -1) {\n                    seen[comp[x]]\
-    \ = expect.size();\n                    expect.push_back({});\n              \
-    \  }\n                expect[seen[comp[x]]].push_back(x);\n            }\n   \
-    \         auto g = uf.groups();\n            std::sort(g.begin(), g.end());\n\
-    \            std::sort(expect.begin(), expect.end());\n            if (g != expect)\
-    \ ok = false;\n        }\n    }\n    if (ok)\n        std::cout << \"Hello World\"\
-    \ << std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
+    \n                if (uf.size(x) != static_cast<int>(std::count(comp.begin(),\
+    \ comp.end(), comp[x]))) ok = false;\n            }\n            // groups: \u9023\
+    \u7D50\u6210\u5206\u3054\u3068\u306E\u9802\u70B9\u306E\u30EA\u30B9\u30C8 (\u5404\
+    \u30EA\u30B9\u30C8\u306F\u6607\u9806)\n            std::vector<std::vector<long\
+    \ long>> expect;\n            std::vector<int> seen(n, -1);\n            for (int\
+    \ x = 0; x < n; x++) {\n                if (seen[comp[x]] == -1) {\n         \
+    \           seen[comp[x]] = expect.size();\n                    expect.push_back({});\n\
+    \                }\n                expect[seen[comp[x]]].push_back(x);\n    \
+    \        }\n            auto g = uf.groups();\n            std::sort(g.begin(),\
+    \ g.end());\n            std::sort(expect.begin(), expect.end());\n          \
+    \  if (g != expect) ok = false;\n        }\n    }\n    if (ok)\n        std::cout\
+    \ << \"Hello World\" << std::endl;\n    else\n        std::cerr << \"failed\"\
+    \ << std::endl;\n}\n"
   dependsOn:
   - src/data_structures/unionfind.hpp
   isVerificationFile: true
   path: test/unittest/unionfind.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/unionfind.test.cpp

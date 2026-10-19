@@ -144,8 +144,8 @@ data:
     \ 0);\n        for (int i = 0; i < m; i++) {\n            if (mf.get_edge(i).flow\
     \ != 0) ok = false;\n        }\n        if (mf.flow(s, t) != best) ok = false;\n\
     \        // \u5BB9\u91CF\u3092 0 \u306B\u3057\u305F\u8FBA\u306B\u306F\u6D41\u308C\
-    \u306A\u3044\n        int k = m == 0 ? -1 : (int)(rng() % m);\n        if (k !=\
-    \ -1) {\n            mf.change_edge(k, 0, 0);\n            if (mf.get_edge(k).cap\
+    \u306A\u3044\n        int k = m == 0 ? -1 : static_cast<int>(rng() % m);\n   \
+    \     if (k != -1) {\n            mf.change_edge(k, 0, 0);\n            if (mf.get_edge(k).cap\
     \ != 0 || mf.get_edge(k).flow != 0) ok = false;\n        }\n    }\n\n    if (ok)\n\
     \        std::cout << \"Hello World\" << std::endl;\n    else\n        std::cerr\
     \ << \"failed\" << std::endl;\n}\n"
@@ -196,8 +196,8 @@ data:
     \ 0);\n        for (int i = 0; i < m; i++) {\n            if (mf.get_edge(i).flow\
     \ != 0) ok = false;\n        }\n        if (mf.flow(s, t) != best) ok = false;\n\
     \        // \u5BB9\u91CF\u3092 0 \u306B\u3057\u305F\u8FBA\u306B\u306F\u6D41\u308C\
-    \u306A\u3044\n        int k = m == 0 ? -1 : (int)(rng() % m);\n        if (k !=\
-    \ -1) {\n            mf.change_edge(k, 0, 0);\n            if (mf.get_edge(k).cap\
+    \u306A\u3044\n        int k = m == 0 ? -1 : static_cast<int>(rng() % m);\n   \
+    \     if (k != -1) {\n            mf.change_edge(k, 0, 0);\n            if (mf.get_edge(k).cap\
     \ != 0 || mf.get_edge(k).flow != 0) ok = false;\n        }\n    }\n\n    if (ok)\n\
     \        std::cout << \"Hello World\" << std::endl;\n    else\n        std::cerr\
     \ << \"failed\" << std::endl;\n}\n"
@@ -206,7 +206,7 @@ data:
   isVerificationFile: true
   path: test/unittest/max-flow.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/max-flow.test.cpp

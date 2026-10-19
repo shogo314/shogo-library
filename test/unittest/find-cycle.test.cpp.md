@@ -478,31 +478,31 @@ data:
     \u3066\u3001\u8FBA\u306E\u756A\u53F7\u304C\u91CD\u8907\u305B\u305A\u3001\u3069\
     \u308C\u3082\u5B9F\u5728\u3059\u308B\u8FBA)\ntemplate <typename E>\nbool is_cycle(const\
     \ std::vector<E>& c, const std::vector<std::tuple<int, int, int>>& es, bool directed)\
-    \ {\n    std::set<int> ids;\n    for (int k = 0; k < (int)c.size(); k++) {\n \
-    \       if (c[k].dst != c[(k + 1) % c.size()].src) return false;\n        if (!ids.insert(c[k].id).second)\
-    \ return false;\n        auto [u, v, id] = es[c[k].id];\n        if (id != c[k].id)\
-    \ return false;\n        bool same = c[k].src == u && c[k].dst == v;\n       \
-    \ bool rev = c[k].src == v && c[k].dst == u;\n        if (!(same || (!directed\
-    \ && rev))) return false;\n    }\n    return true;\n}\n\nint main() {\n    std::mt19937\
-    \ rng(314);\n    bool ok = true;\n    for (int rep = 0; rep < 5000 && ok; rep++)\
-    \ {\n        int n = rng() % 8 + 1, m = rng() % 10;\n        std::vector<std::tuple<int,\
-    \ int, int>> es;\n        Graph<int> dg(n), ug(n);\n        UnionFind uf(n);\n\
-    \        bool undirected_cycle = false;\n        for (int i = 0; i < m; i++) {\n\
-    \            int u = rng() % n, v = rng() % n;  // \u81EA\u5DF1\u30EB\u30FC\u30D7\
-    \u3068\u591A\u91CD\u8FBA\u3082\u542B\u3080\n            es.emplace_back(u, v,\
-    \ i);\n            dg.add_directed_edge(u, v);\n            ug.add_edge(u, v);\n\
-    \            if (!uf.merge(u, v)) undirected_cycle = true;\n        }\n      \
-    \  auto dc = find_cycle_directed(dg);\n        ok = ok && dc.empty() == !has_cycle(dg)\
-    \ && is_cycle(dc, es, true);\n        auto uc = find_cycle_undirected(ug);\n \
-    \       ok = ok && uc.empty() == !undirected_cycle && is_cycle(uc, es, false);\n\
-    \    }\n\n    // \u4F8B: 0 -> 1 -> 2 -> 0\n    Graph<int> g(3);\n    g.add_directed_edge(0,\
-    \ 1);\n    g.add_directed_edge(1, 2);\n    g.add_directed_edge(2, 0);\n    auto\
-    \ c = find_cycle_directed(g);\n    ok = ok && c.size() == 3 && c[0].id == 0 &&\
-    \ c[1].id == 1 && c[2].id == 2;\n    // \u591A\u91CD\u8FBA\u306F\u9577\u3055 2\
-    \ \u306E\u9589\u8DEF\n    Graph<int> h(2);\n    h.add_edge(0, 1);\n    h.add_edge(0,\
-    \ 1);\n    ok = ok && find_cycle_undirected(h).size() == 2;\n\n    if (ok)\n \
-    \       std::cout << \"Hello World\" << std::endl;\n    else\n        std::cerr\
-    \ << \"failed\" << std::endl;\n}\n"
+    \ {\n    std::set<int> ids;\n    for (int k = 0; k < static_cast<int>(c.size());\
+    \ k++) {\n        if (c[k].dst != c[(k + 1) % c.size()].src) return false;\n \
+    \       if (!ids.insert(c[k].id).second) return false;\n        auto [u, v, id]\
+    \ = es[c[k].id];\n        if (id != c[k].id) return false;\n        bool same\
+    \ = c[k].src == u && c[k].dst == v;\n        bool rev = c[k].src == v && c[k].dst\
+    \ == u;\n        if (!(same || (!directed && rev))) return false;\n    }\n   \
+    \ return true;\n}\n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n\
+    \    for (int rep = 0; rep < 5000 && ok; rep++) {\n        int n = rng() % 8 +\
+    \ 1, m = rng() % 10;\n        std::vector<std::tuple<int, int, int>> es;\n   \
+    \     Graph<int> dg(n), ug(n);\n        UnionFind uf(n);\n        bool undirected_cycle\
+    \ = false;\n        for (int i = 0; i < m; i++) {\n            int u = rng() %\
+    \ n, v = rng() % n;  // \u81EA\u5DF1\u30EB\u30FC\u30D7\u3068\u591A\u91CD\u8FBA\
+    \u3082\u542B\u3080\n            es.emplace_back(u, v, i);\n            dg.add_directed_edge(u,\
+    \ v);\n            ug.add_edge(u, v);\n            if (!uf.merge(u, v)) undirected_cycle\
+    \ = true;\n        }\n        auto dc = find_cycle_directed(dg);\n        ok =\
+    \ ok && dc.empty() == !has_cycle(dg) && is_cycle(dc, es, true);\n        auto\
+    \ uc = find_cycle_undirected(ug);\n        ok = ok && uc.empty() == !undirected_cycle\
+    \ && is_cycle(uc, es, false);\n    }\n\n    // \u4F8B: 0 -> 1 -> 2 -> 0\n    Graph<int>\
+    \ g(3);\n    g.add_directed_edge(0, 1);\n    g.add_directed_edge(1, 2);\n    g.add_directed_edge(2,\
+    \ 0);\n    auto c = find_cycle_directed(g);\n    ok = ok && c.size() == 3 && c[0].id\
+    \ == 0 && c[1].id == 1 && c[2].id == 2;\n    // \u591A\u91CD\u8FBA\u306F\u9577\
+    \u3055 2 \u306E\u9589\u8DEF\n    Graph<int> h(2);\n    h.add_edge(0, 1);\n   \
+    \ h.add_edge(0, 1);\n    ok = ok && find_cycle_undirected(h).size() == 2;\n\n\
+    \    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n    else\n \
+    \       std::cerr << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// find_cycle_directed \u3068 find_cycle_undirected \u3092\u30E9\u30F3\u30C0\
     \u30E0\u306A\u30B0\u30E9\u30D5\u3067\u78BA\u304B\u3081\u308B\n// \u9589\u8DEF\u304C\
@@ -519,7 +519,7 @@ data:
     \u3044\u3066\u3001\u8FBA\u306E\u756A\u53F7\u304C\u91CD\u8907\u305B\u305A\u3001\
     \u3069\u308C\u3082\u5B9F\u5728\u3059\u308B\u8FBA)\ntemplate <typename E>\nbool\
     \ is_cycle(const std::vector<E>& c, const std::vector<std::tuple<int, int, int>>&\
-    \ es, bool directed) {\n    std::set<int> ids;\n    for (int k = 0; k < (int)c.size();\
+    \ es, bool directed) {\n    std::set<int> ids;\n    for (int k = 0; k < static_cast<int>(c.size());\
     \ k++) {\n        if (c[k].dst != c[(k + 1) % c.size()].src) return false;\n \
     \       if (!ids.insert(c[k].id).second) return false;\n        auto [u, v, id]\
     \ = es[c[k].id];\n        if (id != c[k].id) return false;\n        bool same\
@@ -551,7 +551,7 @@ data:
   isVerificationFile: true
   path: test/unittest/find-cycle.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/find-cycle.test.cpp

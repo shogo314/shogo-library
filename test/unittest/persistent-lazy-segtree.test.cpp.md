@@ -1091,7 +1091,7 @@ data:
     \ false;\n        } else {\n            int k = rng() % n;\n            if (seg[ver].get(k)\
     \ != naive[ver][k] || seg[ver][k] != naive[ver][k]) ok = false;\n        }\n \
     \   }\n    // \u3059\u3079\u3066\u306E\u7248\u304C\u3001\u4F5C\u3063\u305F\u3068\
-    \u304D\u306E\u5185\u5BB9\u306E\u307E\u307E\u304B\n    for (int i = 0; i < int(seg.size());\
+    \u304D\u306E\u5185\u5BB9\u306E\u307E\u307E\u304B\n    for (int i = 0; i < static_cast<int>(seg.size());\
     \ i++) {\n        if (seg[i].size() != n) ok = false;\n        if (seg[i].to_vector()\
     \ != naive[i]) ok = false;\n        if (seg[i].all_prod() != naive_prod(naive[i],\
     \ 0, n)) ok = false;\n    }\n    return ok;\n}\n\nint main() {\n    std::mt19937\
@@ -1108,19 +1108,19 @@ data:
     \ (mapping \u304C\u533A\u9593\u306E\u4F4D\u7F6E [l, r) \u3092\u4F7F\u3046)\n \
     \   auto am = ActedMonoid(\n        [](long long a, long long b) { return a +\
     \ b; }, 0LL,\n        [](long long f, long long x, int l, int r) { return x +\
-    \ f * (long long)(l + r - 1) * (r - l) / 2; },\n        [](long long f, long long\
-    \ g) { return f + g; }, 0LL);\n    for (int rep = 0; rep < 1500 && ok; rep++)\
-    \ {\n        int n = rng() % 12 + 1;\n        std::vector<long long> v(n);\n \
-    \       for (auto& x : v) x = rng() % 10;\n        PersistentLazySegTree seg(v,\
-    \ am);\n        ok &= random_test(\n            rng, n, seg, v, [&]() { return\
-    \ (long long)(rng() % 10); },\n            [&]() { return (long long)(rng() %\
-    \ 5); },\n            [](long long f, long long x, int i) { return x + f * i;\
-    \ });\n    }\n\n    // \u533A\u9593\u52A0\u7B97\u30FB\u533A\u9593\u548C\u306E\
-    \ max_right / min_left (\u5358\u8ABF\u306A g) \u3068\u51FA\u529B\n    for (int\
-    \ rep = 0; rep < 1500 && ok; rep++) {\n        int n = rng() % 12 + 1;\n     \
-    \   std::vector<long long> v(n);\n        for (auto& x : v) x = rng() % 5;\n \
-    \       PersistentLazySegTree<acted_monoid::AddSum<long long>> seg(v);\n     \
-    \   int l0 = rng() % (n + 1), r0 = rng() % (n + 1);\n        if (l0 > r0) std::swap(l0,\
+    \ f * static_cast<long long>(l + r - 1) * (r - l) / 2; },\n        [](long long\
+    \ f, long long g) { return f + g; }, 0LL);\n    for (int rep = 0; rep < 1500 &&\
+    \ ok; rep++) {\n        int n = rng() % 12 + 1;\n        std::vector<long long>\
+    \ v(n);\n        for (auto& x : v) x = rng() % 10;\n        PersistentLazySegTree\
+    \ seg(v, am);\n        ok &= random_test(\n            rng, n, seg, v, [&]() {\
+    \ return static_cast<long long>(rng() % 10); },\n            [&]() { return static_cast<long\
+    \ long>(rng() % 5); },\n            [](long long f, long long x, int i) { return\
+    \ x + f * i; });\n    }\n\n    // \u533A\u9593\u52A0\u7B97\u30FB\u533A\u9593\u548C\
+    \u306E max_right / min_left (\u5358\u8ABF\u306A g) \u3068\u51FA\u529B\n    for\
+    \ (int rep = 0; rep < 1500 && ok; rep++) {\n        int n = rng() % 12 + 1;\n\
+    \        std::vector<long long> v(n);\n        for (auto& x : v) x = rng() % 5;\n\
+    \        PersistentLazySegTree<acted_monoid::AddSum<long long>> seg(v);\n    \
+    \    int l0 = rng() % (n + 1), r0 = rng() % (n + 1);\n        if (l0 > r0) std::swap(l0,\
     \ r0);\n        long long f = rng() % 3;\n        auto seg2 = seg.apply(l0, r0,\
     \ f);\n        std::vector<long long> v2 = v;\n        for (int i = l0; i < r0;\
     \ i++) v2[i] += f;\n        for (int l = 0; l <= n; l++) {\n            long long\
@@ -1184,7 +1184,7 @@ data:
     \ false;\n        } else {\n            int k = rng() % n;\n            if (seg[ver].get(k)\
     \ != naive[ver][k] || seg[ver][k] != naive[ver][k]) ok = false;\n        }\n \
     \   }\n    // \u3059\u3079\u3066\u306E\u7248\u304C\u3001\u4F5C\u3063\u305F\u3068\
-    \u304D\u306E\u5185\u5BB9\u306E\u307E\u307E\u304B\n    for (int i = 0; i < int(seg.size());\
+    \u304D\u306E\u5185\u5BB9\u306E\u307E\u307E\u304B\n    for (int i = 0; i < static_cast<int>(seg.size());\
     \ i++) {\n        if (seg[i].size() != n) ok = false;\n        if (seg[i].to_vector()\
     \ != naive[i]) ok = false;\n        if (seg[i].all_prod() != naive_prod(naive[i],\
     \ 0, n)) ok = false;\n    }\n    return ok;\n}\n\nint main() {\n    std::mt19937\
@@ -1201,19 +1201,19 @@ data:
     \ (mapping \u304C\u533A\u9593\u306E\u4F4D\u7F6E [l, r) \u3092\u4F7F\u3046)\n \
     \   auto am = ActedMonoid(\n        [](long long a, long long b) { return a +\
     \ b; }, 0LL,\n        [](long long f, long long x, int l, int r) { return x +\
-    \ f * (long long)(l + r - 1) * (r - l) / 2; },\n        [](long long f, long long\
-    \ g) { return f + g; }, 0LL);\n    for (int rep = 0; rep < 1500 && ok; rep++)\
-    \ {\n        int n = rng() % 12 + 1;\n        std::vector<long long> v(n);\n \
-    \       for (auto& x : v) x = rng() % 10;\n        PersistentLazySegTree seg(v,\
-    \ am);\n        ok &= random_test(\n            rng, n, seg, v, [&]() { return\
-    \ (long long)(rng() % 10); },\n            [&]() { return (long long)(rng() %\
-    \ 5); },\n            [](long long f, long long x, int i) { return x + f * i;\
-    \ });\n    }\n\n    // \u533A\u9593\u52A0\u7B97\u30FB\u533A\u9593\u548C\u306E\
-    \ max_right / min_left (\u5358\u8ABF\u306A g) \u3068\u51FA\u529B\n    for (int\
-    \ rep = 0; rep < 1500 && ok; rep++) {\n        int n = rng() % 12 + 1;\n     \
-    \   std::vector<long long> v(n);\n        for (auto& x : v) x = rng() % 5;\n \
-    \       PersistentLazySegTree<acted_monoid::AddSum<long long>> seg(v);\n     \
-    \   int l0 = rng() % (n + 1), r0 = rng() % (n + 1);\n        if (l0 > r0) std::swap(l0,\
+    \ f * static_cast<long long>(l + r - 1) * (r - l) / 2; },\n        [](long long\
+    \ f, long long g) { return f + g; }, 0LL);\n    for (int rep = 0; rep < 1500 &&\
+    \ ok; rep++) {\n        int n = rng() % 12 + 1;\n        std::vector<long long>\
+    \ v(n);\n        for (auto& x : v) x = rng() % 10;\n        PersistentLazySegTree\
+    \ seg(v, am);\n        ok &= random_test(\n            rng, n, seg, v, [&]() {\
+    \ return static_cast<long long>(rng() % 10); },\n            [&]() { return static_cast<long\
+    \ long>(rng() % 5); },\n            [](long long f, long long x, int i) { return\
+    \ x + f * i; });\n    }\n\n    // \u533A\u9593\u52A0\u7B97\u30FB\u533A\u9593\u548C\
+    \u306E max_right / min_left (\u5358\u8ABF\u306A g) \u3068\u51FA\u529B\n    for\
+    \ (int rep = 0; rep < 1500 && ok; rep++) {\n        int n = rng() % 12 + 1;\n\
+    \        std::vector<long long> v(n);\n        for (auto& x : v) x = rng() % 5;\n\
+    \        PersistentLazySegTree<acted_monoid::AddSum<long long>> seg(v);\n    \
+    \    int l0 = rng() % (n + 1), r0 = rng() % (n + 1);\n        if (l0 > r0) std::swap(l0,\
     \ r0);\n        long long f = rng() % 3;\n        auto seg2 = seg.apply(l0, r0,\
     \ f);\n        std::vector<long long> v2 = v;\n        for (int i = l0; i < r0;\
     \ i++) v2[i] += f;\n        for (int l = 0; l <= n; l++) {\n            long long\
@@ -1243,7 +1243,7 @@ data:
   isVerificationFile: true
   path: test/unittest/persistent-lazy-segtree.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 12:03:10+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/persistent-lazy-segtree.test.cpp

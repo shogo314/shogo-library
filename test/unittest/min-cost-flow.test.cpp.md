@@ -141,13 +141,13 @@ data:
     \ pv(n, -1), pe(n, -1);\n            dist[s] = 0;\n            for (int it = 0;\
     \ it < n; it++) {\n                for (int v = 0; v < n; v++) {\n           \
     \         if (dist[v] == INF) continue;\n                    for (int i = 0; i\
-    \ < (int)g[v].size(); i++) {\n                        auto& e = g[v][i];\n   \
-    \                     if (e.cap > 0 && dist[v] + e.cost < dist[e.to]) {\n    \
-    \                        dist[e.to] = dist[v] + e.cost;\n                    \
-    \        pv[e.to] = v;\n                            pe[e.to] = i;\n          \
-    \              }\n                    }\n                }\n            }\n  \
-    \          if (dist[t] == INF) break;\n            for (int v = t; v != s; v =\
-    \ pv[v]) {\n                auto& e = g[pv[v]][pe[v]];\n                e.cap--;\n\
+    \ < static_cast<int>(g[v].size()); i++) {\n                        auto& e = g[v][i];\n\
+    \                        if (e.cap > 0 && dist[v] + e.cost < dist[e.to]) {\n \
+    \                           dist[e.to] = dist[v] + e.cost;\n                 \
+    \           pv[e.to] = v;\n                            pe[e.to] = i;\n       \
+    \                 }\n                    }\n                }\n            }\n\
+    \            if (dist[t] == INF) break;\n            for (int v = t; v != s; v\
+    \ = pv[v]) {\n                auto& e = g[pv[v]][pe[v]];\n                e.cap--;\n\
     \                g[v][e.rev].cap++;\n            }\n            res.push_back(res.back()\
     \ + dist[t]);\n        }\n        return res;\n    }\n};\n\n// \u6298\u308C\u7DDA\
     \ sl \u304C\u3001\u6D41\u91CF\u3054\u3068\u306E\u6700\u5C0F\u30B3\u30B9\u30C8\
@@ -155,56 +155,56 @@ data:
     \u304C\u771F\u306B\u5897\u52A0\u3059\u308B\u304B\nbool check_slope(const std::vector<std::pair<int,\
     \ long long>>& sl, const std::vector<long long>& expected, int base) {\n    if\
     \ (sl.empty() || sl[0] != std::make_pair(0, 0LL)) return false;\n    for (int\
-    \ i = 0; i + 1 < (int)sl.size(); i++) {\n        auto [f0, c0] = sl[i];\n    \
-    \    auto [f1, c1] = sl[i + 1];\n        if (f0 >= f1 || base + f1 >= (int)expected.size())\
-    \ return false;\n        for (int k = f0; k <= f1; k++) {\n            // \u9802\
-    \u70B9\u306E\u9593\u306F\u7DDA\u5F62\n            long long num = (long long)(k\
-    \ - f0) * (c1 - c0);\n            if (num % (f1 - f0) != 0 || c0 + num / (f1 -\
-    \ f0) != expected[base + k] - expected[base]) return false;\n        }\n     \
-    \   if (i + 2 < (int)sl.size()) {\n            auto [f2, c2] = sl[i + 2];\n  \
-    \          if ((c1 - c0) * (f2 - f1) >= (c2 - c1) * (f1 - f0)) return false;\n\
-    \        }\n    }\n    return true;\n}\n\nint main() {\n    std::mt19937 rng(314);\n\
-    \    bool ok = true;\n    for (int rep = 0; rep < 3000 && ok; rep++) {\n     \
-    \   int n = rng() % 6 + 2, m = rng() % 13;\n        int s = rng() % n, t = rng()\
-    \ % (n - 1);\n        if (t >= s) t++;\n        std::vector<std::tuple<int, int,\
-    \ int, int>> es;\n        MinCostFlow<int, long long> mcf(n);\n        for (int\
-    \ i = 0; i < m; i++) {\n            int u = rng() % n, v = rng() % n;  // \u81EA\
-    \u5DF1\u30EB\u30FC\u30D7\u3068\u591A\u91CD\u8FBA\u3082\u542B\u3080\n         \
-    \   int c = rng() % 6, d = rng() % 10;\n            es.emplace_back(u, v, c, d);\n\
-    \            if (mcf.add_edge(u, v, c, d) != i) ok = false;\n        }\n     \
-    \   Naive nv(n, es);\n        std::vector<long long> expected = nv.flow(s, t);\n\
-    \        int max_flow = expected.size() - 1;\n\n        // \u4E0A\u9650\u3064\u304D\
-    \u3067 2 \u56DE\u306B\u5206\u3051\u3066\u6D41\u3059\n        int limit = rng()\
-    \ % (max_flow + 1);\n        auto sl1 = mcf.slope(s, t, limit);\n        auto\
-    \ sl2 = mcf.slope(s, t);\n        ok = ok && check_slope(sl1, expected, 0) &&\
-    \ check_slope(sl2, expected, limit);\n        if (sl1.back().first != limit ||\
-    \ limit + sl2.back().first != max_flow) ok = false;\n\n        // \u5404\u8FBA\
-    \u306E\u6D41\u91CF\u304C\u5BB9\u91CF\u4EE5\u4E0B\u3067\u3001\u6D41\u91CF\u304C\
-    \u4FDD\u5B58\u3055\u308C\u3001\u30B3\u30B9\u30C8\u306E\u548C\u304C\u5408\u3046\
-    \n        std::vector<long long> balance(n);\n        long long total = 0;\n \
-    \       auto edges = mcf.edges();\n        for (int i = 0; i < m; i++) {\n   \
-    \         auto [u, v, c, d] = es[i];\n            auto e = mcf.get_edge(i);\n\
+    \ i = 0; i + 1 < static_cast<int>(sl.size()); i++) {\n        auto [f0, c0] =\
+    \ sl[i];\n        auto [f1, c1] = sl[i + 1];\n        if (f0 >= f1 || base + f1\
+    \ >= static_cast<int>(expected.size())) return false;\n        for (int k = f0;\
+    \ k <= f1; k++) {\n            // \u9802\u70B9\u306E\u9593\u306F\u7DDA\u5F62\n\
+    \            long long num = static_cast<long long>(k - f0) * (c1 - c0);\n   \
+    \         if (num % (f1 - f0) != 0 || c0 + num / (f1 - f0) != expected[base +\
+    \ k] - expected[base]) return false;\n        }\n        if (i + 2 < static_cast<int>(sl.size()))\
+    \ {\n            auto [f2, c2] = sl[i + 2];\n            if ((c1 - c0) * (f2 -\
+    \ f1) >= (c2 - c1) * (f1 - f0)) return false;\n        }\n    }\n    return true;\n\
+    }\n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int\
+    \ rep = 0; rep < 3000 && ok; rep++) {\n        int n = rng() % 6 + 2, m = rng()\
+    \ % 13;\n        int s = rng() % n, t = rng() % (n - 1);\n        if (t >= s)\
+    \ t++;\n        std::vector<std::tuple<int, int, int, int>> es;\n        MinCostFlow<int,\
+    \ long long> mcf(n);\n        for (int i = 0; i < m; i++) {\n            int u\
+    \ = rng() % n, v = rng() % n;  // \u81EA\u5DF1\u30EB\u30FC\u30D7\u3068\u591A\u91CD\
+    \u8FBA\u3082\u542B\u3080\n            int c = rng() % 6, d = rng() % 10;\n   \
+    \         es.emplace_back(u, v, c, d);\n            if (mcf.add_edge(u, v, c,\
+    \ d) != i) ok = false;\n        }\n        Naive nv(n, es);\n        std::vector<long\
+    \ long> expected = nv.flow(s, t);\n        int max_flow = expected.size() - 1;\n\
+    \n        // \u4E0A\u9650\u3064\u304D\u3067 2 \u56DE\u306B\u5206\u3051\u3066\u6D41\
+    \u3059\n        int limit = rng() % (max_flow + 1);\n        auto sl1 = mcf.slope(s,\
+    \ t, limit);\n        auto sl2 = mcf.slope(s, t);\n        ok = ok && check_slope(sl1,\
+    \ expected, 0) && check_slope(sl2, expected, limit);\n        if (sl1.back().first\
+    \ != limit || limit + sl2.back().first != max_flow) ok = false;\n\n        //\
+    \ \u5404\u8FBA\u306E\u6D41\u91CF\u304C\u5BB9\u91CF\u4EE5\u4E0B\u3067\u3001\u6D41\
+    \u91CF\u304C\u4FDD\u5B58\u3055\u308C\u3001\u30B3\u30B9\u30C8\u306E\u548C\u304C\
+    \u5408\u3046\n        std::vector<long long> balance(n);\n        long long total\
+    \ = 0;\n        auto edges = mcf.edges();\n        for (int i = 0; i < m; i++)\
+    \ {\n            auto [u, v, c, d] = es[i];\n            auto e = mcf.get_edge(i);\n\
     \            if (e.from != u || e.to != v || e.cap != c || e.cost != d || e.flow\
     \ < 0 || e.flow > c) ok = false;\n            if (edges[i].flow != e.flow) ok\
     \ = false;\n            balance[u] -= e.flow;\n            balance[v] += e.flow;\n\
-    \            total += (long long)e.flow * d;\n        }\n        for (int v =\
-    \ 0; v < n; v++) {\n            long long want = v == s ? -max_flow : v == t ?\
-    \ max_flow\n                                                         : 0;\n  \
-    \          if (balance[v] != want) ok = false;\n        }\n        if (total !=\
-    \ expected[max_flow]) ok = false;\n    }\n\n    // \u6D41\u3057\u305F\u5F8C\u3067\
-    \u3001\u5225\u306E s, t \u304B\u3089\u7D9A\u3051\u3066\u6D41\u3059 (\u30B3\u30B9\
-    \u30C8\u304C\u8CA0\u306E\u8DEF\u3092\u4F7F\u3046\u3053\u3068\u3082\u3042\u308B\
-    )\n    for (int rep = 0; rep < 3000 && ok; rep++) {\n        int n = rng() % 6\
-    \ + 2, m = rng() % 13;\n        std::vector<std::tuple<int, int, int, int>> es;\n\
-    \        MinCostFlow<int, long long> mcf(n);\n        for (int i = 0; i < m; i++)\
-    \ {\n            int u = rng() % n, v = rng() % n;\n            int c = rng()\
-    \ % 6, d = rng() % 10;\n            es.emplace_back(u, v, c, d);\n           \
-    \ mcf.add_edge(u, v, c, d);\n        }\n        Naive nv(n, es);\n        for\
-    \ (int it = 0; it < 3 && ok; it++) {\n            int s = rng() % n, t = rng()\
-    \ % (n - 1);\n            if (t >= s) t++;\n            auto sl = mcf.slope(s,\
+    \            total += static_cast<long long>(e.flow) * d;\n        }\n       \
+    \ for (int v = 0; v < n; v++) {\n            long long want = v == s ? -max_flow\
+    \ : v == t ? max_flow\n                                                      \
+    \   : 0;\n            if (balance[v] != want) ok = false;\n        }\n       \
+    \ if (total != expected[max_flow]) ok = false;\n    }\n\n    // \u6D41\u3057\u305F\
+    \u5F8C\u3067\u3001\u5225\u306E s, t \u304B\u3089\u7D9A\u3051\u3066\u6D41\u3059\
+    \ (\u30B3\u30B9\u30C8\u304C\u8CA0\u306E\u8DEF\u3092\u4F7F\u3046\u3053\u3068\u3082\
+    \u3042\u308B)\n    for (int rep = 0; rep < 3000 && ok; rep++) {\n        int n\
+    \ = rng() % 6 + 2, m = rng() % 13;\n        std::vector<std::tuple<int, int, int,\
+    \ int>> es;\n        MinCostFlow<int, long long> mcf(n);\n        for (int i =\
+    \ 0; i < m; i++) {\n            int u = rng() % n, v = rng() % n;\n          \
+    \  int c = rng() % 6, d = rng() % 10;\n            es.emplace_back(u, v, c, d);\n\
+    \            mcf.add_edge(u, v, c, d);\n        }\n        Naive nv(n, es);\n\
+    \        for (int it = 0; it < 3 && ok; it++) {\n            int s = rng() % n,\
+    \ t = rng() % (n - 1);\n            if (t >= s) t++;\n            auto sl = mcf.slope(s,\
     \ t);\n            auto expected = nv.flow(s, t);\n            ok = ok && check_slope(sl,\
-    \ expected, 0) && sl.back().first == (int)expected.size() - 1;\n        }\n  \
-    \  }\n\n    // \u4F8B\n    MinCostFlow<int, int> mcf(4);\n    mcf.add_edge(0,\
+    \ expected, 0) && sl.back().first == static_cast<int>(expected.size()) - 1;\n\
+    \        }\n    }\n\n    // \u4F8B\n    MinCostFlow<int, int> mcf(4);\n    mcf.add_edge(0,\
     \ 1, 2, 1);\n    mcf.add_edge(0, 2, 1, 2);\n    mcf.add_edge(1, 2, 1, 1);\n  \
     \  mcf.add_edge(1, 3, 1, 3);\n    mcf.add_edge(2, 3, 2, 1);\n    ok = ok && mcf.slope(0,\
     \ 3) == std::vector<std::pair<int, int>>{{0, 0}, {2, 6}, {3, 10}};\n\n    if (ok)\n\
@@ -230,13 +230,13 @@ data:
     \ pv(n, -1), pe(n, -1);\n            dist[s] = 0;\n            for (int it = 0;\
     \ it < n; it++) {\n                for (int v = 0; v < n; v++) {\n           \
     \         if (dist[v] == INF) continue;\n                    for (int i = 0; i\
-    \ < (int)g[v].size(); i++) {\n                        auto& e = g[v][i];\n   \
-    \                     if (e.cap > 0 && dist[v] + e.cost < dist[e.to]) {\n    \
-    \                        dist[e.to] = dist[v] + e.cost;\n                    \
-    \        pv[e.to] = v;\n                            pe[e.to] = i;\n          \
-    \              }\n                    }\n                }\n            }\n  \
-    \          if (dist[t] == INF) break;\n            for (int v = t; v != s; v =\
-    \ pv[v]) {\n                auto& e = g[pv[v]][pe[v]];\n                e.cap--;\n\
+    \ < static_cast<int>(g[v].size()); i++) {\n                        auto& e = g[v][i];\n\
+    \                        if (e.cap > 0 && dist[v] + e.cost < dist[e.to]) {\n \
+    \                           dist[e.to] = dist[v] + e.cost;\n                 \
+    \           pv[e.to] = v;\n                            pe[e.to] = i;\n       \
+    \                 }\n                    }\n                }\n            }\n\
+    \            if (dist[t] == INF) break;\n            for (int v = t; v != s; v\
+    \ = pv[v]) {\n                auto& e = g[pv[v]][pe[v]];\n                e.cap--;\n\
     \                g[v][e.rev].cap++;\n            }\n            res.push_back(res.back()\
     \ + dist[t]);\n        }\n        return res;\n    }\n};\n\n// \u6298\u308C\u7DDA\
     \ sl \u304C\u3001\u6D41\u91CF\u3054\u3068\u306E\u6700\u5C0F\u30B3\u30B9\u30C8\
@@ -244,56 +244,56 @@ data:
     \u304C\u771F\u306B\u5897\u52A0\u3059\u308B\u304B\nbool check_slope(const std::vector<std::pair<int,\
     \ long long>>& sl, const std::vector<long long>& expected, int base) {\n    if\
     \ (sl.empty() || sl[0] != std::make_pair(0, 0LL)) return false;\n    for (int\
-    \ i = 0; i + 1 < (int)sl.size(); i++) {\n        auto [f0, c0] = sl[i];\n    \
-    \    auto [f1, c1] = sl[i + 1];\n        if (f0 >= f1 || base + f1 >= (int)expected.size())\
-    \ return false;\n        for (int k = f0; k <= f1; k++) {\n            // \u9802\
-    \u70B9\u306E\u9593\u306F\u7DDA\u5F62\n            long long num = (long long)(k\
-    \ - f0) * (c1 - c0);\n            if (num % (f1 - f0) != 0 || c0 + num / (f1 -\
-    \ f0) != expected[base + k] - expected[base]) return false;\n        }\n     \
-    \   if (i + 2 < (int)sl.size()) {\n            auto [f2, c2] = sl[i + 2];\n  \
-    \          if ((c1 - c0) * (f2 - f1) >= (c2 - c1) * (f1 - f0)) return false;\n\
-    \        }\n    }\n    return true;\n}\n\nint main() {\n    std::mt19937 rng(314);\n\
-    \    bool ok = true;\n    for (int rep = 0; rep < 3000 && ok; rep++) {\n     \
-    \   int n = rng() % 6 + 2, m = rng() % 13;\n        int s = rng() % n, t = rng()\
-    \ % (n - 1);\n        if (t >= s) t++;\n        std::vector<std::tuple<int, int,\
-    \ int, int>> es;\n        MinCostFlow<int, long long> mcf(n);\n        for (int\
-    \ i = 0; i < m; i++) {\n            int u = rng() % n, v = rng() % n;  // \u81EA\
-    \u5DF1\u30EB\u30FC\u30D7\u3068\u591A\u91CD\u8FBA\u3082\u542B\u3080\n         \
-    \   int c = rng() % 6, d = rng() % 10;\n            es.emplace_back(u, v, c, d);\n\
-    \            if (mcf.add_edge(u, v, c, d) != i) ok = false;\n        }\n     \
-    \   Naive nv(n, es);\n        std::vector<long long> expected = nv.flow(s, t);\n\
-    \        int max_flow = expected.size() - 1;\n\n        // \u4E0A\u9650\u3064\u304D\
-    \u3067 2 \u56DE\u306B\u5206\u3051\u3066\u6D41\u3059\n        int limit = rng()\
-    \ % (max_flow + 1);\n        auto sl1 = mcf.slope(s, t, limit);\n        auto\
-    \ sl2 = mcf.slope(s, t);\n        ok = ok && check_slope(sl1, expected, 0) &&\
-    \ check_slope(sl2, expected, limit);\n        if (sl1.back().first != limit ||\
-    \ limit + sl2.back().first != max_flow) ok = false;\n\n        // \u5404\u8FBA\
-    \u306E\u6D41\u91CF\u304C\u5BB9\u91CF\u4EE5\u4E0B\u3067\u3001\u6D41\u91CF\u304C\
-    \u4FDD\u5B58\u3055\u308C\u3001\u30B3\u30B9\u30C8\u306E\u548C\u304C\u5408\u3046\
-    \n        std::vector<long long> balance(n);\n        long long total = 0;\n \
-    \       auto edges = mcf.edges();\n        for (int i = 0; i < m; i++) {\n   \
-    \         auto [u, v, c, d] = es[i];\n            auto e = mcf.get_edge(i);\n\
+    \ i = 0; i + 1 < static_cast<int>(sl.size()); i++) {\n        auto [f0, c0] =\
+    \ sl[i];\n        auto [f1, c1] = sl[i + 1];\n        if (f0 >= f1 || base + f1\
+    \ >= static_cast<int>(expected.size())) return false;\n        for (int k = f0;\
+    \ k <= f1; k++) {\n            // \u9802\u70B9\u306E\u9593\u306F\u7DDA\u5F62\n\
+    \            long long num = static_cast<long long>(k - f0) * (c1 - c0);\n   \
+    \         if (num % (f1 - f0) != 0 || c0 + num / (f1 - f0) != expected[base +\
+    \ k] - expected[base]) return false;\n        }\n        if (i + 2 < static_cast<int>(sl.size()))\
+    \ {\n            auto [f2, c2] = sl[i + 2];\n            if ((c1 - c0) * (f2 -\
+    \ f1) >= (c2 - c1) * (f1 - f0)) return false;\n        }\n    }\n    return true;\n\
+    }\n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int\
+    \ rep = 0; rep < 3000 && ok; rep++) {\n        int n = rng() % 6 + 2, m = rng()\
+    \ % 13;\n        int s = rng() % n, t = rng() % (n - 1);\n        if (t >= s)\
+    \ t++;\n        std::vector<std::tuple<int, int, int, int>> es;\n        MinCostFlow<int,\
+    \ long long> mcf(n);\n        for (int i = 0; i < m; i++) {\n            int u\
+    \ = rng() % n, v = rng() % n;  // \u81EA\u5DF1\u30EB\u30FC\u30D7\u3068\u591A\u91CD\
+    \u8FBA\u3082\u542B\u3080\n            int c = rng() % 6, d = rng() % 10;\n   \
+    \         es.emplace_back(u, v, c, d);\n            if (mcf.add_edge(u, v, c,\
+    \ d) != i) ok = false;\n        }\n        Naive nv(n, es);\n        std::vector<long\
+    \ long> expected = nv.flow(s, t);\n        int max_flow = expected.size() - 1;\n\
+    \n        // \u4E0A\u9650\u3064\u304D\u3067 2 \u56DE\u306B\u5206\u3051\u3066\u6D41\
+    \u3059\n        int limit = rng() % (max_flow + 1);\n        auto sl1 = mcf.slope(s,\
+    \ t, limit);\n        auto sl2 = mcf.slope(s, t);\n        ok = ok && check_slope(sl1,\
+    \ expected, 0) && check_slope(sl2, expected, limit);\n        if (sl1.back().first\
+    \ != limit || limit + sl2.back().first != max_flow) ok = false;\n\n        //\
+    \ \u5404\u8FBA\u306E\u6D41\u91CF\u304C\u5BB9\u91CF\u4EE5\u4E0B\u3067\u3001\u6D41\
+    \u91CF\u304C\u4FDD\u5B58\u3055\u308C\u3001\u30B3\u30B9\u30C8\u306E\u548C\u304C\
+    \u5408\u3046\n        std::vector<long long> balance(n);\n        long long total\
+    \ = 0;\n        auto edges = mcf.edges();\n        for (int i = 0; i < m; i++)\
+    \ {\n            auto [u, v, c, d] = es[i];\n            auto e = mcf.get_edge(i);\n\
     \            if (e.from != u || e.to != v || e.cap != c || e.cost != d || e.flow\
     \ < 0 || e.flow > c) ok = false;\n            if (edges[i].flow != e.flow) ok\
     \ = false;\n            balance[u] -= e.flow;\n            balance[v] += e.flow;\n\
-    \            total += (long long)e.flow * d;\n        }\n        for (int v =\
-    \ 0; v < n; v++) {\n            long long want = v == s ? -max_flow : v == t ?\
-    \ max_flow\n                                                         : 0;\n  \
-    \          if (balance[v] != want) ok = false;\n        }\n        if (total !=\
-    \ expected[max_flow]) ok = false;\n    }\n\n    // \u6D41\u3057\u305F\u5F8C\u3067\
-    \u3001\u5225\u306E s, t \u304B\u3089\u7D9A\u3051\u3066\u6D41\u3059 (\u30B3\u30B9\
-    \u30C8\u304C\u8CA0\u306E\u8DEF\u3092\u4F7F\u3046\u3053\u3068\u3082\u3042\u308B\
-    )\n    for (int rep = 0; rep < 3000 && ok; rep++) {\n        int n = rng() % 6\
-    \ + 2, m = rng() % 13;\n        std::vector<std::tuple<int, int, int, int>> es;\n\
-    \        MinCostFlow<int, long long> mcf(n);\n        for (int i = 0; i < m; i++)\
-    \ {\n            int u = rng() % n, v = rng() % n;\n            int c = rng()\
-    \ % 6, d = rng() % 10;\n            es.emplace_back(u, v, c, d);\n           \
-    \ mcf.add_edge(u, v, c, d);\n        }\n        Naive nv(n, es);\n        for\
-    \ (int it = 0; it < 3 && ok; it++) {\n            int s = rng() % n, t = rng()\
-    \ % (n - 1);\n            if (t >= s) t++;\n            auto sl = mcf.slope(s,\
+    \            total += static_cast<long long>(e.flow) * d;\n        }\n       \
+    \ for (int v = 0; v < n; v++) {\n            long long want = v == s ? -max_flow\
+    \ : v == t ? max_flow\n                                                      \
+    \   : 0;\n            if (balance[v] != want) ok = false;\n        }\n       \
+    \ if (total != expected[max_flow]) ok = false;\n    }\n\n    // \u6D41\u3057\u305F\
+    \u5F8C\u3067\u3001\u5225\u306E s, t \u304B\u3089\u7D9A\u3051\u3066\u6D41\u3059\
+    \ (\u30B3\u30B9\u30C8\u304C\u8CA0\u306E\u8DEF\u3092\u4F7F\u3046\u3053\u3068\u3082\
+    \u3042\u308B)\n    for (int rep = 0; rep < 3000 && ok; rep++) {\n        int n\
+    \ = rng() % 6 + 2, m = rng() % 13;\n        std::vector<std::tuple<int, int, int,\
+    \ int>> es;\n        MinCostFlow<int, long long> mcf(n);\n        for (int i =\
+    \ 0; i < m; i++) {\n            int u = rng() % n, v = rng() % n;\n          \
+    \  int c = rng() % 6, d = rng() % 10;\n            es.emplace_back(u, v, c, d);\n\
+    \            mcf.add_edge(u, v, c, d);\n        }\n        Naive nv(n, es);\n\
+    \        for (int it = 0; it < 3 && ok; it++) {\n            int s = rng() % n,\
+    \ t = rng() % (n - 1);\n            if (t >= s) t++;\n            auto sl = mcf.slope(s,\
     \ t);\n            auto expected = nv.flow(s, t);\n            ok = ok && check_slope(sl,\
-    \ expected, 0) && sl.back().first == (int)expected.size() - 1;\n        }\n  \
-    \  }\n\n    // \u4F8B\n    MinCostFlow<int, int> mcf(4);\n    mcf.add_edge(0,\
+    \ expected, 0) && sl.back().first == static_cast<int>(expected.size()) - 1;\n\
+    \        }\n    }\n\n    // \u4F8B\n    MinCostFlow<int, int> mcf(4);\n    mcf.add_edge(0,\
     \ 1, 2, 1);\n    mcf.add_edge(0, 2, 1, 2);\n    mcf.add_edge(1, 2, 1, 1);\n  \
     \  mcf.add_edge(1, 3, 1, 3);\n    mcf.add_edge(2, 3, 2, 1);\n    ok = ok && mcf.slope(0,\
     \ 3) == std::vector<std::pair<int, int>>{{0, 0}, {2, 6}, {3, 10}};\n\n    if (ok)\n\
@@ -304,7 +304,7 @@ data:
   isVerificationFile: true
   path: test/unittest/min-cost-flow.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/min-cost-flow.test.cpp

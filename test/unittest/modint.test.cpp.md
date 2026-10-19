@@ -316,21 +316,23 @@ data:
     \u306B\u8DB3\u3057\u5F15\u304D\u3057\u305F\u3082\u306E\u3068\u6BD4\u3079\u308B\
     \ntemplate <class M>\nbool check_inc_dec(long long mod, std::mt19937_64& rng)\
     \ {\n    bool ok = true;\n    for (int rep = 0; rep < 200; rep++) {\n        long\
-    \ long x = (rep < 4) ? (rep < 2 ? rep : mod - 4 + rep) : (long long)(rng() % mod);\n\
-    \        if (x < 0 || x >= mod) x = 0;\n        M a = x;\n        // \u524D\u7F6E\
-    : \u5909\u66F4\u5F8C\u306E\u81EA\u8EAB\u3092\u8FD4\u3059\n        M& r1 = ++a;\n\
-    \        if (&r1 != &a || (long long)a.val() != (x + 1) % mod) ok = false;\n \
-    \       M& r2 = --a;\n        if (&r2 != &a || (long long)a.val() != x) ok = false;\n\
-    \        // \u5F8C\u7F6E: \u5909\u66F4\u524D\u306E\u5024\u3092\u8FD4\u3059\n \
-    \       M b = a++;\n        if ((long long)b.val() != x || (long long)a.val()\
-    \ != (x + 1) % mod) ok = false;\n        M c = a--;\n        if ((long long)c.val()\
-    \ != (x + 1) % mod || (long long)a.val() != x) ok = false;\n        // 0 \u304B\
-    \u3089 -- \u3059\u308B\u3068 mod - 1 \u306B\u306A\u308B\n        M z = 0;\n  \
-    \      --z;\n        if ((long long)z.val() != mod - 1) ok = false;\n        M\
-    \ w = z++;\n        if ((long long)w.val() != mod - 1 || z.val() != 0) ok = false;\n\
-    \        // \u5358\u9805\u306E + \u306F\u305D\u306E\u307E\u307E\u306E\u5024\n\
-    \        if ((+a).val() != a.val()) ok = false;\n    }\n    return ok;\n}\n\n\
-    int main() {\n    std::mt19937_64 rng(314);\n    bool ok = true;\n\n    if (!check_inc_dec<static_modint<998244353>>(998244353,\
+    \ long x = (rep < 4) ? (rep < 2 ? rep : mod - 4 + rep) : static_cast<long long>(rng()\
+    \ % mod);\n        if (x < 0 || x >= mod) x = 0;\n        M a = x;\n        //\
+    \ \u524D\u7F6E: \u5909\u66F4\u5F8C\u306E\u81EA\u8EAB\u3092\u8FD4\u3059\n     \
+    \   M& r1 = ++a;\n        if (&r1 != &a || static_cast<long long>(a.val()) !=\
+    \ (x + 1) % mod) ok = false;\n        M& r2 = --a;\n        if (&r2 != &a || static_cast<long\
+    \ long>(a.val()) != x) ok = false;\n        // \u5F8C\u7F6E: \u5909\u66F4\u524D\
+    \u306E\u5024\u3092\u8FD4\u3059\n        M b = a++;\n        if (static_cast<long\
+    \ long>(b.val()) != x || static_cast<long long>(a.val()) != (x + 1) % mod) ok\
+    \ = false;\n        M c = a--;\n        if (static_cast<long long>(c.val()) !=\
+    \ (x + 1) % mod || static_cast<long long>(a.val()) != x) ok = false;\n       \
+    \ // 0 \u304B\u3089 -- \u3059\u308B\u3068 mod - 1 \u306B\u306A\u308B\n       \
+    \ M z = 0;\n        --z;\n        if (static_cast<long long>(z.val()) != mod -\
+    \ 1) ok = false;\n        M w = z++;\n        if (static_cast<long long>(w.val())\
+    \ != mod - 1 || z.val() != 0) ok = false;\n        // \u5358\u9805\u306E + \u306F\
+    \u305D\u306E\u307E\u307E\u306E\u5024\n        if ((+a).val() != a.val()) ok =\
+    \ false;\n    }\n    return ok;\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n\
+    \    bool ok = true;\n\n    if (!check_inc_dec<static_modint<998244353>>(998244353,\
     \ rng)) ok = false, std::cerr << \"inc/dec 998244353\" << std::endl;\n    if (!check_inc_dec<static_modint<7>>(7,\
     \ rng)) ok = false, std::cerr << \"inc/dec 7\" << std::endl;\n    if (!check_inc_dec<static_modint<2>>(2,\
     \ rng)) ok = false, std::cerr << \"inc/dec 2\" << std::endl;\n    using D = dynamic_modint<314>;\n\
@@ -359,12 +361,12 @@ data:
     \ {\n        using M = static_modint<1000>;\n        for (int a = 1; a < 1000;\
     \ a++) {\n            long long e = naive_inv(a, 1000);\n            if (e ==\
     \ -1) continue;  // \u4E92\u3044\u306B\u7D20\u3067\u306A\u3044\u3082\u306E\u306F\
-    \u9006\u5143\u304C\u306A\u3044\n            if ((long long)M(a).inv().val() !=\
-    \ e) ok = false, std::cerr << \"inv mod 1000 \" << a << std::endl;\n        }\n\
-    \    }\n    {\n        using M = static_modint<998244353>;\n        for (int rep\
-    \ = 0; rep < 1000; rep++) {\n            M a = (long long)(rng() % 998244352 +\
-    \ 1);\n            if ((a * a.inv()).val() != 1) ok = false;\n        }\n    }\n\
-    \n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \u9006\u5143\u304C\u306A\u3044\n            if (static_cast<long long>(M(a).inv().val())\
+    \ != e) ok = false, std::cerr << \"inv mod 1000 \" << a << std::endl;\n      \
+    \  }\n    }\n    {\n        using M = static_modint<998244353>;\n        for (int\
+    \ rep = 0; rep < 1000; rep++) {\n            M a = static_cast<long long>(rng()\
+    \ % 998244352 + 1);\n            if ((a * a.inv()).val() != 1) ok = false;\n \
+    \       }\n    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// modint \u306E ++\u30FB--\u30FB\u5358\u9805\u306E +\u3001\u5408\u6210\u6570\
     \u306E\u6CD5\u3067\u306E\u9006\u5143\u3001\u7D20\u6570\u5224\u5B9A (internal_modint::is_prime32)\
@@ -381,21 +383,22 @@ data:
     \u3082\u306E\u3068\u6BD4\u3079\u308B\ntemplate <class M>\nbool check_inc_dec(long\
     \ long mod, std::mt19937_64& rng) {\n    bool ok = true;\n    for (int rep = 0;\
     \ rep < 200; rep++) {\n        long long x = (rep < 4) ? (rep < 2 ? rep : mod\
-    \ - 4 + rep) : (long long)(rng() % mod);\n        if (x < 0 || x >= mod) x = 0;\n\
-    \        M a = x;\n        // \u524D\u7F6E: \u5909\u66F4\u5F8C\u306E\u81EA\u8EAB\
-    \u3092\u8FD4\u3059\n        M& r1 = ++a;\n        if (&r1 != &a || (long long)a.val()\
-    \ != (x + 1) % mod) ok = false;\n        M& r2 = --a;\n        if (&r2 != &a ||\
-    \ (long long)a.val() != x) ok = false;\n        // \u5F8C\u7F6E: \u5909\u66F4\u524D\
-    \u306E\u5024\u3092\u8FD4\u3059\n        M b = a++;\n        if ((long long)b.val()\
-    \ != x || (long long)a.val() != (x + 1) % mod) ok = false;\n        M c = a--;\n\
-    \        if ((long long)c.val() != (x + 1) % mod || (long long)a.val() != x) ok\
-    \ = false;\n        // 0 \u304B\u3089 -- \u3059\u308B\u3068 mod - 1 \u306B\u306A\
-    \u308B\n        M z = 0;\n        --z;\n        if ((long long)z.val() != mod\
-    \ - 1) ok = false;\n        M w = z++;\n        if ((long long)w.val() != mod\
-    \ - 1 || z.val() != 0) ok = false;\n        // \u5358\u9805\u306E + \u306F\u305D\
-    \u306E\u307E\u307E\u306E\u5024\n        if ((+a).val() != a.val()) ok = false;\n\
-    \    }\n    return ok;\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n   \
-    \ bool ok = true;\n\n    if (!check_inc_dec<static_modint<998244353>>(998244353,\
+    \ - 4 + rep) : static_cast<long long>(rng() % mod);\n        if (x < 0 || x >=\
+    \ mod) x = 0;\n        M a = x;\n        // \u524D\u7F6E: \u5909\u66F4\u5F8C\u306E\
+    \u81EA\u8EAB\u3092\u8FD4\u3059\n        M& r1 = ++a;\n        if (&r1 != &a ||\
+    \ static_cast<long long>(a.val()) != (x + 1) % mod) ok = false;\n        M& r2\
+    \ = --a;\n        if (&r2 != &a || static_cast<long long>(a.val()) != x) ok =\
+    \ false;\n        // \u5F8C\u7F6E: \u5909\u66F4\u524D\u306E\u5024\u3092\u8FD4\u3059\
+    \n        M b = a++;\n        if (static_cast<long long>(b.val()) != x || static_cast<long\
+    \ long>(a.val()) != (x + 1) % mod) ok = false;\n        M c = a--;\n        if\
+    \ (static_cast<long long>(c.val()) != (x + 1) % mod || static_cast<long long>(a.val())\
+    \ != x) ok = false;\n        // 0 \u304B\u3089 -- \u3059\u308B\u3068 mod - 1 \u306B\
+    \u306A\u308B\n        M z = 0;\n        --z;\n        if (static_cast<long long>(z.val())\
+    \ != mod - 1) ok = false;\n        M w = z++;\n        if (static_cast<long long>(w.val())\
+    \ != mod - 1 || z.val() != 0) ok = false;\n        // \u5358\u9805\u306E + \u306F\
+    \u305D\u306E\u307E\u307E\u306E\u5024\n        if ((+a).val() != a.val()) ok =\
+    \ false;\n    }\n    return ok;\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n\
+    \    bool ok = true;\n\n    if (!check_inc_dec<static_modint<998244353>>(998244353,\
     \ rng)) ok = false, std::cerr << \"inc/dec 998244353\" << std::endl;\n    if (!check_inc_dec<static_modint<7>>(7,\
     \ rng)) ok = false, std::cerr << \"inc/dec 7\" << std::endl;\n    if (!check_inc_dec<static_modint<2>>(2,\
     \ rng)) ok = false, std::cerr << \"inc/dec 2\" << std::endl;\n    using D = dynamic_modint<314>;\n\
@@ -424,19 +427,19 @@ data:
     \ {\n        using M = static_modint<1000>;\n        for (int a = 1; a < 1000;\
     \ a++) {\n            long long e = naive_inv(a, 1000);\n            if (e ==\
     \ -1) continue;  // \u4E92\u3044\u306B\u7D20\u3067\u306A\u3044\u3082\u306E\u306F\
-    \u9006\u5143\u304C\u306A\u3044\n            if ((long long)M(a).inv().val() !=\
-    \ e) ok = false, std::cerr << \"inv mod 1000 \" << a << std::endl;\n        }\n\
-    \    }\n    {\n        using M = static_modint<998244353>;\n        for (int rep\
-    \ = 0; rep < 1000; rep++) {\n            M a = (long long)(rng() % 998244352 +\
-    \ 1);\n            if ((a * a.inv()).val() != 1) ok = false;\n        }\n    }\n\
-    \n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \u9006\u5143\u304C\u306A\u3044\n            if (static_cast<long long>(M(a).inv().val())\
+    \ != e) ok = false, std::cerr << \"inv mod 1000 \" << a << std::endl;\n      \
+    \  }\n    }\n    {\n        using M = static_modint<998244353>;\n        for (int\
+    \ rep = 0; rep < 1000; rep++) {\n            M a = static_cast<long long>(rng()\
+    \ % 998244352 + 1);\n            if ((a * a.inv()).val() != 1) ok = false;\n \
+    \       }\n    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/math/modint.hpp
   - src/utility/traits.hpp
   isVerificationFile: true
   path: test/unittest/modint.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 16:41:25+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/modint.test.cpp

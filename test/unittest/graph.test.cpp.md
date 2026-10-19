@@ -214,45 +214,46 @@ data:
     \u63A5\u30EA\u30B9\u30C8\u305D\u306E\u3082\u306E\u3078\u306E\u53C2\u7167\u3092\
     \u8FD4\u3059\n            std::vector<Graph<long long>::Edge>& es = g[v];\n  \
     \          if (&es != &g.g[v] || es.size() != adj[v].size()) ok = false;\n   \
-    \         for (int i = 0; i < (int)es.size(); i++) {\n                if (es[i].src\
-    \ != v || es[i].dst != adj[v][i] || (int)es[i] != adj[v][i]) ok = false;\n   \
-    \         }\n            // \u53C2\u7167\u3092\u901A\u3057\u3066\u66F8\u304D\u63DB\
-    \u3048\u308B\u3068\u3001\u30B0\u30E9\u30D5\u306B\u53CD\u6620\u3055\u308C\u308B\
-    \n            for (auto& e : g[v]) e.cost += 1;\n            for (int i = 0; i\
-    \ < (int)es.size(); i++) {\n                if (g.g[v][i].cost != es[i].cost)\
-    \ ok = false;\n            }\n        }\n        // const \u306A operator[] \u3068\
-    \u540C\u3058\u3082\u306E\u3092\u6307\u3059\n        const Graph<long long>& cg\
-    \ = g;\n        for (int v = 0; v < n; v++) {\n            if (&cg[v] != &g[v])\
-    \ ok = false;\n        }\n    }\n\n    // shortest_path_01bfs: \u30B3\u30B9\u30C8\
-    \ 0 / 1 \u306E\u30B0\u30E9\u30D5\u3067 Dijkstra \u3068\u6BD4\u3079\u308B\n   \
-    \ for (int rep = 0; rep < 2000 && ok; rep++) {\n        int n = rng() % 10 + 1,\
-    \ m = rng() % 25;\n        Graph<int> g(n);\n        for (int i = 0; i < m; i++)\
-    \ {\n            int u = rng() % n, v = rng() % n, w = rng() % 2;\n          \
-    \  if (rng() % 2)\n                g.add_edge(u, v, w);\n            else\n  \
-    \              g.add_directed_edge(u, v, w);\n        }\n        for (int s =\
-    \ 0; s < n; s++) {\n            auto a = g.shortest_path_01bfs(s);\n         \
-    \   auto b = g.shortest_path(s);\n            if (a.dist != b.dist) ok = false;\n\
-    \            // prev \u3092\u305F\u3069\u3063\u305F\u7D4C\u8DEF\u306E\u9577\u3055\
-    \u304C dist \u3068\u4E00\u81F4\u3059\u308B\n            for (int t = 0; t < n;\
-    \ t++) {\n                if (a.dist[t] == std::numeric_limits<int>::max() / 4)\
-    \ continue;\n                int len = 0;\n                for (auto& e : a.path(t))\
-    \ len += e.cost;\n                if (len != a.dist[t]) ok = false;\n        \
-    \    }\n        }\n    }\n\n    // floyd_warshall: \u8CA0\u306E\u8FBA\u3092\u542B\
-    \u3080\u6709\u5411\u30B0\u30E9\u30D5\u3067\u3001\u5404\u59CB\u70B9\u304B\u3089\
-    \u306E Bellman-Ford \u3068\u6BD4\u3079\u308B\n    for (int rep = 0; rep < 2000\
-    \ && ok; rep++) {\n        int n = rng() % 8 + 1, m = rng() % 20;\n        Graph<long\
-    \ long> g(n);\n        for (int i = 0; i < m; i++) {\n            int u = rng()\
-    \ % n, v = rng() % n;\n            long long w = (long long)(rng() % 21) - 3;\n\
-    \            g.add_directed_edge(u, v, w);\n        }\n        const long long\
-    \ inf = std::numeric_limits<long long>::max() / 4;\n        auto d = g.floyd_warshall();\n\
-    \        bool negative = false;\n        for (int s = 0; s < n; s++) {\n     \
-    \       auto b = g.bellman_ford(s);\n            for (int t = 0; t < n; t++) negative\
-    \ |= b.dist[t] == -inf;\n        }\n        bool negative_fw = false;\n      \
-    \  for (int i = 0; i < n; i++) negative_fw |= d[i][i] < 0;\n        if (negative\
-    \ != negative_fw) ok = false;\n        if (!negative) {\n            for (int\
-    \ s = 0; s < n; s++) {\n                auto b = g.bellman_ford(s);\n        \
-    \        if (d[s] != b.dist) ok = false;\n            }\n        }\n    }\n\n\
-    \    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \         for (int i = 0; i < static_cast<int>(es.size()); i++) {\n          \
+    \      if (es[i].src != v || es[i].dst != adj[v][i] || static_cast<int>(es[i])\
+    \ != adj[v][i]) ok = false;\n            }\n            // \u53C2\u7167\u3092\u901A\
+    \u3057\u3066\u66F8\u304D\u63DB\u3048\u308B\u3068\u3001\u30B0\u30E9\u30D5\u306B\
+    \u53CD\u6620\u3055\u308C\u308B\n            for (auto& e : g[v]) e.cost += 1;\n\
+    \            for (int i = 0; i < static_cast<int>(es.size()); i++) {\n       \
+    \         if (g.g[v][i].cost != es[i].cost) ok = false;\n            }\n     \
+    \   }\n        // const \u306A operator[] \u3068\u540C\u3058\u3082\u306E\u3092\
+    \u6307\u3059\n        const Graph<long long>& cg = g;\n        for (int v = 0;\
+    \ v < n; v++) {\n            if (&cg[v] != &g[v]) ok = false;\n        }\n   \
+    \ }\n\n    // shortest_path_01bfs: \u30B3\u30B9\u30C8 0 / 1 \u306E\u30B0\u30E9\
+    \u30D5\u3067 Dijkstra \u3068\u6BD4\u3079\u308B\n    for (int rep = 0; rep < 2000\
+    \ && ok; rep++) {\n        int n = rng() % 10 + 1, m = rng() % 25;\n        Graph<int>\
+    \ g(n);\n        for (int i = 0; i < m; i++) {\n            int u = rng() % n,\
+    \ v = rng() % n, w = rng() % 2;\n            if (rng() % 2)\n                g.add_edge(u,\
+    \ v, w);\n            else\n                g.add_directed_edge(u, v, w);\n  \
+    \      }\n        for (int s = 0; s < n; s++) {\n            auto a = g.shortest_path_01bfs(s);\n\
+    \            auto b = g.shortest_path(s);\n            if (a.dist != b.dist) ok\
+    \ = false;\n            // prev \u3092\u305F\u3069\u3063\u305F\u7D4C\u8DEF\u306E\
+    \u9577\u3055\u304C dist \u3068\u4E00\u81F4\u3059\u308B\n            for (int t\
+    \ = 0; t < n; t++) {\n                if (a.dist[t] == std::numeric_limits<int>::max()\
+    \ / 4) continue;\n                int len = 0;\n                for (auto& e :\
+    \ a.path(t)) len += e.cost;\n                if (len != a.dist[t]) ok = false;\n\
+    \            }\n        }\n    }\n\n    // floyd_warshall: \u8CA0\u306E\u8FBA\u3092\
+    \u542B\u3080\u6709\u5411\u30B0\u30E9\u30D5\u3067\u3001\u5404\u59CB\u70B9\u304B\
+    \u3089\u306E Bellman-Ford \u3068\u6BD4\u3079\u308B\n    for (int rep = 0; rep\
+    \ < 2000 && ok; rep++) {\n        int n = rng() % 8 + 1, m = rng() % 20;\n   \
+    \     Graph<long long> g(n);\n        for (int i = 0; i < m; i++) {\n        \
+    \    int u = rng() % n, v = rng() % n;\n            long long w = static_cast<long\
+    \ long>(rng() % 21) - 3;\n            g.add_directed_edge(u, v, w);\n        }\n\
+    \        const long long inf = std::numeric_limits<long long>::max() / 4;\n  \
+    \      auto d = g.floyd_warshall();\n        bool negative = false;\n        for\
+    \ (int s = 0; s < n; s++) {\n            auto b = g.bellman_ford(s);\n       \
+    \     for (int t = 0; t < n; t++) negative |= b.dist[t] == -inf;\n        }\n\
+    \        bool negative_fw = false;\n        for (int i = 0; i < n; i++) negative_fw\
+    \ |= d[i][i] < 0;\n        if (negative != negative_fw) ok = false;\n        if\
+    \ (!negative) {\n            for (int s = 0; s < n; s++) {\n                auto\
+    \ b = g.bellman_ford(s);\n                if (d[s] != b.dist) ok = false;\n  \
+    \          }\n        }\n    }\n\n    if (ok) std::cout << \"Hello World\" <<\
+    \ std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// graph.hpp \u306E Graph \u306E\u30C7\u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\
     \u30B9\u30C8\u30E9\u30AF\u30BF\u3068\u3001const \u3067\u306A\u3044 operator[]\
@@ -273,51 +274,51 @@ data:
     \u30B9\u30C8\u305D\u306E\u3082\u306E\u3078\u306E\u53C2\u7167\u3092\u8FD4\u3059\
     \n            std::vector<Graph<long long>::Edge>& es = g[v];\n            if\
     \ (&es != &g.g[v] || es.size() != adj[v].size()) ok = false;\n            for\
-    \ (int i = 0; i < (int)es.size(); i++) {\n                if (es[i].src != v ||\
-    \ es[i].dst != adj[v][i] || (int)es[i] != adj[v][i]) ok = false;\n           \
-    \ }\n            // \u53C2\u7167\u3092\u901A\u3057\u3066\u66F8\u304D\u63DB\u3048\
-    \u308B\u3068\u3001\u30B0\u30E9\u30D5\u306B\u53CD\u6620\u3055\u308C\u308B\n   \
-    \         for (auto& e : g[v]) e.cost += 1;\n            for (int i = 0; i < (int)es.size();\
-    \ i++) {\n                if (g.g[v][i].cost != es[i].cost) ok = false;\n    \
-    \        }\n        }\n        // const \u306A operator[] \u3068\u540C\u3058\u3082\
-    \u306E\u3092\u6307\u3059\n        const Graph<long long>& cg = g;\n        for\
-    \ (int v = 0; v < n; v++) {\n            if (&cg[v] != &g[v]) ok = false;\n  \
-    \      }\n    }\n\n    // shortest_path_01bfs: \u30B3\u30B9\u30C8 0 / 1 \u306E\
-    \u30B0\u30E9\u30D5\u3067 Dijkstra \u3068\u6BD4\u3079\u308B\n    for (int rep =\
-    \ 0; rep < 2000 && ok; rep++) {\n        int n = rng() % 10 + 1, m = rng() % 25;\n\
-    \        Graph<int> g(n);\n        for (int i = 0; i < m; i++) {\n           \
-    \ int u = rng() % n, v = rng() % n, w = rng() % 2;\n            if (rng() % 2)\n\
-    \                g.add_edge(u, v, w);\n            else\n                g.add_directed_edge(u,\
-    \ v, w);\n        }\n        for (int s = 0; s < n; s++) {\n            auto a\
-    \ = g.shortest_path_01bfs(s);\n            auto b = g.shortest_path(s);\n    \
-    \        if (a.dist != b.dist) ok = false;\n            // prev \u3092\u305F\u3069\
-    \u3063\u305F\u7D4C\u8DEF\u306E\u9577\u3055\u304C dist \u3068\u4E00\u81F4\u3059\
-    \u308B\n            for (int t = 0; t < n; t++) {\n                if (a.dist[t]\
-    \ == std::numeric_limits<int>::max() / 4) continue;\n                int len =\
-    \ 0;\n                for (auto& e : a.path(t)) len += e.cost;\n             \
-    \   if (len != a.dist[t]) ok = false;\n            }\n        }\n    }\n\n   \
-    \ // floyd_warshall: \u8CA0\u306E\u8FBA\u3092\u542B\u3080\u6709\u5411\u30B0\u30E9\
-    \u30D5\u3067\u3001\u5404\u59CB\u70B9\u304B\u3089\u306E Bellman-Ford \u3068\u6BD4\
-    \u3079\u308B\n    for (int rep = 0; rep < 2000 && ok; rep++) {\n        int n\
-    \ = rng() % 8 + 1, m = rng() % 20;\n        Graph<long long> g(n);\n        for\
-    \ (int i = 0; i < m; i++) {\n            int u = rng() % n, v = rng() % n;\n \
-    \           long long w = (long long)(rng() % 21) - 3;\n            g.add_directed_edge(u,\
-    \ v, w);\n        }\n        const long long inf = std::numeric_limits<long long>::max()\
-    \ / 4;\n        auto d = g.floyd_warshall();\n        bool negative = false;\n\
-    \        for (int s = 0; s < n; s++) {\n            auto b = g.bellman_ford(s);\n\
-    \            for (int t = 0; t < n; t++) negative |= b.dist[t] == -inf;\n    \
-    \    }\n        bool negative_fw = false;\n        for (int i = 0; i < n; i++)\
-    \ negative_fw |= d[i][i] < 0;\n        if (negative != negative_fw) ok = false;\n\
-    \        if (!negative) {\n            for (int s = 0; s < n; s++) {\n       \
-    \         auto b = g.bellman_ford(s);\n                if (d[s] != b.dist) ok\
-    \ = false;\n            }\n        }\n    }\n\n    if (ok) std::cout << \"Hello\
-    \ World\" << std::endl;\n}\n"
+    \ (int i = 0; i < static_cast<int>(es.size()); i++) {\n                if (es[i].src\
+    \ != v || es[i].dst != adj[v][i] || static_cast<int>(es[i]) != adj[v][i]) ok =\
+    \ false;\n            }\n            // \u53C2\u7167\u3092\u901A\u3057\u3066\u66F8\
+    \u304D\u63DB\u3048\u308B\u3068\u3001\u30B0\u30E9\u30D5\u306B\u53CD\u6620\u3055\
+    \u308C\u308B\n            for (auto& e : g[v]) e.cost += 1;\n            for (int\
+    \ i = 0; i < static_cast<int>(es.size()); i++) {\n                if (g.g[v][i].cost\
+    \ != es[i].cost) ok = false;\n            }\n        }\n        // const \u306A\
+    \ operator[] \u3068\u540C\u3058\u3082\u306E\u3092\u6307\u3059\n        const Graph<long\
+    \ long>& cg = g;\n        for (int v = 0; v < n; v++) {\n            if (&cg[v]\
+    \ != &g[v]) ok = false;\n        }\n    }\n\n    // shortest_path_01bfs: \u30B3\
+    \u30B9\u30C8 0 / 1 \u306E\u30B0\u30E9\u30D5\u3067 Dijkstra \u3068\u6BD4\u3079\u308B\
+    \n    for (int rep = 0; rep < 2000 && ok; rep++) {\n        int n = rng() % 10\
+    \ + 1, m = rng() % 25;\n        Graph<int> g(n);\n        for (int i = 0; i <\
+    \ m; i++) {\n            int u = rng() % n, v = rng() % n, w = rng() % 2;\n  \
+    \          if (rng() % 2)\n                g.add_edge(u, v, w);\n            else\n\
+    \                g.add_directed_edge(u, v, w);\n        }\n        for (int s\
+    \ = 0; s < n; s++) {\n            auto a = g.shortest_path_01bfs(s);\n       \
+    \     auto b = g.shortest_path(s);\n            if (a.dist != b.dist) ok = false;\n\
+    \            // prev \u3092\u305F\u3069\u3063\u305F\u7D4C\u8DEF\u306E\u9577\u3055\
+    \u304C dist \u3068\u4E00\u81F4\u3059\u308B\n            for (int t = 0; t < n;\
+    \ t++) {\n                if (a.dist[t] == std::numeric_limits<int>::max() / 4)\
+    \ continue;\n                int len = 0;\n                for (auto& e : a.path(t))\
+    \ len += e.cost;\n                if (len != a.dist[t]) ok = false;\n        \
+    \    }\n        }\n    }\n\n    // floyd_warshall: \u8CA0\u306E\u8FBA\u3092\u542B\
+    \u3080\u6709\u5411\u30B0\u30E9\u30D5\u3067\u3001\u5404\u59CB\u70B9\u304B\u3089\
+    \u306E Bellman-Ford \u3068\u6BD4\u3079\u308B\n    for (int rep = 0; rep < 2000\
+    \ && ok; rep++) {\n        int n = rng() % 8 + 1, m = rng() % 20;\n        Graph<long\
+    \ long> g(n);\n        for (int i = 0; i < m; i++) {\n            int u = rng()\
+    \ % n, v = rng() % n;\n            long long w = static_cast<long long>(rng()\
+    \ % 21) - 3;\n            g.add_directed_edge(u, v, w);\n        }\n        const\
+    \ long long inf = std::numeric_limits<long long>::max() / 4;\n        auto d =\
+    \ g.floyd_warshall();\n        bool negative = false;\n        for (int s = 0;\
+    \ s < n; s++) {\n            auto b = g.bellman_ford(s);\n            for (int\
+    \ t = 0; t < n; t++) negative |= b.dist[t] == -inf;\n        }\n        bool negative_fw\
+    \ = false;\n        for (int i = 0; i < n; i++) negative_fw |= d[i][i] < 0;\n\
+    \        if (negative != negative_fw) ok = false;\n        if (!negative) {\n\
+    \            for (int s = 0; s < n; s++) {\n                auto b = g.bellman_ford(s);\n\
+    \                if (d[s] != b.dist) ok = false;\n            }\n        }\n \
+    \   }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/graph/graph.hpp
   isVerificationFile: true
   path: test/unittest/graph.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:27:29+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/graph.test.cpp

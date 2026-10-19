@@ -811,7 +811,7 @@ data:
     \         int k = rng() % n;\n                if (seg[ver].get(k) != naive[ver][k]\
     \ || seg[ver][k] != naive[ver][k]) ok = false;\n            }\n        }\n   \
     \     // \u3059\u3079\u3066\u306E\u7248\u304C\u3001\u4F5C\u3063\u305F\u3068\u304D\
-    \u306E\u5185\u5BB9\u306E\u307E\u307E\u304B\n        for (int i = 0; i < int(seg.size());\
+    \u306E\u5185\u5BB9\u306E\u307E\u307E\u304B\n        for (int i = 0; i < static_cast<int>(seg.size());\
     \ i++) {\n            if (seg[i].size() != n) ok = false;\n            if (seg[i].to_vector()\
     \ != naive[i]) ok = false;\n            if (seg[i].all_prod() != naive_prod(naive[i],\
     \ 0, n)) ok = false;\n        }\n    }\n\n    // \u548C\u306E max_right / min_left\
@@ -897,7 +897,7 @@ data:
     \         int k = rng() % n;\n                if (seg[ver].get(k) != naive[ver][k]\
     \ || seg[ver][k] != naive[ver][k]) ok = false;\n            }\n        }\n   \
     \     // \u3059\u3079\u3066\u306E\u7248\u304C\u3001\u4F5C\u3063\u305F\u3068\u304D\
-    \u306E\u5185\u5BB9\u306E\u307E\u307E\u304B\n        for (int i = 0; i < int(seg.size());\
+    \u306E\u5185\u5BB9\u306E\u307E\u307E\u304B\n        for (int i = 0; i < static_cast<int>(seg.size());\
     \ i++) {\n            if (seg[i].size() != n) ok = false;\n            if (seg[i].to_vector()\
     \ != naive[i]) ok = false;\n            if (seg[i].all_prod() != naive_prod(naive[i],\
     \ 0, n)) ok = false;\n        }\n    }\n\n    // \u548C\u306E max_right / min_left\
@@ -934,7 +934,7 @@ data:
   isVerificationFile: true
   path: test/unittest/persistent-segtree.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 12:03:10+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/persistent-segtree.test.cpp

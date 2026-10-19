@@ -166,7 +166,7 @@ data:
     };\n#line 7 \"test/yosupo/enumerate-primes.test.cpp\"\n\nint main() {\n    std::cin.tie(nullptr);\n\
     \    std::ios::sync_with_stdio(false);\n    int n, a, b;\n    std::cin >> n >>\
     \ a >> b;\n    std::vector<long long> ps = enumerate_primes(n);\n    std::vector<long\
-    \ long> ans;\n    for (int i = b; i < (int)ps.size(); i += a) ans.push_back(ps[i]);\n\
+    \ long> ans;\n    for (int i = b; i < static_cast<int>(ps.size()); i += a) ans.push_back(ps[i]);\n\
     \    std::cout << ps.size() << ' ' << ans.size() << '\\n';\n    for (std::size_t\
     \ i = 0; i < ans.size(); i++) std::cout << ans[i] << \" \\n\"[i + 1 == ans.size()];\n\
     \    if (ans.empty()) std::cout << '\\n';\n}\n"
@@ -175,17 +175,17 @@ data:
     \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
     \    int n, a, b;\n    std::cin >> n >> a >> b;\n    std::vector<long long> ps\
     \ = enumerate_primes(n);\n    std::vector<long long> ans;\n    for (int i = b;\
-    \ i < (int)ps.size(); i += a) ans.push_back(ps[i]);\n    std::cout << ps.size()\
-    \ << ' ' << ans.size() << '\\n';\n    for (std::size_t i = 0; i < ans.size();\
-    \ i++) std::cout << ans[i] << \" \\n\"[i + 1 == ans.size()];\n    if (ans.empty())\
-    \ std::cout << '\\n';\n}\n"
+    \ i < static_cast<int>(ps.size()); i += a) ans.push_back(ps[i]);\n    std::cout\
+    \ << ps.size() << ' ' << ans.size() << '\\n';\n    for (std::size_t i = 0; i <\
+    \ ans.size(); i++) std::cout << ans[i] << \" \\n\"[i + 1 == ans.size()];\n   \
+    \ if (ans.empty()) std::cout << '\\n';\n}\n"
   dependsOn:
   - src/math/prime.hpp
   - src/math/modular-arithmetic.hpp
   isVerificationFile: true
   path: test/yosupo/enumerate-primes.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:27:48+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/enumerate-primes.test.cpp

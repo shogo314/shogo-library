@@ -143,11 +143,11 @@ data:
     \ m.end();) {\n        if (itr->second == 0)\n            itr = m.erase(itr);\n\
     \        else\n            ++itr;\n    }\n    return m;\n}\n\nbool same(const\
     \ Counter<int>& c, const Model& m) {\n    Model mm = normalize(m);\n    if (c.size()\
-    \ != (int)mm.size()) return false;\n    // total \u306F\u91CD\u8907\u3092\u542B\
-    \u3081\u305F\u8981\u7D20\u6570 (\u500B\u6570\u306E\u7DCF\u548C)\n    long long\
-    \ sum = 0;\n    for (auto [x, cnt] : mm) sum += cnt;\n    if (c.total() != sum)\
-    \ return false;\n    // begin / end \u3067\u8D70\u67FB\u3057\u305F\u7D50\u679C\
-    \u304C\u5024\u306E\u6607\u9806\u306B\u4E00\u81F4\u3059\u308B\n    std::vector<std::pair<int,\
+    \ != static_cast<int>(mm.size())) return false;\n    // total \u306F\u91CD\u8907\
+    \u3092\u542B\u3081\u305F\u8981\u7D20\u6570 (\u500B\u6570\u306E\u7DCF\u548C)\n\
+    \    long long sum = 0;\n    for (auto [x, cnt] : mm) sum += cnt;\n    if (c.total()\
+    \ != sum) return false;\n    // begin / end \u3067\u8D70\u67FB\u3057\u305F\u7D50\
+    \u679C\u304C\u5024\u306E\u6607\u9806\u306B\u4E00\u81F4\u3059\u308B\n    std::vector<std::pair<int,\
     \ long long>> a(c.begin(), c.end()), b(mm.begin(), mm.end());\n    if (a != b)\
     \ return false;\n    // const \u306A [] \u3068 get\n    for (int x = -1; x <=\
     \ 10; x++) {\n        long long expect = mm.count(x) ? mm.at(x) : 0;\n       \
@@ -225,11 +225,11 @@ data:
     \ m.end();) {\n        if (itr->second == 0)\n            itr = m.erase(itr);\n\
     \        else\n            ++itr;\n    }\n    return m;\n}\n\nbool same(const\
     \ Counter<int>& c, const Model& m) {\n    Model mm = normalize(m);\n    if (c.size()\
-    \ != (int)mm.size()) return false;\n    // total \u306F\u91CD\u8907\u3092\u542B\
-    \u3081\u305F\u8981\u7D20\u6570 (\u500B\u6570\u306E\u7DCF\u548C)\n    long long\
-    \ sum = 0;\n    for (auto [x, cnt] : mm) sum += cnt;\n    if (c.total() != sum)\
-    \ return false;\n    // begin / end \u3067\u8D70\u67FB\u3057\u305F\u7D50\u679C\
-    \u304C\u5024\u306E\u6607\u9806\u306B\u4E00\u81F4\u3059\u308B\n    std::vector<std::pair<int,\
+    \ != static_cast<int>(mm.size())) return false;\n    // total \u306F\u91CD\u8907\
+    \u3092\u542B\u3081\u305F\u8981\u7D20\u6570 (\u500B\u6570\u306E\u7DCF\u548C)\n\
+    \    long long sum = 0;\n    for (auto [x, cnt] : mm) sum += cnt;\n    if (c.total()\
+    \ != sum) return false;\n    // begin / end \u3067\u8D70\u67FB\u3057\u305F\u7D50\
+    \u679C\u304C\u5024\u306E\u6607\u9806\u306B\u4E00\u81F4\u3059\u308B\n    std::vector<std::pair<int,\
     \ long long>> a(c.begin(), c.end()), b(mm.begin(), mm.end());\n    if (a != b)\
     \ return false;\n    // const \u306A [] \u3068 get\n    for (int x = -1; x <=\
     \ 10; x++) {\n        long long expect = mm.count(x) ? mm.at(x) : 0;\n       \
@@ -301,7 +301,7 @@ data:
   isVerificationFile: true
   path: test/unittest/counter.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:35:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/counter.test.cpp

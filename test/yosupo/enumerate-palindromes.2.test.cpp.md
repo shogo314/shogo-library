@@ -141,20 +141,20 @@ data:
     \ res;\n}\n#line 8 \"test/yosupo/enumerate-palindromes.2.test.cpp\"\n\nint main()\
     \ {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n    std::string\
     \ s;\n    std::cin >> s;\n    std::vector<long long> len = palindrome_lengths(s);\n\
-    \    for (long long i = 0; i < (long long)len.size(); i++) std::cout << len[i]\
-    \ << \" \\n\"[i + 1 == (long long)len.size()];\n}\n"
+    \    for (long long i = 0; i < static_cast<long long>(len.size()); i++) std::cout\
+    \ << len[i] << \" \\n\"[i + 1 == static_cast<long long>(len.size())];\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/enumerate_palindromes\"\
     \n\n#include <iostream>\n#include <string>\n#include <vector>\n\n#include \"../../src/string/string.hpp\"\
     \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
     \    std::string s;\n    std::cin >> s;\n    std::vector<long long> len = palindrome_lengths(s);\n\
-    \    for (long long i = 0; i < (long long)len.size(); i++) std::cout << len[i]\
-    \ << \" \\n\"[i + 1 == (long long)len.size()];\n}\n"
+    \    for (long long i = 0; i < static_cast<long long>(len.size()); i++) std::cout\
+    \ << len[i] << \" \\n\"[i + 1 == static_cast<long long>(len.size())];\n}\n"
   dependsOn:
   - src/string/string.hpp
   isVerificationFile: true
   path: test/yosupo/enumerate-palindromes.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-17 23:17:18+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/enumerate-palindromes.2.test.cpp

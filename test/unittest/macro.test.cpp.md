@@ -248,9 +248,9 @@ data:
     );\n        check(vs_ == vs({\"ab\", \"cd\"}), \"VS\");\n        check(vp == vpl({{1,\
     \ 2}, {3, 4}}), \"VPL\");\n        check(va == val<3>({{1, 2, 3}, {4, 5, 6}}),\
     \ \"VAL\");\n        check(vv_ == vvl({{9, 8}, {7, 6}}), \"VVL\");\n        check(st\
-    \ == sl({1, 3, 5}), \"SL\");\n        check(bool(in), \"input stream state\");\n\
-    \    }\n    {\n        // scan \u3092\u76F4\u63A5\u4F7F\u3046\n        std::istringstream\
-    \ in(\"10 abc 2.5\");\n        std::streambuf* old = std::cin.rdbuf(in.rdbuf());\n\
+    \ == sl({1, 3, 5}), \"SL\");\n        check(static_cast<bool>(in), \"input stream\
+    \ state\");\n    }\n    {\n        // scan \u3092\u76F4\u63A5\u4F7F\u3046\n  \
+    \      std::istringstream in(\"10 abc 2.5\");\n        std::streambuf* old = std::cin.rdbuf(in.rdbuf());\n\
     \        int p;\n        std::string q;\n        double r;\n        scan(p, q,\
     \ r);\n        scan();\n        std::cin.rdbuf(old);\n        check(p == 10 &&\
     \ q == \"abc\" && r == 2.5, \"scan\");\n    }\n\n    // \u51FA\u529B\u30DE\u30AF\
@@ -348,9 +348,9 @@ data:
     );\n        check(vs_ == vs({\"ab\", \"cd\"}), \"VS\");\n        check(vp == vpl({{1,\
     \ 2}, {3, 4}}), \"VPL\");\n        check(va == val<3>({{1, 2, 3}, {4, 5, 6}}),\
     \ \"VAL\");\n        check(vv_ == vvl({{9, 8}, {7, 6}}), \"VVL\");\n        check(st\
-    \ == sl({1, 3, 5}), \"SL\");\n        check(bool(in), \"input stream state\");\n\
-    \    }\n    {\n        // scan \u3092\u76F4\u63A5\u4F7F\u3046\n        std::istringstream\
-    \ in(\"10 abc 2.5\");\n        std::streambuf* old = std::cin.rdbuf(in.rdbuf());\n\
+    \ == sl({1, 3, 5}), \"SL\");\n        check(static_cast<bool>(in), \"input stream\
+    \ state\");\n    }\n    {\n        // scan \u3092\u76F4\u63A5\u4F7F\u3046\n  \
+    \      std::istringstream in(\"10 abc 2.5\");\n        std::streambuf* old = std::cin.rdbuf(in.rdbuf());\n\
     \        int p;\n        std::string q;\n        double r;\n        scan(p, q,\
     \ r);\n        scan();\n        std::cin.rdbuf(old);\n        check(p == 10 &&\
     \ q == \"abc\" && r == 2.5, \"scan\");\n    }\n\n    // \u51FA\u529B\u30DE\u30AF\
@@ -368,7 +368,7 @@ data:
   isVerificationFile: true
   path: test/unittest/macro.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 03:13:14+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/macro.test.cpp

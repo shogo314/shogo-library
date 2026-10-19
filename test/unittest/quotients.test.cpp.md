@@ -44,7 +44,7 @@ data:
     \        // \u533A\u9593\u304C 1 \u304B\u3089 n \u307E\u3067\u3092\u9699\u9593\
     \u306A\u304F\u8986\u3044\u3001\u533A\u9593\u306E\u4E2D\u3067\u5546\u304C q \u306B\
     \u7B49\u3057\u304F\u3001\u96A3\u306E\u533A\u9593\u3068\u306F\u5546\u304C\u7570\
-    \u306A\u308B\n        long long next = 1;\n        for (int k = 0; k < (int)qs.size();\
+    \u306A\u308B\n        long long next = 1;\n        for (int k = 0; k < static_cast<int>(qs.size());\
     \ k++) {\n            auto [q, l, r] = qs[k];\n            if (l != next || l\
     \ > r) ok = false;\n            if (n / l != q || n / r != q) ok = false;\n  \
     \          if (k > 0 && qs[k - 1].q <= q) ok = false;\n            next = r +\
@@ -74,7 +74,7 @@ data:
     \    // \u533A\u9593\u304C 1 \u304B\u3089 n \u307E\u3067\u3092\u9699\u9593\u306A\
     \u304F\u8986\u3044\u3001\u533A\u9593\u306E\u4E2D\u3067\u5546\u304C q \u306B\u7B49\
     \u3057\u304F\u3001\u96A3\u306E\u533A\u9593\u3068\u306F\u5546\u304C\u7570\u306A\
-    \u308B\n        long long next = 1;\n        for (int k = 0; k < (int)qs.size();\
+    \u308B\n        long long next = 1;\n        for (int k = 0; k < static_cast<int>(qs.size());\
     \ k++) {\n            auto [q, l, r] = qs[k];\n            if (l != next || l\
     \ > r) ok = false;\n            if (n / l != q || n / r != q) ok = false;\n  \
     \          if (k > 0 && qs[k - 1].q <= q) ok = false;\n            next = r +\
@@ -98,7 +98,7 @@ data:
   isVerificationFile: true
   path: test/unittest/quotients.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:33:42+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/quotients.test.cpp

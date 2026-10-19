@@ -416,21 +416,21 @@ data:
     \n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int\
     \ rep = 0; rep < 500 && ok; rep++) {\n        int k = rng() % 7;\n        int\
     \ n = 1 << k;\n        std::vector<long long> a(n), b(n);\n        for (auto&\
-    \ x : a) x = (long long)(rng() % 21) - 10;\n        for (auto& x : b) x = (long\
-    \ long)(rng() % 21) - 10;\n\n        std::vector<long long> sub(n), sup(n), had(n),\
-    \ ca(n), co(n), cx(n), cs(n);\n        for (int s = 0; s < n; s++) {\n       \
-    \     for (int t = 0; t < n; t++) {\n                if ((t & s) == t) sub[s]\
-    \ += a[t];\n                if ((s & t) == s) sup[s] += a[t];\n              \
-    \  had[s] += (__builtin_popcount(s & t) % 2 ? -1 : 1) * a[t];\n              \
-    \  ca[s & t] += a[s] * b[t];\n                co[s | t] += a[s] * b[t];\n    \
-    \            cx[s ^ t] += a[s] * b[t];\n                if ((s & t) == 0) cs[s\
-    \ | t] += a[s] * b[t];\n            }\n        }\n        auto c = a;\n      \
-    \  subset_zeta(c);\n        ok = ok && c == sub;\n        subset_mobius(c);\n\
-    \        ok = ok && c == a;\n        c = a;\n        superset_zeta(c);\n     \
-    \   ok = ok && c == sup;\n        superset_mobius(c);\n        ok = ok && c ==\
-    \ a;\n        c = a;\n        walsh_hadamard(c);\n        ok = ok && c == had;\n\
-    \        walsh_hadamard(c, true);\n        ok = ok && c == a;\n        ok = ok\
-    \ && and_convolution(a, b) == ca && or_convolution(a, b) == co && xor_convolution(a,\
+    \ x : a) x = static_cast<long long>(rng() % 21) - 10;\n        for (auto& x :\
+    \ b) x = static_cast<long long>(rng() % 21) - 10;\n\n        std::vector<long\
+    \ long> sub(n), sup(n), had(n), ca(n), co(n), cx(n), cs(n);\n        for (int\
+    \ s = 0; s < n; s++) {\n            for (int t = 0; t < n; t++) {\n          \
+    \      if ((t & s) == t) sub[s] += a[t];\n                if ((s & t) == s) sup[s]\
+    \ += a[t];\n                had[s] += (__builtin_popcount(s & t) % 2 ? -1 : 1)\
+    \ * a[t];\n                ca[s & t] += a[s] * b[t];\n                co[s | t]\
+    \ += a[s] * b[t];\n                cx[s ^ t] += a[s] * b[t];\n               \
+    \ if ((s & t) == 0) cs[s | t] += a[s] * b[t];\n            }\n        }\n    \
+    \    auto c = a;\n        subset_zeta(c);\n        ok = ok && c == sub;\n    \
+    \    subset_mobius(c);\n        ok = ok && c == a;\n        c = a;\n        superset_zeta(c);\n\
+    \        ok = ok && c == sup;\n        superset_mobius(c);\n        ok = ok &&\
+    \ c == a;\n        c = a;\n        walsh_hadamard(c);\n        ok = ok && c ==\
+    \ had;\n        walsh_hadamard(c, true);\n        ok = ok && c == a;\n       \
+    \ ok = ok && and_convolution(a, b) == ca && or_convolution(a, b) == co && xor_convolution(a,\
     \ b) == cx;\n        ok = ok && subset_convolution(a, b) == cs;\n\n        //\
     \ modint \u3067\u3082\u540C\u3058\u7D50\u679C\u306B\u306A\u308B (XOR \u306E\u9006\
     \u5909\u63DB\u306F N \u306E\u9006\u5143\u3092\u639B\u3051\u308B)\n        using\
@@ -464,21 +464,21 @@ data:
     \n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int\
     \ rep = 0; rep < 500 && ok; rep++) {\n        int k = rng() % 7;\n        int\
     \ n = 1 << k;\n        std::vector<long long> a(n), b(n);\n        for (auto&\
-    \ x : a) x = (long long)(rng() % 21) - 10;\n        for (auto& x : b) x = (long\
-    \ long)(rng() % 21) - 10;\n\n        std::vector<long long> sub(n), sup(n), had(n),\
-    \ ca(n), co(n), cx(n), cs(n);\n        for (int s = 0; s < n; s++) {\n       \
-    \     for (int t = 0; t < n; t++) {\n                if ((t & s) == t) sub[s]\
-    \ += a[t];\n                if ((s & t) == s) sup[s] += a[t];\n              \
-    \  had[s] += (__builtin_popcount(s & t) % 2 ? -1 : 1) * a[t];\n              \
-    \  ca[s & t] += a[s] * b[t];\n                co[s | t] += a[s] * b[t];\n    \
-    \            cx[s ^ t] += a[s] * b[t];\n                if ((s & t) == 0) cs[s\
-    \ | t] += a[s] * b[t];\n            }\n        }\n        auto c = a;\n      \
-    \  subset_zeta(c);\n        ok = ok && c == sub;\n        subset_mobius(c);\n\
-    \        ok = ok && c == a;\n        c = a;\n        superset_zeta(c);\n     \
-    \   ok = ok && c == sup;\n        superset_mobius(c);\n        ok = ok && c ==\
-    \ a;\n        c = a;\n        walsh_hadamard(c);\n        ok = ok && c == had;\n\
-    \        walsh_hadamard(c, true);\n        ok = ok && c == a;\n        ok = ok\
-    \ && and_convolution(a, b) == ca && or_convolution(a, b) == co && xor_convolution(a,\
+    \ x : a) x = static_cast<long long>(rng() % 21) - 10;\n        for (auto& x :\
+    \ b) x = static_cast<long long>(rng() % 21) - 10;\n\n        std::vector<long\
+    \ long> sub(n), sup(n), had(n), ca(n), co(n), cx(n), cs(n);\n        for (int\
+    \ s = 0; s < n; s++) {\n            for (int t = 0; t < n; t++) {\n          \
+    \      if ((t & s) == t) sub[s] += a[t];\n                if ((s & t) == s) sup[s]\
+    \ += a[t];\n                had[s] += (__builtin_popcount(s & t) % 2 ? -1 : 1)\
+    \ * a[t];\n                ca[s & t] += a[s] * b[t];\n                co[s | t]\
+    \ += a[s] * b[t];\n                cx[s ^ t] += a[s] * b[t];\n               \
+    \ if ((s & t) == 0) cs[s | t] += a[s] * b[t];\n            }\n        }\n    \
+    \    auto c = a;\n        subset_zeta(c);\n        ok = ok && c == sub;\n    \
+    \    subset_mobius(c);\n        ok = ok && c == a;\n        c = a;\n        superset_zeta(c);\n\
+    \        ok = ok && c == sup;\n        superset_mobius(c);\n        ok = ok &&\
+    \ c == a;\n        c = a;\n        walsh_hadamard(c);\n        ok = ok && c ==\
+    \ had;\n        walsh_hadamard(c, true);\n        ok = ok && c == a;\n       \
+    \ ok = ok && and_convolution(a, b) == ca && or_convolution(a, b) == co && xor_convolution(a,\
     \ b) == cx;\n        ok = ok && subset_convolution(a, b) == cs;\n\n        //\
     \ modint \u3067\u3082\u540C\u3058\u7D50\u679C\u306B\u306A\u308B (XOR \u306E\u9006\
     \u5909\u63DB\u306F N \u306E\u9006\u5143\u3092\u639B\u3051\u308B)\n        using\
@@ -506,7 +506,7 @@ data:
   isVerificationFile: true
   path: test/unittest/bitwise-transform.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/bitwise-transform.test.cpp

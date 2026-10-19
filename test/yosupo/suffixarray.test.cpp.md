@@ -117,20 +117,20 @@ data:
     \ lcp;\n}\n#line 8 \"test/yosupo/suffixarray.test.cpp\"\n\nint main() {\n    std::cin.tie(nullptr);\n\
     \    std::ios::sync_with_stdio(false);\n    std::string s;\n    std::cin >> s;\n\
     \    std::vector<long long> sa = suffix_array(s);\n    for (long long i = 0; i\
-    \ < (long long)sa.size(); i++) std::cout << sa[i] << \" \\n\"[i + 1 == (long long)sa.size()];\n\
-    }\n"
+    \ < static_cast<long long>(sa.size()); i++) std::cout << sa[i] << \" \\n\"[i +\
+    \ 1 == static_cast<long long>(sa.size())];\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/suffixarray\"\n\n#include\
     \ <iostream>\n#include <string>\n#include <vector>\n\n#include \"../../src/string/suffix-array.hpp\"\
     \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
     \    std::string s;\n    std::cin >> s;\n    std::vector<long long> sa = suffix_array(s);\n\
-    \    for (long long i = 0; i < (long long)sa.size(); i++) std::cout << sa[i] <<\
-    \ \" \\n\"[i + 1 == (long long)sa.size()];\n}\n"
+    \    for (long long i = 0; i < static_cast<long long>(sa.size()); i++) std::cout\
+    \ << sa[i] << \" \\n\"[i + 1 == static_cast<long long>(sa.size())];\n}\n"
   dependsOn:
   - src/string/suffix-array.hpp
   isVerificationFile: true
   path: test/yosupo/suffixarray.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/suffixarray.test.cpp

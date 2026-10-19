@@ -610,12 +610,12 @@ data:
     \      seg.set(i, a[i]);\n            } else {\n                int l = rng()\
     \ % (n + 1), r = rng() % (n + 1);\n                if (l > r) std::swap(l, r);\n\
     \                S got = seg.prod(l, r);\n                for (int x = 0; x <\
-    \ (int)N; x++) {\n                    int y = x;\n                    for (int\
-    \ i = r - 1; i >= l; i--) y = a[i][y];\n                    if (got[x] != y) return\
-    \ false;\n                }\n            }\n        }\n    }\n    return true;\n\
-    }\n\n// group::Permutation \u306E\u9006\u7F6E\u63DB\u3068\u3001\u975E\u53EF\u63DB\
-    \u306A\u7FA4\u3068\u3057\u3066 PotentializedUnionFind \u306B\u4E57\u305B\u305F\
-    \u3068\u304D\u306E diff\ntemplate <std::size_t N>\nbool check_permutation(std::mt19937&\
+    \ static_cast<int>(N); x++) {\n                    int y = x;\n              \
+    \      for (int i = r - 1; i >= l; i--) y = a[i][y];\n                    if (got[x]\
+    \ != y) return false;\n                }\n            }\n        }\n    }\n  \
+    \  return true;\n}\n\n// group::Permutation \u306E\u9006\u7F6E\u63DB\u3068\u3001\
+    \u975E\u53EF\u63DB\u306A\u7FA4\u3068\u3057\u3066 PotentializedUnionFind \u306B\
+    \u4E57\u305B\u305F\u3068\u304D\u306E diff\ntemplate <std::size_t N>\nbool check_permutation(std::mt19937&\
     \ rng) {\n    using G = group::Permutation<N>;\n    using S = std::array<int,\
     \ N>;\n    for (int rep = 0; rep < 1000; rep++) {\n        S f = random_mapping<N>(rng,\
     \ true);\n        if (G::op(f, G::inv(f)) != G::e() || G::op(G::inv(f), f) !=\
@@ -684,12 +684,12 @@ data:
     \      seg.set(i, a[i]);\n            } else {\n                int l = rng()\
     \ % (n + 1), r = rng() % (n + 1);\n                if (l > r) std::swap(l, r);\n\
     \                S got = seg.prod(l, r);\n                for (int x = 0; x <\
-    \ (int)N; x++) {\n                    int y = x;\n                    for (int\
-    \ i = r - 1; i >= l; i--) y = a[i][y];\n                    if (got[x] != y) return\
-    \ false;\n                }\n            }\n        }\n    }\n    return true;\n\
-    }\n\n// group::Permutation \u306E\u9006\u7F6E\u63DB\u3068\u3001\u975E\u53EF\u63DB\
-    \u306A\u7FA4\u3068\u3057\u3066 PotentializedUnionFind \u306B\u4E57\u305B\u305F\
-    \u3068\u304D\u306E diff\ntemplate <std::size_t N>\nbool check_permutation(std::mt19937&\
+    \ static_cast<int>(N); x++) {\n                    int y = x;\n              \
+    \      for (int i = r - 1; i >= l; i--) y = a[i][y];\n                    if (got[x]\
+    \ != y) return false;\n                }\n            }\n        }\n    }\n  \
+    \  return true;\n}\n\n// group::Permutation \u306E\u9006\u7F6E\u63DB\u3068\u3001\
+    \u975E\u53EF\u63DB\u306A\u7FA4\u3068\u3057\u3066 PotentializedUnionFind \u306B\
+    \u4E57\u305B\u305F\u3068\u304D\u306E diff\ntemplate <std::size_t N>\nbool check_permutation(std::mt19937&\
     \ rng) {\n    using G = group::Permutation<N>;\n    using S = std::array<int,\
     \ N>;\n    for (int rep = 0; rep < 1000; rep++) {\n        S f = random_mapping<N>(rng,\
     \ true);\n        if (G::op(f, G::inv(f)) != G::e() || G::op(G::inv(f), f) !=\
@@ -729,7 +729,7 @@ data:
   isVerificationFile: true
   path: test/unittest/mapping.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 12:03:10+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/mapping.test.cpp

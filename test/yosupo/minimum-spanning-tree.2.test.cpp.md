@@ -468,8 +468,8 @@ data:
     \ \"test/yosupo/minimum-spanning-tree.2.test.cpp\"\n\nint main() {\n    std::cin.tie(nullptr);\n\
     \    std::ios::sync_with_stdio(false);\n    int n, m;\n    std::cin >> n >> m;\n\
     \    Graph<long long> g(n);\n    g.read(m, 0, true);\n    auto mst = minimum_spanning_tree(g);\n\
-    \    std::cout << mst.cost << '\\n';\n    for (int i = 0; i < (int)mst.edges.size();\
-    \ i++) std::cout << mst.edges[i].id << \" \\n\"[i + 1 == (int)mst.edges.size()];\n\
+    \    std::cout << mst.cost << '\\n';\n    for (int i = 0; i < static_cast<int>(mst.edges.size());\
+    \ i++) std::cout << mst.edges[i].id << \" \\n\"[i + 1 == static_cast<int>(mst.edges.size())];\n\
     \    if (mst.edges.empty()) std::cout << '\\n';\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/minimum_spanning_tree\"\
     \n\n// graph_util \u306E minimum_spanning_tree (Kruskal \u6CD5) \u3092\u4F7F\u3046\
@@ -477,8 +477,8 @@ data:
     ../../src/graph/graph_util.hpp\"\n\nint main() {\n    std::cin.tie(nullptr);\n\
     \    std::ios::sync_with_stdio(false);\n    int n, m;\n    std::cin >> n >> m;\n\
     \    Graph<long long> g(n);\n    g.read(m, 0, true);\n    auto mst = minimum_spanning_tree(g);\n\
-    \    std::cout << mst.cost << '\\n';\n    for (int i = 0; i < (int)mst.edges.size();\
-    \ i++) std::cout << mst.edges[i].id << \" \\n\"[i + 1 == (int)mst.edges.size()];\n\
+    \    std::cout << mst.cost << '\\n';\n    for (int i = 0; i < static_cast<int>(mst.edges.size());\
+    \ i++) std::cout << mst.edges[i].id << \" \\n\"[i + 1 == static_cast<int>(mst.edges.size())];\n\
     \    if (mst.edges.empty()) std::cout << '\\n';\n}\n"
   dependsOn:
   - src/graph/graph.hpp
@@ -487,7 +487,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/minimum-spanning-tree.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/minimum-spanning-tree.2.test.cpp

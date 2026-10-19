@@ -376,22 +376,23 @@ data:
     }\n#line 7 \"test/aoj/dsl-3-d.test.cpp\"\n\nint main() {\n    std::cin.tie(nullptr);\n\
     \    std::ios::sync_with_stdio(false);\n    int n, l;\n    std::cin >> n >> l;\n\
     \    std::vector<int> a(n);\n    for (auto& x : a) std::cin >> x;\n    std::vector<int>\
-    \ res = sliding_window_min(a, l);\n    for (int i = 0; i < (int)res.size(); i++)\
-    \ std::cout << res[i] << \" \\n\"[i + 1 == (int)res.size()];\n}\n"
+    \ res = sliding_window_min(a, l);\n    for (int i = 0; i < static_cast<int>(res.size());\
+    \ i++) std::cout << res[i] << \" \\n\"[i + 1 == static_cast<int>(res.size())];\n\
+    }\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_3_D\"\
     \n\n#include <iostream>\n#include <vector>\n\n#include \"../../src/data_structures/sliding-window-aggregation.hpp\"\
     \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
     \    int n, l;\n    std::cin >> n >> l;\n    std::vector<int> a(n);\n    for (auto&\
     \ x : a) std::cin >> x;\n    std::vector<int> res = sliding_window_min(a, l);\n\
-    \    for (int i = 0; i < (int)res.size(); i++) std::cout << res[i] << \" \\n\"\
-    [i + 1 == (int)res.size()];\n}\n"
+    \    for (int i = 0; i < static_cast<int>(res.size()); i++) std::cout << res[i]\
+    \ << \" \\n\"[i + 1 == static_cast<int>(res.size())];\n}\n"
   dependsOn:
   - src/data_structures/sliding-window-aggregation.hpp
   - src/algebra/monoid.hpp
   isVerificationFile: true
   path: test/aoj/dsl-3-d.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 12:03:10+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/dsl-3-d.test.cpp

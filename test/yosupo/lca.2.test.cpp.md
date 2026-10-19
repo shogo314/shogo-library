@@ -819,9 +819,9 @@ data:
     \    int n, q;\n    std::cin >> n >> q;\n    std::vector<int> par(n - 1);\n  \
     \  for (int i = 0; i < n - 1; i++) std::cin >> par[i];\n    RootedTree tree(par,\
     \ 0);\n    SegTree<monoid::Min<long long>> et_depth(tree.euler_tour.size());\n\
-    \    std::vector<int> pre_idx(n);\n    for (int i = 0; i < (int)tree.euler_tour.size();\
-    \ i++) {\n        auto [u, cnt] = tree.euler_tour[i];\n        et_depth[i] = (long\
-    \ long)tree.depth[u] * n + u;\n        if (cnt == 0) pre_idx[u] = i;\n    }\n\
+    \    std::vector<int> pre_idx(n);\n    for (int i = 0; i < static_cast<int>(tree.euler_tour.size());\
+    \ i++) {\n        auto [u, cnt] = tree.euler_tour[i];\n        et_depth[i] = static_cast<long\
+    \ long>(tree.depth[u]) * n + u;\n        if (cnt == 0) pre_idx[u] = i;\n    }\n\
     \    while (q--) {\n        int u, v;\n        std::cin >> u >> v;\n        if\
     \ (pre_idx[u] > pre_idx[v]) std::swap(u, v);\n        std::cout << et_depth.prod(pre_idx[u],\
     \ pre_idx[v] + 1) % n << '\\n';\n    }\n}\n"
@@ -831,9 +831,9 @@ data:
     \    int n, q;\n    std::cin >> n >> q;\n    std::vector<int> par(n - 1);\n  \
     \  for (int i = 0; i < n - 1; i++) std::cin >> par[i];\n    RootedTree tree(par,\
     \ 0);\n    SegTree<monoid::Min<long long>> et_depth(tree.euler_tour.size());\n\
-    \    std::vector<int> pre_idx(n);\n    for (int i = 0; i < (int)tree.euler_tour.size();\
-    \ i++) {\n        auto [u, cnt] = tree.euler_tour[i];\n        et_depth[i] = (long\
-    \ long)tree.depth[u] * n + u;\n        if (cnt == 0) pre_idx[u] = i;\n    }\n\
+    \    std::vector<int> pre_idx(n);\n    for (int i = 0; i < static_cast<int>(tree.euler_tour.size());\
+    \ i++) {\n        auto [u, cnt] = tree.euler_tour[i];\n        et_depth[i] = static_cast<long\
+    \ long>(tree.depth[u]) * n + u;\n        if (cnt == 0) pre_idx[u] = i;\n    }\n\
     \    while (q--) {\n        int u, v;\n        std::cin >> u >> v;\n        if\
     \ (pre_idx[u] > pre_idx[v]) std::swap(u, v);\n        std::cout << et_depth.prod(pre_idx[u],\
     \ pre_idx[v] + 1) % n << '\\n';\n    }\n}"
@@ -845,7 +845,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/lca.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 12:03:10+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/lca.2.test.cpp

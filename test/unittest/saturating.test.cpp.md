@@ -52,29 +52,33 @@ data:
     \u6574\u6570\u578B\u306B\u5236\u9650\u3059\u308B\n#if __cplusplus >= 202002L\n\
     #define SATURATING_FUNC(cond, R) requires(cond) inline constexpr R\n#else\n#define\
     \ SATURATING_FUNC(cond, R) inline constexpr std::enable_if_t<(cond), R>\n#endif\n\
-    \n/**\n * @brief x + y \u3092 T \u306E\u7BC4\u56F2\u306B\u4E38\u3081\u308B\n */\n\
-    template <class T>\nSATURATING_FUNC(internal_saturating::integer<T>, T) saturating_add(T\
-    \ x, T y) noexcept {\n#ifdef __cpp_lib_saturation_arithmetic\n    return std::add_sat(x,\
-    \ y);\n#else\n    T res{};\n    if (!__builtin_add_overflow(x, y, &res)) return\
-    \ res;\n    if constexpr (std::is_signed_v<T>) {\n        if (y < 0) return std::numeric_limits<T>::min();\n\
-    \    }\n    return std::numeric_limits<T>::max();\n#endif\n}\n/**\n * @brief x\
-    \ - y \u3092 T \u306E\u7BC4\u56F2\u306B\u4E38\u3081\u308B\n */\ntemplate <class\
-    \ T>\nSATURATING_FUNC(internal_saturating::integer<T>, T) saturating_sub(T x,\
-    \ T y) noexcept {\n#ifdef __cpp_lib_saturation_arithmetic\n    return std::sub_sat(x,\
-    \ y);\n#else\n    T res{};\n    if (!__builtin_sub_overflow(x, y, &res)) return\
-    \ res;\n    if constexpr (std::is_signed_v<T>) {\n        if (y < 0) return std::numeric_limits<T>::max();\n\
-    \    }\n    return std::numeric_limits<T>::min();\n#endif\n}\n/**\n * @brief x\
-    \ * y \u3092 T \u306E\u7BC4\u56F2\u306B\u4E38\u3081\u308B\n */\ntemplate <class\
-    \ T>\nSATURATING_FUNC(internal_saturating::integer<T>, T) saturating_mul(T x,\
-    \ T y) noexcept {\n#ifdef __cpp_lib_saturation_arithmetic\n    return std::mul_sat(x,\
-    \ y);\n#else\n    T res{};\n    if (!__builtin_mul_overflow(x, y, &res)) return\
-    \ res;\n    if constexpr (std::is_signed_v<T>) {\n        if ((x < 0) != (y <\
-    \ 0)) return std::numeric_limits<T>::min();\n    }\n    return std::numeric_limits<T>::max();\n\
-    #endif\n}\n/**\n * @brief x / y (0 \u65B9\u5411\u306B\u5207\u308A\u6368\u3066\
-    ) \u3092 T \u306E\u7BC4\u56F2\u306B\u4E38\u3081\u308B (y != 0)\n * \u3042\u3075\
-    \u308C\u308B\u306E\u306F\u7B26\u53F7\u4ED8\u304D\u306E min / -1 \u3060\u3051\u3067\
-    \u3001max \u3092\u8FD4\u3059\n */\ntemplate <class T>\nSATURATING_FUNC(internal_saturating::integer<T>,\
-    \ T) saturating_div(T x, T y) noexcept {\n    assert(y != 0);\n#ifdef __cpp_lib_saturation_arithmetic\n\
+    \n// clang-format \u306F SATURATING_FUNC \u3092\u623B\u308A\u5024\u306E\u578B\u3068\
+    \u8AAD\u3081\u305A\u3001\u95A2\u6570\u540D\u306E\u524D\u3067\u6539\u884C\u3057\
+    \u3066\u3057\u307E\u3046\u306E\u3067\u6574\u5F62\u3057\u306A\u3044\n// clang-format\
+    \ off\n\n/**\n * @brief x + y \u3092 T \u306E\u7BC4\u56F2\u306B\u4E38\u3081\u308B\
+    \n */\ntemplate <class T>\nSATURATING_FUNC(internal_saturating::integer<T>, T)\
+    \ saturating_add(T x, T y) noexcept {\n#ifdef __cpp_lib_saturation_arithmetic\n\
+    \    return std::add_sat(x, y);\n#else\n    T res{};\n    if (!__builtin_add_overflow(x,\
+    \ y, &res)) return res;\n    if constexpr (std::is_signed_v<T>) {\n        if\
+    \ (y < 0) return std::numeric_limits<T>::min();\n    }\n    return std::numeric_limits<T>::max();\n\
+    #endif\n}\n/**\n * @brief x - y \u3092 T \u306E\u7BC4\u56F2\u306B\u4E38\u3081\u308B\
+    \n */\ntemplate <class T>\nSATURATING_FUNC(internal_saturating::integer<T>, T)\
+    \ saturating_sub(T x, T y) noexcept {\n#ifdef __cpp_lib_saturation_arithmetic\n\
+    \    return std::sub_sat(x, y);\n#else\n    T res{};\n    if (!__builtin_sub_overflow(x,\
+    \ y, &res)) return res;\n    if constexpr (std::is_signed_v<T>) {\n        if\
+    \ (y < 0) return std::numeric_limits<T>::max();\n    }\n    return std::numeric_limits<T>::min();\n\
+    #endif\n}\n/**\n * @brief x * y \u3092 T \u306E\u7BC4\u56F2\u306B\u4E38\u3081\u308B\
+    \n */\ntemplate <class T>\nSATURATING_FUNC(internal_saturating::integer<T>, T)\
+    \ saturating_mul(T x, T y) noexcept {\n#ifdef __cpp_lib_saturation_arithmetic\n\
+    \    return std::mul_sat(x, y);\n#else\n    T res{};\n    if (!__builtin_mul_overflow(x,\
+    \ y, &res)) return res;\n    if constexpr (std::is_signed_v<T>) {\n        if\
+    \ ((x < 0) != (y < 0)) return std::numeric_limits<T>::min();\n    }\n    return\
+    \ std::numeric_limits<T>::max();\n#endif\n}\n/**\n * @brief x / y (0 \u65B9\u5411\
+    \u306B\u5207\u308A\u6368\u3066) \u3092 T \u306E\u7BC4\u56F2\u306B\u4E38\u3081\u308B\
+    \ (y != 0)\n * \u3042\u3075\u308C\u308B\u306E\u306F\u7B26\u53F7\u4ED8\u304D\u306E\
+    \ min / -1 \u3060\u3051\u3067\u3001max \u3092\u8FD4\u3059\n */\ntemplate <class\
+    \ T>\nSATURATING_FUNC(internal_saturating::integer<T>, T) saturating_div(T x,\
+    \ T y) noexcept {\n    assert(y != 0);\n#ifdef __cpp_lib_saturation_arithmetic\n\
     \    return std::div_sat(x, y);\n#else\n    if constexpr (std::is_signed_v<T>)\
     \ {\n        if (x == std::numeric_limits<T>::min() && y == -1) return std::numeric_limits<T>::max();\n\
     \    }\n    return x / y;\n#endif\n}\n/**\n * @brief \u6574\u6570 x \u3092 R \u306B\
@@ -86,36 +90,40 @@ data:
     \    if (internal_saturating::cmp_less(x, std::numeric_limits<R>::min())) return\
     \ std::numeric_limits<R>::min();\n    if (internal_saturating::cmp_greater(x,\
     \ std::numeric_limits<R>::max())) return std::numeric_limits<R>::max();\n    return\
-    \ static_cast<R>(x);\n#endif\n}\n\n#undef SATURATING_FUNC\n#line 8 \"test/unittest/saturating.test.cpp\"\
-    \n\n#include <cstdint>\n#include <iostream>\n#line 12 \"test/unittest/saturating.test.cpp\"\
-    \n#include <random>\n#line 15 \"test/unittest/saturating.test.cpp\"\n#include\
-    \ <vector>\n\nusing i128 = __int128;\nusing u128 = unsigned __int128;\n\nbool\
-    \ ok = true;\n\nvoid check(bool cond, const char* what) {\n    if (!cond) {\n\
-    \        if (ok) std::cerr << \"failed: \" << what << std::endl;\n        ok =\
-    \ false;\n    }\n}\n\ntemplate <class T>\ni128 lo() { return (i128)std::numeric_limits<T>::min();\
-    \ }\ntemplate <class T>\ni128 hi() { return (i128)std::numeric_limits<T>::max();\
+    \ static_cast<R>(x);\n#endif\n}\n\n// clang-format on\n\n#undef SATURATING_FUNC\n\
+    #line 8 \"test/unittest/saturating.test.cpp\"\n\n#include <cstdint>\n#include\
+    \ <iostream>\n#line 12 \"test/unittest/saturating.test.cpp\"\n#include <random>\n\
+    #line 15 \"test/unittest/saturating.test.cpp\"\n#include <vector>\n\nusing i128\
+    \ = __int128;\nusing u128 = unsigned __int128;\n\nbool ok = true;\n\nvoid check(bool\
+    \ cond, const char* what) {\n    if (!cond) {\n        if (ok) std::cerr << \"\
+    failed: \" << what << std::endl;\n        ok = false;\n    }\n}\n\ntemplate <class\
+    \ T>\ni128 lo() { return static_cast<i128>(std::numeric_limits<T>::min()); }\n\
+    template <class T>\ni128 hi() { return static_cast<i128>(std::numeric_limits<T>::max());\
     \ }\ntemplate <class T>\nT clamp128(i128 v) { return v < lo<T>() ? std::numeric_limits<T>::min()\
-    \ : v > hi<T>() ? std::numeric_limits<T>::max() : (T)v; }\n\n// \u5883\u754C\u4ED8\
-    \u8FD1\u306E\u5024\u3068\u30E9\u30F3\u30C0\u30E0\u306A\u5024\ntemplate <class\
-    \ T>\nstd::vector<T> samples(std::mt19937_64& rng) {\n    std::vector<T> res;\n\
-    \    for (i128 d = 0; d < 4; d++) {\n        for (i128 v : {lo<T>() + d, hi<T>()\
-    \ - d, d, -d, hi<T>() / 2 - 1 + d, lo<T>() / 2 - 1 + d}) {\n            if (lo<T>()\
-    \ <= v && v <= hi<T>()) res.push_back((T)v);\n        }\n    }\n    for (int i\
-    \ = 0; i < 40; i++) {\n        T v = (T)rng();\n        res.push_back(v);\n  \
-    \      res.push_back((T)(v >> (rng() % (8 * sizeof(T)))));  // \u5C0F\u3055\u3044\
-    \u5024\u3082\u6DF7\u305C\u308B\n    }\n    return res;\n}\n\ntemplate <class T>\n\
-    void check_arith(const std::vector<T>& xs) {\n    for (T x : xs) {\n        for\
-    \ (T y : xs) {\n            check(saturating_add(x, y) == clamp128<T>((i128)x\
-    \ + y), \"saturating_add\");\n            check(saturating_sub(x, y) == clamp128<T>((i128)x\
-    \ - y), \"saturating_sub\");\n            if constexpr (std::is_unsigned_v<T>\
-    \ && sizeof(T) == 8) {\n                u128 p = (u128)x * y;\n              \
-    \  check(saturating_mul(x, y) == (p > (u128)std::numeric_limits<T>::max() ? std::numeric_limits<T>::max()\
-    \ : (T)p), \"saturating_mul\");\n            } else {\n                check(saturating_mul(x,\
-    \ y) == clamp128<T>((i128)x * y), \"saturating_mul\");\n            }\n      \
-    \      if (y != 0) check(saturating_div(x, y) == clamp128<T>((i128)x / y), \"\
-    saturating_div\");\n            static_assert(std::is_same_v<decltype(saturating_add(x,\
-    \ y)), T>);\n        }\n    }\n}\n\ntemplate <class R, class T>\nvoid check_cast(const\
-    \ std::vector<T>& xs) {\n    for (T x : xs) check(saturating_cast<R>(x) == clamp128<R>((i128)x),\
+    \ : v > hi<T>() ? std::numeric_limits<T>::max()\n                            \
+    \                                                          : static_cast<T>(v);\
+    \ }\n\n// \u5883\u754C\u4ED8\u8FD1\u306E\u5024\u3068\u30E9\u30F3\u30C0\u30E0\u306A\
+    \u5024\ntemplate <class T>\nstd::vector<T> samples(std::mt19937_64& rng) {\n \
+    \   std::vector<T> res;\n    for (i128 d = 0; d < 4; d++) {\n        for (i128\
+    \ v : {lo<T>() + d, hi<T>() - d, d, -d, hi<T>() / 2 - 1 + d, lo<T>() / 2 - 1 +\
+    \ d}) {\n            if (lo<T>() <= v && v <= hi<T>()) res.push_back(static_cast<T>(v));\n\
+    \        }\n    }\n    for (int i = 0; i < 40; i++) {\n        T v = static_cast<T>(rng());\n\
+    \        res.push_back(v);\n        res.push_back(static_cast<T>(v >> (rng() %\
+    \ (8 * sizeof(T)))));  // \u5C0F\u3055\u3044\u5024\u3082\u6DF7\u305C\u308B\n \
+    \   }\n    return res;\n}\n\ntemplate <class T>\nvoid check_arith(const std::vector<T>&\
+    \ xs) {\n    for (T x : xs) {\n        for (T y : xs) {\n            check(saturating_add(x,\
+    \ y) == clamp128<T>(static_cast<i128>(x) + y), \"saturating_add\");\n        \
+    \    check(saturating_sub(x, y) == clamp128<T>(static_cast<i128>(x) - y), \"saturating_sub\"\
+    );\n            if constexpr (std::is_unsigned_v<T> && sizeof(T) == 8) {\n   \
+    \             u128 p = static_cast<u128>(x) * y;\n                check(saturating_mul(x,\
+    \ y) == (p > static_cast<u128>(std::numeric_limits<T>::max()) ? std::numeric_limits<T>::max()\
+    \ : static_cast<T>(p)), \"saturating_mul\");\n            } else {\n         \
+    \       check(saturating_mul(x, y) == clamp128<T>(static_cast<i128>(x) * y), \"\
+    saturating_mul\");\n            }\n            if (y != 0) check(saturating_div(x,\
+    \ y) == clamp128<T>(static_cast<i128>(x) / y), \"saturating_div\");\n        \
+    \    static_assert(std::is_same_v<decltype(saturating_add(x, y)), T>);\n     \
+    \   }\n    }\n}\n\ntemplate <class R, class T>\nvoid check_cast(const std::vector<T>&\
+    \ xs) {\n    for (T x : xs) check(saturating_cast<R>(x) == clamp128<R>(static_cast<i128>(x)),\
     \ \"saturating_cast\");\n    static_assert(std::is_same_v<decltype(saturating_cast<R>(T())),\
     \ R>);\n}\ntemplate <class T, class... Rs>\nvoid check_cast_all(std::mt19937_64&\
     \ rng) {\n    auto xs = samples<T>(rng);\n    (check_cast<Rs>(xs), ...);\n}\n\n\
@@ -140,9 +148,9 @@ data:
     \ long long>::max()) == std::numeric_limits<int>::max());\n\nint main() {\n  \
     \  std::mt19937_64 rng(314);\n\n    // 8 \u30D3\u30C3\u30C8\u306E\u578B\u306F\u5168\
     \u7D44\n    {\n        std::vector<std::int8_t> s;\n        std::vector<std::uint8_t>\
-    \ u;\n        for (int v = -128; v < 128; v++) s.push_back((std::int8_t)v);\n\
-    \        for (int v = 0; v < 256; v++) u.push_back((std::uint8_t)v);\n       \
-    \ check_arith(s);\n        check_arith(u);\n    }\n    check_arith(samples<short>(rng));\n\
+    \ u;\n        for (int v = -128; v < 128; v++) s.push_back(static_cast<std::int8_t>(v));\n\
+    \        for (int v = 0; v < 256; v++) u.push_back(static_cast<std::uint8_t>(v));\n\
+    \        check_arith(s);\n        check_arith(u);\n    }\n    check_arith(samples<short>(rng));\n\
     \    check_arith(samples<unsigned short>(rng));\n    check_arith(samples<int>(rng));\n\
     \    check_arith(samples<unsigned>(rng));\n    check_arith(samples<long>(rng));\n\
     \    check_arith(samples<long long>(rng));\n    check_arith(samples<unsigned long\
@@ -167,30 +175,33 @@ data:
     \ __int128;\nusing u128 = unsigned __int128;\n\nbool ok = true;\n\nvoid check(bool\
     \ cond, const char* what) {\n    if (!cond) {\n        if (ok) std::cerr << \"\
     failed: \" << what << std::endl;\n        ok = false;\n    }\n}\n\ntemplate <class\
-    \ T>\ni128 lo() { return (i128)std::numeric_limits<T>::min(); }\ntemplate <class\
-    \ T>\ni128 hi() { return (i128)std::numeric_limits<T>::max(); }\ntemplate <class\
-    \ T>\nT clamp128(i128 v) { return v < lo<T>() ? std::numeric_limits<T>::min()\
-    \ : v > hi<T>() ? std::numeric_limits<T>::max() : (T)v; }\n\n// \u5883\u754C\u4ED8\
-    \u8FD1\u306E\u5024\u3068\u30E9\u30F3\u30C0\u30E0\u306A\u5024\ntemplate <class\
-    \ T>\nstd::vector<T> samples(std::mt19937_64& rng) {\n    std::vector<T> res;\n\
-    \    for (i128 d = 0; d < 4; d++) {\n        for (i128 v : {lo<T>() + d, hi<T>()\
-    \ - d, d, -d, hi<T>() / 2 - 1 + d, lo<T>() / 2 - 1 + d}) {\n            if (lo<T>()\
-    \ <= v && v <= hi<T>()) res.push_back((T)v);\n        }\n    }\n    for (int i\
-    \ = 0; i < 40; i++) {\n        T v = (T)rng();\n        res.push_back(v);\n  \
-    \      res.push_back((T)(v >> (rng() % (8 * sizeof(T)))));  // \u5C0F\u3055\u3044\
-    \u5024\u3082\u6DF7\u305C\u308B\n    }\n    return res;\n}\n\ntemplate <class T>\n\
-    void check_arith(const std::vector<T>& xs) {\n    for (T x : xs) {\n        for\
-    \ (T y : xs) {\n            check(saturating_add(x, y) == clamp128<T>((i128)x\
-    \ + y), \"saturating_add\");\n            check(saturating_sub(x, y) == clamp128<T>((i128)x\
-    \ - y), \"saturating_sub\");\n            if constexpr (std::is_unsigned_v<T>\
-    \ && sizeof(T) == 8) {\n                u128 p = (u128)x * y;\n              \
-    \  check(saturating_mul(x, y) == (p > (u128)std::numeric_limits<T>::max() ? std::numeric_limits<T>::max()\
-    \ : (T)p), \"saturating_mul\");\n            } else {\n                check(saturating_mul(x,\
-    \ y) == clamp128<T>((i128)x * y), \"saturating_mul\");\n            }\n      \
-    \      if (y != 0) check(saturating_div(x, y) == clamp128<T>((i128)x / y), \"\
-    saturating_div\");\n            static_assert(std::is_same_v<decltype(saturating_add(x,\
-    \ y)), T>);\n        }\n    }\n}\n\ntemplate <class R, class T>\nvoid check_cast(const\
-    \ std::vector<T>& xs) {\n    for (T x : xs) check(saturating_cast<R>(x) == clamp128<R>((i128)x),\
+    \ T>\ni128 lo() { return static_cast<i128>(std::numeric_limits<T>::min()); }\n\
+    template <class T>\ni128 hi() { return static_cast<i128>(std::numeric_limits<T>::max());\
+    \ }\ntemplate <class T>\nT clamp128(i128 v) { return v < lo<T>() ? std::numeric_limits<T>::min()\
+    \ : v > hi<T>() ? std::numeric_limits<T>::max()\n                            \
+    \                                                          : static_cast<T>(v);\
+    \ }\n\n// \u5883\u754C\u4ED8\u8FD1\u306E\u5024\u3068\u30E9\u30F3\u30C0\u30E0\u306A\
+    \u5024\ntemplate <class T>\nstd::vector<T> samples(std::mt19937_64& rng) {\n \
+    \   std::vector<T> res;\n    for (i128 d = 0; d < 4; d++) {\n        for (i128\
+    \ v : {lo<T>() + d, hi<T>() - d, d, -d, hi<T>() / 2 - 1 + d, lo<T>() / 2 - 1 +\
+    \ d}) {\n            if (lo<T>() <= v && v <= hi<T>()) res.push_back(static_cast<T>(v));\n\
+    \        }\n    }\n    for (int i = 0; i < 40; i++) {\n        T v = static_cast<T>(rng());\n\
+    \        res.push_back(v);\n        res.push_back(static_cast<T>(v >> (rng() %\
+    \ (8 * sizeof(T)))));  // \u5C0F\u3055\u3044\u5024\u3082\u6DF7\u305C\u308B\n \
+    \   }\n    return res;\n}\n\ntemplate <class T>\nvoid check_arith(const std::vector<T>&\
+    \ xs) {\n    for (T x : xs) {\n        for (T y : xs) {\n            check(saturating_add(x,\
+    \ y) == clamp128<T>(static_cast<i128>(x) + y), \"saturating_add\");\n        \
+    \    check(saturating_sub(x, y) == clamp128<T>(static_cast<i128>(x) - y), \"saturating_sub\"\
+    );\n            if constexpr (std::is_unsigned_v<T> && sizeof(T) == 8) {\n   \
+    \             u128 p = static_cast<u128>(x) * y;\n                check(saturating_mul(x,\
+    \ y) == (p > static_cast<u128>(std::numeric_limits<T>::max()) ? std::numeric_limits<T>::max()\
+    \ : static_cast<T>(p)), \"saturating_mul\");\n            } else {\n         \
+    \       check(saturating_mul(x, y) == clamp128<T>(static_cast<i128>(x) * y), \"\
+    saturating_mul\");\n            }\n            if (y != 0) check(saturating_div(x,\
+    \ y) == clamp128<T>(static_cast<i128>(x) / y), \"saturating_div\");\n        \
+    \    static_assert(std::is_same_v<decltype(saturating_add(x, y)), T>);\n     \
+    \   }\n    }\n}\n\ntemplate <class R, class T>\nvoid check_cast(const std::vector<T>&\
+    \ xs) {\n    for (T x : xs) check(saturating_cast<R>(x) == clamp128<R>(static_cast<i128>(x)),\
     \ \"saturating_cast\");\n    static_assert(std::is_same_v<decltype(saturating_cast<R>(T())),\
     \ R>);\n}\ntemplate <class T, class... Rs>\nvoid check_cast_all(std::mt19937_64&\
     \ rng) {\n    auto xs = samples<T>(rng);\n    (check_cast<Rs>(xs), ...);\n}\n\n\
@@ -215,9 +226,9 @@ data:
     \ long long>::max()) == std::numeric_limits<int>::max());\n\nint main() {\n  \
     \  std::mt19937_64 rng(314);\n\n    // 8 \u30D3\u30C3\u30C8\u306E\u578B\u306F\u5168\
     \u7D44\n    {\n        std::vector<std::int8_t> s;\n        std::vector<std::uint8_t>\
-    \ u;\n        for (int v = -128; v < 128; v++) s.push_back((std::int8_t)v);\n\
-    \        for (int v = 0; v < 256; v++) u.push_back((std::uint8_t)v);\n       \
-    \ check_arith(s);\n        check_arith(u);\n    }\n    check_arith(samples<short>(rng));\n\
+    \ u;\n        for (int v = -128; v < 128; v++) s.push_back(static_cast<std::int8_t>(v));\n\
+    \        for (int v = 0; v < 256; v++) u.push_back(static_cast<std::uint8_t>(v));\n\
+    \        check_arith(s);\n        check_arith(u);\n    }\n    check_arith(samples<short>(rng));\n\
     \    check_arith(samples<unsigned short>(rng));\n    check_arith(samples<int>(rng));\n\
     \    check_arith(samples<unsigned>(rng));\n    check_arith(samples<long>(rng));\n\
     \    check_arith(samples<long long>(rng));\n    check_arith(samples<unsigned long\
@@ -234,7 +245,7 @@ data:
   isVerificationFile: true
   path: test/unittest/saturating.test.cpp
   requiredBy: []
-  timestamp: '2026-10-18 18:36:07+09:00'
+  timestamp: '2026-10-19 12:29:38+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/saturating.test.cpp

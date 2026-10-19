@@ -80,11 +80,12 @@ data:
     \            } else {\n                if (st[ver].top() != naive[ver].back())\
     \ ok = false;\n            }\n        }\n        // \u3059\u3079\u3066\u306E\u7248\
     \u304C\u3001\u4F5C\u3063\u305F\u3068\u304D\u306E\u5185\u5BB9\u306E\u307E\u307E\
-    \u304B\n        for (int i = 0; i < int(st.size()); i++) {\n            const\
-    \ auto& v = naive[i];\n            if (st[i].size() != int(v.size()) || st[i].empty()\
-    \ != v.empty()) ok = false;\n            if (st[i].to_vector() != v) ok = false;\n\
-    \            if (!v.empty() && st[i].top() != v.back()) ok = false;\n        }\n\
-    \    }\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \u304B\n        for (int i = 0; i < static_cast<int>(st.size()); i++) {\n    \
+    \        const auto& v = naive[i];\n            if (st[i].size() != static_cast<int>(v.size())\
+    \ || st[i].empty() != v.empty()) ok = false;\n            if (st[i].to_vector()\
+    \ != v) ok = false;\n            if (!v.empty() && st[i].top() != v.back()) ok\
+    \ = false;\n        }\n    }\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
+    }\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// PersistentStack \u3092\u611A\u76F4\u306A\u5B9F\u88C5 (\u7248\u3054\u3068\
     \u306B std::vector \u3092\u6301\u3064) \u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\
@@ -106,17 +107,18 @@ data:
     \            } else {\n                if (st[ver].top() != naive[ver].back())\
     \ ok = false;\n            }\n        }\n        // \u3059\u3079\u3066\u306E\u7248\
     \u304C\u3001\u4F5C\u3063\u305F\u3068\u304D\u306E\u5185\u5BB9\u306E\u307E\u307E\
-    \u304B\n        for (int i = 0; i < int(st.size()); i++) {\n            const\
-    \ auto& v = naive[i];\n            if (st[i].size() != int(v.size()) || st[i].empty()\
-    \ != v.empty()) ok = false;\n            if (st[i].to_vector() != v) ok = false;\n\
-    \            if (!v.empty() && st[i].top() != v.back()) ok = false;\n        }\n\
-    \    }\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \u304B\n        for (int i = 0; i < static_cast<int>(st.size()); i++) {\n    \
+    \        const auto& v = naive[i];\n            if (st[i].size() != static_cast<int>(v.size())\
+    \ || st[i].empty() != v.empty()) ok = false;\n            if (st[i].to_vector()\
+    \ != v) ok = false;\n            if (!v.empty() && st[i].top() != v.back()) ok\
+    \ = false;\n        }\n    }\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
+    }\n"
   dependsOn:
   - src/data_structures/persistent-stack.hpp
   isVerificationFile: true
   path: test/unittest/persistent-stack.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/persistent-stack.test.cpp

@@ -199,11 +199,11 @@ data:
     \            cnt++;\n                }\n                factors.emplace_back(i,\
     \ cnt);\n            }\n        }\n        if (mm > 1) factors.emplace_back(mm,\
     \ 1);\n    }\n    std::vector<CombinationPQ> combpq;\n    for (long long i = 0;\
-    \ i < (long long)factors.size(); ++i) {\n        auto [p, e] = factors[i];\n \
-    \       combpq.emplace_back(p, e);\n    }\n    while (t--) {\n        long long\
+    \ i < static_cast<long long>(factors.size()); ++i) {\n        auto [p, e] = factors[i];\n\
+    \        combpq.emplace_back(p, e);\n    }\n    while (t--) {\n        long long\
     \ n, k;\n        std::cin >> n >> k;\n        std::vector<long long> x, y;\n \
-    \       for (long long i = 0; i < (long long)factors.size(); ++i) {\n        \
-    \    x.push_back(combpq[i].C(n, k));\n            y.push_back(combpq[i].pq);\n\
+    \       for (long long i = 0; i < static_cast<long long>(factors.size()); ++i)\
+    \ {\n            x.push_back(combpq[i].C(n, k));\n            y.push_back(combpq[i].pq);\n\
     \        }\n        std::cout << crt(x, y)->x << std::endl;\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/binomial_coefficient\"\n\
     \n#include <iostream>\n\n#include \"../../src/math/combinatorics.hpp\"\n#include\
@@ -214,12 +214,13 @@ data:
     \                    mm /= i;\n                    cnt++;\n                }\n\
     \                factors.emplace_back(i, cnt);\n            }\n        }\n   \
     \     if (mm > 1) factors.emplace_back(mm, 1);\n    }\n    std::vector<CombinationPQ>\
-    \ combpq;\n    for (long long i = 0; i < (long long)factors.size(); ++i) {\n \
-    \       auto [p, e] = factors[i];\n        combpq.emplace_back(p, e);\n    }\n\
-    \    while (t--) {\n        long long n, k;\n        std::cin >> n >> k;\n   \
-    \     std::vector<long long> x, y;\n        for (long long i = 0; i < (long long)factors.size();\
-    \ ++i) {\n            x.push_back(combpq[i].C(n, k));\n            y.push_back(combpq[i].pq);\n\
-    \        }\n        std::cout << crt(x, y)->x << std::endl;\n    }\n}\n"
+    \ combpq;\n    for (long long i = 0; i < static_cast<long long>(factors.size());\
+    \ ++i) {\n        auto [p, e] = factors[i];\n        combpq.emplace_back(p, e);\n\
+    \    }\n    while (t--) {\n        long long n, k;\n        std::cin >> n >> k;\n\
+    \        std::vector<long long> x, y;\n        for (long long i = 0; i < static_cast<long\
+    \ long>(factors.size()); ++i) {\n            x.push_back(combpq[i].C(n, k));\n\
+    \            y.push_back(combpq[i].pq);\n        }\n        std::cout << crt(x,\
+    \ y)->x << std::endl;\n    }\n}\n"
   dependsOn:
   - src/math/combinatorics.hpp
   - src/math/modular-arithmetic.hpp
@@ -227,7 +228,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/binomial-coefficient.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/binomial-coefficient.test.cpp

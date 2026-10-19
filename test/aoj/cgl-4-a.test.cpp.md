@@ -429,8 +429,8 @@ data:
     \n\nint main(void) {\n    int n;\n    std::cin >> n;\n    std::vector<Vector<int>>\
     \ points(n);\n    for (int i = 0; i < n; ++i) std::cin >> points[i];\n    std::vector<Vector<int>>\
     \ polygon = convex_hull(points, true);\n    int j = 0;\n    for (int i = 0; i\
-    \ < (int)polygon.size(); i++) {\n        if (polygon[i][1] < polygon[j][1]) j\
-    \ = i;\n        if (polygon[i][1] == polygon[j][1] && polygon[i][0] < polygon[j][0])\
+    \ < static_cast<int>(polygon.size()); i++) {\n        if (polygon[i][1] < polygon[j][1])\
+    \ j = i;\n        if (polygon[i][1] == polygon[j][1] && polygon[i][0] < polygon[j][0])\
     \ j = i;\n    }\n    std::rotate(polygon.begin(), polygon.begin() + j, polygon.end());\n\
     \    std::cout << polygon.size() << '\\n';\n    for (auto& p : polygon) std::cout\
     \ << p << '\\n';\n}\n"
@@ -439,8 +439,8 @@ data:
     \ {\n    int n;\n    std::cin >> n;\n    std::vector<Vector<int>> points(n);\n\
     \    for (int i = 0; i < n; ++i) std::cin >> points[i];\n    std::vector<Vector<int>>\
     \ polygon = convex_hull(points, true);\n    int j = 0;\n    for (int i = 0; i\
-    \ < (int)polygon.size(); i++) {\n        if (polygon[i][1] < polygon[j][1]) j\
-    \ = i;\n        if (polygon[i][1] == polygon[j][1] && polygon[i][0] < polygon[j][0])\
+    \ < static_cast<int>(polygon.size()); i++) {\n        if (polygon[i][1] < polygon[j][1])\
+    \ j = i;\n        if (polygon[i][1] == polygon[j][1] && polygon[i][0] < polygon[j][0])\
     \ j = i;\n    }\n    std::rotate(polygon.begin(), polygon.begin() + j, polygon.end());\n\
     \    std::cout << polygon.size() << '\\n';\n    for (auto& p : polygon) std::cout\
     \ << p << '\\n';\n}"
@@ -450,7 +450,7 @@ data:
   isVerificationFile: true
   path: test/aoj/cgl-4-a.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/cgl-4-a.test.cpp

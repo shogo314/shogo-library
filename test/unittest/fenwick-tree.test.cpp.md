@@ -404,32 +404,32 @@ data:
     #line 11 \"test/unittest/fenwick-tree.test.cpp\"\n\n#line 13 \"test/unittest/fenwick-tree.test.cpp\"\
     \n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int\
     \ rep = 0; rep < 300 && ok; rep++) {\n        int n = rng() % 30;\n        std::vector<long\
-    \ long> a(n);\n        for (auto& x : a) x = (long long)(rng() % 21) - 10;\n \
-    \       // \u914D\u5217\u304B\u3089\u4F5C\u308B\u5834\u5408\u3068\u3001\u7A7A\u304B\
-    \u3089 apply \u3067\u4F5C\u308B\u5834\u5408\n        FenwickTree<group::Sum<long\
+    \ long> a(n);\n        for (auto& x : a) x = static_cast<long long>(rng() % 21)\
+    \ - 10;\n        // \u914D\u5217\u304B\u3089\u4F5C\u308B\u5834\u5408\u3068\u3001\
+    \u7A7A\u304B\u3089 apply \u3067\u4F5C\u308B\u5834\u5408\n        FenwickTree<group::Sum<long\
     \ long>> ft(a);\n        FenwickTree<group::Sum<long long>> ft2(n);\n        for\
     \ (int i = 0; i < n; i++) ft2.apply(i, a[i]);\n        ok = ok && ft.size() ==\
     \ n;\n        for (int q = 0; q < 100; q++) {\n            int t = rng() % 3;\n\
     \            if (n > 0 && t == 0) {\n                int i = rng() % n;\n    \
-    \            long long x = (long long)(rng() % 21) - 10;\n                a[i]\
-    \ += x;\n                ft.apply(i, x);\n                ft2.apply(i, x);\n \
-    \           } else if (n > 0 && t == 1) {\n                int i = rng() % n;\n\
-    \                long long x = (long long)(rng() % 21) - 10;\n               \
-    \ a[i] = x;\n                ft.set(i, x);\n                ft2.set(i, x);\n \
-    \           }\n            for (int l = 0; l <= n; l++) {\n                long\
-    \ long s = 0;\n                for (int r = l; r <= n; r++) {\n              \
-    \      ok = ok && ft.prod(l, r) == s && ft2.prod(l, r) == s;\n               \
-    \     if (l == 0) ok = ok && ft.prefix_prod(r) == s;\n                    if (r\
-    \ < n) s += a[r];\n                }\n            }\n            for (int i =\
-    \ 0; i < n; i++) ok = ok && ft.get(i) == a[i];\n        }\n        ok = ok &&\
-    \ ft.all_prod() == ft.prefix_prod(n);\n    }\n\n    // max_right: \u975E\u8CA0\
-    \u306E\u5217\u3067\u3001\u548C\u304C k \u4EE5\u4E0B\u306B\u306A\u308B\u6700\u5927\
-    \u306E r\n    for (int rep = 0; rep < 300 && ok; rep++) {\n        int n = rng()\
-    \ % 30;\n        std::vector<int> a(n);\n        for (auto& x : a) x = rng() %\
-    \ 4;\n        FenwickTree<group::Sum<int>> ft(a);\n        for (int k = 0; k <=\
-    \ 4 * n + 1; k++) {\n            int r = 0, s = 0;\n            while (r < n &&\
-    \ s + a[r] <= k) s += a[r++];\n            ok = ok && ft.max_right([&](int x)\
-    \ { return x <= k; }) == r;\n        }\n    }\n\n    // \u307B\u304B\u306E\u7FA4\
+    \            long long x = static_cast<long long>(rng() % 21) - 10;\n        \
+    \        a[i] += x;\n                ft.apply(i, x);\n                ft2.apply(i,\
+    \ x);\n            } else if (n > 0 && t == 1) {\n                int i = rng()\
+    \ % n;\n                long long x = static_cast<long long>(rng() % 21) - 10;\n\
+    \                a[i] = x;\n                ft.set(i, x);\n                ft2.set(i,\
+    \ x);\n            }\n            for (int l = 0; l <= n; l++) {\n           \
+    \     long long s = 0;\n                for (int r = l; r <= n; r++) {\n     \
+    \               ok = ok && ft.prod(l, r) == s && ft2.prod(l, r) == s;\n      \
+    \              if (l == 0) ok = ok && ft.prefix_prod(r) == s;\n              \
+    \      if (r < n) s += a[r];\n                }\n            }\n            for\
+    \ (int i = 0; i < n; i++) ok = ok && ft.get(i) == a[i];\n        }\n        ok\
+    \ = ok && ft.all_prod() == ft.prefix_prod(n);\n    }\n\n    // max_right: \u975E\
+    \u8CA0\u306E\u5217\u3067\u3001\u548C\u304C k \u4EE5\u4E0B\u306B\u306A\u308B\u6700\
+    \u5927\u306E r\n    for (int rep = 0; rep < 300 && ok; rep++) {\n        int n\
+    \ = rng() % 30;\n        std::vector<int> a(n);\n        for (auto& x : a) x =\
+    \ rng() % 4;\n        FenwickTree<group::Sum<int>> ft(a);\n        for (int k\
+    \ = 0; k <= 4 * n + 1; k++) {\n            int r = 0, s = 0;\n            while\
+    \ (r < n && s + a[r] <= k) s += a[r++];\n            ok = ok && ft.max_right([&](int\
+    \ x) { return x <= k; }) == r;\n        }\n    }\n\n    // \u307B\u304B\u306E\u7FA4\
     : xor \u3068\u3001\u30E9\u30E0\u30C0\u5F0F\u304B\u3089\u4F5C\u308B\u7FA4 (mod\
     \ 7 \u306E\u52A0\u6CD5)\n    {\n        std::vector<unsigned> a = {1, 2, 4, 8,\
     \ 16};\n        FenwickTree<group::Xor<unsigned>> ft(a);\n        ok = ok && ft.prod(1,\
@@ -447,32 +447,32 @@ data:
     \n\n#include <iostream>\n#include <random>\n#include <vector>\n\n#include \"../../src/algebra/group.hpp\"\
     \n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int\
     \ rep = 0; rep < 300 && ok; rep++) {\n        int n = rng() % 30;\n        std::vector<long\
-    \ long> a(n);\n        for (auto& x : a) x = (long long)(rng() % 21) - 10;\n \
-    \       // \u914D\u5217\u304B\u3089\u4F5C\u308B\u5834\u5408\u3068\u3001\u7A7A\u304B\
-    \u3089 apply \u3067\u4F5C\u308B\u5834\u5408\n        FenwickTree<group::Sum<long\
+    \ long> a(n);\n        for (auto& x : a) x = static_cast<long long>(rng() % 21)\
+    \ - 10;\n        // \u914D\u5217\u304B\u3089\u4F5C\u308B\u5834\u5408\u3068\u3001\
+    \u7A7A\u304B\u3089 apply \u3067\u4F5C\u308B\u5834\u5408\n        FenwickTree<group::Sum<long\
     \ long>> ft(a);\n        FenwickTree<group::Sum<long long>> ft2(n);\n        for\
     \ (int i = 0; i < n; i++) ft2.apply(i, a[i]);\n        ok = ok && ft.size() ==\
     \ n;\n        for (int q = 0; q < 100; q++) {\n            int t = rng() % 3;\n\
     \            if (n > 0 && t == 0) {\n                int i = rng() % n;\n    \
-    \            long long x = (long long)(rng() % 21) - 10;\n                a[i]\
-    \ += x;\n                ft.apply(i, x);\n                ft2.apply(i, x);\n \
-    \           } else if (n > 0 && t == 1) {\n                int i = rng() % n;\n\
-    \                long long x = (long long)(rng() % 21) - 10;\n               \
-    \ a[i] = x;\n                ft.set(i, x);\n                ft2.set(i, x);\n \
-    \           }\n            for (int l = 0; l <= n; l++) {\n                long\
-    \ long s = 0;\n                for (int r = l; r <= n; r++) {\n              \
-    \      ok = ok && ft.prod(l, r) == s && ft2.prod(l, r) == s;\n               \
-    \     if (l == 0) ok = ok && ft.prefix_prod(r) == s;\n                    if (r\
-    \ < n) s += a[r];\n                }\n            }\n            for (int i =\
-    \ 0; i < n; i++) ok = ok && ft.get(i) == a[i];\n        }\n        ok = ok &&\
-    \ ft.all_prod() == ft.prefix_prod(n);\n    }\n\n    // max_right: \u975E\u8CA0\
-    \u306E\u5217\u3067\u3001\u548C\u304C k \u4EE5\u4E0B\u306B\u306A\u308B\u6700\u5927\
-    \u306E r\n    for (int rep = 0; rep < 300 && ok; rep++) {\n        int n = rng()\
-    \ % 30;\n        std::vector<int> a(n);\n        for (auto& x : a) x = rng() %\
-    \ 4;\n        FenwickTree<group::Sum<int>> ft(a);\n        for (int k = 0; k <=\
-    \ 4 * n + 1; k++) {\n            int r = 0, s = 0;\n            while (r < n &&\
-    \ s + a[r] <= k) s += a[r++];\n            ok = ok && ft.max_right([&](int x)\
-    \ { return x <= k; }) == r;\n        }\n    }\n\n    // \u307B\u304B\u306E\u7FA4\
+    \            long long x = static_cast<long long>(rng() % 21) - 10;\n        \
+    \        a[i] += x;\n                ft.apply(i, x);\n                ft2.apply(i,\
+    \ x);\n            } else if (n > 0 && t == 1) {\n                int i = rng()\
+    \ % n;\n                long long x = static_cast<long long>(rng() % 21) - 10;\n\
+    \                a[i] = x;\n                ft.set(i, x);\n                ft2.set(i,\
+    \ x);\n            }\n            for (int l = 0; l <= n; l++) {\n           \
+    \     long long s = 0;\n                for (int r = l; r <= n; r++) {\n     \
+    \               ok = ok && ft.prod(l, r) == s && ft2.prod(l, r) == s;\n      \
+    \              if (l == 0) ok = ok && ft.prefix_prod(r) == s;\n              \
+    \      if (r < n) s += a[r];\n                }\n            }\n            for\
+    \ (int i = 0; i < n; i++) ok = ok && ft.get(i) == a[i];\n        }\n        ok\
+    \ = ok && ft.all_prod() == ft.prefix_prod(n);\n    }\n\n    // max_right: \u975E\
+    \u8CA0\u306E\u5217\u3067\u3001\u548C\u304C k \u4EE5\u4E0B\u306B\u306A\u308B\u6700\
+    \u5927\u306E r\n    for (int rep = 0; rep < 300 && ok; rep++) {\n        int n\
+    \ = rng() % 30;\n        std::vector<int> a(n);\n        for (auto& x : a) x =\
+    \ rng() % 4;\n        FenwickTree<group::Sum<int>> ft(a);\n        for (int k\
+    \ = 0; k <= 4 * n + 1; k++) {\n            int r = 0, s = 0;\n            while\
+    \ (r < n && s + a[r] <= k) s += a[r++];\n            ok = ok && ft.max_right([&](int\
+    \ x) { return x <= k; }) == r;\n        }\n    }\n\n    // \u307B\u304B\u306E\u7FA4\
     : xor \u3068\u3001\u30E9\u30E0\u30C0\u5F0F\u304B\u3089\u4F5C\u308B\u7FA4 (mod\
     \ 7 \u306E\u52A0\u6CD5)\n    {\n        std::vector<unsigned> a = {1, 2, 4, 8,\
     \ 16};\n        FenwickTree<group::Xor<unsigned>> ft(a);\n        ok = ok && ft.prod(1,\
@@ -489,7 +489,7 @@ data:
   isVerificationFile: true
   path: test/unittest/fenwick-tree.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 12:03:10+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/fenwick-tree.test.cpp

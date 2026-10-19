@@ -38,20 +38,20 @@ data:
     \ res;\n}\n#line 7 \"test/yosupo/enumerate-quotients.2.test.cpp\"\n\nint main()\
     \ {\n    long long n;\n    std::cin >> n;\n    auto qs = enumerate_quotients(n);\n\
     \    // \u5546\u306E\u6607\u9806\u306B\u51FA\u529B\u3059\u308B\n    std::cout\
-    \ << qs.size() << '\\n';\n    for (int i = (int)qs.size() - 1; i >= 0; i--) std::cout\
-    \ << qs[i].q << \" \\n\"[i == 0];\n}\n"
+    \ << qs.size() << '\\n';\n    for (int i = static_cast<int>(qs.size()) - 1; i\
+    \ >= 0; i--) std::cout << qs[i].q << \" \\n\"[i == 0];\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/enumerate_quotients\"\n\
     \n#include <iostream>\n#include <vector>\n\n#include \"../../src/math/quotients.hpp\"\
     \n\nint main() {\n    long long n;\n    std::cin >> n;\n    auto qs = enumerate_quotients(n);\n\
     \    // \u5546\u306E\u6607\u9806\u306B\u51FA\u529B\u3059\u308B\n    std::cout\
-    \ << qs.size() << '\\n';\n    for (int i = (int)qs.size() - 1; i >= 0; i--) std::cout\
-    \ << qs[i].q << \" \\n\"[i == 0];\n}\n"
+    \ << qs.size() << '\\n';\n    for (int i = static_cast<int>(qs.size()) - 1; i\
+    \ >= 0; i--) std::cout << qs[i].q << \" \\n\"[i == 0];\n}\n"
   dependsOn:
   - src/math/quotients.hpp
   isVerificationFile: true
   path: test/yosupo/enumerate-quotients.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 03:19:43+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/enumerate-quotients.2.test.cpp

@@ -683,13 +683,13 @@ data:
     \               dq.clear();\n            }\n            Affine<mint> expected\
     \ = monoid::Composite<mint>::e();\n            for (const auto& f : dq) expected\
     \ = monoid::Composite<mint>::op(expected, f);\n            if (swag.size() !=\
-    \ (int)dq.size() || swag.empty() != dq.empty() || swag.prod() != expected) ok\
-    \ = false;\n            if (!dq.empty() && swag.front() != dq.front()) ok = false;\n\
-    \        }\n    }\n    // \u30B9\u30E9\u30A4\u30C9\u6700\u5C0F\u5024\u30FB\u6700\
-    \u5927\u5024\n    for (int rep = 0; rep < 2000 && ok; rep++) {\n        int n\
-    \ = rng() % 20 + 1, k = rng() % n + 1;\n        std::vector<int> a(n);\n     \
-    \   for (auto& x : a) x = rng() % 10;\n        std::vector<int> mn, mx;\n    \
-    \    for (int i = 0; i + k <= n; i++) {\n            mn.push_back(*std::min_element(a.begin()\
+    \ static_cast<int>(dq.size()) || swag.empty() != dq.empty() || swag.prod() !=\
+    \ expected) ok = false;\n            if (!dq.empty() && swag.front() != dq.front())\
+    \ ok = false;\n        }\n    }\n    // \u30B9\u30E9\u30A4\u30C9\u6700\u5C0F\u5024\
+    \u30FB\u6700\u5927\u5024\n    for (int rep = 0; rep < 2000 && ok; rep++) {\n \
+    \       int n = rng() % 20 + 1, k = rng() % n + 1;\n        std::vector<int> a(n);\n\
+    \        for (auto& x : a) x = rng() % 10;\n        std::vector<int> mn, mx;\n\
+    \        for (int i = 0; i + k <= n; i++) {\n            mn.push_back(*std::min_element(a.begin()\
     \ + i, a.begin() + i + k));\n            mx.push_back(*std::max_element(a.begin()\
     \ + i, a.begin() + i + k));\n        }\n        ok = ok && sliding_window_min(a,\
     \ k) == mn && sliding_window_max(a, k) == mx;\n        ok = ok && sliding_window_min(a,\
@@ -717,13 +717,13 @@ data:
     \               dq.clear();\n            }\n            Affine<mint> expected\
     \ = monoid::Composite<mint>::e();\n            for (const auto& f : dq) expected\
     \ = monoid::Composite<mint>::op(expected, f);\n            if (swag.size() !=\
-    \ (int)dq.size() || swag.empty() != dq.empty() || swag.prod() != expected) ok\
-    \ = false;\n            if (!dq.empty() && swag.front() != dq.front()) ok = false;\n\
-    \        }\n    }\n    // \u30B9\u30E9\u30A4\u30C9\u6700\u5C0F\u5024\u30FB\u6700\
-    \u5927\u5024\n    for (int rep = 0; rep < 2000 && ok; rep++) {\n        int n\
-    \ = rng() % 20 + 1, k = rng() % n + 1;\n        std::vector<int> a(n);\n     \
-    \   for (auto& x : a) x = rng() % 10;\n        std::vector<int> mn, mx;\n    \
-    \    for (int i = 0; i + k <= n; i++) {\n            mn.push_back(*std::min_element(a.begin()\
+    \ static_cast<int>(dq.size()) || swag.empty() != dq.empty() || swag.prod() !=\
+    \ expected) ok = false;\n            if (!dq.empty() && swag.front() != dq.front())\
+    \ ok = false;\n        }\n    }\n    // \u30B9\u30E9\u30A4\u30C9\u6700\u5C0F\u5024\
+    \u30FB\u6700\u5927\u5024\n    for (int rep = 0; rep < 2000 && ok; rep++) {\n \
+    \       int n = rng() % 20 + 1, k = rng() % n + 1;\n        std::vector<int> a(n);\n\
+    \        for (auto& x : a) x = rng() % 10;\n        std::vector<int> mn, mx;\n\
+    \        for (int i = 0; i + k <= n; i++) {\n            mn.push_back(*std::min_element(a.begin()\
     \ + i, a.begin() + i + k));\n            mx.push_back(*std::max_element(a.begin()\
     \ + i, a.begin() + i + k));\n        }\n        ok = ok && sliding_window_min(a,\
     \ k) == mn && sliding_window_max(a, k) == mx;\n        ok = ok && sliding_window_min(a,\
@@ -738,7 +738,7 @@ data:
   isVerificationFile: true
   path: test/unittest/sliding-window-aggregation.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 12:03:10+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/sliding-window-aggregation.test.cpp

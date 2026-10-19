@@ -427,21 +427,21 @@ data:
     \ a1[i] * b1[i];\n        c2[i] = a2[i] * b2[i];\n    }\n    internal_convolution::trans(c0,\
     \ true), internal_convolution::trans(c1, true), internal_convolution::trans(c2,\
     \ true);\n    static const long long mod0 = internal_convolution::MOD0, mod01\
-    \ = mod0 * internal_convolution::MOD1;\n    static const __int128_t mod012 = (__int128_t)mod01\
+    \ = mod0 * internal_convolution::MOD1;\n    static const __int128_t mod012 = static_cast<__int128_t>(mod01)\
     \ * internal_convolution::MOD2;\n    std::vector<long long> res(N + M - 1);\n\
     \    for (int i = 0; i < N + M - 1; ++i) {\n        int y0 = c0[i].val();\n  \
     \      int y1 = (internal_convolution::imod0 * (c1[i] - y0)).val();\n        int\
     \ y2 = (internal_convolution::imod01 * (c2[i] - y0) - internal_convolution::imod1\
-    \ * y1).val();\n        __int128_t tmp = (__int128_t)mod01 * y2 + (__int128_t)mod0\
-    \ * y1 + y0;\n        if (tmp < (mod012 >> 1))\n            res[i] = tmp;\n  \
-    \      else\n            res[i] = tmp - mod012;\n    }\n    return res;\n}\n#line\
-    \ 4 \"test/yosupo/convolution-mod-1000000007.test.cpp\"\n\nusing mint = modint1000000007;\n\
-    \nint main() {\n    long long n, m, x;\n    std::cin >> n >> m;\n    std::vector<mint>\
-    \ a(n), b(m);\n    for (int i = 0; i < n; ++i) {\n        std::cin >> x;\n   \
-    \     a[i] = mint(x);\n    }\n    for (int i = 0; i < m; ++i) {\n        std::cin\
-    \ >> x;\n        b[i] = mint(x);\n    }\n    auto c = convolution(a, b);\n   \
-    \ for (auto e : c) std::cout << e.val() << \" \";\n    std::cout << std::endl;\n\
-    \n    return 0;\n}\n"
+    \ * y1).val();\n        __int128_t tmp = static_cast<__int128_t>(mod01) * y2 +\
+    \ static_cast<__int128_t>(mod0) * y1 + y0;\n        if (tmp < (mod012 >> 1))\n\
+    \            res[i] = tmp;\n        else\n            res[i] = tmp - mod012;\n\
+    \    }\n    return res;\n}\n#line 4 \"test/yosupo/convolution-mod-1000000007.test.cpp\"\
+    \n\nusing mint = modint1000000007;\n\nint main() {\n    long long n, m, x;\n \
+    \   std::cin >> n >> m;\n    std::vector<mint> a(n), b(m);\n    for (int i = 0;\
+    \ i < n; ++i) {\n        std::cin >> x;\n        a[i] = mint(x);\n    }\n    for\
+    \ (int i = 0; i < m; ++i) {\n        std::cin >> x;\n        b[i] = mint(x);\n\
+    \    }\n    auto c = convolution(a, b);\n    for (auto e : c) std::cout << e.val()\
+    \ << \" \";\n    std::cout << std::endl;\n\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/convolution_mod_1000000007\"\
     \n\n#include \"../../src/math/convolution.hpp\"\n\nusing mint = modint1000000007;\n\
     \nint main() {\n    long long n, m, x;\n    std::cin >> n >> m;\n    std::vector<mint>\
@@ -458,7 +458,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/convolution-mod-1000000007.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/convolution-mod-1000000007.test.cpp

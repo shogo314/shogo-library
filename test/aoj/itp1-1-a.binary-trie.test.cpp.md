@@ -134,10 +134,11 @@ data:
     \ BT.bisect_right(x));\n                break;\n            case 5:\n        \
     \        if (x >= A.size()) break;\n                std::sort(A.begin(), A.end());\n\
     \                assert(A[x] == BT.nth_element(x));\n                break;\n\
-    \            case 6:\n                assert((int)std::count(A.begin(), A.end(),\
-    \ x) == BT.count(x));\n                break;\n            case 7:\n         \
-    \       assert((int)A.size() == BT.size());\n            default:\n          \
-    \      break;\n        }\n    }\n    std::cout << \"Hello World\\n\";\n}\n"
+    \            case 6:\n                assert(static_cast<int>(std::count(A.begin(),\
+    \ A.end(), x)) == BT.count(x));\n                break;\n            case 7:\n\
+    \                assert(static_cast<int>(A.size()) == BT.size());\n          \
+    \  default:\n                break;\n        }\n    }\n    std::cout << \"Hello\
+    \ World\\n\";\n}\n"
   code: "#define PROBLEM \"https://onlinejudge.u-aizu.ac.jp/problems/ITP1_1_A\"\n\n\
     #include <assert.h>\n\n#include <algorithm>\n#include <iostream>\n#include <random>\n\
     #include <vector>\n\n#include \"../../src/data_structures/binary-trie.hpp\"\n\n\
@@ -165,16 +166,17 @@ data:
     \ BT.bisect_right(x));\n                break;\n            case 5:\n        \
     \        if (x >= A.size()) break;\n                std::sort(A.begin(), A.end());\n\
     \                assert(A[x] == BT.nth_element(x));\n                break;\n\
-    \            case 6:\n                assert((int)std::count(A.begin(), A.end(),\
-    \ x) == BT.count(x));\n                break;\n            case 7:\n         \
-    \       assert((int)A.size() == BT.size());\n            default:\n          \
-    \      break;\n        }\n    }\n    std::cout << \"Hello World\\n\";\n}\n"
+    \            case 6:\n                assert(static_cast<int>(std::count(A.begin(),\
+    \ A.end(), x)) == BT.count(x));\n                break;\n            case 7:\n\
+    \                assert(static_cast<int>(A.size()) == BT.size());\n          \
+    \  default:\n                break;\n        }\n    }\n    std::cout << \"Hello\
+    \ World\\n\";\n}\n"
   dependsOn:
   - src/data_structures/binary-trie.hpp
   isVerificationFile: true
   path: test/aoj/itp1-1-a.binary-trie.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/itp1-1-a.binary-trie.test.cpp

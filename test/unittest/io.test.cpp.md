@@ -136,10 +136,10 @@ data:
     \ std::string(\"ab\")), \">> pair\");\n        check(t == std::make_tuple('x',\
     \ 2, std::string(\"yz\"), 3.5), \">> tuple\");\n        check(a == std::array<int,\
     \ 3>{4, 5, 6}, \">> array\");\n        check(v == std::vector<int>{7, 8, 9, 10},\
-    \ \">> vector\");\n        check(bool(is), \"stream state\");\n    }\n    {\n\
-    \        // \u30CD\u30B9\u30C8\u3057\u305F\u578B\n        std::istringstream is(\"\
-    1 2 3 4 5 6\");\n        std::pair<std::vector<int>, std::array<int, 2>> p;\n\
-    \        p.first.resize(2);\n        std::vector<std::pair<int, int>> vp(1);\n\
+    \ \">> vector\");\n        check(static_cast<bool>(is), \"stream state\");\n \
+    \   }\n    {\n        // \u30CD\u30B9\u30C8\u3057\u305F\u578B\n        std::istringstream\
+    \ is(\"1 2 3 4 5 6\");\n        std::pair<std::vector<int>, std::array<int, 2>>\
+    \ p;\n        p.first.resize(2);\n        std::vector<std::pair<int, int>> vp(1);\n\
     \        is >> p >> vp;\n        check(p.first == std::vector<int>{1, 2} && p.second\
     \ == std::array<int, 2>{3, 4}, \">> pair<vector, array>\");\n        check(vp[0]\
     \ == std::make_pair(5, 6), \">> vector<pair>\");\n    }\n\n    // \u30E9\u30F3\
@@ -147,33 +147,34 @@ data:
     \u3001\u51FA\u529B\u306F\u611A\u76F4\u306B\u7A7A\u767D\u3067\u3064\u306A\u3044\
     \u3060\u3082\u306E\u3068\u4E00\u81F4\u3059\u308B\n    for (int rep = 0; rep <\
     \ 2000 && ok; rep++) {\n        int n = rng() % 6;\n        std::vector<int> v(n);\n\
-    \        for (int& x : v) x = (int)(rng() % 2001) - 1000;\n        std::string\
-    \ expect;\n        for (int i = 0; i < n; i++) expect += (i ? \" \" : \"\") +\
-    \ std::to_string(v[i]);\n        check(to_str(v) == expect, \"<< vector (random)\"\
-    );\n        std::set<int> s(v.begin(), v.end());\n        std::string expect_s;\n\
-    \        for (auto it = s.begin(); it != s.end(); ++it) expect_s += (it == s.begin()\
-    \ ? \"\" : \" \") + std::to_string(*it);\n        check(to_str(s) == expect_s,\
-    \ \"<< set (random)\");\n        std::istringstream is(expect);\n        std::vector<int>\
-    \ w(n);\n        is >> w;\n        check(w == v, \">> vector (random)\");\n  \
-    \      std::array<int, 4> a;\n        for (int& x : a) x = (int)(rng() % 2001)\
-    \ - 1000;\n        std::istringstream is2(to_str(a));\n        std::array<int,\
-    \ 4> b;\n        is2 >> b;\n        check(a == b, \"array round trip\");\n   \
-    \     auto t = std::make_tuple((int)(rng() % 100), (long long)rng(), std::string(1\
-    \ + rng() % 3, 'a' + rng() % 26));\n        std::istringstream is3(to_str(t));\n\
-    \        decltype(t) u;\n        is3 >> u;\n        check(t == u, \"tuple round\
-    \ trip\");\n    }\n\n    // print: std::cout \u306B\u7A7A\u767D\u533A\u5207\u308A\
-    \u3067\u51FA\u529B\u3057\u3066\u6539\u884C\n    check(capture(std::cout, [] {\
-    \ print(); }) == \"\\n\", \"print()\");\n    check(capture(std::cout, [] { print(42);\
-    \ }) == \"42\\n\", \"print(x)\");\n    check(capture(std::cout, [] { print(1,\
-    \ \"a\", 2.5, 'c'); }) == \"1 a 2.5 c\\n\", \"print(x, ...)\");\n    check(capture(std::cout,\
-    \ [] { print(std::vector<int>{1, 2}, std::make_pair(3, 4)); }) == \"1 2 3 4\\\
-    n\", \"print(vector, pair)\");\n\n    // err: std::cerr \u306B\u7A7A\u767D\u533A\
-    \u5207\u308A\u3067\u51FA\u529B\u3057\u3066\u6539\u884C\n    check(capture(std::cerr,\
-    \ [] { err(); }) == \"\\n\", \"err()\");\n    check(capture(std::cerr, [] { err(42);\
-    \ }) == \"42\\n\", \"err(x)\");\n    check(capture(std::cerr, [] { err(1, \"a\"\
-    , 2.5, 'c'); }) == \"1 a 2.5 c\\n\", \"err(x, ...)\");\n    check(capture(std::cerr,\
-    \ [] { err(std::set<int>{2, 1}); }) == \"1 2\\n\", \"err(set)\");\n\n    if (ok)\
-    \ std::cout << \"Hello World\" << std::endl;\n}\n"
+    \        for (int& x : v) x = static_cast<int>(rng() % 2001) - 1000;\n       \
+    \ std::string expect;\n        for (int i = 0; i < n; i++) expect += (i ? \" \"\
+    \ : \"\") + std::to_string(v[i]);\n        check(to_str(v) == expect, \"<< vector\
+    \ (random)\");\n        std::set<int> s(v.begin(), v.end());\n        std::string\
+    \ expect_s;\n        for (auto it = s.begin(); it != s.end(); ++it) expect_s +=\
+    \ (it == s.begin() ? \"\" : \" \") + std::to_string(*it);\n        check(to_str(s)\
+    \ == expect_s, \"<< set (random)\");\n        std::istringstream is(expect);\n\
+    \        std::vector<int> w(n);\n        is >> w;\n        check(w == v, \">>\
+    \ vector (random)\");\n        std::array<int, 4> a;\n        for (int& x : a)\
+    \ x = static_cast<int>(rng() % 2001) - 1000;\n        std::istringstream is2(to_str(a));\n\
+    \        std::array<int, 4> b;\n        is2 >> b;\n        check(a == b, \"array\
+    \ round trip\");\n        auto t = std::make_tuple(static_cast<int>(rng() % 100),\
+    \ static_cast<long long>(rng()), std::string(1 + rng() % 3, 'a' + rng() % 26));\n\
+    \        std::istringstream is3(to_str(t));\n        decltype(t) u;\n        is3\
+    \ >> u;\n        check(t == u, \"tuple round trip\");\n    }\n\n    // print:\
+    \ std::cout \u306B\u7A7A\u767D\u533A\u5207\u308A\u3067\u51FA\u529B\u3057\u3066\
+    \u6539\u884C\n    check(capture(std::cout, [] { print(); }) == \"\\n\", \"print()\"\
+    );\n    check(capture(std::cout, [] { print(42); }) == \"42\\n\", \"print(x)\"\
+    );\n    check(capture(std::cout, [] { print(1, \"a\", 2.5, 'c'); }) == \"1 a 2.5\
+    \ c\\n\", \"print(x, ...)\");\n    check(capture(std::cout, [] { print(std::vector<int>{1,\
+    \ 2}, std::make_pair(3, 4)); }) == \"1 2 3 4\\n\", \"print(vector, pair)\");\n\
+    \n    // err: std::cerr \u306B\u7A7A\u767D\u533A\u5207\u308A\u3067\u51FA\u529B\
+    \u3057\u3066\u6539\u884C\n    check(capture(std::cerr, [] { err(); }) == \"\\\
+    n\", \"err()\");\n    check(capture(std::cerr, [] { err(42); }) == \"42\\n\",\
+    \ \"err(x)\");\n    check(capture(std::cerr, [] { err(1, \"a\", 2.5, 'c'); })\
+    \ == \"1 a 2.5 c\\n\", \"err(x, ...)\");\n    check(capture(std::cerr, [] { err(std::set<int>{2,\
+    \ 1}); }) == \"1 2\\n\", \"err(set)\");\n\n    if (ok) std::cout << \"Hello World\"\
+    \ << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// io.hpp \u306E\u5165\u51FA\u529B\u3092 std::istringstream / std::ostringstream\
     \ \u3067\u691C\u8A3C\u3059\u308B\n// print / err \u306F std::cout / std::cerr\
@@ -211,10 +212,10 @@ data:
     \ std::string(\"ab\")), \">> pair\");\n        check(t == std::make_tuple('x',\
     \ 2, std::string(\"yz\"), 3.5), \">> tuple\");\n        check(a == std::array<int,\
     \ 3>{4, 5, 6}, \">> array\");\n        check(v == std::vector<int>{7, 8, 9, 10},\
-    \ \">> vector\");\n        check(bool(is), \"stream state\");\n    }\n    {\n\
-    \        // \u30CD\u30B9\u30C8\u3057\u305F\u578B\n        std::istringstream is(\"\
-    1 2 3 4 5 6\");\n        std::pair<std::vector<int>, std::array<int, 2>> p;\n\
-    \        p.first.resize(2);\n        std::vector<std::pair<int, int>> vp(1);\n\
+    \ \">> vector\");\n        check(static_cast<bool>(is), \"stream state\");\n \
+    \   }\n    {\n        // \u30CD\u30B9\u30C8\u3057\u305F\u578B\n        std::istringstream\
+    \ is(\"1 2 3 4 5 6\");\n        std::pair<std::vector<int>, std::array<int, 2>>\
+    \ p;\n        p.first.resize(2);\n        std::vector<std::pair<int, int>> vp(1);\n\
     \        is >> p >> vp;\n        check(p.first == std::vector<int>{1, 2} && p.second\
     \ == std::array<int, 2>{3, 4}, \">> pair<vector, array>\");\n        check(vp[0]\
     \ == std::make_pair(5, 6), \">> vector<pair>\");\n    }\n\n    // \u30E9\u30F3\
@@ -222,39 +223,40 @@ data:
     \u3001\u51FA\u529B\u306F\u611A\u76F4\u306B\u7A7A\u767D\u3067\u3064\u306A\u3044\
     \u3060\u3082\u306E\u3068\u4E00\u81F4\u3059\u308B\n    for (int rep = 0; rep <\
     \ 2000 && ok; rep++) {\n        int n = rng() % 6;\n        std::vector<int> v(n);\n\
-    \        for (int& x : v) x = (int)(rng() % 2001) - 1000;\n        std::string\
-    \ expect;\n        for (int i = 0; i < n; i++) expect += (i ? \" \" : \"\") +\
-    \ std::to_string(v[i]);\n        check(to_str(v) == expect, \"<< vector (random)\"\
-    );\n        std::set<int> s(v.begin(), v.end());\n        std::string expect_s;\n\
-    \        for (auto it = s.begin(); it != s.end(); ++it) expect_s += (it == s.begin()\
-    \ ? \"\" : \" \") + std::to_string(*it);\n        check(to_str(s) == expect_s,\
-    \ \"<< set (random)\");\n        std::istringstream is(expect);\n        std::vector<int>\
-    \ w(n);\n        is >> w;\n        check(w == v, \">> vector (random)\");\n  \
-    \      std::array<int, 4> a;\n        for (int& x : a) x = (int)(rng() % 2001)\
-    \ - 1000;\n        std::istringstream is2(to_str(a));\n        std::array<int,\
-    \ 4> b;\n        is2 >> b;\n        check(a == b, \"array round trip\");\n   \
-    \     auto t = std::make_tuple((int)(rng() % 100), (long long)rng(), std::string(1\
-    \ + rng() % 3, 'a' + rng() % 26));\n        std::istringstream is3(to_str(t));\n\
-    \        decltype(t) u;\n        is3 >> u;\n        check(t == u, \"tuple round\
-    \ trip\");\n    }\n\n    // print: std::cout \u306B\u7A7A\u767D\u533A\u5207\u308A\
-    \u3067\u51FA\u529B\u3057\u3066\u6539\u884C\n    check(capture(std::cout, [] {\
-    \ print(); }) == \"\\n\", \"print()\");\n    check(capture(std::cout, [] { print(42);\
-    \ }) == \"42\\n\", \"print(x)\");\n    check(capture(std::cout, [] { print(1,\
-    \ \"a\", 2.5, 'c'); }) == \"1 a 2.5 c\\n\", \"print(x, ...)\");\n    check(capture(std::cout,\
-    \ [] { print(std::vector<int>{1, 2}, std::make_pair(3, 4)); }) == \"1 2 3 4\\\
-    n\", \"print(vector, pair)\");\n\n    // err: std::cerr \u306B\u7A7A\u767D\u533A\
-    \u5207\u308A\u3067\u51FA\u529B\u3057\u3066\u6539\u884C\n    check(capture(std::cerr,\
-    \ [] { err(); }) == \"\\n\", \"err()\");\n    check(capture(std::cerr, [] { err(42);\
-    \ }) == \"42\\n\", \"err(x)\");\n    check(capture(std::cerr, [] { err(1, \"a\"\
-    , 2.5, 'c'); }) == \"1 a 2.5 c\\n\", \"err(x, ...)\");\n    check(capture(std::cerr,\
-    \ [] { err(std::set<int>{2, 1}); }) == \"1 2\\n\", \"err(set)\");\n\n    if (ok)\
-    \ std::cout << \"Hello World\" << std::endl;\n}\n"
+    \        for (int& x : v) x = static_cast<int>(rng() % 2001) - 1000;\n       \
+    \ std::string expect;\n        for (int i = 0; i < n; i++) expect += (i ? \" \"\
+    \ : \"\") + std::to_string(v[i]);\n        check(to_str(v) == expect, \"<< vector\
+    \ (random)\");\n        std::set<int> s(v.begin(), v.end());\n        std::string\
+    \ expect_s;\n        for (auto it = s.begin(); it != s.end(); ++it) expect_s +=\
+    \ (it == s.begin() ? \"\" : \" \") + std::to_string(*it);\n        check(to_str(s)\
+    \ == expect_s, \"<< set (random)\");\n        std::istringstream is(expect);\n\
+    \        std::vector<int> w(n);\n        is >> w;\n        check(w == v, \">>\
+    \ vector (random)\");\n        std::array<int, 4> a;\n        for (int& x : a)\
+    \ x = static_cast<int>(rng() % 2001) - 1000;\n        std::istringstream is2(to_str(a));\n\
+    \        std::array<int, 4> b;\n        is2 >> b;\n        check(a == b, \"array\
+    \ round trip\");\n        auto t = std::make_tuple(static_cast<int>(rng() % 100),\
+    \ static_cast<long long>(rng()), std::string(1 + rng() % 3, 'a' + rng() % 26));\n\
+    \        std::istringstream is3(to_str(t));\n        decltype(t) u;\n        is3\
+    \ >> u;\n        check(t == u, \"tuple round trip\");\n    }\n\n    // print:\
+    \ std::cout \u306B\u7A7A\u767D\u533A\u5207\u308A\u3067\u51FA\u529B\u3057\u3066\
+    \u6539\u884C\n    check(capture(std::cout, [] { print(); }) == \"\\n\", \"print()\"\
+    );\n    check(capture(std::cout, [] { print(42); }) == \"42\\n\", \"print(x)\"\
+    );\n    check(capture(std::cout, [] { print(1, \"a\", 2.5, 'c'); }) == \"1 a 2.5\
+    \ c\\n\", \"print(x, ...)\");\n    check(capture(std::cout, [] { print(std::vector<int>{1,\
+    \ 2}, std::make_pair(3, 4)); }) == \"1 2 3 4\\n\", \"print(vector, pair)\");\n\
+    \n    // err: std::cerr \u306B\u7A7A\u767D\u533A\u5207\u308A\u3067\u51FA\u529B\
+    \u3057\u3066\u6539\u884C\n    check(capture(std::cerr, [] { err(); }) == \"\\\
+    n\", \"err()\");\n    check(capture(std::cerr, [] { err(42); }) == \"42\\n\",\
+    \ \"err(x)\");\n    check(capture(std::cerr, [] { err(1, \"a\", 2.5, 'c'); })\
+    \ == \"1 a 2.5 c\\n\", \"err(x, ...)\");\n    check(capture(std::cerr, [] { err(std::set<int>{2,\
+    \ 1}); }) == \"1 2\\n\", \"err(set)\");\n\n    if (ok) std::cout << \"Hello World\"\
+    \ << std::endl;\n}\n"
   dependsOn:
   - src/base/io.hpp
   isVerificationFile: true
   path: test/unittest/io.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:35:32+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/io.test.cpp

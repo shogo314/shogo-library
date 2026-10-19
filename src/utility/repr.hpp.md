@@ -219,8 +219,11 @@ data:
     template <typename T>\ninline std::string type_str(const T& t) {\n    return internal_repr::type_str(t);\n\
     }\ntemplate <typename T>\ninline std::string initializer_str(const T& t) {\n \
     \   return internal_repr::initializer_str(t);\n}\ntemplate <typename T>\ninline\
-    \ std::string repr(const T& t) {\n    return internal_repr::repr(t);\n}\n\n#define\
-    \ DEBUG(x) \\\n    { std::cerr << #x << \" = \" << repr(x) << std::endl; }\n"
+    \ std::string repr(const T& t) {\n    return internal_repr::repr(t);\n}\n\n//\
+    \ clang-format \u306E\u7248\u306B\u3088\u3063\u3066 1 \u884C\u306E\u307E\u307E\
+    \u304B\u5C55\u958B\u3059\u308B\u304B\u304C\u5909\u308F\u308B\u306E\u3067\u6574\
+    \u5F62\u3057\u306A\u3044\n// clang-format off\n#define DEBUG(x) \\\n    { std::cerr\
+    \ << #x << \" = \" << repr(x) << std::endl; }\n// clang-format on\n"
   code: "#pragma once\n\n/**\n * @file repr.hpp\n * @brief \u51FA\u529B\u3092\u305D\
     \u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u306B\u4F7F\u3048\
     \u308B\u6587\u5B57\u5217\u5316 (repr)\n */\n\n#include <array>\n#include <cstddef>\n\
@@ -373,14 +376,17 @@ data:
     template <typename T>\ninline std::string type_str(const T& t) {\n    return internal_repr::type_str(t);\n\
     }\ntemplate <typename T>\ninline std::string initializer_str(const T& t) {\n \
     \   return internal_repr::initializer_str(t);\n}\ntemplate <typename T>\ninline\
-    \ std::string repr(const T& t) {\n    return internal_repr::repr(t);\n}\n\n#define\
-    \ DEBUG(x) \\\n    { std::cerr << #x << \" = \" << repr(x) << std::endl; }\n"
+    \ std::string repr(const T& t) {\n    return internal_repr::repr(t);\n}\n\n//\
+    \ clang-format \u306E\u7248\u306B\u3088\u3063\u3066 1 \u884C\u306E\u307E\u307E\
+    \u304B\u5C55\u958B\u3059\u308B\u304B\u304C\u5909\u308F\u308B\u306E\u3067\u6574\
+    \u5F62\u3057\u306A\u3044\n// clang-format off\n#define DEBUG(x) \\\n    { std::cerr\
+    \ << #x << \" = \" << repr(x) << std::endl; }\n// clang-format on\n"
   dependsOn:
   - src/utility/traits.hpp
   isVerificationFile: false
   path: src/utility/repr.hpp
   requiredBy: []
-  timestamp: '2026-10-15 07:27:48+09:00'
+  timestamp: '2026-10-19 12:29:38+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/repr.test.cpp

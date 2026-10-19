@@ -125,38 +125,39 @@ data:
     \    for (long long i = 0; i < n; i++) expected[i] = i;\n    std::sort(expected.begin(),\
     \ expected.end(), [&](long long a, long long b) {\n        return std::lexicographical_compare(s.begin()\
     \ + a, s.end(), s.begin() + b, s.end());\n    });\n    if (sa != expected) return\
-    \ false;\n    std::vector<long long> lcp = lcp_array(s, sa);\n    if ((long long)lcp.size()\
-    \ != std::max(n - 1, 0LL)) return false;\n    // int \u306E Suffix Array \u3092\
-    \u6E21\u3057\u3066\u3082\u540C\u3058 LCP \u914D\u5217\u306B\u306A\u308B\n    if\
-    \ (lcp_array(s, std::vector<int>(sa.begin(), sa.end())) != lcp) return false;\n\
-    \    for (long long i = 0; i + 1 < n; i++) {\n        long long h = 0;\n     \
-    \   while (sa[i] + h < n && sa[i + 1] + h < n && s[sa[i] + h] == s[sa[i + 1] +\
-    \ h]) h++;\n        if (lcp[i] != h) return false;\n    }\n    return true;\n\
-    }\n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int\
-    \ rep = 0; rep < 3000 && ok; rep++) {\n        int n = rng() % 40;\n        int\
-    \ upper = rng() % 4;\n        std::vector<int> a(n);\n        for (auto& v : a)\
-    \ v = rng() % (upper + 1);\n        ok = ok && check(a, suffix_array(a, upper));\n\
-    \        ok = ok && check(a, suffix_array(a));\n        // long long \u306E\u5217\
-    \u3067\u3082\u3001\u5024\u306E\u4E0A\u9650\u3092\u6E21\u3059\u7248\u3068\u5EA7\
-    \u6A19\u5727\u7E2E\u3059\u308B\u7248\u304C\u4F7F\u3048\u308B\n        std::vector<long\
-    \ long> a2(a.begin(), a.end());\n        ok = ok && check(a2, suffix_array(a2,\
-    \ upper)) && check(a2, suffix_array(a2));\n\n        std::string s(n, 'a');\n\
-    \        for (auto& c : s) c = 'a' + rng() % (upper + 1);\n        ok = ok &&\
-    \ check(s, suffix_array(s));\n\n        std::vector<long long> b(n);\n       \
-    \ for (auto& v : b) v = (long long)(rng() % 3) * 1000000000000LL - 1000000000000LL;\n\
-    \        ok = ok && check(b, suffix_array(b));\n    }\n    // \u9577\u3044\u5217\
-    \ (\u518D\u5E30\u304C\u4F55\u6BB5\u3082\u8D77\u3053\u308B)\n    for (int rep =\
-    \ 0; rep < 20 && ok; rep++) {\n        int n = rng() % 2000 + 1000;\n        std::string\
-    \ s(n, 'a');\n        int k = rng() % 3 + 1;\n        for (auto& c : s) c = 'a'\
-    \ + rng() % k;\n        if (rep % 2) {\n            // \u5468\u671F\u7684\u306A\
-    \u6587\u5B57\u5217\n            int p = rng() % 10 + 1;\n            for (int\
-    \ i = p; i < n; i++) s[i] = s[i - p];\n        }\n        ok = ok && check(s,\
-    \ suffix_array(s));\n    }\n\n    // \u4F8B\n    ok = ok && suffix_array(std::string(\"\
-    abracadabra\")) == std::vector<long long>{10, 7, 0, 3, 5, 8, 1, 4, 6, 9, 2};\n\
-    \    ok = ok && lcp_array(std::string(\"abracadabra\"), suffix_array(std::string(\"\
-    abracadabra\"))) == std::vector<long long>{1, 4, 1, 1, 0, 3, 0, 0, 0, 2};\n\n\
-    \    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n    else\n \
-    \       std::cerr << \"failed\" << std::endl;\n}\n"
+    \ false;\n    std::vector<long long> lcp = lcp_array(s, sa);\n    if (static_cast<long\
+    \ long>(lcp.size()) != std::max(n - 1, 0LL)) return false;\n    // int \u306E\
+    \ Suffix Array \u3092\u6E21\u3057\u3066\u3082\u540C\u3058 LCP \u914D\u5217\u306B\
+    \u306A\u308B\n    if (lcp_array(s, std::vector<int>(sa.begin(), sa.end())) !=\
+    \ lcp) return false;\n    for (long long i = 0; i + 1 < n; i++) {\n        long\
+    \ long h = 0;\n        while (sa[i] + h < n && sa[i + 1] + h < n && s[sa[i] +\
+    \ h] == s[sa[i + 1] + h]) h++;\n        if (lcp[i] != h) return false;\n    }\n\
+    \    return true;\n}\n\nint main() {\n    std::mt19937 rng(314);\n    bool ok\
+    \ = true;\n    for (int rep = 0; rep < 3000 && ok; rep++) {\n        int n = rng()\
+    \ % 40;\n        int upper = rng() % 4;\n        std::vector<int> a(n);\n    \
+    \    for (auto& v : a) v = rng() % (upper + 1);\n        ok = ok && check(a, suffix_array(a,\
+    \ upper));\n        ok = ok && check(a, suffix_array(a));\n        // long long\
+    \ \u306E\u5217\u3067\u3082\u3001\u5024\u306E\u4E0A\u9650\u3092\u6E21\u3059\u7248\
+    \u3068\u5EA7\u6A19\u5727\u7E2E\u3059\u308B\u7248\u304C\u4F7F\u3048\u308B\n   \
+    \     std::vector<long long> a2(a.begin(), a.end());\n        ok = ok && check(a2,\
+    \ suffix_array(a2, upper)) && check(a2, suffix_array(a2));\n\n        std::string\
+    \ s(n, 'a');\n        for (auto& c : s) c = 'a' + rng() % (upper + 1);\n     \
+    \   ok = ok && check(s, suffix_array(s));\n\n        std::vector<long long> b(n);\n\
+    \        for (auto& v : b) v = static_cast<long long>(rng() % 3) * 1000000000000LL\
+    \ - 1000000000000LL;\n        ok = ok && check(b, suffix_array(b));\n    }\n \
+    \   // \u9577\u3044\u5217 (\u518D\u5E30\u304C\u4F55\u6BB5\u3082\u8D77\u3053\u308B\
+    )\n    for (int rep = 0; rep < 20 && ok; rep++) {\n        int n = rng() % 2000\
+    \ + 1000;\n        std::string s(n, 'a');\n        int k = rng() % 3 + 1;\n  \
+    \      for (auto& c : s) c = 'a' + rng() % k;\n        if (rep % 2) {\n      \
+    \      // \u5468\u671F\u7684\u306A\u6587\u5B57\u5217\n            int p = rng()\
+    \ % 10 + 1;\n            for (int i = p; i < n; i++) s[i] = s[i - p];\n      \
+    \  }\n        ok = ok && check(s, suffix_array(s));\n    }\n\n    // \u4F8B\n\
+    \    ok = ok && suffix_array(std::string(\"abracadabra\")) == std::vector<long\
+    \ long>{10, 7, 0, 3, 5, 8, 1, 4, 6, 9, 2};\n    ok = ok && lcp_array(std::string(\"\
+    abracadabra\"), suffix_array(std::string(\"abracadabra\"))) == std::vector<long\
+    \ long>{1, 4, 1, 1, 0, 3, 0, 0, 0, 2};\n\n    if (ok)\n        std::cout << \"\
+    Hello World\" << std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n\
+    }\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// suffix_array \u3068 lcp_array \u3092\u3001\u63A5\u5C3E\u8F9E\u3092\u30BD\
     \u30FC\u30C8\u3059\u308B\u611A\u76F4\u306A\u65B9\u6CD5\u3068\u30E9\u30F3\u30C0\
@@ -169,44 +170,45 @@ data:
     \    for (long long i = 0; i < n; i++) expected[i] = i;\n    std::sort(expected.begin(),\
     \ expected.end(), [&](long long a, long long b) {\n        return std::lexicographical_compare(s.begin()\
     \ + a, s.end(), s.begin() + b, s.end());\n    });\n    if (sa != expected) return\
-    \ false;\n    std::vector<long long> lcp = lcp_array(s, sa);\n    if ((long long)lcp.size()\
-    \ != std::max(n - 1, 0LL)) return false;\n    // int \u306E Suffix Array \u3092\
-    \u6E21\u3057\u3066\u3082\u540C\u3058 LCP \u914D\u5217\u306B\u306A\u308B\n    if\
-    \ (lcp_array(s, std::vector<int>(sa.begin(), sa.end())) != lcp) return false;\n\
-    \    for (long long i = 0; i + 1 < n; i++) {\n        long long h = 0;\n     \
-    \   while (sa[i] + h < n && sa[i + 1] + h < n && s[sa[i] + h] == s[sa[i + 1] +\
-    \ h]) h++;\n        if (lcp[i] != h) return false;\n    }\n    return true;\n\
-    }\n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int\
-    \ rep = 0; rep < 3000 && ok; rep++) {\n        int n = rng() % 40;\n        int\
-    \ upper = rng() % 4;\n        std::vector<int> a(n);\n        for (auto& v : a)\
-    \ v = rng() % (upper + 1);\n        ok = ok && check(a, suffix_array(a, upper));\n\
-    \        ok = ok && check(a, suffix_array(a));\n        // long long \u306E\u5217\
-    \u3067\u3082\u3001\u5024\u306E\u4E0A\u9650\u3092\u6E21\u3059\u7248\u3068\u5EA7\
-    \u6A19\u5727\u7E2E\u3059\u308B\u7248\u304C\u4F7F\u3048\u308B\n        std::vector<long\
-    \ long> a2(a.begin(), a.end());\n        ok = ok && check(a2, suffix_array(a2,\
-    \ upper)) && check(a2, suffix_array(a2));\n\n        std::string s(n, 'a');\n\
-    \        for (auto& c : s) c = 'a' + rng() % (upper + 1);\n        ok = ok &&\
-    \ check(s, suffix_array(s));\n\n        std::vector<long long> b(n);\n       \
-    \ for (auto& v : b) v = (long long)(rng() % 3) * 1000000000000LL - 1000000000000LL;\n\
-    \        ok = ok && check(b, suffix_array(b));\n    }\n    // \u9577\u3044\u5217\
-    \ (\u518D\u5E30\u304C\u4F55\u6BB5\u3082\u8D77\u3053\u308B)\n    for (int rep =\
-    \ 0; rep < 20 && ok; rep++) {\n        int n = rng() % 2000 + 1000;\n        std::string\
-    \ s(n, 'a');\n        int k = rng() % 3 + 1;\n        for (auto& c : s) c = 'a'\
-    \ + rng() % k;\n        if (rep % 2) {\n            // \u5468\u671F\u7684\u306A\
-    \u6587\u5B57\u5217\n            int p = rng() % 10 + 1;\n            for (int\
-    \ i = p; i < n; i++) s[i] = s[i - p];\n        }\n        ok = ok && check(s,\
-    \ suffix_array(s));\n    }\n\n    // \u4F8B\n    ok = ok && suffix_array(std::string(\"\
-    abracadabra\")) == std::vector<long long>{10, 7, 0, 3, 5, 8, 1, 4, 6, 9, 2};\n\
-    \    ok = ok && lcp_array(std::string(\"abracadabra\"), suffix_array(std::string(\"\
-    abracadabra\"))) == std::vector<long long>{1, 4, 1, 1, 0, 3, 0, 0, 0, 2};\n\n\
-    \    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n    else\n \
-    \       std::cerr << \"failed\" << std::endl;\n}\n"
+    \ false;\n    std::vector<long long> lcp = lcp_array(s, sa);\n    if (static_cast<long\
+    \ long>(lcp.size()) != std::max(n - 1, 0LL)) return false;\n    // int \u306E\
+    \ Suffix Array \u3092\u6E21\u3057\u3066\u3082\u540C\u3058 LCP \u914D\u5217\u306B\
+    \u306A\u308B\n    if (lcp_array(s, std::vector<int>(sa.begin(), sa.end())) !=\
+    \ lcp) return false;\n    for (long long i = 0; i + 1 < n; i++) {\n        long\
+    \ long h = 0;\n        while (sa[i] + h < n && sa[i + 1] + h < n && s[sa[i] +\
+    \ h] == s[sa[i + 1] + h]) h++;\n        if (lcp[i] != h) return false;\n    }\n\
+    \    return true;\n}\n\nint main() {\n    std::mt19937 rng(314);\n    bool ok\
+    \ = true;\n    for (int rep = 0; rep < 3000 && ok; rep++) {\n        int n = rng()\
+    \ % 40;\n        int upper = rng() % 4;\n        std::vector<int> a(n);\n    \
+    \    for (auto& v : a) v = rng() % (upper + 1);\n        ok = ok && check(a, suffix_array(a,\
+    \ upper));\n        ok = ok && check(a, suffix_array(a));\n        // long long\
+    \ \u306E\u5217\u3067\u3082\u3001\u5024\u306E\u4E0A\u9650\u3092\u6E21\u3059\u7248\
+    \u3068\u5EA7\u6A19\u5727\u7E2E\u3059\u308B\u7248\u304C\u4F7F\u3048\u308B\n   \
+    \     std::vector<long long> a2(a.begin(), a.end());\n        ok = ok && check(a2,\
+    \ suffix_array(a2, upper)) && check(a2, suffix_array(a2));\n\n        std::string\
+    \ s(n, 'a');\n        for (auto& c : s) c = 'a' + rng() % (upper + 1);\n     \
+    \   ok = ok && check(s, suffix_array(s));\n\n        std::vector<long long> b(n);\n\
+    \        for (auto& v : b) v = static_cast<long long>(rng() % 3) * 1000000000000LL\
+    \ - 1000000000000LL;\n        ok = ok && check(b, suffix_array(b));\n    }\n \
+    \   // \u9577\u3044\u5217 (\u518D\u5E30\u304C\u4F55\u6BB5\u3082\u8D77\u3053\u308B\
+    )\n    for (int rep = 0; rep < 20 && ok; rep++) {\n        int n = rng() % 2000\
+    \ + 1000;\n        std::string s(n, 'a');\n        int k = rng() % 3 + 1;\n  \
+    \      for (auto& c : s) c = 'a' + rng() % k;\n        if (rep % 2) {\n      \
+    \      // \u5468\u671F\u7684\u306A\u6587\u5B57\u5217\n            int p = rng()\
+    \ % 10 + 1;\n            for (int i = p; i < n; i++) s[i] = s[i - p];\n      \
+    \  }\n        ok = ok && check(s, suffix_array(s));\n    }\n\n    // \u4F8B\n\
+    \    ok = ok && suffix_array(std::string(\"abracadabra\")) == std::vector<long\
+    \ long>{10, 7, 0, 3, 5, 8, 1, 4, 6, 9, 2};\n    ok = ok && lcp_array(std::string(\"\
+    abracadabra\"), suffix_array(std::string(\"abracadabra\"))) == std::vector<long\
+    \ long>{1, 4, 1, 1, 0, 3, 0, 0, 0, 2};\n\n    if (ok)\n        std::cout << \"\
+    Hello World\" << std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n\
+    }\n"
   dependsOn:
   - src/string/suffix-array.hpp
   isVerificationFile: true
   path: test/unittest/suffix-array.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/suffix-array.test.cpp

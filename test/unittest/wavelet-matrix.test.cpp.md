@@ -220,20 +220,21 @@ data:
     \ rep++) {\n        int n = rng() % 20;\n        long long range = rep % 3 ==\
     \ 0 ? 3 : rep % 3 == 1 ? 20\n                                                \
     \          : 2000000000000000000LL;\n        std::vector<long long> v(n), w(n);\n\
-    \        for (auto& x : v) x = (long long)(rng() % (2 * range + 1)) - range;\n\
-    \        for (auto& x : w) x = (long long)(rng() % 100) - 50;\n        WaveletMatrix\
-    \ wm(v);\n        WeightedWaveletMatrix wv(v);     // \u5024\u305D\u306E\u3082\
-    \u306E\u3092\u91CD\u307F\u306B\u3059\u308B\n        WeightedWaveletMatrix ww(v,\
-    \ w);  // \u5024\u3068\u5225\u306E\u91CD\u307F\n        check(wm.size() == n &&\
-    \ ww.size() == n, \"size\");\n        for (int i = 0; i < n; i++) check(wm.get(i)\
-    \ == v[i] && wm[i] == v[i] && ww[i] == v[i], \"get\");\n\n        auto random_value\
-    \ = [&]() {\n            if (n > 0 && rng() % 2) return v[rng() % n] + (long long)(rng()\
-    \ % 3) - 1;\n            return (long long)(rng() % (2 * range + 3)) - range -\
-    \ 1;\n        };\n        for (int t = 0; t < 30; t++) {\n            long long\
-    \ l = rng() % (n + 1), r = rng() % (n + 1);\n            if (l > r) std::swap(l,\
-    \ r);\n            // \u533A\u9593\u306E\u8981\u7D20\u3092 (\u5024, \u4F4D\u7F6E\
-    ) \u306E\u9806\u306B\u4E26\u3079\u308B\n            std::vector<std::pair<long\
-    \ long, long long>> s;\n            for (long long i = l; i < r; i++) s.push_back({v[i],\
+    \        for (auto& x : v) x = static_cast<long long>(rng() % (2 * range + 1))\
+    \ - range;\n        for (auto& x : w) x = static_cast<long long>(rng() % 100)\
+    \ - 50;\n        WaveletMatrix wm(v);\n        WeightedWaveletMatrix wv(v);  \
+    \   // \u5024\u305D\u306E\u3082\u306E\u3092\u91CD\u307F\u306B\u3059\u308B\n  \
+    \      WeightedWaveletMatrix ww(v, w);  // \u5024\u3068\u5225\u306E\u91CD\u307F\
+    \n        check(wm.size() == n && ww.size() == n, \"size\");\n        for (int\
+    \ i = 0; i < n; i++) check(wm.get(i) == v[i] && wm[i] == v[i] && ww[i] == v[i],\
+    \ \"get\");\n\n        auto random_value = [&]() {\n            if (n > 0 && rng()\
+    \ % 2) return v[rng() % n] + static_cast<long long>(rng() % 3) - 1;\n        \
+    \    return static_cast<long long>(rng() % (2 * range + 3)) - range - 1;\n   \
+    \     };\n        for (int t = 0; t < 30; t++) {\n            long long l = rng()\
+    \ % (n + 1), r = rng() % (n + 1);\n            if (l > r) std::swap(l, r);\n \
+    \           // \u533A\u9593\u306E\u8981\u7D20\u3092 (\u5024, \u4F4D\u7F6E) \u306E\
+    \u9806\u306B\u4E26\u3079\u308B\n            std::vector<std::pair<long long, long\
+    \ long>> s;\n            for (long long i = l; i < r; i++) s.push_back({v[i],\
     \ i});\n            std::sort(s.begin(), s.end());\n            long long len\
     \ = r - l;\n            if (len > 0) {\n                long long k = rng() %\
     \ len;\n                check(wm.kth_smallest(l, r, k) == s[k].first, \"kth_smallest\"\
@@ -292,20 +293,21 @@ data:
     \ rep++) {\n        int n = rng() % 20;\n        long long range = rep % 3 ==\
     \ 0 ? 3 : rep % 3 == 1 ? 20\n                                                \
     \          : 2000000000000000000LL;\n        std::vector<long long> v(n), w(n);\n\
-    \        for (auto& x : v) x = (long long)(rng() % (2 * range + 1)) - range;\n\
-    \        for (auto& x : w) x = (long long)(rng() % 100) - 50;\n        WaveletMatrix\
-    \ wm(v);\n        WeightedWaveletMatrix wv(v);     // \u5024\u305D\u306E\u3082\
-    \u306E\u3092\u91CD\u307F\u306B\u3059\u308B\n        WeightedWaveletMatrix ww(v,\
-    \ w);  // \u5024\u3068\u5225\u306E\u91CD\u307F\n        check(wm.size() == n &&\
-    \ ww.size() == n, \"size\");\n        for (int i = 0; i < n; i++) check(wm.get(i)\
-    \ == v[i] && wm[i] == v[i] && ww[i] == v[i], \"get\");\n\n        auto random_value\
-    \ = [&]() {\n            if (n > 0 && rng() % 2) return v[rng() % n] + (long long)(rng()\
-    \ % 3) - 1;\n            return (long long)(rng() % (2 * range + 3)) - range -\
-    \ 1;\n        };\n        for (int t = 0; t < 30; t++) {\n            long long\
-    \ l = rng() % (n + 1), r = rng() % (n + 1);\n            if (l > r) std::swap(l,\
-    \ r);\n            // \u533A\u9593\u306E\u8981\u7D20\u3092 (\u5024, \u4F4D\u7F6E\
-    ) \u306E\u9806\u306B\u4E26\u3079\u308B\n            std::vector<std::pair<long\
-    \ long, long long>> s;\n            for (long long i = l; i < r; i++) s.push_back({v[i],\
+    \        for (auto& x : v) x = static_cast<long long>(rng() % (2 * range + 1))\
+    \ - range;\n        for (auto& x : w) x = static_cast<long long>(rng() % 100)\
+    \ - 50;\n        WaveletMatrix wm(v);\n        WeightedWaveletMatrix wv(v);  \
+    \   // \u5024\u305D\u306E\u3082\u306E\u3092\u91CD\u307F\u306B\u3059\u308B\n  \
+    \      WeightedWaveletMatrix ww(v, w);  // \u5024\u3068\u5225\u306E\u91CD\u307F\
+    \n        check(wm.size() == n && ww.size() == n, \"size\");\n        for (int\
+    \ i = 0; i < n; i++) check(wm.get(i) == v[i] && wm[i] == v[i] && ww[i] == v[i],\
+    \ \"get\");\n\n        auto random_value = [&]() {\n            if (n > 0 && rng()\
+    \ % 2) return v[rng() % n] + static_cast<long long>(rng() % 3) - 1;\n        \
+    \    return static_cast<long long>(rng() % (2 * range + 3)) - range - 1;\n   \
+    \     };\n        for (int t = 0; t < 30; t++) {\n            long long l = rng()\
+    \ % (n + 1), r = rng() % (n + 1);\n            if (l > r) std::swap(l, r);\n \
+    \           // \u533A\u9593\u306E\u8981\u7D20\u3092 (\u5024, \u4F4D\u7F6E) \u306E\
+    \u9806\u306B\u4E26\u3079\u308B\n            std::vector<std::pair<long long, long\
+    \ long>> s;\n            for (long long i = l; i < r; i++) s.push_back({v[i],\
     \ i});\n            std::sort(s.begin(), s.end());\n            long long len\
     \ = r - l;\n            if (len > 0) {\n                long long k = rng() %\
     \ len;\n                check(wm.kth_smallest(l, r, k) == s[k].first, \"kth_smallest\"\
@@ -353,7 +355,7 @@ data:
   isVerificationFile: true
   path: test/unittest/wavelet-matrix.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/wavelet-matrix.test.cpp

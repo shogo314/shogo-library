@@ -131,34 +131,34 @@ data:
     \u534A\u958B\u533A\u9593\u306E\u5217\u306B\u3059\u308B (\u63A5\u3059\u308B\u533A\
     \u9593\u306F\u307E\u3068\u3081\u3089\u308C\u308B)\nstd::vector<std::pair<long\
     \ long, long long>> runs(const std::vector<bool>& cov) {\n    std::vector<std::pair<long\
-    \ long, long long>> res;\n    for (int i = 0; i < (int)cov.size();) {\n      \
-    \  if (!cov[i]) {\n            i++;\n            continue;\n        }\n      \
-    \  int j = i;\n        while (j < (int)cov.size() && cov[j]) j++;\n        res.push_back({i\
-    \ + LO, j + LO});\n        i = j;\n    }\n    return res;\n}\n\nint main() {\n\
-    \    std::mt19937 rng(314);\n    bool ok = true;\n    for (int rep = 0; rep <\
-    \ 2000 && ok; rep++) {\n        IntervalSet<long long> st;\n        std::vector<bool>\
-    \ cov(HI - LO, false);\n        for (int t = 0; t < 30 && ok; t++) {\n       \
-    \     long long l = LO + rng() % (HI - LO - 1);\n            long long r = l +\
-    \ 1 + rng() % (HI - l - 1 + 1);\n            if (r > HI) r = HI;\n           \
-    \ if (rng() % 3 != 0) {\n                st.insert(l, r);\n                for\
-    \ (long long x = l; x < r; x++) cov[x - LO] = true;\n            } else {\n  \
-    \              st.erase(l, r);\n                for (long long x = l; x < r; x++)\
-    \ cov[x - LO] = false;\n            }\n            auto expect = runs(cov);\n\
-    \            if (st.to_vector() != expect || st.size() != (int)expect.size())\
-    \ ok = false;\n\n            // covered_by(k): k \u3092\u542B\u3080\u533A\u9593\
-    \n            for (long long k = LO; k < HI; k++) {\n                std::optional<std::pair<long\
-    \ long, long long>> e;\n                for (auto& iv : expect) {\n          \
-    \          if (iv.first <= k && k < iv.second) e = iv;\n                }\n  \
-    \              if (st.covered_by(k) != e) ok = false;\n            }\n       \
-    \     // covered_by(l, r): [l, r) \u3092\u5B8C\u5168\u306B\u542B\u3080\u533A\u9593\
-    \n            for (long long a = LO; a < HI; a++) {\n                for (long\
-    \ long b = a + 1; b <= HI; b++) {\n                    std::optional<std::pair<long\
-    \ long, long long>> e;\n                    for (auto& iv : expect) {\n      \
-    \                  if (iv.first <= a && b <= iv.second) e = iv;\n            \
-    \        }\n                    if (st.covered_by(a, b) != e) ok = false;\n  \
-    \              }\n            }\n        }\n    }\n    if (ok)\n        std::cout\
-    \ << \"Hello World\" << std::endl;\n    else\n        std::cerr << \"failed\"\
-    \ << std::endl;\n}\n"
+    \ long, long long>> res;\n    for (int i = 0; i < static_cast<int>(cov.size());)\
+    \ {\n        if (!cov[i]) {\n            i++;\n            continue;\n       \
+    \ }\n        int j = i;\n        while (j < static_cast<int>(cov.size()) && cov[j])\
+    \ j++;\n        res.push_back({i + LO, j + LO});\n        i = j;\n    }\n    return\
+    \ res;\n}\n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n \
+    \   for (int rep = 0; rep < 2000 && ok; rep++) {\n        IntervalSet<long long>\
+    \ st;\n        std::vector<bool> cov(HI - LO, false);\n        for (int t = 0;\
+    \ t < 30 && ok; t++) {\n            long long l = LO + rng() % (HI - LO - 1);\n\
+    \            long long r = l + 1 + rng() % (HI - l - 1 + 1);\n            if (r\
+    \ > HI) r = HI;\n            if (rng() % 3 != 0) {\n                st.insert(l,\
+    \ r);\n                for (long long x = l; x < r; x++) cov[x - LO] = true;\n\
+    \            } else {\n                st.erase(l, r);\n                for (long\
+    \ long x = l; x < r; x++) cov[x - LO] = false;\n            }\n            auto\
+    \ expect = runs(cov);\n            if (st.to_vector() != expect || st.size() !=\
+    \ static_cast<int>(expect.size())) ok = false;\n\n            // covered_by(k):\
+    \ k \u3092\u542B\u3080\u533A\u9593\n            for (long long k = LO; k < HI;\
+    \ k++) {\n                std::optional<std::pair<long long, long long>> e;\n\
+    \                for (auto& iv : expect) {\n                    if (iv.first <=\
+    \ k && k < iv.second) e = iv;\n                }\n                if (st.covered_by(k)\
+    \ != e) ok = false;\n            }\n            // covered_by(l, r): [l, r) \u3092\
+    \u5B8C\u5168\u306B\u542B\u3080\u533A\u9593\n            for (long long a = LO;\
+    \ a < HI; a++) {\n                for (long long b = a + 1; b <= HI; b++) {\n\
+    \                    std::optional<std::pair<long long, long long>> e;\n     \
+    \               for (auto& iv : expect) {\n                        if (iv.first\
+    \ <= a && b <= iv.second) e = iv;\n                    }\n                   \
+    \ if (st.covered_by(a, b) != e) ok = false;\n                }\n            }\n\
+    \        }\n    }\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
+    \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// IntervalSet \u3092\u300C\u5404\u6574\u6570\u70B9\u304C\u8986\u308F\u308C\
     \u3066\u3044\u308B\u304B\u300D\u306E\u914D\u5217\u306B\u3088\u308B\u611A\u76F4\
@@ -173,41 +173,41 @@ data:
     \u5206\u3092\u534A\u958B\u533A\u9593\u306E\u5217\u306B\u3059\u308B (\u63A5\u3059\
     \u308B\u533A\u9593\u306F\u307E\u3068\u3081\u3089\u308C\u308B)\nstd::vector<std::pair<long\
     \ long, long long>> runs(const std::vector<bool>& cov) {\n    std::vector<std::pair<long\
-    \ long, long long>> res;\n    for (int i = 0; i < (int)cov.size();) {\n      \
-    \  if (!cov[i]) {\n            i++;\n            continue;\n        }\n      \
-    \  int j = i;\n        while (j < (int)cov.size() && cov[j]) j++;\n        res.push_back({i\
-    \ + LO, j + LO});\n        i = j;\n    }\n    return res;\n}\n\nint main() {\n\
-    \    std::mt19937 rng(314);\n    bool ok = true;\n    for (int rep = 0; rep <\
-    \ 2000 && ok; rep++) {\n        IntervalSet<long long> st;\n        std::vector<bool>\
-    \ cov(HI - LO, false);\n        for (int t = 0; t < 30 && ok; t++) {\n       \
-    \     long long l = LO + rng() % (HI - LO - 1);\n            long long r = l +\
-    \ 1 + rng() % (HI - l - 1 + 1);\n            if (r > HI) r = HI;\n           \
-    \ if (rng() % 3 != 0) {\n                st.insert(l, r);\n                for\
-    \ (long long x = l; x < r; x++) cov[x - LO] = true;\n            } else {\n  \
-    \              st.erase(l, r);\n                for (long long x = l; x < r; x++)\
-    \ cov[x - LO] = false;\n            }\n            auto expect = runs(cov);\n\
-    \            if (st.to_vector() != expect || st.size() != (int)expect.size())\
-    \ ok = false;\n\n            // covered_by(k): k \u3092\u542B\u3080\u533A\u9593\
-    \n            for (long long k = LO; k < HI; k++) {\n                std::optional<std::pair<long\
-    \ long, long long>> e;\n                for (auto& iv : expect) {\n          \
-    \          if (iv.first <= k && k < iv.second) e = iv;\n                }\n  \
-    \              if (st.covered_by(k) != e) ok = false;\n            }\n       \
-    \     // covered_by(l, r): [l, r) \u3092\u5B8C\u5168\u306B\u542B\u3080\u533A\u9593\
-    \n            for (long long a = LO; a < HI; a++) {\n                for (long\
-    \ long b = a + 1; b <= HI; b++) {\n                    std::optional<std::pair<long\
-    \ long, long long>> e;\n                    for (auto& iv : expect) {\n      \
-    \                  if (iv.first <= a && b <= iv.second) e = iv;\n            \
-    \        }\n                    if (st.covered_by(a, b) != e) ok = false;\n  \
-    \              }\n            }\n        }\n    }\n    if (ok)\n        std::cout\
-    \ << \"Hello World\" << std::endl;\n    else\n        std::cerr << \"failed\"\
-    \ << std::endl;\n}\n"
+    \ long, long long>> res;\n    for (int i = 0; i < static_cast<int>(cov.size());)\
+    \ {\n        if (!cov[i]) {\n            i++;\n            continue;\n       \
+    \ }\n        int j = i;\n        while (j < static_cast<int>(cov.size()) && cov[j])\
+    \ j++;\n        res.push_back({i + LO, j + LO});\n        i = j;\n    }\n    return\
+    \ res;\n}\n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n \
+    \   for (int rep = 0; rep < 2000 && ok; rep++) {\n        IntervalSet<long long>\
+    \ st;\n        std::vector<bool> cov(HI - LO, false);\n        for (int t = 0;\
+    \ t < 30 && ok; t++) {\n            long long l = LO + rng() % (HI - LO - 1);\n\
+    \            long long r = l + 1 + rng() % (HI - l - 1 + 1);\n            if (r\
+    \ > HI) r = HI;\n            if (rng() % 3 != 0) {\n                st.insert(l,\
+    \ r);\n                for (long long x = l; x < r; x++) cov[x - LO] = true;\n\
+    \            } else {\n                st.erase(l, r);\n                for (long\
+    \ long x = l; x < r; x++) cov[x - LO] = false;\n            }\n            auto\
+    \ expect = runs(cov);\n            if (st.to_vector() != expect || st.size() !=\
+    \ static_cast<int>(expect.size())) ok = false;\n\n            // covered_by(k):\
+    \ k \u3092\u542B\u3080\u533A\u9593\n            for (long long k = LO; k < HI;\
+    \ k++) {\n                std::optional<std::pair<long long, long long>> e;\n\
+    \                for (auto& iv : expect) {\n                    if (iv.first <=\
+    \ k && k < iv.second) e = iv;\n                }\n                if (st.covered_by(k)\
+    \ != e) ok = false;\n            }\n            // covered_by(l, r): [l, r) \u3092\
+    \u5B8C\u5168\u306B\u542B\u3080\u533A\u9593\n            for (long long a = LO;\
+    \ a < HI; a++) {\n                for (long long b = a + 1; b <= HI; b++) {\n\
+    \                    std::optional<std::pair<long long, long long>> e;\n     \
+    \               for (auto& iv : expect) {\n                        if (iv.first\
+    \ <= a && b <= iv.second) e = iv;\n                    }\n                   \
+    \ if (st.covered_by(a, b) != e) ok = false;\n                }\n            }\n\
+    \        }\n    }\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
+    \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/data_structures/interval-set.hpp
   - src/utility/traits.hpp
   isVerificationFile: true
   path: test/unittest/interval-set.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:35:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/interval-set.test.cpp

@@ -340,15 +340,15 @@ data:
     \u304D\u306E\u9023\u7D50\u6210\u5206\u306E\u6570 (skip_v \u81EA\u8EAB\u306F\u6570\
     \u3048\u306A\u3044)\nint count_components(int n, const std::vector<std::pair<int,\
     \ int>>& es, int skip_v, int skip_e) {\n    UnionFind uf(n);\n    for (int i =\
-    \ 0; i < (int)es.size(); i++) {\n        if (i == skip_e) continue;\n        auto\
-    \ [u, v] = es[i];\n        if (u == skip_v || v == skip_v) continue;\n       \
-    \ uf.merge(u, v);\n    }\n    int c = 0;\n    for (int v = 0; v < n; v++) c +=\
-    \ v != skip_v && uf.leader(v) == v;\n    return c;\n}\n\nint main() {\n    std::mt19937\
-    \ rng(314);\n    bool ok = true;\n    for (int rep = 0; rep < 3000 && ok; rep++)\
-    \ {\n        int n = rng() % 9 + 1, m = rng() % 14;\n        Graph<int> g(n);\n\
-    \        std::vector<std::pair<int, int>> es;\n        for (int i = 0; i < m;\
-    \ i++) {\n            int u = rng() % n, v = rng() % n;  // \u81EA\u5DF1\u30EB\
-    \u30FC\u30D7\u3068\u591A\u91CD\u8FBA\u3082\u542B\u3080\n            g.add_edge(u,\
+    \ 0; i < static_cast<int>(es.size()); i++) {\n        if (i == skip_e) continue;\n\
+    \        auto [u, v] = es[i];\n        if (u == skip_v || v == skip_v) continue;\n\
+    \        uf.merge(u, v);\n    }\n    int c = 0;\n    for (int v = 0; v < n; v++)\
+    \ c += v != skip_v && uf.leader(v) == v;\n    return c;\n}\n\nint main() {\n \
+    \   std::mt19937 rng(314);\n    bool ok = true;\n    for (int rep = 0; rep < 3000\
+    \ && ok; rep++) {\n        int n = rng() % 9 + 1, m = rng() % 14;\n        Graph<int>\
+    \ g(n);\n        std::vector<std::pair<int, int>> es;\n        for (int i = 0;\
+    \ i < m; i++) {\n            int u = rng() % n, v = rng() % n;  // \u81EA\u5DF1\
+    \u30EB\u30FC\u30D7\u3068\u591A\u91CD\u8FBA\u3082\u542B\u3080\n            g.add_edge(u,\
     \ v);\n            es.emplace_back(u, v);\n        }\n        LowLink ll(g);\n\
     \        int base = count_components(n, es, -1, -1);\n        std::vector<long\
     \ long> arts, bridges;\n        for (int v = 0; v < n; v++) {\n            //\
@@ -369,14 +369,14 @@ data:
     \u7D50\u6210\u5206\u3068\u4E00\u81F4\u3059\u308B\n        UnionFind uf(n);\n \
     \       for (int i = 0; i < m; i++) {\n            if (!ll.is_bridge(i)) uf.merge(es[i].first,\
     \ es[i].second);\n        }\n        const auto& groups = ll.two_edge_connected_groups();\n\
-    \        int total = 0;\n        for (int k = 0; k < (int)groups.size(); k++)\
-    \ {\n            total += groups[k].size();\n            for (int v : groups[k])\
+    \        int total = 0;\n        for (int k = 0; k < static_cast<int>(groups.size());\
+    \ k++) {\n            total += groups[k].size();\n            for (int v : groups[k])\
     \ {\n                if (ll.two_edge_connected_group_id(v) != k || !uf.same(v,\
     \ groups[k][0])) ok = false;\n            }\n        }\n        int uf_groups\
     \ = 0;\n        for (int v = 0; v < n; v++) uf_groups += uf.leader(v) == v;\n\
-    \        if (total != n || (int)groups.size() != uf_groups) ok = false;\n    }\n\
-    \n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n    else\n\
-    \        std::cerr << \"failed\" << std::endl;\n}\n"
+    \        if (total != n || static_cast<int>(groups.size()) != uf_groups) ok =\
+    \ false;\n    }\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
+    \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// LowLink \u3092\u3001\u9802\u70B9\u3084\u8FBA\u3092 1 \u3064\u53D6\u308A\
     \u9664\u3044\u3066\u9023\u7D50\u6210\u5206\u306E\u6570\u3092\u6570\u3048\u308B\
@@ -389,15 +389,15 @@ data:
     \u304D\u306E\u9023\u7D50\u6210\u5206\u306E\u6570 (skip_v \u81EA\u8EAB\u306F\u6570\
     \u3048\u306A\u3044)\nint count_components(int n, const std::vector<std::pair<int,\
     \ int>>& es, int skip_v, int skip_e) {\n    UnionFind uf(n);\n    for (int i =\
-    \ 0; i < (int)es.size(); i++) {\n        if (i == skip_e) continue;\n        auto\
-    \ [u, v] = es[i];\n        if (u == skip_v || v == skip_v) continue;\n       \
-    \ uf.merge(u, v);\n    }\n    int c = 0;\n    for (int v = 0; v < n; v++) c +=\
-    \ v != skip_v && uf.leader(v) == v;\n    return c;\n}\n\nint main() {\n    std::mt19937\
-    \ rng(314);\n    bool ok = true;\n    for (int rep = 0; rep < 3000 && ok; rep++)\
-    \ {\n        int n = rng() % 9 + 1, m = rng() % 14;\n        Graph<int> g(n);\n\
-    \        std::vector<std::pair<int, int>> es;\n        for (int i = 0; i < m;\
-    \ i++) {\n            int u = rng() % n, v = rng() % n;  // \u81EA\u5DF1\u30EB\
-    \u30FC\u30D7\u3068\u591A\u91CD\u8FBA\u3082\u542B\u3080\n            g.add_edge(u,\
+    \ 0; i < static_cast<int>(es.size()); i++) {\n        if (i == skip_e) continue;\n\
+    \        auto [u, v] = es[i];\n        if (u == skip_v || v == skip_v) continue;\n\
+    \        uf.merge(u, v);\n    }\n    int c = 0;\n    for (int v = 0; v < n; v++)\
+    \ c += v != skip_v && uf.leader(v) == v;\n    return c;\n}\n\nint main() {\n \
+    \   std::mt19937 rng(314);\n    bool ok = true;\n    for (int rep = 0; rep < 3000\
+    \ && ok; rep++) {\n        int n = rng() % 9 + 1, m = rng() % 14;\n        Graph<int>\
+    \ g(n);\n        std::vector<std::pair<int, int>> es;\n        for (int i = 0;\
+    \ i < m; i++) {\n            int u = rng() % n, v = rng() % n;  // \u81EA\u5DF1\
+    \u30EB\u30FC\u30D7\u3068\u591A\u91CD\u8FBA\u3082\u542B\u3080\n            g.add_edge(u,\
     \ v);\n            es.emplace_back(u, v);\n        }\n        LowLink ll(g);\n\
     \        int base = count_components(n, es, -1, -1);\n        std::vector<long\
     \ long> arts, bridges;\n        for (int v = 0; v < n; v++) {\n            //\
@@ -418,14 +418,14 @@ data:
     \u7D50\u6210\u5206\u3068\u4E00\u81F4\u3059\u308B\n        UnionFind uf(n);\n \
     \       for (int i = 0; i < m; i++) {\n            if (!ll.is_bridge(i)) uf.merge(es[i].first,\
     \ es[i].second);\n        }\n        const auto& groups = ll.two_edge_connected_groups();\n\
-    \        int total = 0;\n        for (int k = 0; k < (int)groups.size(); k++)\
-    \ {\n            total += groups[k].size();\n            for (int v : groups[k])\
+    \        int total = 0;\n        for (int k = 0; k < static_cast<int>(groups.size());\
+    \ k++) {\n            total += groups[k].size();\n            for (int v : groups[k])\
     \ {\n                if (ll.two_edge_connected_group_id(v) != k || !uf.same(v,\
     \ groups[k][0])) ok = false;\n            }\n        }\n        int uf_groups\
     \ = 0;\n        for (int v = 0; v < n; v++) uf_groups += uf.leader(v) == v;\n\
-    \        if (total != n || (int)groups.size() != uf_groups) ok = false;\n    }\n\
-    \n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n    else\n\
-    \        std::cerr << \"failed\" << std::endl;\n}\n"
+    \        if (total != n || static_cast<int>(groups.size()) != uf_groups) ok =\
+    \ false;\n    }\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
+    \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/graph/lowlink.hpp
   - src/graph/graph.hpp
@@ -433,7 +433,7 @@ data:
   isVerificationFile: true
   path: test/unittest/lowlink.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/lowlink.test.cpp

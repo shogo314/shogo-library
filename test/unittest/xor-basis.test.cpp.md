@@ -101,32 +101,33 @@ data:
     \ == expected;\n            std::set<int> next = span;\n            for (int y\
     \ : span) next.insert(y ^ x);\n            span = next;\n\n            std::vector<int>\
     \ vals(span.begin(), span.end());\n            ok = ok && (1 << xb.rank()) ==\
-    \ (int)vals.size() && (int)xb.basis().size() == xb.rank();\n            for (int\
-    \ i = 0; i < (int)vals.size(); i++) ok = ok && xb.kth(i) == vals[i];\n       \
-    \     for (int y = 0; y < 256; y++) {\n                int mx = 0, mn = 255;\n\
-    \                for (int v : vals) mx = std::max(mx, y ^ v), mn = std::min(mn,\
-    \ y ^ v);\n                int less = std::lower_bound(vals.begin(), vals.end(),\
-    \ y) - vals.begin();\n                ok = ok && xb.contains(y) == (span.count(y)\
-    \ > 0) && xb.max(y) == mx && xb.min(y) == mn &&\n                     xb.count_less(y)\
-    \ == (unsigned long long)less;\n            }\n            // \u57FA\u5E95\u306E\
-    \u6700\u4E0A\u4F4D\u30D3\u30C3\u30C8\u306F\u964D\u9806\u3067\u7570\u306A\u308A\
-    \u3001\u307B\u304B\u306E\u57FA\u5E95\u306E\u305D\u306E\u30D3\u30C3\u30C8\u306F\
-    \ 0\n            auto bs = xb.basis();\n            for (int i = 0; i < (int)bs.size();\
-    \ i++) {\n                int t = 31 - __builtin_clz(bs[i]);\n               \
-    \ for (int j = 0; j < (int)bs.size(); j++) {\n                    if (i != j &&\
-    \ (bs[j] >> t & 1)) ok = false;\n                }\n                if (i > 0\
-    \ && bs[i - 1] <= bs[i]) ok = false;\n            }\n        }\n    }\n    //\
-    \ 64 \u30D3\u30C3\u30C8: \u57FA\u5E95\u304C 64 \u500B\u306B\u306A\u308B\u5834\u5408\
-    \n    {\n        XorBasis<> xb;\n        for (int i = 0; i < 64; i++) ok = ok\
-    \ && xb.add((1ULL << i) | (i ? 1ULL << (i - 1) : 0));\n        ok = ok && xb.rank()\
-    \ == 64 && !xb.add(12345) && xb.max() == ~0ULL && xb.kth(~0ULL) == ~0ULL;\n  \
-    \      ok = ok && xb.count_less(~0ULL) == ~0ULL && xb.kth(5) == 5;\n    }\n  \
-    \  // \u4F8B\n    {\n        XorBasis<> xb;\n        ok = ok && xb.add(5) && xb.add(3)\
-    \ && !xb.add(6);\n        ok = ok && xb.contains(6) && !xb.contains(1) && xb.max()\
-    \ == 6 && xb.max(1) == 7 && xb.min(1) == 1;\n        ok = ok && xb.kth(0) == 0\
-    \ && xb.kth(1) == 3 && xb.kth(2) == 5 && xb.kth(3) == 6;\n    }\n\n    if (ok)\n\
-    \        std::cout << \"Hello World\" << std::endl;\n    else\n        std::cerr\
-    \ << \"failed\" << std::endl;\n}\n"
+    \ static_cast<int>(vals.size()) && static_cast<int>(xb.basis().size()) == xb.rank();\n\
+    \            for (int i = 0; i < static_cast<int>(vals.size()); i++) ok = ok &&\
+    \ xb.kth(i) == vals[i];\n            for (int y = 0; y < 256; y++) {\n       \
+    \         int mx = 0, mn = 255;\n                for (int v : vals) mx = std::max(mx,\
+    \ y ^ v), mn = std::min(mn, y ^ v);\n                int less = std::lower_bound(vals.begin(),\
+    \ vals.end(), y) - vals.begin();\n                ok = ok && xb.contains(y) ==\
+    \ (span.count(y) > 0) && xb.max(y) == mx && xb.min(y) == mn &&\n             \
+    \        xb.count_less(y) == static_cast<unsigned long long>(less);\n        \
+    \    }\n            // \u57FA\u5E95\u306E\u6700\u4E0A\u4F4D\u30D3\u30C3\u30C8\u306F\
+    \u964D\u9806\u3067\u7570\u306A\u308A\u3001\u307B\u304B\u306E\u57FA\u5E95\u306E\
+    \u305D\u306E\u30D3\u30C3\u30C8\u306F 0\n            auto bs = xb.basis();\n  \
+    \          for (int i = 0; i < static_cast<int>(bs.size()); i++) {\n         \
+    \       int t = 31 - __builtin_clz(bs[i]);\n                for (int j = 0; j\
+    \ < static_cast<int>(bs.size()); j++) {\n                    if (i != j && (bs[j]\
+    \ >> t & 1)) ok = false;\n                }\n                if (i > 0 && bs[i\
+    \ - 1] <= bs[i]) ok = false;\n            }\n        }\n    }\n    // 64 \u30D3\
+    \u30C3\u30C8: \u57FA\u5E95\u304C 64 \u500B\u306B\u306A\u308B\u5834\u5408\n   \
+    \ {\n        XorBasis<> xb;\n        for (int i = 0; i < 64; i++) ok = ok && xb.add((1ULL\
+    \ << i) | (i ? 1ULL << (i - 1) : 0));\n        ok = ok && xb.rank() == 64 && !xb.add(12345)\
+    \ && xb.max() == ~0ULL && xb.kth(~0ULL) == ~0ULL;\n        ok = ok && xb.count_less(~0ULL)\
+    \ == ~0ULL && xb.kth(5) == 5;\n    }\n    // \u4F8B\n    {\n        XorBasis<>\
+    \ xb;\n        ok = ok && xb.add(5) && xb.add(3) && !xb.add(6);\n        ok =\
+    \ ok && xb.contains(6) && !xb.contains(1) && xb.max() == 6 && xb.max(1) == 7 &&\
+    \ xb.min(1) == 1;\n        ok = ok && xb.kth(0) == 0 && xb.kth(1) == 3 && xb.kth(2)\
+    \ == 5 && xb.kth(3) == 6;\n    }\n\n    if (ok)\n        std::cout << \"Hello\
+    \ World\" << std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n\
+    }\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// XorBasis \u3092\u3001\u4F5C\u308C\u308B\u5024\u3092\u3059\u3079\u3066\u5217\
     \u6319\u3059\u308B\u611A\u76F4\u306A\u65B9\u6CD5\u3068\u30E9\u30F3\u30C0\u30E0\
@@ -145,22 +146,23 @@ data:
     \      ok = ok && xb.add(x) == expected;\n            std::set<int> next = span;\n\
     \            for (int y : span) next.insert(y ^ x);\n            span = next;\n\
     \n            std::vector<int> vals(span.begin(), span.end());\n            ok\
-    \ = ok && (1 << xb.rank()) == (int)vals.size() && (int)xb.basis().size() == xb.rank();\n\
-    \            for (int i = 0; i < (int)vals.size(); i++) ok = ok && xb.kth(i) ==\
-    \ vals[i];\n            for (int y = 0; y < 256; y++) {\n                int mx\
-    \ = 0, mn = 255;\n                for (int v : vals) mx = std::max(mx, y ^ v),\
-    \ mn = std::min(mn, y ^ v);\n                int less = std::lower_bound(vals.begin(),\
-    \ vals.end(), y) - vals.begin();\n                ok = ok && xb.contains(y) ==\
-    \ (span.count(y) > 0) && xb.max(y) == mx && xb.min(y) == mn &&\n             \
-    \        xb.count_less(y) == (unsigned long long)less;\n            }\n      \
-    \      // \u57FA\u5E95\u306E\u6700\u4E0A\u4F4D\u30D3\u30C3\u30C8\u306F\u964D\u9806\
-    \u3067\u7570\u306A\u308A\u3001\u307B\u304B\u306E\u57FA\u5E95\u306E\u305D\u306E\
-    \u30D3\u30C3\u30C8\u306F 0\n            auto bs = xb.basis();\n            for\
-    \ (int i = 0; i < (int)bs.size(); i++) {\n                int t = 31 - __builtin_clz(bs[i]);\n\
-    \                for (int j = 0; j < (int)bs.size(); j++) {\n                \
-    \    if (i != j && (bs[j] >> t & 1)) ok = false;\n                }\n        \
-    \        if (i > 0 && bs[i - 1] <= bs[i]) ok = false;\n            }\n       \
-    \ }\n    }\n    // 64 \u30D3\u30C3\u30C8: \u57FA\u5E95\u304C 64 \u500B\u306B\u306A\
+    \ = ok && (1 << xb.rank()) == static_cast<int>(vals.size()) && static_cast<int>(xb.basis().size())\
+    \ == xb.rank();\n            for (int i = 0; i < static_cast<int>(vals.size());\
+    \ i++) ok = ok && xb.kth(i) == vals[i];\n            for (int y = 0; y < 256;\
+    \ y++) {\n                int mx = 0, mn = 255;\n                for (int v :\
+    \ vals) mx = std::max(mx, y ^ v), mn = std::min(mn, y ^ v);\n                int\
+    \ less = std::lower_bound(vals.begin(), vals.end(), y) - vals.begin();\n     \
+    \           ok = ok && xb.contains(y) == (span.count(y) > 0) && xb.max(y) == mx\
+    \ && xb.min(y) == mn &&\n                     xb.count_less(y) == static_cast<unsigned\
+    \ long long>(less);\n            }\n            // \u57FA\u5E95\u306E\u6700\u4E0A\
+    \u4F4D\u30D3\u30C3\u30C8\u306F\u964D\u9806\u3067\u7570\u306A\u308A\u3001\u307B\
+    \u304B\u306E\u57FA\u5E95\u306E\u305D\u306E\u30D3\u30C3\u30C8\u306F 0\n       \
+    \     auto bs = xb.basis();\n            for (int i = 0; i < static_cast<int>(bs.size());\
+    \ i++) {\n                int t = 31 - __builtin_clz(bs[i]);\n               \
+    \ for (int j = 0; j < static_cast<int>(bs.size()); j++) {\n                  \
+    \  if (i != j && (bs[j] >> t & 1)) ok = false;\n                }\n          \
+    \      if (i > 0 && bs[i - 1] <= bs[i]) ok = false;\n            }\n        }\n\
+    \    }\n    // 64 \u30D3\u30C3\u30C8: \u57FA\u5E95\u304C 64 \u500B\u306B\u306A\
     \u308B\u5834\u5408\n    {\n        XorBasis<> xb;\n        for (int i = 0; i <\
     \ 64; i++) ok = ok && xb.add((1ULL << i) | (i ? 1ULL << (i - 1) : 0));\n     \
     \   ok = ok && xb.rank() == 64 && !xb.add(12345) && xb.max() == ~0ULL && xb.kth(~0ULL)\
@@ -176,7 +178,7 @@ data:
   isVerificationFile: true
   path: test/unittest/xor-basis.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:27:48+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/xor-basis.test.cpp

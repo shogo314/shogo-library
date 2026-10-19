@@ -196,16 +196,16 @@ data:
     \ % l, v = rng() % r;\n            bm.add_edge(u, v);\n            mf.add_edge(u,\
     \ l + v, 1);\n            es.emplace(u, v);\n            if (i == m / 2) bm.solve();\n\
     \        }\n        int k = bm.solve();\n        if (k != mf.flow(s, t)) ok =\
-    \ false;\n        auto match = bm.matching();\n        if ((int)match.size() !=\
-    \ k) ok = false;\n        std::vector<bool> used_l(l), used_r(r);\n        for\
-    \ (auto [u, v] : match) {\n            if (!es.count({u, v}) || used_l[u] || used_r[v])\
-    \ ok = false;\n            used_l[u] = used_r[v] = true;\n            if (bm.left_match(u)\
-    \ != v || bm.right_match(v) != u) ok = false;\n        }\n        for (int u =\
-    \ 0; u < l; u++) {\n            if (!used_l[u] && bm.left_match(u) != -1) ok =\
-    \ false;\n        }\n        for (int v = 0; v < r; v++) {\n            if (!used_r[v]\
-    \ && bm.right_match(v) != -1) ok = false;\n        }\n    }\n\n    if (ok)\n \
-    \       std::cout << \"Hello World\" << std::endl;\n    else\n        std::cerr\
-    \ << \"failed\" << std::endl;\n}\n"
+    \ false;\n        auto match = bm.matching();\n        if (static_cast<int>(match.size())\
+    \ != k) ok = false;\n        std::vector<bool> used_l(l), used_r(r);\n       \
+    \ for (auto [u, v] : match) {\n            if (!es.count({u, v}) || used_l[u]\
+    \ || used_r[v]) ok = false;\n            used_l[u] = used_r[v] = true;\n     \
+    \       if (bm.left_match(u) != v || bm.right_match(v) != u) ok = false;\n   \
+    \     }\n        for (int u = 0; u < l; u++) {\n            if (!used_l[u] &&\
+    \ bm.left_match(u) != -1) ok = false;\n        }\n        for (int v = 0; v <\
+    \ r; v++) {\n            if (!used_r[v] && bm.right_match(v) != -1) ok = false;\n\
+    \        }\n    }\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
+    \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// BipartiteMatching \u306E\u5927\u304D\u3055\u3092 MaxFlow \u3068\u6BD4\u3079\
     \u3001\u8FD4\u3059\u30DE\u30C3\u30C1\u30F3\u30B0\u304C\u6B63\u3057\u3044\u304B\
@@ -225,23 +225,23 @@ data:
     \ % r;\n            bm.add_edge(u, v);\n            mf.add_edge(u, l + v, 1);\n\
     \            es.emplace(u, v);\n            if (i == m / 2) bm.solve();\n    \
     \    }\n        int k = bm.solve();\n        if (k != mf.flow(s, t)) ok = false;\n\
-    \        auto match = bm.matching();\n        if ((int)match.size() != k) ok =\
-    \ false;\n        std::vector<bool> used_l(l), used_r(r);\n        for (auto [u,\
-    \ v] : match) {\n            if (!es.count({u, v}) || used_l[u] || used_r[v])\
-    \ ok = false;\n            used_l[u] = used_r[v] = true;\n            if (bm.left_match(u)\
-    \ != v || bm.right_match(v) != u) ok = false;\n        }\n        for (int u =\
-    \ 0; u < l; u++) {\n            if (!used_l[u] && bm.left_match(u) != -1) ok =\
-    \ false;\n        }\n        for (int v = 0; v < r; v++) {\n            if (!used_r[v]\
-    \ && bm.right_match(v) != -1) ok = false;\n        }\n    }\n\n    if (ok)\n \
-    \       std::cout << \"Hello World\" << std::endl;\n    else\n        std::cerr\
-    \ << \"failed\" << std::endl;\n}\n"
+    \        auto match = bm.matching();\n        if (static_cast<int>(match.size())\
+    \ != k) ok = false;\n        std::vector<bool> used_l(l), used_r(r);\n       \
+    \ for (auto [u, v] : match) {\n            if (!es.count({u, v}) || used_l[u]\
+    \ || used_r[v]) ok = false;\n            used_l[u] = used_r[v] = true;\n     \
+    \       if (bm.left_match(u) != v || bm.right_match(v) != u) ok = false;\n   \
+    \     }\n        for (int u = 0; u < l; u++) {\n            if (!used_l[u] &&\
+    \ bm.left_match(u) != -1) ok = false;\n        }\n        for (int v = 0; v <\
+    \ r; v++) {\n            if (!used_r[v] && bm.right_match(v) != -1) ok = false;\n\
+    \        }\n    }\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
+    \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/graph/bipartite-matching.hpp
   - src/graph/max-flow.hpp
   isVerificationFile: true
   path: test/unittest/bipartite-matching.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/bipartite-matching.test.cpp

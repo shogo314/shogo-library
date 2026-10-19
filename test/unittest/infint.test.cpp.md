@@ -219,7 +219,7 @@ data:
     \ 2, 3}) {\n            vals.push_back(I(static_cast<T>(MAXV - 1 - d)));\n   \
     \         vals.push_back(I(static_cast<T>(MINV + 2 + d)));\n        }\n      \
     \  // \u7A4D\u304C\u3061\u3087\u3046\u3069\u5883\u754C\u306B\u306A\u308B\u4ED8\
-    \u8FD1\n        for (__int128 s : {(__int128)1 << (std::numeric_limits<T>::digits\
+    \u8FD1\n        for (__int128 s : {static_cast<__int128>(1) << (std::numeric_limits<T>::digits\
     \ / 2), MAXV / 2, MAXV / 3}) {\n            for (int d = -1; d <= 1; d++) {\n\
     \                vals.push_back(I(static_cast<T>(s + d)));\n                vals.push_back(I(static_cast<T>(-(s\
     \ + d))));\n            }\n        }\n        for (int i = 0; i < 12; i++) vals.push_back(I(static_cast<T>(rng()\
@@ -351,7 +351,7 @@ data:
     \ 2, 3}) {\n            vals.push_back(I(static_cast<T>(MAXV - 1 - d)));\n   \
     \         vals.push_back(I(static_cast<T>(MINV + 2 + d)));\n        }\n      \
     \  // \u7A4D\u304C\u3061\u3087\u3046\u3069\u5883\u754C\u306B\u306A\u308B\u4ED8\
-    \u8FD1\n        for (__int128 s : {(__int128)1 << (std::numeric_limits<T>::digits\
+    \u8FD1\n        for (__int128 s : {static_cast<__int128>(1) << (std::numeric_limits<T>::digits\
     \ / 2), MAXV / 2, MAXV / 3}) {\n            for (int d = -1; d <= 1; d++) {\n\
     \                vals.push_back(I(static_cast<T>(s + d)));\n                vals.push_back(I(static_cast<T>(-(s\
     \ + d))));\n            }\n        }\n        for (int i = 0; i < 12; i++) vals.push_back(I(static_cast<T>(rng()\
@@ -426,7 +426,7 @@ data:
   isVerificationFile: true
   path: test/unittest/infint.test.cpp
   requiredBy: []
-  timestamp: '2026-10-14 11:44:51+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/infint.test.cpp

@@ -131,21 +131,22 @@ data:
     \u5168\u4F53\u3068\u3057\u3066\u30B5\u30A4\u30AF\u30EB\u4E0A\u306E\u9802\u70B9\
     \u3092\u3061\u3087\u3046\u30691\u56DE\u305A\u3064\u542B\u3080\n        std::vector<int>\
     \ cnt(n);\n        for (const auto& cycle : fg.cycles) {\n            for (int\
-    \ i = 0; i < (int)cycle.size(); i++) {\n                if (g[cycle[i]] != cycle[(i\
-    \ + 1) % cycle.size()]) ok = false;\n                cnt[cycle[i]]++;\n      \
-    \      }\n        }\n        for (int x = 0; x < n; x++) {\n            if (cnt[x]\
-    \ != (on_cycle[x] ? 1 : 0)) ok = false;\n            if (fg.is_cycle[x] != on_cycle[x])\
-    \ ok = false;\n        }\n\n        for (int x = 0; x < n; x++) {\n          \
-    \  // hopable: 0 \u56DE\u4EE5\u4E0A\u306E\u79FB\u52D5\u3067\u305F\u3069\u308A\u7740\
-    \u3051\u308B\u9802\u70B9\u306E\u500B\u6570\n            std::set<int> reach;\n\
-    \            int y = x;\n            for (int j = 0; j <= n; j++) {\n        \
-    \        reach.insert(y);\n                y = g[y];\n            }\n        \
-    \    if (fg.hopable(x) != (int)reach.size()) ok = false;\n            // hop:\
-    \ \u5C0F\u3055\u3044 k \u3068\u5927\u304D\u3044 k\n            for (long long\
-    \ k = 0; k <= 3 * n; k++) {\n                if (fg.hop(x, k) != naive_hop(g,\
-    \ x, k)) ok = false;\n            }\n            long long k = rng() % 1000000000000000000LL;\n\
-    \            if (fg.hop(x, k) != naive_hop(g, x, k)) ok = false;\n        }\n\
-    \    }\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \ i = 0; i < static_cast<int>(cycle.size()); i++) {\n                if (g[cycle[i]]\
+    \ != cycle[(i + 1) % cycle.size()]) ok = false;\n                cnt[cycle[i]]++;\n\
+    \            }\n        }\n        for (int x = 0; x < n; x++) {\n           \
+    \ if (cnt[x] != (on_cycle[x] ? 1 : 0)) ok = false;\n            if (fg.is_cycle[x]\
+    \ != on_cycle[x]) ok = false;\n        }\n\n        for (int x = 0; x < n; x++)\
+    \ {\n            // hopable: 0 \u56DE\u4EE5\u4E0A\u306E\u79FB\u52D5\u3067\u305F\
+    \u3069\u308A\u7740\u3051\u308B\u9802\u70B9\u306E\u500B\u6570\n            std::set<int>\
+    \ reach;\n            int y = x;\n            for (int j = 0; j <= n; j++) {\n\
+    \                reach.insert(y);\n                y = g[y];\n            }\n\
+    \            if (fg.hopable(x) != static_cast<int>(reach.size())) ok = false;\n\
+    \            // hop: \u5C0F\u3055\u3044 k \u3068\u5927\u304D\u3044 k\n       \
+    \     for (long long k = 0; k <= 3 * n; k++) {\n                if (fg.hop(x,\
+    \ k) != naive_hop(g, x, k)) ok = false;\n            }\n            long long\
+    \ k = rng() % 1000000000000000000LL;\n            if (fg.hop(x, k) != naive_hop(g,\
+    \ x, k)) ok = false;\n        }\n    }\n    if (ok) std::cout << \"Hello World\"\
+    \ << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// FunctionalGraph \u3092\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u30E9\u30F3\u30C0\
     \u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\
@@ -175,16 +176,16 @@ data:
     \u30B5\u30A4\u30AF\u30EB\u3067\u3001\u5168\u4F53\u3068\u3057\u3066\u30B5\u30A4\
     \u30AF\u30EB\u4E0A\u306E\u9802\u70B9\u3092\u3061\u3087\u3046\u30691\u56DE\u305A\
     \u3064\u542B\u3080\n        std::vector<int> cnt(n);\n        for (const auto&\
-    \ cycle : fg.cycles) {\n            for (int i = 0; i < (int)cycle.size(); i++)\
-    \ {\n                if (g[cycle[i]] != cycle[(i + 1) % cycle.size()]) ok = false;\n\
-    \                cnt[cycle[i]]++;\n            }\n        }\n        for (int\
-    \ x = 0; x < n; x++) {\n            if (cnt[x] != (on_cycle[x] ? 1 : 0)) ok =\
-    \ false;\n            if (fg.is_cycle[x] != on_cycle[x]) ok = false;\n       \
-    \ }\n\n        for (int x = 0; x < n; x++) {\n            // hopable: 0 \u56DE\
-    \u4EE5\u4E0A\u306E\u79FB\u52D5\u3067\u305F\u3069\u308A\u7740\u3051\u308B\u9802\
-    \u70B9\u306E\u500B\u6570\n            std::set<int> reach;\n            int y\
-    \ = x;\n            for (int j = 0; j <= n; j++) {\n                reach.insert(y);\n\
-    \                y = g[y];\n            }\n            if (fg.hopable(x) != (int)reach.size())\
+    \ cycle : fg.cycles) {\n            for (int i = 0; i < static_cast<int>(cycle.size());\
+    \ i++) {\n                if (g[cycle[i]] != cycle[(i + 1) % cycle.size()]) ok\
+    \ = false;\n                cnt[cycle[i]]++;\n            }\n        }\n     \
+    \   for (int x = 0; x < n; x++) {\n            if (cnt[x] != (on_cycle[x] ? 1\
+    \ : 0)) ok = false;\n            if (fg.is_cycle[x] != on_cycle[x]) ok = false;\n\
+    \        }\n\n        for (int x = 0; x < n; x++) {\n            // hopable: 0\
+    \ \u56DE\u4EE5\u4E0A\u306E\u79FB\u52D5\u3067\u305F\u3069\u308A\u7740\u3051\u308B\
+    \u9802\u70B9\u306E\u500B\u6570\n            std::set<int> reach;\n           \
+    \ int y = x;\n            for (int j = 0; j <= n; j++) {\n                reach.insert(y);\n\
+    \                y = g[y];\n            }\n            if (fg.hopable(x) != static_cast<int>(reach.size()))\
     \ ok = false;\n            // hop: \u5C0F\u3055\u3044 k \u3068\u5927\u304D\u3044\
     \ k\n            for (long long k = 0; k <= 3 * n; k++) {\n                if\
     \ (fg.hop(x, k) != naive_hop(g, x, k)) ok = false;\n            }\n          \
@@ -196,7 +197,7 @@ data:
   isVerificationFile: true
   path: test/unittest/functional-graph.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/functional-graph.test.cpp

@@ -89,17 +89,17 @@ data:
     \ len.end());\n    if (longest_increasing_subsequence_lengths(a, strict, comp)\
     \ != len) return false;\n    if (longest_increasing_subsequence(a, strict, comp)\
     \ != best) return false;\n    std::vector<long long> idx = longest_increasing_subsequence_restore(a,\
-    \ strict, comp);\n    if ((long long)idx.size() != best) return false;\n    for\
-    \ (long long k = 0; k < (long long)idx.size(); k++) {\n        if (idx[k] < 0\
-    \ || idx[k] >= n) return false;\n        if (k > 0 && (idx[k - 1] >= idx[k] ||\
-    \ !ok_pair(idx[k - 1], idx[k]))) return false;\n    }\n    return true;\n}\n\n\
-    int main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int rep\
-    \ = 0; rep < 3000 && ok; rep++) {\n        int n = rng() % 15;\n        int range\
-    \ = rng() % 10 + 1;\n        std::vector<int> a(n);\n        for (auto& v : a)\
-    \ v = rng() % range;\n        for (bool strict : {true, false}) {\n          \
-    \  ok = ok && check(a, strict, std::less<int>());\n            ok = ok && check(a,\
-    \ strict, std::greater<int>());\n        }\n    }\n\n    // \u4F8B\n    std::vector<int>\
-    \ a = {3, 1, 4, 1, 5, 9, 2, 6};\n    ok = ok && longest_increasing_subsequence(a)\
+    \ strict, comp);\n    if (static_cast<long long>(idx.size()) != best) return false;\n\
+    \    for (long long k = 0; k < static_cast<long long>(idx.size()); k++) {\n  \
+    \      if (idx[k] < 0 || idx[k] >= n) return false;\n        if (k > 0 && (idx[k\
+    \ - 1] >= idx[k] || !ok_pair(idx[k - 1], idx[k]))) return false;\n    }\n    return\
+    \ true;\n}\n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n\
+    \    for (int rep = 0; rep < 3000 && ok; rep++) {\n        int n = rng() % 15;\n\
+    \        int range = rng() % 10 + 1;\n        std::vector<int> a(n);\n       \
+    \ for (auto& v : a) v = rng() % range;\n        for (bool strict : {true, false})\
+    \ {\n            ok = ok && check(a, strict, std::less<int>());\n            ok\
+    \ = ok && check(a, strict, std::greater<int>());\n        }\n    }\n\n    // \u4F8B\
+    \n    std::vector<int> a = {3, 1, 4, 1, 5, 9, 2, 6};\n    ok = ok && longest_increasing_subsequence(a)\
     \ == 4;\n    ok = ok && longest_increasing_subsequence(a, false) == 4;\n    ok\
     \ = ok && longest_increasing_subsequence(std::vector<int>{2, 2, 2}, false) ==\
     \ 3;\n    ok = ok && longest_increasing_subsequence(std::vector<int>{2, 2, 2})\
@@ -125,17 +125,17 @@ data:
     \ len.end());\n    if (longest_increasing_subsequence_lengths(a, strict, comp)\
     \ != len) return false;\n    if (longest_increasing_subsequence(a, strict, comp)\
     \ != best) return false;\n    std::vector<long long> idx = longest_increasing_subsequence_restore(a,\
-    \ strict, comp);\n    if ((long long)idx.size() != best) return false;\n    for\
-    \ (long long k = 0; k < (long long)idx.size(); k++) {\n        if (idx[k] < 0\
-    \ || idx[k] >= n) return false;\n        if (k > 0 && (idx[k - 1] >= idx[k] ||\
-    \ !ok_pair(idx[k - 1], idx[k]))) return false;\n    }\n    return true;\n}\n\n\
-    int main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int rep\
-    \ = 0; rep < 3000 && ok; rep++) {\n        int n = rng() % 15;\n        int range\
-    \ = rng() % 10 + 1;\n        std::vector<int> a(n);\n        for (auto& v : a)\
-    \ v = rng() % range;\n        for (bool strict : {true, false}) {\n          \
-    \  ok = ok && check(a, strict, std::less<int>());\n            ok = ok && check(a,\
-    \ strict, std::greater<int>());\n        }\n    }\n\n    // \u4F8B\n    std::vector<int>\
-    \ a = {3, 1, 4, 1, 5, 9, 2, 6};\n    ok = ok && longest_increasing_subsequence(a)\
+    \ strict, comp);\n    if (static_cast<long long>(idx.size()) != best) return false;\n\
+    \    for (long long k = 0; k < static_cast<long long>(idx.size()); k++) {\n  \
+    \      if (idx[k] < 0 || idx[k] >= n) return false;\n        if (k > 0 && (idx[k\
+    \ - 1] >= idx[k] || !ok_pair(idx[k - 1], idx[k]))) return false;\n    }\n    return\
+    \ true;\n}\n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n\
+    \    for (int rep = 0; rep < 3000 && ok; rep++) {\n        int n = rng() % 15;\n\
+    \        int range = rng() % 10 + 1;\n        std::vector<int> a(n);\n       \
+    \ for (auto& v : a) v = rng() % range;\n        for (bool strict : {true, false})\
+    \ {\n            ok = ok && check(a, strict, std::less<int>());\n            ok\
+    \ = ok && check(a, strict, std::greater<int>());\n        }\n    }\n\n    // \u4F8B\
+    \n    std::vector<int> a = {3, 1, 4, 1, 5, 9, 2, 6};\n    ok = ok && longest_increasing_subsequence(a)\
     \ == 4;\n    ok = ok && longest_increasing_subsequence(a, false) == 4;\n    ok\
     \ = ok && longest_increasing_subsequence(std::vector<int>{2, 2, 2}, false) ==\
     \ 3;\n    ok = ok && longest_increasing_subsequence(std::vector<int>{2, 2, 2})\
@@ -147,7 +147,7 @@ data:
   isVerificationFile: true
   path: test/unittest/longest-increasing-subsequence.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/longest-increasing-subsequence.test.cpp

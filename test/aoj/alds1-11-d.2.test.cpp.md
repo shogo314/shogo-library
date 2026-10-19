@@ -77,10 +77,10 @@ data:
     \ = 0; i < m; i++) {\n        int s, t;\n        std::cin >> s >> t;\n       \
     \ uf.merge(s, t);\n    }\n    // \u9023\u7D50\u6210\u5206\u3054\u3068\u306B\u756A\
     \u53F7\u3092\u632F\u308B\n    std::vector<int> id(n);\n    auto groups = uf.groups();\n\
-    \    for (int i = 0; i < (int)groups.size(); i++) {\n        for (int v : groups[i])\
-    \ id[v] = i;\n    }\n    int q;\n    std::cin >> q;\n    while (q--) {\n     \
-    \   int s, t;\n        std::cin >> s >> t;\n        std::cout << (id[s] == id[t]\
-    \ ? \"yes\" : \"no\") << '\\n';\n    }\n}\n"
+    \    for (int i = 0; i < static_cast<int>(groups.size()); i++) {\n        for\
+    \ (int v : groups[i]) id[v] = i;\n    }\n    int q;\n    std::cin >> q;\n    while\
+    \ (q--) {\n        int s, t;\n        std::cin >> s >> t;\n        std::cout <<\
+    \ (id[s] == id[t] ? \"yes\" : \"no\") << '\\n';\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_11_D\"\
     \n\n#include <iostream>\n#include <vector>\n\n#include \"../../src/data_structures/unionfind.hpp\"\
     \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios_base::sync_with_stdio(false);\n\
@@ -88,16 +88,16 @@ data:
     \ = 0; i < m; i++) {\n        int s, t;\n        std::cin >> s >> t;\n       \
     \ uf.merge(s, t);\n    }\n    // \u9023\u7D50\u6210\u5206\u3054\u3068\u306B\u756A\
     \u53F7\u3092\u632F\u308B\n    std::vector<int> id(n);\n    auto groups = uf.groups();\n\
-    \    for (int i = 0; i < (int)groups.size(); i++) {\n        for (int v : groups[i])\
-    \ id[v] = i;\n    }\n    int q;\n    std::cin >> q;\n    while (q--) {\n     \
-    \   int s, t;\n        std::cin >> s >> t;\n        std::cout << (id[s] == id[t]\
-    \ ? \"yes\" : \"no\") << '\\n';\n    }\n}\n"
+    \    for (int i = 0; i < static_cast<int>(groups.size()); i++) {\n        for\
+    \ (int v : groups[i]) id[v] = i;\n    }\n    int q;\n    std::cin >> q;\n    while\
+    \ (q--) {\n        int s, t;\n        std::cin >> s >> t;\n        std::cout <<\
+    \ (id[s] == id[t] ? \"yes\" : \"no\") << '\\n';\n    }\n}\n"
   dependsOn:
   - src/data_structures/unionfind.hpp
   isVerificationFile: true
   path: test/aoj/alds1-11-d.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/alds1-11-d.2.test.cpp

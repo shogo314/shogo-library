@@ -508,14 +508,47 @@ data:
     using modint = dynamic_modint<-1>;\n#line 14 \"test/unittest/divisor-transform.test.cpp\"\
     \n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int\
     \ rep = 0; rep < 1000 && ok; rep++) {\n        int n = rng() % 60;\n        std::vector<long\
-    \ long> a(n + 1), b(n + 1);\n        for (auto& x : a) x = (long long)(rng() %\
-    \ 21) - 10;\n        for (auto& x : b) x = (long long)(rng() % 21) - 10;\n\n \
-    \       std::vector<long long> dz(n + 1), mz(n + 1), gc(n + 1), lc(n + 1);\n \
-    \       dz[0] = mz[0] = a[0];\n        for (int i = 1; i <= n; i++) {\n      \
-    \      for (int j = 1; j <= n; j++) {\n                if (i % j == 0) dz[i] +=\
-    \ a[j];\n                if (j % i == 0) mz[i] += a[j];\n                int g\
-    \ = std::gcd(i, j);\n                long long l = (long long)i / g * j;\n   \
-    \             gc[g] += a[i] * b[j];\n                if (l <= n) lc[l] += a[i]\
+    \ long> a(n + 1), b(n + 1);\n        for (auto& x : a) x = static_cast<long long>(rng()\
+    \ % 21) - 10;\n        for (auto& x : b) x = static_cast<long long>(rng() % 21)\
+    \ - 10;\n\n        std::vector<long long> dz(n + 1), mz(n + 1), gc(n + 1), lc(n\
+    \ + 1);\n        dz[0] = mz[0] = a[0];\n        for (int i = 1; i <= n; i++) {\n\
+    \            for (int j = 1; j <= n; j++) {\n                if (i % j == 0) dz[i]\
+    \ += a[j];\n                if (j % i == 0) mz[i] += a[j];\n                int\
+    \ g = std::gcd(i, j);\n                long long l = static_cast<long long>(i)\
+    \ / g * j;\n                gc[g] += a[i] * b[j];\n                if (l <= n)\
+    \ lc[l] += a[i] * b[j];\n            }\n        }\n        auto c = a;\n     \
+    \   divisor_zeta(c);\n        ok = ok && c == dz;\n        divisor_mobius(c);\n\
+    \        ok = ok && c == a;\n        c = a;\n        multiple_zeta(c);\n     \
+    \   ok = ok && c == mz;\n        multiple_mobius(c);\n        ok = ok && c ==\
+    \ a;\n        ok = ok && gcd_convolution(a, b) == gc && lcm_convolution(a, b)\
+    \ == lc;\n    }\n\n    // modint \u3067\u3082\u4F7F\u3048\u308B\n    using mint\
+    \ = modint998244353;\n    std::vector<mint> a = {0, 1, 2, 3, 4}, b = {0, 5, 6,\
+    \ 7, 8};\n    // gcd: c[1] = \u5168\u4F53\u306E\u548C - (gcd \u304C 2, 3, 4 \u306E\
+    \u5206)\n    auto g = gcd_convolution(a, b);\n    ok = ok && g[4] == mint(4 *\
+    \ 8) && g[3] == mint(3 * 7) && g[2] == mint(2 * 6 + 2 * 8 + 4 * 6);\n    auto\
+    \ l = lcm_convolution(a, b);\n    ok = ok && l[1] == mint(5) && l[2] == mint(1\
+    \ * 6 + 2 * 5 + 2 * 6) && l[4] == mint(1 * 8 + 2 * 8 + 4 * 5 + 4 * 6 + 4 * 8);\n\
+    \n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n    else\n\
+    \        std::cerr << \"failed\" << std::endl;\n}\n"
+  code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
+    \n\n// \u7D04\u6570\u30FB\u500D\u6570\u306E\u30BC\u30FC\u30BF\u5909\u63DB\u3001\
+    \u30E1\u30D3\u30A6\u30B9\u5909\u63DB\u3068 GCD\u30FBLCM \u7573\u307F\u8FBC\u307F\
+    \u3092\u611A\u76F4\u306A\u8A08\u7B97\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\
+    \u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\
+    \u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\
+    \u3059\u308B\n\n#include \"../../src/math/divisor-transform.hpp\"\n\n#include\
+    \ <iostream>\n#include <numeric>\n#include <random>\n#include <vector>\n\n#include\
+    \ \"../../src/math/modint.hpp\"\n\nint main() {\n    std::mt19937 rng(314);\n\
+    \    bool ok = true;\n    for (int rep = 0; rep < 1000 && ok; rep++) {\n     \
+    \   int n = rng() % 60;\n        std::vector<long long> a(n + 1), b(n + 1);\n\
+    \        for (auto& x : a) x = static_cast<long long>(rng() % 21) - 10;\n    \
+    \    for (auto& x : b) x = static_cast<long long>(rng() % 21) - 10;\n\n      \
+    \  std::vector<long long> dz(n + 1), mz(n + 1), gc(n + 1), lc(n + 1);\n      \
+    \  dz[0] = mz[0] = a[0];\n        for (int i = 1; i <= n; i++) {\n           \
+    \ for (int j = 1; j <= n; j++) {\n                if (i % j == 0) dz[i] += a[j];\n\
+    \                if (j % i == 0) mz[i] += a[j];\n                int g = std::gcd(i,\
+    \ j);\n                long long l = static_cast<long long>(i) / g * j;\n    \
+    \            gc[g] += a[i] * b[j];\n                if (l <= n) lc[l] += a[i]\
     \ * b[j];\n            }\n        }\n        auto c = a;\n        divisor_zeta(c);\n\
     \        ok = ok && c == dz;\n        divisor_mobius(c);\n        ok = ok && c\
     \ == a;\n        c = a;\n        multiple_zeta(c);\n        ok = ok && c == mz;\n\
@@ -529,38 +562,6 @@ data:
     \ == mint(5) && l[2] == mint(1 * 6 + 2 * 5 + 2 * 6) && l[4] == mint(1 * 8 + 2\
     \ * 8 + 4 * 5 + 4 * 6 + 4 * 8);\n\n    if (ok)\n        std::cout << \"Hello World\"\
     \ << std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
-  code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
-    \n\n// \u7D04\u6570\u30FB\u500D\u6570\u306E\u30BC\u30FC\u30BF\u5909\u63DB\u3001\
-    \u30E1\u30D3\u30A6\u30B9\u5909\u63DB\u3068 GCD\u30FBLCM \u7573\u307F\u8FBC\u307F\
-    \u3092\u611A\u76F4\u306A\u8A08\u7B97\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\
-    \u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\
-    \u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\
-    \u3059\u308B\n\n#include \"../../src/math/divisor-transform.hpp\"\n\n#include\
-    \ <iostream>\n#include <numeric>\n#include <random>\n#include <vector>\n\n#include\
-    \ \"../../src/math/modint.hpp\"\n\nint main() {\n    std::mt19937 rng(314);\n\
-    \    bool ok = true;\n    for (int rep = 0; rep < 1000 && ok; rep++) {\n     \
-    \   int n = rng() % 60;\n        std::vector<long long> a(n + 1), b(n + 1);\n\
-    \        for (auto& x : a) x = (long long)(rng() % 21) - 10;\n        for (auto&\
-    \ x : b) x = (long long)(rng() % 21) - 10;\n\n        std::vector<long long> dz(n\
-    \ + 1), mz(n + 1), gc(n + 1), lc(n + 1);\n        dz[0] = mz[0] = a[0];\n    \
-    \    for (int i = 1; i <= n; i++) {\n            for (int j = 1; j <= n; j++)\
-    \ {\n                if (i % j == 0) dz[i] += a[j];\n                if (j % i\
-    \ == 0) mz[i] += a[j];\n                int g = std::gcd(i, j);\n            \
-    \    long long l = (long long)i / g * j;\n                gc[g] += a[i] * b[j];\n\
-    \                if (l <= n) lc[l] += a[i] * b[j];\n            }\n        }\n\
-    \        auto c = a;\n        divisor_zeta(c);\n        ok = ok && c == dz;\n\
-    \        divisor_mobius(c);\n        ok = ok && c == a;\n        c = a;\n    \
-    \    multiple_zeta(c);\n        ok = ok && c == mz;\n        multiple_mobius(c);\n\
-    \        ok = ok && c == a;\n        ok = ok && gcd_convolution(a, b) == gc &&\
-    \ lcm_convolution(a, b) == lc;\n    }\n\n    // modint \u3067\u3082\u4F7F\u3048\
-    \u308B\n    using mint = modint998244353;\n    std::vector<mint> a = {0, 1, 2,\
-    \ 3, 4}, b = {0, 5, 6, 7, 8};\n    // gcd: c[1] = \u5168\u4F53\u306E\u548C - (gcd\
-    \ \u304C 2, 3, 4 \u306E\u5206)\n    auto g = gcd_convolution(a, b);\n    ok =\
-    \ ok && g[4] == mint(4 * 8) && g[3] == mint(3 * 7) && g[2] == mint(2 * 6 + 2 *\
-    \ 8 + 4 * 6);\n    auto l = lcm_convolution(a, b);\n    ok = ok && l[1] == mint(5)\
-    \ && l[2] == mint(1 * 6 + 2 * 5 + 2 * 6) && l[4] == mint(1 * 8 + 2 * 8 + 4 * 5\
-    \ + 4 * 6 + 4 * 8);\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
-    \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/math/divisor-transform.hpp
   - src/math/prime.hpp
@@ -570,7 +571,7 @@ data:
   isVerificationFile: true
   path: test/unittest/divisor-transform.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/divisor-transform.test.cpp

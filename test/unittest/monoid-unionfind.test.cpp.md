@@ -428,9 +428,9 @@ data:
     \ (int y = 0; y < n; y++) {\n                    if (comp[y] == comp[x]) sum +=\
     \ v[y];\n                }\n                if (uf.prod(x) != sum) ok = false;\n\
     \                if (muf.prod(x) != -1) ok = false;\n                if (uf.size(x)\
-    \ != (int)std::count(comp.begin(), comp.end(), comp[x])) ok = false;\n       \
-    \     }\n        }\n    }\n    if (ok)\n        std::cout << \"Hello World\" <<\
-    \ std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
+    \ != static_cast<int>(std::count(comp.begin(), comp.end(), comp[x]))) ok = false;\n\
+    \            }\n        }\n    }\n    if (ok)\n        std::cout << \"Hello World\"\
+    \ << std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// MonoidUnionFind \u3092\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u30E9\u30F3\u30C0\
     \u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u8981\u7D20\u6570\u3060\u3051\u3092\u6E21\
@@ -461,9 +461,9 @@ data:
     \ (int y = 0; y < n; y++) {\n                    if (comp[y] == comp[x]) sum +=\
     \ v[y];\n                }\n                if (uf.prod(x) != sum) ok = false;\n\
     \                if (muf.prod(x) != -1) ok = false;\n                if (uf.size(x)\
-    \ != (int)std::count(comp.begin(), comp.end(), comp[x])) ok = false;\n       \
-    \     }\n        }\n    }\n    if (ok)\n        std::cout << \"Hello World\" <<\
-    \ std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
+    \ != static_cast<int>(std::count(comp.begin(), comp.end(), comp[x]))) ok = false;\n\
+    \            }\n        }\n    }\n    if (ok)\n        std::cout << \"Hello World\"\
+    \ << std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/data_structures/monoid-unionfind.hpp
   - src/algebra/monoid.hpp
@@ -471,7 +471,7 @@ data:
   isVerificationFile: true
   path: test/unittest/monoid-unionfind.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 12:03:10+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/monoid-unionfind.test.cpp

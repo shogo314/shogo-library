@@ -435,8 +435,8 @@ data:
     \ P2 = Vector<long long>;\n    using P3 = Vector<long long, 3>;\n    for (int\
     \ rep = 0; rep < 10000 && ok; rep++) {\n        // \u6BD4\u8F03\u306E\u7D50\u679C\
     \u304C\u504F\u3089\u306A\u3044\u3088\u3046\u3001\u6210\u5206\u306F\u5C0F\u3055\
-    \u3044\u7BC4\u56F2\u304B\u3089\u9078\u3076\n        auto rnd = [&] { return (long\
-    \ long)(rng() % 5) - 2; };\n        std::array<long long, 2> a = {rnd(), rnd()},\
+    \u3044\u7BC4\u56F2\u304B\u3089\u9078\u3076\n        auto rnd = [&] { return static_cast<long\
+    \ long>(rng() % 5) - 2; };\n        std::array<long long, 2> a = {rnd(), rnd()},\
     \ b = {rnd(), rnd()};\n        P2 p(a[0], a[1]), q(b[0], b[1]);\n        long\
     \ long c = rnd();\n\n        // \u5358\u9805 +\u3001\u5358\u9805 -\u3001\u30B9\
     \u30AB\u30E9\u30FC\u304C\u5DE6\u5074\u306E\u7A4D\n        P2 plus = +p, minus\
@@ -465,8 +465,8 @@ data:
     \ long>;\n    using P3 = Vector<long long, 3>;\n    for (int rep = 0; rep < 10000\
     \ && ok; rep++) {\n        // \u6BD4\u8F03\u306E\u7D50\u679C\u304C\u504F\u3089\
     \u306A\u3044\u3088\u3046\u3001\u6210\u5206\u306F\u5C0F\u3055\u3044\u7BC4\u56F2\
-    \u304B\u3089\u9078\u3076\n        auto rnd = [&] { return (long long)(rng() %\
-    \ 5) - 2; };\n        std::array<long long, 2> a = {rnd(), rnd()}, b = {rnd(),\
+    \u304B\u3089\u9078\u3076\n        auto rnd = [&] { return static_cast<long long>(rng()\
+    \ % 5) - 2; };\n        std::array<long long, 2> a = {rnd(), rnd()}, b = {rnd(),\
     \ rnd()};\n        P2 p(a[0], a[1]), q(b[0], b[1]);\n        long long c = rnd();\n\
     \n        // \u5358\u9805 +\u3001\u5358\u9805 -\u3001\u30B9\u30AB\u30E9\u30FC\u304C\
     \u5DE6\u5074\u306E\u7A4D\n        P2 plus = +p, minus = -p, scaled = c * p;\n\
@@ -489,7 +489,7 @@ data:
   isVerificationFile: true
   path: test/unittest/vector.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/vector.test.cpp

@@ -533,25 +533,25 @@ data:
     \ a1[i] * b1[i];\n        c2[i] = a2[i] * b2[i];\n    }\n    internal_convolution::trans(c0,\
     \ true), internal_convolution::trans(c1, true), internal_convolution::trans(c2,\
     \ true);\n    static const long long mod0 = internal_convolution::MOD0, mod01\
-    \ = mod0 * internal_convolution::MOD1;\n    static const __int128_t mod012 = (__int128_t)mod01\
+    \ = mod0 * internal_convolution::MOD1;\n    static const __int128_t mod012 = static_cast<__int128_t>(mod01)\
     \ * internal_convolution::MOD2;\n    std::vector<long long> res(N + M - 1);\n\
     \    for (int i = 0; i < N + M - 1; ++i) {\n        int y0 = c0[i].val();\n  \
     \      int y1 = (internal_convolution::imod0 * (c1[i] - y0)).val();\n        int\
     \ y2 = (internal_convolution::imod01 * (c2[i] - y0) - internal_convolution::imod1\
-    \ * y1).val();\n        __int128_t tmp = (__int128_t)mod01 * y2 + (__int128_t)mod0\
-    \ * y1 + y0;\n        if (tmp < (mod012 >> 1))\n            res[i] = tmp;\n  \
-    \      else\n            res[i] = tmp - mod012;\n    }\n    return res;\n}\n#line\
-    \ 15 \"src/math/fps.hpp\"\n\ntemplate <typename mint>\nstruct FPS : std::vector<mint>\
-    \ {\n    using std::vector<mint>::vector;\n\n    // constructor\n    FPS(const\
-    \ std::vector<mint>& r) : std::vector<mint>(r) {}\n\n    // core operator\n  \
-    \  inline FPS pre(long long siz) const {\n        return FPS(begin(*this), begin(*this)\
-    \ + std::min(static_cast<long long>(this->size()), siz));\n    }\n    inline FPS\
-    \ rev() const {\n        FPS res = *this;\n        reverse(begin(res), end(res));\n\
-    \        return res;\n    }\n    inline FPS& normalize() {\n        while (!this->empty()\
-    \ && this->back() == 0) this->pop_back();\n        return *this;\n    }\n\n  \
-    \  // basic operator\n    inline FPS operator-() const noexcept {\n        FPS\
-    \ res = (*this);\n        for (int i = 0; i < static_cast<int>(res.size()); ++i)\
-    \ res[i] = -res[i];\n        return res;\n    }\n    inline FPS operator+(const\
+    \ * y1).val();\n        __int128_t tmp = static_cast<__int128_t>(mod01) * y2 +\
+    \ static_cast<__int128_t>(mod0) * y1 + y0;\n        if (tmp < (mod012 >> 1))\n\
+    \            res[i] = tmp;\n        else\n            res[i] = tmp - mod012;\n\
+    \    }\n    return res;\n}\n#line 15 \"src/math/fps.hpp\"\n\ntemplate <typename\
+    \ mint>\nstruct FPS : std::vector<mint> {\n    using std::vector<mint>::vector;\n\
+    \n    // constructor\n    FPS(const std::vector<mint>& r) : std::vector<mint>(r)\
+    \ {}\n\n    // core operator\n    inline FPS pre(long long siz) const {\n    \
+    \    return FPS(begin(*this), begin(*this) + std::min(static_cast<long long>(this->size()),\
+    \ siz));\n    }\n    inline FPS rev() const {\n        FPS res = *this;\n    \
+    \    reverse(begin(res), end(res));\n        return res;\n    }\n    inline FPS&\
+    \ normalize() {\n        while (!this->empty() && this->back() == 0) this->pop_back();\n\
+    \        return *this;\n    }\n\n    // basic operator\n    inline FPS operator-()\
+    \ const noexcept {\n        FPS res = (*this);\n        for (int i = 0; i < static_cast<int>(res.size());\
+    \ ++i) res[i] = -res[i];\n        return res;\n    }\n    inline FPS operator+(const\
     \ mint& v) const { return FPS(*this) += v; }\n    inline FPS operator+(const FPS&\
     \ r) const { return FPS(*this) += r; }\n    inline FPS operator-(const mint& v)\
     \ const { return FPS(*this) -= v; }\n    inline FPS operator-(const FPS& r) const\
@@ -645,20 +645,22 @@ data:
     \    std::cin.tie(nullptr);\n    int n, m;\n    std::cin >> n >> m;\n    FPS<mint>\
     \ f(n), g(m);\n    for (auto& x : f) std::cin >> x;\n    for (auto& x : g) std::cin\
     \ >> x;\n    FPS<mint> q = f / g, r = f % g;\n    std::cout << q.size() << ' '\
-    \ << r.size() << '\\n';\n    for (int i = 0; i < (int)q.size(); i++) std::cout\
-    \ << q[i] << (i + 1 == (int)q.size() ? \"\" : \" \");\n    std::cout << '\\n';\n\
-    \    for (int i = 0; i < (int)r.size(); i++) std::cout << r[i] << (i + 1 == (int)r.size()\
-    \ ? \"\" : \" \");\n    std::cout << '\\n';\n}\n"
+    \ << r.size() << '\\n';\n    for (int i = 0; i < static_cast<int>(q.size()); i++)\
+    \ std::cout << q[i] << (i + 1 == static_cast<int>(q.size()) ? \"\" : \" \");\n\
+    \    std::cout << '\\n';\n    for (int i = 0; i < static_cast<int>(r.size());\
+    \ i++) std::cout << r[i] << (i + 1 == static_cast<int>(r.size()) ? \"\" : \" \"\
+    );\n    std::cout << '\\n';\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/division_of_polynomials\"\
     \n\n#include <iostream>\n\n#include \"../../src/math/fps.hpp\"\n\nusing mint =\
     \ modint998244353;\n\nint main() {\n    std::ios::sync_with_stdio(false);\n  \
     \  std::cin.tie(nullptr);\n    int n, m;\n    std::cin >> n >> m;\n    FPS<mint>\
     \ f(n), g(m);\n    for (auto& x : f) std::cin >> x;\n    for (auto& x : g) std::cin\
     \ >> x;\n    FPS<mint> q = f / g, r = f % g;\n    std::cout << q.size() << ' '\
-    \ << r.size() << '\\n';\n    for (int i = 0; i < (int)q.size(); i++) std::cout\
-    \ << q[i] << (i + 1 == (int)q.size() ? \"\" : \" \");\n    std::cout << '\\n';\n\
-    \    for (int i = 0; i < (int)r.size(); i++) std::cout << r[i] << (i + 1 == (int)r.size()\
-    \ ? \"\" : \" \");\n    std::cout << '\\n';\n}\n"
+    \ << r.size() << '\\n';\n    for (int i = 0; i < static_cast<int>(q.size()); i++)\
+    \ std::cout << q[i] << (i + 1 == static_cast<int>(q.size()) ? \"\" : \" \");\n\
+    \    std::cout << '\\n';\n    for (int i = 0; i < static_cast<int>(r.size());\
+    \ i++) std::cout << r[i] << (i + 1 == static_cast<int>(r.size()) ? \"\" : \" \"\
+    );\n    std::cout << '\\n';\n}\n"
   dependsOn:
   - src/math/fps.hpp
   - src/math/combinatorics.hpp
@@ -669,7 +671,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/division-of-polynomials.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/division-of-polynomials.test.cpp

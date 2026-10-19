@@ -445,30 +445,31 @@ data:
     \ <class M>\nbool check(long long m, int lim) {\n    using C = Combination<M>;\n\
     \    bool ok = true;\n    auto c = pascal(2 * lim, m);\n    long long f = 1;\n\
     \    for (int n = 0; n <= lim; n++) {\n        if (n > 0) f = f * n % m;\n   \
-    \     if ((long long)C::factorial(n).val() != f) ok = false;\n        if ((C::factorial(n)\
-    \ * C::inverse_factorial(n)).val() != 1 % m) ok = false;\n        if (n > 0 &&\
-    \ (C::inv(n) * M(n)).val() != 1 % m) ok = false;\n    }\n    for (int n = 0; n\
-    \ <= lim; n++) {\n        for (int r = -1; r <= lim + 1; r++) {\n            long\
-    \ long ec = (r < 0 || r > n) ? 0 : c[n][r];\n            if ((long long)C::C(n,\
-    \ r).val() != ec) ok = false;\n            // nPr = nCr * r!\n            long\
-    \ long ep = 0;\n            if (r >= 0 && r <= n) {\n                ep = ec;\n\
-    \                for (int i = 1; i <= r; i++) ep = ep * i % m;\n            }\n\
-    \            if ((long long)C::P(n, r).val() != ep) ok = false;\n            //\
-    \ nHr = (n+r-1)Cr (Combination \u306F n < mod \u306E\u7BC4\u56F2\u3067\u306E\u307F\
-    \u6B63\u3057\u3044\u306E\u3067\u3001n+r-1 < m \u306B\u9650\u308B)\n          \
-    \  if (n >= 1 && r >= 0 && r <= lim && n + r - 1 < m) {\n                long\
-    \ long eh = c[n + r - 1][r];\n                if ((long long)C::H(n, r).val()\
-    \ != eh) ok = false;\n            }\n        }\n    }\n    return ok;\n}\n\nint\
-    \ main() {\n    bool ok = true;\n    if (!check<static_modint<998244353>>(998244353,\
-    \ 60)) ok = false, std::cerr << \"998244353\" << std::endl;\n    if (!check<static_modint<1000000007>>(1000000007,\
+    \     if (static_cast<long long>(C::factorial(n).val()) != f) ok = false;\n  \
+    \      if ((C::factorial(n) * C::inverse_factorial(n)).val() != 1 % m) ok = false;\n\
+    \        if (n > 0 && (C::inv(n) * M(n)).val() != 1 % m) ok = false;\n    }\n\
+    \    for (int n = 0; n <= lim; n++) {\n        for (int r = -1; r <= lim + 1;\
+    \ r++) {\n            long long ec = (r < 0 || r > n) ? 0 : c[n][r];\n       \
+    \     if (static_cast<long long>(C::C(n, r).val()) != ec) ok = false;\n      \
+    \      // nPr = nCr * r!\n            long long ep = 0;\n            if (r >=\
+    \ 0 && r <= n) {\n                ep = ec;\n                for (int i = 1; i\
+    \ <= r; i++) ep = ep * i % m;\n            }\n            if (static_cast<long\
+    \ long>(C::P(n, r).val()) != ep) ok = false;\n            // nHr = (n+r-1)Cr (Combination\
+    \ \u306F n < mod \u306E\u7BC4\u56F2\u3067\u306E\u307F\u6B63\u3057\u3044\u306E\u3067\
+    \u3001n+r-1 < m \u306B\u9650\u308B)\n            if (n >= 1 && r >= 0 && r <=\
+    \ lim && n + r - 1 < m) {\n                long long eh = c[n + r - 1][r];\n \
+    \               if (static_cast<long long>(C::H(n, r).val()) != eh) ok = false;\n\
+    \            }\n        }\n    }\n    return ok;\n}\n\nint main() {\n    bool\
+    \ ok = true;\n    if (!check<static_modint<998244353>>(998244353, 60)) ok = false,\
+    \ std::cerr << \"998244353\" << std::endl;\n    if (!check<static_modint<1000000007>>(1000000007,\
     \ 60)) ok = false, std::cerr << \"1000000007\" << std::endl;\n\n    // dynamic_modint:\
     \ \u6CD5\u3092\u5909\u3048\u308B\u305F\u3073\u306B\u524D\u8A08\u7B97\u3092\u3084\
     \u308A\u76F4\u3059\u3002\u524D\u306E\u6CD5\u3088\u308A\u5927\u304D\u3044 n \u3092\
     \u5148\u306B\u4F7F\u3063\u3066\u304B\u3089\u5C0F\u3055\u3044\u6CD5\u306B\u623B\
     \u3059\n    using D = dynamic_modint<271>;\n    for (long long m : {13LL, 1000000007LL,\
-    \ 7LL, 998244353LL, 101LL}) {\n        D::set_mod(m);\n        int lim = (int)std::min<long\
-    \ long>(m - 1, 60);  // n < m \u306E\u7BC4\u56F2\u3067\u6B63\u3057\u3044\n   \
-    \     if (!check<D>(m, lim)) ok = false, std::cerr << \"dynamic \" << m << std::endl;\n\
+    \ 7LL, 998244353LL, 101LL}) {\n        D::set_mod(m);\n        int lim = static_cast<int>(std::min<long\
+    \ long>(m - 1, 60));  // n < m \u306E\u7BC4\u56F2\u3067\u6B63\u3057\u3044\n  \
+    \      if (!check<D>(m, lim)) ok = false, std::cerr << \"dynamic \" << m << std::endl;\n\
     \    }\n\n    // \u5927\u304D\u3044 n \u306B\u5148\u306B extend \u3057\u3066\u304A\
     \u3044\u3066\u3082\u7D50\u679C\u306F\u540C\u3058\n    {\n        using M = static_modint<998244353>;\n\
     \        Combination<M>::extend(100000);\n        std::mt19937_64 rng(314);\n\
@@ -493,30 +494,31 @@ data:
     \ <class M>\nbool check(long long m, int lim) {\n    using C = Combination<M>;\n\
     \    bool ok = true;\n    auto c = pascal(2 * lim, m);\n    long long f = 1;\n\
     \    for (int n = 0; n <= lim; n++) {\n        if (n > 0) f = f * n % m;\n   \
-    \     if ((long long)C::factorial(n).val() != f) ok = false;\n        if ((C::factorial(n)\
-    \ * C::inverse_factorial(n)).val() != 1 % m) ok = false;\n        if (n > 0 &&\
-    \ (C::inv(n) * M(n)).val() != 1 % m) ok = false;\n    }\n    for (int n = 0; n\
-    \ <= lim; n++) {\n        for (int r = -1; r <= lim + 1; r++) {\n            long\
-    \ long ec = (r < 0 || r > n) ? 0 : c[n][r];\n            if ((long long)C::C(n,\
-    \ r).val() != ec) ok = false;\n            // nPr = nCr * r!\n            long\
-    \ long ep = 0;\n            if (r >= 0 && r <= n) {\n                ep = ec;\n\
-    \                for (int i = 1; i <= r; i++) ep = ep * i % m;\n            }\n\
-    \            if ((long long)C::P(n, r).val() != ep) ok = false;\n            //\
-    \ nHr = (n+r-1)Cr (Combination \u306F n < mod \u306E\u7BC4\u56F2\u3067\u306E\u307F\
-    \u6B63\u3057\u3044\u306E\u3067\u3001n+r-1 < m \u306B\u9650\u308B)\n          \
-    \  if (n >= 1 && r >= 0 && r <= lim && n + r - 1 < m) {\n                long\
-    \ long eh = c[n + r - 1][r];\n                if ((long long)C::H(n, r).val()\
-    \ != eh) ok = false;\n            }\n        }\n    }\n    return ok;\n}\n\nint\
-    \ main() {\n    bool ok = true;\n    if (!check<static_modint<998244353>>(998244353,\
-    \ 60)) ok = false, std::cerr << \"998244353\" << std::endl;\n    if (!check<static_modint<1000000007>>(1000000007,\
+    \     if (static_cast<long long>(C::factorial(n).val()) != f) ok = false;\n  \
+    \      if ((C::factorial(n) * C::inverse_factorial(n)).val() != 1 % m) ok = false;\n\
+    \        if (n > 0 && (C::inv(n) * M(n)).val() != 1 % m) ok = false;\n    }\n\
+    \    for (int n = 0; n <= lim; n++) {\n        for (int r = -1; r <= lim + 1;\
+    \ r++) {\n            long long ec = (r < 0 || r > n) ? 0 : c[n][r];\n       \
+    \     if (static_cast<long long>(C::C(n, r).val()) != ec) ok = false;\n      \
+    \      // nPr = nCr * r!\n            long long ep = 0;\n            if (r >=\
+    \ 0 && r <= n) {\n                ep = ec;\n                for (int i = 1; i\
+    \ <= r; i++) ep = ep * i % m;\n            }\n            if (static_cast<long\
+    \ long>(C::P(n, r).val()) != ep) ok = false;\n            // nHr = (n+r-1)Cr (Combination\
+    \ \u306F n < mod \u306E\u7BC4\u56F2\u3067\u306E\u307F\u6B63\u3057\u3044\u306E\u3067\
+    \u3001n+r-1 < m \u306B\u9650\u308B)\n            if (n >= 1 && r >= 0 && r <=\
+    \ lim && n + r - 1 < m) {\n                long long eh = c[n + r - 1][r];\n \
+    \               if (static_cast<long long>(C::H(n, r).val()) != eh) ok = false;\n\
+    \            }\n        }\n    }\n    return ok;\n}\n\nint main() {\n    bool\
+    \ ok = true;\n    if (!check<static_modint<998244353>>(998244353, 60)) ok = false,\
+    \ std::cerr << \"998244353\" << std::endl;\n    if (!check<static_modint<1000000007>>(1000000007,\
     \ 60)) ok = false, std::cerr << \"1000000007\" << std::endl;\n\n    // dynamic_modint:\
     \ \u6CD5\u3092\u5909\u3048\u308B\u305F\u3073\u306B\u524D\u8A08\u7B97\u3092\u3084\
     \u308A\u76F4\u3059\u3002\u524D\u306E\u6CD5\u3088\u308A\u5927\u304D\u3044 n \u3092\
     \u5148\u306B\u4F7F\u3063\u3066\u304B\u3089\u5C0F\u3055\u3044\u6CD5\u306B\u623B\
     \u3059\n    using D = dynamic_modint<271>;\n    for (long long m : {13LL, 1000000007LL,\
-    \ 7LL, 998244353LL, 101LL}) {\n        D::set_mod(m);\n        int lim = (int)std::min<long\
-    \ long>(m - 1, 60);  // n < m \u306E\u7BC4\u56F2\u3067\u6B63\u3057\u3044\n   \
-    \     if (!check<D>(m, lim)) ok = false, std::cerr << \"dynamic \" << m << std::endl;\n\
+    \ 7LL, 998244353LL, 101LL}) {\n        D::set_mod(m);\n        int lim = static_cast<int>(std::min<long\
+    \ long>(m - 1, 60));  // n < m \u306E\u7BC4\u56F2\u3067\u6B63\u3057\u3044\n  \
+    \      if (!check<D>(m, lim)) ok = false, std::cerr << \"dynamic \" << m << std::endl;\n\
     \    }\n\n    // \u5927\u304D\u3044 n \u306B\u5148\u306B extend \u3057\u3066\u304A\
     \u3044\u3066\u3082\u7D50\u679C\u306F\u540C\u3058\n    {\n        using M = static_modint<998244353>;\n\
     \        Combination<M>::extend(100000);\n        std::mt19937_64 rng(314);\n\
@@ -532,7 +534,7 @@ data:
   isVerificationFile: true
   path: test/unittest/combinatorics.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/combinatorics.test.cpp

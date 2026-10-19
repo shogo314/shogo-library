@@ -224,7 +224,7 @@ data:
     \u81F4\u3059\u308B\u304B (\u9577\u3055\u30FB\u6B63\u9806\u306E\u30CF\u30C3\u30B7\
     \u30E5\u30FB\u9006\u9806\u306E\u30CF\u30C3\u30B7\u30E5)\n    auto same = [&](const\
     \ RHString& t, const std::string& s) {\n        std::string r(s.rbegin(), s.rend());\n\
-    \        return t.size() == (long long)s.size() && t.hash1 == rh.build(s).back()\
+    \        return t.size() == static_cast<long long>(s.size()) && t.hash1 == rh.build(s).back()\
     \ && t.hash2 == rh.build(r).back();\n    };\n\n    for (int rep = 0; rep < 3000\
     \ && ok; rep++) {\n        std::string s = random_string(8), t = random_string(8);\n\
     \n        // \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF: \u6587\u5B57\u5217 (std::string\
@@ -250,31 +250,31 @@ data:
     concat equals whole\");\n\n        // \u56DE\u6587\u5224\u5B9A\n        check(a.is_palindrome()\
     \ == is_palindrome(s), \"is_palindrome\");\n        check((a + b).is_palindrome()\
     \ == is_palindrome(s + t), \"is_palindrome concat\");\n\n        // size, empty,\
-    \ clear\n        check(a.size() == (long long)s.size() && a.empty() == s.empty(),\
-    \ \"size/empty\");\n        RHString e = a;\n        e.clear();\n        check(e.empty()\
-    \ && e.size() == 0 && e == empty, \"clear\");\n\n        // assign \u3068 operator=\
-    \ \u306E\u5404\u7248\n        RHString f(rh);\n        f.assign(a);\n        check(f\
-    \ == a, \"assign(RHString)\");\n        f.assign(t);\n        check(same(f, t),\
-    \ \"assign(string)\");\n        f.assign(std::string_view(s));\n        check(same(f,\
-    \ s), \"assign(string_view)\");\n        std::vector<char> tv(t.begin(), t.end());\n\
-    \        f.assign(tv);\n        check(same(f, t), \"assign(vector)\");\n     \
-    \   f.assign('b');\n        check(same(f, \"b\"), \"assign(char)\");\n       \
-    \ f = b;\n        check(f == b, \"operator=(RHString)\");\n        f = s;\n  \
-    \      check(same(f, s), \"operator=(string)\");\n        f = std::string_view(t);\n\
+    \ clear\n        check(a.size() == static_cast<long long>(s.size()) && a.empty()\
+    \ == s.empty(), \"size/empty\");\n        RHString e = a;\n        e.clear();\n\
+    \        check(e.empty() && e.size() == 0 && e == empty, \"clear\");\n\n     \
+    \   // assign \u3068 operator= \u306E\u5404\u7248\n        RHString f(rh);\n \
+    \       f.assign(a);\n        check(f == a, \"assign(RHString)\");\n        f.assign(t);\n\
+    \        check(same(f, t), \"assign(string)\");\n        f.assign(std::string_view(s));\n\
+    \        check(same(f, s), \"assign(string_view)\");\n        std::vector<char>\
+    \ tv(t.begin(), t.end());\n        f.assign(tv);\n        check(same(f, t), \"\
+    assign(vector)\");\n        f.assign('b');\n        check(same(f, \"b\"), \"assign(char)\"\
+    );\n        f = b;\n        check(f == b, \"operator=(RHString)\");\n        f\
+    \ = s;\n        check(same(f, s), \"operator=(string)\");\n        f = std::string_view(t);\n\
     \        check(same(f, t), \"operator=(string_view)\");\n        f = sv;\n   \
     \     check(same(f, s), \"operator=(vector)\");\n        f = 'c';\n        check(same(f,\
     \ \"c\"), \"operator=(char)\");\n    }\n\n    // \u6574\u6570\u306E\u5217 (\u8CA0\
     \u306E\u5024\u3092\u542B\u3080) \u3067\u3082\u3001\u9023\u7D50\u3068\u6BD4\u8F03\
     \u304C\u5217\u3068\u3057\u3066\u306E\u4E00\u81F4\u3068\u5BFE\u5FDC\u3059\u308B\
     \n    for (int rep = 0; rep < 1000 && ok; rep++) {\n        std::vector<long long>\
-    \ x(rng() % 6), y(rng() % 6);\n        for (auto& v : x) v = (long long)(rng()\
-    \ % 5) - 2;\n        for (auto& v : y) v = (long long)(rng() % 5) - 2;\n     \
-    \   std::vector<long long> xy = x;\n        xy.insert(xy.end(), y.begin(), y.end());\n\
-    \        RHString hx(rh, x), hy(rh, y), hxy(rh, xy);\n        check(hx + hy ==\
-    \ hxy, \"vector<long long> concat\");\n        check((hx == hy) == (x == y), \"\
-    vector<long long> equality\");\n        check(hx.is_palindrome() == std::equal(x.begin(),\
-    \ x.end(), x.rbegin()), \"vector<long long> palindrome\");\n    }\n\n    if (ok)\
-    \ std::cout << \"Hello World\" << std::endl;\n}\n"
+    \ x(rng() % 6), y(rng() % 6);\n        for (auto& v : x) v = static_cast<long\
+    \ long>(rng() % 5) - 2;\n        for (auto& v : y) v = static_cast<long long>(rng()\
+    \ % 5) - 2;\n        std::vector<long long> xy = x;\n        xy.insert(xy.end(),\
+    \ y.begin(), y.end());\n        RHString hx(rh, x), hy(rh, y), hxy(rh, xy);\n\
+    \        check(hx + hy == hxy, \"vector<long long> concat\");\n        check((hx\
+    \ == hy) == (x == y), \"vector<long long> equality\");\n        check(hx.is_palindrome()\
+    \ == std::equal(x.begin(), x.end(), x.rbegin()), \"vector<long long> palindrome\"\
+    );\n    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// RHString \u3092 std::string \u3067\u611A\u76F4\u306B\u8A08\u7B97\u3057\u305F\
     \u7D50\u679C\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\
@@ -294,14 +294,14 @@ data:
     \u4E2D\u8EAB\u304C s \u3068\u4E00\u81F4\u3059\u308B\u304B (\u9577\u3055\u30FB\u6B63\
     \u9806\u306E\u30CF\u30C3\u30B7\u30E5\u30FB\u9006\u9806\u306E\u30CF\u30C3\u30B7\
     \u30E5)\n    auto same = [&](const RHString& t, const std::string& s) {\n    \
-    \    std::string r(s.rbegin(), s.rend());\n        return t.size() == (long long)s.size()\
-    \ && t.hash1 == rh.build(s).back() && t.hash2 == rh.build(r).back();\n    };\n\
-    \n    for (int rep = 0; rep < 3000 && ok; rep++) {\n        std::string s = random_string(8),\
-    \ t = random_string(8);\n\n        // \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\
-    : \u6587\u5B57\u5217 (std::string / const char* / string_view)\u30FBvector\u30FB\
-    1 \u6587\u5B57\u30FB\u7A7A\u30FB\u30B3\u30D4\u30FC\u30FB\u30CF\u30C3\u30B7\u30E5\
-    \u5024\u304B\u3089\n        RHString a(rh, s), b(rh, t);\n        check(same(a,\
-    \ s) && same(b, t), \"string constructor\");\n        check(same(RHString(rh,\
+    \    std::string r(s.rbegin(), s.rend());\n        return t.size() == static_cast<long\
+    \ long>(s.size()) && t.hash1 == rh.build(s).back() && t.hash2 == rh.build(r).back();\n\
+    \    };\n\n    for (int rep = 0; rep < 3000 && ok; rep++) {\n        std::string\
+    \ s = random_string(8), t = random_string(8);\n\n        // \u30B3\u30F3\u30B9\
+    \u30C8\u30E9\u30AF\u30BF: \u6587\u5B57\u5217 (std::string / const char* / string_view)\u30FB\
+    vector\u30FB1 \u6587\u5B57\u30FB\u7A7A\u30FB\u30B3\u30D4\u30FC\u30FB\u30CF\u30C3\
+    \u30B7\u30E5\u5024\u304B\u3089\n        RHString a(rh, s), b(rh, t);\n       \
+    \ check(same(a, s) && same(b, t), \"string constructor\");\n        check(same(RHString(rh,\
     \ s.c_str()), s), \"const char* constructor\");\n        check(same(RHString(rh,\
     \ std::string_view(s)), s), \"string_view constructor\");\n        std::vector<char>\
     \ sv(s.begin(), s.end());\n        check(same(RHString(rh, sv), s), \"vector constructor\"\
@@ -320,8 +320,8 @@ data:
     \ == RHString(rh, s + t), \"concat equals whole\");\n\n        // \u56DE\u6587\
     \u5224\u5B9A\n        check(a.is_palindrome() == is_palindrome(s), \"is_palindrome\"\
     );\n        check((a + b).is_palindrome() == is_palindrome(s + t), \"is_palindrome\
-    \ concat\");\n\n        // size, empty, clear\n        check(a.size() == (long\
-    \ long)s.size() && a.empty() == s.empty(), \"size/empty\");\n        RHString\
+    \ concat\");\n\n        // size, empty, clear\n        check(a.size() == static_cast<long\
+    \ long>(s.size()) && a.empty() == s.empty(), \"size/empty\");\n        RHString\
     \ e = a;\n        e.clear();\n        check(e.empty() && e.size() == 0 && e ==\
     \ empty, \"clear\");\n\n        // assign \u3068 operator= \u306E\u5404\u7248\n\
     \        RHString f(rh);\n        f.assign(a);\n        check(f == a, \"assign(RHString)\"\
@@ -338,21 +338,21 @@ data:
     \u3092\u542B\u3080) \u3067\u3082\u3001\u9023\u7D50\u3068\u6BD4\u8F03\u304C\u5217\
     \u3068\u3057\u3066\u306E\u4E00\u81F4\u3068\u5BFE\u5FDC\u3059\u308B\n    for (int\
     \ rep = 0; rep < 1000 && ok; rep++) {\n        std::vector<long long> x(rng()\
-    \ % 6), y(rng() % 6);\n        for (auto& v : x) v = (long long)(rng() % 5) -\
-    \ 2;\n        for (auto& v : y) v = (long long)(rng() % 5) - 2;\n        std::vector<long\
-    \ long> xy = x;\n        xy.insert(xy.end(), y.begin(), y.end());\n        RHString\
-    \ hx(rh, x), hy(rh, y), hxy(rh, xy);\n        check(hx + hy == hxy, \"vector<long\
-    \ long> concat\");\n        check((hx == hy) == (x == y), \"vector<long long>\
-    \ equality\");\n        check(hx.is_palindrome() == std::equal(x.begin(), x.end(),\
-    \ x.rbegin()), \"vector<long long> palindrome\");\n    }\n\n    if (ok) std::cout\
-    \ << \"Hello World\" << std::endl;\n}\n"
+    \ % 6), y(rng() % 6);\n        for (auto& v : x) v = static_cast<long long>(rng()\
+    \ % 5) - 2;\n        for (auto& v : y) v = static_cast<long long>(rng() % 5) -\
+    \ 2;\n        std::vector<long long> xy = x;\n        xy.insert(xy.end(), y.begin(),\
+    \ y.end());\n        RHString hx(rh, x), hy(rh, y), hxy(rh, xy);\n        check(hx\
+    \ + hy == hxy, \"vector<long long> concat\");\n        check((hx == hy) == (x\
+    \ == y), \"vector<long long> equality\");\n        check(hx.is_palindrome() ==\
+    \ std::equal(x.begin(), x.end(), x.rbegin()), \"vector<long long> palindrome\"\
+    );\n    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/string/rolling-hash.hpp
   - src/utility/traits.hpp
   isVerificationFile: true
   path: test/unittest/rolling-hash.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 03:36:18+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/rolling-hash.test.cpp

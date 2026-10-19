@@ -762,38 +762,38 @@ data:
     \ n)) ok = false;\n    }\n\n    // \u8981\u7D20\u6570\u304C\u5927\u304D\u3044\u5834\
     \u5408: \u5024\u3092\u6301\u3064\u4F4D\u7F6E\u3060\u3051\u3092 map \u3067\u6301\
     \u3063\u3066\u6BD4\u3079\u308B (\u548C\u306E\u30E2\u30CE\u30A4\u30C9)\n    for\
-    \ (int rep = 0; rep < 300 && ok; rep++) {\n        long long n = rep % 2 ? (long\
-    \ long)(rng() % 1000000000000000000ULL) + 1 : 1000000000000000000LL;\n       \
+    \ (int rep = 0; rep < 300 && ok; rep++) {\n        long long n = rep % 2 ? static_cast<long\
+    \ long>(rng() % 1000000000000000000ULL) + 1 : 1000000000000000000LL;\n       \
     \ DynamicSegTree seg(n, Monoid([](long long a, long long b) { return a + b; },\
     \ 0LL));\n        std::map<long long, long long> v;\n        auto random_pos =\
-    \ [&]() { return (long long)(rng() % n); };\n        auto naive_prod = [&](long\
-    \ long l, long long r) {\n            long long s = 0;\n            for (auto\
-    \ it = v.lower_bound(l); it != v.end() && it->first < r; ++it) s += it->second;\n\
-    \            return s;\n        };\n        for (int t = 0; t < 60; t++) {\n \
-    \           int op = rng() % 5;\n            long long l = random_pos(), r = random_pos();\n\
-    \            if (l > r) std::swap(l, r);\n            if (rng() % 4 == 0) r =\
-    \ n;\n            if (op == 0) {\n                long long k = random_pos(),\
-    \ x = rng() % 10;\n                seg.set(k, x);\n                v[k] = x;\n\
-    \            } else if (op == 1) {\n                if (seg.prod(l, r) != naive_prod(l,\
-    \ r)) ok = false;\n            } else if (op == 2) {\n                // \u548C\
-    \u304C lim \u4EE5\u4E0B\u306B\u306A\u308B\u6700\u5927\u306E r\n              \
-    \  long long lim = rng() % 30, s = 0, expect = n;\n                for (auto it\
-    \ = v.lower_bound(l); it != v.end(); ++it) {\n                    if (s + it->second\
-    \ > lim) {\n                        expect = it->first;\n                    \
-    \    break;\n                    }\n                    s += it->second;\n   \
-    \             }\n                if (seg.max_right(l, [&](long long x) { return\
-    \ x <= lim; }) != expect) ok = false;\n            } else if (op == 3) {\n   \
-    \             long long lim = rng() % 30, s = 0, expect = 0;\n               \
-    \ for (auto it = v.lower_bound(r); it != v.begin();) {\n                    --it;\n\
-    \                    if (s + it->second > lim) {\n                        expect\
-    \ = it->first + 1;\n                        break;\n                    }\n  \
-    \                  s += it->second;\n                }\n                if (seg.min_left(r,\
-    \ [&](long long x) { return x <= lim; }) != expect) ok = false;\n            }\
-    \ else {\n                long long k = v.empty() || rng() % 2 ? random_pos()\
-    \ : v.begin()->first;\n                long long expect = v.count(k) ? v[k] :\
-    \ 0;\n                if (seg.get(k) != expect) ok = false;\n            }\n \
-    \       }\n        if (seg.all_prod() != naive_prod(0, n) || seg.size() != n)\
-    \ ok = false;\n    }\n\n    // \u8981\u7D20\u6570 0\n    {\n        DynamicSegTree<monoid::Sum<int>>\
+    \ [&]() { return static_cast<long long>(rng() % n); };\n        auto naive_prod\
+    \ = [&](long long l, long long r) {\n            long long s = 0;\n          \
+    \  for (auto it = v.lower_bound(l); it != v.end() && it->first < r; ++it) s +=\
+    \ it->second;\n            return s;\n        };\n        for (int t = 0; t <\
+    \ 60; t++) {\n            int op = rng() % 5;\n            long long l = random_pos(),\
+    \ r = random_pos();\n            if (l > r) std::swap(l, r);\n            if (rng()\
+    \ % 4 == 0) r = n;\n            if (op == 0) {\n                long long k =\
+    \ random_pos(), x = rng() % 10;\n                seg.set(k, x);\n            \
+    \    v[k] = x;\n            } else if (op == 1) {\n                if (seg.prod(l,\
+    \ r) != naive_prod(l, r)) ok = false;\n            } else if (op == 2) {\n   \
+    \             // \u548C\u304C lim \u4EE5\u4E0B\u306B\u306A\u308B\u6700\u5927\u306E\
+    \ r\n                long long lim = rng() % 30, s = 0, expect = n;\n        \
+    \        for (auto it = v.lower_bound(l); it != v.end(); ++it) {\n           \
+    \         if (s + it->second > lim) {\n                        expect = it->first;\n\
+    \                        break;\n                    }\n                    s\
+    \ += it->second;\n                }\n                if (seg.max_right(l, [&](long\
+    \ long x) { return x <= lim; }) != expect) ok = false;\n            } else if\
+    \ (op == 3) {\n                long long lim = rng() % 30, s = 0, expect = 0;\n\
+    \                for (auto it = v.lower_bound(r); it != v.begin();) {\n      \
+    \              --it;\n                    if (s + it->second > lim) {\n      \
+    \                  expect = it->first + 1;\n                        break;\n \
+    \                   }\n                    s += it->second;\n                }\n\
+    \                if (seg.min_left(r, [&](long long x) { return x <= lim; }) !=\
+    \ expect) ok = false;\n            } else {\n                long long k = v.empty()\
+    \ || rng() % 2 ? random_pos() : v.begin()->first;\n                long long expect\
+    \ = v.count(k) ? v[k] : 0;\n                if (seg.get(k) != expect) ok = false;\n\
+    \            }\n        }\n        if (seg.all_prod() != naive_prod(0, n) || seg.size()\
+    \ != n) ok = false;\n    }\n\n    // \u8981\u7D20\u6570 0\n    {\n        DynamicSegTree<monoid::Sum<int>>\
     \ empty;\n        if (empty.size() != 0 || empty.prod(0, 0) != 0 || empty.all_prod()\
     \ != 0) ok = false;\n        if (empty.max_right(0, [](int) { return true; })\
     \ != 0 || empty.min_left(0, [](int) { return true; }) != 0) ok = false;\n    }\n\
@@ -848,28 +848,28 @@ data:
     \n    // \u8981\u7D20\u6570\u304C\u5927\u304D\u3044\u5834\u5408: \u5024\u3092\u6301\
     \u3064\u4F4D\u7F6E\u3060\u3051\u3092 map \u3067\u6301\u3063\u3066\u6BD4\u3079\u308B\
     \ (\u548C\u306E\u30E2\u30CE\u30A4\u30C9)\n    for (int rep = 0; rep < 300 && ok;\
-    \ rep++) {\n        long long n = rep % 2 ? (long long)(rng() % 1000000000000000000ULL)\
+    \ rep++) {\n        long long n = rep % 2 ? static_cast<long long>(rng() % 1000000000000000000ULL)\
     \ + 1 : 1000000000000000000LL;\n        DynamicSegTree seg(n, Monoid([](long long\
     \ a, long long b) { return a + b; }, 0LL));\n        std::map<long long, long\
-    \ long> v;\n        auto random_pos = [&]() { return (long long)(rng() % n); };\n\
-    \        auto naive_prod = [&](long long l, long long r) {\n            long long\
-    \ s = 0;\n            for (auto it = v.lower_bound(l); it != v.end() && it->first\
-    \ < r; ++it) s += it->second;\n            return s;\n        };\n        for\
-    \ (int t = 0; t < 60; t++) {\n            int op = rng() % 5;\n            long\
-    \ long l = random_pos(), r = random_pos();\n            if (l > r) std::swap(l,\
-    \ r);\n            if (rng() % 4 == 0) r = n;\n            if (op == 0) {\n  \
-    \              long long k = random_pos(), x = rng() % 10;\n                seg.set(k,\
-    \ x);\n                v[k] = x;\n            } else if (op == 1) {\n        \
-    \        if (seg.prod(l, r) != naive_prod(l, r)) ok = false;\n            } else\
-    \ if (op == 2) {\n                // \u548C\u304C lim \u4EE5\u4E0B\u306B\u306A\
-    \u308B\u6700\u5927\u306E r\n                long long lim = rng() % 30, s = 0,\
-    \ expect = n;\n                for (auto it = v.lower_bound(l); it != v.end();\
-    \ ++it) {\n                    if (s + it->second > lim) {\n                 \
-    \       expect = it->first;\n                        break;\n                \
-    \    }\n                    s += it->second;\n                }\n            \
-    \    if (seg.max_right(l, [&](long long x) { return x <= lim; }) != expect) ok\
-    \ = false;\n            } else if (op == 3) {\n                long long lim =\
-    \ rng() % 30, s = 0, expect = 0;\n                for (auto it = v.lower_bound(r);\
+    \ long> v;\n        auto random_pos = [&]() { return static_cast<long long>(rng()\
+    \ % n); };\n        auto naive_prod = [&](long long l, long long r) {\n      \
+    \      long long s = 0;\n            for (auto it = v.lower_bound(l); it != v.end()\
+    \ && it->first < r; ++it) s += it->second;\n            return s;\n        };\n\
+    \        for (int t = 0; t < 60; t++) {\n            int op = rng() % 5;\n   \
+    \         long long l = random_pos(), r = random_pos();\n            if (l > r)\
+    \ std::swap(l, r);\n            if (rng() % 4 == 0) r = n;\n            if (op\
+    \ == 0) {\n                long long k = random_pos(), x = rng() % 10;\n     \
+    \           seg.set(k, x);\n                v[k] = x;\n            } else if (op\
+    \ == 1) {\n                if (seg.prod(l, r) != naive_prod(l, r)) ok = false;\n\
+    \            } else if (op == 2) {\n                // \u548C\u304C lim \u4EE5\
+    \u4E0B\u306B\u306A\u308B\u6700\u5927\u306E r\n                long long lim =\
+    \ rng() % 30, s = 0, expect = n;\n                for (auto it = v.lower_bound(l);\
+    \ it != v.end(); ++it) {\n                    if (s + it->second > lim) {\n  \
+    \                      expect = it->first;\n                        break;\n \
+    \                   }\n                    s += it->second;\n                }\n\
+    \                if (seg.max_right(l, [&](long long x) { return x <= lim; }) !=\
+    \ expect) ok = false;\n            } else if (op == 3) {\n                long\
+    \ long lim = rng() % 30, s = 0, expect = 0;\n                for (auto it = v.lower_bound(r);\
     \ it != v.begin();) {\n                    --it;\n                    if (s +\
     \ it->second > lim) {\n                        expect = it->first + 1;\n     \
     \                   break;\n                    }\n                    s += it->second;\n\
@@ -892,7 +892,7 @@ data:
   isVerificationFile: true
   path: test/unittest/dynamic-segtree.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 12:03:10+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/dynamic-segtree.test.cpp

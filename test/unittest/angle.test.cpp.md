@@ -486,27 +486,27 @@ data:
     \ closest_point_pair_squared(points);\n}\n#line 15 \"test/unittest/angle.test.cpp\"\
     \n\nint main() {\n    bool ok = true;\n    const double pi = std::acos(-1.0);\n\
     \    // \u504F\u89D2\u3092 [0, 2\u03C0) \u3067\u8FD4\u3059\u3002\u96F6\u30D9\u30AF\
-    \u30C8\u30EB\u306F 0\n    auto arg = [&](int x, int y) {\n        double t = std::atan2((double)y,\
-    \ (double)x);\n        return t < 0 ? t + 2 * pi : t;\n    };\n    std::vector<std::pair<int,\
-    \ int>> ps;\n    for (int x = -4; x <= 4; x++) {\n        for (int y = -4; y <=\
-    \ 4; y++) ps.emplace_back(x, y);\n    }\n    for (auto [ax, ay] : ps) {\n    \
-    \    Angle<long long> a(ax, ay);\n        ok = ok && std::abs(a.radian() - arg(ax,\
-    \ ay)) < 1e-12;\n        ok = ok && a.is_zero() == (ax == 0 && ay == 0);\n   \
-    \     ok = ok && a.half() == (arg(ax, ay) >= pi - 1e-12);\n        for (auto [bx,\
-    \ by] : ps) {\n            Angle<long long> b(bx, by);\n            double ta\
-    \ = arg(ax, ay), tb = arg(bx, by);\n            bool lt = ta < tb - 1e-12, eq\
-    \ = std::abs(ta - tb) < 1e-12;\n            ok = ok && (a < b) == lt && (b > a)\
-    \ == lt;\n            ok = ok && (a == b) == eq && (a != b) == !eq;\n        \
-    \    ok = ok && (a <= b) == (lt || eq) && (b >= a) == (lt || eq);\n        }\n\
-    \    }\n\n    // Vector\u3001std::array\u3001std::pair \u304B\u3089\u4F5C\u308C\
-    \u308B\n    Vector<long long> v(-3, 2);\n    std::array<long long, 2> w{-3, 2};\n\
-    \    std::pair<long long, long long> p(-3, 2);\n    Angle av(v), aw(w), ap(p);\n\
-    \    ok = ok && av.x == -3 && av.y == 2 && aw.x == -3 && aw.y == 2 && ap.x ==\
-    \ -3 && ap.y == 2;\n    ok = ok && av == Angle<long long>(-6, 4);\n    // \u6D6E\
-    \u52D5\u5C0F\u6570\u70B9\u578B\u3067\u3082\u4F7F\u3048\u308B\n    ok = ok && Angle(1.0,\
-    \ 1.0) < Angle(-1.0, 0.0) && !(Angle(0.0, 0.0) < Angle(2.0, 0.0));\n\n    if (ok)\n\
-    \        std::cout << \"Hello World\" << std::endl;\n    else\n        std::cerr\
-    \ << \"failed\" << std::endl;\n}\n"
+    \u30C8\u30EB\u306F 0\n    auto arg = [&](int x, int y) {\n        double t = std::atan2(static_cast<double>(y),\
+    \ static_cast<double>(x));\n        return t < 0 ? t + 2 * pi : t;\n    };\n \
+    \   std::vector<std::pair<int, int>> ps;\n    for (int x = -4; x <= 4; x++) {\n\
+    \        for (int y = -4; y <= 4; y++) ps.emplace_back(x, y);\n    }\n    for\
+    \ (auto [ax, ay] : ps) {\n        Angle<long long> a(ax, ay);\n        ok = ok\
+    \ && std::abs(a.radian() - arg(ax, ay)) < 1e-12;\n        ok = ok && a.is_zero()\
+    \ == (ax == 0 && ay == 0);\n        ok = ok && a.half() == (arg(ax, ay) >= pi\
+    \ - 1e-12);\n        for (auto [bx, by] : ps) {\n            Angle<long long>\
+    \ b(bx, by);\n            double ta = arg(ax, ay), tb = arg(bx, by);\n       \
+    \     bool lt = ta < tb - 1e-12, eq = std::abs(ta - tb) < 1e-12;\n           \
+    \ ok = ok && (a < b) == lt && (b > a) == lt;\n            ok = ok && (a == b)\
+    \ == eq && (a != b) == !eq;\n            ok = ok && (a <= b) == (lt || eq) &&\
+    \ (b >= a) == (lt || eq);\n        }\n    }\n\n    // Vector\u3001std::array\u3001\
+    std::pair \u304B\u3089\u4F5C\u308C\u308B\n    Vector<long long> v(-3, 2);\n  \
+    \  std::array<long long, 2> w{-3, 2};\n    std::pair<long long, long long> p(-3,\
+    \ 2);\n    Angle av(v), aw(w), ap(p);\n    ok = ok && av.x == -3 && av.y == 2\
+    \ && aw.x == -3 && aw.y == 2 && ap.x == -3 && ap.y == 2;\n    ok = ok && av ==\
+    \ Angle<long long>(-6, 4);\n    // \u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u3067\u3082\
+    \u4F7F\u3048\u308B\n    ok = ok && Angle(1.0, 1.0) < Angle(-1.0, 0.0) && !(Angle(0.0,\
+    \ 0.0) < Angle(2.0, 0.0));\n\n    if (ok)\n        std::cout << \"Hello World\"\
+    \ << std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// geometry/angle.hpp \u306E Angle \u3092\u3001atan2 \u3067\u6C42\u3081\u305F\
     \u504F\u89D2\u3068\u6BD4\u3079\u3066\u78BA\u304B\u3081\u308B\n// \u554F\u984C\u306E\
@@ -516,27 +516,27 @@ data:
     #include <vector>\n\n#include \"../../src/geometry/vector.hpp\"\n\nint main()\
     \ {\n    bool ok = true;\n    const double pi = std::acos(-1.0);\n    // \u504F\
     \u89D2\u3092 [0, 2\u03C0) \u3067\u8FD4\u3059\u3002\u96F6\u30D9\u30AF\u30C8\u30EB\
-    \u306F 0\n    auto arg = [&](int x, int y) {\n        double t = std::atan2((double)y,\
-    \ (double)x);\n        return t < 0 ? t + 2 * pi : t;\n    };\n    std::vector<std::pair<int,\
-    \ int>> ps;\n    for (int x = -4; x <= 4; x++) {\n        for (int y = -4; y <=\
-    \ 4; y++) ps.emplace_back(x, y);\n    }\n    for (auto [ax, ay] : ps) {\n    \
-    \    Angle<long long> a(ax, ay);\n        ok = ok && std::abs(a.radian() - arg(ax,\
-    \ ay)) < 1e-12;\n        ok = ok && a.is_zero() == (ax == 0 && ay == 0);\n   \
-    \     ok = ok && a.half() == (arg(ax, ay) >= pi - 1e-12);\n        for (auto [bx,\
-    \ by] : ps) {\n            Angle<long long> b(bx, by);\n            double ta\
-    \ = arg(ax, ay), tb = arg(bx, by);\n            bool lt = ta < tb - 1e-12, eq\
-    \ = std::abs(ta - tb) < 1e-12;\n            ok = ok && (a < b) == lt && (b > a)\
-    \ == lt;\n            ok = ok && (a == b) == eq && (a != b) == !eq;\n        \
-    \    ok = ok && (a <= b) == (lt || eq) && (b >= a) == (lt || eq);\n        }\n\
-    \    }\n\n    // Vector\u3001std::array\u3001std::pair \u304B\u3089\u4F5C\u308C\
-    \u308B\n    Vector<long long> v(-3, 2);\n    std::array<long long, 2> w{-3, 2};\n\
-    \    std::pair<long long, long long> p(-3, 2);\n    Angle av(v), aw(w), ap(p);\n\
-    \    ok = ok && av.x == -3 && av.y == 2 && aw.x == -3 && aw.y == 2 && ap.x ==\
-    \ -3 && ap.y == 2;\n    ok = ok && av == Angle<long long>(-6, 4);\n    // \u6D6E\
-    \u52D5\u5C0F\u6570\u70B9\u578B\u3067\u3082\u4F7F\u3048\u308B\n    ok = ok && Angle(1.0,\
-    \ 1.0) < Angle(-1.0, 0.0) && !(Angle(0.0, 0.0) < Angle(2.0, 0.0));\n\n    if (ok)\n\
-    \        std::cout << \"Hello World\" << std::endl;\n    else\n        std::cerr\
-    \ << \"failed\" << std::endl;\n}\n"
+    \u306F 0\n    auto arg = [&](int x, int y) {\n        double t = std::atan2(static_cast<double>(y),\
+    \ static_cast<double>(x));\n        return t < 0 ? t + 2 * pi : t;\n    };\n \
+    \   std::vector<std::pair<int, int>> ps;\n    for (int x = -4; x <= 4; x++) {\n\
+    \        for (int y = -4; y <= 4; y++) ps.emplace_back(x, y);\n    }\n    for\
+    \ (auto [ax, ay] : ps) {\n        Angle<long long> a(ax, ay);\n        ok = ok\
+    \ && std::abs(a.radian() - arg(ax, ay)) < 1e-12;\n        ok = ok && a.is_zero()\
+    \ == (ax == 0 && ay == 0);\n        ok = ok && a.half() == (arg(ax, ay) >= pi\
+    \ - 1e-12);\n        for (auto [bx, by] : ps) {\n            Angle<long long>\
+    \ b(bx, by);\n            double ta = arg(ax, ay), tb = arg(bx, by);\n       \
+    \     bool lt = ta < tb - 1e-12, eq = std::abs(ta - tb) < 1e-12;\n           \
+    \ ok = ok && (a < b) == lt && (b > a) == lt;\n            ok = ok && (a == b)\
+    \ == eq && (a != b) == !eq;\n            ok = ok && (a <= b) == (lt || eq) &&\
+    \ (b >= a) == (lt || eq);\n        }\n    }\n\n    // Vector\u3001std::array\u3001\
+    std::pair \u304B\u3089\u4F5C\u308C\u308B\n    Vector<long long> v(-3, 2);\n  \
+    \  std::array<long long, 2> w{-3, 2};\n    std::pair<long long, long long> p(-3,\
+    \ 2);\n    Angle av(v), aw(w), ap(p);\n    ok = ok && av.x == -3 && av.y == 2\
+    \ && aw.x == -3 && aw.y == 2 && ap.x == -3 && ap.y == 2;\n    ok = ok && av ==\
+    \ Angle<long long>(-6, 4);\n    // \u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u3067\u3082\
+    \u4F7F\u3048\u308B\n    ok = ok && Angle(1.0, 1.0) < Angle(-1.0, 0.0) && !(Angle(0.0,\
+    \ 0.0) < Angle(2.0, 0.0));\n\n    if (ok)\n        std::cout << \"Hello World\"\
+    \ << std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/geometry/angle.hpp
   - src/geometry/vector.hpp
@@ -544,7 +544,7 @@ data:
   isVerificationFile: true
   path: test/unittest/angle.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/angle.test.cpp

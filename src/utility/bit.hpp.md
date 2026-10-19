@@ -146,8 +146,11 @@ data:
     \ c;\n            mask >>= w;\n            res += w;\n        }\n    }\n    return\
     \ res;\n}\n/**\n * @brief 0 ^ 1 ^ ... ^ n\n */\ninline constexpr long long xor_upto(long\
     \ long n) {\n    assert(n >= 0);\n    // 4 \u3064\u3054\u3068\u306B\u5468\u671F\
-    \u7684\u306B\u306A\u308B\n    long long r = n & 3;\n    return r == 0 ? n : r\
-    \ == 1 ? 1 : r == 2 ? n + 1 : 0;\n}\n/**\n * @brief 0 \u4EE5\u4E0A n \u4EE5\u4E0B\
+    \u7684\u306B\u306A\u308B\n    long long r = n & 3;\n    // r \u3054\u3068\u306E\
+    \u5024\u306E\u8868\u3068\u3057\u3066\u8AAD\u3081\u308B\u3088\u3046\u306B 1 \u884C\
+    \u3067\u66F8\u3044\u3066\u3044\u308B\u306E\u3067\u6574\u5F62\u3057\u306A\u3044\
+    \n    // clang-format off\n    return r == 0 ? n : r == 1 ? 1 : r == 2 ? n + 1\
+    \ : 0;\n    // clang-format on\n}\n/**\n * @brief 0 \u4EE5\u4E0A n \u4EE5\u4E0B\
     \u306E\u6574\u6570\u306E\u3046\u3061\u3001i \u30D3\u30C3\u30C8\u76EE\u304C\u7ACB\
     \u3063\u3066\u3044\u308B\u3082\u306E\u306E\u6570\n */\ninline constexpr long long\
     \ count_bit_upto(long long n, long long i) {\n    assert(0 <= n && n < 0x7fffffffffffffffLL\
@@ -405,8 +408,11 @@ data:
     \ c;\n            mask >>= w;\n            res += w;\n        }\n    }\n    return\
     \ res;\n}\n/**\n * @brief 0 ^ 1 ^ ... ^ n\n */\ninline constexpr long long xor_upto(long\
     \ long n) {\n    assert(n >= 0);\n    // 4 \u3064\u3054\u3068\u306B\u5468\u671F\
-    \u7684\u306B\u306A\u308B\n    long long r = n & 3;\n    return r == 0 ? n : r\
-    \ == 1 ? 1 : r == 2 ? n + 1 : 0;\n}\n/**\n * @brief 0 \u4EE5\u4E0A n \u4EE5\u4E0B\
+    \u7684\u306B\u306A\u308B\n    long long r = n & 3;\n    // r \u3054\u3068\u306E\
+    \u5024\u306E\u8868\u3068\u3057\u3066\u8AAD\u3081\u308B\u3088\u3046\u306B 1 \u884C\
+    \u3067\u66F8\u3044\u3066\u3044\u308B\u306E\u3067\u6574\u5F62\u3057\u306A\u3044\
+    \n    // clang-format off\n    return r == 0 ? n : r == 1 ? 1 : r == 2 ? n + 1\
+    \ : 0;\n    // clang-format on\n}\n/**\n * @brief 0 \u4EE5\u4E0A n \u4EE5\u4E0B\
     \u306E\u6574\u6570\u306E\u3046\u3061\u3001i \u30D3\u30C3\u30C8\u76EE\u304C\u7ACB\
     \u3063\u3066\u3044\u308B\u3082\u306E\u306E\u6570\n */\ninline constexpr long long\
     \ count_bit_upto(long long n, long long i) {\n    assert(0 <= n && n < 0x7fffffffffffffffLL\
@@ -538,7 +544,7 @@ data:
   isVerificationFile: false
   path: src/utility/bit.hpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:29:38+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/bit.test.cpp

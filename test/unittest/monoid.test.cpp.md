@@ -611,7 +611,7 @@ data:
     \ rng(314);\n\n    // And / Or: \u5358\u4F4D\u5143\u306F\u305D\u308C\u305E\u308C\
     \u5168\u30D3\u30C3\u30C8 1 \u3068 0\n    check(monoid::And<unsigned>::e() == ~0u,\
     \ \"And::e\");\n    check(monoid::Or<unsigned>::e() == 0u, \"Or::e\");\n    auto\
-    \ gen_bits = [&] { return (unsigned)(rng() % 64); };\n    test_segtree<monoid::And<unsigned>>([](unsigned\
+    \ gen_bits = [&] { return static_cast<unsigned>(rng() % 64); };\n    test_segtree<monoid::And<unsigned>>([](unsigned\
     \ a, unsigned b) { return a & b; }, ~0u, gen_bits, rng, \"And\");\n    test_segtree<monoid::Or<unsigned>>([](unsigned\
     \ a, unsigned b) { return a | b; }, 0u, gen_bits, rng, \"Or\");\n\n    // Parenthesis:\
     \ \u533A\u9593\u304C\u6B63\u3057\u3044\u62EC\u5F27\u5217\u304B\u3092 is_valid\
@@ -634,12 +634,13 @@ data:
     , \"Affine <<\");\n        // Composite \u3067\u5408\u6210\u3057\u305F\u7D50\u679C\
     \u304C\u95A2\u6570\u306E\u5408\u6210 a\u2218b \u3068\u4E00\u81F4\u3059\u308B\u3002\
     Reverse \u306F b\u2218a\n        for (int rep = 0; rep < 1000 && ok; rep++) {\n\
-    \            Affine<long long> a{(long long)(rng() % 7) - 3, (long long)(rng()\
-    \ % 7) - 3};\n            Affine<long long> b{(long long)(rng() % 7) - 3, (long\
-    \ long)(rng() % 7) - 3};\n            long long x = (long long)(rng() % 7) - 3;\n\
-    \            auto c = monoid::Composite<long long>::op(a, b);\n            check(c(x)\
-    \ == a(b(x)), \"Composite op\");\n            check(c == Affine<long long>{a.a\
-    \ * b.a, a.a * b.b + a.b}, \"Affine == after op\");\n            auto d = monoid::Reverse<monoid::Composite<long\
+    \            Affine<long long> a{static_cast<long long>(rng() % 7) - 3, static_cast<long\
+    \ long>(rng() % 7) - 3};\n            Affine<long long> b{static_cast<long long>(rng()\
+    \ % 7) - 3, static_cast<long long>(rng() % 7) - 3};\n            long long x =\
+    \ static_cast<long long>(rng() % 7) - 3;\n            auto c = monoid::Composite<long\
+    \ long>::op(a, b);\n            check(c(x) == a(b(x)), \"Composite op\");\n  \
+    \          check(c == Affine<long long>{a.a * b.a, a.a * b.b + a.b}, \"Affine\
+    \ == after op\");\n            auto d = monoid::Reverse<monoid::Composite<long\
     \ long>>().op(a, b);\n            check(d(x) == b(a(x)), \"Reverse<Composite>\
     \ op\");\n        }\n    }\n\n    // Clamp: ==, !=, \u5165\u51FA\u529B, \u65E2\
     \u5B9A\u5024\u306F\u6052\u7B49\u5199\u50CF\n    {\n        Clamp<long long> f{2,\
@@ -745,8 +746,8 @@ data:
     \ / SuffixSumMin / MaxSubarraySum: \u7A7A\u3092\u542B\u3080 prefix\u30FBsuffix\u30FB\
     \u9023\u7D9A\u90E8\u5206\u5217\u306E\u548C\n    for (int rep = 0; rep < 300 &&\
     \ ok; rep++) {\n        int n = rng() % 12 + 1;\n        std::vector<long long>\
-    \ a(n);\n        for (auto& x : a) x = (long long)(rng() % 21) - 10;\n       \
-    \ SegTree<monoid::PrefixSumMax<long long>> pmax(std::vector<monoid::PrefixSumMax<long\
+    \ a(n);\n        for (auto& x : a) x = static_cast<long long>(rng() % 21) - 10;\n\
+    \        SegTree<monoid::PrefixSumMax<long long>> pmax(std::vector<monoid::PrefixSumMax<long\
     \ long>::S>(a.begin(), a.end()));\n        SegTree<monoid::PrefixSumMin<long long>>\
     \ pmin(std::vector<monoid::PrefixSumMin<long long>::S>(a.begin(), a.end()));\n\
     \        SegTree<monoid::SuffixSumMax<long long>> smax(std::vector<monoid::SuffixSumMax<long\
@@ -754,8 +755,8 @@ data:
     \ smin(std::vector<monoid::SuffixSumMin<long long>::S>(a.begin(), a.end()));\n\
     \        SegTree<monoid::MaxSubarraySum<long long>> msub(std::vector<monoid::MaxSubarraySum<long\
     \ long>::S>(a.begin(), a.end()));\n        for (int q = 0; q < 10 && ok; q++)\
-    \ {\n            int k = rng() % n;\n            a[k] = (long long)(rng() % 21)\
-    \ - 10;\n            pmax.set(k, a[k]), pmin.set(k, a[k]), smax.set(k, a[k]),\
+    \ {\n            int k = rng() % n;\n            a[k] = static_cast<long long>(rng()\
+    \ % 21) - 10;\n            pmax.set(k, a[k]), pmin.set(k, a[k]), smax.set(k, a[k]),\
     \ smin.set(k, a[k]), msub.set(k, a[k]);\n            for (int l = 0; l <= n; l++)\
     \ {\n                for (int r = l; r <= n; r++) {\n                    long\
     \ long sum = 0, pre_max = 0, pre_min = 0, suf_max = 0, suf_min = 0, best = 0;\n\
@@ -822,9 +823,9 @@ data:
     \ name);\n    }\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n\n    // And\
     \ / Or: \u5358\u4F4D\u5143\u306F\u305D\u308C\u305E\u308C\u5168\u30D3\u30C3\u30C8\
     \ 1 \u3068 0\n    check(monoid::And<unsigned>::e() == ~0u, \"And::e\");\n    check(monoid::Or<unsigned>::e()\
-    \ == 0u, \"Or::e\");\n    auto gen_bits = [&] { return (unsigned)(rng() % 64);\
-    \ };\n    test_segtree<monoid::And<unsigned>>([](unsigned a, unsigned b) { return\
-    \ a & b; }, ~0u, gen_bits, rng, \"And\");\n    test_segtree<monoid::Or<unsigned>>([](unsigned\
+    \ == 0u, \"Or::e\");\n    auto gen_bits = [&] { return static_cast<unsigned>(rng()\
+    \ % 64); };\n    test_segtree<monoid::And<unsigned>>([](unsigned a, unsigned b)\
+    \ { return a & b; }, ~0u, gen_bits, rng, \"And\");\n    test_segtree<monoid::Or<unsigned>>([](unsigned\
     \ a, unsigned b) { return a | b; }, 0u, gen_bits, rng, \"Or\");\n\n    // Parenthesis:\
     \ \u533A\u9593\u304C\u6B63\u3057\u3044\u62EC\u5F27\u5217\u304B\u3092 is_valid\
     \ \u3067\u5224\u5B9A\u3059\u308B\n    for (int rep = 0; rep < 300 && ok; rep++)\
@@ -846,12 +847,13 @@ data:
     , \"Affine <<\");\n        // Composite \u3067\u5408\u6210\u3057\u305F\u7D50\u679C\
     \u304C\u95A2\u6570\u306E\u5408\u6210 a\u2218b \u3068\u4E00\u81F4\u3059\u308B\u3002\
     Reverse \u306F b\u2218a\n        for (int rep = 0; rep < 1000 && ok; rep++) {\n\
-    \            Affine<long long> a{(long long)(rng() % 7) - 3, (long long)(rng()\
-    \ % 7) - 3};\n            Affine<long long> b{(long long)(rng() % 7) - 3, (long\
-    \ long)(rng() % 7) - 3};\n            long long x = (long long)(rng() % 7) - 3;\n\
-    \            auto c = monoid::Composite<long long>::op(a, b);\n            check(c(x)\
-    \ == a(b(x)), \"Composite op\");\n            check(c == Affine<long long>{a.a\
-    \ * b.a, a.a * b.b + a.b}, \"Affine == after op\");\n            auto d = monoid::Reverse<monoid::Composite<long\
+    \            Affine<long long> a{static_cast<long long>(rng() % 7) - 3, static_cast<long\
+    \ long>(rng() % 7) - 3};\n            Affine<long long> b{static_cast<long long>(rng()\
+    \ % 7) - 3, static_cast<long long>(rng() % 7) - 3};\n            long long x =\
+    \ static_cast<long long>(rng() % 7) - 3;\n            auto c = monoid::Composite<long\
+    \ long>::op(a, b);\n            check(c(x) == a(b(x)), \"Composite op\");\n  \
+    \          check(c == Affine<long long>{a.a * b.a, a.a * b.b + a.b}, \"Affine\
+    \ == after op\");\n            auto d = monoid::Reverse<monoid::Composite<long\
     \ long>>().op(a, b);\n            check(d(x) == b(a(x)), \"Reverse<Composite>\
     \ op\");\n        }\n    }\n\n    // Clamp: ==, !=, \u5165\u51FA\u529B, \u65E2\
     \u5B9A\u5024\u306F\u6052\u7B49\u5199\u50CF\n    {\n        Clamp<long long> f{2,\
@@ -957,8 +959,8 @@ data:
     \ / SuffixSumMin / MaxSubarraySum: \u7A7A\u3092\u542B\u3080 prefix\u30FBsuffix\u30FB\
     \u9023\u7D9A\u90E8\u5206\u5217\u306E\u548C\n    for (int rep = 0; rep < 300 &&\
     \ ok; rep++) {\n        int n = rng() % 12 + 1;\n        std::vector<long long>\
-    \ a(n);\n        for (auto& x : a) x = (long long)(rng() % 21) - 10;\n       \
-    \ SegTree<monoid::PrefixSumMax<long long>> pmax(std::vector<monoid::PrefixSumMax<long\
+    \ a(n);\n        for (auto& x : a) x = static_cast<long long>(rng() % 21) - 10;\n\
+    \        SegTree<monoid::PrefixSumMax<long long>> pmax(std::vector<monoid::PrefixSumMax<long\
     \ long>::S>(a.begin(), a.end()));\n        SegTree<monoid::PrefixSumMin<long long>>\
     \ pmin(std::vector<monoid::PrefixSumMin<long long>::S>(a.begin(), a.end()));\n\
     \        SegTree<monoid::SuffixSumMax<long long>> smax(std::vector<monoid::SuffixSumMax<long\
@@ -966,8 +968,8 @@ data:
     \ smin(std::vector<monoid::SuffixSumMin<long long>::S>(a.begin(), a.end()));\n\
     \        SegTree<monoid::MaxSubarraySum<long long>> msub(std::vector<monoid::MaxSubarraySum<long\
     \ long>::S>(a.begin(), a.end()));\n        for (int q = 0; q < 10 && ok; q++)\
-    \ {\n            int k = rng() % n;\n            a[k] = (long long)(rng() % 21)\
-    \ - 10;\n            pmax.set(k, a[k]), pmin.set(k, a[k]), smax.set(k, a[k]),\
+    \ {\n            int k = rng() % n;\n            a[k] = static_cast<long long>(rng()\
+    \ % 21) - 10;\n            pmax.set(k, a[k]), pmin.set(k, a[k]), smax.set(k, a[k]),\
     \ smin.set(k, a[k]), msub.set(k, a[k]);\n            for (int l = 0; l <= n; l++)\
     \ {\n                for (int r = l; r <= n; r++) {\n                    long\
     \ long sum = 0, pre_max = 0, pre_min = 0, suf_max = 0, suf_min = 0, best = 0;\n\
@@ -1005,7 +1007,7 @@ data:
   isVerificationFile: true
   path: test/unittest/monoid.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 12:03:10+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/monoid.test.cpp

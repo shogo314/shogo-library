@@ -264,9 +264,9 @@ data:
     \   UnionFind uf(n);\n    long long sum = 0;\n    std::vector<int> ids;\n    for\
     \ (const auto& e : es) {\n        if (uf.merge(e.src, e.dst)) {\n            sum\
     \ += e.cost;\n            ids.push_back(e.id);\n        }\n    }\n    std::cout\
-    \ << sum << '\\n';\n    for (int i = 0; i < (int)ids.size(); i++) std::cout <<\
-    \ ids[i] << \" \\n\"[i + 1 == (int)ids.size()];\n    if (ids.empty()) std::cout\
-    \ << '\\n';\n}\n"
+    \ << sum << '\\n';\n    for (int i = 0; i < static_cast<int>(ids.size()); i++)\
+    \ std::cout << ids[i] << \" \\n\"[i + 1 == static_cast<int>(ids.size())];\n  \
+    \  if (ids.empty()) std::cout << '\\n';\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/minimum_spanning_tree\"\
     \n\n#include <algorithm>\n#include <iostream>\n#include <vector>\n\n#include \"\
     ../../src/data_structures/unionfind.hpp\"\n#include \"../../src/graph/graph.hpp\"\
@@ -277,16 +277,16 @@ data:
     \ a.cost < b.cost; });\n    UnionFind uf(n);\n    long long sum = 0;\n    std::vector<int>\
     \ ids;\n    for (const auto& e : es) {\n        if (uf.merge(e.src, e.dst)) {\n\
     \            sum += e.cost;\n            ids.push_back(e.id);\n        }\n   \
-    \ }\n    std::cout << sum << '\\n';\n    for (int i = 0; i < (int)ids.size();\
-    \ i++) std::cout << ids[i] << \" \\n\"[i + 1 == (int)ids.size()];\n    if (ids.empty())\
-    \ std::cout << '\\n';\n}\n"
+    \ }\n    std::cout << sum << '\\n';\n    for (int i = 0; i < static_cast<int>(ids.size());\
+    \ i++) std::cout << ids[i] << \" \\n\"[i + 1 == static_cast<int>(ids.size())];\n\
+    \    if (ids.empty()) std::cout << '\\n';\n}\n"
   dependsOn:
   - src/data_structures/unionfind.hpp
   - src/graph/graph.hpp
   isVerificationFile: true
   path: test/yosupo/minimum-spanning-tree.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/minimum-spanning-tree.1.test.cpp

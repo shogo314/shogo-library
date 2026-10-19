@@ -1085,8 +1085,8 @@ data:
     \ fold(a, k, k + 1)), name);\n            } else {\n                check(eq(seg.prod(l,\
     \ r), fold(a, l, r)), name);\n            }\n        }\n        check(eq(seg.all_prod(),\
     \ fold(a, 0, n)), name);\n    }\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n\
-    \    auto small = [&] { return (long long)(rng() % 21) - 10; };\n\n    // MulSum:\
-    \ \u533A\u9593\u4E57\u7B97\u30FB\u533A\u9593\u548C\n    test_lazy<acted_monoid::MulSum<mint>,\
+    \    auto small = [&] { return static_cast<long long>(rng() % 21) - 10; };\n\n\
+    \    // MulSum: \u533A\u9593\u4E57\u7B97\u30FB\u533A\u9593\u548C\n    test_lazy<acted_monoid::MulSum<mint>,\
     \ mint>(\n        [&] { return mint(rng() % 1000); }, [&] { return mint(rng()\
     \ % 999 + 1); },\n        [](mint x, int) { return x; },\n        [](const std::vector<mint>&\
     \ a, int l, int r) { mint s = 0; for (int i = l; i < r; i++) s += a[i]; return\
@@ -1269,8 +1269,8 @@ data:
     \ fold(a, k, k + 1)), name);\n            } else {\n                check(eq(seg.prod(l,\
     \ r), fold(a, l, r)), name);\n            }\n        }\n        check(eq(seg.all_prod(),\
     \ fold(a, 0, n)), name);\n    }\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n\
-    \    auto small = [&] { return (long long)(rng() % 21) - 10; };\n\n    // MulSum:\
-    \ \u533A\u9593\u4E57\u7B97\u30FB\u533A\u9593\u548C\n    test_lazy<acted_monoid::MulSum<mint>,\
+    \    auto small = [&] { return static_cast<long long>(rng() % 21) - 10; };\n\n\
+    \    // MulSum: \u533A\u9593\u4E57\u7B97\u30FB\u533A\u9593\u548C\n    test_lazy<acted_monoid::MulSum<mint>,\
     \ mint>(\n        [&] { return mint(rng() % 1000); }, [&] { return mint(rng()\
     \ % 999 + 1); },\n        [](mint x, int) { return x; },\n        [](const std::vector<mint>&\
     \ a, int l, int r) { mint s = 0; for (int i = l; i < r; i++) s += a[i]; return\
@@ -1423,7 +1423,7 @@ data:
   isVerificationFile: true
   path: test/unittest/acted-monoid.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 12:03:10+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/acted-monoid.test.cpp

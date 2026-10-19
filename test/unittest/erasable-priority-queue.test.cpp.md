@@ -73,12 +73,12 @@ data:
     \                    st.erase(std::prev(st.end()));\n                } else {\n\
     \                    min_q.pop();\n                    max_q.erase(*st.begin());\n\
     \                    st.erase(st.begin());\n                }\n            }\n\
-    \            if (max_q.size() != (int)st.size() || min_q.size() != (int)st.size())\
-    \ ok = false;\n            if (max_q.empty() != st.empty() || min_q.empty() !=\
-    \ st.empty()) ok = false;\n            if (!st.empty() && (max_q.top() != *st.rbegin()\
-    \ || min_q.top() != *st.begin())) ok = false;\n        }\n    }\n\n    if (ok)\n\
-    \        std::cout << \"Hello World\" << std::endl;\n    else\n        std::cerr\
-    \ << \"failed\" << std::endl;\n}\n"
+    \            if (max_q.size() != static_cast<int>(st.size()) || min_q.size() !=\
+    \ static_cast<int>(st.size())) ok = false;\n            if (max_q.empty() != st.empty()\
+    \ || min_q.empty() != st.empty()) ok = false;\n            if (!st.empty() &&\
+    \ (max_q.top() != *st.rbegin() || min_q.top() != *st.begin())) ok = false;\n \
+    \       }\n    }\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
+    \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// ErasablePriorityQueue \u3092 std::multiset \u3068\u30E9\u30F3\u30C0\u30E0\
     \u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\
@@ -101,18 +101,18 @@ data:
     \                    st.erase(std::prev(st.end()));\n                } else {\n\
     \                    min_q.pop();\n                    max_q.erase(*st.begin());\n\
     \                    st.erase(st.begin());\n                }\n            }\n\
-    \            if (max_q.size() != (int)st.size() || min_q.size() != (int)st.size())\
-    \ ok = false;\n            if (max_q.empty() != st.empty() || min_q.empty() !=\
-    \ st.empty()) ok = false;\n            if (!st.empty() && (max_q.top() != *st.rbegin()\
-    \ || min_q.top() != *st.begin())) ok = false;\n        }\n    }\n\n    if (ok)\n\
-    \        std::cout << \"Hello World\" << std::endl;\n    else\n        std::cerr\
-    \ << \"failed\" << std::endl;\n}\n"
+    \            if (max_q.size() != static_cast<int>(st.size()) || min_q.size() !=\
+    \ static_cast<int>(st.size())) ok = false;\n            if (max_q.empty() != st.empty()\
+    \ || min_q.empty() != st.empty()) ok = false;\n            if (!st.empty() &&\
+    \ (max_q.top() != *st.rbegin() || min_q.top() != *st.begin())) ok = false;\n \
+    \       }\n    }\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
+    \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/data_structures/erasable-priority-queue.hpp
   isVerificationFile: true
   path: test/unittest/erasable-priority-queue.test.cpp
   requiredBy: []
-  timestamp: '2026-10-15 07:35:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/erasable-priority-queue.test.cpp

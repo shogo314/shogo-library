@@ -50,15 +50,15 @@ data:
     \ / b - ((a % b != 0) && ((a < 0) != (b < 0))); }\n\nint main() {\n    std::mt19937\
     \ rng(314);\n    bool ok = true;\n    for (int rep = 0; rep < 100000 && ok; rep++)\
     \ {\n        long long n = rng() % 30;\n        long long m = rng() % 30 + 1;\n\
-    \        long long a = (long long)(rng() % 201) - 100;\n        long long b =\
-    \ (long long)(rng() % 201) - 100;\n        long long expected = 0;\n        for\
-    \ (long long i = 0; i < n; i++) expected += floor_div(a * i + b, m);\n       \
-    \ ok = ok && floor_sum(n, m, a, b) == expected;\n    }\n    // \u5927\u304D\u3044\
-    \u5024\n    ok = ok && floor_sum(1000000000, 1000000000, 999999999, 999999999)\
-    \ == 499999999500000000LL;\n    ok = ok && floor_sum(0, 5, 3, 2) == 0;\n    ok\
-    \ = ok && floor_sum(4, 10, 6, 3) == 3;\n\n    if (ok)\n        std::cout << \"\
-    Hello World\" << std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n\
-    }\n"
+    \        long long a = static_cast<long long>(rng() % 201) - 100;\n        long\
+    \ long b = static_cast<long long>(rng() % 201) - 100;\n        long long expected\
+    \ = 0;\n        for (long long i = 0; i < n; i++) expected += floor_div(a * i\
+    \ + b, m);\n        ok = ok && floor_sum(n, m, a, b) == expected;\n    }\n   \
+    \ // \u5927\u304D\u3044\u5024\n    ok = ok && floor_sum(1000000000, 1000000000,\
+    \ 999999999, 999999999) == 499999999500000000LL;\n    ok = ok && floor_sum(0,\
+    \ 5, 3, 2) == 0;\n    ok = ok && floor_sum(4, 10, 6, 3) == 3;\n\n    if (ok)\n\
+    \        std::cout << \"Hello World\" << std::endl;\n    else\n        std::cerr\
+    \ << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// floor_sum \u3092\u611A\u76F4\u306A\u8A08\u7B97\u3068\u30E9\u30F3\u30C0\u30E0\
     \u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\
@@ -68,12 +68,12 @@ data:
     \ b) { return a / b - ((a % b != 0) && ((a < 0) != (b < 0))); }\n\nint main()\
     \ {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int rep = 0; rep\
     \ < 100000 && ok; rep++) {\n        long long n = rng() % 30;\n        long long\
-    \ m = rng() % 30 + 1;\n        long long a = (long long)(rng() % 201) - 100;\n\
-    \        long long b = (long long)(rng() % 201) - 100;\n        long long expected\
-    \ = 0;\n        for (long long i = 0; i < n; i++) expected += floor_div(a * i\
-    \ + b, m);\n        ok = ok && floor_sum(n, m, a, b) == expected;\n    }\n   \
-    \ // \u5927\u304D\u3044\u5024\n    ok = ok && floor_sum(1000000000, 1000000000,\
-    \ 999999999, 999999999) == 499999999500000000LL;\n    ok = ok && floor_sum(0,\
+    \ m = rng() % 30 + 1;\n        long long a = static_cast<long long>(rng() % 201)\
+    \ - 100;\n        long long b = static_cast<long long>(rng() % 201) - 100;\n \
+    \       long long expected = 0;\n        for (long long i = 0; i < n; i++) expected\
+    \ += floor_div(a * i + b, m);\n        ok = ok && floor_sum(n, m, a, b) == expected;\n\
+    \    }\n    // \u5927\u304D\u3044\u5024\n    ok = ok && floor_sum(1000000000,\
+    \ 1000000000, 999999999, 999999999) == 499999999500000000LL;\n    ok = ok && floor_sum(0,\
     \ 5, 3, 2) == 0;\n    ok = ok && floor_sum(4, 10, 6, 3) == 3;\n\n    if (ok)\n\
     \        std::cout << \"Hello World\" << std::endl;\n    else\n        std::cerr\
     \ << \"failed\" << std::endl;\n}\n"
@@ -82,7 +82,7 @@ data:
   isVerificationFile: true
   path: test/unittest/floor-sum.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/floor-sum.test.cpp

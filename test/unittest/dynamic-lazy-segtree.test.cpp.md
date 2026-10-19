@@ -1065,13 +1065,13 @@ data:
     \ }, mint(0),\n        [](mint f, mint x, long long l, long long r) { return x\
     \ + f * index_sum(l, r); },\n        [](mint f, mint g) { return f + g; }, mint(0));\n\
     \    for (int rep = 0; rep < 300 && ok; rep++) {\n        long long n = rep %\
-    \ 2 ? (long long)(rng() % 1000000000000000000ULL) + 1 : 1000000000000000000LL;\n\
+    \ 2 ? static_cast<long long>(rng() % 1000000000000000000ULL) + 1 : 1000000000000000000LL;\n\
     \        DynamicLazySegTree seg(n, am);\n        std::vector<std::array<long long,\
     \ 3>> ops;  // l, r, f\n        auto naive_prod = [&](long long l, long long r)\
     \ {\n            mint s = 0;\n            for (auto [a, b, f] : ops) s += mint(f)\
     \ * index_sum(std::max(a, l), std::min(b, r));\n            return s;\n      \
-    \  };\n        auto random_pos = [&]() { return (long long)(rng() % n); };\n \
-    \       for (int t = 0; t < 40; t++) {\n            long long l = random_pos(),\
+    \  };\n        auto random_pos = [&]() { return static_cast<long long>(rng() %\
+    \ n); };\n        for (int t = 0; t < 40; t++) {\n            long long l = random_pos(),\
     \ r = random_pos();\n            if (l > r) std::swap(l, r);\n            if (rng()\
     \ % 4 == 0) r = n;\n            int op = rng() % 4;\n            if (op == 0)\
     \ {\n                long long f = rng() % 5;\n                seg.apply(l, r,\
@@ -1093,7 +1093,7 @@ data:
     \ long, 3>> ops;\n        for (int t = 0; t < 10; t++) {\n            long long\
     \ l = rng() % n, len = rng() % 5 + 1, f = rng() % 3;\n            long long r\
     \ = std::min(n, l + len);\n            seg.apply(l, r, f);\n            ops.push_back({l,\
-    \ r, f});\n        }\n        long long l = rng() % 2 ? 0 : (long long)(rng()\
+    \ r, f});\n        }\n        long long l = rng() % 2 ? 0 : static_cast<long long>(rng()\
     \ % n);\n        long long lim = rng() % 10;\n        // \u548C\u304C lim \u3092\
     \u8D85\u3048\u308B\u6700\u521D\u306E\u4F4D\u7F6E\u3092\u3001\u4F5C\u7528\u306E\
     \u7AEF\u70B9\u3092\u9806\u306B\u898B\u3066\u6C42\u3081\u308B\n        std::vector<long\
@@ -1179,13 +1179,13 @@ data:
     \ }, mint(0),\n        [](mint f, mint x, long long l, long long r) { return x\
     \ + f * index_sum(l, r); },\n        [](mint f, mint g) { return f + g; }, mint(0));\n\
     \    for (int rep = 0; rep < 300 && ok; rep++) {\n        long long n = rep %\
-    \ 2 ? (long long)(rng() % 1000000000000000000ULL) + 1 : 1000000000000000000LL;\n\
+    \ 2 ? static_cast<long long>(rng() % 1000000000000000000ULL) + 1 : 1000000000000000000LL;\n\
     \        DynamicLazySegTree seg(n, am);\n        std::vector<std::array<long long,\
     \ 3>> ops;  // l, r, f\n        auto naive_prod = [&](long long l, long long r)\
     \ {\n            mint s = 0;\n            for (auto [a, b, f] : ops) s += mint(f)\
     \ * index_sum(std::max(a, l), std::min(b, r));\n            return s;\n      \
-    \  };\n        auto random_pos = [&]() { return (long long)(rng() % n); };\n \
-    \       for (int t = 0; t < 40; t++) {\n            long long l = random_pos(),\
+    \  };\n        auto random_pos = [&]() { return static_cast<long long>(rng() %\
+    \ n); };\n        for (int t = 0; t < 40; t++) {\n            long long l = random_pos(),\
     \ r = random_pos();\n            if (l > r) std::swap(l, r);\n            if (rng()\
     \ % 4 == 0) r = n;\n            int op = rng() % 4;\n            if (op == 0)\
     \ {\n                long long f = rng() % 5;\n                seg.apply(l, r,\
@@ -1207,7 +1207,7 @@ data:
     \ long, 3>> ops;\n        for (int t = 0; t < 10; t++) {\n            long long\
     \ l = rng() % n, len = rng() % 5 + 1, f = rng() % 3;\n            long long r\
     \ = std::min(n, l + len);\n            seg.apply(l, r, f);\n            ops.push_back({l,\
-    \ r, f});\n        }\n        long long l = rng() % 2 ? 0 : (long long)(rng()\
+    \ r, f});\n        }\n        long long l = rng() % 2 ? 0 : static_cast<long long>(rng()\
     \ % n);\n        long long lim = rng() % 10;\n        // \u548C\u304C lim \u3092\
     \u8D85\u3048\u308B\u6700\u521D\u306E\u4F4D\u7F6E\u3092\u3001\u4F5C\u7528\u306E\
     \u7AEF\u70B9\u3092\u9806\u306B\u898B\u3066\u6C42\u3081\u308B\n        std::vector<long\
@@ -1240,7 +1240,7 @@ data:
   isVerificationFile: true
   path: test/unittest/dynamic-lazy-segtree.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 12:03:10+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/dynamic-lazy-segtree.test.cpp

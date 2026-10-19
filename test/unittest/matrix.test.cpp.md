@@ -574,114 +574,7 @@ data:
     \u901A\u308B)\nstruct ModProp : matrix::OperatorPropertyDefault<mint> {};\n\n\
     VV random_vv(std::mt19937_64& rng, int n, int m, int lo, int hi) {\n    VV a(n,\
     \ std::vector<long long>(m));\n    for (auto& row : a)\n        for (auto& x :\
-    \ row) x = lo + (long long)(rng() % (hi - lo + 1));\n    return a;\n}\n\n// GF(2)\
-    \ \u306E\u884C\u5217\u5F0F (\u611A\u76F4\u306A\u30AC\u30A6\u30B9\u306E\u6D88\u53BB\
-    \u6CD5)\nint naive_det_gf2(std::vector<std::vector<int>> a) {\n    int n = a.size();\n\
-    \    for (int c = 0, r = 0; c < n; c++) {\n        int p = r;\n        while (p\
-    \ < n && a[p][c] == 0) p++;\n        if (p == n) return 0;\n        std::swap(a[p],\
-    \ a[r]);\n        for (int i = 0; i < n; i++)\n            if (i != r && a[i][c])\n\
-    \                for (int j = 0; j < n; j++) a[i][j] ^= a[r][j];\n        r++;\n\
-    \    }\n    return 1;\n}\n\n// mod p \u306E\u884C\u5217\u5F0F (\u4F59\u56E0\u5B50\
-    \u5C55\u958B\u3002n \u306F\u5C0F\u3055\u3044\u3053\u3068)\nmint naive_det(const\
-    \ std::vector<std::vector<mint>>& a) {\n    int n = a.size();\n    if (n == 0)\
-    \ return 1;\n    mint res = 0;\n    for (int j = 0; j < n; j++) {\n        std::vector<std::vector<mint>>\
-    \ b;\n        for (int i = 1; i < n; i++) {\n            std::vector<mint> row;\n\
-    \            for (int k = 0; k < n; k++)\n                if (k != j) row.push_back(a[i][k]);\n\
-    \            b.push_back(row);\n        }\n        mint t = a[0][j] * naive_det(b);\n\
-    \        res += (j % 2 == 0) ? t : -t;\n    }\n    return res;\n}\n\nint main()\
-    \ {\n    std::mt19937_64 rng(314);\n    bool ok = true;\n\n    // \u521D\u671F\
-    \u5316\u5B50\u30EA\u30B9\u30C8\u30FB\u4EE3\u5165\u30FB\u8D70\u67FB\u30FB==\n \
-    \   {\n        Matrix<long long> A({{1, 2, 3}, {4, 5, 6}});\n        if (A.n !=\
-    \ 2 || A.m != 3 || A[1][2] != 6 || A.size() != 2) ok = false;\n        long long\
-    \ s = 0;\n        for (auto& row : A)\n            for (auto& x : row) s += x,\
-    \ x *= 2;  // \u66F8\u304D\u63DB\u3048\u3082\u3067\u304D\u308B\n        const\
-    \ Matrix<long long>& C = A;\n        long long s2 = 0;\n        for (const auto&\
-    \ row : C)\n            for (long long x : row) s2 += x;\n        if (s != 21\
-    \ || s2 != 42) ok = false;\n        Matrix<long long> B(1, 1);\n        B = VV{{2,\
-    \ 4, 6}, {8, 10, 12}};\n        if (B.n != 2 || B.m != 3) ok = false;\n      \
-    \  if (!(A == B) || A != B) ok = false;\n        B[0][0] = 0;\n        if (A ==\
-    \ B || !(A != B)) ok = false;\n        Matrix<long long> Z(2, 3, 7);\n       \
-    \ if (Z[1][2] != 7) ok = false;\n    }\n\n    for (int rep = 0; rep < 300; rep++)\
-    \ {\n        int n = rng() % 5 + 1, m = rng() % 5 + 1;\n        VV a = random_vv(rng,\
-    \ n, m, -100, 100), b = random_vv(rng, n, m, -100, 100);\n        Matrix<long\
-    \ long> A(a), B(b);\n        // + \u3068 -\n        Matrix<long long> S = A +\
-    \ B, D = A - B, S2 = A, D2 = A;\n        S2 += B;\n        D2 -= B;\n        for\
-    \ (int i = 0; i < n; i++)\n            for (int j = 0; j < m; j++) {\n       \
-    \         if (S[i][j] != a[i][j] + b[i][j] || S2[i][j] != S[i][j]) ok = false;\n\
-    \                if (D[i][j] != a[i][j] - b[i][j] || D2[i][j] != D[i][j]) ok =\
-    \ false;\n            }\n        // shift: (i, j) \u3092 ((i + dy) mod n, (j +\
-    \ dx) mod m) \u306B\u79FB\u3059\n        int dy = (int)(rng() % 21) - 10, dx =\
-    \ (int)(rng() % 21) - 10;\n        Matrix<long long> T = A.shift(dy, dx);\n  \
-    \      for (int i = 0; i < n; i++)\n            for (int j = 0; j < m; j++)\n\
-    \                if (T[((i + dy) % n + n) % n][((j + dx) % m + m) % m] != a[i][j])\
-    \ ok = false;\n        int k = rng() % 12;\n        if (A.shift_r(k) != A.shift(0,\
-    \ k) || A.shift_l(k) != A.shift(0, -k)) ok = false;\n        if (A.shift_d(k)\
-    \ != A.shift(k, 0) || A.shift_u(k) != A.shift(-k, 0)) ok = false;\n        //\
-    \ \u5DE6\u53F3\u30FB\u4E0A\u4E0B\u306B\u9006\u5411\u304D\u306B\u305A\u3089\u3059\
-    \u3068\u623B\u308B\n        if (A.shift_r(k).shift_l(k) != A || A.shift_d(k).shift_u(k)\
-    \ != A) ok = false;\n        // col\n        int j0 = rng() % m;\n        std::vector<long\
-    \ long> col = A.col(j0);\n        if ((int)col.size() != n) ok = false;\n    \
-    \    for (int i = 0; i < n; i++)\n            if (col[i] != a[i][j0]) ok = false;\n\
-    \    }\n    // str \u3068 vstr (\u6587\u5B57\u306E\u30B0\u30EA\u30C3\u30C9)\n\
-    \    {\n        std::vector<std::string> g = {\"abc\", \"def\"};\n        Matrix<char>\
-    \ G(g);\n        if (G.str(0) != \"abc\" || G.str(1) != \"def\" || G.vstr() !=\
-    \ g) ok = false;\n        if (G.shift_r(1).str(0) != \"cab\" || G.shift_d(1).str(0)\
-    \ != \"def\") ok = false;\n        std::vector<char> c = G.col(2);\n        if\
-    \ (c != std::vector<char>{'c', 'f'}) ok = false;\n    }\n    if (!ok) std::cerr\
-    \ << \"basic\" << std::endl;\n\n    // GF(2): \u884C\u5217\u5F0F\u3068\u9006\u884C\
-    \u5217\n    for (int rep = 0; rep < 500; rep++) {\n        int n = rng() % 7 +\
-    \ 1;\n        std::vector<std::vector<int>> a(n, std::vector<int>(n));\n     \
-    \   for (auto& row : a)\n            for (auto& x : row) x = rng() % 2;\n    \
-    \    Matrix<int, GF2> A(a);\n        int d = A.det();\n        if (d != naive_det_gf2(a))\
-    \ ok = false, std::cerr << \"gf2 det\" << std::endl;\n        if (d == 1) {\n\
-    \            Matrix<int, GF2> Ai = A.inv();\n            Matrix<int, GF2> P =\
-    \ A * Ai, Q = Ai * A;\n            for (int i = 0; i < n; i++)\n             \
-    \   for (int j = 0; j < n; j++) {\n                    if (P[i][j] != (i == j\
-    \ ? 1 : 0) || Q[i][j] != (i == j ? 1 : 0)) ok = false;\n                    //\
-    \ \u639B\u3051\u7B97\u3082\u611A\u76F4\u306B\u78BA\u304B\u3081\u308B\n       \
-    \             int s = 0;\n                    for (int t = 0; t < n; t++) s ^=\
-    \ a[i][t] & Ai[t][j];\n                    if (s != (i == j ? 1 : 0)) ok = false;\n\
-    \                }\n        }\n    }\n    if (!ok) std::cerr << \"gf2\" << std::endl;\n\
-    \n    // mod p: \u65E2\u5B9A\u306E\u7D4C\u8DEF (valarray) \u3068\u3001OperatorProperty\
-    \ \u3092\u7D99\u627F\u3057\u305F\u6C4E\u7528\u306E\u7D4C\u8DEF\u306E\u7D50\u679C\
-    \u304C\u4E00\u81F4\u3057\u3001\u4F59\u56E0\u5B50\u5C55\u958B\u3068\u3082\u4E00\
-    \u81F4\u3059\u308B\n    for (int rep = 0; rep < 300; rep++) {\n        int n =\
-    \ rng() % 6 + 1;\n        std::vector<std::vector<mint>> a(n, std::vector<mint>(n));\n\
-    \        bool small = rng() % 2;\n        for (auto& row : a)\n            for\
-    \ (auto& x : row) x = small ? (long long)(rng() % 3) : (long long)(rng() % 998244353);\n\
-    \        Matrix<mint> A(a);\n        Matrix<mint, ModProp> B(a);\n        mint\
-    \ e = naive_det(a);\n        if (A.det() != e || B.det() != e) ok = false, std::cerr\
-    \ << \"mod det\" << std::endl;\n        if (e != 0) {\n            Matrix<mint>\
-    \ Ai = A.inv();\n            Matrix<mint, ModProp> Bi = B.inv();\n           \
-    \ for (int i = 0; i < n; i++)\n                for (int j = 0; j < n; j++) {\n\
-    \                    if (Ai[i][j] != Bi[i][j]) ok = false;\n                 \
-    \   mint s = 0;\n                    for (int t = 0; t < n; t++) s += a[i][t]\
-    \ * Bi[t][j];\n                    if (s != (i == j ? 1 : 0)) ok = false;\n  \
-    \              }\n        }\n    }\n    if (!ok) std::cerr << \"mod\" << std::endl;\n\
-    \n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
-  code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
-    \n\n// Matrix \u306E +\u30FB-\u30FB==\u30FB\u30B7\u30D5\u30C8\u7CFB\u30FBcol\u30FB\
-    str\u30FB\u521D\u671F\u5316\u5B50\u30EA\u30B9\u30C8\u30FB\u4EE3\u5165\u30FB\u8D70\
-    \u67FB\u3068\u3001\n// OperatorProperty \u3092\u81EA\u5206\u3067\u5B9A\u7FA9\u3057\
-    \u305F\u5834\u5408 (GF(2) \u3068\u3001\u65E2\u5B9A\u306E\u6F14\u7B97\u3092\u7D99\
-    \u627F\u3057\u305F\u3082\u306E) \u306E det \u3068 inv \u3092\u611A\u76F4\u306A\
-    \u8A08\u7B97\u3068\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\
-    \u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello\
-    \ World \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../src/math/matrix.hpp\"\
-    \n\n#include <iostream>\n#include <random>\n#include <string>\n#include <vector>\n\
-    \n#include \"../../src/math/modint.hpp\"\n\nusing mint = static_modint<998244353>;\n\
-    using VV = std::vector<std::vector<long long>>;\n\n// xor \u3068 and \u306B\u3088\
-    \u308B\u4F53 GF(2)\nstruct GF2 {\n    static int zero() { return 0; }\n    static\
-    \ int add(const int& a, const int& b) { return a ^ b; }\n    static int neg(const\
-    \ int& a) { return a; }\n    static int one() { return 1; }\n    static int mul(const\
-    \ int& a, const int& b) { return a & b; }\n    static int inv(const int& a) {\
-    \ return a; }  // 0 \u3067\u306A\u3044\u5143\u306F 1 \u3060\u3051\n};\n// \u65E2\
-    \u5B9A\u306E\u6F14\u7B97\u3092\u7D99\u627F\u3057\u305F\u5225\u306E\u578B (\u884C\
-    \u5217\u5F0F\u30FB\u9006\u884C\u5217\u306F valarray \u3092\u4F7F\u308F\u306A\u3044\
-    \u6C4E\u7528\u306E\u7D4C\u8DEF\u3092\u901A\u308B)\nstruct ModProp : matrix::OperatorPropertyDefault<mint>\
-    \ {};\n\nVV random_vv(std::mt19937_64& rng, int n, int m, int lo, int hi) {\n\
-    \    VV a(n, std::vector<long long>(m));\n    for (auto& row : a)\n        for\
-    \ (auto& x : row) x = lo + (long long)(rng() % (hi - lo + 1));\n    return a;\n\
+    \ row) x = lo + static_cast<long long>(rng() % (hi - lo + 1));\n    return a;\n\
     }\n\n// GF(2) \u306E\u884C\u5217\u5F0F (\u611A\u76F4\u306A\u30AC\u30A6\u30B9\u306E\
     \u6D88\u53BB\u6CD5)\nint naive_det_gf2(std::vector<std::vector<int>> a) {\n  \
     \  int n = a.size();\n    for (int c = 0, r = 0; c < n; c++) {\n        int p\
@@ -718,55 +611,165 @@ data:
     \         if (S[i][j] != a[i][j] + b[i][j] || S2[i][j] != S[i][j]) ok = false;\n\
     \                if (D[i][j] != a[i][j] - b[i][j] || D2[i][j] != D[i][j]) ok =\
     \ false;\n            }\n        // shift: (i, j) \u3092 ((i + dy) mod n, (j +\
-    \ dx) mod m) \u306B\u79FB\u3059\n        int dy = (int)(rng() % 21) - 10, dx =\
-    \ (int)(rng() % 21) - 10;\n        Matrix<long long> T = A.shift(dy, dx);\n  \
-    \      for (int i = 0; i < n; i++)\n            for (int j = 0; j < m; j++)\n\
-    \                if (T[((i + dy) % n + n) % n][((j + dx) % m + m) % m] != a[i][j])\
-    \ ok = false;\n        int k = rng() % 12;\n        if (A.shift_r(k) != A.shift(0,\
-    \ k) || A.shift_l(k) != A.shift(0, -k)) ok = false;\n        if (A.shift_d(k)\
-    \ != A.shift(k, 0) || A.shift_u(k) != A.shift(-k, 0)) ok = false;\n        //\
-    \ \u5DE6\u53F3\u30FB\u4E0A\u4E0B\u306B\u9006\u5411\u304D\u306B\u305A\u3089\u3059\
-    \u3068\u623B\u308B\n        if (A.shift_r(k).shift_l(k) != A || A.shift_d(k).shift_u(k)\
-    \ != A) ok = false;\n        // col\n        int j0 = rng() % m;\n        std::vector<long\
-    \ long> col = A.col(j0);\n        if ((int)col.size() != n) ok = false;\n    \
-    \    for (int i = 0; i < n; i++)\n            if (col[i] != a[i][j0]) ok = false;\n\
-    \    }\n    // str \u3068 vstr (\u6587\u5B57\u306E\u30B0\u30EA\u30C3\u30C9)\n\
-    \    {\n        std::vector<std::string> g = {\"abc\", \"def\"};\n        Matrix<char>\
-    \ G(g);\n        if (G.str(0) != \"abc\" || G.str(1) != \"def\" || G.vstr() !=\
-    \ g) ok = false;\n        if (G.shift_r(1).str(0) != \"cab\" || G.shift_d(1).str(0)\
-    \ != \"def\") ok = false;\n        std::vector<char> c = G.col(2);\n        if\
-    \ (c != std::vector<char>{'c', 'f'}) ok = false;\n    }\n    if (!ok) std::cerr\
-    \ << \"basic\" << std::endl;\n\n    // GF(2): \u884C\u5217\u5F0F\u3068\u9006\u884C\
-    \u5217\n    for (int rep = 0; rep < 500; rep++) {\n        int n = rng() % 7 +\
-    \ 1;\n        std::vector<std::vector<int>> a(n, std::vector<int>(n));\n     \
-    \   for (auto& row : a)\n            for (auto& x : row) x = rng() % 2;\n    \
-    \    Matrix<int, GF2> A(a);\n        int d = A.det();\n        if (d != naive_det_gf2(a))\
-    \ ok = false, std::cerr << \"gf2 det\" << std::endl;\n        if (d == 1) {\n\
-    \            Matrix<int, GF2> Ai = A.inv();\n            Matrix<int, GF2> P =\
-    \ A * Ai, Q = Ai * A;\n            for (int i = 0; i < n; i++)\n             \
-    \   for (int j = 0; j < n; j++) {\n                    if (P[i][j] != (i == j\
-    \ ? 1 : 0) || Q[i][j] != (i == j ? 1 : 0)) ok = false;\n                    //\
-    \ \u639B\u3051\u7B97\u3082\u611A\u76F4\u306B\u78BA\u304B\u3081\u308B\n       \
-    \             int s = 0;\n                    for (int t = 0; t < n; t++) s ^=\
-    \ a[i][t] & Ai[t][j];\n                    if (s != (i == j ? 1 : 0)) ok = false;\n\
-    \                }\n        }\n    }\n    if (!ok) std::cerr << \"gf2\" << std::endl;\n\
-    \n    // mod p: \u65E2\u5B9A\u306E\u7D4C\u8DEF (valarray) \u3068\u3001OperatorProperty\
-    \ \u3092\u7D99\u627F\u3057\u305F\u6C4E\u7528\u306E\u7D4C\u8DEF\u306E\u7D50\u679C\
-    \u304C\u4E00\u81F4\u3057\u3001\u4F59\u56E0\u5B50\u5C55\u958B\u3068\u3082\u4E00\
-    \u81F4\u3059\u308B\n    for (int rep = 0; rep < 300; rep++) {\n        int n =\
-    \ rng() % 6 + 1;\n        std::vector<std::vector<mint>> a(n, std::vector<mint>(n));\n\
-    \        bool small = rng() % 2;\n        for (auto& row : a)\n            for\
-    \ (auto& x : row) x = small ? (long long)(rng() % 3) : (long long)(rng() % 998244353);\n\
-    \        Matrix<mint> A(a);\n        Matrix<mint, ModProp> B(a);\n        mint\
-    \ e = naive_det(a);\n        if (A.det() != e || B.det() != e) ok = false, std::cerr\
-    \ << \"mod det\" << std::endl;\n        if (e != 0) {\n            Matrix<mint>\
-    \ Ai = A.inv();\n            Matrix<mint, ModProp> Bi = B.inv();\n           \
-    \ for (int i = 0; i < n; i++)\n                for (int j = 0; j < n; j++) {\n\
-    \                    if (Ai[i][j] != Bi[i][j]) ok = false;\n                 \
-    \   mint s = 0;\n                    for (int t = 0; t < n; t++) s += a[i][t]\
-    \ * Bi[t][j];\n                    if (s != (i == j ? 1 : 0)) ok = false;\n  \
-    \              }\n        }\n    }\n    if (!ok) std::cerr << \"mod\" << std::endl;\n\
-    \n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \ dx) mod m) \u306B\u79FB\u3059\n        int dy = static_cast<int>(rng() % 21)\
+    \ - 10, dx = static_cast<int>(rng() % 21) - 10;\n        Matrix<long long> T =\
+    \ A.shift(dy, dx);\n        for (int i = 0; i < n; i++)\n            for (int\
+    \ j = 0; j < m; j++)\n                if (T[((i + dy) % n + n) % n][((j + dx)\
+    \ % m + m) % m] != a[i][j]) ok = false;\n        int k = rng() % 12;\n       \
+    \ if (A.shift_r(k) != A.shift(0, k) || A.shift_l(k) != A.shift(0, -k)) ok = false;\n\
+    \        if (A.shift_d(k) != A.shift(k, 0) || A.shift_u(k) != A.shift(-k, 0))\
+    \ ok = false;\n        // \u5DE6\u53F3\u30FB\u4E0A\u4E0B\u306B\u9006\u5411\u304D\
+    \u306B\u305A\u3089\u3059\u3068\u623B\u308B\n        if (A.shift_r(k).shift_l(k)\
+    \ != A || A.shift_d(k).shift_u(k) != A) ok = false;\n        // col\n        int\
+    \ j0 = rng() % m;\n        std::vector<long long> col = A.col(j0);\n        if\
+    \ (static_cast<int>(col.size()) != n) ok = false;\n        for (int i = 0; i <\
+    \ n; i++)\n            if (col[i] != a[i][j0]) ok = false;\n    }\n    // str\
+    \ \u3068 vstr (\u6587\u5B57\u306E\u30B0\u30EA\u30C3\u30C9)\n    {\n        std::vector<std::string>\
+    \ g = {\"abc\", \"def\"};\n        Matrix<char> G(g);\n        if (G.str(0) !=\
+    \ \"abc\" || G.str(1) != \"def\" || G.vstr() != g) ok = false;\n        if (G.shift_r(1).str(0)\
+    \ != \"cab\" || G.shift_d(1).str(0) != \"def\") ok = false;\n        std::vector<char>\
+    \ c = G.col(2);\n        if (c != std::vector<char>{'c', 'f'}) ok = false;\n \
+    \   }\n    if (!ok) std::cerr << \"basic\" << std::endl;\n\n    // GF(2): \u884C\
+    \u5217\u5F0F\u3068\u9006\u884C\u5217\n    for (int rep = 0; rep < 500; rep++)\
+    \ {\n        int n = rng() % 7 + 1;\n        std::vector<std::vector<int>> a(n,\
+    \ std::vector<int>(n));\n        for (auto& row : a)\n            for (auto& x\
+    \ : row) x = rng() % 2;\n        Matrix<int, GF2> A(a);\n        int d = A.det();\n\
+    \        if (d != naive_det_gf2(a)) ok = false, std::cerr << \"gf2 det\" << std::endl;\n\
+    \        if (d == 1) {\n            Matrix<int, GF2> Ai = A.inv();\n         \
+    \   Matrix<int, GF2> P = A * Ai, Q = Ai * A;\n            for (int i = 0; i <\
+    \ n; i++)\n                for (int j = 0; j < n; j++) {\n                   \
+    \ if (P[i][j] != (i == j ? 1 : 0) || Q[i][j] != (i == j ? 1 : 0)) ok = false;\n\
+    \                    // \u639B\u3051\u7B97\u3082\u611A\u76F4\u306B\u78BA\u304B\
+    \u3081\u308B\n                    int s = 0;\n                    for (int t =\
+    \ 0; t < n; t++) s ^= a[i][t] & Ai[t][j];\n                    if (s != (i ==\
+    \ j ? 1 : 0)) ok = false;\n                }\n        }\n    }\n    if (!ok) std::cerr\
+    \ << \"gf2\" << std::endl;\n\n    // mod p: \u65E2\u5B9A\u306E\u7D4C\u8DEF (valarray)\
+    \ \u3068\u3001OperatorProperty \u3092\u7D99\u627F\u3057\u305F\u6C4E\u7528\u306E\
+    \u7D4C\u8DEF\u306E\u7D50\u679C\u304C\u4E00\u81F4\u3057\u3001\u4F59\u56E0\u5B50\
+    \u5C55\u958B\u3068\u3082\u4E00\u81F4\u3059\u308B\n    for (int rep = 0; rep <\
+    \ 300; rep++) {\n        int n = rng() % 6 + 1;\n        std::vector<std::vector<mint>>\
+    \ a(n, std::vector<mint>(n));\n        bool small = rng() % 2;\n        for (auto&\
+    \ row : a)\n            for (auto& x : row) x = small ? static_cast<long long>(rng()\
+    \ % 3) : static_cast<long long>(rng() % 998244353);\n        Matrix<mint> A(a);\n\
+    \        Matrix<mint, ModProp> B(a);\n        mint e = naive_det(a);\n       \
+    \ if (A.det() != e || B.det() != e) ok = false, std::cerr << \"mod det\" << std::endl;\n\
+    \        if (e != 0) {\n            Matrix<mint> Ai = A.inv();\n            Matrix<mint,\
+    \ ModProp> Bi = B.inv();\n            for (int i = 0; i < n; i++)\n          \
+    \      for (int j = 0; j < n; j++) {\n                    if (Ai[i][j] != Bi[i][j])\
+    \ ok = false;\n                    mint s = 0;\n                    for (int t\
+    \ = 0; t < n; t++) s += a[i][t] * Bi[t][j];\n                    if (s != (i ==\
+    \ j ? 1 : 0)) ok = false;\n                }\n        }\n    }\n    if (!ok) std::cerr\
+    \ << \"mod\" << std::endl;\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
+    }\n"
+  code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
+    \n\n// Matrix \u306E +\u30FB-\u30FB==\u30FB\u30B7\u30D5\u30C8\u7CFB\u30FBcol\u30FB\
+    str\u30FB\u521D\u671F\u5316\u5B50\u30EA\u30B9\u30C8\u30FB\u4EE3\u5165\u30FB\u8D70\
+    \u67FB\u3068\u3001\n// OperatorProperty \u3092\u81EA\u5206\u3067\u5B9A\u7FA9\u3057\
+    \u305F\u5834\u5408 (GF(2) \u3068\u3001\u65E2\u5B9A\u306E\u6F14\u7B97\u3092\u7D99\
+    \u627F\u3057\u305F\u3082\u306E) \u306E det \u3068 inv \u3092\u611A\u76F4\u306A\
+    \u8A08\u7B97\u3068\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\
+    \u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello\
+    \ World \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../src/math/matrix.hpp\"\
+    \n\n#include <iostream>\n#include <random>\n#include <string>\n#include <vector>\n\
+    \n#include \"../../src/math/modint.hpp\"\n\nusing mint = static_modint<998244353>;\n\
+    using VV = std::vector<std::vector<long long>>;\n\n// xor \u3068 and \u306B\u3088\
+    \u308B\u4F53 GF(2)\nstruct GF2 {\n    static int zero() { return 0; }\n    static\
+    \ int add(const int& a, const int& b) { return a ^ b; }\n    static int neg(const\
+    \ int& a) { return a; }\n    static int one() { return 1; }\n    static int mul(const\
+    \ int& a, const int& b) { return a & b; }\n    static int inv(const int& a) {\
+    \ return a; }  // 0 \u3067\u306A\u3044\u5143\u306F 1 \u3060\u3051\n};\n// \u65E2\
+    \u5B9A\u306E\u6F14\u7B97\u3092\u7D99\u627F\u3057\u305F\u5225\u306E\u578B (\u884C\
+    \u5217\u5F0F\u30FB\u9006\u884C\u5217\u306F valarray \u3092\u4F7F\u308F\u306A\u3044\
+    \u6C4E\u7528\u306E\u7D4C\u8DEF\u3092\u901A\u308B)\nstruct ModProp : matrix::OperatorPropertyDefault<mint>\
+    \ {};\n\nVV random_vv(std::mt19937_64& rng, int n, int m, int lo, int hi) {\n\
+    \    VV a(n, std::vector<long long>(m));\n    for (auto& row : a)\n        for\
+    \ (auto& x : row) x = lo + static_cast<long long>(rng() % (hi - lo + 1));\n  \
+    \  return a;\n}\n\n// GF(2) \u306E\u884C\u5217\u5F0F (\u611A\u76F4\u306A\u30AC\
+    \u30A6\u30B9\u306E\u6D88\u53BB\u6CD5)\nint naive_det_gf2(std::vector<std::vector<int>>\
+    \ a) {\n    int n = a.size();\n    for (int c = 0, r = 0; c < n; c++) {\n    \
+    \    int p = r;\n        while (p < n && a[p][c] == 0) p++;\n        if (p ==\
+    \ n) return 0;\n        std::swap(a[p], a[r]);\n        for (int i = 0; i < n;\
+    \ i++)\n            if (i != r && a[i][c])\n                for (int j = 0; j\
+    \ < n; j++) a[i][j] ^= a[r][j];\n        r++;\n    }\n    return 1;\n}\n\n// mod\
+    \ p \u306E\u884C\u5217\u5F0F (\u4F59\u56E0\u5B50\u5C55\u958B\u3002n \u306F\u5C0F\
+    \u3055\u3044\u3053\u3068)\nmint naive_det(const std::vector<std::vector<mint>>&\
+    \ a) {\n    int n = a.size();\n    if (n == 0) return 1;\n    mint res = 0;\n\
+    \    for (int j = 0; j < n; j++) {\n        std::vector<std::vector<mint>> b;\n\
+    \        for (int i = 1; i < n; i++) {\n            std::vector<mint> row;\n \
+    \           for (int k = 0; k < n; k++)\n                if (k != j) row.push_back(a[i][k]);\n\
+    \            b.push_back(row);\n        }\n        mint t = a[0][j] * naive_det(b);\n\
+    \        res += (j % 2 == 0) ? t : -t;\n    }\n    return res;\n}\n\nint main()\
+    \ {\n    std::mt19937_64 rng(314);\n    bool ok = true;\n\n    // \u521D\u671F\
+    \u5316\u5B50\u30EA\u30B9\u30C8\u30FB\u4EE3\u5165\u30FB\u8D70\u67FB\u30FB==\n \
+    \   {\n        Matrix<long long> A({{1, 2, 3}, {4, 5, 6}});\n        if (A.n !=\
+    \ 2 || A.m != 3 || A[1][2] != 6 || A.size() != 2) ok = false;\n        long long\
+    \ s = 0;\n        for (auto& row : A)\n            for (auto& x : row) s += x,\
+    \ x *= 2;  // \u66F8\u304D\u63DB\u3048\u3082\u3067\u304D\u308B\n        const\
+    \ Matrix<long long>& C = A;\n        long long s2 = 0;\n        for (const auto&\
+    \ row : C)\n            for (long long x : row) s2 += x;\n        if (s != 21\
+    \ || s2 != 42) ok = false;\n        Matrix<long long> B(1, 1);\n        B = VV{{2,\
+    \ 4, 6}, {8, 10, 12}};\n        if (B.n != 2 || B.m != 3) ok = false;\n      \
+    \  if (!(A == B) || A != B) ok = false;\n        B[0][0] = 0;\n        if (A ==\
+    \ B || !(A != B)) ok = false;\n        Matrix<long long> Z(2, 3, 7);\n       \
+    \ if (Z[1][2] != 7) ok = false;\n    }\n\n    for (int rep = 0; rep < 300; rep++)\
+    \ {\n        int n = rng() % 5 + 1, m = rng() % 5 + 1;\n        VV a = random_vv(rng,\
+    \ n, m, -100, 100), b = random_vv(rng, n, m, -100, 100);\n        Matrix<long\
+    \ long> A(a), B(b);\n        // + \u3068 -\n        Matrix<long long> S = A +\
+    \ B, D = A - B, S2 = A, D2 = A;\n        S2 += B;\n        D2 -= B;\n        for\
+    \ (int i = 0; i < n; i++)\n            for (int j = 0; j < m; j++) {\n       \
+    \         if (S[i][j] != a[i][j] + b[i][j] || S2[i][j] != S[i][j]) ok = false;\n\
+    \                if (D[i][j] != a[i][j] - b[i][j] || D2[i][j] != D[i][j]) ok =\
+    \ false;\n            }\n        // shift: (i, j) \u3092 ((i + dy) mod n, (j +\
+    \ dx) mod m) \u306B\u79FB\u3059\n        int dy = static_cast<int>(rng() % 21)\
+    \ - 10, dx = static_cast<int>(rng() % 21) - 10;\n        Matrix<long long> T =\
+    \ A.shift(dy, dx);\n        for (int i = 0; i < n; i++)\n            for (int\
+    \ j = 0; j < m; j++)\n                if (T[((i + dy) % n + n) % n][((j + dx)\
+    \ % m + m) % m] != a[i][j]) ok = false;\n        int k = rng() % 12;\n       \
+    \ if (A.shift_r(k) != A.shift(0, k) || A.shift_l(k) != A.shift(0, -k)) ok = false;\n\
+    \        if (A.shift_d(k) != A.shift(k, 0) || A.shift_u(k) != A.shift(-k, 0))\
+    \ ok = false;\n        // \u5DE6\u53F3\u30FB\u4E0A\u4E0B\u306B\u9006\u5411\u304D\
+    \u306B\u305A\u3089\u3059\u3068\u623B\u308B\n        if (A.shift_r(k).shift_l(k)\
+    \ != A || A.shift_d(k).shift_u(k) != A) ok = false;\n        // col\n        int\
+    \ j0 = rng() % m;\n        std::vector<long long> col = A.col(j0);\n        if\
+    \ (static_cast<int>(col.size()) != n) ok = false;\n        for (int i = 0; i <\
+    \ n; i++)\n            if (col[i] != a[i][j0]) ok = false;\n    }\n    // str\
+    \ \u3068 vstr (\u6587\u5B57\u306E\u30B0\u30EA\u30C3\u30C9)\n    {\n        std::vector<std::string>\
+    \ g = {\"abc\", \"def\"};\n        Matrix<char> G(g);\n        if (G.str(0) !=\
+    \ \"abc\" || G.str(1) != \"def\" || G.vstr() != g) ok = false;\n        if (G.shift_r(1).str(0)\
+    \ != \"cab\" || G.shift_d(1).str(0) != \"def\") ok = false;\n        std::vector<char>\
+    \ c = G.col(2);\n        if (c != std::vector<char>{'c', 'f'}) ok = false;\n \
+    \   }\n    if (!ok) std::cerr << \"basic\" << std::endl;\n\n    // GF(2): \u884C\
+    \u5217\u5F0F\u3068\u9006\u884C\u5217\n    for (int rep = 0; rep < 500; rep++)\
+    \ {\n        int n = rng() % 7 + 1;\n        std::vector<std::vector<int>> a(n,\
+    \ std::vector<int>(n));\n        for (auto& row : a)\n            for (auto& x\
+    \ : row) x = rng() % 2;\n        Matrix<int, GF2> A(a);\n        int d = A.det();\n\
+    \        if (d != naive_det_gf2(a)) ok = false, std::cerr << \"gf2 det\" << std::endl;\n\
+    \        if (d == 1) {\n            Matrix<int, GF2> Ai = A.inv();\n         \
+    \   Matrix<int, GF2> P = A * Ai, Q = Ai * A;\n            for (int i = 0; i <\
+    \ n; i++)\n                for (int j = 0; j < n; j++) {\n                   \
+    \ if (P[i][j] != (i == j ? 1 : 0) || Q[i][j] != (i == j ? 1 : 0)) ok = false;\n\
+    \                    // \u639B\u3051\u7B97\u3082\u611A\u76F4\u306B\u78BA\u304B\
+    \u3081\u308B\n                    int s = 0;\n                    for (int t =\
+    \ 0; t < n; t++) s ^= a[i][t] & Ai[t][j];\n                    if (s != (i ==\
+    \ j ? 1 : 0)) ok = false;\n                }\n        }\n    }\n    if (!ok) std::cerr\
+    \ << \"gf2\" << std::endl;\n\n    // mod p: \u65E2\u5B9A\u306E\u7D4C\u8DEF (valarray)\
+    \ \u3068\u3001OperatorProperty \u3092\u7D99\u627F\u3057\u305F\u6C4E\u7528\u306E\
+    \u7D4C\u8DEF\u306E\u7D50\u679C\u304C\u4E00\u81F4\u3057\u3001\u4F59\u56E0\u5B50\
+    \u5C55\u958B\u3068\u3082\u4E00\u81F4\u3059\u308B\n    for (int rep = 0; rep <\
+    \ 300; rep++) {\n        int n = rng() % 6 + 1;\n        std::vector<std::vector<mint>>\
+    \ a(n, std::vector<mint>(n));\n        bool small = rng() % 2;\n        for (auto&\
+    \ row : a)\n            for (auto& x : row) x = small ? static_cast<long long>(rng()\
+    \ % 3) : static_cast<long long>(rng() % 998244353);\n        Matrix<mint> A(a);\n\
+    \        Matrix<mint, ModProp> B(a);\n        mint e = naive_det(a);\n       \
+    \ if (A.det() != e || B.det() != e) ok = false, std::cerr << \"mod det\" << std::endl;\n\
+    \        if (e != 0) {\n            Matrix<mint> Ai = A.inv();\n            Matrix<mint,\
+    \ ModProp> Bi = B.inv();\n            for (int i = 0; i < n; i++)\n          \
+    \      for (int j = 0; j < n; j++) {\n                    if (Ai[i][j] != Bi[i][j])\
+    \ ok = false;\n                    mint s = 0;\n                    for (int t\
+    \ = 0; t < n; t++) s += a[i][t] * Bi[t][j];\n                    if (s != (i ==\
+    \ j ? 1 : 0)) ok = false;\n                }\n        }\n    }\n    if (!ok) std::cerr\
+    \ << \"mod\" << std::endl;\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
+    }\n"
   dependsOn:
   - src/math/matrix.hpp
   - src/math/modint.hpp
@@ -774,7 +777,7 @@ data:
   isVerificationFile: true
   path: test/unittest/matrix.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/matrix.test.cpp

@@ -530,43 +530,44 @@ data:
     \ a, double b) { return std::abs(a - b) < 1e-6; };\n    auto on_circle = [&](const\
     \ Circle<double>& c, const P& p) { return near((p - c.c).abs(), c.r); };\n   \
     \ for (int rep = 0; rep < 20000 && ok; rep++) {\n        auto rnd = [&] { return\
-    \ (long long)(rng() % 11) - 5; };\n        auto rndd = [&] { return (double)rnd();\
-    \ };\n        Circle<long long> ci1(Vector<long long>(rnd(), rnd()), rng() % 5\
-    \ + 1), ci2(Vector<long long>(rnd(), rnd()), rng() % 5 + 1);\n        Circle<double>\
-    \ c1(P((double)ci1.c[0], (double)ci1.c[1]), ci1.r), c2(P((double)ci2.c[0], (double)ci2.c[1]),\
+    \ static_cast<long long>(rng() % 11) - 5; };\n        auto rndd = [&] { return\
+    \ static_cast<double>(rnd()); };\n        Circle<long long> ci1(Vector<long long>(rnd(),\
+    \ rnd()), rng() % 5 + 1), ci2(Vector<long long>(rnd(), rnd()), rng() % 5 + 1);\n\
+    \        Circle<double> c1(P(static_cast<double>(ci1.c[0]), static_cast<double>(ci1.c[1])),\
+    \ ci1.r), c2(P(static_cast<double>(ci2.c[0]), static_cast<double>(ci2.c[1])),\
     \ ci2.r);\n\n        // \u4F4D\u7F6E\u95A2\u4FC2\u3068\u4EA4\u70B9\u306E\u500B\
     \u6570\u304C\u5BFE\u5FDC\u3059\u308B\n        int rel = circle_relation(ci1, ci2);\n\
     \        ok = ok && circle_relation(c1, c2) == rel;\n        auto ps = circle_circle_intersection(c1,\
     \ c2);\n        if (ci1.c == ci2.c) {\n            ok = ok && ps.empty();\n  \
     \      } else {\n            int expected = rel == 4 || rel == 0 ? 0 : rel ==\
     \ 2 ? 2\n                                                               : 1;\n\
-    \            ok = ok && (int)ps.size() == expected;\n        }\n        for (const\
-    \ auto& p : ps) ok = ok && on_circle(c1, p) && on_circle(c2, p);\n\n        //\
-    \ \u5186\u3068\u76F4\u7DDA\u306E\u4EA4\u70B9\u306F\u5186\u5468\u4E0A\u3068\u76F4\
-    \u7DDA\u4E0A\u306B\u3042\u308A\u3001\u500B\u6570\u306F\u4E2D\u5FC3\u3068\u76F4\
-    \u7DDA\u306E\u8DDD\u96E2\u3067\u6C7A\u307E\u308B\n        P p1(rndd(), rndd()),\
-    \ p2(rndd(), rndd());\n        if (p1 != p2) {\n            auto qs = circle_line_intersection(c1,\
-    \ p1, p2);\n            double d = distance_point_line(p1, p2, c1.c);\n      \
-    \      int expected = d > c1.r + 1e-9 ? 0 : d > c1.r - 1e-9 ? 1\n            \
-    \                                                     : 2;\n            ok = ok\
-    \ && (int)qs.size() == expected;\n            for (const auto& q : qs) ok = ok\
-    \ && on_circle(c1, q) && near(cross(p2 - p1, q - p1), 0);\n        }\n\n     \
-    \   // \u63A5\u70B9\u306F\u5186\u5468\u4E0A\u306B\u3042\u308A\u3001\u534A\u5F84\
-    \u3068\u63A5\u7DDA\u304C\u5782\u76F4\n        P p(rndd(), rndd());\n        auto\
-    \ ts = tangent_points(c1, p);\n        double dp = (p - c1.c).abs();\n       \
-    \ ok = ok && (int)ts.size() == (dp > c1.r + 1e-9 ? 2 : dp > c1.r - 1e-9 ? 1\n\
-    \                                                                            \
-    \  : 0);\n        for (const auto& t : ts) ok = ok && on_circle(c1, t) && near(dot(t\
-    \ - c1.c, p - t), 0);\n\n        // \u5185\u63A5\u5186\u306F 3 \u8FBA\u306B\u63A5\
-    \u3057\u3001\u5916\u63A5\u5186\u306F 3 \u9802\u70B9\u3092\u901A\u308B\n      \
-    \  P a(rndd(), rndd()), b(rndd(), rndd()), c(rndd(), rndd());\n        if (cross(b\
-    \ - a, c - a) != 0) {\n            Circle in = incircle(a, b, c), out = circumcircle(a,\
-    \ b, c);\n            ok = ok && near(distance_point_line(a, b, in.c), in.r) &&\
-    \ near(distance_point_line(b, c, in.c), in.r) && near(distance_point_line(c, a,\
-    \ in.c), in.r);\n            ok = ok && on_circle(out, a) && on_circle(out, b)\
-    \ && on_circle(out, c);\n        }\n    }\n\n    if (ok)\n        std::cout <<\
-    \ \"Hello World\" << std::endl;\n    else\n        std::cerr << \"failed\" <<\
-    \ std::endl;\n}\n"
+    \            ok = ok && static_cast<int>(ps.size()) == expected;\n        }\n\
+    \        for (const auto& p : ps) ok = ok && on_circle(c1, p) && on_circle(c2,\
+    \ p);\n\n        // \u5186\u3068\u76F4\u7DDA\u306E\u4EA4\u70B9\u306F\u5186\u5468\
+    \u4E0A\u3068\u76F4\u7DDA\u4E0A\u306B\u3042\u308A\u3001\u500B\u6570\u306F\u4E2D\
+    \u5FC3\u3068\u76F4\u7DDA\u306E\u8DDD\u96E2\u3067\u6C7A\u307E\u308B\n        P\
+    \ p1(rndd(), rndd()), p2(rndd(), rndd());\n        if (p1 != p2) {\n         \
+    \   auto qs = circle_line_intersection(c1, p1, p2);\n            double d = distance_point_line(p1,\
+    \ p2, c1.c);\n            int expected = d > c1.r + 1e-9 ? 0 : d > c1.r - 1e-9\
+    \ ? 1\n                                                                 : 2;\n\
+    \            ok = ok && static_cast<int>(qs.size()) == expected;\n           \
+    \ for (const auto& q : qs) ok = ok && on_circle(c1, q) && near(cross(p2 - p1,\
+    \ q - p1), 0);\n        }\n\n        // \u63A5\u70B9\u306F\u5186\u5468\u4E0A\u306B\
+    \u3042\u308A\u3001\u534A\u5F84\u3068\u63A5\u7DDA\u304C\u5782\u76F4\n        P\
+    \ p(rndd(), rndd());\n        auto ts = tangent_points(c1, p);\n        double\
+    \ dp = (p - c1.c).abs();\n        ok = ok && static_cast<int>(ts.size()) == (dp\
+    \ > c1.r + 1e-9 ? 2 : dp > c1.r - 1e-9 ? 1\n                                 \
+    \                                                          : 0);\n        for\
+    \ (const auto& t : ts) ok = ok && on_circle(c1, t) && near(dot(t - c1.c, p - t),\
+    \ 0);\n\n        // \u5185\u63A5\u5186\u306F 3 \u8FBA\u306B\u63A5\u3057\u3001\u5916\
+    \u63A5\u5186\u306F 3 \u9802\u70B9\u3092\u901A\u308B\n        P a(rndd(), rndd()),\
+    \ b(rndd(), rndd()), c(rndd(), rndd());\n        if (cross(b - a, c - a) != 0)\
+    \ {\n            Circle in = incircle(a, b, c), out = circumcircle(a, b, c);\n\
+    \            ok = ok && near(distance_point_line(a, b, in.c), in.r) && near(distance_point_line(b,\
+    \ c, in.c), in.r) && near(distance_point_line(c, a, in.c), in.r);\n          \
+    \  ok = ok && on_circle(out, a) && on_circle(out, b) && on_circle(out, c);\n \
+    \       }\n    }\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
+    \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// geometry/circle.hpp \u306E\u95A2\u6570\u3092\u3001\u5B9A\u7FA9\u304B\u3089\
     \u78BA\u304B\u3081\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\
@@ -577,43 +578,44 @@ data:
     \ = [](double a, double b) { return std::abs(a - b) < 1e-6; };\n    auto on_circle\
     \ = [&](const Circle<double>& c, const P& p) { return near((p - c.c).abs(), c.r);\
     \ };\n    for (int rep = 0; rep < 20000 && ok; rep++) {\n        auto rnd = [&]\
-    \ { return (long long)(rng() % 11) - 5; };\n        auto rndd = [&] { return (double)rnd();\
-    \ };\n        Circle<long long> ci1(Vector<long long>(rnd(), rnd()), rng() % 5\
-    \ + 1), ci2(Vector<long long>(rnd(), rnd()), rng() % 5 + 1);\n        Circle<double>\
-    \ c1(P((double)ci1.c[0], (double)ci1.c[1]), ci1.r), c2(P((double)ci2.c[0], (double)ci2.c[1]),\
+    \ { return static_cast<long long>(rng() % 11) - 5; };\n        auto rndd = [&]\
+    \ { return static_cast<double>(rnd()); };\n        Circle<long long> ci1(Vector<long\
+    \ long>(rnd(), rnd()), rng() % 5 + 1), ci2(Vector<long long>(rnd(), rnd()), rng()\
+    \ % 5 + 1);\n        Circle<double> c1(P(static_cast<double>(ci1.c[0]), static_cast<double>(ci1.c[1])),\
+    \ ci1.r), c2(P(static_cast<double>(ci2.c[0]), static_cast<double>(ci2.c[1])),\
     \ ci2.r);\n\n        // \u4F4D\u7F6E\u95A2\u4FC2\u3068\u4EA4\u70B9\u306E\u500B\
     \u6570\u304C\u5BFE\u5FDC\u3059\u308B\n        int rel = circle_relation(ci1, ci2);\n\
     \        ok = ok && circle_relation(c1, c2) == rel;\n        auto ps = circle_circle_intersection(c1,\
     \ c2);\n        if (ci1.c == ci2.c) {\n            ok = ok && ps.empty();\n  \
     \      } else {\n            int expected = rel == 4 || rel == 0 ? 0 : rel ==\
     \ 2 ? 2\n                                                               : 1;\n\
-    \            ok = ok && (int)ps.size() == expected;\n        }\n        for (const\
-    \ auto& p : ps) ok = ok && on_circle(c1, p) && on_circle(c2, p);\n\n        //\
-    \ \u5186\u3068\u76F4\u7DDA\u306E\u4EA4\u70B9\u306F\u5186\u5468\u4E0A\u3068\u76F4\
-    \u7DDA\u4E0A\u306B\u3042\u308A\u3001\u500B\u6570\u306F\u4E2D\u5FC3\u3068\u76F4\
-    \u7DDA\u306E\u8DDD\u96E2\u3067\u6C7A\u307E\u308B\n        P p1(rndd(), rndd()),\
-    \ p2(rndd(), rndd());\n        if (p1 != p2) {\n            auto qs = circle_line_intersection(c1,\
-    \ p1, p2);\n            double d = distance_point_line(p1, p2, c1.c);\n      \
-    \      int expected = d > c1.r + 1e-9 ? 0 : d > c1.r - 1e-9 ? 1\n            \
-    \                                                     : 2;\n            ok = ok\
-    \ && (int)qs.size() == expected;\n            for (const auto& q : qs) ok = ok\
-    \ && on_circle(c1, q) && near(cross(p2 - p1, q - p1), 0);\n        }\n\n     \
-    \   // \u63A5\u70B9\u306F\u5186\u5468\u4E0A\u306B\u3042\u308A\u3001\u534A\u5F84\
-    \u3068\u63A5\u7DDA\u304C\u5782\u76F4\n        P p(rndd(), rndd());\n        auto\
-    \ ts = tangent_points(c1, p);\n        double dp = (p - c1.c).abs();\n       \
-    \ ok = ok && (int)ts.size() == (dp > c1.r + 1e-9 ? 2 : dp > c1.r - 1e-9 ? 1\n\
-    \                                                                            \
-    \  : 0);\n        for (const auto& t : ts) ok = ok && on_circle(c1, t) && near(dot(t\
-    \ - c1.c, p - t), 0);\n\n        // \u5185\u63A5\u5186\u306F 3 \u8FBA\u306B\u63A5\
-    \u3057\u3001\u5916\u63A5\u5186\u306F 3 \u9802\u70B9\u3092\u901A\u308B\n      \
-    \  P a(rndd(), rndd()), b(rndd(), rndd()), c(rndd(), rndd());\n        if (cross(b\
-    \ - a, c - a) != 0) {\n            Circle in = incircle(a, b, c), out = circumcircle(a,\
-    \ b, c);\n            ok = ok && near(distance_point_line(a, b, in.c), in.r) &&\
-    \ near(distance_point_line(b, c, in.c), in.r) && near(distance_point_line(c, a,\
-    \ in.c), in.r);\n            ok = ok && on_circle(out, a) && on_circle(out, b)\
-    \ && on_circle(out, c);\n        }\n    }\n\n    if (ok)\n        std::cout <<\
-    \ \"Hello World\" << std::endl;\n    else\n        std::cerr << \"failed\" <<\
-    \ std::endl;\n}\n"
+    \            ok = ok && static_cast<int>(ps.size()) == expected;\n        }\n\
+    \        for (const auto& p : ps) ok = ok && on_circle(c1, p) && on_circle(c2,\
+    \ p);\n\n        // \u5186\u3068\u76F4\u7DDA\u306E\u4EA4\u70B9\u306F\u5186\u5468\
+    \u4E0A\u3068\u76F4\u7DDA\u4E0A\u306B\u3042\u308A\u3001\u500B\u6570\u306F\u4E2D\
+    \u5FC3\u3068\u76F4\u7DDA\u306E\u8DDD\u96E2\u3067\u6C7A\u307E\u308B\n        P\
+    \ p1(rndd(), rndd()), p2(rndd(), rndd());\n        if (p1 != p2) {\n         \
+    \   auto qs = circle_line_intersection(c1, p1, p2);\n            double d = distance_point_line(p1,\
+    \ p2, c1.c);\n            int expected = d > c1.r + 1e-9 ? 0 : d > c1.r - 1e-9\
+    \ ? 1\n                                                                 : 2;\n\
+    \            ok = ok && static_cast<int>(qs.size()) == expected;\n           \
+    \ for (const auto& q : qs) ok = ok && on_circle(c1, q) && near(cross(p2 - p1,\
+    \ q - p1), 0);\n        }\n\n        // \u63A5\u70B9\u306F\u5186\u5468\u4E0A\u306B\
+    \u3042\u308A\u3001\u534A\u5F84\u3068\u63A5\u7DDA\u304C\u5782\u76F4\n        P\
+    \ p(rndd(), rndd());\n        auto ts = tangent_points(c1, p);\n        double\
+    \ dp = (p - c1.c).abs();\n        ok = ok && static_cast<int>(ts.size()) == (dp\
+    \ > c1.r + 1e-9 ? 2 : dp > c1.r - 1e-9 ? 1\n                                 \
+    \                                                          : 0);\n        for\
+    \ (const auto& t : ts) ok = ok && on_circle(c1, t) && near(dot(t - c1.c, p - t),\
+    \ 0);\n\n        // \u5185\u63A5\u5186\u306F 3 \u8FBA\u306B\u63A5\u3057\u3001\u5916\
+    \u63A5\u5186\u306F 3 \u9802\u70B9\u3092\u901A\u308B\n        P a(rndd(), rndd()),\
+    \ b(rndd(), rndd()), c(rndd(), rndd());\n        if (cross(b - a, c - a) != 0)\
+    \ {\n            Circle in = incircle(a, b, c), out = circumcircle(a, b, c);\n\
+    \            ok = ok && near(distance_point_line(a, b, in.c), in.r) && near(distance_point_line(b,\
+    \ c, in.c), in.r) && near(distance_point_line(c, a, in.c), in.r);\n          \
+    \  ok = ok && on_circle(out, a) && on_circle(out, b) && on_circle(out, c);\n \
+    \       }\n    }\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
+    \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/geometry/circle.hpp
   - src/geometry/vector.hpp
@@ -621,7 +623,7 @@ data:
   isVerificationFile: true
   path: test/unittest/circle.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:29:38+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/circle.test.cpp

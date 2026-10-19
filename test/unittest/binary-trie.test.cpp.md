@@ -129,11 +129,11 @@ data:
     \             ms.insert(x ^ x_all);\n            } else {\n                unsigned\
     \ x = rng() % 16;\n                bt.erase_one_element(x);\n                auto\
     \ itr = ms.find(x ^ x_all);\n                if (itr != ms.end()) ms.erase(itr);\n\
-    \            }\n            if (bt.size() != (int)ms.size()) ok = false;\n   \
-    \         for (unsigned x = 0; x < 16; x++) {\n                if (bt.count(x)\
-    \ != (int)ms.count(x ^ x_all)) ok = false;\n            }\n        }\n    }\n\
-    \    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n    else\n \
-    \       std::cerr << \"failed\" << std::endl;\n}\n"
+    \            }\n            if (bt.size() != static_cast<int>(ms.size())) ok =\
+    \ false;\n            for (unsigned x = 0; x < 16; x++) {\n                if\
+    \ (bt.count(x) != static_cast<int>(ms.count(x ^ x_all))) ok = false;\n       \
+    \     }\n        }\n    }\n    if (ok)\n        std::cout << \"Hello World\" <<\
+    \ std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// BinaryTrie \u306E clear \u3092\u3001\u64CD\u4F5C\u5217\u306E\u9014\u4E2D\
     \u3067\u547C\u3093\u3067 std::multiset \u306B\u3088\u308B\u611A\u76F4\u306A\u5B9F\
@@ -156,17 +156,17 @@ data:
     \u3066\u304A\u304F\n                ms.insert(x ^ x_all);\n            } else\
     \ {\n                unsigned x = rng() % 16;\n                bt.erase_one_element(x);\n\
     \                auto itr = ms.find(x ^ x_all);\n                if (itr != ms.end())\
-    \ ms.erase(itr);\n            }\n            if (bt.size() != (int)ms.size())\
+    \ ms.erase(itr);\n            }\n            if (bt.size() != static_cast<int>(ms.size()))\
     \ ok = false;\n            for (unsigned x = 0; x < 16; x++) {\n             \
-    \   if (bt.count(x) != (int)ms.count(x ^ x_all)) ok = false;\n            }\n\
-    \        }\n    }\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
-    \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
+    \   if (bt.count(x) != static_cast<int>(ms.count(x ^ x_all))) ok = false;\n  \
+    \          }\n        }\n    }\n    if (ok)\n        std::cout << \"Hello World\"\
+    \ << std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/data_structures/binary-trie.hpp
   isVerificationFile: true
   path: test/unittest/binary-trie.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/binary-trie.test.cpp

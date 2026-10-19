@@ -158,67 +158,69 @@ data:
     \ ok = false;\n    }\n}\n\n// midpoint \u306E\u7B54\u3048: (a + b) / 2 \u3092\
     \ a \u306E\u5074\u306B\u4E38\u3081\u308B\u3002__int128 \u3067\u8A08\u7B97\u3059\
     \u308B\ntemplate <typename T>\nT naive_midpoint(T a, T b) {\n    __int128 s =\
-    \ (__int128)a + (__int128)b;\n    return (T)(a <= b ? floordiv(s, 2) : ceildiv(s,\
-    \ 2));\n}\ntemplate <typename T>\nvoid check_midpoint(std::mt19937_64& rng) {\n\
-    \    std::vector<T> xs = {std::numeric_limits<T>::min(), std::numeric_limits<T>::max(),\
-    \ 0, 1, (T)(std::numeric_limits<T>::max() - 1), (T)(std::numeric_limits<T>::min()\
-    \ + 1)};\n    if (std::is_signed_v<T>) xs.push_back((T)-1);\n    for (int i =\
-    \ 0; i < 30; i++) xs.push_back((T)rng()), xs.push_back((T)((T)rng() >> (rng()\
-    \ % (8 * sizeof(T)))));\n    for (T a : xs)\n        for (T b : xs) check(midpoint(a,\
-    \ b) == naive_midpoint(a, b), \"midpoint \u6574\u6570\");\n    static_assert(std::is_same_v<decltype(midpoint(T(),\
-    \ T())), T>);\n}\n\n// len \u306F\u8981\u7D20\u6570\u306E\u5206\u304B\u3089\u306A\
-    \u3044\u3082\u306E (forward_list \u3084\u6574\u6570) \u3092\u6E21\u3059\u3068\u5019\
-    \u88DC\u304B\u3089\u5916\u308C\u308B\ntemplate <typename C, typename = void>\n\
-    struct has_len : std::false_type {};\ntemplate <typename C>\nstruct has_len<C,\
-    \ std::void_t<decltype(len(std::declval<C&>()))>> : std::true_type {};\nstatic_assert(has_len<std::vector<int>>::value\
-    \ && has_len<int[3]>::value && has_len<std::list<int>>::value);\nstatic_assert(!has_len<std::forward_list<int>>::value\
+    \ static_cast<__int128>(a) + static_cast<__int128>(b);\n    return static_cast<T>(a\
+    \ <= b ? floordiv(s, 2) : ceildiv(s, 2));\n}\ntemplate <typename T>\nvoid check_midpoint(std::mt19937_64&\
+    \ rng) {\n    std::vector<T> xs = {std::numeric_limits<T>::min(), std::numeric_limits<T>::max(),\
+    \ 0, 1, static_cast<T>(std::numeric_limits<T>::max() - 1), static_cast<T>(std::numeric_limits<T>::min()\
+    \ + 1)};\n    if (std::is_signed_v<T>) xs.push_back(static_cast<T>(-1));\n   \
+    \ for (int i = 0; i < 30; i++) xs.push_back(static_cast<T>(rng())), xs.push_back(static_cast<T>(static_cast<T>(rng())\
+    \ >> (rng() % (8 * sizeof(T)))));\n    for (T a : xs)\n        for (T b : xs)\
+    \ check(midpoint(a, b) == naive_midpoint(a, b), \"midpoint \u6574\u6570\");\n\
+    \    static_assert(std::is_same_v<decltype(midpoint(T(), T())), T>);\n}\n\n//\
+    \ len \u306F\u8981\u7D20\u6570\u306E\u5206\u304B\u3089\u306A\u3044\u3082\u306E\
+    \ (forward_list \u3084\u6574\u6570) \u3092\u6E21\u3059\u3068\u5019\u88DC\u304B\
+    \u3089\u5916\u308C\u308B\ntemplate <typename C, typename = void>\nstruct has_len\
+    \ : std::false_type {};\ntemplate <typename C>\nstruct has_len<C, std::void_t<decltype(len(std::declval<C&>()))>>\
+    \ : std::true_type {};\nstatic_assert(has_len<std::vector<int>>::value && has_len<int[3]>::value\
+    \ && has_len<std::list<int>>::value);\nstatic_assert(!has_len<std::forward_list<int>>::value\
     \ && !has_len<int>::value);\n\nint main() {\n    std::mt19937_64 rng(314);\n\n\
-    \    for (int rep = 0; rep < 20000 && ok; rep++) {\n        long long a = (long\
-    \ long)(rng() % 21) - 10, b = (long long)(rng() % 21) - 10;\n\n        // chmin\
-    \ / chmax: \u66F4\u65B0\u3057\u305F\u304B\u3092\u8FD4\u3059\n        {\n     \
-    \       long long x = a;\n            bool changed = chmin(x, b);\n          \
-    \  check(x == std::min(a, b) && changed == (b < a), \"chmin\");\n            x\
-    \ = a;\n            changed = chmax(x, b);\n            check(x == std::max(a,\
-    \ b) && changed == (b > a), \"chmax\");\n            double d = a;\n         \
-    \   check(chmin(d, b + 0.5) == (b + 0.5 < a) && d == std::min<double>(a, b + 0.5),\
-    \ \"chmin (\u578B\u304C\u7570\u306A\u308B)\");\n        }\n\n        // long long\
-    \ \u540C\u58EB\u306E max / min\n        check(max(a, b) == std::max(a, b) && min(a,\
-    \ b) == std::min(a, b), \"max/min(long long, long long)\");\n        check(max(a,\
-    \ 3) == std::max(a, 3LL) && min(2, b) == std::min(2LL, b), \"max/min (int \u3068\
-    \ long long \u306E\u6DF7\u5728)\");\n\n        // floordiv / ceildiv: \u5B9F\u6570\
-    \u306E floor / ceil \u3068\u6BD4\u3079\u308B\n        if (b != 0) {\n        \
-    \    check(floordiv(a, b) == (long long)std::floor((double)a / b), \"floordiv\"\
-    );\n            check(ceildiv(a, b) == (long long)std::ceil((double)a / b), \"\
-    ceildiv\");\n            auto [q, r] = divmod(a, b);\n            check(q == floordiv(a,\
-    \ b) && q * b + r == a, \"divmod\");\n            check(r == 0 || (r < 0) == (b\
-    \ < 0), \"divmod \u4F59\u308A\u306E\u7B26\u53F7\");\n            check(std::abs(r)\
-    \ < std::abs(b), \"divmod \u4F59\u308A\u306E\u5927\u304D\u3055\");\n        }\n\
-    \n        // inrange / inrect\n        {\n            long long x = (long long)(rng()\
-    \ % 15) - 5;\n            check(inrange(x, a) == (0 <= x && x < a), \"inrange(x,\
-    \ a)\");\n            check(inrange(x, a, b) == (a <= x && x < b), \"inrange(x,\
-    \ a, b)\");\n            long long y = (long long)(rng() % 15) - 5;\n        \
-    \    check(inrect(x, y, a, b) == (0 <= x && x < a && 0 <= y && y < b), \"inrect\"\
-    );\n        }\n\n        // \u6574\u6570\u306E\u4E8C\u5206\u63A2\u7D22: f(ok)\
-    \ \u304C\u771F\u3001f(ng) \u304C\u507D\u3067\u5358\u8ABF\u306A\u3068\u304D\u3001\
-    \u5883\u754C\u306E ok \u5074\u3092\u8FD4\u3059\n        {\n            long long\
-    \ t = (long long)(rng() % 2001) - 1000;\n            long long lo = t - (long\
-    \ long)(rng() % 1000) - 1, hi = t + (long long)(rng() % 1000) + 1;\n         \
-    \   // f(x) = x <= t (ok = lo, ng = hi) -> t\n            check(binary_search(lo,\
-    \ hi, [&](long long x) { return x <= t; }) == t, \"binary_search \u6574\u6570\
-    \ (ok < ng)\");\n            // f(x) = x >= t (ok = hi, ng = lo) -> t\n      \
-    \      check(binary_search(hi, lo, [&](long long x) { return x >= t; }) == t,\
-    \ \"binary_search \u6574\u6570 (ok > ng)\");\n            // \u96A3\u308A\u5408\
-    \u3046 ok, ng \u306A\u3089 ok \u3092\u305D\u306E\u307E\u307E\u8FD4\u3059\n   \
-    \         check(binary_search(t, t + 1, [&](long long) { return true; }) == t,\
-    \ \"binary_search \u6574\u6570 \u96A3\u63A5\");\n        }\n\n        // \u5B9F\
-    \u6570\u306E\u4E8C\u5206\u63A2\u7D22 (100 \u56DE)\n        {\n            double\
-    \ t = (double)(rng() % 2000001) / 1000.0;  // [0, 2000]\n            double r\
-    \ = binary_search(0.0, 3000.0, [&](double x) { return x * x <= t; });\n      \
-    \      check(std::abs(r - std::sqrt(t)) < 1e-9, \"binary_search \u5B9F\u6570 sqrt\"\
-    );\n            double r2 = binary_search(3000.0, 0.0, [&](double x) { return\
-    \ x * x >= t; });\n            check(std::abs(r2 - std::sqrt(t)) < 1e-9, \"binary_search\
-    \ \u5B9F\u6570 (ok > ng)\");\n        }\n    }\n\n    // \u6C7A\u307E\u3063\u305F\
-    \u5024\n    check(binary_search(0, 1000000000, [](int x) { return (long long)x\
+    \    for (int rep = 0; rep < 20000 && ok; rep++) {\n        long long a = static_cast<long\
+    \ long>(rng() % 21) - 10, b = static_cast<long long>(rng() % 21) - 10;\n\n   \
+    \     // chmin / chmax: \u66F4\u65B0\u3057\u305F\u304B\u3092\u8FD4\u3059\n   \
+    \     {\n            long long x = a;\n            bool changed = chmin(x, b);\n\
+    \            check(x == std::min(a, b) && changed == (b < a), \"chmin\");\n  \
+    \          x = a;\n            changed = chmax(x, b);\n            check(x ==\
+    \ std::max(a, b) && changed == (b > a), \"chmax\");\n            double d = a;\n\
+    \            check(chmin(d, b + 0.5) == (b + 0.5 < a) && d == std::min<double>(a,\
+    \ b + 0.5), \"chmin (\u578B\u304C\u7570\u306A\u308B)\");\n        }\n\n      \
+    \  // long long \u540C\u58EB\u306E max / min\n        check(max(a, b) == std::max(a,\
+    \ b) && min(a, b) == std::min(a, b), \"max/min(long long, long long)\");\n   \
+    \     check(max(a, 3) == std::max(a, 3LL) && min(2, b) == std::min(2LL, b), \"\
+    max/min (int \u3068 long long \u306E\u6DF7\u5728)\");\n\n        // floordiv /\
+    \ ceildiv: \u5B9F\u6570\u306E floor / ceil \u3068\u6BD4\u3079\u308B\n        if\
+    \ (b != 0) {\n            check(floordiv(a, b) == static_cast<long long>(std::floor(static_cast<double>(a)\
+    \ / b)), \"floordiv\");\n            check(ceildiv(a, b) == static_cast<long long>(std::ceil(static_cast<double>(a)\
+    \ / b)), \"ceildiv\");\n            auto [q, r] = divmod(a, b);\n            check(q\
+    \ == floordiv(a, b) && q * b + r == a, \"divmod\");\n            check(r == 0\
+    \ || (r < 0) == (b < 0), \"divmod \u4F59\u308A\u306E\u7B26\u53F7\");\n       \
+    \     check(std::abs(r) < std::abs(b), \"divmod \u4F59\u308A\u306E\u5927\u304D\
+    \u3055\");\n        }\n\n        // inrange / inrect\n        {\n            long\
+    \ long x = static_cast<long long>(rng() % 15) - 5;\n            check(inrange(x,\
+    \ a) == (0 <= x && x < a), \"inrange(x, a)\");\n            check(inrange(x, a,\
+    \ b) == (a <= x && x < b), \"inrange(x, a, b)\");\n            long long y = static_cast<long\
+    \ long>(rng() % 15) - 5;\n            check(inrect(x, y, a, b) == (0 <= x && x\
+    \ < a && 0 <= y && y < b), \"inrect\");\n        }\n\n        // \u6574\u6570\u306E\
+    \u4E8C\u5206\u63A2\u7D22: f(ok) \u304C\u771F\u3001f(ng) \u304C\u507D\u3067\u5358\
+    \u8ABF\u306A\u3068\u304D\u3001\u5883\u754C\u306E ok \u5074\u3092\u8FD4\u3059\n\
+    \        {\n            long long t = static_cast<long long>(rng() % 2001) - 1000;\n\
+    \            long long lo = t - static_cast<long long>(rng() % 1000) - 1, hi =\
+    \ t + static_cast<long long>(rng() % 1000) + 1;\n            // f(x) = x <= t\
+    \ (ok = lo, ng = hi) -> t\n            check(binary_search(lo, hi, [&](long long\
+    \ x) { return x <= t; }) == t, \"binary_search \u6574\u6570 (ok < ng)\");\n  \
+    \          // f(x) = x >= t (ok = hi, ng = lo) -> t\n            check(binary_search(hi,\
+    \ lo, [&](long long x) { return x >= t; }) == t, \"binary_search \u6574\u6570\
+    \ (ok > ng)\");\n            // \u96A3\u308A\u5408\u3046 ok, ng \u306A\u3089 ok\
+    \ \u3092\u305D\u306E\u307E\u307E\u8FD4\u3059\n            check(binary_search(t,\
+    \ t + 1, [&](long long) { return true; }) == t, \"binary_search \u6574\u6570 \u96A3\
+    \u63A5\");\n        }\n\n        // \u5B9F\u6570\u306E\u4E8C\u5206\u63A2\u7D22\
+    \ (100 \u56DE)\n        {\n            double t = static_cast<double>(rng() %\
+    \ 2000001) / 1000.0;  // [0, 2000]\n            double r = binary_search(0.0,\
+    \ 3000.0, [&](double x) { return x * x <= t; });\n            check(std::abs(r\
+    \ - std::sqrt(t)) < 1e-9, \"binary_search \u5B9F\u6570 sqrt\");\n            double\
+    \ r2 = binary_search(3000.0, 0.0, [&](double x) { return x * x >= t; });\n   \
+    \         check(std::abs(r2 - std::sqrt(t)) < 1e-9, \"binary_search \u5B9F\u6570\
+    \ (ok > ng)\");\n        }\n    }\n\n    // \u6C7A\u307E\u3063\u305F\u5024\n \
+    \   check(binary_search(0, 1000000000, [](int x) { return static_cast<long long>(x)\
     \ * x <= 1000000000; }) == 31622, \"binary_search sqrt(1e9)\");\n    check(!inrange(0,\
     \ 0) && inrange(0, 1) && !inrange(-1, 1), \"inrange \u5883\u754C\");\n    check(inrange(5,\
     \ 5, 6) && !inrange(6, 5, 6), \"inrange(x, a, b) \u5883\u754C\");\n    check(floordiv(7,\
@@ -238,14 +240,15 @@ data:
     \u7D44\u3001\u4ED6\u306F\u5883\u754C\u4ED8\u8FD1\u3068\u30E9\u30F3\u30C0\u30E0\
     \u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u6570\u3068\u30DD\u30A4\u30F3\u30BF\u306F\
     \u6C7A\u307E\u3063\u305F\u5024\n    for (int a = -128; a < 128; a++)\n       \
-    \ for (int b = -128; b < 128; b++) check(midpoint((std::int8_t)a, (std::int8_t)b)\
-    \ == naive_midpoint((std::int8_t)a, (std::int8_t)b), \"midpoint int8\");\n   \
-    \ for (int a = 0; a < 256; a++)\n        for (int b = 0; b < 256; b++) check(midpoint((std::uint8_t)a,\
-    \ (std::uint8_t)b) == naive_midpoint((std::uint8_t)a, (std::uint8_t)b), \"midpoint\
-    \ uint8\");\n    check_midpoint<short>(rng);\n    check_midpoint<int>(rng);\n\
-    \    check_midpoint<unsigned>(rng);\n    check_midpoint<long long>(rng);\n   \
-    \ check_midpoint<unsigned long long>(rng);\n    {\n        constexpr double M\
-    \ = std::numeric_limits<double>::max(), D = std::numeric_limits<double>::denorm_min();\n\
+    \ for (int b = -128; b < 128; b++) check(midpoint(static_cast<std::int8_t>(a),\
+    \ static_cast<std::int8_t>(b)) == naive_midpoint(static_cast<std::int8_t>(a),\
+    \ static_cast<std::int8_t>(b)), \"midpoint int8\");\n    for (int a = 0; a < 256;\
+    \ a++)\n        for (int b = 0; b < 256; b++) check(midpoint(static_cast<std::uint8_t>(a),\
+    \ static_cast<std::uint8_t>(b)) == naive_midpoint(static_cast<std::uint8_t>(a),\
+    \ static_cast<std::uint8_t>(b)), \"midpoint uint8\");\n    check_midpoint<short>(rng);\n\
+    \    check_midpoint<int>(rng);\n    check_midpoint<unsigned>(rng);\n    check_midpoint<long\
+    \ long>(rng);\n    check_midpoint<unsigned long long>(rng);\n    {\n        constexpr\
+    \ double M = std::numeric_limits<double>::max(), D = std::numeric_limits<double>::denorm_min();\n\
     \        check(midpoint(1.0, 4.0) == 2.5 && midpoint(-3.0, 1.0) == -1.0, \"midpoint\
     \ double\");\n        check(midpoint(M, M) == M && midpoint(-M, M) == 0.0 && midpoint(M,\
     \ M / 2) == M * 0.75, \"midpoint double \u3042\u3075\u308C\u306A\u3044\");\n \
@@ -253,28 +256,29 @@ data:
     \ D) == D, \"midpoint double \u975E\u6B63\u898F\u5316\u6570\");\n        check(midpoint(1.0f,\
     \ 2.0f) == 1.5f && std::is_same_v<decltype(midpoint(1.0f, 2.0f)), float>, \"midpoint\
     \ float\");\n        for (int rep = 0; rep < 1000; rep++) {\n            double\
-    \ a = (double)(long long)(rng() % 2000001 - 1000000) / 1024, b = (double)(long\
-    \ long)(rng() % 2000001 - 1000000) / 1024;\n            check(midpoint(a, b) ==\
-    \ (a + b) / 2, \"midpoint double \u30E9\u30F3\u30C0\u30E0\");\n        }\n   \
-    \     static int arr[10];\n        check(midpoint(arr, arr + 9) == arr + 4 &&\
-    \ midpoint(arr + 9, arr) == arr + 5 && midpoint(arr + 3, arr + 3) == arr + 3,\
-    \ \"midpoint \u30DD\u30A4\u30F3\u30BF\");\n    }\n    static_assert(midpoint(1,\
-    \ 4) == 2 && midpoint(4, 1) == 3 && midpoint(-3, 0) == -2);\n    static_assert(midpoint(std::numeric_limits<long\
-    \ long>::max(), std::numeric_limits<long long>::max() - 2) == std::numeric_limits<long\
-    \ long>::max() - 1);\n    static_assert(midpoint(0u, 4294967295u) == 2147483647u\
-    \ && midpoint(4294967295u, 0u) == 2147483648u);\n    static_assert(midpoint(1.0,\
-    \ 2.0) == 1.5);\n\n    // len: \u8981\u7D20\u6570\u3092 long long \u3067\u8FD4\
-    \u3059\n    {\n        std::vector<int> v(5);\n        const std::string str =\
-    \ \"abcd\";\n        std::set<int> st = {3, 1, 4, 1, 5};\n        int carr[7]\
-    \ = {};\n        check(len(v) == 5 && len(str) == 4 && len(st) == 4 && len(carr)\
-    \ == 7, \"len\");\n        check(len(std::vector<int>()) == 0 && len(std::string_view(\"\
-    xy\")) == 2 && len(\"abc\") == 4, \"len \u7A7A\u30FB\u4E00\u6642\u30AA\u30D6\u30B8\
-    \u30A7\u30AF\u30C8\u30FB\u6587\u5B57\u5217\u30EA\u30C6\u30E9\u30EB\");\n     \
-    \   check(len(v) - 6 == -1, \"len \u306F\u7B26\u53F7\u4ED8\u304D\");\n       \
-    \ static_assert(std::is_same_v<decltype(len(v)), long long>);\n        static_assert(len(std::array<int,\
-    \ 3>{}) == 3);\n#if __cplusplus >= 202002L\n        check(len(std::views::iota(2,\
-    \ 9)) == 7, \"len views::iota\");\n#endif\n    }\n\n    if (ok) std::cout << \"\
-    Hello World\" << std::endl;\n}\n"
+    \ a = static_cast<double>(static_cast<long long>(rng() % 2000001 - 1000000)) /\
+    \ 1024, b = static_cast<double>(static_cast<long long>(rng() % 2000001 - 1000000))\
+    \ / 1024;\n            check(midpoint(a, b) == (a + b) / 2, \"midpoint double\
+    \ \u30E9\u30F3\u30C0\u30E0\");\n        }\n        static int arr[10];\n     \
+    \   check(midpoint(arr, arr + 9) == arr + 4 && midpoint(arr + 9, arr) == arr +\
+    \ 5 && midpoint(arr + 3, arr + 3) == arr + 3, \"midpoint \u30DD\u30A4\u30F3\u30BF\
+    \");\n    }\n    static_assert(midpoint(1, 4) == 2 && midpoint(4, 1) == 3 && midpoint(-3,\
+    \ 0) == -2);\n    static_assert(midpoint(std::numeric_limits<long long>::max(),\
+    \ std::numeric_limits<long long>::max() - 2) == std::numeric_limits<long long>::max()\
+    \ - 1);\n    static_assert(midpoint(0u, 4294967295u) == 2147483647u && midpoint(4294967295u,\
+    \ 0u) == 2147483648u);\n    static_assert(midpoint(1.0, 2.0) == 1.5);\n\n    //\
+    \ len: \u8981\u7D20\u6570\u3092 long long \u3067\u8FD4\u3059\n    {\n        std::vector<int>\
+    \ v(5);\n        const std::string str = \"abcd\";\n        std::set<int> st =\
+    \ {3, 1, 4, 1, 5};\n        int carr[7] = {};\n        check(len(v) == 5 && len(str)\
+    \ == 4 && len(st) == 4 && len(carr) == 7, \"len\");\n        check(len(std::vector<int>())\
+    \ == 0 && len(std::string_view(\"xy\")) == 2 && len(\"abc\") == 4, \"len \u7A7A\
+    \u30FB\u4E00\u6642\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u30FB\u6587\u5B57\u5217\
+    \u30EA\u30C6\u30E9\u30EB\");\n        check(len(v) - 6 == -1, \"len \u306F\u7B26\
+    \u53F7\u4ED8\u304D\");\n        static_assert(std::is_same_v<decltype(len(v)),\
+    \ long long>);\n        static_assert(len(std::array<int, 3>{}) == 3);\n#if __cplusplus\
+    \ >= 202002L\n        check(len(std::views::iota(2, 9)) == 7, \"len views::iota\"\
+    );\n#endif\n    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
+    }\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// functions.hpp \u3068 binary-search.hpp \u306E\u95A2\u6570\u3092\u611A\u76F4\
     \u306A\u5B9F\u88C5\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\
@@ -289,68 +293,70 @@ data:
     \        if (ok) std::cerr << \"failed: \" << what << std::endl;\n        ok =\
     \ false;\n    }\n}\n\n// midpoint \u306E\u7B54\u3048: (a + b) / 2 \u3092 a \u306E\
     \u5074\u306B\u4E38\u3081\u308B\u3002__int128 \u3067\u8A08\u7B97\u3059\u308B\n\
-    template <typename T>\nT naive_midpoint(T a, T b) {\n    __int128 s = (__int128)a\
-    \ + (__int128)b;\n    return (T)(a <= b ? floordiv(s, 2) : ceildiv(s, 2));\n}\n\
-    template <typename T>\nvoid check_midpoint(std::mt19937_64& rng) {\n    std::vector<T>\
-    \ xs = {std::numeric_limits<T>::min(), std::numeric_limits<T>::max(), 0, 1, (T)(std::numeric_limits<T>::max()\
-    \ - 1), (T)(std::numeric_limits<T>::min() + 1)};\n    if (std::is_signed_v<T>)\
-    \ xs.push_back((T)-1);\n    for (int i = 0; i < 30; i++) xs.push_back((T)rng()),\
-    \ xs.push_back((T)((T)rng() >> (rng() % (8 * sizeof(T)))));\n    for (T a : xs)\n\
-    \        for (T b : xs) check(midpoint(a, b) == naive_midpoint(a, b), \"midpoint\
-    \ \u6574\u6570\");\n    static_assert(std::is_same_v<decltype(midpoint(T(), T())),\
-    \ T>);\n}\n\n// len \u306F\u8981\u7D20\u6570\u306E\u5206\u304B\u3089\u306A\u3044\
-    \u3082\u306E (forward_list \u3084\u6574\u6570) \u3092\u6E21\u3059\u3068\u5019\u88DC\
-    \u304B\u3089\u5916\u308C\u308B\ntemplate <typename C, typename = void>\nstruct\
-    \ has_len : std::false_type {};\ntemplate <typename C>\nstruct has_len<C, std::void_t<decltype(len(std::declval<C&>()))>>\
+    template <typename T>\nT naive_midpoint(T a, T b) {\n    __int128 s = static_cast<__int128>(a)\
+    \ + static_cast<__int128>(b);\n    return static_cast<T>(a <= b ? floordiv(s,\
+    \ 2) : ceildiv(s, 2));\n}\ntemplate <typename T>\nvoid check_midpoint(std::mt19937_64&\
+    \ rng) {\n    std::vector<T> xs = {std::numeric_limits<T>::min(), std::numeric_limits<T>::max(),\
+    \ 0, 1, static_cast<T>(std::numeric_limits<T>::max() - 1), static_cast<T>(std::numeric_limits<T>::min()\
+    \ + 1)};\n    if (std::is_signed_v<T>) xs.push_back(static_cast<T>(-1));\n   \
+    \ for (int i = 0; i < 30; i++) xs.push_back(static_cast<T>(rng())), xs.push_back(static_cast<T>(static_cast<T>(rng())\
+    \ >> (rng() % (8 * sizeof(T)))));\n    for (T a : xs)\n        for (T b : xs)\
+    \ check(midpoint(a, b) == naive_midpoint(a, b), \"midpoint \u6574\u6570\");\n\
+    \    static_assert(std::is_same_v<decltype(midpoint(T(), T())), T>);\n}\n\n//\
+    \ len \u306F\u8981\u7D20\u6570\u306E\u5206\u304B\u3089\u306A\u3044\u3082\u306E\
+    \ (forward_list \u3084\u6574\u6570) \u3092\u6E21\u3059\u3068\u5019\u88DC\u304B\
+    \u3089\u5916\u308C\u308B\ntemplate <typename C, typename = void>\nstruct has_len\
+    \ : std::false_type {};\ntemplate <typename C>\nstruct has_len<C, std::void_t<decltype(len(std::declval<C&>()))>>\
     \ : std::true_type {};\nstatic_assert(has_len<std::vector<int>>::value && has_len<int[3]>::value\
     \ && has_len<std::list<int>>::value);\nstatic_assert(!has_len<std::forward_list<int>>::value\
     \ && !has_len<int>::value);\n\nint main() {\n    std::mt19937_64 rng(314);\n\n\
-    \    for (int rep = 0; rep < 20000 && ok; rep++) {\n        long long a = (long\
-    \ long)(rng() % 21) - 10, b = (long long)(rng() % 21) - 10;\n\n        // chmin\
-    \ / chmax: \u66F4\u65B0\u3057\u305F\u304B\u3092\u8FD4\u3059\n        {\n     \
-    \       long long x = a;\n            bool changed = chmin(x, b);\n          \
-    \  check(x == std::min(a, b) && changed == (b < a), \"chmin\");\n            x\
-    \ = a;\n            changed = chmax(x, b);\n            check(x == std::max(a,\
-    \ b) && changed == (b > a), \"chmax\");\n            double d = a;\n         \
-    \   check(chmin(d, b + 0.5) == (b + 0.5 < a) && d == std::min<double>(a, b + 0.5),\
-    \ \"chmin (\u578B\u304C\u7570\u306A\u308B)\");\n        }\n\n        // long long\
-    \ \u540C\u58EB\u306E max / min\n        check(max(a, b) == std::max(a, b) && min(a,\
-    \ b) == std::min(a, b), \"max/min(long long, long long)\");\n        check(max(a,\
-    \ 3) == std::max(a, 3LL) && min(2, b) == std::min(2LL, b), \"max/min (int \u3068\
-    \ long long \u306E\u6DF7\u5728)\");\n\n        // floordiv / ceildiv: \u5B9F\u6570\
-    \u306E floor / ceil \u3068\u6BD4\u3079\u308B\n        if (b != 0) {\n        \
-    \    check(floordiv(a, b) == (long long)std::floor((double)a / b), \"floordiv\"\
-    );\n            check(ceildiv(a, b) == (long long)std::ceil((double)a / b), \"\
-    ceildiv\");\n            auto [q, r] = divmod(a, b);\n            check(q == floordiv(a,\
-    \ b) && q * b + r == a, \"divmod\");\n            check(r == 0 || (r < 0) == (b\
-    \ < 0), \"divmod \u4F59\u308A\u306E\u7B26\u53F7\");\n            check(std::abs(r)\
-    \ < std::abs(b), \"divmod \u4F59\u308A\u306E\u5927\u304D\u3055\");\n        }\n\
-    \n        // inrange / inrect\n        {\n            long long x = (long long)(rng()\
-    \ % 15) - 5;\n            check(inrange(x, a) == (0 <= x && x < a), \"inrange(x,\
-    \ a)\");\n            check(inrange(x, a, b) == (a <= x && x < b), \"inrange(x,\
-    \ a, b)\");\n            long long y = (long long)(rng() % 15) - 5;\n        \
-    \    check(inrect(x, y, a, b) == (0 <= x && x < a && 0 <= y && y < b), \"inrect\"\
-    );\n        }\n\n        // \u6574\u6570\u306E\u4E8C\u5206\u63A2\u7D22: f(ok)\
-    \ \u304C\u771F\u3001f(ng) \u304C\u507D\u3067\u5358\u8ABF\u306A\u3068\u304D\u3001\
-    \u5883\u754C\u306E ok \u5074\u3092\u8FD4\u3059\n        {\n            long long\
-    \ t = (long long)(rng() % 2001) - 1000;\n            long long lo = t - (long\
-    \ long)(rng() % 1000) - 1, hi = t + (long long)(rng() % 1000) + 1;\n         \
-    \   // f(x) = x <= t (ok = lo, ng = hi) -> t\n            check(binary_search(lo,\
-    \ hi, [&](long long x) { return x <= t; }) == t, \"binary_search \u6574\u6570\
-    \ (ok < ng)\");\n            // f(x) = x >= t (ok = hi, ng = lo) -> t\n      \
-    \      check(binary_search(hi, lo, [&](long long x) { return x >= t; }) == t,\
-    \ \"binary_search \u6574\u6570 (ok > ng)\");\n            // \u96A3\u308A\u5408\
-    \u3046 ok, ng \u306A\u3089 ok \u3092\u305D\u306E\u307E\u307E\u8FD4\u3059\n   \
-    \         check(binary_search(t, t + 1, [&](long long) { return true; }) == t,\
-    \ \"binary_search \u6574\u6570 \u96A3\u63A5\");\n        }\n\n        // \u5B9F\
-    \u6570\u306E\u4E8C\u5206\u63A2\u7D22 (100 \u56DE)\n        {\n            double\
-    \ t = (double)(rng() % 2000001) / 1000.0;  // [0, 2000]\n            double r\
-    \ = binary_search(0.0, 3000.0, [&](double x) { return x * x <= t; });\n      \
-    \      check(std::abs(r - std::sqrt(t)) < 1e-9, \"binary_search \u5B9F\u6570 sqrt\"\
-    );\n            double r2 = binary_search(3000.0, 0.0, [&](double x) { return\
-    \ x * x >= t; });\n            check(std::abs(r2 - std::sqrt(t)) < 1e-9, \"binary_search\
-    \ \u5B9F\u6570 (ok > ng)\");\n        }\n    }\n\n    // \u6C7A\u307E\u3063\u305F\
-    \u5024\n    check(binary_search(0, 1000000000, [](int x) { return (long long)x\
+    \    for (int rep = 0; rep < 20000 && ok; rep++) {\n        long long a = static_cast<long\
+    \ long>(rng() % 21) - 10, b = static_cast<long long>(rng() % 21) - 10;\n\n   \
+    \     // chmin / chmax: \u66F4\u65B0\u3057\u305F\u304B\u3092\u8FD4\u3059\n   \
+    \     {\n            long long x = a;\n            bool changed = chmin(x, b);\n\
+    \            check(x == std::min(a, b) && changed == (b < a), \"chmin\");\n  \
+    \          x = a;\n            changed = chmax(x, b);\n            check(x ==\
+    \ std::max(a, b) && changed == (b > a), \"chmax\");\n            double d = a;\n\
+    \            check(chmin(d, b + 0.5) == (b + 0.5 < a) && d == std::min<double>(a,\
+    \ b + 0.5), \"chmin (\u578B\u304C\u7570\u306A\u308B)\");\n        }\n\n      \
+    \  // long long \u540C\u58EB\u306E max / min\n        check(max(a, b) == std::max(a,\
+    \ b) && min(a, b) == std::min(a, b), \"max/min(long long, long long)\");\n   \
+    \     check(max(a, 3) == std::max(a, 3LL) && min(2, b) == std::min(2LL, b), \"\
+    max/min (int \u3068 long long \u306E\u6DF7\u5728)\");\n\n        // floordiv /\
+    \ ceildiv: \u5B9F\u6570\u306E floor / ceil \u3068\u6BD4\u3079\u308B\n        if\
+    \ (b != 0) {\n            check(floordiv(a, b) == static_cast<long long>(std::floor(static_cast<double>(a)\
+    \ / b)), \"floordiv\");\n            check(ceildiv(a, b) == static_cast<long long>(std::ceil(static_cast<double>(a)\
+    \ / b)), \"ceildiv\");\n            auto [q, r] = divmod(a, b);\n            check(q\
+    \ == floordiv(a, b) && q * b + r == a, \"divmod\");\n            check(r == 0\
+    \ || (r < 0) == (b < 0), \"divmod \u4F59\u308A\u306E\u7B26\u53F7\");\n       \
+    \     check(std::abs(r) < std::abs(b), \"divmod \u4F59\u308A\u306E\u5927\u304D\
+    \u3055\");\n        }\n\n        // inrange / inrect\n        {\n            long\
+    \ long x = static_cast<long long>(rng() % 15) - 5;\n            check(inrange(x,\
+    \ a) == (0 <= x && x < a), \"inrange(x, a)\");\n            check(inrange(x, a,\
+    \ b) == (a <= x && x < b), \"inrange(x, a, b)\");\n            long long y = static_cast<long\
+    \ long>(rng() % 15) - 5;\n            check(inrect(x, y, a, b) == (0 <= x && x\
+    \ < a && 0 <= y && y < b), \"inrect\");\n        }\n\n        // \u6574\u6570\u306E\
+    \u4E8C\u5206\u63A2\u7D22: f(ok) \u304C\u771F\u3001f(ng) \u304C\u507D\u3067\u5358\
+    \u8ABF\u306A\u3068\u304D\u3001\u5883\u754C\u306E ok \u5074\u3092\u8FD4\u3059\n\
+    \        {\n            long long t = static_cast<long long>(rng() % 2001) - 1000;\n\
+    \            long long lo = t - static_cast<long long>(rng() % 1000) - 1, hi =\
+    \ t + static_cast<long long>(rng() % 1000) + 1;\n            // f(x) = x <= t\
+    \ (ok = lo, ng = hi) -> t\n            check(binary_search(lo, hi, [&](long long\
+    \ x) { return x <= t; }) == t, \"binary_search \u6574\u6570 (ok < ng)\");\n  \
+    \          // f(x) = x >= t (ok = hi, ng = lo) -> t\n            check(binary_search(hi,\
+    \ lo, [&](long long x) { return x >= t; }) == t, \"binary_search \u6574\u6570\
+    \ (ok > ng)\");\n            // \u96A3\u308A\u5408\u3046 ok, ng \u306A\u3089 ok\
+    \ \u3092\u305D\u306E\u307E\u307E\u8FD4\u3059\n            check(binary_search(t,\
+    \ t + 1, [&](long long) { return true; }) == t, \"binary_search \u6574\u6570 \u96A3\
+    \u63A5\");\n        }\n\n        // \u5B9F\u6570\u306E\u4E8C\u5206\u63A2\u7D22\
+    \ (100 \u56DE)\n        {\n            double t = static_cast<double>(rng() %\
+    \ 2000001) / 1000.0;  // [0, 2000]\n            double r = binary_search(0.0,\
+    \ 3000.0, [&](double x) { return x * x <= t; });\n            check(std::abs(r\
+    \ - std::sqrt(t)) < 1e-9, \"binary_search \u5B9F\u6570 sqrt\");\n            double\
+    \ r2 = binary_search(3000.0, 0.0, [&](double x) { return x * x >= t; });\n   \
+    \         check(std::abs(r2 - std::sqrt(t)) < 1e-9, \"binary_search \u5B9F\u6570\
+    \ (ok > ng)\");\n        }\n    }\n\n    // \u6C7A\u307E\u3063\u305F\u5024\n \
+    \   check(binary_search(0, 1000000000, [](int x) { return static_cast<long long>(x)\
     \ * x <= 1000000000; }) == 31622, \"binary_search sqrt(1e9)\");\n    check(!inrange(0,\
     \ 0) && inrange(0, 1) && !inrange(-1, 1), \"inrange \u5883\u754C\");\n    check(inrange(5,\
     \ 5, 6) && !inrange(6, 5, 6), \"inrange(x, a, b) \u5883\u754C\");\n    check(floordiv(7,\
@@ -370,14 +376,15 @@ data:
     \u7D44\u3001\u4ED6\u306F\u5883\u754C\u4ED8\u8FD1\u3068\u30E9\u30F3\u30C0\u30E0\
     \u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u6570\u3068\u30DD\u30A4\u30F3\u30BF\u306F\
     \u6C7A\u307E\u3063\u305F\u5024\n    for (int a = -128; a < 128; a++)\n       \
-    \ for (int b = -128; b < 128; b++) check(midpoint((std::int8_t)a, (std::int8_t)b)\
-    \ == naive_midpoint((std::int8_t)a, (std::int8_t)b), \"midpoint int8\");\n   \
-    \ for (int a = 0; a < 256; a++)\n        for (int b = 0; b < 256; b++) check(midpoint((std::uint8_t)a,\
-    \ (std::uint8_t)b) == naive_midpoint((std::uint8_t)a, (std::uint8_t)b), \"midpoint\
-    \ uint8\");\n    check_midpoint<short>(rng);\n    check_midpoint<int>(rng);\n\
-    \    check_midpoint<unsigned>(rng);\n    check_midpoint<long long>(rng);\n   \
-    \ check_midpoint<unsigned long long>(rng);\n    {\n        constexpr double M\
-    \ = std::numeric_limits<double>::max(), D = std::numeric_limits<double>::denorm_min();\n\
+    \ for (int b = -128; b < 128; b++) check(midpoint(static_cast<std::int8_t>(a),\
+    \ static_cast<std::int8_t>(b)) == naive_midpoint(static_cast<std::int8_t>(a),\
+    \ static_cast<std::int8_t>(b)), \"midpoint int8\");\n    for (int a = 0; a < 256;\
+    \ a++)\n        for (int b = 0; b < 256; b++) check(midpoint(static_cast<std::uint8_t>(a),\
+    \ static_cast<std::uint8_t>(b)) == naive_midpoint(static_cast<std::uint8_t>(a),\
+    \ static_cast<std::uint8_t>(b)), \"midpoint uint8\");\n    check_midpoint<short>(rng);\n\
+    \    check_midpoint<int>(rng);\n    check_midpoint<unsigned>(rng);\n    check_midpoint<long\
+    \ long>(rng);\n    check_midpoint<unsigned long long>(rng);\n    {\n        constexpr\
+    \ double M = std::numeric_limits<double>::max(), D = std::numeric_limits<double>::denorm_min();\n\
     \        check(midpoint(1.0, 4.0) == 2.5 && midpoint(-3.0, 1.0) == -1.0, \"midpoint\
     \ double\");\n        check(midpoint(M, M) == M && midpoint(-M, M) == 0.0 && midpoint(M,\
     \ M / 2) == M * 0.75, \"midpoint double \u3042\u3075\u308C\u306A\u3044\");\n \
@@ -385,28 +392,29 @@ data:
     \ D) == D, \"midpoint double \u975E\u6B63\u898F\u5316\u6570\");\n        check(midpoint(1.0f,\
     \ 2.0f) == 1.5f && std::is_same_v<decltype(midpoint(1.0f, 2.0f)), float>, \"midpoint\
     \ float\");\n        for (int rep = 0; rep < 1000; rep++) {\n            double\
-    \ a = (double)(long long)(rng() % 2000001 - 1000000) / 1024, b = (double)(long\
-    \ long)(rng() % 2000001 - 1000000) / 1024;\n            check(midpoint(a, b) ==\
-    \ (a + b) / 2, \"midpoint double \u30E9\u30F3\u30C0\u30E0\");\n        }\n   \
-    \     static int arr[10];\n        check(midpoint(arr, arr + 9) == arr + 4 &&\
-    \ midpoint(arr + 9, arr) == arr + 5 && midpoint(arr + 3, arr + 3) == arr + 3,\
-    \ \"midpoint \u30DD\u30A4\u30F3\u30BF\");\n    }\n    static_assert(midpoint(1,\
-    \ 4) == 2 && midpoint(4, 1) == 3 && midpoint(-3, 0) == -2);\n    static_assert(midpoint(std::numeric_limits<long\
-    \ long>::max(), std::numeric_limits<long long>::max() - 2) == std::numeric_limits<long\
-    \ long>::max() - 1);\n    static_assert(midpoint(0u, 4294967295u) == 2147483647u\
-    \ && midpoint(4294967295u, 0u) == 2147483648u);\n    static_assert(midpoint(1.0,\
-    \ 2.0) == 1.5);\n\n    // len: \u8981\u7D20\u6570\u3092 long long \u3067\u8FD4\
-    \u3059\n    {\n        std::vector<int> v(5);\n        const std::string str =\
-    \ \"abcd\";\n        std::set<int> st = {3, 1, 4, 1, 5};\n        int carr[7]\
-    \ = {};\n        check(len(v) == 5 && len(str) == 4 && len(st) == 4 && len(carr)\
-    \ == 7, \"len\");\n        check(len(std::vector<int>()) == 0 && len(std::string_view(\"\
-    xy\")) == 2 && len(\"abc\") == 4, \"len \u7A7A\u30FB\u4E00\u6642\u30AA\u30D6\u30B8\
-    \u30A7\u30AF\u30C8\u30FB\u6587\u5B57\u5217\u30EA\u30C6\u30E9\u30EB\");\n     \
-    \   check(len(v) - 6 == -1, \"len \u306F\u7B26\u53F7\u4ED8\u304D\");\n       \
-    \ static_assert(std::is_same_v<decltype(len(v)), long long>);\n        static_assert(len(std::array<int,\
-    \ 3>{}) == 3);\n#if __cplusplus >= 202002L\n        check(len(std::views::iota(2,\
-    \ 9)) == 7, \"len views::iota\");\n#endif\n    }\n\n    if (ok) std::cout << \"\
-    Hello World\" << std::endl;\n}\n"
+    \ a = static_cast<double>(static_cast<long long>(rng() % 2000001 - 1000000)) /\
+    \ 1024, b = static_cast<double>(static_cast<long long>(rng() % 2000001 - 1000000))\
+    \ / 1024;\n            check(midpoint(a, b) == (a + b) / 2, \"midpoint double\
+    \ \u30E9\u30F3\u30C0\u30E0\");\n        }\n        static int arr[10];\n     \
+    \   check(midpoint(arr, arr + 9) == arr + 4 && midpoint(arr + 9, arr) == arr +\
+    \ 5 && midpoint(arr + 3, arr + 3) == arr + 3, \"midpoint \u30DD\u30A4\u30F3\u30BF\
+    \");\n    }\n    static_assert(midpoint(1, 4) == 2 && midpoint(4, 1) == 3 && midpoint(-3,\
+    \ 0) == -2);\n    static_assert(midpoint(std::numeric_limits<long long>::max(),\
+    \ std::numeric_limits<long long>::max() - 2) == std::numeric_limits<long long>::max()\
+    \ - 1);\n    static_assert(midpoint(0u, 4294967295u) == 2147483647u && midpoint(4294967295u,\
+    \ 0u) == 2147483648u);\n    static_assert(midpoint(1.0, 2.0) == 1.5);\n\n    //\
+    \ len: \u8981\u7D20\u6570\u3092 long long \u3067\u8FD4\u3059\n    {\n        std::vector<int>\
+    \ v(5);\n        const std::string str = \"abcd\";\n        std::set<int> st =\
+    \ {3, 1, 4, 1, 5};\n        int carr[7] = {};\n        check(len(v) == 5 && len(str)\
+    \ == 4 && len(st) == 4 && len(carr) == 7, \"len\");\n        check(len(std::vector<int>())\
+    \ == 0 && len(std::string_view(\"xy\")) == 2 && len(\"abc\") == 4, \"len \u7A7A\
+    \u30FB\u4E00\u6642\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u30FB\u6587\u5B57\u5217\
+    \u30EA\u30C6\u30E9\u30EB\");\n        check(len(v) - 6 == -1, \"len \u306F\u7B26\
+    \u53F7\u4ED8\u304D\");\n        static_assert(std::is_same_v<decltype(len(v)),\
+    \ long long>);\n        static_assert(len(std::array<int, 3>{}) == 3);\n#if __cplusplus\
+    \ >= 202002L\n        check(len(std::views::iota(2, 9)) == 7, \"len views::iota\"\
+    );\n#endif\n    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
+    }\n"
   dependsOn:
   - src/base/functions.hpp
   - src/utility/binary-search.hpp
@@ -414,7 +422,7 @@ data:
   isVerificationFile: true
   path: test/unittest/functions.test.cpp
   requiredBy: []
-  timestamp: '2026-10-18 18:36:16+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/functions.test.cpp

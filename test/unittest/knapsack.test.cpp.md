@@ -174,7 +174,7 @@ data:
     \n\n// \u54C1\u7269 i \u3092 0 \u500B\u4EE5\u4E0A m[i] \u500B\u4EE5\u4E0B\u9078\
     \u3076\u3059\u3079\u3066\u306E\u65B9\u6CD5\u3092\u8A66\u3059\nlong long naive(const\
     \ std::vector<long long>& v, const std::vector<long long>& w, const std::vector<long\
-    \ long>& m,\n                long long W, int i = 0) {\n    if (i == (int)v.size())\
+    \ long>& m,\n                long long W, int i = 0) {\n    if (i == static_cast<int>(v.size()))\
     \ return 0;\n    long long res = 0;\n    for (long long c = 0; c <= m[i] && c\
     \ * w[i] <= W; c++) {\n        res = std::max(res, c * v[i] + naive(v, w, m, W\
     \ - c * w[i], i + 1));\n    }\n    return res;\n}\n\nint main() {\n    std::mt19937_64\
@@ -223,7 +223,7 @@ data:
     \n// \u54C1\u7269 i \u3092 0 \u500B\u4EE5\u4E0A m[i] \u500B\u4EE5\u4E0B\u9078\u3076\
     \u3059\u3079\u3066\u306E\u65B9\u6CD5\u3092\u8A66\u3059\nlong long naive(const\
     \ std::vector<long long>& v, const std::vector<long long>& w, const std::vector<long\
-    \ long>& m,\n                long long W, int i = 0) {\n    if (i == (int)v.size())\
+    \ long>& m,\n                long long W, int i = 0) {\n    if (i == static_cast<int>(v.size()))\
     \ return 0;\n    long long res = 0;\n    for (long long c = 0; c <= m[i] && c\
     \ * w[i] <= W; c++) {\n        res = std::max(res, c * v[i] + naive(v, w, m, W\
     \ - c * w[i], i + 1));\n    }\n    return res;\n}\n\nint main() {\n    std::mt19937_64\
@@ -267,7 +267,7 @@ data:
   isVerificationFile: true
   path: test/unittest/knapsack.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-19 12:08:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/knapsack.test.cpp

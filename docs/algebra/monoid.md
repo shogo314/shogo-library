@@ -93,7 +93,7 @@ std::cout << f;         // "a b" を出力
 
 ## clamp する関数 `Clamp<T>`
 
-`ClampComposite` の要素や、[作用素付きモノイド](acted-monoid.hpp) の `ClampMin`・`ClampMax`・`ClampMinMax` の作用素に使う、$f(x) = \min(\max(x, \mathit{lb}), \mathit{ub})$ の型です。$\mathit{lb} \le \mathit{ub}$ でなければなりません。chmax だけなら `{x, 型の最大値}`、chmin だけなら `{型の最小値, x}`、代入なら `{x, x}` と書けます。
+`ClampComposite` の要素や、[作用素付きモノイド](acted-monoid.hpp) の `ClampMin`・`ClampMax`・`ClampMinMax` の作用素に使う、$f(x) = \min(\max(x, \mathit{lb}), \mathit{ub})$ の型です。$\mathit{lb} \le \mathit{ub}$ でなければなりません。`lb`・`ub` に `{}` (`std::nullopt`) を渡すと、下限・上限なし (型の最小値・最大値) になります。chmax だけなら `{x, {}}`、chmin だけなら `{ {}, x}`、代入なら `{x, x}` と書けます。1 つの値からは作れません (`seg.apply(l, r, x)` のような書き間違いが黙って通らないようにするため)。
 
 clamp の合成はまた clamp になります ($\mathrm{clamp}(\mathrm{clamp}(x, a, b), c, d) = \mathrm{clamp}(x, \mathrm{clamp}(a, c, d), \mathrm{clamp}(b, c, d))$)。
 
@@ -126,14 +126,14 @@ long long z = seg.prod(l, r)(x);                    // x に区間 [l, r) の cl
 
 `ClampAddComposite` の要素や、[作用素付きモノイド](acted-monoid.hpp) の `ClampAddMin`・`ClampAddMax`・`ClampAddMinMax`、[Beats 用の作用素付きモノイド](beats-acted-monoid.hpp) の `ChminChmaxAddSum` の作用素に使う、$f(x) = \min(\max(x + \mathit{add}, \mathit{lb}), \mathit{ub})$ の型です。加算・chmin・chmax・代入をまとめて表せます。$\mathit{lb} \le \mathit{ub}$ でなければなりません。
 
-`lb` が型の最小値、`ub` が型の最大値のときは、それぞれ下限・上限がないことを表します。合成ではこの値に `add` を足さないので、あふれません。
+`lb` が型の最小値、`ub` が型の最大値のときは、それぞれ下限・上限がないことを表します。合成ではこの値に `add` を足さないので、あふれません。`lb`・`ub` に `{}` (`std::nullopt`) を渡すとこの値になります。`add` は省略すると 0 です。`Clamp` と同じく、1 つの値からは作れません。
 
 | 作用 | 書き方 |
 |---|---|
-| $x \leftarrow x + b$ | `{型の最小値, 型の最大値, b}` |
-| $x \leftarrow \min(x, b)$ | `{型の最小値, b, 0}` |
-| $x \leftarrow \max(x, b)$ | `{b, 型の最大値, 0}` |
-| $x \leftarrow b$ | `{b, b, 0}` |
+| $x \leftarrow x + b$ | `{ {}, {}, b}` |
+| $x \leftarrow \min(x, b)$ | `{ {}, b}` |
+| $x \leftarrow \max(x, b)$ | `{b, {}}` |
+| $x \leftarrow b$ | `{b, b}` |
 
 ```cpp
 ClampAdd<long long> f{0, 10, 3};  // f(x) = min(max(x + 3, 0), 10) (省略すると恒等写像)

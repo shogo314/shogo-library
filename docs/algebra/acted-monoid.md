@@ -49,7 +49,15 @@ long long m = seg.prod(l, r);                         // [l, r) の最小値
 
 `MulSum<T>::inv` は `T(1) / f` を返します。`T` が `long long` などの整数型だと整数除算になって正しい逆元にならないので、[imos法](../data_structures/imos.hpp) に渡すときは `T` を modint や浮動小数点数などの体の型にしてください。
 
-`ClampMin`・`ClampMax`・`ClampMinMax` の作用素は、chmin (`{型の最小値, x}`)・chmax (`{x, 型の最大値}`)・代入 (`{x, x}`) をまとめて表せます。`ClampAddMin`・`ClampAddMax`・`ClampAddMinMax` の作用素は、さらに加算もまとめて表せます (書き方は [`ClampAdd<T>`](monoid.hpp))。どちらも単調非減少なので最小値・最大値にはそのまま作用しますが、区間和には作用しません。区間和が欲しい場合は [Beats 用の作用素付きモノイド](beats-acted-monoid.hpp) の `ChminChmaxAddSum` を使います。
+`ClampMin`・`ClampMax`・`ClampMinMax` の作用素は、chmin (`{ {}, x}`)・chmax (`{x, {}}`)・代入 (`{x, x}`) をまとめて表せます。`ClampAddMin`・`ClampAddMax`・`ClampAddMinMax` の作用素は、さらに加算もまとめて表せます (書き方は [`ClampAdd<T>`](monoid.hpp))。どちらも単調非減少なので最小値・最大値にはそのまま作用しますが、区間和には作用しません。区間和が欲しい場合は [Beats 用の作用素付きモノイド](beats-acted-monoid.hpp) の `ChminChmaxAddSum` を使います。
+
+```cpp
+LazySegTree<acted_monoid::ClampAddMin<long long>> seg(v);
+seg.apply(l, r, { {}, {}, x});  // [l, r) に x を足す
+seg.apply(l, r, { {}, x});      // chmin
+seg.apply(l, r, {x, {}});       // chmax
+seg.apply(l, r, {x, x});        // 代入
+```
 
 `AddPowerSum` の要素は `S(x)` で値 `x` の1要素から作り、`s[i]` で `i` 乗和を取得します。
 

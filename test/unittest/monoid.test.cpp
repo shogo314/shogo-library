@@ -10,6 +10,7 @@
 #include <random>
 #include <sstream>
 #include <string>
+#include <type_traits>
 #include <vector>
 
 #include "../../src/algebra/group.hpp"
@@ -128,6 +129,13 @@ int main() {
         check(f != h && !(f == h), "Clamp !=");
         check(id(std::numeric_limits<long long>::lowest()) == std::numeric_limits<long long>::lowest() && id(std::numeric_limits<long long>::max()) == std::numeric_limits<long long>::max(), "Clamp default");
         check(f(1) == 2 && f(3) == 3 && f(9) == 5, "Clamp ()");
+        // {} を渡すと下限・上限なし。1 つの値からは暗黙に変換しない
+        check((Clamp<long long>{0, {}} == Clamp<long long>{0, std::numeric_limits<long long>::max()}), "Clamp {lb, {}}");
+        check((Clamp<long long>{{}, 0} == Clamp<long long>{std::numeric_limits<long long>::lowest(), 0}), "Clamp {{}, ub}");
+        check((Clamp<long long>{{}, {}} == Clamp<long long>{}), "Clamp {{}, {}}");
+        static_assert(!std::is_convertible_v<long long, Clamp<long long>>);
+        static_assert(std::is_trivially_copyable_v<Clamp<long long>>);
+        static_assert(Clamp<int>{0, {}}(-5) == 0);
         std::ostringstream os;
         os << f;
         check(os.str() == "2 5", "Clamp <<");
@@ -168,6 +176,13 @@ int main() {
         check(f != h && !(f == h), "ClampAdd !=");
         check(id == ClampAdd<long long>{lowest, highest, 0} && id(lowest) == lowest && id(highest) == highest, "ClampAdd default");
         check(f(0) == 2 && f(2) == 3 && f(9) == 5, "ClampAdd ()");
+        // {} を渡すと下限・上限なし。add は省略すると 0。1 つの値からは暗黙に変換しない
+        check((ClampAdd<long long>{{}, {}, 3} == ClampAdd<long long>{lowest, highest, 3}), "ClampAdd {{}, {}, add}");
+        check((ClampAdd<long long>{{}, 5} == ClampAdd<long long>{lowest, 5, 0}), "ClampAdd {{}, ub}");
+        check((ClampAdd<long long>{5, {}} == ClampAdd<long long>{5, highest, 0}), "ClampAdd {lb, {}}");
+        static_assert(!std::is_convertible_v<long long, ClampAdd<long long>>);
+        static_assert(std::is_trivially_copyable_v<ClampAdd<long long>>);
+        static_assert(ClampAdd<int>{{}, 10, 3}(9) == 10);
         std::ostringstream os;
         os << f;
         check(os.str() == "2 5 1", "ClampAdd <<");

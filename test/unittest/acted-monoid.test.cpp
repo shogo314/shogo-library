@@ -167,6 +167,12 @@ int main() {
             small, gen_clamp_add, [](long long x, int) { return P{x, x}; },
             [&](const std::vector<long long>& a, int l, int r) { return P{min_fold(a, l, r), max_fold(a, l, r)}; },
             clamp_add_act, [](const P& x, const P& y) { return x == y; }, rng, "ClampAddMinMax");
+        // apply に {} を含む波括弧で作用素を渡せる
+        LazySegTree<acted_monoid::ClampAddMin<long long>> seg(std::vector<long long>{3, 1, 4, 1, 5});
+        seg.apply(0, 5, {{}, {}, 2});  // 加算
+        seg.apply(0, 5, {4, {}});      // chmax
+        seg.apply(1, 3, {{}, 5});      // chmin
+        check(seg.prod(0, 5) == 4 && seg.prod(2, 3) == 5 && seg.get(4) == 7, "ClampAddMin {} の作用素");
     }
 
     // AddMaxWith: 区間加算・区間最大値とその位置 (同じ値なら左側)

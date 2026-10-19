@@ -17,6 +17,7 @@
 #include <istream>
 #include <limits>
 #include <numeric>
+#include <optional>
 #include <ostream>
 #include <type_traits>
 #include <utility>
@@ -49,12 +50,18 @@ struct Affine {
  *
  * monoid::ClampComposite の要素や acted_monoid::ClampMin などの作用素に使う
  * 例: Clamp<int> f{0, 10}; f(x) は x を [0, 10] に収める。省略すると恒等写像 {型の最小値, 型の最大値}
+ * lb, ub に {} (std::nullopt) を渡すと下限・上限なし (型の最小値・最大値) になる。例: Clamp<int>{0, {}} は chmax 0
  * lb <= ub でなければならない
  */
 template <typename T>
 struct Clamp {
-    T lb = std::numeric_limits<T>::lowest();  //!< 下限
-    T ub = std::numeric_limits<T>::max();     //!< 上限
+    T lb;  //!< 下限
+    T ub;  //!< 上限
+    /// @brief 恒等写像
+    constexpr Clamp() : lb(std::numeric_limits<T>::lowest()), ub(std::numeric_limits<T>::max()) {}
+    /// @brief 1 つの値からの暗黙の変換を防ぐため、lb と ub は両方渡す
+    constexpr Clamp(std::optional<T> _lb, std::optional<T> _ub)
+        : lb(_lb ? *_lb : std::numeric_limits<T>::lowest()), ub(_ub ? *_ub : std::numeric_limits<T>::max()) {}
     constexpr T operator()(const T& x) const { return std::min(std::max(x, lb), ub); }
     friend constexpr bool operator==(const Clamp& f, const Clamp& g) { return f.lb == g.lb && f.ub == g.ub; }
     friend constexpr bool operator!=(const Clamp& f, const Clamp& g) { return !(f == g); }
@@ -74,12 +81,18 @@ struct Clamp {
  * monoid::ClampAddComposite の要素や acted_monoid::ClampAddMin、beats_acted_monoid::ChminChmaxAddSum の作用素に使う
  * 例: ClampAdd<long long> f{0, 10, 3}; f(x) は x + 3 を [0, 10] に収める。省略すると恒等写像 {型の最小値, 型の最大値, 0}
  * lb <= ub でなければならない。lb が型の最小値、ub が型の最大値のときは、それぞれ下限・上限がないことを表す
+ * lb, ub に {} (std::nullopt) を渡すと下限・上限なしになる。例: ClampAdd<long long>{{}, {}, 3} は 3 を足す、{{}, 5} は chmin 5
  */
 template <typename T>
 struct ClampAdd {
-    T lb = std::numeric_limits<T>::lowest();  //!< 下限
-    T ub = std::numeric_limits<T>::max();     //!< 上限
-    T add = T(0);                             //!< clamp の前に足す値
+    T lb;   //!< 下限
+    T ub;   //!< 上限
+    T add;  //!< clamp の前に足す値
+    /// @brief 恒等写像
+    constexpr ClampAdd() : lb(std::numeric_limits<T>::lowest()), ub(std::numeric_limits<T>::max()), add(T(0)) {}
+    /// @brief 1 つの値からの暗黙の変換を防ぐため、lb と ub は両方渡す
+    constexpr ClampAdd(std::optional<T> _lb, std::optional<T> _ub, T _add = T(0))
+        : lb(_lb ? *_lb : std::numeric_limits<T>::lowest()), ub(_ub ? *_ub : std::numeric_limits<T>::max()), add(_add) {}
     constexpr T operator()(const T& x) const { return std::min(std::max(x + add, lb), ub); }
     friend constexpr bool operator==(const ClampAdd& f, const ClampAdd& g) { return f.lb == g.lb && f.ub == g.ub && f.add == g.add; }
     friend constexpr bool operator!=(const ClampAdd& f, const ClampAdd& g) { return !(f == g); }

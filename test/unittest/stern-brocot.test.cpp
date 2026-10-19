@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <limits>
+#include <optional>
 #include <random>
 #include <string>
 #include <utility>
@@ -174,6 +175,61 @@ int main() {
         check(*stern_brocot::ancestor(x, big - 2) == Q(big - 1, 1), "ancestor 10^18");
         check(!stern_brocot::ancestor(x, big), "ancestor 10^18 なし");
         check(stern_brocot::lca(Q(big, 1), Q(big - 1, 2)) == Q(big / 2, 1), "lca 10^18");
+    }
+
+    // binary_search: 分母・分子の上限内の分数を全探索して、pred が true の最大と false の最小を求める愚直な実装と比べる
+    {
+        using P = std::pair<long long, long long>;
+        auto naive = [&](long long max_den, long long max_num, auto pred) {
+            Q lo(0), hi(0);
+            bool has_hi = false;
+            for (long long q = 1; q <= max_den; q++) {
+                for (long long p = 0; p <= max_num; p++) {
+                    Q x(p, q);
+                    if (pred(x)) {
+                        if (lo < x) lo = x;
+                    } else if (!has_hi || x < hi) {
+                        hi = x, has_hi = true;
+                    }
+                }
+            }
+            return std::make_pair(P{lo.num(), lo.den()}, has_hi ? P{hi.num(), hi.den()} : P{1, 0});
+        };
+        for (int rep = 0; rep < 3000 && ok; rep++) {
+            long long max_den = rng() % 12 + 1, max_num = rng() % 12;
+            Q x = gen_pos(15);
+            bool strict = rng() % 2;
+            auto pred = [&](const Q& y) { return strict ? y < x || y == Q(0) : y <= x; };
+            auto expect = naive(max_den, max_num, pred);
+            check(stern_brocot::binary_search(max_den, pred, std::optional<long long>(max_num)) == expect, "binary_search 分子の上限あり");
+            // 分子の上限なし: 分子が十分大きい範囲の全探索と同じ
+            check(stern_brocot::binary_search(max_den, pred) == naive(max_den, 16 * max_den, pred), "binary_search 分子の上限なし");
+        }
+        // pred がずっと true なら上側は +∞
+        auto all = stern_brocot::binary_search(5LL, [](const Q&) { return true; }, std::optional<long long>(7));
+        check(all.first == P{7, 1} && all.second == P{1, 0}, "binary_search +∞");
+        // √2 の両側: 分母 10^9 以下で最も近い分数。pred を呼ぶ回数も数える
+        const long long n = 1000000000;
+        int calls = 0;
+        auto [lo, hi] = stern_brocot::binary_search(n, [&](const Q& y) {
+            calls++;
+            return y.num() * y.num() <= 2 * y.den() * y.den();
+        });
+        Q l(lo.first, lo.second), h(hi.first, hi.second);
+        // 隣り合う分数 (間に分母 n 以下の分数がない) で、√2 を挟む
+        check(lo.second <= n && hi.second <= n && lo.second + hi.second > n, "binary_search √2 分母");
+        check(hi.first * lo.second - lo.first * hi.second == 1, "binary_search √2 隣り合う");
+        check(l * l < Q(2) && Q(2) < h * h, "binary_search √2 挟む");
+        check(calls <= 200, "binary_search √2 呼ぶ回数");
+        // best_approximation と一致する
+        for (int rep = 0; rep < 1000 && ok; rep++) {
+            Q x = gen_pos(1000000);
+            long long m = rng() % 1000 + 1;
+            auto [bl, bu] = stern_brocot::best_approximation(x, m);
+            auto [sl, su] = stern_brocot::binary_search(m, [&](const Q& y) { return y <= x; });
+            // x 自身の分母が m 以下なら、下側は x、上側は x の次の分数になる
+            check(Q(sl.first, sl.second) == bl && (bl == bu || Q(su.first, su.second) == bu), "binary_search と best_approximation");
+        }
     }
 
     // ABC408 G の入出力例: A/B < p/q < C/D となる最小の q

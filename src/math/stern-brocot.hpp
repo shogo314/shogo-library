@@ -240,4 +240,58 @@ std::pair<Rational<T>, Rational<T>> best_approximation(const Rational<T>& x, T n
     return {Rational<T>(b.lo_num, b.lo_den) + k, Rational<T>(b.hi_num, b.hi_den) + k};
 }
 
+/**
+ * @brief 分母が max_den 以下 (max_num を渡すと分子も max_num 以下) の 0 以上の分数の中で、単調な pred の境目を求める
+ * pred(x) は小さい x で true、大きい x で false となる単調な関数で、pred(0) は true であること
+ * 戻り値は {{pred が true の最大の分数の分子, 分母}, {pred が false の最小の分数の分子, 分母}}。false の側がなければ {1, 0} (+∞)
+ * max_num を渡さないなら、pred はどこかで false になること (そうでないと終わらない)
+ * pred を呼ぶ回数は O(log max_den) 程度 (max_num を渡さないなら O(log (max_den + 境目の値)))
+ * @pre max_den >= 1
+ */
+template <typename T, typename Pred>
+std::pair<std::pair<T, T>, std::pair<T, T>> binary_search(T max_den, Pred pred, std::optional<T> max_num = std::nullopt) {
+    assert(max_den >= 1);
+    assert(!max_num || *max_num >= 0);
+    assert(pred(Rational<T>(0)));
+    internal::Bounds<T> b;
+    // 分子が 0 以下なら 0 しか選べない (上端 +∞ から左へ進んでも分子 1 のままなので、上限を満たせない)
+    if (max_num && *max_num == 0) return {{0, 1}, {1, 0}};
+    // 動く方の端 (num, den) に k 回もう一方の端 (add_num, add_den) を足せる回数の上限 (なければ -1)
+    auto limit = [&](T num, T den, T add_num, T add_den) -> T {
+        T res = -1;
+        if (add_den > 0) res = (max_den - den) / add_den;
+        if (max_num && add_num > 0) {
+            T r = (*max_num - num) / add_num;
+            res = res == -1 ? r : std::min(res, r);
+        }
+        return res;
+    };
+    // ok(k) が k = 0 で true、k が大きいと false になるとき、ok(k) が true の最大の k (k <= bound、bound = -1 なら上限なし)
+    // 倍々に進めてから、通り過ぎた分を二分探索で戻す。ok を呼ぶ回数は O(log k)
+    auto search = [](T bound, auto ok) -> T {
+        T k = 0, s = 1;
+        while ((bound == -1 || s <= bound - k) && ok(k + s)) k += s, s *= 2;
+        while (s > 1) {
+            s /= 2;
+            if ((bound == -1 || s <= bound - k) && ok(k + s)) k += s;
+        }
+        return k;
+    };
+    while (true) {
+        bool moved = false;
+        // 下端を上げる: 下端 + k 上端 で pred が true の最大の k
+        T k = search(limit(b.lo_num, b.lo_den, b.hi_num, b.hi_den), [&](T k) {
+            return pred(Rational<T>(b.lo_num + k * b.hi_num, b.lo_den + k * b.hi_den));
+        });
+        if (k > 0) b.move('R', k), moved = true;
+        // 上端を下げる: 上端 + k 下端 で pred が false の最大の k
+        k = search(limit(b.hi_num, b.hi_den, b.lo_num, b.lo_den), [&](T k) {
+            return !pred(Rational<T>(b.hi_num + k * b.lo_num, b.hi_den + k * b.lo_den));
+        });
+        if (k > 0) b.move('L', k), moved = true;
+        if (!moved) break;
+    }
+    return {{b.lo_num, b.lo_den}, {b.hi_num, b.hi_den}};
+}
+
 }  // namespace stern_brocot

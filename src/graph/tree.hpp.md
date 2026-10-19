@@ -12,6 +12,11 @@ data:
     path: src/graph/heavy-light-decomposition.hpp
     title: "HL \u5206\u89E3 (Heavy-Light Decomposition)"
   - icon: ':heavy_check_mark:'
+    path: src/graph/lowlink.hpp
+    title: "lowlink (\u95A2\u7BC0\u70B9\u3001\u6A4B\u3001\u4E8C\u91CD\u8FBA\u9023\u7D50\
+      \u6210\u5206\u5206\u89E3\u3001\u4E8C\u91CD\u9802\u70B9\u9023\u7D50\u6210\u5206\
+      \u5206\u89E3\u3001Block-Cut Tree)"
+  - icon: ':heavy_check_mark:'
     path: src/graph/rerooting-dp.hpp
     title: "\u5168\u65B9\u4F4D\u6728DP"
   _extendedVerifiedWith:
@@ -21,6 +26,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj/3372.test.cpp
     title: test/aoj/3372.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/grl-3-a.test.cpp
+    title: test/aoj/grl-3-a.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/grl-3-b.test.cpp
+    title: test/aoj/grl-3-b.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/grl-5-a.test.cpp
     title: test/aoj/grl-5-a.test.cpp
@@ -37,11 +48,17 @@ data:
     path: test/unittest/heavy-light-decomposition.test.cpp
     title: test/unittest/heavy-light-decomposition.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/lowlink.test.cpp
+    title: test/unittest/lowlink.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/rerooting-dp.test.cpp
     title: test/unittest/rerooting-dp.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/tree.test.cpp
     title: test/unittest/tree.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/biconnected-components.test.cpp
+    title: test/yosupo/biconnected-components.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/frequency-table-of-tree-distance.test.cpp
     title: test/yosupo/frequency-table-of-tree-distance.test.cpp
@@ -69,6 +86,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/tree-diameter.test.cpp
     title: test/yosupo/tree-diameter.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/two-edge-connected-components.test.cpp
+    title: test/yosupo/two-edge-connected-components.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/vertex-add-path-sum.test.cpp
     title: test/yosupo/vertex-add-path-sum.test.cpp
@@ -700,18 +720,22 @@ data:
   requiredBy:
   - src/graph/rerooting-dp.hpp
   - src/graph/centroid-decomposition.hpp
+  - src/graph/lowlink.hpp
   - src/graph/heavy-light-decomposition.hpp
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/centroid-decomposition.test.cpp
+  - test/unittest/lowlink.test.cpp
   - test/unittest/rerooting-dp.test.cpp
   - test/unittest/tree.test.cpp
   - test/unittest/heavy-light-decomposition.test.cpp
   - test/aoj/1595.test.cpp
+  - test/aoj/grl-3-b.test.cpp
   - test/aoj/grl-5-d.test.cpp
   - test/aoj/grl-5-a.test.cpp
   - test/aoj/grl-5-b.test.cpp
+  - test/aoj/grl-3-a.test.cpp
   - test/aoj/3372.test.cpp
   - test/yosupo/frequency-table-of-tree-distance.test.cpp
   - test/yosupo/lca.4.test.cpp
@@ -725,7 +749,9 @@ data:
   - test/yosupo/tree-diameter.test.cpp
   - test/yosupo/lca.5.test.cpp
   - test/yosupo/lca.2.test.cpp
+  - test/yosupo/biconnected-components.test.cpp
   - test/yosupo/jump-on-tree.2.test.cpp
+  - test/yosupo/two-edge-connected-components.test.cpp
   - test/yukicoder/1641.test.cpp
   - test/yukicoder/898.test.cpp
 documentation_of: src/graph/tree.hpp

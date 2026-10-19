@@ -196,7 +196,8 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/graph/lowlink.hpp
       title: "lowlink (\u95A2\u7BC0\u70B9\u3001\u6A4B\u3001\u4E8C\u91CD\u8FBA\u9023\
-        \u7D50\u6210\u5206\u5206\u89E3)"
+        \u7D50\u6210\u5206\u5206\u89E3\u3001\u4E8C\u91CD\u9802\u70B9\u9023\u7D50\u6210\
+        \u5206\u5206\u89E3\u3001Block-Cut Tree)"
     - icon: ':heavy_check_mark:'
       path: src/graph/max-flow.hpp
       title: "\u6700\u5927\u6D41 (Dinic \u6CD5)"
@@ -932,6 +933,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/associative-array.test.cpp
       title: test/yosupo/associative-array.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/biconnected-components.test.cpp
+      title: test/yosupo/biconnected-components.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
       title: test/yosupo/binomial-coefficient-prime-mod.1.test.cpp

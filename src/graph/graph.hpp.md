@@ -14,7 +14,8 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/graph/lowlink.hpp
     title: "lowlink (\u95A2\u7BC0\u70B9\u3001\u6A4B\u3001\u4E8C\u91CD\u8FBA\u9023\u7D50\
-      \u6210\u5206\u5206\u89E3)"
+      \u6210\u5206\u5206\u89E3\u3001\u4E8C\u91CD\u9802\u70B9\u9023\u7D50\u6210\u5206\
+      \u5206\u89E3\u3001Block-Cut Tree)"
   - icon: ':heavy_check_mark:'
     path: src/graph/rerooting-dp.hpp
     title: "\u5168\u65B9\u4F4D\u6728DP"
@@ -91,6 +92,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/two-sat.test.cpp
     title: test/unittest/two-sat.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/biconnected-components.test.cpp
+    title: test/yosupo/biconnected-components.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/cycle-detection-undirected.test.cpp
     title: test/yosupo/cycle-detection-undirected.test.cpp
@@ -582,6 +586,7 @@ data:
   - test/yosupo/lca.5.test.cpp
   - test/yosupo/lca.2.test.cpp
   - test/yosupo/shortest-path.test.cpp
+  - test/yosupo/biconnected-components.test.cpp
   - test/yosupo/scc.test.cpp
   - test/yosupo/jump-on-tree.2.test.cpp
   - test/yosupo/two-edge-connected-components.test.cpp

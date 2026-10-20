@@ -19,7 +19,7 @@
 | `src/math/` | modint、mod 演算 (冪乗・逆元・離散対数・平方根)、畳み込み、行列 (連立一次方程式・ランク)、F2 の行列 (mod 2 の連立一次方程式・逆行列・積)、形式的冪級数、線形漸化式 (Bostan-Mori・Berlekamp-Massey)、ラグランジュ補間、組み合わせ、中国剰余定理、素数 (素数判定・素因数分解・篩・原始根)、素数の個数・素数の和 (Lucy DP)、無限大を持つ整数 (`infint`)、floor sum、商の列挙、有理数、約数・倍数のゼータ変換とメビウス変換 (GCD・LCM 畳み込み)、XOR 基底、Stern–Brocot 木と連分数 (区間で最も単純な分数・最良近似・分母に上限がある分数での二分探索) |
 | `src/string/` | Z-algorithm、KMP、Manacher、Suffix Array と LCP 配列、ローリングハッシュ、Trie、Aho-Corasick、Suffix Automaton、回文木 (Eertree) |
 | `src/geometry/` | 幾何 (ベクトル、凸包、偏角ソート、ccw、射影・反射、直線の交点、点・線分の距離、円の交点・接線・内接円・外接円など) |
-| `src/dp/` | 動的計画法 (ナップサック問題、部分和問題 (判定・S 以下の最大値・復元・個数)、最長増加部分列 (LIS)、連続部分列の和の最大値) |
+| `src/dp/` | 動的計画法 (ナップサック問題、部分和問題 (判定・S 以下の最大値・復元・個数)、最長増加部分列 (LIS)、連続部分列の和の最大値)、Monge 性を使う高速化 (monotone minima・(min, +) 畳み込み・Alien DP) |
 | `src/others/` | Mo's algorithm、転倒数 |
 | `test/` | 検証用テスト (ジャッジごとにディレクトリを分けています。`test/unittest/` は問題を使わない単体テスト) |
 | `docs/` | ドキュメントの各ページに埋め込む機能一覧 (`documentation_of` でヘッダに対応付け) |

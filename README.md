@@ -14,7 +14,7 @@
 | `src/base/` | コンテスト用テンプレート (型の別名、マクロ、入出力、`chmin` などの汎用関数)。`all` で一括 include。提出サイズを抑えるため最小限にしている |
 | `src/utility/` | コンテナ・`vector` 用の関数、二分探索、座標圧縮、ビット演算、型特性、`range`、`repr` (出力をそのままコンストラクタに使える文字列化)。必要なものだけ include する |
 | `src/algebra/` | モノイド・群・作用素付きモノイドの定義 |
-| `src/data_structures/` | セグメント木各種 (モノイドを渡して使う)、Fenwick Tree、Sparse Table、Union-Find、マージソートツリー、Li Chao Tree、双対セグメント木、Sliding Window Aggregation (スライド最小値)、削除可能な優先度付きキュー、動的セグメント木 (要素数が大きいもの)、Wavelet Matrix、FastSet (64 分木による整数の集合)、平衡二分木 (RBST: 列への挿入・削除・区間反転・split/merge)、永続データ構造 (セグメント木・遅延伝搬セグメント木・配列・Union-Find・スタック・キュー) など |
+| `src/data_structures/` | セグメント木各種 (モノイドを渡して使う)、Fenwick Tree、Sparse Table、Union-Find、マージソートツリー、Li Chao Tree (x 座標を先読みしない動的版も)、双対セグメント木、Sliding Window Aggregation (スライド最小値)、削除可能な優先度付きキュー、動的セグメント木 (要素数が大きいもの)、Wavelet Matrix、FastSet (64 分木による整数の集合)、平衡二分木 (RBST: 列への挿入・削除・区間反転・split/merge)、永続データ構造 (セグメント木・遅延伝搬セグメント木・配列・Union-Find・スタック・キュー) など |
 | `src/graph/` | グラフ (最短路、全点対間最短路)、木、全方位木 DP、Functional Graph、強連結成分分解、閉路の検出と復元、最小全域木、lowlink (関節点・橋・二重辺連結成分・二重頂点連結成分・Block-Cut Tree)、2-SAT、最大流、最小費用流、二部マッチング、燃やす埋める (Project Selection)、HL 分解、重心分解、Auxiliary Tree (虚树) |
 | `src/math/` | modint、mod 演算 (冪乗・逆元・離散対数・平方根)、畳み込み、行列 (連立一次方程式・ランク)、F2 の行列 (mod 2 の連立一次方程式・逆行列・積)、形式的冪級数、線形漸化式 (Bostan-Mori・Berlekamp-Massey)、ラグランジュ補間、組み合わせ、中国剰余定理、素数 (素数判定・素因数分解・篩・原始根)、素数の個数・素数の和 (Lucy DP)、無限大を持つ整数 (`infint`)、floor sum、商の列挙、有理数、約数・倍数のゼータ変換とメビウス変換 (GCD・LCM 畳み込み)、XOR 基底、Stern–Brocot 木と連分数 (区間で最も単純な分数・最良近似・分母に上限がある分数での二分探索) |
 | `src/string/` | Z-algorithm、KMP、Manacher、Suffix Array と LCP 配列、ローリングハッシュ、Trie、Aho-Corasick、Suffix Automaton、回文木 (Eertree) |

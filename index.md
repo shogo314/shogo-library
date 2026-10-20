@@ -263,7 +263,8 @@ data:
         \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9"
     - icon: ':heavy_check_mark:'
       path: src/math/modular-arithmetic.hpp
-      title: "mod \u6F14\u7B97 (\u7A4D\u3001\u51AA\u4E57\u3001\u9006\u5143)"
+      title: "mod \u6F14\u7B97 (\u7A4D\u3001\u51AA\u4E57\u3001\u9006\u5143\u3001\u96E2\
+        \u6563\u5BFE\u6570\u3001\u5E73\u65B9\u6839)"
     - icon: ':heavy_check_mark:'
       path: src/math/number-theory.hpp
       title: "\u6570\u8AD6 (\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406)"
@@ -273,7 +274,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/math/prime.hpp
       title: "\u7D20\u6570 (\u7D20\u6570\u5224\u5B9A\u3001\u7D20\u56E0\u6570\u5206\
-        \u89E3\u3001\u7D04\u6570\u5217\u6319\u3001\u7BE9)"
+        \u89E3\u3001\u7D04\u6570\u5217\u6319\u3001\u7BE9\u3001\u539F\u59CB\u6839)"
     - icon: ':heavy_check_mark:'
       path: src/math/quotients.hpp
       title: "\u5546\u306E\u5217\u6319"
@@ -1018,6 +1019,9 @@ data:
       path: test/yosupo/cycle-detection.test.cpp
       title: test/yosupo/cycle-detection.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/discrete-logarithm-mod.test.cpp
+      title: test/yosupo/discrete-logarithm-mod.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/division-of-polynomials.test.cpp
       title: test/yosupo/division-of-polynomials.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1183,6 +1187,9 @@ data:
       path: test/yosupo/primality-test.test.cpp
       title: test/yosupo/primality-test.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/primitive-root.test.cpp
+      title: test/yosupo/primitive-root.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/queue-operate-all-composite.test.cpp
       title: test/yosupo/queue-operate-all-composite.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1257,6 +1264,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/sort-points-by-argument.2.test.cpp
       title: test/yosupo/sort-points-by-argument.2.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/sqrt-mod.test.cpp
+      title: test/yosupo/sqrt-mod.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/static-range-frequency.test.cpp
       title: test/yosupo/static-range-frequency.test.cpp

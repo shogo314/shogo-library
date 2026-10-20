@@ -45,13 +45,16 @@ mint y = f.eval(2);            // f(2)
 | `log(f, deg)` | $\log f$ | $f_0 = 1$ | $O(n \log n)$ |
 | `exp(f, deg)` | $\exp f$ | $f_0 = 0$ | $O(n \log n)$ |
 | `pow(f, e, deg)` | $f^e$ | | $O(n \log n)$ |
+| `sqrt(f, deg)` | $\sqrt f$ (`std::optional<FPS>`。平方根がなければ `std::nullopt`) | 最初の 0 でない項が偶数次で、その係数が平方剰余 (法は素数) | $O(n \log n)$ |
 | `taylor_shift(f, a)` | $f(x + a)$ | $n$ が mod より小さい | $O(n \log n)$ |
 | `divmod(f, g)` | `std::pair` で商 `f / g` と余り `f % g` を返す (`/` と `%` を別々に使うより速い) | `g` の最高次の係数が 0 でない | $O(n \log n)$ |
 | `gcd(f, g)` | 多項式の gcd | | $O(n^2 \log n)$ |
 | `modpow(f, e, m)` | $f^e \bmod m$ (多項式の余り) | | $O(\lvert m \rvert \log \lvert m \rvert \log e)$ |
+| `polynomial_product(fs)` | 多項式の列 `fs` (`std::vector<FPS>`) の積。次数の小さいものから 2 つずつ掛ける。`fs` が空なら 1 | | $O(N \log^2 N)$ ($N$ は次数の和) |
 
 ## 関連
 
 - 積に使う畳み込みは [畳み込み](convolution.hpp)
 - 係数の型は [modint](modint.hpp)、`taylor_shift` の階乗は [組み合わせ](combinatorics.hpp)
 - 線形漸化式の第 k 項 (Bostan-Mori) や漸化式の復元 (Berlekamp-Massey) は [線形漸化式](linear-recurrence.hpp)
+- 0 でない項が少ない $f$ の `inv`・`log`・`exp`・`pow`・`sqrt` は [疎な形式的冪級数](sparse-fps.hpp) の方が速い

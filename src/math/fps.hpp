@@ -7,11 +7,14 @@
 
 #include <algorithm>
 #include <cassert>
+#include <optional>
+#include <queue>
 #include <utility>
 #include <vector>
 
 #include "combinatorics.hpp"
 #include "convolution.hpp"
+#include "modular-arithmetic.hpp"
 
 template <typename mint>
 struct FPS : std::vector<mint> {
@@ -212,6 +215,31 @@ struct FPS : std::vector<mint> {
         return pow(f, e, f.size());
     }
 
+    // sqrt(f) の先頭 deg 項 (g^2 = f)。平方根がなければ std::nullopt
+    // 最初の 0 でない項 f_i x^i は、i が偶数で f_i が平方剰余であること。法は素数であること
+    inline friend std::optional<FPS> sqrt(const FPS& f, long long deg) {
+        long long i = 0;
+        while (i < static_cast<long long>(f.size()) && f[i] == 0) ++i;
+        if (i == static_cast<long long>(f.size()) || i / 2 >= deg) return FPS(deg, 0);
+        if (i % 2 == 1) return std::nullopt;
+        long long r = sqrt_mod(f[i].val(), mint::mod());
+        if (r == -1) return std::nullopt;
+        // x^i を外した g = f / x^i (g_0 != 0) の平方根をニュートン法で求める: h <- (h + g / h) / 2
+        const FPS g = f >> i;
+        const long long d = deg - i / 2;
+        FPS h({mint(r)});
+        const mint inv2 = mint(2).inv();
+        for (long long k = 1; k < d; k <<= 1) {
+            h = (h + (g.pre(k << 1) * inv(h, k << 1)).pre(k << 1)) * inv2;
+        }
+        h.resize(d);
+        h <<= i / 2;
+        return h;
+    }
+    inline friend std::optional<FPS> sqrt(const FPS& f) {
+        return sqrt(f, f.size());
+    }
+
     inline friend FPS taylor_shift(FPS f, mint a) {
         using C = Combination<mint>;
         int n = f.size();
@@ -234,4 +262,27 @@ FPS<mint> modpow(const FPS<mint>& f, long long n, const FPS<mint>& m) {
     t = (t * t) % m;
     if (n & 1) t = (t * f) % m;
     return t;
+}
+
+/**
+ * @brief 多項式の列の積 f_0 f_1 ... f_{n-1} O(N log^2 N) (N は次数の和)
+ * 次数の小さいものから 2 つずつ掛けていく。fs が空なら 1
+ */
+template <typename mint>
+FPS<mint> polynomial_product(std::vector<FPS<mint>> fs) {
+    if (fs.empty()) return FPS<mint>(1, 1);
+    auto larger = [&](int a, int b) { return fs[a].size() > fs[b].size(); };
+    std::priority_queue<int, std::vector<int>, decltype(larger)> pq(larger);
+    for (int i = 0; i < static_cast<int>(fs.size()); i++) pq.push(i);
+    while (pq.size() > 1) {
+        int a = pq.top();
+        pq.pop();
+        int b = pq.top();
+        pq.pop();
+        // 空の多項式 (0) との積は 0
+        fs[a] = fs[a].empty() || fs[b].empty() ? FPS<mint>() : fs[a] * fs[b];
+        FPS<mint>().swap(fs[b]);
+        pq.push(a);
+    }
+    return fs[pq.top()];
 }

@@ -1,6 +1,7 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
 // FPS の単項の -、定数を引く -、eval、gcd、modpow、divmod を愚直な多項式演算と比較する
+// sqrt は 2 乗して元に戻るか、polynomial_product は順に掛けたものと比べる
 // FPS の + と - は結果の末尾の 0 を取り除く (仕様) ので、多項式としての比較は末尾の 0 を除いて行う
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
@@ -152,6 +153,46 @@ int main() {
         if (!trim(P(q)).empty() || P(r) != P{1, 2}) ok = false;
         auto [q0, r0] = divmod(F(), F(P{3, 4}));
         if (!trim(P(q0)).empty() || !trim(P(r0)).empty()) ok = false;
+    }
+
+    // sqrt: 平方根があるなら g^2 が先頭 n 項で f と一致し、ないなら nullopt (x^奇数 から始まる、平方非剰余)
+    {
+        auto gen = [&](int n) {
+            F f(n);
+            for (auto& x : f) x = rng() % mint::mod();
+            return f;
+        };
+        for (int rep = 0; rep < 300 && ok; rep++) {
+            int n = rng() % 30 + 1, shift = rng() % 4;
+            // h^2 を作ってから x^(2 shift) を掛けると、必ず平方根がある
+            F h = gen(n);
+            F f = (h * h).pre(n);
+            f = (f << (2 * shift)).pre(n);
+            auto g = sqrt(f, n);
+            if (!g || static_cast<int>(g->size()) != n || P((*g * *g).pre(n)) != P(f)) ok = false, std::cerr << "sqrt" << std::endl;
+            // x^1 から始まるなら平方根はない
+            F odd = f;
+            odd.insert(odd.begin(), mint(0));
+            odd.resize(n + 1);
+            if (odd[1] != 0 && sqrt(odd, n + 1)) ok = false, std::cerr << "sqrt odd" << std::endl;
+        }
+        // 定数項が平方非剰余なら平方根はない (998244353 では 3 が非剰余)
+        if (sqrt(F{3, 1, 4}, 3)) ok = false, std::cerr << "sqrt non-residue" << std::endl;
+        // すべて 0 なら 0
+        auto z = sqrt(F(5, 0), 5);
+        if (!z || P(*z) != P(5, 0)) ok = false, std::cerr << "sqrt zero" << std::endl;
+    }
+    // polynomial_product: 順に掛けたものと同じ (空の列は 1、0 を含むと 0)
+    for (int rep = 0; rep < 300 && ok; rep++) {
+        int k = rng() % 8;
+        std::vector<F> fs(k);
+        P expect = {1};
+        for (auto& f : fs) {
+            f.resize(rng() % 5);
+            for (auto& x : f) x = rng() % 10;
+            expect = naive_mul(expect, P(f));
+        }
+        if (trim(P(polynomial_product(fs))) != trim(expect)) ok = false, std::cerr << "polynomial_product" << std::endl;
     }
 
     if (ok) std::cout << "Hello World" << std::endl;

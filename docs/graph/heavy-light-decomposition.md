@@ -51,3 +51,4 @@ for (auto [a, b] : hld.path(u, v)) x = a <= b ? forward.prod(a, b + 1)(x) : back
 
 - LCA やダブリングだけなら [木の汎用テンプレート](tree.hpp) の `DoublingClimbTree`
 - 木のパスを重心で分けて数えるなら [重心分解](centroid-decomposition.hpp)
+- 指定した頂点とその LCA だけに圧縮した木を作るなら [Auxiliary Tree](auxiliary-tree.hpp)

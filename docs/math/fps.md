@@ -54,3 +54,4 @@ mint y = f.eval(2);            // f(2)
 
 - 積に使う畳み込みは [畳み込み](convolution.hpp)
 - 係数の型は [modint](modint.hpp)、`taylor_shift` の階乗は [組み合わせ](combinatorics.hpp)
+- 線形漸化式の第 k 項 (Bostan-Mori) や漸化式の復元 (Berlekamp-Massey) は [線形漸化式](linear-recurrence.hpp)

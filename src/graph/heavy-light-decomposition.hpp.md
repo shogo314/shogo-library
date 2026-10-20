@@ -663,14 +663,14 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/lowlink.test.cpp
-  - test/unittest/heavy-light-decomposition.test.cpp
   - test/unittest/auxiliary-tree.test.cpp
+  - test/unittest/heavy-light-decomposition.test.cpp
   - test/aoj/grl-5-d.test.cpp
   - test/yosupo/vertex-add-path-sum.test.cpp
-  - test/yosupo/vertex-set-path-composite.test.cpp
-  - test/yosupo/vertex-add-subtree-sum.2.test.cpp
-  - test/yosupo/lca.5.test.cpp
   - test/yosupo/jump-on-tree.2.test.cpp
+  - test/yosupo/vertex-set-path-composite.test.cpp
+  - test/yosupo/lca.5.test.cpp
+  - test/yosupo/vertex-add-subtree-sum.2.test.cpp
 documentation_of: src/graph/heavy-light-decomposition.hpp
 layout: document
 title: "HL \u5206\u89E3 (Heavy-Light Decomposition)"

@@ -831,16 +831,16 @@ data:
   verifiedWith:
   - test/unittest/subset-sum.test.cpp
   - test/unittest/fps.test.cpp
-  - test/yosupo/exp-of-fps.test.cpp
-  - test/yosupo/partition-function_2.test.cpp
-  - test/yosupo/inv-of-fps.test.cpp
-  - test/yosupo/division-of-polynomials.test.cpp
   - test/yosupo/pow-of-fps.test.cpp
-  - test/yosupo/polynomial-taylor-shift.test.cpp
+  - test/yosupo/exp-of-fps.test.cpp
+  - test/yosupo/sharp-p-subset-sum.2.test.cpp
   - test/yosupo/partition-function_1.test.cpp
   - test/yosupo/log-of-fps.test.cpp
-  - test/yosupo/sharp-p-subset-sum.2.test.cpp
   - test/yosupo/sharp-p-subset-sum.1.test.cpp
+  - test/yosupo/polynomial-taylor-shift.test.cpp
+  - test/yosupo/division-of-polynomials.test.cpp
+  - test/yosupo/inv-of-fps.test.cpp
+  - test/yosupo/partition-function_2.test.cpp
 documentation_of: src/math/fps.hpp
 layout: document
 title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570"
@@ -897,3 +897,4 @@ mint y = f.eval(2);            // f(2)
 
 - 積に使う畳み込みは [畳み込み](convolution.hpp)
 - 係数の型は [modint](modint.hpp)、`taylor_shift` の階乗は [組み合わせ](combinatorics.hpp)
+- 線形漸化式の第 k 項 (Bostan-Mori) や漸化式の復元 (Berlekamp-Massey) は [線形漸化式](linear-recurrence.hpp)

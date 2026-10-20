@@ -258,6 +258,12 @@ data:
       path: src/math/infint.hpp
       title: "inf \u3092\u6301\u3064\u6574\u6570\u578B"
     - icon: ':heavy_check_mark:'
+      path: src/math/lagrange-interpolation.hpp
+      title: "\u30E9\u30B0\u30E9\u30F3\u30B8\u30E5\u88DC\u9593"
+    - icon: ':heavy_check_mark:'
+      path: src/math/linear-recurrence.hpp
+      title: "\u7DDA\u5F62\u6F38\u5316\u5F0F (Bostan-Mori\u30FBBerlekamp-Massey)"
+    - icon: ':heavy_check_mark:'
       path: src/math/matrix.hpp
       title: "\u884C\u5217"
     - icon: ':heavy_check_mark:'
@@ -801,6 +807,12 @@ data:
       path: test/unittest/knapsack.test.cpp
       title: test/unittest/knapsack.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/lagrange-interpolation.test.cpp
+      title: test/unittest/lagrange-interpolation.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/linear-recurrence.test.cpp
+      title: test/unittest/linear-recurrence.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/longest-common-substring.test.cpp
       title: test/unittest/longest-common-substring.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1061,6 +1073,9 @@ data:
       path: test/yosupo/factorize.test.cpp
       title: test/yosupo/factorize.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/find-linear-recurrence.test.cpp
+      title: test/yosupo/find-linear-recurrence.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/frequency-table-of-tree-distance.test.cpp
       title: test/yosupo/frequency-table-of-tree-distance.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1078,6 +1093,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/jump-on-tree.2.test.cpp
       title: test/yosupo/jump-on-tree.2.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/kth-term-of-linearly-recurrent-sequence.test.cpp
+      title: test/yosupo/kth-term-of-linearly-recurrent-sequence.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/lca.1.test.cpp
       title: test/yosupo/lca.1.test.cpp

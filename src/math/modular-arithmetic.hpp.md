@@ -19,6 +19,9 @@ data:
     path: src/math/fps.hpp
     title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570"
   - icon: ':heavy_check_mark:'
+    path: src/math/linear-recurrence.hpp
+    title: "\u7DDA\u5F62\u6F38\u5316\u5F0F (Bostan-Mori\u30FBBerlekamp-Massey)"
+  - icon: ':heavy_check_mark:'
     path: src/math/number-theory.hpp
     title: "\u6570\u8AD6 (\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406)"
   - icon: ':heavy_check_mark:'
@@ -72,6 +75,9 @@ data:
     path: test/unittest/fps.test.cpp
     title: test/unittest/fps.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/linear-recurrence.test.cpp
+    title: test/unittest/linear-recurrence.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/modular-arithmetic.test.cpp
     title: test/unittest/modular-arithmetic.test.cpp
   - icon: ':heavy_check_mark:'
@@ -120,6 +126,9 @@ data:
     path: test/yosupo/factorize.test.cpp
     title: test/yosupo/factorize.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/find-linear-recurrence.test.cpp
+    title: test/yosupo/find-linear-recurrence.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/frequency-table-of-tree-distance.test.cpp
     title: test/yosupo/frequency-table-of-tree-distance.test.cpp
   - icon: ':heavy_check_mark:'
@@ -128,6 +137,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/inv-of-fps.test.cpp
     title: test/yosupo/inv-of-fps.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/kth-term-of-linearly-recurrent-sequence.test.cpp
+    title: test/yosupo/kth-term-of-linearly-recurrent-sequence.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/lcm-convolution.test.cpp
     title: test/yosupo/lcm-convolution.test.cpp
@@ -310,64 +322,68 @@ data:
   isVerificationFile: false
   path: src/math/modular-arithmetic.hpp
   requiredBy:
-  - src/dp/subset-sum-count.hpp
-  - src/math/convolution.hpp
-  - src/math/fps.hpp
-  - src/math/divisor-transform.hpp
-  - src/math/combinatorics.hpp
-  - src/math/number-theory.hpp
+  - src/math/linear-recurrence.hpp
   - src/math/prime.hpp
+  - src/math/fps.hpp
+  - src/math/number-theory.hpp
+  - src/math/combinatorics.hpp
+  - src/math/convolution.hpp
+  - src/math/divisor-transform.hpp
+  - src/dp/subset-sum-count.hpp
   timestamp: '2026-10-20 17:15:36+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/combinatorics.test.cpp
-  - test/unittest/number-theory.test.cpp
-  - test/unittest/modular-arithmetic.test.cpp
-  - test/unittest/prime-counting.test.cpp
   - test/unittest/prime.test.cpp
-  - test/unittest/divisor-transform.test.cpp
+  - test/unittest/prime-counting.test.cpp
+  - test/unittest/combinatorics.test.cpp
+  - test/unittest/modular-arithmetic.test.cpp
+  - test/unittest/number-theory.test.cpp
   - test/unittest/subset-sum.test.cpp
+  - test/unittest/linear-recurrence.test.cpp
+  - test/unittest/divisor-transform.test.cpp
   - test/unittest/fps.test.cpp
-  - test/aoj/dpl-5-d.1.test.cpp
-  - test/aoj/0009.test.cpp
-  - test/aoj/dpl-5-f.test.cpp
-  - test/aoj/ntl-1-a.test.cpp
-  - test/aoj/dpl-5-b.1.test.cpp
-  - test/aoj/ntl-1-d.test.cpp
-  - test/aoj/itp1-3-d.test.cpp
-  - test/aoj/alds1-1-c.test.cpp
-  - test/aoj/dpl-5-e.test.cpp
-  - test/aoj/dpl-5-e.lucas.test.cpp
-  - test/aoj/dpl-5-d.2.test.cpp
-  - test/aoj/dpl-5-b.2.test.cpp
-  - test/yosupo/gcd-convolution.test.cpp
-  - test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
-  - test/yosupo/exp-of-fps.test.cpp
-  - test/yosupo/frequency-table-of-tree-distance.test.cpp
-  - test/yosupo/partition-function_2.test.cpp
-  - test/yosupo/inv-of-fps.test.cpp
-  - test/yosupo/division-of-polynomials.test.cpp
-  - test/yosupo/binomial-coefficient.test.cpp
-  - test/yosupo/pow-of-fps.test.cpp
-  - test/yosupo/primitive-root.test.cpp
-  - test/yosupo/discrete-logarithm-mod.test.cpp
-  - test/yosupo/sqrt-mod.test.cpp
-  - test/yosupo/polynomial-taylor-shift.test.cpp
-  - test/yosupo/primality-test.test.cpp
-  - test/yosupo/partition-function_1.test.cpp
-  - test/yosupo/convolution-mod-2-64.test.cpp
-  - test/yosupo/enumerate-primes.test.cpp
-  - test/yosupo/convolution-mod-1000000007.test.cpp
-  - test/yosupo/log-of-fps.test.cpp
-  - test/yosupo/binomial-coefficient-prime-mod.2.test.cpp
-  - test/yosupo/lcm-convolution.test.cpp
-  - test/yosupo/sharp-p-subset-sum.2.test.cpp
-  - test/yosupo/sharp-p-subset-sum.1.test.cpp
-  - test/yosupo/convolution-mod.test.cpp
-  - test/yosupo/factorize.test.cpp
   - test/yukicoder/187.test.cpp
   - test/yukicoder/117.test.cpp
   - test/yukicoder/186.test.cpp
+  - test/aoj/dpl-5-b.1.test.cpp
+  - test/aoj/ntl-1-d.test.cpp
+  - test/aoj/ntl-1-a.test.cpp
+  - test/aoj/dpl-5-f.test.cpp
+  - test/aoj/itp1-3-d.test.cpp
+  - test/aoj/dpl-5-d.1.test.cpp
+  - test/aoj/0009.test.cpp
+  - test/aoj/dpl-5-e.lucas.test.cpp
+  - test/aoj/dpl-5-e.test.cpp
+  - test/aoj/alds1-1-c.test.cpp
+  - test/aoj/dpl-5-d.2.test.cpp
+  - test/aoj/dpl-5-b.2.test.cpp
+  - test/yosupo/pow-of-fps.test.cpp
+  - test/yosupo/primality-test.test.cpp
+  - test/yosupo/kth-term-of-linearly-recurrent-sequence.test.cpp
+  - test/yosupo/factorize.test.cpp
+  - test/yosupo/gcd-convolution.test.cpp
+  - test/yosupo/enumerate-primes.test.cpp
+  - test/yosupo/discrete-logarithm-mod.test.cpp
+  - test/yosupo/convolution-mod.test.cpp
+  - test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
+  - test/yosupo/convolution-mod-1000000007.test.cpp
+  - test/yosupo/exp-of-fps.test.cpp
+  - test/yosupo/convolution-mod-2-64.test.cpp
+  - test/yosupo/lcm-convolution.test.cpp
+  - test/yosupo/primitive-root.test.cpp
+  - test/yosupo/sharp-p-subset-sum.2.test.cpp
+  - test/yosupo/partition-function_1.test.cpp
+  - test/yosupo/binomial-coefficient.test.cpp
+  - test/yosupo/frequency-table-of-tree-distance.test.cpp
+  - test/yosupo/log-of-fps.test.cpp
+  - test/yosupo/sqrt-mod.test.cpp
+  - test/yosupo/sharp-p-subset-sum.1.test.cpp
+  - test/yosupo/polynomial-taylor-shift.test.cpp
+  - test/yosupo/division-of-polynomials.test.cpp
+  - test/yosupo/inv-of-fps.test.cpp
+  - test/yosupo/binomial-coefficient-prime-mod.2.test.cpp
+  - test/yosupo/partition-function_2.test.cpp
+  - test/yosupo/find-linear-recurrence.test.cpp
 documentation_of: src/math/modular-arithmetic.hpp
 layout: document
 title: "mod \u6F14\u7B97 (\u7A4D\u3001\u51AA\u4E57\u3001\u9006\u5143\u3001\u96E2\u6563\

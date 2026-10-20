@@ -592,27 +592,27 @@ data:
   timestamp: '2026-10-19 12:03:10+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/dual-segtree.test.cpp
-  - test/unittest/mapping.test.cpp
   - test/unittest/monoid.test.cpp
-  - test/aoj/itp2-3-b.1.test.cpp
-  - test/aoj/ntl-1-c.test.cpp
-  - test/aoj/dsl-2-a.test.cpp
+  - test/unittest/mapping.test.cpp
+  - test/unittest/dual-segtree.test.cpp
+  - test/yukicoder/1036.2.test.cpp
+  - test/yukicoder/1641.test.cpp
+  - test/yukicoder/1036.1.test.cpp
+  - test/yukicoder/3652.test.cpp
   - test/aoj/dsl-2-b.1.test.cpp
   - test/aoj/itp2-3-b.2.test.cpp
+  - test/aoj/ntl-1-c.test.cpp
+  - test/aoj/dsl-2-a.test.cpp
   - test/aoj/itp2-3-b.3.test.cpp
-  - test/yosupo/vertex-add-subtree-sum.1.test.cpp
-  - test/yosupo/point-set-range-composite.3.test.cpp
-  - test/yosupo/vertex-set-path-composite.test.cpp
-  - test/yosupo/lca.2.test.cpp
+  - test/aoj/itp2-3-b.1.test.cpp
   - test/yosupo/point-set-range-composite.1.test.cpp
-  - test/yosupo/point-set-range-composite.2.test.cpp
-  - test/yosupo/point-add-range-sum.2.test.cpp
   - test/yosupo/rectangle-sum.3.test.cpp
-  - test/yukicoder/1036.1.test.cpp
-  - test/yukicoder/1036.2.test.cpp
-  - test/yukicoder/3652.test.cpp
-  - test/yukicoder/1641.test.cpp
+  - test/yosupo/point-add-range-sum.2.test.cpp
+  - test/yosupo/vertex-set-path-composite.test.cpp
+  - test/yosupo/vertex-add-subtree-sum.1.test.cpp
+  - test/yosupo/lca.2.test.cpp
+  - test/yosupo/point-set-range-composite.2.test.cpp
+  - test/yosupo/point-set-range-composite.3.test.cpp
 documentation_of: src/data_structures/segtree.hpp
 layout: document
 title: "\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"

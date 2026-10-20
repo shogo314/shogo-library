@@ -222,16 +222,16 @@ data:
   timestamp: '2026-10-14 11:35:32+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/macro.test.cpp
   - test/unittest/io.test.cpp
-  - test/aoj/1160.test.cpp
+  - test/unittest/macro.test.cpp
+  - test/aoj/itp2-5-b.test.cpp
+  - test/aoj/itp1-2-c.test.cpp
   - test/aoj/cgl-3-a.test.cpp
   - test/aoj/itp2-5-a.1.test.cpp
-  - test/aoj/itp2-5-b.test.cpp
-  - test/aoj/itp1-6-a.test.cpp
   - test/aoj/cgl-3-c.test.cpp
+  - test/aoj/itp1-6-a.test.cpp
   - test/aoj/cgl-3-b.test.cpp
-  - test/aoj/itp1-2-c.test.cpp
+  - test/aoj/1160.test.cpp
   - test/yosupo/convolution-mod-2-64.test.cpp
 documentation_of: src/base/io.hpp
 layout: document

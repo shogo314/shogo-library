@@ -356,35 +356,35 @@ data:
   isVerificationFile: false
   path: src/math/combinatorics.hpp
   requiredBy:
-  - src/dp/subset-sum-count.hpp
   - src/math/fps.hpp
+  - src/dp/subset-sum-count.hpp
   timestamp: '2026-10-20 17:15:36+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/combinatorics.test.cpp
   - test/unittest/subset-sum.test.cpp
   - test/unittest/fps.test.cpp
-  - test/aoj/dpl-5-d.1.test.cpp
-  - test/aoj/dpl-5-f.test.cpp
+  - test/yukicoder/117.test.cpp
   - test/aoj/dpl-5-b.1.test.cpp
-  - test/aoj/dpl-5-e.test.cpp
+  - test/aoj/dpl-5-f.test.cpp
+  - test/aoj/dpl-5-d.1.test.cpp
   - test/aoj/dpl-5-e.lucas.test.cpp
+  - test/aoj/dpl-5-e.test.cpp
   - test/aoj/dpl-5-d.2.test.cpp
   - test/aoj/dpl-5-b.2.test.cpp
+  - test/yosupo/pow-of-fps.test.cpp
   - test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
   - test/yosupo/exp-of-fps.test.cpp
-  - test/yosupo/partition-function_2.test.cpp
-  - test/yosupo/inv-of-fps.test.cpp
-  - test/yosupo/division-of-polynomials.test.cpp
-  - test/yosupo/binomial-coefficient.test.cpp
-  - test/yosupo/pow-of-fps.test.cpp
-  - test/yosupo/polynomial-taylor-shift.test.cpp
-  - test/yosupo/partition-function_1.test.cpp
-  - test/yosupo/log-of-fps.test.cpp
-  - test/yosupo/binomial-coefficient-prime-mod.2.test.cpp
   - test/yosupo/sharp-p-subset-sum.2.test.cpp
+  - test/yosupo/partition-function_1.test.cpp
+  - test/yosupo/binomial-coefficient.test.cpp
+  - test/yosupo/log-of-fps.test.cpp
   - test/yosupo/sharp-p-subset-sum.1.test.cpp
-  - test/yukicoder/117.test.cpp
+  - test/yosupo/polynomial-taylor-shift.test.cpp
+  - test/yosupo/division-of-polynomials.test.cpp
+  - test/yosupo/inv-of-fps.test.cpp
+  - test/yosupo/binomial-coefficient-prime-mod.2.test.cpp
+  - test/yosupo/partition-function_2.test.cpp
 documentation_of: src/math/combinatorics.hpp
 layout: document
 title: "\u7D44\u307F\u5408\u308F\u305B"

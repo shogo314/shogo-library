@@ -105,6 +105,7 @@
 "test/unittest/acted-monoid.test.cpp": "2026-10-19 12:08:11 +0900",
 "test/unittest/aho-corasick.test.cpp": "2026-10-19 12:29:38 +0900",
 "test/unittest/angle.test.cpp": "2026-10-19 12:08:11 +0900",
+"test/unittest/auxiliary-tree.test.cpp": "2026-10-20 17:21:43 +0900",
 "test/unittest/beats-acted-monoid.test.cpp": "2026-10-19 12:29:38 +0900",
 "test/unittest/binary-trie.test.cpp": "2026-10-19 12:08:11 +0900",
 "test/unittest/bipartite-matching.test.cpp": "2026-10-19 12:08:11 +0900",

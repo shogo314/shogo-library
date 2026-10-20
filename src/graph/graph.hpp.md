@@ -3,6 +3,9 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
+    path: src/graph/auxiliary-tree.hpp
+    title: "Auxiliary Tree (\u865A\u6811)"
+  - icon: ':heavy_check_mark:'
     path: src/graph/centroid-decomposition.hpp
     title: "\u91CD\u5FC3\u5206\u89E3"
   - icon: ':heavy_check_mark:'
@@ -65,6 +68,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj/grl-5-d.test.cpp
     title: test/aoj/grl-5-d.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/auxiliary-tree.test.cpp
+    title: test/unittest/auxiliary-tree.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/centroid-decomposition.test.cpp
     title: test/unittest/centroid-decomposition.test.cpp
@@ -542,6 +548,7 @@ data:
   - src/graph/graph_util.hpp
   - src/graph/centroid-decomposition.hpp
   - src/graph/lowlink.hpp
+  - src/graph/auxiliary-tree.hpp
   - src/graph/heavy-light-decomposition.hpp
   - src/graph/two-sat.hpp
   timestamp: '2026-10-15 07:27:29+09:00'
@@ -555,6 +562,7 @@ data:
   - test/unittest/tree.test.cpp
   - test/unittest/heavy-light-decomposition.test.cpp
   - test/unittest/graph.test.cpp
+  - test/unittest/auxiliary-tree.test.cpp
   - test/unittest/graph-util.test.cpp
   - test/aoj/grl-1-c.2.test.cpp
   - test/aoj/1595.test.cpp

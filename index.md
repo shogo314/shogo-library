@@ -181,6 +181,9 @@ data:
   - name: src/graph
     pages:
     - icon: ':heavy_check_mark:'
+      path: src/graph/auxiliary-tree.hpp
+      title: "Auxiliary Tree (\u865A\u6811)"
+    - icon: ':heavy_check_mark:'
       path: src/graph/bipartite-matching.hpp
       title: "\u4E8C\u90E8\u30B0\u30E9\u30D5\u306E\u6700\u5927\u30DE\u30C3\u30C1\u30F3\
         \u30B0 (Hopcroft-Karp \u6CD5)"
@@ -680,6 +683,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/angle.test.cpp
       title: test/unittest/angle.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/auxiliary-tree.test.cpp
+      title: test/unittest/auxiliary-tree.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/beats-acted-monoid.test.cpp
       title: test/unittest/beats-acted-monoid.test.cpp

@@ -7,11 +7,17 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/graph/tree.hpp
     title: "\u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8"
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':heavy_check_mark:'
+    path: src/graph/auxiliary-tree.hpp
+    title: "Auxiliary Tree (\u865A\u6811)"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/grl-5-d.test.cpp
     title: test/aoj/grl-5-d.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/auxiliary-tree.test.cpp
+    title: test/unittest/auxiliary-tree.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/heavy-light-decomposition.test.cpp
     title: test/unittest/heavy-light-decomposition.test.cpp
@@ -651,12 +657,14 @@ data:
   - src/graph/graph.hpp
   isVerificationFile: false
   path: src/graph/heavy-light-decomposition.hpp
-  requiredBy: []
+  requiredBy:
+  - src/graph/auxiliary-tree.hpp
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/lowlink.test.cpp
   - test/unittest/heavy-light-decomposition.test.cpp
+  - test/unittest/auxiliary-tree.test.cpp
   - test/aoj/grl-5-d.test.cpp
   - test/yosupo/vertex-add-path-sum.test.cpp
   - test/yosupo/vertex-set-path-composite.test.cpp
@@ -716,3 +724,4 @@ for (auto [a, b] : hld.path(u, v)) x = a <= b ? forward.prod(a, b + 1)(x) : back
 
 - LCA やダブリングだけなら [木の汎用テンプレート](tree.hpp) の `DoublingClimbTree`
 - 木のパスを重心で分けて数えるなら [重心分解](centroid-decomposition.hpp)
+- 指定した頂点とその LCA だけに圧縮した木を作るなら [Auxiliary Tree](auxiliary-tree.hpp)

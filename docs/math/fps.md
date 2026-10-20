@@ -58,3 +58,4 @@ mint y = f.eval(2);            // f(2)
 - 係数の型は [modint](modint.hpp)、`taylor_shift` の階乗は [組み合わせ](combinatorics.hpp)
 - 線形漸化式の第 k 項 (Bostan-Mori) や漸化式の復元 (Berlekamp-Massey) は [線形漸化式](linear-recurrence.hpp)
 - 0 でない項が少ない $f$ の `inv`・`log`・`exp`・`pow`・`sqrt` は [疎な形式的冪級数](sparse-fps.hpp) の方が速い
+- 多点評価・多項式補間・標本点のずらしは [多点評価・多項式補間](multipoint.hpp)

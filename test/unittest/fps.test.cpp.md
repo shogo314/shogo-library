@@ -34,18 +34,21 @@ data:
   bundledCode: "#line 1 \"test/unittest/fps.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// FPS \u306E\u5358\u9805\u306E -\u3001\u5B9A\u6570\u3092\u5F15\u304F -\u3001\
     eval\u3001gcd\u3001modpow\u3001divmod \u3092\u611A\u76F4\u306A\u591A\u9805\u5F0F\
-    \u6F14\u7B97\u3068\u6BD4\u8F03\u3059\u308B\n// FPS \u306E + \u3068 - \u306F\u7D50\
-    \u679C\u306E\u672B\u5C3E\u306E 0 \u3092\u53D6\u308A\u9664\u304F (\u4ED5\u69D8\
+    \u6F14\u7B97\u3068\u6BD4\u8F03\u3059\u308B\n// sqrt \u306F 2 \u4E57\u3057\u3066\
+    \u5143\u306B\u623B\u308B\u304B\u3001polynomial_product \u306F\u9806\u306B\u639B\
+    \u3051\u305F\u3082\u306E\u3068\u6BD4\u3079\u308B\n// FPS \u306E + \u3068 - \u306F\
+    \u7D50\u679C\u306E\u672B\u5C3E\u306E 0 \u3092\u53D6\u308A\u9664\u304F (\u4ED5\u69D8\
     ) \u306E\u3067\u3001\u591A\u9805\u5F0F\u3068\u3057\u3066\u306E\u6BD4\u8F03\u306F\
     \u672B\u5C3E\u306E 0 \u3092\u9664\u3044\u3066\u884C\u3046\n// \u554F\u984C\u306E\
     \u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\
     \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/math/fps.hpp\"\
     \n\n/**\n * @file fps.hpp\n * @brief \u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\n */\n\
-    \n#include <algorithm>\n#include <cassert>\n#include <utility>\n#include <vector>\n\
-    \n#line 2 \"src/math/combinatorics.hpp\"\n\n/**\n * @file combinatorics.hpp\n\
-    \ * @brief \u7D44\u307F\u5408\u308F\u305B\n */\n\n#line 9 \"src/math/combinatorics.hpp\"\
-    \n#include <numeric>\n#line 11 \"src/math/combinatorics.hpp\"\n\n#line 2 \"src/math/modular-arithmetic.hpp\"\
-    \n\n/**\n * @file modular-arithmetic.hpp\n * @brief mod \u6F14\u7B97 (\u7A4D\u3001\
+    \n#include <algorithm>\n#include <cassert>\n#include <optional>\n#include <queue>\n\
+    #include <utility>\n#include <vector>\n\n#line 2 \"src/math/combinatorics.hpp\"\
+    \n\n/**\n * @file combinatorics.hpp\n * @brief \u7D44\u307F\u5408\u308F\u305B\n\
+    \ */\n\n#line 9 \"src/math/combinatorics.hpp\"\n#include <numeric>\n#line 11 \"\
+    src/math/combinatorics.hpp\"\n\n#line 2 \"src/math/modular-arithmetic.hpp\"\n\n\
+    /**\n * @file modular-arithmetic.hpp\n * @brief mod \u6F14\u7B97 (\u7A4D\u3001\
     \u51AA\u4E57\u3001\u9006\u5143\u3001\u96E2\u6563\u5BFE\u6570\u3001\u5E73\u65B9\
     \u6839)\n */\n\n#line 10 \"src/math/modular-arithmetic.hpp\"\n#include <cmath>\n\
     #line 12 \"src/math/modular-arithmetic.hpp\"\n#include <unordered_map>\n\n/**\n\
@@ -588,7 +591,7 @@ data:
     \ * y1).val();\n        __int128_t tmp = static_cast<__int128_t>(mod01) * y2 +\
     \ static_cast<__int128_t>(mod0) * y1 + y0;\n        if (tmp < (mod012 >> 1))\n\
     \            res[i] = tmp;\n        else\n            res[i] = tmp - mod012;\n\
-    \    }\n    return res;\n}\n#line 15 \"src/math/fps.hpp\"\n\ntemplate <typename\
+    \    }\n    return res;\n}\n#line 18 \"src/math/fps.hpp\"\n\ntemplate <typename\
     \ mint>\nstruct FPS : std::vector<mint> {\n    using std::vector<mint>::vector;\n\
     \n    // constructor\n    FPS(const std::vector<mint>& r) : std::vector<mint>(r)\
     \ {}\n\n    // core operator\n    inline FPS pre(long long siz) const {\n    \
@@ -677,18 +680,47 @@ data:
     \ 0);\n        mint k = f[i];\n        FPS res = exp(log((f >> i) / k, deg) *\
     \ e, deg) * k.pow(e) << (e * i);\n        res.resize(deg);\n        return res;\n\
     \    }\n    inline friend FPS pow(const FPS& f, long long e) {\n        return\
-    \ pow(f, e, f.size());\n    }\n\n    inline friend FPS taylor_shift(FPS f, mint\
-    \ a) {\n        using C = Combination<mint>;\n        int n = f.size();\n    \
-    \    C::extend(n);\n        for (int i = 0; i < n; i++) f[i] *= C::factorial(i);\n\
-    \        std::reverse(f.begin(), f.end());\n        FPS<mint> g(n, 1);\n     \
-    \   for (int i = 1; i < n; i++) g[i] = g[i - 1] * a * C::inv(i);\n        f =\
-    \ (f * g).pre(n);\n        std::reverse(f.begin(), f.end());\n        for (int\
-    \ i = 0; i < n; i++) f[i] *= C::inverse_factorial(i);\n        return f;\n   \
-    \ }\n};\n\ntemplate <typename mint>\nFPS<mint> modpow(const FPS<mint>& f, long\
-    \ long n, const FPS<mint>& m) {\n    if (n == 0) return FPS<mint>(1, 1);\n   \
-    \ auto t = modpow(f, n / 2, m);\n    t = (t * t) % m;\n    if (n & 1) t = (t *\
-    \ f) % m;\n    return t;\n}\n#line 8 \"test/unittest/fps.test.cpp\"\n\n#line 10\
-    \ \"test/unittest/fps.test.cpp\"\n#include <random>\n#line 12 \"test/unittest/fps.test.cpp\"\
+    \ pow(f, e, f.size());\n    }\n\n    // sqrt(f) \u306E\u5148\u982D deg \u9805\
+    \ (g^2 = f)\u3002\u5E73\u65B9\u6839\u304C\u306A\u3051\u308C\u3070 std::nullopt\n\
+    \    // \u6700\u521D\u306E 0 \u3067\u306A\u3044\u9805 f_i x^i \u306F\u3001i \u304C\
+    \u5076\u6570\u3067 f_i \u304C\u5E73\u65B9\u5270\u4F59\u3067\u3042\u308B\u3053\u3068\
+    \u3002\u6CD5\u306F\u7D20\u6570\u3067\u3042\u308B\u3053\u3068\n    inline friend\
+    \ std::optional<FPS> sqrt(const FPS& f, long long deg) {\n        long long i\
+    \ = 0;\n        while (i < static_cast<long long>(f.size()) && f[i] == 0) ++i;\n\
+    \        if (i == static_cast<long long>(f.size()) || i / 2 >= deg) return FPS(deg,\
+    \ 0);\n        if (i % 2 == 1) return std::nullopt;\n        long long r = sqrt_mod(f[i].val(),\
+    \ mint::mod());\n        if (r == -1) return std::nullopt;\n        // x^i \u3092\
+    \u5916\u3057\u305F g = f / x^i (g_0 != 0) \u306E\u5E73\u65B9\u6839\u3092\u30CB\
+    \u30E5\u30FC\u30C8\u30F3\u6CD5\u3067\u6C42\u3081\u308B: h <- (h + g / h) / 2\n\
+    \        const FPS g = f >> i;\n        const long long d = deg - i / 2;\n   \
+    \     FPS h({mint(r)});\n        const mint inv2 = mint(2).inv();\n        for\
+    \ (long long k = 1; k < d; k <<= 1) {\n            h = (h + (g.pre(k << 1) * inv(h,\
+    \ k << 1)).pre(k << 1)) * inv2;\n        }\n        h.resize(d);\n        h <<=\
+    \ i / 2;\n        return h;\n    }\n    inline friend std::optional<FPS> sqrt(const\
+    \ FPS& f) {\n        return sqrt(f, f.size());\n    }\n\n    inline friend FPS\
+    \ taylor_shift(FPS f, mint a) {\n        using C = Combination<mint>;\n      \
+    \  int n = f.size();\n        C::extend(n);\n        for (int i = 0; i < n; i++)\
+    \ f[i] *= C::factorial(i);\n        std::reverse(f.begin(), f.end());\n      \
+    \  FPS<mint> g(n, 1);\n        for (int i = 1; i < n; i++) g[i] = g[i - 1] * a\
+    \ * C::inv(i);\n        f = (f * g).pre(n);\n        std::reverse(f.begin(), f.end());\n\
+    \        for (int i = 0; i < n; i++) f[i] *= C::inverse_factorial(i);\n      \
+    \  return f;\n    }\n};\n\ntemplate <typename mint>\nFPS<mint> modpow(const FPS<mint>&\
+    \ f, long long n, const FPS<mint>& m) {\n    if (n == 0) return FPS<mint>(1, 1);\n\
+    \    auto t = modpow(f, n / 2, m);\n    t = (t * t) % m;\n    if (n & 1) t = (t\
+    \ * f) % m;\n    return t;\n}\n\n/**\n * @brief \u591A\u9805\u5F0F\u306E\u5217\
+    \u306E\u7A4D f_0 f_1 ... f_{n-1} O(N log^2 N) (N \u306F\u6B21\u6570\u306E\u548C\
+    )\n * \u6B21\u6570\u306E\u5C0F\u3055\u3044\u3082\u306E\u304B\u3089 2 \u3064\u305A\
+    \u3064\u639B\u3051\u3066\u3044\u304F\u3002fs \u304C\u7A7A\u306A\u3089 1\n */\n\
+    template <typename mint>\nFPS<mint> polynomial_product(std::vector<FPS<mint>>\
+    \ fs) {\n    if (fs.empty()) return FPS<mint>(1, 1);\n    auto larger = [&](int\
+    \ a, int b) { return fs[a].size() > fs[b].size(); };\n    std::priority_queue<int,\
+    \ std::vector<int>, decltype(larger)> pq(larger);\n    for (int i = 0; i < static_cast<int>(fs.size());\
+    \ i++) pq.push(i);\n    while (pq.size() > 1) {\n        int a = pq.top();\n \
+    \       pq.pop();\n        int b = pq.top();\n        pq.pop();\n        // \u7A7A\
+    \u306E\u591A\u9805\u5F0F (0) \u3068\u306E\u7A4D\u306F 0\n        fs[a] = fs[a].empty()\
+    \ || fs[b].empty() ? FPS<mint>() : fs[a] * fs[b];\n        FPS<mint>().swap(fs[b]);\n\
+    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n#line 9 \"test/unittest/fps.test.cpp\"\
+    \n\n#line 11 \"test/unittest/fps.test.cpp\"\n#include <random>\n#line 13 \"test/unittest/fps.test.cpp\"\
     \n\nusing mint = static_modint<998244353>;\nusing F = FPS<mint>;\nusing P = std::vector<mint>;\n\
     \nP trim(P a) {\n    while (!a.empty() && a.back() == 0) a.pop_back();\n    return\
     \ a;\n}\nP naive_mul(const P& a, const P& b) {\n    if (a.empty() || b.empty())\
@@ -775,13 +807,43 @@ data:
     \u9664\u304F)\n    {\n        auto [q, r] = divmod(F(P{1, 2, 0}), F(P{3, 4, 5}));\n\
     \        if (!trim(P(q)).empty() || P(r) != P{1, 2}) ok = false;\n        auto\
     \ [q0, r0] = divmod(F(), F(P{3, 4}));\n        if (!trim(P(q0)).empty() || !trim(P(r0)).empty())\
-    \ ok = false;\n    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
-    }\n"
+    \ ok = false;\n    }\n\n    // sqrt: \u5E73\u65B9\u6839\u304C\u3042\u308B\u306A\
+    \u3089 g^2 \u304C\u5148\u982D n \u9805\u3067 f \u3068\u4E00\u81F4\u3057\u3001\u306A\
+    \u3044\u306A\u3089 nullopt (x^\u5947\u6570 \u304B\u3089\u59CB\u307E\u308B\u3001\
+    \u5E73\u65B9\u975E\u5270\u4F59)\n    {\n        auto gen = [&](int n) {\n    \
+    \        F f(n);\n            for (auto& x : f) x = rng() % mint::mod();\n   \
+    \         return f;\n        };\n        for (int rep = 0; rep < 300 && ok; rep++)\
+    \ {\n            int n = rng() % 30 + 1, shift = rng() % 4;\n            // h^2\
+    \ \u3092\u4F5C\u3063\u3066\u304B\u3089 x^(2 shift) \u3092\u639B\u3051\u308B\u3068\
+    \u3001\u5FC5\u305A\u5E73\u65B9\u6839\u304C\u3042\u308B\n            F h = gen(n);\n\
+    \            F f = (h * h).pre(n);\n            f = (f << (2 * shift)).pre(n);\n\
+    \            auto g = sqrt(f, n);\n            if (!g || static_cast<int>(g->size())\
+    \ != n || P((*g * *g).pre(n)) != P(f)) ok = false, std::cerr << \"sqrt\" << std::endl;\n\
+    \            // x^1 \u304B\u3089\u59CB\u307E\u308B\u306A\u3089\u5E73\u65B9\u6839\
+    \u306F\u306A\u3044\n            F odd = f;\n            odd.insert(odd.begin(),\
+    \ mint(0));\n            odd.resize(n + 1);\n            if (odd[1] != 0 && sqrt(odd,\
+    \ n + 1)) ok = false, std::cerr << \"sqrt odd\" << std::endl;\n        }\n   \
+    \     // \u5B9A\u6570\u9805\u304C\u5E73\u65B9\u975E\u5270\u4F59\u306A\u3089\u5E73\
+    \u65B9\u6839\u306F\u306A\u3044 (998244353 \u3067\u306F 3 \u304C\u975E\u5270\u4F59\
+    )\n        if (sqrt(F{3, 1, 4}, 3)) ok = false, std::cerr << \"sqrt non-residue\"\
+    \ << std::endl;\n        // \u3059\u3079\u3066 0 \u306A\u3089 0\n        auto\
+    \ z = sqrt(F(5, 0), 5);\n        if (!z || P(*z) != P(5, 0)) ok = false, std::cerr\
+    \ << \"sqrt zero\" << std::endl;\n    }\n    // polynomial_product: \u9806\u306B\
+    \u639B\u3051\u305F\u3082\u306E\u3068\u540C\u3058 (\u7A7A\u306E\u5217\u306F 1\u3001\
+    0 \u3092\u542B\u3080\u3068 0)\n    for (int rep = 0; rep < 300 && ok; rep++) {\n\
+    \        int k = rng() % 8;\n        std::vector<F> fs(k);\n        P expect =\
+    \ {1};\n        for (auto& f : fs) {\n            f.resize(rng() % 5);\n     \
+    \       for (auto& x : f) x = rng() % 10;\n            expect = naive_mul(expect,\
+    \ P(f));\n        }\n        if (trim(P(polynomial_product(fs))) != trim(expect))\
+    \ ok = false, std::cerr << \"polynomial_product\" << std::endl;\n    }\n\n   \
+    \ if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// FPS \u306E\u5358\u9805\u306E -\u3001\u5B9A\u6570\u3092\u5F15\u304F -\u3001\
     eval\u3001gcd\u3001modpow\u3001divmod \u3092\u611A\u76F4\u306A\u591A\u9805\u5F0F\
-    \u6F14\u7B97\u3068\u6BD4\u8F03\u3059\u308B\n// FPS \u306E + \u3068 - \u306F\u7D50\
-    \u679C\u306E\u672B\u5C3E\u306E 0 \u3092\u53D6\u308A\u9664\u304F (\u4ED5\u69D8\
+    \u6F14\u7B97\u3068\u6BD4\u8F03\u3059\u308B\n// sqrt \u306F 2 \u4E57\u3057\u3066\
+    \u5143\u306B\u623B\u308B\u304B\u3001polynomial_product \u306F\u9806\u306B\u639B\
+    \u3051\u305F\u3082\u306E\u3068\u6BD4\u3079\u308B\n// FPS \u306E + \u3068 - \u306F\
+    \u7D50\u679C\u306E\u672B\u5C3E\u306E 0 \u3092\u53D6\u308A\u9664\u304F (\u4ED5\u69D8\
     ) \u306E\u3067\u3001\u591A\u9805\u5F0F\u3068\u3057\u3066\u306E\u6BD4\u8F03\u306F\
     \u672B\u5C3E\u306E 0 \u3092\u9664\u3044\u3066\u884C\u3046\n// \u554F\u984C\u306E\
     \u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\
@@ -873,8 +935,36 @@ data:
     \u9664\u304F)\n    {\n        auto [q, r] = divmod(F(P{1, 2, 0}), F(P{3, 4, 5}));\n\
     \        if (!trim(P(q)).empty() || P(r) != P{1, 2}) ok = false;\n        auto\
     \ [q0, r0] = divmod(F(), F(P{3, 4}));\n        if (!trim(P(q0)).empty() || !trim(P(r0)).empty())\
-    \ ok = false;\n    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
-    }\n"
+    \ ok = false;\n    }\n\n    // sqrt: \u5E73\u65B9\u6839\u304C\u3042\u308B\u306A\
+    \u3089 g^2 \u304C\u5148\u982D n \u9805\u3067 f \u3068\u4E00\u81F4\u3057\u3001\u306A\
+    \u3044\u306A\u3089 nullopt (x^\u5947\u6570 \u304B\u3089\u59CB\u307E\u308B\u3001\
+    \u5E73\u65B9\u975E\u5270\u4F59)\n    {\n        auto gen = [&](int n) {\n    \
+    \        F f(n);\n            for (auto& x : f) x = rng() % mint::mod();\n   \
+    \         return f;\n        };\n        for (int rep = 0; rep < 300 && ok; rep++)\
+    \ {\n            int n = rng() % 30 + 1, shift = rng() % 4;\n            // h^2\
+    \ \u3092\u4F5C\u3063\u3066\u304B\u3089 x^(2 shift) \u3092\u639B\u3051\u308B\u3068\
+    \u3001\u5FC5\u305A\u5E73\u65B9\u6839\u304C\u3042\u308B\n            F h = gen(n);\n\
+    \            F f = (h * h).pre(n);\n            f = (f << (2 * shift)).pre(n);\n\
+    \            auto g = sqrt(f, n);\n            if (!g || static_cast<int>(g->size())\
+    \ != n || P((*g * *g).pre(n)) != P(f)) ok = false, std::cerr << \"sqrt\" << std::endl;\n\
+    \            // x^1 \u304B\u3089\u59CB\u307E\u308B\u306A\u3089\u5E73\u65B9\u6839\
+    \u306F\u306A\u3044\n            F odd = f;\n            odd.insert(odd.begin(),\
+    \ mint(0));\n            odd.resize(n + 1);\n            if (odd[1] != 0 && sqrt(odd,\
+    \ n + 1)) ok = false, std::cerr << \"sqrt odd\" << std::endl;\n        }\n   \
+    \     // \u5B9A\u6570\u9805\u304C\u5E73\u65B9\u975E\u5270\u4F59\u306A\u3089\u5E73\
+    \u65B9\u6839\u306F\u306A\u3044 (998244353 \u3067\u306F 3 \u304C\u975E\u5270\u4F59\
+    )\n        if (sqrt(F{3, 1, 4}, 3)) ok = false, std::cerr << \"sqrt non-residue\"\
+    \ << std::endl;\n        // \u3059\u3079\u3066 0 \u306A\u3089 0\n        auto\
+    \ z = sqrt(F(5, 0), 5);\n        if (!z || P(*z) != P(5, 0)) ok = false, std::cerr\
+    \ << \"sqrt zero\" << std::endl;\n    }\n    // polynomial_product: \u9806\u306B\
+    \u639B\u3051\u305F\u3082\u306E\u3068\u540C\u3058 (\u7A7A\u306E\u5217\u306F 1\u3001\
+    0 \u3092\u542B\u3080\u3068 0)\n    for (int rep = 0; rep < 300 && ok; rep++) {\n\
+    \        int k = rng() % 8;\n        std::vector<F> fs(k);\n        P expect =\
+    \ {1};\n        for (auto& f : fs) {\n            f.resize(rng() % 5);\n     \
+    \       for (auto& x : f) x = rng() % 10;\n            expect = naive_mul(expect,\
+    \ P(f));\n        }\n        if (trim(P(polynomial_product(fs))) != trim(expect))\
+    \ ok = false, std::cerr << \"polynomial_product\" << std::endl;\n    }\n\n   \
+    \ if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/math/fps.hpp
   - src/math/combinatorics.hpp
@@ -885,7 +975,7 @@ data:
   isVerificationFile: true
   path: test/unittest/fps.test.cpp
   requiredBy: []
-  timestamp: '2026-10-20 17:15:36+09:00'
+  timestamp: '2026-10-21 03:21:45+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/fps.test.cpp

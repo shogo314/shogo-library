@@ -39,6 +39,10 @@ data:
     title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
       \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9"
   - icon: ':heavy_check_mark:'
+    path: src/math/sparse-fps.hpp
+    title: "\u758E\u306A\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570 (inv\u30FBlog\u30FBexp\u30FB\
+      pow\u30FBsqrt)"
+  - icon: ':heavy_check_mark:'
     path: src/string/rolling-hash.hpp
     title: "\u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5"
   - icon: ':heavy_check_mark:'
@@ -267,6 +271,9 @@ data:
     path: test/unittest/sliding-window-aggregation.test.cpp
     title: test/unittest/sliding-window-aggregation.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/sparse-fps.test.cpp
+    title: test/unittest/sparse-fps.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/subset-sum.test.cpp
     title: test/unittest/subset-sum.test.cpp
   - icon: ':heavy_check_mark:'
@@ -315,6 +322,9 @@ data:
     path: test/yosupo/enumerate-palindromes.1.test.cpp
     title: test/yosupo/enumerate-palindromes.1.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/exp-of-formal-power-series-sparse.test.cpp
+    title: test/yosupo/exp-of-formal-power-series-sparse.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/exp-of-fps.test.cpp
     title: test/yosupo/exp-of-fps.test.cpp
   - icon: ':heavy_check_mark:'
@@ -326,6 +336,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/gcd-convolution.test.cpp
     title: test/yosupo/gcd-convolution.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/inv-of-formal-power-series-sparse.test.cpp
+    title: test/yosupo/inv-of-formal-power-series-sparse.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/inv-of-fps.test.cpp
     title: test/yosupo/inv-of-fps.test.cpp
@@ -341,6 +354,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/line-add-get-min.2.test.cpp
     title: test/yosupo/line-add-get-min.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/log-of-formal-power-series-sparse.test.cpp
+    title: test/yosupo/log-of-formal-power-series-sparse.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/log-of-fps.test.cpp
     title: test/yosupo/log-of-fps.test.cpp
@@ -378,8 +394,14 @@ data:
     path: test/yosupo/polynomial-taylor-shift.test.cpp
     title: test/yosupo/polynomial-taylor-shift.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/pow-of-formal-power-series-sparse.test.cpp
+    title: test/yosupo/pow-of-formal-power-series-sparse.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/pow-of-fps.test.cpp
     title: test/yosupo/pow-of-fps.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/product-of-polynomial-sequence.test.cpp
+    title: test/yosupo/product-of-polynomial-sequence.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/queue-operate-all-composite.test.cpp
     title: test/yosupo/queue-operate-all-composite.test.cpp
@@ -416,6 +438,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/sort-points-by-argument.1.test.cpp
     title: test/yosupo/sort-points-by-argument.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/sqrt-of-formal-power-series-sparse.test.cpp
+    title: test/yosupo/sqrt-of-formal-power-series-sparse.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/sqrt-of-formal-power-series.test.cpp
+    title: test/yosupo/sqrt-of-formal-power-series.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/static-range-sum.test.cpp
     title: test/yosupo/static-range-sum.test.cpp
@@ -565,6 +593,7 @@ data:
   - src/geometry/circle.hpp
   - src/math/convolution.hpp
   - src/math/modint.hpp
+  - src/math/sparse-fps.hpp
   - src/math/fps.hpp
   - src/math/linear-recurrence.hpp
   - src/string/rolling-hash.hpp
@@ -575,6 +604,7 @@ data:
   - test/unittest/counter.test.cpp
   - test/unittest/vector-func.test.cpp
   - test/unittest/combinatorics.test.cpp
+  - test/unittest/sparse-fps.test.cpp
   - test/unittest/interval-set.test.cpp
   - test/unittest/repr.test.cpp
   - test/unittest/persistent-lazy-segtree.test.cpp
@@ -649,20 +679,27 @@ data:
   - test/yosupo/gcd-convolution.test.cpp
   - test/yosupo/persistent-range-affine-range-sum.test.cpp
   - test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
+  - test/yosupo/sqrt-of-formal-power-series.test.cpp
   - test/yosupo/static-range-sum.test.cpp
   - test/yosupo/exp-of-fps.test.cpp
+  - test/yosupo/pow-of-formal-power-series-sparse.test.cpp
   - test/yosupo/point-set-range-composite.4.test.cpp
   - test/yosupo/frequency-table-of-tree-distance.test.cpp
   - test/yosupo/range-affine-range-sum.2.test.cpp
+  - test/yosupo/inv-of-formal-power-series-sparse.test.cpp
   - test/yosupo/range-affine-range-sum.3.test.cpp
   - test/yosupo/range-affine-range-sum-large-array.test.cpp
   - test/yosupo/segment-add-get-min.test.cpp
   - test/yosupo/range-affine-point-get.1.test.cpp
+  - test/yosupo/product-of-polynomial-sequence.test.cpp
   - test/yosupo/partition-function_2.test.cpp
+  - test/yosupo/exp-of-formal-power-series-sparse.test.cpp
   - test/yosupo/inv-of-fps.test.cpp
   - test/yosupo/division-of-polynomials.test.cpp
   - test/yosupo/kth-term-of-linearly-recurrent-sequence.test.cpp
+  - test/yosupo/sqrt-of-formal-power-series-sparse.test.cpp
   - test/yosupo/pow-of-fps.test.cpp
+  - test/yosupo/log-of-formal-power-series-sparse.test.cpp
   - test/yosupo/point-set-range-composite.3.test.cpp
   - test/yosupo/vertex-set-path-composite.test.cpp
   - test/yosupo/counting-spanning-tree-undirected.test.cpp

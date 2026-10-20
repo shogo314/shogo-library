@@ -28,6 +28,10 @@ data:
     path: src/math/prime.hpp
     title: "\u7D20\u6570 (\u7D20\u6570\u5224\u5B9A\u3001\u7D20\u56E0\u6570\u5206\u89E3\
       \u3001\u7D04\u6570\u5217\u6319\u3001\u7BE9\u3001\u539F\u59CB\u6839)"
+  - icon: ':heavy_check_mark:'
+    path: src/math/sparse-fps.hpp
+    title: "\u758E\u306A\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570 (inv\u30FBlog\u30FBexp\u30FB\
+      pow\u30FBsqrt)"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/0009.test.cpp
@@ -90,6 +94,9 @@ data:
     path: test/unittest/prime.test.cpp
     title: test/unittest/prime.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/sparse-fps.test.cpp
+    title: test/unittest/sparse-fps.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/subset-sum.test.cpp
     title: test/unittest/subset-sum.test.cpp
   - icon: ':heavy_check_mark:'
@@ -120,6 +127,9 @@ data:
     path: test/yosupo/enumerate-primes.test.cpp
     title: test/yosupo/enumerate-primes.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/exp-of-formal-power-series-sparse.test.cpp
+    title: test/yosupo/exp-of-formal-power-series-sparse.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/exp-of-fps.test.cpp
     title: test/yosupo/exp-of-fps.test.cpp
   - icon: ':heavy_check_mark:'
@@ -135,6 +145,9 @@ data:
     path: test/yosupo/gcd-convolution.test.cpp
     title: test/yosupo/gcd-convolution.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/inv-of-formal-power-series-sparse.test.cpp
+    title: test/yosupo/inv-of-formal-power-series-sparse.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/inv-of-fps.test.cpp
     title: test/yosupo/inv-of-fps.test.cpp
   - icon: ':heavy_check_mark:'
@@ -143,6 +156,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/lcm-convolution.test.cpp
     title: test/yosupo/lcm-convolution.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/log-of-formal-power-series-sparse.test.cpp
+    title: test/yosupo/log-of-formal-power-series-sparse.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/log-of-fps.test.cpp
     title: test/yosupo/log-of-fps.test.cpp
@@ -156,6 +172,9 @@ data:
     path: test/yosupo/polynomial-taylor-shift.test.cpp
     title: test/yosupo/polynomial-taylor-shift.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/pow-of-formal-power-series-sparse.test.cpp
+    title: test/yosupo/pow-of-formal-power-series-sparse.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/pow-of-fps.test.cpp
     title: test/yosupo/pow-of-fps.test.cpp
   - icon: ':heavy_check_mark:'
@@ -165,6 +184,9 @@ data:
     path: test/yosupo/primitive-root.test.cpp
     title: test/yosupo/primitive-root.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/product-of-polynomial-sequence.test.cpp
+    title: test/yosupo/product-of-polynomial-sequence.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/sharp-p-subset-sum.1.test.cpp
     title: test/yosupo/sharp-p-subset-sum.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -173,6 +195,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/sqrt-mod.test.cpp
     title: test/yosupo/sqrt-mod.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/sqrt-of-formal-power-series-sparse.test.cpp
+    title: test/yosupo/sqrt-of-formal-power-series-sparse.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/sqrt-of-formal-power-series.test.cpp
+    title: test/yosupo/sqrt-of-formal-power-series.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/117.test.cpp
     title: test/yukicoder/117.test.cpp
@@ -324,6 +352,7 @@ data:
   requiredBy:
   - src/dp/subset-sum-count.hpp
   - src/math/convolution.hpp
+  - src/math/sparse-fps.hpp
   - src/math/fps.hpp
   - src/math/divisor-transform.hpp
   - src/math/combinatorics.hpp
@@ -334,6 +363,7 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/combinatorics.test.cpp
+  - test/unittest/sparse-fps.test.cpp
   - test/unittest/number-theory.test.cpp
   - test/unittest/modular-arithmetic.test.cpp
   - test/unittest/prime-counting.test.cpp
@@ -356,15 +386,22 @@ data:
   - test/aoj/dpl-5-b.2.test.cpp
   - test/yosupo/gcd-convolution.test.cpp
   - test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
+  - test/yosupo/sqrt-of-formal-power-series.test.cpp
   - test/yosupo/exp-of-fps.test.cpp
+  - test/yosupo/pow-of-formal-power-series-sparse.test.cpp
   - test/yosupo/frequency-table-of-tree-distance.test.cpp
+  - test/yosupo/inv-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/product-of-polynomial-sequence.test.cpp
   - test/yosupo/partition-function_2.test.cpp
+  - test/yosupo/exp-of-formal-power-series-sparse.test.cpp
   - test/yosupo/inv-of-fps.test.cpp
   - test/yosupo/division-of-polynomials.test.cpp
   - test/yosupo/binomial-coefficient.test.cpp
   - test/yosupo/kth-term-of-linearly-recurrent-sequence.test.cpp
+  - test/yosupo/sqrt-of-formal-power-series-sparse.test.cpp
   - test/yosupo/pow-of-fps.test.cpp
   - test/yosupo/primitive-root.test.cpp
+  - test/yosupo/log-of-formal-power-series-sparse.test.cpp
   - test/yosupo/discrete-logarithm-mod.test.cpp
   - test/yosupo/sqrt-mod.test.cpp
   - test/yosupo/polynomial-taylor-shift.test.cpp

@@ -178,4 +178,29 @@ class SuffixAutomaton {
         int v = find_node(t);
         return v == -1 ? 0 : occurrences(v);
     }
+    /**
+     * @brief t の各位置 i について、t[0, i] の接尾辞のうち部分文字列であるものの最長の長さ O(|t|)
+     * 最大値が t との最長共通部分文字列の長さになる
+     * 範囲外の文字 (c - Base が 0 以上 K 未満でない) は、どの部分文字列にも含まれない文字として扱う
+     */
+    template <typename R>
+    std::vector<long long> match_lengths(const R& t) const {
+        std::vector<long long> res;
+        // 今の位置で終わり、部分文字列である最長の文字列を、状態 v と長さ l で持つ
+        int v = 0;
+        long long l = 0;
+        for (auto c : t) {
+            const int k = static_cast<int>(c) - Base;
+            if (k < 0 || K <= k) {
+                v = 0, l = 0;
+            } else {
+                // c で進めない間は、前を削って endpos が増える短い接尾辞の状態に戻る
+                // (初期状態まで戻ったときは l = 0 になっていて、c で進めなければそのまま)
+                while (v != 0 && nodes[v].next[k] == -1) v = nodes[v].link, l = nodes[v].len;
+                if (nodes[v].next[k] != -1) v = nodes[v].next[k], l++;
+            }
+            res.push_back(l);
+        }
+        return res;
+    }
 };

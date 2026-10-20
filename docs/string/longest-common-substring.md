@@ -21,3 +21,4 @@ auto [i, j, len] = longest_common_substring(std::string("abracadabra"), std::str
 ## 関連
 
 - 連続でなくてよい共通部分列は [最長共通部分列 (LCS)](../dp/longest-common-subsequence.hpp)
+- 1 つの文字列を固定して、多くの文字列との最長共通部分文字列の長さを求めるなら [Suffix Automaton](suffix-automaton.hpp) の `match_lengths`

@@ -122,10 +122,33 @@ data:
     \u3066\u3082\u3088\u3044\u3002\u7A7A\u6587\u5B57\u5217\u306A\u3089 length() +\
     \ 1) O(|t|)\n     */\n    template <typename R>\n    long long count_occurrences(const\
     \ R& t) {\n        int v = find_node(t);\n        return v == -1 ? 0 : occurrences(v);\n\
-    \    }\n};\n#line 7 \"test/yosupo/number-of-substrings.2.test.cpp\"\n\nint main()\
-    \ {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n    std::string\
-    \ s;\n    std::cin >> s;\n    std::cout << SuffixAutomaton<26, 'a'>(s).count_distinct_substrings()\
-    \ << '\\n';\n}\n"
+    \    }\n    /**\n     * @brief t \u306E\u5404\u4F4D\u7F6E i \u306B\u3064\u3044\
+    \u3066\u3001t[0, i] \u306E\u63A5\u5C3E\u8F9E\u306E\u3046\u3061\u90E8\u5206\u6587\
+    \u5B57\u5217\u3067\u3042\u308B\u3082\u306E\u306E\u6700\u9577\u306E\u9577\u3055\
+    \ O(|t|)\n     * \u6700\u5927\u5024\u304C t \u3068\u306E\u6700\u9577\u5171\u901A\
+    \u90E8\u5206\u6587\u5B57\u5217\u306E\u9577\u3055\u306B\u306A\u308B\n     * \u7BC4\
+    \u56F2\u5916\u306E\u6587\u5B57 (c - Base \u304C 0 \u4EE5\u4E0A K \u672A\u6E80\u3067\
+    \u306A\u3044) \u306F\u3001\u3069\u306E\u90E8\u5206\u6587\u5B57\u5217\u306B\u3082\
+    \u542B\u307E\u308C\u306A\u3044\u6587\u5B57\u3068\u3057\u3066\u6271\u3046\n   \
+    \  */\n    template <typename R>\n    std::vector<long long> match_lengths(const\
+    \ R& t) const {\n        std::vector<long long> res;\n        // \u4ECA\u306E\u4F4D\
+    \u7F6E\u3067\u7D42\u308F\u308A\u3001\u90E8\u5206\u6587\u5B57\u5217\u3067\u3042\
+    \u308B\u6700\u9577\u306E\u6587\u5B57\u5217\u3092\u3001\u72B6\u614B v \u3068\u9577\
+    \u3055 l \u3067\u6301\u3064\n        int v = 0;\n        long long l = 0;\n  \
+    \      for (auto c : t) {\n            const int k = static_cast<int>(c) - Base;\n\
+    \            if (k < 0 || K <= k) {\n                v = 0, l = 0;\n         \
+    \   } else {\n                // c \u3067\u9032\u3081\u306A\u3044\u9593\u306F\u3001\
+    \u524D\u3092\u524A\u3063\u3066 endpos \u304C\u5897\u3048\u308B\u77ED\u3044\u63A5\
+    \u5C3E\u8F9E\u306E\u72B6\u614B\u306B\u623B\u308B\n                // (\u521D\u671F\
+    \u72B6\u614B\u307E\u3067\u623B\u3063\u305F\u3068\u304D\u306F l = 0 \u306B\u306A\
+    \u3063\u3066\u3044\u3066\u3001c \u3067\u9032\u3081\u306A\u3051\u308C\u3070\u305D\
+    \u306E\u307E\u307E)\n                while (v != 0 && nodes[v].next[k] == -1)\
+    \ v = nodes[v].link, l = nodes[v].len;\n                if (nodes[v].next[k] !=\
+    \ -1) v = nodes[v].next[k], l++;\n            }\n            res.push_back(l);\n\
+    \        }\n        return res;\n    }\n};\n#line 7 \"test/yosupo/number-of-substrings.2.test.cpp\"\
+    \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
+    \    std::string s;\n    std::cin >> s;\n    std::cout << SuffixAutomaton<26,\
+    \ 'a'>(s).count_distinct_substrings() << '\\n';\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/number_of_substrings\"\n\
     \n#include <iostream>\n#include <string>\n\n#include \"../../src/string/suffix-automaton.hpp\"\
     \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
@@ -136,7 +159,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/number-of-substrings.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-20 00:25:26+09:00'
+  timestamp: '2026-10-20 16:28:53+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/number-of-substrings.2.test.cpp

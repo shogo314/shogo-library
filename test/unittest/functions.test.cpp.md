@@ -52,9 +52,11 @@ data:
     \ lo) return a / 2 + b;\n    return a / 2 + b / 2;\n}\ntemplate <typename T>\n\
     inline constexpr std::enable_if_t<std::is_object_v<T>, T*> midpoint(T* a, T* b)\
     \ noexcept {\n    return a + (b - a) / 2;\n}\n#endif\n\n/**\n * \u8981\u7D20\u6570\
-    \u3092 long long \u3067\u8FD4\u3059 (std::ssize \u306E long long \u7248)\n */\n\
-    #if __cplusplus >= 202002L\ntemplate <std::ranges::sized_range R>\ninline constexpr\
-    \ long long len(R&& r) {\n    return static_cast<long long>(std::ranges::size(r));\n\
+    \u3092 long long \u3067\u8FD4\u3059 (std::ssize \u306E long long \u7248)\n * size()\
+    \ \u3092\u6301\u3064\u578B\u306A\u3089\u3001begin() \u3068 end() \u3092\u6301\u305F\
+    \u306A\u3044\u81EA\u4F5C\u306E\u578B\u306B\u3082\u4F7F\u3048\u308B\n */\n#if __cplusplus\
+    \ >= 202002L\ntemplate <typename R>\n    requires requires(R& r) { std::ranges::size(r);\
+    \ }\ninline constexpr long long len(R&& r) {\n    return static_cast<long long>(std::ranges::size(r));\n\
     }\n#else\ntemplate <typename C>\ninline constexpr auto len(const C& c) -> decltype(static_cast<long\
     \ long>(std::size(c))) {\n    return static_cast<long long>(std::size(c));\n}\n\
     #endif\n\ntemplate <typename T>\nconstexpr T extgcd(const T& a, const T& b, T&\
@@ -173,8 +175,12 @@ data:
     \ : std::false_type {};\ntemplate <typename C>\nstruct has_len<C, std::void_t<decltype(len(std::declval<C&>()))>>\
     \ : std::true_type {};\nstatic_assert(has_len<std::vector<int>>::value && has_len<int[3]>::value\
     \ && has_len<std::list<int>>::value);\nstatic_assert(!has_len<std::forward_list<int>>::value\
-    \ && !has_len<int>::value);\n\nint main() {\n    std::mt19937_64 rng(314);\n\n\
-    \    for (int rep = 0; rep < 20000 && ok; rep++) {\n        long long a = static_cast<long\
+    \ && !has_len<int>::value);\n// size() \u3060\u3051\u3092\u6301\u3064\u81EA\u4F5C\
+    \u306E\u578B (begin() \u3068 end() \u306F\u306A\u3044) \u306B\u3082\u3001C++17\
+    \ \u3068 C++20 \u306E\u3069\u3061\u3089\u3067\u3082\u4F7F\u3048\u308B\nstruct\
+    \ OnlySize {\n    int size() const { return 5; }\n};\nstatic_assert(has_len<OnlySize>::value\
+    \ && has_len<const OnlySize>::value);\n\nint main() {\n    std::mt19937_64 rng(314);\n\
+    \n    for (int rep = 0; rep < 20000 && ok; rep++) {\n        long long a = static_cast<long\
     \ long>(rng() % 21) - 10, b = static_cast<long long>(rng() % 21) - 10;\n\n   \
     \     // chmin / chmax: \u66F4\u65B0\u3057\u305F\u304B\u3092\u8FD4\u3059\n   \
     \     {\n            long long x = a;\n            bool changed = chmin(x, b);\n\
@@ -275,6 +281,8 @@ data:
     \u30FB\u4E00\u6642\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u30FB\u6587\u5B57\u5217\
     \u30EA\u30C6\u30E9\u30EB\");\n        check(len(v) - 6 == -1, \"len \u306F\u7B26\
     \u53F7\u4ED8\u304D\");\n        static_assert(std::is_same_v<decltype(len(v)),\
+    \ long long>);\n        OnlySize os;\n        check(len(os) == 5 && len(OnlySize{})\
+    \ == 5, \"len size() \u3060\u3051\u3092\u6301\u3064\u578B\");\n        static_assert(std::is_same_v<decltype(len(os)),\
     \ long long>);\n        static_assert(len(std::array<int, 3>{}) == 3);\n#if __cplusplus\
     \ >= 202002L\n        check(len(std::views::iota(2, 9)) == 7, \"len views::iota\"\
     );\n#endif\n    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
@@ -309,8 +317,12 @@ data:
     \ : std::false_type {};\ntemplate <typename C>\nstruct has_len<C, std::void_t<decltype(len(std::declval<C&>()))>>\
     \ : std::true_type {};\nstatic_assert(has_len<std::vector<int>>::value && has_len<int[3]>::value\
     \ && has_len<std::list<int>>::value);\nstatic_assert(!has_len<std::forward_list<int>>::value\
-    \ && !has_len<int>::value);\n\nint main() {\n    std::mt19937_64 rng(314);\n\n\
-    \    for (int rep = 0; rep < 20000 && ok; rep++) {\n        long long a = static_cast<long\
+    \ && !has_len<int>::value);\n// size() \u3060\u3051\u3092\u6301\u3064\u81EA\u4F5C\
+    \u306E\u578B (begin() \u3068 end() \u306F\u306A\u3044) \u306B\u3082\u3001C++17\
+    \ \u3068 C++20 \u306E\u3069\u3061\u3089\u3067\u3082\u4F7F\u3048\u308B\nstruct\
+    \ OnlySize {\n    int size() const { return 5; }\n};\nstatic_assert(has_len<OnlySize>::value\
+    \ && has_len<const OnlySize>::value);\n\nint main() {\n    std::mt19937_64 rng(314);\n\
+    \n    for (int rep = 0; rep < 20000 && ok; rep++) {\n        long long a = static_cast<long\
     \ long>(rng() % 21) - 10, b = static_cast<long long>(rng() % 21) - 10;\n\n   \
     \     // chmin / chmax: \u66F4\u65B0\u3057\u305F\u304B\u3092\u8FD4\u3059\n   \
     \     {\n            long long x = a;\n            bool changed = chmin(x, b);\n\
@@ -411,6 +423,8 @@ data:
     \u30FB\u4E00\u6642\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u30FB\u6587\u5B57\u5217\
     \u30EA\u30C6\u30E9\u30EB\");\n        check(len(v) - 6 == -1, \"len \u306F\u7B26\
     \u53F7\u4ED8\u304D\");\n        static_assert(std::is_same_v<decltype(len(v)),\
+    \ long long>);\n        OnlySize os;\n        check(len(os) == 5 && len(OnlySize{})\
+    \ == 5, \"len size() \u3060\u3051\u3092\u6301\u3064\u578B\");\n        static_assert(std::is_same_v<decltype(len(os)),\
     \ long long>);\n        static_assert(len(std::array<int, 3>{}) == 3);\n#if __cplusplus\
     \ >= 202002L\n        check(len(std::views::iota(2, 9)) == 7, \"len views::iota\"\
     );\n#endif\n    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
@@ -422,7 +436,7 @@ data:
   isVerificationFile: true
   path: test/unittest/functions.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 12:08:11+09:00'
+  timestamp: '2026-10-20 02:23:35+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/functions.test.cpp

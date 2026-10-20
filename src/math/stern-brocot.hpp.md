@@ -54,9 +54,11 @@ data:
     \ lo) return a / 2 + b;\n    return a / 2 + b / 2;\n}\ntemplate <typename T>\n\
     inline constexpr std::enable_if_t<std::is_object_v<T>, T*> midpoint(T* a, T* b)\
     \ noexcept {\n    return a + (b - a) / 2;\n}\n#endif\n\n/**\n * \u8981\u7D20\u6570\
-    \u3092 long long \u3067\u8FD4\u3059 (std::ssize \u306E long long \u7248)\n */\n\
-    #if __cplusplus >= 202002L\ntemplate <std::ranges::sized_range R>\ninline constexpr\
-    \ long long len(R&& r) {\n    return static_cast<long long>(std::ranges::size(r));\n\
+    \u3092 long long \u3067\u8FD4\u3059 (std::ssize \u306E long long \u7248)\n * size()\
+    \ \u3092\u6301\u3064\u578B\u306A\u3089\u3001begin() \u3068 end() \u3092\u6301\u305F\
+    \u306A\u3044\u81EA\u4F5C\u306E\u578B\u306B\u3082\u4F7F\u3048\u308B\n */\n#if __cplusplus\
+    \ >= 202002L\ntemplate <typename R>\n    requires requires(R& r) { std::ranges::size(r);\
+    \ }\ninline constexpr long long len(R&& r) {\n    return static_cast<long long>(std::ranges::size(r));\n\
     }\n#else\ntemplate <typename C>\ninline constexpr auto len(const C& c) -> decltype(static_cast<long\
     \ long>(std::size(c))) {\n    return static_cast<long long>(std::size(c));\n}\n\
     #endif\n\ntemplate <typename T>\nconstexpr T extgcd(const T& a, const T& b, T&\
@@ -533,7 +535,7 @@ data:
   isVerificationFile: false
   path: src/math/stern-brocot.hpp
   requiredBy: []
-  timestamp: '2026-10-19 20:17:54+09:00'
+  timestamp: '2026-10-20 02:23:35+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/stern-brocot.test.cpp

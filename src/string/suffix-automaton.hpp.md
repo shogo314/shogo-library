@@ -121,7 +121,30 @@ data:
     \u3066\u3082\u3088\u3044\u3002\u7A7A\u6587\u5B57\u5217\u306A\u3089 length() +\
     \ 1) O(|t|)\n     */\n    template <typename R>\n    long long count_occurrences(const\
     \ R& t) {\n        int v = find_node(t);\n        return v == -1 ? 0 : occurrences(v);\n\
-    \    }\n};\n"
+    \    }\n    /**\n     * @brief t \u306E\u5404\u4F4D\u7F6E i \u306B\u3064\u3044\
+    \u3066\u3001t[0, i] \u306E\u63A5\u5C3E\u8F9E\u306E\u3046\u3061\u90E8\u5206\u6587\
+    \u5B57\u5217\u3067\u3042\u308B\u3082\u306E\u306E\u6700\u9577\u306E\u9577\u3055\
+    \ O(|t|)\n     * \u6700\u5927\u5024\u304C t \u3068\u306E\u6700\u9577\u5171\u901A\
+    \u90E8\u5206\u6587\u5B57\u5217\u306E\u9577\u3055\u306B\u306A\u308B\n     * \u7BC4\
+    \u56F2\u5916\u306E\u6587\u5B57 (c - Base \u304C 0 \u4EE5\u4E0A K \u672A\u6E80\u3067\
+    \u306A\u3044) \u306F\u3001\u3069\u306E\u90E8\u5206\u6587\u5B57\u5217\u306B\u3082\
+    \u542B\u307E\u308C\u306A\u3044\u6587\u5B57\u3068\u3057\u3066\u6271\u3046\n   \
+    \  */\n    template <typename R>\n    std::vector<long long> match_lengths(const\
+    \ R& t) const {\n        std::vector<long long> res;\n        // \u4ECA\u306E\u4F4D\
+    \u7F6E\u3067\u7D42\u308F\u308A\u3001\u90E8\u5206\u6587\u5B57\u5217\u3067\u3042\
+    \u308B\u6700\u9577\u306E\u6587\u5B57\u5217\u3092\u3001\u72B6\u614B v \u3068\u9577\
+    \u3055 l \u3067\u6301\u3064\n        int v = 0;\n        long long l = 0;\n  \
+    \      for (auto c : t) {\n            const int k = static_cast<int>(c) - Base;\n\
+    \            if (k < 0 || K <= k) {\n                v = 0, l = 0;\n         \
+    \   } else {\n                // c \u3067\u9032\u3081\u306A\u3044\u9593\u306F\u3001\
+    \u524D\u3092\u524A\u3063\u3066 endpos \u304C\u5897\u3048\u308B\u77ED\u3044\u63A5\
+    \u5C3E\u8F9E\u306E\u72B6\u614B\u306B\u623B\u308B\n                // (\u521D\u671F\
+    \u72B6\u614B\u307E\u3067\u623B\u3063\u305F\u3068\u304D\u306F l = 0 \u306B\u306A\
+    \u3063\u3066\u3044\u3066\u3001c \u3067\u9032\u3081\u306A\u3051\u308C\u3070\u305D\
+    \u306E\u307E\u307E)\n                while (v != 0 && nodes[v].next[k] == -1)\
+    \ v = nodes[v].link, l = nodes[v].len;\n                if (nodes[v].next[k] !=\
+    \ -1) v = nodes[v].next[k], l++;\n            }\n            res.push_back(l);\n\
+    \        }\n        return res;\n    }\n};\n"
   code: "#pragma once\n\n/**\n * @file suffix-automaton.hpp\n * @brief Suffix Automaton\n\
     \ */\n\n#include <array>\n#include <cassert>\n#include <vector>\n\n/**\n * @brief\
     \ Suffix Automaton (\u6587\u5B57\u5217\u306E\u3059\u3079\u3066\u306E\u90E8\u5206\
@@ -228,12 +251,35 @@ data:
     \u3066\u3082\u3088\u3044\u3002\u7A7A\u6587\u5B57\u5217\u306A\u3089 length() +\
     \ 1) O(|t|)\n     */\n    template <typename R>\n    long long count_occurrences(const\
     \ R& t) {\n        int v = find_node(t);\n        return v == -1 ? 0 : occurrences(v);\n\
-    \    }\n};\n"
+    \    }\n    /**\n     * @brief t \u306E\u5404\u4F4D\u7F6E i \u306B\u3064\u3044\
+    \u3066\u3001t[0, i] \u306E\u63A5\u5C3E\u8F9E\u306E\u3046\u3061\u90E8\u5206\u6587\
+    \u5B57\u5217\u3067\u3042\u308B\u3082\u306E\u306E\u6700\u9577\u306E\u9577\u3055\
+    \ O(|t|)\n     * \u6700\u5927\u5024\u304C t \u3068\u306E\u6700\u9577\u5171\u901A\
+    \u90E8\u5206\u6587\u5B57\u5217\u306E\u9577\u3055\u306B\u306A\u308B\n     * \u7BC4\
+    \u56F2\u5916\u306E\u6587\u5B57 (c - Base \u304C 0 \u4EE5\u4E0A K \u672A\u6E80\u3067\
+    \u306A\u3044) \u306F\u3001\u3069\u306E\u90E8\u5206\u6587\u5B57\u5217\u306B\u3082\
+    \u542B\u307E\u308C\u306A\u3044\u6587\u5B57\u3068\u3057\u3066\u6271\u3046\n   \
+    \  */\n    template <typename R>\n    std::vector<long long> match_lengths(const\
+    \ R& t) const {\n        std::vector<long long> res;\n        // \u4ECA\u306E\u4F4D\
+    \u7F6E\u3067\u7D42\u308F\u308A\u3001\u90E8\u5206\u6587\u5B57\u5217\u3067\u3042\
+    \u308B\u6700\u9577\u306E\u6587\u5B57\u5217\u3092\u3001\u72B6\u614B v \u3068\u9577\
+    \u3055 l \u3067\u6301\u3064\n        int v = 0;\n        long long l = 0;\n  \
+    \      for (auto c : t) {\n            const int k = static_cast<int>(c) - Base;\n\
+    \            if (k < 0 || K <= k) {\n                v = 0, l = 0;\n         \
+    \   } else {\n                // c \u3067\u9032\u3081\u306A\u3044\u9593\u306F\u3001\
+    \u524D\u3092\u524A\u3063\u3066 endpos \u304C\u5897\u3048\u308B\u77ED\u3044\u63A5\
+    \u5C3E\u8F9E\u306E\u72B6\u614B\u306B\u623B\u308B\n                // (\u521D\u671F\
+    \u72B6\u614B\u307E\u3067\u623B\u3063\u305F\u3068\u304D\u306F l = 0 \u306B\u306A\
+    \u3063\u3066\u3044\u3066\u3001c \u3067\u9032\u3081\u306A\u3051\u308C\u3070\u305D\
+    \u306E\u307E\u307E)\n                while (v != 0 && nodes[v].next[k] == -1)\
+    \ v = nodes[v].link, l = nodes[v].len;\n                if (nodes[v].next[k] !=\
+    \ -1) v = nodes[v].next[k], l++;\n            }\n            res.push_back(l);\n\
+    \        }\n        return res;\n    }\n};\n"
   dependsOn: []
   isVerificationFile: false
   path: src/string/suffix-automaton.hpp
   requiredBy: []
-  timestamp: '2026-10-20 00:25:26+09:00'
+  timestamp: '2026-10-20 16:28:53+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/suffix-automaton.test.cpp
@@ -243,7 +289,7 @@ layout: document
 title: Suffix Automaton
 ---
 
-文字列のすべての部分文字列を受理する最小の決定性オートマトンです。状態は $2n - 1$ 個以下で、各状態は「出現する終わりの位置の集合 (endpos) が同じ部分文字列」の集まりを表します。異なる部分文字列の個数、部分文字列の判定、出現回数を求められます。末尾に 1 文字ずつ追加することもできます。
+文字列のすべての部分文字列を受理する最小の決定性オートマトンです。状態は $2n - 1$ 個以下で、各状態は「出現する終わりの位置の集合 (endpos) が同じ部分文字列」の集まりを表します。異なる部分文字列の個数、部分文字列の判定、出現回数、別の文字列との最長共通部分文字列を求められます。末尾に 1 文字ずつ追加することもできます。
 
 ```cpp
 SuffixAutomaton<26, 'a'> sa(std::string("abcbc"));
@@ -251,6 +297,9 @@ sa.count_distinct_substrings();  // 12
 sa.contains(std::string("cb"));  // true
 sa.count_occurrences(std::string("bc"));  // 2
 sa.extend('a');                  // 末尾に 'a' を追加して "abcbca" にする
+
+// t の各位置で終わる接尾辞のうち、部分文字列である最長の長さ。最大値が最長共通部分文字列の長さ
+auto ml = sa.match_lengths(std::string("cbx"));  // {1, 2, 0}
 ```
 
 - 文字 `c` は `c - Base` として $0$ 以上 $K$ 未満の番号に直します。英小文字なら `SuffixAutomaton<26, 'a'>`、$0$ 以上 $K$ 未満の整数の列なら `SuffixAutomaton<K, 0>` です。
@@ -277,10 +326,14 @@ sa.extend('a');                  // 末尾に 'a' を追加して "abcbca" に�
 | `contains(t)` | `t` が部分文字列か (空文字列は部分文字列) | $O(\lvert t \rvert)$ |
 | `occurrences(v)` | 状態 `v` の部分文字列が出現する回数 (endpos の大きさ。初期状態なら $n + 1$) | 初回と `extend` の後は $O(n)$、ほかは $O(1)$ |
 | `count_occurrences(t)` | `t` が出現する回数 (重なってもよい。空文字列なら $n + 1$) | $O(\lvert t \rvert)$ (+ `occurrences` の計算) |
+| `match_lengths(t)` | `t` の各位置 $i$ について、`t[0, i]` の接尾辞のうち部分文字列であるものの最長の長さ (`std::vector<long long>`)。範囲外の文字はどの部分文字列にも含まれない文字として扱う | $O(\lvert t \rvert)$ |
 
 出現回数は、複製でない状態にそれぞれ 1 つの終わりの位置を割り当て、suffix link の木で子孫の分を足し合わせて求めます。
+
+`match_lengths` は、`t` を 1 文字ずつ読みながら、今の位置で終わる部分文字列の最長のものを状態と長さで持ちます。次の文字で進めなければ suffix link をたどって前を削ります。同じ状態の文字列は endpos が同じで次に続ける文字も同じなので、削るのは endpos が増える長さまでまとめて飛ばせます。1 つの文字列 `s` を固定して多くの `t` との最長共通部分文字列を求める場合などに、`s` の Suffix Automaton を 1 回作れば、各 `t` に $O(\lvert t \rvert)$ で答えられます。
 
 ## 関連
 
 - 接尾辞を辞書順に並べるなら [Suffix Array](suffix-array.hpp)
+- 2 つの文字列の最長共通部分文字列の位置まで求めるなら [最長共通部分文字列](longest-common-substring.hpp)
 - 複数のパターンをまとめて探すなら [Aho-Corasick](aho-corasick.hpp)

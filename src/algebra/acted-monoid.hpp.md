@@ -907,49 +907,49 @@ data:
   isVerificationFile: false
   path: src/algebra/acted-monoid.hpp
   requiredBy:
-  - src/data_structures/rbst.hpp
-  - src/data_structures/persistent-lazy-segtree.hpp
-  - src/data_structures/dynamic-lazy-segtree.hpp
   - src/data_structures/lazy-segtree.hpp
-  - src/data_structures/segtree-beats.hpp
   - src/data_structures/dual-segtree.hpp
   - src/data_structures/imos.hpp
+  - src/data_structures/rbst.hpp
+  - src/data_structures/dynamic-lazy-segtree.hpp
+  - src/data_structures/persistent-lazy-segtree.hpp
+  - src/data_structures/segtree-beats.hpp
   timestamp: '2026-10-19 12:03:10+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/imos.test.cpp
   - test/unittest/segtree-beats.test.cpp
-  - test/unittest/persistent-lazy-segtree.test.cpp
-  - test/unittest/dual-segtree.test.cpp
   - test/unittest/rbst.test.cpp
-  - test/unittest/dynamic-lazy-segtree.test.cpp
-  - test/unittest/acted-monoid.test.cpp
+  - test/unittest/dual-segtree.test.cpp
+  - test/unittest/persistent-lazy-segtree.test.cpp
+  - test/unittest/imos.test.cpp
   - test/unittest/beats-acted-monoid.test.cpp
-  - test/aoj/dsl-2-h.1.test.cpp
-  - test/aoj/dsl-2-d.test.cpp
-  - test/aoj/dsl-2-i.test.cpp
+  - test/unittest/acted-monoid.test.cpp
+  - test/unittest/dynamic-lazy-segtree.test.cpp
+  - test/yukicoder/2292.test.cpp
   - test/aoj/dsl-2-g.test.cpp
+  - test/aoj/dsl-2-d.test.cpp
+  - test/aoj/dsl-2-h.2.test.cpp
+  - test/aoj/dsl-2-h.1.test.cpp
   - test/aoj/dsl-2-e.test.cpp
   - test/aoj/dsl-5-a.test.cpp
+  - test/aoj/dsl-2-i.test.cpp
   - test/aoj/dsl-2-f.test.cpp
-  - test/aoj/dsl-2-h.2.test.cpp
-  - test/yosupo/point-add-range-sum.1.test.cpp
-  - test/yosupo/persistent-range-affine-range-sum.test.cpp
-  - test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
   - test/yosupo/point-set-range-composite.4.test.cpp
-  - test/yosupo/range-affine-range-sum.2.test.cpp
-  - test/yosupo/range-affine-range-sum.3.test.cpp
-  - test/yosupo/range-affine-range-sum-large-array.test.cpp
-  - test/yosupo/range-affine-point-get.1.test.cpp
-  - test/yosupo/area-of-union-of-rectangles.2.test.cpp
+  - test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
   - test/yosupo/range-chmin-chmax-add-range-sum.3.test.cpp
-  - test/yosupo/range-set-range-composite.test.cpp
-  - test/yosupo/range-affine-point-get.2.test.cpp
-  - test/yosupo/range-chmin-chmax-add-range-sum.1.test.cpp
   - test/yosupo/area-of-union-of-rectangles.1.test.cpp
+  - test/yosupo/persistent-range-affine-range-sum.test.cpp
+  - test/yosupo/range-affine-point-get.1.test.cpp
+  - test/yosupo/range-affine-range-sum-large-array.test.cpp
+  - test/yosupo/range-chmin-chmax-add-range-sum.1.test.cpp
+  - test/yosupo/range-affine-range-sum.3.test.cpp
+  - test/yosupo/area-of-union-of-rectangles.2.test.cpp
+  - test/yosupo/range-affine-point-get.2.test.cpp
   - test/yosupo/dynamic-sequence-range-affine-range-sum.test.cpp
   - test/yosupo/range-affine-range-sum.1.test.cpp
-  - test/yukicoder/2292.test.cpp
+  - test/yosupo/range-affine-range-sum.2.test.cpp
+  - test/yosupo/range-set-range-composite.test.cpp
+  - test/yosupo/point-add-range-sum.1.test.cpp
 documentation_of: src/algebra/acted-monoid.hpp
 layout: document
 title: "\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"

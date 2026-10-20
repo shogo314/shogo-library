@@ -443,8 +443,36 @@ data:
     \        }\n    }\n    return res;\n}\n\n/**\n * @brief \u6700\u5C0F\u30B7\u30E5\
     \u30BF\u30A4\u30CA\u30FC\u6728\u306E\u8FBA\u91CD\u307F\u306E\u7DCF\u548C\n * @note\
     \ X \u3092\u9023\u7D50\u306B\u3067\u304D\u306A\u3051\u308C\u3070 inf \u3092\u8FD4\
-    \u3059\n */\ntemplate <typename Cost, typename T>\nCost minimum_steiner_tree(const\
-    \ Graph<Cost>& graph, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max()\
+    \u3059\n */\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306E\u5F69\u8272\u6570\
+    \ (\u96A3\u308A\u5408\u3046\u9802\u70B9\u304C\u540C\u3058\u8272\u306B\u306A\u3089\
+    \u306A\u3044\u3088\u3046\u306B\u5857\u308B\u3068\u304D\u306E\u8272\u306E\u6700\
+    \u5C0F\u6570\u3002\u9802\u70B9\u6570 20 \u7A0B\u5EA6\u307E\u3067) O(3^n) \u3088\
+    \u308A\u5C11\u3057\u901F\u3044\n * \u72EC\u7ACB\u96C6\u5408\u306E\u8868\u3092\
+    \ O(2^n) \u3067\u4F5C\u308A\u3001dp[S] = min (dp[S \\ T] + 1) \u3092\u3001T \u3092\
+    \u300CS \u306E\u6700\u5C0F\u306E\u9802\u70B9 v \u3092\u542B\u307F\u3001v \u3068\
+    \u96A3\u308A\u5408\u308F\u306A\u3044 S \u306E\u9802\u70B9\u304B\u3089\u306A\u308B\
+    \u72EC\u7ACB\u96C6\u5408\u300D\u306B\u9650\u3063\u3066\u6C42\u3081\u308B\n * \u9802\
+    \u70B9\u304C\u306A\u3051\u308C\u3070 0\u3002\u81EA\u5DF1\u30EB\u30FC\u30D7\u304C\
+    \u3042\u308C\u3070\u5857\u308C\u306A\u3044\u306E\u3067 -1\n */\ntemplate <typename\
+    \ Cost = int>\nlong long chromatic_number(const Graph<Cost>& graph) {\n    const\
+    \ int n = graph.n;\n    if (n == 0) return 0;\n    assert(n <= 30);\n    std::vector<int>\
+    \ adj(n, 0);\n    for (int v = 0; v < n; v++) {\n        for (const auto& e :\
+    \ graph[v]) {\n            if (e.dst == v) return -1;\n            adj[v] |= 1\
+    \ << e.dst;\n        }\n    }\n    // indep[S]: S \u304C\u72EC\u7ACB\u96C6\u5408\
+    \u304B (\u6700\u5C0F\u306E\u9802\u70B9\u3092\u9664\u3044\u305F\u96C6\u5408\u304C\
+    \u72EC\u7ACB\u3067\u3001\u6700\u5C0F\u306E\u9802\u70B9\u304C\u305D\u308C\u3068\
+    \u96A3\u308A\u5408\u308F\u306A\u3044)\n    std::vector<bool> indep(1 << n, false);\n\
+    \    indep[0] = true;\n    for (int S = 1; S < (1 << n); S++) {\n        const\
+    \ int v = __builtin_ctz(S), rest = S & (S - 1);\n        indep[S] = indep[rest]\
+    \ && !(adj[v] & rest);\n    }\n    std::vector<int> dp(1 << n, n + 1);\n    dp[0]\
+    \ = 0;\n    for (int S = 1; S < (1 << n); S++) {\n        if (indep[S]) {\n  \
+    \          dp[S] = 1;\n            continue;\n        }\n        const int v =\
+    \ __builtin_ctz(S), low = 1 << v, cand = S & ~adj[v] & ~low;\n        for (int\
+    \ U = cand;; U = (U - 1) & cand) {\n            const int T = U | low;\n     \
+    \       if (indep[T] && dp[S ^ T] + 1 < dp[S]) dp[S] = dp[S ^ T] + 1;\n      \
+    \      if (U == 0) break;\n        }\n    }\n    return dp[(1 << n) - 1];\n}\n\
+    \ntemplate <typename Cost, typename T>\nCost minimum_steiner_tree(const Graph<Cost>&\
+    \ graph, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max()\
     \ / 4) {\n    if (X.empty()) return Cost{};\n    for (const auto& x : X) assert(0\
     \ <= x && x < graph.n);\n    std::vector<std::vector<Cost>> dp(graph.n, std::vector<Cost>(1\
     \ << X.size(), inf));\n    for (int p = 0; p < static_cast<int>(X.size()); p++)\
@@ -489,7 +517,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/cycle-detection-undirected.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-21 05:55:54+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/cycle-detection-undirected.test.cpp

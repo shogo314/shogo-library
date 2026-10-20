@@ -410,20 +410,20 @@ data:
   timestamp: '2026-10-20 17:15:36+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/prime-counting.test.cpp
   - test/unittest/prime.test.cpp
+  - test/unittest/prime-counting.test.cpp
   - test/unittest/divisor-transform.test.cpp
-  - test/aoj/0009.test.cpp
-  - test/aoj/ntl-1-a.test.cpp
   - test/aoj/ntl-1-d.test.cpp
+  - test/aoj/ntl-1-a.test.cpp
   - test/aoj/itp1-3-d.test.cpp
+  - test/aoj/0009.test.cpp
   - test/aoj/alds1-1-c.test.cpp
-  - test/yosupo/gcd-convolution.test.cpp
-  - test/yosupo/primitive-root.test.cpp
   - test/yosupo/primality-test.test.cpp
+  - test/yosupo/factorize.test.cpp
+  - test/yosupo/gcd-convolution.test.cpp
   - test/yosupo/enumerate-primes.test.cpp
   - test/yosupo/lcm-convolution.test.cpp
-  - test/yosupo/factorize.test.cpp
+  - test/yosupo/primitive-root.test.cpp
 documentation_of: src/math/prime.hpp
 layout: document
 title: "\u7D20\u6570 (\u7D20\u6570\u5224\u5B9A\u3001\u7D20\u56E0\u6570\u5206\u89E3\

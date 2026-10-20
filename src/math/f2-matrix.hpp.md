@@ -358,11 +358,11 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/f2-matrix.test.cpp
-  - test/yosupo/matrix-product-mod-2.test.cpp
-  - test/yosupo/inverse-matrix-mod-2.test.cpp
-  - test/yosupo/matrix-det-mod-2.test.cpp
   - test/yosupo/system-of-linear-equations-mod-2.test.cpp
+  - test/yosupo/matrix-product-mod-2.test.cpp
+  - test/yosupo/matrix-det-mod-2.test.cpp
   - test/yosupo/matrix-rank-mod-2.test.cpp
+  - test/yosupo/inverse-matrix-mod-2.test.cpp
 documentation_of: src/math/f2-matrix.hpp
 layout: document
 title: "F2 \u306E\u884C\u5217 (mod 2)"

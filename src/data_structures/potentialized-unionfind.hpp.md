@@ -547,12 +547,12 @@ data:
   timestamp: '2026-10-19 12:03:10+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/mapping.test.cpp
-  - test/unittest/monoid.test.cpp
   - test/unittest/potentialized-unionfind.test.cpp
-  - test/aoj/jag-summer-2971.test.cpp
+  - test/unittest/monoid.test.cpp
+  - test/unittest/mapping.test.cpp
   - test/aoj/dsl-1-b.2.test.cpp
   - test/aoj/dsl-1-b.1.test.cpp
+  - test/aoj/jag-summer-2971.test.cpp
   - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
 documentation_of: src/data_structures/potentialized-unionfind.hpp
 layout: document

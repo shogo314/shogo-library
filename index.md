@@ -143,6 +143,10 @@ data:
   - name: src/dp
     pages:
     - icon: ':heavy_check_mark:'
+      path: src/dp/bin-packing.hpp
+      title: "\u74F6\u8A70\u3081\u554F\u984C (\u30D3\u30F3\u30D1\u30C3\u30AD\u30F3\
+        \u30B0)"
+    - icon: ':heavy_check_mark:'
       path: src/dp/edit-distance.hpp
       title: "\u7DE8\u96C6\u8DDD\u96E2 (\u30EC\u30FC\u30D9\u30F3\u30B7\u30E5\u30BF\
         \u30A4\u30F3\u8DDD\u96E2)"
@@ -163,6 +167,10 @@ data:
       path: src/dp/monge.hpp
       title: "Monge \u6027\u3092\u4F7F\u3046 DP \u306E\u9AD8\u901F\u5316 (monotone\
         \ minima\u30FB(min, +) \u7573\u307F\u8FBC\u307F\u30FBAlien DP)"
+    - icon: ':heavy_check_mark:'
+      path: src/dp/set-partition.hpp
+      title: "\u96C6\u5408\u306E\u5206\u5272 (\u4F7F\u3063\u3066\u3088\u3044\u96C6\
+        \u5408\u306B\u5206\u3051\u308B\u6700\u5C0F\u500B\u6570)"
     - icon: ':heavy_check_mark:'
       path: src/dp/subset-sum-count.hpp
       title: "\u90E8\u5206\u548C\u306E\u500B\u6570"
@@ -704,6 +712,9 @@ data:
       path: test/unittest/beats-acted-monoid.test.cpp
       title: test/unittest/beats-acted-monoid.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/bin-packing.test.cpp
+      title: test/unittest/bin-packing.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/binary-trie.test.cpp
       title: test/unittest/binary-trie.test.cpp
     - icon: ':heavy_check_mark:'
@@ -941,6 +952,9 @@ data:
       path: test/unittest/segtree-beats.test.cpp
       title: test/unittest/segtree-beats.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/set-partition.test.cpp
+      title: test/unittest/set-partition.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/sliding-window-aggregation.test.cpp
       title: test/unittest/sliding-window-aggregation.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1032,6 +1046,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/bitwise-xor-convolution.test.cpp
       title: test/yosupo/bitwise-xor-convolution.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/chromatic-number.test.cpp
+      title: test/yosupo/chromatic-number.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/convolution-mod-1000000007.test.cpp
       title: test/yosupo/convolution-mod-1000000007.test.cpp

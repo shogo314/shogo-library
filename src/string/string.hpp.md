@@ -273,8 +273,8 @@ data:
   verifiedWith:
   - test/unittest/string.test.cpp
   - test/aoj/alds1-14-b.2.test.cpp
-  - test/yosupo/enumerate-palindromes.2.test.cpp
   - test/yosupo/zalgorithm.test.cpp
+  - test/yosupo/enumerate-palindromes.2.test.cpp
 documentation_of: src/string/string.hpp
 layout: document
 title: "\u6587\u5B57\u5217\u30A2\u30EB\u30B4\u30EA\u30BA\u30E0 (Z-algorithm\u3001\

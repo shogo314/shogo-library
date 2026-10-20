@@ -1,11 +1,13 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
 // prime.hpp の関数と Sieve を愚直な実装とランダムに比較する
+// primitive_root は、位数を愚直に数えて最小の原始根を求めたものと比べる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../src/math/prime.hpp"
 
 #include <iostream>
+#include <numeric>
 #include <random>
 #include <utility>
 #include <vector>
@@ -98,6 +100,32 @@ int main() {
         ok = ok && check_factorize(p * q) && (p == q ? f.size() == 1 && f[0].second == 2 : f.size() == 2);
         ok = ok && divisors(p * q).size() == (p == q ? 3u : 4u);
     }
+
+    // primitive_root: m <= 2000 で、g = 1, 2, ... の位数を数えて最初に φ(m) になるもの (なければ -1)
+    for (long long m = 1; m <= 2000 && ok; m++) {
+        long long phi = 0;
+        for (long long x = 1; x <= m; x++) phi += std::gcd(x, m) == 1;
+        long long expect = m == 1 ? 0 : -1;
+        for (long long g = 1; g < m && expect == -1; g++) {
+            if (std::gcd(g, m) != 1) continue;
+            long long order = 1, cur = g % m;
+            while (cur != 1 % m) cur = cur * g % m, order++;
+            if (order == phi) expect = g;
+        }
+        if (primitive_root(m) != expect) ok = false, std::cerr << "primitive_root " << m << std::endl;
+    }
+    // 大きい素数: 返した g が原始根 (p - 1 のどの素因数 q でも g^((p-1)/q) != 1) で、それより小さい数は原始根でない
+    for (long long p : {998244353LL, 1000000007LL, 167772161LL, (1LL << 61) - 1, 999999999999999989LL}) {
+        long long g = primitive_root(p);
+        auto is_root = [&](long long h) {
+            for (auto [q, e] : factorize(p - 1))
+                if (modpow(h, (p - 1) / q, p) == 1) return false;
+            return true;
+        };
+        ok = ok && g >= 2 && is_root(g);
+        for (long long h = 2; h < g; h++) ok = ok && !is_root(h);
+    }
+    if (primitive_root(998244353) != 3) ok = false;
 
     if (ok)
         std::cout << "Hello World" << std::endl;

@@ -1,5 +1,5 @@
 ---
-title: 素数 (素数判定、素因数分解、約数列挙、篩)
+title: 素数 (素数判定、素因数分解、約数列挙、篩、原始根)
 documentation_of: //src/math/prime.hpp
 ---
 
@@ -27,6 +27,7 @@ $d(n)$ は $n$ の約数の個数です。
 | `factorize(n)` | `n` ($\ge 1$) を素因数分解し、`(素因数, 指数)` を素因数の昇順に並べた `std::vector<std::pair<long long, long long>>` を返す。Pollard の ρ 法 | 期待 $O(n^{1/4})$ 程度 |
 | `divisors(n)` | `n` ($\ge 1$) の正の約数を昇順に並べて返す | `factorize(n)` + $O(d(n) \log d(n))$ |
 | `totient(n)` | オイラーの $\varphi$ 関数 ($1$ 以上 $n$ 以下で $n$ と互いに素な整数の個数) | `factorize(n)` と同じ |
+| `primitive_root(m)` | `m` ($\ge 1$) を法とする最小の原始根。原始根があるのは $m = 1, 2, 4, p^k, 2p^k$ ($p$ は奇素数) のときで、なければ -1 ($m = 1$ なら 0)。$m$ が $10^{18}$ 程度でもよい | `factorize(m)` と `factorize(φ(m))` + 候補ごとに $O(\log^2 m)$ |
 | `enumerate_primes(n)` | `n` 以下の素数を昇順に並べた `std::vector<long long>` を返す。奇数だけを区間ごとに篩うので、$n = 5 \times 10^8$ でも 1 秒かからない | $O(n \log \log n)$ |
 
 ## `Sieve` のメンバ関数

@@ -153,11 +153,11 @@ data:
   timestamp: '2026-10-20 02:23:35+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/functions.test.cpp
   - test/unittest/rational.test.cpp
+  - test/unittest/functions.test.cpp
   - test/unittest/stern-brocot.test.cpp
-  - test/aoj/ntl-1-e.test.cpp
   - test/aoj/1160.test.cpp
+  - test/aoj/ntl-1-e.test.cpp
   - test/aoj/dsl-5-a.test.cpp
   - test/yosupo/stern-brocot-tree.test.cpp
 documentation_of: src/base/functions.hpp

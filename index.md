@@ -729,6 +729,9 @@ data:
       path: test/unittest/container-func.test.cpp
       title: test/unittest/container-func.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/convex-hull-trick.test.cpp
+      title: test/unittest/convex-hull-trick.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/counter-segtree.test.cpp
       title: test/unittest/counter-segtree.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1115,8 +1118,11 @@ data:
       path: test/yosupo/lcm-convolution.test.cpp
       title: test/yosupo/lcm-convolution.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/yosupo/line-add-get-min.test.cpp
-      title: test/yosupo/line-add-get-min.test.cpp
+      path: test/yosupo/line-add-get-min.1.test.cpp
+      title: test/yosupo/line-add-get-min.1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/line-add-get-min.2.test.cpp
+      title: test/yosupo/line-add-get-min.2.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/log-of-fps.test.cpp
       title: test/yosupo/log-of-fps.test.cpp

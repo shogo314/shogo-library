@@ -648,31 +648,31 @@ data:
   isVerificationFile: false
   path: src/math/convolution.hpp
   requiredBy:
-  - src/math/linear-recurrence.hpp
-  - src/math/fps.hpp
   - src/dp/subset-sum-count.hpp
+  - src/math/fps.hpp
+  - src/math/linear-recurrence.hpp
   timestamp: '2026-10-20 17:15:36+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/subset-sum.test.cpp
   - test/unittest/linear-recurrence.test.cpp
+  - test/unittest/subset-sum.test.cpp
   - test/unittest/fps.test.cpp
-  - test/yosupo/pow-of-fps.test.cpp
-  - test/yosupo/kth-term-of-linearly-recurrent-sequence.test.cpp
-  - test/yosupo/convolution-mod.test.cpp
-  - test/yosupo/convolution-mod-1000000007.test.cpp
   - test/yosupo/exp-of-fps.test.cpp
-  - test/yosupo/convolution-mod-2-64.test.cpp
-  - test/yosupo/sharp-p-subset-sum.2.test.cpp
-  - test/yosupo/partition-function_1.test.cpp
   - test/yosupo/frequency-table-of-tree-distance.test.cpp
-  - test/yosupo/log-of-fps.test.cpp
-  - test/yosupo/sharp-p-subset-sum.1.test.cpp
-  - test/yosupo/polynomial-taylor-shift.test.cpp
-  - test/yosupo/division-of-polynomials.test.cpp
-  - test/yosupo/inv-of-fps.test.cpp
   - test/yosupo/partition-function_2.test.cpp
+  - test/yosupo/inv-of-fps.test.cpp
+  - test/yosupo/division-of-polynomials.test.cpp
+  - test/yosupo/kth-term-of-linearly-recurrent-sequence.test.cpp
+  - test/yosupo/pow-of-fps.test.cpp
+  - test/yosupo/polynomial-taylor-shift.test.cpp
+  - test/yosupo/partition-function_1.test.cpp
+  - test/yosupo/convolution-mod-2-64.test.cpp
+  - test/yosupo/convolution-mod-1000000007.test.cpp
+  - test/yosupo/log-of-fps.test.cpp
+  - test/yosupo/sharp-p-subset-sum.2.test.cpp
   - test/yosupo/find-linear-recurrence.test.cpp
+  - test/yosupo/sharp-p-subset-sum.1.test.cpp
+  - test/yosupo/convolution-mod.test.cpp
 documentation_of: src/math/convolution.hpp
 layout: document
 title: "\u7573\u307F\u8FBC\u307F (NTT)"

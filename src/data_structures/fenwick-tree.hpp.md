@@ -468,10 +468,10 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/fenwick-tree.test.cpp
-  - test/aoj/dsl-2-b.2.test.cpp
   - test/aoj/grl-5-d.test.cpp
-  - test/yosupo/vertex-add-path-sum.test.cpp
+  - test/aoj/dsl-2-b.2.test.cpp
   - test/yosupo/point-add-range-sum.3.test.cpp
+  - test/yosupo/vertex-add-path-sum.test.cpp
   - test/yosupo/vertex-add-subtree-sum.2.test.cpp
 documentation_of: src/data_structures/fenwick-tree.hpp
 layout: document

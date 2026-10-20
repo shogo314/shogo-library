@@ -831,16 +831,16 @@ data:
   verifiedWith:
   - test/unittest/subset-sum.test.cpp
   - test/unittest/fps.test.cpp
-  - test/yosupo/pow-of-fps.test.cpp
   - test/yosupo/exp-of-fps.test.cpp
-  - test/yosupo/sharp-p-subset-sum.2.test.cpp
+  - test/yosupo/partition-function_2.test.cpp
+  - test/yosupo/inv-of-fps.test.cpp
+  - test/yosupo/division-of-polynomials.test.cpp
+  - test/yosupo/pow-of-fps.test.cpp
+  - test/yosupo/polynomial-taylor-shift.test.cpp
   - test/yosupo/partition-function_1.test.cpp
   - test/yosupo/log-of-fps.test.cpp
+  - test/yosupo/sharp-p-subset-sum.2.test.cpp
   - test/yosupo/sharp-p-subset-sum.1.test.cpp
-  - test/yosupo/polynomial-taylor-shift.test.cpp
-  - test/yosupo/division-of-polynomials.test.cpp
-  - test/yosupo/inv-of-fps.test.cpp
-  - test/yosupo/partition-function_2.test.cpp
 documentation_of: src/math/fps.hpp
 layout: document
 title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570"

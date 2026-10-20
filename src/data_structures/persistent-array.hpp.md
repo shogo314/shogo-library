@@ -215,8 +215,8 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/persistent-array.test.cpp
   - test/unittest/persistent-unionfind.test.cpp
+  - test/unittest/persistent-array.test.cpp
   - test/yosupo/persistent-unionfind.test.cpp
 documentation_of: src/data_structures/persistent-array.hpp
 layout: document

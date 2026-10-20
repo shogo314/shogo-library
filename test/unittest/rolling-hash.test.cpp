@@ -1,6 +1,7 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
 // RHString を std::string で愚直に計算した結果とランダムに比較する
+// 端の削除 (remove_prefix・remove_suffix) も、残りの文字列から作った RHString と比べる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../src/string/rolling-hash.hpp"
@@ -112,6 +113,36 @@ int main() {
         check(hx + hy == hxy, "vector<long long> concat");
         check((hx == hy) == (x == y), "vector<long long> equality");
         check(hx.is_palindrome() == std::equal(x.begin(), x.end(), x.rbegin()), "vector<long long> palindrome");
+    }
+
+    // remove_prefix / remove_suffix: s = t + u や s = u + t から t を取り除くと、u から作ったものと一致する
+    // 回文の判定 (逆順のハッシュ) も一致し、ランダムな基数でも成り立つ
+    RollingHash random_rh;
+    for (RollingHash* r : {&rh, &random_rh}) {
+        for (int rep = 0; rep < 3000 && ok; rep++) {
+            std::string t = random_string(8), u = random_string(8);
+            RHString a(*r, t + u), b(*r, u + t);
+            a.remove_prefix(RHString(*r, t));
+            b.remove_suffix(t);  // RHString を作れるもの (文字列) を直接渡す
+            RHString hu(*r, u);
+            check(a == hu && a.size() == static_cast<long long>(u.size()), "remove_prefix");
+            check(b == hu && b.size() == static_cast<long long>(u.size()), "remove_suffix");
+            check(a.is_palindrome() == is_palindrome(u) && b.is_palindrome() == is_palindrome(u), "remove 後の is_palindrome");
+            // 取り除いたあとに連結しても正しい
+            check(a + RHString(*r, t) == RHString(*r, u + t), "remove 後の連結");
+        }
+    }
+    // 1 文字ずつ push_back と pop_front をして、長さ k の窓を動かす
+    {
+        std::string s = random_string(200);
+        const int k = 5;
+        RHString w(rh);
+        for (int i = 0; i < static_cast<int>(s.size()); i++) {
+            w += RHString(rh, s[i]);
+            if (i >= k) w.remove_prefix(s[i - k]);  // 文字を直接渡す
+            int l = std::max(0, i - k + 1);
+            check(w == RHString(rh, s.substr(l, i - l + 1)), "窓");
+        }
     }
 
     if (ok) std::cout << "Hello World" << std::endl;

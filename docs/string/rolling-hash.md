@@ -44,8 +44,19 @@ bool p = (t + u).is_palindrome();              // "aba" は回文: true
 | `t + u`、`t += u` | 連結 | $O(1)$ (初回は長さ分) |
 | `t == u`、`t != u` | 一致判定 | $O(1)$ |
 | `t = s`、`t.assign(s)` | 再代入 | $O(n)$ |
+| `t.remove_prefix(x)` / `t.remove_suffix(x)` | 先頭 / 末尾の `x` を取り除く。`x` は `RHString` か、`RHString` を作れるもの (文字列や 1 文字)。端が本当に `x` であること (ハッシュからは確かめられず、違うと値が壊れる) | $O(1)$ (初回は長さ分) |
 | `t.is_palindrome()` | 回文か | $O(1)$ |
 | `t.size()`、`t.empty()`、`t.clear()` | 長さ (`long long`)・空か・空にする | $O(1)$ |
+
+`remove_prefix`・`remove_suffix` は、連結の式を逆にたどって残りのハッシュを求めます。片方のハッシュは基数の逆元の累乗で割る必要があるので、初めて使うときに逆元を求めます (法 $2^{61} - 1$ は素数なので必ずある)。1 文字ずつ `+=` と `remove_prefix` をすれば、長さ $k$ の窓をずらしながらハッシュを持てます。
+
+```cpp
+RHString w(rh);
+for (int i = 0; i < n; i++) {
+    w += RHString(rh, s[i]);
+    if (i >= k) w.remove_prefix(s[i - k]);  // w は s[i - k + 1, i]
+}
+```
 
 ## `RHString` のメンバ変数
 

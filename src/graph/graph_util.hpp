@@ -316,6 +316,47 @@ MinimumSpanningTree<Cost> minimum_spanning_tree(const Graph<Cost>& graph) {
  * @brief 最小シュタイナー木の辺重みの総和
  * @note X を連結にできなければ inf を返す
  */
+/**
+ * @brief 無向グラフの彩色数 (隣り合う頂点が同じ色にならないように塗るときの色の最小数。頂点数 20 程度まで) O(3^n) より少し速い
+ * 独立集合の表を O(2^n) で作り、dp[S] = min (dp[S \ T] + 1) を、T を「S の最小の頂点 v を含み、v と隣り合わない S の頂点からなる独立集合」に限って求める
+ * 頂点がなければ 0。自己ループがあれば塗れないので -1
+ */
+template <typename Cost = int>
+long long chromatic_number(const Graph<Cost>& graph) {
+    const int n = graph.n;
+    if (n == 0) return 0;
+    assert(n <= 30);
+    std::vector<int> adj(n, 0);
+    for (int v = 0; v < n; v++) {
+        for (const auto& e : graph[v]) {
+            if (e.dst == v) return -1;
+            adj[v] |= 1 << e.dst;
+        }
+    }
+    // indep[S]: S が独立集合か (最小の頂点を除いた集合が独立で、最小の頂点がそれと隣り合わない)
+    std::vector<bool> indep(1 << n, false);
+    indep[0] = true;
+    for (int S = 1; S < (1 << n); S++) {
+        const int v = __builtin_ctz(S), rest = S & (S - 1);
+        indep[S] = indep[rest] && !(adj[v] & rest);
+    }
+    std::vector<int> dp(1 << n, n + 1);
+    dp[0] = 0;
+    for (int S = 1; S < (1 << n); S++) {
+        if (indep[S]) {
+            dp[S] = 1;
+            continue;
+        }
+        const int v = __builtin_ctz(S), low = 1 << v, cand = S & ~adj[v] & ~low;
+        for (int U = cand;; U = (U - 1) & cand) {
+            const int T = U | low;
+            if (indep[T] && dp[S ^ T] + 1 < dp[S]) dp[S] = dp[S ^ T] + 1;
+            if (U == 0) break;
+        }
+    }
+    return dp[(1 << n) - 1];
+}
+
 template <typename Cost, typename T>
 Cost minimum_steiner_tree(const Graph<Cost>& graph, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max() / 4) {
     if (X.empty()) return Cost{};

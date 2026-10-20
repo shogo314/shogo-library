@@ -230,5 +230,37 @@ int main() {
         if (sum != mst.cost) ok = false;
     }
 
+    // chromatic_number: 色の数 k を小さい順に、k 色での塗り方をすべて試して最初に塗れた k と比べる
+    for (int rep = 0; rep < 1000 && ok; rep++) {
+        int n = rng() % 8;
+        Graph<int> g(n);
+        std::vector<std::pair<int, int>> es;
+        for (int u = 0; u < n; u++)
+            for (int v = u + 1; v < n; v++)
+                if (rng() % 3 == 0) g.add_edge(u, v), es.emplace_back(u, v);
+        long long expect = 0;
+        for (int k = n == 0 ? 0 : 1; k <= n && expect == 0 && n > 0; k++) {
+            std::vector<int> c(n, 0);
+            while (true) {
+                bool good = true;
+                for (auto [u, v] : es) good &= c[u] != c[v];
+                if (good) {
+                    expect = k;
+                    break;
+                }
+                int i = 0;
+                while (i < n && ++c[i] == k) c[i++] = 0;
+                if (i == n) break;
+            }
+        }
+        if (chromatic_number(g) != expect) ok = false, std::cerr << "chromatic_number" << std::endl;
+    }
+    {
+        // 自己ループがあれば塗れない
+        Graph<int> g(2);
+        g.add_edge(0, 0);
+        if (chromatic_number(g) != -1) ok = false;
+    }
+
     if (ok) std::cout << "Hello World" << std::endl;
 }

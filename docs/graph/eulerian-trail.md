@@ -32,3 +32,4 @@ if (!trail.empty()) {
 ## 関連
 
 - 閉路を 1 つ求めるのは [グラフに関する関数](graph_util.hpp) の `find_cycle_directed`・`find_cycle_undirected`
+- すべての辺を 1 回以上通る最短の閉路は [中国人郵便配達問題](chinese-postman.hpp)

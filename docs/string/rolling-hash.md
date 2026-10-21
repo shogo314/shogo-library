@@ -3,7 +3,7 @@ title: ローリングハッシュ
 documentation_of: //src/string/rolling-hash.hpp
 ---
 
-mod $2^{61} - 1$ のローリングハッシュです。基数は省略するとランダムに選ばれます。
+mod $2^{61} - 1$ のローリングハッシュです。基数は省略するとランダムに選ばれます。表 (2 次元) の長方形のハッシュを求める `RollingHash2D` と、表の中でパターンを探す `pattern_match_2d` もあります。
 
 ```cpp
 RollingHash rh;
@@ -66,6 +66,31 @@ for (int i = 0; i < n; i++) {
 | `sz` | 長さ (`long long`) |
 | `hash1` | 正順のハッシュ |
 | `hash2` | 逆順のハッシュ (回文判定に使う) |
+
+## `RollingHash2D` のメンバ関数
+
+行方向と列方向で別の基数を使う 2 次元のローリングハッシュです。表の左上からの累積ハッシュを作り、長方形のハッシュを求めます。表は `std::vector<std::string>` や `std::vector<std::vector<T>>` を渡します。
+
+```cpp
+std::vector<std::string> g = {"abab", "baba", "abab"};
+RollingHash2D rh2;
+auto h = rh2.build(g);
+bool eq = rh2.query(h, 0, 0, 2, 2) == rh2.query(h, 1, 1, 3, 3);  // {"ab", "ba"} == {"ab", "ba"}: true
+
+auto pos = pattern_match_2d(g, std::vector<std::string>{"ba", "ab"});  // {(0, 1), (1, 0), (1, 2)}
+```
+
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `RollingHash2D(base1 = 0, base2 = 0)` | 行方向・列方向の基数を指定して作る (0 ならランダム) | $O(1)$ |
+| `build(grid)` | $(H + 1) \times (W + 1)$ の表 `h` (`h[i][j]` は左上 `i` 行 `j` 列のハッシュ) | $O(HW)$ |
+| `query(h, i1, j1, i2, j2)` | 行 $[i_1, i_2)$、列 $[j_1, j_2)$ の長方形のハッシュ | $O(1)$ (初回は長さ分) |
+
+## 関数
+
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `pattern_match_2d(text, pattern)` | 表 `text` の中で表 `pattern` と一致する部分の左上の位置 (行, 列) をすべて返す (`std::vector<std::pair<long long, long long>>`、行の昇順、同じ行なら列の昇順)。`pattern` は 1 行 1 列以上 | $O(HW + hw)$ |
 
 ## 関連
 

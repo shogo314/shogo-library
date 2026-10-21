@@ -2,6 +2,7 @@
 
 // RHString を std::string で愚直に計算した結果とランダムに比較する
 // 端の削除 (remove_prefix・remove_suffix) も、残りの文字列から作った RHString と比べる
+// RollingHash2D と pattern_match_2d を、長方形を直接比べたものと比べる (std::vector<std::vector<int>> でも作る)
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../../src/string/rolling-hash.hpp"
@@ -11,6 +12,7 @@
 #include <random>
 #include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 int main() {
@@ -143,6 +145,46 @@ int main() {
             int l = std::max(0, i - k + 1);
             check(w == RHString(rh, s.substr(l, i - l + 1)), "窓");
         }
+    }
+
+    // 2 次元
+    for (int rep = 0; rep < 2000 && ok; rep++) {
+        int h = rng() % 6, w = rng() % 6, ph = rng() % 3 + 1, pw = rng() % 3 + 1, k = rng() % 2 + 1;
+        std::vector<std::string> text(h, std::string(w, 'a')), pattern(ph, std::string(pw, 'a'));
+        for (auto& row : text)
+            for (auto& ch : row) ch = 'a' + rng() % k;
+        for (auto& row : pattern)
+            for (auto& ch : row) ch = 'a' + rng() % k;
+        // 長方形どうしのハッシュが、中身が同じときに限り一致する
+        RollingHash2D rh2;
+        auto th = rh2.build(text);
+        for (int t = 0; t < 20 && h > 0 && w > 0; t++) {
+            int i1 = rng() % (h + 1), i2 = rng() % (h + 1), j1 = rng() % (w + 1), j2 = rng() % (w + 1);
+            if (i1 > i2) std::swap(i1, i2);
+            if (j1 > j2) std::swap(j1, j2);
+            int a = rng() % (h - (i2 - i1) + 1), b = rng() % (w - (j2 - j1) + 1);
+            bool same = true;
+            for (int i = 0; i < i2 - i1; i++)
+                for (int j = 0; j < j2 - j1; j++) same &= text[i1 + i][j1 + j] == text[a + i][b + j];
+            bool eq = rh2.query(th, i1, j1, i2, j2) == rh2.query(th, a, b, a + i2 - i1, b + j2 - j1);
+            if (eq != same) ok = false;
+        }
+        std::vector<std::pair<long long, long long>> expected;
+        for (int i = 0; i + ph <= h; i++) {
+            for (int j = 0; j + pw <= w; j++) {
+                bool match = true;
+                for (int a = 0; a < ph; a++)
+                    for (int b = 0; b < pw; b++) match &= text[i + a][j + b] == pattern[a][b];
+                if (match) expected.emplace_back(i, j);
+            }
+        }
+        if (pattern_match_2d(text, pattern) != expected) ok = false;
+        std::vector<std::vector<int>> ti(h, std::vector<int>(w)), pi(ph, std::vector<int>(pw));
+        for (int i = 0; i < h; i++)
+            for (int j = 0; j < w; j++) ti[i][j] = text[i][j] - 'a' - 1;
+        for (int i = 0; i < ph; i++)
+            for (int j = 0; j < pw; j++) pi[i][j] = pattern[i][j] - 'a' - 1;
+        if (pattern_match_2d(ti, pi) != expected) ok = false;
     }
 
     if (ok) std::cout << "Hello World" << std::endl;

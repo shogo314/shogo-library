@@ -1,10 +1,9 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
+// gcd・extgcd (Half-GCD) を確かめる。gcd は最高次の係数が 1 で、素朴な互除法と一致すること
 // extgcd は a f + b g = d、d の最高次の係数が 1、d が f と g を割り切ることを確かめ、d を素朴な gcd と比べる
 // modinv は f h ≡ 1 (mod g) と次数を確かめ、std::nullopt になるのは gcd が定数でないときだけかを見る
 // 共通因子を持つ f, g も作る。問題の入力は使わず、すべて一致したら Hello World を出力する
-
-#include "../../../src/math/polynomial-gcd.hpp"
 
 #include <iostream>
 #include <random>
@@ -23,6 +22,17 @@ FPS<mint> monic(FPS<mint> f) {
     f.normalize();
     if (!f.empty()) f /= f.back();
     return f;
+}
+
+template <typename mint>
+FPS<mint> naive_gcd(FPS<mint> f, FPS<mint> g) {
+    f.normalize(), g.normalize();
+    while (!g.empty()) {
+        FPS<mint> r = f % g;
+        r.normalize();
+        f = g, g = r;
+    }
+    return monic(f);
 }
 
 template <typename mint>
@@ -45,7 +55,8 @@ void test(std::mt19937_64& rng) {
         F a, b;
         F d = extgcd(f, g, a, b);
         check(F(a * f + b * g).normalize() == d, "extgcd: a f + b g = d");
-        check(d == monic(gcd(F(f), F(g))), "extgcd: d と素朴な gcd");
+        check(d == naive_gcd(f, g), "extgcd: d と素朴な gcd");
+        check(gcd(f, g) == d && gcd(g, f) == d, "gcd");
         if (!d.empty()) {
             check(d.back() == 1, "extgcd: d の最高次の係数");
             check(F(f % d).normalize().empty() && F(g % d).normalize().empty(), "extgcd: d が f と g を割り切る");

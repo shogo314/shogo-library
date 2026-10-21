@@ -41,7 +41,7 @@ void split(const FPS<mint>& g, std::mt19937_64& rng, std::vector<mint>& res) {
 }  // namespace internal_polynomial_roots
 
 /**
- * @brief 多項式 f の、法 p (素数) で割った余りの中の根を、相異なるものだけ値の小さい順に返す 期待 O(n^2 log n + n log n log p)
+ * @brief 多項式 f の、法 p (素数) で割った余りの中の根を、相異なるものだけ値の小さい順に返す 期待 O(n log^2 n log p)
  * f が 0 (すべての値が根) のときは空を返す
  * g = gcd(f, x^p - x) で相異なる根だけを 1 次で持つ多項式にし、ランダムな a で gcd(g, (x + a)^((p-1)/2) - 1) をとって分けていく
  */

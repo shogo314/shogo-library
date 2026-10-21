@@ -4,7 +4,6 @@
 
 #include "../../../src/math/fps.hpp"
 #include "../../../src/math/modint.hpp"
-#include "../../../src/math/polynomial-gcd.hpp"
 
 using mint = modint998244353;
 

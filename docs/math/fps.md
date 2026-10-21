@@ -48,9 +48,13 @@ mint y = f.eval(2);            // f(2)
 | `sqrt(f, deg)` | $\sqrt f$ (`std::optional<FPS>`。平方根がなければ `std::nullopt`) | 最初の 0 でない項が偶数次で、その係数が平方剰余 (法は素数) | $O(n \log n)$ |
 | `taylor_shift(f, a)` | $f(x + a)$ | $n$ が mod より小さい | $O(n \log n)$ |
 | `divmod(f, g)` | `std::pair` で商 `f / g` と余り `f % g` を返す (`/` と `%` を別々に使うより速い) | `g` の最高次の係数が 0 でない | $O(n \log n)$ |
-| `gcd(f, g)` | 多項式の gcd | | $O(n^2 \log n)$ |
+| `gcd(f, g)` | 多項式の gcd (最高次の係数が 1。$f, g$ がともに 0 なら 0 (空)) | | $O(n \log^2 n)$ |
+| `extgcd(f, g, a, b)` | $af + bg = \gcd(f, g)$ となる `a`、`b` (末尾の 0 を取り除いた形) を求め、`gcd(f, g)` を返す。$f, g$ がともに 0 なら `a`、`b` も 0 | | $O(n \log^2 n)$ |
+| `modinv(f, g)` | $fh \equiv 1 \pmod g$ で $\deg h < \deg g$ となる $h$ (`std::optional<FPS>`)。$\gcd(f, g)$ が定数でなければ `std::nullopt`。$g$ が定数なら $h = 0$ (空) | $g \neq 0$ | $O(n \log^2 n)$ |
 | `modpow(f, e, m)` | $f^e \bmod m$ (多項式の余り) | | $O(\lvert m \rvert \log \lvert m \rvert \log e)$ |
 | `polynomial_product(fs)` | 多項式の列 `fs` (`std::vector<FPS>`) の積。次数の小さいものから 2 つずつ掛ける。`fs` が空なら 1 | | $O(N \log^2 N)$ ($N$ は次数の和) |
+
+`gcd`・`extgcd`・`modinv` は Half-GCD を使います。互除法 $(p, q) \to (q, p \bmod q)$ の変換を $2 \times 2$ の多項式行列で持ち、長さ $n$ の $p$ に対して、長さが $\lceil n / 2 \rceil$ 以下になるまでの行列を上位の半分の係数だけから再帰的に求めます。法は素数であることが必要です。整数の [`modinv`](modular-arithmetic.hpp) は互いに素でないと assert で止まりますが、多項式の `modinv` は `std::nullopt` を返します。
 
 ## 関連
 
@@ -60,6 +64,6 @@ mint y = f.eval(2);            // f(2)
 - 0 でない項が少ない $f$ の `inv`・`log`・`exp`・`pow`・`sqrt` は [疎な形式的冪級数](sparse-fps.hpp) の方が速い
 - 多点評価・多項式補間・標本点のずらしは [多点評価・多項式補間](multipoint.hpp)
 - 分割数・ベルヌーイ数・スターリング数・ベル数は [分割数・ベルヌーイ数・スターリング数・ベル数](combinatorial-sequences.hpp)
+- 整数の拡張ユークリッドの互除法 `extgcd` は [汎用関数](../base/functions.hpp)
 - 有限体上の多項式の根は [多項式の根](polynomial-roots.hpp)
-- 速い拡張ユークリッドの互除法 (Half-GCD) と多項式を法とする逆元は [多項式の拡張ユークリッドの互除法と逆元](polynomial-gcd.hpp)
 - 合成 $f(g(x))$ と合成についての逆関数は [形式的冪級数の合成と逆関数](fps-composition.hpp)

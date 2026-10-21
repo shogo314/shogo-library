@@ -19,7 +19,7 @@
 | `src/math/` | modint、mod 演算 (冪乗・逆元・離散対数・平方根)、畳み込み、行列 (連立一次方程式・ランク)、F2 の行列 (mod 2 の連立一次方程式・逆行列・積)、形式的冪級数 (疎なものの演算も・合成と逆関数・Half-GCD による gcd と多項式を法とする逆元)、線形漸化式 (Bostan-Mori・Berlekamp-Massey)、ラグランジュ補間、Σ r^i f(i)、多点評価・多項式補間 (等比数列の点での chirp-z も)・標本点のずらし、多項式の根、組み合わせ、分割数・ベルヌーイ数・スターリング数・ベル数、中国剰余定理、素数 (素数判定・素因数分解・篩・原始根)、素数の個数・素数の和 (Lucy DP)、無限大を持つ整数 (`infint`)、floor sum、商の列挙、有理数、約数・倍数のゼータ変換とメビウス変換 (GCD・LCM 畳み込み)、XOR 基底、Stern–Brocot 木と連分数 (区間で最も単純な分数・最良近似・分母に上限がある分数での二分探索) |
 | `src/string/` | Z-algorithm、KMP、Manacher、Suffix Array と LCP 配列、ローリングハッシュ、Trie、Aho-Corasick、Suffix Automaton、回文木 (Eertree) |
 | `src/geometry/` | 幾何 (ベクトル、凸包、偏角ソート、ccw、射影・反射、直線の交点、点・線分の距離、円の交点・接線・内接円・外接円など) |
-| `src/dp/` | 動的計画法 (ナップサック問題、部分和問題 (判定・S 以下の最大値・復元・個数)、最長増加部分列 (LIS)、連続部分列の和の最大値)、瓶詰め問題、集合の分割 (使ってよい集合に分ける最小個数)、Monge 性を使う高速化 (monotone minima・(min, +) 畳み込み・Alien DP) |
+| `src/dp/` | 動的計画法 (ナップサック問題、部分和問題 (判定・S 以下の最大値・復元・個数)、最長増加部分列 (LIS)、連続部分列の和の最大値)、瓶詰め問題、集合の分割 (使ってよい集合に分ける最小個数)、集合の被覆 (包除原理で覆う最小個数)、Monge 性を使う高速化 (monotone minima・(min, +) 畳み込み・Alien DP) |
 | `src/others/` | Mo's algorithm、転倒数 |
 | `test/` | 検証用テスト。ジャッジごとにディレクトリを分け、その中をサイトでの分類で分けています (`yosupo/` は Library Checker のカテゴリ、`aoj/` はコース名か `volume<番号÷100>`、`atcoder/` は `abc/` とそれ以外、`yukicoder/` は分けない)。`test/unittest/` は問題を使わない単体テストで、`src/` と同じ分類で分けています |
 | `docs/` | ドキュメントの各ページに埋め込む機能一覧 (`documentation_of` でヘッダに対応付け) |

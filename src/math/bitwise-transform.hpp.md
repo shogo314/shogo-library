@@ -226,8 +226,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/math/bitwise-transform.test.cpp
-  - test/yosupo/convolution/bitwise-and-convolution.test.cpp
   - test/yosupo/convolution/bitwise-xor-convolution.test.cpp
+  - test/yosupo/convolution/bitwise-and-convolution.test.cpp
   - test/yosupo/set_power_series/subset-convolution.test.cpp
 documentation_of: src/math/bitwise-transform.hpp
 layout: document

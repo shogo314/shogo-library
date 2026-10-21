@@ -237,6 +237,9 @@ data:
       path: src/graph/rerooting-dp.hpp
       title: "\u5168\u65B9\u4F4D\u6728DP"
     - icon: ':heavy_check_mark:'
+      path: src/graph/shortest-path.hpp
+      title: "\u6700\u77ED\u8DEF"
+    - icon: ':heavy_check_mark:'
       path: src/graph/tree.hpp
       title: "\u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8"
     - icon: ':heavy_check_mark:'
@@ -949,6 +952,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/graph/rerooting-dp.test.cpp
       title: test/unittest/graph/rerooting-dp.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/graph/shortest-path.test.cpp
+      title: test/unittest/graph/shortest-path.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/graph/tree.test.cpp
       title: test/unittest/graph/tree.test.cpp

@@ -432,21 +432,21 @@ data:
   isVerificationFile: false
   path: src/algebra/group.hpp
   requiredBy:
-  - src/data_structures/potentialized-unionfind.hpp
   - src/data_structures/fenwick-tree.hpp
+  - src/data_structures/potentialized-unionfind.hpp
   - src/data_structures/merge-sort-tree.hpp
   timestamp: '2026-10-19 12:03:10+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/potentialized-unionfind.test.cpp
   - test/unittest/data_structures/fenwick-tree.test.cpp
-  - test/unittest/algebra/monoid.test.cpp
   - test/unittest/algebra/mapping.test.cpp
-  - test/aoj/volume29/2971.test.cpp
+  - test/unittest/algebra/monoid.test.cpp
   - test/aoj/grl/grl-5-d.test.cpp
-  - test/aoj/dsl/dsl-2-b.2.test.cpp
   - test/aoj/dsl/dsl-1-b.2.test.cpp
+  - test/aoj/dsl/dsl-2-b.2.test.cpp
   - test/aoj/dsl/dsl-1-b.1.test.cpp
+  - test/aoj/volume29/2971.test.cpp
   - test/yosupo/data_structure/rectangle-sum.2.test.cpp
   - test/yosupo/data_structure/point-add-range-sum.3.test.cpp
   - test/yosupo/data_structure/rectangle-sum.1.test.cpp

@@ -92,19 +92,36 @@ int main() {
             dag |= good;
         } while (!dag && std::next_permutation(perm.begin(), perm.end()));
         if (has_cycle(graph) == dag) ok = false;
+        // DAG でなければ途中まで: 閉路からたどり着ける頂点 (閉路上の頂点から到達できる頂点) 以外がちょうど並ぶ
         std::vector<long long> order = topological_sort(graph);
-        if (dag) {
-            if (static_cast<int>(order.size()) != n)
-                ok = false;
-            else {
-                std::vector<int> pos(n, -1);
-                for (int i = 0; i < n; i++) pos[order[i]] = i;
-                for (auto [u, v] : edges)
-                    if (!(pos[u] < pos[v])) ok = false;
-            }
-        } else if (!order.empty()) {
-            ok = false;
+        std::vector<std::vector<bool>> reach(n, std::vector<bool>(n, false));
+        for (auto [u, v] : edges) reach[u][v] = true;
+        for (int k = 0; k < n; k++)
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < n; j++)
+                    if (reach[i][k] && reach[k][j]) reach[i][j] = true;
+        std::vector<bool> tainted(n, false);
+        for (int c = 0; c < n; c++) {
+            if (!reach[c][c]) continue;
+            for (int v = 0; v < n; v++)
+                if (reach[c][v]) tainted[v] = true;
         }
+        int expected = 0;
+        for (int v = 0; v < n; v++) expected += !tainted[v];
+        if (dag != (expected == n)) ok = false;
+        if (static_cast<int>(order.size()) != expected) ok = false;
+        std::vector<int> pos(n, -1);
+        for (int i = 0; i < static_cast<int>(order.size()); i++) {
+            if (tainted[order[i]] || pos[order[i]] != -1) ok = false;
+            pos[order[i]] = i;
+        }
+        for (auto [u, v] : edges)
+            if (pos[u] != -1 && pos[v] != -1 && !(pos[u] < pos[v])) ok = false;
+    }
+
+    {
+        Graph<int> graph(0);
+        if (!topological_sort(graph).empty() || has_cycle(graph)) ok = false;
     }
 
     // 有向グラフ: strongly_connected_components (自己ループ・多重辺を含む)

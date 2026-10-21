@@ -22,7 +22,7 @@ auto [cost, edges] = minimum_spanning_tree(g);
 | `connected_components(g)` | 連結成分ごとの頂点のリスト (`std::vector<std::vector<long long>>`) | 無向 | $O(n + m)$ |
 | `is_connected(g)` | 連結か | 無向 | $O(n + m)$ |
 | `is_tree(g)` | 木か | 無向 | $O(n + m)$ |
-| `topological_sort(g)` | トポロジカル順に並べた頂点のリスト (`std::vector<long long>`)。DAG でなければ空 | 有向 | $O(n + m)$ |
+| `topological_sort(g)` | トポロジカル順に並べた頂点のリスト (`std::vector<long long>`)。DAG でなければ閉路からたどり着けない頂点だけを並べたもので、長さが $n$ より短くなる | 有向 | $O(n + m)$ |
 | `has_cycle(g)` | 閉路を持つか | 有向 | $O(n + m)$ |
 | `find_cycle_directed(g)` | 閉路を 1 つ求め、その辺をたどる順に並べたもの (`std::vector<Edge>`)。閉路がなければ空 | 有向 | $O(n + m)$ |
 | `find_cycle_undirected(g)` | 同上。同じ辺を戻ることはなく、自己ループは長さ 1、多重辺は長さ 2 の閉路になる | 無向 | $O(n + m)$ |

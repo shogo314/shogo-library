@@ -103,7 +103,7 @@ bool is_tree(const Graph<Cost>& graph) {
 
 /**
  * @brief 有向グラフをトポロジカルソートする
- * @return std::vector<long long> トポロジカル順に並べた頂点のリスト。DAG でなければ空
+ * @return std::vector<long long> トポロジカル順に並べた頂点のリスト。DAG でなければ途中まで (閉路からたどり着けない頂点だけ) を並べたもので、長さが n より短くなる
  */
 template <typename Cost = int>
 std::vector<long long> topological_sort(const Graph<Cost>& graph) {
@@ -124,7 +124,6 @@ std::vector<long long> topological_sort(const Graph<Cost>& graph) {
         }
         sorted.push_back(cur);
     }
-    if (static_cast<long long>(sorted.size()) < graph.n) return {};
     return sorted;
 }
 
@@ -134,14 +133,7 @@ std::vector<long long> topological_sort(const Graph<Cost>& graph) {
  */
 template <typename Cost = int>
 bool has_cycle(const Graph<Cost>& graph) {
-    return graph.n > 0 && topological_sort(graph).empty();
-}
-/**
- * @deprecated has_cycle を使うこと(名前と意味が逆に読めるため改名した)
- */
-template <typename Cost = int>
-[[deprecated("use has_cycle")]] bool has_acyclic(const Graph<Cost>& graph) {
-    return has_cycle(graph);
+    return static_cast<long long>(topological_sort(graph).size()) < graph.n;
 }
 
 /**

@@ -75,6 +75,9 @@ data:
     path: test/unittest/data_structures/dynamic-segtree.test.cpp
     title: test/unittest/data_structures/dynamic-segtree.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/link-cut-tree.test.cpp
+    title: test/unittest/data_structures/link-cut-tree.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/persistent-lazy-segtree.test.cpp
     title: test/unittest/data_structures/persistent-lazy-segtree.test.cpp
   - icon: ':heavy_check_mark:'
@@ -338,6 +341,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/set_power_series/subset-convolution.test.cpp
     title: test/yosupo/set_power_series/subset-convolution.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
+    title: test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
     title: test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
@@ -909,6 +915,7 @@ data:
   - test/unittest/data_structures/dynamic-segtree.test.cpp
   - test/unittest/data_structures/rbst.test.cpp
   - test/unittest/data_structures/dual-segtree.test.cpp
+  - test/unittest/data_structures/link-cut-tree.test.cpp
   - test/unittest/data_structures/persistent-lazy-segtree.test.cpp
   - test/unittest/data_structures/persistent-segtree.test.cpp
   - test/unittest/data_structures/sliding-window-aggregation.test.cpp
@@ -966,6 +973,7 @@ data:
   - test/yosupo/polynomial/inv-of-fps.test.cpp
   - test/yosupo/tree/vertex-set-path-composite.test.cpp
   - test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
+  - test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
   - test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
   - test/yosupo/enumerative_combinatorics/bell-number.test.cpp
   - test/yosupo/enumerative_combinatorics/binomial-coefficient-prime-mod.1.test.cpp

@@ -723,3 +723,6 @@ if (!c.empty()) {
 - 関節点・橋・二重辺連結成分分解は [lowlink](lowlink.hpp)
 - 2-SAT は [2-SAT](two-sat.hpp)
 - 最大流は [最大流](max-flow.hpp)、最小費用流は [最小費用流](min-cost-flow.hpp)、二部マッチングは [二部マッチング](bipartite-matching.hpp)
+- 最短路は [最短路](shortest-path.hpp)
+- オイラー路は [オイラー路](eulerian-trail.hpp)
+- 有向グラフの最小全域木 (最小全域有向木) は [最小全域有向木](minimum-arborescence.hpp)

@@ -64,6 +64,9 @@ data:
     path: test/unittest/data_structures/unionfind.test.cpp
     title: test/unittest/data_structures/unionfind.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/graph/chinese-postman.test.cpp
+    title: test/unittest/graph/chinese-postman.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/graph/lowlink.test.cpp
     title: test/unittest/graph/lowlink.test.cpp
   - icon: ':heavy_check_mark:'
@@ -233,6 +236,7 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/graph/lowlink.test.cpp
+  - test/unittest/graph/chinese-postman.test.cpp
   - test/unittest/graph/two-sat.test.cpp
   - test/unittest/data_structures/potentialized-unionfind.test.cpp
   - test/unittest/data_structures/monoid-unionfind.test.cpp

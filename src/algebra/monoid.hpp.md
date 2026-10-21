@@ -153,6 +153,9 @@ data:
     path: test/unittest/data_structures/imos.test.cpp
     title: test/unittest/data_structures/imos.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/link-cut-tree.test.cpp
+    title: test/unittest/data_structures/link-cut-tree.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/monoid-unionfind.test.cpp
     title: test/unittest/data_structures/monoid-unionfind.test.cpp
   - icon: ':heavy_check_mark:'
@@ -266,6 +269,15 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
     title: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/tree/dynamic-tree-vertex-add-path-sum.test.cpp
+    title: test/yosupo/tree/dynamic-tree-vertex-add-path-sum.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/tree/dynamic-tree-vertex-add-subtree-sum.test.cpp
+    title: test/yosupo/tree/dynamic-tree-vertex-add-subtree-sum.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
+    title: test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/tree/lca.2.test.cpp
     title: test/yosupo/tree/lca.2.test.cpp
@@ -922,6 +934,7 @@ data:
   - test/unittest/data_structures/sparse-table.test.cpp
   - test/unittest/data_structures/monoid-unionfind.test.cpp
   - test/unittest/data_structures/dual-segtree.test.cpp
+  - test/unittest/data_structures/link-cut-tree.test.cpp
   - test/unittest/data_structures/persistent-lazy-segtree.test.cpp
   - test/unittest/data_structures/imos.test.cpp
   - test/unittest/data_structures/persistent-segtree.test.cpp
@@ -990,8 +1003,11 @@ data:
   - test/yosupo/data_structure/queue-operate-all-composite.test.cpp
   - test/yosupo/tree/vertex-add-path-sum.test.cpp
   - test/yosupo/tree/vertex-set-path-composite.test.cpp
+  - test/yosupo/tree/dynamic-tree-vertex-add-subtree-sum.test.cpp
   - test/yosupo/tree/vertex-add-subtree-sum.1.test.cpp
   - test/yosupo/tree/lca.2.test.cpp
+  - test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
+  - test/yosupo/tree/dynamic-tree-vertex-add-path-sum.test.cpp
   - test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp
 documentation_of: src/algebra/monoid.hpp
 layout: document

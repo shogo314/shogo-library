@@ -40,6 +40,9 @@ data:
     path: test/unittest/data_structures/fenwick-tree.test.cpp
     title: test/unittest/data_structures/fenwick-tree.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/link-cut-tree.test.cpp
+    title: test/unittest/data_structures/link-cut-tree.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/potentialized-unionfind.test.cpp
     title: test/unittest/data_structures/potentialized-unionfind.test.cpp
   - icon: ':heavy_check_mark:'
@@ -54,6 +57,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
     title: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/tree/dynamic-tree-vertex-add-subtree-sum.test.cpp
+    title: test/yosupo/tree/dynamic-tree-vertex-add-subtree-sum.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/tree/vertex-add-path-sum.test.cpp
     title: test/yosupo/tree/vertex-add-path-sum.test.cpp
@@ -439,6 +445,7 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/potentialized-unionfind.test.cpp
+  - test/unittest/data_structures/link-cut-tree.test.cpp
   - test/unittest/data_structures/fenwick-tree.test.cpp
   - test/unittest/algebra/monoid.test.cpp
   - test/unittest/algebra/mapping.test.cpp
@@ -452,6 +459,7 @@ data:
   - test/yosupo/data_structure/rectangle-sum.1.test.cpp
   - test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
   - test/yosupo/tree/vertex-add-path-sum.test.cpp
+  - test/yosupo/tree/dynamic-tree-vertex-add-subtree-sum.test.cpp
   - test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp
 documentation_of: src/algebra/group.hpp
 layout: document

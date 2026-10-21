@@ -217,3 +217,4 @@ for (auto [u, v] : bm.matching()) { /* 左 u と右 v がマッチした */ }
 ## 関連
 
 - 容量のある一般のグラフは [最大流](max-flow.hpp)
+- 二部グラフでない一般のグラフは [一般グラフの最大マッチング](general-matching.hpp)

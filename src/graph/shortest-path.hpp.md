@@ -12,6 +12,9 @@ data:
     path: src/graph/centroid-decomposition.hpp
     title: "\u91CD\u5FC3\u5206\u89E3"
   - icon: ':heavy_check_mark:'
+    path: src/graph/chinese-postman.hpp
+    title: "\u4E2D\u56FD\u4EBA\u90F5\u4FBF\u914D\u9054\u554F\u984C"
+  - icon: ':heavy_check_mark:'
     path: src/graph/heavy-light-decomposition.hpp
     title: "HL \u5206\u89E3 (Heavy-Light Decomposition)"
   - icon: ':heavy_check_mark:'
@@ -62,6 +65,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/graph/centroid-decomposition.test.cpp
     title: test/unittest/graph/centroid-decomposition.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/graph/chinese-postman.test.cpp
+    title: test/unittest/graph/chinese-postman.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/graph/heavy-light-decomposition.test.cpp
     title: test/unittest/graph/heavy-light-decomposition.test.cpp
@@ -442,6 +448,7 @@ data:
   path: src/graph/shortest-path.hpp
   requiredBy:
   - src/graph/tree.hpp
+  - src/graph/chinese-postman.hpp
   - src/graph/centroid-decomposition.hpp
   - src/graph/auxiliary-tree.hpp
   - src/graph/heavy-light-decomposition.hpp
@@ -454,6 +461,7 @@ data:
   - test/unittest/graph/tree.test.cpp
   - test/unittest/graph/centroid-decomposition.test.cpp
   - test/unittest/graph/rerooting-dp.test.cpp
+  - test/unittest/graph/chinese-postman.test.cpp
   - test/unittest/graph/auxiliary-tree.test.cpp
   - test/unittest/graph/heavy-light-decomposition.test.cpp
   - test/unittest/graph/shortest-path.test.cpp

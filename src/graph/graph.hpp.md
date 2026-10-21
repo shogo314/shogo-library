@@ -9,6 +9,16 @@ data:
     path: src/graph/centroid-decomposition.hpp
     title: "\u91CD\u5FC3\u5206\u89E3"
   - icon: ':heavy_check_mark:'
+    path: src/graph/chinese-postman.hpp
+    title: "\u4E2D\u56FD\u4EBA\u90F5\u4FBF\u914D\u9054\u554F\u984C"
+  - icon: ':heavy_check_mark:'
+    path: src/graph/eulerian-trail.hpp
+    title: "\u30AA\u30A4\u30E9\u30FC\u8DEF"
+  - icon: ':heavy_check_mark:'
+    path: src/graph/general-matching.hpp
+    title: "\u4E00\u822C\u30B0\u30E9\u30D5\u306E\u6700\u5927\u30DE\u30C3\u30C1\u30F3\
+      \u30B0"
+  - icon: ':heavy_check_mark:'
     path: src/graph/graph_util.hpp
     title: "\u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570"
   - icon: ':heavy_check_mark:'
@@ -19,6 +29,9 @@ data:
     title: "lowlink (\u95A2\u7BC0\u70B9\u3001\u6A4B\u3001\u4E8C\u91CD\u8FBA\u9023\u7D50\
       \u6210\u5206\u5206\u89E3\u3001\u4E8C\u91CD\u9802\u70B9\u9023\u7D50\u6210\u5206\
       \u5206\u89E3\u3001Block-Cut Tree)"
+  - icon: ':heavy_check_mark:'
+    path: src/graph/minimum-arborescence.hpp
+    title: "\u6700\u5C0F\u5168\u57DF\u6709\u5411\u6728"
   - icon: ':heavy_check_mark:'
     path: src/graph/rerooting-dp.hpp
     title: "\u5168\u65B9\u4F4D\u6728DP"
@@ -84,6 +97,12 @@ data:
     path: test/unittest/graph/centroid-decomposition.test.cpp
     title: test/unittest/graph/centroid-decomposition.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/graph/chinese-postman.test.cpp
+    title: test/unittest/graph/chinese-postman.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/graph/general-matching.test.cpp
+    title: test/unittest/graph/general-matching.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/graph/graph.test.cpp
     title: test/unittest/graph/graph.test.cpp
   - icon: ':heavy_check_mark:'
@@ -92,6 +111,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/graph/lowlink.test.cpp
     title: test/unittest/graph/lowlink.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/graph/minimum-arborescence.test.cpp
+    title: test/unittest/graph/minimum-arborescence.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/graph/rerooting-dp.test.cpp
     title: test/unittest/graph/rerooting-dp.test.cpp
@@ -116,6 +138,18 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/cycle-detection.test.cpp
     title: test/yosupo/graph/cycle-detection.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/graph/directedmst.test.cpp
+    title: test/yosupo/graph/directedmst.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/graph/eulerian-trail-directed.test.cpp
+    title: test/yosupo/graph/eulerian-trail-directed.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/graph/eulerian-trail-undirected.test.cpp
+    title: test/yosupo/graph/eulerian-trail-undirected.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/graph/general-matching.test.cpp
+    title: test/yosupo/graph/general-matching.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/minimum-spanning-tree.1.test.cpp
     title: test/yosupo/graph/minimum-spanning-tree.1.test.cpp
@@ -326,22 +360,29 @@ data:
   path: src/graph/graph.hpp
   requiredBy:
   - src/graph/tree.hpp
+  - src/graph/chinese-postman.hpp
   - src/graph/shortest-path.hpp
   - src/graph/centroid-decomposition.hpp
   - src/graph/graph_util.hpp
   - src/graph/auxiliary-tree.hpp
+  - src/graph/minimum-arborescence.hpp
   - src/graph/two-sat.hpp
   - src/graph/heavy-light-decomposition.hpp
   - src/graph/lowlink.hpp
   - src/graph/rerooting-dp.hpp
+  - src/graph/eulerian-trail.hpp
+  - src/graph/general-matching.hpp
   timestamp: '2026-10-22 01:22:17+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/graph/general-matching.test.cpp
   - test/unittest/graph/lowlink.test.cpp
   - test/unittest/graph/tree.test.cpp
   - test/unittest/graph/centroid-decomposition.test.cpp
   - test/unittest/graph/graph.test.cpp
   - test/unittest/graph/rerooting-dp.test.cpp
+  - test/unittest/graph/minimum-arborescence.test.cpp
+  - test/unittest/graph/chinese-postman.test.cpp
   - test/unittest/graph/auxiliary-tree.test.cpp
   - test/unittest/graph/heavy-light-decomposition.test.cpp
   - test/unittest/graph/shortest-path.test.cpp
@@ -376,12 +417,16 @@ data:
   - test/yosupo/tree/lca.3.test.cpp
   - test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp
   - test/yosupo/tree/jump-on-tree.1.test.cpp
+  - test/yosupo/graph/directedmst.test.cpp
   - test/yosupo/graph/chromatic-number.1.test.cpp
+  - test/yosupo/graph/general-matching.test.cpp
   - test/yosupo/graph/scc.test.cpp
   - test/yosupo/graph/two-edge-connected-components.test.cpp
   - test/yosupo/graph/minimum-spanning-tree.1.test.cpp
   - test/yosupo/graph/biconnected-components.test.cpp
   - test/yosupo/graph/minimum-spanning-tree.2.test.cpp
+  - test/yosupo/graph/eulerian-trail-undirected.test.cpp
+  - test/yosupo/graph/eulerian-trail-directed.test.cpp
   - test/yosupo/graph/shortest-path.test.cpp
   - test/yosupo/graph/cycle-detection-undirected.test.cpp
   - test/yosupo/graph/cycle-detection.test.cpp

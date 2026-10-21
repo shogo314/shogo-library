@@ -211,29 +211,57 @@ data:
     \ long i = 0; i < n; i++)\n                for (long long j = 0; j < n; j++) A[i][j]\
     \ = this->v[i][j];\n            return forward_elimination(A);\n        } else\
     \ {\n            auto A = this->v;\n            return forward_elimination(A);\n\
-    \        }\n    }\n\n    /**\n     * @brief \u9006\u884C\u5217\n     * @return\
-    \ \u9006\u884C\u5217\n     * @note det \u3068\u540C\u3058\u304F\u3001\u8981\u7D20\
-    \u306F\u4F53 (modint \u3084\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u306A\u3069) \u3067\
-    \u3042\u308B\u3053\u3068\n     */\n    [[nodiscard]]\n    Matrix inv() const {\n\
-    \        assert(n == m);\n        if (n == 0) return Matrix(n, n);\n        if\
-    \ constexpr (std::is_same_v<OperatorProperty, matrix::OperatorPropertyDefault<T>>)\
-    \ {\n            std::vector A(n, std::valarray(T(0), n + n));\n            for\
-    \ (long long i = 0; i < n; i++) {\n                for (long long j = 0; j < n;\
-    \ j++) A[i][j] = this->v[i][j];\n                A[i][n + i] = T(1);\n       \
-    \     }\n            [[maybe_unused]] T d = forward_elimination(A);\n        \
-    \    assert(d != T(0));\n            for (long long i = n - 1; i >= 0; i--) {\n\
-    \                for (long long j = i - 1; j >= 0; j--) {\n                  \
-    \  A[j] -= A[i] * A[j][i];\n                }\n            }\n            Matrix\
-    \ ret(n, n);\n            for (long long i = 0; i < n; i++)\n                for\
-    \ (long long j = 0; j < n; j++) ret[i][j] = A[i][n + j];\n            return ret;\n\
-    \        } else {\n            std::vector A(n, std::vector<T>(n + n, OperatorProperty::zero()));\n\
-    \            for (long long i = 0; i < n; i++) {\n                for (long long\
-    \ j = 0; j < n; j++) A[i][j] = this->v[i][j];\n                A[i][n + i] = OperatorProperty::one();\n\
-    \            }\n            [[maybe_unused]] T d = forward_elimination(A);\n \
-    \           assert(d != OperatorProperty::zero());\n            for (long long\
-    \ i = n - 1; i >= 0; i--) {\n                for (long long j = i - 1; j >= 0;\
-    \ j--) {\n                    for (long long k = n; k < n + n; k++) {\n      \
-    \                  A[j][k] = OperatorProperty::add(A[j][k], OperatorProperty::neg(OperatorProperty::mul(A[i][k],\
+    \        }\n    }\n\n    /**\n     * @brief \u30D1\u30FC\u30DE\u30CD\u30F3\u30C8\
+    \ \u03A3_\u03C3 \u03A0_i a[i][\u03C3(i)] (Ryser \u306E\u516C\u5F0F) O(2^n n)\n\
+    \     * @return \u30D1\u30FC\u30DE\u30CD\u30F3\u30C8\n     * @note \u5272\u308A\
+    \u7B97\u3092\u4F7F\u308F\u306A\u3044\u306E\u3067\u3001\u8981\u7D20\u306F\u53EF\
+    \u63DB\u74B0 (long long \u3084 modint \u306A\u3069) \u3067\u3088\u3044\u3002\n\
+    \     *       0 \u3068 1 \u306E\u884C\u5217\u306A\u3089\u3001\u4E8C\u90E8\u30B0\
+    \u30E9\u30D5\u306E\u5B8C\u5168\u30DE\u30C3\u30C1\u30F3\u30B0\u306E\u500B\u6570\
+    \u306B\u306A\u308B\n     *\n     * perm(A) = \u03A3_{S \u2286 \u5217} (-1)^{n\
+    \ - |S|} \u03A0_i \u03A3_{j \u2208 S} a[i][j] \u3092\u3001S \u3092\u30B0\u30EC\
+    \u30A4\u30B3\u30FC\u30C9\u306E\u9806\u306B\u52D5\u304B\u3057\u3066\u5404\u884C\
+    \u306E\u548C\u3092 O(n) \u3067\u66F4\u65B0\u3059\u308B\n     */\n    [[nodiscard]]\n\
+    \    T permanent() const {\n        assert(n == m);\n        assert(n < 63);\n\
+    \        std::vector<T> row(n, OperatorProperty::zero());  // \u5404\u884C\u306E\
+    \u3001S \u306B\u5165\u3063\u3066\u3044\u308B\u5217\u306E\u548C\n        T res\
+    \ = OperatorProperty::zero();\n        long long size = 0;  // |S|\n        for\
+    \ (long long k = 1; k < (1LL << n); k++) {\n            // \u30B0\u30EC\u30A4\u30B3\
+    \u30FC\u30C9\u3067 k - 1 \u756A\u76EE\u304B\u3089 k \u756A\u76EE\u306B\u79FB\u308B\
+    \u3068\u304D\u3001k \u306E\u6700\u4E0B\u4F4D\u30D3\u30C3\u30C8\u306E\u4F4D\u7F6E\
+    \u306E\u5217\u304C\u51FA\u5165\u308A\u3059\u308B\n            long long j = 0;\n\
+    \            while (!(k >> j & 1)) j++;\n            bool added = (k ^ (k >> 1))\
+    \ >> j & 1;\n            size += added ? 1 : -1;\n            T prod = OperatorProperty::one();\n\
+    \            for (long long i = 0; i < n; i++) {\n                row[i] = OperatorProperty::add(row[i],\
+    \ added ? this->v[i][j] : OperatorProperty::neg(this->v[i][j]));\n           \
+    \     prod = OperatorProperty::mul(prod, row[i]);\n            }\n           \
+    \ res = OperatorProperty::add(res, (n - size) % 2 == 0 ? prod : OperatorProperty::neg(prod));\n\
+    \        }\n        // S \u304C\u7A7A\u306E\u3068\u304D\u306E\u9805\u306F\u3001\
+    n == 0 \u306A\u3089 1\u3001\u305D\u3046\u3067\u306A\u3051\u308C\u3070 0\n    \
+    \    if (n == 0) res = OperatorProperty::one();\n        return res;\n    }\n\n\
+    \    /**\n     * @brief \u9006\u884C\u5217\n     * @return \u9006\u884C\u5217\n\
+    \     * @note det \u3068\u540C\u3058\u304F\u3001\u8981\u7D20\u306F\u4F53 (modint\
+    \ \u3084\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u306A\u3069) \u3067\u3042\u308B\u3053\
+    \u3068\n     */\n    [[nodiscard]]\n    Matrix inv() const {\n        assert(n\
+    \ == m);\n        if (n == 0) return Matrix(n, n);\n        if constexpr (std::is_same_v<OperatorProperty,\
+    \ matrix::OperatorPropertyDefault<T>>) {\n            std::vector A(n, std::valarray(T(0),\
+    \ n + n));\n            for (long long i = 0; i < n; i++) {\n                for\
+    \ (long long j = 0; j < n; j++) A[i][j] = this->v[i][j];\n                A[i][n\
+    \ + i] = T(1);\n            }\n            [[maybe_unused]] T d = forward_elimination(A);\n\
+    \            assert(d != T(0));\n            for (long long i = n - 1; i >= 0;\
+    \ i--) {\n                for (long long j = i - 1; j >= 0; j--) {\n         \
+    \           A[j] -= A[i] * A[j][i];\n                }\n            }\n      \
+    \      Matrix ret(n, n);\n            for (long long i = 0; i < n; i++)\n    \
+    \            for (long long j = 0; j < n; j++) ret[i][j] = A[i][n + j];\n    \
+    \        return ret;\n        } else {\n            std::vector A(n, std::vector<T>(n\
+    \ + n, OperatorProperty::zero()));\n            for (long long i = 0; i < n; i++)\
+    \ {\n                for (long long j = 0; j < n; j++) A[i][j] = this->v[i][j];\n\
+    \                A[i][n + i] = OperatorProperty::one();\n            }\n     \
+    \       [[maybe_unused]] T d = forward_elimination(A);\n            assert(d !=\
+    \ OperatorProperty::zero());\n            for (long long i = n - 1; i >= 0; i--)\
+    \ {\n                for (long long j = i - 1; j >= 0; j--) {\n              \
+    \      for (long long k = n; k < n + n; k++) {\n                        A[j][k]\
+    \ = OperatorProperty::add(A[j][k], OperatorProperty::neg(OperatorProperty::mul(A[i][k],\
     \ A[j][i])));\n                    }\n                }\n            }\n     \
     \       Matrix ret(n, n);\n            for (long long i = 0; i < n; i++)\n   \
     \             for (long long j = 0; j < n; j++) ret[i][j] = A[i][n + j];\n   \
@@ -529,29 +557,57 @@ data:
     \ long i = 0; i < n; i++)\n                for (long long j = 0; j < n; j++) A[i][j]\
     \ = this->v[i][j];\n            return forward_elimination(A);\n        } else\
     \ {\n            auto A = this->v;\n            return forward_elimination(A);\n\
-    \        }\n    }\n\n    /**\n     * @brief \u9006\u884C\u5217\n     * @return\
-    \ \u9006\u884C\u5217\n     * @note det \u3068\u540C\u3058\u304F\u3001\u8981\u7D20\
-    \u306F\u4F53 (modint \u3084\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u306A\u3069) \u3067\
-    \u3042\u308B\u3053\u3068\n     */\n    [[nodiscard]]\n    Matrix inv() const {\n\
-    \        assert(n == m);\n        if (n == 0) return Matrix(n, n);\n        if\
-    \ constexpr (std::is_same_v<OperatorProperty, matrix::OperatorPropertyDefault<T>>)\
-    \ {\n            std::vector A(n, std::valarray(T(0), n + n));\n            for\
-    \ (long long i = 0; i < n; i++) {\n                for (long long j = 0; j < n;\
-    \ j++) A[i][j] = this->v[i][j];\n                A[i][n + i] = T(1);\n       \
-    \     }\n            [[maybe_unused]] T d = forward_elimination(A);\n        \
-    \    assert(d != T(0));\n            for (long long i = n - 1; i >= 0; i--) {\n\
-    \                for (long long j = i - 1; j >= 0; j--) {\n                  \
-    \  A[j] -= A[i] * A[j][i];\n                }\n            }\n            Matrix\
-    \ ret(n, n);\n            for (long long i = 0; i < n; i++)\n                for\
-    \ (long long j = 0; j < n; j++) ret[i][j] = A[i][n + j];\n            return ret;\n\
-    \        } else {\n            std::vector A(n, std::vector<T>(n + n, OperatorProperty::zero()));\n\
-    \            for (long long i = 0; i < n; i++) {\n                for (long long\
-    \ j = 0; j < n; j++) A[i][j] = this->v[i][j];\n                A[i][n + i] = OperatorProperty::one();\n\
-    \            }\n            [[maybe_unused]] T d = forward_elimination(A);\n \
-    \           assert(d != OperatorProperty::zero());\n            for (long long\
-    \ i = n - 1; i >= 0; i--) {\n                for (long long j = i - 1; j >= 0;\
-    \ j--) {\n                    for (long long k = n; k < n + n; k++) {\n      \
-    \                  A[j][k] = OperatorProperty::add(A[j][k], OperatorProperty::neg(OperatorProperty::mul(A[i][k],\
+    \        }\n    }\n\n    /**\n     * @brief \u30D1\u30FC\u30DE\u30CD\u30F3\u30C8\
+    \ \u03A3_\u03C3 \u03A0_i a[i][\u03C3(i)] (Ryser \u306E\u516C\u5F0F) O(2^n n)\n\
+    \     * @return \u30D1\u30FC\u30DE\u30CD\u30F3\u30C8\n     * @note \u5272\u308A\
+    \u7B97\u3092\u4F7F\u308F\u306A\u3044\u306E\u3067\u3001\u8981\u7D20\u306F\u53EF\
+    \u63DB\u74B0 (long long \u3084 modint \u306A\u3069) \u3067\u3088\u3044\u3002\n\
+    \     *       0 \u3068 1 \u306E\u884C\u5217\u306A\u3089\u3001\u4E8C\u90E8\u30B0\
+    \u30E9\u30D5\u306E\u5B8C\u5168\u30DE\u30C3\u30C1\u30F3\u30B0\u306E\u500B\u6570\
+    \u306B\u306A\u308B\n     *\n     * perm(A) = \u03A3_{S \u2286 \u5217} (-1)^{n\
+    \ - |S|} \u03A0_i \u03A3_{j \u2208 S} a[i][j] \u3092\u3001S \u3092\u30B0\u30EC\
+    \u30A4\u30B3\u30FC\u30C9\u306E\u9806\u306B\u52D5\u304B\u3057\u3066\u5404\u884C\
+    \u306E\u548C\u3092 O(n) \u3067\u66F4\u65B0\u3059\u308B\n     */\n    [[nodiscard]]\n\
+    \    T permanent() const {\n        assert(n == m);\n        assert(n < 63);\n\
+    \        std::vector<T> row(n, OperatorProperty::zero());  // \u5404\u884C\u306E\
+    \u3001S \u306B\u5165\u3063\u3066\u3044\u308B\u5217\u306E\u548C\n        T res\
+    \ = OperatorProperty::zero();\n        long long size = 0;  // |S|\n        for\
+    \ (long long k = 1; k < (1LL << n); k++) {\n            // \u30B0\u30EC\u30A4\u30B3\
+    \u30FC\u30C9\u3067 k - 1 \u756A\u76EE\u304B\u3089 k \u756A\u76EE\u306B\u79FB\u308B\
+    \u3068\u304D\u3001k \u306E\u6700\u4E0B\u4F4D\u30D3\u30C3\u30C8\u306E\u4F4D\u7F6E\
+    \u306E\u5217\u304C\u51FA\u5165\u308A\u3059\u308B\n            long long j = 0;\n\
+    \            while (!(k >> j & 1)) j++;\n            bool added = (k ^ (k >> 1))\
+    \ >> j & 1;\n            size += added ? 1 : -1;\n            T prod = OperatorProperty::one();\n\
+    \            for (long long i = 0; i < n; i++) {\n                row[i] = OperatorProperty::add(row[i],\
+    \ added ? this->v[i][j] : OperatorProperty::neg(this->v[i][j]));\n           \
+    \     prod = OperatorProperty::mul(prod, row[i]);\n            }\n           \
+    \ res = OperatorProperty::add(res, (n - size) % 2 == 0 ? prod : OperatorProperty::neg(prod));\n\
+    \        }\n        // S \u304C\u7A7A\u306E\u3068\u304D\u306E\u9805\u306F\u3001\
+    n == 0 \u306A\u3089 1\u3001\u305D\u3046\u3067\u306A\u3051\u308C\u3070 0\n    \
+    \    if (n == 0) res = OperatorProperty::one();\n        return res;\n    }\n\n\
+    \    /**\n     * @brief \u9006\u884C\u5217\n     * @return \u9006\u884C\u5217\n\
+    \     * @note det \u3068\u540C\u3058\u304F\u3001\u8981\u7D20\u306F\u4F53 (modint\
+    \ \u3084\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u306A\u3069) \u3067\u3042\u308B\u3053\
+    \u3068\n     */\n    [[nodiscard]]\n    Matrix inv() const {\n        assert(n\
+    \ == m);\n        if (n == 0) return Matrix(n, n);\n        if constexpr (std::is_same_v<OperatorProperty,\
+    \ matrix::OperatorPropertyDefault<T>>) {\n            std::vector A(n, std::valarray(T(0),\
+    \ n + n));\n            for (long long i = 0; i < n; i++) {\n                for\
+    \ (long long j = 0; j < n; j++) A[i][j] = this->v[i][j];\n                A[i][n\
+    \ + i] = T(1);\n            }\n            [[maybe_unused]] T d = forward_elimination(A);\n\
+    \            assert(d != T(0));\n            for (long long i = n - 1; i >= 0;\
+    \ i--) {\n                for (long long j = i - 1; j >= 0; j--) {\n         \
+    \           A[j] -= A[i] * A[j][i];\n                }\n            }\n      \
+    \      Matrix ret(n, n);\n            for (long long i = 0; i < n; i++)\n    \
+    \            for (long long j = 0; j < n; j++) ret[i][j] = A[i][n + j];\n    \
+    \        return ret;\n        } else {\n            std::vector A(n, std::vector<T>(n\
+    \ + n, OperatorProperty::zero()));\n            for (long long i = 0; i < n; i++)\
+    \ {\n                for (long long j = 0; j < n; j++) A[i][j] = this->v[i][j];\n\
+    \                A[i][n + i] = OperatorProperty::one();\n            }\n     \
+    \       [[maybe_unused]] T d = forward_elimination(A);\n            assert(d !=\
+    \ OperatorProperty::zero());\n            for (long long i = n - 1; i >= 0; i--)\
+    \ {\n                for (long long j = i - 1; j >= 0; j--) {\n              \
+    \      for (long long k = n; k < n + n; k++) {\n                        A[j][k]\
+    \ = OperatorProperty::add(A[j][k], OperatorProperty::neg(OperatorProperty::mul(A[i][k],\
     \ A[j][i])));\n                    }\n                }\n            }\n     \
     \       Matrix ret(n, n);\n            for (long long i = 0; i < n; i++)\n   \
     \             for (long long j = 0; j < n; j++) ret[i][j] = A[i][n + j];\n   \
@@ -679,7 +735,7 @@ data:
   isVerificationFile: false
   path: src/math/matrix.hpp
   requiredBy: []
-  timestamp: '2026-10-19 20:29:35+09:00'
+  timestamp: '2026-10-22 04:35:34+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/math/matrix.test.cpp
@@ -739,6 +795,7 @@ auto t = g.rotate(1).vstr();          // 時計回りに 90 度回して vector<
 | `A * x` / `x * A` | 列ベクトル / 行ベクトルとの積 (`vector<T>` を返す) | $O(nm)$ |
 | `A.pow(k)` | $A^k$ | $O(n^3 \log k)$ |
 | `A.det()` | 行列式 | $O(n^3)$ |
+| `A.permanent()` | パーマネント $\sum_\sigma \prod_i a_{i \sigma(i)}$ (Ryser の公式)。割り算を使わないので `long long` でもよい。0 と 1 の行列なら二部グラフの完全マッチングの個数 | $O(2^n n)$ |
 | `A.inv()` | 逆行列 (正則でなければ assert で落ちる) | $O(n^3)$ |
 
 `det`、`inv` は掃き出し法で割り算を使うので、要素は体 (`modint` や浮動小数点型など) である必要があります。`int` や `long long` のような整数型では割り算が切り捨てになり、正しい値になりません (例: `Matrix<long long>({ {2, 1}, {1, 1} }).det()` は 1 ではなく 2 を返す)。整数の行列の行列式は、十分大きい素数を法とする `modint` で計算してください。
@@ -786,3 +843,4 @@ auto [R, pivots] = A.reduced_row_echelon();
 - `det`、`inv`、`solve` で使う体の要素は [modint](modint.hpp)
 - mod 2 の行列は [F2 の行列](f2-matrix.hpp)
 - 行列累乗の代わりに漸化式を多項式で扱うなら [形式的冪級数](fps.hpp)
+- 二部グラフの最大マッチングは [二部グラフの最大マッチング](../graph/bipartite-matching.hpp) (完全マッチングの個数は `permanent`)

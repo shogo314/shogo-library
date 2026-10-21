@@ -1,8 +1,14 @@
 ---
 data:
   _extendedDependsOn: []
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':heavy_check_mark:'
+    path: src/data_structures/range-count-distinct.hpp
+    title: "\u533A\u9593\u5185\u306E\u7570\u306A\u308B\u5024\u306E\u500B\u6570"
   _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/range-count-distinct.test.cpp
+    title: test/unittest/data_structures/range-count-distinct.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/wavelet-matrix.test.cpp
     title: test/unittest/data_structures/wavelet-matrix.test.cpp
@@ -12,6 +18,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/rectangle-sum.5.test.cpp
     title: test/yosupo/data_structure/rectangle-sum.5.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/static-range-count-distinct.test.cpp
+    title: test/yosupo/data_structure/static-range-count-distinct.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/static-range-frequency.test.cpp
     title: test/yosupo/data_structure/static-range-frequency.test.cpp
@@ -402,11 +411,14 @@ data:
   dependsOn: []
   isVerificationFile: false
   path: src/data_structures/wavelet-matrix.hpp
-  requiredBy: []
+  requiredBy:
+  - src/data_structures/range-count-distinct.hpp
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/wavelet-matrix.test.cpp
+  - test/unittest/data_structures/range-count-distinct.test.cpp
+  - test/yosupo/data_structure/static-range-count-distinct.test.cpp
   - test/yosupo/data_structure/static-range-frequency.test.cpp
   - test/yosupo/data_structure/rectangle-sum.5.test.cpp
   - test/yosupo/data_structure/range-kth-smallest.test.cpp

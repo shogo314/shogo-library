@@ -80,6 +80,9 @@ data:
       path: src/data_structures/lazy-segtree.hpp
       title: "\u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
     - icon: ':heavy_check_mark:'
+      path: src/data_structures/link-cut-tree.hpp
+      title: Link-Cut Tree
+    - icon: ':heavy_check_mark:'
       path: src/data_structures/merge-sort-tree.hpp
       title: "\u30DE\u30FC\u30B8\u30BD\u30FC\u30C8\u30C4\u30EA\u30FC"
     - icon: ':heavy_check_mark:'
@@ -112,6 +115,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/data_structures/priority_counter.hpp
       title: "\u4E0A\u4F4D K \u500B\u306E\u5024\u3068\u305D\u306E\u500B\u6570"
+    - icon: ':heavy_check_mark:'
+      path: src/data_structures/range-count-distinct.hpp
+      title: "\u533A\u9593\u5185\u306E\u7570\u306A\u308B\u5024\u306E\u500B\u6570"
     - icon: ':heavy_check_mark:'
       path: src/data_structures/rbst.hpp
       title: "\u5E73\u8861\u4E8C\u5206\u6728 (RBST)"
@@ -177,6 +183,9 @@ data:
       title: "\u96C6\u5408\u306E\u5206\u5272 (\u4F7F\u3063\u3066\u3088\u3044\u96C6\
         \u5408\u306B\u5206\u3051\u308B\u6700\u5C0F\u500B\u6570)"
     - icon: ':heavy_check_mark:'
+      path: src/dp/slope-trick.hpp
+      title: Slope Trick
+    - icon: ':heavy_check_mark:'
       path: src/dp/subset-sum-count.hpp
       title: "\u90E8\u5206\u548C\u306E\u500B\u6570"
     - icon: ':heavy_check_mark:'
@@ -208,8 +217,18 @@ data:
       path: src/graph/centroid-decomposition.hpp
       title: "\u91CD\u5FC3\u5206\u89E3"
     - icon: ':heavy_check_mark:'
+      path: src/graph/chinese-postman.hpp
+      title: "\u4E2D\u56FD\u4EBA\u90F5\u4FBF\u914D\u9054\u554F\u984C"
+    - icon: ':heavy_check_mark:'
+      path: src/graph/eulerian-trail.hpp
+      title: "\u30AA\u30A4\u30E9\u30FC\u8DEF"
+    - icon: ':heavy_check_mark:'
       path: src/graph/functional-graph.hpp
       title: "\u30D5\u30A1\u30F3\u30AF\u30B7\u30E7\u30CA\u30EB\u30B0\u30E9\u30D5"
+    - icon: ':heavy_check_mark:'
+      path: src/graph/general-matching.hpp
+      title: "\u4E00\u822C\u30B0\u30E9\u30D5\u306E\u6700\u5927\u30DE\u30C3\u30C1\u30F3\
+        \u30B0"
     - icon: ':heavy_check_mark:'
       path: src/graph/graph.hpp
       title: "\u30B0\u30E9\u30D5"
@@ -230,6 +249,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/graph/min-cost-flow.hpp
       title: "\u6700\u5C0F\u8CBB\u7528\u6D41 (primal-dual \u6CD5)"
+    - icon: ':heavy_check_mark:'
+      path: src/graph/minimum-arborescence.hpp
+      title: "\u6700\u5C0F\u5168\u57DF\u6709\u5411\u6728"
     - icon: ':heavy_check_mark:'
       path: src/graph/project-selection.hpp
       title: "\u71C3\u3084\u3059\u57CB\u3081\u308B (Project Selection Problem)"
@@ -335,7 +357,7 @@ data:
         exp\u30FBpow\u30FBsqrt)"
     - icon: ':heavy_check_mark:'
       path: src/math/sqrt.hpp
-      title: "\u6574\u6570\u306E\u5E73\u65B9\u6839"
+      title: "\u6574\u6570\u306E\u5E73\u65B9\u6839\u30FBk \u4E57\u6839"
     - icon: ':heavy_check_mark:'
       path: src/math/stern-brocot.hpp
       title: "Stern\u2013Brocot \u6728\u3068\u9023\u5206\u6570"
@@ -821,6 +843,9 @@ data:
       path: test/unittest/data_structures/interval-set.test.cpp
       title: test/unittest/data_structures/interval-set.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/data_structures/link-cut-tree.test.cpp
+      title: test/unittest/data_structures/link-cut-tree.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/data_structures/mex-update.test.cpp
       title: test/unittest/data_structures/mex-update.test.cpp
     - icon: ':heavy_check_mark:'
@@ -850,6 +875,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/data_structures/priority_counter.test.cpp
       title: test/unittest/data_structures/priority_counter.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/data_structures/range-count-distinct.test.cpp
+      title: test/unittest/data_structures/range-count-distinct.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/data_structures/rbst.test.cpp
       title: test/unittest/data_structures/rbst.test.cpp
@@ -898,6 +926,9 @@ data:
       path: test/unittest/dp/set-partition.test.cpp
       title: test/unittest/dp/set-partition.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/dp/slope-trick.test.cpp
+      title: test/unittest/dp/slope-trick.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/dp/subset-sum.test.cpp
       title: test/unittest/dp/subset-sum.test.cpp
   - name: test/unittest/geometry
@@ -926,11 +957,17 @@ data:
       path: test/unittest/graph/centroid-decomposition.test.cpp
       title: test/unittest/graph/centroid-decomposition.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/graph/chinese-postman.test.cpp
+      title: test/unittest/graph/chinese-postman.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/graph/functional-graph.1.test.cpp
       title: test/unittest/graph/functional-graph.1.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/graph/functional-graph.2.test.cpp
       title: test/unittest/graph/functional-graph.2.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/graph/general-matching.test.cpp
+      title: test/unittest/graph/general-matching.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/graph/graph.test.cpp
       title: test/unittest/graph/graph.test.cpp
@@ -946,6 +983,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/graph/min-cost-flow.test.cpp
       title: test/unittest/graph/min-cost-flow.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/graph/minimum-arborescence.test.cpp
+      title: test/unittest/graph/minimum-arborescence.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/graph/project-selection.test.cpp
       title: test/unittest/graph/project-selection.test.cpp
@@ -1259,6 +1299,9 @@ data:
       path: test/yosupo/data_structure/set-xor-min.test.cpp
       title: test/yosupo/data_structure/set-xor-min.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/data_structure/static-range-count-distinct.test.cpp
+      title: test/yosupo/data_structure/static-range-count-distinct.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/data_structure/static-range-frequency.test.cpp
       title: test/yosupo/data_structure/static-range-frequency.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1343,6 +1386,18 @@ data:
       path: test/yosupo/graph/cycle-detection.test.cpp
       title: test/yosupo/graph/cycle-detection.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/graph/directedmst.test.cpp
+      title: test/yosupo/graph/directedmst.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/graph/eulerian-trail-directed.test.cpp
+      title: test/yosupo/graph/eulerian-trail-directed.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/graph/eulerian-trail-undirected.test.cpp
+      title: test/yosupo/graph/eulerian-trail-undirected.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/graph/general-matching.test.cpp
+      title: test/yosupo/graph/general-matching.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/graph/minimum-spanning-tree.1.test.cpp
       title: test/yosupo/graph/minimum-spanning-tree.1.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1406,6 +1461,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/number_theory/factorize.test.cpp
       title: test/yosupo/number_theory/factorize.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/number_theory/kth-root-integer.test.cpp
+      title: test/yosupo/number_theory/kth-root-integer.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/number_theory/primality-test.test.cpp
       title: test/yosupo/number_theory/primality-test.test.cpp
@@ -1551,6 +1609,15 @@ data:
       title: test/yosupo/string/zalgorithm.test.cpp
   - name: test/yosupo/tree
     pages:
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/tree/dynamic-tree-vertex-add-path-sum.test.cpp
+      title: test/yosupo/tree/dynamic-tree-vertex-add-path-sum.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/tree/dynamic-tree-vertex-add-subtree-sum.test.cpp
+      title: test/yosupo/tree/dynamic-tree-vertex-add-subtree-sum.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
+      title: test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
       title: test/yosupo/tree/frequency-table-of-tree-distance.test.cpp

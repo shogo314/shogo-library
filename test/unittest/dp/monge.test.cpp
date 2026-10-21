@@ -2,6 +2,7 @@
 
 // monge.hpp の関数を愚直な実装とランダムに比べる
 // monotone_minima は Monge な行列で、(min, +) 畳み込みは凸列で、alien_dp は凸関数と、区間に分ける DP で確かめる
+// knuth_yao は、区間和と区間和の 2 乗の w で、すべての k を試す O(n^3) の区間 DP と比べる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../../src/dp/monge.hpp"
@@ -102,6 +103,31 @@ int main() {
             return e[n];
         };
         for (int k = 1; k <= n; k++) check(alien_dp(k, -10000, 10000, solve) == dp[k][n], "alien_dp 区間に分ける");
+    }
+
+    // knuth_yao
+    for (int rep = 0; rep < 1000 && ok; rep++) {
+        int n = rng() % 15 + 1;
+        std::vector<long long> a(n), b(n), s(n + 1, 0);
+        for (int i = 0; i < n; i++) a[i] = rng() % 10, b[i] = rng() % 2 ? 0 : rng() % 10, s[i + 1] = s[i] + a[i];
+        bool square = rng() % 2;
+        auto base = [&](long long i) { return b[i]; };
+        auto w = [&](long long i, long long j) { return square ? (s[j] - s[i]) * (s[j] - s[i]) : s[j] - s[i]; };
+        std::vector<std::vector<long long>> naive(n + 1, std::vector<long long>(n + 1, 0));
+        for (int i = 0; i < n; i++) naive[i][i + 1] = b[i];
+        for (int len = 2; len <= n; len++) {
+            for (int i = 0; i + len <= n; i++) {
+                int j = i + len;
+                long long best = std::numeric_limits<long long>::max();
+                for (int k = i + 1; k < j; k++) best = std::min(best, naive[i][k] + naive[k][j]);
+                naive[i][j] = best + w(i, j);
+            }
+        }
+        auto dp = knuth_yao(n, base, w);
+        bool same = true;
+        for (int i = 0; i < n; i++)
+            for (int j = i + 1; j <= n; j++) same &= dp[i][j] == naive[i][j];
+        check(same, "knuth_yao");
     }
 
     if (ok) std::cout << "Hello World" << std::endl;

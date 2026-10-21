@@ -2,11 +2,12 @@
 
 /**
  * @file monge.hpp
- * @brief Monge 性を使う DP の高速化 (monotone minima、(min, +) 畳み込み、Alien DP)
+ * @brief Monge 性を使う DP の高速化 (monotone minima、(min, +) 畳み込み、Alien DP、Knuth–Yao)
  */
 
 #include <algorithm>
 #include <cassert>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
@@ -106,4 +107,38 @@ long long alien_dp(long long k, long long lo, long long hi, Solve solve) {
     auto [val, x] = solve(lo);
     assert(x <= k && "alien_dp: [lo, hi] が狭い");
     return val - lo * k;
+}
+
+/**
+ * @brief 区間 DP dp[i][j] = min_{i < k < j} (dp[i][k] + dp[k][j]) + w(i, j) (j - i >= 2)、dp[i][i+1] = base(i) を
+ * Knuth–Yao の高速化で求める O(n^2)
+ *
+ * w が quadrangle inequality (a <= b <= c <= d で w(a, c) + w(b, d) <= w(a, d) + w(b, c)) と
+ * 単調性 (w(b, c) <= w(a, d)) を満たせば、最適な k は opt[i][j-1] <= opt[i][j] <= opt[i+1][j] を満たすので、その範囲だけを調べる
+ * (base の値は最適な k に影響しない。区間の base の和を引けば base = 0 の場合になるため)
+ * @param n 区間の端の個数 - 1 (0 <= i < j <= n)
+ * @return std::vector<std::vector<T>> dp[i][j] (0 <= i < j <= n、それ以外は使わない)
+ */
+template <typename Base, typename W, typename T = std::decay_t<std::invoke_result_t<Base, long long>>>
+std::vector<std::vector<T>> knuth_yao(long long n, Base base, W w) {
+    std::vector<std::vector<T>> dp(n + 1, std::vector<T>(n + 1, T{}));
+    std::vector<std::vector<long long>> opt(n + 1, std::vector<long long>(n + 1, 0));
+    for (long long i = 0; i + 1 <= n; i++) dp[i][i + 1] = base(i), opt[i][i + 1] = i + 1;
+    for (long long len = 2; len <= n; len++) {
+        for (long long i = 0; i + len <= n; i++) {
+            long long j = i + len;
+            // opt[i][j-1] <= k <= opt[i+1][j] (長さ 2 なら k = i + 1 だけ)
+            long long lo = std::max(i + 1, opt[i][j - 1]), hi = std::min(j - 1, opt[i + 1][j]);
+            T best{};
+            long long arg = -1;
+            for (long long k = lo; k <= hi; k++) {
+                T v = dp[i][k] + dp[k][j];
+                if (arg == -1 || v < best) best = v, arg = k;
+            }
+            assert(arg != -1 && "knuth_yao: w が条件を満たさない");
+            dp[i][j] = best + w(i, j);
+            opt[i][j] = arg;
+        }
+    }
+    return dp;
 }

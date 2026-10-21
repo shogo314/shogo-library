@@ -54,3 +54,4 @@ static メンバ関数だけのクラスです。引数の `n`、`r` はすべ�
 
 - mod を表す型は [modint](modint.hpp)、mod の逆元・冪は [mod 演算](modular-arithmetic.hpp)
 - `CombinationPQ` の結果をまとめる中国剰余定理は [数論](number-theory.hpp)
+- 分割数・ベルヌーイ数・スターリング数・ベル数をまとめて求めるなら [分割数・ベルヌーイ数・スターリング数・ベル数](combinatorial-sequences.hpp)

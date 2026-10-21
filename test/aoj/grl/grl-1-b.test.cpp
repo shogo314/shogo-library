@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "../../../src/graph/graph.hpp"
+#include "../../../src/graph/shortest-path.hpp"
 
 int main(void) {
     constexpr int INF = 1e8;
@@ -10,7 +10,7 @@ int main(void) {
     std::cin >> n >> m >> r;
     Graph<int> graph(n);
     graph.read(m, 0, true, true);
-    std::vector<int> ans = graph.bellman_ford(r, INF).dist;
+    std::vector<int> ans = bellman_ford(graph, r, INF).dist;
     for (int i = 0; i < n; i++) {
         if (ans[i] <= -INF) {
             std::cout << "NEGATIVE CYCLE" << std::endl;

@@ -3,14 +3,14 @@
 #include <iostream>
 #include <limits>
 
-#include "../../../src/graph/graph.hpp"
+#include "../../../src/graph/shortest-path.hpp"
 
 int main() {
     int n, m, s, t;
     std::cin >> n >> m >> s >> t;
     Graph<long long> g(n);
     g.read(m, 0, true, true);
-    auto sp = g.shortest_path(s);
+    auto sp = shortest_path(g, s);
     if (sp.dist[t] == std::numeric_limits<long long>::max() / 4) {
         std::cout << -1 << '\n';
         return 0;

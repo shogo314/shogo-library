@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "graph.hpp"
+#include "shortest-path.hpp"
 
 template <typename>
 class RootedTree;
@@ -40,8 +41,6 @@ struct Tree : private Graph<Cost> {
     using Graph<Cost>::add_directed_edge;
     using Graph<Cost>::operator[];
     using Graph<Cost>::edges;
-    using Graph<Cost>::shortest_path;
-    using ShortestPath = typename Graph<Cost>::ShortestPath;
 
     /**
      * @brief コンストラクタ
@@ -66,9 +65,10 @@ struct Tree : private Graph<Cost> {
      * @return std::vector<Edge> 直径を構成する辺のリスト
      */
     std::vector<Edge> diameter(bool weighted = true) const {
-        std::vector<Cost> dist = shortest_path(0, weighted).dist;
+        const Graph<Cost>& graph = *this;
+        std::vector<Cost> dist = shortest_path(graph, 0, weighted).dist;
         long long u = std::max_element(dist.begin(), dist.end()) - dist.begin();
-        auto sp = shortest_path(u, weighted);
+        auto sp = shortest_path(graph, u, weighted);
         long long v = std::max_element(sp.dist.begin(), sp.dist.end()) - sp.dist.begin();
         return sp.path(v);
     }
@@ -133,8 +133,6 @@ class RootedTree : private Tree<Cost> {
     using Tree<Cost>::g;
     using Tree<Cost>::operator[];
     using Tree<Cost>::edges;
-    using Tree<Cost>::shortest_path;
-    using ShortestPath = typename Tree<Cost>::ShortestPath;
 
     long long root;                                           //!< 根
     std::vector<Edge> par;                                    //!< 親へ向かう辺
@@ -268,8 +266,6 @@ class DoublingClimbTree : private RootedTree<Cost> {
     using RootedTree<Cost>::g;
     using RootedTree<Cost>::operator[];
     using RootedTree<Cost>::edges;
-    using RootedTree<Cost>::shortest_path;
-    using ShortestPath = typename RootedTree<Cost>::ShortestPath;
     using RootedTree<Cost>::root;
     using RootedTree<Cost>::par;
     using RootedTree<Cost>::child;

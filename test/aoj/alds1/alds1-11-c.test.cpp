@@ -1,11 +1,11 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_11_C"
 
-// コストがすべて 1 の有向グラフで Graph::shortest_path_01bfs を使う
+// コストがすべて 1 の有向グラフで shortest_path_01bfs を使う
 
 #include <iostream>
 #include <limits>
 
-#include "../../../src/graph/graph.hpp"
+#include "../../../src/graph/shortest-path.hpp"
 
 int main() {
     int n;
@@ -21,6 +21,6 @@ int main() {
         }
     }
     const int inf = std::numeric_limits<int>::max() / 4;
-    auto dist = g.shortest_path_01bfs(0, inf).dist;
+    auto dist = shortest_path_01bfs(g, 0, inf).dist;
     for (int v = 0; v < n; v++) std::cout << v + 1 << ' ' << (dist[v] == inf ? -1 : dist[v]) << '\n';
 }

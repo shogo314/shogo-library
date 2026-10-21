@@ -291,6 +291,9 @@ data:
     path: test/unittest/subset-sum.test.cpp
     title: test/unittest/subset-sum.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/sum-of-exp-times-poly.test.cpp
+    title: test/unittest/sum-of-exp-times-poly.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/vector-func.test.cpp
     title: test/unittest/vector-func.test.cpp
   - icon: ':heavy_check_mark:'
@@ -390,14 +393,14 @@ data:
     path: test/yosupo/multipoint-evaluation.test.cpp
     title: test/yosupo/multipoint-evaluation.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/partition-function.test.cpp
-    title: test/yosupo/partition-function.test.cpp
+    path: test/yosupo/partition-function.1.test.cpp
+    title: test/yosupo/partition-function.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/partition-function_1.test.cpp
-    title: test/yosupo/partition-function_1.test.cpp
+    path: test/yosupo/partition-function.2.test.cpp
+    title: test/yosupo/partition-function.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/partition-function_2.test.cpp
-    title: test/yosupo/partition-function_2.test.cpp
+    path: test/yosupo/partition-function.3.test.cpp
+    title: test/yosupo/partition-function.3.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/persistent-range-affine-range-sum.test.cpp
     title: test/yosupo/persistent-range-affine-range-sum.test.cpp
@@ -488,6 +491,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/subset-convolution.test.cpp
     title: test/yosupo/subset-convolution.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/sum-of-exponential-times-polynomial-limit.test.cpp
+    title: test/yosupo/sum-of-exponential-times-polynomial-limit.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/sum-of-exponential-times-polynomial.test.cpp
+    title: test/yosupo/sum-of-exponential-times-polynomial.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/system-of-linear-equations.test.cpp
     title: test/yosupo/system-of-linear-equations.test.cpp
@@ -658,6 +667,7 @@ data:
   - test/unittest/dual-segtree.test.cpp
   - test/unittest/matrix.test.cpp
   - test/unittest/container-func.test.cpp
+  - test/unittest/sum-of-exp-times-poly.test.cpp
   - test/unittest/rolling-hash.test.cpp
   - test/unittest/persistent-lazy-segtree.test.cpp
   - test/unittest/persistent-segtree.test.cpp
@@ -741,6 +751,7 @@ data:
   - test/yosupo/persistent-range-affine-range-sum.test.cpp
   - test/yosupo/range-affine-point-get.1.test.cpp
   - test/yosupo/sqrt-of-formal-power-series.test.cpp
+  - test/yosupo/partition-function.3.test.cpp
   - test/yosupo/polynomial-interpolation.test.cpp
   - test/yosupo/range-affine-range-sum-large-array.test.cpp
   - test/yosupo/convolution-mod-1000000007.test.cpp
@@ -751,10 +762,12 @@ data:
   - test/yosupo/lcm-convolution.test.cpp
   - test/yosupo/range-affine-range-sum.3.test.cpp
   - test/yosupo/pow-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/partition-function.1.test.cpp
   - test/yosupo/line-add-get-min.2.test.cpp
   - test/yosupo/associative-array.test.cpp
+  - test/yosupo/sum-of-exponential-times-polynomial-limit.test.cpp
+  - test/yosupo/partition-function.2.test.cpp
   - test/yosupo/sharp-p-subset-sum.2.test.cpp
-  - test/yosupo/partition-function_1.test.cpp
   - test/yosupo/bitwise-xor-convolution.test.cpp
   - test/yosupo/product-of-polynomial-sequence.test.cpp
   - test/yosupo/frequency-table-of-tree-distance.test.cpp
@@ -767,6 +780,7 @@ data:
   - test/yosupo/polynomial-taylor-shift.test.cpp
   - test/yosupo/line-add-get-min.1.test.cpp
   - test/yosupo/range-affine-range-sum.2.test.cpp
+  - test/yosupo/sum-of-exponential-times-polynomial.test.cpp
   - test/yosupo/exp-of-formal-power-series-sparse.test.cpp
   - test/yosupo/division-of-polynomials.test.cpp
   - test/yosupo/range-set-range-composite.test.cpp
@@ -781,8 +795,6 @@ data:
   - test/yosupo/static-range-sum.test.cpp
   - test/yosupo/binomial-coefficient-prime-mod.2.test.cpp
   - test/yosupo/point-set-range-composite.3.test.cpp
-  - test/yosupo/partition-function_2.test.cpp
-  - test/yosupo/partition-function.test.cpp
   - test/yosupo/system-of-linear-equations.test.cpp
   - test/yosupo/queue-operate-all-composite.test.cpp
   - test/yosupo/find-linear-recurrence.test.cpp

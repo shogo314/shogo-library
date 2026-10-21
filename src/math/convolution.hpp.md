@@ -102,14 +102,14 @@ data:
     path: test/yosupo/multipoint-evaluation.test.cpp
     title: test/yosupo/multipoint-evaluation.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/partition-function.test.cpp
-    title: test/yosupo/partition-function.test.cpp
+    path: test/yosupo/partition-function.1.test.cpp
+    title: test/yosupo/partition-function.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/partition-function_1.test.cpp
-    title: test/yosupo/partition-function_1.test.cpp
+    path: test/yosupo/partition-function.2.test.cpp
+    title: test/yosupo/partition-function.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/partition-function_2.test.cpp
-    title: test/yosupo/partition-function_2.test.cpp
+    path: test/yosupo/partition-function.3.test.cpp
+    title: test/yosupo/partition-function.3.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/polynomial-interpolation.test.cpp
     title: test/yosupo/polynomial-interpolation.test.cpp
@@ -737,14 +737,16 @@ data:
   - test/yosupo/multipoint-evaluation.test.cpp
   - test/yosupo/bell-number.test.cpp
   - test/yosupo/sqrt-of-formal-power-series.test.cpp
+  - test/yosupo/partition-function.3.test.cpp
   - test/yosupo/polynomial-interpolation.test.cpp
   - test/yosupo/convolution-mod-1000000007.test.cpp
   - test/yosupo/exp-of-fps.test.cpp
   - test/yosupo/stirling-number-of-the-first-kind.test.cpp
   - test/yosupo/convolution-mod-2-64.test.cpp
   - test/yosupo/pow-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/partition-function.1.test.cpp
+  - test/yosupo/partition-function.2.test.cpp
   - test/yosupo/sharp-p-subset-sum.2.test.cpp
-  - test/yosupo/partition-function_1.test.cpp
   - test/yosupo/product-of-polynomial-sequence.test.cpp
   - test/yosupo/frequency-table-of-tree-distance.test.cpp
   - test/yosupo/log-of-fps.test.cpp
@@ -757,8 +759,6 @@ data:
   - test/yosupo/sqrt-of-formal-power-series-sparse.test.cpp
   - test/yosupo/inv-of-fps.test.cpp
   - test/yosupo/bernoulli-number.test.cpp
-  - test/yosupo/partition-function_2.test.cpp
-  - test/yosupo/partition-function.test.cpp
   - test/yosupo/find-linear-recurrence.test.cpp
 documentation_of: src/math/convolution.hpp
 layout: document

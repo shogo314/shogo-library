@@ -24,6 +24,10 @@ data:
     path: src/math/sparse-fps.hpp
     title: "\u758E\u306A\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570 (inv\u30FBlog\u30FBexp\u30FB\
       pow\u30FBsqrt)"
+  - icon: ':heavy_check_mark:'
+    path: src/math/sum-of-exp-times-poly.hpp
+    title: "\u03A3 r^i f(i) (\u6307\u6570\u95A2\u6570\u3068\u591A\u9805\u5F0F\u306E\
+      \u7A4D\u306E\u548C)"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/dpl-5-b.1.test.cpp
@@ -65,6 +69,9 @@ data:
     path: test/unittest/subset-sum.test.cpp
     title: test/unittest/subset-sum.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/sum-of-exp-times-poly.test.cpp
+    title: test/unittest/sum-of-exp-times-poly.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/bell-number.test.cpp
     title: test/yosupo/bell-number.test.cpp
   - icon: ':heavy_check_mark:'
@@ -104,14 +111,14 @@ data:
     path: test/yosupo/multipoint-evaluation.test.cpp
     title: test/yosupo/multipoint-evaluation.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/partition-function.test.cpp
-    title: test/yosupo/partition-function.test.cpp
+    path: test/yosupo/partition-function.1.test.cpp
+    title: test/yosupo/partition-function.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/partition-function_1.test.cpp
-    title: test/yosupo/partition-function_1.test.cpp
+    path: test/yosupo/partition-function.2.test.cpp
+    title: test/yosupo/partition-function.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/partition-function_2.test.cpp
-    title: test/yosupo/partition-function_2.test.cpp
+    path: test/yosupo/partition-function.3.test.cpp
+    title: test/yosupo/partition-function.3.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/polynomial-interpolation.test.cpp
     title: test/yosupo/polynomial-interpolation.test.cpp
@@ -148,6 +155,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/stirling-number-of-the-second-kind.test.cpp
     title: test/yosupo/stirling-number-of-the-second-kind.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/sum-of-exponential-times-polynomial-limit.test.cpp
+    title: test/yosupo/sum-of-exponential-times-polynomial-limit.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/sum-of-exponential-times-polynomial.test.cpp
+    title: test/yosupo/sum-of-exponential-times-polynomial.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/117.test.cpp
     title: test/yukicoder/117.test.cpp
@@ -423,6 +436,7 @@ data:
   path: src/math/combinatorics.hpp
   requiredBy:
   - src/math/fps.hpp
+  - src/math/sum-of-exp-times-poly.hpp
   - src/math/combinatorial-sequences.hpp
   - src/math/multipoint.hpp
   - src/math/sparse-fps.hpp
@@ -434,6 +448,7 @@ data:
   - test/unittest/multipoint.test.cpp
   - test/unittest/combinatorics.test.cpp
   - test/unittest/combinatorial-sequences.test.cpp
+  - test/unittest/sum-of-exp-times-poly.test.cpp
   - test/unittest/subset-sum.test.cpp
   - test/unittest/fps.test.cpp
   - test/yukicoder/117.test.cpp
@@ -451,18 +466,22 @@ data:
   - test/yosupo/bell-number.test.cpp
   - test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
   - test/yosupo/sqrt-of-formal-power-series.test.cpp
+  - test/yosupo/partition-function.3.test.cpp
   - test/yosupo/polynomial-interpolation.test.cpp
   - test/yosupo/exp-of-fps.test.cpp
   - test/yosupo/stirling-number-of-the-first-kind.test.cpp
   - test/yosupo/pow-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/partition-function.1.test.cpp
+  - test/yosupo/sum-of-exponential-times-polynomial-limit.test.cpp
+  - test/yosupo/partition-function.2.test.cpp
   - test/yosupo/sharp-p-subset-sum.2.test.cpp
-  - test/yosupo/partition-function_1.test.cpp
   - test/yosupo/binomial-coefficient.test.cpp
   - test/yosupo/product-of-polynomial-sequence.test.cpp
   - test/yosupo/log-of-fps.test.cpp
   - test/yosupo/shift-of-sampling-points-of-polynomial.test.cpp
   - test/yosupo/sharp-p-subset-sum.1.test.cpp
   - test/yosupo/polynomial-taylor-shift.test.cpp
+  - test/yosupo/sum-of-exponential-times-polynomial.test.cpp
   - test/yosupo/exp-of-formal-power-series-sparse.test.cpp
   - test/yosupo/division-of-polynomials.test.cpp
   - test/yosupo/log-of-formal-power-series-sparse.test.cpp
@@ -470,8 +489,6 @@ data:
   - test/yosupo/inv-of-fps.test.cpp
   - test/yosupo/bernoulli-number.test.cpp
   - test/yosupo/binomial-coefficient-prime-mod.2.test.cpp
-  - test/yosupo/partition-function_2.test.cpp
-  - test/yosupo/partition-function.test.cpp
 documentation_of: src/math/combinatorics.hpp
 layout: document
 title: "\u7D44\u307F\u5408\u308F\u305B"

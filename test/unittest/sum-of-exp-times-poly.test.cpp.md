@@ -5,11 +5,8 @@ data:
     path: src/math/combinatorics.hpp
     title: "\u7D44\u307F\u5408\u308F\u305B"
   - icon: ':heavy_check_mark:'
-    path: src/math/convolution.hpp
-    title: "\u7573\u307F\u8FBC\u307F (NTT)"
-  - icon: ':heavy_check_mark:'
-    path: src/math/fps.hpp
-    title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570"
+    path: src/math/lagrange-interpolation.hpp
+    title: "\u30E9\u30B0\u30E9\u30F3\u30B8\u30E5\u88DC\u9593"
   - icon: ':heavy_check_mark:'
     path: src/math/modint.hpp
     title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
@@ -18,6 +15,14 @@ data:
     path: src/math/modular-arithmetic.hpp
     title: "mod \u6F14\u7B97 (\u7A4D\u3001\u51AA\u4E57\u3001\u9006\u5143\u3001\u96E2\
       \u6563\u5BFE\u6570\u3001\u5E73\u65B9\u6839)"
+  - icon: ':heavy_check_mark:'
+    path: src/math/prime.hpp
+    title: "\u7D20\u6570 (\u7D20\u6570\u5224\u5B9A\u3001\u7D20\u56E0\u6570\u5206\u89E3\
+      \u3001\u7D04\u6570\u5217\u6319\u3001\u7BE9\u3001\u539F\u59CB\u6839)"
+  - icon: ':heavy_check_mark:'
+    path: src/math/sum-of-exp-times-poly.hpp
+    title: "\u03A3 r^i f(i) (\u6307\u6570\u95A2\u6570\u3068\u591A\u9805\u5F0F\u306E\
+      \u7A4D\u306E\u548C)"
   - icon: ':heavy_check_mark:'
     path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
@@ -28,14 +33,21 @@ data:
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.yosupo.jp/problem/partition_function
+    PROBLEM: https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
     links:
-    - https://judge.yosupo.jp/problem/partition_function
-  bundledCode: "#line 1 \"test/yosupo/partition-function_1.test.cpp\"\n#define PROBLEM\
-    \ \"https://judge.yosupo.jp/problem/partition_function\"\n\n#line 2 \"src/math/fps.hpp\"\
-    \n\n/**\n * @file fps.hpp\n * @brief \u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\n */\n\
-    \n#include <algorithm>\n#include <cassert>\n#include <optional>\n#include <queue>\n\
-    #include <utility>\n#include <vector>\n\n#line 2 \"src/math/combinatorics.hpp\"\
+    - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
+  bundledCode: "#line 1 \"test/unittest/sum-of-exp-times-poly.test.cpp\"\n#define\
+    \ PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
+    \n\n// sum_of_exp_times_poly \u3092\u76F4\u63A5\u8DB3\u3057\u5408\u308F\u305B\u305F\
+    \u3082\u306E\u3068\u6BD4\u3079\u308B (r = 0, 1 \u3082)\n// sum_of_exp_times_poly_limit\
+    \ \u306F\u3001d = 0, 1 \u306E\u516C\u5F0F\u3068\u3001L_d = S_d(n) + r^n \u03A3\
+    _j C(d, j) n^{d-j} L_j \u304C\u6210\u308A\u7ACB\u3064\u304B\u3067\u78BA\u304B\u3081\
+    \u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\
+    \u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\
+    \n\n#line 2 \"src/math/sum-of-exp-times-poly.hpp\"\n\n/**\n * @file sum-of-exp-times-poly.hpp\n\
+    \ * @brief \u03A3 r^i f(i) (f \u306F\u591A\u9805\u5F0F) \u3068\u305D\u306E\u7121\
+    \u9650\u548C\u3092 O(d) \u3067\u6C42\u3081\u308B\n */\n\n#include <algorithm>\n\
+    #include <cassert>\n#include <utility>\n#include <vector>\n\n#line 2 \"src/math/combinatorics.hpp\"\
     \n\n/**\n * @file combinatorics.hpp\n * @brief \u7D44\u307F\u5408\u308F\u305B\n\
     \ */\n\n#line 9 \"src/math/combinatorics.hpp\"\n#include <numeric>\n#line 11 \"\
     src/math/combinatorics.hpp\"\n\n#line 2 \"src/math/modular-arithmetic.hpp\"\n\n\
@@ -197,47 +209,267 @@ data:
     \ epsilon.end(), 0);\n        if (e >= q)\n            ans = 0;\n        else\
     \ {\n            for (int i = 0; i < e; i++) {\n                ans = static_cast<long\
     \ long>(ans) * p % pq;\n            }\n        }\n        return ans;\n    }\n\
-    };\n#line 2 \"src/math/convolution.hpp\"\n\n/**\n * @file convolution.hpp\n *\
-    \ @brief \u7573\u307F\u8FBC\u307F (NTT)\n */\n\n#line 11 \"src/math/convolution.hpp\"\
+    };\n#line 2 \"src/math/lagrange-interpolation.hpp\"\n\n/**\n * @file lagrange-interpolation.hpp\n\
+    \ * @brief \u30E9\u30B0\u30E9\u30F3\u30B8\u30E5\u88DC\u9593 (\u6A19\u672C\u70B9\
+    \u304C 0, 1, ..., n-1 \u306E\u3068\u304D)\n */\n\n#line 9 \"src/math/lagrange-interpolation.hpp\"\
+    \n\n/**\n * @brief n - 1 \u6B21\u4EE5\u4E0B\u306E\u591A\u9805\u5F0F f \u306E f(0),\
+    \ f(1), ..., f(n-1) \u304B\u3089 f(x) \u3092\u6C42\u3081\u308B O(n)\n * mint \u306F\
+    \u4F53\u3067\u3001n - 1 \u4EE5\u4E0B\u306E\u6B63\u306E\u6574\u6570\u304C 0 \u306B\
+    \u306A\u3089\u306A\u3044\u3053\u3068 (\u6CD5\u304C n \u4EE5\u4E0A\u306E\u7D20\u6570\
+    \u306A\u3069)\n * f(x) = \u03A3_i y_i \u03A0_{j != i} (x - j) / (i - j) \u3092\
+    \u3001(x - j) \u306E\u524D\u5F8C\u304B\u3089\u306E\u7A4D\u3068\u968E\u4E57\u306E\
+    \u9006\u6570\u3067\u8A08\u7B97\u3059\u308B\n */\ntemplate <typename mint>\nmint\
+    \ lagrange_interpolation(const std::vector<mint>& y, mint x) {\n    const int\
+    \ n = y.size();\n    if (n == 0) return mint(0);\n    // pre[i] = \u03A0_{j <\
+    \ i} (x - j)\u3001suf[i] = \u03A0_{j >= i} (x - j) (x \u304C\u6A19\u672C\u70B9\
+    \u3067\u3082\u3001\u81EA\u5206\u306E\u56E0\u5B50\u3092\u98DB\u3070\u3059\u306E\
+    \u3067\u5272\u308A\u7B97\u306F\u3044\u3089\u306A\u3044)\n    std::vector<mint>\
+    \ pre(n + 1, 1), suf(n + 1, 1);\n    for (int i = 0; i < n; i++) pre[i + 1] =\
+    \ pre[i] * (x - i);\n    for (int i = n - 1; i >= 0; i--) suf[i] = suf[i + 1]\
+    \ * (x - i);\n    // inv_fact[i] = 1 / i!\n    std::vector<mint> inv_fact(n, 1);\n\
+    \    mint fact = 1;\n    for (int i = 1; i < n; i++) fact *= i;\n    inv_fact[n\
+    \ - 1] = fact.inv();\n    for (int i = n - 1; i > 0; i--) inv_fact[i - 1] = inv_fact[i]\
+    \ * i;\n    mint res = 0;\n    for (int i = 0; i < n; i++) {\n        // \u03A0\
+    _{j != i} (i - j) = i! (n - 1 - i)! (-1)^(n - 1 - i)\n        mint t = y[i] *\
+    \ pre[i] * suf[i + 1] * inv_fact[i] * inv_fact[n - 1 - i];\n        res += (n\
+    \ - 1 - i) % 2 == 0 ? t : -t;\n    }\n    return res;\n}\n#line 2 \"src/math/prime.hpp\"\
+    \n\n/**\n * @file prime.hpp\n * @brief \u7D20\u6570 (\u7D20\u6570\u5224\u5B9A\u3001\
+    \u7D20\u56E0\u6570\u5206\u89E3\u3001\u7D04\u6570\u5217\u6319\u3001\u7BE9\u3001\
+    \u539F\u59CB\u6839)\n */\n\n#line 10 \"src/math/prime.hpp\"\n#include <initializer_list>\n\
+    #line 14 \"src/math/prime.hpp\"\n\n#line 16 \"src/math/prime.hpp\"\n\nnamespace\
+    \ internal_prime {\n\nusing u64 = unsigned long long;\n\n/**\n * @brief Pollard\
+    \ \u306E \u03C1 \u6CD5 (Brent \u306E\u6539\u826F) \u3067\u5408\u6210\u6570 n \u306E\
+    \ 1 \u3067\u3082 n \u3067\u3082\u306A\u3044\u7D04\u6570\u3092 1 \u3064\u898B\u3064\
+    \u3051\u308B\n */\ninline u64 find_factor(u64 n) {\n    if (n % 2 == 0) return\
+    \ 2;\n    constexpr u64 m = 128;\n    for (u64 c = 1;; c++) {\n        auto f\
+    \ = [&](u64 x) { return (modmul(x, x, n) + c) % n; };\n        auto diff = [](u64\
+    \ x, u64 y) { return x > y ? x - y : y - x; };\n        u64 x = 0, y = 2, ys =\
+    \ 2, q = 1, g = 1;\n        for (u64 r = 1; g == 1; r <<= 1) {\n            x\
+    \ = y;\n            for (u64 i = 0; i < r; i++) y = f(y);\n            for (u64\
+    \ k = 0; k < r && g == 1; k += m) {\n                ys = y;\n               \
+    \ for (u64 i = 0; i < m && i < r - k; i++) {\n                    y = f(y);\n\
+    \                    q = modmul(q, diff(x, y), n);\n                }\n      \
+    \          g = std::gcd(q, n);\n            }\n        }\n        if (g == n)\
+    \ {\n            // \u307E\u3068\u3081\u3066\u639B\u3051\u305F\u305B\u3044\u3067\
+    \ n \u306B\u306A\u3063\u305F\u306E\u3067\u30011 \u3064\u305A\u3064\u623B\u3063\
+    \u3066\u78BA\u304B\u3081\u308B\n            do {\n                ys = f(ys);\n\
+    \                g = std::gcd(diff(x, ys), n);\n            } while (g == 1);\n\
+    \        }\n        if (g != n) return g;\n    }\n}\n\n}  // namespace internal_prime\n\
+    \n/**\n * @brief n \u304C\u7D20\u6570\u304B (Miller-Rabin\u300164 bit \u3067\u6C7A\
+    \u5B9A\u7684) O(log n)\n */\nconstexpr bool is_prime(long long n) {\n    using\
+    \ namespace internal_prime;\n    if (n < 2) return false;\n    for (u64 p : {2,\
+    \ 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}) {\n        if (static_cast<u64>(n)\
+    \ % p == 0) return static_cast<u64>(n) == p;\n    }\n    const u64 m = n;\n  \
+    \  u64 d = m - 1;\n    int s = 0;\n    while (d % 2 == 0) d /= 2, s++;\n    for\
+    \ (u64 a : {2ULL, 325ULL, 9375ULL, 28178ULL, 450775ULL, 9780504ULL, 1795265022ULL})\
+    \ {\n        a %= m;\n        if (a == 0) continue;\n        u64 x = modpow(a,\
+    \ d, m);\n        if (x == 1 || x == m - 1) continue;\n        bool composite\
+    \ = true;\n        for (int i = 1; i < s; i++) {\n            x = modmul(x, x,\
+    \ m);\n            if (x == m - 1) {\n                composite = false;\n   \
+    \             break;\n            }\n        }\n        if (composite) return\
+    \ false;\n    }\n    return true;\n}\n\n/**\n * @brief n (>= 1) \u3092\u7D20\u56E0\
+    \u6570\u5206\u89E3\u3057\u3001(\u7D20\u56E0\u6570, \u6307\u6570) \u3092\u7D20\u56E0\
+    \u6570\u306E\u6607\u9806\u306B\u4E26\u3079\u3066\u8FD4\u3059\n * Pollard \u306E\
+    \ \u03C1 \u6CD5\u3092\u4F7F\u3046\u3002\u671F\u5F85 O(n^(1/4)) \u7A0B\u5EA6\n\
+    \ */\ninline std::vector<std::pair<long long, long long>> factorize(long long\
+    \ n) {\n    assert(n >= 1);\n    std::vector<long long> ps;\n    // \u5C0F\u3055\
+    \u3044\u7D20\u56E0\u6570\u306F\u5272\u308A\u7B97\u3067\u53D6\u308A\u9664\u304F\
+    \n    for (long long p : {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}) {\n   \
+    \     while (n % p == 0) {\n            ps.push_back(p);\n            n /= p;\n\
+    \        }\n    }\n    std::vector<long long> st;\n    if (n > 1) st.push_back(n);\n\
+    \    while (!st.empty()) {\n        long long x = st.back();\n        st.pop_back();\n\
+    \        if (is_prime(x)) {\n            ps.push_back(x);\n            continue;\n\
+    \        }\n        long long d = internal_prime::find_factor(x);\n        st.push_back(d);\n\
+    \        st.push_back(x / d);\n    }\n    std::sort(ps.begin(), ps.end());\n \
+    \   std::vector<std::pair<long long, long long>> res;\n    for (long long p :\
+    \ ps) {\n        if (!res.empty() && res.back().first == p)\n            res.back().second++;\n\
+    \        else\n            res.emplace_back(p, 1);\n    }\n    return res;\n}\n\
+    \n/**\n * @brief n (>= 1) \u306E\u6B63\u306E\u7D04\u6570\u3092\u6607\u9806\u306B\
+    \u4E26\u3079\u3066\u8FD4\u3059\n */\ninline std::vector<long long> divisors(long\
+    \ long n) {\n    std::vector<long long> res = {1};\n    for (auto [p, e] : factorize(n))\
+    \ {\n        const long long sz = res.size();\n        long long pw = 1;\n   \
+    \     for (long long i = 0; i < e; i++) {\n            pw *= p;\n            for\
+    \ (long long j = 0; j < sz; j++) res.push_back(res[j] * pw);\n        }\n    }\n\
+    \    std::sort(res.begin(), res.end());\n    return res;\n}\n\n/**\n * @brief\
+    \ \u30AA\u30A4\u30E9\u30FC\u306E \u03C6 \u95A2\u6570 (1 \u4EE5\u4E0A n \u4EE5\u4E0B\
+    \u3067 n \u3068\u4E92\u3044\u306B\u7D20\u306A\u6574\u6570\u306E\u500B\u6570)\n\
+    \ */\ninline long long totient(long long n) {\n    long long res = n;\n    for\
+    \ (auto [p, e] : factorize(n)) res = res / p * (p - 1);\n    return res;\n}\n\n\
+    /**\n * @brief m (>= 1) \u3092\u6CD5\u3068\u3059\u308B\u6700\u5C0F\u306E\u539F\
+    \u59CB\u6839 (\u306A\u3051\u308C\u3070 -1)\n * \u539F\u59CB\u6839\u304C\u3042\u308B\
+    \u306E\u306F m = 1, 2, 4, p^k, 2p^k (p \u306F\u5947\u7D20\u6570) \u306E\u3068\u304D\
+    \u3002m = 1 \u306A\u3089 0 \u3092\u8FD4\u3059\n * \u7D20\u56E0\u6570\u5206\u89E3\
+    \u3092\u4F7F\u3046\u306E\u3067\u3001m \u304C 10^18 \u7A0B\u5EA6\u3067\u3082\u901F\
+    \u3044\n */\ninline long long primitive_root(long long m) {\n    assert(m >= 1);\n\
+    \    if (m == 1) return 0;\n    if (m == 2) return 1;\n    if (m == 4) return\
+    \ 3;\n    auto fm = factorize(m);\n    // m = p^k \u304B 2 p^k (p \u306F\u5947\
+    \u7D20\u6570) \u304B\n    if (fm.size() > 2 || (fm.size() == 2 && !(fm[0].first\
+    \ == 2 && fm[0].second == 1)) || (fm.size() == 1 && fm[0].first == 2)) return\
+    \ -1;\n    long long phi = m;\n    for (auto [p, e] : fm) phi = phi / p * (p -\
+    \ 1);\n    auto fphi = factorize(phi);\n    // g \u306E\u4F4D\u6570\u304C \u03C6\
+    (m) \u3067\u3042\u308B\u3053\u3068: \u03C6(m) \u306E\u3069\u306E\u7D20\u56E0\u6570\
+    \ q \u306B\u3064\u3044\u3066\u3082 g^(\u03C6(m)/q) \u304C 1 \u3067\u306A\u3044\
+    \n    for (long long g = 2;; g++) {\n        if (std::gcd(g, m) != 1) continue;\n\
+    \        bool ok = true;\n        for (auto [q, e] : fphi) {\n            if (modpow(g,\
+    \ phi / q, m) == 1) {\n                ok = false;\n                break;\n \
+    \           }\n        }\n        if (ok) return g;\n    }\n}\n\n/**\n * @brief\
+    \ n \u4EE5\u4E0B\u306E\u7D20\u6570\u3092\u6607\u9806\u306B\u4E26\u3079\u3066\u8FD4\
+    \u3059\n * \u5947\u6570\u3060\u3051\u3092\u533A\u9593\u3054\u3068\u306B\u7BE9\u3046\
+    \u3002O(n log log n)\u3001\u30E1\u30E2\u30EA\u306F O(\u221An + \u7D20\u6570\u306E\
+    \u500B\u6570)\n */\ninline std::vector<long long> enumerate_primes(long long n)\
+    \ {\n    std::vector<long long> res;\n    if (n < 2) return res;\n    res.push_back(2);\n\
+    \    long long r = 1;\n    while ((r + 1) * (r + 1) <= n) r++;\n    // \u221A\
+    n \u4EE5\u4E0B\u306E\u5947\u7D20\u6570 p \u3068\u3001\u6B21\u306B\u7BE9\u3046\
+    \ p \u306E\u500D\u6570 (\u5947\u6570)\n    std::vector<char> small(r + 1, 1);\n\
+    \    std::vector<std::pair<long long, long long>> sp;\n    for (long long i =\
+    \ 3; i <= r; i += 2) {\n        if (!small[i]) continue;\n        for (long long\
+    \ j = i * i; j <= r; j += 2 * i) small[j] = 0;\n        sp.emplace_back(i, i *\
+    \ i);\n    }\n    // \u5947\u6570 2k+1 (1 <= k <= kmax) \u3092\u3001k \u306E\u9577\
+    \u3055 B \u306E\u533A\u9593\u3054\u3068\u306B\u7BE9\u3046\n    constexpr int B\
+    \ = 1 << 16;\n    std::vector<char> block(B);\n    const long long kmax = (n -\
+    \ 1) / 2;\n    for (long long lo = 1; lo <= kmax; lo += B) {\n        const long\
+    \ long hi = std::min(lo + B, kmax + 1);\n        std::fill(block.begin(), block.begin()\
+    \ + (hi - lo), 1);\n        for (auto& [p, m] : sp) {\n            long long k\
+    \ = (m - 1) / 2;\n            for (; k < hi; k += p) block[k - lo] = 0;\n    \
+    \        m = 2 * k + 1;\n        }\n        for (long long k = lo; k < hi; k++)\
+    \ {\n            if (block[k - lo]) res.push_back(2 * k + 1);\n        }\n   \
+    \ }\n    return res;\n}\n\n/**\n * @brief n \u4EE5\u4E0B\u306E\u6574\u6570\u306E\
+    \u6700\u5C0F\u7D20\u56E0\u6570\u3092\u524D\u8A08\u7B97\u3059\u308B\u7BE9 (\u7DDA\
+    \u5F62\u7BE9)\n *\n * \u524D\u8A08\u7B97 O(n)\u3001\u7D20\u6570\u5224\u5B9A O(1)\u3001\
+    \u7D20\u56E0\u6570\u5206\u89E3 O(log x)\n * \u4F8B:\n * Sieve sv(1000000);\n *\
+    \ sv.is_prime(x); sv.factorize(x);\n */\nclass Sieve {\n    long long n;\n   \
+    \ std::vector<int> lpf;  // \u6700\u5C0F\u7D20\u56E0\u6570 (\u30E1\u30E2\u30EA\
+    \u3092\u6291\u3048\u308B\u305F\u3081 int \u3067\u6301\u3064)\n    std::vector<long\
+    \ long> ps;\n\n   public:\n    explicit Sieve(long long n) : n(n), lpf(n + 1,\
+    \ 0) {\n        assert(n >= 0);\n        for (int i = 2; i <= n; i++) {\n    \
+    \        if (lpf[i] == 0) {\n                lpf[i] = i;\n                ps.push_back(i);\n\
+    \            }\n            for (long long p : ps) {\n                if (p >\
+    \ lpf[i] || p * i > n) break;\n                lpf[p * i] = p;\n            }\n\
+    \        }\n    }\n\n    /**\n     * @brief \u524D\u8A08\u7B97\u3057\u305F\u7BC4\
+    \u56F2\u306E\u4E0A\u9650 n\n     */\n    long long limit() const { return n; }\n\
+    \    /**\n     * @brief x (0 <= x <= n) \u304C\u7D20\u6570\u304B O(1)\n     */\n\
+    \    bool is_prime(long long x) const {\n        assert(0 <= x && x <= n);\n \
+    \       return x >= 2 && lpf[x] == x;\n    }\n    /**\n     * @brief x (2 <= x\
+    \ <= n) \u306E\u6700\u5C0F\u7D20\u56E0\u6570 O(1)\n     */\n    long long min_factor(long\
+    \ long x) const {\n        assert(2 <= x && x <= n);\n        return lpf[x];\n\
+    \    }\n    /**\n     * @brief n \u4EE5\u4E0B\u306E\u7D20\u6570\u3092\u6607\u9806\
+    \u306B\u4E26\u3079\u305F\u3082\u306E\n     */\n    const std::vector<long long>&\
+    \ primes() const { return ps; }\n    /**\n     * @brief x (1 <= x <= n) \u3092\
+    \u7D20\u56E0\u6570\u5206\u89E3\u3057\u3001(\u7D20\u56E0\u6570, \u6307\u6570) \u3092\
+    \u7D20\u56E0\u6570\u306E\u6607\u9806\u306B\u4E26\u3079\u3066\u8FD4\u3059 O(log\
+    \ x)\n     */\n    std::vector<std::pair<long long, long long>> factorize(long\
+    \ long x) const {\n        assert(1 <= x && x <= n);\n        std::vector<std::pair<long\
+    \ long, long long>> res;\n        while (x > 1) {\n            long long p = lpf[x],\
+    \ e = 0;\n            while (x % p == 0) x /= p, e++;\n            res.emplace_back(p,\
+    \ e);\n        }\n        return res;\n    }\n    /**\n     * @brief x (1 <= x\
+    \ <= n) \u306E\u6B63\u306E\u7D04\u6570\u3092\u6607\u9806\u306B\u4E26\u3079\u3066\
+    \u8FD4\u3059\n     */\n    std::vector<long long> divisors(long long x) const\
+    \ {\n        std::vector<long long> res = {1};\n        for (auto [p, e] : factorize(x))\
+    \ {\n            const long long sz = res.size();\n            long long pw =\
+    \ 1;\n            for (long long i = 0; i < e; i++) {\n                pw *= p;\n\
+    \                for (long long j = 0; j < sz; j++) res.push_back(res[j] * pw);\n\
+    \            }\n        }\n        std::sort(res.begin(), res.end());\n      \
+    \  return res;\n    }\n};\n#line 16 \"src/math/sum-of-exp-times-poly.hpp\"\n\n\
+    namespace internal_sum_of_exp_times_poly {\n// 0^d, 1^d, ..., m^d \u3092\u3001\
+    \u7D20\u6570\u306F\u7D2F\u4E57\u3001\u5408\u6210\u6570\u306F\u6700\u5C0F\u7D20\
+    \u56E0\u6570\u3068\u306E\u7A4D\u3067 O(m) \u56DE\u306E\u639B\u3051\u7B97\u3067\
+    \u6C42\u3081\u308B\ntemplate <typename mint>\nstd::vector<mint> powers(long long\
+    \ m, long long d) {\n    std::vector<mint> pw(m + 1);\n    if (m >= 0) pw[0] =\
+    \ d == 0 ? mint(1) : mint(0);\n    if (m >= 1) pw[1] = 1;\n    Sieve sieve(std::max<long\
+    \ long>(m, 1));\n    for (long long i = 2; i <= m; i++) {\n        long long p\
+    \ = sieve.min_factor(i);\n        pw[i] = p == i ? mint(i).pow(d) : pw[p] * pw[i\
+    \ / p];\n    }\n    return pw;\n}\n// f(0), ..., f(d) (d \u6B21\u4EE5\u4E0B\u306E\
+    \u591A\u9805\u5F0F\u306E\u5024) \u3068 r (!= 0, 1) \u306B\u3064\u3044\u3066\u3001\
+    \u03A3_{i<n} r^i f(i) = c - r^n g(n) \u306E c \u3068 g(0), ..., g(d)\n// s_k =\
+    \ \u03A3_{i<k} r^i f(i) = c - r^k g(k) \u3067\u3001g \u306E d+1 \u968E\u5DEE\u5206\
+    \ \u03A3_k (-1)^{d+1-k} C(d+1, k) g(k) \u304C 0 \u306B\u306A\u308B\u3053\u3068\
+    \u304B\u3089 c \u3092\u6C42\u3081\u308B\ntemplate <typename mint>\nstd::pair<mint,\
+    \ std::vector<mint>> constant_and_g(mint r, const std::vector<mint>& f) {\n  \
+    \  using C = Combination<mint>;\n    const long long d = static_cast<long long>(f.size())\
+    \ - 1;\n    C::extend(d + 1);\n    const mint inv_r = r.inv();\n    // s_k (k\
+    \ = 0, ..., d+1)\n    std::vector<mint> s(d + 2, 0);\n    mint rk = 1;\n    for\
+    \ (long long k = 0; k <= d; k++) s[k + 1] = s[k] + rk * f[k], rk *= r;\n    //\
+    \ c \u03A3 w_k = \u03A3 w_k s_k\u3001w_k = (-1)^{d+1-k} C(d+1, k) r^{-k}\n   \
+    \ mint num = 0, den = 0, ir = 1;\n    for (long long k = 0; k <= d + 1; k++) {\n\
+    \        mint w = C::C(d + 1, k) * ir;\n        if ((d + 1 - k) % 2 == 1) w =\
+    \ -w;\n        num += w * s[k], den += w;\n        ir *= inv_r;\n    }\n    const\
+    \ mint c = num / den;\n    std::vector<mint> g(d + 1);\n    ir = 1;\n    for (long\
+    \ long k = 0; k <= d; k++) g[k] = (c - s[k]) * ir, ir *= inv_r;\n    return {c,\
+    \ g};\n}\n}  // namespace internal_sum_of_exp_times_poly\n\n/**\n * @brief \u03A3\
+    _{i=0}^{n-1} r^i f(i) (f \u306F d \u6B21\u4EE5\u4E0B\u306E\u591A\u9805\u5F0F\u3067\
+    \u3001f(0), ..., f(d) \u3092\u6E21\u3059) O(d) (n \u306F 10^18 \u7A0B\u5EA6\u3067\
+    \u3082\u3088\u3044)\n * \u6CD5\u306F d + 2 \u3088\u308A\u5927\u304D\u3044\u7D20\
+    \u6570\u3067\u3042\u308B\u3053\u3068\u30020^0 = 1 \u3068\u3059\u308B\n */\ntemplate\
+    \ <typename mint>\nmint sum_of_exp_times_poly(mint r, const std::vector<mint>&\
+    \ f, long long n) {\n    assert(!f.empty() && n >= 0);\n    const long long d\
+    \ = static_cast<long long>(f.size()) - 1;\n    if (n == 0) return mint(0);\n \
+    \   // r = 0 \u306A\u3089 i = 0 \u306E\u9805 (r^0 = 1) \u3060\u3051\n    if (r\
+    \ == 0) return f[0];\n    if (r == 1) {\n        // \u03A3_{i<n} f(i) \u306F n\
+    \ \u306E d+1 \u6B21\u4EE5\u4E0B\u306E\u591A\u9805\u5F0F\u306A\u306E\u3067\u3001\
+    n = 0, ..., d+1 \u3067\u306E\u5024\u304B\u3089\u88DC\u9593\u3059\u308B\n     \
+    \   std::vector<mint> s(d + 2, 0);\n        for (long long k = 0; k <= d; k++)\
+    \ s[k + 1] = s[k] + f[k];\n        return lagrange_interpolation(s, mint(n));\n\
+    \    }\n    auto [c, g] = internal_sum_of_exp_times_poly::constant_and_g(r, f);\n\
+    \    return c - r.pow(n) * lagrange_interpolation(g, mint(n));\n}\n\n/**\n * @brief\
+    \ \u03A3_{i=0}^{n-1} r^i i^d O(d) (n \u306F 10^18 \u7A0B\u5EA6\u3067\u3082\u3088\
+    \u3044)\u3002\u6CD5\u306F d + 2 \u3088\u308A\u5927\u304D\u3044\u7D20\u6570\u3067\
+    \u3042\u308B\u3053\u3068\u30020^0 = 1 \u3068\u3059\u308B\n */\ntemplate <typename\
+    \ mint>\nmint sum_of_exp_times_poly(mint r, long long d, long long n) {\n    assert(d\
+    \ >= 0);\n    return sum_of_exp_times_poly(r, internal_sum_of_exp_times_poly::powers<mint>(d,\
+    \ d), n);\n}\n\n/**\n * @brief \u03A3_{i=0}^{\u221E} r^i f(i) (r \u3092 -1 < r\
+    \ < 1 \u306E\u6709\u7406\u6570\u3068\u307F\u306A\u3059\u3002f \u306F d \u6B21\u4EE5\
+    \u4E0B\u306E\u591A\u9805\u5F0F\u3067\u3001f(0), ..., f(d) \u3092\u6E21\u3059)\
+    \ O(d)\n * r != 1 \u3067\u3042\u308B\u3053\u3068\u3002\u03A3_{i<n} r^i f(i) =\
+    \ c - r^n g(n) \u306E c \u304C\u7B54\u3048\n */\ntemplate <typename mint>\nmint\
+    \ sum_of_exp_times_poly_limit(mint r, const std::vector<mint>& f) {\n    assert(!f.empty()\
+    \ && r != 1);\n    if (r == 0) return f[0];\n    return internal_sum_of_exp_times_poly::constant_and_g(r,\
+    \ f).first;\n}\n\n/**\n * @brief \u03A3_{i=0}^{\u221E} r^i i^d (r \u3092 -1 <\
+    \ r < 1 \u306E\u6709\u7406\u6570\u3068\u307F\u306A\u3059) O(d)\u3002r != 1 \u3067\
+    \u3042\u308B\u3053\u3068\u30020^0 = 1 \u3068\u3059\u308B\n */\ntemplate <typename\
+    \ mint>\nmint sum_of_exp_times_poly_limit(mint r, long long d) {\n    assert(d\
+    \ >= 0);\n    return sum_of_exp_times_poly_limit(r, internal_sum_of_exp_times_poly::powers<mint>(d,\
+    \ d));\n}\n#line 8 \"test/unittest/sum-of-exp-times-poly.test.cpp\"\n\n#include\
+    \ <iostream>\n#include <random>\n#line 12 \"test/unittest/sum-of-exp-times-poly.test.cpp\"\
     \n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\
     \u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\
     \u30AF\u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\n#include <cstdint>\n\
-    #include <iostream>\n#include <limits>\n#include <type_traits>\n#line 14 \"src/math/modint.hpp\"\
-    \n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief\
-    \ \u578B\u7279\u6027\n */\n\n#include <cstddef>\n#include <iterator>\n#include\
-    \ <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace internal_traits {\n\
-    using std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
-    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
-    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
-    \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
-    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
-    \n#define HAS_METHOD(func_name)                                              \
-    \                \\\n    namespace internal_traits {                         \
-    \                                   \\\n    template <class T, class = void> \
-    \                                                      \\\n    struct has_##func_name##_impl\
-    \ : std::false_type {};                                    \\\n    template <class\
-    \ T>                                                                     \\\n\
-    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
-    \ \\\n        : std::true_type {};                                           \
-    \                    \\\n    }                                               \
-    \                                       \\\n    template <class T>           \
-    \                                                          \\\n    struct has_##func_name\
-    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
-    \ <class T>                                                                  \
-    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
-    \n#define HAS_METHOD_ARG(func_name)                                          \
-    \                                    \\\n    namespace internal_traits {     \
-    \                                                                           \\\
-    \n    template <class T, typename U, class = void>                           \
-    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
-    \ {};                                                        \\\n    template\
-    \ <class T, typename U>                                                      \
-    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
-    \ \\\n        : std::true_type {};                                           \
-    \                                        \\\n    }                           \
+    #line 11 \"src/math/modint.hpp\"\n#include <limits>\n#include <type_traits>\n\
+    #line 14 \"src/math/modint.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n\
+    \ * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n\
+    #include <iterator>\n#include <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace\
+    \ internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T, class =\
+    \ void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct\
+    \ is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
+    \ : std::true_type {};\n}  // namespace internal_traits\n\ntemplate <class T>\n\
+    struct is_range : internal_traits::is_range_impl<T>::type {};\ntemplate <class\
+    \ T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define HAS_METHOD(func_name)\
+    \                                                              \\\n    namespace\
+    \ internal_traits {                                                          \
+    \  \\\n    template <class T, class = void>                                  \
+    \                     \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                    \\\n    template <class T>          \
+    \                                                           \\\n    struct has_##func_name##_impl<T,\
+    \ std::void_t<decltype(std::declval<T>().func_name())>> \\\n        : std::true_type\
+    \ {};                                                               \\\n    }\
     \                                                                            \
-    \   \\\n    template <class T, typename U>                                   \
-    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \          \\\n    template <class T>                                        \
+    \                             \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T>::type\
+    \ {};          \\\n    template <class T>                                    \
+    \                                 \\\n    inline constexpr bool has_##func_name##_v\
+    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
+    \                                                                    \\\n    namespace\
+    \ internal_traits {                                                          \
+    \                      \\\n    template <class T, typename U, class = void>  \
+    \                                                             \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                                      \
+    \  \\\n    template <class T, typename U>                                    \
+    \                                         \\\n    struct has_##func_name##_impl<T,\
+    \ U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>> \\\
+    \n        : std::true_type {};                                               \
+    \                                    \\\n    }                               \
+    \                                                                           \\\
+    \n    template <class T, typename U>                                         \
+    \                                    \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
     \ U>::type {};                           \\\n    template <class T, typename U>\
     \                                                                            \
     \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
@@ -481,265 +713,103 @@ data:
     \ dynamic_modint(SignedIntegral value) noexcept\n        : base_type{value} {}\n\
     \n   private:\n    inline static value_type modulus = 998244353;\n};\n\nusing\
     \ modint998244353 = static_modint<998244353>;\nusing modint1000000007 = static_modint<1000000007>;\n\
-    using modint = dynamic_modint<-1>;\n#line 14 \"src/math/convolution.hpp\"\n\n\
-    /**\n * @brief \u7573\u307F\u8FBC\u307F\n */\nnamespace internal_convolution {\n\
-    /**\n * @brief \u539F\u5B50\u6839\n * @param MOD int\n * @return int\n */\ninline\
-    \ int calc_primitive_root(int MOD) {\n    if (MOD == 2) return 1;\n    if (MOD\
-    \ == 167772161) return 3;\n    if (MOD == 469762049) return 3;\n    if (MOD ==\
-    \ 754974721) return 11;\n    if (MOD == 998244353) return 3;\n    int divs[20]\
-    \ = {};\n    divs[0] = 2;\n    int cnt = 1;\n    long long x = (MOD - 1) >> 1;\n\
-    \    while (x % 2 == 0) x >>= 1;\n    for (long long i = 3; i * i <= x; i += 2)\
-    \ {\n        if (x % i == 0) {\n            divs[cnt++] = i;\n            while\
-    \ (x % i == 0) x /= i;\n        }\n    }\n    if (x > 1) divs[cnt++] = x;\n  \
-    \  for (int g = 2;; ++g) {\n        bool ok = true;\n        for (int i = 0; i\
-    \ < cnt; i++) {\n            if (modpow(g, (MOD - 1) / divs[i], MOD) == 1) {\n\
-    \                ok = false;\n                break;\n            }\n        }\n\
-    \        if (ok) return g;\n    }\n}\n\n/**\n * @brief \u7573\u307F\u8FBC\u307F\
-    \u306E\u30B5\u30A4\u30BA\u30922\u306E\u3079\u304D\u4E57\u306B\u3059\u308B\n */\n\
-    inline int get_fft_size(int N, int M) {\n    int size = 1;\n    while (size <\
-    \ N + M - 1) size <<= 1;\n    return size;\n}\n\n/**\n * @brief NTT\n */\ntemplate\
-    \ <class mint>\nvoid trans(std::vector<mint>& v, bool inv = false) {\n    if (v.empty())\
-    \ return;\n    int N = static_cast<int>(v.size());\n    int MOD = v[0].mod();\n\
-    \    int PR = calc_primitive_root(MOD);\n    static bool first = true;\n    static\
-    \ std::vector<long long> vbw(30), vibw(30);\n    if (first) {\n        first =\
-    \ false;\n        for (int k = 0; k < 30; ++k) {\n            vbw[k] = modpow(PR,\
-    \ (MOD - 1) >> (k + 1), MOD);\n            vibw[k] = modinv(vbw[k], MOD);\n  \
-    \      }\n    }\n    for (int i = 0, j = 1; j < N - 1; ++j) {\n        for (int\
-    \ k = N >> 1; k > (i ^= k); k >>= 1);\n        if (i > j) std::swap(v[i], v[j]);\n\
-    \    }\n    for (int k = 0, t = 2; t <= N; ++k, t <<= 1) {\n        long long\
-    \ bw = vbw[k];\n        if (inv) bw = vibw[k];\n        for (int i = 0; i < N;\
-    \ i += t) {\n            mint w = 1;\n            for (int j = 0; j < (t >> 1);\
-    \ ++j) {\n                int j1 = i + j, j2 = i + j + (t >> 1);\n           \
-    \     mint c1 = v[j1], c2 = v[j2] * w;\n                v[j1] = c1 + c2;\n   \
-    \             v[j2] = c1 - c2;\n                w *= bw;\n            }\n    \
-    \    }\n    }\n    if (inv) {\n        long long invN = modinv(N, MOD);\n    \
-    \    for (int i = 0; i < N; ++i) v[i] = v[i] * invN;\n    }\n}\n\nstatic constexpr\
-    \ int MOD0 = 754974721;\nstatic constexpr int MOD1 = 167772161;\nstatic constexpr\
-    \ int MOD2 = 469762049;\nusing mint0 = static_modint<MOD0>;\nusing mint1 = static_modint<MOD1>;\n\
-    using mint2 = static_modint<MOD2>;\nstatic const mint1 imod0 = 95869806;    //\
-    \ modinv(MOD0, MOD1);\nstatic const mint2 imod1 = 104391568;   // modinv(MOD1,\
-    \ MOD2);\nstatic const mint2 imod01 = 187290749;  // imod1 / MOD0;\n\n/**\n *\
-    \ @brief \u914D\u5217\u306E\u30B5\u30A4\u30BA\u304C\u5C0F\u3055\u3044\u3068\u304D\
-    \u306E\u7573\u307F\u8FBC\u307F\n * @param T mint, long long\n * @param A vector<T>\n\
-    \ * @param B vector<T>\n * @return vector<T>\n */\ntemplate <class T>\nstd::vector<T>\
-    \ naive(const std::vector<T>& A, const std::vector<T>& B) {\n    if (A.empty()\
-    \ || B.empty()) return {};\n    int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n\
-    \    std::vector<T> res(N + M - 1);\n    for (int i = 0; i < N; ++i)\n       \
-    \ for (int j = 0; j < M; ++j)\n            res[i + j] += A[i] * B[j];\n    return\
-    \ res;\n}\n};  // namespace internal_convolution\n\n/**\n * @brief modint\u306E\
-    \u7573\u307F\u8FBC\u307F\n * @param A vector<mint>\n * @param B vector<mint>\n\
-    \ * @return vector<mint>\n */\ntemplate <class mint>\nstd::vector<mint> convolution(const\
-    \ std::vector<mint>& A, const std::vector<mint>& B) {\n    if (A.empty() || B.empty())\
-    \ return {};\n    int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n\
-    \    if (std::min(N, M) < 30) return internal_convolution::naive(A, B);\n    int\
-    \ MOD = A[0].mod();\n    int size_fft = internal_convolution::get_fft_size(N,\
-    \ M);\n    if (MOD == 998244353) {\n        std::vector<mint> a(size_fft), b(size_fft),\
-    \ c(size_fft);\n        for (int i = 0; i < N; ++i) a[i] = A[i];\n        for\
-    \ (int i = 0; i < M; ++i) b[i] = B[i];\n        internal_convolution::trans(a),\
-    \ internal_convolution::trans(b);\n        std::vector<mint> res(size_fft);\n\
-    \        for (int i = 0; i < size_fft; ++i) res[i] = a[i] * b[i];\n        internal_convolution::trans(res,\
-    \ true);\n        res.resize(N + M - 1);\n        return res;\n    }\n    std::vector<internal_convolution::mint0>\
-    \ a0(size_fft, 0), b0(size_fft, 0), c0(size_fft, 0);\n    std::vector<internal_convolution::mint1>\
-    \ a1(size_fft, 0), b1(size_fft, 0), c1(size_fft, 0);\n    std::vector<internal_convolution::mint2>\
-    \ a2(size_fft, 0), b2(size_fft, 0), c2(size_fft, 0);\n    for (int i = 0; i <\
-    \ N; ++i) {\n        a0[i] = A[i].val();\n        a1[i] = A[i].val();\n      \
-    \  a2[i] = A[i].val();\n    }\n    for (int i = 0; i < M; ++i) {\n        b0[i]\
-    \ = B[i].val();\n        b1[i] = B[i].val();\n        b2[i] = B[i].val();\n  \
-    \  }\n    internal_convolution::trans(a0), internal_convolution::trans(a1), internal_convolution::trans(a2),\n\
-    \        internal_convolution::trans(b0), internal_convolution::trans(b1), internal_convolution::trans(b2);\n\
-    \    for (int i = 0; i < size_fft; ++i) {\n        c0[i] = a0[i] * b0[i];\n  \
-    \      c1[i] = a1[i] * b1[i];\n        c2[i] = a2[i] * b2[i];\n    }\n    internal_convolution::trans(c0,\
-    \ true), internal_convolution::trans(c1, true), internal_convolution::trans(c2,\
-    \ true);\n    const mint mod0 = internal_convolution::MOD0, mod01 = mod0 * internal_convolution::MOD1;\n\
-    \    std::vector<mint> res(N + M - 1);\n    for (int i = 0; i < N + M - 1; ++i)\
-    \ {\n        int y0 = c0[i].val();\n        int y1 = (internal_convolution::imod0\
-    \ * (c1[i] - y0)).val();\n        int y2 = (internal_convolution::imod01 * (c2[i]\
-    \ - y0) - internal_convolution::imod1 * y1).val();\n        res[i] = mod01 * y2\
-    \ + mod0 * y1 + y0;\n    }\n    return res;\n}\n\n/**\n * @brief long long\u306E\
-    \u7573\u307F\u8FBC\u307F\n * @param A vector<long long>\n * @param B vector<long\
-    \ long>\n * @return vector<long long>\n */\ninline std::vector<long long> convolution_ll(const\
-    \ std::vector<long long>& A, const std::vector<long long>& B) {\n    if (A.empty()\
-    \ || B.empty()) return {};\n    int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n\
-    \    if (std::min(N, M) < 30) return internal_convolution::naive(A, B);\n    int\
-    \ size_fft = internal_convolution::get_fft_size(N, M);\n    std::vector<internal_convolution::mint0>\
-    \ a0(size_fft, 0), b0(size_fft, 0), c0(size_fft, 0);\n    std::vector<internal_convolution::mint1>\
-    \ a1(size_fft, 0), b1(size_fft, 0), c1(size_fft, 0);\n    std::vector<internal_convolution::mint2>\
-    \ a2(size_fft, 0), b2(size_fft, 0), c2(size_fft, 0);\n    for (int i = 0; i <\
-    \ N; ++i) {\n        a0[i] = A[i];\n        a1[i] = A[i];\n        a2[i] = A[i];\n\
-    \    }\n    for (int i = 0; i < M; ++i) {\n        b0[i] = B[i];\n        b1[i]\
-    \ = B[i];\n        b2[i] = B[i];\n    }\n    internal_convolution::trans(a0),\
-    \ internal_convolution::trans(a1), internal_convolution::trans(a2),\n        internal_convolution::trans(b0),\
-    \ internal_convolution::trans(b1), internal_convolution::trans(b2);\n    for (int\
-    \ i = 0; i < size_fft; ++i) {\n        c0[i] = a0[i] * b0[i];\n        c1[i] =\
-    \ a1[i] * b1[i];\n        c2[i] = a2[i] * b2[i];\n    }\n    internal_convolution::trans(c0,\
-    \ true), internal_convolution::trans(c1, true), internal_convolution::trans(c2,\
-    \ true);\n    static const long long mod0 = internal_convolution::MOD0, mod01\
-    \ = mod0 * internal_convolution::MOD1;\n    static const __int128_t mod012 = static_cast<__int128_t>(mod01)\
-    \ * internal_convolution::MOD2;\n    std::vector<long long> res(N + M - 1);\n\
-    \    for (int i = 0; i < N + M - 1; ++i) {\n        int y0 = c0[i].val();\n  \
-    \      int y1 = (internal_convolution::imod0 * (c1[i] - y0)).val();\n        int\
-    \ y2 = (internal_convolution::imod01 * (c2[i] - y0) - internal_convolution::imod1\
-    \ * y1).val();\n        __int128_t tmp = static_cast<__int128_t>(mod01) * y2 +\
-    \ static_cast<__int128_t>(mod0) * y1 + y0;\n        if (tmp < (mod012 >> 1))\n\
-    \            res[i] = tmp;\n        else\n            res[i] = tmp - mod012;\n\
-    \    }\n    return res;\n}\n#line 18 \"src/math/fps.hpp\"\n\ntemplate <typename\
-    \ mint>\nstruct FPS : std::vector<mint> {\n    using std::vector<mint>::vector;\n\
-    \n    // constructor\n    FPS(const std::vector<mint>& r) : std::vector<mint>(r)\
-    \ {}\n\n    // core operator\n    inline FPS pre(long long siz) const {\n    \
-    \    return FPS(begin(*this), begin(*this) + std::min(static_cast<long long>(this->size()),\
-    \ siz));\n    }\n    inline FPS rev() const {\n        FPS res = *this;\n    \
-    \    reverse(begin(res), end(res));\n        return res;\n    }\n    inline FPS&\
-    \ normalize() {\n        while (!this->empty() && this->back() == 0) this->pop_back();\n\
-    \        return *this;\n    }\n\n    // basic operator\n    inline FPS operator-()\
-    \ const noexcept {\n        FPS res = (*this);\n        for (int i = 0; i < static_cast<int>(res.size());\
-    \ ++i) res[i] = -res[i];\n        return res;\n    }\n    inline FPS operator+(const\
-    \ mint& v) const { return FPS(*this) += v; }\n    inline FPS operator+(const FPS&\
-    \ r) const { return FPS(*this) += r; }\n    inline FPS operator-(const mint& v)\
-    \ const { return FPS(*this) -= v; }\n    inline FPS operator-(const FPS& r) const\
-    \ { return FPS(*this) -= r; }\n    inline FPS operator*(const mint& v) const {\
-    \ return FPS(*this) *= v; }\n    inline FPS operator*(const FPS& r) const { return\
-    \ FPS(*this) *= r; }\n    inline FPS operator/(const mint& v) const { return FPS(*this)\
-    \ /= v; }\n    inline FPS operator<<(long long x) const { return FPS(*this) <<=\
-    \ x; }\n    inline FPS operator>>(long long x) const { return FPS(*this) >>= x;\
-    \ }\n    inline FPS& operator+=(const mint& v) {\n        if (this->empty()) this->resize(1);\n\
-    \        (*this)[0] += v;\n        return *this;\n    }\n    inline FPS& operator+=(const\
-    \ FPS& r) {\n        if (r.size() > this->size()) this->resize(r.size());\n  \
-    \      for (int i = 0; i < static_cast<int>(r.size()); ++i) (*this)[i] += r[i];\n\
-    \        return this->normalize();\n    }\n    inline FPS& operator-=(const mint&\
-    \ v) {\n        if (this->empty()) this->resize(1);\n        (*this)[0] -= v;\n\
-    \        return *this;\n    }\n    inline FPS& operator-=(const FPS& r) {\n  \
-    \      if (r.size() > this->size()) this->resize(r.size());\n        for (int\
-    \ i = 0; i < static_cast<int>(r.size()); ++i) (*this)[i] -= r[i];\n        return\
-    \ this->normalize();\n    }\n    inline FPS& operator*=(const mint& v) {\n   \
-    \     for (int i = 0; i < static_cast<int>(this->size()); ++i) (*this)[i] *= v;\n\
-    \        return *this;\n    }\n    inline FPS& operator*=(const FPS& r) {\n  \
-    \      return *this = convolution((*this), r);\n    }\n    inline FPS& operator/=(const\
-    \ mint& v) {\n        assert(v != 0);\n        mint iv = v.inv();\n        for\
-    \ (int i = 0; i < static_cast<int>(this->size()); ++i) (*this)[i] *= iv;\n   \
-    \     return *this;\n    }\n    inline FPS& operator<<=(long long x) {\n     \
-    \   FPS res(x, 0);\n        res.insert(res.end(), begin(*this), end(*this));\n\
-    \        return *this = res;\n    }\n    inline FPS& operator>>=(long long x)\
-    \ {\n        if (static_cast<long long>(this->size()) <= x) return *this = FPS<mint>(1,\
-    \ 0);\n        FPS res;\n        res.insert(res.end(), begin(*this) + x, end(*this));\n\
-    \        return *this = res;\n    }\n    inline mint eval(const mint& v) {\n \
-    \       mint res = 0;\n        for (int i = static_cast<int>(this->size()) - 1;\
-    \ i >= 0; --i) {\n            res *= v;\n            res += (*this)[i];\n    \
-    \    }\n        return res;\n    }\n    inline friend FPS gcd(const FPS& f, const\
-    \ FPS& g) {\n        if (g.empty()) return f;\n        return gcd(g, f % g);\n\
-    \    }\n\n    // advanced operation\n    // df/dx\n    inline friend FPS diff(const\
-    \ FPS& f) {\n        int n = static_cast<int>(f.size());\n        if (n == 0)\
-    \ return FPS();\n        FPS res(n - 1);\n        for (int i = 1; i < n; ++i)\
-    \ res[i - 1] = f[i] * i;\n        return res;\n    }\n\n    // \\int f dx\n  \
-    \  inline friend FPS intg(const FPS& f) {\n        int n = static_cast<int>(f.size());\n\
-    \        FPS res(n + 1, 0);\n        for (int i = 0; i < n; ++i) res[i + 1] =\
-    \ f[i] / (i + 1);\n        return res;\n    }\n\n    // inv(f), f[0] must not\
-    \ be 0\n    inline friend FPS inv(const FPS& f, long long deg) {\n        assert(!f.empty()\
-    \ && f[0] != 0);\n        if (deg < 0) deg = static_cast<long long>(f.size());\n\
-    \        if (deg == 0) return FPS();\n        FPS res({mint(1) / f[0]});\n   \
-    \     for (long long i = 1; i < deg; i <<= 1) {\n            res = (res + res\
-    \ - res * res * f.pre(i << 1)).pre(i << 1);\n        }\n        res.resize(deg);\n\
-    \        return res;\n    }\n    inline friend FPS inv(const FPS& f) {\n     \
-    \   return inv(f, f.size());\n    }\n\n    // division, r must be normalized (r.back()\
-    \ must not be 0)\n    inline FPS& operator/=(const FPS& r) {\n        assert(!r.empty());\n\
-    \        assert(r.back() != 0);\n        this->normalize();\n        if (this->size()\
-    \ < r.size()) {\n            this->clear();\n            return *this;\n     \
-    \   }\n        const long long need = static_cast<long long>(this->size()) - static_cast<long\
-    \ long>(r.size()) + 1;\n        *this = ((*this).rev().pre(need) * inv(r.rev(),\
-    \ need)).pre(need).rev();\n        return *this;\n    }\n    inline FPS& operator%=(const\
-    \ FPS& r) {\n        return *this = divmod(*this, r).second;\n    }\n    inline\
-    \ FPS operator/(const FPS& r) const { return FPS(*this) /= r; }\n    inline FPS\
-    \ operator%(const FPS& r) const { return FPS(*this) %= r; }\n    // {f / g, f\
-    \ % g}, g must be normalized (g.back() must not be 0)\n    inline friend std::pair<FPS,\
-    \ FPS> divmod(const FPS& f, const FPS& g) {\n        assert(!g.empty());\n   \
-    \     assert(g.back() != 0);\n        FPS q = f / g;\n        FPS r = f - q *\
-    \ g;\n        return {q, r};\n    }\n\n    // log(f) = \\int f'/f dx, f[0] must\
-    \ be 1\n    inline friend FPS log(const FPS& f, long long deg) {\n        assert(!f.empty()\
-    \ && f[0] == 1);\n        FPS res = intg(diff(f) * inv(f, deg));\n        res.resize(deg);\n\
-    \        return res;\n    }\n    inline friend FPS log(const FPS& f) {\n     \
-    \   return log(f, f.size());\n    }\n\n    // exp(f), f[0] must be 0\n    inline\
-    \ friend FPS exp(const FPS& f, long long deg) {\n        assert(f.empty() || f[0]\
-    \ == 0);\n        FPS res(1, 1);\n        for (long long i = 1; i < deg; i <<=\
-    \ 1) {\n            res = res * (f.pre(i << 1) - log(res, i << 1) + 1).pre(i <<\
-    \ 1);\n        }\n        res.resize(deg);\n        return res;\n    }\n    inline\
-    \ friend FPS exp(const FPS& f) {\n        return exp(f, f.size());\n    }\n\n\
-    \    // pow(f) = exp(e * log f)\n    inline friend FPS pow(const FPS& f, long\
-    \ long e, long long deg) {\n        if (e == 0) {\n            auto ret = FPS(deg,\
-    \ 0);\n            if (deg > 0) ret[0] = 1;\n            return ret;\n       \
-    \ }\n        long long i = 0;\n        while (i < static_cast<long long>(f.size())\
-    \ && f[i] == 0) ++i;\n        if (i == static_cast<long long>(f.size())) return\
-    \ FPS(deg, 0);\n        if ((i >= 1 && e >= deg) || i * e >= deg) return FPS(deg,\
-    \ 0);\n        mint k = f[i];\n        FPS res = exp(log((f >> i) / k, deg) *\
-    \ e, deg) * k.pow(e) << (e * i);\n        res.resize(deg);\n        return res;\n\
-    \    }\n    inline friend FPS pow(const FPS& f, long long e) {\n        return\
-    \ pow(f, e, f.size());\n    }\n\n    // sqrt(f) \u306E\u5148\u982D deg \u9805\
-    \ (g^2 = f)\u3002\u5E73\u65B9\u6839\u304C\u306A\u3051\u308C\u3070 std::nullopt\n\
-    \    // \u6700\u521D\u306E 0 \u3067\u306A\u3044\u9805 f_i x^i \u306F\u3001i \u304C\
-    \u5076\u6570\u3067 f_i \u304C\u5E73\u65B9\u5270\u4F59\u3067\u3042\u308B\u3053\u3068\
-    \u3002\u6CD5\u306F\u7D20\u6570\u3067\u3042\u308B\u3053\u3068\n    inline friend\
-    \ std::optional<FPS> sqrt(const FPS& f, long long deg) {\n        long long i\
-    \ = 0;\n        while (i < static_cast<long long>(f.size()) && f[i] == 0) ++i;\n\
-    \        if (i == static_cast<long long>(f.size()) || i / 2 >= deg) return FPS(deg,\
-    \ 0);\n        if (i % 2 == 1) return std::nullopt;\n        long long r = sqrt_mod(f[i].val(),\
-    \ mint::mod());\n        if (r == -1) return std::nullopt;\n        // x^i \u3092\
-    \u5916\u3057\u305F g = f / x^i (g_0 != 0) \u306E\u5E73\u65B9\u6839\u3092\u30CB\
-    \u30E5\u30FC\u30C8\u30F3\u6CD5\u3067\u6C42\u3081\u308B: h <- (h + g / h) / 2\n\
-    \        const FPS g = f >> i;\n        const long long d = deg - i / 2;\n   \
-    \     FPS h({mint(r)});\n        const mint inv2 = mint(2).inv();\n        for\
-    \ (long long k = 1; k < d; k <<= 1) {\n            h = (h + (g.pre(k << 1) * inv(h,\
-    \ k << 1)).pre(k << 1)) * inv2;\n        }\n        h.resize(d);\n        h <<=\
-    \ i / 2;\n        return h;\n    }\n    inline friend std::optional<FPS> sqrt(const\
-    \ FPS& f) {\n        return sqrt(f, f.size());\n    }\n\n    inline friend FPS\
-    \ taylor_shift(FPS f, mint a) {\n        using C = Combination<mint>;\n      \
-    \  int n = f.size();\n        C::extend(n);\n        for (int i = 0; i < n; i++)\
-    \ f[i] *= C::factorial(i);\n        std::reverse(f.begin(), f.end());\n      \
-    \  FPS<mint> g(n, 1);\n        for (int i = 1; i < n; i++) g[i] = g[i - 1] * a\
-    \ * C::inv(i);\n        f = (f * g).pre(n);\n        std::reverse(f.begin(), f.end());\n\
-    \        for (int i = 0; i < n; i++) f[i] *= C::inverse_factorial(i);\n      \
-    \  return f;\n    }\n};\n\ntemplate <typename mint>\nFPS<mint> modpow(const FPS<mint>&\
-    \ f, long long n, const FPS<mint>& m) {\n    if (n == 0) return FPS<mint>(1, 1);\n\
-    \    auto t = modpow(f, n / 2, m);\n    t = (t * t) % m;\n    if (n & 1) t = (t\
-    \ * f) % m;\n    return t;\n}\n\n/**\n * @brief \u591A\u9805\u5F0F\u306E\u5217\
-    \u306E\u7A4D f_0 f_1 ... f_{n-1} O(N log^2 N) (N \u306F\u6B21\u6570\u306E\u548C\
-    )\n * \u6B21\u6570\u306E\u5C0F\u3055\u3044\u3082\u306E\u304B\u3089 2 \u3064\u305A\
-    \u3064\u639B\u3051\u3066\u3044\u304F\u3002fs \u304C\u7A7A\u306A\u3089 1\n */\n\
-    template <typename mint>\nFPS<mint> polynomial_product(std::vector<FPS<mint>>\
-    \ fs) {\n    if (fs.empty()) return FPS<mint>(1, 1);\n    auto larger = [&](int\
-    \ a, int b) { return fs[a].size() > fs[b].size(); };\n    std::priority_queue<int,\
-    \ std::vector<int>, decltype(larger)> pq(larger);\n    for (int i = 0; i < static_cast<int>(fs.size());\
-    \ i++) pq.push(i);\n    while (pq.size() > 1) {\n        int a = pq.top();\n \
-    \       pq.pop();\n        int b = pq.top();\n        pq.pop();\n        // \u7A7A\
-    \u306E\u591A\u9805\u5F0F (0) \u3068\u306E\u7A4D\u306F 0\n        fs[a] = fs[a].empty()\
-    \ || fs[b].empty() ? FPS<mint>() : fs[a] * fs[b];\n        FPS<mint>().swap(fs[b]);\n\
-    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n#line 4 \"test/yosupo/partition-function_1.test.cpp\"\
-    \n\nusing mint = modint998244353;\n\nint main() {\n    long long n;\n    std::cin\
-    \ >> n;\n    FPS<mint> f(n + 1, 0);\n    for (int i = 1; i <= n; i++) {\n    \
-    \    mint inv = mint(i).inv();\n        for (int j = i; j <= n; j += i) f[j] +=\
-    \ inv;\n    }\n    f = exp(f);\n    for (auto x : f) std::cout << x << \" \";\n\
-    \    std::cout << std::endl;\n    return 0;\n}\n"
-  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/partition_function\"\n\n\
-    #include \"../../src/math/fps.hpp\"\n\nusing mint = modint998244353;\n\nint main()\
-    \ {\n    long long n;\n    std::cin >> n;\n    FPS<mint> f(n + 1, 0);\n    for\
-    \ (int i = 1; i <= n; i++) {\n        mint inv = mint(i).inv();\n        for (int\
-    \ j = i; j <= n; j += i) f[j] += inv;\n    }\n    f = exp(f);\n    for (auto x\
-    \ : f) std::cout << x << \" \";\n    std::cout << std::endl;\n    return 0;\n\
-    }\n"
+    using modint = dynamic_modint<-1>;\n#line 15 \"test/unittest/sum-of-exp-times-poly.test.cpp\"\
+    \n\nusing mint = static_modint<998244353>;\n\nbool ok = true;\nvoid check(bool\
+    \ cond, const char* what) {\n    if (!cond && ok) std::cerr << \"failed: \" <<\
+    \ what << std::endl;\n    if (!cond) ok = false;\n}\n\nint main() {\n    std::mt19937_64\
+    \ rng(314);\n    auto gen_r = [&] {\n        int t = rng() % 4;\n        return\
+    \ t == 0 ? mint(0) : t == 1 ? mint(1)\n                                      \
+    \   : mint(rng() % mint::mod());\n    };\n    // \u6709\u9650\u548C: i^d \u3068\
+    \u3001\u4E00\u822C\u306E\u591A\u9805\u5F0F f\n    for (int rep = 0; rep < 2000\
+    \ && ok; rep++) {\n        mint r = gen_r();\n        long long d = rng() % 8,\
+    \ n = rng() % 30;\n        mint expect = 0, ri = 1;\n        for (long long i\
+    \ = 0; i < n; i++, ri *= r) expect += ri * (i == 0 && d == 0 ? mint(1) : mint(i).pow(d));\n\
+    \        check(sum_of_exp_times_poly(r, d, n) == expect, \"sum_of_exp_times_poly\
+    \ i^d\");\n        std::vector<mint> coef(d + 1);\n        for (auto& c : coef)\
+    \ c = rng() % mint::mod();\n        auto f = [&](long long x) {\n            mint\
+    \ v = 0;\n            for (long long k = d; k >= 0; k--) v = v * mint(x) + coef[k];\n\
+    \            return v;\n        };\n        std::vector<mint> fv(d + 1);\n   \
+    \     for (long long k = 0; k <= d; k++) fv[k] = f(k);\n        expect = 0, ri\
+    \ = 1;\n        for (long long i = 0; i < n; i++, ri *= r) expect += ri * f(i);\n\
+    \        check(sum_of_exp_times_poly(r, fv, n) == expect, \"sum_of_exp_times_poly\
+    \ f\");\n    }\n    // n \u304C\u5927\u304D\u304F\u3066\u3082\u3001\u548C\u306E\
+    \u6F38\u5316\u5F0F S(n+1) = S(n) + r^n n^d \u304C\u6210\u308A\u7ACB\u3064\n  \
+    \  for (int rep = 0; rep < 200 && ok; rep++) {\n        mint r = gen_r();\n  \
+    \      long long d = rng() % 20, n = rng() % 1000000000000000000LL;\n        check(sum_of_exp_times_poly(r,\
+    \ d, n + 1) == sum_of_exp_times_poly(r, d, n) + r.pow(n) * mint(n).pow(d), \"\u5927\
+    \u304D\u3044 n\");\n    }\n    // \u7121\u9650\u548C\n    using C = Combination<mint>;\n\
+    \    for (int rep = 0; rep < 500 && ok; rep++) {\n        mint r = rng() % 5 ==\
+    \ 0 ? mint(0) : mint(rng() % (mint::mod() - 2) + 2);  // r != 1\n        long\
+    \ long D = rng() % 8;\n        std::vector<mint> L(D + 1);\n        for (long\
+    \ long j = 0; j <= D; j++) L[j] = sum_of_exp_times_poly_limit(r, j);\n       \
+    \ check(L[0] == (1 - r).inv(), \"limit d = 0\");\n        if (D >= 1) check(L[1]\
+    \ == r / ((1 - r) * (1 - r)), \"limit d = 1\");\n        long long n = rng() %\
+    \ 20;\n        mint rest = 0;\n        for (long long j = 0; j <= D; j++) rest\
+    \ += C::C(D, j) * mint(n).pow(D - j) * L[j];\n        check(L[D] == sum_of_exp_times_poly(r,\
+    \ D, n) + r.pow(n) * rest, \"limit \u306E\u5206\u89E3\");\n    }\n    if (ok)\
+    \ std::cout << \"Hello World\" << std::endl;\n}\n"
+  code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
+    \n\n// sum_of_exp_times_poly \u3092\u76F4\u63A5\u8DB3\u3057\u5408\u308F\u305B\u305F\
+    \u3082\u306E\u3068\u6BD4\u3079\u308B (r = 0, 1 \u3082)\n// sum_of_exp_times_poly_limit\
+    \ \u306F\u3001d = 0, 1 \u306E\u516C\u5F0F\u3068\u3001L_d = S_d(n) + r^n \u03A3\
+    _j C(d, j) n^{d-j} L_j \u304C\u6210\u308A\u7ACB\u3064\u304B\u3067\u78BA\u304B\u3081\
+    \u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\
+    \u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\
+    \n\n#include \"../../src/math/sum-of-exp-times-poly.hpp\"\n\n#include <iostream>\n\
+    #include <random>\n#include <vector>\n\n#include \"../../src/math/combinatorics.hpp\"\
+    \n#include \"../../src/math/modint.hpp\"\n\nusing mint = static_modint<998244353>;\n\
+    \nbool ok = true;\nvoid check(bool cond, const char* what) {\n    if (!cond &&\
+    \ ok) std::cerr << \"failed: \" << what << std::endl;\n    if (!cond) ok = false;\n\
+    }\n\nint main() {\n    std::mt19937_64 rng(314);\n    auto gen_r = [&] {\n   \
+    \     int t = rng() % 4;\n        return t == 0 ? mint(0) : t == 1 ? mint(1)\n\
+    \                                         : mint(rng() % mint::mod());\n    };\n\
+    \    // \u6709\u9650\u548C: i^d \u3068\u3001\u4E00\u822C\u306E\u591A\u9805\u5F0F\
+    \ f\n    for (int rep = 0; rep < 2000 && ok; rep++) {\n        mint r = gen_r();\n\
+    \        long long d = rng() % 8, n = rng() % 30;\n        mint expect = 0, ri\
+    \ = 1;\n        for (long long i = 0; i < n; i++, ri *= r) expect += ri * (i ==\
+    \ 0 && d == 0 ? mint(1) : mint(i).pow(d));\n        check(sum_of_exp_times_poly(r,\
+    \ d, n) == expect, \"sum_of_exp_times_poly i^d\");\n        std::vector<mint>\
+    \ coef(d + 1);\n        for (auto& c : coef) c = rng() % mint::mod();\n      \
+    \  auto f = [&](long long x) {\n            mint v = 0;\n            for (long\
+    \ long k = d; k >= 0; k--) v = v * mint(x) + coef[k];\n            return v;\n\
+    \        };\n        std::vector<mint> fv(d + 1);\n        for (long long k =\
+    \ 0; k <= d; k++) fv[k] = f(k);\n        expect = 0, ri = 1;\n        for (long\
+    \ long i = 0; i < n; i++, ri *= r) expect += ri * f(i);\n        check(sum_of_exp_times_poly(r,\
+    \ fv, n) == expect, \"sum_of_exp_times_poly f\");\n    }\n    // n \u304C\u5927\
+    \u304D\u304F\u3066\u3082\u3001\u548C\u306E\u6F38\u5316\u5F0F S(n+1) = S(n) + r^n\
+    \ n^d \u304C\u6210\u308A\u7ACB\u3064\n    for (int rep = 0; rep < 200 && ok; rep++)\
+    \ {\n        mint r = gen_r();\n        long long d = rng() % 20, n = rng() %\
+    \ 1000000000000000000LL;\n        check(sum_of_exp_times_poly(r, d, n + 1) ==\
+    \ sum_of_exp_times_poly(r, d, n) + r.pow(n) * mint(n).pow(d), \"\u5927\u304D\u3044\
+    \ n\");\n    }\n    // \u7121\u9650\u548C\n    using C = Combination<mint>;\n\
+    \    for (int rep = 0; rep < 500 && ok; rep++) {\n        mint r = rng() % 5 ==\
+    \ 0 ? mint(0) : mint(rng() % (mint::mod() - 2) + 2);  // r != 1\n        long\
+    \ long D = rng() % 8;\n        std::vector<mint> L(D + 1);\n        for (long\
+    \ long j = 0; j <= D; j++) L[j] = sum_of_exp_times_poly_limit(r, j);\n       \
+    \ check(L[0] == (1 - r).inv(), \"limit d = 0\");\n        if (D >= 1) check(L[1]\
+    \ == r / ((1 - r) * (1 - r)), \"limit d = 1\");\n        long long n = rng() %\
+    \ 20;\n        mint rest = 0;\n        for (long long j = 0; j <= D; j++) rest\
+    \ += C::C(D, j) * mint(n).pow(D - j) * L[j];\n        check(L[D] == sum_of_exp_times_poly(r,\
+    \ D, n) + r.pow(n) * rest, \"limit \u306E\u5206\u89E3\");\n    }\n    if (ok)\
+    \ std::cout << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
-  - src/math/fps.hpp
+  - src/math/sum-of-exp-times-poly.hpp
   - src/math/combinatorics.hpp
   - src/math/modular-arithmetic.hpp
-  - src/math/convolution.hpp
+  - src/math/lagrange-interpolation.hpp
+  - src/math/prime.hpp
   - src/math/modint.hpp
   - src/utility/traits.hpp
   isVerificationFile: true
-  path: test/yosupo/partition-function_1.test.cpp
+  path: test/unittest/sum-of-exp-times-poly.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 03:21:45+09:00'
+  timestamp: '2026-10-21 09:35:38+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/yosupo/partition-function_1.test.cpp
+documentation_of: test/unittest/sum-of-exp-times-poly.test.cpp
 layout: document
 redirect_from:
-- /verify/test/yosupo/partition-function_1.test.cpp
-- /verify/test/yosupo/partition-function_1.test.cpp.html
-title: test/yosupo/partition-function_1.test.cpp
+- /verify/test/unittest/sum-of-exp-times-poly.test.cpp
+- /verify/test/unittest/sum-of-exp-times-poly.test.cpp.html
+title: test/unittest/sum-of-exp-times-poly.test.cpp
 ---

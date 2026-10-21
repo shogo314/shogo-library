@@ -31,7 +31,7 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/partition_function
     links:
     - https://judge.yosupo.jp/problem/partition_function
-  bundledCode: "#line 1 \"test/yosupo/partition-function_2.test.cpp\"\n#define PROBLEM\
+  bundledCode: "#line 1 \"test/yosupo/partition-function.1.test.cpp\"\n#define PROBLEM\
     \ \"https://judge.yosupo.jp/problem/partition_function\"\n\n#line 2 \"src/math/fps.hpp\"\
     \n\n/**\n * @file fps.hpp\n * @brief \u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\n */\n\
     \n#include <algorithm>\n#include <cassert>\n#include <optional>\n#include <queue>\n\
@@ -710,22 +710,19 @@ data:
     \       pq.pop();\n        int b = pq.top();\n        pq.pop();\n        // \u7A7A\
     \u306E\u591A\u9805\u5F0F (0) \u3068\u306E\u7A4D\u306F 0\n        fs[a] = fs[a].empty()\
     \ || fs[b].empty() ? FPS<mint>() : fs[a] * fs[b];\n        FPS<mint>().swap(fs[b]);\n\
-    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n#line 4 \"test/yosupo/partition-function_2.test.cpp\"\
+    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n#line 4 \"test/yosupo/partition-function.1.test.cpp\"\
     \n\nusing mint = modint998244353;\n\nint main() {\n    long long n;\n    std::cin\
-    \ >> n;\n    FPS<mint> f(n + 1, 0);\n    for (int i = 0;; i++) {\n        if (i\
-    \ * (3 * i - 1) > n * 2) break;\n        f[i * (3 * i - 1) / 2] = (i % 2 ? -1\
-    \ : 1);\n    }\n    for (int i = -1;; i--) {\n        if (i * (3 * i - 1) > n\
-    \ * 2) break;\n        f[i * (3 * i - 1) / 2] = (i % 2 ? -1 : 1);\n    }\n   \
-    \ f = inv(f);\n    for (auto x : f) std::cout << x << \" \";\n    std::cout <<\
-    \ std::endl;\n    return 0;\n}\n"
+    \ >> n;\n    FPS<mint> f(n + 1, 0);\n    for (int i = 1; i <= n; i++) {\n    \
+    \    mint inv = mint(i).inv();\n        for (int j = i; j <= n; j += i) f[j] +=\
+    \ inv;\n    }\n    f = exp(f);\n    for (auto x : f) std::cout << x << \" \";\n\
+    \    std::cout << std::endl;\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/partition_function\"\n\n\
     #include \"../../src/math/fps.hpp\"\n\nusing mint = modint998244353;\n\nint main()\
     \ {\n    long long n;\n    std::cin >> n;\n    FPS<mint> f(n + 1, 0);\n    for\
-    \ (int i = 0;; i++) {\n        if (i * (3 * i - 1) > n * 2) break;\n        f[i\
-    \ * (3 * i - 1) / 2] = (i % 2 ? -1 : 1);\n    }\n    for (int i = -1;; i--) {\n\
-    \        if (i * (3 * i - 1) > n * 2) break;\n        f[i * (3 * i - 1) / 2] =\
-    \ (i % 2 ? -1 : 1);\n    }\n    f = inv(f);\n    for (auto x : f) std::cout <<\
-    \ x << \" \";\n    std::cout << std::endl;\n    return 0;\n}\n"
+    \ (int i = 1; i <= n; i++) {\n        mint inv = mint(i).inv();\n        for (int\
+    \ j = i; j <= n; j += i) f[j] += inv;\n    }\n    f = exp(f);\n    for (auto x\
+    \ : f) std::cout << x << \" \";\n    std::cout << std::endl;\n    return 0;\n\
+    }\n"
   dependsOn:
   - src/math/fps.hpp
   - src/math/combinatorics.hpp
@@ -734,15 +731,15 @@ data:
   - src/math/modint.hpp
   - src/utility/traits.hpp
   isVerificationFile: true
-  path: test/yosupo/partition-function_2.test.cpp
+  path: test/yosupo/partition-function.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 03:21:45+09:00'
+  timestamp: '2026-10-21 09:35:38+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/yosupo/partition-function_2.test.cpp
+documentation_of: test/yosupo/partition-function.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/yosupo/partition-function_2.test.cpp
-- /verify/test/yosupo/partition-function_2.test.cpp.html
-title: test/yosupo/partition-function_2.test.cpp
+- /verify/test/yosupo/partition-function.1.test.cpp
+- /verify/test/yosupo/partition-function.1.test.cpp.html
+title: test/yosupo/partition-function.1.test.cpp
 ---

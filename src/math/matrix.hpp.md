@@ -25,11 +25,11 @@ data:
     path: test/yosupo/system-of-linear-equations.test.cpp
     title: test/yosupo/system-of-linear-equations.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yukicoder/rotate-enlarge_1.test.cpp
-    title: test/yukicoder/rotate-enlarge_1.test.cpp
+    path: test/yukicoder/rotate-enlarge.1.test.cpp
+    title: test/yukicoder/rotate-enlarge.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yukicoder/rotate-enlarge_2.test.cpp
-    title: test/yukicoder/rotate-enlarge_2.test.cpp
+    path: test/yukicoder/rotate-enlarge.2.test.cpp
+    title: test/yukicoder/rotate-enlarge.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/search-oji.test.cpp
     title: test/yukicoder/search-oji.test.cpp
@@ -685,8 +685,8 @@ data:
   - test/unittest/matrix.test.cpp
   - test/unittest/f2-matrix.test.cpp
   - test/yukicoder/search-oji.test.cpp
-  - test/yukicoder/rotate-enlarge_2.test.cpp
-  - test/yukicoder/rotate-enlarge_1.test.cpp
+  - test/yukicoder/rotate-enlarge.1.test.cpp
+  - test/yukicoder/rotate-enlarge.2.test.cpp
   - test/aoj/3314.test.cpp
   - test/yosupo/matrix-rank.test.cpp
   - test/yosupo/counting-spanning-tree-undirected.test.cpp

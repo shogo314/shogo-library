@@ -14,7 +14,7 @@ data:
     PROBLEM: https://yukicoder.me/problems/no/565
     links:
     - https://yukicoder.me/problems/no/565
-  bundledCode: "#line 1 \"test/yukicoder/rotate-enlarge_1.test.cpp\"\n#define PROBLEM\
+  bundledCode: "#line 1 \"test/yukicoder/rotate-enlarge.2.test.cpp\"\n#define PROBLEM\
     \ \"https://yukicoder.me/problems/no/565\"\n\n#include <iostream>\n#include <string>\n\
     \n#line 2 \"src/math/matrix.hpp\"\n\n/**\n * @file matrix.hpp\n * @brief \u884C\
     \u5217\n */\n\n#include <algorithm>\n#include <cassert>\n#include <cmath>\n#include\
@@ -333,36 +333,34 @@ data:
     \                for (long long k = pivot_col[i]; k < w; k++) {\n            \
     \        A[j][k] = OperatorProperty::add(A[j][k], OperatorProperty::neg(OperatorProperty::mul(A[i][k],\
     \ scale)));\n                }\n            }\n        }\n        return d;\n\
-    \    }\n};\n#line 7 \"test/yukicoder/rotate-enlarge_1.test.cpp\"\n\nstd::string\
+    \    }\n};\n#line 7 \"test/yukicoder/rotate-enlarge.2.test.cpp\"\n\nstd::string\
     \ extend(std::string s, int k) {\n    std::string ret = \"\";\n    for (char c\
     \ : s) ret += std::string(k, c);\n    return ret;\n}\n\nint main() {\n    int\
     \ r, k, h, w;\n    std::cin >> r >> k >> h >> w;\n    std::vector<std::string>\
-    \ c(h);\n    for (int i = 0; i < h; i++) std::cin >> c[i];\n    Matrix<char> mat(c);\n\
-    \    for (int i = 0; i < r; i += 90) mat = mat.transpose().rev_lr();\n    for\
-    \ (auto s : mat.vstr()) {\n        std::string t = extend(s, k);\n        for\
-    \ (int i = 0; i < k; i++) std::cout << t << std::endl;\n    }\n    return 0;\n\
-    }\n"
+    \ c(h);\n    for (int i = 0; i < h; i++) std::cin >> c[i];\n\n    for (auto s\
+    \ : Matrix<char>(c).rotate(r / 90).vstr()) {\n        std::string t = extend(s,\
+    \ k);\n        for (int i = 0; i < k; i++) std::cout << t << std::endl;\n    }\n\
+    \    return 0;\n}\n"
   code: "#define PROBLEM \"https://yukicoder.me/problems/no/565\"\n\n#include <iostream>\n\
     #include <string>\n\n#include \"../../src/math/matrix.hpp\"\n\nstd::string extend(std::string\
     \ s, int k) {\n    std::string ret = \"\";\n    for (char c : s) ret += std::string(k,\
     \ c);\n    return ret;\n}\n\nint main() {\n    int r, k, h, w;\n    std::cin >>\
     \ r >> k >> h >> w;\n    std::vector<std::string> c(h);\n    for (int i = 0; i\
-    \ < h; i++) std::cin >> c[i];\n    Matrix<char> mat(c);\n    for (int i = 0; i\
-    \ < r; i += 90) mat = mat.transpose().rev_lr();\n    for (auto s : mat.vstr())\
-    \ {\n        std::string t = extend(s, k);\n        for (int i = 0; i < k; i++)\
-    \ std::cout << t << std::endl;\n    }\n    return 0;\n}\n"
+    \ < h; i++) std::cin >> c[i];\n\n    for (auto s : Matrix<char>(c).rotate(r /\
+    \ 90).vstr()) {\n        std::string t = extend(s, k);\n        for (int i = 0;\
+    \ i < k; i++) std::cout << t << std::endl;\n    }\n    return 0;\n}\n"
   dependsOn:
   - src/math/matrix.hpp
   isVerificationFile: true
-  path: test/yukicoder/rotate-enlarge_1.test.cpp
+  path: test/yukicoder/rotate-enlarge.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-19 20:29:35+09:00'
+  timestamp: '2026-10-21 09:35:38+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/yukicoder/rotate-enlarge_1.test.cpp
+documentation_of: test/yukicoder/rotate-enlarge.2.test.cpp
 layout: document
 redirect_from:
-- /verify/test/yukicoder/rotate-enlarge_1.test.cpp
-- /verify/test/yukicoder/rotate-enlarge_1.test.cpp.html
-title: test/yukicoder/rotate-enlarge_1.test.cpp
+- /verify/test/yukicoder/rotate-enlarge.2.test.cpp
+- /verify/test/yukicoder/rotate-enlarge.2.test.cpp.html
+title: test/yukicoder/rotate-enlarge.2.test.cpp
 ---

@@ -1,11 +1,24 @@
 ---
 data:
   _extendedDependsOn: []
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':heavy_check_mark:'
+    path: src/math/sum-of-exp-times-poly.hpp
+    title: "\u03A3 r^i f(i) (\u6307\u6570\u95A2\u6570\u3068\u591A\u9805\u5F0F\u306E\
+      \u7A4D\u306E\u548C)"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/unittest/lagrange-interpolation.test.cpp
     title: test/unittest/lagrange-interpolation.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/sum-of-exp-times-poly.test.cpp
+    title: test/unittest/sum-of-exp-times-poly.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/sum-of-exponential-times-polynomial-limit.test.cpp
+    title: test/yosupo/sum-of-exponential-times-polynomial-limit.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/sum-of-exponential-times-polynomial.test.cpp
+    title: test/yosupo/sum-of-exponential-times-polynomial.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -64,11 +77,15 @@ data:
   dependsOn: []
   isVerificationFile: false
   path: src/math/lagrange-interpolation.hpp
-  requiredBy: []
+  requiredBy:
+  - src/math/sum-of-exp-times-poly.hpp
   timestamp: '2026-10-20 17:46:58+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/lagrange-interpolation.test.cpp
+  - test/unittest/sum-of-exp-times-poly.test.cpp
+  - test/yosupo/sum-of-exponential-times-polynomial-limit.test.cpp
+  - test/yosupo/sum-of-exponential-times-polynomial.test.cpp
 documentation_of: src/math/lagrange-interpolation.hpp
 layout: document
 title: "\u30E9\u30B0\u30E9\u30F3\u30B8\u30E5\u88DC\u9593"
@@ -97,3 +114,4 @@ mint s = lagrange_interpolation(y, mint(1000000000000LL));
 
 - 線形漸化式を満たす数列の遠くの項は [線形漸化式](linear-recurrence.hpp)
 - 多くの点での値をまとめて求めるなら [多点評価・多項式補間・標本点のずらし](multipoint.hpp)
+- $\sum r^i f(i)$ (指数関数と多項式の積の和) は [Σ r^i f(i)](sum-of-exp-times-poly.hpp)

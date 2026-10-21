@@ -10,6 +10,10 @@ data:
     path: src/math/divisor-transform.hpp
     title: "\u7D04\u6570\u30FB\u500D\u6570\u306E\u30BC\u30FC\u30BF\u5909\u63DB\u3001\
       \u30E1\u30D3\u30A6\u30B9\u5909\u63DB\u3068 GCD\u30FBLCM \u7573\u307F\u8FBC\u307F"
+  - icon: ':heavy_check_mark:'
+    path: src/math/sum-of-exp-times-poly.hpp
+    title: "\u03A3 r^i f(i) (\u6307\u6570\u95A2\u6570\u3068\u591A\u9805\u5F0F\u306E\
+      \u7A4D\u306E\u548C)"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/0009.test.cpp
@@ -36,6 +40,9 @@ data:
     path: test/unittest/prime.test.cpp
     title: test/unittest/prime.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/sum-of-exp-times-poly.test.cpp
+    title: test/unittest/sum-of-exp-times-poly.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/enumerate-primes.test.cpp
     title: test/yosupo/enumerate-primes.test.cpp
   - icon: ':heavy_check_mark:'
@@ -53,6 +60,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/primitive-root.test.cpp
     title: test/yosupo/primitive-root.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/sum-of-exponential-times-polynomial-limit.test.cpp
+    title: test/yosupo/sum-of-exponential-times-polynomial-limit.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/sum-of-exponential-times-polynomial.test.cpp
+    title: test/yosupo/sum-of-exponential-times-polynomial.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -406,12 +419,14 @@ data:
   isVerificationFile: false
   path: src/math/prime.hpp
   requiredBy:
+  - src/math/sum-of-exp-times-poly.hpp
   - src/math/divisor-transform.hpp
   timestamp: '2026-10-20 17:15:36+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/prime.test.cpp
   - test/unittest/prime-counting.test.cpp
+  - test/unittest/sum-of-exp-times-poly.test.cpp
   - test/unittest/divisor-transform.test.cpp
   - test/aoj/ntl-1-d.test.cpp
   - test/aoj/ntl-1-a.test.cpp
@@ -423,7 +438,9 @@ data:
   - test/yosupo/gcd-convolution.test.cpp
   - test/yosupo/enumerate-primes.test.cpp
   - test/yosupo/lcm-convolution.test.cpp
+  - test/yosupo/sum-of-exponential-times-polynomial-limit.test.cpp
   - test/yosupo/primitive-root.test.cpp
+  - test/yosupo/sum-of-exponential-times-polynomial.test.cpp
 documentation_of: src/math/prime.hpp
 layout: document
 title: "\u7D20\u6570 (\u7D20\u6570\u5224\u5B9A\u3001\u7D20\u56E0\u6570\u5206\u89E3\

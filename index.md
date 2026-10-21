@@ -324,6 +324,10 @@ data:
       path: src/math/stern-brocot.hpp
       title: "Stern\u2013Brocot \u6728\u3068\u9023\u5206\u6570"
     - icon: ':heavy_check_mark:'
+      path: src/math/sum-of-exp-times-poly.hpp
+      title: "\u03A3 r^i f(i) (\u6307\u6570\u95A2\u6570\u3068\u591A\u9805\u5F0F\u306E\
+        \u7A4D\u306E\u548C)"
+    - icon: ':heavy_check_mark:'
       path: src/math/xor-basis.hpp
       title: "XOR \u57FA\u5E95 (F2 \u4E0A\u306E\u7DDA\u5F62\u57FA\u5E95)"
   - name: src/others
@@ -996,6 +1000,9 @@ data:
       path: test/unittest/suffix-automaton.test.cpp
       title: test/unittest/suffix-automaton.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/sum-of-exp-times-poly.test.cpp
+      title: test/unittest/sum-of-exp-times-poly.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/tadpole-array.test.cpp
       title: test/unittest/tadpole-array.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1229,14 +1236,14 @@ data:
       path: test/yosupo/number-of-substrings.2.test.cpp
       title: test/yosupo/number-of-substrings.2.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/yosupo/partition-function.test.cpp
-      title: test/yosupo/partition-function.test.cpp
+      path: test/yosupo/partition-function.1.test.cpp
+      title: test/yosupo/partition-function.1.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/yosupo/partition-function_1.test.cpp
-      title: test/yosupo/partition-function_1.test.cpp
+      path: test/yosupo/partition-function.2.test.cpp
+      title: test/yosupo/partition-function.2.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/yosupo/partition-function_2.test.cpp
-      title: test/yosupo/partition-function_2.test.cpp
+      path: test/yosupo/partition-function.3.test.cpp
+      title: test/yosupo/partition-function.3.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/persistent-queue.test.cpp
       title: test/yosupo/persistent-queue.test.cpp
@@ -1415,6 +1422,12 @@ data:
       path: test/yosupo/suffixarray.test.cpp
       title: test/yosupo/suffixarray.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/sum-of-exponential-times-polynomial-limit.test.cpp
+      title: test/yosupo/sum-of-exponential-times-polynomial-limit.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/sum-of-exponential-times-polynomial.test.cpp
+      title: test/yosupo/sum-of-exponential-times-polynomial.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/sum-of-floor-of-linear.test.cpp
       title: test/yosupo/sum-of-floor-of-linear.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1489,11 +1502,11 @@ data:
       path: test/yukicoder/898.test.cpp
       title: test/yukicoder/898.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/yukicoder/rotate-enlarge_1.test.cpp
-      title: test/yukicoder/rotate-enlarge_1.test.cpp
+      path: test/yukicoder/rotate-enlarge.1.test.cpp
+      title: test/yukicoder/rotate-enlarge.1.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/yukicoder/rotate-enlarge_2.test.cpp
-      title: test/yukicoder/rotate-enlarge_2.test.cpp
+      path: test/yukicoder/rotate-enlarge.2.test.cpp
+      title: test/yukicoder/rotate-enlarge.2.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yukicoder/search-oji.test.cpp
       title: test/yukicoder/search-oji.test.cpp

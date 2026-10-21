@@ -33,8 +33,8 @@ data:
     path: test/yosupo/bernoulli-number.test.cpp
     title: test/yosupo/bernoulli-number.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/partition-function.test.cpp
-    title: test/yosupo/partition-function.test.cpp
+    path: test/yosupo/partition-function.3.test.cpp
+    title: test/yosupo/partition-function.3.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/stirling-number-of-the-first-kind.test.cpp
     title: test/yosupo/stirling-number-of-the-first-kind.test.cpp
@@ -849,9 +849,9 @@ data:
   - test/unittest/combinatorial-sequences.test.cpp
   - test/yosupo/stirling-number-of-the-second-kind.test.cpp
   - test/yosupo/bell-number.test.cpp
+  - test/yosupo/partition-function.3.test.cpp
   - test/yosupo/stirling-number-of-the-first-kind.test.cpp
   - test/yosupo/bernoulli-number.test.cpp
-  - test/yosupo/partition-function.test.cpp
 documentation_of: src/math/combinatorial-sequences.hpp
 layout: document
 title: "\u5206\u5272\u6570\u30FB\u30D9\u30EB\u30CC\u30FC\u30A4\u6570\u30FB\u30B9\u30BF\

@@ -35,7 +35,7 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/partition_function
     links:
     - https://judge.yosupo.jp/problem/partition_function
-  bundledCode: "#line 1 \"test/yosupo/partition-function.test.cpp\"\n#define PROBLEM\
+  bundledCode: "#line 1 \"test/yosupo/partition-function.3.test.cpp\"\n#define PROBLEM\
     \ \"https://judge.yosupo.jp/problem/partition_function\"\n\n#include <iostream>\n\
     \n#line 2 \"src/math/combinatorial-sequences.hpp\"\n\n/**\n * @file combinatorial-sequences.hpp\n\
     \ * @brief \u5206\u5272\u6570\u30FB\u30D9\u30EB\u30CC\u30FC\u30A4\u6570\u30FB\u30B9\
@@ -767,7 +767,7 @@ data:
     \ bell_numbers(long long n) {\n    using C = Combination<mint>;\n    C::extend(n);\n\
     \    FPS<mint> g(n + 1, 0);\n    for (long long k = 1; k <= n; k++) g[k] = C::inverse_factorial(k);\n\
     \    FPS<mint> f = exp(g, n + 1);\n    for (long long k = 0; k <= n; k++) f[k]\
-    \ *= C::factorial(k);\n    return f;\n}\n#line 7 \"test/yosupo/partition-function.test.cpp\"\
+    \ *= C::factorial(k);\n    return f;\n}\n#line 7 \"test/yosupo/partition-function.3.test.cpp\"\
     \n\nusing mint = modint998244353;\n\nint main() {\n    std::cin.tie(nullptr);\n\
     \    std::ios::sync_with_stdio(false);\n    int n;\n    std::cin >> n;\n    auto\
     \ f = partition_numbers<mint>(n);\n    for (int i = 0; i <= n; i++) std::cout\
@@ -788,15 +788,15 @@ data:
   - src/utility/traits.hpp
   - src/math/fps.hpp
   isVerificationFile: true
-  path: test/yosupo/partition-function.test.cpp
+  path: test/yosupo/partition-function.3.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 09:21:02+09:00'
+  timestamp: '2026-10-21 09:35:38+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/yosupo/partition-function.test.cpp
+documentation_of: test/yosupo/partition-function.3.test.cpp
 layout: document
 redirect_from:
-- /verify/test/yosupo/partition-function.test.cpp
-- /verify/test/yosupo/partition-function.test.cpp.html
-title: test/yosupo/partition-function.test.cpp
+- /verify/test/yosupo/partition-function.3.test.cpp
+- /verify/test/yosupo/partition-function.3.test.cpp.html
+title: test/yosupo/partition-function.3.test.cpp
 ---

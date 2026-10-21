@@ -21,7 +21,8 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/math/multipoint.hpp
     title: "\u591A\u70B9\u8A55\u4FA1\u30FB\u591A\u9805\u5F0F\u88DC\u9593\u30FB\u6A19\
-      \u672C\u70B9\u306E\u305A\u3089\u3057"
+      \u672C\u70B9\u306E\u305A\u3089\u3057 (\u7B49\u6BD4\u6570\u5217\u306E\u70B9\u3082\
+      )"
   - icon: ':heavy_check_mark:'
     path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
@@ -589,7 +590,9 @@ data:
     \ static_cast<__int128_t>(mod0) * y1 + y0;\n        if (tmp < (mod012 >> 1))\n\
     \            res[i] = tmp;\n        else\n            res[i] = tmp - mod012;\n\
     \    }\n    return res;\n}\n#line 18 \"src/math/fps.hpp\"\n\ntemplate <typename\
-    \ mint>\nstruct FPS : std::vector<mint> {\n    using std::vector<mint>::vector;\n\
+    \ mint>\nstruct FPS;\n\nnamespace internal_fps {\ntemplate <typename mint>\nFPS<mint>\
+    \ gcd(const FPS<mint>& f, const FPS<mint>& g);\n}  // namespace internal_fps\n\
+    \ntemplate <typename mint>\nstruct FPS : std::vector<mint> {\n    using std::vector<mint>::vector;\n\
     \n    // constructor\n    FPS(const std::vector<mint>& r) : std::vector<mint>(r)\
     \ {}\n\n    // core operator\n    inline FPS pre(long long siz) const {\n    \
     \    return FPS(begin(*this), begin(*this) + std::min(static_cast<long long>(this->size()),\
@@ -630,37 +633,39 @@ data:
     \        return *this = res;\n    }\n    inline mint eval(const mint& v) {\n \
     \       mint res = 0;\n        for (int i = static_cast<int>(this->size()) - 1;\
     \ i >= 0; --i) {\n            res *= v;\n            res += (*this)[i];\n    \
-    \    }\n        return res;\n    }\n    inline friend FPS gcd(const FPS& f, const\
-    \ FPS& g) {\n        if (g.empty()) return f;\n        return gcd(g, f % g);\n\
-    \    }\n\n    // advanced operation\n    // df/dx\n    inline friend FPS diff(const\
-    \ FPS& f) {\n        int n = static_cast<int>(f.size());\n        if (n == 0)\
-    \ return FPS();\n        FPS res(n - 1);\n        for (int i = 1; i < n; ++i)\
-    \ res[i - 1] = f[i] * i;\n        return res;\n    }\n\n    // \\int f dx\n  \
-    \  inline friend FPS intg(const FPS& f) {\n        int n = static_cast<int>(f.size());\n\
-    \        FPS res(n + 1, 0);\n        for (int i = 0; i < n; ++i) res[i + 1] =\
-    \ f[i] / (i + 1);\n        return res;\n    }\n\n    // inv(f), f[0] must not\
-    \ be 0\n    inline friend FPS inv(const FPS& f, long long deg) {\n        assert(!f.empty()\
-    \ && f[0] != 0);\n        if (deg < 0) deg = static_cast<long long>(f.size());\n\
-    \        if (deg == 0) return FPS();\n        FPS res({mint(1) / f[0]});\n   \
-    \     for (long long i = 1; i < deg; i <<= 1) {\n            res = (res + res\
-    \ - res * res * f.pre(i << 1)).pre(i << 1);\n        }\n        res.resize(deg);\n\
-    \        return res;\n    }\n    inline friend FPS inv(const FPS& f) {\n     \
-    \   return inv(f, f.size());\n    }\n\n    // division, r must be normalized (r.back()\
-    \ must not be 0)\n    inline FPS& operator/=(const FPS& r) {\n        assert(!r.empty());\n\
-    \        assert(r.back() != 0);\n        this->normalize();\n        if (this->size()\
-    \ < r.size()) {\n            this->clear();\n            return *this;\n     \
-    \   }\n        const long long need = static_cast<long long>(this->size()) - static_cast<long\
-    \ long>(r.size()) + 1;\n        *this = ((*this).rev().pre(need) * inv(r.rev(),\
-    \ need)).pre(need).rev();\n        return *this;\n    }\n    inline FPS& operator%=(const\
-    \ FPS& r) {\n        return *this = divmod(*this, r).second;\n    }\n    inline\
-    \ FPS operator/(const FPS& r) const { return FPS(*this) /= r; }\n    inline FPS\
-    \ operator%(const FPS& r) const { return FPS(*this) %= r; }\n    // {f / g, f\
-    \ % g}, g must be normalized (g.back() must not be 0)\n    inline friend std::pair<FPS,\
-    \ FPS> divmod(const FPS& f, const FPS& g) {\n        assert(!g.empty());\n   \
-    \     assert(g.back() != 0);\n        FPS q = f / g;\n        FPS r = f - q *\
-    \ g;\n        return {q, r};\n    }\n\n    // log(f) = \\int f'/f dx, f[0] must\
-    \ be 1\n    inline friend FPS log(const FPS& f, long long deg) {\n        assert(!f.empty()\
-    \ && f[0] == 1);\n        FPS res = intg(diff(f) * inv(f, deg));\n        res.resize(deg);\n\
+    \    }\n        return res;\n    }\n    // \u6700\u9AD8\u6B21\u306E\u4FC2\u6570\
+    \u304C 1 \u306E gcd (Half-GCD)\u3002f \u3068 g \u304C\u3068\u3082\u306B 0 \u306A\
+    \u3089 0 (\u7A7A)\n    inline friend FPS gcd(const FPS& f, const FPS& g) {\n \
+    \       return internal_fps::gcd(f, g);\n    }\n\n    // advanced operation\n\
+    \    // df/dx\n    inline friend FPS diff(const FPS& f) {\n        int n = static_cast<int>(f.size());\n\
+    \        if (n == 0) return FPS();\n        FPS res(n - 1);\n        for (int\
+    \ i = 1; i < n; ++i) res[i - 1] = f[i] * i;\n        return res;\n    }\n\n  \
+    \  // \\int f dx\n    inline friend FPS intg(const FPS& f) {\n        int n =\
+    \ static_cast<int>(f.size());\n        FPS res(n + 1, 0);\n        for (int i\
+    \ = 0; i < n; ++i) res[i + 1] = f[i] / (i + 1);\n        return res;\n    }\n\n\
+    \    // inv(f), f[0] must not be 0\n    inline friend FPS inv(const FPS& f, long\
+    \ long deg) {\n        assert(!f.empty() && f[0] != 0);\n        if (deg < 0)\
+    \ deg = static_cast<long long>(f.size());\n        if (deg == 0) return FPS();\n\
+    \        FPS res({mint(1) / f[0]});\n        for (long long i = 1; i < deg; i\
+    \ <<= 1) {\n            res = (res + res - res * res * f.pre(i << 1)).pre(i <<\
+    \ 1);\n        }\n        res.resize(deg);\n        return res;\n    }\n    inline\
+    \ friend FPS inv(const FPS& f) {\n        return inv(f, f.size());\n    }\n\n\
+    \    // division, r must be normalized (r.back() must not be 0)\n    inline FPS&\
+    \ operator/=(const FPS& r) {\n        assert(!r.empty());\n        assert(r.back()\
+    \ != 0);\n        this->normalize();\n        if (this->size() < r.size()) {\n\
+    \            this->clear();\n            return *this;\n        }\n        const\
+    \ long long need = static_cast<long long>(this->size()) - static_cast<long long>(r.size())\
+    \ + 1;\n        *this = ((*this).rev().pre(need) * inv(r.rev(), need)).pre(need).rev();\n\
+    \        return *this;\n    }\n    inline FPS& operator%=(const FPS& r) {\n  \
+    \      return *this = divmod(*this, r).second;\n    }\n    inline FPS operator/(const\
+    \ FPS& r) const { return FPS(*this) /= r; }\n    inline FPS operator%(const FPS&\
+    \ r) const { return FPS(*this) %= r; }\n    // {f / g, f % g}, g must be normalized\
+    \ (g.back() must not be 0)\n    inline friend std::pair<FPS, FPS> divmod(const\
+    \ FPS& f, const FPS& g) {\n        assert(!g.empty());\n        assert(g.back()\
+    \ != 0);\n        FPS q = f / g;\n        FPS r = f - q * g;\n        return {q,\
+    \ r};\n    }\n\n    // log(f) = \\int f'/f dx, f[0] must be 1\n    inline friend\
+    \ FPS log(const FPS& f, long long deg) {\n        assert(!f.empty() && f[0] ==\
+    \ 1);\n        FPS res = intg(diff(f) * inv(f, deg));\n        res.resize(deg);\n\
     \        return res;\n    }\n    inline friend FPS log(const FPS& f) {\n     \
     \   return log(f, f.size());\n    }\n\n    // exp(f), f[0] must be 0\n    inline\
     \ friend FPS exp(const FPS& f, long long deg) {\n        assert(f.empty() || f[0]\
@@ -701,10 +706,79 @@ data:
     \  FPS<mint> g(n, 1);\n        for (int i = 1; i < n; i++) g[i] = g[i - 1] * a\
     \ * C::inv(i);\n        f = (f * g).pre(n);\n        std::reverse(f.begin(), f.end());\n\
     \        for (int i = 0; i < n; i++) f[i] *= C::inverse_factorial(i);\n      \
-    \  return f;\n    }\n};\n\ntemplate <typename mint>\nFPS<mint> modpow(const FPS<mint>&\
-    \ f, long long n, const FPS<mint>& m) {\n    if (n == 0) return FPS<mint>(1, 1);\n\
-    \    auto t = modpow(f, n / 2, m);\n    t = (t * t) % m;\n    if (n & 1) t = (t\
-    \ * f) % m;\n    return t;\n}\n\n/**\n * @brief \u591A\u9805\u5F0F\u306E\u5217\
+    \  return f;\n    }\n};\n\nnamespace internal_fps {\ntemplate <typename mint>\n\
+    FPS<mint> shrink(FPS<mint> f) {\n    f.normalize();\n    return f;\n}\n\n// x^k\
+    \ \u3067\u5272\u3063\u3066\u4F4E\u6B21\u306E\u9805\u3092\u6368\u3066\u308B\u3002\
+    \u9577\u3055\u304C k \u4EE5\u4E0B\u306A\u3089 0 (\u7A7A)\ntemplate <typename mint>\n\
+    FPS<mint> drop(const FPS<mint>& f, long long k) {\n    if (static_cast<long long>(f.size())\
+    \ <= k) return FPS<mint>();\n    return FPS<mint>(f.begin() + k, f.end());\n}\n\
+    \n// \u591A\u9805\u5F0F\u3092\u6210\u5206\u306B\u6301\u3064 2x2 \u884C\u5217 [[a,\
+    \ b], [c, d]]\ntemplate <typename mint>\nstruct Mat {\n    FPS<mint> a, b, c,\
+    \ d;\n    static Mat identity() { return {FPS<mint>{1}, FPS<mint>(), FPS<mint>(),\
+    \ FPS<mint>{1}}; }\n    Mat operator*(const Mat& r) const {\n        return {shrink(a\
+    \ * r.a + b * r.c), shrink(a * r.b + b * r.d), shrink(c * r.a + d * r.c), shrink(c\
+    \ * r.b + d * r.d)};\n    }\n    std::pair<FPS<mint>, FPS<mint>> operator*(const\
+    \ std::pair<FPS<mint>, FPS<mint>>& p) const {\n        return {shrink(a * p.first\
+    \ + b * p.second), shrink(c * p.first + d * p.second)};\n    }\n};\n\n// \u4E92\
+    \u9664\u6CD5\u3092 1 \u6BB5\u9032\u3081\u308B: (p, q) <- (q, p % q)\u3001m <-\
+    \ [[0, 1], [1, -p / q]] m\ntemplate <typename mint>\nvoid step(Mat<mint>& m, std::pair<FPS<mint>,\
+    \ FPS<mint>>& p) {\n    const FPS<mint> quo = p.first / p.second;\n    FPS<mint>\
+    \ rem = shrink(p.first - p.second * quo);\n    FPS<mint> c = shrink(m.a - m.c\
+    \ * quo), d = shrink(m.b - m.d * quo);\n    m = {std::move(m.c), std::move(m.d),\
+    \ std::move(c), std::move(d)};\n    p = {std::move(p.second), std::move(rem)};\n\
+    }\n\n// p = (f, g) (|f| = n > |g|) \u306B\u5BFE\u3057\u3001\u4E92\u9664\u6CD5\u3067\
+    \u9577\u3055\u304C ceil(n / 2) \u4EE5\u4E0B\u306B\u306A\u308B\u76F4\u524D\u307E\
+    \u3067\u306E\u5909\u63DB\u884C\u5217\ntemplate <typename mint>\nMat<mint> half_gcd(std::pair<FPS<mint>,\
+    \ FPS<mint>> p) {\n    const long long n = p.first.size(), m = p.second.size();\n\
+    \    const long long k = (n + 1) / 2;\n    if (m <= k) return Mat<mint>::identity();\n\
+    \    // \u4E0A\u4F4D\u306E\u534A\u5206\u3060\u3051\u3067\u6C42\u3081\u305F\u884C\
+    \u5217\u306F\u3001\u4E0A\u4F4D\u306E\u7D04\u534A\u5206\u306E\u5546\u3092\u6B63\
+    \u3057\u304F\u4E0E\u3048\u308B\n    Mat<mint> m1 = half_gcd(std::make_pair(drop(p.first,\
+    \ k), drop(p.second, k)));\n    p = m1 * p;\n    if (static_cast<long long>(p.second.size())\
+    \ <= k) return m1;\n    step(m1, p);\n    if (static_cast<long long>(p.second.size())\
+    \ <= k) return m1;\n    const long long l = static_cast<long long>(p.first.size())\
+    \ - 1;\n    const long long j = 2 * k - l;\n    p = {drop(p.first, j), drop(p.second,\
+    \ j)};\n    return half_gcd(std::move(p)) * m1;\n}\n\n// M (f, g) = (gcd(f, g),\
+    \ 0) \u3068\u306A\u308B\u884C\u5217 M\ntemplate <typename mint>\nMat<mint> gcd_matrix(const\
+    \ FPS<mint>& f, const FPS<mint>& g) {\n    std::pair<FPS<mint>, FPS<mint>> p{shrink(f),\
+    \ shrink(g)};\n    if (p.first.size() < p.second.size()) {\n        Mat<mint>\
+    \ m = gcd_matrix(g, f);\n        std::swap(m.a, m.b);\n        std::swap(m.c,\
+    \ m.d);\n        return m;\n    }\n    Mat<mint> res = Mat<mint>::identity();\n\
+    \    while (!p.second.empty()) {\n        Mat<mint> m1 = half_gcd(p);\n      \
+    \  p = m1 * p;\n        if (!p.second.empty()) step(m1, p);\n        res = m1\
+    \ * res;\n    }\n    return res;\n}\n// \u6700\u9AD8\u6B21\u306E\u4FC2\u6570\u304C\
+    \ 1 \u306E gcd\u3002\u884C\u5217\u306F\u639B\u3051\u5408\u308F\u305B\u305A\u3001\
+    \u7D44 (p, q) \u3060\u3051\u3092\u9032\u3081\u308B\ntemplate <typename mint>\n\
+    FPS<mint> gcd(const FPS<mint>& f, const FPS<mint>& g) {\n    std::pair<FPS<mint>,\
+    \ FPS<mint>> p{shrink(f), shrink(g)};\n    if (p.first.size() < p.second.size())\
+    \ std::swap(p.first, p.second);\n    while (!p.second.empty()) {\n        Mat<mint>\
+    \ m1 = half_gcd(p);\n        p = m1 * p;\n        if (!p.second.empty()) step(m1,\
+    \ p);\n    }\n    if (!p.first.empty()) p.first /= p.first.back();\n    return\
+    \ p.first;\n}\n}  // namespace internal_fps\n\ntemplate <typename mint>\nFPS<mint>\
+    \ modpow(const FPS<mint>& f, long long n, const FPS<mint>& m) {\n    if (n ==\
+    \ 0) return FPS<mint>(1, 1);\n    auto t = modpow(f, n / 2, m);\n    t = (t *\
+    \ t) % m;\n    if (n & 1) t = (t * f) % m;\n    return t;\n}\n\n/**\n * @brief\
+    \ a f + b g = d (d \u306F f \u3068 g \u306E\u6700\u5927\u516C\u7D04\u6570\u3067\
+    \u3001\u6700\u9AD8\u6B21\u306E\u4FC2\u6570\u304C 1) \u3068\u306A\u308B a\u3001\
+    b \u3092\u6C42\u3081\u3001d \u3092\u8FD4\u3059 O(n log^2 n)\n * f \u3068 g \u304C\
+    \u3068\u3082\u306B 0 \u306A\u3089 d = a = b = 0\u3002a\u3001b \u306F\u672B\u5C3E\
+    \u306E 0 \u3092\u53D6\u308A\u9664\u3044\u305F\u5F62\n */\ntemplate <typename mint>\n\
+    FPS<mint> extgcd(const FPS<mint>& f, const FPS<mint>& g, FPS<mint>& a, FPS<mint>&\
+    \ b) {\n    using namespace internal_fps;\n    Mat<mint> m = gcd_matrix(f, g);\n\
+    \    FPS<mint> d = shrink(m.a * shrink(f) + m.b * shrink(g));\n    a = std::move(m.a),\
+    \ b = std::move(m.b);\n    if (d.empty()) {\n        a.clear(), b.clear();\n \
+    \       return d;\n    }\n    const mint iv = d.back().inv();\n    d *= iv, a\
+    \ *= iv, b *= iv;\n    return d;\n}\n\n/**\n * @brief f h \u2261 1 (mod g) \u3067\
+    \u3001\u6B21\u6570\u304C g \u3088\u308A\u5C0F\u3055\u3044 h\u3002\u306A\u3051\u308C\
+    \u3070 std::nullopt O(n log^2 n)\n * g \u306F 0 \u3067\u306A\u3044\u3053\u3068\
+    \u3002g \u304C\u5B9A\u6570\u306A\u3089\u3059\u3079\u3066\u304C 0 \u3068\u5408\u540C\
+    \u306A\u306E\u3067\u3001h = 0 (\u7A7A) \u3092\u8FD4\u3059\u3002h \u306F\u672B\u5C3E\
+    \u306E 0 \u3092\u53D6\u308A\u9664\u3044\u305F\u5F62\n */\ntemplate <typename mint>\n\
+    std::optional<FPS<mint>> modinv(const FPS<mint>& f, const FPS<mint>& g) {\n  \
+    \  using namespace internal_fps;\n    const FPS<mint> gs = shrink(g);\n    assert(!gs.empty());\n\
+    \    if (gs.size() == 1) return FPS<mint>();\n    FPS<mint> a, b;\n    const FPS<mint>\
+    \ d = extgcd(shrink(f % gs), gs, a, b);\n    if (d.size() != 1) return std::nullopt;\n\
+    \    return shrink(a % gs);\n}\n\n/**\n * @brief \u591A\u9805\u5F0F\u306E\u5217\
     \u306E\u7A4D f_0 f_1 ... f_{n-1} O(N log^2 N) (N \u306F\u6B21\u6570\u306E\u548C\
     )\n * \u6B21\u6570\u306E\u5C0F\u3055\u3044\u3082\u306E\u304B\u3089 2 \u3064\u305A\
     \u3064\u639B\u3051\u3066\u3044\u304F\u3002fs \u304C\u7A7A\u306A\u3089 1\n */\n\
@@ -719,7 +793,7 @@ data:
     \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n#line 2 \"src/math/multipoint.hpp\"\
     \n\n/**\n * @file multipoint.hpp\n * @brief \u591A\u70B9\u8A55\u4FA1\u30FB\u591A\
     \u9805\u5F0F\u88DC\u9593\u30FB\u6A19\u672C\u70B9\u306E\u305A\u3089\u3057\n */\n\
-    \n#line 10 \"src/math/multipoint.hpp\"\n\n#line 14 \"src/math/multipoint.hpp\"\
+    \n#line 11 \"src/math/multipoint.hpp\"\n\n#line 15 \"src/math/multipoint.hpp\"\
     \n\nnamespace internal_multipoint {\n// \u70B9 xs \u306E subproduct tree: tree[k]\
     \ \u306F\u9802\u70B9 k \u304C\u53D7\u3051\u6301\u3064\u70B9 x_i \u306B\u3064\u3044\
     \u3066 \u03A0 (x - x_i)\u3002\u8449\u306F sz + i\ntemplate <typename mint>\nstruct\
@@ -804,7 +878,66 @@ data:
     \ x \u304C p \u306B\u623B\u3063\u305F\u3068\u304D)\n        long long len = std::min(m\
     \ - k, p - x);\n        auto part = internal_multipoint::shift_no_overlap(ys,\
     \ mint(x), len);\n        for (long long i = 0; i < len; i++) res[k + i] = part[i];\n\
-    \        k += len;\n    }\n    return res;\n}\n#line 9 \"test/yosupo/polynomial/multipoint-evaluation.test.cpp\"\
+    \        k += len;\n    }\n    return res;\n}\n\n/**\n * @brief \u591A\u9805\u5F0F\
+    \ f \u306E\u3001\u7B49\u6BD4\u6570\u5217\u306E\u70B9 a r^i (0 <= i < m) \u3067\
+    \u306E\u5024 O((n + m) log (n + m)) (chirp-z \u5909\u63DB)\n * ij = C(i + j, 2)\
+    \ - C(i, 2) - C(j, 2) \u3092\u4F7F\u3046\u3068 f(a r^i) = r^{-C(i, 2)} \u03A3\
+    _j (f_j a^j r^{-C(j, 2)}) r^{C(i + j, 2)} \u3068\u306A\u308A\u3001\u7573\u307F\
+    \u8FBC\u307F 1 \u56DE\u3067\u6C42\u307E\u308B\n */\ntemplate <typename mint>\n\
+    std::vector<mint> multipoint_evaluation_geometric(const FPS<mint>& f, mint a,\
+    \ mint r, long long m) {\n    const long long n = f.size();\n    std::vector<mint>\
+    \ res(m);\n    if (m == 0 || n == 0) return res;\n    if (r == 0) {\n        //\
+    \ \u70B9\u306F a, 0, 0, ...\n        for (long long j = n - 1; j >= 0; j--) res[0]\
+    \ = res[0] * a + f[j];\n        for (long long i = 1; i < m; i++) res[i] = f[0];\n\
+    \        return res;\n    }\n    // w[k] = r^{C(k, 2)}\u3001iw[k] = r^{-C(k, 2)}\n\
+    \    const long long len = n + m - 1;\n    const mint ir = r.inv();\n    std::vector<mint>\
+    \ w(len), iw(std::max(n, m));\n    mint p = 1;\n    w[0] = 1;\n    for (long long\
+    \ k = 0; k + 1 < len; k++) w[k + 1] = w[k] * p, p *= r;\n    p = 1;\n    iw[0]\
+    \ = 1;\n    for (long long k = 0; k + 1 < static_cast<long long>(iw.size()); k++)\
+    \ iw[k + 1] = iw[k] * p, p *= ir;\n    // A \u3092\u9006\u9806\u306B\u4E26\u3079\
+    \u3066\u7573\u307F\u8FBC\u3080\u3068\u3001[n - 1 + i] \u304C \u03A3_j A_j w[i\
+    \ + j] \u306B\u306A\u308B\n    std::vector<mint> A(n);\n    mint aj = 1;\n   \
+    \ for (long long j = 0; j < n; j++) A[n - 1 - j] = f[j] * aj * iw[j], aj *= a;\n\
+    \    std::vector<mint> c = convolution(A, w);\n    for (long long i = 0; i < m;\
+    \ i++) res[i] = iw[i] * c[n - 1 + i];\n    return res;\n}\n\nnamespace internal_multipoint\
+    \ {\n// \u03A0_{j<n} (x - a r^j) O(n log n)\n// \u524D\u534A h = \u03A0_{j<k}\
+    \ (x - a r^j) \u304B\u3089\u3001\u5F8C\u534A\u306F \u03A0_{j<k} (x - a r^{j+k})\
+    \ = r^{k^2} h(x r^{-k}) \u3068\u4FC2\u6570\u3092\u5909\u3048\u308B\u3060\u3051\
+    \u3067\u6C42\u307E\u308B\ntemplate <typename mint>\nFPS<mint> geometric_product(mint\
+    \ a, mint r, long long n) {\n    if (n == 0) return FPS<mint>{1};\n    if (n %\
+    \ 2 == 1) {\n        FPS<mint> h = geometric_product(a, r, n - 1);\n        return\
+    \ h * FPS<mint>{-a * r.pow(n - 1), 1};\n    }\n    const long long k = n / 2;\n\
+    \    FPS<mint> h = geometric_product(a, r, k);\n    const mint rk = r.pow(k),\
+    \ irk = rk.inv();\n    FPS<mint> g = h;\n    mint c = rk.pow(k);\n    for (auto&\
+    \ x : g) x *= c, c *= irk;\n    return h * g;\n}\n}  // namespace internal_multipoint\n\
+    \n/**\n * @brief \u7B49\u6BD4\u6570\u5217\u306E\u70B9 (a r^i, y_i) (0 <= i < n)\
+    \ \u3092\u3059\u3079\u3066\u901A\u308B n - 1 \u6B21\u4EE5\u4E0B\u306E\u591A\u9805\
+    \u5F0F (\u9577\u3055 n) O(n log n)\n * a r^i \u306F\u4E92\u3044\u306B\u7570\u306A\
+    \u308B\u3053\u3068 (n >= 2 \u306A\u3089 a != 0\u3001r != 0)\n * f = M \u03A3_i\
+    \ w_i / (x - x_i) (M = \u03A0 (x - x_j)\u3001w_i = y_i / \u03A0_{j != i} (x_i\
+    \ - x_j))\u3002\n * \u548C\u306E x^k \u306E\u4FC2\u6570 -a^{-(k+1)} \u03A3_i w_i\
+    \ r^{-i(k+1)} \u306F\u7B49\u6BD4\u6570\u5217\u306E\u70B9\u3067\u306E\u591A\u70B9\
+    \u8A55\u4FA1\u3067\u6C42\u307E\u308B\n */\ntemplate <typename mint>\nFPS<mint>\
+    \ polynomial_interpolation_geometric(mint a, mint r, const std::vector<mint>&\
+    \ ys) {\n    const long long n = ys.size();\n    if (n == 0) return FPS<mint>();\n\
+    \    if (n == 1) return FPS<mint>{ys[0]};\n    assert(a != 0 && r != 0);\n   \
+    \ const mint ir = r.inv();\n    // pw[k] = r^k\u3001P[k] = \u03A0_{t=1}^{k} (r^t\
+    \ - 1)\n    std::vector<mint> pw(n), ipw(n), P(n), iP(n);\n    pw[0] = ipw[0]\
+    \ = P[0] = 1;\n    for (long long k = 1; k < n; k++) pw[k] = pw[k - 1] * r, ipw[k]\
+    \ = ipw[k - 1] * ir, P[k] = P[k - 1] * (pw[k] - 1);\n    assert(P[n - 1] != 0\
+    \ && \"a r^i must be distinct\");\n    iP[n - 1] = P[n - 1].inv();\n    for (long\
+    \ long k = n - 1; k >= 1; k--) iP[k - 1] = iP[k] * (pw[k] - 1);\n    // \u03A0\
+    _{j != i} (x_i - x_j) = a^{n-1} r^{e_i} P_i (-1)^{n-1-i} P_{n-1-i}\u3001e_i =\
+    \ C(i, 2) + i (n - 1 - i)\n    // e_{i+1} - e_i = n - 2 - i \u306A\u306E\u3067\
+    \u3001r^{-e_i} \u306F\u9806\u306B\u639B\u3051\u3066\u6C42\u3081\u308B\n    std::vector<mint>\
+    \ W(n);\n    const mint ian = a.inv().pow(n - 1);\n    mint ire = 1;\n    for\
+    \ (long long i = 0; i < n; i++) {\n        W[i] = ys[i] * ian * ire * iP[i] *\
+    \ iP[n - 1 - i];\n        if ((n - 1 - i) % 2 == 1) W[i] = -W[i];\n        if\
+    \ (i + 1 < n) ire *= ipw[n - 2 - i];\n    }\n    std::vector<mint> s = multipoint_evaluation_geometric(FPS<mint>(W),\
+    \ ir, ir, n);\n    const mint ia = a.inv();\n    mint c = ia;\n    FPS<mint> S(n);\n\
+    \    for (long long k = 0; k < n; k++) S[k] = -c * s[k], c *= ia;\n    FPS<mint>\
+    \ f = (internal_multipoint::geometric_product(a, r, n) * S).pre(n);\n    f.resize(n);\n\
+    \    return f;\n}\n#line 9 \"test/yosupo/polynomial/multipoint-evaluation.test.cpp\"\
     \n\nusing mint = modint998244353;\n\nint main() {\n    std::cin.tie(nullptr);\n\
     \    std::ios::sync_with_stdio(false);\n    int n, m;\n    std::cin >> n >> m;\n\
     \    FPS<mint> f(n);\n    for (auto& x : f) std::cin >> x;\n    std::vector<mint>\
@@ -831,7 +964,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/polynomial/multipoint-evaluation.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:37:20+09:00'
+  timestamp: '2026-10-22 00:31:13+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/polynomial/multipoint-evaluation.test.cpp

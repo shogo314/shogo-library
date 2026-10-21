@@ -297,14 +297,11 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/math/multipoint.hpp
       title: "\u591A\u70B9\u8A55\u4FA1\u30FB\u591A\u9805\u5F0F\u88DC\u9593\u30FB\u6A19\
-        \u672C\u70B9\u306E\u305A\u3089\u3057"
+        \u672C\u70B9\u306E\u305A\u3089\u3057 (\u7B49\u6BD4\u6570\u5217\u306E\u70B9\
+        \u3082)"
     - icon: ':heavy_check_mark:'
       path: src/math/number-theory.hpp
       title: "\u6570\u8AD6 (\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406)"
-    - icon: ':heavy_check_mark:'
-      path: src/math/polynomial-gcd.hpp
-      title: "\u591A\u9805\u5F0F\u306E\u62E1\u5F35\u30E6\u30FC\u30AF\u30EA\u30C3\u30C9\
-        \u306E\u4E92\u9664\u6CD5\u3068\u9006\u5143 (Half-GCD)"
     - icon: ':heavy_check_mark:'
       path: src/math/polynomial-roots.hpp
       title: "\u591A\u9805\u5F0F\u306E\u6839 (Cantor-Zassenhaus \u6CD5)"
@@ -974,6 +971,9 @@ data:
       path: test/unittest/math/fps-composition.test.cpp
       title: test/unittest/math/fps-composition.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/math/fps-gcd.test.cpp
+      title: test/unittest/math/fps-gcd.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/math/fps.test.cpp
       title: test/unittest/math/fps.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1000,9 +1000,6 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/math/number-theory.test.cpp
       title: test/unittest/math/number-theory.test.cpp
-    - icon: ':heavy_check_mark:'
-      path: test/unittest/math/polynomial-gcd.test.cpp
-      title: test/unittest/math/polynomial-gcd.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/math/polynomial-roots.test.cpp
       title: test/unittest/math/polynomial-roots.test.cpp
@@ -1460,8 +1457,14 @@ data:
       path: test/yosupo/polynomial/log-of-fps.test.cpp
       title: test/yosupo/polynomial/log-of-fps.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/polynomial/multipoint-evaluation-on-geometric-sequence.test.cpp
+      title: test/yosupo/polynomial/multipoint-evaluation-on-geometric-sequence.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/polynomial/multipoint-evaluation.test.cpp
       title: test/yosupo/polynomial/multipoint-evaluation.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/polynomial/polynomial-interpolation-on-geometric-sequence.test.cpp
+      title: test/yosupo/polynomial/polynomial-interpolation-on-geometric-sequence.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/polynomial/polynomial-interpolation.test.cpp
       title: test/yosupo/polynomial/polynomial-interpolation.test.cpp

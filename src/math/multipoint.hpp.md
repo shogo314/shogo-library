@@ -27,8 +27,14 @@ data:
     path: test/unittest/math/multipoint.test.cpp
     title: test/unittest/math/multipoint.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/polynomial/multipoint-evaluation-on-geometric-sequence.test.cpp
+    title: test/yosupo/polynomial/multipoint-evaluation-on-geometric-sequence.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/polynomial/multipoint-evaluation.test.cpp
     title: test/yosupo/polynomial/multipoint-evaluation.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/polynomial/polynomial-interpolation-on-geometric-sequence.test.cpp
+    title: test/yosupo/polynomial/polynomial-interpolation-on-geometric-sequence.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/polynomial/polynomial-interpolation.test.cpp
     title: test/yosupo/polynomial/polynomial-interpolation.test.cpp
@@ -44,142 +50,142 @@ data:
     links: []
   bundledCode: "#line 2 \"src/math/multipoint.hpp\"\n\n/**\n * @file multipoint.hpp\n\
     \ * @brief \u591A\u70B9\u8A55\u4FA1\u30FB\u591A\u9805\u5F0F\u88DC\u9593\u30FB\u6A19\
-    \u672C\u70B9\u306E\u305A\u3089\u3057\n */\n\n#include <cassert>\n#include <vector>\n\
-    \n#line 2 \"src/math/combinatorics.hpp\"\n\n/**\n * @file combinatorics.hpp\n\
+    \u672C\u70B9\u306E\u305A\u3089\u3057\n */\n\n#include <algorithm>\n#include <cassert>\n\
+    #include <vector>\n\n#line 2 \"src/math/combinatorics.hpp\"\n\n/**\n * @file combinatorics.hpp\n\
     \ * @brief \u7D44\u307F\u5408\u308F\u305B\n */\n\n#line 9 \"src/math/combinatorics.hpp\"\
     \n#include <numeric>\n#line 11 \"src/math/combinatorics.hpp\"\n\n#line 2 \"src/math/modular-arithmetic.hpp\"\
     \n\n/**\n * @file modular-arithmetic.hpp\n * @brief mod \u6F14\u7B97 (\u7A4D\u3001\
     \u51AA\u4E57\u3001\u9006\u5143\u3001\u96E2\u6563\u5BFE\u6570\u3001\u5E73\u65B9\
-    \u6839)\n */\n\n#include <algorithm>\n#line 10 \"src/math/modular-arithmetic.hpp\"\
-    \n#include <cmath>\n#line 12 \"src/math/modular-arithmetic.hpp\"\n#include <unordered_map>\n\
-    \n/**\n * @brief a * b mod m \u3092\u8FD4\u3059 (\u9014\u4E2D\u3067 __int128 \u3092\
-    \u4F7F\u3046\u306E\u3067 m < 2^63 \u306A\u3089\u3042\u3075\u308C\u306A\u3044)\n\
-    \ */\nconstexpr long long modmul(long long a, long long b, long long m) {\n  \
-    \  long long res = static_cast<long long>(static_cast<__int128>(a) * b % m);\n\
-    \    if (res < 0) res += m;\n    return res;\n}\n\n/**\n * @brief a^(-1) mod m\
-    \ \u3092\u8FD4\u3059\n * @note a \u3068 m \u306F\u4E92\u3044\u306B\u7D20\u3067\
-    \u3042\u308B\u3053\u3068\u3002O(log m)\n */\nconstexpr long long modinv(long long\
-    \ a, long long m) {\n    assert(m >= 1);\n    a %= m;\n    if (a < 0) a += m;\n\
-    \    long long b = m, u = 1, v = 0;\n    while (b) {\n        // std::swap \u306F\
-    \ C++17 \u3067\u306F constexpr \u3067\u306A\u3044\u306E\u3067\u3001\u4F7F\u308F\
-    \u305A\u306B\u66F8\u304F\n        long long t = a / b;\n        long long c =\
-    \ a - t * b;\n        a = b, b = c;\n        long long w = u - t * v;\n      \
-    \  u = v, v = w;\n    }\n    assert(a == 1 && \"a and m must be coprime\");\n\
-    \    u %= m;\n    if (u < 0) u += m;\n    return u;\n}\n\n/**\n * @brief a^n mod\
-    \ m \u3092\u8FD4\u3059\n * @note n \u304C\u8CA0\u306A\u3089 a^(-1) \u306E -n \u4E57\
-    \ (a \u3068 m \u306F\u4E92\u3044\u306B\u7D20\u3067\u3042\u308B\u3053\u3068)\u3002\
-    O(log |n|)\n */\nconstexpr long long modpow(long long a, long long n, long long\
-    \ m) {\n    assert(m >= 1);\n    a %= m;\n    if (a < 0) a += m;\n    if (n <\
-    \ 0) {\n        n = -n;\n        a = modinv(a, m);\n    }\n    long long res =\
-    \ 1 % m;\n    while (n > 0) {\n        if (n & 1) res = modmul(res, a, m);\n \
-    \       a = modmul(a, a, m);\n        n >>= 1;\n    }\n    return res;\n}\n\n\
-    /**\n * @brief a^x \u2261 b (mod m) \u3068\u306A\u308B\u6700\u5C0F\u306E x >=\
-    \ 0 (\u306A\u3051\u308C\u3070 -1)\n * @note a \u3068 m \u306F\u4E92\u3044\u306B\
-    \u7D20\u3067\u306A\u304F\u3066\u3082\u3088\u3044\u3002Baby-step Giant-step \u3067\
-    \ O(\u221Am) \u306E\u6642\u9593\u3068\u30E1\u30E2\u30EA\n */\ninline long long\
-    \ discrete_log(long long a, long long b, long long m) {\n    assert(m >= 1);\n\
-    \    a %= m, b %= m;\n    if (a < 0) a += m;\n    if (b < 0) b += m;\n    if (m\
-    \ == 1) return 0;\n    // a \u3068 m \u304C\u4E92\u3044\u306B\u7D20\u306B\u306A\
-    \u308B\u307E\u3067\u4E21\u8FBA\u3092 gcd \u3067\u5272\u308B\u3002k = a^add / (\u5272\
-    \u3063\u305F gcd \u306E\u7A4D) mod m\n    long long k = 1, add = 0, g;\n    while\
-    \ ((g = std::gcd(a, m)) > 1) {\n        if (b == k) return add;\n        if (b\
-    \ % g != 0) return -1;\n        b /= g, m /= g, add++;\n        k = modmul(k,\
-    \ a / g, m);\n    }\n    // k a^x \u2261 b \u3092 x = n p - q (1 <= p <= n\u3001\
-    0 <= q <= n) \u3068\u66F8\u3044\u3066\u89E3\u304F\n    const long long n = static_cast<long\
-    \ long>(std::sqrt(static_cast<long double>(m))) + 1;\n    std::unordered_map<long\
-    \ long, long long> baby;\n    baby.reserve(2 * n + 2);\n    // b a^q \u3092 q\
-    \ \u306E\u5C0F\u3055\u3044\u9806\u306B\u5165\u308C\u3001\u540C\u3058\u5024\u306A\
-    \u3089\u5927\u304D\u3044 q \u3067\u4E0A\u66F8\u304D\u3059\u308B (x \u3092\u5C0F\
-    \u3055\u304F\u3059\u308B\u305F\u3081)\n    for (long long q = 0, cur = b; q <=\
-    \ n; q++, cur = modmul(cur, a, m)) baby[cur] = q;\n    const long long an = modpow(a,\
-    \ n, m);\n    for (long long p = 1, cur = k; p <= n; p++) {\n        cur = modmul(cur,\
-    \ an, m);\n        auto it = baby.find(cur);\n        if (it != baby.end()) return\
-    \ n * p - it->second + add;\n    }\n    return -1;\n}\n\n/**\n * @brief \u7D20\
-    \u6570 p \u306B\u3064\u3044\u3066 x^2 \u2261 a (mod p) \u3068\u306A\u308B x \u306E\
-    \u3046\u3061\u5C0F\u3055\u3044\u65B9 (\u306A\u3051\u308C\u3070 -1)\n * @note \u3082\
-    \u3046\u4E00\u65B9\u306E\u89E3\u306F p - x\u3002Tonelli-Shanks \u3067 O(log^2\
-    \ p)\n */\ninline long long sqrt_mod(long long a, long long p) {\n    assert(p\
-    \ >= 2);\n    a %= p;\n    if (a < 0) a += p;\n    if (a == 0 || p == 2) return\
-    \ a;\n    // \u30AA\u30A4\u30E9\u30FC\u306E\u898F\u6E96: a^((p-1)/2) \u304C 1\
-    \ \u3067\u306A\u3051\u308C\u3070\u5E73\u65B9\u975E\u5270\u4F59\n    if (modpow(a,\
-    \ (p - 1) / 2, p) != 1) return -1;\n    long long q = p - 1, s = 0;\n    while\
-    \ (q % 2 == 0) q /= 2, s++;\n    // \u5E73\u65B9\u975E\u5270\u4F59 z \u3092\u63A2\
-    \u3059\n    long long z = 2;\n    while (modpow(z, (p - 1) / 2, p) != p - 1) z++;\n\
-    \    long long c = modpow(z, q, p), t = modpow(a, q, p), r = modpow(a, (q + 1)\
-    \ / 2, p);\n    // r^2 = a t \u3092\u4FDD\u3061\u306A\u304C\u3089\u3001t \u306E\
-    \u4F4D\u6570\u3092\u4E0B\u3052\u3066\u3044\u304F\n    while (t != 1) {\n     \
-    \   long long i = 0, tt = t;\n        while (tt != 1) tt = modmul(tt, tt, p),\
-    \ i++;\n        long long b = c;\n        for (long long j = 0; j < s - i - 1;\
-    \ j++) b = modmul(b, b, p);\n        s = i;\n        c = modmul(b, b, p);\n  \
-    \      t = modmul(t, c, p);\n        r = modmul(r, b, p);\n    }\n    return std::min(r,\
-    \ p - r);\n}\n#line 13 \"src/math/combinatorics.hpp\"\n\n/**\n * @brief \u7D44\
-    \u307F\u5408\u308F\u305B\n */\ntemplate <typename Modint>\nclass Combination {\n\
-    \    static std::vector<Modint> fact, inv_fact;\n    static long long cached_mod;\
-    \  // dynamic_modint \u3067 mod \u304C\u5909\u308F\u3063\u305F\u3089\u524D\u8A08\
-    \u7B97\u3092\u3084\u308A\u76F4\u3059\n\n   public:\n    /**\n     * @brief n \u307E\
-    \u3067\u306E\u968E\u4E57\u3068\u305D\u306E\u9006\u5143\u3092\u524D\u8A08\u7B97\
-    \u3059\u308B\n     * @param n\n     * @note O(n) \u5FC5\u8981\u306B\u306A\u3063\
-    \u305F\u3089\u547C\u3073\u51FA\u3055\u308C\u308B\u304C\u3001\u4E88\u3081\u5927\
-    \u304D\u306An\u306B\u5BFE\u3057\u3066\u547C\u3073\u51FA\u3057\u3066\u304A\u304F\
-    \u3053\u3068\u3067\u9006\u5143\u306E\u76F4\u63A5\u8A08\u7B97\u3092\u6E1B\u3089\
-    \u305B\u308B\n     */\n    inline static void extend(long long n) {\n        if\
-    \ (cached_mod != static_cast<long long>(Modint::mod())) {\n            cached_mod\
-    \ = Modint::mod();\n            fact = {1, 1};\n            inv_fact = {1, 1};\n\
-    \        }\n        const long long m = fact.size();\n        if (n < m) return;\n\
-    \        fact.resize(n + 1);\n        inv_fact.resize(n + 1);\n        for (long\
-    \ long i = m; i <= n; ++i) {\n            fact[i] = fact[i - 1] * i;\n       \
-    \ }\n        inv_fact[n] = fact[n].inv();\n        for (long long i = n; i > m;\
-    \ --i) {\n            inv_fact[i - 1] = inv_fact[i] * i;\n        }\n    }\n\n\
-    \    /**\n     * @brief n \u306E\u968E\u4E57\u3092\u8FD4\u3059\n     * @param\
-    \ n\n     * @return n!\n     * @note extend(n), O(1)\n     */\n    inline static\
-    \ Modint factorial(long long n) {\n        extend(n);\n        return fact[n];\n\
-    \    }\n    /**\n     * @brief n \u306E\u968E\u4E57\u306E\u9006\u5143\u3092\u8FD4\
-    \u3059\n     * @param n\n     * @return n!^-1\n     * @note extend(n), O(1)\n\
-    \     */\n    inline static Modint inverse_factorial(long long n) {\n        extend(n);\n\
-    \        return inv_fact[n];\n    }\n    /**\n     * @brief n \u306E\u9006\u5143\
-    \u3092\u8FD4\u3059\n     * @param n\n     * @return n^-1\n     * @note extend(n),\
-    \ O(1)\n     */\n    inline static Modint inv(long long n) {\n        assert(n\
-    \ > 0);\n        extend(n);\n        return inv_fact[n] * fact[n - 1];\n    }\n\
-    \n    /**\n     * @brief nPr \u3092\u8FD4\u3059\n     * @param n\n     * @param\
-    \ r\n     * @return nPr\n     * @note extend(n), O(1)\n     */\n    inline static\
-    \ Modint P(long long n, long long r) {\n        if (r < 0 || n < r) return 0;\n\
-    \        extend(n);\n        return fact[n] * inv_fact[n - r];\n    }\n    /**\n\
-    \     * @brief nCr \u3092\u8FD4\u3059\n     * @param n\n     * @param r\n    \
-    \ * @return nCr\n     * @note extend(n), O(1)\n     */\n    inline static Modint\
-    \ C(long long n, long long r) {\n        if (r < 0 || n < r) return 0;\n     \
-    \   extend(n);\n        return fact[n] * inv_fact[r] * inv_fact[n - r];\n    }\n\
-    \    /**\n     * @brief nHr \u3092\u8FD4\u3059\n     * @param n\n     * @param\
-    \ r\n     * @return nHr\n     * @note extend(n+r-1), O(1)\n     */\n    inline\
-    \ static Modint H(long long n, long long r) {\n        if (n < 0 || r < 0) return\
-    \ 0;\n        if (n == 0 && r == 0) return 1;\n        return C(n + r - 1, r);\n\
-    \    }\n\n    /**\n     * @brief nPr \u3092\u5B9A\u7FA9\u3069\u304A\u308A\u8A08\
-    \u7B97\u3059\u308B\n     * @param n\n     * @param r\n     * @return nPr\n   \
-    \  * @note O(r)\n     */\n    inline static Modint P_loop(long long n, long long\
-    \ r) {\n        if (r < 0 || n < r) return 0;\n        Modint res = 1;\n     \
-    \   for (long long i = 0; i < r; ++i) {\n            res *= n - i;\n        }\n\
-    \        return res;\n    }\n    /**\n     * @brief nCr \u3092\u5B9A\u7FA9\u3069\
-    \u304A\u308A\u8A08\u7B97\u3059\u308B\n     * @param n\n     * @param r\n     *\
-    \ @return nCr\n     * @note O(min(r, n-r))\n     */\n    inline static Modint\
-    \ C_loop(long long n, long long r) {\n        if (r < 0 || n < r) return 0;\n\
-    \        if (r > n - r) r = n - r;\n        extend(r);\n        return P_loop(n,\
-    \ r) * inv_fact[r];\n    }\n    /**\n     * @brief nHr \u3092\u5B9A\u7FA9\u3069\
-    \u304A\u308A\u8A08\u7B97\u3059\u308B\n     * @param n\n     * @param r\n     *\
-    \ @return nHr\n     * @note O(r)\n     */\n    inline static Modint H_loop(long\
-    \ long n, long long r) {\n        if (n < 0 || r < 0) return 0;\n        if (n\
-    \ == 0 && r == 0) return 1;\n        return C_loop(n + r - 1, r);\n    }\n\n \
-    \   /**\n     * @brief nCr \u3092 Lucas \u306E\u5B9A\u7406\u3092\u7528\u3044\u3066\
-    \u8A08\u7B97\u3059\u308B\n     * @param n\n     * @param r\n     * @return nCr\n\
-    \     * @note extend(Mod), O(log(r))\n     */\n    inline static Modint C_lucas(long\
-    \ long n, long long r) {\n        if (r < 0 || n < r) return 0;\n        if (r\
-    \ == 0 || n == r) return 1;\n        Modint res = 1;\n        while (r > 0) {\n\
-    \            int ni = n % Modint::mod(), ri = r % Modint::mod();\n           \
-    \ if (ni < ri) return 0;\n            res *= C(ni, ri);\n            n /= Modint::mod();\n\
-    \            r /= Modint::mod();\n        }\n        return res;\n    }\n};\n\n\
-    template <typename Modint>\nstd::vector<Modint> Combination<Modint>::fact{1, 1};\n\
-    template <typename Modint>\nstd::vector<Modint> Combination<Modint>::inv_fact{1,\
-    \ 1};\ntemplate <typename Modint>\nlong long Combination<Modint>::cached_mod =\
-    \ 0;\n\n/**\n * @brief mod p^q \u3067\u306E\u4E8C\u9805\u4FC2\u6570\u3092\u6C42\
-    \u3081\u308B\u69CB\u9020\n * @note \u524D\u8A08\u7B97O(p^q) \u53C2\u8003: https://nyaannyaan.github.io/library/modulo/arbitrary-mod-binomial.hpp\n\
+    \u6839)\n */\n\n#line 10 \"src/math/modular-arithmetic.hpp\"\n#include <cmath>\n\
+    #line 12 \"src/math/modular-arithmetic.hpp\"\n#include <unordered_map>\n\n/**\n\
+    \ * @brief a * b mod m \u3092\u8FD4\u3059 (\u9014\u4E2D\u3067 __int128 \u3092\u4F7F\
+    \u3046\u306E\u3067 m < 2^63 \u306A\u3089\u3042\u3075\u308C\u306A\u3044)\n */\n\
+    constexpr long long modmul(long long a, long long b, long long m) {\n    long\
+    \ long res = static_cast<long long>(static_cast<__int128>(a) * b % m);\n    if\
+    \ (res < 0) res += m;\n    return res;\n}\n\n/**\n * @brief a^(-1) mod m \u3092\
+    \u8FD4\u3059\n * @note a \u3068 m \u306F\u4E92\u3044\u306B\u7D20\u3067\u3042\u308B\
+    \u3053\u3068\u3002O(log m)\n */\nconstexpr long long modinv(long long a, long\
+    \ long m) {\n    assert(m >= 1);\n    a %= m;\n    if (a < 0) a += m;\n    long\
+    \ long b = m, u = 1, v = 0;\n    while (b) {\n        // std::swap \u306F C++17\
+    \ \u3067\u306F constexpr \u3067\u306A\u3044\u306E\u3067\u3001\u4F7F\u308F\u305A\
+    \u306B\u66F8\u304F\n        long long t = a / b;\n        long long c = a - t\
+    \ * b;\n        a = b, b = c;\n        long long w = u - t * v;\n        u = v,\
+    \ v = w;\n    }\n    assert(a == 1 && \"a and m must be coprime\");\n    u %=\
+    \ m;\n    if (u < 0) u += m;\n    return u;\n}\n\n/**\n * @brief a^n mod m \u3092\
+    \u8FD4\u3059\n * @note n \u304C\u8CA0\u306A\u3089 a^(-1) \u306E -n \u4E57 (a \u3068\
+    \ m \u306F\u4E92\u3044\u306B\u7D20\u3067\u3042\u308B\u3053\u3068)\u3002O(log |n|)\n\
+    \ */\nconstexpr long long modpow(long long a, long long n, long long m) {\n  \
+    \  assert(m >= 1);\n    a %= m;\n    if (a < 0) a += m;\n    if (n < 0) {\n  \
+    \      n = -n;\n        a = modinv(a, m);\n    }\n    long long res = 1 % m;\n\
+    \    while (n > 0) {\n        if (n & 1) res = modmul(res, a, m);\n        a =\
+    \ modmul(a, a, m);\n        n >>= 1;\n    }\n    return res;\n}\n\n/**\n * @brief\
+    \ a^x \u2261 b (mod m) \u3068\u306A\u308B\u6700\u5C0F\u306E x >= 0 (\u306A\u3051\
+    \u308C\u3070 -1)\n * @note a \u3068 m \u306F\u4E92\u3044\u306B\u7D20\u3067\u306A\
+    \u304F\u3066\u3082\u3088\u3044\u3002Baby-step Giant-step \u3067 O(\u221Am) \u306E\
+    \u6642\u9593\u3068\u30E1\u30E2\u30EA\n */\ninline long long discrete_log(long\
+    \ long a, long long b, long long m) {\n    assert(m >= 1);\n    a %= m, b %= m;\n\
+    \    if (a < 0) a += m;\n    if (b < 0) b += m;\n    if (m == 1) return 0;\n \
+    \   // a \u3068 m \u304C\u4E92\u3044\u306B\u7D20\u306B\u306A\u308B\u307E\u3067\
+    \u4E21\u8FBA\u3092 gcd \u3067\u5272\u308B\u3002k = a^add / (\u5272\u3063\u305F\
+    \ gcd \u306E\u7A4D) mod m\n    long long k = 1, add = 0, g;\n    while ((g = std::gcd(a,\
+    \ m)) > 1) {\n        if (b == k) return add;\n        if (b % g != 0) return\
+    \ -1;\n        b /= g, m /= g, add++;\n        k = modmul(k, a / g, m);\n    }\n\
+    \    // k a^x \u2261 b \u3092 x = n p - q (1 <= p <= n\u30010 <= q <= n) \u3068\
+    \u66F8\u3044\u3066\u89E3\u304F\n    const long long n = static_cast<long long>(std::sqrt(static_cast<long\
+    \ double>(m))) + 1;\n    std::unordered_map<long long, long long> baby;\n    baby.reserve(2\
+    \ * n + 2);\n    // b a^q \u3092 q \u306E\u5C0F\u3055\u3044\u9806\u306B\u5165\u308C\
+    \u3001\u540C\u3058\u5024\u306A\u3089\u5927\u304D\u3044 q \u3067\u4E0A\u66F8\u304D\
+    \u3059\u308B (x \u3092\u5C0F\u3055\u304F\u3059\u308B\u305F\u3081)\n    for (long\
+    \ long q = 0, cur = b; q <= n; q++, cur = modmul(cur, a, m)) baby[cur] = q;\n\
+    \    const long long an = modpow(a, n, m);\n    for (long long p = 1, cur = k;\
+    \ p <= n; p++) {\n        cur = modmul(cur, an, m);\n        auto it = baby.find(cur);\n\
+    \        if (it != baby.end()) return n * p - it->second + add;\n    }\n    return\
+    \ -1;\n}\n\n/**\n * @brief \u7D20\u6570 p \u306B\u3064\u3044\u3066 x^2 \u2261\
+    \ a (mod p) \u3068\u306A\u308B x \u306E\u3046\u3061\u5C0F\u3055\u3044\u65B9 (\u306A\
+    \u3051\u308C\u3070 -1)\n * @note \u3082\u3046\u4E00\u65B9\u306E\u89E3\u306F p\
+    \ - x\u3002Tonelli-Shanks \u3067 O(log^2 p)\n */\ninline long long sqrt_mod(long\
+    \ long a, long long p) {\n    assert(p >= 2);\n    a %= p;\n    if (a < 0) a +=\
+    \ p;\n    if (a == 0 || p == 2) return a;\n    // \u30AA\u30A4\u30E9\u30FC\u306E\
+    \u898F\u6E96: a^((p-1)/2) \u304C 1 \u3067\u306A\u3051\u308C\u3070\u5E73\u65B9\u975E\
+    \u5270\u4F59\n    if (modpow(a, (p - 1) / 2, p) != 1) return -1;\n    long long\
+    \ q = p - 1, s = 0;\n    while (q % 2 == 0) q /= 2, s++;\n    // \u5E73\u65B9\u975E\
+    \u5270\u4F59 z \u3092\u63A2\u3059\n    long long z = 2;\n    while (modpow(z,\
+    \ (p - 1) / 2, p) != p - 1) z++;\n    long long c = modpow(z, q, p), t = modpow(a,\
+    \ q, p), r = modpow(a, (q + 1) / 2, p);\n    // r^2 = a t \u3092\u4FDD\u3061\u306A\
+    \u304C\u3089\u3001t \u306E\u4F4D\u6570\u3092\u4E0B\u3052\u3066\u3044\u304F\n \
+    \   while (t != 1) {\n        long long i = 0, tt = t;\n        while (tt != 1)\
+    \ tt = modmul(tt, tt, p), i++;\n        long long b = c;\n        for (long long\
+    \ j = 0; j < s - i - 1; j++) b = modmul(b, b, p);\n        s = i;\n        c =\
+    \ modmul(b, b, p);\n        t = modmul(t, c, p);\n        r = modmul(r, b, p);\n\
+    \    }\n    return std::min(r, p - r);\n}\n#line 13 \"src/math/combinatorics.hpp\"\
+    \n\n/**\n * @brief \u7D44\u307F\u5408\u308F\u305B\n */\ntemplate <typename Modint>\n\
+    class Combination {\n    static std::vector<Modint> fact, inv_fact;\n    static\
+    \ long long cached_mod;  // dynamic_modint \u3067 mod \u304C\u5909\u308F\u3063\
+    \u305F\u3089\u524D\u8A08\u7B97\u3092\u3084\u308A\u76F4\u3059\n\n   public:\n \
+    \   /**\n     * @brief n \u307E\u3067\u306E\u968E\u4E57\u3068\u305D\u306E\u9006\
+    \u5143\u3092\u524D\u8A08\u7B97\u3059\u308B\n     * @param n\n     * @note O(n)\
+    \ \u5FC5\u8981\u306B\u306A\u3063\u305F\u3089\u547C\u3073\u51FA\u3055\u308C\u308B\
+    \u304C\u3001\u4E88\u3081\u5927\u304D\u306An\u306B\u5BFE\u3057\u3066\u547C\u3073\
+    \u51FA\u3057\u3066\u304A\u304F\u3053\u3068\u3067\u9006\u5143\u306E\u76F4\u63A5\
+    \u8A08\u7B97\u3092\u6E1B\u3089\u305B\u308B\n     */\n    inline static void extend(long\
+    \ long n) {\n        if (cached_mod != static_cast<long long>(Modint::mod()))\
+    \ {\n            cached_mod = Modint::mod();\n            fact = {1, 1};\n   \
+    \         inv_fact = {1, 1};\n        }\n        const long long m = fact.size();\n\
+    \        if (n < m) return;\n        fact.resize(n + 1);\n        inv_fact.resize(n\
+    \ + 1);\n        for (long long i = m; i <= n; ++i) {\n            fact[i] = fact[i\
+    \ - 1] * i;\n        }\n        inv_fact[n] = fact[n].inv();\n        for (long\
+    \ long i = n; i > m; --i) {\n            inv_fact[i - 1] = inv_fact[i] * i;\n\
+    \        }\n    }\n\n    /**\n     * @brief n \u306E\u968E\u4E57\u3092\u8FD4\u3059\
+    \n     * @param n\n     * @return n!\n     * @note extend(n), O(1)\n     */\n\
+    \    inline static Modint factorial(long long n) {\n        extend(n);\n     \
+    \   return fact[n];\n    }\n    /**\n     * @brief n \u306E\u968E\u4E57\u306E\u9006\
+    \u5143\u3092\u8FD4\u3059\n     * @param n\n     * @return n!^-1\n     * @note\
+    \ extend(n), O(1)\n     */\n    inline static Modint inverse_factorial(long long\
+    \ n) {\n        extend(n);\n        return inv_fact[n];\n    }\n    /**\n    \
+    \ * @brief n \u306E\u9006\u5143\u3092\u8FD4\u3059\n     * @param n\n     * @return\
+    \ n^-1\n     * @note extend(n), O(1)\n     */\n    inline static Modint inv(long\
+    \ long n) {\n        assert(n > 0);\n        extend(n);\n        return inv_fact[n]\
+    \ * fact[n - 1];\n    }\n\n    /**\n     * @brief nPr \u3092\u8FD4\u3059\n   \
+    \  * @param n\n     * @param r\n     * @return nPr\n     * @note extend(n), O(1)\n\
+    \     */\n    inline static Modint P(long long n, long long r) {\n        if (r\
+    \ < 0 || n < r) return 0;\n        extend(n);\n        return fact[n] * inv_fact[n\
+    \ - r];\n    }\n    /**\n     * @brief nCr \u3092\u8FD4\u3059\n     * @param n\n\
+    \     * @param r\n     * @return nCr\n     * @note extend(n), O(1)\n     */\n\
+    \    inline static Modint C(long long n, long long r) {\n        if (r < 0 ||\
+    \ n < r) return 0;\n        extend(n);\n        return fact[n] * inv_fact[r] *\
+    \ inv_fact[n - r];\n    }\n    /**\n     * @brief nHr \u3092\u8FD4\u3059\n   \
+    \  * @param n\n     * @param r\n     * @return nHr\n     * @note extend(n+r-1),\
+    \ O(1)\n     */\n    inline static Modint H(long long n, long long r) {\n    \
+    \    if (n < 0 || r < 0) return 0;\n        if (n == 0 && r == 0) return 1;\n\
+    \        return C(n + r - 1, r);\n    }\n\n    /**\n     * @brief nPr \u3092\u5B9A\
+    \u7FA9\u3069\u304A\u308A\u8A08\u7B97\u3059\u308B\n     * @param n\n     * @param\
+    \ r\n     * @return nPr\n     * @note O(r)\n     */\n    inline static Modint\
+    \ P_loop(long long n, long long r) {\n        if (r < 0 || n < r) return 0;\n\
+    \        Modint res = 1;\n        for (long long i = 0; i < r; ++i) {\n      \
+    \      res *= n - i;\n        }\n        return res;\n    }\n    /**\n     * @brief\
+    \ nCr \u3092\u5B9A\u7FA9\u3069\u304A\u308A\u8A08\u7B97\u3059\u308B\n     * @param\
+    \ n\n     * @param r\n     * @return nCr\n     * @note O(min(r, n-r))\n     */\n\
+    \    inline static Modint C_loop(long long n, long long r) {\n        if (r <\
+    \ 0 || n < r) return 0;\n        if (r > n - r) r = n - r;\n        extend(r);\n\
+    \        return P_loop(n, r) * inv_fact[r];\n    }\n    /**\n     * @brief nHr\
+    \ \u3092\u5B9A\u7FA9\u3069\u304A\u308A\u8A08\u7B97\u3059\u308B\n     * @param\
+    \ n\n     * @param r\n     * @return nHr\n     * @note O(r)\n     */\n    inline\
+    \ static Modint H_loop(long long n, long long r) {\n        if (n < 0 || r < 0)\
+    \ return 0;\n        if (n == 0 && r == 0) return 1;\n        return C_loop(n\
+    \ + r - 1, r);\n    }\n\n    /**\n     * @brief nCr \u3092 Lucas \u306E\u5B9A\u7406\
+    \u3092\u7528\u3044\u3066\u8A08\u7B97\u3059\u308B\n     * @param n\n     * @param\
+    \ r\n     * @return nCr\n     * @note extend(Mod), O(log(r))\n     */\n    inline\
+    \ static Modint C_lucas(long long n, long long r) {\n        if (r < 0 || n <\
+    \ r) return 0;\n        if (r == 0 || n == r) return 1;\n        Modint res =\
+    \ 1;\n        while (r > 0) {\n            int ni = n % Modint::mod(), ri = r\
+    \ % Modint::mod();\n            if (ni < ri) return 0;\n            res *= C(ni,\
+    \ ri);\n            n /= Modint::mod();\n            r /= Modint::mod();\n   \
+    \     }\n        return res;\n    }\n};\n\ntemplate <typename Modint>\nstd::vector<Modint>\
+    \ Combination<Modint>::fact{1, 1};\ntemplate <typename Modint>\nstd::vector<Modint>\
+    \ Combination<Modint>::inv_fact{1, 1};\ntemplate <typename Modint>\nlong long\
+    \ Combination<Modint>::cached_mod = 0;\n\n/**\n * @brief mod p^q \u3067\u306E\u4E8C\
+    \u9805\u4FC2\u6570\u3092\u6C42\u3081\u308B\u69CB\u9020\n * @note \u524D\u8A08\u7B97\
+    O(p^q) \u53C2\u8003: https://nyaannyaan.github.io/library/modulo/arbitrary-mod-binomial.hpp\n\
     \ */\nstruct CombinationPQ {\n    int p, q;\n    int pq;\n    std::vector<int>\
     \ fact_p, inv_fact_p;\n    int delta;\n    CombinationPQ(int p, int q) : p(p),\
     \ q(q) {\n        pq = 1;\n        for (int i = 0; i < q; i++) pq *= p;\n    \
@@ -595,17 +601,19 @@ data:
     \    }\n    return res;\n}\n#line 2 \"src/math/fps.hpp\"\n\n/**\n * @file fps.hpp\n\
     \ * @brief \u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\n */\n\n#line 10 \"src/math/fps.hpp\"\
     \n#include <optional>\n#include <queue>\n#line 14 \"src/math/fps.hpp\"\n\n#line\
-    \ 18 \"src/math/fps.hpp\"\n\ntemplate <typename mint>\nstruct FPS : std::vector<mint>\
-    \ {\n    using std::vector<mint>::vector;\n\n    // constructor\n    FPS(const\
-    \ std::vector<mint>& r) : std::vector<mint>(r) {}\n\n    // core operator\n  \
-    \  inline FPS pre(long long siz) const {\n        return FPS(begin(*this), begin(*this)\
-    \ + std::min(static_cast<long long>(this->size()), siz));\n    }\n    inline FPS\
-    \ rev() const {\n        FPS res = *this;\n        reverse(begin(res), end(res));\n\
-    \        return res;\n    }\n    inline FPS& normalize() {\n        while (!this->empty()\
-    \ && this->back() == 0) this->pop_back();\n        return *this;\n    }\n\n  \
-    \  // basic operator\n    inline FPS operator-() const noexcept {\n        FPS\
-    \ res = (*this);\n        for (int i = 0; i < static_cast<int>(res.size()); ++i)\
-    \ res[i] = -res[i];\n        return res;\n    }\n    inline FPS operator+(const\
+    \ 18 \"src/math/fps.hpp\"\n\ntemplate <typename mint>\nstruct FPS;\n\nnamespace\
+    \ internal_fps {\ntemplate <typename mint>\nFPS<mint> gcd(const FPS<mint>& f,\
+    \ const FPS<mint>& g);\n}  // namespace internal_fps\n\ntemplate <typename mint>\n\
+    struct FPS : std::vector<mint> {\n    using std::vector<mint>::vector;\n\n   \
+    \ // constructor\n    FPS(const std::vector<mint>& r) : std::vector<mint>(r) {}\n\
+    \n    // core operator\n    inline FPS pre(long long siz) const {\n        return\
+    \ FPS(begin(*this), begin(*this) + std::min(static_cast<long long>(this->size()),\
+    \ siz));\n    }\n    inline FPS rev() const {\n        FPS res = *this;\n    \
+    \    reverse(begin(res), end(res));\n        return res;\n    }\n    inline FPS&\
+    \ normalize() {\n        while (!this->empty() && this->back() == 0) this->pop_back();\n\
+    \        return *this;\n    }\n\n    // basic operator\n    inline FPS operator-()\
+    \ const noexcept {\n        FPS res = (*this);\n        for (int i = 0; i < static_cast<int>(res.size());\
+    \ ++i) res[i] = -res[i];\n        return res;\n    }\n    inline FPS operator+(const\
     \ mint& v) const { return FPS(*this) += v; }\n    inline FPS operator+(const FPS&\
     \ r) const { return FPS(*this) += r; }\n    inline FPS operator-(const mint& v)\
     \ const { return FPS(*this) -= v; }\n    inline FPS operator-(const FPS& r) const\
@@ -637,37 +645,39 @@ data:
     \        return *this = res;\n    }\n    inline mint eval(const mint& v) {\n \
     \       mint res = 0;\n        for (int i = static_cast<int>(this->size()) - 1;\
     \ i >= 0; --i) {\n            res *= v;\n            res += (*this)[i];\n    \
-    \    }\n        return res;\n    }\n    inline friend FPS gcd(const FPS& f, const\
-    \ FPS& g) {\n        if (g.empty()) return f;\n        return gcd(g, f % g);\n\
-    \    }\n\n    // advanced operation\n    // df/dx\n    inline friend FPS diff(const\
-    \ FPS& f) {\n        int n = static_cast<int>(f.size());\n        if (n == 0)\
-    \ return FPS();\n        FPS res(n - 1);\n        for (int i = 1; i < n; ++i)\
-    \ res[i - 1] = f[i] * i;\n        return res;\n    }\n\n    // \\int f dx\n  \
-    \  inline friend FPS intg(const FPS& f) {\n        int n = static_cast<int>(f.size());\n\
-    \        FPS res(n + 1, 0);\n        for (int i = 0; i < n; ++i) res[i + 1] =\
-    \ f[i] / (i + 1);\n        return res;\n    }\n\n    // inv(f), f[0] must not\
-    \ be 0\n    inline friend FPS inv(const FPS& f, long long deg) {\n        assert(!f.empty()\
-    \ && f[0] != 0);\n        if (deg < 0) deg = static_cast<long long>(f.size());\n\
-    \        if (deg == 0) return FPS();\n        FPS res({mint(1) / f[0]});\n   \
-    \     for (long long i = 1; i < deg; i <<= 1) {\n            res = (res + res\
-    \ - res * res * f.pre(i << 1)).pre(i << 1);\n        }\n        res.resize(deg);\n\
-    \        return res;\n    }\n    inline friend FPS inv(const FPS& f) {\n     \
-    \   return inv(f, f.size());\n    }\n\n    // division, r must be normalized (r.back()\
-    \ must not be 0)\n    inline FPS& operator/=(const FPS& r) {\n        assert(!r.empty());\n\
-    \        assert(r.back() != 0);\n        this->normalize();\n        if (this->size()\
-    \ < r.size()) {\n            this->clear();\n            return *this;\n     \
-    \   }\n        const long long need = static_cast<long long>(this->size()) - static_cast<long\
-    \ long>(r.size()) + 1;\n        *this = ((*this).rev().pre(need) * inv(r.rev(),\
-    \ need)).pre(need).rev();\n        return *this;\n    }\n    inline FPS& operator%=(const\
-    \ FPS& r) {\n        return *this = divmod(*this, r).second;\n    }\n    inline\
-    \ FPS operator/(const FPS& r) const { return FPS(*this) /= r; }\n    inline FPS\
-    \ operator%(const FPS& r) const { return FPS(*this) %= r; }\n    // {f / g, f\
-    \ % g}, g must be normalized (g.back() must not be 0)\n    inline friend std::pair<FPS,\
-    \ FPS> divmod(const FPS& f, const FPS& g) {\n        assert(!g.empty());\n   \
-    \     assert(g.back() != 0);\n        FPS q = f / g;\n        FPS r = f - q *\
-    \ g;\n        return {q, r};\n    }\n\n    // log(f) = \\int f'/f dx, f[0] must\
-    \ be 1\n    inline friend FPS log(const FPS& f, long long deg) {\n        assert(!f.empty()\
-    \ && f[0] == 1);\n        FPS res = intg(diff(f) * inv(f, deg));\n        res.resize(deg);\n\
+    \    }\n        return res;\n    }\n    // \u6700\u9AD8\u6B21\u306E\u4FC2\u6570\
+    \u304C 1 \u306E gcd (Half-GCD)\u3002f \u3068 g \u304C\u3068\u3082\u306B 0 \u306A\
+    \u3089 0 (\u7A7A)\n    inline friend FPS gcd(const FPS& f, const FPS& g) {\n \
+    \       return internal_fps::gcd(f, g);\n    }\n\n    // advanced operation\n\
+    \    // df/dx\n    inline friend FPS diff(const FPS& f) {\n        int n = static_cast<int>(f.size());\n\
+    \        if (n == 0) return FPS();\n        FPS res(n - 1);\n        for (int\
+    \ i = 1; i < n; ++i) res[i - 1] = f[i] * i;\n        return res;\n    }\n\n  \
+    \  // \\int f dx\n    inline friend FPS intg(const FPS& f) {\n        int n =\
+    \ static_cast<int>(f.size());\n        FPS res(n + 1, 0);\n        for (int i\
+    \ = 0; i < n; ++i) res[i + 1] = f[i] / (i + 1);\n        return res;\n    }\n\n\
+    \    // inv(f), f[0] must not be 0\n    inline friend FPS inv(const FPS& f, long\
+    \ long deg) {\n        assert(!f.empty() && f[0] != 0);\n        if (deg < 0)\
+    \ deg = static_cast<long long>(f.size());\n        if (deg == 0) return FPS();\n\
+    \        FPS res({mint(1) / f[0]});\n        for (long long i = 1; i < deg; i\
+    \ <<= 1) {\n            res = (res + res - res * res * f.pre(i << 1)).pre(i <<\
+    \ 1);\n        }\n        res.resize(deg);\n        return res;\n    }\n    inline\
+    \ friend FPS inv(const FPS& f) {\n        return inv(f, f.size());\n    }\n\n\
+    \    // division, r must be normalized (r.back() must not be 0)\n    inline FPS&\
+    \ operator/=(const FPS& r) {\n        assert(!r.empty());\n        assert(r.back()\
+    \ != 0);\n        this->normalize();\n        if (this->size() < r.size()) {\n\
+    \            this->clear();\n            return *this;\n        }\n        const\
+    \ long long need = static_cast<long long>(this->size()) - static_cast<long long>(r.size())\
+    \ + 1;\n        *this = ((*this).rev().pre(need) * inv(r.rev(), need)).pre(need).rev();\n\
+    \        return *this;\n    }\n    inline FPS& operator%=(const FPS& r) {\n  \
+    \      return *this = divmod(*this, r).second;\n    }\n    inline FPS operator/(const\
+    \ FPS& r) const { return FPS(*this) /= r; }\n    inline FPS operator%(const FPS&\
+    \ r) const { return FPS(*this) %= r; }\n    // {f / g, f % g}, g must be normalized\
+    \ (g.back() must not be 0)\n    inline friend std::pair<FPS, FPS> divmod(const\
+    \ FPS& f, const FPS& g) {\n        assert(!g.empty());\n        assert(g.back()\
+    \ != 0);\n        FPS q = f / g;\n        FPS r = f - q * g;\n        return {q,\
+    \ r};\n    }\n\n    // log(f) = \\int f'/f dx, f[0] must be 1\n    inline friend\
+    \ FPS log(const FPS& f, long long deg) {\n        assert(!f.empty() && f[0] ==\
+    \ 1);\n        FPS res = intg(diff(f) * inv(f, deg));\n        res.resize(deg);\n\
     \        return res;\n    }\n    inline friend FPS log(const FPS& f) {\n     \
     \   return log(f, f.size());\n    }\n\n    // exp(f), f[0] must be 0\n    inline\
     \ friend FPS exp(const FPS& f, long long deg) {\n        assert(f.empty() || f[0]\
@@ -708,10 +718,79 @@ data:
     \  FPS<mint> g(n, 1);\n        for (int i = 1; i < n; i++) g[i] = g[i - 1] * a\
     \ * C::inv(i);\n        f = (f * g).pre(n);\n        std::reverse(f.begin(), f.end());\n\
     \        for (int i = 0; i < n; i++) f[i] *= C::inverse_factorial(i);\n      \
-    \  return f;\n    }\n};\n\ntemplate <typename mint>\nFPS<mint> modpow(const FPS<mint>&\
-    \ f, long long n, const FPS<mint>& m) {\n    if (n == 0) return FPS<mint>(1, 1);\n\
-    \    auto t = modpow(f, n / 2, m);\n    t = (t * t) % m;\n    if (n & 1) t = (t\
-    \ * f) % m;\n    return t;\n}\n\n/**\n * @brief \u591A\u9805\u5F0F\u306E\u5217\
+    \  return f;\n    }\n};\n\nnamespace internal_fps {\ntemplate <typename mint>\n\
+    FPS<mint> shrink(FPS<mint> f) {\n    f.normalize();\n    return f;\n}\n\n// x^k\
+    \ \u3067\u5272\u3063\u3066\u4F4E\u6B21\u306E\u9805\u3092\u6368\u3066\u308B\u3002\
+    \u9577\u3055\u304C k \u4EE5\u4E0B\u306A\u3089 0 (\u7A7A)\ntemplate <typename mint>\n\
+    FPS<mint> drop(const FPS<mint>& f, long long k) {\n    if (static_cast<long long>(f.size())\
+    \ <= k) return FPS<mint>();\n    return FPS<mint>(f.begin() + k, f.end());\n}\n\
+    \n// \u591A\u9805\u5F0F\u3092\u6210\u5206\u306B\u6301\u3064 2x2 \u884C\u5217 [[a,\
+    \ b], [c, d]]\ntemplate <typename mint>\nstruct Mat {\n    FPS<mint> a, b, c,\
+    \ d;\n    static Mat identity() { return {FPS<mint>{1}, FPS<mint>(), FPS<mint>(),\
+    \ FPS<mint>{1}}; }\n    Mat operator*(const Mat& r) const {\n        return {shrink(a\
+    \ * r.a + b * r.c), shrink(a * r.b + b * r.d), shrink(c * r.a + d * r.c), shrink(c\
+    \ * r.b + d * r.d)};\n    }\n    std::pair<FPS<mint>, FPS<mint>> operator*(const\
+    \ std::pair<FPS<mint>, FPS<mint>>& p) const {\n        return {shrink(a * p.first\
+    \ + b * p.second), shrink(c * p.first + d * p.second)};\n    }\n};\n\n// \u4E92\
+    \u9664\u6CD5\u3092 1 \u6BB5\u9032\u3081\u308B: (p, q) <- (q, p % q)\u3001m <-\
+    \ [[0, 1], [1, -p / q]] m\ntemplate <typename mint>\nvoid step(Mat<mint>& m, std::pair<FPS<mint>,\
+    \ FPS<mint>>& p) {\n    const FPS<mint> quo = p.first / p.second;\n    FPS<mint>\
+    \ rem = shrink(p.first - p.second * quo);\n    FPS<mint> c = shrink(m.a - m.c\
+    \ * quo), d = shrink(m.b - m.d * quo);\n    m = {std::move(m.c), std::move(m.d),\
+    \ std::move(c), std::move(d)};\n    p = {std::move(p.second), std::move(rem)};\n\
+    }\n\n// p = (f, g) (|f| = n > |g|) \u306B\u5BFE\u3057\u3001\u4E92\u9664\u6CD5\u3067\
+    \u9577\u3055\u304C ceil(n / 2) \u4EE5\u4E0B\u306B\u306A\u308B\u76F4\u524D\u307E\
+    \u3067\u306E\u5909\u63DB\u884C\u5217\ntemplate <typename mint>\nMat<mint> half_gcd(std::pair<FPS<mint>,\
+    \ FPS<mint>> p) {\n    const long long n = p.first.size(), m = p.second.size();\n\
+    \    const long long k = (n + 1) / 2;\n    if (m <= k) return Mat<mint>::identity();\n\
+    \    // \u4E0A\u4F4D\u306E\u534A\u5206\u3060\u3051\u3067\u6C42\u3081\u305F\u884C\
+    \u5217\u306F\u3001\u4E0A\u4F4D\u306E\u7D04\u534A\u5206\u306E\u5546\u3092\u6B63\
+    \u3057\u304F\u4E0E\u3048\u308B\n    Mat<mint> m1 = half_gcd(std::make_pair(drop(p.first,\
+    \ k), drop(p.second, k)));\n    p = m1 * p;\n    if (static_cast<long long>(p.second.size())\
+    \ <= k) return m1;\n    step(m1, p);\n    if (static_cast<long long>(p.second.size())\
+    \ <= k) return m1;\n    const long long l = static_cast<long long>(p.first.size())\
+    \ - 1;\n    const long long j = 2 * k - l;\n    p = {drop(p.first, j), drop(p.second,\
+    \ j)};\n    return half_gcd(std::move(p)) * m1;\n}\n\n// M (f, g) = (gcd(f, g),\
+    \ 0) \u3068\u306A\u308B\u884C\u5217 M\ntemplate <typename mint>\nMat<mint> gcd_matrix(const\
+    \ FPS<mint>& f, const FPS<mint>& g) {\n    std::pair<FPS<mint>, FPS<mint>> p{shrink(f),\
+    \ shrink(g)};\n    if (p.first.size() < p.second.size()) {\n        Mat<mint>\
+    \ m = gcd_matrix(g, f);\n        std::swap(m.a, m.b);\n        std::swap(m.c,\
+    \ m.d);\n        return m;\n    }\n    Mat<mint> res = Mat<mint>::identity();\n\
+    \    while (!p.second.empty()) {\n        Mat<mint> m1 = half_gcd(p);\n      \
+    \  p = m1 * p;\n        if (!p.second.empty()) step(m1, p);\n        res = m1\
+    \ * res;\n    }\n    return res;\n}\n// \u6700\u9AD8\u6B21\u306E\u4FC2\u6570\u304C\
+    \ 1 \u306E gcd\u3002\u884C\u5217\u306F\u639B\u3051\u5408\u308F\u305B\u305A\u3001\
+    \u7D44 (p, q) \u3060\u3051\u3092\u9032\u3081\u308B\ntemplate <typename mint>\n\
+    FPS<mint> gcd(const FPS<mint>& f, const FPS<mint>& g) {\n    std::pair<FPS<mint>,\
+    \ FPS<mint>> p{shrink(f), shrink(g)};\n    if (p.first.size() < p.second.size())\
+    \ std::swap(p.first, p.second);\n    while (!p.second.empty()) {\n        Mat<mint>\
+    \ m1 = half_gcd(p);\n        p = m1 * p;\n        if (!p.second.empty()) step(m1,\
+    \ p);\n    }\n    if (!p.first.empty()) p.first /= p.first.back();\n    return\
+    \ p.first;\n}\n}  // namespace internal_fps\n\ntemplate <typename mint>\nFPS<mint>\
+    \ modpow(const FPS<mint>& f, long long n, const FPS<mint>& m) {\n    if (n ==\
+    \ 0) return FPS<mint>(1, 1);\n    auto t = modpow(f, n / 2, m);\n    t = (t *\
+    \ t) % m;\n    if (n & 1) t = (t * f) % m;\n    return t;\n}\n\n/**\n * @brief\
+    \ a f + b g = d (d \u306F f \u3068 g \u306E\u6700\u5927\u516C\u7D04\u6570\u3067\
+    \u3001\u6700\u9AD8\u6B21\u306E\u4FC2\u6570\u304C 1) \u3068\u306A\u308B a\u3001\
+    b \u3092\u6C42\u3081\u3001d \u3092\u8FD4\u3059 O(n log^2 n)\n * f \u3068 g \u304C\
+    \u3068\u3082\u306B 0 \u306A\u3089 d = a = b = 0\u3002a\u3001b \u306F\u672B\u5C3E\
+    \u306E 0 \u3092\u53D6\u308A\u9664\u3044\u305F\u5F62\n */\ntemplate <typename mint>\n\
+    FPS<mint> extgcd(const FPS<mint>& f, const FPS<mint>& g, FPS<mint>& a, FPS<mint>&\
+    \ b) {\n    using namespace internal_fps;\n    Mat<mint> m = gcd_matrix(f, g);\n\
+    \    FPS<mint> d = shrink(m.a * shrink(f) + m.b * shrink(g));\n    a = std::move(m.a),\
+    \ b = std::move(m.b);\n    if (d.empty()) {\n        a.clear(), b.clear();\n \
+    \       return d;\n    }\n    const mint iv = d.back().inv();\n    d *= iv, a\
+    \ *= iv, b *= iv;\n    return d;\n}\n\n/**\n * @brief f h \u2261 1 (mod g) \u3067\
+    \u3001\u6B21\u6570\u304C g \u3088\u308A\u5C0F\u3055\u3044 h\u3002\u306A\u3051\u308C\
+    \u3070 std::nullopt O(n log^2 n)\n * g \u306F 0 \u3067\u306A\u3044\u3053\u3068\
+    \u3002g \u304C\u5B9A\u6570\u306A\u3089\u3059\u3079\u3066\u304C 0 \u3068\u5408\u540C\
+    \u306A\u306E\u3067\u3001h = 0 (\u7A7A) \u3092\u8FD4\u3059\u3002h \u306F\u672B\u5C3E\
+    \u306E 0 \u3092\u53D6\u308A\u9664\u3044\u305F\u5F62\n */\ntemplate <typename mint>\n\
+    std::optional<FPS<mint>> modinv(const FPS<mint>& f, const FPS<mint>& g) {\n  \
+    \  using namespace internal_fps;\n    const FPS<mint> gs = shrink(g);\n    assert(!gs.empty());\n\
+    \    if (gs.size() == 1) return FPS<mint>();\n    FPS<mint> a, b;\n    const FPS<mint>\
+    \ d = extgcd(shrink(f % gs), gs, a, b);\n    if (d.size() != 1) return std::nullopt;\n\
+    \    return shrink(a % gs);\n}\n\n/**\n * @brief \u591A\u9805\u5F0F\u306E\u5217\
     \u306E\u7A4D f_0 f_1 ... f_{n-1} O(N log^2 N) (N \u306F\u6B21\u6570\u306E\u548C\
     )\n * \u6B21\u6570\u306E\u5C0F\u3055\u3044\u3082\u306E\u304B\u3089 2 \u3064\u305A\
     \u3064\u639B\u3051\u3066\u3044\u304F\u3002fs \u304C\u7A7A\u306A\u3089 1\n */\n\
@@ -723,7 +802,7 @@ data:
     \       pq.pop();\n        int b = pq.top();\n        pq.pop();\n        // \u7A7A\
     \u306E\u591A\u9805\u5F0F (0) \u3068\u306E\u7A4D\u306F 0\n        fs[a] = fs[a].empty()\
     \ || fs[b].empty() ? FPS<mint>() : fs[a] * fs[b];\n        FPS<mint>().swap(fs[b]);\n\
-    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n#line 14 \"src/math/multipoint.hpp\"\
+    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n#line 15 \"src/math/multipoint.hpp\"\
     \n\nnamespace internal_multipoint {\n// \u70B9 xs \u306E subproduct tree: tree[k]\
     \ \u306F\u9802\u70B9 k \u304C\u53D7\u3051\u6301\u3064\u70B9 x_i \u306B\u3064\u3044\
     \u3066 \u03A0 (x - x_i)\u3002\u8449\u306F sz + i\ntemplate <typename mint>\nstruct\
@@ -808,27 +887,86 @@ data:
     \ x \u304C p \u306B\u623B\u3063\u305F\u3068\u304D)\n        long long len = std::min(m\
     \ - k, p - x);\n        auto part = internal_multipoint::shift_no_overlap(ys,\
     \ mint(x), len);\n        for (long long i = 0; i < len; i++) res[k + i] = part[i];\n\
-    \        k += len;\n    }\n    return res;\n}\n"
+    \        k += len;\n    }\n    return res;\n}\n\n/**\n * @brief \u591A\u9805\u5F0F\
+    \ f \u306E\u3001\u7B49\u6BD4\u6570\u5217\u306E\u70B9 a r^i (0 <= i < m) \u3067\
+    \u306E\u5024 O((n + m) log (n + m)) (chirp-z \u5909\u63DB)\n * ij = C(i + j, 2)\
+    \ - C(i, 2) - C(j, 2) \u3092\u4F7F\u3046\u3068 f(a r^i) = r^{-C(i, 2)} \u03A3\
+    _j (f_j a^j r^{-C(j, 2)}) r^{C(i + j, 2)} \u3068\u306A\u308A\u3001\u7573\u307F\
+    \u8FBC\u307F 1 \u56DE\u3067\u6C42\u307E\u308B\n */\ntemplate <typename mint>\n\
+    std::vector<mint> multipoint_evaluation_geometric(const FPS<mint>& f, mint a,\
+    \ mint r, long long m) {\n    const long long n = f.size();\n    std::vector<mint>\
+    \ res(m);\n    if (m == 0 || n == 0) return res;\n    if (r == 0) {\n        //\
+    \ \u70B9\u306F a, 0, 0, ...\n        for (long long j = n - 1; j >= 0; j--) res[0]\
+    \ = res[0] * a + f[j];\n        for (long long i = 1; i < m; i++) res[i] = f[0];\n\
+    \        return res;\n    }\n    // w[k] = r^{C(k, 2)}\u3001iw[k] = r^{-C(k, 2)}\n\
+    \    const long long len = n + m - 1;\n    const mint ir = r.inv();\n    std::vector<mint>\
+    \ w(len), iw(std::max(n, m));\n    mint p = 1;\n    w[0] = 1;\n    for (long long\
+    \ k = 0; k + 1 < len; k++) w[k + 1] = w[k] * p, p *= r;\n    p = 1;\n    iw[0]\
+    \ = 1;\n    for (long long k = 0; k + 1 < static_cast<long long>(iw.size()); k++)\
+    \ iw[k + 1] = iw[k] * p, p *= ir;\n    // A \u3092\u9006\u9806\u306B\u4E26\u3079\
+    \u3066\u7573\u307F\u8FBC\u3080\u3068\u3001[n - 1 + i] \u304C \u03A3_j A_j w[i\
+    \ + j] \u306B\u306A\u308B\n    std::vector<mint> A(n);\n    mint aj = 1;\n   \
+    \ for (long long j = 0; j < n; j++) A[n - 1 - j] = f[j] * aj * iw[j], aj *= a;\n\
+    \    std::vector<mint> c = convolution(A, w);\n    for (long long i = 0; i < m;\
+    \ i++) res[i] = iw[i] * c[n - 1 + i];\n    return res;\n}\n\nnamespace internal_multipoint\
+    \ {\n// \u03A0_{j<n} (x - a r^j) O(n log n)\n// \u524D\u534A h = \u03A0_{j<k}\
+    \ (x - a r^j) \u304B\u3089\u3001\u5F8C\u534A\u306F \u03A0_{j<k} (x - a r^{j+k})\
+    \ = r^{k^2} h(x r^{-k}) \u3068\u4FC2\u6570\u3092\u5909\u3048\u308B\u3060\u3051\
+    \u3067\u6C42\u307E\u308B\ntemplate <typename mint>\nFPS<mint> geometric_product(mint\
+    \ a, mint r, long long n) {\n    if (n == 0) return FPS<mint>{1};\n    if (n %\
+    \ 2 == 1) {\n        FPS<mint> h = geometric_product(a, r, n - 1);\n        return\
+    \ h * FPS<mint>{-a * r.pow(n - 1), 1};\n    }\n    const long long k = n / 2;\n\
+    \    FPS<mint> h = geometric_product(a, r, k);\n    const mint rk = r.pow(k),\
+    \ irk = rk.inv();\n    FPS<mint> g = h;\n    mint c = rk.pow(k);\n    for (auto&\
+    \ x : g) x *= c, c *= irk;\n    return h * g;\n}\n}  // namespace internal_multipoint\n\
+    \n/**\n * @brief \u7B49\u6BD4\u6570\u5217\u306E\u70B9 (a r^i, y_i) (0 <= i < n)\
+    \ \u3092\u3059\u3079\u3066\u901A\u308B n - 1 \u6B21\u4EE5\u4E0B\u306E\u591A\u9805\
+    \u5F0F (\u9577\u3055 n) O(n log n)\n * a r^i \u306F\u4E92\u3044\u306B\u7570\u306A\
+    \u308B\u3053\u3068 (n >= 2 \u306A\u3089 a != 0\u3001r != 0)\n * f = M \u03A3_i\
+    \ w_i / (x - x_i) (M = \u03A0 (x - x_j)\u3001w_i = y_i / \u03A0_{j != i} (x_i\
+    \ - x_j))\u3002\n * \u548C\u306E x^k \u306E\u4FC2\u6570 -a^{-(k+1)} \u03A3_i w_i\
+    \ r^{-i(k+1)} \u306F\u7B49\u6BD4\u6570\u5217\u306E\u70B9\u3067\u306E\u591A\u70B9\
+    \u8A55\u4FA1\u3067\u6C42\u307E\u308B\n */\ntemplate <typename mint>\nFPS<mint>\
+    \ polynomial_interpolation_geometric(mint a, mint r, const std::vector<mint>&\
+    \ ys) {\n    const long long n = ys.size();\n    if (n == 0) return FPS<mint>();\n\
+    \    if (n == 1) return FPS<mint>{ys[0]};\n    assert(a != 0 && r != 0);\n   \
+    \ const mint ir = r.inv();\n    // pw[k] = r^k\u3001P[k] = \u03A0_{t=1}^{k} (r^t\
+    \ - 1)\n    std::vector<mint> pw(n), ipw(n), P(n), iP(n);\n    pw[0] = ipw[0]\
+    \ = P[0] = 1;\n    for (long long k = 1; k < n; k++) pw[k] = pw[k - 1] * r, ipw[k]\
+    \ = ipw[k - 1] * ir, P[k] = P[k - 1] * (pw[k] - 1);\n    assert(P[n - 1] != 0\
+    \ && \"a r^i must be distinct\");\n    iP[n - 1] = P[n - 1].inv();\n    for (long\
+    \ long k = n - 1; k >= 1; k--) iP[k - 1] = iP[k] * (pw[k] - 1);\n    // \u03A0\
+    _{j != i} (x_i - x_j) = a^{n-1} r^{e_i} P_i (-1)^{n-1-i} P_{n-1-i}\u3001e_i =\
+    \ C(i, 2) + i (n - 1 - i)\n    // e_{i+1} - e_i = n - 2 - i \u306A\u306E\u3067\
+    \u3001r^{-e_i} \u306F\u9806\u306B\u639B\u3051\u3066\u6C42\u3081\u308B\n    std::vector<mint>\
+    \ W(n);\n    const mint ian = a.inv().pow(n - 1);\n    mint ire = 1;\n    for\
+    \ (long long i = 0; i < n; i++) {\n        W[i] = ys[i] * ian * ire * iP[i] *\
+    \ iP[n - 1 - i];\n        if ((n - 1 - i) % 2 == 1) W[i] = -W[i];\n        if\
+    \ (i + 1 < n) ire *= ipw[n - 2 - i];\n    }\n    std::vector<mint> s = multipoint_evaluation_geometric(FPS<mint>(W),\
+    \ ir, ir, n);\n    const mint ia = a.inv();\n    mint c = ia;\n    FPS<mint> S(n);\n\
+    \    for (long long k = 0; k < n; k++) S[k] = -c * s[k], c *= ia;\n    FPS<mint>\
+    \ f = (internal_multipoint::geometric_product(a, r, n) * S).pre(n);\n    f.resize(n);\n\
+    \    return f;\n}\n"
   code: "#pragma once\n\n/**\n * @file multipoint.hpp\n * @brief \u591A\u70B9\u8A55\
     \u4FA1\u30FB\u591A\u9805\u5F0F\u88DC\u9593\u30FB\u6A19\u672C\u70B9\u306E\u305A\
-    \u3089\u3057\n */\n\n#include <cassert>\n#include <vector>\n\n#include \"combinatorics.hpp\"\
-    \n#include \"convolution.hpp\"\n#include \"fps.hpp\"\n\nnamespace internal_multipoint\
-    \ {\n// \u70B9 xs \u306E subproduct tree: tree[k] \u306F\u9802\u70B9 k \u304C\u53D7\
-    \u3051\u6301\u3064\u70B9 x_i \u306B\u3064\u3044\u3066 \u03A0 (x - x_i)\u3002\u8449\
-    \u306F sz + i\ntemplate <typename mint>\nstruct SubproductTree {\n    long long\
-    \ n, sz;\n    std::vector<FPS<mint>> tree;\n    explicit SubproductTree(const\
-    \ std::vector<mint>& xs) : n(xs.size()), sz(1) {\n        while (sz < n) sz <<=\
-    \ 1;\n        tree.assign(2 * sz, FPS<mint>{1});\n        for (long long i = 0;\
-    \ i < n; i++) tree[sz + i] = FPS<mint>{-xs[i], 1};\n        for (long long k =\
-    \ sz - 1; k >= 1; k--) tree[k] = tree[2 * k] * tree[2 * k + 1];\n    }\n};\n}\
-    \  // namespace internal_multipoint\n\n/**\n * @brief \u591A\u9805\u5F0F f \u306E\
-    \u3001\u70B9 xs \u3067\u306E\u5024 f(x_0), ..., f(x_{m-1}) O((n + m) log^2 (n\
-    \ + m))\n * subproduct tree \u306E\u6839\u304B\u3089\u3001\u5404\u9802\u70B9\u306E\
-    \u591A\u9805\u5F0F\u3067\u5272\u3063\u305F\u4F59\u308A\u3092\u4E0B\u308D\u3057\
-    \u3066\u3044\u304F\u3002\u4F59\u308A\u304C\u77ED\u304F\u306A\u3063\u305F\u3089\
-    \u76F4\u63A5\u8A08\u7B97\u3059\u308B\n */\ntemplate <typename mint>\nstd::vector<mint>\
-    \ multipoint_evaluation(const FPS<mint>& f, const std::vector<mint>& xs) {\n \
-    \   const long long m = xs.size();\n    if (m == 0) return {};\n    internal_multipoint::SubproductTree<mint>\
+    \u3089\u3057\n */\n\n#include <algorithm>\n#include <cassert>\n#include <vector>\n\
+    \n#include \"combinatorics.hpp\"\n#include \"convolution.hpp\"\n#include \"fps.hpp\"\
+    \n\nnamespace internal_multipoint {\n// \u70B9 xs \u306E subproduct tree: tree[k]\
+    \ \u306F\u9802\u70B9 k \u304C\u53D7\u3051\u6301\u3064\u70B9 x_i \u306B\u3064\u3044\
+    \u3066 \u03A0 (x - x_i)\u3002\u8449\u306F sz + i\ntemplate <typename mint>\nstruct\
+    \ SubproductTree {\n    long long n, sz;\n    std::vector<FPS<mint>> tree;\n \
+    \   explicit SubproductTree(const std::vector<mint>& xs) : n(xs.size()), sz(1)\
+    \ {\n        while (sz < n) sz <<= 1;\n        tree.assign(2 * sz, FPS<mint>{1});\n\
+    \        for (long long i = 0; i < n; i++) tree[sz + i] = FPS<mint>{-xs[i], 1};\n\
+    \        for (long long k = sz - 1; k >= 1; k--) tree[k] = tree[2 * k] * tree[2\
+    \ * k + 1];\n    }\n};\n}  // namespace internal_multipoint\n\n/**\n * @brief\
+    \ \u591A\u9805\u5F0F f \u306E\u3001\u70B9 xs \u3067\u306E\u5024 f(x_0), ..., f(x_{m-1})\
+    \ O((n + m) log^2 (n + m))\n * subproduct tree \u306E\u6839\u304B\u3089\u3001\u5404\
+    \u9802\u70B9\u306E\u591A\u9805\u5F0F\u3067\u5272\u3063\u305F\u4F59\u308A\u3092\
+    \u4E0B\u308D\u3057\u3066\u3044\u304F\u3002\u4F59\u308A\u304C\u77ED\u304F\u306A\
+    \u3063\u305F\u3089\u76F4\u63A5\u8A08\u7B97\u3059\u308B\n */\ntemplate <typename\
+    \ mint>\nstd::vector<mint> multipoint_evaluation(const FPS<mint>& f, const std::vector<mint>&\
+    \ xs) {\n    const long long m = xs.size();\n    if (m == 0) return {};\n    internal_multipoint::SubproductTree<mint>\
     \ t(xs);\n    std::vector<mint> res(m);\n    // \u9802\u70B9 k \u306B f \u306E\
     \u4F59\u308A g \u304C\u5C4A\u3044\u305F\u3068\u304D\u3001\u53D7\u3051\u6301\u3064\
     \u70B9\u306E\u5024\u3092\u6C42\u3081\u308B\n    auto rec = [&](auto&& self, long\
@@ -897,7 +1035,66 @@ data:
     \ x \u304C p \u306B\u623B\u3063\u305F\u3068\u304D)\n        long long len = std::min(m\
     \ - k, p - x);\n        auto part = internal_multipoint::shift_no_overlap(ys,\
     \ mint(x), len);\n        for (long long i = 0; i < len; i++) res[k + i] = part[i];\n\
-    \        k += len;\n    }\n    return res;\n}\n"
+    \        k += len;\n    }\n    return res;\n}\n\n/**\n * @brief \u591A\u9805\u5F0F\
+    \ f \u306E\u3001\u7B49\u6BD4\u6570\u5217\u306E\u70B9 a r^i (0 <= i < m) \u3067\
+    \u306E\u5024 O((n + m) log (n + m)) (chirp-z \u5909\u63DB)\n * ij = C(i + j, 2)\
+    \ - C(i, 2) - C(j, 2) \u3092\u4F7F\u3046\u3068 f(a r^i) = r^{-C(i, 2)} \u03A3\
+    _j (f_j a^j r^{-C(j, 2)}) r^{C(i + j, 2)} \u3068\u306A\u308A\u3001\u7573\u307F\
+    \u8FBC\u307F 1 \u56DE\u3067\u6C42\u307E\u308B\n */\ntemplate <typename mint>\n\
+    std::vector<mint> multipoint_evaluation_geometric(const FPS<mint>& f, mint a,\
+    \ mint r, long long m) {\n    const long long n = f.size();\n    std::vector<mint>\
+    \ res(m);\n    if (m == 0 || n == 0) return res;\n    if (r == 0) {\n        //\
+    \ \u70B9\u306F a, 0, 0, ...\n        for (long long j = n - 1; j >= 0; j--) res[0]\
+    \ = res[0] * a + f[j];\n        for (long long i = 1; i < m; i++) res[i] = f[0];\n\
+    \        return res;\n    }\n    // w[k] = r^{C(k, 2)}\u3001iw[k] = r^{-C(k, 2)}\n\
+    \    const long long len = n + m - 1;\n    const mint ir = r.inv();\n    std::vector<mint>\
+    \ w(len), iw(std::max(n, m));\n    mint p = 1;\n    w[0] = 1;\n    for (long long\
+    \ k = 0; k + 1 < len; k++) w[k + 1] = w[k] * p, p *= r;\n    p = 1;\n    iw[0]\
+    \ = 1;\n    for (long long k = 0; k + 1 < static_cast<long long>(iw.size()); k++)\
+    \ iw[k + 1] = iw[k] * p, p *= ir;\n    // A \u3092\u9006\u9806\u306B\u4E26\u3079\
+    \u3066\u7573\u307F\u8FBC\u3080\u3068\u3001[n - 1 + i] \u304C \u03A3_j A_j w[i\
+    \ + j] \u306B\u306A\u308B\n    std::vector<mint> A(n);\n    mint aj = 1;\n   \
+    \ for (long long j = 0; j < n; j++) A[n - 1 - j] = f[j] * aj * iw[j], aj *= a;\n\
+    \    std::vector<mint> c = convolution(A, w);\n    for (long long i = 0; i < m;\
+    \ i++) res[i] = iw[i] * c[n - 1 + i];\n    return res;\n}\n\nnamespace internal_multipoint\
+    \ {\n// \u03A0_{j<n} (x - a r^j) O(n log n)\n// \u524D\u534A h = \u03A0_{j<k}\
+    \ (x - a r^j) \u304B\u3089\u3001\u5F8C\u534A\u306F \u03A0_{j<k} (x - a r^{j+k})\
+    \ = r^{k^2} h(x r^{-k}) \u3068\u4FC2\u6570\u3092\u5909\u3048\u308B\u3060\u3051\
+    \u3067\u6C42\u307E\u308B\ntemplate <typename mint>\nFPS<mint> geometric_product(mint\
+    \ a, mint r, long long n) {\n    if (n == 0) return FPS<mint>{1};\n    if (n %\
+    \ 2 == 1) {\n        FPS<mint> h = geometric_product(a, r, n - 1);\n        return\
+    \ h * FPS<mint>{-a * r.pow(n - 1), 1};\n    }\n    const long long k = n / 2;\n\
+    \    FPS<mint> h = geometric_product(a, r, k);\n    const mint rk = r.pow(k),\
+    \ irk = rk.inv();\n    FPS<mint> g = h;\n    mint c = rk.pow(k);\n    for (auto&\
+    \ x : g) x *= c, c *= irk;\n    return h * g;\n}\n}  // namespace internal_multipoint\n\
+    \n/**\n * @brief \u7B49\u6BD4\u6570\u5217\u306E\u70B9 (a r^i, y_i) (0 <= i < n)\
+    \ \u3092\u3059\u3079\u3066\u901A\u308B n - 1 \u6B21\u4EE5\u4E0B\u306E\u591A\u9805\
+    \u5F0F (\u9577\u3055 n) O(n log n)\n * a r^i \u306F\u4E92\u3044\u306B\u7570\u306A\
+    \u308B\u3053\u3068 (n >= 2 \u306A\u3089 a != 0\u3001r != 0)\n * f = M \u03A3_i\
+    \ w_i / (x - x_i) (M = \u03A0 (x - x_j)\u3001w_i = y_i / \u03A0_{j != i} (x_i\
+    \ - x_j))\u3002\n * \u548C\u306E x^k \u306E\u4FC2\u6570 -a^{-(k+1)} \u03A3_i w_i\
+    \ r^{-i(k+1)} \u306F\u7B49\u6BD4\u6570\u5217\u306E\u70B9\u3067\u306E\u591A\u70B9\
+    \u8A55\u4FA1\u3067\u6C42\u307E\u308B\n */\ntemplate <typename mint>\nFPS<mint>\
+    \ polynomial_interpolation_geometric(mint a, mint r, const std::vector<mint>&\
+    \ ys) {\n    const long long n = ys.size();\n    if (n == 0) return FPS<mint>();\n\
+    \    if (n == 1) return FPS<mint>{ys[0]};\n    assert(a != 0 && r != 0);\n   \
+    \ const mint ir = r.inv();\n    // pw[k] = r^k\u3001P[k] = \u03A0_{t=1}^{k} (r^t\
+    \ - 1)\n    std::vector<mint> pw(n), ipw(n), P(n), iP(n);\n    pw[0] = ipw[0]\
+    \ = P[0] = 1;\n    for (long long k = 1; k < n; k++) pw[k] = pw[k - 1] * r, ipw[k]\
+    \ = ipw[k - 1] * ir, P[k] = P[k - 1] * (pw[k] - 1);\n    assert(P[n - 1] != 0\
+    \ && \"a r^i must be distinct\");\n    iP[n - 1] = P[n - 1].inv();\n    for (long\
+    \ long k = n - 1; k >= 1; k--) iP[k - 1] = iP[k] * (pw[k] - 1);\n    // \u03A0\
+    _{j != i} (x_i - x_j) = a^{n-1} r^{e_i} P_i (-1)^{n-1-i} P_{n-1-i}\u3001e_i =\
+    \ C(i, 2) + i (n - 1 - i)\n    // e_{i+1} - e_i = n - 2 - i \u306A\u306E\u3067\
+    \u3001r^{-e_i} \u306F\u9806\u306B\u639B\u3051\u3066\u6C42\u3081\u308B\n    std::vector<mint>\
+    \ W(n);\n    const mint ian = a.inv().pow(n - 1);\n    mint ire = 1;\n    for\
+    \ (long long i = 0; i < n; i++) {\n        W[i] = ys[i] * ian * ire * iP[i] *\
+    \ iP[n - 1 - i];\n        if ((n - 1 - i) % 2 == 1) W[i] = -W[i];\n        if\
+    \ (i + 1 < n) ire *= ipw[n - 2 - i];\n    }\n    std::vector<mint> s = multipoint_evaluation_geometric(FPS<mint>(W),\
+    \ ir, ir, n);\n    const mint ia = a.inv();\n    mint c = ia;\n    FPS<mint> S(n);\n\
+    \    for (long long k = 0; k < n; k++) S[k] = -c * s[k], c *= ia;\n    FPS<mint>\
+    \ f = (internal_multipoint::geometric_product(a, r, n) * S).pre(n);\n    f.resize(n);\n\
+    \    return f;\n}\n"
   dependsOn:
   - src/math/combinatorics.hpp
   - src/math/modular-arithmetic.hpp
@@ -908,20 +1105,22 @@ data:
   isVerificationFile: false
   path: src/math/multipoint.hpp
   requiredBy: []
-  timestamp: '2026-10-21 06:03:31+09:00'
+  timestamp: '2026-10-22 00:31:13+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/math/multipoint.test.cpp
   - test/yosupo/polynomial/multipoint-evaluation.test.cpp
-  - test/yosupo/polynomial/shift-of-sampling-points-of-polynomial.test.cpp
   - test/yosupo/polynomial/polynomial-interpolation.test.cpp
+  - test/yosupo/polynomial/shift-of-sampling-points-of-polynomial.test.cpp
+  - test/yosupo/polynomial/polynomial-interpolation-on-geometric-sequence.test.cpp
+  - test/yosupo/polynomial/multipoint-evaluation-on-geometric-sequence.test.cpp
 documentation_of: src/math/multipoint.hpp
 layout: document
 title: "\u591A\u70B9\u8A55\u4FA1\u30FB\u591A\u9805\u5F0F\u88DC\u9593\u30FB\u6A19\u672C\
-  \u70B9\u306E\u305A\u3089\u3057"
+  \u70B9\u306E\u305A\u3089\u3057 (\u7B49\u6BD4\u6570\u5217\u306E\u70B9\u3082)"
 ---
 
-多項式の値をたくさんの点でまとめて求める (多点評価)、点と値の組から多項式を求める (補間)、$f(0), \dots, f(n - 1)$ から $f(c), \dots, f(c + m - 1)$ を求める (標本点のずらし) 関数です。
+多項式の値をたくさんの点でまとめて求める (多点評価)、点と値の組から多項式を求める (補間)、$f(0), \dots, f(n - 1)$ から $f(c), \dots, f(c + m - 1)$ を求める (標本点のずらし) 関数です。点が等比数列 $a, ar, ar^2, \dots$ のときは、より速い chirp-z 変換の版があります。
 
 ```cpp
 using mint = modint998244353;
@@ -930,6 +1129,8 @@ std::vector<mint> v = multipoint_evaluation(f, {0, 1, 2});       // {1, 6, 17}
 std::vector<mint> xs = {0, 1, 2}, ys = {1, 6, 17};
 FPS<mint> g = polynomial_interpolation(xs, ys);                  // {1, 2, 3}
 std::vector<mint> w = sample_point_shift(ys, mint(100), 3);      // f(100), f(101), f(102)
+std::vector<mint> u = multipoint_evaluation_geometric(f, mint(1), mint(2), 3);  // f(1), f(2), f(4) = {6, 17, 57}
+FPS<mint> h = polynomial_interpolation_geometric(mint(1), mint(2), u);  // {1, 2, 3}
 ```
 
 ## 関数
@@ -941,10 +1142,14 @@ std::vector<mint> w = sample_point_shift(ys, mint(100), 3);      // f(100), f(10
 | `multipoint_evaluation(f, xs)` | 多項式 `f` ([`FPS<mint>`](fps.hpp)) の、点 `xs` (`std::vector<mint>`) での値。点は重なってもよい | $O((n + m) \log^2 (n + m))$ |
 | `polynomial_interpolation(xs, ys)` | 点 $(x_i, y_i)$ をすべて通る $n - 1$ 次以下の多項式 (長さ $n$ の `FPS<mint>`)。$x_i$ は互いに異なること | $O(n \log^2 n)$ |
 | `sample_point_shift(ys, c, m)` | $n - 1$ 次以下の多項式 $f$ の $f(0), \dots, f(n - 1)$ (`ys`) から、$f(c), \dots, f(c + m - 1)$。法は $n + m$ より大きい素数であること | $O((n + m) \log (n + m))$ |
+| `multipoint_evaluation_geometric(f, a, r, m)` | 等比数列の点 $a r^i$ ($0 \le i < m$) での `f` の値。$a$、$r$ は 0 でもよい | $O((n + m) \log (n + m))$ |
+| `polynomial_interpolation_geometric(a, r, ys)` | 点 $(a r^i, y_i)$ ($0 \le i < n$) をすべて通る $n - 1$ 次以下の多項式 (長さ $n$)。$a r^i$ は互いに異なること | $O(n \log n)$ |
 
 - 多点評価は、各点の $(x - x_i)$ の積を木の形に持つ subproduct tree を作り、根から各頂点の多項式で割った余りを下ろしていきます。受け持つ点が 32 個以下になったら、余りを Horner 法で直接計算します。
 - 補間は、$g = \prod (x - x_i)$ とすると $f = \sum_i y_i / g'(x_i) \prod_{j \ne i} (x - x_j)$ なので、$g'(x_i)$ を多点評価し、和を subproduct tree の下から組み立てます。
 - 標本点のずらしは、ラグランジュ補間の式 $f(c + k) = \left(\prod_{j < n} (c + k - j)\right) \sum_i \frac{a_i}{c + k - i}$ ($a_i = y_i / (i! (n - 1 - i)! (-1)^{n-1-i})$) の和を畳み込みで求めます。$c + k$ が $0$ 以上 $n$ 未満の整数と重なる (法を回って重なる場合も) ところは分母が 0 になるので `ys` をそのまま使い、残りの区間ごとに畳み込みます。
+- 等比数列の点での多点評価は、$ij = \binom{i+j}{2} - \binom{i}{2} - \binom{j}{2}$ を使うと $f(ar^i) = r^{-\binom{i}{2}} \sum_j \left(f_j a^j r^{-\binom{j}{2}}\right) r^{\binom{i+j}{2}}$ となるので、畳み込み 1 回で求まります (chirp-z 変換)。
+- 等比数列の点での補間は、$M = \prod_j (x - x_j)$、$w_i = y_i / \prod_{j \ne i} (x_i - x_j)$ として $f = M \sum_i w_i / (x - x_i)$ を使います。$\prod_{j \ne i} (x_i - x_j)$ は $\prod_{t=1}^{k} (r^t - 1)$ の形の積で $O(n)$ で求まり、和の $x^k$ の係数 $-a^{-(k+1)} \sum_i w_i r^{-i(k+1)}$ は等比数列の点 $r^{-(k+1)}$ での多点評価です。$M$ は前半から後半を $\prod_{j<k} (x - ar^{j+k}) = r^{k^2} M_k(x r^{-k})$ で作って倍々に求めます。
 
 ## 関連
 

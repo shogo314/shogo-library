@@ -19,9 +19,10 @@ data:
     title: "mod \u6F14\u7B97 (\u7A4D\u3001\u51AA\u4E57\u3001\u9006\u5143\u3001\u96E2\
       \u6563\u5BFE\u6570\u3001\u5E73\u65B9\u6839)"
   - icon: ':heavy_check_mark:'
-    path: src/math/polynomial-gcd.hpp
-    title: "\u591A\u9805\u5F0F\u306E\u62E1\u5F35\u30E6\u30FC\u30AF\u30EA\u30C3\u30C9\
-      \u306E\u4E92\u9664\u6CD5\u3068\u9006\u5143 (Half-GCD)"
+    path: src/math/multipoint.hpp
+    title: "\u591A\u70B9\u8A55\u4FA1\u30FB\u591A\u9805\u5F0F\u88DC\u9593\u30FB\u6A19\
+      \u672C\u70B9\u306E\u305A\u3089\u3057 (\u7B49\u6BD4\u6570\u5217\u306E\u70B9\u3082\
+      )"
   - icon: ':heavy_check_mark:'
     path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
@@ -32,27 +33,15 @@ data:
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
+    PROBLEM: https://judge.yosupo.jp/problem/polynomial_interpolation_on_geometric_sequence
     links:
-    - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
-  bundledCode: "#line 1 \"test/unittest/math/polynomial-gcd.test.cpp\"\n#define PROBLEM\
-    \ \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\n\n//\
-    \ extgcd \u306F a f + b g = d\u3001d \u306E\u6700\u9AD8\u6B21\u306E\u4FC2\u6570\
-    \u304C 1\u3001d \u304C f \u3068 g \u3092\u5272\u308A\u5207\u308B\u3053\u3068\u3092\
-    \u78BA\u304B\u3081\u3001d \u3092\u7D20\u6734\u306A gcd \u3068\u6BD4\u3079\u308B\
-    \n// modinv \u306F f h \u2261 1 (mod g) \u3068\u6B21\u6570\u3092\u78BA\u304B\u3081\
-    \u3001std::nullopt \u306B\u306A\u308B\u306E\u306F gcd \u304C\u5B9A\u6570\u3067\
-    \u306A\u3044\u3068\u304D\u3060\u3051\u304B\u3092\u898B\u308B\n// \u5171\u901A\u56E0\
-    \u5B50\u3092\u6301\u3064 f, g \u3082\u4F5C\u308B\u3002\u554F\u984C\u306E\u5165\
-    \u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\
-    \u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/math/polynomial-gcd.hpp\"\
-    \n\n/**\n * @file polynomial-gcd.hpp\n * @brief \u591A\u9805\u5F0F\u306E\u62E1\
-    \u5F35\u30E6\u30FC\u30AF\u30EA\u30C3\u30C9\u306E\u4E92\u9664\u6CD5\u3068\u3001\
-    \u591A\u9805\u5F0F\u3092\u6CD5\u3068\u3059\u308B\u9006\u5143 (Half-GCD)\n */\n\
-    \n#include <cassert>\n#include <optional>\n#include <utility>\n\n#line 2 \"src/math/fps.hpp\"\
-    \n\n/**\n * @file fps.hpp\n * @brief \u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\n */\n\
-    \n#include <algorithm>\n#line 11 \"src/math/fps.hpp\"\n#include <queue>\n#line\
-    \ 13 \"src/math/fps.hpp\"\n#include <vector>\n\n#line 2 \"src/math/combinatorics.hpp\"\
+    - https://judge.yosupo.jp/problem/polynomial_interpolation_on_geometric_sequence
+  bundledCode: "#line 1 \"test/yosupo/polynomial/polynomial-interpolation-on-geometric-sequence.test.cpp\"\
+    \n#define PROBLEM \"https://judge.yosupo.jp/problem/polynomial_interpolation_on_geometric_sequence\"\
+    \n\n#include <iostream>\n#include <vector>\n\n#line 2 \"src/math/fps.hpp\"\n\n\
+    /**\n * @file fps.hpp\n * @brief \u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\n */\n\n\
+    #include <algorithm>\n#include <cassert>\n#include <optional>\n#include <queue>\n\
+    #include <utility>\n#line 14 \"src/math/fps.hpp\"\n\n#line 2 \"src/math/combinatorics.hpp\"\
     \n\n/**\n * @file combinatorics.hpp\n * @brief \u7D44\u307F\u5408\u308F\u305B\n\
     \ */\n\n#line 9 \"src/math/combinatorics.hpp\"\n#include <numeric>\n#line 11 \"\
     src/math/combinatorics.hpp\"\n\n#line 2 \"src/math/modular-arithmetic.hpp\"\n\n\
@@ -219,42 +208,43 @@ data:
     \n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\
     \u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\
     \u30AF\u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\n#include <cstdint>\n\
-    #include <iostream>\n#include <limits>\n#include <type_traits>\n#line 14 \"src/math/modint.hpp\"\
-    \n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief\
-    \ \u578B\u7279\u6027\n */\n\n#include <cstddef>\n#include <iterator>\n#include\
-    \ <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace internal_traits {\n\
-    using std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
-    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
-    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
-    \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
-    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
-    \n#define HAS_METHOD(func_name)                                              \
-    \                \\\n    namespace internal_traits {                         \
-    \                                   \\\n    template <class T, class = void> \
-    \                                                      \\\n    struct has_##func_name##_impl\
-    \ : std::false_type {};                                    \\\n    template <class\
-    \ T>                                                                     \\\n\
-    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
-    \ \\\n        : std::true_type {};                                           \
-    \                    \\\n    }                                               \
-    \                                       \\\n    template <class T>           \
-    \                                                          \\\n    struct has_##func_name\
-    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
-    \ <class T>                                                                  \
-    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
-    \n#define HAS_METHOD_ARG(func_name)                                          \
-    \                                    \\\n    namespace internal_traits {     \
-    \                                                                           \\\
-    \n    template <class T, typename U, class = void>                           \
-    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
-    \ {};                                                        \\\n    template\
-    \ <class T, typename U>                                                      \
-    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
-    \ \\\n        : std::true_type {};                                           \
-    \                                        \\\n    }                           \
+    #line 11 \"src/math/modint.hpp\"\n#include <limits>\n#include <type_traits>\n\
+    #line 14 \"src/math/modint.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n\
+    \ * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n\
+    #include <iterator>\n#include <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace\
+    \ internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T, class =\
+    \ void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct\
+    \ is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
+    \ : std::true_type {};\n}  // namespace internal_traits\n\ntemplate <class T>\n\
+    struct is_range : internal_traits::is_range_impl<T>::type {};\ntemplate <class\
+    \ T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define HAS_METHOD(func_name)\
+    \                                                              \\\n    namespace\
+    \ internal_traits {                                                          \
+    \  \\\n    template <class T, class = void>                                  \
+    \                     \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                    \\\n    template <class T>          \
+    \                                                           \\\n    struct has_##func_name##_impl<T,\
+    \ std::void_t<decltype(std::declval<T>().func_name())>> \\\n        : std::true_type\
+    \ {};                                                               \\\n    }\
     \                                                                            \
-    \   \\\n    template <class T, typename U>                                   \
-    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \          \\\n    template <class T>                                        \
+    \                             \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T>::type\
+    \ {};          \\\n    template <class T>                                    \
+    \                                 \\\n    inline constexpr bool has_##func_name##_v\
+    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
+    \                                                                    \\\n    namespace\
+    \ internal_traits {                                                          \
+    \                      \\\n    template <class T, typename U, class = void>  \
+    \                                                             \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                                      \
+    \  \\\n    template <class T, typename U>                                    \
+    \                                         \\\n    struct has_##func_name##_impl<T,\
+    \ U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>> \\\
+    \n        : std::true_type {};                                               \
+    \                                    \\\n    }                               \
+    \                                                                           \\\
+    \n    template <class T, typename U>                                         \
+    \                                    \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
     \ U>::type {};                           \\\n    template <class T, typename U>\
     \                                                                            \
     \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
@@ -600,7 +590,9 @@ data:
     \ static_cast<__int128_t>(mod0) * y1 + y0;\n        if (tmp < (mod012 >> 1))\n\
     \            res[i] = tmp;\n        else\n            res[i] = tmp - mod012;\n\
     \    }\n    return res;\n}\n#line 18 \"src/math/fps.hpp\"\n\ntemplate <typename\
-    \ mint>\nstruct FPS : std::vector<mint> {\n    using std::vector<mint>::vector;\n\
+    \ mint>\nstruct FPS;\n\nnamespace internal_fps {\ntemplate <typename mint>\nFPS<mint>\
+    \ gcd(const FPS<mint>& f, const FPS<mint>& g);\n}  // namespace internal_fps\n\
+    \ntemplate <typename mint>\nstruct FPS : std::vector<mint> {\n    using std::vector<mint>::vector;\n\
     \n    // constructor\n    FPS(const std::vector<mint>& r) : std::vector<mint>(r)\
     \ {}\n\n    // core operator\n    inline FPS pre(long long siz) const {\n    \
     \    return FPS(begin(*this), begin(*this) + std::min(static_cast<long long>(this->size()),\
@@ -641,37 +633,39 @@ data:
     \        return *this = res;\n    }\n    inline mint eval(const mint& v) {\n \
     \       mint res = 0;\n        for (int i = static_cast<int>(this->size()) - 1;\
     \ i >= 0; --i) {\n            res *= v;\n            res += (*this)[i];\n    \
-    \    }\n        return res;\n    }\n    inline friend FPS gcd(const FPS& f, const\
-    \ FPS& g) {\n        if (g.empty()) return f;\n        return gcd(g, f % g);\n\
-    \    }\n\n    // advanced operation\n    // df/dx\n    inline friend FPS diff(const\
-    \ FPS& f) {\n        int n = static_cast<int>(f.size());\n        if (n == 0)\
-    \ return FPS();\n        FPS res(n - 1);\n        for (int i = 1; i < n; ++i)\
-    \ res[i - 1] = f[i] * i;\n        return res;\n    }\n\n    // \\int f dx\n  \
-    \  inline friend FPS intg(const FPS& f) {\n        int n = static_cast<int>(f.size());\n\
-    \        FPS res(n + 1, 0);\n        for (int i = 0; i < n; ++i) res[i + 1] =\
-    \ f[i] / (i + 1);\n        return res;\n    }\n\n    // inv(f), f[0] must not\
-    \ be 0\n    inline friend FPS inv(const FPS& f, long long deg) {\n        assert(!f.empty()\
-    \ && f[0] != 0);\n        if (deg < 0) deg = static_cast<long long>(f.size());\n\
-    \        if (deg == 0) return FPS();\n        FPS res({mint(1) / f[0]});\n   \
-    \     for (long long i = 1; i < deg; i <<= 1) {\n            res = (res + res\
-    \ - res * res * f.pre(i << 1)).pre(i << 1);\n        }\n        res.resize(deg);\n\
-    \        return res;\n    }\n    inline friend FPS inv(const FPS& f) {\n     \
-    \   return inv(f, f.size());\n    }\n\n    // division, r must be normalized (r.back()\
-    \ must not be 0)\n    inline FPS& operator/=(const FPS& r) {\n        assert(!r.empty());\n\
-    \        assert(r.back() != 0);\n        this->normalize();\n        if (this->size()\
-    \ < r.size()) {\n            this->clear();\n            return *this;\n     \
-    \   }\n        const long long need = static_cast<long long>(this->size()) - static_cast<long\
-    \ long>(r.size()) + 1;\n        *this = ((*this).rev().pre(need) * inv(r.rev(),\
-    \ need)).pre(need).rev();\n        return *this;\n    }\n    inline FPS& operator%=(const\
-    \ FPS& r) {\n        return *this = divmod(*this, r).second;\n    }\n    inline\
-    \ FPS operator/(const FPS& r) const { return FPS(*this) /= r; }\n    inline FPS\
-    \ operator%(const FPS& r) const { return FPS(*this) %= r; }\n    // {f / g, f\
-    \ % g}, g must be normalized (g.back() must not be 0)\n    inline friend std::pair<FPS,\
-    \ FPS> divmod(const FPS& f, const FPS& g) {\n        assert(!g.empty());\n   \
-    \     assert(g.back() != 0);\n        FPS q = f / g;\n        FPS r = f - q *\
-    \ g;\n        return {q, r};\n    }\n\n    // log(f) = \\int f'/f dx, f[0] must\
-    \ be 1\n    inline friend FPS log(const FPS& f, long long deg) {\n        assert(!f.empty()\
-    \ && f[0] == 1);\n        FPS res = intg(diff(f) * inv(f, deg));\n        res.resize(deg);\n\
+    \    }\n        return res;\n    }\n    // \u6700\u9AD8\u6B21\u306E\u4FC2\u6570\
+    \u304C 1 \u306E gcd (Half-GCD)\u3002f \u3068 g \u304C\u3068\u3082\u306B 0 \u306A\
+    \u3089 0 (\u7A7A)\n    inline friend FPS gcd(const FPS& f, const FPS& g) {\n \
+    \       return internal_fps::gcd(f, g);\n    }\n\n    // advanced operation\n\
+    \    // df/dx\n    inline friend FPS diff(const FPS& f) {\n        int n = static_cast<int>(f.size());\n\
+    \        if (n == 0) return FPS();\n        FPS res(n - 1);\n        for (int\
+    \ i = 1; i < n; ++i) res[i - 1] = f[i] * i;\n        return res;\n    }\n\n  \
+    \  // \\int f dx\n    inline friend FPS intg(const FPS& f) {\n        int n =\
+    \ static_cast<int>(f.size());\n        FPS res(n + 1, 0);\n        for (int i\
+    \ = 0; i < n; ++i) res[i + 1] = f[i] / (i + 1);\n        return res;\n    }\n\n\
+    \    // inv(f), f[0] must not be 0\n    inline friend FPS inv(const FPS& f, long\
+    \ long deg) {\n        assert(!f.empty() && f[0] != 0);\n        if (deg < 0)\
+    \ deg = static_cast<long long>(f.size());\n        if (deg == 0) return FPS();\n\
+    \        FPS res({mint(1) / f[0]});\n        for (long long i = 1; i < deg; i\
+    \ <<= 1) {\n            res = (res + res - res * res * f.pre(i << 1)).pre(i <<\
+    \ 1);\n        }\n        res.resize(deg);\n        return res;\n    }\n    inline\
+    \ friend FPS inv(const FPS& f) {\n        return inv(f, f.size());\n    }\n\n\
+    \    // division, r must be normalized (r.back() must not be 0)\n    inline FPS&\
+    \ operator/=(const FPS& r) {\n        assert(!r.empty());\n        assert(r.back()\
+    \ != 0);\n        this->normalize();\n        if (this->size() < r.size()) {\n\
+    \            this->clear();\n            return *this;\n        }\n        const\
+    \ long long need = static_cast<long long>(this->size()) - static_cast<long long>(r.size())\
+    \ + 1;\n        *this = ((*this).rev().pre(need) * inv(r.rev(), need)).pre(need).rev();\n\
+    \        return *this;\n    }\n    inline FPS& operator%=(const FPS& r) {\n  \
+    \      return *this = divmod(*this, r).second;\n    }\n    inline FPS operator/(const\
+    \ FPS& r) const { return FPS(*this) /= r; }\n    inline FPS operator%(const FPS&\
+    \ r) const { return FPS(*this) %= r; }\n    // {f / g, f % g}, g must be normalized\
+    \ (g.back() must not be 0)\n    inline friend std::pair<FPS, FPS> divmod(const\
+    \ FPS& f, const FPS& g) {\n        assert(!g.empty());\n        assert(g.back()\
+    \ != 0);\n        FPS q = f / g;\n        FPS r = f - q * g;\n        return {q,\
+    \ r};\n    }\n\n    // log(f) = \\int f'/f dx, f[0] must be 1\n    inline friend\
+    \ FPS log(const FPS& f, long long deg) {\n        assert(!f.empty() && f[0] ==\
+    \ 1);\n        FPS res = intg(diff(f) * inv(f, deg));\n        res.resize(deg);\n\
     \        return res;\n    }\n    inline friend FPS log(const FPS& f) {\n     \
     \   return log(f, f.size());\n    }\n\n    // exp(f), f[0] must be 0\n    inline\
     \ friend FPS exp(const FPS& f, long long deg) {\n        assert(f.empty() || f[0]\
@@ -712,29 +706,13 @@ data:
     \  FPS<mint> g(n, 1);\n        for (int i = 1; i < n; i++) g[i] = g[i - 1] * a\
     \ * C::inv(i);\n        f = (f * g).pre(n);\n        std::reverse(f.begin(), f.end());\n\
     \        for (int i = 0; i < n; i++) f[i] *= C::inverse_factorial(i);\n      \
-    \  return f;\n    }\n};\n\ntemplate <typename mint>\nFPS<mint> modpow(const FPS<mint>&\
-    \ f, long long n, const FPS<mint>& m) {\n    if (n == 0) return FPS<mint>(1, 1);\n\
-    \    auto t = modpow(f, n / 2, m);\n    t = (t * t) % m;\n    if (n & 1) t = (t\
-    \ * f) % m;\n    return t;\n}\n\n/**\n * @brief \u591A\u9805\u5F0F\u306E\u5217\
-    \u306E\u7A4D f_0 f_1 ... f_{n-1} O(N log^2 N) (N \u306F\u6B21\u6570\u306E\u548C\
-    )\n * \u6B21\u6570\u306E\u5C0F\u3055\u3044\u3082\u306E\u304B\u3089 2 \u3064\u305A\
-    \u3064\u639B\u3051\u3066\u3044\u304F\u3002fs \u304C\u7A7A\u306A\u3089 1\n */\n\
-    template <typename mint>\nFPS<mint> polynomial_product(std::vector<FPS<mint>>\
-    \ fs) {\n    if (fs.empty()) return FPS<mint>(1, 1);\n    auto larger = [&](int\
-    \ a, int b) { return fs[a].size() > fs[b].size(); };\n    std::priority_queue<int,\
-    \ std::vector<int>, decltype(larger)> pq(larger);\n    for (int i = 0; i < static_cast<int>(fs.size());\
-    \ i++) pq.push(i);\n    while (pq.size() > 1) {\n        int a = pq.top();\n \
-    \       pq.pop();\n        int b = pq.top();\n        pq.pop();\n        // \u7A7A\
-    \u306E\u591A\u9805\u5F0F (0) \u3068\u306E\u7A4D\u306F 0\n        fs[a] = fs[a].empty()\
-    \ || fs[b].empty() ? FPS<mint>() : fs[a] * fs[b];\n        FPS<mint>().swap(fs[b]);\n\
-    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n#line 13 \"src/math/polynomial-gcd.hpp\"\
-    \n\nnamespace internal_polynomial_gcd {\ntemplate <typename mint>\nFPS<mint> shrink(FPS<mint>\
-    \ f) {\n    f.normalize();\n    return f;\n}\n\n// x^k \u3067\u5272\u3063\u3066\
-    \u4F4E\u6B21\u306E\u9805\u3092\u6368\u3066\u308B\u3002\u9577\u3055\u304C k \u4EE5\
-    \u4E0B\u306A\u3089 0 (\u7A7A)\ntemplate <typename mint>\nFPS<mint> drop(const\
-    \ FPS<mint>& f, long long k) {\n    if (static_cast<long long>(f.size()) <= k)\
-    \ return FPS<mint>();\n    return FPS<mint>(f.begin() + k, f.end());\n}\n\n//\
-    \ \u591A\u9805\u5F0F\u3092\u6210\u5206\u306B\u6301\u3064 2x2 \u884C\u5217 [[a,\
+    \  return f;\n    }\n};\n\nnamespace internal_fps {\ntemplate <typename mint>\n\
+    FPS<mint> shrink(FPS<mint> f) {\n    f.normalize();\n    return f;\n}\n\n// x^k\
+    \ \u3067\u5272\u3063\u3066\u4F4E\u6B21\u306E\u9805\u3092\u6368\u3066\u308B\u3002\
+    \u9577\u3055\u304C k \u4EE5\u4E0B\u306A\u3089 0 (\u7A7A)\ntemplate <typename mint>\n\
+    FPS<mint> drop(const FPS<mint>& f, long long k) {\n    if (static_cast<long long>(f.size())\
+    \ <= k) return FPS<mint>();\n    return FPS<mint>(f.begin() + k, f.end());\n}\n\
+    \n// \u591A\u9805\u5F0F\u3092\u6210\u5206\u306B\u6301\u3064 2x2 \u884C\u5217 [[a,\
     \ b], [c, d]]\ntemplate <typename mint>\nstruct Mat {\n    FPS<mint> a, b, c,\
     \ d;\n    static Mat identity() { return {FPS<mint>{1}, FPS<mint>(), FPS<mint>(),\
     \ FPS<mint>{1}}; }\n    Mat operator*(const Mat& r) const {\n        return {shrink(a\
@@ -768,115 +746,231 @@ data:
     \ m.d);\n        return m;\n    }\n    Mat<mint> res = Mat<mint>::identity();\n\
     \    while (!p.second.empty()) {\n        Mat<mint> m1 = half_gcd(p);\n      \
     \  p = m1 * p;\n        if (!p.second.empty()) step(m1, p);\n        res = m1\
-    \ * res;\n    }\n    return res;\n}\n}  // namespace internal_polynomial_gcd\n\
-    \n/**\n * @brief a f + b g = d (d \u306F f \u3068 g \u306E\u6700\u5927\u516C\u7D04\
-    \u6570\u3067\u3001\u6700\u9AD8\u6B21\u306E\u4FC2\u6570\u304C 1) \u3068\u306A\u308B\
-    \ a\u3001b \u3092\u6C42\u3081\u3001d \u3092\u8FD4\u3059 O(n log^2 n)\n * f \u3068\
-    \ g \u304C\u3068\u3082\u306B 0 \u306A\u3089 d = a = b = 0\u3002a\u3001b \u306F\
-    \u672B\u5C3E\u306E 0 \u3092\u53D6\u308A\u9664\u3044\u305F\u5F62\n */\ntemplate\
-    \ <typename mint>\nFPS<mint> extgcd(const FPS<mint>& f, const FPS<mint>& g, FPS<mint>&\
-    \ a, FPS<mint>& b) {\n    using namespace internal_polynomial_gcd;\n    Mat<mint>\
-    \ m = gcd_matrix(f, g);\n    FPS<mint> d = shrink(m.a * shrink(f) + m.b * shrink(g));\n\
-    \    a = std::move(m.a), b = std::move(m.b);\n    if (d.empty()) {\n        a.clear(),\
-    \ b.clear();\n        return d;\n    }\n    const mint iv = d.back().inv();\n\
-    \    d *= iv, a *= iv, b *= iv;\n    return d;\n}\n\n/**\n * @brief f h \u2261\
-    \ 1 (mod g) \u3067\u3001\u6B21\u6570\u304C g \u3088\u308A\u5C0F\u3055\u3044 h\u3002\
-    \u306A\u3051\u308C\u3070 std::nullopt O(n log^2 n)\n * g \u306F 0 \u3067\u306A\
-    \u3044\u3053\u3068\u3002g \u304C\u5B9A\u6570\u306A\u3089\u3059\u3079\u3066\u304C\
-    \ 0 \u3068\u5408\u540C\u306A\u306E\u3067\u3001h = 0 (\u7A7A) \u3092\u8FD4\u3059\
-    \u3002h \u306F\u672B\u5C3E\u306E 0 \u3092\u53D6\u308A\u9664\u3044\u305F\u5F62\n\
-    \ */\ntemplate <typename mint>\nstd::optional<FPS<mint>> modinv(const FPS<mint>&\
-    \ f, const FPS<mint>& g) {\n    using namespace internal_polynomial_gcd;\n   \
-    \ const FPS<mint> gs = shrink(g);\n    assert(!gs.empty());\n    if (gs.size()\
-    \ == 1) return FPS<mint>();\n    FPS<mint> a, b;\n    const FPS<mint> d = extgcd(shrink(f\
-    \ % gs), gs, a, b);\n    if (d.size() != 1) return std::nullopt;\n    return shrink(a\
-    \ % gs);\n}\n#line 8 \"test/unittest/math/polynomial-gcd.test.cpp\"\n\n#line 10\
-    \ \"test/unittest/math/polynomial-gcd.test.cpp\"\n#include <random>\n\n#line 14\
-    \ \"test/unittest/math/polynomial-gcd.test.cpp\"\n\nbool ok = true;\nvoid check(bool\
-    \ cond, const char* what) {\n    if (!cond && ok) std::cerr << \"failed: \" <<\
-    \ what << std::endl;\n    if (!cond) ok = false;\n}\n\ntemplate <typename mint>\n\
-    FPS<mint> monic(FPS<mint> f) {\n    f.normalize();\n    if (!f.empty()) f /= f.back();\n\
-    \    return f;\n}\n\ntemplate <typename mint>\nvoid test(std::mt19937_64& rng)\
-    \ {\n    using F = FPS<mint>;\n    auto gen = [&] { return mint(rng() % mint::mod());\
-    \ };\n    auto random_poly = [&](int n) {\n        F f(n);\n        for (auto&\
-    \ x : f) x = rng() % 5 == 0 ? mint(0) : gen();\n        return f.normalize();\n\
-    \    };\n    for (int rep = 0; rep < 400 && ok; rep++) {\n        const int lim\
-    \ = rep < 300 ? 8 : 300;\n        F f = random_poly(rng() % lim), g = random_poly(rng()\
-    \ % lim);\n        if (rng() % 2) {\n            // \u5171\u901A\u56E0\u5B50\u3092\
-    \u639B\u3051\u308B\n            F c = random_poly(1 + rng() % (rep < 300 ? 4 :\
-    \ 100));\n            f = (f * c).normalize(), g = (g * c).normalize();\n    \
-    \    }\n        F a, b;\n        F d = extgcd(f, g, a, b);\n        check(F(a\
-    \ * f + b * g).normalize() == d, \"extgcd: a f + b g = d\");\n        check(d\
-    \ == monic(gcd(F(f), F(g))), \"extgcd: d \u3068\u7D20\u6734\u306A gcd\");\n  \
-    \      if (!d.empty()) {\n            check(d.back() == 1, \"extgcd: d \u306E\u6700\
-    \u9AD8\u6B21\u306E\u4FC2\u6570\");\n            check(F(f % d).normalize().empty()\
-    \ && F(g % d).normalize().empty(), \"extgcd: d \u304C f \u3068 g \u3092\u5272\u308A\
-    \u5207\u308B\");\n        }\n        if (g.empty()) continue;\n        auto h\
-    \ = modinv(f, g);\n        bool exists = g.size() == 1 || d.size() == 1;\n   \
-    \     check(h.has_value() == exists, \"modinv: \u5B58\u5728\u306E\u5224\u5B9A\"\
-    );\n        if (h && g.size() > 1) {\n            check(h->size() < g.size(),\
-    \ \"modinv: \u6B21\u6570\");\n            check(F(*h * f % g).normalize() == F{1},\
-    \ \"modinv: f h \u2261 1\");\n        }\n        if (h && g.size() == 1) check(h->empty(),\
-    \ \"modinv: g \u304C\u5B9A\u6570\");\n    }\n}\n\nint main() {\n    std::mt19937_64\
-    \ rng(314);\n    test<modint998244353>(rng);\n    test<modint1000000007>(rng);\n\
-    \    if (!ok) return 1;\n    std::cout << \"Hello World\" << std::endl;\n}\n"
-  code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
-    \n\n// extgcd \u306F a f + b g = d\u3001d \u306E\u6700\u9AD8\u6B21\u306E\u4FC2\
-    \u6570\u304C 1\u3001d \u304C f \u3068 g \u3092\u5272\u308A\u5207\u308B\u3053\u3068\
-    \u3092\u78BA\u304B\u3081\u3001d \u3092\u7D20\u6734\u306A gcd \u3068\u6BD4\u3079\
-    \u308B\n// modinv \u306F f h \u2261 1 (mod g) \u3068\u6B21\u6570\u3092\u78BA\u304B\
-    \u3081\u3001std::nullopt \u306B\u306A\u308B\u306E\u306F gcd \u304C\u5B9A\u6570\
-    \u3067\u306A\u3044\u3068\u304D\u3060\u3051\u304B\u3092\u898B\u308B\n// \u5171\u901A\
-    \u56E0\u5B50\u3092\u6301\u3064 f, g \u3082\u4F5C\u308B\u3002\u554F\u984C\u306E\
-    \u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\
-    \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../../src/math/polynomial-gcd.hpp\"\
-    \n\n#include <iostream>\n#include <random>\n\n#include \"../../../src/math/fps.hpp\"\
-    \n#include \"../../../src/math/modint.hpp\"\n\nbool ok = true;\nvoid check(bool\
-    \ cond, const char* what) {\n    if (!cond && ok) std::cerr << \"failed: \" <<\
-    \ what << std::endl;\n    if (!cond) ok = false;\n}\n\ntemplate <typename mint>\n\
-    FPS<mint> monic(FPS<mint> f) {\n    f.normalize();\n    if (!f.empty()) f /= f.back();\n\
-    \    return f;\n}\n\ntemplate <typename mint>\nvoid test(std::mt19937_64& rng)\
-    \ {\n    using F = FPS<mint>;\n    auto gen = [&] { return mint(rng() % mint::mod());\
-    \ };\n    auto random_poly = [&](int n) {\n        F f(n);\n        for (auto&\
-    \ x : f) x = rng() % 5 == 0 ? mint(0) : gen();\n        return f.normalize();\n\
-    \    };\n    for (int rep = 0; rep < 400 && ok; rep++) {\n        const int lim\
-    \ = rep < 300 ? 8 : 300;\n        F f = random_poly(rng() % lim), g = random_poly(rng()\
-    \ % lim);\n        if (rng() % 2) {\n            // \u5171\u901A\u56E0\u5B50\u3092\
-    \u639B\u3051\u308B\n            F c = random_poly(1 + rng() % (rep < 300 ? 4 :\
-    \ 100));\n            f = (f * c).normalize(), g = (g * c).normalize();\n    \
-    \    }\n        F a, b;\n        F d = extgcd(f, g, a, b);\n        check(F(a\
-    \ * f + b * g).normalize() == d, \"extgcd: a f + b g = d\");\n        check(d\
-    \ == monic(gcd(F(f), F(g))), \"extgcd: d \u3068\u7D20\u6734\u306A gcd\");\n  \
-    \      if (!d.empty()) {\n            check(d.back() == 1, \"extgcd: d \u306E\u6700\
-    \u9AD8\u6B21\u306E\u4FC2\u6570\");\n            check(F(f % d).normalize().empty()\
-    \ && F(g % d).normalize().empty(), \"extgcd: d \u304C f \u3068 g \u3092\u5272\u308A\
-    \u5207\u308B\");\n        }\n        if (g.empty()) continue;\n        auto h\
-    \ = modinv(f, g);\n        bool exists = g.size() == 1 || d.size() == 1;\n   \
-    \     check(h.has_value() == exists, \"modinv: \u5B58\u5728\u306E\u5224\u5B9A\"\
-    );\n        if (h && g.size() > 1) {\n            check(h->size() < g.size(),\
-    \ \"modinv: \u6B21\u6570\");\n            check(F(*h * f % g).normalize() == F{1},\
-    \ \"modinv: f h \u2261 1\");\n        }\n        if (h && g.size() == 1) check(h->empty(),\
-    \ \"modinv: g \u304C\u5B9A\u6570\");\n    }\n}\n\nint main() {\n    std::mt19937_64\
-    \ rng(314);\n    test<modint998244353>(rng);\n    test<modint1000000007>(rng);\n\
-    \    if (!ok) return 1;\n    std::cout << \"Hello World\" << std::endl;\n}\n"
+    \ * res;\n    }\n    return res;\n}\n// \u6700\u9AD8\u6B21\u306E\u4FC2\u6570\u304C\
+    \ 1 \u306E gcd\u3002\u884C\u5217\u306F\u639B\u3051\u5408\u308F\u305B\u305A\u3001\
+    \u7D44 (p, q) \u3060\u3051\u3092\u9032\u3081\u308B\ntemplate <typename mint>\n\
+    FPS<mint> gcd(const FPS<mint>& f, const FPS<mint>& g) {\n    std::pair<FPS<mint>,\
+    \ FPS<mint>> p{shrink(f), shrink(g)};\n    if (p.first.size() < p.second.size())\
+    \ std::swap(p.first, p.second);\n    while (!p.second.empty()) {\n        Mat<mint>\
+    \ m1 = half_gcd(p);\n        p = m1 * p;\n        if (!p.second.empty()) step(m1,\
+    \ p);\n    }\n    if (!p.first.empty()) p.first /= p.first.back();\n    return\
+    \ p.first;\n}\n}  // namespace internal_fps\n\ntemplate <typename mint>\nFPS<mint>\
+    \ modpow(const FPS<mint>& f, long long n, const FPS<mint>& m) {\n    if (n ==\
+    \ 0) return FPS<mint>(1, 1);\n    auto t = modpow(f, n / 2, m);\n    t = (t *\
+    \ t) % m;\n    if (n & 1) t = (t * f) % m;\n    return t;\n}\n\n/**\n * @brief\
+    \ a f + b g = d (d \u306F f \u3068 g \u306E\u6700\u5927\u516C\u7D04\u6570\u3067\
+    \u3001\u6700\u9AD8\u6B21\u306E\u4FC2\u6570\u304C 1) \u3068\u306A\u308B a\u3001\
+    b \u3092\u6C42\u3081\u3001d \u3092\u8FD4\u3059 O(n log^2 n)\n * f \u3068 g \u304C\
+    \u3068\u3082\u306B 0 \u306A\u3089 d = a = b = 0\u3002a\u3001b \u306F\u672B\u5C3E\
+    \u306E 0 \u3092\u53D6\u308A\u9664\u3044\u305F\u5F62\n */\ntemplate <typename mint>\n\
+    FPS<mint> extgcd(const FPS<mint>& f, const FPS<mint>& g, FPS<mint>& a, FPS<mint>&\
+    \ b) {\n    using namespace internal_fps;\n    Mat<mint> m = gcd_matrix(f, g);\n\
+    \    FPS<mint> d = shrink(m.a * shrink(f) + m.b * shrink(g));\n    a = std::move(m.a),\
+    \ b = std::move(m.b);\n    if (d.empty()) {\n        a.clear(), b.clear();\n \
+    \       return d;\n    }\n    const mint iv = d.back().inv();\n    d *= iv, a\
+    \ *= iv, b *= iv;\n    return d;\n}\n\n/**\n * @brief f h \u2261 1 (mod g) \u3067\
+    \u3001\u6B21\u6570\u304C g \u3088\u308A\u5C0F\u3055\u3044 h\u3002\u306A\u3051\u308C\
+    \u3070 std::nullopt O(n log^2 n)\n * g \u306F 0 \u3067\u306A\u3044\u3053\u3068\
+    \u3002g \u304C\u5B9A\u6570\u306A\u3089\u3059\u3079\u3066\u304C 0 \u3068\u5408\u540C\
+    \u306A\u306E\u3067\u3001h = 0 (\u7A7A) \u3092\u8FD4\u3059\u3002h \u306F\u672B\u5C3E\
+    \u306E 0 \u3092\u53D6\u308A\u9664\u3044\u305F\u5F62\n */\ntemplate <typename mint>\n\
+    std::optional<FPS<mint>> modinv(const FPS<mint>& f, const FPS<mint>& g) {\n  \
+    \  using namespace internal_fps;\n    const FPS<mint> gs = shrink(g);\n    assert(!gs.empty());\n\
+    \    if (gs.size() == 1) return FPS<mint>();\n    FPS<mint> a, b;\n    const FPS<mint>\
+    \ d = extgcd(shrink(f % gs), gs, a, b);\n    if (d.size() != 1) return std::nullopt;\n\
+    \    return shrink(a % gs);\n}\n\n/**\n * @brief \u591A\u9805\u5F0F\u306E\u5217\
+    \u306E\u7A4D f_0 f_1 ... f_{n-1} O(N log^2 N) (N \u306F\u6B21\u6570\u306E\u548C\
+    )\n * \u6B21\u6570\u306E\u5C0F\u3055\u3044\u3082\u306E\u304B\u3089 2 \u3064\u305A\
+    \u3064\u639B\u3051\u3066\u3044\u304F\u3002fs \u304C\u7A7A\u306A\u3089 1\n */\n\
+    template <typename mint>\nFPS<mint> polynomial_product(std::vector<FPS<mint>>\
+    \ fs) {\n    if (fs.empty()) return FPS<mint>(1, 1);\n    auto larger = [&](int\
+    \ a, int b) { return fs[a].size() > fs[b].size(); };\n    std::priority_queue<int,\
+    \ std::vector<int>, decltype(larger)> pq(larger);\n    for (int i = 0; i < static_cast<int>(fs.size());\
+    \ i++) pq.push(i);\n    while (pq.size() > 1) {\n        int a = pq.top();\n \
+    \       pq.pop();\n        int b = pq.top();\n        pq.pop();\n        // \u7A7A\
+    \u306E\u591A\u9805\u5F0F (0) \u3068\u306E\u7A4D\u306F 0\n        fs[a] = fs[a].empty()\
+    \ || fs[b].empty() ? FPS<mint>() : fs[a] * fs[b];\n        FPS<mint>().swap(fs[b]);\n\
+    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n#line 2 \"src/math/multipoint.hpp\"\
+    \n\n/**\n * @file multipoint.hpp\n * @brief \u591A\u70B9\u8A55\u4FA1\u30FB\u591A\
+    \u9805\u5F0F\u88DC\u9593\u30FB\u6A19\u672C\u70B9\u306E\u305A\u3089\u3057\n */\n\
+    \n#line 11 \"src/math/multipoint.hpp\"\n\n#line 15 \"src/math/multipoint.hpp\"\
+    \n\nnamespace internal_multipoint {\n// \u70B9 xs \u306E subproduct tree: tree[k]\
+    \ \u306F\u9802\u70B9 k \u304C\u53D7\u3051\u6301\u3064\u70B9 x_i \u306B\u3064\u3044\
+    \u3066 \u03A0 (x - x_i)\u3002\u8449\u306F sz + i\ntemplate <typename mint>\nstruct\
+    \ SubproductTree {\n    long long n, sz;\n    std::vector<FPS<mint>> tree;\n \
+    \   explicit SubproductTree(const std::vector<mint>& xs) : n(xs.size()), sz(1)\
+    \ {\n        while (sz < n) sz <<= 1;\n        tree.assign(2 * sz, FPS<mint>{1});\n\
+    \        for (long long i = 0; i < n; i++) tree[sz + i] = FPS<mint>{-xs[i], 1};\n\
+    \        for (long long k = sz - 1; k >= 1; k--) tree[k] = tree[2 * k] * tree[2\
+    \ * k + 1];\n    }\n};\n}  // namespace internal_multipoint\n\n/**\n * @brief\
+    \ \u591A\u9805\u5F0F f \u306E\u3001\u70B9 xs \u3067\u306E\u5024 f(x_0), ..., f(x_{m-1})\
+    \ O((n + m) log^2 (n + m))\n * subproduct tree \u306E\u6839\u304B\u3089\u3001\u5404\
+    \u9802\u70B9\u306E\u591A\u9805\u5F0F\u3067\u5272\u3063\u305F\u4F59\u308A\u3092\
+    \u4E0B\u308D\u3057\u3066\u3044\u304F\u3002\u4F59\u308A\u304C\u77ED\u304F\u306A\
+    \u3063\u305F\u3089\u76F4\u63A5\u8A08\u7B97\u3059\u308B\n */\ntemplate <typename\
+    \ mint>\nstd::vector<mint> multipoint_evaluation(const FPS<mint>& f, const std::vector<mint>&\
+    \ xs) {\n    const long long m = xs.size();\n    if (m == 0) return {};\n    internal_multipoint::SubproductTree<mint>\
+    \ t(xs);\n    std::vector<mint> res(m);\n    // \u9802\u70B9 k \u306B f \u306E\
+    \u4F59\u308A g \u304C\u5C4A\u3044\u305F\u3068\u304D\u3001\u53D7\u3051\u6301\u3064\
+    \u70B9\u306E\u5024\u3092\u6C42\u3081\u308B\n    auto rec = [&](auto&& self, long\
+    \ long k, long long l, long long r, FPS<mint> g) -> void {\n        if (l >= m)\
+    \ return;\n        // \u6B21\u6570\u304C\u5C0F\u3055\u3051\u308C\u3070 Horner\
+    \ \u6CD5\u3067\u76F4\u63A5\u6C42\u3081\u308B\n        if (r - l <= 32) {\n   \
+    \         for (long long i = l; i < std::min(r, m); i++) res[i] = g.eval(xs[i]);\n\
+    \            return;\n        }\n        const long long mid = (l + r) / 2;\n\
+    \        self(self, 2 * k, l, mid, g % t.tree[2 * k]);\n        self(self, 2 *\
+    \ k + 1, mid, r, g % t.tree[2 * k + 1]);\n    };\n    FPS<mint> g = f;\n    g.normalize();\n\
+    \    rec(rec, 1, 0, t.sz, g % t.tree[1]);\n    return res;\n}\n\n/**\n * @brief\
+    \ \u70B9 (x_i, y_i) (x_i \u306F\u4E92\u3044\u306B\u7570\u306A\u308B) \u3092\u3059\
+    \u3079\u3066\u901A\u308B n - 1 \u6B21\u4EE5\u4E0B\u306E\u591A\u9805\u5F0F (\u9577\
+    \u3055 n) O(n log^2 n)\n * g = \u03A0 (x - x_i) \u3068\u3059\u308B\u3068 f = \u03A3\
+    \ y_i / g'(x_i) \u03A0_{j != i} (x - x_j)\u3002g'(x_i) \u3092\u591A\u70B9\u8A55\
+    \u4FA1\u3057\u3001\u548C\u3092 subproduct tree \u306E\u4E0B\u304B\u3089\u7D44\u307F\
+    \u7ACB\u3066\u308B\n */\ntemplate <typename mint>\nFPS<mint> polynomial_interpolation(const\
+    \ std::vector<mint>& xs, const std::vector<mint>& ys) {\n    assert(xs.size()\
+    \ == ys.size());\n    const long long n = xs.size();\n    if (n == 0) return FPS<mint>();\n\
+    \    internal_multipoint::SubproductTree<mint> t(xs);\n    std::vector<mint> d\
+    \ = multipoint_evaluation(diff(t.tree[1]), xs);\n    // val[k] = \u03A3_{\u9802\
+    \u70B9 k \u306E\u70B9 i} c_i \u03A0_{\u9802\u70B9 k \u306E\u70B9 j != i} (x -\
+    \ x_j)\u3001c_i = y_i / g'(x_i)\n    std::vector<FPS<mint>> val(2 * t.sz);\n \
+    \   for (long long i = 0; i < t.sz; i++) val[t.sz + i] = i < n ? FPS<mint>{ys[i]\
+    \ / d[i]} : FPS<mint>{};\n    for (long long k = t.sz - 1; k >= 1; k--) {\n  \
+    \      FPS<mint> a = val[2 * k] * t.tree[2 * k + 1], b = val[2 * k + 1] * t.tree[2\
+    \ * k];\n        if (a.size() < b.size()) a.resize(b.size());\n        for (size_t\
+    \ i = 0; i < b.size(); i++) a[i] += b[i];\n        val[k] = a;\n    }\n    FPS<mint>\
+    \ f = val[1];\n    f.resize(n);\n    return f;\n}\n\nnamespace internal_multipoint\
+    \ {\n// ys = f(0), ..., f(n-1) \u304B\u3089 f(c), ..., f(c+m-1)\u3002c + k \u304C\
+    \ 0 \u4EE5\u4E0A n \u672A\u6E80\u306E\u6574\u6570\u3068\u91CD\u306A\u3089\u306A\
+    \u3044\u3053\u3068\n// f(c+k) = (\u03A0_{j<n} (c+k-j)) \u03A3_i a_i / (c+k-i)\u3001\
+    a_i = y_i / (i! (n-1-i)! (-1)^(n-1-i))\ntemplate <typename mint>\nstd::vector<mint>\
+    \ shift_no_overlap(const std::vector<mint>& ys, mint c, long long m) {\n    using\
+    \ C = Combination<mint>;\n    const long long n = ys.size();\n    C::extend(n);\n\
+    \    std::vector<mint> a(n);\n    for (long long i = 0; i < n; i++) {\n      \
+    \  a[i] = ys[i] * C::inverse_factorial(i) * C::inverse_factorial(n - 1 - i);\n\
+    \        if ((n - 1 - i) % 2 == 1) a[i] = -a[i];\n    }\n    // b_t = 1 / (c -\
+    \ (n-1) + t) (t = 0, ..., n+m-2)\u3002\u9006\u6570\u306F\u307E\u3068\u3081\u3066\
+    \u6C42\u3081\u308B\n    const long long len = n + m - 1;\n    std::vector<mint>\
+    \ v(len), b(len), pre(len + 1, 1);\n    for (long long t = 0; t < len; t++) v[t]\
+    \ = c - mint(n - 1) + mint(t), pre[t + 1] = pre[t] * v[t];\n    mint inv_all =\
+    \ pre[len].inv();\n    for (long long t = len - 1; t >= 0; t--) b[t] = inv_all\
+    \ * pre[t], inv_all *= v[t];\n    std::vector<mint> s = convolution(a, b);\n \
+    \   // \u03A0_{j<n} (c+k-j) = v[k] v[k+1] ... v[k+n-1] \u3092\u305A\u3089\u3057\
+    \u306A\u304C\u3089\u6C42\u3081\u308B\n    std::vector<mint> res(m);\n    mint\
+    \ prod = 1;\n    for (long long t = 0; t < n; t++) prod *= v[t];\n    for (long\
+    \ long k = 0; k < m; k++) {\n        if (k > 0) prod *= v[k + n - 1] * b[k - 1];\n\
+    \        res[k] = prod * s[k + n - 1];\n    }\n    return res;\n}\n}  // namespace\
+    \ internal_multipoint\n\n/**\n * @brief n - 1 \u6B21\u4EE5\u4E0B\u306E\u591A\u9805\
+    \u5F0F f \u306E f(0), ..., f(n-1) \u304B\u3089\u3001f(c), f(c+1), ..., f(c+m-1)\
+    \ \u3092\u6C42\u3081\u308B O((n + m) log (n + m))\n * \u6CD5\u306F n + m \u3088\
+    \u308A\u5927\u304D\u3044\u7D20\u6570\u3067\u3042\u308B\u3053\u3068\u3002c + k\
+    \ \u304C 0 \u4EE5\u4E0A n \u672A\u6E80\u306E\u6574\u6570\u3068\u91CD\u306A\u308B\
+    \ k \u306F ys \u3092\u305D\u306E\u307E\u307E\u4F7F\u3046\n */\ntemplate <typename\
+    \ mint>\nstd::vector<mint> sample_point_shift(const std::vector<mint>& ys, mint\
+    \ c, long long m) {\n    const long long n = ys.size();\n    std::vector<mint>\
+    \ res(m);\n    if (n == 0) return res;\n    // (c + k) mod p \u304C [0, n) \u306B\
+    \u5165\u308B\u304B\u3067\u533A\u5207\u308A\u3001\u5165\u3089\u306A\u3044\u533A\
+    \u9593\u3054\u3068\u306B\u7573\u307F\u8FBC\u307F\u3067\u6C42\u3081\u308B\n   \
+    \ const long long p = mint::mod();\n    long long k = 0;\n    while (k < m) {\n\
+    \        long long x = (c.val() + k) % p;\n        if (x < n) {\n            res[k]\
+    \ = ys[x];\n            k++;\n            continue;\n        }\n        // x +\
+    \ len \u304C p \u304B n + p \u306B\u5C4A\u304F\u307E\u3067\u306F\u91CD\u306A\u3089\
+    \u306A\u3044 (x >= n \u306A\u306E\u3067\u6B21\u306B\u91CD\u306A\u308B\u306E\u306F\
+    \ x \u304C p \u306B\u623B\u3063\u305F\u3068\u304D)\n        long long len = std::min(m\
+    \ - k, p - x);\n        auto part = internal_multipoint::shift_no_overlap(ys,\
+    \ mint(x), len);\n        for (long long i = 0; i < len; i++) res[k + i] = part[i];\n\
+    \        k += len;\n    }\n    return res;\n}\n\n/**\n * @brief \u591A\u9805\u5F0F\
+    \ f \u306E\u3001\u7B49\u6BD4\u6570\u5217\u306E\u70B9 a r^i (0 <= i < m) \u3067\
+    \u306E\u5024 O((n + m) log (n + m)) (chirp-z \u5909\u63DB)\n * ij = C(i + j, 2)\
+    \ - C(i, 2) - C(j, 2) \u3092\u4F7F\u3046\u3068 f(a r^i) = r^{-C(i, 2)} \u03A3\
+    _j (f_j a^j r^{-C(j, 2)}) r^{C(i + j, 2)} \u3068\u306A\u308A\u3001\u7573\u307F\
+    \u8FBC\u307F 1 \u56DE\u3067\u6C42\u307E\u308B\n */\ntemplate <typename mint>\n\
+    std::vector<mint> multipoint_evaluation_geometric(const FPS<mint>& f, mint a,\
+    \ mint r, long long m) {\n    const long long n = f.size();\n    std::vector<mint>\
+    \ res(m);\n    if (m == 0 || n == 0) return res;\n    if (r == 0) {\n        //\
+    \ \u70B9\u306F a, 0, 0, ...\n        for (long long j = n - 1; j >= 0; j--) res[0]\
+    \ = res[0] * a + f[j];\n        for (long long i = 1; i < m; i++) res[i] = f[0];\n\
+    \        return res;\n    }\n    // w[k] = r^{C(k, 2)}\u3001iw[k] = r^{-C(k, 2)}\n\
+    \    const long long len = n + m - 1;\n    const mint ir = r.inv();\n    std::vector<mint>\
+    \ w(len), iw(std::max(n, m));\n    mint p = 1;\n    w[0] = 1;\n    for (long long\
+    \ k = 0; k + 1 < len; k++) w[k + 1] = w[k] * p, p *= r;\n    p = 1;\n    iw[0]\
+    \ = 1;\n    for (long long k = 0; k + 1 < static_cast<long long>(iw.size()); k++)\
+    \ iw[k + 1] = iw[k] * p, p *= ir;\n    // A \u3092\u9006\u9806\u306B\u4E26\u3079\
+    \u3066\u7573\u307F\u8FBC\u3080\u3068\u3001[n - 1 + i] \u304C \u03A3_j A_j w[i\
+    \ + j] \u306B\u306A\u308B\n    std::vector<mint> A(n);\n    mint aj = 1;\n   \
+    \ for (long long j = 0; j < n; j++) A[n - 1 - j] = f[j] * aj * iw[j], aj *= a;\n\
+    \    std::vector<mint> c = convolution(A, w);\n    for (long long i = 0; i < m;\
+    \ i++) res[i] = iw[i] * c[n - 1 + i];\n    return res;\n}\n\nnamespace internal_multipoint\
+    \ {\n// \u03A0_{j<n} (x - a r^j) O(n log n)\n// \u524D\u534A h = \u03A0_{j<k}\
+    \ (x - a r^j) \u304B\u3089\u3001\u5F8C\u534A\u306F \u03A0_{j<k} (x - a r^{j+k})\
+    \ = r^{k^2} h(x r^{-k}) \u3068\u4FC2\u6570\u3092\u5909\u3048\u308B\u3060\u3051\
+    \u3067\u6C42\u307E\u308B\ntemplate <typename mint>\nFPS<mint> geometric_product(mint\
+    \ a, mint r, long long n) {\n    if (n == 0) return FPS<mint>{1};\n    if (n %\
+    \ 2 == 1) {\n        FPS<mint> h = geometric_product(a, r, n - 1);\n        return\
+    \ h * FPS<mint>{-a * r.pow(n - 1), 1};\n    }\n    const long long k = n / 2;\n\
+    \    FPS<mint> h = geometric_product(a, r, k);\n    const mint rk = r.pow(k),\
+    \ irk = rk.inv();\n    FPS<mint> g = h;\n    mint c = rk.pow(k);\n    for (auto&\
+    \ x : g) x *= c, c *= irk;\n    return h * g;\n}\n}  // namespace internal_multipoint\n\
+    \n/**\n * @brief \u7B49\u6BD4\u6570\u5217\u306E\u70B9 (a r^i, y_i) (0 <= i < n)\
+    \ \u3092\u3059\u3079\u3066\u901A\u308B n - 1 \u6B21\u4EE5\u4E0B\u306E\u591A\u9805\
+    \u5F0F (\u9577\u3055 n) O(n log n)\n * a r^i \u306F\u4E92\u3044\u306B\u7570\u306A\
+    \u308B\u3053\u3068 (n >= 2 \u306A\u3089 a != 0\u3001r != 0)\n * f = M \u03A3_i\
+    \ w_i / (x - x_i) (M = \u03A0 (x - x_j)\u3001w_i = y_i / \u03A0_{j != i} (x_i\
+    \ - x_j))\u3002\n * \u548C\u306E x^k \u306E\u4FC2\u6570 -a^{-(k+1)} \u03A3_i w_i\
+    \ r^{-i(k+1)} \u306F\u7B49\u6BD4\u6570\u5217\u306E\u70B9\u3067\u306E\u591A\u70B9\
+    \u8A55\u4FA1\u3067\u6C42\u307E\u308B\n */\ntemplate <typename mint>\nFPS<mint>\
+    \ polynomial_interpolation_geometric(mint a, mint r, const std::vector<mint>&\
+    \ ys) {\n    const long long n = ys.size();\n    if (n == 0) return FPS<mint>();\n\
+    \    if (n == 1) return FPS<mint>{ys[0]};\n    assert(a != 0 && r != 0);\n   \
+    \ const mint ir = r.inv();\n    // pw[k] = r^k\u3001P[k] = \u03A0_{t=1}^{k} (r^t\
+    \ - 1)\n    std::vector<mint> pw(n), ipw(n), P(n), iP(n);\n    pw[0] = ipw[0]\
+    \ = P[0] = 1;\n    for (long long k = 1; k < n; k++) pw[k] = pw[k - 1] * r, ipw[k]\
+    \ = ipw[k - 1] * ir, P[k] = P[k - 1] * (pw[k] - 1);\n    assert(P[n - 1] != 0\
+    \ && \"a r^i must be distinct\");\n    iP[n - 1] = P[n - 1].inv();\n    for (long\
+    \ long k = n - 1; k >= 1; k--) iP[k - 1] = iP[k] * (pw[k] - 1);\n    // \u03A0\
+    _{j != i} (x_i - x_j) = a^{n-1} r^{e_i} P_i (-1)^{n-1-i} P_{n-1-i}\u3001e_i =\
+    \ C(i, 2) + i (n - 1 - i)\n    // e_{i+1} - e_i = n - 2 - i \u306A\u306E\u3067\
+    \u3001r^{-e_i} \u306F\u9806\u306B\u639B\u3051\u3066\u6C42\u3081\u308B\n    std::vector<mint>\
+    \ W(n);\n    const mint ian = a.inv().pow(n - 1);\n    mint ire = 1;\n    for\
+    \ (long long i = 0; i < n; i++) {\n        W[i] = ys[i] * ian * ire * iP[i] *\
+    \ iP[n - 1 - i];\n        if ((n - 1 - i) % 2 == 1) W[i] = -W[i];\n        if\
+    \ (i + 1 < n) ire *= ipw[n - 2 - i];\n    }\n    std::vector<mint> s = multipoint_evaluation_geometric(FPS<mint>(W),\
+    \ ir, ir, n);\n    const mint ia = a.inv();\n    mint c = ia;\n    FPS<mint> S(n);\n\
+    \    for (long long k = 0; k < n; k++) S[k] = -c * s[k], c *= ia;\n    FPS<mint>\
+    \ f = (internal_multipoint::geometric_product(a, r, n) * S).pre(n);\n    f.resize(n);\n\
+    \    return f;\n}\n#line 9 \"test/yosupo/polynomial/polynomial-interpolation-on-geometric-sequence.test.cpp\"\
+    \n\nusing mint = modint998244353;\n\nint main() {\n    std::cin.tie(nullptr);\n\
+    \    std::ios::sync_with_stdio(false);\n    int n;\n    mint a, r;\n    std::cin\
+    \ >> n >> a >> r;\n    std::vector<mint> ys(n);\n    for (auto& y : ys) std::cin\
+    \ >> y;\n    auto f = polynomial_interpolation_geometric(a, r, ys);\n    for (int\
+    \ i = 0; i < n; i++) std::cout << f[i] << (i + 1 == n ? \"\" : \" \");\n    std::cout\
+    \ << '\\n';\n}\n"
+  code: "#define PROBLEM \"https://judge.yosupo.jp/problem/polynomial_interpolation_on_geometric_sequence\"\
+    \n\n#include <iostream>\n#include <vector>\n\n#include \"../../../src/math/fps.hpp\"\
+    \n#include \"../../../src/math/modint.hpp\"\n#include \"../../../src/math/multipoint.hpp\"\
+    \n\nusing mint = modint998244353;\n\nint main() {\n    std::cin.tie(nullptr);\n\
+    \    std::ios::sync_with_stdio(false);\n    int n;\n    mint a, r;\n    std::cin\
+    \ >> n >> a >> r;\n    std::vector<mint> ys(n);\n    for (auto& y : ys) std::cin\
+    \ >> y;\n    auto f = polynomial_interpolation_geometric(a, r, ys);\n    for (int\
+    \ i = 0; i < n; i++) std::cout << f[i] << (i + 1 == n ? \"\" : \" \");\n    std::cout\
+    \ << '\\n';\n}\n"
   dependsOn:
-  - src/math/polynomial-gcd.hpp
   - src/math/fps.hpp
   - src/math/combinatorics.hpp
   - src/math/modular-arithmetic.hpp
   - src/math/convolution.hpp
   - src/math/modint.hpp
   - src/utility/traits.hpp
+  - src/math/multipoint.hpp
   isVerificationFile: true
-  path: test/unittest/math/polynomial-gcd.test.cpp
+  path: test/yosupo/polynomial/polynomial-interpolation-on-geometric-sequence.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 00:21:18+09:00'
+  timestamp: '2026-10-22 00:31:13+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/unittest/math/polynomial-gcd.test.cpp
+documentation_of: test/yosupo/polynomial/polynomial-interpolation-on-geometric-sequence.test.cpp
 layout: document
 redirect_from:
-- /verify/test/unittest/math/polynomial-gcd.test.cpp
-- /verify/test/unittest/math/polynomial-gcd.test.cpp.html
-title: test/unittest/math/polynomial-gcd.test.cpp
+- /verify/test/yosupo/polynomial/polynomial-interpolation-on-geometric-sequence.test.cpp
+- /verify/test/yosupo/polynomial/polynomial-interpolation-on-geometric-sequence.test.cpp.html
+title: test/yosupo/polynomial/polynomial-interpolation-on-geometric-sequence.test.cpp
 ---

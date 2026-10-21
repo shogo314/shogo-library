@@ -19,10 +19,6 @@ data:
     title: "mod \u6F14\u7B97 (\u7A4D\u3001\u51AA\u4E57\u3001\u9006\u5143\u3001\u96E2\
       \u6563\u5BFE\u6570\u3001\u5E73\u65B9\u6839)"
   - icon: ':heavy_check_mark:'
-    path: src/math/polynomial-gcd.hpp
-    title: "\u591A\u9805\u5F0F\u306E\u62E1\u5F35\u30E6\u30FC\u30AF\u30EA\u30C3\u30C9\
-      \u306E\u4E92\u9664\u6CD5\u3068\u9006\u5143 (Half-GCD)"
-  - icon: ':heavy_check_mark:'
     path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
@@ -588,7 +584,9 @@ data:
     \ static_cast<__int128_t>(mod0) * y1 + y0;\n        if (tmp < (mod012 >> 1))\n\
     \            res[i] = tmp;\n        else\n            res[i] = tmp - mod012;\n\
     \    }\n    return res;\n}\n#line 18 \"src/math/fps.hpp\"\n\ntemplate <typename\
-    \ mint>\nstruct FPS : std::vector<mint> {\n    using std::vector<mint>::vector;\n\
+    \ mint>\nstruct FPS;\n\nnamespace internal_fps {\ntemplate <typename mint>\nFPS<mint>\
+    \ gcd(const FPS<mint>& f, const FPS<mint>& g);\n}  // namespace internal_fps\n\
+    \ntemplate <typename mint>\nstruct FPS : std::vector<mint> {\n    using std::vector<mint>::vector;\n\
     \n    // constructor\n    FPS(const std::vector<mint>& r) : std::vector<mint>(r)\
     \ {}\n\n    // core operator\n    inline FPS pre(long long siz) const {\n    \
     \    return FPS(begin(*this), begin(*this) + std::min(static_cast<long long>(this->size()),\
@@ -629,37 +627,39 @@ data:
     \        return *this = res;\n    }\n    inline mint eval(const mint& v) {\n \
     \       mint res = 0;\n        for (int i = static_cast<int>(this->size()) - 1;\
     \ i >= 0; --i) {\n            res *= v;\n            res += (*this)[i];\n    \
-    \    }\n        return res;\n    }\n    inline friend FPS gcd(const FPS& f, const\
-    \ FPS& g) {\n        if (g.empty()) return f;\n        return gcd(g, f % g);\n\
-    \    }\n\n    // advanced operation\n    // df/dx\n    inline friend FPS diff(const\
-    \ FPS& f) {\n        int n = static_cast<int>(f.size());\n        if (n == 0)\
-    \ return FPS();\n        FPS res(n - 1);\n        for (int i = 1; i < n; ++i)\
-    \ res[i - 1] = f[i] * i;\n        return res;\n    }\n\n    // \\int f dx\n  \
-    \  inline friend FPS intg(const FPS& f) {\n        int n = static_cast<int>(f.size());\n\
-    \        FPS res(n + 1, 0);\n        for (int i = 0; i < n; ++i) res[i + 1] =\
-    \ f[i] / (i + 1);\n        return res;\n    }\n\n    // inv(f), f[0] must not\
-    \ be 0\n    inline friend FPS inv(const FPS& f, long long deg) {\n        assert(!f.empty()\
-    \ && f[0] != 0);\n        if (deg < 0) deg = static_cast<long long>(f.size());\n\
-    \        if (deg == 0) return FPS();\n        FPS res({mint(1) / f[0]});\n   \
-    \     for (long long i = 1; i < deg; i <<= 1) {\n            res = (res + res\
-    \ - res * res * f.pre(i << 1)).pre(i << 1);\n        }\n        res.resize(deg);\n\
-    \        return res;\n    }\n    inline friend FPS inv(const FPS& f) {\n     \
-    \   return inv(f, f.size());\n    }\n\n    // division, r must be normalized (r.back()\
-    \ must not be 0)\n    inline FPS& operator/=(const FPS& r) {\n        assert(!r.empty());\n\
-    \        assert(r.back() != 0);\n        this->normalize();\n        if (this->size()\
-    \ < r.size()) {\n            this->clear();\n            return *this;\n     \
-    \   }\n        const long long need = static_cast<long long>(this->size()) - static_cast<long\
-    \ long>(r.size()) + 1;\n        *this = ((*this).rev().pre(need) * inv(r.rev(),\
-    \ need)).pre(need).rev();\n        return *this;\n    }\n    inline FPS& operator%=(const\
-    \ FPS& r) {\n        return *this = divmod(*this, r).second;\n    }\n    inline\
-    \ FPS operator/(const FPS& r) const { return FPS(*this) /= r; }\n    inline FPS\
-    \ operator%(const FPS& r) const { return FPS(*this) %= r; }\n    // {f / g, f\
-    \ % g}, g must be normalized (g.back() must not be 0)\n    inline friend std::pair<FPS,\
-    \ FPS> divmod(const FPS& f, const FPS& g) {\n        assert(!g.empty());\n   \
-    \     assert(g.back() != 0);\n        FPS q = f / g;\n        FPS r = f - q *\
-    \ g;\n        return {q, r};\n    }\n\n    // log(f) = \\int f'/f dx, f[0] must\
-    \ be 1\n    inline friend FPS log(const FPS& f, long long deg) {\n        assert(!f.empty()\
-    \ && f[0] == 1);\n        FPS res = intg(diff(f) * inv(f, deg));\n        res.resize(deg);\n\
+    \    }\n        return res;\n    }\n    // \u6700\u9AD8\u6B21\u306E\u4FC2\u6570\
+    \u304C 1 \u306E gcd (Half-GCD)\u3002f \u3068 g \u304C\u3068\u3082\u306B 0 \u306A\
+    \u3089 0 (\u7A7A)\n    inline friend FPS gcd(const FPS& f, const FPS& g) {\n \
+    \       return internal_fps::gcd(f, g);\n    }\n\n    // advanced operation\n\
+    \    // df/dx\n    inline friend FPS diff(const FPS& f) {\n        int n = static_cast<int>(f.size());\n\
+    \        if (n == 0) return FPS();\n        FPS res(n - 1);\n        for (int\
+    \ i = 1; i < n; ++i) res[i - 1] = f[i] * i;\n        return res;\n    }\n\n  \
+    \  // \\int f dx\n    inline friend FPS intg(const FPS& f) {\n        int n =\
+    \ static_cast<int>(f.size());\n        FPS res(n + 1, 0);\n        for (int i\
+    \ = 0; i < n; ++i) res[i + 1] = f[i] / (i + 1);\n        return res;\n    }\n\n\
+    \    // inv(f), f[0] must not be 0\n    inline friend FPS inv(const FPS& f, long\
+    \ long deg) {\n        assert(!f.empty() && f[0] != 0);\n        if (deg < 0)\
+    \ deg = static_cast<long long>(f.size());\n        if (deg == 0) return FPS();\n\
+    \        FPS res({mint(1) / f[0]});\n        for (long long i = 1; i < deg; i\
+    \ <<= 1) {\n            res = (res + res - res * res * f.pre(i << 1)).pre(i <<\
+    \ 1);\n        }\n        res.resize(deg);\n        return res;\n    }\n    inline\
+    \ friend FPS inv(const FPS& f) {\n        return inv(f, f.size());\n    }\n\n\
+    \    // division, r must be normalized (r.back() must not be 0)\n    inline FPS&\
+    \ operator/=(const FPS& r) {\n        assert(!r.empty());\n        assert(r.back()\
+    \ != 0);\n        this->normalize();\n        if (this->size() < r.size()) {\n\
+    \            this->clear();\n            return *this;\n        }\n        const\
+    \ long long need = static_cast<long long>(this->size()) - static_cast<long long>(r.size())\
+    \ + 1;\n        *this = ((*this).rev().pre(need) * inv(r.rev(), need)).pre(need).rev();\n\
+    \        return *this;\n    }\n    inline FPS& operator%=(const FPS& r) {\n  \
+    \      return *this = divmod(*this, r).second;\n    }\n    inline FPS operator/(const\
+    \ FPS& r) const { return FPS(*this) /= r; }\n    inline FPS operator%(const FPS&\
+    \ r) const { return FPS(*this) %= r; }\n    // {f / g, f % g}, g must be normalized\
+    \ (g.back() must not be 0)\n    inline friend std::pair<FPS, FPS> divmod(const\
+    \ FPS& f, const FPS& g) {\n        assert(!g.empty());\n        assert(g.back()\
+    \ != 0);\n        FPS q = f / g;\n        FPS r = f - q * g;\n        return {q,\
+    \ r};\n    }\n\n    // log(f) = \\int f'/f dx, f[0] must be 1\n    inline friend\
+    \ FPS log(const FPS& f, long long deg) {\n        assert(!f.empty() && f[0] ==\
+    \ 1);\n        FPS res = intg(diff(f) * inv(f, deg));\n        res.resize(deg);\n\
     \        return res;\n    }\n    inline friend FPS log(const FPS& f) {\n     \
     \   return log(f, f.size());\n    }\n\n    // exp(f), f[0] must be 0\n    inline\
     \ friend FPS exp(const FPS& f, long long deg) {\n        assert(f.empty() || f[0]\
@@ -700,33 +700,13 @@ data:
     \  FPS<mint> g(n, 1);\n        for (int i = 1; i < n; i++) g[i] = g[i - 1] * a\
     \ * C::inv(i);\n        f = (f * g).pre(n);\n        std::reverse(f.begin(), f.end());\n\
     \        for (int i = 0; i < n; i++) f[i] *= C::inverse_factorial(i);\n      \
-    \  return f;\n    }\n};\n\ntemplate <typename mint>\nFPS<mint> modpow(const FPS<mint>&\
-    \ f, long long n, const FPS<mint>& m) {\n    if (n == 0) return FPS<mint>(1, 1);\n\
-    \    auto t = modpow(f, n / 2, m);\n    t = (t * t) % m;\n    if (n & 1) t = (t\
-    \ * f) % m;\n    return t;\n}\n\n/**\n * @brief \u591A\u9805\u5F0F\u306E\u5217\
-    \u306E\u7A4D f_0 f_1 ... f_{n-1} O(N log^2 N) (N \u306F\u6B21\u6570\u306E\u548C\
-    )\n * \u6B21\u6570\u306E\u5C0F\u3055\u3044\u3082\u306E\u304B\u3089 2 \u3064\u305A\
-    \u3064\u639B\u3051\u3066\u3044\u304F\u3002fs \u304C\u7A7A\u306A\u3089 1\n */\n\
-    template <typename mint>\nFPS<mint> polynomial_product(std::vector<FPS<mint>>\
-    \ fs) {\n    if (fs.empty()) return FPS<mint>(1, 1);\n    auto larger = [&](int\
-    \ a, int b) { return fs[a].size() > fs[b].size(); };\n    std::priority_queue<int,\
-    \ std::vector<int>, decltype(larger)> pq(larger);\n    for (int i = 0; i < static_cast<int>(fs.size());\
-    \ i++) pq.push(i);\n    while (pq.size() > 1) {\n        int a = pq.top();\n \
-    \       pq.pop();\n        int b = pq.top();\n        pq.pop();\n        // \u7A7A\
-    \u306E\u591A\u9805\u5F0F (0) \u3068\u306E\u7A4D\u306F 0\n        fs[a] = fs[a].empty()\
-    \ || fs[b].empty() ? FPS<mint>() : fs[a] * fs[b];\n        FPS<mint>().swap(fs[b]);\n\
-    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n#line 2 \"src/math/polynomial-gcd.hpp\"\
-    \n\n/**\n * @file polynomial-gcd.hpp\n * @brief \u591A\u9805\u5F0F\u306E\u62E1\
-    \u5F35\u30E6\u30FC\u30AF\u30EA\u30C3\u30C9\u306E\u4E92\u9664\u6CD5\u3068\u3001\
-    \u591A\u9805\u5F0F\u3092\u6CD5\u3068\u3059\u308B\u9006\u5143 (Half-GCD)\n */\n\
-    \n#line 11 \"src/math/polynomial-gcd.hpp\"\n\n#line 13 \"src/math/polynomial-gcd.hpp\"\
-    \n\nnamespace internal_polynomial_gcd {\ntemplate <typename mint>\nFPS<mint> shrink(FPS<mint>\
-    \ f) {\n    f.normalize();\n    return f;\n}\n\n// x^k \u3067\u5272\u3063\u3066\
-    \u4F4E\u6B21\u306E\u9805\u3092\u6368\u3066\u308B\u3002\u9577\u3055\u304C k \u4EE5\
-    \u4E0B\u306A\u3089 0 (\u7A7A)\ntemplate <typename mint>\nFPS<mint> drop(const\
-    \ FPS<mint>& f, long long k) {\n    if (static_cast<long long>(f.size()) <= k)\
-    \ return FPS<mint>();\n    return FPS<mint>(f.begin() + k, f.end());\n}\n\n//\
-    \ \u591A\u9805\u5F0F\u3092\u6210\u5206\u306B\u6301\u3064 2x2 \u884C\u5217 [[a,\
+    \  return f;\n    }\n};\n\nnamespace internal_fps {\ntemplate <typename mint>\n\
+    FPS<mint> shrink(FPS<mint> f) {\n    f.normalize();\n    return f;\n}\n\n// x^k\
+    \ \u3067\u5272\u3063\u3066\u4F4E\u6B21\u306E\u9805\u3092\u6368\u3066\u308B\u3002\
+    \u9577\u3055\u304C k \u4EE5\u4E0B\u306A\u3089 0 (\u7A7A)\ntemplate <typename mint>\n\
+    FPS<mint> drop(const FPS<mint>& f, long long k) {\n    if (static_cast<long long>(f.size())\
+    \ <= k) return FPS<mint>();\n    return FPS<mint>(f.begin() + k, f.end());\n}\n\
+    \n// \u591A\u9805\u5F0F\u3092\u6210\u5206\u306B\u6301\u3064 2x2 \u884C\u5217 [[a,\
     \ b], [c, d]]\ntemplate <typename mint>\nstruct Mat {\n    FPS<mint> a, b, c,\
     \ d;\n    static Mat identity() { return {FPS<mint>{1}, FPS<mint>(), FPS<mint>(),\
     \ FPS<mint>{1}}; }\n    Mat operator*(const Mat& r) const {\n        return {shrink(a\
@@ -760,31 +740,53 @@ data:
     \ m.d);\n        return m;\n    }\n    Mat<mint> res = Mat<mint>::identity();\n\
     \    while (!p.second.empty()) {\n        Mat<mint> m1 = half_gcd(p);\n      \
     \  p = m1 * p;\n        if (!p.second.empty()) step(m1, p);\n        res = m1\
-    \ * res;\n    }\n    return res;\n}\n}  // namespace internal_polynomial_gcd\n\
-    \n/**\n * @brief a f + b g = d (d \u306F f \u3068 g \u306E\u6700\u5927\u516C\u7D04\
-    \u6570\u3067\u3001\u6700\u9AD8\u6B21\u306E\u4FC2\u6570\u304C 1) \u3068\u306A\u308B\
-    \ a\u3001b \u3092\u6C42\u3081\u3001d \u3092\u8FD4\u3059 O(n log^2 n)\n * f \u3068\
-    \ g \u304C\u3068\u3082\u306B 0 \u306A\u3089 d = a = b = 0\u3002a\u3001b \u306F\
-    \u672B\u5C3E\u306E 0 \u3092\u53D6\u308A\u9664\u3044\u305F\u5F62\n */\ntemplate\
-    \ <typename mint>\nFPS<mint> extgcd(const FPS<mint>& f, const FPS<mint>& g, FPS<mint>&\
-    \ a, FPS<mint>& b) {\n    using namespace internal_polynomial_gcd;\n    Mat<mint>\
-    \ m = gcd_matrix(f, g);\n    FPS<mint> d = shrink(m.a * shrink(f) + m.b * shrink(g));\n\
-    \    a = std::move(m.a), b = std::move(m.b);\n    if (d.empty()) {\n        a.clear(),\
-    \ b.clear();\n        return d;\n    }\n    const mint iv = d.back().inv();\n\
-    \    d *= iv, a *= iv, b *= iv;\n    return d;\n}\n\n/**\n * @brief f h \u2261\
-    \ 1 (mod g) \u3067\u3001\u6B21\u6570\u304C g \u3088\u308A\u5C0F\u3055\u3044 h\u3002\
-    \u306A\u3051\u308C\u3070 std::nullopt O(n log^2 n)\n * g \u306F 0 \u3067\u306A\
-    \u3044\u3053\u3068\u3002g \u304C\u5B9A\u6570\u306A\u3089\u3059\u3079\u3066\u304C\
-    \ 0 \u3068\u5408\u540C\u306A\u306E\u3067\u3001h = 0 (\u7A7A) \u3092\u8FD4\u3059\
-    \u3002h \u306F\u672B\u5C3E\u306E 0 \u3092\u53D6\u308A\u9664\u3044\u305F\u5F62\n\
-    \ */\ntemplate <typename mint>\nstd::optional<FPS<mint>> modinv(const FPS<mint>&\
-    \ f, const FPS<mint>& g) {\n    using namespace internal_polynomial_gcd;\n   \
-    \ const FPS<mint> gs = shrink(g);\n    assert(!gs.empty());\n    if (gs.size()\
-    \ == 1) return FPS<mint>();\n    FPS<mint> a, b;\n    const FPS<mint> d = extgcd(shrink(f\
-    \ % gs), gs, a, b);\n    if (d.size() != 1) return std::nullopt;\n    return shrink(a\
-    \ % gs);\n}\n#line 8 \"test/yosupo/polynomial/inv-of-polynomials.test.cpp\"\n\n\
-    using mint = modint998244353;\n\nint main() {\n    std::cin.tie(nullptr);\n  \
-    \  std::ios::sync_with_stdio(false);\n    int n, m;\n    std::cin >> n >> m;\n\
+    \ * res;\n    }\n    return res;\n}\n// \u6700\u9AD8\u6B21\u306E\u4FC2\u6570\u304C\
+    \ 1 \u306E gcd\u3002\u884C\u5217\u306F\u639B\u3051\u5408\u308F\u305B\u305A\u3001\
+    \u7D44 (p, q) \u3060\u3051\u3092\u9032\u3081\u308B\ntemplate <typename mint>\n\
+    FPS<mint> gcd(const FPS<mint>& f, const FPS<mint>& g) {\n    std::pair<FPS<mint>,\
+    \ FPS<mint>> p{shrink(f), shrink(g)};\n    if (p.first.size() < p.second.size())\
+    \ std::swap(p.first, p.second);\n    while (!p.second.empty()) {\n        Mat<mint>\
+    \ m1 = half_gcd(p);\n        p = m1 * p;\n        if (!p.second.empty()) step(m1,\
+    \ p);\n    }\n    if (!p.first.empty()) p.first /= p.first.back();\n    return\
+    \ p.first;\n}\n}  // namespace internal_fps\n\ntemplate <typename mint>\nFPS<mint>\
+    \ modpow(const FPS<mint>& f, long long n, const FPS<mint>& m) {\n    if (n ==\
+    \ 0) return FPS<mint>(1, 1);\n    auto t = modpow(f, n / 2, m);\n    t = (t *\
+    \ t) % m;\n    if (n & 1) t = (t * f) % m;\n    return t;\n}\n\n/**\n * @brief\
+    \ a f + b g = d (d \u306F f \u3068 g \u306E\u6700\u5927\u516C\u7D04\u6570\u3067\
+    \u3001\u6700\u9AD8\u6B21\u306E\u4FC2\u6570\u304C 1) \u3068\u306A\u308B a\u3001\
+    b \u3092\u6C42\u3081\u3001d \u3092\u8FD4\u3059 O(n log^2 n)\n * f \u3068 g \u304C\
+    \u3068\u3082\u306B 0 \u306A\u3089 d = a = b = 0\u3002a\u3001b \u306F\u672B\u5C3E\
+    \u306E 0 \u3092\u53D6\u308A\u9664\u3044\u305F\u5F62\n */\ntemplate <typename mint>\n\
+    FPS<mint> extgcd(const FPS<mint>& f, const FPS<mint>& g, FPS<mint>& a, FPS<mint>&\
+    \ b) {\n    using namespace internal_fps;\n    Mat<mint> m = gcd_matrix(f, g);\n\
+    \    FPS<mint> d = shrink(m.a * shrink(f) + m.b * shrink(g));\n    a = std::move(m.a),\
+    \ b = std::move(m.b);\n    if (d.empty()) {\n        a.clear(), b.clear();\n \
+    \       return d;\n    }\n    const mint iv = d.back().inv();\n    d *= iv, a\
+    \ *= iv, b *= iv;\n    return d;\n}\n\n/**\n * @brief f h \u2261 1 (mod g) \u3067\
+    \u3001\u6B21\u6570\u304C g \u3088\u308A\u5C0F\u3055\u3044 h\u3002\u306A\u3051\u308C\
+    \u3070 std::nullopt O(n log^2 n)\n * g \u306F 0 \u3067\u306A\u3044\u3053\u3068\
+    \u3002g \u304C\u5B9A\u6570\u306A\u3089\u3059\u3079\u3066\u304C 0 \u3068\u5408\u540C\
+    \u306A\u306E\u3067\u3001h = 0 (\u7A7A) \u3092\u8FD4\u3059\u3002h \u306F\u672B\u5C3E\
+    \u306E 0 \u3092\u53D6\u308A\u9664\u3044\u305F\u5F62\n */\ntemplate <typename mint>\n\
+    std::optional<FPS<mint>> modinv(const FPS<mint>& f, const FPS<mint>& g) {\n  \
+    \  using namespace internal_fps;\n    const FPS<mint> gs = shrink(g);\n    assert(!gs.empty());\n\
+    \    if (gs.size() == 1) return FPS<mint>();\n    FPS<mint> a, b;\n    const FPS<mint>\
+    \ d = extgcd(shrink(f % gs), gs, a, b);\n    if (d.size() != 1) return std::nullopt;\n\
+    \    return shrink(a % gs);\n}\n\n/**\n * @brief \u591A\u9805\u5F0F\u306E\u5217\
+    \u306E\u7A4D f_0 f_1 ... f_{n-1} O(N log^2 N) (N \u306F\u6B21\u6570\u306E\u548C\
+    )\n * \u6B21\u6570\u306E\u5C0F\u3055\u3044\u3082\u306E\u304B\u3089 2 \u3064\u305A\
+    \u3064\u639B\u3051\u3066\u3044\u304F\u3002fs \u304C\u7A7A\u306A\u3089 1\n */\n\
+    template <typename mint>\nFPS<mint> polynomial_product(std::vector<FPS<mint>>\
+    \ fs) {\n    if (fs.empty()) return FPS<mint>(1, 1);\n    auto larger = [&](int\
+    \ a, int b) { return fs[a].size() > fs[b].size(); };\n    std::priority_queue<int,\
+    \ std::vector<int>, decltype(larger)> pq(larger);\n    for (int i = 0; i < static_cast<int>(fs.size());\
+    \ i++) pq.push(i);\n    while (pq.size() > 1) {\n        int a = pq.top();\n \
+    \       pq.pop();\n        int b = pq.top();\n        pq.pop();\n        // \u7A7A\
+    \u306E\u591A\u9805\u5F0F (0) \u3068\u306E\u7A4D\u306F 0\n        fs[a] = fs[a].empty()\
+    \ || fs[b].empty() ? FPS<mint>() : fs[a] * fs[b];\n        FPS<mint>().swap(fs[b]);\n\
+    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n#line 7 \"test/yosupo/polynomial/inv-of-polynomials.test.cpp\"\
+    \n\nusing mint = modint998244353;\n\nint main() {\n    std::cin.tie(nullptr);\n\
+    \    std::ios::sync_with_stdio(false);\n    int n, m;\n    std::cin >> n >> m;\n\
     \    FPS<mint> f(n), g(m);\n    for (auto& x : f) std::cin >> x;\n    for (auto&\
     \ x : g) std::cin >> x;\n    auto h = modinv(f, g);\n    if (!h) {\n        std::cout\
     \ << -1 << '\\n';\n        return 0;\n    }\n    const int t = h->size();\n  \
@@ -792,14 +794,13 @@ data:
     \ << (i + 1 == t ? \"\" : \" \");\n    std::cout << '\\n';\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/inv_of_polynomials\"\n\n\
     #include <iostream>\n\n#include \"../../../src/math/fps.hpp\"\n#include \"../../../src/math/modint.hpp\"\
-    \n#include \"../../../src/math/polynomial-gcd.hpp\"\n\nusing mint = modint998244353;\n\
-    \nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
-    \    int n, m;\n    std::cin >> n >> m;\n    FPS<mint> f(n), g(m);\n    for (auto&\
-    \ x : f) std::cin >> x;\n    for (auto& x : g) std::cin >> x;\n    auto h = modinv(f,\
-    \ g);\n    if (!h) {\n        std::cout << -1 << '\\n';\n        return 0;\n \
-    \   }\n    const int t = h->size();\n    std::cout << t << '\\n';\n    for (int\
-    \ i = 0; i < t; i++) std::cout << (*h)[i] << (i + 1 == t ? \"\" : \" \");\n  \
-    \  std::cout << '\\n';\n}\n"
+    \n\nusing mint = modint998244353;\n\nint main() {\n    std::cin.tie(nullptr);\n\
+    \    std::ios::sync_with_stdio(false);\n    int n, m;\n    std::cin >> n >> m;\n\
+    \    FPS<mint> f(n), g(m);\n    for (auto& x : f) std::cin >> x;\n    for (auto&\
+    \ x : g) std::cin >> x;\n    auto h = modinv(f, g);\n    if (!h) {\n        std::cout\
+    \ << -1 << '\\n';\n        return 0;\n    }\n    const int t = h->size();\n  \
+    \  std::cout << t << '\\n';\n    for (int i = 0; i < t; i++) std::cout << (*h)[i]\
+    \ << (i + 1 == t ? \"\" : \" \");\n    std::cout << '\\n';\n}\n"
   dependsOn:
   - src/math/fps.hpp
   - src/math/combinatorics.hpp
@@ -807,11 +808,10 @@ data:
   - src/math/convolution.hpp
   - src/math/modint.hpp
   - src/utility/traits.hpp
-  - src/math/polynomial-gcd.hpp
   isVerificationFile: true
   path: test/yosupo/polynomial/inv-of-polynomials.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 00:21:18+09:00'
+  timestamp: '2026-10-22 00:25:30+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/polynomial/inv-of-polynomials.test.cpp

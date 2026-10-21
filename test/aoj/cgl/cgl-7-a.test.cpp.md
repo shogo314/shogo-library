@@ -4,7 +4,8 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/geometry/circle.hpp
     title: "\u5186 (\u4F4D\u7F6E\u95A2\u4FC2\u3001\u4EA4\u70B9\u3001\u63A5\u7DDA\u3001\
-      \u5185\u63A5\u5186\u3001\u5916\u63A5\u5186)"
+      \u5185\u63A5\u5186\u3001\u5916\u63A5\u5186\u3001\u5171\u901A\u90E8\u5206\u306E\
+      \u9762\u7A4D)"
   - icon: ':heavy_check_mark:'
     path: src/geometry/vector.hpp
     title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"
@@ -24,15 +25,15 @@ data:
   bundledCode: "#line 1 \"test/aoj/cgl/cgl-7-a.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_A\"\
     \n\n#include <iostream>\n\n#line 2 \"src/geometry/circle.hpp\"\n\n/**\n * @file\
     \ circle.hpp\n * @brief \u5186 (\u4F4D\u7F6E\u95A2\u4FC2\u3001\u4EA4\u70B9\u3001\
-    \u63A5\u7DDA\u3001\u5185\u63A5\u5186\u3001\u5916\u63A5\u5186)\n */\n\n#include\
-    \ <algorithm>\n#include <cassert>\n#include <cmath>\n#include <istream>\n#include\
-    \ <type_traits>\n#include <vector>\n\n#line 2 \"src/geometry/vector.hpp\"\n\n\
-    /**\n * @file vector.hpp\n * @brief \u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB\n */\n\
-    \n#line 9 \"src/geometry/vector.hpp\"\n#include <array>\n#line 13 \"src/geometry/vector.hpp\"\
-    \n#include <limits>\n#include <numeric>\n#include <optional>\n#include <ostream>\n\
-    #include <stack>\n#line 19 \"src/geometry/vector.hpp\"\n#include <utility>\n#line\
-    \ 21 \"src/geometry/vector.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n\
-    \ * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n\
+    \u63A5\u7DDA\u3001\u5185\u63A5\u5186\u3001\u5916\u63A5\u5186\u3001\u5171\u901A\
+    \u90E8\u5206\u306E\u9762\u7A4D)\n */\n\n#include <algorithm>\n#include <cassert>\n\
+    #include <cmath>\n#include <istream>\n#include <type_traits>\n#include <utility>\n\
+    #include <vector>\n\n#line 2 \"src/geometry/vector.hpp\"\n\n/**\n * @file vector.hpp\n\
+    \ * @brief \u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB\n */\n\n#line 9 \"src/geometry/vector.hpp\"\
+    \n#include <array>\n#line 13 \"src/geometry/vector.hpp\"\n#include <limits>\n\
+    #include <numeric>\n#include <optional>\n#include <ostream>\n#include <stack>\n\
+    #line 21 \"src/geometry/vector.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n\
+    /**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n\
     #include <iterator>\n#include <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace\
     \ internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T, class =\
     \ void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct\
@@ -429,45 +430,106 @@ data:
     \u30C8\n * @return ClosestPair \u6700\u8FD1\u70B9\u5BFE\u306E\u8DDD\u96E2\u3068\
     \u6DFB\u5B57\n */\ntemplate <typename T>\nClosestPair closest_point_pair(const\
     \ std::vector<Vector<T, 2>>& points) {\n    auto [d2, i, j] = closest_point_pair_squared(points);\n\
-    \    return {std::sqrt(static_cast<double>(d2)), i, j};\n}\n/**\n * @deprecated\
-    \ closest_point_pair_squared \u3092\u4F7F\u3046\u3053\u3068(\u7DB4\u308A\u306E\
-    \u8AA4\u308A\u3092\u76F4\u3057\u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename\
-    \ T>\n[[deprecated(\"use closest_point_pair_squared\")]] ClosestPairSquared<T>\
-    \ closest_point_pair_squred(const std::vector<Vector<T, 2>>& points) {\n    return\
-    \ closest_point_pair_squared(points);\n}\n#line 16 \"src/geometry/circle.hpp\"\
-    \n\n/**\n * @brief \u5186\n *\n * @tparam T \u5EA7\u6A19\u3068\u534A\u5F84\u306E\
-    \u578B \u7701\u7565\u3057\u305F\u3089double\n */\ntemplate <typename T = double>\n\
-    struct Circle {\n    Vector<T, 2> c;  //!< \u4E2D\u5FC3\n    T r;            \
-    \ //!< \u534A\u5F84\n\n    constexpr Circle() : c(), r() {}\n    constexpr Circle(const\
-    \ Vector<T, 2>& c, T r) : c(c), r(r) {}\n\n    /**\n     * @brief \"x y r\" \u306E\
-    \u9806\u306B\u8AAD\u307F\u8FBC\u3080\n     */\n    template <class CharT, class\
-    \ Traits>\n    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
-    \ Traits>& is, Circle& rhs) {\n        return is >> rhs.c >> rhs.r;\n    }\n};\n\
-    \n/**\n * @brief 2\u3064\u306E\u5186\u306E\u4F4D\u7F6E\u95A2\u4FC2\u3092\u3001\
-    \u5171\u901A\u63A5\u7DDA\u306E\u672C\u6570\u3067\u8FD4\u3059 (\u6574\u6570\u578B\
-    \u3067\u3082\u4F7F\u3048\u308B\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u3067\
-    \u306F\u8AA4\u5DEE\u3092\u8003\u3048\u305A\u306B\u6BD4\u8F03\u3059\u308B)\n *\
-    \ @return int 4: \u96E2\u308C\u3066\u3044\u308B, 3: \u5916\u63A5, 2: 2\u70B9\u3067\
-    \u4EA4\u308F\u308B, 1: \u5185\u63A5, 0: \u4E00\u65B9\u304C\u4ED6\u65B9\u306E\u5185\
-    \u90E8\u306B\u3042\u308B (2\u3064\u306E\u5186\u304C\u4E00\u81F4\u3059\u308B\u5834\
-    \u5408\u3082 1 \u3092\u8FD4\u3059)\n */\ntemplate <typename T>\nconstexpr int\
-    \ circle_relation(const Circle<T>& c1, const Circle<T>& c2) {\n    T d2 = (c1.c\
-    \ - c2.c).squared_norm();\n    T s = c1.r + c2.r, t = c1.r - c2.r;\n    if (d2\
-    \ > s * s) return 4;\n    if (d2 == s * s) return 3;\n    if (d2 > t * t) return\
-    \ 2;\n    if (d2 == t * t) return 1;\n    return 0;\n}\n\n/**\n * @brief \u4E09\
-    \u89D2\u5F62 abc \u306E\u5185\u63A5\u5186\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\
-    \u9650\u5B9A\n */\ntemplate <typename T>\nCircle<T> incircle(const Vector<T, 2>&\
-    \ a, const Vector<T, 2>& b, const Vector<T, 2>& c) {\n    static_assert(std::is_floating_point_v<T>,\
-    \ \"incircle: T must be a floating point type\");\n    T la = (b - c).abs(), lb\
-    \ = (c - a).abs(), lc = (a - b).abs();\n    T s = la + lb + lc;\n    assert(s\
-    \ > 0);\n    // \u4E2D\u5FC3\u306F\u3001\u5404\u9802\u70B9\u3092\u5411\u304B\u3044\
-    \u5408\u3046\u8FBA\u306E\u9577\u3055\u3067\u91CD\u307F\u4ED8\u3051\u3057\u305F\
-    \u5E73\u5747\n    return Circle<T>((a * la + b * lb + c * lc) / s, std::abs(cross(b\
-    \ - a, c - a)) / s);\n}\n\n/**\n * @brief \u4E09\u89D2\u5F62 abc \u306E\u5916\u63A5\
-    \u5186\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\u30023\u70B9\u304C\
-    \u4E00\u76F4\u7DDA\u4E0A\u306B\u3042\u3063\u3066\u306F\u306A\u3089\u306A\u3044\
-    \n */\ntemplate <typename T>\nCircle<T> circumcircle(const Vector<T, 2>& a, const\
-    \ Vector<T, 2>& b, const Vector<T, 2>& c) {\n    static_assert(std::is_floating_point_v<T>,\
+    \    return {std::sqrt(static_cast<double>(d2)), i, j};\n}\n\n/**\n * @brief farthest_point_pair_squared\
+    \ \u306E\u623B\u308A\u5024\n */\ntemplate <typename T>\nstruct FarthestPairSquared\
+    \ {\n    T squared_dist;  //!< \u6700\u9060\u70B9\u5BFE\u306E\u8DDD\u96E2\u306E\
+    2\u4E57\n    long long i, j;  //!< \u6700\u9060\u70B9\u5BFE\u306E\u6DFB\u5B57\n\
+    };\n/**\n * @brief farthest_point_pair \u306E\u623B\u308A\u5024\n */\nstruct FarthestPair\
+    \ {\n    double dist;     //!< \u6700\u9060\u70B9\u5BFE\u306E\u8DDD\u96E2\n  \
+    \  long long i, j;  //!< \u6700\u9060\u70B9\u5BFE\u306E\u6DFB\u5B57\n};\n\n/**\n\
+    \ * @brief \u6700\u9060\u70B9\u5BFE (\u51F8\u5305\u3092\u4F5C\u308A\u3001\u56DE\
+    \u8EE2\u30AD\u30E3\u30EA\u30D1\u30FC\u6CD5\u3067\u5BFE\u8E60\u70B9\u306E\u7D44\
+    \u3092\u8ABF\u3079\u308B) O(n log n)\n *\n * \u6574\u6570\u578B\u3067\u3082\u4F7F\
+    \u3048\u308B\u3002\u5EA7\u6A19\u306E\u5DEE\u306E2\u4E57\u306E\u548C\u306E2\u500D\
+    \u304C T \u306B\u53CE\u307E\u308B\u5FC5\u8981\u304C\u3042\u308B\n * @tparam T\
+    \ \u5EA7\u6A19\u306E\u578B\n * @param points \u9802\u70B9\u30EA\u30B9\u30C8 (2\u500B\
+    \u4EE5\u4E0A)\n * @return FarthestPairSquared<T> \u6700\u9060\u70B9\u5BFE\u306E\
+    \u8DDD\u96E2\u306E2\u4E57\u3068\u6DFB\u5B57 (i != j)\n */\ntemplate <typename\
+    \ T>\nFarthestPairSquared<T> farthest_point_pair_squared(const std::vector<Vector<T,\
+    \ 2>>& points) {\n    const int n = static_cast<int>(points.size());\n    assert(n\
+    \ >= 2);\n    // \u51F8\u5305\u306E\u9802\u70B9\u3092\u3001\u3082\u3068\u306E\u6DFB\
+    \u5B57\u306B\u623B\u305B\u308B\u3088\u3046\u306B\u3057\u3066\u304A\u304F\n   \
+    \ std::vector<std::pair<Vector<T, 2>, int>> sorted(n);\n    for (int i = 0; i\
+    \ < n; i++) sorted[i] = {points[i], i};\n    std::sort(sorted.begin(), sorted.end());\n\
+    \    auto index_of = [&](const Vector<T, 2>& p) {\n        return std::lower_bound(sorted.begin(),\
+    \ sorted.end(), std::make_pair(p, -1))->second;\n    };\n    std::vector<Vector<T,\
+    \ 2>> hull = convex_hull(points);\n    const int k = static_cast<int>(hull.size());\n\
+    \    if (k == 1) return {T(0), sorted[0].second, sorted[1].second};  // \u3059\
+    \u3079\u3066\u540C\u3058\u70B9\n    FarthestPairSquared<T> res{T(0), -1, -1};\n\
+    \    auto update = [&](int a, int b) {\n        T d = (hull[a] - hull[b]).squared_norm();\n\
+    \        if (res.i == -1 || d > res.squared_dist) res = {d, a, b};\n    };\n \
+    \   if (k == 2) {\n        update(0, 1);\n    } else {\n        // \u8FBA i\u2192\
+    i+1 \u306B\u5BFE\u3057\u3066\u3001\u6700\u3082\u9060\u3044\u9802\u70B9 j \u3092\
+    \u53CD\u6642\u8A08\u56DE\u308A\u306B\u9032\u3081\u3066\u3044\u304F\n        int\
+    \ j = 1;\n        for (int i = 0; i < k; i++) {\n            int ni = i + 1 ==\
+    \ k ? 0 : i + 1;\n            while (true) {\n                int nj = j + 1 ==\
+    \ k ? 0 : j + 1;\n                if (cross(hull[ni] - hull[i], hull[nj] - hull[j])\
+    \ > 0)\n                    j = nj;\n                else\n                  \
+    \  break;\n            }\n            update(i, j);\n            update(ni, j);\n\
+    \        }\n    }\n    return {res.squared_dist, index_of(hull[res.i]), index_of(hull[res.j])};\n\
+    }\n\n/**\n * @brief \u6700\u9060\u70B9\u5BFE\n *\n * @tparam T \u5EA7\u6A19\u306E\
+    \u578B\n * @param points \u9802\u70B9\u30EA\u30B9\u30C8 (2\u500B\u4EE5\u4E0A)\n\
+    \ * @return FarthestPair \u6700\u9060\u70B9\u5BFE\u306E\u8DDD\u96E2\u3068\u6DFB\
+    \u5B57\n */\ntemplate <typename T>\nFarthestPair farthest_point_pair(const std::vector<Vector<T,\
+    \ 2>>& points) {\n    auto [d2, i, j] = farthest_point_pair_squared(points);\n\
+    \    return {std::sqrt(static_cast<double>(d2)), i, j};\n}\n\n/**\n * @brief \u51F8\
+    \u591A\u89D2\u5F62\u3092\u76F4\u7DDA p1p2 \u3067\u5207\u308A\u3001\u76F4\u7DDA\
+    \u306E\u5DE6\u5074 (p1 \u304B\u3089 p2 \u3092\u898B\u3066\u5DE6) \u306E\u90E8\u5206\
+    \u3092\u8FD4\u3059\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n *\n\
+    \ * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u51F8\u591A\u89D2\u5F62\
+    \u306E\u9802\u70B9\u306E\u5EA7\u6A19 (\u53CD\u6642\u8A08\u56DE\u308A)\n * @return\
+    \ std::vector<Vector<T, 2>> \u5DE6\u5074\u306E\u51F8\u591A\u89D2\u5F62\u306E\u9802\
+    \u70B9 (\u53CD\u6642\u8A08\u56DE\u308A)\u3002\u76F4\u7DDA\u4E0A\u306E\u9802\u70B9\
+    \u3082\u542B\u3080\u3002\u5DE6\u5074\u306B\u4F55\u3082\u306A\u3051\u308C\u3070\
+    \u7A7A\n */\ntemplate <typename T>\nstd::vector<Vector<T, 2>> convex_cut(const\
+    \ std::vector<Vector<T, 2>>& polygon, const Vector<T, 2>& p1, const Vector<T,\
+    \ 2>& p2) {\n    static_assert(std::is_floating_point_v<T>, \"convex_cut: T must\
+    \ be a floating point type\");\n    std::vector<Vector<T, 2>> res;\n    const\
+    \ int n = static_cast<int>(polygon.size());\n    for (int i = 0; i < n; i++) {\n\
+    \        const Vector<T, 2>&a = polygon[i], &b = polygon[i + 1 == n ? 0 : i +\
+    \ 1];\n        T ca = cross(p2 - p1, a - p1), cb = cross(p2 - p1, b - p1);\n \
+    \       if (ca >= 0) res.push_back(a);\n        // \u8FBA ab \u304C\u76F4\u7DDA\
+    \u3092\u307E\u305F\u3050\u306A\u3089\u3001\u4EA4\u70B9\u3092\u5165\u308C\u308B\
+    \n        if ((ca > 0 && cb < 0) || (ca < 0 && cb > 0)) res.push_back(a + (b -\
+    \ a) * (ca / (ca - cb)));\n    }\n    return res;\n}\n/**\n * @deprecated closest_point_pair_squared\
+    \ \u3092\u4F7F\u3046\u3053\u3068(\u7DB4\u308A\u306E\u8AA4\u308A\u3092\u76F4\u3057\
+    \u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename T>\n[[deprecated(\"use\
+    \ closest_point_pair_squared\")]] ClosestPairSquared<T> closest_point_pair_squred(const\
+    \ std::vector<Vector<T, 2>>& points) {\n    return closest_point_pair_squared(points);\n\
+    }\n#line 17 \"src/geometry/circle.hpp\"\n\n/**\n * @brief \u5186\n *\n * @tparam\
+    \ T \u5EA7\u6A19\u3068\u534A\u5F84\u306E\u578B \u7701\u7565\u3057\u305F\u3089\
+    double\n */\ntemplate <typename T = double>\nstruct Circle {\n    Vector<T, 2>\
+    \ c;  //!< \u4E2D\u5FC3\n    T r;             //!< \u534A\u5F84\n\n    constexpr\
+    \ Circle() : c(), r() {}\n    constexpr Circle(const Vector<T, 2>& c, T r) : c(c),\
+    \ r(r) {}\n\n    /**\n     * @brief \"x y r\" \u306E\u9806\u306B\u8AAD\u307F\u8FBC\
+    \u3080\n     */\n    template <class CharT, class Traits>\n    friend std::basic_istream<CharT,\
+    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Circle& rhs) {\n\
+    \        return is >> rhs.c >> rhs.r;\n    }\n};\n\n/**\n * @brief 2\u3064\u306E\
+    \u5186\u306E\u4F4D\u7F6E\u95A2\u4FC2\u3092\u3001\u5171\u901A\u63A5\u7DDA\u306E\
+    \u672C\u6570\u3067\u8FD4\u3059 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B\
+    \u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u3067\u306F\u8AA4\u5DEE\u3092\u8003\
+    \u3048\u305A\u306B\u6BD4\u8F03\u3059\u308B)\n * @return int 4: \u96E2\u308C\u3066\
+    \u3044\u308B, 3: \u5916\u63A5, 2: 2\u70B9\u3067\u4EA4\u308F\u308B, 1: \u5185\u63A5\
+    , 0: \u4E00\u65B9\u304C\u4ED6\u65B9\u306E\u5185\u90E8\u306B\u3042\u308B (2\u3064\
+    \u306E\u5186\u304C\u4E00\u81F4\u3059\u308B\u5834\u5408\u3082 1 \u3092\u8FD4\u3059\
+    )\n */\ntemplate <typename T>\nconstexpr int circle_relation(const Circle<T>&\
+    \ c1, const Circle<T>& c2) {\n    T d2 = (c1.c - c2.c).squared_norm();\n    T\
+    \ s = c1.r + c2.r, t = c1.r - c2.r;\n    if (d2 > s * s) return 4;\n    if (d2\
+    \ == s * s) return 3;\n    if (d2 > t * t) return 2;\n    if (d2 == t * t) return\
+    \ 1;\n    return 0;\n}\n\n/**\n * @brief \u4E09\u89D2\u5F62 abc \u306E\u5185\u63A5\
+    \u5186\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n */\ntemplate <typename\
+    \ T>\nCircle<T> incircle(const Vector<T, 2>& a, const Vector<T, 2>& b, const Vector<T,\
+    \ 2>& c) {\n    static_assert(std::is_floating_point_v<T>, \"incircle: T must\
+    \ be a floating point type\");\n    T la = (b - c).abs(), lb = (c - a).abs(),\
+    \ lc = (a - b).abs();\n    T s = la + lb + lc;\n    assert(s > 0);\n    // \u4E2D\
+    \u5FC3\u306F\u3001\u5404\u9802\u70B9\u3092\u5411\u304B\u3044\u5408\u3046\u8FBA\
+    \u306E\u9577\u3055\u3067\u91CD\u307F\u4ED8\u3051\u3057\u305F\u5E73\u5747\n   \
+    \ return Circle<T>((a * la + b * lb + c * lc) / s, std::abs(cross(b - a, c - a))\
+    \ / s);\n}\n\n/**\n * @brief \u4E09\u89D2\u5F62 abc \u306E\u5916\u63A5\u5186\u3002\
+    \u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\u30023\u70B9\u304C\u4E00\u76F4\
+    \u7DDA\u4E0A\u306B\u3042\u3063\u3066\u306F\u306A\u3089\u306A\u3044\n */\ntemplate\
+    \ <typename T>\nCircle<T> circumcircle(const Vector<T, 2>& a, const Vector<T,\
+    \ 2>& b, const Vector<T, 2>& c) {\n    static_assert(std::is_floating_point_v<T>,\
     \ \"circumcircle: T must be a floating point type\");\n    Vector<T, 2> u = b\
     \ - a, v = c - a;\n    T d = cross(u, v) * 2;\n    assert(d != 0 && \"circumcircle:\
     \ collinear points\");\n    T nu = u.squared_norm(), nv = v.squared_norm();\n\
@@ -521,8 +583,81 @@ data:
     \ r^2)) / d^2\n    T s = c.r * std::sqrt(d2 - r2);\n    Vector<T, 2> n(-v[1],\
     \ v[0]);\n    std::vector<Vector<T, 2>> res = {c.c + (v * r2 + n * s) / d2, c.c\
     \ + (v * r2 - n * s) / d2};\n    std::sort(res.begin(), res.end());\n    return\
-    \ res;\n}\n#line 6 \"test/aoj/cgl/cgl-7-a.test.cpp\"\n\nint main() {\n    Circle<long\
-    \ long> c1, c2;\n    std::cin >> c1 >> c2;\n    std::cout << circle_relation(c1,\
+    \ res;\n}\n\n/**\n * @brief 2\u3064\u306E\u5186\u306E\u5171\u901A\u63A5\u7DDA\
+    \ (0\u301C4\u672C)\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\u3002\
+    \u4E2D\u5FC3\u304C\u540C\u3058\u306A\u3089\u7A7A\u3092\u8FD4\u3059\n *\n * \u5404\
+    \u63A5\u7DDA\u3092 (c1 \u3068\u306E\u63A5\u70B9, c2 \u3068\u306E\u63A5\u70B9)\
+    \ \u306E\u7D44\u3067\u8FD4\u3057\u3001c1 \u3068\u306E\u63A5\u70B9\u306E\u5EA7\u6A19\
+    \u306E\u6607\u9806\u306B\u4E26\u3079\u308B\u3002\n * 2\u3064\u306E\u5186\u304C\
+    \u63A5\u3059\u308B\u70B9\u3067\u306E\u63A5\u7DDA\u306F\u30012\u3064\u306E\u63A5\
+    \u70B9\u304C\u540C\u3058\u70B9\u306B\u306A\u308B (\u63A5\u7DDA\u306F\u4E2D\u5FC3\
+    \u3092\u7D50\u3076\u76F4\u7DDA\u306B\u5782\u76F4)\n * @param eps \u63A5\u3059\u308B\
+    \ (\u305D\u306E\u7A2E\u985E\u306E\u63A5\u7DDA\u304C1\u672C) \u3068\u307F\u306A\
+    \u3059\u3001\u4E2D\u5FC3\u9593\u306E\u8DDD\u96E2\u3068\u534A\u5F84\u306E\u548C\
+    \u30FB\u5DEE\u306E\u5DEE\n */\ntemplate <typename T>\nstd::vector<std::pair<Vector<T,\
+    \ 2>, Vector<T, 2>>> common_tangents(const Circle<T>& c1, const Circle<T>& c2,\
+    \ T eps = 1e-9) {\n    static_assert(std::is_floating_point_v<T>, \"common_tangents:\
+    \ T must be a floating point type\");\n    Vector<T, 2> d = c2.c - c1.c;\n   \
+    \ T d2 = d.squared_norm(), dist = std::sqrt(d2);\n    if (dist <= eps) return\
+    \ {};\n    std::vector<std::pair<Vector<T, 2>, Vector<T, 2>>> res;\n    // \u5171\
+    \u901A\u5916\u63A5\u7DDA\u306F c2 \u306E\u534A\u5F84\u3092 r2\u3001\u5171\u901A\
+    \u5185\u63A5\u7DDA\u306F -r2 \u3068\u3057\u3066\u540C\u3058\u5F0F\u3067\u6C42\u3081\
+    \u308B\n    for (T r2 : {c2.r, -c2.r}) {\n        T dr = c1.r - r2;\n        if\
+    \ (dist < std::abs(dr) - eps) continue;\n        bool touch = std::abs(dist -\
+    \ std::abs(dr)) <= eps;\n        T h = touch ? T(0) : std::sqrt(std::max<T>(d2\
+    \ - dr * dr, 0));\n        for (int sign : {1, -1}) {\n            // \u4E2D\u5FC3\
+    \u304B\u3089\u63A5\u70B9\u3078\u306E\u5358\u4F4D\u30D9\u30AF\u30C8\u30EB\n   \
+    \         Vector<T, 2> v = (d * dr + Vector<T, 2>(-d[1], d[0]) * (h * sign)) /\
+    \ d2;\n            res.push_back({c1.c + v * c1.r, c2.c + v * r2});\n        \
+    \    if (touch) break;\n        }\n    }\n    std::sort(res.begin(), res.end());\n\
+    \    return res;\n}\n\n/**\n * @brief 2\u3064\u306E\u5186\u306E\u5171\u901A\u90E8\
+    \u5206\u306E\u9762\u7A4D\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\
+    \n */\ntemplate <typename T>\nT circle_circle_intersection_area(const Circle<T>&\
+    \ c1, const Circle<T>& c2) {\n    static_assert(std::is_floating_point_v<T>, \"\
+    circle_circle_intersection_area: T must be a floating point type\");\n    const\
+    \ T pi = std::acos(T(-1));\n    T d = (c1.c - c2.c).abs();\n    if (d >= c1.r\
+    \ + c2.r) return 0;\n    if (d <= std::abs(c1.r - c2.r)) {\n        T r = std::min(c1.r,\
+    \ c2.r);\n        return pi * r * r;\n    }\n    // \u5404\u5186\u306E\u3001\u4EA4\
+    \u70B9\u3092\u7D50\u3076\u5F26\u3067\u5207\u3063\u305F\u5F13\u5F62\u306E\u9762\
+    \u7A4D\u306E\u548C\n    auto segment = [&](T r, T R) {\n        T a = std::acos(std::clamp((d\
+    \ * d + r * r - R * R) / (2 * d * r), T(-1), T(1)));  // \u4E2D\u5FC3\u89D2\u306E\
+    \u534A\u5206\n        return r * r * (a - std::sin(2 * a) / 2);\n    };\n    return\
+    \ segment(c1.r, c2.r) + segment(c2.r, c1.r);\n}\n\n/**\n * @brief \u5186\u3068\
+    \u591A\u89D2\u5F62\u306E\u5171\u901A\u90E8\u5206\u306E\u9762\u7A4D\u3002\u6D6E\
+    \u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A O(n)\n *\n * \u5186\u306E\u4E2D\u5FC3\
+    \u3068\u591A\u89D2\u5F62\u306E\u5404\u8FBA\u304C\u306A\u3059\u4E09\u89D2\u5F62\
+    \u3068\u5186\u306E\u5171\u901A\u90E8\u5206\u306E\u7B26\u53F7\u4ED8\u304D\u9762\
+    \u7A4D\u3092\u8DB3\u3059\n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19 (\u53CD\
+    \u6642\u8A08\u56DE\u308A\u3067\u3082\u6642\u8A08\u56DE\u308A\u3067\u3082\u3088\
+    \u3044)\u3002\u51F8\u3067\u306A\u304F\u3066\u3082\u3088\u3044\n */\ntemplate <typename\
+    \ T>\nT circle_polygon_intersection_area(const Circle<T>& c, const std::vector<Vector<T,\
+    \ 2>>& polygon) {\n    static_assert(std::is_floating_point_v<T>, \"circle_polygon_intersection_area:\
+    \ T must be a floating point type\");\n    const T r = c.r;\n    // \u539F\u70B9\
+    \ (\u5186\u306E\u4E2D\u5FC3)\u3001a\u3001b \u306E\u4E09\u89D2\u5F62\u3068\u5186\
+    \u306E\u5171\u901A\u90E8\u5206\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\n   \
+    \ auto triangle = [&](const Vector<T, 2>& a, const Vector<T, 2>& b) {\n      \
+    \  // \u7DDA\u5206 ab \u3092\u5186\u5468\u3068\u306E\u4EA4\u70B9\u3067\u5206\u3051\
+    \u308B\n        std::vector<Vector<T, 2>> ps = {a};\n        Vector<T, 2> v =\
+    \ b - a;\n        T A = v.squared_norm(), B = dot(a, v), C = a.squared_norm()\
+    \ - r * r;\n        T disc = B * B - A * C;\n        if (A > 0 && disc > 0) {\n\
+    \            T s = std::sqrt(disc);\n            for (T t : {(-B - s) / A, (-B\
+    \ + s) / A}) {\n                if (0 < t && t < 1) ps.push_back(a + v * t);\n\
+    \            }\n        }\n        ps.push_back(b);\n        T res = 0;\n    \
+    \    for (int i = 0; i + 1 < static_cast<int>(ps.size()); i++) {\n           \
+    \ const Vector<T, 2>&p = ps[i], &q = ps[i + 1];\n            // \u4E21\u7AEF\u304C\
+    \u5186\u306E\u5185\u90E8 (\u5186\u5468\u4E0A\u3092\u542B\u3080) \u306A\u3089\u533A\
+    \u9593\u5168\u4F53\u304C\u5185\u90E8\u306A\u306E\u3067\u4E09\u89D2\u5F62\u3001\
+    \u305D\u3046\u3067\u306A\u3051\u308C\u3070\u6247\u5F62\n            // (\u4E2D\
+    \u70B9\u3067\u5224\u5B9A\u3059\u308B\u3068\u3001\u5186\u306B\u63A5\u3059\u308B\
+    \u8FBA\u3092\u5185\u90E8\u3068\u307F\u306A\u3057\u3066\u3057\u307E\u3046)\n  \
+    \          const T lim = r * r * (1 + 1e-9);\n            if (p.squared_norm()\
+    \ <= lim && q.squared_norm() <= lim)\n                res += cross(p, q) / 2;\n\
+    \            else\n                res += r * r * std::atan2(cross(p, q), dot(p,\
+    \ q)) / 2;\n        }\n        return res;\n    };\n    T res = 0;\n    const\
+    \ int n = static_cast<int>(polygon.size());\n    for (int i = 0; i < n; i++) res\
+    \ += triangle(polygon[i] - c.c, polygon[i + 1 == n ? 0 : i + 1] - c.c);\n    return\
+    \ std::abs(res);\n}\n#line 6 \"test/aoj/cgl/cgl-7-a.test.cpp\"\n\nint main() {\n\
+    \    Circle<long long> c1, c2;\n    std::cin >> c1 >> c2;\n    std::cout << circle_relation(c1,\
     \ c2) << '\\n';\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_A\"\
     \n\n#include <iostream>\n\n#include \"../../../src/geometry/circle.hpp\"\n\nint\
@@ -535,7 +670,7 @@ data:
   isVerificationFile: true
   path: test/aoj/cgl/cgl-7-a.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:37:20+09:00'
+  timestamp: '2026-10-22 05:40:25+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/cgl/cgl-7-a.test.cpp

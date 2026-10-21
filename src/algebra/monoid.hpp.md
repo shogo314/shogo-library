@@ -64,7 +64,14 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/data_structures/sparse-table.hpp
     title: Sparse Table
+  - icon: ':heavy_check_mark:'
+    path: src/geometry/axis-parallel-segments.hpp
+    title: "\u8EF8\u306B\u5E73\u884C\u306A\u7DDA\u5206\u306E\u4EA4\u70B9\u306E\u500B\
+      \u6570"
   _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/cgl/cgl-6-a.test.cpp
+    title: test/aoj/cgl/cgl-6-a.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/dsl/dsl-1-b.1.test.cpp
     title: test/aoj/dsl/dsl-1-b.1.test.cpp
@@ -179,6 +186,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/sparse-table.test.cpp
     title: test/unittest/data_structures/sparse-table.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/geometry/axis-parallel-segments.test.cpp
+    title: test/unittest/geometry/axis-parallel-segments.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/area-of-union-of-rectangles.1.test.cpp
     title: test/yosupo/data_structure/area-of-union-of-rectangles.1.test.cpp
@@ -904,6 +914,7 @@ data:
   isVerificationFile: false
   path: src/algebra/monoid.hpp
   requiredBy:
+  - src/geometry/axis-parallel-segments.hpp
   - src/data_structures/lazy-segtree.hpp
   - src/data_structures/dynamic-segtree.hpp
   - src/data_structures/sliding-window-aggregation.hpp
@@ -927,6 +938,7 @@ data:
   timestamp: '2026-10-19 12:03:10+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/geometry/axis-parallel-segments.test.cpp
   - test/unittest/data_structures/potentialized-unionfind.test.cpp
   - test/unittest/data_structures/segtree-beats.test.cpp
   - test/unittest/data_structures/dynamic-segtree.test.cpp
@@ -971,6 +983,7 @@ data:
   - test/aoj/dsl/dsl-5-a.test.cpp
   - test/aoj/dsl/dsl-2-i.test.cpp
   - test/aoj/dsl/dsl-2-f.test.cpp
+  - test/aoj/cgl/cgl-6-a.test.cpp
   - test/yosupo/data_structure/point-set-range-composite.4.test.cpp
   - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.2.test.cpp
   - test/yosupo/data_structure/point-set-range-composite.1.test.cpp

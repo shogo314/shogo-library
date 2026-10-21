@@ -6,9 +6,14 @@ data:
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
+    path: src/geometry/axis-parallel-segments.hpp
+    title: "\u8EF8\u306B\u5E73\u884C\u306A\u7DDA\u5206\u306E\u4EA4\u70B9\u306E\u500B\
+      \u6570"
+  - icon: ':heavy_check_mark:'
     path: src/geometry/circle.hpp
     title: "\u5186 (\u4F4D\u7F6E\u95A2\u4FC2\u3001\u4EA4\u70B9\u3001\u63A5\u7DDA\u3001\
-      \u5185\u63A5\u5186\u3001\u5916\u63A5\u5186)"
+      \u5185\u63A5\u5186\u3001\u5916\u63A5\u5186\u3001\u5171\u901A\u90E8\u5206\u306E\
+      \u9762\u7A4D)"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/cgl/cgl-1-a.test.cpp
@@ -44,8 +49,17 @@ data:
     path: test/aoj/cgl/cgl-4-a.test.cpp
     title: test/aoj/cgl/cgl-4-a.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/aoj/cgl/cgl-4-b.test.cpp
+    title: test/aoj/cgl/cgl-4-b.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/cgl/cgl-4-c.test.cpp
+    title: test/aoj/cgl/cgl-4-c.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/aoj/cgl/cgl-5-a.test.cpp
     title: test/aoj/cgl/cgl-5-a.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/cgl/cgl-6-a.test.cpp
+    title: test/aoj/cgl/cgl-6-a.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/cgl/cgl-7-a.test.cpp
     title: test/aoj/cgl/cgl-7-a.test.cpp
@@ -65,6 +79,15 @@ data:
     path: test/aoj/cgl/cgl-7-f.test.cpp
     title: test/aoj/cgl/cgl-7-f.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/aoj/cgl/cgl-7-g.test.cpp
+    title: test/aoj/cgl/cgl-7-g.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/cgl/cgl-7-h.test.cpp
+    title: test/aoj/cgl/cgl-7-h.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/cgl/cgl-7-i.test.cpp
+    title: test/aoj/cgl/cgl-7-i.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/aoj/volume33/3314.test.cpp
     title: test/aoj/volume33/3314.test.cpp
   - icon: ':heavy_check_mark:'
@@ -74,14 +97,23 @@ data:
     path: test/unittest/geometry/angle.test.cpp
     title: test/unittest/geometry/angle.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/geometry/axis-parallel-segments.test.cpp
+    title: test/unittest/geometry/axis-parallel-segments.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/geometry/circle.test.cpp
     title: test/unittest/geometry/circle.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/geometry/vector-line.test.cpp
     title: test/unittest/geometry/vector-line.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/geometry/vector-polygon.test.cpp
+    title: test/unittest/geometry/vector-polygon.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/geometry/vector.test.cpp
     title: test/unittest/geometry/vector.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/geo/furthest-pair.test.cpp
+    title: test/yosupo/geo/furthest-pair.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/geo/sort-points-by-argument.1.test.cpp
     title: test/yosupo/geo/sort-points-by-argument.1.test.cpp
@@ -493,12 +525,73 @@ data:
     \u30C8\n * @return ClosestPair \u6700\u8FD1\u70B9\u5BFE\u306E\u8DDD\u96E2\u3068\
     \u6DFB\u5B57\n */\ntemplate <typename T>\nClosestPair closest_point_pair(const\
     \ std::vector<Vector<T, 2>>& points) {\n    auto [d2, i, j] = closest_point_pair_squared(points);\n\
-    \    return {std::sqrt(static_cast<double>(d2)), i, j};\n}\n/**\n * @deprecated\
-    \ closest_point_pair_squared \u3092\u4F7F\u3046\u3053\u3068(\u7DB4\u308A\u306E\
-    \u8AA4\u308A\u3092\u76F4\u3057\u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename\
-    \ T>\n[[deprecated(\"use closest_point_pair_squared\")]] ClosestPairSquared<T>\
-    \ closest_point_pair_squred(const std::vector<Vector<T, 2>>& points) {\n    return\
-    \ closest_point_pair_squared(points);\n}\n"
+    \    return {std::sqrt(static_cast<double>(d2)), i, j};\n}\n\n/**\n * @brief farthest_point_pair_squared\
+    \ \u306E\u623B\u308A\u5024\n */\ntemplate <typename T>\nstruct FarthestPairSquared\
+    \ {\n    T squared_dist;  //!< \u6700\u9060\u70B9\u5BFE\u306E\u8DDD\u96E2\u306E\
+    2\u4E57\n    long long i, j;  //!< \u6700\u9060\u70B9\u5BFE\u306E\u6DFB\u5B57\n\
+    };\n/**\n * @brief farthest_point_pair \u306E\u623B\u308A\u5024\n */\nstruct FarthestPair\
+    \ {\n    double dist;     //!< \u6700\u9060\u70B9\u5BFE\u306E\u8DDD\u96E2\n  \
+    \  long long i, j;  //!< \u6700\u9060\u70B9\u5BFE\u306E\u6DFB\u5B57\n};\n\n/**\n\
+    \ * @brief \u6700\u9060\u70B9\u5BFE (\u51F8\u5305\u3092\u4F5C\u308A\u3001\u56DE\
+    \u8EE2\u30AD\u30E3\u30EA\u30D1\u30FC\u6CD5\u3067\u5BFE\u8E60\u70B9\u306E\u7D44\
+    \u3092\u8ABF\u3079\u308B) O(n log n)\n *\n * \u6574\u6570\u578B\u3067\u3082\u4F7F\
+    \u3048\u308B\u3002\u5EA7\u6A19\u306E\u5DEE\u306E2\u4E57\u306E\u548C\u306E2\u500D\
+    \u304C T \u306B\u53CE\u307E\u308B\u5FC5\u8981\u304C\u3042\u308B\n * @tparam T\
+    \ \u5EA7\u6A19\u306E\u578B\n * @param points \u9802\u70B9\u30EA\u30B9\u30C8 (2\u500B\
+    \u4EE5\u4E0A)\n * @return FarthestPairSquared<T> \u6700\u9060\u70B9\u5BFE\u306E\
+    \u8DDD\u96E2\u306E2\u4E57\u3068\u6DFB\u5B57 (i != j)\n */\ntemplate <typename\
+    \ T>\nFarthestPairSquared<T> farthest_point_pair_squared(const std::vector<Vector<T,\
+    \ 2>>& points) {\n    const int n = static_cast<int>(points.size());\n    assert(n\
+    \ >= 2);\n    // \u51F8\u5305\u306E\u9802\u70B9\u3092\u3001\u3082\u3068\u306E\u6DFB\
+    \u5B57\u306B\u623B\u305B\u308B\u3088\u3046\u306B\u3057\u3066\u304A\u304F\n   \
+    \ std::vector<std::pair<Vector<T, 2>, int>> sorted(n);\n    for (int i = 0; i\
+    \ < n; i++) sorted[i] = {points[i], i};\n    std::sort(sorted.begin(), sorted.end());\n\
+    \    auto index_of = [&](const Vector<T, 2>& p) {\n        return std::lower_bound(sorted.begin(),\
+    \ sorted.end(), std::make_pair(p, -1))->second;\n    };\n    std::vector<Vector<T,\
+    \ 2>> hull = convex_hull(points);\n    const int k = static_cast<int>(hull.size());\n\
+    \    if (k == 1) return {T(0), sorted[0].second, sorted[1].second};  // \u3059\
+    \u3079\u3066\u540C\u3058\u70B9\n    FarthestPairSquared<T> res{T(0), -1, -1};\n\
+    \    auto update = [&](int a, int b) {\n        T d = (hull[a] - hull[b]).squared_norm();\n\
+    \        if (res.i == -1 || d > res.squared_dist) res = {d, a, b};\n    };\n \
+    \   if (k == 2) {\n        update(0, 1);\n    } else {\n        // \u8FBA i\u2192\
+    i+1 \u306B\u5BFE\u3057\u3066\u3001\u6700\u3082\u9060\u3044\u9802\u70B9 j \u3092\
+    \u53CD\u6642\u8A08\u56DE\u308A\u306B\u9032\u3081\u3066\u3044\u304F\n        int\
+    \ j = 1;\n        for (int i = 0; i < k; i++) {\n            int ni = i + 1 ==\
+    \ k ? 0 : i + 1;\n            while (true) {\n                int nj = j + 1 ==\
+    \ k ? 0 : j + 1;\n                if (cross(hull[ni] - hull[i], hull[nj] - hull[j])\
+    \ > 0)\n                    j = nj;\n                else\n                  \
+    \  break;\n            }\n            update(i, j);\n            update(ni, j);\n\
+    \        }\n    }\n    return {res.squared_dist, index_of(hull[res.i]), index_of(hull[res.j])};\n\
+    }\n\n/**\n * @brief \u6700\u9060\u70B9\u5BFE\n *\n * @tparam T \u5EA7\u6A19\u306E\
+    \u578B\n * @param points \u9802\u70B9\u30EA\u30B9\u30C8 (2\u500B\u4EE5\u4E0A)\n\
+    \ * @return FarthestPair \u6700\u9060\u70B9\u5BFE\u306E\u8DDD\u96E2\u3068\u6DFB\
+    \u5B57\n */\ntemplate <typename T>\nFarthestPair farthest_point_pair(const std::vector<Vector<T,\
+    \ 2>>& points) {\n    auto [d2, i, j] = farthest_point_pair_squared(points);\n\
+    \    return {std::sqrt(static_cast<double>(d2)), i, j};\n}\n\n/**\n * @brief \u51F8\
+    \u591A\u89D2\u5F62\u3092\u76F4\u7DDA p1p2 \u3067\u5207\u308A\u3001\u76F4\u7DDA\
+    \u306E\u5DE6\u5074 (p1 \u304B\u3089 p2 \u3092\u898B\u3066\u5DE6) \u306E\u90E8\u5206\
+    \u3092\u8FD4\u3059\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n *\n\
+    \ * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u51F8\u591A\u89D2\u5F62\
+    \u306E\u9802\u70B9\u306E\u5EA7\u6A19 (\u53CD\u6642\u8A08\u56DE\u308A)\n * @return\
+    \ std::vector<Vector<T, 2>> \u5DE6\u5074\u306E\u51F8\u591A\u89D2\u5F62\u306E\u9802\
+    \u70B9 (\u53CD\u6642\u8A08\u56DE\u308A)\u3002\u76F4\u7DDA\u4E0A\u306E\u9802\u70B9\
+    \u3082\u542B\u3080\u3002\u5DE6\u5074\u306B\u4F55\u3082\u306A\u3051\u308C\u3070\
+    \u7A7A\n */\ntemplate <typename T>\nstd::vector<Vector<T, 2>> convex_cut(const\
+    \ std::vector<Vector<T, 2>>& polygon, const Vector<T, 2>& p1, const Vector<T,\
+    \ 2>& p2) {\n    static_assert(std::is_floating_point_v<T>, \"convex_cut: T must\
+    \ be a floating point type\");\n    std::vector<Vector<T, 2>> res;\n    const\
+    \ int n = static_cast<int>(polygon.size());\n    for (int i = 0; i < n; i++) {\n\
+    \        const Vector<T, 2>&a = polygon[i], &b = polygon[i + 1 == n ? 0 : i +\
+    \ 1];\n        T ca = cross(p2 - p1, a - p1), cb = cross(p2 - p1, b - p1);\n \
+    \       if (ca >= 0) res.push_back(a);\n        // \u8FBA ab \u304C\u76F4\u7DDA\
+    \u3092\u307E\u305F\u3050\u306A\u3089\u3001\u4EA4\u70B9\u3092\u5165\u308C\u308B\
+    \n        if ((ca > 0 && cb < 0) || (ca < 0 && cb > 0)) res.push_back(a + (b -\
+    \ a) * (ca / (ca - cb)));\n    }\n    return res;\n}\n/**\n * @deprecated closest_point_pair_squared\
+    \ \u3092\u4F7F\u3046\u3053\u3068(\u7DB4\u308A\u306E\u8AA4\u308A\u3092\u76F4\u3057\
+    \u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename T>\n[[deprecated(\"use\
+    \ closest_point_pair_squared\")]] ClosestPairSquared<T> closest_point_pair_squred(const\
+    \ std::vector<Vector<T, 2>>& points) {\n    return closest_point_pair_squared(points);\n\
+    }\n"
   code: "#pragma once\n\n/**\n * @file vector.hpp\n * @brief \u5E7E\u4F55\u30D9\u30AF\
     \u30C8\u30EB\n */\n\n#include <algorithm>\n#include <array>\n#include <cassert>\n\
     #include <cmath>\n#include <istream>\n#include <limits>\n#include <numeric>\n\
@@ -849,23 +942,87 @@ data:
     \u30C8\n * @return ClosestPair \u6700\u8FD1\u70B9\u5BFE\u306E\u8DDD\u96E2\u3068\
     \u6DFB\u5B57\n */\ntemplate <typename T>\nClosestPair closest_point_pair(const\
     \ std::vector<Vector<T, 2>>& points) {\n    auto [d2, i, j] = closest_point_pair_squared(points);\n\
-    \    return {std::sqrt(static_cast<double>(d2)), i, j};\n}\n/**\n * @deprecated\
-    \ closest_point_pair_squared \u3092\u4F7F\u3046\u3053\u3068(\u7DB4\u308A\u306E\
-    \u8AA4\u308A\u3092\u76F4\u3057\u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename\
-    \ T>\n[[deprecated(\"use closest_point_pair_squared\")]] ClosestPairSquared<T>\
-    \ closest_point_pair_squred(const std::vector<Vector<T, 2>>& points) {\n    return\
-    \ closest_point_pair_squared(points);\n}\n"
+    \    return {std::sqrt(static_cast<double>(d2)), i, j};\n}\n\n/**\n * @brief farthest_point_pair_squared\
+    \ \u306E\u623B\u308A\u5024\n */\ntemplate <typename T>\nstruct FarthestPairSquared\
+    \ {\n    T squared_dist;  //!< \u6700\u9060\u70B9\u5BFE\u306E\u8DDD\u96E2\u306E\
+    2\u4E57\n    long long i, j;  //!< \u6700\u9060\u70B9\u5BFE\u306E\u6DFB\u5B57\n\
+    };\n/**\n * @brief farthest_point_pair \u306E\u623B\u308A\u5024\n */\nstruct FarthestPair\
+    \ {\n    double dist;     //!< \u6700\u9060\u70B9\u5BFE\u306E\u8DDD\u96E2\n  \
+    \  long long i, j;  //!< \u6700\u9060\u70B9\u5BFE\u306E\u6DFB\u5B57\n};\n\n/**\n\
+    \ * @brief \u6700\u9060\u70B9\u5BFE (\u51F8\u5305\u3092\u4F5C\u308A\u3001\u56DE\
+    \u8EE2\u30AD\u30E3\u30EA\u30D1\u30FC\u6CD5\u3067\u5BFE\u8E60\u70B9\u306E\u7D44\
+    \u3092\u8ABF\u3079\u308B) O(n log n)\n *\n * \u6574\u6570\u578B\u3067\u3082\u4F7F\
+    \u3048\u308B\u3002\u5EA7\u6A19\u306E\u5DEE\u306E2\u4E57\u306E\u548C\u306E2\u500D\
+    \u304C T \u306B\u53CE\u307E\u308B\u5FC5\u8981\u304C\u3042\u308B\n * @tparam T\
+    \ \u5EA7\u6A19\u306E\u578B\n * @param points \u9802\u70B9\u30EA\u30B9\u30C8 (2\u500B\
+    \u4EE5\u4E0A)\n * @return FarthestPairSquared<T> \u6700\u9060\u70B9\u5BFE\u306E\
+    \u8DDD\u96E2\u306E2\u4E57\u3068\u6DFB\u5B57 (i != j)\n */\ntemplate <typename\
+    \ T>\nFarthestPairSquared<T> farthest_point_pair_squared(const std::vector<Vector<T,\
+    \ 2>>& points) {\n    const int n = static_cast<int>(points.size());\n    assert(n\
+    \ >= 2);\n    // \u51F8\u5305\u306E\u9802\u70B9\u3092\u3001\u3082\u3068\u306E\u6DFB\
+    \u5B57\u306B\u623B\u305B\u308B\u3088\u3046\u306B\u3057\u3066\u304A\u304F\n   \
+    \ std::vector<std::pair<Vector<T, 2>, int>> sorted(n);\n    for (int i = 0; i\
+    \ < n; i++) sorted[i] = {points[i], i};\n    std::sort(sorted.begin(), sorted.end());\n\
+    \    auto index_of = [&](const Vector<T, 2>& p) {\n        return std::lower_bound(sorted.begin(),\
+    \ sorted.end(), std::make_pair(p, -1))->second;\n    };\n    std::vector<Vector<T,\
+    \ 2>> hull = convex_hull(points);\n    const int k = static_cast<int>(hull.size());\n\
+    \    if (k == 1) return {T(0), sorted[0].second, sorted[1].second};  // \u3059\
+    \u3079\u3066\u540C\u3058\u70B9\n    FarthestPairSquared<T> res{T(0), -1, -1};\n\
+    \    auto update = [&](int a, int b) {\n        T d = (hull[a] - hull[b]).squared_norm();\n\
+    \        if (res.i == -1 || d > res.squared_dist) res = {d, a, b};\n    };\n \
+    \   if (k == 2) {\n        update(0, 1);\n    } else {\n        // \u8FBA i\u2192\
+    i+1 \u306B\u5BFE\u3057\u3066\u3001\u6700\u3082\u9060\u3044\u9802\u70B9 j \u3092\
+    \u53CD\u6642\u8A08\u56DE\u308A\u306B\u9032\u3081\u3066\u3044\u304F\n        int\
+    \ j = 1;\n        for (int i = 0; i < k; i++) {\n            int ni = i + 1 ==\
+    \ k ? 0 : i + 1;\n            while (true) {\n                int nj = j + 1 ==\
+    \ k ? 0 : j + 1;\n                if (cross(hull[ni] - hull[i], hull[nj] - hull[j])\
+    \ > 0)\n                    j = nj;\n                else\n                  \
+    \  break;\n            }\n            update(i, j);\n            update(ni, j);\n\
+    \        }\n    }\n    return {res.squared_dist, index_of(hull[res.i]), index_of(hull[res.j])};\n\
+    }\n\n/**\n * @brief \u6700\u9060\u70B9\u5BFE\n *\n * @tparam T \u5EA7\u6A19\u306E\
+    \u578B\n * @param points \u9802\u70B9\u30EA\u30B9\u30C8 (2\u500B\u4EE5\u4E0A)\n\
+    \ * @return FarthestPair \u6700\u9060\u70B9\u5BFE\u306E\u8DDD\u96E2\u3068\u6DFB\
+    \u5B57\n */\ntemplate <typename T>\nFarthestPair farthest_point_pair(const std::vector<Vector<T,\
+    \ 2>>& points) {\n    auto [d2, i, j] = farthest_point_pair_squared(points);\n\
+    \    return {std::sqrt(static_cast<double>(d2)), i, j};\n}\n\n/**\n * @brief \u51F8\
+    \u591A\u89D2\u5F62\u3092\u76F4\u7DDA p1p2 \u3067\u5207\u308A\u3001\u76F4\u7DDA\
+    \u306E\u5DE6\u5074 (p1 \u304B\u3089 p2 \u3092\u898B\u3066\u5DE6) \u306E\u90E8\u5206\
+    \u3092\u8FD4\u3059\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n *\n\
+    \ * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u51F8\u591A\u89D2\u5F62\
+    \u306E\u9802\u70B9\u306E\u5EA7\u6A19 (\u53CD\u6642\u8A08\u56DE\u308A)\n * @return\
+    \ std::vector<Vector<T, 2>> \u5DE6\u5074\u306E\u51F8\u591A\u89D2\u5F62\u306E\u9802\
+    \u70B9 (\u53CD\u6642\u8A08\u56DE\u308A)\u3002\u76F4\u7DDA\u4E0A\u306E\u9802\u70B9\
+    \u3082\u542B\u3080\u3002\u5DE6\u5074\u306B\u4F55\u3082\u306A\u3051\u308C\u3070\
+    \u7A7A\n */\ntemplate <typename T>\nstd::vector<Vector<T, 2>> convex_cut(const\
+    \ std::vector<Vector<T, 2>>& polygon, const Vector<T, 2>& p1, const Vector<T,\
+    \ 2>& p2) {\n    static_assert(std::is_floating_point_v<T>, \"convex_cut: T must\
+    \ be a floating point type\");\n    std::vector<Vector<T, 2>> res;\n    const\
+    \ int n = static_cast<int>(polygon.size());\n    for (int i = 0; i < n; i++) {\n\
+    \        const Vector<T, 2>&a = polygon[i], &b = polygon[i + 1 == n ? 0 : i +\
+    \ 1];\n        T ca = cross(p2 - p1, a - p1), cb = cross(p2 - p1, b - p1);\n \
+    \       if (ca >= 0) res.push_back(a);\n        // \u8FBA ab \u304C\u76F4\u7DDA\
+    \u3092\u307E\u305F\u3050\u306A\u3089\u3001\u4EA4\u70B9\u3092\u5165\u308C\u308B\
+    \n        if ((ca > 0 && cb < 0) || (ca < 0 && cb > 0)) res.push_back(a + (b -\
+    \ a) * (ca / (ca - cb)));\n    }\n    return res;\n}\n/**\n * @deprecated closest_point_pair_squared\
+    \ \u3092\u4F7F\u3046\u3053\u3068(\u7DB4\u308A\u306E\u8AA4\u308A\u3092\u76F4\u3057\
+    \u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename T>\n[[deprecated(\"use\
+    \ closest_point_pair_squared\")]] ClosestPairSquared<T> closest_point_pair_squred(const\
+    \ std::vector<Vector<T, 2>>& points) {\n    return closest_point_pair_squared(points);\n\
+    }\n"
   dependsOn:
   - src/utility/traits.hpp
   isVerificationFile: false
   path: src/geometry/vector.hpp
   requiredBy:
+  - src/geometry/axis-parallel-segments.hpp
   - src/geometry/circle.hpp
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-22 05:40:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/geometry/vector-line.test.cpp
   - test/unittest/geometry/circle.test.cpp
+  - test/unittest/geometry/vector-polygon.test.cpp
+  - test/unittest/geometry/axis-parallel-segments.test.cpp
   - test/unittest/geometry/vector.test.cpp
   - test/unittest/geometry/angle.test.cpp
   - test/unittest/data_structures/dual-segtree.test.cpp
@@ -875,6 +1032,7 @@ data:
   - test/aoj/cgl/cgl-1-c.test.cpp
   - test/aoj/cgl/cgl-1-b.test.cpp
   - test/aoj/cgl/cgl-7-d.test.cpp
+  - test/aoj/cgl/cgl-7-h.test.cpp
   - test/aoj/cgl/cgl-3-a.test.cpp
   - test/aoj/cgl/cgl-2-d.test.cpp
   - test/aoj/cgl/cgl-2-a.test.cpp
@@ -883,12 +1041,18 @@ data:
   - test/aoj/cgl/cgl-7-c.test.cpp
   - test/aoj/cgl/cgl-7-b.test.cpp
   - test/aoj/cgl/cgl-3-c.test.cpp
+  - test/aoj/cgl/cgl-7-i.test.cpp
   - test/aoj/cgl/cgl-1-a.test.cpp
+  - test/aoj/cgl/cgl-4-c.test.cpp
   - test/aoj/cgl/cgl-3-b.test.cpp
+  - test/aoj/cgl/cgl-6-a.test.cpp
+  - test/aoj/cgl/cgl-4-b.test.cpp
+  - test/aoj/cgl/cgl-7-g.test.cpp
   - test/aoj/cgl/cgl-7-a.test.cpp
   - test/aoj/cgl/cgl-2-b.test.cpp
   - test/aoj/cgl/cgl-2-c.test.cpp
   - test/yosupo/geo/sort-points-by-argument.1.test.cpp
+  - test/yosupo/geo/furthest-pair.test.cpp
 documentation_of: src/geometry/vector.hpp
 layout: document
 title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"
@@ -950,11 +1114,14 @@ std::sort(ps.begin(), ps.end(), [](const P& a, const P& b) { return Angle(a) < A
 | `select_convex(ps, include_straight = false)` | 順番を保った半凸包。x の昇順なら下凸包、降順なら上凸包 | ✓ | $O(n)$ |
 | `closest_point_pair_squared(ps)` | 最近点対の距離の2乗と添字 (`.squared_dist`、`.i`、`.j`。添字は `long long`) | ✓ | $O(n \log^2 n)$ |
 | `closest_point_pair(ps)` | 最近点対の距離と添字 (`.dist`、`.i`、`.j`。添字は `long long`) | ✓ | $O(n \log^2 n)$ |
+| `farthest_point_pair_squared(ps)` | 最遠点対の距離の2乗と添字 (`.squared_dist`、`.i`、`.j`。$i \ne j$)。凸包を作り、回転キャリパー法で調べる。点は 2 個以上 | ✓ | $O(n \log n)$ |
+| `farthest_point_pair(ps)` | 最遠点対の距離と添字 (`.dist`、`.i`、`.j`)。凸多角形の直径にも使える | ✓ | $O(n \log n)$ |
+| `convex_cut(poly, p1, p2)` | 凸多角形 (反時計回り) を直線 $p_1 p_2$ で切った、直線の左側 ($p_1$ から $p_2$ を見て左) の凸多角形。左側に何もなければ空 | 浮動小数点型のみ | $O(n)$ |
 
 浮動小数点型でも、`ccw` や `is_parallel` などの判定は誤差を考えずに `0` と比べます。誤差が問題になる場合は、整数座標で計算してください。
 
 ## 関連
 
-- 円の交点・接線・内接円・外接円は [円](circle.hpp)
+- 円の交点・接線・内接円・外接円・共通部分の面積は [円](circle.hpp)
 - 偏角ソートは [偏角](angle.hpp) の `Angle` (`Angle(p) < Angle(q)` で比べる)
 - 傾きや比を誤差なく比べるには [有理数](../math/rational.hpp)

@@ -19,9 +19,14 @@ data:
     path: src/dp/subset-sum-count.hpp
     title: "\u90E8\u5206\u548C\u306E\u500B\u6570"
   - icon: ':heavy_check_mark:'
+    path: src/geometry/axis-parallel-segments.hpp
+    title: "\u8EF8\u306B\u5E73\u884C\u306A\u7DDA\u5206\u306E\u4EA4\u70B9\u306E\u500B\
+      \u6570"
+  - icon: ':heavy_check_mark:'
     path: src/geometry/circle.hpp
     title: "\u5186 (\u4F4D\u7F6E\u95A2\u4FC2\u3001\u4EA4\u70B9\u3001\u63A5\u7DDA\u3001\
-      \u5185\u63A5\u5186\u3001\u5916\u63A5\u5186)"
+      \u5185\u63A5\u5186\u3001\u5916\u63A5\u5186\u3001\u5171\u901A\u90E8\u5206\u306E\
+      \u9762\u7A4D)"
   - icon: ':heavy_check_mark:'
     path: src/geometry/vector.hpp
     title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"
@@ -83,6 +88,9 @@ data:
     path: test/aoj/alds1/alds1-14-b.1.test.cpp
     title: test/aoj/alds1/alds1-14-b.1.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/aoj/alds1/alds1-14-c.test.cpp
+    title: test/aoj/alds1/alds1-14-c.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/aoj/alds1/alds1-4-b.test.cpp
     title: test/aoj/alds1/alds1-4-b.test.cpp
   - icon: ':heavy_check_mark:'
@@ -122,8 +130,17 @@ data:
     path: test/aoj/cgl/cgl-4-a.test.cpp
     title: test/aoj/cgl/cgl-4-a.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/aoj/cgl/cgl-4-b.test.cpp
+    title: test/aoj/cgl/cgl-4-b.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/cgl/cgl-4-c.test.cpp
+    title: test/aoj/cgl/cgl-4-c.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/aoj/cgl/cgl-5-a.test.cpp
     title: test/aoj/cgl/cgl-5-a.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/cgl/cgl-6-a.test.cpp
+    title: test/aoj/cgl/cgl-6-a.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/cgl/cgl-7-a.test.cpp
     title: test/aoj/cgl/cgl-7-a.test.cpp
@@ -142,6 +159,15 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj/cgl/cgl-7-f.test.cpp
     title: test/aoj/cgl/cgl-7-f.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/cgl/cgl-7-g.test.cpp
+    title: test/aoj/cgl/cgl-7-g.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/cgl/cgl-7-h.test.cpp
+    title: test/aoj/cgl/cgl-7-h.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/cgl/cgl-7-i.test.cpp
+    title: test/aoj/cgl/cgl-7-i.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/dpl/dpl-5-b.1.test.cpp
     title: test/aoj/dpl/dpl-5-b.1.test.cpp
@@ -251,11 +277,17 @@ data:
     path: test/unittest/geometry/angle.test.cpp
     title: test/unittest/geometry/angle.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/geometry/axis-parallel-segments.test.cpp
+    title: test/unittest/geometry/axis-parallel-segments.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/geometry/circle.test.cpp
     title: test/unittest/geometry/circle.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/geometry/vector-line.test.cpp
     title: test/unittest/geometry/vector-line.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/geometry/vector-polygon.test.cpp
+    title: test/unittest/geometry/vector-polygon.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/geometry/vector.test.cpp
     title: test/unittest/geometry/vector.test.cpp
@@ -436,6 +468,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
     title: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/geo/furthest-pair.test.cpp
+    title: test/yosupo/geo/furthest-pair.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/geo/sort-points-by-argument.1.test.cpp
     title: test/yosupo/geo/sort-points-by-argument.1.test.cpp
@@ -689,6 +724,7 @@ data:
   - src/math/fps-composition.hpp
   - src/dp/subset-sum-count.hpp
   - src/string/rolling-hash.hpp
+  - src/geometry/axis-parallel-segments.hpp
   - src/geometry/circle.hpp
   - src/geometry/vector.hpp
   - src/data_structures/interval-set.hpp
@@ -723,6 +759,8 @@ data:
   - test/unittest/string/rolling-hash.test.cpp
   - test/unittest/geometry/vector-line.test.cpp
   - test/unittest/geometry/circle.test.cpp
+  - test/unittest/geometry/vector-polygon.test.cpp
+  - test/unittest/geometry/axis-parallel-segments.test.cpp
   - test/unittest/geometry/vector.test.cpp
   - test/unittest/geometry/angle.test.cpp
   - test/unittest/data_structures/interval-set.test.cpp
@@ -766,6 +804,7 @@ data:
   - test/aoj/cgl/cgl-1-c.test.cpp
   - test/aoj/cgl/cgl-1-b.test.cpp
   - test/aoj/cgl/cgl-7-d.test.cpp
+  - test/aoj/cgl/cgl-7-h.test.cpp
   - test/aoj/cgl/cgl-3-a.test.cpp
   - test/aoj/cgl/cgl-2-d.test.cpp
   - test/aoj/cgl/cgl-2-a.test.cpp
@@ -774,11 +813,17 @@ data:
   - test/aoj/cgl/cgl-7-c.test.cpp
   - test/aoj/cgl/cgl-7-b.test.cpp
   - test/aoj/cgl/cgl-3-c.test.cpp
+  - test/aoj/cgl/cgl-7-i.test.cpp
   - test/aoj/cgl/cgl-1-a.test.cpp
+  - test/aoj/cgl/cgl-4-c.test.cpp
   - test/aoj/cgl/cgl-3-b.test.cpp
+  - test/aoj/cgl/cgl-6-a.test.cpp
+  - test/aoj/cgl/cgl-4-b.test.cpp
+  - test/aoj/cgl/cgl-7-g.test.cpp
   - test/aoj/cgl/cgl-7-a.test.cpp
   - test/aoj/cgl/cgl-2-b.test.cpp
   - test/aoj/cgl/cgl-2-c.test.cpp
+  - test/aoj/alds1/alds1-14-c.test.cpp
   - test/aoj/alds1/alds1-14-b.1.test.cpp
   - test/aoj/alds1/alds1-1-b.test.cpp
   - test/aoj/alds1/alds1-4-b.test.cpp
@@ -860,6 +905,7 @@ data:
   - test/yosupo/other/sum-of-exponential-times-polynomial.test.cpp
   - test/yosupo/other/find-linear-recurrence.test.cpp
   - test/yosupo/geo/sort-points-by-argument.1.test.cpp
+  - test/yosupo/geo/furthest-pair.test.cpp
 documentation_of: src/utility/traits.hpp
 layout: document
 title: "\u578B\u7279\u6027"

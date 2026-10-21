@@ -14,7 +14,14 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/data_structures/potentialized-unionfind.hpp
     title: "\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind"
+  - icon: ':heavy_check_mark:'
+    path: src/geometry/axis-parallel-segments.hpp
+    title: "\u8EF8\u306B\u5E73\u884C\u306A\u7DDA\u5206\u306E\u4EA4\u70B9\u306E\u500B\
+      \u6570"
   _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/cgl/cgl-6-a.test.cpp
+    title: test/aoj/cgl/cgl-6-a.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/dsl/dsl-1-b.1.test.cpp
     title: test/aoj/dsl/dsl-1-b.1.test.cpp
@@ -45,6 +52,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/potentialized-unionfind.test.cpp
     title: test/unittest/data_structures/potentialized-unionfind.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/geometry/axis-parallel-segments.test.cpp
+    title: test/unittest/geometry/axis-parallel-segments.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/point-add-range-sum.3.test.cpp
     title: test/yosupo/data_structure/point-add-range-sum.3.test.cpp
@@ -438,12 +448,14 @@ data:
   isVerificationFile: false
   path: src/algebra/group.hpp
   requiredBy:
+  - src/geometry/axis-parallel-segments.hpp
   - src/data_structures/potentialized-unionfind.hpp
   - src/data_structures/fenwick-tree.hpp
   - src/data_structures/merge-sort-tree.hpp
   timestamp: '2026-10-19 12:03:10+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/geometry/axis-parallel-segments.test.cpp
   - test/unittest/data_structures/potentialized-unionfind.test.cpp
   - test/unittest/data_structures/link-cut-tree.test.cpp
   - test/unittest/data_structures/fenwick-tree.test.cpp
@@ -454,6 +466,7 @@ data:
   - test/aoj/dsl/dsl-2-b.2.test.cpp
   - test/aoj/dsl/dsl-1-b.2.test.cpp
   - test/aoj/dsl/dsl-1-b.1.test.cpp
+  - test/aoj/cgl/cgl-6-a.test.cpp
   - test/yosupo/data_structure/rectangle-sum.2.test.cpp
   - test/yosupo/data_structure/point-add-range-sum.3.test.cpp
   - test/yosupo/data_structure/rectangle-sum.1.test.cpp

@@ -427,66 +427,126 @@ data:
     \u30C8\n * @return ClosestPair \u6700\u8FD1\u70B9\u5BFE\u306E\u8DDD\u96E2\u3068\
     \u6DFB\u5B57\n */\ntemplate <typename T>\nClosestPair closest_point_pair(const\
     \ std::vector<Vector<T, 2>>& points) {\n    auto [d2, i, j] = closest_point_pair_squared(points);\n\
-    \    return {std::sqrt(static_cast<double>(d2)), i, j};\n}\n/**\n * @deprecated\
-    \ closest_point_pair_squared \u3092\u4F7F\u3046\u3053\u3068(\u7DB4\u308A\u306E\
-    \u8AA4\u308A\u3092\u76F4\u3057\u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename\
-    \ T>\n[[deprecated(\"use closest_point_pair_squared\")]] ClosestPairSquared<T>\
-    \ closest_point_pair_squred(const std::vector<Vector<T, 2>>& points) {\n    return\
-    \ closest_point_pair_squared(points);\n}\n#line 12 \"test/unittest/geometry/vector-line.test.cpp\"\
-    \n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    using P\
-    \ = Vector<double>;\n    using L = Vector<long long>;\n    auto near = [](double\
-    \ a, double b) { return std::abs(a - b) < 1e-7; };\n    for (int rep = 0; rep\
-    \ < 20000 && ok; rep++) {\n        auto rnd = [&] { return static_cast<long long>(rng()\
-    \ % 11) - 5; };\n        L a(rnd(), rnd()), b(rnd(), rnd()), c(rnd(), rnd()),\
-    \ d(rnd(), rnd());\n        auto to_p = [](const L& l) { return P(static_cast<double>(l[0]),\
-    \ static_cast<double>(l[1])); };\n        P pa = to_p(a), pb = to_p(b), pc = to_p(c),\
-    \ pd = to_p(d);\n\n        // ccw: \u4E00\u76F4\u7DDA\u4E0A\u306E\u5834\u5408\u306F\
-    \u3001c \u304C\u76F4\u7DDA\u4E0A\u306E\u3069\u3053\u306B\u3042\u308B\u304B\u3067\
-    \u5206\u3051\u308B\n        if (a != b) {\n            int r = ccw(a, b, c);\n\
-    \            long long cr = cross(b - a, c - a);\n            if (cr > 0) ok =\
-    \ ok && r == 1;\n            if (cr < 0) ok = ok && r == -1;\n            if (cr\
-    \ == 0) {\n                // a \u3092 0\u3001b \u3092 1 \u3068\u3057\u305F\u3068\
-    \u304D\u306E c \u306E\u4F4D\u7F6E t\n                long long t = dot(c - a,\
-    \ b - a), len = (b - a).squared_norm();\n                ok = ok && r == (t <\
-    \ 0 ? 2 : t > len ? -2\n                                                     :\
-    \ 0);\n            }\n            ok = ok && ccw(pa, pb, pc) == r;\n        }\n\
-    \        if (a == b || c == d) continue;\n\n        ok = ok && is_parallel(a,\
-    \ b, c, d) == (cross(b - a, d - c) == 0);\n        ok = ok && is_orthogonal(a,\
-    \ b, c, d) == (dot(b - a, d - c) == 0);\n\n        // \u5C04\u5F71\u306F\u76F4\
-    \u7DDA\u4E0A\u306B\u3042\u308A\u3001p \u3068\u306E\u5DEE\u304C\u76F4\u7DDA\u306B\
-    \u5782\u76F4\u3002\u53CD\u5C04\u306F\u5C04\u5F71\u3092\u4E2D\u70B9\u3068\u3059\
-    \u308B\n        P h = projection(pa, pb, pc);\n        ok = ok && near(cross(pb\
-    \ - pa, h - pa), 0) && near(dot(pb - pa, h - pc), 0);\n        P r = reflection(pa,\
-    \ pb, pc);\n        ok = ok && near(r[0] + pc[0], 2 * h[0]) && near(r[1] + pc[1],\
-    \ 2 * h[1]);\n\n        // \u4EA4\u70B9\u306F\u4E21\u65B9\u306E\u76F4\u7DDA\u4E0A\
-    \u306B\u3042\u308B\n        auto x = line_intersection(pa, pb, pc, pd);\n    \
-    \    if (is_parallel(a, b, c, d)) {\n            ok = ok && !x;\n        } else\
-    \ {\n            ok = ok && x && near(cross(pb - pa, *x - pa), 0) && near(cross(pd\
-    \ - pc, *x - pc), 0);\n        }\n\n        // \u70B9\u3068\u76F4\u7DDA\u306E\u8DDD\
-    \u96E2\u306F\u3001\u5C04\u5F71\u307E\u3067\u306E\u8DDD\u96E2\n        ok = ok\
-    \ && near(distance_point_line(a, b, c), (h - pc).abs());\n        // \u70B9\u3068\
-    \u7DDA\u5206\u306E\u8DDD\u96E2\u3092\u3001\u7DDA\u5206\u4E0A\u306E\u70B9\u3092\
-    \u7D30\u304B\u304F\u8ABF\u3079\u305F\u6700\u5C0F\u5024\u3068\u6BD4\u3079\u308B\
-    \n        auto brute_point_segment = [&](P p1, P p2, P p) {\n            double\
-    \ best = 1e18;\n            for (int i = 0; i <= 2000; i++) best = std::min(best,\
-    \ (p1 + (p2 - p1) * (i / 2000.0) - p).abs());\n            return best;\n    \
-    \    };\n        double dps = distance_point_segment(a, b, c);\n        ok = ok\
-    \ && dps <= brute_point_segment(pa, pb, pc) + 1e-9 && dps >= brute_point_segment(pa,\
-    \ pb, pc) - 1e-2;\n        // \u7DDA\u5206\u3069\u3046\u3057\u306E\u8DDD\u96E2\
-    : \u4EA4\u308F\u308B\u306A\u3089 0\u3001\u305D\u3046\u3067\u306A\u3051\u308C\u3070\
-    \u7AEF\u70B9\u3068\u7DDA\u5206\u306E\u8DDD\u96E2\u306E\u6700\u5C0F\u5024\u4EE5\
-    \u4E0B\n        double dss = distance_segments(a, b, c, d);\n        if (segments_intersect(a,\
-    \ b, c, d)) {\n            ok = ok && dss == 0;\n        } else {\n          \
-    \  ok = ok && dss > 0 && near(dss, std::min({distance_point_segment(a, b, c),\
-    \ distance_point_segment(a, b, d), distance_point_segment(c, d, a), distance_point_segment(c,\
-    \ d, b)}));\n        }\n        ok = ok && near(distance_segments(pa, pb, pc,\
-    \ pd), dss);\n    }\n\n    // \u4F8B\n    ok = ok && ccw(L(0, 0), L(2, 0), L(1,\
-    \ 1)) == 1 && ccw(L(0, 0), L(2, 0), L(3, 0)) == -2;\n    P h = projection(P(0.0,\
-    \ 0.0), P(3.0, 4.0), P(2.0, 5.0));\n    ok = ok && near(h[0], 3.12) && near(h[1],\
-    \ 4.16);\n    ok = ok && near(distance_point_line(L(0, 0), L(2, 0), L(5, 3)),\
-    \ 3) && near(distance_point_segment(L(0, 0), L(2, 0), L(5, 4)), 5);\n\n    if\
-    \ (ok)\n        std::cout << \"Hello World\" << std::endl;\n    else\n       \
-    \ std::cerr << \"failed\" << std::endl;\n}\n"
+    \    return {std::sqrt(static_cast<double>(d2)), i, j};\n}\n\n/**\n * @brief farthest_point_pair_squared\
+    \ \u306E\u623B\u308A\u5024\n */\ntemplate <typename T>\nstruct FarthestPairSquared\
+    \ {\n    T squared_dist;  //!< \u6700\u9060\u70B9\u5BFE\u306E\u8DDD\u96E2\u306E\
+    2\u4E57\n    long long i, j;  //!< \u6700\u9060\u70B9\u5BFE\u306E\u6DFB\u5B57\n\
+    };\n/**\n * @brief farthest_point_pair \u306E\u623B\u308A\u5024\n */\nstruct FarthestPair\
+    \ {\n    double dist;     //!< \u6700\u9060\u70B9\u5BFE\u306E\u8DDD\u96E2\n  \
+    \  long long i, j;  //!< \u6700\u9060\u70B9\u5BFE\u306E\u6DFB\u5B57\n};\n\n/**\n\
+    \ * @brief \u6700\u9060\u70B9\u5BFE (\u51F8\u5305\u3092\u4F5C\u308A\u3001\u56DE\
+    \u8EE2\u30AD\u30E3\u30EA\u30D1\u30FC\u6CD5\u3067\u5BFE\u8E60\u70B9\u306E\u7D44\
+    \u3092\u8ABF\u3079\u308B) O(n log n)\n *\n * \u6574\u6570\u578B\u3067\u3082\u4F7F\
+    \u3048\u308B\u3002\u5EA7\u6A19\u306E\u5DEE\u306E2\u4E57\u306E\u548C\u306E2\u500D\
+    \u304C T \u306B\u53CE\u307E\u308B\u5FC5\u8981\u304C\u3042\u308B\n * @tparam T\
+    \ \u5EA7\u6A19\u306E\u578B\n * @param points \u9802\u70B9\u30EA\u30B9\u30C8 (2\u500B\
+    \u4EE5\u4E0A)\n * @return FarthestPairSquared<T> \u6700\u9060\u70B9\u5BFE\u306E\
+    \u8DDD\u96E2\u306E2\u4E57\u3068\u6DFB\u5B57 (i != j)\n */\ntemplate <typename\
+    \ T>\nFarthestPairSquared<T> farthest_point_pair_squared(const std::vector<Vector<T,\
+    \ 2>>& points) {\n    const int n = static_cast<int>(points.size());\n    assert(n\
+    \ >= 2);\n    // \u51F8\u5305\u306E\u9802\u70B9\u3092\u3001\u3082\u3068\u306E\u6DFB\
+    \u5B57\u306B\u623B\u305B\u308B\u3088\u3046\u306B\u3057\u3066\u304A\u304F\n   \
+    \ std::vector<std::pair<Vector<T, 2>, int>> sorted(n);\n    for (int i = 0; i\
+    \ < n; i++) sorted[i] = {points[i], i};\n    std::sort(sorted.begin(), sorted.end());\n\
+    \    auto index_of = [&](const Vector<T, 2>& p) {\n        return std::lower_bound(sorted.begin(),\
+    \ sorted.end(), std::make_pair(p, -1))->second;\n    };\n    std::vector<Vector<T,\
+    \ 2>> hull = convex_hull(points);\n    const int k = static_cast<int>(hull.size());\n\
+    \    if (k == 1) return {T(0), sorted[0].second, sorted[1].second};  // \u3059\
+    \u3079\u3066\u540C\u3058\u70B9\n    FarthestPairSquared<T> res{T(0), -1, -1};\n\
+    \    auto update = [&](int a, int b) {\n        T d = (hull[a] - hull[b]).squared_norm();\n\
+    \        if (res.i == -1 || d > res.squared_dist) res = {d, a, b};\n    };\n \
+    \   if (k == 2) {\n        update(0, 1);\n    } else {\n        // \u8FBA i\u2192\
+    i+1 \u306B\u5BFE\u3057\u3066\u3001\u6700\u3082\u9060\u3044\u9802\u70B9 j \u3092\
+    \u53CD\u6642\u8A08\u56DE\u308A\u306B\u9032\u3081\u3066\u3044\u304F\n        int\
+    \ j = 1;\n        for (int i = 0; i < k; i++) {\n            int ni = i + 1 ==\
+    \ k ? 0 : i + 1;\n            while (true) {\n                int nj = j + 1 ==\
+    \ k ? 0 : j + 1;\n                if (cross(hull[ni] - hull[i], hull[nj] - hull[j])\
+    \ > 0)\n                    j = nj;\n                else\n                  \
+    \  break;\n            }\n            update(i, j);\n            update(ni, j);\n\
+    \        }\n    }\n    return {res.squared_dist, index_of(hull[res.i]), index_of(hull[res.j])};\n\
+    }\n\n/**\n * @brief \u6700\u9060\u70B9\u5BFE\n *\n * @tparam T \u5EA7\u6A19\u306E\
+    \u578B\n * @param points \u9802\u70B9\u30EA\u30B9\u30C8 (2\u500B\u4EE5\u4E0A)\n\
+    \ * @return FarthestPair \u6700\u9060\u70B9\u5BFE\u306E\u8DDD\u96E2\u3068\u6DFB\
+    \u5B57\n */\ntemplate <typename T>\nFarthestPair farthest_point_pair(const std::vector<Vector<T,\
+    \ 2>>& points) {\n    auto [d2, i, j] = farthest_point_pair_squared(points);\n\
+    \    return {std::sqrt(static_cast<double>(d2)), i, j};\n}\n\n/**\n * @brief \u51F8\
+    \u591A\u89D2\u5F62\u3092\u76F4\u7DDA p1p2 \u3067\u5207\u308A\u3001\u76F4\u7DDA\
+    \u306E\u5DE6\u5074 (p1 \u304B\u3089 p2 \u3092\u898B\u3066\u5DE6) \u306E\u90E8\u5206\
+    \u3092\u8FD4\u3059\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n *\n\
+    \ * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u51F8\u591A\u89D2\u5F62\
+    \u306E\u9802\u70B9\u306E\u5EA7\u6A19 (\u53CD\u6642\u8A08\u56DE\u308A)\n * @return\
+    \ std::vector<Vector<T, 2>> \u5DE6\u5074\u306E\u51F8\u591A\u89D2\u5F62\u306E\u9802\
+    \u70B9 (\u53CD\u6642\u8A08\u56DE\u308A)\u3002\u76F4\u7DDA\u4E0A\u306E\u9802\u70B9\
+    \u3082\u542B\u3080\u3002\u5DE6\u5074\u306B\u4F55\u3082\u306A\u3051\u308C\u3070\
+    \u7A7A\n */\ntemplate <typename T>\nstd::vector<Vector<T, 2>> convex_cut(const\
+    \ std::vector<Vector<T, 2>>& polygon, const Vector<T, 2>& p1, const Vector<T,\
+    \ 2>& p2) {\n    static_assert(std::is_floating_point_v<T>, \"convex_cut: T must\
+    \ be a floating point type\");\n    std::vector<Vector<T, 2>> res;\n    const\
+    \ int n = static_cast<int>(polygon.size());\n    for (int i = 0; i < n; i++) {\n\
+    \        const Vector<T, 2>&a = polygon[i], &b = polygon[i + 1 == n ? 0 : i +\
+    \ 1];\n        T ca = cross(p2 - p1, a - p1), cb = cross(p2 - p1, b - p1);\n \
+    \       if (ca >= 0) res.push_back(a);\n        // \u8FBA ab \u304C\u76F4\u7DDA\
+    \u3092\u307E\u305F\u3050\u306A\u3089\u3001\u4EA4\u70B9\u3092\u5165\u308C\u308B\
+    \n        if ((ca > 0 && cb < 0) || (ca < 0 && cb > 0)) res.push_back(a + (b -\
+    \ a) * (ca / (ca - cb)));\n    }\n    return res;\n}\n/**\n * @deprecated closest_point_pair_squared\
+    \ \u3092\u4F7F\u3046\u3053\u3068(\u7DB4\u308A\u306E\u8AA4\u308A\u3092\u76F4\u3057\
+    \u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename T>\n[[deprecated(\"use\
+    \ closest_point_pair_squared\")]] ClosestPairSquared<T> closest_point_pair_squred(const\
+    \ std::vector<Vector<T, 2>>& points) {\n    return closest_point_pair_squared(points);\n\
+    }\n#line 12 \"test/unittest/geometry/vector-line.test.cpp\"\n\nint main() {\n\
+    \    std::mt19937 rng(314);\n    bool ok = true;\n    using P = Vector<double>;\n\
+    \    using L = Vector<long long>;\n    auto near = [](double a, double b) { return\
+    \ std::abs(a - b) < 1e-7; };\n    for (int rep = 0; rep < 20000 && ok; rep++)\
+    \ {\n        auto rnd = [&] { return static_cast<long long>(rng() % 11) - 5; };\n\
+    \        L a(rnd(), rnd()), b(rnd(), rnd()), c(rnd(), rnd()), d(rnd(), rnd());\n\
+    \        auto to_p = [](const L& l) { return P(static_cast<double>(l[0]), static_cast<double>(l[1]));\
+    \ };\n        P pa = to_p(a), pb = to_p(b), pc = to_p(c), pd = to_p(d);\n\n  \
+    \      // ccw: \u4E00\u76F4\u7DDA\u4E0A\u306E\u5834\u5408\u306F\u3001c \u304C\u76F4\
+    \u7DDA\u4E0A\u306E\u3069\u3053\u306B\u3042\u308B\u304B\u3067\u5206\u3051\u308B\
+    \n        if (a != b) {\n            int r = ccw(a, b, c);\n            long long\
+    \ cr = cross(b - a, c - a);\n            if (cr > 0) ok = ok && r == 1;\n    \
+    \        if (cr < 0) ok = ok && r == -1;\n            if (cr == 0) {\n       \
+    \         // a \u3092 0\u3001b \u3092 1 \u3068\u3057\u305F\u3068\u304D\u306E c\
+    \ \u306E\u4F4D\u7F6E t\n                long long t = dot(c - a, b - a), len =\
+    \ (b - a).squared_norm();\n                ok = ok && r == (t < 0 ? 2 : t > len\
+    \ ? -2\n                                                     : 0);\n         \
+    \   }\n            ok = ok && ccw(pa, pb, pc) == r;\n        }\n        if (a\
+    \ == b || c == d) continue;\n\n        ok = ok && is_parallel(a, b, c, d) == (cross(b\
+    \ - a, d - c) == 0);\n        ok = ok && is_orthogonal(a, b, c, d) == (dot(b -\
+    \ a, d - c) == 0);\n\n        // \u5C04\u5F71\u306F\u76F4\u7DDA\u4E0A\u306B\u3042\
+    \u308A\u3001p \u3068\u306E\u5DEE\u304C\u76F4\u7DDA\u306B\u5782\u76F4\u3002\u53CD\
+    \u5C04\u306F\u5C04\u5F71\u3092\u4E2D\u70B9\u3068\u3059\u308B\n        P h = projection(pa,\
+    \ pb, pc);\n        ok = ok && near(cross(pb - pa, h - pa), 0) && near(dot(pb\
+    \ - pa, h - pc), 0);\n        P r = reflection(pa, pb, pc);\n        ok = ok &&\
+    \ near(r[0] + pc[0], 2 * h[0]) && near(r[1] + pc[1], 2 * h[1]);\n\n        //\
+    \ \u4EA4\u70B9\u306F\u4E21\u65B9\u306E\u76F4\u7DDA\u4E0A\u306B\u3042\u308B\n \
+    \       auto x = line_intersection(pa, pb, pc, pd);\n        if (is_parallel(a,\
+    \ b, c, d)) {\n            ok = ok && !x;\n        } else {\n            ok =\
+    \ ok && x && near(cross(pb - pa, *x - pa), 0) && near(cross(pd - pc, *x - pc),\
+    \ 0);\n        }\n\n        // \u70B9\u3068\u76F4\u7DDA\u306E\u8DDD\u96E2\u306F\
+    \u3001\u5C04\u5F71\u307E\u3067\u306E\u8DDD\u96E2\n        ok = ok && near(distance_point_line(a,\
+    \ b, c), (h - pc).abs());\n        // \u70B9\u3068\u7DDA\u5206\u306E\u8DDD\u96E2\
+    \u3092\u3001\u7DDA\u5206\u4E0A\u306E\u70B9\u3092\u7D30\u304B\u304F\u8ABF\u3079\
+    \u305F\u6700\u5C0F\u5024\u3068\u6BD4\u3079\u308B\n        auto brute_point_segment\
+    \ = [&](P p1, P p2, P p) {\n            double best = 1e18;\n            for (int\
+    \ i = 0; i <= 2000; i++) best = std::min(best, (p1 + (p2 - p1) * (i / 2000.0)\
+    \ - p).abs());\n            return best;\n        };\n        double dps = distance_point_segment(a,\
+    \ b, c);\n        ok = ok && dps <= brute_point_segment(pa, pb, pc) + 1e-9 &&\
+    \ dps >= brute_point_segment(pa, pb, pc) - 1e-2;\n        // \u7DDA\u5206\u3069\
+    \u3046\u3057\u306E\u8DDD\u96E2: \u4EA4\u308F\u308B\u306A\u3089 0\u3001\u305D\u3046\
+    \u3067\u306A\u3051\u308C\u3070\u7AEF\u70B9\u3068\u7DDA\u5206\u306E\u8DDD\u96E2\
+    \u306E\u6700\u5C0F\u5024\u4EE5\u4E0B\n        double dss = distance_segments(a,\
+    \ b, c, d);\n        if (segments_intersect(a, b, c, d)) {\n            ok = ok\
+    \ && dss == 0;\n        } else {\n            ok = ok && dss > 0 && near(dss,\
+    \ std::min({distance_point_segment(a, b, c), distance_point_segment(a, b, d),\
+    \ distance_point_segment(c, d, a), distance_point_segment(c, d, b)}));\n     \
+    \   }\n        ok = ok && near(distance_segments(pa, pb, pc, pd), dss);\n    }\n\
+    \n    // \u4F8B\n    ok = ok && ccw(L(0, 0), L(2, 0), L(1, 1)) == 1 && ccw(L(0,\
+    \ 0), L(2, 0), L(3, 0)) == -2;\n    P h = projection(P(0.0, 0.0), P(3.0, 4.0),\
+    \ P(2.0, 5.0));\n    ok = ok && near(h[0], 3.12) && near(h[1], 4.16);\n    ok\
+    \ = ok && near(distance_point_line(L(0, 0), L(2, 0), L(5, 3)), 3) && near(distance_point_segment(L(0,\
+    \ 0), L(2, 0), L(5, 4)), 5);\n\n    if (ok)\n        std::cout << \"Hello World\"\
+    \ << std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// geometry/vector.hpp \u306E\u76F4\u7DDA\u30FB\u7DDA\u5206\u306E\u95A2\u6570\
     \ (ccw\u3001\u5E73\u884C\u30FB\u76F4\u4EA4\u3001\u5C04\u5F71\u3001\u53CD\u5C04\
@@ -554,7 +614,7 @@ data:
   isVerificationFile: true
   path: test/unittest/geometry/vector-line.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:32:25+09:00'
+  timestamp: '2026-10-22 05:40:25+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/geometry/vector-line.test.cpp

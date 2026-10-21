@@ -1626,69 +1626,130 @@ data:
     \u30C8\n * @return ClosestPair \u6700\u8FD1\u70B9\u5BFE\u306E\u8DDD\u96E2\u3068\
     \u6DFB\u5B57\n */\ntemplate <typename T>\nClosestPair closest_point_pair(const\
     \ std::vector<Vector<T, 2>>& points) {\n    auto [d2, i, j] = closest_point_pair_squared(points);\n\
-    \    return {std::sqrt(static_cast<double>(d2)), i, j};\n}\n/**\n * @deprecated\
-    \ closest_point_pair_squared \u3092\u4F7F\u3046\u3053\u3068(\u7DB4\u308A\u306E\
-    \u8AA4\u308A\u3092\u76F4\u3057\u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename\
-    \ T>\n[[deprecated(\"use closest_point_pair_squared\")]] ClosestPairSquared<T>\
-    \ closest_point_pair_squred(const std::vector<Vector<T, 2>>& points) {\n    return\
-    \ closest_point_pair_squared(points);\n}\n#line 2 \"src/math/modint.hpp\"\n\n\
-    /**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\
-    \u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line\
-    \ 9 \"src/math/modint.hpp\"\n#include <cstdint>\n#line 14 \"src/math/modint.hpp\"\
-    \n\n#line 16 \"src/math/modint.hpp\"\n\nnamespace internal_modint {\n// clang-format\
-    \ off\nstatic constexpr std::uint16_t prime32_bases[] {\n    15591,  2018,  166,\
-    \ 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,  3620,   560,  3128, \
-    \ 5212,  2657,\n     2300,  2021, 4652, 1471,  9336,  4018,  2398, 20462, 10277,\
-    \  8028, 2213,  6219,   620,  3763,  4852,  5012,\n     3185,  1333, 6227, 5298,\
-    \  1074,  2391,  5113,  7061,   803,  1269, 3875,   422,   751,   580,  4729,\
-    \ 10239,\n      746,  2951,  556, 2206,  3778,   481,  1522,  3476,   481,  2487,\
-    \ 3266,  5633,   488,  3373,  6441,  3344,\n       17, 15105, 1490, 4154,  2036,\
-    \  1882,  1813,   467,  3307, 14042, 6371,   658,  1005,   903,   737,  1887,\n\
-    \     7447,  1888, 2848, 1784,  7559,  3400,   951, 13969,  4304,   177,   41,\
-    \ 19875,  3110, 13221,  8726,   571,\n     7043,  6943, 1199,  352,  6435,   165,\
-    \  1169,  3315,   978,   233, 3003,  2562,  2994, 10587, 10030,  2377,\n     1902,\
-    \  5354, 4447, 1555,   263, 27027,  2283,   305,   669,  1912,  601,  6186,  \
-    \ 429,  1930, 14873,  1784,\n     1661,   524, 3577,  236,  2360,  6146,  2850,\
-    \ 55637,  1753,  4178, 8466,   222,  2579,  2743,  2031,  2226,\n     2276,  \
-    \ 374, 2132,  813, 23788,  1610,  4422,  5159,  1725,  3597, 3366, 14336,   579,\
-    \   165,  1375, 10018,\n    12616,  9816, 1371,  536,  1867, 10864,   857,  2206,\
-    \  5788,   434, 8085, 17618,   727,  3639,  1595,  4944,\n     2129,  2029, 8195,\
-    \ 8344,  6232,  9183,  8126,  1870,  3296,  7455, 8947, 25017,   541, 19115, \
-    \  368,   566,\n     5674,   411,  522, 1027,  8215,  2050,  6544, 10049,   614,\
-    \   774, 2333,  3007, 35201,  4706,  1152,  1785,\n     1028,  1540, 3743,  493,\
-    \  4474,  2521, 26845,  8354,   864, 18915, 5465,  2447,    42,  4511,  1660,\
-    \   166,\n     1249,  6259, 2553,  304,   272,  7286,    73,  6554,   899,  2816,\
-    \ 5197, 13330,  7054,  2818,  3199,   811,\n      922,   350, 7514, 4452,  3449,\
-    \  2663,  4708,   418,  1621,  1171, 3471,    88, 11345,   412,  1559,   194,\n\
-    };\n// clang-format on\n\nstatic constexpr bool is_SPRP(std::uint32_t n, std::uint32_t\
-    \ a) noexcept {\n    std::uint32_t d = n - 1;\n    std::uint32_t s = 0;\n    while\
-    \ ((d & 1) == 0) {\n        ++s;\n        d >>= 1;\n    }\n    std::uint64_t cur\
-    \ = 1;\n    std::uint64_t pw = d;\n    while (pw) {\n        if (pw & 1) cur =\
-    \ (cur * a) % n;\n        a = (static_cast<std::uint64_t>(a) * a) % n;\n     \
-    \   pw >>= 1;\n    }\n    if (cur == 1) return true;\n    for (std::uint32_t r\
-    \ = 0; r < s; ++r) {\n        if (cur == n - 1) return true;\n        cur = (cur\
-    \ * cur) % n;\n    }\n    return false;\n}\n\n// 32\u30D3\u30C3\u30C8\u7B26\u53F7\
-    \u306A\u3057\u6574\u6570\u306E\u7D20\u6570\u5224\u5B9A\n// \u53C2\u8003: M. Forisek\
-    \ and J. Jancina, \u201CFast Primality Testing for Integers That Fit into a Machine\
-    \ Word,\u201D presented at the Conference on Current Trends in Theory and Practice\
-    \ of Informatics, 2015.\n[[nodiscard]]\nstatic constexpr bool is_prime32(std::uint32_t\
-    \ x) noexcept {\n    if (x == 2 || x == 3 || x == 5 || x == 7) return true;\n\
-    \    if (x % 2 == 0 || x % 3 == 0 || x % 5 == 0 || x % 7 == 0) return false;\n\
-    \    if (x < 121) return (x > 1);\n    std::uint64_t h = x;\n    h = ((h >> 16)\
-    \ ^ h) * 0x45d9f3b;\n    h = ((h >> 16) ^ h) * 0x45d9f3b;\n    h = ((h >> 16)\
-    \ ^ h) & 0xff;\n    return is_SPRP(x, prime32_bases[h]);\n}\n}  // namespace internal_modint\n\
-    \n/// @brief static_modint \u3068 dynamic_modint \u306E\u5B9F\u88C5\u3092 CRTP\
-    \ \u306B\u3088\u3063\u3066\u884C\u3046\u305F\u3081\u306E\u30AF\u30E9\u30B9\u30C6\
-    \u30F3\u30D7\u30EC\u30FC\u30C8\n/// @tparam Modint \u3053\u306E\u30AF\u30E9\u30B9\
-    \u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\u3092\u7D99\u627F\u3059\u308B\u30AF\u30E9\
-    \u30B9\ntemplate <class Modint>\nclass modint_base {\n   public:\n    /// @brief\
-    \ \u4FDD\u6301\u3059\u308B\u5024\u306E\u578B\n    using value_type = std::uint32_t;\n\
-    \n    /// @brief 0 \u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    constexpr\
-    \ modint_base() noexcept\n        : m_value{0} {}\n\n    /// @brief @c value \u306E\
-    \u5270\u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    /// @param value\
-    \ \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\n    template <class SignedIntegral,\
-    \ ENABLE_IF_T((std::is_integral_v<SignedIntegral> && std::is_signed_v<SignedIntegral>))>\n\
-    \    constexpr modint_base(SignedIntegral value) noexcept\n        : m_value{static_cast<value_type>((static_cast<long\
+    \    return {std::sqrt(static_cast<double>(d2)), i, j};\n}\n\n/**\n * @brief farthest_point_pair_squared\
+    \ \u306E\u623B\u308A\u5024\n */\ntemplate <typename T>\nstruct FarthestPairSquared\
+    \ {\n    T squared_dist;  //!< \u6700\u9060\u70B9\u5BFE\u306E\u8DDD\u96E2\u306E\
+    2\u4E57\n    long long i, j;  //!< \u6700\u9060\u70B9\u5BFE\u306E\u6DFB\u5B57\n\
+    };\n/**\n * @brief farthest_point_pair \u306E\u623B\u308A\u5024\n */\nstruct FarthestPair\
+    \ {\n    double dist;     //!< \u6700\u9060\u70B9\u5BFE\u306E\u8DDD\u96E2\n  \
+    \  long long i, j;  //!< \u6700\u9060\u70B9\u5BFE\u306E\u6DFB\u5B57\n};\n\n/**\n\
+    \ * @brief \u6700\u9060\u70B9\u5BFE (\u51F8\u5305\u3092\u4F5C\u308A\u3001\u56DE\
+    \u8EE2\u30AD\u30E3\u30EA\u30D1\u30FC\u6CD5\u3067\u5BFE\u8E60\u70B9\u306E\u7D44\
+    \u3092\u8ABF\u3079\u308B) O(n log n)\n *\n * \u6574\u6570\u578B\u3067\u3082\u4F7F\
+    \u3048\u308B\u3002\u5EA7\u6A19\u306E\u5DEE\u306E2\u4E57\u306E\u548C\u306E2\u500D\
+    \u304C T \u306B\u53CE\u307E\u308B\u5FC5\u8981\u304C\u3042\u308B\n * @tparam T\
+    \ \u5EA7\u6A19\u306E\u578B\n * @param points \u9802\u70B9\u30EA\u30B9\u30C8 (2\u500B\
+    \u4EE5\u4E0A)\n * @return FarthestPairSquared<T> \u6700\u9060\u70B9\u5BFE\u306E\
+    \u8DDD\u96E2\u306E2\u4E57\u3068\u6DFB\u5B57 (i != j)\n */\ntemplate <typename\
+    \ T>\nFarthestPairSquared<T> farthest_point_pair_squared(const std::vector<Vector<T,\
+    \ 2>>& points) {\n    const int n = static_cast<int>(points.size());\n    assert(n\
+    \ >= 2);\n    // \u51F8\u5305\u306E\u9802\u70B9\u3092\u3001\u3082\u3068\u306E\u6DFB\
+    \u5B57\u306B\u623B\u305B\u308B\u3088\u3046\u306B\u3057\u3066\u304A\u304F\n   \
+    \ std::vector<std::pair<Vector<T, 2>, int>> sorted(n);\n    for (int i = 0; i\
+    \ < n; i++) sorted[i] = {points[i], i};\n    std::sort(sorted.begin(), sorted.end());\n\
+    \    auto index_of = [&](const Vector<T, 2>& p) {\n        return std::lower_bound(sorted.begin(),\
+    \ sorted.end(), std::make_pair(p, -1))->second;\n    };\n    std::vector<Vector<T,\
+    \ 2>> hull = convex_hull(points);\n    const int k = static_cast<int>(hull.size());\n\
+    \    if (k == 1) return {T(0), sorted[0].second, sorted[1].second};  // \u3059\
+    \u3079\u3066\u540C\u3058\u70B9\n    FarthestPairSquared<T> res{T(0), -1, -1};\n\
+    \    auto update = [&](int a, int b) {\n        T d = (hull[a] - hull[b]).squared_norm();\n\
+    \        if (res.i == -1 || d > res.squared_dist) res = {d, a, b};\n    };\n \
+    \   if (k == 2) {\n        update(0, 1);\n    } else {\n        // \u8FBA i\u2192\
+    i+1 \u306B\u5BFE\u3057\u3066\u3001\u6700\u3082\u9060\u3044\u9802\u70B9 j \u3092\
+    \u53CD\u6642\u8A08\u56DE\u308A\u306B\u9032\u3081\u3066\u3044\u304F\n        int\
+    \ j = 1;\n        for (int i = 0; i < k; i++) {\n            int ni = i + 1 ==\
+    \ k ? 0 : i + 1;\n            while (true) {\n                int nj = j + 1 ==\
+    \ k ? 0 : j + 1;\n                if (cross(hull[ni] - hull[i], hull[nj] - hull[j])\
+    \ > 0)\n                    j = nj;\n                else\n                  \
+    \  break;\n            }\n            update(i, j);\n            update(ni, j);\n\
+    \        }\n    }\n    return {res.squared_dist, index_of(hull[res.i]), index_of(hull[res.j])};\n\
+    }\n\n/**\n * @brief \u6700\u9060\u70B9\u5BFE\n *\n * @tparam T \u5EA7\u6A19\u306E\
+    \u578B\n * @param points \u9802\u70B9\u30EA\u30B9\u30C8 (2\u500B\u4EE5\u4E0A)\n\
+    \ * @return FarthestPair \u6700\u9060\u70B9\u5BFE\u306E\u8DDD\u96E2\u3068\u6DFB\
+    \u5B57\n */\ntemplate <typename T>\nFarthestPair farthest_point_pair(const std::vector<Vector<T,\
+    \ 2>>& points) {\n    auto [d2, i, j] = farthest_point_pair_squared(points);\n\
+    \    return {std::sqrt(static_cast<double>(d2)), i, j};\n}\n\n/**\n * @brief \u51F8\
+    \u591A\u89D2\u5F62\u3092\u76F4\u7DDA p1p2 \u3067\u5207\u308A\u3001\u76F4\u7DDA\
+    \u306E\u5DE6\u5074 (p1 \u304B\u3089 p2 \u3092\u898B\u3066\u5DE6) \u306E\u90E8\u5206\
+    \u3092\u8FD4\u3059\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n *\n\
+    \ * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u51F8\u591A\u89D2\u5F62\
+    \u306E\u9802\u70B9\u306E\u5EA7\u6A19 (\u53CD\u6642\u8A08\u56DE\u308A)\n * @return\
+    \ std::vector<Vector<T, 2>> \u5DE6\u5074\u306E\u51F8\u591A\u89D2\u5F62\u306E\u9802\
+    \u70B9 (\u53CD\u6642\u8A08\u56DE\u308A)\u3002\u76F4\u7DDA\u4E0A\u306E\u9802\u70B9\
+    \u3082\u542B\u3080\u3002\u5DE6\u5074\u306B\u4F55\u3082\u306A\u3051\u308C\u3070\
+    \u7A7A\n */\ntemplate <typename T>\nstd::vector<Vector<T, 2>> convex_cut(const\
+    \ std::vector<Vector<T, 2>>& polygon, const Vector<T, 2>& p1, const Vector<T,\
+    \ 2>& p2) {\n    static_assert(std::is_floating_point_v<T>, \"convex_cut: T must\
+    \ be a floating point type\");\n    std::vector<Vector<T, 2>> res;\n    const\
+    \ int n = static_cast<int>(polygon.size());\n    for (int i = 0; i < n; i++) {\n\
+    \        const Vector<T, 2>&a = polygon[i], &b = polygon[i + 1 == n ? 0 : i +\
+    \ 1];\n        T ca = cross(p2 - p1, a - p1), cb = cross(p2 - p1, b - p1);\n \
+    \       if (ca >= 0) res.push_back(a);\n        // \u8FBA ab \u304C\u76F4\u7DDA\
+    \u3092\u307E\u305F\u3050\u306A\u3089\u3001\u4EA4\u70B9\u3092\u5165\u308C\u308B\
+    \n        if ((ca > 0 && cb < 0) || (ca < 0 && cb > 0)) res.push_back(a + (b -\
+    \ a) * (ca / (ca - cb)));\n    }\n    return res;\n}\n/**\n * @deprecated closest_point_pair_squared\
+    \ \u3092\u4F7F\u3046\u3053\u3068(\u7DB4\u308A\u306E\u8AA4\u308A\u3092\u76F4\u3057\
+    \u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename T>\n[[deprecated(\"use\
+    \ closest_point_pair_squared\")]] ClosestPairSquared<T> closest_point_pair_squred(const\
+    \ std::vector<Vector<T, 2>>& points) {\n    return closest_point_pair_squared(points);\n\
+    }\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\
+    \u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\
+    \u30AF\u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\n#include <cstdint>\n\
+    #line 14 \"src/math/modint.hpp\"\n\n#line 16 \"src/math/modint.hpp\"\n\nnamespace\
+    \ internal_modint {\n// clang-format off\nstatic constexpr std::uint16_t prime32_bases[]\
+    \ {\n    15591,  2018,  166, 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,\
+    \  3620,   560,  3128,  5212,  2657,\n     2300,  2021, 4652, 1471,  9336,  4018,\
+    \  2398, 20462, 10277,  8028, 2213,  6219,   620,  3763,  4852,  5012,\n     3185,\
+    \  1333, 6227, 5298,  1074,  2391,  5113,  7061,   803,  1269, 3875,   422,  \
+    \ 751,   580,  4729, 10239,\n      746,  2951,  556, 2206,  3778,   481,  1522,\
+    \  3476,   481,  2487, 3266,  5633,   488,  3373,  6441,  3344,\n       17, 15105,\
+    \ 1490, 4154,  2036,  1882,  1813,   467,  3307, 14042, 6371,   658,  1005,  \
+    \ 903,   737,  1887,\n     7447,  1888, 2848, 1784,  7559,  3400,   951, 13969,\
+    \  4304,   177,   41, 19875,  3110, 13221,  8726,   571,\n     7043,  6943, 1199,\
+    \  352,  6435,   165,  1169,  3315,   978,   233, 3003,  2562,  2994, 10587, 10030,\
+    \  2377,\n     1902,  5354, 4447, 1555,   263, 27027,  2283,   305,   669,  1912,\
+    \  601,  6186,   429,  1930, 14873,  1784,\n     1661,   524, 3577,  236,  2360,\
+    \  6146,  2850, 55637,  1753,  4178, 8466,   222,  2579,  2743,  2031,  2226,\n\
+    \     2276,   374, 2132,  813, 23788,  1610,  4422,  5159,  1725,  3597, 3366,\
+    \ 14336,   579,   165,  1375, 10018,\n    12616,  9816, 1371,  536,  1867, 10864,\
+    \   857,  2206,  5788,   434, 8085, 17618,   727,  3639,  1595,  4944,\n     2129,\
+    \  2029, 8195, 8344,  6232,  9183,  8126,  1870,  3296,  7455, 8947, 25017,  \
+    \ 541, 19115,   368,   566,\n     5674,   411,  522, 1027,  8215,  2050,  6544,\
+    \ 10049,   614,   774, 2333,  3007, 35201,  4706,  1152,  1785,\n     1028,  1540,\
+    \ 3743,  493,  4474,  2521, 26845,  8354,   864, 18915, 5465,  2447,    42,  4511,\
+    \  1660,   166,\n     1249,  6259, 2553,  304,   272,  7286,    73,  6554,   899,\
+    \  2816, 5197, 13330,  7054,  2818,  3199,   811,\n      922,   350, 7514, 4452,\
+    \  3449,  2663,  4708,   418,  1621,  1171, 3471,    88, 11345,   412,  1559,\
+    \   194,\n};\n// clang-format on\n\nstatic constexpr bool is_SPRP(std::uint32_t\
+    \ n, std::uint32_t a) noexcept {\n    std::uint32_t d = n - 1;\n    std::uint32_t\
+    \ s = 0;\n    while ((d & 1) == 0) {\n        ++s;\n        d >>= 1;\n    }\n\
+    \    std::uint64_t cur = 1;\n    std::uint64_t pw = d;\n    while (pw) {\n   \
+    \     if (pw & 1) cur = (cur * a) % n;\n        a = (static_cast<std::uint64_t>(a)\
+    \ * a) % n;\n        pw >>= 1;\n    }\n    if (cur == 1) return true;\n    for\
+    \ (std::uint32_t r = 0; r < s; ++r) {\n        if (cur == n - 1) return true;\n\
+    \        cur = (cur * cur) % n;\n    }\n    return false;\n}\n\n// 32\u30D3\u30C3\
+    \u30C8\u7B26\u53F7\u306A\u3057\u6574\u6570\u306E\u7D20\u6570\u5224\u5B9A\n// \u53C2\
+    \u8003: M. Forisek and J. Jancina, \u201CFast Primality Testing for Integers That\
+    \ Fit into a Machine Word,\u201D presented at the Conference on Current Trends\
+    \ in Theory and Practice of Informatics, 2015.\n[[nodiscard]]\nstatic constexpr\
+    \ bool is_prime32(std::uint32_t x) noexcept {\n    if (x == 2 || x == 3 || x ==\
+    \ 5 || x == 7) return true;\n    if (x % 2 == 0 || x % 3 == 0 || x % 5 == 0 ||\
+    \ x % 7 == 0) return false;\n    if (x < 121) return (x > 1);\n    std::uint64_t\
+    \ h = x;\n    h = ((h >> 16) ^ h) * 0x45d9f3b;\n    h = ((h >> 16) ^ h) * 0x45d9f3b;\n\
+    \    h = ((h >> 16) ^ h) & 0xff;\n    return is_SPRP(x, prime32_bases[h]);\n}\n\
+    }  // namespace internal_modint\n\n/// @brief static_modint \u3068 dynamic_modint\
+    \ \u306E\u5B9F\u88C5\u3092 CRTP \u306B\u3088\u3063\u3066\u884C\u3046\u305F\u3081\
+    \u306E\u30AF\u30E9\u30B9\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n/// @tparam Modint\
+    \ \u3053\u306E\u30AF\u30E9\u30B9\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\u3092\u7D99\
+    \u627F\u3059\u308B\u30AF\u30E9\u30B9\ntemplate <class Modint>\nclass modint_base\
+    \ {\n   public:\n    /// @brief \u4FDD\u6301\u3059\u308B\u5024\u306E\u578B\n \
+    \   using value_type = std::uint32_t;\n\n    /// @brief 0 \u3067\u521D\u671F\u5316\
+    \u3057\u307E\u3059\u3002\n    constexpr modint_base() noexcept\n        : m_value{0}\
+    \ {}\n\n    /// @brief @c value \u306E\u5270\u4F59\u3067\u521D\u671F\u5316\u3057\
+    \u307E\u3059\u3002\n    /// @param value \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\
+    \n    template <class SignedIntegral, ENABLE_IF_T((std::is_integral_v<SignedIntegral>\
+    \ && std::is_signed_v<SignedIntegral>))>\n    constexpr modint_base(SignedIntegral\
+    \ value) noexcept\n        : m_value{static_cast<value_type>((static_cast<long\
     \ long>(value) % Modint::mod() + Modint::mod()) % Modint::mod())} {}\n\n    ///\
     \ @brief @c value \u306E\u5270\u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\
     \u3002\n    /// @param value \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\n    template\
@@ -2017,7 +2078,7 @@ data:
   isVerificationFile: true
   path: test/unittest/data_structures/dual-segtree.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:32:25+09:00'
+  timestamp: '2026-10-22 05:40:25+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/data_structures/dual-segtree.test.cpp

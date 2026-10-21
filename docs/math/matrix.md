@@ -45,6 +45,7 @@ auto t = g.rotate(1).vstr();          // 時計回りに 90 度回して vector<
 | `A * x` / `x * A` | 列ベクトル / 行ベクトルとの積 (`vector<T>` を返す) | $O(nm)$ |
 | `A.pow(k)` | $A^k$ | $O(n^3 \log k)$ |
 | `A.det()` | 行列式 | $O(n^3)$ |
+| `A.permanent()` | パーマネント $\sum_\sigma \prod_i a_{i \sigma(i)}$ (Ryser の公式)。割り算を使わないので `long long` でもよい。0 と 1 の行列なら二部グラフの完全マッチングの個数 | $O(2^n n)$ |
 | `A.inv()` | 逆行列 (正則でなければ assert で落ちる) | $O(n^3)$ |
 
 `det`、`inv` は掃き出し法で割り算を使うので、要素は体 (`modint` や浮動小数点型など) である必要があります。`int` や `long long` のような整数型では割り算が切り捨てになり、正しい値になりません (例: `Matrix<long long>({ {2, 1}, {1, 1} }).det()` は 1 ではなく 2 を返す)。整数の行列の行列式は、十分大きい素数を法とする `modint` で計算してください。
@@ -92,3 +93,4 @@ auto [R, pivots] = A.reduced_row_echelon();
 - `det`、`inv`、`solve` で使う体の要素は [modint](modint.hpp)
 - mod 2 の行列は [F2 の行列](f2-matrix.hpp)
 - 行列累乗の代わりに漸化式を多項式で扱うなら [形式的冪級数](fps.hpp)
+- 二部グラフの最大マッチングは [二部グラフの最大マッチング](../graph/bipartite-matching.hpp) (完全マッチングの個数は `permanent`)

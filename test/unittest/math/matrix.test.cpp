@@ -3,11 +3,14 @@
 // Matrix の +・-・==・シフト系・col・str・初期化子リスト・代入・走査と、
 // OperatorProperty を自分で定義した場合 (GF(2) と、既定の演算を継承したもの) の det と inv を愚直な計算と比較する
 // solve・rank・kernel・reduced_row_echelon を、変数の値をすべて試す愚直な実装と比較する (mod 3 と GF(2))
+// permanent を、すべての順列の和と比較する (long long・modint・GF(2))
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../../src/math/matrix.hpp"
 
+#include <algorithm>
 #include <iostream>
+#include <numeric>
 #include <random>
 #include <string>
 #include <vector>
@@ -267,6 +270,36 @@ int main() {
         auto sol = A.solve({0, 0});
         if (!sol || sol->basis.size() != 3 || A.rank() != 0) ok = false;
         if (A.solve({1, 0})) ok = false;
+    }
+
+    // パーマネント
+    for (int rep = 0; rep < 300 && ok; rep++) {
+        int n = rng() % 8;
+        VV a(n, std::vector<long long>(n));
+        std::vector<std::vector<mint>> am(n, std::vector<mint>(n));
+        std::vector<std::vector<int>> a2(n, std::vector<int>(n));
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                a[i][j] = static_cast<long long>(rng() % 11) - 5;
+                am[i][j] = rng();
+                a2[i][j] = rng() % 2;
+            }
+        }
+        std::vector<int> perm(n);
+        std::iota(perm.begin(), perm.end(), 0);
+        long long expect = 0;
+        mint expect_m = 0;
+        int expect_2 = 0;
+        do {
+            long long p = 1;
+            mint pm = 1;
+            int p2 = 1;
+            for (int i = 0; i < n; i++) p *= a[i][perm[i]], pm *= am[i][perm[i]], p2 &= a2[i][perm[i]];
+            expect += p, expect_m += pm, expect_2 ^= p2;
+        } while (std::next_permutation(perm.begin(), perm.end()));
+        if (Matrix<long long>(a).permanent() != expect) ok = false, std::cerr << "permanent long long" << std::endl;
+        if (Matrix<mint>(am).permanent() != expect_m) ok = false, std::cerr << "permanent modint" << std::endl;
+        if (Matrix<int, GF2>(a2).permanent() != expect_2) ok = false, std::cerr << "permanent GF(2)" << std::endl;
     }
 
     if (ok) std::cout << "Hello World" << std::endl;

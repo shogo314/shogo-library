@@ -398,6 +398,39 @@ class Matrix {
     }
 
     /**
+     * @brief パーマネント Σ_σ Π_i a[i][σ(i)] (Ryser の公式) O(2^n n)
+     * @return パーマネント
+     * @note 割り算を使わないので、要素は可換環 (long long や modint など) でよい。
+     *       0 と 1 の行列なら、二部グラフの完全マッチングの個数になる
+     *
+     * perm(A) = Σ_{S ⊆ 列} (-1)^{n - |S|} Π_i Σ_{j ∈ S} a[i][j] を、S をグレイコードの順に動かして各行の和を O(n) で更新する
+     */
+    [[nodiscard]]
+    T permanent() const {
+        assert(n == m);
+        assert(n < 63);
+        std::vector<T> row(n, OperatorProperty::zero());  // 各行の、S に入っている列の和
+        T res = OperatorProperty::zero();
+        long long size = 0;  // |S|
+        for (long long k = 1; k < (1LL << n); k++) {
+            // グレイコードで k - 1 番目から k 番目に移るとき、k の最下位ビットの位置の列が出入りする
+            long long j = 0;
+            while (!(k >> j & 1)) j++;
+            bool added = (k ^ (k >> 1)) >> j & 1;
+            size += added ? 1 : -1;
+            T prod = OperatorProperty::one();
+            for (long long i = 0; i < n; i++) {
+                row[i] = OperatorProperty::add(row[i], added ? this->v[i][j] : OperatorProperty::neg(this->v[i][j]));
+                prod = OperatorProperty::mul(prod, row[i]);
+            }
+            res = OperatorProperty::add(res, (n - size) % 2 == 0 ? prod : OperatorProperty::neg(prod));
+        }
+        // S が空のときの項は、n == 0 なら 1、そうでなければ 0
+        if (n == 0) res = OperatorProperty::one();
+        return res;
+    }
+
+    /**
      * @brief 逆行列
      * @return 逆行列
      * @note det と同じく、要素は体 (modint や浮動小数点型など) であること

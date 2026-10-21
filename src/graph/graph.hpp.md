@@ -102,8 +102,8 @@ data:
     path: test/yosupo/graph/biconnected-components.test.cpp
     title: test/yosupo/graph/biconnected-components.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/graph/chromatic-number.test.cpp
-    title: test/yosupo/graph/chromatic-number.test.cpp
+    path: test/yosupo/graph/chromatic-number.1.test.cpp
+    title: test/yosupo/graph/chromatic-number.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/cycle-detection-undirected.test.cpp
     title: test/yosupo/graph/cycle-detection-undirected.test.cpp
@@ -595,12 +595,12 @@ data:
   - test/yosupo/tree/lca.3.test.cpp
   - test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp
   - test/yosupo/tree/jump-on-tree.1.test.cpp
+  - test/yosupo/graph/chromatic-number.1.test.cpp
   - test/yosupo/graph/scc.test.cpp
   - test/yosupo/graph/two-edge-connected-components.test.cpp
   - test/yosupo/graph/minimum-spanning-tree.1.test.cpp
   - test/yosupo/graph/biconnected-components.test.cpp
   - test/yosupo/graph/minimum-spanning-tree.2.test.cpp
-  - test/yosupo/graph/chromatic-number.test.cpp
   - test/yosupo/graph/shortest-path.test.cpp
   - test/yosupo/graph/cycle-detection-undirected.test.cpp
   - test/yosupo/graph/cycle-detection.test.cpp

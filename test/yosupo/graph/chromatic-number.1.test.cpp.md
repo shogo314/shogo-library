@@ -20,8 +20,8 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/chromatic_number
     links:
     - https://judge.yosupo.jp/problem/chromatic_number
-  bundledCode: "#line 1 \"test/yosupo/graph/chromatic-number.test.cpp\"\n#define PROBLEM\
-    \ \"https://judge.yosupo.jp/problem/chromatic_number\"\n\n#include <iostream>\n\
+  bundledCode: "#line 1 \"test/yosupo/graph/chromatic-number.1.test.cpp\"\n#define\
+    \ PROBLEM \"https://judge.yosupo.jp/problem/chromatic_number\"\n\n#include <iostream>\n\
     \n#line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file graph.hpp\n * @brief \u30B0\
     \u30E9\u30D5\n */\n\n#include <algorithm>\n#include <cassert>\n#include <deque>\n\
     #include <functional>\n#line 13 \"src/graph/graph.hpp\"\n#include <limits>\n#include\
@@ -492,7 +492,7 @@ data:
     \     }\n            }\n        }\n    }\n    Cost res = inf;\n    for (long long\
     \ k = 0; k < graph.n; k++) {\n        if (dp[k].back() != inf && (res == inf ||\
     \ res > dp[k].back())) res = dp[k].back();\n    }\n    return res;\n}\n#line 7\
-    \ \"test/yosupo/graph/chromatic-number.test.cpp\"\n\nint main() {\n    std::cin.tie(nullptr);\n\
+    \ \"test/yosupo/graph/chromatic-number.1.test.cpp\"\n\nint main() {\n    std::cin.tie(nullptr);\n\
     \    std::ios::sync_with_stdio(false);\n    int n, m;\n    std::cin >> n >> m;\n\
     \    Graph<int> g(n);\n    g.read(m, 0);\n    std::cout << chromatic_number(g)\
     \ << '\\n';\n}\n"
@@ -507,15 +507,15 @@ data:
   - src/graph/graph_util.hpp
   - src/data_structures/unionfind.hpp
   isVerificationFile: true
-  path: test/yosupo/graph/chromatic-number.test.cpp
+  path: test/yosupo/graph/chromatic-number.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:37:20+09:00'
+  timestamp: '2026-10-22 01:08:21+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/yosupo/graph/chromatic-number.test.cpp
+documentation_of: test/yosupo/graph/chromatic-number.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/yosupo/graph/chromatic-number.test.cpp
-- /verify/test/yosupo/graph/chromatic-number.test.cpp.html
-title: test/yosupo/graph/chromatic-number.test.cpp
+- /verify/test/yosupo/graph/chromatic-number.1.test.cpp
+- /verify/test/yosupo/graph/chromatic-number.1.test.cpp.html
+title: test/yosupo/graph/chromatic-number.1.test.cpp
 ---

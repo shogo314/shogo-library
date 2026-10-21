@@ -102,5 +102,5 @@ long long k = bin_packing({3, 4, 4, 4, 2, 9, 2}, 10);  // 3 (9 / 4+4+2 / 3+4+2)
 
 ## 関連
 
-- 一般の集合族で分ける最小個数は [集合の分割](set-partition.hpp)、彩色数は [グラフに関する関数](../graph/graph_util.hpp) の `chromatic_number`
+- 一般の集合族で分ける最小個数は [集合の分割](set-partition.hpp)、覆う最小個数は [集合の被覆](set-cover.hpp)、彩色数は [グラフに関する関数](../graph/graph_util.hpp) の `chromatic_number`
 - 1 つの瓶 (ナップサック) に入る価値の最大は [ナップサック問題](knapsack.hpp)

@@ -168,6 +168,11 @@ data:
       title: "Monge \u6027\u3092\u4F7F\u3046 DP \u306E\u9AD8\u901F\u5316 (monotone\
         \ minima\u30FB(min, +) \u7573\u307F\u8FBC\u307F\u30FBAlien DP)"
     - icon: ':heavy_check_mark:'
+      path: src/dp/set-cover.hpp
+      title: "\u96C6\u5408\u306E\u88AB\u8986 (\u4F7F\u3063\u3066\u3088\u3044\u96C6\
+        \u5408\u3067\u8986\u3046\u6700\u5C0F\u500B\u6570\u3001\u5305\u9664\u539F\u7406\
+        )"
+    - icon: ':heavy_check_mark:'
       path: src/dp/set-partition.hpp
       title: "\u96C6\u5408\u306E\u5206\u5272 (\u4F7F\u3063\u3066\u3088\u3044\u96C6\
         \u5408\u306B\u5206\u3051\u308B\u6700\u5C0F\u500B\u6570)"
@@ -884,6 +889,9 @@ data:
       path: test/unittest/dp/monge.test.cpp
       title: test/unittest/dp/monge.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/dp/set-cover.test.cpp
+      title: test/unittest/dp/set-cover.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/dp/set-partition.test.cpp
       title: test/unittest/dp/set-partition.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1314,8 +1322,11 @@ data:
       path: test/yosupo/graph/bipartitematching.test.cpp
       title: test/yosupo/graph/bipartitematching.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/yosupo/graph/chromatic-number.test.cpp
-      title: test/yosupo/graph/chromatic-number.test.cpp
+      path: test/yosupo/graph/chromatic-number.1.test.cpp
+      title: test/yosupo/graph/chromatic-number.1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/graph/chromatic-number.2.test.cpp
+      title: test/yosupo/graph/chromatic-number.2.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
       title: test/yosupo/graph/counting-spanning-tree-undirected.test.cpp

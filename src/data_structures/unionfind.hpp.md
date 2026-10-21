@@ -79,8 +79,8 @@ data:
     path: test/yosupo/data_structure/unionfind.test.cpp
     title: test/yosupo/data_structure/unionfind.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/graph/chromatic-number.test.cpp
-    title: test/yosupo/graph/chromatic-number.test.cpp
+    path: test/yosupo/graph/chromatic-number.1.test.cpp
+    title: test/yosupo/graph/chromatic-number.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/cycle-detection-undirected.test.cpp
     title: test/yosupo/graph/cycle-detection-undirected.test.cpp
@@ -253,10 +253,10 @@ data:
   - test/yosupo/data_structure/unionfind.test.cpp
   - test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
   - test/yosupo/data_structure/persistent-unionfind.test.cpp
+  - test/yosupo/graph/chromatic-number.1.test.cpp
   - test/yosupo/graph/scc.test.cpp
   - test/yosupo/graph/minimum-spanning-tree.1.test.cpp
   - test/yosupo/graph/minimum-spanning-tree.2.test.cpp
-  - test/yosupo/graph/chromatic-number.test.cpp
   - test/yosupo/graph/cycle-detection-undirected.test.cpp
   - test/yosupo/graph/cycle-detection.test.cpp
   - test/yosupo/other/two-sat.test.cpp

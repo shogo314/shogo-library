@@ -37,6 +37,10 @@ data:
     path: src/math/number-theory.hpp
     title: "\u6570\u8AD6 (\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406)"
   - icon: ':heavy_check_mark:'
+    path: src/math/polynomial-gcd.hpp
+    title: "\u591A\u9805\u5F0F\u306E\u62E1\u5F35\u30E6\u30FC\u30AF\u30EA\u30C3\u30C9\
+      \u306E\u4E92\u9664\u6CD5\u3068\u9006\u5143 (Half-GCD)"
+  - icon: ':heavy_check_mark:'
     path: src/math/polynomial-roots.hpp
     title: "\u591A\u9805\u5F0F\u306E\u6839 (Cantor-Zassenhaus \u6CD5)"
   - icon: ':heavy_check_mark:'
@@ -118,6 +122,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/math/number-theory.test.cpp
     title: test/unittest/math/number-theory.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/math/polynomial-gcd.test.cpp
+    title: test/unittest/math/polynomial-gcd.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/math/polynomial-roots.test.cpp
     title: test/unittest/math/polynomial-roots.test.cpp
@@ -235,6 +242,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/polynomial/inv-of-fps.test.cpp
     title: test/yosupo/polynomial/inv-of-fps.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/polynomial/inv-of-polynomials.test.cpp
+    title: test/yosupo/polynomial/inv-of-polynomials.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/polynomial/log-of-formal-power-series-sparse.test.cpp
     title: test/yosupo/polynomial/log-of-formal-power-series-sparse.test.cpp
@@ -435,12 +445,14 @@ data:
   - src/math/number-theory.hpp
   - src/math/polynomial-roots.hpp
   - src/math/fps-composition.hpp
+  - src/math/polynomial-gcd.hpp
   - src/math/linear-recurrence.hpp
   - src/math/prime.hpp
   timestamp: '2026-10-20 17:15:36+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/dp/subset-sum.test.cpp
+  - test/unittest/math/polynomial-gcd.test.cpp
   - test/unittest/math/combinatorics.test.cpp
   - test/unittest/math/combinatorial-sequences.test.cpp
   - test/unittest/math/sparse-fps.test.cpp
@@ -486,6 +498,7 @@ data:
   - test/yosupo/polynomial/composition-of-formal-power-series.test.cpp
   - test/yosupo/polynomial/log-of-fps.test.cpp
   - test/yosupo/polynomial/polynomial-interpolation.test.cpp
+  - test/yosupo/polynomial/inv-of-polynomials.test.cpp
   - test/yosupo/convolution/gcd-convolution.test.cpp
   - test/yosupo/convolution/convolution-mod-2-64.test.cpp
   - test/yosupo/convolution/convolution-mod-1000000007.test.cpp

@@ -59,11 +59,14 @@ std::sort(ps.begin(), ps.end(), [](const P& a, const P& b) { return Angle(a) < A
 | `select_convex(ps, include_straight = false)` | 順番を保った半凸包。x の昇順なら下凸包、降順なら上凸包 | ✓ | $O(n)$ |
 | `closest_point_pair_squared(ps)` | 最近点対の距離の2乗と添字 (`.squared_dist`、`.i`、`.j`。添字は `long long`) | ✓ | $O(n \log^2 n)$ |
 | `closest_point_pair(ps)` | 最近点対の距離と添字 (`.dist`、`.i`、`.j`。添字は `long long`) | ✓ | $O(n \log^2 n)$ |
+| `farthest_point_pair_squared(ps)` | 最遠点対の距離の2乗と添字 (`.squared_dist`、`.i`、`.j`。$i \ne j$)。凸包を作り、回転キャリパー法で調べる。点は 2 個以上 | ✓ | $O(n \log n)$ |
+| `farthest_point_pair(ps)` | 最遠点対の距離と添字 (`.dist`、`.i`、`.j`)。凸多角形の直径にも使える | ✓ | $O(n \log n)$ |
+| `convex_cut(poly, p1, p2)` | 凸多角形 (反時計回り) を直線 $p_1 p_2$ で切った、直線の左側 ($p_1$ から $p_2$ を見て左) の凸多角形。左側に何もなければ空 | 浮動小数点型のみ | $O(n)$ |
 
 浮動小数点型でも、`ccw` や `is_parallel` などの判定は誤差を考えずに `0` と比べます。誤差が問題になる場合は、整数座標で計算してください。
 
 ## 関連
 
-- 円の交点・接線・内接円・外接円は [円](circle.hpp)
+- 円の交点・接線・内接円・外接円・共通部分の面積は [円](circle.hpp)
 - 偏角ソートは [偏角](angle.hpp) の `Angle` (`Angle(p) < Angle(q)` で比べる)
 - 傾きや比を誤差なく比べるには [有理数](../math/rational.hpp)

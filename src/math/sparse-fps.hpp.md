@@ -882,11 +882,11 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/sparse-fps.test.cpp
-  - test/yosupo/pow-of-formal-power-series-sparse.test.cpp
   - test/yosupo/inv-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/pow-of-formal-power-series-sparse.test.cpp
   - test/yosupo/exp-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/sqrt-of-formal-power-series-sparse.test.cpp
   - test/yosupo/log-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/sqrt-of-formal-power-series-sparse.test.cpp
 documentation_of: src/math/sparse-fps.hpp
 layout: document
 title: "\u758E\u306A\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570 (inv\u30FBlog\u30FBexp\u30FB\

@@ -233,10 +233,10 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/longest-common-substring.test.cpp
   - test/unittest/suffix-array.test.cpp
-  - test/yosupo/number-of-substrings.1.test.cpp
+  - test/unittest/longest-common-substring.test.cpp
   - test/yosupo/longest-common-substring.test.cpp
+  - test/yosupo/number-of-substrings.1.test.cpp
   - test/yosupo/suffixarray.test.cpp
 documentation_of: src/string/suffix-array.hpp
 layout: document

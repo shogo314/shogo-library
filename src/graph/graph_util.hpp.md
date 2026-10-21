@@ -768,18 +768,18 @@ data:
   timestamp: '2026-10-21 05:55:54+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/two-sat.test.cpp
-  - test/unittest/find-cycle.test.cpp
   - test/unittest/graph-util.test.cpp
-  - test/aoj/grl-4-a.test.cpp
+  - test/unittest/find-cycle.test.cpp
+  - test/unittest/two-sat.test.cpp
   - test/aoj/grl-2-a.test.cpp
+  - test/aoj/grl-4-a.test.cpp
   - test/aoj/alds1-11-d.1.test.cpp
-  - test/yosupo/cycle-detection-undirected.test.cpp
-  - test/yosupo/two-sat.test.cpp
+  - test/yosupo/scc.test.cpp
   - test/yosupo/minimum-spanning-tree.2.test.cpp
   - test/yosupo/chromatic-number.test.cpp
-  - test/yosupo/scc.test.cpp
+  - test/yosupo/cycle-detection-undirected.test.cpp
   - test/yosupo/cycle-detection.test.cpp
+  - test/yosupo/two-sat.test.cpp
 documentation_of: src/graph/graph_util.hpp
 layout: document
 title: "\u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570"

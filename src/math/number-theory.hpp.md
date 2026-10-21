@@ -197,9 +197,9 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/number-theory.test.cpp
-  - test/yosupo/binomial-coefficient.test.cpp
   - test/yukicoder/187.test.cpp
   - test/yukicoder/186.test.cpp
+  - test/yosupo/binomial-coefficient.test.cpp
 documentation_of: src/math/number-theory.hpp
 layout: document
 title: "\u6570\u8AD6 (\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406)"

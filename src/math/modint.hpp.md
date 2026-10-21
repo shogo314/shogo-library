@@ -9,6 +9,10 @@ data:
     path: src/dp/subset-sum-count.hpp
     title: "\u90E8\u5206\u548C\u306E\u500B\u6570"
   - icon: ':heavy_check_mark:'
+    path: src/math/combinatorial-sequences.hpp
+    title: "\u5206\u5272\u6570\u30FB\u30D9\u30EB\u30CC\u30FC\u30A4\u6570\u30FB\u30B9\
+      \u30BF\u30FC\u30EA\u30F3\u30B0\u6570\u30FB\u30D9\u30EB\u6570"
+  - icon: ':heavy_check_mark:'
     path: src/math/convolution.hpp
     title: "\u7573\u307F\u8FBC\u307F (NTT)"
   - icon: ':heavy_check_mark:'
@@ -56,6 +60,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/bitwise-transform.test.cpp
     title: test/unittest/bitwise-transform.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/combinatorial-sequences.test.cpp
+    title: test/unittest/combinatorial-sequences.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/combinatorics.test.cpp
     title: test/unittest/combinatorics.test.cpp
@@ -110,6 +117,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/subset-sum.test.cpp
     title: test/unittest/subset-sum.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/bell-number.test.cpp
+    title: test/yosupo/bell-number.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/bernoulli-number.test.cpp
+    title: test/yosupo/bernoulli-number.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
     title: test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
@@ -182,6 +195,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/multipoint-evaluation.test.cpp
     title: test/yosupo/multipoint-evaluation.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/partition-function.test.cpp
+    title: test/yosupo/partition-function.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/partition-function_1.test.cpp
     title: test/yosupo/partition-function_1.test.cpp
@@ -260,6 +276,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/sqrt-of-formal-power-series.test.cpp
     title: test/yosupo/sqrt-of-formal-power-series.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/stirling-number-of-the-first-kind.test.cpp
+    title: test/yosupo/stirling-number-of-the-first-kind.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/stirling-number-of-the-second-kind.test.cpp
+    title: test/yosupo/stirling-number-of-the-second-kind.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/subset-convolution.test.cpp
     title: test/yosupo/subset-convolution.test.cpp
@@ -805,99 +827,106 @@ data:
   isVerificationFile: false
   path: src/math/modint.hpp
   requiredBy:
-  - src/dp/subset-sum-count.hpp
-  - src/math/convolution.hpp
-  - src/math/sparse-fps.hpp
-  - src/math/fps.hpp
-  - src/math/multipoint.hpp
   - src/math/linear-recurrence.hpp
+  - src/math/fps.hpp
+  - src/math/combinatorial-sequences.hpp
+  - src/math/convolution.hpp
+  - src/math/multipoint.hpp
+  - src/math/sparse-fps.hpp
+  - src/dp/subset-sum-count.hpp
   timestamp: '2026-10-14 16:41:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/modint.test.cpp
-  - test/unittest/combinatorics.test.cpp
-  - test/unittest/sparse-fps.test.cpp
-  - test/unittest/persistent-lazy-segtree.test.cpp
-  - test/unittest/lagrange-interpolation.test.cpp
-  - test/unittest/dual-segtree.test.cpp
-  - test/unittest/dynamic-segtree.test.cpp
-  - test/unittest/persistent-segtree.test.cpp
-  - test/unittest/sliding-window-aggregation.test.cpp
   - test/unittest/prime-counting.test.cpp
+  - test/unittest/sparse-fps.test.cpp
   - test/unittest/multipoint.test.cpp
+  - test/unittest/combinatorics.test.cpp
+  - test/unittest/lagrange-interpolation.test.cpp
+  - test/unittest/dynamic-segtree.test.cpp
   - test/unittest/rbst.test.cpp
-  - test/unittest/dynamic-lazy-segtree.test.cpp
-  - test/unittest/linear-recurrence.test.cpp
-  - test/unittest/bitwise-transform.test.cpp
-  - test/unittest/acted-monoid.test.cpp
-  - test/unittest/divisor-transform.test.cpp
+  - test/unittest/combinatorial-sequences.test.cpp
+  - test/unittest/modint.test.cpp
+  - test/unittest/dual-segtree.test.cpp
   - test/unittest/matrix.test.cpp
+  - test/unittest/persistent-lazy-segtree.test.cpp
+  - test/unittest/persistent-segtree.test.cpp
   - test/unittest/subset-sum.test.cpp
+  - test/unittest/linear-recurrence.test.cpp
+  - test/unittest/acted-monoid.test.cpp
+  - test/unittest/sliding-window-aggregation.test.cpp
+  - test/unittest/dynamic-lazy-segtree.test.cpp
+  - test/unittest/divisor-transform.test.cpp
+  - test/unittest/bitwise-transform.test.cpp
   - test/unittest/fps.test.cpp
-  - test/aoj/dpl-5-d.1.test.cpp
-  - test/aoj/jag-summer-2971.test.cpp
-  - test/aoj/dpl-5-f.test.cpp
+  - test/yukicoder/search-oji.test.cpp
+  - test/yukicoder/117.test.cpp
   - test/aoj/dpl-5-b.1.test.cpp
-  - test/aoj/dpl-5-e.test.cpp
+  - test/aoj/dpl-5-f.test.cpp
+  - test/aoj/dpl-5-d.1.test.cpp
   - test/aoj/dpl-5-e.lucas.test.cpp
+  - test/aoj/jag-summer-2971.test.cpp
+  - test/aoj/dpl-5-e.test.cpp
   - test/aoj/dpl-5-d.2.test.cpp
   - test/aoj/dpl-5-b.2.test.cpp
-  - test/yosupo/queue-operate-all-composite.test.cpp
-  - test/yosupo/gcd-convolution.test.cpp
-  - test/yosupo/persistent-range-affine-range-sum.test.cpp
-  - test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
-  - test/yosupo/sqrt-of-formal-power-series.test.cpp
-  - test/yosupo/exp-of-fps.test.cpp
-  - test/yosupo/pow-of-formal-power-series-sparse.test.cpp
   - test/yosupo/point-set-range-composite.4.test.cpp
-  - test/yosupo/frequency-table-of-tree-distance.test.cpp
-  - test/yosupo/range-affine-range-sum.2.test.cpp
-  - test/yosupo/inv-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/multipoint-evaluation.test.cpp
-  - test/yosupo/range-affine-range-sum.3.test.cpp
-  - test/yosupo/range-affine-range-sum-large-array.test.cpp
-  - test/yosupo/range-affine-point-get.1.test.cpp
-  - test/yosupo/product-of-polynomial-sequence.test.cpp
-  - test/yosupo/partition-function_2.test.cpp
-  - test/yosupo/exp-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/inv-of-fps.test.cpp
-  - test/yosupo/division-of-polynomials.test.cpp
-  - test/yosupo/kth-term-of-linearly-recurrent-sequence.test.cpp
-  - test/yosupo/sqrt-of-formal-power-series-sparse.test.cpp
   - test/yosupo/pow-of-fps.test.cpp
-  - test/yosupo/log-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/point-set-range-composite.3.test.cpp
-  - test/yosupo/vertex-set-path-composite.test.cpp
-  - test/yosupo/counting-spanning-tree-undirected.test.cpp
-  - test/yosupo/polynomial-taylor-shift.test.cpp
-  - test/yosupo/range-set-range-composite.test.cpp
-  - test/yosupo/shift-of-sampling-points-of-polynomial.test.cpp
-  - test/yosupo/partition-function_1.test.cpp
-  - test/yosupo/range-affine-point-get.2.test.cpp
-  - test/yosupo/bitwise-xor-convolution.test.cpp
+  - test/yosupo/stirling-number-of-the-second-kind.test.cpp
+  - test/yosupo/kth-term-of-linearly-recurrent-sequence.test.cpp
   - test/yosupo/point-set-range-composite.1.test.cpp
-  - test/yosupo/point-set-range-composite.2.test.cpp
-  - test/yosupo/convolution-mod-2-64.test.cpp
-  - test/yosupo/convolution-mod-1000000007.test.cpp
-  - test/yosupo/log-of-fps.test.cpp
-  - test/yosupo/binomial-coefficient-prime-mod.2.test.cpp
-  - test/yosupo/point-set-range-composite-large-array.test.cpp
-  - test/yosupo/lcm-convolution.test.cpp
-  - test/yosupo/dynamic-sequence-range-affine-range-sum.test.cpp
-  - test/yosupo/sharp-p-subset-sum.2.test.cpp
   - test/yosupo/bitwise-and-convolution.test.cpp
-  - test/yosupo/subset-convolution.test.cpp
-  - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
-  - test/yosupo/polynomial-interpolation.test.cpp
-  - test/yosupo/find-linear-recurrence.test.cpp
-  - test/yosupo/sharp-p-subset-sum.1.test.cpp
   - test/yosupo/matrix-rank.test.cpp
-  - test/yosupo/system-of-linear-equations.test.cpp
-  - test/yosupo/range-affine-range-sum.1.test.cpp
+  - test/yosupo/gcd-convolution.test.cpp
+  - test/yosupo/inv-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/point-set-range-composite-large-array.test.cpp
+  - test/yosupo/vertex-set-path-composite.test.cpp
   - test/yosupo/convolution-mod.test.cpp
+  - test/yosupo/multipoint-evaluation.test.cpp
+  - test/yosupo/counting-spanning-tree-undirected.test.cpp
+  - test/yosupo/bell-number.test.cpp
+  - test/yosupo/binomial-coefficient-prime-mod.1.test.cpp
+  - test/yosupo/persistent-range-affine-range-sum.test.cpp
+  - test/yosupo/range-affine-point-get.1.test.cpp
+  - test/yosupo/sqrt-of-formal-power-series.test.cpp
+  - test/yosupo/polynomial-interpolation.test.cpp
+  - test/yosupo/range-affine-range-sum-large-array.test.cpp
+  - test/yosupo/convolution-mod-1000000007.test.cpp
+  - test/yosupo/exp-of-fps.test.cpp
+  - test/yosupo/stirling-number-of-the-first-kind.test.cpp
+  - test/yosupo/convolution-mod-2-64.test.cpp
   - test/yosupo/matrix-det.test.cpp
-  - test/yukicoder/117.test.cpp
-  - test/yukicoder/search-oji.test.cpp
+  - test/yosupo/lcm-convolution.test.cpp
+  - test/yosupo/range-affine-range-sum.3.test.cpp
+  - test/yosupo/pow-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/sharp-p-subset-sum.2.test.cpp
+  - test/yosupo/partition-function_1.test.cpp
+  - test/yosupo/bitwise-xor-convolution.test.cpp
+  - test/yosupo/product-of-polynomial-sequence.test.cpp
+  - test/yosupo/frequency-table-of-tree-distance.test.cpp
+  - test/yosupo/range-affine-point-get.2.test.cpp
+  - test/yosupo/log-of-fps.test.cpp
+  - test/yosupo/dynamic-sequence-range-affine-range-sum.test.cpp
+  - test/yosupo/shift-of-sampling-points-of-polynomial.test.cpp
+  - test/yosupo/range-affine-range-sum.1.test.cpp
+  - test/yosupo/sharp-p-subset-sum.1.test.cpp
+  - test/yosupo/polynomial-taylor-shift.test.cpp
+  - test/yosupo/range-affine-range-sum.2.test.cpp
+  - test/yosupo/exp-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/division-of-polynomials.test.cpp
+  - test/yosupo/range-set-range-composite.test.cpp
+  - test/yosupo/log-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/sqrt-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/subset-convolution.test.cpp
+  - test/yosupo/point-set-range-composite.2.test.cpp
+  - test/yosupo/inv-of-fps.test.cpp
+  - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
+  - test/yosupo/bernoulli-number.test.cpp
+  - test/yosupo/binomial-coefficient-prime-mod.2.test.cpp
+  - test/yosupo/point-set-range-composite.3.test.cpp
+  - test/yosupo/partition-function_2.test.cpp
+  - test/yosupo/partition-function.test.cpp
+  - test/yosupo/system-of-linear-equations.test.cpp
+  - test/yosupo/queue-operate-all-composite.test.cpp
+  - test/yosupo/find-linear-recurrence.test.cpp
 documentation_of: src/math/modint.hpp
 layout: document
 title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\

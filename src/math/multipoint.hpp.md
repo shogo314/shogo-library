@@ -913,8 +913,8 @@ data:
   verifiedWith:
   - test/unittest/multipoint.test.cpp
   - test/yosupo/multipoint-evaluation.test.cpp
-  - test/yosupo/shift-of-sampling-points-of-polynomial.test.cpp
   - test/yosupo/polynomial-interpolation.test.cpp
+  - test/yosupo/shift-of-sampling-points-of-polynomial.test.cpp
 documentation_of: src/math/multipoint.hpp
 layout: document
 title: "\u591A\u70B9\u8A55\u4FA1\u30FB\u591A\u9805\u5F0F\u88DC\u9593\u30FB\u6A19\u672C\

@@ -23,6 +23,10 @@ data:
     path: src/dp/subset-sum-count.hpp
     title: "\u90E8\u5206\u548C\u306E\u500B\u6570"
   - icon: ':heavy_check_mark:'
+    path: src/math/combinatorial-sequences.hpp
+    title: "\u5206\u5272\u6570\u30FB\u30D9\u30EB\u30CC\u30FC\u30A4\u6570\u30FB\u30B9\
+      \u30BF\u30FC\u30EA\u30F3\u30B0\u6570\u30FB\u30D9\u30EB\u6570"
+  - icon: ':heavy_check_mark:'
     path: src/math/multipoint.hpp
     title: "\u591A\u70B9\u8A55\u4FA1\u30FB\u591A\u9805\u5F0F\u88DC\u9593\u30FB\u6A19\
       \u672C\u70B9\u306E\u305A\u3089\u3057"
@@ -31,6 +35,9 @@ data:
     title: "\u758E\u306A\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570 (inv\u30FBlog\u30FBexp\u30FB\
       pow\u30FBsqrt)"
   _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/combinatorial-sequences.test.cpp
+    title: test/unittest/combinatorial-sequences.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/fps.test.cpp
     title: test/unittest/fps.test.cpp
@@ -43,6 +50,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/subset-sum.test.cpp
     title: test/unittest/subset-sum.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/bell-number.test.cpp
+    title: test/yosupo/bell-number.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/bernoulli-number.test.cpp
+    title: test/yosupo/bernoulli-number.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/division-of-polynomials.test.cpp
     title: test/yosupo/division-of-polynomials.test.cpp
@@ -67,6 +80,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/multipoint-evaluation.test.cpp
     title: test/yosupo/multipoint-evaluation.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/partition-function.test.cpp
+    title: test/yosupo/partition-function.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/partition-function_1.test.cpp
     title: test/yosupo/partition-function_1.test.cpp
@@ -103,6 +119,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/sqrt-of-formal-power-series.test.cpp
     title: test/yosupo/sqrt-of-formal-power-series.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/stirling-number-of-the-first-kind.test.cpp
+    title: test/yosupo/stirling-number-of-the-first-kind.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/stirling-number-of-the-second-kind.test.cpp
+    title: test/yosupo/stirling-number-of-the-second-kind.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -928,36 +950,43 @@ data:
   isVerificationFile: false
   path: src/math/fps.hpp
   requiredBy:
-  - src/dp/subset-sum-count.hpp
-  - src/math/sparse-fps.hpp
+  - src/math/combinatorial-sequences.hpp
   - src/math/multipoint.hpp
+  - src/math/sparse-fps.hpp
+  - src/dp/subset-sum-count.hpp
   timestamp: '2026-10-21 03:21:45+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/sparse-fps.test.cpp
   - test/unittest/multipoint.test.cpp
+  - test/unittest/combinatorial-sequences.test.cpp
   - test/unittest/subset-sum.test.cpp
   - test/unittest/fps.test.cpp
-  - test/yosupo/sqrt-of-formal-power-series.test.cpp
-  - test/yosupo/exp-of-fps.test.cpp
-  - test/yosupo/pow-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/pow-of-fps.test.cpp
+  - test/yosupo/stirling-number-of-the-second-kind.test.cpp
   - test/yosupo/inv-of-formal-power-series-sparse.test.cpp
   - test/yosupo/multipoint-evaluation.test.cpp
-  - test/yosupo/product-of-polynomial-sequence.test.cpp
-  - test/yosupo/partition-function_2.test.cpp
-  - test/yosupo/exp-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/inv-of-fps.test.cpp
-  - test/yosupo/division-of-polynomials.test.cpp
-  - test/yosupo/sqrt-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/pow-of-fps.test.cpp
-  - test/yosupo/log-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/polynomial-taylor-shift.test.cpp
-  - test/yosupo/shift-of-sampling-points-of-polynomial.test.cpp
-  - test/yosupo/partition-function_1.test.cpp
-  - test/yosupo/log-of-fps.test.cpp
-  - test/yosupo/sharp-p-subset-sum.2.test.cpp
+  - test/yosupo/bell-number.test.cpp
+  - test/yosupo/sqrt-of-formal-power-series.test.cpp
   - test/yosupo/polynomial-interpolation.test.cpp
+  - test/yosupo/exp-of-fps.test.cpp
+  - test/yosupo/stirling-number-of-the-first-kind.test.cpp
+  - test/yosupo/pow-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/sharp-p-subset-sum.2.test.cpp
+  - test/yosupo/partition-function_1.test.cpp
+  - test/yosupo/product-of-polynomial-sequence.test.cpp
+  - test/yosupo/log-of-fps.test.cpp
+  - test/yosupo/shift-of-sampling-points-of-polynomial.test.cpp
   - test/yosupo/sharp-p-subset-sum.1.test.cpp
+  - test/yosupo/polynomial-taylor-shift.test.cpp
+  - test/yosupo/exp-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/division-of-polynomials.test.cpp
+  - test/yosupo/log-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/sqrt-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/inv-of-fps.test.cpp
+  - test/yosupo/bernoulli-number.test.cpp
+  - test/yosupo/partition-function_2.test.cpp
+  - test/yosupo/partition-function.test.cpp
 documentation_of: src/math/fps.hpp
 layout: document
 title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570"
@@ -1019,3 +1048,4 @@ mint y = f.eval(2);            // f(2)
 - 線形漸化式の第 k 項 (Bostan-Mori) や漸化式の復元 (Berlekamp-Massey) は [線形漸化式](linear-recurrence.hpp)
 - 0 でない項が少ない $f$ の `inv`・`log`・`exp`・`pow`・`sqrt` は [疎な形式的冪級数](sparse-fps.hpp) の方が速い
 - 多点評価・多項式補間・標本点のずらしは [多点評価・多項式補間](multipoint.hpp)
+- 分割数・ベルヌーイ数・スターリング数・ベル数は [分割数・ベルヌーイ数・スターリング数・ベル数](combinatorial-sequences.hpp)

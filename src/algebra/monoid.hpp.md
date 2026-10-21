@@ -892,107 +892,107 @@ data:
   isVerificationFile: false
   path: src/algebra/monoid.hpp
   requiredBy:
-  - src/data_structures/sparse-table.hpp
-  - src/data_structures/dynamic-segtree.hpp
-  - src/data_structures/fenwick-tree.hpp
-  - src/data_structures/rbst.hpp
-  - src/data_structures/persistent-lazy-segtree.hpp
-  - src/data_structures/dynamic-lazy-segtree.hpp
-  - src/data_structures/persistent-segtree.hpp
   - src/data_structures/lazy-segtree.hpp
-  - src/data_structures/segtree-beats.hpp
-  - src/data_structures/potentialized-unionfind.hpp
-  - src/data_structures/dual-segtree.hpp
-  - src/data_structures/segtree-2d.hpp
-  - src/data_structures/merge-sort-tree.hpp
-  - src/data_structures/segtree.hpp
-  - src/data_structures/imos.hpp
+  - src/data_structures/dynamic-segtree.hpp
   - src/data_structures/sliding-window-aggregation.hpp
+  - src/data_structures/dual-segtree.hpp
+  - src/data_structures/imos.hpp
+  - src/data_structures/persistent-segtree.hpp
+  - src/data_structures/potentialized-unionfind.hpp
+  - src/data_structures/rbst.hpp
   - src/data_structures/monoid-unionfind.hpp
+  - src/data_structures/fenwick-tree.hpp
+  - src/data_structures/dynamic-lazy-segtree.hpp
+  - src/data_structures/persistent-lazy-segtree.hpp
+  - src/data_structures/segtree-2d.hpp
+  - src/data_structures/sparse-table.hpp
+  - src/data_structures/segtree.hpp
+  - src/data_structures/segtree-beats.hpp
+  - src/data_structures/merge-sort-tree.hpp
   - src/algebra/beats-acted-monoid.hpp
-  - src/algebra/group.hpp
   - src/algebra/acted-monoid.hpp
+  - src/algebra/group.hpp
   timestamp: '2026-10-19 12:03:10+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/imos.test.cpp
-  - test/unittest/segtree-beats.test.cpp
-  - test/unittest/persistent-lazy-segtree.test.cpp
-  - test/unittest/dual-segtree.test.cpp
-  - test/unittest/dynamic-segtree.test.cpp
-  - test/unittest/persistent-segtree.test.cpp
-  - test/unittest/mapping.test.cpp
-  - test/unittest/sliding-window-aggregation.test.cpp
-  - test/unittest/monoid-unionfind.test.cpp
-  - test/unittest/rbst.test.cpp
-  - test/unittest/dynamic-lazy-segtree.test.cpp
-  - test/unittest/monoid.test.cpp
   - test/unittest/potentialized-unionfind.test.cpp
-  - test/unittest/fenwick-tree.test.cpp
-  - test/unittest/acted-monoid.test.cpp
+  - test/unittest/monoid.test.cpp
+  - test/unittest/mapping.test.cpp
+  - test/unittest/segtree-beats.test.cpp
+  - test/unittest/dynamic-segtree.test.cpp
+  - test/unittest/rbst.test.cpp
   - test/unittest/sparse-table.test.cpp
+  - test/unittest/monoid-unionfind.test.cpp
+  - test/unittest/dual-segtree.test.cpp
+  - test/unittest/persistent-lazy-segtree.test.cpp
+  - test/unittest/imos.test.cpp
+  - test/unittest/persistent-segtree.test.cpp
   - test/unittest/beats-acted-monoid.test.cpp
-  - test/aoj/dsl-2-h.1.test.cpp
-  - test/aoj/dsl-3-d.test.cpp
-  - test/aoj/itp2-3-b.1.test.cpp
-  - test/aoj/jag-summer-2971.test.cpp
-  - test/aoj/dsl-2-d.test.cpp
-  - test/aoj/ntl-1-c.test.cpp
-  - test/aoj/dsl-2-i.test.cpp
-  - test/aoj/dsl-2-g.test.cpp
-  - test/aoj/grl-5-d.test.cpp
-  - test/aoj/dsl-2-a.test.cpp
-  - test/aoj/dsl-1-b.2.test.cpp
-  - test/aoj/dsl-2-b.1.test.cpp
-  - test/aoj/dsl-2-b.2.test.cpp
-  - test/aoj/dsl-1-b.1.test.cpp
-  - test/aoj/dsl-2-e.test.cpp
-  - test/aoj/dsl-5-a.test.cpp
-  - test/aoj/dsl-2-f.test.cpp
-  - test/aoj/itp2-3-b.2.test.cpp
-  - test/aoj/itp2-3-b.3.test.cpp
-  - test/aoj/dsl-2-h.2.test.cpp
-  - test/yosupo/queue-operate-all-composite.test.cpp
-  - test/yosupo/point-add-range-sum.1.test.cpp
-  - test/yosupo/persistent-range-affine-range-sum.test.cpp
-  - test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
-  - test/yosupo/staticrmq.test.cpp
-  - test/yosupo/point-set-range-composite.4.test.cpp
-  - test/yosupo/vertex-add-subtree-sum.1.test.cpp
-  - test/yosupo/range-affine-range-sum.2.test.cpp
-  - test/yosupo/range-affine-range-sum.3.test.cpp
-  - test/yosupo/range-affine-range-sum-large-array.test.cpp
-  - test/yosupo/range-affine-point-get.1.test.cpp
-  - test/yosupo/rectangle-sum.4.test.cpp
-  - test/yosupo/rectangle-sum.2.test.cpp
-  - test/yosupo/point-add-range-sum.3.test.cpp
-  - test/yosupo/area-of-union-of-rectangles.2.test.cpp
-  - test/yosupo/vertex-add-path-sum.test.cpp
-  - test/yosupo/point-set-range-composite.3.test.cpp
-  - test/yosupo/vertex-set-path-composite.test.cpp
-  - test/yosupo/range-chmin-chmax-add-range-sum.3.test.cpp
-  - test/yosupo/vertex-add-subtree-sum.2.test.cpp
-  - test/yosupo/point-add-rectangle-sum.test.cpp
-  - test/yosupo/range-set-range-composite.test.cpp
-  - test/yosupo/lca.2.test.cpp
-  - test/yosupo/range-affine-point-get.2.test.cpp
-  - test/yosupo/point-set-range-composite.1.test.cpp
-  - test/yosupo/point-set-range-composite.2.test.cpp
-  - test/yosupo/range-chmin-chmax-add-range-sum.1.test.cpp
-  - test/yosupo/area-of-union-of-rectangles.1.test.cpp
-  - test/yosupo/point-set-range-composite-large-array.test.cpp
-  - test/yosupo/rectangle-sum.1.test.cpp
-  - test/yosupo/dynamic-sequence-range-affine-range-sum.test.cpp
-  - test/yosupo/point-add-range-sum.2.test.cpp
-  - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
-  - test/yosupo/rectangle-sum.3.test.cpp
-  - test/yosupo/range-affine-range-sum.1.test.cpp
+  - test/unittest/acted-monoid.test.cpp
+  - test/unittest/sliding-window-aggregation.test.cpp
+  - test/unittest/dynamic-lazy-segtree.test.cpp
+  - test/unittest/fenwick-tree.test.cpp
   - test/yukicoder/674.1.test.cpp
-  - test/yukicoder/1036.1.test.cpp
   - test/yukicoder/1036.2.test.cpp
+  - test/yukicoder/1641.test.cpp
+  - test/yukicoder/1036.1.test.cpp
   - test/yukicoder/2292.test.cpp
   - test/yukicoder/3652.test.cpp
-  - test/yukicoder/1641.test.cpp
+  - test/aoj/dsl-2-b.2.test.cpp
+  - test/aoj/dsl-2-g.test.cpp
+  - test/aoj/dsl-2-b.1.test.cpp
+  - test/aoj/dsl-2-d.test.cpp
+  - test/aoj/grl-5-d.test.cpp
+  - test/aoj/dsl-3-d.test.cpp
+  - test/aoj/itp2-3-b.2.test.cpp
+  - test/aoj/dsl-1-b.2.test.cpp
+  - test/aoj/dsl-1-b.1.test.cpp
+  - test/aoj/ntl-1-c.test.cpp
+  - test/aoj/dsl-2-a.test.cpp
+  - test/aoj/jag-summer-2971.test.cpp
+  - test/aoj/itp2-3-b.3.test.cpp
+  - test/aoj/dsl-2-h.2.test.cpp
+  - test/aoj/dsl-2-h.1.test.cpp
+  - test/aoj/dsl-2-e.test.cpp
+  - test/aoj/itp2-3-b.1.test.cpp
+  - test/aoj/dsl-5-a.test.cpp
+  - test/aoj/dsl-2-i.test.cpp
+  - test/aoj/dsl-2-f.test.cpp
+  - test/yosupo/point-set-range-composite.4.test.cpp
+  - test/yosupo/vertex-add-path-sum.test.cpp
+  - test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
+  - test/yosupo/point-set-range-composite.1.test.cpp
+  - test/yosupo/range-chmin-chmax-add-range-sum.3.test.cpp
+  - test/yosupo/rectangle-sum.3.test.cpp
+  - test/yosupo/point-add-range-sum.2.test.cpp
+  - test/yosupo/point-set-range-composite-large-array.test.cpp
+  - test/yosupo/rectangle-sum.2.test.cpp
+  - test/yosupo/vertex-set-path-composite.test.cpp
+  - test/yosupo/area-of-union-of-rectangles.1.test.cpp
+  - test/yosupo/point-add-range-sum.3.test.cpp
+  - test/yosupo/persistent-range-affine-range-sum.test.cpp
+  - test/yosupo/range-affine-point-get.1.test.cpp
+  - test/yosupo/range-affine-range-sum-large-array.test.cpp
+  - test/yosupo/range-chmin-chmax-add-range-sum.1.test.cpp
+  - test/yosupo/rectangle-sum.4.test.cpp
+  - test/yosupo/range-affine-range-sum.3.test.cpp
+  - test/yosupo/area-of-union-of-rectangles.2.test.cpp
+  - test/yosupo/range-affine-point-get.2.test.cpp
+  - test/yosupo/dynamic-sequence-range-affine-range-sum.test.cpp
+  - test/yosupo/point-add-rectangle-sum.test.cpp
+  - test/yosupo/range-affine-range-sum.1.test.cpp
+  - test/yosupo/vertex-add-subtree-sum.1.test.cpp
+  - test/yosupo/range-affine-range-sum.2.test.cpp
+  - test/yosupo/rectangle-sum.1.test.cpp
+  - test/yosupo/lca.2.test.cpp
+  - test/yosupo/range-set-range-composite.test.cpp
+  - test/yosupo/point-add-range-sum.1.test.cpp
+  - test/yosupo/point-set-range-composite.2.test.cpp
+  - test/yosupo/vertex-add-subtree-sum.2.test.cpp
+  - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
+  - test/yosupo/point-set-range-composite.3.test.cpp
+  - test/yosupo/staticrmq.test.cpp
+  - test/yosupo/queue-operate-all-composite.test.cpp
 documentation_of: src/algebra/monoid.hpp
 layout: document
 title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"

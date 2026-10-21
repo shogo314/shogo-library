@@ -246,6 +246,10 @@ data:
         \u30C8\u6F14\u7B97 (AND\u30FBOR\u30FBXOR) \u306E\u7573\u307F\u8FBC\u307F\u3001\
         \u90E8\u5206\u96C6\u5408\u7573\u307F\u8FBC\u307F"
     - icon: ':heavy_check_mark:'
+      path: src/math/combinatorial-sequences.hpp
+      title: "\u5206\u5272\u6570\u30FB\u30D9\u30EB\u30CC\u30FC\u30A4\u6570\u30FB\u30B9\
+        \u30BF\u30FC\u30EA\u30F3\u30B0\u6570\u30FB\u30D9\u30EB\u6570"
+    - icon: ':heavy_check_mark:'
       path: src/math/combinatorics.hpp
       title: "\u7D44\u307F\u5408\u308F\u305B"
     - icon: ':heavy_check_mark:'
@@ -740,6 +744,9 @@ data:
       path: test/unittest/circular-ring.test.cpp
       title: test/unittest/circular-ring.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/combinatorial-sequences.test.cpp
+      title: test/unittest/combinatorial-sequences.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/combinatorics.test.cpp
       title: test/unittest/combinatorics.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1033,6 +1040,12 @@ data:
       path: test/yosupo/associative-array.test.cpp
       title: test/yosupo/associative-array.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/bell-number.test.cpp
+      title: test/yosupo/bell-number.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/bernoulli-number.test.cpp
+      title: test/yosupo/bernoulli-number.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/biconnected-components.test.cpp
       title: test/yosupo/biconnected-components.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1216,6 +1229,9 @@ data:
       path: test/yosupo/number-of-substrings.2.test.cpp
       title: test/yosupo/number-of-substrings.2.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/partition-function.test.cpp
+      title: test/yosupo/partition-function.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/partition-function_1.test.cpp
       title: test/yosupo/partition-function_1.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1386,6 +1402,12 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/stern-brocot-tree.test.cpp
       title: test/yosupo/stern-brocot-tree.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/stirling-number-of-the-first-kind.test.cpp
+      title: test/yosupo/stirling-number-of-the-first-kind.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/stirling-number-of-the-second-kind.test.cpp
+      title: test/yosupo/stirling-number-of-the-second-kind.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/subset-convolution.test.cpp
       title: test/yosupo/subset-convolution.test.cpp

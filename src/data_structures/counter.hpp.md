@@ -7,17 +7,17 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/0029.test.cpp
-    title: test/aoj/0029.test.cpp
+    path: test/aoj/itp2/itp2-7-d.test.cpp
+    title: test/aoj/itp2/itp2-7-d.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/itp2-7-d.test.cpp
-    title: test/aoj/itp2-7-d.test.cpp
+    path: test/aoj/volume0/0029.test.cpp
+    title: test/aoj/volume0/0029.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/counter.test.cpp
-    title: test/unittest/counter.test.cpp
+    path: test/unittest/data_structures/counter.test.cpp
+    title: test/unittest/data_structures/counter.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/associative-array.test.cpp
-    title: test/yosupo/associative-array.test.cpp
+    path: test/yosupo/data_structure/associative-array.test.cpp
+    title: test/yosupo/data_structure/associative-array.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -206,10 +206,10 @@ data:
   timestamp: '2026-10-15 07:35:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/counter.test.cpp
-  - test/aoj/itp2-7-d.test.cpp
-  - test/aoj/0029.test.cpp
-  - test/yosupo/associative-array.test.cpp
+  - test/unittest/data_structures/counter.test.cpp
+  - test/aoj/volume0/0029.test.cpp
+  - test/aoj/itp2/itp2-7-d.test.cpp
+  - test/yosupo/data_structure/associative-array.test.cpp
 documentation_of: src/data_structures/counter.hpp
 layout: document
 title: "\u5024\u306E\u500B\u6570\u3092\u6570\u3048\u308B\u591A\u91CD\u96C6\u5408 (Counter)"

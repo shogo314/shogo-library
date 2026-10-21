@@ -4,11 +4,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/alds1-10-c.test.cpp
-    title: test/aoj/alds1-10-c.test.cpp
+    path: test/aoj/alds1/alds1-10-c.test.cpp
+    title: test/aoj/alds1/alds1-10-c.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/edit-distance.test.cpp
-    title: test/unittest/edit-distance.test.cpp
+    path: test/unittest/dp/edit-distance.test.cpp
+    title: test/unittest/dp/edit-distance.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -86,8 +86,8 @@ data:
   timestamp: '2026-10-17 23:17:28+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/edit-distance.test.cpp
-  - test/aoj/alds1-10-c.test.cpp
+  - test/unittest/dp/edit-distance.test.cpp
+  - test/aoj/alds1/alds1-10-c.test.cpp
 documentation_of: src/dp/longest-common-subsequence.hpp
 layout: document
 title: "\u6700\u9577\u5171\u901A\u90E8\u5206\u5217 (LCS)"

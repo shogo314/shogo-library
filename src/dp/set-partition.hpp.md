@@ -4,8 +4,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/set-partition.test.cpp
-    title: test/unittest/set-partition.test.cpp
+    path: test/unittest/dp/set-partition.test.cpp
+    title: test/unittest/dp/set-partition.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -69,7 +69,7 @@ data:
   timestamp: '2026-10-21 05:55:54+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/set-partition.test.cpp
+  - test/unittest/dp/set-partition.test.cpp
 documentation_of: src/dp/set-partition.hpp
 layout: document
 title: "\u96C6\u5408\u306E\u5206\u5272 (\u4F7F\u3063\u3066\u3088\u3044\u96C6\u5408\

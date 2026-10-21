@@ -4,11 +4,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/grl-6-b.test.cpp
-    title: test/aoj/grl-6-b.test.cpp
+    path: test/aoj/grl/grl-6-b.test.cpp
+    title: test/aoj/grl/grl-6-b.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/min-cost-flow.test.cpp
-    title: test/unittest/min-cost-flow.test.cpp
+    path: test/unittest/graph/min-cost-flow.test.cpp
+    title: test/unittest/graph/min-cost-flow.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -234,8 +234,8 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/min-cost-flow.test.cpp
-  - test/aoj/grl-6-b.test.cpp
+  - test/unittest/graph/min-cost-flow.test.cpp
+  - test/aoj/grl/grl-6-b.test.cpp
 documentation_of: src/graph/min-cost-flow.hpp
 layout: document
 title: "\u6700\u5C0F\u8CBB\u7528\u6D41 (primal-dual \u6CD5)"

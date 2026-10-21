@@ -7,17 +7,17 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/convex-hull-trick.test.cpp
-    title: test/unittest/convex-hull-trick.test.cpp
+    path: test/unittest/data_structures/convex-hull-trick.test.cpp
+    title: test/unittest/data_structures/convex-hull-trick.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/line-add-get-min.1.test.cpp
-    title: test/yosupo/line-add-get-min.1.test.cpp
+    path: test/yosupo/data_structure/line-add-get-min.1.test.cpp
+    title: test/yosupo/data_structure/line-add-get-min.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/line-add-get-min.2.test.cpp
-    title: test/yosupo/line-add-get-min.2.test.cpp
+    path: test/yosupo/data_structure/line-add-get-min.2.test.cpp
+    title: test/yosupo/data_structure/line-add-get-min.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/segment-add-get-min.test.cpp
-    title: test/yosupo/segment-add-get-min.test.cpp
+    path: test/yosupo/data_structure/segment-add-get-min.test.cpp
+    title: test/yosupo/data_structure/segment-add-get-min.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -317,10 +317,10 @@ data:
   timestamp: '2026-10-20 18:02:37+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/convex-hull-trick.test.cpp
-  - test/yosupo/segment-add-get-min.test.cpp
-  - test/yosupo/line-add-get-min.2.test.cpp
-  - test/yosupo/line-add-get-min.1.test.cpp
+  - test/unittest/data_structures/convex-hull-trick.test.cpp
+  - test/yosupo/data_structure/segment-add-get-min.test.cpp
+  - test/yosupo/data_structure/line-add-get-min.2.test.cpp
+  - test/yosupo/data_structure/line-add-get-min.1.test.cpp
 documentation_of: src/data_structures/convex-hull-trick.hpp
 layout: document
 title: Convex Hull Trick

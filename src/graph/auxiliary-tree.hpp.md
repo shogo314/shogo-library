@@ -13,8 +13,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/auxiliary-tree.test.cpp
-    title: test/unittest/auxiliary-tree.test.cpp
+    path: test/unittest/graph/auxiliary-tree.test.cpp
+    title: test/unittest/graph/auxiliary-tree.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -630,7 +630,7 @@ data:
   timestamp: '2026-10-20 17:21:43+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/auxiliary-tree.test.cpp
+  - test/unittest/graph/auxiliary-tree.test.cpp
 documentation_of: src/graph/auxiliary-tree.hpp
 layout: document
 title: "Auxiliary Tree (\u865A\u6811)"

@@ -7,8 +7,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/repr.test.cpp
-    title: test/unittest/repr.test.cpp
+    path: test/unittest/utility/repr.test.cpp
+    title: test/unittest/utility/repr.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -389,7 +389,7 @@ data:
   timestamp: '2026-10-19 12:29:38+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/repr.test.cpp
+  - test/unittest/utility/repr.test.cpp
 documentation_of: src/utility/repr.hpp
 layout: document
 title: "\u51FA\u529B\u3092\u305D\u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\

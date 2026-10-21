@@ -4,8 +4,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/saturating.test.cpp
-    title: test/unittest/saturating.test.cpp
+    path: test/unittest/math/saturating.test.cpp
+    title: test/unittest/math/saturating.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -158,7 +158,7 @@ data:
   timestamp: '2026-10-19 12:29:38+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/saturating.test.cpp
+  - test/unittest/math/saturating.test.cpp
 documentation_of: src/math/saturating.hpp
 layout: document
 title: "\u98FD\u548C\u6F14\u7B97"

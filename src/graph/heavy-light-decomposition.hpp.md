@@ -13,32 +13,32 @@ data:
     title: "Auxiliary Tree (\u865A\u6811)"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/grl-5-d.test.cpp
-    title: test/aoj/grl-5-d.test.cpp
+    path: test/aoj/grl/grl-5-d.test.cpp
+    title: test/aoj/grl/grl-5-d.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/auxiliary-tree.test.cpp
-    title: test/unittest/auxiliary-tree.test.cpp
+    path: test/unittest/graph/auxiliary-tree.test.cpp
+    title: test/unittest/graph/auxiliary-tree.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/heavy-light-decomposition.test.cpp
-    title: test/unittest/heavy-light-decomposition.test.cpp
+    path: test/unittest/graph/heavy-light-decomposition.test.cpp
+    title: test/unittest/graph/heavy-light-decomposition.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/lowlink.test.cpp
-    title: test/unittest/lowlink.test.cpp
+    path: test/unittest/graph/lowlink.test.cpp
+    title: test/unittest/graph/lowlink.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/jump-on-tree.2.test.cpp
-    title: test/yosupo/jump-on-tree.2.test.cpp
+    path: test/yosupo/tree/jump-on-tree.2.test.cpp
+    title: test/yosupo/tree/jump-on-tree.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/lca.5.test.cpp
-    title: test/yosupo/lca.5.test.cpp
+    path: test/yosupo/tree/lca.5.test.cpp
+    title: test/yosupo/tree/lca.5.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/vertex-add-path-sum.test.cpp
-    title: test/yosupo/vertex-add-path-sum.test.cpp
+    path: test/yosupo/tree/vertex-add-path-sum.test.cpp
+    title: test/yosupo/tree/vertex-add-path-sum.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/vertex-add-subtree-sum.2.test.cpp
-    title: test/yosupo/vertex-add-subtree-sum.2.test.cpp
+    path: test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp
+    title: test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/vertex-set-path-composite.test.cpp
-    title: test/yosupo/vertex-set-path-composite.test.cpp
+    path: test/yosupo/tree/vertex-set-path-composite.test.cpp
+    title: test/yosupo/tree/vertex-set-path-composite.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -662,15 +662,15 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/lowlink.test.cpp
-  - test/unittest/auxiliary-tree.test.cpp
-  - test/unittest/heavy-light-decomposition.test.cpp
-  - test/aoj/grl-5-d.test.cpp
-  - test/yosupo/vertex-add-path-sum.test.cpp
-  - test/yosupo/jump-on-tree.2.test.cpp
-  - test/yosupo/vertex-set-path-composite.test.cpp
-  - test/yosupo/lca.5.test.cpp
-  - test/yosupo/vertex-add-subtree-sum.2.test.cpp
+  - test/unittest/graph/lowlink.test.cpp
+  - test/unittest/graph/heavy-light-decomposition.test.cpp
+  - test/unittest/graph/auxiliary-tree.test.cpp
+  - test/aoj/grl/grl-5-d.test.cpp
+  - test/yosupo/tree/vertex-add-path-sum.test.cpp
+  - test/yosupo/tree/vertex-set-path-composite.test.cpp
+  - test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp
+  - test/yosupo/tree/lca.5.test.cpp
+  - test/yosupo/tree/jump-on-tree.2.test.cpp
 documentation_of: src/graph/heavy-light-decomposition.hpp
 layout: document
 title: "HL \u5206\u89E3 (Heavy-Light Decomposition)"

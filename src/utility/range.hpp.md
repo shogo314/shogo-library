@@ -4,17 +4,17 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/itp1-7-b.test.cpp
-    title: test/aoj/itp1-7-b.test.cpp
+    path: test/aoj/itp1/itp1-7-b.test.cpp
+    title: test/aoj/itp1/itp1-7-b.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/range-rect.test.cpp
-    title: test/unittest/range-rect.test.cpp
+    path: test/unittest/utility/range-rect.test.cpp
+    title: test/unittest/utility/range-rect.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/range.test.cpp
-    title: test/unittest/range.test.cpp
+    path: test/unittest/utility/range.test.cpp
+    title: test/unittest/utility/range.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/repr.test.cpp
-    title: test/unittest/repr.test.cpp
+    path: test/unittest/utility/repr.test.cpp
+    title: test/unittest/utility/repr.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -646,10 +646,10 @@ data:
   timestamp: '2026-10-19 12:29:38+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/range.test.cpp
-  - test/unittest/range-rect.test.cpp
-  - test/unittest/repr.test.cpp
-  - test/aoj/itp1-7-b.test.cpp
+  - test/unittest/utility/repr.test.cpp
+  - test/unittest/utility/range-rect.test.cpp
+  - test/unittest/utility/range.test.cpp
+  - test/aoj/itp1/itp1-7-b.test.cpp
 documentation_of: src/utility/range.hpp
 layout: document
 title: "Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\u5217\u3068\u3001\

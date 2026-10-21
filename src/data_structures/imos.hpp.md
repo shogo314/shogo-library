@@ -10,14 +10,14 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dsl-5-a.test.cpp
-    title: test/aoj/dsl-5-a.test.cpp
+    path: test/aoj/dsl/dsl-5-a.test.cpp
+    title: test/aoj/dsl/dsl-5-a.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/acted-monoid.test.cpp
-    title: test/unittest/acted-monoid.test.cpp
+    path: test/unittest/algebra/acted-monoid.test.cpp
+    title: test/unittest/algebra/acted-monoid.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/imos.test.cpp
-    title: test/unittest/imos.test.cpp
+    path: test/unittest/data_structures/imos.test.cpp
+    title: test/unittest/data_structures/imos.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -658,9 +658,9 @@ data:
   timestamp: '2026-10-19 12:03:10+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/imos.test.cpp
-  - test/unittest/acted-monoid.test.cpp
-  - test/aoj/dsl-5-a.test.cpp
+  - test/unittest/data_structures/imos.test.cpp
+  - test/unittest/algebra/acted-monoid.test.cpp
+  - test/aoj/dsl/dsl-5-a.test.cpp
 documentation_of: src/data_structures/imos.hpp
 layout: document
 title: "imos\u6CD5\u3067\u533A\u9593\u4F5C\u7528\u30011\u70B9\u53D6\u5F97"

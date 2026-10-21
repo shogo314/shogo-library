@@ -24,23 +24,23 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/combinatorial-sequences.test.cpp
-    title: test/unittest/combinatorial-sequences.test.cpp
+    path: test/unittest/math/combinatorial-sequences.test.cpp
+    title: test/unittest/math/combinatorial-sequences.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/bell-number.test.cpp
-    title: test/yosupo/bell-number.test.cpp
+    path: test/yosupo/enumerative_combinatorics/bell-number.test.cpp
+    title: test/yosupo/enumerative_combinatorics/bell-number.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/bernoulli-number.test.cpp
-    title: test/yosupo/bernoulli-number.test.cpp
+    path: test/yosupo/enumerative_combinatorics/partition-function.3.test.cpp
+    title: test/yosupo/enumerative_combinatorics/partition-function.3.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/partition-function.3.test.cpp
-    title: test/yosupo/partition-function.3.test.cpp
+    path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind.test.cpp
+    title: test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/stirling-number-of-the-first-kind.test.cpp
-    title: test/yosupo/stirling-number-of-the-first-kind.test.cpp
+    path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
+    title: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/stirling-number-of-the-second-kind.test.cpp
-    title: test/yosupo/stirling-number-of-the-second-kind.test.cpp
+    path: test/yosupo/number_theory/bernoulli-number.test.cpp
+    title: test/yosupo/number_theory/bernoulli-number.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -846,12 +846,12 @@ data:
   timestamp: '2026-10-21 09:21:02+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/combinatorial-sequences.test.cpp
-  - test/yosupo/stirling-number-of-the-second-kind.test.cpp
-  - test/yosupo/bell-number.test.cpp
-  - test/yosupo/partition-function.3.test.cpp
-  - test/yosupo/stirling-number-of-the-first-kind.test.cpp
-  - test/yosupo/bernoulli-number.test.cpp
+  - test/unittest/math/combinatorial-sequences.test.cpp
+  - test/yosupo/number_theory/bernoulli-number.test.cpp
+  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
+  - test/yosupo/enumerative_combinatorics/partition-function.3.test.cpp
+  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind.test.cpp
+  - test/yosupo/enumerative_combinatorics/bell-number.test.cpp
 documentation_of: src/math/combinatorial-sequences.hpp
 layout: document
 title: "\u5206\u5272\u6570\u30FB\u30D9\u30EB\u30CC\u30FC\u30A4\u6570\u30FB\u30B9\u30BF\

@@ -10,17 +10,17 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dsl-2-d.test.cpp
-    title: test/aoj/dsl-2-d.test.cpp
+    path: test/aoj/dsl/dsl-2-d.test.cpp
+    title: test/aoj/dsl/dsl-2-d.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dsl-2-e.test.cpp
-    title: test/aoj/dsl-2-e.test.cpp
+    path: test/aoj/dsl/dsl-2-e.test.cpp
+    title: test/aoj/dsl/dsl-2-e.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/dual-segtree.test.cpp
-    title: test/unittest/dual-segtree.test.cpp
+    path: test/unittest/data_structures/dual-segtree.test.cpp
+    title: test/unittest/data_structures/dual-segtree.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/range-affine-point-get.2.test.cpp
-    title: test/yosupo/range-affine-point-get.2.test.cpp
+    path: test/yosupo/data_structure/range-affine-point-get.2.test.cpp
+    title: test/yosupo/data_structure/range-affine-point-get.2.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -748,10 +748,10 @@ data:
   timestamp: '2026-10-19 12:03:10+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/dual-segtree.test.cpp
-  - test/aoj/dsl-2-d.test.cpp
-  - test/aoj/dsl-2-e.test.cpp
-  - test/yosupo/range-affine-point-get.2.test.cpp
+  - test/unittest/data_structures/dual-segtree.test.cpp
+  - test/aoj/dsl/dsl-2-d.test.cpp
+  - test/aoj/dsl/dsl-2-e.test.cpp
+  - test/yosupo/data_structure/range-affine-point-get.2.test.cpp
 documentation_of: src/data_structures/dual-segtree.hpp
 layout: document
 title: "\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u533A\u9593\u4F5C\u7528\

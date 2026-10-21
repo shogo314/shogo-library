@@ -4,11 +4,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/itp2-10-c.test.cpp
-    title: test/aoj/itp2-10-c.test.cpp
+    path: test/aoj/itp2/itp2-10-c.test.cpp
+    title: test/aoj/itp2/itp2-10-c.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/bit.test.cpp
-    title: test/unittest/bit.test.cpp
+    path: test/unittest/utility/bit.test.cpp
+    title: test/unittest/utility/bit.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -547,8 +547,8 @@ data:
   timestamp: '2026-10-19 12:29:38+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/bit.test.cpp
-  - test/aoj/itp2-10-c.test.cpp
+  - test/unittest/utility/bit.test.cpp
+  - test/aoj/itp2/itp2-10-c.test.cpp
 documentation_of: src/utility/bit.hpp
 layout: document
 title: "\u30D3\u30C3\u30C8\u6F14\u7B97"

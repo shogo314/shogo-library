@@ -4,11 +4,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/mo.test.cpp
-    title: test/unittest/mo.test.cpp
+    path: test/unittest/others/mo.test.cpp
+    title: test/unittest/others/mo.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/static-range-inversions-query.test.cpp
-    title: test/yosupo/static-range-inversions-query.test.cpp
+    path: test/yosupo/data_structure/static-range-inversions-query.test.cpp
+    title: test/yosupo/data_structure/static-range-inversions-query.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -100,8 +100,8 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/mo.test.cpp
-  - test/yosupo/static-range-inversions-query.test.cpp
+  - test/unittest/others/mo.test.cpp
+  - test/yosupo/data_structure/static-range-inversions-query.test.cpp
 documentation_of: src/others/mo.hpp
 layout: document
 title: Mo's algorithm

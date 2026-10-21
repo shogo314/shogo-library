@@ -7,11 +7,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/longest-common-substring.test.cpp
-    title: test/unittest/longest-common-substring.test.cpp
+    path: test/unittest/string/longest-common-substring.test.cpp
+    title: test/unittest/string/longest-common-substring.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/longest-common-substring.test.cpp
-    title: test/yosupo/longest-common-substring.test.cpp
+    path: test/yosupo/string/longest-common-substring.test.cpp
+    title: test/yosupo/string/longest-common-substring.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -189,8 +189,8 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/longest-common-substring.test.cpp
-  - test/yosupo/longest-common-substring.test.cpp
+  - test/unittest/string/longest-common-substring.test.cpp
+  - test/yosupo/string/longest-common-substring.test.cpp
 documentation_of: src/string/longest-common-substring.hpp
 layout: document
 title: "\u6700\u9577\u5171\u901A\u90E8\u5206\u6587\u5B57\u5217"

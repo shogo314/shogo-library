@@ -16,50 +16,50 @@ data:
     title: "\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dsl-1-b.1.test.cpp
-    title: test/aoj/dsl-1-b.1.test.cpp
+    path: test/aoj/dsl/dsl-1-b.1.test.cpp
+    title: test/aoj/dsl/dsl-1-b.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dsl-1-b.2.test.cpp
-    title: test/aoj/dsl-1-b.2.test.cpp
+    path: test/aoj/dsl/dsl-1-b.2.test.cpp
+    title: test/aoj/dsl/dsl-1-b.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dsl-2-b.2.test.cpp
-    title: test/aoj/dsl-2-b.2.test.cpp
+    path: test/aoj/dsl/dsl-2-b.2.test.cpp
+    title: test/aoj/dsl/dsl-2-b.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/grl-5-d.test.cpp
-    title: test/aoj/grl-5-d.test.cpp
+    path: test/aoj/grl/grl-5-d.test.cpp
+    title: test/aoj/grl/grl-5-d.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/jag-summer-2971.test.cpp
-    title: test/aoj/jag-summer-2971.test.cpp
+    path: test/aoj/volume29/2971.test.cpp
+    title: test/aoj/volume29/2971.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/fenwick-tree.test.cpp
-    title: test/unittest/fenwick-tree.test.cpp
+    path: test/unittest/algebra/mapping.test.cpp
+    title: test/unittest/algebra/mapping.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/mapping.test.cpp
-    title: test/unittest/mapping.test.cpp
+    path: test/unittest/algebra/monoid.test.cpp
+    title: test/unittest/algebra/monoid.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/monoid.test.cpp
-    title: test/unittest/monoid.test.cpp
+    path: test/unittest/data_structures/fenwick-tree.test.cpp
+    title: test/unittest/data_structures/fenwick-tree.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/potentialized-unionfind.test.cpp
-    title: test/unittest/potentialized-unionfind.test.cpp
+    path: test/unittest/data_structures/potentialized-unionfind.test.cpp
+    title: test/unittest/data_structures/potentialized-unionfind.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/point-add-range-sum.3.test.cpp
-    title: test/yosupo/point-add-range-sum.3.test.cpp
+    path: test/yosupo/data_structure/point-add-range-sum.3.test.cpp
+    title: test/yosupo/data_structure/point-add-range-sum.3.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/rectangle-sum.1.test.cpp
-    title: test/yosupo/rectangle-sum.1.test.cpp
+    path: test/yosupo/data_structure/rectangle-sum.1.test.cpp
+    title: test/yosupo/data_structure/rectangle-sum.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/rectangle-sum.2.test.cpp
-    title: test/yosupo/rectangle-sum.2.test.cpp
+    path: test/yosupo/data_structure/rectangle-sum.2.test.cpp
+    title: test/yosupo/data_structure/rectangle-sum.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
-    title: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
+    path: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
+    title: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/vertex-add-path-sum.test.cpp
-    title: test/yosupo/vertex-add-path-sum.test.cpp
+    path: test/yosupo/tree/vertex-add-path-sum.test.cpp
+    title: test/yosupo/tree/vertex-add-path-sum.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/vertex-add-subtree-sum.2.test.cpp
-    title: test/yosupo/vertex-add-subtree-sum.2.test.cpp
+    path: test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp
+    title: test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -432,27 +432,27 @@ data:
   isVerificationFile: false
   path: src/algebra/group.hpp
   requiredBy:
-  - src/data_structures/potentialized-unionfind.hpp
   - src/data_structures/fenwick-tree.hpp
+  - src/data_structures/potentialized-unionfind.hpp
   - src/data_structures/merge-sort-tree.hpp
   timestamp: '2026-10-19 12:03:10+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/potentialized-unionfind.test.cpp
-  - test/unittest/monoid.test.cpp
-  - test/unittest/mapping.test.cpp
-  - test/unittest/fenwick-tree.test.cpp
-  - test/aoj/dsl-2-b.2.test.cpp
-  - test/aoj/grl-5-d.test.cpp
-  - test/aoj/dsl-1-b.2.test.cpp
-  - test/aoj/dsl-1-b.1.test.cpp
-  - test/aoj/jag-summer-2971.test.cpp
-  - test/yosupo/vertex-add-path-sum.test.cpp
-  - test/yosupo/rectangle-sum.2.test.cpp
-  - test/yosupo/point-add-range-sum.3.test.cpp
-  - test/yosupo/rectangle-sum.1.test.cpp
-  - test/yosupo/vertex-add-subtree-sum.2.test.cpp
-  - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
+  - test/unittest/data_structures/potentialized-unionfind.test.cpp
+  - test/unittest/data_structures/fenwick-tree.test.cpp
+  - test/unittest/algebra/mapping.test.cpp
+  - test/unittest/algebra/monoid.test.cpp
+  - test/aoj/grl/grl-5-d.test.cpp
+  - test/aoj/dsl/dsl-1-b.2.test.cpp
+  - test/aoj/dsl/dsl-2-b.2.test.cpp
+  - test/aoj/dsl/dsl-1-b.1.test.cpp
+  - test/aoj/volume29/2971.test.cpp
+  - test/yosupo/data_structure/rectangle-sum.2.test.cpp
+  - test/yosupo/data_structure/point-add-range-sum.3.test.cpp
+  - test/yosupo/data_structure/rectangle-sum.1.test.cpp
+  - test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
+  - test/yosupo/tree/vertex-add-path-sum.test.cpp
+  - test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp
 documentation_of: src/algebra/group.hpp
 layout: document
 title: "\u7FA4\u306E\u5B9A\u7FA9"

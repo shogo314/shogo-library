@@ -4,11 +4,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/alds1-4-c.test.cpp
-    title: test/aoj/alds1-4-c.test.cpp
+    path: test/aoj/alds1/alds1-4-c.test.cpp
+    title: test/aoj/alds1/alds1-4-c.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/trie.test.cpp
-    title: test/unittest/trie.test.cpp
+    path: test/unittest/string/trie.test.cpp
+    title: test/unittest/string/trie.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -198,8 +198,8 @@ data:
   timestamp: '2026-10-15 03:36:18+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/trie.test.cpp
-  - test/aoj/alds1-4-c.test.cpp
+  - test/unittest/string/trie.test.cpp
+  - test/aoj/alds1/alds1-4-c.test.cpp
 documentation_of: src/string/trie.hpp
 layout: document
 title: Trie

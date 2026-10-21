@@ -10,11 +10,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/dynamic-lazy-segtree.test.cpp
-    title: test/unittest/dynamic-lazy-segtree.test.cpp
+    path: test/unittest/data_structures/dynamic-lazy-segtree.test.cpp
+    title: test/unittest/data_structures/dynamic-lazy-segtree.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/range-affine-range-sum-large-array.test.cpp
-    title: test/yosupo/range-affine-range-sum-large-array.test.cpp
+    path: test/yosupo/data_structure/range-affine-range-sum-large-array.test.cpp
+    title: test/yosupo/data_structure/range-affine-range-sum-large-array.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -887,8 +887,8 @@ data:
   timestamp: '2026-10-19 12:03:10+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/dynamic-lazy-segtree.test.cpp
-  - test/yosupo/range-affine-range-sum-large-array.test.cpp
+  - test/unittest/data_structures/dynamic-lazy-segtree.test.cpp
+  - test/yosupo/data_structure/range-affine-range-sum-large-array.test.cpp
 documentation_of: src/data_structures/dynamic-lazy-segtree.hpp
 layout: document
 title: "\u52D5\u7684\u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"

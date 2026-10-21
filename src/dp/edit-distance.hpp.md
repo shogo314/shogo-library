@@ -4,11 +4,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dpl-1-e.test.cpp
-    title: test/aoj/dpl-1-e.test.cpp
+    path: test/aoj/dpl/dpl-1-e.test.cpp
+    title: test/aoj/dpl/dpl-1-e.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/edit-distance.test.cpp
-    title: test/unittest/edit-distance.test.cpp
+    path: test/unittest/dp/edit-distance.test.cpp
+    title: test/unittest/dp/edit-distance.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -57,8 +57,8 @@ data:
   timestamp: '2026-10-17 23:17:28+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/edit-distance.test.cpp
-  - test/aoj/dpl-1-e.test.cpp
+  - test/unittest/dp/edit-distance.test.cpp
+  - test/aoj/dpl/dpl-1-e.test.cpp
 documentation_of: src/dp/edit-distance.hpp
 layout: document
 title: "\u7DE8\u96C6\u8DDD\u96E2 (\u30EC\u30FC\u30D9\u30F3\u30B7\u30E5\u30BF\u30A4\

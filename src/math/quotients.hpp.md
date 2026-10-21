@@ -4,14 +4,14 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/prime-counting.test.cpp
-    title: test/unittest/prime-counting.test.cpp
+    path: test/unittest/math/prime-counting.test.cpp
+    title: test/unittest/math/prime-counting.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/quotients.test.cpp
-    title: test/unittest/quotients.test.cpp
+    path: test/unittest/math/quotients.test.cpp
+    title: test/unittest/math/quotients.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/enumerate-quotients.2.test.cpp
-    title: test/yosupo/enumerate-quotients.2.test.cpp
+    path: test/yosupo/number_theory/enumerate-quotients.2.test.cpp
+    title: test/yosupo/number_theory/enumerate-quotients.2.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -66,9 +66,9 @@ data:
   timestamp: '2026-10-14 03:19:43+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/prime-counting.test.cpp
-  - test/unittest/quotients.test.cpp
-  - test/yosupo/enumerate-quotients.2.test.cpp
+  - test/unittest/math/quotients.test.cpp
+  - test/unittest/math/prime-counting.test.cpp
+  - test/yosupo/number_theory/enumerate-quotients.2.test.cpp
 documentation_of: src/math/quotients.hpp
 layout: document
 title: "\u5546\u306E\u5217\u6319"

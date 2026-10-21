@@ -7,17 +7,17 @@ data:
     title: "\u7D20\u6570\u306E\u500B\u6570\u30FB\u7D20\u6570\u306E\u548C (Lucy DP)"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/prime-counting.test.cpp
-    title: test/unittest/prime-counting.test.cpp
+    path: test/unittest/math/prime-counting.test.cpp
+    title: test/unittest/math/prime-counting.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/sqrt.test.cpp
-    title: test/unittest/sqrt.test.cpp
+    path: test/unittest/math/sqrt.test.cpp
+    title: test/unittest/math/sqrt.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/counting-primes.test.cpp
-    title: test/yosupo/counting-primes.test.cpp
+    path: test/yosupo/number_theory/counting-primes.test.cpp
+    title: test/yosupo/number_theory/counting-primes.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/enumerate-quotients.1.test.cpp
-    title: test/yosupo/enumerate-quotients.1.test.cpp
+    path: test/yosupo/number_theory/enumerate-quotients.1.test.cpp
+    title: test/yosupo/number_theory/enumerate-quotients.1.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -49,10 +49,10 @@ data:
   timestamp: '2026-10-14 11:33:42+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/prime-counting.test.cpp
-  - test/unittest/sqrt.test.cpp
-  - test/yosupo/counting-primes.test.cpp
-  - test/yosupo/enumerate-quotients.1.test.cpp
+  - test/unittest/math/sqrt.test.cpp
+  - test/unittest/math/prime-counting.test.cpp
+  - test/yosupo/number_theory/counting-primes.test.cpp
+  - test/yosupo/number_theory/enumerate-quotients.1.test.cpp
 documentation_of: src/math/sqrt.hpp
 layout: document
 title: "\u6574\u6570\u306E\u5E73\u65B9\u6839"

@@ -8,11 +8,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/number-theory.test.cpp
-    title: test/unittest/number-theory.test.cpp
+    path: test/unittest/math/number-theory.test.cpp
+    title: test/unittest/math/number-theory.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/binomial-coefficient.test.cpp
-    title: test/yosupo/binomial-coefficient.test.cpp
+    path: test/yosupo/enumerative_combinatorics/binomial-coefficient.test.cpp
+    title: test/yosupo/enumerative_combinatorics/binomial-coefficient.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/186.test.cpp
     title: test/yukicoder/186.test.cpp
@@ -196,10 +196,10 @@ data:
   timestamp: '2026-10-20 17:15:36+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/number-theory.test.cpp
+  - test/unittest/math/number-theory.test.cpp
+  - test/yosupo/enumerative_combinatorics/binomial-coefficient.test.cpp
   - test/yukicoder/187.test.cpp
   - test/yukicoder/186.test.cpp
-  - test/yosupo/binomial-coefficient.test.cpp
 documentation_of: src/math/number-theory.hpp
 layout: document
 title: "\u6570\u8AD6 (\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406)"

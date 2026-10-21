@@ -4,8 +4,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/persistent-stack.test.cpp
-    title: test/unittest/persistent-stack.test.cpp
+    path: test/unittest/data_structures/persistent-stack.test.cpp
+    title: test/unittest/data_structures/persistent-stack.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -108,7 +108,7 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/persistent-stack.test.cpp
+  - test/unittest/data_structures/persistent-stack.test.cpp
 documentation_of: src/data_structures/persistent-stack.hpp
 layout: document
 title: "\u6C38\u7D9A\u30B9\u30BF\u30C3\u30AF"

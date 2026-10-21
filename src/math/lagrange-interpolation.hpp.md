@@ -8,17 +8,17 @@ data:
       \u7A4D\u306E\u548C)"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/lagrange-interpolation.test.cpp
-    title: test/unittest/lagrange-interpolation.test.cpp
+    path: test/unittest/math/lagrange-interpolation.test.cpp
+    title: test/unittest/math/lagrange-interpolation.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/sum-of-exp-times-poly.test.cpp
-    title: test/unittest/sum-of-exp-times-poly.test.cpp
+    path: test/unittest/math/sum-of-exp-times-poly.test.cpp
+    title: test/unittest/math/sum-of-exp-times-poly.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/sum-of-exponential-times-polynomial-limit.test.cpp
-    title: test/yosupo/sum-of-exponential-times-polynomial-limit.test.cpp
+    path: test/yosupo/other/sum-of-exponential-times-polynomial-limit.test.cpp
+    title: test/yosupo/other/sum-of-exponential-times-polynomial-limit.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/sum-of-exponential-times-polynomial.test.cpp
-    title: test/yosupo/sum-of-exponential-times-polynomial.test.cpp
+    path: test/yosupo/other/sum-of-exponential-times-polynomial.test.cpp
+    title: test/yosupo/other/sum-of-exponential-times-polynomial.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -82,10 +82,10 @@ data:
   timestamp: '2026-10-20 17:46:58+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/lagrange-interpolation.test.cpp
-  - test/unittest/sum-of-exp-times-poly.test.cpp
-  - test/yosupo/sum-of-exponential-times-polynomial-limit.test.cpp
-  - test/yosupo/sum-of-exponential-times-polynomial.test.cpp
+  - test/unittest/math/lagrange-interpolation.test.cpp
+  - test/unittest/math/sum-of-exp-times-poly.test.cpp
+  - test/yosupo/other/sum-of-exponential-times-polynomial-limit.test.cpp
+  - test/yosupo/other/sum-of-exponential-times-polynomial.test.cpp
 documentation_of: src/math/lagrange-interpolation.hpp
 layout: document
 title: "\u30E9\u30B0\u30E9\u30F3\u30B8\u30E5\u88DC\u9593"

@@ -7,8 +7,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/project-selection.test.cpp
-    title: test/unittest/project-selection.test.cpp
+    path: test/unittest/graph/project-selection.test.cpp
+    title: test/unittest/graph/project-selection.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -303,7 +303,7 @@ data:
   timestamp: '2026-10-20 00:24:39+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/project-selection.test.cpp
+  - test/unittest/graph/project-selection.test.cpp
 documentation_of: src/graph/project-selection.hpp
 layout: document
 title: "\u71C3\u3084\u3059\u57CB\u3081\u308B (Project Selection Problem)"

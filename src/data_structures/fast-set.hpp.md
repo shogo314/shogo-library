@@ -4,11 +4,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/fast-set.test.cpp
-    title: test/unittest/fast-set.test.cpp
+    path: test/unittest/data_structures/fast-set.test.cpp
+    title: test/unittest/data_structures/fast-set.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/predecessor-problem.test.cpp
-    title: test/yosupo/predecessor-problem.test.cpp
+    path: test/yosupo/data_structure/predecessor-problem.test.cpp
+    title: test/yosupo/data_structure/predecessor-problem.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -189,8 +189,8 @@ data:
   timestamp: '2026-10-20 00:24:39+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/fast-set.test.cpp
-  - test/yosupo/predecessor-problem.test.cpp
+  - test/unittest/data_structures/fast-set.test.cpp
+  - test/yosupo/data_structure/predecessor-problem.test.cpp
 documentation_of: src/data_structures/fast-set.hpp
 layout: document
 title: "64 \u5206\u6728 (FastSet)"

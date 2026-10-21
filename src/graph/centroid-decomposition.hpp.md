@@ -10,11 +10,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/centroid-decomposition.test.cpp
-    title: test/unittest/centroid-decomposition.test.cpp
+    path: test/unittest/graph/centroid-decomposition.test.cpp
+    title: test/unittest/graph/centroid-decomposition.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/frequency-table-of-tree-distance.test.cpp
-    title: test/yosupo/frequency-table-of-tree-distance.test.cpp
+    path: test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
+    title: test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -591,8 +591,8 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/centroid-decomposition.test.cpp
-  - test/yosupo/frequency-table-of-tree-distance.test.cpp
+  - test/unittest/graph/centroid-decomposition.test.cpp
+  - test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
 documentation_of: src/graph/centroid-decomposition.hpp
 layout: document
 title: "\u91CD\u5FC3\u5206\u89E3"

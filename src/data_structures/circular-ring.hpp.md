@@ -4,8 +4,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/circular-ring.test.cpp
-    title: test/unittest/circular-ring.test.cpp
+    path: test/unittest/data_structures/circular-ring.test.cpp
+    title: test/unittest/data_structures/circular-ring.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -45,7 +45,7 @@ data:
   timestamp: '2026-10-15 07:35:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/circular-ring.test.cpp
+  - test/unittest/data_structures/circular-ring.test.cpp
 documentation_of: src/data_structures/circular-ring.hpp
 layout: document
 title: "\u5186\u74B0"

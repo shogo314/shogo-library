@@ -4,17 +4,17 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/bitwise-transform.test.cpp
-    title: test/unittest/bitwise-transform.test.cpp
+    path: test/unittest/math/bitwise-transform.test.cpp
+    title: test/unittest/math/bitwise-transform.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/bitwise-and-convolution.test.cpp
-    title: test/yosupo/bitwise-and-convolution.test.cpp
+    path: test/yosupo/convolution/bitwise-and-convolution.test.cpp
+    title: test/yosupo/convolution/bitwise-and-convolution.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/bitwise-xor-convolution.test.cpp
-    title: test/yosupo/bitwise-xor-convolution.test.cpp
+    path: test/yosupo/convolution/bitwise-xor-convolution.test.cpp
+    title: test/yosupo/convolution/bitwise-xor-convolution.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/subset-convolution.test.cpp
-    title: test/yosupo/subset-convolution.test.cpp
+    path: test/yosupo/set_power_series/subset-convolution.test.cpp
+    title: test/yosupo/set_power_series/subset-convolution.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -225,10 +225,10 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/bitwise-transform.test.cpp
-  - test/yosupo/bitwise-and-convolution.test.cpp
-  - test/yosupo/bitwise-xor-convolution.test.cpp
-  - test/yosupo/subset-convolution.test.cpp
+  - test/unittest/math/bitwise-transform.test.cpp
+  - test/yosupo/convolution/bitwise-xor-convolution.test.cpp
+  - test/yosupo/convolution/bitwise-and-convolution.test.cpp
+  - test/yosupo/set_power_series/subset-convolution.test.cpp
 documentation_of: src/math/bitwise-transform.hpp
 layout: document
 title: "\u90E8\u5206\u96C6\u5408\u30FB\u4E0A\u4F4D\u96C6\u5408\u306E\u30BC\u30FC\u30BF\

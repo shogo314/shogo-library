@@ -18,14 +18,14 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/linear-recurrence.test.cpp
-    title: test/unittest/linear-recurrence.test.cpp
+    path: test/unittest/math/linear-recurrence.test.cpp
+    title: test/unittest/math/linear-recurrence.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/find-linear-recurrence.test.cpp
-    title: test/yosupo/find-linear-recurrence.test.cpp
+    path: test/yosupo/other/find-linear-recurrence.test.cpp
+    title: test/yosupo/other/find-linear-recurrence.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/kth-term-of-linearly-recurrent-sequence.test.cpp
-    title: test/yosupo/kth-term-of-linearly-recurrent-sequence.test.cpp
+    path: test/yosupo/other/kth-term-of-linearly-recurrent-sequence.test.cpp
+    title: test/yosupo/other/kth-term-of-linearly-recurrent-sequence.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -597,9 +597,9 @@ data:
   timestamp: '2026-10-20 17:46:58+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/linear-recurrence.test.cpp
-  - test/yosupo/kth-term-of-linearly-recurrent-sequence.test.cpp
-  - test/yosupo/find-linear-recurrence.test.cpp
+  - test/unittest/math/linear-recurrence.test.cpp
+  - test/yosupo/other/kth-term-of-linearly-recurrent-sequence.test.cpp
+  - test/yosupo/other/find-linear-recurrence.test.cpp
 documentation_of: src/math/linear-recurrence.hpp
 layout: document
 title: "\u7DDA\u5F62\u6F38\u5316\u5F0F (Bostan-Mori\u30FBBerlekamp-Massey)"

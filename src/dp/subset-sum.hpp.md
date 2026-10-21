@@ -4,11 +4,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/alds1-5-a.test.cpp
-    title: test/aoj/alds1-5-a.test.cpp
+    path: test/aoj/alds1/alds1-5-a.test.cpp
+    title: test/aoj/alds1/alds1-5-a.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/subset-sum.test.cpp
-    title: test/unittest/subset-sum.test.cpp
+    path: test/unittest/dp/subset-sum.test.cpp
+    title: test/unittest/dp/subset-sum.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -274,8 +274,8 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/subset-sum.test.cpp
-  - test/aoj/alds1-5-a.test.cpp
+  - test/unittest/dp/subset-sum.test.cpp
+  - test/aoj/alds1/alds1-5-a.test.cpp
 documentation_of: src/dp/subset-sum.hpp
 layout: document
 title: "\u90E8\u5206\u548C\u554F\u984C (\u4F5C\u308C\u308B\u548C\u306E\u5224\u5B9A\

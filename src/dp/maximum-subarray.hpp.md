@@ -4,11 +4,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/0022.test.cpp
-    title: test/aoj/0022.test.cpp
+    path: test/aoj/volume0/0022.test.cpp
+    title: test/aoj/volume0/0022.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/maximum-subarray.test.cpp
-    title: test/unittest/maximum-subarray.test.cpp
+    path: test/unittest/dp/maximum-subarray.test.cpp
+    title: test/unittest/dp/maximum-subarray.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -65,8 +65,8 @@ data:
   timestamp: '2026-10-15 23:11:36+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/maximum-subarray.test.cpp
-  - test/aoj/0022.test.cpp
+  - test/unittest/dp/maximum-subarray.test.cpp
+  - test/aoj/volume0/0022.test.cpp
 documentation_of: src/dp/maximum-subarray.hpp
 layout: document
 title: "\u9023\u7D9A\u90E8\u5206\u5217\u306E\u548C\u306E\u6700\u5927\u5024 (Kadane\

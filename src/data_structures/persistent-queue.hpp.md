@@ -4,11 +4,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/persistent-queue.test.cpp
-    title: test/unittest/persistent-queue.test.cpp
+    path: test/unittest/data_structures/persistent-queue.test.cpp
+    title: test/unittest/data_structures/persistent-queue.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/persistent-queue.test.cpp
-    title: test/yosupo/persistent-queue.test.cpp
+    path: test/yosupo/data_structure/persistent-queue.test.cpp
+    title: test/yosupo/data_structure/persistent-queue.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -139,8 +139,8 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/persistent-queue.test.cpp
-  - test/yosupo/persistent-queue.test.cpp
+  - test/unittest/data_structures/persistent-queue.test.cpp
+  - test/yosupo/data_structure/persistent-queue.test.cpp
 documentation_of: src/data_structures/persistent-queue.hpp
 layout: document
 title: "\u6C38\u7D9A\u30AD\u30E5\u30FC"

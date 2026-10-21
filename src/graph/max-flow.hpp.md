@@ -7,17 +7,17 @@ data:
     title: "\u71C3\u3084\u3059\u57CB\u3081\u308B (Project Selection Problem)"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/grl-6-a.test.cpp
-    title: test/aoj/grl-6-a.test.cpp
+    path: test/aoj/grl/grl-6-a.test.cpp
+    title: test/aoj/grl/grl-6-a.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/bipartite-matching.test.cpp
-    title: test/unittest/bipartite-matching.test.cpp
+    path: test/unittest/graph/bipartite-matching.test.cpp
+    title: test/unittest/graph/bipartite-matching.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/max-flow.test.cpp
-    title: test/unittest/max-flow.test.cpp
+    path: test/unittest/graph/max-flow.test.cpp
+    title: test/unittest/graph/max-flow.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/project-selection.test.cpp
-    title: test/unittest/project-selection.test.cpp
+    path: test/unittest/graph/project-selection.test.cpp
+    title: test/unittest/graph/project-selection.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -198,10 +198,10 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/max-flow.test.cpp
-  - test/unittest/project-selection.test.cpp
-  - test/unittest/bipartite-matching.test.cpp
-  - test/aoj/grl-6-a.test.cpp
+  - test/unittest/graph/bipartite-matching.test.cpp
+  - test/unittest/graph/project-selection.test.cpp
+  - test/unittest/graph/max-flow.test.cpp
+  - test/aoj/grl/grl-6-a.test.cpp
 documentation_of: src/graph/max-flow.hpp
 layout: document
 title: "\u6700\u5927\u6D41 (Dinic \u6CD5)"

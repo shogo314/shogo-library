@@ -4,11 +4,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/floor-sum.test.cpp
-    title: test/unittest/floor-sum.test.cpp
+    path: test/unittest/math/floor-sum.test.cpp
+    title: test/unittest/math/floor-sum.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/sum-of-floor-of-linear.test.cpp
-    title: test/yosupo/sum-of-floor-of-linear.test.cpp
+    path: test/yosupo/number_theory/sum-of-floor-of-linear.test.cpp
+    title: test/yosupo/number_theory/sum-of-floor-of-linear.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -77,8 +77,8 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/floor-sum.test.cpp
-  - test/yosupo/sum-of-floor-of-linear.test.cpp
+  - test/unittest/math/floor-sum.test.cpp
+  - test/yosupo/number_theory/sum-of-floor-of-linear.test.cpp
 documentation_of: src/math/floor-sum.hpp
 layout: document
 title: "floor sum (\u4E00\u6B21\u95A2\u6570\u306E\u5E8A\u95A2\u6570\u306E\u548C)"

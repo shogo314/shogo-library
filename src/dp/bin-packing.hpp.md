@@ -4,8 +4,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/bin-packing.test.cpp
-    title: test/unittest/bin-packing.test.cpp
+    path: test/unittest/dp/bin-packing.test.cpp
+    title: test/unittest/dp/bin-packing.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -77,7 +77,7 @@ data:
   timestamp: '2026-10-21 05:55:54+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/bin-packing.test.cpp
+  - test/unittest/dp/bin-packing.test.cpp
 documentation_of: src/dp/bin-packing.hpp
 layout: document
 title: "\u74F6\u8A70\u3081\u554F\u984C (\u30D3\u30F3\u30D1\u30C3\u30AD\u30F3\u30B0\

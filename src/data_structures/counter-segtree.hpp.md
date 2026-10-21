@@ -4,11 +4,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/counter-segtree.test.cpp
-    title: test/unittest/counter-segtree.test.cpp
+    path: test/unittest/data_structures/counter-segtree.test.cpp
+    title: test/unittest/data_structures/counter-segtree.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/point-set-range-frequency.test.cpp
-    title: test/yosupo/point-set-range-frequency.test.cpp
+    path: test/yosupo/data_structure/point-set-range-frequency.test.cpp
+    title: test/yosupo/data_structure/point-set-range-frequency.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -130,8 +130,8 @@ data:
   timestamp: '2026-10-15 07:35:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/counter-segtree.test.cpp
-  - test/yosupo/point-set-range-frequency.test.cpp
+  - test/unittest/data_structures/counter-segtree.test.cpp
+  - test/yosupo/data_structure/point-set-range-frequency.test.cpp
 documentation_of: src/data_structures/counter-segtree.hpp
 layout: document
 title: "\u533A\u9593\u5185\u306E\u5024\u306E\u500B\u6570\u3092\u6570\u3048\u308B\u30BB\

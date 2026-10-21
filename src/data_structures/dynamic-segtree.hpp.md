@@ -7,11 +7,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/dynamic-segtree.test.cpp
-    title: test/unittest/dynamic-segtree.test.cpp
+    path: test/unittest/data_structures/dynamic-segtree.test.cpp
+    title: test/unittest/data_structures/dynamic-segtree.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/point-set-range-composite-large-array.test.cpp
-    title: test/yosupo/point-set-range-composite-large-array.test.cpp
+    path: test/yosupo/data_structure/point-set-range-composite-large-array.test.cpp
+    title: test/yosupo/data_structure/point-set-range-composite-large-array.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -546,8 +546,8 @@ data:
   timestamp: '2026-10-19 12:03:10+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/dynamic-segtree.test.cpp
-  - test/yosupo/point-set-range-composite-large-array.test.cpp
+  - test/unittest/data_structures/dynamic-segtree.test.cpp
+  - test/yosupo/data_structure/point-set-range-composite-large-array.test.cpp
 documentation_of: src/data_structures/dynamic-segtree.hpp
 layout: document
 title: "\u52D5\u7684\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"

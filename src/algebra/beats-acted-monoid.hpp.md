@@ -10,23 +10,23 @@ data:
     title: Segment Tree Beats
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/beats-acted-monoid.test.cpp
-    title: test/unittest/beats-acted-monoid.test.cpp
+    path: test/unittest/algebra/beats-acted-monoid.test.cpp
+    title: test/unittest/algebra/beats-acted-monoid.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/dual-segtree.test.cpp
-    title: test/unittest/dual-segtree.test.cpp
+    path: test/unittest/data_structures/dual-segtree.test.cpp
+    title: test/unittest/data_structures/dual-segtree.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/segtree-beats.test.cpp
-    title: test/unittest/segtree-beats.test.cpp
+    path: test/unittest/data_structures/segtree-beats.test.cpp
+    title: test/unittest/data_structures/segtree-beats.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/range-chmin-chmax-add-range-sum.1.test.cpp
-    title: test/yosupo/range-chmin-chmax-add-range-sum.1.test.cpp
+    path: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.1.test.cpp
+    title: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
-    title: test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
+    path: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.2.test.cpp
+    title: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/range-chmin-chmax-add-range-sum.3.test.cpp
-    title: test/yosupo/range-chmin-chmax-add-range-sum.3.test.cpp
+    path: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
+    title: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -599,12 +599,12 @@ data:
   timestamp: '2026-10-19 12:29:38+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/segtree-beats.test.cpp
-  - test/unittest/dual-segtree.test.cpp
-  - test/unittest/beats-acted-monoid.test.cpp
-  - test/yosupo/range-chmin-chmax-add-range-sum.2.test.cpp
-  - test/yosupo/range-chmin-chmax-add-range-sum.3.test.cpp
-  - test/yosupo/range-chmin-chmax-add-range-sum.1.test.cpp
+  - test/unittest/data_structures/segtree-beats.test.cpp
+  - test/unittest/data_structures/dual-segtree.test.cpp
+  - test/unittest/algebra/beats-acted-monoid.test.cpp
+  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.2.test.cpp
+  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
+  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.1.test.cpp
 documentation_of: src/algebra/beats-acted-monoid.hpp
 layout: document
 title: "Segment Tree Beats \u7528\u306E\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\

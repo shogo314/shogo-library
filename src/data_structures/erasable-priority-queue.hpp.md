@@ -4,11 +4,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/erasable-priority-queue.test.cpp
-    title: test/unittest/erasable-priority-queue.test.cpp
+    path: test/unittest/data_structures/erasable-priority-queue.test.cpp
+    title: test/unittest/data_structures/erasable-priority-queue.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/double-ended-priority-queue.test.cpp
-    title: test/yosupo/double-ended-priority-queue.test.cpp
+    path: test/yosupo/data_structure/double-ended-priority-queue.test.cpp
+    title: test/yosupo/data_structure/double-ended-priority-queue.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -94,8 +94,8 @@ data:
   timestamp: '2026-10-15 07:35:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/erasable-priority-queue.test.cpp
-  - test/yosupo/double-ended-priority-queue.test.cpp
+  - test/unittest/data_structures/erasable-priority-queue.test.cpp
+  - test/yosupo/data_structure/double-ended-priority-queue.test.cpp
 documentation_of: src/data_structures/erasable-priority-queue.hpp
 layout: document
 title: "\u524A\u9664\u53EF\u80FD\u306A\u512A\u5148\u5EA6\u4ED8\u304D\u30AD\u30E5\u30FC"

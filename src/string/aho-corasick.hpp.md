@@ -4,14 +4,14 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/2873.test.cpp
-    title: test/aoj/2873.test.cpp
+    path: test/aoj/volume28/2873.test.cpp
+    title: test/aoj/volume28/2873.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/aho-corasick.test.cpp
-    title: test/unittest/aho-corasick.test.cpp
+    path: test/unittest/string/aho-corasick.test.cpp
+    title: test/unittest/string/aho-corasick.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/aho-corasick.test.cpp
-    title: test/yosupo/aho-corasick.test.cpp
+    path: test/yosupo/string/aho-corasick.test.cpp
+    title: test/yosupo/string/aho-corasick.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -298,9 +298,9 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/aho-corasick.test.cpp
-  - test/aoj/2873.test.cpp
-  - test/yosupo/aho-corasick.test.cpp
+  - test/unittest/string/aho-corasick.test.cpp
+  - test/aoj/volume28/2873.test.cpp
+  - test/yosupo/string/aho-corasick.test.cpp
 documentation_of: src/string/aho-corasick.hpp
 layout: document
 title: Aho-Corasick

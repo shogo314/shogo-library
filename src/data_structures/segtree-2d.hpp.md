@@ -7,8 +7,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/point-add-rectangle-sum.test.cpp
-    title: test/yosupo/point-add-rectangle-sum.test.cpp
+    path: test/yosupo/data_structure/point-add-rectangle-sum.test.cpp
+    title: test/yosupo/data_structure/point-add-rectangle-sum.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -565,7 +565,7 @@ data:
   timestamp: '2026-10-19 12:03:10+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/yosupo/point-add-rectangle-sum.test.cpp
+  - test/yosupo/data_structure/point-add-rectangle-sum.test.cpp
 documentation_of: src/data_structures/segtree-2d.hpp
 layout: document
 title: "2\u6B21\u5143\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"

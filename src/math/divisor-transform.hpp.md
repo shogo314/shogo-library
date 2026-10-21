@@ -12,14 +12,14 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/divisor-transform.test.cpp
-    title: test/unittest/divisor-transform.test.cpp
+    path: test/unittest/math/divisor-transform.test.cpp
+    title: test/unittest/math/divisor-transform.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/gcd-convolution.test.cpp
-    title: test/yosupo/gcd-convolution.test.cpp
+    path: test/yosupo/convolution/gcd-convolution.test.cpp
+    title: test/yosupo/convolution/gcd-convolution.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/lcm-convolution.test.cpp
-    title: test/yosupo/lcm-convolution.test.cpp
+    path: test/yosupo/convolution/lcm-convolution.test.cpp
+    title: test/yosupo/convolution/lcm-convolution.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -322,9 +322,9 @@ data:
   timestamp: '2026-10-20 17:15:36+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/divisor-transform.test.cpp
-  - test/yosupo/gcd-convolution.test.cpp
-  - test/yosupo/lcm-convolution.test.cpp
+  - test/unittest/math/divisor-transform.test.cpp
+  - test/yosupo/convolution/gcd-convolution.test.cpp
+  - test/yosupo/convolution/lcm-convolution.test.cpp
 documentation_of: src/math/divisor-transform.hpp
 layout: document
 title: "\u7D04\u6570\u30FB\u500D\u6570\u306E\u30BC\u30FC\u30BF\u5909\u63DB\u3001\u30E1\

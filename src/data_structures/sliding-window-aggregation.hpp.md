@@ -7,14 +7,14 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dsl-3-d.test.cpp
-    title: test/aoj/dsl-3-d.test.cpp
+    path: test/aoj/dsl/dsl-3-d.test.cpp
+    title: test/aoj/dsl/dsl-3-d.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/sliding-window-aggregation.test.cpp
-    title: test/unittest/sliding-window-aggregation.test.cpp
+    path: test/unittest/data_structures/sliding-window-aggregation.test.cpp
+    title: test/unittest/data_structures/sliding-window-aggregation.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/queue-operate-all-composite.test.cpp
-    title: test/yosupo/queue-operate-all-composite.test.cpp
+    path: test/yosupo/data_structure/queue-operate-all-composite.test.cpp
+    title: test/yosupo/data_structure/queue-operate-all-composite.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -449,9 +449,9 @@ data:
   timestamp: '2026-10-19 12:03:10+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/sliding-window-aggregation.test.cpp
-  - test/aoj/dsl-3-d.test.cpp
-  - test/yosupo/queue-operate-all-composite.test.cpp
+  - test/unittest/data_structures/sliding-window-aggregation.test.cpp
+  - test/aoj/dsl/dsl-3-d.test.cpp
+  - test/yosupo/data_structure/queue-operate-all-composite.test.cpp
 documentation_of: src/data_structures/sliding-window-aggregation.hpp
 layout: document
 title: "Sliding Window Aggregation \u3068\u30B9\u30E9\u30A4\u30C9\u6700\u5C0F\u5024"

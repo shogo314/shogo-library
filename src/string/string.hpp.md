@@ -4,17 +4,17 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/alds1-14-b.2.test.cpp
-    title: test/aoj/alds1-14-b.2.test.cpp
+    path: test/aoj/alds1/alds1-14-b.2.test.cpp
+    title: test/aoj/alds1/alds1-14-b.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/string.test.cpp
-    title: test/unittest/string.test.cpp
+    path: test/unittest/string/string.test.cpp
+    title: test/unittest/string/string.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/enumerate-palindromes.2.test.cpp
-    title: test/yosupo/enumerate-palindromes.2.test.cpp
+    path: test/yosupo/string/enumerate-palindromes.2.test.cpp
+    title: test/yosupo/string/enumerate-palindromes.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/zalgorithm.test.cpp
-    title: test/yosupo/zalgorithm.test.cpp
+    path: test/yosupo/string/zalgorithm.test.cpp
+    title: test/yosupo/string/zalgorithm.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -271,10 +271,10 @@ data:
   timestamp: '2026-10-17 23:17:18+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/string.test.cpp
-  - test/aoj/alds1-14-b.2.test.cpp
-  - test/yosupo/zalgorithm.test.cpp
-  - test/yosupo/enumerate-palindromes.2.test.cpp
+  - test/unittest/string/string.test.cpp
+  - test/aoj/alds1/alds1-14-b.2.test.cpp
+  - test/yosupo/string/enumerate-palindromes.2.test.cpp
+  - test/yosupo/string/zalgorithm.test.cpp
 documentation_of: src/string/string.hpp
 layout: document
 title: "\u6587\u5B57\u5217\u30A2\u30EB\u30B4\u30EA\u30BA\u30E0 (Z-algorithm\u3001\

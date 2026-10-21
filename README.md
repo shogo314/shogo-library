@@ -16,12 +16,12 @@
 | `src/algebra/` | モノイド・群・作用素付きモノイドの定義 |
 | `src/data_structures/` | セグメント木各種 (モノイドを渡して使う)、Fenwick Tree、Sparse Table、Union-Find、マージソートツリー、Li Chao Tree (x 座標を先読みしない動的版も)、双対セグメント木、Sliding Window Aggregation (スライド最小値)、削除可能な優先度付きキュー、動的セグメント木 (要素数が大きいもの)、Wavelet Matrix、FastSet (64 分木による整数の集合)、平衡二分木 (RBST: 列への挿入・削除・区間反転・split/merge)、永続データ構造 (セグメント木・遅延伝搬セグメント木・配列・Union-Find・スタック・キュー) など |
 | `src/graph/` | グラフ (最短路、全点対間最短路)、木、全方位木 DP、Functional Graph、強連結成分分解、閉路の検出と復元、最小全域木、彩色数、lowlink (関節点・橋・二重辺連結成分・二重頂点連結成分・Block-Cut Tree)、2-SAT、最大流、最小費用流、二部マッチング、燃やす埋める (Project Selection)、HL 分解、重心分解、Auxiliary Tree (虚树) |
-| `src/math/` | modint、mod 演算 (冪乗・逆元・離散対数・平方根)、畳み込み、行列 (連立一次方程式・ランク)、F2 の行列 (mod 2 の連立一次方程式・逆行列・積)、形式的冪級数 (疎なものの演算も)、線形漸化式 (Bostan-Mori・Berlekamp-Massey)、ラグランジュ補間、Σ r^i f(i)、多点評価・多項式補間・標本点のずらし、組み合わせ、分割数・ベルヌーイ数・スターリング数・ベル数、中国剰余定理、素数 (素数判定・素因数分解・篩・原始根)、素数の個数・素数の和 (Lucy DP)、無限大を持つ整数 (`infint`)、floor sum、商の列挙、有理数、約数・倍数のゼータ変換とメビウス変換 (GCD・LCM 畳み込み)、XOR 基底、Stern–Brocot 木と連分数 (区間で最も単純な分数・最良近似・分母に上限がある分数での二分探索) |
+| `src/math/` | modint、mod 演算 (冪乗・逆元・離散対数・平方根)、畳み込み、行列 (連立一次方程式・ランク)、F2 の行列 (mod 2 の連立一次方程式・逆行列・積)、形式的冪級数 (疎なものの演算も)、線形漸化式 (Bostan-Mori・Berlekamp-Massey)、ラグランジュ補間、Σ r^i f(i)、多点評価・多項式補間・標本点のずらし、多項式の根、組み合わせ、分割数・ベルヌーイ数・スターリング数・ベル数、中国剰余定理、素数 (素数判定・素因数分解・篩・原始根)、素数の個数・素数の和 (Lucy DP)、無限大を持つ整数 (`infint`)、floor sum、商の列挙、有理数、約数・倍数のゼータ変換とメビウス変換 (GCD・LCM 畳み込み)、XOR 基底、Stern–Brocot 木と連分数 (区間で最も単純な分数・最良近似・分母に上限がある分数での二分探索) |
 | `src/string/` | Z-algorithm、KMP、Manacher、Suffix Array と LCP 配列、ローリングハッシュ、Trie、Aho-Corasick、Suffix Automaton、回文木 (Eertree) |
 | `src/geometry/` | 幾何 (ベクトル、凸包、偏角ソート、ccw、射影・反射、直線の交点、点・線分の距離、円の交点・接線・内接円・外接円など) |
 | `src/dp/` | 動的計画法 (ナップサック問題、部分和問題 (判定・S 以下の最大値・復元・個数)、最長増加部分列 (LIS)、連続部分列の和の最大値)、瓶詰め問題、集合の分割 (使ってよい集合に分ける最小個数)、Monge 性を使う高速化 (monotone minima・(min, +) 畳み込み・Alien DP) |
 | `src/others/` | Mo's algorithm、転倒数 |
-| `test/` | 検証用テスト (ジャッジごとにディレクトリを分けています。`test/unittest/` は問題を使わない単体テスト) |
+| `test/` | 検証用テスト。ジャッジごとにディレクトリを分け、その中をサイトでの分類で分けています (`yosupo/` は Library Checker のカテゴリ、`aoj/` はコース名か `volume<番号÷100>`、`atcoder/` は `abc/` とそれ以外、`yukicoder/` は分けない)。`test/unittest/` は問題を使わない単体テストで、`src/` と同じ分類で分けています |
 | `docs/` | ドキュメントの各ページに埋め込む機能一覧 (`documentation_of` でヘッダに対応付け) |
 
 ## 使い方

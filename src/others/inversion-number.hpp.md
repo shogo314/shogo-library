@@ -4,11 +4,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/alds1-5-d.test.cpp
-    title: test/aoj/alds1-5-d.test.cpp
+    path: test/aoj/alds1/alds1-5-d.test.cpp
+    title: test/aoj/alds1/alds1-5-d.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/inversion-number.test.cpp
-    title: test/unittest/inversion-number.test.cpp
+    path: test/unittest/others/inversion-number.test.cpp
+    title: test/unittest/others/inversion-number.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -69,8 +69,8 @@ data:
   timestamp: '2026-10-14 01:15:13+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/inversion-number.test.cpp
-  - test/aoj/alds1-5-d.test.cpp
+  - test/unittest/others/inversion-number.test.cpp
+  - test/aoj/alds1/alds1-5-d.test.cpp
 documentation_of: src/others/inversion-number.hpp
 layout: document
 title: "\u8EE2\u5012\u6570"

@@ -10,26 +10,26 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/cgl-7-a.test.cpp
-    title: test/aoj/cgl-7-a.test.cpp
+    path: test/aoj/cgl/cgl-7-a.test.cpp
+    title: test/aoj/cgl/cgl-7-a.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/cgl-7-b.test.cpp
-    title: test/aoj/cgl-7-b.test.cpp
+    path: test/aoj/cgl/cgl-7-b.test.cpp
+    title: test/aoj/cgl/cgl-7-b.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/cgl-7-c.test.cpp
-    title: test/aoj/cgl-7-c.test.cpp
+    path: test/aoj/cgl/cgl-7-c.test.cpp
+    title: test/aoj/cgl/cgl-7-c.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/cgl-7-d.test.cpp
-    title: test/aoj/cgl-7-d.test.cpp
+    path: test/aoj/cgl/cgl-7-d.test.cpp
+    title: test/aoj/cgl/cgl-7-d.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/cgl-7-e.test.cpp
-    title: test/aoj/cgl-7-e.test.cpp
+    path: test/aoj/cgl/cgl-7-e.test.cpp
+    title: test/aoj/cgl/cgl-7-e.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/cgl-7-f.test.cpp
-    title: test/aoj/cgl-7-f.test.cpp
+    path: test/aoj/cgl/cgl-7-f.test.cpp
+    title: test/aoj/cgl/cgl-7-f.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/circle.test.cpp
-    title: test/unittest/circle.test.cpp
+    path: test/unittest/geometry/circle.test.cpp
+    title: test/unittest/geometry/circle.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -636,13 +636,13 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/circle.test.cpp
-  - test/aoj/cgl-7-f.test.cpp
-  - test/aoj/cgl-7-d.test.cpp
-  - test/aoj/cgl-7-e.test.cpp
-  - test/aoj/cgl-7-c.test.cpp
-  - test/aoj/cgl-7-b.test.cpp
-  - test/aoj/cgl-7-a.test.cpp
+  - test/unittest/geometry/circle.test.cpp
+  - test/aoj/cgl/cgl-7-d.test.cpp
+  - test/aoj/cgl/cgl-7-f.test.cpp
+  - test/aoj/cgl/cgl-7-c.test.cpp
+  - test/aoj/cgl/cgl-7-a.test.cpp
+  - test/aoj/cgl/cgl-7-e.test.cpp
+  - test/aoj/cgl/cgl-7-b.test.cpp
 documentation_of: src/geometry/circle.hpp
 layout: document
 title: "\u5186 (\u4F4D\u7F6E\u95A2\u4FC2\u3001\u4EA4\u70B9\u3001\u63A5\u7DDA\u3001\

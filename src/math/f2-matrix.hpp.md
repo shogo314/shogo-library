@@ -4,23 +4,23 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/f2-matrix.test.cpp
-    title: test/unittest/f2-matrix.test.cpp
+    path: test/unittest/math/f2-matrix.test.cpp
+    title: test/unittest/math/f2-matrix.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/inverse-matrix-mod-2.test.cpp
-    title: test/yosupo/inverse-matrix-mod-2.test.cpp
+    path: test/yosupo/linear_algebra/inverse-matrix-mod-2.test.cpp
+    title: test/yosupo/linear_algebra/inverse-matrix-mod-2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/matrix-det-mod-2.test.cpp
-    title: test/yosupo/matrix-det-mod-2.test.cpp
+    path: test/yosupo/linear_algebra/matrix-det-mod-2.test.cpp
+    title: test/yosupo/linear_algebra/matrix-det-mod-2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/matrix-product-mod-2.test.cpp
-    title: test/yosupo/matrix-product-mod-2.test.cpp
+    path: test/yosupo/linear_algebra/matrix-product-mod-2.test.cpp
+    title: test/yosupo/linear_algebra/matrix-product-mod-2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/matrix-rank-mod-2.test.cpp
-    title: test/yosupo/matrix-rank-mod-2.test.cpp
+    path: test/yosupo/linear_algebra/matrix-rank-mod-2.test.cpp
+    title: test/yosupo/linear_algebra/matrix-rank-mod-2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/system-of-linear-equations-mod-2.test.cpp
-    title: test/yosupo/system-of-linear-equations-mod-2.test.cpp
+    path: test/yosupo/linear_algebra/system-of-linear-equations-mod-2.test.cpp
+    title: test/yosupo/linear_algebra/system-of-linear-equations-mod-2.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -357,12 +357,12 @@ data:
   timestamp: '2026-10-19 20:29:35+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/f2-matrix.test.cpp
-  - test/yosupo/system-of-linear-equations-mod-2.test.cpp
-  - test/yosupo/matrix-product-mod-2.test.cpp
-  - test/yosupo/matrix-det-mod-2.test.cpp
-  - test/yosupo/matrix-rank-mod-2.test.cpp
-  - test/yosupo/inverse-matrix-mod-2.test.cpp
+  - test/unittest/math/f2-matrix.test.cpp
+  - test/yosupo/linear_algebra/matrix-product-mod-2.test.cpp
+  - test/yosupo/linear_algebra/inverse-matrix-mod-2.test.cpp
+  - test/yosupo/linear_algebra/matrix-det-mod-2.test.cpp
+  - test/yosupo/linear_algebra/system-of-linear-equations-mod-2.test.cpp
+  - test/yosupo/linear_algebra/matrix-rank-mod-2.test.cpp
 documentation_of: src/math/f2-matrix.hpp
 layout: document
 title: "F2 \u306E\u884C\u5217 (mod 2)"

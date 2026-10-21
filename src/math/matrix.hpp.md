@@ -4,35 +4,35 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/3314.test.cpp
-    title: test/aoj/3314.test.cpp
+    path: test/aoj/volume33/3314.test.cpp
+    title: test/aoj/volume33/3314.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/f2-matrix.test.cpp
-    title: test/unittest/f2-matrix.test.cpp
+    path: test/unittest/math/f2-matrix.test.cpp
+    title: test/unittest/math/f2-matrix.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/matrix.test.cpp
-    title: test/unittest/matrix.test.cpp
+    path: test/unittest/math/matrix.test.cpp
+    title: test/unittest/math/matrix.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/counting-spanning-tree-undirected.test.cpp
-    title: test/yosupo/counting-spanning-tree-undirected.test.cpp
+    path: test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
+    title: test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/matrix-det.test.cpp
-    title: test/yosupo/matrix-det.test.cpp
+    path: test/yosupo/linear_algebra/matrix-det.test.cpp
+    title: test/yosupo/linear_algebra/matrix-det.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/matrix-rank.test.cpp
-    title: test/yosupo/matrix-rank.test.cpp
+    path: test/yosupo/linear_algebra/matrix-rank.test.cpp
+    title: test/yosupo/linear_algebra/matrix-rank.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/system-of-linear-equations.test.cpp
-    title: test/yosupo/system-of-linear-equations.test.cpp
+    path: test/yosupo/linear_algebra/system-of-linear-equations.test.cpp
+    title: test/yosupo/linear_algebra/system-of-linear-equations.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yukicoder/rotate-enlarge.1.test.cpp
-    title: test/yukicoder/rotate-enlarge.1.test.cpp
+    path: test/yukicoder/1340.test.cpp
+    title: test/yukicoder/1340.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yukicoder/rotate-enlarge.2.test.cpp
-    title: test/yukicoder/rotate-enlarge.2.test.cpp
+    path: test/yukicoder/565.1.test.cpp
+    title: test/yukicoder/565.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yukicoder/search-oji.test.cpp
-    title: test/yukicoder/search-oji.test.cpp
+    path: test/yukicoder/565.2.test.cpp
+    title: test/yukicoder/565.2.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -682,16 +682,16 @@ data:
   timestamp: '2026-10-19 20:29:35+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/matrix.test.cpp
-  - test/unittest/f2-matrix.test.cpp
-  - test/yukicoder/search-oji.test.cpp
-  - test/yukicoder/rotate-enlarge.1.test.cpp
-  - test/yukicoder/rotate-enlarge.2.test.cpp
-  - test/aoj/3314.test.cpp
-  - test/yosupo/matrix-rank.test.cpp
-  - test/yosupo/counting-spanning-tree-undirected.test.cpp
-  - test/yosupo/matrix-det.test.cpp
-  - test/yosupo/system-of-linear-equations.test.cpp
+  - test/unittest/math/f2-matrix.test.cpp
+  - test/unittest/math/matrix.test.cpp
+  - test/aoj/volume33/3314.test.cpp
+  - test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
+  - test/yosupo/linear_algebra/matrix-rank.test.cpp
+  - test/yosupo/linear_algebra/system-of-linear-equations.test.cpp
+  - test/yosupo/linear_algebra/matrix-det.test.cpp
+  - test/yukicoder/565.1.test.cpp
+  - test/yukicoder/565.2.test.cpp
+  - test/yukicoder/1340.test.cpp
 documentation_of: src/math/matrix.hpp
 layout: document
 title: "\u884C\u5217"

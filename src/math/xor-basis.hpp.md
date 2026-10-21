@@ -4,8 +4,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/xor-basis.test.cpp
-    title: test/unittest/xor-basis.test.cpp
+    path: test/unittest/math/xor-basis.test.cpp
+    title: test/unittest/math/xor-basis.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -158,7 +158,7 @@ data:
   timestamp: '2026-10-15 07:27:48+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/xor-basis.test.cpp
+  - test/unittest/math/xor-basis.test.cpp
 documentation_of: src/math/xor-basis.hpp
 layout: document
 title: "XOR \u57FA\u5E95 (F2 \u4E0A\u306E\u7DDA\u5F62\u57FA\u5E95)"

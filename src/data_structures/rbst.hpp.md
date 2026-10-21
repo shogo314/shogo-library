@@ -10,11 +10,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/rbst.test.cpp
-    title: test/unittest/rbst.test.cpp
+    path: test/unittest/data_structures/rbst.test.cpp
+    title: test/unittest/data_structures/rbst.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/dynamic-sequence-range-affine-range-sum.test.cpp
-    title: test/yosupo/dynamic-sequence-range-affine-range-sum.test.cpp
+    path: test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
+    title: test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -1000,8 +1000,8 @@ data:
   timestamp: '2026-10-19 20:07:08+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/rbst.test.cpp
-  - test/yosupo/dynamic-sequence-range-affine-range-sum.test.cpp
+  - test/unittest/data_structures/rbst.test.cpp
+  - test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
 documentation_of: src/data_structures/rbst.hpp
 layout: document
 title: "\u5E73\u8861\u4E8C\u5206\u6728 (RBST)"

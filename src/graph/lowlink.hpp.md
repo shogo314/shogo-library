@@ -10,20 +10,20 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/grl-3-a.test.cpp
-    title: test/aoj/grl-3-a.test.cpp
+    path: test/aoj/grl/grl-3-a.test.cpp
+    title: test/aoj/grl/grl-3-a.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/grl-3-b.test.cpp
-    title: test/aoj/grl-3-b.test.cpp
+    path: test/aoj/grl/grl-3-b.test.cpp
+    title: test/aoj/grl/grl-3-b.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/lowlink.test.cpp
-    title: test/unittest/lowlink.test.cpp
+    path: test/unittest/graph/lowlink.test.cpp
+    title: test/unittest/graph/lowlink.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/biconnected-components.test.cpp
-    title: test/yosupo/biconnected-components.test.cpp
+    path: test/yosupo/graph/biconnected-components.test.cpp
+    title: test/yosupo/graph/biconnected-components.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/two-edge-connected-components.test.cpp
-    title: test/yosupo/two-edge-connected-components.test.cpp
+    path: test/yosupo/graph/two-edge-connected-components.test.cpp
+    title: test/yosupo/graph/two-edge-connected-components.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -695,11 +695,11 @@ data:
   timestamp: '2026-10-19 19:53:46+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/lowlink.test.cpp
-  - test/aoj/grl-3-a.test.cpp
-  - test/aoj/grl-3-b.test.cpp
-  - test/yosupo/two-edge-connected-components.test.cpp
-  - test/yosupo/biconnected-components.test.cpp
+  - test/unittest/graph/lowlink.test.cpp
+  - test/aoj/grl/grl-3-b.test.cpp
+  - test/aoj/grl/grl-3-a.test.cpp
+  - test/yosupo/graph/biconnected-components.test.cpp
+  - test/yosupo/graph/two-edge-connected-components.test.cpp
 documentation_of: src/graph/lowlink.hpp
 layout: document
 title: "lowlink (\u95A2\u7BC0\u70B9\u3001\u6A4B\u3001\u4E8C\u91CD\u8FBA\u9023\u7D50\

@@ -4,14 +4,14 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/grl-7-a.test.cpp
-    title: test/aoj/grl-7-a.test.cpp
+    path: test/aoj/grl/grl-7-a.test.cpp
+    title: test/aoj/grl/grl-7-a.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/bipartite-matching.test.cpp
-    title: test/unittest/bipartite-matching.test.cpp
+    path: test/unittest/graph/bipartite-matching.test.cpp
+    title: test/unittest/graph/bipartite-matching.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/bipartitematching.test.cpp
-    title: test/yosupo/bipartitematching.test.cpp
+    path: test/yosupo/graph/bipartitematching.test.cpp
+    title: test/yosupo/graph/bipartitematching.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -180,9 +180,9 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/bipartite-matching.test.cpp
-  - test/aoj/grl-7-a.test.cpp
-  - test/yosupo/bipartitematching.test.cpp
+  - test/unittest/graph/bipartite-matching.test.cpp
+  - test/aoj/grl/grl-7-a.test.cpp
+  - test/yosupo/graph/bipartitematching.test.cpp
 documentation_of: src/graph/bipartite-matching.hpp
 layout: document
 title: "\u4E8C\u90E8\u30B0\u30E9\u30D5\u306E\u6700\u5927\u30DE\u30C3\u30C1\u30F3\u30B0\

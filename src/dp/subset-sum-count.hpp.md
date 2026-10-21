@@ -24,11 +24,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/subset-sum.test.cpp
-    title: test/unittest/subset-sum.test.cpp
+    path: test/unittest/dp/subset-sum.test.cpp
+    title: test/unittest/dp/subset-sum.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/sharp-p-subset-sum.2.test.cpp
-    title: test/yosupo/sharp-p-subset-sum.2.test.cpp
+    path: test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.2.test.cpp
+    title: test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.2.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -828,8 +828,8 @@ data:
   timestamp: '2026-10-21 03:21:45+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/subset-sum.test.cpp
-  - test/yosupo/sharp-p-subset-sum.2.test.cpp
+  - test/unittest/dp/subset-sum.test.cpp
+  - test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.2.test.cpp
 documentation_of: src/dp/subset-sum-count.hpp
 layout: document
 title: "\u90E8\u5206\u548C\u306E\u500B\u6570"

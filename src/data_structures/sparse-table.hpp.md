@@ -7,11 +7,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/sparse-table.test.cpp
-    title: test/unittest/sparse-table.test.cpp
+    path: test/unittest/data_structures/sparse-table.test.cpp
+    title: test/unittest/data_structures/sparse-table.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/staticrmq.test.cpp
-    title: test/yosupo/staticrmq.test.cpp
+    path: test/yosupo/data_structure/staticrmq.test.cpp
+    title: test/yosupo/data_structure/staticrmq.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -375,8 +375,8 @@ data:
   timestamp: '2026-10-19 12:03:10+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/sparse-table.test.cpp
-  - test/yosupo/staticrmq.test.cpp
+  - test/unittest/data_structures/sparse-table.test.cpp
+  - test/yosupo/data_structure/staticrmq.test.cpp
 documentation_of: src/data_structures/sparse-table.hpp
 layout: document
 title: Sparse Table

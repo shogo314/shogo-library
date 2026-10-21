@@ -24,23 +24,23 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/sparse-fps.test.cpp
-    title: test/unittest/sparse-fps.test.cpp
+    path: test/unittest/math/sparse-fps.test.cpp
+    title: test/unittest/math/sparse-fps.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/exp-of-formal-power-series-sparse.test.cpp
-    title: test/yosupo/exp-of-formal-power-series-sparse.test.cpp
+    path: test/yosupo/polynomial/exp-of-formal-power-series-sparse.test.cpp
+    title: test/yosupo/polynomial/exp-of-formal-power-series-sparse.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/inv-of-formal-power-series-sparse.test.cpp
-    title: test/yosupo/inv-of-formal-power-series-sparse.test.cpp
+    path: test/yosupo/polynomial/inv-of-formal-power-series-sparse.test.cpp
+    title: test/yosupo/polynomial/inv-of-formal-power-series-sparse.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/log-of-formal-power-series-sparse.test.cpp
-    title: test/yosupo/log-of-formal-power-series-sparse.test.cpp
+    path: test/yosupo/polynomial/log-of-formal-power-series-sparse.test.cpp
+    title: test/yosupo/polynomial/log-of-formal-power-series-sparse.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/pow-of-formal-power-series-sparse.test.cpp
-    title: test/yosupo/pow-of-formal-power-series-sparse.test.cpp
+    path: test/yosupo/polynomial/pow-of-formal-power-series-sparse.test.cpp
+    title: test/yosupo/polynomial/pow-of-formal-power-series-sparse.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/sqrt-of-formal-power-series-sparse.test.cpp
-    title: test/yosupo/sqrt-of-formal-power-series-sparse.test.cpp
+    path: test/yosupo/polynomial/sqrt-of-formal-power-series-sparse.test.cpp
+    title: test/yosupo/polynomial/sqrt-of-formal-power-series-sparse.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -881,12 +881,12 @@ data:
   timestamp: '2026-10-21 03:21:45+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/sparse-fps.test.cpp
-  - test/yosupo/inv-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/pow-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/exp-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/log-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/sqrt-of-formal-power-series-sparse.test.cpp
+  - test/unittest/math/sparse-fps.test.cpp
+  - test/yosupo/polynomial/pow-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/polynomial/inv-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/polynomial/exp-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/polynomial/sqrt-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/polynomial/log-of-formal-power-series-sparse.test.cpp
 documentation_of: src/math/sparse-fps.hpp
 layout: document
 title: "\u758E\u306A\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570 (inv\u30FBlog\u30FBexp\u30FB\

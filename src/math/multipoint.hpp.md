@@ -24,17 +24,17 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/multipoint.test.cpp
-    title: test/unittest/multipoint.test.cpp
+    path: test/unittest/math/multipoint.test.cpp
+    title: test/unittest/math/multipoint.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/multipoint-evaluation.test.cpp
-    title: test/yosupo/multipoint-evaluation.test.cpp
+    path: test/yosupo/polynomial/multipoint-evaluation.test.cpp
+    title: test/yosupo/polynomial/multipoint-evaluation.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/polynomial-interpolation.test.cpp
-    title: test/yosupo/polynomial-interpolation.test.cpp
+    path: test/yosupo/polynomial/polynomial-interpolation.test.cpp
+    title: test/yosupo/polynomial/polynomial-interpolation.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/shift-of-sampling-points-of-polynomial.test.cpp
-    title: test/yosupo/shift-of-sampling-points-of-polynomial.test.cpp
+    path: test/yosupo/polynomial/shift-of-sampling-points-of-polynomial.test.cpp
+    title: test/yosupo/polynomial/shift-of-sampling-points-of-polynomial.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -911,10 +911,10 @@ data:
   timestamp: '2026-10-21 06:03:31+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/multipoint.test.cpp
-  - test/yosupo/multipoint-evaluation.test.cpp
-  - test/yosupo/polynomial-interpolation.test.cpp
-  - test/yosupo/shift-of-sampling-points-of-polynomial.test.cpp
+  - test/unittest/math/multipoint.test.cpp
+  - test/yosupo/polynomial/multipoint-evaluation.test.cpp
+  - test/yosupo/polynomial/shift-of-sampling-points-of-polynomial.test.cpp
+  - test/yosupo/polynomial/polynomial-interpolation.test.cpp
 documentation_of: src/math/multipoint.hpp
 layout: document
 title: "\u591A\u70B9\u8A55\u4FA1\u30FB\u591A\u9805\u5F0F\u88DC\u9593\u30FB\u6A19\u672C\

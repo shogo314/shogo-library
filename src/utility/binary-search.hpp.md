@@ -7,11 +7,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/alds1-4-d.test.cpp
-    title: test/aoj/alds1-4-d.test.cpp
+    path: test/aoj/alds1/alds1-4-d.test.cpp
+    title: test/aoj/alds1/alds1-4-d.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/functions.test.cpp
-    title: test/unittest/functions.test.cpp
+    path: test/unittest/base/functions.test.cpp
+    title: test/unittest/base/functions.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -116,8 +116,8 @@ data:
   timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/functions.test.cpp
-  - test/aoj/alds1-4-d.test.cpp
+  - test/unittest/base/functions.test.cpp
+  - test/aoj/alds1/alds1-4-d.test.cpp
 documentation_of: src/utility/binary-search.hpp
 layout: document
 title: "\u4E8C\u5206\u63A2\u7D22"

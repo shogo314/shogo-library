@@ -7,56 +7,56 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dsl-2-a.test.cpp
-    title: test/aoj/dsl-2-a.test.cpp
+    path: test/aoj/dsl/dsl-2-a.test.cpp
+    title: test/aoj/dsl/dsl-2-a.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dsl-2-b.1.test.cpp
-    title: test/aoj/dsl-2-b.1.test.cpp
+    path: test/aoj/dsl/dsl-2-b.1.test.cpp
+    title: test/aoj/dsl/dsl-2-b.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/itp2-3-b.1.test.cpp
-    title: test/aoj/itp2-3-b.1.test.cpp
+    path: test/aoj/itp2/itp2-3-b.1.test.cpp
+    title: test/aoj/itp2/itp2-3-b.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/itp2-3-b.2.test.cpp
-    title: test/aoj/itp2-3-b.2.test.cpp
+    path: test/aoj/itp2/itp2-3-b.2.test.cpp
+    title: test/aoj/itp2/itp2-3-b.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/itp2-3-b.3.test.cpp
-    title: test/aoj/itp2-3-b.3.test.cpp
+    path: test/aoj/itp2/itp2-3-b.3.test.cpp
+    title: test/aoj/itp2/itp2-3-b.3.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/ntl-1-c.test.cpp
-    title: test/aoj/ntl-1-c.test.cpp
+    path: test/aoj/ntl/ntl-1-c.test.cpp
+    title: test/aoj/ntl/ntl-1-c.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/dual-segtree.test.cpp
-    title: test/unittest/dual-segtree.test.cpp
+    path: test/unittest/algebra/mapping.test.cpp
+    title: test/unittest/algebra/mapping.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/mapping.test.cpp
-    title: test/unittest/mapping.test.cpp
+    path: test/unittest/algebra/monoid.test.cpp
+    title: test/unittest/algebra/monoid.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/monoid.test.cpp
-    title: test/unittest/monoid.test.cpp
+    path: test/unittest/data_structures/dual-segtree.test.cpp
+    title: test/unittest/data_structures/dual-segtree.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/lca.2.test.cpp
-    title: test/yosupo/lca.2.test.cpp
+    path: test/yosupo/data_structure/point-add-range-sum.2.test.cpp
+    title: test/yosupo/data_structure/point-add-range-sum.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/point-add-range-sum.2.test.cpp
-    title: test/yosupo/point-add-range-sum.2.test.cpp
+    path: test/yosupo/data_structure/point-set-range-composite.1.test.cpp
+    title: test/yosupo/data_structure/point-set-range-composite.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/point-set-range-composite.1.test.cpp
-    title: test/yosupo/point-set-range-composite.1.test.cpp
+    path: test/yosupo/data_structure/point-set-range-composite.2.test.cpp
+    title: test/yosupo/data_structure/point-set-range-composite.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/point-set-range-composite.2.test.cpp
-    title: test/yosupo/point-set-range-composite.2.test.cpp
+    path: test/yosupo/data_structure/point-set-range-composite.3.test.cpp
+    title: test/yosupo/data_structure/point-set-range-composite.3.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/point-set-range-composite.3.test.cpp
-    title: test/yosupo/point-set-range-composite.3.test.cpp
+    path: test/yosupo/data_structure/rectangle-sum.3.test.cpp
+    title: test/yosupo/data_structure/rectangle-sum.3.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/rectangle-sum.3.test.cpp
-    title: test/yosupo/rectangle-sum.3.test.cpp
+    path: test/yosupo/tree/lca.2.test.cpp
+    title: test/yosupo/tree/lca.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/vertex-add-subtree-sum.1.test.cpp
-    title: test/yosupo/vertex-add-subtree-sum.1.test.cpp
+    path: test/yosupo/tree/vertex-add-subtree-sum.1.test.cpp
+    title: test/yosupo/tree/vertex-add-subtree-sum.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/vertex-set-path-composite.test.cpp
-    title: test/yosupo/vertex-set-path-composite.test.cpp
+    path: test/yosupo/tree/vertex-set-path-composite.test.cpp
+    title: test/yosupo/tree/vertex-set-path-composite.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/1036.1.test.cpp
     title: test/yukicoder/1036.1.test.cpp
@@ -592,27 +592,27 @@ data:
   timestamp: '2026-10-19 12:03:10+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/monoid.test.cpp
-  - test/unittest/mapping.test.cpp
-  - test/unittest/dual-segtree.test.cpp
-  - test/yukicoder/1036.2.test.cpp
-  - test/yukicoder/1641.test.cpp
+  - test/unittest/data_structures/dual-segtree.test.cpp
+  - test/unittest/algebra/mapping.test.cpp
+  - test/unittest/algebra/monoid.test.cpp
+  - test/aoj/ntl/ntl-1-c.test.cpp
+  - test/aoj/dsl/dsl-2-a.test.cpp
+  - test/aoj/dsl/dsl-2-b.1.test.cpp
+  - test/aoj/itp2/itp2-3-b.1.test.cpp
+  - test/aoj/itp2/itp2-3-b.2.test.cpp
+  - test/aoj/itp2/itp2-3-b.3.test.cpp
+  - test/yosupo/data_structure/point-set-range-composite.3.test.cpp
+  - test/yosupo/data_structure/point-set-range-composite.1.test.cpp
+  - test/yosupo/data_structure/point-set-range-composite.2.test.cpp
+  - test/yosupo/data_structure/point-add-range-sum.2.test.cpp
+  - test/yosupo/data_structure/rectangle-sum.3.test.cpp
+  - test/yosupo/tree/vertex-add-subtree-sum.1.test.cpp
+  - test/yosupo/tree/vertex-set-path-composite.test.cpp
+  - test/yosupo/tree/lca.2.test.cpp
   - test/yukicoder/1036.1.test.cpp
+  - test/yukicoder/1036.2.test.cpp
   - test/yukicoder/3652.test.cpp
-  - test/aoj/dsl-2-b.1.test.cpp
-  - test/aoj/itp2-3-b.2.test.cpp
-  - test/aoj/ntl-1-c.test.cpp
-  - test/aoj/dsl-2-a.test.cpp
-  - test/aoj/itp2-3-b.3.test.cpp
-  - test/aoj/itp2-3-b.1.test.cpp
-  - test/yosupo/point-set-range-composite.1.test.cpp
-  - test/yosupo/rectangle-sum.3.test.cpp
-  - test/yosupo/point-add-range-sum.2.test.cpp
-  - test/yosupo/vertex-set-path-composite.test.cpp
-  - test/yosupo/vertex-add-subtree-sum.1.test.cpp
-  - test/yosupo/lca.2.test.cpp
-  - test/yosupo/point-set-range-composite.2.test.cpp
-  - test/yosupo/point-set-range-composite.3.test.cpp
+  - test/yukicoder/1641.test.cpp
 documentation_of: src/data_structures/segtree.hpp
 layout: document
 title: "\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"

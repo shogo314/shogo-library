@@ -13,11 +13,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/two-sat.test.cpp
-    title: test/unittest/two-sat.test.cpp
+    path: test/unittest/graph/two-sat.test.cpp
+    title: test/unittest/graph/two-sat.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/two-sat.test.cpp
-    title: test/yosupo/two-sat.test.cpp
+    path: test/yosupo/other/two-sat.test.cpp
+    title: test/yosupo/other/two-sat.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -591,8 +591,8 @@ data:
   timestamp: '2026-10-21 05:55:54+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/two-sat.test.cpp
-  - test/yosupo/two-sat.test.cpp
+  - test/unittest/graph/two-sat.test.cpp
+  - test/yosupo/other/two-sat.test.cpp
 documentation_of: src/graph/two-sat.hpp
 layout: document
 title: 2-SAT

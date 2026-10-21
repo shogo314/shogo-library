@@ -4,14 +4,14 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dsl-4-a.2.test.cpp
-    title: test/aoj/dsl-4-a.2.test.cpp
+    path: test/aoj/dsl/dsl-4-a.2.test.cpp
+    title: test/aoj/dsl/dsl-4-a.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/compress.test.cpp
-    title: test/unittest/compress.test.cpp
+    path: test/unittest/utility/compress.test.cpp
+    title: test/unittest/utility/compress.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/rectangle-sum.3.test.cpp
-    title: test/yosupo/rectangle-sum.3.test.cpp
+    path: test/yosupo/data_structure/rectangle-sum.3.test.cpp
+    title: test/yosupo/data_structure/rectangle-sum.3.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -121,9 +121,9 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/compress.test.cpp
-  - test/aoj/dsl-4-a.2.test.cpp
-  - test/yosupo/rectangle-sum.3.test.cpp
+  - test/unittest/utility/compress.test.cpp
+  - test/aoj/dsl/dsl-4-a.2.test.cpp
+  - test/yosupo/data_structure/rectangle-sum.3.test.cpp
 documentation_of: src/utility/compress.hpp
 layout: document
 title: "\u5EA7\u6A19\u5727\u7E2E"

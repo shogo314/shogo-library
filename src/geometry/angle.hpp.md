@@ -4,14 +4,14 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/angle.test.cpp
-    title: test/unittest/angle.test.cpp
+    path: test/unittest/geometry/angle.test.cpp
+    title: test/unittest/geometry/angle.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/sort-points-by-argument.1.test.cpp
-    title: test/yosupo/sort-points-by-argument.1.test.cpp
+    path: test/yosupo/geo/sort-points-by-argument.1.test.cpp
+    title: test/yosupo/geo/sort-points-by-argument.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/sort-points-by-argument.2.test.cpp
-    title: test/yosupo/sort-points-by-argument.2.test.cpp
+    path: test/yosupo/geo/sort-points-by-argument.2.test.cpp
+    title: test/yosupo/geo/sort-points-by-argument.2.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -123,9 +123,9 @@ data:
   timestamp: '2026-10-14 11:33:42+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/angle.test.cpp
-  - test/yosupo/sort-points-by-argument.2.test.cpp
-  - test/yosupo/sort-points-by-argument.1.test.cpp
+  - test/unittest/geometry/angle.test.cpp
+  - test/yosupo/geo/sort-points-by-argument.2.test.cpp
+  - test/yosupo/geo/sort-points-by-argument.1.test.cpp
 documentation_of: src/geometry/angle.hpp
 layout: document
 title: "\u504F\u89D2"

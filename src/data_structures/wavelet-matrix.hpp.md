@@ -4,17 +4,17 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/wavelet-matrix.test.cpp
-    title: test/unittest/wavelet-matrix.test.cpp
+    path: test/unittest/data_structures/wavelet-matrix.test.cpp
+    title: test/unittest/data_structures/wavelet-matrix.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/range-kth-smallest.test.cpp
-    title: test/yosupo/range-kth-smallest.test.cpp
+    path: test/yosupo/data_structure/range-kth-smallest.test.cpp
+    title: test/yosupo/data_structure/range-kth-smallest.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/rectangle-sum.5.test.cpp
-    title: test/yosupo/rectangle-sum.5.test.cpp
+    path: test/yosupo/data_structure/rectangle-sum.5.test.cpp
+    title: test/yosupo/data_structure/rectangle-sum.5.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/static-range-frequency.test.cpp
-    title: test/yosupo/static-range-frequency.test.cpp
+    path: test/yosupo/data_structure/static-range-frequency.test.cpp
+    title: test/yosupo/data_structure/static-range-frequency.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -406,10 +406,10 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/wavelet-matrix.test.cpp
-  - test/yosupo/static-range-frequency.test.cpp
-  - test/yosupo/rectangle-sum.5.test.cpp
-  - test/yosupo/range-kth-smallest.test.cpp
+  - test/unittest/data_structures/wavelet-matrix.test.cpp
+  - test/yosupo/data_structure/rectangle-sum.5.test.cpp
+  - test/yosupo/data_structure/range-kth-smallest.test.cpp
+  - test/yosupo/data_structure/static-range-frequency.test.cpp
 documentation_of: src/data_structures/wavelet-matrix.hpp
 layout: document
 title: Wavelet Matrix

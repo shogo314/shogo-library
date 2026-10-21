@@ -10,11 +10,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/stern-brocot.test.cpp
-    title: test/unittest/stern-brocot.test.cpp
+    path: test/unittest/math/stern-brocot.test.cpp
+    title: test/unittest/math/stern-brocot.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/stern-brocot-tree.test.cpp
-    title: test/yosupo/stern-brocot-tree.test.cpp
+    path: test/yosupo/number_theory/stern-brocot-tree.test.cpp
+    title: test/yosupo/number_theory/stern-brocot-tree.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -538,8 +538,8 @@ data:
   timestamp: '2026-10-20 02:23:35+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/stern-brocot.test.cpp
-  - test/yosupo/stern-brocot-tree.test.cpp
+  - test/unittest/math/stern-brocot.test.cpp
+  - test/yosupo/number_theory/stern-brocot-tree.test.cpp
 documentation_of: src/math/stern-brocot.hpp
 layout: document
 title: "Stern\u2013Brocot \u6728\u3068\u9023\u5206\u6570"

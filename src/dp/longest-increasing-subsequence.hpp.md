@@ -4,14 +4,14 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dpl-1-d.test.cpp
-    title: test/aoj/dpl-1-d.test.cpp
+    path: test/aoj/dpl/dpl-1-d.test.cpp
+    title: test/aoj/dpl/dpl-1-d.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/longest-increasing-subsequence.test.cpp
-    title: test/unittest/longest-increasing-subsequence.test.cpp
+    path: test/unittest/dp/longest-increasing-subsequence.test.cpp
+    title: test/unittest/dp/longest-increasing-subsequence.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/longest-increasing-subsequence.test.cpp
-    title: test/yosupo/longest-increasing-subsequence.test.cpp
+    path: test/yosupo/other/longest-increasing-subsequence.test.cpp
+    title: test/yosupo/other/longest-increasing-subsequence.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -134,9 +134,9 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/longest-increasing-subsequence.test.cpp
-  - test/aoj/dpl-1-d.test.cpp
-  - test/yosupo/longest-increasing-subsequence.test.cpp
+  - test/unittest/dp/longest-increasing-subsequence.test.cpp
+  - test/aoj/dpl/dpl-1-d.test.cpp
+  - test/yosupo/other/longest-increasing-subsequence.test.cpp
 documentation_of: src/dp/longest-increasing-subsequence.hpp
 layout: document
 title: "\u6700\u9577\u5897\u52A0\u90E8\u5206\u5217 (LIS)"

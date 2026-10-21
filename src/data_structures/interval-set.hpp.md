@@ -7,8 +7,8 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/unittest/interval-set.test.cpp
-    title: test/unittest/interval-set.test.cpp
+    path: test/unittest/data_structures/interval-set.test.cpp
+    title: test/unittest/data_structures/interval-set.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/674.2.test.cpp
     title: test/yukicoder/674.2.test.cpp
@@ -175,7 +175,7 @@ data:
   timestamp: '2026-10-15 07:35:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/interval-set.test.cpp
+  - test/unittest/data_structures/interval-set.test.cpp
   - test/yukicoder/674.2.test.cpp
 documentation_of: src/data_structures/interval-set.hpp
 layout: document

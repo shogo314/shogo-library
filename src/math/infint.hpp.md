@@ -4,11 +4,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/grl-1-c.1.test.cpp
-    title: test/aoj/grl-1-c.1.test.cpp
+    path: test/aoj/grl/grl-1-c.1.test.cpp
+    title: test/aoj/grl/grl-1-c.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/infint.test.cpp
-    title: test/unittest/infint.test.cpp
+    path: test/unittest/math/infint.test.cpp
+    title: test/unittest/math/infint.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -310,8 +310,8 @@ data:
   timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/infint.test.cpp
-  - test/aoj/grl-1-c.1.test.cpp
+  - test/unittest/math/infint.test.cpp
+  - test/aoj/grl/grl-1-c.1.test.cpp
 documentation_of: src/math/infint.hpp
 layout: document
 title: "inf \u3092\u6301\u3064\u6574\u6570\u578B"

@@ -13,41 +13,41 @@ data:
     title: 2-SAT
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/alds1-11-d.1.test.cpp
-    title: test/aoj/alds1-11-d.1.test.cpp
+    path: test/aoj/alds1/alds1-11-d.1.test.cpp
+    title: test/aoj/alds1/alds1-11-d.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/grl-2-a.test.cpp
-    title: test/aoj/grl-2-a.test.cpp
+    path: test/aoj/grl/grl-2-a.test.cpp
+    title: test/aoj/grl/grl-2-a.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/grl-4-a.test.cpp
-    title: test/aoj/grl-4-a.test.cpp
+    path: test/aoj/grl/grl-4-a.test.cpp
+    title: test/aoj/grl/grl-4-a.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/find-cycle.test.cpp
-    title: test/unittest/find-cycle.test.cpp
+    path: test/unittest/data_structures/find-cycle.test.cpp
+    title: test/unittest/data_structures/find-cycle.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/graph-util.test.cpp
-    title: test/unittest/graph-util.test.cpp
+    path: test/unittest/data_structures/graph-util.test.cpp
+    title: test/unittest/data_structures/graph-util.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/two-sat.test.cpp
-    title: test/unittest/two-sat.test.cpp
+    path: test/unittest/graph/two-sat.test.cpp
+    title: test/unittest/graph/two-sat.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/chromatic-number.test.cpp
-    title: test/yosupo/chromatic-number.test.cpp
+    path: test/yosupo/graph/chromatic-number.test.cpp
+    title: test/yosupo/graph/chromatic-number.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/cycle-detection-undirected.test.cpp
-    title: test/yosupo/cycle-detection-undirected.test.cpp
+    path: test/yosupo/graph/cycle-detection-undirected.test.cpp
+    title: test/yosupo/graph/cycle-detection-undirected.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/cycle-detection.test.cpp
-    title: test/yosupo/cycle-detection.test.cpp
+    path: test/yosupo/graph/cycle-detection.test.cpp
+    title: test/yosupo/graph/cycle-detection.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/minimum-spanning-tree.2.test.cpp
-    title: test/yosupo/minimum-spanning-tree.2.test.cpp
+    path: test/yosupo/graph/minimum-spanning-tree.2.test.cpp
+    title: test/yosupo/graph/minimum-spanning-tree.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/scc.test.cpp
-    title: test/yosupo/scc.test.cpp
+    path: test/yosupo/graph/scc.test.cpp
+    title: test/yosupo/graph/scc.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/two-sat.test.cpp
-    title: test/yosupo/two-sat.test.cpp
+    path: test/yosupo/other/two-sat.test.cpp
+    title: test/yosupo/other/two-sat.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -768,18 +768,18 @@ data:
   timestamp: '2026-10-21 05:55:54+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/graph-util.test.cpp
-  - test/unittest/find-cycle.test.cpp
-  - test/unittest/two-sat.test.cpp
-  - test/aoj/grl-2-a.test.cpp
-  - test/aoj/grl-4-a.test.cpp
-  - test/aoj/alds1-11-d.1.test.cpp
-  - test/yosupo/scc.test.cpp
-  - test/yosupo/minimum-spanning-tree.2.test.cpp
-  - test/yosupo/chromatic-number.test.cpp
-  - test/yosupo/cycle-detection-undirected.test.cpp
-  - test/yosupo/cycle-detection.test.cpp
-  - test/yosupo/two-sat.test.cpp
+  - test/unittest/graph/two-sat.test.cpp
+  - test/unittest/data_structures/find-cycle.test.cpp
+  - test/unittest/data_structures/graph-util.test.cpp
+  - test/aoj/grl/grl-4-a.test.cpp
+  - test/aoj/grl/grl-2-a.test.cpp
+  - test/aoj/alds1/alds1-11-d.1.test.cpp
+  - test/yosupo/graph/cycle-detection-undirected.test.cpp
+  - test/yosupo/graph/minimum-spanning-tree.2.test.cpp
+  - test/yosupo/graph/chromatic-number.test.cpp
+  - test/yosupo/graph/scc.test.cpp
+  - test/yosupo/graph/cycle-detection.test.cpp
+  - test/yosupo/other/two-sat.test.cpp
 documentation_of: src/graph/graph_util.hpp
 layout: document
 title: "\u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570"

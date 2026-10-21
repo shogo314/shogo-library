@@ -13,26 +13,26 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dsl-1-b.1.test.cpp
-    title: test/aoj/dsl-1-b.1.test.cpp
+    path: test/aoj/dsl/dsl-1-b.1.test.cpp
+    title: test/aoj/dsl/dsl-1-b.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dsl-1-b.2.test.cpp
-    title: test/aoj/dsl-1-b.2.test.cpp
+    path: test/aoj/dsl/dsl-1-b.2.test.cpp
+    title: test/aoj/dsl/dsl-1-b.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/jag-summer-2971.test.cpp
-    title: test/aoj/jag-summer-2971.test.cpp
+    path: test/aoj/volume29/2971.test.cpp
+    title: test/aoj/volume29/2971.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/mapping.test.cpp
-    title: test/unittest/mapping.test.cpp
+    path: test/unittest/algebra/mapping.test.cpp
+    title: test/unittest/algebra/mapping.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/monoid.test.cpp
-    title: test/unittest/monoid.test.cpp
+    path: test/unittest/algebra/monoid.test.cpp
+    title: test/unittest/algebra/monoid.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/potentialized-unionfind.test.cpp
-    title: test/unittest/potentialized-unionfind.test.cpp
+    path: test/unittest/data_structures/potentialized-unionfind.test.cpp
+    title: test/unittest/data_structures/potentialized-unionfind.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
-    title: test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
+    path: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
+    title: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -547,13 +547,13 @@ data:
   timestamp: '2026-10-19 12:03:10+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/potentialized-unionfind.test.cpp
-  - test/unittest/monoid.test.cpp
-  - test/unittest/mapping.test.cpp
-  - test/aoj/dsl-1-b.2.test.cpp
-  - test/aoj/dsl-1-b.1.test.cpp
-  - test/aoj/jag-summer-2971.test.cpp
-  - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
+  - test/unittest/data_structures/potentialized-unionfind.test.cpp
+  - test/unittest/algebra/mapping.test.cpp
+  - test/unittest/algebra/monoid.test.cpp
+  - test/aoj/dsl/dsl-1-b.2.test.cpp
+  - test/aoj/dsl/dsl-1-b.1.test.cpp
+  - test/aoj/volume29/2971.test.cpp
+  - test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
 documentation_of: src/data_structures/potentialized-unionfind.hpp
 layout: document
 title: "\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind"

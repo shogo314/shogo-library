@@ -4,14 +4,14 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/itp1-1-a.binary-trie.test.cpp
-    title: test/aoj/itp1-1-a.binary-trie.test.cpp
+    path: test/aoj/itp1/itp1-1-a.binary-trie.test.cpp
+    title: test/aoj/itp1/itp1-1-a.binary-trie.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/binary-trie.test.cpp
-    title: test/unittest/binary-trie.test.cpp
+    path: test/unittest/data_structures/binary-trie.test.cpp
+    title: test/unittest/data_structures/binary-trie.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/set-xor-min.test.cpp
-    title: test/yosupo/set-xor-min.test.cpp
+    path: test/yosupo/data_structure/set-xor-min.test.cpp
+    title: test/yosupo/data_structure/set-xor-min.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -209,9 +209,9 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/binary-trie.test.cpp
-  - test/aoj/itp1-1-a.binary-trie.test.cpp
-  - test/yosupo/set-xor-min.test.cpp
+  - test/unittest/data_structures/binary-trie.test.cpp
+  - test/aoj/itp1/itp1-1-a.binary-trie.test.cpp
+  - test/yosupo/data_structure/set-xor-min.test.cpp
 documentation_of: src/data_structures/binary-trie.hpp
 layout: document
 title: Binary Trie

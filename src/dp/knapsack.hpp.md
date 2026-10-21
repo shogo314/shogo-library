@@ -4,23 +4,23 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dpl-1-b.test.cpp
-    title: test/aoj/dpl-1-b.test.cpp
+    path: test/aoj/dpl/dpl-1-b.test.cpp
+    title: test/aoj/dpl/dpl-1-b.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dpl-1-c.test.cpp
-    title: test/aoj/dpl-1-c.test.cpp
+    path: test/aoj/dpl/dpl-1-c.test.cpp
+    title: test/aoj/dpl/dpl-1-c.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dpl-1-f.test.cpp
-    title: test/aoj/dpl-1-f.test.cpp
+    path: test/aoj/dpl/dpl-1-f.test.cpp
+    title: test/aoj/dpl/dpl-1-f.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dpl-1-g.test.cpp
-    title: test/aoj/dpl-1-g.test.cpp
+    path: test/aoj/dpl/dpl-1-g.test.cpp
+    title: test/aoj/dpl/dpl-1-g.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dpl-1-h.test.cpp
-    title: test/aoj/dpl-1-h.test.cpp
+    path: test/aoj/dpl/dpl-1-h.test.cpp
+    title: test/aoj/dpl/dpl-1-h.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/knapsack.test.cpp
-    title: test/unittest/knapsack.test.cpp
+    path: test/unittest/dp/knapsack.test.cpp
+    title: test/unittest/dp/knapsack.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -335,12 +335,12 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/knapsack.test.cpp
-  - test/aoj/dpl-1-f.test.cpp
-  - test/aoj/dpl-1-h.test.cpp
-  - test/aoj/dpl-1-g.test.cpp
-  - test/aoj/dpl-1-c.test.cpp
-  - test/aoj/dpl-1-b.test.cpp
+  - test/unittest/dp/knapsack.test.cpp
+  - test/aoj/dpl/dpl-1-f.test.cpp
+  - test/aoj/dpl/dpl-1-c.test.cpp
+  - test/aoj/dpl/dpl-1-b.test.cpp
+  - test/aoj/dpl/dpl-1-h.test.cpp
+  - test/aoj/dpl/dpl-1-g.test.cpp
 documentation_of: src/dp/knapsack.hpp
 layout: document
 title: "\u30CA\u30C3\u30D7\u30B5\u30C3\u30AF\u554F\u984C"

@@ -10,11 +10,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/rectangle-sum.1.test.cpp
-    title: test/yosupo/rectangle-sum.1.test.cpp
+    path: test/yosupo/data_structure/rectangle-sum.1.test.cpp
+    title: test/yosupo/data_structure/rectangle-sum.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/rectangle-sum.2.test.cpp
-    title: test/yosupo/rectangle-sum.2.test.cpp
+    path: test/yosupo/data_structure/rectangle-sum.2.test.cpp
+    title: test/yosupo/data_structure/rectangle-sum.2.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -518,8 +518,8 @@ data:
   timestamp: '2026-10-19 12:03:10+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/yosupo/rectangle-sum.2.test.cpp
-  - test/yosupo/rectangle-sum.1.test.cpp
+  - test/yosupo/data_structure/rectangle-sum.2.test.cpp
+  - test/yosupo/data_structure/rectangle-sum.1.test.cpp
 documentation_of: src/data_structures/merge-sort-tree.hpp
 layout: document
 title: "\u30DE\u30FC\u30B8\u30BD\u30FC\u30C8\u30C4\u30EA\u30FC"

@@ -1,0 +1,41 @@
+#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/sources/JAG/Summer/2971"
+
+#include <array>
+#include <iostream>
+
+#include "../../../src/data_structures/potentialized-unionfind.hpp"
+#include "../../../src/math/modint.hpp"
+
+template <typename mint>
+bool solve(int n, const std::vector<std::array<int, 3>>& abx) {
+    PotentializedUnionFind<group::Prod<mint>> uf(n);
+    for (auto [a, b, x] : abx) {
+        mint mx = x;
+        if (mx != 0) {
+            // すでに連結で矛盾していたら false
+            if (!uf.merge(a, b, mx) && uf.diff(a, b) != mx) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+int main() {
+    using mint3 = modint998244353;
+    using mint7 = modint1000000007;
+    using mint9 = static_modint<1000000009U>;
+    int n, m;
+    std::cin >> n >> m;
+    std::vector<std::array<int, 3>> abx(m);
+    for (auto& [a, b, x] : abx) {
+        std::cin >> a >> b >> x;
+        a--;
+        b--;
+    }
+    if (solve<mint3>(n, abx) && solve<mint7>(n, abx) && solve<mint9>(n, abx)) {
+        std::cout << "Yes" << std::endl;
+    } else {
+        std::cout << "No" << std::endl;
+    }
+}

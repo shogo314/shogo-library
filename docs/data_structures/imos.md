@@ -34,3 +34,4 @@ Imos imos2(5, acted_monoid::AddSum<long long>());  // 作用素付きモノイ�
 
 - 区間取得も必要なら [遅延伝搬セグメント木](lazy-segtree.hpp)
 - 作用素が逆元を持たない (区間 chmin、区間代入など) ときは [双対セグメント木](dual-segtree.hpp)
+- 2 次元は [2 次元のいもす法](imos-2d.hpp)

@@ -270,7 +270,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/math/fps-composition.hpp
       title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\u306E\u5408\u6210\u3068\u9006\u95A2\
-        \u6570"
+        \u6570 (Kinoshita\u2013Li)"
     - icon: ':heavy_check_mark:'
       path: src/math/fps.hpp
       title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570"
@@ -1427,8 +1427,14 @@ data:
   - name: test/yosupo/polynomial
     pages:
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/polynomial/composition-of-formal-power-series-large.test.cpp
+      title: test/yosupo/polynomial/composition-of-formal-power-series-large.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/polynomial/composition-of-formal-power-series.test.cpp
       title: test/yosupo/polynomial/composition-of-formal-power-series.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/polynomial/compositional-inverse-of-formal-power-series-large.test.cpp
+      title: test/yosupo/polynomial/compositional-inverse-of-formal-power-series-large.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/polynomial/compositional-inverse-of-formal-power-series.test.cpp
       title: test/yosupo/polynomial/compositional-inverse-of-formal-power-series.test.cpp

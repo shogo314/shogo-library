@@ -18,7 +18,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/math/fps-composition.hpp
     title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\u306E\u5408\u6210\u3068\u9006\u95A2\
-      \u6570"
+      \u6570 (Kinoshita\u2013Li)"
   - icon: ':heavy_check_mark:'
     path: src/math/fps.hpp
     title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570"
@@ -264,8 +264,14 @@ data:
     path: test/yosupo/other/sum-of-exponential-times-polynomial.test.cpp
     title: test/yosupo/other/sum-of-exponential-times-polynomial.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/polynomial/composition-of-formal-power-series-large.test.cpp
+    title: test/yosupo/polynomial/composition-of-formal-power-series-large.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/polynomial/composition-of-formal-power-series.test.cpp
     title: test/yosupo/polynomial/composition-of-formal-power-series.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/polynomial/compositional-inverse-of-formal-power-series-large.test.cpp
+    title: test/yosupo/polynomial/compositional-inverse-of-formal-power-series-large.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/polynomial/compositional-inverse-of-formal-power-series.test.cpp
     title: test/yosupo/polynomial/compositional-inverse-of-formal-power-series.test.cpp
@@ -938,6 +944,7 @@ data:
   - test/yosupo/polynomial/pow-of-fps.test.cpp
   - test/yosupo/polynomial/compositional-inverse-of-formal-power-series.test.cpp
   - test/yosupo/polynomial/inv-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/polynomial/composition-of-formal-power-series-large.test.cpp
   - test/yosupo/polynomial/multipoint-evaluation.test.cpp
   - test/yosupo/polynomial/sqrt-of-formal-power-series.test.cpp
   - test/yosupo/polynomial/polynomial-interpolation.test.cpp
@@ -947,6 +954,7 @@ data:
   - test/yosupo/polynomial/log-of-fps.test.cpp
   - test/yosupo/polynomial/shift-of-sampling-points-of-polynomial.test.cpp
   - test/yosupo/polynomial/polynomial-taylor-shift.test.cpp
+  - test/yosupo/polynomial/compositional-inverse-of-formal-power-series-large.test.cpp
   - test/yosupo/polynomial/exp-of-formal-power-series-sparse.test.cpp
   - test/yosupo/polynomial/division-of-polynomials.test.cpp
   - test/yosupo/polynomial/polynomial-interpolation-on-geometric-sequence.test.cpp

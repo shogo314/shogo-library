@@ -156,9 +156,9 @@ data:
   - test/unittest/base/functions.test.cpp
   - test/unittest/math/rational.test.cpp
   - test/unittest/math/stern-brocot.test.cpp
-  - test/aoj/volume11/1160.test.cpp
   - test/aoj/ntl/ntl-1-e.test.cpp
   - test/aoj/dsl/dsl-5-a.test.cpp
+  - test/aoj/volume11/1160.test.cpp
   - test/yosupo/number_theory/stern-brocot-tree.test.cpp
 documentation_of: src/base/functions.hpp
 layout: document

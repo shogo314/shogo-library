@@ -323,22 +323,27 @@ data:
     \    using Graph<Cost>::operator[];\n    using Graph<Cost>::edges;\n\n    /**\n\
     \     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @param\
     \ n \u30CE\u30FC\u30C9\u6570\n     */\n    explicit Tree(long long n = 0) : Graph<Cost>(n)\
-    \ {}\n\n    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\
-    \u529B\u304B\u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\u308B\n   \
-    \  * @param padding  = -1 \u9802\u70B9\u756A\u53F7\u3092\u5165\u529B\u304B\u3089\
-    \u3044\u304F\u3064\u305A\u3089\u3059\u304B\n     * @param weighted = false \u8FBA\
-    \u306E\u91CD\u307F\u304C\u5165\u529B\u3055\u308C\u308B\u304B\n     */\n    void\
-    \ read(long long padding = -1, bool weighted = false) {\n        Graph<Cost>::read(this->n\
-    \ - 1, padding, weighted, false);\n    }\n\n    /**\n     * @brief \u6728\u306E\
-    \u76F4\u5F84\n     *\n     * @param weighted = true \u91CD\u307F\u4ED8\u304D\u304B\
-    \n     * @return std::vector<Edge> \u76F4\u5F84\u3092\u69CB\u6210\u3059\u308B\u8FBA\
-    \u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<Edge> diameter(bool weighted\
-    \ = true) const {\n        const Graph<Cost>& graph = *this;\n        std::vector<Cost>\
-    \ dist = shortest_path(graph, 0, weighted).dist;\n        long long u = std::max_element(dist.begin(),\
-    \ dist.end()) - dist.begin();\n        auto sp = shortest_path(graph, u, weighted);\n\
-    \        long long v = std::max_element(sp.dist.begin(), sp.dist.end()) - sp.dist.begin();\n\
-    \        return sp.path(v);\n    }\n\n    /**\n     * @brief \u6839\u4ED8\u304D\
-    \u6728\u306B\u3059\u308B\n     *\n     * @param root \u6839\n     * @return RootedTree<Cost>\
+    \ {}\n\n    /**\n     * @brief Graph \u3068\u3057\u3066\u898B\u308B\n     *\n\
+    \     * Graph \u3092\u53D7\u3051\u53D6\u308B\u95A2\u6570 (shortest_path \u306A\
+    \u3069) \u306B\u6E21\u3059\u3068\u304D\u306B\u4F7F\u3046\n     * @return const\
+    \ Graph<Cost>& \u3053\u306E\u6728\u3092\u8868\u3059\u30B0\u30E9\u30D5\n     */\n\
+    \    const Graph<Cost>& graph() const { return *this; }\n\n    /**\n     * @brief\
+    \ \u8FBA\u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\u529B\u304B\u3089\u53D7\u3051\
+    \u53D6\u3063\u3066\u8FFD\u52A0\u3059\u308B\n     * @param padding  = -1 \u9802\
+    \u70B9\u756A\u53F7\u3092\u5165\u529B\u304B\u3089\u3044\u304F\u3064\u305A\u3089\
+    \u3059\u304B\n     * @param weighted = false \u8FBA\u306E\u91CD\u307F\u304C\u5165\
+    \u529B\u3055\u308C\u308B\u304B\n     */\n    void read(long long padding = -1,\
+    \ bool weighted = false) {\n        Graph<Cost>::read(this->n - 1, padding, weighted,\
+    \ false);\n    }\n\n    /**\n     * @brief \u6728\u306E\u76F4\u5F84\n     *\n\
+    \     * @param weighted = true \u91CD\u307F\u4ED8\u304D\u304B\n     * @return\
+    \ std::vector<Edge> \u76F4\u5F84\u3092\u69CB\u6210\u3059\u308B\u8FBA\u306E\u30EA\
+    \u30B9\u30C8\n     */\n    std::vector<Edge> diameter(bool weighted = true) const\
+    \ {\n        std::vector<Cost> dist = shortest_path(graph(), 0, weighted).dist;\n\
+    \        long long u = std::max_element(dist.begin(), dist.end()) - dist.begin();\n\
+    \        auto sp = shortest_path(graph(), u, weighted);\n        long long v =\
+    \ std::max_element(sp.dist.begin(), sp.dist.end()) - sp.dist.begin();\n      \
+    \  return sp.path(v);\n    }\n\n    /**\n     * @brief \u6839\u4ED8\u304D\u6728\
+    \u306B\u3059\u308B\n     *\n     * @param root \u6839\n     * @return RootedTree<Cost>\
     \ \u6839\u4ED8\u304D\u6728\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\n     */\n\
     \    [[nodiscard]]\n    RootedTree<Cost> set_root(long long root) const& {\n \
     \       return RootedTree<Cost>(*this, root);\n    }\n    /**\n     * @brief \u6839\
@@ -364,26 +369,26 @@ data:
     \ : private Tree<Cost> {\n   public:\n    using Edge = typename Tree<Cost>::Edge;\n\
     \    using Tree<Cost>::n;\n    using Tree<Cost>::size;\n    using Tree<Cost>::m;\n\
     \    using Tree<Cost>::g;\n    using Tree<Cost>::operator[];\n    using Tree<Cost>::edges;\n\
-    \n    long long root;                                           //!< \u6839\n\
-    \    std::vector<Edge> par;                                    //!< \u89AA\u3078\
-    \u5411\u304B\u3046\u8FBA\n    std::vector<std::vector<Edge>> child;          \
-    \           //!< \u5B50\u3078\u5411\u304B\u3046\u8FBA\u306E\u30EA\u30B9\u30C8\n\
-    \    std::vector<Cost> depth;                                  //!< \u6DF1\u3055\
-    \u306E\u30EA\u30B9\u30C8\n    std::vector<Cost> height;                      \
-    \           //!< \u90E8\u5206\u6728\u306E\u9AD8\u3055\u306E\u30EA\u30B9\u30C8\n\
-    \    std::vector<long long> unweighted_depth;                  //!< \u91CD\u307F\
-    \u306A\u3057\u306E\u6DF1\u3055\u306E\u30EA\u30B9\u30C8\n    std::vector<long long>\
-    \ unweighted_height;                 //!< \u91CD\u307F\u306A\u3057\u306E\u90E8\
-    \u5206\u6728\u306E\u9AD8\u3055\u306E\u30EA\u30B9\u30C8\n    std::vector<long long>\
-    \ sz;                                //!< \u90E8\u5206\u6728\u306E\u9802\u70B9\
-    \u6570\u306E\u30EA\u30B9\u30C8\n    std::vector<long long> preorder;         \
-    \                 //!< \u5148\u884C\u9806\u5DE1\u56DE\n    std::vector<long long>\
-    \ postorder;                         //!< \u5F8C\u884C\u9806\u5DE1\u56DE\n   \
-    \ std::vector<std::pair<long long, long long>> euler_tour;  //!< \u30AA\u30A4\u30E9\
-    \u30FC\u30C4\u30A2\u30FC DFS\u4E2D\u306B\u3068\u304A\u3063\u305F\u9802\u70B9\u306E\
-    (\u9802\u70B9\u756A\u53F7,\u305D\u306E\u9802\u70B9\u3092\u901A\u3063\u305F\u56DE\
-    \u6570)\u306E\u30EA\u30B9\u30C8\n\n    RootedTree() = delete;\n\n    /**\n   \
-    \  * @brief \u89AA\u306E\u9802\u70B9\u306E\u30EA\u30B9\u30C8\u304B\u3089\u6839\
+    \    using Tree<Cost>::graph;\n\n    long long root;                         \
+    \                  //!< \u6839\n    std::vector<Edge> par;                   \
+    \                 //!< \u89AA\u3078\u5411\u304B\u3046\u8FBA\n    std::vector<std::vector<Edge>>\
+    \ child;                     //!< \u5B50\u3078\u5411\u304B\u3046\u8FBA\u306E\u30EA\
+    \u30B9\u30C8\n    std::vector<Cost> depth;                                  //!<\
+    \ \u6DF1\u3055\u306E\u30EA\u30B9\u30C8\n    std::vector<Cost> height;        \
+    \                         //!< \u90E8\u5206\u6728\u306E\u9AD8\u3055\u306E\u30EA\
+    \u30B9\u30C8\n    std::vector<long long> unweighted_depth;                  //!<\
+    \ \u91CD\u307F\u306A\u3057\u306E\u6DF1\u3055\u306E\u30EA\u30B9\u30C8\n    std::vector<long\
+    \ long> unweighted_height;                 //!< \u91CD\u307F\u306A\u3057\u306E\
+    \u90E8\u5206\u6728\u306E\u9AD8\u3055\u306E\u30EA\u30B9\u30C8\n    std::vector<long\
+    \ long> sz;                                //!< \u90E8\u5206\u6728\u306E\u9802\
+    \u70B9\u6570\u306E\u30EA\u30B9\u30C8\n    std::vector<long long> preorder;   \
+    \                       //!< \u5148\u884C\u9806\u5DE1\u56DE\n    std::vector<long\
+    \ long> postorder;                         //!< \u5F8C\u884C\u9806\u5DE1\u56DE\
+    \n    std::vector<std::pair<long long, long long>> euler_tour;  //!< \u30AA\u30A4\
+    \u30E9\u30FC\u30C4\u30A2\u30FC DFS\u4E2D\u306B\u3068\u304A\u3063\u305F\u9802\u70B9\
+    \u306E(\u9802\u70B9\u756A\u53F7,\u305D\u306E\u9802\u70B9\u3092\u901A\u3063\u305F\
+    \u56DE\u6570)\u306E\u30EA\u30B9\u30C8\n\n    RootedTree() = delete;\n\n    /**\n\
+    \     * @brief \u89AA\u306E\u9802\u70B9\u306E\u30EA\u30B9\u30C8\u304B\u3089\u6839\
     \u304C0\u306E\u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\
     \u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @tparam T \u9802\u70B9\u756A\u53F7\
     \u306E\u6574\u6570\u578B (long long \u3084 int)\n     * @param par_ \u9802\u70B9\
@@ -444,57 +449,57 @@ data:
     \ typename RootedTree<Cost>::Edge;\n    using RootedTree<Cost>::n;\n    using\
     \ RootedTree<Cost>::size;\n    using RootedTree<Cost>::m;\n    using RootedTree<Cost>::g;\n\
     \    using RootedTree<Cost>::operator[];\n    using RootedTree<Cost>::edges;\n\
-    \    using RootedTree<Cost>::root;\n    using RootedTree<Cost>::par;\n    using\
-    \ RootedTree<Cost>::child;\n    using RootedTree<Cost>::depth;\n    using RootedTree<Cost>::height;\n\
-    \    using RootedTree<Cost>::unweighted_depth;\n    using RootedTree<Cost>::unweighted_height;\n\
-    \    using RootedTree<Cost>::sz;\n    using RootedTree<Cost>::preorder;\n    using\
-    \ RootedTree<Cost>::postorder;\n    using RootedTree<Cost>::euler_tour;\n\n  \
-    \  long long h;                                       //!< \u30C0\u30D6\u30EA\u30F3\
-    \u30B0\u306E\u56DE\u6570\n    std::vector<std::vector<long long>> doubling_par;\
-    \  //!< j\u304B\u3089(1<<i)\u9802\u70B9\u767B\u3063\u305F\u9802\u70B9(\u5B58\u5728\
-    \u3057\u306A\u3044\u5834\u5408\u306F-1)\n\n    DoublingClimbTree() = delete;\n\
+    \    using RootedTree<Cost>::graph;\n    using RootedTree<Cost>::root;\n    using\
+    \ RootedTree<Cost>::par;\n    using RootedTree<Cost>::child;\n    using RootedTree<Cost>::depth;\n\
+    \    using RootedTree<Cost>::height;\n    using RootedTree<Cost>::unweighted_depth;\n\
+    \    using RootedTree<Cost>::unweighted_height;\n    using RootedTree<Cost>::sz;\n\
+    \    using RootedTree<Cost>::preorder;\n    using RootedTree<Cost>::postorder;\n\
+    \    using RootedTree<Cost>::euler_tour;\n\n    long long h;                 \
+    \                      //!< \u30C0\u30D6\u30EA\u30F3\u30B0\u306E\u56DE\u6570\n\
+    \    std::vector<std::vector<long long>> doubling_par;  //!< j\u304B\u3089(1<<i)\u9802\
+    \u70B9\u767B\u3063\u305F\u9802\u70B9(\u5B58\u5728\u3057\u306A\u3044\u5834\u5408\
+    \u306F-1)\n\n    DoublingClimbTree() = delete;\n\n    /**\n     * @brief RootedTree\u304B\
+    \u3089\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\u307F\u6839\u4ED8\u304D\u6728\u3092\
+    \u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF(\u30B3\u30D4\
+    \u30FC)\n     *\n     * @param tree RootedTree\n     */\n    explicit DoublingClimbTree(const\
+    \ RootedTree<Cost>& tree) : RootedTree<Cost>(tree) {\n        build();\n    }\n\
     \n    /**\n     * @brief RootedTree\u304B\u3089\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\
     \u307F\u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\
-    \u30C8\u30E9\u30AF\u30BF(\u30B3\u30D4\u30FC)\n     *\n     * @param tree RootedTree\n\
-    \     */\n    explicit DoublingClimbTree(const RootedTree<Cost>& tree) : RootedTree<Cost>(tree)\
-    \ {\n        build();\n    }\n\n    /**\n     * @brief RootedTree\u304B\u3089\u30C0\
-    \u30D6\u30EA\u30F3\u30B0\u6E08\u307F\u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\
-    \u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF(\u30E0\u30FC\u30D6)\n \
-    \    *\n     * @param tree RootedTree\n     */\n    DoublingClimbTree(RootedTree<Cost>&&\
-    \ tree) : RootedTree<Cost>(std::move(tree)) {\n        build();\n    }\n\n   \
-    \ /**\n     * @brief \u89AA\u306E\u9802\u70B9\u306E\u30EA\u30B9\u30C8\u304B\u3089\
-    \u6839\u304C0\u306E\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\u307F\u6839\u4ED8\u304D\
+    \u30C8\u30E9\u30AF\u30BF(\u30E0\u30FC\u30D6)\n     *\n     * @param tree RootedTree\n\
+    \     */\n    DoublingClimbTree(RootedTree<Cost>&& tree) : RootedTree<Cost>(std::move(tree))\
+    \ {\n        build();\n    }\n\n    /**\n     * @brief \u89AA\u306E\u9802\u70B9\
+    \u306E\u30EA\u30B9\u30C8\u304B\u3089\u6839\u304C0\u306E\u30C0\u30D6\u30EA\u30F3\
+    \u30B0\u6E08\u307F\u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\
+    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @tparam T \u9802\u70B9\u756A\
+    \u53F7\u306E\u6574\u6570\u578B (long long \u3084 int)\n     * @param par_ \u9802\
+    \u70B90\u4EE5\u5916\u306E\u89AA\u306E\u9802\u70B9\u306E\u30EA\u30B9\u30C8\n  \
+    \   * @param padding = -1 par\u306E\u9802\u70B9\u756A\u53F7\u3092\u3044\u304F\u3064\
+    \u305A\u3089\u3059\u304B\n     */\n    template <typename T = long long>\n   \
+    \ explicit DoublingClimbTree(const std::vector<T>& par_, long long padding = -1)\
+    \ : RootedTree<Cost>(par_, padding) {\n        build();\n    }\n    /**\n    \
+    \ * @brief Tree\u304B\u3089\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\u307F\u6839\u4ED8\
+    \u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\
+    \u30BF(\u30B3\u30D4\u30FC)\n     *\n     * @param tree Tree\n     * @param root\
+    \ \u6839\n     */\n    DoublingClimbTree(const Tree<Cost>& tree, long long root)\
+    \ : RootedTree<Cost>(tree, root) {\n        build();\n    }\n    /**\n     * @brief\
+    \ Tree\u304B\u3089\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\u307F\u6839\u4ED8\u304D\
     \u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\
-    \n     *\n     * @tparam T \u9802\u70B9\u756A\u53F7\u306E\u6574\u6570\u578B (long\
-    \ long \u3084 int)\n     * @param par_ \u9802\u70B90\u4EE5\u5916\u306E\u89AA\u306E\
-    \u9802\u70B9\u306E\u30EA\u30B9\u30C8\n     * @param padding = -1 par\u306E\u9802\
-    \u70B9\u756A\u53F7\u3092\u3044\u304F\u3064\u305A\u3089\u3059\u304B\n     */\n\
-    \    template <typename T = long long>\n    explicit DoublingClimbTree(const std::vector<T>&\
-    \ par_, long long padding = -1) : RootedTree<Cost>(par_, padding) {\n        build();\n\
-    \    }\n    /**\n     * @brief Tree\u304B\u3089\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\
-    \u307F\u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\
-    \u30C8\u30E9\u30AF\u30BF(\u30B3\u30D4\u30FC)\n     *\n     * @param tree Tree\n\
-    \     * @param root \u6839\n     */\n    DoublingClimbTree(const Tree<Cost>& tree,\
-    \ long long root) : RootedTree<Cost>(tree, root) {\n        build();\n    }\n\
-    \    /**\n     * @brief Tree\u304B\u3089\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\u307F\
-    \u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\
-    \u30E9\u30AF\u30BF(\u30E0\u30FC\u30D6)\n     *\n     * @param tree Tree\n    \
-    \ * @param root \u6839\n     */\n    DoublingClimbTree(Tree<Cost>&& tree, long\
-    \ long root) : RootedTree<Cost>(std::move(tree), root) {\n        build();\n \
-    \   }\n\n    /**\n     * @brief \u9802\u70B9u\u304B\u3089k\u56DE\u3092\u6839\u306E\
-    \u65B9\u5411\u306B\u9061\u3063\u305F\u9802\u70B9\n     *\n     * @param u \u5143\
-    \u306E\u9802\u70B9\n     * @param k \u767B\u308B\u6BB5\u6570\n     * @return long\
-    \ long k\u56DE\u767B\u3063\u305F\u9802\u70B9\n     */\n    long long hop(long\
-    \ long u, long long k) const {\n        assert(0 <= u && u < this->n && k >= 0);\n\
-    \        if (k > this->unweighted_depth[u]) return -1;\n        for (long long\
-    \ i = 0; i < h; i++) {\n            if (k >> i & 1) u = doubling_par[i][u];\n\
-    \            if (u == -1) return -1;\n        }\n        return u;\n    }\n\n\
-    \    /**\n     * @brief \u6700\u5C0F\u5171\u901A\u7956\u5148\n     *\n     * @param\
-    \ u \u9802\u70B91\n     * @param v \u9802\u70B92\n     * @return long long LCA\u306E\
-    \u9802\u70B9\u756A\u53F7\n     */\n    long long lca(long long u, long long v)\
-    \ const {\n        assert(0 <= u && u < this->n && 0 <= v && v < this->n);\n \
-    \       if (this->unweighted_depth[u] > this->unweighted_depth[v]) std::swap(u,\
-    \ v);\n        v = hop(v, this->unweighted_depth[v] - this->unweighted_depth[u]);\n\
+    (\u30E0\u30FC\u30D6)\n     *\n     * @param tree Tree\n     * @param root \u6839\
+    \n     */\n    DoublingClimbTree(Tree<Cost>&& tree, long long root) : RootedTree<Cost>(std::move(tree),\
+    \ root) {\n        build();\n    }\n\n    /**\n     * @brief \u9802\u70B9u\u304B\
+    \u3089k\u56DE\u3092\u6839\u306E\u65B9\u5411\u306B\u9061\u3063\u305F\u9802\u70B9\
+    \n     *\n     * @param u \u5143\u306E\u9802\u70B9\n     * @param k \u767B\u308B\
+    \u6BB5\u6570\n     * @return long long k\u56DE\u767B\u3063\u305F\u9802\u70B9\n\
+    \     */\n    long long hop(long long u, long long k) const {\n        assert(0\
+    \ <= u && u < this->n && k >= 0);\n        if (k > this->unweighted_depth[u])\
+    \ return -1;\n        for (long long i = 0; i < h; i++) {\n            if (k >>\
+    \ i & 1) u = doubling_par[i][u];\n            if (u == -1) return -1;\n      \
+    \  }\n        return u;\n    }\n\n    /**\n     * @brief \u6700\u5C0F\u5171\u901A\
+    \u7956\u5148\n     *\n     * @param u \u9802\u70B91\n     * @param v \u9802\u70B9\
+    2\n     * @return long long LCA\u306E\u9802\u70B9\u756A\u53F7\n     */\n    long\
+    \ long lca(long long u, long long v) const {\n        assert(0 <= u && u < this->n\
+    \ && 0 <= v && v < this->n);\n        if (this->unweighted_depth[u] > this->unweighted_depth[v])\
+    \ std::swap(u, v);\n        v = hop(v, this->unweighted_depth[v] - this->unweighted_depth[u]);\n\
     \        if (u == v) return u;\n        for (long long i = h - 1; i >= 0; i--)\
     \ {\n            long long nu = doubling_par[i][u];\n            long long nv\
     \ = doubling_par[i][v];\n            if (nu == -1) continue;\n            if (nu\
@@ -530,22 +535,27 @@ data:
     \    using Graph<Cost>::operator[];\n    using Graph<Cost>::edges;\n\n    /**\n\
     \     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @param\
     \ n \u30CE\u30FC\u30C9\u6570\n     */\n    explicit Tree(long long n = 0) : Graph<Cost>(n)\
-    \ {}\n\n    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\
-    \u529B\u304B\u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\u308B\n   \
-    \  * @param padding  = -1 \u9802\u70B9\u756A\u53F7\u3092\u5165\u529B\u304B\u3089\
-    \u3044\u304F\u3064\u305A\u3089\u3059\u304B\n     * @param weighted = false \u8FBA\
-    \u306E\u91CD\u307F\u304C\u5165\u529B\u3055\u308C\u308B\u304B\n     */\n    void\
-    \ read(long long padding = -1, bool weighted = false) {\n        Graph<Cost>::read(this->n\
-    \ - 1, padding, weighted, false);\n    }\n\n    /**\n     * @brief \u6728\u306E\
-    \u76F4\u5F84\n     *\n     * @param weighted = true \u91CD\u307F\u4ED8\u304D\u304B\
-    \n     * @return std::vector<Edge> \u76F4\u5F84\u3092\u69CB\u6210\u3059\u308B\u8FBA\
-    \u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<Edge> diameter(bool weighted\
-    \ = true) const {\n        const Graph<Cost>& graph = *this;\n        std::vector<Cost>\
-    \ dist = shortest_path(graph, 0, weighted).dist;\n        long long u = std::max_element(dist.begin(),\
-    \ dist.end()) - dist.begin();\n        auto sp = shortest_path(graph, u, weighted);\n\
-    \        long long v = std::max_element(sp.dist.begin(), sp.dist.end()) - sp.dist.begin();\n\
-    \        return sp.path(v);\n    }\n\n    /**\n     * @brief \u6839\u4ED8\u304D\
-    \u6728\u306B\u3059\u308B\n     *\n     * @param root \u6839\n     * @return RootedTree<Cost>\
+    \ {}\n\n    /**\n     * @brief Graph \u3068\u3057\u3066\u898B\u308B\n     *\n\
+    \     * Graph \u3092\u53D7\u3051\u53D6\u308B\u95A2\u6570 (shortest_path \u306A\
+    \u3069) \u306B\u6E21\u3059\u3068\u304D\u306B\u4F7F\u3046\n     * @return const\
+    \ Graph<Cost>& \u3053\u306E\u6728\u3092\u8868\u3059\u30B0\u30E9\u30D5\n     */\n\
+    \    const Graph<Cost>& graph() const { return *this; }\n\n    /**\n     * @brief\
+    \ \u8FBA\u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\u529B\u304B\u3089\u53D7\u3051\
+    \u53D6\u3063\u3066\u8FFD\u52A0\u3059\u308B\n     * @param padding  = -1 \u9802\
+    \u70B9\u756A\u53F7\u3092\u5165\u529B\u304B\u3089\u3044\u304F\u3064\u305A\u3089\
+    \u3059\u304B\n     * @param weighted = false \u8FBA\u306E\u91CD\u307F\u304C\u5165\
+    \u529B\u3055\u308C\u308B\u304B\n     */\n    void read(long long padding = -1,\
+    \ bool weighted = false) {\n        Graph<Cost>::read(this->n - 1, padding, weighted,\
+    \ false);\n    }\n\n    /**\n     * @brief \u6728\u306E\u76F4\u5F84\n     *\n\
+    \     * @param weighted = true \u91CD\u307F\u4ED8\u304D\u304B\n     * @return\
+    \ std::vector<Edge> \u76F4\u5F84\u3092\u69CB\u6210\u3059\u308B\u8FBA\u306E\u30EA\
+    \u30B9\u30C8\n     */\n    std::vector<Edge> diameter(bool weighted = true) const\
+    \ {\n        std::vector<Cost> dist = shortest_path(graph(), 0, weighted).dist;\n\
+    \        long long u = std::max_element(dist.begin(), dist.end()) - dist.begin();\n\
+    \        auto sp = shortest_path(graph(), u, weighted);\n        long long v =\
+    \ std::max_element(sp.dist.begin(), sp.dist.end()) - sp.dist.begin();\n      \
+    \  return sp.path(v);\n    }\n\n    /**\n     * @brief \u6839\u4ED8\u304D\u6728\
+    \u306B\u3059\u308B\n     *\n     * @param root \u6839\n     * @return RootedTree<Cost>\
     \ \u6839\u4ED8\u304D\u6728\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\n     */\n\
     \    [[nodiscard]]\n    RootedTree<Cost> set_root(long long root) const& {\n \
     \       return RootedTree<Cost>(*this, root);\n    }\n    /**\n     * @brief \u6839\
@@ -571,26 +581,26 @@ data:
     \ : private Tree<Cost> {\n   public:\n    using Edge = typename Tree<Cost>::Edge;\n\
     \    using Tree<Cost>::n;\n    using Tree<Cost>::size;\n    using Tree<Cost>::m;\n\
     \    using Tree<Cost>::g;\n    using Tree<Cost>::operator[];\n    using Tree<Cost>::edges;\n\
-    \n    long long root;                                           //!< \u6839\n\
-    \    std::vector<Edge> par;                                    //!< \u89AA\u3078\
-    \u5411\u304B\u3046\u8FBA\n    std::vector<std::vector<Edge>> child;          \
-    \           //!< \u5B50\u3078\u5411\u304B\u3046\u8FBA\u306E\u30EA\u30B9\u30C8\n\
-    \    std::vector<Cost> depth;                                  //!< \u6DF1\u3055\
-    \u306E\u30EA\u30B9\u30C8\n    std::vector<Cost> height;                      \
-    \           //!< \u90E8\u5206\u6728\u306E\u9AD8\u3055\u306E\u30EA\u30B9\u30C8\n\
-    \    std::vector<long long> unweighted_depth;                  //!< \u91CD\u307F\
-    \u306A\u3057\u306E\u6DF1\u3055\u306E\u30EA\u30B9\u30C8\n    std::vector<long long>\
-    \ unweighted_height;                 //!< \u91CD\u307F\u306A\u3057\u306E\u90E8\
-    \u5206\u6728\u306E\u9AD8\u3055\u306E\u30EA\u30B9\u30C8\n    std::vector<long long>\
-    \ sz;                                //!< \u90E8\u5206\u6728\u306E\u9802\u70B9\
-    \u6570\u306E\u30EA\u30B9\u30C8\n    std::vector<long long> preorder;         \
-    \                 //!< \u5148\u884C\u9806\u5DE1\u56DE\n    std::vector<long long>\
-    \ postorder;                         //!< \u5F8C\u884C\u9806\u5DE1\u56DE\n   \
-    \ std::vector<std::pair<long long, long long>> euler_tour;  //!< \u30AA\u30A4\u30E9\
-    \u30FC\u30C4\u30A2\u30FC DFS\u4E2D\u306B\u3068\u304A\u3063\u305F\u9802\u70B9\u306E\
-    (\u9802\u70B9\u756A\u53F7,\u305D\u306E\u9802\u70B9\u3092\u901A\u3063\u305F\u56DE\
-    \u6570)\u306E\u30EA\u30B9\u30C8\n\n    RootedTree() = delete;\n\n    /**\n   \
-    \  * @brief \u89AA\u306E\u9802\u70B9\u306E\u30EA\u30B9\u30C8\u304B\u3089\u6839\
+    \    using Tree<Cost>::graph;\n\n    long long root;                         \
+    \                  //!< \u6839\n    std::vector<Edge> par;                   \
+    \                 //!< \u89AA\u3078\u5411\u304B\u3046\u8FBA\n    std::vector<std::vector<Edge>>\
+    \ child;                     //!< \u5B50\u3078\u5411\u304B\u3046\u8FBA\u306E\u30EA\
+    \u30B9\u30C8\n    std::vector<Cost> depth;                                  //!<\
+    \ \u6DF1\u3055\u306E\u30EA\u30B9\u30C8\n    std::vector<Cost> height;        \
+    \                         //!< \u90E8\u5206\u6728\u306E\u9AD8\u3055\u306E\u30EA\
+    \u30B9\u30C8\n    std::vector<long long> unweighted_depth;                  //!<\
+    \ \u91CD\u307F\u306A\u3057\u306E\u6DF1\u3055\u306E\u30EA\u30B9\u30C8\n    std::vector<long\
+    \ long> unweighted_height;                 //!< \u91CD\u307F\u306A\u3057\u306E\
+    \u90E8\u5206\u6728\u306E\u9AD8\u3055\u306E\u30EA\u30B9\u30C8\n    std::vector<long\
+    \ long> sz;                                //!< \u90E8\u5206\u6728\u306E\u9802\
+    \u70B9\u6570\u306E\u30EA\u30B9\u30C8\n    std::vector<long long> preorder;   \
+    \                       //!< \u5148\u884C\u9806\u5DE1\u56DE\n    std::vector<long\
+    \ long> postorder;                         //!< \u5F8C\u884C\u9806\u5DE1\u56DE\
+    \n    std::vector<std::pair<long long, long long>> euler_tour;  //!< \u30AA\u30A4\
+    \u30E9\u30FC\u30C4\u30A2\u30FC DFS\u4E2D\u306B\u3068\u304A\u3063\u305F\u9802\u70B9\
+    \u306E(\u9802\u70B9\u756A\u53F7,\u305D\u306E\u9802\u70B9\u3092\u901A\u3063\u305F\
+    \u56DE\u6570)\u306E\u30EA\u30B9\u30C8\n\n    RootedTree() = delete;\n\n    /**\n\
+    \     * @brief \u89AA\u306E\u9802\u70B9\u306E\u30EA\u30B9\u30C8\u304B\u3089\u6839\
     \u304C0\u306E\u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\
     \u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @tparam T \u9802\u70B9\u756A\u53F7\
     \u306E\u6574\u6570\u578B (long long \u3084 int)\n     * @param par_ \u9802\u70B9\
@@ -651,57 +661,57 @@ data:
     \ typename RootedTree<Cost>::Edge;\n    using RootedTree<Cost>::n;\n    using\
     \ RootedTree<Cost>::size;\n    using RootedTree<Cost>::m;\n    using RootedTree<Cost>::g;\n\
     \    using RootedTree<Cost>::operator[];\n    using RootedTree<Cost>::edges;\n\
-    \    using RootedTree<Cost>::root;\n    using RootedTree<Cost>::par;\n    using\
-    \ RootedTree<Cost>::child;\n    using RootedTree<Cost>::depth;\n    using RootedTree<Cost>::height;\n\
-    \    using RootedTree<Cost>::unweighted_depth;\n    using RootedTree<Cost>::unweighted_height;\n\
-    \    using RootedTree<Cost>::sz;\n    using RootedTree<Cost>::preorder;\n    using\
-    \ RootedTree<Cost>::postorder;\n    using RootedTree<Cost>::euler_tour;\n\n  \
-    \  long long h;                                       //!< \u30C0\u30D6\u30EA\u30F3\
-    \u30B0\u306E\u56DE\u6570\n    std::vector<std::vector<long long>> doubling_par;\
-    \  //!< j\u304B\u3089(1<<i)\u9802\u70B9\u767B\u3063\u305F\u9802\u70B9(\u5B58\u5728\
-    \u3057\u306A\u3044\u5834\u5408\u306F-1)\n\n    DoublingClimbTree() = delete;\n\
+    \    using RootedTree<Cost>::graph;\n    using RootedTree<Cost>::root;\n    using\
+    \ RootedTree<Cost>::par;\n    using RootedTree<Cost>::child;\n    using RootedTree<Cost>::depth;\n\
+    \    using RootedTree<Cost>::height;\n    using RootedTree<Cost>::unweighted_depth;\n\
+    \    using RootedTree<Cost>::unweighted_height;\n    using RootedTree<Cost>::sz;\n\
+    \    using RootedTree<Cost>::preorder;\n    using RootedTree<Cost>::postorder;\n\
+    \    using RootedTree<Cost>::euler_tour;\n\n    long long h;                 \
+    \                      //!< \u30C0\u30D6\u30EA\u30F3\u30B0\u306E\u56DE\u6570\n\
+    \    std::vector<std::vector<long long>> doubling_par;  //!< j\u304B\u3089(1<<i)\u9802\
+    \u70B9\u767B\u3063\u305F\u9802\u70B9(\u5B58\u5728\u3057\u306A\u3044\u5834\u5408\
+    \u306F-1)\n\n    DoublingClimbTree() = delete;\n\n    /**\n     * @brief RootedTree\u304B\
+    \u3089\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\u307F\u6839\u4ED8\u304D\u6728\u3092\
+    \u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF(\u30B3\u30D4\
+    \u30FC)\n     *\n     * @param tree RootedTree\n     */\n    explicit DoublingClimbTree(const\
+    \ RootedTree<Cost>& tree) : RootedTree<Cost>(tree) {\n        build();\n    }\n\
     \n    /**\n     * @brief RootedTree\u304B\u3089\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\
     \u307F\u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\
-    \u30C8\u30E9\u30AF\u30BF(\u30B3\u30D4\u30FC)\n     *\n     * @param tree RootedTree\n\
-    \     */\n    explicit DoublingClimbTree(const RootedTree<Cost>& tree) : RootedTree<Cost>(tree)\
-    \ {\n        build();\n    }\n\n    /**\n     * @brief RootedTree\u304B\u3089\u30C0\
-    \u30D6\u30EA\u30F3\u30B0\u6E08\u307F\u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\
-    \u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF(\u30E0\u30FC\u30D6)\n \
-    \    *\n     * @param tree RootedTree\n     */\n    DoublingClimbTree(RootedTree<Cost>&&\
-    \ tree) : RootedTree<Cost>(std::move(tree)) {\n        build();\n    }\n\n   \
-    \ /**\n     * @brief \u89AA\u306E\u9802\u70B9\u306E\u30EA\u30B9\u30C8\u304B\u3089\
-    \u6839\u304C0\u306E\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\u307F\u6839\u4ED8\u304D\
+    \u30C8\u30E9\u30AF\u30BF(\u30E0\u30FC\u30D6)\n     *\n     * @param tree RootedTree\n\
+    \     */\n    DoublingClimbTree(RootedTree<Cost>&& tree) : RootedTree<Cost>(std::move(tree))\
+    \ {\n        build();\n    }\n\n    /**\n     * @brief \u89AA\u306E\u9802\u70B9\
+    \u306E\u30EA\u30B9\u30C8\u304B\u3089\u6839\u304C0\u306E\u30C0\u30D6\u30EA\u30F3\
+    \u30B0\u6E08\u307F\u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\
+    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @tparam T \u9802\u70B9\u756A\
+    \u53F7\u306E\u6574\u6570\u578B (long long \u3084 int)\n     * @param par_ \u9802\
+    \u70B90\u4EE5\u5916\u306E\u89AA\u306E\u9802\u70B9\u306E\u30EA\u30B9\u30C8\n  \
+    \   * @param padding = -1 par\u306E\u9802\u70B9\u756A\u53F7\u3092\u3044\u304F\u3064\
+    \u305A\u3089\u3059\u304B\n     */\n    template <typename T = long long>\n   \
+    \ explicit DoublingClimbTree(const std::vector<T>& par_, long long padding = -1)\
+    \ : RootedTree<Cost>(par_, padding) {\n        build();\n    }\n    /**\n    \
+    \ * @brief Tree\u304B\u3089\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\u307F\u6839\u4ED8\
+    \u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\
+    \u30BF(\u30B3\u30D4\u30FC)\n     *\n     * @param tree Tree\n     * @param root\
+    \ \u6839\n     */\n    DoublingClimbTree(const Tree<Cost>& tree, long long root)\
+    \ : RootedTree<Cost>(tree, root) {\n        build();\n    }\n    /**\n     * @brief\
+    \ Tree\u304B\u3089\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\u307F\u6839\u4ED8\u304D\
     \u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\
-    \n     *\n     * @tparam T \u9802\u70B9\u756A\u53F7\u306E\u6574\u6570\u578B (long\
-    \ long \u3084 int)\n     * @param par_ \u9802\u70B90\u4EE5\u5916\u306E\u89AA\u306E\
-    \u9802\u70B9\u306E\u30EA\u30B9\u30C8\n     * @param padding = -1 par\u306E\u9802\
-    \u70B9\u756A\u53F7\u3092\u3044\u304F\u3064\u305A\u3089\u3059\u304B\n     */\n\
-    \    template <typename T = long long>\n    explicit DoublingClimbTree(const std::vector<T>&\
-    \ par_, long long padding = -1) : RootedTree<Cost>(par_, padding) {\n        build();\n\
-    \    }\n    /**\n     * @brief Tree\u304B\u3089\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\
-    \u307F\u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\
-    \u30C8\u30E9\u30AF\u30BF(\u30B3\u30D4\u30FC)\n     *\n     * @param tree Tree\n\
-    \     * @param root \u6839\n     */\n    DoublingClimbTree(const Tree<Cost>& tree,\
-    \ long long root) : RootedTree<Cost>(tree, root) {\n        build();\n    }\n\
-    \    /**\n     * @brief Tree\u304B\u3089\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\u307F\
-    \u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\
-    \u30E9\u30AF\u30BF(\u30E0\u30FC\u30D6)\n     *\n     * @param tree Tree\n    \
-    \ * @param root \u6839\n     */\n    DoublingClimbTree(Tree<Cost>&& tree, long\
-    \ long root) : RootedTree<Cost>(std::move(tree), root) {\n        build();\n \
-    \   }\n\n    /**\n     * @brief \u9802\u70B9u\u304B\u3089k\u56DE\u3092\u6839\u306E\
-    \u65B9\u5411\u306B\u9061\u3063\u305F\u9802\u70B9\n     *\n     * @param u \u5143\
-    \u306E\u9802\u70B9\n     * @param k \u767B\u308B\u6BB5\u6570\n     * @return long\
-    \ long k\u56DE\u767B\u3063\u305F\u9802\u70B9\n     */\n    long long hop(long\
-    \ long u, long long k) const {\n        assert(0 <= u && u < this->n && k >= 0);\n\
-    \        if (k > this->unweighted_depth[u]) return -1;\n        for (long long\
-    \ i = 0; i < h; i++) {\n            if (k >> i & 1) u = doubling_par[i][u];\n\
-    \            if (u == -1) return -1;\n        }\n        return u;\n    }\n\n\
-    \    /**\n     * @brief \u6700\u5C0F\u5171\u901A\u7956\u5148\n     *\n     * @param\
-    \ u \u9802\u70B91\n     * @param v \u9802\u70B92\n     * @return long long LCA\u306E\
-    \u9802\u70B9\u756A\u53F7\n     */\n    long long lca(long long u, long long v)\
-    \ const {\n        assert(0 <= u && u < this->n && 0 <= v && v < this->n);\n \
-    \       if (this->unweighted_depth[u] > this->unweighted_depth[v]) std::swap(u,\
-    \ v);\n        v = hop(v, this->unweighted_depth[v] - this->unweighted_depth[u]);\n\
+    (\u30E0\u30FC\u30D6)\n     *\n     * @param tree Tree\n     * @param root \u6839\
+    \n     */\n    DoublingClimbTree(Tree<Cost>&& tree, long long root) : RootedTree<Cost>(std::move(tree),\
+    \ root) {\n        build();\n    }\n\n    /**\n     * @brief \u9802\u70B9u\u304B\
+    \u3089k\u56DE\u3092\u6839\u306E\u65B9\u5411\u306B\u9061\u3063\u305F\u9802\u70B9\
+    \n     *\n     * @param u \u5143\u306E\u9802\u70B9\n     * @param k \u767B\u308B\
+    \u6BB5\u6570\n     * @return long long k\u56DE\u767B\u3063\u305F\u9802\u70B9\n\
+    \     */\n    long long hop(long long u, long long k) const {\n        assert(0\
+    \ <= u && u < this->n && k >= 0);\n        if (k > this->unweighted_depth[u])\
+    \ return -1;\n        for (long long i = 0; i < h; i++) {\n            if (k >>\
+    \ i & 1) u = doubling_par[i][u];\n            if (u == -1) return -1;\n      \
+    \  }\n        return u;\n    }\n\n    /**\n     * @brief \u6700\u5C0F\u5171\u901A\
+    \u7956\u5148\n     *\n     * @param u \u9802\u70B91\n     * @param v \u9802\u70B9\
+    2\n     * @return long long LCA\u306E\u9802\u70B9\u756A\u53F7\n     */\n    long\
+    \ long lca(long long u, long long v) const {\n        assert(0 <= u && u < this->n\
+    \ && 0 <= v && v < this->n);\n        if (this->unweighted_depth[u] > this->unweighted_depth[v])\
+    \ std::swap(u, v);\n        v = hop(v, this->unweighted_depth[v] - this->unweighted_depth[u]);\n\
     \        if (u == v) return u;\n        for (long long i = h - 1; i >= 0; i--)\
     \ {\n            long long nu = doubling_par[i][u];\n            long long nv\
     \ = doubling_par[i][v];\n            if (nu == -1) continue;\n            if (nu\
@@ -725,44 +735,44 @@ data:
   isVerificationFile: false
   path: src/graph/tree.hpp
   requiredBy:
-  - src/graph/rerooting-dp.hpp
   - src/graph/centroid-decomposition.hpp
-  - src/graph/lowlink.hpp
   - src/graph/auxiliary-tree.hpp
   - src/graph/heavy-light-decomposition.hpp
-  timestamp: '2026-10-22 01:22:17+09:00'
+  - src/graph/lowlink.hpp
+  - src/graph/rerooting-dp.hpp
+  timestamp: '2026-10-22 01:35:54+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/graph/centroid-decomposition.test.cpp
   - test/unittest/graph/lowlink.test.cpp
-  - test/unittest/graph/rerooting-dp.test.cpp
   - test/unittest/graph/tree.test.cpp
-  - test/unittest/graph/heavy-light-decomposition.test.cpp
+  - test/unittest/graph/centroid-decomposition.test.cpp
+  - test/unittest/graph/rerooting-dp.test.cpp
   - test/unittest/graph/auxiliary-tree.test.cpp
-  - test/aoj/volume33/3372.test.cpp
-  - test/aoj/grl/grl-3-b.test.cpp
-  - test/aoj/grl/grl-5-d.test.cpp
-  - test/aoj/grl/grl-5-a.test.cpp
-  - test/aoj/grl/grl-5-b.test.cpp
-  - test/aoj/grl/grl-3-a.test.cpp
-  - test/aoj/volume15/1595.test.cpp
-  - test/yosupo/graph/biconnected-components.test.cpp
-  - test/yosupo/graph/two-edge-connected-components.test.cpp
-  - test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
-  - test/yosupo/tree/lca.4.test.cpp
-  - test/yosupo/tree/vertex-add-subtree-sum.1.test.cpp
-  - test/yosupo/tree/jump-on-tree.1.test.cpp
-  - test/yosupo/tree/lca.1.test.cpp
-  - test/yosupo/tree/lca.3.test.cpp
-  - test/yosupo/tree/vertex-add-path-sum.test.cpp
-  - test/yosupo/tree/vertex-set-path-composite.test.cpp
-  - test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp
-  - test/yosupo/tree/tree-diameter.test.cpp
-  - test/yosupo/tree/lca.5.test.cpp
-  - test/yosupo/tree/lca.2.test.cpp
-  - test/yosupo/tree/jump-on-tree.2.test.cpp
+  - test/unittest/graph/heavy-light-decomposition.test.cpp
   - test/yukicoder/1641.test.cpp
   - test/yukicoder/898.test.cpp
+  - test/aoj/volume33/3372.test.cpp
+  - test/aoj/grl/grl-5-a.test.cpp
+  - test/aoj/grl/grl-3-a.test.cpp
+  - test/aoj/grl/grl-5-d.test.cpp
+  - test/aoj/grl/grl-3-b.test.cpp
+  - test/aoj/grl/grl-5-b.test.cpp
+  - test/aoj/volume15/1595.test.cpp
+  - test/yosupo/tree/vertex-add-path-sum.test.cpp
+  - test/yosupo/tree/jump-on-tree.2.test.cpp
+  - test/yosupo/tree/vertex-set-path-composite.test.cpp
+  - test/yosupo/tree/lca.1.test.cpp
+  - test/yosupo/tree/lca.5.test.cpp
+  - test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
+  - test/yosupo/tree/vertex-add-subtree-sum.1.test.cpp
+  - test/yosupo/tree/tree-diameter.test.cpp
+  - test/yosupo/tree/lca.4.test.cpp
+  - test/yosupo/tree/lca.2.test.cpp
+  - test/yosupo/tree/lca.3.test.cpp
+  - test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp
+  - test/yosupo/tree/jump-on-tree.1.test.cpp
+  - test/yosupo/graph/two-edge-connected-components.test.cpp
+  - test/yosupo/graph/biconnected-components.test.cpp
 documentation_of: src/graph/tree.hpp
 layout: document
 title: "\u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8"
@@ -786,6 +796,7 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 | 辺の追加 (`add_edge`)・入力 (`read`) | ✓ | | |
 | 直径 (`diameter`) | ✓ | | |
 | `g[v]`、`edges()` ([グラフ](graph.hpp) と同じ) | ✓ | ✓ | ✓ |
+| `graph()` (`Graph` として取り出す) | ✓ | ✓ | ✓ |
 | 親・子・深さ・高さ・部分木サイズ・巡回順 | | ✓ | ✓ |
 | `hop`、`lca`、`dist` | | | ✓ |
 
@@ -797,6 +808,7 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 | `size()` | 頂点数 (`RootedTree`・`DoublingClimbTree` でも使える) | $O(1)$ |
 | `add_edge(u, v, w = 1)` | 辺を追加 | $O(1)$ |
 | `read(padding = -1, weighted = false)` | 標準入力から `n - 1` 本の辺を読む | $O(n)$ |
+| `graph()` | この木を `const Graph<Cost>&` として返す。`shortest_path` や [グラフに関する関数](graph_util.hpp) など、`Graph` を受け取る関数に渡すときに使う (`RootedTree`・`DoublingClimbTree` でも使える) | $O(1)$ |
 | `diameter(weighted = true)` | 直径を構成する辺のリスト (端点から順に) | $O(n \log n)$ |
 | `set_root(r)` | 根を `r` にした `RootedTree` を返す | $O(n)$ |
 | `build_lca(r)` | 根を `r` にした `DoublingClimbTree` を返す | $O(n \log n)$ |

@@ -682,16 +682,16 @@ data:
   timestamp: '2026-10-19 20:29:35+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/math/f2-matrix.test.cpp
   - test/unittest/math/matrix.test.cpp
+  - test/unittest/math/f2-matrix.test.cpp
+  - test/yukicoder/565.1.test.cpp
+  - test/yukicoder/1340.test.cpp
+  - test/yukicoder/565.2.test.cpp
   - test/aoj/volume33/3314.test.cpp
   - test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
   - test/yosupo/linear_algebra/matrix-rank.test.cpp
-  - test/yosupo/linear_algebra/system-of-linear-equations.test.cpp
   - test/yosupo/linear_algebra/matrix-det.test.cpp
-  - test/yukicoder/565.1.test.cpp
-  - test/yukicoder/565.2.test.cpp
-  - test/yukicoder/1340.test.cpp
+  - test/yosupo/linear_algebra/system-of-linear-equations.test.cpp
 documentation_of: src/math/matrix.hpp
 layout: document
 title: "\u884C\u5217"

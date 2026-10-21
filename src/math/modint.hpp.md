@@ -16,6 +16,10 @@ data:
     path: src/math/convolution.hpp
     title: "\u7573\u307F\u8FBC\u307F (NTT)"
   - icon: ':heavy_check_mark:'
+    path: src/math/fps-composition.hpp
+    title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\u306E\u5408\u6210\u3068\u9006\u95A2\
+      \u6570"
+  - icon: ':heavy_check_mark:'
     path: src/math/fps.hpp
     title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570"
   - icon: ':heavy_check_mark:'
@@ -96,6 +100,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/math/divisor-transform.test.cpp
     title: test/unittest/math/divisor-transform.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/math/fps-composition.test.cpp
+    title: test/unittest/math/fps-composition.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/math/fps.test.cpp
     title: test/unittest/math/fps.test.cpp
@@ -252,6 +259,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/other/sum-of-exponential-times-polynomial.test.cpp
     title: test/yosupo/other/sum-of-exponential-times-polynomial.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/polynomial/composition-of-formal-power-series.test.cpp
+    title: test/yosupo/polynomial/composition-of-formal-power-series.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/polynomial/compositional-inverse-of-formal-power-series.test.cpp
+    title: test/yosupo/polynomial/compositional-inverse-of-formal-power-series.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/polynomial/division-of-polynomials.test.cpp
     title: test/yosupo/polynomial/division-of-polynomials.test.cpp
@@ -852,6 +865,7 @@ data:
   - src/math/multipoint.hpp
   - src/math/combinatorial-sequences.hpp
   - src/math/polynomial-roots.hpp
+  - src/math/fps-composition.hpp
   - src/math/linear-recurrence.hpp
   timestamp: '2026-10-14 16:41:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
@@ -869,6 +883,7 @@ data:
   - test/unittest/math/combinatorial-sequences.test.cpp
   - test/unittest/math/sparse-fps.test.cpp
   - test/unittest/math/lagrange-interpolation.test.cpp
+  - test/unittest/math/fps-composition.test.cpp
   - test/unittest/math/sum-of-exp-times-poly.test.cpp
   - test/unittest/math/prime-counting.test.cpp
   - test/unittest/math/multipoint.test.cpp
@@ -902,6 +917,8 @@ data:
   - test/yosupo/polynomial/polynomial-taylor-shift.test.cpp
   - test/yosupo/polynomial/shift-of-sampling-points-of-polynomial.test.cpp
   - test/yosupo/polynomial/polynomial-root-finding.test.cpp
+  - test/yosupo/polynomial/compositional-inverse-of-formal-power-series.test.cpp
+  - test/yosupo/polynomial/composition-of-formal-power-series.test.cpp
   - test/yosupo/polynomial/log-of-fps.test.cpp
   - test/yosupo/polynomial/polynomial-interpolation.test.cpp
   - test/yosupo/graph/counting-spanning-tree-undirected.test.cpp

@@ -14,6 +14,10 @@ data:
     title: "\u5206\u5272\u6570\u30FB\u30D9\u30EB\u30CC\u30FC\u30A4\u6570\u30FB\u30B9\
       \u30BF\u30FC\u30EA\u30F3\u30B0\u6570\u30FB\u30D9\u30EB\u6570"
   - icon: ':heavy_check_mark:'
+    path: src/math/fps-composition.hpp
+    title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\u306E\u5408\u6210\u3068\u9006\u95A2\
+      \u6570"
+  - icon: ':heavy_check_mark:'
     path: src/math/fps.hpp
     title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570"
   - icon: ':heavy_check_mark:'
@@ -62,6 +66,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/math/combinatorics.test.cpp
     title: test/unittest/math/combinatorics.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/math/fps-composition.test.cpp
+    title: test/unittest/math/fps-composition.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/math/fps.test.cpp
     title: test/unittest/math/fps.test.cpp
@@ -119,6 +126,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/other/sum-of-exponential-times-polynomial.test.cpp
     title: test/yosupo/other/sum-of-exponential-times-polynomial.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/polynomial/composition-of-formal-power-series.test.cpp
+    title: test/yosupo/polynomial/composition-of-formal-power-series.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/polynomial/compositional-inverse-of-formal-power-series.test.cpp
+    title: test/yosupo/polynomial/compositional-inverse-of-formal-power-series.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/polynomial/division-of-polynomials.test.cpp
     title: test/yosupo/polynomial/division-of-polynomials.test.cpp
@@ -451,6 +464,7 @@ data:
   - src/math/multipoint.hpp
   - src/math/combinatorial-sequences.hpp
   - src/math/polynomial-roots.hpp
+  - src/math/fps-composition.hpp
   timestamp: '2026-10-20 17:15:36+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
@@ -458,6 +472,7 @@ data:
   - test/unittest/math/combinatorics.test.cpp
   - test/unittest/math/combinatorial-sequences.test.cpp
   - test/unittest/math/sparse-fps.test.cpp
+  - test/unittest/math/fps-composition.test.cpp
   - test/unittest/math/sum-of-exp-times-poly.test.cpp
   - test/unittest/math/multipoint.test.cpp
   - test/unittest/math/polynomial-roots.test.cpp
@@ -484,6 +499,8 @@ data:
   - test/yosupo/polynomial/polynomial-taylor-shift.test.cpp
   - test/yosupo/polynomial/shift-of-sampling-points-of-polynomial.test.cpp
   - test/yosupo/polynomial/polynomial-root-finding.test.cpp
+  - test/yosupo/polynomial/compositional-inverse-of-formal-power-series.test.cpp
+  - test/yosupo/polynomial/composition-of-formal-power-series.test.cpp
   - test/yosupo/polynomial/log-of-fps.test.cpp
   - test/yosupo/polynomial/polynomial-interpolation.test.cpp
   - test/yosupo/other/sum-of-exponential-times-polynomial-limit.test.cpp

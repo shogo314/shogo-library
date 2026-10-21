@@ -268,6 +268,10 @@ data:
       title: "floor sum (\u4E00\u6B21\u95A2\u6570\u306E\u5E8A\u95A2\u6570\u306E\u548C\
         )"
     - icon: ':heavy_check_mark:'
+      path: src/math/fps-composition.hpp
+      title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\u306E\u5408\u6210\u3068\u9006\u95A2\
+        \u6570"
+    - icon: ':heavy_check_mark:'
       path: src/math/fps.hpp
       title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570"
     - icon: ':heavy_check_mark:'
@@ -963,6 +967,9 @@ data:
       path: test/unittest/math/floor-sum.test.cpp
       title: test/unittest/math/floor-sum.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/math/fps-composition.test.cpp
+      title: test/unittest/math/fps-composition.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/math/fps.test.cpp
       title: test/unittest/math/fps.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1415,6 +1422,12 @@ data:
       title: test/yosupo/other/two-sat.test.cpp
   - name: test/yosupo/polynomial
     pages:
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/polynomial/composition-of-formal-power-series.test.cpp
+      title: test/yosupo/polynomial/composition-of-formal-power-series.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/polynomial/compositional-inverse-of-formal-power-series.test.cpp
+      title: test/yosupo/polynomial/compositional-inverse-of-formal-power-series.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/polynomial/division-of-polynomials.test.cpp
       title: test/yosupo/polynomial/division-of-polynomials.test.cpp

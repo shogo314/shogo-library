@@ -2,7 +2,7 @@
 
 /**
  * @file circle.hpp
- * @brief 円 (位置関係、交点、接線、内接円、外接円)
+ * @brief 円 (位置関係、交点、接線、内接円、外接円、共通部分の面積)
  */
 
 #include <algorithm>
@@ -10,6 +10,7 @@
 #include <cmath>
 #include <istream>
 #include <type_traits>
+#include <utility>
 #include <vector>
 
 #include "vector.hpp"
@@ -142,4 +143,99 @@ std::vector<Vector<T, 2>> tangent_points(const Circle<T>& c, const Vector<T, 2>&
     std::vector<Vector<T, 2>> res = {c.c + (v * r2 + n * s) / d2, c.c + (v * r2 - n * s) / d2};
     std::sort(res.begin(), res.end());
     return res;
+}
+
+/**
+ * @brief 2つの円の共通接線 (0〜4本)。浮動小数点型限定。中心が同じなら空を返す
+ *
+ * 各接線を (c1 との接点, c2 との接点) の組で返し、c1 との接点の座標の昇順に並べる。
+ * 2つの円が接する点での接線は、2つの接点が同じ点になる (接線は中心を結ぶ直線に垂直)
+ * @param eps 接する (その種類の接線が1本) とみなす、中心間の距離と半径の和・差の差
+ */
+template <typename T>
+std::vector<std::pair<Vector<T, 2>, Vector<T, 2>>> common_tangents(const Circle<T>& c1, const Circle<T>& c2, T eps = 1e-9) {
+    static_assert(std::is_floating_point_v<T>, "common_tangents: T must be a floating point type");
+    Vector<T, 2> d = c2.c - c1.c;
+    T d2 = d.squared_norm(), dist = std::sqrt(d2);
+    if (dist <= eps) return {};
+    std::vector<std::pair<Vector<T, 2>, Vector<T, 2>>> res;
+    // 共通外接線は c2 の半径を r2、共通内接線は -r2 として同じ式で求める
+    for (T r2 : {c2.r, -c2.r}) {
+        T dr = c1.r - r2;
+        if (dist < std::abs(dr) - eps) continue;
+        bool touch = std::abs(dist - std::abs(dr)) <= eps;
+        T h = touch ? T(0) : std::sqrt(std::max<T>(d2 - dr * dr, 0));
+        for (int sign : {1, -1}) {
+            // 中心から接点への単位ベクトル
+            Vector<T, 2> v = (d * dr + Vector<T, 2>(-d[1], d[0]) * (h * sign)) / d2;
+            res.push_back({c1.c + v * c1.r, c2.c + v * r2});
+            if (touch) break;
+        }
+    }
+    std::sort(res.begin(), res.end());
+    return res;
+}
+
+/**
+ * @brief 2つの円の共通部分の面積。浮動小数点型限定
+ */
+template <typename T>
+T circle_circle_intersection_area(const Circle<T>& c1, const Circle<T>& c2) {
+    static_assert(std::is_floating_point_v<T>, "circle_circle_intersection_area: T must be a floating point type");
+    const T pi = std::acos(T(-1));
+    T d = (c1.c - c2.c).abs();
+    if (d >= c1.r + c2.r) return 0;
+    if (d <= std::abs(c1.r - c2.r)) {
+        T r = std::min(c1.r, c2.r);
+        return pi * r * r;
+    }
+    // 各円の、交点を結ぶ弦で切った弓形の面積の和
+    auto segment = [&](T r, T R) {
+        T a = std::acos(std::clamp((d * d + r * r - R * R) / (2 * d * r), T(-1), T(1)));  // 中心角の半分
+        return r * r * (a - std::sin(2 * a) / 2);
+    };
+    return segment(c1.r, c2.r) + segment(c2.r, c1.r);
+}
+
+/**
+ * @brief 円と多角形の共通部分の面積。浮動小数点型限定 O(n)
+ *
+ * 円の中心と多角形の各辺がなす三角形と円の共通部分の符号付き面積を足す
+ * @param polygon 頂点の座標 (反時計回りでも時計回りでもよい)。凸でなくてもよい
+ */
+template <typename T>
+T circle_polygon_intersection_area(const Circle<T>& c, const std::vector<Vector<T, 2>>& polygon) {
+    static_assert(std::is_floating_point_v<T>, "circle_polygon_intersection_area: T must be a floating point type");
+    const T r = c.r;
+    // 原点 (円の中心)、a、b の三角形と円の共通部分の符号付き面積
+    auto triangle = [&](const Vector<T, 2>& a, const Vector<T, 2>& b) {
+        // 線分 ab を円周との交点で分ける
+        std::vector<Vector<T, 2>> ps = {a};
+        Vector<T, 2> v = b - a;
+        T A = v.squared_norm(), B = dot(a, v), C = a.squared_norm() - r * r;
+        T disc = B * B - A * C;
+        if (A > 0 && disc > 0) {
+            T s = std::sqrt(disc);
+            for (T t : {(-B - s) / A, (-B + s) / A}) {
+                if (0 < t && t < 1) ps.push_back(a + v * t);
+            }
+        }
+        ps.push_back(b);
+        T res = 0;
+        for (int i = 0; i + 1 < static_cast<int>(ps.size()); i++) {
+            const Vector<T, 2>&p = ps[i], &q = ps[i + 1];
+            // 両端が円の内部 (円周上を含む) なら区間全体が内部なので三角形、そうでなければ扇形
+            // (中点で判定すると、円に接する辺を内部とみなしてしまう)
+            const T lim = r * r * (1 + 1e-9);
+            if (p.squared_norm() <= lim && q.squared_norm() <= lim)
+                res += cross(p, q) / 2;
+            else
+                res += r * r * std::atan2(cross(p, q), dot(p, q)) / 2;
+        }
+        return res;
+    };
+    T res = 0;
+    const int n = static_cast<int>(polygon.size());
+    for (int i = 0; i < n; i++) res += triangle(polygon[i] - c.c, polygon[i + 1 == n ? 0 : i + 1] - c.c);
+    return std::abs(res);
 }

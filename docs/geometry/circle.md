@@ -1,5 +1,5 @@
 ---
-title: 円 (位置関係、交点、接線、内接円、外接円)
+title: 円 (位置関係、交点、接線、内接円、外接円、共通部分の面積)
 documentation_of: //src/geometry/circle.hpp
 ---
 
@@ -36,8 +36,12 @@ Circle out = circumcircle(Vector(0.0, 3.0), Vector(4.0, 0.0), Vector(0.0, 0.0));
 | `circle_line_intersection(c, p1, p2, eps = 1e-9)` | 円と直線 $p_1 p_2$ の交点 (0〜2個) | 浮動小数点型のみ | $O(1)$ |
 | `circle_circle_intersection(c1, c2, eps = 1e-9)` | 2つの円の交点 (0〜2個)。中心が同じなら空 | 浮動小数点型のみ | $O(1)$ |
 | `tangent_points(c, p, eps = 1e-9)` | 点 $p$ から円に引いた接線の接点 (0〜2個)。$p$ が円の内部なら空、円周上なら $p$ だけ | 浮動小数点型のみ | $O(1)$ |
+| `common_tangents(c1, c2, eps = 1e-9)` | 2つの円の共通接線 (0〜4本、本数は `circle_relation` と同じ)。各接線を (`c1` との接点, `c2` との接点) の `std::pair` で返す。中心が同じなら空 | 浮動小数点型のみ | $O(1)$ |
+| `circle_circle_intersection_area(c1, c2)` | 2つの円の共通部分の面積 | 浮動小数点型のみ | $O(1)$ |
+| `circle_polygon_intersection_area(c, poly)` | 円と多角形の共通部分の面積。多角形は凸でなくてもよく、向きも問わない | 浮動小数点型のみ | $O(n)$ |
 
 - 交点や接点は `std::vector` で返し、座標の昇順 (x が小さい順、同じなら y が小さい順) に並べます。
+- `common_tangents` は `c1` との接点の座標の昇順に並べます。2つの円が接する点での接線は、2つの接点が同じ点になります (接線は中心を結ぶ直線に垂直です)。
 - 交点が 1 個 (接する) かどうかは、距離の差が `eps` 以下かで判定します。例えば `circle_line_intersection` では、中心と直線の距離と半径の差を見ます。
 - `circle_relation` は誤差を考えずに比べます。座標と半径が整数なら `Circle<long long>` を使うと正確です。
 

@@ -50,6 +50,14 @@ struct Tree : private Graph<Cost> {
     explicit Tree(long long n = 0) : Graph<Cost>(n) {}
 
     /**
+     * @brief Graph として見る
+     *
+     * Graph を受け取る関数 (shortest_path など) に渡すときに使う
+     * @return const Graph<Cost>& この木を表すグラフ
+     */
+    const Graph<Cost>& graph() const { return *this; }
+
+    /**
      * @brief 辺の情報を標準入力から受け取って追加する
      * @param padding  = -1 頂点番号を入力からいくつずらすか
      * @param weighted = false 辺の重みが入力されるか
@@ -65,10 +73,9 @@ struct Tree : private Graph<Cost> {
      * @return std::vector<Edge> 直径を構成する辺のリスト
      */
     std::vector<Edge> diameter(bool weighted = true) const {
-        const Graph<Cost>& graph = *this;
-        std::vector<Cost> dist = shortest_path(graph, 0, weighted).dist;
+        std::vector<Cost> dist = shortest_path(graph(), 0, weighted).dist;
         long long u = std::max_element(dist.begin(), dist.end()) - dist.begin();
-        auto sp = shortest_path(graph, u, weighted);
+        auto sp = shortest_path(graph(), u, weighted);
         long long v = std::max_element(sp.dist.begin(), sp.dist.end()) - sp.dist.begin();
         return sp.path(v);
     }
@@ -133,6 +140,7 @@ class RootedTree : private Tree<Cost> {
     using Tree<Cost>::g;
     using Tree<Cost>::operator[];
     using Tree<Cost>::edges;
+    using Tree<Cost>::graph;
 
     long long root;                                           //!< 根
     std::vector<Edge> par;                                    //!< 親へ向かう辺
@@ -266,6 +274,7 @@ class DoublingClimbTree : private RootedTree<Cost> {
     using RootedTree<Cost>::g;
     using RootedTree<Cost>::operator[];
     using RootedTree<Cost>::edges;
+    using RootedTree<Cost>::graph;
     using RootedTree<Cost>::root;
     using RootedTree<Cost>::par;
     using RootedTree<Cost>::child;

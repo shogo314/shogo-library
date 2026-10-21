@@ -1,9 +1,9 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/shortest_path"
 
+#include "../../../src/graph/shortest-path.hpp"
+
 #include <iostream>
 #include <limits>
-
-#include "../../../src/graph/shortest-path.hpp"
 
 int main() {
     int n, m, s, t;

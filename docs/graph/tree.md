@@ -21,6 +21,7 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 | 辺の追加 (`add_edge`)・入力 (`read`) | ✓ | | |
 | 直径 (`diameter`) | ✓ | | |
 | `g[v]`、`edges()` ([グラフ](graph.hpp) と同じ) | ✓ | ✓ | ✓ |
+| `graph()` (`Graph` として取り出す) | ✓ | ✓ | ✓ |
 | 親・子・深さ・高さ・部分木サイズ・巡回順 | | ✓ | ✓ |
 | `hop`、`lca`、`dist` | | | ✓ |
 
@@ -32,6 +33,7 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 | `size()` | 頂点数 (`RootedTree`・`DoublingClimbTree` でも使える) | $O(1)$ |
 | `add_edge(u, v, w = 1)` | 辺を追加 | $O(1)$ |
 | `read(padding = -1, weighted = false)` | 標準入力から `n - 1` 本の辺を読む | $O(n)$ |
+| `graph()` | この木を `const Graph<Cost>&` として返す。`shortest_path` や [グラフに関する関数](graph_util.hpp) など、`Graph` を受け取る関数に渡すときに使う (`RootedTree`・`DoublingClimbTree` でも使える) | $O(1)$ |
 | `diameter(weighted = true)` | 直径を構成する辺のリスト (端点から順に) | $O(n \log n)$ |
 | `set_root(r)` | 根を `r` にした `RootedTree` を返す | $O(n)$ |
 | `build_lca(r)` | 根を `r` にした `DoublingClimbTree` を返す | $O(n \log n)$ |

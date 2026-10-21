@@ -5,6 +5,7 @@
  * @brief 多点評価・多項式補間・標本点のずらし
  */
 
+#include <algorithm>
 #include <cassert>
 #include <vector>
 
@@ -138,4 +139,98 @@ std::vector<mint> sample_point_shift(const std::vector<mint>& ys, mint c, long l
         k += len;
     }
     return res;
+}
+
+/**
+ * @brief 多項式 f の、等比数列の点 a r^i (0 <= i < m) での値 O((n + m) log (n + m)) (chirp-z 変換)
+ * ij = C(i + j, 2) - C(i, 2) - C(j, 2) を使うと f(a r^i) = r^{-C(i, 2)} Σ_j (f_j a^j r^{-C(j, 2)}) r^{C(i + j, 2)} となり、畳み込み 1 回で求まる
+ */
+template <typename mint>
+std::vector<mint> multipoint_evaluation_geometric(const FPS<mint>& f, mint a, mint r, long long m) {
+    const long long n = f.size();
+    std::vector<mint> res(m);
+    if (m == 0 || n == 0) return res;
+    if (r == 0) {
+        // 点は a, 0, 0, ...
+        for (long long j = n - 1; j >= 0; j--) res[0] = res[0] * a + f[j];
+        for (long long i = 1; i < m; i++) res[i] = f[0];
+        return res;
+    }
+    // w[k] = r^{C(k, 2)}、iw[k] = r^{-C(k, 2)}
+    const long long len = n + m - 1;
+    const mint ir = r.inv();
+    std::vector<mint> w(len), iw(std::max(n, m));
+    mint p = 1;
+    w[0] = 1;
+    for (long long k = 0; k + 1 < len; k++) w[k + 1] = w[k] * p, p *= r;
+    p = 1;
+    iw[0] = 1;
+    for (long long k = 0; k + 1 < static_cast<long long>(iw.size()); k++) iw[k + 1] = iw[k] * p, p *= ir;
+    // A を逆順に並べて畳み込むと、[n - 1 + i] が Σ_j A_j w[i + j] になる
+    std::vector<mint> A(n);
+    mint aj = 1;
+    for (long long j = 0; j < n; j++) A[n - 1 - j] = f[j] * aj * iw[j], aj *= a;
+    std::vector<mint> c = convolution(A, w);
+    for (long long i = 0; i < m; i++) res[i] = iw[i] * c[n - 1 + i];
+    return res;
+}
+
+namespace internal_multipoint {
+// Π_{j<n} (x - a r^j) O(n log n)
+// 前半 h = Π_{j<k} (x - a r^j) から、後半は Π_{j<k} (x - a r^{j+k}) = r^{k^2} h(x r^{-k}) と係数を変えるだけで求まる
+template <typename mint>
+FPS<mint> geometric_product(mint a, mint r, long long n) {
+    if (n == 0) return FPS<mint>{1};
+    if (n % 2 == 1) {
+        FPS<mint> h = geometric_product(a, r, n - 1);
+        return h * FPS<mint>{-a * r.pow(n - 1), 1};
+    }
+    const long long k = n / 2;
+    FPS<mint> h = geometric_product(a, r, k);
+    const mint rk = r.pow(k), irk = rk.inv();
+    FPS<mint> g = h;
+    mint c = rk.pow(k);
+    for (auto& x : g) x *= c, c *= irk;
+    return h * g;
+}
+}  // namespace internal_multipoint
+
+/**
+ * @brief 等比数列の点 (a r^i, y_i) (0 <= i < n) をすべて通る n - 1 次以下の多項式 (長さ n) O(n log n)
+ * a r^i は互いに異なること (n >= 2 なら a != 0、r != 0)
+ * f = M Σ_i w_i / (x - x_i) (M = Π (x - x_j)、w_i = y_i / Π_{j != i} (x_i - x_j))。
+ * 和の x^k の係数 -a^{-(k+1)} Σ_i w_i r^{-i(k+1)} は等比数列の点での多点評価で求まる
+ */
+template <typename mint>
+FPS<mint> polynomial_interpolation_geometric(mint a, mint r, const std::vector<mint>& ys) {
+    const long long n = ys.size();
+    if (n == 0) return FPS<mint>();
+    if (n == 1) return FPS<mint>{ys[0]};
+    assert(a != 0 && r != 0);
+    const mint ir = r.inv();
+    // pw[k] = r^k、P[k] = Π_{t=1}^{k} (r^t - 1)
+    std::vector<mint> pw(n), ipw(n), P(n), iP(n);
+    pw[0] = ipw[0] = P[0] = 1;
+    for (long long k = 1; k < n; k++) pw[k] = pw[k - 1] * r, ipw[k] = ipw[k - 1] * ir, P[k] = P[k - 1] * (pw[k] - 1);
+    assert(P[n - 1] != 0 && "a r^i must be distinct");
+    iP[n - 1] = P[n - 1].inv();
+    for (long long k = n - 1; k >= 1; k--) iP[k - 1] = iP[k] * (pw[k] - 1);
+    // Π_{j != i} (x_i - x_j) = a^{n-1} r^{e_i} P_i (-1)^{n-1-i} P_{n-1-i}、e_i = C(i, 2) + i (n - 1 - i)
+    // e_{i+1} - e_i = n - 2 - i なので、r^{-e_i} は順に掛けて求める
+    std::vector<mint> W(n);
+    const mint ian = a.inv().pow(n - 1);
+    mint ire = 1;
+    for (long long i = 0; i < n; i++) {
+        W[i] = ys[i] * ian * ire * iP[i] * iP[n - 1 - i];
+        if ((n - 1 - i) % 2 == 1) W[i] = -W[i];
+        if (i + 1 < n) ire *= ipw[n - 2 - i];
+    }
+    std::vector<mint> s = multipoint_evaluation_geometric(FPS<mint>(W), ir, ir, n);
+    const mint ia = a.inv();
+    mint c = ia;
+    FPS<mint> S(n);
+    for (long long k = 0; k < n; k++) S[k] = -c * s[k], c *= ia;
+    FPS<mint> f = (internal_multipoint::geometric_product(a, r, n) * S).pre(n);
+    f.resize(n);
+    return f;
 }

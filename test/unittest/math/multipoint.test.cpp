@@ -1,11 +1,13 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
 // multipoint_evaluation・polynomial_interpolation・sample_point_shift を、1 点ずつ直接計算したものと比べる
+// multipoint_evaluation_geometric は、a・r が 0・1・-1 の場合も試す
 // sample_point_shift は、c + k が 0 以上 n 未満の整数と重なる場合や、法を回って重なる場合も試す
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../../src/math/multipoint.hpp"
 
+#include <algorithm>
 #include <iostream>
 #include <random>
 #include <vector>
@@ -56,6 +58,36 @@ int main() {
         F f = polynomial_interpolation(xs, ys);
         check(static_cast<int>(f.size()) == n, "polynomial_interpolation の長さ");
         for (int i = 0; i < n; i++) check(eval(f, xs[i]) == ys[i], "polynomial_interpolation");
+    }
+    // multipoint_evaluation_geometric: f(a r^i) (0 <= i < m)
+    for (int rep = 0; rep < 600 && ok; rep++) {
+        int n = rng() % (rep < 400 ? 10 : 200), m = rng() % (rep < 400 ? 10 : 200);
+        F f(n);
+        for (auto& x : f) x = gen();
+        auto pick = [&] {
+            int t = rng() % 5;
+            return t == 0 ? mint(0) : t == 1 ? mint(1)
+                                  : t == 2   ? mint(-1)
+                                             : gen();
+        };
+        mint a = pick(), r = pick();
+        auto res = multipoint_evaluation_geometric(f, a, r, m);
+        check(static_cast<int>(res.size()) == m, "multipoint_evaluation_geometric の長さ");
+        mint x = a;
+        for (int i = 0; i < m; i++, x *= r) check(res[i] == eval(f, x), "multipoint_evaluation_geometric");
+    }
+    // polynomial_interpolation_geometric: 点 a r^i を通る。r = -1 なら n <= 2 まで
+    for (int rep = 0; rep < 600 && ok; rep++) {
+        int n = rng() % (rep < 400 ? 10 : 300);
+        mint a = gen(), r = gen();
+        if (rep % 10 == 0) r = -1, n = std::min(n, 2);
+        if (a == 0 || r == 0 || r == 1) continue;
+        std::vector<mint> ys(n);
+        for (auto& y : ys) y = gen();
+        F f = polynomial_interpolation_geometric(a, r, ys);
+        check(static_cast<int>(f.size()) == n, "polynomial_interpolation_geometric の長さ");
+        mint x = a;
+        for (int i = 0; i < n; i++, x *= r) check(eval(f, x) == ys[i], "polynomial_interpolation_geometric");
     }
     // sample_point_shift: f(0..n-1) から f(c..c+m-1)
     for (int rep = 0; rep < 1000 && ok; rep++) {

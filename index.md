@@ -287,6 +287,10 @@ data:
       title: "mod \u6F14\u7B97 (\u7A4D\u3001\u51AA\u4E57\u3001\u9006\u5143\u3001\u96E2\
         \u6563\u5BFE\u6570\u3001\u5E73\u65B9\u6839)"
     - icon: ':heavy_check_mark:'
+      path: src/math/multipoint.hpp
+      title: "\u591A\u70B9\u8A55\u4FA1\u30FB\u591A\u9805\u5F0F\u88DC\u9593\u30FB\u6A19\
+        \u672C\u70B9\u306E\u305A\u3089\u3057"
+    - icon: ':heavy_check_mark:'
       path: src/math/number-theory.hpp
       title: "\u6570\u8AD6 (\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406)"
     - icon: ':heavy_check_mark:'
@@ -883,6 +887,9 @@ data:
       path: test/unittest/monoid.test.cpp
       title: test/unittest/monoid.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/multipoint.test.cpp
+      title: test/unittest/multipoint.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/number-theory.test.cpp
       title: test/unittest/number-theory.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1200,6 +1207,9 @@ data:
       path: test/yosupo/minimum-spanning-tree.2.test.cpp
       title: test/yosupo/minimum-spanning-tree.2.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/multipoint-evaluation.test.cpp
+      title: test/yosupo/multipoint-evaluation.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/number-of-substrings.1.test.cpp
       title: test/yosupo/number-of-substrings.1.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1250,6 +1260,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/point-set-range-frequency.test.cpp
       title: test/yosupo/point-set-range-frequency.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/polynomial-interpolation.test.cpp
+      title: test/yosupo/polynomial-interpolation.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/polynomial-taylor-shift.test.cpp
       title: test/yosupo/polynomial-taylor-shift.test.cpp
@@ -1337,6 +1350,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/sharp-p-subset-sum.2.test.cpp
       title: test/yosupo/sharp-p-subset-sum.2.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/shift-of-sampling-points-of-polynomial.test.cpp
+      title: test/yosupo/shift-of-sampling-points-of-polynomial.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/shortest-path.test.cpp
       title: test/yosupo/shortest-path.test.cpp

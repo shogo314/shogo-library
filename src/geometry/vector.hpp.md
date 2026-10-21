@@ -864,30 +864,30 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/vector-line.test.cpp
-  - test/unittest/circle.test.cpp
   - test/unittest/dual-segtree.test.cpp
-  - test/unittest/vector.test.cpp
+  - test/unittest/circle.test.cpp
   - test/unittest/angle.test.cpp
-  - test/aoj/cgl-5-a.test.cpp
-  - test/aoj/cgl-7-f.test.cpp
-  - test/aoj/cgl-1-c.test.cpp
-  - test/aoj/cgl-1-b.test.cpp
+  - test/unittest/vector.test.cpp
+  - test/unittest/vector-line.test.cpp
   - test/aoj/cgl-7-d.test.cpp
-  - test/aoj/cgl-3-a.test.cpp
-  - test/aoj/cgl-2-d.test.cpp
-  - test/aoj/cgl-2-a.test.cpp
-  - test/aoj/cgl-7-e.test.cpp
-  - test/aoj/cgl-4-a.test.cpp
-  - test/aoj/cgl-7-c.test.cpp
-  - test/aoj/cgl-7-b.test.cpp
-  - test/aoj/cgl-3-c.test.cpp
+  - test/aoj/cgl-7-f.test.cpp
   - test/aoj/cgl-1-a.test.cpp
+  - test/aoj/cgl-7-c.test.cpp
+  - test/aoj/cgl-1-b.test.cpp
+  - test/aoj/cgl-3-a.test.cpp
+  - test/aoj/cgl-7-a.test.cpp
+  - test/aoj/cgl-2-a.test.cpp
+  - test/aoj/cgl-1-c.test.cpp
+  - test/aoj/cgl-7-e.test.cpp
+  - test/aoj/cgl-2-c.test.cpp
+  - test/aoj/cgl-5-a.test.cpp
+  - test/aoj/cgl-4-a.test.cpp
+  - test/aoj/cgl-7-b.test.cpp
+  - test/aoj/cgl-2-d.test.cpp
+  - test/aoj/cgl-3-c.test.cpp
   - test/aoj/3314.test.cpp
   - test/aoj/cgl-3-b.test.cpp
-  - test/aoj/cgl-7-a.test.cpp
   - test/aoj/cgl-2-b.test.cpp
-  - test/aoj/cgl-2-c.test.cpp
   - test/yosupo/sort-points-by-argument.1.test.cpp
 documentation_of: src/geometry/vector.hpp
 layout: document

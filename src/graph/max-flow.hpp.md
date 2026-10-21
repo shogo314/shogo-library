@@ -198,9 +198,9 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/max-flow.test.cpp
-  - test/unittest/project-selection.test.cpp
   - test/unittest/bipartite-matching.test.cpp
+  - test/unittest/project-selection.test.cpp
+  - test/unittest/max-flow.test.cpp
   - test/aoj/grl-6-a.test.cpp
 documentation_of: src/graph/max-flow.hpp
 layout: document

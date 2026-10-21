@@ -96,3 +96,4 @@ mint s = lagrange_interpolation(y, mint(1000000000000LL));
 ## 関連
 
 - 線形漸化式を満たす数列の遠くの項は [線形漸化式](linear-recurrence.hpp)
+- 多くの点での値をまとめて求めるなら [多点評価・多項式補間・標本点のずらし](multipoint.hpp)

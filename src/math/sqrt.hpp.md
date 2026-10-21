@@ -49,8 +49,8 @@ data:
   timestamp: '2026-10-14 11:33:42+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/prime-counting.test.cpp
   - test/unittest/sqrt.test.cpp
+  - test/unittest/prime-counting.test.cpp
   - test/yosupo/counting-primes.test.cpp
   - test/yosupo/enumerate-quotients.1.test.cpp
 documentation_of: src/math/sqrt.hpp

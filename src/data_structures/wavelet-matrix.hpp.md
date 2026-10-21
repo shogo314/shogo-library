@@ -407,9 +407,9 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/wavelet-matrix.test.cpp
-  - test/yosupo/static-range-frequency.test.cpp
   - test/yosupo/rectangle-sum.5.test.cpp
   - test/yosupo/range-kth-smallest.test.cpp
+  - test/yosupo/static-range-frequency.test.cpp
 documentation_of: src/data_structures/wavelet-matrix.hpp
 layout: document
 title: Wavelet Matrix

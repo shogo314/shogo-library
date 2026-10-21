@@ -432,26 +432,26 @@ data:
   isVerificationFile: false
   path: src/algebra/group.hpp
   requiredBy:
-  - src/data_structures/potentialized-unionfind.hpp
   - src/data_structures/fenwick-tree.hpp
+  - src/data_structures/potentialized-unionfind.hpp
   - src/data_structures/merge-sort-tree.hpp
   timestamp: '2026-10-19 12:03:10+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/potentialized-unionfind.test.cpp
-  - test/unittest/monoid.test.cpp
   - test/unittest/mapping.test.cpp
+  - test/unittest/monoid.test.cpp
+  - test/unittest/potentialized-unionfind.test.cpp
   - test/unittest/fenwick-tree.test.cpp
-  - test/aoj/dsl-2-b.2.test.cpp
+  - test/aoj/jag-summer-2971.test.cpp
   - test/aoj/grl-5-d.test.cpp
   - test/aoj/dsl-1-b.2.test.cpp
+  - test/aoj/dsl-2-b.2.test.cpp
   - test/aoj/dsl-1-b.1.test.cpp
-  - test/aoj/jag-summer-2971.test.cpp
-  - test/yosupo/vertex-add-path-sum.test.cpp
   - test/yosupo/rectangle-sum.2.test.cpp
   - test/yosupo/point-add-range-sum.3.test.cpp
-  - test/yosupo/rectangle-sum.1.test.cpp
+  - test/yosupo/vertex-add-path-sum.test.cpp
   - test/yosupo/vertex-add-subtree-sum.2.test.cpp
+  - test/yosupo/rectangle-sum.1.test.cpp
   - test/yosupo/unionfind-with-potential-non-commutative-group.test.cpp
 documentation_of: src/algebra/group.hpp
 layout: document

@@ -637,12 +637,12 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/circle.test.cpp
-  - test/aoj/cgl-7-f.test.cpp
   - test/aoj/cgl-7-d.test.cpp
-  - test/aoj/cgl-7-e.test.cpp
+  - test/aoj/cgl-7-f.test.cpp
   - test/aoj/cgl-7-c.test.cpp
-  - test/aoj/cgl-7-b.test.cpp
   - test/aoj/cgl-7-a.test.cpp
+  - test/aoj/cgl-7-e.test.cpp
+  - test/aoj/cgl-7-b.test.cpp
 documentation_of: src/geometry/circle.hpp
 layout: document
 title: "\u5186 (\u4F4D\u7F6E\u95A2\u4FC2\u3001\u4EA4\u70B9\u3001\u63A5\u7DDA\u3001\

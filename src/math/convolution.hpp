@@ -247,6 +247,19 @@ constexpr bool ntt_friendly(int z) {
     }
 }
 
+/**
+ * @brief 長さ 61 以上の畳み込みを mint で直接 NTT できる見込みがあるか (コンパイル時に決まる部分だけ)
+ * 偽なら NTT の関数を実体化しない (法 - 1 の 2 の指数が小さいと、回転因子の表の外を読むという誤った警告が出るため)
+ */
+template <class mint>
+constexpr bool ntt_candidate() {
+    if constexpr (is_static_modint<mint>::value) {
+        return countr_zero(mint::mod() - 1) >= 7;
+    } else {
+        return false;
+    }
+}
+
 static constexpr int MOD0 = 754974721;
 static constexpr int MOD1 = 167772161;
 static constexpr int MOD2 = 469762049;
@@ -320,7 +333,7 @@ std::vector<mint> convolution(const std::vector<mint>& A, const std::vector<mint
     const int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());
     if (std::min(N, M) <= 60) return internal_convolution::naive(A, B);
     const int z = internal_convolution::get_fft_size(N, M);
-    if constexpr (internal_convolution::is_static_modint<mint>::value) {
+    if constexpr (internal_convolution::ntt_candidate<mint>()) {
         if (internal_convolution::ntt_friendly<mint>(z)) return internal_convolution::convolution_fft(A, B, &A == &B);
     }
     std::vector<unsigned int> a(N), b(M);

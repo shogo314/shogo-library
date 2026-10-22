@@ -43,12 +43,12 @@ data:
     \u6570 (Kinoshita\u2013Li)\n */\n\n#include <algorithm>\n#include <cassert>\n\
     #include <vector>\n\n#line 2 \"src/math/convolution.hpp\"\n\n/**\n * @file convolution.hpp\n\
     \ * @brief \u7573\u307F\u8FBC\u307F (NTT)\n */\n\n#line 9 \"src/math/convolution.hpp\"\
-    \n#include <utility>\n#line 11 \"src/math/convolution.hpp\"\n\n#line 2 \"src/math/modint.hpp\"\
-    \n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\
-    \u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line\
-    \ 9 \"src/math/modint.hpp\"\n#include <cstdint>\n#line 11 \"src/math/modint.hpp\"\
-    \n#include <limits>\n#include <type_traits>\n#line 14 \"src/math/modint.hpp\"\n\
-    \n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\
+    \n#include <array>\n#include <cstdint>\n#include <type_traits>\n#include <utility>\n\
+    #line 14 \"src/math/convolution.hpp\"\n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n\
+    \ * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\
+    \u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line 11 \"\
+    src/math/modint.hpp\"\n#include <limits>\n#line 14 \"src/math/modint.hpp\"\n\n\
+    #line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\
     \u7279\u6027\n */\n\n#include <cstddef>\n#include <iterator>\n#include <set>\n\
     #line 13 \"src/utility/traits.hpp\"\n\nnamespace internal_traits {\nusing std::begin,\
     \ std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl : std::false_type\
@@ -390,7 +390,7 @@ data:
     \ tt = modmul(tt, tt, p), i++;\n        long long b = c;\n        for (long long\
     \ j = 0; j < s - i - 1; j++) b = modmul(b, b, p);\n        s = i;\n        c =\
     \ modmul(b, b, p);\n        t = modmul(t, c, p);\n        r = modmul(r, b, p);\n\
-    \    }\n    return std::min(r, p - r);\n}\n#line 14 \"src/math/convolution.hpp\"\
+    \    }\n    return std::min(r, p - r);\n}\n#line 17 \"src/math/convolution.hpp\"\
     \n\n/**\n * @brief \u7573\u307F\u8FBC\u307F\n */\nnamespace internal_convolution\
     \ {\n/**\n * @brief \u539F\u5B50\u6839\n * @param MOD int\n * @return int\n */\n\
     inline int calc_primitive_root(int MOD) {\n    if (MOD == 2) return 1;\n    if\
@@ -406,92 +406,174 @@ data:
     \        if (ok) return g;\n    }\n}\n\n/**\n * @brief \u7573\u307F\u8FBC\u307F\
     \u306E\u30B5\u30A4\u30BA\u30922\u306E\u3079\u304D\u4E57\u306B\u3059\u308B\n */\n\
     inline int get_fft_size(int N, int M) {\n    int size = 1;\n    while (size <\
-    \ N + M - 1) size <<= 1;\n    return size;\n}\n\n/**\n * @brief NTT\n */\ntemplate\
-    \ <class mint>\nvoid trans(std::vector<mint>& v, bool inv = false) {\n    if (v.empty())\
-    \ return;\n    int N = static_cast<int>(v.size());\n    int MOD = v[0].mod();\n\
-    \    int PR = calc_primitive_root(MOD);\n    static bool first = true;\n    static\
-    \ std::vector<long long> vbw(30), vibw(30);\n    if (first) {\n        first =\
-    \ false;\n        for (int k = 0; k < 30; ++k) {\n            vbw[k] = modpow(PR,\
-    \ (MOD - 1) >> (k + 1), MOD);\n            vibw[k] = modinv(vbw[k], MOD);\n  \
-    \      }\n    }\n    for (int i = 0, j = 1; j < N - 1; ++j) {\n        for (int\
-    \ k = N >> 1; k > (i ^= k); k >>= 1);\n        if (i > j) std::swap(v[i], v[j]);\n\
-    \    }\n    for (int k = 0, t = 2; t <= N; ++k, t <<= 1) {\n        long long\
-    \ bw = vbw[k];\n        if (inv) bw = vibw[k];\n        for (int i = 0; i < N;\
-    \ i += t) {\n            mint w = 1;\n            for (int j = 0; j < (t >> 1);\
-    \ ++j) {\n                int j1 = i + j, j2 = i + j + (t >> 1);\n           \
-    \     mint c1 = v[j1], c2 = v[j2] * w;\n                v[j1] = c1 + c2;\n   \
-    \             v[j2] = c1 - c2;\n                w *= bw;\n            }\n    \
-    \    }\n    }\n    if (inv) {\n        long long invN = modinv(N, MOD);\n    \
-    \    for (int i = 0; i < N; ++i) v[i] = v[i] * invN;\n    }\n}\n\nstatic constexpr\
-    \ int MOD0 = 754974721;\nstatic constexpr int MOD1 = 167772161;\nstatic constexpr\
-    \ int MOD2 = 469762049;\nusing mint0 = static_modint<MOD0>;\nusing mint1 = static_modint<MOD1>;\n\
-    using mint2 = static_modint<MOD2>;\nstatic const mint1 imod0 = 95869806;    //\
-    \ modinv(MOD0, MOD1);\nstatic const mint2 imod1 = 104391568;   // modinv(MOD1,\
-    \ MOD2);\nstatic const mint2 imod01 = 187290749;  // imod1 / MOD0;\n\n/**\n *\
-    \ @brief \u914D\u5217\u306E\u30B5\u30A4\u30BA\u304C\u5C0F\u3055\u3044\u3068\u304D\
-    \u306E\u7573\u307F\u8FBC\u307F\n * @param T mint, long long\n * @param A vector<T>\n\
-    \ * @param B vector<T>\n * @return vector<T>\n */\ntemplate <class T>\nstd::vector<T>\
-    \ naive(const std::vector<T>& A, const std::vector<T>& B) {\n    if (A.empty()\
-    \ || B.empty()) return {};\n    int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n\
-    \    std::vector<T> res(N + M - 1);\n    for (int i = 0; i < N; ++i)\n       \
-    \ for (int j = 0; j < M; ++j)\n            res[i + j] += A[i] * B[j];\n    return\
-    \ res;\n}\n};  // namespace internal_convolution\n\n/**\n * @brief modint\u306E\
-    \u7573\u307F\u8FBC\u307F\n * @param A vector<mint>\n * @param B vector<mint>\n\
-    \ * @return vector<mint>\n */\ntemplate <class mint>\nstd::vector<mint> convolution(const\
-    \ std::vector<mint>& A, const std::vector<mint>& B) {\n    if (A.empty() || B.empty())\
-    \ return {};\n    int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n\
-    \    if (std::min(N, M) < 30) return internal_convolution::naive(A, B);\n    int\
-    \ MOD = A[0].mod();\n    int size_fft = internal_convolution::get_fft_size(N,\
-    \ M);\n    if (MOD == 998244353) {\n        std::vector<mint> a(size_fft), b(size_fft),\
-    \ c(size_fft);\n        for (int i = 0; i < N; ++i) a[i] = A[i];\n        for\
-    \ (int i = 0; i < M; ++i) b[i] = B[i];\n        internal_convolution::trans(a),\
-    \ internal_convolution::trans(b);\n        std::vector<mint> res(size_fft);\n\
-    \        for (int i = 0; i < size_fft; ++i) res[i] = a[i] * b[i];\n        internal_convolution::trans(res,\
-    \ true);\n        res.resize(N + M - 1);\n        return res;\n    }\n    std::vector<internal_convolution::mint0>\
-    \ a0(size_fft, 0), b0(size_fft, 0), c0(size_fft, 0);\n    std::vector<internal_convolution::mint1>\
-    \ a1(size_fft, 0), b1(size_fft, 0), c1(size_fft, 0);\n    std::vector<internal_convolution::mint2>\
-    \ a2(size_fft, 0), b2(size_fft, 0), c2(size_fft, 0);\n    for (int i = 0; i <\
-    \ N; ++i) {\n        a0[i] = A[i].val();\n        a1[i] = A[i].val();\n      \
-    \  a2[i] = A[i].val();\n    }\n    for (int i = 0; i < M; ++i) {\n        b0[i]\
-    \ = B[i].val();\n        b1[i] = B[i].val();\n        b2[i] = B[i].val();\n  \
-    \  }\n    internal_convolution::trans(a0), internal_convolution::trans(a1), internal_convolution::trans(a2),\n\
-    \        internal_convolution::trans(b0), internal_convolution::trans(b1), internal_convolution::trans(b2);\n\
-    \    for (int i = 0; i < size_fft; ++i) {\n        c0[i] = a0[i] * b0[i];\n  \
-    \      c1[i] = a1[i] * b1[i];\n        c2[i] = a2[i] * b2[i];\n    }\n    internal_convolution::trans(c0,\
-    \ true), internal_convolution::trans(c1, true), internal_convolution::trans(c2,\
-    \ true);\n    const mint mod0 = internal_convolution::MOD0, mod01 = mod0 * internal_convolution::MOD1;\n\
-    \    std::vector<mint> res(N + M - 1);\n    for (int i = 0; i < N + M - 1; ++i)\
-    \ {\n        int y0 = c0[i].val();\n        int y1 = (internal_convolution::imod0\
-    \ * (c1[i] - y0)).val();\n        int y2 = (internal_convolution::imod01 * (c2[i]\
-    \ - y0) - internal_convolution::imod1 * y1).val();\n        res[i] = mod01 * y2\
-    \ + mod0 * y1 + y0;\n    }\n    return res;\n}\n\n/**\n * @brief long long\u306E\
-    \u7573\u307F\u8FBC\u307F\n * @param A vector<long long>\n * @param B vector<long\
-    \ long>\n * @return vector<long long>\n */\ninline std::vector<long long> convolution_ll(const\
-    \ std::vector<long long>& A, const std::vector<long long>& B) {\n    if (A.empty()\
-    \ || B.empty()) return {};\n    int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n\
-    \    if (std::min(N, M) < 30) return internal_convolution::naive(A, B);\n    int\
-    \ size_fft = internal_convolution::get_fft_size(N, M);\n    std::vector<internal_convolution::mint0>\
-    \ a0(size_fft, 0), b0(size_fft, 0), c0(size_fft, 0);\n    std::vector<internal_convolution::mint1>\
-    \ a1(size_fft, 0), b1(size_fft, 0), c1(size_fft, 0);\n    std::vector<internal_convolution::mint2>\
-    \ a2(size_fft, 0), b2(size_fft, 0), c2(size_fft, 0);\n    for (int i = 0; i <\
-    \ N; ++i) {\n        a0[i] = A[i];\n        a1[i] = A[i];\n        a2[i] = A[i];\n\
-    \    }\n    for (int i = 0; i < M; ++i) {\n        b0[i] = B[i];\n        b1[i]\
-    \ = B[i];\n        b2[i] = B[i];\n    }\n    internal_convolution::trans(a0),\
-    \ internal_convolution::trans(a1), internal_convolution::trans(a2),\n        internal_convolution::trans(b0),\
-    \ internal_convolution::trans(b1), internal_convolution::trans(b2);\n    for (int\
-    \ i = 0; i < size_fft; ++i) {\n        c0[i] = a0[i] * b0[i];\n        c1[i] =\
-    \ a1[i] * b1[i];\n        c2[i] = a2[i] * b2[i];\n    }\n    internal_convolution::trans(c0,\
-    \ true), internal_convolution::trans(c1, true), internal_convolution::trans(c2,\
-    \ true);\n    static const long long mod0 = internal_convolution::MOD0, mod01\
-    \ = mod0 * internal_convolution::MOD1;\n    static const __int128_t mod012 = static_cast<__int128_t>(mod01)\
-    \ * internal_convolution::MOD2;\n    std::vector<long long> res(N + M - 1);\n\
-    \    for (int i = 0; i < N + M - 1; ++i) {\n        int y0 = c0[i].val();\n  \
-    \      int y1 = (internal_convolution::imod0 * (c1[i] - y0)).val();\n        int\
-    \ y2 = (internal_convolution::imod01 * (c2[i] - y0) - internal_convolution::imod1\
-    \ * y1).val();\n        __int128_t tmp = static_cast<__int128_t>(mod01) * y2 +\
-    \ static_cast<__int128_t>(mod0) * y1 + y0;\n        if (tmp < (mod012 >> 1))\n\
-    \            res[i] = tmp;\n        else\n            res[i] = tmp - mod012;\n\
-    \    }\n    return res;\n}\n#line 2 \"src/math/fps.hpp\"\n\n/**\n * @file fps.hpp\n\
+    \ N + M - 1) size <<= 1;\n    return size;\n}\n\n/**\n * @brief x \u306E\u672B\
+    \u5C3E\u306E 0 \u306E\u500B\u6570 (x > 0)\n */\nconstexpr int countr_zero(unsigned\
+    \ int x) {\n    int k = 0;\n    while (!(x & 1)) x >>= 1, k++;\n    return k;\n\
+    }\n\ntemplate <class T>\nstruct is_static_modint : std::false_type {};\ntemplate\
+    \ <std::uint32_t Mod>\nstruct is_static_modint<static_modint<Mod>> : std::true_type\
+    \ {};\n\n/**\n * @brief NTT \u306E\u56DE\u8EE2\u56E0\u5B50\u306E\u8868 (AtCoder\
+    \ Library \u3068\u540C\u3058\u4F5C\u308A)\n *\n * root[i] \u306F 1 \u306E\u539F\
+    \u59CB 2^i \u4E57\u6839\u3001rate2\u30FBrate3 \u306F\u57FA\u6570 2\u30FB4 \u306E\
+    \u30D0\u30BF\u30D5\u30E9\u30A4\u3067\u6B21\u306E\u30D6\u30ED\u30C3\u30AF\u306B\
+    \u9032\u3080\u3068\u304D\u306B\u639B\u3051\u308B\u5024\n */\ntemplate <class mint>\n\
+    struct FFTInfo {\n    static constexpr int rank2 = countr_zero(mint::mod() - 1);\n\
+    \    std::array<mint, rank2 + 1> root, iroot;\n    std::array<mint, std::max(0,\
+    \ rank2 - 1)> rate2, irate2;\n    std::array<mint, std::max(0, rank2 - 2)> rate3,\
+    \ irate3;\n\n    FFTInfo() {\n        const mint g = calc_primitive_root(mint::mod());\n\
+    \        root[rank2] = g.pow((mint::mod() - 1) >> rank2);\n        iroot[rank2]\
+    \ = root[rank2].inv();\n        for (int i = rank2 - 1; i >= 0; i--) {\n     \
+    \       root[i] = root[i + 1] * root[i + 1];\n            iroot[i] = iroot[i +\
+    \ 1] * iroot[i + 1];\n        }\n        mint prod = 1, iprod = 1;\n        for\
+    \ (int i = 0; i <= rank2 - 2; i++) {\n            rate2[i] = root[i + 2] * prod;\n\
+    \            irate2[i] = iroot[i + 2] * iprod;\n            prod *= iroot[i +\
+    \ 2];\n            iprod *= root[i + 2];\n        }\n        prod = 1, iprod =\
+    \ 1;\n        for (int i = 0; i <= rank2 - 3; i++) {\n            rate3[i] = root[i\
+    \ + 3] * prod;\n            irate3[i] = iroot[i + 3] * iprod;\n            prod\
+    \ *= iroot[i + 3];\n            iprod *= root[i + 3];\n        }\n    }\n};\n\n\
+    /**\n * @brief NTT (\u30D3\u30C3\u30C8\u53CD\u8EE2\u306E\u4E26\u3079\u66FF\u3048\
+    \u3092\u3057\u306A\u3044\u3002\u7D50\u679C\u306F\u30D3\u30C3\u30C8\u53CD\u8EE2\
+    \u3057\u305F\u9806\u306B\u4E26\u3076)\u3002\u57FA\u6570 4 \u306E\u30D0\u30BF\u30D5\
+    \u30E9\u30A4\u3092\u4F7F\u3046\n * a \u306E\u9577\u3055\u306F 2 \u306E\u3079\u304D\
+    \u4E57\u3067\u30012^rank2 \u4EE5\u4E0B\u3067\u3042\u308B\u3053\u3068\n */\ntemplate\
+    \ <class mint>\nvoid butterfly(std::vector<mint>& a) {\n    const int n = static_cast<int>(a.size());\n\
+    \    const int h = countr_zero(n);\n    static const FFTInfo<mint> info;\n   \
+    \ int len = 0;  // a[i, i + (n >> len), i + 2 * (n >> len), ...] \u306F\u5909\u63DB\
+    \u6E08\u307F\n    while (len < h) {\n        if (h - len == 1) {\n           \
+    \ int p = 1 << (h - len - 1);\n            mint rot = 1;\n            for (int\
+    \ s = 0; s < (1 << len); s++) {\n                int offset = s << (h - len);\n\
+    \                for (int i = 0; i < p; i++) {\n                    mint l = a[i\
+    \ + offset], r = a[i + offset + p] * rot;\n                    a[i + offset] =\
+    \ l + r;\n                    a[i + offset + p] = l - r;\n                }\n\
+    \                if (s + 1 != (1 << len)) rot *= info.rate2[countr_zero(~static_cast<unsigned\
+    \ int>(s))];\n            }\n            len++;\n        } else {\n          \
+    \  int p = 1 << (h - len - 2);\n            mint rot = 1, imag = info.root[2];\n\
+    \            const unsigned long long mod2 = 1ULL * mint::mod() * mint::mod();\n\
+    \            for (int s = 0; s < (1 << len); s++) {\n                mint rot2\
+    \ = rot * rot, rot3 = rot2 * rot;\n                int offset = s << (h - len);\n\
+    \                for (int i = 0; i < p; i++) {\n                    unsigned long\
+    \ long a0 = a[i + offset].val();\n                    unsigned long long a1 =\
+    \ 1ULL * a[i + offset + p].val() * rot.val();\n                    unsigned long\
+    \ long a2 = 1ULL * a[i + offset + 2 * p].val() * rot2.val();\n               \
+    \     unsigned long long a3 = 1ULL * a[i + offset + 3 * p].val() * rot3.val();\n\
+    \                    unsigned long long a1na3imag = 1ULL * mint(a1 + mod2 - a3).val()\
+    \ * imag.val();\n                    unsigned long long na2 = mod2 - a2;\n   \
+    \                 a[i + offset] = mint(a0 + a2 + a1 + a3);\n                 \
+    \   a[i + offset + p] = mint(a0 + a2 + (2 * mod2 - (a1 + a3)));\n            \
+    \        a[i + offset + 2 * p] = mint(a0 + na2 + a1na3imag);\n               \
+    \     a[i + offset + 3 * p] = mint(a0 + na2 + (mod2 - a1na3imag));\n         \
+    \       }\n                if (s + 1 != (1 << len)) rot *= info.rate3[countr_zero(~static_cast<unsigned\
+    \ int>(s))];\n            }\n            len += 2;\n        }\n    }\n}\n\n/**\n\
+    \ * @brief butterfly \u306E\u9006\u5909\u63DB (n \u3067\u5272\u3089\u306A\u3044\
+    )\n */\ntemplate <class mint>\nvoid butterfly_inv(std::vector<mint>& a) {\n  \
+    \  const int n = static_cast<int>(a.size());\n    const int h = countr_zero(n);\n\
+    \    static const FFTInfo<mint> info;\n    int len = h;\n    while (len) {\n \
+    \       if (len == 1) {\n            int p = 1 << (h - len);\n            mint\
+    \ irot = 1;\n            for (int s = 0; s < (1 << (len - 1)); s++) {\n      \
+    \          int offset = s << (h - len + 1);\n                for (int i = 0; i\
+    \ < p; i++) {\n                    mint l = a[i + offset], r = a[i + offset +\
+    \ p];\n                    a[i + offset] = l + r;\n                    a[i + offset\
+    \ + p] = mint(1ULL * (mint::mod() + l.val() - r.val()) * irot.val());\n      \
+    \          }\n                if (s + 1 != (1 << (len - 1))) irot *= info.irate2[countr_zero(~static_cast<unsigned\
+    \ int>(s))];\n            }\n            len--;\n        } else {\n          \
+    \  int p = 1 << (h - len);\n            mint irot = 1, iimag = info.iroot[2];\n\
+    \            for (int s = 0; s < (1 << (len - 2)); s++) {\n                mint\
+    \ irot2 = irot * irot, irot3 = irot2 * irot;\n                int offset = s <<\
+    \ (h - len + 2);\n                for (int i = 0; i < p; i++) {\n            \
+    \        unsigned long long a0 = a[i + offset].val();\n                    unsigned\
+    \ long long a1 = a[i + offset + p].val();\n                    unsigned long long\
+    \ a2 = a[i + offset + 2 * p].val();\n                    unsigned long long a3\
+    \ = a[i + offset + 3 * p].val();\n                    unsigned long long a2na3iimag\
+    \ = mint((mint::mod() + a2 - a3) * iimag.val()).val();\n                    a[i\
+    \ + offset] = mint(a0 + a1 + a2 + a3);\n                    a[i + offset + p]\
+    \ = mint((a0 + (mint::mod() - a1) + a2na3iimag) * irot.val());\n             \
+    \       a[i + offset + 2 * p] = mint((a0 + a1 + (mint::mod() - a2) + (mint::mod()\
+    \ - a3)) * irot2.val());\n                    a[i + offset + 3 * p] = mint((a0\
+    \ + (mint::mod() - a1) + (mint::mod() - a2na3iimag)) * irot3.val());\n       \
+    \         }\n                if (s + 1 != (1 << (len - 2))) irot *= info.irate3[countr_zero(~static_cast<unsigned\
+    \ int>(s))];\n            }\n            len -= 2;\n        }\n    }\n}\n\n/**\n\
+    \ * @brief NTT \u3067\u7573\u307F\u8FBC\u3080 (\u6CD5\u306F\u7D20\u6570\u3067\u3001\
+    \u9577\u3055 N + M - 1 \u4EE5\u4E0A\u306E 2 \u306E\u3079\u304D\u4E57\u304C 2^rank2\
+    \ \u4EE5\u4E0B\u3067\u3042\u308B\u3053\u3068)\n * same \u306A\u3089 B \u306F A\
+    \ \u3068\u540C\u3058\u3068\u307F\u306A\u3057\u3001\u5909\u63DB\u3092 1 \u56DE\u7701\
+    \u304F\n */\ntemplate <class mint>\nstd::vector<mint> convolution_fft(std::vector<mint>\
+    \ a, std::vector<mint> b, bool same = false) {\n    const int n = static_cast<int>(a.size()),\
+    \ m = static_cast<int>(b.size());\n    const int z = get_fft_size(n, m);\n   \
+    \ a.resize(z);\n    butterfly(a);\n    if (same) {\n        for (int i = 0; i\
+    \ < z; i++) a[i] *= a[i];\n    } else {\n        b.resize(z);\n        butterfly(b);\n\
+    \        for (int i = 0; i < z; i++) a[i] *= b[i];\n    }\n    butterfly_inv(a);\n\
+    \    a.resize(n + m - 1);\n    const mint iz = mint(z).inv();\n    for (int i\
+    \ = 0; i < n + m - 1; i++) a[i] *= iz;\n    return a;\n}\n\n/**\n * @brief mint\
+    \ \u3067\u76F4\u63A5 NTT \u3067\u304D\u308B\u304B (static_modint \u3067\u3001\u6CD5\
+    \u304C\u7D20\u6570\u3067\u30012^rank2 \u304C\u9577\u3055 z \u4EE5\u4E0A)\n */\n\
+    template <class mint>\nconstexpr bool ntt_friendly(int z) {\n    if constexpr\
+    \ (is_static_modint<mint>::value) {\n        return internal_modint::is_prime32(mint::mod())\
+    \ && mint::mod() > 2 && (mint::mod() - 1) % z == 0;\n    } else {\n        return\
+    \ false;\n    }\n}\n\nstatic constexpr int MOD0 = 754974721;\nstatic constexpr\
+    \ int MOD1 = 167772161;\nstatic constexpr int MOD2 = 469762049;\nusing mint0 =\
+    \ static_modint<MOD0>;\nusing mint1 = static_modint<MOD1>;\nusing mint2 = static_modint<MOD2>;\n\
+    static const mint1 imod0 = 95869806;    // modinv(MOD0, MOD1);\nstatic const mint2\
+    \ imod1 = 104391568;   // modinv(MOD1, MOD2);\nstatic const mint2 imod01 = 187290749;\
+    \  // imod1 / MOD0;\n\n/**\n * @brief \u914D\u5217\u306E\u30B5\u30A4\u30BA\u304C\
+    \u5C0F\u3055\u3044\u3068\u304D\u306E\u7573\u307F\u8FBC\u307F\n * @param T mint,\
+    \ long long\n * @param A vector<T>\n * @param B vector<T>\n * @return vector<T>\n\
+    \ */\ntemplate <class T>\nstd::vector<T> naive(const std::vector<T>& A, const\
+    \ std::vector<T>& B) {\n    if (A.empty() || B.empty()) return {};\n    int N\
+    \ = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n    std::vector<T>\
+    \ res(N + M - 1);\n    for (int i = 0; i < N; ++i)\n        for (int j = 0; j\
+    \ < M; ++j)\n            res[i + j] += A[i] * B[j];\n    return res;\n}\n};  //\
+    \ namespace internal_convolution\n\nnamespace internal_convolution {\n/**\n *\
+    \ @brief 3 \u3064\u306E\u6CD5\u3067\u7573\u307F\u8FBC\u307F\u3001\u4E2D\u56FD\u5270\
+    \u4F59\u5B9A\u7406\u3067\u5024 (0 \u4EE5\u4E0A MOD0 MOD1 MOD2 \u672A\u6E80) \u3092\
+    \u5FA9\u5143\u3059\u308B\n * \u5024\u306F y0 + y1 MOD0 + y2 MOD0 MOD1 (0 <= y0\
+    \ < MOD0\u30010 <= y1 < MOD1\u30010 <= y2 < MOD2) \u306E\u5F62\u306B\u306A\u308A\
+    \u3001\u5404\u9805\u3092 f(y0, y1, y2) \u3067\u7D44\u307F\u7ACB\u3066\u308B\n\
+    \ * A \u3068 B \u304C\u540C\u3058\u914D\u5217\u306A\u3089\u3001\u5909\u63DB\u3092\
+    \ 1 \u56DE\u7701\u304F\n */\ntemplate <class T, class R, class F>\nstd::vector<R>\
+    \ convolution_crt(const std::vector<T>& A, const std::vector<T>& B, F f) {\n \
+    \   const int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n\
+    \    std::vector<mint0> a0(N), b0(M);\n    std::vector<mint1> a1(N), b1(M);\n\
+    \    std::vector<mint2> a2(N), b2(M);\n    for (int i = 0; i < N; ++i) a0[i] =\
+    \ A[i], a1[i] = A[i], a2[i] = A[i];\n    for (int i = 0; i < M; ++i) b0[i] = B[i],\
+    \ b1[i] = B[i], b2[i] = B[i];\n    const bool same = &A == &B;\n    auto c0 =\
+    \ convolution_fft(std::move(a0), std::move(b0), same);\n    auto c1 = convolution_fft(std::move(a1),\
+    \ std::move(b1), same);\n    auto c2 = convolution_fft(std::move(a2), std::move(b2),\
+    \ same);\n    std::vector<R> res(N + M - 1);\n    for (int i = 0; i < N + M -\
+    \ 1; ++i) {\n        unsigned int y0 = c0[i].val();\n        unsigned int y1 =\
+    \ (imod0 * (c1[i] - y0)).val();\n        unsigned int y2 = (imod01 * (c2[i] -\
+    \ y0) - imod1 * y1).val();\n        res[i] = f(y0, y1, y2);\n    }\n    return\
+    \ res;\n}\n}  // namespace internal_convolution\n\n/**\n * @brief modint\u306E\
+    \u7573\u307F\u8FBC\u307F\n *\n * static_modint \u3067\u6CD5\u304C NTT \u306B\u5411\
+    \u304F\u7D20\u6570 (998244353 \u306A\u3069) \u306A\u3089\u3001\u305D\u306E\u6CD5\
+    \u3067\u76F4\u63A5 NTT \u3059\u308B\u3002\n * \u305D\u3046\u3067\u306A\u3051\u308C\
+    \u3070 3 \u3064\u306E\u6CD5\u3067\u7573\u307F\u8FBC\u307F\u3001\u4E2D\u56FD\u5270\
+    \u4F59\u5B9A\u7406\u3067\u5FA9\u5143\u3059\u308B\n * @param A vector<mint>\n *\
+    \ @param B vector<mint>\n * @return vector<mint>\n */\ntemplate <class mint>\n\
+    std::vector<mint> convolution(const std::vector<mint>& A, const std::vector<mint>&\
+    \ B) {\n    if (A.empty() || B.empty()) return {};\n    const int N = static_cast<int>(A.size()),\
+    \ M = static_cast<int>(B.size());\n    if (std::min(N, M) <= 60) return internal_convolution::naive(A,\
+    \ B);\n    const int z = internal_convolution::get_fft_size(N, M);\n    if constexpr\
+    \ (internal_convolution::is_static_modint<mint>::value) {\n        if (internal_convolution::ntt_friendly<mint>(z))\
+    \ return internal_convolution::convolution_fft(A, B, &A == &B);\n    }\n    std::vector<unsigned\
+    \ int> a(N), b(M);\n    for (int i = 0; i < N; ++i) a[i] = A[i].val();\n    for\
+    \ (int i = 0; i < M; ++i) b[i] = B[i].val();\n    const mint mod0 = internal_convolution::MOD0,\
+    \ mod01 = mod0 * internal_convolution::MOD1;\n    return internal_convolution::convolution_crt<unsigned\
+    \ int, mint>(a, &A == &B ? a : b, [&](unsigned int y0, unsigned int y1, unsigned\
+    \ int y2) {\n        return mod01 * y2 + mod0 * y1 + y0;\n    });\n}\n\n/**\n\
+    \ * @brief long long\u306E\u7573\u307F\u8FBC\u307F\n * \u7D50\u679C\u306E\u5404\
+    \u9805\u306E\u7D76\u5BFE\u5024\u304C MOD0 MOD1 MOD2 / 2 (\u7D04 3 * 10^25) \u672A\
+    \u6E80\u3067\u3001long long \u306B\u53CE\u307E\u308B\u3053\u3068\n * @param A\
+    \ vector<long long>\n * @param B vector<long long>\n * @return vector<long long>\n\
+    \ */\ninline std::vector<long long> convolution_ll(const std::vector<long long>&\
+    \ A, const std::vector<long long>& B) {\n    if (A.empty() || B.empty()) return\
+    \ {};\n    const int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n\
+    \    if (std::min(N, M) <= 60) return internal_convolution::naive(A, B);\n   \
+    \ static const long long mod0 = internal_convolution::MOD0, mod01 = mod0 * internal_convolution::MOD1;\n\
+    \    static const __int128_t mod012 = static_cast<__int128_t>(mod01) * internal_convolution::MOD2;\n\
+    \    return internal_convolution::convolution_crt<long long, long long>(A, B,\
+    \ [&](unsigned int y0, unsigned int y1, unsigned int y2) {\n        __int128_t\
+    \ tmp = static_cast<__int128_t>(mod01) * y2 + static_cast<__int128_t>(mod0) *\
+    \ y1 + y0;\n        return static_cast<long long>(tmp < (mod012 >> 1) ? tmp :\
+    \ tmp - mod012);\n    });\n}\n#line 2 \"src/math/fps.hpp\"\n\n/**\n * @file fps.hpp\n\
     \ * @brief \u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\n */\n\n#line 10 \"src/math/fps.hpp\"\
     \n#include <optional>\n#include <queue>\n#line 14 \"src/math/fps.hpp\"\n\n#line\
     \ 2 \"src/math/combinatorics.hpp\"\n\n/**\n * @file combinatorics.hpp\n * @brief\
@@ -952,7 +1034,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/polynomial/compositional-inverse-of-formal-power-series-large.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 14:37:49+09:00'
+  timestamp: '2026-10-22 15:13:12+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/polynomial/compositional-inverse-of-formal-power-series-large.test.cpp

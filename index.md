@@ -1093,6 +1093,9 @@ data:
       path: test/unittest/math/combinatorics.test.cpp
       title: test/unittest/math/combinatorics.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/math/convolution.test.cpp
+      title: test/unittest/math/convolution.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/math/divisor-transform.test.cpp
       title: test/unittest/math/divisor-transform.test.cpp
     - icon: ':heavy_check_mark:'

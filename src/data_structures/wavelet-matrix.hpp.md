@@ -418,10 +418,10 @@ data:
   verifiedWith:
   - test/unittest/data_structures/wavelet-matrix.test.cpp
   - test/unittest/data_structures/range-count-distinct.test.cpp
-  - test/yosupo/data_structure/rectangle-sum.5.test.cpp
   - test/yosupo/data_structure/static-range-count-distinct.test.cpp
-  - test/yosupo/data_structure/range-kth-smallest.test.cpp
   - test/yosupo/data_structure/static-range-frequency.test.cpp
+  - test/yosupo/data_structure/rectangle-sum.5.test.cpp
+  - test/yosupo/data_structure/range-kth-smallest.test.cpp
 documentation_of: src/data_structures/wavelet-matrix.hpp
 layout: document
 title: Wavelet Matrix

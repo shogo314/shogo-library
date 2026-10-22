@@ -350,8 +350,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/link-cut-tree.test.cpp
-  - test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
   - test/yosupo/tree/dynamic-tree-vertex-add-subtree-sum.test.cpp
+  - test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
   - test/yosupo/tree/dynamic-tree-vertex-add-path-sum.test.cpp
 documentation_of: src/data_structures/link-cut-tree.hpp
 layout: document

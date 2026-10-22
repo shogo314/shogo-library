@@ -79,11 +79,11 @@ data:
   timestamp: '2026-10-22 04:30:36+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/math/sqrt.test.cpp
   - test/unittest/math/prime-counting.test.cpp
+  - test/unittest/math/sqrt.test.cpp
+  - test/yosupo/number_theory/kth-root-integer.test.cpp
   - test/yosupo/number_theory/counting-primes.test.cpp
   - test/yosupo/number_theory/enumerate-quotients.1.test.cpp
-  - test/yosupo/number_theory/kth-root-integer.test.cpp
 documentation_of: src/math/sqrt.hpp
 layout: document
 title: "\u6574\u6570\u306E\u5E73\u65B9\u6839\u30FBk \u4E57\u6839"

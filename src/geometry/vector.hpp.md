@@ -1044,38 +1044,38 @@ data:
   timestamp: '2026-10-22 13:36:14+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/data_structures/dual-segtree.test.cpp
-  - test/unittest/geometry/axis-parallel-segments.test.cpp
-  - test/unittest/geometry/circle.test.cpp
-  - test/unittest/geometry/angle.test.cpp
-  - test/unittest/geometry/vector.test.cpp
-  - test/unittest/geometry/vector-polygon.test.cpp
   - test/unittest/geometry/vector-line.test.cpp
+  - test/unittest/geometry/circle.test.cpp
+  - test/unittest/geometry/vector-polygon.test.cpp
+  - test/unittest/geometry/axis-parallel-segments.test.cpp
+  - test/unittest/geometry/vector.test.cpp
+  - test/unittest/geometry/angle.test.cpp
+  - test/unittest/data_structures/dual-segtree.test.cpp
   - test/aoj/volume33/3314.test.cpp
-  - test/aoj/cgl/cgl-7-d.test.cpp
-  - test/aoj/cgl/cgl-4-c.test.cpp
-  - test/aoj/cgl/cgl-7-f.test.cpp
-  - test/aoj/cgl/cgl-1-a.test.cpp
-  - test/aoj/cgl/cgl-7-c.test.cpp
-  - test/aoj/cgl/cgl-7-i.test.cpp
-  - test/aoj/cgl/cgl-1-b.test.cpp
-  - test/aoj/cgl/cgl-3-a.test.cpp
-  - test/aoj/cgl/cgl-7-a.test.cpp
-  - test/aoj/cgl/cgl-6-a.test.cpp
-  - test/aoj/cgl/cgl-7-h.test.cpp
-  - test/aoj/cgl/cgl-2-a.test.cpp
-  - test/aoj/cgl/cgl-1-c.test.cpp
-  - test/aoj/cgl/cgl-4-b.test.cpp
-  - test/aoj/cgl/cgl-7-e.test.cpp
-  - test/aoj/cgl/cgl-2-c.test.cpp
   - test/aoj/cgl/cgl-5-a.test.cpp
-  - test/aoj/cgl/cgl-4-a.test.cpp
-  - test/aoj/cgl/cgl-7-b.test.cpp
+  - test/aoj/cgl/cgl-7-f.test.cpp
+  - test/aoj/cgl/cgl-1-c.test.cpp
+  - test/aoj/cgl/cgl-1-b.test.cpp
+  - test/aoj/cgl/cgl-7-d.test.cpp
+  - test/aoj/cgl/cgl-7-h.test.cpp
+  - test/aoj/cgl/cgl-3-a.test.cpp
   - test/aoj/cgl/cgl-2-d.test.cpp
+  - test/aoj/cgl/cgl-2-a.test.cpp
+  - test/aoj/cgl/cgl-7-e.test.cpp
+  - test/aoj/cgl/cgl-4-a.test.cpp
+  - test/aoj/cgl/cgl-7-c.test.cpp
+  - test/aoj/cgl/cgl-7-b.test.cpp
   - test/aoj/cgl/cgl-3-c.test.cpp
+  - test/aoj/cgl/cgl-7-i.test.cpp
+  - test/aoj/cgl/cgl-1-a.test.cpp
+  - test/aoj/cgl/cgl-4-c.test.cpp
   - test/aoj/cgl/cgl-3-b.test.cpp
+  - test/aoj/cgl/cgl-6-a.test.cpp
+  - test/aoj/cgl/cgl-4-b.test.cpp
   - test/aoj/cgl/cgl-7-g.test.cpp
+  - test/aoj/cgl/cgl-7-a.test.cpp
   - test/aoj/cgl/cgl-2-b.test.cpp
+  - test/aoj/cgl/cgl-2-c.test.cpp
   - test/yosupo/geo/sort-points-by-argument.1.test.cpp
   - test/yosupo/geo/furthest-pair.test.cpp
 documentation_of: src/geometry/vector.hpp

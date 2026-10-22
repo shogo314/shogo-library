@@ -34,15 +34,21 @@ data:
     \u76F4\u306A\u8A08\u7B97\u3068\u6BD4\u3079\u308B\n// NTT \u306E\u4F7F\u3048\u306A\
     \u3044\u6CD5 (10^9 + 7) \u3068\u3001\u6700\u77ED\u6027\u3092\u5168\u63A2\u7D22\
     \u3067\u78BA\u304B\u3081\u308B\u305F\u3081\u306E\u5C0F\u3055\u3044\u6CD5 (3) \u3082\
-    \u8A66\u3059\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\
-    \u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\
-    \u308B\n\n#line 2 \"src/math/linear-recurrence.hpp\"\n\n/**\n * @file linear-recurrence.hpp\n\
-    \ * @brief \u7DDA\u5F62\u6F38\u5316\u5F0F (Bostan-Mori \u306B\u3088\u308B\u7B2C\
-    \ k \u9805\u3001Berlekamp-Massey \u306B\u3088\u308B\u6F38\u5316\u5F0F\u306E\u5FA9\
-    \u5143)\n */\n\n#include <cassert>\n#include <vector>\n\n#line 2 \"src/math/convolution.hpp\"\
-    \n\n/**\n * @file convolution.hpp\n * @brief \u7573\u307F\u8FBC\u307F (NTT)\n\
-    \ */\n\n#include <algorithm>\n#include <array>\n#include <cstdint>\n#include <type_traits>\n\
-    #include <utility>\n#line 14 \"src/math/convolution.hpp\"\n\n#line 2 \"src/math/modint.hpp\"\
+    \u8A66\u3059\n// \u9577\u3055\u304C 60 \u3092\u8D85\u3048\u308B\u3068 bostan_mori\
+    \ \u306F NTT \u3057\u305F\u5024\u306E\u307E\u307E\u9032\u3081\u308B\u5225\u306E\
+    \u7D4C\u8DEF\u306B\u5165\u308B\u306E\u3067\u3001\n// \u540C\u3058\u6CD5\u306E\
+    \ dynamic_modint (\u3053\u306E\u7D4C\u8DEF\u306B\u5165\u3089\u306A\u3044) \u3068\
+    \u3001\u9577\u3055\u306E\u5883\u76EE (2 \u306E\u3079\u304D\u4E57\u306E\u524D\u5F8C\
+    ) \u3067\u6BD4\u3079\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\
+    \u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\
+    \u51FA\u529B\u3059\u308B\n\n#line 2 \"src/math/linear-recurrence.hpp\"\n\n/**\n\
+    \ * @file linear-recurrence.hpp\n * @brief \u7DDA\u5F62\u6F38\u5316\u5F0F (Bostan-Mori\
+    \ \u306B\u3088\u308B\u7B2C k \u9805\u3001Berlekamp-Massey \u306B\u3088\u308B\u6F38\
+    \u5316\u5F0F\u306E\u5FA9\u5143)\n */\n\n#include <algorithm>\n#include <cassert>\n\
+    #include <utility>\n#include <vector>\n\n#line 2 \"src/math/convolution.hpp\"\n\
+    \n/**\n * @file convolution.hpp\n * @brief \u7573\u307F\u8FBC\u307F (NTT)\n */\n\
+    \n#line 9 \"src/math/convolution.hpp\"\n#include <array>\n#include <cstdint>\n\
+    #include <type_traits>\n#line 14 \"src/math/convolution.hpp\"\n\n#line 2 \"src/math/modint.hpp\"\
     \n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\
     \u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line\
     \ 10 \"src/math/modint.hpp\"\n#include <iostream>\n#include <limits>\n#line 14\
@@ -507,27 +513,36 @@ data:
     template <class mint>\nconstexpr bool ntt_friendly(int z) {\n    if constexpr\
     \ (is_static_modint<mint>::value) {\n        return internal_modint::is_prime32(mint::mod())\
     \ && mint::mod() > 2 && (mint::mod() - 1) % z == 0;\n    } else {\n        return\
-    \ false;\n    }\n}\n\nstatic constexpr int MOD0 = 754974721;\nstatic constexpr\
-    \ int MOD1 = 167772161;\nstatic constexpr int MOD2 = 469762049;\nusing mint0 =\
-    \ static_modint<MOD0>;\nusing mint1 = static_modint<MOD1>;\nusing mint2 = static_modint<MOD2>;\n\
-    static const mint1 imod0 = 95869806;    // modinv(MOD0, MOD1);\nstatic const mint2\
-    \ imod1 = 104391568;   // modinv(MOD1, MOD2);\nstatic const mint2 imod01 = 187290749;\
-    \  // imod1 / MOD0;\n\n/**\n * @brief \u914D\u5217\u306E\u30B5\u30A4\u30BA\u304C\
-    \u5C0F\u3055\u3044\u3068\u304D\u306E\u7573\u307F\u8FBC\u307F\n * @param T mint,\
-    \ long long\n * @param A vector<T>\n * @param B vector<T>\n * @return vector<T>\n\
-    \ */\ntemplate <class T>\nstd::vector<T> naive(const std::vector<T>& A, const\
-    \ std::vector<T>& B) {\n    if (A.empty() || B.empty()) return {};\n    int N\
-    \ = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n    std::vector<T>\
-    \ res(N + M - 1);\n    for (int i = 0; i < N; ++i)\n        for (int j = 0; j\
-    \ < M; ++j)\n            res[i + j] += A[i] * B[j];\n    return res;\n}\n};  //\
-    \ namespace internal_convolution\n\nnamespace internal_convolution {\n/**\n *\
-    \ @brief 3 \u3064\u306E\u6CD5\u3067\u7573\u307F\u8FBC\u307F\u3001\u4E2D\u56FD\u5270\
-    \u4F59\u5B9A\u7406\u3067\u5024 (0 \u4EE5\u4E0A MOD0 MOD1 MOD2 \u672A\u6E80) \u3092\
-    \u5FA9\u5143\u3059\u308B\n * \u5024\u306F y0 + y1 MOD0 + y2 MOD0 MOD1 (0 <= y0\
-    \ < MOD0\u30010 <= y1 < MOD1\u30010 <= y2 < MOD2) \u306E\u5F62\u306B\u306A\u308A\
-    \u3001\u5404\u9805\u3092 f(y0, y1, y2) \u3067\u7D44\u307F\u7ACB\u3066\u308B\n\
-    \ * A \u3068 B \u304C\u540C\u3058\u914D\u5217\u306A\u3089\u3001\u5909\u63DB\u3092\
-    \ 1 \u56DE\u7701\u304F\n */\ntemplate <class T, class R, class F>\nstd::vector<R>\
+    \ false;\n    }\n}\n\n/**\n * @brief \u9577\u3055 61 \u4EE5\u4E0A\u306E\u7573\u307F\
+    \u8FBC\u307F\u3092 mint \u3067\u76F4\u63A5 NTT \u3067\u304D\u308B\u898B\u8FBC\u307F\
+    \u304C\u3042\u308B\u304B (\u30B3\u30F3\u30D1\u30A4\u30EB\u6642\u306B\u6C7A\u307E\
+    \u308B\u90E8\u5206\u3060\u3051)\n * \u507D\u306A\u3089 NTT \u306E\u95A2\u6570\u3092\
+    \u5B9F\u4F53\u5316\u3057\u306A\u3044 (\u6CD5 - 1 \u306E 2 \u306E\u6307\u6570\u304C\
+    \u5C0F\u3055\u3044\u3068\u3001\u56DE\u8EE2\u56E0\u5B50\u306E\u8868\u306E\u5916\
+    \u3092\u8AAD\u3080\u3068\u3044\u3046\u8AA4\u3063\u305F\u8B66\u544A\u304C\u51FA\
+    \u308B\u305F\u3081)\n */\ntemplate <class mint>\nconstexpr bool ntt_candidate()\
+    \ {\n    if constexpr (is_static_modint<mint>::value) {\n        return countr_zero(mint::mod()\
+    \ - 1) >= 7;\n    } else {\n        return false;\n    }\n}\n\nstatic constexpr\
+    \ int MOD0 = 754974721;\nstatic constexpr int MOD1 = 167772161;\nstatic constexpr\
+    \ int MOD2 = 469762049;\nusing mint0 = static_modint<MOD0>;\nusing mint1 = static_modint<MOD1>;\n\
+    using mint2 = static_modint<MOD2>;\nstatic const mint1 imod0 = 95869806;    //\
+    \ modinv(MOD0, MOD1);\nstatic const mint2 imod1 = 104391568;   // modinv(MOD1,\
+    \ MOD2);\nstatic const mint2 imod01 = 187290749;  // imod1 / MOD0;\n\n/**\n *\
+    \ @brief \u914D\u5217\u306E\u30B5\u30A4\u30BA\u304C\u5C0F\u3055\u3044\u3068\u304D\
+    \u306E\u7573\u307F\u8FBC\u307F\n * @param T mint, long long\n * @param A vector<T>\n\
+    \ * @param B vector<T>\n * @return vector<T>\n */\ntemplate <class T>\nstd::vector<T>\
+    \ naive(const std::vector<T>& A, const std::vector<T>& B) {\n    if (A.empty()\
+    \ || B.empty()) return {};\n    int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n\
+    \    std::vector<T> res(N + M - 1);\n    for (int i = 0; i < N; ++i)\n       \
+    \ for (int j = 0; j < M; ++j)\n            res[i + j] += A[i] * B[j];\n    return\
+    \ res;\n}\n};  // namespace internal_convolution\n\nnamespace internal_convolution\
+    \ {\n/**\n * @brief 3 \u3064\u306E\u6CD5\u3067\u7573\u307F\u8FBC\u307F\u3001\u4E2D\
+    \u56FD\u5270\u4F59\u5B9A\u7406\u3067\u5024 (0 \u4EE5\u4E0A MOD0 MOD1 MOD2 \u672A\
+    \u6E80) \u3092\u5FA9\u5143\u3059\u308B\n * \u5024\u306F y0 + y1 MOD0 + y2 MOD0\
+    \ MOD1 (0 <= y0 < MOD0\u30010 <= y1 < MOD1\u30010 <= y2 < MOD2) \u306E\u5F62\u306B\
+    \u306A\u308A\u3001\u5404\u9805\u3092 f(y0, y1, y2) \u3067\u7D44\u307F\u7ACB\u3066\
+    \u308B\n * A \u3068 B \u304C\u540C\u3058\u914D\u5217\u306A\u3089\u3001\u5909\u63DB\
+    \u3092 1 \u56DE\u7701\u304F\n */\ntemplate <class T, class R, class F>\nstd::vector<R>\
     \ convolution_crt(const std::vector<T>& A, const std::vector<T>& B, F f) {\n \
     \   const int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n\
     \    std::vector<mint0> a0(N), b0(M);\n    std::vector<mint1> a1(N), b1(M);\n\
@@ -551,7 +566,7 @@ data:
     \ B) {\n    if (A.empty() || B.empty()) return {};\n    const int N = static_cast<int>(A.size()),\
     \ M = static_cast<int>(B.size());\n    if (std::min(N, M) <= 60) return internal_convolution::naive(A,\
     \ B);\n    const int z = internal_convolution::get_fft_size(N, M);\n    if constexpr\
-    \ (internal_convolution::is_static_modint<mint>::value) {\n        if (internal_convolution::ntt_friendly<mint>(z))\
+    \ (internal_convolution::ntt_candidate<mint>()) {\n        if (internal_convolution::ntt_friendly<mint>(z))\
     \ return internal_convolution::convolution_fft(A, B, &A == &B);\n    }\n    std::vector<unsigned\
     \ int> a(N), b(M);\n    for (int i = 0; i < N; ++i) a[i] = A[i].val();\n    for\
     \ (int i = 0; i < M; ++i) b[i] = B[i].val();\n    const mint mod0 = internal_convolution::MOD0,\
@@ -572,19 +587,66 @@ data:
     \ [&](unsigned int y0, unsigned int y1, unsigned int y2) {\n        __int128_t\
     \ tmp = static_cast<__int128_t>(mod01) * y2 + static_cast<__int128_t>(mod0) *\
     \ y1 + y0;\n        return static_cast<long long>(tmp < (mod012 >> 1) ? tmp :\
-    \ tmp - mod012);\n    });\n}\n#line 12 \"src/math/linear-recurrence.hpp\"\n\n\
-    /**\n * @brief [x^k] P(x) / Q(x) (Q[0] != 0) \u3092 Bostan-Mori \u6CD5\u3067\u6C42\
-    \u3081\u308B O(d log d log k) (d \u306F P, Q \u306E\u9577\u3055)\n * P(x) / Q(x)\
-    \ = P(x) Q(-x) / (Q(x) Q(-x)) \u3067\u3001\u5206\u6BCD\u306F x^2 \u306E\u591A\u9805\
-    \u5F0F\u306B\u306A\u308B\u306E\u3067\u3001k \u306E\u5076\u5947\u3067\u5206\u5B50\
-    \u306E\u4FC2\u6570\u3092\u534A\u5206\u306B\u7D5E\u3063\u3066 k \u3092\u534A\u5206\
-    \u306B\u3059\u308B\n */\ntemplate <typename mint>\nmint bostan_mori(std::vector<mint>\
+    \ tmp - mod012);\n    });\n}\n#line 14 \"src/math/linear-recurrence.hpp\"\n\n\
+    namespace internal_linear_recurrence {\n\n/**\n * @brief bostan_mori \u3092 NTT\
+    \ \u3057\u305F\u5024\u306E\u307E\u307E\u9032\u3081\u308B\u7248 (\u6CD5\u304C NTT\
+    \ \u306B\u5411\u304F\u7D20\u6570\u306E\u3068\u304D)\n * \u9577\u3055 2N \u3067\
+    \u5909\u63DB\u3059\u308B\u3068\u3001butterfly \u306E\u7D50\u679C\u306F\u30D3\u30C3\
+    \u30C8\u53CD\u8EE2\u3057\u305F\u9806\u306B\u4E26\u3073\u3001\u4F4D\u7F6E 2i \u3068\
+    \ 2i+1 \u306F\u70B9 w \u3068 -w \u3067\u306E\u5024\u306B\u306A\u308B\u3002\n *\
+    \ \u305D\u3053\u3067 Q(-x) \u306F\u96A3\u3069\u3046\u3057\u3092\u5165\u308C\u66FF\
+    \u3048\u308B\u3060\u3051\u3067\u5F97\u3089\u308C\u3001\u5076\u6570\u6B21\u30FB\
+    \u5947\u6570\u6B21\u306E\u90E8\u5206\u306E\u5024 (\u9577\u3055 N \u306E\u5909\u63DB\
+    ) \u3082\n * (F(w) + F(-w)) / 2\u3001(F(w) - F(-w)) / (2w) \u3067\u6C42\u307E\u308B\
+    \u3002\u6B21\u306E\u6BB5\u306E\u9577\u3055 2N \u306E\u5909\u63DB\u306F\u3001\n\
+    \ * \u6B8B\u308A\u306E\u534A\u5206 (\u70B9 w \u03C9_{2N} \u3067\u306E\u5024) \u3060\
+    \u3051\u3092\u9006\u5909\u63DB\u3068\u5909\u63DB 1 \u56DE\u305A\u3064\u3067\u4F5C\
+    \u308B\u30021 \u6BB5\u3042\u305F\u308A\u306E NTT \u306F\u9577\u3055 2N \u3092\
+    \ 2 \u56DE\u5206\u307B\u3069\u306B\u306A\u308B\n */\ntemplate <typename mint>\n\
+    mint bostan_mori_ntt(std::vector<mint> P, std::vector<mint> Q, long long k, int\
+    \ h) {\n    using namespace internal_convolution;\n    static const FFTInfo<mint>\
+    \ info;\n    const int N = 1 << h;\n    // half_iw[i] = 1 / (2w) (w \u306F\u9577\
+    \u3055 2N \u306E\u4F4D\u7F6E 2i \u306E\u70B9 \u03C9_{2N}^{rev[i]})\u3001tw[i]\
+    \ = \u03C9_{2N}^i / N\n    const mint inv2 = mint(2).inv();\n    std::vector<int>\
+    \ rev(N);\n    for (int i = 1; i < N; i++) rev[i] = (rev[i >> 1] >> 1) | ((i &\
+    \ 1) << (h - 1));\n    std::vector<mint> pw(N), half_iw(N), tw(N);\n    pw[0]\
+    \ = 1, tw[0] = mint(N).inv();\n    for (int i = 1; i < N; i++) {\n        pw[i]\
+    \ = pw[i - 1] * info.iroot[h + 1];\n        tw[i] = tw[i - 1] * info.root[h +\
+    \ 1];\n    }\n    for (int i = 0; i < N; i++) half_iw[i] = pw[rev[i]] * inv2;\n\
+    \    P.resize(2 * N), Q.resize(2 * N);\n    butterfly(P), butterfly(Q);\n    //\
+    \ \u9577\u3055 N \u306E\u5909\u63DB f \u304B\u3089\u3001\u9577\u3055 2N \u306E\
+    \u5909\u63DB (\u524D\u534A\u306F f \u306E\u307E\u307E) \u3092\u4F5C\u308B\n  \
+    \  auto extend = [&](std::vector<mint>& f) {\n        std::vector<mint> g(f.begin(),\
+    \ f.begin() + N);\n        butterfly_inv(g);\n        for (int i = 0; i < N; i++)\
+    \ g[i] *= tw[i];\n        butterfly(g);\n        std::copy(g.begin(), g.end(),\
+    \ f.begin() + N);\n    };\n    while (true) {\n        for (int i = 0; i < N;\
+    \ i++) {\n            const mint p0 = P[2 * i], p1 = P[2 * i + 1], q0 = Q[2 *\
+    \ i], q1 = Q[2 * i + 1];\n            // U = P(x) Q(-x) \u306E w, -w \u3067\u306E\
+    \u5024\u306F p0 q1, p1 q0\u3002V = Q(x) Q(-x) \u306F\u3069\u3061\u3089\u3082 q0\
+    \ q1\n            const mint u0 = p0 * q1, u1 = p1 * q0;\n            P[i] = (k\
+    \ & 1) ? (u0 - u1) * half_iw[i] : (u0 + u1) * inv2;\n            Q[i] = q0 * q1;\n\
+    \        }\n        k >>= 1;\n        if (k == 0) break;\n        extend(P), extend(Q);\n\
+    \    }\n    // \u5B9A\u6570\u9805\u306F\u9577\u3055 N \u306E\u5909\u63DB\u306E\
+    \u5024\u306E\u548C\u306E 1/N \u306A\u306E\u3067\u3001\u6BD4\u306F\u548C\u306E\u6BD4\
+    \u306B\u306A\u308B\n    mint p = 0, q = 0;\n    for (int i = 0; i < N; i++) p\
+    \ += P[i], q += Q[i];\n    return p / q;\n}\n\n}  // namespace internal_linear_recurrence\n\
+    \n/**\n * @brief [x^k] P(x) / Q(x) (Q[0] != 0) \u3092 Bostan-Mori \u6CD5\u3067\
+    \u6C42\u3081\u308B O(d log d log k) (d \u306F P, Q \u306E\u9577\u3055)\n * P(x)\
+    \ / Q(x) = P(x) Q(-x) / (Q(x) Q(-x)) \u3067\u3001\u5206\u6BCD\u306F x^2 \u306E\
+    \u591A\u9805\u5F0F\u306B\u306A\u308B\u306E\u3067\u3001k \u306E\u5076\u5947\u3067\
+    \u5206\u5B50\u306E\u4FC2\u6570\u3092\u534A\u5206\u306B\u7D5E\u3063\u3066 k \u3092\
+    \u534A\u5206\u306B\u3059\u308B\n */\ntemplate <typename mint>\nmint bostan_mori(std::vector<mint>\
     \ P, std::vector<mint> Q, long long k) {\n    assert(!Q.empty() && Q[0] != 0 &&\
-    \ k >= 0);\n    while (k > 0 && !P.empty()) {\n        std::vector<mint> Qm =\
-    \ Q;\n        for (size_t i = 1; i < Qm.size(); i += 2) Qm[i] = -Qm[i];\n    \
-    \    std::vector<mint> U = convolution(P, Qm), V = convolution(Q, Qm);\n     \
-    \   P.clear(), Q.clear();\n        for (size_t i = k & 1; i < U.size(); i += 2)\
-    \ P.push_back(U[i]);\n        for (size_t i = 0; i < V.size(); i += 2) Q.push_back(V[i]);\n\
+    \ k >= 0);\n    if constexpr (internal_convolution::ntt_candidate<mint>()) {\n\
+    \        const int n = static_cast<int>(std::max(P.size(), Q.size()));\n     \
+    \   if (k > 0 && n > 60) {\n            int h = 0;\n            while ((1 << h)\
+    \ < n) h++;\n            if (internal_convolution::ntt_friendly<mint>(2 << h))\
+    \ return internal_linear_recurrence::bostan_mori_ntt(std::move(P), std::move(Q),\
+    \ k, h);\n        }\n    }\n    while (k > 0 && !P.empty()) {\n        std::vector<mint>\
+    \ Qm = Q;\n        for (size_t i = 1; i < Qm.size(); i += 2) Qm[i] = -Qm[i];\n\
+    \        std::vector<mint> U = convolution(P, Qm), V = convolution(Q, Qm);\n \
+    \       P.clear(), Q.clear();\n        for (size_t i = k & 1; i < U.size(); i\
+    \ += 2) P.push_back(U[i]);\n        for (size_t i = 0; i < V.size(); i += 2) Q.push_back(V[i]);\n\
     \        k >>= 1;\n    }\n    if (P.empty()) return mint(0);\n    // k = 0 \u306A\
     \u3089 P / Q \u306E\u5B9A\u6570\u9805\n    return P[0] / Q[0];\n}\n\n/**\n * @brief\
     \ a_i = c_1 a_{i-1} + c_2 a_{i-2} + ... + c_d a_{i-d} (i >= d) \u3092\u6E80\u305F\
@@ -619,9 +681,9 @@ data:
     \    if (2 * len <= i) {\n            len = i + 1 - len;\n            B = T, b\
     \ = delta, shift = 1;\n        } else {\n            shift++;\n        }\n   \
     \ }\n    C.resize(len + 1);\n    std::vector<mint> res(len);\n    for (size_t\
-    \ j = 0; j < len; j++) res[j] = -C[j + 1];\n    return res;\n}\n#line 8 \"test/unittest/math/linear-recurrence.test.cpp\"\
-    \n\n#line 10 \"test/unittest/math/linear-recurrence.test.cpp\"\n#include <random>\n\
-    #line 12 \"test/unittest/math/linear-recurrence.test.cpp\"\n\n#line 14 \"test/unittest/math/linear-recurrence.test.cpp\"\
+    \ j = 0; j < len; j++) res[j] = -C[j + 1];\n    return res;\n}\n#line 10 \"test/unittest/math/linear-recurrence.test.cpp\"\
+    \n\n#line 13 \"test/unittest/math/linear-recurrence.test.cpp\"\n#include <random>\n\
+    #line 16 \"test/unittest/math/linear-recurrence.test.cpp\"\n\n#line 18 \"test/unittest/math/linear-recurrence.test.cpp\"\
     \n\nbool ok = true;\nvoid check(bool cond, const char* what) {\n    if (!cond\
     \ && ok) std::cerr << \"failed: \" << what << std::endl;\n    if (!cond) ok =\
     \ false;\n}\n\ntemplate <typename mint>\nvoid test_mod(std::mt19937_64& rng) {\n\
@@ -667,61 +729,94 @@ data:
     \ t00 = m00 * m00 + m01 * m10, t01 = m00 * m01 + m01 * m11, t10 = m10 * m00 +\
     \ m11 * m10, t11 = m10 * m01 + m11 * m11;\n        m00 = t00, m01 = t01, m10 =\
     \ t10, m11 = t11;\n    }\n    check(linear_recurrence_kth(fib_a, fib_c, k) ==\
-    \ r01, \"\u30D5\u30A3\u30DC\u30CA\u30C3\u30C1 10^18\");\n}\n\nint main() {\n \
-    \   std::mt19937_64 rng(314);\n    test_mod<static_modint<998244353>>(rng);\n\
-    \    test_mod<static_modint<1000000007>>(rng);\n\n    // berlekamp_massey \u306E\
-    \u6700\u77ED\u6027: mod 3 \u3067\u9577\u3055 d \u306E\u6F38\u5316\u5F0F\u3092\u5168\
-    \u90E8\u8A66\u3057\u3001\u6210\u308A\u7ACB\u3064\u6700\u77ED\u306E d \u3068\u6BD4\
-    \u3079\u308B\n    using m3 = static_modint<3>;\n    for (int rep = 0; rep < 3000\
-    \ && ok; rep++) {\n        int n = rng() % 8;\n        std::vector<m3> a(n);\n\
-    \        for (auto& x : a) x = rng() % 3;\n        int best = -1;\n        for\
-    \ (int d = 0; best == -1; d++) {\n            int total = 1;\n            for\
-    \ (int j = 0; j < d; j++) total *= 3;\n            for (int code = 0; code < total\
-    \ && best == -1; code++) {\n                std::vector<int> c(d);\n         \
-    \       for (int j = 0, t = code; j < d; j++, t /= 3) c[j] = t % 3;\n        \
-    \        bool good = true;\n                for (int i = d; i < n && good; i++)\
-    \ {\n                    m3 s = 0;\n                    for (int j = 1; j <= d;\
-    \ j++) s += m3(c[j - 1]) * a[i - j];\n                    good = s == a[i];\n\
-    \                }\n                if (good) best = d;\n            }\n     \
-    \   }\n        auto r = berlekamp_massey(a);\n        check(static_cast<int>(r.size())\
-    \ == best, \"berlekamp_massey \u306E\u6700\u77ED\u6027\");\n        for (int i\
-    \ = r.size(); i < n; i++) {\n            m3 s = 0;\n            for (size_t j\
-    \ = 1; j <= r.size(); j++) s += r[j - 1] * a[i - j];\n            check(s == a[i],\
-    \ \"berlekamp_massey \u304C\u6210\u308A\u7ACB\u3064\");\n        }\n    }\n\n\
-    \    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \ r01, \"\u30D5\u30A3\u30DC\u30CA\u30C3\u30C1 10^18\");\n}\n\n// \u9577\u3044\
+    \ P, Q \u3067\u3001static_modint<998244353> (NTT \u3057\u305F\u5024\u306E\u307E\
+    \u307E\u9032\u3081\u308B\u7D4C\u8DEF) \u3068 dynamic_modint (\u7573\u307F\u8FBC\
+    \u307F\u3092\u7E70\u308A\u8FD4\u3059\u7D4C\u8DEF) \u3092\u6BD4\u3079\u308B\nvoid\
+    \ test_ntt_path(std::mt19937_64& rng) {\n    using sm = static_modint<998244353>;\n\
+    \    using dm = dynamic_modint<0>;\n    dm::set_mod(998244353);\n    const std::vector<int>\
+    \ sizes = {61, 63, 64, 65, 100, 127, 128, 129, 255, 256, 257, 1000};\n    for\
+    \ (int rep = 0; rep < 60 && ok; rep++) {\n        int np = rep % 3 == 0 ? rng()\
+    \ % 1100 : sizes[rng() % sizes.size()] - rng() % 2;\n        int nq = sizes[rng()\
+    \ % sizes.size()];\n        if (rep % 4 == 0) std::swap(np, nq);\n        nq =\
+    \ std::max(nq, 1);\n        std::vector<sm> Ps(np), Qs(nq);\n        std::vector<dm>\
+    \ Pd(np), Qd(nq);\n        for (int i = 0; i < np; i++) {\n            unsigned\
+    \ int v = rng() % 998244353;\n            Ps[i] = v, Pd[i] = v;\n        }\n \
+    \       for (int i = 0; i < nq; i++) {\n            unsigned int v = rng() % 998244353;\n\
+    \            if (i == 0 && v == 0) v = 1;\n            Qs[i] = v, Qd[i] = v;\n\
+    \        }\n        std::vector<long long> ks = {0, 1, 2, 3, np, nq, np + nq,\
+    \ 1000000000000000000LL, static_cast<long long>(rng() >> 4)};\n        for (int\
+    \ t = 0; t < 5; t++) ks.push_back(rng() % 5000);\n        for (long long k : ks)\
+    \ check(bostan_mori(Ps, Qs, k).val() == bostan_mori(Pd, Qd, k).val(), \"bostan_mori\
+    \ \u306E NTT \u306E\u7D4C\u8DEF\");\n    }\n    // linear_recurrence_kth \u3082\
+    \u3001d \u304C\u5927\u304D\u3044\u3068\u304D\u306B\u6F38\u5316\u5F0F\u3067\u9806\
+    \u306B\u8A08\u7B97\u3057\u305F\u3082\u306E\u3068\u6BD4\u3079\u308B\n    for (int\
+    \ d : {61, 64, 65, 200}) {\n        std::vector<sm> a(d), c(d);\n        for (auto&\
+    \ x : a) x = rng() % 998244353;\n        for (auto& x : c) x = rng() % 998244353;\n\
+    \        std::vector<sm> seq = a;\n        for (int i = d; i < 3000; i++) {\n\
+    \            sm s = 0;\n            for (int j = 1; j <= d; j++) s += c[j - 1]\
+    \ * seq[i - j];\n            seq.push_back(s);\n        }\n        for (int k\
+    \ = 0; k < 3000; k += 7) check(linear_recurrence_kth(a, c, k) == seq[k], \"linear_recurrence_kth\
+    \ \u306E NTT \u306E\u7D4C\u8DEF\");\n    }\n}\n\nint main() {\n    std::mt19937_64\
+    \ rng(314);\n    test_mod<static_modint<998244353>>(rng);\n    test_mod<static_modint<1000000007>>(rng);\n\
+    \    test_ntt_path(rng);\n\n    // berlekamp_massey \u306E\u6700\u77ED\u6027:\
+    \ mod 3 \u3067\u9577\u3055 d \u306E\u6F38\u5316\u5F0F\u3092\u5168\u90E8\u8A66\u3057\
+    \u3001\u6210\u308A\u7ACB\u3064\u6700\u77ED\u306E d \u3068\u6BD4\u3079\u308B\n\
+    \    using m3 = static_modint<3>;\n    for (int rep = 0; rep < 3000 && ok; rep++)\
+    \ {\n        int n = rng() % 8;\n        std::vector<m3> a(n);\n        for (auto&\
+    \ x : a) x = rng() % 3;\n        int best = -1;\n        for (int d = 0; best\
+    \ == -1; d++) {\n            int total = 1;\n            for (int j = 0; j < d;\
+    \ j++) total *= 3;\n            for (int code = 0; code < total && best == -1;\
+    \ code++) {\n                std::vector<int> c(d);\n                for (int\
+    \ j = 0, t = code; j < d; j++, t /= 3) c[j] = t % 3;\n                bool good\
+    \ = true;\n                for (int i = d; i < n && good; i++) {\n           \
+    \         m3 s = 0;\n                    for (int j = 1; j <= d; j++) s += m3(c[j\
+    \ - 1]) * a[i - j];\n                    good = s == a[i];\n                }\n\
+    \                if (good) best = d;\n            }\n        }\n        auto r\
+    \ = berlekamp_massey(a);\n        check(static_cast<int>(r.size()) == best, \"\
+    berlekamp_massey \u306E\u6700\u77ED\u6027\");\n        for (int i = r.size();\
+    \ i < n; i++) {\n            m3 s = 0;\n            for (size_t j = 1; j <= r.size();\
+    \ j++) s += r[j - 1] * a[i - j];\n            check(s == a[i], \"berlekamp_massey\
+    \ \u304C\u6210\u308A\u7ACB\u3064\");\n        }\n    }\n\n    if (ok) std::cout\
+    \ << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// bostan_mori\u30FBlinear_recurrence_kth\u30FBberlekamp_massey \u3092\u611A\
     \u76F4\u306A\u8A08\u7B97\u3068\u6BD4\u3079\u308B\n// NTT \u306E\u4F7F\u3048\u306A\
     \u3044\u6CD5 (10^9 + 7) \u3068\u3001\u6700\u77ED\u6027\u3092\u5168\u63A2\u7D22\
     \u3067\u78BA\u304B\u3081\u308B\u305F\u3081\u306E\u5C0F\u3055\u3044\u6CD5 (3) \u3082\
-    \u8A66\u3059\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\
-    \u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\
-    \u308B\n\n#include \"../../../src/math/linear-recurrence.hpp\"\n\n#include <iostream>\n\
-    #include <random>\n#include <vector>\n\n#include \"../../../src/math/modint.hpp\"\
-    \n\nbool ok = true;\nvoid check(bool cond, const char* what) {\n    if (!cond\
-    \ && ok) std::cerr << \"failed: \" << what << std::endl;\n    if (!cond) ok =\
-    \ false;\n}\n\ntemplate <typename mint>\nvoid test_mod(std::mt19937_64& rng) {\n\
-    \    auto gen = [&] { return mint(rng() % mint::mod()); };\n    // bostan_mori:\
-    \ P / Q \u3092\u4FC2\u6570\u3054\u3068\u306B\u5272\u308A\u7B97\u3067\u6C42\u3081\
-    \u305F\u3082\u306E\u3068\u6BD4\u3079\u308B (P \u306E\u6B21\u6570\u304C Q \u4EE5\
-    \u4E0A\u306E\u5834\u5408\u3082)\n    for (int rep = 0; rep < 300 && ok; rep++)\
-    \ {\n        int np = rng() % 6, nq = rng() % 5 + 1;\n        std::vector<mint>\
-    \ P(np), Q(nq);\n        for (auto& x : P) x = gen();\n        for (auto& x :\
-    \ Q) x = gen();\n        if (Q[0] == 0) Q[0] = 1;\n        const int K = 60;\n\
-    \        // F = P / Q: F_k = (P_k - \u03A3_{j>=1} Q_j F_{k-j}) / Q_0\n       \
-    \ std::vector<mint> F(K + 1);\n        for (int k = 0; k <= K; k++) {\n      \
-    \      mint s = k < np ? P[k] : mint(0);\n            for (int j = 1; j < nq &&\
-    \ j <= k; j++) s -= Q[j] * F[k - j];\n            F[k] = s / Q[0];\n        }\n\
-    \        for (int k = 0; k <= K; k++) check(bostan_mori(P, Q, k) == F[k], \"bostan_mori\"\
-    );\n    }\n    // linear_recurrence_kth: \u6F38\u5316\u5F0F\u3067\u9806\u306B\u8A08\
-    \u7B97\u3057\u305F\u3082\u306E\u3068\u6BD4\u3079\u308B\n    for (int rep = 0;\
-    \ rep < 200 && ok; rep++) {\n        int d = rng() % 6;\n        std::vector<mint>\
-    \ a(d), c(d);\n        for (auto& x : a) x = gen();\n        for (auto& x : c)\
-    \ x = gen();\n        std::vector<mint> seq = a;\n        for (int i = d; i <\
-    \ 300; i++) {\n            mint s = 0;\n            for (int j = 1; j <= d; j++)\
-    \ s += c[j - 1] * seq[i - j];\n            seq.push_back(s);\n        }\n    \
-    \    for (int k = 0; k < 300; k++) check(linear_recurrence_kth(a, c, k) == (k\
-    \ < static_cast<int>(seq.size()) ? seq[k] : mint(0)), \"linear_recurrence_kth\"\
+    \u8A66\u3059\n// \u9577\u3055\u304C 60 \u3092\u8D85\u3048\u308B\u3068 bostan_mori\
+    \ \u306F NTT \u3057\u305F\u5024\u306E\u307E\u307E\u9032\u3081\u308B\u5225\u306E\
+    \u7D4C\u8DEF\u306B\u5165\u308B\u306E\u3067\u3001\n// \u540C\u3058\u6CD5\u306E\
+    \ dynamic_modint (\u3053\u306E\u7D4C\u8DEF\u306B\u5165\u3089\u306A\u3044) \u3068\
+    \u3001\u9577\u3055\u306E\u5883\u76EE (2 \u306E\u3079\u304D\u4E57\u306E\u524D\u5F8C\
+    ) \u3067\u6BD4\u3079\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\
+    \u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\
+    \u51FA\u529B\u3059\u308B\n\n#include \"../../../src/math/linear-recurrence.hpp\"\
+    \n\n#include <algorithm>\n#include <iostream>\n#include <random>\n#include <utility>\n\
+    #include <vector>\n\n#include \"../../../src/math/modint.hpp\"\n\nbool ok = true;\n\
+    void check(bool cond, const char* what) {\n    if (!cond && ok) std::cerr << \"\
+    failed: \" << what << std::endl;\n    if (!cond) ok = false;\n}\n\ntemplate <typename\
+    \ mint>\nvoid test_mod(std::mt19937_64& rng) {\n    auto gen = [&] { return mint(rng()\
+    \ % mint::mod()); };\n    // bostan_mori: P / Q \u3092\u4FC2\u6570\u3054\u3068\
+    \u306B\u5272\u308A\u7B97\u3067\u6C42\u3081\u305F\u3082\u306E\u3068\u6BD4\u3079\
+    \u308B (P \u306E\u6B21\u6570\u304C Q \u4EE5\u4E0A\u306E\u5834\u5408\u3082)\n \
+    \   for (int rep = 0; rep < 300 && ok; rep++) {\n        int np = rng() % 6, nq\
+    \ = rng() % 5 + 1;\n        std::vector<mint> P(np), Q(nq);\n        for (auto&\
+    \ x : P) x = gen();\n        for (auto& x : Q) x = gen();\n        if (Q[0] ==\
+    \ 0) Q[0] = 1;\n        const int K = 60;\n        // F = P / Q: F_k = (P_k -\
+    \ \u03A3_{j>=1} Q_j F_{k-j}) / Q_0\n        std::vector<mint> F(K + 1);\n    \
+    \    for (int k = 0; k <= K; k++) {\n            mint s = k < np ? P[k] : mint(0);\n\
+    \            for (int j = 1; j < nq && j <= k; j++) s -= Q[j] * F[k - j];\n  \
+    \          F[k] = s / Q[0];\n        }\n        for (int k = 0; k <= K; k++) check(bostan_mori(P,\
+    \ Q, k) == F[k], \"bostan_mori\");\n    }\n    // linear_recurrence_kth: \u6F38\
+    \u5316\u5F0F\u3067\u9806\u306B\u8A08\u7B97\u3057\u305F\u3082\u306E\u3068\u6BD4\
+    \u3079\u308B\n    for (int rep = 0; rep < 200 && ok; rep++) {\n        int d =\
+    \ rng() % 6;\n        std::vector<mint> a(d), c(d);\n        for (auto& x : a)\
+    \ x = gen();\n        for (auto& x : c) x = gen();\n        std::vector<mint>\
+    \ seq = a;\n        for (int i = d; i < 300; i++) {\n            mint s = 0;\n\
+    \            for (int j = 1; j <= d; j++) s += c[j - 1] * seq[i - j];\n      \
+    \      seq.push_back(s);\n        }\n        for (int k = 0; k < 300; k++) check(linear_recurrence_kth(a,\
+    \ c, k) == (k < static_cast<int>(seq.size()) ? seq[k] : mint(0)), \"linear_recurrence_kth\"\
     );\n        // berlekamp_massey: 2d \u9805\u4EE5\u4E0A\u3042\u308C\u3070\u3001\
     \u9577\u3055 d \u4EE5\u4E0B\u306E\u6F38\u5316\u5F0F\u3067\u6570\u5217\u5168\u4F53\
     \u3092\u518D\u73FE\u3067\u304D\u308B\n        auto r = berlekamp_massey(std::vector<mint>(seq.begin(),\
@@ -743,28 +838,56 @@ data:
     \ t00 = m00 * m00 + m01 * m10, t01 = m00 * m01 + m01 * m11, t10 = m10 * m00 +\
     \ m11 * m10, t11 = m10 * m01 + m11 * m11;\n        m00 = t00, m01 = t01, m10 =\
     \ t10, m11 = t11;\n    }\n    check(linear_recurrence_kth(fib_a, fib_c, k) ==\
-    \ r01, \"\u30D5\u30A3\u30DC\u30CA\u30C3\u30C1 10^18\");\n}\n\nint main() {\n \
-    \   std::mt19937_64 rng(314);\n    test_mod<static_modint<998244353>>(rng);\n\
-    \    test_mod<static_modint<1000000007>>(rng);\n\n    // berlekamp_massey \u306E\
-    \u6700\u77ED\u6027: mod 3 \u3067\u9577\u3055 d \u306E\u6F38\u5316\u5F0F\u3092\u5168\
-    \u90E8\u8A66\u3057\u3001\u6210\u308A\u7ACB\u3064\u6700\u77ED\u306E d \u3068\u6BD4\
-    \u3079\u308B\n    using m3 = static_modint<3>;\n    for (int rep = 0; rep < 3000\
-    \ && ok; rep++) {\n        int n = rng() % 8;\n        std::vector<m3> a(n);\n\
-    \        for (auto& x : a) x = rng() % 3;\n        int best = -1;\n        for\
-    \ (int d = 0; best == -1; d++) {\n            int total = 1;\n            for\
-    \ (int j = 0; j < d; j++) total *= 3;\n            for (int code = 0; code < total\
-    \ && best == -1; code++) {\n                std::vector<int> c(d);\n         \
-    \       for (int j = 0, t = code; j < d; j++, t /= 3) c[j] = t % 3;\n        \
-    \        bool good = true;\n                for (int i = d; i < n && good; i++)\
-    \ {\n                    m3 s = 0;\n                    for (int j = 1; j <= d;\
-    \ j++) s += m3(c[j - 1]) * a[i - j];\n                    good = s == a[i];\n\
-    \                }\n                if (good) best = d;\n            }\n     \
-    \   }\n        auto r = berlekamp_massey(a);\n        check(static_cast<int>(r.size())\
-    \ == best, \"berlekamp_massey \u306E\u6700\u77ED\u6027\");\n        for (int i\
-    \ = r.size(); i < n; i++) {\n            m3 s = 0;\n            for (size_t j\
-    \ = 1; j <= r.size(); j++) s += r[j - 1] * a[i - j];\n            check(s == a[i],\
-    \ \"berlekamp_massey \u304C\u6210\u308A\u7ACB\u3064\");\n        }\n    }\n\n\
-    \    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \ r01, \"\u30D5\u30A3\u30DC\u30CA\u30C3\u30C1 10^18\");\n}\n\n// \u9577\u3044\
+    \ P, Q \u3067\u3001static_modint<998244353> (NTT \u3057\u305F\u5024\u306E\u307E\
+    \u307E\u9032\u3081\u308B\u7D4C\u8DEF) \u3068 dynamic_modint (\u7573\u307F\u8FBC\
+    \u307F\u3092\u7E70\u308A\u8FD4\u3059\u7D4C\u8DEF) \u3092\u6BD4\u3079\u308B\nvoid\
+    \ test_ntt_path(std::mt19937_64& rng) {\n    using sm = static_modint<998244353>;\n\
+    \    using dm = dynamic_modint<0>;\n    dm::set_mod(998244353);\n    const std::vector<int>\
+    \ sizes = {61, 63, 64, 65, 100, 127, 128, 129, 255, 256, 257, 1000};\n    for\
+    \ (int rep = 0; rep < 60 && ok; rep++) {\n        int np = rep % 3 == 0 ? rng()\
+    \ % 1100 : sizes[rng() % sizes.size()] - rng() % 2;\n        int nq = sizes[rng()\
+    \ % sizes.size()];\n        if (rep % 4 == 0) std::swap(np, nq);\n        nq =\
+    \ std::max(nq, 1);\n        std::vector<sm> Ps(np), Qs(nq);\n        std::vector<dm>\
+    \ Pd(np), Qd(nq);\n        for (int i = 0; i < np; i++) {\n            unsigned\
+    \ int v = rng() % 998244353;\n            Ps[i] = v, Pd[i] = v;\n        }\n \
+    \       for (int i = 0; i < nq; i++) {\n            unsigned int v = rng() % 998244353;\n\
+    \            if (i == 0 && v == 0) v = 1;\n            Qs[i] = v, Qd[i] = v;\n\
+    \        }\n        std::vector<long long> ks = {0, 1, 2, 3, np, nq, np + nq,\
+    \ 1000000000000000000LL, static_cast<long long>(rng() >> 4)};\n        for (int\
+    \ t = 0; t < 5; t++) ks.push_back(rng() % 5000);\n        for (long long k : ks)\
+    \ check(bostan_mori(Ps, Qs, k).val() == bostan_mori(Pd, Qd, k).val(), \"bostan_mori\
+    \ \u306E NTT \u306E\u7D4C\u8DEF\");\n    }\n    // linear_recurrence_kth \u3082\
+    \u3001d \u304C\u5927\u304D\u3044\u3068\u304D\u306B\u6F38\u5316\u5F0F\u3067\u9806\
+    \u306B\u8A08\u7B97\u3057\u305F\u3082\u306E\u3068\u6BD4\u3079\u308B\n    for (int\
+    \ d : {61, 64, 65, 200}) {\n        std::vector<sm> a(d), c(d);\n        for (auto&\
+    \ x : a) x = rng() % 998244353;\n        for (auto& x : c) x = rng() % 998244353;\n\
+    \        std::vector<sm> seq = a;\n        for (int i = d; i < 3000; i++) {\n\
+    \            sm s = 0;\n            for (int j = 1; j <= d; j++) s += c[j - 1]\
+    \ * seq[i - j];\n            seq.push_back(s);\n        }\n        for (int k\
+    \ = 0; k < 3000; k += 7) check(linear_recurrence_kth(a, c, k) == seq[k], \"linear_recurrence_kth\
+    \ \u306E NTT \u306E\u7D4C\u8DEF\");\n    }\n}\n\nint main() {\n    std::mt19937_64\
+    \ rng(314);\n    test_mod<static_modint<998244353>>(rng);\n    test_mod<static_modint<1000000007>>(rng);\n\
+    \    test_ntt_path(rng);\n\n    // berlekamp_massey \u306E\u6700\u77ED\u6027:\
+    \ mod 3 \u3067\u9577\u3055 d \u306E\u6F38\u5316\u5F0F\u3092\u5168\u90E8\u8A66\u3057\
+    \u3001\u6210\u308A\u7ACB\u3064\u6700\u77ED\u306E d \u3068\u6BD4\u3079\u308B\n\
+    \    using m3 = static_modint<3>;\n    for (int rep = 0; rep < 3000 && ok; rep++)\
+    \ {\n        int n = rng() % 8;\n        std::vector<m3> a(n);\n        for (auto&\
+    \ x : a) x = rng() % 3;\n        int best = -1;\n        for (int d = 0; best\
+    \ == -1; d++) {\n            int total = 1;\n            for (int j = 0; j < d;\
+    \ j++) total *= 3;\n            for (int code = 0; code < total && best == -1;\
+    \ code++) {\n                std::vector<int> c(d);\n                for (int\
+    \ j = 0, t = code; j < d; j++, t /= 3) c[j] = t % 3;\n                bool good\
+    \ = true;\n                for (int i = d; i < n && good; i++) {\n           \
+    \         m3 s = 0;\n                    for (int j = 1; j <= d; j++) s += m3(c[j\
+    \ - 1]) * a[i - j];\n                    good = s == a[i];\n                }\n\
+    \                if (good) best = d;\n            }\n        }\n        auto r\
+    \ = berlekamp_massey(a);\n        check(static_cast<int>(r.size()) == best, \"\
+    berlekamp_massey \u306E\u6700\u77ED\u6027\");\n        for (int i = r.size();\
+    \ i < n; i++) {\n            m3 s = 0;\n            for (size_t j = 1; j <= r.size();\
+    \ j++) s += r[j - 1] * a[i - j];\n            check(s == a[i], \"berlekamp_massey\
+    \ \u304C\u6210\u308A\u7ACB\u3064\");\n        }\n    }\n\n    if (ok) std::cout\
+    \ << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/math/linear-recurrence.hpp
   - src/math/convolution.hpp
@@ -774,7 +897,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/linear-recurrence.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 15:13:12+09:00'
+  timestamp: '2026-10-22 20:04:06+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/linear-recurrence.test.cpp

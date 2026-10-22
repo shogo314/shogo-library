@@ -621,27 +621,36 @@ data:
     template <class mint>\nconstexpr bool ntt_friendly(int z) {\n    if constexpr\
     \ (is_static_modint<mint>::value) {\n        return internal_modint::is_prime32(mint::mod())\
     \ && mint::mod() > 2 && (mint::mod() - 1) % z == 0;\n    } else {\n        return\
-    \ false;\n    }\n}\n\nstatic constexpr int MOD0 = 754974721;\nstatic constexpr\
-    \ int MOD1 = 167772161;\nstatic constexpr int MOD2 = 469762049;\nusing mint0 =\
-    \ static_modint<MOD0>;\nusing mint1 = static_modint<MOD1>;\nusing mint2 = static_modint<MOD2>;\n\
-    static const mint1 imod0 = 95869806;    // modinv(MOD0, MOD1);\nstatic const mint2\
-    \ imod1 = 104391568;   // modinv(MOD1, MOD2);\nstatic const mint2 imod01 = 187290749;\
-    \  // imod1 / MOD0;\n\n/**\n * @brief \u914D\u5217\u306E\u30B5\u30A4\u30BA\u304C\
-    \u5C0F\u3055\u3044\u3068\u304D\u306E\u7573\u307F\u8FBC\u307F\n * @param T mint,\
-    \ long long\n * @param A vector<T>\n * @param B vector<T>\n * @return vector<T>\n\
-    \ */\ntemplate <class T>\nstd::vector<T> naive(const std::vector<T>& A, const\
-    \ std::vector<T>& B) {\n    if (A.empty() || B.empty()) return {};\n    int N\
-    \ = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n    std::vector<T>\
-    \ res(N + M - 1);\n    for (int i = 0; i < N; ++i)\n        for (int j = 0; j\
-    \ < M; ++j)\n            res[i + j] += A[i] * B[j];\n    return res;\n}\n};  //\
-    \ namespace internal_convolution\n\nnamespace internal_convolution {\n/**\n *\
-    \ @brief 3 \u3064\u306E\u6CD5\u3067\u7573\u307F\u8FBC\u307F\u3001\u4E2D\u56FD\u5270\
-    \u4F59\u5B9A\u7406\u3067\u5024 (0 \u4EE5\u4E0A MOD0 MOD1 MOD2 \u672A\u6E80) \u3092\
-    \u5FA9\u5143\u3059\u308B\n * \u5024\u306F y0 + y1 MOD0 + y2 MOD0 MOD1 (0 <= y0\
-    \ < MOD0\u30010 <= y1 < MOD1\u30010 <= y2 < MOD2) \u306E\u5F62\u306B\u306A\u308A\
-    \u3001\u5404\u9805\u3092 f(y0, y1, y2) \u3067\u7D44\u307F\u7ACB\u3066\u308B\n\
-    \ * A \u3068 B \u304C\u540C\u3058\u914D\u5217\u306A\u3089\u3001\u5909\u63DB\u3092\
-    \ 1 \u56DE\u7701\u304F\n */\ntemplate <class T, class R, class F>\nstd::vector<R>\
+    \ false;\n    }\n}\n\n/**\n * @brief \u9577\u3055 61 \u4EE5\u4E0A\u306E\u7573\u307F\
+    \u8FBC\u307F\u3092 mint \u3067\u76F4\u63A5 NTT \u3067\u304D\u308B\u898B\u8FBC\u307F\
+    \u304C\u3042\u308B\u304B (\u30B3\u30F3\u30D1\u30A4\u30EB\u6642\u306B\u6C7A\u307E\
+    \u308B\u90E8\u5206\u3060\u3051)\n * \u507D\u306A\u3089 NTT \u306E\u95A2\u6570\u3092\
+    \u5B9F\u4F53\u5316\u3057\u306A\u3044 (\u6CD5 - 1 \u306E 2 \u306E\u6307\u6570\u304C\
+    \u5C0F\u3055\u3044\u3068\u3001\u56DE\u8EE2\u56E0\u5B50\u306E\u8868\u306E\u5916\
+    \u3092\u8AAD\u3080\u3068\u3044\u3046\u8AA4\u3063\u305F\u8B66\u544A\u304C\u51FA\
+    \u308B\u305F\u3081)\n */\ntemplate <class mint>\nconstexpr bool ntt_candidate()\
+    \ {\n    if constexpr (is_static_modint<mint>::value) {\n        return countr_zero(mint::mod()\
+    \ - 1) >= 7;\n    } else {\n        return false;\n    }\n}\n\nstatic constexpr\
+    \ int MOD0 = 754974721;\nstatic constexpr int MOD1 = 167772161;\nstatic constexpr\
+    \ int MOD2 = 469762049;\nusing mint0 = static_modint<MOD0>;\nusing mint1 = static_modint<MOD1>;\n\
+    using mint2 = static_modint<MOD2>;\nstatic const mint1 imod0 = 95869806;    //\
+    \ modinv(MOD0, MOD1);\nstatic const mint2 imod1 = 104391568;   // modinv(MOD1,\
+    \ MOD2);\nstatic const mint2 imod01 = 187290749;  // imod1 / MOD0;\n\n/**\n *\
+    \ @brief \u914D\u5217\u306E\u30B5\u30A4\u30BA\u304C\u5C0F\u3055\u3044\u3068\u304D\
+    \u306E\u7573\u307F\u8FBC\u307F\n * @param T mint, long long\n * @param A vector<T>\n\
+    \ * @param B vector<T>\n * @return vector<T>\n */\ntemplate <class T>\nstd::vector<T>\
+    \ naive(const std::vector<T>& A, const std::vector<T>& B) {\n    if (A.empty()\
+    \ || B.empty()) return {};\n    int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n\
+    \    std::vector<T> res(N + M - 1);\n    for (int i = 0; i < N; ++i)\n       \
+    \ for (int j = 0; j < M; ++j)\n            res[i + j] += A[i] * B[j];\n    return\
+    \ res;\n}\n};  // namespace internal_convolution\n\nnamespace internal_convolution\
+    \ {\n/**\n * @brief 3 \u3064\u306E\u6CD5\u3067\u7573\u307F\u8FBC\u307F\u3001\u4E2D\
+    \u56FD\u5270\u4F59\u5B9A\u7406\u3067\u5024 (0 \u4EE5\u4E0A MOD0 MOD1 MOD2 \u672A\
+    \u6E80) \u3092\u5FA9\u5143\u3059\u308B\n * \u5024\u306F y0 + y1 MOD0 + y2 MOD0\
+    \ MOD1 (0 <= y0 < MOD0\u30010 <= y1 < MOD1\u30010 <= y2 < MOD2) \u306E\u5F62\u306B\
+    \u306A\u308A\u3001\u5404\u9805\u3092 f(y0, y1, y2) \u3067\u7D44\u307F\u7ACB\u3066\
+    \u308B\n * A \u3068 B \u304C\u540C\u3058\u914D\u5217\u306A\u3089\u3001\u5909\u63DB\
+    \u3092 1 \u56DE\u7701\u304F\n */\ntemplate <class T, class R, class F>\nstd::vector<R>\
     \ convolution_crt(const std::vector<T>& A, const std::vector<T>& B, F f) {\n \
     \   const int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n\
     \    std::vector<mint0> a0(N), b0(M);\n    std::vector<mint1> a1(N), b1(M);\n\
@@ -665,7 +674,7 @@ data:
     \ B) {\n    if (A.empty() || B.empty()) return {};\n    const int N = static_cast<int>(A.size()),\
     \ M = static_cast<int>(B.size());\n    if (std::min(N, M) <= 60) return internal_convolution::naive(A,\
     \ B);\n    const int z = internal_convolution::get_fft_size(N, M);\n    if constexpr\
-    \ (internal_convolution::is_static_modint<mint>::value) {\n        if (internal_convolution::ntt_friendly<mint>(z))\
+    \ (internal_convolution::ntt_candidate<mint>()) {\n        if (internal_convolution::ntt_friendly<mint>(z))\
     \ return internal_convolution::convolution_fft(A, B, &A == &B);\n    }\n    std::vector<unsigned\
     \ int> a(N), b(M);\n    for (int i = 0; i < N; ++i) a[i] = A[i].val();\n    for\
     \ (int i = 0; i < M; ++i) b[i] = B[i].val();\n    const mint mod0 = internal_convolution::MOD0,\
@@ -1233,17 +1242,17 @@ data:
   isVerificationFile: false
   path: src/math/multipoint.hpp
   requiredBy: []
-  timestamp: '2026-10-22 15:13:12+09:00'
+  timestamp: '2026-10-22 20:04:06+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/math/multipoint.test.cpp
-  - test/yosupo/polynomial/polynomial-interpolation-on-geometric-sequence.test.cpp
-  - test/yosupo/polynomial/multipoint-evaluation.test.cpp
-  - test/yosupo/polynomial/shift-of-sampling-points-of-polynomial.test.cpp
-  - test/yosupo/polynomial/multipoint-evaluation-on-geometric-sequence.test.cpp
-  - test/yosupo/polynomial/polynomial-interpolation.test.cpp
   - test/yukicoder/3770.test.cpp
   - test/yukicoder/3771.test.cpp
+  - test/yosupo/polynomial/multipoint-evaluation.test.cpp
+  - test/yosupo/polynomial/polynomial-interpolation.test.cpp
+  - test/yosupo/polynomial/shift-of-sampling-points-of-polynomial.test.cpp
+  - test/yosupo/polynomial/polynomial-interpolation-on-geometric-sequence.test.cpp
+  - test/yosupo/polynomial/multipoint-evaluation-on-geometric-sequence.test.cpp
 documentation_of: src/math/multipoint.hpp
 layout: document
 title: "\u591A\u70B9\u8A55\u4FA1\u30FB\u591A\u9805\u5F0F\u88DC\u9593\u30FB\u6A19\u672C\

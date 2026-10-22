@@ -235,35 +235,35 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/graph/two-sat.test.cpp
   - test/unittest/graph/lowlink.test.cpp
   - test/unittest/graph/chinese-postman.test.cpp
+  - test/unittest/graph/two-sat.test.cpp
+  - test/unittest/data_structures/potentialized-unionfind.test.cpp
+  - test/unittest/data_structures/monoid-unionfind.test.cpp
   - test/unittest/data_structures/unionfind.test.cpp
+  - test/unittest/data_structures/graph-util.test.cpp
   - test/unittest/data_structures/persistent-unionfind.test.cpp
   - test/unittest/data_structures/find-cycle.test.cpp
-  - test/unittest/data_structures/monoid-unionfind.test.cpp
-  - test/unittest/data_structures/potentialized-unionfind.test.cpp
-  - test/unittest/data_structures/graph-util.test.cpp
-  - test/unittest/algebra/mapping.test.cpp
   - test/unittest/algebra/monoid.test.cpp
-  - test/aoj/grl/grl-4-a.test.cpp
+  - test/unittest/algebra/mapping.test.cpp
+  - test/yukicoder/674.1.test.cpp
+  - test/aoj/volume29/2971.test.cpp
   - test/aoj/grl/grl-2-a.test.cpp
-  - test/aoj/alds1/alds1-11-d.2.test.cpp
-  - test/aoj/alds1/alds1-11-d.1.test.cpp
+  - test/aoj/grl/grl-4-a.test.cpp
   - test/aoj/dsl/dsl-1-b.2.test.cpp
   - test/aoj/dsl/dsl-1-b.1.test.cpp
-  - test/aoj/volume29/2971.test.cpp
-  - test/yosupo/graph/cycle-detection-undirected.test.cpp
-  - test/yosupo/graph/chromatic-number.1.test.cpp
-  - test/yosupo/graph/minimum-spanning-tree.2.test.cpp
-  - test/yosupo/graph/minimum-spanning-tree.1.test.cpp
-  - test/yosupo/graph/scc.test.cpp
-  - test/yosupo/graph/cycle-detection.test.cpp
+  - test/aoj/alds1/alds1-11-d.2.test.cpp
+  - test/aoj/alds1/alds1-11-d.1.test.cpp
   - test/yosupo/data_structure/unionfind.test.cpp
-  - test/yosupo/data_structure/persistent-unionfind.test.cpp
   - test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
+  - test/yosupo/data_structure/persistent-unionfind.test.cpp
+  - test/yosupo/graph/chromatic-number.1.test.cpp
+  - test/yosupo/graph/scc.test.cpp
+  - test/yosupo/graph/minimum-spanning-tree.1.test.cpp
+  - test/yosupo/graph/minimum-spanning-tree.2.test.cpp
+  - test/yosupo/graph/cycle-detection-undirected.test.cpp
+  - test/yosupo/graph/cycle-detection.test.cpp
   - test/yosupo/other/two-sat.test.cpp
-  - test/yukicoder/674.1.test.cpp
 documentation_of: src/data_structures/unionfind.hpp
 layout: document
 title: UnionFind

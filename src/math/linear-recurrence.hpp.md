@@ -37,16 +37,16 @@ data:
   bundledCode: "#line 2 \"src/math/linear-recurrence.hpp\"\n\n/**\n * @file linear-recurrence.hpp\n\
     \ * @brief \u7DDA\u5F62\u6F38\u5316\u5F0F (Bostan-Mori \u306B\u3088\u308B\u7B2C\
     \ k \u9805\u3001Berlekamp-Massey \u306B\u3088\u308B\u6F38\u5316\u5F0F\u306E\u5FA9\
-    \u5143)\n */\n\n#include <cassert>\n#include <vector>\n\n#line 2 \"src/math/convolution.hpp\"\
-    \n\n/**\n * @file convolution.hpp\n * @brief \u7573\u307F\u8FBC\u307F (NTT)\n\
-    \ */\n\n#include <algorithm>\n#include <array>\n#include <cstdint>\n#include <type_traits>\n\
-    #include <utility>\n#line 14 \"src/math/convolution.hpp\"\n\n#line 2 \"src/math/modint.hpp\"\
-    \n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\
-    \u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line\
-    \ 10 \"src/math/modint.hpp\"\n#include <iostream>\n#include <limits>\n#line 14\
-    \ \"src/math/modint.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file\
-    \ traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n#include\
-    \ <iterator>\n#include <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace\
+    \u5143)\n */\n\n#include <algorithm>\n#include <cassert>\n#include <utility>\n\
+    #include <vector>\n\n#line 2 \"src/math/convolution.hpp\"\n\n/**\n * @file convolution.hpp\n\
+    \ * @brief \u7573\u307F\u8FBC\u307F (NTT)\n */\n\n#line 9 \"src/math/convolution.hpp\"\
+    \n#include <array>\n#include <cstdint>\n#include <type_traits>\n#line 14 \"src/math/convolution.hpp\"\
+    \n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\
+    \u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\
+    \u30AF\u30E9\u30B9\n */\n\n#line 10 \"src/math/modint.hpp\"\n#include <iostream>\n\
+    #include <limits>\n#line 14 \"src/math/modint.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\
+    \n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n\
+    #include <iterator>\n#include <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace\
     \ internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T, class =\
     \ void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct\
     \ is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
@@ -505,27 +505,36 @@ data:
     template <class mint>\nconstexpr bool ntt_friendly(int z) {\n    if constexpr\
     \ (is_static_modint<mint>::value) {\n        return internal_modint::is_prime32(mint::mod())\
     \ && mint::mod() > 2 && (mint::mod() - 1) % z == 0;\n    } else {\n        return\
-    \ false;\n    }\n}\n\nstatic constexpr int MOD0 = 754974721;\nstatic constexpr\
-    \ int MOD1 = 167772161;\nstatic constexpr int MOD2 = 469762049;\nusing mint0 =\
-    \ static_modint<MOD0>;\nusing mint1 = static_modint<MOD1>;\nusing mint2 = static_modint<MOD2>;\n\
-    static const mint1 imod0 = 95869806;    // modinv(MOD0, MOD1);\nstatic const mint2\
-    \ imod1 = 104391568;   // modinv(MOD1, MOD2);\nstatic const mint2 imod01 = 187290749;\
-    \  // imod1 / MOD0;\n\n/**\n * @brief \u914D\u5217\u306E\u30B5\u30A4\u30BA\u304C\
-    \u5C0F\u3055\u3044\u3068\u304D\u306E\u7573\u307F\u8FBC\u307F\n * @param T mint,\
-    \ long long\n * @param A vector<T>\n * @param B vector<T>\n * @return vector<T>\n\
-    \ */\ntemplate <class T>\nstd::vector<T> naive(const std::vector<T>& A, const\
-    \ std::vector<T>& B) {\n    if (A.empty() || B.empty()) return {};\n    int N\
-    \ = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n    std::vector<T>\
-    \ res(N + M - 1);\n    for (int i = 0; i < N; ++i)\n        for (int j = 0; j\
-    \ < M; ++j)\n            res[i + j] += A[i] * B[j];\n    return res;\n}\n};  //\
-    \ namespace internal_convolution\n\nnamespace internal_convolution {\n/**\n *\
-    \ @brief 3 \u3064\u306E\u6CD5\u3067\u7573\u307F\u8FBC\u307F\u3001\u4E2D\u56FD\u5270\
-    \u4F59\u5B9A\u7406\u3067\u5024 (0 \u4EE5\u4E0A MOD0 MOD1 MOD2 \u672A\u6E80) \u3092\
-    \u5FA9\u5143\u3059\u308B\n * \u5024\u306F y0 + y1 MOD0 + y2 MOD0 MOD1 (0 <= y0\
-    \ < MOD0\u30010 <= y1 < MOD1\u30010 <= y2 < MOD2) \u306E\u5F62\u306B\u306A\u308A\
-    \u3001\u5404\u9805\u3092 f(y0, y1, y2) \u3067\u7D44\u307F\u7ACB\u3066\u308B\n\
-    \ * A \u3068 B \u304C\u540C\u3058\u914D\u5217\u306A\u3089\u3001\u5909\u63DB\u3092\
-    \ 1 \u56DE\u7701\u304F\n */\ntemplate <class T, class R, class F>\nstd::vector<R>\
+    \ false;\n    }\n}\n\n/**\n * @brief \u9577\u3055 61 \u4EE5\u4E0A\u306E\u7573\u307F\
+    \u8FBC\u307F\u3092 mint \u3067\u76F4\u63A5 NTT \u3067\u304D\u308B\u898B\u8FBC\u307F\
+    \u304C\u3042\u308B\u304B (\u30B3\u30F3\u30D1\u30A4\u30EB\u6642\u306B\u6C7A\u307E\
+    \u308B\u90E8\u5206\u3060\u3051)\n * \u507D\u306A\u3089 NTT \u306E\u95A2\u6570\u3092\
+    \u5B9F\u4F53\u5316\u3057\u306A\u3044 (\u6CD5 - 1 \u306E 2 \u306E\u6307\u6570\u304C\
+    \u5C0F\u3055\u3044\u3068\u3001\u56DE\u8EE2\u56E0\u5B50\u306E\u8868\u306E\u5916\
+    \u3092\u8AAD\u3080\u3068\u3044\u3046\u8AA4\u3063\u305F\u8B66\u544A\u304C\u51FA\
+    \u308B\u305F\u3081)\n */\ntemplate <class mint>\nconstexpr bool ntt_candidate()\
+    \ {\n    if constexpr (is_static_modint<mint>::value) {\n        return countr_zero(mint::mod()\
+    \ - 1) >= 7;\n    } else {\n        return false;\n    }\n}\n\nstatic constexpr\
+    \ int MOD0 = 754974721;\nstatic constexpr int MOD1 = 167772161;\nstatic constexpr\
+    \ int MOD2 = 469762049;\nusing mint0 = static_modint<MOD0>;\nusing mint1 = static_modint<MOD1>;\n\
+    using mint2 = static_modint<MOD2>;\nstatic const mint1 imod0 = 95869806;    //\
+    \ modinv(MOD0, MOD1);\nstatic const mint2 imod1 = 104391568;   // modinv(MOD1,\
+    \ MOD2);\nstatic const mint2 imod01 = 187290749;  // imod1 / MOD0;\n\n/**\n *\
+    \ @brief \u914D\u5217\u306E\u30B5\u30A4\u30BA\u304C\u5C0F\u3055\u3044\u3068\u304D\
+    \u306E\u7573\u307F\u8FBC\u307F\n * @param T mint, long long\n * @param A vector<T>\n\
+    \ * @param B vector<T>\n * @return vector<T>\n */\ntemplate <class T>\nstd::vector<T>\
+    \ naive(const std::vector<T>& A, const std::vector<T>& B) {\n    if (A.empty()\
+    \ || B.empty()) return {};\n    int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n\
+    \    std::vector<T> res(N + M - 1);\n    for (int i = 0; i < N; ++i)\n       \
+    \ for (int j = 0; j < M; ++j)\n            res[i + j] += A[i] * B[j];\n    return\
+    \ res;\n}\n};  // namespace internal_convolution\n\nnamespace internal_convolution\
+    \ {\n/**\n * @brief 3 \u3064\u306E\u6CD5\u3067\u7573\u307F\u8FBC\u307F\u3001\u4E2D\
+    \u56FD\u5270\u4F59\u5B9A\u7406\u3067\u5024 (0 \u4EE5\u4E0A MOD0 MOD1 MOD2 \u672A\
+    \u6E80) \u3092\u5FA9\u5143\u3059\u308B\n * \u5024\u306F y0 + y1 MOD0 + y2 MOD0\
+    \ MOD1 (0 <= y0 < MOD0\u30010 <= y1 < MOD1\u30010 <= y2 < MOD2) \u306E\u5F62\u306B\
+    \u306A\u308A\u3001\u5404\u9805\u3092 f(y0, y1, y2) \u3067\u7D44\u307F\u7ACB\u3066\
+    \u308B\n * A \u3068 B \u304C\u540C\u3058\u914D\u5217\u306A\u3089\u3001\u5909\u63DB\
+    \u3092 1 \u56DE\u7701\u304F\n */\ntemplate <class T, class R, class F>\nstd::vector<R>\
     \ convolution_crt(const std::vector<T>& A, const std::vector<T>& B, F f) {\n \
     \   const int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n\
     \    std::vector<mint0> a0(N), b0(M);\n    std::vector<mint1> a1(N), b1(M);\n\
@@ -549,7 +558,7 @@ data:
     \ B) {\n    if (A.empty() || B.empty()) return {};\n    const int N = static_cast<int>(A.size()),\
     \ M = static_cast<int>(B.size());\n    if (std::min(N, M) <= 60) return internal_convolution::naive(A,\
     \ B);\n    const int z = internal_convolution::get_fft_size(N, M);\n    if constexpr\
-    \ (internal_convolution::is_static_modint<mint>::value) {\n        if (internal_convolution::ntt_friendly<mint>(z))\
+    \ (internal_convolution::ntt_candidate<mint>()) {\n        if (internal_convolution::ntt_friendly<mint>(z))\
     \ return internal_convolution::convolution_fft(A, B, &A == &B);\n    }\n    std::vector<unsigned\
     \ int> a(N), b(M);\n    for (int i = 0; i < N; ++i) a[i] = A[i].val();\n    for\
     \ (int i = 0; i < M; ++i) b[i] = B[i].val();\n    const mint mod0 = internal_convolution::MOD0,\
@@ -570,19 +579,66 @@ data:
     \ [&](unsigned int y0, unsigned int y1, unsigned int y2) {\n        __int128_t\
     \ tmp = static_cast<__int128_t>(mod01) * y2 + static_cast<__int128_t>(mod0) *\
     \ y1 + y0;\n        return static_cast<long long>(tmp < (mod012 >> 1) ? tmp :\
-    \ tmp - mod012);\n    });\n}\n#line 12 \"src/math/linear-recurrence.hpp\"\n\n\
-    /**\n * @brief [x^k] P(x) / Q(x) (Q[0] != 0) \u3092 Bostan-Mori \u6CD5\u3067\u6C42\
-    \u3081\u308B O(d log d log k) (d \u306F P, Q \u306E\u9577\u3055)\n * P(x) / Q(x)\
-    \ = P(x) Q(-x) / (Q(x) Q(-x)) \u3067\u3001\u5206\u6BCD\u306F x^2 \u306E\u591A\u9805\
-    \u5F0F\u306B\u306A\u308B\u306E\u3067\u3001k \u306E\u5076\u5947\u3067\u5206\u5B50\
-    \u306E\u4FC2\u6570\u3092\u534A\u5206\u306B\u7D5E\u3063\u3066 k \u3092\u534A\u5206\
-    \u306B\u3059\u308B\n */\ntemplate <typename mint>\nmint bostan_mori(std::vector<mint>\
+    \ tmp - mod012);\n    });\n}\n#line 14 \"src/math/linear-recurrence.hpp\"\n\n\
+    namespace internal_linear_recurrence {\n\n/**\n * @brief bostan_mori \u3092 NTT\
+    \ \u3057\u305F\u5024\u306E\u307E\u307E\u9032\u3081\u308B\u7248 (\u6CD5\u304C NTT\
+    \ \u306B\u5411\u304F\u7D20\u6570\u306E\u3068\u304D)\n * \u9577\u3055 2N \u3067\
+    \u5909\u63DB\u3059\u308B\u3068\u3001butterfly \u306E\u7D50\u679C\u306F\u30D3\u30C3\
+    \u30C8\u53CD\u8EE2\u3057\u305F\u9806\u306B\u4E26\u3073\u3001\u4F4D\u7F6E 2i \u3068\
+    \ 2i+1 \u306F\u70B9 w \u3068 -w \u3067\u306E\u5024\u306B\u306A\u308B\u3002\n *\
+    \ \u305D\u3053\u3067 Q(-x) \u306F\u96A3\u3069\u3046\u3057\u3092\u5165\u308C\u66FF\
+    \u3048\u308B\u3060\u3051\u3067\u5F97\u3089\u308C\u3001\u5076\u6570\u6B21\u30FB\
+    \u5947\u6570\u6B21\u306E\u90E8\u5206\u306E\u5024 (\u9577\u3055 N \u306E\u5909\u63DB\
+    ) \u3082\n * (F(w) + F(-w)) / 2\u3001(F(w) - F(-w)) / (2w) \u3067\u6C42\u307E\u308B\
+    \u3002\u6B21\u306E\u6BB5\u306E\u9577\u3055 2N \u306E\u5909\u63DB\u306F\u3001\n\
+    \ * \u6B8B\u308A\u306E\u534A\u5206 (\u70B9 w \u03C9_{2N} \u3067\u306E\u5024) \u3060\
+    \u3051\u3092\u9006\u5909\u63DB\u3068\u5909\u63DB 1 \u56DE\u305A\u3064\u3067\u4F5C\
+    \u308B\u30021 \u6BB5\u3042\u305F\u308A\u306E NTT \u306F\u9577\u3055 2N \u3092\
+    \ 2 \u56DE\u5206\u307B\u3069\u306B\u306A\u308B\n */\ntemplate <typename mint>\n\
+    mint bostan_mori_ntt(std::vector<mint> P, std::vector<mint> Q, long long k, int\
+    \ h) {\n    using namespace internal_convolution;\n    static const FFTInfo<mint>\
+    \ info;\n    const int N = 1 << h;\n    // half_iw[i] = 1 / (2w) (w \u306F\u9577\
+    \u3055 2N \u306E\u4F4D\u7F6E 2i \u306E\u70B9 \u03C9_{2N}^{rev[i]})\u3001tw[i]\
+    \ = \u03C9_{2N}^i / N\n    const mint inv2 = mint(2).inv();\n    std::vector<int>\
+    \ rev(N);\n    for (int i = 1; i < N; i++) rev[i] = (rev[i >> 1] >> 1) | ((i &\
+    \ 1) << (h - 1));\n    std::vector<mint> pw(N), half_iw(N), tw(N);\n    pw[0]\
+    \ = 1, tw[0] = mint(N).inv();\n    for (int i = 1; i < N; i++) {\n        pw[i]\
+    \ = pw[i - 1] * info.iroot[h + 1];\n        tw[i] = tw[i - 1] * info.root[h +\
+    \ 1];\n    }\n    for (int i = 0; i < N; i++) half_iw[i] = pw[rev[i]] * inv2;\n\
+    \    P.resize(2 * N), Q.resize(2 * N);\n    butterfly(P), butterfly(Q);\n    //\
+    \ \u9577\u3055 N \u306E\u5909\u63DB f \u304B\u3089\u3001\u9577\u3055 2N \u306E\
+    \u5909\u63DB (\u524D\u534A\u306F f \u306E\u307E\u307E) \u3092\u4F5C\u308B\n  \
+    \  auto extend = [&](std::vector<mint>& f) {\n        std::vector<mint> g(f.begin(),\
+    \ f.begin() + N);\n        butterfly_inv(g);\n        for (int i = 0; i < N; i++)\
+    \ g[i] *= tw[i];\n        butterfly(g);\n        std::copy(g.begin(), g.end(),\
+    \ f.begin() + N);\n    };\n    while (true) {\n        for (int i = 0; i < N;\
+    \ i++) {\n            const mint p0 = P[2 * i], p1 = P[2 * i + 1], q0 = Q[2 *\
+    \ i], q1 = Q[2 * i + 1];\n            // U = P(x) Q(-x) \u306E w, -w \u3067\u306E\
+    \u5024\u306F p0 q1, p1 q0\u3002V = Q(x) Q(-x) \u306F\u3069\u3061\u3089\u3082 q0\
+    \ q1\n            const mint u0 = p0 * q1, u1 = p1 * q0;\n            P[i] = (k\
+    \ & 1) ? (u0 - u1) * half_iw[i] : (u0 + u1) * inv2;\n            Q[i] = q0 * q1;\n\
+    \        }\n        k >>= 1;\n        if (k == 0) break;\n        extend(P), extend(Q);\n\
+    \    }\n    // \u5B9A\u6570\u9805\u306F\u9577\u3055 N \u306E\u5909\u63DB\u306E\
+    \u5024\u306E\u548C\u306E 1/N \u306A\u306E\u3067\u3001\u6BD4\u306F\u548C\u306E\u6BD4\
+    \u306B\u306A\u308B\n    mint p = 0, q = 0;\n    for (int i = 0; i < N; i++) p\
+    \ += P[i], q += Q[i];\n    return p / q;\n}\n\n}  // namespace internal_linear_recurrence\n\
+    \n/**\n * @brief [x^k] P(x) / Q(x) (Q[0] != 0) \u3092 Bostan-Mori \u6CD5\u3067\
+    \u6C42\u3081\u308B O(d log d log k) (d \u306F P, Q \u306E\u9577\u3055)\n * P(x)\
+    \ / Q(x) = P(x) Q(-x) / (Q(x) Q(-x)) \u3067\u3001\u5206\u6BCD\u306F x^2 \u306E\
+    \u591A\u9805\u5F0F\u306B\u306A\u308B\u306E\u3067\u3001k \u306E\u5076\u5947\u3067\
+    \u5206\u5B50\u306E\u4FC2\u6570\u3092\u534A\u5206\u306B\u7D5E\u3063\u3066 k \u3092\
+    \u534A\u5206\u306B\u3059\u308B\n */\ntemplate <typename mint>\nmint bostan_mori(std::vector<mint>\
     \ P, std::vector<mint> Q, long long k) {\n    assert(!Q.empty() && Q[0] != 0 &&\
-    \ k >= 0);\n    while (k > 0 && !P.empty()) {\n        std::vector<mint> Qm =\
-    \ Q;\n        for (size_t i = 1; i < Qm.size(); i += 2) Qm[i] = -Qm[i];\n    \
-    \    std::vector<mint> U = convolution(P, Qm), V = convolution(Q, Qm);\n     \
-    \   P.clear(), Q.clear();\n        for (size_t i = k & 1; i < U.size(); i += 2)\
-    \ P.push_back(U[i]);\n        for (size_t i = 0; i < V.size(); i += 2) Q.push_back(V[i]);\n\
+    \ k >= 0);\n    if constexpr (internal_convolution::ntt_candidate<mint>()) {\n\
+    \        const int n = static_cast<int>(std::max(P.size(), Q.size()));\n     \
+    \   if (k > 0 && n > 60) {\n            int h = 0;\n            while ((1 << h)\
+    \ < n) h++;\n            if (internal_convolution::ntt_friendly<mint>(2 << h))\
+    \ return internal_linear_recurrence::bostan_mori_ntt(std::move(P), std::move(Q),\
+    \ k, h);\n        }\n    }\n    while (k > 0 && !P.empty()) {\n        std::vector<mint>\
+    \ Qm = Q;\n        for (size_t i = 1; i < Qm.size(); i += 2) Qm[i] = -Qm[i];\n\
+    \        std::vector<mint> U = convolution(P, Qm), V = convolution(Q, Qm);\n \
+    \       P.clear(), Q.clear();\n        for (size_t i = k & 1; i < U.size(); i\
+    \ += 2) P.push_back(U[i]);\n        for (size_t i = 0; i < V.size(); i += 2) Q.push_back(V[i]);\n\
     \        k >>= 1;\n    }\n    if (P.empty()) return mint(0);\n    // k = 0 \u306A\
     \u3089 P / Q \u306E\u5B9A\u6570\u9805\n    return P[0] / Q[0];\n}\n\n/**\n * @brief\
     \ a_i = c_1 a_{i-1} + c_2 a_{i-2} + ... + c_d a_{i-d} (i >= d) \u3092\u6E80\u305F\
@@ -620,26 +676,73 @@ data:
     \ j = 0; j < len; j++) res[j] = -C[j + 1];\n    return res;\n}\n"
   code: "#pragma once\n\n/**\n * @file linear-recurrence.hpp\n * @brief \u7DDA\u5F62\
     \u6F38\u5316\u5F0F (Bostan-Mori \u306B\u3088\u308B\u7B2C k \u9805\u3001Berlekamp-Massey\
-    \ \u306B\u3088\u308B\u6F38\u5316\u5F0F\u306E\u5FA9\u5143)\n */\n\n#include <cassert>\n\
-    #include <vector>\n\n#include \"convolution.hpp\"\n\n/**\n * @brief [x^k] P(x)\
-    \ / Q(x) (Q[0] != 0) \u3092 Bostan-Mori \u6CD5\u3067\u6C42\u3081\u308B O(d log\
-    \ d log k) (d \u306F P, Q \u306E\u9577\u3055)\n * P(x) / Q(x) = P(x) Q(-x) / (Q(x)\
-    \ Q(-x)) \u3067\u3001\u5206\u6BCD\u306F x^2 \u306E\u591A\u9805\u5F0F\u306B\u306A\
-    \u308B\u306E\u3067\u3001k \u306E\u5076\u5947\u3067\u5206\u5B50\u306E\u4FC2\u6570\
-    \u3092\u534A\u5206\u306B\u7D5E\u3063\u3066 k \u3092\u534A\u5206\u306B\u3059\u308B\
-    \n */\ntemplate <typename mint>\nmint bostan_mori(std::vector<mint> P, std::vector<mint>\
-    \ Q, long long k) {\n    assert(!Q.empty() && Q[0] != 0 && k >= 0);\n    while\
-    \ (k > 0 && !P.empty()) {\n        std::vector<mint> Qm = Q;\n        for (size_t\
-    \ i = 1; i < Qm.size(); i += 2) Qm[i] = -Qm[i];\n        std::vector<mint> U =\
-    \ convolution(P, Qm), V = convolution(Q, Qm);\n        P.clear(), Q.clear();\n\
-    \        for (size_t i = k & 1; i < U.size(); i += 2) P.push_back(U[i]);\n   \
-    \     for (size_t i = 0; i < V.size(); i += 2) Q.push_back(V[i]);\n        k >>=\
-    \ 1;\n    }\n    if (P.empty()) return mint(0);\n    // k = 0 \u306A\u3089 P /\
-    \ Q \u306E\u5B9A\u6570\u9805\n    return P[0] / Q[0];\n}\n\n/**\n * @brief a_i\
-    \ = c_1 a_{i-1} + c_2 a_{i-2} + ... + c_d a_{i-d} (i >= d) \u3092\u6E80\u305F\u3059\
-    \u6570\u5217\u306E\u7B2C k \u9805 (0-indexed) O(d log d log k)\n * @param a \u521D\
-    \u3081\u306E d \u9805 a_0, ..., a_{d-1}\n * @param c \u4FC2\u6570 c_1, ..., c_d\n\
-    \ */\ntemplate <typename mint>\nmint linear_recurrence_kth(const std::vector<mint>&\
+    \ \u306B\u3088\u308B\u6F38\u5316\u5F0F\u306E\u5FA9\u5143)\n */\n\n#include <algorithm>\n\
+    #include <cassert>\n#include <utility>\n#include <vector>\n\n#include \"convolution.hpp\"\
+    \n\nnamespace internal_linear_recurrence {\n\n/**\n * @brief bostan_mori \u3092\
+    \ NTT \u3057\u305F\u5024\u306E\u307E\u307E\u9032\u3081\u308B\u7248 (\u6CD5\u304C\
+    \ NTT \u306B\u5411\u304F\u7D20\u6570\u306E\u3068\u304D)\n * \u9577\u3055 2N \u3067\
+    \u5909\u63DB\u3059\u308B\u3068\u3001butterfly \u306E\u7D50\u679C\u306F\u30D3\u30C3\
+    \u30C8\u53CD\u8EE2\u3057\u305F\u9806\u306B\u4E26\u3073\u3001\u4F4D\u7F6E 2i \u3068\
+    \ 2i+1 \u306F\u70B9 w \u3068 -w \u3067\u306E\u5024\u306B\u306A\u308B\u3002\n *\
+    \ \u305D\u3053\u3067 Q(-x) \u306F\u96A3\u3069\u3046\u3057\u3092\u5165\u308C\u66FF\
+    \u3048\u308B\u3060\u3051\u3067\u5F97\u3089\u308C\u3001\u5076\u6570\u6B21\u30FB\
+    \u5947\u6570\u6B21\u306E\u90E8\u5206\u306E\u5024 (\u9577\u3055 N \u306E\u5909\u63DB\
+    ) \u3082\n * (F(w) + F(-w)) / 2\u3001(F(w) - F(-w)) / (2w) \u3067\u6C42\u307E\u308B\
+    \u3002\u6B21\u306E\u6BB5\u306E\u9577\u3055 2N \u306E\u5909\u63DB\u306F\u3001\n\
+    \ * \u6B8B\u308A\u306E\u534A\u5206 (\u70B9 w \u03C9_{2N} \u3067\u306E\u5024) \u3060\
+    \u3051\u3092\u9006\u5909\u63DB\u3068\u5909\u63DB 1 \u56DE\u305A\u3064\u3067\u4F5C\
+    \u308B\u30021 \u6BB5\u3042\u305F\u308A\u306E NTT \u306F\u9577\u3055 2N \u3092\
+    \ 2 \u56DE\u5206\u307B\u3069\u306B\u306A\u308B\n */\ntemplate <typename mint>\n\
+    mint bostan_mori_ntt(std::vector<mint> P, std::vector<mint> Q, long long k, int\
+    \ h) {\n    using namespace internal_convolution;\n    static const FFTInfo<mint>\
+    \ info;\n    const int N = 1 << h;\n    // half_iw[i] = 1 / (2w) (w \u306F\u9577\
+    \u3055 2N \u306E\u4F4D\u7F6E 2i \u306E\u70B9 \u03C9_{2N}^{rev[i]})\u3001tw[i]\
+    \ = \u03C9_{2N}^i / N\n    const mint inv2 = mint(2).inv();\n    std::vector<int>\
+    \ rev(N);\n    for (int i = 1; i < N; i++) rev[i] = (rev[i >> 1] >> 1) | ((i &\
+    \ 1) << (h - 1));\n    std::vector<mint> pw(N), half_iw(N), tw(N);\n    pw[0]\
+    \ = 1, tw[0] = mint(N).inv();\n    for (int i = 1; i < N; i++) {\n        pw[i]\
+    \ = pw[i - 1] * info.iroot[h + 1];\n        tw[i] = tw[i - 1] * info.root[h +\
+    \ 1];\n    }\n    for (int i = 0; i < N; i++) half_iw[i] = pw[rev[i]] * inv2;\n\
+    \    P.resize(2 * N), Q.resize(2 * N);\n    butterfly(P), butterfly(Q);\n    //\
+    \ \u9577\u3055 N \u306E\u5909\u63DB f \u304B\u3089\u3001\u9577\u3055 2N \u306E\
+    \u5909\u63DB (\u524D\u534A\u306F f \u306E\u307E\u307E) \u3092\u4F5C\u308B\n  \
+    \  auto extend = [&](std::vector<mint>& f) {\n        std::vector<mint> g(f.begin(),\
+    \ f.begin() + N);\n        butterfly_inv(g);\n        for (int i = 0; i < N; i++)\
+    \ g[i] *= tw[i];\n        butterfly(g);\n        std::copy(g.begin(), g.end(),\
+    \ f.begin() + N);\n    };\n    while (true) {\n        for (int i = 0; i < N;\
+    \ i++) {\n            const mint p0 = P[2 * i], p1 = P[2 * i + 1], q0 = Q[2 *\
+    \ i], q1 = Q[2 * i + 1];\n            // U = P(x) Q(-x) \u306E w, -w \u3067\u306E\
+    \u5024\u306F p0 q1, p1 q0\u3002V = Q(x) Q(-x) \u306F\u3069\u3061\u3089\u3082 q0\
+    \ q1\n            const mint u0 = p0 * q1, u1 = p1 * q0;\n            P[i] = (k\
+    \ & 1) ? (u0 - u1) * half_iw[i] : (u0 + u1) * inv2;\n            Q[i] = q0 * q1;\n\
+    \        }\n        k >>= 1;\n        if (k == 0) break;\n        extend(P), extend(Q);\n\
+    \    }\n    // \u5B9A\u6570\u9805\u306F\u9577\u3055 N \u306E\u5909\u63DB\u306E\
+    \u5024\u306E\u548C\u306E 1/N \u306A\u306E\u3067\u3001\u6BD4\u306F\u548C\u306E\u6BD4\
+    \u306B\u306A\u308B\n    mint p = 0, q = 0;\n    for (int i = 0; i < N; i++) p\
+    \ += P[i], q += Q[i];\n    return p / q;\n}\n\n}  // namespace internal_linear_recurrence\n\
+    \n/**\n * @brief [x^k] P(x) / Q(x) (Q[0] != 0) \u3092 Bostan-Mori \u6CD5\u3067\
+    \u6C42\u3081\u308B O(d log d log k) (d \u306F P, Q \u306E\u9577\u3055)\n * P(x)\
+    \ / Q(x) = P(x) Q(-x) / (Q(x) Q(-x)) \u3067\u3001\u5206\u6BCD\u306F x^2 \u306E\
+    \u591A\u9805\u5F0F\u306B\u306A\u308B\u306E\u3067\u3001k \u306E\u5076\u5947\u3067\
+    \u5206\u5B50\u306E\u4FC2\u6570\u3092\u534A\u5206\u306B\u7D5E\u3063\u3066 k \u3092\
+    \u534A\u5206\u306B\u3059\u308B\n */\ntemplate <typename mint>\nmint bostan_mori(std::vector<mint>\
+    \ P, std::vector<mint> Q, long long k) {\n    assert(!Q.empty() && Q[0] != 0 &&\
+    \ k >= 0);\n    if constexpr (internal_convolution::ntt_candidate<mint>()) {\n\
+    \        const int n = static_cast<int>(std::max(P.size(), Q.size()));\n     \
+    \   if (k > 0 && n > 60) {\n            int h = 0;\n            while ((1 << h)\
+    \ < n) h++;\n            if (internal_convolution::ntt_friendly<mint>(2 << h))\
+    \ return internal_linear_recurrence::bostan_mori_ntt(std::move(P), std::move(Q),\
+    \ k, h);\n        }\n    }\n    while (k > 0 && !P.empty()) {\n        std::vector<mint>\
+    \ Qm = Q;\n        for (size_t i = 1; i < Qm.size(); i += 2) Qm[i] = -Qm[i];\n\
+    \        std::vector<mint> U = convolution(P, Qm), V = convolution(Q, Qm);\n \
+    \       P.clear(), Q.clear();\n        for (size_t i = k & 1; i < U.size(); i\
+    \ += 2) P.push_back(U[i]);\n        for (size_t i = 0; i < V.size(); i += 2) Q.push_back(V[i]);\n\
+    \        k >>= 1;\n    }\n    if (P.empty()) return mint(0);\n    // k = 0 \u306A\
+    \u3089 P / Q \u306E\u5B9A\u6570\u9805\n    return P[0] / Q[0];\n}\n\n/**\n * @brief\
+    \ a_i = c_1 a_{i-1} + c_2 a_{i-2} + ... + c_d a_{i-d} (i >= d) \u3092\u6E80\u305F\
+    \u3059\u6570\u5217\u306E\u7B2C k \u9805 (0-indexed) O(d log d log k)\n * @param\
+    \ a \u521D\u3081\u306E d \u9805 a_0, ..., a_{d-1}\n * @param c \u4FC2\u6570 c_1,\
+    \ ..., c_d\n */\ntemplate <typename mint>\nmint linear_recurrence_kth(const std::vector<mint>&\
     \ a, const std::vector<mint>& c, long long k) {\n    assert(a.size() == c.size()\
     \ && k >= 0);\n    const size_t d = c.size();\n    if (d == 0) return mint(0);\n\
     \    // \u6BCD\u95A2\u6570 A(x) = P(x) / Q(x)\u3002Q(x) = 1 - c_1 x - ... - c_d\
@@ -677,7 +780,7 @@ data:
   isVerificationFile: false
   path: src/math/linear-recurrence.hpp
   requiredBy: []
-  timestamp: '2026-10-22 15:13:12+09:00'
+  timestamp: '2026-10-22 20:04:06+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/math/linear-recurrence.test.cpp
@@ -711,7 +814,7 @@ mint g = linear_recurrence_kth(std::vector<mint>(first.begin(), first.begin() + 
 | `berlekamp_massey(a)` | 数列 `a` を満たす最短の漸化式の係数 $c_1, \dots, c_d$ ($d \le i < \lvert a \rvert$ で成り立つ) | $O(\lvert a \rvert^2)$ |
 
 - `linear_recurrence_kth` は、母関数 $A(x) = P(x) / Q(x)$ ($Q(x) = 1 - c_1 x - \dots - c_d x^d$、$P(x) = A(x) Q(x) \bmod x^d$) について `bostan_mori` を呼びます。
-- `bostan_mori` は $P(x) / Q(x) = P(x) Q(-x) / (Q(x) Q(-x))$ の分母が $x^2$ の多項式になることを使い、$k$ の偶奇で分子の係数を半分に絞って $k$ を半分にします。畳み込みは [畳み込み](convolution.hpp) の `convolution` を使うので、法は任意です。1 段ごとに畳み込みを 2 回するので、$d = 10^5$、$k = 10^{18}$ では 3 秒ほどかかります。
+- `bostan_mori` は $P(x) / Q(x) = P(x) Q(-x) / (Q(x) Q(-x))$ の分母が $x^2$ の多項式になることを使い、$k$ の偶奇で分子の係数を半分に絞って $k$ を半分にします。法が NTT に向く素数 (998244353 など) で長さが 61 以上なら、NTT した値のまま段を進めます (1 段あたり NTT 4 回分ほど、$d = 10^5$、$k = 10^{18}$ で 0.3 秒ほど)。そうでなければ 1 段ごとに [畳み込み](convolution.hpp) の `convolution` を 2 回呼ぶので、法は任意です。
 - `berlekamp_massey` は、漸化式の長さが $d$ なら、初めの $2d$ 項以上を渡せば正しく復元できます。足りないと、もっと短い別の漸化式を返すことがあります。
 
 ## 関連

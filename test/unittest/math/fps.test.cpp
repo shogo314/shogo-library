@@ -2,6 +2,7 @@
 
 // FPS の単項の -、定数を引く -、eval、gcd、modpow、divmod を愚直な多項式演算と比較する
 // sqrt は 2 乗して元に戻るか、polynomial_product は順に掛けたものと比べる
+// sum_of_fractions は、分子が Σ_i nums_i Π_{j != i} dens_j、分母が Π dens_j になることを確かめる
 // FPS の + と - は結果の末尾の 0 を取り除く (仕様) ので、多項式としての比較は末尾の 0 を除いて行う
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
@@ -193,6 +194,34 @@ int main() {
             expect = naive_mul(expect, P(f));
         }
         if (trim(P(polynomial_product(fs))) != trim(expect)) ok = false, std::cerr << "polynomial_product" << std::endl;
+    }
+
+    // sum_of_fractions (空の列は 0 / 1)
+    {
+        auto [num, den] = sum_of_fractions(std::vector<F>{}, std::vector<F>{});
+        if (!trim(P(num)).empty() || trim(P(den)) != P{1}) ok = false, std::cerr << "sum_of_fractions empty" << std::endl;
+    }
+    for (int rep = 0; rep < 300 && ok; rep++) {
+        int k = rng() % 8 + 1;
+        std::vector<F> nums(k), dens(k);
+        for (int i = 0; i < k; i++) {
+            nums[i].resize(rng() % 4);
+            for (auto& x : nums[i]) x = rng() % 10;
+            dens[i].resize(rng() % 4 + 1);
+            for (auto& x : dens[i]) x = rng() % 10;
+            dens[i].back() = rng() % 9 + 1;
+        }
+        P expect_num = {}, expect_den = {1};
+        for (int i = 0; i < k; i++) {
+            P t = P(nums[i]);
+            for (int j = 0; j < k; j++)
+                if (j != i) t = naive_mul(t, P(dens[j]));
+            if (expect_num.size() < t.size()) expect_num.resize(t.size());
+            for (int a = 0; a < static_cast<int>(t.size()); a++) expect_num[a] += t[a];
+            expect_den = naive_mul(expect_den, P(dens[i]));
+        }
+        auto [num, den] = sum_of_fractions(nums, dens);
+        if (trim(P(num)) != trim(expect_num) || trim(P(den)) != trim(expect_den)) ok = false, std::cerr << "sum_of_fractions" << std::endl;
     }
 
     if (ok) std::cout << "Hello World" << std::endl;

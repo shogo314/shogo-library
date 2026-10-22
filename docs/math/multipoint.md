@@ -27,6 +27,7 @@ FPS<mint> h = polynomial_interpolation_geometric(mint(1), mint(2), u);  // {1, 2
 | `sample_point_shift(ys, c, m)` | $n - 1$ 次以下の多項式 $f$ の $f(0), \dots, f(n - 1)$ (`ys`) から、$f(c), \dots, f(c + m - 1)$。法は $n + m$ より大きい素数であること | $O((n + m) \log (n + m))$ |
 | `multipoint_evaluation_geometric(f, a, r, m)` | 等比数列の点 $a r^i$ ($0 \le i < m$) での `f` の値。$a$、$r$ は 0 でもよい | $O((n + m) \log (n + m))$ |
 | `polynomial_interpolation_geometric(a, r, ys)` | 点 $(a r^i, y_i)$ ($0 \le i < n$) をすべて通る $n - 1$ 次以下の多項式 (長さ $n$)。$a r^i$ は互いに異なること | $O(n \log n)$ |
+| `weighted_power_sums(xs, ws, n)` | 重み付きの累乗和 $s_k = \sum_i w_i x_i^k$ ($0 \le k < n$) を `std::vector<mint>` で返す。$\sum_k s_k t^k = \sum_i w_i / (1 - x_i t)$ を [`sum_of_fractions`](fps.hpp) でまとめて求める (多点評価の転置)。点は重なってもよい | $O(m \log^2 m + n \log n)$ ($m$ は点の個数) |
 
 - 多点評価は、各点の $(x - x_i)$ の積を木の形に持つ subproduct tree を作り、根から各頂点の多項式で割った余りを下ろしていきます。受け持つ点が 32 個以下になったら、余りを Horner 法で直接計算します。
 - 補間は、$g = \prod (x - x_i)$ とすると $f = \sum_i y_i / g'(x_i) \prod_{j \ne i} (x - x_j)$ なので、$g'(x_i)$ を多点評価し、和を subproduct tree の下から組み立てます。
@@ -38,3 +39,4 @@ FPS<mint> h = polynomial_interpolation_geometric(mint(1), mint(2), u);  // {1, 2
 
 - 標本点が $0, \dots, n - 1$ で 1 点だけ求めるなら [ラグランジュ補間](lagrange-interpolation.hpp) の方が軽い ($O(n)$)
 - 多項式の演算は [形式的冪級数](fps.hpp)
+- `weighted_power_sums` は、$\sum_t c_t e^{tx}$ の係数を求めるのにも使える ($k! [x^k] = \sum_t c_t t^k$)。$H(e^x - 1)$ は $P(z) = H(z - 1)$ (`taylor_shift`) として $P(e^x)$ に直せる

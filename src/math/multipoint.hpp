@@ -234,3 +234,21 @@ FPS<mint> polynomial_interpolation_geometric(mint a, mint r, const std::vector<m
     f.resize(n);
     return f;
 }
+
+/**
+ * @brief 重み付きの累乗和 s_k = Σ_i w_i x_i^k (0 <= k < n) O(m log^2 m + n log n) (m は点の個数)
+ * Σ_k s_k t^k = Σ_i w_i / (1 - x_i t) なので、分数の和を 1 つの分数にまとめ、分母の逆元を掛ける
+ * (多点評価の転置にあたる。点は重なってもよい)
+ */
+template <typename mint>
+std::vector<mint> weighted_power_sums(const std::vector<mint>& xs, const std::vector<mint>& ws, long long n) {
+    assert(xs.size() == ws.size());
+    std::vector<mint> res(n);
+    if (n == 0 || xs.empty()) return res;
+    std::vector<FPS<mint>> nums(xs.size()), dens(xs.size());
+    for (long long i = 0; i < static_cast<long long>(xs.size()); i++) nums[i] = {ws[i]}, dens[i] = {1, -xs[i]};
+    auto [num, den] = sum_of_fractions(nums, dens);
+    FPS<mint> s = (num * inv(den, n)).pre(n);
+    std::copy(s.begin(), s.end(), res.begin());
+    return res;
+}

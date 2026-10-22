@@ -418,3 +418,22 @@ FPS<mint> polynomial_product(std::vector<FPS<mint>> fs) {
     }
     return fs[pq.top()];
 }
+
+/**
+ * @brief 分数の和 Σ_i nums[i] / dens[i] を 1 つの分数 num / den にまとめる O(N log^2 N) (N は多項式の長さの和)
+ * 半分ずつに分けて a / b + c / d = (ad + cb) / bd とまとめる。den は dens の積。空なら 0 / 1
+ * @return std::pair<FPS<mint>, FPS<mint>> {num, den}
+ */
+template <typename mint>
+std::pair<FPS<mint>, FPS<mint>> sum_of_fractions(const std::vector<FPS<mint>>& nums, const std::vector<FPS<mint>>& dens) {
+    assert(nums.size() == dens.size());
+    if (nums.empty()) return {FPS<mint>(), FPS<mint>{1}};
+    auto rec = [&](auto&& self, long long l, long long r) -> std::pair<FPS<mint>, FPS<mint>> {
+        if (r - l == 1) return {nums[l], dens[l]};
+        long long m = (l + r) / 2;
+        auto [a, b] = self(self, l, m);
+        auto [c, d] = self(self, m, r);
+        return {a * d + c * b, b * d};
+    };
+    return rec(rec, 0, nums.size());
+}

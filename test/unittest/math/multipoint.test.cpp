@@ -3,6 +3,7 @@
 // multipoint_evaluation・polynomial_interpolation・sample_point_shift を、1 点ずつ直接計算したものと比べる
 // multipoint_evaluation_geometric は、a・r が 0・1・-1 の場合も試す
 // sample_point_shift は、c + k が 0 以上 n 未満の整数と重なる場合や、法を回って重なる場合も試す
+// weighted_power_sums を、Σ_i w_i x_i^k を直接計算したものと比べる (点の重なりや 0 も含む)
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../../src/math/multipoint.hpp"
@@ -103,6 +104,19 @@ int main() {
         auto res = sample_point_shift(ys, c, m);
         check(static_cast<int>(res.size()) == m, "sample_point_shift の長さ");
         for (int k = 0; k < m; k++) check(res[k] == eval(f, c + mint(k)), "sample_point_shift");
+    }
+    // weighted_power_sums
+    for (int rep = 0; rep < 300 && ok; rep++) {
+        int m = rng() % 15, n = rng() % 20;
+        std::vector<mint> xs(m), ws(m);
+        for (int i = 0; i < m; i++) xs[i] = rng() % 3 == 0 ? mint(rng() % 3) : gen(), ws[i] = gen();
+        auto res = weighted_power_sums(xs, ws, n);
+        check(static_cast<int>(res.size()) == n, "weighted_power_sums の長さ");
+        for (int k = 0; k < n; k++) {
+            mint s = 0;
+            for (int i = 0; i < m; i++) s += ws[i] * xs[i].pow(k);
+            check(res[k] == s, "weighted_power_sums");
+        }
     }
     if (ok) std::cout << "Hello World" << std::endl;
 }

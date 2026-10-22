@@ -23,10 +23,10 @@
  * mcf.add_edge(0, 1, 5, 3);
  * auto [f, c] = mcf.flow(s, t, limit);
  *
- * @tparam Cap 容量の型
- * @tparam Cost コストの型。コストの総和が収まること
+ * @tparam Cap 容量の型 省略したら long long
+ * @tparam Cost コストの型。コストの総和が収まること 省略したら long long
  */
-template <typename Cap, typename Cost>
+template <typename Cap = long long, typename Cost = long long>
 class MinCostFlow {
    public:
     /**

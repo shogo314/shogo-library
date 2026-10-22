@@ -1,6 +1,7 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
 // MinCostFlow を、Bellman-Ford 法で 1 ずつ流す愚直な方法と比べる
+// 型を省いたときに long long になることも static_assert で確かめる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../../src/graph/min-cost-flow.hpp"
@@ -8,6 +9,7 @@
 #include <iostream>
 #include <random>
 #include <tuple>
+#include <type_traits>
 #include <vector>
 
 // Bellman-Ford 法で 1 ずつ流す愚直な最小費用流
@@ -76,6 +78,8 @@ bool check_slope(const std::vector<std::pair<int, long long>>& sl, const std::ve
     }
     return true;
 }
+
+static_assert(std::is_same_v<decltype(MinCostFlow(3)), MinCostFlow<long long, long long>>);
 
 int main() {
     std::mt19937 rng(314);

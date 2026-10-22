@@ -3,7 +3,7 @@ title: 最小費用流 (primal-dual 法)
 documentation_of: //src/graph/min-cost-flow.hpp
 ---
 
-有向グラフの最小費用流を求める `MinCostFlow<Cap, Cost>` です。`Cap` は容量の型、`Cost` はコストの型です。辺のコストは 0 以上とします。
+有向グラフの最小費用流を求める `MinCostFlow<Cap = long long, Cost = long long>` です。`Cap` は容量の型、`Cost` はコストの型で、省くとどちらも `long long` になります (`MinCostFlow mcf(n);` と書けます)。辺のコストは 0 以上とします。
 
 ポテンシャルを使い、残余グラフの最短路を Dijkstra 法で求めては流します。最短路 1 本ごとに $O((n + m) \log m)$ かかり、最短路の本数は流量 $F$ 以下なので、全体で $O(F (n + m) \log m)$ です。
 

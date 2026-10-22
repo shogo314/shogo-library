@@ -21,9 +21,9 @@
  * mf.add_edge(0, 1, 5);
  * long long f = mf.flow(s, t);
  *
- * @tparam Cap 容量の型
+ * @tparam Cap 容量の型 省略したら long long
  */
-template <typename Cap>
+template <typename Cap = long long>
 class MaxFlow {
    public:
     /**

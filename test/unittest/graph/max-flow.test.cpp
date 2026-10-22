@@ -1,6 +1,7 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
 // MaxFlow を、頂点の分け方をすべて試して求めた最小カットと比べる。change_edge も確かめる
+// 型を省いたときに long long になることも static_assert で確かめる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../../src/graph/max-flow.hpp"
@@ -8,7 +9,10 @@
 #include <iostream>
 #include <random>
 #include <tuple>
+#include <type_traits>
 #include <vector>
+
+static_assert(std::is_same_v<decltype(MaxFlow(3)), MaxFlow<long long>>);
 
 int main() {
     std::mt19937 rng(314);

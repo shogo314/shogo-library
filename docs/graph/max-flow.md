@@ -3,7 +3,7 @@ title: 最大流 (Dinic 法)
 documentation_of: //src/graph/max-flow.hpp
 ---
 
-有向グラフの最大流を Dinic 法で求める `MaxFlow<Cap>` です。`Cap` は容量の型です。計算量は $O(n^2 m)$ ですが、実際にはずっと速いことが多いです。容量がすべて 1 なら $O(m \min(\sqrt{m}, n^{2/3}))$ です。
+有向グラフの最大流を Dinic 法で求める `MaxFlow<Cap = long long>` です。`Cap` は容量の型で、省くと `long long` になります (`MaxFlow mf(n);` と書けます)。計算量は $O(n^2 m)$ ですが、実際にはずっと速いことが多いです。容量がすべて 1 なら $O(m \min(\sqrt{m}, n^{2/3}))$ です。
 
 ```cpp
 MaxFlow<long long> mf(n);

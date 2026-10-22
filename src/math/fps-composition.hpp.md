@@ -1163,11 +1163,11 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/math/fps-composition.test.cpp
-  - test/yukicoder/3771.test.cpp
   - test/yosupo/polynomial/compositional-inverse-of-formal-power-series.test.cpp
-  - test/yosupo/polynomial/composition-of-formal-power-series-large.test.cpp
-  - test/yosupo/polynomial/compositional-inverse-of-formal-power-series-large.test.cpp
   - test/yosupo/polynomial/composition-of-formal-power-series.test.cpp
+  - test/yosupo/polynomial/compositional-inverse-of-formal-power-series-large.test.cpp
+  - test/yosupo/polynomial/composition-of-formal-power-series-large.test.cpp
+  - test/yukicoder/3771.test.cpp
 documentation_of: src/math/fps-composition.hpp
 layout: document
 title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\u306E\u5408\u6210\u3068\u9006\u95A2\u6570\

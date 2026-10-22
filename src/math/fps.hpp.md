@@ -1253,58 +1253,58 @@ data:
   isVerificationFile: false
   path: src/math/fps.hpp
   requiredBy:
-  - src/math/combinatorial-sequences.hpp
-  - src/math/multipoint.hpp
-  - src/math/polynomial-roots.hpp
-  - src/math/sparse-fps.hpp
-  - src/math/fps-composition.hpp
   - src/dp/subset-sum-count.hpp
+  - src/math/sparse-fps.hpp
+  - src/math/multipoint.hpp
+  - src/math/combinatorial-sequences.hpp
+  - src/math/polynomial-roots.hpp
+  - src/math/fps-composition.hpp
   timestamp: '2026-10-22 15:13:12+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/math/sparse-fps.test.cpp
-  - test/unittest/math/multipoint.test.cpp
-  - test/unittest/math/combinatorial-sequences.test.cpp
-  - test/unittest/math/fps-composition.test.cpp
-  - test/unittest/math/polynomial-roots.test.cpp
-  - test/unittest/math/fps-gcd.test.cpp
-  - test/unittest/math/fps.test.cpp
   - test/unittest/dp/subset-sum.test.cpp
-  - test/yukicoder/3770.test.cpp
-  - test/yukicoder/3771.test.cpp
-  - test/yosupo/polynomial/polynomial-root-finding.test.cpp
-  - test/yosupo/polynomial/pow-of-fps.test.cpp
-  - test/yosupo/polynomial/compositional-inverse-of-formal-power-series.test.cpp
-  - test/yosupo/polynomial/inv-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/polynomial/composition-of-formal-power-series-large.test.cpp
-  - test/yosupo/polynomial/multipoint-evaluation.test.cpp
+  - test/unittest/math/combinatorial-sequences.test.cpp
+  - test/unittest/math/sparse-fps.test.cpp
+  - test/unittest/math/fps-composition.test.cpp
+  - test/unittest/math/fps-gcd.test.cpp
+  - test/unittest/math/multipoint.test.cpp
+  - test/unittest/math/polynomial-roots.test.cpp
+  - test/unittest/math/fps.test.cpp
   - test/yosupo/polynomial/sqrt-of-formal-power-series.test.cpp
-  - test/yosupo/polynomial/polynomial-interpolation.test.cpp
   - test/yosupo/polynomial/exp-of-fps.test.cpp
   - test/yosupo/polynomial/pow-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/polynomial/product-of-polynomial-sequence.test.cpp
-  - test/yosupo/polynomial/log-of-fps.test.cpp
-  - test/yosupo/polynomial/shift-of-sampling-points-of-polynomial.test.cpp
-  - test/yosupo/polynomial/polynomial-taylor-shift.test.cpp
-  - test/yosupo/polynomial/compositional-inverse-of-formal-power-series-large.test.cpp
-  - test/yosupo/polynomial/exp-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/polynomial/division-of-polynomials.test.cpp
   - test/yosupo/polynomial/polynomial-interpolation-on-geometric-sequence.test.cpp
-  - test/yosupo/polynomial/inv-of-polynomials.test.cpp
-  - test/yosupo/polynomial/composition-of-formal-power-series.test.cpp
-  - test/yosupo/polynomial/log-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/polynomial/multipoint-evaluation-on-geometric-sequence.test.cpp
-  - test/yosupo/polynomial/sqrt-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/polynomial/inv-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/polynomial/multipoint-evaluation.test.cpp
+  - test/yosupo/polynomial/product-of-polynomial-sequence.test.cpp
+  - test/yosupo/polynomial/exp-of-formal-power-series-sparse.test.cpp
   - test/yosupo/polynomial/inv-of-fps.test.cpp
+  - test/yosupo/polynomial/division-of-polynomials.test.cpp
+  - test/yosupo/polynomial/sqrt-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/polynomial/pow-of-fps.test.cpp
+  - test/yosupo/polynomial/log-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/polynomial/polynomial-taylor-shift.test.cpp
+  - test/yosupo/polynomial/shift-of-sampling-points-of-polynomial.test.cpp
+  - test/yosupo/polynomial/polynomial-root-finding.test.cpp
+  - test/yosupo/polynomial/compositional-inverse-of-formal-power-series.test.cpp
+  - test/yosupo/polynomial/composition-of-formal-power-series.test.cpp
+  - test/yosupo/polynomial/log-of-fps.test.cpp
+  - test/yosupo/polynomial/compositional-inverse-of-formal-power-series-large.test.cpp
+  - test/yosupo/polynomial/composition-of-formal-power-series-large.test.cpp
+  - test/yosupo/polynomial/multipoint-evaluation-on-geometric-sequence.test.cpp
+  - test/yosupo/polynomial/polynomial-interpolation.test.cpp
+  - test/yosupo/polynomial/inv-of-polynomials.test.cpp
+  - test/yosupo/number_theory/bernoulli-number.test.cpp
   - test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
-  - test/yosupo/enumerative_combinatorics/bell-number.test.cpp
   - test/yosupo/enumerative_combinatorics/partition-function.3.test.cpp
   - test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind.test.cpp
-  - test/yosupo/enumerative_combinatorics/partition-function.1.test.cpp
-  - test/yosupo/enumerative_combinatorics/partition-function.2.test.cpp
+  - test/yosupo/enumerative_combinatorics/bell-number.test.cpp
   - test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.2.test.cpp
   - test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.1.test.cpp
-  - test/yosupo/number_theory/bernoulli-number.test.cpp
+  - test/yosupo/enumerative_combinatorics/partition-function.1.test.cpp
+  - test/yosupo/enumerative_combinatorics/partition-function.2.test.cpp
+  - test/yukicoder/3770.test.cpp
+  - test/yukicoder/3771.test.cpp
 documentation_of: src/math/fps.hpp
 layout: document
 title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570"

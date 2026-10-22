@@ -284,6 +284,9 @@ data:
       path: src/graph/tree.hpp
       title: "\u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8"
     - icon: ':heavy_check_mark:'
+      path: src/graph/tree_util.hpp
+      title: "\u6728\u306B\u95A2\u3059\u308B\u95A2\u6570"
+    - icon: ':heavy_check_mark:'
       path: src/graph/two-sat.hpp
       title: 2-SAT
   - name: src/math
@@ -1078,6 +1081,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/graph/tree.test.cpp
       title: test/unittest/graph/tree.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/graph/tree_util.test.cpp
+      title: test/unittest/graph/tree_util.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/graph/two-sat.test.cpp
       title: test/unittest/graph/two-sat.test.cpp

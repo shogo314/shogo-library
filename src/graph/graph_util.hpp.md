@@ -657,15 +657,15 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/graph/two-sat.test.cpp
-  - test/unittest/data_structures/graph-util.test.cpp
   - test/unittest/data_structures/find-cycle.test.cpp
-  - test/aoj/grl/grl-2-a.test.cpp
+  - test/unittest/data_structures/graph-util.test.cpp
   - test/aoj/grl/grl-4-a.test.cpp
+  - test/aoj/grl/grl-2-a.test.cpp
   - test/aoj/alds1/alds1-11-d.1.test.cpp
-  - test/yosupo/graph/chromatic-number.1.test.cpp
-  - test/yosupo/graph/scc.test.cpp
-  - test/yosupo/graph/minimum-spanning-tree.2.test.cpp
   - test/yosupo/graph/cycle-detection-undirected.test.cpp
+  - test/yosupo/graph/chromatic-number.1.test.cpp
+  - test/yosupo/graph/minimum-spanning-tree.2.test.cpp
+  - test/yosupo/graph/scc.test.cpp
   - test/yosupo/graph/cycle-detection.test.cpp
   - test/yosupo/other/two-sat.test.cpp
 documentation_of: src/graph/graph_util.hpp

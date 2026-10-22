@@ -6,28 +6,8 @@ data:
     title: "\u30B0\u30E9\u30D5"
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
-    path: src/graph/auxiliary-tree.hpp
-    title: "Auxiliary Tree (\u865A\u6811)"
-  - icon: ':heavy_check_mark:'
-    path: src/graph/centroid-decomposition.hpp
-    title: "\u91CD\u5FC3\u5206\u89E3"
-  - icon: ':heavy_check_mark:'
     path: src/graph/chinese-postman.hpp
     title: "\u4E2D\u56FD\u4EBA\u90F5\u4FBF\u914D\u9054\u554F\u984C"
-  - icon: ':heavy_check_mark:'
-    path: src/graph/heavy-light-decomposition.hpp
-    title: "HL \u5206\u89E3 (Heavy-Light Decomposition)"
-  - icon: ':heavy_check_mark:'
-    path: src/graph/lowlink.hpp
-    title: "lowlink (\u95A2\u7BC0\u70B9\u3001\u6A4B\u3001\u4E8C\u91CD\u8FBA\u9023\u7D50\
-      \u6210\u5206\u5206\u89E3\u3001\u4E8C\u91CD\u9802\u70B9\u9023\u7D50\u6210\u5206\
-      \u5206\u89E3\u3001Block-Cut Tree)"
-  - icon: ':heavy_check_mark:'
-    path: src/graph/rerooting-dp.hpp
-    title: "\u5168\u65B9\u4F4D\u6728DP"
-  - icon: ':heavy_check_mark:'
-    path: src/graph/tree.hpp
-    title: "\u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/alds1/alds1-11-c.test.cpp
@@ -39,47 +19,8 @@ data:
     path: test/aoj/grl/grl-1-c.2.test.cpp
     title: test/aoj/grl/grl-1-c.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/grl/grl-3-a.test.cpp
-    title: test/aoj/grl/grl-3-a.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/aoj/grl/grl-3-b.test.cpp
-    title: test/aoj/grl/grl-3-b.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/aoj/grl/grl-5-a.test.cpp
-    title: test/aoj/grl/grl-5-a.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/aoj/grl/grl-5-b.test.cpp
-    title: test/aoj/grl/grl-5-b.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/aoj/grl/grl-5-d.test.cpp
-    title: test/aoj/grl/grl-5-d.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/aoj/volume15/1595.test.cpp
-    title: test/aoj/volume15/1595.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/aoj/volume33/3372.test.cpp
-    title: test/aoj/volume33/3372.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/unittest/graph/auxiliary-tree.test.cpp
-    title: test/unittest/graph/auxiliary-tree.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/unittest/graph/centroid-decomposition.test.cpp
-    title: test/unittest/graph/centroid-decomposition.test.cpp
-  - icon: ':heavy_check_mark:'
     path: test/unittest/graph/chinese-postman.test.cpp
     title: test/unittest/graph/chinese-postman.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/unittest/graph/graph.test.cpp
-    title: test/unittest/graph/graph.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/unittest/graph/heavy-light-decomposition.test.cpp
-    title: test/unittest/graph/heavy-light-decomposition.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/unittest/graph/lowlink.test.cpp
-    title: test/unittest/graph/lowlink.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/unittest/graph/rerooting-dp.test.cpp
-    title: test/unittest/graph/rerooting-dp.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/graph/shortest-path.test.cpp
     title: test/unittest/graph/shortest-path.test.cpp
@@ -87,59 +28,8 @@ data:
     path: test/unittest/graph/tree.test.cpp
     title: test/unittest/graph/tree.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/graph/biconnected-components.test.cpp
-    title: test/yosupo/graph/biconnected-components.test.cpp
-  - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/shortest-path.test.cpp
     title: test/yosupo/graph/shortest-path.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/yosupo/graph/two-edge-connected-components.test.cpp
-    title: test/yosupo/graph/two-edge-connected-components.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
-    title: test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/yosupo/tree/jump-on-tree.1.test.cpp
-    title: test/yosupo/tree/jump-on-tree.1.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/yosupo/tree/jump-on-tree.2.test.cpp
-    title: test/yosupo/tree/jump-on-tree.2.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/yosupo/tree/lca.1.test.cpp
-    title: test/yosupo/tree/lca.1.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/yosupo/tree/lca.2.test.cpp
-    title: test/yosupo/tree/lca.2.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/yosupo/tree/lca.3.test.cpp
-    title: test/yosupo/tree/lca.3.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/yosupo/tree/lca.4.test.cpp
-    title: test/yosupo/tree/lca.4.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/yosupo/tree/lca.5.test.cpp
-    title: test/yosupo/tree/lca.5.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/yosupo/tree/tree-diameter.test.cpp
-    title: test/yosupo/tree/tree-diameter.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/yosupo/tree/vertex-add-path-sum.test.cpp
-    title: test/yosupo/tree/vertex-add-path-sum.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/yosupo/tree/vertex-add-subtree-sum.1.test.cpp
-    title: test/yosupo/tree/vertex-add-subtree-sum.1.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp
-    title: test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/yosupo/tree/vertex-set-path-composite.test.cpp
-    title: test/yosupo/tree/vertex-set-path-composite.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/yukicoder/1641.test.cpp
-    title: test/yukicoder/1641.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/yukicoder/898.test.cpp
-    title: test/yukicoder/898.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -452,52 +342,16 @@ data:
   isVerificationFile: false
   path: src/graph/shortest-path.hpp
   requiredBy:
-  - src/graph/tree.hpp
   - src/graph/chinese-postman.hpp
-  - src/graph/centroid-decomposition.hpp
-  - src/graph/auxiliary-tree.hpp
-  - src/graph/heavy-light-decomposition.hpp
-  - src/graph/lowlink.hpp
-  - src/graph/rerooting-dp.hpp
   timestamp: '2026-10-22 13:40:29+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/graph/lowlink.test.cpp
-  - test/unittest/graph/tree.test.cpp
-  - test/unittest/graph/centroid-decomposition.test.cpp
-  - test/unittest/graph/graph.test.cpp
-  - test/unittest/graph/rerooting-dp.test.cpp
   - test/unittest/graph/chinese-postman.test.cpp
-  - test/unittest/graph/auxiliary-tree.test.cpp
-  - test/unittest/graph/heavy-light-decomposition.test.cpp
+  - test/unittest/graph/tree.test.cpp
   - test/unittest/graph/shortest-path.test.cpp
-  - test/yukicoder/1641.test.cpp
-  - test/yukicoder/898.test.cpp
-  - test/aoj/volume33/3372.test.cpp
-  - test/aoj/grl/grl-5-a.test.cpp
-  - test/aoj/grl/grl-3-a.test.cpp
-  - test/aoj/grl/grl-1-b.test.cpp
-  - test/aoj/grl/grl-5-d.test.cpp
   - test/aoj/grl/grl-1-c.2.test.cpp
-  - test/aoj/grl/grl-3-b.test.cpp
-  - test/aoj/grl/grl-5-b.test.cpp
-  - test/aoj/volume15/1595.test.cpp
+  - test/aoj/grl/grl-1-b.test.cpp
   - test/aoj/alds1/alds1-11-c.test.cpp
-  - test/yosupo/tree/vertex-add-path-sum.test.cpp
-  - test/yosupo/tree/jump-on-tree.2.test.cpp
-  - test/yosupo/tree/vertex-set-path-composite.test.cpp
-  - test/yosupo/tree/lca.1.test.cpp
-  - test/yosupo/tree/lca.5.test.cpp
-  - test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
-  - test/yosupo/tree/vertex-add-subtree-sum.1.test.cpp
-  - test/yosupo/tree/tree-diameter.test.cpp
-  - test/yosupo/tree/lca.4.test.cpp
-  - test/yosupo/tree/lca.2.test.cpp
-  - test/yosupo/tree/lca.3.test.cpp
-  - test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp
-  - test/yosupo/tree/jump-on-tree.1.test.cpp
-  - test/yosupo/graph/two-edge-connected-components.test.cpp
-  - test/yosupo/graph/biconnected-components.test.cpp
   - test/yosupo/graph/shortest-path.test.cpp
 documentation_of: src/graph/shortest-path.hpp
 layout: document

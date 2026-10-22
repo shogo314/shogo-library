@@ -797,42 +797,55 @@ data:
     \       pq.pop();\n        int b = pq.top();\n        pq.pop();\n        // \u7A7A\
     \u306E\u591A\u9805\u5F0F (0) \u3068\u306E\u7A4D\u306F 0\n        fs[a] = fs[a].empty()\
     \ || fs[b].empty() ? FPS<mint>() : fs[a] * fs[b];\n        FPS<mint>().swap(fs[b]);\n\
-    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n#line 13 \"src/math/polynomial-roots.hpp\"\
-    \n\nnamespace internal_polynomial_roots {\n// 1 \u6B21\u306E\u56E0\u5B50\u306E\
-    \u7A4D g (\u6839\u306F\u76F8\u7570\u306A\u308A 0 \u3067\u306A\u3044) \u3092\u3001\
-    \u6839\u3054\u3068\u306B\u5206\u3051\u3066 res \u306B\u5165\u308C\u308B\ntemplate\
-    \ <typename mint>\nvoid split(const FPS<mint>& g, std::mt19937_64& rng, std::vector<mint>&\
-    \ res) {\n    const long long d = static_cast<long long>(g.size()) - 1;\n    if\
-    \ (d <= 0) return;\n    if (d == 1) {\n        res.push_back(-g[0] / g[1]);\n\
-    \        return;\n    }\n    const long long p = mint::mod();\n    while (true)\
-    \ {\n        // (x + a)^((p-1)/2) \u306F\u3001x + a \u304C\u5E73\u65B9\u5270\u4F59\
-    \u306B\u306A\u308B\u6839\u3067\u306F 1\u3001\u306A\u3089\u306A\u3044\u6839\u3067\
-    \u306F -1 \u306B\u306A\u308B\n        mint a = rng() % p;\n        FPS<mint> h\
-    \ = modpow(FPS<mint>{a, 1}, (p - 1) / 2, g);\n        h -= 1;\n        h.normalize();\n\
-    \        FPS<mint> c = gcd(g, h);\n        c.normalize();\n        const long\
-    \ long k = static_cast<long long>(c.size()) - 1;\n        if (0 < k && k < d)\
-    \ {\n            split(c, rng, res);\n            split(g / c, rng, res);\n  \
-    \          return;\n        }\n    }\n}\n}  // namespace internal_polynomial_roots\n\
-    \n/**\n * @brief \u591A\u9805\u5F0F f \u306E\u3001\u6CD5 p (\u7D20\u6570) \u3067\
-    \u5272\u3063\u305F\u4F59\u308A\u306E\u4E2D\u306E\u6839\u3092\u3001\u76F8\u7570\
-    \u306A\u308B\u3082\u306E\u3060\u3051\u5024\u306E\u5C0F\u3055\u3044\u9806\u306B\
-    \u8FD4\u3059 \u671F\u5F85 O(n log^2 n log p)\n * f \u304C 0 (\u3059\u3079\u3066\
-    \u306E\u5024\u304C\u6839) \u306E\u3068\u304D\u306F\u7A7A\u3092\u8FD4\u3059\n *\
-    \ g = gcd(f, x^p - x) \u3067\u76F8\u7570\u306A\u308B\u6839\u3060\u3051\u3092 1\
-    \ \u6B21\u3067\u6301\u3064\u591A\u9805\u5F0F\u306B\u3057\u3001\u30E9\u30F3\u30C0\
-    \u30E0\u306A a \u3067 gcd(g, (x + a)^((p-1)/2) - 1) \u3092\u3068\u3063\u3066\u5206\
-    \u3051\u3066\u3044\u304F\n */\ntemplate <typename mint>\nstd::vector<mint> polynomial_roots(FPS<mint>\
-    \ f) {\n    f.normalize();\n    std::vector<mint> res;\n    if (f.size() <= 1)\
-    \ return res;\n    // 0 \u304C\u6839\u306A\u3089\u53D6\u308A\u9664\u304F (x^p\
-    \ - x \u3068\u306E gcd \u3067\u306F 0 \u3082\u6839\u306B\u306A\u308B\u304C\u3001\
-    \u5148\u306B\u5916\u3057\u3066\u304A\u304F\u3068\u5206\u3051\u308B\u3068\u304D\
-    \u306B\u6271\u3044\u3084\u3059\u3044)\n    long long z = 0;\n    while (f[z] ==\
-    \ 0) z++;\n    if (z > 0) res.push_back(mint(0)), f >>= z;\n    if (f.size() >\
-    \ 1) {\n        const long long p = mint::mod();\n        FPS<mint> xp = modpow(FPS<mint>{0,\
-    \ 1}, p, f);\n        xp -= FPS<mint>{0, 1};\n        xp.normalize();\n      \
-    \  FPS<mint> g = gcd(f, xp);\n        g.normalize();\n        static std::mt19937_64\
-    \ rng(std::random_device{}());\n        internal_polynomial_roots::split(g, rng,\
-    \ res);\n    }\n    std::sort(res.begin(), res.end(), [](const mint& a, const\
+    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n\n/**\n * @brief \u5206\
+    \u6570\u306E\u548C \u03A3_i nums[i] / dens[i] \u3092 1 \u3064\u306E\u5206\u6570\
+    \ num / den \u306B\u307E\u3068\u3081\u308B O(N log^2 N) (N \u306F\u591A\u9805\u5F0F\
+    \u306E\u9577\u3055\u306E\u548C)\n * \u534A\u5206\u305A\u3064\u306B\u5206\u3051\
+    \u3066 a / b + c / d = (ad + cb) / bd \u3068\u307E\u3068\u3081\u308B\u3002den\
+    \ \u306F dens \u306E\u7A4D\u3002\u7A7A\u306A\u3089 0 / 1\n * @return std::pair<FPS<mint>,\
+    \ FPS<mint>> {num, den}\n */\ntemplate <typename mint>\nstd::pair<FPS<mint>, FPS<mint>>\
+    \ sum_of_fractions(const std::vector<FPS<mint>>& nums, const std::vector<FPS<mint>>&\
+    \ dens) {\n    assert(nums.size() == dens.size());\n    if (nums.empty()) return\
+    \ {FPS<mint>(), FPS<mint>{1}};\n    auto rec = [&](auto&& self, long long l, long\
+    \ long r) -> std::pair<FPS<mint>, FPS<mint>> {\n        if (r - l == 1) return\
+    \ {nums[l], dens[l]};\n        long long m = (l + r) / 2;\n        auto [a, b]\
+    \ = self(self, l, m);\n        auto [c, d] = self(self, m, r);\n        return\
+    \ {a * d + c * b, b * d};\n    };\n    return rec(rec, 0, nums.size());\n}\n#line\
+    \ 13 \"src/math/polynomial-roots.hpp\"\n\nnamespace internal_polynomial_roots\
+    \ {\n// 1 \u6B21\u306E\u56E0\u5B50\u306E\u7A4D g (\u6839\u306F\u76F8\u7570\u306A\
+    \u308A 0 \u3067\u306A\u3044) \u3092\u3001\u6839\u3054\u3068\u306B\u5206\u3051\u3066\
+    \ res \u306B\u5165\u308C\u308B\ntemplate <typename mint>\nvoid split(const FPS<mint>&\
+    \ g, std::mt19937_64& rng, std::vector<mint>& res) {\n    const long long d =\
+    \ static_cast<long long>(g.size()) - 1;\n    if (d <= 0) return;\n    if (d ==\
+    \ 1) {\n        res.push_back(-g[0] / g[1]);\n        return;\n    }\n    const\
+    \ long long p = mint::mod();\n    while (true) {\n        // (x + a)^((p-1)/2)\
+    \ \u306F\u3001x + a \u304C\u5E73\u65B9\u5270\u4F59\u306B\u306A\u308B\u6839\u3067\
+    \u306F 1\u3001\u306A\u3089\u306A\u3044\u6839\u3067\u306F -1 \u306B\u306A\u308B\
+    \n        mint a = rng() % p;\n        FPS<mint> h = modpow(FPS<mint>{a, 1}, (p\
+    \ - 1) / 2, g);\n        h -= 1;\n        h.normalize();\n        FPS<mint> c\
+    \ = gcd(g, h);\n        c.normalize();\n        const long long k = static_cast<long\
+    \ long>(c.size()) - 1;\n        if (0 < k && k < d) {\n            split(c, rng,\
+    \ res);\n            split(g / c, rng, res);\n            return;\n        }\n\
+    \    }\n}\n}  // namespace internal_polynomial_roots\n\n/**\n * @brief \u591A\u9805\
+    \u5F0F f \u306E\u3001\u6CD5 p (\u7D20\u6570) \u3067\u5272\u3063\u305F\u4F59\u308A\
+    \u306E\u4E2D\u306E\u6839\u3092\u3001\u76F8\u7570\u306A\u308B\u3082\u306E\u3060\
+    \u3051\u5024\u306E\u5C0F\u3055\u3044\u9806\u306B\u8FD4\u3059 \u671F\u5F85 O(n\
+    \ log^2 n log p)\n * f \u304C 0 (\u3059\u3079\u3066\u306E\u5024\u304C\u6839) \u306E\
+    \u3068\u304D\u306F\u7A7A\u3092\u8FD4\u3059\n * g = gcd(f, x^p - x) \u3067\u76F8\
+    \u7570\u306A\u308B\u6839\u3060\u3051\u3092 1 \u6B21\u3067\u6301\u3064\u591A\u9805\
+    \u5F0F\u306B\u3057\u3001\u30E9\u30F3\u30C0\u30E0\u306A a \u3067 gcd(g, (x + a)^((p-1)/2)\
+    \ - 1) \u3092\u3068\u3063\u3066\u5206\u3051\u3066\u3044\u304F\n */\ntemplate <typename\
+    \ mint>\nstd::vector<mint> polynomial_roots(FPS<mint> f) {\n    f.normalize();\n\
+    \    std::vector<mint> res;\n    if (f.size() <= 1) return res;\n    // 0 \u304C\
+    \u6839\u306A\u3089\u53D6\u308A\u9664\u304F (x^p - x \u3068\u306E gcd \u3067\u306F\
+    \ 0 \u3082\u6839\u306B\u306A\u308B\u304C\u3001\u5148\u306B\u5916\u3057\u3066\u304A\
+    \u304F\u3068\u5206\u3051\u308B\u3068\u304D\u306B\u6271\u3044\u3084\u3059\u3044\
+    )\n    long long z = 0;\n    while (f[z] == 0) z++;\n    if (z > 0) res.push_back(mint(0)),\
+    \ f >>= z;\n    if (f.size() > 1) {\n        const long long p = mint::mod();\n\
+    \        FPS<mint> xp = modpow(FPS<mint>{0, 1}, p, f);\n        xp -= FPS<mint>{0,\
+    \ 1};\n        xp.normalize();\n        FPS<mint> g = gcd(f, xp);\n        g.normalize();\n\
+    \        static std::mt19937_64 rng(std::random_device{}());\n        internal_polynomial_roots::split(g,\
+    \ rng, res);\n    }\n    std::sort(res.begin(), res.end(), [](const mint& a, const\
     \ mint& b) { return a.val() < b.val(); });\n    return res;\n}\n#line 8 \"test/unittest/math/polynomial-roots.test.cpp\"\
     \n\n#line 14 \"test/unittest/math/polynomial-roots.test.cpp\"\n\n#line 17 \"test/unittest/math/polynomial-roots.test.cpp\"\
     \n\nbool ok = true;\nvoid check(bool cond, const char* what) {\n    if (!cond\
@@ -935,7 +948,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/polynomial-roots.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 00:25:30+09:00'
+  timestamp: '2026-10-22 14:37:49+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/polynomial-roots.test.cpp

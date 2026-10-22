@@ -356,6 +356,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/1340.test.cpp
     title: test/yukicoder/1340.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yukicoder/3770.test.cpp
+    title: test/yukicoder/3770.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yukicoder/3771.test.cpp
+    title: test/yukicoder/3771.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -923,6 +929,8 @@ data:
   - test/unittest/algebra/acted-monoid.test.cpp
   - test/yukicoder/117.test.cpp
   - test/yukicoder/1340.test.cpp
+  - test/yukicoder/3770.test.cpp
+  - test/yukicoder/3771.test.cpp
   - test/aoj/volume29/2971.test.cpp
   - test/aoj/dpl/dpl-5-b.1.test.cpp
   - test/aoj/dpl/dpl-5-f.test.cpp

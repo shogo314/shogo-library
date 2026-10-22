@@ -785,14 +785,28 @@ data:
     \       pq.pop();\n        int b = pq.top();\n        pq.pop();\n        // \u7A7A\
     \u306E\u591A\u9805\u5F0F (0) \u3068\u306E\u7A4D\u306F 0\n        fs[a] = fs[a].empty()\
     \ || fs[b].empty() ? FPS<mint>() : fs[a] * fs[b];\n        FPS<mint>().swap(fs[b]);\n\
-    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n#line 8 \"test/yosupo/polynomial/product-of-polynomial-sequence.test.cpp\"\
-    \n\nusing mint = modint998244353;\n\nint main() {\n    std::cin.tie(nullptr);\n\
-    \    std::ios::sync_with_stdio(false);\n    int n;\n    std::cin >> n;\n    std::vector<FPS<mint>>\
-    \ fs(n);\n    long long total = 0;\n    for (auto& f : fs) {\n        int d;\n\
-    \        std::cin >> d;\n        total += d;\n        f.resize(d + 1);\n     \
-    \   for (auto& x : f) std::cin >> x;\n    }\n    FPS<mint> g = polynomial_product(fs);\n\
-    \    g.resize(total + 1);\n    for (long long i = 0; i <= total; i++) std::cout\
-    \ << g[i] << (i == total ? '\\n' : ' ');\n}\n"
+    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n\n/**\n * @brief \u5206\
+    \u6570\u306E\u548C \u03A3_i nums[i] / dens[i] \u3092 1 \u3064\u306E\u5206\u6570\
+    \ num / den \u306B\u307E\u3068\u3081\u308B O(N log^2 N) (N \u306F\u591A\u9805\u5F0F\
+    \u306E\u9577\u3055\u306E\u548C)\n * \u534A\u5206\u305A\u3064\u306B\u5206\u3051\
+    \u3066 a / b + c / d = (ad + cb) / bd \u3068\u307E\u3068\u3081\u308B\u3002den\
+    \ \u306F dens \u306E\u7A4D\u3002\u7A7A\u306A\u3089 0 / 1\n * @return std::pair<FPS<mint>,\
+    \ FPS<mint>> {num, den}\n */\ntemplate <typename mint>\nstd::pair<FPS<mint>, FPS<mint>>\
+    \ sum_of_fractions(const std::vector<FPS<mint>>& nums, const std::vector<FPS<mint>>&\
+    \ dens) {\n    assert(nums.size() == dens.size());\n    if (nums.empty()) return\
+    \ {FPS<mint>(), FPS<mint>{1}};\n    auto rec = [&](auto&& self, long long l, long\
+    \ long r) -> std::pair<FPS<mint>, FPS<mint>> {\n        if (r - l == 1) return\
+    \ {nums[l], dens[l]};\n        long long m = (l + r) / 2;\n        auto [a, b]\
+    \ = self(self, l, m);\n        auto [c, d] = self(self, m, r);\n        return\
+    \ {a * d + c * b, b * d};\n    };\n    return rec(rec, 0, nums.size());\n}\n#line\
+    \ 8 \"test/yosupo/polynomial/product-of-polynomial-sequence.test.cpp\"\n\nusing\
+    \ mint = modint998244353;\n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
+    \    int n;\n    std::cin >> n;\n    std::vector<FPS<mint>> fs(n);\n    long long\
+    \ total = 0;\n    for (auto& f : fs) {\n        int d;\n        std::cin >> d;\n\
+    \        total += d;\n        f.resize(d + 1);\n        for (auto& x : f) std::cin\
+    \ >> x;\n    }\n    FPS<mint> g = polynomial_product(fs);\n    g.resize(total\
+    \ + 1);\n    for (long long i = 0; i <= total; i++) std::cout << g[i] << (i ==\
+    \ total ? '\\n' : ' ');\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/product_of_polynomial_sequence\"\
     \n\n#include <iostream>\n#include <vector>\n\n#include \"../../../src/math/fps.hpp\"\
     \n#include \"../../../src/math/modint.hpp\"\n\nusing mint = modint998244353;\n\
@@ -813,7 +827,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/polynomial/product-of-polynomial-sequence.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 00:25:30+09:00'
+  timestamp: '2026-10-22 14:37:49+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/polynomial/product-of-polynomial-sequence.test.cpp

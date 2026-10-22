@@ -36,19 +36,21 @@ data:
     eval\u3001gcd\u3001modpow\u3001divmod \u3092\u611A\u76F4\u306A\u591A\u9805\u5F0F\
     \u6F14\u7B97\u3068\u6BD4\u8F03\u3059\u308B\n// sqrt \u306F 2 \u4E57\u3057\u3066\
     \u5143\u306B\u623B\u308B\u304B\u3001polynomial_product \u306F\u9806\u306B\u639B\
-    \u3051\u305F\u3082\u306E\u3068\u6BD4\u3079\u308B\n// FPS \u306E + \u3068 - \u306F\
-    \u7D50\u679C\u306E\u672B\u5C3E\u306E 0 \u3092\u53D6\u308A\u9664\u304F (\u4ED5\u69D8\
-    ) \u306E\u3067\u3001\u591A\u9805\u5F0F\u3068\u3057\u3066\u306E\u6BD4\u8F03\u306F\
-    \u672B\u5C3E\u306E 0 \u3092\u9664\u3044\u3066\u884C\u3046\n// \u554F\u984C\u306E\
-    \u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\
-    \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/math/fps.hpp\"\
-    \n\n/**\n * @file fps.hpp\n * @brief \u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\n */\n\
-    \n#include <algorithm>\n#include <cassert>\n#include <optional>\n#include <queue>\n\
-    #include <utility>\n#include <vector>\n\n#line 2 \"src/math/combinatorics.hpp\"\
-    \n\n/**\n * @file combinatorics.hpp\n * @brief \u7D44\u307F\u5408\u308F\u305B\n\
-    \ */\n\n#line 9 \"src/math/combinatorics.hpp\"\n#include <numeric>\n#line 11 \"\
-    src/math/combinatorics.hpp\"\n\n#line 2 \"src/math/modular-arithmetic.hpp\"\n\n\
-    /**\n * @file modular-arithmetic.hpp\n * @brief mod \u6F14\u7B97 (\u7A4D\u3001\
+    \u3051\u305F\u3082\u306E\u3068\u6BD4\u3079\u308B\n// sum_of_fractions \u306F\u3001\
+    \u5206\u5B50\u304C \u03A3_i nums_i \u03A0_{j != i} dens_j\u3001\u5206\u6BCD\u304C\
+    \ \u03A0 dens_j \u306B\u306A\u308B\u3053\u3068\u3092\u78BA\u304B\u3081\u308B\n\
+    // FPS \u306E + \u3068 - \u306F\u7D50\u679C\u306E\u672B\u5C3E\u306E 0 \u3092\u53D6\
+    \u308A\u9664\u304F (\u4ED5\u69D8) \u306E\u3067\u3001\u591A\u9805\u5F0F\u3068\u3057\
+    \u3066\u306E\u6BD4\u8F03\u306F\u672B\u5C3E\u306E 0 \u3092\u9664\u3044\u3066\u884C\
+    \u3046\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\
+    \u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\
+    \n\n#line 2 \"src/math/fps.hpp\"\n\n/**\n * @file fps.hpp\n * @brief \u5F62\u5F0F\
+    \u7684\u51AA\u7D1A\u6570\n */\n\n#include <algorithm>\n#include <cassert>\n#include\
+    \ <optional>\n#include <queue>\n#include <utility>\n#include <vector>\n\n#line\
+    \ 2 \"src/math/combinatorics.hpp\"\n\n/**\n * @file combinatorics.hpp\n * @brief\
+    \ \u7D44\u307F\u5408\u308F\u305B\n */\n\n#line 9 \"src/math/combinatorics.hpp\"\
+    \n#include <numeric>\n#line 11 \"src/math/combinatorics.hpp\"\n\n#line 2 \"src/math/modular-arithmetic.hpp\"\
+    \n\n/**\n * @file modular-arithmetic.hpp\n * @brief mod \u6F14\u7B97 (\u7A4D\u3001\
     \u51AA\u4E57\u3001\u9006\u5143\u3001\u96E2\u6563\u5BFE\u6570\u3001\u5E73\u65B9\
     \u6839)\n */\n\n#line 10 \"src/math/modular-arithmetic.hpp\"\n#include <cmath>\n\
     #line 12 \"src/math/modular-arithmetic.hpp\"\n#include <unordered_map>\n\n/**\n\
@@ -792,138 +794,23 @@ data:
     \       pq.pop();\n        int b = pq.top();\n        pq.pop();\n        // \u7A7A\
     \u306E\u591A\u9805\u5F0F (0) \u3068\u306E\u7A4D\u306F 0\n        fs[a] = fs[a].empty()\
     \ || fs[b].empty() ? FPS<mint>() : fs[a] * fs[b];\n        FPS<mint>().swap(fs[b]);\n\
-    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n#line 9 \"test/unittest/math/fps.test.cpp\"\
-    \n\n#line 11 \"test/unittest/math/fps.test.cpp\"\n#include <random>\n#line 13\
-    \ \"test/unittest/math/fps.test.cpp\"\n\nusing mint = static_modint<998244353>;\n\
-    using F = FPS<mint>;\nusing P = std::vector<mint>;\n\nP trim(P a) {\n    while\
-    \ (!a.empty() && a.back() == 0) a.pop_back();\n    return a;\n}\nP naive_mul(const\
-    \ P& a, const P& b) {\n    if (a.empty() || b.empty()) return {};\n    P c(a.size()\
-    \ + b.size() - 1);\n    for (size_t i = 0; i < a.size(); i++)\n        for (size_t\
-    \ j = 0; j < b.size(); j++) c[i + j] += a[i] * b[j];\n    return c;\n}\n// \u591A\
-    \u9805\u5F0F\u306E\u4F59\u308A (b \u306F\u672B\u5C3E\u304C 0 \u3067\u306A\u3044\
-    \u3053\u3068)\nP naive_mod(P a, const P& b) {\n    a = trim(a);\n    while (a.size()\
-    \ >= b.size()) {\n        mint c = a.back() / b.back();\n        size_t s = a.size()\
-    \ - b.size();\n        for (size_t i = 0; i < b.size(); i++) a[s + i] -= c * b[i];\n\
-    \        a = trim(a);\n    }\n    return a;\n}\n// \u6700\u9AD8\u6B21\u306E\u4FC2\
-    \u6570\u3092 1 \u306B\u3059\u308B\nP monic(P a) {\n    a = trim(a);\n    if (a.empty())\
-    \ return a;\n    mint c = a.back().inv();\n    for (auto& x : a) x *= c;\n   \
-    \ return a;\n}\nP naive_gcd(P a, P b) {\n    a = trim(a), b = trim(b);\n    while\
-    \ (!b.empty()) {\n        P r = naive_mod(a, b);\n        a = b;\n        b =\
-    \ r;\n    }\n    return monic(a);\n}\nP random_poly(std::mt19937_64& rng, int\
-    \ n, bool nonzero_lead) {\n    P a(n);\n    for (auto& x : a) x = static_cast<long\
-    \ long>(rng() % 998244353);\n    if (rng() % 4 == 0)\n        for (auto& x : a)\
-    \ x = static_cast<long long>(rng() % 3);  // 0 \u3092\u591A\u3081\u306B\u542B\u3080\
-    \n    if (nonzero_lead && n > 0 && a.back() == 0) a.back() = 1;\n    return a;\n\
-    }\n\nint main() {\n    std::mt19937_64 rng(314);\n    bool ok = true;\n\n    for\
-    \ (int rep = 0; rep < 300; rep++) {\n        int n = rng() % 8;\n        P a =\
-    \ random_poly(rng, n, false);\n        F f(a);\n        // \u5358\u9805\u306E\
-    \ -: \u5404\u4FC2\u6570\u306E\u7B26\u53F7\u3092\u53CD\u8EE2\u3057\u3001\u9577\u3055\
-    \u306F\u5909\u308F\u3089\u306A\u3044\n        F g = -f;\n        if (g.size()\
-    \ != a.size()) ok = false;\n        for (size_t i = 0; i < a.size(); i++)\n  \
-    \          if (g[i] != -a[i]) ok = false;\n        // \u5B9A\u6570\u3092\u5F15\
-    \u304F: \u5B9A\u6570\u9805\u304B\u3089\u5F15\u304F (\u7A7A\u306A\u3089\u9577\u3055\
-    \ 1 \u306B\u306A\u308B)\u3002\u9577\u3055\u306F\u305D\u308C\u4EE5\u5916\u5909\u308F\
-    \u3089\u306A\u3044\n        mint c = static_cast<long long>(rng() % 998244353);\n\
-    \        F h = f - c;\n        P e = a.empty() ? P{-c} : a;\n        if (!a.empty())\
-    \ e[0] -= c;\n        if (P(h) != e) ok = false;\n        F h2 = f;\n        h2\
-    \ -= c;\n        if (P(h2) != e) ok = false;\n        // \u5B9A\u6570\u3092\u8DB3\
-    \u3059\u306E\u3068\u6253\u3061\u6D88\u3057\u5408\u3046\n        if (P(f - c +\
-    \ c) != (a.empty() ? P{0} : a)) ok = false;\n        // eval: f(x) \u3092\u611A\
-    \u76F4\u306B\u8A08\u7B97\u3057\u305F\u3082\u306E\u3068\u4E00\u81F4\u3059\u308B\
-    \n        for (int t = 0; t < 5; t++) {\n            mint x = (t == 0) ? mint(0)\
-    \ : mint(static_cast<long long>(rng() % 998244353));\n            mint s = 0,\
-    \ pw = 1;\n            for (auto& coef : a) s += coef * pw, pw *= x;\n       \
-    \     if (f.eval(x) != s) ok = false;\n        }\n    }\n    if (!ok) std::cerr\
-    \ << \"unary minus / minus const / eval\" << std::endl;\n\n    // gcd: \u5171\u901A\
-    \u56E0\u5B50 h \u3092\u639B\u3051\u305F 2 \u3064\u306E\u591A\u9805\u5F0F\u306E\
-    \ gcd \u304C h \u306E\u5B9A\u6570\u500D\u306B\u306A\u308B\u3002NTT \u3092\u4F7F\
-    \u3046\u9577\u3055\u3082\u542B\u3081\u308B\n    for (int rep = 0; rep < 150 &&\
-    \ ok; rep++) {\n        int big = (rep % 5 == 0) ? 40 : 0;\n        P h = random_poly(rng,\
-    \ rng() % 5 + 1 + big / 4, true);\n        P x = random_poly(rng, rng() % 6 +\
-    \ 1 + big, true);\n        P y = random_poly(rng, rng() % 6 + 1 + big, true);\n\
-    \        P a = trim(naive_mul(h, x)), b = trim(naive_mul(h, y));\n        F d\
-    \ = gcd(F(a), F(b));\n        if (monic(P(d)) != naive_gcd(a, b)) ok = false,\
-    \ std::cerr << \"gcd \" << rep << std::endl;\n        // \u5F15\u6570\u306E\u9806\
-    \u3092\u5165\u308C\u66FF\u3048\u3066\u3082\u540C\u3058 (\u5B9A\u6570\u500D\u3092\
-    \u9664\u3044\u3066)\n        if (monic(P(gcd(F(b), F(a)))) != naive_gcd(a, b))\
-    \ ok = false;\n        // \u5272\u308A\u5207\u308B\n        if (!trim(P(F(a) %\
-    \ d)).empty() || !trim(P(F(b) % d)).empty()) ok = false;\n    }\n    // \u7247\
-    \u65B9\u304C 0 (\u7A7A) \u306A\u3089\u3001\u3082\u3046\u7247\u65B9\u3092\u8FD4\
-    \u3059\n    {\n        P a = {1, 2, 3};\n        if (monic(P(gcd(F(a), F())))\
-    \ != monic(a)) ok = false;\n        if (monic(P(gcd(F(), F(a)))) != monic(a))\
-    \ ok = false;\n    }\n\n    // modpow: f^n mod m \u3092\u3001\u611A\u76F4\u306B\
-    \u639B\u3051\u3066\u4F59\u308A\u3092\u53D6\u3063\u305F\u3082\u306E\u3068\u6BD4\
-    \u3079\u308B\n    for (int rep = 0; rep < 200 && ok; rep++) {\n        int deg_m\
-    \ = rng() % 6 + 1;  // m \u306E\u6B21\u6570\u306F 1 \u4EE5\u4E0A\n        if (rep\
-    \ % 10 == 0) deg_m = 40;\n        P m = random_poly(rng, deg_m + 1, true);\n \
-    \       P f = random_poly(rng, rng() % 8, false);\n        long long n = (rep\
-    \ % 3 == 0) ? static_cast<long long>(rng() % 1000000000000LL) : static_cast<long\
-    \ long>(rng() % 20);\n        F got = modpow(F(f), n, F(m));\n        // \u611A\
-    \u76F4: \u7E70\u308A\u8FD4\u3057\u4E8C\u4E57\u6CD5\u3092\u611A\u76F4\u306A\u639B\
-    \u3051\u7B97\u3068\u4F59\u308A\u3067\u884C\u3046\n        P res = naive_mod(P{1},\
-    \ m), base = naive_mod(f, m);\n        for (long long k = n; k > 0; k >>= 1) {\n\
-    \            if (k & 1) res = naive_mod(naive_mul(res, base), m);\n          \
-    \  base = naive_mod(naive_mul(base, base), m);\n        }\n        if (trim(P(got))\
-    \ != trim(res)) ok = false, std::cerr << \"modpow \" << rep << std::endl;\n  \
-    \  }\n    // n = 0 \u306F 1\n    if (P(modpow(F(P{5, 6}), 0, F(P{1, 1, 1}))) !=\
-    \ P{1}) ok = false;\n\n    // divmod: f = q g + r\u3001deg r < deg g \u3092\u6E80\
-    \u305F\u3057\u3001f / g\u3001f % g \u3068\u4E00\u81F4\u3059\u308B\u3002NTT \u3092\
-    \u4F7F\u3046\u9577\u3055\u3082\u542B\u3081\u308B\n    for (int rep = 0; rep <\
-    \ 300 && ok; rep++) {\n        int big = (rep % 10 == 0) ? 100 : 0;\n        P\
-    \ g = random_poly(rng, rng() % 6 + 1 + big / 2, true);\n        P f = random_poly(rng,\
-    \ rng() % 12 + big, false);\n        auto [q, r] = divmod(F(f), F(g));\n     \
-    \   if (trim(P(r)) != naive_mod(f, g)) ok = false, std::cerr << \"divmod r \"\
-    \ << rep << std::endl;\n        if (trim(naive_mul(P(q), g)) != trim(P(F(f) -\
-    \ F(r)))) ok = false, std::cerr << \"divmod q \" << rep << std::endl;\n      \
-    \  if (trim(P(q)) != trim(P(F(f) / F(g))) || trim(P(r)) != trim(P(F(f) % F(g))))\
-    \ ok = false;\n    }\n    // \u6B21\u6570\u304C g \u3088\u308A\u5C0F\u3055\u3051\
-    \u308C\u3070\u5546\u306F 0\u3001\u4F59\u308A\u306F f (\u672B\u5C3E\u306E 0 \u3092\
-    \u9664\u304F)\n    {\n        auto [q, r] = divmod(F(P{1, 2, 0}), F(P{3, 4, 5}));\n\
-    \        if (!trim(P(q)).empty() || P(r) != P{1, 2}) ok = false;\n        auto\
-    \ [q0, r0] = divmod(F(), F(P{3, 4}));\n        if (!trim(P(q0)).empty() || !trim(P(r0)).empty())\
-    \ ok = false;\n    }\n\n    // sqrt: \u5E73\u65B9\u6839\u304C\u3042\u308B\u306A\
-    \u3089 g^2 \u304C\u5148\u982D n \u9805\u3067 f \u3068\u4E00\u81F4\u3057\u3001\u306A\
-    \u3044\u306A\u3089 nullopt (x^\u5947\u6570 \u304B\u3089\u59CB\u307E\u308B\u3001\
-    \u5E73\u65B9\u975E\u5270\u4F59)\n    {\n        auto gen = [&](int n) {\n    \
-    \        F f(n);\n            for (auto& x : f) x = rng() % mint::mod();\n   \
-    \         return f;\n        };\n        for (int rep = 0; rep < 300 && ok; rep++)\
-    \ {\n            int n = rng() % 30 + 1, shift = rng() % 4;\n            // h^2\
-    \ \u3092\u4F5C\u3063\u3066\u304B\u3089 x^(2 shift) \u3092\u639B\u3051\u308B\u3068\
-    \u3001\u5FC5\u305A\u5E73\u65B9\u6839\u304C\u3042\u308B\n            F h = gen(n);\n\
-    \            F f = (h * h).pre(n);\n            f = (f << (2 * shift)).pre(n);\n\
-    \            auto g = sqrt(f, n);\n            if (!g || static_cast<int>(g->size())\
-    \ != n || P((*g * *g).pre(n)) != P(f)) ok = false, std::cerr << \"sqrt\" << std::endl;\n\
-    \            // x^1 \u304B\u3089\u59CB\u307E\u308B\u306A\u3089\u5E73\u65B9\u6839\
-    \u306F\u306A\u3044\n            F odd = f;\n            odd.insert(odd.begin(),\
-    \ mint(0));\n            odd.resize(n + 1);\n            if (odd[1] != 0 && sqrt(odd,\
-    \ n + 1)) ok = false, std::cerr << \"sqrt odd\" << std::endl;\n        }\n   \
-    \     // \u5B9A\u6570\u9805\u304C\u5E73\u65B9\u975E\u5270\u4F59\u306A\u3089\u5E73\
-    \u65B9\u6839\u306F\u306A\u3044 (998244353 \u3067\u306F 3 \u304C\u975E\u5270\u4F59\
-    )\n        if (sqrt(F{3, 1, 4}, 3)) ok = false, std::cerr << \"sqrt non-residue\"\
-    \ << std::endl;\n        // \u3059\u3079\u3066 0 \u306A\u3089 0\n        auto\
-    \ z = sqrt(F(5, 0), 5);\n        if (!z || P(*z) != P(5, 0)) ok = false, std::cerr\
-    \ << \"sqrt zero\" << std::endl;\n    }\n    // polynomial_product: \u9806\u306B\
-    \u639B\u3051\u305F\u3082\u306E\u3068\u540C\u3058 (\u7A7A\u306E\u5217\u306F 1\u3001\
-    0 \u3092\u542B\u3080\u3068 0)\n    for (int rep = 0; rep < 300 && ok; rep++) {\n\
-    \        int k = rng() % 8;\n        std::vector<F> fs(k);\n        P expect =\
-    \ {1};\n        for (auto& f : fs) {\n            f.resize(rng() % 5);\n     \
-    \       for (auto& x : f) x = rng() % 10;\n            expect = naive_mul(expect,\
-    \ P(f));\n        }\n        if (trim(P(polynomial_product(fs))) != trim(expect))\
-    \ ok = false, std::cerr << \"polynomial_product\" << std::endl;\n    }\n\n   \
-    \ if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
-  code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
-    \n\n// FPS \u306E\u5358\u9805\u306E -\u3001\u5B9A\u6570\u3092\u5F15\u304F -\u3001\
-    eval\u3001gcd\u3001modpow\u3001divmod \u3092\u611A\u76F4\u306A\u591A\u9805\u5F0F\
-    \u6F14\u7B97\u3068\u6BD4\u8F03\u3059\u308B\n// sqrt \u306F 2 \u4E57\u3057\u3066\
-    \u5143\u306B\u623B\u308B\u304B\u3001polynomial_product \u306F\u9806\u306B\u639B\
-    \u3051\u305F\u3082\u306E\u3068\u6BD4\u3079\u308B\n// FPS \u306E + \u3068 - \u306F\
-    \u7D50\u679C\u306E\u672B\u5C3E\u306E 0 \u3092\u53D6\u308A\u9664\u304F (\u4ED5\u69D8\
-    ) \u306E\u3067\u3001\u591A\u9805\u5F0F\u3068\u3057\u3066\u306E\u6BD4\u8F03\u306F\
-    \u672B\u5C3E\u306E 0 \u3092\u9664\u3044\u3066\u884C\u3046\n// \u554F\u984C\u306E\
-    \u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\
-    \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../../src/math/fps.hpp\"\
-    \n\n#include <iostream>\n#include <random>\n#include <vector>\n\nusing mint =\
-    \ static_modint<998244353>;\nusing F = FPS<mint>;\nusing P = std::vector<mint>;\n\
+    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n\n/**\n * @brief \u5206\
+    \u6570\u306E\u548C \u03A3_i nums[i] / dens[i] \u3092 1 \u3064\u306E\u5206\u6570\
+    \ num / den \u306B\u307E\u3068\u3081\u308B O(N log^2 N) (N \u306F\u591A\u9805\u5F0F\
+    \u306E\u9577\u3055\u306E\u548C)\n * \u534A\u5206\u305A\u3064\u306B\u5206\u3051\
+    \u3066 a / b + c / d = (ad + cb) / bd \u3068\u307E\u3068\u3081\u308B\u3002den\
+    \ \u306F dens \u306E\u7A4D\u3002\u7A7A\u306A\u3089 0 / 1\n * @return std::pair<FPS<mint>,\
+    \ FPS<mint>> {num, den}\n */\ntemplate <typename mint>\nstd::pair<FPS<mint>, FPS<mint>>\
+    \ sum_of_fractions(const std::vector<FPS<mint>>& nums, const std::vector<FPS<mint>>&\
+    \ dens) {\n    assert(nums.size() == dens.size());\n    if (nums.empty()) return\
+    \ {FPS<mint>(), FPS<mint>{1}};\n    auto rec = [&](auto&& self, long long l, long\
+    \ long r) -> std::pair<FPS<mint>, FPS<mint>> {\n        if (r - l == 1) return\
+    \ {nums[l], dens[l]};\n        long long m = (l + r) / 2;\n        auto [a, b]\
+    \ = self(self, l, m);\n        auto [c, d] = self(self, m, r);\n        return\
+    \ {a * d + c * b, b * d};\n    };\n    return rec(rec, 0, nums.size());\n}\n#line\
+    \ 10 \"test/unittest/math/fps.test.cpp\"\n\n#line 12 \"test/unittest/math/fps.test.cpp\"\
+    \n#include <random>\n#line 14 \"test/unittest/math/fps.test.cpp\"\n\nusing mint\
+    \ = static_modint<998244353>;\nusing F = FPS<mint>;\nusing P = std::vector<mint>;\n\
     \nP trim(P a) {\n    while (!a.empty() && a.back() == 0) a.pop_back();\n    return\
     \ a;\n}\nP naive_mul(const P& a, const P& b) {\n    if (a.empty() || b.empty())\
     \ return {};\n    P c(a.size() + b.size() - 1);\n    for (size_t i = 0; i < a.size();\
@@ -1038,7 +925,172 @@ data:
     \       for (auto& x : f) x = rng() % 10;\n            expect = naive_mul(expect,\
     \ P(f));\n        }\n        if (trim(P(polynomial_product(fs))) != trim(expect))\
     \ ok = false, std::cerr << \"polynomial_product\" << std::endl;\n    }\n\n   \
-    \ if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \ // sum_of_fractions (\u7A7A\u306E\u5217\u306F 0 / 1)\n    {\n        auto [num,\
+    \ den] = sum_of_fractions(std::vector<F>{}, std::vector<F>{});\n        if (!trim(P(num)).empty()\
+    \ || trim(P(den)) != P{1}) ok = false, std::cerr << \"sum_of_fractions empty\"\
+    \ << std::endl;\n    }\n    for (int rep = 0; rep < 300 && ok; rep++) {\n    \
+    \    int k = rng() % 8 + 1;\n        std::vector<F> nums(k), dens(k);\n      \
+    \  for (int i = 0; i < k; i++) {\n            nums[i].resize(rng() % 4);\n   \
+    \         for (auto& x : nums[i]) x = rng() % 10;\n            dens[i].resize(rng()\
+    \ % 4 + 1);\n            for (auto& x : dens[i]) x = rng() % 10;\n           \
+    \ dens[i].back() = rng() % 9 + 1;\n        }\n        P expect_num = {}, expect_den\
+    \ = {1};\n        for (int i = 0; i < k; i++) {\n            P t = P(nums[i]);\n\
+    \            for (int j = 0; j < k; j++)\n                if (j != i) t = naive_mul(t,\
+    \ P(dens[j]));\n            if (expect_num.size() < t.size()) expect_num.resize(t.size());\n\
+    \            for (int a = 0; a < static_cast<int>(t.size()); a++) expect_num[a]\
+    \ += t[a];\n            expect_den = naive_mul(expect_den, P(dens[i]));\n    \
+    \    }\n        auto [num, den] = sum_of_fractions(nums, dens);\n        if (trim(P(num))\
+    \ != trim(expect_num) || trim(P(den)) != trim(expect_den)) ok = false, std::cerr\
+    \ << \"sum_of_fractions\" << std::endl;\n    }\n\n    if (ok) std::cout << \"\
+    Hello World\" << std::endl;\n}\n"
+  code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
+    \n\n// FPS \u306E\u5358\u9805\u306E -\u3001\u5B9A\u6570\u3092\u5F15\u304F -\u3001\
+    eval\u3001gcd\u3001modpow\u3001divmod \u3092\u611A\u76F4\u306A\u591A\u9805\u5F0F\
+    \u6F14\u7B97\u3068\u6BD4\u8F03\u3059\u308B\n// sqrt \u306F 2 \u4E57\u3057\u3066\
+    \u5143\u306B\u623B\u308B\u304B\u3001polynomial_product \u306F\u9806\u306B\u639B\
+    \u3051\u305F\u3082\u306E\u3068\u6BD4\u3079\u308B\n// sum_of_fractions \u306F\u3001\
+    \u5206\u5B50\u304C \u03A3_i nums_i \u03A0_{j != i} dens_j\u3001\u5206\u6BCD\u304C\
+    \ \u03A0 dens_j \u306B\u306A\u308B\u3053\u3068\u3092\u78BA\u304B\u3081\u308B\n\
+    // FPS \u306E + \u3068 - \u306F\u7D50\u679C\u306E\u672B\u5C3E\u306E 0 \u3092\u53D6\
+    \u308A\u9664\u304F (\u4ED5\u69D8) \u306E\u3067\u3001\u591A\u9805\u5F0F\u3068\u3057\
+    \u3066\u306E\u6BD4\u8F03\u306F\u672B\u5C3E\u306E 0 \u3092\u9664\u3044\u3066\u884C\
+    \u3046\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\
+    \u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\
+    \n\n#include \"../../../src/math/fps.hpp\"\n\n#include <iostream>\n#include <random>\n\
+    #include <vector>\n\nusing mint = static_modint<998244353>;\nusing F = FPS<mint>;\n\
+    using P = std::vector<mint>;\n\nP trim(P a) {\n    while (!a.empty() && a.back()\
+    \ == 0) a.pop_back();\n    return a;\n}\nP naive_mul(const P& a, const P& b) {\n\
+    \    if (a.empty() || b.empty()) return {};\n    P c(a.size() + b.size() - 1);\n\
+    \    for (size_t i = 0; i < a.size(); i++)\n        for (size_t j = 0; j < b.size();\
+    \ j++) c[i + j] += a[i] * b[j];\n    return c;\n}\n// \u591A\u9805\u5F0F\u306E\
+    \u4F59\u308A (b \u306F\u672B\u5C3E\u304C 0 \u3067\u306A\u3044\u3053\u3068)\nP\
+    \ naive_mod(P a, const P& b) {\n    a = trim(a);\n    while (a.size() >= b.size())\
+    \ {\n        mint c = a.back() / b.back();\n        size_t s = a.size() - b.size();\n\
+    \        for (size_t i = 0; i < b.size(); i++) a[s + i] -= c * b[i];\n       \
+    \ a = trim(a);\n    }\n    return a;\n}\n// \u6700\u9AD8\u6B21\u306E\u4FC2\u6570\
+    \u3092 1 \u306B\u3059\u308B\nP monic(P a) {\n    a = trim(a);\n    if (a.empty())\
+    \ return a;\n    mint c = a.back().inv();\n    for (auto& x : a) x *= c;\n   \
+    \ return a;\n}\nP naive_gcd(P a, P b) {\n    a = trim(a), b = trim(b);\n    while\
+    \ (!b.empty()) {\n        P r = naive_mod(a, b);\n        a = b;\n        b =\
+    \ r;\n    }\n    return monic(a);\n}\nP random_poly(std::mt19937_64& rng, int\
+    \ n, bool nonzero_lead) {\n    P a(n);\n    for (auto& x : a) x = static_cast<long\
+    \ long>(rng() % 998244353);\n    if (rng() % 4 == 0)\n        for (auto& x : a)\
+    \ x = static_cast<long long>(rng() % 3);  // 0 \u3092\u591A\u3081\u306B\u542B\u3080\
+    \n    if (nonzero_lead && n > 0 && a.back() == 0) a.back() = 1;\n    return a;\n\
+    }\n\nint main() {\n    std::mt19937_64 rng(314);\n    bool ok = true;\n\n    for\
+    \ (int rep = 0; rep < 300; rep++) {\n        int n = rng() % 8;\n        P a =\
+    \ random_poly(rng, n, false);\n        F f(a);\n        // \u5358\u9805\u306E\
+    \ -: \u5404\u4FC2\u6570\u306E\u7B26\u53F7\u3092\u53CD\u8EE2\u3057\u3001\u9577\u3055\
+    \u306F\u5909\u308F\u3089\u306A\u3044\n        F g = -f;\n        if (g.size()\
+    \ != a.size()) ok = false;\n        for (size_t i = 0; i < a.size(); i++)\n  \
+    \          if (g[i] != -a[i]) ok = false;\n        // \u5B9A\u6570\u3092\u5F15\
+    \u304F: \u5B9A\u6570\u9805\u304B\u3089\u5F15\u304F (\u7A7A\u306A\u3089\u9577\u3055\
+    \ 1 \u306B\u306A\u308B)\u3002\u9577\u3055\u306F\u305D\u308C\u4EE5\u5916\u5909\u308F\
+    \u3089\u306A\u3044\n        mint c = static_cast<long long>(rng() % 998244353);\n\
+    \        F h = f - c;\n        P e = a.empty() ? P{-c} : a;\n        if (!a.empty())\
+    \ e[0] -= c;\n        if (P(h) != e) ok = false;\n        F h2 = f;\n        h2\
+    \ -= c;\n        if (P(h2) != e) ok = false;\n        // \u5B9A\u6570\u3092\u8DB3\
+    \u3059\u306E\u3068\u6253\u3061\u6D88\u3057\u5408\u3046\n        if (P(f - c +\
+    \ c) != (a.empty() ? P{0} : a)) ok = false;\n        // eval: f(x) \u3092\u611A\
+    \u76F4\u306B\u8A08\u7B97\u3057\u305F\u3082\u306E\u3068\u4E00\u81F4\u3059\u308B\
+    \n        for (int t = 0; t < 5; t++) {\n            mint x = (t == 0) ? mint(0)\
+    \ : mint(static_cast<long long>(rng() % 998244353));\n            mint s = 0,\
+    \ pw = 1;\n            for (auto& coef : a) s += coef * pw, pw *= x;\n       \
+    \     if (f.eval(x) != s) ok = false;\n        }\n    }\n    if (!ok) std::cerr\
+    \ << \"unary minus / minus const / eval\" << std::endl;\n\n    // gcd: \u5171\u901A\
+    \u56E0\u5B50 h \u3092\u639B\u3051\u305F 2 \u3064\u306E\u591A\u9805\u5F0F\u306E\
+    \ gcd \u304C h \u306E\u5B9A\u6570\u500D\u306B\u306A\u308B\u3002NTT \u3092\u4F7F\
+    \u3046\u9577\u3055\u3082\u542B\u3081\u308B\n    for (int rep = 0; rep < 150 &&\
+    \ ok; rep++) {\n        int big = (rep % 5 == 0) ? 40 : 0;\n        P h = random_poly(rng,\
+    \ rng() % 5 + 1 + big / 4, true);\n        P x = random_poly(rng, rng() % 6 +\
+    \ 1 + big, true);\n        P y = random_poly(rng, rng() % 6 + 1 + big, true);\n\
+    \        P a = trim(naive_mul(h, x)), b = trim(naive_mul(h, y));\n        F d\
+    \ = gcd(F(a), F(b));\n        if (monic(P(d)) != naive_gcd(a, b)) ok = false,\
+    \ std::cerr << \"gcd \" << rep << std::endl;\n        // \u5F15\u6570\u306E\u9806\
+    \u3092\u5165\u308C\u66FF\u3048\u3066\u3082\u540C\u3058 (\u5B9A\u6570\u500D\u3092\
+    \u9664\u3044\u3066)\n        if (monic(P(gcd(F(b), F(a)))) != naive_gcd(a, b))\
+    \ ok = false;\n        // \u5272\u308A\u5207\u308B\n        if (!trim(P(F(a) %\
+    \ d)).empty() || !trim(P(F(b) % d)).empty()) ok = false;\n    }\n    // \u7247\
+    \u65B9\u304C 0 (\u7A7A) \u306A\u3089\u3001\u3082\u3046\u7247\u65B9\u3092\u8FD4\
+    \u3059\n    {\n        P a = {1, 2, 3};\n        if (monic(P(gcd(F(a), F())))\
+    \ != monic(a)) ok = false;\n        if (monic(P(gcd(F(), F(a)))) != monic(a))\
+    \ ok = false;\n    }\n\n    // modpow: f^n mod m \u3092\u3001\u611A\u76F4\u306B\
+    \u639B\u3051\u3066\u4F59\u308A\u3092\u53D6\u3063\u305F\u3082\u306E\u3068\u6BD4\
+    \u3079\u308B\n    for (int rep = 0; rep < 200 && ok; rep++) {\n        int deg_m\
+    \ = rng() % 6 + 1;  // m \u306E\u6B21\u6570\u306F 1 \u4EE5\u4E0A\n        if (rep\
+    \ % 10 == 0) deg_m = 40;\n        P m = random_poly(rng, deg_m + 1, true);\n \
+    \       P f = random_poly(rng, rng() % 8, false);\n        long long n = (rep\
+    \ % 3 == 0) ? static_cast<long long>(rng() % 1000000000000LL) : static_cast<long\
+    \ long>(rng() % 20);\n        F got = modpow(F(f), n, F(m));\n        // \u611A\
+    \u76F4: \u7E70\u308A\u8FD4\u3057\u4E8C\u4E57\u6CD5\u3092\u611A\u76F4\u306A\u639B\
+    \u3051\u7B97\u3068\u4F59\u308A\u3067\u884C\u3046\n        P res = naive_mod(P{1},\
+    \ m), base = naive_mod(f, m);\n        for (long long k = n; k > 0; k >>= 1) {\n\
+    \            if (k & 1) res = naive_mod(naive_mul(res, base), m);\n          \
+    \  base = naive_mod(naive_mul(base, base), m);\n        }\n        if (trim(P(got))\
+    \ != trim(res)) ok = false, std::cerr << \"modpow \" << rep << std::endl;\n  \
+    \  }\n    // n = 0 \u306F 1\n    if (P(modpow(F(P{5, 6}), 0, F(P{1, 1, 1}))) !=\
+    \ P{1}) ok = false;\n\n    // divmod: f = q g + r\u3001deg r < deg g \u3092\u6E80\
+    \u305F\u3057\u3001f / g\u3001f % g \u3068\u4E00\u81F4\u3059\u308B\u3002NTT \u3092\
+    \u4F7F\u3046\u9577\u3055\u3082\u542B\u3081\u308B\n    for (int rep = 0; rep <\
+    \ 300 && ok; rep++) {\n        int big = (rep % 10 == 0) ? 100 : 0;\n        P\
+    \ g = random_poly(rng, rng() % 6 + 1 + big / 2, true);\n        P f = random_poly(rng,\
+    \ rng() % 12 + big, false);\n        auto [q, r] = divmod(F(f), F(g));\n     \
+    \   if (trim(P(r)) != naive_mod(f, g)) ok = false, std::cerr << \"divmod r \"\
+    \ << rep << std::endl;\n        if (trim(naive_mul(P(q), g)) != trim(P(F(f) -\
+    \ F(r)))) ok = false, std::cerr << \"divmod q \" << rep << std::endl;\n      \
+    \  if (trim(P(q)) != trim(P(F(f) / F(g))) || trim(P(r)) != trim(P(F(f) % F(g))))\
+    \ ok = false;\n    }\n    // \u6B21\u6570\u304C g \u3088\u308A\u5C0F\u3055\u3051\
+    \u308C\u3070\u5546\u306F 0\u3001\u4F59\u308A\u306F f (\u672B\u5C3E\u306E 0 \u3092\
+    \u9664\u304F)\n    {\n        auto [q, r] = divmod(F(P{1, 2, 0}), F(P{3, 4, 5}));\n\
+    \        if (!trim(P(q)).empty() || P(r) != P{1, 2}) ok = false;\n        auto\
+    \ [q0, r0] = divmod(F(), F(P{3, 4}));\n        if (!trim(P(q0)).empty() || !trim(P(r0)).empty())\
+    \ ok = false;\n    }\n\n    // sqrt: \u5E73\u65B9\u6839\u304C\u3042\u308B\u306A\
+    \u3089 g^2 \u304C\u5148\u982D n \u9805\u3067 f \u3068\u4E00\u81F4\u3057\u3001\u306A\
+    \u3044\u306A\u3089 nullopt (x^\u5947\u6570 \u304B\u3089\u59CB\u307E\u308B\u3001\
+    \u5E73\u65B9\u975E\u5270\u4F59)\n    {\n        auto gen = [&](int n) {\n    \
+    \        F f(n);\n            for (auto& x : f) x = rng() % mint::mod();\n   \
+    \         return f;\n        };\n        for (int rep = 0; rep < 300 && ok; rep++)\
+    \ {\n            int n = rng() % 30 + 1, shift = rng() % 4;\n            // h^2\
+    \ \u3092\u4F5C\u3063\u3066\u304B\u3089 x^(2 shift) \u3092\u639B\u3051\u308B\u3068\
+    \u3001\u5FC5\u305A\u5E73\u65B9\u6839\u304C\u3042\u308B\n            F h = gen(n);\n\
+    \            F f = (h * h).pre(n);\n            f = (f << (2 * shift)).pre(n);\n\
+    \            auto g = sqrt(f, n);\n            if (!g || static_cast<int>(g->size())\
+    \ != n || P((*g * *g).pre(n)) != P(f)) ok = false, std::cerr << \"sqrt\" << std::endl;\n\
+    \            // x^1 \u304B\u3089\u59CB\u307E\u308B\u306A\u3089\u5E73\u65B9\u6839\
+    \u306F\u306A\u3044\n            F odd = f;\n            odd.insert(odd.begin(),\
+    \ mint(0));\n            odd.resize(n + 1);\n            if (odd[1] != 0 && sqrt(odd,\
+    \ n + 1)) ok = false, std::cerr << \"sqrt odd\" << std::endl;\n        }\n   \
+    \     // \u5B9A\u6570\u9805\u304C\u5E73\u65B9\u975E\u5270\u4F59\u306A\u3089\u5E73\
+    \u65B9\u6839\u306F\u306A\u3044 (998244353 \u3067\u306F 3 \u304C\u975E\u5270\u4F59\
+    )\n        if (sqrt(F{3, 1, 4}, 3)) ok = false, std::cerr << \"sqrt non-residue\"\
+    \ << std::endl;\n        // \u3059\u3079\u3066 0 \u306A\u3089 0\n        auto\
+    \ z = sqrt(F(5, 0), 5);\n        if (!z || P(*z) != P(5, 0)) ok = false, std::cerr\
+    \ << \"sqrt zero\" << std::endl;\n    }\n    // polynomial_product: \u9806\u306B\
+    \u639B\u3051\u305F\u3082\u306E\u3068\u540C\u3058 (\u7A7A\u306E\u5217\u306F 1\u3001\
+    0 \u3092\u542B\u3080\u3068 0)\n    for (int rep = 0; rep < 300 && ok; rep++) {\n\
+    \        int k = rng() % 8;\n        std::vector<F> fs(k);\n        P expect =\
+    \ {1};\n        for (auto& f : fs) {\n            f.resize(rng() % 5);\n     \
+    \       for (auto& x : f) x = rng() % 10;\n            expect = naive_mul(expect,\
+    \ P(f));\n        }\n        if (trim(P(polynomial_product(fs))) != trim(expect))\
+    \ ok = false, std::cerr << \"polynomial_product\" << std::endl;\n    }\n\n   \
+    \ // sum_of_fractions (\u7A7A\u306E\u5217\u306F 0 / 1)\n    {\n        auto [num,\
+    \ den] = sum_of_fractions(std::vector<F>{}, std::vector<F>{});\n        if (!trim(P(num)).empty()\
+    \ || trim(P(den)) != P{1}) ok = false, std::cerr << \"sum_of_fractions empty\"\
+    \ << std::endl;\n    }\n    for (int rep = 0; rep < 300 && ok; rep++) {\n    \
+    \    int k = rng() % 8 + 1;\n        std::vector<F> nums(k), dens(k);\n      \
+    \  for (int i = 0; i < k; i++) {\n            nums[i].resize(rng() % 4);\n   \
+    \         for (auto& x : nums[i]) x = rng() % 10;\n            dens[i].resize(rng()\
+    \ % 4 + 1);\n            for (auto& x : dens[i]) x = rng() % 10;\n           \
+    \ dens[i].back() = rng() % 9 + 1;\n        }\n        P expect_num = {}, expect_den\
+    \ = {1};\n        for (int i = 0; i < k; i++) {\n            P t = P(nums[i]);\n\
+    \            for (int j = 0; j < k; j++)\n                if (j != i) t = naive_mul(t,\
+    \ P(dens[j]));\n            if (expect_num.size() < t.size()) expect_num.resize(t.size());\n\
+    \            for (int a = 0; a < static_cast<int>(t.size()); a++) expect_num[a]\
+    \ += t[a];\n            expect_den = naive_mul(expect_den, P(dens[i]));\n    \
+    \    }\n        auto [num, den] = sum_of_fractions(nums, dens);\n        if (trim(P(num))\
+    \ != trim(expect_num) || trim(P(den)) != trim(expect_den)) ok = false, std::cerr\
+    \ << \"sum_of_fractions\" << std::endl;\n    }\n\n    if (ok) std::cout << \"\
+    Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/math/fps.hpp
   - src/math/combinatorics.hpp
@@ -1049,7 +1101,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/fps.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 00:25:30+09:00'
+  timestamp: '2026-10-22 14:37:49+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/fps.test.cpp

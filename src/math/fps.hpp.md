@@ -166,6 +166,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/polynomial/sqrt-of-formal-power-series.test.cpp
     title: test/yosupo/polynomial/sqrt-of-formal-power-series.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yukicoder/3770.test.cpp
+    title: test/yukicoder/3770.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yukicoder/3771.test.cpp
+    title: test/yukicoder/3771.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -922,7 +928,20 @@ data:
     \       pq.pop();\n        int b = pq.top();\n        pq.pop();\n        // \u7A7A\
     \u306E\u591A\u9805\u5F0F (0) \u3068\u306E\u7A4D\u306F 0\n        fs[a] = fs[a].empty()\
     \ || fs[b].empty() ? FPS<mint>() : fs[a] * fs[b];\n        FPS<mint>().swap(fs[b]);\n\
-    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n"
+    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n\n/**\n * @brief \u5206\
+    \u6570\u306E\u548C \u03A3_i nums[i] / dens[i] \u3092 1 \u3064\u306E\u5206\u6570\
+    \ num / den \u306B\u307E\u3068\u3081\u308B O(N log^2 N) (N \u306F\u591A\u9805\u5F0F\
+    \u306E\u9577\u3055\u306E\u548C)\n * \u534A\u5206\u305A\u3064\u306B\u5206\u3051\
+    \u3066 a / b + c / d = (ad + cb) / bd \u3068\u307E\u3068\u3081\u308B\u3002den\
+    \ \u306F dens \u306E\u7A4D\u3002\u7A7A\u306A\u3089 0 / 1\n * @return std::pair<FPS<mint>,\
+    \ FPS<mint>> {num, den}\n */\ntemplate <typename mint>\nstd::pair<FPS<mint>, FPS<mint>>\
+    \ sum_of_fractions(const std::vector<FPS<mint>>& nums, const std::vector<FPS<mint>>&\
+    \ dens) {\n    assert(nums.size() == dens.size());\n    if (nums.empty()) return\
+    \ {FPS<mint>(), FPS<mint>{1}};\n    auto rec = [&](auto&& self, long long l, long\
+    \ long r) -> std::pair<FPS<mint>, FPS<mint>> {\n        if (r - l == 1) return\
+    \ {nums[l], dens[l]};\n        long long m = (l + r) / 2;\n        auto [a, b]\
+    \ = self(self, l, m);\n        auto [c, d] = self(self, m, r);\n        return\
+    \ {a * d + c * b, b * d};\n    };\n    return rec(rec, 0, nums.size());\n}\n"
   code: "#pragma once\n\n/**\n * @file fps.hpp\n * @brief \u5F62\u5F0F\u7684\u51AA\
     \u7D1A\u6570\n */\n\n#include <algorithm>\n#include <cassert>\n#include <optional>\n\
     #include <queue>\n#include <utility>\n#include <vector>\n\n#include \"combinatorics.hpp\"\
@@ -1128,7 +1147,20 @@ data:
     \       pq.pop();\n        int b = pq.top();\n        pq.pop();\n        // \u7A7A\
     \u306E\u591A\u9805\u5F0F (0) \u3068\u306E\u7A4D\u306F 0\n        fs[a] = fs[a].empty()\
     \ || fs[b].empty() ? FPS<mint>() : fs[a] * fs[b];\n        FPS<mint>().swap(fs[b]);\n\
-    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n"
+    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n\n/**\n * @brief \u5206\
+    \u6570\u306E\u548C \u03A3_i nums[i] / dens[i] \u3092 1 \u3064\u306E\u5206\u6570\
+    \ num / den \u306B\u307E\u3068\u3081\u308B O(N log^2 N) (N \u306F\u591A\u9805\u5F0F\
+    \u306E\u9577\u3055\u306E\u548C)\n * \u534A\u5206\u305A\u3064\u306B\u5206\u3051\
+    \u3066 a / b + c / d = (ad + cb) / bd \u3068\u307E\u3068\u3081\u308B\u3002den\
+    \ \u306F dens \u306E\u7A4D\u3002\u7A7A\u306A\u3089 0 / 1\n * @return std::pair<FPS<mint>,\
+    \ FPS<mint>> {num, den}\n */\ntemplate <typename mint>\nstd::pair<FPS<mint>, FPS<mint>>\
+    \ sum_of_fractions(const std::vector<FPS<mint>>& nums, const std::vector<FPS<mint>>&\
+    \ dens) {\n    assert(nums.size() == dens.size());\n    if (nums.empty()) return\
+    \ {FPS<mint>(), FPS<mint>{1}};\n    auto rec = [&](auto&& self, long long l, long\
+    \ long r) -> std::pair<FPS<mint>, FPS<mint>> {\n        if (r - l == 1) return\
+    \ {nums[l], dens[l]};\n        long long m = (l + r) / 2;\n        auto [a, b]\
+    \ = self(self, l, m);\n        auto [c, d] = self(self, m, r);\n        return\
+    \ {a * d + c * b, b * d};\n    };\n    return rec(rec, 0, nums.size());\n}\n"
   dependsOn:
   - src/math/combinatorics.hpp
   - src/math/modular-arithmetic.hpp
@@ -1144,7 +1176,7 @@ data:
   - src/math/sparse-fps.hpp
   - src/math/fps-composition.hpp
   - src/dp/subset-sum-count.hpp
-  timestamp: '2026-10-22 00:25:30+09:00'
+  timestamp: '2026-10-22 14:37:49+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/math/sparse-fps.test.cpp
@@ -1155,6 +1187,8 @@ data:
   - test/unittest/math/fps-gcd.test.cpp
   - test/unittest/math/fps.test.cpp
   - test/unittest/dp/subset-sum.test.cpp
+  - test/yukicoder/3770.test.cpp
+  - test/yukicoder/3771.test.cpp
   - test/yosupo/polynomial/polynomial-root-finding.test.cpp
   - test/yosupo/polynomial/pow-of-fps.test.cpp
   - test/yosupo/polynomial/compositional-inverse-of-formal-power-series.test.cpp
@@ -1243,6 +1277,7 @@ mint y = f.eval(2);            // f(2)
 | `modinv(f, g)` | $fh \equiv 1 \pmod g$ で $\deg h < \deg g$ となる $h$ (`std::optional<FPS>`)。$\gcd(f, g)$ が定数でなければ `std::nullopt`。$g$ が定数なら $h = 0$ (空) | $g \neq 0$ | $O(n \log^2 n)$ |
 | `modpow(f, e, m)` | $f^e \bmod m$ (多項式の余り) | | $O(\lvert m \rvert \log \lvert m \rvert \log e)$ |
 | `polynomial_product(fs)` | 多項式の列 `fs` (`std::vector<FPS>`) の積。次数の小さいものから 2 つずつ掛ける。`fs` が空なら 1 | | $O(N \log^2 N)$ ($N$ は次数の和) |
+| `sum_of_fractions(nums, dens)` | 分数の和 $\sum_i \mathit{nums}_i / \mathit{dens}_i$ を 1 つの分数にまとめ、`std::pair` で {分子, 分母} を返す。分母は `dens` の積。半分ずつに分けて $a/b + c/d = (ad + cb)/bd$ とまとめる。空なら $0 / 1$ | | $O(N \log^2 N)$ ($N$ は長さの和) |
 
 `gcd`・`extgcd`・`modinv` は Half-GCD を使います。互除法 $(p, q) \to (q, p \bmod q)$ の変換を $2 \times 2$ の多項式行列で持ち、長さ $n$ の $p$ に対して、長さが $\lceil n / 2 \rceil$ 以下になるまでの行列を上位の半分の係数だけから再帰的に求めます。法は素数であることが必要です。整数の [`modinv`](modular-arithmetic.hpp) は互いに素でないと assert で止まりますが、多項式の `modinv` は `std::nullopt` を返します。
 

@@ -793,22 +793,36 @@ data:
     \       pq.pop();\n        int b = pq.top();\n        pq.pop();\n        // \u7A7A\
     \u306E\u591A\u9805\u5F0F (0) \u3068\u306E\u7A4D\u306F 0\n        fs[a] = fs[a].empty()\
     \ || fs[b].empty() ? FPS<mint>() : fs[a] * fs[b];\n        FPS<mint>().swap(fs[b]);\n\
-    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n#line 13 \"src/math/combinatorial-sequences.hpp\"\
-    \n\n/**\n * @brief \u5206\u5272\u6570 p(0), ..., p(n) (n \u3092\u6B63\u306E\u6574\
-    \u6570\u306E\u548C\u306B\u5206\u3051\u308B\u65B9\u6CD5\u306E\u6570\u3002\u548C\
-    \u306E\u9806\u756A\u306F\u533A\u5225\u3057\u306A\u3044) O(n log n)\n * \u6BCD\u95A2\
-    \u6570\u306F 1 / \u03A0_{k >= 1} (1 - x^k)\u3002\u5206\u6BCD\u306F\u4E94\u89D2\
-    \u6570\u5B9A\u7406\u3067 \u03A3_k (-1)^k x^{k(3k-1)/2} (k \u306F\u5168\u6574\u6570\
-    ) \u3068\u66F8\u3051\u308B\n */\ntemplate <typename mint>\nFPS<mint> partition_numbers(long\
-    \ long n) {\n    FPS<mint> f(n + 1, 0);\n    f[0] = 1;\n    for (long long k =\
-    \ 1;; k++) {\n        const long long a = k * (3 * k - 1) / 2, b = k * (3 * k\
-    \ + 1) / 2;\n        if (a > n) break;\n        const mint s = k % 2 == 1 ? mint(-1)\
-    \ : mint(1);\n        f[a] += s;\n        if (b <= n) f[b] += s;\n    }\n    return\
-    \ inv(f, n + 1);\n}\n\n/**\n * @brief \u30D9\u30EB\u30CC\u30FC\u30A4\u6570 B_0,\
-    \ ..., B_n (B_1 = -1/2 \u3068\u3059\u308B\u6D41\u5100) O(n log n)\n * \u6307\u6570\
-    \u578B\u6BCD\u95A2\u6570 x / (e^x - 1) \u3092\u3001(e^x - 1) / x = \u03A3 x^k\
-    \ / (k+1)! \u306E\u9006\u6570\u3068\u3057\u3066\u6C42\u3081\u308B\n */\ntemplate\
-    \ <typename mint>\nFPS<mint> bernoulli_numbers(long long n) {\n    using C = Combination<mint>;\n\
+    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n\n/**\n * @brief \u5206\
+    \u6570\u306E\u548C \u03A3_i nums[i] / dens[i] \u3092 1 \u3064\u306E\u5206\u6570\
+    \ num / den \u306B\u307E\u3068\u3081\u308B O(N log^2 N) (N \u306F\u591A\u9805\u5F0F\
+    \u306E\u9577\u3055\u306E\u548C)\n * \u534A\u5206\u305A\u3064\u306B\u5206\u3051\
+    \u3066 a / b + c / d = (ad + cb) / bd \u3068\u307E\u3068\u3081\u308B\u3002den\
+    \ \u306F dens \u306E\u7A4D\u3002\u7A7A\u306A\u3089 0 / 1\n * @return std::pair<FPS<mint>,\
+    \ FPS<mint>> {num, den}\n */\ntemplate <typename mint>\nstd::pair<FPS<mint>, FPS<mint>>\
+    \ sum_of_fractions(const std::vector<FPS<mint>>& nums, const std::vector<FPS<mint>>&\
+    \ dens) {\n    assert(nums.size() == dens.size());\n    if (nums.empty()) return\
+    \ {FPS<mint>(), FPS<mint>{1}};\n    auto rec = [&](auto&& self, long long l, long\
+    \ long r) -> std::pair<FPS<mint>, FPS<mint>> {\n        if (r - l == 1) return\
+    \ {nums[l], dens[l]};\n        long long m = (l + r) / 2;\n        auto [a, b]\
+    \ = self(self, l, m);\n        auto [c, d] = self(self, m, r);\n        return\
+    \ {a * d + c * b, b * d};\n    };\n    return rec(rec, 0, nums.size());\n}\n#line\
+    \ 13 \"src/math/combinatorial-sequences.hpp\"\n\n/**\n * @brief \u5206\u5272\u6570\
+    \ p(0), ..., p(n) (n \u3092\u6B63\u306E\u6574\u6570\u306E\u548C\u306B\u5206\u3051\
+    \u308B\u65B9\u6CD5\u306E\u6570\u3002\u548C\u306E\u9806\u756A\u306F\u533A\u5225\
+    \u3057\u306A\u3044) O(n log n)\n * \u6BCD\u95A2\u6570\u306F 1 / \u03A0_{k >= 1}\
+    \ (1 - x^k)\u3002\u5206\u6BCD\u306F\u4E94\u89D2\u6570\u5B9A\u7406\u3067 \u03A3\
+    _k (-1)^k x^{k(3k-1)/2} (k \u306F\u5168\u6574\u6570) \u3068\u66F8\u3051\u308B\n\
+    \ */\ntemplate <typename mint>\nFPS<mint> partition_numbers(long long n) {\n \
+    \   FPS<mint> f(n + 1, 0);\n    f[0] = 1;\n    for (long long k = 1;; k++) {\n\
+    \        const long long a = k * (3 * k - 1) / 2, b = k * (3 * k + 1) / 2;\n \
+    \       if (a > n) break;\n        const mint s = k % 2 == 1 ? mint(-1) : mint(1);\n\
+    \        f[a] += s;\n        if (b <= n) f[b] += s;\n    }\n    return inv(f,\
+    \ n + 1);\n}\n\n/**\n * @brief \u30D9\u30EB\u30CC\u30FC\u30A4\u6570 B_0, ...,\
+    \ B_n (B_1 = -1/2 \u3068\u3059\u308B\u6D41\u5100) O(n log n)\n * \u6307\u6570\u578B\
+    \u6BCD\u95A2\u6570 x / (e^x - 1) \u3092\u3001(e^x - 1) / x = \u03A3 x^k / (k+1)!\
+    \ \u306E\u9006\u6570\u3068\u3057\u3066\u6C42\u3081\u308B\n */\ntemplate <typename\
+    \ mint>\nFPS<mint> bernoulli_numbers(long long n) {\n    using C = Combination<mint>;\n\
     \    C::extend(n + 1);\n    FPS<mint> f(n + 1);\n    for (long long k = 0; k <=\
     \ n; k++) f[k] = C::inverse_factorial(k + 1);\n    FPS<mint> g = inv(f, n + 1);\n\
     \    for (long long k = 0; k <= n; k++) g[k] *= C::factorial(k);\n    return g;\n\
@@ -863,7 +877,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 00:25:30+09:00'
+  timestamp: '2026-10-22 14:37:49+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp

@@ -187,6 +187,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
     title: test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yukicoder/3770.test.cpp
+    title: test/yukicoder/3770.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yukicoder/3771.test.cpp
+    title: test/yukicoder/3771.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -775,6 +781,8 @@ data:
   - test/unittest/math/fps-gcd.test.cpp
   - test/unittest/math/fps.test.cpp
   - test/unittest/dp/subset-sum.test.cpp
+  - test/yukicoder/3770.test.cpp
+  - test/yukicoder/3771.test.cpp
   - test/yosupo/polynomial/polynomial-root-finding.test.cpp
   - test/yosupo/polynomial/pow-of-fps.test.cpp
   - test/yosupo/polynomial/compositional-inverse-of-formal-power-series.test.cpp

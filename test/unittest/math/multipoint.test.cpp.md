@@ -44,16 +44,18 @@ data:
     r \u304C 0\u30FB1\u30FB-1 \u306E\u5834\u5408\u3082\u8A66\u3059\n// sample_point_shift\
     \ \u306F\u3001c + k \u304C 0 \u4EE5\u4E0A n \u672A\u6E80\u306E\u6574\u6570\u3068\
     \u91CD\u306A\u308B\u5834\u5408\u3084\u3001\u6CD5\u3092\u56DE\u3063\u3066\u91CD\
-    \u306A\u308B\u5834\u5408\u3082\u8A66\u3059\n// \u554F\u984C\u306E\u5165\u529B\u306F\
-    \u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello\
-    \ World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/math/multipoint.hpp\"\n\
-    \n/**\n * @file multipoint.hpp\n * @brief \u591A\u70B9\u8A55\u4FA1\u30FB\u591A\
-    \u9805\u5F0F\u88DC\u9593\u30FB\u6A19\u672C\u70B9\u306E\u305A\u3089\u3057\n */\n\
-    \n#include <algorithm>\n#include <cassert>\n#include <vector>\n\n#line 2 \"src/math/combinatorics.hpp\"\
-    \n\n/**\n * @file combinatorics.hpp\n * @brief \u7D44\u307F\u5408\u308F\u305B\n\
-    \ */\n\n#line 9 \"src/math/combinatorics.hpp\"\n#include <numeric>\n#line 11 \"\
-    src/math/combinatorics.hpp\"\n\n#line 2 \"src/math/modular-arithmetic.hpp\"\n\n\
-    /**\n * @file modular-arithmetic.hpp\n * @brief mod \u6F14\u7B97 (\u7A4D\u3001\
+    \u306A\u308B\u5834\u5408\u3082\u8A66\u3059\n// weighted_power_sums \u3092\u3001\
+    \u03A3_i w_i x_i^k \u3092\u76F4\u63A5\u8A08\u7B97\u3057\u305F\u3082\u306E\u3068\
+    \u6BD4\u3079\u308B (\u70B9\u306E\u91CD\u306A\u308A\u3084 0 \u3082\u542B\u3080\
+    )\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\
+    \u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\
+    \n\n#line 2 \"src/math/multipoint.hpp\"\n\n/**\n * @file multipoint.hpp\n * @brief\
+    \ \u591A\u70B9\u8A55\u4FA1\u30FB\u591A\u9805\u5F0F\u88DC\u9593\u30FB\u6A19\u672C\
+    \u70B9\u306E\u305A\u3089\u3057\n */\n\n#include <algorithm>\n#include <cassert>\n\
+    #include <vector>\n\n#line 2 \"src/math/combinatorics.hpp\"\n\n/**\n * @file combinatorics.hpp\n\
+    \ * @brief \u7D44\u307F\u5408\u308F\u305B\n */\n\n#line 9 \"src/math/combinatorics.hpp\"\
+    \n#include <numeric>\n#line 11 \"src/math/combinatorics.hpp\"\n\n#line 2 \"src/math/modular-arithmetic.hpp\"\
+    \n\n/**\n * @file modular-arithmetic.hpp\n * @brief mod \u6F14\u7B97 (\u7A4D\u3001\
     \u51AA\u4E57\u3001\u9006\u5143\u3001\u96E2\u6563\u5BFE\u6570\u3001\u5E73\u65B9\
     \u6839)\n */\n\n#line 10 \"src/math/modular-arithmetic.hpp\"\n#include <cmath>\n\
     #line 12 \"src/math/modular-arithmetic.hpp\"\n#include <unordered_map>\n\n/**\n\
@@ -801,40 +803,54 @@ data:
     \       pq.pop();\n        int b = pq.top();\n        pq.pop();\n        // \u7A7A\
     \u306E\u591A\u9805\u5F0F (0) \u3068\u306E\u7A4D\u306F 0\n        fs[a] = fs[a].empty()\
     \ || fs[b].empty() ? FPS<mint>() : fs[a] * fs[b];\n        FPS<mint>().swap(fs[b]);\n\
-    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n#line 15 \"src/math/multipoint.hpp\"\
-    \n\nnamespace internal_multipoint {\n// \u70B9 xs \u306E subproduct tree: tree[k]\
-    \ \u306F\u9802\u70B9 k \u304C\u53D7\u3051\u6301\u3064\u70B9 x_i \u306B\u3064\u3044\
-    \u3066 \u03A0 (x - x_i)\u3002\u8449\u306F sz + i\ntemplate <typename mint>\nstruct\
-    \ SubproductTree {\n    long long n, sz;\n    std::vector<FPS<mint>> tree;\n \
-    \   explicit SubproductTree(const std::vector<mint>& xs) : n(xs.size()), sz(1)\
-    \ {\n        while (sz < n) sz <<= 1;\n        tree.assign(2 * sz, FPS<mint>{1});\n\
-    \        for (long long i = 0; i < n; i++) tree[sz + i] = FPS<mint>{-xs[i], 1};\n\
-    \        for (long long k = sz - 1; k >= 1; k--) tree[k] = tree[2 * k] * tree[2\
-    \ * k + 1];\n    }\n};\n}  // namespace internal_multipoint\n\n/**\n * @brief\
-    \ \u591A\u9805\u5F0F f \u306E\u3001\u70B9 xs \u3067\u306E\u5024 f(x_0), ..., f(x_{m-1})\
-    \ O((n + m) log^2 (n + m))\n * subproduct tree \u306E\u6839\u304B\u3089\u3001\u5404\
-    \u9802\u70B9\u306E\u591A\u9805\u5F0F\u3067\u5272\u3063\u305F\u4F59\u308A\u3092\
-    \u4E0B\u308D\u3057\u3066\u3044\u304F\u3002\u4F59\u308A\u304C\u77ED\u304F\u306A\
-    \u3063\u305F\u3089\u76F4\u63A5\u8A08\u7B97\u3059\u308B\n */\ntemplate <typename\
-    \ mint>\nstd::vector<mint> multipoint_evaluation(const FPS<mint>& f, const std::vector<mint>&\
-    \ xs) {\n    const long long m = xs.size();\n    if (m == 0) return {};\n    internal_multipoint::SubproductTree<mint>\
-    \ t(xs);\n    std::vector<mint> res(m);\n    // \u9802\u70B9 k \u306B f \u306E\
-    \u4F59\u308A g \u304C\u5C4A\u3044\u305F\u3068\u304D\u3001\u53D7\u3051\u6301\u3064\
-    \u70B9\u306E\u5024\u3092\u6C42\u3081\u308B\n    auto rec = [&](auto&& self, long\
-    \ long k, long long l, long long r, FPS<mint> g) -> void {\n        if (l >= m)\
-    \ return;\n        // \u6B21\u6570\u304C\u5C0F\u3055\u3051\u308C\u3070 Horner\
-    \ \u6CD5\u3067\u76F4\u63A5\u6C42\u3081\u308B\n        if (r - l <= 32) {\n   \
-    \         for (long long i = l; i < std::min(r, m); i++) res[i] = g.eval(xs[i]);\n\
-    \            return;\n        }\n        const long long mid = (l + r) / 2;\n\
-    \        self(self, 2 * k, l, mid, g % t.tree[2 * k]);\n        self(self, 2 *\
-    \ k + 1, mid, r, g % t.tree[2 * k + 1]);\n    };\n    FPS<mint> g = f;\n    g.normalize();\n\
-    \    rec(rec, 1, 0, t.sz, g % t.tree[1]);\n    return res;\n}\n\n/**\n * @brief\
-    \ \u70B9 (x_i, y_i) (x_i \u306F\u4E92\u3044\u306B\u7570\u306A\u308B) \u3092\u3059\
-    \u3079\u3066\u901A\u308B n - 1 \u6B21\u4EE5\u4E0B\u306E\u591A\u9805\u5F0F (\u9577\
-    \u3055 n) O(n log^2 n)\n * g = \u03A0 (x - x_i) \u3068\u3059\u308B\u3068 f = \u03A3\
-    \ y_i / g'(x_i) \u03A0_{j != i} (x - x_j)\u3002g'(x_i) \u3092\u591A\u70B9\u8A55\
-    \u4FA1\u3057\u3001\u548C\u3092 subproduct tree \u306E\u4E0B\u304B\u3089\u7D44\u307F\
-    \u7ACB\u3066\u308B\n */\ntemplate <typename mint>\nFPS<mint> polynomial_interpolation(const\
+    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n\n/**\n * @brief \u5206\
+    \u6570\u306E\u548C \u03A3_i nums[i] / dens[i] \u3092 1 \u3064\u306E\u5206\u6570\
+    \ num / den \u306B\u307E\u3068\u3081\u308B O(N log^2 N) (N \u306F\u591A\u9805\u5F0F\
+    \u306E\u9577\u3055\u306E\u548C)\n * \u534A\u5206\u305A\u3064\u306B\u5206\u3051\
+    \u3066 a / b + c / d = (ad + cb) / bd \u3068\u307E\u3068\u3081\u308B\u3002den\
+    \ \u306F dens \u306E\u7A4D\u3002\u7A7A\u306A\u3089 0 / 1\n * @return std::pair<FPS<mint>,\
+    \ FPS<mint>> {num, den}\n */\ntemplate <typename mint>\nstd::pair<FPS<mint>, FPS<mint>>\
+    \ sum_of_fractions(const std::vector<FPS<mint>>& nums, const std::vector<FPS<mint>>&\
+    \ dens) {\n    assert(nums.size() == dens.size());\n    if (nums.empty()) return\
+    \ {FPS<mint>(), FPS<mint>{1}};\n    auto rec = [&](auto&& self, long long l, long\
+    \ long r) -> std::pair<FPS<mint>, FPS<mint>> {\n        if (r - l == 1) return\
+    \ {nums[l], dens[l]};\n        long long m = (l + r) / 2;\n        auto [a, b]\
+    \ = self(self, l, m);\n        auto [c, d] = self(self, m, r);\n        return\
+    \ {a * d + c * b, b * d};\n    };\n    return rec(rec, 0, nums.size());\n}\n#line\
+    \ 15 \"src/math/multipoint.hpp\"\n\nnamespace internal_multipoint {\n// \u70B9\
+    \ xs \u306E subproduct tree: tree[k] \u306F\u9802\u70B9 k \u304C\u53D7\u3051\u6301\
+    \u3064\u70B9 x_i \u306B\u3064\u3044\u3066 \u03A0 (x - x_i)\u3002\u8449\u306F sz\
+    \ + i\ntemplate <typename mint>\nstruct SubproductTree {\n    long long n, sz;\n\
+    \    std::vector<FPS<mint>> tree;\n    explicit SubproductTree(const std::vector<mint>&\
+    \ xs) : n(xs.size()), sz(1) {\n        while (sz < n) sz <<= 1;\n        tree.assign(2\
+    \ * sz, FPS<mint>{1});\n        for (long long i = 0; i < n; i++) tree[sz + i]\
+    \ = FPS<mint>{-xs[i], 1};\n        for (long long k = sz - 1; k >= 1; k--) tree[k]\
+    \ = tree[2 * k] * tree[2 * k + 1];\n    }\n};\n}  // namespace internal_multipoint\n\
+    \n/**\n * @brief \u591A\u9805\u5F0F f \u306E\u3001\u70B9 xs \u3067\u306E\u5024\
+    \ f(x_0), ..., f(x_{m-1}) O((n + m) log^2 (n + m))\n * subproduct tree \u306E\u6839\
+    \u304B\u3089\u3001\u5404\u9802\u70B9\u306E\u591A\u9805\u5F0F\u3067\u5272\u3063\
+    \u305F\u4F59\u308A\u3092\u4E0B\u308D\u3057\u3066\u3044\u304F\u3002\u4F59\u308A\
+    \u304C\u77ED\u304F\u306A\u3063\u305F\u3089\u76F4\u63A5\u8A08\u7B97\u3059\u308B\
+    \n */\ntemplate <typename mint>\nstd::vector<mint> multipoint_evaluation(const\
+    \ FPS<mint>& f, const std::vector<mint>& xs) {\n    const long long m = xs.size();\n\
+    \    if (m == 0) return {};\n    internal_multipoint::SubproductTree<mint> t(xs);\n\
+    \    std::vector<mint> res(m);\n    // \u9802\u70B9 k \u306B f \u306E\u4F59\u308A\
+    \ g \u304C\u5C4A\u3044\u305F\u3068\u304D\u3001\u53D7\u3051\u6301\u3064\u70B9\u306E\
+    \u5024\u3092\u6C42\u3081\u308B\n    auto rec = [&](auto&& self, long long k, long\
+    \ long l, long long r, FPS<mint> g) -> void {\n        if (l >= m) return;\n \
+    \       // \u6B21\u6570\u304C\u5C0F\u3055\u3051\u308C\u3070 Horner \u6CD5\u3067\
+    \u76F4\u63A5\u6C42\u3081\u308B\n        if (r - l <= 32) {\n            for (long\
+    \ long i = l; i < std::min(r, m); i++) res[i] = g.eval(xs[i]);\n            return;\n\
+    \        }\n        const long long mid = (l + r) / 2;\n        self(self, 2 *\
+    \ k, l, mid, g % t.tree[2 * k]);\n        self(self, 2 * k + 1, mid, r, g % t.tree[2\
+    \ * k + 1]);\n    };\n    FPS<mint> g = f;\n    g.normalize();\n    rec(rec, 1,\
+    \ 0, t.sz, g % t.tree[1]);\n    return res;\n}\n\n/**\n * @brief \u70B9 (x_i,\
+    \ y_i) (x_i \u306F\u4E92\u3044\u306B\u7570\u306A\u308B) \u3092\u3059\u3079\u3066\
+    \u901A\u308B n - 1 \u6B21\u4EE5\u4E0B\u306E\u591A\u9805\u5F0F (\u9577\u3055 n)\
+    \ O(n log^2 n)\n * g = \u03A0 (x - x_i) \u3068\u3059\u308B\u3068 f = \u03A3 y_i\
+    \ / g'(x_i) \u03A0_{j != i} (x - x_j)\u3002g'(x_i) \u3092\u591A\u70B9\u8A55\u4FA1\
+    \u3057\u3001\u548C\u3092 subproduct tree \u306E\u4E0B\u304B\u3089\u7D44\u307F\u7ACB\
+    \u3066\u308B\n */\ntemplate <typename mint>\nFPS<mint> polynomial_interpolation(const\
     \ std::vector<mint>& xs, const std::vector<mint>& ys) {\n    assert(xs.size()\
     \ == ys.size());\n    const long long n = xs.size();\n    if (n == 0) return FPS<mint>();\n\
     \    internal_multipoint::SubproductTree<mint> t(xs);\n    std::vector<mint> d\
@@ -945,9 +961,22 @@ data:
     \ ir, ir, n);\n    const mint ia = a.inv();\n    mint c = ia;\n    FPS<mint> S(n);\n\
     \    for (long long k = 0; k < n; k++) S[k] = -c * s[k], c *= ia;\n    FPS<mint>\
     \ f = (internal_multipoint::geometric_product(a, r, n) * S).pre(n);\n    f.resize(n);\n\
-    \    return f;\n}\n#line 9 \"test/unittest/math/multipoint.test.cpp\"\n\n#line\
-    \ 12 \"test/unittest/math/multipoint.test.cpp\"\n#include <random>\n#line 14 \"\
-    test/unittest/math/multipoint.test.cpp\"\n\n#line 17 \"test/unittest/math/multipoint.test.cpp\"\
+    \    return f;\n}\n\n/**\n * @brief \u91CD\u307F\u4ED8\u304D\u306E\u7D2F\u4E57\
+    \u548C s_k = \u03A3_i w_i x_i^k (0 <= k < n) O(m log^2 m + n log n) (m \u306F\u70B9\
+    \u306E\u500B\u6570)\n * \u03A3_k s_k t^k = \u03A3_i w_i / (1 - x_i t) \u306A\u306E\
+    \u3067\u3001\u5206\u6570\u306E\u548C\u3092 1 \u3064\u306E\u5206\u6570\u306B\u307E\
+    \u3068\u3081\u3001\u5206\u6BCD\u306E\u9006\u5143\u3092\u639B\u3051\u308B\n * (\u591A\
+    \u70B9\u8A55\u4FA1\u306E\u8EE2\u7F6E\u306B\u3042\u305F\u308B\u3002\u70B9\u306F\
+    \u91CD\u306A\u3063\u3066\u3082\u3088\u3044)\n */\ntemplate <typename mint>\nstd::vector<mint>\
+    \ weighted_power_sums(const std::vector<mint>& xs, const std::vector<mint>& ws,\
+    \ long long n) {\n    assert(xs.size() == ws.size());\n    std::vector<mint> res(n);\n\
+    \    if (n == 0 || xs.empty()) return res;\n    std::vector<FPS<mint>> nums(xs.size()),\
+    \ dens(xs.size());\n    for (long long i = 0; i < static_cast<long long>(xs.size());\
+    \ i++) nums[i] = {ws[i]}, dens[i] = {1, -xs[i]};\n    auto [num, den] = sum_of_fractions(nums,\
+    \ dens);\n    FPS<mint> s = (num * inv(den, n)).pre(n);\n    std::copy(s.begin(),\
+    \ s.end(), res.begin());\n    return res;\n}\n#line 10 \"test/unittest/math/multipoint.test.cpp\"\
+    \n\n#line 13 \"test/unittest/math/multipoint.test.cpp\"\n#include <random>\n#line\
+    \ 15 \"test/unittest/math/multipoint.test.cpp\"\n\n#line 18 \"test/unittest/math/multipoint.test.cpp\"\
     \n\nusing mint = static_modint<998244353>;\nusing F = FPS<mint>;\n\nbool ok =\
     \ true;\nvoid check(bool cond, const char* what) {\n    if (!cond && ok) std::cerr\
     \ << \"failed: \" << what << std::endl;\n    if (!cond) ok = false;\n}\n\nmint\
@@ -1004,8 +1033,16 @@ data:
     \                          : gen();\n        auto res = sample_point_shift(ys,\
     \ c, m);\n        check(static_cast<int>(res.size()) == m, \"sample_point_shift\
     \ \u306E\u9577\u3055\");\n        for (int k = 0; k < m; k++) check(res[k] ==\
-    \ eval(f, c + mint(k)), \"sample_point_shift\");\n    }\n    if (ok) std::cout\
-    \ << \"Hello World\" << std::endl;\n}\n"
+    \ eval(f, c + mint(k)), \"sample_point_shift\");\n    }\n    // weighted_power_sums\n\
+    \    for (int rep = 0; rep < 300 && ok; rep++) {\n        int m = rng() % 15,\
+    \ n = rng() % 20;\n        std::vector<mint> xs(m), ws(m);\n        for (int i\
+    \ = 0; i < m; i++) xs[i] = rng() % 3 == 0 ? mint(rng() % 3) : gen(), ws[i] = gen();\n\
+    \        auto res = weighted_power_sums(xs, ws, n);\n        check(static_cast<int>(res.size())\
+    \ == n, \"weighted_power_sums \u306E\u9577\u3055\");\n        for (int k = 0;\
+    \ k < n; k++) {\n            mint s = 0;\n            for (int i = 0; i < m; i++)\
+    \ s += ws[i] * xs[i].pow(k);\n            check(res[k] == s, \"weighted_power_sums\"\
+    );\n        }\n    }\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
+    }\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// multipoint_evaluation\u30FBpolynomial_interpolation\u30FBsample_point_shift\
     \ \u3092\u30011 \u70B9\u305A\u3064\u76F4\u63A5\u8A08\u7B97\u3057\u305F\u3082\u306E\
@@ -1013,24 +1050,27 @@ data:
     r \u304C 0\u30FB1\u30FB-1 \u306E\u5834\u5408\u3082\u8A66\u3059\n// sample_point_shift\
     \ \u306F\u3001c + k \u304C 0 \u4EE5\u4E0A n \u672A\u6E80\u306E\u6574\u6570\u3068\
     \u91CD\u306A\u308B\u5834\u5408\u3084\u3001\u6CD5\u3092\u56DE\u3063\u3066\u91CD\
-    \u306A\u308B\u5834\u5408\u3082\u8A66\u3059\n// \u554F\u984C\u306E\u5165\u529B\u306F\
-    \u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello\
-    \ World \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../../src/math/multipoint.hpp\"\
-    \n\n#include <algorithm>\n#include <iostream>\n#include <random>\n#include <vector>\n\
-    \n#include \"../../../src/math/fps.hpp\"\n#include \"../../../src/math/modint.hpp\"\
-    \n\nusing mint = static_modint<998244353>;\nusing F = FPS<mint>;\n\nbool ok =\
-    \ true;\nvoid check(bool cond, const char* what) {\n    if (!cond && ok) std::cerr\
-    \ << \"failed: \" << what << std::endl;\n    if (!cond) ok = false;\n}\n\nmint\
-    \ eval(const F& f, mint x) {\n    mint r = 0;\n    for (int i = static_cast<int>(f.size())\
-    \ - 1; i >= 0; i--) r = r * x + f[i];\n    return r;\n}\n\nint main() {\n    std::mt19937_64\
-    \ rng(314);\n    auto gen = [&] { return mint(rng() % mint::mod()); };\n    //\
-    \ multipoint_evaluation: \u70B9\u304C\u91CD\u306A\u3063\u3066\u3082\u3001f \u304C\
-    \ 0 \u3067\u3082\u3088\u3044\u300232 \u70B9\u3092\u8D85\u3048\u308B\u5927\u304D\
-    \u3055\u3082\u8A66\u3059\n    for (int rep = 0; rep < 300 && ok; rep++) {\n  \
-    \      int n = rng() % (rep < 200 ? 10 : 200), m = rng() % (rep < 200 ? 10 : 200);\n\
-    \        F f(n);\n        for (auto& x : f) x = gen();\n        std::vector<mint>\
-    \ xs(m);\n        for (auto& x : xs) x = rng() % 3 == 0 ? mint(rng() % 5) : gen();\n\
-    \        auto res = multipoint_evaluation(f, xs);\n        check(static_cast<int>(res.size())\
+    \u306A\u308B\u5834\u5408\u3082\u8A66\u3059\n// weighted_power_sums \u3092\u3001\
+    \u03A3_i w_i x_i^k \u3092\u76F4\u63A5\u8A08\u7B97\u3057\u305F\u3082\u306E\u3068\
+    \u6BD4\u3079\u308B (\u70B9\u306E\u91CD\u306A\u308A\u3084 0 \u3082\u542B\u3080\
+    )\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\
+    \u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\
+    \n\n#include \"../../../src/math/multipoint.hpp\"\n\n#include <algorithm>\n#include\
+    \ <iostream>\n#include <random>\n#include <vector>\n\n#include \"../../../src/math/fps.hpp\"\
+    \n#include \"../../../src/math/modint.hpp\"\n\nusing mint = static_modint<998244353>;\n\
+    using F = FPS<mint>;\n\nbool ok = true;\nvoid check(bool cond, const char* what)\
+    \ {\n    if (!cond && ok) std::cerr << \"failed: \" << what << std::endl;\n  \
+    \  if (!cond) ok = false;\n}\n\nmint eval(const F& f, mint x) {\n    mint r =\
+    \ 0;\n    for (int i = static_cast<int>(f.size()) - 1; i >= 0; i--) r = r * x\
+    \ + f[i];\n    return r;\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n \
+    \   auto gen = [&] { return mint(rng() % mint::mod()); };\n    // multipoint_evaluation:\
+    \ \u70B9\u304C\u91CD\u306A\u3063\u3066\u3082\u3001f \u304C 0 \u3067\u3082\u3088\
+    \u3044\u300232 \u70B9\u3092\u8D85\u3048\u308B\u5927\u304D\u3055\u3082\u8A66\u3059\
+    \n    for (int rep = 0; rep < 300 && ok; rep++) {\n        int n = rng() % (rep\
+    \ < 200 ? 10 : 200), m = rng() % (rep < 200 ? 10 : 200);\n        F f(n);\n  \
+    \      for (auto& x : f) x = gen();\n        std::vector<mint> xs(m);\n      \
+    \  for (auto& x : xs) x = rng() % 3 == 0 ? mint(rng() % 5) : gen();\n        auto\
+    \ res = multipoint_evaluation(f, xs);\n        check(static_cast<int>(res.size())\
     \ == m, \"multipoint_evaluation \u306E\u9577\u3055\");\n        for (int i = 0;\
     \ i < m; i++) check(res[i] == eval(f, xs[i]), \"multipoint_evaluation\");\n  \
     \  }\n    // polynomial_interpolation: \u6C42\u3081\u305F\u591A\u9805\u5F0F\u306F\
@@ -1074,8 +1114,16 @@ data:
     \                          : gen();\n        auto res = sample_point_shift(ys,\
     \ c, m);\n        check(static_cast<int>(res.size()) == m, \"sample_point_shift\
     \ \u306E\u9577\u3055\");\n        for (int k = 0; k < m; k++) check(res[k] ==\
-    \ eval(f, c + mint(k)), \"sample_point_shift\");\n    }\n    if (ok) std::cout\
-    \ << \"Hello World\" << std::endl;\n}\n"
+    \ eval(f, c + mint(k)), \"sample_point_shift\");\n    }\n    // weighted_power_sums\n\
+    \    for (int rep = 0; rep < 300 && ok; rep++) {\n        int m = rng() % 15,\
+    \ n = rng() % 20;\n        std::vector<mint> xs(m), ws(m);\n        for (int i\
+    \ = 0; i < m; i++) xs[i] = rng() % 3 == 0 ? mint(rng() % 3) : gen(), ws[i] = gen();\n\
+    \        auto res = weighted_power_sums(xs, ws, n);\n        check(static_cast<int>(res.size())\
+    \ == n, \"weighted_power_sums \u306E\u9577\u3055\");\n        for (int k = 0;\
+    \ k < n; k++) {\n            mint s = 0;\n            for (int i = 0; i < m; i++)\
+    \ s += ws[i] * xs[i].pow(k);\n            check(res[k] == s, \"weighted_power_sums\"\
+    );\n        }\n    }\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
+    }\n"
   dependsOn:
   - src/math/multipoint.hpp
   - src/math/combinatorics.hpp
@@ -1087,7 +1135,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/multipoint.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 00:31:13+09:00'
+  timestamp: '2026-10-22 14:37:49+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/multipoint.test.cpp

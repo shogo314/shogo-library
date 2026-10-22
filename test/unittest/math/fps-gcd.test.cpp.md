@@ -796,38 +796,52 @@ data:
     \       pq.pop();\n        int b = pq.top();\n        pq.pop();\n        // \u7A7A\
     \u306E\u591A\u9805\u5F0F (0) \u3068\u306E\u7A4D\u306F 0\n        fs[a] = fs[a].empty()\
     \ || fs[b].empty() ? FPS<mint>() : fs[a] * fs[b];\n        FPS<mint>().swap(fs[b]);\n\
-    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n#line 13 \"test/unittest/math/fps-gcd.test.cpp\"\
-    \n\nbool ok = true;\nvoid check(bool cond, const char* what) {\n    if (!cond\
-    \ && ok) std::cerr << \"failed: \" << what << std::endl;\n    if (!cond) ok =\
-    \ false;\n}\n\ntemplate <typename mint>\nFPS<mint> monic(FPS<mint> f) {\n    f.normalize();\n\
-    \    if (!f.empty()) f /= f.back();\n    return f;\n}\n\ntemplate <typename mint>\n\
-    FPS<mint> naive_gcd(FPS<mint> f, FPS<mint> g) {\n    f.normalize(), g.normalize();\n\
-    \    while (!g.empty()) {\n        FPS<mint> r = f % g;\n        r.normalize();\n\
-    \        f = g, g = r;\n    }\n    return monic(f);\n}\n\ntemplate <typename mint>\n\
-    void test(std::mt19937_64& rng) {\n    using F = FPS<mint>;\n    auto gen = [&]\
-    \ { return mint(rng() % mint::mod()); };\n    auto random_poly = [&](int n) {\n\
-    \        F f(n);\n        for (auto& x : f) x = rng() % 5 == 0 ? mint(0) : gen();\n\
-    \        return f.normalize();\n    };\n    for (int rep = 0; rep < 400 && ok;\
-    \ rep++) {\n        const int lim = rep < 300 ? 8 : 300;\n        F f = random_poly(rng()\
-    \ % lim), g = random_poly(rng() % lim);\n        if (rng() % 2) {\n          \
-    \  // \u5171\u901A\u56E0\u5B50\u3092\u639B\u3051\u308B\n            F c = random_poly(1\
-    \ + rng() % (rep < 300 ? 4 : 100));\n            f = (f * c).normalize(), g =\
-    \ (g * c).normalize();\n        }\n        F a, b;\n        F d = extgcd(f, g,\
-    \ a, b);\n        check(F(a * f + b * g).normalize() == d, \"extgcd: a f + b g\
-    \ = d\");\n        check(d == naive_gcd(f, g), \"extgcd: d \u3068\u7D20\u6734\u306A\
-    \ gcd\");\n        check(gcd(f, g) == d && gcd(g, f) == d, \"gcd\");\n       \
-    \ if (!d.empty()) {\n            check(d.back() == 1, \"extgcd: d \u306E\u6700\
-    \u9AD8\u6B21\u306E\u4FC2\u6570\");\n            check(F(f % d).normalize().empty()\
-    \ && F(g % d).normalize().empty(), \"extgcd: d \u304C f \u3068 g \u3092\u5272\u308A\
-    \u5207\u308B\");\n        }\n        if (g.empty()) continue;\n        auto h\
-    \ = modinv(f, g);\n        bool exists = g.size() == 1 || d.size() == 1;\n   \
-    \     check(h.has_value() == exists, \"modinv: \u5B58\u5728\u306E\u5224\u5B9A\"\
-    );\n        if (h && g.size() > 1) {\n            check(h->size() < g.size(),\
-    \ \"modinv: \u6B21\u6570\");\n            check(F(*h * f % g).normalize() == F{1},\
-    \ \"modinv: f h \u2261 1\");\n        }\n        if (h && g.size() == 1) check(h->empty(),\
-    \ \"modinv: g \u304C\u5B9A\u6570\");\n    }\n}\n\nint main() {\n    std::mt19937_64\
-    \ rng(314);\n    test<modint998244353>(rng);\n    test<modint1000000007>(rng);\n\
-    \    if (!ok) return 1;\n    std::cout << \"Hello World\" << std::endl;\n}\n"
+    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n\n/**\n * @brief \u5206\
+    \u6570\u306E\u548C \u03A3_i nums[i] / dens[i] \u3092 1 \u3064\u306E\u5206\u6570\
+    \ num / den \u306B\u307E\u3068\u3081\u308B O(N log^2 N) (N \u306F\u591A\u9805\u5F0F\
+    \u306E\u9577\u3055\u306E\u548C)\n * \u534A\u5206\u305A\u3064\u306B\u5206\u3051\
+    \u3066 a / b + c / d = (ad + cb) / bd \u3068\u307E\u3068\u3081\u308B\u3002den\
+    \ \u306F dens \u306E\u7A4D\u3002\u7A7A\u306A\u3089 0 / 1\n * @return std::pair<FPS<mint>,\
+    \ FPS<mint>> {num, den}\n */\ntemplate <typename mint>\nstd::pair<FPS<mint>, FPS<mint>>\
+    \ sum_of_fractions(const std::vector<FPS<mint>>& nums, const std::vector<FPS<mint>>&\
+    \ dens) {\n    assert(nums.size() == dens.size());\n    if (nums.empty()) return\
+    \ {FPS<mint>(), FPS<mint>{1}};\n    auto rec = [&](auto&& self, long long l, long\
+    \ long r) -> std::pair<FPS<mint>, FPS<mint>> {\n        if (r - l == 1) return\
+    \ {nums[l], dens[l]};\n        long long m = (l + r) / 2;\n        auto [a, b]\
+    \ = self(self, l, m);\n        auto [c, d] = self(self, m, r);\n        return\
+    \ {a * d + c * b, b * d};\n    };\n    return rec(rec, 0, nums.size());\n}\n#line\
+    \ 13 \"test/unittest/math/fps-gcd.test.cpp\"\n\nbool ok = true;\nvoid check(bool\
+    \ cond, const char* what) {\n    if (!cond && ok) std::cerr << \"failed: \" <<\
+    \ what << std::endl;\n    if (!cond) ok = false;\n}\n\ntemplate <typename mint>\n\
+    FPS<mint> monic(FPS<mint> f) {\n    f.normalize();\n    if (!f.empty()) f /= f.back();\n\
+    \    return f;\n}\n\ntemplate <typename mint>\nFPS<mint> naive_gcd(FPS<mint> f,\
+    \ FPS<mint> g) {\n    f.normalize(), g.normalize();\n    while (!g.empty()) {\n\
+    \        FPS<mint> r = f % g;\n        r.normalize();\n        f = g, g = r;\n\
+    \    }\n    return monic(f);\n}\n\ntemplate <typename mint>\nvoid test(std::mt19937_64&\
+    \ rng) {\n    using F = FPS<mint>;\n    auto gen = [&] { return mint(rng() % mint::mod());\
+    \ };\n    auto random_poly = [&](int n) {\n        F f(n);\n        for (auto&\
+    \ x : f) x = rng() % 5 == 0 ? mint(0) : gen();\n        return f.normalize();\n\
+    \    };\n    for (int rep = 0; rep < 400 && ok; rep++) {\n        const int lim\
+    \ = rep < 300 ? 8 : 300;\n        F f = random_poly(rng() % lim), g = random_poly(rng()\
+    \ % lim);\n        if (rng() % 2) {\n            // \u5171\u901A\u56E0\u5B50\u3092\
+    \u639B\u3051\u308B\n            F c = random_poly(1 + rng() % (rep < 300 ? 4 :\
+    \ 100));\n            f = (f * c).normalize(), g = (g * c).normalize();\n    \
+    \    }\n        F a, b;\n        F d = extgcd(f, g, a, b);\n        check(F(a\
+    \ * f + b * g).normalize() == d, \"extgcd: a f + b g = d\");\n        check(d\
+    \ == naive_gcd(f, g), \"extgcd: d \u3068\u7D20\u6734\u306A gcd\");\n        check(gcd(f,\
+    \ g) == d && gcd(g, f) == d, \"gcd\");\n        if (!d.empty()) {\n          \
+    \  check(d.back() == 1, \"extgcd: d \u306E\u6700\u9AD8\u6B21\u306E\u4FC2\u6570\
+    \");\n            check(F(f % d).normalize().empty() && F(g % d).normalize().empty(),\
+    \ \"extgcd: d \u304C f \u3068 g \u3092\u5272\u308A\u5207\u308B\");\n        }\n\
+    \        if (g.empty()) continue;\n        auto h = modinv(f, g);\n        bool\
+    \ exists = g.size() == 1 || d.size() == 1;\n        check(h.has_value() == exists,\
+    \ \"modinv: \u5B58\u5728\u306E\u5224\u5B9A\");\n        if (h && g.size() > 1)\
+    \ {\n            check(h->size() < g.size(), \"modinv: \u6B21\u6570\");\n    \
+    \        check(F(*h * f % g).normalize() == F{1}, \"modinv: f h \u2261 1\");\n\
+    \        }\n        if (h && g.size() == 1) check(h->empty(), \"modinv: g \u304C\
+    \u5B9A\u6570\");\n    }\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n  \
+    \  test<modint998244353>(rng);\n    test<modint1000000007>(rng);\n    if (!ok)\
+    \ return 1;\n    std::cout << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// gcd\u30FBextgcd (Half-GCD) \u3092\u78BA\u304B\u3081\u308B\u3002gcd \u306F\
     \u6700\u9AD8\u6B21\u306E\u4FC2\u6570\u304C 1 \u3067\u3001\u7D20\u6734\u306A\u4E92\
@@ -883,7 +897,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/fps-gcd.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 00:25:30+09:00'
+  timestamp: '2026-10-22 14:37:49+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/fps-gcd.test.cpp

@@ -205,6 +205,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/117.test.cpp
     title: test/yukicoder/117.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yukicoder/3770.test.cpp
+    title: test/yukicoder/3770.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yukicoder/3771.test.cpp
+    title: test/yukicoder/3771.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -498,6 +504,8 @@ data:
   - test/unittest/math/fps.test.cpp
   - test/unittest/dp/subset-sum.test.cpp
   - test/yukicoder/117.test.cpp
+  - test/yukicoder/3770.test.cpp
+  - test/yukicoder/3771.test.cpp
   - test/aoj/dpl/dpl-5-b.1.test.cpp
   - test/aoj/dpl/dpl-5-f.test.cpp
   - test/aoj/dpl/dpl-5-d.1.test.cpp

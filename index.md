@@ -1773,6 +1773,12 @@ data:
       path: test/yukicoder/3652.test.cpp
       title: test/yukicoder/3652.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yukicoder/3770.test.cpp
+      title: test/yukicoder/3770.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yukicoder/3771.test.cpp
+      title: test/yukicoder/3771.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yukicoder/565.1.test.cpp
       title: test/yukicoder/565.1.test.cpp
     - icon: ':heavy_check_mark:'

@@ -791,39 +791,53 @@ data:
     \       pq.pop();\n        int b = pq.top();\n        pq.pop();\n        // \u7A7A\
     \u306E\u591A\u9805\u5F0F (0) \u3068\u306E\u7A4D\u306F 0\n        fs[a] = fs[a].empty()\
     \ || fs[b].empty() ? FPS<mint>() : fs[a] * fs[b];\n        FPS<mint>().swap(fs[b]);\n\
-    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n#line 14 \"src/dp/subset-sum-count.hpp\"\
-    \n\n/**\n * @brief \u548C\u304C s \u306B\u306A\u308B\u90E8\u5206\u96C6\u5408 (\u5404\
-    \u8981\u7D20\u306F 1 \u56DE\u307E\u3067) \u306E\u500B\u6570\u3092\u3001s = 0,\
-    \ 1, ..., S \u306B\u3064\u3044\u3066\u6C42\u3081\u308B (DP) O(N S)\n * @tparam\
-    \ T \u500B\u6570\u306E\u578B (modint \u3084 long long)\n * @param a 0 \u4EE5\u4E0A\
-    \u306E\u6574\u6570\u306E\u5217\n */\ntemplate <typename T>\nstd::vector<T> subset_sum_count_dp(const\
-    \ std::vector<long long>& a, long long S) {\n    assert(0 <= S && S < INT_MAX);\n\
-    \    const int t = static_cast<int>(S);\n    std::vector<T> dp(t + 1, T(0));\n\
-    \    dp[0] = T(1);\n    for (long long x : a) {\n        assert(x >= 0);\n   \
-    \     if (x > t) continue;\n        if (x == 0) {\n            // \u9078\u3076\
-    \u304B\u9078\u3070\u306A\u3044\u304B\u3067 2 \u500D\n            for (auto& y\
-    \ : dp) y += y;\n            continue;\n        }\n        for (int s = t; s >=\
-    \ x; s--) dp[s] += dp[s - x];\n    }\n    return dp;\n}\n\n/**\n * @brief \u548C\
-    \u304C s \u306B\u306A\u308B\u90E8\u5206\u96C6\u5408 (\u5404\u8981\u7D20\u306F\
-    \ 1 \u56DE\u307E\u3067) \u306E\u500B\u6570\u3092\u3001s = 0, 1, ..., S \u306B\u3064\
-    \u3044\u3066\u6C42\u3081\u308B (\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\u306E exp)\
-    \ O(S log S)\n *\n * prod (1 + x^a_i) = exp(sum_i log(1 + x^a_i)) \u3092\u4F7F\
-    \u3046\n * @tparam mint modint\u3002mod \u306F S \u3088\u308A\u5927\u304D\u3044\
-    \u7D20\u6570\u3067\u3042\u308B\u3053\u3068\n * @param a 0 \u4EE5\u4E0A\u306E\u6574\
-    \u6570\u306E\u5217\n */\ntemplate <typename mint>\nstd::vector<mint> subset_sum_count_fps(const\
-    \ std::vector<long long>& a, long long S) {\n    assert(0 <= S && S < INT_MAX);\n\
-    \    const int t = static_cast<int>(S);\n    std::vector<int> cnt(t + 1);\n  \
-    \  mint zero_factor = 1;  // 0 \u306E\u8981\u7D20\u306F\u3001\u9078\u3076\u304B\
-    \u9078\u3070\u306A\u3044\u304B\u3067 2 \u500D\n    for (long long x : a) {\n \
-    \       assert(x >= 0);\n        if (x == 0)\n            zero_factor += zero_factor;\n\
-    \        else if (x <= t)\n            cnt[x]++;\n    }\n    std::vector<mint>\
-    \ inv(t + 1, mint(1));\n    for (int i = 2; i <= t; i++) inv[i] = -inv[mint::mod()\
-    \ % i] * mint(mint::mod() / i);\n    // log(1 + x^k) = sum_{j >= 1} (-1)^(j +\
-    \ 1) x^(k j) / j\n    FPS<mint> f(t + 1);\n    for (int k = 1; k <= t; k++) {\n\
-    \        if (cnt[k] == 0) continue;\n        for (int j = 1; k * j <= t; j++)\
-    \ {\n            if (j & 1)\n                f[k * j] += mint(cnt[k]) * inv[j];\n\
-    \            else\n                f[k * j] -= mint(cnt[k]) * inv[j];\n      \
-    \  }\n    }\n    FPS<mint> g = exp(f, t + 1);\n    std::vector<mint> res(t + 1);\n\
+    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n\n/**\n * @brief \u5206\
+    \u6570\u306E\u548C \u03A3_i nums[i] / dens[i] \u3092 1 \u3064\u306E\u5206\u6570\
+    \ num / den \u306B\u307E\u3068\u3081\u308B O(N log^2 N) (N \u306F\u591A\u9805\u5F0F\
+    \u306E\u9577\u3055\u306E\u548C)\n * \u534A\u5206\u305A\u3064\u306B\u5206\u3051\
+    \u3066 a / b + c / d = (ad + cb) / bd \u3068\u307E\u3068\u3081\u308B\u3002den\
+    \ \u306F dens \u306E\u7A4D\u3002\u7A7A\u306A\u3089 0 / 1\n * @return std::pair<FPS<mint>,\
+    \ FPS<mint>> {num, den}\n */\ntemplate <typename mint>\nstd::pair<FPS<mint>, FPS<mint>>\
+    \ sum_of_fractions(const std::vector<FPS<mint>>& nums, const std::vector<FPS<mint>>&\
+    \ dens) {\n    assert(nums.size() == dens.size());\n    if (nums.empty()) return\
+    \ {FPS<mint>(), FPS<mint>{1}};\n    auto rec = [&](auto&& self, long long l, long\
+    \ long r) -> std::pair<FPS<mint>, FPS<mint>> {\n        if (r - l == 1) return\
+    \ {nums[l], dens[l]};\n        long long m = (l + r) / 2;\n        auto [a, b]\
+    \ = self(self, l, m);\n        auto [c, d] = self(self, m, r);\n        return\
+    \ {a * d + c * b, b * d};\n    };\n    return rec(rec, 0, nums.size());\n}\n#line\
+    \ 14 \"src/dp/subset-sum-count.hpp\"\n\n/**\n * @brief \u548C\u304C s \u306B\u306A\
+    \u308B\u90E8\u5206\u96C6\u5408 (\u5404\u8981\u7D20\u306F 1 \u56DE\u307E\u3067\
+    ) \u306E\u500B\u6570\u3092\u3001s = 0, 1, ..., S \u306B\u3064\u3044\u3066\u6C42\
+    \u3081\u308B (DP) O(N S)\n * @tparam T \u500B\u6570\u306E\u578B (modint \u3084\
+    \ long long)\n * @param a 0 \u4EE5\u4E0A\u306E\u6574\u6570\u306E\u5217\n */\n\
+    template <typename T>\nstd::vector<T> subset_sum_count_dp(const std::vector<long\
+    \ long>& a, long long S) {\n    assert(0 <= S && S < INT_MAX);\n    const int\
+    \ t = static_cast<int>(S);\n    std::vector<T> dp(t + 1, T(0));\n    dp[0] = T(1);\n\
+    \    for (long long x : a) {\n        assert(x >= 0);\n        if (x > t) continue;\n\
+    \        if (x == 0) {\n            // \u9078\u3076\u304B\u9078\u3070\u306A\u3044\
+    \u304B\u3067 2 \u500D\n            for (auto& y : dp) y += y;\n            continue;\n\
+    \        }\n        for (int s = t; s >= x; s--) dp[s] += dp[s - x];\n    }\n\
+    \    return dp;\n}\n\n/**\n * @brief \u548C\u304C s \u306B\u306A\u308B\u90E8\u5206\
+    \u96C6\u5408 (\u5404\u8981\u7D20\u306F 1 \u56DE\u307E\u3067) \u306E\u500B\u6570\
+    \u3092\u3001s = 0, 1, ..., S \u306B\u3064\u3044\u3066\u6C42\u3081\u308B (\u5F62\
+    \u5F0F\u7684\u51AA\u7D1A\u6570\u306E exp) O(S log S)\n *\n * prod (1 + x^a_i)\
+    \ = exp(sum_i log(1 + x^a_i)) \u3092\u4F7F\u3046\n * @tparam mint modint\u3002\
+    mod \u306F S \u3088\u308A\u5927\u304D\u3044\u7D20\u6570\u3067\u3042\u308B\u3053\
+    \u3068\n * @param a 0 \u4EE5\u4E0A\u306E\u6574\u6570\u306E\u5217\n */\ntemplate\
+    \ <typename mint>\nstd::vector<mint> subset_sum_count_fps(const std::vector<long\
+    \ long>& a, long long S) {\n    assert(0 <= S && S < INT_MAX);\n    const int\
+    \ t = static_cast<int>(S);\n    std::vector<int> cnt(t + 1);\n    mint zero_factor\
+    \ = 1;  // 0 \u306E\u8981\u7D20\u306F\u3001\u9078\u3076\u304B\u9078\u3070\u306A\
+    \u3044\u304B\u3067 2 \u500D\n    for (long long x : a) {\n        assert(x >=\
+    \ 0);\n        if (x == 0)\n            zero_factor += zero_factor;\n        else\
+    \ if (x <= t)\n            cnt[x]++;\n    }\n    std::vector<mint> inv(t + 1,\
+    \ mint(1));\n    for (int i = 2; i <= t; i++) inv[i] = -inv[mint::mod() % i] *\
+    \ mint(mint::mod() / i);\n    // log(1 + x^k) = sum_{j >= 1} (-1)^(j + 1) x^(k\
+    \ j) / j\n    FPS<mint> f(t + 1);\n    for (int k = 1; k <= t; k++) {\n      \
+    \  if (cnt[k] == 0) continue;\n        for (int j = 1; k * j <= t; j++) {\n  \
+    \          if (j & 1)\n                f[k * j] += mint(cnt[k]) * inv[j];\n  \
+    \          else\n                f[k * j] -= mint(cnt[k]) * inv[j];\n        }\n\
+    \    }\n    FPS<mint> g = exp(f, t + 1);\n    std::vector<mint> res(t + 1);\n\
     \    for (int s = 0; s <= t && s < static_cast<int>(g.size()); s++) res[s] = g[s]\
     \ * zero_factor;\n    return res;\n}\n\n/**\n * @brief \u548C\u304C s \u306B\u306A\
     \u308B\u90E8\u5206\u96C6\u5408 (\u5404\u8981\u7D20\u306F 1 \u56DE\u307E\u3067\
@@ -863,7 +877,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 00:25:30+09:00'
+  timestamp: '2026-10-22 14:37:49+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.2.test.cpp

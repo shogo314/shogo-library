@@ -38,56 +38,59 @@ data:
   bundledCode: "#line 1 \"test/unittest/math/fps-composition.test.cpp\"\n#define PROBLEM\
     \ \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\n\n//\
     \ composition \u3092\u7D20\u6734\u306A\u8A08\u7B97\u3068\u6BD4\u3079\u3001compositional_inverse\
-    \ \u306F f(h) = x \u3068 h(f) = x \u3092\u78BA\u304B\u3081\u308B\n// \u6CD5\u306F\
-    \ 998244353 \u3068 1000000007 (NTT \u304C\u4F7F\u3048\u306A\u3044\u6CD5) \u306E\
-    \u4E21\u65B9\u3067\u8A66\u3059\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\
-    \u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\
-    \u51FA\u529B\u3059\u308B\n\n#line 2 \"src/math/fps-composition.hpp\"\n\n/**\n\
-    \ * @file fps-composition.hpp\n * @brief \u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\u306E\
-    \u5408\u6210\u3068\u3001\u5408\u6210\u306B\u3064\u3044\u3066\u306E\u9006\u95A2\
-    \u6570 (Kinoshita\u2013Li)\n */\n\n#include <algorithm>\n#include <cassert>\n\
-    #include <vector>\n\n#line 2 \"src/math/convolution.hpp\"\n\n/**\n * @file convolution.hpp\n\
-    \ * @brief \u7573\u307F\u8FBC\u307F (NTT)\n */\n\n#line 9 \"src/math/convolution.hpp\"\
-    \n#include <utility>\n#line 11 \"src/math/convolution.hpp\"\n\n#line 2 \"src/math/modint.hpp\"\
-    \n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\
-    \u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line\
-    \ 9 \"src/math/modint.hpp\"\n#include <cstdint>\n#include <iostream>\n#include\
-    \ <limits>\n#include <type_traits>\n#line 14 \"src/math/modint.hpp\"\n\n#line\
-    \ 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\
-    \u6027\n */\n\n#include <cstddef>\n#include <iterator>\n#include <set>\n#line\
-    \ 13 \"src/utility/traits.hpp\"\n\nnamespace internal_traits {\nusing std::begin,\
-    \ std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl : std::false_type\
-    \ {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
-    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
-    \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
-    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
-    \n#define HAS_METHOD(func_name)                                              \
-    \                \\\n    namespace internal_traits {                         \
-    \                                   \\\n    template <class T, class = void> \
-    \                                                      \\\n    struct has_##func_name##_impl\
-    \ : std::false_type {};                                    \\\n    template <class\
-    \ T>                                                                     \\\n\
-    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
-    \ \\\n        : std::true_type {};                                           \
-    \                    \\\n    }                                               \
-    \                                       \\\n    template <class T>           \
-    \                                                          \\\n    struct has_##func_name\
-    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
-    \ <class T>                                                                  \
-    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
-    \n#define HAS_METHOD_ARG(func_name)                                          \
-    \                                    \\\n    namespace internal_traits {     \
-    \                                                                           \\\
-    \n    template <class T, typename U, class = void>                           \
-    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
-    \ {};                                                        \\\n    template\
-    \ <class T, typename U>                                                      \
-    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
-    \ \\\n        : std::true_type {};                                           \
-    \                                        \\\n    }                           \
+    \ \u306F f(h) = x \u3068 h(f) = x \u3092\u78BA\u304B\u3081\u308B\n// composition\
+    \ \u306F\u3001f \u304C\u77ED\u3044\u3068\u304D\u306E Horner \u6CD5\u3068\u3001\
+    g \u304C x^v \u304B\u3089\u59CB\u307E\u308B\u3068\u304D\u306B f \u3092\u5207\u308A\
+    \u8A70\u3081\u308B\u5834\u5408\u3082\u8ABF\u3079\u308B\n// \u6CD5\u306F 998244353\
+    \ \u3068 1000000007 (NTT \u304C\u4F7F\u3048\u306A\u3044\u6CD5) \u306E\u4E21\u65B9\
+    \u3067\u8A66\u3059\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\
+    \u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\
+    \u3059\u308B\n\n#line 2 \"src/math/fps-composition.hpp\"\n\n/**\n * @file fps-composition.hpp\n\
+    \ * @brief \u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\u306E\u5408\u6210\u3068\u3001\u5408\
+    \u6210\u306B\u3064\u3044\u3066\u306E\u9006\u95A2\u6570 (Kinoshita\u2013Li)\n */\n\
+    \n#include <algorithm>\n#include <cassert>\n#include <vector>\n\n#line 2 \"src/math/convolution.hpp\"\
+    \n\n/**\n * @file convolution.hpp\n * @brief \u7573\u307F\u8FBC\u307F (NTT)\n\
+    \ */\n\n#line 9 \"src/math/convolution.hpp\"\n#include <utility>\n#line 11 \"\
+    src/math/convolution.hpp\"\n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file\
+    \ modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\
+    \u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\
+    \n#include <cstdint>\n#include <iostream>\n#include <limits>\n#include <type_traits>\n\
+    #line 14 \"src/math/modint.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n\
+    \ * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n\
+    #include <iterator>\n#include <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace\
+    \ internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T, class =\
+    \ void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct\
+    \ is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
+    \ : std::true_type {};\n}  // namespace internal_traits\n\ntemplate <class T>\n\
+    struct is_range : internal_traits::is_range_impl<T>::type {};\ntemplate <class\
+    \ T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define HAS_METHOD(func_name)\
+    \                                                              \\\n    namespace\
+    \ internal_traits {                                                          \
+    \  \\\n    template <class T, class = void>                                  \
+    \                     \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                    \\\n    template <class T>          \
+    \                                                           \\\n    struct has_##func_name##_impl<T,\
+    \ std::void_t<decltype(std::declval<T>().func_name())>> \\\n        : std::true_type\
+    \ {};                                                               \\\n    }\
     \                                                                            \
-    \   \\\n    template <class T, typename U>                                   \
-    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \          \\\n    template <class T>                                        \
+    \                             \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T>::type\
+    \ {};          \\\n    template <class T>                                    \
+    \                                 \\\n    inline constexpr bool has_##func_name##_v\
+    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
+    \                                                                    \\\n    namespace\
+    \ internal_traits {                                                          \
+    \                      \\\n    template <class T, typename U, class = void>  \
+    \                                                             \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                                      \
+    \  \\\n    template <class T, typename U>                                    \
+    \                                         \\\n    struct has_##func_name##_impl<T,\
+    \ U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>> \\\
+    \n        : std::true_type {};                                               \
+    \                                    \\\n    }                               \
+    \                                                                           \\\
+    \n    template <class T, typename U>                                         \
+    \                                    \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
     \ U>::type {};                           \\\n    template <class T, typename U>\
     \                                                                            \
     \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
@@ -796,116 +799,145 @@ data:
     \       pq.pop();\n        int b = pq.top();\n        pq.pop();\n        // \u7A7A\
     \u306E\u591A\u9805\u5F0F (0) \u3068\u306E\u7A4D\u306F 0\n        fs[a] = fs[a].empty()\
     \ || fs[b].empty() ? FPS<mint>() : fs[a] * fs[b];\n        FPS<mint>().swap(fs[b]);\n\
-    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n#line 14 \"src/math/fps-composition.hpp\"\
-    \n\nnamespace internal_fps_composition {\n// 2 \u5909\u6570\u591A\u9805\u5F0F\
-    \ A(x, y) \u3092\u3001x \u306E\u6B21\u6570\u3054\u3068\u306B y \u306E\u4FC2\u6570\
-    \u3092\u5E45 w \u3067\u4E26\u3079\u305F 1 \u6B21\u5143\u306E\u914D\u5217\u3067\
-    \u6301\u3064 (A[i * w + j] \u304C x^i y^j \u306E\u4FC2\u6570)\n// Q(x, y) = 1\
-    \ - y g(x) \u304B\u3089\u59CB\u3081\u3001Q(x, y) Q(-x, y) \u306E x \u306E\u5076\
-    \u6570\u6B21\u3060\u3051\u3092\u6B8B\u3057\u3066 x \u306E\u6B21\u6570\u3092\u534A\
-    \u5206\u306B\u3057\u3066\u3044\u304F\n// qs[t] \u306F t \u6BB5\u76EE\u306E Q \u3067\
-    \u3001x \u306F nx[t] \u9805\u3001y \u306F 2^t + 1 \u9805\u3002\u6700\u5F8C\u306E\
-    \u6BB5\u3067 nx = 1 \u306B\u306A\u308B\ntemplate <typename mint>\nstruct Graeffe\
-    \ {\n    std::vector<std::vector<mint>> qs;\n    std::vector<long long> nx;\n\
-    \    Graeffe(const FPS<mint>& g, long long n) {\n        long long x = n, w =\
-    \ 2;\n        std::vector<mint> q(x * w);\n        q[0] = 1;\n        for (long\
-    \ long i = 0; i < x && i < static_cast<long long>(g.size()); i++) q[i * w + 1]\
-    \ = -g[i];\n        while (x > 1) {\n            qs.push_back(q);\n          \
-    \  nx.push_back(x);\n            // y \u306E\u5E45\u3092 2w - 1 \u306B\u5E83\u3052\
-    \u3066\u8A70\u3081\u76F4\u3059\u3068\u30011 \u6B21\u5143\u306E\u7573\u307F\u8FBC\
-    \u307F\u304C 2 \u6B21\u5143\u306E\u7A4D\u306B\u306A\u308B\n            const long\
-    \ long nw = 2 * w - 1;\n            std::vector<mint> a(x * nw), b(x * nw);\n\
-    \            for (long long i = 0; i < x; i++) {\n                for (long long\
-    \ j = 0; j < w; j++) {\n                    a[i * nw + j] = q[i * w + j];\n  \
-    \                  b[i * nw + j] = i % 2 == 0 ? q[i * w + j] : -q[i * w + j];\n\
-    \                }\n            }\n            std::vector<mint> c = convolution(a,\
-    \ b);\n            const long long x2 = (x + 1) / 2;\n            q.assign(x2\
-    \ * nw, 0);\n            for (long long i = 0; i < x2; i++) {\n              \
-    \  for (long long j = 0; j < nw; j++) q[i * nw + j] = c[2 * i * nw + j];\n   \
-    \         }\n            x = x2, w = nw;\n        }\n    }\n    long long depth()\
-    \ const { return qs.size(); }\n};\n\n// h_i = \u03A3_k w_k [x^k] g^i (0 <= i <\
-    \ m) O(n log^2 n) (n = |w|)\u3002g_0 = 0 \u3067\u3042\u308B\u3053\u3068\n// [x^{n-1}]\
-    \ W(x) / (1 - y g(x)) (W(x) = \u03A3_k w_k x^{n-1-k}) \u3092\u3001x \u306B\u3064\
-    \u3044\u3066 Bostan-Mori \u6CD5\u3067\u6C42\u3081\u308B\ntemplate <typename mint>\n\
-    std::vector<mint> power_projection(const std::vector<mint>& wt, const FPS<mint>&\
-    \ g, long long m) {\n    const long long n = wt.size();\n    std::vector<mint>\
-    \ res(m);\n    if (n == 0) return res;\n    Graeffe<mint> gr(g, n);\n    // p\
-    \ \u306F t \u6BB5\u76EE\u306E\u5206\u5B50\u3067\u3001x \u306F nx[t] \u9805\u3001\
-    y \u306F 2^t \u9805\n    std::vector<mint> p(n);\n    for (long long k = 0; k\
-    \ < n; k++) p[n - 1 - k] = wt[k];\n    long long e = 1;\n    for (long long t\
-    \ = 0; t < gr.depth(); t++) {\n        const long long x = gr.nx[t], w = e + 1,\
-    \ nw = 2 * e;\n        const auto& q = gr.qs[t];\n        std::vector<mint> a(x\
-    \ * nw), b(x * nw);\n        for (long long i = 0; i < x; i++) {\n           \
-    \ for (long long j = 0; j < e; j++) a[i * nw + j] = p[i * e + j];\n          \
-    \  for (long long j = 0; j < w; j++) b[i * nw + j] = i % 2 == 0 ? q[i * w + j]\
-    \ : -q[i * w + j];\n        }\n        std::vector<mint> c = convolution(a, b);\n\
-    \        // [x^{x-1}] \u3092\u53D6\u308A\u51FA\u3059\u306E\u3067\u3001x - 1 \u3068\
-    \u540C\u3058\u5076\u5947\u306E\u9805\u3060\u3051\u3092\u6B8B\u3059\n        const\
-    \ long long par = (x - 1) % 2, x2 = (x + 1) / 2;\n        p.assign(x2 * nw, 0);\n\
-    \        for (long long i = 0; i < x2; i++) {\n            for (long long j =\
-    \ 0; j < nw; j++) p[i * nw + j] = c[(2 * i + par) * nw + j];\n        }\n    \
-    \    e = nw;\n    }\n    // \u6700\u5F8C\u306E\u6BB5\u3067\u306F x \u304C 1 \u9805\
-    \u3067\u3001\u5206\u6BCD\u306E\u5B9A\u6570\u9805 (x^0) \u306F 1\n    for (long\
-    \ long i = 0; i < m && i < e; i++) res[i] = p[i];\n    return res;\n}\n\n// \u03A3\
-    _i f_i g^i \u306E x^n \u672A\u6E80 O(n log^2 n)\u3002g_0 = 0\u3001|f| <= n \u3067\
-    \u3042\u308B\u3053\u3068\n// power_projection \u306E\u8EE2\u7F6E\u3067\u3001power_projection\
-    \ \u306E\u5404\u6BB5\u3092\u9006\u5411\u304D\u306B\u305F\u3069\u308B\ntemplate\
-    \ <typename mint>\nFPS<mint> composition_zero(const FPS<mint>& f, const FPS<mint>&\
-    \ g, long long n) {\n    Graeffe<mint> gr(g, n);\n    const long long depth =\
-    \ gr.depth();\n    // \u6700\u5F8C\u306E\u6BB5\u306E\u5206\u5B50\u306E y \u306E\
-    \u9805\u6570\u306F 2^depth\n    long long e = 1LL << depth;\n    std::vector<mint>\
-    \ p(e);\n    for (long long i = 0; i < e && i < static_cast<long long>(f.size());\
-    \ i++) p[i] = f[i];\n    for (long long t = depth - 1; t >= 0; t--) {\n      \
-    \  const long long x = gr.nx[t], w = e / 2 + 1, pe = e / 2;\n        const auto&\
-    \ q = gr.qs[t];\n        // \u53D6\u308A\u51FA\u3057\u305F\u5076\u5947\u306E\u4F4D\
-    \u7F6E\u306B\u623B\u3057 (r)\u3001Q(-x, y) \u3068\u306E\u7A4D\u306E\u8EE2\u7F6E\
-    \ (\u4E21\u65B9\u5411\u3092\u53CD\u8EE2\u3057\u305F Q(-x, y) \u3068\u306E\u7573\
-    \u307F\u8FBC\u307F) \u3092\u53D6\u308B\n        const long long par = (x - 1)\
-    \ % 2, x2 = (x + 1) / 2, nw = e + w - 1;\n        std::vector<mint> r(x * nw),\
-    \ b(x * nw);\n        for (long long i = 0; i < x2; i++) {\n            for (long\
-    \ long j = 0; j < e; j++) r[(2 * i + par) * nw + j] = p[i * e + j];\n        }\n\
-    \        for (long long i = 0; i < x; i++) {\n            for (long long j = 0;\
-    \ j < w; j++) {\n                const mint v = q[i * w + j];\n              \
-    \  b[(x - 1 - i) * nw + (w - 1 - j)] = i % 2 == 0 ? v : -v;\n            }\n \
-    \       }\n        std::vector<mint> c = convolution(r, b);\n        p.assign(x\
-    \ * pe, 0);\n        for (long long i = 0; i < x; i++) {\n            for (long\
-    \ long j = 0; j < pe; j++) p[i * pe + j] = c[(i + x - 1) * nw + (j + w - 1)];\n\
-    \        }\n        e = pe;\n    }\n    FPS<mint> res(n);\n    for (long long\
-    \ k = 0; k < n; k++) res[k] = p[n - 1 - k];\n    return res;\n}\n}  // namespace\
-    \ internal_fps_composition\n\n/**\n * @brief f(g(x)) \u306E x^deg \u672A\u6E80\
-    \u306E\u9805 O(n log^2 n) (n = deg\u3001g_0 != 0 \u306A\u3089 O(|f| log |f|) \u3092\
-    \u8DB3\u3059)\n * f \u306F\u591A\u9805\u5F0F\u3068\u3057\u3066\u6271\u3046\u306E\
-    \u3067\u3001g \u306E\u5B9A\u6570\u9805\u306F 0 \u3067\u306A\u304F\u3066\u3082\u3088\
-    \u3044 (f(x + g_0) \u306B\u76F4\u3057\u3066\u304B\u3089\u6C42\u3081\u308B\u3002\
-    |f| \u306F\u6CD5\u3088\u308A\u5C0F\u3055\u3044\u3053\u3068)\u3002\n * deg \u3092\
-    \u7701\u7565\u3059\u308B\u304B\u8CA0\u306E\u5024\u3092\u6E21\u3059\u3068 max(|f|,\
-    \ |g|)\n */\ntemplate <typename mint>\nFPS<mint> composition(FPS<mint> f, FPS<mint>\
-    \ g, long long deg = -1) {\n    if (deg < 0) deg = std::max(f.size(), g.size());\n\
-    \    if (deg == 0) return FPS<mint>();\n    if (!g.empty() && g[0] != 0) {\n \
-    \       f = taylor_shift(f, g[0]);\n        g[0] = 0;\n    }\n    // g_0 = 0 \u306A\
-    \u306E\u3067\u3001f \u306E x^deg \u4EE5\u4E0A\u306E\u9805\u306F\u52B9\u304B\u306A\
-    \u3044\n    if (static_cast<long long>(f.size()) > deg) f.resize(deg);\n    return\
-    \ internal_fps_composition::composition_zero(f, g.pre(deg), deg);\n}\n\n/**\n\
-    \ * @brief f(h(x)) = x \u3068\u306A\u308B h \u306E x^deg \u672A\u6E80\u306E\u9805\
-    \ O(n log^2 n) (n = deg)\n * f_0 = 0\u3001f_1 != 0 \u3067\u3042\u308B\u3053\u3068\
-    \u3002deg \u3092\u7701\u7565\u3059\u308B\u304B\u8CA0\u306E\u5024\u3092\u6E21\u3059\
-    \u3068 |f|\n * N = deg - 1 \u3068\u3057\u3066\u3001\u30E9\u30B0\u30E9\u30F3\u30B8\
-    \u30E5\u306E\u53CD\u8EE2\u516C\u5F0F [x^N] f^k = (k / N) [x^{N-k}] (x / h)^N \u304B\
-    \u3089 (x / h)^N \u3092\u6C42\u3081\u3001N \u4E57\u6839\u3092\u53D6\u308B\n */\n\
-    template <typename mint>\nFPS<mint> compositional_inverse(const FPS<mint>& f,\
-    \ long long deg = -1) {\n    assert(f.size() >= 2 && f[0] == 0 && f[1] != 0);\n\
-    \    if (deg < 0) deg = f.size();\n    if (deg <= 2) {\n        FPS<mint> h =\
-    \ {0, f[1].inv()};\n        h.resize(deg);\n        return h;\n    }\n    const\
-    \ long long N = deg - 1;\n    // p_k = [x^N] f^k (0 <= k <= N)\n    std::vector<mint>\
-    \ wt(deg);\n    wt[N] = 1;\n    std::vector<mint> p = internal_fps_composition::power_projection(wt,\
+    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n\n/**\n * @brief \u5206\
+    \u6570\u306E\u548C \u03A3_i nums[i] / dens[i] \u3092 1 \u3064\u306E\u5206\u6570\
+    \ num / den \u306B\u307E\u3068\u3081\u308B O(N log^2 N) (N \u306F\u591A\u9805\u5F0F\
+    \u306E\u9577\u3055\u306E\u548C)\n * \u534A\u5206\u305A\u3064\u306B\u5206\u3051\
+    \u3066 a / b + c / d = (ad + cb) / bd \u3068\u307E\u3068\u3081\u308B\u3002den\
+    \ \u306F dens \u306E\u7A4D\u3002\u7A7A\u306A\u3089 0 / 1\n * @return std::pair<FPS<mint>,\
+    \ FPS<mint>> {num, den}\n */\ntemplate <typename mint>\nstd::pair<FPS<mint>, FPS<mint>>\
+    \ sum_of_fractions(const std::vector<FPS<mint>>& nums, const std::vector<FPS<mint>>&\
+    \ dens) {\n    assert(nums.size() == dens.size());\n    if (nums.empty()) return\
+    \ {FPS<mint>(), FPS<mint>{1}};\n    auto rec = [&](auto&& self, long long l, long\
+    \ long r) -> std::pair<FPS<mint>, FPS<mint>> {\n        if (r - l == 1) return\
+    \ {nums[l], dens[l]};\n        long long m = (l + r) / 2;\n        auto [a, b]\
+    \ = self(self, l, m);\n        auto [c, d] = self(self, m, r);\n        return\
+    \ {a * d + c * b, b * d};\n    };\n    return rec(rec, 0, nums.size());\n}\n#line\
+    \ 14 \"src/math/fps-composition.hpp\"\n\nnamespace internal_fps_composition {\n\
+    // 2 \u5909\u6570\u591A\u9805\u5F0F A(x, y) \u3092\u3001x \u306E\u6B21\u6570\u3054\
+    \u3068\u306B y \u306E\u4FC2\u6570\u3092\u5E45 w \u3067\u4E26\u3079\u305F 1 \u6B21\
+    \u5143\u306E\u914D\u5217\u3067\u6301\u3064 (A[i * w + j] \u304C x^i y^j \u306E\
+    \u4FC2\u6570)\n// Q(x, y) = 1 - y g(x) \u304B\u3089\u59CB\u3081\u3001Q(x, y) Q(-x,\
+    \ y) \u306E x \u306E\u5076\u6570\u6B21\u3060\u3051\u3092\u6B8B\u3057\u3066 x \u306E\
+    \u6B21\u6570\u3092\u534A\u5206\u306B\u3057\u3066\u3044\u304F\n// qs[t] \u306F\
+    \ t \u6BB5\u76EE\u306E Q \u3067\u3001x \u306F nx[t] \u9805\u3001y \u306F 2^t +\
+    \ 1 \u9805\u3002\u6700\u5F8C\u306E\u6BB5\u3067 nx = 1 \u306B\u306A\u308B\ntemplate\
+    \ <typename mint>\nstruct Graeffe {\n    std::vector<std::vector<mint>> qs;\n\
+    \    std::vector<long long> nx;\n    Graeffe(const FPS<mint>& g, long long n)\
+    \ {\n        long long x = n, w = 2;\n        std::vector<mint> q(x * w);\n  \
+    \      q[0] = 1;\n        for (long long i = 0; i < x && i < static_cast<long\
+    \ long>(g.size()); i++) q[i * w + 1] = -g[i];\n        while (x > 1) {\n     \
+    \       qs.push_back(q);\n            nx.push_back(x);\n            // y \u306E\
+    \u5E45\u3092 2w - 1 \u306B\u5E83\u3052\u3066\u8A70\u3081\u76F4\u3059\u3068\u3001\
+    1 \u6B21\u5143\u306E\u7573\u307F\u8FBC\u307F\u304C 2 \u6B21\u5143\u306E\u7A4D\u306B\
+    \u306A\u308B\n            const long long nw = 2 * w - 1;\n            std::vector<mint>\
+    \ a(x * nw), b(x * nw);\n            for (long long i = 0; i < x; i++) {\n   \
+    \             for (long long j = 0; j < w; j++) {\n                    a[i * nw\
+    \ + j] = q[i * w + j];\n                    b[i * nw + j] = i % 2 == 0 ? q[i *\
+    \ w + j] : -q[i * w + j];\n                }\n            }\n            std::vector<mint>\
+    \ c = convolution(a, b);\n            const long long x2 = (x + 1) / 2;\n    \
+    \        q.assign(x2 * nw, 0);\n            for (long long i = 0; i < x2; i++)\
+    \ {\n                for (long long j = 0; j < nw; j++) q[i * nw + j] = c[2 *\
+    \ i * nw + j];\n            }\n            x = x2, w = nw;\n        }\n    }\n\
+    \    long long depth() const { return qs.size(); }\n};\n\n// h_i = \u03A3_k w_k\
+    \ [x^k] g^i (0 <= i < m) O(n log^2 n) (n = |w|)\u3002g_0 = 0 \u3067\u3042\u308B\
+    \u3053\u3068\n// [x^{n-1}] W(x) / (1 - y g(x)) (W(x) = \u03A3_k w_k x^{n-1-k})\
+    \ \u3092\u3001x \u306B\u3064\u3044\u3066 Bostan-Mori \u6CD5\u3067\u6C42\u3081\u308B\
+    \ntemplate <typename mint>\nstd::vector<mint> power_projection(const std::vector<mint>&\
+    \ wt, const FPS<mint>& g, long long m) {\n    const long long n = wt.size();\n\
+    \    std::vector<mint> res(m);\n    if (n == 0) return res;\n    Graeffe<mint>\
+    \ gr(g, n);\n    // p \u306F t \u6BB5\u76EE\u306E\u5206\u5B50\u3067\u3001x \u306F\
+    \ nx[t] \u9805\u3001y \u306F 2^t \u9805\n    std::vector<mint> p(n);\n    for\
+    \ (long long k = 0; k < n; k++) p[n - 1 - k] = wt[k];\n    long long e = 1;\n\
+    \    for (long long t = 0; t < gr.depth(); t++) {\n        const long long x =\
+    \ gr.nx[t], w = e + 1, nw = 2 * e;\n        const auto& q = gr.qs[t];\n      \
+    \  std::vector<mint> a(x * nw), b(x * nw);\n        for (long long i = 0; i <\
+    \ x; i++) {\n            for (long long j = 0; j < e; j++) a[i * nw + j] = p[i\
+    \ * e + j];\n            for (long long j = 0; j < w; j++) b[i * nw + j] = i %\
+    \ 2 == 0 ? q[i * w + j] : -q[i * w + j];\n        }\n        std::vector<mint>\
+    \ c = convolution(a, b);\n        // [x^{x-1}] \u3092\u53D6\u308A\u51FA\u3059\u306E\
+    \u3067\u3001x - 1 \u3068\u540C\u3058\u5076\u5947\u306E\u9805\u3060\u3051\u3092\
+    \u6B8B\u3059\n        const long long par = (x - 1) % 2, x2 = (x + 1) / 2;\n \
+    \       p.assign(x2 * nw, 0);\n        for (long long i = 0; i < x2; i++) {\n\
+    \            for (long long j = 0; j < nw; j++) p[i * nw + j] = c[(2 * i + par)\
+    \ * nw + j];\n        }\n        e = nw;\n    }\n    // \u6700\u5F8C\u306E\u6BB5\
+    \u3067\u306F x \u304C 1 \u9805\u3067\u3001\u5206\u6BCD\u306E\u5B9A\u6570\u9805\
+    \ (x^0) \u306F 1\n    for (long long i = 0; i < m && i < e; i++) res[i] = p[i];\n\
+    \    return res;\n}\n\n// \u03A3_i f_i g^i \u306E x^n \u672A\u6E80 O(n log^2 n)\u3002\
+    g_0 = 0\u3001|f| <= n \u3067\u3042\u308B\u3053\u3068\n// power_projection \u306E\
+    \u8EE2\u7F6E\u3067\u3001power_projection \u306E\u5404\u6BB5\u3092\u9006\u5411\u304D\
+    \u306B\u305F\u3069\u308B\ntemplate <typename mint>\nFPS<mint> composition_zero(const\
+    \ FPS<mint>& f, const FPS<mint>& g, long long n) {\n    Graeffe<mint> gr(g, n);\n\
+    \    const long long depth = gr.depth();\n    // \u6700\u5F8C\u306E\u6BB5\u306E\
+    \u5206\u5B50\u306E y \u306E\u9805\u6570\u306F 2^depth\n    long long e = 1LL <<\
+    \ depth;\n    std::vector<mint> p(e);\n    for (long long i = 0; i < e && i <\
+    \ static_cast<long long>(f.size()); i++) p[i] = f[i];\n    for (long long t =\
+    \ depth - 1; t >= 0; t--) {\n        const long long x = gr.nx[t], w = e / 2 +\
+    \ 1, pe = e / 2;\n        const auto& q = gr.qs[t];\n        // \u53D6\u308A\u51FA\
+    \u3057\u305F\u5076\u5947\u306E\u4F4D\u7F6E\u306B\u623B\u3057 (r)\u3001Q(-x, y)\
+    \ \u3068\u306E\u7A4D\u306E\u8EE2\u7F6E (\u4E21\u65B9\u5411\u3092\u53CD\u8EE2\u3057\
+    \u305F Q(-x, y) \u3068\u306E\u7573\u307F\u8FBC\u307F) \u3092\u53D6\u308B\n   \
+    \     const long long par = (x - 1) % 2, x2 = (x + 1) / 2, nw = e + w - 1;\n \
+    \       std::vector<mint> r(x * nw), b(x * nw);\n        for (long long i = 0;\
+    \ i < x2; i++) {\n            for (long long j = 0; j < e; j++) r[(2 * i + par)\
+    \ * nw + j] = p[i * e + j];\n        }\n        for (long long i = 0; i < x; i++)\
+    \ {\n            for (long long j = 0; j < w; j++) {\n                const mint\
+    \ v = q[i * w + j];\n                b[(x - 1 - i) * nw + (w - 1 - j)] = i % 2\
+    \ == 0 ? v : -v;\n            }\n        }\n        std::vector<mint> c = convolution(r,\
+    \ b);\n        p.assign(x * pe, 0);\n        for (long long i = 0; i < x; i++)\
+    \ {\n            for (long long j = 0; j < pe; j++) p[i * pe + j] = c[(i + x -\
+    \ 1) * nw + (j + w - 1)];\n        }\n        e = pe;\n    }\n    FPS<mint> res(n);\n\
+    \    for (long long k = 0; k < n; k++) res[k] = p[n - 1 - k];\n    return res;\n\
+    }\n}  // namespace internal_fps_composition\n\n/**\n * @brief f(g(x)) \u306E x^deg\
+    \ \u672A\u6E80\u306E\u9805 O(n log^2 n) (n = deg\u3001g_0 != 0 \u306A\u3089 O(|f|\
+    \ log |f|) \u3092\u8DB3\u3059)\n * g \u304C x^v \u304B\u3089\u59CB\u307E\u308B\
+    \u306A\u3089 f \u306E\u6B21\u6570 ceil(deg / v) \u4EE5\u4E0A\u306E\u9805\u306F\
+    \u4F7F\u308F\u305A\u3001\u6B8B\u308A\u304C max(32, 4 log2(deg)) \u9805\u4EE5\u4E0B\
+    \u306A\u3089 Horner \u6CD5\u3067 O(|f| n log n) \u306B\u3059\u308B\n * f \u306F\
+    \u591A\u9805\u5F0F\u3068\u3057\u3066\u6271\u3046\u306E\u3067\u3001g \u306E\u5B9A\
+    \u6570\u9805\u306F 0 \u3067\u306A\u304F\u3066\u3082\u3088\u3044 (f(x + g_0) \u306B\
+    \u76F4\u3057\u3066\u304B\u3089\u6C42\u3081\u308B\u3002|f| \u306F\u6CD5\u3088\u308A\
+    \u5C0F\u3055\u3044\u3053\u3068)\u3002\n * deg \u3092\u7701\u7565\u3059\u308B\u304B\
+    \u8CA0\u306E\u5024\u3092\u6E21\u3059\u3068 max(|f|, |g|)\n */\ntemplate <typename\
+    \ mint>\nFPS<mint> composition(FPS<mint> f, FPS<mint> g, long long deg = -1) {\n\
+    \    if (deg < 0) deg = std::max(f.size(), g.size());\n    if (deg == 0) return\
+    \ FPS<mint>();\n    if (!g.empty() && g[0] != 0) {\n        f = taylor_shift(f,\
+    \ g[0]);\n        g[0] = 0;\n    }\n    g = g.pre(deg);\n    // g \u306E\u6700\
+    \u4F4E\u6B21\u306E\u9805\u3092 x^v \u3068\u3059\u308B\u3068\u3001g^k \u306F x^{kv}\
+    \ \u304B\u3089\u59CB\u307E\u308B\u306E\u3067\u3001f \u306E k >= ceil(deg / v)\
+    \ \u306E\u9805\u306F\u52B9\u304B\u306A\u3044\n    long long v = 1;\n    while\
+    \ (v < static_cast<long long>(g.size()) && g[v] == 0) v++;\n    const long long\
+    \ need = v >= static_cast<long long>(g.size()) ? 1 : (deg - 1) / v + 1;\n    if\
+    \ (static_cast<long long>(f.size()) > need) f.resize(need);\n    // f \u304C\u77ED\
+    \u3044\u3068\u304D\u306F Horner \u6CD5 (\u639B\u3051\u7B97 |f| \u56DE) \u306E\u307B\
+    \u3046\u304C\u901F\u3044\n    // (Kinoshita\u2013Li \u306F\u9577\u3055 deg \u306E\
+    \u639B\u3051\u7B97\u306E 4 log2(deg)\u301C7 log2(deg) \u56DE\u5206\u307B\u3069\
+    \u3002deg = 10^4 \u3067 55 \u56DE\u30012 * 10^5 \u3067 130 \u56DE)\n    long long\
+    \ log_deg = 0;\n    while ((1LL << log_deg) < deg) log_deg++;\n    if (static_cast<long\
+    \ long>(f.size()) <= std::max(32LL, 4 * log_deg)) {\n        FPS<mint> res(deg);\n\
+    \        for (long long i = static_cast<long long>(f.size()) - 1; i >= 0; i--)\
+    \ {\n            res = (res * g).pre(deg);\n            res.resize(deg);\n   \
+    \         res[0] += f[i];\n        }\n        return res;\n    }\n    return internal_fps_composition::composition_zero(f,\
+    \ g, deg);\n}\n\n/**\n * @brief f(h(x)) = x \u3068\u306A\u308B h \u306E x^deg\
+    \ \u672A\u6E80\u306E\u9805 O(n log^2 n) (n = deg)\n * f_0 = 0\u3001f_1 != 0 \u3067\
+    \u3042\u308B\u3053\u3068\u3002deg \u3092\u7701\u7565\u3059\u308B\u304B\u8CA0\u306E\
+    \u5024\u3092\u6E21\u3059\u3068 |f|\n * N = deg - 1 \u3068\u3057\u3066\u3001\u30E9\
+    \u30B0\u30E9\u30F3\u30B8\u30E5\u306E\u53CD\u8EE2\u516C\u5F0F [x^N] f^k = (k /\
+    \ N) [x^{N-k}] (x / h)^N \u304B\u3089 (x / h)^N \u3092\u6C42\u3081\u3001N \u4E57\
+    \u6839\u3092\u53D6\u308B\n */\ntemplate <typename mint>\nFPS<mint> compositional_inverse(const\
+    \ FPS<mint>& f, long long deg = -1) {\n    assert(f.size() >= 2 && f[0] == 0 &&\
+    \ f[1] != 0);\n    if (deg < 0) deg = f.size();\n    if (deg <= 2) {\n       \
+    \ FPS<mint> h = {0, f[1].inv()};\n        h.resize(deg);\n        return h;\n\
+    \    }\n    const long long N = deg - 1;\n    // p_k = [x^N] f^k (0 <= k <= N)\n\
+    \    std::vector<mint> wt(deg);\n    wt[N] = 1;\n    std::vector<mint> p = internal_fps_composition::power_projection(wt,\
     \ f.pre(deg), deg);\n    // A = (x / h)^N \u306E x^N \u672A\u6E80: [x^j] A = N\
     \ / (N - j) p_{N-j}\n    FPS<mint> A(N);\n    for (long long j = 0; j < N; j++)\
     \ A[j] = p[N - j] * mint(N) / mint(N - j);\n    // x / h \u306E\u5B9A\u6570\u9805\
     \u306F f_1 \u306A\u306E\u3067\u3001(x / h) = f_1 (A / f_1^N)^{1/N}\n    const\
     \ mint c = f[1].pow(N);\n    FPS<mint> B = exp(log(A / c, N) * mint(N).inv(),\
-    \ N) * f[1];\n    return inv(B, N) << 1;\n}\n#line 8 \"test/unittest/math/fps-composition.test.cpp\"\
-    \n\n#line 10 \"test/unittest/math/fps-composition.test.cpp\"\n#include <random>\n\
-    \n#line 14 \"test/unittest/math/fps-composition.test.cpp\"\n\nbool ok = true;\n\
+    \ N) * f[1];\n    return inv(B, N) << 1;\n}\n#line 9 \"test/unittest/math/fps-composition.test.cpp\"\
+    \n\n#line 11 \"test/unittest/math/fps-composition.test.cpp\"\n#include <random>\n\
+    \n#line 15 \"test/unittest/math/fps-composition.test.cpp\"\n\nbool ok = true;\n\
     void check(bool cond, const char* what) {\n    if (!cond && ok) std::cerr << \"\
     failed: \" << what << std::endl;\n    if (!cond) ok = false;\n}\n\n// f(g) \u306E\
     \ x^deg \u672A\u6E80\u3092 Horner \u6CD5\u3067 O(|f| deg^2) \u3067\u6C42\u3081\
@@ -927,11 +959,20 @@ data:
     \ g[0] = 0;\n        F res = composition(f, g, deg);\n        check(res == naive_composition(f,\
     \ g, deg), \"composition\");\n    }\n    {\n        F f = {1, 2, 3}, g = {0, 1,\
     \ 1};\n        check(composition(f, g) == naive_composition(f, g, 3), \"composition\
-    \ \u306E deg \u306E\u7701\u7565\");\n    }\n    // compositional_inverse: f(h)\
-    \ = x \u3068 h(f) = x\n    for (int rep = 0; rep < 200 && ok; rep++) {\n     \
-    \   int n = 2 + rng() % (rep < 150 ? 10 : 300), deg = rng() % (rep < 150 ? 12\
-    \ : 300);\n        F f(n);\n        for (auto& x : f) x = gen();\n        f[0]\
-    \ = 0;\n        while (f[1] == 0) f[1] = gen();\n        F h = compositional_inverse(f,\
+    \ \u306E deg \u306E\u7701\u7565\");\n    }\n    // g \u304C x^v (v >= 1) \u304B\
+    \u3089\u59CB\u307E\u308B\u3002f \u306E\u9577\u3055\u306F Horner \u6CD5 (32 \u4EE5\
+    \u4E0B) \u3068 Kinoshita\u2013Li \u306E\u4E21\u65B9\u3092\u901A\u308B\n    for\
+    \ (int rep = 0; rep < 200 && ok; rep++) {\n        int n = rng() % 120, v = rng()\
+    \ % 6 + 1, deg = rng() % 80, m = v + 1 + rng() % 40;\n        F f(n), g(m, 0);\n\
+    \        for (auto& x : f) x = gen();\n        for (int i = v; i < m; i++) g[i]\
+    \ = gen();\n        if (rng() % 2) g[v] = gen() + 1;  // \u6700\u4F4E\u6B21\u306E\
+    \u4FC2\u6570\u306F 0 \u3067\u306A\u3044\u3053\u3068\u304C\u591A\u3044\n      \
+    \  check(composition(f, g, deg) == naive_composition(f, g, deg), \"composition:\
+    \ g \u304C x^v \u304B\u3089\u59CB\u307E\u308B\");\n    }\n    // compositional_inverse:\
+    \ f(h) = x \u3068 h(f) = x\n    for (int rep = 0; rep < 200 && ok; rep++) {\n\
+    \        int n = 2 + rng() % (rep < 150 ? 10 : 300), deg = rng() % (rep < 150\
+    \ ? 12 : 300);\n        F f(n);\n        for (auto& x : f) x = gen();\n      \
+    \  f[0] = 0;\n        while (f[1] == 0) f[1] = gen();\n        F h = compositional_inverse(f,\
     \ deg);\n        check(static_cast<int>(h.size()) == deg, \"compositional_inverse\
     \ \u306E\u9577\u3055\");\n        F x(deg, 0);\n        if (deg > 1) x[1] = 1;\n\
     \        check(composition(f, h, deg) == x, \"compositional_inverse: f(h) = x\"\
@@ -945,10 +986,13 @@ data:
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// composition \u3092\u7D20\u6734\u306A\u8A08\u7B97\u3068\u6BD4\u3079\u3001\
     compositional_inverse \u306F f(h) = x \u3068 h(f) = x \u3092\u78BA\u304B\u3081\
-    \u308B\n// \u6CD5\u306F 998244353 \u3068 1000000007 (NTT \u304C\u4F7F\u3048\u306A\
-    \u3044\u6CD5) \u306E\u4E21\u65B9\u3067\u8A66\u3059\n// \u554F\u984C\u306E\u5165\
-    \u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\
-    \u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../../src/math/fps-composition.hpp\"\
+    \u308B\n// composition \u306F\u3001f \u304C\u77ED\u3044\u3068\u304D\u306E Horner\
+    \ \u6CD5\u3068\u3001g \u304C x^v \u304B\u3089\u59CB\u307E\u308B\u3068\u304D\u306B\
+    \ f \u3092\u5207\u308A\u8A70\u3081\u308B\u5834\u5408\u3082\u8ABF\u3079\u308B\n\
+    // \u6CD5\u306F 998244353 \u3068 1000000007 (NTT \u304C\u4F7F\u3048\u306A\u3044\
+    \u6CD5) \u306E\u4E21\u65B9\u3067\u8A66\u3059\n// \u554F\u984C\u306E\u5165\u529B\
+    \u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089\
+    \ Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../../src/math/fps-composition.hpp\"\
     \n\n#include <iostream>\n#include <random>\n\n#include \"../../../src/math/fps.hpp\"\
     \n#include \"../../../src/math/modint.hpp\"\n\nbool ok = true;\nvoid check(bool\
     \ cond, const char* what) {\n    if (!cond && ok) std::cerr << \"failed: \" <<\
@@ -971,21 +1015,30 @@ data:
     \ % 2 && m > 0) g[0] = 0;\n        F res = composition(f, g, deg);\n        check(res\
     \ == naive_composition(f, g, deg), \"composition\");\n    }\n    {\n        F\
     \ f = {1, 2, 3}, g = {0, 1, 1};\n        check(composition(f, g) == naive_composition(f,\
-    \ g, 3), \"composition \u306E deg \u306E\u7701\u7565\");\n    }\n    // compositional_inverse:\
-    \ f(h) = x \u3068 h(f) = x\n    for (int rep = 0; rep < 200 && ok; rep++) {\n\
-    \        int n = 2 + rng() % (rep < 150 ? 10 : 300), deg = rng() % (rep < 150\
-    \ ? 12 : 300);\n        F f(n);\n        for (auto& x : f) x = gen();\n      \
-    \  f[0] = 0;\n        while (f[1] == 0) f[1] = gen();\n        F h = compositional_inverse(f,\
-    \ deg);\n        check(static_cast<int>(h.size()) == deg, \"compositional_inverse\
-    \ \u306E\u9577\u3055\");\n        F x(deg, 0);\n        if (deg > 1) x[1] = 1;\n\
-    \        check(composition(f, h, deg) == x, \"compositional_inverse: f(h) = x\"\
-    );\n        check(composition(h, f, deg) == x, \"compositional_inverse: h(f) =\
-    \ x\");\n    }\n    {\n        // x / (1 - x) \u306E\u9006\u95A2\u6570\u306F x\
-    \ / (1 + x)\n        F f = {0, 1, 1, 1, 1, 1};\n        check(compositional_inverse(f)\
-    \ == F({0, 1, -1, 1, -1, 1}), \"compositional_inverse: x / (1 - x)\");\n    }\n\
-    }\n\nint main() {\n    std::mt19937_64 rng(314);\n    test<modint998244353>(rng);\n\
-    \    test<modint1000000007>(rng);\n    if (!ok) return 1;\n    std::cout << \"\
-    Hello World\" << std::endl;\n}\n"
+    \ g, 3), \"composition \u306E deg \u306E\u7701\u7565\");\n    }\n    // g \u304C\
+    \ x^v (v >= 1) \u304B\u3089\u59CB\u307E\u308B\u3002f \u306E\u9577\u3055\u306F\
+    \ Horner \u6CD5 (32 \u4EE5\u4E0B) \u3068 Kinoshita\u2013Li \u306E\u4E21\u65B9\u3092\
+    \u901A\u308B\n    for (int rep = 0; rep < 200 && ok; rep++) {\n        int n =\
+    \ rng() % 120, v = rng() % 6 + 1, deg = rng() % 80, m = v + 1 + rng() % 40;\n\
+    \        F f(n), g(m, 0);\n        for (auto& x : f) x = gen();\n        for (int\
+    \ i = v; i < m; i++) g[i] = gen();\n        if (rng() % 2) g[v] = gen() + 1; \
+    \ // \u6700\u4F4E\u6B21\u306E\u4FC2\u6570\u306F 0 \u3067\u306A\u3044\u3053\u3068\
+    \u304C\u591A\u3044\n        check(composition(f, g, deg) == naive_composition(f,\
+    \ g, deg), \"composition: g \u304C x^v \u304B\u3089\u59CB\u307E\u308B\");\n  \
+    \  }\n    // compositional_inverse: f(h) = x \u3068 h(f) = x\n    for (int rep\
+    \ = 0; rep < 200 && ok; rep++) {\n        int n = 2 + rng() % (rep < 150 ? 10\
+    \ : 300), deg = rng() % (rep < 150 ? 12 : 300);\n        F f(n);\n        for\
+    \ (auto& x : f) x = gen();\n        f[0] = 0;\n        while (f[1] == 0) f[1]\
+    \ = gen();\n        F h = compositional_inverse(f, deg);\n        check(static_cast<int>(h.size())\
+    \ == deg, \"compositional_inverse \u306E\u9577\u3055\");\n        F x(deg, 0);\n\
+    \        if (deg > 1) x[1] = 1;\n        check(composition(f, h, deg) == x, \"\
+    compositional_inverse: f(h) = x\");\n        check(composition(h, f, deg) == x,\
+    \ \"compositional_inverse: h(f) = x\");\n    }\n    {\n        // x / (1 - x)\
+    \ \u306E\u9006\u95A2\u6570\u306F x / (1 + x)\n        F f = {0, 1, 1, 1, 1, 1};\n\
+    \        check(compositional_inverse(f) == F({0, 1, -1, 1, -1, 1}), \"compositional_inverse:\
+    \ x / (1 - x)\");\n    }\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n \
+    \   test<modint998244353>(rng);\n    test<modint1000000007>(rng);\n    if (!ok)\
+    \ return 1;\n    std::cout << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/math/fps-composition.hpp
   - src/math/convolution.hpp
@@ -997,7 +1050,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/fps-composition.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 00:53:28+09:00'
+  timestamp: '2026-10-22 14:37:49+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/fps-composition.test.cpp

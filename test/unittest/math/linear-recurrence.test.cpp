@@ -2,12 +2,16 @@
 
 // bostan_mori・linear_recurrence_kth・berlekamp_massey を愚直な計算と比べる
 // NTT の使えない法 (10^9 + 7) と、最短性を全探索で確かめるための小さい法 (3) も試す
+// 長さが 60 を超えると bostan_mori は NTT した値のまま進める別の経路に入るので、
+// 同じ法の dynamic_modint (この経路に入らない) と、長さの境目 (2 のべき乗の前後) で比べる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../../src/math/linear-recurrence.hpp"
 
+#include <algorithm>
 #include <iostream>
 #include <random>
+#include <utility>
 #include <vector>
 
 #include "../../../src/math/modint.hpp"
@@ -77,10 +81,52 @@ void test_mod(std::mt19937_64& rng) {
     check(linear_recurrence_kth(fib_a, fib_c, k) == r01, "フィボナッチ 10^18");
 }
 
+// 長い P, Q で、static_modint<998244353> (NTT した値のまま進める経路) と dynamic_modint (畳み込みを繰り返す経路) を比べる
+void test_ntt_path(std::mt19937_64& rng) {
+    using sm = static_modint<998244353>;
+    using dm = dynamic_modint<0>;
+    dm::set_mod(998244353);
+    const std::vector<int> sizes = {61, 63, 64, 65, 100, 127, 128, 129, 255, 256, 257, 1000};
+    for (int rep = 0; rep < 60 && ok; rep++) {
+        int np = rep % 3 == 0 ? rng() % 1100 : sizes[rng() % sizes.size()] - rng() % 2;
+        int nq = sizes[rng() % sizes.size()];
+        if (rep % 4 == 0) std::swap(np, nq);
+        nq = std::max(nq, 1);
+        std::vector<sm> Ps(np), Qs(nq);
+        std::vector<dm> Pd(np), Qd(nq);
+        for (int i = 0; i < np; i++) {
+            unsigned int v = rng() % 998244353;
+            Ps[i] = v, Pd[i] = v;
+        }
+        for (int i = 0; i < nq; i++) {
+            unsigned int v = rng() % 998244353;
+            if (i == 0 && v == 0) v = 1;
+            Qs[i] = v, Qd[i] = v;
+        }
+        std::vector<long long> ks = {0, 1, 2, 3, np, nq, np + nq, 1000000000000000000LL, static_cast<long long>(rng() >> 4)};
+        for (int t = 0; t < 5; t++) ks.push_back(rng() % 5000);
+        for (long long k : ks) check(bostan_mori(Ps, Qs, k).val() == bostan_mori(Pd, Qd, k).val(), "bostan_mori の NTT の経路");
+    }
+    // linear_recurrence_kth も、d が大きいときに漸化式で順に計算したものと比べる
+    for (int d : {61, 64, 65, 200}) {
+        std::vector<sm> a(d), c(d);
+        for (auto& x : a) x = rng() % 998244353;
+        for (auto& x : c) x = rng() % 998244353;
+        std::vector<sm> seq = a;
+        for (int i = d; i < 3000; i++) {
+            sm s = 0;
+            for (int j = 1; j <= d; j++) s += c[j - 1] * seq[i - j];
+            seq.push_back(s);
+        }
+        for (int k = 0; k < 3000; k += 7) check(linear_recurrence_kth(a, c, k) == seq[k], "linear_recurrence_kth の NTT の経路");
+    }
+}
+
 int main() {
     std::mt19937_64 rng(314);
     test_mod<static_modint<998244353>>(rng);
     test_mod<static_modint<1000000007>>(rng);
+    test_ntt_path(rng);
 
     // berlekamp_massey の最短性: mod 3 で長さ d の漸化式を全部試し、成り立つ最短の d と比べる
     using m3 = static_modint<3>;

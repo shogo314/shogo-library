@@ -26,7 +26,7 @@ mint g = linear_recurrence_kth(std::vector<mint>(first.begin(), first.begin() + 
 | `berlekamp_massey(a)` | 数列 `a` を満たす最短の漸化式の係数 $c_1, \dots, c_d$ ($d \le i < \lvert a \rvert$ で成り立つ) | $O(\lvert a \rvert^2)$ |
 
 - `linear_recurrence_kth` は、母関数 $A(x) = P(x) / Q(x)$ ($Q(x) = 1 - c_1 x - \dots - c_d x^d$、$P(x) = A(x) Q(x) \bmod x^d$) について `bostan_mori` を呼びます。
-- `bostan_mori` は $P(x) / Q(x) = P(x) Q(-x) / (Q(x) Q(-x))$ の分母が $x^2$ の多項式になることを使い、$k$ の偶奇で分子の係数を半分に絞って $k$ を半分にします。畳み込みは [畳み込み](convolution.hpp) の `convolution` を使うので、法は任意です。1 段ごとに畳み込みを 2 回するので、$d = 10^5$、$k = 10^{18}$ では 3 秒ほどかかります。
+- `bostan_mori` は $P(x) / Q(x) = P(x) Q(-x) / (Q(x) Q(-x))$ の分母が $x^2$ の多項式になることを使い、$k$ の偶奇で分子の係数を半分に絞って $k$ を半分にします。法が NTT に向く素数 (998244353 など) で長さが 61 以上なら、NTT した値のまま段を進めます (1 段あたり NTT 4 回分ほど、$d = 10^5$、$k = 10^{18}$ で 0.3 秒ほど)。そうでなければ 1 段ごとに [畳み込み](convolution.hpp) の `convolution` を 2 回呼ぶので、法は任意です。
 - `berlekamp_massey` は、漸化式の長さが $d$ なら、初めの $2d$ 項以上を渡せば正しく復元できます。足りないと、もっと短い別の漸化式を返すことがあります。
 
 ## 関連

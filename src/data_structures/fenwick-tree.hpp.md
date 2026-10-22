@@ -478,11 +478,11 @@ data:
   timestamp: '2026-10-19 12:03:10+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/geometry/axis-parallel-segments.test.cpp
   - test/unittest/data_structures/fenwick-tree.test.cpp
+  - test/unittest/geometry/axis-parallel-segments.test.cpp
+  - test/aoj/cgl/cgl-6-a.test.cpp
   - test/aoj/grl/grl-5-d.test.cpp
   - test/aoj/dsl/dsl-2-b.2.test.cpp
-  - test/aoj/cgl/cgl-6-a.test.cpp
   - test/yosupo/data_structure/point-add-range-sum.3.test.cpp
   - test/yosupo/tree/vertex-add-path-sum.test.cpp
   - test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp

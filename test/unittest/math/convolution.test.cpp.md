@@ -27,63 +27,64 @@ data:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
   bundledCode: "#line 1 \"test/unittest/math/convolution.test.cpp\"\n#define PROBLEM\
     \ \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\n\n//\
-    \ convolution \u3068 convolution_ll \u3092\u3001\u7D20\u6734\u306A\u8A08\u7B97\
-    \u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u3079\u308B\n// \u76F4\u63A5 NTT \u3059\
-    \u308B\u6CD5 (998244353 \u306A\u3069 NTT \u306B\u5411\u304F\u7D20\u6570) \u3068\
-    \u30013 \u3064\u306E\u6CD5\u306E\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\u3092\u4F7F\
-    \u3046\u6CD5 (1e9+7\u3001dynamic_modint\u3001\u7D20\u6570\u3067\u306A\u3044\u6CD5\
-    ) \u306E\u4E21\u65B9\u3092\u8A66\u3059\n// \u9577\u3055\u306F\u7D20\u6734\u306A\
-    \u8A08\u7B97\u306B\u5207\u308A\u66FF\u3048\u308B\u5883\u76EE (60) \u3092\u307E\
-    \u305F\u3050\u3088\u3046\u306B\u3057\u3001\u540C\u3058\u914D\u5217\u3069\u3046\
-    \u3057\u306E\u7573\u307F\u8FBC\u307F (\u5909\u63DB\u3092 1 \u56DE\u7701\u304F\
-    ) \u3082\u8ABF\u3079\u308B\n// 7340033 \u306F 2^20 \u307E\u3067\u3057\u304B\u76F4\
-    \u63A5 NTT \u3067\u304D\u306A\u3044\u306E\u3067\u3001\u305D\u308C\u3088\u308A\u9577\
-    \u3044\u3068\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\u306B\u5207\u308A\u66FF\u308F\
-    \u308B\u3002\u30E9\u30F3\u30C0\u30E0\u306A\u70B9\u3067\u306E\u5024 A(x) B(x) \u3067\
-    \u78BA\u304B\u3081\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\
-    \u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\
-    \u529B\u3059\u308B\n\n#line 2 \"src/math/convolution.hpp\"\n\n/**\n * @file convolution.hpp\n\
-    \ * @brief \u7573\u307F\u8FBC\u307F (NTT)\n */\n\n#include <algorithm>\n#include\
-    \ <array>\n#include <cstdint>\n#include <type_traits>\n#include <utility>\n#include\
-    \ <vector>\n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n *\
-    \ @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
-    \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#include <cassert>\n#line 10 \"\
-    src/math/modint.hpp\"\n#include <iostream>\n#include <limits>\n#line 14 \"src/math/modint.hpp\"\
-    \n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief\
-    \ \u578B\u7279\u6027\n */\n\n#include <cstddef>\n#include <iterator>\n#include\
-    \ <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace internal_traits {\n\
-    using std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
-    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
-    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
-    \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
-    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
-    \n#define HAS_METHOD(func_name)                                              \
-    \                \\\n    namespace internal_traits {                         \
-    \                                   \\\n    template <class T, class = void> \
-    \                                                      \\\n    struct has_##func_name##_impl\
-    \ : std::false_type {};                                    \\\n    template <class\
-    \ T>                                                                     \\\n\
-    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
-    \ \\\n        : std::true_type {};                                           \
-    \                    \\\n    }                                               \
-    \                                       \\\n    template <class T>           \
-    \                                                          \\\n    struct has_##func_name\
-    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
-    \ <class T>                                                                  \
-    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
-    \n#define HAS_METHOD_ARG(func_name)                                          \
-    \                                    \\\n    namespace internal_traits {     \
-    \                                                                           \\\
-    \n    template <class T, typename U, class = void>                           \
-    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
-    \ {};                                                        \\\n    template\
-    \ <class T, typename U>                                                      \
-    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
-    \ \\\n        : std::true_type {};                                           \
-    \                                        \\\n    }                           \
+    \ convolution \u3068 convolution_ll \u3068 convolution_u64 \u3092\u3001\u7D20\u6734\
+    \u306A\u8A08\u7B97\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u3079\u308B\n// \u76F4\
+    \u63A5 NTT \u3059\u308B\u6CD5 (998244353 \u306A\u3069 NTT \u306B\u5411\u304F\u7D20\
+    \u6570) \u3068\u30013 \u3064\u306E\u6CD5\u306E\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\
+    \u3092\u4F7F\u3046\u6CD5 (1e9+7\u3001dynamic_modint\u3001\u7D20\u6570\u3067\u306A\
+    \u3044\u6CD5) \u306E\u4E21\u65B9\u3092\u8A66\u3059\n// \u9577\u3055\u306F\u7D20\
+    \u6734\u306A\u8A08\u7B97\u306B\u5207\u308A\u66FF\u3048\u308B\u5883\u76EE (60)\
+    \ \u3092\u307E\u305F\u3050\u3088\u3046\u306B\u3057\u3001\u540C\u3058\u914D\u5217\
+    \u3069\u3046\u3057\u306E\u7573\u307F\u8FBC\u307F (\u5909\u63DB\u3092 1 \u56DE\u7701\
+    \u304F) \u3082\u8ABF\u3079\u308B\n// 7340033 \u306F 2^20 \u307E\u3067\u3057\u304B\
+    \u76F4\u63A5 NTT \u3067\u304D\u306A\u3044\u306E\u3067\u3001\u305D\u308C\u3088\u308A\
+    \u9577\u3044\u3068\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\u306B\u5207\u308A\u66FF\
+    \u308F\u308B\u3002\u30E9\u30F3\u30C0\u30E0\u306A\u70B9\u3067\u306E\u5024 A(x)\
+    \ B(x) \u3067\u78BA\u304B\u3081\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\
+    \u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello\
+    \ World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/math/convolution.hpp\"\
+    \n\n/**\n * @file convolution.hpp\n * @brief \u7573\u307F\u8FBC\u307F (NTT)\n\
+    \ */\n\n#include <algorithm>\n#include <array>\n#include <cassert>\n#include <cstdint>\n\
+    #include <type_traits>\n#include <utility>\n#include <vector>\n\n#line 2 \"src/math/modint.hpp\"\
+    \n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\
+    \u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line\
+    \ 10 \"src/math/modint.hpp\"\n#include <iostream>\n#include <limits>\n#line 14\
+    \ \"src/math/modint.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file\
+    \ traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n#include\
+    \ <iterator>\n#include <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace\
+    \ internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T, class =\
+    \ void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct\
+    \ is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
+    \ : std::true_type {};\n}  // namespace internal_traits\n\ntemplate <class T>\n\
+    struct is_range : internal_traits::is_range_impl<T>::type {};\ntemplate <class\
+    \ T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define HAS_METHOD(func_name)\
+    \                                                              \\\n    namespace\
+    \ internal_traits {                                                          \
+    \  \\\n    template <class T, class = void>                                  \
+    \                     \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                    \\\n    template <class T>          \
+    \                                                           \\\n    struct has_##func_name##_impl<T,\
+    \ std::void_t<decltype(std::declval<T>().func_name())>> \\\n        : std::true_type\
+    \ {};                                                               \\\n    }\
     \                                                                            \
-    \   \\\n    template <class T, typename U>                                   \
-    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \          \\\n    template <class T>                                        \
+    \                             \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T>::type\
+    \ {};          \\\n    template <class T>                                    \
+    \                                 \\\n    inline constexpr bool has_##func_name##_v\
+    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
+    \                                                                    \\\n    namespace\
+    \ internal_traits {                                                          \
+    \                      \\\n    template <class T, typename U, class = void>  \
+    \                                                             \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                                      \
+    \  \\\n    template <class T, typename U>                                    \
+    \                                         \\\n    struct has_##func_name##_impl<T,\
+    \ U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>> \\\
+    \n        : std::true_type {};                                               \
+    \                                    \\\n    }                               \
+    \                                                                           \\\
+    \n    template <class T, typename U>                                         \
+    \                                    \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
     \ U>::type {};                           \\\n    template <class T, typename U>\
     \                                                                            \
     \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
@@ -391,7 +392,7 @@ data:
     \ tt = modmul(tt, tt, p), i++;\n        long long b = c;\n        for (long long\
     \ j = 0; j < s - i - 1; j++) b = modmul(b, b, p);\n        s = i;\n        c =\
     \ modmul(b, b, p);\n        t = modmul(t, c, p);\n        r = modmul(r, b, p);\n\
-    \    }\n    return std::min(r, p - r);\n}\n#line 17 \"src/math/convolution.hpp\"\
+    \    }\n    return std::min(r, p - r);\n}\n#line 18 \"src/math/convolution.hpp\"\
     \n\n/**\n * @brief \u7573\u307F\u8FBC\u307F\n */\nnamespace internal_convolution\
     \ {\n/**\n * @brief \u539F\u5B50\u6839\n * @param MOD int\n * @return int\n */\n\
     inline int calc_primitive_root(int MOD) {\n    if (MOD == 2) return 1;\n    if\
@@ -551,7 +552,22 @@ data:
     \ 1; ++i) {\n        unsigned int y0 = c0[i].val();\n        unsigned int y1 =\
     \ (imod0 * (c1[i] - y0)).val();\n        unsigned int y2 = (imod01 * (c2[i] -\
     \ y0) - imod1 * y1).val();\n        res[i] = f(y0, y1, y2);\n    }\n    return\
-    \ res;\n}\n}  // namespace internal_convolution\n\n/**\n * @brief modint\u306E\
+    \ res;\n}\n\n/**\n * @brief convolution_u64 \u306E 1 \u3064\u306E\u6CD5\u3067\u306E\
+    \u8A08\u7B97\u3002A = A0 + A1 2^32\u3001B = B0 + B1 2^32 \u3068\u5206\u3051\u3001\
+    \n * A0 B0 \u3068 A0 B1 + A1 B0 \u306E\u7573\u307F\u8FBC\u307F\u3092\u30014 \u56DE\
+    \u306E\u5909\u63DB\u3068 2 \u56DE\u306E\u9006\u5909\u63DB\u3067\u6C42\u3081\u308B\
+    \n */\ntemplate <class mint>\nstd::array<std::vector<mint>, 2> convolution_u64_parts(const\
+    \ std::vector<unsigned long long>& A, const std::vector<unsigned long long>& B,\
+    \ int z) {\n    const int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n\
+    \    std::vector<mint> a0(z), a1(z), b0(z), b1(z);\n    for (int i = 0; i < N;\
+    \ ++i) a0[i] = A[i] & 0xffffffffULL, a1[i] = A[i] >> 32;\n    for (int i = 0;\
+    \ i < M; ++i) b0[i] = B[i] & 0xffffffffULL, b1[i] = B[i] >> 32;\n    butterfly(a0),\
+    \ butterfly(a1), butterfly(b0), butterfly(b1);\n    for (int i = 0; i < z; ++i)\
+    \ {\n        const mint x0 = a0[i], x1 = a1[i];\n        a0[i] = x0 * b0[i];\n\
+    \        a1[i] = x0 * b1[i] + x1 * b0[i];\n    }\n    butterfly_inv(a0), butterfly_inv(a1);\n\
+    \    a0.resize(N + M - 1), a1.resize(N + M - 1);\n    const mint iz = mint(z).inv();\n\
+    \    for (int i = 0; i < N + M - 1; ++i) a0[i] *= iz, a1[i] *= iz;\n    return\
+    \ {a0, a1};\n}\n}  // namespace internal_convolution\n\n/**\n * @brief modint\u306E\
     \u7573\u307F\u8FBC\u307F\n *\n * static_modint \u3067\u6CD5\u304C NTT \u306B\u5411\
     \u304F\u7D20\u6570 (998244353 \u306A\u3069) \u306A\u3089\u3001\u305D\u306E\u6CD5\
     \u3067\u76F4\u63A5 NTT \u3059\u308B\u3002\n * \u305D\u3046\u3067\u306A\u3051\u308C\
@@ -583,25 +599,52 @@ data:
     \ [&](unsigned int y0, unsigned int y1, unsigned int y2) {\n        __int128_t\
     \ tmp = static_cast<__int128_t>(mod01) * y2 + static_cast<__int128_t>(mod0) *\
     \ y1 + y0;\n        return static_cast<long long>(tmp < (mod012 >> 1) ? tmp :\
-    \ tmp - mod012);\n    });\n}\n#line 10 \"test/unittest/math/convolution.test.cpp\"\
-    \n\n#line 12 \"test/unittest/math/convolution.test.cpp\"\n#include <random>\n\
-    #line 14 \"test/unittest/math/convolution.test.cpp\"\n\n#line 16 \"test/unittest/math/convolution.test.cpp\"\
-    \n\nbool ok = true;\nvoid check(bool cond, const char* what) {\n    if (!cond\
-    \ && ok) std::cerr << \"failed: \" << what << std::endl;\n    if (!cond) ok =\
-    \ false;\n}\n\ntemplate <class T>\nstd::vector<T> naive(const std::vector<T>&\
-    \ a, const std::vector<T>& b) {\n    if (a.empty() || b.empty()) return {};\n\
-    \    std::vector<T> c(a.size() + b.size() - 1);\n    for (size_t i = 0; i < a.size();\
-    \ i++)\n        for (size_t j = 0; j < b.size(); j++) c[i + j] += a[i] * b[j];\n\
-    \    return c;\n}\n\ntemplate <class mint>\nvoid test(std::mt19937_64& rng, const\
-    \ char* name) {\n    for (int rep = 0; rep < 200 && ok; rep++) {\n        int\
-    \ n = rng() % 200, m = rng() % 200;\n        std::vector<mint> a(n), b(m);\n \
-    \       for (auto& x : a) x = rng();\n        for (auto& x : b) x = rng();\n \
-    \       check(convolution(a, b) == naive(a, b), name);\n        check(convolution(a,\
-    \ a) == naive(a, a), name);  // \u540C\u3058\u914D\u5217\n    }\n}\n\ntemplate\
-    \ <class mint>\nmint eval(const std::vector<mint>& f, mint x) {\n    mint r =\
-    \ 0;\n    for (int i = static_cast<int>(f.size()) - 1; i >= 0; i--) r = r * x\
-    \ + f[i];\n    return r;\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n \
-    \   test<modint998244353>(rng, \"998244353\");\n    test<static_modint<469762049>>(rng,\
+    \ tmp - mod012);\n    });\n}\n\n/**\n * @brief unsigned long long \u306E\u7573\
+    \u307F\u8FBC\u307F\u3092 2^64 \u3067\u5272\u3063\u305F\u4F59\u308A\u3067\u6C42\
+    \u3081\u308B\n * \u5404\u5024\u3092 32 \u30D3\u30C3\u30C8\u305A\u3064 2 \u3064\
+    \u306B\u5206\u3051\u3001\u4E0B\u4F4D\u3069\u3046\u3057\u306E\u7A4D\u306E\u548C\
+    \u3068\u3001\u4E0A\u4F4D\u3068\u4E0B\u4F4D\u306E\u7A4D\u306E\u548C\u3092 3 \u3064\
+    \u306E\u6CD5\u3068\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\u3067\u6C42\u3081\u308B\
+    \u3002\n * \u548C\u306E\u9805\u306E\u6570 min(|A|, |B|) \u304C 10^6 \u4EE5\u4E0B\
+    \u3067\u3042\u308B\u3053\u3068 (\u548C\u304C MOD0 MOD1 MOD2 \u672A\u6E80\u306B\
+    \u53CE\u307E\u308B)\n * @param A vector<unsigned long long>\n * @param B vector<unsigned\
+    \ long long>\n * @return vector<unsigned long long>\n */\ninline std::vector<unsigned\
+    \ long long> convolution_u64(const std::vector<unsigned long long>& A, const std::vector<unsigned\
+    \ long long>& B) {\n    if (A.empty() || B.empty()) return {};\n    const int\
+    \ N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n    if (std::min(N,\
+    \ M) <= 60) return internal_convolution::naive(A, B);\n    assert(std::min(N,\
+    \ M) <= 1000000);\n    using namespace internal_convolution;\n    const int z\
+    \ = get_fft_size(N, M);\n    const auto [p0, q0] = convolution_u64_parts<mint0>(A,\
+    \ B, z);\n    const auto [p1, q1] = convolution_u64_parts<mint1>(A, B, z);\n \
+    \   const auto [p2, q2] = convolution_u64_parts<mint2>(A, B, z);\n    // \u5024\
+    \u306F y0 + y1 MOD0 + y2 MOD0 MOD1 \u306A\u306E\u3067\u3001unsigned long long\
+    \ \u3067\u8A08\u7B97\u3059\u308C\u3070 2^64 \u3067\u5272\u3063\u305F\u4F59\u308A\
+    \u306B\u306A\u308B\n    constexpr unsigned long long mod01 = static_cast<unsigned\
+    \ long long>(MOD0) * MOD1;\n    auto restore = [&](mint0 c0, mint1 c1, mint2 c2)\
+    \ {\n        const unsigned int y0 = c0.val();\n        const unsigned int y1\
+    \ = (imod0 * (c1 - y0)).val();\n        const unsigned int y2 = (imod01 * (c2\
+    \ - y0) - imod1 * y1).val();\n        return y0 + static_cast<unsigned long long>(y1)\
+    \ * MOD0 + y2 * mod01;\n    };\n    std::vector<unsigned long long> res(N + M\
+    \ - 1);\n    for (int i = 0; i < N + M - 1; ++i) res[i] = restore(p0[i], p1[i],\
+    \ p2[i]) + (restore(q0[i], q1[i], q2[i]) << 32);\n    return res;\n}\n#line 10\
+    \ \"test/unittest/math/convolution.test.cpp\"\n\n#line 13 \"test/unittest/math/convolution.test.cpp\"\
+    \n#include <random>\n#line 15 \"test/unittest/math/convolution.test.cpp\"\n\n\
+    #line 17 \"test/unittest/math/convolution.test.cpp\"\n\nbool ok = true;\nvoid\
+    \ check(bool cond, const char* what) {\n    if (!cond && ok) std::cerr << \"failed:\
+    \ \" << what << std::endl;\n    if (!cond) ok = false;\n}\n\ntemplate <class T>\n\
+    std::vector<T> naive(const std::vector<T>& a, const std::vector<T>& b) {\n   \
+    \ if (a.empty() || b.empty()) return {};\n    std::vector<T> c(a.size() + b.size()\
+    \ - 1);\n    for (size_t i = 0; i < a.size(); i++)\n        for (size_t j = 0;\
+    \ j < b.size(); j++) c[i + j] += a[i] * b[j];\n    return c;\n}\n\ntemplate <class\
+    \ mint>\nvoid test(std::mt19937_64& rng, const char* name) {\n    for (int rep\
+    \ = 0; rep < 200 && ok; rep++) {\n        int n = rng() % 200, m = rng() % 200;\n\
+    \        std::vector<mint> a(n), b(m);\n        for (auto& x : a) x = rng();\n\
+    \        for (auto& x : b) x = rng();\n        check(convolution(a, b) == naive(a,\
+    \ b), name);\n        check(convolution(a, a) == naive(a, a), name);  // \u540C\
+    \u3058\u914D\u5217\n    }\n}\n\ntemplate <class mint>\nmint eval(const std::vector<mint>&\
+    \ f, mint x) {\n    mint r = 0;\n    for (int i = static_cast<int>(f.size()) -\
+    \ 1; i >= 0; i--) r = r * x + f[i];\n    return r;\n}\n\nint main() {\n    std::mt19937_64\
+    \ rng(314);\n    test<modint998244353>(rng, \"998244353\");\n    test<static_modint<469762049>>(rng,\
     \ \"469762049\");\n    test<static_modint<167772161>>(rng, \"167772161\");\n \
     \   test<static_modint<754974721>>(rng, \"754974721\");\n    test<static_modint<7340033>>(rng,\
     \ \"7340033\");\n    test<modint1000000007>(rng, \"1000000007\");\n    test<static_modint<1000000>>(rng,\
@@ -627,41 +670,64 @@ data:
     \ b) x = static_cast<long long>(rng() % (2 * w + 1)) - w;\n        check(convolution_ll(a,\
     \ b) == naive(a, b), \"convolution_ll\");\n        check(convolution_ll(a, a)\
     \ == naive(a, a), \"convolution_ll \u540C\u3058\u914D\u5217\");\n    }\n\n   \
-    \ if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \ // convolution_u64: unsigned long long \u306E\u7D20\u6734\u306A\u8A08\u7B97\
+    \ (2^64 \u3067\u81EA\u7136\u306B\u5272\u3063\u305F\u4F59\u308A\u306B\u306A\u308B\
+    ) \u3068\u6BD4\u3079\u308B\n    // \u5024\u306F 2^64 \u8FD1\u304F\u306E\u3082\u306E\
+    \u3084\u4E0A\u4F4D 32 \u30D3\u30C3\u30C8\u3060\u3051\u306E\u3082\u306E\u3082\u6DF7\
+    \u305C\u3001\u9577\u3055\u306F 60 \u3092\u307E\u305F\u3050\u3002\u9577\u3044\u5834\
+    \u5408\u306F\u5024\u3092 1 \u70B9\u3060\u3051\u78BA\u304B\u3081\u308B\n    for\
+    \ (int rep = 0; rep < 200 && ok; rep++) {\n        int n = rng() % 300, m = rng()\
+    \ % 300;\n        auto gen = [&]() -> unsigned long long {\n            switch\
+    \ (rng() % 4) {\n                case 0:\n                    return rng();\n\
+    \                case 1:\n                    return ~0ULL - rng() % 3;\n    \
+    \            case 2:\n                    return rng() << 32;\n              \
+    \  default:\n                    return rng() % 5;\n            }\n        };\n\
+    \        std::vector<unsigned long long> a(n), b(m);\n        for (auto& x : a)\
+    \ x = gen();\n        for (auto& x : b) x = gen();\n        check(convolution_u64(a,\
+    \ b) == naive(a, b), \"convolution_u64\");\n    }\n    {\n        // \u548C\u306E\
+    \u9805\u306E\u6570\u304C\u591A\u3044\u3068\u304D (\u4E0A\u9650 10^6 \u306B\u8FD1\
+    \u3044\u9577\u3055)\u3002\u3059\u3079\u3066 2^64 - 1 \u306A\u3089\u3001c_k = (k\
+    \ + 1) (2^64 - 1)^2 = k + 1 (mod 2^64)\n        const int n = 1000000;\n     \
+    \   std::vector<unsigned long long> a(n, ~0ULL), b(n, ~0ULL);\n        auto c\
+    \ = convolution_u64(a, b);\n        check(c.size() == 2 * n - 1, \"convolution_u64\
+    \ \u9577\u3044\");\n        for (int k : {0, 1, 12345, n - 1, n, 2 * n - 2}) check(c[k]\
+    \ == static_cast<unsigned long long>(std::min(k, 2 * n - 2 - k) + 1), \"convolution_u64\
+    \ \u9577\u3044\");\n    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
+    }\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
-    \n\n// convolution \u3068 convolution_ll \u3092\u3001\u7D20\u6734\u306A\u8A08\u7B97\
-    \u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u3079\u308B\n// \u76F4\u63A5 NTT \u3059\
-    \u308B\u6CD5 (998244353 \u306A\u3069 NTT \u306B\u5411\u304F\u7D20\u6570) \u3068\
-    \u30013 \u3064\u306E\u6CD5\u306E\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\u3092\u4F7F\
-    \u3046\u6CD5 (1e9+7\u3001dynamic_modint\u3001\u7D20\u6570\u3067\u306A\u3044\u6CD5\
-    ) \u306E\u4E21\u65B9\u3092\u8A66\u3059\n// \u9577\u3055\u306F\u7D20\u6734\u306A\
-    \u8A08\u7B97\u306B\u5207\u308A\u66FF\u3048\u308B\u5883\u76EE (60) \u3092\u307E\
-    \u305F\u3050\u3088\u3046\u306B\u3057\u3001\u540C\u3058\u914D\u5217\u3069\u3046\
-    \u3057\u306E\u7573\u307F\u8FBC\u307F (\u5909\u63DB\u3092 1 \u56DE\u7701\u304F\
-    ) \u3082\u8ABF\u3079\u308B\n// 7340033 \u306F 2^20 \u307E\u3067\u3057\u304B\u76F4\
-    \u63A5 NTT \u3067\u304D\u306A\u3044\u306E\u3067\u3001\u305D\u308C\u3088\u308A\u9577\
-    \u3044\u3068\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\u306B\u5207\u308A\u66FF\u308F\
-    \u308B\u3002\u30E9\u30F3\u30C0\u30E0\u306A\u70B9\u3067\u306E\u5024 A(x) B(x) \u3067\
-    \u78BA\u304B\u3081\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\
-    \u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\
-    \u529B\u3059\u308B\n\n#include \"../../../src/math/convolution.hpp\"\n\n#include\
-    \ <iostream>\n#include <random>\n#include <vector>\n\n#include \"../../../src/math/modint.hpp\"\
-    \n\nbool ok = true;\nvoid check(bool cond, const char* what) {\n    if (!cond\
-    \ && ok) std::cerr << \"failed: \" << what << std::endl;\n    if (!cond) ok =\
-    \ false;\n}\n\ntemplate <class T>\nstd::vector<T> naive(const std::vector<T>&\
-    \ a, const std::vector<T>& b) {\n    if (a.empty() || b.empty()) return {};\n\
-    \    std::vector<T> c(a.size() + b.size() - 1);\n    for (size_t i = 0; i < a.size();\
-    \ i++)\n        for (size_t j = 0; j < b.size(); j++) c[i + j] += a[i] * b[j];\n\
-    \    return c;\n}\n\ntemplate <class mint>\nvoid test(std::mt19937_64& rng, const\
-    \ char* name) {\n    for (int rep = 0; rep < 200 && ok; rep++) {\n        int\
-    \ n = rng() % 200, m = rng() % 200;\n        std::vector<mint> a(n), b(m);\n \
-    \       for (auto& x : a) x = rng();\n        for (auto& x : b) x = rng();\n \
-    \       check(convolution(a, b) == naive(a, b), name);\n        check(convolution(a,\
-    \ a) == naive(a, a), name);  // \u540C\u3058\u914D\u5217\n    }\n}\n\ntemplate\
-    \ <class mint>\nmint eval(const std::vector<mint>& f, mint x) {\n    mint r =\
-    \ 0;\n    for (int i = static_cast<int>(f.size()) - 1; i >= 0; i--) r = r * x\
-    \ + f[i];\n    return r;\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n \
-    \   test<modint998244353>(rng, \"998244353\");\n    test<static_modint<469762049>>(rng,\
+    \n\n// convolution \u3068 convolution_ll \u3068 convolution_u64 \u3092\u3001\u7D20\
+    \u6734\u306A\u8A08\u7B97\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u3079\u308B\
+    \n// \u76F4\u63A5 NTT \u3059\u308B\u6CD5 (998244353 \u306A\u3069 NTT \u306B\u5411\
+    \u304F\u7D20\u6570) \u3068\u30013 \u3064\u306E\u6CD5\u306E\u4E2D\u56FD\u5270\u4F59\
+    \u5B9A\u7406\u3092\u4F7F\u3046\u6CD5 (1e9+7\u3001dynamic_modint\u3001\u7D20\u6570\
+    \u3067\u306A\u3044\u6CD5) \u306E\u4E21\u65B9\u3092\u8A66\u3059\n// \u9577\u3055\
+    \u306F\u7D20\u6734\u306A\u8A08\u7B97\u306B\u5207\u308A\u66FF\u3048\u308B\u5883\
+    \u76EE (60) \u3092\u307E\u305F\u3050\u3088\u3046\u306B\u3057\u3001\u540C\u3058\
+    \u914D\u5217\u3069\u3046\u3057\u306E\u7573\u307F\u8FBC\u307F (\u5909\u63DB\u3092\
+    \ 1 \u56DE\u7701\u304F) \u3082\u8ABF\u3079\u308B\n// 7340033 \u306F 2^20 \u307E\
+    \u3067\u3057\u304B\u76F4\u63A5 NTT \u3067\u304D\u306A\u3044\u306E\u3067\u3001\u305D\
+    \u308C\u3088\u308A\u9577\u3044\u3068\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\u306B\
+    \u5207\u308A\u66FF\u308F\u308B\u3002\u30E9\u30F3\u30C0\u30E0\u306A\u70B9\u3067\
+    \u306E\u5024 A(x) B(x) \u3067\u78BA\u304B\u3081\u308B\n// \u554F\u984C\u306E\u5165\
+    \u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\
+    \u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../../src/math/convolution.hpp\"\
+    \n\n#include <algorithm>\n#include <iostream>\n#include <random>\n#include <vector>\n\
+    \n#include \"../../../src/math/modint.hpp\"\n\nbool ok = true;\nvoid check(bool\
+    \ cond, const char* what) {\n    if (!cond && ok) std::cerr << \"failed: \" <<\
+    \ what << std::endl;\n    if (!cond) ok = false;\n}\n\ntemplate <class T>\nstd::vector<T>\
+    \ naive(const std::vector<T>& a, const std::vector<T>& b) {\n    if (a.empty()\
+    \ || b.empty()) return {};\n    std::vector<T> c(a.size() + b.size() - 1);\n \
+    \   for (size_t i = 0; i < a.size(); i++)\n        for (size_t j = 0; j < b.size();\
+    \ j++) c[i + j] += a[i] * b[j];\n    return c;\n}\n\ntemplate <class mint>\nvoid\
+    \ test(std::mt19937_64& rng, const char* name) {\n    for (int rep = 0; rep <\
+    \ 200 && ok; rep++) {\n        int n = rng() % 200, m = rng() % 200;\n       \
+    \ std::vector<mint> a(n), b(m);\n        for (auto& x : a) x = rng();\n      \
+    \  for (auto& x : b) x = rng();\n        check(convolution(a, b) == naive(a, b),\
+    \ name);\n        check(convolution(a, a) == naive(a, a), name);  // \u540C\u3058\
+    \u914D\u5217\n    }\n}\n\ntemplate <class mint>\nmint eval(const std::vector<mint>&\
+    \ f, mint x) {\n    mint r = 0;\n    for (int i = static_cast<int>(f.size()) -\
+    \ 1; i >= 0; i--) r = r * x + f[i];\n    return r;\n}\n\nint main() {\n    std::mt19937_64\
+    \ rng(314);\n    test<modint998244353>(rng, \"998244353\");\n    test<static_modint<469762049>>(rng,\
     \ \"469762049\");\n    test<static_modint<167772161>>(rng, \"167772161\");\n \
     \   test<static_modint<754974721>>(rng, \"754974721\");\n    test<static_modint<7340033>>(rng,\
     \ \"7340033\");\n    test<modint1000000007>(rng, \"1000000007\");\n    test<static_modint<1000000>>(rng,\
@@ -687,7 +753,30 @@ data:
     \ b) x = static_cast<long long>(rng() % (2 * w + 1)) - w;\n        check(convolution_ll(a,\
     \ b) == naive(a, b), \"convolution_ll\");\n        check(convolution_ll(a, a)\
     \ == naive(a, a), \"convolution_ll \u540C\u3058\u914D\u5217\");\n    }\n\n   \
-    \ if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \ // convolution_u64: unsigned long long \u306E\u7D20\u6734\u306A\u8A08\u7B97\
+    \ (2^64 \u3067\u81EA\u7136\u306B\u5272\u3063\u305F\u4F59\u308A\u306B\u306A\u308B\
+    ) \u3068\u6BD4\u3079\u308B\n    // \u5024\u306F 2^64 \u8FD1\u304F\u306E\u3082\u306E\
+    \u3084\u4E0A\u4F4D 32 \u30D3\u30C3\u30C8\u3060\u3051\u306E\u3082\u306E\u3082\u6DF7\
+    \u305C\u3001\u9577\u3055\u306F 60 \u3092\u307E\u305F\u3050\u3002\u9577\u3044\u5834\
+    \u5408\u306F\u5024\u3092 1 \u70B9\u3060\u3051\u78BA\u304B\u3081\u308B\n    for\
+    \ (int rep = 0; rep < 200 && ok; rep++) {\n        int n = rng() % 300, m = rng()\
+    \ % 300;\n        auto gen = [&]() -> unsigned long long {\n            switch\
+    \ (rng() % 4) {\n                case 0:\n                    return rng();\n\
+    \                case 1:\n                    return ~0ULL - rng() % 3;\n    \
+    \            case 2:\n                    return rng() << 32;\n              \
+    \  default:\n                    return rng() % 5;\n            }\n        };\n\
+    \        std::vector<unsigned long long> a(n), b(m);\n        for (auto& x : a)\
+    \ x = gen();\n        for (auto& x : b) x = gen();\n        check(convolution_u64(a,\
+    \ b) == naive(a, b), \"convolution_u64\");\n    }\n    {\n        // \u548C\u306E\
+    \u9805\u306E\u6570\u304C\u591A\u3044\u3068\u304D (\u4E0A\u9650 10^6 \u306B\u8FD1\
+    \u3044\u9577\u3055)\u3002\u3059\u3079\u3066 2^64 - 1 \u306A\u3089\u3001c_k = (k\
+    \ + 1) (2^64 - 1)^2 = k + 1 (mod 2^64)\n        const int n = 1000000;\n     \
+    \   std::vector<unsigned long long> a(n, ~0ULL), b(n, ~0ULL);\n        auto c\
+    \ = convolution_u64(a, b);\n        check(c.size() == 2 * n - 1, \"convolution_u64\
+    \ \u9577\u3044\");\n        for (int k : {0, 1, 12345, n - 1, n, 2 * n - 2}) check(c[k]\
+    \ == static_cast<unsigned long long>(std::min(k, 2 * n - 2 - k) + 1), \"convolution_u64\
+    \ \u9577\u3044\");\n    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
+    }\n"
   dependsOn:
   - src/math/convolution.hpp
   - src/math/modint.hpp
@@ -696,7 +785,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/convolution.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 20:04:06+09:00'
+  timestamp: '2026-10-22 21:31:06+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/convolution.test.cpp

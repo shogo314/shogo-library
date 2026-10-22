@@ -919,21 +919,21 @@ data:
   verifiedWith:
   - test/unittest/data_structures/dual-segtree.test.cpp
   - test/unittest/algebra/acted-monoid.test.cpp
-  - test/yukicoder/2292.test.cpp
-  - test/aoj/dsl/dsl-2-g.test.cpp
-  - test/aoj/dsl/dsl-2-h.2.test.cpp
   - test/aoj/dsl/dsl-2-h.1.test.cpp
   - test/aoj/dsl/dsl-2-i.test.cpp
+  - test/aoj/dsl/dsl-2-g.test.cpp
   - test/aoj/dsl/dsl-2-f.test.cpp
-  - test/yosupo/data_structure/point-set-range-composite.4.test.cpp
-  - test/yosupo/data_structure/area-of-union-of-rectangles.1.test.cpp
-  - test/yosupo/data_structure/range-affine-point-get.1.test.cpp
-  - test/yosupo/data_structure/range-affine-range-sum.3.test.cpp
-  - test/yosupo/data_structure/area-of-union-of-rectangles.2.test.cpp
-  - test/yosupo/data_structure/range-affine-range-sum.1.test.cpp
-  - test/yosupo/data_structure/range-affine-range-sum.2.test.cpp
-  - test/yosupo/data_structure/range-set-range-composite.test.cpp
+  - test/aoj/dsl/dsl-2-h.2.test.cpp
   - test/yosupo/data_structure/point-add-range-sum.1.test.cpp
+  - test/yosupo/data_structure/point-set-range-composite.4.test.cpp
+  - test/yosupo/data_structure/range-affine-range-sum.2.test.cpp
+  - test/yosupo/data_structure/range-affine-range-sum.3.test.cpp
+  - test/yosupo/data_structure/range-affine-point-get.1.test.cpp
+  - test/yosupo/data_structure/area-of-union-of-rectangles.2.test.cpp
+  - test/yosupo/data_structure/range-set-range-composite.test.cpp
+  - test/yosupo/data_structure/area-of-union-of-rectangles.1.test.cpp
+  - test/yosupo/data_structure/range-affine-range-sum.1.test.cpp
+  - test/yukicoder/2292.test.cpp
 documentation_of: src/data_structures/lazy-segtree.hpp
 layout: document
 title: "\u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"

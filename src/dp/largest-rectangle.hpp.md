@@ -117,9 +117,9 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/dp/largest-rectangle.test.cpp
-  - test/aoj/dpl/dpl-3-c.test.cpp
   - test/aoj/dpl/dpl-3-a.test.cpp
   - test/aoj/dpl/dpl-3-b.test.cpp
+  - test/aoj/dpl/dpl-3-c.test.cpp
 documentation_of: src/dp/largest-rectangle.hpp
 layout: document
 title: "\u30D2\u30B9\u30C8\u30B0\u30E9\u30E0\u30FB\u30B0\u30EA\u30C3\u30C9\u306E\u6700\

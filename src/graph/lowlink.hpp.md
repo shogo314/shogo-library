@@ -581,10 +581,10 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/graph/lowlink.test.cpp
-  - test/aoj/grl/grl-3-a.test.cpp
   - test/aoj/grl/grl-3-b.test.cpp
-  - test/yosupo/graph/two-edge-connected-components.test.cpp
+  - test/aoj/grl/grl-3-a.test.cpp
   - test/yosupo/graph/biconnected-components.test.cpp
+  - test/yosupo/graph/two-edge-connected-components.test.cpp
 documentation_of: src/graph/lowlink.hpp
 layout: document
 title: "lowlink (\u95A2\u7BC0\u70B9\u3001\u6A4B\u3001\u4E8C\u91CD\u8FBA\u9023\u7D50\

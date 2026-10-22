@@ -1248,8 +1248,11 @@ data:
       path: test/yosupo/convolution/convolution-mod-1000000007.test.cpp
       title: test/yosupo/convolution/convolution-mod-1000000007.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/yosupo/convolution/convolution-mod-2-64.test.cpp
-      title: test/yosupo/convolution/convolution-mod-2-64.test.cpp
+      path: test/yosupo/convolution/convolution-mod-2-64.1.test.cpp
+      title: test/yosupo/convolution/convolution-mod-2-64.1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/convolution/convolution-mod-2-64.2.test.cpp
+      title: test/yosupo/convolution/convolution-mod-2-64.2.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/convolution/convolution-mod.test.cpp
       title: test/yosupo/convolution/convolution-mod.test.cpp

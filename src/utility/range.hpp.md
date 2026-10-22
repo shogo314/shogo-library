@@ -646,9 +646,9 @@ data:
   timestamp: '2026-10-19 12:29:38+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/utility/range.test.cpp
-  - test/unittest/utility/range-rect.test.cpp
   - test/unittest/utility/repr.test.cpp
+  - test/unittest/utility/range-rect.test.cpp
+  - test/unittest/utility/range.test.cpp
   - test/aoj/itp1/itp1-7-b.test.cpp
 documentation_of: src/utility/range.hpp
 layout: document

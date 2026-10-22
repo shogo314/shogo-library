@@ -29,16 +29,16 @@ data:
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/convolution_mod_1000000007\"\
     \n\n#line 2 \"src/math/convolution.hpp\"\n\n/**\n * @file convolution.hpp\n *\
     \ @brief \u7573\u307F\u8FBC\u307F (NTT)\n */\n\n#include <algorithm>\n#include\
-    \ <array>\n#include <cstdint>\n#include <type_traits>\n#include <utility>\n#include\
-    \ <vector>\n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n *\
-    \ @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
-    \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#include <cassert>\n#line 10 \"\
-    src/math/modint.hpp\"\n#include <iostream>\n#include <limits>\n#line 14 \"src/math/modint.hpp\"\
-    \n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief\
-    \ \u578B\u7279\u6027\n */\n\n#include <cstddef>\n#include <iterator>\n#include\
-    \ <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace internal_traits {\n\
-    using std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
-    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ <array>\n#include <cassert>\n#include <cstdint>\n#include <type_traits>\n#include\
+    \ <utility>\n#include <vector>\n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file\
+    \ modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\
+    \u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line 10 \"src/math/modint.hpp\"\
+    \n#include <iostream>\n#include <limits>\n#line 14 \"src/math/modint.hpp\"\n\n\
+    #line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\
+    \u7279\u6027\n */\n\n#include <cstddef>\n#include <iterator>\n#include <set>\n\
+    #line 13 \"src/utility/traits.hpp\"\n\nnamespace internal_traits {\nusing std::begin,\
+    \ std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl : std::false_type\
+    \ {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
     \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
     \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
     \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
@@ -376,7 +376,7 @@ data:
     \ tt = modmul(tt, tt, p), i++;\n        long long b = c;\n        for (long long\
     \ j = 0; j < s - i - 1; j++) b = modmul(b, b, p);\n        s = i;\n        c =\
     \ modmul(b, b, p);\n        t = modmul(t, c, p);\n        r = modmul(r, b, p);\n\
-    \    }\n    return std::min(r, p - r);\n}\n#line 17 \"src/math/convolution.hpp\"\
+    \    }\n    return std::min(r, p - r);\n}\n#line 18 \"src/math/convolution.hpp\"\
     \n\n/**\n * @brief \u7573\u307F\u8FBC\u307F\n */\nnamespace internal_convolution\
     \ {\n/**\n * @brief \u539F\u5B50\u6839\n * @param MOD int\n * @return int\n */\n\
     inline int calc_primitive_root(int MOD) {\n    if (MOD == 2) return 1;\n    if\
@@ -536,7 +536,22 @@ data:
     \ 1; ++i) {\n        unsigned int y0 = c0[i].val();\n        unsigned int y1 =\
     \ (imod0 * (c1[i] - y0)).val();\n        unsigned int y2 = (imod01 * (c2[i] -\
     \ y0) - imod1 * y1).val();\n        res[i] = f(y0, y1, y2);\n    }\n    return\
-    \ res;\n}\n}  // namespace internal_convolution\n\n/**\n * @brief modint\u306E\
+    \ res;\n}\n\n/**\n * @brief convolution_u64 \u306E 1 \u3064\u306E\u6CD5\u3067\u306E\
+    \u8A08\u7B97\u3002A = A0 + A1 2^32\u3001B = B0 + B1 2^32 \u3068\u5206\u3051\u3001\
+    \n * A0 B0 \u3068 A0 B1 + A1 B0 \u306E\u7573\u307F\u8FBC\u307F\u3092\u30014 \u56DE\
+    \u306E\u5909\u63DB\u3068 2 \u56DE\u306E\u9006\u5909\u63DB\u3067\u6C42\u3081\u308B\
+    \n */\ntemplate <class mint>\nstd::array<std::vector<mint>, 2> convolution_u64_parts(const\
+    \ std::vector<unsigned long long>& A, const std::vector<unsigned long long>& B,\
+    \ int z) {\n    const int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n\
+    \    std::vector<mint> a0(z), a1(z), b0(z), b1(z);\n    for (int i = 0; i < N;\
+    \ ++i) a0[i] = A[i] & 0xffffffffULL, a1[i] = A[i] >> 32;\n    for (int i = 0;\
+    \ i < M; ++i) b0[i] = B[i] & 0xffffffffULL, b1[i] = B[i] >> 32;\n    butterfly(a0),\
+    \ butterfly(a1), butterfly(b0), butterfly(b1);\n    for (int i = 0; i < z; ++i)\
+    \ {\n        const mint x0 = a0[i], x1 = a1[i];\n        a0[i] = x0 * b0[i];\n\
+    \        a1[i] = x0 * b1[i] + x1 * b0[i];\n    }\n    butterfly_inv(a0), butterfly_inv(a1);\n\
+    \    a0.resize(N + M - 1), a1.resize(N + M - 1);\n    const mint iz = mint(z).inv();\n\
+    \    for (int i = 0; i < N + M - 1; ++i) a0[i] *= iz, a1[i] *= iz;\n    return\
+    \ {a0, a1};\n}\n}  // namespace internal_convolution\n\n/**\n * @brief modint\u306E\
     \u7573\u307F\u8FBC\u307F\n *\n * static_modint \u3067\u6CD5\u304C NTT \u306B\u5411\
     \u304F\u7D20\u6570 (998244353 \u306A\u3069) \u306A\u3089\u3001\u305D\u306E\u6CD5\
     \u3067\u76F4\u63A5 NTT \u3059\u308B\u3002\n * \u305D\u3046\u3067\u306A\u3051\u308C\
@@ -568,13 +583,41 @@ data:
     \ [&](unsigned int y0, unsigned int y1, unsigned int y2) {\n        __int128_t\
     \ tmp = static_cast<__int128_t>(mod01) * y2 + static_cast<__int128_t>(mod0) *\
     \ y1 + y0;\n        return static_cast<long long>(tmp < (mod012 >> 1) ? tmp :\
-    \ tmp - mod012);\n    });\n}\n#line 4 \"test/yosupo/convolution/convolution-mod-1000000007.test.cpp\"\
-    \n\nusing mint = modint1000000007;\n\nint main() {\n    long long n, m, x;\n \
-    \   std::cin >> n >> m;\n    std::vector<mint> a(n), b(m);\n    for (int i = 0;\
-    \ i < n; ++i) {\n        std::cin >> x;\n        a[i] = mint(x);\n    }\n    for\
-    \ (int i = 0; i < m; ++i) {\n        std::cin >> x;\n        b[i] = mint(x);\n\
-    \    }\n    auto c = convolution(a, b);\n    for (auto e : c) std::cout << e.val()\
-    \ << \" \";\n    std::cout << std::endl;\n\n    return 0;\n}\n"
+    \ tmp - mod012);\n    });\n}\n\n/**\n * @brief unsigned long long \u306E\u7573\
+    \u307F\u8FBC\u307F\u3092 2^64 \u3067\u5272\u3063\u305F\u4F59\u308A\u3067\u6C42\
+    \u3081\u308B\n * \u5404\u5024\u3092 32 \u30D3\u30C3\u30C8\u305A\u3064 2 \u3064\
+    \u306B\u5206\u3051\u3001\u4E0B\u4F4D\u3069\u3046\u3057\u306E\u7A4D\u306E\u548C\
+    \u3068\u3001\u4E0A\u4F4D\u3068\u4E0B\u4F4D\u306E\u7A4D\u306E\u548C\u3092 3 \u3064\
+    \u306E\u6CD5\u3068\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\u3067\u6C42\u3081\u308B\
+    \u3002\n * \u548C\u306E\u9805\u306E\u6570 min(|A|, |B|) \u304C 10^6 \u4EE5\u4E0B\
+    \u3067\u3042\u308B\u3053\u3068 (\u548C\u304C MOD0 MOD1 MOD2 \u672A\u6E80\u306B\
+    \u53CE\u307E\u308B)\n * @param A vector<unsigned long long>\n * @param B vector<unsigned\
+    \ long long>\n * @return vector<unsigned long long>\n */\ninline std::vector<unsigned\
+    \ long long> convolution_u64(const std::vector<unsigned long long>& A, const std::vector<unsigned\
+    \ long long>& B) {\n    if (A.empty() || B.empty()) return {};\n    const int\
+    \ N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n    if (std::min(N,\
+    \ M) <= 60) return internal_convolution::naive(A, B);\n    assert(std::min(N,\
+    \ M) <= 1000000);\n    using namespace internal_convolution;\n    const int z\
+    \ = get_fft_size(N, M);\n    const auto [p0, q0] = convolution_u64_parts<mint0>(A,\
+    \ B, z);\n    const auto [p1, q1] = convolution_u64_parts<mint1>(A, B, z);\n \
+    \   const auto [p2, q2] = convolution_u64_parts<mint2>(A, B, z);\n    // \u5024\
+    \u306F y0 + y1 MOD0 + y2 MOD0 MOD1 \u306A\u306E\u3067\u3001unsigned long long\
+    \ \u3067\u8A08\u7B97\u3059\u308C\u3070 2^64 \u3067\u5272\u3063\u305F\u4F59\u308A\
+    \u306B\u306A\u308B\n    constexpr unsigned long long mod01 = static_cast<unsigned\
+    \ long long>(MOD0) * MOD1;\n    auto restore = [&](mint0 c0, mint1 c1, mint2 c2)\
+    \ {\n        const unsigned int y0 = c0.val();\n        const unsigned int y1\
+    \ = (imod0 * (c1 - y0)).val();\n        const unsigned int y2 = (imod01 * (c2\
+    \ - y0) - imod1 * y1).val();\n        return y0 + static_cast<unsigned long long>(y1)\
+    \ * MOD0 + y2 * mod01;\n    };\n    std::vector<unsigned long long> res(N + M\
+    \ - 1);\n    for (int i = 0; i < N + M - 1; ++i) res[i] = restore(p0[i], p1[i],\
+    \ p2[i]) + (restore(q0[i], q1[i], q2[i]) << 32);\n    return res;\n}\n#line 4\
+    \ \"test/yosupo/convolution/convolution-mod-1000000007.test.cpp\"\n\nusing mint\
+    \ = modint1000000007;\n\nint main() {\n    long long n, m, x;\n    std::cin >>\
+    \ n >> m;\n    std::vector<mint> a(n), b(m);\n    for (int i = 0; i < n; ++i)\
+    \ {\n        std::cin >> x;\n        a[i] = mint(x);\n    }\n    for (int i =\
+    \ 0; i < m; ++i) {\n        std::cin >> x;\n        b[i] = mint(x);\n    }\n \
+    \   auto c = convolution(a, b);\n    for (auto e : c) std::cout << e.val() <<\
+    \ \" \";\n    std::cout << std::endl;\n\n    return 0;\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/convolution_mod_1000000007\"\
     \n\n#include \"../../../src/math/convolution.hpp\"\n\nusing mint = modint1000000007;\n\
     \nint main() {\n    long long n, m, x;\n    std::cin >> n >> m;\n    std::vector<mint>\
@@ -591,7 +634,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/convolution/convolution-mod-1000000007.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 20:04:06+09:00'
+  timestamp: '2026-10-22 21:31:06+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/convolution/convolution-mod-1000000007.test.cpp

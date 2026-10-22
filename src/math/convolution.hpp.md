@@ -77,8 +77,11 @@ data:
     path: test/yosupo/convolution/convolution-mod-1000000007.test.cpp
     title: test/yosupo/convolution/convolution-mod-1000000007.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/convolution/convolution-mod-2-64.test.cpp
-    title: test/yosupo/convolution/convolution-mod-2-64.test.cpp
+    path: test/yosupo/convolution/convolution-mod-2-64.1.test.cpp
+    title: test/yosupo/convolution/convolution-mod-2-64.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/convolution/convolution-mod-2-64.2.test.cpp
+    title: test/yosupo/convolution/convolution-mod-2-64.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/convolution/convolution-mod.test.cpp
     title: test/yosupo/convolution/convolution-mod.test.cpp
@@ -204,16 +207,16 @@ data:
     links: []
   bundledCode: "#line 2 \"src/math/convolution.hpp\"\n\n/**\n * @file convolution.hpp\n\
     \ * @brief \u7573\u307F\u8FBC\u307F (NTT)\n */\n\n#include <algorithm>\n#include\
-    \ <array>\n#include <cstdint>\n#include <type_traits>\n#include <utility>\n#include\
-    \ <vector>\n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n *\
-    \ @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
-    \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#include <cassert>\n#line 10 \"\
-    src/math/modint.hpp\"\n#include <iostream>\n#include <limits>\n#line 14 \"src/math/modint.hpp\"\
-    \n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief\
-    \ \u578B\u7279\u6027\n */\n\n#include <cstddef>\n#include <iterator>\n#include\
-    \ <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace internal_traits {\n\
-    using std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
-    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ <array>\n#include <cassert>\n#include <cstdint>\n#include <type_traits>\n#include\
+    \ <utility>\n#include <vector>\n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file\
+    \ modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\
+    \u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line 10 \"src/math/modint.hpp\"\
+    \n#include <iostream>\n#include <limits>\n#line 14 \"src/math/modint.hpp\"\n\n\
+    #line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\
+    \u7279\u6027\n */\n\n#include <cstddef>\n#include <iterator>\n#include <set>\n\
+    #line 13 \"src/utility/traits.hpp\"\n\nnamespace internal_traits {\nusing std::begin,\
+    \ std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl : std::false_type\
+    \ {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
     \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
     \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
     \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
@@ -551,7 +554,7 @@ data:
     \ tt = modmul(tt, tt, p), i++;\n        long long b = c;\n        for (long long\
     \ j = 0; j < s - i - 1; j++) b = modmul(b, b, p);\n        s = i;\n        c =\
     \ modmul(b, b, p);\n        t = modmul(t, c, p);\n        r = modmul(r, b, p);\n\
-    \    }\n    return std::min(r, p - r);\n}\n#line 17 \"src/math/convolution.hpp\"\
+    \    }\n    return std::min(r, p - r);\n}\n#line 18 \"src/math/convolution.hpp\"\
     \n\n/**\n * @brief \u7573\u307F\u8FBC\u307F\n */\nnamespace internal_convolution\
     \ {\n/**\n * @brief \u539F\u5B50\u6839\n * @param MOD int\n * @return int\n */\n\
     inline int calc_primitive_root(int MOD) {\n    if (MOD == 2) return 1;\n    if\
@@ -711,7 +714,22 @@ data:
     \ 1; ++i) {\n        unsigned int y0 = c0[i].val();\n        unsigned int y1 =\
     \ (imod0 * (c1[i] - y0)).val();\n        unsigned int y2 = (imod01 * (c2[i] -\
     \ y0) - imod1 * y1).val();\n        res[i] = f(y0, y1, y2);\n    }\n    return\
-    \ res;\n}\n}  // namespace internal_convolution\n\n/**\n * @brief modint\u306E\
+    \ res;\n}\n\n/**\n * @brief convolution_u64 \u306E 1 \u3064\u306E\u6CD5\u3067\u306E\
+    \u8A08\u7B97\u3002A = A0 + A1 2^32\u3001B = B0 + B1 2^32 \u3068\u5206\u3051\u3001\
+    \n * A0 B0 \u3068 A0 B1 + A1 B0 \u306E\u7573\u307F\u8FBC\u307F\u3092\u30014 \u56DE\
+    \u306E\u5909\u63DB\u3068 2 \u56DE\u306E\u9006\u5909\u63DB\u3067\u6C42\u3081\u308B\
+    \n */\ntemplate <class mint>\nstd::array<std::vector<mint>, 2> convolution_u64_parts(const\
+    \ std::vector<unsigned long long>& A, const std::vector<unsigned long long>& B,\
+    \ int z) {\n    const int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n\
+    \    std::vector<mint> a0(z), a1(z), b0(z), b1(z);\n    for (int i = 0; i < N;\
+    \ ++i) a0[i] = A[i] & 0xffffffffULL, a1[i] = A[i] >> 32;\n    for (int i = 0;\
+    \ i < M; ++i) b0[i] = B[i] & 0xffffffffULL, b1[i] = B[i] >> 32;\n    butterfly(a0),\
+    \ butterfly(a1), butterfly(b0), butterfly(b1);\n    for (int i = 0; i < z; ++i)\
+    \ {\n        const mint x0 = a0[i], x1 = a1[i];\n        a0[i] = x0 * b0[i];\n\
+    \        a1[i] = x0 * b1[i] + x1 * b0[i];\n    }\n    butterfly_inv(a0), butterfly_inv(a1);\n\
+    \    a0.resize(N + M - 1), a1.resize(N + M - 1);\n    const mint iz = mint(z).inv();\n\
+    \    for (int i = 0; i < N + M - 1; ++i) a0[i] *= iz, a1[i] *= iz;\n    return\
+    \ {a0, a1};\n}\n}  // namespace internal_convolution\n\n/**\n * @brief modint\u306E\
     \u7573\u307F\u8FBC\u307F\n *\n * static_modint \u3067\u6CD5\u304C NTT \u306B\u5411\
     \u304F\u7D20\u6570 (998244353 \u306A\u3069) \u306A\u3089\u3001\u305D\u306E\u6CD5\
     \u3067\u76F4\u63A5 NTT \u3059\u308B\u3002\n * \u305D\u3046\u3067\u306A\u3051\u308C\
@@ -743,22 +761,49 @@ data:
     \ [&](unsigned int y0, unsigned int y1, unsigned int y2) {\n        __int128_t\
     \ tmp = static_cast<__int128_t>(mod01) * y2 + static_cast<__int128_t>(mod0) *\
     \ y1 + y0;\n        return static_cast<long long>(tmp < (mod012 >> 1) ? tmp :\
-    \ tmp - mod012);\n    });\n}\n"
+    \ tmp - mod012);\n    });\n}\n\n/**\n * @brief unsigned long long \u306E\u7573\
+    \u307F\u8FBC\u307F\u3092 2^64 \u3067\u5272\u3063\u305F\u4F59\u308A\u3067\u6C42\
+    \u3081\u308B\n * \u5404\u5024\u3092 32 \u30D3\u30C3\u30C8\u305A\u3064 2 \u3064\
+    \u306B\u5206\u3051\u3001\u4E0B\u4F4D\u3069\u3046\u3057\u306E\u7A4D\u306E\u548C\
+    \u3068\u3001\u4E0A\u4F4D\u3068\u4E0B\u4F4D\u306E\u7A4D\u306E\u548C\u3092 3 \u3064\
+    \u306E\u6CD5\u3068\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\u3067\u6C42\u3081\u308B\
+    \u3002\n * \u548C\u306E\u9805\u306E\u6570 min(|A|, |B|) \u304C 10^6 \u4EE5\u4E0B\
+    \u3067\u3042\u308B\u3053\u3068 (\u548C\u304C MOD0 MOD1 MOD2 \u672A\u6E80\u306B\
+    \u53CE\u307E\u308B)\n * @param A vector<unsigned long long>\n * @param B vector<unsigned\
+    \ long long>\n * @return vector<unsigned long long>\n */\ninline std::vector<unsigned\
+    \ long long> convolution_u64(const std::vector<unsigned long long>& A, const std::vector<unsigned\
+    \ long long>& B) {\n    if (A.empty() || B.empty()) return {};\n    const int\
+    \ N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n    if (std::min(N,\
+    \ M) <= 60) return internal_convolution::naive(A, B);\n    assert(std::min(N,\
+    \ M) <= 1000000);\n    using namespace internal_convolution;\n    const int z\
+    \ = get_fft_size(N, M);\n    const auto [p0, q0] = convolution_u64_parts<mint0>(A,\
+    \ B, z);\n    const auto [p1, q1] = convolution_u64_parts<mint1>(A, B, z);\n \
+    \   const auto [p2, q2] = convolution_u64_parts<mint2>(A, B, z);\n    // \u5024\
+    \u306F y0 + y1 MOD0 + y2 MOD0 MOD1 \u306A\u306E\u3067\u3001unsigned long long\
+    \ \u3067\u8A08\u7B97\u3059\u308C\u3070 2^64 \u3067\u5272\u3063\u305F\u4F59\u308A\
+    \u306B\u306A\u308B\n    constexpr unsigned long long mod01 = static_cast<unsigned\
+    \ long long>(MOD0) * MOD1;\n    auto restore = [&](mint0 c0, mint1 c1, mint2 c2)\
+    \ {\n        const unsigned int y0 = c0.val();\n        const unsigned int y1\
+    \ = (imod0 * (c1 - y0)).val();\n        const unsigned int y2 = (imod01 * (c2\
+    \ - y0) - imod1 * y1).val();\n        return y0 + static_cast<unsigned long long>(y1)\
+    \ * MOD0 + y2 * mod01;\n    };\n    std::vector<unsigned long long> res(N + M\
+    \ - 1);\n    for (int i = 0; i < N + M - 1; ++i) res[i] = restore(p0[i], p1[i],\
+    \ p2[i]) + (restore(q0[i], q1[i], q2[i]) << 32);\n    return res;\n}\n"
   code: "#pragma once\n\n/**\n * @file convolution.hpp\n * @brief \u7573\u307F\u8FBC\
-    \u307F (NTT)\n */\n\n#include <algorithm>\n#include <array>\n#include <cstdint>\n\
-    #include <type_traits>\n#include <utility>\n#include <vector>\n\n#include \"modint.hpp\"\
-    \n#include \"modular-arithmetic.hpp\"\n\n/**\n * @brief \u7573\u307F\u8FBC\u307F\
-    \n */\nnamespace internal_convolution {\n/**\n * @brief \u539F\u5B50\u6839\n *\
-    \ @param MOD int\n * @return int\n */\ninline int calc_primitive_root(int MOD)\
-    \ {\n    if (MOD == 2) return 1;\n    if (MOD == 167772161) return 3;\n    if\
-    \ (MOD == 469762049) return 3;\n    if (MOD == 754974721) return 11;\n    if (MOD\
-    \ == 998244353) return 3;\n    int divs[20] = {};\n    divs[0] = 2;\n    int cnt\
-    \ = 1;\n    long long x = (MOD - 1) >> 1;\n    while (x % 2 == 0) x >>= 1;\n \
-    \   for (long long i = 3; i * i <= x; i += 2) {\n        if (x % i == 0) {\n \
-    \           divs[cnt++] = i;\n            while (x % i == 0) x /= i;\n       \
-    \ }\n    }\n    if (x > 1) divs[cnt++] = x;\n    for (int g = 2;; ++g) {\n   \
-    \     bool ok = true;\n        for (int i = 0; i < cnt; i++) {\n            if\
-    \ (modpow(g, (MOD - 1) / divs[i], MOD) == 1) {\n                ok = false;\n\
+    \u307F (NTT)\n */\n\n#include <algorithm>\n#include <array>\n#include <cassert>\n\
+    #include <cstdint>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\
+    \n#include \"modint.hpp\"\n#include \"modular-arithmetic.hpp\"\n\n/**\n * @brief\
+    \ \u7573\u307F\u8FBC\u307F\n */\nnamespace internal_convolution {\n/**\n * @brief\
+    \ \u539F\u5B50\u6839\n * @param MOD int\n * @return int\n */\ninline int calc_primitive_root(int\
+    \ MOD) {\n    if (MOD == 2) return 1;\n    if (MOD == 167772161) return 3;\n \
+    \   if (MOD == 469762049) return 3;\n    if (MOD == 754974721) return 11;\n  \
+    \  if (MOD == 998244353) return 3;\n    int divs[20] = {};\n    divs[0] = 2;\n\
+    \    int cnt = 1;\n    long long x = (MOD - 1) >> 1;\n    while (x % 2 == 0) x\
+    \ >>= 1;\n    for (long long i = 3; i * i <= x; i += 2) {\n        if (x % i ==\
+    \ 0) {\n            divs[cnt++] = i;\n            while (x % i == 0) x /= i;\n\
+    \        }\n    }\n    if (x > 1) divs[cnt++] = x;\n    for (int g = 2;; ++g)\
+    \ {\n        bool ok = true;\n        for (int i = 0; i < cnt; i++) {\n      \
+    \      if (modpow(g, (MOD - 1) / divs[i], MOD) == 1) {\n                ok = false;\n\
     \                break;\n            }\n        }\n        if (ok) return g;\n\
     \    }\n}\n\n/**\n * @brief \u7573\u307F\u8FBC\u307F\u306E\u30B5\u30A4\u30BA\u3092\
     2\u306E\u3079\u304D\u4E57\u306B\u3059\u308B\n */\ninline int get_fft_size(int\
@@ -907,7 +952,22 @@ data:
     \ 1; ++i) {\n        unsigned int y0 = c0[i].val();\n        unsigned int y1 =\
     \ (imod0 * (c1[i] - y0)).val();\n        unsigned int y2 = (imod01 * (c2[i] -\
     \ y0) - imod1 * y1).val();\n        res[i] = f(y0, y1, y2);\n    }\n    return\
-    \ res;\n}\n}  // namespace internal_convolution\n\n/**\n * @brief modint\u306E\
+    \ res;\n}\n\n/**\n * @brief convolution_u64 \u306E 1 \u3064\u306E\u6CD5\u3067\u306E\
+    \u8A08\u7B97\u3002A = A0 + A1 2^32\u3001B = B0 + B1 2^32 \u3068\u5206\u3051\u3001\
+    \n * A0 B0 \u3068 A0 B1 + A1 B0 \u306E\u7573\u307F\u8FBC\u307F\u3092\u30014 \u56DE\
+    \u306E\u5909\u63DB\u3068 2 \u56DE\u306E\u9006\u5909\u63DB\u3067\u6C42\u3081\u308B\
+    \n */\ntemplate <class mint>\nstd::array<std::vector<mint>, 2> convolution_u64_parts(const\
+    \ std::vector<unsigned long long>& A, const std::vector<unsigned long long>& B,\
+    \ int z) {\n    const int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n\
+    \    std::vector<mint> a0(z), a1(z), b0(z), b1(z);\n    for (int i = 0; i < N;\
+    \ ++i) a0[i] = A[i] & 0xffffffffULL, a1[i] = A[i] >> 32;\n    for (int i = 0;\
+    \ i < M; ++i) b0[i] = B[i] & 0xffffffffULL, b1[i] = B[i] >> 32;\n    butterfly(a0),\
+    \ butterfly(a1), butterfly(b0), butterfly(b1);\n    for (int i = 0; i < z; ++i)\
+    \ {\n        const mint x0 = a0[i], x1 = a1[i];\n        a0[i] = x0 * b0[i];\n\
+    \        a1[i] = x0 * b1[i] + x1 * b0[i];\n    }\n    butterfly_inv(a0), butterfly_inv(a1);\n\
+    \    a0.resize(N + M - 1), a1.resize(N + M - 1);\n    const mint iz = mint(z).inv();\n\
+    \    for (int i = 0; i < N + M - 1; ++i) a0[i] *= iz, a1[i] *= iz;\n    return\
+    \ {a0, a1};\n}\n}  // namespace internal_convolution\n\n/**\n * @brief modint\u306E\
     \u7573\u307F\u8FBC\u307F\n *\n * static_modint \u3067\u6CD5\u304C NTT \u306B\u5411\
     \u304F\u7D20\u6570 (998244353 \u306A\u3069) \u306A\u3089\u3001\u305D\u306E\u6CD5\
     \u3067\u76F4\u63A5 NTT \u3059\u308B\u3002\n * \u305D\u3046\u3067\u306A\u3051\u308C\
@@ -939,7 +999,34 @@ data:
     \ [&](unsigned int y0, unsigned int y1, unsigned int y2) {\n        __int128_t\
     \ tmp = static_cast<__int128_t>(mod01) * y2 + static_cast<__int128_t>(mod0) *\
     \ y1 + y0;\n        return static_cast<long long>(tmp < (mod012 >> 1) ? tmp :\
-    \ tmp - mod012);\n    });\n}\n"
+    \ tmp - mod012);\n    });\n}\n\n/**\n * @brief unsigned long long \u306E\u7573\
+    \u307F\u8FBC\u307F\u3092 2^64 \u3067\u5272\u3063\u305F\u4F59\u308A\u3067\u6C42\
+    \u3081\u308B\n * \u5404\u5024\u3092 32 \u30D3\u30C3\u30C8\u305A\u3064 2 \u3064\
+    \u306B\u5206\u3051\u3001\u4E0B\u4F4D\u3069\u3046\u3057\u306E\u7A4D\u306E\u548C\
+    \u3068\u3001\u4E0A\u4F4D\u3068\u4E0B\u4F4D\u306E\u7A4D\u306E\u548C\u3092 3 \u3064\
+    \u306E\u6CD5\u3068\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406\u3067\u6C42\u3081\u308B\
+    \u3002\n * \u548C\u306E\u9805\u306E\u6570 min(|A|, |B|) \u304C 10^6 \u4EE5\u4E0B\
+    \u3067\u3042\u308B\u3053\u3068 (\u548C\u304C MOD0 MOD1 MOD2 \u672A\u6E80\u306B\
+    \u53CE\u307E\u308B)\n * @param A vector<unsigned long long>\n * @param B vector<unsigned\
+    \ long long>\n * @return vector<unsigned long long>\n */\ninline std::vector<unsigned\
+    \ long long> convolution_u64(const std::vector<unsigned long long>& A, const std::vector<unsigned\
+    \ long long>& B) {\n    if (A.empty() || B.empty()) return {};\n    const int\
+    \ N = static_cast<int>(A.size()), M = static_cast<int>(B.size());\n    if (std::min(N,\
+    \ M) <= 60) return internal_convolution::naive(A, B);\n    assert(std::min(N,\
+    \ M) <= 1000000);\n    using namespace internal_convolution;\n    const int z\
+    \ = get_fft_size(N, M);\n    const auto [p0, q0] = convolution_u64_parts<mint0>(A,\
+    \ B, z);\n    const auto [p1, q1] = convolution_u64_parts<mint1>(A, B, z);\n \
+    \   const auto [p2, q2] = convolution_u64_parts<mint2>(A, B, z);\n    // \u5024\
+    \u306F y0 + y1 MOD0 + y2 MOD0 MOD1 \u306A\u306E\u3067\u3001unsigned long long\
+    \ \u3067\u8A08\u7B97\u3059\u308C\u3070 2^64 \u3067\u5272\u3063\u305F\u4F59\u308A\
+    \u306B\u306A\u308B\n    constexpr unsigned long long mod01 = static_cast<unsigned\
+    \ long long>(MOD0) * MOD1;\n    auto restore = [&](mint0 c0, mint1 c1, mint2 c2)\
+    \ {\n        const unsigned int y0 = c0.val();\n        const unsigned int y1\
+    \ = (imod0 * (c1 - y0)).val();\n        const unsigned int y2 = (imod01 * (c2\
+    \ - y0) - imod1 * y1).val();\n        return y0 + static_cast<unsigned long long>(y1)\
+    \ * MOD0 + y2 * mod01;\n    };\n    std::vector<unsigned long long> res(N + M\
+    \ - 1);\n    for (int i = 0; i < N + M - 1; ++i) res[i] = restore(p0[i], p1[i],\
+    \ p2[i]) + (restore(q0[i], q1[i], q2[i]) << 32);\n    return res;\n}\n"
   dependsOn:
   - src/math/modint.hpp
   - src/utility/traits.hpp
@@ -947,68 +1034,69 @@ data:
   isVerificationFile: false
   path: src/math/convolution.hpp
   requiredBy:
-  - src/math/linear-recurrence.hpp
-  - src/math/fps.hpp
-  - src/math/combinatorial-sequences.hpp
-  - src/math/multipoint.hpp
-  - src/math/polynomial-roots.hpp
-  - src/math/sparse-fps.hpp
-  - src/math/fps-composition.hpp
   - src/dp/subset-sum-count.hpp
-  timestamp: '2026-10-22 20:04:06+09:00'
+  - src/math/sparse-fps.hpp
+  - src/math/fps.hpp
+  - src/math/multipoint.hpp
+  - src/math/combinatorial-sequences.hpp
+  - src/math/polynomial-roots.hpp
+  - src/math/fps-composition.hpp
+  - src/math/linear-recurrence.hpp
+  timestamp: '2026-10-22 21:31:06+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/math/sparse-fps.test.cpp
-  - test/unittest/math/multipoint.test.cpp
-  - test/unittest/math/combinatorial-sequences.test.cpp
-  - test/unittest/math/convolution.test.cpp
-  - test/unittest/math/linear-recurrence.test.cpp
-  - test/unittest/math/fps-composition.test.cpp
-  - test/unittest/math/polynomial-roots.test.cpp
-  - test/unittest/math/fps-gcd.test.cpp
-  - test/unittest/math/fps.test.cpp
   - test/unittest/dp/subset-sum.test.cpp
-  - test/yukicoder/3770.test.cpp
-  - test/yukicoder/3771.test.cpp
-  - test/yosupo/polynomial/polynomial-root-finding.test.cpp
-  - test/yosupo/polynomial/pow-of-fps.test.cpp
-  - test/yosupo/polynomial/compositional-inverse-of-formal-power-series.test.cpp
-  - test/yosupo/polynomial/inv-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/polynomial/composition-of-formal-power-series-large.test.cpp
-  - test/yosupo/polynomial/multipoint-evaluation.test.cpp
+  - test/unittest/math/combinatorial-sequences.test.cpp
+  - test/unittest/math/sparse-fps.test.cpp
+  - test/unittest/math/fps-composition.test.cpp
+  - test/unittest/math/convolution.test.cpp
+  - test/unittest/math/fps-gcd.test.cpp
+  - test/unittest/math/multipoint.test.cpp
+  - test/unittest/math/linear-recurrence.test.cpp
+  - test/unittest/math/polynomial-roots.test.cpp
+  - test/unittest/math/fps.test.cpp
   - test/yosupo/polynomial/sqrt-of-formal-power-series.test.cpp
-  - test/yosupo/polynomial/polynomial-interpolation.test.cpp
   - test/yosupo/polynomial/exp-of-fps.test.cpp
   - test/yosupo/polynomial/pow-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/polynomial/product-of-polynomial-sequence.test.cpp
-  - test/yosupo/polynomial/log-of-fps.test.cpp
-  - test/yosupo/polynomial/shift-of-sampling-points-of-polynomial.test.cpp
-  - test/yosupo/polynomial/polynomial-taylor-shift.test.cpp
-  - test/yosupo/polynomial/compositional-inverse-of-formal-power-series-large.test.cpp
-  - test/yosupo/polynomial/exp-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/polynomial/division-of-polynomials.test.cpp
   - test/yosupo/polynomial/polynomial-interpolation-on-geometric-sequence.test.cpp
-  - test/yosupo/polynomial/inv-of-polynomials.test.cpp
-  - test/yosupo/polynomial/composition-of-formal-power-series.test.cpp
-  - test/yosupo/polynomial/log-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/polynomial/multipoint-evaluation-on-geometric-sequence.test.cpp
-  - test/yosupo/polynomial/sqrt-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/polynomial/inv-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/polynomial/multipoint-evaluation.test.cpp
+  - test/yosupo/polynomial/product-of-polynomial-sequence.test.cpp
+  - test/yosupo/polynomial/exp-of-formal-power-series-sparse.test.cpp
   - test/yosupo/polynomial/inv-of-fps.test.cpp
-  - test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
-  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
-  - test/yosupo/enumerative_combinatorics/bell-number.test.cpp
-  - test/yosupo/enumerative_combinatorics/partition-function.3.test.cpp
-  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind.test.cpp
-  - test/yosupo/enumerative_combinatorics/partition-function.1.test.cpp
-  - test/yosupo/enumerative_combinatorics/partition-function.2.test.cpp
-  - test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.2.test.cpp
-  - test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.1.test.cpp
-  - test/yosupo/convolution/convolution-mod.test.cpp
+  - test/yosupo/polynomial/division-of-polynomials.test.cpp
+  - test/yosupo/polynomial/sqrt-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/polynomial/pow-of-fps.test.cpp
+  - test/yosupo/polynomial/log-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/polynomial/polynomial-taylor-shift.test.cpp
+  - test/yosupo/polynomial/shift-of-sampling-points-of-polynomial.test.cpp
+  - test/yosupo/polynomial/polynomial-root-finding.test.cpp
+  - test/yosupo/polynomial/compositional-inverse-of-formal-power-series.test.cpp
+  - test/yosupo/polynomial/composition-of-formal-power-series.test.cpp
+  - test/yosupo/polynomial/log-of-fps.test.cpp
+  - test/yosupo/polynomial/compositional-inverse-of-formal-power-series-large.test.cpp
+  - test/yosupo/polynomial/composition-of-formal-power-series-large.test.cpp
+  - test/yosupo/polynomial/multipoint-evaluation-on-geometric-sequence.test.cpp
+  - test/yosupo/polynomial/polynomial-interpolation.test.cpp
+  - test/yosupo/polynomial/inv-of-polynomials.test.cpp
+  - test/yosupo/convolution/convolution-mod-2-64.1.test.cpp
   - test/yosupo/convolution/convolution-mod-1000000007.test.cpp
-  - test/yosupo/convolution/convolution-mod-2-64.test.cpp
-  - test/yosupo/number_theory/bernoulli-number.test.cpp
+  - test/yosupo/convolution/convolution-mod-2-64.2.test.cpp
+  - test/yosupo/convolution/convolution-mod.test.cpp
   - test/yosupo/other/kth-term-of-linearly-recurrent-sequence.test.cpp
   - test/yosupo/other/find-linear-recurrence.test.cpp
+  - test/yosupo/number_theory/bernoulli-number.test.cpp
+  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
+  - test/yosupo/enumerative_combinatorics/partition-function.3.test.cpp
+  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind.test.cpp
+  - test/yosupo/enumerative_combinatorics/bell-number.test.cpp
+  - test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.2.test.cpp
+  - test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.1.test.cpp
+  - test/yosupo/enumerative_combinatorics/partition-function.1.test.cpp
+  - test/yosupo/enumerative_combinatorics/partition-function.2.test.cpp
+  - test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
+  - test/yukicoder/3770.test.cpp
+  - test/yukicoder/3771.test.cpp
 documentation_of: src/math/convolution.hpp
 layout: document
 title: "\u7573\u307F\u8FBC\u307F (NTT)"
@@ -1019,6 +1107,7 @@ $c_k = \sum_{i + j = k} a_i b_j$ を求めます。短い方の長さが 60 以�
 ```cpp
 auto c = convolution(a, b);                 // a, b は std::vector<mint>
 auto d = convolution_ll({1, 2}, {3, 4});    // {3, 10, 8}
+auto e = convolution_u64(x, y);            // x, y は std::vector<unsigned long long>、2^64 で割った余り
 ```
 
 NTT は AtCoder Library と同じ作りです。回転因子を法ごとに一度だけ表にし、基数 4 のバタフライで、ビット反転の並べ替えをせずに変換します (順変換の結果はビット反転した順に並び、逆変換でもとに戻ります)。同じ配列どうしの畳み込み (`convolution(a, a)`) では、変換を 1 回省きます。
@@ -1036,6 +1125,7 @@ NTT は AtCoder Library と同じ作りです。回転因子を法ごとに一�
 |---|---|---|
 | `convolution(a, b)` | `std::vector<mint>` の畳み込み。法は任意 (上を参照) | $O(n \log n)$ |
 | `convolution_ll(a, b)` | `std::vector<long long>` の畳み込み。3 つの法と中国剰余定理で求めるので、結果の各値の絶対値が約 $3 \times 10^{25}$ 未満で、`long long` に収まること | $O(n \log n)$ |
+| `convolution_u64(a, b)` | `std::vector<unsigned long long>` の畳み込みを $2^{64}$ で割った余りで求める。各値を 32 ビットずつ 2 つに分け、下位どうしの積の和と、上位と下位の積の和だけを 3 つの法と中国剰余定理で求める (NTT 18 回)。$\min(\lvert a \rvert, \lvert b \rvert) \le 10^6$ であること。長さ $5 \times 10^5$ どうしで約 0.2 秒 | $O(n \log n)$ |
 
 ## 関連
 

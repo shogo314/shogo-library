@@ -66,8 +66,8 @@ data:
   timestamp: '2026-10-14 03:19:43+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/math/prime-counting.test.cpp
   - test/unittest/math/quotients.test.cpp
+  - test/unittest/math/prime-counting.test.cpp
   - test/yosupo/number_theory/enumerate-quotients.2.test.cpp
 documentation_of: src/math/quotients.hpp
 layout: document

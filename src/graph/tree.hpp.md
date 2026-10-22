@@ -610,47 +610,47 @@ data:
   isVerificationFile: false
   path: src/graph/tree.hpp
   requiredBy:
-  - src/graph/centroid-decomposition.hpp
-  - src/graph/auxiliary-tree.hpp
-  - src/graph/tree_util.hpp
-  - src/graph/heavy-light-decomposition.hpp
-  - src/graph/lowlink.hpp
   - src/graph/rerooting-dp.hpp
+  - src/graph/centroid-decomposition.hpp
+  - src/graph/tree_util.hpp
+  - src/graph/lowlink.hpp
+  - src/graph/auxiliary-tree.hpp
+  - src/graph/heavy-light-decomposition.hpp
   timestamp: '2026-10-22 19:53:10+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/graph/lowlink.test.cpp
-  - test/unittest/graph/tree.test.cpp
-  - test/unittest/graph/tree_util.test.cpp
   - test/unittest/graph/centroid-decomposition.test.cpp
-  - test/unittest/graph/graph.test.cpp
+  - test/unittest/graph/lowlink.test.cpp
   - test/unittest/graph/rerooting-dp.test.cpp
-  - test/unittest/graph/auxiliary-tree.test.cpp
+  - test/unittest/graph/tree.test.cpp
   - test/unittest/graph/heavy-light-decomposition.test.cpp
+  - test/unittest/graph/graph.test.cpp
+  - test/unittest/graph/auxiliary-tree.test.cpp
+  - test/unittest/graph/tree_util.test.cpp
+  - test/aoj/volume33/3372.test.cpp
+  - test/aoj/grl/grl-3-b.test.cpp
+  - test/aoj/grl/grl-5-d.test.cpp
+  - test/aoj/grl/grl-5-a.test.cpp
+  - test/aoj/grl/grl-5-b.test.cpp
+  - test/aoj/grl/grl-3-a.test.cpp
+  - test/aoj/volume15/1595.test.cpp
+  - test/yosupo/graph/biconnected-components.test.cpp
+  - test/yosupo/graph/two-edge-connected-components.test.cpp
+  - test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
+  - test/yosupo/tree/lca.4.test.cpp
+  - test/yosupo/tree/vertex-add-subtree-sum.1.test.cpp
+  - test/yosupo/tree/jump-on-tree.1.test.cpp
+  - test/yosupo/tree/lca.1.test.cpp
+  - test/yosupo/tree/lca.3.test.cpp
+  - test/yosupo/tree/vertex-add-path-sum.test.cpp
+  - test/yosupo/tree/vertex-set-path-composite.test.cpp
+  - test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp
+  - test/yosupo/tree/tree-diameter.test.cpp
+  - test/yosupo/tree/lca.5.test.cpp
+  - test/yosupo/tree/lca.2.test.cpp
+  - test/yosupo/tree/jump-on-tree.2.test.cpp
   - test/yukicoder/1641.test.cpp
   - test/yukicoder/898.test.cpp
-  - test/aoj/volume33/3372.test.cpp
-  - test/aoj/grl/grl-5-a.test.cpp
-  - test/aoj/grl/grl-3-a.test.cpp
-  - test/aoj/grl/grl-5-d.test.cpp
-  - test/aoj/grl/grl-3-b.test.cpp
-  - test/aoj/grl/grl-5-b.test.cpp
-  - test/aoj/volume15/1595.test.cpp
-  - test/yosupo/tree/vertex-add-path-sum.test.cpp
-  - test/yosupo/tree/jump-on-tree.2.test.cpp
-  - test/yosupo/tree/vertex-set-path-composite.test.cpp
-  - test/yosupo/tree/lca.1.test.cpp
-  - test/yosupo/tree/lca.5.test.cpp
-  - test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
-  - test/yosupo/tree/vertex-add-subtree-sum.1.test.cpp
-  - test/yosupo/tree/tree-diameter.test.cpp
-  - test/yosupo/tree/lca.4.test.cpp
-  - test/yosupo/tree/lca.2.test.cpp
-  - test/yosupo/tree/lca.3.test.cpp
-  - test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp
-  - test/yosupo/tree/jump-on-tree.1.test.cpp
-  - test/yosupo/graph/two-edge-connected-components.test.cpp
-  - test/yosupo/graph/biconnected-components.test.cpp
 documentation_of: src/graph/tree.hpp
 layout: document
 title: "\u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8"

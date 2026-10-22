@@ -8,6 +8,7 @@ $c_k = \sum_{i + j = k} a_i b_j$ を求めます。短い方の長さが 60 以�
 ```cpp
 auto c = convolution(a, b);                 // a, b は std::vector<mint>
 auto d = convolution_ll({1, 2}, {3, 4});    // {3, 10, 8}
+auto e = convolution_u64(x, y);            // x, y は std::vector<unsigned long long>、2^64 で割った余り
 ```
 
 NTT は AtCoder Library と同じ作りです。回転因子を法ごとに一度だけ表にし、基数 4 のバタフライで、ビット反転の並べ替えをせずに変換します (順変換の結果はビット反転した順に並び、逆変換でもとに戻ります)。同じ配列どうしの畳み込み (`convolution(a, a)`) では、変換を 1 回省きます。
@@ -25,6 +26,7 @@ NTT は AtCoder Library と同じ作りです。回転因子を法ごとに一�
 |---|---|---|
 | `convolution(a, b)` | `std::vector<mint>` の畳み込み。法は任意 (上を参照) | $O(n \log n)$ |
 | `convolution_ll(a, b)` | `std::vector<long long>` の畳み込み。3 つの法と中国剰余定理で求めるので、結果の各値の絶対値が約 $3 \times 10^{25}$ 未満で、`long long` に収まること | $O(n \log n)$ |
+| `convolution_u64(a, b)` | `std::vector<unsigned long long>` の畳み込みを $2^{64}$ で割った余りで求める。各値を 32 ビットずつ 2 つに分け、下位どうしの積の和と、上位と下位の積の和だけを 3 つの法と中国剰余定理で求める (NTT 18 回)。$\min(\lvert a \rvert, \lvert b \rvert) \le 10^6$ であること。長さ $5 \times 10^5$ どうしで約 0.2 秒 | $O(n \log n)$ |
 
 ## 関連
 

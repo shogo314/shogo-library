@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cassert>
 #include <cstdint>
 #include <type_traits>
 #include <utility>
@@ -316,6 +317,29 @@ std::vector<R> convolution_crt(const std::vector<T>& A, const std::vector<T>& B,
     }
     return res;
 }
+
+/**
+ * @brief convolution_u64 の 1 つの法での計算。A = A0 + A1 2^32、B = B0 + B1 2^32 と分け、
+ * A0 B0 と A0 B1 + A1 B0 の畳み込みを、4 回の変換と 2 回の逆変換で求める
+ */
+template <class mint>
+std::array<std::vector<mint>, 2> convolution_u64_parts(const std::vector<unsigned long long>& A, const std::vector<unsigned long long>& B, int z) {
+    const int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());
+    std::vector<mint> a0(z), a1(z), b0(z), b1(z);
+    for (int i = 0; i < N; ++i) a0[i] = A[i] & 0xffffffffULL, a1[i] = A[i] >> 32;
+    for (int i = 0; i < M; ++i) b0[i] = B[i] & 0xffffffffULL, b1[i] = B[i] >> 32;
+    butterfly(a0), butterfly(a1), butterfly(b0), butterfly(b1);
+    for (int i = 0; i < z; ++i) {
+        const mint x0 = a0[i], x1 = a1[i];
+        a0[i] = x0 * b0[i];
+        a1[i] = x0 * b1[i] + x1 * b0[i];
+    }
+    butterfly_inv(a0), butterfly_inv(a1);
+    a0.resize(N + M - 1), a1.resize(N + M - 1);
+    const mint iz = mint(z).inv();
+    for (int i = 0; i < N + M - 1; ++i) a0[i] *= iz, a1[i] *= iz;
+    return {a0, a1};
+}
 }  // namespace internal_convolution
 
 /**
@@ -362,4 +386,35 @@ inline std::vector<long long> convolution_ll(const std::vector<long long>& A, co
         __int128_t tmp = static_cast<__int128_t>(mod01) * y2 + static_cast<__int128_t>(mod0) * y1 + y0;
         return static_cast<long long>(tmp < (mod012 >> 1) ? tmp : tmp - mod012);
     });
+}
+
+/**
+ * @brief unsigned long long の畳み込みを 2^64 で割った余りで求める
+ * 各値を 32 ビットずつ 2 つに分け、下位どうしの積の和と、上位と下位の積の和を 3 つの法と中国剰余定理で求める。
+ * 和の項の数 min(|A|, |B|) が 10^6 以下であること (和が MOD0 MOD1 MOD2 未満に収まる)
+ * @param A vector<unsigned long long>
+ * @param B vector<unsigned long long>
+ * @return vector<unsigned long long>
+ */
+inline std::vector<unsigned long long> convolution_u64(const std::vector<unsigned long long>& A, const std::vector<unsigned long long>& B) {
+    if (A.empty() || B.empty()) return {};
+    const int N = static_cast<int>(A.size()), M = static_cast<int>(B.size());
+    if (std::min(N, M) <= 60) return internal_convolution::naive(A, B);
+    assert(std::min(N, M) <= 1000000);
+    using namespace internal_convolution;
+    const int z = get_fft_size(N, M);
+    const auto [p0, q0] = convolution_u64_parts<mint0>(A, B, z);
+    const auto [p1, q1] = convolution_u64_parts<mint1>(A, B, z);
+    const auto [p2, q2] = convolution_u64_parts<mint2>(A, B, z);
+    // 値は y0 + y1 MOD0 + y2 MOD0 MOD1 なので、unsigned long long で計算すれば 2^64 で割った余りになる
+    constexpr unsigned long long mod01 = static_cast<unsigned long long>(MOD0) * MOD1;
+    auto restore = [&](mint0 c0, mint1 c1, mint2 c2) {
+        const unsigned int y0 = c0.val();
+        const unsigned int y1 = (imod0 * (c1 - y0)).val();
+        const unsigned int y2 = (imod01 * (c2 - y0) - imod1 * y1).val();
+        return y0 + static_cast<unsigned long long>(y1) * MOD0 + y2 * mod01;
+    };
+    std::vector<unsigned long long> res(N + M - 1);
+    for (int i = 0; i < N + M - 1; ++i) res[i] = restore(p0[i], p1[i], p2[i]) + (restore(q0[i], q1[i], q2[i]) << 32);
+    return res;
 }

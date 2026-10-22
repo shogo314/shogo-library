@@ -25,7 +25,7 @@
  *
  * @tparam Cost 辺のコストの型
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 class LowLink {
     long long n;
     std::vector<bool> art, bridge;

@@ -112,7 +112,7 @@ struct MinimumArborescence {
  * @return std::optional<MinimumArborescence<Cost>> root から到達できない頂点があれば std::nullopt
  * @note 負のコストの辺があってもよい。自己ループ・多重辺があってもよい
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 std::optional<MinimumArborescence<Cost>> minimum_arborescence(const Graph<Cost>& graph, long long root) {
     using Edge = typename Graph<Cost>::Edge;
     const long long n = graph.n;

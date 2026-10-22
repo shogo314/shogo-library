@@ -25,7 +25,7 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 | 親・子・深さ・高さ・部分木サイズ・巡回順 | | ✓ | ✓ |
 | `hop`、`lca`、`dist` | | | ✓ |
 
-## `Tree<Cost = int>` (根なし木)
+## `Tree<Cost = long long>` (根なし木)
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
@@ -38,7 +38,7 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 | `set_root(r)` | 根を `r` にした `RootedTree` を返す | $O(n)$ |
 | `build_lca(r)` | 根を `r` にした `DoublingClimbTree` を返す | $O(n \log n)$ |
 
-## `RootedTree<Cost = int>` (根付き木)
+## `RootedTree<Cost = long long>` (根付き木)
 
 `Tree` の `set_root(r)` か、次のコンストラクタで作ります。
 
@@ -61,7 +61,7 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 
 `root` と、`unweighted_depth`・`unweighted_height`・`sz`・`preorder`・`postorder`・`euler_tour` の要素は `long long` です。
 
-## `DoublingClimbTree<Cost = int>` (ダブリング済み根付き木)
+## `DoublingClimbTree<Cost = long long>` (ダブリング済み根付き木)
 
 `Tree` の `build_lca(r)`、`RootedTree` の `build_lca()`、またはコンストラクタ (`RootedTree` から、`Tree` と根から、親のリストから) で作ります。構築は $O(n \log n)$ です。
 

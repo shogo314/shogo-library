@@ -122,7 +122,7 @@ class Blossom {
  * @return std::vector<Edge> マッチングに使った辺のリスト (各辺は src < dst の向きで 1 回ずつ、src の昇順)
  * @note 自己ループは無視する。多重辺があってもよい
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 std::vector<typename Graph<Cost>::Edge> general_matching(const Graph<Cost>& graph) {
     std::vector<int> match = internal_general_matching::Blossom<Cost>(graph).solve();
     std::vector<typename Graph<Cost>::Edge> res;

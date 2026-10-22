@@ -12,9 +12,9 @@
 /**
  * @brief グラフの汎用クラス
  *
- * @tparam Cost 辺のコストの型
+ * @tparam Cost 辺のコストの型 省略したら long long (重みの和や未到達を表す max / 4 があふれにくいように)
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 class Graph {
    public:
     /**

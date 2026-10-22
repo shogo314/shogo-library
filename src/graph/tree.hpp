@@ -23,11 +23,11 @@ class DoublingClimbTree;
 /**
  * @brief 根なし木
  *
- * @tparam Cost = int 辺の重み
+ * @tparam Cost = long long 辺の重み
  *
  * Graph<Cost>を継承し、すべて無向辺で表す
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 struct Tree : private Graph<Cost> {
     // Graph<Cost>* g = new Tree<Cost>(); ができてしまうと、delete時にメモリリークが発生
     // 回避するためprivate継承にして、メンバをすべてusing宣言
@@ -128,9 +128,9 @@ struct Tree : private Graph<Cost> {
 /**
  * @brief 根付き木
  *
- * @tparam Cost = int 辺のコスト
+ * @tparam Cost = long long 辺のコスト
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 class RootedTree : private Tree<Cost> {
    public:
     using Edge = typename Tree<Cost>::Edge;
@@ -262,9 +262,9 @@ class RootedTree : private Tree<Cost> {
 /**
  * @brief 親頂点ダブリング済み根付き木
  *
- * @tparam Cost = int 辺の重み(注: hopでは根の重みは考えない)
+ * @tparam Cost = long long 辺の重み(注: hopでは根の重みは考えない)
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 class DoublingClimbTree : private RootedTree<Cost> {
    public:
     using Edge = typename RootedTree<Cost>::Edge;

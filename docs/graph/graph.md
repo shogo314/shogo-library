@@ -3,7 +3,7 @@ title: グラフ
 documentation_of: //src/graph/graph.hpp
 ---
 
-隣接リストで表すグラフ `Graph<Cost = int>` です。メンバ関数はグラフを作る・たどる操作だけで、アルゴリズムは `Graph` を受け取る関数として別のファイルにあります。最短路は [最短路](shortest-path.hpp)、二部グラフ判定・連結成分・トポロジカルソートなどは [グラフに関する関数](graph_util.hpp) です。木は [木の汎用テンプレート](tree.hpp) を使います。
+隣接リストで表すグラフ `Graph<Cost = long long>` です。コストの型を省くと `long long` になります (重みが $10^9$ 程度でも、最短路の和や未到達を表す `max / 4` があふれないように)。メンバ関数はグラフを作る・たどる操作だけで、アルゴリズムは `Graph` を受け取る関数として別のファイルにあります。最短路は [最短路](shortest-path.hpp)、二部グラフ判定・連結成分・トポロジカルソートなどは [グラフに関する関数](graph_util.hpp) です。木は [木の汎用テンプレート](tree.hpp) を使います。
 
 ```cpp
 Graph<long long> g(n);

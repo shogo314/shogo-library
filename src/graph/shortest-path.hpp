@@ -99,7 +99,7 @@ ShortestPath<Cost> dijkstra(const Graph<Cost>& graph, long long s, Cost inf) {
  * @param inf コストのminの単位元 未到達の頂点への距離はinfになる 省略すると std::numeric_limits<Cost>::max() / 4
  * @return ShortestPath 各頂点への最短路長 (dist) と、各頂点への最短路上の直前の辺 (prev)
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 ShortestPath<Cost> shortest_path(const Graph<Cost>& graph, long long s, bool weighted = true, Cost inf = std::numeric_limits<Cost>::max() / 4) {
     assert(0 <= s && s < graph.n);
     if (weighted)
@@ -114,7 +114,7 @@ ShortestPath<Cost> shortest_path(const Graph<Cost>& graph, long long s, bool wei
  * @param inf コストのminの単位元 未到達の頂点への距離はinfになる 省略すると std::numeric_limits<Cost>::max() / 4 負閉路の影響を受ける点は -inf
  * @return ShortestPath 各頂点への最短路長 (dist) と、各頂点への最短路上の直前の辺 (prev)
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 ShortestPath<Cost> bellman_ford(const Graph<Cost>& graph, long long s, Cost inf = std::numeric_limits<Cost>::max() / 4) {
     assert(0 <= s && s < graph.n);
     const long long n = graph.n;
@@ -164,7 +164,7 @@ ShortestPath<Cost> bellman_ford(const Graph<Cost>& graph, long long s, Cost inf 
  * @param inf 未到達の頂点への距離 省略すると std::numeric_limits<Cost>::max() / 4
  * @return ShortestPath 各頂点への最短路長 (dist) と、各頂点への最短路上の直前の辺 (prev)
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 ShortestPath<Cost> shortest_path_01bfs(const Graph<Cost>& graph, long long s, Cost inf = std::numeric_limits<Cost>::max() / 4) {
     assert(0 <= s && s < graph.n);
     std::vector<Cost> dist(graph.n, inf);
@@ -197,7 +197,7 @@ ShortestPath<Cost> shortest_path_01bfs(const Graph<Cost>& graph, long long s, Co
  * @return std::vector<std::vector<Cost>> dist[i][j] が i から j への最短路長 (到達できなければ inf)
  * @note 負の辺があってもよい。dist[i][i] < 0 となる i があれば負閉路がある
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 std::vector<std::vector<Cost>> floyd_warshall(const Graph<Cost>& graph, Cost inf = std::numeric_limits<Cost>::max() / 4) {
     const long long n = graph.n;
     std::vector<std::vector<Cost>> dist(n, std::vector<Cost>(n, inf));

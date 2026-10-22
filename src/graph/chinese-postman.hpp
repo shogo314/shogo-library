@@ -24,7 +24,7 @@
  * @return std::optional<Cost> 辺がすべて 1 つの連結成分に入っていなければ std::nullopt。辺がなければ 0
  * @note 辺のコストは 0 以上であること。k は 20 程度まで。自己ループ・多重辺があってもよい
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 std::optional<Cost> chinese_postman(const Graph<Cost>& graph, Cost inf = std::numeric_limits<Cost>::max() / 4) {
     const long long n = graph.n;
     Cost total{};

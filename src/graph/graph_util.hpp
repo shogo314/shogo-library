@@ -22,7 +22,7 @@
  * 連結成分のうち、インデックスの最も小さいものを0にする。
  * @return std::vector<int> 各頂点の彩色結果
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 std::vector<int> bipartite_coloring(const Graph<Cost>& graph) {
     std::vector<int> color(graph.n, -1);
     for (long long i = 0; i < graph.n; i++) {
@@ -50,7 +50,7 @@ std::vector<int> bipartite_coloring(const Graph<Cost>& graph) {
  * @brief 無向グラフについて、二部グラフかどうかを判定する。
  * @return bool 二部グラフならtrue、二部グラフでないならfalseを返す。
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 bool is_bipartite(const Graph<Cost>& graph) {
     return !bipartite_coloring(graph).empty();
 }
@@ -59,7 +59,7 @@ bool is_bipartite(const Graph<Cost>& graph) {
  * @brief 無向グラフについて、連結成分分解する。
  * @return std::vector<std::vector<long long>> 「同じ連結成分となる頂点のリスト」のリスト
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 std::vector<std::vector<long long>> connected_components(const Graph<Cost>& graph) {
     std::vector<std::vector<long long>> groups;
     std::vector<bool> visited(graph.n);
@@ -87,7 +87,7 @@ std::vector<std::vector<long long>> connected_components(const Graph<Cost>& grap
  * @brief 無向グラフについて、連結グラフかどうかを判定する。
  * @return bool 連結グラフならtrue、連結グラフでないならfalseを返す。
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 bool is_connected(const Graph<Cost>& graph) {
     return connected_components(graph).size() == 1;
 }
@@ -96,7 +96,7 @@ bool is_connected(const Graph<Cost>& graph) {
  * @brief 無向グラフについて、木かどうかを判定する。
  * @return bool 木ならtrue、木でないならfalseを返す。
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 bool is_tree(const Graph<Cost>& graph) {
     return graph.m == graph.n - 1 && is_connected(graph);
 }
@@ -105,7 +105,7 @@ bool is_tree(const Graph<Cost>& graph) {
  * @brief 有向グラフをトポロジカルソートする
  * @return std::vector<long long> トポロジカル順に並べた頂点のリスト。DAG でなければ途中まで (閉路からたどり着けない頂点だけ) を並べたもので、長さが n より短くなる
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 std::vector<long long> topological_sort(const Graph<Cost>& graph) {
     std::vector<int> indeg(graph.n);
     std::vector<long long> sorted;
@@ -131,7 +131,7 @@ std::vector<long long> topological_sort(const Graph<Cost>& graph) {
  * @brief 有向グラフについて、サイクルをもつかどうかを判定する。
  * @return bool サイクルをもつならtrue、非巡回ならfalseを返す。
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 bool has_cycle(const Graph<Cost>& graph) {
     return static_cast<long long>(topological_sort(graph).size()) < graph.n;
 }
@@ -143,7 +143,7 @@ bool has_cycle(const Graph<Cost>& graph) {
  * @return std::vector<Edge> 閉路の辺を、たどる順に並べたもの (e[k].dst == e[k + 1].src、末尾の dst は先頭の src)。閉路がなければ空
  * 自己ループは長さ 1 の閉路になる。頂点の列は各辺の src で得られる
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 std::vector<typename Graph<Cost>::Edge> find_cycle_directed(const Graph<Cost>& graph) {
     using Edge = typename Graph<Cost>::Edge;
     // state: 0 は未訪問、1 は DFS のスタック上、2 は探索済み
@@ -185,7 +185,7 @@ std::vector<typename Graph<Cost>::Edge> find_cycle_directed(const Graph<Cost>& g
  * @return std::vector<Edge> 閉路の辺を、たどる順に並べたもの (e[k].dst == e[k + 1].src、末尾の dst は先頭の src)。閉路がなければ空
  * 自己ループは長さ 1、多重辺は長さ 2 の閉路になる (同じ辺を戻ることはない)。頂点の列は各辺の src で得られる
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 std::vector<typename Graph<Cost>::Edge> find_cycle_undirected(const Graph<Cost>& graph) {
     using Edge = typename Graph<Cost>::Edge;
     std::vector<int> state(graph.n, 0), iter(graph.n, 0);
@@ -230,7 +230,7 @@ std::vector<typename Graph<Cost>::Edge> find_cycle_undirected(const Graph<Cost>&
  * @return std::vector<std::vector<long long>> 強連結成分ごとの頂点のリスト。
  * 成分はトポロジカル順に並ぶ (成分 A から成分 B へ辺があれば A が B より前)
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 std::vector<std::vector<long long>> strongly_connected_components(const Graph<Cost>& graph) {
     const long long n = graph.n;
     std::vector<int> ord(n, -1), low(n), comp(n, -1), iter(n, 0);
@@ -289,7 +289,7 @@ struct MinimumSpanningTree {
  * 連結でなければ、各連結成分の最小全域木を合わせたもの (最小全域森) を返す
  * 連結かどうかは edges.size() == n - 1 で判定できる
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 MinimumSpanningTree<Cost> minimum_spanning_tree(const Graph<Cost>& graph) {
     auto es = graph.edges();
     std::stable_sort(es.begin(), es.end(), [](const auto& a, const auto& b) { return a.cost < b.cost; });
@@ -313,7 +313,7 @@ MinimumSpanningTree<Cost> minimum_spanning_tree(const Graph<Cost>& graph) {
  * 独立集合の表を O(2^n) で作り、dp[S] = min (dp[S \ T] + 1) を、T を「S の最小の頂点 v を含み、v と隣り合わない S の頂点からなる独立集合」に限って求める
  * 頂点がなければ 0。自己ループがあれば塗れないので -1
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 long long chromatic_number(const Graph<Cost>& graph) {
     const int n = graph.n;
     if (n == 0) return 0;

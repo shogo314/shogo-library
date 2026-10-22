@@ -1,13 +1,21 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
 // graph.hpp の Graph のデフォルトコンストラクタと、const でない operator[] を検証する
+// コストの型を省いたときに long long になることも static_assert で確かめる (Tree も)
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../../src/graph/graph.hpp"
 
 #include <iostream>
 #include <random>
+#include <type_traits>
 #include <vector>
+
+#include "../../../src/graph/tree.hpp"
+
+// 重みが 10^9 程度でも、重みの和や未到達を表す max / 4 があふれないように long long にしている
+static_assert(std::is_same_v<decltype(Graph(3)), Graph<long long>>);
+static_assert(std::is_same_v<decltype(Tree(3)), Tree<long long>>);
 
 int main() {
     std::mt19937_64 rng(314);

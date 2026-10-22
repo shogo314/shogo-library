@@ -55,7 +55,7 @@ std::vector<typename Graph<Cost>::Edge> hierholzer(const Graph<Cost>& graph, lon
  * @return std::vector<Edge> 路の辺を、たどる順に並べたもの (e[k].dst == e[k + 1].src)。オイラー路がなければ空
  * 辺がないときも空 (オイラー路は自明に存在する)。始点と終点が同じになるのは、閉路として回れるときだけ
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 std::vector<typename Graph<Cost>::Edge> eulerian_trail_directed(const Graph<Cost>& graph) {
     if (graph.m == 0) return {};
     std::vector<long long> diff(graph.n, 0);  // 出次数 - 入次数
@@ -82,7 +82,7 @@ std::vector<typename Graph<Cost>::Edge> eulerian_trail_directed(const Graph<Cost
  * @return std::vector<Edge> 路の辺を、たどる向きにして並べたもの (e[k].dst == e[k + 1].src)。オイラー路がなければ空
  * 辺がないときも空 (オイラー路は自明に存在する)。自己ループ・多重辺があってもよい
  */
-template <typename Cost = int>
+template <typename Cost = long long>
 std::vector<typename Graph<Cost>::Edge> eulerian_trail_undirected(const Graph<Cost>& graph) {
     if (graph.m == 0) return {};
     // 次数が奇数の頂点が 2 個ならその一方から、0 個なら辺を持つ頂点から始める

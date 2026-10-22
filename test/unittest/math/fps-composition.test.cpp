@@ -1,6 +1,7 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
 // composition を素朴な計算と比べ、compositional_inverse は f(h) = x と h(f) = x を確かめる
+// composition は、f が短いときの Horner 法と、g が x^v から始まるときに f を切り詰める場合も調べる
 // 法は 998244353 と 1000000007 (NTT が使えない法) の両方で試す
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
@@ -52,6 +53,15 @@ void test(std::mt19937_64& rng) {
     {
         F f = {1, 2, 3}, g = {0, 1, 1};
         check(composition(f, g) == naive_composition(f, g, 3), "composition の deg の省略");
+    }
+    // g が x^v (v >= 1) から始まる。f の長さは Horner 法 (32 以下) と Kinoshita–Li の両方を通る
+    for (int rep = 0; rep < 200 && ok; rep++) {
+        int n = rng() % 120, v = rng() % 6 + 1, deg = rng() % 80, m = v + 1 + rng() % 40;
+        F f(n), g(m, 0);
+        for (auto& x : f) x = gen();
+        for (int i = v; i < m; i++) g[i] = gen();
+        if (rng() % 2) g[v] = gen() + 1;  // 最低次の係数は 0 でないことが多い
+        check(composition(f, g, deg) == naive_composition(f, g, deg), "composition: g が x^v から始まる");
     }
     // compositional_inverse: f(h) = x と h(f) = x
     for (int rep = 0; rep < 200 && ok; rep++) {

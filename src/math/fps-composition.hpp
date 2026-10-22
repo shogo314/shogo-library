@@ -123,6 +123,7 @@ FPS<mint> composition_zero(const FPS<mint>& f, const FPS<mint>& g, long long n) 
 
 /**
  * @brief f(g(x)) の x^deg 未満の項 O(n log^2 n) (n = deg、g_0 != 0 なら O(|f| log |f|) を足す)
+ * g が x^v から始まるなら f の次数 ceil(deg / v) 以上の項は使わず、残りが max(32, 4 log2(deg)) 項以下なら Horner 法で O(|f| n log n) にする
  * f は多項式として扱うので、g の定数項は 0 でなくてもよい (f(x + g_0) に直してから求める。|f| は法より小さいこと)。
  * deg を省略するか負の値を渡すと max(|f|, |g|)
  */
@@ -134,9 +135,26 @@ FPS<mint> composition(FPS<mint> f, FPS<mint> g, long long deg = -1) {
         f = taylor_shift(f, g[0]);
         g[0] = 0;
     }
-    // g_0 = 0 なので、f の x^deg 以上の項は効かない
-    if (static_cast<long long>(f.size()) > deg) f.resize(deg);
-    return internal_fps_composition::composition_zero(f, g.pre(deg), deg);
+    g = g.pre(deg);
+    // g の最低次の項を x^v とすると、g^k は x^{kv} から始まるので、f の k >= ceil(deg / v) の項は効かない
+    long long v = 1;
+    while (v < static_cast<long long>(g.size()) && g[v] == 0) v++;
+    const long long need = v >= static_cast<long long>(g.size()) ? 1 : (deg - 1) / v + 1;
+    if (static_cast<long long>(f.size()) > need) f.resize(need);
+    // f が短いときは Horner 法 (掛け算 |f| 回) のほうが速い
+    // (Kinoshita–Li は長さ deg の掛け算の 4 log2(deg)〜7 log2(deg) 回分ほど。deg = 10^4 で 55 回、2 * 10^5 で 130 回)
+    long long log_deg = 0;
+    while ((1LL << log_deg) < deg) log_deg++;
+    if (static_cast<long long>(f.size()) <= std::max(32LL, 4 * log_deg)) {
+        FPS<mint> res(deg);
+        for (long long i = static_cast<long long>(f.size()) - 1; i >= 0; i--) {
+            res = (res * g).pre(deg);
+            res.resize(deg);
+            res[0] += f[i];
+        }
+        return res;
+    }
+    return internal_fps_composition::composition_zero(f, g, deg);
 }
 
 /**

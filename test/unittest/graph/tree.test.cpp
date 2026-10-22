@@ -12,6 +12,8 @@
 #include <utility>
 #include <vector>
 
+#include "../../../src/graph/shortest-path.hpp"
+
 int main() {
     std::mt19937_64 rng(314);
     bool ok = true;

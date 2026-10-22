@@ -3,14 +3,14 @@
 #include <iostream>
 #include <vector>
 
-#include "../../../src/graph/tree.hpp"
+#include "../../../src/graph/tree_util.hpp"
 
 int main() {
     int n;
     std::cin >> n;
     Tree<long long> tree(n);
     tree.read(0, true);
-    auto path = tree.diameter();
+    auto path = tree_diameter(tree);
     long long x = 0;
     std::vector<int> vs;
     if (path.empty()) {

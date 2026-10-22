@@ -13,7 +13,6 @@
 #include <vector>
 
 #include "graph.hpp"
-#include "shortest-path.hpp"
 
 template <typename>
 class RootedTree;
@@ -64,20 +63,6 @@ struct Tree : private Graph<Cost> {
      */
     void read(long long padding = -1, bool weighted = false) {
         Graph<Cost>::read(this->n - 1, padding, weighted, false);
-    }
-
-    /**
-     * @brief 木の直径
-     *
-     * @param weighted = true 重み付きか
-     * @return std::vector<Edge> 直径を構成する辺のリスト
-     */
-    std::vector<Edge> diameter(bool weighted = true) const {
-        std::vector<Cost> dist = shortest_path(graph(), 0, weighted).dist;
-        long long u = std::max_element(dist.begin(), dist.end()) - dist.begin();
-        auto sp = shortest_path(graph(), u, weighted);
-        long long v = std::max_element(sp.dist.begin(), sp.dist.end()) - sp.dist.begin();
-        return sp.path(v);
     }
 
     /**

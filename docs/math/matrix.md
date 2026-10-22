@@ -21,7 +21,7 @@ auto t = g.rotate(1).vstr();          // 時計回りに 90 度回して vector<
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `Matrix({ {a, b}, {c, d} })` | 初期化子リストから作る | $O(nm)$ |
-| `Matrix(v)` | `vector<vector<T>>` や `vector<string>` から作る | $O(nm)$ |
+| `Matrix(v)` | `vector<vector<T>>` や `vector<string>` から作る。型を省くと、要素の型は各行の `value_type` になる (`vector<vector<int>>` なら `Matrix<int>`、`vector<string>` なら `Matrix<char>`) | $O(nm)$ |
 | `Matrix(n, m, val = 0)` | `n` 行 `m` 列で、要素はすべて `val` | $O(nm)$ |
 | `A.size()` | 行数 (`long long`) | $O(1)$ |
 | `A[i][j]` | 要素 | $O(1)$ |

@@ -20,5 +20,5 @@ int main() {
             x = b;
         }
     }
-    std::cout << Matrix<modint1000000007>(a).permanent() << '\n';
+    std::cout << Matrix(a).permanent() << '\n';
 }

@@ -4,6 +4,7 @@
 // OperatorProperty を自分で定義した場合 (GF(2) と、既定の演算を継承したもの) の det と inv を愚直な計算と比較する
 // solve・rank・kernel・reduced_row_echelon を、変数の値をすべて試す愚直な実装と比較する (mod 3 と GF(2))
 // permanent を、すべての順列の和と比較する (long long・modint・GF(2))
+// 行のリストから作るときの推論ガイドを static_assert で確かめる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../../src/math/matrix.hpp"
@@ -13,11 +14,16 @@
 #include <numeric>
 #include <random>
 #include <string>
+#include <type_traits>
 #include <vector>
 
 #include "../../../src/math/modint.hpp"
 
 using mint = static_modint<998244353>;
+
+// 推論ガイド: 要素の型は各行の value_type
+static_assert(std::is_same_v<decltype(Matrix(std::vector<std::vector<long long>>())), Matrix<long long>>);
+static_assert(std::is_same_v<decltype(Matrix(std::vector<std::string>())), Matrix<char>>);
 using VV = std::vector<std::vector<long long>>;
 
 // xor と and による体 GF(2)

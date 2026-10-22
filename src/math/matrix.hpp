@@ -667,3 +667,11 @@ class Matrix {
         return d;
     }
 };
+
+/**
+ * @brief 行のリストから作るときの推論ガイド。要素の型は各行の value_type にする
+ *
+ * Matrix(std::vector<std::vector<int>>) は Matrix<int>、Matrix(std::vector<std::string>) は Matrix<char>
+ */
+template <typename Iterable>
+Matrix(const std::vector<Iterable>&) -> Matrix<typename Iterable::value_type>;

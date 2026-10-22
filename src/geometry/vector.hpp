@@ -39,10 +39,11 @@ struct Vector {
     /**
      * @brief 可変長引数によるコンストラクタ
      *
+     * 各成分を T に変換して入れる (Vector(1, 2.5) のように型が混ざっても縮小変換の警告を出さない)
      * @tparam Args
      */
     template <typename... Args>
-    constexpr Vector(Args... args) noexcept : v{args...} {}
+    constexpr Vector(Args... args) noexcept : v{static_cast<T>(args)...} {}
 
     /**
      * @brief i番目の成分を返す
@@ -319,6 +320,15 @@ struct Vector {
         return std::sqrt(squared_norm());
     }
 };
+
+/**
+ * @brief 成分から作るときの推論ガイド。型は成分の共通の型、次元は成分の個数にする
+ *
+ * Vector(2LL, 3LL) は Vector<long long, 2>、Vector(1, 2, 3) は Vector<int, 3>、Vector(0.0, 0.0) は Vector<double, 2>
+ * (これがないと、テンプレート引数の省略時の値から Vector<double, 2> になってしまう)
+ */
+template <typename T, typename... U, ENABLE_IF_T(std::is_scalar_v<T> && (std::is_scalar_v<U> && ...))>
+Vector(T, U...) -> Vector<std::common_type_t<T, U...>, 1 + sizeof...(U)>;
 
 /**
  * @brief 二次元ベクトルどうしの外積(平行四辺形の符号付き面積)

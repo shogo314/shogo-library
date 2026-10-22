@@ -1,6 +1,7 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
 // geometry/vector.hpp の Vector の演算子を、成分の配列で愚直に計算した結果とランダムに比較する
+// 成分から作るときの推論ガイド (型は成分の共通の型、次元は成分の個数) も static_assert で確かめる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../../src/geometry/vector.hpp"
@@ -8,6 +9,16 @@
 #include <array>
 #include <iostream>
 #include <random>
+#include <type_traits>
+
+// 推論ガイド
+static_assert(std::is_same_v<decltype(Vector(2LL, 3LL)), Vector<long long, 2>>);
+static_assert(std::is_same_v<decltype(Vector(2, 3)), Vector<int, 2>>);
+static_assert(std::is_same_v<decltype(Vector(1, 2.5)), Vector<double, 2>>);
+static_assert(std::is_same_v<decltype(Vector(1LL, 2LL, 3LL)), Vector<long long, 3>>);
+static_assert(std::is_same_v<decltype(Vector(Vector<long long>(2, 3))), Vector<long long, 2>>);  // コピーは変わらない
+static_assert(std::is_same_v<decltype(Vector()), Vector<double, 2>>);
+static_assert(Vector(1000000000000000001LL, 0LL)[0] == 1000000000000000001LL);  // double を経由しない
 
 int main() {
     std::mt19937_64 rng(314);

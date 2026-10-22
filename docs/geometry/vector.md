@@ -20,7 +20,7 @@ std::sort(ps.begin(), ps.end(), [](const P& a, const P& b) { return Angle(a) < A
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `Vector()` / `Vector(x, y, ...)` | ゼロベクトル / 成分を指定 | $O(d)$ |
+| `Vector()` / `Vector(x, y, ...)` | ゼロベクトル / 成分を指定。型を省くと、成分の共通の型と個数から推論する (`Vector(2LL, 3LL)` は `Vector<long long, 2>`、`Vector(0.0, 0.0)` は `Vector<double, 2>`)。`Vector()` は `Vector<double, 2>` | $O(d)$ |
 | `p[i]` | `i` 番目の成分 | $O(1)$ |
 | `+`、`-` (単項・二項)、`+=`、`-=` | 加減算 | $O(d)$ |
 | `p * c`、`c * p`、`p / c`、`*=`、`/=` | スカラー倍 (整数型で割り切れない除算は assert で落ちる) | $O(d)$ |

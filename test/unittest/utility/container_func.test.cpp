@@ -3,6 +3,8 @@
 // container_func.hpp の関数を愚直な実装とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../../src/utility/container_func.hpp"
+
 #include <algorithm>
 #include <functional>
 #include <iostream>
@@ -11,8 +13,6 @@
 #include <set>
 #include <string>
 #include <vector>
-
-#include "../../../src/utility/container_func.hpp"
 
 bool ok = true;
 

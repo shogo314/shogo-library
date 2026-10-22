@@ -1,4 +1,6 @@
-#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/ITP1_1_A"
+#define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
+
+#include "../../../src/data_structures/binary-trie.hpp"
 
 #include <assert.h>
 
@@ -6,8 +8,6 @@
 #include <iostream>
 #include <random>
 #include <vector>
-
-#include "../../../src/data_structures/binary-trie.hpp"
 
 using namespace std;
 

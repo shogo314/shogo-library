@@ -3,13 +3,13 @@
 // vector_func.hpp の演算子と関数を愚直な実装とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../../src/utility/vector_func.hpp"
+
 #include <algorithm>
 #include <cstdlib>
 #include <iostream>
 #include <random>
 #include <vector>
-
-#include "../../../src/utility/vector_func.hpp"
 
 bool ok = true;
 

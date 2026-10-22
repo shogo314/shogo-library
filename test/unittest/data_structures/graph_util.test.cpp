@@ -3,6 +3,8 @@
 // graph_util.hpp の関数を愚直な実装とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
+#include "../../../src/graph/graph_util.hpp"
+
 #include <algorithm>
 #include <iostream>
 #include <numeric>
@@ -11,7 +13,6 @@
 #include <vector>
 
 #include "../../../src/data_structures/unionfind.hpp"
-#include "../../../src/graph/graph_util.hpp"
 
 int main() {
     std::mt19937 rng(314);

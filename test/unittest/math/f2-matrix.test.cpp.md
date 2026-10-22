@@ -532,96 +532,102 @@ data:
     \                for (long long k = pivot_col[i]; k < w; k++) {\n            \
     \        A[j][k] = OperatorProperty::add(A[j][k], OperatorProperty::neg(OperatorProperty::mul(A[i][k],\
     \ scale)));\n                }\n            }\n        }\n        return d;\n\
-    \    }\n};\n#line 16 \"test/unittest/math/f2-matrix.test.cpp\"\n\n// xor \u3068\
-    \ and \u306B\u3088\u308B\u4F53 GF(2)\nstruct GF2 {\n    static int zero() { return\
-    \ 0; }\n    static int add(const int& a, const int& b) { return a ^ b; }\n   \
-    \ static int neg(const int& a) { return a; }\n    static int one() { return 1;\
-    \ }\n    static int mul(const int& a, const int& b) { return a & b; }\n    static\
-    \ int inv(const int& a) { return a; }\n};\nusing M2 = Matrix<int, GF2>;\n\nbool\
-    \ ok = true;\nvoid check(bool cond, const char* what) {\n    if (!cond && ok)\
-    \ std::cerr << \"failed: \" << what << std::endl;\n    if (!cond) ok = false;\n\
-    }\n\nstd::vector<std::vector<int>> random_bits(std::mt19937_64& rng, int n, int\
-    \ m) {\n    std::vector<std::vector<int>> a(n, std::vector<int>(m));\n    for\
-    \ (auto& row : a)\n        for (auto& x : row) x = rng() % 2;\n    // \u30E9\u30F3\
-    \u30AF\u304C\u5C0F\u3055\u3044\u884C\u5217\u3082\u4F5C\u308B (\u3042\u308B\u884C\
-    \u3092\u5225\u306E\u884C\u306B\u305D\u308D\u3048\u308B)\n    if (n >= 2 && rng()\
-    \ % 2) a[rng() % n] = a[rng() % n];\n    return a;\n}\nbool same(const F2Matrix&\
-    \ A, const M2& B) {\n    if (A.n != B.n || A.m != B.m) return false;\n    for\
-    \ (long long i = 0; i < A.n; i++)\n        for (long long j = 0; j < A.m; j++)\n\
-    \            if (A.get(i, j) != (B[i][j] == 1)) return false;\n    return true;\n\
-    }\nstd::vector<bool> mul(const std::vector<std::vector<int>>& a, const std::vector<bool>&\
-    \ x) {\n    std::vector<bool> y(a.size(), false);\n    for (size_t i = 0; i <\
-    \ a.size(); i++)\n        for (size_t j = 0; j < x.size(); j++) y[i] = y[i] ^\
-    \ (a[i][j] && x[j]);\n    return y;\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n\
-    \    // \u5217\u6570\u3068\u3057\u3066 64 \u306E\u524D\u5F8C\u3082\u8A66\u3059\
-    \n    auto gen_size = [&] {\n        int t = rng() % 4;\n        return t == 0\
-    \ ? static_cast<int>(rng() % 64 + 60) : static_cast<int>(rng() % 8 + 1);\n   \
-    \ };\n\n    // \u7A4D\u30FB\u8DB3\u3057\u7B97\u30FB\u8EE2\u7F6E\u30FBpow\u30FB\
-    \u884C\u5217\u3068\u30D9\u30AF\u30C8\u30EB\u306E\u7A4D\u30FBrank\u30FBdet\u30FB\
-    inv \u3092 Matrix<int, GF2> \u3068\u6BD4\u3079\u308B\n    for (int rep = 0; rep\
-    \ < 300 && ok; rep++) {\n        int n = gen_size(), m = gen_size(), k = gen_size();\n\
-    \        auto a = random_bits(rng, n, m), b = random_bits(rng, m, k), c = random_bits(rng,\
-    \ n, m);\n        F2Matrix A(a), B(b), C(c);\n        M2 Am(a), Bm(b), Cm(c);\n\
-    \        check(same(A * B, Am * Bm), \"\u7A4D\");\n        check(same(A + C, M2(a)\
-    \ += Cm), \"\u8DB3\u3057\u7B97\");\n        auto t = A.transpose();\n        check(t.n\
-    \ == m && t.m == n, \"\u8EE2\u7F6E\u306E\u5927\u304D\u3055\");\n        for (int\
-    \ i = 0; i < n; i++)\n            for (int j = 0; j < m; j++) check(t.get(j, i)\
-    \ == A.get(i, j), \"\u8EE2\u7F6E\");\n        std::vector<bool> x(m);\n      \
-    \  for (int j = 0; j < m; j++) x[j] = rng() % 2;\n        check(A * x == mul(a,\
-    \ x), \"\u884C\u5217\u3068\u30D9\u30AF\u30C8\u30EB\u306E\u7A4D\");\n        check(A.rank()\
-    \ == Am.rank(), \"rank\");\n        auto sq = random_bits(rng, n, n);\n      \
-    \  F2Matrix S(sq);\n        M2 Sm(sq);\n        check(S.det() == (Sm.det() ==\
-    \ 1), \"det\");\n        auto si = S.inv();\n        check(si.has_value() == S.det(),\
-    \ \"inv \u304C\u3042\u308B\u304B\");\n        if (si) check(S * *si == F2Matrix::identity(n)\
-    \ && *si * S == F2Matrix::identity(n), \"inv\");\n        long long e = rng()\
-    \ % 20;\n        check(same(S.pow(e), Sm.pow(e)), \"pow\");\n        // \u7C21\
-    \u7D04\u5316: \u4E3B\u6210\u5206\u306E\u5217\u304C\u5897\u3048\u3066\u3044\u304D\
-    \u3001\u305D\u306E\u5217\u306E\u4ED6\u306E\u6210\u5206\u306F 0\n        auto [R,\
-    \ piv] = A.reduced_row_echelon();\n        check(static_cast<long long>(piv.size())\
-    \ == A.rank(), \"reduced_row_echelon \u306E\u30E9\u30F3\u30AF\");\n        for\
-    \ (size_t i = 0; i < piv.size(); i++) {\n            if (i > 0) check(piv[i] >\
-    \ piv[i - 1], \"reduced_row_echelon \u306E\u4E3B\u6210\u5206\u306E\u5217\");\n\
-    \            for (int r = 0; r < n; r++) check(R.get(r, piv[i]) == (r == static_cast<int>(i)),\
-    \ \"reduced_row_echelon \u306E\u4E3B\u6210\u5206\");\n        }\n    }\n\n   \
-    \ // solve\u30FBkernel: \u5217\u304C\u5C11\u306A\u3051\u308C\u3070 2^m \u901A\u308A\
-    \u306E x \u3092\u3059\u3079\u3066\u8A66\u3057\u3066\u3001\u89E3\u306E\u500B\u6570\
-    \u3068\u5408\u3046\u304B\u78BA\u304B\u3081\u308B\n    for (int rep = 0; rep <\
-    \ 2000 && ok; rep++) {\n        int n = rng() % 8 + 1, m = rng() % 10 + 1;\n \
-    \       auto a = random_bits(rng, n, m);\n        F2Matrix A(a);\n        std::vector<bool>\
-    \ b(n);\n        for (int i = 0; i < n; i++) b[i] = rng() % 2;\n        long long\
-    \ cnt_b = 0, cnt_0 = 0;\n        std::vector<bool> zero(n, false);\n        for\
-    \ (long long code = 0; code < (1LL << m); code++) {\n            std::vector<bool>\
-    \ x(m);\n            for (int j = 0; j < m; j++) x[j] = code >> j & 1;\n     \
-    \       auto y = mul(a, x);\n            cnt_b += y == b;\n            cnt_0 +=\
-    \ y == zero;\n        }\n        long long r = A.rank();\n        check(cnt_0\
-    \ == (1LL << (m - r)), \"rank \u3068\u89E3\u306E\u500B\u6570\");\n        auto\
-    \ ker = A.kernel();\n        check(static_cast<long long>(ker.size()) == m - r,\
-    \ \"kernel \u306E\u500B\u6570\");\n        for (const auto& v : ker) check(A *\
-    \ v == zero, \"kernel \u306F Ax = 0 \u306E\u89E3\");\n        if (!ker.empty())\
-    \ {\n            F2Matrix K(ker.size(), m);\n            for (size_t i = 0; i\
-    \ < ker.size(); i++)\n                for (int j = 0; j < m; j++) K.set(i, j,\
-    \ ker[i][j]);\n            check(K.rank() == static_cast<long long>(ker.size()),\
-    \ \"kernel \u306F\u4E00\u6B21\u72EC\u7ACB\");\n        }\n        auto sol = A.solve(b);\n\
-    \        if (!sol) {\n            check(cnt_b == 0, \"\u89E3\u306A\u3057\");\n\
-    \        } else {\n            check(A * sol->x == b && cnt_b == (1LL << sol->basis.size()),\
-    \ \"solve\");\n            for (const auto& v : sol->basis) check(A * v == zero,\
-    \ \"solve \u306E\u57FA\u5E95\");\n        }\n    }\n\n    // 64 \u5217\u3092\u307E\
-    \u305F\u3050\u5927\u304D\u3055\u306E solve: \u89E3\u3092\u4F5C\u3063\u3066\u304B\
-    \u3089 b \u3092\u6C7A\u3081\u3001\u89E3\u304C\u898B\u3064\u304B\u308B\u304B\u78BA\
-    \u304B\u3081\u308B\n    for (int rep = 0; rep < 100 && ok; rep++) {\n        int\
-    \ n = rng() % 150 + 1, m = rng() % 150 + 1;\n        auto a = random_bits(rng,\
-    \ n, m);\n        F2Matrix A(a);\n        std::vector<bool> x(m);\n        for\
-    \ (int j = 0; j < m; j++) x[j] = rng() % 2;\n        auto b = A * x;\n       \
-    \ auto sol = A.solve(b);\n        check(sol && A * sol->x == b && static_cast<long\
-    \ long>(sol->basis.size()) == m - A.rank(), \"\u5927\u304D\u3044 solve\");\n \
-    \   }\n\n    // \u6587\u5B57\u5217\u304B\u3089\u4F5C\u308B\u30FB\u51FA\u529B\u30FB\
-    set\n    {\n        F2Matrix A(std::vector<std::string>{\"110\", \"011\"});\n\
-    \        check(A.get(0, 1) && !A.get(0, 2) && A.get(1, 2), \"\u6587\u5B57\u5217\
-    \u304B\u3089\u4F5C\u308B\");\n        A.set(0, 0, false);\n        std::ostringstream\
-    \ os;\n        os << A;\n        check(os.str() == \"010\\n011\" && A.to_strings()\
-    \ == std::vector<std::string>{\"010\", \"011\"}, \"\u51FA\u529B\");\n        check(F2Matrix().n\
-    \ == 0 && F2Matrix(3, 70).rank() == 0, \"\u96F6\u884C\u5217\");\n    }\n\n   \
-    \ if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \    }\n};\n\n/**\n * @brief \u884C\u306E\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\
+    \u3068\u304D\u306E\u63A8\u8AD6\u30AC\u30A4\u30C9\u3002\u8981\u7D20\u306E\u578B\
+    \u306F\u5404\u884C\u306E value_type \u306B\u3059\u308B\n *\n * Matrix(std::vector<std::vector<int>>)\
+    \ \u306F Matrix<int>\u3001Matrix(std::vector<std::string>) \u306F Matrix<char>\n\
+    \ */\ntemplate <typename Iterable>\nMatrix(const std::vector<Iterable>&) -> Matrix<typename\
+    \ Iterable::value_type>;\n#line 16 \"test/unittest/math/f2-matrix.test.cpp\"\n\
+    \n// xor \u3068 and \u306B\u3088\u308B\u4F53 GF(2)\nstruct GF2 {\n    static int\
+    \ zero() { return 0; }\n    static int add(const int& a, const int& b) { return\
+    \ a ^ b; }\n    static int neg(const int& a) { return a; }\n    static int one()\
+    \ { return 1; }\n    static int mul(const int& a, const int& b) { return a & b;\
+    \ }\n    static int inv(const int& a) { return a; }\n};\nusing M2 = Matrix<int,\
+    \ GF2>;\n\nbool ok = true;\nvoid check(bool cond, const char* what) {\n    if\
+    \ (!cond && ok) std::cerr << \"failed: \" << what << std::endl;\n    if (!cond)\
+    \ ok = false;\n}\n\nstd::vector<std::vector<int>> random_bits(std::mt19937_64&\
+    \ rng, int n, int m) {\n    std::vector<std::vector<int>> a(n, std::vector<int>(m));\n\
+    \    for (auto& row : a)\n        for (auto& x : row) x = rng() % 2;\n    // \u30E9\
+    \u30F3\u30AF\u304C\u5C0F\u3055\u3044\u884C\u5217\u3082\u4F5C\u308B (\u3042\u308B\
+    \u884C\u3092\u5225\u306E\u884C\u306B\u305D\u308D\u3048\u308B)\n    if (n >= 2\
+    \ && rng() % 2) a[rng() % n] = a[rng() % n];\n    return a;\n}\nbool same(const\
+    \ F2Matrix& A, const M2& B) {\n    if (A.n != B.n || A.m != B.m) return false;\n\
+    \    for (long long i = 0; i < A.n; i++)\n        for (long long j = 0; j < A.m;\
+    \ j++)\n            if (A.get(i, j) != (B[i][j] == 1)) return false;\n    return\
+    \ true;\n}\nstd::vector<bool> mul(const std::vector<std::vector<int>>& a, const\
+    \ std::vector<bool>& x) {\n    std::vector<bool> y(a.size(), false);\n    for\
+    \ (size_t i = 0; i < a.size(); i++)\n        for (size_t j = 0; j < x.size();\
+    \ j++) y[i] = y[i] ^ (a[i][j] && x[j]);\n    return y;\n}\n\nint main() {\n  \
+    \  std::mt19937_64 rng(314);\n    // \u5217\u6570\u3068\u3057\u3066 64 \u306E\u524D\
+    \u5F8C\u3082\u8A66\u3059\n    auto gen_size = [&] {\n        int t = rng() % 4;\n\
+    \        return t == 0 ? static_cast<int>(rng() % 64 + 60) : static_cast<int>(rng()\
+    \ % 8 + 1);\n    };\n\n    // \u7A4D\u30FB\u8DB3\u3057\u7B97\u30FB\u8EE2\u7F6E\
+    \u30FBpow\u30FB\u884C\u5217\u3068\u30D9\u30AF\u30C8\u30EB\u306E\u7A4D\u30FBrank\u30FB\
+    det\u30FBinv \u3092 Matrix<int, GF2> \u3068\u6BD4\u3079\u308B\n    for (int rep\
+    \ = 0; rep < 300 && ok; rep++) {\n        int n = gen_size(), m = gen_size(),\
+    \ k = gen_size();\n        auto a = random_bits(rng, n, m), b = random_bits(rng,\
+    \ m, k), c = random_bits(rng, n, m);\n        F2Matrix A(a), B(b), C(c);\n   \
+    \     M2 Am(a), Bm(b), Cm(c);\n        check(same(A * B, Am * Bm), \"\u7A4D\"\
+    );\n        check(same(A + C, M2(a) += Cm), \"\u8DB3\u3057\u7B97\");\n       \
+    \ auto t = A.transpose();\n        check(t.n == m && t.m == n, \"\u8EE2\u7F6E\u306E\
+    \u5927\u304D\u3055\");\n        for (int i = 0; i < n; i++)\n            for (int\
+    \ j = 0; j < m; j++) check(t.get(j, i) == A.get(i, j), \"\u8EE2\u7F6E\");\n  \
+    \      std::vector<bool> x(m);\n        for (int j = 0; j < m; j++) x[j] = rng()\
+    \ % 2;\n        check(A * x == mul(a, x), \"\u884C\u5217\u3068\u30D9\u30AF\u30C8\
+    \u30EB\u306E\u7A4D\");\n        check(A.rank() == Am.rank(), \"rank\");\n    \
+    \    auto sq = random_bits(rng, n, n);\n        F2Matrix S(sq);\n        M2 Sm(sq);\n\
+    \        check(S.det() == (Sm.det() == 1), \"det\");\n        auto si = S.inv();\n\
+    \        check(si.has_value() == S.det(), \"inv \u304C\u3042\u308B\u304B\");\n\
+    \        if (si) check(S * *si == F2Matrix::identity(n) && *si * S == F2Matrix::identity(n),\
+    \ \"inv\");\n        long long e = rng() % 20;\n        check(same(S.pow(e), Sm.pow(e)),\
+    \ \"pow\");\n        // \u7C21\u7D04\u5316: \u4E3B\u6210\u5206\u306E\u5217\u304C\
+    \u5897\u3048\u3066\u3044\u304D\u3001\u305D\u306E\u5217\u306E\u4ED6\u306E\u6210\
+    \u5206\u306F 0\n        auto [R, piv] = A.reduced_row_echelon();\n        check(static_cast<long\
+    \ long>(piv.size()) == A.rank(), \"reduced_row_echelon \u306E\u30E9\u30F3\u30AF\
+    \");\n        for (size_t i = 0; i < piv.size(); i++) {\n            if (i > 0)\
+    \ check(piv[i] > piv[i - 1], \"reduced_row_echelon \u306E\u4E3B\u6210\u5206\u306E\
+    \u5217\");\n            for (int r = 0; r < n; r++) check(R.get(r, piv[i]) ==\
+    \ (r == static_cast<int>(i)), \"reduced_row_echelon \u306E\u4E3B\u6210\u5206\"\
+    );\n        }\n    }\n\n    // solve\u30FBkernel: \u5217\u304C\u5C11\u306A\u3051\
+    \u308C\u3070 2^m \u901A\u308A\u306E x \u3092\u3059\u3079\u3066\u8A66\u3057\u3066\
+    \u3001\u89E3\u306E\u500B\u6570\u3068\u5408\u3046\u304B\u78BA\u304B\u3081\u308B\
+    \n    for (int rep = 0; rep < 2000 && ok; rep++) {\n        int n = rng() % 8\
+    \ + 1, m = rng() % 10 + 1;\n        auto a = random_bits(rng, n, m);\n       \
+    \ F2Matrix A(a);\n        std::vector<bool> b(n);\n        for (int i = 0; i <\
+    \ n; i++) b[i] = rng() % 2;\n        long long cnt_b = 0, cnt_0 = 0;\n       \
+    \ std::vector<bool> zero(n, false);\n        for (long long code = 0; code < (1LL\
+    \ << m); code++) {\n            std::vector<bool> x(m);\n            for (int\
+    \ j = 0; j < m; j++) x[j] = code >> j & 1;\n            auto y = mul(a, x);\n\
+    \            cnt_b += y == b;\n            cnt_0 += y == zero;\n        }\n  \
+    \      long long r = A.rank();\n        check(cnt_0 == (1LL << (m - r)), \"rank\
+    \ \u3068\u89E3\u306E\u500B\u6570\");\n        auto ker = A.kernel();\n       \
+    \ check(static_cast<long long>(ker.size()) == m - r, \"kernel \u306E\u500B\u6570\
+    \");\n        for (const auto& v : ker) check(A * v == zero, \"kernel \u306F Ax\
+    \ = 0 \u306E\u89E3\");\n        if (!ker.empty()) {\n            F2Matrix K(ker.size(),\
+    \ m);\n            for (size_t i = 0; i < ker.size(); i++)\n                for\
+    \ (int j = 0; j < m; j++) K.set(i, j, ker[i][j]);\n            check(K.rank()\
+    \ == static_cast<long long>(ker.size()), \"kernel \u306F\u4E00\u6B21\u72EC\u7ACB\
+    \");\n        }\n        auto sol = A.solve(b);\n        if (!sol) {\n       \
+    \     check(cnt_b == 0, \"\u89E3\u306A\u3057\");\n        } else {\n         \
+    \   check(A * sol->x == b && cnt_b == (1LL << sol->basis.size()), \"solve\");\n\
+    \            for (const auto& v : sol->basis) check(A * v == zero, \"solve \u306E\
+    \u57FA\u5E95\");\n        }\n    }\n\n    // 64 \u5217\u3092\u307E\u305F\u3050\
+    \u5927\u304D\u3055\u306E solve: \u89E3\u3092\u4F5C\u3063\u3066\u304B\u3089 b \u3092\
+    \u6C7A\u3081\u3001\u89E3\u304C\u898B\u3064\u304B\u308B\u304B\u78BA\u304B\u3081\
+    \u308B\n    for (int rep = 0; rep < 100 && ok; rep++) {\n        int n = rng()\
+    \ % 150 + 1, m = rng() % 150 + 1;\n        auto a = random_bits(rng, n, m);\n\
+    \        F2Matrix A(a);\n        std::vector<bool> x(m);\n        for (int j =\
+    \ 0; j < m; j++) x[j] = rng() % 2;\n        auto b = A * x;\n        auto sol\
+    \ = A.solve(b);\n        check(sol && A * sol->x == b && static_cast<long long>(sol->basis.size())\
+    \ == m - A.rank(), \"\u5927\u304D\u3044 solve\");\n    }\n\n    // \u6587\u5B57\
+    \u5217\u304B\u3089\u4F5C\u308B\u30FB\u51FA\u529B\u30FBset\n    {\n        F2Matrix\
+    \ A(std::vector<std::string>{\"110\", \"011\"});\n        check(A.get(0, 1) &&\
+    \ !A.get(0, 2) && A.get(1, 2), \"\u6587\u5B57\u5217\u304B\u3089\u4F5C\u308B\"\
+    );\n        A.set(0, 0, false);\n        std::ostringstream os;\n        os <<\
+    \ A;\n        check(os.str() == \"010\\n011\" && A.to_strings() == std::vector<std::string>{\"\
+    010\", \"011\"}, \"\u51FA\u529B\");\n        check(F2Matrix().n == 0 && F2Matrix(3,\
+    \ 70).rank() == 0, \"\u96F6\u884C\u5217\");\n    }\n\n    if (ok) std::cout <<\
+    \ \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// F2Matrix \u3092\u3001GF(2) \u306E\u6F14\u7B97\u3092\u6E21\u3057\u305F Matrix\
     \ \u3084\u3001x \u3092\u3059\u3079\u3066\u8A66\u3059\u611A\u76F4\u306A\u5B9F\u88C5\
@@ -727,7 +733,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/f2-matrix.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 04:35:34+09:00'
+  timestamp: '2026-10-22 13:41:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/f2-matrix.test.cpp

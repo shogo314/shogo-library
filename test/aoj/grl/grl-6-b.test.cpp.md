@@ -28,17 +28,18 @@ data:
     \u306E\u8DEF\u3067\u591A\u304F\u6D41\u308C\u308B\u3053\u3068\u304C\u591A\u3044\
     \n * \u4F8B:\n * MinCostFlow<int, long long> mcf(n);\n * mcf.add_edge(0, 1, 5,\
     \ 3);\n * auto [f, c] = mcf.flow(s, t, limit);\n *\n * @tparam Cap \u5BB9\u91CF\
-    \u306E\u578B\n * @tparam Cost \u30B3\u30B9\u30C8\u306E\u578B\u3002\u30B3\u30B9\
-    \u30C8\u306E\u7DCF\u548C\u304C\u53CE\u307E\u308B\u3053\u3068\n */\ntemplate <typename\
-    \ Cap, typename Cost>\nclass MinCostFlow {\n   public:\n    /**\n     * @brief\
-    \ \u8FBA\u306E\u60C5\u5831\n     */\n    struct Edge {\n        long long from,\
-    \ to;\n        Cap cap;    //!< \u5BB9\u91CF\n        Cap flow;   //!< \u6D41\u308C\
-    \u3066\u3044\u308B\u91CF\n        Cost cost;  //!< 1 \u3060\u3051\u6D41\u3057\u305F\
-    \u3068\u304D\u306E\u30B3\u30B9\u30C8\n    };\n\n   private:\n    // \u5185\u90E8\
-    \u306E\u8FBA\u3068\u914D\u5217\u306F int \u3067\u6301\u3061\u3001\u516C\u958B\u3059\
-    \u308B\u95A2\u6570\u3067 long long \u306B\u3059\u308B\n    struct InnerEdge {\n\
-    \        int to, rev;\n        Cap cap;  // \u6B8B\u308A\u306E\u5BB9\u91CF\n \
-    \       Cost cost;\n    };\n    long long n;\n    std::vector<std::vector<InnerEdge>>\
+    \u306E\u578B \u7701\u7565\u3057\u305F\u3089 long long\n * @tparam Cost \u30B3\u30B9\
+    \u30C8\u306E\u578B\u3002\u30B3\u30B9\u30C8\u306E\u7DCF\u548C\u304C\u53CE\u307E\
+    \u308B\u3053\u3068 \u7701\u7565\u3057\u305F\u3089 long long\n */\ntemplate <typename\
+    \ Cap = long long, typename Cost = long long>\nclass MinCostFlow {\n   public:\n\
+    \    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\n     */\n    struct Edge {\n\
+    \        long long from, to;\n        Cap cap;    //!< \u5BB9\u91CF\n        Cap\
+    \ flow;   //!< \u6D41\u308C\u3066\u3044\u308B\u91CF\n        Cost cost;  //!<\
+    \ 1 \u3060\u3051\u6D41\u3057\u305F\u3068\u304D\u306E\u30B3\u30B9\u30C8\n    };\n\
+    \n   private:\n    // \u5185\u90E8\u306E\u8FBA\u3068\u914D\u5217\u306F int \u3067\
+    \u6301\u3061\u3001\u516C\u958B\u3059\u308B\u95A2\u6570\u3067 long long \u306B\u3059\
+    \u308B\n    struct InnerEdge {\n        int to, rev;\n        Cap cap;  // \u6B8B\
+    \u308A\u306E\u5BB9\u91CF\n        Cost cost;\n    };\n    long long n;\n    std::vector<std::vector<InnerEdge>>\
     \ g;\n    std::vector<std::pair<int, int>> pos;  // \u8FFD\u52A0\u3057\u305F\u8FBA\
     \u304C g \u306E\u3069\u3053\u306B\u3042\u308B\u304B\n    // \u30DD\u30C6\u30F3\
     \u30B7\u30E3\u30EB\u3002\u5BB9\u91CF\u304C\u6B8B\u3063\u3066\u3044\u308B\u3059\
@@ -139,7 +140,7 @@ data:
   isVerificationFile: true
   path: test/aoj/grl/grl-6-b.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:37:20+09:00'
+  timestamp: '2026-10-22 13:41:47+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/grl/grl-6-b.test.cpp

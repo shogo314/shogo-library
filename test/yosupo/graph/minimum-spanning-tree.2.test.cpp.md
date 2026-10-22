@@ -26,75 +26,78 @@ data:
     \ <iostream>\n\n#line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file graph.hpp\n *\
     \ @brief \u30B0\u30E9\u30D5\n */\n\n#include <cassert>\n#line 10 \"src/graph/graph.hpp\"\
     \n#include <vector>\n\n/**\n * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\
-    \u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u578B\n\
-    \ */\ntemplate <typename Cost = int>\nclass Graph {\n   public:\n    /**\n   \
-    \  * @brief \u6709\u5411\u8FBA\u306E\u69CB\u9020\u4F53\n     *\n     * operator\
-    \ long long()\u3092\u5B9A\u7FA9\u3057\u3066\u3044\u308B\u306E\u3067\u3001\u6574\
-    \u6570\u578B\u306B\u30AD\u30E3\u30B9\u30C8\u3059\u308B\u3068\u52DD\u624B\u306B\
-    dst\u306B\u306A\u308B\n     * \u4F8B\u3048\u3070\u3001\n     * for (auto& e :\
-    \ g[v]) \u3092\u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\u304C\u5217\
-    \u6319\u3055\u308C\u308B\u304C\u3001\n     * for (long long dst : g[v]) \u3068\
-    \u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\u306E\u884C\u304D\u5148\
-    \u304C\u5217\u6319\u3055\u308C\u308B\n     */\n    struct Edge {\n        long\
-    \ long src = -1;  //!< \u59CB\u70B9\n        long long dst = -1;  //!< \u7D42\u70B9\
-    \n        Cost cost = {};      //!< \u30B3\u30B9\u30C8\n        long long id =\
-    \ -1;   //!< \u8FBA\u306E\u756A\u53F7(\u8FFD\u52A0\u3055\u308C\u305F\u9806\u3001\
-    \u7121\u5411\u8FBA\u306E\u5834\u5408\u306Fid\u304C\u540C\u3058\u3067\u65B9\u5411\
-    \u304C\u9006\u306E\u3082\u306E\u304C2\u3064\u5B58\u5728\u3059\u308B)\n       \
-    \ Edge() = default;\n        Edge(long long src, long long dst, Cost cost = 1,\
-    \ long long id = -1) : src(src), dst(dst), cost(cost), id(id) {}\n        operator\
-    \ long long() const { return dst; }\n    };\n\n    long long n;              \
-    \         //!< \u9802\u70B9\u6570\n    long long m;                       //!<\
-    \ \u8FBA\u6570\n    std::vector<std::vector<Edge>> g;  //!< \u30B0\u30E9\u30D5\
-    \u306E\u96A3\u63A5\u30EA\u30B9\u30C8\u8868\u73FE\n\n    /**\n     * @brief \u30C7\
-    \u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     */\n\
-    \    Graph() : n(0), m(0), g(0) {}\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\
-    \u30E9\u30AF\u30BF\n     * @param n \u9802\u70B9\u6570\n     */\n    explicit\
-    \ Graph(long long n) : n(n), m(0), g(n) {}\n    /**\n     * @brief \u9802\u70B9\
-    \u6570\n     */\n    long long size() const { return n; }\n    /**\n     * @brief\
-    \ \u7121\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n     * @param u \u59CB\u70B9\
-    \n     * @param v \u7D42\u70B9\n     * @param w \u30B3\u30B9\u30C8 \u7701\u7565\
-    \u3057\u305F\u30891\n     */\n    void add_edge(long long u, long long v, Cost\
-    \ w = 1) {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n        g[u].push_back({u,\
-    \ v, w, m});\n        g[v].push_back({v, u, w, m++});\n    }\n    /**\n     *\
-    \ @brief \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n     * @param u \u59CB\
-    \u70B9\n     * @param v \u7D42\u70B9\n     * @param w \u30B3\u30B9\u30C8 \u7701\
-    \u7565\u3057\u305F\u30891\n     */\n    void add_directed_edge(long long u, long\
+    \u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u578B \u7701\
+    \u7565\u3057\u305F\u3089 long long (\u91CD\u307F\u306E\u548C\u3084\u672A\u5230\
+    \u9054\u3092\u8868\u3059 max / 4 \u304C\u3042\u3075\u308C\u306B\u304F\u3044\u3088\
+    \u3046\u306B)\n */\ntemplate <typename Cost = long long>\nclass Graph {\n   public:\n\
+    \    /**\n     * @brief \u6709\u5411\u8FBA\u306E\u69CB\u9020\u4F53\n     *\n \
+    \    * operator long long()\u3092\u5B9A\u7FA9\u3057\u3066\u3044\u308B\u306E\u3067\
+    \u3001\u6574\u6570\u578B\u306B\u30AD\u30E3\u30B9\u30C8\u3059\u308B\u3068\u52DD\
+    \u624B\u306Bdst\u306B\u306A\u308B\n     * \u4F8B\u3048\u3070\u3001\n     * for\
+    \ (auto& e : g[v]) \u3092\u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\
+    \u304C\u5217\u6319\u3055\u308C\u308B\u304C\u3001\n     * for (long long dst :\
+    \ g[v]) \u3068\u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\u306E\u884C\
+    \u304D\u5148\u304C\u5217\u6319\u3055\u308C\u308B\n     */\n    struct Edge {\n\
+    \        long long src = -1;  //!< \u59CB\u70B9\n        long long dst = -1; \
+    \ //!< \u7D42\u70B9\n        Cost cost = {};      //!< \u30B3\u30B9\u30C8\n  \
+    \      long long id = -1;   //!< \u8FBA\u306E\u756A\u53F7(\u8FFD\u52A0\u3055\u308C\
+    \u305F\u9806\u3001\u7121\u5411\u8FBA\u306E\u5834\u5408\u306Fid\u304C\u540C\u3058\
+    \u3067\u65B9\u5411\u304C\u9006\u306E\u3082\u306E\u304C2\u3064\u5B58\u5728\u3059\
+    \u308B)\n        Edge() = default;\n        Edge(long long src, long long dst,\
+    \ Cost cost = 1, long long id = -1) : src(src), dst(dst), cost(cost), id(id) {}\n\
+    \        operator long long() const { return dst; }\n    };\n\n    long long n;\
+    \                       //!< \u9802\u70B9\u6570\n    long long m;            \
+    \           //!< \u8FBA\u6570\n    std::vector<std::vector<Edge>> g;  //!< \u30B0\
+    \u30E9\u30D5\u306E\u96A3\u63A5\u30EA\u30B9\u30C8\u8868\u73FE\n\n    /**\n    \
+    \ * @brief \u30C7\u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\
+    \n     */\n    Graph() : n(0), m(0), g(0) {}\n    /**\n     * @brief \u30B3\u30F3\
+    \u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param n \u9802\u70B9\u6570\n     */\n\
+    \    explicit Graph(long long n) : n(n), m(0), g(n) {}\n    /**\n     * @brief\
+    \ \u9802\u70B9\u6570\n     */\n    long long size() const { return n; }\n    /**\n\
+    \     * @brief \u7121\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n     * @param\
+    \ u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n     * @param w \u30B3\u30B9\u30C8\
+    \ \u7701\u7565\u3057\u305F\u30891\n     */\n    void add_edge(long long u, long\
     \ long v, Cost w = 1) {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n\
-    \        g[u].push_back({u, v, w, m++});\n    }\n    /**\n     * @brief \u8FBA\
-    \u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\u529B\u304B\u3089\u53D7\u3051\u53D6\
-    \u3063\u3066\u8FFD\u52A0\u3059\u308B\n     * @param m \u8FBA\u306E\u6570\n   \
-    \  * @param padding \u9802\u70B9\u756A\u53F7\u3092\u5165\u529B\u304B\u3089\u3044\
-    \u304F\u3064\u305A\u3089\u3059\u304B \u7701\u7565\u3057\u305F\u3089-1\n     *\
-    \ @param weighted \u8FBA\u306E\u91CD\u307F\u304C\u5165\u529B\u3055\u308C\u308B\
-    \u304B \u7701\u7565\u3057\u305F\u3089false\u3068\u306A\u308A\u3001\u91CD\u307F\
-    1\u3067\u8FBA\u304C\u8FFD\u52A0\u3055\u308C\u308B\n     * @param directed \u6709\
-    \u5411\u30B0\u30E9\u30D5\u304B\u3069\u3046\u304B \u7701\u7565\u3057\u305F\u3089\
-    false\n     */\n    void read(long long m, long long padding = -1, bool weighted\
-    \ = false, bool directed = false) {\n        for (long long i = 0; i < m; i++)\
-    \ {\n            long long u, v;\n            std::cin >> u >> v;\n          \
-    \  u += padding, v += padding;\n            Cost c(1);\n            if (weighted)\n\
-    \                std::cin >> c;\n            if (directed)\n                add_directed_edge(u,\
-    \ v, c);\n            else\n                add_edge(u, v, c);\n        }\n  \
-    \  }\n    /**\n     * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u51FA\u308B\u8FBA\
-    \u3092\u5217\u6319\u3059\u308B\n     * @param v \u9802\u70B9\u756A\u53F7\n   \
-    \  * @return std::vector<Edge>& v\u304B\u3089\u51FA\u308B\u8FBA\u306E\u30EA\u30B9\
-    \u30C8\n     */\n    std::vector<Edge>& operator[](long long v) {\n        return\
-    \ g[v];\n    }\n    /**\n     * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u51FA\
-    \u308B\u8FBA\u3092\u5217\u6319\u3059\u308B\n     * @param v \u9802\u70B9\u756A\
-    \u53F7\n     * @return const std::vector<Edge>& v\u304B\u3089\u51FA\u308B\u8FBA\
-    \u306E\u30EA\u30B9\u30C8\n     */\n    const std::vector<Edge>& operator[](long\
-    \ long v) const {\n        return g[v];\n    }\n    /**\n     * @brief \u8FBA\u306E\
-    \u30EA\u30B9\u30C8\n     * @return std::vector<Edge> \u8FBA\u306E\u30EA\u30B9\u30C8\
-    (id\u306E\u6607\u9806)\n     *\n     * \u7121\u5411\u8FBA\u306F\u4EE3\u8868\u3057\
-    \u30661\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\n     */\n    std::vector<Edge>\
-    \ edges() const {\n        std::vector<Edge> res(m);\n        for (long long i\
-    \ = 0; i < n; i++) {\n            for (auto& e : g[i]) {\n                res[e.id]\
-    \ = e;\n            }\n        }\n        return res;\n    }\n};\n#line 2 \"src/graph/graph_util.hpp\"\
-    \n\n/**\n * @file graph_util.hpp\n * @brief \u30B0\u30E9\u30D5\u306B\u95A2\u3059\
-    \u308B\u95A2\u6570\n */\n\n#include <algorithm>\n#line 10 \"src/graph/graph_util.hpp\"\
-    \n#include <functional>\n#include <limits>\n#include <queue>\n#include <stack>\n\
-    #include <utility>\n#line 16 \"src/graph/graph_util.hpp\"\n\n#line 2 \"src/data_structures/unionfind.hpp\"\
+    \        g[u].push_back({u, v, w, m});\n        g[v].push_back({v, u, w, m++});\n\
+    \    }\n    /**\n     * @brief \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\
+    \n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n     * @param w\
+    \ \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n    void add_directed_edge(long\
+    \ long u, long long v, Cost w = 1) {\n        assert(0 <= u && u < n && 0 <= v\
+    \ && v < n);\n        g[u].push_back({u, v, w, m++});\n    }\n    /**\n     *\
+    \ @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\u529B\u304B\u3089\u53D7\
+    \u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\u308B\n     * @param m \u8FBA\u306E\
+    \u6570\n     * @param padding \u9802\u70B9\u756A\u53F7\u3092\u5165\u529B\u304B\
+    \u3089\u3044\u304F\u3064\u305A\u3089\u3059\u304B \u7701\u7565\u3057\u305F\u3089\
+    -1\n     * @param weighted \u8FBA\u306E\u91CD\u307F\u304C\u5165\u529B\u3055\u308C\
+    \u308B\u304B \u7701\u7565\u3057\u305F\u3089false\u3068\u306A\u308A\u3001\u91CD\
+    \u307F1\u3067\u8FBA\u304C\u8FFD\u52A0\u3055\u308C\u308B\n     * @param directed\
+    \ \u6709\u5411\u30B0\u30E9\u30D5\u304B\u3069\u3046\u304B \u7701\u7565\u3057\u305F\
+    \u3089false\n     */\n    void read(long long m, long long padding = -1, bool\
+    \ weighted = false, bool directed = false) {\n        for (long long i = 0; i\
+    \ < m; i++) {\n            long long u, v;\n            std::cin >> u >> v;\n\
+    \            u += padding, v += padding;\n            Cost c(1);\n           \
+    \ if (weighted)\n                std::cin >> c;\n            if (directed)\n \
+    \               add_directed_edge(u, v, c);\n            else\n              \
+    \  add_edge(u, v, c);\n        }\n    }\n    /**\n     * @brief \u3042\u308B\u9802\
+    \u70B9\u304B\u3089\u51FA\u308B\u8FBA\u3092\u5217\u6319\u3059\u308B\n     * @param\
+    \ v \u9802\u70B9\u756A\u53F7\n     * @return std::vector<Edge>& v\u304B\u3089\u51FA\
+    \u308B\u8FBA\u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<Edge>& operator[](long\
+    \ long v) {\n        return g[v];\n    }\n    /**\n     * @brief \u3042\u308B\u9802\
+    \u70B9\u304B\u3089\u51FA\u308B\u8FBA\u3092\u5217\u6319\u3059\u308B\n     * @param\
+    \ v \u9802\u70B9\u756A\u53F7\n     * @return const std::vector<Edge>& v\u304B\u3089\
+    \u51FA\u308B\u8FBA\u306E\u30EA\u30B9\u30C8\n     */\n    const std::vector<Edge>&\
+    \ operator[](long long v) const {\n        return g[v];\n    }\n    /**\n    \
+    \ * @brief \u8FBA\u306E\u30EA\u30B9\u30C8\n     * @return std::vector<Edge> \u8FBA\
+    \u306E\u30EA\u30B9\u30C8(id\u306E\u6607\u9806)\n     *\n     * \u7121\u5411\u8FBA\
+    \u306F\u4EE3\u8868\u3057\u30661\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\
+    \n     */\n    std::vector<Edge> edges() const {\n        std::vector<Edge> res(m);\n\
+    \        for (long long i = 0; i < n; i++) {\n            for (auto& e : g[i])\
+    \ {\n                res[e.id] = e;\n            }\n        }\n        return\
+    \ res;\n    }\n};\n#line 2 \"src/graph/graph_util.hpp\"\n\n/**\n * @file graph_util.hpp\n\
+    \ * @brief \u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570\n */\n\n#include\
+    \ <algorithm>\n#line 10 \"src/graph/graph_util.hpp\"\n#include <functional>\n\
+    #include <limits>\n#include <queue>\n#include <stack>\n#include <utility>\n#line\
+    \ 16 \"src/graph/graph_util.hpp\"\n\n#line 2 \"src/data_structures/unionfind.hpp\"\
     \n\n/**\n * @file unionfind.hpp\n * @brief UnionFind\n */\n\n#line 12 \"src/data_structures/unionfind.hpp\"\
     \n\nnamespace internal_unionfind {\n/**\n * @brief \u5404\u8981\u7D20\u306E\u4EE3\
     \u8868\u5143\u304B\u3089\u3001\u9023\u7D50\u6210\u5206\u3054\u3068\u306E\u8981\
@@ -157,7 +160,7 @@ data:
     \n * \u9023\u7D50\u6210\u5206\u306E\u3046\u3061\u3001\u30A4\u30F3\u30C7\u30C3\u30AF\
     \u30B9\u306E\u6700\u3082\u5C0F\u3055\u3044\u3082\u306E\u30920\u306B\u3059\u308B\
     \u3002\n * @return std::vector<int> \u5404\u9802\u70B9\u306E\u5F69\u8272\u7D50\
-    \u679C\n */\ntemplate <typename Cost = int>\nstd::vector<int> bipartite_coloring(const\
+    \u679C\n */\ntemplate <typename Cost = long long>\nstd::vector<int> bipartite_coloring(const\
     \ Graph<Cost>& graph) {\n    std::vector<int> color(graph.n, -1);\n    for (long\
     \ long i = 0; i < graph.n; i++) {\n        if (color[i] != -1) continue;\n   \
     \     std::stack<long long> stk;\n        stk.push(i);\n        color[i] = 0;\n\
@@ -170,13 +173,13 @@ data:
     \u306B\u3064\u3044\u3066\u3001\u4E8C\u90E8\u30B0\u30E9\u30D5\u304B\u3069\u3046\
     \u304B\u3092\u5224\u5B9A\u3059\u308B\u3002\n * @return bool \u4E8C\u90E8\u30B0\
     \u30E9\u30D5\u306A\u3089true\u3001\u4E8C\u90E8\u30B0\u30E9\u30D5\u3067\u306A\u3044\
-    \u306A\u3089false\u3092\u8FD4\u3059\u3002\n */\ntemplate <typename Cost = int>\n\
-    bool is_bipartite(const Graph<Cost>& graph) {\n    return !bipartite_coloring(graph).empty();\n\
+    \u306A\u3089false\u3092\u8FD4\u3059\u3002\n */\ntemplate <typename Cost = long\
+    \ long>\nbool is_bipartite(const Graph<Cost>& graph) {\n    return !bipartite_coloring(graph).empty();\n\
     }\n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u3064\u3044\u3066\u3001\
     \u9023\u7D50\u6210\u5206\u5206\u89E3\u3059\u308B\u3002\n * @return std::vector<std::vector<long\
     \ long>> \u300C\u540C\u3058\u9023\u7D50\u6210\u5206\u3068\u306A\u308B\u9802\u70B9\
     \u306E\u30EA\u30B9\u30C8\u300D\u306E\u30EA\u30B9\u30C8\n */\ntemplate <typename\
-    \ Cost = int>\nstd::vector<std::vector<long long>> connected_components(const\
+    \ Cost = long long>\nstd::vector<std::vector<long long>> connected_components(const\
     \ Graph<Cost>& graph) {\n    std::vector<std::vector<long long>> groups;\n   \
     \ std::vector<bool> visited(graph.n);\n    for (long long i = 0; i < graph.n;\
     \ i++) {\n        if (visited[i]) continue;\n        std::stack<long long> stk;\n\
@@ -190,32 +193,33 @@ data:
     \u3046\u304B\u3092\u5224\u5B9A\u3059\u308B\u3002\n * @return bool \u9023\u7D50\
     \u30B0\u30E9\u30D5\u306A\u3089true\u3001\u9023\u7D50\u30B0\u30E9\u30D5\u3067\u306A\
     \u3044\u306A\u3089false\u3092\u8FD4\u3059\u3002\n */\ntemplate <typename Cost\
-    \ = int>\nbool is_connected(const Graph<Cost>& graph) {\n    return connected_components(graph).size()\
+    \ = long long>\nbool is_connected(const Graph<Cost>& graph) {\n    return connected_components(graph).size()\
     \ == 1;\n}\n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u3064\u3044\u3066\
     \u3001\u6728\u304B\u3069\u3046\u304B\u3092\u5224\u5B9A\u3059\u308B\u3002\n * @return\
     \ bool \u6728\u306A\u3089true\u3001\u6728\u3067\u306A\u3044\u306A\u3089false\u3092\
-    \u8FD4\u3059\u3002\n */\ntemplate <typename Cost = int>\nbool is_tree(const Graph<Cost>&\
-    \ graph) {\n    return graph.m == graph.n - 1 && is_connected(graph);\n}\n\n/**\n\
-    \ * @brief \u6709\u5411\u30B0\u30E9\u30D5\u3092\u30C8\u30DD\u30ED\u30B8\u30AB\u30EB\
-    \u30BD\u30FC\u30C8\u3059\u308B\n * @return std::vector<long long> \u30C8\u30DD\
-    \u30ED\u30B8\u30AB\u30EB\u9806\u306B\u4E26\u3079\u305F\u9802\u70B9\u306E\u30EA\
-    \u30B9\u30C8\u3002DAG \u3067\u306A\u3051\u308C\u3070\u9014\u4E2D\u307E\u3067 (\u9589\
-    \u8DEF\u304B\u3089\u305F\u3069\u308A\u7740\u3051\u306A\u3044\u9802\u70B9\u3060\
-    \u3051) \u3092\u4E26\u3079\u305F\u3082\u306E\u3067\u3001\u9577\u3055\u304C n \u3088\
-    \u308A\u77ED\u304F\u306A\u308B\n */\ntemplate <typename Cost = int>\nstd::vector<long\
-    \ long> topological_sort(const Graph<Cost>& graph) {\n    std::vector<int> indeg(graph.n);\n\
-    \    std::vector<long long> sorted;\n    std::queue<long long> q;\n    for (long\
-    \ long i = 0; i < graph.n; i++) {\n        for (long long dst : graph[i]) indeg[dst]++;\n\
-    \    }\n    for (long long i = 0; i < graph.n; i++) {\n        if (!indeg[i])\
-    \ q.push(i);\n    }\n    while (!q.empty()) {\n        long long cur = q.front();\n\
-    \        q.pop();\n        for (long long dst : graph[cur]) {\n            if\
-    \ (!--indeg[dst]) q.push(dst);\n        }\n        sorted.push_back(cur);\n  \
-    \  }\n    return sorted;\n}\n\n/**\n * @brief \u6709\u5411\u30B0\u30E9\u30D5\u306B\
-    \u3064\u3044\u3066\u3001\u30B5\u30A4\u30AF\u30EB\u3092\u3082\u3064\u304B\u3069\
-    \u3046\u304B\u3092\u5224\u5B9A\u3059\u308B\u3002\n * @return bool \u30B5\u30A4\
-    \u30AF\u30EB\u3092\u3082\u3064\u306A\u3089true\u3001\u975E\u5DE1\u56DE\u306A\u3089\
-    false\u3092\u8FD4\u3059\u3002\n */\ntemplate <typename Cost = int>\nbool has_cycle(const\
-    \ Graph<Cost>& graph) {\n    return static_cast<long long>(topological_sort(graph).size())\
+    \u8FD4\u3059\u3002\n */\ntemplate <typename Cost = long long>\nbool is_tree(const\
+    \ Graph<Cost>& graph) {\n    return graph.m == graph.n - 1 && is_connected(graph);\n\
+    }\n\n/**\n * @brief \u6709\u5411\u30B0\u30E9\u30D5\u3092\u30C8\u30DD\u30ED\u30B8\
+    \u30AB\u30EB\u30BD\u30FC\u30C8\u3059\u308B\n * @return std::vector<long long>\
+    \ \u30C8\u30DD\u30ED\u30B8\u30AB\u30EB\u9806\u306B\u4E26\u3079\u305F\u9802\u70B9\
+    \u306E\u30EA\u30B9\u30C8\u3002DAG \u3067\u306A\u3051\u308C\u3070\u9014\u4E2D\u307E\
+    \u3067 (\u9589\u8DEF\u304B\u3089\u305F\u3069\u308A\u7740\u3051\u306A\u3044\u9802\
+    \u70B9\u3060\u3051) \u3092\u4E26\u3079\u305F\u3082\u306E\u3067\u3001\u9577\u3055\
+    \u304C n \u3088\u308A\u77ED\u304F\u306A\u308B\n */\ntemplate <typename Cost =\
+    \ long long>\nstd::vector<long long> topological_sort(const Graph<Cost>& graph)\
+    \ {\n    std::vector<int> indeg(graph.n);\n    std::vector<long long> sorted;\n\
+    \    std::queue<long long> q;\n    for (long long i = 0; i < graph.n; i++) {\n\
+    \        for (long long dst : graph[i]) indeg[dst]++;\n    }\n    for (long long\
+    \ i = 0; i < graph.n; i++) {\n        if (!indeg[i]) q.push(i);\n    }\n    while\
+    \ (!q.empty()) {\n        long long cur = q.front();\n        q.pop();\n     \
+    \   for (long long dst : graph[cur]) {\n            if (!--indeg[dst]) q.push(dst);\n\
+    \        }\n        sorted.push_back(cur);\n    }\n    return sorted;\n}\n\n/**\n\
+    \ * @brief \u6709\u5411\u30B0\u30E9\u30D5\u306B\u3064\u3044\u3066\u3001\u30B5\u30A4\
+    \u30AF\u30EB\u3092\u3082\u3064\u304B\u3069\u3046\u304B\u3092\u5224\u5B9A\u3059\
+    \u308B\u3002\n * @return bool \u30B5\u30A4\u30AF\u30EB\u3092\u3082\u3064\u306A\
+    \u3089true\u3001\u975E\u5DE1\u56DE\u306A\u3089false\u3092\u8FD4\u3059\u3002\n\
+    \ */\ntemplate <typename Cost = long long>\nbool has_cycle(const Graph<Cost>&\
+    \ graph) {\n    return static_cast<long long>(topological_sort(graph).size())\
     \ < graph.n;\n}\n\n/**\n * @brief \u6709\u5411\u30B0\u30E9\u30D5\u306E\u9589\u8DEF\
     \u3092 1 \u3064\u6C42\u3081\u308B\n *\n * DFS \u3092\u518D\u5E30\u3092\u4F7F\u308F\
     \u305A\u306B\u884C\u3046\u3002O(n + m)\n * @return std::vector<Edge> \u9589\u8DEF\
@@ -224,7 +228,7 @@ data:
     \u306E src)\u3002\u9589\u8DEF\u304C\u306A\u3051\u308C\u3070\u7A7A\n * \u81EA\u5DF1\
     \u30EB\u30FC\u30D7\u306F\u9577\u3055 1 \u306E\u9589\u8DEF\u306B\u306A\u308B\u3002\
     \u9802\u70B9\u306E\u5217\u306F\u5404\u8FBA\u306E src \u3067\u5F97\u3089\u308C\u308B\
-    \n */\ntemplate <typename Cost = int>\nstd::vector<typename Graph<Cost>::Edge>\
+    \n */\ntemplate <typename Cost = long long>\nstd::vector<typename Graph<Cost>::Edge>\
     \ find_cycle_directed(const Graph<Cost>& graph) {\n    using Edge = typename Graph<Cost>::Edge;\n\
     \    // state: 0 \u306F\u672A\u8A2A\u554F\u30011 \u306F DFS \u306E\u30B9\u30BF\
     \u30C3\u30AF\u4E0A\u30012 \u306F\u63A2\u7D22\u6E08\u307F\n    std::vector<int>\
@@ -252,8 +256,8 @@ data:
     \u5DF1\u30EB\u30FC\u30D7\u306F\u9577\u3055 1\u3001\u591A\u91CD\u8FBA\u306F\u9577\
     \u3055 2 \u306E\u9589\u8DEF\u306B\u306A\u308B (\u540C\u3058\u8FBA\u3092\u623B\u308B\
     \u3053\u3068\u306F\u306A\u3044)\u3002\u9802\u70B9\u306E\u5217\u306F\u5404\u8FBA\
-    \u306E src \u3067\u5F97\u3089\u308C\u308B\n */\ntemplate <typename Cost = int>\n\
-    std::vector<typename Graph<Cost>::Edge> find_cycle_undirected(const Graph<Cost>&\
+    \u306E src \u3067\u5F97\u3089\u308C\u308B\n */\ntemplate <typename Cost = long\
+    \ long>\nstd::vector<typename Graph<Cost>::Edge> find_cycle_undirected(const Graph<Cost>&\
     \ graph) {\n    using Edge = typename Graph<Cost>::Edge;\n    std::vector<int>\
     \ state(graph.n, 0), iter(graph.n, 0);\n    std::vector<Edge> in(graph.n);\n \
     \   for (long long root = 0; root < graph.n; root++) {\n        if (state[root])\
@@ -284,43 +288,43 @@ data:
     \u306E\u9802\u70B9\u306E\u30EA\u30B9\u30C8\u3002\n * \u6210\u5206\u306F\u30C8\u30DD\
     \u30ED\u30B8\u30AB\u30EB\u9806\u306B\u4E26\u3076 (\u6210\u5206 A \u304B\u3089\u6210\
     \u5206 B \u3078\u8FBA\u304C\u3042\u308C\u3070 A \u304C B \u3088\u308A\u524D)\n\
-    \ */\ntemplate <typename Cost = int>\nstd::vector<std::vector<long long>> strongly_connected_components(const\
-    \ Graph<Cost>& graph) {\n    const long long n = graph.n;\n    std::vector<int>\
-    \ ord(n, -1), low(n), comp(n, -1), iter(n, 0);\n    std::vector<long long> visiting;\
-    \  // \u6210\u5206\u304C\u307E\u3060\u6C7A\u307E\u3063\u3066\u3044\u306A\u3044\
-    \u8A2A\u554F\u6E08\u307F\u306E\u9802\u70B9\n    std::vector<long long> call; \
-    \     // DFS \u306E\u547C\u3073\u51FA\u3057\u30B9\u30BF\u30C3\u30AF\n    int now\
-    \ = 0, k = 0;\n    for (long long s = 0; s < n; s++) {\n        if (ord[s] !=\
-    \ -1) continue;\n        ord[s] = low[s] = now++;\n        visiting.push_back(s);\n\
-    \        call.push_back(s);\n        while (!call.empty()) {\n            long\
-    \ long v = call.back();\n            if (iter[v] < static_cast<int>(graph[v].size()))\
-    \ {\n                long long to = graph[v][iter[v]++].dst;\n               \
-    \ if (ord[to] == -1) {\n                    ord[to] = low[to] = now++;\n     \
-    \               visiting.push_back(to);\n                    call.push_back(to);\n\
-    \                } else if (comp[to] == -1) {\n                    low[v] = std::min(low[v],\
-    \ ord[to]);\n                }\n                continue;\n            }\n   \
-    \         call.pop_back();\n            if (!call.empty()) low[call.back()] =\
-    \ std::min(low[call.back()], low[v]);\n            if (low[v] == ord[v]) {\n \
-    \               while (true) {\n                    long long u = visiting.back();\n\
-    \                    visiting.pop_back();\n                    comp[u] = k;\n\
-    \                    if (u == v) break;\n                }\n                k++;\n\
-    \            }\n        }\n    }\n    // Tarjan \u306E\u30A2\u30EB\u30B4\u30EA\
-    \u30BA\u30E0\u306F\u6210\u5206\u3092\u30C8\u30DD\u30ED\u30B8\u30AB\u30EB\u9806\
-    \u306E\u9006\u306B\u898B\u3064\u3051\u308B\u306E\u3067\u3001\u9006\u9806\u306B\
-    \u4E26\u3079\u308B\n    std::vector<std::vector<long long>> groups(k);\n    for\
-    \ (long long v = 0; v < n; v++) groups[k - 1 - comp[v]].push_back(v);\n    return\
-    \ groups;\n}\n\n/**\n * @brief \u6700\u5C0F\u5168\u57DF\u6728\u306E\u7D50\u679C\
-    \n */\ntemplate <typename Cost>\nstruct MinimumSpanningTree {\n    Cost cost;\
-    \                                      //!< \u4F7F\u3063\u305F\u8FBA\u306E\u30B3\
-    \u30B9\u30C8\u306E\u7DCF\u548C\n    std::vector<typename Graph<Cost>::Edge> edges;\
-    \  //!< \u4F7F\u3063\u305F\u8FBA (\u30B3\u30B9\u30C8\u306E\u6607\u9806\u3001\u540C\
-    \u3058\u30B3\u30B9\u30C8\u306A\u3089\u8FBA\u306E\u756A\u53F7\u9806)\n};\n\n/**\n\
-    \ * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306E\u6700\u5C0F\u5168\u57DF\u6728\
+    \ */\ntemplate <typename Cost = long long>\nstd::vector<std::vector<long long>>\
+    \ strongly_connected_components(const Graph<Cost>& graph) {\n    const long long\
+    \ n = graph.n;\n    std::vector<int> ord(n, -1), low(n), comp(n, -1), iter(n,\
+    \ 0);\n    std::vector<long long> visiting;  // \u6210\u5206\u304C\u307E\u3060\
+    \u6C7A\u307E\u3063\u3066\u3044\u306A\u3044\u8A2A\u554F\u6E08\u307F\u306E\u9802\
+    \u70B9\n    std::vector<long long> call;      // DFS \u306E\u547C\u3073\u51FA\u3057\
+    \u30B9\u30BF\u30C3\u30AF\n    int now = 0, k = 0;\n    for (long long s = 0; s\
+    \ < n; s++) {\n        if (ord[s] != -1) continue;\n        ord[s] = low[s] =\
+    \ now++;\n        visiting.push_back(s);\n        call.push_back(s);\n       \
+    \ while (!call.empty()) {\n            long long v = call.back();\n          \
+    \  if (iter[v] < static_cast<int>(graph[v].size())) {\n                long long\
+    \ to = graph[v][iter[v]++].dst;\n                if (ord[to] == -1) {\n      \
+    \              ord[to] = low[to] = now++;\n                    visiting.push_back(to);\n\
+    \                    call.push_back(to);\n                } else if (comp[to]\
+    \ == -1) {\n                    low[v] = std::min(low[v], ord[to]);\n        \
+    \        }\n                continue;\n            }\n            call.pop_back();\n\
+    \            if (!call.empty()) low[call.back()] = std::min(low[call.back()],\
+    \ low[v]);\n            if (low[v] == ord[v]) {\n                while (true)\
+    \ {\n                    long long u = visiting.back();\n                    visiting.pop_back();\n\
+    \                    comp[u] = k;\n                    if (u == v) break;\n  \
+    \              }\n                k++;\n            }\n        }\n    }\n    //\
+    \ Tarjan \u306E\u30A2\u30EB\u30B4\u30EA\u30BA\u30E0\u306F\u6210\u5206\u3092\u30C8\
+    \u30DD\u30ED\u30B8\u30AB\u30EB\u9806\u306E\u9006\u306B\u898B\u3064\u3051\u308B\
+    \u306E\u3067\u3001\u9006\u9806\u306B\u4E26\u3079\u308B\n    std::vector<std::vector<long\
+    \ long>> groups(k);\n    for (long long v = 0; v < n; v++) groups[k - 1 - comp[v]].push_back(v);\n\
+    \    return groups;\n}\n\n/**\n * @brief \u6700\u5C0F\u5168\u57DF\u6728\u306E\u7D50\
+    \u679C\n */\ntemplate <typename Cost>\nstruct MinimumSpanningTree {\n    Cost\
+    \ cost;                                      //!< \u4F7F\u3063\u305F\u8FBA\u306E\
+    \u30B3\u30B9\u30C8\u306E\u7DCF\u548C\n    std::vector<typename Graph<Cost>::Edge>\
+    \ edges;  //!< \u4F7F\u3063\u305F\u8FBA (\u30B3\u30B9\u30C8\u306E\u6607\u9806\u3001\
+    \u540C\u3058\u30B3\u30B9\u30C8\u306A\u3089\u8FBA\u306E\u756A\u53F7\u9806)\n};\n\
+    \n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306E\u6700\u5C0F\u5168\u57DF\u6728\
     \ (Kruskal \u6CD5) O(m log m)\n *\n * \u9023\u7D50\u3067\u306A\u3051\u308C\u3070\
     \u3001\u5404\u9023\u7D50\u6210\u5206\u306E\u6700\u5C0F\u5168\u57DF\u6728\u3092\
     \u5408\u308F\u305B\u305F\u3082\u306E (\u6700\u5C0F\u5168\u57DF\u68EE) \u3092\u8FD4\
     \u3059\n * \u9023\u7D50\u304B\u3069\u3046\u304B\u306F edges.size() == n - 1 \u3067\
-    \u5224\u5B9A\u3067\u304D\u308B\n */\ntemplate <typename Cost = int>\nMinimumSpanningTree<Cost>\
+    \u5224\u5B9A\u3067\u304D\u308B\n */\ntemplate <typename Cost = long long>\nMinimumSpanningTree<Cost>\
     \ minimum_spanning_tree(const Graph<Cost>& graph) {\n    auto es = graph.edges();\n\
     \    std::stable_sort(es.begin(), es.end(), [](const auto& a, const auto& b) {\
     \ return a.cost < b.cost; });\n    UnionFind uf(graph.n);\n    MinimumSpanningTree<Cost>\
@@ -340,25 +344,25 @@ data:
     \u72EC\u7ACB\u96C6\u5408\u300D\u306B\u9650\u3063\u3066\u6C42\u3081\u308B\n * \u9802\
     \u70B9\u304C\u306A\u3051\u308C\u3070 0\u3002\u81EA\u5DF1\u30EB\u30FC\u30D7\u304C\
     \u3042\u308C\u3070\u5857\u308C\u306A\u3044\u306E\u3067 -1\n */\ntemplate <typename\
-    \ Cost = int>\nlong long chromatic_number(const Graph<Cost>& graph) {\n    const\
-    \ int n = graph.n;\n    if (n == 0) return 0;\n    assert(n <= 30);\n    std::vector<int>\
-    \ adj(n, 0);\n    for (int v = 0; v < n; v++) {\n        for (const auto& e :\
-    \ graph[v]) {\n            if (e.dst == v) return -1;\n            adj[v] |= 1\
-    \ << e.dst;\n        }\n    }\n    // indep[S]: S \u304C\u72EC\u7ACB\u96C6\u5408\
-    \u304B (\u6700\u5C0F\u306E\u9802\u70B9\u3092\u9664\u3044\u305F\u96C6\u5408\u304C\
-    \u72EC\u7ACB\u3067\u3001\u6700\u5C0F\u306E\u9802\u70B9\u304C\u305D\u308C\u3068\
-    \u96A3\u308A\u5408\u308F\u306A\u3044)\n    std::vector<bool> indep(1 << n, false);\n\
-    \    indep[0] = true;\n    for (int S = 1; S < (1 << n); S++) {\n        const\
-    \ int v = __builtin_ctz(S), rest = S & (S - 1);\n        indep[S] = indep[rest]\
-    \ && !(adj[v] & rest);\n    }\n    std::vector<int> dp(1 << n, n + 1);\n    dp[0]\
-    \ = 0;\n    for (int S = 1; S < (1 << n); S++) {\n        if (indep[S]) {\n  \
-    \          dp[S] = 1;\n            continue;\n        }\n        const int v =\
-    \ __builtin_ctz(S), low = 1 << v, cand = S & ~adj[v] & ~low;\n        for (int\
-    \ U = cand;; U = (U - 1) & cand) {\n            const int T = U | low;\n     \
-    \       if (indep[T] && dp[S ^ T] + 1 < dp[S]) dp[S] = dp[S ^ T] + 1;\n      \
-    \      if (U == 0) break;\n        }\n    }\n    return dp[(1 << n) - 1];\n}\n\
-    \ntemplate <typename Cost, typename T>\nCost minimum_steiner_tree(const Graph<Cost>&\
-    \ graph, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max()\
+    \ Cost = long long>\nlong long chromatic_number(const Graph<Cost>& graph) {\n\
+    \    const int n = graph.n;\n    if (n == 0) return 0;\n    assert(n <= 30);\n\
+    \    std::vector<int> adj(n, 0);\n    for (int v = 0; v < n; v++) {\n        for\
+    \ (const auto& e : graph[v]) {\n            if (e.dst == v) return -1;\n     \
+    \       adj[v] |= 1 << e.dst;\n        }\n    }\n    // indep[S]: S \u304C\u72EC\
+    \u7ACB\u96C6\u5408\u304B (\u6700\u5C0F\u306E\u9802\u70B9\u3092\u9664\u3044\u305F\
+    \u96C6\u5408\u304C\u72EC\u7ACB\u3067\u3001\u6700\u5C0F\u306E\u9802\u70B9\u304C\
+    \u305D\u308C\u3068\u96A3\u308A\u5408\u308F\u306A\u3044)\n    std::vector<bool>\
+    \ indep(1 << n, false);\n    indep[0] = true;\n    for (int S = 1; S < (1 << n);\
+    \ S++) {\n        const int v = __builtin_ctz(S), rest = S & (S - 1);\n      \
+    \  indep[S] = indep[rest] && !(adj[v] & rest);\n    }\n    std::vector<int> dp(1\
+    \ << n, n + 1);\n    dp[0] = 0;\n    for (int S = 1; S < (1 << n); S++) {\n  \
+    \      if (indep[S]) {\n            dp[S] = 1;\n            continue;\n      \
+    \  }\n        const int v = __builtin_ctz(S), low = 1 << v, cand = S & ~adj[v]\
+    \ & ~low;\n        for (int U = cand;; U = (U - 1) & cand) {\n            const\
+    \ int T = U | low;\n            if (indep[T] && dp[S ^ T] + 1 < dp[S]) dp[S] =\
+    \ dp[S ^ T] + 1;\n            if (U == 0) break;\n        }\n    }\n    return\
+    \ dp[(1 << n) - 1];\n}\n\ntemplate <typename Cost, typename T>\nCost minimum_steiner_tree(const\
+    \ Graph<Cost>& graph, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max()\
     \ / 4) {\n    if (X.empty()) return Cost{};\n    for (const auto& x : X) assert(0\
     \ <= x && x < graph.n);\n    std::vector<std::vector<Cost>> dp(graph.n, std::vector<Cost>(1\
     \ << X.size(), inf));\n    for (int p = 0; p < static_cast<int>(X.size()); p++)\
@@ -401,7 +405,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/graph/minimum-spanning-tree.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 01:22:17+09:00'
+  timestamp: '2026-10-22 13:40:29+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/graph/minimum-spanning-tree.2.test.cpp

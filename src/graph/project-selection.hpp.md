@@ -25,18 +25,19 @@ data:
     \u3001\u5B9F\u969B\u306B\u306F\u305A\u3063\u3068\u901F\u3044\u3053\u3068\u304C\
     \u591A\u3044\u3002\u5BB9\u91CF\u304C\u3059\u3079\u3066 1 \u306A\u3089 O(m min(m^(1/2),\
     \ n^(2/3)))\n * \u4F8B:\n * MaxFlow<long long> mf(n);\n * mf.add_edge(0, 1, 5);\n\
-    \ * long long f = mf.flow(s, t);\n *\n * @tparam Cap \u5BB9\u91CF\u306E\u578B\n\
-    \ */\ntemplate <typename Cap>\nclass MaxFlow {\n   public:\n    /**\n     * @brief\
-    \ \u8FBA\u306E\u60C5\u5831\n     */\n    struct Edge {\n        long long from,\
-    \ to;\n        Cap cap;   //!< \u5BB9\u91CF\n        Cap flow;  //!< \u6D41\u308C\
-    \u3066\u3044\u308B\u91CF\n    };\n\n   private:\n    // \u5185\u90E8\u306E\u8FBA\
-    \u3068\u914D\u5217\u306F int \u3067\u6301\u3061\u3001\u516C\u958B\u3059\u308B\u95A2\
-    \u6570\u3067 long long \u306B\u3059\u308B\n    struct InnerEdge {\n        int\
-    \ to, rev;\n        Cap cap;  // \u6B8B\u308A\u306E\u5BB9\u91CF\n    };\n    long\
-    \ long n;\n    std::vector<std::vector<InnerEdge>> g;\n    std::vector<std::pair<int,\
-    \ int>> pos;  // \u8FFD\u52A0\u3057\u305F\u8FBA\u304C g \u306E\u3069\u3053\u306B\
-    \u3042\u308B\u304B\n    std::vector<int> level, iter;\n\n    bool bfs(int s, int\
-    \ t) {\n        level.assign(n, -1);\n        level[s] = 0;\n        std::queue<int>\
+    \ * long long f = mf.flow(s, t);\n *\n * @tparam Cap \u5BB9\u91CF\u306E\u578B\
+    \ \u7701\u7565\u3057\u305F\u3089 long long\n */\ntemplate <typename Cap = long\
+    \ long>\nclass MaxFlow {\n   public:\n    /**\n     * @brief \u8FBA\u306E\u60C5\
+    \u5831\n     */\n    struct Edge {\n        long long from, to;\n        Cap cap;\
+    \   //!< \u5BB9\u91CF\n        Cap flow;  //!< \u6D41\u308C\u3066\u3044\u308B\u91CF\
+    \n    };\n\n   private:\n    // \u5185\u90E8\u306E\u8FBA\u3068\u914D\u5217\u306F\
+    \ int \u3067\u6301\u3061\u3001\u516C\u958B\u3059\u308B\u95A2\u6570\u3067 long\
+    \ long \u306B\u3059\u308B\n    struct InnerEdge {\n        int to, rev;\n    \
+    \    Cap cap;  // \u6B8B\u308A\u306E\u5BB9\u91CF\n    };\n    long long n;\n \
+    \   std::vector<std::vector<InnerEdge>> g;\n    std::vector<std::pair<int, int>>\
+    \ pos;  // \u8FFD\u52A0\u3057\u305F\u8FBA\u304C g \u306E\u3069\u3053\u306B\u3042\
+    \u308B\u304B\n    std::vector<int> level, iter;\n\n    bool bfs(int s, int t)\
+    \ {\n        level.assign(n, -1);\n        level[s] = 0;\n        std::queue<int>\
     \ que;\n        que.push(s);\n        while (!que.empty()) {\n            int\
     \ v = que.front();\n            que.pop();\n            for (const auto& e : g[v])\
     \ {\n                if (e.cap > 0 && level[e.to] == -1) {\n                 \
@@ -300,7 +301,7 @@ data:
   isVerificationFile: false
   path: src/graph/project-selection.hpp
   requiredBy: []
-  timestamp: '2026-10-20 00:24:39+09:00'
+  timestamp: '2026-10-22 13:41:47+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/graph/project-selection.test.cpp

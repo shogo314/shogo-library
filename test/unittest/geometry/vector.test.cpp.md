@@ -21,48 +21,52 @@ data:
     \ \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\n\n//\
     \ geometry/vector.hpp \u306E Vector \u306E\u6F14\u7B97\u5B50\u3092\u3001\u6210\
     \u5206\u306E\u914D\u5217\u3067\u611A\u76F4\u306B\u8A08\u7B97\u3057\u305F\u7D50\
-    \u679C\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\
-    \u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\
-    \u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/geometry/vector.hpp\"\
-    \n\n/**\n * @file vector.hpp\n * @brief \u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB\n\
-    \ */\n\n#include <algorithm>\n#include <array>\n#include <cassert>\n#include <cmath>\n\
-    #include <istream>\n#include <limits>\n#include <numeric>\n#include <optional>\n\
-    #include <ostream>\n#include <stack>\n#include <type_traits>\n#include <utility>\n\
-    #include <vector>\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n\
-    \ * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n#include <iterator>\n\
-    #include <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace internal_traits\
-    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
-    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
-    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
-    \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
-    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
-    \n#define HAS_METHOD(func_name)                                              \
-    \                \\\n    namespace internal_traits {                         \
-    \                                   \\\n    template <class T, class = void> \
-    \                                                      \\\n    struct has_##func_name##_impl\
-    \ : std::false_type {};                                    \\\n    template <class\
-    \ T>                                                                     \\\n\
-    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
-    \ \\\n        : std::true_type {};                                           \
-    \                    \\\n    }                                               \
-    \                                       \\\n    template <class T>           \
-    \                                                          \\\n    struct has_##func_name\
-    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
-    \ <class T>                                                                  \
-    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
-    \n#define HAS_METHOD_ARG(func_name)                                          \
-    \                                    \\\n    namespace internal_traits {     \
-    \                                                                           \\\
-    \n    template <class T, typename U, class = void>                           \
-    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
-    \ {};                                                        \\\n    template\
-    \ <class T, typename U>                                                      \
-    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
-    \ \\\n        : std::true_type {};                                           \
-    \                                        \\\n    }                           \
+    \u679C\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u6210\u5206\
+    \u304B\u3089\u4F5C\u308B\u3068\u304D\u306E\u63A8\u8AD6\u30AC\u30A4\u30C9 (\u578B\
+    \u306F\u6210\u5206\u306E\u5171\u901A\u306E\u578B\u3001\u6B21\u5143\u306F\u6210\
+    \u5206\u306E\u500B\u6570) \u3082 static_assert \u3067\u78BA\u304B\u3081\u308B\n\
+    // \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\
+    \u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n\
+    #line 2 \"src/geometry/vector.hpp\"\n\n/**\n * @file vector.hpp\n * @brief \u5E7E\
+    \u4F55\u30D9\u30AF\u30C8\u30EB\n */\n\n#include <algorithm>\n#include <array>\n\
+    #include <cassert>\n#include <cmath>\n#include <istream>\n#include <limits>\n\
+    #include <numeric>\n#include <optional>\n#include <ostream>\n#include <stack>\n\
+    #include <type_traits>\n#include <utility>\n#include <vector>\n\n#line 2 \"src/utility/traits.hpp\"\
+    \n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n\
+    #include <iterator>\n#include <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace\
+    \ internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T, class =\
+    \ void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct\
+    \ is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
+    \ : std::true_type {};\n}  // namespace internal_traits\n\ntemplate <class T>\n\
+    struct is_range : internal_traits::is_range_impl<T>::type {};\ntemplate <class\
+    \ T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define HAS_METHOD(func_name)\
+    \                                                              \\\n    namespace\
+    \ internal_traits {                                                          \
+    \  \\\n    template <class T, class = void>                                  \
+    \                     \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                    \\\n    template <class T>          \
+    \                                                           \\\n    struct has_##func_name##_impl<T,\
+    \ std::void_t<decltype(std::declval<T>().func_name())>> \\\n        : std::true_type\
+    \ {};                                                               \\\n    }\
     \                                                                            \
-    \   \\\n    template <class T, typename U>                                   \
-    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \          \\\n    template <class T>                                        \
+    \                             \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T>::type\
+    \ {};          \\\n    template <class T>                                    \
+    \                                 \\\n    inline constexpr bool has_##func_name##_v\
+    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
+    \                                                                    \\\n    namespace\
+    \ internal_traits {                                                          \
+    \                      \\\n    template <class T, typename U, class = void>  \
+    \                                                             \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                                      \
+    \  \\\n    template <class T, typename U>                                    \
+    \                                         \\\n    struct has_##func_name##_impl<T,\
+    \ U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>> \\\
+    \n        : std::true_type {};                                               \
+    \                                    \\\n    }                               \
+    \                                                                           \\\
+    \n    template <class T, typename U>                                         \
+    \                                    \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
     \ U>::type {};                           \\\n    template <class T, typename U>\
     \                                                                            \
     \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
@@ -88,35 +92,38 @@ data:
     \u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * \u30BC\u30ED\
     \u30D9\u30AF\u30C8\u30EB\n     */\n    constexpr Vector() noexcept : v() {}\n\
     \    /**\n     * @brief \u53EF\u5909\u9577\u5F15\u6570\u306B\u3088\u308B\u30B3\
-    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @tparam Args\n     */\n \
-    \   template <typename... Args>\n    constexpr Vector(Args... args) noexcept :\
-    \ v{args...} {}\n\n    /**\n     * @brief i\u756A\u76EE\u306E\u6210\u5206\u3092\
-    \u8FD4\u3059\n     *\n     * @param i\n     * @return T&\n     */\n    constexpr\
-    \ T& operator[](long long i) noexcept {\n        return v[i];\n    }\n    /**\n\
-    \     * @brief i\u756A\u76EE\u306E\u6210\u5206\u3092\u8FD4\u3059\n     *\n   \
-    \  * @param i\n     * @return T&\n     */\n    constexpr const T& operator[](long\
-    \ long i) const noexcept {\n        return v[i];\n    }\n\n    /**\n     * @brief\
-    \ \u52A0\u7B97\u4EE3\u5165\u6F14\u7B97\u5B50\n     *\n     * @param rhs\n    \
-    \ * @return Vector&\n     */\n    constexpr Vector& operator+=(const Vector& rhs)\
-    \ noexcept {\n        for (int i = 0; i < Dim; i++) v[i] += rhs[i];\n        return\
-    \ *this;\n    }\n    /**\n     * @brief \u6E1B\u7B97\u4EE3\u5165\u6F14\u7B97\u5B50\
-    \n     *\n     * @param rhs\n     * @return Vector&\n     */\n    constexpr Vector&\
-    \ operator-=(const Vector& rhs) noexcept {\n        for (int i = 0; i < Dim; i++)\
-    \ v[i] -= rhs.v[i];\n        return *this;\n    }\n    /**\n     * @brief \u30B9\
-    \u30AB\u30E9\u30FC\u500D\u4EE3\u5165\u6F14\u7B97\u5B50\n     *\n     * @param\
-    \ coef\n     * @return Vector&\n     */\n    constexpr Vector& operator*=(const\
-    \ T& coef) noexcept {\n        for (int i = 0; i < Dim; i++) v[i] *= coef;\n \
-    \       return *this;\n    }\n    /**\n     * @brief \u30B9\u30AB\u30E9\u30FC\u306E\
-    \u9006\u6570\u500D\u4EE3\u5165\u6F14\u7B97\u5B50\n     *\n     * @param coef\n\
-    \     * @return Vector&\n     */\n    constexpr Vector& operator/=(const T& coef)\
-    \ {\n        for (int i = 0; i < Dim; i++) {\n            if constexpr (std::is_integral_v<T>)\
-    \ {\n                assert(v[i] % coef == 0 && \"Vector::operator/= : coef must\
-    \ be a divisor of all elements\");\n            }\n            v[i] /= coef;\n\
-    \        }\n        return *this;\n    }\n\n    /**\n     * @brief \u5358\u9805\
-    \u30D7\u30E9\u30B9\u6F14\u7B97\u5B50\n     *\n     * @return Vector\n     */\n\
-    \    [[nodiscard]]\n    constexpr Vector operator+() const noexcept {\n      \
-    \  return *this;\n    }\n    /**\n     * @brief \u5358\u9805\u30DE\u30A4\u30CA\
-    \u30B9\u6F14\u7B97\u5B50\n     *\n     * @return Vector\n     */\n    [[nodiscard]]\n\
+    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * \u5404\u6210\u5206\u3092\
+    \ T \u306B\u5909\u63DB\u3057\u3066\u5165\u308C\u308B (Vector(1, 2.5) \u306E\u3088\
+    \u3046\u306B\u578B\u304C\u6DF7\u3056\u3063\u3066\u3082\u7E2E\u5C0F\u5909\u63DB\
+    \u306E\u8B66\u544A\u3092\u51FA\u3055\u306A\u3044)\n     * @tparam Args\n     */\n\
+    \    template <typename... Args>\n    constexpr Vector(Args... args) noexcept\
+    \ : v{static_cast<T>(args)...} {}\n\n    /**\n     * @brief i\u756A\u76EE\u306E\
+    \u6210\u5206\u3092\u8FD4\u3059\n     *\n     * @param i\n     * @return T&\n \
+    \    */\n    constexpr T& operator[](long long i) noexcept {\n        return v[i];\n\
+    \    }\n    /**\n     * @brief i\u756A\u76EE\u306E\u6210\u5206\u3092\u8FD4\u3059\
+    \n     *\n     * @param i\n     * @return T&\n     */\n    constexpr const T&\
+    \ operator[](long long i) const noexcept {\n        return v[i];\n    }\n\n  \
+    \  /**\n     * @brief \u52A0\u7B97\u4EE3\u5165\u6F14\u7B97\u5B50\n     *\n   \
+    \  * @param rhs\n     * @return Vector&\n     */\n    constexpr Vector& operator+=(const\
+    \ Vector& rhs) noexcept {\n        for (int i = 0; i < Dim; i++) v[i] += rhs[i];\n\
+    \        return *this;\n    }\n    /**\n     * @brief \u6E1B\u7B97\u4EE3\u5165\
+    \u6F14\u7B97\u5B50\n     *\n     * @param rhs\n     * @return Vector&\n     */\n\
+    \    constexpr Vector& operator-=(const Vector& rhs) noexcept {\n        for (int\
+    \ i = 0; i < Dim; i++) v[i] -= rhs.v[i];\n        return *this;\n    }\n    /**\n\
+    \     * @brief \u30B9\u30AB\u30E9\u30FC\u500D\u4EE3\u5165\u6F14\u7B97\u5B50\n\
+    \     *\n     * @param coef\n     * @return Vector&\n     */\n    constexpr Vector&\
+    \ operator*=(const T& coef) noexcept {\n        for (int i = 0; i < Dim; i++)\
+    \ v[i] *= coef;\n        return *this;\n    }\n    /**\n     * @brief \u30B9\u30AB\
+    \u30E9\u30FC\u306E\u9006\u6570\u500D\u4EE3\u5165\u6F14\u7B97\u5B50\n     *\n \
+    \    * @param coef\n     * @return Vector&\n     */\n    constexpr Vector& operator/=(const\
+    \ T& coef) {\n        for (int i = 0; i < Dim; i++) {\n            if constexpr\
+    \ (std::is_integral_v<T>) {\n                assert(v[i] % coef == 0 && \"Vector::operator/=\
+    \ : coef must be a divisor of all elements\");\n            }\n            v[i]\
+    \ /= coef;\n        }\n        return *this;\n    }\n\n    /**\n     * @brief\
+    \ \u5358\u9805\u30D7\u30E9\u30B9\u6F14\u7B97\u5B50\n     *\n     * @return Vector\n\
+    \     */\n    [[nodiscard]]\n    constexpr Vector operator+() const noexcept {\n\
+    \        return *this;\n    }\n    /**\n     * @brief \u5358\u9805\u30DE\u30A4\
+    \u30CA\u30B9\u6F14\u7B97\u5B50\n     *\n     * @return Vector\n     */\n    [[nodiscard]]\n\
     \    constexpr Vector operator-() const noexcept {\n        return *this * (-1);\n\
     \    }\n\n    /**\n     * @brief \u52A0\u7B97\u6F14\u7B97\u5B50\n     *\n    \
     \ * @param lhs\n     * @param rhs\n     * @return Vector\n     */\n    [[nodiscard]]\n\
@@ -184,87 +191,96 @@ data:
     \  */\n    constexpr T squared_norm() const noexcept {\n        return dot(*this,\
     \ *this);\n    }\n    /**\n     * @brief \u7D76\u5BFE\u5024\n     *\n     * @return\
     \ double\n     */\n    constexpr double abs() const noexcept {\n        return\
-    \ std::sqrt(squared_norm());\n    }\n};\n\n/**\n * @brief \u4E8C\u6B21\u5143\u30D9\
-    \u30AF\u30C8\u30EB\u3069\u3046\u3057\u306E\u5916\u7A4D(\u5E73\u884C\u56DB\u8FBA\
-    \u5F62\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D)\n *\n * @param lhs\n * @param\
-    \ rhs\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @return T\n */\ntemplate <typename\
-    \ T>\nconstexpr T cross(const Vector<T, 2>& lhs, const Vector<T, 2>& rhs) noexcept\
-    \ {\n    return lhs[0] * rhs[1] - lhs[1] * rhs[0];\n}\n/**\n * @brief \u4E09\u6B21\
-    \u5143\u30D9\u30AF\u30C8\u30EB\u3069\u3046\u3057\u306E\u5916\u7A4D\n *\n * @param\
-    \ lhs\n * @param rhs\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @return Vector<T,\
-    \ 3>\n */\ntemplate <typename T>\nconstexpr Vector<T, 3> cross(const Vector<T,\
-    \ 3>& lhs, const Vector<T, 3>& rhs) noexcept {\n    Vector<T, 3> ret;\n    ret[0]\
-    \ = lhs[1] * rhs[2] - lhs[2] * rhs[1];\n    ret[1] = lhs[2] * rhs[0] - lhs[0]\
-    \ * rhs[2];\n    ret[2] = lhs[0] * rhs[1] - lhs[1] * rhs[0];\n    return ret;\n\
-    }\n\n/**\n * @brief \u7DDA\u5206\u306E\u4EA4\u5DEE\u5224\u5B9A\n *\n * \u6574\u6570\
-    \u578B\u3067\u3082\u4F7F\u3048\u308B\u3002\u5916\u7A4D\u3092\u8A08\u7B97\u3059\
-    \u308B\u305F\u3081\u3001\u5EA7\u6A19\u306E\u7D76\u5BFE\u5024\u306E2\u4E57\u306E\
-    \u6570\u500D\u304CT\u306B\u53CE\u307E\u308B\u5FC5\u8981\u304C\u3042\u308B\n *\n\
-    \ * @param p1 1\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B91\n * @param p2\
-    \ 1\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B92\n * @param q1 2\u672C\u76EE\
+    \ std::sqrt(squared_norm());\n    }\n};\n\n/**\n * @brief \u6210\u5206\u304B\u3089\
+    \u4F5C\u308B\u3068\u304D\u306E\u63A8\u8AD6\u30AC\u30A4\u30C9\u3002\u578B\u306F\
+    \u6210\u5206\u306E\u5171\u901A\u306E\u578B\u3001\u6B21\u5143\u306F\u6210\u5206\
+    \u306E\u500B\u6570\u306B\u3059\u308B\n *\n * Vector(2LL, 3LL) \u306F Vector<long\
+    \ long, 2>\u3001Vector(1, 2, 3) \u306F Vector<int, 3>\u3001Vector(0.0, 0.0) \u306F\
+    \ Vector<double, 2>\n * (\u3053\u308C\u304C\u306A\u3044\u3068\u3001\u30C6\u30F3\
+    \u30D7\u30EC\u30FC\u30C8\u5F15\u6570\u306E\u7701\u7565\u6642\u306E\u5024\u304B\
+    \u3089 Vector<double, 2> \u306B\u306A\u3063\u3066\u3057\u307E\u3046)\n */\ntemplate\
+    \ <typename T, typename... U, ENABLE_IF_T(std::is_scalar_v<T> && (std::is_scalar_v<U>\
+    \ && ...))>\nVector(T, U...) -> Vector<std::common_type_t<T, U...>, 1 + sizeof...(U)>;\n\
+    \n/**\n * @brief \u4E8C\u6B21\u5143\u30D9\u30AF\u30C8\u30EB\u3069\u3046\u3057\u306E\
+    \u5916\u7A4D(\u5E73\u884C\u56DB\u8FBA\u5F62\u306E\u7B26\u53F7\u4ED8\u304D\u9762\
+    \u7A4D)\n *\n * @param lhs\n * @param rhs\n * @tparam T \u5EA7\u6A19\u306E\u578B\
+    \n * @return T\n */\ntemplate <typename T>\nconstexpr T cross(const Vector<T,\
+    \ 2>& lhs, const Vector<T, 2>& rhs) noexcept {\n    return lhs[0] * rhs[1] - lhs[1]\
+    \ * rhs[0];\n}\n/**\n * @brief \u4E09\u6B21\u5143\u30D9\u30AF\u30C8\u30EB\u3069\
+    \u3046\u3057\u306E\u5916\u7A4D\n *\n * @param lhs\n * @param rhs\n * @tparam T\
+    \ \u5EA7\u6A19\u306E\u578B\n * @return Vector<T, 3>\n */\ntemplate <typename T>\n\
+    constexpr Vector<T, 3> cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs)\
+    \ noexcept {\n    Vector<T, 3> ret;\n    ret[0] = lhs[1] * rhs[2] - lhs[2] * rhs[1];\n\
+    \    ret[1] = lhs[2] * rhs[0] - lhs[0] * rhs[2];\n    ret[2] = lhs[0] * rhs[1]\
+    \ - lhs[1] * rhs[0];\n    return ret;\n}\n\n/**\n * @brief \u7DDA\u5206\u306E\u4EA4\
+    \u5DEE\u5224\u5B9A\n *\n * \u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B\u3002\
+    \u5916\u7A4D\u3092\u8A08\u7B97\u3059\u308B\u305F\u3081\u3001\u5EA7\u6A19\u306E\
+    \u7D76\u5BFE\u5024\u306E2\u4E57\u306E\u6570\u500D\u304CT\u306B\u53CE\u307E\u308B\
+    \u5FC5\u8981\u304C\u3042\u308B\n *\n * @param p1 1\u672C\u76EE\u306E\u7DDA\u5206\
+    \u306E\u7AEF\u70B91\n * @param p2 1\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B9\
+    2\n * @param q1 2\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B91\n * @param\
+    \ q2 2\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B92\n * @tparam T \u5EA7\u6A19\
+    \u306E\u578B\n * @return bool \u5171\u6709\u70B9\u3092\u6301\u3064\u304B\n */\n\
+    template <typename T>\nconstexpr bool segments_intersect(const Vector<T, 2>& p1,\
+    \ const Vector<T, 2>& p2, const Vector<T, 2>& q1, const Vector<T, 2>& q2) {\n\
+    \    assert(p1 != p2 && q1 != q2 && \"segments_intersect: degenerate segment\"\
+    );\n    auto sign = [](T x) { return (x > 0) - (x < 0); };\n    int q1_section\
+    \ = sign(cross(p2 - p1, q1 - p1));  // \u76F4\u7DDAp1p2\u306B\u5BFE\u3057\u3066\
+    q1\u304C\u3069\u306E\u4F4D\u7F6E\u306B\u3042\u308B\u304B\n    int q2_section =\
+    \ sign(cross(p2 - p1, q2 - p1));  // \u76F4\u7DDAp1p2\u306B\u5BFE\u3057\u3066\
+    q2\u304C\u3069\u306E\u4F4D\u7F6E\u306B\u3042\u308B\u304B\n    int p1_section =\
+    \ sign(cross(q2 - q1, p1 - q1));  // \u76F4\u7DDAq1q2\u306B\u5BFE\u3057\u3066\
+    p1\u304C\u3069\u306E\u4F4D\u7F6E\u306B\u3042\u308B\u304B\n    int p2_section =\
+    \ sign(cross(q2 - q1, p2 - q1));  // \u76F4\u7DDAq1q2\u306B\u5BFE\u3057\u3066\
+    p2\u304C\u3069\u306E\u4F4D\u7F6E\u306B\u3042\u308B\u304B\n    if (q1_section ==\
+    \ 0 && q2_section == 0) {\n        // 4\u70B9\u304C\u540C\u4E00\u76F4\u7DDA\u4E0A\
+    \u306B\u3042\u308B\u5834\u5408\n        return dot(q1 - p1, q2 - p1) <= 0 || dot(q1\
+    \ - p2, q2 - p2) <= 0 || dot(p1 - q1, p2 - q1) <= 0;\n    }\n    return q1_section\
+    \ * q2_section <= 0 && p1_section * p2_section <= 0;\n}\n\n/**\n * @brief \u7DDA\
+    \u5206\u306E\u4EA4\u5DEE\u5224\u5B9A\u3068\u5171\u6709\u70B9\u306E\u8A08\u7B97\
+    \n *\n * \u5171\u6709\u70B9\u306E\u5EA7\u6A19\u306F\u4E00\u822C\u306B\u6574\u6570\
+    \u306B\u306A\u3089\u306A\u3044\u305F\u3081\u3001\u6D6E\u52D5\u5C0F\u6570\u70B9\
+    \u578B\u9650\u5B9A\n * \u6574\u6570\u5EA7\u6A19\u3067\u4EA4\u5DEE\u5224\u5B9A\u3060\
+    \u3051\u3057\u305F\u3044\u5834\u5408\u306F segments_intersect \u3092\u4F7F\u3046\
+    \n *\n * @param p1 1\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B91\n * @param\
+    \ p2 1\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B92\n * @param q1 2\u672C\u76EE\
     \u306E\u7DDA\u5206\u306E\u7AEF\u70B91\n * @param q2 2\u672C\u76EE\u306E\u7DDA\u5206\
-    \u306E\u7AEF\u70B92\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @return bool \u5171\
-    \u6709\u70B9\u3092\u6301\u3064\u304B\n */\ntemplate <typename T>\nconstexpr bool\
-    \ segments_intersect(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const Vector<T,\
-    \ 2>& q1, const Vector<T, 2>& q2) {\n    assert(p1 != p2 && q1 != q2 && \"segments_intersect:\
-    \ degenerate segment\");\n    auto sign = [](T x) { return (x > 0) - (x < 0);\
-    \ };\n    int q1_section = sign(cross(p2 - p1, q1 - p1));  // \u76F4\u7DDAp1p2\u306B\
-    \u5BFE\u3057\u3066q1\u304C\u3069\u306E\u4F4D\u7F6E\u306B\u3042\u308B\u304B\n \
-    \   int q2_section = sign(cross(p2 - p1, q2 - p1));  // \u76F4\u7DDAp1p2\u306B\
-    \u5BFE\u3057\u3066q2\u304C\u3069\u306E\u4F4D\u7F6E\u306B\u3042\u308B\u304B\n \
-    \   int p1_section = sign(cross(q2 - q1, p1 - q1));  // \u76F4\u7DDAq1q2\u306B\
-    \u5BFE\u3057\u3066p1\u304C\u3069\u306E\u4F4D\u7F6E\u306B\u3042\u308B\u304B\n \
-    \   int p2_section = sign(cross(q2 - q1, p2 - q1));  // \u76F4\u7DDAq1q2\u306B\
-    \u5BFE\u3057\u3066p2\u304C\u3069\u306E\u4F4D\u7F6E\u306B\u3042\u308B\u304B\n \
-    \   if (q1_section == 0 && q2_section == 0) {\n        // 4\u70B9\u304C\u540C\u4E00\
-    \u76F4\u7DDA\u4E0A\u306B\u3042\u308B\u5834\u5408\n        return dot(q1 - p1,\
-    \ q2 - p1) <= 0 || dot(q1 - p2, q2 - p2) <= 0 || dot(p1 - q1, p2 - q1) <= 0;\n\
-    \    }\n    return q1_section * q2_section <= 0 && p1_section * p2_section <=\
-    \ 0;\n}\n\n/**\n * @brief \u7DDA\u5206\u306E\u4EA4\u5DEE\u5224\u5B9A\u3068\u5171\
-    \u6709\u70B9\u306E\u8A08\u7B97\n *\n * \u5171\u6709\u70B9\u306E\u5EA7\u6A19\u306F\
-    \u4E00\u822C\u306B\u6574\u6570\u306B\u306A\u3089\u306A\u3044\u305F\u3081\u3001\
-    \u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n * \u6574\u6570\u5EA7\u6A19\u3067\
-    \u4EA4\u5DEE\u5224\u5B9A\u3060\u3051\u3057\u305F\u3044\u5834\u5408\u306F segments_intersect\
-    \ \u3092\u4F7F\u3046\n *\n * @param p1 1\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\
-    \u70B91\n * @param p2 1\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B92\n * @param\
-    \ q1 2\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B91\n * @param q2 2\u672C\u76EE\
-    \u306E\u7DDA\u5206\u306E\u7AEF\u70B92\n * @tparam T \u5EA7\u6A19\u306E\u578B\n\
-    \ * @return std::optional<Vector<T, 2>> \u5171\u6709\u70B9\u306E1\u4F8B (\u5171\
-    \u6709\u70B9\u304C\u306A\u3051\u308C\u3070 std::nullopt)\n */\ntemplate <typename\
-    \ T>\nconstexpr std::optional<Vector<T, 2>> segment_intersection(const Vector<T,\
-    \ 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& q1, const Vector<T, 2>&\
-    \ q2) {\n    static_assert(std::is_floating_point_v<T>, \"segment_intersection:\
-    \ T must be a floating point type (use segments_intersect for integers)\");\n\
-    \    if (!segments_intersect(p1, p2, q1, q2)) return std::nullopt;\n    if (cross(p2\
-    \ - p1, q1 - p1) == 0 && cross(p2 - p1, q2 - p1) == 0) {\n        // 4\u70B9\u304C\
-    \u540C\u4E00\u76F4\u7DDA\u4E0A\u306B\u3042\u308B\u5834\u5408\n        if (dot(q1\
-    \ - p1, q2 - p1) <= 0) return p1;\n        if (dot(q1 - p2, q2 - p2) <= 0) return\
-    \ p2;\n        return q1;\n    }\n    T area = cross(p2 - p1, q2 - q1);      \
-    \    // 4\u70B9\u3092\u9802\u70B9\u3068\u3059\u308B\u56DB\u89D2\u5F62\u306E\u7B26\
-    \u53F7\u4ED8\u304D\u9762\u7A4D\n    T partial_area = cross(q2 - q1, p1 - q1);\
-    \  // \u4E09\u89D2\u5F62q1q2p1\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\n   \
-    \ return p1 + (p2 - p1) * partial_area / area;\n}\n\n/**\n * @brief 3\u70B9\u306E\
-    \u4F4D\u7F6E\u95A2\u4FC2 (counter-clockwise)\n *\n * \u6574\u6570\u578B\u3067\u3082\
-    \u4F7F\u3048\u308B\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u3067\u306F\u8AA4\
-    \u5DEE\u3092\u8003\u3048\u305A\u306B\u6BD4\u8F03\u3059\u308B\n *\n * @tparam T\
-    \ \u5EA7\u6A19\u306E\u578B\n * @return int 1: a\u2192b\u2192c \u304C\u53CD\u6642\
-    \u8A08\u56DE\u308A, -1: \u6642\u8A08\u56DE\u308A, 2: c, a, b \u306E\u9806\u306B\
-    \u4E00\u76F4\u7DDA\u4E0A, -2: a, b, c \u306E\u9806\u306B\u4E00\u76F4\u7DDA\u4E0A\
-    , 0: c \u304C\u7DDA\u5206 ab \u4E0A\n */\ntemplate <typename T>\nconstexpr int\
-    \ ccw(const Vector<T, 2>& a, const Vector<T, 2>& b, const Vector<T, 2>& c) {\n\
-    \    Vector<T, 2> u = b - a, v = c - a;\n    T cr = cross(u, v);\n    if (cr >\
-    \ 0) return 1;\n    if (cr < 0) return -1;\n    if (dot(u, v) < 0) return 2;\n\
-    \    if (u.squared_norm() < v.squared_norm()) return -2;\n    return 0;\n}\n\n\
-    /**\n * @brief \u76F4\u7DDA p1p2 \u3068\u76F4\u7DDA q1q2 \u304C\u5E73\u884C\u304B\
-    \ (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate <typename\
-    \ T>\nconstexpr bool is_parallel(const Vector<T, 2>& p1, const Vector<T, 2>& p2,\
-    \ const Vector<T, 2>& q1, const Vector<T, 2>& q2) {\n    return cross(p2 - p1,\
-    \ q2 - q1) == 0;\n}\n/**\n * @brief \u76F4\u7DDA p1p2 \u3068\u76F4\u7DDA q1q2\
-    \ \u304C\u76F4\u4EA4\u3059\u308B\u304B (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\
-    \u308B)\n */\ntemplate <typename T>\nconstexpr bool is_orthogonal(const Vector<T,\
-    \ 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& q1, const Vector<T, 2>&\
-    \ q2) {\n    return dot(p2 - p1, q2 - q1) == 0;\n}\n\n/**\n * @brief \u70B9 p\
-    \ \u304B\u3089\u76F4\u7DDA p1p2 \u306B\u4E0B\u308D\u3057\u305F\u5782\u7DDA\u306E\
+    \u306E\u7AEF\u70B92\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @return std::optional<Vector<T,\
+    \ 2>> \u5171\u6709\u70B9\u306E1\u4F8B (\u5171\u6709\u70B9\u304C\u306A\u3051\u308C\
+    \u3070 std::nullopt)\n */\ntemplate <typename T>\nconstexpr std::optional<Vector<T,\
+    \ 2>> segment_intersection(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const\
+    \ Vector<T, 2>& q1, const Vector<T, 2>& q2) {\n    static_assert(std::is_floating_point_v<T>,\
+    \ \"segment_intersection: T must be a floating point type (use segments_intersect\
+    \ for integers)\");\n    if (!segments_intersect(p1, p2, q1, q2)) return std::nullopt;\n\
+    \    if (cross(p2 - p1, q1 - p1) == 0 && cross(p2 - p1, q2 - p1) == 0) {\n   \
+    \     // 4\u70B9\u304C\u540C\u4E00\u76F4\u7DDA\u4E0A\u306B\u3042\u308B\u5834\u5408\
+    \n        if (dot(q1 - p1, q2 - p1) <= 0) return p1;\n        if (dot(q1 - p2,\
+    \ q2 - p2) <= 0) return p2;\n        return q1;\n    }\n    T area = cross(p2\
+    \ - p1, q2 - q1);          // 4\u70B9\u3092\u9802\u70B9\u3068\u3059\u308B\u56DB\
+    \u89D2\u5F62\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\n    T partial_area = cross(q2\
+    \ - q1, p1 - q1);  // \u4E09\u89D2\u5F62q1q2p1\u306E\u7B26\u53F7\u4ED8\u304D\u9762\
+    \u7A4D\n    return p1 + (p2 - p1) * partial_area / area;\n}\n\n/**\n * @brief\
+    \ 3\u70B9\u306E\u4F4D\u7F6E\u95A2\u4FC2 (counter-clockwise)\n *\n * \u6574\u6570\
+    \u578B\u3067\u3082\u4F7F\u3048\u308B\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\
+    \u3067\u306F\u8AA4\u5DEE\u3092\u8003\u3048\u305A\u306B\u6BD4\u8F03\u3059\u308B\
+    \n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @return int 1: a\u2192b\u2192\
+    c \u304C\u53CD\u6642\u8A08\u56DE\u308A, -1: \u6642\u8A08\u56DE\u308A, 2: c, a,\
+    \ b \u306E\u9806\u306B\u4E00\u76F4\u7DDA\u4E0A, -2: a, b, c \u306E\u9806\u306B\
+    \u4E00\u76F4\u7DDA\u4E0A, 0: c \u304C\u7DDA\u5206 ab \u4E0A\n */\ntemplate <typename\
+    \ T>\nconstexpr int ccw(const Vector<T, 2>& a, const Vector<T, 2>& b, const Vector<T,\
+    \ 2>& c) {\n    Vector<T, 2> u = b - a, v = c - a;\n    T cr = cross(u, v);\n\
+    \    if (cr > 0) return 1;\n    if (cr < 0) return -1;\n    if (dot(u, v) < 0)\
+    \ return 2;\n    if (u.squared_norm() < v.squared_norm()) return -2;\n    return\
+    \ 0;\n}\n\n/**\n * @brief \u76F4\u7DDA p1p2 \u3068\u76F4\u7DDA q1q2 \u304C\u5E73\
+    \u884C\u304B (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate\
+    \ <typename T>\nconstexpr bool is_parallel(const Vector<T, 2>& p1, const Vector<T,\
+    \ 2>& p2, const Vector<T, 2>& q1, const Vector<T, 2>& q2) {\n    return cross(p2\
+    \ - p1, q2 - q1) == 0;\n}\n/**\n * @brief \u76F4\u7DDA p1p2 \u3068\u76F4\u7DDA\
+    \ q1q2 \u304C\u76F4\u4EA4\u3059\u308B\u304B (\u6574\u6570\u578B\u3067\u3082\u4F7F\
+    \u3048\u308B)\n */\ntemplate <typename T>\nconstexpr bool is_orthogonal(const\
+    \ Vector<T, 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& q1, const Vector<T,\
+    \ 2>& q2) {\n    return dot(p2 - p1, q2 - q1) == 0;\n}\n\n/**\n * @brief \u70B9\
+    \ p \u304B\u3089\u76F4\u7DDA p1p2 \u306B\u4E0B\u308D\u3057\u305F\u5782\u7DDA\u306E\
     \u8DB3 (\u5C04\u5F71)\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n\
     \ */\ntemplate <typename T>\nconstexpr Vector<T, 2> projection(const Vector<T,\
     \ 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& p) {\n    static_assert(std::is_floating_point_v<T>,\
@@ -491,8 +507,17 @@ data:
     \u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename T>\n[[deprecated(\"use\
     \ closest_point_pair_squared\")]] ClosestPairSquared<T> closest_point_pair_squred(const\
     \ std::vector<Vector<T, 2>>& points) {\n    return closest_point_pair_squared(points);\n\
-    }\n#line 7 \"test/unittest/geometry/vector.test.cpp\"\n\n#line 9 \"test/unittest/geometry/vector.test.cpp\"\
-    \n#include <iostream>\n#include <random>\n\nint main() {\n    std::mt19937_64\
+    }\n#line 8 \"test/unittest/geometry/vector.test.cpp\"\n\n#line 10 \"test/unittest/geometry/vector.test.cpp\"\
+    \n#include <iostream>\n#include <random>\n#line 13 \"test/unittest/geometry/vector.test.cpp\"\
+    \n\n// \u63A8\u8AD6\u30AC\u30A4\u30C9\nstatic_assert(std::is_same_v<decltype(Vector(2LL,\
+    \ 3LL)), Vector<long long, 2>>);\nstatic_assert(std::is_same_v<decltype(Vector(2,\
+    \ 3)), Vector<int, 2>>);\nstatic_assert(std::is_same_v<decltype(Vector(1, 2.5)),\
+    \ Vector<double, 2>>);\nstatic_assert(std::is_same_v<decltype(Vector(1LL, 2LL,\
+    \ 3LL)), Vector<long long, 3>>);\nstatic_assert(std::is_same_v<decltype(Vector(Vector<long\
+    \ long>(2, 3))), Vector<long long, 2>>);  // \u30B3\u30D4\u30FC\u306F\u5909\u308F\
+    \u3089\u306A\u3044\nstatic_assert(std::is_same_v<decltype(Vector()), Vector<double,\
+    \ 2>>);\nstatic_assert(Vector(1000000000000000001LL, 0LL)[0] == 1000000000000000001LL);\
+    \  // double \u3092\u7D4C\u7531\u3057\u306A\u3044\n\nint main() {\n    std::mt19937_64\
     \ rng(314);\n    bool ok = true;\n    using P2 = Vector<long long>;\n    using\
     \ P3 = Vector<long long, 3>;\n    for (int rep = 0; rep < 10000 && ok; rep++)\
     \ {\n        // \u6BD4\u8F03\u306E\u7D50\u679C\u304C\u504F\u3089\u306A\u3044\u3088\
@@ -518,18 +543,30 @@ data:
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// geometry/vector.hpp \u306E Vector \u306E\u6F14\u7B97\u5B50\u3092\u3001\u6210\
     \u5206\u306E\u914D\u5217\u3067\u611A\u76F4\u306B\u8A08\u7B97\u3057\u305F\u7D50\
-    \u679C\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\
-    \u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\
-    \u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../../src/geometry/vector.hpp\"\
-    \n\n#include <array>\n#include <iostream>\n#include <random>\n\nint main() {\n\
-    \    std::mt19937_64 rng(314);\n    bool ok = true;\n    using P2 = Vector<long\
-    \ long>;\n    using P3 = Vector<long long, 3>;\n    for (int rep = 0; rep < 10000\
-    \ && ok; rep++) {\n        // \u6BD4\u8F03\u306E\u7D50\u679C\u304C\u504F\u3089\
-    \u306A\u3044\u3088\u3046\u3001\u6210\u5206\u306F\u5C0F\u3055\u3044\u7BC4\u56F2\
-    \u304B\u3089\u9078\u3076\n        auto rnd = [&] { return static_cast<long long>(rng()\
-    \ % 5) - 2; };\n        std::array<long long, 2> a = {rnd(), rnd()}, b = {rnd(),\
-    \ rnd()};\n        P2 p(a[0], a[1]), q(b[0], b[1]);\n        long long c = rnd();\n\
-    \n        // \u5358\u9805 +\u3001\u5358\u9805 -\u3001\u30B9\u30AB\u30E9\u30FC\u304C\
+    \u679C\u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u6210\u5206\
+    \u304B\u3089\u4F5C\u308B\u3068\u304D\u306E\u63A8\u8AD6\u30AC\u30A4\u30C9 (\u578B\
+    \u306F\u6210\u5206\u306E\u5171\u901A\u306E\u578B\u3001\u6B21\u5143\u306F\u6210\
+    \u5206\u306E\u500B\u6570) \u3082 static_assert \u3067\u78BA\u304B\u3081\u308B\n\
+    // \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\
+    \u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n\
+    #include \"../../../src/geometry/vector.hpp\"\n\n#include <array>\n#include <iostream>\n\
+    #include <random>\n#include <type_traits>\n\n// \u63A8\u8AD6\u30AC\u30A4\u30C9\
+    \nstatic_assert(std::is_same_v<decltype(Vector(2LL, 3LL)), Vector<long long, 2>>);\n\
+    static_assert(std::is_same_v<decltype(Vector(2, 3)), Vector<int, 2>>);\nstatic_assert(std::is_same_v<decltype(Vector(1,\
+    \ 2.5)), Vector<double, 2>>);\nstatic_assert(std::is_same_v<decltype(Vector(1LL,\
+    \ 2LL, 3LL)), Vector<long long, 3>>);\nstatic_assert(std::is_same_v<decltype(Vector(Vector<long\
+    \ long>(2, 3))), Vector<long long, 2>>);  // \u30B3\u30D4\u30FC\u306F\u5909\u308F\
+    \u3089\u306A\u3044\nstatic_assert(std::is_same_v<decltype(Vector()), Vector<double,\
+    \ 2>>);\nstatic_assert(Vector(1000000000000000001LL, 0LL)[0] == 1000000000000000001LL);\
+    \  // double \u3092\u7D4C\u7531\u3057\u306A\u3044\n\nint main() {\n    std::mt19937_64\
+    \ rng(314);\n    bool ok = true;\n    using P2 = Vector<long long>;\n    using\
+    \ P3 = Vector<long long, 3>;\n    for (int rep = 0; rep < 10000 && ok; rep++)\
+    \ {\n        // \u6BD4\u8F03\u306E\u7D50\u679C\u304C\u504F\u3089\u306A\u3044\u3088\
+    \u3046\u3001\u6210\u5206\u306F\u5C0F\u3055\u3044\u7BC4\u56F2\u304B\u3089\u9078\
+    \u3076\n        auto rnd = [&] { return static_cast<long long>(rng() % 5) - 2;\
+    \ };\n        std::array<long long, 2> a = {rnd(), rnd()}, b = {rnd(), rnd()};\n\
+    \        P2 p(a[0], a[1]), q(b[0], b[1]);\n        long long c = rnd();\n\n  \
+    \      // \u5358\u9805 +\u3001\u5358\u9805 -\u3001\u30B9\u30AB\u30E9\u30FC\u304C\
     \u5DE6\u5074\u306E\u7A4D\n        P2 plus = +p, minus = -p, scaled = c * p;\n\
     \        for (int i = 0; i < 2; i++) {\n            if (plus[i] != a[i] || minus[i]\
     \ != -a[i] || scaled[i] != c * a[i]) ok = false;\n        }\n        if (c * p\
@@ -550,7 +587,7 @@ data:
   isVerificationFile: true
   path: test/unittest/geometry/vector.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 05:40:25+09:00'
+  timestamp: '2026-10-22 13:36:14+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/geometry/vector.test.cpp

@@ -368,16 +368,21 @@ data:
     \                for (long long k = pivot_col[i]; k < w; k++) {\n            \
     \        A[j][k] = OperatorProperty::add(A[j][k], OperatorProperty::neg(OperatorProperty::mul(A[i][k],\
     \ scale)));\n                }\n            }\n        }\n        return d;\n\
-    \    }\n};\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief\
-    \ \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\
-    \u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\n#include\
-    \ <cstdint>\n#line 11 \"src/math/modint.hpp\"\n#include <limits>\n#line 14 \"\
-    src/math/modint.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n\
-    \ * @brief \u578B\u7279\u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\n#include\
-    \ <iterator>\n#include <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace\
-    \ internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T, class =\
-    \ void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct\
-    \ is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
+    \    }\n};\n\n/**\n * @brief \u884C\u306E\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\
+    \u3068\u304D\u306E\u63A8\u8AD6\u30AC\u30A4\u30C9\u3002\u8981\u7D20\u306E\u578B\
+    \u306F\u5404\u884C\u306E value_type \u306B\u3059\u308B\n *\n * Matrix(std::vector<std::vector<int>>)\
+    \ \u306F Matrix<int>\u3001Matrix(std::vector<std::string>) \u306F Matrix<char>\n\
+    \ */\ntemplate <typename Iterable>\nMatrix(const std::vector<Iterable>&) -> Matrix<typename\
+    \ Iterable::value_type>;\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n\
+    \ * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067\
+    \ mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\
+    \n#include <cstdint>\n#line 11 \"src/math/modint.hpp\"\n#include <limits>\n#line\
+    \ 14 \"src/math/modint.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n *\
+    \ @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\
+    \n#include <iterator>\n#include <set>\n#line 13 \"src/utility/traits.hpp\"\n\n\
+    namespace internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T,\
+    \ class = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\n\
+    struct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
     \ : std::true_type {};\n}  // namespace internal_traits\n\ntemplate <class T>\n\
     struct is_range : internal_traits::is_range_impl<T>::type {};\ntemplate <class\
     \ T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define HAS_METHOD(func_name)\
@@ -680,7 +685,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/linear_algebra/system-of-linear-equations.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 04:35:34+09:00'
+  timestamp: '2026-10-22 13:41:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/linear_algebra/system-of-linear-equations.test.cpp

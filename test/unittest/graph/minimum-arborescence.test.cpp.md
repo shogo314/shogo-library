@@ -32,34 +32,36 @@ data:
     \ * @file graph.hpp\n * @brief \u30B0\u30E9\u30D5\n */\n\n#include <cassert>\n\
     #include <iostream>\n#line 11 \"src/graph/graph.hpp\"\n\n/**\n * @brief \u30B0\
     \u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\
-    \u30B3\u30B9\u30C8\u306E\u578B\n */\ntemplate <typename Cost = int>\nclass Graph\
-    \ {\n   public:\n    /**\n     * @brief \u6709\u5411\u8FBA\u306E\u69CB\u9020\u4F53\
-    \n     *\n     * operator long long()\u3092\u5B9A\u7FA9\u3057\u3066\u3044\u308B\
-    \u306E\u3067\u3001\u6574\u6570\u578B\u306B\u30AD\u30E3\u30B9\u30C8\u3059\u308B\
-    \u3068\u52DD\u624B\u306Bdst\u306B\u306A\u308B\n     * \u4F8B\u3048\u3070\u3001\
-    \n     * for (auto& e : g[v]) \u3092\u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\
-    \u308B\u8FBA\u304C\u5217\u6319\u3055\u308C\u308B\u304C\u3001\n     * for (long\
-    \ long dst : g[v]) \u3068\u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\
-    \u306E\u884C\u304D\u5148\u304C\u5217\u6319\u3055\u308C\u308B\n     */\n    struct\
-    \ Edge {\n        long long src = -1;  //!< \u59CB\u70B9\n        long long dst\
-    \ = -1;  //!< \u7D42\u70B9\n        Cost cost = {};      //!< \u30B3\u30B9\u30C8\
-    \n        long long id = -1;   //!< \u8FBA\u306E\u756A\u53F7(\u8FFD\u52A0\u3055\
-    \u308C\u305F\u9806\u3001\u7121\u5411\u8FBA\u306E\u5834\u5408\u306Fid\u304C\u540C\
-    \u3058\u3067\u65B9\u5411\u304C\u9006\u306E\u3082\u306E\u304C2\u3064\u5B58\u5728\
-    \u3059\u308B)\n        Edge() = default;\n        Edge(long long src, long long\
-    \ dst, Cost cost = 1, long long id = -1) : src(src), dst(dst), cost(cost), id(id)\
-    \ {}\n        operator long long() const { return dst; }\n    };\n\n    long long\
-    \ n;                       //!< \u9802\u70B9\u6570\n    long long m;         \
-    \              //!< \u8FBA\u6570\n    std::vector<std::vector<Edge>> g;  //!<\
-    \ \u30B0\u30E9\u30D5\u306E\u96A3\u63A5\u30EA\u30B9\u30C8\u8868\u73FE\n\n    /**\n\
-    \     * @brief \u30C7\u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\
-    \u30BF\n     */\n    Graph() : n(0), m(0), g(0) {}\n    /**\n     * @brief \u30B3\
-    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param n \u9802\u70B9\u6570\n   \
-    \  */\n    explicit Graph(long long n) : n(n), m(0), g(n) {}\n    /**\n     *\
-    \ @brief \u9802\u70B9\u6570\n     */\n    long long size() const { return n; }\n\
-    \    /**\n     * @brief \u7121\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n   \
-    \  * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n     * @param w \u30B3\
-    \u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n    void add_edge(long\
+    \u30B3\u30B9\u30C8\u306E\u578B \u7701\u7565\u3057\u305F\u3089 long long (\u91CD\
+    \u307F\u306E\u548C\u3084\u672A\u5230\u9054\u3092\u8868\u3059 max / 4 \u304C\u3042\
+    \u3075\u308C\u306B\u304F\u3044\u3088\u3046\u306B)\n */\ntemplate <typename Cost\
+    \ = long long>\nclass Graph {\n   public:\n    /**\n     * @brief \u6709\u5411\
+    \u8FBA\u306E\u69CB\u9020\u4F53\n     *\n     * operator long long()\u3092\u5B9A\
+    \u7FA9\u3057\u3066\u3044\u308B\u306E\u3067\u3001\u6574\u6570\u578B\u306B\u30AD\
+    \u30E3\u30B9\u30C8\u3059\u308B\u3068\u52DD\u624B\u306Bdst\u306B\u306A\u308B\n\
+    \     * \u4F8B\u3048\u3070\u3001\n     * for (auto& e : g[v]) \u3092\u3059\u308B\
+    \u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\u304C\u5217\u6319\u3055\u308C\u308B\
+    \u304C\u3001\n     * for (long long dst : g[v]) \u3068\u3059\u308B\u3068\u3001\
+    v\u304B\u3089\u51FA\u308B\u8FBA\u306E\u884C\u304D\u5148\u304C\u5217\u6319\u3055\
+    \u308C\u308B\n     */\n    struct Edge {\n        long long src = -1;  //!< \u59CB\
+    \u70B9\n        long long dst = -1;  //!< \u7D42\u70B9\n        Cost cost = {};\
+    \      //!< \u30B3\u30B9\u30C8\n        long long id = -1;   //!< \u8FBA\u306E\
+    \u756A\u53F7(\u8FFD\u52A0\u3055\u308C\u305F\u9806\u3001\u7121\u5411\u8FBA\u306E\
+    \u5834\u5408\u306Fid\u304C\u540C\u3058\u3067\u65B9\u5411\u304C\u9006\u306E\u3082\
+    \u306E\u304C2\u3064\u5B58\u5728\u3059\u308B)\n        Edge() = default;\n    \
+    \    Edge(long long src, long long dst, Cost cost = 1, long long id = -1) : src(src),\
+    \ dst(dst), cost(cost), id(id) {}\n        operator long long() const { return\
+    \ dst; }\n    };\n\n    long long n;                       //!< \u9802\u70B9\u6570\
+    \n    long long m;                       //!< \u8FBA\u6570\n    std::vector<std::vector<Edge>>\
+    \ g;  //!< \u30B0\u30E9\u30D5\u306E\u96A3\u63A5\u30EA\u30B9\u30C8\u8868\u73FE\n\
+    \n    /**\n     * @brief \u30C7\u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\
+    \u30E9\u30AF\u30BF\n     */\n    Graph() : n(0), m(0), g(0) {}\n    /**\n    \
+    \ * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param n \u9802\u70B9\
+    \u6570\n     */\n    explicit Graph(long long n) : n(n), m(0), g(n) {}\n    /**\n\
+    \     * @brief \u9802\u70B9\u6570\n     */\n    long long size() const { return\
+    \ n; }\n    /**\n     * @brief \u7121\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\
+    \n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n     * @param w\
+    \ \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n    void add_edge(long\
     \ long u, long long v, Cost w = 1) {\n        assert(0 <= u && u < n && 0 <= v\
     \ && v < n);\n        g[u].push_back({u, v, w, m});\n        g[v].push_back({v,\
     \ u, w, m++});\n    }\n    /**\n     * @brief \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\
@@ -147,43 +149,43 @@ data:
     \u5230\u9054\u3067\u304D\u306A\u3044\u9802\u70B9\u304C\u3042\u308C\u3070 std::nullopt\n\
     \ * @note \u8CA0\u306E\u30B3\u30B9\u30C8\u306E\u8FBA\u304C\u3042\u3063\u3066\u3082\
     \u3088\u3044\u3002\u81EA\u5DF1\u30EB\u30FC\u30D7\u30FB\u591A\u91CD\u8FBA\u304C\
-    \u3042\u3063\u3066\u3082\u3088\u3044\n */\ntemplate <typename Cost = int>\nstd::optional<MinimumArborescence<Cost>>\
-    \ minimum_arborescence(const Graph<Cost>& graph, long long root) {\n    using\
-    \ Edge = typename Graph<Cost>::Edge;\n    const long long n = graph.n;\n    std::vector<Edge>\
-    \ es;\n    for (long long v = 0; v < n; v++) {\n        for (const auto& e : graph[v])\
-    \ es.push_back(e);\n    }\n    internal_minimum_arborescence::LeftistHeap<Cost>\
-    \ heap;\n    internal_minimum_arborescence::RollbackUnionFind uf(n);\n    std::vector<int>\
-    \ top(n, -1);  // \u5404\u6210\u5206\u306B\u5165\u308B\u8FBA\u306E\u30D2\u30FC\
-    \u30D7\n    for (long long i = 0; i < static_cast<long long>(es.size()); i++)\
-    \ {\n        top[es[i].dst] = heap.merge(top[es[i].dst], heap.make(es[i].cost,\
-    \ i));\n    }\n    struct Cycle {\n        long long u, time;\n        std::vector<long\
-    \ long> edges;\n    };\n    std::vector<Cycle> cycles;\n    Cost cost{};\n   \
-    \ std::vector<long long> seen(n, -1), path(n), queue(n), in(n, -1);\n    seen[root]\
-    \ = root;\n    for (long long s = 0; s < n; s++) {\n        long long u = s, qi\
-    \ = 0;\n        // s \u304B\u3089\u5165\u308B\u8FBA\u3092\u9006\u306B\u305F\u3069\
-    \u308A\u3001\u9589\u8DEF\u304C\u3067\u304D\u305F\u3089 1 \u3064\u306E\u9802\u70B9\
-    \u306B\u7E2E\u3081\u308B\n        while (seen[u] < 0) {\n            if (top[u]\
-    \ == -1) return std::nullopt;\n            auto [w, i] = heap.top(top[u]);\n \
-    \           heap.add(top[u], -w);\n            top[u] = heap.pop(top[u]);\n  \
-    \          queue[qi] = i, path[qi++] = u, seen[u] = s;\n            cost += w;\n\
-    \            u = uf.find(es[i].src);\n            if (seen[u] == s) {\n      \
-    \          int cycle = -1;\n                long long end = qi, time = uf.time(),\
-    \ v;\n                do {\n                    v = path[--qi];\n            \
-    \        cycle = heap.merge(cycle, top[v]);\n                } while (uf.merge(u,\
-    \ v));\n                u = uf.find(u), top[u] = cycle, seen[u] = -1;\n      \
-    \          cycles.push_back({u, time, std::vector<long long>(queue.begin() + qi,\
-    \ queue.begin() + end)});\n            }\n        }\n        for (long long i\
-    \ = 0; i < qi; i++) in[uf.find(es[queue[i]].dst)] = queue[i];\n    }\n    // \u7E2E\
-    \u3081\u305F\u9589\u8DEF\u3092\u65B0\u3057\u3044\u3082\u306E\u304B\u3089\u623B\
-    \u3057\u3001\u9589\u8DEF\u306E\u4E2D\u306E\u8FBA\u3092\u9078\u3073\u76F4\u3059\
-    \n    for (auto it = cycles.rbegin(); it != cycles.rend(); ++it) {\n        uf.rollback(it->time);\n\
-    \        long long in_edge = in[it->u];\n        for (long long i : it->edges)\
-    \ in[uf.find(es[i].dst)] = i;\n        in[uf.find(es[in_edge].dst)] = in_edge;\n\
-    \    }\n    std::vector<Edge> parent_edge(n);\n    for (long long v = 0; v < n;\
-    \ v++) {\n        if (v != root) parent_edge[v] = es[in[v]];\n    }\n    return\
-    \ MinimumArborescence<Cost>{cost, parent_edge};\n}\n#line 8 \"test/unittest/graph/minimum-arborescence.test.cpp\"\
-    \n\n#line 10 \"test/unittest/graph/minimum-arborescence.test.cpp\"\n#include <limits>\n\
-    #include <random>\n#line 13 \"test/unittest/graph/minimum-arborescence.test.cpp\"\
+    \u3042\u3063\u3066\u3082\u3088\u3044\n */\ntemplate <typename Cost = long long>\n\
+    std::optional<MinimumArborescence<Cost>> minimum_arborescence(const Graph<Cost>&\
+    \ graph, long long root) {\n    using Edge = typename Graph<Cost>::Edge;\n   \
+    \ const long long n = graph.n;\n    std::vector<Edge> es;\n    for (long long\
+    \ v = 0; v < n; v++) {\n        for (const auto& e : graph[v]) es.push_back(e);\n\
+    \    }\n    internal_minimum_arborescence::LeftistHeap<Cost> heap;\n    internal_minimum_arborescence::RollbackUnionFind\
+    \ uf(n);\n    std::vector<int> top(n, -1);  // \u5404\u6210\u5206\u306B\u5165\u308B\
+    \u8FBA\u306E\u30D2\u30FC\u30D7\n    for (long long i = 0; i < static_cast<long\
+    \ long>(es.size()); i++) {\n        top[es[i].dst] = heap.merge(top[es[i].dst],\
+    \ heap.make(es[i].cost, i));\n    }\n    struct Cycle {\n        long long u,\
+    \ time;\n        std::vector<long long> edges;\n    };\n    std::vector<Cycle>\
+    \ cycles;\n    Cost cost{};\n    std::vector<long long> seen(n, -1), path(n),\
+    \ queue(n), in(n, -1);\n    seen[root] = root;\n    for (long long s = 0; s <\
+    \ n; s++) {\n        long long u = s, qi = 0;\n        // s \u304B\u3089\u5165\
+    \u308B\u8FBA\u3092\u9006\u306B\u305F\u3069\u308A\u3001\u9589\u8DEF\u304C\u3067\
+    \u304D\u305F\u3089 1 \u3064\u306E\u9802\u70B9\u306B\u7E2E\u3081\u308B\n      \
+    \  while (seen[u] < 0) {\n            if (top[u] == -1) return std::nullopt;\n\
+    \            auto [w, i] = heap.top(top[u]);\n            heap.add(top[u], -w);\n\
+    \            top[u] = heap.pop(top[u]);\n            queue[qi] = i, path[qi++]\
+    \ = u, seen[u] = s;\n            cost += w;\n            u = uf.find(es[i].src);\n\
+    \            if (seen[u] == s) {\n                int cycle = -1;\n          \
+    \      long long end = qi, time = uf.time(), v;\n                do {\n      \
+    \              v = path[--qi];\n                    cycle = heap.merge(cycle,\
+    \ top[v]);\n                } while (uf.merge(u, v));\n                u = uf.find(u),\
+    \ top[u] = cycle, seen[u] = -1;\n                cycles.push_back({u, time, std::vector<long\
+    \ long>(queue.begin() + qi, queue.begin() + end)});\n            }\n        }\n\
+    \        for (long long i = 0; i < qi; i++) in[uf.find(es[queue[i]].dst)] = queue[i];\n\
+    \    }\n    // \u7E2E\u3081\u305F\u9589\u8DEF\u3092\u65B0\u3057\u3044\u3082\u306E\
+    \u304B\u3089\u623B\u3057\u3001\u9589\u8DEF\u306E\u4E2D\u306E\u8FBA\u3092\u9078\
+    \u3073\u76F4\u3059\n    for (auto it = cycles.rbegin(); it != cycles.rend(); ++it)\
+    \ {\n        uf.rollback(it->time);\n        long long in_edge = in[it->u];\n\
+    \        for (long long i : it->edges) in[uf.find(es[i].dst)] = i;\n        in[uf.find(es[in_edge].dst)]\
+    \ = in_edge;\n    }\n    std::vector<Edge> parent_edge(n);\n    for (long long\
+    \ v = 0; v < n; v++) {\n        if (v != root) parent_edge[v] = es[in[v]];\n \
+    \   }\n    return MinimumArborescence<Cost>{cost, parent_edge};\n}\n#line 8 \"\
+    test/unittest/graph/minimum-arborescence.test.cpp\"\n\n#line 10 \"test/unittest/graph/minimum-arborescence.test.cpp\"\
+    \n#include <limits>\n#include <random>\n#line 13 \"test/unittest/graph/minimum-arborescence.test.cpp\"\
     \n\nint main() {\n    std::mt19937_64 rng(314);\n    bool ok = true;\n    for\
     \ (int rep = 0; rep < 3000 && ok; rep++) {\n        int n = rng() % 6 + 1, m =\
     \ rng() % 12, root = rng() % n;\n        Graph<long long> g(n);\n        std::vector<std::vector<Graph<long\
@@ -274,7 +276,7 @@ data:
   isVerificationFile: true
   path: test/unittest/graph/minimum-arborescence.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 04:20:59+09:00'
+  timestamp: '2026-10-22 13:40:29+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/graph/minimum-arborescence.test.cpp

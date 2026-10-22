@@ -3,7 +3,8 @@ data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
     path: src/string/longest-common-substring.hpp
-    title: "\u6700\u9577\u5171\u901A\u90E8\u5206\u6587\u5B57\u5217"
+    title: "\u6700\u9577\u5171\u901A\u90E8\u5206\u6587\u5B57\u5217\u3068\u3001\u6700\
+      \u9577\u306E\u7E70\u308A\u8FD4\u3057\u90E8\u5206\u6587\u5B57\u5217"
   - icon: ':heavy_check_mark:'
     path: src/string/suffix-array.hpp
     title: "Suffix Array \u3068 LCP \u914D\u5217"
@@ -21,12 +22,16 @@ data:
     \n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// longest_common_substring \u3092\u3001\u3059\u3079\u3066\u306E\u90E8\u5206\
     \u6587\u5B57\u5217\u3092\u8ABF\u3079\u308B\u611A\u76F4\u306A\u65B9\u6CD5\u3068\
-    \u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\
-    \u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\
-    \u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/string/longest-common-substring.hpp\"\
-    \n\n/**\n * @file longest-common-substring.hpp\n * @brief \u6700\u9577\u5171\u901A\
-    \u90E8\u5206\u6587\u5B57\u5217\n */\n\n#include <algorithm>\n#include <iterator>\n\
-    #include <tuple>\n#include <type_traits>\n#include <vector>\n\n#line 2 \"src/string/suffix-array.hpp\"\
+    \u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// longest_repeated_substring\
+    \ \u3068 longest_non_overlapping_repeated_substring \u3082\u3001\u3059\u3079\u3066\
+    \u306E 2 \u304B\u6240\u3092\u8ABF\u3079\u305F\u3082\u306E\u3068\u6BD4\u3079\u308B\
+    \n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\
+    \u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n\
+    #line 2 \"src/string/longest-common-substring.hpp\"\n\n/**\n * @file longest-common-substring.hpp\n\
+    \ * @brief \u6700\u9577\u5171\u901A\u90E8\u5206\u6587\u5B57\u5217\u3068\u3001\u6700\
+    \u9577\u306E\u7E70\u308A\u8FD4\u3057\u90E8\u5206\u6587\u5B57\u5217\n */\n\n#include\
+    \ <algorithm>\n#include <iterator>\n#include <tuple>\n#include <type_traits>\n\
+    #include <utility>\n#include <vector>\n\n#line 2 \"src/string/suffix-array.hpp\"\
     \n\n/**\n * @file suffix-array.hpp\n * @brief Suffix Array (SA-IS) \u3068 LCP\
     \ \u914D\u5217\n */\n\n#line 9 \"src/string/suffix-array.hpp\"\n#include <cassert>\n\
     #include <climits>\n#include <cstddef>\n#include <string>\n#line 15 \"src/string/suffix-array.hpp\"\
@@ -125,7 +130,7 @@ data:
     \ < n; i++) {\n        if (h > 0) h--;\n        if (rank[i] == 0) continue;\n\
     \        long long j = sa[rank[i] - 1];\n        while (j + h < n && i + h < n\
     \ && s[j + h] == s[i + h]) h++;\n        lcp[rank[i] - 1] = h;\n    }\n    return\
-    \ lcp;\n}\n#line 15 \"src/string/longest-common-substring.hpp\"\n\n/**\n * @brief\
+    \ lcp;\n}\n#line 16 \"src/string/longest-common-substring.hpp\"\n\n/**\n * @brief\
     \ s \u3068 t \u306E\u6700\u9577\u5171\u901A\u90E8\u5206\u6587\u5B57\u5217 (\u9023\
     \u7D9A\u3059\u308B\u90E8\u5206\u5217) \u3092 1 \u3064\u6C42\u3081\u308B O((n +\
     \ m) log(n + m))\n * s[i, i + len) == t[j, j + len) \u3068\u306A\u308B (i, j,\
@@ -153,9 +158,52 @@ data:
     \ k + 1 < static_cast<long long>(sa.size()); k++) {\n        long long a = sa[k],\
     \ b = sa[k + 1];\n        if (a > b) std::swap(a, b);\n        if (a < n && n\
     \ < b && lcp[k] > len) {\n            i = a, j = b - n - 1, len = lcp[k];\n  \
-    \      }\n    }\n    return {i, j, len};\n}\n#line 7 \"test/unittest/string/longest-common-substring.test.cpp\"\
-    \n\n#line 9 \"test/unittest/string/longest-common-substring.test.cpp\"\n#include\
-    \ <iostream>\n#include <random>\n#line 13 \"test/unittest/string/longest-common-substring.test.cpp\"\
+    \      }\n    }\n    return {i, j, len};\n}\n\n/**\n * @brief s \u306E\u4E2D\u306B\
+    \ 2 \u56DE\u4EE5\u4E0A\u73FE\u308C\u308B (\u91CD\u306A\u3063\u3066\u3088\u3044\
+    ) \u6700\u9577\u306E\u90E8\u5206\u6587\u5B57\u5217\u3092 1 \u3064\u6C42\u3081\u308B\
+    \ O(n log n)\n * s[i, i + len) == s[j, j + len) \u304B\u3064 i < j \u3068\u306A\
+    \u308B (i, j, len) \u3092\u8FD4\u3059\u30022 \u56DE\u4EE5\u4E0A\u73FE\u308C\u308B\
+    \u90E8\u5206\u304C\u306A\u3051\u308C\u3070 (0, 0, 0)\n * \u8F9E\u66F8\u9806\u3067\
+    \u96A3\u308A\u5408\u3046\u63A5\u5C3E\u8F9E\u306E LCP \u306E\u6700\u5927\u3002\u8981\
+    \u7D20\u306F operator< \u3067\u6BD4\u3079\u308B\n */\ntemplate <typename R>\n\
+    std::tuple<long long, long long, long long> longest_repeated_substring(const R&\
+    \ s) {\n    using T = std::decay_t<decltype(*std::begin(s))>;\n    std::vector<T>\
+    \ v(std::begin(s), std::end(s));\n    std::vector<long long> sa = suffix_array(v);\n\
+    \    std::vector<long long> lcp = lcp_array(v, sa);\n    long long i = 0, j =\
+    \ 0, len = 0;\n    for (long long k = 0; k < static_cast<long long>(lcp.size());\
+    \ k++) {\n        if (lcp[k] > len) i = std::min(sa[k], sa[k + 1]), j = std::max(sa[k],\
+    \ sa[k + 1]), len = lcp[k];\n    }\n    return {i, j, len};\n}\n\n/**\n * @brief\
+    \ s \u306E\u4E2D\u306B\u91CD\u306A\u3089\u305A\u306B 2 \u56DE\u4EE5\u4E0A\u73FE\
+    \u308C\u308B\u6700\u9577\u306E\u90E8\u5206\u6587\u5B57\u5217\u3092 1 \u3064\u6C42\
+    \u3081\u308B O(n log n)\n * s[i, i + len) == s[j, j + len) \u304B\u3064 i + len\
+    \ <= j \u3068\u306A\u308B (i, j, len) \u3092\u8FD4\u3059\u3002\u306A\u3051\u308C\
+    \u3070 (0, 0, 0)\n *\n * \u9577\u3055 L \u306E\u3082\u306E\u304C\u3042\u308C\u3070\
+    \ L - 1 \u306E\u3082\u306E\u3082\u3042\u308B\u306E\u3067\u3001L \u3067\u4E8C\u5206\
+    \u63A2\u7D22\u3059\u308B\u3002L \u3092\u56FA\u5B9A\u3057\u305F\u3089\u3001\u8F9E\
+    \u66F8\u9806\u3067\u96A3\u308A\u5408\u3046 LCP \u304C\n * L \u4EE5\u4E0A\u306E\
+    \u9023\u7D9A\u3057\u305F\u533A\u9593\u3054\u3068\u306B\u3001\u958B\u59CB\u4F4D\
+    \u7F6E\u306E\u6700\u5C0F\u3068\u6700\u5927\u306E\u5DEE\u304C L \u4EE5\u4E0A\u304B\
+    \u3092\u898B\u308B\u3002\u8981\u7D20\u306F operator< \u3067\u6BD4\u3079\u308B\n\
+    \ */\ntemplate <typename R>\nstd::tuple<long long, long long, long long> longest_non_overlapping_repeated_substring(const\
+    \ R& s) {\n    using T = std::decay_t<decltype(*std::begin(s))>;\n    std::vector<T>\
+    \ v(std::begin(s), std::end(s));\n    const long long n = v.size();\n    std::vector<long\
+    \ long> sa = suffix_array(v);\n    std::vector<long long> lcp = lcp_array(v, sa);\n\
+    \    // \u9577\u3055 L \u3067\u91CD\u306A\u3089\u306A\u3044 2 \u304B\u6240\u304C\
+    \u3042\u308C\u3070\u3001\u305D\u306E\u958B\u59CB\u4F4D\u7F6E (i, j) \u3092\u8FD4\
+    \u3059\u3002\u306A\u3051\u308C\u3070 (-1, -1)\n    auto find = [&](long long L)\
+    \ -> std::pair<long long, long long> {\n        long long lo = sa.empty() ? 0\
+    \ : sa[0], hi = lo;\n        for (long long k = 0; k < n; k++) {\n           \
+    \ if (k > 0 && lcp[k - 1] >= L) {\n                lo = std::min(lo, sa[k]), hi\
+    \ = std::max(hi, sa[k]);\n            } else {\n                lo = hi = sa[k];\n\
+    \            }\n            if (hi - lo >= L) return {lo, hi};\n        }\n  \
+    \      return {-1, -1};\n    };\n    // find(ok) \u304C\u898B\u3064\u304B\u308A\
+    \u3001find(ng) \u304C\u898B\u3064\u304B\u3089\u306A\u3044\n    long long ok =\
+    \ 0, ng = n / 2 + 1;\n    while (ng - ok > 1) {\n        long long mid = (ok +\
+    \ ng) / 2;\n        (find(mid).first != -1 ? ok : ng) = mid;\n    }\n    if (ok\
+    \ == 0) return {0, 0, 0};\n    auto [i, j] = find(ok);\n    return {i, j, ok};\n\
+    }\n#line 8 \"test/unittest/string/longest-common-substring.test.cpp\"\n\n#line\
+    \ 10 \"test/unittest/string/longest-common-substring.test.cpp\"\n#include <iostream>\n\
+    #include <random>\n#line 14 \"test/unittest/string/longest-common-substring.test.cpp\"\
     \n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int\
     \ rep = 0; rep < 5000 && ok; rep++) {\n        int n = rng() % 15, m = rng() %\
     \ 15;\n        int k = rng() % 3 + 1;\n        std::string s(n, 'a'), t(m, 'a');\n\
@@ -177,45 +225,90 @@ data:
     ), std::string(\"xyz\"));\n        ok = ok && i == 0 && j == 0 && len == 0;\n\
     \    }\n    {\n        auto [i, j, len] = longest_common_substring(std::string(\"\
     \"), std::string(\"\"));\n        ok = ok && i == 0 && j == 0 && len == 0;\n \
-    \   }\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n   \
-    \ else\n        std::cerr << \"failed\" << std::endl;\n}\n"
+    \   }\n\n    // 1 \u3064\u306E\u5217\u306E\u4E2D\u306E\u7E70\u308A\u8FD4\u3057\
+    \ (std::string \u3068\u3001\u8CA0\u306E\u5024\u3092\u542B\u3080 std::vector<int>)\n\
+    \    for (int rep = 0; rep < 5000 && ok; rep++) {\n        int n = rng() % 16,\
+    \ k = rng() % 3 + 1;\n        std::string s(n, 'a');\n        for (auto& c : s)\
+    \ c = 'a' + rng() % k;\n        std::vector<int> v(s.begin(), s.end());\n    \
+    \    for (auto& x : v) x = -x;\n        // \u91CD\u306A\u3063\u3066\u3088\u3044\
+    \u6700\u9577 / \u91CD\u306A\u3089\u306A\u3044\u6700\u9577\n        long long any\
+    \ = 0, apart = 0;\n        for (int i = 0; i < n; i++)\n            for (int j\
+    \ = i + 1; j < n; j++) {\n                int l = 0;\n                while (j\
+    \ + l < n && s[i + l] == s[j + l]) l++;\n                any = std::max<long long>(any,\
+    \ l);\n                apart = std::max<long long>(apart, std::min(l, j - i));\n\
+    \            }\n        for (int type = 0; type < 4; type++) {\n            auto\
+    \ [i, j, len] = type == 0 ? longest_repeated_substring(s) : type == 1 ? longest_repeated_substring(v)\n\
+    \                                                                       : type\
+    \ == 2   ? longest_non_overlapping_repeated_substring(s)\n                   \
+    \                                                                  : longest_non_overlapping_repeated_substring(v);\n\
+    \            bool overlap = type < 2;\n            ok = ok && len == (overlap\
+    \ ? any : apart);\n            if (len == 0) {\n                ok = ok && i ==\
+    \ 0 && j == 0;\n            } else {\n                ok = ok && 0 <= i && i <\
+    \ j && j + len <= n && s.substr(i, len) == s.substr(j, len);\n               \
+    \ if (!overlap) ok = ok && i + len <= j;\n            }\n        }\n    }\n\n\
+    \    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n    else\n \
+    \       std::cerr << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// longest_common_substring \u3092\u3001\u3059\u3079\u3066\u306E\u90E8\u5206\
     \u6587\u5B57\u5217\u3092\u8ABF\u3079\u308B\u611A\u76F4\u306A\u65B9\u6CD5\u3068\
-    \u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\
-    \u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\
-    \u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../../src/string/longest-common-substring.hpp\"\
-    \n\n#include <algorithm>\n#include <iostream>\n#include <random>\n#include <string>\n\
-    #include <vector>\n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n\
-    \    for (int rep = 0; rep < 5000 && ok; rep++) {\n        int n = rng() % 15,\
-    \ m = rng() % 15;\n        int k = rng() % 3 + 1;\n        std::string s(n, 'a'),\
-    \ t(m, 'a');\n        for (auto& c : s) c = 'a' + rng() % k;\n        for (auto&\
-    \ c : t) c = 'a' + rng() % k;\n\n        long long best = 0;\n        for (int\
-    \ i = 0; i < n; i++) {\n            for (int j = 0; j < m; j++) {\n          \
-    \      long long l = 0;\n                while (i + l < n && j + l < m && s[i\
-    \ + l] == t[j + l]) l++;\n                best = std::max(best, l);\n        \
-    \    }\n        }\n        auto [i, j, len] = longest_common_substring(s, t);\n\
-    \        ok = ok && len == best && 0 <= i && i + len <= n && 0 <= j && j + len\
-    \ <= m;\n        ok = ok && s.substr(i, len) == t.substr(j, len);\n        if\
-    \ (len == 0) ok = ok && i == 0 && j == 0;\n    }\n\n    // \u4F8B\n    {\n   \
-    \     auto [i, j, len] = longest_common_substring(std::string(\"abracadabra\"\
-    ), std::string(\"cadabx\"));\n        ok = ok && i == 4 && j == 0 && len == 5;\n\
-    \    }\n    {\n        // \u578B\u304C\u9055\u3046\u5217\u3001\u8CA0\u306E\u5024\
-    \n        auto [i, j, len] = longest_common_substring(std::vector<long long>{-5,\
-    \ 3, 100, 7}, std::vector<long long>{3, 100, -5});\n        ok = ok && i == 1\
-    \ && j == 0 && len == 2;\n    }\n    {\n        auto [i, j, len] = longest_common_substring(std::string(\"\
-    abc\"), std::string(\"xyz\"));\n        ok = ok && i == 0 && j == 0 && len ==\
-    \ 0;\n    }\n    {\n        auto [i, j, len] = longest_common_substring(std::string(\"\
+    \u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// longest_repeated_substring\
+    \ \u3068 longest_non_overlapping_repeated_substring \u3082\u3001\u3059\u3079\u3066\
+    \u306E 2 \u304B\u6240\u3092\u8ABF\u3079\u305F\u3082\u306E\u3068\u6BD4\u3079\u308B\
+    \n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\
+    \u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n\
+    #include \"../../../src/string/longest-common-substring.hpp\"\n\n#include <algorithm>\n\
+    #include <iostream>\n#include <random>\n#include <string>\n#include <vector>\n\
+    \nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int\
+    \ rep = 0; rep < 5000 && ok; rep++) {\n        int n = rng() % 15, m = rng() %\
+    \ 15;\n        int k = rng() % 3 + 1;\n        std::string s(n, 'a'), t(m, 'a');\n\
+    \        for (auto& c : s) c = 'a' + rng() % k;\n        for (auto& c : t) c =\
+    \ 'a' + rng() % k;\n\n        long long best = 0;\n        for (int i = 0; i <\
+    \ n; i++) {\n            for (int j = 0; j < m; j++) {\n                long long\
+    \ l = 0;\n                while (i + l < n && j + l < m && s[i + l] == t[j + l])\
+    \ l++;\n                best = std::max(best, l);\n            }\n        }\n\
+    \        auto [i, j, len] = longest_common_substring(s, t);\n        ok = ok &&\
+    \ len == best && 0 <= i && i + len <= n && 0 <= j && j + len <= m;\n        ok\
+    \ = ok && s.substr(i, len) == t.substr(j, len);\n        if (len == 0) ok = ok\
+    \ && i == 0 && j == 0;\n    }\n\n    // \u4F8B\n    {\n        auto [i, j, len]\
+    \ = longest_common_substring(std::string(\"abracadabra\"), std::string(\"cadabx\"\
+    ));\n        ok = ok && i == 4 && j == 0 && len == 5;\n    }\n    {\n        //\
+    \ \u578B\u304C\u9055\u3046\u5217\u3001\u8CA0\u306E\u5024\n        auto [i, j,\
+    \ len] = longest_common_substring(std::vector<long long>{-5, 3, 100, 7}, std::vector<long\
+    \ long>{3, 100, -5});\n        ok = ok && i == 1 && j == 0 && len == 2;\n    }\n\
+    \    {\n        auto [i, j, len] = longest_common_substring(std::string(\"abc\"\
+    ), std::string(\"xyz\"));\n        ok = ok && i == 0 && j == 0 && len == 0;\n\
+    \    }\n    {\n        auto [i, j, len] = longest_common_substring(std::string(\"\
     \"), std::string(\"\"));\n        ok = ok && i == 0 && j == 0 && len == 0;\n \
-    \   }\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n   \
-    \ else\n        std::cerr << \"failed\" << std::endl;\n}\n"
+    \   }\n\n    // 1 \u3064\u306E\u5217\u306E\u4E2D\u306E\u7E70\u308A\u8FD4\u3057\
+    \ (std::string \u3068\u3001\u8CA0\u306E\u5024\u3092\u542B\u3080 std::vector<int>)\n\
+    \    for (int rep = 0; rep < 5000 && ok; rep++) {\n        int n = rng() % 16,\
+    \ k = rng() % 3 + 1;\n        std::string s(n, 'a');\n        for (auto& c : s)\
+    \ c = 'a' + rng() % k;\n        std::vector<int> v(s.begin(), s.end());\n    \
+    \    for (auto& x : v) x = -x;\n        // \u91CD\u306A\u3063\u3066\u3088\u3044\
+    \u6700\u9577 / \u91CD\u306A\u3089\u306A\u3044\u6700\u9577\n        long long any\
+    \ = 0, apart = 0;\n        for (int i = 0; i < n; i++)\n            for (int j\
+    \ = i + 1; j < n; j++) {\n                int l = 0;\n                while (j\
+    \ + l < n && s[i + l] == s[j + l]) l++;\n                any = std::max<long long>(any,\
+    \ l);\n                apart = std::max<long long>(apart, std::min(l, j - i));\n\
+    \            }\n        for (int type = 0; type < 4; type++) {\n            auto\
+    \ [i, j, len] = type == 0 ? longest_repeated_substring(s) : type == 1 ? longest_repeated_substring(v)\n\
+    \                                                                       : type\
+    \ == 2   ? longest_non_overlapping_repeated_substring(s)\n                   \
+    \                                                                  : longest_non_overlapping_repeated_substring(v);\n\
+    \            bool overlap = type < 2;\n            ok = ok && len == (overlap\
+    \ ? any : apart);\n            if (len == 0) {\n                ok = ok && i ==\
+    \ 0 && j == 0;\n            } else {\n                ok = ok && 0 <= i && i <\
+    \ j && j + len <= n && s.substr(i, len) == s.substr(j, len);\n               \
+    \ if (!overlap) ok = ok && i + len <= j;\n            }\n        }\n    }\n\n\
+    \    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n    else\n \
+    \       std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/string/longest-common-substring.hpp
   - src/string/suffix-array.hpp
   isVerificationFile: true
   path: test/unittest/string/longest-common-substring.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:32:25+09:00'
+  timestamp: '2026-10-22 14:02:47+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/string/longest-common-substring.test.cpp

@@ -32,7 +32,9 @@ data:
     \ \u3092\u3001\u5909\u6570\u306E\u5024\u3092\u3059\u3079\u3066\u8A66\u3059\u611A\
     \u76F4\u306A\u5B9F\u88C5\u3068\u6BD4\u8F03\u3059\u308B (mod 3 \u3068 GF(2))\n\
     // permanent \u3092\u3001\u3059\u3079\u3066\u306E\u9806\u5217\u306E\u548C\u3068\
-    \u6BD4\u8F03\u3059\u308B (long long\u30FBmodint\u30FBGF(2))\n// \u554F\u984C\u306E\
+    \u6BD4\u8F03\u3059\u308B (long long\u30FBmodint\u30FBGF(2))\n// \u884C\u306E\u30EA\
+    \u30B9\u30C8\u304B\u3089\u4F5C\u308B\u3068\u304D\u306E\u63A8\u8AD6\u30AC\u30A4\
+    \u30C9\u3092 static_assert \u3067\u78BA\u304B\u3081\u308B\n// \u554F\u984C\u306E\
     \u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\
     \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/math/matrix.hpp\"\
     \n\n/**\n * @file matrix.hpp\n * @brief \u884C\u5217\n */\n\n#include <algorithm>\n\
@@ -379,8 +381,14 @@ data:
     \                for (long long k = pivot_col[i]; k < w; k++) {\n            \
     \        A[j][k] = OperatorProperty::add(A[j][k], OperatorProperty::neg(OperatorProperty::mul(A[i][k],\
     \ scale)));\n                }\n            }\n        }\n        return d;\n\
-    \    }\n};\n#line 10 \"test/unittest/math/matrix.test.cpp\"\n\n#line 12 \"test/unittest/math/matrix.test.cpp\"\
-    \n#include <iostream>\n#include <numeric>\n#include <random>\n#line 17 \"test/unittest/math/matrix.test.cpp\"\
+    \    }\n};\n\n/**\n * @brief \u884C\u306E\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\
+    \u3068\u304D\u306E\u63A8\u8AD6\u30AC\u30A4\u30C9\u3002\u8981\u7D20\u306E\u578B\
+    \u306F\u5404\u884C\u306E value_type \u306B\u3059\u308B\n *\n * Matrix(std::vector<std::vector<int>>)\
+    \ \u306F Matrix<int>\u3001Matrix(std::vector<std::string>) \u306F Matrix<char>\n\
+    \ */\ntemplate <typename Iterable>\nMatrix(const std::vector<Iterable>&) -> Matrix<typename\
+    \ Iterable::value_type>;\n#line 11 \"test/unittest/math/matrix.test.cpp\"\n\n\
+    #line 13 \"test/unittest/math/matrix.test.cpp\"\n#include <iostream>\n#include\
+    \ <numeric>\n#include <random>\n#line 19 \"test/unittest/math/matrix.test.cpp\"\
     \n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\
     \u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\
     \u30AF\u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\n#include <cstdint>\n\
@@ -663,33 +671,35 @@ data:
     \ dynamic_modint(SignedIntegral value) noexcept\n        : base_type{value} {}\n\
     \n   private:\n    inline static value_type modulus = 998244353;\n};\n\nusing\
     \ modint998244353 = static_modint<998244353>;\nusing modint1000000007 = static_modint<1000000007>;\n\
-    using modint = dynamic_modint<-1>;\n#line 19 \"test/unittest/math/matrix.test.cpp\"\
-    \n\nusing mint = static_modint<998244353>;\nusing VV = std::vector<std::vector<long\
-    \ long>>;\n\n// xor \u3068 and \u306B\u3088\u308B\u4F53 GF(2)\nstruct GF2 {\n\
-    \    static int zero() { return 0; }\n    static int add(const int& a, const int&\
-    \ b) { return a ^ b; }\n    static int neg(const int& a) { return a; }\n    static\
-    \ int one() { return 1; }\n    static int mul(const int& a, const int& b) { return\
-    \ a & b; }\n    static int inv(const int& a) { return a; }  // 0 \u3067\u306A\u3044\
-    \u5143\u306F 1 \u3060\u3051\n};\n// \u65E2\u5B9A\u306E\u6F14\u7B97\u3092\u7D99\
-    \u627F\u3057\u305F\u5225\u306E\u578B (\u884C\u5217\u5F0F\u30FB\u9006\u884C\u5217\
-    \u306F valarray \u3092\u4F7F\u308F\u306A\u3044\u6C4E\u7528\u306E\u7D4C\u8DEF\u3092\
-    \u901A\u308B)\nstruct ModProp : matrix::OperatorPropertyDefault<mint> {};\n\n\
-    VV random_vv(std::mt19937_64& rng, int n, int m, int lo, int hi) {\n    VV a(n,\
-    \ std::vector<long long>(m));\n    for (auto& row : a)\n        for (auto& x :\
-    \ row) x = lo + static_cast<long long>(rng() % (hi - lo + 1));\n    return a;\n\
-    }\n\n// GF(2) \u306E\u884C\u5217\u5F0F (\u611A\u76F4\u306A\u30AC\u30A6\u30B9\u306E\
-    \u6D88\u53BB\u6CD5)\nint naive_det_gf2(std::vector<std::vector<int>> a) {\n  \
-    \  int n = a.size();\n    for (int c = 0, r = 0; c < n; c++) {\n        int p\
-    \ = r;\n        while (p < n && a[p][c] == 0) p++;\n        if (p == n) return\
-    \ 0;\n        std::swap(a[p], a[r]);\n        for (int i = 0; i < n; i++)\n  \
-    \          if (i != r && a[i][c])\n                for (int j = 0; j < n; j++)\
-    \ a[i][j] ^= a[r][j];\n        r++;\n    }\n    return 1;\n}\n\n// mod p \u306E\
-    \u884C\u5217\u5F0F (\u4F59\u56E0\u5B50\u5C55\u958B\u3002n \u306F\u5C0F\u3055\u3044\
-    \u3053\u3068)\nmint naive_det(const std::vector<std::vector<mint>>& a) {\n   \
-    \ int n = a.size();\n    if (n == 0) return 1;\n    mint res = 0;\n    for (int\
-    \ j = 0; j < n; j++) {\n        std::vector<std::vector<mint>> b;\n        for\
-    \ (int i = 1; i < n; i++) {\n            std::vector<mint> row;\n            for\
-    \ (int k = 0; k < n; k++)\n                if (k != j) row.push_back(a[i][k]);\n\
+    using modint = dynamic_modint<-1>;\n#line 21 \"test/unittest/math/matrix.test.cpp\"\
+    \n\nusing mint = static_modint<998244353>;\n\n// \u63A8\u8AD6\u30AC\u30A4\u30C9\
+    : \u8981\u7D20\u306E\u578B\u306F\u5404\u884C\u306E value_type\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::vector<long\
+    \ long>>())), Matrix<long long>>);\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::string>())),\
+    \ Matrix<char>>);\nusing VV = std::vector<std::vector<long long>>;\n\n// xor \u3068\
+    \ and \u306B\u3088\u308B\u4F53 GF(2)\nstruct GF2 {\n    static int zero() { return\
+    \ 0; }\n    static int add(const int& a, const int& b) { return a ^ b; }\n   \
+    \ static int neg(const int& a) { return a; }\n    static int one() { return 1;\
+    \ }\n    static int mul(const int& a, const int& b) { return a & b; }\n    static\
+    \ int inv(const int& a) { return a; }  // 0 \u3067\u306A\u3044\u5143\u306F 1 \u3060\
+    \u3051\n};\n// \u65E2\u5B9A\u306E\u6F14\u7B97\u3092\u7D99\u627F\u3057\u305F\u5225\
+    \u306E\u578B (\u884C\u5217\u5F0F\u30FB\u9006\u884C\u5217\u306F valarray \u3092\
+    \u4F7F\u308F\u306A\u3044\u6C4E\u7528\u306E\u7D4C\u8DEF\u3092\u901A\u308B)\nstruct\
+    \ ModProp : matrix::OperatorPropertyDefault<mint> {};\n\nVV random_vv(std::mt19937_64&\
+    \ rng, int n, int m, int lo, int hi) {\n    VV a(n, std::vector<long long>(m));\n\
+    \    for (auto& row : a)\n        for (auto& x : row) x = lo + static_cast<long\
+    \ long>(rng() % (hi - lo + 1));\n    return a;\n}\n\n// GF(2) \u306E\u884C\u5217\
+    \u5F0F (\u611A\u76F4\u306A\u30AC\u30A6\u30B9\u306E\u6D88\u53BB\u6CD5)\nint naive_det_gf2(std::vector<std::vector<int>>\
+    \ a) {\n    int n = a.size();\n    for (int c = 0, r = 0; c < n; c++) {\n    \
+    \    int p = r;\n        while (p < n && a[p][c] == 0) p++;\n        if (p ==\
+    \ n) return 0;\n        std::swap(a[p], a[r]);\n        for (int i = 0; i < n;\
+    \ i++)\n            if (i != r && a[i][c])\n                for (int j = 0; j\
+    \ < n; j++) a[i][j] ^= a[r][j];\n        r++;\n    }\n    return 1;\n}\n\n// mod\
+    \ p \u306E\u884C\u5217\u5F0F (\u4F59\u56E0\u5B50\u5C55\u958B\u3002n \u306F\u5C0F\
+    \u3055\u3044\u3053\u3068)\nmint naive_det(const std::vector<std::vector<mint>>&\
+    \ a) {\n    int n = a.size();\n    if (n == 0) return 1;\n    mint res = 0;\n\
+    \    for (int j = 0; j < n; j++) {\n        std::vector<std::vector<mint>> b;\n\
+    \        for (int i = 1; i < n; i++) {\n            std::vector<mint> row;\n \
+    \           for (int k = 0; k < n; k++)\n                if (k != j) row.push_back(a[i][k]);\n\
     \            b.push_back(row);\n        }\n        mint t = a[0][j] * naive_det(b);\n\
     \        res += (j % 2 == 0) ? t : -t;\n    }\n    return res;\n}\n\n// \u9023\
     \u7ACB\u4E00\u6B21\u65B9\u7A0B\u5F0F: p^m \u901A\u308A\u306E x \u3092\u3059\u3079\
@@ -848,25 +858,30 @@ data:
     \u8A66\u3059\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u6BD4\u8F03\u3059\u308B (mod\
     \ 3 \u3068 GF(2))\n// permanent \u3092\u3001\u3059\u3079\u3066\u306E\u9806\u5217\
     \u306E\u548C\u3068\u6BD4\u8F03\u3059\u308B (long long\u30FBmodint\u30FBGF(2))\n\
+    // \u884C\u306E\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\u3068\u304D\u306E\u63A8\
+    \u8AD6\u30AC\u30A4\u30C9\u3092 static_assert \u3067\u78BA\u304B\u3081\u308B\n\
     // \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\
     \u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n\
     #include \"../../../src/math/matrix.hpp\"\n\n#include <algorithm>\n#include <iostream>\n\
-    #include <numeric>\n#include <random>\n#include <string>\n#include <vector>\n\n\
-    #include \"../../../src/math/modint.hpp\"\n\nusing mint = static_modint<998244353>;\n\
-    using VV = std::vector<std::vector<long long>>;\n\n// xor \u3068 and \u306B\u3088\
-    \u308B\u4F53 GF(2)\nstruct GF2 {\n    static int zero() { return 0; }\n    static\
-    \ int add(const int& a, const int& b) { return a ^ b; }\n    static int neg(const\
-    \ int& a) { return a; }\n    static int one() { return 1; }\n    static int mul(const\
-    \ int& a, const int& b) { return a & b; }\n    static int inv(const int& a) {\
-    \ return a; }  // 0 \u3067\u306A\u3044\u5143\u306F 1 \u3060\u3051\n};\n// \u65E2\
-    \u5B9A\u306E\u6F14\u7B97\u3092\u7D99\u627F\u3057\u305F\u5225\u306E\u578B (\u884C\
-    \u5217\u5F0F\u30FB\u9006\u884C\u5217\u306F valarray \u3092\u4F7F\u308F\u306A\u3044\
-    \u6C4E\u7528\u306E\u7D4C\u8DEF\u3092\u901A\u308B)\nstruct ModProp : matrix::OperatorPropertyDefault<mint>\
-    \ {};\n\nVV random_vv(std::mt19937_64& rng, int n, int m, int lo, int hi) {\n\
-    \    VV a(n, std::vector<long long>(m));\n    for (auto& row : a)\n        for\
-    \ (auto& x : row) x = lo + static_cast<long long>(rng() % (hi - lo + 1));\n  \
-    \  return a;\n}\n\n// GF(2) \u306E\u884C\u5217\u5F0F (\u611A\u76F4\u306A\u30AC\
-    \u30A6\u30B9\u306E\u6D88\u53BB\u6CD5)\nint naive_det_gf2(std::vector<std::vector<int>>\
+    #include <numeric>\n#include <random>\n#include <string>\n#include <type_traits>\n\
+    #include <vector>\n\n#include \"../../../src/math/modint.hpp\"\n\nusing mint =\
+    \ static_modint<998244353>;\n\n// \u63A8\u8AD6\u30AC\u30A4\u30C9: \u8981\u7D20\
+    \u306E\u578B\u306F\u5404\u884C\u306E value_type\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::vector<long\
+    \ long>>())), Matrix<long long>>);\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::string>())),\
+    \ Matrix<char>>);\nusing VV = std::vector<std::vector<long long>>;\n\n// xor \u3068\
+    \ and \u306B\u3088\u308B\u4F53 GF(2)\nstruct GF2 {\n    static int zero() { return\
+    \ 0; }\n    static int add(const int& a, const int& b) { return a ^ b; }\n   \
+    \ static int neg(const int& a) { return a; }\n    static int one() { return 1;\
+    \ }\n    static int mul(const int& a, const int& b) { return a & b; }\n    static\
+    \ int inv(const int& a) { return a; }  // 0 \u3067\u306A\u3044\u5143\u306F 1 \u3060\
+    \u3051\n};\n// \u65E2\u5B9A\u306E\u6F14\u7B97\u3092\u7D99\u627F\u3057\u305F\u5225\
+    \u306E\u578B (\u884C\u5217\u5F0F\u30FB\u9006\u884C\u5217\u306F valarray \u3092\
+    \u4F7F\u308F\u306A\u3044\u6C4E\u7528\u306E\u7D4C\u8DEF\u3092\u901A\u308B)\nstruct\
+    \ ModProp : matrix::OperatorPropertyDefault<mint> {};\n\nVV random_vv(std::mt19937_64&\
+    \ rng, int n, int m, int lo, int hi) {\n    VV a(n, std::vector<long long>(m));\n\
+    \    for (auto& row : a)\n        for (auto& x : row) x = lo + static_cast<long\
+    \ long>(rng() % (hi - lo + 1));\n    return a;\n}\n\n// GF(2) \u306E\u884C\u5217\
+    \u5F0F (\u611A\u76F4\u306A\u30AC\u30A6\u30B9\u306E\u6D88\u53BB\u6CD5)\nint naive_det_gf2(std::vector<std::vector<int>>\
     \ a) {\n    int n = a.size();\n    for (int c = 0, r = 0; c < n; c++) {\n    \
     \    int p = r;\n        while (p < n && a[p][c] == 0) p++;\n        if (p ==\
     \ n) return 0;\n        std::swap(a[p], a[r]);\n        for (int i = 0; i < n;\
@@ -1032,7 +1047,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/matrix.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 04:35:34+09:00'
+  timestamp: '2026-10-22 13:41:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/matrix.test.cpp

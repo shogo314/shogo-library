@@ -384,7 +384,12 @@ data:
     \                for (long long k = pivot_col[i]; k < w; k++) {\n            \
     \        A[j][k] = OperatorProperty::add(A[j][k], OperatorProperty::neg(OperatorProperty::mul(A[i][k],\
     \ scale)));\n                }\n            }\n        }\n        return d;\n\
-    \    }\n};\n"
+    \    }\n};\n\n/**\n * @brief \u884C\u306E\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\
+    \u3068\u304D\u306E\u63A8\u8AD6\u30AC\u30A4\u30C9\u3002\u8981\u7D20\u306E\u578B\
+    \u306F\u5404\u884C\u306E value_type \u306B\u3059\u308B\n *\n * Matrix(std::vector<std::vector<int>>)\
+    \ \u306F Matrix<int>\u3001Matrix(std::vector<std::string>) \u306F Matrix<char>\n\
+    \ */\ntemplate <typename Iterable>\nMatrix(const std::vector<Iterable>&) -> Matrix<typename\
+    \ Iterable::value_type>;\n"
   code: "#pragma once\n\n/**\n * @file matrix.hpp\n * @brief \u884C\u5217\n */\n\n\
     #include <algorithm>\n#include <cassert>\n#include <cmath>\n#include <cstddef>\n\
     #include <initializer_list>\n#include <optional>\n#include <string>\n#include\
@@ -730,12 +735,17 @@ data:
     \                for (long long k = pivot_col[i]; k < w; k++) {\n            \
     \        A[j][k] = OperatorProperty::add(A[j][k], OperatorProperty::neg(OperatorProperty::mul(A[i][k],\
     \ scale)));\n                }\n            }\n        }\n        return d;\n\
-    \    }\n};\n"
+    \    }\n};\n\n/**\n * @brief \u884C\u306E\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\
+    \u3068\u304D\u306E\u63A8\u8AD6\u30AC\u30A4\u30C9\u3002\u8981\u7D20\u306E\u578B\
+    \u306F\u5404\u884C\u306E value_type \u306B\u3059\u308B\n *\n * Matrix(std::vector<std::vector<int>>)\
+    \ \u306F Matrix<int>\u3001Matrix(std::vector<std::string>) \u306F Matrix<char>\n\
+    \ */\ntemplate <typename Iterable>\nMatrix(const std::vector<Iterable>&) -> Matrix<typename\
+    \ Iterable::value_type>;\n"
   dependsOn: []
   isVerificationFile: false
   path: src/math/matrix.hpp
   requiredBy: []
-  timestamp: '2026-10-22 04:35:34+09:00'
+  timestamp: '2026-10-22 13:41:11+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/math/matrix.test.cpp
@@ -771,7 +781,7 @@ auto t = g.rotate(1).vstr();          // 時計回りに 90 度回して vector<
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `Matrix({ {a, b}, {c, d} })` | 初期化子リストから作る | $O(nm)$ |
-| `Matrix(v)` | `vector<vector<T>>` や `vector<string>` から作る | $O(nm)$ |
+| `Matrix(v)` | `vector<vector<T>>` や `vector<string>` から作る。型を省くと、要素の型は各行の `value_type` になる (`vector<vector<int>>` なら `Matrix<int>`、`vector<string>` なら `Matrix<char>`) | $O(nm)$ |
 | `Matrix(n, m, val = 0)` | `n` 行 `m` 列で、要素はすべて `val` | $O(nm)$ |
 | `A.size()` | 行数 (`long long`) | $O(1)$ |
 | `A[i][j]` | 要素 | $O(1)$ |

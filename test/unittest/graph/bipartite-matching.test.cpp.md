@@ -109,41 +109,41 @@ data:
     \u306F\u305A\u3063\u3068\u901F\u3044\u3053\u3068\u304C\u591A\u3044\u3002\u5BB9\
     \u91CF\u304C\u3059\u3079\u3066 1 \u306A\u3089 O(m min(m^(1/2), n^(2/3)))\n * \u4F8B\
     :\n * MaxFlow<long long> mf(n);\n * mf.add_edge(0, 1, 5);\n * long long f = mf.flow(s,\
-    \ t);\n *\n * @tparam Cap \u5BB9\u91CF\u306E\u578B\n */\ntemplate <typename Cap>\n\
-    class MaxFlow {\n   public:\n    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\n\
-    \     */\n    struct Edge {\n        long long from, to;\n        Cap cap;   //!<\
-    \ \u5BB9\u91CF\n        Cap flow;  //!< \u6D41\u308C\u3066\u3044\u308B\u91CF\n\
-    \    };\n\n   private:\n    // \u5185\u90E8\u306E\u8FBA\u3068\u914D\u5217\u306F\
-    \ int \u3067\u6301\u3061\u3001\u516C\u958B\u3059\u308B\u95A2\u6570\u3067 long\
-    \ long \u306B\u3059\u308B\n    struct InnerEdge {\n        int to, rev;\n    \
-    \    Cap cap;  // \u6B8B\u308A\u306E\u5BB9\u91CF\n    };\n    long long n;\n \
-    \   std::vector<std::vector<InnerEdge>> g;\n    std::vector<std::pair<int, int>>\
-    \ pos;  // \u8FFD\u52A0\u3057\u305F\u8FBA\u304C g \u306E\u3069\u3053\u306B\u3042\
-    \u308B\u304B\n    std::vector<int> level, iter;\n\n    bool bfs(int s, int t)\
-    \ {\n        level.assign(n, -1);\n        level[s] = 0;\n        std::queue<int>\
-    \ que;\n        que.push(s);\n        while (!que.empty()) {\n            int\
-    \ v = que.front();\n            que.pop();\n            for (const auto& e : g[v])\
-    \ {\n                if (e.cap > 0 && level[e.to] == -1) {\n                 \
-    \   level[e.to] = level[v] + 1;\n                    que.push(e.to);\n       \
-    \         }\n            }\n        }\n        return level[t] != -1;\n    }\n\
-    \    // v \u304B\u3089 t \u3078\u3001up \u3092\u4E0A\u9650\u3068\u3057\u3066\u30EC\
-    \u30D9\u30EB\u30B0\u30E9\u30D5\u4E0A\u3067\u6D41\u3059\n    Cap dfs(int v, int\
-    \ t, Cap up) {\n        if (v == t) return up;\n        Cap res = 0;\n       \
-    \ for (int& i = iter[v]; i < static_cast<int>(g[v].size()); i++) {\n         \
-    \   InnerEdge& e = g[v][i];\n            if (e.cap <= 0 || level[e.to] != level[v]\
-    \ + 1) continue;\n            Cap d = dfs(e.to, t, std::min(up - res, e.cap));\n\
-    \            if (d <= 0) continue;\n            e.cap -= d;\n            g[e.to][e.rev].cap\
-    \ += d;\n            res += d;\n            if (res == up) return res;\n     \
-    \   }\n        // \u3053\u308C\u4EE5\u4E0A\u6D41\u305B\u306A\u3044\u306E\u3067\
-    \u3001\u3053\u306E\u30D5\u30A7\u30FC\u30BA\u3067\u306F\u4F7F\u308F\u306A\u3044\
-    \n        level[v] = n;\n        return res;\n    }\n\n   public:\n    explicit\
-    \ MaxFlow(long long n = 0) : n(n), g(n) {}\n\n    long long size() const { return\
-    \ n; }\n\n    /**\n     * @brief from \u304B\u3089 to \u3078\u306E\u5BB9\u91CF\
-    \ cap \u306E\u8FBA\u3092\u8FFD\u52A0\u3057\u3001\u8FBA\u306E\u756A\u53F7 (\u8FFD\
-    \u52A0\u3057\u305F\u9806\u306B 0, 1, ...) \u3092\u8FD4\u3059\n     */\n    long\
-    \ long add_edge(long long from, long long to, Cap cap) {\n        assert(0 <=\
-    \ from && from < n && 0 <= to && to < n && cap >= 0);\n        long long id =\
-    \ pos.size();\n        int from_id = g[from].size();\n        int to_id = g[to].size()\
+    \ t);\n *\n * @tparam Cap \u5BB9\u91CF\u306E\u578B \u7701\u7565\u3057\u305F\u3089\
+    \ long long\n */\ntemplate <typename Cap = long long>\nclass MaxFlow {\n   public:\n\
+    \    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\n     */\n    struct Edge {\n\
+    \        long long from, to;\n        Cap cap;   //!< \u5BB9\u91CF\n        Cap\
+    \ flow;  //!< \u6D41\u308C\u3066\u3044\u308B\u91CF\n    };\n\n   private:\n  \
+    \  // \u5185\u90E8\u306E\u8FBA\u3068\u914D\u5217\u306F int \u3067\u6301\u3061\u3001\
+    \u516C\u958B\u3059\u308B\u95A2\u6570\u3067 long long \u306B\u3059\u308B\n    struct\
+    \ InnerEdge {\n        int to, rev;\n        Cap cap;  // \u6B8B\u308A\u306E\u5BB9\
+    \u91CF\n    };\n    long long n;\n    std::vector<std::vector<InnerEdge>> g;\n\
+    \    std::vector<std::pair<int, int>> pos;  // \u8FFD\u52A0\u3057\u305F\u8FBA\u304C\
+    \ g \u306E\u3069\u3053\u306B\u3042\u308B\u304B\n    std::vector<int> level, iter;\n\
+    \n    bool bfs(int s, int t) {\n        level.assign(n, -1);\n        level[s]\
+    \ = 0;\n        std::queue<int> que;\n        que.push(s);\n        while (!que.empty())\
+    \ {\n            int v = que.front();\n            que.pop();\n            for\
+    \ (const auto& e : g[v]) {\n                if (e.cap > 0 && level[e.to] == -1)\
+    \ {\n                    level[e.to] = level[v] + 1;\n                    que.push(e.to);\n\
+    \                }\n            }\n        }\n        return level[t] != -1;\n\
+    \    }\n    // v \u304B\u3089 t \u3078\u3001up \u3092\u4E0A\u9650\u3068\u3057\u3066\
+    \u30EC\u30D9\u30EB\u30B0\u30E9\u30D5\u4E0A\u3067\u6D41\u3059\n    Cap dfs(int\
+    \ v, int t, Cap up) {\n        if (v == t) return up;\n        Cap res = 0;\n\
+    \        for (int& i = iter[v]; i < static_cast<int>(g[v].size()); i++) {\n  \
+    \          InnerEdge& e = g[v][i];\n            if (e.cap <= 0 || level[e.to]\
+    \ != level[v] + 1) continue;\n            Cap d = dfs(e.to, t, std::min(up - res,\
+    \ e.cap));\n            if (d <= 0) continue;\n            e.cap -= d;\n     \
+    \       g[e.to][e.rev].cap += d;\n            res += d;\n            if (res ==\
+    \ up) return res;\n        }\n        // \u3053\u308C\u4EE5\u4E0A\u6D41\u305B\u306A\
+    \u3044\u306E\u3067\u3001\u3053\u306E\u30D5\u30A7\u30FC\u30BA\u3067\u306F\u4F7F\
+    \u308F\u306A\u3044\n        level[v] = n;\n        return res;\n    }\n\n   public:\n\
+    \    explicit MaxFlow(long long n = 0) : n(n), g(n) {}\n\n    long long size()\
+    \ const { return n; }\n\n    /**\n     * @brief from \u304B\u3089 to \u3078\u306E\
+    \u5BB9\u91CF cap \u306E\u8FBA\u3092\u8FFD\u52A0\u3057\u3001\u8FBA\u306E\u756A\u53F7\
+    \ (\u8FFD\u52A0\u3057\u305F\u9806\u306B 0, 1, ...) \u3092\u8FD4\u3059\n     */\n\
+    \    long long add_edge(long long from, long long to, Cap cap) {\n        assert(0\
+    \ <= from && from < n && 0 <= to && to < n && cap >= 0);\n        long long id\
+    \ = pos.size();\n        int from_id = g[from].size();\n        int to_id = g[to].size()\
     \ + (from == to);\n        pos.emplace_back(from, from_id);\n        g[from].push_back({static_cast<int>(to),\
     \ to_id, cap});\n        g[to].push_back({static_cast<int>(from), from_id, 0});\n\
     \        return id;\n    }\n\n    /**\n     * @brief s \u304B\u3089 t \u3078\u3001\
@@ -241,7 +241,7 @@ data:
   isVerificationFile: true
   path: test/unittest/graph/bipartite-matching.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:32:25+09:00'
+  timestamp: '2026-10-22 13:41:47+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/graph/bipartite-matching.test.cpp

@@ -44,34 +44,36 @@ data:
     \n\n/**\n * @file graph.hpp\n * @brief \u30B0\u30E9\u30D5\n */\n\n#line 9 \"src/graph/graph.hpp\"\
     \n#include <iostream>\n#line 11 \"src/graph/graph.hpp\"\n\n/**\n * @brief \u30B0\
     \u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\
-    \u30B3\u30B9\u30C8\u306E\u578B\n */\ntemplate <typename Cost = int>\nclass Graph\
-    \ {\n   public:\n    /**\n     * @brief \u6709\u5411\u8FBA\u306E\u69CB\u9020\u4F53\
-    \n     *\n     * operator long long()\u3092\u5B9A\u7FA9\u3057\u3066\u3044\u308B\
-    \u306E\u3067\u3001\u6574\u6570\u578B\u306B\u30AD\u30E3\u30B9\u30C8\u3059\u308B\
-    \u3068\u52DD\u624B\u306Bdst\u306B\u306A\u308B\n     * \u4F8B\u3048\u3070\u3001\
-    \n     * for (auto& e : g[v]) \u3092\u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\
-    \u308B\u8FBA\u304C\u5217\u6319\u3055\u308C\u308B\u304C\u3001\n     * for (long\
-    \ long dst : g[v]) \u3068\u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\
-    \u306E\u884C\u304D\u5148\u304C\u5217\u6319\u3055\u308C\u308B\n     */\n    struct\
-    \ Edge {\n        long long src = -1;  //!< \u59CB\u70B9\n        long long dst\
-    \ = -1;  //!< \u7D42\u70B9\n        Cost cost = {};      //!< \u30B3\u30B9\u30C8\
-    \n        long long id = -1;   //!< \u8FBA\u306E\u756A\u53F7(\u8FFD\u52A0\u3055\
-    \u308C\u305F\u9806\u3001\u7121\u5411\u8FBA\u306E\u5834\u5408\u306Fid\u304C\u540C\
-    \u3058\u3067\u65B9\u5411\u304C\u9006\u306E\u3082\u306E\u304C2\u3064\u5B58\u5728\
-    \u3059\u308B)\n        Edge() = default;\n        Edge(long long src, long long\
-    \ dst, Cost cost = 1, long long id = -1) : src(src), dst(dst), cost(cost), id(id)\
-    \ {}\n        operator long long() const { return dst; }\n    };\n\n    long long\
-    \ n;                       //!< \u9802\u70B9\u6570\n    long long m;         \
-    \              //!< \u8FBA\u6570\n    std::vector<std::vector<Edge>> g;  //!<\
-    \ \u30B0\u30E9\u30D5\u306E\u96A3\u63A5\u30EA\u30B9\u30C8\u8868\u73FE\n\n    /**\n\
-    \     * @brief \u30C7\u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\
-    \u30BF\n     */\n    Graph() : n(0), m(0), g(0) {}\n    /**\n     * @brief \u30B3\
-    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param n \u9802\u70B9\u6570\n   \
-    \  */\n    explicit Graph(long long n) : n(n), m(0), g(n) {}\n    /**\n     *\
-    \ @brief \u9802\u70B9\u6570\n     */\n    long long size() const { return n; }\n\
-    \    /**\n     * @brief \u7121\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n   \
-    \  * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n     * @param w \u30B3\
-    \u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n    void add_edge(long\
+    \u30B3\u30B9\u30C8\u306E\u578B \u7701\u7565\u3057\u305F\u3089 long long (\u91CD\
+    \u307F\u306E\u548C\u3084\u672A\u5230\u9054\u3092\u8868\u3059 max / 4 \u304C\u3042\
+    \u3075\u308C\u306B\u304F\u3044\u3088\u3046\u306B)\n */\ntemplate <typename Cost\
+    \ = long long>\nclass Graph {\n   public:\n    /**\n     * @brief \u6709\u5411\
+    \u8FBA\u306E\u69CB\u9020\u4F53\n     *\n     * operator long long()\u3092\u5B9A\
+    \u7FA9\u3057\u3066\u3044\u308B\u306E\u3067\u3001\u6574\u6570\u578B\u306B\u30AD\
+    \u30E3\u30B9\u30C8\u3059\u308B\u3068\u52DD\u624B\u306Bdst\u306B\u306A\u308B\n\
+    \     * \u4F8B\u3048\u3070\u3001\n     * for (auto& e : g[v]) \u3092\u3059\u308B\
+    \u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\u304C\u5217\u6319\u3055\u308C\u308B\
+    \u304C\u3001\n     * for (long long dst : g[v]) \u3068\u3059\u308B\u3068\u3001\
+    v\u304B\u3089\u51FA\u308B\u8FBA\u306E\u884C\u304D\u5148\u304C\u5217\u6319\u3055\
+    \u308C\u308B\n     */\n    struct Edge {\n        long long src = -1;  //!< \u59CB\
+    \u70B9\n        long long dst = -1;  //!< \u7D42\u70B9\n        Cost cost = {};\
+    \      //!< \u30B3\u30B9\u30C8\n        long long id = -1;   //!< \u8FBA\u306E\
+    \u756A\u53F7(\u8FFD\u52A0\u3055\u308C\u305F\u9806\u3001\u7121\u5411\u8FBA\u306E\
+    \u5834\u5408\u306Fid\u304C\u540C\u3058\u3067\u65B9\u5411\u304C\u9006\u306E\u3082\
+    \u306E\u304C2\u3064\u5B58\u5728\u3059\u308B)\n        Edge() = default;\n    \
+    \    Edge(long long src, long long dst, Cost cost = 1, long long id = -1) : src(src),\
+    \ dst(dst), cost(cost), id(id) {}\n        operator long long() const { return\
+    \ dst; }\n    };\n\n    long long n;                       //!< \u9802\u70B9\u6570\
+    \n    long long m;                       //!< \u8FBA\u6570\n    std::vector<std::vector<Edge>>\
+    \ g;  //!< \u30B0\u30E9\u30D5\u306E\u96A3\u63A5\u30EA\u30B9\u30C8\u8868\u73FE\n\
+    \n    /**\n     * @brief \u30C7\u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\
+    \u30E9\u30AF\u30BF\n     */\n    Graph() : n(0), m(0), g(0) {}\n    /**\n    \
+    \ * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param n \u9802\u70B9\
+    \u6570\n     */\n    explicit Graph(long long n) : n(n), m(0), g(n) {}\n    /**\n\
+    \     * @brief \u9802\u70B9\u6570\n     */\n    long long size() const { return\
+    \ n; }\n    /**\n     * @brief \u7121\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\
+    \n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n     * @param w\
+    \ \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n    void add_edge(long\
     \ long u, long long v, Cost w = 1) {\n        assert(0 <= u && u < n && 0 <= v\
     \ && v < n);\n        g[u].push_back({u, v, w, m});\n        g[v].push_back({v,\
     \ u, w, m++});\n    }\n    /**\n     * @brief \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\
@@ -157,46 +159,46 @@ data:
     inf\u306B\u306A\u308B \u7701\u7565\u3059\u308B\u3068 std::numeric_limits<Cost>::max()\
     \ / 4\n * @return ShortestPath \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\
     \u9577 (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\
-    \u306E\u76F4\u524D\u306E\u8FBA (prev)\n */\ntemplate <typename Cost = int>\nShortestPath<Cost>\
-    \ shortest_path(const Graph<Cost>& graph, long long s, bool weighted = true, Cost\
-    \ inf = std::numeric_limits<Cost>::max() / 4) {\n    assert(0 <= s && s < graph.n);\n\
-    \    if (weighted)\n        return internal_shortest_path::dijkstra(graph, s,\
-    \ inf);\n    return internal_shortest_path::bfs(graph, s, inf);\n}\n\n/**\n *\
-    \ @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\
+    \u306E\u76F4\u524D\u306E\u8FBA (prev)\n */\ntemplate <typename Cost = long long>\n\
+    ShortestPath<Cost> shortest_path(const Graph<Cost>& graph, long long s, bool weighted\
+    \ = true, Cost inf = std::numeric_limits<Cost>::max() / 4) {\n    assert(0 <=\
+    \ s && s < graph.n);\n    if (weighted)\n        return internal_shortest_path::dijkstra(graph,\
+    \ s, inf);\n    return internal_shortest_path::bfs(graph, s, inf);\n}\n\n/**\n\
+    \ * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\
     \u77ED\u8DEF\n *\n * @param s \u59CB\u70B9\n * @param inf \u30B3\u30B9\u30C8\u306E\
     min\u306E\u5358\u4F4D\u5143 \u672A\u5230\u9054\u306E\u9802\u70B9\u3078\u306E\u8DDD\
     \u96E2\u306Finf\u306B\u306A\u308B \u7701\u7565\u3059\u308B\u3068 std::numeric_limits<Cost>::max()\
     \ / 4 \u8CA0\u9589\u8DEF\u306E\u5F71\u97FF\u3092\u53D7\u3051\u308B\u70B9\u306F\
     \ -inf\n * @return ShortestPath \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\
     \u9577 (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\
-    \u306E\u76F4\u524D\u306E\u8FBA (prev)\n */\ntemplate <typename Cost = int>\nShortestPath<Cost>\
-    \ bellman_ford(const Graph<Cost>& graph, long long s, Cost inf = std::numeric_limits<Cost>::max()\
-    \ / 4) {\n    assert(0 <= s && s < graph.n);\n    const long long n = graph.n;\n\
-    \    std::vector<Cost> dist(n, inf);\n    std::vector<typename Graph<Cost>::Edge>\
-    \ prev(n);\n    dist[s] = Cost{};\n\n    for (long long i = 1; i < n; i++) {\n\
-    \        bool changed = false;\n        for (long long j = 0; j < n; j++)\n  \
-    \          for (const auto& e : graph[j]) {\n                if (dist[e.src] ==\
-    \ inf)\n                    continue;\n                if (dist[e.dst] > dist[e.src]\
-    \ + e.cost) {\n                    dist[e.dst] = dist[e.src] + e.cost;\n     \
-    \               if (dist[e.dst] < -inf)\n                        dist[e.dst] =\
-    \ -inf;\n                    prev[e.dst] = e;\n                    changed = true;\n\
-    \                }\n            }\n        if (!changed)\n            break;\n\
-    \    }\n    for (long long i = 0; i < n; i++) {\n        bool changed = false;\n\
-    \        for (long long j = 0; j < n; j++)\n            for (const auto& e : graph[j])\
-    \ {\n                if (dist[e.src] == inf)\n                    continue;\n\
-    \                if (dist[e.dst] > dist[e.src] + e.cost) {\n                 \
-    \   dist[e.dst] = -inf;\n                    prev[e.dst] = e;\n              \
-    \      changed = true;\n                }\n            }\n        if (!changed)\n\
-    \            break;\n    }\n    return {dist, prev};\n}\n\n/**\n * @brief \u8FBA\
-    \u306E\u30B3\u30B9\u30C8\u304C 0 \u304B 1 \u3060\u3051\u306E\u30B0\u30E9\u30D5\
-    \u3067\u3001\u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\
-    \u6700\u77ED\u8DEF (01-BFS) O(n + m)\n *\n * @param s \u59CB\u70B9\n * @param\
-    \ inf \u672A\u5230\u9054\u306E\u9802\u70B9\u3078\u306E\u8DDD\u96E2 \u7701\u7565\
-    \u3059\u308B\u3068 std::numeric_limits<Cost>::max() / 4\n * @return ShortestPath\
-    \ \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u9577 (dist) \u3068\u3001\u5404\
-    \u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA\
-    \ (prev)\n */\ntemplate <typename Cost = int>\nShortestPath<Cost> shortest_path_01bfs(const\
-    \ Graph<Cost>& graph, long long s, Cost inf = std::numeric_limits<Cost>::max()\
+    \u306E\u76F4\u524D\u306E\u8FBA (prev)\n */\ntemplate <typename Cost = long long>\n\
+    ShortestPath<Cost> bellman_ford(const Graph<Cost>& graph, long long s, Cost inf\
+    \ = std::numeric_limits<Cost>::max() / 4) {\n    assert(0 <= s && s < graph.n);\n\
+    \    const long long n = graph.n;\n    std::vector<Cost> dist(n, inf);\n    std::vector<typename\
+    \ Graph<Cost>::Edge> prev(n);\n    dist[s] = Cost{};\n\n    for (long long i =\
+    \ 1; i < n; i++) {\n        bool changed = false;\n        for (long long j =\
+    \ 0; j < n; j++)\n            for (const auto& e : graph[j]) {\n             \
+    \   if (dist[e.src] == inf)\n                    continue;\n                if\
+    \ (dist[e.dst] > dist[e.src] + e.cost) {\n                    dist[e.dst] = dist[e.src]\
+    \ + e.cost;\n                    if (dist[e.dst] < -inf)\n                   \
+    \     dist[e.dst] = -inf;\n                    prev[e.dst] = e;\n            \
+    \        changed = true;\n                }\n            }\n        if (!changed)\n\
+    \            break;\n    }\n    for (long long i = 0; i < n; i++) {\n        bool\
+    \ changed = false;\n        for (long long j = 0; j < n; j++)\n            for\
+    \ (const auto& e : graph[j]) {\n                if (dist[e.src] == inf)\n    \
+    \                continue;\n                if (dist[e.dst] > dist[e.src] + e.cost)\
+    \ {\n                    dist[e.dst] = -inf;\n                    prev[e.dst]\
+    \ = e;\n                    changed = true;\n                }\n            }\n\
+    \        if (!changed)\n            break;\n    }\n    return {dist, prev};\n\
+    }\n\n/**\n * @brief \u8FBA\u306E\u30B3\u30B9\u30C8\u304C 0 \u304B 1 \u3060\u3051\
+    \u306E\u30B0\u30E9\u30D5\u3067\u3001\u3042\u308B\u9802\u70B9\u304B\u3089\u5404\
+    \u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF (01-BFS) O(n + m)\n *\n * @param s\
+    \ \u59CB\u70B9\n * @param inf \u672A\u5230\u9054\u306E\u9802\u70B9\u3078\u306E\
+    \u8DDD\u96E2 \u7701\u7565\u3059\u308B\u3068 std::numeric_limits<Cost>::max() /\
+    \ 4\n * @return ShortestPath \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u9577\
+    \ (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\u306E\
+    \u76F4\u524D\u306E\u8FBA (prev)\n */\ntemplate <typename Cost = long long>\nShortestPath<Cost>\
+    \ shortest_path_01bfs(const Graph<Cost>& graph, long long s, Cost inf = std::numeric_limits<Cost>::max()\
     \ / 4) {\n    assert(0 <= s && s < graph.n);\n    std::vector<Cost> dist(graph.n,\
     \ inf);\n    std::vector<typename Graph<Cost>::Edge> prev(graph.n);\n    std::deque<long\
     \ long> que;\n    dist[s] = 0;\n    que.push_back(s);\n    while (!que.empty())\
@@ -214,9 +216,9 @@ data:
     \u9054\u3067\u304D\u306A\u3051\u308C\u3070 inf)\n * @note \u8CA0\u306E\u8FBA\u304C\
     \u3042\u3063\u3066\u3082\u3088\u3044\u3002dist[i][i] < 0 \u3068\u306A\u308B i\
     \ \u304C\u3042\u308C\u3070\u8CA0\u9589\u8DEF\u304C\u3042\u308B\n */\ntemplate\
-    \ <typename Cost = int>\nstd::vector<std::vector<Cost>> floyd_warshall(const Graph<Cost>&\
-    \ graph, Cost inf = std::numeric_limits<Cost>::max() / 4) {\n    const long long\
-    \ n = graph.n;\n    std::vector<std::vector<Cost>> dist(n, std::vector<Cost>(n,\
+    \ <typename Cost = long long>\nstd::vector<std::vector<Cost>> floyd_warshall(const\
+    \ Graph<Cost>& graph, Cost inf = std::numeric_limits<Cost>::max() / 4) {\n   \
+    \ const long long n = graph.n;\n    std::vector<std::vector<Cost>> dist(n, std::vector<Cost>(n,\
     \ inf));\n    for (long long i = 0; i < n; i++) dist[i][i] = Cost{};\n    for\
     \ (long long i = 0; i < n; i++) {\n        for (auto& e : graph[i]) dist[i][e.dst]\
     \ = std::min(dist[i][e.dst], e.cost);\n    }\n    for (long long k = 0; k < n;\
@@ -244,45 +246,45 @@ data:
     \u30B3\u30B9\u30C8\u306F 0 \u4EE5\u4E0A\u3067\u3042\u308B\u3053\u3068\u3002k \u306F\
     \ 20 \u7A0B\u5EA6\u307E\u3067\u3002\u81EA\u5DF1\u30EB\u30FC\u30D7\u30FB\u591A\u91CD\
     \u8FBA\u304C\u3042\u3063\u3066\u3082\u3088\u3044\n */\ntemplate <typename Cost\
-    \ = int>\nstd::optional<Cost> chinese_postman(const Graph<Cost>& graph, Cost inf\
-    \ = std::numeric_limits<Cost>::max() / 4) {\n    const long long n = graph.n;\n\
-    \    Cost total{};\n    for (const auto& e : graph.edges()) {\n        assert(e.cost\
-    \ >= Cost{});\n        total += e.cost;\n    }\n    std::vector<long long> odd;\n\
-    \    long long some = -1;  // \u8FBA\u3092\u6301\u3064\u9802\u70B9\u306E 1 \u3064\
-    \n    for (long long v = 0; v < n; v++) {\n        if (!graph[v].empty()) some\
-    \ = v;\n        // \u81EA\u5DF1\u30EB\u30FC\u30D7\u306F\u96A3\u63A5\u30EA\u30B9\
-    \u30C8\u306B 2 \u56DE\u5165\u308B\u306E\u3067\u3001\u6B21\u6570\u306B 2 \u3068\
-    \u6570\u3048\u3089\u308C\u308B\n        if (graph[v].size() % 2 == 1) odd.push_back(v);\n\
-    \    }\n    if (some == -1) return Cost{};\n    // \u8FBA\u3092\u6301\u3064\u9802\
-    \u70B9\u304C\u3059\u3079\u3066\u9023\u7D50\u304B\n    std::vector<Cost> d = shortest_path(graph,\
-    \ some, true, inf).dist;\n    for (long long v = 0; v < n; v++) {\n        if\
-    \ (!graph[v].empty() && d[v] == inf) return std::nullopt;\n    }\n    const int\
-    \ k = static_cast<int>(odd.size());\n    assert(k < 31);\n    std::vector<std::vector<Cost>>\
-    \ dist(k);\n    for (int i = 0; i < k; i++) {\n        std::vector<Cost> di =\
-    \ shortest_path(graph, odd[i], true, inf).dist;\n        for (int j = 0; j < k;\
-    \ j++) dist[i].push_back(di[odd[j]]);\n    }\n    // dp[S]: \u5947\u6570\u6B21\
-    \u6570\u306E\u9802\u70B9\u306E\u96C6\u5408 S \u3092\u7D44\u306B\u3059\u308B\u6700\
-    \u5C0F\u30B3\u30B9\u30C8\u3002S \u306E\u6700\u5C0F\u306E\u9802\u70B9\u306E\u76F8\
-    \u624B\u3092\u6C7A\u3081\u308B\n    std::vector<Cost> dp(1 << k, inf);\n    dp[0]\
-    \ = Cost{};\n    for (int S = 1; S < (1 << k); S++) {\n        if (__builtin_popcount(S)\
-    \ % 2 == 1) continue;\n        int i = __builtin_ctz(S);\n        for (int j =\
-    \ i + 1; j < k; j++) {\n            if (!(S >> j & 1)) continue;\n           \
-    \ int T = S ^ (1 << i) ^ (1 << j);\n            if (dp[T] != inf) dp[S] = std::min(dp[S],\
-    \ dp[T] + dist[i][j]);\n        }\n    }\n    return total + dp[(1 << k) - 1];\n\
-    }\n#line 10 \"test/unittest/graph/chinese-postman.test.cpp\"\n\n#line 12 \"test/unittest/graph/chinese-postman.test.cpp\"\
-    \n#include <random>\n#line 14 \"test/unittest/graph/chinese-postman.test.cpp\"\
-    \n\n#line 2 \"src/data_structures/unionfind.hpp\"\n\n/**\n * @file unionfind.hpp\n\
-    \ * @brief UnionFind\n */\n\n#line 12 \"src/data_structures/unionfind.hpp\"\n\n\
-    namespace internal_unionfind {\n/**\n * @brief \u5404\u8981\u7D20\u306E\u4EE3\u8868\
-    \u5143\u304B\u3089\u3001\u9023\u7D50\u6210\u5206\u3054\u3068\u306E\u8981\u7D20\
-    \u306E\u30EA\u30B9\u30C8\u3092\u4F5C\u308B\n * @param leader \u8981\u7D20 a \u306E\
-    \u4EE3\u8868\u5143\u3092\u8FD4\u3059\u95A2\u6570\n */\ntemplate <typename F>\n\
-    std::vector<std::vector<long long>> groups(long long n, F leader) {\n    std::vector<long\
-    \ long> leader_buf(n), group_size(n);\n    for (long long i = 0; i < n; i++) {\n\
-    \        leader_buf[i] = leader(i);\n        group_size[leader_buf[i]]++;\n  \
-    \  }\n    std::vector<std::vector<long long>> result(n);\n    for (long long i\
-    \ = 0; i < n; i++) {\n        result[i].reserve(group_size[i]);\n    }\n    for\
-    \ (long long i = 0; i < n; i++) {\n        result[leader_buf[i]].push_back(i);\n\
+    \ = long long>\nstd::optional<Cost> chinese_postman(const Graph<Cost>& graph,\
+    \ Cost inf = std::numeric_limits<Cost>::max() / 4) {\n    const long long n =\
+    \ graph.n;\n    Cost total{};\n    for (const auto& e : graph.edges()) {\n   \
+    \     assert(e.cost >= Cost{});\n        total += e.cost;\n    }\n    std::vector<long\
+    \ long> odd;\n    long long some = -1;  // \u8FBA\u3092\u6301\u3064\u9802\u70B9\
+    \u306E 1 \u3064\n    for (long long v = 0; v < n; v++) {\n        if (!graph[v].empty())\
+    \ some = v;\n        // \u81EA\u5DF1\u30EB\u30FC\u30D7\u306F\u96A3\u63A5\u30EA\
+    \u30B9\u30C8\u306B 2 \u56DE\u5165\u308B\u306E\u3067\u3001\u6B21\u6570\u306B 2\
+    \ \u3068\u6570\u3048\u3089\u308C\u308B\n        if (graph[v].size() % 2 == 1)\
+    \ odd.push_back(v);\n    }\n    if (some == -1) return Cost{};\n    // \u8FBA\u3092\
+    \u6301\u3064\u9802\u70B9\u304C\u3059\u3079\u3066\u9023\u7D50\u304B\n    std::vector<Cost>\
+    \ d = shortest_path(graph, some, true, inf).dist;\n    for (long long v = 0; v\
+    \ < n; v++) {\n        if (!graph[v].empty() && d[v] == inf) return std::nullopt;\n\
+    \    }\n    const int k = static_cast<int>(odd.size());\n    assert(k < 31);\n\
+    \    std::vector<std::vector<Cost>> dist(k);\n    for (int i = 0; i < k; i++)\
+    \ {\n        std::vector<Cost> di = shortest_path(graph, odd[i], true, inf).dist;\n\
+    \        for (int j = 0; j < k; j++) dist[i].push_back(di[odd[j]]);\n    }\n \
+    \   // dp[S]: \u5947\u6570\u6B21\u6570\u306E\u9802\u70B9\u306E\u96C6\u5408 S \u3092\
+    \u7D44\u306B\u3059\u308B\u6700\u5C0F\u30B3\u30B9\u30C8\u3002S \u306E\u6700\u5C0F\
+    \u306E\u9802\u70B9\u306E\u76F8\u624B\u3092\u6C7A\u3081\u308B\n    std::vector<Cost>\
+    \ dp(1 << k, inf);\n    dp[0] = Cost{};\n    for (int S = 1; S < (1 << k); S++)\
+    \ {\n        if (__builtin_popcount(S) % 2 == 1) continue;\n        int i = __builtin_ctz(S);\n\
+    \        for (int j = i + 1; j < k; j++) {\n            if (!(S >> j & 1)) continue;\n\
+    \            int T = S ^ (1 << i) ^ (1 << j);\n            if (dp[T] != inf) dp[S]\
+    \ = std::min(dp[S], dp[T] + dist[i][j]);\n        }\n    }\n    return total +\
+    \ dp[(1 << k) - 1];\n}\n#line 10 \"test/unittest/graph/chinese-postman.test.cpp\"\
+    \n\n#line 12 \"test/unittest/graph/chinese-postman.test.cpp\"\n#include <random>\n\
+    #line 14 \"test/unittest/graph/chinese-postman.test.cpp\"\n\n#line 2 \"src/data_structures/unionfind.hpp\"\
+    \n\n/**\n * @file unionfind.hpp\n * @brief UnionFind\n */\n\n#line 12 \"src/data_structures/unionfind.hpp\"\
+    \n\nnamespace internal_unionfind {\n/**\n * @brief \u5404\u8981\u7D20\u306E\u4EE3\
+    \u8868\u5143\u304B\u3089\u3001\u9023\u7D50\u6210\u5206\u3054\u3068\u306E\u8981\
+    \u7D20\u306E\u30EA\u30B9\u30C8\u3092\u4F5C\u308B\n * @param leader \u8981\u7D20\
+    \ a \u306E\u4EE3\u8868\u5143\u3092\u8FD4\u3059\u95A2\u6570\n */\ntemplate <typename\
+    \ F>\nstd::vector<std::vector<long long>> groups(long long n, F leader) {\n  \
+    \  std::vector<long long> leader_buf(n), group_size(n);\n    for (long long i\
+    \ = 0; i < n; i++) {\n        leader_buf[i] = leader(i);\n        group_size[leader_buf[i]]++;\n\
+    \    }\n    std::vector<std::vector<long long>> result(n);\n    for (long long\
+    \ i = 0; i < n; i++) {\n        result[i].reserve(group_size[i]);\n    }\n   \
+    \ for (long long i = 0; i < n; i++) {\n        result[leader_buf[i]].push_back(i);\n\
     \    }\n    result.erase(std::remove_if(result.begin(), result.end(), [&](const\
     \ std::vector<long long>& v) { return v.empty(); }), result.end());\n    return\
     \ result;\n}\n}  // namespace internal_unionfind\n\n/**\n * @brief \u7121\u5411\
@@ -392,7 +394,7 @@ data:
   isVerificationFile: true
   path: test/unittest/graph/chinese-postman.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 04:37:11+09:00'
+  timestamp: '2026-10-22 13:40:29+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/graph/chinese-postman.test.cpp

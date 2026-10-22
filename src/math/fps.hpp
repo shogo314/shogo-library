@@ -22,6 +22,103 @@ struct FPS;
 namespace internal_fps {
 template <typename mint>
 FPS<mint> gcd(const FPS<mint>& f, const FPS<mint>& g);
+
+// 以下は法が NTT に向く素数のときの inv・exp。NTT した値を使い回し、巡回畳み込みで汚れない係数だけを取り出す。
+// butterfly の結果はビット反転した順に並ぶので、長さ 2m の変換の前半は、x^m - 1 で割った余りの長さ m の変換になる
+
+// 長さ 2^k の NTT と逆変換 (n で割る)
+template <typename mint>
+void ntt(std::vector<mint>& a) {
+    internal_convolution::butterfly(a);
+}
+template <typename mint>
+void intt(std::vector<mint>& a) {
+    internal_convolution::butterfly_inv(a);
+    const mint in = mint(a.size()).inv();
+    for (auto& x : a) x *= in;
+}
+
+// 長さ n 以上の変換を mint で直接 NTT できるか (internal_convolution::ntt_candidate<mint>() のときだけ呼ぶ)
+template <typename mint>
+bool use_ntt(long long n) {
+    long long z = 1;
+    while (z < n) z <<= 1;
+    return z <= (1 << 23) && internal_convolution::ntt_friendly<mint>(static_cast<int>(z));
+}
+
+// 1 / f の先頭 deg 項 (f[0] != 0、deg >= 1)。1 段 (m -> 2m) あたり長さ 2m の NTT 5 回
+template <typename mint>
+std::vector<mint> inv_ntt(const std::vector<mint>& f, long long deg) {
+    std::vector<mint> g = {f[0].inv()};
+    for (long long m = 1; m < deg; m <<= 1) {
+        // F G = 1 + (x^m 以上の項)。巡回畳み込みの折り返しは [0, m) にしか来ない
+        std::vector<mint> F(2 * m), G(2 * m);
+        std::copy(f.begin(), f.begin() + std::min<long long>(f.size(), 2 * m), F.begin());
+        std::copy(g.begin(), g.end(), G.begin());
+        ntt(F), ntt(G);
+        for (long long i = 0; i < 2 * m; i++) F[i] *= G[i];
+        intt(F);
+        std::fill(F.begin(), F.begin() + m, mint(0));
+        // g <- g - g (F G - 1) の [m, 2m) の部分
+        ntt(F);
+        for (long long i = 0; i < 2 * m; i++) F[i] *= G[i];
+        intt(F);
+        for (long long i = m; i < 2 * m; i++) g.push_back(-F[i]);
+    }
+    g.resize(deg);
+    return g;
+}
+
+// exp(f) の先頭 deg 項 (f[0] == 0、deg >= 1)。exp(f) = b と 1 / b を同時にニュートン法で倍々に伸ばす
+template <typename mint>
+std::vector<mint> exp_ntt(const std::vector<mint>& f, long long deg) {
+    using C = Combination<mint>;
+    C::extend(2 * deg);
+    auto at = [&](long long i) { return i < static_cast<long long>(f.size()) ? f[i] : mint(0); };
+    // b = exp(f) mod x^m、c = 1 / b mod x^{m/2}、Zc = c の長さ m の変換
+    std::vector<mint> b = {1, at(1)}, c = {1}, Zc = {1, 1};
+    for (long long m = 2; m < deg; m <<= 1) {
+        std::vector<mint> Y(b);
+        Y.resize(2 * m);
+        ntt(Y);
+        // c を 1 / b mod x^m に伸ばす: c <- c - c (b c - 1)。b c - 1 は [m/2, m) だけ取り出せば折り返しに汚れない
+        {
+            std::vector<mint> z(m);
+            for (long long i = 0; i < m; i++) z[i] = Y[i] * Zc[i];
+            intt(z);
+            std::fill(z.begin(), z.begin() + m / 2, mint(0));
+            ntt(z);
+            for (long long i = 0; i < m; i++) z[i] *= -Zc[i];
+            intt(z);
+            c.insert(c.end(), z.begin() + m / 2, z.end());
+        }
+        Zc = c;
+        Zc.resize(2 * m);
+        ntt(Zc);
+        // R = b f' - b' (f' は x^{m-1} 未満)。x^{m-1} 未満は 0 で、巡回畳み込みで [0, m-1) に折り返った x^m 以上の項を戻す
+        std::vector<mint> x(m);
+        for (long long i = 0; i < m - 1; i++) x[i] = at(i + 1) * (i + 1);
+        ntt(x);
+        for (long long i = 0; i < m; i++) x[i] *= Y[i];
+        intt(x);
+        for (long long i = 0; i < m - 1; i++) x[i] -= b[i + 1] * (i + 1);
+        x.resize(2 * m);
+        for (long long i = 0; i < m - 1; i++) x[m + i] = x[i], x[i] = 0;
+        // R / b = f' - b' / b の [m - 1, 2m - 1) を積分すると、f - log b の [m, 2m)
+        ntt(x);
+        for (long long i = 0; i < 2 * m; i++) x[i] *= Zc[i];
+        intt(x);
+        for (long long i = 2 * m - 1; i >= m; i--) x[i] = x[i - 1] * C::inv(i) + at(i);
+        std::fill(x.begin(), x.begin() + m, mint(0));
+        // b <- b + b (f - log b) の [m, 2m)
+        ntt(x);
+        for (long long i = 0; i < 2 * m; i++) x[i] *= Y[i];
+        intt(x);
+        b.insert(b.end(), x.begin() + m, x.end());
+    }
+    b.resize(deg);
+    return b;
+}
 }  // namespace internal_fps
 
 template <typename mint>
@@ -140,6 +237,9 @@ struct FPS : std::vector<mint> {
         assert(!f.empty() && f[0] != 0);
         if (deg < 0) deg = static_cast<long long>(f.size());
         if (deg == 0) return FPS();
+        if constexpr (internal_convolution::ntt_candidate<mint>()) {
+            if (internal_fps::use_ntt<mint>(2 * deg)) return internal_fps::inv_ntt<mint>(f, deg);
+        }
         FPS res({mint(1) / f[0]});
         for (long long i = 1; i < deg; i <<= 1) {
             res = (res + res - res * res * f.pre(i << 1)).pre(i << 1);
@@ -192,6 +292,10 @@ struct FPS : std::vector<mint> {
     // exp(f), f[0] must be 0
     inline friend FPS exp(const FPS& f, long long deg) {
         assert(f.empty() || f[0] == 0);
+        if (deg <= 0) return FPS();
+        if constexpr (internal_convolution::ntt_candidate<mint>()) {
+            if (internal_fps::use_ntt<mint>(2 * deg)) return internal_fps::exp_ntt<mint>(f, deg);
+        }
         FPS res(1, 1);
         for (long long i = 1; i < deg; i <<= 1) {
             res = res * (f.pre(i << 1) - log(res, i << 1) + 1).pre(i << 1);

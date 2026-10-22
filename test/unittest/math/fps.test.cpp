@@ -4,10 +4,13 @@
 // sqrt は 2 乗して元に戻るか、polynomial_product は順に掛けたものと比べる
 // sum_of_fractions は、分子が Σ_i nums_i Π_{j != i} dens_j、分母が Π dens_j になることを確かめる
 // FPS の + と - は結果の末尾の 0 を取り除く (仕様) ので、多項式としての比較は末尾の 0 を除いて行う
+// inv・exp は法が NTT に向くと NTT した値を使い回す別の経路に入るので、同じ法の dynamic_modint (この経路に入らない) と比べ、
+// inv は f g が先頭 deg 項で 1 になることも確かめる (log・pow・sqrt もこの経路を通る)
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../../src/math/fps.hpp"
 
+#include <algorithm>
 #include <iostream>
 #include <random>
 #include <vector>
@@ -222,6 +225,54 @@ int main() {
         }
         auto [num, den] = sum_of_fractions(nums, dens);
         if (trim(P(num)) != trim(expect_num) || trim(P(den)) != trim(expect_den)) ok = false, std::cerr << "sum_of_fractions" << std::endl;
+    }
+
+    // inv・exp・log・pow・sqrt: NTT の経路 (static_modint) と、畳み込みを繰り返す経路 (dynamic_modint) が同じ結果になる
+    {
+        using dm = dynamic_modint<0>;
+        dm::set_mod(998244353);
+        using FD = FPS<dm>;
+        auto to_dm = [](const F& f) {
+            FD g(f.size());
+            for (size_t i = 0; i < f.size(); i++) g[i] = f[i].val();
+            return g;
+        };
+        auto same = [](const F& a, const FD& b) {
+            if (a.size() != b.size()) return false;
+            for (size_t i = 0; i < a.size(); i++)
+                if (a[i].val() != b[i].val()) return false;
+            return true;
+        };
+        std::vector<int> degs = {1, 2, 3, 4, 5, 7, 8, 9, 15, 16, 17, 31, 32, 33, 63, 64, 65, 127, 128, 129, 500, 1024, 1025};
+        for (int deg : degs) {
+            for (int rep = 0; rep < 3 && ok; rep++) {
+                // f の長さは deg より短い・同じ・長いのどれも試す
+                int n = std::max(1, deg + static_cast<int>(rng() % 5) - 2);
+                if (rep == 0) n = std::max(1, deg / 3);
+                F f(n);
+                for (auto& x : f) x = rng() % mint::mod();
+                if (f[0] == 0) f[0] = 1;
+                F g = inv(f, deg);
+                if (!same(g, inv(to_dm(f), deg))) ok = false, std::cerr << "inv ntt " << deg << std::endl;
+                F one = (f * g).pre(deg);
+                for (int i = 0; i < deg; i++)
+                    if (one[i] != (i == 0 ? 1 : 0)) ok = false, std::cerr << "inv f g " << deg << std::endl;
+                F e = f;
+                e[0] = 0;
+                if (!same(exp(e, deg), exp(to_dm(e), deg))) ok = false, std::cerr << "exp ntt " << deg << std::endl;
+                F l = f;
+                l[0] = 1;
+                if (!same(log(l, deg), log(to_dm(l), deg))) ok = false, std::cerr << "log ntt " << deg << std::endl;
+                long long k = rng() % 1000000;
+                if (!same(pow(f, k, deg), pow(to_dm(f), k, deg))) ok = false, std::cerr << "pow ntt " << deg << std::endl;
+                F sq2 = (f * f).pre(deg);
+                sq2.resize(deg);
+                auto sq = sqrt(sq2, deg);
+                F back = sq ? (*sq * *sq).pre(deg) : F();
+                back.resize(deg);
+                if (!sq || P(back) != P(sq2)) ok = false, std::cerr << "sqrt ntt " << deg << std::endl;
+            }
+        }
     }
 
     if (ok) std::cout << "Hello World" << std::endl;

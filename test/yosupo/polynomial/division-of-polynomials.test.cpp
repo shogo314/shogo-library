@@ -14,7 +14,7 @@ int main() {
     FPS<mint> f(n), g(m);
     for (auto& x : f) std::cin >> x;
     for (auto& x : g) std::cin >> x;
-    FPS<mint> q = f / g, r = f % g;
+    auto [q, r] = divmod(f, g);
     std::cout << q.size() << ' ' << r.size() << '\n';
     for (int i = 0; i < static_cast<int>(q.size()); i++) std::cout << q[i] << (i + 1 == static_cast<int>(q.size()) ? "" : " ");
     std::cout << '\n';

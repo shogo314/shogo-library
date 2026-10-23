@@ -11,6 +11,7 @@ auto p = partition_numbers<mint>(100);  // p[100] = 190569292
 auto B = bernoulli_numbers<mint>(10);   // B[1] = -1/2
 auto s = stirling_first<mint>(5);       // s(5, k): x(x-1)(x-2)(x-3)(x-4) の係数
 auto S = stirling_second<mint>(5);      // S(5, k)
+auto S3 = stirling_second_column<mint>(10, 3);  // S(n, 3) (n = 0, ..., 10)
 auto bell = bell_numbers<mint>(10);     // bell[10] = 115975
 mint f = large_factorial<mint>(998244352);  // (p - 1)! ≡ -1 (ウィルソンの定理)
 ```
@@ -25,6 +26,8 @@ mint f = large_factorial<mint>(998244352);  // (p - 1)! ≡ -1 (ウィルソン�
 | `bernoulli_numbers<mint>(n)` | ベルヌーイ数 $B_0, \dots, B_n$ ($B_1 = -1/2$ の流儀) | 指数型母関数 $x / (e^x - 1)$ | $O(n \log n)$ |
 | `stirling_first<mint>(n)` | 符号付き第 1 種スターリング数 $s(n, 0), \dots, s(n, n)$ ($x (x-1) \cdots (x-n+1) = \sum_k s(n, k) x^k$) | 下降階乗を $f_{2m}(x) = f_m(x) f_m(x - m)$ で倍々に作る ([Taylor shift](fps.hpp)) | $O(n \log n)$ |
 | `stirling_second<mint>(n)` | 第 2 種スターリング数 $S(n, 0), \dots, S(n, n)$ ($n$ 個の区別できる玉を $k$ 個の区別できない空でない箱に分ける方法の数) | $S(n, k) = \sum_i (-1)^{k-i} i^n / (i! (k-i)!)$ を畳み込みで | $O(n \log n)$ |
+| `stirling_first_column<mint>(n, k)` | $k$ を固定した符号付き第 1 種スターリング数の列 $s(0, k), s(1, k), \dots, s(n, k)$ | 指数型母関数 $\log(1 + x)^k / k!$ | $O(n \log n)$ |
+| `stirling_second_column<mint>(n, k)` | $k$ を固定した第 2 種スターリング数の列 $S(0, k), S(1, k), \dots, S(n, k)$ | 指数型母関数 $(e^x - 1)^k / k!$ | $O(n \log n)$ |
 | `bell_numbers<mint>(n)` | ベル数 $B_0, \dots, B_n$ ($k$ 個の区別できる要素を空でない部分集合に分ける方法の数) | 指数型母関数 $\exp(e^x - 1)$ | $O(n \log n)$ |
 
 - 符号なし第 1 種スターリング数 (順列を $k$ 個の巡回に分ける方法の数) は $\lvert s(n, k) \rvert = (-1)^{n-k} s(n, k)$ です。

@@ -87,6 +87,50 @@ FPS<mint> stirling_second(long long n) {
     return s;
 }
 
+namespace internal_combinatorial_sequences {
+// 指数型母関数 f^k / k! の係数に i! を掛けたもの (長さ n + 1)。f は定数項が 0
+template <typename mint>
+FPS<mint> egf_power_column(const FPS<mint>& f, long long n, long long k) {
+    using C = Combination<mint>;
+    C::extend(n);
+    FPS<mint> res(n + 1, mint(0));
+    if (k > n) return res;
+    res = pow(f, k, n + 1);
+    for (long long i = 0; i <= n; i++) res[i] *= C::factorial(i) * C::inverse_factorial(k);
+    return res;
+}
+}  // namespace internal_combinatorial_sequences
+
+/**
+ * @brief 符号付き第 1 種スターリング数の列 s(0, k), s(1, k), ..., s(n, k) (k を固定して n を動かす) O(n log n)
+ * 指数型母関数 Σ_n s(n, k) x^n / n! = log(1 + x)^k / k! を使う
+ */
+template <typename mint>
+FPS<mint> stirling_first_column(long long n, long long k) {
+    assert(n >= 0 && k >= 0);
+    using C = Combination<mint>;
+    C::extend(n + 1);
+    // log(1 + x) = Σ_{i >= 1} (-1)^(i+1) x^i / i
+    FPS<mint> f(n + 1, mint(0));
+    for (long long i = 1; i <= n; i++) f[i] = (i % 2 == 1 ? mint(1) : -mint(1)) * C::inv(i);
+    return internal_combinatorial_sequences::egf_power_column(f, n, k);
+}
+
+/**
+ * @brief 第 2 種スターリング数の列 S(0, k), S(1, k), ..., S(n, k) (k を固定して n を動かす) O(n log n)
+ * 指数型母関数 Σ_n S(n, k) x^n / n! = (e^x - 1)^k / k! を使う
+ */
+template <typename mint>
+FPS<mint> stirling_second_column(long long n, long long k) {
+    assert(n >= 0 && k >= 0);
+    using C = Combination<mint>;
+    C::extend(n);
+    // e^x - 1 = Σ_{i >= 1} x^i / i!
+    FPS<mint> f(n + 1, mint(0));
+    for (long long i = 1; i <= n; i++) f[i] = C::inverse_factorial(i);
+    return internal_combinatorial_sequences::egf_power_column(f, n, k);
+}
+
 /**
  * @brief ベル数 B_0, ..., B_n (n 個の区別できる要素を空でない部分集合に分ける方法の数) O(n log n)
  * 指数型母関数は exp(e^x - 1)

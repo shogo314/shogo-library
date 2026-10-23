@@ -2,6 +2,7 @@
 
 // 分割数・ベルヌーイ数・スターリング数・ベル数を、O(n^2) の漸化式で 1 つずつ求めたものと比べる
 // large_factorial を、1 から順に掛けた値とウィルソンの定理で確かめる
+// stirling_first_column・stirling_second_column を、n を固定した行と比べる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../../src/math/combinatorial-sequences.hpp"
@@ -68,6 +69,17 @@ int main() {
     check(partition_numbers<mint>(100)[100] == mint(190569292), "p(100) = 190569292");
     check(bernoulli_numbers<mint>(1)[1] == -mint(2).inv(), "B_1 = -1/2");
     check(bell_numbers<mint>(10)[10] == mint(115975), "B_10 = 115975");
+    // stirling_first_column・stirling_second_column: n を固定した行 stirling_first(n)・stirling_second(n) の k 番目と比べる (k > n も含む)
+    for (long long n = 0; n <= 25 && ok; n++) {
+        auto s1 = stirling_first<mint>(n), s2 = stirling_second<mint>(n);
+        for (long long k = 0; k <= 27; k++) {
+            auto c1 = stirling_first_column<mint>(25, k), c2 = stirling_second_column<mint>(25, k);
+            check(c1.size() == 26 && c2.size() == 26, "stirling_column size");
+            check(c1[n] == (k <= n ? s1[k] : mint(0)), "stirling_first_column");
+            check(c2[n] == (k <= n ? s2[k] : mint(0)), "stirling_second_column");
+        }
+    }
+
     // large_factorial: 1 から順に掛けた値と比べる (v が変わる境目の前後も含む)。NTT に向かない法 10^9 + 7 でも調べる
     {
         mint f = 1;

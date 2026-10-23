@@ -1,9 +1,9 @@
 ---
-title: 文字列アルゴリズム (Z-algorithm、KMP、Manacher)
+title: 文字列アルゴリズム (Z-algorithm、KMP、Manacher、Lyndon 分解)
 documentation_of: //src/string/string.hpp
 ---
 
-Z-algorithm・KMP 法・Manacher 法を $O(n)$ で行います。文字列のほか、`vector` などの列にも使えます (要素は `==` で比べます)。結果は `hamming_distance` だけ `long long`、ほかは `std::vector<long long>` で返します。
+Z-algorithm・KMP 法・Manacher 法・Lyndon 分解を $O(n)$ で行います。文字列のほか、`vector` などの列にも使えます (要素は `==` で比べ、Lyndon 分解だけは `<` で比べます)。結果は `hamming_distance` だけ `long long`、ほかは `std::vector<long long>` で返します。
 
 ```cpp
 auto z = z_algorithm(std::string("aabaab"));        // {6, 1, 0, 3, 1, 0}
@@ -12,6 +12,7 @@ auto pos = kmp_search(std::string("aaaa"), std::string("aa"));  // {0, 1, 2}
 auto r = manacher(std::string("abaaba"));           // {1, 2, 1, 1, 2, 1}
 auto len = palindrome_lengths(std::string("abaaba"));  // {1, 0, 3, 0, 1, 6, 1, 0, 3, 0, 1}
 long long d = hamming_distance(std::string("karolin"), std::string("kathrin"));  // 3
+auto ly = lyndon_factorization(std::string("abracadabra"));  // {0, 7, 10, 11} (abracad | abr | a)
 ```
 
 ## 関数
@@ -24,6 +25,7 @@ long long d = hamming_distance(std::string("karolin"), std::string("kathrin")); 
 | `manacher(s)` / `manacher(begin, end)` | 各 $i$ について、`s[i]` を中心とする奇数長の回文の最大の半径 `r[i]` (`s[i - r[i] + 1, i + r[i])` が回文、長さは `2 * r[i] - 1`) | $O(n)$ |
 | `palindrome_lengths(s)` / `palindrome_lengths(begin, end)` | 長さ $2n - 1$ の `len`。`len[2 * i]` は `s[i]` を中心とする最長の回文の長さ、`len[2 * i + 1]` は `s[i]` と `s[i + 1]` の間を中心とする最長の回文の長さ (なければ 0) | $O(n)$ |
 | `hamming_distance(s, t)` | 同じ長さの `s` と `t` で要素が異なる位置の数 (長さが違うと assert で落ちる) | $O(n)$ |
+| `lyndon_factorization(s)` / `lyndon_factorization(begin, end)` | Lyndon 分解 $s = w_1 w_2 \cdots w_k$ ($w_1 \ge w_2 \ge \dots \ge w_k$、各 $w_i$ は自分のどの真の接尾辞よりも辞書順で真に小さい文字列) の区切りの位置 $0 = a_0 < a_1 < \dots < a_k = n$ (Duval のアルゴリズム) | $O(n)$ |
 
 - `s[l, r)` が回文かどうかは、`palindrome_lengths(s)[l + r - 1] >= r - l` で判定できます。
 - 文字列の周期 (`s[i] == s[i + p]` がすべての i で成り立つ最小の `p`) は `n - pi[n - 1]` です。

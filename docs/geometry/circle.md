@@ -51,7 +51,7 @@ Circle out = circumcircle(Vector(0.0, 3.0), Vector(4.0, 0.0), Vector(0.0, 0.0));
 `minimum_enclosing_circle` は、円周上にあって円を決める 1 〜 3 点で円を表した `EnclosingCircle<T>` を返します。座標が整数なら、点が円周上にあるかを正確に判定できます。
 
 ```cpp
-std::vector<Vector<long long, 2>> p = {{0, 0}, {4, 0}, {0, 4}, {1, 1}};
+std::vector<Vector<long long, 2>> p = { {0, 0}, {4, 0}, {0, 4}, {1, 1} };
 auto c = minimum_enclosing_circle(p);
 int s = c.side(Vector<long long, 2>(4, 4));  // 0 (円周上)
 Circle<double> d = c.circle();               // 中心 (2, 2)、半径 2√2

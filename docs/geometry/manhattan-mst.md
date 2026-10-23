@@ -6,7 +6,7 @@ documentation_of: //src/geometry/manhattan-mst.hpp
 平面上の点の集合で、2 点を結ぶ辺の重みをマンハッタン距離 $\lvert x_i - x_j \rvert + \lvert y_i - y_j \rvert$ とした完全グラフの最小全域木を $O(n \log n)$ で求めます。
 
 ```cpp
-std::vector<Vector<long long, 2>> p = {{0, 0}, {3, 1}, {1, 4}};
+std::vector<Vector<long long, 2>> p = { {0, 0}, {3, 1}, {1, 4} };
 auto mst = manhattan_mst(p);
 long long cost = mst.cost;  // 9 (0-1 の距離 4 と 0-2 の距離 5。1-2 は距離 5)
 for (const auto& e : mst.edges) {

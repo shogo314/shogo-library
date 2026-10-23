@@ -349,17 +349,38 @@ long long chromatic_number(const Graph<Cost>& graph) {
     return dp[(1 << n) - 1];
 }
 
+namespace internal_graph_util {
+/**
+ * @brief minimum_steiner_tree の DP
+ * dp[k][i]: 頂点 k を含み、X の部分集合 i をすべて含む部分木の重みの最小値
+ * from[k][i]: 復元用。type が -1 なら X の頂点そのもの、0 なら i を x と i ^ x に分けた、1 なら頂点 x から辺 id を通って来た
+ */
+struct SteinerFrom {
+    int type = -1;
+    long long x = -1, id = -1;
+};
+template <typename Cost>
+struct SteinerDP {
+    std::vector<std::vector<Cost>> dp;
+    std::vector<std::vector<SteinerFrom>> from;
+};
 template <typename Cost, typename T>
-Cost minimum_steiner_tree(const Graph<Cost>& graph, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max() / 4) {
-    if (X.empty()) return Cost{};
+SteinerDP<Cost> steiner_dp(const Graph<Cost>& graph, const std::vector<T>& X, Cost inf, bool restore) {
     for (const auto& x : X) assert(0 <= x && x < graph.n);
-    std::vector<std::vector<Cost>> dp(graph.n, std::vector<Cost>(1 << X.size(), inf));
+    const int full = 1 << X.size();
+    SteinerDP<Cost> res;
+    auto& dp = res.dp;
+    dp.assign(graph.n, std::vector<Cost>(full, inf));
+    if (restore) res.from.assign(graph.n, std::vector<SteinerFrom>(full));
     for (int p = 0; p < static_cast<int>(X.size()); p++) dp[X[p]][1 << p] = {};
-    for (int i = 0; i < (1 << X.size()); i++) {
+    for (int i = 0; i < full; i++) {
         for (int j = i; j > 0; j = (j - 1) & i) {
             for (long long k = 0; k < graph.n; k++) {
                 if (dp[k][j] != inf && dp[k][i ^ j] != inf) {
-                    if (dp[k][i] == inf || dp[k][i] > dp[k][j] + dp[k][i ^ j]) dp[k][i] = dp[k][j] + dp[k][i ^ j];
+                    if (dp[k][i] == inf || dp[k][i] > dp[k][j] + dp[k][i ^ j]) {
+                        dp[k][i] = dp[k][j] + dp[k][i ^ j];
+                        if (restore) res.from[k][i] = {0, j, -1};
+                    }
                 }
             }
         }
@@ -373,14 +394,61 @@ Cost minimum_steiner_tree(const Graph<Cost>& graph, const std::vector<T>& X, Cos
             for (auto e : graph[u]) {
                 if (dp[e.dst][i] == inf || dp[e.dst][i] > d + e.cost) {
                     dp[e.dst][i] = d + e.cost;
+                    if (restore) res.from[e.dst][i] = {1, u, e.id};
                     que.emplace(d + e.cost, e.dst);
                 }
             }
         }
     }
+    return res;
+}
+}  // namespace internal_graph_util
+
+/**
+ * @brief 頂点集合 X をすべて含む部分木の辺の重みの総和の最小値 O(3^k n + 2^k m log m) (k = |X|)
+ * @note 無向グラフ。X が空なら 0
+ */
+template <typename Cost, typename T>
+Cost minimum_steiner_tree(const Graph<Cost>& graph, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max() / 4) {
+    if (X.empty()) return Cost{};
+    const auto dp = internal_graph_util::steiner_dp(graph, X, inf, false).dp;
     Cost res = inf;
     for (long long k = 0; k < graph.n; k++) {
         if (dp[k].back() != inf && (res == inf || res > dp[k].back())) res = dp[k].back();
     }
+    return res;
+}
+
+/**
+ * @brief 頂点集合 X をすべて含む重み最小の部分木を 1 つ求め、その辺の番号を昇順に返す
+ * 計算量は minimum_steiner_tree と同じ
+ * @note 無向グラフ。X が空なら空。X の頂点どうしが連結でないときは呼ばないこと
+ */
+template <typename Cost, typename T>
+std::vector<long long> minimum_steiner_tree_restore(const Graph<Cost>& graph, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max() / 4) {
+    if (X.empty()) return {};
+    const auto [dp, from] = internal_graph_util::steiner_dp(graph, X, inf, true);
+    long long root = -1;
+    for (long long k = 0; k < graph.n; k++) {
+        if (dp[k].back() != inf && (root == -1 || dp[root].back() > dp[k].back())) root = k;
+    }
+    assert(root != -1);
+    // 辺の重みが 0 だと同じ辺を 2 回使うことがあるので、最後に重複を除く
+    std::vector<long long> res;
+    std::vector<std::pair<long long, int>> stk = {{root, static_cast<int>(dp[root].size()) - 1}};
+    while (!stk.empty()) {
+        auto [k, i] = stk.back();
+        stk.pop_back();
+        const auto& f = from[k][i];
+        if (f.type == 0) {
+            stk.emplace_back(k, static_cast<int>(f.x));
+            stk.emplace_back(k, i ^ static_cast<int>(f.x));
+        } else if (f.type == 1) {
+            res.push_back(f.id);
+            stk.emplace_back(f.x, i);
+        }
+    }
+    std::sort(res.begin(), res.end());
+    res.erase(std::unique(res.begin(), res.end()), res.end());
     return res;
 }

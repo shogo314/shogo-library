@@ -175,15 +175,16 @@ int main() {
         }
     }
 
-    // minimum_steiner_tree: 辺の部分集合を全探索する
+    // minimum_steiner_tree・minimum_steiner_tree_restore: 辺の部分集合を全探索する
+    // 重み 0 の辺も混ぜる (復元で同じ辺を 2 回数えないか)
     for (int rep = 0; rep < 500 && ok; rep++) {
         int n = rng() % 6 + 1;
         std::vector<std::tuple<int, int, int>> edges;
         // 連結にするため、まず全域木を作る
-        for (int v = 1; v < n; v++) edges.emplace_back(rng() % v, v, rng() % 10 + 1);
+        for (int v = 1; v < n; v++) edges.emplace_back(rng() % v, v, rng() % 10);
         for (int u = 0; u < n; u++) {
             for (int v = u + 1; v < n; v++) {
-                if (rng() % 4 == 0) edges.emplace_back(u, v, rng() % 10 + 1);
+                if (rng() % 4 == 0) edges.emplace_back(u, v, rng() % 10);
             }
         }
         if (edges.size() > 12) edges.resize(12);
@@ -214,6 +215,19 @@ int main() {
         }
         if (terminals.empty()) best = 0;
         if (minimum_steiner_tree(graph, terminals) != best) ok = false;
+        // 復元: 辺の番号が昇順で重複がなく、重みの和が最小で、terminals をつなぐ
+        auto used = minimum_steiner_tree_restore(graph, terminals);
+        if (!std::is_sorted(used.begin(), used.end()) || std::adjacent_find(used.begin(), used.end()) != used.end()) ok = false;
+        int cost = 0;
+        UnionFind uf(n);
+        for (auto i : used) {
+            auto [u, v, w] = edges[i];
+            cost += w;
+            uf.merge(u, v);
+        }
+        if (cost != best) ok = false;
+        for (int v : terminals)
+            if (!uf.same(v, terminals[0])) ok = false;
     }
 
     // minimum_spanning_tree: 辺の部分集合をすべて試して最小のコストの全域森と比べる

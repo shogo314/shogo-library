@@ -3,3 +3,5 @@ description: 競技プログラミング用の C++ ライブラリ
 # CI で検証しない AtCoder のテスト (README 参照)
 exclude:
   - test/atcoder
+  - AGENTS.md
+  - CLAUDE.md

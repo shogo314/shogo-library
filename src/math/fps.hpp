@@ -456,13 +456,33 @@ FPS<mint> gcd(const FPS<mint>& f, const FPS<mint>& g) {
 }
 }  // namespace internal_fps
 
+/**
+ * @brief f^n mod m (m は末尾が 0 でないこと) O(d log d log n) (d は m の次数)
+ */
 template <typename mint>
 FPS<mint> modpow(const FPS<mint>& f, long long n, const FPS<mint>& m) {
-    if (n == 0) return FPS<mint>(1, 1);
-    auto t = modpow(f, n / 2, m);
-    t = (t * t) % m;
-    if (n & 1) t = (t * f) % m;
-    return t;
+    assert(!m.empty() && m.back() != 0);
+    const long long d = static_cast<long long>(m.size()) - 1;  // m の次数
+    if (d == 0) return FPS<mint>();
+    // h (次数 2d - 2 以下) を m で割った余り。商の次数は d - 2 以下なので、rev(m) の逆元は d - 1 項あればよく、最初に 1 回だけ求める (Barrett)
+    const FPS<mint> iv = inv(m.rev(), std::max(d - 1, 1LL));
+    auto reduce = [&](FPS<mint> h) {
+        h.normalize();
+        if (h.size() < m.size()) return h;
+        const long long need = static_cast<long long>(h.size()) - static_cast<long long>(m.size()) + 1;
+        const FPS<mint> q = (h.rev().pre(need) * iv.pre(need)).pre(need).rev();
+        h -= q * m;
+        h.resize(std::min<long long>(h.size(), d));
+        h.normalize();
+        return h;
+    };
+    const FPS<mint> base = f % m;
+    FPS<mint> res(1, 1);
+    for (int bit = 62; bit >= 0; bit--) {
+        res = reduce(res * res);
+        if (n >> bit & 1) res = reduce(res * base);
+    }
+    return res;
 }
 
 /**

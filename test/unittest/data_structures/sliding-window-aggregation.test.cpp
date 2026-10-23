@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
-// SlidingWindowAggregation と sliding_window_min / max を愚直な実装とランダムに比較する
+// SlidingWindowAggregation・DequeAggregation と sliding_window_min / max を愚直な実装とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../../src/data_structures/sliding-window-aggregation.hpp"
@@ -40,6 +40,30 @@ int main() {
             for (const auto& f : dq) expected = monoid::Composite<mint>::op(expected, f);
             if (swag.size() != static_cast<int>(dq.size()) || swag.empty() != dq.empty() || swag.prod() != expected) ok = false;
             if (!dq.empty() && swag.front() != dq.front()) ok = false;
+        }
+    }
+    // DequeAggregation: 両端への追加・削除を std::deque と比べる
+    for (int rep = 0; rep < 500 && ok; rep++) {
+        DequeAggregation<monoid::Composite<mint>> da;
+        std::deque<Affine<mint>> dq;
+        for (int t = 0; t < 200; t++) {
+            int op = rng() % 9;
+            Affine<mint> f{mint(rng() % 5), mint(rng() % 5)};
+            if (op <= 1) {
+                da.push_front(f), dq.push_front(f);
+            } else if (op <= 3) {
+                da.push_back(f), dq.push_back(f);
+            } else if (op <= 5 && !dq.empty()) {
+                da.pop_front(), dq.pop_front();
+            } else if (op <= 7 && !dq.empty()) {
+                da.pop_back(), dq.pop_back();
+            } else if (op == 8 && rng() % 20 == 0) {
+                da.clear(), dq.clear();
+            }
+            Affine<mint> expected = monoid::Composite<mint>::e();
+            for (const auto& g : dq) expected = monoid::Composite<mint>::op(expected, g);
+            if (da.size() != static_cast<int>(dq.size()) || da.empty() != dq.empty() || da.prod() != expected) ok = false;
+            if (!dq.empty() && (da.front() != dq.front() || da.back() != dq.back())) ok = false;
         }
     }
     // スライド最小値・最大値

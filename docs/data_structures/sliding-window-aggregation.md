@@ -1,5 +1,5 @@
 ---
-title: Sliding Window Aggregation とスライド最小値
+title: Sliding Window Aggregation (キューと両端キュー) とスライド最小値
 documentation_of: //src/data_structures/sliding-window-aggregation.hpp
 ---
 
@@ -27,6 +27,30 @@ SlidingWindowAggregation swag2(Monoid([](int a, int b) { return std::min(a, b); 
 | `push(x)` | 末尾に `x` を追加 | $O(1)$ |
 | `pop()` | 先頭を削除 | 償却 $O(1)$ |
 | `front()` | 先頭の要素 | $O(1)$ |
+| `prod()` | 先頭から末尾までの積 (空なら単位元) | $O(1)$ |
+| `size()`、`empty()` | 要素数、空か | $O(1)$ |
+| `clear()` | すべて削除 | $O(n)$ |
+
+## 両端キュー (DequeAggregation)
+
+モノイドを乗せた両端キューです。先頭と末尾への追加・削除、全体の積の取得を償却 $O(1)$ で行います。
+
+```cpp
+DequeAggregation<monoid::Reverse<monoid::Composite<mint>>> dq;
+dq.push_front(Affine<mint>{2, 3});
+dq.push_back(Affine<mint>{1, 5});
+mint y = dq.prod()(x);  // 先頭から順に適用した結果
+dq.pop_back();
+```
+
+前半と後半を 2 つのスタックで持ち、それぞれに積を持たせます。空の側から取り出すときは、もう一方を半分に分けて作り直します。
+
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `DequeAggregation<M>()` | 空の両端キュー | $O(1)$ |
+| `push_front(x)`、`push_back(x)` | 先頭、末尾に `x` を追加 | $O(1)$ |
+| `pop_front()`、`pop_back()` | 先頭、末尾を削除 | 償却 $O(1)$ |
+| `front()`、`back()` | 先頭、末尾の要素 | $O(1)$ |
 | `prod()` | 先頭から末尾までの積 (空なら単位元) | $O(1)$ |
 | `size()`、`empty()` | 要素数、空か | $O(1)$ |
 | `clear()` | すべて削除 | $O(n)$ |

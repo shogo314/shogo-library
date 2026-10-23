@@ -20,7 +20,7 @@
 | `src/string/` | Z-algorithm、KMP、Manacher、Lyndon 分解、ワイルドカードつきのパターンマッチング、Suffix Array と LCP 配列、ローリングハッシュ、Trie、Aho-Corasick、Suffix Automaton、回文木 (Eertree) |
 | `src/geometry/` | 幾何 (ベクトル、凸包、偏角ソート、ccw、射影・反射、直線の交点、点・線分の距離、円の交点・接線・内接円・外接円・最小包含円など)、マンハッタン距離の最小全域木 |
 | `src/dp/` | 動的計画法 (ナップサック問題、部分和問題 (判定・S 以下の最大値・復元・個数)、最長増加部分列 (LIS)、連続部分列の和の最大値)、瓶詰め問題、集合の分割 (使ってよい集合に分ける最小個数)、集合の被覆 (包除原理で覆う最小個数)、Monge 性を使う高速化 (monotone minima・(min, +) 畳み込み・Alien DP) |
-| `src/others/` | Mo's algorithm、転倒数 |
+| `src/others/` | Mo's algorithm、転倒数、和が条件を満たす区間の個数 |
 | `test/` | 検証用テスト。ジャッジごとにディレクトリを分け、その中をサイトでの分類で分けています (`yosupo/` は Library Checker のカテゴリ、`aoj/` はコース名か `volume<番号÷100>`、`atcoder/` は `abc/` とそれ以外、`yukicoder/` は分けない)。`test/unittest/` は問題を使わない単体テストで、`src/` と同じ分類で分けています |
 | `docs/` | ドキュメントの各ページに埋め込む機能一覧 (`documentation_of` でヘッダに対応付け) |
 

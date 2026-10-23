@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cassert>
 #include <optional>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
@@ -188,6 +189,19 @@ std::pair<T, T> simplest_open(T a, T b, T c, T d) {
     auto [u, v] = simplest_open(d, c, b, a);
     return {k * u + v, u};
 }
+
+// 引数の型の推論に使わせない (binary_search の max_num に T の値をそのまま渡せるようにする)
+#if __cplusplus >= 202002L
+template <typename T>
+using non_deduced_t = std::type_identity_t<T>;
+#else
+template <typename T>
+struct type_identity {
+    using type = T;
+};
+template <typename T>
+using non_deduced_t = typename type_identity<T>::type;
+#endif
 }  // namespace internal
 
 /**
@@ -249,7 +263,7 @@ std::pair<Rational<T>, Rational<T>> best_approximation(const Rational<T>& x, T n
  * @pre max_den >= 1
  */
 template <typename T, typename Pred>
-std::pair<std::pair<T, T>, std::pair<T, T>> binary_search(T max_den, Pred pred, std::optional<T> max_num = std::nullopt) {
+std::pair<std::pair<T, T>, std::pair<T, T>> binary_search(T max_den, Pred pred, std::optional<internal::non_deduced_t<T>> max_num = std::nullopt) {
     assert(max_den >= 1);
     assert(!max_num || *max_num >= 0);
     assert(pred(Rational<T>(0)));

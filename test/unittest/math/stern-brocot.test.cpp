@@ -201,12 +201,12 @@ int main() {
             bool strict = rng() % 2;
             auto pred = [&](const Q& y) { return strict ? y < x || y == Q(0) : y <= x; };
             auto expect = naive(max_den, max_num, pred);
-            check(stern_brocot::binary_search(max_den, pred, std::optional<long long>(max_num)) == expect, "binary_search 分子の上限あり");
+            check(stern_brocot::binary_search(max_den, pred, max_num) == expect, "binary_search 分子の上限あり");
             // 分子の上限なし: 分子が十分大きい範囲の全探索と同じ
             check(stern_brocot::binary_search(max_den, pred) == naive(max_den, 16 * max_den, pred), "binary_search 分子の上限なし");
         }
         // pred がずっと true なら上側は +∞
-        auto all = stern_brocot::binary_search(5LL, [](const Q&) { return true; }, std::optional<long long>(7));
+        auto all = stern_brocot::binary_search(5LL, [](const Q&) { return true; }, 7LL);
         check(all.first == P{7, 1} && all.second == P{1, 0}, "binary_search +∞");
         // √2 の両側: 分母 10^9 以下で最も近い分数。pred を呼ぶ回数も数える
         const long long n = 1000000000;

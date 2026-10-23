@@ -381,15 +381,68 @@ FPS<mint> drop(const FPS<mint>& f, long long k) {
     return FPS<mint>(f.begin() + k, f.end());
 }
 
+// 行列の成分の積和 Σ_j x[i][j] y[j][k] を、各成分を 1 回ずつ NTT して求める (法が NTT に向き、長さが十分長いときだけ)
+// x は rows × 2、y は 2 × cols。結果は rows × cols。使えなければ false を返す
+template <typename mint>
+bool mat_mul_ntt(const FPS<mint>* const* x, int rows, const FPS<mint>* const* y, int cols, FPS<mint>* res) {
+    if constexpr (!internal_convolution::ntt_candidate<mint>()) {
+        return false;
+    } else {
+        long long len = 0, small = 1LL << 60;
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < 2; j++)
+                for (int k = 0; k < cols; k++) {
+                    const long long s1 = x[i * 2 + j]->size(), s2 = y[j * cols + k]->size();
+                    if (s1 == 0 || s2 == 0) continue;
+                    len = std::max(len, s1 + s2 - 1), small = std::min(small, std::min(s1, s2));
+                }
+        // 短いものは普通に掛けたほうが速い
+        if (len == 0 || small <= 64 || !use_ntt<mint>(len)) return false;
+        long long z = 1;
+        while (z < len) z <<= 1;
+        auto transform = [&](const FPS<mint>& f) {
+            std::vector<mint> t(z);
+            std::copy(f.begin(), f.end(), t.begin());
+            ntt(t);
+            return t;
+        };
+        std::vector<std::vector<mint>> tx(rows * 2), ty(2 * cols);
+        for (int i = 0; i < rows * 2; i++) tx[i] = transform(*x[i]);
+        for (int i = 0; i < 2 * cols; i++) ty[i] = transform(*y[i]);
+        for (int i = 0; i < rows; i++)
+            for (int k = 0; k < cols; k++) {
+                std::vector<mint> t(z);
+                for (long long e = 0; e < z; e++) t[e] = tx[i * 2][e] * ty[k][e] + tx[i * 2 + 1][e] * ty[cols + k][e];
+                intt(t);
+                t.resize(len);
+                res[i * cols + k] = shrink(FPS<mint>(std::move(t)));
+            }
+        return true;
+    }
+}
+
 // 多項式を成分に持つ 2x2 行列 [[a, b], [c, d]]
 template <typename mint>
 struct Mat {
     FPS<mint> a, b, c, d;
     static Mat identity() { return {FPS<mint>{1}, FPS<mint>(), FPS<mint>(), FPS<mint>{1}}; }
     Mat operator*(const Mat& r) const {
+        const FPS<mint>* x[4] = {&a, &b, &c, &d};
+        const FPS<mint>* y[4] = {&r.a, &r.b, &r.c, &r.d};
+        Mat res;
+        FPS<mint>* out[4] = {&res.a, &res.b, &res.c, &res.d};
+        FPS<mint> tmp[4];
+        if (mat_mul_ntt(x, 2, y, 2, tmp)) {
+            for (int i = 0; i < 4; i++) *out[i] = std::move(tmp[i]);
+            return res;
+        }
         return {shrink(a * r.a + b * r.c), shrink(a * r.b + b * r.d), shrink(c * r.a + d * r.c), shrink(c * r.b + d * r.d)};
     }
     std::pair<FPS<mint>, FPS<mint>> operator*(const std::pair<FPS<mint>, FPS<mint>>& p) const {
+        const FPS<mint>* x[4] = {&a, &b, &c, &d};
+        const FPS<mint>* y[2] = {&p.first, &p.second};
+        FPS<mint> tmp[2];
+        if (mat_mul_ntt(x, 2, y, 1, tmp)) return {std::move(tmp[0]), std::move(tmp[1])};
         return {shrink(a * p.first + b * p.second), shrink(c * p.first + d * p.second)};
     }
 };
@@ -410,6 +463,12 @@ Mat<mint> half_gcd(std::pair<FPS<mint>, FPS<mint>> p) {
     const long long n = p.first.size(), m = p.second.size();
     const long long k = (n + 1) / 2;
     if (m <= k) return Mat<mint>::identity();
+    // 短いときは、互除法を 1 段ずつ進めたほうが速い
+    if (n <= 64) {
+        Mat<mint> res = Mat<mint>::identity();
+        while (static_cast<long long>(p.second.size()) > k) step(res, p);
+        return res;
+    }
     // 上位の半分だけで求めた行列は、上位の約半分の商を正しく与える
     Mat<mint> m1 = half_gcd(std::make_pair(drop(p.first, k), drop(p.second, k)));
     p = m1 * p;

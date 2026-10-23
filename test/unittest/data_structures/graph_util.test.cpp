@@ -276,6 +276,28 @@ int main() {
         if (got != expect) ok = false;
     }
 
+    // complement_connected_components: 補グラフを作って connected_components で分解したものと比べる (成分の順番と成分の中の順番は問わない)
+    for (int rep = 0; rep < 2000 && ok; rep++) {
+        int n = rng() % 9, m = n == 0 ? 0 : rng() % (n * n + 1);
+        Graph<int> graph(n);
+        std::vector<std::vector<bool>> adj(n, std::vector<bool>(n, false));
+        for (int i = 0; i < m; i++) {
+            int u = rng() % n, v = rng() % n;
+            graph.add_edge(u, v);
+            adj[u][v] = adj[v][u] = true;
+        }
+        Graph<int> comp(n);
+        for (int u = 0; u < n; u++)
+            for (int v = u + 1; v < n; v++)
+                if (!adj[u][v]) comp.add_edge(u, v);
+        auto normalize = [](std::vector<std::vector<long long>> g) {
+            for (auto& c : g) std::sort(c.begin(), c.end());
+            std::sort(g.begin(), g.end());
+            return g;
+        };
+        if (normalize(complement_connected_components(graph)) != normalize(connected_components(comp))) ok = false;
+    }
+
     // minimum_spanning_tree: 辺の部分集合をすべて試して最小のコストの全域森と比べる
     for (int rep = 0; rep < 1000 && ok; rep++) {
         int n = rng() % 6 + 1, m = rng() % 9;

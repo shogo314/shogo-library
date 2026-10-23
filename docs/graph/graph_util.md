@@ -20,6 +20,7 @@ auto [cost, edges] = minimum_spanning_tree(g);
 | `is_bipartite(g)` | 二部グラフか | 無向 | $O(n + m)$ |
 | `bipartite_coloring(g)` | 二部グラフなら各頂点を 0, 1 に彩色した結果 (`std::vector<int>`、各連結成分で番号最小の頂点を 0 にする)。二部グラフでなければ空 | 無向 | $O(n + m)$ |
 | `connected_components(g)` | 連結成分ごとの頂点のリスト (`std::vector<std::vector<long long>>`) | 無向 | $O(n + m)$ |
+| `complement_connected_components(g)` | 補グラフ (辺のない 2 頂点の間に辺を張ったグラフ) の連結成分ごとの頂点のリスト。補グラフは作らない | 無向 | $O(n + m)$ |
 | `is_connected(g)` | 連結か | 無向 | $O(n + m)$ |
 | `is_tree(g)` | 木か | 無向 | $O(n + m)$ |
 | `topological_sort(g)` | トポロジカル順に並べた頂点のリスト (`std::vector<long long>`)。DAG でなければ閉路からたどり着けない頂点だけを並べたもので、長さが $n$ より短くなる | 有向 | $O(n + m)$ |

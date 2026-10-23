@@ -84,6 +84,39 @@ std::vector<std::vector<long long>> connected_components(const Graph<Cost>& grap
 }
 
 /**
+ * @brief 無向グラフの補グラフ (辺のない 2 頂点の間に辺を張ったグラフ) を連結成分分解する O(n + m)
+ * まだどの成分にも入っていない頂点の列を持ち、取り出した頂点と隣り合わないものを同じ成分に移す
+ */
+template <typename Cost = long long>
+std::vector<std::vector<long long>> complement_connected_components(const Graph<Cost>& graph) {
+    const long long n = graph.n;
+    std::vector<long long> rest(n);
+    for (long long i = 0; i < n; i++) rest[i] = i;
+    std::vector<bool> adj(n, false);
+    std::vector<std::vector<long long>> groups;
+    while (!rest.empty()) {
+        groups.push_back({rest.back()});
+        rest.pop_back();
+        // groups.back() の i 番目の頂点を取り出し、rest のうち隣り合わないものを成分に移す
+        for (size_t i = 0; i < groups.back().size(); i++) {
+            const long long u = groups.back()[i];
+            for (long long v : graph[u]) adj[v] = true;
+            std::vector<long long> keep;
+            for (long long v : rest) {
+                if (adj[v]) {
+                    keep.push_back(v);
+                } else {
+                    groups.back().push_back(v);
+                }
+            }
+            rest.swap(keep);
+            for (long long v : graph[u]) adj[v] = false;
+        }
+    }
+    return groups;
+}
+
+/**
  * @brief 無向グラフについて、連結グラフかどうかを判定する。
  * @return bool 連結グラフならtrue、連結グラフでないならfalseを返す。
  */

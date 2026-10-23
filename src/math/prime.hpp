@@ -240,6 +240,38 @@ inline long long kth_root_mod(long long k, long long a, long long p) {
 }
 
 /**
+ * @brief テトレーション a↑↑b (a を b 個重ねたべき乗 a^a^...^a、a↑↑0 = 1) を m で割った余り。0^0 = 1 とする
+ *
+ * x >= log2(m) なら a^x ≡ a^(x mod φ(m) + φ(m)) (mod m) を使い、m を φ(m) に置き換えて再帰する。m は O(log m) 回で 1 になる
+ * 途中の値は「本当の値が m 未満ならそのまま、m 以上なら (値 mod m) + m」で持ち、本当の値が m 以上かを失わないようにする
+ * O(log m × (factorize(m) + log m))
+ * @pre m <= 2 × 10^9
+ */
+inline long long tetration_mod(long long a, long long b, long long m) {
+    // 途中の値は 2m 未満なので、その積があふれないように m を制限する
+    assert(a >= 0 && b >= 0 && 1 <= m && m <= 2000000000);
+    // x を上の形に直す
+    auto clamp = [](long long x, long long mod) { return x < mod ? x : x % mod + mod; };
+    // a↑↑b を上の形で返す
+    auto rec = [&](auto self, long long b, long long mod) -> long long {
+        if (b == 0) return clamp(1, mod);
+        // 0↑↑b は b が偶数なら 1、奇数なら 0
+        if (a == 0) return clamp(b % 2 == 0 ? 1 : 0, mod);
+        // a >= 1 なら a↑↑b >= 1
+        if (a == 1 || mod == 1) return clamp(1, mod);
+        const long long e = self(self, b - 1, totient(mod));
+        // a^e を上の形で求める (a >= 1、e >= 1)
+        long long res = 1, base = clamp(a, mod);
+        for (long long k = e; k > 0; k >>= 1) {
+            if (k & 1) res = clamp(res * base, mod);
+            if (k > 1) base = clamp(base * base, mod);
+        }
+        return res;
+    };
+    return rec(rec, b, m) % m;
+}
+
+/**
  * @brief n 以下の素数を昇順に並べて返す
  * 奇数だけを区間ごとに篩う。O(n log log n)、メモリは O(√n + 素数の個数)
  */

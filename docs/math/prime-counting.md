@@ -1,5 +1,5 @@
 ---
-title: 素数の個数・素数の和 (Lucy DP)
+title: 素数の個数・素数の和 (Lucy DP)・乗法的関数の和
 documentation_of: //src/math/prime-counting.hpp
 ---
 
@@ -36,6 +36,29 @@ s(n);                           // n 以下の素数の和
 - `T` は `long long`、`__int128`、`modint` など、足し算・引き算・掛け算ができる型です。素数の和は $n = 10^{11}$ で $10^{20}$ を超えるので、`__int128` か `modint` を使います。
 - 2 以上 $v$ 以下の整数すべての和から始めて、小さい素数 $p$ から順に「最小素因数が $p$ の合成数」の分を引いていきます (Lucy DP)。$p^2 \le v$ の値だけを更新するので、計算量が $O(n^{3/4} / \log n)$ になります。
 - $g(p) = p^k$ の表をいくつか組み合わせれば、$p$ の多項式で表される $g(p)$ の和も求められます。
+
+## 乗法的関数の和
+
+`multiplicative_sum(n, prime_sum, f_pe)` は、乗法的関数 $f$ の和 $f(1) + f(2) + \dots + f(n)$ を求めます (min_25 篩の後半)。$f$ は次の 2 つで渡します。
+
+- `prime_sum(v)`: $v$ 以下の素数 $p$ の $f(p)$ の和。$v$ は $\lfloor n / k \rfloor$ の形で呼ばれるので、`PrimeSumTable` を組み合わせて作ります
+- `f_pe(p, e)`: $f(p^e)$ ($p$ は $\sqrt{n}$ 以下の素数、$e \ge 1$)
+
+$f(1) = 1$ とします。戻り値の型は `prime_sum` の戻り値の型です。
+
+```cpp
+// オイラーの φ の和。φ(p) = p - 1、φ(p^e) = p^e - p^(e - 1)
+PrimeSumTable<mint> cnt(n, [](long long v) { return mint(v - 1); }, [](long long) { return mint(1); });
+PrimeSumTable<mint> sum(n, [](long long v) { return mint(v) * mint(v + 1) / 2 - 1; }, [](long long p) { return mint(p); });
+mint s = multiplicative_sum(n, [&](long long v) { return sum(v) - cnt(v); },
+                            [](long long p, long long e) { return mint(p).pow(e) - mint(p).pow(e - 1); });
+```
+
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `multiplicative_sum(n, prime_sum, f_pe)` | 乗法的関数 $f$ の $\sum_{i=1}^{n} f(i)$ ($n \ge 0$) | $O(n^{3/4} / \log n)$ 程度 |
+
+$n = 10^{11}$ で、表 2 つの構築と合わせて 2.5 秒ほどかかります (Library Checker の公式解の 2 倍ほど)。
 
 ## 関連
 

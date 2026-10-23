@@ -4,7 +4,8 @@ data:
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
     path: src/math/prime-counting.hpp
-    title: "\u7D20\u6570\u306E\u500B\u6570\u30FB\u7D20\u6570\u306E\u548C (Lucy DP)"
+    title: "\u7D20\u6570\u306E\u500B\u6570\u30FB\u7D20\u6570\u306E\u548C (Lucy DP)\u30FB\
+      \u4E57\u6CD5\u7684\u95A2\u6570\u306E\u548C"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/unittest/math/prime-counting.test.cpp
@@ -21,6 +22,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/number_theory/kth-root-integer.test.cpp
     title: test/yosupo/number_theory/kth-root-integer.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/number_theory/sum-of-multiplicative-function.test.cpp
+    title: test/yosupo/number_theory/sum-of-multiplicative-function.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/number_theory/sum-of-totient-function.test.cpp
+    title: test/yosupo/number_theory/sum-of-totient-function.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -84,6 +91,8 @@ data:
   - test/yosupo/number_theory/counting-primes.test.cpp
   - test/yosupo/number_theory/enumerate-quotients.1.test.cpp
   - test/yosupo/number_theory/kth-root-integer.test.cpp
+  - test/yosupo/number_theory/sum-of-multiplicative-function.test.cpp
+  - test/yosupo/number_theory/sum-of-totient-function.test.cpp
 documentation_of: src/math/sqrt.hpp
 layout: document
 title: "\u6574\u6570\u306E\u5E73\u65B9\u6839\u30FBk \u4E57\u6839"

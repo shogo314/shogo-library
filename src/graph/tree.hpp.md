@@ -102,6 +102,9 @@ data:
     path: test/yosupo/tree/lca.5.test.cpp
     title: test/yosupo/tree/lca.5.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/tree/rooted-tree-isomorphism-classification.test.cpp
+    title: test/yosupo/tree/rooted-tree-isomorphism-classification.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/tree/tree-diameter.test.cpp
     title: test/yosupo/tree/tree-diameter.test.cpp
   - icon: ':heavy_check_mark:'
@@ -649,6 +652,7 @@ data:
   - test/yosupo/tree/lca.5.test.cpp
   - test/yosupo/tree/lca.2.test.cpp
   - test/yosupo/tree/jump-on-tree.2.test.cpp
+  - test/yosupo/tree/rooted-tree-isomorphism-classification.test.cpp
   - test/yukicoder/1641.test.cpp
   - test/yukicoder/898.test.cpp
 documentation_of: src/graph/tree.hpp

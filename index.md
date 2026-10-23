@@ -239,6 +239,9 @@ data:
       path: src/graph/chinese-postman.hpp
       title: "\u4E2D\u56FD\u4EBA\u90F5\u4FBF\u914D\u9054\u554F\u984C"
     - icon: ':heavy_check_mark:'
+      path: src/graph/dominator-tree.hpp
+      title: "\u652F\u914D\u6728"
+    - icon: ':heavy_check_mark:'
       path: src/graph/eulerian-trail.hpp
       title: "\u30AA\u30A4\u30E9\u30FC\u8DEF"
     - icon: ':heavy_check_mark:'
@@ -257,6 +260,10 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/graph/heavy-light-decomposition.hpp
       title: "HL \u5206\u89E3 (Heavy-Light Decomposition)"
+    - icon: ':heavy_check_mark:'
+      path: src/graph/hungarian.hpp
+      title: "\u5272\u5F53\u554F\u984C (\u30CF\u30F3\u30AC\u30EA\u30A2\u30F3\u6CD5\
+        )"
     - icon: ':heavy_check_mark:'
       path: src/graph/lowlink.hpp
       title: "lowlink (\u95A2\u7BC0\u70B9\u3001\u6A4B\u3001\u4E8C\u91CD\u8FBA\u9023\
@@ -359,7 +366,8 @@ data:
       title: "\u591A\u9805\u5F0F\u306E\u6839 (Cantor-Zassenhaus \u6CD5)"
     - icon: ':heavy_check_mark:'
       path: src/math/prime-counting.hpp
-      title: "\u7D20\u6570\u306E\u500B\u6570\u30FB\u7D20\u6570\u306E\u548C (Lucy DP)"
+      title: "\u7D20\u6570\u306E\u500B\u6570\u30FB\u7D20\u6570\u306E\u548C (Lucy DP)\u30FB\
+        \u4E57\u6CD5\u7684\u95A2\u6570\u306E\u548C"
     - icon: ':heavy_check_mark:'
       path: src/math/prime.hpp
       title: "\u7D20\u6570 (\u7D20\u6570\u5224\u5B9A\u3001\u7D20\u56E0\u6570\u5206\
@@ -1043,6 +1051,9 @@ data:
       path: test/unittest/graph/chinese-postman.test.cpp
       title: test/unittest/graph/chinese-postman.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/graph/dominator-tree.test.cpp
+      title: test/unittest/graph/dominator-tree.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/graph/functional-graph.1.test.cpp
       title: test/unittest/graph/functional-graph.1.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1057,6 +1068,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/graph/heavy-light-decomposition.test.cpp
       title: test/unittest/graph/heavy-light-decomposition.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/graph/hungarian.test.cpp
+      title: test/unittest/graph/hungarian.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/graph/lowlink.test.cpp
       title: test/unittest/graph/lowlink.test.cpp
@@ -1475,6 +1489,9 @@ data:
   - name: test/yosupo/graph
     pages:
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/graph/assignment.test.cpp
+      title: test/yosupo/graph/assignment.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/graph/biconnected-components.test.cpp
       title: test/yosupo/graph/biconnected-components.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1498,6 +1515,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/graph/directedmst.test.cpp
       title: test/yosupo/graph/directedmst.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/graph/dominatortree.test.cpp
+      title: test/yosupo/graph/dominatortree.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/graph/eulerian-trail-directed.test.cpp
       title: test/yosupo/graph/eulerian-trail-directed.test.cpp
@@ -1527,6 +1547,9 @@ data:
       title: test/yosupo/graph/two-edge-connected-components.test.cpp
   - name: test/yosupo/linear_algebra
     pages:
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/linear_algebra/characteristic-polynomial.test.cpp
+      title: test/yosupo/linear_algebra/characteristic-polynomial.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/linear_algebra/inverse-matrix-mod-2.test.cpp
       title: test/yosupo/linear_algebra/inverse-matrix-mod-2.test.cpp
@@ -1604,6 +1627,12 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/number_theory/sum-of-floor-of-linear.test.cpp
       title: test/yosupo/number_theory/sum-of-floor-of-linear.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/number_theory/sum-of-multiplicative-function.test.cpp
+      title: test/yosupo/number_theory/sum-of-multiplicative-function.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/number_theory/sum-of-totient-function.test.cpp
+      title: test/yosupo/number_theory/sum-of-totient-function.test.cpp
   - name: test/yosupo/other
     pages:
     - icon: ':heavy_check_mark:'
@@ -1767,6 +1796,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/tree/lca.5.test.cpp
       title: test/yosupo/tree/lca.5.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/tree/rooted-tree-isomorphism-classification.test.cpp
+      title: test/yosupo/tree/rooted-tree-isomorphism-classification.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/tree/tree-diameter.test.cpp
       title: test/yosupo/tree/tree-diameter.test.cpp

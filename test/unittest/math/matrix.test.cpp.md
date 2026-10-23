@@ -32,48 +32,51 @@ data:
     \ \u3092\u3001\u5909\u6570\u306E\u5024\u3092\u3059\u3079\u3066\u8A66\u3059\u611A\
     \u76F4\u306A\u5B9F\u88C5\u3068\u6BD4\u8F03\u3059\u308B (mod 3 \u3068 GF(2))\n\
     // permanent \u3092\u3001\u3059\u3079\u3066\u306E\u9806\u5217\u306E\u548C\u3068\
-    \u6BD4\u8F03\u3059\u308B (long long\u30FBmodint\u30FBGF(2))\n// \u884C\u306E\u30EA\
-    \u30B9\u30C8\u304B\u3089\u4F5C\u308B\u3068\u304D\u306E\u63A8\u8AD6\u30AC\u30A4\
-    \u30C9\u3092 static_assert \u3067\u78BA\u304B\u3081\u308B\n// \u554F\u984C\u306E\
-    \u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\
-    \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/math/matrix.hpp\"\
-    \n\n/**\n * @file matrix.hpp\n * @brief \u884C\u5217\n */\n\n#include <algorithm>\n\
-    #include <cassert>\n#include <cmath>\n#include <cstddef>\n#include <initializer_list>\n\
-    #include <optional>\n#include <string>\n#include <type_traits>\n#include <utility>\n\
-    #include <valarray>\n#include <vector>\n\nnamespace matrix {\ntemplate <typename\
-    \ T>\nstruct OperatorPropertyDefault {\n    constexpr static T zero() { return\
-    \ T(0); }\n    constexpr static T add(const T& a, const T& b) { return a + b;\
-    \ }\n    constexpr static T neg(const T& a) { return -a; }\n    constexpr static\
-    \ T one() { return T(1); }\n    constexpr static T mul(const T& a, const T& b)\
-    \ { return a * b; }\n    constexpr static T inv(const T& a) { return T(1) / a;\
-    \ }\n};\n}  // namespace matrix\n\n/**\n * @brief \u884C\u5217\n * @tparam T \u578B\
-    \ \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u8981\u7D20\u3068\u306A\u308Bint\u3084\
-    char\n * @tparam OperatorProperty \u884C\u5217\u306E\u8981\u7D20\u306E\u6F14\u7B97\
-    \u3092\u5B9A\u7FA9\u3059\u308B\u69CB\u9020\u4F53 0,1\u3068+,*\u306A\u3089\u7701\
-    \u7565\u53EF\n *\n * @note\n * OperatorProperty\u306E\u4F8B\uFF08\u6574\u6570\u306E\
-    xor\u3068and\u306B\u3088\u308B\u74B0\uFF09\n * @code\n * struct XorOperatorProperty\
-    \ {\n *     constexpr static int zero() { return 0; }\n *     constexpr static\
-    \ int add(const int &a, const int &b) { return a ^ b; }\n *     constexpr static\
-    \ int neg(const int &a) { return a; }\n *     constexpr static int one() { return\
-    \ 1; }\n *     constexpr static int mul(const int &a, const int &b) { return a\
-    \ & b; }\n * };\n * @endcode\n * constexpr\u3067\u3042\u308B\u5FC5\u8981\u306F\
-    \u306A\u304F\u3001\u307E\u305Finv\u306A\u3069\u4F7F\u308F\u306A\u3044\u3082\u306E\
-    \u306F\u5B9A\u7FA9\u3057\u306A\u304F\u3066\u3082\u3088\u3044\uFF08\u5FC5\u8981\
-    \u306A\u3082\u306E\u304C\u306A\u304B\u3063\u305F\u3089\u30B3\u30F3\u30D1\u30A4\
-    \u30EB\u30A8\u30E9\u30FC\u304C\u767A\u751F\u3059\u308B\uFF09\n */\ntemplate <class\
-    \ T, class OperatorProperty = matrix::OperatorPropertyDefault<T>>\nclass Matrix\
-    \ {\n   public:\n    long long n, m;\n    std::vector<std::vector<T>> v;\n\n \
-    \   /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param\
-    \ v \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u5143\u3068\u306A\u308B vector<string>\
-    \ \u3084 vector<vector<T>>\n     * @return Matrix\n     */\n    template <typename\
-    \ Iterable>\n    Matrix(const std::vector<Iterable>& v_) noexcept : n(v_.size()),\
-    \ m(v_.size() == 0 ? 0 : v_[0].size()) {\n        v.resize(n);\n        for (long\
-    \ long i = 0; i < n; i++) {\n            v[i].assign(v_[i].begin(), v_[i].end());\n\
-    \        }\n    }\n\n    /**\n     * @brief \u521D\u671F\u5316\u5B50\u30EA\u30B9\
-    \u30C8\u304B\u3089\u4F5C\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n   \
-    \  * \u4F8B: Matrix<mint> A({{1, 1}, {1, 0}});\n     * @param il \u5404\u884C\u306E\
-    \u8981\u7D20\u306E\u30EA\u30B9\u30C8\n     */\n    Matrix(std::initializer_list<std::initializer_list<T>>\
-    \ il) : n(il.size()), m(il.size() == 0 ? 0 : il.begin()->size()) {\n        v.reserve(n);\n\
+    \u6BD4\u8F03\u3059\u308B (long long\u30FBmodint\u30FBGF(2))\n// characteristic_polynomial\
+    \ \u3092\u3001\u884C\u5217\u5F0F\u3092\u9806\u5217\u3067\u5C55\u958B\u3057\u305F\
+    \u591A\u9805\u5F0F\u3068\u6BD4\u8F03\u3059\u308B (mod 998244353\u30FBmod 3)\n\
+    // \u884C\u306E\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\u3068\u304D\u306E\u63A8\
+    \u8AD6\u30AC\u30A4\u30C9\u3092 static_assert \u3067\u78BA\u304B\u3081\u308B\n\
+    // \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\
+    \u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n\
+    #line 2 \"src/math/matrix.hpp\"\n\n/**\n * @file matrix.hpp\n * @brief \u884C\u5217\
+    \n */\n\n#include <algorithm>\n#include <cassert>\n#include <cmath>\n#include\
+    \ <cstddef>\n#include <initializer_list>\n#include <optional>\n#include <string>\n\
+    #include <type_traits>\n#include <utility>\n#include <valarray>\n#include <vector>\n\
+    \nnamespace matrix {\ntemplate <typename T>\nstruct OperatorPropertyDefault {\n\
+    \    constexpr static T zero() { return T(0); }\n    constexpr static T add(const\
+    \ T& a, const T& b) { return a + b; }\n    constexpr static T neg(const T& a)\
+    \ { return -a; }\n    constexpr static T one() { return T(1); }\n    constexpr\
+    \ static T mul(const T& a, const T& b) { return a * b; }\n    constexpr static\
+    \ T inv(const T& a) { return T(1) / a; }\n};\n}  // namespace matrix\n\n/**\n\
+    \ * @brief \u884C\u5217\n * @tparam T \u578B \u884C\u5217(\u30B0\u30EA\u30C3\u30C9\
+    )\u306E\u8981\u7D20\u3068\u306A\u308Bint\u3084char\n * @tparam OperatorProperty\
+    \ \u884C\u5217\u306E\u8981\u7D20\u306E\u6F14\u7B97\u3092\u5B9A\u7FA9\u3059\u308B\
+    \u69CB\u9020\u4F53 0,1\u3068+,*\u306A\u3089\u7701\u7565\u53EF\n *\n * @note\n\
+    \ * OperatorProperty\u306E\u4F8B\uFF08\u6574\u6570\u306Exor\u3068and\u306B\u3088\
+    \u308B\u74B0\uFF09\n * @code\n * struct XorOperatorProperty {\n *     constexpr\
+    \ static int zero() { return 0; }\n *     constexpr static int add(const int &a,\
+    \ const int &b) { return a ^ b; }\n *     constexpr static int neg(const int &a)\
+    \ { return a; }\n *     constexpr static int one() { return 1; }\n *     constexpr\
+    \ static int mul(const int &a, const int &b) { return a & b; }\n * };\n * @endcode\n\
+    \ * constexpr\u3067\u3042\u308B\u5FC5\u8981\u306F\u306A\u304F\u3001\u307E\u305F\
+    inv\u306A\u3069\u4F7F\u308F\u306A\u3044\u3082\u306E\u306F\u5B9A\u7FA9\u3057\u306A\
+    \u304F\u3066\u3082\u3088\u3044\uFF08\u5FC5\u8981\u306A\u3082\u306E\u304C\u306A\
+    \u304B\u3063\u305F\u3089\u30B3\u30F3\u30D1\u30A4\u30EB\u30A8\u30E9\u30FC\u304C\
+    \u767A\u751F\u3059\u308B\uFF09\n */\ntemplate <class T, class OperatorProperty\
+    \ = matrix::OperatorPropertyDefault<T>>\nclass Matrix {\n   public:\n    long\
+    \ long n, m;\n    std::vector<std::vector<T>> v;\n\n    /**\n     * @brief \u30B3\
+    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param v \u884C\u5217(\u30B0\u30EA\
+    \u30C3\u30C9)\u306E\u5143\u3068\u306A\u308B vector<string> \u3084 vector<vector<T>>\n\
+    \     * @return Matrix\n     */\n    template <typename Iterable>\n    Matrix(const\
+    \ std::vector<Iterable>& v_) noexcept : n(v_.size()), m(v_.size() == 0 ? 0 : v_[0].size())\
+    \ {\n        v.resize(n);\n        for (long long i = 0; i < n; i++) {\n     \
+    \       v[i].assign(v_[i].begin(), v_[i].end());\n        }\n    }\n\n    /**\n\
+    \     * @brief \u521D\u671F\u5316\u5B50\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\
+    \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * \u4F8B: Matrix<mint> A({{1,\
+    \ 1}, {1, 0}});\n     * @param il \u5404\u884C\u306E\u8981\u7D20\u306E\u30EA\u30B9\
+    \u30C8\n     */\n    Matrix(std::initializer_list<std::initializer_list<T>> il)\
+    \ : n(il.size()), m(il.size() == 0 ? 0 : il.begin()->size()) {\n        v.reserve(n);\n\
     \        for (const auto& row : il) v.emplace_back(row);\n    }\n    /**\n   \
     \  * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param _n \u884C\
     \u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u884C\u6570\n     * @param _m \u884C\u5217\
@@ -208,14 +211,49 @@ data:
     \ long i = 0; i < n; i++)\n                for (long long j = 0; j < n; j++) A[i][j]\
     \ = this->v[i][j];\n            return forward_elimination(A);\n        } else\
     \ {\n            auto A = this->v;\n            return forward_elimination(A);\n\
-    \        }\n    }\n\n    /**\n     * @brief \u30D1\u30FC\u30DE\u30CD\u30F3\u30C8\
-    \ \u03A3_\u03C3 \u03A0_i a[i][\u03C3(i)] (Ryser \u306E\u516C\u5F0F) O(2^n n)\n\
-    \     * @return \u30D1\u30FC\u30DE\u30CD\u30F3\u30C8\n     * @note \u5272\u308A\
-    \u7B97\u3092\u4F7F\u308F\u306A\u3044\u306E\u3067\u3001\u8981\u7D20\u306F\u53EF\
-    \u63DB\u74B0 (long long \u3084 modint \u306A\u3069) \u3067\u3088\u3044\u3002\n\
-    \     *       0 \u3068 1 \u306E\u884C\u5217\u306A\u3089\u3001\u4E8C\u90E8\u30B0\
-    \u30E9\u30D5\u306E\u5B8C\u5168\u30DE\u30C3\u30C1\u30F3\u30B0\u306E\u500B\u6570\
-    \u306B\u306A\u308B\n     *\n     * perm(A) = \u03A3_{S \u2286 \u5217} (-1)^{n\
+    \        }\n    }\n\n    /**\n     * @brief \u7279\u6027\u591A\u9805\u5F0F det(xI\
+    \ - A) \u306E\u4FC2\u6570 (\u4F4E\u6B21\u304B\u3089 n + 1 \u500B\u3001\u6700\u9AD8\
+    \u6B21\u306F 1) O(n^3)\n     * @note \u5272\u308A\u7B97\u3092\u4F7F\u3046\u306E\
+    \u3067\u3001\u8981\u7D20\u306F\u4F53 (modint \u306A\u3069) \u3067\u3042\u308B\u3053\
+    \u3068\n     *\n     * \u76F8\u4F3C\u5909\u63DB\u3067\u4E0A\u30D8\u30C3\u30BB\u30F3\
+    \u30D9\u30EB\u30AF\u884C\u5217 (i > j + 1 \u3067 0) \u306B\u3057\u3066\u304B\u3089\
+    \u3001\u5DE6\u4E0A\u306E k \xD7 k \u306E\u7279\u6027\u591A\u9805\u5F0F\u3092 k\
+    \ \u306E\u5C0F\u3055\u3044\u65B9\u304B\u3089\u6C42\u3081\u308B\n     */\n    [[nodiscard]]\n\
+    \    std::vector<T> characteristic_polynomial() const {\n        assert(n == m);\n\
+    \        using P = OperatorProperty;\n        auto sub = [](const T& a, const\
+    \ T& b) { return P::add(a, P::neg(b)); };\n        auto H = this->v;\n       \
+    \ for (long long j = 0; j + 2 < n; j++) {\n            long long piv = j + 1;\n\
+    \            while (piv < n && H[piv][j] == P::zero()) piv++;\n            if\
+    \ (piv == n) continue;\n            if (piv != j + 1) {\n                std::swap(H[piv],\
+    \ H[j + 1]);\n                for (long long i = 0; i < n; i++) std::swap(H[i][piv],\
+    \ H[i][j + 1]);\n            }\n            const T iv = P::inv(H[j + 1][j]);\n\
+    \            for (long long k = j + 2; k < n; k++) {\n                const T\
+    \ c = P::mul(H[k][j], iv);\n                if (c == P::zero()) continue;\n  \
+    \              // \u884C k \u304B\u3089\u884C j + 1 \u306E c \u500D\u3092\u5F15\
+    \u304D\u3001\u5217 j + 1 \u306B\u5217 k \u306E c \u500D\u3092\u8DB3\u3059 (\u76F8\
+    \u4F3C\u5909\u63DB)\n                for (long long l = 0; l < n; l++) H[k][l]\
+    \ = sub(H[k][l], P::mul(c, H[j + 1][l]));\n                for (long long l =\
+    \ 0; l < n; l++) H[l][j + 1] = P::add(H[l][j + 1], P::mul(c, H[l][k]));\n    \
+    \        }\n        }\n        // p[k]: \u5DE6\u4E0A\u306E k \xD7 k \u306E\u7279\
+    \u6027\u591A\u9805\u5F0F\n        // p[k + 1] = (x - H[k][k]) p[k] - \u03A3_{i\
+    \ < k} (H[i + 1][i] ... H[k][k - 1]) H[i][k] p[i]\n        std::vector<std::vector<T>>\
+    \ p(n + 1);\n        p[0] = {P::one()};\n        for (long long k = 0; k < n;\
+    \ k++) {\n            std::vector<T> q(k + 2, P::zero());\n            for (long\
+    \ long d = 0; d <= k; d++) {\n                q[d + 1] = P::add(q[d + 1], p[k][d]);\n\
+    \                q[d] = sub(q[d], P::mul(H[k][k], p[k][d]));\n            }\n\
+    \            T prod = P::one();\n            for (long long i = k - 1; i >= 0;\
+    \ i--) {\n                prod = P::mul(prod, H[i + 1][i]);\n                if\
+    \ (prod == P::zero()) break;\n                const T c = P::mul(prod, H[i][k]);\n\
+    \                for (long long d = 0; d <= i; d++) q[d] = sub(q[d], P::mul(c,\
+    \ p[i][d]));\n            }\n            p[k + 1] = std::move(q);\n        }\n\
+    \        return p[n];\n    }\n\n    /**\n     * @brief \u30D1\u30FC\u30DE\u30CD\
+    \u30F3\u30C8 \u03A3_\u03C3 \u03A0_i a[i][\u03C3(i)] (Ryser \u306E\u516C\u5F0F\
+    ) O(2^n n)\n     * @return \u30D1\u30FC\u30DE\u30CD\u30F3\u30C8\n     * @note\
+    \ \u5272\u308A\u7B97\u3092\u4F7F\u308F\u306A\u3044\u306E\u3067\u3001\u8981\u7D20\
+    \u306F\u53EF\u63DB\u74B0 (long long \u3084 modint \u306A\u3069) \u3067\u3088\u3044\
+    \u3002\n     *       0 \u3068 1 \u306E\u884C\u5217\u306A\u3089\u3001\u4E8C\u90E8\
+    \u30B0\u30E9\u30D5\u306E\u5B8C\u5168\u30DE\u30C3\u30C1\u30F3\u30B0\u306E\u500B\
+    \u6570\u306B\u306A\u308B\n     *\n     * perm(A) = \u03A3_{S \u2286 \u5217} (-1)^{n\
     \ - |S|} \u03A0_i \u03A3_{j \u2208 S} a[i][j] \u3092\u3001S \u3092\u30B0\u30EC\
     \u30A4\u30B3\u30FC\u30C9\u306E\u9806\u306B\u52D5\u304B\u3057\u3066\u5404\u884C\
     \u306E\u548C\u3092 O(n) \u3067\u66F4\u65B0\u3059\u308B\n     */\n    [[nodiscard]]\n\
@@ -386,9 +424,9 @@ data:
     \u306F\u5404\u884C\u306E value_type \u306B\u3059\u308B\n *\n * Matrix(std::vector<std::vector<int>>)\
     \ \u306F Matrix<int>\u3001Matrix(std::vector<std::string>) \u306F Matrix<char>\n\
     \ */\ntemplate <typename Iterable>\nMatrix(const std::vector<Iterable>&) -> Matrix<typename\
-    \ Iterable::value_type>;\n#line 11 \"test/unittest/math/matrix.test.cpp\"\n\n\
-    #line 13 \"test/unittest/math/matrix.test.cpp\"\n#include <iostream>\n#include\
-    \ <numeric>\n#include <random>\n#line 19 \"test/unittest/math/matrix.test.cpp\"\
+    \ Iterable::value_type>;\n#line 12 \"test/unittest/math/matrix.test.cpp\"\n\n\
+    #line 14 \"test/unittest/math/matrix.test.cpp\"\n#include <iostream>\n#include\
+    \ <numeric>\n#include <random>\n#line 20 \"test/unittest/math/matrix.test.cpp\"\
     \n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\
     \u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\
     \u30AF\u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\n#include <cstdint>\n\
@@ -671,7 +709,7 @@ data:
     \ dynamic_modint(SignedIntegral value) noexcept\n        : base_type{value} {}\n\
     \n   private:\n    inline static value_type modulus = 998244353;\n};\n\nusing\
     \ modint998244353 = static_modint<998244353>;\nusing modint1000000007 = static_modint<1000000007>;\n\
-    using modint = dynamic_modint<-1>;\n#line 21 \"test/unittest/math/matrix.test.cpp\"\
+    using modint = dynamic_modint<-1>;\n#line 22 \"test/unittest/math/matrix.test.cpp\"\
     \n\nusing mint = static_modint<998244353>;\n\n// \u63A8\u8AD6\u30AC\u30A4\u30C9\
     : \u8981\u7D20\u306E\u578B\u306F\u5404\u884C\u306E value_type\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::vector<long\
     \ long>>())), Matrix<long long>>);\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::string>())),\
@@ -845,8 +883,36 @@ data:
     \ false, std::cerr << \"permanent long long\" << std::endl;\n        if (Matrix<mint>(am).permanent()\
     \ != expect_m) ok = false, std::cerr << \"permanent modint\" << std::endl;\n \
     \       if (Matrix<int, GF2>(a2).permanent() != expect_2) ok = false, std::cerr\
-    \ << \"permanent GF(2)\" << std::endl;\n    }\n\n    if (ok) std::cout << \"Hello\
-    \ World\" << std::endl;\n}\n"
+    \ << \"permanent GF(2)\" << std::endl;\n    }\n\n    // characteristic_polynomial:\
+    \ det(xI - A) \u3092\u3001\u3059\u3079\u3066\u306E\u9806\u5217\u306B\u3064\u3044\
+    \u3066 \u03A0 (x \u03B4 - a) \u306E\u591A\u9805\u5F0F\u3092\u8DB3\u3057\u3066\u6C42\
+    \u3081\u305F\u3082\u306E\u3068\u6BD4\u3079\u308B\n    // mod 3 \u3067\u306F 0\
+    \ \u304C\u591A\u304F\u51FA\u308B\u306E\u3067\u3001\u30D8\u30C3\u30BB\u30F3\u30D9\
+    \u30EB\u30AF\u5316\u3067\u8EF8\u3092\u5165\u308C\u66FF\u3048\u308B\u5834\u5408\
+    \u3084\u3001\u526F\u5BFE\u89D2\u304C 0 \u306B\u306A\u308B\u5834\u5408\u3082\u901A\
+    \u308B\n    auto check_charpoly = [&](auto zero_mint, int mod_range, const char*\
+    \ name) {\n        using M = decltype(zero_mint);\n        for (int rep = 0; rep\
+    \ < 300 && ok; rep++) {\n            int n = rng() % 6;\n            std::vector<std::vector<M>>\
+    \ a(n, std::vector<M>(n));\n            for (auto& row : a)\n                for\
+    \ (auto& x : row) x = rng() % mod_range;\n            std::vector<M> expect(n\
+    \ + 1, M(0));\n            std::vector<int> perm(n);\n            std::iota(perm.begin(),\
+    \ perm.end(), 0);\n            do {\n                // \u7F6E\u63DB\u306E\u7B26\
+    \u53F7\n                int sign = 1;\n                for (int i = 0; i < n;\
+    \ i++)\n                    for (int j = i + 1; j < n; j++)\n                \
+    \        if (perm[i] > perm[j]) sign = -sign;\n                std::vector<M>\
+    \ poly = {M(1)};\n                for (int i = 0; i < n; i++) {\n            \
+    \        // (x \u03B4_{i, perm[i]} - a[i][perm[i]]) \u3092\u639B\u3051\u308B\n\
+    \                    std::vector<M> next(poly.size() + 1, M(0));\n           \
+    \         for (int d = 0; d < static_cast<int>(poly.size()); d++) {\n        \
+    \                if (perm[i] == i) next[d + 1] += poly[d];\n                 \
+    \       next[d] -= poly[d] * a[i][perm[i]];\n                    }\n         \
+    \           poly = next;\n                }\n                for (int d = 0; d\
+    \ <= n; d++) expect[d] += sign * poly[d];\n            } while (std::next_permutation(perm.begin(),\
+    \ perm.end()));\n            if (Matrix<M>(a).characteristic_polynomial() != expect)\
+    \ ok = false, std::cerr << \"characteristic_polynomial \" << name << std::endl;\n\
+    \        }\n    };\n    check_charpoly(mint(0), 1000000, \"mod 998244353\");\n\
+    \    check_charpoly(static_modint<3>(0), 3, \"mod 3\");\n\n    if (ok) std::cout\
+    \ << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// Matrix \u306E +\u30FB-\u30FB==\u30FB\u30B7\u30D5\u30C8\u7CFB\u30FBcol\u30FB\
     str\u30FB\u521D\u671F\u5316\u5B50\u30EA\u30B9\u30C8\u30FB\u4EE3\u5165\u30FB\u8D70\
@@ -858,15 +924,17 @@ data:
     \u8A66\u3059\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u6BD4\u8F03\u3059\u308B (mod\
     \ 3 \u3068 GF(2))\n// permanent \u3092\u3001\u3059\u3079\u3066\u306E\u9806\u5217\
     \u306E\u548C\u3068\u6BD4\u8F03\u3059\u308B (long long\u30FBmodint\u30FBGF(2))\n\
-    // \u884C\u306E\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\u3068\u304D\u306E\u63A8\
-    \u8AD6\u30AC\u30A4\u30C9\u3092 static_assert \u3067\u78BA\u304B\u3081\u308B\n\
-    // \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\
-    \u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n\
-    #include \"../../../src/math/matrix.hpp\"\n\n#include <algorithm>\n#include <iostream>\n\
-    #include <numeric>\n#include <random>\n#include <string>\n#include <type_traits>\n\
-    #include <vector>\n\n#include \"../../../src/math/modint.hpp\"\n\nusing mint =\
-    \ static_modint<998244353>;\n\n// \u63A8\u8AD6\u30AC\u30A4\u30C9: \u8981\u7D20\
-    \u306E\u578B\u306F\u5404\u884C\u306E value_type\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::vector<long\
+    // characteristic_polynomial \u3092\u3001\u884C\u5217\u5F0F\u3092\u9806\u5217\u3067\
+    \u5C55\u958B\u3057\u305F\u591A\u9805\u5F0F\u3068\u6BD4\u8F03\u3059\u308B (mod\
+    \ 998244353\u30FBmod 3)\n// \u884C\u306E\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\
+    \u3068\u304D\u306E\u63A8\u8AD6\u30AC\u30A4\u30C9\u3092 static_assert \u3067\u78BA\
+    \u304B\u3081\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\
+    \u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\
+    \u3059\u308B\n\n#include \"../../../src/math/matrix.hpp\"\n\n#include <algorithm>\n\
+    #include <iostream>\n#include <numeric>\n#include <random>\n#include <string>\n\
+    #include <type_traits>\n#include <vector>\n\n#include \"../../../src/math/modint.hpp\"\
+    \n\nusing mint = static_modint<998244353>;\n\n// \u63A8\u8AD6\u30AC\u30A4\u30C9\
+    : \u8981\u7D20\u306E\u578B\u306F\u5404\u884C\u306E value_type\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::vector<long\
     \ long>>())), Matrix<long long>>);\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::string>())),\
     \ Matrix<char>>);\nusing VV = std::vector<std::vector<long long>>;\n\n// xor \u3068\
     \ and \u306B\u3088\u308B\u4F53 GF(2)\nstruct GF2 {\n    static int zero() { return\
@@ -1038,8 +1106,36 @@ data:
     \ false, std::cerr << \"permanent long long\" << std::endl;\n        if (Matrix<mint>(am).permanent()\
     \ != expect_m) ok = false, std::cerr << \"permanent modint\" << std::endl;\n \
     \       if (Matrix<int, GF2>(a2).permanent() != expect_2) ok = false, std::cerr\
-    \ << \"permanent GF(2)\" << std::endl;\n    }\n\n    if (ok) std::cout << \"Hello\
-    \ World\" << std::endl;\n}\n"
+    \ << \"permanent GF(2)\" << std::endl;\n    }\n\n    // characteristic_polynomial:\
+    \ det(xI - A) \u3092\u3001\u3059\u3079\u3066\u306E\u9806\u5217\u306B\u3064\u3044\
+    \u3066 \u03A0 (x \u03B4 - a) \u306E\u591A\u9805\u5F0F\u3092\u8DB3\u3057\u3066\u6C42\
+    \u3081\u305F\u3082\u306E\u3068\u6BD4\u3079\u308B\n    // mod 3 \u3067\u306F 0\
+    \ \u304C\u591A\u304F\u51FA\u308B\u306E\u3067\u3001\u30D8\u30C3\u30BB\u30F3\u30D9\
+    \u30EB\u30AF\u5316\u3067\u8EF8\u3092\u5165\u308C\u66FF\u3048\u308B\u5834\u5408\
+    \u3084\u3001\u526F\u5BFE\u89D2\u304C 0 \u306B\u306A\u308B\u5834\u5408\u3082\u901A\
+    \u308B\n    auto check_charpoly = [&](auto zero_mint, int mod_range, const char*\
+    \ name) {\n        using M = decltype(zero_mint);\n        for (int rep = 0; rep\
+    \ < 300 && ok; rep++) {\n            int n = rng() % 6;\n            std::vector<std::vector<M>>\
+    \ a(n, std::vector<M>(n));\n            for (auto& row : a)\n                for\
+    \ (auto& x : row) x = rng() % mod_range;\n            std::vector<M> expect(n\
+    \ + 1, M(0));\n            std::vector<int> perm(n);\n            std::iota(perm.begin(),\
+    \ perm.end(), 0);\n            do {\n                // \u7F6E\u63DB\u306E\u7B26\
+    \u53F7\n                int sign = 1;\n                for (int i = 0; i < n;\
+    \ i++)\n                    for (int j = i + 1; j < n; j++)\n                \
+    \        if (perm[i] > perm[j]) sign = -sign;\n                std::vector<M>\
+    \ poly = {M(1)};\n                for (int i = 0; i < n; i++) {\n            \
+    \        // (x \u03B4_{i, perm[i]} - a[i][perm[i]]) \u3092\u639B\u3051\u308B\n\
+    \                    std::vector<M> next(poly.size() + 1, M(0));\n           \
+    \         for (int d = 0; d < static_cast<int>(poly.size()); d++) {\n        \
+    \                if (perm[i] == i) next[d + 1] += poly[d];\n                 \
+    \       next[d] -= poly[d] * a[i][perm[i]];\n                    }\n         \
+    \           poly = next;\n                }\n                for (int d = 0; d\
+    \ <= n; d++) expect[d] += sign * poly[d];\n            } while (std::next_permutation(perm.begin(),\
+    \ perm.end()));\n            if (Matrix<M>(a).characteristic_polynomial() != expect)\
+    \ ok = false, std::cerr << \"characteristic_polynomial \" << name << std::endl;\n\
+    \        }\n    };\n    check_charpoly(mint(0), 1000000, \"mod 998244353\");\n\
+    \    check_charpoly(static_modint<3>(0), 3, \"mod 3\");\n\n    if (ok) std::cout\
+    \ << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/math/matrix.hpp
   - src/math/modint.hpp
@@ -1047,7 +1143,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/matrix.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 13:41:11+09:00'
+  timestamp: '2026-10-23 13:37:04+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/matrix.test.cpp

@@ -493,6 +493,9 @@ data:
     path: test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
     title: test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/linear_algebra/characteristic-polynomial.test.cpp
+    title: test/yosupo/linear_algebra/characteristic-polynomial.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/inverse-matrix.test.cpp
     title: test/yosupo/linear_algebra/inverse-matrix.test.cpp
   - icon: ':heavy_check_mark:'
@@ -513,6 +516,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/number_theory/bernoulli-number.test.cpp
     title: test/yosupo/number_theory/bernoulli-number.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/number_theory/sum-of-multiplicative-function.test.cpp
+    title: test/yosupo/number_theory/sum-of-multiplicative-function.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/number_theory/sum-of-totient-function.test.cpp
+    title: test/yosupo/number_theory/sum-of-totient-function.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/other/find-linear-recurrence.test.cpp
     title: test/yosupo/other/find-linear-recurrence.test.cpp
@@ -912,6 +921,7 @@ data:
   - test/yosupo/data_structure/associative-array.test.cpp
   - test/yosupo/data_structure/range-affine-range-sum.1.test.cpp
   - test/yosupo/linear_algebra/pow-of-matrix.test.cpp
+  - test/yosupo/linear_algebra/characteristic-polynomial.test.cpp
   - test/yosupo/linear_algebra/matrix-product.test.cpp
   - test/yosupo/linear_algebra/inverse-matrix.test.cpp
   - test/yosupo/linear_algebra/matrix-rank.test.cpp
@@ -923,6 +933,8 @@ data:
   - test/yosupo/other/sum-of-exponential-times-polynomial.test.cpp
   - test/yosupo/other/find-linear-recurrence.test.cpp
   - test/yosupo/number_theory/bernoulli-number.test.cpp
+  - test/yosupo/number_theory/sum-of-multiplicative-function.test.cpp
+  - test/yosupo/number_theory/sum-of-totient-function.test.cpp
   - test/yosupo/geo/static-convex-hull.test.cpp
   - test/yosupo/geo/sort-points-by-argument.1.test.cpp
   - test/yosupo/geo/closest-pair.test.cpp

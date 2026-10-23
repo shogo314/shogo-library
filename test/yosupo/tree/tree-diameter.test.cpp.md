@@ -24,9 +24,9 @@ data:
     \ \"https://judge.yosupo.jp/problem/tree_diameter\"\n\n#include <iostream>\n#include\
     \ <vector>\n\n#line 2 \"src/graph/tree_util.hpp\"\n\n/**\n * @file tree_util.hpp\n\
     \ * @brief \u6728\u306B\u95A2\u3059\u308B\u95A2\u6570\n */\n\n#include <algorithm>\n\
-    #include <cassert>\n#include <utility>\n#line 12 \"src/graph/tree_util.hpp\"\n\
-    \n#line 2 \"src/graph/tree.hpp\"\n\n/**\n * @file tree.hpp\n * @brief \u6728\u306E\
-    \u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n */\n\n#line 10 \"src/graph/tree.hpp\"\
+    #include <cassert>\n#include <map>\n#include <utility>\n#line 13 \"src/graph/tree_util.hpp\"\
+    \n\n#line 2 \"src/graph/tree.hpp\"\n\n/**\n * @file tree.hpp\n * @brief \u6728\
+    \u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n */\n\n#line 10 \"src/graph/tree.hpp\"\
     \n#include <stack>\n#include <type_traits>\n#line 14 \"src/graph/tree.hpp\"\n\n\
     #line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file graph.hpp\n * @brief \u30B0\u30E9\
     \u30D5\n */\n\n#line 11 \"src/graph/graph.hpp\"\n\n/**\n * @brief \u30B0\u30E9\
@@ -297,7 +297,7 @@ data:
     \        for (long long i = 0; i < h - 1; i++) {\n            for (long long j\
     \ = 0; j < n; j++) {\n                if (doubling_par[i][j] != -1) {\n      \
     \              doubling_par[i + 1][j] = doubling_par[i][doubling_par[i][j]];\n\
-    \                }\n            }\n        }\n    }\n};\n#line 14 \"src/graph/tree_util.hpp\"\
+    \                }\n            }\n        }\n    }\n};\n#line 15 \"src/graph/tree_util.hpp\"\
     \n\nnamespace internal_tree_util {\n\n// s \u304B\u3089\u5404\u9802\u70B9\u3078\
     \u306E\u8DDD\u96E2\u3068\u3001\u5404\u9802\u70B9\u3078\u5411\u304B\u3046\u8FBA\
     \ (s \u3067\u306F Edge()) \u3092 DFS \u3067\u6C42\u3081\u308B\ntemplate <typename\
@@ -322,15 +322,39 @@ data:
     \    long long v = std::max_element(dist.begin(), dist.end()) - dist.begin();\n\
     \    std::vector<typename Tree<Cost>::Edge> path;\n    for (long long w = v; w\
     \ != u; w = prev[w].src) path.push_back(prev[w]);\n    std::reverse(path.begin(),\
-    \ path.end());\n    return path;\n}\n#line 7 \"test/yosupo/tree/tree-diameter.test.cpp\"\
-    \n\nint main() {\n    int n;\n    std::cin >> n;\n    Tree<long long> tree(n);\n\
-    \    tree.read(0, true);\n    auto path = tree_diameter(tree);\n    long long\
-    \ x = 0;\n    std::vector<int> vs;\n    if (path.empty()) {\n        vs.push_back(0);\
-    \  // n = 1\n    } else {\n        vs.push_back(path[0].src);\n        for (const\
-    \ auto& e : path) {\n            x += e.cost;\n            vs.push_back(e.dst);\n\
-    \        }\n    }\n    std::cout << x << ' ' << vs.size() << '\\n';\n    for (int\
-    \ i = 0; i < static_cast<int>(vs.size()); i++) std::cout << vs[i] << \" \\n\"\
-    [i + 1 == static_cast<int>(vs.size())];\n}\n"
+    \ path.end());\n    return path;\n}\n\n/**\n * @brief root \u3092\u6839\u3068\u3059\
+    \u308B\u6839\u4ED8\u304D\u6728\u3067\u3001\u5404\u9802\u70B9\u3092\u6839\u3068\
+    \u3059\u308B\u90E8\u5206\u6728\u3092\u540C\u578B\u306A\u3082\u306E\u3054\u3068\
+    \u306B\u5206\u985E\u3059\u308B O(n log n)\n *\n * \u30CF\u30C3\u30B7\u30E5\u3067\
+    \u306F\u306A\u304F\u3001\u5B50\u306E\u5206\u985E\u756A\u53F7\u3092\u4E26\u3079\
+    \u305F\u5217\u306B\u756A\u53F7\u3092\u632F\u308B\u306E\u3067\u3001\u885D\u7A81\
+    \u3057\u306A\u3044\n * @return \u5404\u9802\u70B9\u306E\u5206\u985E\u756A\u53F7\
+    \ (0 \u304B\u3089\u9806\u306B\u632F\u308B)\u30022 \u3064\u306E\u9802\u70B9\u306E\
+    \u90E8\u5206\u6728\u304C\u540C\u578B\u306A\u3068\u304D\u3001\u304B\u3064\u305D\
+    \u306E\u3068\u304D\u306B\u9650\u308A\u540C\u3058\u756A\u53F7\n */\ntemplate <typename\
+    \ Cost>\nstd::vector<long long> rooted_tree_isomorphism(const Tree<Cost>& tree,\
+    \ long long root) {\n    const long long n = tree.size();\n    assert(0 <= root\
+    \ && root < n);\n    // BFS \u306E\u9806\u306B\u4E26\u3079\u3001\u8449\u306E\u5074\
+    \u304B\u3089\u756A\u53F7\u3092\u6C7A\u3081\u308B\n    std::vector<long long> order\
+    \ = {root}, parent(n, -1);\n    for (long long i = 0; i < static_cast<long long>(order.size());\
+    \ i++) {\n        long long u = order[i];\n        for (const auto& e : tree[u])\
+    \ {\n            if (e.dst == parent[u]) continue;\n            parent[e.dst]\
+    \ = u;\n            order.push_back(e.dst);\n        }\n    }\n    std::vector<std::vector<long\
+    \ long>> children(n);\n    std::map<std::vector<long long>, long long> ids;\n\
+    \    std::vector<long long> res(n);\n    for (long long i = n - 1; i >= 0; i--)\
+    \ {\n        long long u = order[i];\n        auto& c = children[u];\n       \
+    \ std::sort(c.begin(), c.end());\n        auto [it, inserted] = ids.emplace(std::move(c),\
+    \ static_cast<long long>(ids.size()));\n        res[u] = it->second;\n       \
+    \ if (parent[u] != -1) children[parent[u]].push_back(res[u]);\n    }\n    return\
+    \ res;\n}\n#line 7 \"test/yosupo/tree/tree-diameter.test.cpp\"\n\nint main() {\n\
+    \    int n;\n    std::cin >> n;\n    Tree<long long> tree(n);\n    tree.read(0,\
+    \ true);\n    auto path = tree_diameter(tree);\n    long long x = 0;\n    std::vector<int>\
+    \ vs;\n    if (path.empty()) {\n        vs.push_back(0);  // n = 1\n    } else\
+    \ {\n        vs.push_back(path[0].src);\n        for (const auto& e : path) {\n\
+    \            x += e.cost;\n            vs.push_back(e.dst);\n        }\n    }\n\
+    \    std::cout << x << ' ' << vs.size() << '\\n';\n    for (int i = 0; i < static_cast<int>(vs.size());\
+    \ i++) std::cout << vs[i] << \" \\n\"[i + 1 == static_cast<int>(vs.size())];\n\
+    }\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/tree_diameter\"\n\n#include\
     \ <iostream>\n#include <vector>\n\n#include \"../../../src/graph/tree_util.hpp\"\
     \n\nint main() {\n    int n;\n    std::cin >> n;\n    Tree<long long> tree(n);\n\
@@ -348,7 +372,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/tree/tree-diameter.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 19:53:10+09:00'
+  timestamp: '2026-10-23 13:34:52+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/tree/tree-diameter.test.cpp

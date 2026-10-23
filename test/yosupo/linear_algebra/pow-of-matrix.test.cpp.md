@@ -195,14 +195,49 @@ data:
     \ long i = 0; i < n; i++)\n                for (long long j = 0; j < n; j++) A[i][j]\
     \ = this->v[i][j];\n            return forward_elimination(A);\n        } else\
     \ {\n            auto A = this->v;\n            return forward_elimination(A);\n\
-    \        }\n    }\n\n    /**\n     * @brief \u30D1\u30FC\u30DE\u30CD\u30F3\u30C8\
-    \ \u03A3_\u03C3 \u03A0_i a[i][\u03C3(i)] (Ryser \u306E\u516C\u5F0F) O(2^n n)\n\
-    \     * @return \u30D1\u30FC\u30DE\u30CD\u30F3\u30C8\n     * @note \u5272\u308A\
-    \u7B97\u3092\u4F7F\u308F\u306A\u3044\u306E\u3067\u3001\u8981\u7D20\u306F\u53EF\
-    \u63DB\u74B0 (long long \u3084 modint \u306A\u3069) \u3067\u3088\u3044\u3002\n\
-    \     *       0 \u3068 1 \u306E\u884C\u5217\u306A\u3089\u3001\u4E8C\u90E8\u30B0\
-    \u30E9\u30D5\u306E\u5B8C\u5168\u30DE\u30C3\u30C1\u30F3\u30B0\u306E\u500B\u6570\
-    \u306B\u306A\u308B\n     *\n     * perm(A) = \u03A3_{S \u2286 \u5217} (-1)^{n\
+    \        }\n    }\n\n    /**\n     * @brief \u7279\u6027\u591A\u9805\u5F0F det(xI\
+    \ - A) \u306E\u4FC2\u6570 (\u4F4E\u6B21\u304B\u3089 n + 1 \u500B\u3001\u6700\u9AD8\
+    \u6B21\u306F 1) O(n^3)\n     * @note \u5272\u308A\u7B97\u3092\u4F7F\u3046\u306E\
+    \u3067\u3001\u8981\u7D20\u306F\u4F53 (modint \u306A\u3069) \u3067\u3042\u308B\u3053\
+    \u3068\n     *\n     * \u76F8\u4F3C\u5909\u63DB\u3067\u4E0A\u30D8\u30C3\u30BB\u30F3\
+    \u30D9\u30EB\u30AF\u884C\u5217 (i > j + 1 \u3067 0) \u306B\u3057\u3066\u304B\u3089\
+    \u3001\u5DE6\u4E0A\u306E k \xD7 k \u306E\u7279\u6027\u591A\u9805\u5F0F\u3092 k\
+    \ \u306E\u5C0F\u3055\u3044\u65B9\u304B\u3089\u6C42\u3081\u308B\n     */\n    [[nodiscard]]\n\
+    \    std::vector<T> characteristic_polynomial() const {\n        assert(n == m);\n\
+    \        using P = OperatorProperty;\n        auto sub = [](const T& a, const\
+    \ T& b) { return P::add(a, P::neg(b)); };\n        auto H = this->v;\n       \
+    \ for (long long j = 0; j + 2 < n; j++) {\n            long long piv = j + 1;\n\
+    \            while (piv < n && H[piv][j] == P::zero()) piv++;\n            if\
+    \ (piv == n) continue;\n            if (piv != j + 1) {\n                std::swap(H[piv],\
+    \ H[j + 1]);\n                for (long long i = 0; i < n; i++) std::swap(H[i][piv],\
+    \ H[i][j + 1]);\n            }\n            const T iv = P::inv(H[j + 1][j]);\n\
+    \            for (long long k = j + 2; k < n; k++) {\n                const T\
+    \ c = P::mul(H[k][j], iv);\n                if (c == P::zero()) continue;\n  \
+    \              // \u884C k \u304B\u3089\u884C j + 1 \u306E c \u500D\u3092\u5F15\
+    \u304D\u3001\u5217 j + 1 \u306B\u5217 k \u306E c \u500D\u3092\u8DB3\u3059 (\u76F8\
+    \u4F3C\u5909\u63DB)\n                for (long long l = 0; l < n; l++) H[k][l]\
+    \ = sub(H[k][l], P::mul(c, H[j + 1][l]));\n                for (long long l =\
+    \ 0; l < n; l++) H[l][j + 1] = P::add(H[l][j + 1], P::mul(c, H[l][k]));\n    \
+    \        }\n        }\n        // p[k]: \u5DE6\u4E0A\u306E k \xD7 k \u306E\u7279\
+    \u6027\u591A\u9805\u5F0F\n        // p[k + 1] = (x - H[k][k]) p[k] - \u03A3_{i\
+    \ < k} (H[i + 1][i] ... H[k][k - 1]) H[i][k] p[i]\n        std::vector<std::vector<T>>\
+    \ p(n + 1);\n        p[0] = {P::one()};\n        for (long long k = 0; k < n;\
+    \ k++) {\n            std::vector<T> q(k + 2, P::zero());\n            for (long\
+    \ long d = 0; d <= k; d++) {\n                q[d + 1] = P::add(q[d + 1], p[k][d]);\n\
+    \                q[d] = sub(q[d], P::mul(H[k][k], p[k][d]));\n            }\n\
+    \            T prod = P::one();\n            for (long long i = k - 1; i >= 0;\
+    \ i--) {\n                prod = P::mul(prod, H[i + 1][i]);\n                if\
+    \ (prod == P::zero()) break;\n                const T c = P::mul(prod, H[i][k]);\n\
+    \                for (long long d = 0; d <= i; d++) q[d] = sub(q[d], P::mul(c,\
+    \ p[i][d]));\n            }\n            p[k + 1] = std::move(q);\n        }\n\
+    \        return p[n];\n    }\n\n    /**\n     * @brief \u30D1\u30FC\u30DE\u30CD\
+    \u30F3\u30C8 \u03A3_\u03C3 \u03A0_i a[i][\u03C3(i)] (Ryser \u306E\u516C\u5F0F\
+    ) O(2^n n)\n     * @return \u30D1\u30FC\u30DE\u30CD\u30F3\u30C8\n     * @note\
+    \ \u5272\u308A\u7B97\u3092\u4F7F\u308F\u306A\u3044\u306E\u3067\u3001\u8981\u7D20\
+    \u306F\u53EF\u63DB\u74B0 (long long \u3084 modint \u306A\u3069) \u3067\u3088\u3044\
+    \u3002\n     *       0 \u3068 1 \u306E\u884C\u5217\u306A\u3089\u3001\u4E8C\u90E8\
+    \u30B0\u30E9\u30D5\u306E\u5B8C\u5168\u30DE\u30C3\u30C1\u30F3\u30B0\u306E\u500B\
+    \u6570\u306B\u306A\u308B\n     *\n     * perm(A) = \u03A3_{S \u2286 \u5217} (-1)^{n\
     \ - |S|} \u03A0_i \u03A3_{j \u2208 S} a[i][j] \u3092\u3001S \u3092\u30B0\u30EC\
     \u30A4\u30B3\u30FC\u30C9\u306E\u9806\u306B\u52D5\u304B\u3057\u3066\u5404\u884C\
     \u306E\u548C\u3092 O(n) \u3067\u66F4\u65B0\u3059\u308B\n     */\n    [[nodiscard]]\n\
@@ -680,7 +715,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/linear_algebra/pow-of-matrix.test.cpp
   requiredBy: []
-  timestamp: '2026-10-23 13:29:09+09:00'
+  timestamp: '2026-10-23 13:37:04+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/linear_algebra/pow-of-matrix.test.cpp

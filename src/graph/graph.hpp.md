@@ -12,6 +12,9 @@ data:
     path: src/graph/chinese-postman.hpp
     title: "\u4E2D\u56FD\u4EBA\u90F5\u4FBF\u914D\u9054\u554F\u984C"
   - icon: ':heavy_check_mark:'
+    path: src/graph/dominator-tree.hpp
+    title: "\u652F\u914D\u6728"
+  - icon: ':heavy_check_mark:'
     path: src/graph/eulerian-trail.hpp
     title: "\u30AA\u30A4\u30E9\u30FC\u8DEF"
   - icon: ':heavy_check_mark:'
@@ -103,6 +106,9 @@ data:
     path: test/unittest/graph/chinese-postman.test.cpp
     title: test/unittest/graph/chinese-postman.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/graph/dominator-tree.test.cpp
+    title: test/unittest/graph/dominator-tree.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/graph/general-matching.test.cpp
     title: test/unittest/graph/general-matching.test.cpp
   - icon: ':heavy_check_mark:'
@@ -147,6 +153,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/directedmst.test.cpp
     title: test/yosupo/graph/directedmst.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/graph/dominatortree.test.cpp
+    title: test/yosupo/graph/dominatortree.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/eulerian-trail-directed.test.cpp
     title: test/yosupo/graph/eulerian-trail-directed.test.cpp
@@ -201,6 +210,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/tree/lca.5.test.cpp
     title: test/yosupo/tree/lca.5.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/tree/rooted-tree-isomorphism-classification.test.cpp
+    title: test/yosupo/tree/rooted-tree-isomorphism-classification.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/tree/tree-diameter.test.cpp
     title: test/yosupo/tree/tree-diameter.test.cpp
@@ -376,6 +388,7 @@ data:
   - src/graph/rerooting-dp.hpp
   - src/graph/graph_util.hpp
   - src/graph/centroid-decomposition.hpp
+  - src/graph/dominator-tree.hpp
   - src/graph/tree_util.hpp
   - src/graph/lowlink.hpp
   - src/graph/eulerian-trail.hpp
@@ -391,6 +404,7 @@ data:
   verifiedWith:
   - test/unittest/graph/general-matching.test.cpp
   - test/unittest/graph/centroid-decomposition.test.cpp
+  - test/unittest/graph/dominator-tree.test.cpp
   - test/unittest/graph/two-sat.test.cpp
   - test/unittest/graph/lowlink.test.cpp
   - test/unittest/graph/minimum-arborescence.test.cpp
@@ -425,6 +439,7 @@ data:
   - test/yosupo/graph/minimum-spanning-tree.1.test.cpp
   - test/yosupo/graph/minimum-steiner-tree.test.cpp
   - test/yosupo/graph/shortest-path.test.cpp
+  - test/yosupo/graph/dominatortree.test.cpp
   - test/yosupo/graph/biconnected-components.test.cpp
   - test/yosupo/graph/scc.test.cpp
   - test/yosupo/graph/two-edge-connected-components.test.cpp
@@ -445,6 +460,7 @@ data:
   - test/yosupo/tree/lca.5.test.cpp
   - test/yosupo/tree/lca.2.test.cpp
   - test/yosupo/tree/jump-on-tree.2.test.cpp
+  - test/yosupo/tree/rooted-tree-isomorphism-classification.test.cpp
   - test/yukicoder/1641.test.cpp
   - test/yukicoder/898.test.cpp
 documentation_of: src/graph/graph.hpp

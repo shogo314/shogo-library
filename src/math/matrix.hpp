@@ -398,6 +398,57 @@ class Matrix {
     }
 
     /**
+     * @brief 特性多項式 det(xI - A) の係数 (低次から n + 1 個、最高次は 1) O(n^3)
+     * @note 割り算を使うので、要素は体 (modint など) であること
+     *
+     * 相似変換で上ヘッセンベルク行列 (i > j + 1 で 0) にしてから、左上の k × k の特性多項式を k の小さい方から求める
+     */
+    [[nodiscard]]
+    std::vector<T> characteristic_polynomial() const {
+        assert(n == m);
+        using P = OperatorProperty;
+        auto sub = [](const T& a, const T& b) { return P::add(a, P::neg(b)); };
+        auto H = this->v;
+        for (long long j = 0; j + 2 < n; j++) {
+            long long piv = j + 1;
+            while (piv < n && H[piv][j] == P::zero()) piv++;
+            if (piv == n) continue;
+            if (piv != j + 1) {
+                std::swap(H[piv], H[j + 1]);
+                for (long long i = 0; i < n; i++) std::swap(H[i][piv], H[i][j + 1]);
+            }
+            const T iv = P::inv(H[j + 1][j]);
+            for (long long k = j + 2; k < n; k++) {
+                const T c = P::mul(H[k][j], iv);
+                if (c == P::zero()) continue;
+                // 行 k から行 j + 1 の c 倍を引き、列 j + 1 に列 k の c 倍を足す (相似変換)
+                for (long long l = 0; l < n; l++) H[k][l] = sub(H[k][l], P::mul(c, H[j + 1][l]));
+                for (long long l = 0; l < n; l++) H[l][j + 1] = P::add(H[l][j + 1], P::mul(c, H[l][k]));
+            }
+        }
+        // p[k]: 左上の k × k の特性多項式
+        // p[k + 1] = (x - H[k][k]) p[k] - Σ_{i < k} (H[i + 1][i] ... H[k][k - 1]) H[i][k] p[i]
+        std::vector<std::vector<T>> p(n + 1);
+        p[0] = {P::one()};
+        for (long long k = 0; k < n; k++) {
+            std::vector<T> q(k + 2, P::zero());
+            for (long long d = 0; d <= k; d++) {
+                q[d + 1] = P::add(q[d + 1], p[k][d]);
+                q[d] = sub(q[d], P::mul(H[k][k], p[k][d]));
+            }
+            T prod = P::one();
+            for (long long i = k - 1; i >= 0; i--) {
+                prod = P::mul(prod, H[i + 1][i]);
+                if (prod == P::zero()) break;
+                const T c = P::mul(prod, H[i][k]);
+                for (long long d = 0; d <= i; d++) q[d] = sub(q[d], P::mul(c, p[i][d]));
+            }
+            p[k + 1] = std::move(q);
+        }
+        return p[n];
+    }
+
+    /**
      * @brief パーマネント Σ_σ Π_i a[i][σ(i)] (Ryser の公式) O(2^n n)
      * @return パーマネント
      * @note 割り算を使わないので、要素は可換環 (long long や modint など) でよい。

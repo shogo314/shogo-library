@@ -4,6 +4,7 @@
 // OperatorProperty を自分で定義した場合 (GF(2) と、既定の演算を継承したもの) の det と inv を愚直な計算と比較する
 // solve・rank・kernel・reduced_row_echelon を、変数の値をすべて試す愚直な実装と比較する (mod 3 と GF(2))
 // permanent を、すべての順列の和と比較する (long long・modint・GF(2))
+// characteristic_polynomial を、行列式を順列で展開した多項式と比較する (mod 998244353・mod 3)
 // 行のリストから作るときの推論ガイドを static_assert で確かめる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
@@ -307,6 +308,42 @@ int main() {
         if (Matrix<mint>(am).permanent() != expect_m) ok = false, std::cerr << "permanent modint" << std::endl;
         if (Matrix<int, GF2>(a2).permanent() != expect_2) ok = false, std::cerr << "permanent GF(2)" << std::endl;
     }
+
+    // characteristic_polynomial: det(xI - A) を、すべての順列について Π (x δ - a) の多項式を足して求めたものと比べる
+    // mod 3 では 0 が多く出るので、ヘッセンベルク化で軸を入れ替える場合や、副対角が 0 になる場合も通る
+    auto check_charpoly = [&](auto zero_mint, int mod_range, const char* name) {
+        using M = decltype(zero_mint);
+        for (int rep = 0; rep < 300 && ok; rep++) {
+            int n = rng() % 6;
+            std::vector<std::vector<M>> a(n, std::vector<M>(n));
+            for (auto& row : a)
+                for (auto& x : row) x = rng() % mod_range;
+            std::vector<M> expect(n + 1, M(0));
+            std::vector<int> perm(n);
+            std::iota(perm.begin(), perm.end(), 0);
+            do {
+                // 置換の符号
+                int sign = 1;
+                for (int i = 0; i < n; i++)
+                    for (int j = i + 1; j < n; j++)
+                        if (perm[i] > perm[j]) sign = -sign;
+                std::vector<M> poly = {M(1)};
+                for (int i = 0; i < n; i++) {
+                    // (x δ_{i, perm[i]} - a[i][perm[i]]) を掛ける
+                    std::vector<M> next(poly.size() + 1, M(0));
+                    for (int d = 0; d < static_cast<int>(poly.size()); d++) {
+                        if (perm[i] == i) next[d + 1] += poly[d];
+                        next[d] -= poly[d] * a[i][perm[i]];
+                    }
+                    poly = next;
+                }
+                for (int d = 0; d <= n; d++) expect[d] += sign * poly[d];
+            } while (std::next_permutation(perm.begin(), perm.end()));
+            if (Matrix<M>(a).characteristic_polynomial() != expect) ok = false, std::cerr << "characteristic_polynomial " << name << std::endl;
+        }
+    };
+    check_charpoly(mint(0), 1000000, "mod 998244353");
+    check_charpoly(static_modint<3>(0), 3, "mod 3");
 
     if (ok) std::cout << "Hello World" << std::endl;
 }

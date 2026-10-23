@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <map>
 #include <utility>
 #include <vector>
 
@@ -55,4 +56,38 @@ std::vector<typename Tree<Cost>::Edge> tree_diameter(const Tree<Cost>& tree, boo
     for (long long w = v; w != u; w = prev[w].src) path.push_back(prev[w]);
     std::reverse(path.begin(), path.end());
     return path;
+}
+
+/**
+ * @brief root を根とする根付き木で、各頂点を根とする部分木を同型なものごとに分類する O(n log n)
+ *
+ * ハッシュではなく、子の分類番号を並べた列に番号を振るので、衝突しない
+ * @return 各頂点の分類番号 (0 から順に振る)。2 つの頂点の部分木が同型なとき、かつそのときに限り同じ番号
+ */
+template <typename Cost>
+std::vector<long long> rooted_tree_isomorphism(const Tree<Cost>& tree, long long root) {
+    const long long n = tree.size();
+    assert(0 <= root && root < n);
+    // BFS の順に並べ、葉の側から番号を決める
+    std::vector<long long> order = {root}, parent(n, -1);
+    for (long long i = 0; i < static_cast<long long>(order.size()); i++) {
+        long long u = order[i];
+        for (const auto& e : tree[u]) {
+            if (e.dst == parent[u]) continue;
+            parent[e.dst] = u;
+            order.push_back(e.dst);
+        }
+    }
+    std::vector<std::vector<long long>> children(n);
+    std::map<std::vector<long long>, long long> ids;
+    std::vector<long long> res(n);
+    for (long long i = n - 1; i >= 0; i--) {
+        long long u = order[i];
+        auto& c = children[u];
+        std::sort(c.begin(), c.end());
+        auto [it, inserted] = ids.emplace(std::move(c), static_cast<long long>(ids.size()));
+        res[u] = it->second;
+        if (parent[u] != -1) children[parent[u]].push_back(res[u]);
+    }
+    return res;
 }

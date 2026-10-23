@@ -305,10 +305,6 @@ MinimumSpanningTree<Cost> minimum_spanning_tree(const Graph<Cost>& graph) {
 }
 
 /**
- * @brief 最小シュタイナー木の辺重みの総和
- * @note X を連結にできなければ inf を返す
- */
-/**
  * @brief 無向グラフの彩色数 (隣り合う頂点が同じ色にならないように塗るときの色の最小数。頂点数 20 程度まで) O(3^n) より少し速い
  * 独立集合の表を O(2^n) で作り、dp[S] = min (dp[S \ T] + 1) を、T を「S の最小の頂点 v を含み、v と隣り合わない S の頂点からなる独立集合」に限って求める
  * 頂点がなければ 0。自己ループがあれば塗れないので -1
@@ -406,7 +402,7 @@ SteinerDP<Cost> steiner_dp(const Graph<Cost>& graph, const std::vector<T>& X, Co
 
 /**
  * @brief 頂点集合 X をすべて含む部分木の辺の重みの総和の最小値 O(3^k n + 2^k m log m) (k = |X|)
- * @note 無向グラフ。X が空なら 0
+ * @note 無向グラフ。X が空なら 0。X を連結にできなければ inf を返す
  */
 template <typename Cost, typename T>
 Cost minimum_steiner_tree(const Graph<Cost>& graph, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max() / 4) {

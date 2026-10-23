@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
-// 部分集合・上位集合のゼータ変換、メビウス変換、アダマール変換と AND・OR・XOR 畳み込み、部分集合畳み込みを愚直な計算とランダムに比較する
+// 部分集合・上位集合のゼータ変換、メビウス変換、アダマール変換と AND・OR・XOR 畳み込み、部分集合畳み込み、集合冪級数の exp・log を愚直な計算とランダムに比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../../src/math/bitwise-transform.hpp"
@@ -71,6 +71,29 @@ int main() {
     ok = ok && or_convolution(std::vector<long long>{1, 2}, std::vector<long long>{3, 4}) == std::vector<long long>{3, 18};
     ok = ok && subset_convolution(std::vector<long long>{1, 2, 3, 4}, std::vector<long long>{5, 6, 7, 8}) == std::vector<long long>{5, 16, 22, 60};
     ok = ok && subset_convolution(std::vector<long long>{3}, std::vector<long long>{4}) == std::vector<long long>{12};
+
+    // set_power_series_exp: 部分集合畳み込みを繰り返して Σ_m a^m / m! を求めたものと比べる
+    // set_power_series_log: exp と互いに逆になっているか
+    {
+        using mint = modint998244353;
+        for (int n = 0; n <= 6 && ok; n++) {
+            for (int rep = 0; rep < 20; rep++) {
+                const int len = 1 << n;
+                std::vector<mint> a(len);
+                for (int s = 1; s < len; s++) a[s] = rng() % 10;
+                std::vector<mint> expect(len), pw(len);
+                pw[0] = 1;  // a^0
+                mint fact = 1;
+                for (int m = 0; m <= n; m++) {
+                    if (m > 0) pw = subset_convolution(pw, a), fact *= m;
+                    for (int s = 0; s < len; s++) expect[s] += pw[s] / fact;
+                }
+                auto e = set_power_series_exp(a);
+                if (e != expect) ok = false;
+                if (set_power_series_log(e) != a) ok = false;
+            }
+        }
+    }
 
     if (ok)
         std::cout << "Hello World" << std::endl;

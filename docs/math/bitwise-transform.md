@@ -1,5 +1,5 @@
 ---
-title: 部分集合・上位集合のゼータ変換、メビウス変換とビット演算 (AND・OR・XOR) の畳み込み、部分集合畳み込み
+title: 部分集合・上位集合のゼータ変換、メビウス変換とビット演算 (AND・OR・XOR) の畳み込み、部分集合畳み込み、集合冪級数の exp・log
 documentation_of: //src/math/bitwise-transform.hpp
 ---
 
@@ -28,6 +28,8 @@ auto f = subset_convolution(a, b);  // {5, 16, 22, 60}
 | `or_convolution(a, b)` | $c_k = \sum_{i \mid j = k} a_i b_j$ を返す | $O(N \log N)$ |
 | `xor_convolution(a, b)` | $c_k = \sum_{i \oplus j = k} a_i b_j$ を返す | $O(N \log N)$ |
 | `subset_convolution(a, b)` | $c_k = \sum_{i \mid j = k,\ i \mathbin{\&} j = 0} a_i b_j$ を返す ($k$ を 2 つの交わらない集合に分ける) | 時間 $O(N \log^2 N)$、メモリ $O(N \log N)$ |
+| `set_power_series_exp(a)` | 集合冪級数の exp $\sum_m a^m / m!$ (積は部分集合畳み込み)。$a_0 = 0$、要素は体 | 時間 $O(N \log^2 N)$、メモリ $O(N \log N)$ |
+| `set_power_series_log(a)` | 集合冪級数の log (exp の逆)。$a_0 = 1$、要素は体 | 時間 $O(N \log^2 N)$、メモリ $O(N \log N)$ |
 
 - `a` と `b` は同じ長さで、長さが 2 の累乗でないと assert で落ちます。
 - `xor_convolution` と `walsh_hadamard(a, true)` は最後に $N$ で割ります。modint や浮動小数点数では $N$ の逆数を掛け、整数型では $N$ で割ります (結果が整数なので割り切れます)。
@@ -54,6 +56,12 @@ $n = 20$ ($N = 2^{20}$) のとき、`T` が 4 バイトの modint なら、内�
 // dp[S] = S を交わらない 2 つの集合に分けたときの、cost の積の和
 auto dp = subset_convolution(cost, cost);
 ```
+
+## 集合冪級数の exp・log
+
+部分集合畳み込みと同じくランク付きゼータ変換をすると、集合ごとに要素数についての多項式 $p(z)$ になり、積は多項式の積になります。exp は $q' = p' q$、log は $p q' = p'$ から、それぞれ $O(n^2)$ で係数を求めてから、ランク付きメビウス変換で戻します。全体で $O(2^n n^2)$ です ($n = 20$ で 1.5 秒ほど)。
+
+集合冪級数 $a$ の exp の $S$ の係数は、$S$ を交わらない空でない集合 $T_1, \dots, T_k$ に分ける方法すべてについての $a_{T_1} \cdots a_{T_k}$ の和です。連結なグラフの数え上げ (log) や、集合の分割の数え上げ (exp) に使います。
 
 ## 関連
 

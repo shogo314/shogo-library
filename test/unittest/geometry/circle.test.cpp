@@ -2,6 +2,7 @@
 
 // geometry/circle.hpp の関数を、定義から確かめる
 // 共通部分の面積は、x 方向に細かく分けた数値積分と比べる
+// 最小包含円は、1 〜 3 点の組をすべて試す総当たりと比べる
 // 問題の入力は使わず、すべて成り立ったら Hello World を出力する
 
 #include "../../../src/geometry/circle.hpp"
@@ -100,6 +101,40 @@ int main() {
         // 向きを逆にしても同じ
         std::vector<P> rev(square.rbegin(), square.rend());
         ok = ok && std::abs(circle_polygon_intersection_area(c1, rev) - area_cp) < 1e-3;
+    }
+
+    // minimum_enclosing_circle: 1 〜 3 点のすべての組を候補にして、全点を含む最小の円を探したものと比べる
+    // 同じ点や一直線上の点を多く含むように、小さい範囲の整数座標で調べる
+    for (int rep = 0; rep < 1000 && ok; rep++) {
+        int n = rng() % 8 + 1;
+        using L = Vector<long long, 2>;
+        std::vector<L> p(n);
+        for (auto& v : p) v = L(static_cast<long long>(rng() % 7), static_cast<long long>(rng() % 7));
+        auto c = minimum_enclosing_circle(p);
+        // 半径の 2 乗が最小の候補 (3 点が一直線上のものは除く)
+        double best = 1e18;
+        EnclosingCircle<long long> best_c;
+        for (int i = 0; i < n; i++)
+            for (int j = i; j < n; j++)
+                for (int k = j; k < n; k++) {
+                    EnclosingCircle<long long> cand;
+                    if (i == j && j == k) {
+                        cand.support = {p[i]};
+                    } else if (j == k) {
+                        cand.support = {p[i], p[j]};
+                    } else {
+                        if (cross(p[j] - p[i], p[k] - p[i]) == 0) continue;
+                        cand.support = {p[i], p[j], p[k]};
+                    }
+                    bool all = true;
+                    for (auto& q : p) all &= cand.side(q) <= 0;
+                    double r = cand.circle().r;
+                    if (all && r < best - 1e-9) best = r, best_c = cand;
+                }
+        if (!near(c.circle().r, best)) ok = false;
+        for (auto& q : p) {
+            if (c.side(q) > 0 || c.side(q) != best_c.side(q)) ok = false;
+        }
     }
 
     if (ok)

@@ -2,13 +2,14 @@
 
 /**
  * @file circle.hpp
- * @brief 円 (位置関係、交点、接線、内接円、外接円、共通部分の面積)
+ * @brief 円 (位置関係、交点、接線、内接円、外接円、共通部分の面積、最小包含円)
  */
 
 #include <algorithm>
 #include <cassert>
 #include <cmath>
 #include <istream>
+#include <random>
 #include <type_traits>
 #include <utility>
 #include <vector>
@@ -238,4 +239,77 @@ T circle_polygon_intersection_area(const Circle<T>& c, const std::vector<Vector<
     const int n = static_cast<int>(polygon.size());
     for (int i = 0; i < n; i++) res += triangle(polygon[i] - c.c, polygon[i + 1 == n ? 0 : i + 1] - c.c);
     return std::abs(res);
+}
+
+/**
+ * @brief minimum_enclosing_circle の戻り値。円周上にあって円を決める 1 〜 3 点で表す
+ * @tparam T 座標の型。整数型なら side は __int128 で正確に判定する
+ */
+template <typename T>
+struct EnclosingCircle {
+    std::vector<Vector<T, 2>> support;  //!< 円を決める点 (1 点なら半径 0、2 点ならそれを直径とする円、3 点ならその外接円)
+
+    /**
+     * @brief 点 p が円の内側なら -1、円周上なら 0、外側なら 1 (浮動小数点型では誤差を考えない)
+     */
+    int side(const Vector<T, 2>& p) const {
+        using W = std::conditional_t<std::is_integral_v<T>, __int128, T>;
+        auto sgn = [](W x) { return x > 0 ? 1 : x < 0 ? -1
+                                                      : 0; };
+        if (support.size() == 1) return p == support[0] ? 0 : 1;
+        if (support.size() == 2) {
+            // 直径の両端から見た向きの内積の符号
+            const Vector<T, 2> a = support[0] - p, b = support[1] - p;
+            return sgn(static_cast<W>(a[0]) * b[0] + static_cast<W>(a[1]) * b[1]);
+        }
+        // 外接円の内外判定 (incircle の行列式)。三角形が時計回りなら符号を反転する
+        W m[3][3];
+        for (int i = 0; i < 3; i++) {
+            const W x = support[i][0] - p[0], y = support[i][1] - p[1];
+            m[i][0] = x, m[i][1] = y, m[i][2] = x * x + y * y;
+        }
+        const W det = m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) - m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0]) + m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
+        const Vector<T, 2> u = support[1] - support[0], v = support[2] - support[0];
+        const int orient = sgn(static_cast<W>(u[0]) * v[1] - static_cast<W>(u[1]) * v[0]);
+        return -sgn(det) * orient;
+    }
+    /**
+     * @brief 中心と半径 (double)
+     */
+    Circle<double> circle() const {
+        auto to = [](const Vector<T, 2>& a) { return Vector<double, 2>(static_cast<double>(a[0]), static_cast<double>(a[1])); };
+        if (support.size() == 1) return Circle<double>(to(support[0]), 0);
+        if (support.size() == 2) {
+            const Vector<double, 2> a = to(support[0]), b = to(support[1]);
+            return Circle<double>((a + b) / 2.0, (a - b).abs() / 2);
+        }
+        return circumcircle(to(support[0]), to(support[1]), to(support[2]));
+    }
+};
+
+/**
+ * @brief 点の集合を含む最小の円 (Welzl の乱択アルゴリズム) 期待 O(n)
+ * 点の順番を乱択で入れ替え、外にある点が見つかるたびに、その点を円周上に固定して作り直す
+ * @pre 点は 1 つ以上
+ */
+template <typename T>
+EnclosingCircle<T> minimum_enclosing_circle(std::vector<Vector<T, 2>> p) {
+    assert(!p.empty());
+    static std::mt19937_64 rng(std::random_device{}());
+    std::shuffle(p.begin(), p.end(), rng);
+    const long long n = p.size();
+    EnclosingCircle<T> c{{p[0]}};
+    for (long long i = 1; i < n; i++) {
+        if (c.side(p[i]) <= 0) continue;
+        c.support = {p[i]};
+        for (long long j = 0; j < i; j++) {
+            if (c.side(p[j]) <= 0) continue;
+            c.support = {p[i], p[j]};
+            for (long long k = 0; k < j; k++) {
+                if (c.side(p[k]) <= 0) continue;
+                c.support = {p[i], p[j], p[k]};
+            }
+        }
+    }
+    return c;
 }

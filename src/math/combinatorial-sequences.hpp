@@ -2,14 +2,16 @@
 
 /**
  * @file combinatorial-sequences.hpp
- * @brief 分割数・ベルヌーイ数・スターリング数・ベル数 (形式的冪級数で O(n log n))
+ * @brief 分割数・ベルヌーイ数・スターリング数・ベル数 (形式的冪級数で O(n log n))、大きい n の階乗
  */
 
+#include <cassert>
 #include <vector>
 
 #include "combinatorics.hpp"
 #include "convolution.hpp"
 #include "fps.hpp"
+#include "multipoint.hpp"
 
 /**
  * @brief 分割数 p(0), ..., p(n) (n を正の整数の和に分ける方法の数。和の順番は区別しない) O(n log n)
@@ -98,4 +100,33 @@ FPS<mint> bell_numbers(long long n) {
     FPS<mint> f = exp(g, n + 1);
     for (long long k = 0; k <= n; k++) f[k] *= C::factorial(k);
     return f;
+}
+
+/**
+ * @brief n! を素数 p (= mint::mod()) で割った余り (n < p、n が 10^9 程度でもよい) O(sqrt(n) log n)
+ *
+ * v を 2 のべきで v (v + 1) > n となるようにとり、g_d(x) = (vx + 1)(vx + 2) ... (vx + d) の g_d(0), ..., g_d(d) を
+ * d = 1, 2, 4, ..., v と倍にしながら標本点のずらしで求める (g_2d(x) = g_d(x) g_d(x + d / v))
+ * n! = g_v(0) g_v(1) ... g_v(q - 1) × (qv + 1) ... n (q = floor(n / v))
+ */
+template <typename mint>
+mint large_factorial(long long n) {
+    assert(0 <= n && n < static_cast<long long>(mint::mod()));
+    long long v = 1;
+    while (v * (v + 1) <= n) v *= 2;
+    const mint inv_v = mint(v).inv();
+    std::vector<mint> ys = {mint(1), mint(v) + 1};  // g_1(0), g_1(1)
+    for (long long d = 1; d < v; d *= 2) {
+        // g_d(0), ..., g_d(2d) と g_d(x + d / v) (x = 0, ..., 2d) を掛ける
+        std::vector<mint> a = ys, ext = sample_point_shift(ys, mint(d + 1), d);
+        a.insert(a.end(), ext.begin(), ext.end());
+        std::vector<mint> b = sample_point_shift(ys, mint(d) * inv_v, 2 * d + 1);
+        for (long long x = 0; x <= 2 * d; x++) a[x] *= b[x];
+        ys.swap(a);
+    }
+    const long long q = n / v;
+    mint res = 1;
+    for (long long i = 0; i < q; i++) res *= ys[i];
+    for (long long i = q * v + 1; i <= n; i++) res *= mint(i);
+    return res;
 }

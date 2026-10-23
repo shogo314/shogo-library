@@ -1,6 +1,7 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
 // 分割数・ベルヌーイ数・スターリング数・ベル数を、O(n^2) の漸化式で 1 つずつ求めたものと比べる
+// large_factorial を、1 から順に掛けた値とウィルソンの定理で確かめる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../../src/math/combinatorial-sequences.hpp"
@@ -67,5 +68,24 @@ int main() {
     check(partition_numbers<mint>(100)[100] == mint(190569292), "p(100) = 190569292");
     check(bernoulli_numbers<mint>(1)[1] == -mint(2).inv(), "B_1 = -1/2");
     check(bell_numbers<mint>(10)[10] == mint(115975), "B_10 = 115975");
+    // large_factorial: 1 から順に掛けた値と比べる (v が変わる境目の前後も含む)。NTT に向かない法 10^9 + 7 でも調べる
+    {
+        mint f = 1;
+        long long next = 0;
+        std::vector<long long> ns = {0, 1, 2, 5, 6, 7, 12, 19, 20, 21, 71, 72, 73, 1000, 4096, 65535, 65536, 65537, 200000};
+        for (long long n = 0; n <= 200000 && ok; n++) {
+            if (n > 0) f *= mint(n);
+            if (next < static_cast<long long>(ns.size()) && ns[next] == n) {
+                check(large_factorial<mint>(n) == f, "large_factorial");
+                next++;
+            }
+        }
+        using mint2 = static_modint<1000000007>;
+        mint2 g = 1;
+        for (long long n = 1; n <= 100000; n++) g *= mint2(n);
+        check(large_factorial<mint2>(100000) == g, "large_factorial mod 10^9 + 7");
+        // ウィルソンの定理 (p - 1)! ≡ -1
+        check(large_factorial<mint>(998244352) == mint(-1), "large_factorial (p - 1)!");
+    }
     if (ok) std::cout << "Hello World" << std::endl;
 }

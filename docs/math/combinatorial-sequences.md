@@ -1,5 +1,5 @@
 ---
-title: 分割数・ベルヌーイ数・スターリング数・ベル数
+title: 分割数・ベルヌーイ数・スターリング数・ベル数・大きい n の階乗
 documentation_of: //src/math/combinatorial-sequences.hpp
 ---
 
@@ -12,6 +12,7 @@ auto B = bernoulli_numbers<mint>(10);   // B[1] = -1/2
 auto s = stirling_first<mint>(5);       // s(5, k): x(x-1)(x-2)(x-3)(x-4) の係数
 auto S = stirling_second<mint>(5);      // S(5, k)
 auto bell = bell_numbers<mint>(10);     // bell[10] = 115975
+mint f = large_factorial<mint>(998244352);  // (p - 1)! ≡ -1 (ウィルソンの定理)
 ```
 
 ## 関数
@@ -29,7 +30,15 @@ auto bell = bell_numbers<mint>(10);     // bell[10] = 115975
 - 符号なし第 1 種スターリング数 (順列を $k$ 個の巡回に分ける方法の数) は $\lvert s(n, k) \rvert = (-1)^{n-k} s(n, k)$ です。
 - ベル数は $B_n = \sum_k S(n, k)$ でもあります。
 
+## 大きい n の階乗
+
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `large_factorial<mint>(n)` | $n!$ を素数 $p$ (`mint` の法) で割った余り。$0 \le n < p$ で、$n$ が $10^9$ 程度でもよい | $O(\sqrt{n} \log n)$ |
+
+$v$ を 2 のべきで $v (v + 1) > n$ となるようにとり、$g_d(x) = (vx + 1)(vx + 2) \cdots (vx + d)$ の値 $g_d(0), \dots, g_d(d)$ を、$g_{2d}(x) = g_d(x) g_d(x + d / v)$ を使って $d = 1, 2, 4, \dots, v$ と倍にしながら [標本点のずらし](multipoint.hpp) で求めます。$q = \lfloor n / v \rfloor$ として $n! = g_v(0) \cdots g_v(q - 1) \times (qv + 1) \cdots n$ です。$n = 10^9$ 程度で 1 回 30 ミリ秒ほどです。
+
 ## 関連
 
-- 階乗・二項係数は [組み合わせ](combinatorics.hpp)
+- 前計算した表による階乗・二項係数は [組み合わせ](combinatorics.hpp)
 - 母関数の演算は [形式的冪級数](fps.hpp)

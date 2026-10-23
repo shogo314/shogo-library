@@ -25,28 +25,28 @@ data:
     \ <iostream>\n#include <string>\n#include <utility>\n#include <vector>\n\n#line\
     \ 2 \"src/math/stern-brocot.hpp\"\n\n/**\n * @file stern-brocot.hpp\n * @brief\
     \ Stern\u2013Brocot \u6728\u3068\u9023\u5206\u6570\n */\n\n#include <algorithm>\n\
-    #include <cassert>\n#include <optional>\n#line 13 \"src/math/stern-brocot.hpp\"\
+    #include <cassert>\n#include <optional>\n#include <type_traits>\n#line 14 \"src/math/stern-brocot.hpp\"\
     \n\n#line 2 \"src/math/rational.hpp\"\n\n/**\n * @file rational.hpp\n * @brief\
     \ \u6709\u7406\u6570\n */\n\n#line 9 \"src/math/rational.hpp\"\n#include <cstddef>\n\
     #include <istream>\n#include <ostream>\n#line 14 \"src/math/rational.hpp\"\n\n\
     #line 2 \"src/base/functions.hpp\"\n\n/**\n * @file functions.hpp\n * @brief \u6C4E\
     \u7528\u95A2\u6570 (chmin, chmax \u306A\u3069)\n */\n\n#line 9 \"src/base/functions.hpp\"\
     \n#include <cmath>\n#include <iterator>\n#include <limits>\n#include <numeric>\n\
-    #if __cplusplus >= 202002L\n#include <ranges>\n#endif\n#include <type_traits>\n\
-    #line 18 \"src/base/functions.hpp\"\n\ntemplate <typename T1, typename T2>\ninline\
-    \ constexpr bool chmin(T1& a, T2 b) {\n    if (a > b) {\n        a = b;\n    \
-    \    return true;\n    }\n    return false;\n}\n\ntemplate <typename T1, typename\
-    \ T2>\ninline constexpr bool chmax(T1& a, T2 b) {\n    if (a < b) {\n        a\
-    \ = b;\n        return true;\n    }\n    return false;\n}\n\ninline constexpr\
-    \ long long max(const long long& t1, const long long& t2) {\n    return std::max<long\
-    \ long>(t1, t2);\n}\n\ninline constexpr long long min(const long long& t1, const\
-    \ long long& t2) {\n    return std::min<long long>(t1, t2);\n}\n\nusing std::abs;\n\
-    using std::gcd;\nusing std::lcm;\nusing std::size;\n\n#if __cplusplus >= 202002L\n\
-    using std::midpoint;\n#else\n// C++20 \u306E std::midpoint \u3068\u540C\u3058\
-    \ (\u6574\u6570\u306F a \u306E\u5074\u306B\u4E38\u3081\u3001\u3042\u3075\u308C\
-    \u306A\u3044)\ntemplate <typename T>\ninline constexpr std::enable_if_t<std::is_integral_v<T>\
-    \ && !std::is_same_v<T, bool>, T> midpoint(T a, T b) noexcept {\n    using U =\
-    \ std::make_unsigned_t<T>;\n    if (a <= b) return static_cast<T>(a + static_cast<T>(static_cast<U>(static_cast<U>(b)\
+    #if __cplusplus >= 202002L\n#include <ranges>\n#endif\n#line 18 \"src/base/functions.hpp\"\
+    \n\ntemplate <typename T1, typename T2>\ninline constexpr bool chmin(T1& a, T2\
+    \ b) {\n    if (a > b) {\n        a = b;\n        return true;\n    }\n    return\
+    \ false;\n}\n\ntemplate <typename T1, typename T2>\ninline constexpr bool chmax(T1&\
+    \ a, T2 b) {\n    if (a < b) {\n        a = b;\n        return true;\n    }\n\
+    \    return false;\n}\n\ninline constexpr long long max(const long long& t1, const\
+    \ long long& t2) {\n    return std::max<long long>(t1, t2);\n}\n\ninline constexpr\
+    \ long long min(const long long& t1, const long long& t2) {\n    return std::min<long\
+    \ long>(t1, t2);\n}\n\nusing std::abs;\nusing std::gcd;\nusing std::lcm;\nusing\
+    \ std::size;\n\n#if __cplusplus >= 202002L\nusing std::midpoint;\n#else\n// C++20\
+    \ \u306E std::midpoint \u3068\u540C\u3058 (\u6574\u6570\u306F a \u306E\u5074\u306B\
+    \u4E38\u3081\u3001\u3042\u3075\u308C\u306A\u3044)\ntemplate <typename T>\ninline\
+    \ constexpr std::enable_if_t<std::is_integral_v<T> && !std::is_same_v<T, bool>,\
+    \ T> midpoint(T a, T b) noexcept {\n    using U = std::make_unsigned_t<T>;\n \
+    \   if (a <= b) return static_cast<T>(a + static_cast<T>(static_cast<U>(static_cast<U>(b)\
     \ - static_cast<U>(a)) >> 1));\n    return static_cast<T>(a - static_cast<T>(static_cast<U>(static_cast<U>(a)\
     \ - static_cast<U>(b)) >> 1));\n}\ntemplate <typename T>\ninline constexpr std::enable_if_t<std::is_floating_point_v<T>,\
     \ T> midpoint(T a, T b) noexcept {\n    constexpr T lo = std::numeric_limits<T>::min()\
@@ -183,7 +183,7 @@ data:
     \            return neg ? -x : x;\n        };\n        auto pos = s.find('/');\n\
     \        if (pos == std::string::npos)\n            r = Rational(parse(s));\n\
     \        else\n            r = Rational(parse(s.substr(0, pos)), parse(s.substr(pos\
-    \ + 1)));\n        return is;\n    }\n};\n#line 15 \"src/math/stern-brocot.hpp\"\
+    \ + 1)));\n        return is;\n    }\n};\n#line 16 \"src/math/stern-brocot.hpp\"\
     \n\n/**\n * @brief Stern\u2013Brocot \u6728\u3068\u9023\u5206\u6570\n *\n * \u6B63\
     \u306E\u6709\u7406\u6570\u3092 Stern\u2013Brocot \u6728 (\u6839\u306F 1/1) \u306E\
     \u9802\u70B9\u3068\u540C\u4E00\u8996\u3059\u308B\n * \u6839\u304B\u3089\u9802\u70B9\
@@ -270,7 +270,13 @@ data:
     \      // 0 < 1 / q < c / d \u3068\u306A\u308B\u6700\u5C0F\u306E q\n        T\
     \ q = d / c + 1;\n        return {k * q + 1, q};\n    }\n    // \u9006\u6570\u3092\
     \u3068\u308B\u3068 d / c < q / p < b / a\n    auto [u, v] = simplest_open(d, c,\
-    \ b, a);\n    return {k * u + v, u};\n}\n}  // namespace internal\n\n/**\n * @brief\
+    \ b, a);\n    return {k * u + v, u};\n}\n\n// \u5F15\u6570\u306E\u578B\u306E\u63A8\
+    \u8AD6\u306B\u4F7F\u308F\u305B\u306A\u3044 (binary_search \u306E max_num \u306B\
+    \ T \u306E\u5024\u3092\u305D\u306E\u307E\u307E\u6E21\u305B\u308B\u3088\u3046\u306B\
+    \u3059\u308B)\n#if __cplusplus >= 202002L\ntemplate <typename T>\nusing non_deduced_t\
+    \ = std::type_identity_t<T>;\n#else\ntemplate <typename T>\nstruct type_identity\
+    \ {\n    using type = T;\n};\ntemplate <typename T>\nusing non_deduced_t = typename\
+    \ type_identity<T>::type;\n#endif\n}  // namespace internal\n\n/**\n * @brief\
     \ lo \u3068 hi \u306E\u9593\u3067\u6700\u3082\u5358\u7D14\u306A (\u5206\u6BCD\u304C\
     \u6700\u5C0F\u3067\u3001\u305D\u306E\u4E2D\u3067\u5206\u5B50\u306E\u7D76\u5BFE\
     \u5024\u304C\u6700\u5C0F\u306E) \u5206\u6570\n * \u65E2\u5B9A\u306F\u958B\u533A\
@@ -322,51 +328,51 @@ data:
     \u6570\u306F O(log max_den) \u7A0B\u5EA6 (max_num \u3092\u6E21\u3055\u306A\u3044\
     \u306A\u3089 O(log (max_den + \u5883\u76EE\u306E\u5024)))\n * @pre max_den >=\
     \ 1\n */\ntemplate <typename T, typename Pred>\nstd::pair<std::pair<T, T>, std::pair<T,\
-    \ T>> binary_search(T max_den, Pred pred, std::optional<T> max_num = std::nullopt)\
-    \ {\n    assert(max_den >= 1);\n    assert(!max_num || *max_num >= 0);\n    assert(pred(Rational<T>(0)));\n\
-    \    internal::Bounds<T> b;\n    // \u5206\u5B50\u304C 0 \u4EE5\u4E0B\u306A\u3089\
-    \ 0 \u3057\u304B\u9078\u3079\u306A\u3044 (\u4E0A\u7AEF +\u221E \u304B\u3089\u5DE6\
-    \u3078\u9032\u3093\u3067\u3082\u5206\u5B50 1 \u306E\u307E\u307E\u306A\u306E\u3067\
-    \u3001\u4E0A\u9650\u3092\u6E80\u305F\u305B\u306A\u3044)\n    if (max_num && *max_num\
-    \ == 0) return {{0, 1}, {1, 0}};\n    // \u52D5\u304F\u65B9\u306E\u7AEF (num,\
-    \ den) \u306B k \u56DE\u3082\u3046\u4E00\u65B9\u306E\u7AEF (add_num, add_den)\
-    \ \u3092\u8DB3\u305B\u308B\u56DE\u6570\u306E\u4E0A\u9650 (\u306A\u3051\u308C\u3070\
-    \ -1)\n    auto limit = [&](T num, T den, T add_num, T add_den) -> T {\n     \
-    \   T res = -1;\n        if (add_den > 0) res = (max_den - den) / add_den;\n \
-    \       if (max_num && add_num > 0) {\n            T r = (*max_num - num) / add_num;\n\
-    \            res = res == -1 ? r : std::min(res, r);\n        }\n        return\
-    \ res;\n    };\n    // ok(k) \u304C k = 0 \u3067 true\u3001k \u304C\u5927\u304D\
-    \u3044\u3068 false \u306B\u306A\u308B\u3068\u304D\u3001ok(k) \u304C true \u306E\
-    \u6700\u5927\u306E k (k <= bound\u3001bound = -1 \u306A\u3089\u4E0A\u9650\u306A\
-    \u3057)\n    // \u500D\u3005\u306B\u9032\u3081\u3066\u304B\u3089\u3001\u901A\u308A\
-    \u904E\u304E\u305F\u5206\u3092\u4E8C\u5206\u63A2\u7D22\u3067\u623B\u3059\u3002\
-    ok \u3092\u547C\u3076\u56DE\u6570\u306F O(log k)\n    auto search = [](T bound,\
-    \ auto ok) -> T {\n        T k = 0, s = 1;\n        while ((bound == -1 || s <=\
-    \ bound - k) && ok(k + s)) k += s, s *= 2;\n        while (s > 1) {\n        \
-    \    s /= 2;\n            if ((bound == -1 || s <= bound - k) && ok(k + s)) k\
-    \ += s;\n        }\n        return k;\n    };\n    while (true) {\n        bool\
-    \ moved = false;\n        // \u4E0B\u7AEF\u3092\u4E0A\u3052\u308B: \u4E0B\u7AEF\
-    \ + k \u4E0A\u7AEF \u3067 pred \u304C true \u306E\u6700\u5927\u306E k\n      \
-    \  T k = search(limit(b.lo_num, b.lo_den, b.hi_num, b.hi_den), [&](T k) {\n  \
-    \          return pred(Rational<T>(b.lo_num + k * b.hi_num, b.lo_den + k * b.hi_den));\n\
-    \        });\n        if (k > 0) b.move('R', k), moved = true;\n        // \u4E0A\
-    \u7AEF\u3092\u4E0B\u3052\u308B: \u4E0A\u7AEF + k \u4E0B\u7AEF \u3067 pred \u304C\
-    \ false \u306E\u6700\u5927\u306E k\n        k = search(limit(b.hi_num, b.hi_den,\
-    \ b.lo_num, b.lo_den), [&](T k) {\n            return !pred(Rational<T>(b.hi_num\
-    \ + k * b.lo_num, b.hi_den + k * b.lo_den));\n        });\n        if (k > 0)\
-    \ b.move('L', k), moved = true;\n        if (!moved) break;\n    }\n    return\
-    \ {{b.lo_num, b.lo_den}, {b.hi_num, b.hi_den}};\n}\n\n}  // namespace stern_brocot\n\
-    #line 9 \"test/yosupo/number_theory/stern-brocot-tree.test.cpp\"\n\nint main()\
-    \ {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n    using\
-    \ Q = Rational<long long>;\n    int t;\n    std::cin >> t;\n    while (t--) {\n\
-    \        std::string type;\n        std::cin >> type;\n        if (type == \"\
-    ENCODE_PATH\") {\n            long long a, b;\n            std::cin >> a >> b;\n\
-    \            auto path = stern_brocot::encode_path(Q(a, b));\n            std::cout\
-    \ << path.size();\n            for (auto [c, n] : path) std::cout << ' ' << c\
-    \ << ' ' << n;\n            std::cout << '\\n';\n        } else if (type == \"\
-    DECODE_PATH\") {\n            int k;\n            std::cin >> k;\n           \
-    \ std::vector<std::pair<char, long long>> path(k);\n            for (auto& [c,\
-    \ n] : path) std::cin >> c >> n;\n            Q x = stern_brocot::decode_path(path);\n\
+    \ T>> binary_search(T max_den, Pred pred, std::optional<internal::non_deduced_t<T>>\
+    \ max_num = std::nullopt) {\n    assert(max_den >= 1);\n    assert(!max_num ||\
+    \ *max_num >= 0);\n    assert(pred(Rational<T>(0)));\n    internal::Bounds<T>\
+    \ b;\n    // \u5206\u5B50\u304C 0 \u4EE5\u4E0B\u306A\u3089 0 \u3057\u304B\u9078\
+    \u3079\u306A\u3044 (\u4E0A\u7AEF +\u221E \u304B\u3089\u5DE6\u3078\u9032\u3093\u3067\
+    \u3082\u5206\u5B50 1 \u306E\u307E\u307E\u306A\u306E\u3067\u3001\u4E0A\u9650\u3092\
+    \u6E80\u305F\u305B\u306A\u3044)\n    if (max_num && *max_num == 0) return {{0,\
+    \ 1}, {1, 0}};\n    // \u52D5\u304F\u65B9\u306E\u7AEF (num, den) \u306B k \u56DE\
+    \u3082\u3046\u4E00\u65B9\u306E\u7AEF (add_num, add_den) \u3092\u8DB3\u305B\u308B\
+    \u56DE\u6570\u306E\u4E0A\u9650 (\u306A\u3051\u308C\u3070 -1)\n    auto limit =\
+    \ [&](T num, T den, T add_num, T add_den) -> T {\n        T res = -1;\n      \
+    \  if (add_den > 0) res = (max_den - den) / add_den;\n        if (max_num && add_num\
+    \ > 0) {\n            T r = (*max_num - num) / add_num;\n            res = res\
+    \ == -1 ? r : std::min(res, r);\n        }\n        return res;\n    };\n    //\
+    \ ok(k) \u304C k = 0 \u3067 true\u3001k \u304C\u5927\u304D\u3044\u3068 false \u306B\
+    \u306A\u308B\u3068\u304D\u3001ok(k) \u304C true \u306E\u6700\u5927\u306E k (k\
+    \ <= bound\u3001bound = -1 \u306A\u3089\u4E0A\u9650\u306A\u3057)\n    // \u500D\
+    \u3005\u306B\u9032\u3081\u3066\u304B\u3089\u3001\u901A\u308A\u904E\u304E\u305F\
+    \u5206\u3092\u4E8C\u5206\u63A2\u7D22\u3067\u623B\u3059\u3002ok \u3092\u547C\u3076\
+    \u56DE\u6570\u306F O(log k)\n    auto search = [](T bound, auto ok) -> T {\n \
+    \       T k = 0, s = 1;\n        while ((bound == -1 || s <= bound - k) && ok(k\
+    \ + s)) k += s, s *= 2;\n        while (s > 1) {\n            s /= 2;\n      \
+    \      if ((bound == -1 || s <= bound - k) && ok(k + s)) k += s;\n        }\n\
+    \        return k;\n    };\n    while (true) {\n        bool moved = false;\n\
+    \        // \u4E0B\u7AEF\u3092\u4E0A\u3052\u308B: \u4E0B\u7AEF + k \u4E0A\u7AEF\
+    \ \u3067 pred \u304C true \u306E\u6700\u5927\u306E k\n        T k = search(limit(b.lo_num,\
+    \ b.lo_den, b.hi_num, b.hi_den), [&](T k) {\n            return pred(Rational<T>(b.lo_num\
+    \ + k * b.hi_num, b.lo_den + k * b.hi_den));\n        });\n        if (k > 0)\
+    \ b.move('R', k), moved = true;\n        // \u4E0A\u7AEF\u3092\u4E0B\u3052\u308B\
+    : \u4E0A\u7AEF + k \u4E0B\u7AEF \u3067 pred \u304C false \u306E\u6700\u5927\u306E\
+    \ k\n        k = search(limit(b.hi_num, b.hi_den, b.lo_num, b.lo_den), [&](T k)\
+    \ {\n            return !pred(Rational<T>(b.hi_num + k * b.lo_num, b.hi_den +\
+    \ k * b.lo_den));\n        });\n        if (k > 0) b.move('L', k), moved = true;\n\
+    \        if (!moved) break;\n    }\n    return {{b.lo_num, b.lo_den}, {b.hi_num,\
+    \ b.hi_den}};\n}\n\n}  // namespace stern_brocot\n#line 9 \"test/yosupo/number_theory/stern-brocot-tree.test.cpp\"\
+    \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
+    \    using Q = Rational<long long>;\n    int t;\n    std::cin >> t;\n    while\
+    \ (t--) {\n        std::string type;\n        std::cin >> type;\n        if (type\
+    \ == \"ENCODE_PATH\") {\n            long long a, b;\n            std::cin >>\
+    \ a >> b;\n            auto path = stern_brocot::encode_path(Q(a, b));\n     \
+    \       std::cout << path.size();\n            for (auto [c, n] : path) std::cout\
+    \ << ' ' << c << ' ' << n;\n            std::cout << '\\n';\n        } else if\
+    \ (type == \"DECODE_PATH\") {\n            int k;\n            std::cin >> k;\n\
+    \            std::vector<std::pair<char, long long>> path(k);\n            for\
+    \ (auto& [c, n] : path) std::cin >> c >> n;\n            Q x = stern_brocot::decode_path(path);\n\
     \            std::cout << x.num() << ' ' << x.den() << '\\n';\n        } else\
     \ if (type == \"LCA\") {\n            long long a, b, c, d;\n            std::cin\
     \ >> a >> b >> c >> d;\n            Q x = stern_brocot::lca(Q(a, b), Q(c, d));\n\
@@ -411,7 +417,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/number_theory/stern-brocot-tree.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:37:20+09:00'
+  timestamp: '2026-10-23 13:29:09+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/number_theory/stern-brocot-tree.test.cpp

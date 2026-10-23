@@ -79,6 +79,9 @@ data:
     path: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
     title: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/unionfind-with-potential.test.cpp
+    title: test/yosupo/data_structure/unionfind-with-potential.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/unionfind.test.cpp
     title: test/yosupo/data_structure/unionfind.test.cpp
   - icon: ':heavy_check_mark:'
@@ -96,6 +99,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/minimum-spanning-tree.2.test.cpp
     title: test/yosupo/graph/minimum-spanning-tree.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/graph/minimum-steiner-tree.test.cpp
+    title: test/yosupo/graph/minimum-steiner-tree.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/scc.test.cpp
     title: test/yosupo/graph/scc.test.cpp
@@ -257,10 +263,12 @@ data:
   - test/yosupo/graph/chromatic-number.1.test.cpp
   - test/yosupo/graph/minimum-spanning-tree.2.test.cpp
   - test/yosupo/graph/minimum-spanning-tree.1.test.cpp
+  - test/yosupo/graph/minimum-steiner-tree.test.cpp
   - test/yosupo/graph/scc.test.cpp
   - test/yosupo/graph/cycle-detection.test.cpp
   - test/yosupo/data_structure/unionfind.test.cpp
   - test/yosupo/data_structure/persistent-unionfind.test.cpp
+  - test/yosupo/data_structure/unionfind-with-potential.test.cpp
   - test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
   - test/yosupo/other/two-sat.test.cpp
   - test/yukicoder/674.1.test.cpp

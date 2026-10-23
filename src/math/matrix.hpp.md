@@ -16,11 +16,20 @@ data:
     path: test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
     title: test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/linear_algebra/inverse-matrix.test.cpp
+    title: test/yosupo/linear_algebra/inverse-matrix.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/matrix-det.test.cpp
     title: test/yosupo/linear_algebra/matrix-det.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/linear_algebra/matrix-product.test.cpp
+    title: test/yosupo/linear_algebra/matrix-product.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/matrix-rank.test.cpp
     title: test/yosupo/linear_algebra/matrix-rank.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/linear_algebra/pow-of-matrix.test.cpp
+    title: test/yosupo/linear_algebra/pow-of-matrix.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/system-of-linear-equations.test.cpp
     title: test/yosupo/linear_algebra/system-of-linear-equations.test.cpp
@@ -752,6 +761,9 @@ data:
   - test/unittest/math/matrix.test.cpp
   - test/aoj/volume33/3314.test.cpp
   - test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
+  - test/yosupo/linear_algebra/pow-of-matrix.test.cpp
+  - test/yosupo/linear_algebra/matrix-product.test.cpp
+  - test/yosupo/linear_algebra/inverse-matrix.test.cpp
   - test/yosupo/linear_algebra/matrix-rank.test.cpp
   - test/yosupo/linear_algebra/system-of-linear-equations.test.cpp
   - test/yosupo/linear_algebra/matrix-det.test.cpp

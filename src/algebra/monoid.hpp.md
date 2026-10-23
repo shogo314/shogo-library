@@ -232,6 +232,9 @@ data:
     path: test/yosupo/data_structure/queue-operate-all-composite.test.cpp
     title: test/yosupo/data_structure/queue-operate-all-composite.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/range-add-range-min.test.cpp
+    title: test/yosupo/data_structure/range-add-range-min.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/range-affine-point-get.1.test.cpp
     title: test/yosupo/data_structure/range-affine-point-get.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -279,6 +282,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
     title: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/unionfind-with-potential.test.cpp
+    title: test/yosupo/data_structure/unionfind-with-potential.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/tree/dynamic-tree-vertex-add-path-sum.test.cpp
     title: test/yosupo/tree/dynamic-tree-vertex-add-path-sum.test.cpp
@@ -992,6 +998,8 @@ data:
   - test/yosupo/data_structure/rectangle-sum.2.test.cpp
   - test/yosupo/data_structure/point-add-range-sum.3.test.cpp
   - test/yosupo/data_structure/area-of-union-of-rectangles.2.test.cpp
+  - test/yosupo/data_structure/range-add-range-min.test.cpp
+  - test/yosupo/data_structure/unionfind-with-potential.test.cpp
   - test/yosupo/data_structure/point-set-range-composite.3.test.cpp
   - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
   - test/yosupo/data_structure/point-add-rectangle-sum.test.cpp

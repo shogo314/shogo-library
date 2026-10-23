@@ -33,6 +33,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
     title: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/unionfind-with-potential.test.cpp
+    title: test/yosupo/data_structure/unionfind-with-potential.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -553,6 +556,7 @@ data:
   - test/aoj/dsl/dsl-1-b.2.test.cpp
   - test/aoj/dsl/dsl-1-b.1.test.cpp
   - test/aoj/volume29/2971.test.cpp
+  - test/yosupo/data_structure/unionfind-with-potential.test.cpp
   - test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
 documentation_of: src/data_structures/potentialized-unionfind.hpp
 layout: document

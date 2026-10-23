@@ -163,6 +163,9 @@ data:
     path: test/yosupo/graph/minimum-spanning-tree.2.test.cpp
     title: test/yosupo/graph/minimum-spanning-tree.2.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/graph/minimum-steiner-tree.test.cpp
+    title: test/yosupo/graph/minimum-steiner-tree.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/scc.test.cpp
     title: test/yosupo/graph/scc.test.cpp
   - icon: ':heavy_check_mark:'
@@ -420,6 +423,7 @@ data:
   - test/yosupo/graph/chromatic-number.1.test.cpp
   - test/yosupo/graph/minimum-spanning-tree.2.test.cpp
   - test/yosupo/graph/minimum-spanning-tree.1.test.cpp
+  - test/yosupo/graph/minimum-steiner-tree.test.cpp
   - test/yosupo/graph/shortest-path.test.cpp
   - test/yosupo/graph/biconnected-components.test.cpp
   - test/yosupo/graph/scc.test.cpp

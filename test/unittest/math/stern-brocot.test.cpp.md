@@ -29,16 +29,16 @@ data:
     \u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/math/stern-brocot.hpp\"\
     \n\n/**\n * @file stern-brocot.hpp\n * @brief Stern\u2013Brocot \u6728\u3068\u9023\
     \u5206\u6570\n */\n\n#include <algorithm>\n#include <cassert>\n#include <optional>\n\
-    #include <utility>\n#include <vector>\n\n#line 2 \"src/math/rational.hpp\"\n\n\
-    /**\n * @file rational.hpp\n * @brief \u6709\u7406\u6570\n */\n\n#line 9 \"src/math/rational.hpp\"\
-    \n#include <cstddef>\n#include <istream>\n#include <ostream>\n#include <string>\n\
-    #line 14 \"src/math/rational.hpp\"\n\n#line 2 \"src/base/functions.hpp\"\n\n/**\n\
-    \ * @file functions.hpp\n * @brief \u6C4E\u7528\u95A2\u6570 (chmin, chmax \u306A\
-    \u3069)\n */\n\n#line 9 \"src/base/functions.hpp\"\n#include <cmath>\n#include\
-    \ <iterator>\n#include <limits>\n#include <numeric>\n#if __cplusplus >= 202002L\n\
-    #include <ranges>\n#endif\n#include <type_traits>\n#line 18 \"src/base/functions.hpp\"\
-    \n\ntemplate <typename T1, typename T2>\ninline constexpr bool chmin(T1& a, T2\
-    \ b) {\n    if (a > b) {\n        a = b;\n        return true;\n    }\n    return\
+    #include <type_traits>\n#include <utility>\n#include <vector>\n\n#line 2 \"src/math/rational.hpp\"\
+    \n\n/**\n * @file rational.hpp\n * @brief \u6709\u7406\u6570\n */\n\n#line 9 \"\
+    src/math/rational.hpp\"\n#include <cstddef>\n#include <istream>\n#include <ostream>\n\
+    #include <string>\n#line 14 \"src/math/rational.hpp\"\n\n#line 2 \"src/base/functions.hpp\"\
+    \n\n/**\n * @file functions.hpp\n * @brief \u6C4E\u7528\u95A2\u6570 (chmin, chmax\
+    \ \u306A\u3069)\n */\n\n#line 9 \"src/base/functions.hpp\"\n#include <cmath>\n\
+    #include <iterator>\n#include <limits>\n#include <numeric>\n#if __cplusplus >=\
+    \ 202002L\n#include <ranges>\n#endif\n#line 18 \"src/base/functions.hpp\"\n\n\
+    template <typename T1, typename T2>\ninline constexpr bool chmin(T1& a, T2 b)\
+    \ {\n    if (a > b) {\n        a = b;\n        return true;\n    }\n    return\
     \ false;\n}\n\ntemplate <typename T1, typename T2>\ninline constexpr bool chmax(T1&\
     \ a, T2 b) {\n    if (a < b) {\n        a = b;\n        return true;\n    }\n\
     \    return false;\n}\n\ninline constexpr long long max(const long long& t1, const\
@@ -187,7 +187,7 @@ data:
     \            return neg ? -x : x;\n        };\n        auto pos = s.find('/');\n\
     \        if (pos == std::string::npos)\n            r = Rational(parse(s));\n\
     \        else\n            r = Rational(parse(s.substr(0, pos)), parse(s.substr(pos\
-    \ + 1)));\n        return is;\n    }\n};\n#line 15 \"src/math/stern-brocot.hpp\"\
+    \ + 1)));\n        return is;\n    }\n};\n#line 16 \"src/math/stern-brocot.hpp\"\
     \n\n/**\n * @brief Stern\u2013Brocot \u6728\u3068\u9023\u5206\u6570\n *\n * \u6B63\
     \u306E\u6709\u7406\u6570\u3092 Stern\u2013Brocot \u6728 (\u6839\u306F 1/1) \u306E\
     \u9802\u70B9\u3068\u540C\u4E00\u8996\u3059\u308B\n * \u6839\u304B\u3089\u9802\u70B9\
@@ -274,7 +274,13 @@ data:
     \      // 0 < 1 / q < c / d \u3068\u306A\u308B\u6700\u5C0F\u306E q\n        T\
     \ q = d / c + 1;\n        return {k * q + 1, q};\n    }\n    // \u9006\u6570\u3092\
     \u3068\u308B\u3068 d / c < q / p < b / a\n    auto [u, v] = simplest_open(d, c,\
-    \ b, a);\n    return {k * u + v, u};\n}\n}  // namespace internal\n\n/**\n * @brief\
+    \ b, a);\n    return {k * u + v, u};\n}\n\n// \u5F15\u6570\u306E\u578B\u306E\u63A8\
+    \u8AD6\u306B\u4F7F\u308F\u305B\u306A\u3044 (binary_search \u306E max_num \u306B\
+    \ T \u306E\u5024\u3092\u305D\u306E\u307E\u307E\u6E21\u305B\u308B\u3088\u3046\u306B\
+    \u3059\u308B)\n#if __cplusplus >= 202002L\ntemplate <typename T>\nusing non_deduced_t\
+    \ = std::type_identity_t<T>;\n#else\ntemplate <typename T>\nstruct type_identity\
+    \ {\n    using type = T;\n};\ntemplate <typename T>\nusing non_deduced_t = typename\
+    \ type_identity<T>::type;\n#endif\n}  // namespace internal\n\n/**\n * @brief\
     \ lo \u3068 hi \u306E\u9593\u3067\u6700\u3082\u5358\u7D14\u306A (\u5206\u6BCD\u304C\
     \u6700\u5C0F\u3067\u3001\u305D\u306E\u4E2D\u3067\u5206\u5B50\u306E\u7D76\u5BFE\
     \u5024\u304C\u6700\u5C0F\u306E) \u5206\u6570\n * \u65E2\u5B9A\u306F\u958B\u533A\
@@ -326,71 +332,71 @@ data:
     \u6570\u306F O(log max_den) \u7A0B\u5EA6 (max_num \u3092\u6E21\u3055\u306A\u3044\
     \u306A\u3089 O(log (max_den + \u5883\u76EE\u306E\u5024)))\n * @pre max_den >=\
     \ 1\n */\ntemplate <typename T, typename Pred>\nstd::pair<std::pair<T, T>, std::pair<T,\
-    \ T>> binary_search(T max_den, Pred pred, std::optional<T> max_num = std::nullopt)\
-    \ {\n    assert(max_den >= 1);\n    assert(!max_num || *max_num >= 0);\n    assert(pred(Rational<T>(0)));\n\
-    \    internal::Bounds<T> b;\n    // \u5206\u5B50\u304C 0 \u4EE5\u4E0B\u306A\u3089\
-    \ 0 \u3057\u304B\u9078\u3079\u306A\u3044 (\u4E0A\u7AEF +\u221E \u304B\u3089\u5DE6\
-    \u3078\u9032\u3093\u3067\u3082\u5206\u5B50 1 \u306E\u307E\u307E\u306A\u306E\u3067\
-    \u3001\u4E0A\u9650\u3092\u6E80\u305F\u305B\u306A\u3044)\n    if (max_num && *max_num\
-    \ == 0) return {{0, 1}, {1, 0}};\n    // \u52D5\u304F\u65B9\u306E\u7AEF (num,\
-    \ den) \u306B k \u56DE\u3082\u3046\u4E00\u65B9\u306E\u7AEF (add_num, add_den)\
-    \ \u3092\u8DB3\u305B\u308B\u56DE\u6570\u306E\u4E0A\u9650 (\u306A\u3051\u308C\u3070\
-    \ -1)\n    auto limit = [&](T num, T den, T add_num, T add_den) -> T {\n     \
-    \   T res = -1;\n        if (add_den > 0) res = (max_den - den) / add_den;\n \
-    \       if (max_num && add_num > 0) {\n            T r = (*max_num - num) / add_num;\n\
-    \            res = res == -1 ? r : std::min(res, r);\n        }\n        return\
-    \ res;\n    };\n    // ok(k) \u304C k = 0 \u3067 true\u3001k \u304C\u5927\u304D\
-    \u3044\u3068 false \u306B\u306A\u308B\u3068\u304D\u3001ok(k) \u304C true \u306E\
-    \u6700\u5927\u306E k (k <= bound\u3001bound = -1 \u306A\u3089\u4E0A\u9650\u306A\
-    \u3057)\n    // \u500D\u3005\u306B\u9032\u3081\u3066\u304B\u3089\u3001\u901A\u308A\
-    \u904E\u304E\u305F\u5206\u3092\u4E8C\u5206\u63A2\u7D22\u3067\u623B\u3059\u3002\
-    ok \u3092\u547C\u3076\u56DE\u6570\u306F O(log k)\n    auto search = [](T bound,\
-    \ auto ok) -> T {\n        T k = 0, s = 1;\n        while ((bound == -1 || s <=\
-    \ bound - k) && ok(k + s)) k += s, s *= 2;\n        while (s > 1) {\n        \
-    \    s /= 2;\n            if ((bound == -1 || s <= bound - k) && ok(k + s)) k\
-    \ += s;\n        }\n        return k;\n    };\n    while (true) {\n        bool\
-    \ moved = false;\n        // \u4E0B\u7AEF\u3092\u4E0A\u3052\u308B: \u4E0B\u7AEF\
-    \ + k \u4E0A\u7AEF \u3067 pred \u304C true \u306E\u6700\u5927\u306E k\n      \
-    \  T k = search(limit(b.lo_num, b.lo_den, b.hi_num, b.hi_den), [&](T k) {\n  \
-    \          return pred(Rational<T>(b.lo_num + k * b.hi_num, b.lo_den + k * b.hi_den));\n\
-    \        });\n        if (k > 0) b.move('R', k), moved = true;\n        // \u4E0A\
-    \u7AEF\u3092\u4E0B\u3052\u308B: \u4E0A\u7AEF + k \u4E0B\u7AEF \u3067 pred \u304C\
-    \ false \u306E\u6700\u5927\u306E k\n        k = search(limit(b.hi_num, b.hi_den,\
-    \ b.lo_num, b.lo_den), [&](T k) {\n            return !pred(Rational<T>(b.hi_num\
-    \ + k * b.lo_num, b.hi_den + k * b.lo_den));\n        });\n        if (k > 0)\
-    \ b.move('L', k), moved = true;\n        if (!moved) break;\n    }\n    return\
-    \ {{b.lo_num, b.lo_den}, {b.hi_num, b.hi_den}};\n}\n\n}  // namespace stern_brocot\n\
-    #line 7 \"test/unittest/math/stern-brocot.test.cpp\"\n\n#include <iostream>\n\
-    #line 11 \"test/unittest/math/stern-brocot.test.cpp\"\n#include <random>\n#line\
-    \ 15 \"test/unittest/math/stern-brocot.test.cpp\"\n\nusing Q = Rational<long long>;\n\
-    \nbool ok = true;\nvoid check(bool cond, const char* what) {\n    if (!cond &&\
-    \ ok) std::cerr << \"failed: \" << what << std::endl;\n    if (!cond) ok = false;\n\
-    }\n\n// \u6839 1/1 \u304B\u3089 x \u307E\u3067 1 \u6B69\u305A\u3064\u305F\u3069\
-    \u3063\u305F\u9053 (\"RRL\" \u306A\u3069) \u3068\u3001\u305D\u306E\u3068\u304D\
-    \u306E\u5B50\u5B6B\u306E\u7BC4\u56F2\nstruct NaiveWalk {\n    std::string path;\n\
-    \    long long lo_num = 0, lo_den = 1, hi_num = 1, hi_den = 0;\n};\nNaiveWalk\
-    \ naive_walk(const Q& x) {\n    NaiveWalk w;\n    while (true) {\n        Q m(w.lo_num\
-    \ + w.hi_num, w.lo_den + w.hi_den);\n        if (m == x) return w;\n        if\
-    \ (m < x) {\n            w.path += 'R';\n            w.lo_num = m.num(), w.lo_den\
-    \ = m.den();\n        } else {\n            w.path += 'L';\n            w.hi_num\
-    \ = m.num(), w.hi_den = m.den();\n        }\n    }\n}\nQ naive_decode(const std::string&\
-    \ path) {\n    long long a = 0, b = 1, c = 1, d = 0;\n    for (char ch : path)\
-    \ {\n        if (ch == 'R') {\n            a += c, b += d;\n        } else {\n\
-    \            c += a, d += b;\n        }\n    }\n    return Q(a + c, b + d);\n\
-    }\nstd::string expand(const std::vector<std::pair<char, long long>>& path) {\n\
-    \    std::string s;\n    for (auto [c, n] : path) s += std::string(n, c);\n  \
-    \  return s;\n}\n\n// \u5206\u6BCD\u3092 1 \u304B\u3089\u9806\u306B\u8A66\u3057\
-    \u3066\u3001\u533A\u9593\u306B\u5165\u308B\u5206\u6570\u306E\u3046\u3061\u6700\
-    \u3082\u5358\u7D14\u306A\u3082\u306E\nQ naive_simplest(const Q& lo, const Q& hi,\
-    \ bool include_lo, bool include_hi) {\n    auto in = [&](const Q& x) { return\
-    \ (lo < x || (include_lo && lo == x)) && (x < hi || (include_hi && x == hi));\
-    \ };\n    for (long long q = 1;; q++) {\n        // \u5206\u5B50\u306E\u7D76\u5BFE\
-    \u5024\u304C\u5C0F\u3055\u3044\u9806\u306B\u8A66\u3059\n        for (long long\
-    \ a = 0; a <= 100 * q; a++) {\n            for (long long p : {a, -a}) {\n   \
-    \             Q x(p, q);\n                if (x.den() == q && in(x)) return x;\n\
-    \            }\n        }\n    }\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n\
-    \    auto gen_pos = [&](long long m) { return Q(static_cast<long long>(rng() %\
-    \ m) + 1, static_cast<long long>(rng() % m) + 1); };\n    auto gen = [&](long\
+    \ T>> binary_search(T max_den, Pred pred, std::optional<internal::non_deduced_t<T>>\
+    \ max_num = std::nullopt) {\n    assert(max_den >= 1);\n    assert(!max_num ||\
+    \ *max_num >= 0);\n    assert(pred(Rational<T>(0)));\n    internal::Bounds<T>\
+    \ b;\n    // \u5206\u5B50\u304C 0 \u4EE5\u4E0B\u306A\u3089 0 \u3057\u304B\u9078\
+    \u3079\u306A\u3044 (\u4E0A\u7AEF +\u221E \u304B\u3089\u5DE6\u3078\u9032\u3093\u3067\
+    \u3082\u5206\u5B50 1 \u306E\u307E\u307E\u306A\u306E\u3067\u3001\u4E0A\u9650\u3092\
+    \u6E80\u305F\u305B\u306A\u3044)\n    if (max_num && *max_num == 0) return {{0,\
+    \ 1}, {1, 0}};\n    // \u52D5\u304F\u65B9\u306E\u7AEF (num, den) \u306B k \u56DE\
+    \u3082\u3046\u4E00\u65B9\u306E\u7AEF (add_num, add_den) \u3092\u8DB3\u305B\u308B\
+    \u56DE\u6570\u306E\u4E0A\u9650 (\u306A\u3051\u308C\u3070 -1)\n    auto limit =\
+    \ [&](T num, T den, T add_num, T add_den) -> T {\n        T res = -1;\n      \
+    \  if (add_den > 0) res = (max_den - den) / add_den;\n        if (max_num && add_num\
+    \ > 0) {\n            T r = (*max_num - num) / add_num;\n            res = res\
+    \ == -1 ? r : std::min(res, r);\n        }\n        return res;\n    };\n    //\
+    \ ok(k) \u304C k = 0 \u3067 true\u3001k \u304C\u5927\u304D\u3044\u3068 false \u306B\
+    \u306A\u308B\u3068\u304D\u3001ok(k) \u304C true \u306E\u6700\u5927\u306E k (k\
+    \ <= bound\u3001bound = -1 \u306A\u3089\u4E0A\u9650\u306A\u3057)\n    // \u500D\
+    \u3005\u306B\u9032\u3081\u3066\u304B\u3089\u3001\u901A\u308A\u904E\u304E\u305F\
+    \u5206\u3092\u4E8C\u5206\u63A2\u7D22\u3067\u623B\u3059\u3002ok \u3092\u547C\u3076\
+    \u56DE\u6570\u306F O(log k)\n    auto search = [](T bound, auto ok) -> T {\n \
+    \       T k = 0, s = 1;\n        while ((bound == -1 || s <= bound - k) && ok(k\
+    \ + s)) k += s, s *= 2;\n        while (s > 1) {\n            s /= 2;\n      \
+    \      if ((bound == -1 || s <= bound - k) && ok(k + s)) k += s;\n        }\n\
+    \        return k;\n    };\n    while (true) {\n        bool moved = false;\n\
+    \        // \u4E0B\u7AEF\u3092\u4E0A\u3052\u308B: \u4E0B\u7AEF + k \u4E0A\u7AEF\
+    \ \u3067 pred \u304C true \u306E\u6700\u5927\u306E k\n        T k = search(limit(b.lo_num,\
+    \ b.lo_den, b.hi_num, b.hi_den), [&](T k) {\n            return pred(Rational<T>(b.lo_num\
+    \ + k * b.hi_num, b.lo_den + k * b.hi_den));\n        });\n        if (k > 0)\
+    \ b.move('R', k), moved = true;\n        // \u4E0A\u7AEF\u3092\u4E0B\u3052\u308B\
+    : \u4E0A\u7AEF + k \u4E0B\u7AEF \u3067 pred \u304C false \u306E\u6700\u5927\u306E\
+    \ k\n        k = search(limit(b.hi_num, b.hi_den, b.lo_num, b.lo_den), [&](T k)\
+    \ {\n            return !pred(Rational<T>(b.hi_num + k * b.lo_num, b.hi_den +\
+    \ k * b.lo_den));\n        });\n        if (k > 0) b.move('L', k), moved = true;\n\
+    \        if (!moved) break;\n    }\n    return {{b.lo_num, b.lo_den}, {b.hi_num,\
+    \ b.hi_den}};\n}\n\n}  // namespace stern_brocot\n#line 7 \"test/unittest/math/stern-brocot.test.cpp\"\
+    \n\n#include <iostream>\n#line 11 \"test/unittest/math/stern-brocot.test.cpp\"\
+    \n#include <random>\n#line 15 \"test/unittest/math/stern-brocot.test.cpp\"\n\n\
+    using Q = Rational<long long>;\n\nbool ok = true;\nvoid check(bool cond, const\
+    \ char* what) {\n    if (!cond && ok) std::cerr << \"failed: \" << what << std::endl;\n\
+    \    if (!cond) ok = false;\n}\n\n// \u6839 1/1 \u304B\u3089 x \u307E\u3067 1\
+    \ \u6B69\u305A\u3064\u305F\u3069\u3063\u305F\u9053 (\"RRL\" \u306A\u3069) \u3068\
+    \u3001\u305D\u306E\u3068\u304D\u306E\u5B50\u5B6B\u306E\u7BC4\u56F2\nstruct NaiveWalk\
+    \ {\n    std::string path;\n    long long lo_num = 0, lo_den = 1, hi_num = 1,\
+    \ hi_den = 0;\n};\nNaiveWalk naive_walk(const Q& x) {\n    NaiveWalk w;\n    while\
+    \ (true) {\n        Q m(w.lo_num + w.hi_num, w.lo_den + w.hi_den);\n        if\
+    \ (m == x) return w;\n        if (m < x) {\n            w.path += 'R';\n     \
+    \       w.lo_num = m.num(), w.lo_den = m.den();\n        } else {\n          \
+    \  w.path += 'L';\n            w.hi_num = m.num(), w.hi_den = m.den();\n     \
+    \   }\n    }\n}\nQ naive_decode(const std::string& path) {\n    long long a =\
+    \ 0, b = 1, c = 1, d = 0;\n    for (char ch : path) {\n        if (ch == 'R')\
+    \ {\n            a += c, b += d;\n        } else {\n            c += a, d += b;\n\
+    \        }\n    }\n    return Q(a + c, b + d);\n}\nstd::string expand(const std::vector<std::pair<char,\
+    \ long long>>& path) {\n    std::string s;\n    for (auto [c, n] : path) s +=\
+    \ std::string(n, c);\n    return s;\n}\n\n// \u5206\u6BCD\u3092 1 \u304B\u3089\
+    \u9806\u306B\u8A66\u3057\u3066\u3001\u533A\u9593\u306B\u5165\u308B\u5206\u6570\
+    \u306E\u3046\u3061\u6700\u3082\u5358\u7D14\u306A\u3082\u306E\nQ naive_simplest(const\
+    \ Q& lo, const Q& hi, bool include_lo, bool include_hi) {\n    auto in = [&](const\
+    \ Q& x) { return (lo < x || (include_lo && lo == x)) && (x < hi || (include_hi\
+    \ && x == hi)); };\n    for (long long q = 1;; q++) {\n        // \u5206\u5B50\
+    \u306E\u7D76\u5BFE\u5024\u304C\u5C0F\u3055\u3044\u9806\u306B\u8A66\u3059\n   \
+    \     for (long long a = 0; a <= 100 * q; a++) {\n            for (long long p\
+    \ : {a, -a}) {\n                Q x(p, q);\n                if (x.den() == q &&\
+    \ in(x)) return x;\n            }\n        }\n    }\n}\n\nint main() {\n    std::mt19937_64\
+    \ rng(314);\n    auto gen_pos = [&](long long m) { return Q(static_cast<long long>(rng()\
+    \ % m) + 1, static_cast<long long>(rng() % m) + 1); };\n    auto gen = [&](long\
     \ long m) { return Q(static_cast<long long>(rng() % (2 * m + 1)) - m, static_cast<long\
     \ long>(rng() % m) + 1); };\n\n    // \u9023\u5206\u6570: \u5C55\u958B\u3057\u3066\
     \u623B\u3059\u3068\u5143\u306B\u623B\u308B\u3002\u6700\u5F8C\u306E\u9805\u306F\
@@ -500,43 +506,43 @@ data:
     \  bool strict = rng() % 2;\n            auto pred = [&](const Q& y) { return\
     \ strict ? y < x || y == Q(0) : y <= x; };\n            auto expect = naive(max_den,\
     \ max_num, pred);\n            check(stern_brocot::binary_search(max_den, pred,\
-    \ std::optional<long long>(max_num)) == expect, \"binary_search \u5206\u5B50\u306E\
-    \u4E0A\u9650\u3042\u308A\");\n            // \u5206\u5B50\u306E\u4E0A\u9650\u306A\
-    \u3057: \u5206\u5B50\u304C\u5341\u5206\u5927\u304D\u3044\u7BC4\u56F2\u306E\u5168\
-    \u63A2\u7D22\u3068\u540C\u3058\n            check(stern_brocot::binary_search(max_den,\
-    \ pred) == naive(max_den, 16 * max_den, pred), \"binary_search \u5206\u5B50\u306E\
-    \u4E0A\u9650\u306A\u3057\");\n        }\n        // pred \u304C\u305A\u3063\u3068\
-    \ true \u306A\u3089\u4E0A\u5074\u306F +\u221E\n        auto all = stern_brocot::binary_search(5LL,\
-    \ [](const Q&) { return true; }, std::optional<long long>(7));\n        check(all.first\
-    \ == P{7, 1} && all.second == P{1, 0}, \"binary_search +\u221E\");\n        //\
-    \ \u221A2 \u306E\u4E21\u5074: \u5206\u6BCD 10^9 \u4EE5\u4E0B\u3067\u6700\u3082\
-    \u8FD1\u3044\u5206\u6570\u3002pred \u3092\u547C\u3076\u56DE\u6570\u3082\u6570\u3048\
-    \u308B\n        const long long n = 1000000000;\n        int calls = 0;\n    \
-    \    auto [lo, hi] = stern_brocot::binary_search(n, [&](const Q& y) {\n      \
-    \      calls++;\n            return y.num() * y.num() <= 2 * y.den() * y.den();\n\
-    \        });\n        Q l(lo.first, lo.second), h(hi.first, hi.second);\n    \
-    \    // \u96A3\u308A\u5408\u3046\u5206\u6570 (\u9593\u306B\u5206\u6BCD n \u4EE5\
-    \u4E0B\u306E\u5206\u6570\u304C\u306A\u3044) \u3067\u3001\u221A2 \u3092\u631F\u3080\
-    \n        check(lo.second <= n && hi.second <= n && lo.second + hi.second > n,\
-    \ \"binary_search \u221A2 \u5206\u6BCD\");\n        check(hi.first * lo.second\
-    \ - lo.first * hi.second == 1, \"binary_search \u221A2 \u96A3\u308A\u5408\u3046\
-    \");\n        check(l * l < Q(2) && Q(2) < h * h, \"binary_search \u221A2 \u631F\
-    \u3080\");\n        check(calls <= 200, \"binary_search \u221A2 \u547C\u3076\u56DE\
-    \u6570\");\n        // best_approximation \u3068\u4E00\u81F4\u3059\u308B\n   \
-    \     for (int rep = 0; rep < 1000 && ok; rep++) {\n            Q x = gen_pos(1000000);\n\
-    \            long long m = rng() % 1000 + 1;\n            auto [bl, bu] = stern_brocot::best_approximation(x,\
-    \ m);\n            auto [sl, su] = stern_brocot::binary_search(m, [&](const Q&\
-    \ y) { return y <= x; });\n            // x \u81EA\u8EAB\u306E\u5206\u6BCD\u304C\
-    \ m \u4EE5\u4E0B\u306A\u3089\u3001\u4E0B\u5074\u306F x\u3001\u4E0A\u5074\u306F\
-    \ x \u306E\u6B21\u306E\u5206\u6570\u306B\u306A\u308B\n            check(Q(sl.first,\
-    \ sl.second) == bl && (bl == bu || Q(su.first, su.second) == bu), \"binary_search\
-    \ \u3068 best_approximation\");\n        }\n    }\n\n    // ABC408 G \u306E\u5165\
-    \u51FA\u529B\u4F8B: A/B < p/q < C/D \u3068\u306A\u308B\u6700\u5C0F\u306E q\n \
-    \   {\n        long long in[5][4] = {{3, 2, 2, 1}, {5, 2, 8, 3}, {1, 2, 2, 1},\
-    \ {60, 191, 11, 35}, {40, 191, 71, 226}};\n        long long out[5] = {3, 5, 1,\
-    \ 226, 4};\n        for (int i = 0; i < 5; i++) check(stern_brocot::simplest_between(Q(in[i][0],\
-    \ in[i][1]), Q(in[i][2], in[i][3])).den() == out[i], \"ABC408 G\");\n    }\n\n\
-    \    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \ max_num) == expect, \"binary_search \u5206\u5B50\u306E\u4E0A\u9650\u3042\u308A\
+    \");\n            // \u5206\u5B50\u306E\u4E0A\u9650\u306A\u3057: \u5206\u5B50\u304C\
+    \u5341\u5206\u5927\u304D\u3044\u7BC4\u56F2\u306E\u5168\u63A2\u7D22\u3068\u540C\
+    \u3058\n            check(stern_brocot::binary_search(max_den, pred) == naive(max_den,\
+    \ 16 * max_den, pred), \"binary_search \u5206\u5B50\u306E\u4E0A\u9650\u306A\u3057\
+    \");\n        }\n        // pred \u304C\u305A\u3063\u3068 true \u306A\u3089\u4E0A\
+    \u5074\u306F +\u221E\n        auto all = stern_brocot::binary_search(5LL, [](const\
+    \ Q&) { return true; }, 7LL);\n        check(all.first == P{7, 1} && all.second\
+    \ == P{1, 0}, \"binary_search +\u221E\");\n        // \u221A2 \u306E\u4E21\u5074\
+    : \u5206\u6BCD 10^9 \u4EE5\u4E0B\u3067\u6700\u3082\u8FD1\u3044\u5206\u6570\u3002\
+    pred \u3092\u547C\u3076\u56DE\u6570\u3082\u6570\u3048\u308B\n        const long\
+    \ long n = 1000000000;\n        int calls = 0;\n        auto [lo, hi] = stern_brocot::binary_search(n,\
+    \ [&](const Q& y) {\n            calls++;\n            return y.num() * y.num()\
+    \ <= 2 * y.den() * y.den();\n        });\n        Q l(lo.first, lo.second), h(hi.first,\
+    \ hi.second);\n        // \u96A3\u308A\u5408\u3046\u5206\u6570 (\u9593\u306B\u5206\
+    \u6BCD n \u4EE5\u4E0B\u306E\u5206\u6570\u304C\u306A\u3044) \u3067\u3001\u221A\
+    2 \u3092\u631F\u3080\n        check(lo.second <= n && hi.second <= n && lo.second\
+    \ + hi.second > n, \"binary_search \u221A2 \u5206\u6BCD\");\n        check(hi.first\
+    \ * lo.second - lo.first * hi.second == 1, \"binary_search \u221A2 \u96A3\u308A\
+    \u5408\u3046\");\n        check(l * l < Q(2) && Q(2) < h * h, \"binary_search\
+    \ \u221A2 \u631F\u3080\");\n        check(calls <= 200, \"binary_search \u221A\
+    2 \u547C\u3076\u56DE\u6570\");\n        // best_approximation \u3068\u4E00\u81F4\
+    \u3059\u308B\n        for (int rep = 0; rep < 1000 && ok; rep++) {\n         \
+    \   Q x = gen_pos(1000000);\n            long long m = rng() % 1000 + 1;\n   \
+    \         auto [bl, bu] = stern_brocot::best_approximation(x, m);\n          \
+    \  auto [sl, su] = stern_brocot::binary_search(m, [&](const Q& y) { return y <=\
+    \ x; });\n            // x \u81EA\u8EAB\u306E\u5206\u6BCD\u304C m \u4EE5\u4E0B\
+    \u306A\u3089\u3001\u4E0B\u5074\u306F x\u3001\u4E0A\u5074\u306F x \u306E\u6B21\u306E\
+    \u5206\u6570\u306B\u306A\u308B\n            check(Q(sl.first, sl.second) == bl\
+    \ && (bl == bu || Q(su.first, su.second) == bu), \"binary_search \u3068 best_approximation\"\
+    );\n        }\n    }\n\n    // ABC408 G \u306E\u5165\u51FA\u529B\u4F8B: A/B <\
+    \ p/q < C/D \u3068\u306A\u308B\u6700\u5C0F\u306E q\n    {\n        long long in[5][4]\
+    \ = {{3, 2, 2, 1}, {5, 2, 8, 3}, {1, 2, 2, 1}, {60, 191, 11, 35}, {40, 191, 71,\
+    \ 226}};\n        long long out[5] = {3, 5, 1, 226, 4};\n        for (int i =\
+    \ 0; i < 5; i++) check(stern_brocot::simplest_between(Q(in[i][0], in[i][1]), Q(in[i][2],\
+    \ in[i][3])).den() == out[i], \"ABC408 G\");\n    }\n\n    if (ok) std::cout <<\
+    \ \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// stern-brocot.hpp \u306E\u95A2\u6570\u3092\u3001\u6728\u3092 1 \u6B69\u305A\
     \u3064\u305F\u3069\u308B\u611A\u76F4\u306A\u5B9F\u88C5\u3084\u5168\u63A2\u7D22\
@@ -682,43 +688,43 @@ data:
     \  bool strict = rng() % 2;\n            auto pred = [&](const Q& y) { return\
     \ strict ? y < x || y == Q(0) : y <= x; };\n            auto expect = naive(max_den,\
     \ max_num, pred);\n            check(stern_brocot::binary_search(max_den, pred,\
-    \ std::optional<long long>(max_num)) == expect, \"binary_search \u5206\u5B50\u306E\
-    \u4E0A\u9650\u3042\u308A\");\n            // \u5206\u5B50\u306E\u4E0A\u9650\u306A\
-    \u3057: \u5206\u5B50\u304C\u5341\u5206\u5927\u304D\u3044\u7BC4\u56F2\u306E\u5168\
-    \u63A2\u7D22\u3068\u540C\u3058\n            check(stern_brocot::binary_search(max_den,\
-    \ pred) == naive(max_den, 16 * max_den, pred), \"binary_search \u5206\u5B50\u306E\
-    \u4E0A\u9650\u306A\u3057\");\n        }\n        // pred \u304C\u305A\u3063\u3068\
-    \ true \u306A\u3089\u4E0A\u5074\u306F +\u221E\n        auto all = stern_brocot::binary_search(5LL,\
-    \ [](const Q&) { return true; }, std::optional<long long>(7));\n        check(all.first\
-    \ == P{7, 1} && all.second == P{1, 0}, \"binary_search +\u221E\");\n        //\
-    \ \u221A2 \u306E\u4E21\u5074: \u5206\u6BCD 10^9 \u4EE5\u4E0B\u3067\u6700\u3082\
-    \u8FD1\u3044\u5206\u6570\u3002pred \u3092\u547C\u3076\u56DE\u6570\u3082\u6570\u3048\
-    \u308B\n        const long long n = 1000000000;\n        int calls = 0;\n    \
-    \    auto [lo, hi] = stern_brocot::binary_search(n, [&](const Q& y) {\n      \
-    \      calls++;\n            return y.num() * y.num() <= 2 * y.den() * y.den();\n\
-    \        });\n        Q l(lo.first, lo.second), h(hi.first, hi.second);\n    \
-    \    // \u96A3\u308A\u5408\u3046\u5206\u6570 (\u9593\u306B\u5206\u6BCD n \u4EE5\
-    \u4E0B\u306E\u5206\u6570\u304C\u306A\u3044) \u3067\u3001\u221A2 \u3092\u631F\u3080\
-    \n        check(lo.second <= n && hi.second <= n && lo.second + hi.second > n,\
-    \ \"binary_search \u221A2 \u5206\u6BCD\");\n        check(hi.first * lo.second\
-    \ - lo.first * hi.second == 1, \"binary_search \u221A2 \u96A3\u308A\u5408\u3046\
-    \");\n        check(l * l < Q(2) && Q(2) < h * h, \"binary_search \u221A2 \u631F\
-    \u3080\");\n        check(calls <= 200, \"binary_search \u221A2 \u547C\u3076\u56DE\
-    \u6570\");\n        // best_approximation \u3068\u4E00\u81F4\u3059\u308B\n   \
-    \     for (int rep = 0; rep < 1000 && ok; rep++) {\n            Q x = gen_pos(1000000);\n\
-    \            long long m = rng() % 1000 + 1;\n            auto [bl, bu] = stern_brocot::best_approximation(x,\
-    \ m);\n            auto [sl, su] = stern_brocot::binary_search(m, [&](const Q&\
-    \ y) { return y <= x; });\n            // x \u81EA\u8EAB\u306E\u5206\u6BCD\u304C\
-    \ m \u4EE5\u4E0B\u306A\u3089\u3001\u4E0B\u5074\u306F x\u3001\u4E0A\u5074\u306F\
-    \ x \u306E\u6B21\u306E\u5206\u6570\u306B\u306A\u308B\n            check(Q(sl.first,\
-    \ sl.second) == bl && (bl == bu || Q(su.first, su.second) == bu), \"binary_search\
-    \ \u3068 best_approximation\");\n        }\n    }\n\n    // ABC408 G \u306E\u5165\
-    \u51FA\u529B\u4F8B: A/B < p/q < C/D \u3068\u306A\u308B\u6700\u5C0F\u306E q\n \
-    \   {\n        long long in[5][4] = {{3, 2, 2, 1}, {5, 2, 8, 3}, {1, 2, 2, 1},\
-    \ {60, 191, 11, 35}, {40, 191, 71, 226}};\n        long long out[5] = {3, 5, 1,\
-    \ 226, 4};\n        for (int i = 0; i < 5; i++) check(stern_brocot::simplest_between(Q(in[i][0],\
-    \ in[i][1]), Q(in[i][2], in[i][3])).den() == out[i], \"ABC408 G\");\n    }\n\n\
-    \    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \ max_num) == expect, \"binary_search \u5206\u5B50\u306E\u4E0A\u9650\u3042\u308A\
+    \");\n            // \u5206\u5B50\u306E\u4E0A\u9650\u306A\u3057: \u5206\u5B50\u304C\
+    \u5341\u5206\u5927\u304D\u3044\u7BC4\u56F2\u306E\u5168\u63A2\u7D22\u3068\u540C\
+    \u3058\n            check(stern_brocot::binary_search(max_den, pred) == naive(max_den,\
+    \ 16 * max_den, pred), \"binary_search \u5206\u5B50\u306E\u4E0A\u9650\u306A\u3057\
+    \");\n        }\n        // pred \u304C\u305A\u3063\u3068 true \u306A\u3089\u4E0A\
+    \u5074\u306F +\u221E\n        auto all = stern_brocot::binary_search(5LL, [](const\
+    \ Q&) { return true; }, 7LL);\n        check(all.first == P{7, 1} && all.second\
+    \ == P{1, 0}, \"binary_search +\u221E\");\n        // \u221A2 \u306E\u4E21\u5074\
+    : \u5206\u6BCD 10^9 \u4EE5\u4E0B\u3067\u6700\u3082\u8FD1\u3044\u5206\u6570\u3002\
+    pred \u3092\u547C\u3076\u56DE\u6570\u3082\u6570\u3048\u308B\n        const long\
+    \ long n = 1000000000;\n        int calls = 0;\n        auto [lo, hi] = stern_brocot::binary_search(n,\
+    \ [&](const Q& y) {\n            calls++;\n            return y.num() * y.num()\
+    \ <= 2 * y.den() * y.den();\n        });\n        Q l(lo.first, lo.second), h(hi.first,\
+    \ hi.second);\n        // \u96A3\u308A\u5408\u3046\u5206\u6570 (\u9593\u306B\u5206\
+    \u6BCD n \u4EE5\u4E0B\u306E\u5206\u6570\u304C\u306A\u3044) \u3067\u3001\u221A\
+    2 \u3092\u631F\u3080\n        check(lo.second <= n && hi.second <= n && lo.second\
+    \ + hi.second > n, \"binary_search \u221A2 \u5206\u6BCD\");\n        check(hi.first\
+    \ * lo.second - lo.first * hi.second == 1, \"binary_search \u221A2 \u96A3\u308A\
+    \u5408\u3046\");\n        check(l * l < Q(2) && Q(2) < h * h, \"binary_search\
+    \ \u221A2 \u631F\u3080\");\n        check(calls <= 200, \"binary_search \u221A\
+    2 \u547C\u3076\u56DE\u6570\");\n        // best_approximation \u3068\u4E00\u81F4\
+    \u3059\u308B\n        for (int rep = 0; rep < 1000 && ok; rep++) {\n         \
+    \   Q x = gen_pos(1000000);\n            long long m = rng() % 1000 + 1;\n   \
+    \         auto [bl, bu] = stern_brocot::best_approximation(x, m);\n          \
+    \  auto [sl, su] = stern_brocot::binary_search(m, [&](const Q& y) { return y <=\
+    \ x; });\n            // x \u81EA\u8EAB\u306E\u5206\u6BCD\u304C m \u4EE5\u4E0B\
+    \u306A\u3089\u3001\u4E0B\u5074\u306F x\u3001\u4E0A\u5074\u306F x \u306E\u6B21\u306E\
+    \u5206\u6570\u306B\u306A\u308B\n            check(Q(sl.first, sl.second) == bl\
+    \ && (bl == bu || Q(su.first, su.second) == bu), \"binary_search \u3068 best_approximation\"\
+    );\n        }\n    }\n\n    // ABC408 G \u306E\u5165\u51FA\u529B\u4F8B: A/B <\
+    \ p/q < C/D \u3068\u306A\u308B\u6700\u5C0F\u306E q\n    {\n        long long in[5][4]\
+    \ = {{3, 2, 2, 1}, {5, 2, 8, 3}, {1, 2, 2, 1}, {60, 191, 11, 35}, {40, 191, 71,\
+    \ 226}};\n        long long out[5] = {3, 5, 1, 226, 4};\n        for (int i =\
+    \ 0; i < 5; i++) check(stern_brocot::simplest_between(Q(in[i][0], in[i][1]), Q(in[i][2],\
+    \ in[i][3])).den() == out[i], \"ABC408 G\");\n    }\n\n    if (ok) std::cout <<\
+    \ \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/math/stern-brocot.hpp
   - src/math/rational.hpp
@@ -726,7 +732,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/stern-brocot.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:32:25+09:00'
+  timestamp: '2026-10-23 13:29:09+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/stern-brocot.test.cpp

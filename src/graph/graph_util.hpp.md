@@ -43,6 +43,9 @@ data:
     path: test/yosupo/graph/minimum-spanning-tree.2.test.cpp
     title: test/yosupo/graph/minimum-spanning-tree.2.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/graph/minimum-steiner-tree.test.cpp
+    title: test/yosupo/graph/minimum-steiner-tree.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/scc.test.cpp
     title: test/yosupo/graph/scc.test.cpp
   - icon: ':heavy_check_mark:'
@@ -392,27 +395,71 @@ data:
     \ & ~low;\n        for (int U = cand;; U = (U - 1) & cand) {\n            const\
     \ int T = U | low;\n            if (indep[T] && dp[S ^ T] + 1 < dp[S]) dp[S] =\
     \ dp[S ^ T] + 1;\n            if (U == 0) break;\n        }\n    }\n    return\
-    \ dp[(1 << n) - 1];\n}\n\ntemplate <typename Cost, typename T>\nCost minimum_steiner_tree(const\
-    \ Graph<Cost>& graph, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max()\
-    \ / 4) {\n    if (X.empty()) return Cost{};\n    for (const auto& x : X) assert(0\
-    \ <= x && x < graph.n);\n    std::vector<std::vector<Cost>> dp(graph.n, std::vector<Cost>(1\
-    \ << X.size(), inf));\n    for (int p = 0; p < static_cast<int>(X.size()); p++)\
-    \ dp[X[p]][1 << p] = {};\n    for (int i = 0; i < (1 << X.size()); i++) {\n  \
-    \      for (int j = i; j > 0; j = (j - 1) & i) {\n            for (long long k\
-    \ = 0; k < graph.n; k++) {\n                if (dp[k][j] != inf && dp[k][i ^ j]\
-    \ != inf) {\n                    if (dp[k][i] == inf || dp[k][i] > dp[k][j] +\
-    \ dp[k][i ^ j]) dp[k][i] = dp[k][j] + dp[k][i ^ j];\n                }\n     \
-    \       }\n        }\n        std::priority_queue<std::pair<Cost, long long>,\
+    \ dp[(1 << n) - 1];\n}\n\nnamespace internal_graph_util {\n/**\n * @brief minimum_steiner_tree\
+    \ \u306E DP\n * dp[k][i]: \u9802\u70B9 k \u3092\u542B\u307F\u3001X \u306E\u90E8\
+    \u5206\u96C6\u5408 i \u3092\u3059\u3079\u3066\u542B\u3080\u90E8\u5206\u6728\u306E\
+    \u91CD\u307F\u306E\u6700\u5C0F\u5024\n * from[k][i]: \u5FA9\u5143\u7528\u3002\
+    type \u304C -1 \u306A\u3089 X \u306E\u9802\u70B9\u305D\u306E\u3082\u306E\u3001\
+    0 \u306A\u3089 i \u3092 x \u3068 i ^ x \u306B\u5206\u3051\u305F\u30011 \u306A\u3089\
+    \u9802\u70B9 x \u304B\u3089\u8FBA id \u3092\u901A\u3063\u3066\u6765\u305F\n */\n\
+    struct SteinerFrom {\n    int type = -1;\n    long long x = -1, id = -1;\n};\n\
+    template <typename Cost>\nstruct SteinerDP {\n    std::vector<std::vector<Cost>>\
+    \ dp;\n    std::vector<std::vector<SteinerFrom>> from;\n};\ntemplate <typename\
+    \ Cost, typename T>\nSteinerDP<Cost> steiner_dp(const Graph<Cost>& graph, const\
+    \ std::vector<T>& X, Cost inf, bool restore) {\n    for (const auto& x : X) assert(0\
+    \ <= x && x < graph.n);\n    const int full = 1 << X.size();\n    SteinerDP<Cost>\
+    \ res;\n    auto& dp = res.dp;\n    dp.assign(graph.n, std::vector<Cost>(full,\
+    \ inf));\n    if (restore) res.from.assign(graph.n, std::vector<SteinerFrom>(full));\n\
+    \    for (int p = 0; p < static_cast<int>(X.size()); p++) dp[X[p]][1 << p] = {};\n\
+    \    for (int i = 0; i < full; i++) {\n        for (int j = i; j > 0; j = (j -\
+    \ 1) & i) {\n            for (long long k = 0; k < graph.n; k++) {\n         \
+    \       if (dp[k][j] != inf && dp[k][i ^ j] != inf) {\n                    if\
+    \ (dp[k][i] == inf || dp[k][i] > dp[k][j] + dp[k][i ^ j]) {\n                \
+    \        dp[k][i] = dp[k][j] + dp[k][i ^ j];\n                        if (restore)\
+    \ res.from[k][i] = {0, j, -1};\n                    }\n                }\n   \
+    \         }\n        }\n        std::priority_queue<std::pair<Cost, long long>,\
     \ std::vector<std::pair<Cost, long long>>, std::greater<std::pair<Cost, long long>>>\
     \ que;\n        for (long long k = 0; k < graph.n; k++)\n            if (dp[k][i]\
     \ != inf) que.emplace(dp[k][i], k);\n        while (que.size()) {\n          \
     \  auto [d, u] = que.top();\n            que.pop();\n            if (d > dp[u][i])\
     \ continue;\n            for (auto e : graph[u]) {\n                if (dp[e.dst][i]\
     \ == inf || dp[e.dst][i] > d + e.cost) {\n                    dp[e.dst][i] = d\
-    \ + e.cost;\n                    que.emplace(d + e.cost, e.dst);\n           \
-    \     }\n            }\n        }\n    }\n    Cost res = inf;\n    for (long long\
-    \ k = 0; k < graph.n; k++) {\n        if (dp[k].back() != inf && (res == inf ||\
-    \ res > dp[k].back())) res = dp[k].back();\n    }\n    return res;\n}\n"
+    \ + e.cost;\n                    if (restore) res.from[e.dst][i] = {1, u, e.id};\n\
+    \                    que.emplace(d + e.cost, e.dst);\n                }\n    \
+    \        }\n        }\n    }\n    return res;\n}\n}  // namespace internal_graph_util\n\
+    \n/**\n * @brief \u9802\u70B9\u96C6\u5408 X \u3092\u3059\u3079\u3066\u542B\u3080\
+    \u90E8\u5206\u6728\u306E\u8FBA\u306E\u91CD\u307F\u306E\u7DCF\u548C\u306E\u6700\
+    \u5C0F\u5024 O(3^k n + 2^k m log m) (k = |X|)\n * @note \u7121\u5411\u30B0\u30E9\
+    \u30D5\u3002X \u304C\u7A7A\u306A\u3089 0\n */\ntemplate <typename Cost, typename\
+    \ T>\nCost minimum_steiner_tree(const Graph<Cost>& graph, const std::vector<T>&\
+    \ X, Cost inf = std::numeric_limits<Cost>::max() / 4) {\n    if (X.empty()) return\
+    \ Cost{};\n    const auto dp = internal_graph_util::steiner_dp(graph, X, inf,\
+    \ false).dp;\n    Cost res = inf;\n    for (long long k = 0; k < graph.n; k++)\
+    \ {\n        if (dp[k].back() != inf && (res == inf || res > dp[k].back())) res\
+    \ = dp[k].back();\n    }\n    return res;\n}\n\n/**\n * @brief \u9802\u70B9\u96C6\
+    \u5408 X \u3092\u3059\u3079\u3066\u542B\u3080\u91CD\u307F\u6700\u5C0F\u306E\u90E8\
+    \u5206\u6728\u3092 1 \u3064\u6C42\u3081\u3001\u305D\u306E\u8FBA\u306E\u756A\u53F7\
+    \u3092\u6607\u9806\u306B\u8FD4\u3059\n * \u8A08\u7B97\u91CF\u306F minimum_steiner_tree\
+    \ \u3068\u540C\u3058\n * @note \u7121\u5411\u30B0\u30E9\u30D5\u3002X \u304C\u7A7A\
+    \u306A\u3089\u7A7A\u3002X \u306E\u9802\u70B9\u3069\u3046\u3057\u304C\u9023\u7D50\
+    \u3067\u306A\u3044\u3068\u304D\u306F\u547C\u3070\u306A\u3044\u3053\u3068\n */\n\
+    template <typename Cost, typename T>\nstd::vector<long long> minimum_steiner_tree_restore(const\
+    \ Graph<Cost>& graph, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max()\
+    \ / 4) {\n    if (X.empty()) return {};\n    const auto [dp, from] = internal_graph_util::steiner_dp(graph,\
+    \ X, inf, true);\n    long long root = -1;\n    for (long long k = 0; k < graph.n;\
+    \ k++) {\n        if (dp[k].back() != inf && (root == -1 || dp[root].back() >\
+    \ dp[k].back())) root = k;\n    }\n    assert(root != -1);\n    // \u8FBA\u306E\
+    \u91CD\u307F\u304C 0 \u3060\u3068\u540C\u3058\u8FBA\u3092 2 \u56DE\u4F7F\u3046\
+    \u3053\u3068\u304C\u3042\u308B\u306E\u3067\u3001\u6700\u5F8C\u306B\u91CD\u8907\
+    \u3092\u9664\u304F\n    std::vector<long long> res;\n    std::vector<std::pair<long\
+    \ long, int>> stk = {{root, static_cast<int>(dp[root].size()) - 1}};\n    while\
+    \ (!stk.empty()) {\n        auto [k, i] = stk.back();\n        stk.pop_back();\n\
+    \        const auto& f = from[k][i];\n        if (f.type == 0) {\n           \
+    \ stk.emplace_back(k, static_cast<int>(f.x));\n            stk.emplace_back(k,\
+    \ i ^ static_cast<int>(f.x));\n        } else if (f.type == 1) {\n           \
+    \ res.push_back(f.id);\n            stk.emplace_back(f.x, i);\n        }\n   \
+    \ }\n    std::sort(res.begin(), res.end());\n    res.erase(std::unique(res.begin(),\
+    \ res.end()), res.end());\n    return res;\n}\n"
   code: "#pragma once\n\n/**\n * @file graph_util.hpp\n * @brief \u30B0\u30E9\u30D5\
     \u306B\u95A2\u3059\u308B\u95A2\u6570\n */\n\n#include <algorithm>\n#include <cassert>\n\
     #include <functional>\n#include <limits>\n#include <queue>\n#include <stack>\n\
@@ -625,27 +672,71 @@ data:
     \ & ~low;\n        for (int U = cand;; U = (U - 1) & cand) {\n            const\
     \ int T = U | low;\n            if (indep[T] && dp[S ^ T] + 1 < dp[S]) dp[S] =\
     \ dp[S ^ T] + 1;\n            if (U == 0) break;\n        }\n    }\n    return\
-    \ dp[(1 << n) - 1];\n}\n\ntemplate <typename Cost, typename T>\nCost minimum_steiner_tree(const\
-    \ Graph<Cost>& graph, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max()\
-    \ / 4) {\n    if (X.empty()) return Cost{};\n    for (const auto& x : X) assert(0\
-    \ <= x && x < graph.n);\n    std::vector<std::vector<Cost>> dp(graph.n, std::vector<Cost>(1\
-    \ << X.size(), inf));\n    for (int p = 0; p < static_cast<int>(X.size()); p++)\
-    \ dp[X[p]][1 << p] = {};\n    for (int i = 0; i < (1 << X.size()); i++) {\n  \
-    \      for (int j = i; j > 0; j = (j - 1) & i) {\n            for (long long k\
-    \ = 0; k < graph.n; k++) {\n                if (dp[k][j] != inf && dp[k][i ^ j]\
-    \ != inf) {\n                    if (dp[k][i] == inf || dp[k][i] > dp[k][j] +\
-    \ dp[k][i ^ j]) dp[k][i] = dp[k][j] + dp[k][i ^ j];\n                }\n     \
-    \       }\n        }\n        std::priority_queue<std::pair<Cost, long long>,\
+    \ dp[(1 << n) - 1];\n}\n\nnamespace internal_graph_util {\n/**\n * @brief minimum_steiner_tree\
+    \ \u306E DP\n * dp[k][i]: \u9802\u70B9 k \u3092\u542B\u307F\u3001X \u306E\u90E8\
+    \u5206\u96C6\u5408 i \u3092\u3059\u3079\u3066\u542B\u3080\u90E8\u5206\u6728\u306E\
+    \u91CD\u307F\u306E\u6700\u5C0F\u5024\n * from[k][i]: \u5FA9\u5143\u7528\u3002\
+    type \u304C -1 \u306A\u3089 X \u306E\u9802\u70B9\u305D\u306E\u3082\u306E\u3001\
+    0 \u306A\u3089 i \u3092 x \u3068 i ^ x \u306B\u5206\u3051\u305F\u30011 \u306A\u3089\
+    \u9802\u70B9 x \u304B\u3089\u8FBA id \u3092\u901A\u3063\u3066\u6765\u305F\n */\n\
+    struct SteinerFrom {\n    int type = -1;\n    long long x = -1, id = -1;\n};\n\
+    template <typename Cost>\nstruct SteinerDP {\n    std::vector<std::vector<Cost>>\
+    \ dp;\n    std::vector<std::vector<SteinerFrom>> from;\n};\ntemplate <typename\
+    \ Cost, typename T>\nSteinerDP<Cost> steiner_dp(const Graph<Cost>& graph, const\
+    \ std::vector<T>& X, Cost inf, bool restore) {\n    for (const auto& x : X) assert(0\
+    \ <= x && x < graph.n);\n    const int full = 1 << X.size();\n    SteinerDP<Cost>\
+    \ res;\n    auto& dp = res.dp;\n    dp.assign(graph.n, std::vector<Cost>(full,\
+    \ inf));\n    if (restore) res.from.assign(graph.n, std::vector<SteinerFrom>(full));\n\
+    \    for (int p = 0; p < static_cast<int>(X.size()); p++) dp[X[p]][1 << p] = {};\n\
+    \    for (int i = 0; i < full; i++) {\n        for (int j = i; j > 0; j = (j -\
+    \ 1) & i) {\n            for (long long k = 0; k < graph.n; k++) {\n         \
+    \       if (dp[k][j] != inf && dp[k][i ^ j] != inf) {\n                    if\
+    \ (dp[k][i] == inf || dp[k][i] > dp[k][j] + dp[k][i ^ j]) {\n                \
+    \        dp[k][i] = dp[k][j] + dp[k][i ^ j];\n                        if (restore)\
+    \ res.from[k][i] = {0, j, -1};\n                    }\n                }\n   \
+    \         }\n        }\n        std::priority_queue<std::pair<Cost, long long>,\
     \ std::vector<std::pair<Cost, long long>>, std::greater<std::pair<Cost, long long>>>\
     \ que;\n        for (long long k = 0; k < graph.n; k++)\n            if (dp[k][i]\
     \ != inf) que.emplace(dp[k][i], k);\n        while (que.size()) {\n          \
     \  auto [d, u] = que.top();\n            que.pop();\n            if (d > dp[u][i])\
     \ continue;\n            for (auto e : graph[u]) {\n                if (dp[e.dst][i]\
     \ == inf || dp[e.dst][i] > d + e.cost) {\n                    dp[e.dst][i] = d\
-    \ + e.cost;\n                    que.emplace(d + e.cost, e.dst);\n           \
-    \     }\n            }\n        }\n    }\n    Cost res = inf;\n    for (long long\
-    \ k = 0; k < graph.n; k++) {\n        if (dp[k].back() != inf && (res == inf ||\
-    \ res > dp[k].back())) res = dp[k].back();\n    }\n    return res;\n}\n"
+    \ + e.cost;\n                    if (restore) res.from[e.dst][i] = {1, u, e.id};\n\
+    \                    que.emplace(d + e.cost, e.dst);\n                }\n    \
+    \        }\n        }\n    }\n    return res;\n}\n}  // namespace internal_graph_util\n\
+    \n/**\n * @brief \u9802\u70B9\u96C6\u5408 X \u3092\u3059\u3079\u3066\u542B\u3080\
+    \u90E8\u5206\u6728\u306E\u8FBA\u306E\u91CD\u307F\u306E\u7DCF\u548C\u306E\u6700\
+    \u5C0F\u5024 O(3^k n + 2^k m log m) (k = |X|)\n * @note \u7121\u5411\u30B0\u30E9\
+    \u30D5\u3002X \u304C\u7A7A\u306A\u3089 0\n */\ntemplate <typename Cost, typename\
+    \ T>\nCost minimum_steiner_tree(const Graph<Cost>& graph, const std::vector<T>&\
+    \ X, Cost inf = std::numeric_limits<Cost>::max() / 4) {\n    if (X.empty()) return\
+    \ Cost{};\n    const auto dp = internal_graph_util::steiner_dp(graph, X, inf,\
+    \ false).dp;\n    Cost res = inf;\n    for (long long k = 0; k < graph.n; k++)\
+    \ {\n        if (dp[k].back() != inf && (res == inf || res > dp[k].back())) res\
+    \ = dp[k].back();\n    }\n    return res;\n}\n\n/**\n * @brief \u9802\u70B9\u96C6\
+    \u5408 X \u3092\u3059\u3079\u3066\u542B\u3080\u91CD\u307F\u6700\u5C0F\u306E\u90E8\
+    \u5206\u6728\u3092 1 \u3064\u6C42\u3081\u3001\u305D\u306E\u8FBA\u306E\u756A\u53F7\
+    \u3092\u6607\u9806\u306B\u8FD4\u3059\n * \u8A08\u7B97\u91CF\u306F minimum_steiner_tree\
+    \ \u3068\u540C\u3058\n * @note \u7121\u5411\u30B0\u30E9\u30D5\u3002X \u304C\u7A7A\
+    \u306A\u3089\u7A7A\u3002X \u306E\u9802\u70B9\u3069\u3046\u3057\u304C\u9023\u7D50\
+    \u3067\u306A\u3044\u3068\u304D\u306F\u547C\u3070\u306A\u3044\u3053\u3068\n */\n\
+    template <typename Cost, typename T>\nstd::vector<long long> minimum_steiner_tree_restore(const\
+    \ Graph<Cost>& graph, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max()\
+    \ / 4) {\n    if (X.empty()) return {};\n    const auto [dp, from] = internal_graph_util::steiner_dp(graph,\
+    \ X, inf, true);\n    long long root = -1;\n    for (long long k = 0; k < graph.n;\
+    \ k++) {\n        if (dp[k].back() != inf && (root == -1 || dp[root].back() >\
+    \ dp[k].back())) root = k;\n    }\n    assert(root != -1);\n    // \u8FBA\u306E\
+    \u91CD\u307F\u304C 0 \u3060\u3068\u540C\u3058\u8FBA\u3092 2 \u56DE\u4F7F\u3046\
+    \u3053\u3068\u304C\u3042\u308B\u306E\u3067\u3001\u6700\u5F8C\u306B\u91CD\u8907\
+    \u3092\u9664\u304F\n    std::vector<long long> res;\n    std::vector<std::pair<long\
+    \ long, int>> stk = {{root, static_cast<int>(dp[root].size()) - 1}};\n    while\
+    \ (!stk.empty()) {\n        auto [k, i] = stk.back();\n        stk.pop_back();\n\
+    \        const auto& f = from[k][i];\n        if (f.type == 0) {\n           \
+    \ stk.emplace_back(k, static_cast<int>(f.x));\n            stk.emplace_back(k,\
+    \ i ^ static_cast<int>(f.x));\n        } else if (f.type == 1) {\n           \
+    \ res.push_back(f.id);\n            stk.emplace_back(f.x, i);\n        }\n   \
+    \ }\n    std::sort(res.begin(), res.end());\n    res.erase(std::unique(res.begin(),\
+    \ res.end()), res.end());\n    return res;\n}\n"
   dependsOn:
   - src/data_structures/unionfind.hpp
   - src/graph/graph.hpp
@@ -653,7 +744,7 @@ data:
   path: src/graph/graph_util.hpp
   requiredBy:
   - src/graph/two-sat.hpp
-  timestamp: '2026-10-22 13:40:29+09:00'
+  timestamp: '2026-10-23 13:29:09+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/graph/two-sat.test.cpp
@@ -665,6 +756,7 @@ data:
   - test/yosupo/graph/cycle-detection-undirected.test.cpp
   - test/yosupo/graph/chromatic-number.1.test.cpp
   - test/yosupo/graph/minimum-spanning-tree.2.test.cpp
+  - test/yosupo/graph/minimum-steiner-tree.test.cpp
   - test/yosupo/graph/scc.test.cpp
   - test/yosupo/graph/cycle-detection.test.cpp
   - test/yosupo/other/two-sat.test.cpp
@@ -699,6 +791,7 @@ auto [cost, edges] = minimum_spanning_tree(g);
 | `strongly_connected_components(g)` | 強連結成分ごとの頂点のリスト (`std::vector<std::vector<long long>>`)。成分はトポロジカル順 (成分 A から B へ辺があれば A が先) に並ぶ | 有向 | $O(n + m)$ |
 | `minimum_spanning_tree(g)` | 最小全域木 (Kruskal 法)。`cost` (コストの総和) と `edges` (使った辺) を持つ構造体を返す。連結でなければ最小全域森 | 無向 | $O(m \log m)$ |
 | `minimum_steiner_tree(g, X, inf = max / 4)` | 頂点集合 `X` をすべて含む部分木の辺の重みの総和の最小値 | 無向 | $O(3^k n + 2^k m \log m)$ ($k = \lvert X \rvert$) |
+| `minimum_steiner_tree_restore(g, X, inf = max / 4)` | 頂点集合 `X` をすべて含む重み最小の部分木を 1 つ求め、その辺の番号を昇順に返す。`X` の頂点どうしは連結であること | 無向 | `minimum_steiner_tree` と同じ |
 | `chromatic_number(g)` | 彩色数 (隣り合う頂点が同じ色にならないように塗るときの色の最小数)。頂点がなければ 0、自己ループがあれば -1。頂点数 20 程度まで。確率的なアルゴリズムでよければ、[集合の被覆](../dp/set-cover.hpp) の `min_set_cover` (独立集合で覆う、$O(2^n n)$) で速くできる | 無向 | $O(3^n)$ より速い |
 
 強連結成分の番号が頂点ごとに欲しいときは、返ってきたリストから作ります。番号の小さい成分ほどトポロジカル順で前にあります。

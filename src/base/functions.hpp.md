@@ -28,6 +28,9 @@ data:
     path: test/unittest/math/stern-brocot.test.cpp
     title: test/unittest/math/stern-brocot.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/number_theory/rational-approximation.test.cpp
+    title: test/yosupo/number_theory/rational-approximation.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/number_theory/stern-brocot-tree.test.cpp
     title: test/yosupo/number_theory/stern-brocot-tree.test.cpp
   _isVerificationFailed: false
@@ -159,6 +162,7 @@ data:
   - test/aoj/volume11/1160.test.cpp
   - test/aoj/ntl/ntl-1-e.test.cpp
   - test/aoj/dsl/dsl-5-a.test.cpp
+  - test/yosupo/number_theory/rational-approximation.test.cpp
   - test/yosupo/number_theory/stern-brocot-tree.test.cpp
 documentation_of: src/base/functions.hpp
 layout: document

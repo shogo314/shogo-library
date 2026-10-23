@@ -363,29 +363,73 @@ data:
     \ & ~low;\n        for (int U = cand;; U = (U - 1) & cand) {\n            const\
     \ int T = U | low;\n            if (indep[T] && dp[S ^ T] + 1 < dp[S]) dp[S] =\
     \ dp[S ^ T] + 1;\n            if (U == 0) break;\n        }\n    }\n    return\
-    \ dp[(1 << n) - 1];\n}\n\ntemplate <typename Cost, typename T>\nCost minimum_steiner_tree(const\
-    \ Graph<Cost>& graph, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max()\
-    \ / 4) {\n    if (X.empty()) return Cost{};\n    for (const auto& x : X) assert(0\
-    \ <= x && x < graph.n);\n    std::vector<std::vector<Cost>> dp(graph.n, std::vector<Cost>(1\
-    \ << X.size(), inf));\n    for (int p = 0; p < static_cast<int>(X.size()); p++)\
-    \ dp[X[p]][1 << p] = {};\n    for (int i = 0; i < (1 << X.size()); i++) {\n  \
-    \      for (int j = i; j > 0; j = (j - 1) & i) {\n            for (long long k\
-    \ = 0; k < graph.n; k++) {\n                if (dp[k][j] != inf && dp[k][i ^ j]\
-    \ != inf) {\n                    if (dp[k][i] == inf || dp[k][i] > dp[k][j] +\
-    \ dp[k][i ^ j]) dp[k][i] = dp[k][j] + dp[k][i ^ j];\n                }\n     \
-    \       }\n        }\n        std::priority_queue<std::pair<Cost, long long>,\
+    \ dp[(1 << n) - 1];\n}\n\nnamespace internal_graph_util {\n/**\n * @brief minimum_steiner_tree\
+    \ \u306E DP\n * dp[k][i]: \u9802\u70B9 k \u3092\u542B\u307F\u3001X \u306E\u90E8\
+    \u5206\u96C6\u5408 i \u3092\u3059\u3079\u3066\u542B\u3080\u90E8\u5206\u6728\u306E\
+    \u91CD\u307F\u306E\u6700\u5C0F\u5024\n * from[k][i]: \u5FA9\u5143\u7528\u3002\
+    type \u304C -1 \u306A\u3089 X \u306E\u9802\u70B9\u305D\u306E\u3082\u306E\u3001\
+    0 \u306A\u3089 i \u3092 x \u3068 i ^ x \u306B\u5206\u3051\u305F\u30011 \u306A\u3089\
+    \u9802\u70B9 x \u304B\u3089\u8FBA id \u3092\u901A\u3063\u3066\u6765\u305F\n */\n\
+    struct SteinerFrom {\n    int type = -1;\n    long long x = -1, id = -1;\n};\n\
+    template <typename Cost>\nstruct SteinerDP {\n    std::vector<std::vector<Cost>>\
+    \ dp;\n    std::vector<std::vector<SteinerFrom>> from;\n};\ntemplate <typename\
+    \ Cost, typename T>\nSteinerDP<Cost> steiner_dp(const Graph<Cost>& graph, const\
+    \ std::vector<T>& X, Cost inf, bool restore) {\n    for (const auto& x : X) assert(0\
+    \ <= x && x < graph.n);\n    const int full = 1 << X.size();\n    SteinerDP<Cost>\
+    \ res;\n    auto& dp = res.dp;\n    dp.assign(graph.n, std::vector<Cost>(full,\
+    \ inf));\n    if (restore) res.from.assign(graph.n, std::vector<SteinerFrom>(full));\n\
+    \    for (int p = 0; p < static_cast<int>(X.size()); p++) dp[X[p]][1 << p] = {};\n\
+    \    for (int i = 0; i < full; i++) {\n        for (int j = i; j > 0; j = (j -\
+    \ 1) & i) {\n            for (long long k = 0; k < graph.n; k++) {\n         \
+    \       if (dp[k][j] != inf && dp[k][i ^ j] != inf) {\n                    if\
+    \ (dp[k][i] == inf || dp[k][i] > dp[k][j] + dp[k][i ^ j]) {\n                \
+    \        dp[k][i] = dp[k][j] + dp[k][i ^ j];\n                        if (restore)\
+    \ res.from[k][i] = {0, j, -1};\n                    }\n                }\n   \
+    \         }\n        }\n        std::priority_queue<std::pair<Cost, long long>,\
     \ std::vector<std::pair<Cost, long long>>, std::greater<std::pair<Cost, long long>>>\
     \ que;\n        for (long long k = 0; k < graph.n; k++)\n            if (dp[k][i]\
     \ != inf) que.emplace(dp[k][i], k);\n        while (que.size()) {\n          \
     \  auto [d, u] = que.top();\n            que.pop();\n            if (d > dp[u][i])\
     \ continue;\n            for (auto e : graph[u]) {\n                if (dp[e.dst][i]\
     \ == inf || dp[e.dst][i] > d + e.cost) {\n                    dp[e.dst][i] = d\
-    \ + e.cost;\n                    que.emplace(d + e.cost, e.dst);\n           \
-    \     }\n            }\n        }\n    }\n    Cost res = inf;\n    for (long long\
-    \ k = 0; k < graph.n; k++) {\n        if (dp[k].back() != inf && (res == inf ||\
-    \ res > dp[k].back())) res = dp[k].back();\n    }\n    return res;\n}\n#line 7\
-    \ \"test/unittest/data_structures/graph_util.test.cpp\"\n\n#line 10 \"test/unittest/data_structures/graph_util.test.cpp\"\
-    \n#include <numeric>\n#include <random>\n#include <tuple>\n#line 14 \"test/unittest/data_structures/graph_util.test.cpp\"\
+    \ + e.cost;\n                    if (restore) res.from[e.dst][i] = {1, u, e.id};\n\
+    \                    que.emplace(d + e.cost, e.dst);\n                }\n    \
+    \        }\n        }\n    }\n    return res;\n}\n}  // namespace internal_graph_util\n\
+    \n/**\n * @brief \u9802\u70B9\u96C6\u5408 X \u3092\u3059\u3079\u3066\u542B\u3080\
+    \u90E8\u5206\u6728\u306E\u8FBA\u306E\u91CD\u307F\u306E\u7DCF\u548C\u306E\u6700\
+    \u5C0F\u5024 O(3^k n + 2^k m log m) (k = |X|)\n * @note \u7121\u5411\u30B0\u30E9\
+    \u30D5\u3002X \u304C\u7A7A\u306A\u3089 0\n */\ntemplate <typename Cost, typename\
+    \ T>\nCost minimum_steiner_tree(const Graph<Cost>& graph, const std::vector<T>&\
+    \ X, Cost inf = std::numeric_limits<Cost>::max() / 4) {\n    if (X.empty()) return\
+    \ Cost{};\n    const auto dp = internal_graph_util::steiner_dp(graph, X, inf,\
+    \ false).dp;\n    Cost res = inf;\n    for (long long k = 0; k < graph.n; k++)\
+    \ {\n        if (dp[k].back() != inf && (res == inf || res > dp[k].back())) res\
+    \ = dp[k].back();\n    }\n    return res;\n}\n\n/**\n * @brief \u9802\u70B9\u96C6\
+    \u5408 X \u3092\u3059\u3079\u3066\u542B\u3080\u91CD\u307F\u6700\u5C0F\u306E\u90E8\
+    \u5206\u6728\u3092 1 \u3064\u6C42\u3081\u3001\u305D\u306E\u8FBA\u306E\u756A\u53F7\
+    \u3092\u6607\u9806\u306B\u8FD4\u3059\n * \u8A08\u7B97\u91CF\u306F minimum_steiner_tree\
+    \ \u3068\u540C\u3058\n * @note \u7121\u5411\u30B0\u30E9\u30D5\u3002X \u304C\u7A7A\
+    \u306A\u3089\u7A7A\u3002X \u306E\u9802\u70B9\u3069\u3046\u3057\u304C\u9023\u7D50\
+    \u3067\u306A\u3044\u3068\u304D\u306F\u547C\u3070\u306A\u3044\u3053\u3068\n */\n\
+    template <typename Cost, typename T>\nstd::vector<long long> minimum_steiner_tree_restore(const\
+    \ Graph<Cost>& graph, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max()\
+    \ / 4) {\n    if (X.empty()) return {};\n    const auto [dp, from] = internal_graph_util::steiner_dp(graph,\
+    \ X, inf, true);\n    long long root = -1;\n    for (long long k = 0; k < graph.n;\
+    \ k++) {\n        if (dp[k].back() != inf && (root == -1 || dp[root].back() >\
+    \ dp[k].back())) root = k;\n    }\n    assert(root != -1);\n    // \u8FBA\u306E\
+    \u91CD\u307F\u304C 0 \u3060\u3068\u540C\u3058\u8FBA\u3092 2 \u56DE\u4F7F\u3046\
+    \u3053\u3068\u304C\u3042\u308B\u306E\u3067\u3001\u6700\u5F8C\u306B\u91CD\u8907\
+    \u3092\u9664\u304F\n    std::vector<long long> res;\n    std::vector<std::pair<long\
+    \ long, int>> stk = {{root, static_cast<int>(dp[root].size()) - 1}};\n    while\
+    \ (!stk.empty()) {\n        auto [k, i] = stk.back();\n        stk.pop_back();\n\
+    \        const auto& f = from[k][i];\n        if (f.type == 0) {\n           \
+    \ stk.emplace_back(k, static_cast<int>(f.x));\n            stk.emplace_back(k,\
+    \ i ^ static_cast<int>(f.x));\n        } else if (f.type == 1) {\n           \
+    \ res.push_back(f.id);\n            stk.emplace_back(f.x, i);\n        }\n   \
+    \ }\n    std::sort(res.begin(), res.end());\n    res.erase(std::unique(res.begin(),\
+    \ res.end()), res.end());\n    return res;\n}\n#line 7 \"test/unittest/data_structures/graph_util.test.cpp\"\
+    \n\n#line 10 \"test/unittest/data_structures/graph_util.test.cpp\"\n#include <numeric>\n\
+    #include <random>\n#include <tuple>\n#line 14 \"test/unittest/data_structures/graph_util.test.cpp\"\
     \n\n#line 16 \"test/unittest/data_structures/graph_util.test.cpp\"\n\nint main()\
     \ {\n    std::mt19937 rng(314);\n    bool ok = true;\n\n    // \u7121\u5411\u30B0\
     \u30E9\u30D5: bipartite_coloring, is_bipartite, connected_components, is_connected,\
@@ -477,37 +521,47 @@ data:
     \      if ((id[u] == id[v]) != (reach[u][v] && reach[v][u])) ok = false;\n   \
     \         }\n        }\n        // \u6210\u5206\u306F\u30C8\u30DD\u30ED\u30B8\u30AB\
     \u30EB\u9806\u306B\u4E26\u3076\n        for (auto [u, v] : edges) {\n        \
-    \    if (id[u] > id[v]) ok = false;\n        }\n    }\n\n    // minimum_steiner_tree:\
-    \ \u8FBA\u306E\u90E8\u5206\u96C6\u5408\u3092\u5168\u63A2\u7D22\u3059\u308B\n \
-    \   for (int rep = 0; rep < 500 && ok; rep++) {\n        int n = rng() % 6 + 1;\n\
-    \        std::vector<std::tuple<int, int, int>> edges;\n        // \u9023\u7D50\
-    \u306B\u3059\u308B\u305F\u3081\u3001\u307E\u305A\u5168\u57DF\u6728\u3092\u4F5C\
-    \u308B\n        for (int v = 1; v < n; v++) edges.emplace_back(rng() % v, v, rng()\
-    \ % 10 + 1);\n        for (int u = 0; u < n; u++) {\n            for (int v =\
-    \ u + 1; v < n; v++) {\n                if (rng() % 4 == 0) edges.emplace_back(u,\
-    \ v, rng() % 10 + 1);\n            }\n        }\n        if (edges.size() > 12)\
-    \ edges.resize(12);\n        Graph<int> graph(n);\n        for (auto [u, v, w]\
-    \ : edges) graph.add_edge(u, v, w);\n        std::vector<int> terminals;\n   \
-    \     for (int v = 0; v < n; v++)\n            if (rng() % 2) terminals.push_back(v);\n\
-    \n        int best = -1;\n        int m = edges.size();\n        for (int mask\
-    \ = 0; mask < (1 << m); mask++) {\n            std::vector<int> label(n);\n  \
-    \          std::iota(label.begin(), label.end(), 0);\n            int cost = 0;\n\
-    \            for (int i = 0; i < m; i++)\n                if (mask >> i & 1) cost\
-    \ += std::get<2>(edges[i]);\n            for (int t = 0; t < n; t++) {\n     \
-    \           for (int i = 0; i < m; i++) {\n                    if (!(mask >> i\
-    \ & 1)) continue;\n                    auto [u, v, w] = edges[i];\n          \
-    \          label[u] = label[v] = std::min(label[u], label[v]);\n             \
-    \   }\n            }\n            bool connected = true;\n            for (int\
-    \ v : terminals) connected &= label[v] == label[terminals[0]];\n            if\
-    \ (connected && (best == -1 || cost < best)) best = cost;\n        }\n       \
-    \ if (terminals.empty()) best = 0;\n        if (minimum_steiner_tree(graph, terminals)\
-    \ != best) ok = false;\n    }\n\n    // minimum_spanning_tree: \u8FBA\u306E\u90E8\
-    \u5206\u96C6\u5408\u3092\u3059\u3079\u3066\u8A66\u3057\u3066\u6700\u5C0F\u306E\
-    \u30B3\u30B9\u30C8\u306E\u5168\u57DF\u68EE\u3068\u6BD4\u3079\u308B\n    for (int\
-    \ rep = 0; rep < 1000 && ok; rep++) {\n        int n = rng() % 6 + 1, m = rng()\
-    \ % 9;\n        Graph<int> graph(n);\n        for (int i = 0; i < m; i++) graph.add_edge(rng()\
-    \ % n, rng() % n, rng() % 10);\n        auto es = graph.edges();\n        auto\
-    \ comps = connected_components(graph);\n        int need = n - static_cast<int>(comps.size());\
+    \    if (id[u] > id[v]) ok = false;\n        }\n    }\n\n    // minimum_steiner_tree\u30FB\
+    minimum_steiner_tree_restore: \u8FBA\u306E\u90E8\u5206\u96C6\u5408\u3092\u5168\
+    \u63A2\u7D22\u3059\u308B\n    // \u91CD\u307F 0 \u306E\u8FBA\u3082\u6DF7\u305C\
+    \u308B (\u5FA9\u5143\u3067\u540C\u3058\u8FBA\u3092 2 \u56DE\u6570\u3048\u306A\u3044\
+    \u304B)\n    for (int rep = 0; rep < 500 && ok; rep++) {\n        int n = rng()\
+    \ % 6 + 1;\n        std::vector<std::tuple<int, int, int>> edges;\n        //\
+    \ \u9023\u7D50\u306B\u3059\u308B\u305F\u3081\u3001\u307E\u305A\u5168\u57DF\u6728\
+    \u3092\u4F5C\u308B\n        for (int v = 1; v < n; v++) edges.emplace_back(rng()\
+    \ % v, v, rng() % 10);\n        for (int u = 0; u < n; u++) {\n            for\
+    \ (int v = u + 1; v < n; v++) {\n                if (rng() % 4 == 0) edges.emplace_back(u,\
+    \ v, rng() % 10);\n            }\n        }\n        if (edges.size() > 12) edges.resize(12);\n\
+    \        Graph<int> graph(n);\n        for (auto [u, v, w] : edges) graph.add_edge(u,\
+    \ v, w);\n        std::vector<int> terminals;\n        for (int v = 0; v < n;\
+    \ v++)\n            if (rng() % 2) terminals.push_back(v);\n\n        int best\
+    \ = -1;\n        int m = edges.size();\n        for (int mask = 0; mask < (1 <<\
+    \ m); mask++) {\n            std::vector<int> label(n);\n            std::iota(label.begin(),\
+    \ label.end(), 0);\n            int cost = 0;\n            for (int i = 0; i <\
+    \ m; i++)\n                if (mask >> i & 1) cost += std::get<2>(edges[i]);\n\
+    \            for (int t = 0; t < n; t++) {\n                for (int i = 0; i\
+    \ < m; i++) {\n                    if (!(mask >> i & 1)) continue;\n         \
+    \           auto [u, v, w] = edges[i];\n                    label[u] = label[v]\
+    \ = std::min(label[u], label[v]);\n                }\n            }\n        \
+    \    bool connected = true;\n            for (int v : terminals) connected &=\
+    \ label[v] == label[terminals[0]];\n            if (connected && (best == -1 ||\
+    \ cost < best)) best = cost;\n        }\n        if (terminals.empty()) best =\
+    \ 0;\n        if (minimum_steiner_tree(graph, terminals) != best) ok = false;\n\
+    \        // \u5FA9\u5143: \u8FBA\u306E\u756A\u53F7\u304C\u6607\u9806\u3067\u91CD\
+    \u8907\u304C\u306A\u304F\u3001\u91CD\u307F\u306E\u548C\u304C\u6700\u5C0F\u3067\
+    \u3001terminals \u3092\u3064\u306A\u3050\n        auto used = minimum_steiner_tree_restore(graph,\
+    \ terminals);\n        if (!std::is_sorted(used.begin(), used.end()) || std::adjacent_find(used.begin(),\
+    \ used.end()) != used.end()) ok = false;\n        int cost = 0;\n        UnionFind\
+    \ uf(n);\n        for (auto i : used) {\n            auto [u, v, w] = edges[i];\n\
+    \            cost += w;\n            uf.merge(u, v);\n        }\n        if (cost\
+    \ != best) ok = false;\n        for (int v : terminals)\n            if (!uf.same(v,\
+    \ terminals[0])) ok = false;\n    }\n\n    // minimum_spanning_tree: \u8FBA\u306E\
+    \u90E8\u5206\u96C6\u5408\u3092\u3059\u3079\u3066\u8A66\u3057\u3066\u6700\u5C0F\
+    \u306E\u30B3\u30B9\u30C8\u306E\u5168\u57DF\u68EE\u3068\u6BD4\u3079\u308B\n   \
+    \ for (int rep = 0; rep < 1000 && ok; rep++) {\n        int n = rng() % 6 + 1,\
+    \ m = rng() % 9;\n        Graph<int> graph(n);\n        for (int i = 0; i < m;\
+    \ i++) graph.add_edge(rng() % n, rng() % n, rng() % 10);\n        auto es = graph.edges();\n\
+    \        auto comps = connected_components(graph);\n        int need = n - static_cast<int>(comps.size());\
     \  // \u5168\u57DF\u68EE\u306E\u8FBA\u306E\u672C\u6570\n        int best = -1;\n\
     \        for (int mask = 0; mask < (1 << m); mask++) {\n            if (__builtin_popcount(mask)\
     \ != need) continue;\n            UnionFind uf(n);\n            bool forest =\
@@ -636,37 +690,47 @@ data:
     \      if ((id[u] == id[v]) != (reach[u][v] && reach[v][u])) ok = false;\n   \
     \         }\n        }\n        // \u6210\u5206\u306F\u30C8\u30DD\u30ED\u30B8\u30AB\
     \u30EB\u9806\u306B\u4E26\u3076\n        for (auto [u, v] : edges) {\n        \
-    \    if (id[u] > id[v]) ok = false;\n        }\n    }\n\n    // minimum_steiner_tree:\
-    \ \u8FBA\u306E\u90E8\u5206\u96C6\u5408\u3092\u5168\u63A2\u7D22\u3059\u308B\n \
-    \   for (int rep = 0; rep < 500 && ok; rep++) {\n        int n = rng() % 6 + 1;\n\
-    \        std::vector<std::tuple<int, int, int>> edges;\n        // \u9023\u7D50\
-    \u306B\u3059\u308B\u305F\u3081\u3001\u307E\u305A\u5168\u57DF\u6728\u3092\u4F5C\
-    \u308B\n        for (int v = 1; v < n; v++) edges.emplace_back(rng() % v, v, rng()\
-    \ % 10 + 1);\n        for (int u = 0; u < n; u++) {\n            for (int v =\
-    \ u + 1; v < n; v++) {\n                if (rng() % 4 == 0) edges.emplace_back(u,\
-    \ v, rng() % 10 + 1);\n            }\n        }\n        if (edges.size() > 12)\
-    \ edges.resize(12);\n        Graph<int> graph(n);\n        for (auto [u, v, w]\
-    \ : edges) graph.add_edge(u, v, w);\n        std::vector<int> terminals;\n   \
-    \     for (int v = 0; v < n; v++)\n            if (rng() % 2) terminals.push_back(v);\n\
-    \n        int best = -1;\n        int m = edges.size();\n        for (int mask\
-    \ = 0; mask < (1 << m); mask++) {\n            std::vector<int> label(n);\n  \
-    \          std::iota(label.begin(), label.end(), 0);\n            int cost = 0;\n\
-    \            for (int i = 0; i < m; i++)\n                if (mask >> i & 1) cost\
-    \ += std::get<2>(edges[i]);\n            for (int t = 0; t < n; t++) {\n     \
-    \           for (int i = 0; i < m; i++) {\n                    if (!(mask >> i\
-    \ & 1)) continue;\n                    auto [u, v, w] = edges[i];\n          \
-    \          label[u] = label[v] = std::min(label[u], label[v]);\n             \
-    \   }\n            }\n            bool connected = true;\n            for (int\
-    \ v : terminals) connected &= label[v] == label[terminals[0]];\n            if\
-    \ (connected && (best == -1 || cost < best)) best = cost;\n        }\n       \
-    \ if (terminals.empty()) best = 0;\n        if (minimum_steiner_tree(graph, terminals)\
-    \ != best) ok = false;\n    }\n\n    // minimum_spanning_tree: \u8FBA\u306E\u90E8\
-    \u5206\u96C6\u5408\u3092\u3059\u3079\u3066\u8A66\u3057\u3066\u6700\u5C0F\u306E\
-    \u30B3\u30B9\u30C8\u306E\u5168\u57DF\u68EE\u3068\u6BD4\u3079\u308B\n    for (int\
-    \ rep = 0; rep < 1000 && ok; rep++) {\n        int n = rng() % 6 + 1, m = rng()\
-    \ % 9;\n        Graph<int> graph(n);\n        for (int i = 0; i < m; i++) graph.add_edge(rng()\
-    \ % n, rng() % n, rng() % 10);\n        auto es = graph.edges();\n        auto\
-    \ comps = connected_components(graph);\n        int need = n - static_cast<int>(comps.size());\
+    \    if (id[u] > id[v]) ok = false;\n        }\n    }\n\n    // minimum_steiner_tree\u30FB\
+    minimum_steiner_tree_restore: \u8FBA\u306E\u90E8\u5206\u96C6\u5408\u3092\u5168\
+    \u63A2\u7D22\u3059\u308B\n    // \u91CD\u307F 0 \u306E\u8FBA\u3082\u6DF7\u305C\
+    \u308B (\u5FA9\u5143\u3067\u540C\u3058\u8FBA\u3092 2 \u56DE\u6570\u3048\u306A\u3044\
+    \u304B)\n    for (int rep = 0; rep < 500 && ok; rep++) {\n        int n = rng()\
+    \ % 6 + 1;\n        std::vector<std::tuple<int, int, int>> edges;\n        //\
+    \ \u9023\u7D50\u306B\u3059\u308B\u305F\u3081\u3001\u307E\u305A\u5168\u57DF\u6728\
+    \u3092\u4F5C\u308B\n        for (int v = 1; v < n; v++) edges.emplace_back(rng()\
+    \ % v, v, rng() % 10);\n        for (int u = 0; u < n; u++) {\n            for\
+    \ (int v = u + 1; v < n; v++) {\n                if (rng() % 4 == 0) edges.emplace_back(u,\
+    \ v, rng() % 10);\n            }\n        }\n        if (edges.size() > 12) edges.resize(12);\n\
+    \        Graph<int> graph(n);\n        for (auto [u, v, w] : edges) graph.add_edge(u,\
+    \ v, w);\n        std::vector<int> terminals;\n        for (int v = 0; v < n;\
+    \ v++)\n            if (rng() % 2) terminals.push_back(v);\n\n        int best\
+    \ = -1;\n        int m = edges.size();\n        for (int mask = 0; mask < (1 <<\
+    \ m); mask++) {\n            std::vector<int> label(n);\n            std::iota(label.begin(),\
+    \ label.end(), 0);\n            int cost = 0;\n            for (int i = 0; i <\
+    \ m; i++)\n                if (mask >> i & 1) cost += std::get<2>(edges[i]);\n\
+    \            for (int t = 0; t < n; t++) {\n                for (int i = 0; i\
+    \ < m; i++) {\n                    if (!(mask >> i & 1)) continue;\n         \
+    \           auto [u, v, w] = edges[i];\n                    label[u] = label[v]\
+    \ = std::min(label[u], label[v]);\n                }\n            }\n        \
+    \    bool connected = true;\n            for (int v : terminals) connected &=\
+    \ label[v] == label[terminals[0]];\n            if (connected && (best == -1 ||\
+    \ cost < best)) best = cost;\n        }\n        if (terminals.empty()) best =\
+    \ 0;\n        if (minimum_steiner_tree(graph, terminals) != best) ok = false;\n\
+    \        // \u5FA9\u5143: \u8FBA\u306E\u756A\u53F7\u304C\u6607\u9806\u3067\u91CD\
+    \u8907\u304C\u306A\u304F\u3001\u91CD\u307F\u306E\u548C\u304C\u6700\u5C0F\u3067\
+    \u3001terminals \u3092\u3064\u306A\u3050\n        auto used = minimum_steiner_tree_restore(graph,\
+    \ terminals);\n        if (!std::is_sorted(used.begin(), used.end()) || std::adjacent_find(used.begin(),\
+    \ used.end()) != used.end()) ok = false;\n        int cost = 0;\n        UnionFind\
+    \ uf(n);\n        for (auto i : used) {\n            auto [u, v, w] = edges[i];\n\
+    \            cost += w;\n            uf.merge(u, v);\n        }\n        if (cost\
+    \ != best) ok = false;\n        for (int v : terminals)\n            if (!uf.same(v,\
+    \ terminals[0])) ok = false;\n    }\n\n    // minimum_spanning_tree: \u8FBA\u306E\
+    \u90E8\u5206\u96C6\u5408\u3092\u3059\u3079\u3066\u8A66\u3057\u3066\u6700\u5C0F\
+    \u306E\u30B3\u30B9\u30C8\u306E\u5168\u57DF\u68EE\u3068\u6BD4\u3079\u308B\n   \
+    \ for (int rep = 0; rep < 1000 && ok; rep++) {\n        int n = rng() % 6 + 1,\
+    \ m = rng() % 9;\n        Graph<int> graph(n);\n        for (int i = 0; i < m;\
+    \ i++) graph.add_edge(rng() % n, rng() % n, rng() % 10);\n        auto es = graph.edges();\n\
+    \        auto comps = connected_components(graph);\n        int need = n - static_cast<int>(comps.size());\
     \  // \u5168\u57DF\u68EE\u306E\u8FBA\u306E\u672C\u6570\n        int best = -1;\n\
     \        for (int mask = 0; mask < (1 << m); mask++) {\n            if (__builtin_popcount(mask)\
     \ != need) continue;\n            UnionFind uf(n);\n            bool forest =\
@@ -705,7 +769,7 @@ data:
   isVerificationFile: true
   path: test/unittest/data_structures/graph_util.test.cpp
   requiredBy: []
-  timestamp: '2026-10-23 06:33:25+09:00'
+  timestamp: '2026-10-23 13:29:09+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/data_structures/graph_util.test.cpp

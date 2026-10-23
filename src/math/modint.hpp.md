@@ -216,6 +216,9 @@ data:
     path: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
     title: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/unionfind-with-potential.test.cpp
+    title: test/yosupo/data_structure/unionfind-with-potential.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/enumerative_combinatorics/bell-number.test.cpp
     title: test/yosupo/enumerative_combinatorics/bell-number.test.cpp
   - icon: ':heavy_check_mark:'
@@ -249,11 +252,20 @@ data:
     path: test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
     title: test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/linear_algebra/inverse-matrix.test.cpp
+    title: test/yosupo/linear_algebra/inverse-matrix.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/matrix-det.test.cpp
     title: test/yosupo/linear_algebra/matrix-det.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/linear_algebra/matrix-product.test.cpp
+    title: test/yosupo/linear_algebra/matrix-product.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/matrix-rank.test.cpp
     title: test/yosupo/linear_algebra/matrix-rank.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/linear_algebra/pow-of-matrix.test.cpp
+    title: test/yosupo/linear_algebra/pow-of-matrix.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/system-of-linear-equations.test.cpp
     title: test/yosupo/linear_algebra/system-of-linear-equations.test.cpp
@@ -982,6 +994,7 @@ data:
   - test/yosupo/data_structure/range-affine-range-sum.3.test.cpp
   - test/yosupo/data_structure/range-affine-range-sum-large-array.test.cpp
   - test/yosupo/data_structure/range-affine-point-get.1.test.cpp
+  - test/yosupo/data_structure/unionfind-with-potential.test.cpp
   - test/yosupo/data_structure/point-set-range-composite.3.test.cpp
   - test/yosupo/data_structure/range-set-range-composite.test.cpp
   - test/yosupo/data_structure/range-affine-point-get.2.test.cpp
@@ -991,6 +1004,9 @@ data:
   - test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
   - test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
   - test/yosupo/data_structure/range-affine-range-sum.1.test.cpp
+  - test/yosupo/linear_algebra/pow-of-matrix.test.cpp
+  - test/yosupo/linear_algebra/matrix-product.test.cpp
+  - test/yosupo/linear_algebra/inverse-matrix.test.cpp
   - test/yosupo/linear_algebra/matrix-rank.test.cpp
   - test/yosupo/linear_algebra/system-of-linear-equations.test.cpp
   - test/yosupo/linear_algebra/matrix-det.test.cpp

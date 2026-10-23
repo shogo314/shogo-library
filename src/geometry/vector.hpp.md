@@ -112,11 +112,17 @@ data:
     path: test/unittest/geometry/vector.test.cpp
     title: test/unittest/geometry/vector.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/geo/closest-pair.test.cpp
+    title: test/yosupo/geo/closest-pair.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/geo/furthest-pair.test.cpp
     title: test/yosupo/geo/furthest-pair.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/geo/sort-points-by-argument.1.test.cpp
     title: test/yosupo/geo/sort-points-by-argument.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/geo/static-convex-hull.test.cpp
+    title: test/yosupo/geo/static-convex-hull.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -1076,7 +1082,9 @@ data:
   - test/aoj/cgl/cgl-3-b.test.cpp
   - test/aoj/cgl/cgl-7-g.test.cpp
   - test/aoj/cgl/cgl-2-b.test.cpp
+  - test/yosupo/geo/static-convex-hull.test.cpp
   - test/yosupo/geo/sort-points-by-argument.1.test.cpp
+  - test/yosupo/geo/closest-pair.test.cpp
   - test/yosupo/geo/furthest-pair.test.cpp
 documentation_of: src/geometry/vector.hpp
 layout: document

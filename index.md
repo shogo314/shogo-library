@@ -1340,6 +1340,9 @@ data:
       path: test/yosupo/data_structure/queue-operate-all-composite.test.cpp
       title: test/yosupo/data_structure/queue-operate-all-composite.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/data_structure/range-add-range-min.test.cpp
+      title: test/yosupo/data_structure/range-add-range-min.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/data_structure/range-affine-point-get.1.test.cpp
       title: test/yosupo/data_structure/range-affine-point-get.1.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1412,6 +1415,9 @@ data:
       path: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
       title: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/data_structure/unionfind-with-potential.test.cpp
+      title: test/yosupo/data_structure/unionfind-with-potential.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/data_structure/unionfind.test.cpp
       title: test/yosupo/data_structure/unionfind.test.cpp
   - name: test/yosupo/enumerative_combinatorics
@@ -1452,6 +1458,9 @@ data:
   - name: test/yosupo/geo
     pages:
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/geo/closest-pair.test.cpp
+      title: test/yosupo/geo/closest-pair.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/geo/furthest-pair.test.cpp
       title: test/yosupo/geo/furthest-pair.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1460,6 +1469,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/geo/sort-points-by-argument.2.test.cpp
       title: test/yosupo/geo/sort-points-by-argument.2.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/geo/static-convex-hull.test.cpp
+      title: test/yosupo/geo/static-convex-hull.test.cpp
   - name: test/yosupo/graph
     pages:
     - icon: ':heavy_check_mark:'
@@ -1502,6 +1514,9 @@ data:
       path: test/yosupo/graph/minimum-spanning-tree.2.test.cpp
       title: test/yosupo/graph/minimum-spanning-tree.2.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/graph/minimum-steiner-tree.test.cpp
+      title: test/yosupo/graph/minimum-steiner-tree.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/graph/scc.test.cpp
       title: test/yosupo/graph/scc.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1516,6 +1531,9 @@ data:
       path: test/yosupo/linear_algebra/inverse-matrix-mod-2.test.cpp
       title: test/yosupo/linear_algebra/inverse-matrix-mod-2.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/linear_algebra/inverse-matrix.test.cpp
+      title: test/yosupo/linear_algebra/inverse-matrix.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/linear_algebra/matrix-det-mod-2.test.cpp
       title: test/yosupo/linear_algebra/matrix-det-mod-2.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1525,11 +1543,17 @@ data:
       path: test/yosupo/linear_algebra/matrix-product-mod-2.test.cpp
       title: test/yosupo/linear_algebra/matrix-product-mod-2.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/linear_algebra/matrix-product.test.cpp
+      title: test/yosupo/linear_algebra/matrix-product.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/linear_algebra/matrix-rank-mod-2.test.cpp
       title: test/yosupo/linear_algebra/matrix-rank-mod-2.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/linear_algebra/matrix-rank.test.cpp
       title: test/yosupo/linear_algebra/matrix-rank.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/linear_algebra/pow-of-matrix.test.cpp
+      title: test/yosupo/linear_algebra/pow-of-matrix.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/linear_algebra/system-of-linear-equations-mod-2.test.cpp
       title: test/yosupo/linear_algebra/system-of-linear-equations-mod-2.test.cpp
@@ -1568,6 +1592,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/number_theory/primitive-root.test.cpp
       title: test/yosupo/number_theory/primitive-root.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/number_theory/rational-approximation.test.cpp
+      title: test/yosupo/number_theory/rational-approximation.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/number_theory/sqrt-mod.test.cpp
       title: test/yosupo/number_theory/sqrt-mod.test.cpp

@@ -43,6 +43,9 @@ data:
     path: test/yosupo/data_structure/point-set-range-composite.4.test.cpp
     title: test/yosupo/data_structure/point-set-range-composite.4.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/range-add-range-min.test.cpp
+    title: test/yosupo/data_structure/range-add-range-min.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/range-affine-point-get.1.test.cpp
     title: test/yosupo/data_structure/range-affine-point-get.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -930,6 +933,7 @@ data:
   - test/yosupo/data_structure/range-affine-range-sum.3.test.cpp
   - test/yosupo/data_structure/range-affine-point-get.1.test.cpp
   - test/yosupo/data_structure/area-of-union-of-rectangles.2.test.cpp
+  - test/yosupo/data_structure/range-add-range-min.test.cpp
   - test/yosupo/data_structure/range-set-range-composite.test.cpp
   - test/yosupo/data_structure/area-of-union-of-rectangles.1.test.cpp
   - test/yosupo/data_structure/range-affine-range-sum.1.test.cpp

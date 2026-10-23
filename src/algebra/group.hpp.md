@@ -68,6 +68,9 @@ data:
     path: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
     title: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/unionfind-with-potential.test.cpp
+    title: test/yosupo/data_structure/unionfind-with-potential.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/tree/dynamic-tree-vertex-add-subtree-sum.test.cpp
     title: test/yosupo/tree/dynamic-tree-vertex-add-subtree-sum.test.cpp
   - icon: ':heavy_check_mark:'
@@ -469,6 +472,7 @@ data:
   - test/aoj/volume29/2971.test.cpp
   - test/yosupo/data_structure/rectangle-sum.2.test.cpp
   - test/yosupo/data_structure/point-add-range-sum.3.test.cpp
+  - test/yosupo/data_structure/unionfind-with-potential.test.cpp
   - test/yosupo/data_structure/rectangle-sum.1.test.cpp
   - test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
   - test/yosupo/tree/vertex-add-path-sum.test.cpp

@@ -364,58 +364,102 @@ data:
     \ & ~low;\n        for (int U = cand;; U = (U - 1) & cand) {\n            const\
     \ int T = U | low;\n            if (indep[T] && dp[S ^ T] + 1 < dp[S]) dp[S] =\
     \ dp[S ^ T] + 1;\n            if (U == 0) break;\n        }\n    }\n    return\
-    \ dp[(1 << n) - 1];\n}\n\ntemplate <typename Cost, typename T>\nCost minimum_steiner_tree(const\
-    \ Graph<Cost>& graph, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max()\
-    \ / 4) {\n    if (X.empty()) return Cost{};\n    for (const auto& x : X) assert(0\
-    \ <= x && x < graph.n);\n    std::vector<std::vector<Cost>> dp(graph.n, std::vector<Cost>(1\
-    \ << X.size(), inf));\n    for (int p = 0; p < static_cast<int>(X.size()); p++)\
-    \ dp[X[p]][1 << p] = {};\n    for (int i = 0; i < (1 << X.size()); i++) {\n  \
-    \      for (int j = i; j > 0; j = (j - 1) & i) {\n            for (long long k\
-    \ = 0; k < graph.n; k++) {\n                if (dp[k][j] != inf && dp[k][i ^ j]\
-    \ != inf) {\n                    if (dp[k][i] == inf || dp[k][i] > dp[k][j] +\
-    \ dp[k][i ^ j]) dp[k][i] = dp[k][j] + dp[k][i ^ j];\n                }\n     \
-    \       }\n        }\n        std::priority_queue<std::pair<Cost, long long>,\
+    \ dp[(1 << n) - 1];\n}\n\nnamespace internal_graph_util {\n/**\n * @brief minimum_steiner_tree\
+    \ \u306E DP\n * dp[k][i]: \u9802\u70B9 k \u3092\u542B\u307F\u3001X \u306E\u90E8\
+    \u5206\u96C6\u5408 i \u3092\u3059\u3079\u3066\u542B\u3080\u90E8\u5206\u6728\u306E\
+    \u91CD\u307F\u306E\u6700\u5C0F\u5024\n * from[k][i]: \u5FA9\u5143\u7528\u3002\
+    type \u304C -1 \u306A\u3089 X \u306E\u9802\u70B9\u305D\u306E\u3082\u306E\u3001\
+    0 \u306A\u3089 i \u3092 x \u3068 i ^ x \u306B\u5206\u3051\u305F\u30011 \u306A\u3089\
+    \u9802\u70B9 x \u304B\u3089\u8FBA id \u3092\u901A\u3063\u3066\u6765\u305F\n */\n\
+    struct SteinerFrom {\n    int type = -1;\n    long long x = -1, id = -1;\n};\n\
+    template <typename Cost>\nstruct SteinerDP {\n    std::vector<std::vector<Cost>>\
+    \ dp;\n    std::vector<std::vector<SteinerFrom>> from;\n};\ntemplate <typename\
+    \ Cost, typename T>\nSteinerDP<Cost> steiner_dp(const Graph<Cost>& graph, const\
+    \ std::vector<T>& X, Cost inf, bool restore) {\n    for (const auto& x : X) assert(0\
+    \ <= x && x < graph.n);\n    const int full = 1 << X.size();\n    SteinerDP<Cost>\
+    \ res;\n    auto& dp = res.dp;\n    dp.assign(graph.n, std::vector<Cost>(full,\
+    \ inf));\n    if (restore) res.from.assign(graph.n, std::vector<SteinerFrom>(full));\n\
+    \    for (int p = 0; p < static_cast<int>(X.size()); p++) dp[X[p]][1 << p] = {};\n\
+    \    for (int i = 0; i < full; i++) {\n        for (int j = i; j > 0; j = (j -\
+    \ 1) & i) {\n            for (long long k = 0; k < graph.n; k++) {\n         \
+    \       if (dp[k][j] != inf && dp[k][i ^ j] != inf) {\n                    if\
+    \ (dp[k][i] == inf || dp[k][i] > dp[k][j] + dp[k][i ^ j]) {\n                \
+    \        dp[k][i] = dp[k][j] + dp[k][i ^ j];\n                        if (restore)\
+    \ res.from[k][i] = {0, j, -1};\n                    }\n                }\n   \
+    \         }\n        }\n        std::priority_queue<std::pair<Cost, long long>,\
     \ std::vector<std::pair<Cost, long long>>, std::greater<std::pair<Cost, long long>>>\
     \ que;\n        for (long long k = 0; k < graph.n; k++)\n            if (dp[k][i]\
     \ != inf) que.emplace(dp[k][i], k);\n        while (que.size()) {\n          \
     \  auto [d, u] = que.top();\n            que.pop();\n            if (d > dp[u][i])\
     \ continue;\n            for (auto e : graph[u]) {\n                if (dp[e.dst][i]\
     \ == inf || dp[e.dst][i] > d + e.cost) {\n                    dp[e.dst][i] = d\
-    \ + e.cost;\n                    que.emplace(d + e.cost, e.dst);\n           \
-    \     }\n            }\n        }\n    }\n    Cost res = inf;\n    for (long long\
-    \ k = 0; k < graph.n; k++) {\n        if (dp[k].back() != inf && (res == inf ||\
-    \ res > dp[k].back())) res = dp[k].back();\n    }\n    return res;\n}\n#line 13\
-    \ \"src/graph/two-sat.hpp\"\n\n/**\n * @brief 2-SAT\n *\n * \u5909\u6570 x_0,\
-    \ ..., x_{n-1} \u306B\u3064\u3044\u3066\u306E\u300C(x_i = f) \u307E\u305F\u306F\
-    \ (x_j = g)\u300D\u3068\u3044\u3046\u5F62\u306E\u6761\u4EF6\u3092\u4E26\u3079\u3066\
-    \u3001\n * \u3059\u3079\u3066\u3092\u6E80\u305F\u3059\u5272\u308A\u5F53\u3066\u304C\
-    \u3042\u308B\u304B\u3092\u5224\u5B9A\u3059\u308B\n * \u5F37\u9023\u7D50\u6210\u5206\
-    \u5206\u89E3\u3092\u4F7F\u3046\u3002O(n + \u6761\u4EF6\u306E\u500B\u6570)\n *\
-    \ \u4F8B:\n * TwoSat ts(n);\n * ts.add_clause(0, true, 1, false);  // x_0 \u307E\
-    \u305F\u306F (not x_1)\n * if (ts.satisfiable()) auto ans = ts.answer();\n */\n\
-    class TwoSat {\n    long long n;\n    // \u9802\u70B9 i \u306F\u300Cx_i = true\u300D\
-    \u3001\u9802\u70B9 n + i \u306F\u300Cx_i = false\u300D\u3092\u8868\u3059\n   \
-    \ Graph<int> graph;\n    std::vector<bool> ans;\n    long long literal(long long\
-    \ i, bool f) const { return f ? i : n + i; }\n\n   public:\n    explicit TwoSat(long\
-    \ long n = 0) : n(n), graph(2 * n), ans(n) {}\n\n    long long size() const {\
-    \ return n; }\n\n    /**\n     * @brief \u6761\u4EF6\u300C(x_i = f) \u307E\u305F\
-    \u306F (x_j = g)\u300D\u3092\u52A0\u3048\u308B\n     */\n    void add_clause(long\
-    \ long i, bool f, long long j, bool g) {\n        assert(0 <= i && i < n && 0\
-    \ <= j && j < n);\n        // (x_i != f) \u306A\u3089 (x_j = g)\u3001(x_j != g)\
-    \ \u306A\u3089 (x_i = f)\n        graph.add_directed_edge(literal(i, !f), literal(j,\
-    \ g));\n        graph.add_directed_edge(literal(j, !g), literal(i, f));\n    }\n\
-    \    /**\n     * @brief \u6761\u4EF6\u300C(x_i = f) \u306A\u3089\u3070 (x_j =\
-    \ g)\u300D\u3092\u52A0\u3048\u308B\n     */\n    void add_imply(long long i, bool\
-    \ f, long long j, bool g) { add_clause(i, !f, j, g); }\n    /**\n     * @brief\
-    \ \u6761\u4EF6\u300Cx_i = f\u300D\u3092\u52A0\u3048\u308B\n     */\n    void add_fix(long\
-    \ long i, bool f) { add_clause(i, f, i, f); }\n    /**\n     * @brief \u6761\u4EF6\
-    \u300C(x_i = f) \u3068 (x_j = g) \u306E\u5C11\u306A\u304F\u3068\u3082\u4E00\u65B9\
-    \u306F\u6210\u308A\u7ACB\u305F\u306A\u3044\u300D\u3092\u52A0\u3048\u308B\n   \
-    \  */\n    void add_nand(long long i, bool f, long long j, bool g) { add_clause(i,\
-    \ !f, j, !g); }\n\n    /**\n     * @brief \u3059\u3079\u3066\u306E\u6761\u4EF6\
-    \u3092\u6E80\u305F\u3059\u5272\u308A\u5F53\u3066\u304C\u3042\u308B\u304B\u3002\
-    \u3042\u308C\u3070 answer() \u3067 1 \u3064\u5F97\u3089\u308C\u308B\n     */\n\
-    \    bool satisfiable() {\n        auto groups = strongly_connected_components(graph);\n\
+    \ + e.cost;\n                    if (restore) res.from[e.dst][i] = {1, u, e.id};\n\
+    \                    que.emplace(d + e.cost, e.dst);\n                }\n    \
+    \        }\n        }\n    }\n    return res;\n}\n}  // namespace internal_graph_util\n\
+    \n/**\n * @brief \u9802\u70B9\u96C6\u5408 X \u3092\u3059\u3079\u3066\u542B\u3080\
+    \u90E8\u5206\u6728\u306E\u8FBA\u306E\u91CD\u307F\u306E\u7DCF\u548C\u306E\u6700\
+    \u5C0F\u5024 O(3^k n + 2^k m log m) (k = |X|)\n * @note \u7121\u5411\u30B0\u30E9\
+    \u30D5\u3002X \u304C\u7A7A\u306A\u3089 0\n */\ntemplate <typename Cost, typename\
+    \ T>\nCost minimum_steiner_tree(const Graph<Cost>& graph, const std::vector<T>&\
+    \ X, Cost inf = std::numeric_limits<Cost>::max() / 4) {\n    if (X.empty()) return\
+    \ Cost{};\n    const auto dp = internal_graph_util::steiner_dp(graph, X, inf,\
+    \ false).dp;\n    Cost res = inf;\n    for (long long k = 0; k < graph.n; k++)\
+    \ {\n        if (dp[k].back() != inf && (res == inf || res > dp[k].back())) res\
+    \ = dp[k].back();\n    }\n    return res;\n}\n\n/**\n * @brief \u9802\u70B9\u96C6\
+    \u5408 X \u3092\u3059\u3079\u3066\u542B\u3080\u91CD\u307F\u6700\u5C0F\u306E\u90E8\
+    \u5206\u6728\u3092 1 \u3064\u6C42\u3081\u3001\u305D\u306E\u8FBA\u306E\u756A\u53F7\
+    \u3092\u6607\u9806\u306B\u8FD4\u3059\n * \u8A08\u7B97\u91CF\u306F minimum_steiner_tree\
+    \ \u3068\u540C\u3058\n * @note \u7121\u5411\u30B0\u30E9\u30D5\u3002X \u304C\u7A7A\
+    \u306A\u3089\u7A7A\u3002X \u306E\u9802\u70B9\u3069\u3046\u3057\u304C\u9023\u7D50\
+    \u3067\u306A\u3044\u3068\u304D\u306F\u547C\u3070\u306A\u3044\u3053\u3068\n */\n\
+    template <typename Cost, typename T>\nstd::vector<long long> minimum_steiner_tree_restore(const\
+    \ Graph<Cost>& graph, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max()\
+    \ / 4) {\n    if (X.empty()) return {};\n    const auto [dp, from] = internal_graph_util::steiner_dp(graph,\
+    \ X, inf, true);\n    long long root = -1;\n    for (long long k = 0; k < graph.n;\
+    \ k++) {\n        if (dp[k].back() != inf && (root == -1 || dp[root].back() >\
+    \ dp[k].back())) root = k;\n    }\n    assert(root != -1);\n    // \u8FBA\u306E\
+    \u91CD\u307F\u304C 0 \u3060\u3068\u540C\u3058\u8FBA\u3092 2 \u56DE\u4F7F\u3046\
+    \u3053\u3068\u304C\u3042\u308B\u306E\u3067\u3001\u6700\u5F8C\u306B\u91CD\u8907\
+    \u3092\u9664\u304F\n    std::vector<long long> res;\n    std::vector<std::pair<long\
+    \ long, int>> stk = {{root, static_cast<int>(dp[root].size()) - 1}};\n    while\
+    \ (!stk.empty()) {\n        auto [k, i] = stk.back();\n        stk.pop_back();\n\
+    \        const auto& f = from[k][i];\n        if (f.type == 0) {\n           \
+    \ stk.emplace_back(k, static_cast<int>(f.x));\n            stk.emplace_back(k,\
+    \ i ^ static_cast<int>(f.x));\n        } else if (f.type == 1) {\n           \
+    \ res.push_back(f.id);\n            stk.emplace_back(f.x, i);\n        }\n   \
+    \ }\n    std::sort(res.begin(), res.end());\n    res.erase(std::unique(res.begin(),\
+    \ res.end()), res.end());\n    return res;\n}\n#line 13 \"src/graph/two-sat.hpp\"\
+    \n\n/**\n * @brief 2-SAT\n *\n * \u5909\u6570 x_0, ..., x_{n-1} \u306B\u3064\u3044\
+    \u3066\u306E\u300C(x_i = f) \u307E\u305F\u306F (x_j = g)\u300D\u3068\u3044\u3046\
+    \u5F62\u306E\u6761\u4EF6\u3092\u4E26\u3079\u3066\u3001\n * \u3059\u3079\u3066\u3092\
+    \u6E80\u305F\u3059\u5272\u308A\u5F53\u3066\u304C\u3042\u308B\u304B\u3092\u5224\
+    \u5B9A\u3059\u308B\n * \u5F37\u9023\u7D50\u6210\u5206\u5206\u89E3\u3092\u4F7F\u3046\
+    \u3002O(n + \u6761\u4EF6\u306E\u500B\u6570)\n * \u4F8B:\n * TwoSat ts(n);\n *\
+    \ ts.add_clause(0, true, 1, false);  // x_0 \u307E\u305F\u306F (not x_1)\n * if\
+    \ (ts.satisfiable()) auto ans = ts.answer();\n */\nclass TwoSat {\n    long long\
+    \ n;\n    // \u9802\u70B9 i \u306F\u300Cx_i = true\u300D\u3001\u9802\u70B9 n +\
+    \ i \u306F\u300Cx_i = false\u300D\u3092\u8868\u3059\n    Graph<int> graph;\n \
+    \   std::vector<bool> ans;\n    long long literal(long long i, bool f) const {\
+    \ return f ? i : n + i; }\n\n   public:\n    explicit TwoSat(long long n = 0)\
+    \ : n(n), graph(2 * n), ans(n) {}\n\n    long long size() const { return n; }\n\
+    \n    /**\n     * @brief \u6761\u4EF6\u300C(x_i = f) \u307E\u305F\u306F (x_j =\
+    \ g)\u300D\u3092\u52A0\u3048\u308B\n     */\n    void add_clause(long long i,\
+    \ bool f, long long j, bool g) {\n        assert(0 <= i && i < n && 0 <= j &&\
+    \ j < n);\n        // (x_i != f) \u306A\u3089 (x_j = g)\u3001(x_j != g) \u306A\
+    \u3089 (x_i = f)\n        graph.add_directed_edge(literal(i, !f), literal(j, g));\n\
+    \        graph.add_directed_edge(literal(j, !g), literal(i, f));\n    }\n    /**\n\
+    \     * @brief \u6761\u4EF6\u300C(x_i = f) \u306A\u3089\u3070 (x_j = g)\u300D\u3092\
+    \u52A0\u3048\u308B\n     */\n    void add_imply(long long i, bool f, long long\
+    \ j, bool g) { add_clause(i, !f, j, g); }\n    /**\n     * @brief \u6761\u4EF6\
+    \u300Cx_i = f\u300D\u3092\u52A0\u3048\u308B\n     */\n    void add_fix(long long\
+    \ i, bool f) { add_clause(i, f, i, f); }\n    /**\n     * @brief \u6761\u4EF6\u300C\
+    (x_i = f) \u3068 (x_j = g) \u306E\u5C11\u306A\u304F\u3068\u3082\u4E00\u65B9\u306F\
+    \u6210\u308A\u7ACB\u305F\u306A\u3044\u300D\u3092\u52A0\u3048\u308B\n     */\n\
+    \    void add_nand(long long i, bool f, long long j, bool g) { add_clause(i, !f,\
+    \ j, !g); }\n\n    /**\n     * @brief \u3059\u3079\u3066\u306E\u6761\u4EF6\u3092\
+    \u6E80\u305F\u3059\u5272\u308A\u5F53\u3066\u304C\u3042\u308B\u304B\u3002\u3042\
+    \u308C\u3070 answer() \u3067 1 \u3064\u5F97\u3089\u308C\u308B\n     */\n    bool\
+    \ satisfiable() {\n        auto groups = strongly_connected_components(graph);\n\
     \        // \u6210\u5206\u306E\u30C8\u30DD\u30ED\u30B8\u30AB\u30EB\u9806\u3067\
     \u306E\u756A\u53F7\n        std::vector<int> id(2 * n);\n        for (int k =\
     \ 0; k < static_cast<int>(groups.size()); k++) {\n            for (long long v\
@@ -458,7 +502,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/other/two-sat.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 13:40:29+09:00'
+  timestamp: '2026-10-23 13:29:09+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/other/two-sat.test.cpp

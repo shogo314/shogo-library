@@ -49,8 +49,8 @@ data:
     path: test/unittest/data_structures/find-cycle.test.cpp
     title: test/unittest/data_structures/find-cycle.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/data_structures/graph-util.test.cpp
-    title: test/unittest/data_structures/graph-util.test.cpp
+    path: test/unittest/data_structures/graph_util.test.cpp
+    title: test/unittest/data_structures/graph_util.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/monoid-unionfind.test.cpp
     title: test/unittest/data_structures/monoid-unionfind.test.cpp
@@ -240,10 +240,10 @@ data:
   - test/unittest/graph/chinese-postman.test.cpp
   - test/unittest/data_structures/unionfind.test.cpp
   - test/unittest/data_structures/persistent-unionfind.test.cpp
+  - test/unittest/data_structures/graph_util.test.cpp
   - test/unittest/data_structures/find-cycle.test.cpp
   - test/unittest/data_structures/monoid-unionfind.test.cpp
   - test/unittest/data_structures/potentialized-unionfind.test.cpp
-  - test/unittest/data_structures/graph-util.test.cpp
   - test/unittest/algebra/mapping.test.cpp
   - test/unittest/algebra/monoid.test.cpp
   - test/aoj/grl/grl-4-a.test.cpp

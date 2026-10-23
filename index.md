@@ -622,11 +622,11 @@ data:
       path: test/aoj/dpl/dpl-5-d.2.test.cpp
       title: test/aoj/dpl/dpl-5-d.2.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/aoj/dpl/dpl-5-e.lucas.test.cpp
-      title: test/aoj/dpl/dpl-5-e.lucas.test.cpp
+      path: test/aoj/dpl/dpl-5-e.1.test.cpp
+      title: test/aoj/dpl/dpl-5-e.1.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/aoj/dpl/dpl-5-e.test.cpp
-      title: test/aoj/dpl/dpl-5-e.test.cpp
+      path: test/aoj/dpl/dpl-5-e.2.test.cpp
+      title: test/aoj/dpl/dpl-5-e.2.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/aoj/dpl/dpl-5-f.test.cpp
       title: test/aoj/dpl/dpl-5-f.test.cpp
@@ -732,9 +732,6 @@ data:
       title: test/aoj/grl/grl-7-a.test.cpp
   - name: test/aoj/itp1
     pages:
-    - icon: ':heavy_check_mark:'
-      path: test/aoj/itp1/itp1-1-a.binary-trie.test.cpp
-      title: test/aoj/itp1/itp1-1-a.binary-trie.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/aoj/itp1/itp1-10-c.test.cpp
       title: test/aoj/itp1/itp1-10-c.test.cpp
@@ -863,8 +860,11 @@ data:
   - name: test/unittest/data_structures
     pages:
     - icon: ':heavy_check_mark:'
-      path: test/unittest/data_structures/binary-trie.test.cpp
-      title: test/unittest/data_structures/binary-trie.test.cpp
+      path: test/unittest/data_structures/binary-trie.1.test.cpp
+      title: test/unittest/data_structures/binary-trie.1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/data_structures/binary-trie.2.test.cpp
+      title: test/unittest/data_structures/binary-trie.2.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/data_structures/circular-ring.test.cpp
       title: test/unittest/data_structures/circular-ring.test.cpp
@@ -899,8 +899,8 @@ data:
       path: test/unittest/data_structures/find-cycle.test.cpp
       title: test/unittest/data_structures/find-cycle.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/unittest/data_structures/graph-util.test.cpp
-      title: test/unittest/data_structures/graph-util.test.cpp
+      path: test/unittest/data_structures/graph_util.test.cpp
+      title: test/unittest/data_structures/graph_util.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/data_structures/imos-2d.test.cpp
       title: test/unittest/data_structures/imos-2d.test.cpp
@@ -1219,11 +1219,11 @@ data:
       path: test/unittest/utility/compress.test.cpp
       title: test/unittest/utility/compress.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/unittest/utility/container-func-member.test.cpp
-      title: test/unittest/utility/container-func-member.test.cpp
+      path: test/unittest/utility/container_func-member.test.cpp
+      title: test/unittest/utility/container_func-member.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/unittest/utility/container-func.test.cpp
-      title: test/unittest/utility/container-func.test.cpp
+      path: test/unittest/utility/container_func.test.cpp
+      title: test/unittest/utility/container_func.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/utility/range-rect.test.cpp
       title: test/unittest/utility/range-rect.test.cpp
@@ -1234,8 +1234,8 @@ data:
       path: test/unittest/utility/repr.test.cpp
       title: test/unittest/utility/repr.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/unittest/utility/vector-func.test.cpp
-      title: test/unittest/utility/vector-func.test.cpp
+      path: test/unittest/utility/vector_func.test.cpp
+      title: test/unittest/utility/vector_func.test.cpp
   - name: test/yosupo/convolution
     pages:
     - icon: ':heavy_check_mark:'

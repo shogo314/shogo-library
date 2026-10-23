@@ -181,11 +181,11 @@ data:
     path: test/aoj/dpl/dpl-5-d.2.test.cpp
     title: test/aoj/dpl/dpl-5-d.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dpl/dpl-5-e.lucas.test.cpp
-    title: test/aoj/dpl/dpl-5-e.lucas.test.cpp
+    path: test/aoj/dpl/dpl-5-e.1.test.cpp
+    title: test/aoj/dpl/dpl-5-e.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dpl/dpl-5-e.test.cpp
-    title: test/aoj/dpl/dpl-5-e.test.cpp
+    path: test/aoj/dpl/dpl-5-e.2.test.cpp
+    title: test/aoj/dpl/dpl-5-e.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/dpl/dpl-5-f.test.cpp
     title: test/aoj/dpl/dpl-5-f.test.cpp
@@ -346,17 +346,17 @@ data:
     path: test/unittest/string/rolling-hash.test.cpp
     title: test/unittest/string/rolling-hash.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/utility/container-func-member.test.cpp
-    title: test/unittest/utility/container-func-member.test.cpp
+    path: test/unittest/utility/container_func-member.test.cpp
+    title: test/unittest/utility/container_func-member.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/utility/container-func.test.cpp
-    title: test/unittest/utility/container-func.test.cpp
+    path: test/unittest/utility/container_func.test.cpp
+    title: test/unittest/utility/container_func.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/utility/repr.test.cpp
     title: test/unittest/utility/repr.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/utility/vector-func.test.cpp
-    title: test/unittest/utility/vector-func.test.cpp
+    path: test/unittest/utility/vector_func.test.cpp
+    title: test/unittest/utility/vector_func.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/convolution/bitwise-and-convolution.test.cpp
     title: test/yosupo/convolution/bitwise-and-convolution.test.cpp
@@ -747,10 +747,10 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/base/functions.test.cpp
-  - test/unittest/utility/vector-func.test.cpp
+  - test/unittest/utility/container_func.test.cpp
   - test/unittest/utility/repr.test.cpp
-  - test/unittest/utility/container-func-member.test.cpp
-  - test/unittest/utility/container-func.test.cpp
+  - test/unittest/utility/container_func-member.test.cpp
+  - test/unittest/utility/vector_func.test.cpp
   - test/unittest/dp/subset-sum.test.cpp
   - test/unittest/data_structures/counter.test.cpp
   - test/unittest/data_structures/interval-set.test.cpp
@@ -791,10 +791,10 @@ data:
   - test/unittest/algebra/acted-monoid.test.cpp
   - test/aoj/volume33/3314.test.cpp
   - test/aoj/dpl/dpl-5-d.1.test.cpp
+  - test/aoj/dpl/dpl-5-e.1.test.cpp
   - test/aoj/dpl/dpl-5-f.test.cpp
   - test/aoj/dpl/dpl-5-b.1.test.cpp
-  - test/aoj/dpl/dpl-5-e.test.cpp
-  - test/aoj/dpl/dpl-5-e.lucas.test.cpp
+  - test/aoj/dpl/dpl-5-e.2.test.cpp
   - test/aoj/dpl/dpl-5-d.2.test.cpp
   - test/aoj/dpl/dpl-5-b.2.test.cpp
   - test/aoj/cgl/cgl-7-d.test.cpp

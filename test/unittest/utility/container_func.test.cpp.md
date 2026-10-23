@@ -18,54 +18,52 @@ data:
     PROBLEM: https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
     links:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
-  bundledCode: "#line 1 \"test/unittest/utility/container-func.test.cpp\"\n#define\
+  bundledCode: "#line 1 \"test/unittest/utility/container_func.test.cpp\"\n#define\
     \ PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// container_func.hpp \u306E\u95A2\u6570\u3092\u611A\u76F4\u306A\u5B9F\u88C5\
     \u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\
     \u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\
-    \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include <algorithm>\n\
-    #include <functional>\n#include <iostream>\n#include <numeric>\n#include <random>\n\
-    #include <set>\n#include <string>\n#include <vector>\n\n#line 2 \"src/utility/container_func.hpp\"\
+    \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/utility/container_func.hpp\"\
     \n\n/**\n * @file container_func.hpp\n * @brief \u30B3\u30F3\u30C6\u30CA\u306B\
-    \u5BFE\u3059\u308B\u95A2\u6570 (sorted, max, sum \u306A\u3069)\n */\n\n#line 9\
-    \ \"src/utility/container_func.hpp\"\n#include <cassert>\n#include <cstddef>\n\
-    #line 12 \"src/utility/container_func.hpp\"\n#include <initializer_list>\n#include\
-    \ <iterator>\n#line 15 \"src/utility/container_func.hpp\"\n#include <type_traits>\n\
-    #line 17 \"src/utility/container_func.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\
-    \n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 12 \"\
-    src/utility/traits.hpp\"\n#include <utility>\n\nnamespace internal_traits {\n\
-    using std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
-    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
-    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
-    \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
-    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
-    \n#define HAS_METHOD(func_name)                                              \
-    \                \\\n    namespace internal_traits {                         \
-    \                                   \\\n    template <class T, class = void> \
-    \                                                      \\\n    struct has_##func_name##_impl\
-    \ : std::false_type {};                                    \\\n    template <class\
-    \ T>                                                                     \\\n\
-    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
-    \ \\\n        : std::true_type {};                                           \
-    \                    \\\n    }                                               \
-    \                                       \\\n    template <class T>           \
-    \                                                          \\\n    struct has_##func_name\
-    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
-    \ <class T>                                                                  \
-    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
-    \n#define HAS_METHOD_ARG(func_name)                                          \
-    \                                    \\\n    namespace internal_traits {     \
-    \                                                                           \\\
-    \n    template <class T, typename U, class = void>                           \
-    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
-    \ {};                                                        \\\n    template\
-    \ <class T, typename U>                                                      \
-    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
-    \ \\\n        : std::true_type {};                                           \
-    \                                        \\\n    }                           \
+    \u5BFE\u3059\u308B\u95A2\u6570 (sorted, max, sum \u306A\u3069)\n */\n\n#include\
+    \ <algorithm>\n#include <cassert>\n#include <cstddef>\n#include <functional>\n\
+    #include <initializer_list>\n#include <iterator>\n#include <numeric>\n#include\
+    \ <type_traits>\n#include <vector>\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n\
+    \ * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 10 \"src/utility/traits.hpp\"\
+    \n#include <set>\n#line 12 \"src/utility/traits.hpp\"\n#include <utility>\n\n\
+    namespace internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T,\
+    \ class = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\n\
+    struct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
+    \ : std::true_type {};\n}  // namespace internal_traits\n\ntemplate <class T>\n\
+    struct is_range : internal_traits::is_range_impl<T>::type {};\ntemplate <class\
+    \ T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define HAS_METHOD(func_name)\
+    \                                                              \\\n    namespace\
+    \ internal_traits {                                                          \
+    \  \\\n    template <class T, class = void>                                  \
+    \                     \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                    \\\n    template <class T>          \
+    \                                                           \\\n    struct has_##func_name##_impl<T,\
+    \ std::void_t<decltype(std::declval<T>().func_name())>> \\\n        : std::true_type\
+    \ {};                                                               \\\n    }\
     \                                                                            \
-    \   \\\n    template <class T, typename U>                                   \
-    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \          \\\n    template <class T>                                        \
+    \                             \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T>::type\
+    \ {};          \\\n    template <class T>                                    \
+    \                                 \\\n    inline constexpr bool has_##func_name##_v\
+    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
+    \                                                                    \\\n    namespace\
+    \ internal_traits {                                                          \
+    \                      \\\n    template <class T, typename U, class = void>  \
+    \                                                             \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                                      \
+    \  \\\n    template <class T, typename U>                                    \
+    \                                         \\\n    struct has_##func_name##_impl<T,\
+    \ U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>> \\\
+    \n        : std::true_type {};                                               \
+    \                                    \\\n    }                               \
+    \                                                                           \\\
+    \n    template <class T, typename U>                                         \
+    \                                    \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
     \ U>::type {};                           \\\n    template <class T, typename U>\
     \                                                                            \
     \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
@@ -184,73 +182,76 @@ data:
     \ mem_value_type<C>& x) {\n    return static_cast<long long>(std::distance(v.begin(),\
     \ lower_bound(v, x)));\n}\ntemplate <class C>\ninline constexpr long long bisect_right(const\
     \ C& v, const mem_value_type<C>& x) {\n    return static_cast<long long>(std::distance(v.begin(),\
-    \ upper_bound(v, x)));\n}\n#line 16 \"test/unittest/utility/container-func.test.cpp\"\
-    \n\nbool ok = true;\n\nvoid check(bool cond, const char* what) {\n    if (!cond)\
-    \ {\n        if (ok) std::cerr << \"failed: \" << what << std::endl;\n       \
-    \ ok = false;\n    }\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n    auto\
-    \ rand_vec = [&](int n, long long lo, long long hi) {\n        std::vector<long\
-    \ long> v(n);\n        for (auto& x : v) x = lo + static_cast<long long>(rng()\
-    \ % static_cast<unsigned long long>(hi - lo + 1));\n        return v;\n    };\n\
-    \n    for (int rep = 0; rep < 2000 && ok; rep++) {\n        int n = rng() % 10\
-    \ + 1;\n        std::vector<long long> v = rand_vec(n, -5, 5);\n\n        // sorted\
-    \ / sort (\u6BD4\u8F03\u95A2\u6570\u3064\u304D)\n        {\n            std::vector<long\
-    \ long> expect = v;\n            std::sort(expect.begin(), expect.end(), std::greater<long\
-    \ long>());\n            check(sorted(v, std::greater<long long>()) == expect,\
-    \ \"sorted(c, f)\");\n            std::vector<long long> w = v;\n            sort(w,\
-    \ std::greater<long long>());\n            check(w == expect, \"sort(c, f)\");\n\
-    \        }\n\n        // set / multiset \u306B\u5BFE\u3059\u308B max / min (\u30BD\
-    \u30FC\u30C8\u6E08\u307F\u306E\u30B3\u30F3\u30C6\u30CA\u306F\u5148\u982D\u3068\
-    \u672B\u5C3E)\n        {\n            std::set<long long> s(v.begin(), v.end());\n\
-    \            std::multiset<long long> ms(v.begin(), v.end());\n            long\
-    \ long mx = *std::max_element(v.begin(), v.end());\n            long long mn =\
-    \ *std::min_element(v.begin(), v.end());\n            check(max(s) == mx && min(s)\
-    \ == mn, \"max/min(set)\");\n            check(max(ms) == mx && min(ms) == mn,\
-    \ \"max/min(multiset)\");\n            check(max(v) == mx && min(v) == mn, \"\
-    max/min(vector)\");\n        }\n\n        // product / product_xor\n        {\n\
-    \            std::vector<long long> small = rand_vec(n, -3, 3);\n            long\
-    \ long p = 1, x = 0;\n            for (long long a : small) p *= a, x ^= a;\n\
-    \            check(product(small) == p, \"product(c)\");\n            check(product_xor(small)\
-    \ == x, \"product_xor(c)\");\n            std::vector<long long> nonneg = rand_vec(n,\
-    \ 0, 1000000);\n            long long y = 0;\n            for (long long a : nonneg)\
-    \ y ^= a;\n            check(product_xor(nonneg) == y, \"product_xor(c) large\"\
-    );\n        }\n\n        // median: \u5076\u6570\u500B\u306A\u3089\u4E2D\u592E\
-    \ 2 \u3064\u306E\u5E73\u5747 (\u6574\u6570\u578B\u306F 0 \u65B9\u5411\u306B\u5207\
-    \u308A\u6368\u3066)\n        {\n            std::vector<long long> w = v;\n  \
-    \          std::sort(w.begin(), w.end());\n            long long expect = n %\
-    \ 2 ? w[n / 2] : (w[n / 2 - 1] + w[n / 2]) / 2;\n            check(median(v) ==\
-    \ expect, \"median(vector<long long>)\");\n            std::vector<double> d(v.begin(),\
-    \ v.end());\n            std::vector<double> dw = d;\n            std::sort(dw.begin(),\
-    \ dw.end());\n            double dexp = n % 2 ? dw[n / 2] : (dw[n / 2 - 1] + dw[n\
-    \ / 2]) / 2;\n            check(median(d) == dexp, \"median(vector<double>)\"\
-    );\n        }\n\n        // index: \u6700\u521D\u306B\u73FE\u308C\u308B\u4F4D\u7F6E\
-    \u3001\u306A\u3051\u308C\u3070 -1\n        {\n            long long x = static_cast<long\
-    \ long>(rng() % 13) - 6;\n            long long expect = std::find(v.begin(),\
-    \ v.end(), x) - v.begin();\n            if (expect == static_cast<long long>(v.size()))\
-    \ expect = -1;\n            check(index(v, x) == expect, \"index(c, x)\");\n \
-    \       }\n\n        // index_if / indices_if / count_if: f(x) \u304C true \u306B\
-    \u306A\u308B\u4F4D\u7F6E\u3068\u500B\u6570 (vector \u3068 set)\n        {\n  \
-    \          long long x = static_cast<long long>(rng() % 13) - 6;\n           \
-    \ auto f = [&](long long e) { return e >= x; };\n            std::vector<long\
-    \ long> pos;\n            for (long long i = 0; i < static_cast<long long>(v.size());\
-    \ i++) {\n                if (f(v[i])) pos.push_back(i);\n            }\n    \
-    \        check(indices_if(v, f) == pos, \"indices_if(vector, f)\");\n        \
-    \    check(index_if(v, f) == (pos.empty() ? -1 : pos[0]), \"index_if(vector, f)\"\
-    );\n            check(count_if(v, f) == static_cast<long long>(pos.size()), \"\
-    count_if(vector, f)\");\n            std::set<long long> st(v.begin(), v.end());\n\
-    \            long long first = std::find_if(st.begin(), st.end(), f) == st.end()\
-    \ ? -1 : std::distance(st.begin(), std::find_if(st.begin(), st.end(), f));\n \
-    \           check(index_if(st, f) == first, \"index_if(set, f)\");\n         \
-    \   check(count_if(st, f) == std::count_if(st.begin(), st.end(), f), \"count_if(set,\
-    \ f)\");\n        }\n\n        // mex: \u542B\u307E\u308C\u306A\u3044\u6700\u5C0F\
-    \u306E\u975E\u8CA0\u6574\u6570\n        {\n            std::vector<int> w(n);\n\
-    \            for (auto& a : w) a = static_cast<int>(rng() % 8) - 2;\n        \
-    \    int expect = 0;\n            while (std::find(w.begin(), w.end(), expect)\
-    \ != w.end()) expect++;\n            check(mex(w) == expect, \"mex(c)\");\n  \
-    \      }\n\n        // count / find / lower_bound / upper_bound (set \u306F\u30E1\
-    \u30F3\u30D0\u95A2\u6570\u3001vector \u306F std:: \u306E\u30A2\u30EB\u30B4\u30EA\
-    \u30BA\u30E0)\n        {\n            long long x = static_cast<long long>(rng()\
-    \ % 13) - 6;\n            std::multiset<long long> ms(v.begin(), v.end());\n \
-    \           std::vector<long long> w = v;\n            std::sort(w.begin(), w.end());\n\
+    \ upper_bound(v, x)));\n}\n#line 7 \"test/unittest/utility/container_func.test.cpp\"\
+    \n\n#line 10 \"test/unittest/utility/container_func.test.cpp\"\n#include <iostream>\n\
+    #line 12 \"test/unittest/utility/container_func.test.cpp\"\n#include <random>\n\
+    #line 14 \"test/unittest/utility/container_func.test.cpp\"\n#include <string>\n\
+    #line 16 \"test/unittest/utility/container_func.test.cpp\"\n\nbool ok = true;\n\
+    \nvoid check(bool cond, const char* what) {\n    if (!cond) {\n        if (ok)\
+    \ std::cerr << \"failed: \" << what << std::endl;\n        ok = false;\n    }\n\
+    }\n\nint main() {\n    std::mt19937_64 rng(314);\n    auto rand_vec = [&](int\
+    \ n, long long lo, long long hi) {\n        std::vector<long long> v(n);\n   \
+    \     for (auto& x : v) x = lo + static_cast<long long>(rng() % static_cast<unsigned\
+    \ long long>(hi - lo + 1));\n        return v;\n    };\n\n    for (int rep = 0;\
+    \ rep < 2000 && ok; rep++) {\n        int n = rng() % 10 + 1;\n        std::vector<long\
+    \ long> v = rand_vec(n, -5, 5);\n\n        // sorted / sort (\u6BD4\u8F03\u95A2\
+    \u6570\u3064\u304D)\n        {\n            std::vector<long long> expect = v;\n\
+    \            std::sort(expect.begin(), expect.end(), std::greater<long long>());\n\
+    \            check(sorted(v, std::greater<long long>()) == expect, \"sorted(c,\
+    \ f)\");\n            std::vector<long long> w = v;\n            sort(w, std::greater<long\
+    \ long>());\n            check(w == expect, \"sort(c, f)\");\n        }\n\n  \
+    \      // set / multiset \u306B\u5BFE\u3059\u308B max / min (\u30BD\u30FC\u30C8\
+    \u6E08\u307F\u306E\u30B3\u30F3\u30C6\u30CA\u306F\u5148\u982D\u3068\u672B\u5C3E\
+    )\n        {\n            std::set<long long> s(v.begin(), v.end());\n       \
+    \     std::multiset<long long> ms(v.begin(), v.end());\n            long long\
+    \ mx = *std::max_element(v.begin(), v.end());\n            long long mn = *std::min_element(v.begin(),\
+    \ v.end());\n            check(max(s) == mx && min(s) == mn, \"max/min(set)\"\
+    );\n            check(max(ms) == mx && min(ms) == mn, \"max/min(multiset)\");\n\
+    \            check(max(v) == mx && min(v) == mn, \"max/min(vector)\");\n     \
+    \   }\n\n        // product / product_xor\n        {\n            std::vector<long\
+    \ long> small = rand_vec(n, -3, 3);\n            long long p = 1, x = 0;\n   \
+    \         for (long long a : small) p *= a, x ^= a;\n            check(product(small)\
+    \ == p, \"product(c)\");\n            check(product_xor(small) == x, \"product_xor(c)\"\
+    );\n            std::vector<long long> nonneg = rand_vec(n, 0, 1000000);\n   \
+    \         long long y = 0;\n            for (long long a : nonneg) y ^= a;\n \
+    \           check(product_xor(nonneg) == y, \"product_xor(c) large\");\n     \
+    \   }\n\n        // median: \u5076\u6570\u500B\u306A\u3089\u4E2D\u592E 2 \u3064\
+    \u306E\u5E73\u5747 (\u6574\u6570\u578B\u306F 0 \u65B9\u5411\u306B\u5207\u308A\u6368\
+    \u3066)\n        {\n            std::vector<long long> w = v;\n            std::sort(w.begin(),\
+    \ w.end());\n            long long expect = n % 2 ? w[n / 2] : (w[n / 2 - 1] +\
+    \ w[n / 2]) / 2;\n            check(median(v) == expect, \"median(vector<long\
+    \ long>)\");\n            std::vector<double> d(v.begin(), v.end());\n       \
+    \     std::vector<double> dw = d;\n            std::sort(dw.begin(), dw.end());\n\
+    \            double dexp = n % 2 ? dw[n / 2] : (dw[n / 2 - 1] + dw[n / 2]) / 2;\n\
+    \            check(median(d) == dexp, \"median(vector<double>)\");\n        }\n\
+    \n        // index: \u6700\u521D\u306B\u73FE\u308C\u308B\u4F4D\u7F6E\u3001\u306A\
+    \u3051\u308C\u3070 -1\n        {\n            long long x = static_cast<long long>(rng()\
+    \ % 13) - 6;\n            long long expect = std::find(v.begin(), v.end(), x)\
+    \ - v.begin();\n            if (expect == static_cast<long long>(v.size())) expect\
+    \ = -1;\n            check(index(v, x) == expect, \"index(c, x)\");\n        }\n\
+    \n        // index_if / indices_if / count_if: f(x) \u304C true \u306B\u306A\u308B\
+    \u4F4D\u7F6E\u3068\u500B\u6570 (vector \u3068 set)\n        {\n            long\
+    \ long x = static_cast<long long>(rng() % 13) - 6;\n            auto f = [&](long\
+    \ long e) { return e >= x; };\n            std::vector<long long> pos;\n     \
+    \       for (long long i = 0; i < static_cast<long long>(v.size()); i++) {\n \
+    \               if (f(v[i])) pos.push_back(i);\n            }\n            check(indices_if(v,\
+    \ f) == pos, \"indices_if(vector, f)\");\n            check(index_if(v, f) ==\
+    \ (pos.empty() ? -1 : pos[0]), \"index_if(vector, f)\");\n            check(count_if(v,\
+    \ f) == static_cast<long long>(pos.size()), \"count_if(vector, f)\");\n      \
+    \      std::set<long long> st(v.begin(), v.end());\n            long long first\
+    \ = std::find_if(st.begin(), st.end(), f) == st.end() ? -1 : std::distance(st.begin(),\
+    \ std::find_if(st.begin(), st.end(), f));\n            check(index_if(st, f) ==\
+    \ first, \"index_if(set, f)\");\n            check(count_if(st, f) == std::count_if(st.begin(),\
+    \ st.end(), f), \"count_if(set, f)\");\n        }\n\n        // mex: \u542B\u307E\
+    \u308C\u306A\u3044\u6700\u5C0F\u306E\u975E\u8CA0\u6574\u6570\n        {\n    \
+    \        std::vector<int> w(n);\n            for (auto& a : w) a = static_cast<int>(rng()\
+    \ % 8) - 2;\n            int expect = 0;\n            while (std::find(w.begin(),\
+    \ w.end(), expect) != w.end()) expect++;\n            check(mex(w) == expect,\
+    \ \"mex(c)\");\n        }\n\n        // count / find / lower_bound / upper_bound\
+    \ (set \u306F\u30E1\u30F3\u30D0\u95A2\u6570\u3001vector \u306F std:: \u306E\u30A2\
+    \u30EB\u30B4\u30EA\u30BA\u30E0)\n        {\n            long long x = static_cast<long\
+    \ long>(rng() % 13) - 6;\n            std::multiset<long long> ms(v.begin(), v.end());\n\
+    \            std::vector<long long> w = v;\n            std::sort(w.begin(), w.end());\n\
     \            check(count(ms, x) == static_cast<std::size_t>(std::count(v.begin(),\
     \ v.end(), x)), \"count(multiset, x)\");\n            check(count(v, x) == std::count(v.begin(),\
     \ v.end(), x), \"count(vector, x)\");\n            check((find(ms, x) != ms.end())\
@@ -300,10 +301,10 @@ data:
     \n\n// container_func.hpp \u306E\u95A2\u6570\u3092\u611A\u76F4\u306A\u5B9F\u88C5\
     \u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\
     \u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\
-    \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include <algorithm>\n\
-    #include <functional>\n#include <iostream>\n#include <numeric>\n#include <random>\n\
-    #include <set>\n#include <string>\n#include <vector>\n\n#include \"../../../src/utility/container_func.hpp\"\
-    \n\nbool ok = true;\n\nvoid check(bool cond, const char* what) {\n    if (!cond)\
+    \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../../src/utility/container_func.hpp\"\
+    \n\n#include <algorithm>\n#include <functional>\n#include <iostream>\n#include\
+    \ <numeric>\n#include <random>\n#include <set>\n#include <string>\n#include <vector>\n\
+    \nbool ok = true;\n\nvoid check(bool cond, const char* what) {\n    if (!cond)\
     \ {\n        if (ok) std::cerr << \"failed: \" << what << std::endl;\n       \
     \ ok = false;\n    }\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n    auto\
     \ rand_vec = [&](int n, long long lo, long long hi) {\n        std::vector<long\
@@ -418,15 +419,15 @@ data:
   - src/utility/container_func.hpp
   - src/utility/traits.hpp
   isVerificationFile: true
-  path: test/unittest/utility/container-func.test.cpp
+  path: test/unittest/utility/container_func.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:32:25+09:00'
+  timestamp: '2026-10-23 06:33:25+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/unittest/utility/container-func.test.cpp
+documentation_of: test/unittest/utility/container_func.test.cpp
 layout: document
 redirect_from:
-- /verify/test/unittest/utility/container-func.test.cpp
-- /verify/test/unittest/utility/container-func.test.cpp.html
-title: test/unittest/utility/container-func.test.cpp
+- /verify/test/unittest/utility/container_func.test.cpp
+- /verify/test/unittest/utility/container_func.test.cpp.html
+title: test/unittest/utility/container_func.test.cpp
 ---

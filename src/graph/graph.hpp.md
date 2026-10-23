@@ -91,8 +91,8 @@ data:
     path: test/unittest/data_structures/find-cycle.test.cpp
     title: test/unittest/data_structures/find-cycle.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/data_structures/graph-util.test.cpp
-    title: test/unittest/data_structures/graph-util.test.cpp
+    path: test/unittest/data_structures/graph_util.test.cpp
+    title: test/unittest/data_structures/graph_util.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/graph/auxiliary-tree.test.cpp
     title: test/unittest/graph/auxiliary-tree.test.cpp
@@ -399,8 +399,8 @@ data:
   - test/unittest/graph/graph.test.cpp
   - test/unittest/graph/auxiliary-tree.test.cpp
   - test/unittest/graph/tree_util.test.cpp
+  - test/unittest/data_structures/graph_util.test.cpp
   - test/unittest/data_structures/find-cycle.test.cpp
-  - test/unittest/data_structures/graph-util.test.cpp
   - test/aoj/volume33/3372.test.cpp
   - test/aoj/grl/grl-1-c.2.test.cpp
   - test/aoj/grl/grl-1-b.test.cpp

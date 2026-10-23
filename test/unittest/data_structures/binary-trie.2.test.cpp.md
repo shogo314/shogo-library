@@ -11,13 +11,12 @@ data:
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
-    PROBLEM: https://onlinejudge.u-aizu.ac.jp/problems/ITP1_1_A
+    PROBLEM: https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
     links:
-    - https://onlinejudge.u-aizu.ac.jp/problems/ITP1_1_A
-  bundledCode: "#line 1 \"test/aoj/itp1/itp1-1-a.binary-trie.test.cpp\"\n#define PROBLEM\
-    \ \"https://onlinejudge.u-aizu.ac.jp/problems/ITP1_1_A\"\n\n#include <assert.h>\n\
-    \n#include <algorithm>\n#include <iostream>\n#include <random>\n#include <vector>\n\
-    \n#line 2 \"src/data_structures/binary-trie.hpp\"\n\n/**\n * @file binary-trie.hpp\n\
+    - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
+  bundledCode: "#line 1 \"test/unittest/data_structures/binary-trie.2.test.cpp\"\n\
+    #define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
+    \n\n#line 2 \"src/data_structures/binary-trie.hpp\"\n\n/**\n * @file binary-trie.hpp\n\
     \ * @brief Binary Trie\n */\n\n#include <cassert>\n#include <limits>\n#include\
     \ <memory>\n#include <utility>\n\n/**\n * @brief \u7B26\u53F7\u306A\u3057\u6574\
     \u6570\u306E\u591A\u91CD\u96C6\u5408\u3092\u7BA1\u7406\u3059\u308B\n * @tparam\
@@ -108,11 +107,12 @@ data:
     \ { root_ptr->xval ^= n; }\n\n    /**\n     * @brief \u8981\u7D20\u3092\u3059\u3079\
     \u3066\u524A\u9664\u3059\u308B\u3002\u78BA\u4FDD\u3057\u305F\u30E1\u30E2\u30EA\
     \u9818\u57DF\u3082\u524A\u9664\u3055\u308C\u308B\n     */\n    void clear() {\n\
-    \        root_ptr = std::make_shared<BinaryTrieNode>(d);\n    }\n};\n#line 11\
-    \ \"test/aoj/itp1/itp1-1-a.binary-trie.test.cpp\"\n\nusing namespace std;\n\n\
-    int main(void) {\n    std::random_device rd;\n    std::mt19937 gen(rd());\n  \
-    \  std::uniform_int_distribution<unsigned long long> dist(0, UINT64_MAX);\n  \
-    \  std::vector<unsigned long long> pool;\n    for (int i = 0; i < 24; ++i) {\n\
+    \        root_ptr = std::make_shared<BinaryTrieNode>(d);\n    }\n};\n#line 4 \"\
+    test/unittest/data_structures/binary-trie.2.test.cpp\"\n\n#include <assert.h>\n\
+    \n#include <algorithm>\n#include <iostream>\n#include <random>\n#include <vector>\n\
+    \nusing namespace std;\n\nint main(void) {\n    std::random_device rd;\n    std::mt19937\
+    \ gen(rd());\n    std::uniform_int_distribution<unsigned long long> dist(0, UINT64_MAX);\n\
+    \    std::vector<unsigned long long> pool;\n    for (int i = 0; i < 24; ++i) {\n\
     \        pool.push_back(dist(gen));\n    }\n    pool.push_back(UINT64_MAX);\n\n\
     \    auto randgen_from_pool = [&]() {\n        return pool[dist(gen) % pool.size()];\n\
     \    };\n\n    std::vector<unsigned long long> A;\n    BinaryTrie<64> BT;\n  \
@@ -139,14 +139,14 @@ data:
     \                assert(static_cast<int>(A.size()) == BT.size());\n          \
     \  default:\n                break;\n        }\n    }\n    std::cout << \"Hello\
     \ World\\n\";\n}\n"
-  code: "#define PROBLEM \"https://onlinejudge.u-aizu.ac.jp/problems/ITP1_1_A\"\n\n\
-    #include <assert.h>\n\n#include <algorithm>\n#include <iostream>\n#include <random>\n\
-    #include <vector>\n\n#include \"../../../src/data_structures/binary-trie.hpp\"\
-    \n\nusing namespace std;\n\nint main(void) {\n    std::random_device rd;\n   \
-    \ std::mt19937 gen(rd());\n    std::uniform_int_distribution<unsigned long long>\
-    \ dist(0, UINT64_MAX);\n    std::vector<unsigned long long> pool;\n    for (int\
-    \ i = 0; i < 24; ++i) {\n        pool.push_back(dist(gen));\n    }\n    pool.push_back(UINT64_MAX);\n\
-    \n    auto randgen_from_pool = [&]() {\n        return pool[dist(gen) % pool.size()];\n\
+  code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
+    \n\n#include \"../../../src/data_structures/binary-trie.hpp\"\n\n#include <assert.h>\n\
+    \n#include <algorithm>\n#include <iostream>\n#include <random>\n#include <vector>\n\
+    \nusing namespace std;\n\nint main(void) {\n    std::random_device rd;\n    std::mt19937\
+    \ gen(rd());\n    std::uniform_int_distribution<unsigned long long> dist(0, UINT64_MAX);\n\
+    \    std::vector<unsigned long long> pool;\n    for (int i = 0; i < 24; ++i) {\n\
+    \        pool.push_back(dist(gen));\n    }\n    pool.push_back(UINT64_MAX);\n\n\
+    \    auto randgen_from_pool = [&]() {\n        return pool[dist(gen) % pool.size()];\n\
     \    };\n\n    std::vector<unsigned long long> A;\n    BinaryTrie<64> BT;\n  \
     \  for (int i = 0; i < 10000; ++i) {\n        unsigned long long x = randgen_from_pool();\n\
     \        A.push_back(x);\n        BT.insert(x);\n    }\n    for (int i = 0; i\
@@ -174,15 +174,15 @@ data:
   dependsOn:
   - src/data_structures/binary-trie.hpp
   isVerificationFile: true
-  path: test/aoj/itp1/itp1-1-a.binary-trie.test.cpp
+  path: test/unittest/data_structures/binary-trie.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:37:20+09:00'
+  timestamp: '2026-10-23 06:33:25+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/aoj/itp1/itp1-1-a.binary-trie.test.cpp
+documentation_of: test/unittest/data_structures/binary-trie.2.test.cpp
 layout: document
 redirect_from:
-- /verify/test/aoj/itp1/itp1-1-a.binary-trie.test.cpp
-- /verify/test/aoj/itp1/itp1-1-a.binary-trie.test.cpp.html
-title: test/aoj/itp1/itp1-1-a.binary-trie.test.cpp
+- /verify/test/unittest/data_structures/binary-trie.2.test.cpp
+- /verify/test/unittest/data_structures/binary-trie.2.test.cpp.html
+title: test/unittest/data_structures/binary-trie.2.test.cpp
 ---

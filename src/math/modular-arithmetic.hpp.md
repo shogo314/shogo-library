@@ -69,11 +69,11 @@ data:
     path: test/aoj/dpl/dpl-5-d.2.test.cpp
     title: test/aoj/dpl/dpl-5-d.2.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dpl/dpl-5-e.lucas.test.cpp
-    title: test/aoj/dpl/dpl-5-e.lucas.test.cpp
+    path: test/aoj/dpl/dpl-5-e.1.test.cpp
+    title: test/aoj/dpl/dpl-5-e.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/dpl/dpl-5-e.test.cpp
-    title: test/aoj/dpl/dpl-5-e.test.cpp
+    path: test/aoj/dpl/dpl-5-e.2.test.cpp
+    title: test/aoj/dpl/dpl-5-e.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/dpl/dpl-5-f.test.cpp
     title: test/aoj/dpl/dpl-5-f.test.cpp
@@ -489,10 +489,10 @@ data:
   - test/unittest/math/divisor-transform.test.cpp
   - test/unittest/math/fps.test.cpp
   - test/aoj/dpl/dpl-5-d.1.test.cpp
+  - test/aoj/dpl/dpl-5-e.1.test.cpp
   - test/aoj/dpl/dpl-5-f.test.cpp
   - test/aoj/dpl/dpl-5-b.1.test.cpp
-  - test/aoj/dpl/dpl-5-e.test.cpp
-  - test/aoj/dpl/dpl-5-e.lucas.test.cpp
+  - test/aoj/dpl/dpl-5-e.2.test.cpp
   - test/aoj/dpl/dpl-5-d.2.test.cpp
   - test/aoj/dpl/dpl-5-b.2.test.cpp
   - test/aoj/ntl/ntl-1-a.test.cpp

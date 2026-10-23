@@ -4,11 +4,11 @@ data:
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/itp1/itp1-1-a.binary-trie.test.cpp
-    title: test/aoj/itp1/itp1-1-a.binary-trie.test.cpp
+    path: test/unittest/data_structures/binary-trie.1.test.cpp
+    title: test/unittest/data_structures/binary-trie.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/data_structures/binary-trie.test.cpp
-    title: test/unittest/data_structures/binary-trie.test.cpp
+    path: test/unittest/data_structures/binary-trie.2.test.cpp
+    title: test/unittest/data_structures/binary-trie.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/set-xor-min.test.cpp
     title: test/yosupo/data_structure/set-xor-min.test.cpp
@@ -209,8 +209,8 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/data_structures/binary-trie.test.cpp
-  - test/aoj/itp1/itp1-1-a.binary-trie.test.cpp
+  - test/unittest/data_structures/binary-trie.1.test.cpp
+  - test/unittest/data_structures/binary-trie.2.test.cpp
   - test/yosupo/data_structure/set-xor-min.test.cpp
 documentation_of: src/data_structures/binary-trie.hpp
 layout: document

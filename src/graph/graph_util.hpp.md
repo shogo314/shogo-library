@@ -25,8 +25,8 @@ data:
     path: test/unittest/data_structures/find-cycle.test.cpp
     title: test/unittest/data_structures/find-cycle.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/data_structures/graph-util.test.cpp
-    title: test/unittest/data_structures/graph-util.test.cpp
+    path: test/unittest/data_structures/graph_util.test.cpp
+    title: test/unittest/data_structures/graph_util.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/graph/two-sat.test.cpp
     title: test/unittest/graph/two-sat.test.cpp
@@ -657,8 +657,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/graph/two-sat.test.cpp
+  - test/unittest/data_structures/graph_util.test.cpp
   - test/unittest/data_structures/find-cycle.test.cpp
-  - test/unittest/data_structures/graph-util.test.cpp
   - test/aoj/grl/grl-4-a.test.cpp
   - test/aoj/grl/grl-2-a.test.cpp
   - test/aoj/alds1/alds1-11-d.1.test.cpp

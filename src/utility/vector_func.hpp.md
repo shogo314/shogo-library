@@ -10,8 +10,8 @@ data:
     path: test/aoj/dsl/dsl-4-a.1.test.cpp
     title: test/aoj/dsl/dsl-4-a.1.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/utility/vector-func.test.cpp
-    title: test/unittest/utility/vector-func.test.cpp
+    path: test/unittest/utility/vector_func.test.cpp
+    title: test/unittest/utility/vector_func.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/static-range-sum.test.cpp
     title: test/yosupo/data_structure/static-range-sum.test.cpp
@@ -239,7 +239,7 @@ data:
   timestamp: '2026-10-17 23:17:18+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/utility/vector-func.test.cpp
+  - test/unittest/utility/vector_func.test.cpp
   - test/aoj/dsl/dsl-4-a.1.test.cpp
   - test/yosupo/data_structure/static-range-sum.test.cpp
 documentation_of: src/utility/vector_func.hpp

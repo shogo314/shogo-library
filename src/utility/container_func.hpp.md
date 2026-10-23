@@ -40,11 +40,11 @@ data:
     path: test/aoj/itp2/itp2-5-b.test.cpp
     title: test/aoj/itp2/itp2-5-b.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/utility/container-func-member.test.cpp
-    title: test/unittest/utility/container-func-member.test.cpp
+    path: test/unittest/utility/container_func-member.test.cpp
+    title: test/unittest/utility/container_func-member.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/utility/container-func.test.cpp
-    title: test/unittest/utility/container-func.test.cpp
+    path: test/unittest/utility/container_func.test.cpp
+    title: test/unittest/utility/container_func.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -326,8 +326,8 @@ data:
   timestamp: '2026-10-18 01:03:35+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/utility/container-func-member.test.cpp
-  - test/unittest/utility/container-func.test.cpp
+  - test/unittest/utility/container_func.test.cpp
+  - test/unittest/utility/container_func-member.test.cpp
   - test/aoj/alds1/alds1-1-b.test.cpp
   - test/aoj/alds1/alds1-4-b.test.cpp
   - test/aoj/dsl/dsl-4-a.1.test.cpp

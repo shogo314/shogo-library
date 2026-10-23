@@ -25,12 +25,11 @@ data:
     PROBLEM: https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DPL_5_E
     links:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DPL_5_E
-  bundledCode: "#line 1 \"test/aoj/dpl/dpl-5-e.lucas.test.cpp\"\n#define PROBLEM \"\
-    https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DPL_5_E\"\n\n#include\
-    \ <iostream>\n\n#line 2 \"src/math/combinatorics.hpp\"\n\n/**\n * @file combinatorics.hpp\n\
-    \ * @brief \u7D44\u307F\u5408\u308F\u305B\n */\n\n#include <cassert>\n#include\
-    \ <numeric>\n#include <vector>\n\n#line 2 \"src/math/modular-arithmetic.hpp\"\n\
-    \n/**\n * @file modular-arithmetic.hpp\n * @brief mod \u6F14\u7B97 (\u7A4D\u3001\
+  bundledCode: "#line 1 \"test/aoj/dpl/dpl-5-e.1.test.cpp\"\n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DPL_5_E\"\
+    \n\n#include <iostream>\n\n#line 2 \"src/math/combinatorics.hpp\"\n\n/**\n * @file\
+    \ combinatorics.hpp\n * @brief \u7D44\u307F\u5408\u308F\u305B\n */\n\n#include\
+    \ <cassert>\n#include <numeric>\n#include <vector>\n\n#line 2 \"src/math/modular-arithmetic.hpp\"\
+    \n\n/**\n * @file modular-arithmetic.hpp\n * @brief mod \u6F14\u7B97 (\u7A4D\u3001\
     \u51AA\u4E57\u3001\u9006\u5143\u3001\u96E2\u6563\u5BFE\u6570\u3001\u5E73\u65B9\
     \u6839)\n */\n\n#include <algorithm>\n#line 10 \"src/math/modular-arithmetic.hpp\"\
     \n#include <cmath>\n#line 12 \"src/math/modular-arithmetic.hpp\"\n#include <unordered_map>\n\
@@ -470,12 +469,11 @@ data:
     \ dynamic_modint(SignedIntegral value) noexcept\n        : base_type{value} {}\n\
     \n   private:\n    inline static value_type modulus = 998244353;\n};\n\nusing\
     \ modint998244353 = static_modint<998244353>;\nusing modint1000000007 = static_modint<1000000007>;\n\
-    using modint = dynamic_modint<-1>;\n#line 7 \"test/aoj/dpl/dpl-5-e.lucas.test.cpp\"\
+    using modint = dynamic_modint<-1>;\n#line 7 \"test/aoj/dpl/dpl-5-e.1.test.cpp\"\
     \n\nusing mint = modint1000000007;\n\nint main() {\n    int n, k;\n    std::cin\
     \ >> n >> k;\n    // \u533A\u5225\u3067\u304D\u306A\u3044 n \u500B\u306E\u30DC\
     \u30FC\u30EB\u3092\u3001\u533A\u5225\u3067\u304D\u308B k \u500B\u306E\u7BB1\u306B\
-    \u9AD8\u3005 1 \u500B\u305A\u3064\u5165\u308C\u308B: kCn \u3092 Lucas \u306E\u5B9A\
-    \u7406\u3067\u8A08\u7B97\u3059\u308B\n    std::cout << Combination<mint>::C_lucas(k,\
+    \u9AD8\u3005 1 \u500B\u305A\u3064\u5165\u308C\u308B: kCn\n    std::cout << Combination<mint>::C(k,\
     \ n) << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DPL_5_E\"\
     \n\n#include <iostream>\n\n#include \"../../../src/math/combinatorics.hpp\"\n\
@@ -483,23 +481,23 @@ data:
     int main() {\n    int n, k;\n    std::cin >> n >> k;\n    // \u533A\u5225\u3067\
     \u304D\u306A\u3044 n \u500B\u306E\u30DC\u30FC\u30EB\u3092\u3001\u533A\u5225\u3067\
     \u304D\u308B k \u500B\u306E\u7BB1\u306B\u9AD8\u3005 1 \u500B\u305A\u3064\u5165\
-    \u308C\u308B: kCn \u3092 Lucas \u306E\u5B9A\u7406\u3067\u8A08\u7B97\u3059\u308B\
-    \n    std::cout << Combination<mint>::C_lucas(k, n) << std::endl;\n}\n"
+    \u308C\u308B: kCn\n    std::cout << Combination<mint>::C(k, n) << std::endl;\n\
+    }\n"
   dependsOn:
   - src/math/combinatorics.hpp
   - src/math/modular-arithmetic.hpp
   - src/math/modint.hpp
   - src/utility/traits.hpp
   isVerificationFile: true
-  path: test/aoj/dpl/dpl-5-e.lucas.test.cpp
+  path: test/aoj/dpl/dpl-5-e.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:37:20+09:00'
+  timestamp: '2026-10-23 06:33:25+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/aoj/dpl/dpl-5-e.lucas.test.cpp
+documentation_of: test/aoj/dpl/dpl-5-e.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/aoj/dpl/dpl-5-e.lucas.test.cpp
-- /verify/test/aoj/dpl/dpl-5-e.lucas.test.cpp.html
-title: test/aoj/dpl/dpl-5-e.lucas.test.cpp
+- /verify/test/aoj/dpl/dpl-5-e.1.test.cpp
+- /verify/test/aoj/dpl/dpl-5-e.1.test.cpp.html
+title: test/aoj/dpl/dpl-5-e.1.test.cpp
 ---

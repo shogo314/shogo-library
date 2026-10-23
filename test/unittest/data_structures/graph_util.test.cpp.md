@@ -20,16 +20,17 @@ data:
     PROBLEM: https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
     links:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
-  bundledCode: "#line 1 \"test/unittest/data_structures/graph-util.test.cpp\"\n#define\
+  bundledCode: "#line 1 \"test/unittest/data_structures/graph_util.test.cpp\"\n#define\
     \ PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// graph_util.hpp \u306E\u95A2\u6570\u3092\u611A\u76F4\u306A\u5B9F\u88C5\u3068\
     \u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\
     \u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\
-    \u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include <algorithm>\n#include\
-    \ <iostream>\n#include <numeric>\n#include <random>\n#include <tuple>\n#include\
-    \ <vector>\n\n#line 2 \"src/data_structures/unionfind.hpp\"\n\n/**\n * @file unionfind.hpp\n\
-    \ * @brief UnionFind\n */\n\n#line 9 \"src/data_structures/unionfind.hpp\"\n#include\
-    \ <cassert>\n#include <utility>\n#line 12 \"src/data_structures/unionfind.hpp\"\
+    \u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/graph/graph_util.hpp\"\
+    \n\n/**\n * @file graph_util.hpp\n * @brief \u30B0\u30E9\u30D5\u306B\u95A2\u3059\
+    \u308B\u95A2\u6570\n */\n\n#include <algorithm>\n#include <cassert>\n#include\
+    \ <functional>\n#include <limits>\n#include <queue>\n#include <stack>\n#include\
+    \ <utility>\n#include <vector>\n\n#line 2 \"src/data_structures/unionfind.hpp\"\
+    \n\n/**\n * @file unionfind.hpp\n * @brief UnionFind\n */\n\n#line 12 \"src/data_structures/unionfind.hpp\"\
     \n\nnamespace internal_unionfind {\n/**\n * @brief \u5404\u8981\u7D20\u306E\u4EE3\
     \u8868\u5143\u304B\u3089\u3001\u9023\u7D50\u6210\u5206\u3054\u3068\u306E\u8981\
     \u7D20\u306E\u30EA\u30B9\u30C8\u3092\u4F5C\u308B\n * @param leader \u8981\u7D20\
@@ -83,12 +84,9 @@ data:
     \u306E\u9023\u7D50\u6210\u5206\u306E\u9802\u70B9\u756A\u53F7\u306E\u30EA\u30B9\
     \u30C8\u300D\u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<std::vector<long\
     \ long>> groups() {\n        return internal_unionfind::groups(_n, [&](long long\
-    \ a) { return leader(a); });\n    }\n};\n#line 2 \"src/graph/graph_util.hpp\"\n\
-    \n/**\n * @file graph_util.hpp\n * @brief \u30B0\u30E9\u30D5\u306B\u95A2\u3059\
-    \u308B\u95A2\u6570\n */\n\n#line 10 \"src/graph/graph_util.hpp\"\n#include <functional>\n\
-    #include <limits>\n#include <queue>\n#include <stack>\n#line 16 \"src/graph/graph_util.hpp\"\
-    \n\n#line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file graph.hpp\n * @brief \u30B0\
-    \u30E9\u30D5\n */\n\n#line 11 \"src/graph/graph.hpp\"\n\n/**\n * @brief \u30B0\
+    \ a) { return leader(a); });\n    }\n};\n#line 2 \"src/graph/graph.hpp\"\n\n/**\n\
+    \ * @file graph.hpp\n * @brief \u30B0\u30E9\u30D5\n */\n\n#line 9 \"src/graph/graph.hpp\"\
+    \n#include <iostream>\n#line 11 \"src/graph/graph.hpp\"\n\n/**\n * @brief \u30B0\
     \u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\
     \u30B3\u30B9\u30C8\u306E\u578B \u7701\u7565\u3057\u305F\u3089 long long (\u91CD\
     \u307F\u306E\u548C\u3084\u672A\u5230\u9054\u3092\u8868\u3059 max / 4 \u304C\u3042\
@@ -385,35 +383,38 @@ data:
     \ + e.cost;\n                    que.emplace(d + e.cost, e.dst);\n           \
     \     }\n            }\n        }\n    }\n    Cost res = inf;\n    for (long long\
     \ k = 0; k < graph.n; k++) {\n        if (dp[k].back() != inf && (res == inf ||\
-    \ res > dp[k].back())) res = dp[k].back();\n    }\n    return res;\n}\n#line 15\
-    \ \"test/unittest/data_structures/graph-util.test.cpp\"\n\nint main() {\n    std::mt19937\
-    \ rng(314);\n    bool ok = true;\n\n    // \u7121\u5411\u30B0\u30E9\u30D5: bipartite_coloring,\
-    \ is_bipartite, connected_components, is_connected, is_tree\n    for (int rep\
-    \ = 0; rep < 3000 && ok; rep++) {\n        int n = rng() % 8 + 1;\n        std::vector<std::pair<int,\
-    \ int>> edges;\n        for (int u = 0; u < n; u++) {\n            for (int v\
-    \ = u + 1; v < n; v++) {\n                if (rng() % 3 == 0) edges.emplace_back(u,\
-    \ v);\n            }\n        }\n        Graph<int> graph(n);\n        for (auto\
-    \ [u, v] : edges) graph.add_edge(u, v);\n\n        // \u4E8C\u90E8\u30B0\u30E9\
-    \u30D5\u304B\u3069\u3046\u304B\u3092\u5168\u5F69\u8272\u3067\u8ABF\u3079\u308B\
-    \n        bool bipartite = false;\n        for (int mask = 0; mask < (1 << n);\
-    \ mask++) {\n            bool good = true;\n            for (auto [u, v] : edges)\
-    \ good &= ((mask >> u & 1) != (mask >> v & 1));\n            bipartite |= good;\n\
-    \        }\n        std::vector<int> color = bipartite_coloring(graph);\n    \
-    \    if (bipartite != !color.empty() || bipartite != is_bipartite(graph)) ok =\
-    \ false;\n        if (!color.empty()) {\n            for (auto [u, v] : edges)\n\
-    \                if (color[u] == color[v]) ok = false;\n        }\n\n        //\
-    \ \u9023\u7D50\u6210\u5206\u3092 Union-Find \u98A8\u306B\u611A\u76F4\u306B\u6C42\
-    \u3081\u308B\n        std::vector<int> label(n);\n        std::iota(label.begin(),\
-    \ label.end(), 0);\n        for (int t = 0; t < n; t++) {\n            for (auto\
-    \ [u, v] : edges) label[u] = label[v] = std::min(label[u], label[v]);\n      \
-    \  }\n        auto groups = connected_components(graph);\n        std::vector<int>\
-    \ seen(n);\n        for (const auto& group : groups) {\n            for (int v\
-    \ : group) {\n                seen[v]++;\n                if (label[v] != label[group[0]])\
-    \ ok = false;\n            }\n        }\n        int num_components = 0;\n   \
-    \     for (int v = 0; v < n; v++) {\n            if (seen[v] != 1) ok = false;\n\
-    \            if (label[v] == v) num_components++;\n        }\n        if (static_cast<int>(groups.size())\
-    \ != num_components) ok = false;\n        if (is_connected(graph) != (num_components\
-    \ == 1)) ok = false;\n        if (is_tree(graph) != (num_components == 1 && static_cast<int>(edges.size())\
+    \ res > dp[k].back())) res = dp[k].back();\n    }\n    return res;\n}\n#line 7\
+    \ \"test/unittest/data_structures/graph_util.test.cpp\"\n\n#line 10 \"test/unittest/data_structures/graph_util.test.cpp\"\
+    \n#include <numeric>\n#include <random>\n#include <tuple>\n#line 14 \"test/unittest/data_structures/graph_util.test.cpp\"\
+    \n\n#line 16 \"test/unittest/data_structures/graph_util.test.cpp\"\n\nint main()\
+    \ {\n    std::mt19937 rng(314);\n    bool ok = true;\n\n    // \u7121\u5411\u30B0\
+    \u30E9\u30D5: bipartite_coloring, is_bipartite, connected_components, is_connected,\
+    \ is_tree\n    for (int rep = 0; rep < 3000 && ok; rep++) {\n        int n = rng()\
+    \ % 8 + 1;\n        std::vector<std::pair<int, int>> edges;\n        for (int\
+    \ u = 0; u < n; u++) {\n            for (int v = u + 1; v < n; v++) {\n      \
+    \          if (rng() % 3 == 0) edges.emplace_back(u, v);\n            }\n    \
+    \    }\n        Graph<int> graph(n);\n        for (auto [u, v] : edges) graph.add_edge(u,\
+    \ v);\n\n        // \u4E8C\u90E8\u30B0\u30E9\u30D5\u304B\u3069\u3046\u304B\u3092\
+    \u5168\u5F69\u8272\u3067\u8ABF\u3079\u308B\n        bool bipartite = false;\n\
+    \        for (int mask = 0; mask < (1 << n); mask++) {\n            bool good\
+    \ = true;\n            for (auto [u, v] : edges) good &= ((mask >> u & 1) != (mask\
+    \ >> v & 1));\n            bipartite |= good;\n        }\n        std::vector<int>\
+    \ color = bipartite_coloring(graph);\n        if (bipartite != !color.empty()\
+    \ || bipartite != is_bipartite(graph)) ok = false;\n        if (!color.empty())\
+    \ {\n            for (auto [u, v] : edges)\n                if (color[u] == color[v])\
+    \ ok = false;\n        }\n\n        // \u9023\u7D50\u6210\u5206\u3092 Union-Find\
+    \ \u98A8\u306B\u611A\u76F4\u306B\u6C42\u3081\u308B\n        std::vector<int> label(n);\n\
+    \        std::iota(label.begin(), label.end(), 0);\n        for (int t = 0; t\
+    \ < n; t++) {\n            for (auto [u, v] : edges) label[u] = label[v] = std::min(label[u],\
+    \ label[v]);\n        }\n        auto groups = connected_components(graph);\n\
+    \        std::vector<int> seen(n);\n        for (const auto& group : groups) {\n\
+    \            for (int v : group) {\n                seen[v]++;\n             \
+    \   if (label[v] != label[group[0]]) ok = false;\n            }\n        }\n \
+    \       int num_components = 0;\n        for (int v = 0; v < n; v++) {\n     \
+    \       if (seen[v] != 1) ok = false;\n            if (label[v] == v) num_components++;\n\
+    \        }\n        if (static_cast<int>(groups.size()) != num_components) ok\
+    \ = false;\n        if (is_connected(graph) != (num_components == 1)) ok = false;\n\
+    \        if (is_tree(graph) != (num_components == 1 && static_cast<int>(edges.size())\
     \ == n - 1)) ok = false;\n    }\n\n    // \u6709\u5411\u30B0\u30E9\u30D5: topological_sort,\
     \ has_cycle\n    for (int rep = 0; rep < 3000 && ok; rep++) {\n        int n =\
     \ rng() % 8 + 1;\n        Graph<int> graph(n);\n        std::vector<std::pair<int,\
@@ -542,32 +543,32 @@ data:
     \n\n// graph_util.hpp \u306E\u95A2\u6570\u3092\u611A\u76F4\u306A\u5B9F\u88C5\u3068\
     \u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\
     \u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\
-    \u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include <algorithm>\n#include\
-    \ <iostream>\n#include <numeric>\n#include <random>\n#include <tuple>\n#include\
-    \ <vector>\n\n#include \"../../../src/data_structures/unionfind.hpp\"\n#include\
-    \ \"../../../src/graph/graph_util.hpp\"\n\nint main() {\n    std::mt19937 rng(314);\n\
-    \    bool ok = true;\n\n    // \u7121\u5411\u30B0\u30E9\u30D5: bipartite_coloring,\
-    \ is_bipartite, connected_components, is_connected, is_tree\n    for (int rep\
-    \ = 0; rep < 3000 && ok; rep++) {\n        int n = rng() % 8 + 1;\n        std::vector<std::pair<int,\
-    \ int>> edges;\n        for (int u = 0; u < n; u++) {\n            for (int v\
-    \ = u + 1; v < n; v++) {\n                if (rng() % 3 == 0) edges.emplace_back(u,\
-    \ v);\n            }\n        }\n        Graph<int> graph(n);\n        for (auto\
-    \ [u, v] : edges) graph.add_edge(u, v);\n\n        // \u4E8C\u90E8\u30B0\u30E9\
-    \u30D5\u304B\u3069\u3046\u304B\u3092\u5168\u5F69\u8272\u3067\u8ABF\u3079\u308B\
-    \n        bool bipartite = false;\n        for (int mask = 0; mask < (1 << n);\
-    \ mask++) {\n            bool good = true;\n            for (auto [u, v] : edges)\
-    \ good &= ((mask >> u & 1) != (mask >> v & 1));\n            bipartite |= good;\n\
-    \        }\n        std::vector<int> color = bipartite_coloring(graph);\n    \
-    \    if (bipartite != !color.empty() || bipartite != is_bipartite(graph)) ok =\
-    \ false;\n        if (!color.empty()) {\n            for (auto [u, v] : edges)\n\
-    \                if (color[u] == color[v]) ok = false;\n        }\n\n        //\
-    \ \u9023\u7D50\u6210\u5206\u3092 Union-Find \u98A8\u306B\u611A\u76F4\u306B\u6C42\
-    \u3081\u308B\n        std::vector<int> label(n);\n        std::iota(label.begin(),\
-    \ label.end(), 0);\n        for (int t = 0; t < n; t++) {\n            for (auto\
-    \ [u, v] : edges) label[u] = label[v] = std::min(label[u], label[v]);\n      \
-    \  }\n        auto groups = connected_components(graph);\n        std::vector<int>\
-    \ seen(n);\n        for (const auto& group : groups) {\n            for (int v\
-    \ : group) {\n                seen[v]++;\n                if (label[v] != label[group[0]])\
+    \u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../../src/graph/graph_util.hpp\"\
+    \n\n#include <algorithm>\n#include <iostream>\n#include <numeric>\n#include <random>\n\
+    #include <tuple>\n#include <vector>\n\n#include \"../../../src/data_structures/unionfind.hpp\"\
+    \n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n\n    // \u7121\
+    \u5411\u30B0\u30E9\u30D5: bipartite_coloring, is_bipartite, connected_components,\
+    \ is_connected, is_tree\n    for (int rep = 0; rep < 3000 && ok; rep++) {\n  \
+    \      int n = rng() % 8 + 1;\n        std::vector<std::pair<int, int>> edges;\n\
+    \        for (int u = 0; u < n; u++) {\n            for (int v = u + 1; v < n;\
+    \ v++) {\n                if (rng() % 3 == 0) edges.emplace_back(u, v);\n    \
+    \        }\n        }\n        Graph<int> graph(n);\n        for (auto [u, v]\
+    \ : edges) graph.add_edge(u, v);\n\n        // \u4E8C\u90E8\u30B0\u30E9\u30D5\u304B\
+    \u3069\u3046\u304B\u3092\u5168\u5F69\u8272\u3067\u8ABF\u3079\u308B\n        bool\
+    \ bipartite = false;\n        for (int mask = 0; mask < (1 << n); mask++) {\n\
+    \            bool good = true;\n            for (auto [u, v] : edges) good &=\
+    \ ((mask >> u & 1) != (mask >> v & 1));\n            bipartite |= good;\n    \
+    \    }\n        std::vector<int> color = bipartite_coloring(graph);\n        if\
+    \ (bipartite != !color.empty() || bipartite != is_bipartite(graph)) ok = false;\n\
+    \        if (!color.empty()) {\n            for (auto [u, v] : edges)\n      \
+    \          if (color[u] == color[v]) ok = false;\n        }\n\n        // \u9023\
+    \u7D50\u6210\u5206\u3092 Union-Find \u98A8\u306B\u611A\u76F4\u306B\u6C42\u3081\
+    \u308B\n        std::vector<int> label(n);\n        std::iota(label.begin(), label.end(),\
+    \ 0);\n        for (int t = 0; t < n; t++) {\n            for (auto [u, v] : edges)\
+    \ label[u] = label[v] = std::min(label[u], label[v]);\n        }\n        auto\
+    \ groups = connected_components(graph);\n        std::vector<int> seen(n);\n \
+    \       for (const auto& group : groups) {\n            for (int v : group) {\n\
+    \                seen[v]++;\n                if (label[v] != label[group[0]])\
     \ ok = false;\n            }\n        }\n        int num_components = 0;\n   \
     \     for (int v = 0; v < n; v++) {\n            if (seen[v] != 1) ok = false;\n\
     \            if (label[v] == v) num_components++;\n        }\n        if (static_cast<int>(groups.size())\
@@ -698,19 +699,19 @@ data:
     \    if (chromatic_number(g) != -1) ok = false;\n    }\n\n    if (ok) std::cout\
     \ << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
-  - src/data_structures/unionfind.hpp
   - src/graph/graph_util.hpp
+  - src/data_structures/unionfind.hpp
   - src/graph/graph.hpp
   isVerificationFile: true
-  path: test/unittest/data_structures/graph-util.test.cpp
+  path: test/unittest/data_structures/graph_util.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 13:40:29+09:00'
+  timestamp: '2026-10-23 06:33:25+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/unittest/data_structures/graph-util.test.cpp
+documentation_of: test/unittest/data_structures/graph_util.test.cpp
 layout: document
 redirect_from:
-- /verify/test/unittest/data_structures/graph-util.test.cpp
-- /verify/test/unittest/data_structures/graph-util.test.cpp.html
-title: test/unittest/data_structures/graph-util.test.cpp
+- /verify/test/unittest/data_structures/graph_util.test.cpp
+- /verify/test/unittest/data_structures/graph_util.test.cpp.html
+title: test/unittest/data_structures/graph_util.test.cpp
 ---

@@ -14,8 +14,8 @@ data:
     PROBLEM: https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
     links:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
-  bundledCode: "#line 1 \"test/unittest/data_structures/binary-trie.test.cpp\"\n#define\
-    \ PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
+  bundledCode: "#line 1 \"test/unittest/data_structures/binary-trie.1.test.cpp\"\n\
+    #define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// BinaryTrie \u306E clear \u3092\u3001\u64CD\u4F5C\u5217\u306E\u9014\u4E2D\
     \u3067\u547C\u3093\u3067 std::multiset \u306B\u3088\u308B\u611A\u76F4\u306A\u5B9F\
     \u88C5\u3068\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\
@@ -112,7 +112,7 @@ data:
     \u3066\u524A\u9664\u3059\u308B\u3002\u78BA\u4FDD\u3057\u305F\u30E1\u30E2\u30EA\
     \u9818\u57DF\u3082\u524A\u9664\u3055\u308C\u308B\n     */\n    void clear() {\n\
     \        root_ptr = std::make_shared<BinaryTrieNode>(d);\n    }\n};\n#line 7 \"\
-    test/unittest/data_structures/binary-trie.test.cpp\"\n\n#include <iostream>\n\
+    test/unittest/data_structures/binary-trie.1.test.cpp\"\n\n#include <iostream>\n\
     #include <random>\n#include <set>\n\nint main() {\n    std::mt19937 rng(314);\n\
     \    bool ok = true;\n    for (int rep = 0; rep < 2000 && ok; rep++) {\n     \
     \   BinaryTrie<4, unsigned> bt;\n        std::multiset<unsigned> ms;\n       \
@@ -164,15 +164,15 @@ data:
   dependsOn:
   - src/data_structures/binary-trie.hpp
   isVerificationFile: true
-  path: test/unittest/data_structures/binary-trie.test.cpp
+  path: test/unittest/data_structures/binary-trie.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:32:25+09:00'
+  timestamp: '2026-10-23 06:33:25+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/unittest/data_structures/binary-trie.test.cpp
+documentation_of: test/unittest/data_structures/binary-trie.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/unittest/data_structures/binary-trie.test.cpp
-- /verify/test/unittest/data_structures/binary-trie.test.cpp.html
-title: test/unittest/data_structures/binary-trie.test.cpp
+- /verify/test/unittest/data_structures/binary-trie.1.test.cpp
+- /verify/test/unittest/data_structures/binary-trie.1.test.cpp.html
+title: test/unittest/data_structures/binary-trie.1.test.cpp
 ---

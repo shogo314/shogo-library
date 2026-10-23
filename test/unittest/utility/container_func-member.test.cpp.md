@@ -18,7 +18,7 @@ data:
     PROBLEM: https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
     links:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
-  bundledCode: "#line 1 \"test/unittest/utility/container-func-member.test.cpp\"\n\
+  bundledCode: "#line 1 \"test/unittest/utility/container_func-member.test.cpp\"\n\
     #define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// container_func.hpp \u306E\u95A2\u6570\u304C\u3001\u30B3\u30F3\u30C6\u30CA\
     \u304C\u540C\u540D\u306E\u30E1\u30F3\u30D0\u95A2\u6570\u3092\u6301\u3064\u3068\
@@ -184,7 +184,7 @@ data:
     \ mem_value_type<C>& x) {\n    return static_cast<long long>(std::distance(v.begin(),\
     \ lower_bound(v, x)));\n}\ntemplate <class C>\ninline constexpr long long bisect_right(const\
     \ C& v, const mem_value_type<C>& x) {\n    return static_cast<long long>(std::distance(v.begin(),\
-    \ upper_bound(v, x)));\n}\n#line 10 \"test/unittest/utility/container-func-member.test.cpp\"\
+    \ upper_bound(v, x)));\n}\n#line 10 \"test/unittest/utility/container_func-member.test.cpp\"\
     \n\n// \u8981\u7D20\u306F {3, 1, 2} \u3060\u304C\u3001\u30E1\u30F3\u30D0\u95A2\
     \u6570\u306F\u76EE\u5370\u306E\u5024\u3092\u8FD4\u3059\nstruct Base {\n    using\
     \ value_type = int;\n    std::vector<int> v{3, 1, 2};\n    auto begin() const\
@@ -262,15 +262,15 @@ data:
   - src/utility/container_func.hpp
   - src/utility/traits.hpp
   isVerificationFile: true
-  path: test/unittest/utility/container-func-member.test.cpp
+  path: test/unittest/utility/container_func-member.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:32:25+09:00'
+  timestamp: '2026-10-23 06:33:25+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/unittest/utility/container-func-member.test.cpp
+documentation_of: test/unittest/utility/container_func-member.test.cpp
 layout: document
 redirect_from:
-- /verify/test/unittest/utility/container-func-member.test.cpp
-- /verify/test/unittest/utility/container-func-member.test.cpp.html
-title: test/unittest/utility/container-func-member.test.cpp
+- /verify/test/unittest/utility/container_func-member.test.cpp
+- /verify/test/unittest/utility/container_func-member.test.cpp.html
+title: test/unittest/utility/container_func-member.test.cpp
 ---

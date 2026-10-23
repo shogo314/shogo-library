@@ -394,6 +394,37 @@ std::vector<long long> maximum_independent_set(const Graph<Cost>& graph) {
     return res;
 }
 
+/**
+ * @brief 単純な無向グラフの三角形 (互いに隣り合う 3 頂点) をすべて列挙し、それぞれについて f(a, b, c) (a < b < c) を呼ぶ O(m sqrt(m))
+ * 辺を次数の小さい方から大きい方へ向けると、各頂点から出る辺は O(sqrt(m)) 本になる
+ * @note 自己ループと多重辺はないこと
+ */
+template <typename Cost, typename F>
+void enumerate_triangles(const Graph<Cost>& graph, F f) {
+    const long long n = graph.n;
+    auto less = [&](long long u, long long v) {
+        return graph[u].size() != graph[v].size() ? graph[u].size() < graph[v].size() : u < v;
+    };
+    std::vector<std::vector<long long>> out(n);
+    for (long long u = 0; u < n; u++) {
+        for (const auto& e : graph[u])
+            if (less(u, e.dst)) out[u].push_back(e.dst);
+    }
+    std::vector<bool> mark(n, false);
+    for (long long u = 0; u < n; u++) {
+        for (long long v : out[u]) mark[v] = true;
+        for (long long v : out[u]) {
+            for (long long w : out[v]) {
+                if (!mark[w]) continue;
+                long long t[3] = {u, v, w};
+                std::sort(t, t + 3);
+                f(t[0], t[1], t[2]);
+            }
+        }
+        for (long long v : out[u]) mark[v] = false;
+    }
+}
+
 namespace internal_graph_util {
 /**
  * @brief minimum_steiner_tree の DP

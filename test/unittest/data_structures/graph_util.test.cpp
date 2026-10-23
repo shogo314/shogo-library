@@ -255,6 +255,27 @@ int main() {
         if (static_cast<int>(res.size()) != best || __builtin_popcount(S) != best || !independent(S) || !std::is_sorted(res.begin(), res.end())) ok = false;
     }
 
+    // enumerate_triangles: 3 頂点の組をすべて調べたものと比べる (順番も a < b < c で、重複しない)
+    for (int rep = 0; rep < 2000 && ok; rep++) {
+        int n = rng() % 9, m = n < 2 ? 0 : rng() % (n * (n - 1) / 2 + 1);
+        Graph<int> graph(n);
+        std::vector<std::vector<bool>> adj(n, std::vector<bool>(n, false));
+        for (int i = 0; i < m; i++) {
+            int u = rng() % n, v = rng() % n;
+            if (u == v || adj[u][v]) continue;
+            graph.add_edge(u, v);
+            adj[u][v] = adj[v][u] = true;
+        }
+        std::vector<std::tuple<long long, long long, long long>> expect, got;
+        for (int a = 0; a < n; a++)
+            for (int b = a + 1; b < n; b++)
+                for (int c = b + 1; c < n; c++)
+                    if (adj[a][b] && adj[a][c] && adj[b][c]) expect.emplace_back(a, b, c);
+        enumerate_triangles(graph, [&](long long a, long long b, long long c) { got.emplace_back(a, b, c); });
+        std::sort(got.begin(), got.end());
+        if (got != expect) ok = false;
+    }
+
     // minimum_spanning_tree: 辺の部分集合をすべて試して最小のコストの全域森と比べる
     for (int rep = 0; rep < 1000 && ok; rep++) {
         int n = rng() % 6 + 1, m = rng() % 9;

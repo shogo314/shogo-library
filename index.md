@@ -37,6 +37,9 @@ data:
       path: src/data_structures/binary-trie.hpp
       title: Binary Trie
     - icon: ':heavy_check_mark:'
+      path: src/data_structures/cartesian-tree.hpp
+      title: "Cartesian \u6728"
+    - icon: ':heavy_check_mark:'
       path: src/data_structures/circular-ring.hpp
       title: "\u5186\u74B0"
     - icon: ':heavy_check_mark:'
@@ -125,6 +128,12 @@ data:
       path: src/data_structures/range-count-distinct.hpp
       title: "\u533A\u9593\u5185\u306E\u7570\u306A\u308B\u5024\u306E\u500B\u6570"
     - icon: ':heavy_check_mark:'
+      path: src/data_structures/range-lis.hpp
+      title: "\u533A\u9593\u306E\u6700\u9577\u5897\u52A0\u90E8\u5206\u5217"
+    - icon: ':heavy_check_mark:'
+      path: src/data_structures/range-mode.hpp
+      title: "\u533A\u9593\u306E\u6700\u983B\u5024"
+    - icon: ':heavy_check_mark:'
       path: src/data_structures/rbst.hpp
       title: "\u5E73\u8861\u4E8C\u5206\u6728 (RBST)"
     - icon: ':heavy_check_mark:'
@@ -138,8 +147,12 @@ data:
       title: "\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
     - icon: ':heavy_check_mark:'
       path: src/data_structures/sliding-window-aggregation.hpp
-      title: "Sliding Window Aggregation \u3068\u30B9\u30E9\u30A4\u30C9\u6700\u5C0F\
-        \u5024"
+      title: "Sliding Window Aggregation (\u30AD\u30E5\u30FC\u3068\u4E21\u7AEF\u30AD\
+        \u30E5\u30FC) \u3068\u30B9\u30E9\u30A4\u30C9\u6700\u5C0F\u5024"
+    - icon: ':heavy_check_mark:'
+      path: src/data_structures/sortable-segtree.hpp
+      title: "\u533A\u9593\u30BD\u30FC\u30C8\u306E\u3067\u304D\u308B\u30BB\u30B0\u30E1\
+        \u30F3\u30C8\u6728"
     - icon: ':heavy_check_mark:'
       path: src/data_structures/sparse-table.hpp
       title: Sparse Table
@@ -216,7 +229,11 @@ data:
       path: src/geometry/circle.hpp
       title: "\u5186 (\u4F4D\u7F6E\u95A2\u4FC2\u3001\u4EA4\u70B9\u3001\u63A5\u7DDA\
         \u3001\u5185\u63A5\u5186\u3001\u5916\u63A5\u5186\u3001\u5171\u901A\u90E8\u5206\
-        \u306E\u9762\u7A4D)"
+        \u306E\u9762\u7A4D\u3001\u6700\u5C0F\u5305\u542B\u5186)"
+    - icon: ':heavy_check_mark:'
+      path: src/geometry/manhattan-mst.hpp
+      title: "\u30DE\u30F3\u30CF\u30C3\u30BF\u30F3\u8DDD\u96E2\u306E\u6700\u5C0F\u5168\
+        \u57DF\u6728"
     - icon: ':heavy_check_mark:'
       path: src/geometry/rectangle-union.hpp
       title: "\u9577\u65B9\u5F62\u306E\u548C\u96C6\u5408\u306E\u9762\u7A4D"
@@ -303,11 +320,13 @@ data:
       title: "\u90E8\u5206\u96C6\u5408\u30FB\u4E0A\u4F4D\u96C6\u5408\u306E\u30BC\u30FC\
         \u30BF\u5909\u63DB\u3001\u30E1\u30D3\u30A6\u30B9\u5909\u63DB\u3068\u30D3\u30C3\
         \u30C8\u6F14\u7B97 (AND\u30FBOR\u30FBXOR) \u306E\u7573\u307F\u8FBC\u307F\u3001\
-        \u90E8\u5206\u96C6\u5408\u7573\u307F\u8FBC\u307F"
+        \u90E8\u5206\u96C6\u5408\u7573\u307F\u8FBC\u307F\u3001\u96C6\u5408\u51AA\u7D1A\
+        \u6570\u306E exp\u30FBlog"
     - icon: ':heavy_check_mark:'
       path: src/math/combinatorial-sequences.hpp
       title: "\u5206\u5272\u6570\u30FB\u30D9\u30EB\u30CC\u30FC\u30A4\u6570\u30FB\u30B9\
-        \u30BF\u30FC\u30EA\u30F3\u30B0\u6570\u30FB\u30D9\u30EB\u6570"
+        \u30BF\u30FC\u30EA\u30F3\u30B0\u6570\u30FB\u30D9\u30EB\u6570\u30FB\u5927\u304D\
+        \u3044 n \u306E\u968E\u4E57"
     - icon: ':heavy_check_mark:'
       path: src/math/combinatorics.hpp
       title: "\u7D44\u307F\u5408\u308F\u305B"
@@ -333,6 +352,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/math/fps.hpp
       title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570"
+    - icon: ':heavy_check_mark:'
+      path: src/math/gaussian-integer.hpp
+      title: "\u30AC\u30A6\u30B9\u6574\u6570\u3068\u4E8C\u5E73\u65B9\u548C"
     - icon: ':heavy_check_mark:'
       path: src/math/infint.hpp
       title: "inf \u3092\u6301\u3064\u6574\u6570\u578B"
@@ -372,6 +394,9 @@ data:
       path: src/math/prime.hpp
       title: "\u7D20\u6570 (\u7D20\u6570\u5224\u5B9A\u3001\u7D20\u56E0\u6570\u5206\
         \u89E3\u3001\u7D04\u6570\u5217\u6319\u3001\u7BE9\u3001\u539F\u59CB\u6839)"
+    - icon: ':heavy_check_mark:'
+      path: src/math/q-binomial.hpp
+      title: "q \u4E8C\u9805\u4FC2\u6570"
     - icon: ':heavy_check_mark:'
       path: src/math/quotients.hpp
       title: "\u5546\u306E\u5217\u6319"
@@ -424,7 +449,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/string/string.hpp
       title: "\u6587\u5B57\u5217\u30A2\u30EB\u30B4\u30EA\u30BA\u30E0 (Z-algorithm\u3001\
-        KMP\u3001Manacher)"
+        KMP\u3001Manacher\u3001Lyndon \u5206\u89E3)"
     - icon: ':heavy_check_mark:'
       path: src/string/suffix-array.hpp
       title: "Suffix Array \u3068 LCP \u914D\u5217"
@@ -434,6 +459,10 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/string/trie.hpp
       title: Trie
+    - icon: ':heavy_check_mark:'
+      path: src/string/wildcard-matching.hpp
+      title: "\u30EF\u30A4\u30EB\u30C9\u30AB\u30FC\u30C9\u3064\u304D\u306E\u30D1\u30BF\
+        \u30FC\u30F3\u30DE\u30C3\u30C1\u30F3\u30B0"
   - name: src/utility
     pages:
     - icon: ':heavy_check_mark:'
@@ -874,6 +903,9 @@ data:
       path: test/unittest/data_structures/binary-trie.2.test.cpp
       title: test/unittest/data_structures/binary-trie.2.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/data_structures/cartesian-tree.test.cpp
+      title: test/unittest/data_structures/cartesian-tree.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/data_structures/circular-ring.test.cpp
       title: test/unittest/data_structures/circular-ring.test.cpp
     - icon: ':heavy_check_mark:'
@@ -958,6 +990,12 @@ data:
       path: test/unittest/data_structures/range-count-distinct.test.cpp
       title: test/unittest/data_structures/range-count-distinct.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/data_structures/range-lis.test.cpp
+      title: test/unittest/data_structures/range-lis.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/data_structures/range-mode.test.cpp
+      title: test/unittest/data_structures/range-mode.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/data_structures/rbst.test.cpp
       title: test/unittest/data_structures/rbst.test.cpp
     - icon: ':heavy_check_mark:'
@@ -966,6 +1004,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/data_structures/sliding-window-aggregation.test.cpp
       title: test/unittest/data_structures/sliding-window-aggregation.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/data_structures/sortable-segtree.test.cpp
+      title: test/unittest/data_structures/sortable-segtree.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/data_structures/sparse-table.test.cpp
       title: test/unittest/data_structures/sparse-table.test.cpp
@@ -1024,6 +1065,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/geometry/circle.test.cpp
       title: test/unittest/geometry/circle.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/geometry/manhattan-mst.test.cpp
+      title: test/unittest/geometry/manhattan-mst.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/geometry/rectangle-union.test.cpp
       title: test/unittest/geometry/rectangle-union.test.cpp
@@ -1134,6 +1178,9 @@ data:
       path: test/unittest/math/fps.test.cpp
       title: test/unittest/math/fps.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/math/gaussian-integer.test.cpp
+      title: test/unittest/math/gaussian-integer.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/math/infint.test.cpp
       title: test/unittest/math/infint.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1166,6 +1213,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/math/prime.test.cpp
       title: test/unittest/math/prime.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/math/q-binomial.test.cpp
+      title: test/unittest/math/q-binomial.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/math/quotients.test.cpp
       title: test/unittest/math/quotients.test.cpp
@@ -1224,6 +1274,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/string/trie.test.cpp
       title: test/unittest/string/trie.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/string/wildcard-matching.test.cpp
+      title: test/unittest/string/wildcard-matching.test.cpp
   - name: test/unittest/utility
     pages:
     - icon: ':heavy_check_mark:'
@@ -1297,6 +1350,9 @@ data:
       path: test/yosupo/data_structure/associative-array.test.cpp
       title: test/yosupo/data_structure/associative-array.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/data_structure/deque-operate-all-composite.test.cpp
+      title: test/yosupo/data_structure/deque-operate-all-composite.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/data_structure/double-ended-priority-queue.test.cpp
       title: test/yosupo/data_structure/double-ended-priority-queue.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1347,6 +1403,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/data_structure/point-set-range-frequency.test.cpp
       title: test/yosupo/data_structure/point-set-range-frequency.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
+      title: test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/data_structure/predecessor-problem.test.cpp
       title: test/yosupo/data_structure/predecessor-problem.test.cpp
@@ -1420,6 +1479,12 @@ data:
       path: test/yosupo/data_structure/static-range-inversions-query.test.cpp
       title: test/yosupo/data_structure/static-range-inversions-query.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/data_structure/static-range-lis-query.test.cpp
+      title: test/yosupo/data_structure/static-range-lis-query.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/data_structure/static-range-mode-query.test.cpp
+      title: test/yosupo/data_structure/static-range-mode-query.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/data_structure/static-range-sum.test.cpp
       title: test/yosupo/data_structure/static-range-sum.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1449,6 +1514,9 @@ data:
       path: test/yosupo/enumerative_combinatorics/binomial-coefficient.test.cpp
       title: test/yosupo/enumerative_combinatorics/binomial-coefficient.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/enumerative_combinatorics/factorial.test.cpp
+      title: test/yosupo/enumerative_combinatorics/factorial.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/enumerative_combinatorics/partition-function.1.test.cpp
       title: test/yosupo/enumerative_combinatorics/partition-function.1.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1458,14 +1526,23 @@ data:
       path: test/yosupo/enumerative_combinatorics/partition-function.3.test.cpp
       title: test/yosupo/enumerative_combinatorics/partition-function.3.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/enumerative_combinatorics/q-binomial-coefficient-prime-mod.test.cpp
+      title: test/yosupo/enumerative_combinatorics/q-binomial-coefficient-prime-mod.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.1.test.cpp
       title: test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.1.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.2.test.cpp
       title: test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.2.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind-fixed-k.test.cpp
+      title: test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind-fixed-k.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind.test.cpp
       title: test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind-fixed-k.test.cpp
+      title: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind-fixed-k.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
       title: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
@@ -1477,6 +1554,12 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/geo/furthest-pair.test.cpp
       title: test/yosupo/geo/furthest-pair.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/geo/manhattanmst.test.cpp
+      title: test/yosupo/geo/manhattanmst.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/geo/minimum-enclosing-circle.test.cpp
+      title: test/yosupo/geo/minimum-enclosing-circle.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/geo/sort-points-by-argument.1.test.cpp
       title: test/yosupo/geo/sort-points-by-argument.1.test.cpp
@@ -1504,6 +1587,9 @@ data:
       path: test/yosupo/graph/chromatic-number.2.test.cpp
       title: test/yosupo/graph/chromatic-number.2.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/graph/connected-components-of-complement-graph.test.cpp
+      title: test/yosupo/graph/connected-components-of-complement-graph.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
       title: test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1519,6 +1605,9 @@ data:
       path: test/yosupo/graph/dominatortree.test.cpp
       title: test/yosupo/graph/dominatortree.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/graph/enumerate-triangles.test.cpp
+      title: test/yosupo/graph/enumerate-triangles.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/graph/eulerian-trail-directed.test.cpp
       title: test/yosupo/graph/eulerian-trail-directed.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1527,6 +1616,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/graph/general-matching.test.cpp
       title: test/yosupo/graph/general-matching.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/graph/maximum-independent-set.test.cpp
+      title: test/yosupo/graph/maximum-independent-set.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/graph/minimum-spanning-tree.1.test.cpp
       title: test/yosupo/graph/minimum-spanning-tree.1.test.cpp
@@ -1556,6 +1648,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/linear_algebra/inverse-matrix.test.cpp
       title: test/yosupo/linear_algebra/inverse-matrix.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/linear_algebra/matrix-det-arbitrary-mod.test.cpp
+      title: test/yosupo/linear_algebra/matrix-det-arbitrary-mod.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/linear_algebra/matrix-det-mod-2.test.cpp
       title: test/yosupo/linear_algebra/matrix-det-mod-2.test.cpp
@@ -1607,8 +1702,14 @@ data:
       path: test/yosupo/number_theory/factorize.test.cpp
       title: test/yosupo/number_theory/factorize.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/number_theory/gcd-of-gaussian-integers.test.cpp
+      title: test/yosupo/number_theory/gcd-of-gaussian-integers.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/number_theory/kth-root-integer.test.cpp
       title: test/yosupo/number_theory/kth-root-integer.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/number_theory/kth-root-mod.test.cpp
+      title: test/yosupo/number_theory/kth-root-mod.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/number_theory/primality-test.test.cpp
       title: test/yosupo/number_theory/primality-test.test.cpp
@@ -1633,6 +1734,12 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/number_theory/sum-of-totient-function.test.cpp
       title: test/yosupo/number_theory/sum-of-totient-function.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/number_theory/tetration-mod.test.cpp
+      title: test/yosupo/number_theory/tetration-mod.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/number_theory/two-square-sum.test.cpp
+      title: test/yosupo/number_theory/two-square-sum.test.cpp
   - name: test/yosupo/other
     pages:
     - icon: ':heavy_check_mark:'
@@ -1730,6 +1837,12 @@ data:
   - name: test/yosupo/set_power_series
     pages:
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/set_power_series/exp-of-set-power-series.test.cpp
+      title: test/yosupo/set_power_series/exp-of-set-power-series.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/set_power_series/log-of-set-power-series.test.cpp
+      title: test/yosupo/set_power_series/log-of-set-power-series.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/set_power_series/subset-convolution.test.cpp
       title: test/yosupo/set_power_series/subset-convolution.test.cpp
   - name: test/yosupo/string
@@ -1750,6 +1863,9 @@ data:
       path: test/yosupo/string/longest-common-substring.test.cpp
       title: test/yosupo/string/longest-common-substring.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/string/lyndon-factorization.test.cpp
+      title: test/yosupo/string/lyndon-factorization.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/string/number-of-substrings.1.test.cpp
       title: test/yosupo/string/number-of-substrings.1.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1759,10 +1875,16 @@ data:
       path: test/yosupo/string/suffixarray.test.cpp
       title: test/yosupo/string/suffixarray.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/string/wildcard-pattern-matching.test.cpp
+      title: test/yosupo/string/wildcard-pattern-matching.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/string/zalgorithm.test.cpp
       title: test/yosupo/string/zalgorithm.test.cpp
   - name: test/yosupo/tree
     pages:
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/tree/cartesian-tree.test.cpp
+      title: test/yosupo/tree/cartesian-tree.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/tree/dynamic-tree-vertex-add-path-sum.test.cpp
       title: test/yosupo/tree/dynamic-tree-vertex-add-path-sum.test.cpp

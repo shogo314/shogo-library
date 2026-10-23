@@ -511,8 +511,8 @@ data:
     \ - 1 - i) % 2 == 0 ? t : -t;\n    }\n    return res;\n}\n#line 2 \"src/math/prime.hpp\"\
     \n\n/**\n * @file prime.hpp\n * @brief \u7D20\u6570 (\u7D20\u6570\u5224\u5B9A\u3001\
     \u7D20\u56E0\u6570\u5206\u89E3\u3001\u7D04\u6570\u5217\u6319\u3001\u7BE9\u3001\
-    \u539F\u59CB\u6839)\n */\n\n#line 10 \"src/math/prime.hpp\"\n#include <initializer_list>\n\
-    #line 14 \"src/math/prime.hpp\"\n\n#line 16 \"src/math/prime.hpp\"\n\nnamespace\
+    \u539F\u59CB\u6839)\n */\n\n#line 11 \"src/math/prime.hpp\"\n#include <initializer_list>\n\
+    #line 16 \"src/math/prime.hpp\"\n\n#line 18 \"src/math/prime.hpp\"\n\nnamespace\
     \ internal_prime {\n\nusing u64 = unsigned long long;\n\n/**\n * @brief Pollard\
     \ \u306E \u03C1 \u6CD5 (Brent \u306E\u6539\u826F) \u3067\u5408\u6210\u6570 n \u306E\
     \ 1 \u3067\u3082 n \u3067\u3082\u306A\u3044\u7D04\u6570\u3092 1 \u3064\u898B\u3064\
@@ -589,102 +589,175 @@ data:
     \        bool ok = true;\n        for (auto [q, e] : fphi) {\n            if (modpow(g,\
     \ phi / q, m) == 1) {\n                ok = false;\n                break;\n \
     \           }\n        }\n        if (ok) return g;\n    }\n}\n\n/**\n * @brief\
-    \ n \u4EE5\u4E0B\u306E\u7D20\u6570\u3092\u6607\u9806\u306B\u4E26\u3079\u3066\u8FD4\
-    \u3059\n * \u5947\u6570\u3060\u3051\u3092\u533A\u9593\u3054\u3068\u306B\u7BE9\u3046\
-    \u3002O(n log log n)\u3001\u30E1\u30E2\u30EA\u306F O(\u221An + \u7D20\u6570\u306E\
-    \u500B\u6570)\n */\ninline std::vector<long long> enumerate_primes(long long n)\
-    \ {\n    std::vector<long long> res;\n    if (n < 2) return res;\n    res.push_back(2);\n\
-    \    long long r = 1;\n    while ((r + 1) * (r + 1) <= n) r++;\n    // \u221A\
-    n \u4EE5\u4E0B\u306E\u5947\u7D20\u6570 p \u3068\u3001\u6B21\u306B\u7BE9\u3046\
-    \ p \u306E\u500D\u6570 (\u5947\u6570)\n    std::vector<char> small(r + 1, 1);\n\
-    \    std::vector<std::pair<long long, long long>> sp;\n    for (long long i =\
-    \ 3; i <= r; i += 2) {\n        if (!small[i]) continue;\n        for (long long\
-    \ j = i * i; j <= r; j += 2 * i) small[j] = 0;\n        sp.emplace_back(i, i *\
-    \ i);\n    }\n    // \u5947\u6570 2k+1 (1 <= k <= kmax) \u3092\u3001k \u306E\u9577\
-    \u3055 B \u306E\u533A\u9593\u3054\u3068\u306B\u7BE9\u3046\n    constexpr int B\
-    \ = 1 << 16;\n    std::vector<char> block(B);\n    const long long kmax = (n -\
-    \ 1) / 2;\n    for (long long lo = 1; lo <= kmax; lo += B) {\n        const long\
-    \ long hi = std::min(lo + B, kmax + 1);\n        std::fill(block.begin(), block.begin()\
-    \ + (hi - lo), 1);\n        for (auto& [p, m] : sp) {\n            long long k\
-    \ = (m - 1) / 2;\n            for (; k < hi; k += p) block[k - lo] = 0;\n    \
-    \        m = 2 * k + 1;\n        }\n        for (long long k = lo; k < hi; k++)\
-    \ {\n            if (block[k - lo]) res.push_back(2 * k + 1);\n        }\n   \
-    \ }\n    return res;\n}\n\n/**\n * @brief n \u4EE5\u4E0B\u306E\u6574\u6570\u306E\
-    \u6700\u5C0F\u7D20\u56E0\u6570\u3092\u524D\u8A08\u7B97\u3059\u308B\u7BE9 (\u7DDA\
-    \u5F62\u7BE9)\n *\n * \u524D\u8A08\u7B97 O(n)\u3001\u7D20\u6570\u5224\u5B9A O(1)\u3001\
-    \u7D20\u56E0\u6570\u5206\u89E3 O(log x)\n * \u4F8B:\n * Sieve sv(1000000);\n *\
-    \ sv.is_prime(x); sv.factorize(x);\n */\nclass Sieve {\n    long long n;\n   \
-    \ std::vector<int> lpf;  // \u6700\u5C0F\u7D20\u56E0\u6570 (\u30E1\u30E2\u30EA\
-    \u3092\u6291\u3048\u308B\u305F\u3081 int \u3067\u6301\u3064)\n    std::vector<long\
-    \ long> ps;\n\n   public:\n    explicit Sieve(long long n) : n(n), lpf(n + 1,\
-    \ 0) {\n        assert(n >= 0);\n        for (int i = 2; i <= n; i++) {\n    \
-    \        if (lpf[i] == 0) {\n                lpf[i] = i;\n                ps.push_back(i);\n\
-    \            }\n            for (long long p : ps) {\n                if (p >\
-    \ lpf[i] || p * i > n) break;\n                lpf[p * i] = p;\n            }\n\
-    \        }\n    }\n\n    /**\n     * @brief \u524D\u8A08\u7B97\u3057\u305F\u7BC4\
-    \u56F2\u306E\u4E0A\u9650 n\n     */\n    long long limit() const { return n; }\n\
-    \    /**\n     * @brief x (0 <= x <= n) \u304C\u7D20\u6570\u304B O(1)\n     */\n\
-    \    bool is_prime(long long x) const {\n        assert(0 <= x && x <= n);\n \
-    \       return x >= 2 && lpf[x] == x;\n    }\n    /**\n     * @brief x (2 <= x\
-    \ <= n) \u306E\u6700\u5C0F\u7D20\u56E0\u6570 O(1)\n     */\n    long long min_factor(long\
-    \ long x) const {\n        assert(2 <= x && x <= n);\n        return lpf[x];\n\
-    \    }\n    /**\n     * @brief n \u4EE5\u4E0B\u306E\u7D20\u6570\u3092\u6607\u9806\
-    \u306B\u4E26\u3079\u305F\u3082\u306E\n     */\n    const std::vector<long long>&\
-    \ primes() const { return ps; }\n    /**\n     * @brief x (1 <= x <= n) \u3092\
-    \u7D20\u56E0\u6570\u5206\u89E3\u3057\u3001(\u7D20\u56E0\u6570, \u6307\u6570) \u3092\
-    \u7D20\u56E0\u6570\u306E\u6607\u9806\u306B\u4E26\u3079\u3066\u8FD4\u3059 O(log\
-    \ x)\n     */\n    std::vector<std::pair<long long, long long>> factorize(long\
-    \ long x) const {\n        assert(1 <= x && x <= n);\n        std::vector<std::pair<long\
-    \ long, long long>> res;\n        while (x > 1) {\n            long long p = lpf[x],\
-    \ e = 0;\n            while (x % p == 0) x /= p, e++;\n            res.emplace_back(p,\
-    \ e);\n        }\n        return res;\n    }\n    /**\n     * @brief x (1 <= x\
-    \ <= n) \u306E\u6B63\u306E\u7D04\u6570\u3092\u6607\u9806\u306B\u4E26\u3079\u3066\
-    \u8FD4\u3059\n     */\n    std::vector<long long> divisors(long long x) const\
-    \ {\n        std::vector<long long> res = {1};\n        for (auto [p, e] : factorize(x))\
-    \ {\n            const long long sz = res.size();\n            long long pw =\
-    \ 1;\n            for (long long i = 0; i < e; i++) {\n                pw *= p;\n\
-    \                for (long long j = 0; j < sz; j++) res.push_back(res[j] * pw);\n\
-    \            }\n        }\n        std::sort(res.begin(), res.end());\n      \
-    \  return res;\n    }\n};\n#line 16 \"src/math/sum-of-exp-times-poly.hpp\"\n\n\
-    namespace internal_sum_of_exp_times_poly {\n// 0^d, 1^d, ..., m^d \u3092\u3001\
-    \u7D20\u6570\u306F\u7D2F\u4E57\u3001\u5408\u6210\u6570\u306F\u6700\u5C0F\u7D20\
-    \u56E0\u6570\u3068\u306E\u7A4D\u3067 O(m) \u56DE\u306E\u639B\u3051\u7B97\u3067\
-    \u6C42\u3081\u308B\ntemplate <typename mint>\nstd::vector<mint> powers(long long\
-    \ m, long long d) {\n    std::vector<mint> pw(m + 1);\n    if (m >= 0) pw[0] =\
-    \ d == 0 ? mint(1) : mint(0);\n    if (m >= 1) pw[1] = 1;\n    Sieve sieve(std::max<long\
-    \ long>(m, 1));\n    for (long long i = 2; i <= m; i++) {\n        long long p\
-    \ = sieve.min_factor(i);\n        pw[i] = p == i ? mint(i).pow(d) : pw[p] * pw[i\
-    \ / p];\n    }\n    return pw;\n}\n// f(0), ..., f(d) (d \u6B21\u4EE5\u4E0B\u306E\
-    \u591A\u9805\u5F0F\u306E\u5024) \u3068 r (!= 0, 1) \u306B\u3064\u3044\u3066\u3001\
-    \u03A3_{i<n} r^i f(i) = c - r^n g(n) \u306E c \u3068 g(0), ..., g(d)\n// s_k =\
-    \ \u03A3_{i<k} r^i f(i) = c - r^k g(k) \u3067\u3001g \u306E d+1 \u968E\u5DEE\u5206\
-    \ \u03A3_k (-1)^{d+1-k} C(d+1, k) g(k) \u304C 0 \u306B\u306A\u308B\u3053\u3068\
-    \u304B\u3089 c \u3092\u6C42\u3081\u308B\ntemplate <typename mint>\nstd::pair<mint,\
-    \ std::vector<mint>> constant_and_g(mint r, const std::vector<mint>& f) {\n  \
-    \  using C = Combination<mint>;\n    const long long d = static_cast<long long>(f.size())\
-    \ - 1;\n    C::extend(d + 1);\n    const mint inv_r = r.inv();\n    // s_k (k\
-    \ = 0, ..., d+1)\n    std::vector<mint> s(d + 2, 0);\n    mint rk = 1;\n    for\
-    \ (long long k = 0; k <= d; k++) s[k + 1] = s[k] + rk * f[k], rk *= r;\n    //\
-    \ c \u03A3 w_k = \u03A3 w_k s_k\u3001w_k = (-1)^{d+1-k} C(d+1, k) r^{-k}\n   \
-    \ mint num = 0, den = 0, ir = 1;\n    for (long long k = 0; k <= d + 1; k++) {\n\
-    \        mint w = C::C(d + 1, k) * ir;\n        if ((d + 1 - k) % 2 == 1) w =\
-    \ -w;\n        num += w * s[k], den += w;\n        ir *= inv_r;\n    }\n    const\
-    \ mint c = num / den;\n    std::vector<mint> g(d + 1);\n    ir = 1;\n    for (long\
-    \ long k = 0; k <= d; k++) g[k] = (c - s[k]) * ir, ir *= inv_r;\n    return {c,\
-    \ g};\n}\n}  // namespace internal_sum_of_exp_times_poly\n\n/**\n * @brief \u03A3\
-    _{i=0}^{n-1} r^i f(i) (f \u306F d \u6B21\u4EE5\u4E0B\u306E\u591A\u9805\u5F0F\u3067\
-    \u3001f(0), ..., f(d) \u3092\u6E21\u3059) O(d) (n \u306F 10^18 \u7A0B\u5EA6\u3067\
-    \u3082\u3088\u3044)\n * \u6CD5\u306F d + 2 \u3088\u308A\u5927\u304D\u3044\u7D20\
-    \u6570\u3067\u3042\u308B\u3053\u3068\u30020^0 = 1 \u3068\u3059\u308B\n */\ntemplate\
-    \ <typename mint>\nmint sum_of_exp_times_poly(mint r, const std::vector<mint>&\
-    \ f, long long n) {\n    assert(!f.empty() && n >= 0);\n    const long long d\
-    \ = static_cast<long long>(f.size()) - 1;\n    if (n == 0) return mint(0);\n \
-    \   // r = 0 \u306A\u3089 i = 0 \u306E\u9805 (r^0 = 1) \u3060\u3051\n    if (r\
-    \ == 0) return f[0];\n    if (r == 1) {\n        // \u03A3_{i<n} f(i) \u306F n\
-    \ \u306E d+1 \u6B21\u4EE5\u4E0B\u306E\u591A\u9805\u5F0F\u306A\u306E\u3067\u3001\
-    n = 0, ..., d+1 \u3067\u306E\u5024\u304B\u3089\u88DC\u9593\u3059\u308B\n     \
-    \   std::vector<mint> s(d + 2, 0);\n        for (long long k = 0; k <= d; k++)\
-    \ s[k + 1] = s[k] + f[k];\n        return lagrange_interpolation(s, mint(n));\n\
+    \ \u7D20\u6570 p \u306B\u3064\u3044\u3066 x^k \u2261 a (mod p) \u3068\u306A\u308B\
+    \ x \u3092 1 \u3064\u8FD4\u3059 (\u306A\u3051\u308C\u3070 -1)\u30020^0 = 1 \u3068\
+    \u3059\u308B\n *\n * g = gcd(k, p - 1) \u3068\u3057\u3066 g \u4E57\u6839 z \u3092\
+    \u6C42\u3081\u3001x = z^(k/g \u306E\u9006\u6570 mod (p-1)/g) \u3068\u3059\u308B\
+    \n * g \u4E57\u6839\u306F\u3001g \u306E\u7D20\u56E0\u6570 q \u3054\u3068\u306B\
+    \u3001\u4F4D\u6570 q^s \u306E\u90E8\u5206\u7FA4\u306E\u4E2D\u3067 Pohlig-Hellman\
+    \ \u6CD5 (q \u306E\u90E8\u5206\u306F baby-step giant-step) \u3092\u4F7F\u3063\u3066\
+    \u76F4\u3059\n * O(\u03A3_q (s sqrt(q) + log^2 p)) \u306B p - 1 \u306E\u7D20\u56E0\
+    \u6570\u5206\u89E3\u3092\u8DB3\u3057\u305F\u3082\u306E\n */\ninline long long\
+    \ kth_root_mod(long long k, long long a, long long p) {\n    assert(k >= 0 &&\
+    \ p >= 2);\n    a %= p;\n    if (a < 0) a += p;\n    if (k == 0) return a == 1\
+    \ % p ? 1 : -1;\n    if (a == 0) return 0;\n    const long long m = p - 1, g =\
+    \ std::gcd(k, m);\n    if (modpow(a, m / g, p) != 1) return -1;\n    long long\
+    \ z = a;  // \u7D20\u56E0\u6570\u3092 1 \u3064\u305A\u3064\u51E6\u7406\u3057\u3001\
+    \u6700\u5F8C\u306B z^g = a \u3068\u306A\u308B\u3088\u3046\u306B\u3059\u308B\n\
+    \    for (auto [q, e] : factorize(g)) {\n        long long s = 0, t = m, qe =\
+    \ 1;\n        while (t % q == 0) t /= q, s++;\n        for (long long i = 0; i\
+    \ < e; i++) qe *= q;\n        // x1 = z^r (r q^e \u2261 1 mod t) \u3068\u3059\u308B\
+    \u3068 x1^(q^e) = z h (h \u306F\u4F4D\u6570 q^s \u306E\u90E8\u5206\u7FA4 H \u306E\
+    \u5143)\n        const long long r = t == 1 ? 0 : modinv(qe % t, t);\n       \
+    \ const long long x1 = modpow(z, r, p);\n        const long long target = modmul(z,\
+    \ modinv(modpow(x1, qe, p), p), p);  // h^(-1)\u3001H \u306E\u5143\u3067 q^e \u4E57\
+    \u306B\u306A\u3063\u3066\u3044\u308B\n        // H \u306E\u751F\u6210\u5143 c\
+    \ = w^t (w \u306F q \u4E57\u975E\u5270\u4F59)\n        long long w = 2;\n    \
+    \    while (modpow(w, m / q, p) == 1) w++;\n        const long long c = modpow(w,\
+    \ t, p);\n        // target = c^d \u3068\u306A\u308B d \u3092 q \u9032\u3067 1\
+    \ \u6841\u305A\u3064\u6C42\u3081\u308B (Pohlig-Hellman)\n        long long zeta\
+    \ = c;  // \u4F4D\u6570 q \u306E\u5143 c^(q^(s-1))\n        for (long long i =\
+    \ 0; i + 1 < s; i++) zeta = modpow(zeta, q, p);\n        const long long B = std::sqrt(static_cast<double>(q))\
+    \ + 1;\n        std::unordered_map<long long, long long> baby;  // zeta^j -> j\
+    \ (j < B)\n        for (long long j = 0, x = 1; j < B; j++, x = modmul(x, zeta,\
+    \ p)) baby.emplace(x, j);\n        const long long giant = modinv(modpow(zeta,\
+    \ B, p), p);\n        auto log_zeta = [&](long long y) {\n            for (long\
+    \ long i = 0; i <= q / B + 1; i++, y = modmul(y, giant, p)) {\n              \
+    \  auto it = baby.find(y);\n                if (it != baby.end()) return i * B\
+    \ + it->second;\n            }\n            assert(false);\n            return\
+    \ -1LL;\n        };\n        long long d = 0, qi = 1;\n        const long long\
+    \ cinv = modinv(c, p);\n        for (long long i = 0; i < s; i++, qi *= q) {\n\
+    \            // (target c^(-d))^(q^(s-1-i)) = zeta^(d \u306E i \u6841\u76EE)\n\
+    \            long long y = modmul(target, modpow(cinv, d, p), p);\n          \
+    \  for (long long j = 0; j + 1 + i < s; j++) y = modpow(y, q, p);\n          \
+    \  d += log_zeta(y) * qi;\n        }\n        // d \u306F q^e \u306E\u500D\u6570\
+    \u306B\u306A\u3063\u3066\u3044\u308B\n        z = modmul(x1, modpow(c, d / qe,\
+    \ p), p);\n    }\n    const long long mg = m / g;\n    const long long inv = mg\
+    \ == 1 ? 0 : modinv((k / g) % mg, mg);\n    return modpow(z, inv, p);\n}\n\n/**\n\
+    \ * @brief \u30C6\u30C8\u30EC\u30FC\u30B7\u30E7\u30F3 a\u2191\u2191b (a \u3092\
+    \ b \u500B\u91CD\u306D\u305F\u3079\u304D\u4E57 a^a^...^a\u3001a\u2191\u21910 =\
+    \ 1) \u3092 m \u3067\u5272\u3063\u305F\u4F59\u308A\u30020^0 = 1 \u3068\u3059\u308B\
+    \n *\n * x >= log2(m) \u306A\u3089 a^x \u2261 a^(x mod \u03C6(m) + \u03C6(m))\
+    \ (mod m) \u3092\u4F7F\u3044\u3001m \u3092 \u03C6(m) \u306B\u7F6E\u304D\u63DB\u3048\
+    \u3066\u518D\u5E30\u3059\u308B\u3002m \u306F O(log m) \u56DE\u3067 1 \u306B\u306A\
+    \u308B\n * \u9014\u4E2D\u306E\u5024\u306F\u300C\u672C\u5F53\u306E\u5024\u304C\
+    \ m \u672A\u6E80\u306A\u3089\u305D\u306E\u307E\u307E\u3001m \u4EE5\u4E0A\u306A\
+    \u3089 (\u5024 mod m) + m\u300D\u3067\u6301\u3061\u3001\u672C\u5F53\u306E\u5024\
+    \u304C m \u4EE5\u4E0A\u304B\u3092\u5931\u308F\u306A\u3044\u3088\u3046\u306B\u3059\
+    \u308B\n * O(log m \xD7 (factorize(m) + log m))\n * @pre m <= 2 \xD7 10^9\n */\n\
+    inline long long tetration_mod(long long a, long long b, long long m) {\n    //\
+    \ \u9014\u4E2D\u306E\u5024\u306F 2m \u672A\u6E80\u306A\u306E\u3067\u3001\u305D\
+    \u306E\u7A4D\u304C\u3042\u3075\u308C\u306A\u3044\u3088\u3046\u306B m \u3092\u5236\
+    \u9650\u3059\u308B\n    assert(a >= 0 && b >= 0 && 1 <= m && m <= 2000000000);\n\
+    \    // x \u3092\u4E0A\u306E\u5F62\u306B\u76F4\u3059\n    auto clamp = [](long\
+    \ long x, long long mod) { return x < mod ? x : x % mod + mod; };\n    // a\u2191\
+    \u2191b \u3092\u4E0A\u306E\u5F62\u3067\u8FD4\u3059\n    auto rec = [&](auto self,\
+    \ long long b, long long mod) -> long long {\n        if (b == 0) return clamp(1,\
+    \ mod);\n        // 0\u2191\u2191b \u306F b \u304C\u5076\u6570\u306A\u3089 1\u3001\
+    \u5947\u6570\u306A\u3089 0\n        if (a == 0) return clamp(b % 2 == 0 ? 1 :\
+    \ 0, mod);\n        // a >= 1 \u306A\u3089 a\u2191\u2191b >= 1\n        if (a\
+    \ == 1 || mod == 1) return clamp(1, mod);\n        const long long e = self(self,\
+    \ b - 1, totient(mod));\n        // a^e \u3092\u4E0A\u306E\u5F62\u3067\u6C42\u3081\
+    \u308B (a >= 1\u3001e >= 1)\n        long long res = 1, base = clamp(a, mod);\n\
+    \        for (long long k = e; k > 0; k >>= 1) {\n            if (k & 1) res =\
+    \ clamp(res * base, mod);\n            if (k > 1) base = clamp(base * base, mod);\n\
+    \        }\n        return res;\n    };\n    return rec(rec, b, m) % m;\n}\n\n\
+    /**\n * @brief n \u4EE5\u4E0B\u306E\u7D20\u6570\u3092\u6607\u9806\u306B\u4E26\u3079\
+    \u3066\u8FD4\u3059\n * \u5947\u6570\u3060\u3051\u3092\u533A\u9593\u3054\u3068\u306B\
+    \u7BE9\u3046\u3002O(n log log n)\u3001\u30E1\u30E2\u30EA\u306F O(\u221An + \u7D20\
+    \u6570\u306E\u500B\u6570)\n */\ninline std::vector<long long> enumerate_primes(long\
+    \ long n) {\n    std::vector<long long> res;\n    if (n < 2) return res;\n   \
+    \ res.push_back(2);\n    long long r = 1;\n    while ((r + 1) * (r + 1) <= n)\
+    \ r++;\n    // \u221An \u4EE5\u4E0B\u306E\u5947\u7D20\u6570 p \u3068\u3001\u6B21\
+    \u306B\u7BE9\u3046 p \u306E\u500D\u6570 (\u5947\u6570)\n    std::vector<char>\
+    \ small(r + 1, 1);\n    std::vector<std::pair<long long, long long>> sp;\n   \
+    \ for (long long i = 3; i <= r; i += 2) {\n        if (!small[i]) continue;\n\
+    \        for (long long j = i * i; j <= r; j += 2 * i) small[j] = 0;\n       \
+    \ sp.emplace_back(i, i * i);\n    }\n    // \u5947\u6570 2k+1 (1 <= k <= kmax)\
+    \ \u3092\u3001k \u306E\u9577\u3055 B \u306E\u533A\u9593\u3054\u3068\u306B\u7BE9\
+    \u3046\n    constexpr int B = 1 << 16;\n    std::vector<char> block(B);\n    const\
+    \ long long kmax = (n - 1) / 2;\n    for (long long lo = 1; lo <= kmax; lo +=\
+    \ B) {\n        const long long hi = std::min(lo + B, kmax + 1);\n        std::fill(block.begin(),\
+    \ block.begin() + (hi - lo), 1);\n        for (auto& [p, m] : sp) {\n        \
+    \    long long k = (m - 1) / 2;\n            for (; k < hi; k += p) block[k -\
+    \ lo] = 0;\n            m = 2 * k + 1;\n        }\n        for (long long k =\
+    \ lo; k < hi; k++) {\n            if (block[k - lo]) res.push_back(2 * k + 1);\n\
+    \        }\n    }\n    return res;\n}\n\n/**\n * @brief n \u4EE5\u4E0B\u306E\u6574\
+    \u6570\u306E\u6700\u5C0F\u7D20\u56E0\u6570\u3092\u524D\u8A08\u7B97\u3059\u308B\
+    \u7BE9 (\u7DDA\u5F62\u7BE9)\n *\n * \u524D\u8A08\u7B97 O(n)\u3001\u7D20\u6570\u5224\
+    \u5B9A O(1)\u3001\u7D20\u56E0\u6570\u5206\u89E3 O(log x)\n * \u4F8B:\n * Sieve\
+    \ sv(1000000);\n * sv.is_prime(x); sv.factorize(x);\n */\nclass Sieve {\n    long\
+    \ long n;\n    std::vector<int> lpf;  // \u6700\u5C0F\u7D20\u56E0\u6570 (\u30E1\
+    \u30E2\u30EA\u3092\u6291\u3048\u308B\u305F\u3081 int \u3067\u6301\u3064)\n   \
+    \ std::vector<long long> ps;\n\n   public:\n    explicit Sieve(long long n) :\
+    \ n(n), lpf(n + 1, 0) {\n        assert(n >= 0);\n        for (int i = 2; i <=\
+    \ n; i++) {\n            if (lpf[i] == 0) {\n                lpf[i] = i;\n   \
+    \             ps.push_back(i);\n            }\n            for (long long p :\
+    \ ps) {\n                if (p > lpf[i] || p * i > n) break;\n               \
+    \ lpf[p * i] = p;\n            }\n        }\n    }\n\n    /**\n     * @brief \u524D\
+    \u8A08\u7B97\u3057\u305F\u7BC4\u56F2\u306E\u4E0A\u9650 n\n     */\n    long long\
+    \ limit() const { return n; }\n    /**\n     * @brief x (0 <= x <= n) \u304C\u7D20\
+    \u6570\u304B O(1)\n     */\n    bool is_prime(long long x) const {\n        assert(0\
+    \ <= x && x <= n);\n        return x >= 2 && lpf[x] == x;\n    }\n    /**\n  \
+    \   * @brief x (2 <= x <= n) \u306E\u6700\u5C0F\u7D20\u56E0\u6570 O(1)\n     */\n\
+    \    long long min_factor(long long x) const {\n        assert(2 <= x && x <=\
+    \ n);\n        return lpf[x];\n    }\n    /**\n     * @brief n \u4EE5\u4E0B\u306E\
+    \u7D20\u6570\u3092\u6607\u9806\u306B\u4E26\u3079\u305F\u3082\u306E\n     */\n\
+    \    const std::vector<long long>& primes() const { return ps; }\n    /**\n  \
+    \   * @brief x (1 <= x <= n) \u3092\u7D20\u56E0\u6570\u5206\u89E3\u3057\u3001\
+    (\u7D20\u56E0\u6570, \u6307\u6570) \u3092\u7D20\u56E0\u6570\u306E\u6607\u9806\u306B\
+    \u4E26\u3079\u3066\u8FD4\u3059 O(log x)\n     */\n    std::vector<std::pair<long\
+    \ long, long long>> factorize(long long x) const {\n        assert(1 <= x && x\
+    \ <= n);\n        std::vector<std::pair<long long, long long>> res;\n        while\
+    \ (x > 1) {\n            long long p = lpf[x], e = 0;\n            while (x %\
+    \ p == 0) x /= p, e++;\n            res.emplace_back(p, e);\n        }\n     \
+    \   return res;\n    }\n    /**\n     * @brief x (1 <= x <= n) \u306E\u6B63\u306E\
+    \u7D04\u6570\u3092\u6607\u9806\u306B\u4E26\u3079\u3066\u8FD4\u3059\n     */\n\
+    \    std::vector<long long> divisors(long long x) const {\n        std::vector<long\
+    \ long> res = {1};\n        for (auto [p, e] : factorize(x)) {\n            const\
+    \ long long sz = res.size();\n            long long pw = 1;\n            for (long\
+    \ long i = 0; i < e; i++) {\n                pw *= p;\n                for (long\
+    \ long j = 0; j < sz; j++) res.push_back(res[j] * pw);\n            }\n      \
+    \  }\n        std::sort(res.begin(), res.end());\n        return res;\n    }\n\
+    };\n#line 16 \"src/math/sum-of-exp-times-poly.hpp\"\n\nnamespace internal_sum_of_exp_times_poly\
+    \ {\n// 0^d, 1^d, ..., m^d \u3092\u3001\u7D20\u6570\u306F\u7D2F\u4E57\u3001\u5408\
+    \u6210\u6570\u306F\u6700\u5C0F\u7D20\u56E0\u6570\u3068\u306E\u7A4D\u3067 O(m)\
+    \ \u56DE\u306E\u639B\u3051\u7B97\u3067\u6C42\u3081\u308B\ntemplate <typename mint>\n\
+    std::vector<mint> powers(long long m, long long d) {\n    std::vector<mint> pw(m\
+    \ + 1);\n    if (m >= 0) pw[0] = d == 0 ? mint(1) : mint(0);\n    if (m >= 1)\
+    \ pw[1] = 1;\n    Sieve sieve(std::max<long long>(m, 1));\n    for (long long\
+    \ i = 2; i <= m; i++) {\n        long long p = sieve.min_factor(i);\n        pw[i]\
+    \ = p == i ? mint(i).pow(d) : pw[p] * pw[i / p];\n    }\n    return pw;\n}\n//\
+    \ f(0), ..., f(d) (d \u6B21\u4EE5\u4E0B\u306E\u591A\u9805\u5F0F\u306E\u5024) \u3068\
+    \ r (!= 0, 1) \u306B\u3064\u3044\u3066\u3001\u03A3_{i<n} r^i f(i) = c - r^n g(n)\
+    \ \u306E c \u3068 g(0), ..., g(d)\n// s_k = \u03A3_{i<k} r^i f(i) = c - r^k g(k)\
+    \ \u3067\u3001g \u306E d+1 \u968E\u5DEE\u5206 \u03A3_k (-1)^{d+1-k} C(d+1, k)\
+    \ g(k) \u304C 0 \u306B\u306A\u308B\u3053\u3068\u304B\u3089 c \u3092\u6C42\u3081\
+    \u308B\ntemplate <typename mint>\nstd::pair<mint, std::vector<mint>> constant_and_g(mint\
+    \ r, const std::vector<mint>& f) {\n    using C = Combination<mint>;\n    const\
+    \ long long d = static_cast<long long>(f.size()) - 1;\n    C::extend(d + 1);\n\
+    \    const mint inv_r = r.inv();\n    // s_k (k = 0, ..., d+1)\n    std::vector<mint>\
+    \ s(d + 2, 0);\n    mint rk = 1;\n    for (long long k = 0; k <= d; k++) s[k +\
+    \ 1] = s[k] + rk * f[k], rk *= r;\n    // c \u03A3 w_k = \u03A3 w_k s_k\u3001\
+    w_k = (-1)^{d+1-k} C(d+1, k) r^{-k}\n    mint num = 0, den = 0, ir = 1;\n    for\
+    \ (long long k = 0; k <= d + 1; k++) {\n        mint w = C::C(d + 1, k) * ir;\n\
+    \        if ((d + 1 - k) % 2 == 1) w = -w;\n        num += w * s[k], den += w;\n\
+    \        ir *= inv_r;\n    }\n    const mint c = num / den;\n    std::vector<mint>\
+    \ g(d + 1);\n    ir = 1;\n    for (long long k = 0; k <= d; k++) g[k] = (c - s[k])\
+    \ * ir, ir *= inv_r;\n    return {c, g};\n}\n}  // namespace internal_sum_of_exp_times_poly\n\
+    \n/**\n * @brief \u03A3_{i=0}^{n-1} r^i f(i) (f \u306F d \u6B21\u4EE5\u4E0B\u306E\
+    \u591A\u9805\u5F0F\u3067\u3001f(0), ..., f(d) \u3092\u6E21\u3059) O(d) (n \u306F\
+    \ 10^18 \u7A0B\u5EA6\u3067\u3082\u3088\u3044)\n * \u6CD5\u306F d + 2 \u3088\u308A\
+    \u5927\u304D\u3044\u7D20\u6570\u3067\u3042\u308B\u3053\u3068\u30020^0 = 1 \u3068\
+    \u3059\u308B\n */\ntemplate <typename mint>\nmint sum_of_exp_times_poly(mint r,\
+    \ const std::vector<mint>& f, long long n) {\n    assert(!f.empty() && n >= 0);\n\
+    \    const long long d = static_cast<long long>(f.size()) - 1;\n    if (n == 0)\
+    \ return mint(0);\n    // r = 0 \u306A\u3089 i = 0 \u306E\u9805 (r^0 = 1) \u3060\
+    \u3051\n    if (r == 0) return f[0];\n    if (r == 1) {\n        // \u03A3_{i<n}\
+    \ f(i) \u306F n \u306E d+1 \u6B21\u4EE5\u4E0B\u306E\u591A\u9805\u5F0F\u306A\u306E\
+    \u3067\u3001n = 0, ..., d+1 \u3067\u306E\u5024\u304B\u3089\u88DC\u9593\u3059\u308B\
+    \n        std::vector<mint> s(d + 2, 0);\n        for (long long k = 0; k <= d;\
+    \ k++) s[k + 1] = s[k] + f[k];\n        return lagrange_interpolation(s, mint(n));\n\
     \    }\n    auto [c, g] = internal_sum_of_exp_times_poly::constant_and_g(r, f);\n\
     \    return c - r.pow(n) * lagrange_interpolation(g, mint(n));\n}\n\n/**\n * @brief\
     \ \u03A3_{i=0}^{n-1} r^i i^d O(d) (n \u306F 10^18 \u7A0B\u5EA6\u3067\u3082\u3088\
@@ -724,7 +797,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/other/sum-of-exponential-times-polynomial.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:37:20+09:00'
+  timestamp: '2026-10-23 19:32:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/other/sum-of-exponential-times-polynomial.test.cpp

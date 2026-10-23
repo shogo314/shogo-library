@@ -4,7 +4,11 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':heavy_check_mark:'
+    path: src/data_structures/sortable-segtree.hpp
+    title: "\u533A\u9593\u30BD\u30FC\u30C8\u306E\u3067\u304D\u308B\u30BB\u30B0\u30E1\
+      \u30F3\u30C8\u6728"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/dsl/dsl-2-a.test.cpp
@@ -34,6 +38,9 @@ data:
     path: test/unittest/data_structures/dual-segtree.test.cpp
     title: test/unittest/data_structures/dual-segtree.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/sortable-segtree.test.cpp
+    title: test/unittest/data_structures/sortable-segtree.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/point-add-range-sum.2.test.cpp
     title: test/yosupo/data_structure/point-add-range-sum.2.test.cpp
   - icon: ':heavy_check_mark:'
@@ -45,6 +52,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/point-set-range-composite.3.test.cpp
     title: test/yosupo/data_structure/point-set-range-composite.3.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
+    title: test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/rectangle-sum.3.test.cpp
     title: test/yosupo/data_structure/rectangle-sum.3.test.cpp
@@ -588,11 +598,13 @@ data:
   - src/algebra/monoid.hpp
   isVerificationFile: false
   path: src/data_structures/segtree.hpp
-  requiredBy: []
+  requiredBy:
+  - src/data_structures/sortable-segtree.hpp
   timestamp: '2026-10-19 12:03:10+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/dual-segtree.test.cpp
+  - test/unittest/data_structures/sortable-segtree.test.cpp
   - test/unittest/algebra/mapping.test.cpp
   - test/unittest/algebra/monoid.test.cpp
   - test/aoj/ntl/ntl-1-c.test.cpp
@@ -606,6 +618,7 @@ data:
   - test/yosupo/data_structure/point-set-range-composite.2.test.cpp
   - test/yosupo/data_structure/point-add-range-sum.2.test.cpp
   - test/yosupo/data_structure/rectangle-sum.3.test.cpp
+  - test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
   - test/yosupo/tree/vertex-add-subtree-sum.1.test.cpp
   - test/yosupo/tree/vertex-set-path-composite.test.cpp
   - test/yosupo/tree/lca.2.test.cpp

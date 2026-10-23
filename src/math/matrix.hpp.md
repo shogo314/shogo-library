@@ -22,6 +22,9 @@ data:
     path: test/yosupo/linear_algebra/inverse-matrix.test.cpp
     title: test/yosupo/linear_algebra/inverse-matrix.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/linear_algebra/matrix-det-arbitrary-mod.test.cpp
+    title: test/yosupo/linear_algebra/matrix-det-arbitrary-mod.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/matrix-det.test.cpp
     title: test/yosupo/linear_algebra/matrix-det.test.cpp
   - icon: ':heavy_check_mark:'
@@ -223,14 +226,35 @@ data:
     \ long i = 0; i < n; i++)\n                for (long long j = 0; j < n; j++) A[i][j]\
     \ = this->v[i][j];\n            return forward_elimination(A);\n        } else\
     \ {\n            auto A = this->v;\n            return forward_elimination(A);\n\
-    \        }\n    }\n\n    /**\n     * @brief \u7279\u6027\u591A\u9805\u5F0F det(xI\
-    \ - A) \u306E\u4FC2\u6570 (\u4F4E\u6B21\u304B\u3089 n + 1 \u500B\u3001\u6700\u9AD8\
-    \u6B21\u306F 1) O(n^3)\n     * @note \u5272\u308A\u7B97\u3092\u4F7F\u3046\u306E\
-    \u3067\u3001\u8981\u7D20\u306F\u4F53 (modint \u306A\u3069) \u3067\u3042\u308B\u3053\
-    \u3068\n     *\n     * \u76F8\u4F3C\u5909\u63DB\u3067\u4E0A\u30D8\u30C3\u30BB\u30F3\
-    \u30D9\u30EB\u30AF\u884C\u5217 (i > j + 1 \u3067 0) \u306B\u3057\u3066\u304B\u3089\
-    \u3001\u5DE6\u4E0A\u306E k \xD7 k \u306E\u7279\u6027\u591A\u9805\u5F0F\u3092 k\
-    \ \u306E\u5C0F\u3055\u3044\u65B9\u304B\u3089\u6C42\u3081\u308B\n     */\n    [[nodiscard]]\n\
+    \        }\n    }\n\n    /**\n     * @brief \u884C\u5217\u5F0F\u3092 mod \u3067\
+    \u5272\u3063\u305F\u4F59\u308A (mod \u306F\u7D20\u6570\u3067\u306A\u304F\u3066\
+    \u3088\u3044) O(n^2 (n + log mod))\n     * @note \u8981\u7D20\u306F\u6574\u6570\
+    \u578B\u3067\u3042\u308B\u3053\u3068\u3002\u5272\u308A\u7B97\u306E\u4EE3\u308F\
+    \u308A\u306B\u30012 \u3064\u306E\u884C\u3067\u4E92\u9664\u6CD5\u306E\u3088\u3046\
+    \u306B\u5F15\u304D\u5408\u3063\u3066 0 \u3092\u4F5C\u308B\n     */\n    [[nodiscard]]\n\
+    \    long long det_mod(long long mod) const {\n        assert(n == m);\n     \
+    \   assert(1 <= mod && mod <= (1LL << 31));\n        std::vector<std::vector<long\
+    \ long>> a(n, std::vector<long long>(n));\n        for (long long i = 0; i < n;\
+    \ i++)\n            for (long long j = 0; j < n; j++) a[i][j] = ((static_cast<long\
+    \ long>(this->v[i][j]) % mod) + mod) % mod;\n        long long res = 1 % mod;\n\
+    \        for (long long i = 0; i < n; i++) {\n            for (long long j = i\
+    \ + 1; j < n; j++) {\n                // a[j][i] \u304C 0 \u306B\u306A\u308B\u307E\
+    \u3067\u3001\u884C i \u304B\u3089\u884C j \u306E q \u500D\u3092\u5F15\u3044\u3066\
+    \u5165\u308C\u66FF\u3048\u308B\n                while (a[j][i] != 0) {\n     \
+    \               const long long q = a[i][i] / a[j][i];\n                    if\
+    \ (q != 0) {\n                        for (long long k = i; k < n; k++) a[i][k]\
+    \ = ((a[i][k] - q * a[j][k]) % mod + mod) % mod;\n                    }\n    \
+    \                std::swap(a[i], a[j]);\n                    res = (mod - res)\
+    \ % mod;\n                }\n            }\n            res = res * a[i][i] %\
+    \ mod;\n            if (res == 0) return 0;\n        }\n        return res;\n\
+    \    }\n\n    /**\n     * @brief \u7279\u6027\u591A\u9805\u5F0F det(xI - A) \u306E\
+    \u4FC2\u6570 (\u4F4E\u6B21\u304B\u3089 n + 1 \u500B\u3001\u6700\u9AD8\u6B21\u306F\
+    \ 1) O(n^3)\n     * @note \u5272\u308A\u7B97\u3092\u4F7F\u3046\u306E\u3067\u3001\
+    \u8981\u7D20\u306F\u4F53 (modint \u306A\u3069) \u3067\u3042\u308B\u3053\u3068\n\
+    \     *\n     * \u76F8\u4F3C\u5909\u63DB\u3067\u4E0A\u30D8\u30C3\u30BB\u30F3\u30D9\
+    \u30EB\u30AF\u884C\u5217 (i > j + 1 \u3067 0) \u306B\u3057\u3066\u304B\u3089\u3001\
+    \u5DE6\u4E0A\u306E k \xD7 k \u306E\u7279\u6027\u591A\u9805\u5F0F\u3092 k \u306E\
+    \u5C0F\u3055\u3044\u65B9\u304B\u3089\u6C42\u3081\u308B\n     */\n    [[nodiscard]]\n\
     \    std::vector<T> characteristic_polynomial() const {\n        assert(n == m);\n\
     \        using P = OperatorProperty;\n        auto sub = [](const T& a, const\
     \ T& b) { return P::add(a, P::neg(b)); };\n        auto H = this->v;\n       \
@@ -609,14 +633,35 @@ data:
     \ long i = 0; i < n; i++)\n                for (long long j = 0; j < n; j++) A[i][j]\
     \ = this->v[i][j];\n            return forward_elimination(A);\n        } else\
     \ {\n            auto A = this->v;\n            return forward_elimination(A);\n\
-    \        }\n    }\n\n    /**\n     * @brief \u7279\u6027\u591A\u9805\u5F0F det(xI\
-    \ - A) \u306E\u4FC2\u6570 (\u4F4E\u6B21\u304B\u3089 n + 1 \u500B\u3001\u6700\u9AD8\
-    \u6B21\u306F 1) O(n^3)\n     * @note \u5272\u308A\u7B97\u3092\u4F7F\u3046\u306E\
-    \u3067\u3001\u8981\u7D20\u306F\u4F53 (modint \u306A\u3069) \u3067\u3042\u308B\u3053\
-    \u3068\n     *\n     * \u76F8\u4F3C\u5909\u63DB\u3067\u4E0A\u30D8\u30C3\u30BB\u30F3\
-    \u30D9\u30EB\u30AF\u884C\u5217 (i > j + 1 \u3067 0) \u306B\u3057\u3066\u304B\u3089\
-    \u3001\u5DE6\u4E0A\u306E k \xD7 k \u306E\u7279\u6027\u591A\u9805\u5F0F\u3092 k\
-    \ \u306E\u5C0F\u3055\u3044\u65B9\u304B\u3089\u6C42\u3081\u308B\n     */\n    [[nodiscard]]\n\
+    \        }\n    }\n\n    /**\n     * @brief \u884C\u5217\u5F0F\u3092 mod \u3067\
+    \u5272\u3063\u305F\u4F59\u308A (mod \u306F\u7D20\u6570\u3067\u306A\u304F\u3066\
+    \u3088\u3044) O(n^2 (n + log mod))\n     * @note \u8981\u7D20\u306F\u6574\u6570\
+    \u578B\u3067\u3042\u308B\u3053\u3068\u3002\u5272\u308A\u7B97\u306E\u4EE3\u308F\
+    \u308A\u306B\u30012 \u3064\u306E\u884C\u3067\u4E92\u9664\u6CD5\u306E\u3088\u3046\
+    \u306B\u5F15\u304D\u5408\u3063\u3066 0 \u3092\u4F5C\u308B\n     */\n    [[nodiscard]]\n\
+    \    long long det_mod(long long mod) const {\n        assert(n == m);\n     \
+    \   assert(1 <= mod && mod <= (1LL << 31));\n        std::vector<std::vector<long\
+    \ long>> a(n, std::vector<long long>(n));\n        for (long long i = 0; i < n;\
+    \ i++)\n            for (long long j = 0; j < n; j++) a[i][j] = ((static_cast<long\
+    \ long>(this->v[i][j]) % mod) + mod) % mod;\n        long long res = 1 % mod;\n\
+    \        for (long long i = 0; i < n; i++) {\n            for (long long j = i\
+    \ + 1; j < n; j++) {\n                // a[j][i] \u304C 0 \u306B\u306A\u308B\u307E\
+    \u3067\u3001\u884C i \u304B\u3089\u884C j \u306E q \u500D\u3092\u5F15\u3044\u3066\
+    \u5165\u308C\u66FF\u3048\u308B\n                while (a[j][i] != 0) {\n     \
+    \               const long long q = a[i][i] / a[j][i];\n                    if\
+    \ (q != 0) {\n                        for (long long k = i; k < n; k++) a[i][k]\
+    \ = ((a[i][k] - q * a[j][k]) % mod + mod) % mod;\n                    }\n    \
+    \                std::swap(a[i], a[j]);\n                    res = (mod - res)\
+    \ % mod;\n                }\n            }\n            res = res * a[i][i] %\
+    \ mod;\n            if (res == 0) return 0;\n        }\n        return res;\n\
+    \    }\n\n    /**\n     * @brief \u7279\u6027\u591A\u9805\u5F0F det(xI - A) \u306E\
+    \u4FC2\u6570 (\u4F4E\u6B21\u304B\u3089 n + 1 \u500B\u3001\u6700\u9AD8\u6B21\u306F\
+    \ 1) O(n^3)\n     * @note \u5272\u308A\u7B97\u3092\u4F7F\u3046\u306E\u3067\u3001\
+    \u8981\u7D20\u306F\u4F53 (modint \u306A\u3069) \u3067\u3042\u308B\u3053\u3068\n\
+    \     *\n     * \u76F8\u4F3C\u5909\u63DB\u3067\u4E0A\u30D8\u30C3\u30BB\u30F3\u30D9\
+    \u30EB\u30AF\u884C\u5217 (i > j + 1 \u3067 0) \u306B\u3057\u3066\u304B\u3089\u3001\
+    \u5DE6\u4E0A\u306E k \xD7 k \u306E\u7279\u6027\u591A\u9805\u5F0F\u3092 k \u306E\
+    \u5C0F\u3055\u3044\u65B9\u304B\u3089\u6C42\u3081\u308B\n     */\n    [[nodiscard]]\n\
     \    std::vector<T> characteristic_polynomial() const {\n        assert(n == m);\n\
     \        using P = OperatorProperty;\n        auto sub = [](const T& a, const\
     \ T& b) { return P::add(a, P::neg(b)); };\n        auto H = this->v;\n       \
@@ -827,7 +872,7 @@ data:
   isVerificationFile: false
   path: src/math/matrix.hpp
   requiredBy: []
-  timestamp: '2026-10-23 13:37:04+09:00'
+  timestamp: '2026-10-23 19:18:19+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/math/f2-matrix.test.cpp
@@ -836,6 +881,7 @@ data:
   - test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
   - test/yosupo/linear_algebra/pow-of-matrix.test.cpp
   - test/yosupo/linear_algebra/characteristic-polynomial.test.cpp
+  - test/yosupo/linear_algebra/matrix-det-arbitrary-mod.test.cpp
   - test/yosupo/linear_algebra/matrix-product.test.cpp
   - test/yosupo/linear_algebra/inverse-matrix.test.cpp
   - test/yosupo/linear_algebra/matrix-rank.test.cpp
@@ -891,11 +937,12 @@ auto t = g.rotate(1).vstr();          // 時計回りに 90 度回して vector<
 | `A * x` / `x * A` | 列ベクトル / 行ベクトルとの積 (`vector<T>` を返す) | $O(nm)$ |
 | `A.pow(k)` | $A^k$ | $O(n^3 \log k)$ |
 | `A.det()` | 行列式 | $O(n^3)$ |
+| `A.det_mod(mod)` | 行列式を `mod` で割った余り。`mod` は素数でなくてよい ($1 \le$ `mod` $\le 2^{31}$)。要素は整数型であること。割り算の代わりに 2 つの行を互除法のように引き合って消去する | $O(n^2 (n + \log \mathrm{mod}))$ |
 | `A.permanent()` | パーマネント $\sum_\sigma \prod_i a_{i \sigma(i)}$ (Ryser の公式)。割り算を使わないので `long long` でもよい。0 と 1 の行列なら二部グラフの完全マッチングの個数 | $O(2^n n)$ |
 | `A.inv()` | 逆行列 (正則でなければ assert で落ちる) | $O(n^3)$ |
 | `A.characteristic_polynomial()` | 特性多項式 $\det(xI - A)$ の係数 (`std::vector<T>`、低次から $n + 1$ 個、最高次は 1)。ヘッセンベルク行列に変形して求める | $O(n^3)$ |
 
-`det`、`inv`、`characteristic_polynomial` は割り算を使うので、要素は体 (`modint` や浮動小数点型など) である必要があります。`int` や `long long` のような整数型では割り算が切り捨てになり、正しい値になりません (例: `Matrix<long long>({ {2, 1}, {1, 1} }).det()` は 1 ではなく 2 を返す)。整数の行列の行列式は、十分大きい素数を法とする `modint` で計算してください。
+`det`、`inv`、`characteristic_polynomial` は割り算を使うので、要素は体 (`modint` や浮動小数点型など) である必要があります。`int` や `long long` のような整数型では割り算が切り捨てになり、正しい値になりません (例: `Matrix<long long>({ {2, 1}, {1, 1} }).det()` は 1 ではなく 2 を返す)。整数の行列の行列式は、十分大きい素数を法とする `modint` で計算してください。素数でない数を法とする行列式は `det_mod` で求められます。
 
 浮動小数点型なら部分ピボット選択を行い、絶対値が $10^{-9}$ 未満を 0 とみなします。
 

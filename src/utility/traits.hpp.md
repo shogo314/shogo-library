@@ -26,14 +26,19 @@ data:
     path: src/geometry/circle.hpp
     title: "\u5186 (\u4F4D\u7F6E\u95A2\u4FC2\u3001\u4EA4\u70B9\u3001\u63A5\u7DDA\u3001\
       \u5185\u63A5\u5186\u3001\u5916\u63A5\u5186\u3001\u5171\u901A\u90E8\u5206\u306E\
-      \u9762\u7A4D)"
+      \u9762\u7A4D\u3001\u6700\u5C0F\u5305\u542B\u5186)"
+  - icon: ':heavy_check_mark:'
+    path: src/geometry/manhattan-mst.hpp
+    title: "\u30DE\u30F3\u30CF\u30C3\u30BF\u30F3\u8DDD\u96E2\u306E\u6700\u5C0F\u5168\
+      \u57DF\u6728"
   - icon: ':heavy_check_mark:'
     path: src/geometry/vector.hpp
     title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"
   - icon: ':heavy_check_mark:'
     path: src/math/combinatorial-sequences.hpp
     title: "\u5206\u5272\u6570\u30FB\u30D9\u30EB\u30CC\u30FC\u30A4\u6570\u30FB\u30B9\
-      \u30BF\u30FC\u30EA\u30F3\u30B0\u6570\u30FB\u30D9\u30EB\u6570"
+      \u30BF\u30FC\u30EA\u30F3\u30B0\u6570\u30FB\u30D9\u30EB\u6570\u30FB\u5927\u304D\
+      \u3044 n \u306E\u968E\u4E57"
   - icon: ':heavy_check_mark:'
     path: src/math/convolution.hpp
     title: "\u7573\u307F\u8FBC\u307F (NTT)"
@@ -66,6 +71,10 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/string/rolling-hash.hpp
     title: "\u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5"
+  - icon: ':heavy_check_mark:'
+    path: src/string/wildcard-matching.hpp
+    title: "\u30EF\u30A4\u30EB\u30C9\u30AB\u30FC\u30C9\u3064\u304D\u306E\u30D1\u30BF\
+      \u30FC\u30F3\u30DE\u30C3\u30C1\u30F3\u30B0"
   - icon: ':heavy_check_mark:'
     path: src/utility/binary-search.hpp
     title: "\u4E8C\u5206\u63A2\u7D22"
@@ -283,6 +292,9 @@ data:
     path: test/unittest/geometry/circle.test.cpp
     title: test/unittest/geometry/circle.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/geometry/manhattan-mst.test.cpp
+    title: test/unittest/geometry/manhattan-mst.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/geometry/vector-line.test.cpp
     title: test/unittest/geometry/vector-line.test.cpp
   - icon: ':heavy_check_mark:'
@@ -346,6 +358,9 @@ data:
     path: test/unittest/string/rolling-hash.test.cpp
     title: test/unittest/string/rolling-hash.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/string/wildcard-matching.test.cpp
+    title: test/unittest/string/wildcard-matching.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/utility/container_func-member.test.cpp
     title: test/unittest/utility/container_func-member.test.cpp
   - icon: ':heavy_check_mark:'
@@ -385,6 +400,9 @@ data:
     path: test/yosupo/data_structure/associative-array.test.cpp
     title: test/yosupo/data_structure/associative-array.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/deque-operate-all-composite.test.cpp
+    title: test/yosupo/data_structure/deque-operate-all-composite.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
     title: test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
   - icon: ':heavy_check_mark:'
@@ -411,6 +429,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/point-set-range-composite.4.test.cpp
     title: test/yosupo/data_structure/point-set-range-composite.4.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
+    title: test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/queue-operate-all-composite.test.cpp
     title: test/yosupo/data_structure/queue-operate-all-composite.test.cpp
@@ -457,6 +478,9 @@ data:
     path: test/yosupo/enumerative_combinatorics/binomial-coefficient-prime-mod.2.test.cpp
     title: test/yosupo/enumerative_combinatorics/binomial-coefficient-prime-mod.2.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/enumerative_combinatorics/factorial.test.cpp
+    title: test/yosupo/enumerative_combinatorics/factorial.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/enumerative_combinatorics/partition-function.1.test.cpp
     title: test/yosupo/enumerative_combinatorics/partition-function.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -472,8 +496,14 @@ data:
     path: test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.2.test.cpp
     title: test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.2.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind-fixed-k.test.cpp
+    title: test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind-fixed-k.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind.test.cpp
     title: test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind-fixed-k.test.cpp
+    title: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind-fixed-k.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
     title: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
@@ -484,6 +514,12 @@ data:
     path: test/yosupo/geo/furthest-pair.test.cpp
     title: test/yosupo/geo/furthest-pair.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/geo/manhattanmst.test.cpp
+    title: test/yosupo/geo/manhattanmst.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/geo/minimum-enclosing-circle.test.cpp
+    title: test/yosupo/geo/minimum-enclosing-circle.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/geo/sort-points-by-argument.1.test.cpp
     title: test/yosupo/geo/sort-points-by-argument.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -492,6 +528,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
     title: test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/graph/enumerate-triangles.test.cpp
+    title: test/yosupo/graph/enumerate-triangles.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/characteristic-polynomial.test.cpp
     title: test/yosupo/linear_algebra/characteristic-polynomial.test.cpp
@@ -607,11 +646,20 @@ data:
     path: test/yosupo/polynomial/sqrt-of-formal-power-series.test.cpp
     title: test/yosupo/polynomial/sqrt-of-formal-power-series.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/set_power_series/exp-of-set-power-series.test.cpp
+    title: test/yosupo/set_power_series/exp-of-set-power-series.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/set_power_series/log-of-set-power-series.test.cpp
+    title: test/yosupo/set_power_series/log-of-set-power-series.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/set_power_series/subset-convolution.test.cpp
     title: test/yosupo/set_power_series/subset-convolution.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/string/enumerate-palindromes.1.test.cpp
     title: test/yosupo/string/enumerate-palindromes.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/string/wildcard-pattern-matching.test.cpp
+    title: test/yosupo/string/wildcard-pattern-matching.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
     title: test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
@@ -757,6 +805,7 @@ data:
   - src/data_structures/priority_counter.hpp
   - src/data_structures/interval-set.hpp
   - src/data_structures/convex-hull-trick.hpp
+  - src/geometry/manhattan-mst.hpp
   - src/geometry/axis-parallel-segments.hpp
   - src/geometry/vector.hpp
   - src/geometry/circle.hpp
@@ -770,6 +819,7 @@ data:
   - src/math/fps-composition.hpp
   - src/math/linear-recurrence.hpp
   - src/string/rolling-hash.hpp
+  - src/string/wildcard-matching.hpp
   timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
@@ -791,6 +841,7 @@ data:
   - test/unittest/data_structures/rbst.test.cpp
   - test/unittest/data_structures/dynamic-lazy-segtree.test.cpp
   - test/unittest/data_structures/link-cut-tree.test.cpp
+  - test/unittest/geometry/manhattan-mst.test.cpp
   - test/unittest/geometry/axis-parallel-segments.test.cpp
   - test/unittest/geometry/circle.test.cpp
   - test/unittest/geometry/angle.test.cpp
@@ -815,6 +866,7 @@ data:
   - test/unittest/math/matrix.test.cpp
   - test/unittest/math/fps.test.cpp
   - test/unittest/string/rolling-hash.test.cpp
+  - test/unittest/string/wildcard-matching.test.cpp
   - test/unittest/algebra/acted-monoid.test.cpp
   - test/aoj/volume33/3314.test.cpp
   - test/aoj/dpl/dpl-5-d.1.test.cpp
@@ -890,6 +942,7 @@ data:
   - test/yosupo/polynomial/polynomial-interpolation.test.cpp
   - test/yosupo/polynomial/inv-of-polynomials.test.cpp
   - test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
+  - test/yosupo/graph/enumerate-triangles.test.cpp
   - test/yosupo/convolution/gcd-convolution.test.cpp
   - test/yosupo/convolution/convolution-mod-2-64.1.test.cpp
   - test/yosupo/convolution/bitwise-xor-convolution.test.cpp
@@ -919,7 +972,9 @@ data:
   - test/yosupo/data_structure/line-add-get-min.1.test.cpp
   - test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
   - test/yosupo/data_structure/associative-array.test.cpp
+  - test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
   - test/yosupo/data_structure/range-affine-range-sum.1.test.cpp
+  - test/yosupo/data_structure/deque-operate-all-composite.test.cpp
   - test/yosupo/linear_algebra/pow-of-matrix.test.cpp
   - test/yosupo/linear_algebra/characteristic-polynomial.test.cpp
   - test/yosupo/linear_algebra/matrix-product.test.cpp
@@ -927,6 +982,8 @@ data:
   - test/yosupo/linear_algebra/matrix-rank.test.cpp
   - test/yosupo/linear_algebra/system-of-linear-equations.test.cpp
   - test/yosupo/linear_algebra/matrix-det.test.cpp
+  - test/yosupo/set_power_series/log-of-set-power-series.test.cpp
+  - test/yosupo/set_power_series/exp-of-set-power-series.test.cpp
   - test/yosupo/set_power_series/subset-convolution.test.cpp
   - test/yosupo/other/sum-of-exponential-times-polynomial-limit.test.cpp
   - test/yosupo/other/kth-term-of-linearly-recurrent-sequence.test.cpp
@@ -937,17 +994,23 @@ data:
   - test/yosupo/number_theory/sum-of-totient-function.test.cpp
   - test/yosupo/geo/static-convex-hull.test.cpp
   - test/yosupo/geo/sort-points-by-argument.1.test.cpp
+  - test/yosupo/geo/minimum-enclosing-circle.test.cpp
   - test/yosupo/geo/closest-pair.test.cpp
   - test/yosupo/geo/furthest-pair.test.cpp
+  - test/yosupo/geo/manhattanmst.test.cpp
+  - test/yosupo/string/wildcard-pattern-matching.test.cpp
   - test/yosupo/string/enumerate-palindromes.1.test.cpp
   - test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
   - test/yosupo/enumerative_combinatorics/binomial-coefficient-prime-mod.1.test.cpp
   - test/yosupo/enumerative_combinatorics/partition-function.3.test.cpp
+  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind-fixed-k.test.cpp
   - test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind.test.cpp
   - test/yosupo/enumerative_combinatorics/bell-number.test.cpp
+  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind-fixed-k.test.cpp
   - test/yosupo/enumerative_combinatorics/binomial-coefficient-prime-mod.2.test.cpp
   - test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.2.test.cpp
   - test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.1.test.cpp
+  - test/yosupo/enumerative_combinatorics/factorial.test.cpp
   - test/yosupo/enumerative_combinatorics/partition-function.1.test.cpp
   - test/yosupo/enumerative_combinatorics/partition-function.2.test.cpp
   - test/yosupo/tree/frequency-table-of-tree-distance.test.cpp

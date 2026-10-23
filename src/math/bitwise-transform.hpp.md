@@ -13,6 +13,12 @@ data:
     path: test/yosupo/convolution/bitwise-xor-convolution.test.cpp
     title: test/yosupo/convolution/bitwise-xor-convolution.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/set_power_series/exp-of-set-power-series.test.cpp
+    title: test/yosupo/set_power_series/exp-of-set-power-series.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/set_power_series/log-of-set-power-series.test.cpp
+    title: test/yosupo/set_power_series/log-of-set-power-series.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/set_power_series/subset-convolution.test.cpp
     title: test/yosupo/set_power_series/subset-convolution.test.cpp
   _isVerificationFailed: false
@@ -87,40 +93,81 @@ data:
     \u70B9\u6570)\n */\ntemplate <typename T>\nstd::vector<T> xor_convolution(std::vector<T>\
     \ a, std::vector<T> b) {\n    assert(a.size() == b.size());\n    walsh_hadamard(a);\n\
     \    walsh_hadamard(b);\n    for (int i = 0; i < static_cast<int>(a.size()); i++)\
-    \ a[i] *= b[i];\n    walsh_hadamard(a, true);\n    return a;\n}\n\n/**\n * @brief\
-    \ \u90E8\u5206\u96C6\u5408\u7573\u307F\u8FBC\u307F c[k] = sum_{i | j = k, i &\
-    \ j = 0} a[i] b[j] O(N log^2 N)\n * a \u3068 b \u306F\u540C\u3058\u9577\u3055\
-    \ N \u3067\u3001N \u306F 2 \u306E\u7D2F\u4E57\u3002\u30E1\u30E2\u30EA\u306F O(N\
-    \ log N)\n */\ntemplate <typename T>\nstd::vector<T> subset_convolution(const\
-    \ std::vector<T>& a, const std::vector<T>& b) {\n    int len = a.size();\n   \
-    \ assert(a.size() == b.size() && internal_bitwise_transform::is_power_of_two(len));\n\
-    \    int n = 0;\n    while ((1 << n) < len) n++;\n    int w = n + 1;\n    // f[s\
-    \ * w + k] \u306F\u3001\u8981\u7D20\u6570 k \u306E\u96C6\u5408\u3060\u3051\u3092\
-    \u6B8B\u3057\u305F\u3082\u306E\u306E\u5024 (\u30E9\u30F3\u30AF\u4ED8\u304D\u30BC\
-    \u30FC\u30BF\u5909\u63DB)\n    std::vector<T> fa(static_cast<long long>(len) *\
-    \ w), fb(static_cast<long long>(len) * w);\n    for (int s = 0; s < len; s++)\
-    \ {\n        int k = __builtin_popcount(s);\n        fa[static_cast<long long>(s)\
-    \ * w + k] = a[s];\n        fb[static_cast<long long>(s) * w + k] = b[s];\n  \
-    \  }\n    for (int bit = 1; bit < len; bit <<= 1) {\n        for (int s = 0; s\
-    \ < len; s++) {\n            if (!(s & bit)) continue;\n            T* x = &fa[static_cast<long\
-    \ long>(s) * w];\n            T* y = &fb[static_cast<long long>(s) * w];\n   \
-    \         const T* px = &fa[static_cast<long long>(s ^ bit) * w];\n          \
-    \  const T* py = &fb[static_cast<long long>(s ^ bit) * w];\n            for (int\
-    \ k = 0; k < w; k++) {\n                x[k] += px[k];\n                y[k] +=\
-    \ py[k];\n            }\n        }\n    }\n    // \u96C6\u5408\u3054\u3068\u306B\
-    \u3001\u8981\u7D20\u6570\u306B\u3064\u3044\u3066\u306E\u591A\u9805\u5F0F\u3068\
-    \u3057\u3066\u639B\u3051\u308B\n    std::vector<T> tmp(w);\n    for (int s = 0;\
-    \ s < len; s++) {\n        T* x = &fa[static_cast<long long>(s) * w];\n      \
-    \  const T* y = &fb[static_cast<long long>(s) * w];\n        for (int k = 0; k\
-    \ < w; k++) {\n            T sum = T();\n            for (int i = 0; i <= k; i++)\
-    \ sum += x[i] * y[k - i];\n            tmp[k] = sum;\n        }\n        for (int\
-    \ k = 0; k < w; k++) x[k] = tmp[k];\n    }\n    for (int bit = 1; bit < len; bit\
-    \ <<= 1) {\n        for (int s = 0; s < len; s++) {\n            if (!(s & bit))\
-    \ continue;\n            T* x = &fa[static_cast<long long>(s) * w];\n        \
-    \    const T* px = &fa[static_cast<long long>(s ^ bit) * w];\n            for\
-    \ (int k = 0; k < w; k++) x[k] -= px[k];\n        }\n    }\n    std::vector<T>\
-    \ c(len);\n    for (int s = 0; s < len; s++) c[s] = fa[static_cast<long long>(s)\
-    \ * w + __builtin_popcount(s)];\n    return c;\n}\n"
+    \ a[i] *= b[i];\n    walsh_hadamard(a, true);\n    return a;\n}\n\nnamespace internal_bitwise_transform\
+    \ {\n// \u30E9\u30F3\u30AF\u4ED8\u304D\u30BC\u30FC\u30BF\u5909\u63DB\u3002f[s\
+    \ * w + k] (w = n + 1) \u306F\u3001\u8981\u7D20\u6570 k \u306E\u90E8\u5206\u96C6\
+    \u5408 T \u2286 s \u306B\u3064\u3044\u3066\u306E a[T] \u306E\u548C\ntemplate <typename\
+    \ T>\nstd::vector<T> ranked_zeta(const std::vector<T>& a, int n) {\n    const\
+    \ int len = 1 << n, w = n + 1;\n    std::vector<T> f(static_cast<long long>(len)\
+    \ * w);\n    for (int s = 0; s < len; s++) f[static_cast<long long>(s) * w + __builtin_popcount(s)]\
+    \ = a[s];\n    for (int bit = 1; bit < len; bit <<= 1) {\n        for (int s =\
+    \ 0; s < len; s++) {\n            if (!(s & bit)) continue;\n            T* x\
+    \ = &f[static_cast<long long>(s) * w];\n            const T* px = &f[static_cast<long\
+    \ long>(s ^ bit) * w];\n            for (int k = 0; k < w; k++) x[k] += px[k];\n\
+    \        }\n    }\n    return f;\n}\n// ranked_zeta \u306E\u9006\u5909\u63DB\u3092\
+    \u3057\u3066\u3001\u5404 s \u306B\u3064\u3044\u3066\u8981\u7D20\u6570 popcount(s)\
+    \ \u306E\u5024\u3092\u53D6\u308A\u51FA\u3059\ntemplate <typename T>\nstd::vector<T>\
+    \ ranked_mobius(std::vector<T> f, int n) {\n    const int len = 1 << n, w = n\
+    \ + 1;\n    for (int bit = 1; bit < len; bit <<= 1) {\n        for (int s = 0;\
+    \ s < len; s++) {\n            if (!(s & bit)) continue;\n            T* x = &f[static_cast<long\
+    \ long>(s) * w];\n            const T* px = &f[static_cast<long long>(s ^ bit)\
+    \ * w];\n            for (int k = 0; k < w; k++) x[k] -= px[k];\n        }\n \
+    \   }\n    std::vector<T> c(len);\n    for (int s = 0; s < len; s++) c[s] = f[static_cast<long\
+    \ long>(s) * w + __builtin_popcount(s)];\n    return c;\n}\ninline int log2_exact(long\
+    \ long len) {\n    assert(is_power_of_two(len));\n    int n = 0;\n    while ((1LL\
+    \ << n) < len) n++;\n    return n;\n}\n}  // namespace internal_bitwise_transform\n\
+    \n/**\n * @brief \u90E8\u5206\u96C6\u5408\u7573\u307F\u8FBC\u307F c[k] = sum_{i\
+    \ | j = k, i & j = 0} a[i] b[j] O(N log^2 N)\n * \u30E9\u30F3\u30AF\u4ED8\u304D\
+    \u30BC\u30FC\u30BF\u5909\u63DB\u3092\u3057\u3066\u3001\u96C6\u5408\u3054\u3068\
+    \u306B\u8981\u7D20\u6570\u306B\u3064\u3044\u3066\u306E\u591A\u9805\u5F0F\u3068\
+    \u3057\u3066\u639B\u3051\u3001\u30E9\u30F3\u30AF\u4ED8\u304D\u30E1\u30D3\u30A6\
+    \u30B9\u5909\u63DB\u3067\u623B\u3059\n * @note a \u3068 b \u306E\u9577\u3055\u306F\
+    \u540C\u3058 2 \u306E\u3079\u304D\n */\ntemplate <typename T>\nstd::vector<T>\
+    \ subset_convolution(const std::vector<T>& a, const std::vector<T>& b) {\n   \
+    \ using namespace internal_bitwise_transform;\n    assert(a.size() == b.size());\n\
+    \    const int n = log2_exact(a.size()), len = 1 << n, w = n + 1;\n    auto fa\
+    \ = ranked_zeta(a, n);\n    const auto fb = ranked_zeta(b, n);\n    std::vector<T>\
+    \ tmp(w);\n    for (int s = 0; s < len; s++) {\n        T* x = &fa[static_cast<long\
+    \ long>(s) * w];\n        const T* y = &fb[static_cast<long long>(s) * w];\n \
+    \       for (int k = 0; k < w; k++) {\n            T sum = T();\n            for\
+    \ (int i = 0; i <= k; i++) sum += x[i] * y[k - i];\n            tmp[k] = sum;\n\
+    \        }\n        for (int k = 0; k < w; k++) x[k] = tmp[k];\n    }\n    return\
+    \ ranked_mobius(std::move(fa), n);\n}\n\n/**\n * @brief \u96C6\u5408\u51AA\u7D1A\
+    \u6570\u306E exp: \u03A3_m a^m / m! (\u7A4D\u306F\u90E8\u5206\u96C6\u5408\u7573\
+    \u307F\u8FBC\u307F) O(N log^2 N)\n * \u30E9\u30F3\u30AF\u4ED8\u304D\u30BC\u30FC\
+    \u30BF\u5909\u63DB\u3092\u3057\u3066\u3001\u96C6\u5408\u3054\u3068\u306B\u8981\
+    \u7D20\u6570\u306B\u3064\u3044\u3066\u306E\u591A\u9805\u5F0F p \u306E exp \u3092\
+    \ q' = p' q \u304B\u3089\u6C42\u3081\u3001\u30E9\u30F3\u30AF\u4ED8\u304D\u30E1\
+    \u30D3\u30A6\u30B9\u5909\u63DB\u3067\u623B\u3059\n * @note a[0] = 0\u3002\u9577\
+    \u3055\u306F 2 \u306E\u3079\u304D\u3002\u8981\u7D20\u306F\u4F53 (\u5272\u308A\u7B97\
+    \u3092\u4F7F\u3046)\n */\ntemplate <typename T>\nstd::vector<T> set_power_series_exp(const\
+    \ std::vector<T>& a) {\n    using namespace internal_bitwise_transform;\n    const\
+    \ int n = log2_exact(a.size()), len = 1 << n, w = n + 1;\n    assert(a[0] == T(0));\n\
+    \    auto f = ranked_zeta(a, n);\n    std::vector<T> inv(w + 1), q(w), ip(w);\n\
+    \    for (int k = 1; k <= w; k++) inv[k] = T(1) / T(k);\n    for (int s = 0; s\
+    \ < len; s++) {\n        T* p = &f[static_cast<long long>(s) * w];\n        //\
+    \ q[k] = (1 / k) \u03A3_{i=1}^{k} i p[i] q[k-i]\n        for (int i = 1; i < w;\
+    \ i++) ip[i] = T(i) * p[i];\n        q[0] = T(1);\n        for (int k = 1; k <\
+    \ w; k++) {\n            T sum = T();\n            for (int i = 1; i <= k; i++)\
+    \ sum += ip[i] * q[k - i];\n            q[k] = sum * inv[k];\n        }\n    \
+    \    for (int k = 0; k < w; k++) p[k] = q[k];\n    }\n    return ranked_mobius(std::move(f),\
+    \ n);\n}\n\n/**\n * @brief \u96C6\u5408\u51AA\u7D1A\u6570\u306E log (exp \u306E\
+    \u9006) O(N log^2 N)\n * \u96C6\u5408\u3054\u3068\u306B\u8981\u7D20\u6570\u306B\
+    \u3064\u3044\u3066\u306E\u591A\u9805\u5F0F p \u306E log \u3092 p q' = p' \u304B\
+    \u3089\u6C42\u3081\u308B\n * @note a[0] = 1\u3002\u9577\u3055\u306F 2 \u306E\u3079\
+    \u304D\u3002\u8981\u7D20\u306F\u4F53 (\u5272\u308A\u7B97\u3092\u4F7F\u3046)\n\
+    \ */\ntemplate <typename T>\nstd::vector<T> set_power_series_log(const std::vector<T>&\
+    \ a) {\n    using namespace internal_bitwise_transform;\n    const int n = log2_exact(a.size()),\
+    \ len = 1 << n, w = n + 1;\n    assert(a[0] == T(1));\n    auto f = ranked_zeta(a,\
+    \ n);\n    std::vector<T> inv(w + 1), q(w), iq(w);\n    for (int k = 1; k <= w;\
+    \ k++) inv[k] = T(1) / T(k);\n    for (int s = 0; s < len; s++) {\n        T*\
+    \ p = &f[static_cast<long long>(s) * w];\n        // p[0] = 1 \u306A\u306E\u3067\
+    \u3001k q[k] = k p[k] - \u03A3_{i=1}^{k-1} i q[i] p[k-i]\n        q[0] = T();\n\
+    \        for (int k = 1; k < w; k++) {\n            T sum = T(k) * p[k];\n   \
+    \         for (int i = 1; i < k; i++) sum -= iq[i] * p[k - i];\n            q[k]\
+    \ = sum * inv[k];\n            iq[k] = T(k) * q[k];\n        }\n        for (int\
+    \ k = 0; k < w; k++) p[k] = q[k];\n    }\n    return ranked_mobius(std::move(f),\
+    \ n);\n}\n"
   code: "#pragma once\n\n/**\n * @file bitwise-transform.hpp\n * @brief \u90E8\u5206\
     \u96C6\u5408\u30FB\u4E0A\u4F4D\u96C6\u5408\u306E\u30BC\u30FC\u30BF\u5909\u63DB\
     \u3001\u30E1\u30D3\u30A6\u30B9\u5909\u63DB\u3068\u30D3\u30C3\u30C8\u6F14\u7B97\
@@ -184,57 +231,101 @@ data:
     \u70B9\u6570)\n */\ntemplate <typename T>\nstd::vector<T> xor_convolution(std::vector<T>\
     \ a, std::vector<T> b) {\n    assert(a.size() == b.size());\n    walsh_hadamard(a);\n\
     \    walsh_hadamard(b);\n    for (int i = 0; i < static_cast<int>(a.size()); i++)\
-    \ a[i] *= b[i];\n    walsh_hadamard(a, true);\n    return a;\n}\n\n/**\n * @brief\
-    \ \u90E8\u5206\u96C6\u5408\u7573\u307F\u8FBC\u307F c[k] = sum_{i | j = k, i &\
-    \ j = 0} a[i] b[j] O(N log^2 N)\n * a \u3068 b \u306F\u540C\u3058\u9577\u3055\
-    \ N \u3067\u3001N \u306F 2 \u306E\u7D2F\u4E57\u3002\u30E1\u30E2\u30EA\u306F O(N\
-    \ log N)\n */\ntemplate <typename T>\nstd::vector<T> subset_convolution(const\
-    \ std::vector<T>& a, const std::vector<T>& b) {\n    int len = a.size();\n   \
-    \ assert(a.size() == b.size() && internal_bitwise_transform::is_power_of_two(len));\n\
-    \    int n = 0;\n    while ((1 << n) < len) n++;\n    int w = n + 1;\n    // f[s\
-    \ * w + k] \u306F\u3001\u8981\u7D20\u6570 k \u306E\u96C6\u5408\u3060\u3051\u3092\
-    \u6B8B\u3057\u305F\u3082\u306E\u306E\u5024 (\u30E9\u30F3\u30AF\u4ED8\u304D\u30BC\
-    \u30FC\u30BF\u5909\u63DB)\n    std::vector<T> fa(static_cast<long long>(len) *\
-    \ w), fb(static_cast<long long>(len) * w);\n    for (int s = 0; s < len; s++)\
-    \ {\n        int k = __builtin_popcount(s);\n        fa[static_cast<long long>(s)\
-    \ * w + k] = a[s];\n        fb[static_cast<long long>(s) * w + k] = b[s];\n  \
-    \  }\n    for (int bit = 1; bit < len; bit <<= 1) {\n        for (int s = 0; s\
-    \ < len; s++) {\n            if (!(s & bit)) continue;\n            T* x = &fa[static_cast<long\
-    \ long>(s) * w];\n            T* y = &fb[static_cast<long long>(s) * w];\n   \
-    \         const T* px = &fa[static_cast<long long>(s ^ bit) * w];\n          \
-    \  const T* py = &fb[static_cast<long long>(s ^ bit) * w];\n            for (int\
-    \ k = 0; k < w; k++) {\n                x[k] += px[k];\n                y[k] +=\
-    \ py[k];\n            }\n        }\n    }\n    // \u96C6\u5408\u3054\u3068\u306B\
-    \u3001\u8981\u7D20\u6570\u306B\u3064\u3044\u3066\u306E\u591A\u9805\u5F0F\u3068\
-    \u3057\u3066\u639B\u3051\u308B\n    std::vector<T> tmp(w);\n    for (int s = 0;\
-    \ s < len; s++) {\n        T* x = &fa[static_cast<long long>(s) * w];\n      \
-    \  const T* y = &fb[static_cast<long long>(s) * w];\n        for (int k = 0; k\
-    \ < w; k++) {\n            T sum = T();\n            for (int i = 0; i <= k; i++)\
-    \ sum += x[i] * y[k - i];\n            tmp[k] = sum;\n        }\n        for (int\
-    \ k = 0; k < w; k++) x[k] = tmp[k];\n    }\n    for (int bit = 1; bit < len; bit\
-    \ <<= 1) {\n        for (int s = 0; s < len; s++) {\n            if (!(s & bit))\
-    \ continue;\n            T* x = &fa[static_cast<long long>(s) * w];\n        \
-    \    const T* px = &fa[static_cast<long long>(s ^ bit) * w];\n            for\
-    \ (int k = 0; k < w; k++) x[k] -= px[k];\n        }\n    }\n    std::vector<T>\
-    \ c(len);\n    for (int s = 0; s < len; s++) c[s] = fa[static_cast<long long>(s)\
-    \ * w + __builtin_popcount(s)];\n    return c;\n}\n"
+    \ a[i] *= b[i];\n    walsh_hadamard(a, true);\n    return a;\n}\n\nnamespace internal_bitwise_transform\
+    \ {\n// \u30E9\u30F3\u30AF\u4ED8\u304D\u30BC\u30FC\u30BF\u5909\u63DB\u3002f[s\
+    \ * w + k] (w = n + 1) \u306F\u3001\u8981\u7D20\u6570 k \u306E\u90E8\u5206\u96C6\
+    \u5408 T \u2286 s \u306B\u3064\u3044\u3066\u306E a[T] \u306E\u548C\ntemplate <typename\
+    \ T>\nstd::vector<T> ranked_zeta(const std::vector<T>& a, int n) {\n    const\
+    \ int len = 1 << n, w = n + 1;\n    std::vector<T> f(static_cast<long long>(len)\
+    \ * w);\n    for (int s = 0; s < len; s++) f[static_cast<long long>(s) * w + __builtin_popcount(s)]\
+    \ = a[s];\n    for (int bit = 1; bit < len; bit <<= 1) {\n        for (int s =\
+    \ 0; s < len; s++) {\n            if (!(s & bit)) continue;\n            T* x\
+    \ = &f[static_cast<long long>(s) * w];\n            const T* px = &f[static_cast<long\
+    \ long>(s ^ bit) * w];\n            for (int k = 0; k < w; k++) x[k] += px[k];\n\
+    \        }\n    }\n    return f;\n}\n// ranked_zeta \u306E\u9006\u5909\u63DB\u3092\
+    \u3057\u3066\u3001\u5404 s \u306B\u3064\u3044\u3066\u8981\u7D20\u6570 popcount(s)\
+    \ \u306E\u5024\u3092\u53D6\u308A\u51FA\u3059\ntemplate <typename T>\nstd::vector<T>\
+    \ ranked_mobius(std::vector<T> f, int n) {\n    const int len = 1 << n, w = n\
+    \ + 1;\n    for (int bit = 1; bit < len; bit <<= 1) {\n        for (int s = 0;\
+    \ s < len; s++) {\n            if (!(s & bit)) continue;\n            T* x = &f[static_cast<long\
+    \ long>(s) * w];\n            const T* px = &f[static_cast<long long>(s ^ bit)\
+    \ * w];\n            for (int k = 0; k < w; k++) x[k] -= px[k];\n        }\n \
+    \   }\n    std::vector<T> c(len);\n    for (int s = 0; s < len; s++) c[s] = f[static_cast<long\
+    \ long>(s) * w + __builtin_popcount(s)];\n    return c;\n}\ninline int log2_exact(long\
+    \ long len) {\n    assert(is_power_of_two(len));\n    int n = 0;\n    while ((1LL\
+    \ << n) < len) n++;\n    return n;\n}\n}  // namespace internal_bitwise_transform\n\
+    \n/**\n * @brief \u90E8\u5206\u96C6\u5408\u7573\u307F\u8FBC\u307F c[k] = sum_{i\
+    \ | j = k, i & j = 0} a[i] b[j] O(N log^2 N)\n * \u30E9\u30F3\u30AF\u4ED8\u304D\
+    \u30BC\u30FC\u30BF\u5909\u63DB\u3092\u3057\u3066\u3001\u96C6\u5408\u3054\u3068\
+    \u306B\u8981\u7D20\u6570\u306B\u3064\u3044\u3066\u306E\u591A\u9805\u5F0F\u3068\
+    \u3057\u3066\u639B\u3051\u3001\u30E9\u30F3\u30AF\u4ED8\u304D\u30E1\u30D3\u30A6\
+    \u30B9\u5909\u63DB\u3067\u623B\u3059\n * @note a \u3068 b \u306E\u9577\u3055\u306F\
+    \u540C\u3058 2 \u306E\u3079\u304D\n */\ntemplate <typename T>\nstd::vector<T>\
+    \ subset_convolution(const std::vector<T>& a, const std::vector<T>& b) {\n   \
+    \ using namespace internal_bitwise_transform;\n    assert(a.size() == b.size());\n\
+    \    const int n = log2_exact(a.size()), len = 1 << n, w = n + 1;\n    auto fa\
+    \ = ranked_zeta(a, n);\n    const auto fb = ranked_zeta(b, n);\n    std::vector<T>\
+    \ tmp(w);\n    for (int s = 0; s < len; s++) {\n        T* x = &fa[static_cast<long\
+    \ long>(s) * w];\n        const T* y = &fb[static_cast<long long>(s) * w];\n \
+    \       for (int k = 0; k < w; k++) {\n            T sum = T();\n            for\
+    \ (int i = 0; i <= k; i++) sum += x[i] * y[k - i];\n            tmp[k] = sum;\n\
+    \        }\n        for (int k = 0; k < w; k++) x[k] = tmp[k];\n    }\n    return\
+    \ ranked_mobius(std::move(fa), n);\n}\n\n/**\n * @brief \u96C6\u5408\u51AA\u7D1A\
+    \u6570\u306E exp: \u03A3_m a^m / m! (\u7A4D\u306F\u90E8\u5206\u96C6\u5408\u7573\
+    \u307F\u8FBC\u307F) O(N log^2 N)\n * \u30E9\u30F3\u30AF\u4ED8\u304D\u30BC\u30FC\
+    \u30BF\u5909\u63DB\u3092\u3057\u3066\u3001\u96C6\u5408\u3054\u3068\u306B\u8981\
+    \u7D20\u6570\u306B\u3064\u3044\u3066\u306E\u591A\u9805\u5F0F p \u306E exp \u3092\
+    \ q' = p' q \u304B\u3089\u6C42\u3081\u3001\u30E9\u30F3\u30AF\u4ED8\u304D\u30E1\
+    \u30D3\u30A6\u30B9\u5909\u63DB\u3067\u623B\u3059\n * @note a[0] = 0\u3002\u9577\
+    \u3055\u306F 2 \u306E\u3079\u304D\u3002\u8981\u7D20\u306F\u4F53 (\u5272\u308A\u7B97\
+    \u3092\u4F7F\u3046)\n */\ntemplate <typename T>\nstd::vector<T> set_power_series_exp(const\
+    \ std::vector<T>& a) {\n    using namespace internal_bitwise_transform;\n    const\
+    \ int n = log2_exact(a.size()), len = 1 << n, w = n + 1;\n    assert(a[0] == T(0));\n\
+    \    auto f = ranked_zeta(a, n);\n    std::vector<T> inv(w + 1), q(w), ip(w);\n\
+    \    for (int k = 1; k <= w; k++) inv[k] = T(1) / T(k);\n    for (int s = 0; s\
+    \ < len; s++) {\n        T* p = &f[static_cast<long long>(s) * w];\n        //\
+    \ q[k] = (1 / k) \u03A3_{i=1}^{k} i p[i] q[k-i]\n        for (int i = 1; i < w;\
+    \ i++) ip[i] = T(i) * p[i];\n        q[0] = T(1);\n        for (int k = 1; k <\
+    \ w; k++) {\n            T sum = T();\n            for (int i = 1; i <= k; i++)\
+    \ sum += ip[i] * q[k - i];\n            q[k] = sum * inv[k];\n        }\n    \
+    \    for (int k = 0; k < w; k++) p[k] = q[k];\n    }\n    return ranked_mobius(std::move(f),\
+    \ n);\n}\n\n/**\n * @brief \u96C6\u5408\u51AA\u7D1A\u6570\u306E log (exp \u306E\
+    \u9006) O(N log^2 N)\n * \u96C6\u5408\u3054\u3068\u306B\u8981\u7D20\u6570\u306B\
+    \u3064\u3044\u3066\u306E\u591A\u9805\u5F0F p \u306E log \u3092 p q' = p' \u304B\
+    \u3089\u6C42\u3081\u308B\n * @note a[0] = 1\u3002\u9577\u3055\u306F 2 \u306E\u3079\
+    \u304D\u3002\u8981\u7D20\u306F\u4F53 (\u5272\u308A\u7B97\u3092\u4F7F\u3046)\n\
+    \ */\ntemplate <typename T>\nstd::vector<T> set_power_series_log(const std::vector<T>&\
+    \ a) {\n    using namespace internal_bitwise_transform;\n    const int n = log2_exact(a.size()),\
+    \ len = 1 << n, w = n + 1;\n    assert(a[0] == T(1));\n    auto f = ranked_zeta(a,\
+    \ n);\n    std::vector<T> inv(w + 1), q(w), iq(w);\n    for (int k = 1; k <= w;\
+    \ k++) inv[k] = T(1) / T(k);\n    for (int s = 0; s < len; s++) {\n        T*\
+    \ p = &f[static_cast<long long>(s) * w];\n        // p[0] = 1 \u306A\u306E\u3067\
+    \u3001k q[k] = k p[k] - \u03A3_{i=1}^{k-1} i q[i] p[k-i]\n        q[0] = T();\n\
+    \        for (int k = 1; k < w; k++) {\n            T sum = T(k) * p[k];\n   \
+    \         for (int i = 1; i < k; i++) sum -= iq[i] * p[k - i];\n            q[k]\
+    \ = sum * inv[k];\n            iq[k] = T(k) * q[k];\n        }\n        for (int\
+    \ k = 0; k < w; k++) p[k] = q[k];\n    }\n    return ranked_mobius(std::move(f),\
+    \ n);\n}\n"
   dependsOn: []
   isVerificationFile: false
   path: src/math/bitwise-transform.hpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-23 19:55:01+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/math/bitwise-transform.test.cpp
   - test/yosupo/convolution/bitwise-xor-convolution.test.cpp
   - test/yosupo/convolution/bitwise-and-convolution.test.cpp
+  - test/yosupo/set_power_series/log-of-set-power-series.test.cpp
+  - test/yosupo/set_power_series/exp-of-set-power-series.test.cpp
   - test/yosupo/set_power_series/subset-convolution.test.cpp
 documentation_of: src/math/bitwise-transform.hpp
 layout: document
 title: "\u90E8\u5206\u96C6\u5408\u30FB\u4E0A\u4F4D\u96C6\u5408\u306E\u30BC\u30FC\u30BF\
   \u5909\u63DB\u3001\u30E1\u30D3\u30A6\u30B9\u5909\u63DB\u3068\u30D3\u30C3\u30C8\u6F14\
   \u7B97 (AND\u30FBOR\u30FBXOR) \u306E\u7573\u307F\u8FBC\u307F\u3001\u90E8\u5206\u96C6\
-  \u5408\u7573\u307F\u8FBC\u307F"
+  \u5408\u7573\u307F\u8FBC\u307F\u3001\u96C6\u5408\u51AA\u7D1A\u6570\u306E exp\u30FB\
+  log"
 ---
 
 添字を集合 (ビット列) とみて、部分集合・上位集合について和をとる変換と、その逆変換です。配列 `a` の長さ $N$ は 2 の累乗 ($N = 2^n$) で、添字 $S$ は $n$ 個の要素の集合を表します。値の型 `T` は `+`、`-`、`*` が使えれば何でもよく、`long long` や modint を想定しています。
@@ -262,6 +353,8 @@ auto f = subset_convolution(a, b);  // {5, 16, 22, 60}
 | `or_convolution(a, b)` | $c_k = \sum_{i \mid j = k} a_i b_j$ を返す | $O(N \log N)$ |
 | `xor_convolution(a, b)` | $c_k = \sum_{i \oplus j = k} a_i b_j$ を返す | $O(N \log N)$ |
 | `subset_convolution(a, b)` | $c_k = \sum_{i \mid j = k,\ i \mathbin{\&} j = 0} a_i b_j$ を返す ($k$ を 2 つの交わらない集合に分ける) | 時間 $O(N \log^2 N)$、メモリ $O(N \log N)$ |
+| `set_power_series_exp(a)` | 集合冪級数の exp $\sum_m a^m / m!$ (積は部分集合畳み込み)。$a_0 = 0$、要素は体 | 時間 $O(N \log^2 N)$、メモリ $O(N \log N)$ |
+| `set_power_series_log(a)` | 集合冪級数の log (exp の逆)。$a_0 = 1$、要素は体 | 時間 $O(N \log^2 N)$、メモリ $O(N \log N)$ |
 
 - `a` と `b` は同じ長さで、長さが 2 の累乗でないと assert で落ちます。
 - `xor_convolution` と `walsh_hadamard(a, true)` は最後に $N$ で割ります。modint や浮動小数点数では $N$ の逆数を掛け、整数型では $N$ で割ります (結果が整数なので割り切れます)。
@@ -288,6 +381,12 @@ $n = 20$ ($N = 2^{20}$) のとき、`T` が 4 バイトの modint なら、内�
 // dp[S] = S を交わらない 2 つの集合に分けたときの、cost の積の和
 auto dp = subset_convolution(cost, cost);
 ```
+
+## 集合冪級数の exp・log
+
+部分集合畳み込みと同じくランク付きゼータ変換をすると、集合ごとに要素数についての多項式 $p(z)$ になり、積は多項式の積になります。exp は $q' = p' q$、log は $p q' = p'$ から、それぞれ $O(n^2)$ で係数を求めてから、ランク付きメビウス変換で戻します。全体で $O(2^n n^2)$ です ($n = 20$ で 1.5 秒ほど)。
+
+集合冪級数 $a$ の exp の $S$ の係数は、$S$ を交わらない空でない集合 $T_1, \dots, T_k$ に分ける方法すべてについての $a_{T_1} \cdots a_{T_k}$ の和です。連結なグラフの数え上げ (log) や、集合の分割の数え上げ (exp) に使います。
 
 ## 関連
 

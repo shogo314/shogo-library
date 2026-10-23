@@ -11,7 +11,8 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/math/combinatorial-sequences.hpp
     title: "\u5206\u5272\u6570\u30FB\u30D9\u30EB\u30CC\u30FC\u30A4\u6570\u30FB\u30B9\
-      \u30BF\u30FC\u30EA\u30F3\u30B0\u6570\u30FB\u30D9\u30EB\u6570"
+      \u30BF\u30FC\u30EA\u30F3\u30B0\u6570\u30FB\u30D9\u30EB\u6570\u30FB\u5927\u304D\
+      \u3044 n \u306E\u968E\u4E57"
   - icon: ':heavy_check_mark:'
     path: src/math/convolution.hpp
     title: "\u7573\u307F\u8FBC\u307F (NTT)"
@@ -37,6 +38,10 @@ data:
     path: src/math/sparse-fps.hpp
     title: "\u758E\u306A\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570 (inv\u30FBlog\u30FBexp\u30FB\
       pow\u30FBsqrt)"
+  - icon: ':heavy_check_mark:'
+    path: src/string/wildcard-matching.hpp
+    title: "\u30EF\u30A4\u30EB\u30C9\u30AB\u30FC\u30C9\u3064\u304D\u306E\u30D1\u30BF\
+      \u30FC\u30F3\u30DE\u30C3\u30C1\u30F3\u30B0"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/dpl/dpl-5-b.1.test.cpp
@@ -144,6 +149,9 @@ data:
     path: test/unittest/math/sum-of-exp-times-poly.test.cpp
     title: test/unittest/math/sum-of-exp-times-poly.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/string/wildcard-matching.test.cpp
+    title: test/unittest/string/wildcard-matching.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/convolution/bitwise-and-convolution.test.cpp
     title: test/yosupo/convolution/bitwise-and-convolution.test.cpp
   - icon: ':heavy_check_mark:'
@@ -168,6 +176,9 @@ data:
     path: test/yosupo/convolution/lcm-convolution.test.cpp
     title: test/yosupo/convolution/lcm-convolution.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/deque-operate-all-composite.test.cpp
+    title: test/yosupo/data_structure/deque-operate-all-composite.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
     title: test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
   - icon: ':heavy_check_mark:'
@@ -188,6 +199,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/point-set-range-composite.4.test.cpp
     title: test/yosupo/data_structure/point-set-range-composite.4.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
+    title: test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/queue-operate-all-composite.test.cpp
     title: test/yosupo/data_structure/queue-operate-all-composite.test.cpp
@@ -228,6 +242,9 @@ data:
     path: test/yosupo/enumerative_combinatorics/binomial-coefficient-prime-mod.2.test.cpp
     title: test/yosupo/enumerative_combinatorics/binomial-coefficient-prime-mod.2.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/enumerative_combinatorics/factorial.test.cpp
+    title: test/yosupo/enumerative_combinatorics/factorial.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/enumerative_combinatorics/partition-function.1.test.cpp
     title: test/yosupo/enumerative_combinatorics/partition-function.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -243,14 +260,23 @@ data:
     path: test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.2.test.cpp
     title: test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.2.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind-fixed-k.test.cpp
+    title: test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind-fixed-k.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind.test.cpp
     title: test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind-fixed-k.test.cpp
+    title: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind-fixed-k.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
     title: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
     title: test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/graph/enumerate-triangles.test.cpp
+    title: test/yosupo/graph/enumerate-triangles.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/characteristic-polynomial.test.cpp
     title: test/yosupo/linear_algebra/characteristic-polynomial.test.cpp
@@ -366,8 +392,17 @@ data:
     path: test/yosupo/polynomial/sqrt-of-formal-power-series.test.cpp
     title: test/yosupo/polynomial/sqrt-of-formal-power-series.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/set_power_series/exp-of-set-power-series.test.cpp
+    title: test/yosupo/set_power_series/exp-of-set-power-series.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/set_power_series/log-of-set-power-series.test.cpp
+    title: test/yosupo/set_power_series/log-of-set-power-series.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/set_power_series/subset-convolution.test.cpp
     title: test/yosupo/set_power_series/subset-convolution.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/string/wildcard-pattern-matching.test.cpp
+    title: test/yosupo/string/wildcard-pattern-matching.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
     title: test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
@@ -925,6 +960,7 @@ data:
   - src/math/polynomial-roots.hpp
   - src/math/fps-composition.hpp
   - src/math/linear-recurrence.hpp
+  - src/string/wildcard-matching.hpp
   timestamp: '2026-10-14 16:41:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
@@ -954,6 +990,7 @@ data:
   - test/unittest/math/divisor-transform.test.cpp
   - test/unittest/math/matrix.test.cpp
   - test/unittest/math/fps.test.cpp
+  - test/unittest/string/wildcard-matching.test.cpp
   - test/unittest/algebra/acted-monoid.test.cpp
   - test/aoj/dpl/dpl-5-d.1.test.cpp
   - test/aoj/dpl/dpl-5-e.1.test.cpp
@@ -988,6 +1025,7 @@ data:
   - test/yosupo/polynomial/polynomial-interpolation.test.cpp
   - test/yosupo/polynomial/inv-of-polynomials.test.cpp
   - test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
+  - test/yosupo/graph/enumerate-triangles.test.cpp
   - test/yosupo/convolution/gcd-convolution.test.cpp
   - test/yosupo/convolution/convolution-mod-2-64.1.test.cpp
   - test/yosupo/convolution/bitwise-xor-convolution.test.cpp
@@ -1012,7 +1050,9 @@ data:
   - test/yosupo/data_structure/point-set-range-composite-large-array.test.cpp
   - test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
   - test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
+  - test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
   - test/yosupo/data_structure/range-affine-range-sum.1.test.cpp
+  - test/yosupo/data_structure/deque-operate-all-composite.test.cpp
   - test/yosupo/linear_algebra/pow-of-matrix.test.cpp
   - test/yosupo/linear_algebra/characteristic-polynomial.test.cpp
   - test/yosupo/linear_algebra/matrix-product.test.cpp
@@ -1020,6 +1060,8 @@ data:
   - test/yosupo/linear_algebra/matrix-rank.test.cpp
   - test/yosupo/linear_algebra/system-of-linear-equations.test.cpp
   - test/yosupo/linear_algebra/matrix-det.test.cpp
+  - test/yosupo/set_power_series/log-of-set-power-series.test.cpp
+  - test/yosupo/set_power_series/exp-of-set-power-series.test.cpp
   - test/yosupo/set_power_series/subset-convolution.test.cpp
   - test/yosupo/other/sum-of-exponential-times-polynomial-limit.test.cpp
   - test/yosupo/other/kth-term-of-linearly-recurrent-sequence.test.cpp
@@ -1028,14 +1070,18 @@ data:
   - test/yosupo/number_theory/bernoulli-number.test.cpp
   - test/yosupo/number_theory/sum-of-multiplicative-function.test.cpp
   - test/yosupo/number_theory/sum-of-totient-function.test.cpp
+  - test/yosupo/string/wildcard-pattern-matching.test.cpp
   - test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
   - test/yosupo/enumerative_combinatorics/binomial-coefficient-prime-mod.1.test.cpp
   - test/yosupo/enumerative_combinatorics/partition-function.3.test.cpp
+  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind-fixed-k.test.cpp
   - test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind.test.cpp
   - test/yosupo/enumerative_combinatorics/bell-number.test.cpp
+  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind-fixed-k.test.cpp
   - test/yosupo/enumerative_combinatorics/binomial-coefficient-prime-mod.2.test.cpp
   - test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.2.test.cpp
   - test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.1.test.cpp
+  - test/yosupo/enumerative_combinatorics/factorial.test.cpp
   - test/yosupo/enumerative_combinatorics/partition-function.1.test.cpp
   - test/yosupo/enumerative_combinatorics/partition-function.2.test.cpp
   - test/yosupo/tree/frequency-table-of-tree-distance.test.cpp

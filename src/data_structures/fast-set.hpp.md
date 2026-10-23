@@ -1,11 +1,21 @@
 ---
 data:
   _extendedDependsOn: []
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':heavy_check_mark:'
+    path: src/data_structures/sortable-segtree.hpp
+    title: "\u533A\u9593\u30BD\u30FC\u30C8\u306E\u3067\u304D\u308B\u30BB\u30B0\u30E1\
+      \u30F3\u30C8\u6728"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/fast-set.test.cpp
     title: test/unittest/data_structures/fast-set.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/sortable-segtree.test.cpp
+    title: test/unittest/data_structures/sortable-segtree.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
+    title: test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/predecessor-problem.test.cpp
     title: test/yosupo/data_structure/predecessor-problem.test.cpp
@@ -185,11 +195,14 @@ data:
   dependsOn: []
   isVerificationFile: false
   path: src/data_structures/fast-set.hpp
-  requiredBy: []
+  requiredBy:
+  - src/data_structures/sortable-segtree.hpp
   timestamp: '2026-10-20 00:24:39+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/fast-set.test.cpp
+  - test/unittest/data_structures/sortable-segtree.test.cpp
+  - test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
   - test/yosupo/data_structure/predecessor-problem.test.cpp
 documentation_of: src/data_structures/fast-set.hpp
 layout: document

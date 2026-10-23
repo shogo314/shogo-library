@@ -4,7 +4,8 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/math/combinatorial-sequences.hpp
     title: "\u5206\u5272\u6570\u30FB\u30D9\u30EB\u30CC\u30FC\u30A4\u6570\u30FB\u30B9\
-      \u30BF\u30FC\u30EA\u30F3\u30B0\u6570\u30FB\u30D9\u30EB\u6570"
+      \u30BF\u30FC\u30EA\u30F3\u30B0\u6570\u30FB\u30D9\u30EB\u6570\u30FB\u5927\u304D\
+      \u3044 n \u306E\u968E\u4E57"
   - icon: ':heavy_check_mark:'
     path: src/math/combinatorics.hpp
     title: "\u7D44\u307F\u5408\u308F\u305B"
@@ -23,6 +24,11 @@ data:
     title: "mod \u6F14\u7B97 (\u7A4D\u3001\u51AA\u4E57\u3001\u9006\u5143\u3001\u96E2\
       \u6563\u5BFE\u6570\u3001\u5E73\u65B9\u6839)"
   - icon: ':heavy_check_mark:'
+    path: src/math/multipoint.hpp
+    title: "\u591A\u70B9\u8A55\u4FA1\u30FB\u591A\u9805\u5F0F\u88DC\u9593\u30FB\u6A19\
+      \u672C\u70B9\u306E\u305A\u3089\u3057 (\u7B49\u6BD4\u6570\u5217\u306E\u70B9\u3082\
+      )"
+  - icon: ':heavy_check_mark:'
     path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
@@ -40,10 +46,11 @@ data:
     \ <iostream>\n\n#line 2 \"src/math/combinatorial-sequences.hpp\"\n\n/**\n * @file\
     \ combinatorial-sequences.hpp\n * @brief \u5206\u5272\u6570\u30FB\u30D9\u30EB\u30CC\
     \u30FC\u30A4\u6570\u30FB\u30B9\u30BF\u30FC\u30EA\u30F3\u30B0\u6570\u30FB\u30D9\
-    \u30EB\u6570 (\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\u3067 O(n log n))\n */\n\n\
-    #include <vector>\n\n#line 2 \"src/math/combinatorics.hpp\"\n\n/**\n * @file combinatorics.hpp\n\
-    \ * @brief \u7D44\u307F\u5408\u308F\u305B\n */\n\n#include <cassert>\n#include\
-    \ <numeric>\n#line 11 \"src/math/combinatorics.hpp\"\n\n#line 2 \"src/math/modular-arithmetic.hpp\"\
+    \u30EB\u6570 (\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\u3067 O(n log n))\u3001\u5927\
+    \u304D\u3044 n \u306E\u968E\u4E57\n */\n\n#include <cassert>\n#include <vector>\n\
+    \n#line 2 \"src/math/combinatorics.hpp\"\n\n/**\n * @file combinatorics.hpp\n\
+    \ * @brief \u7D44\u307F\u5408\u308F\u305B\n */\n\n#line 9 \"src/math/combinatorics.hpp\"\
+    \n#include <numeric>\n#line 11 \"src/math/combinatorics.hpp\"\n\n#line 2 \"src/math/modular-arithmetic.hpp\"\
     \n\n/**\n * @file modular-arithmetic.hpp\n * @brief mod \u6F14\u7B97 (\u7A4D\u3001\
     \u51AA\u4E57\u3001\u9006\u5143\u3001\u96E2\u6563\u5BFE\u6570\u3001\u5E73\u65B9\
     \u6839)\n */\n\n#include <algorithm>\n#line 10 \"src/math/modular-arithmetic.hpp\"\
@@ -1009,22 +1016,182 @@ data:
     \ {nums[l], dens[l]};\n        long long m = (l + r) / 2;\n        auto [a, b]\
     \ = self(self, l, m);\n        auto [c, d] = self(self, m, r);\n        return\
     \ {a * d + c * b, b * d};\n    };\n    return rec(rec, 0, nums.size());\n}\n#line\
-    \ 13 \"src/math/combinatorial-sequences.hpp\"\n\n/**\n * @brief \u5206\u5272\u6570\
-    \ p(0), ..., p(n) (n \u3092\u6B63\u306E\u6574\u6570\u306E\u548C\u306B\u5206\u3051\
-    \u308B\u65B9\u6CD5\u306E\u6570\u3002\u548C\u306E\u9806\u756A\u306F\u533A\u5225\
-    \u3057\u306A\u3044) O(n log n)\n * \u6BCD\u95A2\u6570\u306F 1 / \u03A0_{k >= 1}\
-    \ (1 - x^k)\u3002\u5206\u6BCD\u306F\u4E94\u89D2\u6570\u5B9A\u7406\u3067 \u03A3\
-    _k (-1)^k x^{k(3k-1)/2} (k \u306F\u5168\u6574\u6570) \u3068\u66F8\u3051\u308B\n\
-    \ */\ntemplate <typename mint>\nFPS<mint> partition_numbers(long long n) {\n \
-    \   FPS<mint> f(n + 1, 0);\n    f[0] = 1;\n    for (long long k = 1;; k++) {\n\
-    \        const long long a = k * (3 * k - 1) / 2, b = k * (3 * k + 1) / 2;\n \
-    \       if (a > n) break;\n        const mint s = k % 2 == 1 ? mint(-1) : mint(1);\n\
-    \        f[a] += s;\n        if (b <= n) f[b] += s;\n    }\n    return inv(f,\
-    \ n + 1);\n}\n\n/**\n * @brief \u30D9\u30EB\u30CC\u30FC\u30A4\u6570 B_0, ...,\
-    \ B_n (B_1 = -1/2 \u3068\u3059\u308B\u6D41\u5100) O(n log n)\n * \u6307\u6570\u578B\
-    \u6BCD\u95A2\u6570 x / (e^x - 1) \u3092\u3001(e^x - 1) / x = \u03A3 x^k / (k+1)!\
-    \ \u306E\u9006\u6570\u3068\u3057\u3066\u6C42\u3081\u308B\n */\ntemplate <typename\
-    \ mint>\nFPS<mint> bernoulli_numbers(long long n) {\n    using C = Combination<mint>;\n\
+    \ 2 \"src/math/multipoint.hpp\"\n\n/**\n * @file multipoint.hpp\n * @brief \u591A\
+    \u70B9\u8A55\u4FA1\u30FB\u591A\u9805\u5F0F\u88DC\u9593\u30FB\u6A19\u672C\u70B9\
+    \u306E\u305A\u3089\u3057\n */\n\n#line 11 \"src/math/multipoint.hpp\"\n\n#line\
+    \ 15 \"src/math/multipoint.hpp\"\n\nnamespace internal_multipoint {\n// \u70B9\
+    \ xs \u306E subproduct tree: tree[k] \u306F\u9802\u70B9 k \u304C\u53D7\u3051\u6301\
+    \u3064\u70B9 x_i \u306B\u3064\u3044\u3066 \u03A0 (x - x_i)\u3002\u8449\u306F sz\
+    \ + i\ntemplate <typename mint>\nstruct SubproductTree {\n    long long n, sz;\n\
+    \    std::vector<FPS<mint>> tree;\n    explicit SubproductTree(const std::vector<mint>&\
+    \ xs) : n(xs.size()), sz(1) {\n        while (sz < n) sz <<= 1;\n        tree.assign(2\
+    \ * sz, FPS<mint>{1});\n        for (long long i = 0; i < n; i++) tree[sz + i]\
+    \ = FPS<mint>{-xs[i], 1};\n        for (long long k = sz - 1; k >= 1; k--) tree[k]\
+    \ = tree[2 * k] * tree[2 * k + 1];\n    }\n};\n}  // namespace internal_multipoint\n\
+    \n/**\n * @brief \u591A\u9805\u5F0F f \u306E\u3001\u70B9 xs \u3067\u306E\u5024\
+    \ f(x_0), ..., f(x_{m-1}) O((n + m) log^2 (n + m))\n * subproduct tree \u306E\u6839\
+    \u304B\u3089\u3001\u5404\u9802\u70B9\u306E\u591A\u9805\u5F0F\u3067\u5272\u3063\
+    \u305F\u4F59\u308A\u3092\u4E0B\u308D\u3057\u3066\u3044\u304F\u3002\u4F59\u308A\
+    \u304C\u77ED\u304F\u306A\u3063\u305F\u3089\u76F4\u63A5\u8A08\u7B97\u3059\u308B\
+    \n */\ntemplate <typename mint>\nstd::vector<mint> multipoint_evaluation(const\
+    \ FPS<mint>& f, const std::vector<mint>& xs) {\n    const long long m = xs.size();\n\
+    \    if (m == 0) return {};\n    internal_multipoint::SubproductTree<mint> t(xs);\n\
+    \    std::vector<mint> res(m);\n    // \u9802\u70B9 k \u306B f \u306E\u4F59\u308A\
+    \ g \u304C\u5C4A\u3044\u305F\u3068\u304D\u3001\u53D7\u3051\u6301\u3064\u70B9\u306E\
+    \u5024\u3092\u6C42\u3081\u308B\n    auto rec = [&](auto&& self, long long k, long\
+    \ long l, long long r, FPS<mint> g) -> void {\n        if (l >= m) return;\n \
+    \       // \u6B21\u6570\u304C\u5C0F\u3055\u3051\u308C\u3070 Horner \u6CD5\u3067\
+    \u76F4\u63A5\u6C42\u3081\u308B\n        if (r - l <= 32) {\n            for (long\
+    \ long i = l; i < std::min(r, m); i++) res[i] = g.eval(xs[i]);\n            return;\n\
+    \        }\n        const long long mid = (l + r) / 2;\n        self(self, 2 *\
+    \ k, l, mid, g % t.tree[2 * k]);\n        self(self, 2 * k + 1, mid, r, g % t.tree[2\
+    \ * k + 1]);\n    };\n    FPS<mint> g = f;\n    g.normalize();\n    rec(rec, 1,\
+    \ 0, t.sz, g % t.tree[1]);\n    return res;\n}\n\n/**\n * @brief \u70B9 (x_i,\
+    \ y_i) (x_i \u306F\u4E92\u3044\u306B\u7570\u306A\u308B) \u3092\u3059\u3079\u3066\
+    \u901A\u308B n - 1 \u6B21\u4EE5\u4E0B\u306E\u591A\u9805\u5F0F (\u9577\u3055 n)\
+    \ O(n log^2 n)\n * g = \u03A0 (x - x_i) \u3068\u3059\u308B\u3068 f = \u03A3 y_i\
+    \ / g'(x_i) \u03A0_{j != i} (x - x_j)\u3002g'(x_i) \u3092\u591A\u70B9\u8A55\u4FA1\
+    \u3057\u3001\u548C\u3092 subproduct tree \u306E\u4E0B\u304B\u3089\u7D44\u307F\u7ACB\
+    \u3066\u308B\n */\ntemplate <typename mint>\nFPS<mint> polynomial_interpolation(const\
+    \ std::vector<mint>& xs, const std::vector<mint>& ys) {\n    assert(xs.size()\
+    \ == ys.size());\n    const long long n = xs.size();\n    if (n == 0) return FPS<mint>();\n\
+    \    internal_multipoint::SubproductTree<mint> t(xs);\n    std::vector<mint> d\
+    \ = multipoint_evaluation(diff(t.tree[1]), xs);\n    // val[k] = \u03A3_{\u9802\
+    \u70B9 k \u306E\u70B9 i} c_i \u03A0_{\u9802\u70B9 k \u306E\u70B9 j != i} (x -\
+    \ x_j)\u3001c_i = y_i / g'(x_i)\n    std::vector<FPS<mint>> val(2 * t.sz);\n \
+    \   for (long long i = 0; i < t.sz; i++) val[t.sz + i] = i < n ? FPS<mint>{ys[i]\
+    \ / d[i]} : FPS<mint>{};\n    for (long long k = t.sz - 1; k >= 1; k--) {\n  \
+    \      FPS<mint> a = val[2 * k] * t.tree[2 * k + 1], b = val[2 * k + 1] * t.tree[2\
+    \ * k];\n        if (a.size() < b.size()) a.resize(b.size());\n        for (size_t\
+    \ i = 0; i < b.size(); i++) a[i] += b[i];\n        val[k] = a;\n    }\n    FPS<mint>\
+    \ f = val[1];\n    f.resize(n);\n    return f;\n}\n\nnamespace internal_multipoint\
+    \ {\n// ys = f(0), ..., f(n-1) \u304B\u3089 f(c), ..., f(c+m-1)\u3002c + k \u304C\
+    \ 0 \u4EE5\u4E0A n \u672A\u6E80\u306E\u6574\u6570\u3068\u91CD\u306A\u3089\u306A\
+    \u3044\u3053\u3068\n// f(c+k) = (\u03A0_{j<n} (c+k-j)) \u03A3_i a_i / (c+k-i)\u3001\
+    a_i = y_i / (i! (n-1-i)! (-1)^(n-1-i))\ntemplate <typename mint>\nstd::vector<mint>\
+    \ shift_no_overlap(const std::vector<mint>& ys, mint c, long long m) {\n    using\
+    \ C = Combination<mint>;\n    const long long n = ys.size();\n    C::extend(n);\n\
+    \    std::vector<mint> a(n);\n    for (long long i = 0; i < n; i++) {\n      \
+    \  a[i] = ys[i] * C::inverse_factorial(i) * C::inverse_factorial(n - 1 - i);\n\
+    \        if ((n - 1 - i) % 2 == 1) a[i] = -a[i];\n    }\n    // b_t = 1 / (c -\
+    \ (n-1) + t) (t = 0, ..., n+m-2)\u3002\u9006\u6570\u306F\u307E\u3068\u3081\u3066\
+    \u6C42\u3081\u308B\n    const long long len = n + m - 1;\n    std::vector<mint>\
+    \ v(len), b(len), pre(len + 1, 1);\n    for (long long t = 0; t < len; t++) v[t]\
+    \ = c - mint(n - 1) + mint(t), pre[t + 1] = pre[t] * v[t];\n    mint inv_all =\
+    \ pre[len].inv();\n    for (long long t = len - 1; t >= 0; t--) b[t] = inv_all\
+    \ * pre[t], inv_all *= v[t];\n    std::vector<mint> s = convolution(a, b);\n \
+    \   // \u03A0_{j<n} (c+k-j) = v[k] v[k+1] ... v[k+n-1] \u3092\u305A\u3089\u3057\
+    \u306A\u304C\u3089\u6C42\u3081\u308B\n    std::vector<mint> res(m);\n    mint\
+    \ prod = 1;\n    for (long long t = 0; t < n; t++) prod *= v[t];\n    for (long\
+    \ long k = 0; k < m; k++) {\n        if (k > 0) prod *= v[k + n - 1] * b[k - 1];\n\
+    \        res[k] = prod * s[k + n - 1];\n    }\n    return res;\n}\n}  // namespace\
+    \ internal_multipoint\n\n/**\n * @brief n - 1 \u6B21\u4EE5\u4E0B\u306E\u591A\u9805\
+    \u5F0F f \u306E f(0), ..., f(n-1) \u304B\u3089\u3001f(c), f(c+1), ..., f(c+m-1)\
+    \ \u3092\u6C42\u3081\u308B O((n + m) log (n + m))\n * \u6CD5\u306F n + m \u3088\
+    \u308A\u5927\u304D\u3044\u7D20\u6570\u3067\u3042\u308B\u3053\u3068\u3002c + k\
+    \ \u304C 0 \u4EE5\u4E0A n \u672A\u6E80\u306E\u6574\u6570\u3068\u91CD\u306A\u308B\
+    \ k \u306F ys \u3092\u305D\u306E\u307E\u307E\u4F7F\u3046\n */\ntemplate <typename\
+    \ mint>\nstd::vector<mint> sample_point_shift(const std::vector<mint>& ys, mint\
+    \ c, long long m) {\n    const long long n = ys.size();\n    std::vector<mint>\
+    \ res(m);\n    if (n == 0) return res;\n    // (c + k) mod p \u304C [0, n) \u306B\
+    \u5165\u308B\u304B\u3067\u533A\u5207\u308A\u3001\u5165\u3089\u306A\u3044\u533A\
+    \u9593\u3054\u3068\u306B\u7573\u307F\u8FBC\u307F\u3067\u6C42\u3081\u308B\n   \
+    \ const long long p = mint::mod();\n    long long k = 0;\n    while (k < m) {\n\
+    \        long long x = (c.val() + k) % p;\n        if (x < n) {\n            res[k]\
+    \ = ys[x];\n            k++;\n            continue;\n        }\n        // x +\
+    \ len \u304C p \u304B n + p \u306B\u5C4A\u304F\u307E\u3067\u306F\u91CD\u306A\u3089\
+    \u306A\u3044 (x >= n \u306A\u306E\u3067\u6B21\u306B\u91CD\u306A\u308B\u306E\u306F\
+    \ x \u304C p \u306B\u623B\u3063\u305F\u3068\u304D)\n        long long len = std::min(m\
+    \ - k, p - x);\n        auto part = internal_multipoint::shift_no_overlap(ys,\
+    \ mint(x), len);\n        for (long long i = 0; i < len; i++) res[k + i] = part[i];\n\
+    \        k += len;\n    }\n    return res;\n}\n\n/**\n * @brief \u591A\u9805\u5F0F\
+    \ f \u306E\u3001\u7B49\u6BD4\u6570\u5217\u306E\u70B9 a r^i (0 <= i < m) \u3067\
+    \u306E\u5024 O((n + m) log (n + m)) (chirp-z \u5909\u63DB)\n * ij = C(i + j, 2)\
+    \ - C(i, 2) - C(j, 2) \u3092\u4F7F\u3046\u3068 f(a r^i) = r^{-C(i, 2)} \u03A3\
+    _j (f_j a^j r^{-C(j, 2)}) r^{C(i + j, 2)} \u3068\u306A\u308A\u3001\u7573\u307F\
+    \u8FBC\u307F 1 \u56DE\u3067\u6C42\u307E\u308B\n */\ntemplate <typename mint>\n\
+    std::vector<mint> multipoint_evaluation_geometric(const FPS<mint>& f, mint a,\
+    \ mint r, long long m) {\n    const long long n = f.size();\n    std::vector<mint>\
+    \ res(m);\n    if (m == 0 || n == 0) return res;\n    if (r == 0) {\n        //\
+    \ \u70B9\u306F a, 0, 0, ...\n        for (long long j = n - 1; j >= 0; j--) res[0]\
+    \ = res[0] * a + f[j];\n        for (long long i = 1; i < m; i++) res[i] = f[0];\n\
+    \        return res;\n    }\n    // w[k] = r^{C(k, 2)}\u3001iw[k] = r^{-C(k, 2)}\n\
+    \    const long long len = n + m - 1;\n    const mint ir = r.inv();\n    std::vector<mint>\
+    \ w(len), iw(std::max(n, m));\n    mint p = 1;\n    w[0] = 1;\n    for (long long\
+    \ k = 0; k + 1 < len; k++) w[k + 1] = w[k] * p, p *= r;\n    p = 1;\n    iw[0]\
+    \ = 1;\n    for (long long k = 0; k + 1 < static_cast<long long>(iw.size()); k++)\
+    \ iw[k + 1] = iw[k] * p, p *= ir;\n    // A \u3092\u9006\u9806\u306B\u4E26\u3079\
+    \u3066\u7573\u307F\u8FBC\u3080\u3068\u3001[n - 1 + i] \u304C \u03A3_j A_j w[i\
+    \ + j] \u306B\u306A\u308B\n    std::vector<mint> A(n);\n    mint aj = 1;\n   \
+    \ for (long long j = 0; j < n; j++) A[n - 1 - j] = f[j] * aj * iw[j], aj *= a;\n\
+    \    std::vector<mint> c = convolution(A, w);\n    for (long long i = 0; i < m;\
+    \ i++) res[i] = iw[i] * c[n - 1 + i];\n    return res;\n}\n\nnamespace internal_multipoint\
+    \ {\n// \u03A0_{j<n} (x - a r^j) O(n log n)\n// \u524D\u534A h = \u03A0_{j<k}\
+    \ (x - a r^j) \u304B\u3089\u3001\u5F8C\u534A\u306F \u03A0_{j<k} (x - a r^{j+k})\
+    \ = r^{k^2} h(x r^{-k}) \u3068\u4FC2\u6570\u3092\u5909\u3048\u308B\u3060\u3051\
+    \u3067\u6C42\u307E\u308B\ntemplate <typename mint>\nFPS<mint> geometric_product(mint\
+    \ a, mint r, long long n) {\n    if (n == 0) return FPS<mint>{1};\n    if (n %\
+    \ 2 == 1) {\n        FPS<mint> h = geometric_product(a, r, n - 1);\n        return\
+    \ h * FPS<mint>{-a * r.pow(n - 1), 1};\n    }\n    const long long k = n / 2;\n\
+    \    FPS<mint> h = geometric_product(a, r, k);\n    const mint rk = r.pow(k),\
+    \ irk = rk.inv();\n    FPS<mint> g = h;\n    mint c = rk.pow(k);\n    for (auto&\
+    \ x : g) x *= c, c *= irk;\n    return h * g;\n}\n}  // namespace internal_multipoint\n\
+    \n/**\n * @brief \u7B49\u6BD4\u6570\u5217\u306E\u70B9 (a r^i, y_i) (0 <= i < n)\
+    \ \u3092\u3059\u3079\u3066\u901A\u308B n - 1 \u6B21\u4EE5\u4E0B\u306E\u591A\u9805\
+    \u5F0F (\u9577\u3055 n) O(n log n)\n * a r^i \u306F\u4E92\u3044\u306B\u7570\u306A\
+    \u308B\u3053\u3068 (n >= 2 \u306A\u3089 a != 0\u3001r != 0)\n * f = M \u03A3_i\
+    \ w_i / (x - x_i) (M = \u03A0 (x - x_j)\u3001w_i = y_i / \u03A0_{j != i} (x_i\
+    \ - x_j))\u3002\n * \u548C\u306E x^k \u306E\u4FC2\u6570 -a^{-(k+1)} \u03A3_i w_i\
+    \ r^{-i(k+1)} \u306F\u7B49\u6BD4\u6570\u5217\u306E\u70B9\u3067\u306E\u591A\u70B9\
+    \u8A55\u4FA1\u3067\u6C42\u307E\u308B\n */\ntemplate <typename mint>\nFPS<mint>\
+    \ polynomial_interpolation_geometric(mint a, mint r, const std::vector<mint>&\
+    \ ys) {\n    const long long n = ys.size();\n    if (n == 0) return FPS<mint>();\n\
+    \    if (n == 1) return FPS<mint>{ys[0]};\n    assert(a != 0 && r != 0);\n   \
+    \ const mint ir = r.inv();\n    // pw[k] = r^k\u3001P[k] = \u03A0_{t=1}^{k} (r^t\
+    \ - 1)\n    std::vector<mint> pw(n), ipw(n), P(n), iP(n);\n    pw[0] = ipw[0]\
+    \ = P[0] = 1;\n    for (long long k = 1; k < n; k++) pw[k] = pw[k - 1] * r, ipw[k]\
+    \ = ipw[k - 1] * ir, P[k] = P[k - 1] * (pw[k] - 1);\n    assert(P[n - 1] != 0\
+    \ && \"a r^i must be distinct\");\n    iP[n - 1] = P[n - 1].inv();\n    for (long\
+    \ long k = n - 1; k >= 1; k--) iP[k - 1] = iP[k] * (pw[k] - 1);\n    // \u03A0\
+    _{j != i} (x_i - x_j) = a^{n-1} r^{e_i} P_i (-1)^{n-1-i} P_{n-1-i}\u3001e_i =\
+    \ C(i, 2) + i (n - 1 - i)\n    // e_{i+1} - e_i = n - 2 - i \u306A\u306E\u3067\
+    \u3001r^{-e_i} \u306F\u9806\u306B\u639B\u3051\u3066\u6C42\u3081\u308B\n    std::vector<mint>\
+    \ W(n);\n    const mint ian = a.inv().pow(n - 1);\n    mint ire = 1;\n    for\
+    \ (long long i = 0; i < n; i++) {\n        W[i] = ys[i] * ian * ire * iP[i] *\
+    \ iP[n - 1 - i];\n        if ((n - 1 - i) % 2 == 1) W[i] = -W[i];\n        if\
+    \ (i + 1 < n) ire *= ipw[n - 2 - i];\n    }\n    std::vector<mint> s = multipoint_evaluation_geometric(FPS<mint>(W),\
+    \ ir, ir, n);\n    const mint ia = a.inv();\n    mint c = ia;\n    FPS<mint> S(n);\n\
+    \    for (long long k = 0; k < n; k++) S[k] = -c * s[k], c *= ia;\n    FPS<mint>\
+    \ f = (internal_multipoint::geometric_product(a, r, n) * S).pre(n);\n    f.resize(n);\n\
+    \    return f;\n}\n\n/**\n * @brief \u91CD\u307F\u4ED8\u304D\u306E\u7D2F\u4E57\
+    \u548C s_k = \u03A3_i w_i x_i^k (0 <= k < n) O(m log^2 m + n log n) (m \u306F\u70B9\
+    \u306E\u500B\u6570)\n * \u03A3_k s_k t^k = \u03A3_i w_i / (1 - x_i t) \u306A\u306E\
+    \u3067\u3001\u5206\u6570\u306E\u548C\u3092 1 \u3064\u306E\u5206\u6570\u306B\u307E\
+    \u3068\u3081\u3001\u5206\u6BCD\u306E\u9006\u5143\u3092\u639B\u3051\u308B\n * (\u591A\
+    \u70B9\u8A55\u4FA1\u306E\u8EE2\u7F6E\u306B\u3042\u305F\u308B\u3002\u70B9\u306F\
+    \u91CD\u306A\u3063\u3066\u3082\u3088\u3044)\n */\ntemplate <typename mint>\nstd::vector<mint>\
+    \ weighted_power_sums(const std::vector<mint>& xs, const std::vector<mint>& ws,\
+    \ long long n) {\n    assert(xs.size() == ws.size());\n    std::vector<mint> res(n);\n\
+    \    if (n == 0 || xs.empty()) return res;\n    std::vector<FPS<mint>> nums(xs.size()),\
+    \ dens(xs.size());\n    for (long long i = 0; i < static_cast<long long>(xs.size());\
+    \ i++) nums[i] = {ws[i]}, dens[i] = {1, -xs[i]};\n    auto [num, den] = sum_of_fractions(nums,\
+    \ dens);\n    FPS<mint> s = (num * inv(den, n)).pre(n);\n    std::copy(s.begin(),\
+    \ s.end(), res.begin());\n    return res;\n}\n#line 15 \"src/math/combinatorial-sequences.hpp\"\
+    \n\n/**\n * @brief \u5206\u5272\u6570 p(0), ..., p(n) (n \u3092\u6B63\u306E\u6574\
+    \u6570\u306E\u548C\u306B\u5206\u3051\u308B\u65B9\u6CD5\u306E\u6570\u3002\u548C\
+    \u306E\u9806\u756A\u306F\u533A\u5225\u3057\u306A\u3044) O(n log n)\n * \u6BCD\u95A2\
+    \u6570\u306F 1 / \u03A0_{k >= 1} (1 - x^k)\u3002\u5206\u6BCD\u306F\u4E94\u89D2\
+    \u6570\u5B9A\u7406\u3067 \u03A3_k (-1)^k x^{k(3k-1)/2} (k \u306F\u5168\u6574\u6570\
+    ) \u3068\u66F8\u3051\u308B\n */\ntemplate <typename mint>\nFPS<mint> partition_numbers(long\
+    \ long n) {\n    FPS<mint> f(n + 1, 0);\n    f[0] = 1;\n    for (long long k =\
+    \ 1;; k++) {\n        const long long a = k * (3 * k - 1) / 2, b = k * (3 * k\
+    \ + 1) / 2;\n        if (a > n) break;\n        const mint s = k % 2 == 1 ? mint(-1)\
+    \ : mint(1);\n        f[a] += s;\n        if (b <= n) f[b] += s;\n    }\n    return\
+    \ inv(f, n + 1);\n}\n\n/**\n * @brief \u30D9\u30EB\u30CC\u30FC\u30A4\u6570 B_0,\
+    \ ..., B_n (B_1 = -1/2 \u3068\u3059\u308B\u6D41\u5100) O(n log n)\n * \u6307\u6570\
+    \u578B\u6BCD\u95A2\u6570 x / (e^x - 1) \u3092\u3001(e^x - 1) / x = \u03A3 x^k\
+    \ / (k+1)! \u306E\u9006\u6570\u3068\u3057\u3066\u6C42\u3081\u308B\n */\ntemplate\
+    \ <typename mint>\nFPS<mint> bernoulli_numbers(long long n) {\n    using C = Combination<mint>;\n\
     \    C::extend(n + 1);\n    FPS<mint> f(n + 1);\n    for (long long k = 0; k <=\
     \ n; k++) f[k] = C::inverse_factorial(k + 1);\n    FPS<mint> g = inv(f, n + 1);\n\
     \    for (long long k = 0; k <= n; k++) g[k] *= C::factorial(k);\n    return g;\n\
@@ -1050,14 +1217,60 @@ data:
     \ i++) {\n        a[i] = mint(i).pow(n) * C::inverse_factorial(i);\n        b[i]\
     \ = i % 2 == 0 ? C::inverse_factorial(i) : -C::inverse_factorial(i);\n    }\n\
     \    FPS<mint> s = convolution(a, b);\n    s.resize(n + 1);\n    return s;\n}\n\
-    \n/**\n * @brief \u30D9\u30EB\u6570 B_0, ..., B_n (n \u500B\u306E\u533A\u5225\u3067\
-    \u304D\u308B\u8981\u7D20\u3092\u7A7A\u3067\u306A\u3044\u90E8\u5206\u96C6\u5408\
-    \u306B\u5206\u3051\u308B\u65B9\u6CD5\u306E\u6570) O(n log n)\n * \u6307\u6570\u578B\
-    \u6BCD\u95A2\u6570\u306F exp(e^x - 1)\n */\ntemplate <typename mint>\nFPS<mint>\
-    \ bell_numbers(long long n) {\n    using C = Combination<mint>;\n    C::extend(n);\n\
-    \    FPS<mint> g(n + 1, 0);\n    for (long long k = 1; k <= n; k++) g[k] = C::inverse_factorial(k);\n\
+    \nnamespace internal_combinatorial_sequences {\n// \u6307\u6570\u578B\u6BCD\u95A2\
+    \u6570 f^k / k! \u306E\u4FC2\u6570\u306B i! \u3092\u639B\u3051\u305F\u3082\u306E\
+    \ (\u9577\u3055 n + 1)\u3002f \u306F\u5B9A\u6570\u9805\u304C 0\ntemplate <typename\
+    \ mint>\nFPS<mint> egf_power_column(const FPS<mint>& f, long long n, long long\
+    \ k) {\n    using C = Combination<mint>;\n    C::extend(n);\n    FPS<mint> res(n\
+    \ + 1, mint(0));\n    if (k > n) return res;\n    res = pow(f, k, n + 1);\n  \
+    \  for (long long i = 0; i <= n; i++) res[i] *= C::factorial(i) * C::inverse_factorial(k);\n\
+    \    return res;\n}\n}  // namespace internal_combinatorial_sequences\n\n/**\n\
+    \ * @brief \u7B26\u53F7\u4ED8\u304D\u7B2C 1 \u7A2E\u30B9\u30BF\u30FC\u30EA\u30F3\
+    \u30B0\u6570\u306E\u5217 s(0, k), s(1, k), ..., s(n, k) (k \u3092\u56FA\u5B9A\u3057\
+    \u3066 n \u3092\u52D5\u304B\u3059) O(n log n)\n * \u6307\u6570\u578B\u6BCD\u95A2\
+    \u6570 \u03A3_n s(n, k) x^n / n! = log(1 + x)^k / k! \u3092\u4F7F\u3046\n */\n\
+    template <typename mint>\nFPS<mint> stirling_first_column(long long n, long long\
+    \ k) {\n    assert(n >= 0 && k >= 0);\n    using C = Combination<mint>;\n    C::extend(n\
+    \ + 1);\n    // log(1 + x) = \u03A3_{i >= 1} (-1)^(i+1) x^i / i\n    FPS<mint>\
+    \ f(n + 1, mint(0));\n    for (long long i = 1; i <= n; i++) f[i] = (i % 2 ==\
+    \ 1 ? mint(1) : -mint(1)) * C::inv(i);\n    return internal_combinatorial_sequences::egf_power_column(f,\
+    \ n, k);\n}\n\n/**\n * @brief \u7B2C 2 \u7A2E\u30B9\u30BF\u30FC\u30EA\u30F3\u30B0\
+    \u6570\u306E\u5217 S(0, k), S(1, k), ..., S(n, k) (k \u3092\u56FA\u5B9A\u3057\u3066\
+    \ n \u3092\u52D5\u304B\u3059) O(n log n)\n * \u6307\u6570\u578B\u6BCD\u95A2\u6570\
+    \ \u03A3_n S(n, k) x^n / n! = (e^x - 1)^k / k! \u3092\u4F7F\u3046\n */\ntemplate\
+    \ <typename mint>\nFPS<mint> stirling_second_column(long long n, long long k)\
+    \ {\n    assert(n >= 0 && k >= 0);\n    using C = Combination<mint>;\n    C::extend(n);\n\
+    \    // e^x - 1 = \u03A3_{i >= 1} x^i / i!\n    FPS<mint> f(n + 1, mint(0));\n\
+    \    for (long long i = 1; i <= n; i++) f[i] = C::inverse_factorial(i);\n    return\
+    \ internal_combinatorial_sequences::egf_power_column(f, n, k);\n}\n\n/**\n * @brief\
+    \ \u30D9\u30EB\u6570 B_0, ..., B_n (n \u500B\u306E\u533A\u5225\u3067\u304D\u308B\
+    \u8981\u7D20\u3092\u7A7A\u3067\u306A\u3044\u90E8\u5206\u96C6\u5408\u306B\u5206\
+    \u3051\u308B\u65B9\u6CD5\u306E\u6570) O(n log n)\n * \u6307\u6570\u578B\u6BCD\u95A2\
+    \u6570\u306F exp(e^x - 1)\n */\ntemplate <typename mint>\nFPS<mint> bell_numbers(long\
+    \ long n) {\n    using C = Combination<mint>;\n    C::extend(n);\n    FPS<mint>\
+    \ g(n + 1, 0);\n    for (long long k = 1; k <= n; k++) g[k] = C::inverse_factorial(k);\n\
     \    FPS<mint> f = exp(g, n + 1);\n    for (long long k = 0; k <= n; k++) f[k]\
-    \ *= C::factorial(k);\n    return f;\n}\n#line 7 \"test/yosupo/enumerative_combinatorics/partition-function.3.test.cpp\"\
+    \ *= C::factorial(k);\n    return f;\n}\n\n/**\n * @brief n! \u3092\u7D20\u6570\
+    \ p (= mint::mod()) \u3067\u5272\u3063\u305F\u4F59\u308A (n < p\u3001n \u304C\
+    \ 10^9 \u7A0B\u5EA6\u3067\u3082\u3088\u3044) O(sqrt(n) log n)\n *\n * v \u3092\
+    \ 2 \u306E\u3079\u304D\u3067 v (v + 1) > n \u3068\u306A\u308B\u3088\u3046\u306B\
+    \u3068\u308A\u3001g_d(x) = (vx + 1)(vx + 2) ... (vx + d) \u306E g_d(0), ..., g_d(d)\
+    \ \u3092\n * d = 1, 2, 4, ..., v \u3068\u500D\u306B\u3057\u306A\u304C\u3089\u6A19\
+    \u672C\u70B9\u306E\u305A\u3089\u3057\u3067\u6C42\u3081\u308B (g_2d(x) = g_d(x)\
+    \ g_d(x + d / v))\n * n! = g_v(0) g_v(1) ... g_v(q - 1) \xD7 (qv + 1) ... n (q\
+    \ = floor(n / v))\n */\ntemplate <typename mint>\nmint large_factorial(long long\
+    \ n) {\n    assert(0 <= n && n < static_cast<long long>(mint::mod()));\n    long\
+    \ long v = 1;\n    while (v * (v + 1) <= n) v *= 2;\n    const mint inv_v = mint(v).inv();\n\
+    \    std::vector<mint> ys = {mint(1), mint(v) + 1};  // g_1(0), g_1(1)\n    for\
+    \ (long long d = 1; d < v; d *= 2) {\n        // g_d(0), ..., g_d(2d) \u3068 g_d(x\
+    \ + d / v) (x = 0, ..., 2d) \u3092\u639B\u3051\u308B\n        std::vector<mint>\
+    \ a = ys, ext = sample_point_shift(ys, mint(d + 1), d);\n        a.insert(a.end(),\
+    \ ext.begin(), ext.end());\n        std::vector<mint> b = sample_point_shift(ys,\
+    \ mint(d) * inv_v, 2 * d + 1);\n        for (long long x = 0; x <= 2 * d; x++)\
+    \ a[x] *= b[x];\n        ys.swap(a);\n    }\n    const long long q = n / v;\n\
+    \    mint res = 1;\n    for (long long i = 0; i < q; i++) res *= ys[i];\n    for\
+    \ (long long i = q * v + 1; i <= n; i++) res *= mint(i);\n    return res;\n}\n\
+    #line 7 \"test/yosupo/enumerative_combinatorics/partition-function.3.test.cpp\"\
     \n\nusing mint = modint998244353;\n\nint main() {\n    std::cin.tie(nullptr);\n\
     \    std::ios::sync_with_stdio(false);\n    int n;\n    std::cin >> n;\n    auto\
     \ f = partition_numbers<mint>(n);\n    for (int i = 0; i <= n; i++) std::cout\
@@ -1077,10 +1290,11 @@ data:
   - src/math/modint.hpp
   - src/utility/traits.hpp
   - src/math/fps.hpp
+  - src/math/multipoint.hpp
   isVerificationFile: true
   path: test/yosupo/enumerative_combinatorics/partition-function.3.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 21:31:06+09:00'
+  timestamp: '2026-10-23 19:35:43+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/enumerative_combinatorics/partition-function.3.test.cpp

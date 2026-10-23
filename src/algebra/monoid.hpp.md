@@ -60,7 +60,12 @@ data:
     title: "\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
   - icon: ':heavy_check_mark:'
     path: src/data_structures/sliding-window-aggregation.hpp
-    title: "Sliding Window Aggregation \u3068\u30B9\u30E9\u30A4\u30C9\u6700\u5C0F\u5024"
+    title: "Sliding Window Aggregation (\u30AD\u30E5\u30FC\u3068\u4E21\u7AEF\u30AD\
+      \u30E5\u30FC) \u3068\u30B9\u30E9\u30A4\u30C9\u6700\u5C0F\u5024"
+  - icon: ':heavy_check_mark:'
+    path: src/data_structures/sortable-segtree.hpp
+    title: "\u533A\u9593\u30BD\u30FC\u30C8\u306E\u3067\u304D\u308B\u30BB\u30B0\u30E1\
+      \u30F3\u30C8\u6728"
   - icon: ':heavy_check_mark:'
     path: src/data_structures/sparse-table.hpp
     title: Sparse Table
@@ -184,6 +189,9 @@ data:
     path: test/unittest/data_structures/sliding-window-aggregation.test.cpp
     title: test/unittest/data_structures/sliding-window-aggregation.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/sortable-segtree.test.cpp
+    title: test/unittest/data_structures/sortable-segtree.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/sparse-table.test.cpp
     title: test/unittest/data_structures/sparse-table.test.cpp
   - icon: ':heavy_check_mark:'
@@ -195,6 +203,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/area-of-union-of-rectangles.2.test.cpp
     title: test/yosupo/data_structure/area-of-union-of-rectangles.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/deque-operate-all-composite.test.cpp
+    title: test/yosupo/data_structure/deque-operate-all-composite.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
     title: test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
@@ -228,6 +239,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/point-set-range-composite.4.test.cpp
     title: test/yosupo/data_structure/point-set-range-composite.4.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
+    title: test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/queue-operate-all-composite.test.cpp
     title: test/yosupo/data_structure/queue-operate-all-composite.test.cpp
@@ -925,6 +939,7 @@ data:
   - src/data_structures/fenwick-tree.hpp
   - src/data_structures/rbst.hpp
   - src/data_structures/persistent-lazy-segtree.hpp
+  - src/data_structures/sortable-segtree.hpp
   - src/data_structures/dynamic-lazy-segtree.hpp
   - src/data_structures/persistent-segtree.hpp
   - src/data_structures/lazy-segtree.hpp
@@ -951,6 +966,7 @@ data:
   - test/unittest/data_structures/dynamic-segtree.test.cpp
   - test/unittest/data_structures/persistent-segtree.test.cpp
   - test/unittest/data_structures/sliding-window-aggregation.test.cpp
+  - test/unittest/data_structures/sortable-segtree.test.cpp
   - test/unittest/data_structures/monoid-unionfind.test.cpp
   - test/unittest/data_structures/rbst.test.cpp
   - test/unittest/data_structures/dynamic-lazy-segtree.test.cpp
@@ -1015,7 +1031,9 @@ data:
   - test/yosupo/data_structure/point-add-range-sum.2.test.cpp
   - test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
   - test/yosupo/data_structure/rectangle-sum.3.test.cpp
+  - test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
   - test/yosupo/data_structure/range-affine-range-sum.1.test.cpp
+  - test/yosupo/data_structure/deque-operate-all-composite.test.cpp
   - test/yosupo/tree/vertex-add-subtree-sum.1.test.cpp
   - test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
   - test/yosupo/tree/vertex-add-path-sum.test.cpp

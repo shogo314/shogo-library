@@ -5,7 +5,7 @@ data:
     path: src/geometry/circle.hpp
     title: "\u5186 (\u4F4D\u7F6E\u95A2\u4FC2\u3001\u4EA4\u70B9\u3001\u63A5\u7DDA\u3001\
       \u5185\u63A5\u5186\u3001\u5916\u63A5\u5186\u3001\u5171\u901A\u90E8\u5206\u306E\
-      \u9762\u7A4D)"
+      \u9762\u7A4D\u3001\u6700\u5C0F\u5305\u542B\u5186)"
   - icon: ':heavy_check_mark:'
     path: src/geometry/vector.hpp
     title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"
@@ -27,53 +27,55 @@ data:
     \ geometry/circle.hpp \u306E\u95A2\u6570\u3092\u3001\u5B9A\u7FA9\u304B\u3089\u78BA\
     \u304B\u3081\u308B\n// \u5171\u901A\u90E8\u5206\u306E\u9762\u7A4D\u306F\u3001\
     x \u65B9\u5411\u306B\u7D30\u304B\u304F\u5206\u3051\u305F\u6570\u5024\u7A4D\u5206\
+    \u3068\u6BD4\u3079\u308B\n// \u6700\u5C0F\u5305\u542B\u5186\u306F\u30011 \u301C\
+    \ 3 \u70B9\u306E\u7D44\u3092\u3059\u3079\u3066\u8A66\u3059\u7DCF\u5F53\u305F\u308A\
     \u3068\u6BD4\u3079\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\
     \u3001\u3059\u3079\u3066\u6210\u308A\u7ACB\u3063\u305F\u3089 Hello World \u3092\
     \u51FA\u529B\u3059\u308B\n\n#line 2 \"src/geometry/circle.hpp\"\n\n/**\n * @file\
     \ circle.hpp\n * @brief \u5186 (\u4F4D\u7F6E\u95A2\u4FC2\u3001\u4EA4\u70B9\u3001\
     \u63A5\u7DDA\u3001\u5185\u63A5\u5186\u3001\u5916\u63A5\u5186\u3001\u5171\u901A\
-    \u90E8\u5206\u306E\u9762\u7A4D)\n */\n\n#include <algorithm>\n#include <cassert>\n\
-    #include <cmath>\n#include <istream>\n#include <type_traits>\n#include <utility>\n\
-    #include <vector>\n\n#line 2 \"src/geometry/vector.hpp\"\n\n/**\n * @file vector.hpp\n\
-    \ * @brief \u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB\n */\n\n#line 9 \"src/geometry/vector.hpp\"\
-    \n#include <array>\n#line 13 \"src/geometry/vector.hpp\"\n#include <limits>\n\
-    #include <numeric>\n#include <optional>\n#include <ostream>\n#include <stack>\n\
-    #line 21 \"src/geometry/vector.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n\
-    /**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n\
-    #include <iterator>\n#include <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace\
-    \ internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T, class =\
-    \ void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct\
-    \ is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
-    \ : std::true_type {};\n}  // namespace internal_traits\n\ntemplate <class T>\n\
-    struct is_range : internal_traits::is_range_impl<T>::type {};\ntemplate <class\
-    \ T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define HAS_METHOD(func_name)\
-    \                                                              \\\n    namespace\
-    \ internal_traits {                                                          \
-    \  \\\n    template <class T, class = void>                                  \
-    \                     \\\n    struct has_##func_name##_impl : std::false_type\
-    \ {};                                    \\\n    template <class T>          \
-    \                                                           \\\n    struct has_##func_name##_impl<T,\
-    \ std::void_t<decltype(std::declval<T>().func_name())>> \\\n        : std::true_type\
-    \ {};                                                               \\\n    }\
-    \                                                                            \
-    \          \\\n    template <class T>                                        \
-    \                             \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T>::type\
-    \ {};          \\\n    template <class T>                                    \
-    \                                 \\\n    inline constexpr bool has_##func_name##_v\
-    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
-    \                                                                    \\\n    namespace\
-    \ internal_traits {                                                          \
-    \                      \\\n    template <class T, typename U, class = void>  \
-    \                                                             \\\n    struct has_##func_name##_impl\
-    \ : std::false_type {};                                                      \
-    \  \\\n    template <class T, typename U>                                    \
-    \                                         \\\n    struct has_##func_name##_impl<T,\
-    \ U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>> \\\
-    \n        : std::true_type {};                                               \
-    \                                    \\\n    }                               \
+    \u90E8\u5206\u306E\u9762\u7A4D\u3001\u6700\u5C0F\u5305\u542B\u5186)\n */\n\n#include\
+    \ <algorithm>\n#include <cassert>\n#include <cmath>\n#include <istream>\n#include\
+    \ <random>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\n\
+    #line 2 \"src/geometry/vector.hpp\"\n\n/**\n * @file vector.hpp\n * @brief \u5E7E\
+    \u4F55\u30D9\u30AF\u30C8\u30EB\n */\n\n#line 9 \"src/geometry/vector.hpp\"\n#include\
+    \ <array>\n#line 13 \"src/geometry/vector.hpp\"\n#include <limits>\n#include <numeric>\n\
+    #include <optional>\n#include <ostream>\n#include <stack>\n#line 21 \"src/geometry/vector.hpp\"\
+    \n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief\
+    \ \u578B\u7279\u6027\n */\n\n#include <cstddef>\n#include <iterator>\n#include\
+    \ <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace internal_traits {\n\
+    using std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
+    \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
+    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
+    \n#define HAS_METHOD(func_name)                                              \
+    \                \\\n    namespace internal_traits {                         \
+    \                                   \\\n    template <class T, class = void> \
+    \                                                      \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                    \\\n    template <class\
+    \ T>                                                                     \\\n\
+    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                    \\\n    }                                               \
+    \                                       \\\n    template <class T>           \
+    \                                                          \\\n    struct has_##func_name\
+    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
+    \ <class T>                                                                  \
+    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
+    \n#define HAS_METHOD_ARG(func_name)                                          \
+    \                                    \\\n    namespace internal_traits {     \
     \                                                                           \\\
-    \n    template <class T, typename U>                                         \
-    \                                    \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \n    template <class T, typename U, class = void>                           \
+    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                                        \\\n    template\
+    \ <class T, typename U>                                                      \
+    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                                        \\\n    }                           \
+    \                                                                            \
+    \   \\\n    template <class T, typename U>                                   \
+    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
     \ U>::type {};                           \\\n    template <class T, typename U>\
     \                                                                            \
     \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
@@ -514,7 +516,7 @@ data:
     \u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename T>\n[[deprecated(\"use\
     \ closest_point_pair_squared\")]] ClosestPairSquared<T> closest_point_pair_squred(const\
     \ std::vector<Vector<T, 2>>& points) {\n    return closest_point_pair_squared(points);\n\
-    }\n#line 17 \"src/geometry/circle.hpp\"\n\n/**\n * @brief \u5186\n *\n * @tparam\
+    }\n#line 18 \"src/geometry/circle.hpp\"\n\n/**\n * @brief \u5186\n *\n * @tparam\
     \ T \u5EA7\u6A19\u3068\u534A\u5F84\u306E\u578B \u7701\u7565\u3057\u305F\u3089\
     double\n */\ntemplate <typename T = double>\nstruct Circle {\n    Vector<T, 2>\
     \ c;  //!< \u4E2D\u5FC3\n    T r;             //!< \u534A\u5F84\n\n    constexpr\
@@ -674,10 +676,60 @@ data:
     \ q)) / 2;\n        }\n        return res;\n    };\n    T res = 0;\n    const\
     \ int n = static_cast<int>(polygon.size());\n    for (int i = 0; i < n; i++) res\
     \ += triangle(polygon[i] - c.c, polygon[i + 1 == n ? 0 : i + 1] - c.c);\n    return\
-    \ std::abs(res);\n}\n#line 8 \"test/unittest/geometry/circle.test.cpp\"\n\n#line\
-    \ 11 \"test/unittest/geometry/circle.test.cpp\"\n#include <iostream>\n#include\
-    \ <random>\n#line 15 \"test/unittest/geometry/circle.test.cpp\"\n\nint main()\
-    \ {\n    std::mt19937 rng(314);\n    bool ok = true;\n    using P = Vector<double>;\n\
+    \ std::abs(res);\n}\n\n/**\n * @brief minimum_enclosing_circle \u306E\u623B\u308A\
+    \u5024\u3002\u5186\u5468\u4E0A\u306B\u3042\u3063\u3066\u5186\u3092\u6C7A\u3081\
+    \u308B 1 \u301C 3 \u70B9\u3067\u8868\u3059\n * @tparam T \u5EA7\u6A19\u306E\u578B\
+    \u3002\u6574\u6570\u578B\u306A\u3089 side \u306F __int128 \u3067\u6B63\u78BA\u306B\
+    \u5224\u5B9A\u3059\u308B\n */\ntemplate <typename T>\nstruct EnclosingCircle {\n\
+    \    std::vector<Vector<T, 2>> support;  //!< \u5186\u3092\u6C7A\u3081\u308B\u70B9\
+    \ (1 \u70B9\u306A\u3089\u534A\u5F84 0\u30012 \u70B9\u306A\u3089\u305D\u308C\u3092\
+    \u76F4\u5F84\u3068\u3059\u308B\u5186\u30013 \u70B9\u306A\u3089\u305D\u306E\u5916\
+    \u63A5\u5186)\n\n    /**\n     * @brief \u70B9 p \u304C\u5186\u306E\u5185\u5074\
+    \u306A\u3089 -1\u3001\u5186\u5468\u4E0A\u306A\u3089 0\u3001\u5916\u5074\u306A\u3089\
+    \ 1 (\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u3067\u306F\u8AA4\u5DEE\u3092\u8003\u3048\
+    \u306A\u3044)\n     */\n    int side(const Vector<T, 2>& p) const {\n        using\
+    \ W = std::conditional_t<std::is_integral_v<T>, __int128, T>;\n        auto sgn\
+    \ = [](W x) { return x > 0 ? 1 : x < 0 ? -1\n                                \
+    \                      : 0; };\n        if (support.size() == 1) return p == support[0]\
+    \ ? 0 : 1;\n        if (support.size() == 2) {\n            // \u76F4\u5F84\u306E\
+    \u4E21\u7AEF\u304B\u3089\u898B\u305F\u5411\u304D\u306E\u5185\u7A4D\u306E\u7B26\
+    \u53F7\n            const Vector<T, 2> a = support[0] - p, b = support[1] - p;\n\
+    \            return sgn(static_cast<W>(a[0]) * b[0] + static_cast<W>(a[1]) * b[1]);\n\
+    \        }\n        // \u5916\u63A5\u5186\u306E\u5185\u5916\u5224\u5B9A (incircle\
+    \ \u306E\u884C\u5217\u5F0F)\u3002\u4E09\u89D2\u5F62\u304C\u6642\u8A08\u56DE\u308A\
+    \u306A\u3089\u7B26\u53F7\u3092\u53CD\u8EE2\u3059\u308B\n        W m[3][3];\n \
+    \       for (int i = 0; i < 3; i++) {\n            const W x = support[i][0] -\
+    \ p[0], y = support[i][1] - p[1];\n            m[i][0] = x, m[i][1] = y, m[i][2]\
+    \ = x * x + y * y;\n        }\n        const W det = m[0][0] * (m[1][1] * m[2][2]\
+    \ - m[1][2] * m[2][1]) - m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0]) + m[0][2]\
+    \ * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);\n        const Vector<T, 2> u = support[1]\
+    \ - support[0], v = support[2] - support[0];\n        const int orient = sgn(static_cast<W>(u[0])\
+    \ * v[1] - static_cast<W>(u[1]) * v[0]);\n        return -sgn(det) * orient;\n\
+    \    }\n    /**\n     * @brief \u4E2D\u5FC3\u3068\u534A\u5F84 (double)\n     */\n\
+    \    Circle<double> circle() const {\n        auto to = [](const Vector<T, 2>&\
+    \ a) { return Vector<double, 2>(static_cast<double>(a[0]), static_cast<double>(a[1]));\
+    \ };\n        if (support.size() == 1) return Circle<double>(to(support[0]), 0);\n\
+    \        if (support.size() == 2) {\n            const Vector<double, 2> a = to(support[0]),\
+    \ b = to(support[1]);\n            return Circle<double>((a + b) / 2.0, (a - b).abs()\
+    \ / 2);\n        }\n        return circumcircle(to(support[0]), to(support[1]),\
+    \ to(support[2]));\n    }\n};\n\n/**\n * @brief \u70B9\u306E\u96C6\u5408\u3092\
+    \u542B\u3080\u6700\u5C0F\u306E\u5186 (Welzl \u306E\u4E71\u629E\u30A2\u30EB\u30B4\
+    \u30EA\u30BA\u30E0) \u671F\u5F85 O(n)\n * \u70B9\u306E\u9806\u756A\u3092\u4E71\
+    \u629E\u3067\u5165\u308C\u66FF\u3048\u3001\u5916\u306B\u3042\u308B\u70B9\u304C\
+    \u898B\u3064\u304B\u308B\u305F\u3073\u306B\u3001\u305D\u306E\u70B9\u3092\u5186\
+    \u5468\u4E0A\u306B\u56FA\u5B9A\u3057\u3066\u4F5C\u308A\u76F4\u3059\n * @pre \u70B9\
+    \u306F 1 \u3064\u4EE5\u4E0A\n */\ntemplate <typename T>\nEnclosingCircle<T> minimum_enclosing_circle(std::vector<Vector<T,\
+    \ 2>> p) {\n    assert(!p.empty());\n    static std::mt19937_64 rng(std::random_device{}());\n\
+    \    std::shuffle(p.begin(), p.end(), rng);\n    const long long n = p.size();\n\
+    \    EnclosingCircle<T> c{{p[0]}};\n    for (long long i = 1; i < n; i++) {\n\
+    \        if (c.side(p[i]) <= 0) continue;\n        c.support = {p[i]};\n     \
+    \   for (long long j = 0; j < i; j++) {\n            if (c.side(p[j]) <= 0) continue;\n\
+    \            c.support = {p[i], p[j]};\n            for (long long k = 0; k <\
+    \ j; k++) {\n                if (c.side(p[k]) <= 0) continue;\n              \
+    \  c.support = {p[i], p[j], p[k]};\n            }\n        }\n    }\n    return\
+    \ c;\n}\n#line 9 \"test/unittest/geometry/circle.test.cpp\"\n\n#line 12 \"test/unittest/geometry/circle.test.cpp\"\
+    \n#include <iostream>\n#line 16 \"test/unittest/geometry/circle.test.cpp\"\n\n\
+    int main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    using P = Vector<double>;\n\
     \    auto near = [](double a, double b) { return std::abs(a - b) < 1e-6; };\n\
     \    auto on_circle = [&](const Circle<double>& c, const P& p) { return near((p\
     \ - c.c).abs(), c.r); };\n    for (int rep = 0; rep < 20000 && ok; rep++) {\n\
@@ -750,12 +802,39 @@ data:
     \ square) - area_cp) < 1e-3;\n        // \u5411\u304D\u3092\u9006\u306B\u3057\u3066\
     \u3082\u540C\u3058\n        std::vector<P> rev(square.rbegin(), square.rend());\n\
     \        ok = ok && std::abs(circle_polygon_intersection_area(c1, rev) - area_cp)\
-    \ < 1e-3;\n    }\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
-    \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
+    \ < 1e-3;\n    }\n\n    // minimum_enclosing_circle: 1 \u301C 3 \u70B9\u306E\u3059\
+    \u3079\u3066\u306E\u7D44\u3092\u5019\u88DC\u306B\u3057\u3066\u3001\u5168\u70B9\
+    \u3092\u542B\u3080\u6700\u5C0F\u306E\u5186\u3092\u63A2\u3057\u305F\u3082\u306E\
+    \u3068\u6BD4\u3079\u308B\n    // \u540C\u3058\u70B9\u3084\u4E00\u76F4\u7DDA\u4E0A\
+    \u306E\u70B9\u3092\u591A\u304F\u542B\u3080\u3088\u3046\u306B\u3001\u5C0F\u3055\
+    \u3044\u7BC4\u56F2\u306E\u6574\u6570\u5EA7\u6A19\u3067\u8ABF\u3079\u308B\n   \
+    \ for (int rep = 0; rep < 1000 && ok; rep++) {\n        int n = rng() % 8 + 1;\n\
+    \        using L = Vector<long long, 2>;\n        std::vector<L> p(n);\n     \
+    \   for (auto& v : p) v = L(static_cast<long long>(rng() % 7), static_cast<long\
+    \ long>(rng() % 7));\n        auto c = minimum_enclosing_circle(p);\n        //\
+    \ \u534A\u5F84\u306E 2 \u4E57\u304C\u6700\u5C0F\u306E\u5019\u88DC (3 \u70B9\u304C\
+    \u4E00\u76F4\u7DDA\u4E0A\u306E\u3082\u306E\u306F\u9664\u304F)\n        double\
+    \ best = 1e18;\n        EnclosingCircle<long long> best_c;\n        for (int i\
+    \ = 0; i < n; i++)\n            for (int j = i; j < n; j++)\n                for\
+    \ (int k = j; k < n; k++) {\n                    EnclosingCircle<long long> cand;\n\
+    \                    if (i == j && j == k) {\n                        cand.support\
+    \ = {p[i]};\n                    } else if (j == k) {\n                      \
+    \  cand.support = {p[i], p[j]};\n                    } else {\n              \
+    \          if (cross(p[j] - p[i], p[k] - p[i]) == 0) continue;\n             \
+    \           cand.support = {p[i], p[j], p[k]};\n                    }\n      \
+    \              bool all = true;\n                    for (auto& q : p) all &=\
+    \ cand.side(q) <= 0;\n                    double r = cand.circle().r;\n      \
+    \              if (all && r < best - 1e-9) best = r, best_c = cand;\n        \
+    \        }\n        if (!near(c.circle().r, best)) ok = false;\n        for (auto&\
+    \ q : p) {\n            if (c.side(q) > 0 || c.side(q) != best_c.side(q)) ok =\
+    \ false;\n        }\n    }\n\n    if (ok)\n        std::cout << \"Hello World\"\
+    \ << std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// geometry/circle.hpp \u306E\u95A2\u6570\u3092\u3001\u5B9A\u7FA9\u304B\u3089\
     \u78BA\u304B\u3081\u308B\n// \u5171\u901A\u90E8\u5206\u306E\u9762\u7A4D\u306F\u3001\
     x \u65B9\u5411\u306B\u7D30\u304B\u304F\u5206\u3051\u305F\u6570\u5024\u7A4D\u5206\
+    \u3068\u6BD4\u3079\u308B\n// \u6700\u5C0F\u5305\u542B\u5186\u306F\u30011 \u301C\
+    \ 3 \u70B9\u306E\u7D44\u3092\u3059\u3079\u3066\u8A66\u3059\u7DCF\u5F53\u305F\u308A\
     \u3068\u6BD4\u3079\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\
     \u3001\u3059\u3079\u3066\u6210\u308A\u7ACB\u3063\u305F\u3089 Hello World \u3092\
     \u51FA\u529B\u3059\u308B\n\n#include \"../../../src/geometry/circle.hpp\"\n\n\
@@ -834,8 +913,33 @@ data:
     \ square) - area_cp) < 1e-3;\n        // \u5411\u304D\u3092\u9006\u306B\u3057\u3066\
     \u3082\u540C\u3058\n        std::vector<P> rev(square.rbegin(), square.rend());\n\
     \        ok = ok && std::abs(circle_polygon_intersection_area(c1, rev) - area_cp)\
-    \ < 1e-3;\n    }\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
-    \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
+    \ < 1e-3;\n    }\n\n    // minimum_enclosing_circle: 1 \u301C 3 \u70B9\u306E\u3059\
+    \u3079\u3066\u306E\u7D44\u3092\u5019\u88DC\u306B\u3057\u3066\u3001\u5168\u70B9\
+    \u3092\u542B\u3080\u6700\u5C0F\u306E\u5186\u3092\u63A2\u3057\u305F\u3082\u306E\
+    \u3068\u6BD4\u3079\u308B\n    // \u540C\u3058\u70B9\u3084\u4E00\u76F4\u7DDA\u4E0A\
+    \u306E\u70B9\u3092\u591A\u304F\u542B\u3080\u3088\u3046\u306B\u3001\u5C0F\u3055\
+    \u3044\u7BC4\u56F2\u306E\u6574\u6570\u5EA7\u6A19\u3067\u8ABF\u3079\u308B\n   \
+    \ for (int rep = 0; rep < 1000 && ok; rep++) {\n        int n = rng() % 8 + 1;\n\
+    \        using L = Vector<long long, 2>;\n        std::vector<L> p(n);\n     \
+    \   for (auto& v : p) v = L(static_cast<long long>(rng() % 7), static_cast<long\
+    \ long>(rng() % 7));\n        auto c = minimum_enclosing_circle(p);\n        //\
+    \ \u534A\u5F84\u306E 2 \u4E57\u304C\u6700\u5C0F\u306E\u5019\u88DC (3 \u70B9\u304C\
+    \u4E00\u76F4\u7DDA\u4E0A\u306E\u3082\u306E\u306F\u9664\u304F)\n        double\
+    \ best = 1e18;\n        EnclosingCircle<long long> best_c;\n        for (int i\
+    \ = 0; i < n; i++)\n            for (int j = i; j < n; j++)\n                for\
+    \ (int k = j; k < n; k++) {\n                    EnclosingCircle<long long> cand;\n\
+    \                    if (i == j && j == k) {\n                        cand.support\
+    \ = {p[i]};\n                    } else if (j == k) {\n                      \
+    \  cand.support = {p[i], p[j]};\n                    } else {\n              \
+    \          if (cross(p[j] - p[i], p[k] - p[i]) == 0) continue;\n             \
+    \           cand.support = {p[i], p[j], p[k]};\n                    }\n      \
+    \              bool all = true;\n                    for (auto& q : p) all &=\
+    \ cand.side(q) <= 0;\n                    double r = cand.circle().r;\n      \
+    \              if (all && r < best - 1e-9) best = r, best_c = cand;\n        \
+    \        }\n        if (!near(c.circle().r, best)) ok = false;\n        for (auto&\
+    \ q : p) {\n            if (c.side(q) > 0 || c.side(q) != best_c.side(q)) ok =\
+    \ false;\n        }\n    }\n\n    if (ok)\n        std::cout << \"Hello World\"\
+    \ << std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/geometry/circle.hpp
   - src/geometry/vector.hpp
@@ -843,7 +947,7 @@ data:
   isVerificationFile: true
   path: test/unittest/geometry/circle.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 13:36:14+09:00'
+  timestamp: '2026-10-23 19:50:46+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/geometry/circle.test.cpp

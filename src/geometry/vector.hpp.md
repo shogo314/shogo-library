@@ -13,7 +13,11 @@ data:
     path: src/geometry/circle.hpp
     title: "\u5186 (\u4F4D\u7F6E\u95A2\u4FC2\u3001\u4EA4\u70B9\u3001\u63A5\u7DDA\u3001\
       \u5185\u63A5\u5186\u3001\u5916\u63A5\u5186\u3001\u5171\u901A\u90E8\u5206\u306E\
-      \u9762\u7A4D)"
+      \u9762\u7A4D\u3001\u6700\u5C0F\u5305\u542B\u5186)"
+  - icon: ':heavy_check_mark:'
+    path: src/geometry/manhattan-mst.hpp
+    title: "\u30DE\u30F3\u30CF\u30C3\u30BF\u30F3\u8DDD\u96E2\u306E\u6700\u5C0F\u5168\
+      \u57DF\u6728"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/cgl/cgl-1-a.test.cpp
@@ -103,6 +107,9 @@ data:
     path: test/unittest/geometry/circle.test.cpp
     title: test/unittest/geometry/circle.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/geometry/manhattan-mst.test.cpp
+    title: test/unittest/geometry/manhattan-mst.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/geometry/vector-line.test.cpp
     title: test/unittest/geometry/vector-line.test.cpp
   - icon: ':heavy_check_mark:'
@@ -117,6 +124,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/geo/furthest-pair.test.cpp
     title: test/yosupo/geo/furthest-pair.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/geo/manhattanmst.test.cpp
+    title: test/yosupo/geo/manhattanmst.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/geo/minimum-enclosing-circle.test.cpp
+    title: test/yosupo/geo/minimum-enclosing-circle.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/geo/sort-points-by-argument.1.test.cpp
     title: test/yosupo/geo/sort-points-by-argument.1.test.cpp
@@ -1045,12 +1058,14 @@ data:
   isVerificationFile: false
   path: src/geometry/vector.hpp
   requiredBy:
+  - src/geometry/manhattan-mst.hpp
   - src/geometry/axis-parallel-segments.hpp
   - src/geometry/circle.hpp
   timestamp: '2026-10-22 13:36:14+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/dual-segtree.test.cpp
+  - test/unittest/geometry/manhattan-mst.test.cpp
   - test/unittest/geometry/axis-parallel-segments.test.cpp
   - test/unittest/geometry/circle.test.cpp
   - test/unittest/geometry/angle.test.cpp
@@ -1084,8 +1099,10 @@ data:
   - test/aoj/cgl/cgl-2-b.test.cpp
   - test/yosupo/geo/static-convex-hull.test.cpp
   - test/yosupo/geo/sort-points-by-argument.1.test.cpp
+  - test/yosupo/geo/minimum-enclosing-circle.test.cpp
   - test/yosupo/geo/closest-pair.test.cpp
   - test/yosupo/geo/furthest-pair.test.cpp
+  - test/yosupo/geo/manhattanmst.test.cpp
 documentation_of: src/geometry/vector.hpp
 layout: document
 title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"

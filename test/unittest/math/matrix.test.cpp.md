@@ -35,7 +35,9 @@ data:
     \u6BD4\u8F03\u3059\u308B (long long\u30FBmodint\u30FBGF(2))\n// characteristic_polynomial\
     \ \u3092\u3001\u884C\u5217\u5F0F\u3092\u9806\u5217\u3067\u5C55\u958B\u3057\u305F\
     \u591A\u9805\u5F0F\u3068\u6BD4\u8F03\u3059\u308B (mod 998244353\u30FBmod 3)\n\
-    // \u884C\u306E\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\u3068\u304D\u306E\u63A8\
+    // det_mod \u3092\u3001\u9806\u5217\u3067\u5C55\u958B\u3057\u305F\u884C\u5217\u5F0F\
+    \u3068\u6BD4\u8F03\u3059\u308B (\u7D20\u6570\u3067\u306A\u3044 mod \u3082)\n//\
+    \ \u884C\u306E\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\u3068\u304D\u306E\u63A8\
     \u8AD6\u30AC\u30A4\u30C9\u3092 static_assert \u3067\u78BA\u304B\u3081\u308B\n\
     // \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\
     \u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n\
@@ -211,14 +213,35 @@ data:
     \ long i = 0; i < n; i++)\n                for (long long j = 0; j < n; j++) A[i][j]\
     \ = this->v[i][j];\n            return forward_elimination(A);\n        } else\
     \ {\n            auto A = this->v;\n            return forward_elimination(A);\n\
-    \        }\n    }\n\n    /**\n     * @brief \u7279\u6027\u591A\u9805\u5F0F det(xI\
-    \ - A) \u306E\u4FC2\u6570 (\u4F4E\u6B21\u304B\u3089 n + 1 \u500B\u3001\u6700\u9AD8\
-    \u6B21\u306F 1) O(n^3)\n     * @note \u5272\u308A\u7B97\u3092\u4F7F\u3046\u306E\
-    \u3067\u3001\u8981\u7D20\u306F\u4F53 (modint \u306A\u3069) \u3067\u3042\u308B\u3053\
-    \u3068\n     *\n     * \u76F8\u4F3C\u5909\u63DB\u3067\u4E0A\u30D8\u30C3\u30BB\u30F3\
-    \u30D9\u30EB\u30AF\u884C\u5217 (i > j + 1 \u3067 0) \u306B\u3057\u3066\u304B\u3089\
-    \u3001\u5DE6\u4E0A\u306E k \xD7 k \u306E\u7279\u6027\u591A\u9805\u5F0F\u3092 k\
-    \ \u306E\u5C0F\u3055\u3044\u65B9\u304B\u3089\u6C42\u3081\u308B\n     */\n    [[nodiscard]]\n\
+    \        }\n    }\n\n    /**\n     * @brief \u884C\u5217\u5F0F\u3092 mod \u3067\
+    \u5272\u3063\u305F\u4F59\u308A (mod \u306F\u7D20\u6570\u3067\u306A\u304F\u3066\
+    \u3088\u3044) O(n^2 (n + log mod))\n     * @note \u8981\u7D20\u306F\u6574\u6570\
+    \u578B\u3067\u3042\u308B\u3053\u3068\u3002\u5272\u308A\u7B97\u306E\u4EE3\u308F\
+    \u308A\u306B\u30012 \u3064\u306E\u884C\u3067\u4E92\u9664\u6CD5\u306E\u3088\u3046\
+    \u306B\u5F15\u304D\u5408\u3063\u3066 0 \u3092\u4F5C\u308B\n     */\n    [[nodiscard]]\n\
+    \    long long det_mod(long long mod) const {\n        assert(n == m);\n     \
+    \   assert(1 <= mod && mod <= (1LL << 31));\n        std::vector<std::vector<long\
+    \ long>> a(n, std::vector<long long>(n));\n        for (long long i = 0; i < n;\
+    \ i++)\n            for (long long j = 0; j < n; j++) a[i][j] = ((static_cast<long\
+    \ long>(this->v[i][j]) % mod) + mod) % mod;\n        long long res = 1 % mod;\n\
+    \        for (long long i = 0; i < n; i++) {\n            for (long long j = i\
+    \ + 1; j < n; j++) {\n                // a[j][i] \u304C 0 \u306B\u306A\u308B\u307E\
+    \u3067\u3001\u884C i \u304B\u3089\u884C j \u306E q \u500D\u3092\u5F15\u3044\u3066\
+    \u5165\u308C\u66FF\u3048\u308B\n                while (a[j][i] != 0) {\n     \
+    \               const long long q = a[i][i] / a[j][i];\n                    if\
+    \ (q != 0) {\n                        for (long long k = i; k < n; k++) a[i][k]\
+    \ = ((a[i][k] - q * a[j][k]) % mod + mod) % mod;\n                    }\n    \
+    \                std::swap(a[i], a[j]);\n                    res = (mod - res)\
+    \ % mod;\n                }\n            }\n            res = res * a[i][i] %\
+    \ mod;\n            if (res == 0) return 0;\n        }\n        return res;\n\
+    \    }\n\n    /**\n     * @brief \u7279\u6027\u591A\u9805\u5F0F det(xI - A) \u306E\
+    \u4FC2\u6570 (\u4F4E\u6B21\u304B\u3089 n + 1 \u500B\u3001\u6700\u9AD8\u6B21\u306F\
+    \ 1) O(n^3)\n     * @note \u5272\u308A\u7B97\u3092\u4F7F\u3046\u306E\u3067\u3001\
+    \u8981\u7D20\u306F\u4F53 (modint \u306A\u3069) \u3067\u3042\u308B\u3053\u3068\n\
+    \     *\n     * \u76F8\u4F3C\u5909\u63DB\u3067\u4E0A\u30D8\u30C3\u30BB\u30F3\u30D9\
+    \u30EB\u30AF\u884C\u5217 (i > j + 1 \u3067 0) \u306B\u3057\u3066\u304B\u3089\u3001\
+    \u5DE6\u4E0A\u306E k \xD7 k \u306E\u7279\u6027\u591A\u9805\u5F0F\u3092 k \u306E\
+    \u5C0F\u3055\u3044\u65B9\u304B\u3089\u6C42\u3081\u308B\n     */\n    [[nodiscard]]\n\
     \    std::vector<T> characteristic_polynomial() const {\n        assert(n == m);\n\
     \        using P = OperatorProperty;\n        auto sub = [](const T& a, const\
     \ T& b) { return P::add(a, P::neg(b)); };\n        auto H = this->v;\n       \
@@ -424,9 +447,9 @@ data:
     \u306F\u5404\u884C\u306E value_type \u306B\u3059\u308B\n *\n * Matrix(std::vector<std::vector<int>>)\
     \ \u306F Matrix<int>\u3001Matrix(std::vector<std::string>) \u306F Matrix<char>\n\
     \ */\ntemplate <typename Iterable>\nMatrix(const std::vector<Iterable>&) -> Matrix<typename\
-    \ Iterable::value_type>;\n#line 12 \"test/unittest/math/matrix.test.cpp\"\n\n\
-    #line 14 \"test/unittest/math/matrix.test.cpp\"\n#include <iostream>\n#include\
-    \ <numeric>\n#include <random>\n#line 20 \"test/unittest/math/matrix.test.cpp\"\
+    \ Iterable::value_type>;\n#line 13 \"test/unittest/math/matrix.test.cpp\"\n\n\
+    #line 15 \"test/unittest/math/matrix.test.cpp\"\n#include <iostream>\n#include\
+    \ <numeric>\n#include <random>\n#line 21 \"test/unittest/math/matrix.test.cpp\"\
     \n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\
     \u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\
     \u30AF\u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\n#include <cstdint>\n\
@@ -709,7 +732,7 @@ data:
     \ dynamic_modint(SignedIntegral value) noexcept\n        : base_type{value} {}\n\
     \n   private:\n    inline static value_type modulus = 998244353;\n};\n\nusing\
     \ modint998244353 = static_modint<998244353>;\nusing modint1000000007 = static_modint<1000000007>;\n\
-    using modint = dynamic_modint<-1>;\n#line 22 \"test/unittest/math/matrix.test.cpp\"\
+    using modint = dynamic_modint<-1>;\n#line 23 \"test/unittest/math/matrix.test.cpp\"\
     \n\nusing mint = static_modint<998244353>;\n\n// \u63A8\u8AD6\u30AC\u30A4\u30C9\
     : \u8981\u7D20\u306E\u578B\u306F\u5404\u884C\u306E value_type\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::vector<long\
     \ long>>())), Matrix<long long>>);\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::string>())),\
@@ -911,8 +934,23 @@ data:
     \ perm.end()));\n            if (Matrix<M>(a).characteristic_polynomial() != expect)\
     \ ok = false, std::cerr << \"characteristic_polynomial \" << name << std::endl;\n\
     \        }\n    };\n    check_charpoly(mint(0), 1000000, \"mod 998244353\");\n\
-    \    check_charpoly(static_modint<3>(0), 3, \"mod 3\");\n\n    if (ok) std::cout\
-    \ << \"Hello World\" << std::endl;\n}\n"
+    \    check_charpoly(static_modint<3>(0), 3, \"mod 3\");\n\n    // det_mod: \u9806\
+    \u5217\u3067\u5C55\u958B\u3057\u305F\u884C\u5217\u5F0F\u3092 mod \u3067\u5272\u3063\
+    \u305F\u4F59\u308A\u3068\u6BD4\u3079\u308B\u3002mod \u306F\u7D20\u6570\u3067\u306A\
+    \u3044\u3082\u306E\u3082\u3001\u8981\u7D20\u306F\u8CA0\u306E\u5024\u3082\u542B\
+    \u3081\u308B\n    for (int rep = 0; rep < 2000 && ok; rep++) {\n        int n\
+    \ = rng() % 6;\n        long long mod = rng() % 30 + 1;\n        std::vector<std::vector<long\
+    \ long>> a(n, std::vector<long long>(n));\n        for (auto& row : a)\n     \
+    \       for (auto& x : row) x = static_cast<long long>(rng() % 21) - 10;\n   \
+    \     std::vector<int> perm(n);\n        std::iota(perm.begin(), perm.end(), 0);\n\
+    \        long long expect = 0;\n        do {\n            long long p = 1;\n \
+    \           for (int i = 0; i < n; i++) p *= a[i][perm[i]];\n            for (int\
+    \ i = 0; i < n; i++)\n                for (int j = i + 1; j < n; j++)\n      \
+    \              if (perm[i] > perm[j]) p = -p;\n            expect += p;\n    \
+    \    } while (std::next_permutation(perm.begin(), perm.end()));\n        expect\
+    \ = (expect % mod + mod) % mod;\n        if (Matrix<long long>(a).det_mod(mod)\
+    \ != expect) ok = false, std::cerr << \"det_mod\" << std::endl;\n    }\n\n   \
+    \ if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// Matrix \u306E +\u30FB-\u30FB==\u30FB\u30B7\u30D5\u30C8\u7CFB\u30FBcol\u30FB\
     str\u30FB\u521D\u671F\u5316\u5B50\u30EA\u30B9\u30C8\u30FB\u4EE3\u5165\u30FB\u8D70\
@@ -926,7 +964,9 @@ data:
     \u306E\u548C\u3068\u6BD4\u8F03\u3059\u308B (long long\u30FBmodint\u30FBGF(2))\n\
     // characteristic_polynomial \u3092\u3001\u884C\u5217\u5F0F\u3092\u9806\u5217\u3067\
     \u5C55\u958B\u3057\u305F\u591A\u9805\u5F0F\u3068\u6BD4\u8F03\u3059\u308B (mod\
-    \ 998244353\u30FBmod 3)\n// \u884C\u306E\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\
+    \ 998244353\u30FBmod 3)\n// det_mod \u3092\u3001\u9806\u5217\u3067\u5C55\u958B\
+    \u3057\u305F\u884C\u5217\u5F0F\u3068\u6BD4\u8F03\u3059\u308B (\u7D20\u6570\u3067\
+    \u306A\u3044 mod \u3082)\n// \u884C\u306E\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\
     \u3068\u304D\u306E\u63A8\u8AD6\u30AC\u30A4\u30C9\u3092 static_assert \u3067\u78BA\
     \u304B\u3081\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\
     \u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\
@@ -1134,8 +1174,23 @@ data:
     \ perm.end()));\n            if (Matrix<M>(a).characteristic_polynomial() != expect)\
     \ ok = false, std::cerr << \"characteristic_polynomial \" << name << std::endl;\n\
     \        }\n    };\n    check_charpoly(mint(0), 1000000, \"mod 998244353\");\n\
-    \    check_charpoly(static_modint<3>(0), 3, \"mod 3\");\n\n    if (ok) std::cout\
-    \ << \"Hello World\" << std::endl;\n}\n"
+    \    check_charpoly(static_modint<3>(0), 3, \"mod 3\");\n\n    // det_mod: \u9806\
+    \u5217\u3067\u5C55\u958B\u3057\u305F\u884C\u5217\u5F0F\u3092 mod \u3067\u5272\u3063\
+    \u305F\u4F59\u308A\u3068\u6BD4\u3079\u308B\u3002mod \u306F\u7D20\u6570\u3067\u306A\
+    \u3044\u3082\u306E\u3082\u3001\u8981\u7D20\u306F\u8CA0\u306E\u5024\u3082\u542B\
+    \u3081\u308B\n    for (int rep = 0; rep < 2000 && ok; rep++) {\n        int n\
+    \ = rng() % 6;\n        long long mod = rng() % 30 + 1;\n        std::vector<std::vector<long\
+    \ long>> a(n, std::vector<long long>(n));\n        for (auto& row : a)\n     \
+    \       for (auto& x : row) x = static_cast<long long>(rng() % 21) - 10;\n   \
+    \     std::vector<int> perm(n);\n        std::iota(perm.begin(), perm.end(), 0);\n\
+    \        long long expect = 0;\n        do {\n            long long p = 1;\n \
+    \           for (int i = 0; i < n; i++) p *= a[i][perm[i]];\n            for (int\
+    \ i = 0; i < n; i++)\n                for (int j = i + 1; j < n; j++)\n      \
+    \              if (perm[i] > perm[j]) p = -p;\n            expect += p;\n    \
+    \    } while (std::next_permutation(perm.begin(), perm.end()));\n        expect\
+    \ = (expect % mod + mod) % mod;\n        if (Matrix<long long>(a).det_mod(mod)\
+    \ != expect) ok = false, std::cerr << \"det_mod\" << std::endl;\n    }\n\n   \
+    \ if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/math/matrix.hpp
   - src/math/modint.hpp
@@ -1143,7 +1198,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/matrix.test.cpp
   requiredBy: []
-  timestamp: '2026-10-23 13:37:04+09:00'
+  timestamp: '2026-10-23 19:18:19+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/matrix.test.cpp

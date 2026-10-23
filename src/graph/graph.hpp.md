@@ -3,6 +3,10 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
+    path: src/geometry/manhattan-mst.hpp
+    title: "\u30DE\u30F3\u30CF\u30C3\u30BF\u30F3\u8DDD\u96E2\u306E\u6700\u5C0F\u5168\
+      \u57DF\u6728"
+  - icon: ':heavy_check_mark:'
     path: src/graph/auxiliary-tree.hpp
     title: "Auxiliary Tree (\u865A\u6811)"
   - icon: ':heavy_check_mark:'
@@ -97,6 +101,9 @@ data:
     path: test/unittest/data_structures/graph_util.test.cpp
     title: test/unittest/data_structures/graph_util.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/geometry/manhattan-mst.test.cpp
+    title: test/unittest/geometry/manhattan-mst.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/graph/auxiliary-tree.test.cpp
     title: test/unittest/graph/auxiliary-tree.test.cpp
   - icon: ':heavy_check_mark:'
@@ -139,11 +146,17 @@ data:
     path: test/unittest/graph/two-sat.test.cpp
     title: test/unittest/graph/two-sat.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/geo/manhattanmst.test.cpp
+    title: test/yosupo/geo/manhattanmst.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/biconnected-components.test.cpp
     title: test/yosupo/graph/biconnected-components.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/chromatic-number.1.test.cpp
     title: test/yosupo/graph/chromatic-number.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/graph/connected-components-of-complement-graph.test.cpp
+    title: test/yosupo/graph/connected-components-of-complement-graph.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/cycle-detection-undirected.test.cpp
     title: test/yosupo/graph/cycle-detection-undirected.test.cpp
@@ -157,6 +170,9 @@ data:
     path: test/yosupo/graph/dominatortree.test.cpp
     title: test/yosupo/graph/dominatortree.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/graph/enumerate-triangles.test.cpp
+    title: test/yosupo/graph/enumerate-triangles.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/eulerian-trail-directed.test.cpp
     title: test/yosupo/graph/eulerian-trail-directed.test.cpp
   - icon: ':heavy_check_mark:'
@@ -165,6 +181,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/general-matching.test.cpp
     title: test/yosupo/graph/general-matching.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/graph/maximum-independent-set.test.cpp
+    title: test/yosupo/graph/maximum-independent-set.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/minimum-spanning-tree.1.test.cpp
     title: test/yosupo/graph/minimum-spanning-tree.1.test.cpp
@@ -399,6 +418,7 @@ data:
   - src/graph/auxiliary-tree.hpp
   - src/graph/heavy-light-decomposition.hpp
   - src/graph/two-sat.hpp
+  - src/geometry/manhattan-mst.hpp
   timestamp: '2026-10-22 13:40:29+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
@@ -418,6 +438,7 @@ data:
   - test/unittest/graph/tree_util.test.cpp
   - test/unittest/data_structures/graph_util.test.cpp
   - test/unittest/data_structures/find-cycle.test.cpp
+  - test/unittest/geometry/manhattan-mst.test.cpp
   - test/aoj/volume33/3372.test.cpp
   - test/aoj/grl/grl-1-c.2.test.cpp
   - test/aoj/grl/grl-1-b.test.cpp
@@ -437,16 +458,20 @@ data:
   - test/yosupo/graph/chromatic-number.1.test.cpp
   - test/yosupo/graph/minimum-spanning-tree.2.test.cpp
   - test/yosupo/graph/minimum-spanning-tree.1.test.cpp
+  - test/yosupo/graph/connected-components-of-complement-graph.test.cpp
   - test/yosupo/graph/minimum-steiner-tree.test.cpp
   - test/yosupo/graph/shortest-path.test.cpp
+  - test/yosupo/graph/enumerate-triangles.test.cpp
   - test/yosupo/graph/dominatortree.test.cpp
   - test/yosupo/graph/biconnected-components.test.cpp
   - test/yosupo/graph/scc.test.cpp
   - test/yosupo/graph/two-edge-connected-components.test.cpp
   - test/yosupo/graph/cycle-detection.test.cpp
+  - test/yosupo/graph/maximum-independent-set.test.cpp
   - test/yosupo/graph/eulerian-trail-directed.test.cpp
   - test/yosupo/graph/directedmst.test.cpp
   - test/yosupo/other/two-sat.test.cpp
+  - test/yosupo/geo/manhattanmst.test.cpp
   - test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
   - test/yosupo/tree/lca.4.test.cpp
   - test/yosupo/tree/vertex-add-subtree-sum.1.test.cpp

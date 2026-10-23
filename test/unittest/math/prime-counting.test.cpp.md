@@ -445,53 +445,53 @@ data:
     using modint = dynamic_modint<-1>;\n#line 2 \"src/math/prime.hpp\"\n\n/**\n *\
     \ @file prime.hpp\n * @brief \u7D20\u6570 (\u7D20\u6570\u5224\u5B9A\u3001\u7D20\
     \u56E0\u6570\u5206\u89E3\u3001\u7D04\u6570\u5217\u6319\u3001\u7BE9\u3001\u539F\
-    \u59CB\u6839)\n */\n\n#include <algorithm>\n#line 10 \"src/math/prime.hpp\"\n\
-    #include <initializer_list>\n#include <numeric>\n#line 14 \"src/math/prime.hpp\"\
-    \n\n#line 2 \"src/math/modular-arithmetic.hpp\"\n\n/**\n * @file modular-arithmetic.hpp\n\
-    \ * @brief mod \u6F14\u7B97 (\u7A4D\u3001\u51AA\u4E57\u3001\u9006\u5143\u3001\u96E2\
-    \u6563\u5BFE\u6570\u3001\u5E73\u65B9\u6839)\n */\n\n#line 12 \"src/math/modular-arithmetic.hpp\"\
-    \n#include <unordered_map>\n\n/**\n * @brief a * b mod m \u3092\u8FD4\u3059 (\u9014\
-    \u4E2D\u3067 __int128 \u3092\u4F7F\u3046\u306E\u3067 m < 2^63 \u306A\u3089\u3042\
-    \u3075\u308C\u306A\u3044)\n */\nconstexpr long long modmul(long long a, long long\
-    \ b, long long m) {\n    long long res = static_cast<long long>(static_cast<__int128>(a)\
-    \ * b % m);\n    if (res < 0) res += m;\n    return res;\n}\n\n/**\n * @brief\
-    \ a^(-1) mod m \u3092\u8FD4\u3059\n * @note a \u3068 m \u306F\u4E92\u3044\u306B\
-    \u7D20\u3067\u3042\u308B\u3053\u3068\u3002O(log m)\n */\nconstexpr long long modinv(long\
-    \ long a, long long m) {\n    assert(m >= 1);\n    a %= m;\n    if (a < 0) a +=\
-    \ m;\n    long long b = m, u = 1, v = 0;\n    while (b) {\n        // std::swap\
-    \ \u306F C++17 \u3067\u306F constexpr \u3067\u306A\u3044\u306E\u3067\u3001\u4F7F\
-    \u308F\u305A\u306B\u66F8\u304F\n        long long t = a / b;\n        long long\
-    \ c = a - t * b;\n        a = b, b = c;\n        long long w = u - t * v;\n  \
-    \      u = v, v = w;\n    }\n    assert(a == 1 && \"a and m must be coprime\"\
-    );\n    u %= m;\n    if (u < 0) u += m;\n    return u;\n}\n\n/**\n * @brief a^n\
-    \ mod m \u3092\u8FD4\u3059\n * @note n \u304C\u8CA0\u306A\u3089 a^(-1) \u306E\
-    \ -n \u4E57 (a \u3068 m \u306F\u4E92\u3044\u306B\u7D20\u3067\u3042\u308B\u3053\
-    \u3068)\u3002O(log |n|)\n */\nconstexpr long long modpow(long long a, long long\
-    \ n, long long m) {\n    assert(m >= 1);\n    a %= m;\n    if (a < 0) a += m;\n\
-    \    if (n < 0) {\n        n = -n;\n        a = modinv(a, m);\n    }\n    long\
-    \ long res = 1 % m;\n    while (n > 0) {\n        if (n & 1) res = modmul(res,\
-    \ a, m);\n        a = modmul(a, a, m);\n        n >>= 1;\n    }\n    return res;\n\
-    }\n\n/**\n * @brief a^x \u2261 b (mod m) \u3068\u306A\u308B\u6700\u5C0F\u306E\
-    \ x >= 0 (\u306A\u3051\u308C\u3070 -1)\n * @note a \u3068 m \u306F\u4E92\u3044\
-    \u306B\u7D20\u3067\u306A\u304F\u3066\u3082\u3088\u3044\u3002Baby-step Giant-step\
-    \ \u3067 O(\u221Am) \u306E\u6642\u9593\u3068\u30E1\u30E2\u30EA\n */\ninline long\
-    \ long discrete_log(long long a, long long b, long long m) {\n    assert(m >=\
-    \ 1);\n    a %= m, b %= m;\n    if (a < 0) a += m;\n    if (b < 0) b += m;\n \
-    \   if (m == 1) return 0;\n    // a \u3068 m \u304C\u4E92\u3044\u306B\u7D20\u306B\
-    \u306A\u308B\u307E\u3067\u4E21\u8FBA\u3092 gcd \u3067\u5272\u308B\u3002k = a^add\
-    \ / (\u5272\u3063\u305F gcd \u306E\u7A4D) mod m\n    long long k = 1, add = 0,\
-    \ g;\n    while ((g = std::gcd(a, m)) > 1) {\n        if (b == k) return add;\n\
-    \        if (b % g != 0) return -1;\n        b /= g, m /= g, add++;\n        k\
-    \ = modmul(k, a / g, m);\n    }\n    // k a^x \u2261 b \u3092 x = n p - q (1 <=\
-    \ p <= n\u30010 <= q <= n) \u3068\u66F8\u3044\u3066\u89E3\u304F\n    const long\
-    \ long n = static_cast<long long>(std::sqrt(static_cast<long double>(m))) + 1;\n\
-    \    std::unordered_map<long long, long long> baby;\n    baby.reserve(2 * n +\
-    \ 2);\n    // b a^q \u3092 q \u306E\u5C0F\u3055\u3044\u9806\u306B\u5165\u308C\u3001\
-    \u540C\u3058\u5024\u306A\u3089\u5927\u304D\u3044 q \u3067\u4E0A\u66F8\u304D\u3059\
-    \u308B (x \u3092\u5C0F\u3055\u304F\u3059\u308B\u305F\u3081)\n    for (long long\
-    \ q = 0, cur = b; q <= n; q++, cur = modmul(cur, a, m)) baby[cur] = q;\n    const\
-    \ long long an = modpow(a, n, m);\n    for (long long p = 1, cur = k; p <= n;\
-    \ p++) {\n        cur = modmul(cur, an, m);\n        auto it = baby.find(cur);\n\
+    \u59CB\u6839)\n */\n\n#include <algorithm>\n#line 11 \"src/math/prime.hpp\"\n\
+    #include <initializer_list>\n#include <numeric>\n#include <unordered_map>\n#line\
+    \ 16 \"src/math/prime.hpp\"\n\n#line 2 \"src/math/modular-arithmetic.hpp\"\n\n\
+    /**\n * @file modular-arithmetic.hpp\n * @brief mod \u6F14\u7B97 (\u7A4D\u3001\
+    \u51AA\u4E57\u3001\u9006\u5143\u3001\u96E2\u6563\u5BFE\u6570\u3001\u5E73\u65B9\
+    \u6839)\n */\n\n#line 13 \"src/math/modular-arithmetic.hpp\"\n\n/**\n * @brief\
+    \ a * b mod m \u3092\u8FD4\u3059 (\u9014\u4E2D\u3067 __int128 \u3092\u4F7F\u3046\
+    \u306E\u3067 m < 2^63 \u306A\u3089\u3042\u3075\u308C\u306A\u3044)\n */\nconstexpr\
+    \ long long modmul(long long a, long long b, long long m) {\n    long long res\
+    \ = static_cast<long long>(static_cast<__int128>(a) * b % m);\n    if (res < 0)\
+    \ res += m;\n    return res;\n}\n\n/**\n * @brief a^(-1) mod m \u3092\u8FD4\u3059\
+    \n * @note a \u3068 m \u306F\u4E92\u3044\u306B\u7D20\u3067\u3042\u308B\u3053\u3068\
+    \u3002O(log m)\n */\nconstexpr long long modinv(long long a, long long m) {\n\
+    \    assert(m >= 1);\n    a %= m;\n    if (a < 0) a += m;\n    long long b = m,\
+    \ u = 1, v = 0;\n    while (b) {\n        // std::swap \u306F C++17 \u3067\u306F\
+    \ constexpr \u3067\u306A\u3044\u306E\u3067\u3001\u4F7F\u308F\u305A\u306B\u66F8\
+    \u304F\n        long long t = a / b;\n        long long c = a - t * b;\n     \
+    \   a = b, b = c;\n        long long w = u - t * v;\n        u = v, v = w;\n \
+    \   }\n    assert(a == 1 && \"a and m must be coprime\");\n    u %= m;\n    if\
+    \ (u < 0) u += m;\n    return u;\n}\n\n/**\n * @brief a^n mod m \u3092\u8FD4\u3059\
+    \n * @note n \u304C\u8CA0\u306A\u3089 a^(-1) \u306E -n \u4E57 (a \u3068 m \u306F\
+    \u4E92\u3044\u306B\u7D20\u3067\u3042\u308B\u3053\u3068)\u3002O(log |n|)\n */\n\
+    constexpr long long modpow(long long a, long long n, long long m) {\n    assert(m\
+    \ >= 1);\n    a %= m;\n    if (a < 0) a += m;\n    if (n < 0) {\n        n = -n;\n\
+    \        a = modinv(a, m);\n    }\n    long long res = 1 % m;\n    while (n >\
+    \ 0) {\n        if (n & 1) res = modmul(res, a, m);\n        a = modmul(a, a,\
+    \ m);\n        n >>= 1;\n    }\n    return res;\n}\n\n/**\n * @brief a^x \u2261\
+    \ b (mod m) \u3068\u306A\u308B\u6700\u5C0F\u306E x >= 0 (\u306A\u3051\u308C\u3070\
+    \ -1)\n * @note a \u3068 m \u306F\u4E92\u3044\u306B\u7D20\u3067\u306A\u304F\u3066\
+    \u3082\u3088\u3044\u3002Baby-step Giant-step \u3067 O(\u221Am) \u306E\u6642\u9593\
+    \u3068\u30E1\u30E2\u30EA\n */\ninline long long discrete_log(long long a, long\
+    \ long b, long long m) {\n    assert(m >= 1);\n    a %= m, b %= m;\n    if (a\
+    \ < 0) a += m;\n    if (b < 0) b += m;\n    if (m == 1) return 0;\n    // a \u3068\
+    \ m \u304C\u4E92\u3044\u306B\u7D20\u306B\u306A\u308B\u307E\u3067\u4E21\u8FBA\u3092\
+    \ gcd \u3067\u5272\u308B\u3002k = a^add / (\u5272\u3063\u305F gcd \u306E\u7A4D\
+    ) mod m\n    long long k = 1, add = 0, g;\n    while ((g = std::gcd(a, m)) > 1)\
+    \ {\n        if (b == k) return add;\n        if (b % g != 0) return -1;\n   \
+    \     b /= g, m /= g, add++;\n        k = modmul(k, a / g, m);\n    }\n    //\
+    \ k a^x \u2261 b \u3092 x = n p - q (1 <= p <= n\u30010 <= q <= n) \u3068\u66F8\
+    \u3044\u3066\u89E3\u304F\n    const long long n = static_cast<long long>(std::sqrt(static_cast<long\
+    \ double>(m))) + 1;\n    std::unordered_map<long long, long long> baby;\n    baby.reserve(2\
+    \ * n + 2);\n    // b a^q \u3092 q \u306E\u5C0F\u3055\u3044\u9806\u306B\u5165\u308C\
+    \u3001\u540C\u3058\u5024\u306A\u3089\u5927\u304D\u3044 q \u3067\u4E0A\u66F8\u304D\
+    \u3059\u308B (x \u3092\u5C0F\u3055\u304F\u3059\u308B\u305F\u3081)\n    for (long\
+    \ long q = 0, cur = b; q <= n; q++, cur = modmul(cur, a, m)) baby[cur] = q;\n\
+    \    const long long an = modpow(a, n, m);\n    for (long long p = 1, cur = k;\
+    \ p <= n; p++) {\n        cur = modmul(cur, an, m);\n        auto it = baby.find(cur);\n\
     \        if (it != baby.end()) return n * p - it->second + add;\n    }\n    return\
     \ -1;\n}\n\n/**\n * @brief \u7D20\u6570 p \u306B\u3064\u3044\u3066 x^2 \u2261\
     \ a (mod p) \u3068\u306A\u308B x \u306E\u3046\u3061\u5C0F\u3055\u3044\u65B9 (\u306A\
@@ -510,7 +510,7 @@ data:
     \ tt = modmul(tt, tt, p), i++;\n        long long b = c;\n        for (long long\
     \ j = 0; j < s - i - 1; j++) b = modmul(b, b, p);\n        s = i;\n        c =\
     \ modmul(b, b, p);\n        t = modmul(t, c, p);\n        r = modmul(r, b, p);\n\
-    \    }\n    return std::min(r, p - r);\n}\n#line 16 \"src/math/prime.hpp\"\n\n\
+    \    }\n    return std::min(r, p - r);\n}\n#line 18 \"src/math/prime.hpp\"\n\n\
     namespace internal_prime {\n\nusing u64 = unsigned long long;\n\n/**\n * @brief\
     \ Pollard \u306E \u03C1 \u6CD5 (Brent \u306E\u6539\u826F) \u3067\u5408\u6210\u6570\
     \ n \u306E 1 \u3067\u3082 n \u3067\u3082\u306A\u3044\u7D04\u6570\u3092 1 \u3064\
@@ -587,79 +587,153 @@ data:
     \        bool ok = true;\n        for (auto [q, e] : fphi) {\n            if (modpow(g,\
     \ phi / q, m) == 1) {\n                ok = false;\n                break;\n \
     \           }\n        }\n        if (ok) return g;\n    }\n}\n\n/**\n * @brief\
-    \ n \u4EE5\u4E0B\u306E\u7D20\u6570\u3092\u6607\u9806\u306B\u4E26\u3079\u3066\u8FD4\
-    \u3059\n * \u5947\u6570\u3060\u3051\u3092\u533A\u9593\u3054\u3068\u306B\u7BE9\u3046\
-    \u3002O(n log log n)\u3001\u30E1\u30E2\u30EA\u306F O(\u221An + \u7D20\u6570\u306E\
-    \u500B\u6570)\n */\ninline std::vector<long long> enumerate_primes(long long n)\
-    \ {\n    std::vector<long long> res;\n    if (n < 2) return res;\n    res.push_back(2);\n\
-    \    long long r = 1;\n    while ((r + 1) * (r + 1) <= n) r++;\n    // \u221A\
-    n \u4EE5\u4E0B\u306E\u5947\u7D20\u6570 p \u3068\u3001\u6B21\u306B\u7BE9\u3046\
-    \ p \u306E\u500D\u6570 (\u5947\u6570)\n    std::vector<char> small(r + 1, 1);\n\
-    \    std::vector<std::pair<long long, long long>> sp;\n    for (long long i =\
-    \ 3; i <= r; i += 2) {\n        if (!small[i]) continue;\n        for (long long\
-    \ j = i * i; j <= r; j += 2 * i) small[j] = 0;\n        sp.emplace_back(i, i *\
-    \ i);\n    }\n    // \u5947\u6570 2k+1 (1 <= k <= kmax) \u3092\u3001k \u306E\u9577\
-    \u3055 B \u306E\u533A\u9593\u3054\u3068\u306B\u7BE9\u3046\n    constexpr int B\
-    \ = 1 << 16;\n    std::vector<char> block(B);\n    const long long kmax = (n -\
-    \ 1) / 2;\n    for (long long lo = 1; lo <= kmax; lo += B) {\n        const long\
-    \ long hi = std::min(lo + B, kmax + 1);\n        std::fill(block.begin(), block.begin()\
-    \ + (hi - lo), 1);\n        for (auto& [p, m] : sp) {\n            long long k\
-    \ = (m - 1) / 2;\n            for (; k < hi; k += p) block[k - lo] = 0;\n    \
-    \        m = 2 * k + 1;\n        }\n        for (long long k = lo; k < hi; k++)\
-    \ {\n            if (block[k - lo]) res.push_back(2 * k + 1);\n        }\n   \
-    \ }\n    return res;\n}\n\n/**\n * @brief n \u4EE5\u4E0B\u306E\u6574\u6570\u306E\
-    \u6700\u5C0F\u7D20\u56E0\u6570\u3092\u524D\u8A08\u7B97\u3059\u308B\u7BE9 (\u7DDA\
-    \u5F62\u7BE9)\n *\n * \u524D\u8A08\u7B97 O(n)\u3001\u7D20\u6570\u5224\u5B9A O(1)\u3001\
-    \u7D20\u56E0\u6570\u5206\u89E3 O(log x)\n * \u4F8B:\n * Sieve sv(1000000);\n *\
-    \ sv.is_prime(x); sv.factorize(x);\n */\nclass Sieve {\n    long long n;\n   \
-    \ std::vector<int> lpf;  // \u6700\u5C0F\u7D20\u56E0\u6570 (\u30E1\u30E2\u30EA\
-    \u3092\u6291\u3048\u308B\u305F\u3081 int \u3067\u6301\u3064)\n    std::vector<long\
-    \ long> ps;\n\n   public:\n    explicit Sieve(long long n) : n(n), lpf(n + 1,\
-    \ 0) {\n        assert(n >= 0);\n        for (int i = 2; i <= n; i++) {\n    \
-    \        if (lpf[i] == 0) {\n                lpf[i] = i;\n                ps.push_back(i);\n\
-    \            }\n            for (long long p : ps) {\n                if (p >\
-    \ lpf[i] || p * i > n) break;\n                lpf[p * i] = p;\n            }\n\
-    \        }\n    }\n\n    /**\n     * @brief \u524D\u8A08\u7B97\u3057\u305F\u7BC4\
-    \u56F2\u306E\u4E0A\u9650 n\n     */\n    long long limit() const { return n; }\n\
-    \    /**\n     * @brief x (0 <= x <= n) \u304C\u7D20\u6570\u304B O(1)\n     */\n\
-    \    bool is_prime(long long x) const {\n        assert(0 <= x && x <= n);\n \
-    \       return x >= 2 && lpf[x] == x;\n    }\n    /**\n     * @brief x (2 <= x\
-    \ <= n) \u306E\u6700\u5C0F\u7D20\u56E0\u6570 O(1)\n     */\n    long long min_factor(long\
-    \ long x) const {\n        assert(2 <= x && x <= n);\n        return lpf[x];\n\
-    \    }\n    /**\n     * @brief n \u4EE5\u4E0B\u306E\u7D20\u6570\u3092\u6607\u9806\
-    \u306B\u4E26\u3079\u305F\u3082\u306E\n     */\n    const std::vector<long long>&\
-    \ primes() const { return ps; }\n    /**\n     * @brief x (1 <= x <= n) \u3092\
-    \u7D20\u56E0\u6570\u5206\u89E3\u3057\u3001(\u7D20\u56E0\u6570, \u6307\u6570) \u3092\
-    \u7D20\u56E0\u6570\u306E\u6607\u9806\u306B\u4E26\u3079\u3066\u8FD4\u3059 O(log\
-    \ x)\n     */\n    std::vector<std::pair<long long, long long>> factorize(long\
-    \ long x) const {\n        assert(1 <= x && x <= n);\n        std::vector<std::pair<long\
-    \ long, long long>> res;\n        while (x > 1) {\n            long long p = lpf[x],\
-    \ e = 0;\n            while (x % p == 0) x /= p, e++;\n            res.emplace_back(p,\
-    \ e);\n        }\n        return res;\n    }\n    /**\n     * @brief x (1 <= x\
-    \ <= n) \u306E\u6B63\u306E\u7D04\u6570\u3092\u6607\u9806\u306B\u4E26\u3079\u3066\
-    \u8FD4\u3059\n     */\n    std::vector<long long> divisors(long long x) const\
-    \ {\n        std::vector<long long> res = {1};\n        for (auto [p, e] : factorize(x))\
-    \ {\n            const long long sz = res.size();\n            long long pw =\
-    \ 1;\n            for (long long i = 0; i < e; i++) {\n                pw *= p;\n\
-    \                for (long long j = 0; j < sz; j++) res.push_back(res[j] * pw);\n\
-    \            }\n        }\n        std::sort(res.begin(), res.end());\n      \
-    \  return res;\n    }\n};\n#line 2 \"src/math/quotients.hpp\"\n\n/**\n * @file\
-    \ quotients.hpp\n * @brief \u5546\u306E\u5217\u6319 (floor(n / i) \u304C\u540C\
-    \u3058\u5024\u306B\u306A\u308B i \u306E\u533A\u9593)\n */\n\n#line 10 \"src/math/quotients.hpp\"\
-    \n\n/**\n * @brief \u5546 q = floor(n / i) \u3068\u3001\u305D\u308C\u3092\u3068\
-    \u308B i \u306E\u533A\u9593 [l, r]\n */\nstruct QuotientRange {\n    long long\
-    \ q;  //!< \u5546\n    long long l;  //!< \u533A\u9593\u306E\u5DE6\u7AEF (\u542B\
-    \u3080)\n    long long r;  //!< \u533A\u9593\u306E\u53F3\u7AEF (\u542B\u3080)\n\
-    };\n\n/**\n * @brief i = 1, ..., n \u3092 floor(n / i) \u306E\u5024\u3067\u533A\
-    \u9593\u306B\u5206\u3051\u3001i \u306E\u6607\u9806 (\u5546\u306E\u964D\u9806)\
-    \ \u306B f(q, l, r) \u3092\u547C\u3076 O(sqrt(n))\n * l <= i <= r \u306A\u3089\
-    \ floor(n / i) == q\n */\ntemplate <typename F>\nvoid for_each_quotient(long long\
-    \ n, F f) {\n    assert(n >= 0);\n    for (long long l = 1; l <= n;) {\n     \
-    \   long long q = n / l, r = n / q;\n        f(q, l, r);\n        l = r + 1;\n\
-    \    }\n}\n\n/**\n * @brief i = 1, ..., n \u3092 floor(n / i) \u306E\u5024\u3067\
-    \u533A\u9593\u306B\u5206\u3051\u305F\u3082\u306E (i \u306E\u6607\u9806\u3001\u3064\
-    \u307E\u308A\u5546\u306E\u964D\u9806) O(sqrt(n))\n * \u533A\u9593\u306E\u500B\u6570\
-    \u306F 2 sqrt(n) \u4EE5\u4E0B\n */\ninline std::vector<QuotientRange> enumerate_quotients(long\
+    \ \u7D20\u6570 p \u306B\u3064\u3044\u3066 x^k \u2261 a (mod p) \u3068\u306A\u308B\
+    \ x \u3092 1 \u3064\u8FD4\u3059 (\u306A\u3051\u308C\u3070 -1)\u30020^0 = 1 \u3068\
+    \u3059\u308B\n *\n * g = gcd(k, p - 1) \u3068\u3057\u3066 g \u4E57\u6839 z \u3092\
+    \u6C42\u3081\u3001x = z^(k/g \u306E\u9006\u6570 mod (p-1)/g) \u3068\u3059\u308B\
+    \n * g \u4E57\u6839\u306F\u3001g \u306E\u7D20\u56E0\u6570 q \u3054\u3068\u306B\
+    \u3001\u4F4D\u6570 q^s \u306E\u90E8\u5206\u7FA4\u306E\u4E2D\u3067 Pohlig-Hellman\
+    \ \u6CD5 (q \u306E\u90E8\u5206\u306F baby-step giant-step) \u3092\u4F7F\u3063\u3066\
+    \u76F4\u3059\n * O(\u03A3_q (s sqrt(q) + log^2 p)) \u306B p - 1 \u306E\u7D20\u56E0\
+    \u6570\u5206\u89E3\u3092\u8DB3\u3057\u305F\u3082\u306E\n */\ninline long long\
+    \ kth_root_mod(long long k, long long a, long long p) {\n    assert(k >= 0 &&\
+    \ p >= 2);\n    a %= p;\n    if (a < 0) a += p;\n    if (k == 0) return a == 1\
+    \ % p ? 1 : -1;\n    if (a == 0) return 0;\n    const long long m = p - 1, g =\
+    \ std::gcd(k, m);\n    if (modpow(a, m / g, p) != 1) return -1;\n    long long\
+    \ z = a;  // \u7D20\u56E0\u6570\u3092 1 \u3064\u305A\u3064\u51E6\u7406\u3057\u3001\
+    \u6700\u5F8C\u306B z^g = a \u3068\u306A\u308B\u3088\u3046\u306B\u3059\u308B\n\
+    \    for (auto [q, e] : factorize(g)) {\n        long long s = 0, t = m, qe =\
+    \ 1;\n        while (t % q == 0) t /= q, s++;\n        for (long long i = 0; i\
+    \ < e; i++) qe *= q;\n        // x1 = z^r (r q^e \u2261 1 mod t) \u3068\u3059\u308B\
+    \u3068 x1^(q^e) = z h (h \u306F\u4F4D\u6570 q^s \u306E\u90E8\u5206\u7FA4 H \u306E\
+    \u5143)\n        const long long r = t == 1 ? 0 : modinv(qe % t, t);\n       \
+    \ const long long x1 = modpow(z, r, p);\n        const long long target = modmul(z,\
+    \ modinv(modpow(x1, qe, p), p), p);  // h^(-1)\u3001H \u306E\u5143\u3067 q^e \u4E57\
+    \u306B\u306A\u3063\u3066\u3044\u308B\n        // H \u306E\u751F\u6210\u5143 c\
+    \ = w^t (w \u306F q \u4E57\u975E\u5270\u4F59)\n        long long w = 2;\n    \
+    \    while (modpow(w, m / q, p) == 1) w++;\n        const long long c = modpow(w,\
+    \ t, p);\n        // target = c^d \u3068\u306A\u308B d \u3092 q \u9032\u3067 1\
+    \ \u6841\u305A\u3064\u6C42\u3081\u308B (Pohlig-Hellman)\n        long long zeta\
+    \ = c;  // \u4F4D\u6570 q \u306E\u5143 c^(q^(s-1))\n        for (long long i =\
+    \ 0; i + 1 < s; i++) zeta = modpow(zeta, q, p);\n        const long long B = std::sqrt(static_cast<double>(q))\
+    \ + 1;\n        std::unordered_map<long long, long long> baby;  // zeta^j -> j\
+    \ (j < B)\n        for (long long j = 0, x = 1; j < B; j++, x = modmul(x, zeta,\
+    \ p)) baby.emplace(x, j);\n        const long long giant = modinv(modpow(zeta,\
+    \ B, p), p);\n        auto log_zeta = [&](long long y) {\n            for (long\
+    \ long i = 0; i <= q / B + 1; i++, y = modmul(y, giant, p)) {\n              \
+    \  auto it = baby.find(y);\n                if (it != baby.end()) return i * B\
+    \ + it->second;\n            }\n            assert(false);\n            return\
+    \ -1LL;\n        };\n        long long d = 0, qi = 1;\n        const long long\
+    \ cinv = modinv(c, p);\n        for (long long i = 0; i < s; i++, qi *= q) {\n\
+    \            // (target c^(-d))^(q^(s-1-i)) = zeta^(d \u306E i \u6841\u76EE)\n\
+    \            long long y = modmul(target, modpow(cinv, d, p), p);\n          \
+    \  for (long long j = 0; j + 1 + i < s; j++) y = modpow(y, q, p);\n          \
+    \  d += log_zeta(y) * qi;\n        }\n        // d \u306F q^e \u306E\u500D\u6570\
+    \u306B\u306A\u3063\u3066\u3044\u308B\n        z = modmul(x1, modpow(c, d / qe,\
+    \ p), p);\n    }\n    const long long mg = m / g;\n    const long long inv = mg\
+    \ == 1 ? 0 : modinv((k / g) % mg, mg);\n    return modpow(z, inv, p);\n}\n\n/**\n\
+    \ * @brief \u30C6\u30C8\u30EC\u30FC\u30B7\u30E7\u30F3 a\u2191\u2191b (a \u3092\
+    \ b \u500B\u91CD\u306D\u305F\u3079\u304D\u4E57 a^a^...^a\u3001a\u2191\u21910 =\
+    \ 1) \u3092 m \u3067\u5272\u3063\u305F\u4F59\u308A\u30020^0 = 1 \u3068\u3059\u308B\
+    \n *\n * x >= log2(m) \u306A\u3089 a^x \u2261 a^(x mod \u03C6(m) + \u03C6(m))\
+    \ (mod m) \u3092\u4F7F\u3044\u3001m \u3092 \u03C6(m) \u306B\u7F6E\u304D\u63DB\u3048\
+    \u3066\u518D\u5E30\u3059\u308B\u3002m \u306F O(log m) \u56DE\u3067 1 \u306B\u306A\
+    \u308B\n * \u9014\u4E2D\u306E\u5024\u306F\u300C\u672C\u5F53\u306E\u5024\u304C\
+    \ m \u672A\u6E80\u306A\u3089\u305D\u306E\u307E\u307E\u3001m \u4EE5\u4E0A\u306A\
+    \u3089 (\u5024 mod m) + m\u300D\u3067\u6301\u3061\u3001\u672C\u5F53\u306E\u5024\
+    \u304C m \u4EE5\u4E0A\u304B\u3092\u5931\u308F\u306A\u3044\u3088\u3046\u306B\u3059\
+    \u308B\n * O(log m \xD7 (factorize(m) + log m))\n * @pre m <= 2 \xD7 10^9\n */\n\
+    inline long long tetration_mod(long long a, long long b, long long m) {\n    //\
+    \ \u9014\u4E2D\u306E\u5024\u306F 2m \u672A\u6E80\u306A\u306E\u3067\u3001\u305D\
+    \u306E\u7A4D\u304C\u3042\u3075\u308C\u306A\u3044\u3088\u3046\u306B m \u3092\u5236\
+    \u9650\u3059\u308B\n    assert(a >= 0 && b >= 0 && 1 <= m && m <= 2000000000);\n\
+    \    // x \u3092\u4E0A\u306E\u5F62\u306B\u76F4\u3059\n    auto clamp = [](long\
+    \ long x, long long mod) { return x < mod ? x : x % mod + mod; };\n    // a\u2191\
+    \u2191b \u3092\u4E0A\u306E\u5F62\u3067\u8FD4\u3059\n    auto rec = [&](auto self,\
+    \ long long b, long long mod) -> long long {\n        if (b == 0) return clamp(1,\
+    \ mod);\n        // 0\u2191\u2191b \u306F b \u304C\u5076\u6570\u306A\u3089 1\u3001\
+    \u5947\u6570\u306A\u3089 0\n        if (a == 0) return clamp(b % 2 == 0 ? 1 :\
+    \ 0, mod);\n        // a >= 1 \u306A\u3089 a\u2191\u2191b >= 1\n        if (a\
+    \ == 1 || mod == 1) return clamp(1, mod);\n        const long long e = self(self,\
+    \ b - 1, totient(mod));\n        // a^e \u3092\u4E0A\u306E\u5F62\u3067\u6C42\u3081\
+    \u308B (a >= 1\u3001e >= 1)\n        long long res = 1, base = clamp(a, mod);\n\
+    \        for (long long k = e; k > 0; k >>= 1) {\n            if (k & 1) res =\
+    \ clamp(res * base, mod);\n            if (k > 1) base = clamp(base * base, mod);\n\
+    \        }\n        return res;\n    };\n    return rec(rec, b, m) % m;\n}\n\n\
+    /**\n * @brief n \u4EE5\u4E0B\u306E\u7D20\u6570\u3092\u6607\u9806\u306B\u4E26\u3079\
+    \u3066\u8FD4\u3059\n * \u5947\u6570\u3060\u3051\u3092\u533A\u9593\u3054\u3068\u306B\
+    \u7BE9\u3046\u3002O(n log log n)\u3001\u30E1\u30E2\u30EA\u306F O(\u221An + \u7D20\
+    \u6570\u306E\u500B\u6570)\n */\ninline std::vector<long long> enumerate_primes(long\
+    \ long n) {\n    std::vector<long long> res;\n    if (n < 2) return res;\n   \
+    \ res.push_back(2);\n    long long r = 1;\n    while ((r + 1) * (r + 1) <= n)\
+    \ r++;\n    // \u221An \u4EE5\u4E0B\u306E\u5947\u7D20\u6570 p \u3068\u3001\u6B21\
+    \u306B\u7BE9\u3046 p \u306E\u500D\u6570 (\u5947\u6570)\n    std::vector<char>\
+    \ small(r + 1, 1);\n    std::vector<std::pair<long long, long long>> sp;\n   \
+    \ for (long long i = 3; i <= r; i += 2) {\n        if (!small[i]) continue;\n\
+    \        for (long long j = i * i; j <= r; j += 2 * i) small[j] = 0;\n       \
+    \ sp.emplace_back(i, i * i);\n    }\n    // \u5947\u6570 2k+1 (1 <= k <= kmax)\
+    \ \u3092\u3001k \u306E\u9577\u3055 B \u306E\u533A\u9593\u3054\u3068\u306B\u7BE9\
+    \u3046\n    constexpr int B = 1 << 16;\n    std::vector<char> block(B);\n    const\
+    \ long long kmax = (n - 1) / 2;\n    for (long long lo = 1; lo <= kmax; lo +=\
+    \ B) {\n        const long long hi = std::min(lo + B, kmax + 1);\n        std::fill(block.begin(),\
+    \ block.begin() + (hi - lo), 1);\n        for (auto& [p, m] : sp) {\n        \
+    \    long long k = (m - 1) / 2;\n            for (; k < hi; k += p) block[k -\
+    \ lo] = 0;\n            m = 2 * k + 1;\n        }\n        for (long long k =\
+    \ lo; k < hi; k++) {\n            if (block[k - lo]) res.push_back(2 * k + 1);\n\
+    \        }\n    }\n    return res;\n}\n\n/**\n * @brief n \u4EE5\u4E0B\u306E\u6574\
+    \u6570\u306E\u6700\u5C0F\u7D20\u56E0\u6570\u3092\u524D\u8A08\u7B97\u3059\u308B\
+    \u7BE9 (\u7DDA\u5F62\u7BE9)\n *\n * \u524D\u8A08\u7B97 O(n)\u3001\u7D20\u6570\u5224\
+    \u5B9A O(1)\u3001\u7D20\u56E0\u6570\u5206\u89E3 O(log x)\n * \u4F8B:\n * Sieve\
+    \ sv(1000000);\n * sv.is_prime(x); sv.factorize(x);\n */\nclass Sieve {\n    long\
+    \ long n;\n    std::vector<int> lpf;  // \u6700\u5C0F\u7D20\u56E0\u6570 (\u30E1\
+    \u30E2\u30EA\u3092\u6291\u3048\u308B\u305F\u3081 int \u3067\u6301\u3064)\n   \
+    \ std::vector<long long> ps;\n\n   public:\n    explicit Sieve(long long n) :\
+    \ n(n), lpf(n + 1, 0) {\n        assert(n >= 0);\n        for (int i = 2; i <=\
+    \ n; i++) {\n            if (lpf[i] == 0) {\n                lpf[i] = i;\n   \
+    \             ps.push_back(i);\n            }\n            for (long long p :\
+    \ ps) {\n                if (p > lpf[i] || p * i > n) break;\n               \
+    \ lpf[p * i] = p;\n            }\n        }\n    }\n\n    /**\n     * @brief \u524D\
+    \u8A08\u7B97\u3057\u305F\u7BC4\u56F2\u306E\u4E0A\u9650 n\n     */\n    long long\
+    \ limit() const { return n; }\n    /**\n     * @brief x (0 <= x <= n) \u304C\u7D20\
+    \u6570\u304B O(1)\n     */\n    bool is_prime(long long x) const {\n        assert(0\
+    \ <= x && x <= n);\n        return x >= 2 && lpf[x] == x;\n    }\n    /**\n  \
+    \   * @brief x (2 <= x <= n) \u306E\u6700\u5C0F\u7D20\u56E0\u6570 O(1)\n     */\n\
+    \    long long min_factor(long long x) const {\n        assert(2 <= x && x <=\
+    \ n);\n        return lpf[x];\n    }\n    /**\n     * @brief n \u4EE5\u4E0B\u306E\
+    \u7D20\u6570\u3092\u6607\u9806\u306B\u4E26\u3079\u305F\u3082\u306E\n     */\n\
+    \    const std::vector<long long>& primes() const { return ps; }\n    /**\n  \
+    \   * @brief x (1 <= x <= n) \u3092\u7D20\u56E0\u6570\u5206\u89E3\u3057\u3001\
+    (\u7D20\u56E0\u6570, \u6307\u6570) \u3092\u7D20\u56E0\u6570\u306E\u6607\u9806\u306B\
+    \u4E26\u3079\u3066\u8FD4\u3059 O(log x)\n     */\n    std::vector<std::pair<long\
+    \ long, long long>> factorize(long long x) const {\n        assert(1 <= x && x\
+    \ <= n);\n        std::vector<std::pair<long long, long long>> res;\n        while\
+    \ (x > 1) {\n            long long p = lpf[x], e = 0;\n            while (x %\
+    \ p == 0) x /= p, e++;\n            res.emplace_back(p, e);\n        }\n     \
+    \   return res;\n    }\n    /**\n     * @brief x (1 <= x <= n) \u306E\u6B63\u306E\
+    \u7D04\u6570\u3092\u6607\u9806\u306B\u4E26\u3079\u3066\u8FD4\u3059\n     */\n\
+    \    std::vector<long long> divisors(long long x) const {\n        std::vector<long\
+    \ long> res = {1};\n        for (auto [p, e] : factorize(x)) {\n            const\
+    \ long long sz = res.size();\n            long long pw = 1;\n            for (long\
+    \ long i = 0; i < e; i++) {\n                pw *= p;\n                for (long\
+    \ long j = 0; j < sz; j++) res.push_back(res[j] * pw);\n            }\n      \
+    \  }\n        std::sort(res.begin(), res.end());\n        return res;\n    }\n\
+    };\n#line 2 \"src/math/quotients.hpp\"\n\n/**\n * @file quotients.hpp\n * @brief\
+    \ \u5546\u306E\u5217\u6319 (floor(n / i) \u304C\u540C\u3058\u5024\u306B\u306A\u308B\
+    \ i \u306E\u533A\u9593)\n */\n\n#line 10 \"src/math/quotients.hpp\"\n\n/**\n *\
+    \ @brief \u5546 q = floor(n / i) \u3068\u3001\u305D\u308C\u3092\u3068\u308B i\
+    \ \u306E\u533A\u9593 [l, r]\n */\nstruct QuotientRange {\n    long long q;  //!<\
+    \ \u5546\n    long long l;  //!< \u533A\u9593\u306E\u5DE6\u7AEF (\u542B\u3080\
+    )\n    long long r;  //!< \u533A\u9593\u306E\u53F3\u7AEF (\u542B\u3080)\n};\n\n\
+    /**\n * @brief i = 1, ..., n \u3092 floor(n / i) \u306E\u5024\u3067\u533A\u9593\
+    \u306B\u5206\u3051\u3001i \u306E\u6607\u9806 (\u5546\u306E\u964D\u9806) \u306B\
+    \ f(q, l, r) \u3092\u547C\u3076 O(sqrt(n))\n * l <= i <= r \u306A\u3089 floor(n\
+    \ / i) == q\n */\ntemplate <typename F>\nvoid for_each_quotient(long long n, F\
+    \ f) {\n    assert(n >= 0);\n    for (long long l = 1; l <= n;) {\n        long\
+    \ long q = n / l, r = n / q;\n        f(q, l, r);\n        l = r + 1;\n    }\n\
+    }\n\n/**\n * @brief i = 1, ..., n \u3092 floor(n / i) \u306E\u5024\u3067\u533A\
+    \u9593\u306B\u5206\u3051\u305F\u3082\u306E (i \u306E\u6607\u9806\u3001\u3064\u307E\
+    \u308A\u5546\u306E\u964D\u9806) O(sqrt(n))\n * \u533A\u9593\u306E\u500B\u6570\u306F\
+    \ 2 sqrt(n) \u4EE5\u4E0B\n */\ninline std::vector<QuotientRange> enumerate_quotients(long\
     \ long n) {\n    std::vector<QuotientRange> res;\n    for_each_quotient(n, [&](long\
     \ long q, long long l, long long r) { res.push_back({q, l, r}); });\n    return\
     \ res;\n}\n#line 16 \"test/unittest/math/prime-counting.test.cpp\"\n\nusing mint\
@@ -816,7 +890,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/prime-counting.test.cpp
   requiredBy: []
-  timestamp: '2026-10-23 13:42:45+09:00'
+  timestamp: '2026-10-23 19:32:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/prime-counting.test.cpp

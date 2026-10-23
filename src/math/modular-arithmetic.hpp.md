@@ -8,7 +8,8 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/math/combinatorial-sequences.hpp
     title: "\u5206\u5272\u6570\u30FB\u30D9\u30EB\u30CC\u30FC\u30A4\u6570\u30FB\u30B9\
-      \u30BF\u30FC\u30EA\u30F3\u30B0\u6570\u30FB\u30D9\u30EB\u6570"
+      \u30BF\u30FC\u30EA\u30F3\u30B0\u6570\u30FB\u30D9\u30EB\u6570\u30FB\u5927\u304D\
+      \u3044 n \u306E\u968E\u4E57"
   - icon: ':heavy_check_mark:'
     path: src/math/combinatorics.hpp
     title: "\u7D44\u307F\u5408\u308F\u305B"
@@ -26,6 +27,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/math/fps.hpp
     title: "\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570"
+  - icon: ':heavy_check_mark:'
+    path: src/math/gaussian-integer.hpp
+    title: "\u30AC\u30A6\u30B9\u6574\u6570\u3068\u4E8C\u5E73\u65B9\u548C"
   - icon: ':heavy_check_mark:'
     path: src/math/linear-recurrence.hpp
     title: "\u7DDA\u5F62\u6F38\u5316\u5F0F (Bostan-Mori\u30FBBerlekamp-Massey)"
@@ -45,6 +49,9 @@ data:
     title: "\u7D20\u6570 (\u7D20\u6570\u5224\u5B9A\u3001\u7D20\u56E0\u6570\u5206\u89E3\
       \u3001\u7D04\u6570\u5217\u6319\u3001\u7BE9\u3001\u539F\u59CB\u6839)"
   - icon: ':heavy_check_mark:'
+    path: src/math/q-binomial.hpp
+    title: "q \u4E8C\u9805\u4FC2\u6570"
+  - icon: ':heavy_check_mark:'
     path: src/math/sparse-fps.hpp
     title: "\u758E\u306A\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570 (inv\u30FBlog\u30FBexp\u30FB\
       pow\u30FBsqrt)"
@@ -52,6 +59,10 @@ data:
     path: src/math/sum-of-exp-times-poly.hpp
     title: "\u03A3 r^i f(i) (\u6307\u6570\u95A2\u6570\u3068\u591A\u9805\u5F0F\u306E\
       \u7A4D\u306E\u548C)"
+  - icon: ':heavy_check_mark:'
+    path: src/string/wildcard-matching.hpp
+    title: "\u30EF\u30A4\u30EB\u30C9\u30AB\u30FC\u30C9\u3064\u304D\u306E\u30D1\u30BF\
+      \u30FC\u30F3\u30DE\u30C3\u30C1\u30F3\u30B0"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/alds1/alds1-1-c.test.cpp
@@ -114,6 +125,9 @@ data:
     path: test/unittest/math/fps.test.cpp
     title: test/unittest/math/fps.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/math/gaussian-integer.test.cpp
+    title: test/unittest/math/gaussian-integer.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/math/linear-recurrence.test.cpp
     title: test/unittest/math/linear-recurrence.test.cpp
   - icon: ':heavy_check_mark:'
@@ -135,11 +149,17 @@ data:
     path: test/unittest/math/prime.test.cpp
     title: test/unittest/math/prime.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/math/q-binomial.test.cpp
+    title: test/unittest/math/q-binomial.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/math/sparse-fps.test.cpp
     title: test/unittest/math/sparse-fps.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/math/sum-of-exp-times-poly.test.cpp
     title: test/unittest/math/sum-of-exp-times-poly.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/string/wildcard-matching.test.cpp
+    title: test/unittest/string/wildcard-matching.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/convolution/convolution-mod-1000000007.test.cpp
     title: test/yosupo/convolution/convolution-mod-1000000007.test.cpp
@@ -171,6 +191,9 @@ data:
     path: test/yosupo/enumerative_combinatorics/binomial-coefficient.test.cpp
     title: test/yosupo/enumerative_combinatorics/binomial-coefficient.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/enumerative_combinatorics/factorial.test.cpp
+    title: test/yosupo/enumerative_combinatorics/factorial.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/enumerative_combinatorics/partition-function.1.test.cpp
     title: test/yosupo/enumerative_combinatorics/partition-function.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -180,14 +203,23 @@ data:
     path: test/yosupo/enumerative_combinatorics/partition-function.3.test.cpp
     title: test/yosupo/enumerative_combinatorics/partition-function.3.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/enumerative_combinatorics/q-binomial-coefficient-prime-mod.test.cpp
+    title: test/yosupo/enumerative_combinatorics/q-binomial-coefficient-prime-mod.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.1.test.cpp
     title: test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.2.test.cpp
     title: test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.2.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind-fixed-k.test.cpp
+    title: test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind-fixed-k.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind.test.cpp
     title: test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind-fixed-k.test.cpp
+    title: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind-fixed-k.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
     title: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
@@ -204,6 +236,12 @@ data:
     path: test/yosupo/number_theory/factorize.test.cpp
     title: test/yosupo/number_theory/factorize.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/number_theory/gcd-of-gaussian-integers.test.cpp
+    title: test/yosupo/number_theory/gcd-of-gaussian-integers.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/number_theory/kth-root-mod.test.cpp
+    title: test/yosupo/number_theory/kth-root-mod.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/number_theory/primality-test.test.cpp
     title: test/yosupo/number_theory/primality-test.test.cpp
   - icon: ':heavy_check_mark:'
@@ -212,6 +250,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/number_theory/sqrt-mod.test.cpp
     title: test/yosupo/number_theory/sqrt-mod.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/number_theory/tetration-mod.test.cpp
+    title: test/yosupo/number_theory/tetration-mod.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/number_theory/two-square-sum.test.cpp
+    title: test/yosupo/number_theory/two-square-sum.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/other/find-linear-recurrence.test.cpp
     title: test/yosupo/other/find-linear-recurrence.test.cpp
@@ -296,6 +340,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/polynomial/sqrt-of-formal-power-series.test.cpp
     title: test/yosupo/polynomial/sqrt-of-formal-power-series.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/string/wildcard-pattern-matching.test.cpp
+    title: test/yosupo/string/wildcard-pattern-matching.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
     title: test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
@@ -465,9 +512,12 @@ data:
   - src/math/combinatorics.hpp
   - src/math/number-theory.hpp
   - src/math/polynomial-roots.hpp
+  - src/math/q-binomial.hpp
   - src/math/fps-composition.hpp
+  - src/math/gaussian-integer.hpp
   - src/math/linear-recurrence.hpp
   - src/math/prime.hpp
+  - src/string/wildcard-matching.hpp
   timestamp: '2026-10-20 17:15:36+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
@@ -481,6 +531,7 @@ data:
   - test/unittest/math/convolution.test.cpp
   - test/unittest/math/fps-gcd.test.cpp
   - test/unittest/math/sum-of-exp-times-poly.test.cpp
+  - test/unittest/math/q-binomial.test.cpp
   - test/unittest/math/prime-counting.test.cpp
   - test/unittest/math/multipoint.test.cpp
   - test/unittest/math/prime.test.cpp
@@ -488,6 +539,8 @@ data:
   - test/unittest/math/polynomial-roots.test.cpp
   - test/unittest/math/divisor-transform.test.cpp
   - test/unittest/math/fps.test.cpp
+  - test/unittest/math/gaussian-integer.test.cpp
+  - test/unittest/string/wildcard-matching.test.cpp
   - test/aoj/dpl/dpl-5-d.1.test.cpp
   - test/aoj/dpl/dpl-5-e.1.test.cpp
   - test/aoj/dpl/dpl-5-f.test.cpp
@@ -534,22 +587,31 @@ data:
   - test/yosupo/other/kth-term-of-linearly-recurrent-sequence.test.cpp
   - test/yosupo/other/sum-of-exponential-times-polynomial.test.cpp
   - test/yosupo/other/find-linear-recurrence.test.cpp
+  - test/yosupo/number_theory/kth-root-mod.test.cpp
   - test/yosupo/number_theory/bernoulli-number.test.cpp
+  - test/yosupo/number_theory/two-square-sum.test.cpp
   - test/yosupo/number_theory/primitive-root.test.cpp
   - test/yosupo/number_theory/discrete-logarithm-mod.test.cpp
   - test/yosupo/number_theory/sqrt-mod.test.cpp
+  - test/yosupo/number_theory/gcd-of-gaussian-integers.test.cpp
   - test/yosupo/number_theory/primality-test.test.cpp
+  - test/yosupo/number_theory/tetration-mod.test.cpp
   - test/yosupo/number_theory/enumerate-primes.test.cpp
   - test/yosupo/number_theory/factorize.test.cpp
+  - test/yosupo/string/wildcard-pattern-matching.test.cpp
   - test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
   - test/yosupo/enumerative_combinatorics/binomial-coefficient-prime-mod.1.test.cpp
+  - test/yosupo/enumerative_combinatorics/q-binomial-coefficient-prime-mod.test.cpp
   - test/yosupo/enumerative_combinatorics/partition-function.3.test.cpp
+  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind-fixed-k.test.cpp
   - test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind.test.cpp
   - test/yosupo/enumerative_combinatorics/binomial-coefficient.test.cpp
   - test/yosupo/enumerative_combinatorics/bell-number.test.cpp
+  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind-fixed-k.test.cpp
   - test/yosupo/enumerative_combinatorics/binomial-coefficient-prime-mod.2.test.cpp
   - test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.2.test.cpp
   - test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.1.test.cpp
+  - test/yosupo/enumerative_combinatorics/factorial.test.cpp
   - test/yosupo/enumerative_combinatorics/partition-function.1.test.cpp
   - test/yosupo/enumerative_combinatorics/partition-function.2.test.cpp
   - test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
@@ -590,4 +652,4 @@ long long r = sqrt_mod(2, 7);           // r^2 ≡ 2 (mod 7) となる小さい�
 
 - `modint` のメンバ関数 `pow`、`inv` は [modint](modint.hpp)
 - 中国剰余定理は [数論](number-theory.hpp)
-- 素数判定・素因数分解・原始根は [素数](prime.hpp)
+- 素数判定・素因数分解・原始根・一般の k 乗根 `kth_root_mod` は [素数](prime.hpp)

@@ -6,7 +6,8 @@ data:
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   - icon: ':heavy_check_mark:'
     path: src/data_structures/sliding-window-aggregation.hpp
-    title: "Sliding Window Aggregation \u3068\u30B9\u30E9\u30A4\u30C9\u6700\u5C0F\u5024"
+    title: "Sliding Window Aggregation (\u30AD\u30E5\u30FC\u3068\u4E21\u7AEF\u30AD\
+      \u30E5\u30FC) \u3068\u30B9\u30E9\u30A4\u30C9\u6700\u5C0F\u5024"
   - icon: ':heavy_check_mark:'
     path: src/math/modint.hpp
     title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
@@ -28,29 +29,30 @@ data:
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/queue_operate_all_composite\"\
     \n\n#include <iostream>\n\n#line 2 \"src/data_structures/sliding-window-aggregation.hpp\"\
     \n\n/**\n * @file sliding-window-aggregation.hpp\n * @brief Sliding Window Aggregation\
-    \ (\u30E2\u30CE\u30A4\u30C9\u3092\u4E57\u305B\u305F\u30AD\u30E5\u30FC) \u3068\u30B9\
-    \u30E9\u30A4\u30C9\u6700\u5C0F\u5024\n */\n\n#include <cassert>\n#include <deque>\n\
-    #include <functional>\n#include <utility>\n#include <vector>\n\n#line 2 \"src/algebra/monoid.hpp\"\
-    \n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
-    \n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
-    \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\
-    \n * - S op(const S& a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e():\
-    \ \u5358\u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\
-    \u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\
-    \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\
-    \u51FA\u3059)\n */\n\n#include <algorithm>\n#include <array>\n#include <cstddef>\n\
-    #include <istream>\n#include <limits>\n#include <numeric>\n#include <optional>\n\
-    #include <ostream>\n#include <type_traits>\n#line 24 \"src/algebra/monoid.hpp\"\
-    \n\n/**\n * @brief 1\u6B21\u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite\
-    \ \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\
-    \u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\
-    \u3059\u308B\u3068\u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\n\
-    struct Affine {\n    T a = T(1);  //!< \u50BE\u304D\n    T b = T(0);  //!< \u5207\
-    \u7247\n    constexpr T operator()(const T& x) const { return a * x + b; }\n \
-    \   friend constexpr bool operator==(const Affine& f, const Affine& g) { return\
-    \ f.a == g.a && f.b == g.b; }\n    friend constexpr bool operator!=(const Affine&\
-    \ f, const Affine& g) { return !(f == g); }\n    template <class CharT, class\
-    \ Traits>\n    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    \ (\u30E2\u30CE\u30A4\u30C9\u3092\u4E57\u305B\u305F\u30AD\u30E5\u30FC\u3068\u4E21\
+    \u7AEF\u30AD\u30E5\u30FC) \u3068\u30B9\u30E9\u30A4\u30C9\u6700\u5C0F\u5024\n */\n\
+    \n#include <cassert>\n#include <deque>\n#include <functional>\n#include <utility>\n\
+    #include <vector>\n\n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n\
+    \ * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\
+    \u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\
+    \u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S&\
+    \ a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n\
+    \ * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\
+    \u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\
+    \u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\
+    \n#include <algorithm>\n#include <array>\n#include <cstddef>\n#include <istream>\n\
+    #include <limits>\n#include <numeric>\n#include <optional>\n#include <ostream>\n\
+    #include <type_traits>\n#line 24 \"src/algebra/monoid.hpp\"\n\n/**\n * @brief\
+    \ 1\u6B21\u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\
+    \u3084 acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n *\
+    \ \u4F8B: Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\u3059\u308B\
+    \u3068\u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\nstruct Affine\
+    \ {\n    T a = T(1);  //!< \u50BE\u304D\n    T b = T(0);  //!< \u5207\u7247\n\
+    \    constexpr T operator()(const T& x) const { return a * x + b; }\n    friend\
+    \ constexpr bool operator==(const Affine& f, const Affine& g) { return f.a ==\
+    \ g.a && f.b == g.b; }\n    friend constexpr bool operator!=(const Affine& f,\
+    \ const Affine& g) { return !(f == g); }\n    template <class CharT, class Traits>\n\
+    \    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
     \ Traits>& is, Affine& f) {\n        return is >> f.a >> f.b;\n    }\n    template\
     \ <class CharT, class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const Affine& f) {\n        return os << f.a << CharT(' ') << f.b;\n\
@@ -362,6 +364,64 @@ data:
     \u3092\u524A\u9664\u3059\u308B\n     */\n    void clear() {\n        front_vals.clear();\n\
     \        front_prod.clear();\n        back_vals.clear();\n        back_prod =\
     \ e();\n    }\n};\n\ntemplate <typename M>\nSlidingWindowAggregation(M) -> SlidingWindowAggregation<M>;\n\
+    \n/**\n * @brief \u30E2\u30CE\u30A4\u30C9\u3092\u4E57\u305B\u305F\u4E21\u7AEF\u30AD\
+    \u30E5\u30FC\n *\n * \u5148\u982D\u3068\u672B\u5C3E\u3078\u306E\u8FFD\u52A0\u30FB\
+    \u524A\u9664\u3001\u5168\u4F53\u306E\u7A4D\u3092\u511F\u5374 O(1) \u3067\u884C\
+    \u3046\u3002\u30E2\u30CE\u30A4\u30C9\u306F\u53EF\u63DB\u3067\u306A\u304F\u3066\
+    \u3082\u3088\u3044\n * \u524D\u534A\u3068\u5F8C\u534A\u3092 2 \u3064\u306E\u30B9\
+    \u30BF\u30C3\u30AF\u3067\u6301\u3061\u3001\u7A7A\u306E\u5074\u304B\u3089\u53D6\
+    \u308A\u51FA\u3059\u3068\u304D\u306F\u3001\u3082\u3046\u4E00\u65B9\u3092\u534A\
+    \u5206\u306B\u5206\u3051\u3066\u4F5C\u308A\u76F4\u3059\n * \u4F8B:\n * DequeAggregation<monoid::Reverse<monoid::Composite<mint>>>\
+    \ dq;  // \u5148\u982D\u304B\u3089\u9806\u306B\u9069\u7528\n * dq.push_front(f);\
+    \ dq.push_back(g); dq.pop_front(); dq.prod();\n *\n * @tparam M \u30E2\u30CE\u30A4\
+    \u30C9 (algebra/monoid.hpp)\n */\ntemplate <typename M>\nclass DequeAggregation\
+    \ {\n   public:\n    using S = typename M::S;\n\n   private:\n    M m;\n    //\
+    \ front_vals \u306F\u672B\u5C3E\u304C\u4E21\u7AEF\u30AD\u30E5\u30FC\u306E\u5148\
+    \u982D\u3001back_vals \u306F\u672B\u5C3E\u304C\u4E21\u7AEF\u30AD\u30E5\u30FC\u306E\
+    \u672B\u5C3E\n    // front_prod[i] \u306F front_vals[i], front_vals[i - 1], ...,\
+    \ front_vals[0] \u306E\u7A4D\u3001back_prod[i] \u306F back_vals[0], ..., back_vals[i]\
+    \ \u306E\u7A4D\n    std::vector<S> front_vals, front_prod, back_vals, back_prod;\n\
+    \n    S op(const S& x, const S& y) const { return m.op(x, y); }\n    void push_front_stack(const\
+    \ S& x) {\n        front_prod.push_back(front_vals.empty() ? x : op(x, front_prod.back()));\n\
+    \        front_vals.push_back(x);\n    }\n    void push_back_stack(const S& x)\
+    \ {\n        back_prod.push_back(back_vals.empty() ? x : op(back_prod.back(),\
+    \ x));\n        back_vals.push_back(x);\n    }\n    // \u4E21\u7AEF\u30AD\u30E5\
+    \u30FC\u306E\u9806\u306B\u4E26\u3079\u305F\u5217 v \u306E\u5148\u982D k \u500B\
+    \u3092\u524D\u534A\u3001\u6B8B\u308A\u3092\u5F8C\u534A\u306B\u3059\u308B\n   \
+    \ void rebuild(const std::vector<S>& v, size_t k) {\n        front_vals.clear(),\
+    \ front_prod.clear(), back_vals.clear(), back_prod.clear();\n        for (size_t\
+    \ i = k; i-- > 0;) push_front_stack(v[i]);\n        for (size_t i = k; i < v.size();\
+    \ i++) push_back_stack(v[i]);\n    }\n    std::vector<S> to_vector() const {\n\
+    \        std::vector<S> v(front_vals.rbegin(), front_vals.rend());\n        v.insert(v.end(),\
+    \ back_vals.begin(), back_vals.end());\n        return v;\n    }\n\n   public:\n\
+    \    explicit DequeAggregation(M m = M()) : m(std::move(m)) {}\n    /**\n    \
+    \ * @brief \u8981\u7D20\u6570\n     */\n    long long size() const { return front_vals.size()\
+    \ + back_vals.size(); }\n    bool empty() const { return size() == 0; }\n    /**\n\
+    \     * @brief \u5148\u982D\u306B x \u3092\u8FFD\u52A0\u3059\u308B O(1)\n    \
+    \ */\n    void push_front(const S& x) { push_front_stack(x); }\n    /**\n    \
+    \ * @brief \u672B\u5C3E\u306B x \u3092\u8FFD\u52A0\u3059\u308B O(1)\n     */\n\
+    \    void push_back(const S& x) { push_back_stack(x); }\n    /**\n     * @brief\
+    \ \u5148\u982D\u306E\u8981\u7D20\u3092\u524A\u9664\u3059\u308B \u511F\u5374 O(1)\n\
+    \     */\n    void pop_front() {\n        assert(!empty());\n        if (front_vals.empty())\
+    \ {\n            auto v = to_vector();\n            rebuild(v, (v.size() + 1)\
+    \ / 2);\n        }\n        front_vals.pop_back(), front_prod.pop_back();\n  \
+    \  }\n    /**\n     * @brief \u672B\u5C3E\u306E\u8981\u7D20\u3092\u524A\u9664\u3059\
+    \u308B \u511F\u5374 O(1)\n     */\n    void pop_back() {\n        assert(!empty());\n\
+    \        if (back_vals.empty()) {\n            auto v = to_vector();\n       \
+    \     rebuild(v, v.size() / 2);\n        }\n        back_vals.pop_back(), back_prod.pop_back();\n\
+    \    }\n    /**\n     * @brief \u5148\u982D\u306E\u8981\u7D20 O(1)\n     */\n\
+    \    const S& front() const {\n        assert(!empty());\n        return front_vals.empty()\
+    \ ? back_vals.front() : front_vals.back();\n    }\n    /**\n     * @brief \u672B\
+    \u5C3E\u306E\u8981\u7D20 O(1)\n     */\n    const S& back() const {\n        assert(!empty());\n\
+    \        return back_vals.empty() ? front_vals.front() : back_vals.back();\n \
+    \   }\n    /**\n     * @brief \u5148\u982D\u304B\u3089\u672B\u5C3E\u307E\u3067\
+    \u306E\u7A4D (\u7A7A\u306A\u3089\u5358\u4F4D\u5143) O(1)\n     */\n    S prod()\
+    \ const {\n        if (front_vals.empty()) return back_vals.empty() ? m.e() :\
+    \ back_prod.back();\n        if (back_vals.empty()) return front_prod.back();\n\
+    \        return op(front_prod.back(), back_prod.back());\n    }\n    /**\n   \
+    \  * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\u3092\u524A\u9664\u3059\u308B\
+    \n     */\n    void clear() { front_vals.clear(), front_prod.clear(), back_vals.clear(),\
+    \ back_prod.clear(); }\n};\n\ntemplate <typename M>\nDequeAggregation(M) -> DequeAggregation<M>;\n\
     \n/**\n * @brief \u9577\u3055 k \u306E\u5404\u533A\u9593 [i, i + k) \u306E\u6700\
     \u5C0F\u5024\u3092\u4E26\u3079\u305F\u3082\u306E (\u9577\u3055 n - k + 1) O(n)\n\
     \ *\n * \u5358\u8ABF\u306A deque \u3092\u4F7F\u3046\n * @param comp \u5927\u5C0F\
@@ -696,7 +756,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/data_structure/queue-operate-all-composite.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:37:20+09:00'
+  timestamp: '2026-10-23 19:48:53+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/data_structure/queue-operate-all-composite.test.cpp

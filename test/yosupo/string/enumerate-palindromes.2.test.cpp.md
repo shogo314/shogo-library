@@ -4,7 +4,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/string/string.hpp
     title: "\u6587\u5B57\u5217\u30A2\u30EB\u30B4\u30EA\u30BA\u30E0 (Z-algorithm\u3001\
-      KMP\u3001Manacher)"
+      KMP\u3001Manacher\u3001Lyndon \u5206\u89E3)"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
@@ -19,52 +19,52 @@ data:
     #define PROBLEM \"https://judge.yosupo.jp/problem/enumerate_palindromes\"\n\n\
     #include <iostream>\n#include <string>\n#include <vector>\n\n#line 2 \"src/string/string.hpp\"\
     \n\n/**\n * @file string.hpp\n * @brief \u6587\u5B57\u5217\u30A2\u30EB\u30B4\u30EA\
-    \u30BA\u30E0 (Z-algorithm\u3001KMP\u3001Manacher)\n */\n\n#include <algorithm>\n\
-    #include <cassert>\n#include <iterator>\n#line 12 \"src/string/string.hpp\"\n\n\
-    /**\n * @brief Z-algorithm\n * s[0:]\u3068s[i:]\u306ELCP\u306E\u9577\u3055\u3092\
-    \u5404i\u306B\u3064\u3044\u3066\u6C42\u3081\u308B \u5168\u4F53\u3067O(N)\n *\n\
-    \ * @tparam It \u914D\u5217\u306E\u30A4\u30C6\u30EC\u30FC\u30BF\n * @param begin\
-    \ \u914D\u5217\u306E\u958B\u59CB\u30A4\u30C6\u30EC\u30FC\u30BF\n * @param end\
-    \ \u914D\u5217\u306E\u7D42\u4E86\u30A4\u30C6\u30EC\u30FC\u30BF\n * @return std::vector<long\
-    \ long> z\n */\ntemplate <typename It>\nstd::vector<long long> z_algorithm(It\
-    \ begin, It end) {\n    long long n = end - begin;\n    if (n == 0) return {};\n\
-    \    std::vector<long long> z(n);\n    z[0] = n;\n    for (long long i = 1, j\
-    \ = 0; i < n;) {\n        // [0, j)\u3068[i, i + j)\u304C\u4E00\u81F4\u3057\u3066\
-    \u3044\u308B\n        while (i + j < n && begin[j] == begin[i + j]) j++;\n   \
-    \     z[i] = j;\n        long long k = 1;  // [k,)\u3068[i+k,)\u306FLCP\u304C\u7B49\
-    \u3057\u3044\u3068\u78BA\u5B9A\u3057\u3066\u3044\u308B\n        for (; k < j &&\
-    \ k + z[k] < j; k++) {\n            z[i + k] = z[k];\n        }\n        i +=\
-    \ k;\n        if (j) j -= k;\n    }\n    return z;\n}\n\n/**\n * @brief Z-algorithm\n\
-    \ * s[0:]\u3068s[i:]\u306ELCP\u306E\u9577\u3055\u3092\u5404i\u306B\u3064\u3044\
-    \u3066\u6C42\u3081\u308B \u5168\u4F53\u3067O(N)\n *\n * @tparam R \u914D\u5217\
-    \u306E\u578B\n * @param s \u914D\u5217\n * @return std::vector<long long> z\n\
-    \ */\ntemplate <typename R>\nstd::vector<long long> z_algorithm(const R& s) {\n\
-    \    return z_algorithm(std::begin(s), std::end(s));\n}\n\n/**\n * @brief \u63A5\
-    \u982D\u8F9E\u95A2\u6570 (KMP \u6CD5\u306E\u5931\u6557\u95A2\u6570)\n * s[0, i]\
-    \ \u306E\u63A5\u982D\u8F9E\u3067\u3042\u308A\u63A5\u5C3E\u8F9E\u3067\u3082\u3042\
-    \u308B\u90E8\u5206 (s[0, i] \u81EA\u8EAB\u3092\u9664\u304F) \u306E\u6700\u9577\
-    \u306E\u9577\u3055\u3092\u5404 i \u306B\u3064\u3044\u3066\u6C42\u3081\u308B \u5168\
-    \u4F53\u3067 O(N)\n *\n * @tparam It \u914D\u5217\u306E\u30A4\u30C6\u30EC\u30FC\
-    \u30BF\n * @param begin \u914D\u5217\u306E\u958B\u59CB\u30A4\u30C6\u30EC\u30FC\
-    \u30BF\n * @param end \u914D\u5217\u306E\u7D42\u4E86\u30A4\u30C6\u30EC\u30FC\u30BF\
-    \n * @return std::vector<long long> pi\n */\ntemplate <typename It>\nstd::vector<long\
-    \ long> prefix_function(It begin, It end) {\n    long long n = end - begin;\n\
-    \    std::vector<long long> pi(n);\n    for (long long i = 1; i < n; i++) {\n\
-    \        long long j = pi[i - 1];\n        while (j > 0 && !(begin[i] == begin[j]))\
-    \ j = pi[j - 1];\n        if (begin[i] == begin[j]) j++;\n        pi[i] = j;\n\
-    \    }\n    return pi;\n}\n\n/**\n * @brief \u63A5\u982D\u8F9E\u95A2\u6570 (KMP\
-    \ \u6CD5\u306E\u5931\u6557\u95A2\u6570)\n * s[0, i] \u306E\u63A5\u982D\u8F9E\u3067\
-    \u3042\u308A\u63A5\u5C3E\u8F9E\u3067\u3082\u3042\u308B\u90E8\u5206 (s[0, i] \u81EA\
-    \u8EAB\u3092\u9664\u304F) \u306E\u6700\u9577\u306E\u9577\u3055\u3092\u5404 i \u306B\
-    \u3064\u3044\u3066\u6C42\u3081\u308B \u5168\u4F53\u3067 O(N)\n *\n * @tparam R\
-    \ \u914D\u5217\u306E\u578B\n * @param s \u914D\u5217\n * @return std::vector<long\
-    \ long> pi\n */\ntemplate <typename R>\nstd::vector<long long> prefix_function(const\
-    \ R& s) {\n    return prefix_function(std::begin(s), std::end(s));\n}\n\n/**\n\
-    \ * @brief KMP \u6CD5\u3067 text \u306E\u4E2D\u306E pattern \u306E\u51FA\u73FE\
-    \u4F4D\u7F6E (\u958B\u59CB\u4F4D\u7F6E) \u3092\u3059\u3079\u3066\u6607\u9806\u306B\
-    \u6C42\u3081\u308B O(N + M)\n * pattern \u304C\u7A7A\u306A\u3089 0, 1, ..., N\
-    \ \u3092\u8FD4\u3059\n *\n * @tparam R1 \u914D\u5217\u306E\u578B\n * @tparam R2\
-    \ \u914D\u5217\u306E\u578B\n * @param text \u63A2\u3059\u5BFE\u8C61\n * @param\
+    \u30BA\u30E0 (Z-algorithm\u3001KMP\u3001Manacher\u3001Lyndon \u5206\u89E3)\n */\n\
+    \n#include <algorithm>\n#include <cassert>\n#include <iterator>\n#line 12 \"src/string/string.hpp\"\
+    \n\n/**\n * @brief Z-algorithm\n * s[0:]\u3068s[i:]\u306ELCP\u306E\u9577\u3055\
+    \u3092\u5404i\u306B\u3064\u3044\u3066\u6C42\u3081\u308B \u5168\u4F53\u3067O(N)\n\
+    \ *\n * @tparam It \u914D\u5217\u306E\u30A4\u30C6\u30EC\u30FC\u30BF\n * @param\
+    \ begin \u914D\u5217\u306E\u958B\u59CB\u30A4\u30C6\u30EC\u30FC\u30BF\n * @param\
+    \ end \u914D\u5217\u306E\u7D42\u4E86\u30A4\u30C6\u30EC\u30FC\u30BF\n * @return\
+    \ std::vector<long long> z\n */\ntemplate <typename It>\nstd::vector<long long>\
+    \ z_algorithm(It begin, It end) {\n    long long n = end - begin;\n    if (n ==\
+    \ 0) return {};\n    std::vector<long long> z(n);\n    z[0] = n;\n    for (long\
+    \ long i = 1, j = 0; i < n;) {\n        // [0, j)\u3068[i, i + j)\u304C\u4E00\u81F4\
+    \u3057\u3066\u3044\u308B\n        while (i + j < n && begin[j] == begin[i + j])\
+    \ j++;\n        z[i] = j;\n        long long k = 1;  // [k,)\u3068[i+k,)\u306F\
+    LCP\u304C\u7B49\u3057\u3044\u3068\u78BA\u5B9A\u3057\u3066\u3044\u308B\n      \
+    \  for (; k < j && k + z[k] < j; k++) {\n            z[i + k] = z[k];\n      \
+    \  }\n        i += k;\n        if (j) j -= k;\n    }\n    return z;\n}\n\n/**\n\
+    \ * @brief Z-algorithm\n * s[0:]\u3068s[i:]\u306ELCP\u306E\u9577\u3055\u3092\u5404\
+    i\u306B\u3064\u3044\u3066\u6C42\u3081\u308B \u5168\u4F53\u3067O(N)\n *\n * @tparam\
+    \ R \u914D\u5217\u306E\u578B\n * @param s \u914D\u5217\n * @return std::vector<long\
+    \ long> z\n */\ntemplate <typename R>\nstd::vector<long long> z_algorithm(const\
+    \ R& s) {\n    return z_algorithm(std::begin(s), std::end(s));\n}\n\n/**\n * @brief\
+    \ \u63A5\u982D\u8F9E\u95A2\u6570 (KMP \u6CD5\u306E\u5931\u6557\u95A2\u6570)\n\
+    \ * s[0, i] \u306E\u63A5\u982D\u8F9E\u3067\u3042\u308A\u63A5\u5C3E\u8F9E\u3067\
+    \u3082\u3042\u308B\u90E8\u5206 (s[0, i] \u81EA\u8EAB\u3092\u9664\u304F) \u306E\
+    \u6700\u9577\u306E\u9577\u3055\u3092\u5404 i \u306B\u3064\u3044\u3066\u6C42\u3081\
+    \u308B \u5168\u4F53\u3067 O(N)\n *\n * @tparam It \u914D\u5217\u306E\u30A4\u30C6\
+    \u30EC\u30FC\u30BF\n * @param begin \u914D\u5217\u306E\u958B\u59CB\u30A4\u30C6\
+    \u30EC\u30FC\u30BF\n * @param end \u914D\u5217\u306E\u7D42\u4E86\u30A4\u30C6\u30EC\
+    \u30FC\u30BF\n * @return std::vector<long long> pi\n */\ntemplate <typename It>\n\
+    std::vector<long long> prefix_function(It begin, It end) {\n    long long n =\
+    \ end - begin;\n    std::vector<long long> pi(n);\n    for (long long i = 1; i\
+    \ < n; i++) {\n        long long j = pi[i - 1];\n        while (j > 0 && !(begin[i]\
+    \ == begin[j])) j = pi[j - 1];\n        if (begin[i] == begin[j]) j++;\n     \
+    \   pi[i] = j;\n    }\n    return pi;\n}\n\n/**\n * @brief \u63A5\u982D\u8F9E\u95A2\
+    \u6570 (KMP \u6CD5\u306E\u5931\u6557\u95A2\u6570)\n * s[0, i] \u306E\u63A5\u982D\
+    \u8F9E\u3067\u3042\u308A\u63A5\u5C3E\u8F9E\u3067\u3082\u3042\u308B\u90E8\u5206\
+    \ (s[0, i] \u81EA\u8EAB\u3092\u9664\u304F) \u306E\u6700\u9577\u306E\u9577\u3055\
+    \u3092\u5404 i \u306B\u3064\u3044\u3066\u6C42\u3081\u308B \u5168\u4F53\u3067 O(N)\n\
+    \ *\n * @tparam R \u914D\u5217\u306E\u578B\n * @param s \u914D\u5217\n * @return\
+    \ std::vector<long long> pi\n */\ntemplate <typename R>\nstd::vector<long long>\
+    \ prefix_function(const R& s) {\n    return prefix_function(std::begin(s), std::end(s));\n\
+    }\n\n/**\n * @brief KMP \u6CD5\u3067 text \u306E\u4E2D\u306E pattern \u306E\u51FA\
+    \u73FE\u4F4D\u7F6E (\u958B\u59CB\u4F4D\u7F6E) \u3092\u3059\u3079\u3066\u6607\u9806\
+    \u306B\u6C42\u3081\u308B O(N + M)\n * pattern \u304C\u7A7A\u306A\u3089 0, 1, ...,\
+    \ N \u3092\u8FD4\u3059\n *\n * @tparam R1 \u914D\u5217\u306E\u578B\n * @tparam\
+    \ R2 \u914D\u5217\u306E\u578B\n * @param text \u63A2\u3059\u5BFE\u8C61\n * @param\
     \ pattern \u63A2\u3059\u5217\n * @return std::vector<long long> \u51FA\u73FE\u4F4D\
     \u7F6E\n */\ntemplate <typename R1, typename R2>\nstd::vector<long long> kmp_search(const\
     \ R1& text, const R2& pattern) {\n    auto t = std::begin(text);\n    auto p =\
@@ -138,8 +138,32 @@ data:
     \ a = std::begin(s);\n    auto b = std::begin(t);\n    long long n = std::end(s)\
     \ - a;\n    assert(n == std::end(t) - b);\n    long long res = 0;\n    for (long\
     \ long i = 0; i < n; i++) {\n        if (!(a[i] == b[i])) res++;\n    }\n    return\
-    \ res;\n}\n#line 8 \"test/yosupo/string/enumerate-palindromes.2.test.cpp\"\n\n\
-    int main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
+    \ res;\n}\n\n/**\n * @brief Lyndon \u5206\u89E3 (Duval \u306E\u30A2\u30EB\u30B4\
+    \u30EA\u30BA\u30E0) O(N)\n * s \u3092 s = w_1 w_2 ... w_k (\u5404 w_i \u306F Lyndon\
+    \ \u6587\u5B57\u5217\u3067\u3001w_1 >= w_2 >= ... >= w_k) \u306B\u5206\u3051\u308B\
+    \n * Lyndon \u6587\u5B57\u5217\u306F\u3001\u81EA\u5206\u306E\u3069\u306E\u771F\
+    \u306E\u63A5\u5C3E\u8F9E\u3088\u308A\u3082\u8F9E\u66F8\u9806\u3067\u771F\u306B\
+    \u5C0F\u3055\u3044\u6587\u5B57\u5217\n *\n * @tparam It \u914D\u5217\u306E\u30A4\
+    \u30C6\u30EC\u30FC\u30BF\n * @param begin \u914D\u5217\u306E\u958B\u59CB\u30A4\
+    \u30C6\u30EC\u30FC\u30BF\n * @param end \u914D\u5217\u306E\u7D42\u4E86\u30A4\u30C6\
+    \u30EC\u30FC\u30BF\n * @return std::vector<long long> \u533A\u5207\u308A\u306E\
+    \u4F4D\u7F6E 0 = a_0 < a_1 < ... < a_k = N (w_i = s[a_{i-1}, a_i))\n */\ntemplate\
+    \ <typename It>\nstd::vector<long long> lyndon_factorization(It begin, It end)\
+    \ {\n    const long long n = end - begin;\n    std::vector<long long> res = {0};\n\
+    \    long long i = 0;\n    while (i < n) {\n        // s[i, j) \u306F\u3001\u9577\
+    \u3055 j - k \u306E Lyndon \u6587\u5B57\u5217\u3092\u4F55\u56DE\u304B\u7E70\u308A\
+    \u8FD4\u3057\u305F\u3082\u306E\u3068\u3001\u305D\u306E\u63A5\u982D\u8F9E\u3092\
+    \u3064\u306A\u3044\u3060\u3082\u306E\n        long long j = i + 1, k = i;\n  \
+    \      while (j < n && !(begin[j] < begin[k])) {\n            k = begin[k] < begin[j]\
+    \ ? i : k + 1;\n            j++;\n        }\n        while (i <= k) {\n      \
+    \      i += j - k;\n            res.push_back(i);\n        }\n    }\n    return\
+    \ res;\n}\n\n/**\n * @brief Lyndon \u5206\u89E3 (Duval \u306E\u30A2\u30EB\u30B4\
+    \u30EA\u30BA\u30E0) O(N)\n *\n * @tparam R \u914D\u5217\u306E\u578B\n * @param\
+    \ s \u914D\u5217\n * @return std::vector<long long> \u533A\u5207\u308A\u306E\u4F4D\
+    \u7F6E 0 = a_0 < a_1 < ... < a_k = N\n */\ntemplate <typename R>\nstd::vector<long\
+    \ long> lyndon_factorization(const R& s) {\n    return lyndon_factorization(std::begin(s),\
+    \ std::end(s));\n}\n#line 8 \"test/yosupo/string/enumerate-palindromes.2.test.cpp\"\
+    \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
     \    std::string s;\n    std::cin >> s;\n    std::vector<long long> len = palindrome_lengths(s);\n\
     \    for (long long i = 0; i < static_cast<long long>(len.size()); i++) std::cout\
     \ << len[i] << \" \\n\"[i + 1 == static_cast<long long>(len.size())];\n}\n"
@@ -154,7 +178,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/string/enumerate-palindromes.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:37:20+09:00'
+  timestamp: '2026-10-23 19:16:21+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/string/enumerate-palindromes.2.test.cpp

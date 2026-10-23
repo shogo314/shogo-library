@@ -12,6 +12,10 @@ data:
     path: src/data_structures/potentialized-unionfind.hpp
     title: "\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind"
   - icon: ':heavy_check_mark:'
+    path: src/geometry/manhattan-mst.hpp
+    title: "\u30DE\u30F3\u30CF\u30C3\u30BF\u30F3\u8DDD\u96E2\u306E\u6700\u5C0F\u5168\
+      \u57DF\u6728"
+  - icon: ':heavy_check_mark:'
     path: src/graph/graph_util.hpp
     title: "\u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570"
   - icon: ':heavy_check_mark:'
@@ -64,6 +68,9 @@ data:
     path: test/unittest/data_structures/unionfind.test.cpp
     title: test/unittest/data_structures/unionfind.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/geometry/manhattan-mst.test.cpp
+    title: test/unittest/geometry/manhattan-mst.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/graph/chinese-postman.test.cpp
     title: test/unittest/graph/chinese-postman.test.cpp
   - icon: ':heavy_check_mark:'
@@ -85,14 +92,26 @@ data:
     path: test/yosupo/data_structure/unionfind.test.cpp
     title: test/yosupo/data_structure/unionfind.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/geo/manhattanmst.test.cpp
+    title: test/yosupo/geo/manhattanmst.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/chromatic-number.1.test.cpp
     title: test/yosupo/graph/chromatic-number.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/graph/connected-components-of-complement-graph.test.cpp
+    title: test/yosupo/graph/connected-components-of-complement-graph.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/cycle-detection-undirected.test.cpp
     title: test/yosupo/graph/cycle-detection-undirected.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/cycle-detection.test.cpp
     title: test/yosupo/graph/cycle-detection.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/graph/enumerate-triangles.test.cpp
+    title: test/yosupo/graph/enumerate-triangles.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/graph/maximum-independent-set.test.cpp
+    title: test/yosupo/graph/maximum-independent-set.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/minimum-spanning-tree.1.test.cpp
     title: test/yosupo/graph/minimum-spanning-tree.1.test.cpp
@@ -238,6 +257,7 @@ data:
   - src/data_structures/persistent-unionfind.hpp
   - src/data_structures/potentialized-unionfind.hpp
   - src/data_structures/monoid-unionfind.hpp
+  - src/geometry/manhattan-mst.hpp
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
@@ -250,6 +270,7 @@ data:
   - test/unittest/data_structures/find-cycle.test.cpp
   - test/unittest/data_structures/monoid-unionfind.test.cpp
   - test/unittest/data_structures/potentialized-unionfind.test.cpp
+  - test/unittest/geometry/manhattan-mst.test.cpp
   - test/unittest/algebra/mapping.test.cpp
   - test/unittest/algebra/monoid.test.cpp
   - test/aoj/grl/grl-4-a.test.cpp
@@ -263,14 +284,18 @@ data:
   - test/yosupo/graph/chromatic-number.1.test.cpp
   - test/yosupo/graph/minimum-spanning-tree.2.test.cpp
   - test/yosupo/graph/minimum-spanning-tree.1.test.cpp
+  - test/yosupo/graph/connected-components-of-complement-graph.test.cpp
   - test/yosupo/graph/minimum-steiner-tree.test.cpp
+  - test/yosupo/graph/enumerate-triangles.test.cpp
   - test/yosupo/graph/scc.test.cpp
   - test/yosupo/graph/cycle-detection.test.cpp
+  - test/yosupo/graph/maximum-independent-set.test.cpp
   - test/yosupo/data_structure/unionfind.test.cpp
   - test/yosupo/data_structure/persistent-unionfind.test.cpp
   - test/yosupo/data_structure/unionfind-with-potential.test.cpp
   - test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
   - test/yosupo/other/two-sat.test.cpp
+  - test/yosupo/geo/manhattanmst.test.cpp
   - test/yukicoder/674.1.test.cpp
 documentation_of: src/data_structures/unionfind.hpp
 layout: document

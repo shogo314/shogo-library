@@ -21,11 +21,43 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':heavy_check_mark:'
+    path: src/math/combinatorial-sequences.hpp
+    title: "\u5206\u5272\u6570\u30FB\u30D9\u30EB\u30CC\u30FC\u30A4\u6570\u30FB\u30B9\
+      \u30BF\u30FC\u30EA\u30F3\u30B0\u6570\u30FB\u30D9\u30EB\u6570\u30FB\u5927\u304D\
+      \u3044 n \u306E\u968E\u4E57"
   _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/math/combinatorial-sequences.test.cpp
+    title: test/unittest/math/combinatorial-sequences.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/math/multipoint.test.cpp
     title: test/unittest/math/multipoint.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/enumerative_combinatorics/bell-number.test.cpp
+    title: test/yosupo/enumerative_combinatorics/bell-number.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/enumerative_combinatorics/factorial.test.cpp
+    title: test/yosupo/enumerative_combinatorics/factorial.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/enumerative_combinatorics/partition-function.3.test.cpp
+    title: test/yosupo/enumerative_combinatorics/partition-function.3.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind-fixed-k.test.cpp
+    title: test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind-fixed-k.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind.test.cpp
+    title: test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind-fixed-k.test.cpp
+    title: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind-fixed-k.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
+    title: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/number_theory/bernoulli-number.test.cpp
+    title: test/yosupo/number_theory/bernoulli-number.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/polynomial/multipoint-evaluation-on-geometric-sequence.test.cpp
     title: test/yosupo/polynomial/multipoint-evaluation-on-geometric-sequence.test.cpp
@@ -1353,16 +1385,26 @@ data:
   - src/math/fps.hpp
   isVerificationFile: false
   path: src/math/multipoint.hpp
-  requiredBy: []
+  requiredBy:
+  - src/math/combinatorial-sequences.hpp
   timestamp: '2026-10-22 21:31:06+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/math/combinatorial-sequences.test.cpp
   - test/unittest/math/multipoint.test.cpp
   - test/yosupo/polynomial/polynomial-interpolation-on-geometric-sequence.test.cpp
   - test/yosupo/polynomial/multipoint-evaluation.test.cpp
   - test/yosupo/polynomial/shift-of-sampling-points-of-polynomial.test.cpp
   - test/yosupo/polynomial/multipoint-evaluation-on-geometric-sequence.test.cpp
   - test/yosupo/polynomial/polynomial-interpolation.test.cpp
+  - test/yosupo/number_theory/bernoulli-number.test.cpp
+  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
+  - test/yosupo/enumerative_combinatorics/partition-function.3.test.cpp
+  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind-fixed-k.test.cpp
+  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind.test.cpp
+  - test/yosupo/enumerative_combinatorics/bell-number.test.cpp
+  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind-fixed-k.test.cpp
+  - test/yosupo/enumerative_combinatorics/factorial.test.cpp
   - test/yukicoder/3770.test.cpp
   - test/yukicoder/3771.test.cpp
 documentation_of: src/math/multipoint.hpp

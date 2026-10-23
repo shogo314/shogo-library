@@ -5,10 +5,16 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/data_structures/range-count-distinct.hpp
     title: "\u533A\u9593\u5185\u306E\u7570\u306A\u308B\u5024\u306E\u500B\u6570"
+  - icon: ':heavy_check_mark:'
+    path: src/data_structures/range-lis.hpp
+    title: "\u533A\u9593\u306E\u6700\u9577\u5897\u52A0\u90E8\u5206\u5217"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/range-count-distinct.test.cpp
     title: test/unittest/data_structures/range-count-distinct.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/range-lis.test.cpp
+    title: test/unittest/data_structures/range-lis.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/wavelet-matrix.test.cpp
     title: test/unittest/data_structures/wavelet-matrix.test.cpp
@@ -24,6 +30,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/static-range-frequency.test.cpp
     title: test/yosupo/data_structure/static-range-frequency.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/static-range-lis-query.test.cpp
+    title: test/yosupo/data_structure/static-range-lis-query.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -413,13 +422,16 @@ data:
   path: src/data_structures/wavelet-matrix.hpp
   requiredBy:
   - src/data_structures/range-count-distinct.hpp
+  - src/data_structures/range-lis.hpp
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/wavelet-matrix.test.cpp
   - test/unittest/data_structures/range-count-distinct.test.cpp
+  - test/unittest/data_structures/range-lis.test.cpp
   - test/yosupo/data_structure/rectangle-sum.5.test.cpp
   - test/yosupo/data_structure/static-range-count-distinct.test.cpp
+  - test/yosupo/data_structure/static-range-lis-query.test.cpp
   - test/yosupo/data_structure/range-kth-smallest.test.cpp
   - test/yosupo/data_structure/static-range-frequency.test.cpp
 documentation_of: src/data_structures/wavelet-matrix.hpp

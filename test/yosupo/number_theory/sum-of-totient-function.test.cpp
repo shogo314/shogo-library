@@ -15,11 +15,11 @@ int main() {
         return 0;
     }
     // φ(p) = p - 1 なので、素数の和から素数の個数を引く
-    PrimeSumTable<mint> cnt(n, [](long long v) { return mint(v - 1); }, [](long long) { return mint(1); });
+    auto cnt = prime_count_table(n);  // 個数は整数の表で足りる
     PrimeSumTable<mint> sum(n, [](long long v) { return mint(v) * mint(v + 1) / 2 - 1; }, [](long long p) { return mint(p); });
     auto phi_pe = [](long long p, long long e) {
         // p^e - p^(e - 1)
         return mint(p).pow(e) - mint(p).pow(e - 1);
     };
-    std::cout << multiplicative_sum(n, [&](long long v) { return sum(v) - cnt(v); }, phi_pe) << '\n';
+    std::cout << multiplicative_sum(n, [&](long long v) { return sum(v) - mint(cnt(v)); }, phi_pe) << '\n';
 }

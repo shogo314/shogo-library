@@ -16,10 +16,10 @@ int main() {
         long long n;
         mint a, b;
         std::cin >> n >> a >> b;
-        // f(p) = a + b p なので、素数の個数の a 倍と素数の和の b 倍を足す
-        PrimeSumTable<mint> cnt(n, [](long long v) { return mint(v - 1); }, [](long long) { return mint(1); });
+        // f(p) = a + b p なので、素数の個数の a 倍と素数の和の b 倍を足す。個数は整数の表で足りる
+        auto cnt = prime_count_table(n);
         PrimeSumTable<mint> sum(n, [](long long v) { return mint(v) * mint(v + 1) / 2 - 1; }, [](long long p) { return mint(p); });
         auto f_pe = [&](long long p, long long e) { return a * e + b * p; };
-        std::cout << multiplicative_sum(n, [&](long long v) { return a * cnt(v) + b * sum(v); }, f_pe) << '\n';
+        std::cout << multiplicative_sum(n, [&](long long v) { return a * mint(cnt(v)) + b * sum(v); }, f_pe) << '\n';
     }
 }

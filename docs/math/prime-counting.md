@@ -48,9 +48,9 @@ $f(1) = 1$ とします。戻り値の型は `prime_sum` の戻り値の型で�
 
 ```cpp
 // オイラーの φ の和。φ(p) = p - 1、φ(p^e) = p^e - p^(e - 1)
-PrimeSumTable<mint> cnt(n, [](long long v) { return mint(v - 1); }, [](long long) { return mint(1); });
+auto cnt = prime_count_table(n);  // 素数の個数は整数の表で足りる (こちらのほうが速い)
 PrimeSumTable<mint> sum(n, [](long long v) { return mint(v) * mint(v + 1) / 2 - 1; }, [](long long p) { return mint(p); });
-mint s = multiplicative_sum(n, [&](long long v) { return sum(v) - cnt(v); },
+mint s = multiplicative_sum(n, [&](long long v) { return sum(v) - mint(cnt(v)); },
                             [](long long p, long long e) { return mint(p).pow(e) - mint(p).pow(e - 1); });
 ```
 
@@ -58,7 +58,7 @@ mint s = multiplicative_sum(n, [&](long long v) { return sum(v) - cnt(v); },
 |---|---|---|
 | `multiplicative_sum(n, prime_sum, f_pe)` | 乗法的関数 $f$ の $\sum_{i=1}^{n} f(i)$ ($n \ge 0$) | $O(n^{3/4} / \log n)$ 程度 |
 
-$n = 10^{11}$ で、表 2 つの構築と合わせて 2.5 秒ほどかかります (Library Checker の公式解の 2 倍ほど)。
+`prime_sum` は $\lfloor n / k \rfloor$ のとる値ごとに 1 回だけ呼んで表にし、再帰ではその表を引きます。$p^3 > x$ となる素数 $p$ の分は再帰せずに求めます。$n = 10^{11}$ で、表 2 つの構築と合わせて 0.6 秒ほどです (Library Checker の公式解の 1.5 倍ほど)。
 
 ## 関連
 

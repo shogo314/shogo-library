@@ -230,6 +230,31 @@ int main() {
             if (!uf.same(v, terminals[0])) ok = false;
     }
 
+    // maximum_independent_set: 頂点の部分集合を全探索する。自己ループ・多重辺も混ぜる
+    for (int rep = 0; rep < 2000 && ok; rep++) {
+        int n = rng() % 11, m = n == 0 ? 0 : rng() % (2 * n + 1);
+        Graph<int> graph(n);
+        std::vector<int> adj(n, 0);
+        for (int i = 0; i < m; i++) {
+            int u = rng() % n, v = rng() % (rng() % 8 == 0 ? n : n);
+            if (rng() % 10 == 0) v = u;
+            graph.add_edge(u, v);
+            adj[u] |= 1 << v, adj[v] |= 1 << u;
+        }
+        auto independent = [&](int S) {
+            for (int v = 0; v < n; v++)
+                if ((S >> v & 1) && (adj[v] & S)) return false;
+            return true;
+        };
+        int best = 0;
+        for (int S = 0; S < (1 << n); S++)
+            if (independent(S)) best = std::max(best, __builtin_popcount(S));
+        auto res = maximum_independent_set(graph);
+        int S = 0;
+        for (auto v : res) S |= 1 << v;
+        if (static_cast<int>(res.size()) != best || __builtin_popcount(S) != best || !independent(S) || !std::is_sorted(res.begin(), res.end())) ok = false;
+    }
+
     // minimum_spanning_tree: 辺の部分集合をすべて試して最小のコストの全域森と比べる
     for (int rep = 0; rep < 1000 && ok; rep++) {
         int n = rng() % 6 + 1, m = rng() % 9;

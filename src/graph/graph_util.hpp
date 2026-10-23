@@ -345,6 +345,55 @@ long long chromatic_number(const Graph<Cost>& graph) {
     return dp[(1 << n) - 1];
 }
 
+/**
+ * @brief 無向グラフの最大独立集合 (どの 2 頂点も隣り合わない頂点集合で、要素数が最大のもの) を 1 つ求め、頂点を昇順に返す (頂点数 64 以下)
+ * 次数 1 以下の頂点は選んでよいので選び、そうでなければ次数最大の頂点を選ぶか選ばないかで分岐する。O(1.39^n) 程度 (n = 40 で十分速い)
+ * @note 自己ループのある頂点は選ばない
+ */
+template <typename Cost = long long>
+std::vector<long long> maximum_independent_set(const Graph<Cost>& graph) {
+    const int n = graph.n;
+    assert(n <= 64);
+    using u64 = unsigned long long;
+    std::vector<u64> adj(n, 0);
+    u64 all = n == 64 ? ~0ULL : (1ULL << n) - 1;
+    for (int u = 0; u < n; u++) {
+        for (const auto& e : graph[u]) {
+            if (e.dst == u) {
+                all &= ~(1ULL << u);
+            } else {
+                adj[u] |= 1ULL << e.dst;
+            }
+        }
+    }
+    u64 best = 0;
+    // rest: まだ決めていない頂点、cur: 選んだ頂点
+    auto rec = [&](auto self, u64 rest, u64 cur) -> void {
+        if (__builtin_popcountll(cur) + __builtin_popcountll(rest) <= __builtin_popcountll(best)) return;
+        if (rest == 0) {
+            best = cur;
+            return;
+        }
+        int v = -1, deg = -1;
+        for (u64 r = rest; r; r &= r - 1) {
+            const int u = __builtin_ctzll(r), d = __builtin_popcountll(adj[u] & rest);
+            if (d <= 1) {
+                // 次数 1 以下なら選んでも損をしない
+                self(self, rest & ~adj[u] & ~(1ULL << u), cur | 1ULL << u);
+                return;
+            }
+            if (d > deg) v = u, deg = d;
+        }
+        self(self, rest & ~adj[v] & ~(1ULL << v), cur | 1ULL << v);
+        self(self, rest & ~(1ULL << v), cur);
+    };
+    rec(rec, all, 0);
+    std::vector<long long> res;
+    for (int v = 0; v < n; v++)
+        if (best >> v & 1) res.push_back(v);
+    return res;
+}
+
 namespace internal_graph_util {
 /**
  * @brief minimum_steiner_tree の DP

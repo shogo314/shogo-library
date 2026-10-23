@@ -8,7 +8,11 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
+#if __cplusplus >= 202002L
+#include <concepts>
+#endif
 #include <cstddef>
+#include <cstdint>
 #include <initializer_list>
 #include <optional>
 #include <string>
@@ -28,6 +32,28 @@ struct OperatorPropertyDefault {
     constexpr static T inv(const T& a) { return T(1) / a; }
 };
 }  // namespace matrix
+
+namespace internal_matrix {
+// 法が 2^31 未満の modint (mod() と val() を持つ型) か
+#if __cplusplus >= 202002L
+template <class T>
+concept modint_like = requires(const T& x) {
+    { T::mod() } -> std::convertible_to<std::uint32_t>;
+    { x.val() } -> std::convertible_to<std::uint32_t>;
+};
+template <class T>
+inline constexpr bool is_modint_like_v = modint_like<T>;
+#else
+template <class T, class = void>
+struct is_modint_like : std::false_type {};
+template <class T>
+struct is_modint_like<T, std::void_t<decltype(static_cast<std::uint32_t>(T::mod())),
+                                     decltype(static_cast<std::uint32_t>(std::declval<const T&>().val()))>>
+    : std::true_type {};
+template <class T>
+inline constexpr bool is_modint_like_v = is_modint_like<T>::value;
+#endif
+}  // namespace internal_matrix
 
 /**
  * @brief 行列
@@ -303,6 +329,49 @@ class Matrix {
     Matrix& operator*=(const Matrix& B) {
         assert(m == B.n);
         const long long p = B.m;
+        if constexpr (std::is_same_v<OperatorProperty, matrix::OperatorPropertyDefault<T>> &&
+                      internal_matrix::is_modint_like_v<T>) {
+            // 積を 64 ビットのまま足し、あふれる前にだけ mod を取る
+            // 法が 2^30 程度までなら 4 行ずつまとめて足し、acc の読み書きを減らす
+            const std::uint64_t mod = T::mod();
+            const std::uint64_t lim = UINT64_MAX / ((mod - 1) * (mod - 1) + 1) - 1;
+            std::vector<std::uint32_t> b(m * p);
+            for (long long k = 0; k < m; k++)
+                for (long long j = 0; j < p; j++) b[k * p + j] = B[k][j].val();
+            std::vector<std::uint64_t> acc(p);
+            for (long long i = 0; i < n; i++) {
+                std::fill(acc.begin(), acc.end(), 0);
+                std::uint64_t cnt = 0;
+                long long k = 0;
+                if (lim >= 4) {
+                    for (; k + 4 <= m; k += 4) {
+                        if (cnt + 4 > lim) {
+                            cnt = 0;
+                            for (long long j = 0; j < p; j++) acc[j] %= mod;
+                        }
+                        cnt += 4;
+                        const auto& r = (*this)[i];
+                        const std::uint64_t a0 = r[k].val(), a1 = r[k + 1].val(), a2 = r[k + 2].val(), a3 = r[k + 3].val();
+                        const std::uint32_t *b0 = b.data() + k * p, *b1 = b0 + p, *b2 = b1 + p, *b3 = b2 + p;
+                        for (long long j = 0; j < p; j++) acc[j] += a0 * b0[j] + a1 * b1[j] + a2 * b2[j] + a3 * b3[j];
+                    }
+                }
+                for (; k < m; k++) {
+                    if (cnt + 1 > lim) {
+                        cnt = 0;
+                        for (long long j = 0; j < p; j++) acc[j] %= mod;
+                    }
+                    cnt++;
+                    const std::uint64_t a0 = (*this)[i][k].val();
+                    const std::uint32_t* b0 = b.data() + k * p;
+                    for (long long j = 0; j < p; j++) acc[j] += a0 * b0[j];
+                }
+                v[i].resize(p);
+                for (long long j = 0; j < p; j++) v[i][j] = T(acc[j] % mod);
+            }
+            m = p;
+            return (*this);
+        }
         Matrix C(n, p);
         for (long long i = 0; i < n; i++) {
             for (long long k = 0; k < m; k++) {

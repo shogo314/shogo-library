@@ -6,6 +6,7 @@
 // permanent を、すべての順列の和と比較する (long long・modint・GF(2))
 // characteristic_polynomial を、行列式を順列で展開した多項式と比較する (mod 998244353・mod 3)
 // det_mod を、順列で展開した行列式と比較する (素数でない mod も)
+// modint の積 (64 ビットで足してから mod を取る経路) と pow を、long long での愚直な積と比較する (法が 2^31 に近いものや 1 も)
 // 行のリストから作るときの推論ガイドを static_assert で確かめる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
@@ -367,6 +368,60 @@ int main() {
         expect = (expect % mod + mod) % mod;
         if (Matrix<long long>(a).det_mod(mod) != expect) ok = false, std::cerr << "det_mod" << std::endl;
     }
+
+    // modint の積: 長方形・空の行列・自分自身との積 (A *= A) も試す
+    auto check_product = [&](auto zero, const char* name) {
+        using M = decltype(zero);
+        const unsigned long long mod = M::mod();
+        auto naive = [&](const std::vector<std::vector<unsigned long long>>& a, const std::vector<std::vector<unsigned long long>>& b, int p) {
+            int n = a.size(), m = b.size();
+            std::vector<std::vector<unsigned long long>> c(n, std::vector<unsigned long long>(p));
+            for (int i = 0; i < n; i++)
+                for (int k = 0; k < m; k++)
+                    for (int j = 0; j < p; j++) c[i][j] = (c[i][j] + a[i][k] * b[k][j]) % mod;
+            return c;
+        };
+        auto to_matrix = [&](const std::vector<std::vector<unsigned long long>>& a, int cols) {
+            Matrix<M> A(a.size(), cols);
+            for (int i = 0; i < static_cast<int>(a.size()); i++)
+                for (int j = 0; j < cols; j++) A[i][j] = M(a[i][j]);
+            return A;
+        };
+        auto same = [&](const Matrix<M>& A, const std::vector<std::vector<unsigned long long>>& c, int cols) {
+            if (A.n != static_cast<long long>(c.size()) || A.m != cols) return false;
+            for (int i = 0; i < A.n; i++)
+                for (int j = 0; j < cols; j++)
+                    if (A[i][j].val() != c[i][j]) return false;
+            return true;
+        };
+        auto random_mat = [&](int n, int m) {
+            std::vector<std::vector<unsigned long long>> a(n, std::vector<unsigned long long>(m));
+            for (auto& row : a)
+                for (auto& x : row) x = rng() % 4 == 0 ? mod - 1 : rng() % mod;  // 最大の値を多めに入れてあふれを試す
+            return a;
+        };
+        for (int rep = 0; rep < 300 && ok; rep++) {
+            int n = rng() % 8, m = rng() % 60, p = rng() % 8;
+            auto a = random_mat(n, m), b = random_mat(m, p);
+            if (!same(to_matrix(a, m) * to_matrix(b, p), naive(a, b, p), p)) ok = false, std::cerr << "product " << name << std::endl;
+            auto c = random_mat(n, n);
+            Matrix<M> C = to_matrix(c, n);
+            C *= C;
+            if (!same(C, naive(c, c, n), n)) ok = false, std::cerr << "product (A *= A) " << name << std::endl;
+            long long e = rng() % 10;
+            auto expect = std::vector<std::vector<unsigned long long>>(n, std::vector<unsigned long long>(n));
+            for (int i = 0; i < n; i++) expect[i][i] = 1 % mod;
+            for (int t = 0; t < e; t++) expect = naive(expect, c, n);
+            if (!same(to_matrix(c, n).pow(e), expect, n)) ok = false, std::cerr << "pow " << name << std::endl;
+        }
+    };
+    check_product(mint(0), "mod 998244353");
+    check_product(static_modint<1000000007>(0), "mod 1000000007");
+    check_product(static_modint<2147483647>(0), "mod 2147483647");
+    check_product(static_modint<1>(0), "mod 1");
+    check_product(static_modint<2>(0), "mod 2");
+    dynamic_modint<0>::set_mod(2000000011);
+    check_product(dynamic_modint<0>(0), "mod 2000000011 (dynamic)");
 
     if (ok) std::cout << "Hello World" << std::endl;
 }

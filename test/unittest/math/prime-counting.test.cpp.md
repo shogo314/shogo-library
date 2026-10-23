@@ -126,12 +126,13 @@ data:
     }\n\n/**\n * @brief \u4E57\u6CD5\u7684\u95A2\u6570 f \u306E\u548C f(1) + f(2)\
     \ + ... + f(n) (min_25 \u7BE9\u306E\u5F8C\u534A) O(n^(3/4) / log n) \u7A0B\u5EA6\
     \n *\n * prime_sum(v) \u306F v \u4EE5\u4E0B\u306E\u7D20\u6570 p \u306E f(p) \u306E\
-    \u548C\u3002v \u306F floor(n / k) \u306E\u5F62\u3067\u547C\u3076\u3002PrimeSumTable\
-    \ \u3092\u7D44\u307F\u5408\u308F\u305B\u3066\u4F5C\u308B\n * f_pe(p, e) \u306F\
-    \ f(p^e) (p \u306F sqrt(n) \u4EE5\u4E0B\u306E\u7D20\u6570\u3001e >= 1)\u3002f(1)\
-    \ = 1 \u3068\u3059\u308B\n * \u4F8B: \u30AA\u30A4\u30E9\u30FC\u306E \u03C6 \u306A\
-    \u3089 \u03C6(p) = p - 1 \u306A\u306E\u3067\u3001\u7D20\u6570\u306E\u548C\u306E\
-    \u8868 s \u3068\u500B\u6570\u306E\u8868 c \u304B\u3089 prime_sum(v) = s(v) - c(v)\u3001\
+    \u548C\u3002floor(n / k) \u306E\u3068\u308B\u5024 v \u3054\u3068\u306B 1 \u56DE\
+    \u305A\u3064\u547C\u3093\u3067\u8868\u306B\u3059\u308B\u3002PrimeSumTable \u3092\
+    \u7D44\u307F\u5408\u308F\u305B\u3066\u4F5C\u308B\n * f_pe(p, e) \u306F f(p^e)\
+    \ (p \u306F sqrt(n) \u4EE5\u4E0B\u306E\u7D20\u6570\u3001e >= 1)\u3002f(1) = 1\
+    \ \u3068\u3059\u308B\n * \u4F8B: \u30AA\u30A4\u30E9\u30FC\u306E \u03C6 \u306A\u3089\
+    \ \u03C6(p) = p - 1 \u306A\u306E\u3067\u3001\u7D20\u6570\u306E\u548C\u306E\u8868\
+    \ s \u3068\u500B\u6570\u306E\u8868 c \u304B\u3089 prime_sum(v) = s(v) - c(v)\u3001\
     f_pe(p, e) = p^e - p^(e-1)\n * @pre n >= 0\n */\ntemplate <typename PrimeSum,\
     \ typename F>\nauto multiplicative_sum(long long n, PrimeSum prime_sum, F f_pe)\
     \ {\n    using T = std::decay_t<decltype(prime_sum(n))>;\n    assert(n >= 0);\n\
@@ -142,22 +143,34 @@ data:
     \ }\n    // below[j]: primes \u306E\u5148\u982D j \u500B\u306E f(p) \u306E\u548C\
     \n    std::vector<T> below(primes.size() + 1, T(0));\n    for (size_t j = 0; j\
     \ < primes.size(); j++) below[j + 1] = below[j] + f_pe(primes[j], 1);\n    //\
-    \ 2 \u4EE5\u4E0A x \u4EE5\u4E0B\u3067\u3001\u6700\u5C0F\u7D20\u56E0\u6570\u304C\
-    \ primes[j] \u4EE5\u4E0A\u306E i \u306E f(i) \u306E\u548C\n    auto rec = [&](auto\
-    \ self, long long x, size_t j) -> T {\n        // primes[j] \u4EE5\u4E0A (primes\
-    \ \u3092\u4F7F\u3044\u5207\u3063\u305F\u306A\u3089\u3001primes \u306E\u3069\u308C\
-    \u3088\u308A\u3082\u5927\u304D\u3044) \u306E\u7D20\u6570\u304C x \u4EE5\u4E0B\u306B\
-    \u306A\u3044\n        if (j < primes.size() ? primes[j] > x : !primes.empty()\
+    \ prime_sum \u3092 floor(n / k) \u306E\u3068\u308B\u5024\u3054\u3068\u306B 1 \u56DE\
+    \u3060\u3051\u547C\u3093\u3067\u8868\u306B\u3059\u308B (v <= sq \u306F v - 1 \u756A\
+    \u76EE\u3001\u305D\u308C\u3088\u308A\u5927\u304D\u3044 n / k \u306F sq + k - 1\
+    \ \u756A\u76EE)\n    std::vector<T> table(2 * sq + 1);\n    for (long long v =\
+    \ 1; v <= sq; v++) table[v - 1] = prime_sum(v);\n    for (long long k = 1; n /\
+    \ k > sq; k++) table[sq + k - 1] = prime_sum(n / k);\n    auto at = [&](long long\
+    \ x) -> const T& { return x <= sq ? table[x - 1] : table[sq + n / x - 1]; };\n\
+    \    // 2 \u4EE5\u4E0A x \u4EE5\u4E0B\u3067\u3001\u6700\u5C0F\u7D20\u56E0\u6570\
+    \u304C primes[j] \u4EE5\u4E0A\u306E i \u306E f(i) \u306E\u548C\n    auto rec =\
+    \ [&](auto self, long long x, size_t j) -> T {\n        // primes[j] \u4EE5\u4E0A\
+    \ (primes \u3092\u4F7F\u3044\u5207\u3063\u305F\u306A\u3089\u3001primes \u306E\u3069\
+    \u308C\u3088\u308A\u3082\u5927\u304D\u3044) \u306E\u7D20\u6570\u304C x \u4EE5\u4E0B\
+    \u306B\u306A\u3044\n        if (j < primes.size() ? primes[j] > x : !primes.empty()\
     \ && primes.back() >= x) return T(0);\n        // \u7D20\u6570\u306E\u5206\n \
-    \       T res = prime_sum(x) - below[j];\n        // \u5408\u6210\u6570\u306E\u5206\
-    : \u6700\u5C0F\u7D20\u56E0\u6570 p \u3067 p^e \u3067\u5272\u308A\u5207\u308C\u3066\
+    \       T res = at(x) - below[j];\n        // \u5408\u6210\u6570\u306E\u5206:\
+    \ \u6700\u5C0F\u7D20\u56E0\u6570 p \u3067 p^e \u3067\u5272\u308A\u5207\u308C\u3066\
     \ p^(e+1) \u3067\u5272\u308A\u5207\u308C\u306A\u3044\u3082\u306E\u3092\u3001p^e\
     \ \u3068\u6B8B\u308A\u306E\u7A4D\u3068\u3057\u3066\u6570\u3048\u308B\n       \
     \ for (size_t k = j; k < primes.size() && primes[k] * primes[k] <= x; k++) {\n\
-    \            const long long p = primes[k];\n            long long pe = p;\n \
-    \           for (long long e = 1; pe <= x / p; e++, pe *= p) {\n             \
-    \   res += f_pe(p, e) * self(self, x / pe, k + 1) + f_pe(p, e + 1);\n        \
-    \    }\n        }\n        return res;\n    };\n    return rec(rec, n, 0) + T(1);\n\
+    \            const long long p = primes[k];\n            if (p > x / (p * p))\
+    \ {\n                // p^3 > x \u306A\u3089 e = 1 \u3060\u3051\u3067\u3001\u6B8B\
+    \u308A x / p (< p^2) \u306F p \u3088\u308A\u5927\u304D\u3044\u7D20\u6570\u304B\
+    \ 1 \u306A\u306E\u3067\u3001\u518D\u5E30\u305B\u305A\u306B\u6C42\u3081\u308B\n\
+    \                res += f_pe(p, 1) * (at(x / p) - below[k + 1]) + f_pe(p, 2);\n\
+    \                continue;\n            }\n            long long pe = p;\n   \
+    \         for (long long e = 1; pe <= x / p; e++, pe *= p) {\n               \
+    \ res += f_pe(p, e) * self(self, x / pe, k + 1) + f_pe(p, e + 1);\n          \
+    \  }\n        }\n        return res;\n    };\n    return rec(rec, n, 0) + T(1);\n\
     }\n#line 8 \"test/unittest/math/prime-counting.test.cpp\"\n\n#include <iostream>\n\
     #include <random>\n#line 12 \"test/unittest/math/prime-counting.test.cpp\"\n\n\
     #line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\
@@ -890,7 +903,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/prime-counting.test.cpp
   requiredBy: []
-  timestamp: '2026-10-23 19:32:11+09:00'
+  timestamp: '2026-10-23 21:42:02+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/prime-counting.test.cpp

@@ -431,6 +431,10 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/others/mo.hpp
       title: Mo's algorithm
+    - icon: ':heavy_check_mark:'
+      path: src/others/subarray-sum.hpp
+      title: "\u548C\u304C\u6761\u4EF6\u3092\u6E80\u305F\u3059\u533A\u9593\u306E\u500B\
+        \u6570"
   - name: src/string
     pages:
     - icon: ':heavy_check_mark:'
@@ -1248,6 +1252,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/others/mo.test.cpp
       title: test/unittest/others/mo.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/others/subarray-sum.test.cpp
+      title: test/unittest/others/subarray-sum.test.cpp
   - name: test/unittest/string
     pages:
     - icon: ':heavy_check_mark:'

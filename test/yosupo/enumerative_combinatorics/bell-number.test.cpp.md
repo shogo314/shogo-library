@@ -924,28 +924,67 @@ data:
     \u9577\u3055\u304C k \u4EE5\u4E0B\u306A\u3089 0 (\u7A7A)\ntemplate <typename mint>\n\
     FPS<mint> drop(const FPS<mint>& f, long long k) {\n    if (static_cast<long long>(f.size())\
     \ <= k) return FPS<mint>();\n    return FPS<mint>(f.begin() + k, f.end());\n}\n\
-    \n// \u591A\u9805\u5F0F\u3092\u6210\u5206\u306B\u6301\u3064 2x2 \u884C\u5217 [[a,\
-    \ b], [c, d]]\ntemplate <typename mint>\nstruct Mat {\n    FPS<mint> a, b, c,\
-    \ d;\n    static Mat identity() { return {FPS<mint>{1}, FPS<mint>(), FPS<mint>(),\
-    \ FPS<mint>{1}}; }\n    Mat operator*(const Mat& r) const {\n        return {shrink(a\
-    \ * r.a + b * r.c), shrink(a * r.b + b * r.d), shrink(c * r.a + d * r.c), shrink(c\
-    \ * r.b + d * r.d)};\n    }\n    std::pair<FPS<mint>, FPS<mint>> operator*(const\
-    \ std::pair<FPS<mint>, FPS<mint>>& p) const {\n        return {shrink(a * p.first\
-    \ + b * p.second), shrink(c * p.first + d * p.second)};\n    }\n};\n\n// \u4E92\
-    \u9664\u6CD5\u3092 1 \u6BB5\u9032\u3081\u308B: (p, q) <- (q, p % q)\u3001m <-\
-    \ [[0, 1], [1, -p / q]] m\ntemplate <typename mint>\nvoid step(Mat<mint>& m, std::pair<FPS<mint>,\
-    \ FPS<mint>>& p) {\n    const FPS<mint> quo = p.first / p.second;\n    FPS<mint>\
-    \ rem = shrink(p.first - p.second * quo);\n    FPS<mint> c = shrink(m.a - m.c\
-    \ * quo), d = shrink(m.b - m.d * quo);\n    m = {std::move(m.c), std::move(m.d),\
-    \ std::move(c), std::move(d)};\n    p = {std::move(p.second), std::move(rem)};\n\
-    }\n\n// p = (f, g) (|f| = n > |g|) \u306B\u5BFE\u3057\u3001\u4E92\u9664\u6CD5\u3067\
-    \u9577\u3055\u304C ceil(n / 2) \u4EE5\u4E0B\u306B\u306A\u308B\u76F4\u524D\u307E\
-    \u3067\u306E\u5909\u63DB\u884C\u5217\ntemplate <typename mint>\nMat<mint> half_gcd(std::pair<FPS<mint>,\
-    \ FPS<mint>> p) {\n    const long long n = p.first.size(), m = p.second.size();\n\
-    \    const long long k = (n + 1) / 2;\n    if (m <= k) return Mat<mint>::identity();\n\
-    \    // \u4E0A\u4F4D\u306E\u534A\u5206\u3060\u3051\u3067\u6C42\u3081\u305F\u884C\
-    \u5217\u306F\u3001\u4E0A\u4F4D\u306E\u7D04\u534A\u5206\u306E\u5546\u3092\u6B63\
-    \u3057\u304F\u4E0E\u3048\u308B\n    Mat<mint> m1 = half_gcd(std::make_pair(drop(p.first,\
+    \n// \u884C\u5217\u306E\u6210\u5206\u306E\u7A4D\u548C \u03A3_j x[i][j] y[j][k]\
+    \ \u3092\u3001\u5404\u6210\u5206\u3092 1 \u56DE\u305A\u3064 NTT \u3057\u3066\u6C42\
+    \u3081\u308B (\u6CD5\u304C NTT \u306B\u5411\u304D\u3001\u9577\u3055\u304C\u5341\
+    \u5206\u9577\u3044\u3068\u304D\u3060\u3051)\n// x \u306F rows \xD7 2\u3001y \u306F\
+    \ 2 \xD7 cols\u3002\u7D50\u679C\u306F rows \xD7 cols\u3002\u4F7F\u3048\u306A\u3051\
+    \u308C\u3070 false \u3092\u8FD4\u3059\ntemplate <typename mint>\nbool mat_mul_ntt(const\
+    \ FPS<mint>* const* x, int rows, const FPS<mint>* const* y, int cols, FPS<mint>*\
+    \ res) {\n    if constexpr (!internal_convolution::ntt_candidate<mint>()) {\n\
+    \        return false;\n    } else {\n        long long len = 0, small = 1LL <<\
+    \ 60;\n        for (int i = 0; i < rows; i++)\n            for (int j = 0; j <\
+    \ 2; j++)\n                for (int k = 0; k < cols; k++) {\n                \
+    \    const long long s1 = x[i * 2 + j]->size(), s2 = y[j * cols + k]->size();\n\
+    \                    if (s1 == 0 || s2 == 0) continue;\n                    len\
+    \ = std::max(len, s1 + s2 - 1), small = std::min(small, std::min(s1, s2));\n \
+    \               }\n        // \u77ED\u3044\u3082\u306E\u306F\u666E\u901A\u306B\
+    \u639B\u3051\u305F\u307B\u3046\u304C\u901F\u3044\n        if (len == 0 || small\
+    \ <= 64 || !use_ntt<mint>(len)) return false;\n        long long z = 1;\n    \
+    \    while (z < len) z <<= 1;\n        auto transform = [&](const FPS<mint>& f)\
+    \ {\n            std::vector<mint> t(z);\n            std::copy(f.begin(), f.end(),\
+    \ t.begin());\n            ntt(t);\n            return t;\n        };\n      \
+    \  std::vector<std::vector<mint>> tx(rows * 2), ty(2 * cols);\n        for (int\
+    \ i = 0; i < rows * 2; i++) tx[i] = transform(*x[i]);\n        for (int i = 0;\
+    \ i < 2 * cols; i++) ty[i] = transform(*y[i]);\n        for (int i = 0; i < rows;\
+    \ i++)\n            for (int k = 0; k < cols; k++) {\n                std::vector<mint>\
+    \ t(z);\n                for (long long e = 0; e < z; e++) t[e] = tx[i * 2][e]\
+    \ * ty[k][e] + tx[i * 2 + 1][e] * ty[cols + k][e];\n                intt(t);\n\
+    \                t.resize(len);\n                res[i * cols + k] = shrink(FPS<mint>(std::move(t)));\n\
+    \            }\n        return true;\n    }\n}\n\n// \u591A\u9805\u5F0F\u3092\u6210\
+    \u5206\u306B\u6301\u3064 2x2 \u884C\u5217 [[a, b], [c, d]]\ntemplate <typename\
+    \ mint>\nstruct Mat {\n    FPS<mint> a, b, c, d;\n    static Mat identity() {\
+    \ return {FPS<mint>{1}, FPS<mint>(), FPS<mint>(), FPS<mint>{1}}; }\n    Mat operator*(const\
+    \ Mat& r) const {\n        const FPS<mint>* x[4] = {&a, &b, &c, &d};\n       \
+    \ const FPS<mint>* y[4] = {&r.a, &r.b, &r.c, &r.d};\n        Mat res;\n      \
+    \  FPS<mint>* out[4] = {&res.a, &res.b, &res.c, &res.d};\n        FPS<mint> tmp[4];\n\
+    \        if (mat_mul_ntt(x, 2, y, 2, tmp)) {\n            for (int i = 0; i <\
+    \ 4; i++) *out[i] = std::move(tmp[i]);\n            return res;\n        }\n \
+    \       return {shrink(a * r.a + b * r.c), shrink(a * r.b + b * r.d), shrink(c\
+    \ * r.a + d * r.c), shrink(c * r.b + d * r.d)};\n    }\n    std::pair<FPS<mint>,\
+    \ FPS<mint>> operator*(const std::pair<FPS<mint>, FPS<mint>>& p) const {\n   \
+    \     const FPS<mint>* x[4] = {&a, &b, &c, &d};\n        const FPS<mint>* y[2]\
+    \ = {&p.first, &p.second};\n        FPS<mint> tmp[2];\n        if (mat_mul_ntt(x,\
+    \ 2, y, 1, tmp)) return {std::move(tmp[0]), std::move(tmp[1])};\n        return\
+    \ {shrink(a * p.first + b * p.second), shrink(c * p.first + d * p.second)};\n\
+    \    }\n};\n\n// \u4E92\u9664\u6CD5\u3092 1 \u6BB5\u9032\u3081\u308B: (p, q) <-\
+    \ (q, p % q)\u3001m <- [[0, 1], [1, -p / q]] m\ntemplate <typename mint>\nvoid\
+    \ step(Mat<mint>& m, std::pair<FPS<mint>, FPS<mint>>& p) {\n    const FPS<mint>\
+    \ quo = p.first / p.second;\n    FPS<mint> rem = shrink(p.first - p.second * quo);\n\
+    \    FPS<mint> c = shrink(m.a - m.c * quo), d = shrink(m.b - m.d * quo);\n   \
+    \ m = {std::move(m.c), std::move(m.d), std::move(c), std::move(d)};\n    p = {std::move(p.second),\
+    \ std::move(rem)};\n}\n\n// p = (f, g) (|f| = n > |g|) \u306B\u5BFE\u3057\u3001\
+    \u4E92\u9664\u6CD5\u3067\u9577\u3055\u304C ceil(n / 2) \u4EE5\u4E0B\u306B\u306A\
+    \u308B\u76F4\u524D\u307E\u3067\u306E\u5909\u63DB\u884C\u5217\ntemplate <typename\
+    \ mint>\nMat<mint> half_gcd(std::pair<FPS<mint>, FPS<mint>> p) {\n    const long\
+    \ long n = p.first.size(), m = p.second.size();\n    const long long k = (n +\
+    \ 1) / 2;\n    if (m <= k) return Mat<mint>::identity();\n    // \u77ED\u3044\u3068\
+    \u304D\u306F\u3001\u4E92\u9664\u6CD5\u3092 1 \u6BB5\u305A\u3064\u9032\u3081\u305F\
+    \u307B\u3046\u304C\u901F\u3044\n    if (n <= 64) {\n        Mat<mint> res = Mat<mint>::identity();\n\
+    \        while (static_cast<long long>(p.second.size()) > k) step(res, p);\n \
+    \       return res;\n    }\n    // \u4E0A\u4F4D\u306E\u534A\u5206\u3060\u3051\u3067\
+    \u6C42\u3081\u305F\u884C\u5217\u306F\u3001\u4E0A\u4F4D\u306E\u7D04\u534A\u5206\
+    \u306E\u5546\u3092\u6B63\u3057\u304F\u4E0E\u3048\u308B\n    Mat<mint> m1 = half_gcd(std::make_pair(drop(p.first,\
     \ k), drop(p.second, k)));\n    p = m1 * p;\n    if (static_cast<long long>(p.second.size())\
     \ <= k) return m1;\n    step(m1, p);\n    if (static_cast<long long>(p.second.size())\
     \ <= k) return m1;\n    const long long l = static_cast<long long>(p.first.size())\
@@ -966,93 +1005,107 @@ data:
     \ std::swap(p.first, p.second);\n    while (!p.second.empty()) {\n        Mat<mint>\
     \ m1 = half_gcd(p);\n        p = m1 * p;\n        if (!p.second.empty()) step(m1,\
     \ p);\n    }\n    if (!p.first.empty()) p.first /= p.first.back();\n    return\
-    \ p.first;\n}\n}  // namespace internal_fps\n\ntemplate <typename mint>\nFPS<mint>\
-    \ modpow(const FPS<mint>& f, long long n, const FPS<mint>& m) {\n    if (n ==\
-    \ 0) return FPS<mint>(1, 1);\n    auto t = modpow(f, n / 2, m);\n    t = (t *\
-    \ t) % m;\n    if (n & 1) t = (t * f) % m;\n    return t;\n}\n\n/**\n * @brief\
-    \ a f + b g = d (d \u306F f \u3068 g \u306E\u6700\u5927\u516C\u7D04\u6570\u3067\
-    \u3001\u6700\u9AD8\u6B21\u306E\u4FC2\u6570\u304C 1) \u3068\u306A\u308B a\u3001\
-    b \u3092\u6C42\u3081\u3001d \u3092\u8FD4\u3059 O(n log^2 n)\n * f \u3068 g \u304C\
-    \u3068\u3082\u306B 0 \u306A\u3089 d = a = b = 0\u3002a\u3001b \u306F\u672B\u5C3E\
-    \u306E 0 \u3092\u53D6\u308A\u9664\u3044\u305F\u5F62\n */\ntemplate <typename mint>\n\
-    FPS<mint> extgcd(const FPS<mint>& f, const FPS<mint>& g, FPS<mint>& a, FPS<mint>&\
-    \ b) {\n    using namespace internal_fps;\n    Mat<mint> m = gcd_matrix(f, g);\n\
-    \    FPS<mint> d = shrink(m.a * shrink(f) + m.b * shrink(g));\n    a = std::move(m.a),\
-    \ b = std::move(m.b);\n    if (d.empty()) {\n        a.clear(), b.clear();\n \
-    \       return d;\n    }\n    const mint iv = d.back().inv();\n    d *= iv, a\
-    \ *= iv, b *= iv;\n    return d;\n}\n\n/**\n * @brief f h \u2261 1 (mod g) \u3067\
-    \u3001\u6B21\u6570\u304C g \u3088\u308A\u5C0F\u3055\u3044 h\u3002\u306A\u3051\u308C\
-    \u3070 std::nullopt O(n log^2 n)\n * g \u306F 0 \u3067\u306A\u3044\u3053\u3068\
-    \u3002g \u304C\u5B9A\u6570\u306A\u3089\u3059\u3079\u3066\u304C 0 \u3068\u5408\u540C\
-    \u306A\u306E\u3067\u3001h = 0 (\u7A7A) \u3092\u8FD4\u3059\u3002h \u306F\u672B\u5C3E\
-    \u306E 0 \u3092\u53D6\u308A\u9664\u3044\u305F\u5F62\n */\ntemplate <typename mint>\n\
-    std::optional<FPS<mint>> modinv(const FPS<mint>& f, const FPS<mint>& g) {\n  \
-    \  using namespace internal_fps;\n    const FPS<mint> gs = shrink(g);\n    assert(!gs.empty());\n\
-    \    if (gs.size() == 1) return FPS<mint>();\n    FPS<mint> a, b;\n    const FPS<mint>\
-    \ d = extgcd(shrink(f % gs), gs, a, b);\n    if (d.size() != 1) return std::nullopt;\n\
-    \    return shrink(a % gs);\n}\n\n/**\n * @brief \u591A\u9805\u5F0F\u306E\u5217\
-    \u306E\u7A4D f_0 f_1 ... f_{n-1} O(N log^2 N) (N \u306F\u6B21\u6570\u306E\u548C\
-    )\n * \u6B21\u6570\u306E\u5C0F\u3055\u3044\u3082\u306E\u304B\u3089 2 \u3064\u305A\
-    \u3064\u639B\u3051\u3066\u3044\u304F\u3002fs \u304C\u7A7A\u306A\u3089 1\n */\n\
-    template <typename mint>\nFPS<mint> polynomial_product(std::vector<FPS<mint>>\
-    \ fs) {\n    if (fs.empty()) return FPS<mint>(1, 1);\n    auto larger = [&](int\
-    \ a, int b) { return fs[a].size() > fs[b].size(); };\n    std::priority_queue<int,\
-    \ std::vector<int>, decltype(larger)> pq(larger);\n    for (int i = 0; i < static_cast<int>(fs.size());\
-    \ i++) pq.push(i);\n    while (pq.size() > 1) {\n        int a = pq.top();\n \
-    \       pq.pop();\n        int b = pq.top();\n        pq.pop();\n        // \u7A7A\
-    \u306E\u591A\u9805\u5F0F (0) \u3068\u306E\u7A4D\u306F 0\n        fs[a] = fs[a].empty()\
-    \ || fs[b].empty() ? FPS<mint>() : fs[a] * fs[b];\n        FPS<mint>().swap(fs[b]);\n\
-    \        pq.push(a);\n    }\n    return fs[pq.top()];\n}\n\n/**\n * @brief \u5206\
-    \u6570\u306E\u548C \u03A3_i nums[i] / dens[i] \u3092 1 \u3064\u306E\u5206\u6570\
-    \ num / den \u306B\u307E\u3068\u3081\u308B O(N log^2 N) (N \u306F\u591A\u9805\u5F0F\
-    \u306E\u9577\u3055\u306E\u548C)\n * \u534A\u5206\u305A\u3064\u306B\u5206\u3051\
-    \u3066 a / b + c / d = (ad + cb) / bd \u3068\u307E\u3068\u3081\u308B\u3002den\
-    \ \u306F dens \u306E\u7A4D\u3002\u7A7A\u306A\u3089 0 / 1\n * @return std::pair<FPS<mint>,\
-    \ FPS<mint>> {num, den}\n */\ntemplate <typename mint>\nstd::pair<FPS<mint>, FPS<mint>>\
-    \ sum_of_fractions(const std::vector<FPS<mint>>& nums, const std::vector<FPS<mint>>&\
-    \ dens) {\n    assert(nums.size() == dens.size());\n    if (nums.empty()) return\
-    \ {FPS<mint>(), FPS<mint>{1}};\n    auto rec = [&](auto&& self, long long l, long\
-    \ long r) -> std::pair<FPS<mint>, FPS<mint>> {\n        if (r - l == 1) return\
-    \ {nums[l], dens[l]};\n        long long m = (l + r) / 2;\n        auto [a, b]\
-    \ = self(self, l, m);\n        auto [c, d] = self(self, m, r);\n        return\
-    \ {a * d + c * b, b * d};\n    };\n    return rec(rec, 0, nums.size());\n}\n#line\
-    \ 2 \"src/math/multipoint.hpp\"\n\n/**\n * @file multipoint.hpp\n * @brief \u591A\
-    \u70B9\u8A55\u4FA1\u30FB\u591A\u9805\u5F0F\u88DC\u9593\u30FB\u6A19\u672C\u70B9\
-    \u306E\u305A\u3089\u3057\n */\n\n#line 11 \"src/math/multipoint.hpp\"\n\n#line\
-    \ 15 \"src/math/multipoint.hpp\"\n\nnamespace internal_multipoint {\n// \u70B9\
-    \ xs \u306E subproduct tree: tree[k] \u306F\u9802\u70B9 k \u304C\u53D7\u3051\u6301\
-    \u3064\u70B9 x_i \u306B\u3064\u3044\u3066 \u03A0 (x - x_i)\u3002\u8449\u306F sz\
-    \ + i\ntemplate <typename mint>\nstruct SubproductTree {\n    long long n, sz;\n\
-    \    std::vector<FPS<mint>> tree;\n    explicit SubproductTree(const std::vector<mint>&\
-    \ xs) : n(xs.size()), sz(1) {\n        while (sz < n) sz <<= 1;\n        tree.assign(2\
-    \ * sz, FPS<mint>{1});\n        for (long long i = 0; i < n; i++) tree[sz + i]\
-    \ = FPS<mint>{-xs[i], 1};\n        for (long long k = sz - 1; k >= 1; k--) tree[k]\
-    \ = tree[2 * k] * tree[2 * k + 1];\n    }\n};\n}  // namespace internal_multipoint\n\
-    \n/**\n * @brief \u591A\u9805\u5F0F f \u306E\u3001\u70B9 xs \u3067\u306E\u5024\
-    \ f(x_0), ..., f(x_{m-1}) O((n + m) log^2 (n + m))\n * subproduct tree \u306E\u6839\
-    \u304B\u3089\u3001\u5404\u9802\u70B9\u306E\u591A\u9805\u5F0F\u3067\u5272\u3063\
-    \u305F\u4F59\u308A\u3092\u4E0B\u308D\u3057\u3066\u3044\u304F\u3002\u4F59\u308A\
-    \u304C\u77ED\u304F\u306A\u3063\u305F\u3089\u76F4\u63A5\u8A08\u7B97\u3059\u308B\
-    \n */\ntemplate <typename mint>\nstd::vector<mint> multipoint_evaluation(const\
-    \ FPS<mint>& f, const std::vector<mint>& xs) {\n    const long long m = xs.size();\n\
-    \    if (m == 0) return {};\n    internal_multipoint::SubproductTree<mint> t(xs);\n\
-    \    std::vector<mint> res(m);\n    // \u9802\u70B9 k \u306B f \u306E\u4F59\u308A\
-    \ g \u304C\u5C4A\u3044\u305F\u3068\u304D\u3001\u53D7\u3051\u6301\u3064\u70B9\u306E\
-    \u5024\u3092\u6C42\u3081\u308B\n    auto rec = [&](auto&& self, long long k, long\
-    \ long l, long long r, FPS<mint> g) -> void {\n        if (l >= m) return;\n \
-    \       // \u6B21\u6570\u304C\u5C0F\u3055\u3051\u308C\u3070 Horner \u6CD5\u3067\
-    \u76F4\u63A5\u6C42\u3081\u308B\n        if (r - l <= 32) {\n            for (long\
-    \ long i = l; i < std::min(r, m); i++) res[i] = g.eval(xs[i]);\n            return;\n\
-    \        }\n        const long long mid = (l + r) / 2;\n        self(self, 2 *\
-    \ k, l, mid, g % t.tree[2 * k]);\n        self(self, 2 * k + 1, mid, r, g % t.tree[2\
-    \ * k + 1]);\n    };\n    FPS<mint> g = f;\n    g.normalize();\n    rec(rec, 1,\
-    \ 0, t.sz, g % t.tree[1]);\n    return res;\n}\n\n/**\n * @brief \u70B9 (x_i,\
-    \ y_i) (x_i \u306F\u4E92\u3044\u306B\u7570\u306A\u308B) \u3092\u3059\u3079\u3066\
-    \u901A\u308B n - 1 \u6B21\u4EE5\u4E0B\u306E\u591A\u9805\u5F0F (\u9577\u3055 n)\
-    \ O(n log^2 n)\n * g = \u03A0 (x - x_i) \u3068\u3059\u308B\u3068 f = \u03A3 y_i\
-    \ / g'(x_i) \u03A0_{j != i} (x - x_j)\u3002g'(x_i) \u3092\u591A\u70B9\u8A55\u4FA1\
-    \u3057\u3001\u548C\u3092 subproduct tree \u306E\u4E0B\u304B\u3089\u7D44\u307F\u7ACB\
-    \u3066\u308B\n */\ntemplate <typename mint>\nFPS<mint> polynomial_interpolation(const\
+    \ p.first;\n}\n}  // namespace internal_fps\n\n/**\n * @brief f^n mod m (m \u306F\
+    \u672B\u5C3E\u304C 0 \u3067\u306A\u3044\u3053\u3068) O(d log d log n) (d \u306F\
+    \ m \u306E\u6B21\u6570)\n */\ntemplate <typename mint>\nFPS<mint> modpow(const\
+    \ FPS<mint>& f, long long n, const FPS<mint>& m) {\n    assert(!m.empty() && m.back()\
+    \ != 0);\n    const long long d = static_cast<long long>(m.size()) - 1;  // m\
+    \ \u306E\u6B21\u6570\n    if (d == 0) return FPS<mint>();\n    // h (\u6B21\u6570\
+    \ 2d - 2 \u4EE5\u4E0B) \u3092 m \u3067\u5272\u3063\u305F\u4F59\u308A\u3002\u5546\
+    \u306E\u6B21\u6570\u306F d - 2 \u4EE5\u4E0B\u306A\u306E\u3067\u3001rev(m) \u306E\
+    \u9006\u5143\u306F d - 1 \u9805\u3042\u308C\u3070\u3088\u304F\u3001\u6700\u521D\
+    \u306B 1 \u56DE\u3060\u3051\u6C42\u3081\u308B (Barrett)\n    const FPS<mint> iv\
+    \ = inv(m.rev(), std::max(d - 1, 1LL));\n    auto reduce = [&](FPS<mint> h) {\n\
+    \        h.normalize();\n        if (h.size() < m.size()) return h;\n        const\
+    \ long long need = static_cast<long long>(h.size()) - static_cast<long long>(m.size())\
+    \ + 1;\n        const FPS<mint> q = (h.rev().pre(need) * iv.pre(need)).pre(need).rev();\n\
+    \        h -= q * m;\n        h.resize(std::min<long long>(h.size(), d));\n  \
+    \      h.normalize();\n        return h;\n    };\n    const FPS<mint> base = f\
+    \ % m;\n    FPS<mint> res(1, 1);\n    for (int bit = 62; bit >= 0; bit--) {\n\
+    \        res = reduce(res * res);\n        if (n >> bit & 1) res = reduce(res\
+    \ * base);\n    }\n    return res;\n}\n\n/**\n * @brief a f + b g = d (d \u306F\
+    \ f \u3068 g \u306E\u6700\u5927\u516C\u7D04\u6570\u3067\u3001\u6700\u9AD8\u6B21\
+    \u306E\u4FC2\u6570\u304C 1) \u3068\u306A\u308B a\u3001b \u3092\u6C42\u3081\u3001\
+    d \u3092\u8FD4\u3059 O(n log^2 n)\n * f \u3068 g \u304C\u3068\u3082\u306B 0 \u306A\
+    \u3089 d = a = b = 0\u3002a\u3001b \u306F\u672B\u5C3E\u306E 0 \u3092\u53D6\u308A\
+    \u9664\u3044\u305F\u5F62\n */\ntemplate <typename mint>\nFPS<mint> extgcd(const\
+    \ FPS<mint>& f, const FPS<mint>& g, FPS<mint>& a, FPS<mint>& b) {\n    using namespace\
+    \ internal_fps;\n    Mat<mint> m = gcd_matrix(f, g);\n    FPS<mint> d = shrink(m.a\
+    \ * shrink(f) + m.b * shrink(g));\n    a = std::move(m.a), b = std::move(m.b);\n\
+    \    if (d.empty()) {\n        a.clear(), b.clear();\n        return d;\n    }\n\
+    \    const mint iv = d.back().inv();\n    d *= iv, a *= iv, b *= iv;\n    return\
+    \ d;\n}\n\n/**\n * @brief f h \u2261 1 (mod g) \u3067\u3001\u6B21\u6570\u304C\
+    \ g \u3088\u308A\u5C0F\u3055\u3044 h\u3002\u306A\u3051\u308C\u3070 std::nullopt\
+    \ O(n log^2 n)\n * g \u306F 0 \u3067\u306A\u3044\u3053\u3068\u3002g \u304C\u5B9A\
+    \u6570\u306A\u3089\u3059\u3079\u3066\u304C 0 \u3068\u5408\u540C\u306A\u306E\u3067\
+    \u3001h = 0 (\u7A7A) \u3092\u8FD4\u3059\u3002h \u306F\u672B\u5C3E\u306E 0 \u3092\
+    \u53D6\u308A\u9664\u3044\u305F\u5F62\n */\ntemplate <typename mint>\nstd::optional<FPS<mint>>\
+    \ modinv(const FPS<mint>& f, const FPS<mint>& g) {\n    using namespace internal_fps;\n\
+    \    const FPS<mint> gs = shrink(g);\n    assert(!gs.empty());\n    if (gs.size()\
+    \ == 1) return FPS<mint>();\n    FPS<mint> a, b;\n    const FPS<mint> d = extgcd(shrink(f\
+    \ % gs), gs, a, b);\n    if (d.size() != 1) return std::nullopt;\n    return shrink(a\
+    \ % gs);\n}\n\n/**\n * @brief \u591A\u9805\u5F0F\u306E\u5217\u306E\u7A4D f_0 f_1\
+    \ ... f_{n-1} O(N log^2 N) (N \u306F\u6B21\u6570\u306E\u548C)\n * \u6B21\u6570\
+    \u306E\u5C0F\u3055\u3044\u3082\u306E\u304B\u3089 2 \u3064\u305A\u3064\u639B\u3051\
+    \u3066\u3044\u304F\u3002fs \u304C\u7A7A\u306A\u3089 1\n */\ntemplate <typename\
+    \ mint>\nFPS<mint> polynomial_product(std::vector<FPS<mint>> fs) {\n    if (fs.empty())\
+    \ return FPS<mint>(1, 1);\n    auto larger = [&](int a, int b) { return fs[a].size()\
+    \ > fs[b].size(); };\n    std::priority_queue<int, std::vector<int>, decltype(larger)>\
+    \ pq(larger);\n    for (int i = 0; i < static_cast<int>(fs.size()); i++) pq.push(i);\n\
+    \    while (pq.size() > 1) {\n        int a = pq.top();\n        pq.pop();\n \
+    \       int b = pq.top();\n        pq.pop();\n        // \u7A7A\u306E\u591A\u9805\
+    \u5F0F (0) \u3068\u306E\u7A4D\u306F 0\n        fs[a] = fs[a].empty() || fs[b].empty()\
+    \ ? FPS<mint>() : fs[a] * fs[b];\n        FPS<mint>().swap(fs[b]);\n        pq.push(a);\n\
+    \    }\n    return fs[pq.top()];\n}\n\n/**\n * @brief \u5206\u6570\u306E\u548C\
+    \ \u03A3_i nums[i] / dens[i] \u3092 1 \u3064\u306E\u5206\u6570 num / den \u306B\
+    \u307E\u3068\u3081\u308B O(N log^2 N) (N \u306F\u591A\u9805\u5F0F\u306E\u9577\u3055\
+    \u306E\u548C)\n * \u534A\u5206\u305A\u3064\u306B\u5206\u3051\u3066 a / b + c /\
+    \ d = (ad + cb) / bd \u3068\u307E\u3068\u3081\u308B\u3002den \u306F dens \u306E\
+    \u7A4D\u3002\u7A7A\u306A\u3089 0 / 1\n * @return std::pair<FPS<mint>, FPS<mint>>\
+    \ {num, den}\n */\ntemplate <typename mint>\nstd::pair<FPS<mint>, FPS<mint>> sum_of_fractions(const\
+    \ std::vector<FPS<mint>>& nums, const std::vector<FPS<mint>>& dens) {\n    assert(nums.size()\
+    \ == dens.size());\n    if (nums.empty()) return {FPS<mint>(), FPS<mint>{1}};\n\
+    \    auto rec = [&](auto&& self, long long l, long long r) -> std::pair<FPS<mint>,\
+    \ FPS<mint>> {\n        if (r - l == 1) return {nums[l], dens[l]};\n        long\
+    \ long m = (l + r) / 2;\n        auto [a, b] = self(self, l, m);\n        auto\
+    \ [c, d] = self(self, m, r);\n        return {a * d + c * b, b * d};\n    };\n\
+    \    return rec(rec, 0, nums.size());\n}\n#line 2 \"src/math/multipoint.hpp\"\n\
+    \n/**\n * @file multipoint.hpp\n * @brief \u591A\u70B9\u8A55\u4FA1\u30FB\u591A\
+    \u9805\u5F0F\u88DC\u9593\u30FB\u6A19\u672C\u70B9\u306E\u305A\u3089\u3057\n */\n\
+    \n#line 11 \"src/math/multipoint.hpp\"\n\n#line 15 \"src/math/multipoint.hpp\"\
+    \n\nnamespace internal_multipoint {\n// \u70B9 xs \u306E subproduct tree: tree[k]\
+    \ \u306F\u9802\u70B9 k \u304C\u53D7\u3051\u6301\u3064\u70B9 x_i \u306B\u3064\u3044\
+    \u3066 \u03A0 (x - x_i)\u3002\u8449\u306F sz + i\ntemplate <typename mint>\nstruct\
+    \ SubproductTree {\n    long long n, sz;\n    std::vector<FPS<mint>> tree;\n \
+    \   explicit SubproductTree(const std::vector<mint>& xs) : n(xs.size()), sz(1)\
+    \ {\n        while (sz < n) sz <<= 1;\n        tree.assign(2 * sz, FPS<mint>{1});\n\
+    \        for (long long i = 0; i < n; i++) tree[sz + i] = FPS<mint>{-xs[i], 1};\n\
+    \        for (long long k = sz - 1; k >= 1; k--) tree[k] = tree[2 * k] * tree[2\
+    \ * k + 1];\n    }\n};\n}  // namespace internal_multipoint\n\n/**\n * @brief\
+    \ \u591A\u9805\u5F0F f \u306E\u3001\u70B9 xs \u3067\u306E\u5024 f(x_0), ..., f(x_{m-1})\
+    \ O((n + m) log^2 (n + m))\n * subproduct tree \u306E\u6839\u304B\u3089\u3001\u5404\
+    \u9802\u70B9\u306E\u591A\u9805\u5F0F\u3067\u5272\u3063\u305F\u4F59\u308A\u3092\
+    \u4E0B\u308D\u3057\u3066\u3044\u304F\u3002\u4F59\u308A\u304C\u77ED\u304F\u306A\
+    \u3063\u305F\u3089\u76F4\u63A5\u8A08\u7B97\u3059\u308B\n */\ntemplate <typename\
+    \ mint>\nstd::vector<mint> multipoint_evaluation(const FPS<mint>& f, const std::vector<mint>&\
+    \ xs) {\n    const long long m = xs.size();\n    if (m == 0) return {};\n    internal_multipoint::SubproductTree<mint>\
+    \ t(xs);\n    std::vector<mint> res(m);\n    // \u9802\u70B9 k \u306B f \u306E\
+    \u4F59\u308A g \u304C\u5C4A\u3044\u305F\u3068\u304D\u3001\u53D7\u3051\u6301\u3064\
+    \u70B9\u306E\u5024\u3092\u6C42\u3081\u308B\n    auto rec = [&](auto&& self, long\
+    \ long k, long long l, long long r, FPS<mint> g) -> void {\n        if (l >= m)\
+    \ return;\n        // \u6B21\u6570\u304C\u5C0F\u3055\u3051\u308C\u3070 Horner\
+    \ \u6CD5\u3067\u76F4\u63A5\u6C42\u3081\u308B\n        if (r - l <= 32) {\n   \
+    \         for (long long i = l; i < std::min(r, m); i++) res[i] = g.eval(xs[i]);\n\
+    \            return;\n        }\n        const long long mid = (l + r) / 2;\n\
+    \        self(self, 2 * k, l, mid, g % t.tree[2 * k]);\n        self(self, 2 *\
+    \ k + 1, mid, r, g % t.tree[2 * k + 1]);\n    };\n    FPS<mint> g = f;\n    g.normalize();\n\
+    \    rec(rec, 1, 0, t.sz, g % t.tree[1]);\n    return res;\n}\n\n/**\n * @brief\
+    \ \u70B9 (x_i, y_i) (x_i \u306F\u4E92\u3044\u306B\u7570\u306A\u308B) \u3092\u3059\
+    \u3079\u3066\u901A\u308B n - 1 \u6B21\u4EE5\u4E0B\u306E\u591A\u9805\u5F0F (\u9577\
+    \u3055 n) O(n log^2 n)\n * g = \u03A0 (x - x_i) \u3068\u3059\u308B\u3068 f = \u03A3\
+    \ y_i / g'(x_i) \u03A0_{j != i} (x - x_j)\u3002g'(x_i) \u3092\u591A\u70B9\u8A55\
+    \u4FA1\u3057\u3001\u548C\u3092 subproduct tree \u306E\u4E0B\u304B\u3089\u7D44\u307F\
+    \u7ACB\u3066\u308B\n */\ntemplate <typename mint>\nFPS<mint> polynomial_interpolation(const\
     \ std::vector<mint>& xs, const std::vector<mint>& ys) {\n    assert(xs.size()\
     \ == ys.size());\n    const long long n = xs.size();\n    if (n == 0) return FPS<mint>();\n\
     \    internal_multipoint::SubproductTree<mint> t(xs);\n    std::vector<mint> d\
@@ -1292,7 +1345,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/enumerative_combinatorics/bell-number.test.cpp
   requiredBy: []
-  timestamp: '2026-10-23 19:35:43+09:00'
+  timestamp: '2026-10-23 21:53:50+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/enumerative_combinatorics/bell-number.test.cpp

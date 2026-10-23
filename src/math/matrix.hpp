@@ -398,6 +398,36 @@ class Matrix {
     }
 
     /**
+     * @brief 行列式を mod で割った余り (mod は素数でなくてよい) O(n^2 (n + log mod))
+     * @note 要素は整数型であること。割り算の代わりに、2 つの行で互除法のように引き合って 0 を作る
+     */
+    [[nodiscard]]
+    long long det_mod(long long mod) const {
+        assert(n == m);
+        assert(1 <= mod && mod <= (1LL << 31));
+        std::vector<std::vector<long long>> a(n, std::vector<long long>(n));
+        for (long long i = 0; i < n; i++)
+            for (long long j = 0; j < n; j++) a[i][j] = ((static_cast<long long>(this->v[i][j]) % mod) + mod) % mod;
+        long long res = 1 % mod;
+        for (long long i = 0; i < n; i++) {
+            for (long long j = i + 1; j < n; j++) {
+                // a[j][i] が 0 になるまで、行 i から行 j の q 倍を引いて入れ替える
+                while (a[j][i] != 0) {
+                    const long long q = a[i][i] / a[j][i];
+                    if (q != 0) {
+                        for (long long k = i; k < n; k++) a[i][k] = ((a[i][k] - q * a[j][k]) % mod + mod) % mod;
+                    }
+                    std::swap(a[i], a[j]);
+                    res = (mod - res) % mod;
+                }
+            }
+            res = res * a[i][i] % mod;
+            if (res == 0) return 0;
+        }
+        return res;
+    }
+
+    /**
      * @brief 特性多項式 det(xI - A) の係数 (低次から n + 1 個、最高次は 1) O(n^3)
      * @note 割り算を使うので、要素は体 (modint など) であること
      *

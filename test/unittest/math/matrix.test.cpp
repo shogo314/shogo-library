@@ -5,6 +5,7 @@
 // solve・rank・kernel・reduced_row_echelon を、変数の値をすべて試す愚直な実装と比較する (mod 3 と GF(2))
 // permanent を、すべての順列の和と比較する (long long・modint・GF(2))
 // characteristic_polynomial を、行列式を順列で展開した多項式と比較する (mod 998244353・mod 3)
+// det_mod を、順列で展開した行列式と比較する (素数でない mod も)
 // 行のリストから作るときの推論ガイドを static_assert で確かめる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
@@ -344,6 +345,28 @@ int main() {
     };
     check_charpoly(mint(0), 1000000, "mod 998244353");
     check_charpoly(static_modint<3>(0), 3, "mod 3");
+
+    // det_mod: 順列で展開した行列式を mod で割った余りと比べる。mod は素数でないものも、要素は負の値も含める
+    for (int rep = 0; rep < 2000 && ok; rep++) {
+        int n = rng() % 6;
+        long long mod = rng() % 30 + 1;
+        std::vector<std::vector<long long>> a(n, std::vector<long long>(n));
+        for (auto& row : a)
+            for (auto& x : row) x = static_cast<long long>(rng() % 21) - 10;
+        std::vector<int> perm(n);
+        std::iota(perm.begin(), perm.end(), 0);
+        long long expect = 0;
+        do {
+            long long p = 1;
+            for (int i = 0; i < n; i++) p *= a[i][perm[i]];
+            for (int i = 0; i < n; i++)
+                for (int j = i + 1; j < n; j++)
+                    if (perm[i] > perm[j]) p = -p;
+            expect += p;
+        } while (std::next_permutation(perm.begin(), perm.end()));
+        expect = (expect % mod + mod) % mod;
+        if (Matrix<long long>(a).det_mod(mod) != expect) ok = false, std::cerr << "det_mod" << std::endl;
+    }
 
     if (ok) std::cout << "Hello World" << std::endl;
 }

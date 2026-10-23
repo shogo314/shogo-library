@@ -45,11 +45,12 @@ auto t = g.rotate(1).vstr();          // 時計回りに 90 度回して vector<
 | `A * x` / `x * A` | 列ベクトル / 行ベクトルとの積 (`vector<T>` を返す) | $O(nm)$ |
 | `A.pow(k)` | $A^k$ | $O(n^3 \log k)$ |
 | `A.det()` | 行列式 | $O(n^3)$ |
+| `A.det_mod(mod)` | 行列式を `mod` で割った余り。`mod` は素数でなくてよい ($1 \le$ `mod` $\le 2^{31}$)。要素は整数型であること。割り算の代わりに 2 つの行を互除法のように引き合って消去する | $O(n^2 (n + \log \mathrm{mod}))$ |
 | `A.permanent()` | パーマネント $\sum_\sigma \prod_i a_{i \sigma(i)}$ (Ryser の公式)。割り算を使わないので `long long` でもよい。0 と 1 の行列なら二部グラフの完全マッチングの個数 | $O(2^n n)$ |
 | `A.inv()` | 逆行列 (正則でなければ assert で落ちる) | $O(n^3)$ |
 | `A.characteristic_polynomial()` | 特性多項式 $\det(xI - A)$ の係数 (`std::vector<T>`、低次から $n + 1$ 個、最高次は 1)。ヘッセンベルク行列に変形して求める | $O(n^3)$ |
 
-`det`、`inv`、`characteristic_polynomial` は割り算を使うので、要素は体 (`modint` や浮動小数点型など) である必要があります。`int` や `long long` のような整数型では割り算が切り捨てになり、正しい値になりません (例: `Matrix<long long>({ {2, 1}, {1, 1} }).det()` は 1 ではなく 2 を返す)。整数の行列の行列式は、十分大きい素数を法とする `modint` で計算してください。
+`det`、`inv`、`characteristic_polynomial` は割り算を使うので、要素は体 (`modint` や浮動小数点型など) である必要があります。`int` や `long long` のような整数型では割り算が切り捨てになり、正しい値になりません (例: `Matrix<long long>({ {2, 1}, {1, 1} }).det()` は 1 ではなく 2 を返す)。整数の行列の行列式は、十分大きい素数を法とする `modint` で計算してください。素数でない数を法とする行列式は `det_mod` で求められます。
 
 浮動小数点型なら部分ピボット選択を行い、絶対値が $10^{-9}$ 未満を 0 とみなします。
 

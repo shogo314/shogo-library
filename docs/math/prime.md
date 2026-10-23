@@ -28,6 +28,7 @@ $d(n)$ は $n$ の約数の個数です。
 | `divisors(n)` | `n` ($\ge 1$) の正の約数を昇順に並べて返す | `factorize(n)` + $O(d(n) \log d(n))$ |
 | `totient(n)` | オイラーの $\varphi$ 関数 ($1$ 以上 $n$ 以下で $n$ と互いに素な整数の個数) | `factorize(n)` と同じ |
 | `primitive_root(m)` | `m` ($\ge 1$) を法とする最小の原始根。原始根があるのは $m = 1, 2, 4, p^k, 2p^k$ ($p$ は奇素数) のときで、なければ -1 ($m = 1$ なら 0)。$m$ が $10^{18}$ 程度でもよい | `factorize(m)` と `factorize(φ(m))` + 候補ごとに $O(\log^2 m)$ |
+| `kth_root_mod(k, a, p)` | 素数 `p` について $x^k \equiv a \pmod p$ となる $x$ を 1 つ (なければ -1)。$0^0 = 1$ とする。$g = \gcd(k, p - 1)$ 乗根を、$g$ の素因数 $q$ ごとに位数 $q^s$ の部分群で Pohlig-Hellman 法を使って求める | `factorize(p - 1)` + $O(\sum_q (s \sqrt{q} + \log^2 p))$ |
 | `enumerate_primes(n)` | `n` 以下の素数を昇順に並べた `std::vector<long long>` を返す。奇数だけを区間ごとに篩うので、$n = 5 \times 10^8$ でも 1 秒かからない | $O(n \log \log n)$ |
 
 ## `Sieve` のメンバ関数

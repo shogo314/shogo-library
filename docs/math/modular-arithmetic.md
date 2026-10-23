@@ -29,4 +29,4 @@ long long r = sqrt_mod(2, 7);           // r^2 ≡ 2 (mod 7) となる小さい�
 
 - `modint` のメンバ関数 `pow`、`inv` は [modint](modint.hpp)
 - 中国剰余定理は [数論](number-theory.hpp)
-- 素数判定・素因数分解・原始根は [素数](prime.hpp)
+- 素数判定・素因数分解・原始根・一般の k 乗根 `kth_root_mod` は [素数](prime.hpp)

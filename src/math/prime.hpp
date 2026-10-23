@@ -7,8 +7,10 @@
 
 #include <algorithm>
 #include <cassert>
+#include <cmath>
 #include <initializer_list>
 #include <numeric>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -176,6 +178,65 @@ inline long long primitive_root(long long m) {
         }
         if (ok) return g;
     }
+}
+
+/**
+ * @brief 素数 p について x^k ≡ a (mod p) となる x を 1 つ返す (なければ -1)。0^0 = 1 とする
+ *
+ * g = gcd(k, p - 1) として g 乗根 z を求め、x = z^(k/g の逆数 mod (p-1)/g) とする
+ * g 乗根は、g の素因数 q ごとに、位数 q^s の部分群の中で Pohlig-Hellman 法 (q の部分は baby-step giant-step) を使って直す
+ * O(Σ_q (s sqrt(q) + log^2 p)) に p - 1 の素因数分解を足したもの
+ */
+inline long long kth_root_mod(long long k, long long a, long long p) {
+    assert(k >= 0 && p >= 2);
+    a %= p;
+    if (a < 0) a += p;
+    if (k == 0) return a == 1 % p ? 1 : -1;
+    if (a == 0) return 0;
+    const long long m = p - 1, g = std::gcd(k, m);
+    if (modpow(a, m / g, p) != 1) return -1;
+    long long z = a;  // 素因数を 1 つずつ処理し、最後に z^g = a となるようにする
+    for (auto [q, e] : factorize(g)) {
+        long long s = 0, t = m, qe = 1;
+        while (t % q == 0) t /= q, s++;
+        for (long long i = 0; i < e; i++) qe *= q;
+        // x1 = z^r (r q^e ≡ 1 mod t) とすると x1^(q^e) = z h (h は位数 q^s の部分群 H の元)
+        const long long r = t == 1 ? 0 : modinv(qe % t, t);
+        const long long x1 = modpow(z, r, p);
+        const long long target = modmul(z, modinv(modpow(x1, qe, p), p), p);  // h^(-1)、H の元で q^e 乗になっている
+        // H の生成元 c = w^t (w は q 乗非剰余)
+        long long w = 2;
+        while (modpow(w, m / q, p) == 1) w++;
+        const long long c = modpow(w, t, p);
+        // target = c^d となる d を q 進で 1 桁ずつ求める (Pohlig-Hellman)
+        long long zeta = c;  // 位数 q の元 c^(q^(s-1))
+        for (long long i = 0; i + 1 < s; i++) zeta = modpow(zeta, q, p);
+        const long long B = std::sqrt(static_cast<double>(q)) + 1;
+        std::unordered_map<long long, long long> baby;  // zeta^j -> j (j < B)
+        for (long long j = 0, x = 1; j < B; j++, x = modmul(x, zeta, p)) baby.emplace(x, j);
+        const long long giant = modinv(modpow(zeta, B, p), p);
+        auto log_zeta = [&](long long y) {
+            for (long long i = 0; i <= q / B + 1; i++, y = modmul(y, giant, p)) {
+                auto it = baby.find(y);
+                if (it != baby.end()) return i * B + it->second;
+            }
+            assert(false);
+            return -1LL;
+        };
+        long long d = 0, qi = 1;
+        const long long cinv = modinv(c, p);
+        for (long long i = 0; i < s; i++, qi *= q) {
+            // (target c^(-d))^(q^(s-1-i)) = zeta^(d の i 桁目)
+            long long y = modmul(target, modpow(cinv, d, p), p);
+            for (long long j = 0; j + 1 + i < s; j++) y = modpow(y, q, p);
+            d += log_zeta(y) * qi;
+        }
+        // d は q^e の倍数になっている
+        z = modmul(x1, modpow(c, d / qe, p), p);
+    }
+    const long long mg = m / g;
+    const long long inv = mg == 1 ? 0 : modinv((k / g) % mg, mg);
+    return modpow(z, inv, p);
 }
 
 /**

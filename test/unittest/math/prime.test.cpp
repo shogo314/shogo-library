@@ -2,6 +2,7 @@
 
 // prime.hpp の関数と Sieve を愚直な実装とランダムに比較する
 // primitive_root は、位数を愚直に数えて最小の原始根を求めたものと比べる
+// kth_root_mod は、小さい素数で解の有無を全探索と比べ、返した値が解になっているかを確かめる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../../src/math/prime.hpp"
@@ -126,6 +127,35 @@ int main() {
         for (long long h = 2; h < g; h++) ok = ok && !is_root(h);
     }
     if (primitive_root(998244353) != 3) ok = false;
+
+    // kth_root_mod: 小さい素数で、x をすべて試して解があるかを調べ、返した x が解になっているかを確かめる
+    // p - 1 が 2・3 のべきを多く含む素数 (73 = 2^3 3^2 + 1、97 = 2^5 3 + 1 など) と、k が p - 1 より大きい場合も含める
+    for (long long p : {2, 3, 5, 7, 13, 17, 19, 37, 73, 97, 101, 163, 193, 257}) {
+        for (long long k = 0; k <= 2 * p + 2 && ok; k++) {
+            for (long long a = 0; a < p; a++) {
+                bool exists = false;
+                for (long long x = 0; x < p && !exists; x++) {
+                    long long y = 1 % p;
+                    for (long long i = 0; i < k; i++) y = y * x % p;
+                    if (y == a) exists = true;
+                }
+                long long x = kth_root_mod(k, a, p);
+                if (!exists) {
+                    if (x != -1) ok = false;
+                    continue;
+                }
+                long long y = 1 % p;
+                for (long long i = 0; i < k; i++) y = y * x % p;
+                if (x < 0 || x >= p || y != a) ok = false;
+            }
+        }
+    }
+    // 大きい素数でも、返した x が解になっているか
+    for (int rep = 0; rep < 300 && ok; rep++) {
+        long long p = 998244353, k = rng() % 1000000000, x0 = rng() % p;
+        long long a = modpow(x0, k, p), x = kth_root_mod(k, a, p);
+        if (x == -1 || modpow(x, k, p) != a) ok = false;
+    }
 
     if (ok)
         std::cout << "Hello World" << std::endl;

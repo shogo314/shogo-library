@@ -29,3 +29,4 @@ long long y = count_subarrays_with_sum_at_most(a, 3LL);   // 7
 
 - 和が最大の区間は [連続部分列の和の最大値](../dp/maximum-subarray.hpp)
 - 累積和は [vector の関数](../utility/vector_func.hpp) の `cumulative_sum`
+- 尺取り法そのものは [尺取り法](../utility/two-pointers.hpp)

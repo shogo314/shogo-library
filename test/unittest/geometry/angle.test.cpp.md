@@ -27,63 +27,110 @@ data:
     \u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u6210\u308A\u7ACB\u3063\
     \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/geometry/angle.hpp\"\
     \n\n/**\n * @file angle.hpp\n * @brief \u504F\u89D2\n */\n\n#include <cmath>\n\
-    #include <type_traits>\n#include <utility>\n\n/**\n * @brief 2 \u6B21\u5143\u30D9\
-    \u30AF\u30C8\u30EB (x, y) \u306E\u504F\u89D2\n *\n * x \u8EF8\u6B63\u65B9\u5411\
-    \u3092 0 \u3068\u3057\u3066\u53CD\u6642\u8A08\u56DE\u308A\u306B [0, 2\u03C0) \u3067\
-    \u6BD4\u3079\u308B\u3002\u96F6\u30D9\u30AF\u30C8\u30EB\u306F x \u8EF8\u6B63\u65B9\
-    \u5411\u3068\u540C\u3058\u504F\u89D2\u3068\u3057\u3066\u6271\u3046\n * \u5916\u7A4D\
-    \u3067\u6BD4\u3079\u308B\u306E\u3067\u3001\u6574\u6570\u578B\u306A\u3089\u8AA4\
-    \u5DEE\u306A\u304F\u6BD4\u3079\u3089\u308C\u308B (\u5EA7\u6A19\u306E\u7D76\u5BFE\
-    \u5024\u306E 2 \u4E57\u304C T \u306B\u53CE\u307E\u308B\u5FC5\u8981\u304C\u3042\
-    \u308B)\n *\n * std::sort(ps.begin(), ps.end(), [](const auto& a, const auto&\
-    \ b) { return Angle(a) < Angle(b); });\n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\
-    \n */\ntemplate <typename T>\nstruct Angle {\n    T x;  //!< x \u5EA7\u6A19\n\
-    \    T y;  //!< y \u5EA7\u6A19\n\n    /**\n     * @brief \u504F\u89D2 0 (\u96F6\
-    \u30D9\u30AF\u30C8\u30EB)\n     */\n    constexpr Angle() noexcept : x(), y()\
-    \ {}\n    /**\n     * @brief \u30D9\u30AF\u30C8\u30EB (x, y) \u306E\u504F\u89D2\
-    \n     */\n    constexpr Angle(T x, T y) noexcept : x(x), y(y) {}\n    /**\n \
-    \    * @brief p[0], p[1] \u3092 x, y \u3068\u3059\u308B (Vector<T, 2> \u3084 std::array<T,\
+    #include <istream>\n#include <ostream>\n#include <type_traits>\n#include <utility>\n\
+    \n/**\n * @brief 2 \u6B21\u5143\u30D9\u30AF\u30C8\u30EB (x, y) \u306E\u504F\u89D2\
+    \n *\n * x \u8EF8\u6B63\u65B9\u5411\u3092 0 \u3068\u3057\u3066\u53CD\u6642\u8A08\
+    \u56DE\u308A\u306B\u6E2C\u308A\u3001\u5468\u56DE\u6570 turn \u3068\u5408\u308F\
+    \u305B\u3066 2\u03C0 * turn + [0, 2\u03C0) \u306E\u5024\u3068\u3057\u3066\u6BD4\
+    \u3079\u308B\u3002\u96F6\u30D9\u30AF\u30C8\u30EB\u306F x \u8EF8\u6B63\u65B9\u5411\
+    \u3068\u540C\u3058\u504F\u89D2\u3068\u3057\u3066\u6271\u3046\n * \u5916\u7A4D\u3067\
+    \u6BD4\u3079\u308B\u306E\u3067\u3001\u6574\u6570\u578B\u306A\u3089\u8AA4\u5DEE\
+    \u306A\u304F\u6BD4\u3079\u3089\u308C\u308B (\u5EA7\u6A19\u306E\u7D76\u5BFE\u5024\
+    \u306E 2 \u4E57\u304C T \u306B\u53CE\u307E\u308B\u5FC5\u8981\u304C\u3042\u308B\
+    )\n *\n * std::sort(ps.begin(), ps.end(), [](const auto& a, const auto& b) { return\
+    \ Angle(a) < Angle(b); });\n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\n */\ntemplate\
+    \ <typename T>\nstruct Angle {\n    T x;                 //!< x \u5EA7\u6A19\n\
+    \    T y;                 //!< y \u5EA7\u6A19\n    long long turn = 0;  //!< \u5468\
+    \u56DE\u6570\n\n    /**\n     * @brief \u504F\u89D2 0 (\u96F6\u30D9\u30AF\u30C8\
+    \u30EB)\n     */\n    constexpr Angle() noexcept : x(), y() {}\n    /**\n    \
+    \ * @brief \u30D9\u30AF\u30C8\u30EB (x, y) \u306E\u504F\u89D2\u306B 2\u03C0 *\
+    \ turn \u3092\u8DB3\u3057\u305F\u3082\u306E\n     */\n    constexpr Angle(T x,\
+    \ T y, long long turn = 0) noexcept : x(x), y(y), turn(turn) {}\n    /**\n   \
+    \  * @brief p[0], p[1] \u3092 x, y \u3068\u3059\u308B (Vector<T, 2> \u3084 std::array<T,\
     \ 2> \u304B\u3089\u4F5C\u308B)\n     */\n    template <typename P, typename =\
     \ decltype(std::declval<const P&>()[0])>\n    constexpr explicit Angle(const P&\
     \ p) noexcept : x(p[0]), y(p[1]) {}\n    /**\n     * @brief p.first, p.second\
     \ \u3092 x, y \u3068\u3059\u308B\n     */\n    constexpr explicit Angle(const\
     \ std::pair<T, T>& p) noexcept : x(p.first), y(p.second) {}\n\n    /**\n     *\
     \ @brief \u96F6\u30D9\u30AF\u30C8\u30EB\u304B\n     */\n    constexpr bool is_zero()\
-    \ const noexcept { return x == 0 && y == 0; }\n    /**\n     * @brief \u504F\u89D2\
-    \u304C [0, \u03C0) \u306A\u3089 0\u3001[\u03C0, 2\u03C0) \u306A\u3089 1\n    \
-    \ */\n    constexpr int half() const noexcept { return y < 0 || (y == 0 && x <\
-    \ 0); }\n    /**\n     * @brief \u504F\u89D2 (\u30E9\u30B8\u30A2\u30F3\u3001[0,\
-    \ 2\u03C0))\n     */\n    double radian() const {\n        double t = std::atan2(static_cast<double>(y),\
-    \ static_cast<double>(x));\n        return t < 0 ? t + 2 * std::acos(-1.0) : t;\n\
-    \    }\n\n    friend constexpr bool operator<(const Angle& a, const Angle& b)\
-    \ noexcept {\n        // \u96F6\u30D9\u30AF\u30C8\u30EB\u306F\u5916\u7A4D\u3067\
-    \u6BD4\u3079\u3089\u308C\u306A\u3044\u306E\u3067\u3001\u504F\u89D2 0 (x \u8EF8\
-    \u6B63\u65B9\u5411) \u3068\u3057\u3066\u5148\u306B\u5224\u5B9A\u3059\u308B\n \
-    \       if (b.is_zero()) return false;                   // \u504F\u89D2 0 \u3088\
-    \u308A\u5C0F\u3055\u3044\u3082\u306E\u306F\u306A\u3044\n        if (a.is_zero())\
-    \ return !(b.y == 0 && b.x > 0);  // b \u306E\u504F\u89D2\u304C 0 \u3088\u308A\
-    \u5927\u304D\u3044\u304B\n        if (a.half() != b.half()) return a.half() <\
-    \ b.half();\n        return b.x * a.y < a.x * b.y;\n    }\n    friend constexpr\
-    \ bool operator>(const Angle& a, const Angle& b) noexcept { return b < a; }\n\
-    \    friend constexpr bool operator<=(const Angle& a, const Angle& b) noexcept\
-    \ { return !(b < a); }\n    friend constexpr bool operator>=(const Angle& a, const\
-    \ Angle& b) noexcept { return !(a < b); }\n    /**\n     * @brief \u504F\u89D2\
-    \u304C\u7B49\u3057\u3044\u304B (\u30D9\u30AF\u30C8\u30EB\u3068\u3057\u3066\u7B49\
-    \u3057\u3044\u304B\u3067\u306F\u306A\u3044)\n     */\n    friend constexpr bool\
-    \ operator==(const Angle& a, const Angle& b) noexcept { return !(a < b) && !(b\
-    \ < a); }\n    friend constexpr bool operator!=(const Angle& a, const Angle& b)\
-    \ noexcept { return !(a == b); }\n};\n\ntemplate <typename P, typename = decltype(std::declval<const\
-    \ P&>()[0])>\nAngle(const P&) -> Angle<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<const\
+    \ const noexcept { return x == 0 && y == 0; }\n    /**\n     * @brief \u5468\u56DE\
+    \u6570\u3092\u9664\u3044\u305F\u504F\u89D2\u304C [0, \u03C0) \u306A\u3089 0\u3001\
+    [\u03C0, 2\u03C0) \u306A\u3089 1\n     */\n    constexpr int half() const noexcept\
+    \ { return y < 0 || (y == 0 && x < 0); }\n    /**\n     * @brief \u504F\u89D2\
+    \ (\u30E9\u30B8\u30A2\u30F3\u30012\u03C0 * turn + [0, 2\u03C0))\n     */\n   \
+    \ double radian() const {\n        const double pi = std::acos(-1.0);\n      \
+    \  double t = std::atan2(static_cast<double>(y), static_cast<double>(x));\n  \
+    \      return (t < 0 ? t + 2 * pi : t) + 2 * pi * static_cast<double>(turn);\n\
+    \    }\n    /**\n     * @brief 2\u03C0 \u3092\u8DB3\u3057\u305F\u504F\u89D2\n\
+    \     */\n    constexpr Angle next_turn() const noexcept { return Angle(x, y,\
+    \ turn + 1); }\n    /**\n     * @brief \u03C0 \u3092\u8DB3\u3057\u305F\u504F\u89D2\
+    \ (\u9006\u5411\u304D\u306E\u30D9\u30AF\u30C8\u30EB)\n     */\n    constexpr Angle\
+    \ opposite() const noexcept { return Angle(-x, -y, turn + half()); }\n\n    /**\n\
+    \     * @brief \u7B26\u53F7\u3092\u53CD\u8EE2\u3057\u305F\u504F\u89D2 (x \u8EF8\
+    \u306B\u3064\u3044\u3066\u6298\u308A\u8FD4\u3057\u305F\u30D9\u30AF\u30C8\u30EB\
+    )\n     */\n    constexpr Angle operator-() const noexcept {\n        // \u5468\
+    \u56DE\u6570\u3092\u9664\u3044\u305F\u504F\u89D2\u304C 0 \u306A\u3089 -2\u03C0\
+    \ * turn\u3001\u305D\u3046\u3067\u306A\u3051\u308C\u3070 2\u03C0 \u3092\u8DB3\u3057\
+    \u3066 [0, 2\u03C0) \u306B\u53CE\u3081\u308B\n        bool on_zero = y == 0 &&\
+    \ x >= 0;\n        return Angle(x, -y, -turn - !on_zero);\n    }\n    /**\n  \
+    \   * @brief \u504F\u89D2\u306E\u548C (\u8907\u7D20\u6570\u3068\u3057\u3066\u306E\
+    \u7A4D)\n     *\n     * \u5EA7\u6A19\u306F a \u3068 b \u306E\u5EA7\u6A19\u306E\
+    \u7A4D\u306E\u5927\u304D\u3055\u306B\u306A\u308B\u3002\u96F6\u30D9\u30AF\u30C8\
+    \u30EB\u306F\u504F\u89D2 0 \u3068\u3057\u3066\u6271\u3044\u3001\u3082\u3046\u4E00\
+    \u65B9\u306E\u30D9\u30AF\u30C8\u30EB\u3092\u8FD4\u3059\n     */\n    friend constexpr\
+    \ Angle operator+(const Angle& a, const Angle& b) noexcept {\n        if (a.is_zero())\
+    \ return Angle(b.x, b.y, a.turn + b.turn);\n        if (b.is_zero()) return Angle(a.x,\
+    \ a.y, a.turn + b.turn);\n        Angle c(a.x * b.x - a.y * b.y, a.x * b.y + a.y\
+    \ * b.x, a.turn + b.turn);\n        // \u5468\u56DE\u6570\u3092\u9664\u3044\u305F\
+    \u504F\u89D2\u306E\u548C\u304C 2\u03C0 \u4EE5\u4E0A\u306A\u3089\u7E70\u308A\u4E0A\
+    \u3052\u308B\n        // \u4E21\u65B9 [\u03C0, 2\u03C0) \u306A\u3089\u5FC5\u305A\
+    \u3001\u7247\u65B9\u3060\u3051\u306A\u3089\u548C\u306F [\u03C0, 3\u03C0) \u306A\
+    \u306E\u3067\u7D50\u679C\u304C [0, \u03C0) \u306E\u3068\u304D\n        if (a.half()\
+    \ && b.half()) c.turn++;\n        if (a.half() != b.half() && c.half() == 0) c.turn++;\n\
+    \        return c;\n    }\n    /**\n     * @brief \u504F\u89D2\u306E\u5DEE (a\
+    \ \u304B\u3089 b \u3078\u53CD\u6642\u8A08\u56DE\u308A\u306B\u56DE\u3059\u89D2\u306F\
+    \ b - a)\n     */\n    friend constexpr Angle operator-(const Angle& a, const\
+    \ Angle& b) noexcept { return a + (-b); }\n    constexpr Angle& operator+=(const\
+    \ Angle& rhs) noexcept { return *this = *this + rhs; }\n    constexpr Angle& operator-=(const\
+    \ Angle& rhs) noexcept { return *this = *this - rhs; }\n\n    friend constexpr\
+    \ bool operator<(const Angle& a, const Angle& b) noexcept {\n        if (a.turn\
+    \ != b.turn) return a.turn < b.turn;\n        // \u96F6\u30D9\u30AF\u30C8\u30EB\
+    \u306F\u5916\u7A4D\u3067\u6BD4\u3079\u3089\u308C\u306A\u3044\u306E\u3067\u3001\
+    \u504F\u89D2 0 (x \u8EF8\u6B63\u65B9\u5411) \u3068\u3057\u3066\u5148\u306B\u5224\
+    \u5B9A\u3059\u308B\n        if (b.is_zero()) return false;                   //\
+    \ \u504F\u89D2 0 \u3088\u308A\u5C0F\u3055\u3044\u3082\u306E\u306F\u306A\u3044\n\
+    \        if (a.is_zero()) return !(b.y == 0 && b.x > 0);  // b \u306E\u504F\u89D2\
+    \u304C 0 \u3088\u308A\u5927\u304D\u3044\u304B\n        if (a.half() != b.half())\
+    \ return a.half() < b.half();\n        return b.x * a.y < a.x * b.y;\n    }\n\
+    \    friend constexpr bool operator>(const Angle& a, const Angle& b) noexcept\
+    \ { return b < a; }\n    friend constexpr bool operator<=(const Angle& a, const\
+    \ Angle& b) noexcept { return !(b < a); }\n    friend constexpr bool operator>=(const\
+    \ Angle& a, const Angle& b) noexcept { return !(a < b); }\n    /**\n     * @brief\
+    \ \u504F\u89D2\u304C\u7B49\u3057\u3044\u304B (\u30D9\u30AF\u30C8\u30EB\u3068\u3057\
+    \u3066\u7B49\u3057\u3044\u304B\u3067\u306F\u306A\u3044)\n     */\n    friend constexpr\
+    \ bool operator==(const Angle& a, const Angle& b) noexcept { return !(a < b) &&\
+    \ !(b < a); }\n    friend constexpr bool operator!=(const Angle& a, const Angle&\
+    \ b) noexcept { return !(a == b); }\n\n    /**\n     * @brief x, y \u3092\u8AAD\
+    \u3080 (\u5468\u56DE\u6570\u306F 0 \u306B\u3059\u308B)\n     */\n    template\
+    \ <class CharT, class Traits>\n    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    \ Traits>& is, Angle& rhs) {\n        rhs.turn = 0;\n        return is >> rhs.x\
+    \ >> rhs.y;\n    }\n    /**\n     * @brief x, y \u3092\u7A7A\u767D\u533A\u5207\
+    \u308A\u3067\u66F8\u304F (\u5468\u56DE\u6570\u306F\u66F8\u304B\u306A\u3044)\n\
+    \     */\n    template <class CharT, class Traits>\n    friend std::basic_ostream<CharT,\
+    \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const Angle& rhs)\
+    \ {\n        return os << rhs.x << CharT(' ') << rhs.y;\n    }\n};\n\ntemplate\
+    \ <typename P, typename = decltype(std::declval<const P&>()[0])>\nAngle(const\
+    \ P&) -> Angle<std::remove_cv_t<std::remove_reference_t<decltype(std::declval<const\
     \ P&>()[0])>>>;\ntemplate <typename T>\nAngle(const std::pair<T, T>&) -> Angle<T>;\n\
     #line 7 \"test/unittest/geometry/angle.test.cpp\"\n\n#include <array>\n#line 10\
-    \ \"test/unittest/geometry/angle.test.cpp\"\n#include <iostream>\n#line 12 \"\
-    test/unittest/geometry/angle.test.cpp\"\n#include <vector>\n\n#line 2 \"src/geometry/vector.hpp\"\
-    \n\n/**\n * @file vector.hpp\n * @brief \u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB\n\
-    \ */\n\n#include <algorithm>\n#line 10 \"src/geometry/vector.hpp\"\n#include <cassert>\n\
-    #line 12 \"src/geometry/vector.hpp\"\n#include <istream>\n#include <limits>\n\
-    #include <numeric>\n#include <optional>\n#include <ostream>\n#include <stack>\n\
-    #line 21 \"src/geometry/vector.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n\
-    /**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n\
+    \ \"test/unittest/geometry/angle.test.cpp\"\n#include <iostream>\n#include <sstream>\n\
+    #line 13 \"test/unittest/geometry/angle.test.cpp\"\n#include <vector>\n\n#line\
+    \ 2 \"src/geometry/vector.hpp\"\n\n/**\n * @file vector.hpp\n * @brief \u5E7E\u4F55\
+    \u30D9\u30AF\u30C8\u30EB\n */\n\n#include <algorithm>\n#line 10 \"src/geometry/vector.hpp\"\
+    \n#include <cassert>\n#line 13 \"src/geometry/vector.hpp\"\n#include <limits>\n\
+    #include <numeric>\n#include <optional>\n#line 17 \"src/geometry/vector.hpp\"\n\
+    #include <stack>\n#line 21 \"src/geometry/vector.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\
+    \n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n\
     #include <iterator>\n#include <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace\
     \ internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T, class =\
     \ void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct\
@@ -558,7 +605,7 @@ data:
     \u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename T>\n[[deprecated(\"use\
     \ closest_point_pair_squared\")]] ClosestPairSquared<T> closest_point_pair_squred(const\
     \ std::vector<Vector<T, 2>>& points) {\n    return closest_point_pair_squared(points);\n\
-    }\n#line 15 \"test/unittest/geometry/angle.test.cpp\"\n\nint main() {\n    bool\
+    }\n#line 16 \"test/unittest/geometry/angle.test.cpp\"\n\nint main() {\n    bool\
     \ ok = true;\n    const double pi = std::acos(-1.0);\n    // \u504F\u89D2\u3092\
     \ [0, 2\u03C0) \u3067\u8FD4\u3059\u3002\u96F6\u30D9\u30AF\u30C8\u30EB\u306F 0\n\
     \    auto arg = [&](int x, int y) {\n        double t = std::atan2(static_cast<double>(y),\
@@ -573,7 +620,38 @@ data:
     \     bool lt = ta < tb - 1e-12, eq = std::abs(ta - tb) < 1e-12;\n           \
     \ ok = ok && (a < b) == lt && (b > a) == lt;\n            ok = ok && (a == b)\
     \ == eq && (a != b) == !eq;\n            ok = ok && (a <= b) == (lt || eq) &&\
-    \ (b >= a) == (lt || eq);\n        }\n    }\n\n    // Vector\u3001std::array\u3001\
+    \ (b >= a) == (lt || eq);\n        }\n    }\n\n    // \u5468\u56DE\u6570\u3092\
+    \u4ED8\u3051\u305F\u3068\u304D\u306E\u6BD4\u8F03\u3001\u548C\u30FB\u5DEE\u30FB\
+    \u7B26\u53F7\u53CD\u8EE2\u30FBopposite\u30FBnext_turn \u3092 radian \u3068\u6BD4\
+    \u3079\u308B\n    for (auto [ax, ay] : ps) {\n        for (int at = -1; at <=\
+    \ 1; at++) {\n            Angle<long long> a(ax, ay, at);\n            double\
+    \ ta = a.radian();\n            ok = ok && std::abs(ta - (arg(ax, ay) + 2 * pi\
+    \ * at)) < 1e-9;\n            ok = ok && std::abs(a.next_turn().radian() - (ta\
+    \ + 2 * pi)) < 1e-9;\n            ok = ok && std::abs((-a).radian() + ta) < 1e-9;\n\
+    \            if (!a.is_zero()) ok = ok && std::abs(a.opposite().radian() - (ta\
+    \ + pi)) < 1e-9;\n            for (auto [bx, by] : ps) {\n                for\
+    \ (int bt = -1; bt <= 1; bt++) {\n                    Angle<long long> b(bx, by,\
+    \ bt);\n                    double tb = b.radian();\n                    bool\
+    \ lt = ta < tb - 1e-9, eq = std::abs(ta - tb) < 1e-9;\n                    ok\
+    \ = ok && (a < b) == lt && (a == b) == eq;\n                    ok = ok && std::abs((a\
+    \ + b).radian() - (ta + tb)) < 1e-9;\n                    ok = ok && std::abs((a\
+    \ - b).radian() - (ta - tb)) < 1e-9;\n                    Angle<long long> c =\
+    \ a;\n                    c += b;\n                    ok = ok && c == a + b;\n\
+    \                    c -= b;\n                    ok = ok && c == a;\n       \
+    \         }\n            }\n        }\n    }\n    // [\u03B8, \u03B8 + \u03C0\
+    ) \u306E\u5224\u5B9A\u306F a <= b && b < a.opposite() \u3067\u3082 b - a < \u03C0\
+    \ \u3067\u3082\u66F8\u3051\u308B\n    {\n        Angle<long long> a(1, 1), on(2,\
+    \ 2), in(-1, 1), out(-1, -1), back(-3, -3);\n        ok = ok && a <= on && on\
+    \ < a.opposite() && a <= in && in < a.opposite();\n        ok = ok && !(back <\
+    \ a.opposite()) && !(out < a.opposite());\n        ok = ok && on - a < Angle<long\
+    \ long>(-1, 0) && in - a < Angle<long long>(-1, 0);\n        ok = ok && !(back\
+    \ - a < Angle<long long>(-1, 0)) && !(out - a < Angle<long long>(-1, 0));\n  \
+    \  }\n    // \u5165\u51FA\u529B\u306F x y (\u5468\u56DE\u6570\u306F\u8AAD\u307F\
+    \u66F8\u304D\u3057\u306A\u3044)\n    {\n        std::istringstream is(\"3 -4 -5\
+    \ 6\");\n        Angle<long long> a(0, 0, 5), b;\n        is >> a >> b;\n    \
+    \    ok = ok && a.x == 3 && a.y == -4 && a.turn == 0 && b.x == -5 && b.y == 6;\n\
+    \        std::ostringstream os;\n        os << Angle<long long>(-1, 2, 3);\n \
+    \       ok = ok && os.str() == \"-1 2\";\n    }\n\n    // Vector\u3001std::array\u3001\
     std::pair \u304B\u3089\u4F5C\u308C\u308B\n    Vector<long long> v(-3, 2);\n  \
     \  std::array<long long, 2> w{-3, 2};\n    std::pair<long long, long long> p(-3,\
     \ 2);\n    Angle av(v), aw(w), ap(p);\n    ok = ok && av.x == -3 && av.y == 2\
@@ -587,11 +665,11 @@ data:
     \u504F\u89D2\u3068\u6BD4\u3079\u3066\u78BA\u304B\u3081\u308B\n// \u554F\u984C\u306E\
     \u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u6210\u308A\u7ACB\
     \u3063\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../../src/geometry/angle.hpp\"\
-    \n\n#include <array>\n#include <cmath>\n#include <iostream>\n#include <utility>\n\
-    #include <vector>\n\n#include \"../../../src/geometry/vector.hpp\"\n\nint main()\
-    \ {\n    bool ok = true;\n    const double pi = std::acos(-1.0);\n    // \u504F\
-    \u89D2\u3092 [0, 2\u03C0) \u3067\u8FD4\u3059\u3002\u96F6\u30D9\u30AF\u30C8\u30EB\
-    \u306F 0\n    auto arg = [&](int x, int y) {\n        double t = std::atan2(static_cast<double>(y),\
+    \n\n#include <array>\n#include <cmath>\n#include <iostream>\n#include <sstream>\n\
+    #include <utility>\n#include <vector>\n\n#include \"../../../src/geometry/vector.hpp\"\
+    \n\nint main() {\n    bool ok = true;\n    const double pi = std::acos(-1.0);\n\
+    \    // \u504F\u89D2\u3092 [0, 2\u03C0) \u3067\u8FD4\u3059\u3002\u96F6\u30D9\u30AF\
+    \u30C8\u30EB\u306F 0\n    auto arg = [&](int x, int y) {\n        double t = std::atan2(static_cast<double>(y),\
     \ static_cast<double>(x));\n        return t < 0 ? t + 2 * pi : t;\n    };\n \
     \   std::vector<std::pair<int, int>> ps;\n    for (int x = -4; x <= 4; x++) {\n\
     \        for (int y = -4; y <= 4; y++) ps.emplace_back(x, y);\n    }\n    for\
@@ -603,7 +681,38 @@ data:
     \     bool lt = ta < tb - 1e-12, eq = std::abs(ta - tb) < 1e-12;\n           \
     \ ok = ok && (a < b) == lt && (b > a) == lt;\n            ok = ok && (a == b)\
     \ == eq && (a != b) == !eq;\n            ok = ok && (a <= b) == (lt || eq) &&\
-    \ (b >= a) == (lt || eq);\n        }\n    }\n\n    // Vector\u3001std::array\u3001\
+    \ (b >= a) == (lt || eq);\n        }\n    }\n\n    // \u5468\u56DE\u6570\u3092\
+    \u4ED8\u3051\u305F\u3068\u304D\u306E\u6BD4\u8F03\u3001\u548C\u30FB\u5DEE\u30FB\
+    \u7B26\u53F7\u53CD\u8EE2\u30FBopposite\u30FBnext_turn \u3092 radian \u3068\u6BD4\
+    \u3079\u308B\n    for (auto [ax, ay] : ps) {\n        for (int at = -1; at <=\
+    \ 1; at++) {\n            Angle<long long> a(ax, ay, at);\n            double\
+    \ ta = a.radian();\n            ok = ok && std::abs(ta - (arg(ax, ay) + 2 * pi\
+    \ * at)) < 1e-9;\n            ok = ok && std::abs(a.next_turn().radian() - (ta\
+    \ + 2 * pi)) < 1e-9;\n            ok = ok && std::abs((-a).radian() + ta) < 1e-9;\n\
+    \            if (!a.is_zero()) ok = ok && std::abs(a.opposite().radian() - (ta\
+    \ + pi)) < 1e-9;\n            for (auto [bx, by] : ps) {\n                for\
+    \ (int bt = -1; bt <= 1; bt++) {\n                    Angle<long long> b(bx, by,\
+    \ bt);\n                    double tb = b.radian();\n                    bool\
+    \ lt = ta < tb - 1e-9, eq = std::abs(ta - tb) < 1e-9;\n                    ok\
+    \ = ok && (a < b) == lt && (a == b) == eq;\n                    ok = ok && std::abs((a\
+    \ + b).radian() - (ta + tb)) < 1e-9;\n                    ok = ok && std::abs((a\
+    \ - b).radian() - (ta - tb)) < 1e-9;\n                    Angle<long long> c =\
+    \ a;\n                    c += b;\n                    ok = ok && c == a + b;\n\
+    \                    c -= b;\n                    ok = ok && c == a;\n       \
+    \         }\n            }\n        }\n    }\n    // [\u03B8, \u03B8 + \u03C0\
+    ) \u306E\u5224\u5B9A\u306F a <= b && b < a.opposite() \u3067\u3082 b - a < \u03C0\
+    \ \u3067\u3082\u66F8\u3051\u308B\n    {\n        Angle<long long> a(1, 1), on(2,\
+    \ 2), in(-1, 1), out(-1, -1), back(-3, -3);\n        ok = ok && a <= on && on\
+    \ < a.opposite() && a <= in && in < a.opposite();\n        ok = ok && !(back <\
+    \ a.opposite()) && !(out < a.opposite());\n        ok = ok && on - a < Angle<long\
+    \ long>(-1, 0) && in - a < Angle<long long>(-1, 0);\n        ok = ok && !(back\
+    \ - a < Angle<long long>(-1, 0)) && !(out - a < Angle<long long>(-1, 0));\n  \
+    \  }\n    // \u5165\u51FA\u529B\u306F x y (\u5468\u56DE\u6570\u306F\u8AAD\u307F\
+    \u66F8\u304D\u3057\u306A\u3044)\n    {\n        std::istringstream is(\"3 -4 -5\
+    \ 6\");\n        Angle<long long> a(0, 0, 5), b;\n        is >> a >> b;\n    \
+    \    ok = ok && a.x == 3 && a.y == -4 && a.turn == 0 && b.x == -5 && b.y == 6;\n\
+    \        std::ostringstream os;\n        os << Angle<long long>(-1, 2, 3);\n \
+    \       ok = ok && os.str() == \"-1 2\";\n    }\n\n    // Vector\u3001std::array\u3001\
     std::pair \u304B\u3089\u4F5C\u308C\u308B\n    Vector<long long> v(-3, 2);\n  \
     \  std::array<long long, 2> w{-3, 2};\n    std::pair<long long, long long> p(-3,\
     \ 2);\n    Angle av(v), aw(w), ap(p);\n    ok = ok && av.x == -3 && av.y == 2\
@@ -619,7 +728,7 @@ data:
   isVerificationFile: true
   path: test/unittest/geometry/angle.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 13:36:14+09:00'
+  timestamp: '2026-10-24 23:15:04+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/geometry/angle.test.cpp

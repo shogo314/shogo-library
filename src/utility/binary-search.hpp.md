@@ -141,3 +141,4 @@ double s = binary_search(0.0, 10.0, [](double m) { return m * m <= 2; });       
 ## 関連
 
 - ソート済みの列で値を探すなら [コンテナに対する関数](container_func.hpp) の `bisect_left(c, x)` / `lower_bound(c, x)`
+- 区間を伸び縮みさせて探すなら [尺取り法](two-pointers.hpp)

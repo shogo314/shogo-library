@@ -498,6 +498,9 @@ data:
       path: src/utility/traits.hpp
       title: "\u578B\u7279\u6027"
     - icon: ':heavy_check_mark:'
+      path: src/utility/two-pointers.hpp
+      title: "\u5C3A\u53D6\u308A\u6CD5"
+    - icon: ':heavy_check_mark:'
       path: src/utility/vector_func.hpp
       title: "vector \u306B\u5BFE\u3059\u308B\u6F14\u7B97\u5B50\u3068\u95A2\u6570"
   verificationCategories:
@@ -1317,6 +1320,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/utility/repr.test.cpp
       title: test/unittest/utility/repr.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/utility/two-pointers.test.cpp
+      title: test/unittest/utility/two-pointers.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/utility/vector_func.test.cpp
       title: test/unittest/utility/vector_func.test.cpp

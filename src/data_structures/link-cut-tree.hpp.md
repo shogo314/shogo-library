@@ -7,6 +7,9 @@ data:
     path: test/unittest/data_structures/link-cut-tree.test.cpp
     title: test/unittest/data_structures/link-cut-tree.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/graph/incremental-minimum-spanning-forest.test.cpp
+    title: test/yosupo/graph/incremental-minimum-spanning-forest.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/tree/dynamic-tree-vertex-add-path-sum.test.cpp
     title: test/yosupo/tree/dynamic-tree-vertex-add-path-sum.test.cpp
   - icon: ':heavy_check_mark:'
@@ -350,6 +353,7 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/link-cut-tree.test.cpp
+  - test/yosupo/graph/incremental-minimum-spanning-forest.test.cpp
   - test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
   - test/yosupo/tree/dynamic-tree-vertex-add-subtree-sum.test.cpp
   - test/yosupo/tree/dynamic-tree-vertex-add-path-sum.test.cpp

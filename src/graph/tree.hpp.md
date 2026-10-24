@@ -108,6 +108,9 @@ data:
     path: test/yosupo/tree/tree-diameter.test.cpp
     title: test/yosupo/tree/tree-diameter.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/tree/tree-path-composite-sum.test.cpp
+    title: test/yosupo/tree/tree-path-composite-sum.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/tree/vertex-add-path-sum.test.cpp
     title: test/yosupo/tree/vertex-add-path-sum.test.cpp
   - icon: ':heavy_check_mark:'
@@ -643,6 +646,7 @@ data:
   - test/yosupo/tree/lca.4.test.cpp
   - test/yosupo/tree/vertex-add-subtree-sum.1.test.cpp
   - test/yosupo/tree/jump-on-tree.1.test.cpp
+  - test/yosupo/tree/tree-path-composite-sum.test.cpp
   - test/yosupo/tree/lca.1.test.cpp
   - test/yosupo/tree/lca.3.test.cpp
   - test/yosupo/tree/vertex-add-path-sum.test.cpp

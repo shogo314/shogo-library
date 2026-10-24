@@ -272,6 +272,9 @@ data:
     path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
     title: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/graph/counting-spanning-tree-directed.test.cpp
+    title: test/yosupo/graph/counting-spanning-tree-directed.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
     title: test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
   - icon: ':heavy_check_mark:'
@@ -409,6 +412,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
     title: test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/tree/tree-path-composite-sum.test.cpp
+    title: test/yosupo/tree/tree-path-composite-sum.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/tree/vertex-set-path-composite.test.cpp
     title: test/yosupo/tree/vertex-set-path-composite.test.cpp
@@ -1026,6 +1032,7 @@ data:
   - test/yosupo/polynomial/inv-of-polynomials.test.cpp
   - test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
   - test/yosupo/graph/enumerate-triangles.test.cpp
+  - test/yosupo/graph/counting-spanning-tree-directed.test.cpp
   - test/yosupo/convolution/gcd-convolution.test.cpp
   - test/yosupo/convolution/convolution-mod-2-64.1.test.cpp
   - test/yosupo/convolution/bitwise-xor-convolution.test.cpp
@@ -1085,6 +1092,7 @@ data:
   - test/yosupo/enumerative_combinatorics/partition-function.1.test.cpp
   - test/yosupo/enumerative_combinatorics/partition-function.2.test.cpp
   - test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
+  - test/yosupo/tree/tree-path-composite-sum.test.cpp
   - test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
   - test/yosupo/tree/vertex-set-path-composite.test.cpp
   - test/yukicoder/3770.test.cpp

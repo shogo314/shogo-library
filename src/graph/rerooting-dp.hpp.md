@@ -15,6 +15,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/graph/rerooting-dp.test.cpp
     title: test/unittest/graph/rerooting-dp.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/tree/tree-path-composite-sum.test.cpp
+    title: test/yosupo/tree/tree-path-composite-sum.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -403,6 +406,7 @@ data:
   verifiedWith:
   - test/unittest/graph/rerooting-dp.test.cpp
   - test/aoj/volume15/1595.test.cpp
+  - test/yosupo/tree/tree-path-composite-sum.test.cpp
 documentation_of: src/graph/rerooting-dp.hpp
 layout: document
 title: "\u5168\u65B9\u4F4D\u6728DP"

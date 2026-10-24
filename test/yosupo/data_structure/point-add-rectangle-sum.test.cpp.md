@@ -19,30 +19,31 @@ data:
     - https://judge.yosupo.jp/problem/point_add_rectangle_sum
   bundledCode: "#line 1 \"test/yosupo/data_structure/point-add-rectangle-sum.test.cpp\"\
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/point_add_rectangle_sum\"\n\
-    \n#include <iostream>\n\n#line 2 \"src/data_structures/segtree-2d.hpp\"\n\n/**\n\
-    \ * @file segtree-2d.hpp\n * @brief 2\u6B21\u5143\u30BB\u30B0\u30E1\u30F3\u30C8\
-    \u6728\n */\n\n#include <algorithm>\n#include <cassert>\n#include <tuple>\n#include\
-    \ <utility>\n#include <vector>\n\n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n\
-    \ * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n\
-    \ * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\
-    \u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\n\
-    \ * - S op(const S& a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e(): \u5358\
-    \u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\u3088\
-    \u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\
-    \u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\
-    \u3059)\n */\n\n#line 15 \"src/algebra/monoid.hpp\"\n#include <array>\n#include\
-    \ <cstddef>\n#include <istream>\n#include <limits>\n#include <numeric>\n#include\
-    \ <optional>\n#include <ostream>\n#include <type_traits>\n#line 24 \"src/algebra/monoid.hpp\"\
-    \n\n/**\n * @brief 1\u6B21\u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite\
-    \ \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\
-    \u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\
-    \u3059\u308B\u3068\u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\n\
-    struct Affine {\n    T a = T(1);  //!< \u50BE\u304D\n    T b = T(0);  //!< \u5207\
-    \u7247\n    constexpr T operator()(const T& x) const { return a * x + b; }\n \
-    \   friend constexpr bool operator==(const Affine& f, const Affine& g) { return\
-    \ f.a == g.a && f.b == g.b; }\n    friend constexpr bool operator!=(const Affine&\
-    \ f, const Affine& g) { return !(f == g); }\n    template <class CharT, class\
-    \ Traits>\n    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    \n#include <iostream>\n#include <tuple>\n#include <utility>\n#include <vector>\n\
+    \n#line 2 \"src/data_structures/segtree-2d.hpp\"\n\n/**\n * @file segtree-2d.hpp\n\
+    \ * @brief 2\u6B21\u5143\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n */\n\n#include\
+    \ <algorithm>\n#include <cassert>\n#include <iterator>\n#line 13 \"src/data_structures/segtree-2d.hpp\"\
+    \n\n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n * @brief\
+    \ \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\
+    \u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\
+    \u3059\n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S& a, const S&\
+    \ b): \u7A4D (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n * op, e \u306F\
+    \ static \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\u30FC\u30BF\
+    \u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\
+    \u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\n#line 15\
+    \ \"src/algebra/monoid.hpp\"\n#include <array>\n#include <cstddef>\n#include <istream>\n\
+    #include <limits>\n#include <numeric>\n#include <optional>\n#include <ostream>\n\
+    #include <type_traits>\n#line 24 \"src/algebra/monoid.hpp\"\n\n/**\n * @brief\
+    \ 1\u6B21\u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\
+    \u3084 acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n *\
+    \ \u4F8B: Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\u3059\u308B\
+    \u3068\u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\nstruct Affine\
+    \ {\n    T a = T(1);  //!< \u50BE\u304D\n    T b = T(0);  //!< \u5207\u7247\n\
+    \    constexpr T operator()(const T& x) const { return a * x + b; }\n    friend\
+    \ constexpr bool operator==(const Affine& f, const Affine& g) { return f.a ==\
+    \ g.a && f.b == g.b; }\n    friend constexpr bool operator!=(const Affine& f,\
+    \ const Affine& g) { return !(f == g); }\n    template <class CharT, class Traits>\n\
+    \    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
     \ Traits>& is, Affine& f) {\n        return is >> f.a >> f.b;\n    }\n    template\
     \ <class CharT, class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const Affine& f) {\n        return os << f.a << CharT(' ') << f.b;\n\
@@ -314,203 +315,138 @@ data:
     \ S op(const S& a, const S& b) const { return op_object(a, b); }\n    constexpr\
     \ S e() const { return identity; }\n};\ntemplate <typename Op, typename T>\nMonoid(Op,\
     \ T) -> Monoid<T, Op>;\n#line 15 \"src/data_structures/segtree-2d.hpp\"\n\n/**\n\
-    \ * @brief 2\u6B21\u5143\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u66F4\u65B0\u30FB\
-    \u53D6\u5F97\u3059\u308B\u5EA7\u6A19\u3092\u5148\u8AAD\u307F\u3057\u3066\u5727\
-    \u7E2E\u3059\u308B)\n *\n * @tparam M \u53EF\u63DB\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\n\
-    \ */\ntemplate <typename M>\nclass SegTree2D {\n   public:\n    using S = typename\
-    \ M::S;\n\n   private:\n    M m;\n    S op(const S& a, const S& b) const { return\
-    \ m.op(a, b); }\n    S e() const { return m.e(); }\n\n    long long h, w, sz_x,\
-    \ sz_y;\n    int height_x, height_y;\n    std::vector<std::vector<int>> y_indices;\
-    \  // \u5404 x \u306E\u30CE\u30FC\u30C9\u304C\u6301\u3064 y \u306E\u30CE\u30FC\
-    \u30C9\u756A\u53F7 (\u30E1\u30E2\u30EA\u3092\u6291\u3048\u308B\u305F\u3081 int\
-    \ \u3067\u6301\u3064)\n    std::vector<std::vector<S>> data_compressed;\n\n  \
-    \  S get_y(long long kx, long long ky) {\n        ky += sz_y;\n        auto it\
-    \ = std::lower_bound(y_indices[kx].begin(), y_indices[kx].end(), ky);\n      \
-    \  if (it == y_indices[kx].end() || *it != ky) return e();\n        return data_compressed[kx][it\
-    \ - y_indices[kx].begin()];\n    }\n\n    S updated_y(long long kx, long long\
-    \ ky, int child_y_idx, bool child_y_right, const S& child_val) {\n        if (!child_y_right\
-    \ && child_y_idx + 1 < static_cast<int>(y_indices[kx].size()) && y_indices[kx][child_y_idx\
-    \ + 1] == ky * 2 + 1) {\n            return op(child_val, data_compressed[kx][child_y_idx\
-    \ + 1]);\n        }\n        if (child_y_right && child_y_idx - 1 >= 0 && y_indices[kx][child_y_idx\
-    \ - 1] == ky * 2) {\n            return op(data_compressed[kx][child_y_idx - 1],\
-    \ child_val);\n        }\n        return child_val;\n    }\n\n    void update_tree_y(long\
-    \ long kx, long long ky, const S& val) {\n        ky += sz_y;\n        int y_idx\
-    \ = std::lower_bound(y_indices[kx].begin(), y_indices[kx].end(), ky) - y_indices[kx].begin();\n\
-    \        S tmp_val = val;\n        data_compressed[kx][y_idx] = tmp_val;\n   \
-    \     for (int i = 1; i <= height_y; i++) {\n            int child_y_idx = y_idx;\n\
-    \            y_idx = std::lower_bound(y_indices[kx].begin(), y_indices[kx].begin()\
-    \ + child_y_idx, ky >> i) - y_indices[kx].begin();\n            tmp_val = data_compressed[kx][y_idx]\
-    \ = updated_y(kx, ky >> i, child_y_idx, ky >> (i - 1) & 1, tmp_val);\n       \
-    \ }\n    }\n\n    S updated_x(long long kx, long long ky, bool child_x_right,\
-    \ const S& child_val) {\n        if (!child_x_right) {\n            return op(child_val,\
-    \ get_y(kx * 2 + 1, ky));\n        } else {\n            return op(get_y(kx *\
-    \ 2, ky), child_val);\n        }\n    }\n\n    void update_tree_x(long long kx,\
-    \ long long ky, const S& val) {\n        kx += sz_x;\n        S tmp_val = val;\n\
-    \        update_tree_y(kx, ky, tmp_val);\n        for (int i = 1; i <= height_x;\
-    \ i++) {\n            tmp_val = updated_x(kx >> i, ky, kx >> (i - 1) & 1, tmp_val);\n\
-    \            update_tree_y(kx >> i, ky, tmp_val);\n        }\n    }\n\n    S prod_y(long\
-    \ long kx, long long ly, long long ry) {\n        S left_prod = e(), right_prod\
-    \ = e();\n        ly += sz_y;\n        ry += sz_y;\n        auto itr = y_indices[kx].end();\n\
-    \        while (ly < ry) {\n            if (ry & 1) {\n                --ry;\n\
-    \                itr = std::lower_bound(y_indices[kx].begin(), itr, ry);\n   \
-    \             right_prod = op(data_compressed[kx][itr - y_indices[kx].begin()],\
-    \ right_prod);\n            }\n            if (ly & 1) {\n                itr\
-    \ = std::lower_bound(y_indices[kx].begin(), itr, ly);\n                left_prod\
-    \ = op(left_prod, data_compressed[kx][itr - y_indices[kx].begin()]);\n       \
-    \         ++ly;\n            }\n            ly >>= 1;\n            ry >>= 1;\n\
-    \        }\n        return op(left_prod, right_prod);\n    }\n\n    S prod_x(long\
-    \ long lx, long long rx, long long ly, long long ry) {\n        S left_prod =\
-    \ e(), right_prod = e();\n        lx += sz_x;\n        rx += sz_x;\n        while\
-    \ (lx < rx) {\n            if (lx & 1) {\n                left_prod = op(left_prod,\
-    \ prod_y(lx++, ly, ry));\n            }\n            if (rx & 1) {\n         \
-    \       right_prod = op(prod_y(--rx, ly, ry), right_prod);\n            }\n  \
-    \          lx >>= 1;\n            rx >>= 1;\n        }\n        return op(left_prod,\
-    \ right_prod);\n    }\n\n    void construct_data(const std::vector<std::tuple<long\
-    \ long, long long>>& set_query_indices, const std::vector<std::tuple<long long,\
-    \ long long, long long, long long>>& prod_query_indices) {\n        sz_x = 1;\n\
-    \        height_x = 0;\n        while (sz_x < h) {\n            sz_x <<= 1;\n\
-    \            ++height_x;\n        }\n        sz_y = 1;\n        height_y = 0;\n\
-    \        while (sz_y < w) {\n            sz_y <<= 1;\n            ++height_y;\n\
-    \        }\n        data_compressed.resize(sz_x * 2);\n        y_indices.resize(sz_x\
-    \ * 2);\n\n        for (auto [x, y] : set_query_indices) {\n            x += sz_x;\n\
-    \            std::vector<long long> x_indices_tmp;\n            for (int i = 0;\
-    \ i <= height_x; ++i) {\n                x_indices_tmp.push_back(x);\n       \
-    \         x >>= 1;\n            }\n            y += sz_y;\n            std::vector<int>\
-    \ y_indices_tmp;\n            for (int i = 0; i <= height_y; ++i) {\n        \
-    \        y_indices_tmp.push_back(static_cast<int>(y));\n                y >>=\
-    \ 1;\n            }\n            for (long long x : x_indices_tmp) {\n       \
-    \         for (int y : y_indices_tmp) {\n                    y_indices[x].push_back(y);\n\
-    \                }\n            }\n        }\n        for (auto [lx, rx, ly, ry]\
-    \ : prod_query_indices) {\n            std::vector<long long> x_indices_tmp;\n\
-    \            lx += sz_x;\n            rx += sz_x;\n            while (lx < rx)\
-    \ {\n                if (lx & 1) x_indices_tmp.push_back(lx++);\n            \
-    \    if (rx & 1) x_indices_tmp.push_back(--rx);\n                lx >>= 1;\n \
-    \               rx >>= 1;\n            }\n            ly += sz_y;\n          \
-    \  ry += sz_y;\n            std::vector<int> y_indices_tmp;\n            while\
-    \ (ly < ry) {\n                if (ly & 1) y_indices_tmp.push_back(static_cast<int>(ly++));\n\
-    \                if (ry & 1) y_indices_tmp.push_back(static_cast<int>(--ry));\n\
-    \                ly >>= 1;\n                ry >>= 1;\n            }\n       \
-    \     for (long long x : x_indices_tmp) {\n                for (int y : y_indices_tmp)\
-    \ {\n                    y_indices[x].push_back(y);\n                }\n     \
-    \       }\n        }\n\n        for (long long x = 1; x < sz_x * 2; x++) {\n \
-    \           std::sort(y_indices[x].begin(), y_indices[x].end());\n           \
-    \ y_indices[x].erase(std::unique(y_indices[x].begin(), y_indices[x].end()), y_indices[x].end());\n\
-    \        }\n        for (long long i = 1; i < sz_x * 2; ++i) {\n            data_compressed[i].assign(y_indices[i].size(),\
-    \ e());\n        }\n    }\n\n   public:\n    SegTree2D() = default;\n    /**\n\
-    \     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @param\
-    \ h x\u5EA7\u6A19\u306E\u7BC4\u56F2 [0, h)\n     * @param w y\u5EA7\u6A19\u306E\
-    \u7BC4\u56F2 [0, w)\n     * @param set_query_indices set/apply \u3059\u308B\u5EA7\
-    \u6A19 (x, y) \u306E\u5217\n     * @param prod_query_indices prod \u3059\u308B\
-    \u7BC4\u56F2 (lx, rx, ly, ry) \u306E\u5217\n     * @param m \u30E2\u30CE\u30A4\
-    \u30C9\n     */\n    explicit SegTree2D(long long h, long long w, const std::vector<std::tuple<long\
-    \ long, long long>>& set_query_indices, const std::vector<std::tuple<long long,\
-    \ long long, long long, long long>>& prod_query_indices, M m = M())\n        :\
-    \ m(std::move(m)), h(h), w(w) {\n        construct_data(set_query_indices, prod_query_indices);\n\
-    \    }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\
-    \u5024\u3092\u8FD4\u3059\n     * @param kx x\u5EA7\u6A19\n     * @param ky y\u5EA7\
-    \u6A19\n     * @return \u8981\u7D20\u306E\u5024\n     */\n    S get(long long\
-    \ kx, long long ky) {\n        assert(0 <= kx && kx < h && 0 <= ky && ky < w);\n\
-    \        kx += sz_x;\n        return get_y(kx, ky);\n    }\n\n    /**\n     *\
-    \ @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\u5024\u3092x\u306B\u66F4\
-    \u65B0\u3059\u308B\n     * @param kx x\u5EA7\u6A19\n     * @param ky y\u5EA7\u6A19\
-    \n     * @param x \u4EE3\u5165\u3059\u308B\u5024\n     */\n    void set(long long\
-    \ kx, long long ky, const S& x) {\n        assert(0 <= kx && kx < h && 0 <= ky\
-    \ && ky < w);\n        update_tree_x(kx, ky, x);\n    }\n\n    /**\n     * @brief\
-    \ \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\u5024\u306Bx\u3092\u4F5C\u7528\
-    \u3055\u305B\u308B\n     *\n     * @param kx x\u5EA7\u6A19\n     * @param ky y\u5EA7\
-    \u6A19\n     * @param x \u4F5C\u7528\u7D20\n     */\n    void apply(long long\
-    \ kx, long long ky, const S& x) {\n        set(kx, ky, op(get(kx, ky), x));\n\
-    \    }\n\n    /**\n     * @brief [lx, rx)x[ly, ry)\u306E\u7BC4\u56F2\u306E\u8981\
-    \u7D20\u306E\u7DCF\u7A4D\u3092\u8FD4\u3059\n     *\n     * @param lx x\u5EA7\u6A19\
-    \u306E\u534A\u958B\u533A\u9593\u306E\u958B\u59CB\n     * @param rx x\u5EA7\u6A19\
-    \u306E\u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF\n     * @param ly y\u5EA7\u6A19\
-    \u306E\u534A\u958B\u533A\u9593\u306E\u958B\u59CB\n     * @param ry y\u5EA7\u6A19\
-    \u306E\u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF\n     */\n    S prod(long long\
-    \ lx, long long rx, long long ly, long long ry) {\n        assert(0 <= lx && lx\
-    \ <= rx && rx <= h);\n        assert(0 <= ly && ly <= ry && ry <= w);\n      \
-    \  return prod_x(lx, rx, ly, ry);\n    }\n};\n\ntemplate <typename M>\nSegTree2D(long\
-    \ long, long long, std::vector<std::tuple<long long, long long>>, std::vector<std::tuple<long\
-    \ long, long long, long long, long long>>, M) -> SegTree2D<M>;\n\n/**\n * @brief\
-    \ RangeMaxQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RMaxQ2D\
-    \ = SegTree2D<monoid::Max<S>>;\n/**\n * @brief RangeMinQuery\n *\n * @tparam S\
-    \ \u578B\n */\ntemplate <typename S>\nusing RMinQ2D = SegTree2D<monoid::Min<S>>;\n\
+    \ * @brief 2\u6B21\u5143\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u66F4\u65B0\u3059\
+    \u308B\u70B9\u3092\u5148\u8AAD\u307F\u3059\u308B\u9818\u57DF\u6728)\n *\n * x\
+    \ \u5EA7\u6A19\u306E\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\u306E\u5404\u30CE\u30FC\
+    \u30C9\u306B\u3001\u305D\u306E\u90E8\u5206\u6728\u306B\u3042\u308B\u70B9\u306E\
+    \ y \u5EA7\u6A19\u306E\u5217\u3068\u3001\u305D\u306E\u4E0A\u306E\u30BB\u30B0\u30E1\
+    \u30F3\u30C8\u6728\u3092\u6301\u305F\u305B\u308B\u3002\n *\n * @tparam M \u53EF\
+    \u63DB\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\n */\ntemplate <typename M>\n\
+    class SegTree2D {\n   public:\n    using S = typename M::S;\n\n   private:\n \
+    \   M m;\n    S op(const S& a, const S& b) const { return m.op(a, b); }\n    S\
+    \ e() const { return m.e(); }\n\n    int n;                                  //\
+    \ x \u5EA7\u6A19\u306E\u7A2E\u985E\u6570\n    std::vector<long long> xs, ys; \
+    \         // \u5727\u7E2E\u3057\u305F\u5EA7\u6A19\n    std::vector<std::vector<int>>\
+    \ node_ys;  // \u5404\u30CE\u30FC\u30C9\u306B\u3042\u308B\u70B9\u306E y \u306E\
+    \u756A\u53F7 (\u6607\u9806)\n    std::vector<std::vector<S>> data;       // \u5404\
+    \u30CE\u30FC\u30C9\u306E y \u306E\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u5927\u304D\
+    \u3055\u306F 2 * node_ys[k].size())\n\n    // \u30CE\u30FC\u30C9 k \u306E y \u306E\
+    \u756A\u53F7 yi \u306E\u4F4D\u7F6E\u3002\u306A\u3051\u308C\u3070 -1\n    int find_y(int\
+    \ k, int yi) const {\n        auto it = std::lower_bound(node_ys[k].begin(), node_ys[k].end(),\
+    \ yi);\n        if (it == node_ys[k].end() || *it != yi) return -1;\n        return\
+    \ static_cast<int>(it - node_ys[k].begin());\n    }\n    S get_node(int k, int\
+    \ yi) const {\n        int p = find_y(k, yi);\n        if (p == -1) return e();\n\
+    \        return data[k][node_ys[k].size() + p];\n    }\n    int x_index(long long\
+    \ x) const {\n        auto it = std::lower_bound(xs.begin(), xs.end(), x);\n \
+    \       assert(it != xs.end() && *it == x);\n        return static_cast<int>(it\
+    \ - xs.begin());\n    }\n    int y_index(long long y) const {\n        auto it\
+    \ = std::lower_bound(ys.begin(), ys.end(), y);\n        assert(it != ys.end()\
+    \ && *it == y);\n        return static_cast<int>(it - ys.begin());\n    }\n  \
+    \  S prod_node(int k, int ly, int ry) const {\n        const auto& v = node_ys[k];\n\
+    \        int len = static_cast<int>(v.size());\n        int l = static_cast<int>(std::lower_bound(v.begin(),\
+    \ v.end(), ly) - v.begin()) + len;\n        int r = static_cast<int>(std::lower_bound(v.begin(),\
+    \ v.end(), ry) - v.begin()) + len;\n        S sml = e(), smr = e();\n        while\
+    \ (l < r) {\n            if (l & 1) sml = op(sml, data[k][l++]);\n           \
+    \ if (r & 1) smr = op(data[k][--r], smr);\n            l >>= 1;\n            r\
+    \ >>= 1;\n        }\n        return op(sml, smr);\n    }\n\n   public:\n    SegTree2D()\
+    \ : SegTree2D(std::vector<std::pair<long long, long long>>()) {}\n    /**\n  \
+    \   * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @param\
+    \ points set/apply \u3059\u308B\u70B9 (x, y) \u306E\u5217 (\u91CD\u8907\u3057\u3066\
+    \u3088\u3044)\n     * @param m \u30E2\u30CE\u30A4\u30C9\n     */\n    explicit\
+    \ SegTree2D(const std::vector<std::pair<long long, long long>>& points, M m =\
+    \ M()) : m(std::move(m)) {\n        for (auto [x, y] : points) {\n           \
+    \ xs.push_back(x);\n            ys.push_back(y);\n        }\n        std::sort(xs.begin(),\
+    \ xs.end());\n        xs.erase(std::unique(xs.begin(), xs.end()), xs.end());\n\
+    \        std::sort(ys.begin(), ys.end());\n        ys.erase(std::unique(ys.begin(),\
+    \ ys.end()), ys.end());\n        n = static_cast<int>(xs.size());\n        node_ys.resize(2\
+    \ * n);\n        for (auto [x, y] : points) node_ys[n + x_index(x)].push_back(y_index(y));\n\
+    \        for (int k = n; k < 2 * n; k++) {\n            std::sort(node_ys[k].begin(),\
+    \ node_ys[k].end());\n            node_ys[k].erase(std::unique(node_ys[k].begin(),\
+    \ node_ys[k].end()), node_ys[k].end());\n        }\n        for (int k = n - 1;\
+    \ k >= 1; k--) {\n            const auto &a = node_ys[2 * k], &b = node_ys[2 *\
+    \ k + 1];\n            std::set_union(a.begin(), a.end(), b.begin(), b.end(),\
+    \ std::back_inserter(node_ys[k]));\n        }\n        data.resize(2 * n);\n \
+    \       for (int k = 1; k < 2 * n; k++) data[k].assign(2 * node_ys[k].size(),\
+    \ e());\n    }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u70B9\u306E\
+    \u5024\u3092\u8FD4\u3059 (\u6E21\u3057\u3066\u3044\u306A\u3044\u70B9\u306A\u3089\
+    \u5358\u4F4D\u5143)\n     */\n    S get(long long x, long long y) const {\n  \
+    \      auto ix = std::lower_bound(xs.begin(), xs.end(), x);\n        auto iy =\
+    \ std::lower_bound(ys.begin(), ys.end(), y);\n        if (ix == xs.end() || *ix\
+    \ != x || iy == ys.end() || *iy != y) return e();\n        return get_node(n +\
+    \ static_cast<int>(ix - xs.begin()), static_cast<int>(iy - ys.begin()));\n   \
+    \ }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u70B9\u306E\u5024\
+    \u3092 v \u306B\u66F4\u65B0\u3059\u308B (\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\
+    \u3067\u6E21\u3057\u305F\u70B9\u306E\u307F)\n     */\n    void set(long long x,\
+    \ long long y, const S& v) {\n        int yi = y_index(y);\n        for (int k\
+    \ = n + x_index(x); k >= 1; k >>= 1) {\n            int len = static_cast<int>(node_ys[k].size());\n\
+    \            int p = find_y(k, yi) + len;\n            data[k][p] = k >= n ? v\
+    \ : op(get_node(2 * k, yi), get_node(2 * k + 1, yi));\n            for (p >>=\
+    \ 1; p >= 1; p >>= 1) data[k][p] = op(data[k][2 * p], data[k][2 * p + 1]);\n \
+    \       }\n    }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u70B9\
+    \u306E\u5024\u306B v \u3092\u4F5C\u7528\u3055\u305B\u308B (\u30B3\u30F3\u30B9\u30C8\
+    \u30E9\u30AF\u30BF\u3067\u6E21\u3057\u305F\u70B9\u306E\u307F)\n     */\n    void\
+    \ apply(long long x, long long y, const S& v) {\n        int yi = y_index(y);\n\
+    \        // \u53EF\u63DB\u306A\u306E\u3067\u3001\u7956\u5148\u306E\u5024\u306B\
+    \u305D\u306E\u307E\u307E v \u3092\u639B\u3051\u308C\u3070\u3088\u3044\n      \
+    \  for (int k = n + x_index(x); k >= 1; k >>= 1) {\n            for (int p = find_y(k,\
+    \ yi) + static_cast<int>(node_ys[k].size()); p >= 1; p >>= 1) data[k][p] = op(data[k][p],\
+    \ v);\n        }\n    }\n\n    /**\n     * @brief [lx, rx) x [ly, ry) \u306B\u3042\
+    \u308B\u70B9\u306E\u5024\u306E\u7DCF\u7A4D\u3092\u8FD4\u3059\n     */\n    S prod(long\
+    \ long lx, long long rx, long long ly, long long ry) const {\n        assert(lx\
+    \ <= rx && ly <= ry);\n        int l = static_cast<int>(std::lower_bound(xs.begin(),\
+    \ xs.end(), lx) - xs.begin()) + n;\n        int r = static_cast<int>(std::lower_bound(xs.begin(),\
+    \ xs.end(), rx) - xs.begin()) + n;\n        int lyi = static_cast<int>(std::lower_bound(ys.begin(),\
+    \ ys.end(), ly) - ys.begin());\n        int ryi = static_cast<int>(std::lower_bound(ys.begin(),\
+    \ ys.end(), ry) - ys.begin());\n        S res = e();\n        while (l < r) {\n\
+    \            if (l & 1) res = op(res, prod_node(l++, lyi, ryi));\n           \
+    \ if (r & 1) res = op(res, prod_node(--r, lyi, ryi));\n            l >>= 1;\n\
+    \            r >>= 1;\n        }\n        return res;\n    }\n};\n\ntemplate <typename\
+    \ M>\nSegTree2D(std::vector<std::pair<long long, long long>>, M) -> SegTree2D<M>;\n\
+    \n/**\n * @brief RangeMaxQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename\
+    \ S>\nusing RMaxQ2D = SegTree2D<monoid::Max<S>>;\n/**\n * @brief RangeMinQuery\n\
+    \ *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RMinQ2D = SegTree2D<monoid::Min<S>>;\n\
     /**\n * @brief RangeSumQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename\
-    \ S>\nusing RSumQ2D = SegTree2D<monoid::Sum<S>>;\n#line 6 \"test/yosupo/data_structure/point-add-rectangle-sum.test.cpp\"\
+    \ S>\nusing RSumQ2D = SegTree2D<monoid::Sum<S>>;\n#line 9 \"test/yosupo/data_structure/point-add-rectangle-sum.test.cpp\"\
     \n\nint main(void) {\n    std::cin.tie(nullptr);\n    std::ios_base::sync_with_stdio(false);\n\
-    \n    int n, q;\n    std::cin >> n >> q;\n    std::vector<std::tuple<long long,\
-    \ long long>> set_queries;\n    std::vector<std::tuple<long long, long long, long\
-    \ long, long long>> prod_queries;\n    std::vector<std::tuple<int, int, int, int,\
-    \ int>> queries;\n    std::vector<int> xs, ys;\n    for (int i = 0; i < n; i++)\
-    \ {\n        int x, y, w;\n        std::cin >> x >> y >> w;\n        set_queries.emplace_back(x,\
-    \ y);\n        queries.emplace_back(0, x, y, w, 0);\n        xs.push_back(x);\n\
-    \        ys.push_back(y);\n    }\n    for (int i = 0; i < q; i++) {\n        int\
-    \ op;\n        std::cin >> op;\n        if (op == 0) {\n            int x, y,\
-    \ w;\n            std::cin >> x >> y >> w;\n            set_queries.emplace_back(x,\
-    \ y);\n            queries.emplace_back(0, x, y, w, 0);\n            xs.push_back(x);\n\
-    \            ys.push_back(y);\n        } else {\n            int l, d, r, u;\n\
-    \            std::cin >> l >> d >> r >> u;\n            prod_queries.emplace_back(l,\
-    \ r, d, u);\n            queries.emplace_back(1, l, d, r, u);\n            xs.push_back(l);\n\
-    \            xs.push_back(r);\n            ys.push_back(d);\n            ys.push_back(u);\n\
-    \        }\n    }\n    std::sort(xs.begin(), xs.end());\n    std::sort(ys.begin(),\
-    \ ys.end());\n    xs.erase(std::unique(xs.begin(), xs.end()), xs.end());\n   \
-    \ ys.erase(std::unique(ys.begin(), ys.end()), ys.end());\n    for (auto& [x, y]\
-    \ : set_queries) {\n        x = std::lower_bound(xs.begin(), xs.end(), x) - xs.begin();\n\
-    \        y = std::lower_bound(ys.begin(), ys.end(), y) - ys.begin();\n    }\n\
-    \    for (auto& [lx, rx, ly, ry] : prod_queries) {\n        lx = std::lower_bound(xs.begin(),\
-    \ xs.end(), lx) - xs.begin();\n        rx = std::lower_bound(xs.begin(), xs.end(),\
-    \ rx) - xs.begin();\n        ly = std::lower_bound(ys.begin(), ys.end(), ly) -\
-    \ ys.begin();\n        ry = std::lower_bound(ys.begin(), ys.end(), ry) - ys.begin();\n\
-    \    }\n    SegTree2D<monoid::Sum<long long>> seg(xs.size(), ys.size(), set_queries,\
-    \ prod_queries);\n    for (auto& [op, a, b, c, d] : queries) {\n        if (op\
-    \ == 0) {\n            a = std::lower_bound(xs.begin(), xs.end(), a) - xs.begin();\n\
-    \            b = std::lower_bound(ys.begin(), ys.end(), b) - ys.begin();\n   \
-    \         seg.apply(a, b, c);\n        } else {\n            a = std::lower_bound(xs.begin(),\
-    \ xs.end(), a) - xs.begin();\n            b = std::lower_bound(ys.begin(), ys.end(),\
-    \ b) - ys.begin();\n            c = std::lower_bound(xs.begin(), xs.end(), c)\
-    \ - xs.begin();\n            d = std::lower_bound(ys.begin(), ys.end(), d) - ys.begin();\n\
-    \            std::cout << seg.prod(a, c, b, d) << '\\n';\n        }\n    }\n}\n"
+    \n    int n, q;\n    std::cin >> n >> q;\n    std::vector<std::pair<long long,\
+    \ long long>> points;\n    std::vector<std::tuple<int, long long, long long, long\
+    \ long, long long>> queries;\n    for (int i = 0; i < n; i++) {\n        long\
+    \ long x, y, w;\n        std::cin >> x >> y >> w;\n        points.emplace_back(x,\
+    \ y);\n        queries.emplace_back(0, x, y, w, 0);\n    }\n    for (int i = 0;\
+    \ i < q; i++) {\n        int t;\n        std::cin >> t;\n        if (t == 0) {\n\
+    \            long long x, y, w;\n            std::cin >> x >> y >> w;\n      \
+    \      points.emplace_back(x, y);\n            queries.emplace_back(0, x, y, w,\
+    \ 0);\n        } else {\n            long long l, d, r, u;\n            std::cin\
+    \ >> l >> d >> r >> u;\n            queries.emplace_back(1, l, d, r, u);\n   \
+    \     }\n    }\n    RSumQ2D<long long> seg(points);\n    for (auto [t, a, b, c,\
+    \ d] : queries) {\n        if (t == 0) {\n            seg.apply(a, b, c);\n  \
+    \      } else {\n            std::cout << seg.prod(a, c, b, d) << '\\n';\n   \
+    \     }\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/point_add_rectangle_sum\"\
-    \n\n#include <iostream>\n\n#include \"../../../src/data_structures/segtree-2d.hpp\"\
-    \n\nint main(void) {\n    std::cin.tie(nullptr);\n    std::ios_base::sync_with_stdio(false);\n\
-    \n    int n, q;\n    std::cin >> n >> q;\n    std::vector<std::tuple<long long,\
-    \ long long>> set_queries;\n    std::vector<std::tuple<long long, long long, long\
-    \ long, long long>> prod_queries;\n    std::vector<std::tuple<int, int, int, int,\
-    \ int>> queries;\n    std::vector<int> xs, ys;\n    for (int i = 0; i < n; i++)\
-    \ {\n        int x, y, w;\n        std::cin >> x >> y >> w;\n        set_queries.emplace_back(x,\
-    \ y);\n        queries.emplace_back(0, x, y, w, 0);\n        xs.push_back(x);\n\
-    \        ys.push_back(y);\n    }\n    for (int i = 0; i < q; i++) {\n        int\
-    \ op;\n        std::cin >> op;\n        if (op == 0) {\n            int x, y,\
-    \ w;\n            std::cin >> x >> y >> w;\n            set_queries.emplace_back(x,\
-    \ y);\n            queries.emplace_back(0, x, y, w, 0);\n            xs.push_back(x);\n\
-    \            ys.push_back(y);\n        } else {\n            int l, d, r, u;\n\
-    \            std::cin >> l >> d >> r >> u;\n            prod_queries.emplace_back(l,\
-    \ r, d, u);\n            queries.emplace_back(1, l, d, r, u);\n            xs.push_back(l);\n\
-    \            xs.push_back(r);\n            ys.push_back(d);\n            ys.push_back(u);\n\
-    \        }\n    }\n    std::sort(xs.begin(), xs.end());\n    std::sort(ys.begin(),\
-    \ ys.end());\n    xs.erase(std::unique(xs.begin(), xs.end()), xs.end());\n   \
-    \ ys.erase(std::unique(ys.begin(), ys.end()), ys.end());\n    for (auto& [x, y]\
-    \ : set_queries) {\n        x = std::lower_bound(xs.begin(), xs.end(), x) - xs.begin();\n\
-    \        y = std::lower_bound(ys.begin(), ys.end(), y) - ys.begin();\n    }\n\
-    \    for (auto& [lx, rx, ly, ry] : prod_queries) {\n        lx = std::lower_bound(xs.begin(),\
-    \ xs.end(), lx) - xs.begin();\n        rx = std::lower_bound(xs.begin(), xs.end(),\
-    \ rx) - xs.begin();\n        ly = std::lower_bound(ys.begin(), ys.end(), ly) -\
-    \ ys.begin();\n        ry = std::lower_bound(ys.begin(), ys.end(), ry) - ys.begin();\n\
-    \    }\n    SegTree2D<monoid::Sum<long long>> seg(xs.size(), ys.size(), set_queries,\
-    \ prod_queries);\n    for (auto& [op, a, b, c, d] : queries) {\n        if (op\
-    \ == 0) {\n            a = std::lower_bound(xs.begin(), xs.end(), a) - xs.begin();\n\
-    \            b = std::lower_bound(ys.begin(), ys.end(), b) - ys.begin();\n   \
-    \         seg.apply(a, b, c);\n        } else {\n            a = std::lower_bound(xs.begin(),\
-    \ xs.end(), a) - xs.begin();\n            b = std::lower_bound(ys.begin(), ys.end(),\
-    \ b) - ys.begin();\n            c = std::lower_bound(xs.begin(), xs.end(), c)\
-    \ - xs.begin();\n            d = std::lower_bound(ys.begin(), ys.end(), d) - ys.begin();\n\
-    \            std::cout << seg.prod(a, c, b, d) << '\\n';\n        }\n    }\n}\n"
+    \n\n#include <iostream>\n#include <tuple>\n#include <utility>\n#include <vector>\n\
+    \n#include \"../../../src/data_structures/segtree-2d.hpp\"\n\nint main(void) {\n\
+    \    std::cin.tie(nullptr);\n    std::ios_base::sync_with_stdio(false);\n\n  \
+    \  int n, q;\n    std::cin >> n >> q;\n    std::vector<std::pair<long long, long\
+    \ long>> points;\n    std::vector<std::tuple<int, long long, long long, long long,\
+    \ long long>> queries;\n    for (int i = 0; i < n; i++) {\n        long long x,\
+    \ y, w;\n        std::cin >> x >> y >> w;\n        points.emplace_back(x, y);\n\
+    \        queries.emplace_back(0, x, y, w, 0);\n    }\n    for (int i = 0; i <\
+    \ q; i++) {\n        int t;\n        std::cin >> t;\n        if (t == 0) {\n \
+    \           long long x, y, w;\n            std::cin >> x >> y >> w;\n       \
+    \     points.emplace_back(x, y);\n            queries.emplace_back(0, x, y, w,\
+    \ 0);\n        } else {\n            long long l, d, r, u;\n            std::cin\
+    \ >> l >> d >> r >> u;\n            queries.emplace_back(1, l, d, r, u);\n   \
+    \     }\n    }\n    RSumQ2D<long long> seg(points);\n    for (auto [t, a, b, c,\
+    \ d] : queries) {\n        if (t == 0) {\n            seg.apply(a, b, c);\n  \
+    \      } else {\n            std::cout << seg.prod(a, c, b, d) << '\\n';\n   \
+    \     }\n    }\n}\n"
   dependsOn:
   - src/data_structures/segtree-2d.hpp
   - src/algebra/monoid.hpp
   isVerificationFile: true
   path: test/yosupo/data_structure/point-add-rectangle-sum.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:37:20+09:00'
+  timestamp: '2026-10-24 19:51:09+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/data_structure/point-add-rectangle-sum.test.cpp

@@ -15,6 +15,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
     title: test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/range-reverse-range-sum.test.cpp
+    title: test/yosupo/data_structure/range-reverse-range-sum.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -1001,6 +1004,7 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/rbst.test.cpp
+  - test/yosupo/data_structure/range-reverse-range-sum.test.cpp
   - test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
 documentation_of: src/data_structures/rbst.hpp
 layout: document

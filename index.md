@@ -1003,6 +1003,9 @@ data:
       path: test/unittest/data_structures/rbst.test.cpp
       title: test/unittest/data_structures/rbst.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/data_structures/segtree-2d.test.cpp
+      title: test/unittest/data_structures/segtree-2d.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/data_structures/segtree-beats.test.cpp
       title: test/unittest/data_structures/segtree-beats.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1372,6 +1375,9 @@ data:
       path: test/yosupo/data_structure/line-add-get-min.2.test.cpp
       title: test/yosupo/data_structure/line-add-get-min.2.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/data_structure/ordered-set.test.cpp
+      title: test/yosupo/data_structure/ordered-set.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/data_structure/persistent-queue.test.cpp
       title: test/yosupo/data_structure/persistent-queue.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1453,8 +1459,14 @@ data:
       path: test/yosupo/data_structure/range-kth-smallest.test.cpp
       title: test/yosupo/data_structure/range-kth-smallest.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/data_structure/range-reverse-range-sum.test.cpp
+      title: test/yosupo/data_structure/range-reverse-range-sum.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/data_structure/range-set-range-composite.test.cpp
       title: test/yosupo/data_structure/range-set-range-composite.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/data_structure/rectangle-add-point-get.test.cpp
+      title: test/yosupo/data_structure/rectangle-add-point-get.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/data_structure/rectangle-sum.1.test.cpp
       title: test/yosupo/data_structure/rectangle-sum.1.test.cpp
@@ -1491,6 +1503,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/data_structure/static-range-mode-query.test.cpp
       title: test/yosupo/data_structure/static-range-mode-query.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/data_structure/static-range-sum-with-upper-bound.test.cpp
+      title: test/yosupo/data_structure/static-range-sum-with-upper-bound.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/data_structure/static-range-sum.test.cpp
       title: test/yosupo/data_structure/static-range-sum.test.cpp
@@ -1597,6 +1612,9 @@ data:
       path: test/yosupo/graph/connected-components-of-complement-graph.test.cpp
       title: test/yosupo/graph/connected-components-of-complement-graph.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/yosupo/graph/counting-spanning-tree-directed.test.cpp
+      title: test/yosupo/graph/counting-spanning-tree-directed.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
       title: test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1623,6 +1641,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/graph/general-matching.test.cpp
       title: test/yosupo/graph/general-matching.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/graph/incremental-minimum-spanning-forest.test.cpp
+      title: test/yosupo/graph/incremental-minimum-spanning-forest.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/graph/maximum-independent-set.test.cpp
       title: test/yosupo/graph/maximum-independent-set.test.cpp
@@ -1931,6 +1952,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/tree/tree-diameter.test.cpp
       title: test/yosupo/tree/tree-diameter.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/tree/tree-path-composite-sum.test.cpp
+      title: test/yosupo/tree/tree-path-composite-sum.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/tree/vertex-add-path-sum.test.cpp
       title: test/yosupo/tree/vertex-add-path-sum.test.cpp

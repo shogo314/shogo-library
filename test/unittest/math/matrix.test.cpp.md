@@ -37,22 +37,37 @@ data:
     \u591A\u9805\u5F0F\u3068\u6BD4\u8F03\u3059\u308B (mod 998244353\u30FBmod 3)\n\
     // det_mod \u3092\u3001\u9806\u5217\u3067\u5C55\u958B\u3057\u305F\u884C\u5217\u5F0F\
     \u3068\u6BD4\u8F03\u3059\u308B (\u7D20\u6570\u3067\u306A\u3044 mod \u3082)\n//\
-    \ \u884C\u306E\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\u3068\u304D\u306E\u63A8\
-    \u8AD6\u30AC\u30A4\u30C9\u3092 static_assert \u3067\u78BA\u304B\u3081\u308B\n\
-    // \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\
-    \u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n\
-    #line 2 \"src/math/matrix.hpp\"\n\n/**\n * @file matrix.hpp\n * @brief \u884C\u5217\
-    \n */\n\n#include <algorithm>\n#include <cassert>\n#include <cmath>\n#include\
-    \ <cstddef>\n#include <initializer_list>\n#include <optional>\n#include <string>\n\
-    #include <type_traits>\n#include <utility>\n#include <valarray>\n#include <vector>\n\
-    \nnamespace matrix {\ntemplate <typename T>\nstruct OperatorPropertyDefault {\n\
-    \    constexpr static T zero() { return T(0); }\n    constexpr static T add(const\
-    \ T& a, const T& b) { return a + b; }\n    constexpr static T neg(const T& a)\
-    \ { return -a; }\n    constexpr static T one() { return T(1); }\n    constexpr\
-    \ static T mul(const T& a, const T& b) { return a * b; }\n    constexpr static\
-    \ T inv(const T& a) { return T(1) / a; }\n};\n}  // namespace matrix\n\n/**\n\
-    \ * @brief \u884C\u5217\n * @tparam T \u578B \u884C\u5217(\u30B0\u30EA\u30C3\u30C9\
-    )\u306E\u8981\u7D20\u3068\u306A\u308Bint\u3084char\n * @tparam OperatorProperty\
+    \ modint \u306E\u7A4D (64 \u30D3\u30C3\u30C8\u3067\u8DB3\u3057\u3066\u304B\u3089\
+    \ mod \u3092\u53D6\u308B\u7D4C\u8DEF) \u3068 pow \u3092\u3001long long \u3067\u306E\
+    \u611A\u76F4\u306A\u7A4D\u3068\u6BD4\u8F03\u3059\u308B (\u6CD5\u304C 2^31 \u306B\
+    \u8FD1\u3044\u3082\u306E\u3084 1 \u3082)\n// \u884C\u306E\u30EA\u30B9\u30C8\u304B\
+    \u3089\u4F5C\u308B\u3068\u304D\u306E\u63A8\u8AD6\u30AC\u30A4\u30C9\u3092 static_assert\
+    \ \u3067\u78BA\u304B\u3081\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\
+    \u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World\
+    \ \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/math/matrix.hpp\"\n\n/**\n *\
+    \ @file matrix.hpp\n * @brief \u884C\u5217\n */\n\n#include <algorithm>\n#include\
+    \ <cassert>\n#include <cmath>\n#if __cplusplus >= 202002L\n#include <concepts>\n\
+    #endif\n#include <cstddef>\n#include <cstdint>\n#include <initializer_list>\n\
+    #include <optional>\n#include <string>\n#include <type_traits>\n#include <utility>\n\
+    #include <valarray>\n#include <vector>\n\nnamespace matrix {\ntemplate <typename\
+    \ T>\nstruct OperatorPropertyDefault {\n    constexpr static T zero() { return\
+    \ T(0); }\n    constexpr static T add(const T& a, const T& b) { return a + b;\
+    \ }\n    constexpr static T neg(const T& a) { return -a; }\n    constexpr static\
+    \ T one() { return T(1); }\n    constexpr static T mul(const T& a, const T& b)\
+    \ { return a * b; }\n    constexpr static T inv(const T& a) { return T(1) / a;\
+    \ }\n};\n}  // namespace matrix\n\nnamespace internal_matrix {\n// \u6CD5\u304C\
+    \ 2^31 \u672A\u6E80\u306E modint (mod() \u3068 val() \u3092\u6301\u3064\u578B\
+    ) \u304B\n#if __cplusplus >= 202002L\ntemplate <class T>\nconcept modint_like\
+    \ = requires(const T& x) {\n    { T::mod() } -> std::convertible_to<std::uint32_t>;\n\
+    \    { x.val() } -> std::convertible_to<std::uint32_t>;\n};\ntemplate <class T>\n\
+    inline constexpr bool is_modint_like_v = modint_like<T>;\n#else\ntemplate <class\
+    \ T, class = void>\nstruct is_modint_like : std::false_type {};\ntemplate <class\
+    \ T>\nstruct is_modint_like<T, std::void_t<decltype(static_cast<std::uint32_t>(T::mod())),\n\
+    \                                     decltype(static_cast<std::uint32_t>(std::declval<const\
+    \ T&>().val()))>>\n    : std::true_type {};\ntemplate <class T>\ninline constexpr\
+    \ bool is_modint_like_v = is_modint_like<T>::value;\n#endif\n}  // namespace internal_matrix\n\
+    \n/**\n * @brief \u884C\u5217\n * @tparam T \u578B \u884C\u5217(\u30B0\u30EA\u30C3\
+    \u30C9)\u306E\u8981\u7D20\u3068\u306A\u308Bint\u3084char\n * @tparam OperatorProperty\
     \ \u884C\u5217\u306E\u8981\u7D20\u306E\u6F14\u7B97\u3092\u5B9A\u7FA9\u3059\u308B\
     \u69CB\u9020\u4F53 0,1\u3068+,*\u306A\u3089\u7701\u7565\u53EF\n *\n * @note\n\
     \ * OperatorProperty\u306E\u4F8B\uFF08\u6574\u6570\u306Exor\u3068and\u306B\u3088\
@@ -170,36 +185,68 @@ data:
     \u3044\u308B\u884C\u5217\u306B\u884C\u5217B\u3092\u639B\u3051\u308B\n     * @param\
     \ B \u639B\u3051\u308B\u884C\u5217\n     * @return @c *this\n     */\n    Matrix&\
     \ operator*=(const Matrix& B) {\n        assert(m == B.n);\n        const long\
-    \ long p = B.m;\n        Matrix C(n, p);\n        for (long long i = 0; i < n;\
-    \ i++) {\n            for (long long k = 0; k < m; k++) {\n                for\
-    \ (long long j = 0; j < p; j++) {\n                    C[i][j] = OperatorProperty::add(C[i][j],\
-    \ OperatorProperty::mul((*this)[i][k], B[k][j]));\n                }\n       \
-    \     }\n        }\n        v.swap(C.v);\n        m = p;\n        return (*this);\n\
-    \    }\n\n    /**\n     * @brief \u4FDD\u6301\u3057\u3066\u3044\u308B\u884C\u5217\
-    \u306Ek\u4E57\u3092\u6C42\u3081\u308B\n     * @param k \u6307\u6570\n     * @return\
-    \ Matrix\n     */\n    [[nodiscard]]\n    Matrix pow(long long k) const {\n  \
-    \      Matrix A = *this, B(n, n);\n        for (long long i = 0; i < n; i++) B[i][i]\
-    \ = OperatorProperty::one();\n        while (k > 0) {\n            if (k & 1)\
-    \ B *= A;\n            A *= A;\n            k >>= 1;\n        }\n        return\
-    \ B;\n    }\n\n    [[nodiscard]]\n    Matrix operator+(const Matrix& B) const\
-    \ { return (Matrix(*this) += B); }\n    [[nodiscard]]\n    Matrix operator-(const\
-    \ Matrix& B) const { return (Matrix(*this) -= B); }\n    [[nodiscard]]\n    Matrix\
-    \ operator*(const Matrix& B) const { return (Matrix(*this) *= B); }\n\n    /**\n\
-    \     * @brief \u884C\u5217A\u3068\u5217\u30D9\u30AF\u30C8\u30EBB\u306E\u7A4D\n\
-    \     * @param A Matrix\n     * @param B vector<T>\n     * @return vector<T> \u5217\
-    \u30D9\u30AF\u30C8\u30EB\n     */\n    [[nodiscard]]\n    friend std::vector<T>\
-    \ operator*(const Matrix& A, const std::vector<T>& B) {\n        assert(A.m ==\
-    \ static_cast<long long>(B.size()));\n        std::vector<T> ret(A.n, OperatorProperty::zero());\n\
-    \        for (long long i = 0; i < A.n; i++) {\n            for (long long j =\
-    \ 0; j < A.m; j++) {\n                ret[i] = OperatorProperty::add(ret[i], OperatorProperty::mul(A[i][j],\
-    \ B[j]));\n            }\n        }\n        return ret;\n    }\n\n    /**\n \
-    \    * @brief \u884C\u30D9\u30AF\u30C8\u30EBA\u3068\u884C\u5217B\u306E\u7A4D\n\
-    \     * @param A vector<T>\n     * @param B Matrix\n     * @return vector<T> \u884C\
-    \u30D9\u30AF\u30C8\u30EB\n     */\n    [[nodiscard]]\n    friend std::vector<T>\
-    \ operator*(const std::vector<T>& A, const Matrix& B) {\n        assert(static_cast<long\
-    \ long>(A.size()) == B.n);\n        std::vector<T> ret(B.m, OperatorProperty::zero());\n\
-    \        for (long long i = 0; i < B.n; i++) {\n            for (long long j =\
-    \ 0; j < B.m; j++) {\n                ret[j] = OperatorProperty::add(ret[j], OperatorProperty::mul(A[i],\
+    \ long p = B.m;\n        if constexpr (std::is_same_v<OperatorProperty, matrix::OperatorPropertyDefault<T>>\
+    \ &&\n                      internal_matrix::is_modint_like_v<T>) {\n        \
+    \    // \u7A4D\u3092 64 \u30D3\u30C3\u30C8\u306E\u307E\u307E\u8DB3\u3057\u3001\
+    \u3042\u3075\u308C\u308B\u524D\u306B\u3060\u3051 mod \u3092\u53D6\u308B\n    \
+    \        // \u6CD5\u304C 2^30 \u7A0B\u5EA6\u307E\u3067\u306A\u3089 4 \u884C\u305A\
+    \u3064\u307E\u3068\u3081\u3066\u8DB3\u3057\u3001acc \u306E\u8AAD\u307F\u66F8\u304D\
+    \u3092\u6E1B\u3089\u3059\n            const std::uint64_t mod = T::mod();\n  \
+    \          const std::uint64_t lim = UINT64_MAX / ((mod - 1) * (mod - 1) + 1)\
+    \ - 1;\n            std::vector<std::uint32_t> b(m * p);\n            for (long\
+    \ long k = 0; k < m; k++)\n                for (long long j = 0; j < p; j++) b[k\
+    \ * p + j] = B[k][j].val();\n            std::vector<std::uint64_t> acc(p);\n\
+    \            for (long long i = 0; i < n; i++) {\n                std::fill(acc.begin(),\
+    \ acc.end(), 0);\n                std::uint64_t cnt = 0;\n                long\
+    \ long k = 0;\n                if (lim >= 4) {\n                    for (; k +\
+    \ 4 <= m; k += 4) {\n                        if (cnt + 4 > lim) {\n          \
+    \                  cnt = 0;\n                            for (long long j = 0;\
+    \ j < p; j++) acc[j] %= mod;\n                        }\n                    \
+    \    cnt += 4;\n                        const auto& r = (*this)[i];\n        \
+    \                const std::uint64_t a0 = r[k].val(), a1 = r[k + 1].val(), a2\
+    \ = r[k + 2].val(), a3 = r[k + 3].val();\n                        const std::uint32_t\
+    \ *b0 = b.data() + k * p, *b1 = b0 + p, *b2 = b1 + p, *b3 = b2 + p;\n        \
+    \                for (long long j = 0; j < p; j++) acc[j] += a0 * b0[j] + a1 *\
+    \ b1[j] + a2 * b2[j] + a3 * b3[j];\n                    }\n                }\n\
+    \                for (; k < m; k++) {\n                    if (cnt + 1 > lim)\
+    \ {\n                        cnt = 0;\n                        for (long long\
+    \ j = 0; j < p; j++) acc[j] %= mod;\n                    }\n                 \
+    \   cnt++;\n                    const std::uint64_t a0 = (*this)[i][k].val();\n\
+    \                    const std::uint32_t* b0 = b.data() + k * p;\n           \
+    \         for (long long j = 0; j < p; j++) acc[j] += a0 * b0[j];\n          \
+    \      }\n                v[i].resize(p);\n                for (long long j =\
+    \ 0; j < p; j++) v[i][j] = T(acc[j] % mod);\n            }\n            m = p;\n\
+    \            return (*this);\n        }\n        Matrix C(n, p);\n        for\
+    \ (long long i = 0; i < n; i++) {\n            for (long long k = 0; k < m; k++)\
+    \ {\n                for (long long j = 0; j < p; j++) {\n                   \
+    \ C[i][j] = OperatorProperty::add(C[i][j], OperatorProperty::mul((*this)[i][k],\
+    \ B[k][j]));\n                }\n            }\n        }\n        v.swap(C.v);\n\
+    \        m = p;\n        return (*this);\n    }\n\n    /**\n     * @brief \u4FDD\
+    \u6301\u3057\u3066\u3044\u308B\u884C\u5217\u306Ek\u4E57\u3092\u6C42\u3081\u308B\
+    \n     * @param k \u6307\u6570\n     * @return Matrix\n     */\n    [[nodiscard]]\n\
+    \    Matrix pow(long long k) const {\n        Matrix A = *this, B(n, n);\n   \
+    \     for (long long i = 0; i < n; i++) B[i][i] = OperatorProperty::one();\n \
+    \       while (k > 0) {\n            if (k & 1) B *= A;\n            A *= A;\n\
+    \            k >>= 1;\n        }\n        return B;\n    }\n\n    [[nodiscard]]\n\
+    \    Matrix operator+(const Matrix& B) const { return (Matrix(*this) += B); }\n\
+    \    [[nodiscard]]\n    Matrix operator-(const Matrix& B) const { return (Matrix(*this)\
+    \ -= B); }\n    [[nodiscard]]\n    Matrix operator*(const Matrix& B) const { return\
+    \ (Matrix(*this) *= B); }\n\n    /**\n     * @brief \u884C\u5217A\u3068\u5217\u30D9\
+    \u30AF\u30C8\u30EBB\u306E\u7A4D\n     * @param A Matrix\n     * @param B vector<T>\n\
+    \     * @return vector<T> \u5217\u30D9\u30AF\u30C8\u30EB\n     */\n    [[nodiscard]]\n\
+    \    friend std::vector<T> operator*(const Matrix& A, const std::vector<T>& B)\
+    \ {\n        assert(A.m == static_cast<long long>(B.size()));\n        std::vector<T>\
+    \ ret(A.n, OperatorProperty::zero());\n        for (long long i = 0; i < A.n;\
+    \ i++) {\n            for (long long j = 0; j < A.m; j++) {\n                ret[i]\
+    \ = OperatorProperty::add(ret[i], OperatorProperty::mul(A[i][j], B[j]));\n   \
+    \         }\n        }\n        return ret;\n    }\n\n    /**\n     * @brief \u884C\
+    \u30D9\u30AF\u30C8\u30EBA\u3068\u884C\u5217B\u306E\u7A4D\n     * @param A vector<T>\n\
+    \     * @param B Matrix\n     * @return vector<T> \u884C\u30D9\u30AF\u30C8\u30EB\
+    \n     */\n    [[nodiscard]]\n    friend std::vector<T> operator*(const std::vector<T>&\
+    \ A, const Matrix& B) {\n        assert(static_cast<long long>(A.size()) == B.n);\n\
+    \        std::vector<T> ret(B.m, OperatorProperty::zero());\n        for (long\
+    \ long i = 0; i < B.n; i++) {\n            for (long long j = 0; j < B.m; j++)\
+    \ {\n                ret[j] = OperatorProperty::add(ret[j], OperatorProperty::mul(A[i],\
     \ B[i][j]));\n            }\n        }\n        return ret;\n    }\n\n    /**\n\
     \     * @brief \u884C\u5217\u5F0F\n     * @return \u884C\u5217\u5F0F\n     * @note\
     \ \u5272\u308A\u7B97\u3092\u4F7F\u3046\u306E\u3067\u3001\u8981\u7D20\u306F\u4F53\
@@ -447,48 +494,48 @@ data:
     \u306F\u5404\u884C\u306E value_type \u306B\u3059\u308B\n *\n * Matrix(std::vector<std::vector<int>>)\
     \ \u306F Matrix<int>\u3001Matrix(std::vector<std::string>) \u306F Matrix<char>\n\
     \ */\ntemplate <typename Iterable>\nMatrix(const std::vector<Iterable>&) -> Matrix<typename\
-    \ Iterable::value_type>;\n#line 13 \"test/unittest/math/matrix.test.cpp\"\n\n\
-    #line 15 \"test/unittest/math/matrix.test.cpp\"\n#include <iostream>\n#include\
-    \ <numeric>\n#include <random>\n#line 21 \"test/unittest/math/matrix.test.cpp\"\
+    \ Iterable::value_type>;\n#line 14 \"test/unittest/math/matrix.test.cpp\"\n\n\
+    #line 16 \"test/unittest/math/matrix.test.cpp\"\n#include <iostream>\n#include\
+    \ <numeric>\n#include <random>\n#line 22 \"test/unittest/math/matrix.test.cpp\"\
     \n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\
     \u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\
-    \u30AF\u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\n#include <cstdint>\n\
-    #line 11 \"src/math/modint.hpp\"\n#include <limits>\n#line 14 \"src/math/modint.hpp\"\
-    \n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief\
-    \ \u578B\u7279\u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\n#include <iterator>\n\
-    #include <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace internal_traits\
-    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
-    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
-    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
-    \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
-    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
-    \n#define HAS_METHOD(func_name)                                              \
-    \                \\\n    namespace internal_traits {                         \
-    \                                   \\\n    template <class T, class = void> \
-    \                                                      \\\n    struct has_##func_name##_impl\
-    \ : std::false_type {};                                    \\\n    template <class\
-    \ T>                                                                     \\\n\
-    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
-    \ \\\n        : std::true_type {};                                           \
-    \                    \\\n    }                                               \
-    \                                       \\\n    template <class T>           \
-    \                                                          \\\n    struct has_##func_name\
-    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
-    \ <class T>                                                                  \
-    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
-    \n#define HAS_METHOD_ARG(func_name)                                          \
-    \                                    \\\n    namespace internal_traits {     \
-    \                                                                           \\\
-    \n    template <class T, typename U, class = void>                           \
-    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
-    \ {};                                                        \\\n    template\
-    \ <class T, typename U>                                                      \
-    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
-    \ \\\n        : std::true_type {};                                           \
-    \                                        \\\n    }                           \
+    \u30AF\u30E9\u30B9\n */\n\n#line 11 \"src/math/modint.hpp\"\n#include <limits>\n\
+    #line 14 \"src/math/modint.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n\
+    \ * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\
+    \n#include <iterator>\n#include <set>\n#line 13 \"src/utility/traits.hpp\"\n\n\
+    namespace internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T,\
+    \ class = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\n\
+    struct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
+    \ : std::true_type {};\n}  // namespace internal_traits\n\ntemplate <class T>\n\
+    struct is_range : internal_traits::is_range_impl<T>::type {};\ntemplate <class\
+    \ T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define HAS_METHOD(func_name)\
+    \                                                              \\\n    namespace\
+    \ internal_traits {                                                          \
+    \  \\\n    template <class T, class = void>                                  \
+    \                     \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                    \\\n    template <class T>          \
+    \                                                           \\\n    struct has_##func_name##_impl<T,\
+    \ std::void_t<decltype(std::declval<T>().func_name())>> \\\n        : std::true_type\
+    \ {};                                                               \\\n    }\
     \                                                                            \
-    \   \\\n    template <class T, typename U>                                   \
-    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \          \\\n    template <class T>                                        \
+    \                             \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T>::type\
+    \ {};          \\\n    template <class T>                                    \
+    \                                 \\\n    inline constexpr bool has_##func_name##_v\
+    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
+    \                                                                    \\\n    namespace\
+    \ internal_traits {                                                          \
+    \                      \\\n    template <class T, typename U, class = void>  \
+    \                                                             \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                                      \
+    \  \\\n    template <class T, typename U>                                    \
+    \                                         \\\n    struct has_##func_name##_impl<T,\
+    \ U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>> \\\
+    \n        : std::true_type {};                                               \
+    \                                    \\\n    }                               \
+    \                                                                           \\\
+    \n    template <class T, typename U>                                         \
+    \                                    \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
     \ U>::type {};                           \\\n    template <class T, typename U>\
     \                                                                            \
     \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
@@ -732,7 +779,7 @@ data:
     \ dynamic_modint(SignedIntegral value) noexcept\n        : base_type{value} {}\n\
     \n   private:\n    inline static value_type modulus = 998244353;\n};\n\nusing\
     \ modint998244353 = static_modint<998244353>;\nusing modint1000000007 = static_modint<1000000007>;\n\
-    using modint = dynamic_modint<-1>;\n#line 23 \"test/unittest/math/matrix.test.cpp\"\
+    using modint = dynamic_modint<-1>;\n#line 24 \"test/unittest/math/matrix.test.cpp\"\
     \n\nusing mint = static_modint<998244353>;\n\n// \u63A8\u8AD6\u30AC\u30A4\u30C9\
     : \u8981\u7D20\u306E\u578B\u306F\u5404\u884C\u306E value_type\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::vector<long\
     \ long>>())), Matrix<long long>>);\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::string>())),\
@@ -950,7 +997,48 @@ data:
     \    } while (std::next_permutation(perm.begin(), perm.end()));\n        expect\
     \ = (expect % mod + mod) % mod;\n        if (Matrix<long long>(a).det_mod(mod)\
     \ != expect) ok = false, std::cerr << \"det_mod\" << std::endl;\n    }\n\n   \
-    \ if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \ // modint \u306E\u7A4D: \u9577\u65B9\u5F62\u30FB\u7A7A\u306E\u884C\u5217\u30FB\
+    \u81EA\u5206\u81EA\u8EAB\u3068\u306E\u7A4D (A *= A) \u3082\u8A66\u3059\n    auto\
+    \ check_product = [&](auto zero, const char* name) {\n        using M = decltype(zero);\n\
+    \        const unsigned long long mod = M::mod();\n        auto naive = [&](const\
+    \ std::vector<std::vector<unsigned long long>>& a, const std::vector<std::vector<unsigned\
+    \ long long>>& b, int p) {\n            int n = a.size(), m = b.size();\n    \
+    \        std::vector<std::vector<unsigned long long>> c(n, std::vector<unsigned\
+    \ long long>(p));\n            for (int i = 0; i < n; i++)\n                for\
+    \ (int k = 0; k < m; k++)\n                    for (int j = 0; j < p; j++) c[i][j]\
+    \ = (c[i][j] + a[i][k] * b[k][j]) % mod;\n            return c;\n        };\n\
+    \        auto to_matrix = [&](const std::vector<std::vector<unsigned long long>>&\
+    \ a, int cols) {\n            Matrix<M> A(a.size(), cols);\n            for (int\
+    \ i = 0; i < static_cast<int>(a.size()); i++)\n                for (int j = 0;\
+    \ j < cols; j++) A[i][j] = M(a[i][j]);\n            return A;\n        };\n  \
+    \      auto same = [&](const Matrix<M>& A, const std::vector<std::vector<unsigned\
+    \ long long>>& c, int cols) {\n            if (A.n != static_cast<long long>(c.size())\
+    \ || A.m != cols) return false;\n            for (int i = 0; i < A.n; i++)\n \
+    \               for (int j = 0; j < cols; j++)\n                    if (A[i][j].val()\
+    \ != c[i][j]) return false;\n            return true;\n        };\n        auto\
+    \ random_mat = [&](int n, int m) {\n            std::vector<std::vector<unsigned\
+    \ long long>> a(n, std::vector<unsigned long long>(m));\n            for (auto&\
+    \ row : a)\n                for (auto& x : row) x = rng() % 4 == 0 ? mod - 1 :\
+    \ rng() % mod;  // \u6700\u5927\u306E\u5024\u3092\u591A\u3081\u306B\u5165\u308C\
+    \u3066\u3042\u3075\u308C\u3092\u8A66\u3059\n            return a;\n        };\n\
+    \        for (int rep = 0; rep < 300 && ok; rep++) {\n            int n = rng()\
+    \ % 8, m = rng() % 60, p = rng() % 8;\n            auto a = random_mat(n, m),\
+    \ b = random_mat(m, p);\n            if (!same(to_matrix(a, m) * to_matrix(b,\
+    \ p), naive(a, b, p), p)) ok = false, std::cerr << \"product \" << name << std::endl;\n\
+    \            auto c = random_mat(n, n);\n            Matrix<M> C = to_matrix(c,\
+    \ n);\n            C *= C;\n            if (!same(C, naive(c, c, n), n)) ok =\
+    \ false, std::cerr << \"product (A *= A) \" << name << std::endl;\n          \
+    \  long long e = rng() % 10;\n            auto expect = std::vector<std::vector<unsigned\
+    \ long long>>(n, std::vector<unsigned long long>(n));\n            for (int i\
+    \ = 0; i < n; i++) expect[i][i] = 1 % mod;\n            for (int t = 0; t < e;\
+    \ t++) expect = naive(expect, c, n);\n            if (!same(to_matrix(c, n).pow(e),\
+    \ expect, n)) ok = false, std::cerr << \"pow \" << name << std::endl;\n      \
+    \  }\n    };\n    check_product(mint(0), \"mod 998244353\");\n    check_product(static_modint<1000000007>(0),\
+    \ \"mod 1000000007\");\n    check_product(static_modint<2147483647>(0), \"mod\
+    \ 2147483647\");\n    check_product(static_modint<1>(0), \"mod 1\");\n    check_product(static_modint<2>(0),\
+    \ \"mod 2\");\n    dynamic_modint<0>::set_mod(2000000011);\n    check_product(dynamic_modint<0>(0),\
+    \ \"mod 2000000011 (dynamic)\");\n\n    if (ok) std::cout << \"Hello World\" <<\
+    \ std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// Matrix \u306E +\u30FB-\u30FB==\u30FB\u30B7\u30D5\u30C8\u7CFB\u30FBcol\u30FB\
     str\u30FB\u521D\u671F\u5316\u5B50\u30EA\u30B9\u30C8\u30FB\u4EE3\u5165\u30FB\u8D70\
@@ -966,15 +1054,19 @@ data:
     \u5C55\u958B\u3057\u305F\u591A\u9805\u5F0F\u3068\u6BD4\u8F03\u3059\u308B (mod\
     \ 998244353\u30FBmod 3)\n// det_mod \u3092\u3001\u9806\u5217\u3067\u5C55\u958B\
     \u3057\u305F\u884C\u5217\u5F0F\u3068\u6BD4\u8F03\u3059\u308B (\u7D20\u6570\u3067\
-    \u306A\u3044 mod \u3082)\n// \u884C\u306E\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\
-    \u3068\u304D\u306E\u63A8\u8AD6\u30AC\u30A4\u30C9\u3092 static_assert \u3067\u78BA\
-    \u304B\u3081\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\
-    \u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\
-    \u3059\u308B\n\n#include \"../../../src/math/matrix.hpp\"\n\n#include <algorithm>\n\
-    #include <iostream>\n#include <numeric>\n#include <random>\n#include <string>\n\
-    #include <type_traits>\n#include <vector>\n\n#include \"../../../src/math/modint.hpp\"\
-    \n\nusing mint = static_modint<998244353>;\n\n// \u63A8\u8AD6\u30AC\u30A4\u30C9\
-    : \u8981\u7D20\u306E\u578B\u306F\u5404\u884C\u306E value_type\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::vector<long\
+    \u306A\u3044 mod \u3082)\n// modint \u306E\u7A4D (64 \u30D3\u30C3\u30C8\u3067\u8DB3\
+    \u3057\u3066\u304B\u3089 mod \u3092\u53D6\u308B\u7D4C\u8DEF) \u3068 pow \u3092\
+    \u3001long long \u3067\u306E\u611A\u76F4\u306A\u7A4D\u3068\u6BD4\u8F03\u3059\u308B\
+    \ (\u6CD5\u304C 2^31 \u306B\u8FD1\u3044\u3082\u306E\u3084 1 \u3082)\n// \u884C\
+    \u306E\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\u3068\u304D\u306E\u63A8\u8AD6\
+    \u30AC\u30A4\u30C9\u3092 static_assert \u3067\u78BA\u304B\u3081\u308B\n// \u554F\
+    \u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\
+    \u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include\
+    \ \"../../../src/math/matrix.hpp\"\n\n#include <algorithm>\n#include <iostream>\n\
+    #include <numeric>\n#include <random>\n#include <string>\n#include <type_traits>\n\
+    #include <vector>\n\n#include \"../../../src/math/modint.hpp\"\n\nusing mint =\
+    \ static_modint<998244353>;\n\n// \u63A8\u8AD6\u30AC\u30A4\u30C9: \u8981\u7D20\
+    \u306E\u578B\u306F\u5404\u884C\u306E value_type\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::vector<long\
     \ long>>())), Matrix<long long>>);\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::string>())),\
     \ Matrix<char>>);\nusing VV = std::vector<std::vector<long long>>;\n\n// xor \u3068\
     \ and \u306B\u3088\u308B\u4F53 GF(2)\nstruct GF2 {\n    static int zero() { return\
@@ -1190,7 +1282,48 @@ data:
     \    } while (std::next_permutation(perm.begin(), perm.end()));\n        expect\
     \ = (expect % mod + mod) % mod;\n        if (Matrix<long long>(a).det_mod(mod)\
     \ != expect) ok = false, std::cerr << \"det_mod\" << std::endl;\n    }\n\n   \
-    \ if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \ // modint \u306E\u7A4D: \u9577\u65B9\u5F62\u30FB\u7A7A\u306E\u884C\u5217\u30FB\
+    \u81EA\u5206\u81EA\u8EAB\u3068\u306E\u7A4D (A *= A) \u3082\u8A66\u3059\n    auto\
+    \ check_product = [&](auto zero, const char* name) {\n        using M = decltype(zero);\n\
+    \        const unsigned long long mod = M::mod();\n        auto naive = [&](const\
+    \ std::vector<std::vector<unsigned long long>>& a, const std::vector<std::vector<unsigned\
+    \ long long>>& b, int p) {\n            int n = a.size(), m = b.size();\n    \
+    \        std::vector<std::vector<unsigned long long>> c(n, std::vector<unsigned\
+    \ long long>(p));\n            for (int i = 0; i < n; i++)\n                for\
+    \ (int k = 0; k < m; k++)\n                    for (int j = 0; j < p; j++) c[i][j]\
+    \ = (c[i][j] + a[i][k] * b[k][j]) % mod;\n            return c;\n        };\n\
+    \        auto to_matrix = [&](const std::vector<std::vector<unsigned long long>>&\
+    \ a, int cols) {\n            Matrix<M> A(a.size(), cols);\n            for (int\
+    \ i = 0; i < static_cast<int>(a.size()); i++)\n                for (int j = 0;\
+    \ j < cols; j++) A[i][j] = M(a[i][j]);\n            return A;\n        };\n  \
+    \      auto same = [&](const Matrix<M>& A, const std::vector<std::vector<unsigned\
+    \ long long>>& c, int cols) {\n            if (A.n != static_cast<long long>(c.size())\
+    \ || A.m != cols) return false;\n            for (int i = 0; i < A.n; i++)\n \
+    \               for (int j = 0; j < cols; j++)\n                    if (A[i][j].val()\
+    \ != c[i][j]) return false;\n            return true;\n        };\n        auto\
+    \ random_mat = [&](int n, int m) {\n            std::vector<std::vector<unsigned\
+    \ long long>> a(n, std::vector<unsigned long long>(m));\n            for (auto&\
+    \ row : a)\n                for (auto& x : row) x = rng() % 4 == 0 ? mod - 1 :\
+    \ rng() % mod;  // \u6700\u5927\u306E\u5024\u3092\u591A\u3081\u306B\u5165\u308C\
+    \u3066\u3042\u3075\u308C\u3092\u8A66\u3059\n            return a;\n        };\n\
+    \        for (int rep = 0; rep < 300 && ok; rep++) {\n            int n = rng()\
+    \ % 8, m = rng() % 60, p = rng() % 8;\n            auto a = random_mat(n, m),\
+    \ b = random_mat(m, p);\n            if (!same(to_matrix(a, m) * to_matrix(b,\
+    \ p), naive(a, b, p), p)) ok = false, std::cerr << \"product \" << name << std::endl;\n\
+    \            auto c = random_mat(n, n);\n            Matrix<M> C = to_matrix(c,\
+    \ n);\n            C *= C;\n            if (!same(C, naive(c, c, n), n)) ok =\
+    \ false, std::cerr << \"product (A *= A) \" << name << std::endl;\n          \
+    \  long long e = rng() % 10;\n            auto expect = std::vector<std::vector<unsigned\
+    \ long long>>(n, std::vector<unsigned long long>(n));\n            for (int i\
+    \ = 0; i < n; i++) expect[i][i] = 1 % mod;\n            for (int t = 0; t < e;\
+    \ t++) expect = naive(expect, c, n);\n            if (!same(to_matrix(c, n).pow(e),\
+    \ expect, n)) ok = false, std::cerr << \"pow \" << name << std::endl;\n      \
+    \  }\n    };\n    check_product(mint(0), \"mod 998244353\");\n    check_product(static_modint<1000000007>(0),\
+    \ \"mod 1000000007\");\n    check_product(static_modint<2147483647>(0), \"mod\
+    \ 2147483647\");\n    check_product(static_modint<1>(0), \"mod 1\");\n    check_product(static_modint<2>(0),\
+    \ \"mod 2\");\n    dynamic_modint<0>::set_mod(2000000011);\n    check_product(dynamic_modint<0>(0),\
+    \ \"mod 2000000011 (dynamic)\");\n\n    if (ok) std::cout << \"Hello World\" <<\
+    \ std::endl;\n}\n"
   dependsOn:
   - src/math/matrix.hpp
   - src/math/modint.hpp
@@ -1198,7 +1331,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/matrix.test.cpp
   requiredBy: []
-  timestamp: '2026-10-23 19:18:19+09:00'
+  timestamp: '2026-10-24 03:47:04+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/matrix.test.cpp

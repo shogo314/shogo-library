@@ -125,6 +125,9 @@ data:
     path: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
     title: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/range-reverse-range-sum.test.cpp
+    title: test/yosupo/data_structure/range-reverse-range-sum.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/range-set-range-composite.test.cpp
     title: test/yosupo/data_structure/range-set-range-composite.test.cpp
   - icon: ':heavy_check_mark:'
@@ -938,6 +941,7 @@ data:
   - test/aoj/dsl/dsl-2-h.2.test.cpp
   - test/yosupo/data_structure/point-add-range-sum.1.test.cpp
   - test/yosupo/data_structure/persistent-range-affine-range-sum.test.cpp
+  - test/yosupo/data_structure/range-reverse-range-sum.test.cpp
   - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.2.test.cpp
   - test/yosupo/data_structure/point-set-range-composite.4.test.cpp
   - test/yosupo/data_structure/range-affine-range-sum.2.test.cpp

@@ -33,6 +33,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/static-range-lis-query.test.cpp
     title: test/yosupo/data_structure/static-range-lis-query.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/static-range-sum-with-upper-bound.test.cpp
+    title: test/yosupo/data_structure/static-range-sum-with-upper-bound.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -430,6 +433,7 @@ data:
   - test/unittest/data_structures/range-count-distinct.test.cpp
   - test/unittest/data_structures/range-lis.test.cpp
   - test/yosupo/data_structure/rectangle-sum.5.test.cpp
+  - test/yosupo/data_structure/static-range-sum-with-upper-bound.test.cpp
   - test/yosupo/data_structure/static-range-count-distinct.test.cpp
   - test/yosupo/data_structure/static-range-lis-query.test.cpp
   - test/yosupo/data_structure/range-kth-smallest.test.cpp
@@ -488,6 +492,6 @@ $n$ を要素数、$\sigma$ を値の種類数とします。
 
 ## 関連
 
-- 列を更新したいなら [2次元セグメント木](segtree-2d.hpp) (クエリを先読みする)
+- 列を更新したいなら [2次元セグメント木](segtree-2d.hpp) (更新する点を先読みする)
 - 区間内の値の範囲の積 (和以外の群) なら [マージソートツリー](merge-sort-tree.hpp) ($O(\log^2 n)$)
 - 過去の版を使う問題なら [永続セグメント木](persistent-segtree.hpp)

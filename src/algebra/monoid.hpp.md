@@ -183,6 +183,9 @@ data:
     path: test/unittest/data_structures/rbst.test.cpp
     title: test/unittest/data_structures/rbst.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/segtree-2d.test.cpp
+    title: test/unittest/data_structures/segtree-2d.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/segtree-beats.test.cpp
     title: test/unittest/data_structures/segtree-beats.test.cpp
   - icon: ':heavy_check_mark:'
@@ -276,8 +279,14 @@ data:
     path: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
     title: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/range-reverse-range-sum.test.cpp
+    title: test/yosupo/data_structure/range-reverse-range-sum.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/range-set-range-composite.test.cpp
     title: test/yosupo/data_structure/range-set-range-composite.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/rectangle-add-point-get.test.cpp
+    title: test/yosupo/data_structure/rectangle-add-point-get.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/rectangle-sum.1.test.cpp
     title: test/yosupo/data_structure/rectangle-sum.1.test.cpp
@@ -967,6 +976,7 @@ data:
   - test/unittest/data_structures/persistent-segtree.test.cpp
   - test/unittest/data_structures/sliding-window-aggregation.test.cpp
   - test/unittest/data_structures/sortable-segtree.test.cpp
+  - test/unittest/data_structures/segtree-2d.test.cpp
   - test/unittest/data_structures/monoid-unionfind.test.cpp
   - test/unittest/data_structures/rbst.test.cpp
   - test/unittest/data_structures/dynamic-lazy-segtree.test.cpp
@@ -1003,6 +1013,7 @@ data:
   - test/yosupo/data_structure/queue-operate-all-composite.test.cpp
   - test/yosupo/data_structure/point-add-range-sum.1.test.cpp
   - test/yosupo/data_structure/persistent-range-affine-range-sum.test.cpp
+  - test/yosupo/data_structure/range-reverse-range-sum.test.cpp
   - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.2.test.cpp
   - test/yosupo/data_structure/staticrmq.test.cpp
   - test/yosupo/data_structure/point-set-range-composite.4.test.cpp
@@ -1019,6 +1030,7 @@ data:
   - test/yosupo/data_structure/point-set-range-composite.3.test.cpp
   - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
   - test/yosupo/data_structure/point-add-rectangle-sum.test.cpp
+  - test/yosupo/data_structure/rectangle-add-point-get.test.cpp
   - test/yosupo/data_structure/range-set-range-composite.test.cpp
   - test/yosupo/data_structure/range-affine-point-get.2.test.cpp
   - test/yosupo/data_structure/point-set-range-composite.1.test.cpp

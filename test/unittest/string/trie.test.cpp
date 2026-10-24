@@ -82,6 +82,51 @@ int main() {
     digits.insert(std::vector<int>{3, 1, 4});
     ok = ok && digits.count_prefix(std::vector<int>{3, 1}) == 1 && digits.find(std::vector<int>{1}) == -1;
 
+    // 文字列リテラルは末尾の '\0' を読まない
+    {
+        Trie<26, 'a'> t;
+        t.insert("abc");
+        ok = ok && t.count_prefix("ab") == 1 && t.count("abc") == 1 && t.find("x") == -1 && t.longest_common_prefix("abd") == 2;
+    }
+
+    // less・lca を、文字列の比較・最長共通接頭辞と比べる。extend は文字列の個数を変えない
+    for (int rep = 0; rep < 200 && ok; rep++) {
+        Trie<3, 'a'> t;
+        std::vector<std::string> ss;
+        std::vector<long long> vs;
+        for (int i = 0; i < 30; i++) {
+            ss.push_back(random_string(rng() % 2 ? 4 : 40));
+            long long v = 0;
+            for (char c : ss.back()) v = t.extend(v, c);
+            vs.push_back(v);
+        }
+        ok = ok && t.total() == 0 && t.count_prefix("") == 0;
+        for (int i = 0; i < 30; i++) {
+            ok = ok && t.find(ss[i]) == vs[i];
+            for (int j = 0; j < 30; j++) {
+                long long lcp = 0;
+                while (lcp < static_cast<long long>(std::min(ss[i].size(), ss[j].size())) && ss[i][lcp] == ss[j][lcp]) lcp++;
+                ok = ok && t.less(vs[i], vs[j]) == (ss[i] < ss[j]);
+                ok = ok && t.lca(vs[i], vs[j]) == t.find(ss[i].substr(0, lcp));
+            }
+        }
+    }
+    // 長い文字列でも、比較は O(log n) で終わる
+    {
+        const int n = 200000;
+        Trie<2, 'a'> t;
+        long long u = 0, v = 0;
+        std::string su, sv;
+        for (int i = 0; i < n; i++) {
+            char c = 'a' + rng() % 2, d = i == n / 2 ? 'a' + 'b' - c : c;
+            u = t.extend(u, c), v = t.extend(v, d);
+            su += c, sv += d;
+        }
+        bool expected = su < sv;
+        for (int q = 0; q < 100000; q++) ok = ok && t.less(u, v) == expected && !t.less(u, u);
+        ok = ok && t.depth(t.lca(u, v)) == n / 2;
+    }
+
     if (ok)
         std::cout << "Hello World" << std::endl;
     else

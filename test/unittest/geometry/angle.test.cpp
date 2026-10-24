@@ -8,6 +8,7 @@
 #include <array>
 #include <cmath>
 #include <iostream>
+#include <sstream>
 #include <utility>
 #include <vector>
 
@@ -38,6 +39,51 @@ int main() {
             ok = ok && (a == b) == eq && (a != b) == !eq;
             ok = ok && (a <= b) == (lt || eq) && (b >= a) == (lt || eq);
         }
+    }
+
+    // 周回数を付けたときの比較、和・差・符号反転・opposite・next_turn を radian と比べる
+    for (auto [ax, ay] : ps) {
+        for (int at = -1; at <= 1; at++) {
+            Angle<long long> a(ax, ay, at);
+            double ta = a.radian();
+            ok = ok && std::abs(ta - (arg(ax, ay) + 2 * pi * at)) < 1e-9;
+            ok = ok && std::abs(a.next_turn().radian() - (ta + 2 * pi)) < 1e-9;
+            ok = ok && std::abs((-a).radian() + ta) < 1e-9;
+            if (!a.is_zero()) ok = ok && std::abs(a.opposite().radian() - (ta + pi)) < 1e-9;
+            for (auto [bx, by] : ps) {
+                for (int bt = -1; bt <= 1; bt++) {
+                    Angle<long long> b(bx, by, bt);
+                    double tb = b.radian();
+                    bool lt = ta < tb - 1e-9, eq = std::abs(ta - tb) < 1e-9;
+                    ok = ok && (a < b) == lt && (a == b) == eq;
+                    ok = ok && std::abs((a + b).radian() - (ta + tb)) < 1e-9;
+                    ok = ok && std::abs((a - b).radian() - (ta - tb)) < 1e-9;
+                    Angle<long long> c = a;
+                    c += b;
+                    ok = ok && c == a + b;
+                    c -= b;
+                    ok = ok && c == a;
+                }
+            }
+        }
+    }
+    // [θ, θ + π) の判定は a <= b && b < a.opposite() でも b - a < π でも書ける
+    {
+        Angle<long long> a(1, 1), on(2, 2), in(-1, 1), out(-1, -1), back(-3, -3);
+        ok = ok && a <= on && on < a.opposite() && a <= in && in < a.opposite();
+        ok = ok && !(back < a.opposite()) && !(out < a.opposite());
+        ok = ok && on - a < Angle<long long>(-1, 0) && in - a < Angle<long long>(-1, 0);
+        ok = ok && !(back - a < Angle<long long>(-1, 0)) && !(out - a < Angle<long long>(-1, 0));
+    }
+    // 入出力は x y (周回数は読み書きしない)
+    {
+        std::istringstream is("3 -4 -5 6");
+        Angle<long long> a(0, 0, 5), b;
+        is >> a >> b;
+        ok = ok && a.x == 3 && a.y == -4 && a.turn == 0 && b.x == -5 && b.y == 6;
+        std::ostringstream os;
+        os << Angle<long long>(-1, 2, 3);
+        ok = ok && os.str() == "-1 2";
     }
 
     // Vector、std::array、std::pair から作れる

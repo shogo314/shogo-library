@@ -810,4 +810,5 @@ seg.apply(l, r, "abc");  // [l, r) を "abc" にする
 ## 関連
 
 - 区間積も必要なら [遅延伝搬セグメント木](lazy-segtree.hpp)
+- 2次元なら [2次元双対セグメント木](dual-segtree-2d.hpp)
 - 作用素が逆元を持ち、`get` の添字がおおむね増えていくなら [imos 法](imos.hpp) の方が速い

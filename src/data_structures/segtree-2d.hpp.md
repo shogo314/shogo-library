@@ -13,8 +13,8 @@ data:
     path: test/yosupo/data_structure/point-add-rectangle-sum.test.cpp
     title: test/yosupo/data_structure/point-add-rectangle-sum.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/yosupo/data_structure/rectangle-add-point-get.test.cpp
-    title: test/yosupo/data_structure/rectangle-add-point-get.test.cpp
+    path: test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
+    title: test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -512,8 +512,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/segtree-2d.test.cpp
+  - test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
   - test/yosupo/data_structure/point-add-rectangle-sum.test.cpp
-  - test/yosupo/data_structure/rectangle-add-point-get.test.cpp
 documentation_of: src/data_structures/segtree-2d.hpp
 layout: document
 title: "2\u6B21\u5143\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
@@ -536,7 +536,7 @@ seg.get(2, 3);         // 7
 
 - `set`・`apply` は、コンストラクタで渡した点にしか使えません (違えば assert で落ちます)。`get` は渡していない点なら単位元を返します。
 - 内部ノードの値を子の値から作るので、モノイドは可換である必要があります。逆元は使わないので、Max・Min も乗ります。
-- 長方形への加算と点の取得は、長方形の 4 隅を点として渡し、差分を `apply` して $(x, y)$ 以下の範囲の和を `prod` で求めると解けます。
+- 長方形への加算と点の取得は、長方形の 4 隅を点として渡し、差分を `apply` して $(x, y)$ 以下の範囲の和を `prod` で求めると解けます。ただし [2次元双対セグメント木](dual-segtree-2d.hpp) で取得する点を先読みするほうが速く、メモリも少なくて済みます。
 
 ## 別名
 
@@ -563,4 +563,5 @@ $P$ を渡した点の数とします。
 ## 関連
 
 - 1次元なら [セグメント木](segtree.hpp)
+- 長方形作用・1点取得なら [2次元双対セグメント木](dual-segtree-2d.hpp)
 - 更新がなく、点の重みの長方形の和なら [マージソートツリー](merge-sort-tree.hpp) でも求められる

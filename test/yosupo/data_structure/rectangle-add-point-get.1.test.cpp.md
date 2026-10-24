@@ -17,7 +17,7 @@ data:
     PROBLEM: https://judge.yosupo.jp/problem/rectangle_add_point_get
     links:
     - https://judge.yosupo.jp/problem/rectangle_add_point_get
-  bundledCode: "#line 1 \"test/yosupo/data_structure/rectangle-add-point-get.test.cpp\"\
+  bundledCode: "#line 1 \"test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp\"\
     \n#define PROBLEM \"https://judge.yosupo.jp/problem/rectangle_add_point_get\"\n\
     \n#include <iostream>\n#include <utility>\n#include <vector>\n\n#line 2 \"src/data_structures/segtree-2d.hpp\"\
     \n\n/**\n * @file segtree-2d.hpp\n * @brief 2\u6B21\u5143\u30BB\u30B0\u30E1\u30F3\
@@ -405,7 +405,7 @@ data:
     \ S>\nusing RMaxQ2D = SegTree2D<monoid::Max<S>>;\n/**\n * @brief RangeMinQuery\n\
     \ *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RMinQ2D = SegTree2D<monoid::Min<S>>;\n\
     /**\n * @brief RangeSumQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename\
-    \ S>\nusing RSumQ2D = SegTree2D<monoid::Sum<S>>;\n#line 8 \"test/yosupo/data_structure/rectangle-add-point-get.test.cpp\"\
+    \ S>\nusing RSumQ2D = SegTree2D<monoid::Sum<S>>;\n#line 8 \"test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp\"\
     \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
     \    int n, q;\n    std::cin >> n >> q;\n    // \u9577\u65B9\u5F62 [l, r) x [d,\
     \ u) \u3078\u306E\u52A0\u7B97\u3092 4 \u9685\u3078\u306E\u52A0\u7B97 (\u5DEE\u5206\
@@ -455,15 +455,15 @@ data:
   - src/data_structures/segtree-2d.hpp
   - src/algebra/monoid.hpp
   isVerificationFile: true
-  path: test/yosupo/data_structure/rectangle-add-point-get.test.cpp
+  path: test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-24 19:51:09+09:00'
+  timestamp: '2026-10-24 20:14:42+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
-documentation_of: test/yosupo/data_structure/rectangle-add-point-get.test.cpp
+documentation_of: test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
 layout: document
 redirect_from:
-- /verify/test/yosupo/data_structure/rectangle-add-point-get.test.cpp
-- /verify/test/yosupo/data_structure/rectangle-add-point-get.test.cpp.html
-title: test/yosupo/data_structure/rectangle-add-point-get.test.cpp
+- /verify/test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
+- /verify/test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp.html
+title: test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
 ---

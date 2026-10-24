@@ -6,6 +6,10 @@ data:
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
+    path: src/data_structures/dual-segtree-2d.hpp
+    title: "2\u6B21\u5143\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u9577\u65B9\
+      \u5F62\u4F5C\u7528\u30011\u70B9\u53D6\u5F97)"
+  - icon: ':heavy_check_mark:'
     path: src/data_structures/dual-segtree.hpp
     title: "\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u533A\u9593\u4F5C\u7528\
       \u30011\u70B9\u53D6\u5F97)"
@@ -58,6 +62,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/algebra/beats-acted-monoid.test.cpp
     title: test/unittest/algebra/beats-acted-monoid.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/dual-segtree-2d.test.cpp
+    title: test/unittest/data_structures/dual-segtree-2d.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/dual-segtree.test.cpp
     title: test/unittest/data_structures/dual-segtree.test.cpp
@@ -130,6 +137,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/range-set-range-composite.test.cpp
     title: test/yosupo/data_structure/range-set-range-composite.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/rectangle-add-point-get.2.test.cpp
+    title: test/yosupo/data_structure/rectangle-add-point-get.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/2292.test.cpp
     title: test/yukicoder/2292.test.cpp
@@ -916,6 +926,7 @@ data:
   - src/data_structures/rbst.hpp
   - src/data_structures/persistent-lazy-segtree.hpp
   - src/data_structures/dynamic-lazy-segtree.hpp
+  - src/data_structures/dual-segtree-2d.hpp
   - src/data_structures/lazy-segtree.hpp
   - src/data_structures/segtree-beats.hpp
   - src/data_structures/dual-segtree.hpp
@@ -924,6 +935,7 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/imos.test.cpp
+  - test/unittest/data_structures/dual-segtree-2d.test.cpp
   - test/unittest/data_structures/segtree-beats.test.cpp
   - test/unittest/data_structures/persistent-lazy-segtree.test.cpp
   - test/unittest/data_structures/dual-segtree.test.cpp
@@ -948,6 +960,7 @@ data:
   - test/yosupo/data_structure/range-affine-range-sum.3.test.cpp
   - test/yosupo/data_structure/range-affine-range-sum-large-array.test.cpp
   - test/yosupo/data_structure/range-affine-point-get.1.test.cpp
+  - test/yosupo/data_structure/rectangle-add-point-get.2.test.cpp
   - test/yosupo/data_structure/area-of-union-of-rectangles.2.test.cpp
   - test/yosupo/data_structure/range-add-range-min.test.cpp
   - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp

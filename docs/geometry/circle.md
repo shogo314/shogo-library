@@ -31,12 +31,12 @@ Circle out = circumcircle(Vector(0.0, 3.0), Vector(4.0, 0.0), Vector(0.0, 0.0));
 | 関数 | 説明 | 整数型 | 計算量 |
 |---|---|:-:|---|
 | `circle_relation(c1, c2)` | 2つの円の位置関係を、共通接線の本数で返す。4: 離れている、3: 外接、2: 2点で交わる、1: 内接、0: 一方が他方の内部 (2つの円が一致する場合は 1) | ✓ | $O(1)$ |
-| `incircle(a, b, c)` | 三角形 $abc$ の内接円 | 浮動小数点型のみ | $O(1)$ |
+| `incircle(a, b, c)` | 三角形 $abc$ の内接円 (3点は一直線上にないこと) | 浮動小数点型のみ | $O(1)$ |
 | `circumcircle(a, b, c)` | 三角形 $abc$ の外接円 (3点は一直線上にないこと) | 浮動小数点型のみ | $O(1)$ |
-| `circle_line_intersection(c, p1, p2, eps = 1e-9)` | 円と直線 $p_1 p_2$ の交点 (0〜2個) | 浮動小数点型のみ | $O(1)$ |
-| `circle_circle_intersection(c1, c2, eps = 1e-9)` | 2つの円の交点 (0〜2個)。中心が同じなら空 | 浮動小数点型のみ | $O(1)$ |
+| `circle_line_intersection(c, p1, p2, eps = 1e-9)` | 円と直線 $p_1 p_2$ の交点 (0〜2個)。$p_1 = p_2$ なら assert で落ちる | 浮動小数点型のみ | $O(1)$ |
+| `circle_circle_intersection(c1, c2, eps = 1e-9)` | 2つの円の交点 (0〜2個)。同心で半径が違うなら空。同じ円は assert で落ちる | 浮動小数点型のみ | $O(1)$ |
 | `tangent_points(c, p, eps = 1e-9)` | 点 $p$ から円に引いた接線の接点 (0〜2個)。$p$ が円の内部なら空、円周上なら $p$ だけ | 浮動小数点型のみ | $O(1)$ |
-| `common_tangents(c1, c2, eps = 1e-9)` | 2つの円の共通接線 (0〜4本、本数は `circle_relation` と同じ)。各接線を (`c1` との接点, `c2` との接点) の `std::pair` で返す。中心が同じなら空 | 浮動小数点型のみ | $O(1)$ |
+| `common_tangents(c1, c2, eps = 1e-9)` | 2つの円の共通接線 (0〜4本、本数は同じ円を除いて `circle_relation` と同じ)。各接線を (`c1` との接点, `c2` との接点) の `std::pair` で返す。同心で半径が違うなら空。同じ円は assert で落ちる | 浮動小数点型のみ | $O(1)$ |
 | `circle_circle_intersection_area(c1, c2)` | 2つの円の共通部分の面積 | 浮動小数点型のみ | $O(1)$ |
 | `circle_polygon_intersection_area(c, poly)` | 円と多角形の共通部分の面積。多角形は凸でなくてもよく、向きも問わない | 浮動小数点型のみ | $O(n)$ |
 | `minimum_enclosing_circle(points)` | 点の集合 (1 個以上) を含む最小の円 (`EnclosingCircle<T>`)。Welzl の乱択アルゴリズム | 使える (判定が正確になる) | 期待 $O(n)$ |
@@ -44,6 +44,7 @@ Circle out = circumcircle(Vector(0.0, 3.0), Vector(4.0, 0.0), Vector(0.0, 0.0));
 - 交点や接点は `std::vector` で返し、座標の昇順 (x が小さい順、同じなら y が小さい順) に並べます。
 - `common_tangents` は `c1` との接点の座標の昇順に並べます。2つの円が接する点での接線は、2つの接点が同じ点になります (接線は中心を結ぶ直線に垂直です)。
 - 交点が 1 個 (接する) かどうかは、距離の差が `eps` 以下かで判定します。例えば `circle_line_intersection` では、中心と直線の距離と半径の差を見ます。
+- `circle_circle_intersection` と `common_tangents` は、中心間の距離と半径の差がともに `eps` 以下なら同じ円とみなします。同じ円は交点や接線が無数にあるので、assert で落ちます。
 - `circle_relation` は誤差を考えずに比べます。座標と半径が整数なら `Circle<long long>` を使うと正確です。
 
 ## 最小包含円 `EnclosingCircle<T>`

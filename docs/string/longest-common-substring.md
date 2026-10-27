@@ -17,9 +17,9 @@ auto [c, d, l2] = longest_non_overlapping_repeated_substring(std::string("ababa"
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `longest_common_substring(s, t)` | `s[i, i + len) == t[j, j + len)` となる最長の `(i, j, len)` を 1 つ求め、`std::tuple<long long, long long, long long>` で返す。共通部分がなければ `(0, 0, 0)` | $O((n + m) \log (n + m))$ |
-| `longest_repeated_substring(s)` | `s` の中に 2 回以上現れる (重なってよい) 最長の部分文字列。`s[i, i + len) == s[j, j + len)`、$i < j$ となる `(i, j, len)` を 1 つ返す。なければ `(0, 0, 0)` | $O(n \log n)$ |
-| `longest_non_overlapping_repeated_substring(s)` | 同じく、重ならずに 2 回以上現れるもの ($i + \mathit{len} \le j$) | $O(n \log n)$ |
+| `longest_common_substring(s, t)` | `s[i, i + len) == t[j, j + len)` となる最長の `(i, j, len)` を 1 つ求め、`std::tuple<long long, long long, long long>` で返す。共通する要素がなければ (長さ 0) `(0, 0, 0)` | $O((n + m) \log (n + m))$ |
+| `longest_repeated_substring(s)` | `s` の中に 2 回以上現れる (重なってよい) 最長の部分文字列。$\mathit{len} > 0$ なら `s[i, i + len) == s[j, j + len)`、$i < j$ となる `(i, j, len)` を 1 つ返す。2 回以上現れる要素がなければ (長さ 0) `(0, 0, 0)` | $O(n \log n)$ |
+| `longest_non_overlapping_repeated_substring(s)` | 同じく、重ならずに 2 回以上現れるもの ($\mathit{len} > 0$ なら $i + \mathit{len} \le j$)。なければ (長さ 0) `(0, 0, 0)` | $O(n \log n)$ |
 
 `s`、区切り、`t` の順につないだ列の [Suffix Array と LCP 配列](suffix-array.hpp) を作り、辞書順で隣り合う接尾辞のうち、片方が `s`、もう片方が `t` から始まるものの LCP の最大を取ります。区切りの値は 1 回しか現れないので、LCP が区切りをまたぐことはありません。計算量の $\log$ は座標圧縮の分です。
 

@@ -29,8 +29,11 @@ int main() {
         // 位置関係と交点の個数が対応する
         int rel = circle_relation(ci1, ci2);
         ok = ok && circle_relation(c1, c2) == rel;
-        auto ps = circle_circle_intersection(c1, c2);
+        // 同じ円は交点・接線が無数にあり assert で落ちるので、渡さない
+        bool same = ci1.c == ci2.c && ci1.r == ci2.r;
+        auto ps = same ? std::vector<P>{} : circle_circle_intersection(c1, c2);
         if (ci1.c == ci2.c) {
+            // 同心で半径が違えば空
             ok = ok && ps.empty();
         } else {
             int expected = rel == 4 || rel == 0 ? 0 : rel == 2 ? 2
@@ -40,7 +43,7 @@ int main() {
         for (const auto& p : ps) ok = ok && on_circle(c1, p) && on_circle(c2, p);
 
         // 共通接線の本数は位置関係 (共通接線の本数) と一致し、各直線は両方の円に接する
-        auto ts2 = common_tangents(c1, c2);
+        auto ts2 = same ? std::vector<std::pair<P, P>>{} : common_tangents(c1, c2);
         ok = ok && static_cast<int>(ts2.size()) == (ci1.c == ci2.c ? 0 : rel);
         for (const auto& [p, q] : ts2) {
             P dir = p == q ? P(-(p - c1.c)[1], (p - c1.c)[0]) : q - p;
@@ -135,6 +138,14 @@ int main() {
         for (auto& q : p) {
             if (c.side(q) > 0 || c.side(q) != best_c.side(q)) ok = false;
         }
+    }
+
+    // 同心で半径が違う円は、交点も共通接線もない (中心のずれが eps 以下でも同心とみなす)
+    {
+        Circle<double> c1(P(1.0, 2.0), 1.0), c2(P(1.0, 2.0), 3.0), c3(P(1.0 + 1e-12, 2.0), 3.0);
+        ok = ok && circle_circle_intersection(c1, c2).empty() && circle_circle_intersection(c2, c1).empty();
+        ok = ok && common_tangents(c1, c2).empty() && common_tangents(c2, c1).empty();
+        ok = ok && circle_circle_intersection(c1, c3).empty() && common_tangents(c1, c3).empty();
     }
 
     if (ok)

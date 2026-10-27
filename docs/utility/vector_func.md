@@ -23,7 +23,7 @@ auto idx = sorted_idx(a, true);   // 値の降順に並べた添字
 | `v + w`、`v += w` | 要素ごとの和 (短い方は 0 で埋める) | $O(\max(n, m))$ |
 | `v * w`、`v *= w` | 要素ごとの積 (長い方の余りは 0 になる) | $O(\max(n, m))$ |
 | `v |= w` | `w` を末尾に連結 (`extend` と同じ) | $O(m)$ |
-| `v | k`、`k | v`、`v |= k` | `v` を `k` 回繰り返す | $O(nk)$ |
+| `v | k`、`k | v`、`v |= k` | `v` を `k` 回繰り返す (`k` は 0 以上。負なら assert で落ちる) | $O(nk)$ |
 
 ## 関数
 
@@ -37,8 +37,8 @@ auto idx = sorted_idx(a, true);   // 値の降順に並べた添字
 | `hamming_distance(v, w)` | 同じ長さの `v` と `w` で要素が異なる位置の数 (長さが違うと assert で落ちる) | $O(n)$ |
 | `extend(v, w)` | `w` を末尾に連結 | $O(m)$ |
 | `assign(v, w)` | `w` の内容で置き換える (型の変換つき) | $O(m)$ |
-| `radix_convert(x, base = 10)` | 整数 `x` を `base` 進数の桁のリスト (上位桁から) にする。`x = 0` なら空のリスト | $O(\log_{base} x)$ |
-| `radix_convert(digits, base = 10)` | `base` 進数の桁のリスト (上位桁から) を整数に戻す | 桁数に比例 |
+| `radix_convert(x, base = 10)` | 整数 `x` を `base` 進数の桁のリスト (上位桁から) にする。`x = 0` なら空のリスト。`x >= 0`、`base >= 2` でなければ assert で落ちる | $O(\log_{base} x)$ |
+| `radix_convert(digits, base = 10)` | `base` 進数の桁のリスト (上位桁から) を整数に戻す。`base >= 2` で、各桁が $[0, \mathit{base})$ になければ assert で落ちる | 桁数に比例 |
 
 ## 関連
 

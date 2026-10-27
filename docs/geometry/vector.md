@@ -41,13 +41,13 @@ std::sort(ps.begin(), ps.end(), [](const P& a, const P& b) { return Angle(a) < A
 | 関数 | 説明 | 整数型 | 計算量 |
 |---|---|:-:|---|
 | `cross(p, q)` | 外積。2次元ではスカラー (符号付き面積)、3次元ではベクトル | ✓ | $O(1)$ |
-| `segments_intersect(p1, p2, q1, q2)` | 線分 $p_1 p_2$ と $q_1 q_2$ が共有点を持つか | ✓ | $O(1)$ |
-| `segment_intersection(p1, p2, q1, q2)` | 共有点の1つを `std::optional` で返す (共有点がなければ `std::nullopt`) | 浮動小数点型のみ | $O(1)$ |
+| `segments_intersect(p1, p2, q1, q2)` | 線分 $p_1 p_2$ と $q_1 q_2$ が共有点を持つか (長さ 0 の線分は assert で落ちる) | ✓ | $O(1)$ |
+| `segment_intersection(p1, p2, q1, q2)` | 共有点の1つを `std::optional` で返す (共有点がなければ `std::nullopt`。長さ 0 の線分は assert で落ちる) | 浮動小数点型のみ | $O(1)$ |
 | `ccw(a, b, c)` | 3点の位置関係。1: $a \to b \to c$ が反時計回り、-1: 時計回り、2: $c, a, b$ の順に一直線上、-2: $a, b, c$ の順に一直線上、0: $c$ が線分 $ab$ 上 | ✓ | $O(1)$ |
 | `is_parallel(p1, p2, q1, q2)` / `is_orthogonal(p1, p2, q1, q2)` | 直線 $p_1 p_2$ と $q_1 q_2$ が平行か / 直交するか | ✓ | $O(1)$ |
 | `projection(p1, p2, p)` | 点 $p$ から直線 $p_1 p_2$ に下ろした垂線の足 | 浮動小数点型のみ | $O(1)$ |
 | `reflection(p1, p2, p)` | 直線 $p_1 p_2$ について $p$ と対称な点 | 浮動小数点型のみ | $O(1)$ |
-| `line_intersection(p1, p2, q1, q2)` | 直線 $p_1 p_2$ と $q_1 q_2$ の交点を `std::optional` で返す (平行なら `std::nullopt`) | 浮動小数点型のみ | $O(1)$ |
+| `line_intersection(p1, p2, q1, q2)` | 直線 $p_1 p_2$ と $q_1 q_2$ の交点を `std::optional` で返す (平行 (重なる直線も含む) なら `std::nullopt`。$p_1 = p_2$ や $q_1 = q_2$ は assert で落ちる) | 浮動小数点型のみ | $O(1)$ |
 | `distance_point_line(p1, p2, p)` | 点 $p$ と直線 $p_1 p_2$ の距離 (`double`) | ✓ | $O(1)$ |
 | `distance_point_segment(p1, p2, p)` | 点 $p$ と線分 $p_1 p_2$ の距離 (`double`) | ✓ | $O(1)$ |
 | `distance_segments(p1, p2, q1, q2)` | 線分 $p_1 p_2$ と $q_1 q_2$ の距離 (`double`、交われば 0) | ✓ | $O(1)$ |
@@ -57,8 +57,8 @@ std::sort(ps.begin(), ps.end(), [](const P& a, const P& b) { return Angle(a) < A
 | `polygon_contains(poly, p)` | 点が多角形 (反時計回り) の 0: 外部、1: 辺上、2: 内部 | ✓ | $O(n)$ |
 | `convex_hull(ps, include_straight = false)` | 凸包 (反時計回り)。`include_straight` で 180 度の頂点を含めるか選ぶ | ✓ | $O(n \log n)$ |
 | `select_convex(ps, include_straight = false)` | 順番を保った半凸包。x の昇順なら下凸包、降順なら上凸包 | ✓ | $O(n)$ |
-| `closest_point_pair_squared(ps)` | 最近点対の距離の2乗と添字 (`.squared_dist`、`.i`、`.j`。添字は `long long`) | ✓ | $O(n \log^2 n)$ |
-| `closest_point_pair(ps)` | 最近点対の距離と添字 (`.dist`、`.i`、`.j`。添字は `long long`) | ✓ | $O(n \log^2 n)$ |
+| `closest_point_pair_squared(ps)` | 最近点対の距離の2乗と添字 (`.squared_dist`、`.i`、`.j`。添字は `long long`)。点は 2 個以上 (でなければ assert で落ちる) | ✓ | $O(n \log^2 n)$ |
+| `closest_point_pair(ps)` | 最近点対の距離と添字 (`.dist`、`.i`、`.j`。添字は `long long`)。点は 2 個以上 (でなければ assert で落ちる) | ✓ | $O(n \log^2 n)$ |
 | `farthest_point_pair_squared(ps)` | 最遠点対の距離の2乗と添字 (`.squared_dist`、`.i`、`.j`。$i \ne j$)。凸包を作り、回転キャリパー法で調べる。点は 2 個以上 | ✓ | $O(n \log n)$ |
 | `farthest_point_pair(ps)` | 最遠点対の距離と添字 (`.dist`、`.i`、`.j`)。凸多角形の直径にも使える | ✓ | $O(n \log n)$ |
 | `convex_cut(poly, p1, p2)` | 凸多角形 (反時計回り) を直線 $p_1 p_2$ で切った、直線の左側 ($p_1$ から $p_2$ を見て左) の凸多角形。左側に何もなければ空 | 浮動小数点型のみ | $O(n)$ |

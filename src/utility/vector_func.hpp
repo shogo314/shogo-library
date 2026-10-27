@@ -145,9 +145,10 @@ inline std::vector<T>& operator|=(std::vector<T>& v1, const std::vector<U>& v2) 
 
 template <typename T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>
 inline std::vector<T>& operator|=(std::vector<T>& v, const U& u) {
+    if constexpr (std::is_signed_v<U>) assert(u >= 0);
     std::vector<T> w(v);
     v.clear();
-    for (int i = 0; i < u; i++) {
+    for (long long i = 0; i < static_cast<long long>(u); i++) {
         extend(v, w);
     }
     return v;
@@ -208,14 +209,17 @@ std::vector<T> unique(const std::vector<T>& v) {
 }
 
 inline long long radix_convert(const std::vector<long long>& v, int base = 10) {
+    assert(base >= 2);
     long long res = 0;
     for (long long d : v) {
+        assert(0 <= d && d < base);
         res = res * base + d;
     }
     return res;
 }
 
 inline std::vector<long long> radix_convert(long long v, int base = 10) {
+    assert(v >= 0 && base >= 2);
     std::vector<long long> res;
     while (v > 0) {
         res.push_back(v % base);

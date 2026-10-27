@@ -330,7 +330,7 @@ class DoublingClimbTree : private RootedTree<Cost> {
      *
      * @param u 元の頂点
      * @param k 登る段数
-     * @return long long k回登った頂点
+     * @return long long k回登った頂点 (存在しなければ -1)
      */
     long long hop(long long u, long long k) const {
         assert(0 <= u && u < this->n && k >= 0);
@@ -374,6 +374,7 @@ class DoublingClimbTree : private RootedTree<Cost> {
      * @return Cost uとv間の最短経路の辺の重みの和
      */
     Cost dist(long long u, long long v) const {
+        assert(0 <= u && u < this->n && 0 <= v && v < this->n);
         return this->depth[u] + this->depth[v] - this->depth[lca(u, v)] * 2;
     }
 

@@ -21,7 +21,8 @@ int main() {
     std::cin >> k;
     std::vector<int> x(k);
     for (auto& v : x) std::cin >> v;
-    auto edges = minimum_steiner_tree_restore(g, x);
+    // 問題の制約でグラフは連結
+    const auto edges = *minimum_steiner_tree_restore(g, x);
     long long sum = 0;
     for (auto e : edges) sum += w[e];
     std::cout << sum << ' ' << edges.size() << '\n';

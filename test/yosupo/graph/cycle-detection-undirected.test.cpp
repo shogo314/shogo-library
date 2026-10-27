@@ -12,11 +12,12 @@ int main() {
     std::cin >> n >> m;
     Graph<int> g(n);
     g.read(m, 0, false, false);
-    auto cycle = find_cycle_undirected(g);
-    if (cycle.empty()) {
+    auto res = find_cycle_undirected(g);
+    if (!res) {
         std::cout << -1 << '\n';
         return 0;
     }
+    auto& cycle = *res;
     int l = cycle.size();
     std::cout << l << '\n';
     for (int i = 0; i < l; i++) std::cout << cycle[i].src << " \n"[i + 1 == l];

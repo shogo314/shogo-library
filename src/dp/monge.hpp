@@ -90,6 +90,7 @@ std::vector<T> min_plus_convolution_convex_convex(const std::vector<T>& a, const
  * solve(lambda) は {min_x (f(x) + lambda x), その最小値をとる x のうち最小のもの} を返すこと
  * lambda は [lo, hi] の整数の中から二分探索する。-lo, -hi は f の傾きの最小値・最大値を含むようにとる (f(x+1) - f(x) が [-hi, -lo] に入る)
  * solve を呼ぶ回数は O(log (hi - lo))。最大化なら f の符号を反転して使う
+ * @note k はちょうど k 個選べる (f(k) が定義される) 値であること。そうでなければ結果は意味を持たない
  */
 template <typename Solve>
 long long alien_dp(long long k, long long lo, long long hi, Solve solve) {

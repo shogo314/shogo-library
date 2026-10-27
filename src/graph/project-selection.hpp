@@ -40,6 +40,7 @@ class ProjectSelection {
     };
     std::vector<E> es;
     std::vector<bool> result;
+    bool solved = false;
 
     // 頂点の番号: 変数 0, ..., n - 1、補助頂点 n, ..., n + aux - 1、始点 n + aux、終点 n + aux + 1
     void check_var(long long v) const { assert(0 <= v && v < n); }
@@ -165,10 +166,15 @@ class ProjectSelection {
         std::vector<bool> reach = mf.min_cut(s);
         result.assign(n, false);
         for (long long v = 0; v < n; v++) result[v] = !reach[v];
+        solved = true;
         return base + f;
     }
     /**
      * @brief 直前の solve() で最小値をとる割り当て (x_v が 1 なら true)
+     * @note solve() を呼ぶ前に呼ぶと assert で止まる
      */
-    const std::vector<bool>& assignment() const { return result; }
+    const std::vector<bool>& assignment() const {
+        assert(solved);
+        return result;
+    }
 };

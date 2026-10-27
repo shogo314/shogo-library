@@ -37,11 +37,11 @@ int main() {
             for (auto [u, v] : edges) good &= ((mask >> u & 1) != (mask >> v & 1));
             bipartite |= good;
         }
-        std::vector<int> color = bipartite_coloring(graph);
-        if (bipartite != !color.empty() || bipartite != is_bipartite(graph)) ok = false;
-        if (!color.empty()) {
+        auto color = bipartite_coloring(graph);
+        if (bipartite != color.has_value() || bipartite != is_bipartite(graph)) ok = false;
+        if (color) {
             for (auto [u, v] : edges)
-                if (color[u] == color[v]) ok = false;
+                if ((*color)[u] == (*color)[v]) ok = false;
         }
 
         // 連結成分を Union-Find 風に愚直に求める
@@ -68,7 +68,7 @@ int main() {
         if (is_tree(graph) != (num_components == 1 && static_cast<int>(edges.size()) == n - 1)) ok = false;
     }
 
-    // 有向グラフ: topological_sort, has_cycle
+    // 有向グラフ: topological_sort, has_cycle_directed
     for (int rep = 0; rep < 3000 && ok; rep++) {
         int n = rng() % 8 + 1;
         Graph<int> graph(n);
@@ -92,37 +92,27 @@ int main() {
             for (auto [u, v] : edges) good &= pos[u] < pos[v];
             dag |= good;
         } while (!dag && std::next_permutation(perm.begin(), perm.end()));
-        if (has_cycle(graph) == dag) ok = false;
-        // DAG でなければ途中まで: 閉路からたどり着ける頂点 (閉路上の頂点から到達できる頂点) 以外がちょうど並ぶ
-        std::vector<long long> order = topological_sort(graph);
-        std::vector<std::vector<bool>> reach(n, std::vector<bool>(n, false));
-        for (auto [u, v] : edges) reach[u][v] = true;
-        for (int k = 0; k < n; k++)
-            for (int i = 0; i < n; i++)
-                for (int j = 0; j < n; j++)
-                    if (reach[i][k] && reach[k][j]) reach[i][j] = true;
-        std::vector<bool> tainted(n, false);
-        for (int c = 0; c < n; c++) {
-            if (!reach[c][c]) continue;
-            for (int v = 0; v < n; v++)
-                if (reach[c][v]) tainted[v] = true;
+        if (has_cycle_directed(graph) == dag) ok = false;
+        // DAG でなければ nullopt、DAG ならすべての頂点が 1 回ずつ並び、辺の向きを守る
+        auto order = topological_sort(graph);
+        if (dag != order.has_value()) ok = false;
+        if (order) {
+            if (static_cast<int>(order->size()) != n) ok = false;
+            std::vector<int> pos(n, -1);
+            for (int i = 0; i < static_cast<int>(order->size()); i++) {
+                if (pos[(*order)[i]] != -1) ok = false;
+                pos[(*order)[i]] = i;
+            }
+            for (auto [u, v] : edges)
+                if (!(pos[u] < pos[v])) ok = false;
         }
-        int expected = 0;
-        for (int v = 0; v < n; v++) expected += !tainted[v];
-        if (dag != (expected == n)) ok = false;
-        if (static_cast<int>(order.size()) != expected) ok = false;
-        std::vector<int> pos(n, -1);
-        for (int i = 0; i < static_cast<int>(order.size()); i++) {
-            if (tainted[order[i]] || pos[order[i]] != -1) ok = false;
-            pos[order[i]] = i;
-        }
-        for (auto [u, v] : edges)
-            if (pos[u] != -1 && pos[v] != -1 && !(pos[u] < pos[v])) ok = false;
     }
 
     {
+        // 頂点がなければ空の列 (nullopt ではない)
         Graph<int> graph(0);
-        if (!topological_sort(graph).empty() || has_cycle(graph)) ok = false;
+        auto order = topological_sort(graph);
+        if (!order || !order->empty() || has_cycle_directed(graph)) ok = false;
     }
 
     // 有向グラフ: strongly_connected_components (自己ループ・多重辺を含む)
@@ -176,12 +166,15 @@ int main() {
     }
 
     // minimum_steiner_tree・minimum_steiner_tree_restore: 辺の部分集合を全探索する
+    int disconnected_steiner = 0;
     // 重み 0 の辺も混ぜる (復元で同じ辺を 2 回数えないか)
     for (int rep = 0; rep < 500 && ok; rep++) {
         int n = rng() % 6 + 1;
         std::vector<std::tuple<int, int, int>> edges;
-        // 連結にするため、まず全域木を作る
-        for (int v = 1; v < n; v++) edges.emplace_back(rng() % v, v, rng() % 10);
+        // たいていは連結にするため、まず全域木を作る。1/4 は作らず、連結にできない場合も試す
+        if (rng() % 4 != 0) {
+            for (int v = 1; v < n; v++) edges.emplace_back(rng() % v, v, rng() % 10);
+        }
         for (int u = 0; u < n; u++) {
             for (int v = u + 1; v < n; v++) {
                 if (rng() % 4 == 0) edges.emplace_back(u, v, rng() % 10);
@@ -214,9 +207,20 @@ int main() {
             if (connected && (best == -1 || cost < best)) best = cost;
         }
         if (terminals.empty()) best = 0;
-        if (minimum_steiner_tree(graph, terminals) != best) ok = false;
+        // 連結にできなければ nullopt
+        const auto got = minimum_steiner_tree(graph, terminals);
+        const auto restored = minimum_steiner_tree_restore(graph, terminals);
+        if (best == -1) {
+            disconnected_steiner++;
+            if (got.has_value() || restored.has_value()) ok = false;
+            continue;
+        }
+        if (!got || *got != best || !restored) {
+            ok = false;
+            continue;
+        }
         // 復元: 辺の番号が昇順で重複がなく、重みの和が最小で、terminals をつなぐ
-        auto used = minimum_steiner_tree_restore(graph, terminals);
+        const auto& used = *restored;
         if (!std::is_sorted(used.begin(), used.end()) || std::adjacent_find(used.begin(), used.end()) != used.end()) ok = false;
         int cost = 0;
         UnionFind uf(n);
@@ -228,6 +232,15 @@ int main() {
         if (cost != best) ok = false;
         for (int v : terminals)
             if (!uf.same(v, terminals[0])) ok = false;
+    }
+    // 連結にできない場合も試せていること
+    if (disconnected_steiner < 10) ok = false;
+    {
+        // 端点が空なら 0 と空の vector
+        Graph<int> graph(3);
+        const auto c = minimum_steiner_tree(graph, std::vector<int>{});
+        const auto r = minimum_steiner_tree_restore(graph, std::vector<int>{});
+        if (!c || *c != 0 || !r || !r->empty()) ok = false;
     }
 
     // maximum_independent_set: 頂点の部分集合を全探索する。自己ループ・多重辺も混ぜる

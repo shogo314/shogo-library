@@ -16,10 +16,12 @@ auto d = floyd_warshall(g);          // d[i][j] が i から j への距離
 
 | 関数 | 説明 | 未到達の頂点の距離 | 計算量 |
 |---|---|---|---|
-| `shortest_path(g, s)` | Dijkstra | `inf` (省略時 `max / 4`) | $O(m \log m)$ |
+| `shortest_path(g, s)` | Dijkstra (負の辺があると assert で落ちる) | `inf` (省略時 `max / 4`) | $O(m \log m)$ |
 | `shortest_path(g, s, false)` | BFS (辺の重みを 1 とみなす) | `inf` (省略時 `max / 4`) | $O(n + m)$ |
 | `bellman_ford(g, s)` | Bellman-Ford (負の辺も可) | `inf` (省略時 `max / 4`)。負閉路の影響を受ける頂点は `-inf` | $O(nm)$ |
 | `shortest_path_01bfs(g, s)` | 01-BFS (辺のコストは 0 か 1 だけ。それ以外は assert で落ちる) | `inf` (省略時 `max / 4`) | $O(n + m)$ |
+
+`shortest_path(g, s)` は、はじめにすべての辺のコストが 0 以上であることを assert で確かめます ($O(n + m)$)。負の辺があるときは `bellman_ford` を使います。
 
 `inf` は `shortest_path(g, s, weighted, inf)`、`bellman_ford(g, s, inf)`、`shortest_path_01bfs(g, s, inf)` のように最後の引数で渡します。
 
@@ -32,7 +34,9 @@ auto d = floyd_warshall(g);          // d[i][j] が i から j への距離
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `path(t)` | 始点から `t` への最短路を構成する辺のリスト (始点側から順に)。`t` が始点か未到達なら空。負閉路の影響を受ける頂点では assert で落ちる | $O(\text{経路の辺数})$ |
+| `path(t)` | 始点から `t` への最短路を構成する辺のリスト (`std::optional<std::vector<Edge>>`、始点側から順に)。`t` が始点なら空、未到達なら `std::nullopt`。負閉路の影響を受ける頂点では assert で落ちる | $O(\text{経路の辺数})$ |
+
+`path(t)` の結果は、変数に受けてから使います。`for (const auto& e : *sp.path(t))` と書くと、一時オブジェクトの `std::optional` が先に破棄され、壊れた値を読みます。
 
 ## 全点対間の最短路
 
@@ -40,7 +44,7 @@ auto d = floyd_warshall(g);          // d[i][j] が i から j への距離
 |---|---|---|
 | `floyd_warshall(g, inf = max / 4)` | `dist[i][j]` が `i` から `j` への最短路長である `std::vector<std::vector<Cost>>` を返す (Floyd-Warshall)。到達できなければ `inf`。負の辺があってもよい | $O(n^3)$ |
 
-`dist[i][i] < 0` となる `i` があれば負閉路があります。
+`dist[i][i] < 0` となる `i` があれば負閉路があります。負閉路があるとき、値は `-inf` より小さくならないように切り詰めるので、あふれません (負閉路の影響を受ける組の値は最短路長ではありません)。
 
 ```cpp
 auto d = floyd_warshall(g);

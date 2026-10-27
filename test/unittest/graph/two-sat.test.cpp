@@ -48,16 +48,31 @@ int main() {
             for (const auto& c : cs) all = all && c.holds(x);
             expected = all;
         }
-        bool got = ts.satisfiable();
-        ok = ok && got == expected && ts.size() == n;
-        if (got) {
+        const auto res = ts.solve();
+        ok = ok && res.has_value() == expected && ts.size() == n;
+        if (res) {
             sat_count++;
-            const auto& x = ts.answer();
-            for (const auto& c : cs) ok = ok && c.holds(x);
+            ok = ok && static_cast<int>(res->size()) == n;
+            for (const auto& c : cs) ok = ok && c.holds(*res);
         }
     }
     // 充足可能な場合と不可能な場合の両方を試せていること
     ok = ok && 100 < sat_count && sat_count < 2900;
+
+    // 充足不能なら nullopt。条件を加えてから解き直すと、前の結果によらず判定し直す
+    {
+        TwoSat ts(2);
+        ts.add_clause(0, true, 1, true);
+        ok = ok && ts.solve().has_value();
+        ts.add_fix(0, false);
+        ts.add_fix(1, false);
+        ok = ok && !ts.solve().has_value();
+    }
+    {
+        TwoSat ts(0);
+        const auto res = ts.solve();
+        ok = ok && res.has_value() && res->empty();
+    }
 
     if (ok)
         std::cout << "Hello World" << std::endl;

@@ -9,5 +9,5 @@ int main() {
     std::cin >> n >> m;
     Graph<int> graph(n);
     graph.read(m, 0, false, true);
-    std::cout << (has_cycle(graph) ? 1 : 0) << std::endl;
+    std::cout << (has_cycle_directed(graph) ? 1 : 0) << std::endl;
 }

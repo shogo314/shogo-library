@@ -39,6 +39,7 @@ long long ans = alien_dp(k, -1000000000000LL, 1000000000000LL, [&](long long lam
 | `knuth_yao(n, base, w)` | 区間 DP $\mathit{dp}[i][j] = \min_{i < k < j} (\mathit{dp}[i][k] + \mathit{dp}[k][j]) + w(i, j)$、$\mathit{dp}[i][i+1] = \mathit{base}(i)$ の表 ($0 \le i < j \le n$) を返す。$w$ が quadrangle inequality と単調性を満たすこと | $O(n^2)$ |
 
 - Monge な行列とは、$i < i'$、$j < j'$ について $f(i, j) + f(i', j') \le f(i, j') + f(i', j)$ を満たすものです。例えば、凸関数 $g$ について $g(x_i - y_j)$ ($x$、$y$ は昇順) や、$a_{i-j}$ ($a$ は凸) は Monge です。
+- `alien_dp` の `k` は、ちょうど $k$ 個選ぶことができる (実行可能な) 値であることを前提にします。実行不可能な $k$ を渡したときの結果は意味を持ちません (判定はしません)。
 - `alien_dp` の `solve(lambda)` は、$\min_x (f(x) + \lambda x)$ と、その最小値をとる $x$ のうち最小のものの組 `{値, x}` を返します。$\lambda$ は $[lo, hi]$ の整数から二分探索するので、$f$ の傾き $f(x+1) - f(x)$ がすべて $[-hi, -lo]$ に入るようにとります。$\lambda k$ や `solve` の値があふれないように注意します。最大化なら $f$ の符号を反転して使います。
 - `alien_dp` は、$x_{\min}(\lambda) \le k$ となる最小の $\lambda$ を探します。傾きが整数なら、そのとき $k$ は最小値をとる $x$ の範囲 $[x_{\min}(\lambda), x_{\min}(\lambda - 1)]$ に入るので、$f(k) = (\text{最小値}) - \lambda k$ です。
 - `knuth_yao` の $w$ の条件は、$a \le b \le c \le d$ について $w(a, c) + w(b, d) \le w(a, d) + w(b, c)$ (quadrangle inequality) と $w(b, c) \le w(a, d)$ (単調性) です。このとき最適な $k$ が $\mathit{opt}[i][j-1] \le \mathit{opt}[i][j] \le \mathit{opt}[i+1][j]$ を満たすので、その範囲だけを調べます。非負の数列の区間和や、その 2 乗は条件を満たします。$\mathit{base}$ の値は最適な $k$ に影響しません。

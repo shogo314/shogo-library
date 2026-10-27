@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
-// find_cycle_directed と find_cycle_undirected をランダムなグラフで確かめる
+// find_cycle_directed・find_cycle_undirected・has_cycle_undirected をランダムなグラフで確かめる
 // 閉路があるかを別の方法 (トポロジカルソート、Union-Find) で求めて比べ、返した辺の列が閉路になっているかを調べる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
@@ -47,9 +47,10 @@ int main() {
             if (!uf.merge(u, v)) undirected_cycle = true;
         }
         auto dc = find_cycle_directed(dg);
-        ok = ok && dc.empty() == !has_cycle(dg) && is_cycle(dc, es, true);
+        ok = ok && dc.has_value() == has_cycle_directed(dg) && (!dc || (!dc->empty() && is_cycle(*dc, es, true)));
         auto uc = find_cycle_undirected(ug);
-        ok = ok && uc.empty() == !undirected_cycle && is_cycle(uc, es, false);
+        ok = ok && uc.has_value() == undirected_cycle && (!uc || (!uc->empty() && is_cycle(*uc, es, false)));
+        ok = ok && has_cycle_undirected(ug) == undirected_cycle;
     }
 
     // 例: 0 -> 1 -> 2 -> 0
@@ -58,12 +59,17 @@ int main() {
     g.add_directed_edge(1, 2);
     g.add_directed_edge(2, 0);
     auto c = find_cycle_directed(g);
-    ok = ok && c.size() == 3 && c[0].id == 0 && c[1].id == 1 && c[2].id == 2;
+    ok = ok && c && c->size() == 3 && (*c)[0].id == 0 && (*c)[1].id == 1 && (*c)[2].id == 2;
     // 多重辺は長さ 2 の閉路
     Graph<int> h(2);
     h.add_edge(0, 1);
     h.add_edge(0, 1);
-    ok = ok && find_cycle_undirected(h).size() == 2;
+    ok = ok && find_cycle_undirected(h)->size() == 2;
+    ok = ok && has_cycle_undirected(h);
+    // 自己ループも閉路
+    Graph<int> sl(1);
+    sl.add_edge(0, 0);
+    ok = ok && has_cycle_undirected(sl);
 
     if (ok)
         std::cout << "Hello World" << std::endl;

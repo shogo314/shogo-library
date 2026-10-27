@@ -122,11 +122,17 @@ class BipartiteMatching {
     /**
      * @brief 左側の頂点 u とマッチした右側の頂点 (なければ -1)。solve() の後で使う
      */
-    long long left_match(long long u) const { return match_l[u]; }
+    long long left_match(long long u) const {
+        assert(0 <= u && u < l);
+        return match_l[u];
+    }
     /**
      * @brief 右側の頂点 v とマッチした左側の頂点 (なければ -1)。solve() の後で使う
      */
-    long long right_match(long long v) const { return match_r[v]; }
+    long long right_match(long long v) const {
+        assert(0 <= v && v < r);
+        return match_r[v];
+    }
     /**
      * @brief マッチングの辺 (左側の頂点, 右側の頂点) のリスト (左側の頂点の昇順)。solve() の後で使う
      */

@@ -14,16 +14,17 @@ int main() {
         std::cin >> n >> m;
         Graph<int> g(n);
         g.read(m, 0, false, false);
-        auto trail = eulerian_trail_undirected(g);
-        if (m == 0) {
-            std::cout << "Yes\n0\n\n";
-            continue;
-        }
-        if (trail.empty()) {
+        auto res = eulerian_trail_undirected(g);
+        if (!res) {
             std::cout << "No\n";
             continue;
         }
+        auto& trail = *res;
         std::cout << "Yes\n";
+        if (m == 0) {
+            std::cout << "0\n\n";
+            continue;
+        }
         for (auto& e : trail) std::cout << e.src << ' ';
         std::cout << trail.back().dst << '\n';
         for (int i = 0; i < m; i++) std::cout << trail[i].id << " \n"[i == m - 1];

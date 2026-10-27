@@ -81,23 +81,38 @@ class HeavyLightDecomposition {
     /**
      * @brief 頂点 v の列での位置
      */
-    long long index(long long v) const { return in[v]; }
+    long long index(long long v) const {
+        assert(0 <= v && v < n);
+        return in[v];
+    }
     /**
      * @brief 列の i 番目の頂点 (index の逆)
      */
-    long long vertex(long long i) const { return order[i]; }
+    long long vertex(long long i) const {
+        assert(0 <= i && i < n);
+        return order[i];
+    }
     /**
      * @brief v の親 (根なら -1)
      */
-    long long parent(long long v) const { return par[v]; }
+    long long parent(long long v) const {
+        assert(0 <= v && v < n);
+        return par[v];
+    }
     /**
      * @brief v の深さ (根は 0、辺の本数)
      */
-    long long depth(long long v) const { return dep[v]; }
+    long long depth(long long v) const {
+        assert(0 <= v && v < n);
+        return dep[v];
+    }
     /**
      * @brief v を根とする部分木の頂点の個数
      */
-    long long subtree_size(long long v) const { return sz[v]; }
+    long long subtree_size(long long v) const {
+        assert(0 <= v && v < n);
+        return sz[v];
+    }
     /**
      * @brief v を根とする部分木の頂点に対応する区間 [l, r)
      */

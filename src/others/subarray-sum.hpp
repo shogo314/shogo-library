@@ -43,7 +43,7 @@ long long count_pairs_at_most(std::vector<T> p, T k) {
 template <typename T>
 std::vector<T> prefix_sums(const std::vector<T>& a) {
     std::vector<T> p(a.size() + 1, T{});
-    for (size_t i = 0; i < a.size(); i++) p[i + 1] = p[i] + a[i];
+    for (long long i = 0; i < static_cast<long long>(a.size()); i++) p[i + 1] = p[i] + a[i];
     return p;
 }
 }  // namespace internal_subarray_sum

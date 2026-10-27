@@ -3,7 +3,6 @@
 #include "../../../src/graph/shortest-path.hpp"
 
 #include <iostream>
-#include <limits>
 
 int main() {
     int n, m, s, t;
@@ -11,13 +10,13 @@ int main() {
     Graph<long long> g(n);
     g.read(m, 0, true, true);
     auto sp = shortest_path(g, s);
-    if (sp.dist[t] == std::numeric_limits<long long>::max() / 4) {
+    auto route = sp.path(t);
+    if (!route) {
         std::cout << -1 << '\n';
         return 0;
     }
-    auto route = sp.path(t);
-    std::cout << sp.dist[t] << ' ' << route.size() << '\n';
-    for (auto& e : route) {
+    std::cout << sp.dist[t] << ' ' << route->size() << '\n';
+    for (auto& e : *route) {
         std::cout << e.src << ' ' << e.dst << '\n';
     }
 }

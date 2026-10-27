@@ -31,9 +31,13 @@ int main() {
             if (a.dist != b.dist) ok = false;
             // prev をたどった経路の長さが dist と一致する
             for (int t = 0; t < n; t++) {
-                if (a.dist[t] == std::numeric_limits<int>::max() / 4) continue;
+                // 未到達なら path は nullopt
+                auto p = a.path(t);
+                if (p.has_value() != (a.dist[t] != std::numeric_limits<int>::max() / 4)) ok = false;
+                if (!p) continue;
+                if (t == s && !p->empty()) ok = false;
                 int len = 0;
-                for (auto& e : a.path(t)) len += e.cost;
+                for (auto& e : *p) len += e.cost;
                 if (len != a.dist[t]) ok = false;
             }
         }
@@ -64,6 +68,32 @@ int main() {
                 if (d[s] != b.dist) ok = false;
             }
         }
+    }
+
+    // floyd_warshall: 負閉路があっても値は -inf 以上に収まり、あふれない。dist[i][i] < 0 で負閉路を判定できる
+    for (int n : {2, 10, 40}) {
+        const long long inf = std::numeric_limits<long long>::max() / 4;
+        Graph<long long> g(n);
+        for (int u = 0; u < n; u++) {
+            for (int v = 0; v < n; v++) g.add_directed_edge(u, v, -1000000000000000LL);
+        }
+        auto d = floyd_warshall(g);
+        for (int i = 0; i < n; i++) {
+            if (d[i][i] >= 0) ok = false;
+            for (int j = 0; j < n; j++) {
+                if (d[i][j] < -inf || d[i][j] >= 0) ok = false;
+            }
+        }
+    }
+    {
+        // 負閉路に届かない頂点の値は変わらない
+        Graph<long long> g(4);
+        g.add_directed_edge(0, 1, -5);
+        g.add_directed_edge(1, 0, -5);
+        g.add_directed_edge(2, 3, 7);
+        auto d = floyd_warshall(g);
+        const long long inf = std::numeric_limits<long long>::max() / 4;
+        if (d[2][3] != 7 || d[3][2] != inf || d[2][0] != inf || d[0][0] >= 0 || d[2][2] != 0) ok = false;
     }
 
     if (ok) std::cout << "Hello World" << std::endl;

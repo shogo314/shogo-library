@@ -34,7 +34,7 @@ std::vector<bool> x = ps.assignment();  // そのときの割り当て (x_v = 1 
 | `forbid(u, a, v)` | $x_u = a$ かつ $x_v = \lnot a$ となる割り当てを禁止する | $O(1)$ |
 | `add_gain_if_all(vs, a, g)` | `vs` の変数がすべて $a$ なら利得 $g \ge 0$ (コスト $-g$) を得る。補助頂点を 1 つ使う | $O(\lvert vs \rvert)$ |
 | `solve()` | コストの和の最小値 | 最大流 1 回 |
-| `assignment()` | 直前の `solve()` で最小値をとる割り当て (`std::vector<bool>`、$x_v = 1$ なら `true`) | $O(1)$ |
+| `assignment()` | 直前の `solve()` で最小値をとる割り当て (`std::vector<bool>`、$x_v = 1$ なら `true`)。`solve()` より前に呼ぶと assert で止まる | $O(1)$ |
 
 - 2 変数のコストは、定数・1 変数のコスト・辺 1 本に分けて入れます: $c_{00} + (c_{10} - c_{00}) x_u + (c_{11} - c_{10}) x_v + (c_{01} + c_{10} - c_{00} - c_{11}) [x_u = 0 \land x_v = 1]$。
 - 1 変数のコストが負になる分は定数に移し、辺の容量はすべて 0 以上にします。

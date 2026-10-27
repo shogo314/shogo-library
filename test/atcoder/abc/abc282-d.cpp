@@ -11,11 +11,12 @@ int main(void) {
     std::cin >> N >> M;
     Graph<int> graph(N);
     graph.read(M);
-    std::vector<int> c = bipartite_coloring(graph);
-    if (c.empty()) {
+    auto color = bipartite_coloring(graph);
+    if (!color) {
         std::cout << 0 << std::endl;
         return 0;
     }
+    std::vector<int> c = *color;
     std::vector<std::vector<long long>> groups = connected_components(graph);
     long long ans = static_cast<long long>(N) * (N - 1) / 2 - M;
     for (const std::vector<long long>& group : groups) {

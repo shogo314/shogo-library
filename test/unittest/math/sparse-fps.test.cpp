@@ -49,5 +49,14 @@ int main() {
             if (P((*s * *s).pre(m)) != P(dm)) ok = false, std::cerr << "sqrt^2" << std::endl;
         }
     }
+    // 平方根がないかどうかは n によらない (x^3 や 3 x^4 は n が小さくても nullopt)。f = 0 なら 0
+    for (int n = 0; n <= 3; n++) {
+        if (sparse_sqrt(F{0, 0, 0, 1}, n)) ok = false, std::cerr << "sqrt x^3 " << n << std::endl;
+        if (sparse_sqrt(F{0, 0, 0, 0, 3}, n)) ok = false, std::cerr << "sqrt 3x^4 " << n << std::endl;
+        auto z = sparse_sqrt(F(3, 0), n);
+        if (!z || P(*z) != P(n, 0)) ok = false, std::cerr << "sqrt zero " << n << std::endl;
+    }
+    auto x4 = sparse_sqrt(F{0, 0, 0, 0, 1}, 2);
+    if (!x4 || P(*x4) != P(2, 0)) ok = false, std::cerr << "sqrt x^4 short" << std::endl;
     if (ok) std::cout << "Hello World" << std::endl;
 }

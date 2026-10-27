@@ -35,14 +35,16 @@ SegTree seg2(v, Monoid([](int a, int b) { return a + b; }, 0));  // ラムダ式
 | `ClampAddComposite<T>` | `ClampAdd<T>` | 足してから clamp する関数 $f(x) = \min(\max(x + \mathit{add}, \mathit{lb}), \mathit{ub})$ の合成 $f \circ g$ ($g$ を先に適用) | 恒等写像 |
 | `Mapping<N>` | `std::array<int, N>` | $\lbrace 0, \dots, N-1 \rbrace$ から自分自身への写像の合成 $f \circ g$ ($g$ を先に適用)。全単射でなくてよい | 恒等写像 |
 | `Parenthesis` | `Parenthesis::S` | 括弧列の連結 (対応の取れていない `)` と `(` の個数) | 空の括弧列 |
-| `MinWith<T, U = long long>` | `pair<T, U>` | 最小値とその位置 (同じ値なら左側) | `{型の最大値, U{}}` |
-| `MaxWith<T, U = long long>` | `pair<T, U>` | 最大値とその位置 (同じ値なら左側) | `{型の最小値, U{}}` |
+| `MinWith<T, U = long long>` | `pair<T, U>` | 最小値とその位置 (同じ値なら左側) | `{型の最大値, -1}` (空区間では位置 -1) |
+| `MaxWith<T, U = long long>` | `pair<T, U>` | 最大値とその位置 (同じ値なら左側) | `{型の最小値, -1}` (空区間では位置 -1) |
 | `MinCount<T, U = long long>` | `pair<T, U>` | 最小値とその個数 | `{型の最大値, 0}` |
 | `MaxCount<T, U = long long>` | `pair<T, U>` | 最大値とその個数 | `{型の最小値, 0}` |
 | `PrefixSumMax<T>` / `PrefixSumMin<T>` | `PrefixSumMax<T>::S` など | 区間の和 `sum` と、空を含む prefix の和の最大値 `max` (最小値 `min`) | 空の区間 `{0, 0}` |
 | `SuffixSumMax<T>` / `SuffixSumMin<T>` | `SuffixSumMax<T>::S` など | 区間の和 `sum` と、空を含む suffix の和の最大値 `max` (最小値 `min`) | 空の区間 `{0, 0}` |
 | `MaxSubarraySum<T>` | `MaxSubarraySum<T>::S` | 区間の和 `sum`、空を含む prefix・suffix の和の最大値 `prefix`・`suffix`、空を含む連続部分列の和の最大値 `best` | 空の区間 `{0, 0, 0, 0}` |
 | `Reverse<M>` | `M::S` | `M::op(b, a)` (積の順序を逆にする) | `M::e()` |
+
+`MinWith`・`MaxWith` は、位置が -1 の要素を単位元とみなします。そのため、値が型の最大値 (`MaxWith` なら最小値) の要素があっても、空区間の積は `{型の最大値, -1}` (`MaxWith` なら `{型の最小値, -1}`) になり、その要素の位置が正しく返ります。位置に -1 は使わないでください。`U` が整数型でないとき (`bool` も含む) は、単位元は `{型の最大値, U{}}` (`MaxWith` なら `{型の最小値, U{}}`) で、値が型の最大値 (最小値) の要素は置けません。
 
 `Parenthesis::S` は文字 `'('`、`')'` から作れます。`is_valid()` で正しい括弧列かどうかを判定できます。
 

@@ -39,5 +39,16 @@ int main() {
         }
     }
 
+    // MOD = 1 なら x も lcm も 0 (空でも)。空なら x = 0、lcm = 1 % MOD
+    for (int k = 0; k <= 2; k++) {
+        std::vector<long long> r(k, 1), m(k, 3);
+        auto c = crt(r, m, 1);
+        if (!c || c->x != 0 || c->lcm != 0) ok = false, std::cerr << "crt MOD = 1, k = " << k << std::endl;
+    }
+    {
+        auto c = crt({}, {}, 7);
+        if (!c || c->x != 0 || c->lcm != 1) ok = false, std::cerr << "crt empty" << std::endl;
+    }
+
     if (ok) std::cout << "Hello World" << std::endl;
 }

@@ -183,14 +183,26 @@ int main() {
             [&] { return P(small(), -1); }, small,
             [](P x, int i) { return P(x.first, i); },
             [](const std::vector<P>& a, int l, int r) {
-                P best(std::numeric_limits<long long>::lowest(), 0);
+                P best(std::numeric_limits<long long>::lowest(), -1);  // 空区間では位置 -1
                 for (int i = l; i < r; i++)
                     if (a[i].first > best.first) best = P(a[i].first, i);
                 return best;
             },
             [](long long f, P x) { return P(x.first + f, x.second); },
-            [](P x, P y) { return x.first == y.first && (x.first == std::numeric_limits<long long>::lowest() || x.second == y.second); },
+            [](P x, P y) { return x.first == y.first && x.second == y.second; },
             rng, "AddMaxWith");
+    }
+    // AddMinWith: 空区間は {型の最大値, -1}。値が型の最大値の要素があっても位置が正しく、単位元には加算しない
+    {
+        using A = acted_monoid::AddMinWith<long long, int>;
+        using P = std::pair<long long, int>;
+        constexpr long long INF = std::numeric_limits<long long>::max();
+        LazySegTree<A> seg(std::vector<P>{{INF, 0}, {INF, 1}, {5, 2}});
+        check(seg.prod(0, 0) == P(INF, -1) && seg.prod(3, 3) == P(INF, -1), "AddMinWith 空区間");
+        check(seg.prod(0, 2) == P(INF, 0) && seg.prod(1, 2) == P(INF, 1) && seg.all_prod() == P(5, 2), "AddMinWith 最大値の要素");
+        seg.apply(2, 3, -3);
+        seg.apply(0, 0, 100);
+        check(seg.prod(1, 3) == P(2, 2) && seg.prod(2, 2) == P(INF, -1), "AddMinWith 加算");
     }
 
     // AddPowerSum: 区間加算・区間の 0 乗和から K 乗和

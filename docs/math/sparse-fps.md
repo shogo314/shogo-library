@@ -24,7 +24,7 @@ $f$ は [`FPS<mint>`](fps.hpp) で渡し、0 でない項を集めて使いま�
 | `sparse_log(f, n)` | $\log f$ の先頭 $n$ 項 | $f_0 = 1$ | $O(nK)$ |
 | `sparse_exp(f, n)` | $\exp f$ の先頭 $n$ 項 | $f_0 = 0$ | $O(nK)$ |
 | `sparse_pow(f, e, n)` | $f^e$ の先頭 $n$ 項 ($e \ge 0$、$10^{18}$ 程度でもよい) | | $O(nK)$ |
-| `sparse_sqrt(f, n)` | $\sqrt f$ の先頭 $n$ 項 (`std::optional`。平方根がなければ `std::nullopt`) | 法は素数 | $O(nK)$ |
+| `sparse_sqrt(f, n)` | $g^2 = f$ となる $g$ の先頭 $n$ 項 (`std::optional`)。$f = 0$ なら 0。最初の 0 でない項が奇数次か、その係数が平方非剰余なら、平方根がないので $n$ によらず `std::nullopt` | 法は素数 | $O(nK)$ |
 
 求める級数 $g$ が満たす微分方程式の係数を比べて、1 項ずつ求めます。例えば $g = f^e$ なら $f g' = e f' g$ から、$f_0 k g_k = \sum_{i \ge 1} f_i g_{k-i} (e i - (k - i))$ です。`sparse_sqrt` は $e = 1/2$ として同じ式を使います。`sparse_pow`・`sparse_sqrt` は、$f$ の最初の 0 でない項 $f_d x^d$ を外して $f_0 \ne 0$ の場合に直します。
 

@@ -6,6 +6,7 @@
  */
 
 #include <algorithm>
+#include <cassert>
 #include <random>
 #include <vector>
 
@@ -42,12 +43,13 @@ void split(const FPS<mint>& g, std::mt19937_64& rng, std::vector<mint>& res) {
 
 /**
  * @brief 多項式 f の、法 p (素数) で割った余りの中の根を、相異なるものだけ値の小さい順に返す 期待 O(n log^2 n log p)
- * f が 0 (すべての値が根) のときは空を返す
+ * f は 0 でないこと。定数なら空を返す
  * g = gcd(f, x^p - x) で相異なる根だけを 1 次で持つ多項式にし、ランダムな a で gcd(g, (x + a)^((p-1)/2) - 1) をとって分けていく
  */
 template <typename mint>
 std::vector<mint> polynomial_roots(FPS<mint> f) {
     f.normalize();
+    assert(!f.empty());
     std::vector<mint> res;
     if (f.size() <= 1) return res;
     // 0 が根なら取り除く (x^p - x との gcd では 0 も根になるが、先に外しておくと分けるときに扱いやすい)

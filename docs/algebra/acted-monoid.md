@@ -40,8 +40,8 @@ long long m = seg.prod(l, r);                         // [l, r) の最小値
 | `ClampAddMinMax<T>` | 区間 加算と clamp | 区間最小値と最大値の組 `{min, max}` | [`ClampAdd<T>`](monoid.hpp) | |
 | `AffineSum<T>` | 区間アフィン変換 $x \leftarrow ax + b$ | 区間和 | [`Affine<T>`](monoid.hpp) | |
 | `UpdateComposite<T>` | 区間代入 | 1次関数の合成 (`monoid::Composite`) | `optional<Affine<T>>` | |
-| `AddMinWith<T, U = long long>` | 区間加算 | 区間最小値とその位置 | `T` | |
-| `AddMaxWith<T, U = long long>` | 区間加算 | 区間最大値とその位置 | `T` | |
+| `AddMinWith<T, U = long long>` | 区間加算 | 区間最小値とその位置 (空区間では `{型の最大値, -1}`) | `T` | |
+| `AddMaxWith<T, U = long long>` | 区間加算 | 区間最大値とその位置 (空区間では `{型の最小値, -1}`) | `T` | |
 | `AddMinCount<T, U = long long>` | 区間加算 | 区間最小値とその個数 | `T` | |
 | `AddMaxCount<T, U = long long>` | 区間加算 | 区間最大値とその個数 | `T` | |
 | `AddPowerSum<T, K>` | 区間加算 | 区間の 0 乗和から K 乗和 | `T` | |

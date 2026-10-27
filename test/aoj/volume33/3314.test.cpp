@@ -36,7 +36,7 @@ int main() {
     for (int j = 0; j < 3; j++) trans_abc[0][j] = a[j] - t[j];
     for (int j = 0; j < 3; j++) trans_abc[1][j] = b[j] - t[j];
     for (int j = 0; j < 3; j++) trans_abc[2][j] = c[j] - t[j];
-    auto s = base_abc.inv() * trans_abc;
+    auto s = *base_abc.inv() * trans_abc;
 
     std::cout << std::fixed << std::setprecision(10);
     int n;

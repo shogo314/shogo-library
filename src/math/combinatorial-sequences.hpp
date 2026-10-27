@@ -19,6 +19,7 @@
  */
 template <typename mint>
 FPS<mint> partition_numbers(long long n) {
+    assert(n >= 0);
     FPS<mint> f(n + 1, 0);
     f[0] = 1;
     for (long long k = 1;; k++) {
@@ -37,6 +38,7 @@ FPS<mint> partition_numbers(long long n) {
  */
 template <typename mint>
 FPS<mint> bernoulli_numbers(long long n) {
+    assert(n >= 0);
     using C = Combination<mint>;
     C::extend(n + 1);
     FPS<mint> f(n + 1);
@@ -53,6 +55,7 @@ FPS<mint> bernoulli_numbers(long long n) {
  */
 template <typename mint>
 FPS<mint> stirling_first(long long n) {
+    assert(n >= 0);
     FPS<mint> f{1};
     long long m = 0;
     for (int bit = 62; bit >= 0; bit--) {
@@ -75,6 +78,7 @@ FPS<mint> stirling_first(long long n) {
  */
 template <typename mint>
 FPS<mint> stirling_second(long long n) {
+    assert(n >= 0);
     using C = Combination<mint>;
     C::extend(n);
     std::vector<mint> a(n + 1), b(n + 1);
@@ -137,6 +141,7 @@ FPS<mint> stirling_second_column(long long n, long long k) {
  */
 template <typename mint>
 FPS<mint> bell_numbers(long long n) {
+    assert(n >= 0);
     using C = Combination<mint>;
     C::extend(n);
     FPS<mint> g(n + 1, 0);

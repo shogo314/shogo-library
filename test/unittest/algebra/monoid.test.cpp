@@ -11,6 +11,7 @@
 #include <sstream>
 #include <string>
 #include <type_traits>
+#include <utility>
 #include <vector>
 
 #include "../../../src/algebra/group.hpp"
@@ -290,6 +291,36 @@ int main() {
                 }
             }
             check(pmax.max_right(l, [](const auto& s) { return s.max <= 0; }) == expect, "PrefixSumMax max_right");
+        }
+    }
+
+    // MinWith / MaxWith: 空区間は位置 -1。値が型の最大値 (最小値) の要素があっても単位元として働き、同じ値なら左側
+    {
+        using Mn = monoid::MinWith<long long>;
+        using Mx = monoid::MaxWith<long long>;
+        constexpr long long INF = std::numeric_limits<long long>::max(), NINF = std::numeric_limits<long long>::lowest();
+        check(Mn::e() == std::pair<long long, long long>(INF, -1) && Mx::e() == std::pair<long long, long long>(NINF, -1), "MinWith/MaxWith::e");
+        check(Mn::op(Mn::e(), {INF, 3}) == std::pair<long long, long long>(INF, 3) && Mn::op({INF, 3}, Mn::e()) == std::pair<long long, long long>(INF, 3), "MinWith e は単位元");
+        check(Mx::op(Mx::e(), {NINF, 3}) == std::pair<long long, long long>(NINF, 3) && Mx::op({NINF, 3}, Mx::e()) == std::pair<long long, long long>(NINF, 3), "MaxWith e は単位元");
+        for (int rep = 0; rep < 200 && ok; rep++) {
+            int n = rng() % 20 + 1;
+            std::vector<long long> a(n);
+            for (auto& x : a) x = rng() % 3 == 0 ? (rng() % 2 ? INF : NINF) : static_cast<long long>(rng() % 5);
+            std::vector<std::pair<long long, long long>> init(n);
+            for (int i = 0; i < n; i++) init[i] = {a[i], i};
+            SegTree<Mn> mn(init);
+            SegTree<Mx> mx(init);
+            for (int q = 0; q < 30; q++) {
+                int l = rng() % (n + 1), r = rng() % (n + 1);
+                if (l > r) std::swap(l, r);
+                std::pair<long long, long long> emn(INF, -1), emx(NINF, -1);
+                for (int i = l; i < r; i++) {
+                    if (emn.second == -1 || a[i] < emn.first) emn = {a[i], i};
+                    if (emx.second == -1 || a[i] > emx.first) emx = {a[i], i};
+                }
+                check(mn.prod(l, r) == emn, "MinWith prod");
+                check(mx.prod(l, r) == emx, "MaxWith prod");
+            }
         }
     }
 

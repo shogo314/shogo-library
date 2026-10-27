@@ -51,6 +51,7 @@ class Combination {
      * @note extend(n), O(1)
      */
     inline static Modint factorial(long long n) {
+        assert(n >= 0);
         extend(n);
         return fact[n];
     }
@@ -61,6 +62,7 @@ class Combination {
      * @note extend(n), O(1)
      */
     inline static Modint inverse_factorial(long long n) {
+        assert(n >= 0);
         extend(n);
         return inv_fact[n];
     }

@@ -13,7 +13,7 @@ auto h = pow(f, 10, n);        // (1 + x)^10 の x^n 未満
 mint y = f.eval(2);            // f(2)
 ```
 
-`deg` を取る関数は、結果の $x^{\mathrm{deg}}$ 未満の項を返します。`deg`、`pre(k)` の `k`、シフト量 `k` は `long long` です。`deg` を省略するか負の値を渡すと `f.size()` になります。
+`deg` を取る関数は、結果の $x^{\mathrm{deg}}$ 未満の項を返します。`deg`、`pre(k)` の `k`、シフト量 `k` は `long long` です。`inv`・`log`・`exp`・`pow`・`sqrt` は、`deg` を省略するか負の値を渡すと `deg = f.size()` になります。
 
 ## 演算子
 
@@ -45,7 +45,7 @@ mint y = f.eval(2);            // f(2)
 | `log(f, deg)` | $\log f$ | $f_0 = 1$ | $O(n \log n)$ |
 | `exp(f, deg)` | $\exp f$ | $f_0 = 0$ | $O(n \log n)$ |
 | `pow(f, e, deg)` | $f^e$ | | $O(n \log n)$ |
-| `sqrt(f, deg)` | $\sqrt f$ (`std::optional<FPS>`。平方根がなければ `std::nullopt`) | 最初の 0 でない項が偶数次で、その係数が平方剰余 (法は素数) | $O(n \log n)$ |
+| `sqrt(f, deg)` | $g^2 = f$ となる $g$ の先頭 `deg` 項 (`std::optional<FPS>`)。$f = 0$ なら 0。最初の 0 でない項が奇数次か、その係数が平方非剰余なら、平方根がないので `deg` によらず `std::nullopt` | 法は素数 | $O(n \log n)$ |
 | `taylor_shift(f, a)` | $f(x + a)$ | $n$ が mod より小さい | $O(n \log n)$ |
 | `divmod(f, g)` | `std::pair` で商 `f / g` と余り `f % g` を返す (`/` と `%` を別々に使うより速い) | `g` の最高次の係数が 0 でない | $O(n \log n)$ |
 | `gcd(f, g)` | 多項式の gcd (最高次の係数が 1。$f, g$ がともに 0 なら 0 (空)) | | $O(n \log^2 n)$ |

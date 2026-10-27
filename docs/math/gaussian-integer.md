@@ -30,7 +30,7 @@ auto v = two_square_sum(25);           // {(0, 5), (3, 4), (4, 3), (5, 0)}
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `gaussian_gcd(x, y)` | 最大公約数の 1 つ (単数 $\pm 1, \pm i$ 倍の違いを除いて決まる)。両方 0 なら 0 | $O(\log \text{ノルム})$ |
-| `two_square_sum(n)` | $n = a^2 + b^2$ となる 0 以上の整数の組 $(a, b)$ を $a$ の昇順にすべて (`std::vector<std::pair<long long, long long>>`)。$0 \le n \le 10^{18}$ | `factorize(n)` + 素因数ごとに $O(\log^2 n)$ + 組の個数 |
+| `two_square_sum(n)` | $n = a^2 + b^2$ となる 0 以上の整数の組 $(a, b)$ を $a$ の昇順にすべて (`std::vector<std::pair<long long, long long>>`)。表せなければ空。$0 \le n \le 10^{18}$ | `factorize(n)` + 素因数ごとに $O(\log^2 n)$ + 組の個数 |
 
 `two_square_sum` は $n$ を素因数分解し、4 で割って 1 余る素数 $p$ を $p = \pi \bar{\pi}$ と分けて (−1 の平方根 $t$ を使い $\pi = \gcd(p, t + i)$)、それぞれの素因数の選び方をすべて試します。4 で割って 3 余る素数が奇数乗で含まれていれば、表せません。
 

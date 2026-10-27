@@ -13,6 +13,7 @@
 #include "../../../src/math/matrix.hpp"
 
 #include <algorithm>
+#include <cmath>
 #include <iostream>
 #include <numeric>
 #include <random>
@@ -229,8 +230,10 @@ int main() {
         Matrix<int, GF2> A(a);
         int d = A.det();
         if (d != naive_det_gf2(a)) ok = false, std::cerr << "gf2 det" << std::endl;
-        if (d == 1) {
-            Matrix<int, GF2> Ai = A.inv();
+        auto Ai_opt = A.inv();
+        if (Ai_opt.has_value() != (d == 1)) ok = false, std::cerr << "gf2 inv nullopt" << std::endl;
+        if (d == 1 && Ai_opt) {
+            Matrix<int, GF2> Ai = *Ai_opt;
             Matrix<int, GF2> P = A * Ai, Q = Ai * A;
             for (int i = 0; i < n; i++)
                 for (int j = 0; j < n; j++) {
@@ -255,9 +258,12 @@ int main() {
         Matrix<mint, ModProp> B(a);
         mint e = naive_det(a);
         if (A.det() != e || B.det() != e) ok = false, std::cerr << "mod det" << std::endl;
-        if (e != 0) {
-            Matrix<mint> Ai = A.inv();
-            Matrix<mint, ModProp> Bi = B.inv();
+        auto Ai_opt = A.inv();
+        auto Bi_opt = B.inv();
+        if (Ai_opt.has_value() != (e != 0) || Bi_opt.has_value() != (e != 0)) ok = false, std::cerr << "mod inv nullopt" << std::endl;
+        if (e != 0 && Ai_opt && Bi_opt) {
+            Matrix<mint> Ai = *Ai_opt;
+            Matrix<mint, ModProp> Bi = *Bi_opt;
             for (int i = 0; i < n; i++)
                 for (int j = 0; j < n; j++) {
                     if (Ai[i][j] != Bi[i][j]) ok = false;
@@ -268,6 +274,16 @@ int main() {
         }
     }
     if (!ok) std::cerr << "mod" << std::endl;
+
+    // 正則でない行列の inv は nullopt (浮動小数点、0 x 0 は単位行列)
+    {
+        if (Matrix<double>({{1., 2.}, {2., 4.}}).inv()) ok = false, std::cerr << "inv singular double" << std::endl;
+        auto di = Matrix<double>({{2., 0.}, {0., 4.}}).inv();
+        if (!di || std::abs((*di)[0][0] - 0.5) > 1e-12 || std::abs((*di)[1][1] - 0.25) > 1e-12) ok = false, std::cerr << "inv double" << std::endl;
+        if (Matrix<mint>({{0, 0}, {0, 0}}).inv()) ok = false, std::cerr << "inv zero" << std::endl;
+        auto ei = Matrix<mint>(0, 0).inv();
+        if (!ei || ei->size() != 0) ok = false, std::cerr << "inv empty" << std::endl;
+    }
 
     // 連立一次方程式 (mod 3 と GF(2))
     using mint3 = static_modint<3>;

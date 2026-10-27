@@ -15,7 +15,7 @@ std::vector<mint> r = polynomial_roots(f);  // {2, 3}
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `polynomial_roots(f)` | `f` ([`FPS<mint>`](fps.hpp)) の根を、相異なるものだけ値の小さい順に並べた `std::vector<mint>`。重根も 1 つだけ入る。`f` が定数 (0 も含む) なら空 | 期待 $O(n \log^2 n \log p)$ |
+| `polynomial_roots(f)` | `f` ([`FPS<mint>`](fps.hpp)) の根を、相異なるものだけ値の小さい順に並べた `std::vector<mint>`。重根も 1 つだけ入る。`f` は 0 でないこと (0 なら assert で落ちる)。0 でない定数なら空 | 期待 $O(n \log^2 n \log p)$ |
 
 1. 0 が根なら先に取り除きます ($f$ を $x$ で割れるだけ割る)。
 2. $g = \gcd(f, x^p - x)$ を求めます。$x^p - x = \prod_{a} (x - a)$ なので、$g$ は $f$ の相異なる根 $a$ についての $(x - a)$ の積です。$x^p \bmod f$ は [`modpow`](fps.hpp) で求めます。

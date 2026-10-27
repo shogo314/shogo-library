@@ -134,17 +134,18 @@ FPS<mint> sparse_pow(const FPS<mint>& f, long long e, long long n) {
 }
 
 /**
- * @brief sqrt f の先頭 n 項 (g^2 = f)。平方根がなければ std::nullopt
- * 最初の 0 でない項 f_d x^d は、d が偶数で f_d が平方剰余であること。法は素数であること
+ * @brief sqrt f (g^2 = f となる g) の先頭 n 項。法は素数であること
+ * f = 0 なら 0。最初の 0 でない項 f_d x^d の d が奇数か、f_d が平方非剰余なら平方根はなく std::nullopt (n によらない)
  */
 template <typename mint>
 std::optional<FPS<mint>> sparse_sqrt(const FPS<mint>& f, long long n) {
     long long d = 0;
     while (d < static_cast<long long>(f.size()) && f[d] == 0) d++;
-    if (d == static_cast<long long>(f.size()) || d / 2 >= n) return FPS<mint>(n);
+    if (d == static_cast<long long>(f.size())) return FPS<mint>(n);
     if (d % 2 == 1) return std::nullopt;
     long long r = sqrt_mod(f[d].val(), mint::mod());
     if (r == -1) return std::nullopt;
+    if (d / 2 >= n) return FPS<mint>(n);
     FPS<mint> g = internal_sparse_fps::pow_nonzero_constant(f >> d, mint(2).inv(), mint(r), n - d / 2);
     g <<= d / 2;
     g.resize(n);

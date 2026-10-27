@@ -77,7 +77,7 @@ inline std::optional<CRTResult> crt(const std::vector<long long>& r, const std::
  */
 inline std::optional<CRTResult> crt(const std::vector<long long>& r, const std::vector<long long>& m, long long MOD) {
     assert(r.size() == m.size());
-    if (r.size() == 0) return CRTResult{0, 1};
+    if (r.size() == 0) return CRTResult{0, 1 % MOD};
     int n = static_cast<int>(r.size());
     std::vector<long long> r2 = r, m2 = m;
     // mを互いに素にする

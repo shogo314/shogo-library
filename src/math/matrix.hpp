@@ -392,6 +392,7 @@ class Matrix {
      */
     [[nodiscard]]
     Matrix pow(long long k) const {
+        assert(n == m && k >= 0);
         Matrix A = *this, B(n, n);
         for (long long i = 0; i < n; i++) B[i][i] = OperatorProperty::one();
         while (k > 0) {
@@ -582,11 +583,11 @@ class Matrix {
 
     /**
      * @brief 逆行列
-     * @return 逆行列
+     * @return 逆行列。正則でなければ std::nullopt
      * @note det と同じく、要素は体 (modint や浮動小数点型など) であること
      */
     [[nodiscard]]
-    Matrix inv() const {
+    std::optional<Matrix> inv() const {
         assert(n == m);
         if (n == 0) return Matrix(n, n);
         if constexpr (std::is_same_v<OperatorProperty, matrix::OperatorPropertyDefault<T>>) {
@@ -595,8 +596,8 @@ class Matrix {
                 for (long long j = 0; j < n; j++) A[i][j] = this->v[i][j];
                 A[i][n + i] = T(1);
             }
-            [[maybe_unused]] T d = forward_elimination(A);
-            assert(d != T(0));
+            T d = forward_elimination(A);
+            if (d == T(0)) return std::nullopt;
             for (long long i = n - 1; i >= 0; i--) {
                 for (long long j = i - 1; j >= 0; j--) {
                     A[j] -= A[i] * A[j][i];
@@ -612,8 +613,8 @@ class Matrix {
                 for (long long j = 0; j < n; j++) A[i][j] = this->v[i][j];
                 A[i][n + i] = OperatorProperty::one();
             }
-            [[maybe_unused]] T d = forward_elimination(A);
-            assert(d != OperatorProperty::zero());
+            T d = forward_elimination(A);
+            if (d == OperatorProperty::zero()) return std::nullopt;
             for (long long i = n - 1; i >= 0; i--) {
                 for (long long j = i - 1; j >= 0; j--) {
                     for (long long k = n; k < n + n; k++) {

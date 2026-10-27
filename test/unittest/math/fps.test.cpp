@@ -185,6 +185,30 @@ int main() {
         // すべて 0 なら 0
         auto z = sqrt(F(5, 0), 5);
         if (!z || P(*z) != P(5, 0)) ok = false, std::cerr << "sqrt zero" << std::endl;
+        auto ze = sqrt(F(), 3);
+        if (!ze || P(*ze) != P(3, 0)) ok = false, std::cerr << "sqrt empty" << std::endl;
+        // 平方根がないかどうかは deg によらない (x^3 や 3 x^4 は deg が小さくても nullopt)
+        for (int deg = 0; deg <= 3; deg++) {
+            if (sqrt(F{0, 0, 0, 1}, deg)) ok = false, std::cerr << "sqrt x^3 " << deg << std::endl;
+            if (sqrt(F{0, 0, 0, 0, 3}, deg)) ok = false, std::cerr << "sqrt 3x^4 " << deg << std::endl;
+        }
+        // 平方根があり、先頭 deg 項が 0 だけのとき (x^4 の平方根 x^2)
+        auto x4 = sqrt(F{0, 0, 0, 0, 1}, 2);
+        if (!x4 || P(*x4) != P(2, 0)) ok = false, std::cerr << "sqrt x^4 short" << std::endl;
+        x4 = sqrt(F{0, 0, 0, 0, 1}, 4);
+        if (!x4 || P(*x4) != P{0, 0, 1, 0}) ok = false, std::cerr << "sqrt x^4" << std::endl;
+    }
+    // deg を負にすると f.size() (inv・log・exp・pow・sqrt)
+    {
+        F f{4, 3, 2, 1, 5};
+        if (P(inv(f, -1)) != P(inv(f, 5))) ok = false, std::cerr << "inv deg -1" << std::endl;
+        F l{1, 3, 2, 1, 5};
+        if (P(log(l, -1)) != P(log(l, 5)) || P(log(l)) != P(log(l, 5))) ok = false, std::cerr << "log deg -1" << std::endl;
+        F e{0, 3, 2, 1, 5};
+        if (P(exp(e, -1)) != P(exp(e, 5)) || P(exp(e)) != P(exp(e, 5))) ok = false, std::cerr << "exp deg -1" << std::endl;
+        if (P(pow(f, 3, -1)) != P(pow(f, 3, 5)) || P(pow(f, 0, -1)) != P(pow(f, 0, 5)) || P(pow(f, 3)) != P(pow(f, 3, 5))) ok = false, std::cerr << "pow deg -1" << std::endl;
+        auto sq = sqrt(f, -1), sq5 = sqrt(f, 5);
+        if (!sq || !sq5 || P(*sq) != P(*sq5) || sq->size() != 5) ok = false, std::cerr << "sqrt deg -1" << std::endl;
     }
     // polynomial_product: 順に掛けたものと同じ (空の列は 1、0 を含むと 0)
     for (int rep = 0; rep < 300 && ok; rep++) {

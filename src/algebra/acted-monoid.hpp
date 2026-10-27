@@ -277,7 +277,11 @@ template <typename T, typename U = long long>
 struct AddMinWith : monoid::MinWith<T, U> {
     using S = std::pair<T, U>;
     using F = T;
-    static constexpr S mapping(const F& f, const S& x) { return {x.first + f, x.second}; }
+    // 単位元 (位置が -1) は単位元のまま (型の最大値・最小値に足してあふれないように)
+    static constexpr S mapping(const F& f, const S& x) {
+        if (internal_monoid::with_is_e(x.second)) return x;
+        return {x.first + f, x.second};
+    }
     static constexpr F composition(const F& f, const F& g) { return f + g; }
     static constexpr F id() { return F(0); }
 };
@@ -289,7 +293,11 @@ template <typename T, typename U = long long>
 struct AddMaxWith : monoid::MaxWith<T, U> {
     using S = std::pair<T, U>;
     using F = T;
-    static constexpr S mapping(const F& f, const S& x) { return {x.first + f, x.second}; }
+    // 単位元 (位置が -1) は単位元のまま (型の最大値・最小値に足してあふれないように)
+    static constexpr S mapping(const F& f, const S& x) {
+        if (internal_monoid::with_is_e(x.second)) return x;
+        return {x.first + f, x.second};
+    }
     static constexpr F composition(const F& f, const F& g) { return f + g; }
     static constexpr F id() { return F(0); }
 };

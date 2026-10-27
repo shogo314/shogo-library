@@ -43,15 +43,12 @@ void test_small(std::mt19937_64& rng) {
             for (int i = 0; i < k; i++) f = f * FPS<mint>{-mint(rng() % p), 1};
         }
         std::vector<mint> expect;
-        bool zero = true;
-        for (auto c : f) zero &= c == 0;
-        if (!zero) {
-            FPS<mint> g = f;
-            g.normalize();
-            if (g.size() > 1)
-                for (int x = 0; x < p; x++)
-                    if (eval(f, mint(x)) == 0) expect.push_back(mint(x));
-        }
+        FPS<mint> g = f;
+        g.normalize();
+        if (g.empty()) continue;  // 0 の多項式は前提違反
+        if (g.size() > 1)
+            for (int x = 0; x < p; x++)
+                if (eval(f, mint(x)) == 0) expect.push_back(mint(x));
         check(polynomial_roots(f) == expect, "小さい法");
     }
 }
@@ -87,7 +84,7 @@ int main() {
         for (auto r : want) check(got.count(r), "決めた根が見つかる");
         check(std::is_sorted(roots.begin(), roots.end(), [](mint a, mint b) { return a.val() < b.val(); }), "昇順");
     }
-    // 定数・0 の多項式は根なし (空)
-    check(polynomial_roots(FPS<mint>{5}).empty() && polynomial_roots(FPS<mint>{0, 0}).empty(), "定数");
+    // 0 でない定数の多項式は根なし (空)。末尾の 0 は取り除いてから判定する
+    check(polynomial_roots(FPS<mint>{5}).empty() && polynomial_roots(FPS<mint>{5, 0, 0}).empty(), "定数");
     if (ok) std::cout << "Hello World" << std::endl;
 }

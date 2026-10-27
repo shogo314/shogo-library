@@ -36,9 +36,15 @@ class MexUpdate {
     }
 
    public:
-    MexUpdate() = default;
+    /**
+     * @brief 長さ 0 (mex は 0)
+     */
+    MexUpdate() : MexUpdate(0) {}
+    /**
+     * @brief 長さ n で、どの要素もまだ値を持たない (mex は 0)。n = 0 でもよい
+     */
     explicit MexUpdate(long long n) : n(n), v(n, e) {
-        assert(n > 0);
+        assert(n >= 0);
         assert(static_cast<unsigned long long>(n) + 1 < static_cast<unsigned long long>(e));
         std::set<int>::iterator hint = s.end();
         for (long long i = n; i >= 0; --i) {
@@ -46,7 +52,6 @@ class MexUpdate {
         }
     }
     explicit MexUpdate(const std::vector<value_type>& init) : n(init.size()), v(init) {
-        assert(n > 0);
         assert(static_cast<unsigned long long>(n) + 1 < static_cast<unsigned long long>(e));
         std::set<int>::iterator hint = s.end();
         for (long long i = n; i >= 0; --i) {

@@ -58,6 +58,9 @@ int main() {
     ok = ok && full.mex() == 3;
     full.set(1, 3);
     ok = ok && full.mex() == 0;
+    // 長さ 0 と既定構築は mex が 0
+    ok = ok && MexUpdate<int>().mex() == 0 && MexUpdate<int>(0).mex() == 0;
+    ok = ok && MexUpdate<int>(std::vector<int>{}).mex() == 0 && MexUpdate<unsigned int>().mex() == 0u;
     if (ok)
         std::cout << "Hello World" << std::endl;
     else

@@ -54,7 +54,7 @@ class IntervalSet {
    public:
     IntervalSet() = default;
     /**
-     * @brief k が含まれている区間
+     * @brief k が含まれている区間。なければ std::nullopt
      */
     std::optional<value_type> covered_by(key_type k) const {
         auto itr = data.upper_bound({k, k});
@@ -66,7 +66,7 @@ class IntervalSet {
         return {};
     }
     /**
-     * @brief [l,r) が完全に含まれている区間
+     * @brief [l,r) が完全に含まれている区間。なければ std::nullopt
      */
     std::optional<value_type> covered_by(key_type l, key_type r) const {
         auto opt = find(l, r);

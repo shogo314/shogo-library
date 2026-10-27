@@ -23,7 +23,7 @@ bt.nth_element(0);   // 3 (x との xor の最小値は apply_xor(x) してか�
 | `erase_one_element(x)` | `x` を 1 個削除 (なければ何もしない) | $O(d)$ |
 | `count(x)` | `x` の個数 | $O(d)$ |
 | `size()` | 要素数 | $O(1)$ |
-| `nth_element(k)` | 小さい方から `k` 番目 (0-indexed) の値 | $O(d)$ |
+| `nth_element(k)` | 小さい方から `k` 番目 (0-indexed) の値。`0 <= k < size()` であること | $O(d)$ |
 | `bisect_left(x)` | `x` 未満の要素の個数 (`x` 以上の最小の要素が何番目か。なければ `size()`) | $O(d)$ |
 | `bisect_right(x)` | `x` 以下の要素の個数 (`x` より大きい最小の要素が何番目か。なければ `size()`) | $O(d)$ |
 | `apply_xor(x)` | 全要素を `x` と xor する | $O(1)$ |

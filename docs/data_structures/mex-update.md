@@ -16,7 +16,8 @@ int b = mu.mex();     // 1
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `MexUpdate<T>(n)` | 長さ `n` で、どの要素もまだ値を持たない (mex は 0) | $O(n)$ |
+| `MexUpdate<T>()` | 長さ 0 (mex は 0) | $O(1)$ |
+| `MexUpdate<T>(n)` | 長さ `n` ($n \geq 0$) で、どの要素もまだ値を持たない (mex は 0) | $O(n)$ |
 | `MexUpdate<T>(v)` | `v` で初期化 | $O(n \log n)$ |
 | `set(k, x)` | `k` 番目を `x` に更新 | $O(\log n)$ |
 | `mex()` | 全体の mex | $O(1)$ |

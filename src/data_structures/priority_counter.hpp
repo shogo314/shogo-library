@@ -6,6 +6,7 @@
  */
 
 #include <array>
+#include <cassert>
 #include <cstddef>
 #include <functional>
 #include <type_traits>
@@ -39,6 +40,7 @@ struct PriorityCounter {
     }
 
     constexpr void inc(const key_type& x, const mapped_type& c = 1) {
+        assert(c > 0);
         bool f = false;
         key_type pre_key{};
         mapped_type pre_mapped{};

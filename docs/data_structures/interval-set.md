@@ -23,8 +23,8 @@ s.covered_by(5);                                // なし (std::nullopt)
 |---|---|---|
 | `insert(l, r)` | $[l, r)$ を追加 ($l < r$) | ならし $O(\log n)$ |
 | `erase(l, r)` | $[l, r)$ を取り除く ($l < r$) | ならし $O(\log n)$ |
-| `covered_by(k)` | `k` を含む区間 (`std::optional<std::pair<T, T>>`) | $O(\log n)$ |
-| `covered_by(l, r)` | $[l, r)$ を丸ごと含む区間 (`std::optional`) | $O(\log n)$ |
+| `covered_by(k)` | `k` を含む区間 (`std::optional<std::pair<T, T>>`)。なければ `std::nullopt` | $O(\log n)$ |
+| `covered_by(l, r)` | $[l, r)$ を丸ごと含む区間 (`std::optional`)。なければ `std::nullopt` | $O(\log n)$ |
 | `size()` | 区間の個数 | $O(1)$ |
 | `to_vector()` | 区間の一覧 (左端の昇順) | $O(n)$ |
 

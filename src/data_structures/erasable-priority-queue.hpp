@@ -54,21 +54,22 @@ class ErasablePriorityQueue {
     }
     /**
      * @brief x を 1 つ削除する。x は含まれていること (含まれていない要素を削除すると壊れる)
-     * 比較関数で等しい要素は区別しない
+     * 比較関数で等しい要素は区別しない。空なら assert で落ちる
      */
     void erase(const T& x) {
+        assert(!empty());
         del.push(x);
         normalize();
     }
     /**
-     * @brief 先頭 (既定では最大) の要素
+     * @brief 先頭 (既定では最大) の要素。空なら assert で落ちる
      */
     const T& top() const {
         assert(!empty());
         return que.top();
     }
     /**
-     * @brief 先頭の要素を削除する
+     * @brief 先頭の要素を削除する。空なら assert で落ちる
      */
     void pop() {
         assert(!empty());

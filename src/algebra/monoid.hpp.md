@@ -444,13 +444,24 @@ data:
     \        return is >> f.lb >> f.ub >> f.add;\n    }\n    template <class CharT,\
     \ class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const ClampAdd& f) {\n        return os << f.lb << CharT(' ') <<\
-    \ f.ub << CharT(' ') << f.add;\n    }\n};\n\nnamespace monoid {\n\n/**\n * @brief\
-    \ \u548C\n */\ntemplate <typename T>\nstruct Sum {\n    using S = T;\n    static\
-    \ constexpr S op(const S& a, const S& b) { return a + b; }\n    static constexpr\
-    \ S e() { return S(0); }\n};\n\n/**\n * @brief \u7A4D\n */\ntemplate <typename\
-    \ T>\nstruct Prod {\n    using S = T;\n    static constexpr S op(const S& a, const\
-    \ S& b) { return a * b; }\n    static constexpr S e() { return S(1); }\n};\n\n\
-    /**\n * @brief \u6700\u5927\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\u6700\u5C0F\
+    \ f.ub << CharT(' ') << f.add;\n    }\n};\n\nnamespace internal_monoid {\n// MinWith\u30FB\
+    MaxWith \u306E\u5358\u4F4D\u5143\u306E\u4F4D\u7F6E\u3002U \u304C bool \u4EE5\u5916\
+    \u306E\u6574\u6570\u578B\u306A\u3089 -1 (\u5B9F\u5728\u306E\u4F4D\u7F6E\u3068\u533A\
+    \u5225\u3067\u304D\u308B)\u3001\u305D\u3046\u3067\u306A\u3051\u308C\u3070 U{}\n\
+    template <typename U>\nconstexpr bool with_has_e_position = std::is_integral_v<U>\
+    \ && !std::is_same_v<U, bool>;\ntemplate <typename U>\nconstexpr U with_e_position()\
+    \ {\n    if constexpr (with_has_e_position<U>)\n        return static_cast<U>(-1);\n\
+    \    else\n        return U{};\n}\n// U \u304C bool \u4EE5\u5916\u306E\u6574\u6570\
+    \u578B\u3067\u3001\u4F4D\u7F6E\u304C -1 \u306A\u3089\u5358\u4F4D\u5143\ntemplate\
+    \ <typename U>\nconstexpr bool with_is_e(const U& u) {\n    if constexpr (with_has_e_position<U>)\n\
+    \        return u == static_cast<U>(-1);\n    else\n        return false;\n}\n\
+    }  // namespace internal_monoid\n\nnamespace monoid {\n\n/**\n * @brief \u548C\
+    \n */\ntemplate <typename T>\nstruct Sum {\n    using S = T;\n    static constexpr\
+    \ S op(const S& a, const S& b) { return a + b; }\n    static constexpr S e() {\
+    \ return S(0); }\n};\n\n/**\n * @brief \u7A4D\n */\ntemplate <typename T>\nstruct\
+    \ Prod {\n    using S = T;\n    static constexpr S op(const S& a, const S& b)\
+    \ { return a * b; }\n    static constexpr S e() { return S(1); }\n};\n\n/**\n\
+    \ * @brief \u6700\u5927\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\u6700\u5C0F\
     \u5024\n */\ntemplate <typename T>\nstruct Max {\n    using S = T;\n    static\
     \ constexpr S op(const S& a, const S& b) { return std::max(a, b); }\n    static\
     \ constexpr S e() { return std::numeric_limits<S>::lowest(); }\n};\n\n/**\n *\
@@ -537,23 +548,41 @@ data:
     \ >= b.close) return S(a.close, a.open - b.close + b.open);\n        return S(a.close\
     \ + b.close - a.open, b.open);\n    }\n    static constexpr S e() { return S();\
     \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\
-    \u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\
-    \u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\
-    \u5024\u306E\u578B\n */\ntemplate <typename T, typename U = long long>\nstruct\
-    \ MinWith {\n    using S = std::pair<T, U>;\n    static constexpr S op(const S&\
-    \ a, const S& b) { return b.first < a.first ? b : a; }\n    static constexpr S\
-    \ e() { return {std::numeric_limits<T>::max(), U{}}; }\n};\n\n/**\n * @brief \u6700\
-    \u5927\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\
-    \u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u4F4D\
-    \u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\u578B\n */\ntemplate\
-    \ <typename T, typename U = long long>\nstruct MaxWith {\n    using S = std::pair<T,\
-    \ U>;\n    static constexpr S op(const S& a, const S& b) { return a.first < b.first\
-    \ ? b : a; }\n    static constexpr S e() { return {std::numeric_limits<T>::lowest(),\
-    \ U{}}; }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u500B\u6570\
-    \n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u500B\u6570\u306E\u578B\n\
-    \ */\ntemplate <typename T, typename U = long long>\nstruct MinCount {\n    using\
-    \ S = std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n\
-    \        if (a.first < b.first) return a;\n        if (b.first < a.first) return\
+    \u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n * U \u304C\u6574\u6570\
+    \u578B\u306A\u3089\u5358\u4F4D\u5143 (\u7A7A\u533A\u9593) \u306E\u4F4D\u7F6E\u306F\
+    \ -1 \u3067\u3001\u5024\u304C\u578B\u306E\u6700\u5927\u5024\u306E\u8981\u7D20\u304C\
+    \u3042\u3063\u3066\u3082\u5358\u4F4D\u5143\u3068\u3057\u3066\u50CD\u304F\n * U\
+    \ \u304C\u6574\u6570\u578B\u3067\u306A\u3051\u308C\u3070\u5358\u4F4D\u5143\u306F\
+    \ {\u578B\u306E\u6700\u5927\u5024, U{}} \u3067\u3001\u5024\u304C\u578B\u306E\u6700\
+    \u5927\u5024\u306E\u8981\u7D20\u306F\u306A\u3044\u3053\u3068\n *\n * @tparam T\
+    \ \u5024\u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\
+    \u308B\u5024\u306E\u578B (\u6574\u6570\u578B\u306A\u3089 -1 \u306F\u4F7F\u308F\
+    \u306A\u3044\u3053\u3068)\n */\ntemplate <typename T, typename U = long long>\n\
+    struct MinWith {\n    using S = std::pair<T, U>;\n    static constexpr S op(const\
+    \ S& a, const S& b) {\n        if (internal_monoid::with_is_e(a.second)) return\
+    \ b;\n        if (internal_monoid::with_is_e(b.second)) return a;\n        return\
+    \ b.first < a.first ? b : a;\n    }\n    static constexpr S e() { return {std::numeric_limits<T>::max(),\
+    \ internal_monoid::with_e_position<U>()}; }\n};\n\n/**\n * @brief \u6700\u5927\
+    \u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\
+    \u3092\u512A\u5148\n * U \u304C\u6574\u6570\u578B\u306A\u3089\u5358\u4F4D\u5143\
+    \ (\u7A7A\u533A\u9593) \u306E\u4F4D\u7F6E\u306F -1 \u3067\u3001\u5024\u304C\u578B\
+    \u306E\u6700\u5C0F\u5024\u306E\u8981\u7D20\u304C\u3042\u3063\u3066\u3082\u5358\
+    \u4F4D\u5143\u3068\u3057\u3066\u50CD\u304F\n * U \u304C\u6574\u6570\u578B\u3067\
+    \u306A\u3051\u308C\u3070\u5358\u4F4D\u5143\u306F {\u578B\u306E\u6700\u5C0F\u5024\
+    , U{}} \u3067\u3001\u5024\u304C\u578B\u306E\u6700\u5C0F\u5024\u306E\u8981\u7D20\
+    \u306F\u306A\u3044\u3053\u3068\n *\n * @tparam T \u5024\u306E\u578B\n * @tparam\
+    \ U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\u578B (\u6574\
+    \u6570\u578B\u306A\u3089 -1 \u306F\u4F7F\u308F\u306A\u3044\u3053\u3068)\n */\n\
+    template <typename T, typename U = long long>\nstruct MaxWith {\n    using S =\
+    \ std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n    \
+    \    if (internal_monoid::with_is_e(a.second)) return b;\n        if (internal_monoid::with_is_e(b.second))\
+    \ return a;\n        return a.first < b.first ? b : a;\n    }\n    static constexpr\
+    \ S e() { return {std::numeric_limits<T>::lowest(), internal_monoid::with_e_position<U>()};\
+    \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u500B\u6570\n *\n\
+    \ * @tparam T \u5024\u306E\u578B\n * @tparam U \u500B\u6570\u306E\u578B\n */\n\
+    template <typename T, typename U = long long>\nstruct MinCount {\n    using S\
+    \ = std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n  \
+    \      if (a.first < b.first) return a;\n        if (b.first < a.first) return\
     \ b;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
     \ S e() { return {std::numeric_limits<T>::max(), U(0)}; }\n};\n\n/**\n * @brief\
     \ \u6700\u5927\u5024\u3068\u305D\u306E\u500B\u6570\n *\n * @tparam T \u5024\u306E\
@@ -735,13 +764,24 @@ data:
     \        return is >> f.lb >> f.ub >> f.add;\n    }\n    template <class CharT,\
     \ class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const ClampAdd& f) {\n        return os << f.lb << CharT(' ') <<\
-    \ f.ub << CharT(' ') << f.add;\n    }\n};\n\nnamespace monoid {\n\n/**\n * @brief\
-    \ \u548C\n */\ntemplate <typename T>\nstruct Sum {\n    using S = T;\n    static\
-    \ constexpr S op(const S& a, const S& b) { return a + b; }\n    static constexpr\
-    \ S e() { return S(0); }\n};\n\n/**\n * @brief \u7A4D\n */\ntemplate <typename\
-    \ T>\nstruct Prod {\n    using S = T;\n    static constexpr S op(const S& a, const\
-    \ S& b) { return a * b; }\n    static constexpr S e() { return S(1); }\n};\n\n\
-    /**\n * @brief \u6700\u5927\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\u6700\u5C0F\
+    \ f.ub << CharT(' ') << f.add;\n    }\n};\n\nnamespace internal_monoid {\n// MinWith\u30FB\
+    MaxWith \u306E\u5358\u4F4D\u5143\u306E\u4F4D\u7F6E\u3002U \u304C bool \u4EE5\u5916\
+    \u306E\u6574\u6570\u578B\u306A\u3089 -1 (\u5B9F\u5728\u306E\u4F4D\u7F6E\u3068\u533A\
+    \u5225\u3067\u304D\u308B)\u3001\u305D\u3046\u3067\u306A\u3051\u308C\u3070 U{}\n\
+    template <typename U>\nconstexpr bool with_has_e_position = std::is_integral_v<U>\
+    \ && !std::is_same_v<U, bool>;\ntemplate <typename U>\nconstexpr U with_e_position()\
+    \ {\n    if constexpr (with_has_e_position<U>)\n        return static_cast<U>(-1);\n\
+    \    else\n        return U{};\n}\n// U \u304C bool \u4EE5\u5916\u306E\u6574\u6570\
+    \u578B\u3067\u3001\u4F4D\u7F6E\u304C -1 \u306A\u3089\u5358\u4F4D\u5143\ntemplate\
+    \ <typename U>\nconstexpr bool with_is_e(const U& u) {\n    if constexpr (with_has_e_position<U>)\n\
+    \        return u == static_cast<U>(-1);\n    else\n        return false;\n}\n\
+    }  // namespace internal_monoid\n\nnamespace monoid {\n\n/**\n * @brief \u548C\
+    \n */\ntemplate <typename T>\nstruct Sum {\n    using S = T;\n    static constexpr\
+    \ S op(const S& a, const S& b) { return a + b; }\n    static constexpr S e() {\
+    \ return S(0); }\n};\n\n/**\n * @brief \u7A4D\n */\ntemplate <typename T>\nstruct\
+    \ Prod {\n    using S = T;\n    static constexpr S op(const S& a, const S& b)\
+    \ { return a * b; }\n    static constexpr S e() { return S(1); }\n};\n\n/**\n\
+    \ * @brief \u6700\u5927\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\u6700\u5C0F\
     \u5024\n */\ntemplate <typename T>\nstruct Max {\n    using S = T;\n    static\
     \ constexpr S op(const S& a, const S& b) { return std::max(a, b); }\n    static\
     \ constexpr S e() { return std::numeric_limits<S>::lowest(); }\n};\n\n/**\n *\
@@ -828,23 +868,41 @@ data:
     \ >= b.close) return S(a.close, a.open - b.close + b.open);\n        return S(a.close\
     \ + b.close - a.open, b.open);\n    }\n    static constexpr S e() { return S();\
     \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\
-    \u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\
-    \u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\
-    \u5024\u306E\u578B\n */\ntemplate <typename T, typename U = long long>\nstruct\
-    \ MinWith {\n    using S = std::pair<T, U>;\n    static constexpr S op(const S&\
-    \ a, const S& b) { return b.first < a.first ? b : a; }\n    static constexpr S\
-    \ e() { return {std::numeric_limits<T>::max(), U{}}; }\n};\n\n/**\n * @brief \u6700\
-    \u5927\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\
-    \u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u4F4D\
-    \u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\u578B\n */\ntemplate\
-    \ <typename T, typename U = long long>\nstruct MaxWith {\n    using S = std::pair<T,\
-    \ U>;\n    static constexpr S op(const S& a, const S& b) { return a.first < b.first\
-    \ ? b : a; }\n    static constexpr S e() { return {std::numeric_limits<T>::lowest(),\
-    \ U{}}; }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u500B\u6570\
-    \n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u500B\u6570\u306E\u578B\n\
-    \ */\ntemplate <typename T, typename U = long long>\nstruct MinCount {\n    using\
-    \ S = std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n\
-    \        if (a.first < b.first) return a;\n        if (b.first < a.first) return\
+    \u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n * U \u304C\u6574\u6570\
+    \u578B\u306A\u3089\u5358\u4F4D\u5143 (\u7A7A\u533A\u9593) \u306E\u4F4D\u7F6E\u306F\
+    \ -1 \u3067\u3001\u5024\u304C\u578B\u306E\u6700\u5927\u5024\u306E\u8981\u7D20\u304C\
+    \u3042\u3063\u3066\u3082\u5358\u4F4D\u5143\u3068\u3057\u3066\u50CD\u304F\n * U\
+    \ \u304C\u6574\u6570\u578B\u3067\u306A\u3051\u308C\u3070\u5358\u4F4D\u5143\u306F\
+    \ {\u578B\u306E\u6700\u5927\u5024, U{}} \u3067\u3001\u5024\u304C\u578B\u306E\u6700\
+    \u5927\u5024\u306E\u8981\u7D20\u306F\u306A\u3044\u3053\u3068\n *\n * @tparam T\
+    \ \u5024\u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\
+    \u308B\u5024\u306E\u578B (\u6574\u6570\u578B\u306A\u3089 -1 \u306F\u4F7F\u308F\
+    \u306A\u3044\u3053\u3068)\n */\ntemplate <typename T, typename U = long long>\n\
+    struct MinWith {\n    using S = std::pair<T, U>;\n    static constexpr S op(const\
+    \ S& a, const S& b) {\n        if (internal_monoid::with_is_e(a.second)) return\
+    \ b;\n        if (internal_monoid::with_is_e(b.second)) return a;\n        return\
+    \ b.first < a.first ? b : a;\n    }\n    static constexpr S e() { return {std::numeric_limits<T>::max(),\
+    \ internal_monoid::with_e_position<U>()}; }\n};\n\n/**\n * @brief \u6700\u5927\
+    \u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\
+    \u3092\u512A\u5148\n * U \u304C\u6574\u6570\u578B\u306A\u3089\u5358\u4F4D\u5143\
+    \ (\u7A7A\u533A\u9593) \u306E\u4F4D\u7F6E\u306F -1 \u3067\u3001\u5024\u304C\u578B\
+    \u306E\u6700\u5C0F\u5024\u306E\u8981\u7D20\u304C\u3042\u3063\u3066\u3082\u5358\
+    \u4F4D\u5143\u3068\u3057\u3066\u50CD\u304F\n * U \u304C\u6574\u6570\u578B\u3067\
+    \u306A\u3051\u308C\u3070\u5358\u4F4D\u5143\u306F {\u578B\u306E\u6700\u5C0F\u5024\
+    , U{}} \u3067\u3001\u5024\u304C\u578B\u306E\u6700\u5C0F\u5024\u306E\u8981\u7D20\
+    \u306F\u306A\u3044\u3053\u3068\n *\n * @tparam T \u5024\u306E\u578B\n * @tparam\
+    \ U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\u578B (\u6574\
+    \u6570\u578B\u306A\u3089 -1 \u306F\u4F7F\u308F\u306A\u3044\u3053\u3068)\n */\n\
+    template <typename T, typename U = long long>\nstruct MaxWith {\n    using S =\
+    \ std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n    \
+    \    if (internal_monoid::with_is_e(a.second)) return b;\n        if (internal_monoid::with_is_e(b.second))\
+    \ return a;\n        return a.first < b.first ? b : a;\n    }\n    static constexpr\
+    \ S e() { return {std::numeric_limits<T>::lowest(), internal_monoid::with_e_position<U>()};\
+    \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u500B\u6570\n *\n\
+    \ * @tparam T \u5024\u306E\u578B\n * @tparam U \u500B\u6570\u306E\u578B\n */\n\
+    template <typename T, typename U = long long>\nstruct MinCount {\n    using S\
+    \ = std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n  \
+    \      if (a.first < b.first) return a;\n        if (b.first < a.first) return\
     \ b;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
     \ S e() { return {std::numeric_limits<T>::max(), U(0)}; }\n};\n\n/**\n * @brief\
     \ \u6700\u5927\u5024\u3068\u305D\u306E\u500B\u6570\n *\n * @tparam T \u5024\u306E\
@@ -976,7 +1034,7 @@ data:
   - src/algebra/beats-acted-monoid.hpp
   - src/algebra/group.hpp
   - src/algebra/acted-monoid.hpp
-  timestamp: '2026-10-19 12:03:10+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/imos.test.cpp
@@ -1110,14 +1168,16 @@ SegTree seg2(v, Monoid([](int a, int b) { return a + b; }, 0));  // ラムダ式
 | `ClampAddComposite<T>` | `ClampAdd<T>` | 足してから clamp する関数 $f(x) = \min(\max(x + \mathit{add}, \mathit{lb}), \mathit{ub})$ の合成 $f \circ g$ ($g$ を先に適用) | 恒等写像 |
 | `Mapping<N>` | `std::array<int, N>` | $\lbrace 0, \dots, N-1 \rbrace$ から自分自身への写像の合成 $f \circ g$ ($g$ を先に適用)。全単射でなくてよい | 恒等写像 |
 | `Parenthesis` | `Parenthesis::S` | 括弧列の連結 (対応の取れていない `)` と `(` の個数) | 空の括弧列 |
-| `MinWith<T, U = long long>` | `pair<T, U>` | 最小値とその位置 (同じ値なら左側) | `{型の最大値, U{}}` |
-| `MaxWith<T, U = long long>` | `pair<T, U>` | 最大値とその位置 (同じ値なら左側) | `{型の最小値, U{}}` |
+| `MinWith<T, U = long long>` | `pair<T, U>` | 最小値とその位置 (同じ値なら左側) | `{型の最大値, -1}` (空区間では位置 -1) |
+| `MaxWith<T, U = long long>` | `pair<T, U>` | 最大値とその位置 (同じ値なら左側) | `{型の最小値, -1}` (空区間では位置 -1) |
 | `MinCount<T, U = long long>` | `pair<T, U>` | 最小値とその個数 | `{型の最大値, 0}` |
 | `MaxCount<T, U = long long>` | `pair<T, U>` | 最大値とその個数 | `{型の最小値, 0}` |
 | `PrefixSumMax<T>` / `PrefixSumMin<T>` | `PrefixSumMax<T>::S` など | 区間の和 `sum` と、空を含む prefix の和の最大値 `max` (最小値 `min`) | 空の区間 `{0, 0}` |
 | `SuffixSumMax<T>` / `SuffixSumMin<T>` | `SuffixSumMax<T>::S` など | 区間の和 `sum` と、空を含む suffix の和の最大値 `max` (最小値 `min`) | 空の区間 `{0, 0}` |
 | `MaxSubarraySum<T>` | `MaxSubarraySum<T>::S` | 区間の和 `sum`、空を含む prefix・suffix の和の最大値 `prefix`・`suffix`、空を含む連続部分列の和の最大値 `best` | 空の区間 `{0, 0, 0, 0}` |
 | `Reverse<M>` | `M::S` | `M::op(b, a)` (積の順序を逆にする) | `M::e()` |
+
+`MinWith`・`MaxWith` は、位置が -1 の要素を単位元とみなします。そのため、値が型の最大値 (`MaxWith` なら最小値) の要素があっても、空区間の積は `{型の最大値, -1}` (`MaxWith` なら `{型の最小値, -1}`) になり、その要素の位置が正しく返ります。位置に -1 は使わないでください。`U` が整数型でないとき (`bool` も含む) は、単位元は `{型の最大値, U{}}` (`MaxWith` なら `{型の最小値, U{}}`) で、値が型の最大値 (最小値) の要素は置けません。
 
 `Parenthesis::S` は文字 `'('`、`')'` から作れます。`is_valid()` で正しい括弧列かどうかを判定できます。
 

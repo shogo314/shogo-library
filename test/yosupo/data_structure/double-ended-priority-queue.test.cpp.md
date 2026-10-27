@@ -47,12 +47,15 @@ data:
     \u3066\u3044\u308B\u3053\u3068 (\u542B\u307E\u308C\u3066\u3044\u306A\u3044\u8981\
     \u7D20\u3092\u524A\u9664\u3059\u308B\u3068\u58CA\u308C\u308B)\n     * \u6BD4\u8F03\
     \u95A2\u6570\u3067\u7B49\u3057\u3044\u8981\u7D20\u306F\u533A\u5225\u3057\u306A\
-    \u3044\n     */\n    void erase(const T& x) {\n        del.push(x);\n        normalize();\n\
-    \    }\n    /**\n     * @brief \u5148\u982D (\u65E2\u5B9A\u3067\u306F\u6700\u5927\
-    ) \u306E\u8981\u7D20\n     */\n    const T& top() const {\n        assert(!empty());\n\
+    \u3044\u3002\u7A7A\u306A\u3089 assert \u3067\u843D\u3061\u308B\n     */\n    void\
+    \ erase(const T& x) {\n        assert(!empty());\n        del.push(x);\n     \
+    \   normalize();\n    }\n    /**\n     * @brief \u5148\u982D (\u65E2\u5B9A\u3067\
+    \u306F\u6700\u5927) \u306E\u8981\u7D20\u3002\u7A7A\u306A\u3089 assert \u3067\u843D\
+    \u3061\u308B\n     */\n    const T& top() const {\n        assert(!empty());\n\
     \        return que.top();\n    }\n    /**\n     * @brief \u5148\u982D\u306E\u8981\
-    \u7D20\u3092\u524A\u9664\u3059\u308B\n     */\n    void pop() {\n        assert(!empty());\n\
-    \        que.pop();\n        normalize();\n    }\n};\n#line 7 \"test/yosupo/data_structure/double-ended-priority-queue.test.cpp\"\
+    \u7D20\u3092\u524A\u9664\u3059\u308B\u3002\u7A7A\u306A\u3089 assert \u3067\u843D\
+    \u3061\u308B\n     */\n    void pop() {\n        assert(!empty());\n        que.pop();\n\
+    \        normalize();\n    }\n};\n#line 7 \"test/yosupo/data_structure/double-ended-priority-queue.test.cpp\"\
     \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
     \    int n, q;\n    std::cin >> n >> q;\n    // \u6700\u5927\u5024\u7528\u3068\
     \u6700\u5C0F\u5024\u7528\u306E 2 \u3064\u3092\u6301\u3061\u3001\u7247\u65B9\u304B\
@@ -88,7 +91,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/data_structure/double-ended-priority-queue.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:37:20+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/data_structure/double-ended-priority-queue.test.cpp

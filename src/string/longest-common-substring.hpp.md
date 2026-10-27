@@ -126,20 +126,21 @@ data:
     \ s \u3068 t \u306E\u6700\u9577\u5171\u901A\u90E8\u5206\u6587\u5B57\u5217 (\u9023\
     \u7D9A\u3059\u308B\u90E8\u5206\u5217) \u3092 1 \u3064\u6C42\u3081\u308B O((n +\
     \ m) log(n + m))\n * s[i, i + len) == t[j, j + len) \u3068\u306A\u308B (i, j,\
-    \ len) \u3092\u8FD4\u3059\u3002\u5171\u901A\u90E8\u5206\u304C\u306A\u3051\u308C\
-    \u3070 (0, 0, 0)\n * \u8981\u7D20\u306F operator< \u3067\u6BD4\u3079\u308B\n */\n\
-    template <typename R1, typename R2>\nstd::tuple<long long, long long, long long>\
-    \ longest_common_substring(const R1& s, const R2& t) {\n    using T = std::decay_t<decltype(*std::begin(s))>;\n\
-    \    std::vector<T> vs(std::begin(s), std::end(s)), vt(std::begin(t), std::end(t));\n\
-    \    long long n = vs.size(), m = vt.size();\n    // \u5EA7\u6A19\u5727\u7E2E\u3057\
-    \u3066\u3001s\u3001\u533A\u5207\u308A\u3001t \u306E\u9806\u306B\u4E26\u3079\u308B\
-    \u3002\u533A\u5207\u308A\u306F 1 \u56DE\u3057\u304B\u73FE\u308C\u306A\u3044\u306E\
-    \u3067\u3001LCP \u306F\u533A\u5207\u308A\u3092\u307E\u305F\u304C\u306A\u3044\n\
-    \    std::vector<T> vals(vs);\n    vals.insert(vals.end(), vt.begin(), vt.end());\n\
-    \    std::sort(vals.begin(), vals.end());\n    vals.erase(std::unique(vals.begin(),\
-    \ vals.end(), [](const T& a, const T& b) { return !(a < b) && !(b < a); }),\n\
-    \               vals.end());\n    long long sep = vals.size();\n    std::vector<int>\
-    \ u;\n    u.reserve(n + m + 1);\n    for (const T& x : vs) u.push_back(std::lower_bound(vals.begin(),\
+    \ len) \u3092\u8FD4\u3059\u3002\u5171\u901A\u3059\u308B\u8981\u7D20\u304C\u306A\
+    \u3051\u308C\u3070 (\u9577\u3055 0) (0, 0, 0)\n * \u8981\u7D20\u306F operator<\
+    \ \u3067\u6BD4\u3079\u308B\n */\ntemplate <typename R1, typename R2>\nstd::tuple<long\
+    \ long, long long, long long> longest_common_substring(const R1& s, const R2&\
+    \ t) {\n    using T = std::decay_t<decltype(*std::begin(s))>;\n    std::vector<T>\
+    \ vs(std::begin(s), std::end(s)), vt(std::begin(t), std::end(t));\n    long long\
+    \ n = vs.size(), m = vt.size();\n    // \u5EA7\u6A19\u5727\u7E2E\u3057\u3066\u3001\
+    s\u3001\u533A\u5207\u308A\u3001t \u306E\u9806\u306B\u4E26\u3079\u308B\u3002\u533A\
+    \u5207\u308A\u306F 1 \u56DE\u3057\u304B\u73FE\u308C\u306A\u3044\u306E\u3067\u3001\
+    LCP \u306F\u533A\u5207\u308A\u3092\u307E\u305F\u304C\u306A\u3044\n    std::vector<T>\
+    \ vals(vs);\n    vals.insert(vals.end(), vt.begin(), vt.end());\n    std::sort(vals.begin(),\
+    \ vals.end());\n    vals.erase(std::unique(vals.begin(), vals.end(), [](const\
+    \ T& a, const T& b) { return !(a < b) && !(b < a); }),\n               vals.end());\n\
+    \    long long sep = vals.size();\n    std::vector<int> u;\n    u.reserve(n +\
+    \ m + 1);\n    for (const T& x : vs) u.push_back(std::lower_bound(vals.begin(),\
     \ vals.end(), x) - vals.begin());\n    u.push_back(sep);\n    for (const T& x\
     \ : vt) u.push_back(std::lower_bound(vals.begin(), vals.end(), x) - vals.begin());\n\
     \    std::vector<long long> sa = suffix_array(u, sep);\n    std::vector<long long>\
@@ -153,30 +154,31 @@ data:
     \      }\n    }\n    return {i, j, len};\n}\n\n/**\n * @brief s \u306E\u4E2D\u306B\
     \ 2 \u56DE\u4EE5\u4E0A\u73FE\u308C\u308B (\u91CD\u306A\u3063\u3066\u3088\u3044\
     ) \u6700\u9577\u306E\u90E8\u5206\u6587\u5B57\u5217\u3092 1 \u3064\u6C42\u3081\u308B\
-    \ O(n log n)\n * s[i, i + len) == s[j, j + len) \u304B\u3064 i < j \u3068\u306A\
-    \u308B (i, j, len) \u3092\u8FD4\u3059\u30022 \u56DE\u4EE5\u4E0A\u73FE\u308C\u308B\
-    \u90E8\u5206\u304C\u306A\u3051\u308C\u3070 (0, 0, 0)\n * \u8F9E\u66F8\u9806\u3067\
-    \u96A3\u308A\u5408\u3046\u63A5\u5C3E\u8F9E\u306E LCP \u306E\u6700\u5927\u3002\u8981\
-    \u7D20\u306F operator< \u3067\u6BD4\u3079\u308B\n */\ntemplate <typename R>\n\
-    std::tuple<long long, long long, long long> longest_repeated_substring(const R&\
-    \ s) {\n    using T = std::decay_t<decltype(*std::begin(s))>;\n    std::vector<T>\
-    \ v(std::begin(s), std::end(s));\n    std::vector<long long> sa = suffix_array(v);\n\
-    \    std::vector<long long> lcp = lcp_array(v, sa);\n    long long i = 0, j =\
-    \ 0, len = 0;\n    for (long long k = 0; k < static_cast<long long>(lcp.size());\
-    \ k++) {\n        if (lcp[k] > len) i = std::min(sa[k], sa[k + 1]), j = std::max(sa[k],\
-    \ sa[k + 1]), len = lcp[k];\n    }\n    return {i, j, len};\n}\n\n/**\n * @brief\
-    \ s \u306E\u4E2D\u306B\u91CD\u306A\u3089\u305A\u306B 2 \u56DE\u4EE5\u4E0A\u73FE\
-    \u308C\u308B\u6700\u9577\u306E\u90E8\u5206\u6587\u5B57\u5217\u3092 1 \u3064\u6C42\
-    \u3081\u308B O(n log n)\n * s[i, i + len) == s[j, j + len) \u304B\u3064 i + len\
-    \ <= j \u3068\u306A\u308B (i, j, len) \u3092\u8FD4\u3059\u3002\u306A\u3051\u308C\
-    \u3070 (0, 0, 0)\n *\n * \u9577\u3055 L \u306E\u3082\u306E\u304C\u3042\u308C\u3070\
-    \ L - 1 \u306E\u3082\u306E\u3082\u3042\u308B\u306E\u3067\u3001L \u3067\u4E8C\u5206\
-    \u63A2\u7D22\u3059\u308B\u3002L \u3092\u56FA\u5B9A\u3057\u305F\u3089\u3001\u8F9E\
-    \u66F8\u9806\u3067\u96A3\u308A\u5408\u3046 LCP \u304C\n * L \u4EE5\u4E0A\u306E\
-    \u9023\u7D9A\u3057\u305F\u533A\u9593\u3054\u3068\u306B\u3001\u958B\u59CB\u4F4D\
-    \u7F6E\u306E\u6700\u5C0F\u3068\u6700\u5927\u306E\u5DEE\u304C L \u4EE5\u4E0A\u304B\
-    \u3092\u898B\u308B\u3002\u8981\u7D20\u306F operator< \u3067\u6BD4\u3079\u308B\n\
-    \ */\ntemplate <typename R>\nstd::tuple<long long, long long, long long> longest_non_overlapping_repeated_substring(const\
+    \ O(n log n)\n * len > 0 \u306A\u3089 s[i, i + len) == s[j, j + len) \u304B\u3064\
+    \ i < j \u3068\u306A\u308B (i, j, len) \u3092\u8FD4\u3059\u30022 \u56DE\u4EE5\u4E0A\
+    \u73FE\u308C\u308B\u8981\u7D20\u304C\u306A\u3051\u308C\u3070 (\u9577\u3055 0)\
+    \ (0, 0, 0)\n * \u8F9E\u66F8\u9806\u3067\u96A3\u308A\u5408\u3046\u63A5\u5C3E\u8F9E\
+    \u306E LCP \u306E\u6700\u5927\u3002\u8981\u7D20\u306F operator< \u3067\u6BD4\u3079\
+    \u308B\n */\ntemplate <typename R>\nstd::tuple<long long, long long, long long>\
+    \ longest_repeated_substring(const R& s) {\n    using T = std::decay_t<decltype(*std::begin(s))>;\n\
+    \    std::vector<T> v(std::begin(s), std::end(s));\n    std::vector<long long>\
+    \ sa = suffix_array(v);\n    std::vector<long long> lcp = lcp_array(v, sa);\n\
+    \    long long i = 0, j = 0, len = 0;\n    for (long long k = 0; k < static_cast<long\
+    \ long>(lcp.size()); k++) {\n        if (lcp[k] > len) i = std::min(sa[k], sa[k\
+    \ + 1]), j = std::max(sa[k], sa[k + 1]), len = lcp[k];\n    }\n    return {i,\
+    \ j, len};\n}\n\n/**\n * @brief s \u306E\u4E2D\u306B\u91CD\u306A\u3089\u305A\u306B\
+    \ 2 \u56DE\u4EE5\u4E0A\u73FE\u308C\u308B\u6700\u9577\u306E\u90E8\u5206\u6587\u5B57\
+    \u5217\u3092 1 \u3064\u6C42\u3081\u308B O(n log n)\n * len > 0 \u306A\u3089 s[i,\
+    \ i + len) == s[j, j + len) \u304B\u3064 i + len <= j \u3068\u306A\u308B (i, j,\
+    \ len) \u3092\u8FD4\u3059\u3002\u306A\u3051\u308C\u3070 (\u9577\u3055 0) (0, 0,\
+    \ 0)\n *\n * \u9577\u3055 L \u306E\u3082\u306E\u304C\u3042\u308C\u3070 L - 1 \u306E\
+    \u3082\u306E\u3082\u3042\u308B\u306E\u3067\u3001L \u3067\u4E8C\u5206\u63A2\u7D22\
+    \u3059\u308B\u3002L \u3092\u56FA\u5B9A\u3057\u305F\u3089\u3001\u8F9E\u66F8\u9806\
+    \u3067\u96A3\u308A\u5408\u3046 LCP \u304C\n * L \u4EE5\u4E0A\u306E\u9023\u7D9A\
+    \u3057\u305F\u533A\u9593\u3054\u3068\u306B\u3001\u958B\u59CB\u4F4D\u7F6E\u306E\
+    \u6700\u5C0F\u3068\u6700\u5927\u306E\u5DEE\u304C L \u4EE5\u4E0A\u304B\u3092\u898B\
+    \u308B\u3002\u8981\u7D20\u306F operator< \u3067\u6BD4\u3079\u308B\n */\ntemplate\
+    \ <typename R>\nstd::tuple<long long, long long, long long> longest_non_overlapping_repeated_substring(const\
     \ R& s) {\n    using T = std::decay_t<decltype(*std::begin(s))>;\n    std::vector<T>\
     \ v(std::begin(s), std::end(s));\n    const long long n = v.size();\n    std::vector<long\
     \ long> sa = suffix_array(v);\n    std::vector<long long> lcp = lcp_array(v, sa);\n\
@@ -202,20 +204,21 @@ data:
     \ t \u306E\u6700\u9577\u5171\u901A\u90E8\u5206\u6587\u5B57\u5217 (\u9023\u7D9A\
     \u3059\u308B\u90E8\u5206\u5217) \u3092 1 \u3064\u6C42\u3081\u308B O((n + m) log(n\
     \ + m))\n * s[i, i + len) == t[j, j + len) \u3068\u306A\u308B (i, j, len) \u3092\
-    \u8FD4\u3059\u3002\u5171\u901A\u90E8\u5206\u304C\u306A\u3051\u308C\u3070 (0, 0,\
-    \ 0)\n * \u8981\u7D20\u306F operator< \u3067\u6BD4\u3079\u308B\n */\ntemplate\
-    \ <typename R1, typename R2>\nstd::tuple<long long, long long, long long> longest_common_substring(const\
-    \ R1& s, const R2& t) {\n    using T = std::decay_t<decltype(*std::begin(s))>;\n\
-    \    std::vector<T> vs(std::begin(s), std::end(s)), vt(std::begin(t), std::end(t));\n\
-    \    long long n = vs.size(), m = vt.size();\n    // \u5EA7\u6A19\u5727\u7E2E\u3057\
-    \u3066\u3001s\u3001\u533A\u5207\u308A\u3001t \u306E\u9806\u306B\u4E26\u3079\u308B\
-    \u3002\u533A\u5207\u308A\u306F 1 \u56DE\u3057\u304B\u73FE\u308C\u306A\u3044\u306E\
-    \u3067\u3001LCP \u306F\u533A\u5207\u308A\u3092\u307E\u305F\u304C\u306A\u3044\n\
-    \    std::vector<T> vals(vs);\n    vals.insert(vals.end(), vt.begin(), vt.end());\n\
-    \    std::sort(vals.begin(), vals.end());\n    vals.erase(std::unique(vals.begin(),\
-    \ vals.end(), [](const T& a, const T& b) { return !(a < b) && !(b < a); }),\n\
-    \               vals.end());\n    long long sep = vals.size();\n    std::vector<int>\
-    \ u;\n    u.reserve(n + m + 1);\n    for (const T& x : vs) u.push_back(std::lower_bound(vals.begin(),\
+    \u8FD4\u3059\u3002\u5171\u901A\u3059\u308B\u8981\u7D20\u304C\u306A\u3051\u308C\
+    \u3070 (\u9577\u3055 0) (0, 0, 0)\n * \u8981\u7D20\u306F operator< \u3067\u6BD4\
+    \u3079\u308B\n */\ntemplate <typename R1, typename R2>\nstd::tuple<long long,\
+    \ long long, long long> longest_common_substring(const R1& s, const R2& t) {\n\
+    \    using T = std::decay_t<decltype(*std::begin(s))>;\n    std::vector<T> vs(std::begin(s),\
+    \ std::end(s)), vt(std::begin(t), std::end(t));\n    long long n = vs.size(),\
+    \ m = vt.size();\n    // \u5EA7\u6A19\u5727\u7E2E\u3057\u3066\u3001s\u3001\u533A\
+    \u5207\u308A\u3001t \u306E\u9806\u306B\u4E26\u3079\u308B\u3002\u533A\u5207\u308A\
+    \u306F 1 \u56DE\u3057\u304B\u73FE\u308C\u306A\u3044\u306E\u3067\u3001LCP \u306F\
+    \u533A\u5207\u308A\u3092\u307E\u305F\u304C\u306A\u3044\n    std::vector<T> vals(vs);\n\
+    \    vals.insert(vals.end(), vt.begin(), vt.end());\n    std::sort(vals.begin(),\
+    \ vals.end());\n    vals.erase(std::unique(vals.begin(), vals.end(), [](const\
+    \ T& a, const T& b) { return !(a < b) && !(b < a); }),\n               vals.end());\n\
+    \    long long sep = vals.size();\n    std::vector<int> u;\n    u.reserve(n +\
+    \ m + 1);\n    for (const T& x : vs) u.push_back(std::lower_bound(vals.begin(),\
     \ vals.end(), x) - vals.begin());\n    u.push_back(sep);\n    for (const T& x\
     \ : vt) u.push_back(std::lower_bound(vals.begin(), vals.end(), x) - vals.begin());\n\
     \    std::vector<long long> sa = suffix_array(u, sep);\n    std::vector<long long>\
@@ -229,30 +232,31 @@ data:
     \      }\n    }\n    return {i, j, len};\n}\n\n/**\n * @brief s \u306E\u4E2D\u306B\
     \ 2 \u56DE\u4EE5\u4E0A\u73FE\u308C\u308B (\u91CD\u306A\u3063\u3066\u3088\u3044\
     ) \u6700\u9577\u306E\u90E8\u5206\u6587\u5B57\u5217\u3092 1 \u3064\u6C42\u3081\u308B\
-    \ O(n log n)\n * s[i, i + len) == s[j, j + len) \u304B\u3064 i < j \u3068\u306A\
-    \u308B (i, j, len) \u3092\u8FD4\u3059\u30022 \u56DE\u4EE5\u4E0A\u73FE\u308C\u308B\
-    \u90E8\u5206\u304C\u306A\u3051\u308C\u3070 (0, 0, 0)\n * \u8F9E\u66F8\u9806\u3067\
-    \u96A3\u308A\u5408\u3046\u63A5\u5C3E\u8F9E\u306E LCP \u306E\u6700\u5927\u3002\u8981\
-    \u7D20\u306F operator< \u3067\u6BD4\u3079\u308B\n */\ntemplate <typename R>\n\
-    std::tuple<long long, long long, long long> longest_repeated_substring(const R&\
-    \ s) {\n    using T = std::decay_t<decltype(*std::begin(s))>;\n    std::vector<T>\
-    \ v(std::begin(s), std::end(s));\n    std::vector<long long> sa = suffix_array(v);\n\
-    \    std::vector<long long> lcp = lcp_array(v, sa);\n    long long i = 0, j =\
-    \ 0, len = 0;\n    for (long long k = 0; k < static_cast<long long>(lcp.size());\
-    \ k++) {\n        if (lcp[k] > len) i = std::min(sa[k], sa[k + 1]), j = std::max(sa[k],\
-    \ sa[k + 1]), len = lcp[k];\n    }\n    return {i, j, len};\n}\n\n/**\n * @brief\
-    \ s \u306E\u4E2D\u306B\u91CD\u306A\u3089\u305A\u306B 2 \u56DE\u4EE5\u4E0A\u73FE\
-    \u308C\u308B\u6700\u9577\u306E\u90E8\u5206\u6587\u5B57\u5217\u3092 1 \u3064\u6C42\
-    \u3081\u308B O(n log n)\n * s[i, i + len) == s[j, j + len) \u304B\u3064 i + len\
-    \ <= j \u3068\u306A\u308B (i, j, len) \u3092\u8FD4\u3059\u3002\u306A\u3051\u308C\
-    \u3070 (0, 0, 0)\n *\n * \u9577\u3055 L \u306E\u3082\u306E\u304C\u3042\u308C\u3070\
-    \ L - 1 \u306E\u3082\u306E\u3082\u3042\u308B\u306E\u3067\u3001L \u3067\u4E8C\u5206\
-    \u63A2\u7D22\u3059\u308B\u3002L \u3092\u56FA\u5B9A\u3057\u305F\u3089\u3001\u8F9E\
-    \u66F8\u9806\u3067\u96A3\u308A\u5408\u3046 LCP \u304C\n * L \u4EE5\u4E0A\u306E\
-    \u9023\u7D9A\u3057\u305F\u533A\u9593\u3054\u3068\u306B\u3001\u958B\u59CB\u4F4D\
-    \u7F6E\u306E\u6700\u5C0F\u3068\u6700\u5927\u306E\u5DEE\u304C L \u4EE5\u4E0A\u304B\
-    \u3092\u898B\u308B\u3002\u8981\u7D20\u306F operator< \u3067\u6BD4\u3079\u308B\n\
-    \ */\ntemplate <typename R>\nstd::tuple<long long, long long, long long> longest_non_overlapping_repeated_substring(const\
+    \ O(n log n)\n * len > 0 \u306A\u3089 s[i, i + len) == s[j, j + len) \u304B\u3064\
+    \ i < j \u3068\u306A\u308B (i, j, len) \u3092\u8FD4\u3059\u30022 \u56DE\u4EE5\u4E0A\
+    \u73FE\u308C\u308B\u8981\u7D20\u304C\u306A\u3051\u308C\u3070 (\u9577\u3055 0)\
+    \ (0, 0, 0)\n * \u8F9E\u66F8\u9806\u3067\u96A3\u308A\u5408\u3046\u63A5\u5C3E\u8F9E\
+    \u306E LCP \u306E\u6700\u5927\u3002\u8981\u7D20\u306F operator< \u3067\u6BD4\u3079\
+    \u308B\n */\ntemplate <typename R>\nstd::tuple<long long, long long, long long>\
+    \ longest_repeated_substring(const R& s) {\n    using T = std::decay_t<decltype(*std::begin(s))>;\n\
+    \    std::vector<T> v(std::begin(s), std::end(s));\n    std::vector<long long>\
+    \ sa = suffix_array(v);\n    std::vector<long long> lcp = lcp_array(v, sa);\n\
+    \    long long i = 0, j = 0, len = 0;\n    for (long long k = 0; k < static_cast<long\
+    \ long>(lcp.size()); k++) {\n        if (lcp[k] > len) i = std::min(sa[k], sa[k\
+    \ + 1]), j = std::max(sa[k], sa[k + 1]), len = lcp[k];\n    }\n    return {i,\
+    \ j, len};\n}\n\n/**\n * @brief s \u306E\u4E2D\u306B\u91CD\u306A\u3089\u305A\u306B\
+    \ 2 \u56DE\u4EE5\u4E0A\u73FE\u308C\u308B\u6700\u9577\u306E\u90E8\u5206\u6587\u5B57\
+    \u5217\u3092 1 \u3064\u6C42\u3081\u308B O(n log n)\n * len > 0 \u306A\u3089 s[i,\
+    \ i + len) == s[j, j + len) \u304B\u3064 i + len <= j \u3068\u306A\u308B (i, j,\
+    \ len) \u3092\u8FD4\u3059\u3002\u306A\u3051\u308C\u3070 (\u9577\u3055 0) (0, 0,\
+    \ 0)\n *\n * \u9577\u3055 L \u306E\u3082\u306E\u304C\u3042\u308C\u3070 L - 1 \u306E\
+    \u3082\u306E\u3082\u3042\u308B\u306E\u3067\u3001L \u3067\u4E8C\u5206\u63A2\u7D22\
+    \u3059\u308B\u3002L \u3092\u56FA\u5B9A\u3057\u305F\u3089\u3001\u8F9E\u66F8\u9806\
+    \u3067\u96A3\u308A\u5408\u3046 LCP \u304C\n * L \u4EE5\u4E0A\u306E\u9023\u7D9A\
+    \u3057\u305F\u533A\u9593\u3054\u3068\u306B\u3001\u958B\u59CB\u4F4D\u7F6E\u306E\
+    \u6700\u5C0F\u3068\u6700\u5927\u306E\u5DEE\u304C L \u4EE5\u4E0A\u304B\u3092\u898B\
+    \u308B\u3002\u8981\u7D20\u306F operator< \u3067\u6BD4\u3079\u308B\n */\ntemplate\
+    \ <typename R>\nstd::tuple<long long, long long, long long> longest_non_overlapping_repeated_substring(const\
     \ R& s) {\n    using T = std::decay_t<decltype(*std::begin(s))>;\n    std::vector<T>\
     \ v(std::begin(s), std::end(s));\n    const long long n = v.size();\n    std::vector<long\
     \ long> sa = suffix_array(v);\n    std::vector<long long> lcp = lcp_array(v, sa);\n\
@@ -275,7 +279,7 @@ data:
   isVerificationFile: false
   path: src/string/longest-common-substring.hpp
   requiredBy: []
-  timestamp: '2026-10-22 14:02:47+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/string/longest-common-substring.test.cpp
@@ -300,9 +304,9 @@ auto [c, d, l2] = longest_non_overlapping_repeated_substring(std::string("ababa"
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `longest_common_substring(s, t)` | `s[i, i + len) == t[j, j + len)` となる最長の `(i, j, len)` を 1 つ求め、`std::tuple<long long, long long, long long>` で返す。共通部分がなければ `(0, 0, 0)` | $O((n + m) \log (n + m))$ |
-| `longest_repeated_substring(s)` | `s` の中に 2 回以上現れる (重なってよい) 最長の部分文字列。`s[i, i + len) == s[j, j + len)`、$i < j$ となる `(i, j, len)` を 1 つ返す。なければ `(0, 0, 0)` | $O(n \log n)$ |
-| `longest_non_overlapping_repeated_substring(s)` | 同じく、重ならずに 2 回以上現れるもの ($i + \mathit{len} \le j$) | $O(n \log n)$ |
+| `longest_common_substring(s, t)` | `s[i, i + len) == t[j, j + len)` となる最長の `(i, j, len)` を 1 つ求め、`std::tuple<long long, long long, long long>` で返す。共通する要素がなければ (長さ 0) `(0, 0, 0)` | $O((n + m) \log (n + m))$ |
+| `longest_repeated_substring(s)` | `s` の中に 2 回以上現れる (重なってよい) 最長の部分文字列。$\mathit{len} > 0$ なら `s[i, i + len) == s[j, j + len)`、$i < j$ となる `(i, j, len)` を 1 つ返す。2 回以上現れる要素がなければ (長さ 0) `(0, 0, 0)` | $O(n \log n)$ |
+| `longest_non_overlapping_repeated_substring(s)` | 同じく、重ならずに 2 回以上現れるもの ($\mathit{len} > 0$ なら $i + \mathit{len} \le j$)。なければ (長さ 0) `(0, 0, 0)` | $O(n \log n)$ |
 
 `s`、区切り、`t` の順につないだ列の [Suffix Array と LCP 配列](suffix-array.hpp) を作り、辞書順で隣り合う接尾辞のうち、片方が `s`、もう片方が `t` から始まるものの LCP の最大を取ります。区切りの値は 1 回しか現れないので、LCP が区切りをまたぐことはありません。計算量の $\log$ は座標圧縮の分です。
 

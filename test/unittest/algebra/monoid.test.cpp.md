@@ -110,13 +110,24 @@ data:
     \        return is >> f.lb >> f.ub >> f.add;\n    }\n    template <class CharT,\
     \ class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const ClampAdd& f) {\n        return os << f.lb << CharT(' ') <<\
-    \ f.ub << CharT(' ') << f.add;\n    }\n};\n\nnamespace monoid {\n\n/**\n * @brief\
-    \ \u548C\n */\ntemplate <typename T>\nstruct Sum {\n    using S = T;\n    static\
-    \ constexpr S op(const S& a, const S& b) { return a + b; }\n    static constexpr\
-    \ S e() { return S(0); }\n};\n\n/**\n * @brief \u7A4D\n */\ntemplate <typename\
-    \ T>\nstruct Prod {\n    using S = T;\n    static constexpr S op(const S& a, const\
-    \ S& b) { return a * b; }\n    static constexpr S e() { return S(1); }\n};\n\n\
-    /**\n * @brief \u6700\u5927\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\u6700\u5C0F\
+    \ f.ub << CharT(' ') << f.add;\n    }\n};\n\nnamespace internal_monoid {\n// MinWith\u30FB\
+    MaxWith \u306E\u5358\u4F4D\u5143\u306E\u4F4D\u7F6E\u3002U \u304C bool \u4EE5\u5916\
+    \u306E\u6574\u6570\u578B\u306A\u3089 -1 (\u5B9F\u5728\u306E\u4F4D\u7F6E\u3068\u533A\
+    \u5225\u3067\u304D\u308B)\u3001\u305D\u3046\u3067\u306A\u3051\u308C\u3070 U{}\n\
+    template <typename U>\nconstexpr bool with_has_e_position = std::is_integral_v<U>\
+    \ && !std::is_same_v<U, bool>;\ntemplate <typename U>\nconstexpr U with_e_position()\
+    \ {\n    if constexpr (with_has_e_position<U>)\n        return static_cast<U>(-1);\n\
+    \    else\n        return U{};\n}\n// U \u304C bool \u4EE5\u5916\u306E\u6574\u6570\
+    \u578B\u3067\u3001\u4F4D\u7F6E\u304C -1 \u306A\u3089\u5358\u4F4D\u5143\ntemplate\
+    \ <typename U>\nconstexpr bool with_is_e(const U& u) {\n    if constexpr (with_has_e_position<U>)\n\
+    \        return u == static_cast<U>(-1);\n    else\n        return false;\n}\n\
+    }  // namespace internal_monoid\n\nnamespace monoid {\n\n/**\n * @brief \u548C\
+    \n */\ntemplate <typename T>\nstruct Sum {\n    using S = T;\n    static constexpr\
+    \ S op(const S& a, const S& b) { return a + b; }\n    static constexpr S e() {\
+    \ return S(0); }\n};\n\n/**\n * @brief \u7A4D\n */\ntemplate <typename T>\nstruct\
+    \ Prod {\n    using S = T;\n    static constexpr S op(const S& a, const S& b)\
+    \ { return a * b; }\n    static constexpr S e() { return S(1); }\n};\n\n/**\n\
+    \ * @brief \u6700\u5927\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\u6700\u5C0F\
     \u5024\n */\ntemplate <typename T>\nstruct Max {\n    using S = T;\n    static\
     \ constexpr S op(const S& a, const S& b) { return std::max(a, b); }\n    static\
     \ constexpr S e() { return std::numeric_limits<S>::lowest(); }\n};\n\n/**\n *\
@@ -203,23 +214,41 @@ data:
     \ >= b.close) return S(a.close, a.open - b.close + b.open);\n        return S(a.close\
     \ + b.close - a.open, b.open);\n    }\n    static constexpr S e() { return S();\
     \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\
-    \u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\
-    \u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\
-    \u5024\u306E\u578B\n */\ntemplate <typename T, typename U = long long>\nstruct\
-    \ MinWith {\n    using S = std::pair<T, U>;\n    static constexpr S op(const S&\
-    \ a, const S& b) { return b.first < a.first ? b : a; }\n    static constexpr S\
-    \ e() { return {std::numeric_limits<T>::max(), U{}}; }\n};\n\n/**\n * @brief \u6700\
-    \u5927\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\
-    \u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u4F4D\
-    \u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\u578B\n */\ntemplate\
-    \ <typename T, typename U = long long>\nstruct MaxWith {\n    using S = std::pair<T,\
-    \ U>;\n    static constexpr S op(const S& a, const S& b) { return a.first < b.first\
-    \ ? b : a; }\n    static constexpr S e() { return {std::numeric_limits<T>::lowest(),\
-    \ U{}}; }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u500B\u6570\
-    \n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u500B\u6570\u306E\u578B\n\
-    \ */\ntemplate <typename T, typename U = long long>\nstruct MinCount {\n    using\
-    \ S = std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n\
-    \        if (a.first < b.first) return a;\n        if (b.first < a.first) return\
+    \u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n * U \u304C\u6574\u6570\
+    \u578B\u306A\u3089\u5358\u4F4D\u5143 (\u7A7A\u533A\u9593) \u306E\u4F4D\u7F6E\u306F\
+    \ -1 \u3067\u3001\u5024\u304C\u578B\u306E\u6700\u5927\u5024\u306E\u8981\u7D20\u304C\
+    \u3042\u3063\u3066\u3082\u5358\u4F4D\u5143\u3068\u3057\u3066\u50CD\u304F\n * U\
+    \ \u304C\u6574\u6570\u578B\u3067\u306A\u3051\u308C\u3070\u5358\u4F4D\u5143\u306F\
+    \ {\u578B\u306E\u6700\u5927\u5024, U{}} \u3067\u3001\u5024\u304C\u578B\u306E\u6700\
+    \u5927\u5024\u306E\u8981\u7D20\u306F\u306A\u3044\u3053\u3068\n *\n * @tparam T\
+    \ \u5024\u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\
+    \u308B\u5024\u306E\u578B (\u6574\u6570\u578B\u306A\u3089 -1 \u306F\u4F7F\u308F\
+    \u306A\u3044\u3053\u3068)\n */\ntemplate <typename T, typename U = long long>\n\
+    struct MinWith {\n    using S = std::pair<T, U>;\n    static constexpr S op(const\
+    \ S& a, const S& b) {\n        if (internal_monoid::with_is_e(a.second)) return\
+    \ b;\n        if (internal_monoid::with_is_e(b.second)) return a;\n        return\
+    \ b.first < a.first ? b : a;\n    }\n    static constexpr S e() { return {std::numeric_limits<T>::max(),\
+    \ internal_monoid::with_e_position<U>()}; }\n};\n\n/**\n * @brief \u6700\u5927\
+    \u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\
+    \u3092\u512A\u5148\n * U \u304C\u6574\u6570\u578B\u306A\u3089\u5358\u4F4D\u5143\
+    \ (\u7A7A\u533A\u9593) \u306E\u4F4D\u7F6E\u306F -1 \u3067\u3001\u5024\u304C\u578B\
+    \u306E\u6700\u5C0F\u5024\u306E\u8981\u7D20\u304C\u3042\u3063\u3066\u3082\u5358\
+    \u4F4D\u5143\u3068\u3057\u3066\u50CD\u304F\n * U \u304C\u6574\u6570\u578B\u3067\
+    \u306A\u3051\u308C\u3070\u5358\u4F4D\u5143\u306F {\u578B\u306E\u6700\u5C0F\u5024\
+    , U{}} \u3067\u3001\u5024\u304C\u578B\u306E\u6700\u5C0F\u5024\u306E\u8981\u7D20\
+    \u306F\u306A\u3044\u3053\u3068\n *\n * @tparam T \u5024\u306E\u578B\n * @tparam\
+    \ U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\u578B (\u6574\
+    \u6570\u578B\u306A\u3089 -1 \u306F\u4F7F\u308F\u306A\u3044\u3053\u3068)\n */\n\
+    template <typename T, typename U = long long>\nstruct MaxWith {\n    using S =\
+    \ std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n    \
+    \    if (internal_monoid::with_is_e(a.second)) return b;\n        if (internal_monoid::with_is_e(b.second))\
+    \ return a;\n        return a.first < b.first ? b : a;\n    }\n    static constexpr\
+    \ S e() { return {std::numeric_limits<T>::lowest(), internal_monoid::with_e_position<U>()};\
+    \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u500B\u6570\n *\n\
+    \ * @tparam T \u5024\u306E\u578B\n * @tparam U \u500B\u6570\u306E\u578B\n */\n\
+    template <typename T, typename U = long long>\nstruct MinCount {\n    using S\
+    \ = std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n  \
+    \      if (a.first < b.first) return a;\n        if (b.first < a.first) return\
     \ b;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
     \ S e() { return {std::numeric_limits<T>::max(), U(0)}; }\n};\n\n/**\n * @brief\
     \ \u6700\u5927\u5024\u3068\u305D\u306E\u500B\u6570\n *\n * @tparam T \u5024\u306E\
@@ -325,7 +354,7 @@ data:
     \ S e() const { return identity; }\n};\ntemplate <typename Op, typename T>\nMonoid(Op,\
     \ T) -> Monoid<T, Op>;\n#line 7 \"test/unittest/algebra/monoid.test.cpp\"\n\n\
     #include <iostream>\n#line 10 \"test/unittest/algebra/monoid.test.cpp\"\n#include\
-    \ <random>\n#include <sstream>\n#include <string>\n#line 14 \"test/unittest/algebra/monoid.test.cpp\"\
+    \ <random>\n#include <sstream>\n#include <string>\n#line 15 \"test/unittest/algebra/monoid.test.cpp\"\
     \n#include <vector>\n\n#line 2 \"src/algebra/group.hpp\"\n\n/**\n * @file group.hpp\n\
     \ * @brief \u7FA4\u306E\u5B9A\u7FA9\n *\n * \u7FA4\u306F\u30E2\u30CE\u30A4\u30C9\
     \ (algebra/monoid.hpp) \u306E\u30E1\u30F3\u30D0\u306B\u52A0\u3048\u3066\u6B21\u306E\
@@ -582,7 +611,7 @@ data:
     \ S>\nusing RProdQ = SegTree<monoid::Prod<S>>;\n/**\n * @brief RangeXorQuery\n\
     \ *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RXorQ = SegTree<monoid::Xor<S>>;\n\
     /**\n * @brief RangeGcdQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename\
-    \ S>\nusing RGcdQ = SegTree<monoid::Gcd<S>>;\n#line 19 \"test/unittest/algebra/monoid.test.cpp\"\
+    \ S>\nusing RGcdQ = SegTree<monoid::Gcd<S>>;\n#line 20 \"test/unittest/algebra/monoid.test.cpp\"\
     \n\nbool ok = true;\nvoid check(bool cond, const char* what) {\n    if (!cond\
     \ && ok) std::cerr << \"failed: \" << what << std::endl;\n    if (!cond) ok =\
     \ false;\n}\n\n// SegTree<M> \u3092\u3001\u914D\u5217\u3068\u6F14\u7B97 op \u3067\
@@ -784,8 +813,34 @@ data:
     \         if (sum > 0) {\n                    expect = i;\n                  \
     \  break;\n                }\n            }\n            check(pmax.max_right(l,\
     \ [](const auto& s) { return s.max <= 0; }) == expect, \"PrefixSumMax max_right\"\
-    );\n        }\n    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
-    }\n"
+    );\n        }\n    }\n\n    // MinWith / MaxWith: \u7A7A\u533A\u9593\u306F\u4F4D\
+    \u7F6E -1\u3002\u5024\u304C\u578B\u306E\u6700\u5927\u5024 (\u6700\u5C0F\u5024\
+    ) \u306E\u8981\u7D20\u304C\u3042\u3063\u3066\u3082\u5358\u4F4D\u5143\u3068\u3057\
+    \u3066\u50CD\u304D\u3001\u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\n    {\n  \
+    \      using Mn = monoid::MinWith<long long>;\n        using Mx = monoid::MaxWith<long\
+    \ long>;\n        constexpr long long INF = std::numeric_limits<long long>::max(),\
+    \ NINF = std::numeric_limits<long long>::lowest();\n        check(Mn::e() == std::pair<long\
+    \ long, long long>(INF, -1) && Mx::e() == std::pair<long long, long long>(NINF,\
+    \ -1), \"MinWith/MaxWith::e\");\n        check(Mn::op(Mn::e(), {INF, 3}) == std::pair<long\
+    \ long, long long>(INF, 3) && Mn::op({INF, 3}, Mn::e()) == std::pair<long long,\
+    \ long long>(INF, 3), \"MinWith e \u306F\u5358\u4F4D\u5143\");\n        check(Mx::op(Mx::e(),\
+    \ {NINF, 3}) == std::pair<long long, long long>(NINF, 3) && Mx::op({NINF, 3},\
+    \ Mx::e()) == std::pair<long long, long long>(NINF, 3), \"MaxWith e \u306F\u5358\
+    \u4F4D\u5143\");\n        for (int rep = 0; rep < 200 && ok; rep++) {\n      \
+    \      int n = rng() % 20 + 1;\n            std::vector<long long> a(n);\n   \
+    \         for (auto& x : a) x = rng() % 3 == 0 ? (rng() % 2 ? INF : NINF) : static_cast<long\
+    \ long>(rng() % 5);\n            std::vector<std::pair<long long, long long>>\
+    \ init(n);\n            for (int i = 0; i < n; i++) init[i] = {a[i], i};\n   \
+    \         SegTree<Mn> mn(init);\n            SegTree<Mx> mx(init);\n         \
+    \   for (int q = 0; q < 30; q++) {\n                int l = rng() % (n + 1), r\
+    \ = rng() % (n + 1);\n                if (l > r) std::swap(l, r);\n          \
+    \      std::pair<long long, long long> emn(INF, -1), emx(NINF, -1);\n        \
+    \        for (int i = l; i < r; i++) {\n                    if (emn.second ==\
+    \ -1 || a[i] < emn.first) emn = {a[i], i};\n                    if (emx.second\
+    \ == -1 || a[i] > emx.first) emx = {a[i], i};\n                }\n           \
+    \     check(mn.prod(l, r) == emn, \"MinWith prod\");\n                check(mx.prod(l,\
+    \ r) == emx, \"MaxWith prod\");\n            }\n        }\n    }\n\n    if (ok)\
+    \ std::cout << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// monoid.hpp / group.hpp \u306E\u30E2\u30CE\u30A4\u30C9\u30FB\u7FA4\u3068\
     \ SegTree \u306E\u7D30\u304B\u3044\u6A5F\u80FD\u3092\u611A\u76F4\u306A\u5B9F\u88C5\
@@ -793,15 +848,15 @@ data:
     \u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\
     \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../../src/algebra/monoid.hpp\"\
     \n\n#include <iostream>\n#include <limits>\n#include <random>\n#include <sstream>\n\
-    #include <string>\n#include <type_traits>\n#include <vector>\n\n#include \"../../../src/algebra/group.hpp\"\
-    \n#include \"../../../src/data_structures/potentialized-unionfind.hpp\"\n#include\
-    \ \"../../../src/data_structures/segtree.hpp\"\n\nbool ok = true;\nvoid check(bool\
-    \ cond, const char* what) {\n    if (!cond && ok) std::cerr << \"failed: \" <<\
-    \ what << std::endl;\n    if (!cond) ok = false;\n}\n\n// SegTree<M> \u3092\u3001\
-    \u914D\u5217\u3068\u6F14\u7B97 op \u3067\u611A\u76F4\u306B\u8A08\u7B97\u3057\u305F\
-    \u7D50\u679C\u3068\u30E9\u30F3\u30C0\u30E0\u306A\u64CD\u4F5C\u5217\u3067\u6BD4\
-    \u3079\u308B\n// size\u30FBconst \u306A operator[]\u30FBall_prod\u30FBos << seg\
-    \ \u3082\u78BA\u304B\u3081\u308B\ntemplate <typename M, typename Op, typename\
+    #include <string>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\
+    \n#include \"../../../src/algebra/group.hpp\"\n#include \"../../../src/data_structures/potentialized-unionfind.hpp\"\
+    \n#include \"../../../src/data_structures/segtree.hpp\"\n\nbool ok = true;\nvoid\
+    \ check(bool cond, const char* what) {\n    if (!cond && ok) std::cerr << \"failed:\
+    \ \" << what << std::endl;\n    if (!cond) ok = false;\n}\n\n// SegTree<M> \u3092\
+    \u3001\u914D\u5217\u3068\u6F14\u7B97 op \u3067\u611A\u76F4\u306B\u8A08\u7B97\u3057\
+    \u305F\u7D50\u679C\u3068\u30E9\u30F3\u30C0\u30E0\u306A\u64CD\u4F5C\u5217\u3067\
+    \u6BD4\u3079\u308B\n// size\u30FBconst \u306A operator[]\u30FBall_prod\u30FBos\
+    \ << seg \u3082\u78BA\u304B\u3081\u308B\ntemplate <typename M, typename Op, typename\
     \ Gen>\nvoid test_segtree(Op op, typename M::S e, Gen gen, std::mt19937_64& rng,\
     \ const char* name) {\n    using S = typename M::S;\n    for (int rep = 0; rep\
     \ < 200 && ok; rep++) {\n        int n = rng() % 20 + 1;\n        std::vector<S>\
@@ -997,8 +1052,34 @@ data:
     \         if (sum > 0) {\n                    expect = i;\n                  \
     \  break;\n                }\n            }\n            check(pmax.max_right(l,\
     \ [](const auto& s) { return s.max <= 0; }) == expect, \"PrefixSumMax max_right\"\
-    );\n        }\n    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
-    }\n"
+    );\n        }\n    }\n\n    // MinWith / MaxWith: \u7A7A\u533A\u9593\u306F\u4F4D\
+    \u7F6E -1\u3002\u5024\u304C\u578B\u306E\u6700\u5927\u5024 (\u6700\u5C0F\u5024\
+    ) \u306E\u8981\u7D20\u304C\u3042\u3063\u3066\u3082\u5358\u4F4D\u5143\u3068\u3057\
+    \u3066\u50CD\u304D\u3001\u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\n    {\n  \
+    \      using Mn = monoid::MinWith<long long>;\n        using Mx = monoid::MaxWith<long\
+    \ long>;\n        constexpr long long INF = std::numeric_limits<long long>::max(),\
+    \ NINF = std::numeric_limits<long long>::lowest();\n        check(Mn::e() == std::pair<long\
+    \ long, long long>(INF, -1) && Mx::e() == std::pair<long long, long long>(NINF,\
+    \ -1), \"MinWith/MaxWith::e\");\n        check(Mn::op(Mn::e(), {INF, 3}) == std::pair<long\
+    \ long, long long>(INF, 3) && Mn::op({INF, 3}, Mn::e()) == std::pair<long long,\
+    \ long long>(INF, 3), \"MinWith e \u306F\u5358\u4F4D\u5143\");\n        check(Mx::op(Mx::e(),\
+    \ {NINF, 3}) == std::pair<long long, long long>(NINF, 3) && Mx::op({NINF, 3},\
+    \ Mx::e()) == std::pair<long long, long long>(NINF, 3), \"MaxWith e \u306F\u5358\
+    \u4F4D\u5143\");\n        for (int rep = 0; rep < 200 && ok; rep++) {\n      \
+    \      int n = rng() % 20 + 1;\n            std::vector<long long> a(n);\n   \
+    \         for (auto& x : a) x = rng() % 3 == 0 ? (rng() % 2 ? INF : NINF) : static_cast<long\
+    \ long>(rng() % 5);\n            std::vector<std::pair<long long, long long>>\
+    \ init(n);\n            for (int i = 0; i < n; i++) init[i] = {a[i], i};\n   \
+    \         SegTree<Mn> mn(init);\n            SegTree<Mx> mx(init);\n         \
+    \   for (int q = 0; q < 30; q++) {\n                int l = rng() % (n + 1), r\
+    \ = rng() % (n + 1);\n                if (l > r) std::swap(l, r);\n          \
+    \      std::pair<long long, long long> emn(INF, -1), emx(NINF, -1);\n        \
+    \        for (int i = l; i < r; i++) {\n                    if (emn.second ==\
+    \ -1 || a[i] < emn.first) emn = {a[i], i};\n                    if (emx.second\
+    \ == -1 || a[i] > emx.first) emx = {a[i], i};\n                }\n           \
+    \     check(mn.prod(l, r) == emn, \"MinWith prod\");\n                check(mx.prod(l,\
+    \ r) == emx, \"MaxWith prod\");\n            }\n        }\n    }\n\n    if (ok)\
+    \ std::cout << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/algebra/monoid.hpp
   - src/algebra/group.hpp
@@ -1008,7 +1089,7 @@ data:
   isVerificationFile: true
   path: test/unittest/algebra/monoid.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:32:25+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/algebra/monoid.test.cpp

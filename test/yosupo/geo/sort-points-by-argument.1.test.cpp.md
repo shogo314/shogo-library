@@ -23,59 +23,61 @@ data:
   bundledCode: "#line 1 \"test/yosupo/geo/sort-points-by-argument.1.test.cpp\"\n#define\
     \ PROBLEM \"https://judge.yosupo.jp/problem/sort_points_by_argument\"\n\n#include\
     \ <algorithm>\n#include <iostream>\n#include <vector>\n\n#line 2 \"src/geometry/angle.hpp\"\
-    \n\n/**\n * @file angle.hpp\n * @brief \u504F\u89D2\n */\n\n#include <cmath>\n\
-    #include <istream>\n#include <ostream>\n#include <type_traits>\n#include <utility>\n\
-    \n/**\n * @brief 2 \u6B21\u5143\u30D9\u30AF\u30C8\u30EB (x, y) \u306E\u504F\u89D2\
-    \n *\n * x \u8EF8\u6B63\u65B9\u5411\u3092 0 \u3068\u3057\u3066\u53CD\u6642\u8A08\
-    \u56DE\u308A\u306B\u6E2C\u308A\u3001\u5468\u56DE\u6570 turn \u3068\u5408\u308F\
-    \u305B\u3066 2\u03C0 * turn + [0, 2\u03C0) \u306E\u5024\u3068\u3057\u3066\u6BD4\
-    \u3079\u308B\u3002\u96F6\u30D9\u30AF\u30C8\u30EB\u306F x \u8EF8\u6B63\u65B9\u5411\
-    \u3068\u540C\u3058\u504F\u89D2\u3068\u3057\u3066\u6271\u3046\n * \u5916\u7A4D\u3067\
-    \u6BD4\u3079\u308B\u306E\u3067\u3001\u6574\u6570\u578B\u306A\u3089\u8AA4\u5DEE\
-    \u306A\u304F\u6BD4\u3079\u3089\u308C\u308B (\u5EA7\u6A19\u306E\u7D76\u5BFE\u5024\
-    \u306E 2 \u4E57\u304C T \u306B\u53CE\u307E\u308B\u5FC5\u8981\u304C\u3042\u308B\
-    )\n *\n * std::sort(ps.begin(), ps.end(), [](const auto& a, const auto& b) { return\
-    \ Angle(a) < Angle(b); });\n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\n */\ntemplate\
-    \ <typename T>\nstruct Angle {\n    T x;                 //!< x \u5EA7\u6A19\n\
-    \    T y;                 //!< y \u5EA7\u6A19\n    long long turn = 0;  //!< \u5468\
-    \u56DE\u6570\n\n    /**\n     * @brief \u504F\u89D2 0 (\u96F6\u30D9\u30AF\u30C8\
-    \u30EB)\n     */\n    constexpr Angle() noexcept : x(), y() {}\n    /**\n    \
-    \ * @brief \u30D9\u30AF\u30C8\u30EB (x, y) \u306E\u504F\u89D2\u306B 2\u03C0 *\
-    \ turn \u3092\u8DB3\u3057\u305F\u3082\u306E\n     */\n    constexpr Angle(T x,\
-    \ T y, long long turn = 0) noexcept : x(x), y(y), turn(turn) {}\n    /**\n   \
-    \  * @brief p[0], p[1] \u3092 x, y \u3068\u3059\u308B (Vector<T, 2> \u3084 std::array<T,\
-    \ 2> \u304B\u3089\u4F5C\u308B)\n     */\n    template <typename P, typename =\
-    \ decltype(std::declval<const P&>()[0])>\n    constexpr explicit Angle(const P&\
-    \ p) noexcept : x(p[0]), y(p[1]) {}\n    /**\n     * @brief p.first, p.second\
-    \ \u3092 x, y \u3068\u3059\u308B\n     */\n    constexpr explicit Angle(const\
-    \ std::pair<T, T>& p) noexcept : x(p.first), y(p.second) {}\n\n    /**\n     *\
-    \ @brief \u96F6\u30D9\u30AF\u30C8\u30EB\u304B\n     */\n    constexpr bool is_zero()\
-    \ const noexcept { return x == 0 && y == 0; }\n    /**\n     * @brief \u5468\u56DE\
-    \u6570\u3092\u9664\u3044\u305F\u504F\u89D2\u304C [0, \u03C0) \u306A\u3089 0\u3001\
-    [\u03C0, 2\u03C0) \u306A\u3089 1\n     */\n    constexpr int half() const noexcept\
-    \ { return y < 0 || (y == 0 && x < 0); }\n    /**\n     * @brief \u504F\u89D2\
-    \ (\u30E9\u30B8\u30A2\u30F3\u30012\u03C0 * turn + [0, 2\u03C0))\n     */\n   \
-    \ double radian() const {\n        const double pi = std::acos(-1.0);\n      \
-    \  double t = std::atan2(static_cast<double>(y), static_cast<double>(x));\n  \
-    \      return (t < 0 ? t + 2 * pi : t) + 2 * pi * static_cast<double>(turn);\n\
+    \n\n/**\n * @file angle.hpp\n * @brief \u504F\u89D2\n */\n\n#include <cassert>\n\
+    #include <cmath>\n#include <istream>\n#include <ostream>\n#include <type_traits>\n\
+    #include <utility>\n\n/**\n * @brief 2 \u6B21\u5143\u30D9\u30AF\u30C8\u30EB (x,\
+    \ y) \u306E\u504F\u89D2\n *\n * x \u8EF8\u6B63\u65B9\u5411\u3092 0 \u3068\u3057\
+    \u3066\u53CD\u6642\u8A08\u56DE\u308A\u306B\u6E2C\u308A\u3001\u5468\u56DE\u6570\
+    \ turn \u3068\u5408\u308F\u305B\u3066 2\u03C0 * turn + [0, 2\u03C0) \u306E\u5024\
+    \u3068\u3057\u3066\u6BD4\u3079\u308B\u3002\u96F6\u30D9\u30AF\u30C8\u30EB\u306F\
+    \ x \u8EF8\u6B63\u65B9\u5411\u3068\u540C\u3058\u504F\u89D2\u3068\u3057\u3066\u6271\
+    \u3046\n * \u5916\u7A4D\u3067\u6BD4\u3079\u308B\u306E\u3067\u3001\u6574\u6570\u578B\
+    \u306A\u3089\u8AA4\u5DEE\u306A\u304F\u6BD4\u3079\u3089\u308C\u308B (\u5EA7\u6A19\
+    \u306E\u7D76\u5BFE\u5024\u306E 2 \u4E57\u304C T \u306B\u53CE\u307E\u308B\u5FC5\
+    \u8981\u304C\u3042\u308B)\n *\n * std::sort(ps.begin(), ps.end(), [](const auto&\
+    \ a, const auto& b) { return Angle(a) < Angle(b); });\n *\n * @tparam T \u5EA7\
+    \u6A19\u306E\u578B\n */\ntemplate <typename T>\nstruct Angle {\n    T x;     \
+    \            //!< x \u5EA7\u6A19\n    T y;                 //!< y \u5EA7\u6A19\
+    \n    long long turn = 0;  //!< \u5468\u56DE\u6570\n\n    /**\n     * @brief \u504F\
+    \u89D2 0 (\u96F6\u30D9\u30AF\u30C8\u30EB)\n     */\n    constexpr Angle() noexcept\
+    \ : x(), y() {}\n    /**\n     * @brief \u30D9\u30AF\u30C8\u30EB (x, y) \u306E\
+    \u504F\u89D2\u306B 2\u03C0 * turn \u3092\u8DB3\u3057\u305F\u3082\u306E\n     */\n\
+    \    constexpr Angle(T x, T y, long long turn = 0) noexcept : x(x), y(y), turn(turn)\
+    \ {}\n    /**\n     * @brief p[0], p[1] \u3092 x, y \u3068\u3059\u308B (Vector<T,\
+    \ 2> \u3084 std::array<T, 2> \u304B\u3089\u4F5C\u308B)\n     */\n    template\
+    \ <typename P, typename = decltype(std::declval<const P&>()[0])>\n    constexpr\
+    \ explicit Angle(const P& p) noexcept : x(p[0]), y(p[1]) {}\n    /**\n     * @brief\
+    \ p.first, p.second \u3092 x, y \u3068\u3059\u308B\n     */\n    constexpr explicit\
+    \ Angle(const std::pair<T, T>& p) noexcept : x(p.first), y(p.second) {}\n\n  \
+    \  /**\n     * @brief \u96F6\u30D9\u30AF\u30C8\u30EB\u304B\n     */\n    constexpr\
+    \ bool is_zero() const noexcept { return x == 0 && y == 0; }\n    /**\n     *\
+    \ @brief \u5468\u56DE\u6570\u3092\u9664\u3044\u305F\u504F\u89D2\u304C [0, \u03C0\
+    ) \u306A\u3089 0\u3001[\u03C0, 2\u03C0) \u306A\u3089 1\n     */\n    constexpr\
+    \ int half() const noexcept { return y < 0 || (y == 0 && x < 0); }\n    /**\n\
+    \     * @brief \u504F\u89D2 (\u30E9\u30B8\u30A2\u30F3\u30012\u03C0 * turn + [0,\
+    \ 2\u03C0))\n     */\n    double radian() const {\n        const double pi = std::acos(-1.0);\n\
+    \        double t = std::atan2(static_cast<double>(y), static_cast<double>(x));\n\
+    \        return (t < 0 ? t + 2 * pi : t) + 2 * pi * static_cast<double>(turn);\n\
     \    }\n    /**\n     * @brief 2\u03C0 \u3092\u8DB3\u3057\u305F\u504F\u89D2\n\
     \     */\n    constexpr Angle next_turn() const noexcept { return Angle(x, y,\
     \ turn + 1); }\n    /**\n     * @brief \u03C0 \u3092\u8DB3\u3057\u305F\u504F\u89D2\
-    \ (\u9006\u5411\u304D\u306E\u30D9\u30AF\u30C8\u30EB)\n     */\n    constexpr Angle\
-    \ opposite() const noexcept { return Angle(-x, -y, turn + half()); }\n\n    /**\n\
-    \     * @brief \u7B26\u53F7\u3092\u53CD\u8EE2\u3057\u305F\u504F\u89D2 (x \u8EF8\
-    \u306B\u3064\u3044\u3066\u6298\u308A\u8FD4\u3057\u305F\u30D9\u30AF\u30C8\u30EB\
-    )\n     */\n    constexpr Angle operator-() const noexcept {\n        // \u5468\
-    \u56DE\u6570\u3092\u9664\u3044\u305F\u504F\u89D2\u304C 0 \u306A\u3089 -2\u03C0\
-    \ * turn\u3001\u305D\u3046\u3067\u306A\u3051\u308C\u3070 2\u03C0 \u3092\u8DB3\u3057\
-    \u3066 [0, 2\u03C0) \u306B\u53CE\u3081\u308B\n        bool on_zero = y == 0 &&\
-    \ x >= 0;\n        return Angle(x, -y, -turn - !on_zero);\n    }\n    /**\n  \
-    \   * @brief \u504F\u89D2\u306E\u548C (\u8907\u7D20\u6570\u3068\u3057\u3066\u306E\
-    \u7A4D)\n     *\n     * \u5EA7\u6A19\u306F a \u3068 b \u306E\u5EA7\u6A19\u306E\
-    \u7A4D\u306E\u5927\u304D\u3055\u306B\u306A\u308B\u3002\u96F6\u30D9\u30AF\u30C8\
-    \u30EB\u306F\u504F\u89D2 0 \u3068\u3057\u3066\u6271\u3044\u3001\u3082\u3046\u4E00\
-    \u65B9\u306E\u30D9\u30AF\u30C8\u30EB\u3092\u8FD4\u3059\n     */\n    friend constexpr\
-    \ Angle operator+(const Angle& a, const Angle& b) noexcept {\n        if (a.is_zero())\
+    \ (\u9006\u5411\u304D\u306E\u30D9\u30AF\u30C8\u30EB)\u3002\u96F6\u30D9\u30AF\u30C8\
+    \u30EB\u306B\u306F\u4F7F\u3048\u306A\u3044\n     */\n    constexpr Angle opposite()\
+    \ const noexcept {\n        assert(!is_zero() && \"Angle::opposite: zero vector\"\
+    );\n        return Angle(-x, -y, turn + half());\n    }\n\n    /**\n     * @brief\
+    \ \u7B26\u53F7\u3092\u53CD\u8EE2\u3057\u305F\u504F\u89D2 (x \u8EF8\u306B\u3064\
+    \u3044\u3066\u6298\u308A\u8FD4\u3057\u305F\u30D9\u30AF\u30C8\u30EB)\n     */\n\
+    \    constexpr Angle operator-() const noexcept {\n        // \u5468\u56DE\u6570\
+    \u3092\u9664\u3044\u305F\u504F\u89D2\u304C 0 \u306A\u3089 -2\u03C0 * turn\u3001\
+    \u305D\u3046\u3067\u306A\u3051\u308C\u3070 2\u03C0 \u3092\u8DB3\u3057\u3066 [0,\
+    \ 2\u03C0) \u306B\u53CE\u3081\u308B\n        bool on_zero = y == 0 && x >= 0;\n\
+    \        return Angle(x, -y, -turn - !on_zero);\n    }\n    /**\n     * @brief\
+    \ \u504F\u89D2\u306E\u548C (\u8907\u7D20\u6570\u3068\u3057\u3066\u306E\u7A4D)\n\
+    \     *\n     * \u5EA7\u6A19\u306F a \u3068 b \u306E\u5EA7\u6A19\u306E\u7A4D\u306E\
+    \u5927\u304D\u3055\u306B\u306A\u308B\u3002\u96F6\u30D9\u30AF\u30C8\u30EB\u306F\
+    \u504F\u89D2 0 \u3068\u3057\u3066\u6271\u3044\u3001\u3082\u3046\u4E00\u65B9\u306E\
+    \u30D9\u30AF\u30C8\u30EB\u3092\u8FD4\u3059\n     */\n    friend constexpr Angle\
+    \ operator+(const Angle& a, const Angle& b) noexcept {\n        if (a.is_zero())\
     \ return Angle(b.x, b.y, a.turn + b.turn);\n        if (b.is_zero()) return Angle(a.x,\
     \ a.y, a.turn + b.turn);\n        Angle c(a.x * b.x - a.y * b.y, a.x * b.y + a.y\
     \ * b.x, a.turn + b.turn);\n        // \u5468\u56DE\u6570\u3092\u9664\u3044\u305F\
@@ -121,10 +123,10 @@ data:
     \ P&>()[0])>>>;\ntemplate <typename T>\nAngle(const std::pair<T, T>&) -> Angle<T>;\n\
     #line 2 \"src/geometry/vector.hpp\"\n\n/**\n * @file vector.hpp\n * @brief \u5E7E\
     \u4F55\u30D9\u30AF\u30C8\u30EB\n */\n\n#line 9 \"src/geometry/vector.hpp\"\n#include\
-    \ <array>\n#include <cassert>\n#line 13 \"src/geometry/vector.hpp\"\n#include\
-    \ <limits>\n#include <numeric>\n#include <optional>\n#line 17 \"src/geometry/vector.hpp\"\
-    \n#include <stack>\n#line 21 \"src/geometry/vector.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\
-    \n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n\
+    \ <array>\n#line 13 \"src/geometry/vector.hpp\"\n#include <limits>\n#include <numeric>\n\
+    #include <optional>\n#line 17 \"src/geometry/vector.hpp\"\n#include <stack>\n\
+    #line 21 \"src/geometry/vector.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n\
+    /**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n\
     #include <iterator>\n#include <set>\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace\
     \ internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T, class =\
     \ void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct\
@@ -384,65 +386,68 @@ data:
     \ T>\nconstexpr Vector<T, 2> reflection(const Vector<T, 2>& p1, const Vector<T,\
     \ 2>& p2, const Vector<T, 2>& p) {\n    return projection(p1, p2, p) * T(2) -\
     \ p;\n}\n\n/**\n * @brief \u76F4\u7DDA p1p2 \u3068\u76F4\u7DDA q1q2 \u306E\u4EA4\
-    \u70B9\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n * @return std::optional<Vector<T,\
-    \ 2>> \u4EA4\u70B9 (\u5E73\u884C\u306A\u3089 std::nullopt)\n */\ntemplate <typename\
-    \ T>\nconstexpr std::optional<Vector<T, 2>> line_intersection(const Vector<T,\
-    \ 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& q1, const Vector<T, 2>&\
-    \ q2) {\n    static_assert(std::is_floating_point_v<T>, \"line_intersection: T\
-    \ must be a floating point type\");\n    Vector<T, 2> d = p2 - p1, e = q2 - q1;\n\
-    \    T c = cross(e, d);\n    if (c == 0) return std::nullopt;\n    // p1 + d t\
-    \ \u304C\u76F4\u7DDA q1q2 \u4E0A\u306B\u3042\u308B t\n    return p1 + d * (cross(e,\
-    \ q1 - p1) / c);\n}\n\n/**\n * @brief \u70B9 p \u3068\u76F4\u7DDA p1p2 \u306E\u8DDD\
+    \u70B9\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\u3002p1 != p2 \u304B\
+    \u3064 q1 != q2 \u3067\u3042\u308B\u3053\u3068\n * @return std::optional<Vector<T,\
+    \ 2>> \u4EA4\u70B9 (\u5E73\u884C (\u91CD\u306A\u308B\u76F4\u7DDA\u3082\u542B\u3080\
+    ) \u306A\u3089 std::nullopt)\n */\ntemplate <typename T>\nconstexpr std::optional<Vector<T,\
+    \ 2>> line_intersection(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const\
+    \ Vector<T, 2>& q1, const Vector<T, 2>& q2) {\n    static_assert(std::is_floating_point_v<T>,\
+    \ \"line_intersection: T must be a floating point type\");\n    assert(p1 != p2\
+    \ && q1 != q2 && \"line_intersection: degenerate line\");\n    Vector<T, 2> d\
+    \ = p2 - p1, e = q2 - q1;\n    T c = cross(e, d);\n    if (c == 0) return std::nullopt;\n\
+    \    // p1 + d t \u304C\u76F4\u7DDA q1q2 \u4E0A\u306B\u3042\u308B t\n    return\
+    \ p1 + d * (cross(e, q1 - p1) / c);\n}\n\n/**\n * @brief \u70B9 p \u3068\u76F4\
+    \u7DDA p1p2 \u306E\u8DDD\u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B\
+    )\n */\ntemplate <typename T>\ndouble distance_point_line(const Vector<T, 2>&\
+    \ p1, const Vector<T, 2>& p2, const Vector<T, 2>& p) {\n    assert(p1 != p2 &&\
+    \ \"distance_point_line: degenerate line\");\n    return std::abs(static_cast<double>(cross(p2\
+    \ - p1, p - p1))) / (p2 - p1).abs();\n}\n/**\n * @brief \u70B9 p \u3068\u7DDA\u5206\
+    \ p1p2 \u306E\u8DDD\u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n\
+    \ */\ntemplate <typename T>\ndouble distance_point_segment(const Vector<T, 2>&\
+    \ p1, const Vector<T, 2>& p2, const Vector<T, 2>& p) {\n    if (p1 == p2) return\
+    \ (p - p1).abs();\n    // \u5782\u7DDA\u306E\u8DB3\u304C\u7DDA\u5206\u306E\u5916\
+    \u306A\u3089\u3001\u8FD1\u3044\u65B9\u306E\u7AEF\u70B9\u3068\u306E\u8DDD\u96E2\
+    \n    if (dot(p2 - p1, p - p1) < 0) return (p - p1).abs();\n    if (dot(p1 - p2,\
+    \ p - p2) < 0) return (p - p2).abs();\n    return distance_point_line(p1, p2,\
+    \ p);\n}\n/**\n * @brief \u7DDA\u5206 p1p2 \u3068\u7DDA\u5206 q1q2 \u306E\u8DDD\
     \u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate <typename\
-    \ T>\ndouble distance_point_line(const Vector<T, 2>& p1, const Vector<T, 2>& p2,\
-    \ const Vector<T, 2>& p) {\n    assert(p1 != p2 && \"distance_point_line: degenerate\
-    \ line\");\n    return std::abs(static_cast<double>(cross(p2 - p1, p - p1))) /\
-    \ (p2 - p1).abs();\n}\n/**\n * @brief \u70B9 p \u3068\u7DDA\u5206 p1p2 \u306E\u8DDD\
-    \u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate <typename\
-    \ T>\ndouble distance_point_segment(const Vector<T, 2>& p1, const Vector<T, 2>&\
-    \ p2, const Vector<T, 2>& p) {\n    if (p1 == p2) return (p - p1).abs();\n   \
-    \ // \u5782\u7DDA\u306E\u8DB3\u304C\u7DDA\u5206\u306E\u5916\u306A\u3089\u3001\u8FD1\
-    \u3044\u65B9\u306E\u7AEF\u70B9\u3068\u306E\u8DDD\u96E2\n    if (dot(p2 - p1, p\
-    \ - p1) < 0) return (p - p1).abs();\n    if (dot(p1 - p2, p - p2) < 0) return\
-    \ (p - p2).abs();\n    return distance_point_line(p1, p2, p);\n}\n/**\n * @brief\
-    \ \u7DDA\u5206 p1p2 \u3068\u7DDA\u5206 q1q2 \u306E\u8DDD\u96E2 (\u6574\u6570\u578B\
-    \u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate <typename T>\ndouble distance_segments(const\
-    \ Vector<T, 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& q1, const Vector<T,\
-    \ 2>& q2) {\n    if (p1 != p2 && q1 != q2 && segments_intersect(p1, p2, q1, q2))\
-    \ return 0;\n    return std::min({distance_point_segment(p1, p2, q1), distance_point_segment(p1,\
-    \ p2, q2),\n                     distance_point_segment(q1, q2, p1), distance_point_segment(q1,\
-    \ q2, p2)});\n}\n\n/**\n * @brief \u591A\u89D2\u5F62\u306E\u7B26\u53F7\u4ED8\u304D\
-    \u9762\u7A4D\u306E2\u500D\n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param\
-    \ polygon \u9802\u70B9\u306E\u5EA7\u6A19\n * @return T \u9762\u7A4D\u306E2\u500D\
-    (\u53CD\u6642\u8A08\u56DE\u308A\u306A\u3089\u6B63\u3001\u6642\u8A08\u56DE\u308A\
-    \u306A\u3089\u8CA0)\n */\ntemplate <typename T>\nT polygon_area_doubled(const\
-    \ std::vector<Vector<T, 2>>& polygon) {\n    T ret = 0;\n    for (int i = 0; i\
-    \ < static_cast<int>(polygon.size()); i++) {\n        int j = i + 1;\n       \
-    \ if (j == static_cast<int>(polygon.size())) j = 0;\n        ret += cross(polygon[i],\
-    \ polygon[j]);\n    }\n    return ret;\n}\n\n/**\n * @brief \u591A\u89D2\u5F62\
-    \u306E\u9762\u7A4D\n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon\
-    \ \u9802\u70B9\u306E\u5EA7\u6A19(\u9806\u756A\u3001\u53CD\u6642\u8A08\u56DE\u308A\
-    \u304B\u6642\u8A08\u56DE\u308A\u304B\u306F\u554F\u308F\u306A\u3044)\n * @return\
-    \ double \u9762\u7A4D\n */\ntemplate <typename T>\ndouble polygon_area(const std::vector<Vector<T,\
-    \ 2>>& polygon) {\n    return std::abs(polygon_area_doubled(polygon)) / 2.;\n\
-    }\n\n/**\n * @brief \u591A\u89D2\u5F62\u306E\u51F8\u6027\u5224\u5B9A\n *\n * @tparam\
+    \ T>\ndouble distance_segments(const Vector<T, 2>& p1, const Vector<T, 2>& p2,\
+    \ const Vector<T, 2>& q1, const Vector<T, 2>& q2) {\n    if (p1 != p2 && q1 !=\
+    \ q2 && segments_intersect(p1, p2, q1, q2)) return 0;\n    return std::min({distance_point_segment(p1,\
+    \ p2, q1), distance_point_segment(p1, p2, q2),\n                     distance_point_segment(q1,\
+    \ q2, p1), distance_point_segment(q1, q2, p2)});\n}\n\n/**\n * @brief \u591A\u89D2\
+    \u5F62\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\u306E2\u500D\n *\n * @tparam\
     \ T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19\
-    (\u53CD\u6642\u8A08\u56DE\u308A)\n * @return true \u51F8\n * @return false \u51F9\
-    \n */\ntemplate <typename T>\nbool polygon_is_convex(const std::vector<Vector<T,\
-    \ 2>>& polygon) {\n    int n = polygon.size();\n    for (int i = 0; i < n; i++)\
-    \ {\n        int j = i + 1;\n        if (j == n) j = 0;\n        int k = j + 1;\n\
-    \        if (k == n) k = 0;\n        if (cross(polygon[j] - polygon[i], polygon[k]\
-    \ - polygon[j]) < 0) return false;\n    }\n    return true;\n}\n\n/**\n * @brief\
-    \ \u70B9\u306E\u591A\u89D2\u5F62\u5185\u5305\u542B\u5224\u5B9A\n *\n * @tparam\
-    \ T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19\
-    (\u53CD\u6642\u8A08\u56DE\u308A)\n * @param p \u70B9\u306E\u5EA7\u6A19\n * @return\
-    \ int 0: \u5916\u90E8, 1: \u8FBA\u4E0A, 2: \u5185\u90E8\n */\ntemplate <typename\
-    \ T>\nint polygon_contains(const std::vector<Vector<T, 2>>& polygon, const Vector<T,\
-    \ 2>& p) {\n    bool in = false;\n    for (int i = 0; i < static_cast<int>(polygon.size());\
-    \ i++) {\n        int j = i + 1;\n        if (j == static_cast<int>(polygon.size()))\
-    \ j = 0;\n        Vector<T> v1 = polygon[i] - p, v2 = polygon[j] - p;\n      \
-    \  if (v1[1] > v2[1]) std::swap(v1, v2);\n        T c = cross(v1, v2);\n     \
-    \   if (v1[1] <= 0 && v2[1] > 0 && c < 0) in = !in;\n        if (c == 0 && dot(v1,\
+    \n * @return T \u9762\u7A4D\u306E2\u500D(\u53CD\u6642\u8A08\u56DE\u308A\u306A\u3089\
+    \u6B63\u3001\u6642\u8A08\u56DE\u308A\u306A\u3089\u8CA0)\n */\ntemplate <typename\
+    \ T>\nT polygon_area_doubled(const std::vector<Vector<T, 2>>& polygon) {\n   \
+    \ T ret = 0;\n    for (int i = 0; i < static_cast<int>(polygon.size()); i++) {\n\
+    \        int j = i + 1;\n        if (j == static_cast<int>(polygon.size())) j\
+    \ = 0;\n        ret += cross(polygon[i], polygon[j]);\n    }\n    return ret;\n\
+    }\n\n/**\n * @brief \u591A\u89D2\u5F62\u306E\u9762\u7A4D\n *\n * @tparam T \u5EA7\
+    \u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19(\u9806\u756A\
+    \u3001\u53CD\u6642\u8A08\u56DE\u308A\u304B\u6642\u8A08\u56DE\u308A\u304B\u306F\
+    \u554F\u308F\u306A\u3044)\n * @return double \u9762\u7A4D\n */\ntemplate <typename\
+    \ T>\ndouble polygon_area(const std::vector<Vector<T, 2>>& polygon) {\n    return\
+    \ std::abs(polygon_area_doubled(polygon)) / 2.;\n}\n\n/**\n * @brief \u591A\u89D2\
+    \u5F62\u306E\u51F8\u6027\u5224\u5B9A\n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\
+    \n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19(\u53CD\u6642\u8A08\u56DE\u308A\
+    )\n * @return true \u51F8\n * @return false \u51F9\n */\ntemplate <typename T>\n\
+    bool polygon_is_convex(const std::vector<Vector<T, 2>>& polygon) {\n    int n\
+    \ = polygon.size();\n    for (int i = 0; i < n; i++) {\n        int j = i + 1;\n\
+    \        if (j == n) j = 0;\n        int k = j + 1;\n        if (k == n) k = 0;\n\
+    \        if (cross(polygon[j] - polygon[i], polygon[k] - polygon[j]) < 0) return\
+    \ false;\n    }\n    return true;\n}\n\n/**\n * @brief \u70B9\u306E\u591A\u89D2\
+    \u5F62\u5185\u5305\u542B\u5224\u5B9A\n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\
+    \n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19(\u53CD\u6642\u8A08\u56DE\u308A\
+    )\n * @param p \u70B9\u306E\u5EA7\u6A19\n * @return int 0: \u5916\u90E8, 1: \u8FBA\
+    \u4E0A, 2: \u5185\u90E8\n */\ntemplate <typename T>\nint polygon_contains(const\
+    \ std::vector<Vector<T, 2>>& polygon, const Vector<T, 2>& p) {\n    bool in =\
+    \ false;\n    for (int i = 0; i < static_cast<int>(polygon.size()); i++) {\n \
+    \       int j = i + 1;\n        if (j == static_cast<int>(polygon.size())) j =\
+    \ 0;\n        Vector<T> v1 = polygon[i] - p, v2 = polygon[j] - p;\n        if\
+    \ (v1[1] > v2[1]) std::swap(v1, v2);\n        T c = cross(v1, v2);\n        if\
+    \ (v1[1] <= 0 && v2[1] > 0 && c < 0) in = !in;\n        if (c == 0 && dot(v1,\
     \ v2) <= 0) return 1;\n    }\n    return in ? 2 : 0;\n}\n\n/**\n * @brief \u591A\
     \u89D2\u5F62\u306E\u534A\u51F8\u5305\n * \u4E0E\u3048\u3089\u308C\u305F\u9802\u70B9\
     \u30EA\u30B9\u30C8\u306E\u9806\u756A\u3092\u4FDD\u3063\u3066\u53CD\u6642\u8A08\
@@ -483,11 +488,12 @@ data:
     \ {\n    double dist;     //!< \u6700\u8FD1\u70B9\u5BFE\u306E\u8DDD\u96E2\n  \
     \  long long i, j;  //!< \u6700\u8FD1\u70B9\u5BFE\u306E\u6DFB\u5B57\n};\n\n/**\n\
     \ * @brief \u6700\u8FD1\u70B9\u5BFE\n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\
-    \n * @param points \u9802\u70B9\u30EA\u30B9\u30C8\n * @return ClosestPairSquared<T>\
-    \ \u6700\u8FD1\u70B9\u5BFE\u306E\u8DDD\u96E2\u306E2\u4E57\u3068\u6DFB\u5B57\n\
-    \ */\ntemplate <typename T>\nClosestPairSquared<T> closest_point_pair_squared(const\
-    \ std::vector<Vector<T, 2>>& points) {\n    std::vector<int> sorted_idx(points.size());\n\
-    \    std::iota(sorted_idx.begin(), sorted_idx.end(), 0);\n    std::sort(sorted_idx.begin(),\
+    \n * @param points \u9802\u70B9\u30EA\u30B9\u30C8 (2\u500B\u4EE5\u4E0A)\n * @return\
+    \ ClosestPairSquared<T> \u6700\u8FD1\u70B9\u5BFE\u306E\u8DDD\u96E2\u306E2\u4E57\
+    \u3068\u6DFB\u5B57\n */\ntemplate <typename T>\nClosestPairSquared<T> closest_point_pair_squared(const\
+    \ std::vector<Vector<T, 2>>& points) {\n    assert(points.size() >= 2 && \"closest_point_pair_squared:\
+    \ fewer than 2 points\");\n    std::vector<int> sorted_idx(points.size());\n \
+    \   std::iota(sorted_idx.begin(), sorted_idx.end(), 0);\n    std::sort(sorted_idx.begin(),\
     \ sorted_idx.end(), [&](int i, int j) {\n        return points[i][0] < points[j][0];\n\
     \    });\n    std::vector<int> left(1, 0);                                   \
     \     // \u5DE6\u7AEF\n    std::vector<int> right(1, points.size());         \
@@ -530,8 +536,8 @@ data:
     \            }\n        }\n    }\n    return {min_dist_squared[0], min_dist_pair[0].first,\
     \ min_dist_pair[0].second};\n}\n\n/**\n * @brief \u6700\u8FD1\u70B9\u5BFE\n *\n\
     \ * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param points \u9802\u70B9\u30EA\u30B9\
-    \u30C8\n * @return ClosestPair \u6700\u8FD1\u70B9\u5BFE\u306E\u8DDD\u96E2\u3068\
-    \u6DFB\u5B57\n */\ntemplate <typename T>\nClosestPair closest_point_pair(const\
+    \u30C8 (2\u500B\u4EE5\u4E0A)\n * @return ClosestPair \u6700\u8FD1\u70B9\u5BFE\u306E\
+    \u8DDD\u96E2\u3068\u6DFB\u5B57\n */\ntemplate <typename T>\nClosestPair closest_point_pair(const\
     \ std::vector<Vector<T, 2>>& points) {\n    auto [d2, i, j] = closest_point_pair_squared(points);\n\
     \    return {std::sqrt(static_cast<double>(d2)), i, j};\n}\n\n/**\n * @brief farthest_point_pair_squared\
     \ \u306E\u623B\u308A\u5024\n */\ntemplate <typename T>\nstruct FarthestPairSquared\
@@ -628,7 +634,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/geo/sort-points-by-argument.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-24 23:15:04+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/geo/sort-points-by-argument.1.test.cpp

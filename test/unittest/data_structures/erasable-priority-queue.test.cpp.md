@@ -49,26 +49,29 @@ data:
     x \u306F\u542B\u307E\u308C\u3066\u3044\u308B\u3053\u3068 (\u542B\u307E\u308C\u3066\
     \u3044\u306A\u3044\u8981\u7D20\u3092\u524A\u9664\u3059\u308B\u3068\u58CA\u308C\
     \u308B)\n     * \u6BD4\u8F03\u95A2\u6570\u3067\u7B49\u3057\u3044\u8981\u7D20\u306F\
-    \u533A\u5225\u3057\u306A\u3044\n     */\n    void erase(const T& x) {\n      \
-    \  del.push(x);\n        normalize();\n    }\n    /**\n     * @brief \u5148\u982D\
-    \ (\u65E2\u5B9A\u3067\u306F\u6700\u5927) \u306E\u8981\u7D20\n     */\n    const\
-    \ T& top() const {\n        assert(!empty());\n        return que.top();\n   \
-    \ }\n    /**\n     * @brief \u5148\u982D\u306E\u8981\u7D20\u3092\u524A\u9664\u3059\
-    \u308B\n     */\n    void pop() {\n        assert(!empty());\n        que.pop();\n\
-    \        normalize();\n    }\n};\n#line 7 \"test/unittest/data_structures/erasable-priority-queue.test.cpp\"\
-    \n\n#line 9 \"test/unittest/data_structures/erasable-priority-queue.test.cpp\"\
-    \n#include <iostream>\n#include <iterator>\n#include <random>\n#include <set>\n\
-    #line 14 \"test/unittest/data_structures/erasable-priority-queue.test.cpp\"\n\n\
-    int main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int rep\
-    \ = 0; rep < 1000 && ok; rep++) {\n        ErasablePriorityQueue<int> max_q;\n\
-    \        ErasablePriorityQueue<int, std::greater<int>> min_q;\n        std::multiset<int>\
-    \ st;\n        for (int t = 0; t < 100; t++) {\n            int op = rng() % 4;\n\
-    \            if (op <= 1 || st.empty()) {\n                int x = rng() % 10;\n\
-    \                max_q.push(x);\n                min_q.push(x);\n            \
-    \    st.insert(x);\n            } else if (op == 2) {\n                // \u542B\
-    \u307E\u308C\u3066\u3044\u308B\u8981\u7D20\u3092\u30E9\u30F3\u30C0\u30E0\u306B\
-    \u9078\u3093\u3067\u524A\u9664\u3059\u308B\n                auto it = std::next(st.begin(),\
-    \ rng() % st.size());\n                max_q.erase(*it);\n                min_q.erase(*it);\n\
+    \u533A\u5225\u3057\u306A\u3044\u3002\u7A7A\u306A\u3089 assert \u3067\u843D\u3061\
+    \u308B\n     */\n    void erase(const T& x) {\n        assert(!empty());\n   \
+    \     del.push(x);\n        normalize();\n    }\n    /**\n     * @brief \u5148\
+    \u982D (\u65E2\u5B9A\u3067\u306F\u6700\u5927) \u306E\u8981\u7D20\u3002\u7A7A\u306A\
+    \u3089 assert \u3067\u843D\u3061\u308B\n     */\n    const T& top() const {\n\
+    \        assert(!empty());\n        return que.top();\n    }\n    /**\n     *\
+    \ @brief \u5148\u982D\u306E\u8981\u7D20\u3092\u524A\u9664\u3059\u308B\u3002\u7A7A\
+    \u306A\u3089 assert \u3067\u843D\u3061\u308B\n     */\n    void pop() {\n    \
+    \    assert(!empty());\n        que.pop();\n        normalize();\n    }\n};\n\
+    #line 7 \"test/unittest/data_structures/erasable-priority-queue.test.cpp\"\n\n\
+    #line 9 \"test/unittest/data_structures/erasable-priority-queue.test.cpp\"\n#include\
+    \ <iostream>\n#include <iterator>\n#include <random>\n#include <set>\n#line 14\
+    \ \"test/unittest/data_structures/erasable-priority-queue.test.cpp\"\n\nint main()\
+    \ {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int rep = 0; rep\
+    \ < 1000 && ok; rep++) {\n        ErasablePriorityQueue<int> max_q;\n        ErasablePriorityQueue<int,\
+    \ std::greater<int>> min_q;\n        std::multiset<int> st;\n        for (int\
+    \ t = 0; t < 100; t++) {\n            int op = rng() % 4;\n            if (op\
+    \ <= 1 || st.empty()) {\n                int x = rng() % 10;\n               \
+    \ max_q.push(x);\n                min_q.push(x);\n                st.insert(x);\n\
+    \            } else if (op == 2) {\n                // \u542B\u307E\u308C\u3066\
+    \u3044\u308B\u8981\u7D20\u3092\u30E9\u30F3\u30C0\u30E0\u306B\u9078\u3093\u3067\
+    \u524A\u9664\u3059\u308B\n                auto it = std::next(st.begin(), rng()\
+    \ % st.size());\n                max_q.erase(*it);\n                min_q.erase(*it);\n\
     \                st.erase(it);\n            } else {\n                if (rng()\
     \ % 2) {\n                    max_q.pop();\n                    min_q.erase(*st.rbegin());\n\
     \                    st.erase(std::prev(st.end()));\n                } else {\n\
@@ -113,7 +116,7 @@ data:
   isVerificationFile: true
   path: test/unittest/data_structures/erasable-priority-queue.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:32:25+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/data_structures/erasable-priority-queue.test.cpp

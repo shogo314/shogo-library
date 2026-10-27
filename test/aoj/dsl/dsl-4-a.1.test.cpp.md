@@ -233,8 +233,9 @@ data:
     \ U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>& operator|=(std::vector<T>&\
     \ v1, const std::vector<U>& v2) {\n    return extend(v1, v2);\n}\n\ntemplate <typename\
     \ T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>\ninline std::vector<T>& operator|=(std::vector<T>&\
-    \ v, const U& u) {\n    std::vector<T> w(v);\n    v.clear();\n    for (int i =\
-    \ 0; i < u; i++) {\n        extend(v, w);\n    }\n    return v;\n}\n\ntemplate\
+    \ v, const U& u) {\n    if constexpr (std::is_signed_v<U>) assert(u >= 0);\n \
+    \   std::vector<T> w(v);\n    v.clear();\n    for (long long i = 0; i < static_cast<long\
+    \ long>(u); i++) {\n        extend(v, w);\n    }\n    return v;\n}\n\ntemplate\
     \ <typename T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>\ninline std::vector<T>\
     \ operator|(const std::vector<T>& v, const U& u) {\n    std::vector<T> res(v);\n\
     \    return res |= u;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>\n\
@@ -254,27 +255,28 @@ data:
     \ std::vector<T>& v) {\n    std::vector<T> res(v);\n    std::sort(res.begin(),\
     \ res.end());\n    res.erase(std::unique(res.begin(), res.end()), res.end());\n\
     \    return res;\n}\n\ninline long long radix_convert(const std::vector<long long>&\
-    \ v, int base = 10) {\n    long long res = 0;\n    for (long long d : v) {\n \
-    \       res = res * base + d;\n    }\n    return res;\n}\n\ninline std::vector<long\
-    \ long> radix_convert(long long v, int base = 10) {\n    std::vector<long long>\
-    \ res;\n    while (v > 0) {\n        res.push_back(v % base);\n        v /= base;\n\
-    \    }\n    std::reverse(res.begin(), res.end());\n    return res;\n}\n#line 8\
-    \ \"test/aoj/dsl/dsl-4-a.1.test.cpp\"\n\nint main() {\n    int n;\n    std::cin\
-    \ >> n;\n    std::vector<long long> x1(n), y1(n), x2(n), y2(n);\n    std::vector<long\
-    \ long> xs, ys;\n    for (int i = 0; i < n; i++) {\n        std::cin >> x1[i]\
-    \ >> y1[i] >> x2[i] >> y2[i];\n        xs.push_back(x1[i]), xs.push_back(x2[i]);\n\
-    \        ys.push_back(y1[i]), ys.push_back(y2[i]);\n    }\n    // \u5EA7\u6A19\
-    \u5727\u7E2E\n    xs = unique(xs);\n    ys = unique(ys);\n    int w = xs.size(),\
-    \ h = ys.size();\n    std::vector<std::vector<int>> imos(w, std::vector<int>(h));\n\
-    \    for (int i = 0; i < n; i++) {\n        int a = bisect_left(xs, x1[i]), b\
-    \ = bisect_left(xs, x2[i]);\n        int c = bisect_left(ys, y1[i]), d = bisect_left(ys,\
-    \ y2[i]);\n        imos[a][c]++, imos[a][d]--, imos[b][c]--, imos[b][d]++;\n \
-    \   }\n    for (int i = 0; i < w; i++)\n        for (int j = 1; j < h; j++) imos[i][j]\
-    \ += imos[i][j - 1];\n    for (int i = 1; i < w; i++)\n        for (int j = 0;\
-    \ j < h; j++) imos[i][j] += imos[i - 1][j];\n    long long ans = 0;\n    for (int\
-    \ i = 0; i + 1 < w; i++)\n        for (int j = 0; j + 1 < h; j++) {\n        \
-    \    if (imos[i][j] > 0) ans += (xs[i + 1] - xs[i]) * (ys[j + 1] - ys[j]);\n \
-    \       }\n    std::cout << ans << '\\n';\n}\n"
+    \ v, int base = 10) {\n    assert(base >= 2);\n    long long res = 0;\n    for\
+    \ (long long d : v) {\n        assert(0 <= d && d < base);\n        res = res\
+    \ * base + d;\n    }\n    return res;\n}\n\ninline std::vector<long long> radix_convert(long\
+    \ long v, int base = 10) {\n    assert(v >= 0 && base >= 2);\n    std::vector<long\
+    \ long> res;\n    while (v > 0) {\n        res.push_back(v % base);\n        v\
+    \ /= base;\n    }\n    std::reverse(res.begin(), res.end());\n    return res;\n\
+    }\n#line 8 \"test/aoj/dsl/dsl-4-a.1.test.cpp\"\n\nint main() {\n    int n;\n \
+    \   std::cin >> n;\n    std::vector<long long> x1(n), y1(n), x2(n), y2(n);\n \
+    \   std::vector<long long> xs, ys;\n    for (int i = 0; i < n; i++) {\n      \
+    \  std::cin >> x1[i] >> y1[i] >> x2[i] >> y2[i];\n        xs.push_back(x1[i]),\
+    \ xs.push_back(x2[i]);\n        ys.push_back(y1[i]), ys.push_back(y2[i]);\n  \
+    \  }\n    // \u5EA7\u6A19\u5727\u7E2E\n    xs = unique(xs);\n    ys = unique(ys);\n\
+    \    int w = xs.size(), h = ys.size();\n    std::vector<std::vector<int>> imos(w,\
+    \ std::vector<int>(h));\n    for (int i = 0; i < n; i++) {\n        int a = bisect_left(xs,\
+    \ x1[i]), b = bisect_left(xs, x2[i]);\n        int c = bisect_left(ys, y1[i]),\
+    \ d = bisect_left(ys, y2[i]);\n        imos[a][c]++, imos[a][d]--, imos[b][c]--,\
+    \ imos[b][d]++;\n    }\n    for (int i = 0; i < w; i++)\n        for (int j =\
+    \ 1; j < h; j++) imos[i][j] += imos[i][j - 1];\n    for (int i = 1; i < w; i++)\n\
+    \        for (int j = 0; j < h; j++) imos[i][j] += imos[i - 1][j];\n    long long\
+    \ ans = 0;\n    for (int i = 0; i + 1 < w; i++)\n        for (int j = 0; j + 1\
+    \ < h; j++) {\n            if (imos[i][j] > 0) ans += (xs[i + 1] - xs[i]) * (ys[j\
+    \ + 1] - ys[j]);\n        }\n    std::cout << ans << '\\n';\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_4_A\"\
     \n\n#include <iostream>\n#include <vector>\n\n#include \"../../../src/utility/container_func.hpp\"\
     \n#include \"../../../src/utility/vector_func.hpp\"\n\nint main() {\n    int n;\n\
@@ -300,7 +302,7 @@ data:
   isVerificationFile: true
   path: test/aoj/dsl/dsl-4-a.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:37:20+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/dsl/dsl-4-a.1.test.cpp

@@ -100,13 +100,24 @@ data:
     \        return is >> f.lb >> f.ub >> f.add;\n    }\n    template <class CharT,\
     \ class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const ClampAdd& f) {\n        return os << f.lb << CharT(' ') <<\
-    \ f.ub << CharT(' ') << f.add;\n    }\n};\n\nnamespace monoid {\n\n/**\n * @brief\
-    \ \u548C\n */\ntemplate <typename T>\nstruct Sum {\n    using S = T;\n    static\
-    \ constexpr S op(const S& a, const S& b) { return a + b; }\n    static constexpr\
-    \ S e() { return S(0); }\n};\n\n/**\n * @brief \u7A4D\n */\ntemplate <typename\
-    \ T>\nstruct Prod {\n    using S = T;\n    static constexpr S op(const S& a, const\
-    \ S& b) { return a * b; }\n    static constexpr S e() { return S(1); }\n};\n\n\
-    /**\n * @brief \u6700\u5927\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\u6700\u5C0F\
+    \ f.ub << CharT(' ') << f.add;\n    }\n};\n\nnamespace internal_monoid {\n// MinWith\u30FB\
+    MaxWith \u306E\u5358\u4F4D\u5143\u306E\u4F4D\u7F6E\u3002U \u304C bool \u4EE5\u5916\
+    \u306E\u6574\u6570\u578B\u306A\u3089 -1 (\u5B9F\u5728\u306E\u4F4D\u7F6E\u3068\u533A\
+    \u5225\u3067\u304D\u308B)\u3001\u305D\u3046\u3067\u306A\u3051\u308C\u3070 U{}\n\
+    template <typename U>\nconstexpr bool with_has_e_position = std::is_integral_v<U>\
+    \ && !std::is_same_v<U, bool>;\ntemplate <typename U>\nconstexpr U with_e_position()\
+    \ {\n    if constexpr (with_has_e_position<U>)\n        return static_cast<U>(-1);\n\
+    \    else\n        return U{};\n}\n// U \u304C bool \u4EE5\u5916\u306E\u6574\u6570\
+    \u578B\u3067\u3001\u4F4D\u7F6E\u304C -1 \u306A\u3089\u5358\u4F4D\u5143\ntemplate\
+    \ <typename U>\nconstexpr bool with_is_e(const U& u) {\n    if constexpr (with_has_e_position<U>)\n\
+    \        return u == static_cast<U>(-1);\n    else\n        return false;\n}\n\
+    }  // namespace internal_monoid\n\nnamespace monoid {\n\n/**\n * @brief \u548C\
+    \n */\ntemplate <typename T>\nstruct Sum {\n    using S = T;\n    static constexpr\
+    \ S op(const S& a, const S& b) { return a + b; }\n    static constexpr S e() {\
+    \ return S(0); }\n};\n\n/**\n * @brief \u7A4D\n */\ntemplate <typename T>\nstruct\
+    \ Prod {\n    using S = T;\n    static constexpr S op(const S& a, const S& b)\
+    \ { return a * b; }\n    static constexpr S e() { return S(1); }\n};\n\n/**\n\
+    \ * @brief \u6700\u5927\u5024 \u5358\u4F4D\u5143\u306F\u578B\u306E\u6700\u5C0F\
     \u5024\n */\ntemplate <typename T>\nstruct Max {\n    using S = T;\n    static\
     \ constexpr S op(const S& a, const S& b) { return std::max(a, b); }\n    static\
     \ constexpr S e() { return std::numeric_limits<S>::lowest(); }\n};\n\n/**\n *\
@@ -193,23 +204,41 @@ data:
     \ >= b.close) return S(a.close, a.open - b.close + b.open);\n        return S(a.close\
     \ + b.close - a.open, b.open);\n    }\n    static constexpr S e() { return S();\
     \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\
-    \u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\
-    \u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\
-    \u5024\u306E\u578B\n */\ntemplate <typename T, typename U = long long>\nstruct\
-    \ MinWith {\n    using S = std::pair<T, U>;\n    static constexpr S op(const S&\
-    \ a, const S& b) { return b.first < a.first ? b : a; }\n    static constexpr S\
-    \ e() { return {std::numeric_limits<T>::max(), U{}}; }\n};\n\n/**\n * @brief \u6700\
-    \u5927\u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\
-    \u5074\u3092\u512A\u5148\n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u4F4D\
-    \u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\u578B\n */\ntemplate\
-    \ <typename T, typename U = long long>\nstruct MaxWith {\n    using S = std::pair<T,\
-    \ U>;\n    static constexpr S op(const S& a, const S& b) { return a.first < b.first\
-    \ ? b : a; }\n    static constexpr S e() { return {std::numeric_limits<T>::lowest(),\
-    \ U{}}; }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u500B\u6570\
-    \n *\n * @tparam T \u5024\u306E\u578B\n * @tparam U \u500B\u6570\u306E\u578B\n\
-    \ */\ntemplate <typename T, typename U = long long>\nstruct MinCount {\n    using\
-    \ S = std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n\
-    \        if (a.first < b.first) return a;\n        if (b.first < a.first) return\
+    \u3058\u5024\u306A\u3089\u5DE6\u5074\u3092\u512A\u5148\n * U \u304C\u6574\u6570\
+    \u578B\u306A\u3089\u5358\u4F4D\u5143 (\u7A7A\u533A\u9593) \u306E\u4F4D\u7F6E\u306F\
+    \ -1 \u3067\u3001\u5024\u304C\u578B\u306E\u6700\u5927\u5024\u306E\u8981\u7D20\u304C\
+    \u3042\u3063\u3066\u3082\u5358\u4F4D\u5143\u3068\u3057\u3066\u50CD\u304F\n * U\
+    \ \u304C\u6574\u6570\u578B\u3067\u306A\u3051\u308C\u3070\u5358\u4F4D\u5143\u306F\
+    \ {\u578B\u306E\u6700\u5927\u5024, U{}} \u3067\u3001\u5024\u304C\u578B\u306E\u6700\
+    \u5927\u5024\u306E\u8981\u7D20\u306F\u306A\u3044\u3053\u3068\n *\n * @tparam T\
+    \ \u5024\u306E\u578B\n * @tparam U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\
+    \u308B\u5024\u306E\u578B (\u6574\u6570\u578B\u306A\u3089 -1 \u306F\u4F7F\u308F\
+    \u306A\u3044\u3053\u3068)\n */\ntemplate <typename T, typename U = long long>\n\
+    struct MinWith {\n    using S = std::pair<T, U>;\n    static constexpr S op(const\
+    \ S& a, const S& b) {\n        if (internal_monoid::with_is_e(a.second)) return\
+    \ b;\n        if (internal_monoid::with_is_e(b.second)) return a;\n        return\
+    \ b.first < a.first ? b : a;\n    }\n    static constexpr S e() { return {std::numeric_limits<T>::max(),\
+    \ internal_monoid::with_e_position<U>()}; }\n};\n\n/**\n * @brief \u6700\u5927\
+    \u5024\u3068\u305D\u306E\u4F4D\u7F6E \u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\
+    \u3092\u512A\u5148\n * U \u304C\u6574\u6570\u578B\u306A\u3089\u5358\u4F4D\u5143\
+    \ (\u7A7A\u533A\u9593) \u306E\u4F4D\u7F6E\u306F -1 \u3067\u3001\u5024\u304C\u578B\
+    \u306E\u6700\u5C0F\u5024\u306E\u8981\u7D20\u304C\u3042\u3063\u3066\u3082\u5358\
+    \u4F4D\u5143\u3068\u3057\u3066\u50CD\u304F\n * U \u304C\u6574\u6570\u578B\u3067\
+    \u306A\u3051\u308C\u3070\u5358\u4F4D\u5143\u306F {\u578B\u306E\u6700\u5C0F\u5024\
+    , U{}} \u3067\u3001\u5024\u304C\u578B\u306E\u6700\u5C0F\u5024\u306E\u8981\u7D20\
+    \u306F\u306A\u3044\u3053\u3068\n *\n * @tparam T \u5024\u306E\u578B\n * @tparam\
+    \ U \u4F4D\u7F6E\u306A\u3069\u306E\u4ED8\u968F\u3059\u308B\u5024\u306E\u578B (\u6574\
+    \u6570\u578B\u306A\u3089 -1 \u306F\u4F7F\u308F\u306A\u3044\u3053\u3068)\n */\n\
+    template <typename T, typename U = long long>\nstruct MaxWith {\n    using S =\
+    \ std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n    \
+    \    if (internal_monoid::with_is_e(a.second)) return b;\n        if (internal_monoid::with_is_e(b.second))\
+    \ return a;\n        return a.first < b.first ? b : a;\n    }\n    static constexpr\
+    \ S e() { return {std::numeric_limits<T>::lowest(), internal_monoid::with_e_position<U>()};\
+    \ }\n};\n\n/**\n * @brief \u6700\u5C0F\u5024\u3068\u305D\u306E\u500B\u6570\n *\n\
+    \ * @tparam T \u5024\u306E\u578B\n * @tparam U \u500B\u6570\u306E\u578B\n */\n\
+    template <typename T, typename U = long long>\nstruct MinCount {\n    using S\
+    \ = std::pair<T, U>;\n    static constexpr S op(const S& a, const S& b) {\n  \
+    \      if (a.first < b.first) return a;\n        if (b.first < a.first) return\
     \ b;\n        return {a.first, a.second + b.second};\n    }\n    static constexpr\
     \ S e() { return {std::numeric_limits<T>::max(), U(0)}; }\n};\n\n/**\n * @brief\
     \ \u6700\u5927\u5024\u3068\u305D\u306E\u500B\u6570\n *\n * @tparam T \u5024\u306E\
@@ -375,26 +404,32 @@ data:
     \ static_cast<int>(ix - xs.begin()), static_cast<int>(iy - ys.begin()));\n   \
     \ }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u70B9\u306E\u5024\
     \u3092 v \u306B\u66F4\u65B0\u3059\u308B (\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\
-    \u3067\u6E21\u3057\u305F\u70B9\u306E\u307F)\n     */\n    void set(long long x,\
-    \ long long y, const S& v) {\n        int yi = y_index(y);\n        for (int k\
-    \ = n + x_index(x); k >= 1; k >>= 1) {\n            int len = static_cast<int>(node_ys[k].size());\n\
+    \u3067\u6E21\u3057\u305F\u70B9\u306E\u307F\u3002\u9055\u3048\u3070 assert \u3067\
+    \u843D\u3061\u308B)\n     */\n    void set(long long x, long long y, const S&\
+    \ v) {\n        int yi = y_index(y);\n        int leaf = n + x_index(x);\n   \
+    \     assert(find_y(leaf, yi) != -1);  // \u6E21\u3057\u305F\u70B9\u304B (\u8449\
+    \u306B\u3042\u308C\u3070\u7956\u5148\u306B\u3082\u3042\u308B)\n        for (int\
+    \ k = leaf; k >= 1; k >>= 1) {\n            int len = static_cast<int>(node_ys[k].size());\n\
     \            int p = find_y(k, yi) + len;\n            data[k][p] = k >= n ? v\
     \ : op(get_node(2 * k, yi), get_node(2 * k + 1, yi));\n            for (p >>=\
     \ 1; p >= 1; p >>= 1) data[k][p] = op(data[k][2 * p], data[k][2 * p + 1]);\n \
     \       }\n    }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u70B9\
     \u306E\u5024\u306B v \u3092\u4F5C\u7528\u3055\u305B\u308B (\u30B3\u30F3\u30B9\u30C8\
-    \u30E9\u30AF\u30BF\u3067\u6E21\u3057\u305F\u70B9\u306E\u307F)\n     */\n    void\
-    \ apply(long long x, long long y, const S& v) {\n        int yi = y_index(y);\n\
-    \        // \u53EF\u63DB\u306A\u306E\u3067\u3001\u7956\u5148\u306E\u5024\u306B\
-    \u305D\u306E\u307E\u307E v \u3092\u639B\u3051\u308C\u3070\u3088\u3044\n      \
-    \  for (int k = n + x_index(x); k >= 1; k >>= 1) {\n            for (int p = find_y(k,\
-    \ yi) + static_cast<int>(node_ys[k].size()); p >= 1; p >>= 1) data[k][p] = op(data[k][p],\
-    \ v);\n        }\n    }\n\n    /**\n     * @brief [lx, rx) x [ly, ry) \u306B\u3042\
-    \u308B\u70B9\u306E\u5024\u306E\u7DCF\u7A4D\u3092\u8FD4\u3059\n     */\n    S prod(long\
-    \ long lx, long long rx, long long ly, long long ry) const {\n        assert(lx\
-    \ <= rx && ly <= ry);\n        int l = static_cast<int>(std::lower_bound(xs.begin(),\
-    \ xs.end(), lx) - xs.begin()) + n;\n        int r = static_cast<int>(std::lower_bound(xs.begin(),\
-    \ xs.end(), rx) - xs.begin()) + n;\n        int lyi = static_cast<int>(std::lower_bound(ys.begin(),\
+    \u30E9\u30AF\u30BF\u3067\u6E21\u3057\u305F\u70B9\u306E\u307F\u3002\u9055\u3048\
+    \u3070 assert \u3067\u843D\u3061\u308B)\n     */\n    void apply(long long x,\
+    \ long long y, const S& v) {\n        int yi = y_index(y);\n        // \u53EF\u63DB\
+    \u306A\u306E\u3067\u3001\u7956\u5148\u306E\u5024\u306B\u305D\u306E\u307E\u307E\
+    \ v \u3092\u639B\u3051\u308C\u3070\u3088\u3044\n        int leaf = n + x_index(x);\n\
+    \        assert(find_y(leaf, yi) != -1);  // \u6E21\u3057\u305F\u70B9\u304B (\u8449\
+    \u306B\u3042\u308C\u3070\u7956\u5148\u306B\u3082\u3042\u308B)\n        for (int\
+    \ k = leaf; k >= 1; k >>= 1) {\n            for (int p = find_y(k, yi) + static_cast<int>(node_ys[k].size());\
+    \ p >= 1; p >>= 1) data[k][p] = op(data[k][p], v);\n        }\n    }\n\n    /**\n\
+    \     * @brief [lx, rx) x [ly, ry) \u306B\u3042\u308B\u70B9\u306E\u5024\u306E\u7DCF\
+    \u7A4D\u3092\u8FD4\u3059\n     */\n    S prod(long long lx, long long rx, long\
+    \ long ly, long long ry) const {\n        assert(lx <= rx && ly <= ry);\n    \
+    \    int l = static_cast<int>(std::lower_bound(xs.begin(), xs.end(), lx) - xs.begin())\
+    \ + n;\n        int r = static_cast<int>(std::lower_bound(xs.begin(), xs.end(),\
+    \ rx) - xs.begin()) + n;\n        int lyi = static_cast<int>(std::lower_bound(ys.begin(),\
     \ ys.end(), ly) - ys.begin());\n        int ryi = static_cast<int>(std::lower_bound(ys.begin(),\
     \ ys.end(), ry) - ys.begin());\n        S res = e();\n        while (l < r) {\n\
     \            if (l & 1) res = op(res, prod_node(l++, lyi, ryi));\n           \
@@ -457,7 +492,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-24 20:14:42+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp

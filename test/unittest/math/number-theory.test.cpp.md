@@ -128,8 +128,8 @@ data:
     \ LCM % MOD) \u89E3\u306A\u3057\u306E\u3068\u304D\u306F std::nullopt\n */\ninline\
     \ std::optional<CRTResult> crt(const std::vector<long long>& r, const std::vector<long\
     \ long>& m, long long MOD) {\n    assert(r.size() == m.size());\n    if (r.size()\
-    \ == 0) return CRTResult{0, 1};\n    int n = static_cast<int>(r.size());\n   \
-    \ std::vector<long long> r2 = r, m2 = m;\n    // m\u3092\u4E92\u3044\u306B\u7D20\
+    \ == 0) return CRTResult{0, 1 % MOD};\n    int n = static_cast<int>(r.size());\n\
+    \    std::vector<long long> r2 = r, m2 = m;\n    // m\u3092\u4E92\u3044\u306B\u7D20\
     \u306B\u3059\u308B\n    for (int i = 1; i < n; i++) {\n        for (int j = 0;\
     \ j < i; j++) {\n            if (!coprimize_simultaneous_congruence_equation(r2[i],\
     \ m2[i], r2[j], m2[j])) return std::nullopt;\n        }\n    }\n\n    m2.push_back(MOD);\n\
@@ -156,8 +156,14 @@ data:
     nullopt \" << rep << std::endl;\n        } else {\n            if (!a || a->x\
     \ != best || a->lcm != lcm) ok = false, std::cerr << \"crt \" << rep << std::endl;\n\
     \            if (!b || b->x != best % MOD || b->lcm != lcm % MOD) ok = false,\
-    \ std::cerr << \"crt mod \" << rep << std::endl;\n        }\n    }\n\n    if (ok)\
-    \ std::cout << \"Hello World\" << std::endl;\n}\n"
+    \ std::cerr << \"crt mod \" << rep << std::endl;\n        }\n    }\n\n    // MOD\
+    \ = 1 \u306A\u3089 x \u3082 lcm \u3082 0 (\u7A7A\u3067\u3082)\u3002\u7A7A\u306A\
+    \u3089 x = 0\u3001lcm = 1 % MOD\n    for (int k = 0; k <= 2; k++) {\n        std::vector<long\
+    \ long> r(k, 1), m(k, 3);\n        auto c = crt(r, m, 1);\n        if (!c || c->x\
+    \ != 0 || c->lcm != 0) ok = false, std::cerr << \"crt MOD = 1, k = \" << k <<\
+    \ std::endl;\n    }\n    {\n        auto c = crt({}, {}, 7);\n        if (!c ||\
+    \ c->x != 0 || c->lcm != 1) ok = false, std::cerr << \"crt empty\" << std::endl;\n\
+    \    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// crt (2 \u901A\u308A) \u3092\u3001\u5C0F\u3055\u3044\u7BC4\u56F2\u3067\u89E3\
     \u3092\u5168\u63A2\u7D22\u3057\u305F\u3082\u306E\u3068\u6BD4\u8F03\u3059\u308B\
@@ -180,15 +186,21 @@ data:
     nullopt \" << rep << std::endl;\n        } else {\n            if (!a || a->x\
     \ != best || a->lcm != lcm) ok = false, std::cerr << \"crt \" << rep << std::endl;\n\
     \            if (!b || b->x != best % MOD || b->lcm != lcm % MOD) ok = false,\
-    \ std::cerr << \"crt mod \" << rep << std::endl;\n        }\n    }\n\n    if (ok)\
-    \ std::cout << \"Hello World\" << std::endl;\n}\n"
+    \ std::cerr << \"crt mod \" << rep << std::endl;\n        }\n    }\n\n    // MOD\
+    \ = 1 \u306A\u3089 x \u3082 lcm \u3082 0 (\u7A7A\u3067\u3082)\u3002\u7A7A\u306A\
+    \u3089 x = 0\u3001lcm = 1 % MOD\n    for (int k = 0; k <= 2; k++) {\n        std::vector<long\
+    \ long> r(k, 1), m(k, 3);\n        auto c = crt(r, m, 1);\n        if (!c || c->x\
+    \ != 0 || c->lcm != 0) ok = false, std::cerr << \"crt MOD = 1, k = \" << k <<\
+    \ std::endl;\n    }\n    {\n        auto c = crt({}, {}, 7);\n        if (!c ||\
+    \ c->x != 0 || c->lcm != 1) ok = false, std::cerr << \"crt empty\" << std::endl;\n\
+    \    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/math/number-theory.hpp
   - src/math/modular-arithmetic.hpp
   isVerificationFile: true
   path: test/unittest/math/number-theory.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:32:25+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/number-theory.test.cpp

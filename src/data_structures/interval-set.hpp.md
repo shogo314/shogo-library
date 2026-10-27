@@ -91,12 +91,13 @@ data:
     \ {\n            return {};\n        }\n        auto itr_r = data.upper_bound({r,\
     \ r});\n        return std::pair<iterator, iterator>{itr_l, itr_r};\n    }\n\n\
     \   public:\n    IntervalSet() = default;\n    /**\n     * @brief k \u304C\u542B\
-    \u307E\u308C\u3066\u3044\u308B\u533A\u9593\n     */\n    std::optional<value_type>\
-    \ covered_by(key_type k) const {\n        auto itr = data.upper_bound({k, k});\n\
-    \        if (itr == data.begin()) return {};\n        --itr;\n        if (key_comp(k,\
-    \ itr->second)) {\n            return *itr;\n        }\n        return {};\n \
-    \   }\n    /**\n     * @brief [l,r) \u304C\u5B8C\u5168\u306B\u542B\u307E\u308C\
-    \u3066\u3044\u308B\u533A\u9593\n     */\n    std::optional<value_type> covered_by(key_type\
+    \u307E\u308C\u3066\u3044\u308B\u533A\u9593\u3002\u306A\u3051\u308C\u3070 std::nullopt\n\
+    \     */\n    std::optional<value_type> covered_by(key_type k) const {\n     \
+    \   auto itr = data.upper_bound({k, k});\n        if (itr == data.begin()) return\
+    \ {};\n        --itr;\n        if (key_comp(k, itr->second)) {\n            return\
+    \ *itr;\n        }\n        return {};\n    }\n    /**\n     * @brief [l,r) \u304C\
+    \u5B8C\u5168\u306B\u542B\u307E\u308C\u3066\u3044\u308B\u533A\u9593\u3002\u306A\
+    \u3051\u308C\u3070 std::nullopt\n     */\n    std::optional<value_type> covered_by(key_type\
     \ l, key_type r) const {\n        auto opt = find(l, r);\n        if (!opt.has_value())\
     \ {\n            return {};\n        }\n        std::pair<iterator, iterator>\
     \ p = opt.value();\n        if (p.first != std::prev(p.second)) {\n          \
@@ -140,16 +141,17 @@ data:
     \    }\n        auto itr_r = data.upper_bound({r, r});\n        return std::pair<iterator,\
     \ iterator>{itr_l, itr_r};\n    }\n\n   public:\n    IntervalSet() = default;\n\
     \    /**\n     * @brief k \u304C\u542B\u307E\u308C\u3066\u3044\u308B\u533A\u9593\
-    \n     */\n    std::optional<value_type> covered_by(key_type k) const {\n    \
-    \    auto itr = data.upper_bound({k, k});\n        if (itr == data.begin()) return\
-    \ {};\n        --itr;\n        if (key_comp(k, itr->second)) {\n            return\
-    \ *itr;\n        }\n        return {};\n    }\n    /**\n     * @brief [l,r) \u304C\
-    \u5B8C\u5168\u306B\u542B\u307E\u308C\u3066\u3044\u308B\u533A\u9593\n     */\n\
-    \    std::optional<value_type> covered_by(key_type l, key_type r) const {\n  \
-    \      auto opt = find(l, r);\n        if (!opt.has_value()) {\n            return\
-    \ {};\n        }\n        std::pair<iterator, iterator> p = opt.value();\n   \
-    \     if (p.first != std::prev(p.second)) {\n            return {};\n        }\n\
-    \        if (key_comp(l, p.first->first)) return {};\n        if (key_comp(p.first->second,\
+    \u3002\u306A\u3051\u308C\u3070 std::nullopt\n     */\n    std::optional<value_type>\
+    \ covered_by(key_type k) const {\n        auto itr = data.upper_bound({k, k});\n\
+    \        if (itr == data.begin()) return {};\n        --itr;\n        if (key_comp(k,\
+    \ itr->second)) {\n            return *itr;\n        }\n        return {};\n \
+    \   }\n    /**\n     * @brief [l,r) \u304C\u5B8C\u5168\u306B\u542B\u307E\u308C\
+    \u3066\u3044\u308B\u533A\u9593\u3002\u306A\u3051\u308C\u3070 std::nullopt\n  \
+    \   */\n    std::optional<value_type> covered_by(key_type l, key_type r) const\
+    \ {\n        auto opt = find(l, r);\n        if (!opt.has_value()) {\n       \
+    \     return {};\n        }\n        std::pair<iterator, iterator> p = opt.value();\n\
+    \        if (p.first != std::prev(p.second)) {\n            return {};\n     \
+    \   }\n        if (key_comp(l, p.first->first)) return {};\n        if (key_comp(p.first->second,\
     \ r)) return {};\n        return value_type(p.first->first, p.first->second);\n\
     \    }\n    void insert(key_type l, key_type r) {\n        assert(key_comp(l,\
     \ r));\n        auto opt = find(l, r);\n        if (!opt.has_value()) {\n    \
@@ -172,7 +174,7 @@ data:
   isVerificationFile: false
   path: src/data_structures/interval-set.hpp
   requiredBy: []
-  timestamp: '2026-10-15 07:35:57+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/interval-set.test.cpp
@@ -202,8 +204,8 @@ s.covered_by(5);                                // なし (std::nullopt)
 |---|---|---|
 | `insert(l, r)` | $[l, r)$ を追加 ($l < r$) | ならし $O(\log n)$ |
 | `erase(l, r)` | $[l, r)$ を取り除く ($l < r$) | ならし $O(\log n)$ |
-| `covered_by(k)` | `k` を含む区間 (`std::optional<std::pair<T, T>>`) | $O(\log n)$ |
-| `covered_by(l, r)` | $[l, r)$ を丸ごと含む区間 (`std::optional`) | $O(\log n)$ |
+| `covered_by(k)` | `k` を含む区間 (`std::optional<std::pair<T, T>>`)。なければ `std::nullopt` | $O(\log n)$ |
+| `covered_by(l, r)` | $[l, r)$ を丸ごと含む区間 (`std::optional`)。なければ `std::nullopt` | $O(\log n)$ |
 | `size()` | 区間の個数 | $O(1)$ |
 | `to_vector()` | 区間の一覧 (左端の昇順) | $O(n)$ |
 

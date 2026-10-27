@@ -25,47 +25,17 @@ data:
     \u306B\u6BD4\u3079\u308B)\n    bool in_range(const value_type& x) const {\n  \
     \      if constexpr (std::is_signed_v<value_type>) {\n            if (x < 0) return\
     \ false;\n        }\n        return static_cast<unsigned long long>(x) <= static_cast<unsigned\
-    \ long long>(n);\n    }\n\n   public:\n    MexUpdate() = default;\n    explicit\
-    \ MexUpdate(long long n) : n(n), v(n, e) {\n        assert(n > 0);\n        assert(static_cast<unsigned\
-    \ long long>(n) + 1 < static_cast<unsigned long long>(e));\n        std::set<int>::iterator\
-    \ hint = s.end();\n        for (long long i = n; i >= 0; --i) {\n            hint\
-    \ = s.emplace_hint(hint, static_cast<int>(i));\n        }\n    }\n    explicit\
-    \ MexUpdate(const std::vector<value_type>& init) : n(init.size()), v(init) {\n\
-    \        assert(n > 0);\n        assert(static_cast<unsigned long long>(n) + 1\
-    \ < static_cast<unsigned long long>(e));\n        std::set<int>::iterator hint\
-    \ = s.end();\n        for (long long i = n; i >= 0; --i) {\n            hint =\
-    \ s.emplace_hint(hint, static_cast<int>(i));\n        }\n        for (const auto&\
-    \ i : init) {\n            if (in_range(i)) {\n                m[i]++;\n     \
-    \           s.erase(i);\n            }\n        }\n    }\n    void set(long long\
-    \ k, const value_type& x) {\n        assert(0 <= k && k < n);\n        if (in_range(v[k]))\
-    \ {\n            int v_k = v[k];\n            auto itr = m.find(v_k);\n      \
-    \      if (itr->second > 1) {\n                itr->second--;\n            } else\
-    \ {\n                m.erase(itr);\n                s.insert(v_k);\n         \
-    \   }\n        }\n        if (in_range(x)) {\n            int xx = x;\n      \
-    \      auto itr = m.find(xx);\n            if (itr == m.end()) {\n           \
-    \     m[xx]++;\n                s.erase(xx);\n            } else {\n         \
-    \       itr->second++;\n            }\n        }\n        v[k] = x;\n    }\n \
-    \   value_type mex() const {\n        return *s.begin();\n    }\n};\n"
-  code: "#pragma once\n\n/**\n * @file mex-update.hpp\n * @brief 1\u70B9\u66F4\u65B0\
-    \u30FB\u5168\u4F53\u306E mex \u53D6\u5F97\n */\n\n#include <cassert>\n#include\
-    \ <limits>\n#include <map>\n#include <set>\n#include <type_traits>\n#include <vector>\n\
-    \ntemplate <typename T>\nclass MexUpdate {\n    static_assert(std::is_integral_v<T>,\
-    \ \"MexUpdate: T must be an integer type\");\n\n   public:\n    using value_type\
-    \ = T;\n\n   private:\n    inline constexpr static value_type e = std::numeric_limits<value_type>::max();\n\
-    \n    long long n;\n    std::vector<value_type> v;\n    std::set<int> s;\n   \
-    \ std::map<int, int> m;\n\n    // x \u304C 0 \u4EE5\u4E0A n \u4EE5\u4E0B\u304B\
-    \ (T \u304C\u7B26\u53F7\u306A\u3057\u3067\u3082\u8B66\u544A\u304C\u51FA\u306A\u3044\
-    \u3088\u3046\u306B\u6BD4\u3079\u308B)\n    bool in_range(const value_type& x)\
-    \ const {\n        if constexpr (std::is_signed_v<value_type>) {\n           \
-    \ if (x < 0) return false;\n        }\n        return static_cast<unsigned long\
-    \ long>(x) <= static_cast<unsigned long long>(n);\n    }\n\n   public:\n    MexUpdate()\
-    \ = default;\n    explicit MexUpdate(long long n) : n(n), v(n, e) {\n        assert(n\
-    \ > 0);\n        assert(static_cast<unsigned long long>(n) + 1 < static_cast<unsigned\
+    \ long long>(n);\n    }\n\n   public:\n    /**\n     * @brief \u9577\u3055 0 (mex\
+    \ \u306F 0)\n     */\n    MexUpdate() : MexUpdate(0) {}\n    /**\n     * @brief\
+    \ \u9577\u3055 n \u3067\u3001\u3069\u306E\u8981\u7D20\u3082\u307E\u3060\u5024\u3092\
+    \u6301\u305F\u306A\u3044 (mex \u306F 0)\u3002n = 0 \u3067\u3082\u3088\u3044\n\
+    \     */\n    explicit MexUpdate(long long n) : n(n), v(n, e) {\n        assert(n\
+    \ >= 0);\n        assert(static_cast<unsigned long long>(n) + 1 < static_cast<unsigned\
     \ long long>(e));\n        std::set<int>::iterator hint = s.end();\n        for\
     \ (long long i = n; i >= 0; --i) {\n            hint = s.emplace_hint(hint, static_cast<int>(i));\n\
     \        }\n    }\n    explicit MexUpdate(const std::vector<value_type>& init)\
-    \ : n(init.size()), v(init) {\n        assert(n > 0);\n        assert(static_cast<unsigned\
-    \ long long>(n) + 1 < static_cast<unsigned long long>(e));\n        std::set<int>::iterator\
+    \ : n(init.size()), v(init) {\n        assert(static_cast<unsigned long long>(n)\
+    \ + 1 < static_cast<unsigned long long>(e));\n        std::set<int>::iterator\
     \ hint = s.end();\n        for (long long i = n; i >= 0; --i) {\n            hint\
     \ = s.emplace_hint(hint, static_cast<int>(i));\n        }\n        for (const\
     \ auto& i : init) {\n            if (in_range(i)) {\n                m[i]++;\n\
@@ -79,11 +49,48 @@ data:
     \           m[xx]++;\n                s.erase(xx);\n            } else {\n   \
     \             itr->second++;\n            }\n        }\n        v[k] = x;\n  \
     \  }\n    value_type mex() const {\n        return *s.begin();\n    }\n};\n"
+  code: "#pragma once\n\n/**\n * @file mex-update.hpp\n * @brief 1\u70B9\u66F4\u65B0\
+    \u30FB\u5168\u4F53\u306E mex \u53D6\u5F97\n */\n\n#include <cassert>\n#include\
+    \ <limits>\n#include <map>\n#include <set>\n#include <type_traits>\n#include <vector>\n\
+    \ntemplate <typename T>\nclass MexUpdate {\n    static_assert(std::is_integral_v<T>,\
+    \ \"MexUpdate: T must be an integer type\");\n\n   public:\n    using value_type\
+    \ = T;\n\n   private:\n    inline constexpr static value_type e = std::numeric_limits<value_type>::max();\n\
+    \n    long long n;\n    std::vector<value_type> v;\n    std::set<int> s;\n   \
+    \ std::map<int, int> m;\n\n    // x \u304C 0 \u4EE5\u4E0A n \u4EE5\u4E0B\u304B\
+    \ (T \u304C\u7B26\u53F7\u306A\u3057\u3067\u3082\u8B66\u544A\u304C\u51FA\u306A\u3044\
+    \u3088\u3046\u306B\u6BD4\u3079\u308B)\n    bool in_range(const value_type& x)\
+    \ const {\n        if constexpr (std::is_signed_v<value_type>) {\n           \
+    \ if (x < 0) return false;\n        }\n        return static_cast<unsigned long\
+    \ long>(x) <= static_cast<unsigned long long>(n);\n    }\n\n   public:\n    /**\n\
+    \     * @brief \u9577\u3055 0 (mex \u306F 0)\n     */\n    MexUpdate() : MexUpdate(0)\
+    \ {}\n    /**\n     * @brief \u9577\u3055 n \u3067\u3001\u3069\u306E\u8981\u7D20\
+    \u3082\u307E\u3060\u5024\u3092\u6301\u305F\u306A\u3044 (mex \u306F 0)\u3002n =\
+    \ 0 \u3067\u3082\u3088\u3044\n     */\n    explicit MexUpdate(long long n) : n(n),\
+    \ v(n, e) {\n        assert(n >= 0);\n        assert(static_cast<unsigned long\
+    \ long>(n) + 1 < static_cast<unsigned long long>(e));\n        std::set<int>::iterator\
+    \ hint = s.end();\n        for (long long i = n; i >= 0; --i) {\n            hint\
+    \ = s.emplace_hint(hint, static_cast<int>(i));\n        }\n    }\n    explicit\
+    \ MexUpdate(const std::vector<value_type>& init) : n(init.size()), v(init) {\n\
+    \        assert(static_cast<unsigned long long>(n) + 1 < static_cast<unsigned\
+    \ long long>(e));\n        std::set<int>::iterator hint = s.end();\n        for\
+    \ (long long i = n; i >= 0; --i) {\n            hint = s.emplace_hint(hint, static_cast<int>(i));\n\
+    \        }\n        for (const auto& i : init) {\n            if (in_range(i))\
+    \ {\n                m[i]++;\n                s.erase(i);\n            }\n   \
+    \     }\n    }\n    void set(long long k, const value_type& x) {\n        assert(0\
+    \ <= k && k < n);\n        if (in_range(v[k])) {\n            int v_k = v[k];\n\
+    \            auto itr = m.find(v_k);\n            if (itr->second > 1) {\n   \
+    \             itr->second--;\n            } else {\n                m.erase(itr);\n\
+    \                s.insert(v_k);\n            }\n        }\n        if (in_range(x))\
+    \ {\n            int xx = x;\n            auto itr = m.find(xx);\n           \
+    \ if (itr == m.end()) {\n                m[xx]++;\n                s.erase(xx);\n\
+    \            } else {\n                itr->second++;\n            }\n       \
+    \ }\n        v[k] = x;\n    }\n    value_type mex() const {\n        return *s.begin();\n\
+    \    }\n};\n"
   dependsOn: []
   isVerificationFile: false
   path: src/data_structures/mex-update.hpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/mex-update.test.cpp
@@ -105,7 +112,8 @@ int b = mu.mex();     // 1
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `MexUpdate<T>(n)` | 長さ `n` で、どの要素もまだ値を持たない (mex は 0) | $O(n)$ |
+| `MexUpdate<T>()` | 長さ 0 (mex は 0) | $O(1)$ |
+| `MexUpdate<T>(n)` | 長さ `n` ($n \geq 0$) で、どの要素もまだ値を持たない (mex は 0) | $O(n)$ |
 | `MexUpdate<T>(v)` | `v` で初期化 | $O(n \log n)$ |
 | `set(k, x)` | `k` 番目を `x` に更新 | $O(\log n)$ |
 | `mex()` | 全体の mex | $O(1)$ |

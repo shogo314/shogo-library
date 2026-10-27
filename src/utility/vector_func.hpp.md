@@ -127,8 +127,9 @@ data:
     \ U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>& operator|=(std::vector<T>&\
     \ v1, const std::vector<U>& v2) {\n    return extend(v1, v2);\n}\n\ntemplate <typename\
     \ T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>\ninline std::vector<T>& operator|=(std::vector<T>&\
-    \ v, const U& u) {\n    std::vector<T> w(v);\n    v.clear();\n    for (int i =\
-    \ 0; i < u; i++) {\n        extend(v, w);\n    }\n    return v;\n}\n\ntemplate\
+    \ v, const U& u) {\n    if constexpr (std::is_signed_v<U>) assert(u >= 0);\n \
+    \   std::vector<T> w(v);\n    v.clear();\n    for (long long i = 0; i < static_cast<long\
+    \ long>(u); i++) {\n        extend(v, w);\n    }\n    return v;\n}\n\ntemplate\
     \ <typename T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>\ninline std::vector<T>\
     \ operator|(const std::vector<T>& v, const U& u) {\n    std::vector<T> res(v);\n\
     \    return res |= u;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>\n\
@@ -148,11 +149,13 @@ data:
     \ std::vector<T>& v) {\n    std::vector<T> res(v);\n    std::sort(res.begin(),\
     \ res.end());\n    res.erase(std::unique(res.begin(), res.end()), res.end());\n\
     \    return res;\n}\n\ninline long long radix_convert(const std::vector<long long>&\
-    \ v, int base = 10) {\n    long long res = 0;\n    for (long long d : v) {\n \
-    \       res = res * base + d;\n    }\n    return res;\n}\n\ninline std::vector<long\
-    \ long> radix_convert(long long v, int base = 10) {\n    std::vector<long long>\
-    \ res;\n    while (v > 0) {\n        res.push_back(v % base);\n        v /= base;\n\
-    \    }\n    std::reverse(res.begin(), res.end());\n    return res;\n}\n"
+    \ v, int base = 10) {\n    assert(base >= 2);\n    long long res = 0;\n    for\
+    \ (long long d : v) {\n        assert(0 <= d && d < base);\n        res = res\
+    \ * base + d;\n    }\n    return res;\n}\n\ninline std::vector<long long> radix_convert(long\
+    \ long v, int base = 10) {\n    assert(v >= 0 && base >= 2);\n    std::vector<long\
+    \ long> res;\n    while (v > 0) {\n        res.push_back(v % base);\n        v\
+    \ /= base;\n    }\n    std::reverse(res.begin(), res.end());\n    return res;\n\
+    }\n"
   code: "#pragma once\n\n/**\n * @file vector_func.hpp\n * @brief vector \u306B\u5BFE\
     \u3059\u308B\u6F14\u7B97\u5B50\u3068\u95A2\u6570\n */\n\n#include <algorithm>\n\
     #include <cassert>\n#include <cmath>\n#include <cstddef>\n#include <numeric>\n\
@@ -205,8 +208,9 @@ data:
     \ U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>& operator|=(std::vector<T>&\
     \ v1, const std::vector<U>& v2) {\n    return extend(v1, v2);\n}\n\ntemplate <typename\
     \ T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>\ninline std::vector<T>& operator|=(std::vector<T>&\
-    \ v, const U& u) {\n    std::vector<T> w(v);\n    v.clear();\n    for (int i =\
-    \ 0; i < u; i++) {\n        extend(v, w);\n    }\n    return v;\n}\n\ntemplate\
+    \ v, const U& u) {\n    if constexpr (std::is_signed_v<U>) assert(u >= 0);\n \
+    \   std::vector<T> w(v);\n    v.clear();\n    for (long long i = 0; i < static_cast<long\
+    \ long>(u); i++) {\n        extend(v, w);\n    }\n    return v;\n}\n\ntemplate\
     \ <typename T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>\ninline std::vector<T>\
     \ operator|(const std::vector<T>& v, const U& u) {\n    std::vector<T> res(v);\n\
     \    return res |= u;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>\n\
@@ -226,17 +230,19 @@ data:
     \ std::vector<T>& v) {\n    std::vector<T> res(v);\n    std::sort(res.begin(),\
     \ res.end());\n    res.erase(std::unique(res.begin(), res.end()), res.end());\n\
     \    return res;\n}\n\ninline long long radix_convert(const std::vector<long long>&\
-    \ v, int base = 10) {\n    long long res = 0;\n    for (long long d : v) {\n \
-    \       res = res * base + d;\n    }\n    return res;\n}\n\ninline std::vector<long\
-    \ long> radix_convert(long long v, int base = 10) {\n    std::vector<long long>\
-    \ res;\n    while (v > 0) {\n        res.push_back(v % base);\n        v /= base;\n\
-    \    }\n    std::reverse(res.begin(), res.end());\n    return res;\n}\n"
+    \ v, int base = 10) {\n    assert(base >= 2);\n    long long res = 0;\n    for\
+    \ (long long d : v) {\n        assert(0 <= d && d < base);\n        res = res\
+    \ * base + d;\n    }\n    return res;\n}\n\ninline std::vector<long long> radix_convert(long\
+    \ long v, int base = 10) {\n    assert(v >= 0 && base >= 2);\n    std::vector<long\
+    \ long> res;\n    while (v > 0) {\n        res.push_back(v % base);\n        v\
+    \ /= base;\n    }\n    std::reverse(res.begin(), res.end());\n    return res;\n\
+    }\n"
   dependsOn:
   - src/utility/traits.hpp
   isVerificationFile: false
   path: src/utility/vector_func.hpp
   requiredBy: []
-  timestamp: '2026-10-17 23:17:18+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/utility/vector_func.test.cpp
@@ -267,7 +273,7 @@ auto idx = sorted_idx(a, true);   // 値の降順に並べた添字
 | `v + w`、`v += w` | 要素ごとの和 (短い方は 0 で埋める) | $O(\max(n, m))$ |
 | `v * w`、`v *= w` | 要素ごとの積 (長い方の余りは 0 になる) | $O(\max(n, m))$ |
 | `v |= w` | `w` を末尾に連結 (`extend` と同じ) | $O(m)$ |
-| `v | k`、`k | v`、`v |= k` | `v` を `k` 回繰り返す | $O(nk)$ |
+| `v | k`、`k | v`、`v |= k` | `v` を `k` 回繰り返す (`k` は 0 以上。負なら assert で落ちる) | $O(nk)$ |
 
 ## 関数
 
@@ -281,8 +287,8 @@ auto idx = sorted_idx(a, true);   // 値の降順に並べた添字
 | `hamming_distance(v, w)` | 同じ長さの `v` と `w` で要素が異なる位置の数 (長さが違うと assert で落ちる) | $O(n)$ |
 | `extend(v, w)` | `w` を末尾に連結 | $O(m)$ |
 | `assign(v, w)` | `w` の内容で置き換える (型の変換つき) | $O(m)$ |
-| `radix_convert(x, base = 10)` | 整数 `x` を `base` 進数の桁のリスト (上位桁から) にする。`x = 0` なら空のリスト | $O(\log_{base} x)$ |
-| `radix_convert(digits, base = 10)` | `base` 進数の桁のリスト (上位桁から) を整数に戻す | 桁数に比例 |
+| `radix_convert(x, base = 10)` | 整数 `x` を `base` 進数の桁のリスト (上位桁から) にする。`x = 0` なら空のリスト。`x >= 0`、`base >= 2` でなければ assert で落ちる | $O(\log_{base} x)$ |
+| `radix_convert(digits, base = 10)` | `base` 進数の桁のリスト (上位桁から) を整数に戻す。`base >= 2` で、各桁が $[0, \mathit{base})$ になければ assert で落ちる | 桁数に比例 |
 
 ## 関連
 

@@ -136,47 +136,48 @@ data:
     \ cap)\u3002inf \u306A\u3089\u5BB9\u91CF\u306F\u5341\u5206\u5927\u304D\u3044\u5024\
     \u306B\u3059\u308B\n    struct E {\n        long long from, to;\n        Cost\
     \ cap;\n        bool inf;\n    };\n    std::vector<E> es;\n    std::vector<bool>\
-    \ result;\n\n    // \u9802\u70B9\u306E\u756A\u53F7: \u5909\u6570 0, ..., n - 1\u3001\
-    \u88DC\u52A9\u9802\u70B9 n, ..., n + aux - 1\u3001\u59CB\u70B9 n + aux\u3001\u7D42\
-    \u70B9 n + aux + 1\n    void check_var(long long v) const { assert(0 <= v && v\
-    \ < n); }\n\n   public:\n    /**\n     * @brief n \u500B\u306E\u5909\u6570\u3067\
-    \u3001\u30B3\u30B9\u30C8\u304C\u3059\u3079\u3066 0\n     */\n    explicit ProjectSelection(long\
-    \ long n = 0) : n(n), cost1(n, 0) {}\n\n    /**\n     * @brief \u5909\u6570\u306E\
-    \u500B\u6570\n     */\n    long long size() const { return n; }\n\n    /**\n \
-    \    * @brief \u5B9A\u6570\u306E\u30B3\u30B9\u30C8 c \u3092\u8DB3\u3059\n    \
-    \ */\n    void add_constant(Cost c) { constant += c; }\n    /**\n     * @brief\
-    \ x_v = 0 \u306A\u3089\u30B3\u30B9\u30C8 c0\u3001x_v = 1 \u306A\u3089\u30B3\u30B9\
-    \u30C8 c1 \u3092\u8DB3\u3059 (\u8CA0\u3067\u3082\u3088\u3044)\n     */\n    void\
-    \ add_cost(long long v, Cost c0, Cost c1) {\n        check_var(v);\n        constant\
-    \ += c0;\n        cost1[v] += c1 - c0;\n    }\n    /**\n     * @brief x_v = a\
-    \ \u306A\u3089\u30B3\u30B9\u30C8 c \u3092\u8DB3\u3059 (\u8CA0\u3067\u3082\u3088\
-    \u3044)\n     */\n    void add_cost_if(long long v, bool a, Cost c) {\n      \
-    \  if (a) {\n            add_cost(v, 0, c);\n        } else {\n            add_cost(v,\
-    \ c, 0);\n        }\n    }\n    /**\n     * @brief (x_u, x_v) \u304C (0, 0)\u3001\
-    (0, 1)\u3001(1, 0)\u3001(1, 1) \u306E\u3068\u304D\u306E\u30B3\u30B9\u30C8 c00\u3001\
-    c01\u3001c10\u3001c11 \u3092\u8DB3\u3059\n     * @pre \u52A3\u30E2\u30B8\u30E5\
-    \u30E9: c01 + c10 >= c00 + c11\n     */\n    void add_cost(long long u, long long\
-    \ v, Cost c00, Cost c01, Cost c10, Cost c11) {\n        check_var(u), check_var(v);\n\
-    \        assert(u != v);\n        assert(c01 + c10 >= c00 + c11 && \"ProjectSelection:\
-    \ not submodular\");\n        // c00 + (c10 - c00) x_u + (c11 - c10) x_v + (c01\
-    \ + c10 - c00 - c11) [x_u = 0 \u304B\u3064 x_v = 1]\n        constant += c00;\n\
-    \        cost1[u] += c10 - c00;\n        cost1[v] += c11 - c10;\n        Cost\
-    \ w = c01 + c10 - c00 - c11;\n        if (w > 0) es.push_back({u, v, w, false});\n\
-    \    }\n    /**\n     * @brief x_u = a \u304B\u3064 x_v = b \u306A\u3089\u30B3\
-    \u30B9\u30C8 c \u3092\u8DB3\u3059\n     * @pre a != b \u306A\u3089 c >= 0\u3001\
-    a == b \u306A\u3089 c <= 0 (\u52A3\u30E2\u30B8\u30E5\u30E9\u306B\u306A\u308B\u5834\
-    \u5408)\n     */\n    void add_cost_if(long long u, bool a, long long v, bool\
-    \ b, Cost c) {\n        Cost cs[2][2] = {{0, 0}, {0, 0}};\n        cs[a][b] =\
-    \ c;\n        add_cost(u, v, cs[0][0], cs[0][1], cs[1][0], cs[1][1]);\n    }\n\
-    \    /**\n     * @brief x_u = a \u304B\u3064 x_v = !a \u3068\u306A\u308B\u5272\
-    \u308A\u5F53\u3066\u3092\u7981\u6B62\u3059\u308B (\u30B3\u30B9\u30C8\u3092\u5341\
-    \u5206\u5927\u304D\u304F\u3059\u308B)\n     */\n    void forbid(long long u, bool\
-    \ a, long long v) {\n        check_var(u), check_var(v);\n        if (a) {\n \
-    \           es.push_back({v, u, 0, true});\n        } else {\n            es.push_back({u,\
-    \ v, 0, true});\n        }\n    }\n    /**\n     * @brief vs \u306E\u5909\u6570\
-    \u304C\u3059\u3079\u3066 a \u306A\u3089\u5229\u5F97 g \u3092\u5F97\u308B (\u30B3\
-    \u30B9\u30C8 -g \u3092\u8DB3\u3059)\n     * \u88DC\u52A9\u9802\u70B9\u3092 1 \u3064\
-    \u4F7F\u3046\n     * @pre g >= 0\n     */\n    void add_gain_if_all(const std::vector<long\
+    \ result;\n    bool solved = false;\n\n    // \u9802\u70B9\u306E\u756A\u53F7:\
+    \ \u5909\u6570 0, ..., n - 1\u3001\u88DC\u52A9\u9802\u70B9 n, ..., n + aux - 1\u3001\
+    \u59CB\u70B9 n + aux\u3001\u7D42\u70B9 n + aux + 1\n    void check_var(long long\
+    \ v) const { assert(0 <= v && v < n); }\n\n   public:\n    /**\n     * @brief\
+    \ n \u500B\u306E\u5909\u6570\u3067\u3001\u30B3\u30B9\u30C8\u304C\u3059\u3079\u3066\
+    \ 0\n     */\n    explicit ProjectSelection(long long n = 0) : n(n), cost1(n,\
+    \ 0) {}\n\n    /**\n     * @brief \u5909\u6570\u306E\u500B\u6570\n     */\n  \
+    \  long long size() const { return n; }\n\n    /**\n     * @brief \u5B9A\u6570\
+    \u306E\u30B3\u30B9\u30C8 c \u3092\u8DB3\u3059\n     */\n    void add_constant(Cost\
+    \ c) { constant += c; }\n    /**\n     * @brief x_v = 0 \u306A\u3089\u30B3\u30B9\
+    \u30C8 c0\u3001x_v = 1 \u306A\u3089\u30B3\u30B9\u30C8 c1 \u3092\u8DB3\u3059 (\u8CA0\
+    \u3067\u3082\u3088\u3044)\n     */\n    void add_cost(long long v, Cost c0, Cost\
+    \ c1) {\n        check_var(v);\n        constant += c0;\n        cost1[v] += c1\
+    \ - c0;\n    }\n    /**\n     * @brief x_v = a \u306A\u3089\u30B3\u30B9\u30C8\
+    \ c \u3092\u8DB3\u3059 (\u8CA0\u3067\u3082\u3088\u3044)\n     */\n    void add_cost_if(long\
+    \ long v, bool a, Cost c) {\n        if (a) {\n            add_cost(v, 0, c);\n\
+    \        } else {\n            add_cost(v, c, 0);\n        }\n    }\n    /**\n\
+    \     * @brief (x_u, x_v) \u304C (0, 0)\u3001(0, 1)\u3001(1, 0)\u3001(1, 1) \u306E\
+    \u3068\u304D\u306E\u30B3\u30B9\u30C8 c00\u3001c01\u3001c10\u3001c11 \u3092\u8DB3\
+    \u3059\n     * @pre \u52A3\u30E2\u30B8\u30E5\u30E9: c01 + c10 >= c00 + c11\n \
+    \    */\n    void add_cost(long long u, long long v, Cost c00, Cost c01, Cost\
+    \ c10, Cost c11) {\n        check_var(u), check_var(v);\n        assert(u != v);\n\
+    \        assert(c01 + c10 >= c00 + c11 && \"ProjectSelection: not submodular\"\
+    );\n        // c00 + (c10 - c00) x_u + (c11 - c10) x_v + (c01 + c10 - c00 - c11)\
+    \ [x_u = 0 \u304B\u3064 x_v = 1]\n        constant += c00;\n        cost1[u] +=\
+    \ c10 - c00;\n        cost1[v] += c11 - c10;\n        Cost w = c01 + c10 - c00\
+    \ - c11;\n        if (w > 0) es.push_back({u, v, w, false});\n    }\n    /**\n\
+    \     * @brief x_u = a \u304B\u3064 x_v = b \u306A\u3089\u30B3\u30B9\u30C8 c \u3092\
+    \u8DB3\u3059\n     * @pre a != b \u306A\u3089 c >= 0\u3001a == b \u306A\u3089\
+    \ c <= 0 (\u52A3\u30E2\u30B8\u30E5\u30E9\u306B\u306A\u308B\u5834\u5408)\n    \
+    \ */\n    void add_cost_if(long long u, bool a, long long v, bool b, Cost c) {\n\
+    \        Cost cs[2][2] = {{0, 0}, {0, 0}};\n        cs[a][b] = c;\n        add_cost(u,\
+    \ v, cs[0][0], cs[0][1], cs[1][0], cs[1][1]);\n    }\n    /**\n     * @brief x_u\
+    \ = a \u304B\u3064 x_v = !a \u3068\u306A\u308B\u5272\u308A\u5F53\u3066\u3092\u7981\
+    \u6B62\u3059\u308B (\u30B3\u30B9\u30C8\u3092\u5341\u5206\u5927\u304D\u304F\u3059\
+    \u308B)\n     */\n    void forbid(long long u, bool a, long long v) {\n      \
+    \  check_var(u), check_var(v);\n        if (a) {\n            es.push_back({v,\
+    \ u, 0, true});\n        } else {\n            es.push_back({u, v, 0, true});\n\
+    \        }\n    }\n    /**\n     * @brief vs \u306E\u5909\u6570\u304C\u3059\u3079\
+    \u3066 a \u306A\u3089\u5229\u5F97 g \u3092\u5F97\u308B (\u30B3\u30B9\u30C8 -g\
+    \ \u3092\u8DB3\u3059)\n     * \u88DC\u52A9\u9802\u70B9\u3092 1 \u3064\u4F7F\u3046\
+    \n     * @pre g >= 0\n     */\n    void add_gain_if_all(const std::vector<long\
     \ long>& vs, bool a, Cost g) {\n        assert(g >= 0);\n        for (long long\
     \ v : vs) check_var(v);\n        long long y = n + aux++;\n        constant -=\
     \ g;\n        if (a) {\n            // y = 0 \u306A\u3089\u30B3\u30B9\u30C8 g\u3001\
@@ -205,12 +206,14 @@ data:
     \ == -1 ? s : e.from, to = e.to == -1 ? t : e.to;\n            mf.add_edge(from,\
     \ to, e.inf ? inf : e.cap);\n        }\n        Cost f = mf.flow(s, t);\n    \
     \    std::vector<bool> reach = mf.min_cut(s);\n        result.assign(n, false);\n\
-    \        for (long long v = 0; v < n; v++) result[v] = !reach[v];\n        return\
-    \ base + f;\n    }\n    /**\n     * @brief \u76F4\u524D\u306E solve() \u3067\u6700\
-    \u5C0F\u5024\u3092\u3068\u308B\u5272\u308A\u5F53\u3066 (x_v \u304C 1 \u306A\u3089\
-    \ true)\n     */\n    const std::vector<bool>& assignment() const { return result;\
-    \ }\n};\n#line 9 \"test/unittest/graph/project-selection.test.cpp\"\n\n#include\
-    \ <functional>\n#include <iostream>\n#line 13 \"test/unittest/graph/project-selection.test.cpp\"\
+    \        for (long long v = 0; v < n; v++) result[v] = !reach[v];\n        solved\
+    \ = true;\n        return base + f;\n    }\n    /**\n     * @brief \u76F4\u524D\
+    \u306E solve() \u3067\u6700\u5C0F\u5024\u3092\u3068\u308B\u5272\u308A\u5F53\u3066\
+    \ (x_v \u304C 1 \u306A\u3089 true)\n     * @note solve() \u3092\u547C\u3076\u524D\
+    \u306B\u547C\u3076\u3068 assert \u3067\u6B62\u307E\u308B\n     */\n    const std::vector<bool>&\
+    \ assignment() const {\n        assert(solved);\n        return result;\n    }\n\
+    };\n#line 9 \"test/unittest/graph/project-selection.test.cpp\"\n\n#include <functional>\n\
+    #include <iostream>\n#line 13 \"test/unittest/graph/project-selection.test.cpp\"\
     \n#include <random>\n#line 15 \"test/unittest/graph/project-selection.test.cpp\"\
     \n\nbool ok = true;\nvoid check(bool cond, const char* what) {\n    if (!cond\
     \ && ok) std::cerr << \"failed: \" << what << std::endl;\n    if (!cond) ok =\
@@ -339,7 +342,7 @@ data:
   isVerificationFile: true
   path: test/unittest/graph/project-selection.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 13:41:47+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/graph/project-selection.test.cpp

@@ -224,29 +224,29 @@ data:
     \        m = p;\n        return (*this);\n    }\n\n    /**\n     * @brief \u4FDD\
     \u6301\u3057\u3066\u3044\u308B\u884C\u5217\u306Ek\u4E57\u3092\u6C42\u3081\u308B\
     \n     * @param k \u6307\u6570\n     * @return Matrix\n     */\n    [[nodiscard]]\n\
-    \    Matrix pow(long long k) const {\n        Matrix A = *this, B(n, n);\n   \
-    \     for (long long i = 0; i < n; i++) B[i][i] = OperatorProperty::one();\n \
-    \       while (k > 0) {\n            if (k & 1) B *= A;\n            A *= A;\n\
-    \            k >>= 1;\n        }\n        return B;\n    }\n\n    [[nodiscard]]\n\
-    \    Matrix operator+(const Matrix& B) const { return (Matrix(*this) += B); }\n\
-    \    [[nodiscard]]\n    Matrix operator-(const Matrix& B) const { return (Matrix(*this)\
-    \ -= B); }\n    [[nodiscard]]\n    Matrix operator*(const Matrix& B) const { return\
-    \ (Matrix(*this) *= B); }\n\n    /**\n     * @brief \u884C\u5217A\u3068\u5217\u30D9\
-    \u30AF\u30C8\u30EBB\u306E\u7A4D\n     * @param A Matrix\n     * @param B vector<T>\n\
-    \     * @return vector<T> \u5217\u30D9\u30AF\u30C8\u30EB\n     */\n    [[nodiscard]]\n\
-    \    friend std::vector<T> operator*(const Matrix& A, const std::vector<T>& B)\
-    \ {\n        assert(A.m == static_cast<long long>(B.size()));\n        std::vector<T>\
-    \ ret(A.n, OperatorProperty::zero());\n        for (long long i = 0; i < A.n;\
-    \ i++) {\n            for (long long j = 0; j < A.m; j++) {\n                ret[i]\
-    \ = OperatorProperty::add(ret[i], OperatorProperty::mul(A[i][j], B[j]));\n   \
-    \         }\n        }\n        return ret;\n    }\n\n    /**\n     * @brief \u884C\
-    \u30D9\u30AF\u30C8\u30EBA\u3068\u884C\u5217B\u306E\u7A4D\n     * @param A vector<T>\n\
-    \     * @param B Matrix\n     * @return vector<T> \u884C\u30D9\u30AF\u30C8\u30EB\
-    \n     */\n    [[nodiscard]]\n    friend std::vector<T> operator*(const std::vector<T>&\
-    \ A, const Matrix& B) {\n        assert(static_cast<long long>(A.size()) == B.n);\n\
-    \        std::vector<T> ret(B.m, OperatorProperty::zero());\n        for (long\
-    \ long i = 0; i < B.n; i++) {\n            for (long long j = 0; j < B.m; j++)\
-    \ {\n                ret[j] = OperatorProperty::add(ret[j], OperatorProperty::mul(A[i],\
+    \    Matrix pow(long long k) const {\n        assert(n == m && k >= 0);\n    \
+    \    Matrix A = *this, B(n, n);\n        for (long long i = 0; i < n; i++) B[i][i]\
+    \ = OperatorProperty::one();\n        while (k > 0) {\n            if (k & 1)\
+    \ B *= A;\n            A *= A;\n            k >>= 1;\n        }\n        return\
+    \ B;\n    }\n\n    [[nodiscard]]\n    Matrix operator+(const Matrix& B) const\
+    \ { return (Matrix(*this) += B); }\n    [[nodiscard]]\n    Matrix operator-(const\
+    \ Matrix& B) const { return (Matrix(*this) -= B); }\n    [[nodiscard]]\n    Matrix\
+    \ operator*(const Matrix& B) const { return (Matrix(*this) *= B); }\n\n    /**\n\
+    \     * @brief \u884C\u5217A\u3068\u5217\u30D9\u30AF\u30C8\u30EBB\u306E\u7A4D\n\
+    \     * @param A Matrix\n     * @param B vector<T>\n     * @return vector<T> \u5217\
+    \u30D9\u30AF\u30C8\u30EB\n     */\n    [[nodiscard]]\n    friend std::vector<T>\
+    \ operator*(const Matrix& A, const std::vector<T>& B) {\n        assert(A.m ==\
+    \ static_cast<long long>(B.size()));\n        std::vector<T> ret(A.n, OperatorProperty::zero());\n\
+    \        for (long long i = 0; i < A.n; i++) {\n            for (long long j =\
+    \ 0; j < A.m; j++) {\n                ret[i] = OperatorProperty::add(ret[i], OperatorProperty::mul(A[i][j],\
+    \ B[j]));\n            }\n        }\n        return ret;\n    }\n\n    /**\n \
+    \    * @brief \u884C\u30D9\u30AF\u30C8\u30EBA\u3068\u884C\u5217B\u306E\u7A4D\n\
+    \     * @param A vector<T>\n     * @param B Matrix\n     * @return vector<T> \u884C\
+    \u30D9\u30AF\u30C8\u30EB\n     */\n    [[nodiscard]]\n    friend std::vector<T>\
+    \ operator*(const std::vector<T>& A, const Matrix& B) {\n        assert(static_cast<long\
+    \ long>(A.size()) == B.n);\n        std::vector<T> ret(B.m, OperatorProperty::zero());\n\
+    \        for (long long i = 0; i < B.n; i++) {\n            for (long long j =\
+    \ 0; j < B.m; j++) {\n                ret[j] = OperatorProperty::add(ret[j], OperatorProperty::mul(A[i],\
     \ B[i][j]));\n            }\n        }\n        return ret;\n    }\n\n    /**\n\
     \     * @brief \u884C\u5217\u5F0F\n     * @return \u884C\u5217\u5F0F\n     * @note\
     \ \u5272\u308A\u7B97\u3092\u4F7F\u3046\u306E\u3067\u3001\u8981\u7D20\u306F\u4F53\
@@ -344,29 +344,30 @@ data:
     \        }\n        // S \u304C\u7A7A\u306E\u3068\u304D\u306E\u9805\u306F\u3001\
     n == 0 \u306A\u3089 1\u3001\u305D\u3046\u3067\u306A\u3051\u308C\u3070 0\n    \
     \    if (n == 0) res = OperatorProperty::one();\n        return res;\n    }\n\n\
-    \    /**\n     * @brief \u9006\u884C\u5217\n     * @return \u9006\u884C\u5217\n\
-    \     * @note det \u3068\u540C\u3058\u304F\u3001\u8981\u7D20\u306F\u4F53 (modint\
-    \ \u3084\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u306A\u3069) \u3067\u3042\u308B\u3053\
-    \u3068\n     */\n    [[nodiscard]]\n    Matrix inv() const {\n        assert(n\
-    \ == m);\n        if (n == 0) return Matrix(n, n);\n        if constexpr (std::is_same_v<OperatorProperty,\
+    \    /**\n     * @brief \u9006\u884C\u5217\n     * @return \u9006\u884C\u5217\u3002\
+    \u6B63\u5247\u3067\u306A\u3051\u308C\u3070 std::nullopt\n     * @note det \u3068\
+    \u540C\u3058\u304F\u3001\u8981\u7D20\u306F\u4F53 (modint \u3084\u6D6E\u52D5\u5C0F\
+    \u6570\u70B9\u578B\u306A\u3069) \u3067\u3042\u308B\u3053\u3068\n     */\n    [[nodiscard]]\n\
+    \    std::optional<Matrix> inv() const {\n        assert(n == m);\n        if\
+    \ (n == 0) return Matrix(n, n);\n        if constexpr (std::is_same_v<OperatorProperty,\
     \ matrix::OperatorPropertyDefault<T>>) {\n            std::vector A(n, std::valarray(T(0),\
     \ n + n));\n            for (long long i = 0; i < n; i++) {\n                for\
     \ (long long j = 0; j < n; j++) A[i][j] = this->v[i][j];\n                A[i][n\
-    \ + i] = T(1);\n            }\n            [[maybe_unused]] T d = forward_elimination(A);\n\
-    \            assert(d != T(0));\n            for (long long i = n - 1; i >= 0;\
-    \ i--) {\n                for (long long j = i - 1; j >= 0; j--) {\n         \
-    \           A[j] -= A[i] * A[j][i];\n                }\n            }\n      \
-    \      Matrix ret(n, n);\n            for (long long i = 0; i < n; i++)\n    \
-    \            for (long long j = 0; j < n; j++) ret[i][j] = A[i][n + j];\n    \
-    \        return ret;\n        } else {\n            std::vector A(n, std::vector<T>(n\
-    \ + n, OperatorProperty::zero()));\n            for (long long i = 0; i < n; i++)\
-    \ {\n                for (long long j = 0; j < n; j++) A[i][j] = this->v[i][j];\n\
-    \                A[i][n + i] = OperatorProperty::one();\n            }\n     \
-    \       [[maybe_unused]] T d = forward_elimination(A);\n            assert(d !=\
-    \ OperatorProperty::zero());\n            for (long long i = n - 1; i >= 0; i--)\
-    \ {\n                for (long long j = i - 1; j >= 0; j--) {\n              \
-    \      for (long long k = n; k < n + n; k++) {\n                        A[j][k]\
-    \ = OperatorProperty::add(A[j][k], OperatorProperty::neg(OperatorProperty::mul(A[i][k],\
+    \ + i] = T(1);\n            }\n            T d = forward_elimination(A);\n   \
+    \         if (d == T(0)) return std::nullopt;\n            for (long long i =\
+    \ n - 1; i >= 0; i--) {\n                for (long long j = i - 1; j >= 0; j--)\
+    \ {\n                    A[j] -= A[i] * A[j][i];\n                }\n        \
+    \    }\n            Matrix ret(n, n);\n            for (long long i = 0; i < n;\
+    \ i++)\n                for (long long j = 0; j < n; j++) ret[i][j] = A[i][n +\
+    \ j];\n            return ret;\n        } else {\n            std::vector A(n,\
+    \ std::vector<T>(n + n, OperatorProperty::zero()));\n            for (long long\
+    \ i = 0; i < n; i++) {\n                for (long long j = 0; j < n; j++) A[i][j]\
+    \ = this->v[i][j];\n                A[i][n + i] = OperatorProperty::one();\n \
+    \           }\n            T d = forward_elimination(A);\n            if (d ==\
+    \ OperatorProperty::zero()) return std::nullopt;\n            for (long long i\
+    \ = n - 1; i >= 0; i--) {\n                for (long long j = i - 1; j >= 0; j--)\
+    \ {\n                    for (long long k = n; k < n + n; k++) {\n           \
+    \             A[j][k] = OperatorProperty::add(A[j][k], OperatorProperty::neg(OperatorProperty::mul(A[i][k],\
     \ A[j][i])));\n                    }\n                }\n            }\n     \
     \       Matrix ret(n, n);\n            for (long long i = 0; i < n; i++)\n   \
     \             for (long long j = 0; j < n; j++) ret[i][j] = A[i][n + j];\n   \
@@ -495,8 +496,8 @@ data:
     \ \u306F Matrix<int>\u3001Matrix(std::vector<std::string>) \u306F Matrix<char>\n\
     \ */\ntemplate <typename Iterable>\nMatrix(const std::vector<Iterable>&) -> Matrix<typename\
     \ Iterable::value_type>;\n#line 14 \"test/unittest/math/matrix.test.cpp\"\n\n\
-    #line 16 \"test/unittest/math/matrix.test.cpp\"\n#include <iostream>\n#include\
-    \ <numeric>\n#include <random>\n#line 22 \"test/unittest/math/matrix.test.cpp\"\
+    #line 17 \"test/unittest/math/matrix.test.cpp\"\n#include <iostream>\n#include\
+    \ <numeric>\n#include <random>\n#line 23 \"test/unittest/math/matrix.test.cpp\"\
     \n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\
     \u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\
     \u30AF\u30E9\u30B9\n */\n\n#line 11 \"src/math/modint.hpp\"\n#include <limits>\n\
@@ -779,7 +780,7 @@ data:
     \ dynamic_modint(SignedIntegral value) noexcept\n        : base_type{value} {}\n\
     \n   private:\n    inline static value_type modulus = 998244353;\n};\n\nusing\
     \ modint998244353 = static_modint<998244353>;\nusing modint1000000007 = static_modint<1000000007>;\n\
-    using modint = dynamic_modint<-1>;\n#line 24 \"test/unittest/math/matrix.test.cpp\"\
+    using modint = dynamic_modint<-1>;\n#line 25 \"test/unittest/math/matrix.test.cpp\"\
     \n\nusing mint = static_modint<998244353>;\n\n// \u63A8\u8AD6\u30AC\u30A4\u30C9\
     : \u8981\u7D20\u306E\u578B\u306F\u5404\u884C\u306E value_type\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::vector<long\
     \ long>>())), Matrix<long long>>);\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::string>())),\
@@ -903,15 +904,17 @@ data:
     \ std::vector<int>(n));\n        for (auto& row : a)\n            for (auto& x\
     \ : row) x = rng() % 2;\n        Matrix<int, GF2> A(a);\n        int d = A.det();\n\
     \        if (d != naive_det_gf2(a)) ok = false, std::cerr << \"gf2 det\" << std::endl;\n\
-    \        if (d == 1) {\n            Matrix<int, GF2> Ai = A.inv();\n         \
-    \   Matrix<int, GF2> P = A * Ai, Q = Ai * A;\n            for (int i = 0; i <\
-    \ n; i++)\n                for (int j = 0; j < n; j++) {\n                   \
-    \ if (P[i][j] != (i == j ? 1 : 0) || Q[i][j] != (i == j ? 1 : 0)) ok = false;\n\
-    \                    // \u639B\u3051\u7B97\u3082\u611A\u76F4\u306B\u78BA\u304B\
-    \u3081\u308B\n                    int s = 0;\n                    for (int t =\
-    \ 0; t < n; t++) s ^= a[i][t] & Ai[t][j];\n                    if (s != (i ==\
-    \ j ? 1 : 0)) ok = false;\n                }\n        }\n    }\n    if (!ok) std::cerr\
-    \ << \"gf2\" << std::endl;\n\n    // mod p: \u65E2\u5B9A\u306E\u7D4C\u8DEF (valarray)\
+    \        auto Ai_opt = A.inv();\n        if (Ai_opt.has_value() != (d == 1)) ok\
+    \ = false, std::cerr << \"gf2 inv nullopt\" << std::endl;\n        if (d == 1\
+    \ && Ai_opt) {\n            Matrix<int, GF2> Ai = *Ai_opt;\n            Matrix<int,\
+    \ GF2> P = A * Ai, Q = Ai * A;\n            for (int i = 0; i < n; i++)\n    \
+    \            for (int j = 0; j < n; j++) {\n                    if (P[i][j] !=\
+    \ (i == j ? 1 : 0) || Q[i][j] != (i == j ? 1 : 0)) ok = false;\n             \
+    \       // \u639B\u3051\u7B97\u3082\u611A\u76F4\u306B\u78BA\u304B\u3081\u308B\n\
+    \                    int s = 0;\n                    for (int t = 0; t < n; t++)\
+    \ s ^= a[i][t] & Ai[t][j];\n                    if (s != (i == j ? 1 : 0)) ok\
+    \ = false;\n                }\n        }\n    }\n    if (!ok) std::cerr << \"\
+    gf2\" << std::endl;\n\n    // mod p: \u65E2\u5B9A\u306E\u7D4C\u8DEF (valarray)\
     \ \u3068\u3001OperatorProperty \u3092\u7D99\u627F\u3057\u305F\u6C4E\u7528\u306E\
     \u7D4C\u8DEF\u306E\u7D50\u679C\u304C\u4E00\u81F4\u3057\u3001\u4F59\u56E0\u5B50\
     \u5C55\u958B\u3068\u3082\u4E00\u81F4\u3059\u308B\n    for (int rep = 0; rep <\
@@ -921,13 +924,25 @@ data:
     \ % 3) : static_cast<long long>(rng() % 998244353);\n        Matrix<mint> A(a);\n\
     \        Matrix<mint, ModProp> B(a);\n        mint e = naive_det(a);\n       \
     \ if (A.det() != e || B.det() != e) ok = false, std::cerr << \"mod det\" << std::endl;\n\
-    \        if (e != 0) {\n            Matrix<mint> Ai = A.inv();\n            Matrix<mint,\
-    \ ModProp> Bi = B.inv();\n            for (int i = 0; i < n; i++)\n          \
-    \      for (int j = 0; j < n; j++) {\n                    if (Ai[i][j] != Bi[i][j])\
-    \ ok = false;\n                    mint s = 0;\n                    for (int t\
-    \ = 0; t < n; t++) s += a[i][t] * Bi[t][j];\n                    if (s != (i ==\
-    \ j ? 1 : 0)) ok = false;\n                }\n        }\n    }\n    if (!ok) std::cerr\
-    \ << \"mod\" << std::endl;\n\n    // \u9023\u7ACB\u4E00\u6B21\u65B9\u7A0B\u5F0F\
+    \        auto Ai_opt = A.inv();\n        auto Bi_opt = B.inv();\n        if (Ai_opt.has_value()\
+    \ != (e != 0) || Bi_opt.has_value() != (e != 0)) ok = false, std::cerr << \"mod\
+    \ inv nullopt\" << std::endl;\n        if (e != 0 && Ai_opt && Bi_opt) {\n   \
+    \         Matrix<mint> Ai = *Ai_opt;\n            Matrix<mint, ModProp> Bi = *Bi_opt;\n\
+    \            for (int i = 0; i < n; i++)\n                for (int j = 0; j <\
+    \ n; j++) {\n                    if (Ai[i][j] != Bi[i][j]) ok = false;\n     \
+    \               mint s = 0;\n                    for (int t = 0; t < n; t++) s\
+    \ += a[i][t] * Bi[t][j];\n                    if (s != (i == j ? 1 : 0)) ok =\
+    \ false;\n                }\n        }\n    }\n    if (!ok) std::cerr << \"mod\"\
+    \ << std::endl;\n\n    // \u6B63\u5247\u3067\u306A\u3044\u884C\u5217\u306E inv\
+    \ \u306F nullopt (\u6D6E\u52D5\u5C0F\u6570\u70B9\u30010 x 0 \u306F\u5358\u4F4D\
+    \u884C\u5217)\n    {\n        if (Matrix<double>({{1., 2.}, {2., 4.}}).inv())\
+    \ ok = false, std::cerr << \"inv singular double\" << std::endl;\n        auto\
+    \ di = Matrix<double>({{2., 0.}, {0., 4.}}).inv();\n        if (!di || std::abs((*di)[0][0]\
+    \ - 0.5) > 1e-12 || std::abs((*di)[1][1] - 0.25) > 1e-12) ok = false, std::cerr\
+    \ << \"inv double\" << std::endl;\n        if (Matrix<mint>({{0, 0}, {0, 0}}).inv())\
+    \ ok = false, std::cerr << \"inv zero\" << std::endl;\n        auto ei = Matrix<mint>(0,\
+    \ 0).inv();\n        if (!ei || ei->size() != 0) ok = false, std::cerr << \"inv\
+    \ empty\" << std::endl;\n    }\n\n    // \u9023\u7ACB\u4E00\u6B21\u65B9\u7A0B\u5F0F\
     \ (mod 3 \u3068 GF(2))\n    using mint3 = static_modint<3>;\n    if (!check_linear<mint3,\
     \ matrix::OperatorPropertyDefault<mint3>>(rng, 3, [](long long x) { return mint3(x);\
     \ })) ok = false, std::cerr << \"linear mod 3\" << std::endl;\n    if (!check_linear<int,\
@@ -1062,11 +1077,11 @@ data:
     \u30AC\u30A4\u30C9\u3092 static_assert \u3067\u78BA\u304B\u3081\u308B\n// \u554F\
     \u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\
     \u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include\
-    \ \"../../../src/math/matrix.hpp\"\n\n#include <algorithm>\n#include <iostream>\n\
-    #include <numeric>\n#include <random>\n#include <string>\n#include <type_traits>\n\
-    #include <vector>\n\n#include \"../../../src/math/modint.hpp\"\n\nusing mint =\
-    \ static_modint<998244353>;\n\n// \u63A8\u8AD6\u30AC\u30A4\u30C9: \u8981\u7D20\
-    \u306E\u578B\u306F\u5404\u884C\u306E value_type\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::vector<long\
+    \ \"../../../src/math/matrix.hpp\"\n\n#include <algorithm>\n#include <cmath>\n\
+    #include <iostream>\n#include <numeric>\n#include <random>\n#include <string>\n\
+    #include <type_traits>\n#include <vector>\n\n#include \"../../../src/math/modint.hpp\"\
+    \n\nusing mint = static_modint<998244353>;\n\n// \u63A8\u8AD6\u30AC\u30A4\u30C9\
+    : \u8981\u7D20\u306E\u578B\u306F\u5404\u884C\u306E value_type\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::vector<long\
     \ long>>())), Matrix<long long>>);\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::string>())),\
     \ Matrix<char>>);\nusing VV = std::vector<std::vector<long long>>;\n\n// xor \u3068\
     \ and \u306B\u3088\u308B\u4F53 GF(2)\nstruct GF2 {\n    static int zero() { return\
@@ -1188,15 +1203,17 @@ data:
     \ std::vector<int>(n));\n        for (auto& row : a)\n            for (auto& x\
     \ : row) x = rng() % 2;\n        Matrix<int, GF2> A(a);\n        int d = A.det();\n\
     \        if (d != naive_det_gf2(a)) ok = false, std::cerr << \"gf2 det\" << std::endl;\n\
-    \        if (d == 1) {\n            Matrix<int, GF2> Ai = A.inv();\n         \
-    \   Matrix<int, GF2> P = A * Ai, Q = Ai * A;\n            for (int i = 0; i <\
-    \ n; i++)\n                for (int j = 0; j < n; j++) {\n                   \
-    \ if (P[i][j] != (i == j ? 1 : 0) || Q[i][j] != (i == j ? 1 : 0)) ok = false;\n\
-    \                    // \u639B\u3051\u7B97\u3082\u611A\u76F4\u306B\u78BA\u304B\
-    \u3081\u308B\n                    int s = 0;\n                    for (int t =\
-    \ 0; t < n; t++) s ^= a[i][t] & Ai[t][j];\n                    if (s != (i ==\
-    \ j ? 1 : 0)) ok = false;\n                }\n        }\n    }\n    if (!ok) std::cerr\
-    \ << \"gf2\" << std::endl;\n\n    // mod p: \u65E2\u5B9A\u306E\u7D4C\u8DEF (valarray)\
+    \        auto Ai_opt = A.inv();\n        if (Ai_opt.has_value() != (d == 1)) ok\
+    \ = false, std::cerr << \"gf2 inv nullopt\" << std::endl;\n        if (d == 1\
+    \ && Ai_opt) {\n            Matrix<int, GF2> Ai = *Ai_opt;\n            Matrix<int,\
+    \ GF2> P = A * Ai, Q = Ai * A;\n            for (int i = 0; i < n; i++)\n    \
+    \            for (int j = 0; j < n; j++) {\n                    if (P[i][j] !=\
+    \ (i == j ? 1 : 0) || Q[i][j] != (i == j ? 1 : 0)) ok = false;\n             \
+    \       // \u639B\u3051\u7B97\u3082\u611A\u76F4\u306B\u78BA\u304B\u3081\u308B\n\
+    \                    int s = 0;\n                    for (int t = 0; t < n; t++)\
+    \ s ^= a[i][t] & Ai[t][j];\n                    if (s != (i == j ? 1 : 0)) ok\
+    \ = false;\n                }\n        }\n    }\n    if (!ok) std::cerr << \"\
+    gf2\" << std::endl;\n\n    // mod p: \u65E2\u5B9A\u306E\u7D4C\u8DEF (valarray)\
     \ \u3068\u3001OperatorProperty \u3092\u7D99\u627F\u3057\u305F\u6C4E\u7528\u306E\
     \u7D4C\u8DEF\u306E\u7D50\u679C\u304C\u4E00\u81F4\u3057\u3001\u4F59\u56E0\u5B50\
     \u5C55\u958B\u3068\u3082\u4E00\u81F4\u3059\u308B\n    for (int rep = 0; rep <\
@@ -1206,13 +1223,25 @@ data:
     \ % 3) : static_cast<long long>(rng() % 998244353);\n        Matrix<mint> A(a);\n\
     \        Matrix<mint, ModProp> B(a);\n        mint e = naive_det(a);\n       \
     \ if (A.det() != e || B.det() != e) ok = false, std::cerr << \"mod det\" << std::endl;\n\
-    \        if (e != 0) {\n            Matrix<mint> Ai = A.inv();\n            Matrix<mint,\
-    \ ModProp> Bi = B.inv();\n            for (int i = 0; i < n; i++)\n          \
-    \      for (int j = 0; j < n; j++) {\n                    if (Ai[i][j] != Bi[i][j])\
-    \ ok = false;\n                    mint s = 0;\n                    for (int t\
-    \ = 0; t < n; t++) s += a[i][t] * Bi[t][j];\n                    if (s != (i ==\
-    \ j ? 1 : 0)) ok = false;\n                }\n        }\n    }\n    if (!ok) std::cerr\
-    \ << \"mod\" << std::endl;\n\n    // \u9023\u7ACB\u4E00\u6B21\u65B9\u7A0B\u5F0F\
+    \        auto Ai_opt = A.inv();\n        auto Bi_opt = B.inv();\n        if (Ai_opt.has_value()\
+    \ != (e != 0) || Bi_opt.has_value() != (e != 0)) ok = false, std::cerr << \"mod\
+    \ inv nullopt\" << std::endl;\n        if (e != 0 && Ai_opt && Bi_opt) {\n   \
+    \         Matrix<mint> Ai = *Ai_opt;\n            Matrix<mint, ModProp> Bi = *Bi_opt;\n\
+    \            for (int i = 0; i < n; i++)\n                for (int j = 0; j <\
+    \ n; j++) {\n                    if (Ai[i][j] != Bi[i][j]) ok = false;\n     \
+    \               mint s = 0;\n                    for (int t = 0; t < n; t++) s\
+    \ += a[i][t] * Bi[t][j];\n                    if (s != (i == j ? 1 : 0)) ok =\
+    \ false;\n                }\n        }\n    }\n    if (!ok) std::cerr << \"mod\"\
+    \ << std::endl;\n\n    // \u6B63\u5247\u3067\u306A\u3044\u884C\u5217\u306E inv\
+    \ \u306F nullopt (\u6D6E\u52D5\u5C0F\u6570\u70B9\u30010 x 0 \u306F\u5358\u4F4D\
+    \u884C\u5217)\n    {\n        if (Matrix<double>({{1., 2.}, {2., 4.}}).inv())\
+    \ ok = false, std::cerr << \"inv singular double\" << std::endl;\n        auto\
+    \ di = Matrix<double>({{2., 0.}, {0., 4.}}).inv();\n        if (!di || std::abs((*di)[0][0]\
+    \ - 0.5) > 1e-12 || std::abs((*di)[1][1] - 0.25) > 1e-12) ok = false, std::cerr\
+    \ << \"inv double\" << std::endl;\n        if (Matrix<mint>({{0, 0}, {0, 0}}).inv())\
+    \ ok = false, std::cerr << \"inv zero\" << std::endl;\n        auto ei = Matrix<mint>(0,\
+    \ 0).inv();\n        if (!ei || ei->size() != 0) ok = false, std::cerr << \"inv\
+    \ empty\" << std::endl;\n    }\n\n    // \u9023\u7ACB\u4E00\u6B21\u65B9\u7A0B\u5F0F\
     \ (mod 3 \u3068 GF(2))\n    using mint3 = static_modint<3>;\n    if (!check_linear<mint3,\
     \ matrix::OperatorPropertyDefault<mint3>>(rng, 3, [](long long x) { return mint3(x);\
     \ })) ok = false, std::cerr << \"linear mod 3\" << std::endl;\n    if (!check_linear<int,\
@@ -1331,7 +1360,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/matrix.test.cpp
   requiredBy: []
-  timestamp: '2026-10-24 03:47:04+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/matrix.test.cpp

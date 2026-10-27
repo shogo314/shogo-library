@@ -96,12 +96,13 @@ data:
     \ {\n            return {};\n        }\n        auto itr_r = data.upper_bound({r,\
     \ r});\n        return std::pair<iterator, iterator>{itr_l, itr_r};\n    }\n\n\
     \   public:\n    IntervalSet() = default;\n    /**\n     * @brief k \u304C\u542B\
-    \u307E\u308C\u3066\u3044\u308B\u533A\u9593\n     */\n    std::optional<value_type>\
-    \ covered_by(key_type k) const {\n        auto itr = data.upper_bound({k, k});\n\
-    \        if (itr == data.begin()) return {};\n        --itr;\n        if (key_comp(k,\
-    \ itr->second)) {\n            return *itr;\n        }\n        return {};\n \
-    \   }\n    /**\n     * @brief [l,r) \u304C\u5B8C\u5168\u306B\u542B\u307E\u308C\
-    \u3066\u3044\u308B\u533A\u9593\n     */\n    std::optional<value_type> covered_by(key_type\
+    \u307E\u308C\u3066\u3044\u308B\u533A\u9593\u3002\u306A\u3051\u308C\u3070 std::nullopt\n\
+    \     */\n    std::optional<value_type> covered_by(key_type k) const {\n     \
+    \   auto itr = data.upper_bound({k, k});\n        if (itr == data.begin()) return\
+    \ {};\n        --itr;\n        if (key_comp(k, itr->second)) {\n            return\
+    \ *itr;\n        }\n        return {};\n    }\n    /**\n     * @brief [l,r) \u304C\
+    \u5B8C\u5168\u306B\u542B\u307E\u308C\u3066\u3044\u308B\u533A\u9593\u3002\u306A\
+    \u3051\u308C\u3070 std::nullopt\n     */\n    std::optional<value_type> covered_by(key_type\
     \ l, key_type r) const {\n        auto opt = find(l, r);\n        if (!opt.has_value())\
     \ {\n            return {};\n        }\n        std::pair<iterator, iterator>\
     \ p = opt.value();\n        if (p.first != std::prev(p.second)) {\n          \
@@ -207,7 +208,7 @@ data:
   isVerificationFile: true
   path: test/unittest/data_structures/interval-set.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:32:25+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/data_structures/interval-set.test.cpp

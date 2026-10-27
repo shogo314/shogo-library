@@ -84,14 +84,15 @@ data:
     \        return res;\n    }\n\n    /**\n     * @brief \u5DE6\u5074\u306E\u9802\
     \u70B9 u \u3068\u30DE\u30C3\u30C1\u3057\u305F\u53F3\u5074\u306E\u9802\u70B9 (\u306A\
     \u3051\u308C\u3070 -1)\u3002solve() \u306E\u5F8C\u3067\u4F7F\u3046\n     */\n\
-    \    long long left_match(long long u) const { return match_l[u]; }\n    /**\n\
-    \     * @brief \u53F3\u5074\u306E\u9802\u70B9 v \u3068\u30DE\u30C3\u30C1\u3057\
-    \u305F\u5DE6\u5074\u306E\u9802\u70B9 (\u306A\u3051\u308C\u3070 -1)\u3002solve()\
-    \ \u306E\u5F8C\u3067\u4F7F\u3046\n     */\n    long long right_match(long long\
-    \ v) const { return match_r[v]; }\n    /**\n     * @brief \u30DE\u30C3\u30C1\u30F3\
-    \u30B0\u306E\u8FBA (\u5DE6\u5074\u306E\u9802\u70B9, \u53F3\u5074\u306E\u9802\u70B9\
-    ) \u306E\u30EA\u30B9\u30C8 (\u5DE6\u5074\u306E\u9802\u70B9\u306E\u6607\u9806)\u3002\
-    solve() \u306E\u5F8C\u3067\u4F7F\u3046\n     */\n    std::vector<std::pair<long\
+    \    long long left_match(long long u) const {\n        assert(0 <= u && u < l);\n\
+    \        return match_l[u];\n    }\n    /**\n     * @brief \u53F3\u5074\u306E\u9802\
+    \u70B9 v \u3068\u30DE\u30C3\u30C1\u3057\u305F\u5DE6\u5074\u306E\u9802\u70B9 (\u306A\
+    \u3051\u308C\u3070 -1)\u3002solve() \u306E\u5F8C\u3067\u4F7F\u3046\n     */\n\
+    \    long long right_match(long long v) const {\n        assert(0 <= v && v <\
+    \ r);\n        return match_r[v];\n    }\n    /**\n     * @brief \u30DE\u30C3\u30C1\
+    \u30F3\u30B0\u306E\u8FBA (\u5DE6\u5074\u306E\u9802\u70B9, \u53F3\u5074\u306E\u9802\
+    \u70B9) \u306E\u30EA\u30B9\u30C8 (\u5DE6\u5074\u306E\u9802\u70B9\u306E\u6607\u9806\
+    )\u3002solve() \u306E\u5F8C\u3067\u4F7F\u3046\n     */\n    std::vector<std::pair<long\
     \ long, long long>> matching() const {\n        std::vector<std::pair<long long,\
     \ long long>> res;\n        for (long long u = 0; u < l; u++) {\n            if\
     \ (match_l[u] != -1) res.emplace_back(u, match_l[u]);\n        }\n        return\
@@ -161,14 +162,15 @@ data:
     \        return res;\n    }\n\n    /**\n     * @brief \u5DE6\u5074\u306E\u9802\
     \u70B9 u \u3068\u30DE\u30C3\u30C1\u3057\u305F\u53F3\u5074\u306E\u9802\u70B9 (\u306A\
     \u3051\u308C\u3070 -1)\u3002solve() \u306E\u5F8C\u3067\u4F7F\u3046\n     */\n\
-    \    long long left_match(long long u) const { return match_l[u]; }\n    /**\n\
-    \     * @brief \u53F3\u5074\u306E\u9802\u70B9 v \u3068\u30DE\u30C3\u30C1\u3057\
-    \u305F\u5DE6\u5074\u306E\u9802\u70B9 (\u306A\u3051\u308C\u3070 -1)\u3002solve()\
-    \ \u306E\u5F8C\u3067\u4F7F\u3046\n     */\n    long long right_match(long long\
-    \ v) const { return match_r[v]; }\n    /**\n     * @brief \u30DE\u30C3\u30C1\u30F3\
-    \u30B0\u306E\u8FBA (\u5DE6\u5074\u306E\u9802\u70B9, \u53F3\u5074\u306E\u9802\u70B9\
-    ) \u306E\u30EA\u30B9\u30C8 (\u5DE6\u5074\u306E\u9802\u70B9\u306E\u6607\u9806)\u3002\
-    solve() \u306E\u5F8C\u3067\u4F7F\u3046\n     */\n    std::vector<std::pair<long\
+    \    long long left_match(long long u) const {\n        assert(0 <= u && u < l);\n\
+    \        return match_l[u];\n    }\n    /**\n     * @brief \u53F3\u5074\u306E\u9802\
+    \u70B9 v \u3068\u30DE\u30C3\u30C1\u3057\u305F\u5DE6\u5074\u306E\u9802\u70B9 (\u306A\
+    \u3051\u308C\u3070 -1)\u3002solve() \u306E\u5F8C\u3067\u4F7F\u3046\n     */\n\
+    \    long long right_match(long long v) const {\n        assert(0 <= v && v <\
+    \ r);\n        return match_r[v];\n    }\n    /**\n     * @brief \u30DE\u30C3\u30C1\
+    \u30F3\u30B0\u306E\u8FBA (\u5DE6\u5074\u306E\u9802\u70B9, \u53F3\u5074\u306E\u9802\
+    \u70B9) \u306E\u30EA\u30B9\u30C8 (\u5DE6\u5074\u306E\u9802\u70B9\u306E\u6607\u9806\
+    )\u3002solve() \u306E\u5F8C\u3067\u4F7F\u3046\n     */\n    std::vector<std::pair<long\
     \ long, long long>> matching() const {\n        std::vector<std::pair<long long,\
     \ long long>> res;\n        for (long long u = 0; u < l; u++) {\n            if\
     \ (match_l[u] != -1) res.emplace_back(u, match_l[u]);\n        }\n        return\
@@ -177,7 +179,7 @@ data:
   isVerificationFile: false
   path: src/graph/bipartite-matching.hpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/graph/bipartite-matching.test.cpp

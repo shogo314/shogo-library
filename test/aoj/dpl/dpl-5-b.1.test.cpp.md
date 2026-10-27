@@ -113,54 +113,55 @@ data:
     \ --i) {\n            inv_fact[i - 1] = inv_fact[i] * i;\n        }\n    }\n\n\
     \    /**\n     * @brief n \u306E\u968E\u4E57\u3092\u8FD4\u3059\n     * @param\
     \ n\n     * @return n!\n     * @note extend(n), O(1)\n     */\n    inline static\
-    \ Modint factorial(long long n) {\n        extend(n);\n        return fact[n];\n\
-    \    }\n    /**\n     * @brief n \u306E\u968E\u4E57\u306E\u9006\u5143\u3092\u8FD4\
-    \u3059\n     * @param n\n     * @return n!^-1\n     * @note extend(n), O(1)\n\
-    \     */\n    inline static Modint inverse_factorial(long long n) {\n        extend(n);\n\
-    \        return inv_fact[n];\n    }\n    /**\n     * @brief n \u306E\u9006\u5143\
-    \u3092\u8FD4\u3059\n     * @param n\n     * @return n^-1\n     * @note extend(n),\
-    \ O(1)\n     */\n    inline static Modint inv(long long n) {\n        assert(n\
-    \ > 0);\n        extend(n);\n        return inv_fact[n] * fact[n - 1];\n    }\n\
-    \n    /**\n     * @brief nPr \u3092\u8FD4\u3059\n     * @param n\n     * @param\
-    \ r\n     * @return nPr\n     * @note extend(n), O(1)\n     */\n    inline static\
-    \ Modint P(long long n, long long r) {\n        if (r < 0 || n < r) return 0;\n\
-    \        extend(n);\n        return fact[n] * inv_fact[n - r];\n    }\n    /**\n\
-    \     * @brief nCr \u3092\u8FD4\u3059\n     * @param n\n     * @param r\n    \
-    \ * @return nCr\n     * @note extend(n), O(1)\n     */\n    inline static Modint\
-    \ C(long long n, long long r) {\n        if (r < 0 || n < r) return 0;\n     \
-    \   extend(n);\n        return fact[n] * inv_fact[r] * inv_fact[n - r];\n    }\n\
-    \    /**\n     * @brief nHr \u3092\u8FD4\u3059\n     * @param n\n     * @param\
-    \ r\n     * @return nHr\n     * @note extend(n+r-1), O(1)\n     */\n    inline\
-    \ static Modint H(long long n, long long r) {\n        if (n < 0 || r < 0) return\
-    \ 0;\n        if (n == 0 && r == 0) return 1;\n        return C(n + r - 1, r);\n\
-    \    }\n\n    /**\n     * @brief nPr \u3092\u5B9A\u7FA9\u3069\u304A\u308A\u8A08\
-    \u7B97\u3059\u308B\n     * @param n\n     * @param r\n     * @return nPr\n   \
-    \  * @note O(r)\n     */\n    inline static Modint P_loop(long long n, long long\
-    \ r) {\n        if (r < 0 || n < r) return 0;\n        Modint res = 1;\n     \
-    \   for (long long i = 0; i < r; ++i) {\n            res *= n - i;\n        }\n\
-    \        return res;\n    }\n    /**\n     * @brief nCr \u3092\u5B9A\u7FA9\u3069\
-    \u304A\u308A\u8A08\u7B97\u3059\u308B\n     * @param n\n     * @param r\n     *\
-    \ @return nCr\n     * @note O(min(r, n-r))\n     */\n    inline static Modint\
-    \ C_loop(long long n, long long r) {\n        if (r < 0 || n < r) return 0;\n\
-    \        if (r > n - r) r = n - r;\n        extend(r);\n        return P_loop(n,\
-    \ r) * inv_fact[r];\n    }\n    /**\n     * @brief nHr \u3092\u5B9A\u7FA9\u3069\
-    \u304A\u308A\u8A08\u7B97\u3059\u308B\n     * @param n\n     * @param r\n     *\
-    \ @return nHr\n     * @note O(r)\n     */\n    inline static Modint H_loop(long\
+    \ Modint factorial(long long n) {\n        assert(n >= 0);\n        extend(n);\n\
+    \        return fact[n];\n    }\n    /**\n     * @brief n \u306E\u968E\u4E57\u306E\
+    \u9006\u5143\u3092\u8FD4\u3059\n     * @param n\n     * @return n!^-1\n     *\
+    \ @note extend(n), O(1)\n     */\n    inline static Modint inverse_factorial(long\
+    \ long n) {\n        assert(n >= 0);\n        extend(n);\n        return inv_fact[n];\n\
+    \    }\n    /**\n     * @brief n \u306E\u9006\u5143\u3092\u8FD4\u3059\n     *\
+    \ @param n\n     * @return n^-1\n     * @note extend(n), O(1)\n     */\n    inline\
+    \ static Modint inv(long long n) {\n        assert(n > 0);\n        extend(n);\n\
+    \        return inv_fact[n] * fact[n - 1];\n    }\n\n    /**\n     * @brief nPr\
+    \ \u3092\u8FD4\u3059\n     * @param n\n     * @param r\n     * @return nPr\n \
+    \    * @note extend(n), O(1)\n     */\n    inline static Modint P(long long n,\
+    \ long long r) {\n        if (r < 0 || n < r) return 0;\n        extend(n);\n\
+    \        return fact[n] * inv_fact[n - r];\n    }\n    /**\n     * @brief nCr\
+    \ \u3092\u8FD4\u3059\n     * @param n\n     * @param r\n     * @return nCr\n \
+    \    * @note extend(n), O(1)\n     */\n    inline static Modint C(long long n,\
+    \ long long r) {\n        if (r < 0 || n < r) return 0;\n        extend(n);\n\
+    \        return fact[n] * inv_fact[r] * inv_fact[n - r];\n    }\n    /**\n   \
+    \  * @brief nHr \u3092\u8FD4\u3059\n     * @param n\n     * @param r\n     * @return\
+    \ nHr\n     * @note extend(n+r-1), O(1)\n     */\n    inline static Modint H(long\
     \ long n, long long r) {\n        if (n < 0 || r < 0) return 0;\n        if (n\
-    \ == 0 && r == 0) return 1;\n        return C_loop(n + r - 1, r);\n    }\n\n \
-    \   /**\n     * @brief nCr \u3092 Lucas \u306E\u5B9A\u7406\u3092\u7528\u3044\u3066\
-    \u8A08\u7B97\u3059\u308B\n     * @param n\n     * @param r\n     * @return nCr\n\
-    \     * @note extend(Mod), O(log(r))\n     */\n    inline static Modint C_lucas(long\
-    \ long n, long long r) {\n        if (r < 0 || n < r) return 0;\n        if (r\
-    \ == 0 || n == r) return 1;\n        Modint res = 1;\n        while (r > 0) {\n\
-    \            int ni = n % Modint::mod(), ri = r % Modint::mod();\n           \
-    \ if (ni < ri) return 0;\n            res *= C(ni, ri);\n            n /= Modint::mod();\n\
-    \            r /= Modint::mod();\n        }\n        return res;\n    }\n};\n\n\
-    template <typename Modint>\nstd::vector<Modint> Combination<Modint>::fact{1, 1};\n\
-    template <typename Modint>\nstd::vector<Modint> Combination<Modint>::inv_fact{1,\
-    \ 1};\ntemplate <typename Modint>\nlong long Combination<Modint>::cached_mod =\
-    \ 0;\n\n/**\n * @brief mod p^q \u3067\u306E\u4E8C\u9805\u4FC2\u6570\u3092\u6C42\
-    \u3081\u308B\u69CB\u9020\n * @note \u524D\u8A08\u7B97O(p^q) \u53C2\u8003: https://nyaannyaan.github.io/library/modulo/arbitrary-mod-binomial.hpp\n\
+    \ == 0 && r == 0) return 1;\n        return C(n + r - 1, r);\n    }\n\n    /**\n\
+    \     * @brief nPr \u3092\u5B9A\u7FA9\u3069\u304A\u308A\u8A08\u7B97\u3059\u308B\
+    \n     * @param n\n     * @param r\n     * @return nPr\n     * @note O(r)\n  \
+    \   */\n    inline static Modint P_loop(long long n, long long r) {\n        if\
+    \ (r < 0 || n < r) return 0;\n        Modint res = 1;\n        for (long long\
+    \ i = 0; i < r; ++i) {\n            res *= n - i;\n        }\n        return res;\n\
+    \    }\n    /**\n     * @brief nCr \u3092\u5B9A\u7FA9\u3069\u304A\u308A\u8A08\u7B97\
+    \u3059\u308B\n     * @param n\n     * @param r\n     * @return nCr\n     * @note\
+    \ O(min(r, n-r))\n     */\n    inline static Modint C_loop(long long n, long long\
+    \ r) {\n        if (r < 0 || n < r) return 0;\n        if (r > n - r) r = n -\
+    \ r;\n        extend(r);\n        return P_loop(n, r) * inv_fact[r];\n    }\n\
+    \    /**\n     * @brief nHr \u3092\u5B9A\u7FA9\u3069\u304A\u308A\u8A08\u7B97\u3059\
+    \u308B\n     * @param n\n     * @param r\n     * @return nHr\n     * @note O(r)\n\
+    \     */\n    inline static Modint H_loop(long long n, long long r) {\n      \
+    \  if (n < 0 || r < 0) return 0;\n        if (n == 0 && r == 0) return 1;\n  \
+    \      return C_loop(n + r - 1, r);\n    }\n\n    /**\n     * @brief nCr \u3092\
+    \ Lucas \u306E\u5B9A\u7406\u3092\u7528\u3044\u3066\u8A08\u7B97\u3059\u308B\n \
+    \    * @param n\n     * @param r\n     * @return nCr\n     * @note extend(Mod),\
+    \ O(log(r))\n     */\n    inline static Modint C_lucas(long long n, long long\
+    \ r) {\n        if (r < 0 || n < r) return 0;\n        if (r == 0 || n == r) return\
+    \ 1;\n        Modint res = 1;\n        while (r > 0) {\n            int ni = n\
+    \ % Modint::mod(), ri = r % Modint::mod();\n            if (ni < ri) return 0;\n\
+    \            res *= C(ni, ri);\n            n /= Modint::mod();\n            r\
+    \ /= Modint::mod();\n        }\n        return res;\n    }\n};\n\ntemplate <typename\
+    \ Modint>\nstd::vector<Modint> Combination<Modint>::fact{1, 1};\ntemplate <typename\
+    \ Modint>\nstd::vector<Modint> Combination<Modint>::inv_fact{1, 1};\ntemplate\
+    \ <typename Modint>\nlong long Combination<Modint>::cached_mod = 0;\n\n/**\n *\
+    \ @brief mod p^q \u3067\u306E\u4E8C\u9805\u4FC2\u6570\u3092\u6C42\u3081\u308B\u69CB\
+    \u9020\n * @note \u524D\u8A08\u7B97O(p^q) \u53C2\u8003: https://nyaannyaan.github.io/library/modulo/arbitrary-mod-binomial.hpp\n\
     \ */\nstruct CombinationPQ {\n    int p, q;\n    int pq;\n    std::vector<int>\
     \ fact_p, inv_fact_p;\n    int delta;\n    CombinationPQ(int p, int q) : p(p),\
     \ q(q) {\n        pq = 1;\n        for (int i = 0; i < q; i++) pq *= p;\n    \
@@ -490,7 +491,7 @@ data:
   isVerificationFile: true
   path: test/aoj/dpl/dpl-5-b.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:37:20+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/dpl/dpl-5-b.1.test.cpp

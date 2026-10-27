@@ -277,17 +277,18 @@ data:
     \ root) {\n        build();\n    }\n\n    /**\n     * @brief \u9802\u70B9u\u304B\
     \u3089k\u56DE\u3092\u6839\u306E\u65B9\u5411\u306B\u9061\u3063\u305F\u9802\u70B9\
     \n     *\n     * @param u \u5143\u306E\u9802\u70B9\n     * @param k \u767B\u308B\
-    \u6BB5\u6570\n     * @return long long k\u56DE\u767B\u3063\u305F\u9802\u70B9\n\
-    \     */\n    long long hop(long long u, long long k) const {\n        assert(0\
-    \ <= u && u < this->n && k >= 0);\n        if (k > this->unweighted_depth[u])\
-    \ return -1;\n        for (long long i = 0; i < h; i++) {\n            if (k >>\
-    \ i & 1) u = doubling_par[i][u];\n            if (u == -1) return -1;\n      \
-    \  }\n        return u;\n    }\n\n    /**\n     * @brief \u6700\u5C0F\u5171\u901A\
-    \u7956\u5148\n     *\n     * @param u \u9802\u70B91\n     * @param v \u9802\u70B9\
-    2\n     * @return long long LCA\u306E\u9802\u70B9\u756A\u53F7\n     */\n    long\
-    \ long lca(long long u, long long v) const {\n        assert(0 <= u && u < this->n\
-    \ && 0 <= v && v < this->n);\n        if (this->unweighted_depth[u] > this->unweighted_depth[v])\
-    \ std::swap(u, v);\n        v = hop(v, this->unweighted_depth[v] - this->unweighted_depth[u]);\n\
+    \u6BB5\u6570\n     * @return long long k\u56DE\u767B\u3063\u305F\u9802\u70B9 (\u5B58\
+    \u5728\u3057\u306A\u3051\u308C\u3070 -1)\n     */\n    long long hop(long long\
+    \ u, long long k) const {\n        assert(0 <= u && u < this->n && k >= 0);\n\
+    \        if (k > this->unweighted_depth[u]) return -1;\n        for (long long\
+    \ i = 0; i < h; i++) {\n            if (k >> i & 1) u = doubling_par[i][u];\n\
+    \            if (u == -1) return -1;\n        }\n        return u;\n    }\n\n\
+    \    /**\n     * @brief \u6700\u5C0F\u5171\u901A\u7956\u5148\n     *\n     * @param\
+    \ u \u9802\u70B91\n     * @param v \u9802\u70B92\n     * @return long long LCA\u306E\
+    \u9802\u70B9\u756A\u53F7\n     */\n    long long lca(long long u, long long v)\
+    \ const {\n        assert(0 <= u && u < this->n && 0 <= v && v < this->n);\n \
+    \       if (this->unweighted_depth[u] > this->unweighted_depth[v]) std::swap(u,\
+    \ v);\n        v = hop(v, this->unweighted_depth[v] - this->unweighted_depth[u]);\n\
     \        if (u == v) return u;\n        for (long long i = h - 1; i >= 0; i--)\
     \ {\n            long long nu = doubling_par[i][u];\n            long long nv\
     \ = doubling_par[i][v];\n            if (nu == -1) continue;\n            if (nu\
@@ -296,21 +297,22 @@ data:
     \u70B9\u9593\u8DDD\u96E2(\u91CD\u307F\u4ED8\u304D)\n     *\n     * @param u \u9802\
     \u70B91\n     * @param v \u9802\u70B92\n     * @return Cost u\u3068v\u9593\u306E\
     \u6700\u77ED\u7D4C\u8DEF\u306E\u8FBA\u306E\u91CD\u307F\u306E\u548C\n     */\n\
-    \    Cost dist(long long u, long long v) const {\n        return this->depth[u]\
-    \ + this->depth[v] - this->depth[lca(u, v)] * 2;\n    }\n\n   private:\n    void\
-    \ build() {\n        long long n = this->n;\n        h = 1;\n        while ((1LL\
-    \ << h) < n) h++;\n        doubling_par.assign(h, std::vector<long long>(n, -1));\n\
-    \        for (long long i = 0; i < n; i++) doubling_par[0][i] = this->par[i];\n\
-    \        for (long long i = 0; i < h - 1; i++) {\n            for (long long j\
-    \ = 0; j < n; j++) {\n                if (doubling_par[i][j] != -1) {\n      \
-    \              doubling_par[i + 1][j] = doubling_par[i][doubling_par[i][j]];\n\
-    \                }\n            }\n        }\n    }\n};\n#line 9 \"test/unittest/graph/tree.test.cpp\"\
+    \    Cost dist(long long u, long long v) const {\n        assert(0 <= u && u <\
+    \ this->n && 0 <= v && v < this->n);\n        return this->depth[u] + this->depth[v]\
+    \ - this->depth[lca(u, v)] * 2;\n    }\n\n   private:\n    void build() {\n  \
+    \      long long n = this->n;\n        h = 1;\n        while ((1LL << h) < n)\
+    \ h++;\n        doubling_par.assign(h, std::vector<long long>(n, -1));\n     \
+    \   for (long long i = 0; i < n; i++) doubling_par[0][i] = this->par[i];\n   \
+    \     for (long long i = 0; i < h - 1; i++) {\n            for (long long j =\
+    \ 0; j < n; j++) {\n                if (doubling_par[i][j] != -1) {\n        \
+    \            doubling_par[i + 1][j] = doubling_par[i][doubling_par[i][j]];\n \
+    \               }\n            }\n        }\n    }\n};\n#line 9 \"test/unittest/graph/tree.test.cpp\"\
     \n\n#line 11 \"test/unittest/graph/tree.test.cpp\"\n#include <random>\n#line 14\
     \ \"test/unittest/graph/tree.test.cpp\"\n\n#line 2 \"src/graph/shortest-path.hpp\"\
     \n\n/**\n * @file shortest-path.hpp\n * @brief \u6700\u77ED\u8DEF\n */\n\n#line\
     \ 10 \"src/graph/shortest-path.hpp\"\n#include <deque>\n#include <functional>\n\
-    #include <limits>\n#include <queue>\n#line 16 \"src/graph/shortest-path.hpp\"\n\
-    \n#line 18 \"src/graph/shortest-path.hpp\"\n\n/**\n * @brief \u6700\u77ED\u8DEF\
+    #include <limits>\n#include <optional>\n#include <queue>\n#line 17 \"src/graph/shortest-path.hpp\"\
+    \n\n#line 19 \"src/graph/shortest-path.hpp\"\n\n/**\n * @brief \u6700\u77ED\u8DEF\
     \u306E\u7D50\u679C\n *\n * auto [dist, prev] = shortest_path(g, s); \u306E\u3088\
     \u3046\u306B\u53D7\u3051\u53D6\u308C\u308B\n */\ntemplate <typename Cost>\nstruct\
     \ ShortestPath {\n    using Edge = typename Graph<Cost>::Edge;\n    std::vector<Cost>\
@@ -319,11 +321,16 @@ data:
     \u524D\u306E\u8FBA (\u59CB\u70B9\u3068\u672A\u5230\u9054\u306E\u9802\u70B9\u3067\
     \u306F src == -1)\n    /**\n     * @brief \u59CB\u70B9\u304B\u3089 t \u3078\u306E\
     \u6700\u77ED\u8DEF\u3092\u69CB\u6210\u3059\u308B\u8FBA\u306E\u30EA\u30B9\u30C8\
-    \ (\u59CB\u70B9\u5074\u304B\u3089\u9806\u306B)\n     * @note t \u304C\u59CB\u70B9\
-    \u304B\u672A\u5230\u9054\u306E\u9802\u70B9\u306A\u3089\u7A7A\u3002\u8CA0\u9589\
-    \u8DEF\u306E\u5F71\u97FF\u3092\u53D7\u3051\u308B\u9802\u70B9\u3067\u306F\u6700\
-    \u77ED\u8DEF\u304C\u5B9A\u307E\u3089\u306A\u3044 (assert \u3067\u843D\u3061\u308B\
-    )\n     */\n    std::vector<Edge> path(long long t) const {\n        std::vector<Edge>\
+    \ (\u59CB\u70B9\u5074\u304B\u3089\u9806\u306B)\n     * @return std::optional<std::vector<Edge>>\
+    \ t \u304C\u59CB\u70B9\u306A\u3089\u7A7A\u3001\u672A\u5230\u9054\u306A\u3089 std::nullopt\n\
+    \     * @note \u8CA0\u9589\u8DEF\u306E\u5F71\u97FF\u3092\u53D7\u3051\u308B\u9802\
+    \u70B9\u3067\u306F\u6700\u77ED\u8DEF\u304C\u5B9A\u307E\u3089\u306A\u3044 (assert\
+    \ \u3067\u843D\u3061\u308B)\n     */\n    std::optional<std::vector<Edge>> path(long\
+    \ long t) const {\n        // \u76F4\u524D\u306E\u8FBA\u304C\u306A\u3044\u306E\
+    \u306F\u59CB\u70B9\u3068\u672A\u5230\u9054\u306E\u9802\u70B9\u3002\u59CB\u70B9\
+    \u306E\u8DDD\u96E2\u306F 0 \u3067\u3001\u672A\u5230\u9054\u306E\u8DDD\u96E2 inf\
+    \ \u306F\u6B63\u306A\u306E\u3067\u533A\u5225\u3067\u304D\u308B\n        if (prev[t].src\
+    \ == -1 && dist[t] != Cost{}) return std::nullopt;\n        std::vector<Edge>\
     \ res;\n        while (prev[t].src != -1) {\n            res.push_back(prev[t]);\n\
     \            assert(res.size() < prev.size() && \"path: negative cycle\");\n \
     \           t = prev[t].src;\n        }\n        std::reverse(res.begin(), res.end());\n\
@@ -354,15 +361,20 @@ data:
     inf\u306B\u306A\u308B \u7701\u7565\u3059\u308B\u3068 std::numeric_limits<Cost>::max()\
     \ / 4\n * @return ShortestPath \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\
     \u9577 (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\
-    \u306E\u76F4\u524D\u306E\u8FBA (prev)\n */\ntemplate <typename Cost = long long>\n\
-    ShortestPath<Cost> shortest_path(const Graph<Cost>& graph, long long s, bool weighted\
-    \ = true, Cost inf = std::numeric_limits<Cost>::max() / 4) {\n    assert(0 <=\
-    \ s && s < graph.n);\n    if (weighted)\n        return internal_shortest_path::dijkstra(graph,\
-    \ s, inf);\n    return internal_shortest_path::bfs(graph, s, inf);\n}\n\n/**\n\
-    \ * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\
-    \u77ED\u8DEF\n *\n * @param s \u59CB\u70B9\n * @param inf \u30B3\u30B9\u30C8\u306E\
-    min\u306E\u5358\u4F4D\u5143 \u672A\u5230\u9054\u306E\u9802\u70B9\u3078\u306E\u8DDD\
-    \u96E2\u306Finf\u306B\u306A\u308B \u7701\u7565\u3059\u308B\u3068 std::numeric_limits<Cost>::max()\
+    \u306E\u76F4\u524D\u306E\u8FBA (prev)\n * @note weighted \u306A\u3089 Dijkstra\
+    \ \u306A\u306E\u3067\u3001\u8CA0\u306E\u8FBA\u304C\u3042\u308B\u3068 assert \u3067\
+    \u843D\u3061\u308B (\u8CA0\u306E\u8FBA\u304C\u3042\u308B\u306A\u3089 bellman_ford)\n\
+    \ */\ntemplate <typename Cost = long long>\nShortestPath<Cost> shortest_path(const\
+    \ Graph<Cost>& graph, long long s, bool weighted = true, Cost inf = std::numeric_limits<Cost>::max()\
+    \ / 4) {\n    assert(0 <= s && s < graph.n);\n    if (weighted) {\n        for\
+    \ (long long v = 0; v < graph.n; v++) {\n            for (const auto& e : graph[v])\
+    \ assert(!(e.cost < Cost{}) && \"shortest_path: negative edge (use bellman_ford)\"\
+    );\n        }\n        return internal_shortest_path::dijkstra(graph, s, inf);\n\
+    \    }\n    return internal_shortest_path::bfs(graph, s, inf);\n}\n\n/**\n * @brief\
+    \ \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\
+    \u8DEF\n *\n * @param s \u59CB\u70B9\n * @param inf \u30B3\u30B9\u30C8\u306Emin\u306E\
+    \u5358\u4F4D\u5143 \u672A\u5230\u9054\u306E\u9802\u70B9\u3078\u306E\u8DDD\u96E2\
+    \u306Finf\u306B\u306A\u308B \u7701\u7565\u3059\u308B\u3068 std::numeric_limits<Cost>::max()\
     \ / 4 \u8CA0\u9589\u8DEF\u306E\u5F71\u97FF\u3092\u53D7\u3051\u308B\u70B9\u306F\
     \ -inf\n * @return ShortestPath \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\
     \u9577 (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\
@@ -410,17 +422,24 @@ data:
     \ dist[i][j] \u304C i \u304B\u3089 j \u3078\u306E\u6700\u77ED\u8DEF\u9577 (\u5230\
     \u9054\u3067\u304D\u306A\u3051\u308C\u3070 inf)\n * @note \u8CA0\u306E\u8FBA\u304C\
     \u3042\u3063\u3066\u3082\u3088\u3044\u3002dist[i][i] < 0 \u3068\u306A\u308B i\
-    \ \u304C\u3042\u308C\u3070\u8CA0\u9589\u8DEF\u304C\u3042\u308B\n */\ntemplate\
-    \ <typename Cost = long long>\nstd::vector<std::vector<Cost>> floyd_warshall(const\
-    \ Graph<Cost>& graph, Cost inf = std::numeric_limits<Cost>::max() / 4) {\n   \
-    \ const long long n = graph.n;\n    std::vector<std::vector<Cost>> dist(n, std::vector<Cost>(n,\
+    \ \u304C\u3042\u308C\u3070\u8CA0\u9589\u8DEF\u304C\u3042\u308B\n * \u8CA0\u9589\
+    \u8DEF\u304C\u3042\u308B\u3068\u304D\u306E\u5024\u306F -inf \u4EE5\u4E0A\u306B\
+    \u5207\u308A\u8A70\u3081\u308B\u306E\u3067\u3001\u3042\u3075\u308C\u306A\u3044\
+    \ (\u8CA0\u9589\u8DEF\u306E\u5F71\u97FF\u3092\u53D7\u3051\u308B\u7D44\u306E\u5024\
+    \u306F\u6700\u77ED\u8DEF\u9577\u3067\u306F\u306A\u3044)\n */\ntemplate <typename\
+    \ Cost = long long>\nstd::vector<std::vector<Cost>> floyd_warshall(const Graph<Cost>&\
+    \ graph, Cost inf = std::numeric_limits<Cost>::max() / 4) {\n    const long long\
+    \ n = graph.n;\n    std::vector<std::vector<Cost>> dist(n, std::vector<Cost>(n,\
     \ inf));\n    for (long long i = 0; i < n; i++) dist[i][i] = Cost{};\n    for\
     \ (long long i = 0; i < n; i++) {\n        for (auto& e : graph[i]) dist[i][e.dst]\
     \ = std::min(dist[i][e.dst], e.cost);\n    }\n    for (long long k = 0; k < n;\
     \ k++) {\n        for (long long i = 0; i < n; i++) {\n            if (dist[i][k]\
     \ == inf) continue;\n            for (long long j = 0; j < n; j++) {\n       \
-    \         if (dist[k][j] == inf) continue;\n                dist[i][j] = std::min(dist[i][j],\
-    \ dist[i][k] + dist[k][j]);\n            }\n        }\n    }\n    return dist;\n\
+    \         if (dist[k][j] == inf) continue;\n                // dist \u306F -inf\
+    \ \u4EE5\u4E0A inf \u4EE5\u4E0B\u306A\u306E\u3067\u3001\u548C\u306F -2 inf \u4EE5\
+    \u4E0A\u3067\u3042\u3075\u308C\u306A\u3044\n                Cost d = dist[i][k]\
+    \ + dist[k][j];\n                if (d < -inf) d = -inf;\n                if (d\
+    \ < dist[i][j]) dist[i][j] = d;\n            }\n        }\n    }\n    return dist;\n\
     }\n#line 16 \"test/unittest/graph/tree.test.cpp\"\n\nint main() {\n    std::mt19937_64\
     \ rng(314);\n    bool ok = true;\n    for (int rep = 0; rep < 2000 && ok; rep++)\
     \ {\n        int n = rng() % 12 + 1;\n        int root = rng() % n;\n        Tree<long\
@@ -530,7 +549,7 @@ data:
   isVerificationFile: true
   path: test/unittest/graph/tree.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 19:53:10+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/graph/tree.test.cpp

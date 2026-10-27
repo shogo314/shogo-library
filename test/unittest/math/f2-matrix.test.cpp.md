@@ -366,29 +366,29 @@ data:
     \        m = p;\n        return (*this);\n    }\n\n    /**\n     * @brief \u4FDD\
     \u6301\u3057\u3066\u3044\u308B\u884C\u5217\u306Ek\u4E57\u3092\u6C42\u3081\u308B\
     \n     * @param k \u6307\u6570\n     * @return Matrix\n     */\n    [[nodiscard]]\n\
-    \    Matrix pow(long long k) const {\n        Matrix A = *this, B(n, n);\n   \
-    \     for (long long i = 0; i < n; i++) B[i][i] = OperatorProperty::one();\n \
-    \       while (k > 0) {\n            if (k & 1) B *= A;\n            A *= A;\n\
-    \            k >>= 1;\n        }\n        return B;\n    }\n\n    [[nodiscard]]\n\
-    \    Matrix operator+(const Matrix& B) const { return (Matrix(*this) += B); }\n\
-    \    [[nodiscard]]\n    Matrix operator-(const Matrix& B) const { return (Matrix(*this)\
-    \ -= B); }\n    [[nodiscard]]\n    Matrix operator*(const Matrix& B) const { return\
-    \ (Matrix(*this) *= B); }\n\n    /**\n     * @brief \u884C\u5217A\u3068\u5217\u30D9\
-    \u30AF\u30C8\u30EBB\u306E\u7A4D\n     * @param A Matrix\n     * @param B vector<T>\n\
-    \     * @return vector<T> \u5217\u30D9\u30AF\u30C8\u30EB\n     */\n    [[nodiscard]]\n\
-    \    friend std::vector<T> operator*(const Matrix& A, const std::vector<T>& B)\
-    \ {\n        assert(A.m == static_cast<long long>(B.size()));\n        std::vector<T>\
-    \ ret(A.n, OperatorProperty::zero());\n        for (long long i = 0; i < A.n;\
-    \ i++) {\n            for (long long j = 0; j < A.m; j++) {\n                ret[i]\
-    \ = OperatorProperty::add(ret[i], OperatorProperty::mul(A[i][j], B[j]));\n   \
-    \         }\n        }\n        return ret;\n    }\n\n    /**\n     * @brief \u884C\
-    \u30D9\u30AF\u30C8\u30EBA\u3068\u884C\u5217B\u306E\u7A4D\n     * @param A vector<T>\n\
-    \     * @param B Matrix\n     * @return vector<T> \u884C\u30D9\u30AF\u30C8\u30EB\
-    \n     */\n    [[nodiscard]]\n    friend std::vector<T> operator*(const std::vector<T>&\
-    \ A, const Matrix& B) {\n        assert(static_cast<long long>(A.size()) == B.n);\n\
-    \        std::vector<T> ret(B.m, OperatorProperty::zero());\n        for (long\
-    \ long i = 0; i < B.n; i++) {\n            for (long long j = 0; j < B.m; j++)\
-    \ {\n                ret[j] = OperatorProperty::add(ret[j], OperatorProperty::mul(A[i],\
+    \    Matrix pow(long long k) const {\n        assert(n == m && k >= 0);\n    \
+    \    Matrix A = *this, B(n, n);\n        for (long long i = 0; i < n; i++) B[i][i]\
+    \ = OperatorProperty::one();\n        while (k > 0) {\n            if (k & 1)\
+    \ B *= A;\n            A *= A;\n            k >>= 1;\n        }\n        return\
+    \ B;\n    }\n\n    [[nodiscard]]\n    Matrix operator+(const Matrix& B) const\
+    \ { return (Matrix(*this) += B); }\n    [[nodiscard]]\n    Matrix operator-(const\
+    \ Matrix& B) const { return (Matrix(*this) -= B); }\n    [[nodiscard]]\n    Matrix\
+    \ operator*(const Matrix& B) const { return (Matrix(*this) *= B); }\n\n    /**\n\
+    \     * @brief \u884C\u5217A\u3068\u5217\u30D9\u30AF\u30C8\u30EBB\u306E\u7A4D\n\
+    \     * @param A Matrix\n     * @param B vector<T>\n     * @return vector<T> \u5217\
+    \u30D9\u30AF\u30C8\u30EB\n     */\n    [[nodiscard]]\n    friend std::vector<T>\
+    \ operator*(const Matrix& A, const std::vector<T>& B) {\n        assert(A.m ==\
+    \ static_cast<long long>(B.size()));\n        std::vector<T> ret(A.n, OperatorProperty::zero());\n\
+    \        for (long long i = 0; i < A.n; i++) {\n            for (long long j =\
+    \ 0; j < A.m; j++) {\n                ret[i] = OperatorProperty::add(ret[i], OperatorProperty::mul(A[i][j],\
+    \ B[j]));\n            }\n        }\n        return ret;\n    }\n\n    /**\n \
+    \    * @brief \u884C\u30D9\u30AF\u30C8\u30EBA\u3068\u884C\u5217B\u306E\u7A4D\n\
+    \     * @param A vector<T>\n     * @param B Matrix\n     * @return vector<T> \u884C\
+    \u30D9\u30AF\u30C8\u30EB\n     */\n    [[nodiscard]]\n    friend std::vector<T>\
+    \ operator*(const std::vector<T>& A, const Matrix& B) {\n        assert(static_cast<long\
+    \ long>(A.size()) == B.n);\n        std::vector<T> ret(B.m, OperatorProperty::zero());\n\
+    \        for (long long i = 0; i < B.n; i++) {\n            for (long long j =\
+    \ 0; j < B.m; j++) {\n                ret[j] = OperatorProperty::add(ret[j], OperatorProperty::mul(A[i],\
     \ B[i][j]));\n            }\n        }\n        return ret;\n    }\n\n    /**\n\
     \     * @brief \u884C\u5217\u5F0F\n     * @return \u884C\u5217\u5F0F\n     * @note\
     \ \u5272\u308A\u7B97\u3092\u4F7F\u3046\u306E\u3067\u3001\u8981\u7D20\u306F\u4F53\
@@ -486,29 +486,30 @@ data:
     \        }\n        // S \u304C\u7A7A\u306E\u3068\u304D\u306E\u9805\u306F\u3001\
     n == 0 \u306A\u3089 1\u3001\u305D\u3046\u3067\u306A\u3051\u308C\u3070 0\n    \
     \    if (n == 0) res = OperatorProperty::one();\n        return res;\n    }\n\n\
-    \    /**\n     * @brief \u9006\u884C\u5217\n     * @return \u9006\u884C\u5217\n\
-    \     * @note det \u3068\u540C\u3058\u304F\u3001\u8981\u7D20\u306F\u4F53 (modint\
-    \ \u3084\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u306A\u3069) \u3067\u3042\u308B\u3053\
-    \u3068\n     */\n    [[nodiscard]]\n    Matrix inv() const {\n        assert(n\
-    \ == m);\n        if (n == 0) return Matrix(n, n);\n        if constexpr (std::is_same_v<OperatorProperty,\
+    \    /**\n     * @brief \u9006\u884C\u5217\n     * @return \u9006\u884C\u5217\u3002\
+    \u6B63\u5247\u3067\u306A\u3051\u308C\u3070 std::nullopt\n     * @note det \u3068\
+    \u540C\u3058\u304F\u3001\u8981\u7D20\u306F\u4F53 (modint \u3084\u6D6E\u52D5\u5C0F\
+    \u6570\u70B9\u578B\u306A\u3069) \u3067\u3042\u308B\u3053\u3068\n     */\n    [[nodiscard]]\n\
+    \    std::optional<Matrix> inv() const {\n        assert(n == m);\n        if\
+    \ (n == 0) return Matrix(n, n);\n        if constexpr (std::is_same_v<OperatorProperty,\
     \ matrix::OperatorPropertyDefault<T>>) {\n            std::vector A(n, std::valarray(T(0),\
     \ n + n));\n            for (long long i = 0; i < n; i++) {\n                for\
     \ (long long j = 0; j < n; j++) A[i][j] = this->v[i][j];\n                A[i][n\
-    \ + i] = T(1);\n            }\n            [[maybe_unused]] T d = forward_elimination(A);\n\
-    \            assert(d != T(0));\n            for (long long i = n - 1; i >= 0;\
-    \ i--) {\n                for (long long j = i - 1; j >= 0; j--) {\n         \
-    \           A[j] -= A[i] * A[j][i];\n                }\n            }\n      \
-    \      Matrix ret(n, n);\n            for (long long i = 0; i < n; i++)\n    \
-    \            for (long long j = 0; j < n; j++) ret[i][j] = A[i][n + j];\n    \
-    \        return ret;\n        } else {\n            std::vector A(n, std::vector<T>(n\
-    \ + n, OperatorProperty::zero()));\n            for (long long i = 0; i < n; i++)\
-    \ {\n                for (long long j = 0; j < n; j++) A[i][j] = this->v[i][j];\n\
-    \                A[i][n + i] = OperatorProperty::one();\n            }\n     \
-    \       [[maybe_unused]] T d = forward_elimination(A);\n            assert(d !=\
-    \ OperatorProperty::zero());\n            for (long long i = n - 1; i >= 0; i--)\
-    \ {\n                for (long long j = i - 1; j >= 0; j--) {\n              \
-    \      for (long long k = n; k < n + n; k++) {\n                        A[j][k]\
-    \ = OperatorProperty::add(A[j][k], OperatorProperty::neg(OperatorProperty::mul(A[i][k],\
+    \ + i] = T(1);\n            }\n            T d = forward_elimination(A);\n   \
+    \         if (d == T(0)) return std::nullopt;\n            for (long long i =\
+    \ n - 1; i >= 0; i--) {\n                for (long long j = i - 1; j >= 0; j--)\
+    \ {\n                    A[j] -= A[i] * A[j][i];\n                }\n        \
+    \    }\n            Matrix ret(n, n);\n            for (long long i = 0; i < n;\
+    \ i++)\n                for (long long j = 0; j < n; j++) ret[i][j] = A[i][n +\
+    \ j];\n            return ret;\n        } else {\n            std::vector A(n,\
+    \ std::vector<T>(n + n, OperatorProperty::zero()));\n            for (long long\
+    \ i = 0; i < n; i++) {\n                for (long long j = 0; j < n; j++) A[i][j]\
+    \ = this->v[i][j];\n                A[i][n + i] = OperatorProperty::one();\n \
+    \           }\n            T d = forward_elimination(A);\n            if (d ==\
+    \ OperatorProperty::zero()) return std::nullopt;\n            for (long long i\
+    \ = n - 1; i >= 0; i--) {\n                for (long long j = i - 1; j >= 0; j--)\
+    \ {\n                    for (long long k = n; k < n + n; k++) {\n           \
+    \             A[j][k] = OperatorProperty::add(A[j][k], OperatorProperty::neg(OperatorProperty::mul(A[i][k],\
     \ A[j][i])));\n                    }\n                }\n            }\n     \
     \       Matrix ret(n, n);\n            for (long long i = 0; i < n; i++)\n   \
     \             for (long long j = 0; j < n; j++) ret[i][j] = A[i][n + j];\n   \
@@ -832,7 +833,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/f2-matrix.test.cpp
   requiredBy: []
-  timestamp: '2026-10-24 03:47:04+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/f2-matrix.test.cpp

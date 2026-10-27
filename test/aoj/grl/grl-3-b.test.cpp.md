@@ -273,17 +273,18 @@ data:
     \ root) {\n        build();\n    }\n\n    /**\n     * @brief \u9802\u70B9u\u304B\
     \u3089k\u56DE\u3092\u6839\u306E\u65B9\u5411\u306B\u9061\u3063\u305F\u9802\u70B9\
     \n     *\n     * @param u \u5143\u306E\u9802\u70B9\n     * @param k \u767B\u308B\
-    \u6BB5\u6570\n     * @return long long k\u56DE\u767B\u3063\u305F\u9802\u70B9\n\
-    \     */\n    long long hop(long long u, long long k) const {\n        assert(0\
-    \ <= u && u < this->n && k >= 0);\n        if (k > this->unweighted_depth[u])\
-    \ return -1;\n        for (long long i = 0; i < h; i++) {\n            if (k >>\
-    \ i & 1) u = doubling_par[i][u];\n            if (u == -1) return -1;\n      \
-    \  }\n        return u;\n    }\n\n    /**\n     * @brief \u6700\u5C0F\u5171\u901A\
-    \u7956\u5148\n     *\n     * @param u \u9802\u70B91\n     * @param v \u9802\u70B9\
-    2\n     * @return long long LCA\u306E\u9802\u70B9\u756A\u53F7\n     */\n    long\
-    \ long lca(long long u, long long v) const {\n        assert(0 <= u && u < this->n\
-    \ && 0 <= v && v < this->n);\n        if (this->unweighted_depth[u] > this->unweighted_depth[v])\
-    \ std::swap(u, v);\n        v = hop(v, this->unweighted_depth[v] - this->unweighted_depth[u]);\n\
+    \u6BB5\u6570\n     * @return long long k\u56DE\u767B\u3063\u305F\u9802\u70B9 (\u5B58\
+    \u5728\u3057\u306A\u3051\u308C\u3070 -1)\n     */\n    long long hop(long long\
+    \ u, long long k) const {\n        assert(0 <= u && u < this->n && k >= 0);\n\
+    \        if (k > this->unweighted_depth[u]) return -1;\n        for (long long\
+    \ i = 0; i < h; i++) {\n            if (k >> i & 1) u = doubling_par[i][u];\n\
+    \            if (u == -1) return -1;\n        }\n        return u;\n    }\n\n\
+    \    /**\n     * @brief \u6700\u5C0F\u5171\u901A\u7956\u5148\n     *\n     * @param\
+    \ u \u9802\u70B91\n     * @param v \u9802\u70B92\n     * @return long long LCA\u306E\
+    \u9802\u70B9\u756A\u53F7\n     */\n    long long lca(long long u, long long v)\
+    \ const {\n        assert(0 <= u && u < this->n && 0 <= v && v < this->n);\n \
+    \       if (this->unweighted_depth[u] > this->unweighted_depth[v]) std::swap(u,\
+    \ v);\n        v = hop(v, this->unweighted_depth[v] - this->unweighted_depth[u]);\n\
     \        if (u == v) return u;\n        for (long long i = h - 1; i >= 0; i--)\
     \ {\n            long long nu = doubling_par[i][u];\n            long long nv\
     \ = doubling_par[i][v];\n            if (nu == -1) continue;\n            if (nu\
@@ -292,15 +293,16 @@ data:
     \u70B9\u9593\u8DDD\u96E2(\u91CD\u307F\u4ED8\u304D)\n     *\n     * @param u \u9802\
     \u70B91\n     * @param v \u9802\u70B92\n     * @return Cost u\u3068v\u9593\u306E\
     \u6700\u77ED\u7D4C\u8DEF\u306E\u8FBA\u306E\u91CD\u307F\u306E\u548C\n     */\n\
-    \    Cost dist(long long u, long long v) const {\n        return this->depth[u]\
-    \ + this->depth[v] - this->depth[lca(u, v)] * 2;\n    }\n\n   private:\n    void\
-    \ build() {\n        long long n = this->n;\n        h = 1;\n        while ((1LL\
-    \ << h) < n) h++;\n        doubling_par.assign(h, std::vector<long long>(n, -1));\n\
-    \        for (long long i = 0; i < n; i++) doubling_par[0][i] = this->par[i];\n\
-    \        for (long long i = 0; i < h - 1; i++) {\n            for (long long j\
-    \ = 0; j < n; j++) {\n                if (doubling_par[i][j] != -1) {\n      \
-    \              doubling_par[i + 1][j] = doubling_par[i][doubling_par[i][j]];\n\
-    \                }\n            }\n        }\n    }\n};\n#line 14 \"src/graph/lowlink.hpp\"\
+    \    Cost dist(long long u, long long v) const {\n        assert(0 <= u && u <\
+    \ this->n && 0 <= v && v < this->n);\n        return this->depth[u] + this->depth[v]\
+    \ - this->depth[lca(u, v)] * 2;\n    }\n\n   private:\n    void build() {\n  \
+    \      long long n = this->n;\n        h = 1;\n        while ((1LL << h) < n)\
+    \ h++;\n        doubling_par.assign(h, std::vector<long long>(n, -1));\n     \
+    \   for (long long i = 0; i < n; i++) doubling_par[0][i] = this->par[i];\n   \
+    \     for (long long i = 0; i < h - 1; i++) {\n            for (long long j =\
+    \ 0; j < n; j++) {\n                if (doubling_par[i][j] != -1) {\n        \
+    \            doubling_par[i + 1][j] = doubling_par[i][doubling_par[i][j]];\n \
+    \               }\n            }\n        }\n    }\n};\n#line 14 \"src/graph/lowlink.hpp\"\
     \n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306E lowlink \u3092\u6C42\u3081\
     \u3001\u95A2\u7BC0\u70B9\u30FB\u6A4B\u30FB\u4E8C\u91CD\u8FBA\u9023\u7D50\u6210\
     \u5206\u30FB\u4E8C\u91CD\u9802\u70B9\u9023\u7D50\u6210\u5206\u3092\u6C42\u3081\
@@ -451,7 +453,7 @@ data:
   isVerificationFile: true
   path: test/aoj/grl/grl-3-b.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 19:53:10+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/grl/grl-3-b.test.cpp

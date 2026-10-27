@@ -32,29 +32,32 @@ data:
     \u3088\u3046\u306B\u6BD4\u3079\u308B)\n    bool in_range(const value_type& x)\
     \ const {\n        if constexpr (std::is_signed_v<value_type>) {\n           \
     \ if (x < 0) return false;\n        }\n        return static_cast<unsigned long\
-    \ long>(x) <= static_cast<unsigned long long>(n);\n    }\n\n   public:\n    MexUpdate()\
-    \ = default;\n    explicit MexUpdate(long long n) : n(n), v(n, e) {\n        assert(n\
-    \ > 0);\n        assert(static_cast<unsigned long long>(n) + 1 < static_cast<unsigned\
+    \ long>(x) <= static_cast<unsigned long long>(n);\n    }\n\n   public:\n    /**\n\
+    \     * @brief \u9577\u3055 0 (mex \u306F 0)\n     */\n    MexUpdate() : MexUpdate(0)\
+    \ {}\n    /**\n     * @brief \u9577\u3055 n \u3067\u3001\u3069\u306E\u8981\u7D20\
+    \u3082\u307E\u3060\u5024\u3092\u6301\u305F\u306A\u3044 (mex \u306F 0)\u3002n =\
+    \ 0 \u3067\u3082\u3088\u3044\n     */\n    explicit MexUpdate(long long n) : n(n),\
+    \ v(n, e) {\n        assert(n >= 0);\n        assert(static_cast<unsigned long\
+    \ long>(n) + 1 < static_cast<unsigned long long>(e));\n        std::set<int>::iterator\
+    \ hint = s.end();\n        for (long long i = n; i >= 0; --i) {\n            hint\
+    \ = s.emplace_hint(hint, static_cast<int>(i));\n        }\n    }\n    explicit\
+    \ MexUpdate(const std::vector<value_type>& init) : n(init.size()), v(init) {\n\
+    \        assert(static_cast<unsigned long long>(n) + 1 < static_cast<unsigned\
     \ long long>(e));\n        std::set<int>::iterator hint = s.end();\n        for\
     \ (long long i = n; i >= 0; --i) {\n            hint = s.emplace_hint(hint, static_cast<int>(i));\n\
-    \        }\n    }\n    explicit MexUpdate(const std::vector<value_type>& init)\
-    \ : n(init.size()), v(init) {\n        assert(n > 0);\n        assert(static_cast<unsigned\
-    \ long long>(n) + 1 < static_cast<unsigned long long>(e));\n        std::set<int>::iterator\
-    \ hint = s.end();\n        for (long long i = n; i >= 0; --i) {\n            hint\
-    \ = s.emplace_hint(hint, static_cast<int>(i));\n        }\n        for (const\
-    \ auto& i : init) {\n            if (in_range(i)) {\n                m[i]++;\n\
-    \                s.erase(i);\n            }\n        }\n    }\n    void set(long\
-    \ long k, const value_type& x) {\n        assert(0 <= k && k < n);\n        if\
-    \ (in_range(v[k])) {\n            int v_k = v[k];\n            auto itr = m.find(v_k);\n\
-    \            if (itr->second > 1) {\n                itr->second--;\n        \
-    \    } else {\n                m.erase(itr);\n                s.insert(v_k);\n\
-    \            }\n        }\n        if (in_range(x)) {\n            int xx = x;\n\
-    \            auto itr = m.find(xx);\n            if (itr == m.end()) {\n     \
-    \           m[xx]++;\n                s.erase(xx);\n            } else {\n   \
-    \             itr->second++;\n            }\n        }\n        v[k] = x;\n  \
-    \  }\n    value_type mex() const {\n        return *s.begin();\n    }\n};\n#line\
-    \ 7 \"test/unittest/data_structures/mex-update.test.cpp\"\n\n#include <iostream>\n\
-    #include <random>\n#line 12 \"test/unittest/data_structures/mex-update.test.cpp\"\
+    \        }\n        for (const auto& i : init) {\n            if (in_range(i))\
+    \ {\n                m[i]++;\n                s.erase(i);\n            }\n   \
+    \     }\n    }\n    void set(long long k, const value_type& x) {\n        assert(0\
+    \ <= k && k < n);\n        if (in_range(v[k])) {\n            int v_k = v[k];\n\
+    \            auto itr = m.find(v_k);\n            if (itr->second > 1) {\n   \
+    \             itr->second--;\n            } else {\n                m.erase(itr);\n\
+    \                s.insert(v_k);\n            }\n        }\n        if (in_range(x))\
+    \ {\n            int xx = x;\n            auto itr = m.find(xx);\n           \
+    \ if (itr == m.end()) {\n                m[xx]++;\n                s.erase(xx);\n\
+    \            } else {\n                itr->second++;\n            }\n       \
+    \ }\n        v[k] = x;\n    }\n    value_type mex() const {\n        return *s.begin();\n\
+    \    }\n};\n#line 7 \"test/unittest/data_structures/mex-update.test.cpp\"\n\n\
+    #include <iostream>\n#include <random>\n#line 12 \"test/unittest/data_structures/mex-update.test.cpp\"\
     \n\n// v \u306B\u542B\u307E\u308C\u306A\u3044\u6700\u5C0F\u306E\u975E\u8CA0\u6574\
     \u6570\ntemplate <typename T>\nT naive_mex(const std::vector<T>& v) {\n    std::set<T>\
     \ s(v.begin(), v.end());\n    T x = 0;\n    while (s.count(x)) x++;\n    return\
@@ -80,8 +83,11 @@ data:
     \ && run<unsigned long long>(rng);\n    // 0..n-1 \u304C\u3059\u3079\u3066\u63C3\
     \u3046\u3068 mex \u306F n\n    MexUpdate<int> full(std::vector<int>{2, 0, 1});\n\
     \    ok = ok && full.mex() == 3;\n    full.set(1, 3);\n    ok = ok && full.mex()\
-    \ == 0;\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n   \
-    \ else\n        std::cerr << \"failed\" << std::endl;\n}\n"
+    \ == 0;\n    // \u9577\u3055 0 \u3068\u65E2\u5B9A\u69CB\u7BC9\u306F mex \u304C\
+    \ 0\n    ok = ok && MexUpdate<int>().mex() == 0 && MexUpdate<int>(0).mex() ==\
+    \ 0;\n    ok = ok && MexUpdate<int>(std::vector<int>{}).mex() == 0 && MexUpdate<unsigned\
+    \ int>().mex() == 0u;\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
+    \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// MexUpdate \u3092\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u30E9\u30F3\u30C0\u30E0\
     \u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\
@@ -113,14 +119,17 @@ data:
     \ && run<unsigned long long>(rng);\n    // 0..n-1 \u304C\u3059\u3079\u3066\u63C3\
     \u3046\u3068 mex \u306F n\n    MexUpdate<int> full(std::vector<int>{2, 0, 1});\n\
     \    ok = ok && full.mex() == 3;\n    full.set(1, 3);\n    ok = ok && full.mex()\
-    \ == 0;\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n   \
-    \ else\n        std::cerr << \"failed\" << std::endl;\n}\n"
+    \ == 0;\n    // \u9577\u3055 0 \u3068\u65E2\u5B9A\u69CB\u7BC9\u306F mex \u304C\
+    \ 0\n    ok = ok && MexUpdate<int>().mex() == 0 && MexUpdate<int>(0).mex() ==\
+    \ 0;\n    ok = ok && MexUpdate<int>(std::vector<int>{}).mex() == 0 && MexUpdate<unsigned\
+    \ int>().mex() == 0u;\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
+    \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/data_structures/mex-update.hpp
   isVerificationFile: true
   path: test/unittest/data_structures/mex-update.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:32:25+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/data_structures/mex-update.test.cpp

@@ -96,30 +96,33 @@ data:
     \u542B\u3080\u3088\u3046\u306B\u3068\u308B (f(x+1) - f(x) \u304C [-hi, -lo] \u306B\
     \u5165\u308B)\n * solve \u3092\u547C\u3076\u56DE\u6570\u306F O(log (hi - lo))\u3002\
     \u6700\u5927\u5316\u306A\u3089 f \u306E\u7B26\u53F7\u3092\u53CD\u8EE2\u3057\u3066\
-    \u4F7F\u3046\n */\ntemplate <typename Solve>\nlong long alien_dp(long long k,\
-    \ long long lo, long long hi, Solve solve) {\n    assert(lo <= hi);\n    // x_min(lambda)\
-    \ \u306F lambda \u306B\u3064\u3044\u3066\u5358\u8ABF\u975E\u5897\u52A0\u3002x_min(lambda)\
-    \ <= k \u3068\u306A\u308B\u6700\u5C0F\u306E lambda \u3092\u63A2\u3059\n    //\
-    \ \u305D\u306E\u3068\u304D k \u306F\u6700\u5C0F\u5024\u3092\u3068\u308B x \u306E\
-    \u7BC4\u56F2 [x_min(lambda), x_min(lambda - 1)] \u306B\u5165\u308B\u306E\u3067\
-    \u3001f(k) = \u6700\u5C0F\u5024 - lambda k\n    while (lo < hi) {\n        long\
-    \ long mid = lo + (hi - lo) / 2;\n        if (solve(mid).second <= k) {\n    \
-    \        hi = mid;\n        } else {\n            lo = mid + 1;\n        }\n \
-    \   }\n    auto [val, x] = solve(lo);\n    assert(x <= k && \"alien_dp: [lo, hi]\
-    \ \u304C\u72ED\u3044\");\n    return val - lo * k;\n}\n\n/**\n * @brief \u533A\
-    \u9593 DP dp[i][j] = min_{i < k < j} (dp[i][k] + dp[k][j]) + w(i, j) (j - i >=\
-    \ 2)\u3001dp[i][i+1] = base(i) \u3092\n * Knuth\u2013Yao \u306E\u9AD8\u901F\u5316\
-    \u3067\u6C42\u3081\u308B O(n^2)\n *\n * w \u304C quadrangle inequality (a <= b\
-    \ <= c <= d \u3067 w(a, c) + w(b, d) <= w(a, d) + w(b, c)) \u3068\n * \u5358\u8ABF\
-    \u6027 (w(b, c) <= w(a, d)) \u3092\u6E80\u305F\u305B\u3070\u3001\u6700\u9069\u306A\
-    \ k \u306F opt[i][j-1] <= opt[i][j] <= opt[i+1][j] \u3092\u6E80\u305F\u3059\u306E\
-    \u3067\u3001\u305D\u306E\u7BC4\u56F2\u3060\u3051\u3092\u8ABF\u3079\u308B\n * (base\
-    \ \u306E\u5024\u306F\u6700\u9069\u306A k \u306B\u5F71\u97FF\u3057\u306A\u3044\u3002\
-    \u533A\u9593\u306E base \u306E\u548C\u3092\u5F15\u3051\u3070 base = 0 \u306E\u5834\
-    \u5408\u306B\u306A\u308B\u305F\u3081)\n * @param n \u533A\u9593\u306E\u7AEF\u306E\
-    \u500B\u6570 - 1 (0 <= i < j <= n)\n * @return std::vector<std::vector<T>> dp[i][j]\
-    \ (0 <= i < j <= n\u3001\u305D\u308C\u4EE5\u5916\u306F\u4F7F\u308F\u306A\u3044\
-    )\n */\ntemplate <typename Base, typename W, typename T = std::decay_t<std::invoke_result_t<Base,\
+    \u4F7F\u3046\n * @note k \u306F\u3061\u3087\u3046\u3069 k \u500B\u9078\u3079\u308B\
+    \ (f(k) \u304C\u5B9A\u7FA9\u3055\u308C\u308B) \u5024\u3067\u3042\u308B\u3053\u3068\
+    \u3002\u305D\u3046\u3067\u306A\u3051\u308C\u3070\u7D50\u679C\u306F\u610F\u5473\
+    \u3092\u6301\u305F\u306A\u3044\n */\ntemplate <typename Solve>\nlong long alien_dp(long\
+    \ long k, long long lo, long long hi, Solve solve) {\n    assert(lo <= hi);\n\
+    \    // x_min(lambda) \u306F lambda \u306B\u3064\u3044\u3066\u5358\u8ABF\u975E\
+    \u5897\u52A0\u3002x_min(lambda) <= k \u3068\u306A\u308B\u6700\u5C0F\u306E lambda\
+    \ \u3092\u63A2\u3059\n    // \u305D\u306E\u3068\u304D k \u306F\u6700\u5C0F\u5024\
+    \u3092\u3068\u308B x \u306E\u7BC4\u56F2 [x_min(lambda), x_min(lambda - 1)] \u306B\
+    \u5165\u308B\u306E\u3067\u3001f(k) = \u6700\u5C0F\u5024 - lambda k\n    while\
+    \ (lo < hi) {\n        long long mid = lo + (hi - lo) / 2;\n        if (solve(mid).second\
+    \ <= k) {\n            hi = mid;\n        } else {\n            lo = mid + 1;\n\
+    \        }\n    }\n    auto [val, x] = solve(lo);\n    assert(x <= k && \"alien_dp:\
+    \ [lo, hi] \u304C\u72ED\u3044\");\n    return val - lo * k;\n}\n\n/**\n * @brief\
+    \ \u533A\u9593 DP dp[i][j] = min_{i < k < j} (dp[i][k] + dp[k][j]) + w(i, j) (j\
+    \ - i >= 2)\u3001dp[i][i+1] = base(i) \u3092\n * Knuth\u2013Yao \u306E\u9AD8\u901F\
+    \u5316\u3067\u6C42\u3081\u308B O(n^2)\n *\n * w \u304C quadrangle inequality (a\
+    \ <= b <= c <= d \u3067 w(a, c) + w(b, d) <= w(a, d) + w(b, c)) \u3068\n * \u5358\
+    \u8ABF\u6027 (w(b, c) <= w(a, d)) \u3092\u6E80\u305F\u305B\u3070\u3001\u6700\u9069\
+    \u306A k \u306F opt[i][j-1] <= opt[i][j] <= opt[i+1][j] \u3092\u6E80\u305F\u3059\
+    \u306E\u3067\u3001\u305D\u306E\u7BC4\u56F2\u3060\u3051\u3092\u8ABF\u3079\u308B\
+    \n * (base \u306E\u5024\u306F\u6700\u9069\u306A k \u306B\u5F71\u97FF\u3057\u306A\
+    \u3044\u3002\u533A\u9593\u306E base \u306E\u548C\u3092\u5F15\u3051\u3070 base\
+    \ = 0 \u306E\u5834\u5408\u306B\u306A\u308B\u305F\u3081)\n * @param n \u533A\u9593\
+    \u306E\u7AEF\u306E\u500B\u6570 - 1 (0 <= i < j <= n)\n * @return std::vector<std::vector<T>>\
+    \ dp[i][j] (0 <= i < j <= n\u3001\u305D\u308C\u4EE5\u5916\u306F\u4F7F\u308F\u306A\
+    \u3044)\n */\ntemplate <typename Base, typename W, typename T = std::decay_t<std::invoke_result_t<Base,\
     \ long long>>>\nstd::vector<std::vector<T>> knuth_yao(long long n, Base base,\
     \ W w) {\n    std::vector<std::vector<T>> dp(n + 1, std::vector<T>(n + 1, T{}));\n\
     \    std::vector<std::vector<long long>> opt(n + 1, std::vector<long long>(n +\
@@ -208,30 +211,33 @@ data:
     \u542B\u3080\u3088\u3046\u306B\u3068\u308B (f(x+1) - f(x) \u304C [-hi, -lo] \u306B\
     \u5165\u308B)\n * solve \u3092\u547C\u3076\u56DE\u6570\u306F O(log (hi - lo))\u3002\
     \u6700\u5927\u5316\u306A\u3089 f \u306E\u7B26\u53F7\u3092\u53CD\u8EE2\u3057\u3066\
-    \u4F7F\u3046\n */\ntemplate <typename Solve>\nlong long alien_dp(long long k,\
-    \ long long lo, long long hi, Solve solve) {\n    assert(lo <= hi);\n    // x_min(lambda)\
-    \ \u306F lambda \u306B\u3064\u3044\u3066\u5358\u8ABF\u975E\u5897\u52A0\u3002x_min(lambda)\
-    \ <= k \u3068\u306A\u308B\u6700\u5C0F\u306E lambda \u3092\u63A2\u3059\n    //\
-    \ \u305D\u306E\u3068\u304D k \u306F\u6700\u5C0F\u5024\u3092\u3068\u308B x \u306E\
-    \u7BC4\u56F2 [x_min(lambda), x_min(lambda - 1)] \u306B\u5165\u308B\u306E\u3067\
-    \u3001f(k) = \u6700\u5C0F\u5024 - lambda k\n    while (lo < hi) {\n        long\
-    \ long mid = lo + (hi - lo) / 2;\n        if (solve(mid).second <= k) {\n    \
-    \        hi = mid;\n        } else {\n            lo = mid + 1;\n        }\n \
-    \   }\n    auto [val, x] = solve(lo);\n    assert(x <= k && \"alien_dp: [lo, hi]\
-    \ \u304C\u72ED\u3044\");\n    return val - lo * k;\n}\n\n/**\n * @brief \u533A\
-    \u9593 DP dp[i][j] = min_{i < k < j} (dp[i][k] + dp[k][j]) + w(i, j) (j - i >=\
-    \ 2)\u3001dp[i][i+1] = base(i) \u3092\n * Knuth\u2013Yao \u306E\u9AD8\u901F\u5316\
-    \u3067\u6C42\u3081\u308B O(n^2)\n *\n * w \u304C quadrangle inequality (a <= b\
-    \ <= c <= d \u3067 w(a, c) + w(b, d) <= w(a, d) + w(b, c)) \u3068\n * \u5358\u8ABF\
-    \u6027 (w(b, c) <= w(a, d)) \u3092\u6E80\u305F\u305B\u3070\u3001\u6700\u9069\u306A\
-    \ k \u306F opt[i][j-1] <= opt[i][j] <= opt[i+1][j] \u3092\u6E80\u305F\u3059\u306E\
-    \u3067\u3001\u305D\u306E\u7BC4\u56F2\u3060\u3051\u3092\u8ABF\u3079\u308B\n * (base\
-    \ \u306E\u5024\u306F\u6700\u9069\u306A k \u306B\u5F71\u97FF\u3057\u306A\u3044\u3002\
-    \u533A\u9593\u306E base \u306E\u548C\u3092\u5F15\u3051\u3070 base = 0 \u306E\u5834\
-    \u5408\u306B\u306A\u308B\u305F\u3081)\n * @param n \u533A\u9593\u306E\u7AEF\u306E\
-    \u500B\u6570 - 1 (0 <= i < j <= n)\n * @return std::vector<std::vector<T>> dp[i][j]\
-    \ (0 <= i < j <= n\u3001\u305D\u308C\u4EE5\u5916\u306F\u4F7F\u308F\u306A\u3044\
-    )\n */\ntemplate <typename Base, typename W, typename T = std::decay_t<std::invoke_result_t<Base,\
+    \u4F7F\u3046\n * @note k \u306F\u3061\u3087\u3046\u3069 k \u500B\u9078\u3079\u308B\
+    \ (f(k) \u304C\u5B9A\u7FA9\u3055\u308C\u308B) \u5024\u3067\u3042\u308B\u3053\u3068\
+    \u3002\u305D\u3046\u3067\u306A\u3051\u308C\u3070\u7D50\u679C\u306F\u610F\u5473\
+    \u3092\u6301\u305F\u306A\u3044\n */\ntemplate <typename Solve>\nlong long alien_dp(long\
+    \ long k, long long lo, long long hi, Solve solve) {\n    assert(lo <= hi);\n\
+    \    // x_min(lambda) \u306F lambda \u306B\u3064\u3044\u3066\u5358\u8ABF\u975E\
+    \u5897\u52A0\u3002x_min(lambda) <= k \u3068\u306A\u308B\u6700\u5C0F\u306E lambda\
+    \ \u3092\u63A2\u3059\n    // \u305D\u306E\u3068\u304D k \u306F\u6700\u5C0F\u5024\
+    \u3092\u3068\u308B x \u306E\u7BC4\u56F2 [x_min(lambda), x_min(lambda - 1)] \u306B\
+    \u5165\u308B\u306E\u3067\u3001f(k) = \u6700\u5C0F\u5024 - lambda k\n    while\
+    \ (lo < hi) {\n        long long mid = lo + (hi - lo) / 2;\n        if (solve(mid).second\
+    \ <= k) {\n            hi = mid;\n        } else {\n            lo = mid + 1;\n\
+    \        }\n    }\n    auto [val, x] = solve(lo);\n    assert(x <= k && \"alien_dp:\
+    \ [lo, hi] \u304C\u72ED\u3044\");\n    return val - lo * k;\n}\n\n/**\n * @brief\
+    \ \u533A\u9593 DP dp[i][j] = min_{i < k < j} (dp[i][k] + dp[k][j]) + w(i, j) (j\
+    \ - i >= 2)\u3001dp[i][i+1] = base(i) \u3092\n * Knuth\u2013Yao \u306E\u9AD8\u901F\
+    \u5316\u3067\u6C42\u3081\u308B O(n^2)\n *\n * w \u304C quadrangle inequality (a\
+    \ <= b <= c <= d \u3067 w(a, c) + w(b, d) <= w(a, d) + w(b, c)) \u3068\n * \u5358\
+    \u8ABF\u6027 (w(b, c) <= w(a, d)) \u3092\u6E80\u305F\u305B\u3070\u3001\u6700\u9069\
+    \u306A k \u306F opt[i][j-1] <= opt[i][j] <= opt[i+1][j] \u3092\u6E80\u305F\u3059\
+    \u306E\u3067\u3001\u305D\u306E\u7BC4\u56F2\u3060\u3051\u3092\u8ABF\u3079\u308B\
+    \n * (base \u306E\u5024\u306F\u6700\u9069\u306A k \u306B\u5F71\u97FF\u3057\u306A\
+    \u3044\u3002\u533A\u9593\u306E base \u306E\u548C\u3092\u5F15\u3051\u3070 base\
+    \ = 0 \u306E\u5834\u5408\u306B\u306A\u308B\u305F\u3081)\n * @param n \u533A\u9593\
+    \u306E\u7AEF\u306E\u500B\u6570 - 1 (0 <= i < j <= n)\n * @return std::vector<std::vector<T>>\
+    \ dp[i][j] (0 <= i < j <= n\u3001\u305D\u308C\u4EE5\u5916\u306F\u4F7F\u308F\u306A\
+    \u3044)\n */\ntemplate <typename Base, typename W, typename T = std::decay_t<std::invoke_result_t<Base,\
     \ long long>>>\nstd::vector<std::vector<T>> knuth_yao(long long n, Base base,\
     \ W w) {\n    std::vector<std::vector<T>> dp(n + 1, std::vector<T>(n + 1, T{}));\n\
     \    std::vector<std::vector<long long>> opt(n + 1, std::vector<long long>(n +\
@@ -251,7 +257,7 @@ data:
   isVerificationFile: false
   path: src/dp/monge.hpp
   requiredBy: []
-  timestamp: '2026-10-22 05:49:48+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/dp/monge.test.cpp
@@ -300,6 +306,7 @@ long long ans = alien_dp(k, -1000000000000LL, 1000000000000LL, [&](long long lam
 | `knuth_yao(n, base, w)` | 区間 DP $\mathit{dp}[i][j] = \min_{i < k < j} (\mathit{dp}[i][k] + \mathit{dp}[k][j]) + w(i, j)$、$\mathit{dp}[i][i+1] = \mathit{base}(i)$ の表 ($0 \le i < j \le n$) を返す。$w$ が quadrangle inequality と単調性を満たすこと | $O(n^2)$ |
 
 - Monge な行列とは、$i < i'$、$j < j'$ について $f(i, j) + f(i', j') \le f(i, j') + f(i', j)$ を満たすものです。例えば、凸関数 $g$ について $g(x_i - y_j)$ ($x$、$y$ は昇順) や、$a_{i-j}$ ($a$ は凸) は Monge です。
+- `alien_dp` の `k` は、ちょうど $k$ 個選ぶことができる (実行可能な) 値であることを前提にします。実行不可能な $k$ を渡したときの結果は意味を持ちません (判定はしません)。
 - `alien_dp` の `solve(lambda)` は、$\min_x (f(x) + \lambda x)$ と、その最小値をとる $x$ のうち最小のものの組 `{値, x}` を返します。$\lambda$ は $[lo, hi]$ の整数から二分探索するので、$f$ の傾き $f(x+1) - f(x)$ がすべて $[-hi, -lo]$ に入るようにとります。$\lambda k$ や `solve` の値があふれないように注意します。最大化なら $f$ の符号を反転して使います。
 - `alien_dp` は、$x_{\min}(\lambda) \le k$ となる最小の $\lambda$ を探します。傾きが整数なら、そのとき $k$ は最小値をとる $x$ の範囲 $[x_{\min}(\lambda), x_{\min}(\lambda - 1)]$ に入るので、$f(k) = (\text{最小値}) - \lambda k$ です。
 - `knuth_yao` の $w$ の条件は、$a \le b \le c \le d$ について $w(a, c) + w(b, d) \le w(a, d) + w(b, c)$ (quadrangle inequality) と $w(b, c) \le w(a, d)$ (単調性) です。このとき最適な $k$ が $\mathit{opt}[i][j-1] \le \mathit{opt}[i][j] \le \mathit{opt}[i+1][j]$ を満たすので、その範囲だけを調べます。非負の数列の区間和や、その 2 乗は条件を満たします。$\mathit{base}$ の値は最適な $k$ に影響しません。

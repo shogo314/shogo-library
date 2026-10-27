@@ -124,8 +124,9 @@ data:
     \ U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>& operator|=(std::vector<T>&\
     \ v1, const std::vector<U>& v2) {\n    return extend(v1, v2);\n}\n\ntemplate <typename\
     \ T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>\ninline std::vector<T>& operator|=(std::vector<T>&\
-    \ v, const U& u) {\n    std::vector<T> w(v);\n    v.clear();\n    for (int i =\
-    \ 0; i < u; i++) {\n        extend(v, w);\n    }\n    return v;\n}\n\ntemplate\
+    \ v, const U& u) {\n    if constexpr (std::is_signed_v<U>) assert(u >= 0);\n \
+    \   std::vector<T> w(v);\n    v.clear();\n    for (long long i = 0; i < static_cast<long\
+    \ long>(u); i++) {\n        extend(v, w);\n    }\n    return v;\n}\n\ntemplate\
     \ <typename T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>\ninline std::vector<T>\
     \ operator|(const std::vector<T>& v, const U& u) {\n    std::vector<T> res(v);\n\
     \    return res |= u;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>\n\
@@ -145,14 +146,15 @@ data:
     \ std::vector<T>& v) {\n    std::vector<T> res(v);\n    std::sort(res.begin(),\
     \ res.end());\n    res.erase(std::unique(res.begin(), res.end()), res.end());\n\
     \    return res;\n}\n\ninline long long radix_convert(const std::vector<long long>&\
-    \ v, int base = 10) {\n    long long res = 0;\n    for (long long d : v) {\n \
-    \       res = res * base + d;\n    }\n    return res;\n}\n\ninline std::vector<long\
-    \ long> radix_convert(long long v, int base = 10) {\n    std::vector<long long>\
-    \ res;\n    while (v > 0) {\n        res.push_back(v % base);\n        v /= base;\n\
-    \    }\n    std::reverse(res.begin(), res.end());\n    return res;\n}\n#line 7\
-    \ \"test/yosupo/data_structure/static-range-sum.test.cpp\"\n\nint main() {\n \
-    \   std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    int n,\
-    \ q;\n    std::cin >> n >> q;\n    std::vector<long long> a(n);\n    for (auto&\
+    \ v, int base = 10) {\n    assert(base >= 2);\n    long long res = 0;\n    for\
+    \ (long long d : v) {\n        assert(0 <= d && d < base);\n        res = res\
+    \ * base + d;\n    }\n    return res;\n}\n\ninline std::vector<long long> radix_convert(long\
+    \ long v, int base = 10) {\n    assert(v >= 0 && base >= 2);\n    std::vector<long\
+    \ long> res;\n    while (v > 0) {\n        res.push_back(v % base);\n        v\
+    \ /= base;\n    }\n    std::reverse(res.begin(), res.end());\n    return res;\n\
+    }\n#line 7 \"test/yosupo/data_structure/static-range-sum.test.cpp\"\n\nint main()\
+    \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    int\
+    \ n, q;\n    std::cin >> n >> q;\n    std::vector<long long> a(n);\n    for (auto&\
     \ x : a) std::cin >> x;\n    // s[i] = a[0] + ... + a[i-1]\n    std::vector<long\
     \ long> s = cumulative_sum(a);\n    while (q--) {\n        int l, r;\n       \
     \ std::cin >> l >> r;\n        std::cout << s[r] - s[l] << '\\n';\n    }\n}\n"
@@ -169,7 +171,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/data_structure/static-range-sum.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:37:20+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/data_structure/static-range-sum.test.cpp

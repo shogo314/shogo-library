@@ -342,28 +342,29 @@ data:
     \ GaussianInteger<T>(0)) {\n        x = x % y;\n        std::swap(x, y);\n   \
     \ }\n    return x;\n}\n\n/**\n * @brief n = a^2 + b^2 \u3068\u306A\u308B 0 \u4EE5\
     \u4E0A\u306E\u6574\u6570\u306E\u7D44 (a, b) \u3092\u3001a \u306E\u6607\u9806\u306B\
-    \u3059\u3079\u3066\u8FD4\u3059\n * n \u3092\u7D20\u56E0\u6570\u5206\u89E3\u3057\
-    \u30014 \u3067\u5272\u3063\u3066 1 \u4F59\u308B\u7D20\u6570 p \u3092 p = \u03C0\
-    \ \u03C0' (\u03C0' \u306F \u03C0 \u306E\u5171\u5F79) \u3068\u5206\u3051\u3066\u3001\
-    \u305D\u308C\u305E\u308C\u306E\u9078\u3073\u65B9\u3092\u3059\u3079\u3066\u8A66\
-    \u3059\n * \u7D44\u306E\u500B\u6570\u3092 K \u3068\u3057\u3066\u3001O(factorize(n)\
-    \ + p \u306E\u500B\u6570 \xD7 log^2 n + K)\n * @pre 0 <= n <= 10^18 \u7A0B\u5EA6\
-    \ (__int128 \u3067\u3042\u3075\u308C\u306A\u3044\u7BC4\u56F2)\n */\ninline std::vector<std::pair<long\
-    \ long, long long>> two_square_sum(long long n) {\n    assert(n >= 0);\n    if\
-    \ (n == 0) return {{0, 0}};\n    using G = GaussianInteger<__int128>;\n    std::vector<G>\
-    \ cand = {G(1)};\n    for (auto [p, e] : factorize(n)) {\n        if (p % 4 ==\
-    \ 3) {\n            // p \u306F\u30AC\u30A6\u30B9\u6574\u6570\u3067\u3082\u7D20\
-    \u6570\u306A\u306E\u3067\u3001\u5076\u6570\u4E57\u3067\u306A\u3051\u308C\u3070\
-    \u8868\u305B\u306A\u3044\n            if (e % 2 == 1) return {};\n           \
-    \ G q(1);\n            for (long long i = 0; i < e / 2; i++) q = q * G(p);\n \
-    \           for (auto& z : cand) z = z * q;\n            continue;\n        }\n\
-    \        // p = \u03C0 \u03C0'\n        G pi;\n        if (p == 2) {\n       \
-    \     pi = G(1, 1);\n        } else {\n            const long long t = sqrt_mod(p\
-    \ - 1, p);  // t^2 \u2261 -1 (mod p)\n            pi = gaussian_gcd(G(p), G(t,\
-    \ 1));\n        }\n        // \u03C0^j \u03C0'^(e-j) (j = 0, ..., e)\u3002p =\
-    \ 2 \u306A\u3089 \u03C0 \u3068 \u03C0' \u306F\u5358\u6570\u500D\u306E\u9055\u3044\
-    \u306A\u306E\u3067 1 \u901A\u308A\n        std::vector<G> pw = {G(1)}, cpw = {G(1)};\n\
-    \        for (long long i = 0; i < e; i++) pw.push_back(pw.back() * pi), cpw.push_back(cpw.back()\
+    \u3059\u3079\u3066\u8FD4\u3059\u3002\u8868\u305B\u306A\u3051\u308C\u3070\u7A7A\
+    \n * n \u3092\u7D20\u56E0\u6570\u5206\u89E3\u3057\u30014 \u3067\u5272\u3063\u3066\
+    \ 1 \u4F59\u308B\u7D20\u6570 p \u3092 p = \u03C0 \u03C0' (\u03C0' \u306F \u03C0\
+    \ \u306E\u5171\u5F79) \u3068\u5206\u3051\u3066\u3001\u305D\u308C\u305E\u308C\u306E\
+    \u9078\u3073\u65B9\u3092\u3059\u3079\u3066\u8A66\u3059\n * \u7D44\u306E\u500B\u6570\
+    \u3092 K \u3068\u3057\u3066\u3001O(factorize(n) + p \u306E\u500B\u6570 \xD7 log^2\
+    \ n + K)\n * @pre 0 <= n <= 10^18 \u7A0B\u5EA6 (__int128 \u3067\u3042\u3075\u308C\
+    \u306A\u3044\u7BC4\u56F2)\n */\ninline std::vector<std::pair<long long, long long>>\
+    \ two_square_sum(long long n) {\n    assert(n >= 0);\n    if (n == 0) return {{0,\
+    \ 0}};\n    using G = GaussianInteger<__int128>;\n    std::vector<G> cand = {G(1)};\n\
+    \    for (auto [p, e] : factorize(n)) {\n        if (p % 4 == 3) {\n         \
+    \   // p \u306F\u30AC\u30A6\u30B9\u6574\u6570\u3067\u3082\u7D20\u6570\u306A\u306E\
+    \u3067\u3001\u5076\u6570\u4E57\u3067\u306A\u3051\u308C\u3070\u8868\u305B\u306A\
+    \u3044\n            if (e % 2 == 1) return {};\n            G q(1);\n        \
+    \    for (long long i = 0; i < e / 2; i++) q = q * G(p);\n            for (auto&\
+    \ z : cand) z = z * q;\n            continue;\n        }\n        // p = \u03C0\
+    \ \u03C0'\n        G pi;\n        if (p == 2) {\n            pi = G(1, 1);\n \
+    \       } else {\n            const long long t = sqrt_mod(p - 1, p);  // t^2\
+    \ \u2261 -1 (mod p)\n            pi = gaussian_gcd(G(p), G(t, 1));\n        }\n\
+    \        // \u03C0^j \u03C0'^(e-j) (j = 0, ..., e)\u3002p = 2 \u306A\u3089 \u03C0\
+    \ \u3068 \u03C0' \u306F\u5358\u6570\u500D\u306E\u9055\u3044\u306A\u306E\u3067\
+    \ 1 \u901A\u308A\n        std::vector<G> pw = {G(1)}, cpw = {G(1)};\n        for\
+    \ (long long i = 0; i < e; i++) pw.push_back(pw.back() * pi), cpw.push_back(cpw.back()\
     \ * pi.conj());\n        std::vector<G> next;\n        for (const auto& z : cand)\
     \ {\n            for (long long j = 0; j <= (p == 2 ? 0 : e); j++) next.push_back(z\
     \ * (p == 2 ? pw[e] : pw[j] * cpw[e - j]));\n        }\n        cand.swap(next);\n\
@@ -414,28 +415,29 @@ data:
     \ GaussianInteger<T>(0)) {\n        x = x % y;\n        std::swap(x, y);\n   \
     \ }\n    return x;\n}\n\n/**\n * @brief n = a^2 + b^2 \u3068\u306A\u308B 0 \u4EE5\
     \u4E0A\u306E\u6574\u6570\u306E\u7D44 (a, b) \u3092\u3001a \u306E\u6607\u9806\u306B\
-    \u3059\u3079\u3066\u8FD4\u3059\n * n \u3092\u7D20\u56E0\u6570\u5206\u89E3\u3057\
-    \u30014 \u3067\u5272\u3063\u3066 1 \u4F59\u308B\u7D20\u6570 p \u3092 p = \u03C0\
-    \ \u03C0' (\u03C0' \u306F \u03C0 \u306E\u5171\u5F79) \u3068\u5206\u3051\u3066\u3001\
-    \u305D\u308C\u305E\u308C\u306E\u9078\u3073\u65B9\u3092\u3059\u3079\u3066\u8A66\
-    \u3059\n * \u7D44\u306E\u500B\u6570\u3092 K \u3068\u3057\u3066\u3001O(factorize(n)\
-    \ + p \u306E\u500B\u6570 \xD7 log^2 n + K)\n * @pre 0 <= n <= 10^18 \u7A0B\u5EA6\
-    \ (__int128 \u3067\u3042\u3075\u308C\u306A\u3044\u7BC4\u56F2)\n */\ninline std::vector<std::pair<long\
-    \ long, long long>> two_square_sum(long long n) {\n    assert(n >= 0);\n    if\
-    \ (n == 0) return {{0, 0}};\n    using G = GaussianInteger<__int128>;\n    std::vector<G>\
-    \ cand = {G(1)};\n    for (auto [p, e] : factorize(n)) {\n        if (p % 4 ==\
-    \ 3) {\n            // p \u306F\u30AC\u30A6\u30B9\u6574\u6570\u3067\u3082\u7D20\
-    \u6570\u306A\u306E\u3067\u3001\u5076\u6570\u4E57\u3067\u306A\u3051\u308C\u3070\
-    \u8868\u305B\u306A\u3044\n            if (e % 2 == 1) return {};\n           \
-    \ G q(1);\n            for (long long i = 0; i < e / 2; i++) q = q * G(p);\n \
-    \           for (auto& z : cand) z = z * q;\n            continue;\n        }\n\
-    \        // p = \u03C0 \u03C0'\n        G pi;\n        if (p == 2) {\n       \
-    \     pi = G(1, 1);\n        } else {\n            const long long t = sqrt_mod(p\
-    \ - 1, p);  // t^2 \u2261 -1 (mod p)\n            pi = gaussian_gcd(G(p), G(t,\
-    \ 1));\n        }\n        // \u03C0^j \u03C0'^(e-j) (j = 0, ..., e)\u3002p =\
-    \ 2 \u306A\u3089 \u03C0 \u3068 \u03C0' \u306F\u5358\u6570\u500D\u306E\u9055\u3044\
-    \u306A\u306E\u3067 1 \u901A\u308A\n        std::vector<G> pw = {G(1)}, cpw = {G(1)};\n\
-    \        for (long long i = 0; i < e; i++) pw.push_back(pw.back() * pi), cpw.push_back(cpw.back()\
+    \u3059\u3079\u3066\u8FD4\u3059\u3002\u8868\u305B\u306A\u3051\u308C\u3070\u7A7A\
+    \n * n \u3092\u7D20\u56E0\u6570\u5206\u89E3\u3057\u30014 \u3067\u5272\u3063\u3066\
+    \ 1 \u4F59\u308B\u7D20\u6570 p \u3092 p = \u03C0 \u03C0' (\u03C0' \u306F \u03C0\
+    \ \u306E\u5171\u5F79) \u3068\u5206\u3051\u3066\u3001\u305D\u308C\u305E\u308C\u306E\
+    \u9078\u3073\u65B9\u3092\u3059\u3079\u3066\u8A66\u3059\n * \u7D44\u306E\u500B\u6570\
+    \u3092 K \u3068\u3057\u3066\u3001O(factorize(n) + p \u306E\u500B\u6570 \xD7 log^2\
+    \ n + K)\n * @pre 0 <= n <= 10^18 \u7A0B\u5EA6 (__int128 \u3067\u3042\u3075\u308C\
+    \u306A\u3044\u7BC4\u56F2)\n */\ninline std::vector<std::pair<long long, long long>>\
+    \ two_square_sum(long long n) {\n    assert(n >= 0);\n    if (n == 0) return {{0,\
+    \ 0}};\n    using G = GaussianInteger<__int128>;\n    std::vector<G> cand = {G(1)};\n\
+    \    for (auto [p, e] : factorize(n)) {\n        if (p % 4 == 3) {\n         \
+    \   // p \u306F\u30AC\u30A6\u30B9\u6574\u6570\u3067\u3082\u7D20\u6570\u306A\u306E\
+    \u3067\u3001\u5076\u6570\u4E57\u3067\u306A\u3051\u308C\u3070\u8868\u305B\u306A\
+    \u3044\n            if (e % 2 == 1) return {};\n            G q(1);\n        \
+    \    for (long long i = 0; i < e / 2; i++) q = q * G(p);\n            for (auto&\
+    \ z : cand) z = z * q;\n            continue;\n        }\n        // p = \u03C0\
+    \ \u03C0'\n        G pi;\n        if (p == 2) {\n            pi = G(1, 1);\n \
+    \       } else {\n            const long long t = sqrt_mod(p - 1, p);  // t^2\
+    \ \u2261 -1 (mod p)\n            pi = gaussian_gcd(G(p), G(t, 1));\n        }\n\
+    \        // \u03C0^j \u03C0'^(e-j) (j = 0, ..., e)\u3002p = 2 \u306A\u3089 \u03C0\
+    \ \u3068 \u03C0' \u306F\u5358\u6570\u500D\u306E\u9055\u3044\u306A\u306E\u3067\
+    \ 1 \u901A\u308A\n        std::vector<G> pw = {G(1)}, cpw = {G(1)};\n        for\
+    \ (long long i = 0; i < e; i++) pw.push_back(pw.back() * pi), cpw.push_back(cpw.back()\
     \ * pi.conj());\n        std::vector<G> next;\n        for (const auto& z : cand)\
     \ {\n            for (long long j = 0; j <= (p == 2 ? 0 : e); j++) next.push_back(z\
     \ * (p == 2 ? pw[e] : pw[j] * cpw[e - j]));\n        }\n        cand.swap(next);\n\
@@ -452,7 +454,7 @@ data:
   isVerificationFile: false
   path: src/math/gaussian-integer.hpp
   requiredBy: []
-  timestamp: '2026-10-23 19:32:11+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/math/gaussian-integer.test.cpp
@@ -490,7 +492,7 @@ auto v = two_square_sum(25);           // {(0, 5), (3, 4), (4, 3), (5, 0)}
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `gaussian_gcd(x, y)` | 最大公約数の 1 つ (単数 $\pm 1, \pm i$ 倍の違いを除いて決まる)。両方 0 なら 0 | $O(\log \text{ノルム})$ |
-| `two_square_sum(n)` | $n = a^2 + b^2$ となる 0 以上の整数の組 $(a, b)$ を $a$ の昇順にすべて (`std::vector<std::pair<long long, long long>>`)。$0 \le n \le 10^{18}$ | `factorize(n)` + 素因数ごとに $O(\log^2 n)$ + 組の個数 |
+| `two_square_sum(n)` | $n = a^2 + b^2$ となる 0 以上の整数の組 $(a, b)$ を $a$ の昇順にすべて (`std::vector<std::pair<long long, long long>>`)。表せなければ空。$0 \le n \le 10^{18}$ | `factorize(n)` + 素因数ごとに $O(\log^2 n)$ + 組の個数 |
 
 `two_square_sum` は $n$ を素因数分解し、4 で割って 1 余る素数 $p$ を $p = \pi \bar{\pi}$ と分けて (−1 の平方根 $t$ を使い $\pi = \gcd(p, t + i)$)、それぞれの素因数の選び方をすべて試します。4 で割って 3 余る素数が奇数乗で含まれていれば、表せません。
 

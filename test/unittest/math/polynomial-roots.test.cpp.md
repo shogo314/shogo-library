@@ -46,10 +46,10 @@ data:
     \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/math/polynomial-roots.hpp\"\
     \n\n/**\n * @file polynomial-roots.hpp\n * @brief \u6709\u9650\u4F53\u4E0A\u306E\
     \u591A\u9805\u5F0F\u306E\u6839 (Cantor-Zassenhaus \u6CD5)\n */\n\n#include <algorithm>\n\
-    #include <random>\n#include <vector>\n\n#line 2 \"src/math/fps.hpp\"\n\n/**\n\
-    \ * @file fps.hpp\n * @brief \u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\n */\n\n#line\
-    \ 9 \"src/math/fps.hpp\"\n#include <cassert>\n#include <optional>\n#include <queue>\n\
-    #include <utility>\n#line 14 \"src/math/fps.hpp\"\n\n#line 2 \"src/math/combinatorics.hpp\"\
+    #include <cassert>\n#include <random>\n#include <vector>\n\n#line 2 \"src/math/fps.hpp\"\
+    \n\n/**\n * @file fps.hpp\n * @brief \u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\n */\n\
+    \n#line 10 \"src/math/fps.hpp\"\n#include <optional>\n#include <queue>\n#include\
+    \ <utility>\n#line 14 \"src/math/fps.hpp\"\n\n#line 2 \"src/math/combinatorics.hpp\"\
     \n\n/**\n * @file combinatorics.hpp\n * @brief \u7D44\u307F\u5408\u308F\u305B\n\
     \ */\n\n#line 9 \"src/math/combinatorics.hpp\"\n#include <numeric>\n#line 11 \"\
     src/math/combinatorics.hpp\"\n\n#line 2 \"src/math/modular-arithmetic.hpp\"\n\n\
@@ -136,55 +136,55 @@ data:
     \ long i = n; i > m; --i) {\n            inv_fact[i - 1] = inv_fact[i] * i;\n\
     \        }\n    }\n\n    /**\n     * @brief n \u306E\u968E\u4E57\u3092\u8FD4\u3059\
     \n     * @param n\n     * @return n!\n     * @note extend(n), O(1)\n     */\n\
-    \    inline static Modint factorial(long long n) {\n        extend(n);\n     \
-    \   return fact[n];\n    }\n    /**\n     * @brief n \u306E\u968E\u4E57\u306E\u9006\
-    \u5143\u3092\u8FD4\u3059\n     * @param n\n     * @return n!^-1\n     * @note\
-    \ extend(n), O(1)\n     */\n    inline static Modint inverse_factorial(long long\
-    \ n) {\n        extend(n);\n        return inv_fact[n];\n    }\n    /**\n    \
-    \ * @brief n \u306E\u9006\u5143\u3092\u8FD4\u3059\n     * @param n\n     * @return\
-    \ n^-1\n     * @note extend(n), O(1)\n     */\n    inline static Modint inv(long\
-    \ long n) {\n        assert(n > 0);\n        extend(n);\n        return inv_fact[n]\
-    \ * fact[n - 1];\n    }\n\n    /**\n     * @brief nPr \u3092\u8FD4\u3059\n   \
-    \  * @param n\n     * @param r\n     * @return nPr\n     * @note extend(n), O(1)\n\
-    \     */\n    inline static Modint P(long long n, long long r) {\n        if (r\
-    \ < 0 || n < r) return 0;\n        extend(n);\n        return fact[n] * inv_fact[n\
-    \ - r];\n    }\n    /**\n     * @brief nCr \u3092\u8FD4\u3059\n     * @param n\n\
-    \     * @param r\n     * @return nCr\n     * @note extend(n), O(1)\n     */\n\
-    \    inline static Modint C(long long n, long long r) {\n        if (r < 0 ||\
-    \ n < r) return 0;\n        extend(n);\n        return fact[n] * inv_fact[r] *\
-    \ inv_fact[n - r];\n    }\n    /**\n     * @brief nHr \u3092\u8FD4\u3059\n   \
-    \  * @param n\n     * @param r\n     * @return nHr\n     * @note extend(n+r-1),\
-    \ O(1)\n     */\n    inline static Modint H(long long n, long long r) {\n    \
-    \    if (n < 0 || r < 0) return 0;\n        if (n == 0 && r == 0) return 1;\n\
-    \        return C(n + r - 1, r);\n    }\n\n    /**\n     * @brief nPr \u3092\u5B9A\
-    \u7FA9\u3069\u304A\u308A\u8A08\u7B97\u3059\u308B\n     * @param n\n     * @param\
-    \ r\n     * @return nPr\n     * @note O(r)\n     */\n    inline static Modint\
-    \ P_loop(long long n, long long r) {\n        if (r < 0 || n < r) return 0;\n\
-    \        Modint res = 1;\n        for (long long i = 0; i < r; ++i) {\n      \
-    \      res *= n - i;\n        }\n        return res;\n    }\n    /**\n     * @brief\
-    \ nCr \u3092\u5B9A\u7FA9\u3069\u304A\u308A\u8A08\u7B97\u3059\u308B\n     * @param\
-    \ n\n     * @param r\n     * @return nCr\n     * @note O(min(r, n-r))\n     */\n\
-    \    inline static Modint C_loop(long long n, long long r) {\n        if (r <\
-    \ 0 || n < r) return 0;\n        if (r > n - r) r = n - r;\n        extend(r);\n\
-    \        return P_loop(n, r) * inv_fact[r];\n    }\n    /**\n     * @brief nHr\
-    \ \u3092\u5B9A\u7FA9\u3069\u304A\u308A\u8A08\u7B97\u3059\u308B\n     * @param\
-    \ n\n     * @param r\n     * @return nHr\n     * @note O(r)\n     */\n    inline\
-    \ static Modint H_loop(long long n, long long r) {\n        if (n < 0 || r < 0)\
-    \ return 0;\n        if (n == 0 && r == 0) return 1;\n        return C_loop(n\
-    \ + r - 1, r);\n    }\n\n    /**\n     * @brief nCr \u3092 Lucas \u306E\u5B9A\u7406\
-    \u3092\u7528\u3044\u3066\u8A08\u7B97\u3059\u308B\n     * @param n\n     * @param\
-    \ r\n     * @return nCr\n     * @note extend(Mod), O(log(r))\n     */\n    inline\
-    \ static Modint C_lucas(long long n, long long r) {\n        if (r < 0 || n <\
-    \ r) return 0;\n        if (r == 0 || n == r) return 1;\n        Modint res =\
-    \ 1;\n        while (r > 0) {\n            int ni = n % Modint::mod(), ri = r\
-    \ % Modint::mod();\n            if (ni < ri) return 0;\n            res *= C(ni,\
-    \ ri);\n            n /= Modint::mod();\n            r /= Modint::mod();\n   \
-    \     }\n        return res;\n    }\n};\n\ntemplate <typename Modint>\nstd::vector<Modint>\
-    \ Combination<Modint>::fact{1, 1};\ntemplate <typename Modint>\nstd::vector<Modint>\
-    \ Combination<Modint>::inv_fact{1, 1};\ntemplate <typename Modint>\nlong long\
-    \ Combination<Modint>::cached_mod = 0;\n\n/**\n * @brief mod p^q \u3067\u306E\u4E8C\
-    \u9805\u4FC2\u6570\u3092\u6C42\u3081\u308B\u69CB\u9020\n * @note \u524D\u8A08\u7B97\
-    O(p^q) \u53C2\u8003: https://nyaannyaan.github.io/library/modulo/arbitrary-mod-binomial.hpp\n\
+    \    inline static Modint factorial(long long n) {\n        assert(n >= 0);\n\
+    \        extend(n);\n        return fact[n];\n    }\n    /**\n     * @brief n\
+    \ \u306E\u968E\u4E57\u306E\u9006\u5143\u3092\u8FD4\u3059\n     * @param n\n  \
+    \   * @return n!^-1\n     * @note extend(n), O(1)\n     */\n    inline static\
+    \ Modint inverse_factorial(long long n) {\n        assert(n >= 0);\n        extend(n);\n\
+    \        return inv_fact[n];\n    }\n    /**\n     * @brief n \u306E\u9006\u5143\
+    \u3092\u8FD4\u3059\n     * @param n\n     * @return n^-1\n     * @note extend(n),\
+    \ O(1)\n     */\n    inline static Modint inv(long long n) {\n        assert(n\
+    \ > 0);\n        extend(n);\n        return inv_fact[n] * fact[n - 1];\n    }\n\
+    \n    /**\n     * @brief nPr \u3092\u8FD4\u3059\n     * @param n\n     * @param\
+    \ r\n     * @return nPr\n     * @note extend(n), O(1)\n     */\n    inline static\
+    \ Modint P(long long n, long long r) {\n        if (r < 0 || n < r) return 0;\n\
+    \        extend(n);\n        return fact[n] * inv_fact[n - r];\n    }\n    /**\n\
+    \     * @brief nCr \u3092\u8FD4\u3059\n     * @param n\n     * @param r\n    \
+    \ * @return nCr\n     * @note extend(n), O(1)\n     */\n    inline static Modint\
+    \ C(long long n, long long r) {\n        if (r < 0 || n < r) return 0;\n     \
+    \   extend(n);\n        return fact[n] * inv_fact[r] * inv_fact[n - r];\n    }\n\
+    \    /**\n     * @brief nHr \u3092\u8FD4\u3059\n     * @param n\n     * @param\
+    \ r\n     * @return nHr\n     * @note extend(n+r-1), O(1)\n     */\n    inline\
+    \ static Modint H(long long n, long long r) {\n        if (n < 0 || r < 0) return\
+    \ 0;\n        if (n == 0 && r == 0) return 1;\n        return C(n + r - 1, r);\n\
+    \    }\n\n    /**\n     * @brief nPr \u3092\u5B9A\u7FA9\u3069\u304A\u308A\u8A08\
+    \u7B97\u3059\u308B\n     * @param n\n     * @param r\n     * @return nPr\n   \
+    \  * @note O(r)\n     */\n    inline static Modint P_loop(long long n, long long\
+    \ r) {\n        if (r < 0 || n < r) return 0;\n        Modint res = 1;\n     \
+    \   for (long long i = 0; i < r; ++i) {\n            res *= n - i;\n        }\n\
+    \        return res;\n    }\n    /**\n     * @brief nCr \u3092\u5B9A\u7FA9\u3069\
+    \u304A\u308A\u8A08\u7B97\u3059\u308B\n     * @param n\n     * @param r\n     *\
+    \ @return nCr\n     * @note O(min(r, n-r))\n     */\n    inline static Modint\
+    \ C_loop(long long n, long long r) {\n        if (r < 0 || n < r) return 0;\n\
+    \        if (r > n - r) r = n - r;\n        extend(r);\n        return P_loop(n,\
+    \ r) * inv_fact[r];\n    }\n    /**\n     * @brief nHr \u3092\u5B9A\u7FA9\u3069\
+    \u304A\u308A\u8A08\u7B97\u3059\u308B\n     * @param n\n     * @param r\n     *\
+    \ @return nHr\n     * @note O(r)\n     */\n    inline static Modint H_loop(long\
+    \ long n, long long r) {\n        if (n < 0 || r < 0) return 0;\n        if (n\
+    \ == 0 && r == 0) return 1;\n        return C_loop(n + r - 1, r);\n    }\n\n \
+    \   /**\n     * @brief nCr \u3092 Lucas \u306E\u5B9A\u7406\u3092\u7528\u3044\u3066\
+    \u8A08\u7B97\u3059\u308B\n     * @param n\n     * @param r\n     * @return nCr\n\
+    \     * @note extend(Mod), O(log(r))\n     */\n    inline static Modint C_lucas(long\
+    \ long n, long long r) {\n        if (r < 0 || n < r) return 0;\n        if (r\
+    \ == 0 || n == r) return 1;\n        Modint res = 1;\n        while (r > 0) {\n\
+    \            int ni = n % Modint::mod(), ri = r % Modint::mod();\n           \
+    \ if (ni < ri) return 0;\n            res *= C(ni, ri);\n            n /= Modint::mod();\n\
+    \            r /= Modint::mod();\n        }\n        return res;\n    }\n};\n\n\
+    template <typename Modint>\nstd::vector<Modint> Combination<Modint>::fact{1, 1};\n\
+    template <typename Modint>\nstd::vector<Modint> Combination<Modint>::inv_fact{1,\
+    \ 1};\ntemplate <typename Modint>\nlong long Combination<Modint>::cached_mod =\
+    \ 0;\n\n/**\n * @brief mod p^q \u3067\u306E\u4E8C\u9805\u4FC2\u6570\u3092\u6C42\
+    \u3081\u308B\u69CB\u9020\n * @note \u524D\u8A08\u7B97O(p^q) \u53C2\u8003: https://nyaannyaan.github.io/library/modulo/arbitrary-mod-binomial.hpp\n\
     \ */\nstruct CombinationPQ {\n    int p, q;\n    int pq;\n    std::vector<int>\
     \ fact_p, inv_fact_p;\n    int delta;\n    CombinationPQ(int p, int q) : p(p),\
     \ q(q) {\n        pq = 1;\n        for (int i = 0; i < q; i++) pq *= p;\n    \
@@ -874,60 +874,65 @@ data:
     \     assert(g.back() != 0);\n        FPS q = f / g;\n        FPS r = f - q *\
     \ g;\n        return {q, r};\n    }\n\n    // log(f) = \\int f'/f dx, f[0] must\
     \ be 1\n    inline friend FPS log(const FPS& f, long long deg) {\n        assert(!f.empty()\
-    \ && f[0] == 1);\n        FPS res = intg(diff(f) * inv(f, deg));\n        res.resize(deg);\n\
-    \        return res;\n    }\n    inline friend FPS log(const FPS& f) {\n     \
-    \   return log(f, f.size());\n    }\n\n    // exp(f), f[0] must be 0\n    inline\
+    \ && f[0] == 1);\n        if (deg < 0) deg = static_cast<long long>(f.size());\n\
+    \        FPS res = intg(diff(f) * inv(f, deg));\n        res.resize(deg);\n  \
+    \      return res;\n    }\n    inline friend FPS log(const FPS& f) {\n       \
+    \ return log(f, f.size());\n    }\n\n    // exp(f), f[0] must be 0\n    inline\
     \ friend FPS exp(const FPS& f, long long deg) {\n        assert(f.empty() || f[0]\
-    \ == 0);\n        if (deg <= 0) return FPS();\n        if constexpr (internal_convolution::ntt_candidate<mint>())\
+    \ == 0);\n        if (deg < 0) deg = static_cast<long long>(f.size());\n     \
+    \   if (deg == 0) return FPS();\n        if constexpr (internal_convolution::ntt_candidate<mint>())\
     \ {\n            if (internal_fps::use_ntt<mint>(2 * deg)) return internal_fps::exp_ntt<mint>(f,\
     \ deg);\n        }\n        FPS res(1, 1);\n        for (long long i = 1; i <\
     \ deg; i <<= 1) {\n            res = res * (f.pre(i << 1) - log(res, i << 1) +\
     \ 1).pre(i << 1);\n        }\n        res.resize(deg);\n        return res;\n\
     \    }\n    inline friend FPS exp(const FPS& f) {\n        return exp(f, f.size());\n\
     \    }\n\n    // pow(f) = exp(e * log f)\n    inline friend FPS pow(const FPS&\
-    \ f, long long e, long long deg) {\n        if (e == 0) {\n            auto ret\
-    \ = FPS(deg, 0);\n            if (deg > 0) ret[0] = 1;\n            return ret;\n\
-    \        }\n        long long i = 0;\n        while (i < static_cast<long long>(f.size())\
+    \ f, long long e, long long deg) {\n        if (deg < 0) deg = static_cast<long\
+    \ long>(f.size());\n        if (e == 0) {\n            auto ret = FPS(deg, 0);\n\
+    \            if (deg > 0) ret[0] = 1;\n            return ret;\n        }\n  \
+    \      long long i = 0;\n        while (i < static_cast<long long>(f.size()) &&\
+    \ f[i] == 0) ++i;\n        if (i == static_cast<long long>(f.size())) return FPS(deg,\
+    \ 0);\n        if ((i >= 1 && e >= deg) || i * e >= deg) return FPS(deg, 0);\n\
+    \        mint k = f[i];\n        FPS res = exp(log((f >> i) / k, deg) * e, deg)\
+    \ * k.pow(e) << (e * i);\n        res.resize(deg);\n        return res;\n    }\n\
+    \    inline friend FPS pow(const FPS& f, long long e) {\n        return pow(f,\
+    \ e, f.size());\n    }\n\n    // sqrt(f) (g^2 = f \u3068\u306A\u308B g) \u306E\
+    \u5148\u982D deg \u9805\u3002\u6CD5\u306F\u7D20\u6570\u3067\u3042\u308B\u3053\u3068\
+    \n    // f = 0 \u306A\u3089 0\u3002\u6700\u521D\u306E 0 \u3067\u306A\u3044\u9805\
+    \ f_i x^i \u306E i \u304C\u5947\u6570\u304B\u3001f_i \u304C\u5E73\u65B9\u975E\u5270\
+    \u4F59\u306A\u3089\u5E73\u65B9\u6839\u306F\u306A\u304F std::nullopt (deg \u306B\
+    \u3088\u3089\u306A\u3044)\n    inline friend std::optional<FPS> sqrt(const FPS&\
+    \ f, long long deg) {\n        if (deg < 0) deg = static_cast<long long>(f.size());\n\
+    \        long long i = 0;\n        while (i < static_cast<long long>(f.size())\
     \ && f[i] == 0) ++i;\n        if (i == static_cast<long long>(f.size())) return\
-    \ FPS(deg, 0);\n        if ((i >= 1 && e >= deg) || i * e >= deg) return FPS(deg,\
-    \ 0);\n        mint k = f[i];\n        FPS res = exp(log((f >> i) / k, deg) *\
-    \ e, deg) * k.pow(e) << (e * i);\n        res.resize(deg);\n        return res;\n\
-    \    }\n    inline friend FPS pow(const FPS& f, long long e) {\n        return\
-    \ pow(f, e, f.size());\n    }\n\n    // sqrt(f) \u306E\u5148\u982D deg \u9805\
-    \ (g^2 = f)\u3002\u5E73\u65B9\u6839\u304C\u306A\u3051\u308C\u3070 std::nullopt\n\
-    \    // \u6700\u521D\u306E 0 \u3067\u306A\u3044\u9805 f_i x^i \u306F\u3001i \u304C\
-    \u5076\u6570\u3067 f_i \u304C\u5E73\u65B9\u5270\u4F59\u3067\u3042\u308B\u3053\u3068\
-    \u3002\u6CD5\u306F\u7D20\u6570\u3067\u3042\u308B\u3053\u3068\n    inline friend\
-    \ std::optional<FPS> sqrt(const FPS& f, long long deg) {\n        long long i\
-    \ = 0;\n        while (i < static_cast<long long>(f.size()) && f[i] == 0) ++i;\n\
-    \        if (i == static_cast<long long>(f.size()) || i / 2 >= deg) return FPS(deg,\
-    \ 0);\n        if (i % 2 == 1) return std::nullopt;\n        long long r = sqrt_mod(f[i].val(),\
-    \ mint::mod());\n        if (r == -1) return std::nullopt;\n        // x^i \u3092\
-    \u5916\u3057\u305F g = f / x^i (g_0 != 0) \u306E\u5E73\u65B9\u6839\u3092\u30CB\
-    \u30E5\u30FC\u30C8\u30F3\u6CD5\u3067\u6C42\u3081\u308B: h <- (h + g / h) / 2\n\
-    \        const FPS g = f >> i;\n        const long long d = deg - i / 2;\n   \
-    \     FPS h({mint(r)});\n        const mint inv2 = mint(2).inv();\n        for\
-    \ (long long k = 1; k < d; k <<= 1) {\n            h = (h + (g.pre(k << 1) * inv(h,\
-    \ k << 1)).pre(k << 1)) * inv2;\n        }\n        h.resize(d);\n        h <<=\
-    \ i / 2;\n        return h;\n    }\n    inline friend std::optional<FPS> sqrt(const\
-    \ FPS& f) {\n        return sqrt(f, f.size());\n    }\n\n    inline friend FPS\
-    \ taylor_shift(FPS f, mint a) {\n        using C = Combination<mint>;\n      \
-    \  int n = f.size();\n        C::extend(n);\n        for (int i = 0; i < n; i++)\
-    \ f[i] *= C::factorial(i);\n        std::reverse(f.begin(), f.end());\n      \
-    \  FPS<mint> g(n, 1);\n        for (int i = 1; i < n; i++) g[i] = g[i - 1] * a\
-    \ * C::inv(i);\n        f = (f * g).pre(n);\n        std::reverse(f.begin(), f.end());\n\
-    \        for (int i = 0; i < n; i++) f[i] *= C::inverse_factorial(i);\n      \
-    \  return f;\n    }\n};\n\nnamespace internal_fps {\ntemplate <typename mint>\n\
-    FPS<mint> shrink(FPS<mint> f) {\n    f.normalize();\n    return f;\n}\n\n// x^k\
-    \ \u3067\u5272\u3063\u3066\u4F4E\u6B21\u306E\u9805\u3092\u6368\u3066\u308B\u3002\
-    \u9577\u3055\u304C k \u4EE5\u4E0B\u306A\u3089 0 (\u7A7A)\ntemplate <typename mint>\n\
-    FPS<mint> drop(const FPS<mint>& f, long long k) {\n    if (static_cast<long long>(f.size())\
-    \ <= k) return FPS<mint>();\n    return FPS<mint>(f.begin() + k, f.end());\n}\n\
-    \n// \u884C\u5217\u306E\u6210\u5206\u306E\u7A4D\u548C \u03A3_j x[i][j] y[j][k]\
-    \ \u3092\u3001\u5404\u6210\u5206\u3092 1 \u56DE\u305A\u3064 NTT \u3057\u3066\u6C42\
-    \u3081\u308B (\u6CD5\u304C NTT \u306B\u5411\u304D\u3001\u9577\u3055\u304C\u5341\
-    \u5206\u9577\u3044\u3068\u304D\u3060\u3051)\n// x \u306F rows \xD7 2\u3001y \u306F\
-    \ 2 \xD7 cols\u3002\u7D50\u679C\u306F rows \xD7 cols\u3002\u4F7F\u3048\u306A\u3051\
+    \ FPS(deg, 0);\n        if (i % 2 == 1) return std::nullopt;\n        long long\
+    \ r = sqrt_mod(f[i].val(), mint::mod());\n        if (r == -1) return std::nullopt;\n\
+    \        if (i / 2 >= deg) return FPS(deg, 0);\n        // x^i \u3092\u5916\u3057\
+    \u305F g = f / x^i (g_0 != 0) \u306E\u5E73\u65B9\u6839\u3092\u30CB\u30E5\u30FC\
+    \u30C8\u30F3\u6CD5\u3067\u6C42\u3081\u308B: h <- (h + g / h) / 2\n        const\
+    \ FPS g = f >> i;\n        const long long d = deg - i / 2;\n        FPS h({mint(r)});\n\
+    \        const mint inv2 = mint(2).inv();\n        for (long long k = 1; k < d;\
+    \ k <<= 1) {\n            h = (h + (g.pre(k << 1) * inv(h, k << 1)).pre(k << 1))\
+    \ * inv2;\n        }\n        h.resize(d);\n        h <<= i / 2;\n        return\
+    \ h;\n    }\n    inline friend std::optional<FPS> sqrt(const FPS& f) {\n     \
+    \   return sqrt(f, f.size());\n    }\n\n    inline friend FPS taylor_shift(FPS\
+    \ f, mint a) {\n        using C = Combination<mint>;\n        int n = f.size();\n\
+    \        C::extend(n);\n        for (int i = 0; i < n; i++) f[i] *= C::factorial(i);\n\
+    \        std::reverse(f.begin(), f.end());\n        FPS<mint> g(n, 1);\n     \
+    \   for (int i = 1; i < n; i++) g[i] = g[i - 1] * a * C::inv(i);\n        f =\
+    \ (f * g).pre(n);\n        std::reverse(f.begin(), f.end());\n        for (int\
+    \ i = 0; i < n; i++) f[i] *= C::inverse_factorial(i);\n        return f;\n   \
+    \ }\n};\n\nnamespace internal_fps {\ntemplate <typename mint>\nFPS<mint> shrink(FPS<mint>\
+    \ f) {\n    f.normalize();\n    return f;\n}\n\n// x^k \u3067\u5272\u3063\u3066\
+    \u4F4E\u6B21\u306E\u9805\u3092\u6368\u3066\u308B\u3002\u9577\u3055\u304C k \u4EE5\
+    \u4E0B\u306A\u3089 0 (\u7A7A)\ntemplate <typename mint>\nFPS<mint> drop(const\
+    \ FPS<mint>& f, long long k) {\n    if (static_cast<long long>(f.size()) <= k)\
+    \ return FPS<mint>();\n    return FPS<mint>(f.begin() + k, f.end());\n}\n\n//\
+    \ \u884C\u5217\u306E\u6210\u5206\u306E\u7A4D\u548C \u03A3_j x[i][j] y[j][k] \u3092\
+    \u3001\u5404\u6210\u5206\u3092 1 \u56DE\u305A\u3064 NTT \u3057\u3066\u6C42\u3081\
+    \u308B (\u6CD5\u304C NTT \u306B\u5411\u304D\u3001\u9577\u3055\u304C\u5341\u5206\
+    \u9577\u3044\u3068\u304D\u3060\u3051)\n// x \u306F rows \xD7 2\u3001y \u306F 2\
+    \ \xD7 cols\u3002\u7D50\u679C\u306F rows \xD7 cols\u3002\u4F7F\u3048\u306A\u3051\
     \u308C\u3070 false \u3092\u8FD4\u3059\ntemplate <typename mint>\nbool mat_mul_ntt(const\
     \ FPS<mint>* const* x, int rows, const FPS<mint>* const* y, int cols, FPS<mint>*\
     \ res) {\n    if constexpr (!internal_convolution::ntt_candidate<mint>()) {\n\
@@ -1068,7 +1073,7 @@ data:
     \ FPS<mint>> {\n        if (r - l == 1) return {nums[l], dens[l]};\n        long\
     \ long m = (l + r) / 2;\n        auto [a, b] = self(self, l, m);\n        auto\
     \ [c, d] = self(self, m, r);\n        return {a * d + c * b, b * d};\n    };\n\
-    \    return rec(rec, 0, nums.size());\n}\n#line 13 \"src/math/polynomial-roots.hpp\"\
+    \    return rec(rec, 0, nums.size());\n}\n#line 14 \"src/math/polynomial-roots.hpp\"\
     \n\nnamespace internal_polynomial_roots {\n// 1 \u6B21\u306E\u56E0\u5B50\u306E\
     \u7A4D g (\u6839\u306F\u76F8\u7570\u306A\u308A 0 \u3067\u306A\u3044) \u3092\u3001\
     \u6839\u3054\u3068\u306B\u5206\u3051\u3066 res \u306B\u5165\u308C\u308B\ntemplate\
@@ -1087,23 +1092,23 @@ data:
     \n/**\n * @brief \u591A\u9805\u5F0F f \u306E\u3001\u6CD5 p (\u7D20\u6570) \u3067\
     \u5272\u3063\u305F\u4F59\u308A\u306E\u4E2D\u306E\u6839\u3092\u3001\u76F8\u7570\
     \u306A\u308B\u3082\u306E\u3060\u3051\u5024\u306E\u5C0F\u3055\u3044\u9806\u306B\
-    \u8FD4\u3059 \u671F\u5F85 O(n log^2 n log p)\n * f \u304C 0 (\u3059\u3079\u3066\
-    \u306E\u5024\u304C\u6839) \u306E\u3068\u304D\u306F\u7A7A\u3092\u8FD4\u3059\n *\
-    \ g = gcd(f, x^p - x) \u3067\u76F8\u7570\u306A\u308B\u6839\u3060\u3051\u3092 1\
-    \ \u6B21\u3067\u6301\u3064\u591A\u9805\u5F0F\u306B\u3057\u3001\u30E9\u30F3\u30C0\
-    \u30E0\u306A a \u3067 gcd(g, (x + a)^((p-1)/2) - 1) \u3092\u3068\u3063\u3066\u5206\
-    \u3051\u3066\u3044\u304F\n */\ntemplate <typename mint>\nstd::vector<mint> polynomial_roots(FPS<mint>\
-    \ f) {\n    f.normalize();\n    std::vector<mint> res;\n    if (f.size() <= 1)\
-    \ return res;\n    // 0 \u304C\u6839\u306A\u3089\u53D6\u308A\u9664\u304F (x^p\
-    \ - x \u3068\u306E gcd \u3067\u306F 0 \u3082\u6839\u306B\u306A\u308B\u304C\u3001\
-    \u5148\u306B\u5916\u3057\u3066\u304A\u304F\u3068\u5206\u3051\u308B\u3068\u304D\
-    \u306B\u6271\u3044\u3084\u3059\u3044)\n    long long z = 0;\n    while (f[z] ==\
-    \ 0) z++;\n    if (z > 0) res.push_back(mint(0)), f >>= z;\n    if (f.size() >\
-    \ 1) {\n        const long long p = mint::mod();\n        FPS<mint> xp = modpow(FPS<mint>{0,\
-    \ 1}, p, f);\n        xp -= FPS<mint>{0, 1};\n        xp.normalize();\n      \
-    \  FPS<mint> g = gcd(f, xp);\n        g.normalize();\n        static std::mt19937_64\
-    \ rng(std::random_device{}());\n        internal_polynomial_roots::split(g, rng,\
-    \ res);\n    }\n    std::sort(res.begin(), res.end(), [](const mint& a, const\
+    \u8FD4\u3059 \u671F\u5F85 O(n log^2 n log p)\n * f \u306F 0 \u3067\u306A\u3044\
+    \u3053\u3068\u3002\u5B9A\u6570\u306A\u3089\u7A7A\u3092\u8FD4\u3059\n * g = gcd(f,\
+    \ x^p - x) \u3067\u76F8\u7570\u306A\u308B\u6839\u3060\u3051\u3092 1 \u6B21\u3067\
+    \u6301\u3064\u591A\u9805\u5F0F\u306B\u3057\u3001\u30E9\u30F3\u30C0\u30E0\u306A\
+    \ a \u3067 gcd(g, (x + a)^((p-1)/2) - 1) \u3092\u3068\u3063\u3066\u5206\u3051\u3066\
+    \u3044\u304F\n */\ntemplate <typename mint>\nstd::vector<mint> polynomial_roots(FPS<mint>\
+    \ f) {\n    f.normalize();\n    assert(!f.empty());\n    std::vector<mint> res;\n\
+    \    if (f.size() <= 1) return res;\n    // 0 \u304C\u6839\u306A\u3089\u53D6\u308A\
+    \u9664\u304F (x^p - x \u3068\u306E gcd \u3067\u306F 0 \u3082\u6839\u306B\u306A\
+    \u308B\u304C\u3001\u5148\u306B\u5916\u3057\u3066\u304A\u304F\u3068\u5206\u3051\
+    \u308B\u3068\u304D\u306B\u6271\u3044\u3084\u3059\u3044)\n    long long z = 0;\n\
+    \    while (f[z] == 0) z++;\n    if (z > 0) res.push_back(mint(0)), f >>= z;\n\
+    \    if (f.size() > 1) {\n        const long long p = mint::mod();\n        FPS<mint>\
+    \ xp = modpow(FPS<mint>{0, 1}, p, f);\n        xp -= FPS<mint>{0, 1};\n      \
+    \  xp.normalize();\n        FPS<mint> g = gcd(f, xp);\n        g.normalize();\n\
+    \        static std::mt19937_64 rng(std::random_device{}());\n        internal_polynomial_roots::split(g,\
+    \ rng, res);\n    }\n    std::sort(res.begin(), res.end(), [](const mint& a, const\
     \ mint& b) { return a.val() < b.val(); });\n    return res;\n}\n#line 8 \"test/unittest/math/polynomial-roots.test.cpp\"\
     \n\n#line 14 \"test/unittest/math/polynomial-roots.test.cpp\"\n\n#line 17 \"test/unittest/math/polynomial-roots.test.cpp\"\
     \n\nbool ok = true;\nvoid check(bool cond, const char* what) {\n    if (!cond\
@@ -1118,18 +1123,17 @@ data:
     \ 8 + 1);\n            for (auto& c : f) c = rng() % p;\n        } else {\n  \
     \          f = {mint(rng() % (p - 1) + 1)};\n            int k = rng() % 6;\n\
     \            for (int i = 0; i < k; i++) f = f * FPS<mint>{-mint(rng() % p), 1};\n\
-    \        }\n        std::vector<mint> expect;\n        bool zero = true;\n   \
-    \     for (auto c : f) zero &= c == 0;\n        if (!zero) {\n            FPS<mint>\
-    \ g = f;\n            g.normalize();\n            if (g.size() > 1)\n        \
-    \        for (int x = 0; x < p; x++)\n                    if (eval(f, mint(x))\
-    \ == 0) expect.push_back(mint(x));\n        }\n        check(polynomial_roots(f)\
-    \ == expect, \"\u5C0F\u3055\u3044\u6CD5\");\n    }\n}\n\nint main() {\n    std::mt19937_64\
-    \ rng(314);\n    test_small<static_modint<13>>(rng);\n    test_small<static_modint<101>>(rng);\n\
-    \n    using mint = static_modint<998244353>;\n    for (int rep = 0; rep < 300\
-    \ && ok; rep++) {\n        std::set<unsigned> want;\n        FPS<mint> f = {1};\n\
-    \        int k = rng() % 12;\n        for (int i = 0; i < k; i++) {\n        \
-    \    mint r = rng() % 3 == 0 ? mint(rng() % 3) : mint(rng() % mint::mod());  //\
-    \ 0 \u3084\u91CD\u6839\u3082\u51FA\u3059\n            want.insert(r.val());\n\
+    \        }\n        std::vector<mint> expect;\n        FPS<mint> g = f;\n    \
+    \    g.normalize();\n        if (g.empty()) continue;  // 0 \u306E\u591A\u9805\
+    \u5F0F\u306F\u524D\u63D0\u9055\u53CD\n        if (g.size() > 1)\n            for\
+    \ (int x = 0; x < p; x++)\n                if (eval(f, mint(x)) == 0) expect.push_back(mint(x));\n\
+    \        check(polynomial_roots(f) == expect, \"\u5C0F\u3055\u3044\u6CD5\");\n\
+    \    }\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n    test_small<static_modint<13>>(rng);\n\
+    \    test_small<static_modint<101>>(rng);\n\n    using mint = static_modint<998244353>;\n\
+    \    for (int rep = 0; rep < 300 && ok; rep++) {\n        std::set<unsigned> want;\n\
+    \        FPS<mint> f = {1};\n        int k = rng() % 12;\n        for (int i =\
+    \ 0; i < k; i++) {\n            mint r = rng() % 3 == 0 ? mint(rng() % 3) : mint(rng()\
+    \ % mint::mod());  // 0 \u3084\u91CD\u6839\u3082\u51FA\u3059\n            want.insert(r.val());\n\
     \            int e = rng() % 3 + 1;\n            for (int t = 0; t < e; t++) f\
     \ = f * FPS<mint>{-r, 1};\n        }\n        // \u6839\u3092\u6301\u3064\u304B\
     \u3082\u3057\u308C\u306A\u3044\u5225\u306E\u56E0\u5B50\u3082\u639B\u3051\u308B\
@@ -1141,10 +1145,12 @@ data:
     \ == roots.size(), \"\u76F8\u7570\u306A\u308B\");\n        for (auto r : want)\
     \ check(got.count(r), \"\u6C7A\u3081\u305F\u6839\u304C\u898B\u3064\u304B\u308B\
     \");\n        check(std::is_sorted(roots.begin(), roots.end(), [](mint a, mint\
-    \ b) { return a.val() < b.val(); }), \"\u6607\u9806\");\n    }\n    // \u5B9A\u6570\
-    \u30FB0 \u306E\u591A\u9805\u5F0F\u306F\u6839\u306A\u3057 (\u7A7A)\n    check(polynomial_roots(FPS<mint>{5}).empty()\
-    \ && polynomial_roots(FPS<mint>{0, 0}).empty(), \"\u5B9A\u6570\");\n    if (ok)\
-    \ std::cout << \"Hello World\" << std::endl;\n}\n"
+    \ b) { return a.val() < b.val(); }), \"\u6607\u9806\");\n    }\n    // 0 \u3067\
+    \u306A\u3044\u5B9A\u6570\u306E\u591A\u9805\u5F0F\u306F\u6839\u306A\u3057 (\u7A7A\
+    )\u3002\u672B\u5C3E\u306E 0 \u306F\u53D6\u308A\u9664\u3044\u3066\u304B\u3089\u5224\
+    \u5B9A\u3059\u308B\n    check(polynomial_roots(FPS<mint>{5}).empty() && polynomial_roots(FPS<mint>{5,\
+    \ 0, 0}).empty(), \"\u5B9A\u6570\");\n    if (ok) std::cout << \"Hello World\"\
+    \ << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// polynomial_roots \u3092\u3001\u5C0F\u3055\u3044\u7D20\u6570\u306E\u6CD5\
     \u3067\u306F\u3059\u3079\u3066\u306E\u5024\u3092\u4EE3\u5165\u3059\u308B\u611A\
@@ -1168,18 +1174,17 @@ data:
     \ 8 + 1);\n            for (auto& c : f) c = rng() % p;\n        } else {\n  \
     \          f = {mint(rng() % (p - 1) + 1)};\n            int k = rng() % 6;\n\
     \            for (int i = 0; i < k; i++) f = f * FPS<mint>{-mint(rng() % p), 1};\n\
-    \        }\n        std::vector<mint> expect;\n        bool zero = true;\n   \
-    \     for (auto c : f) zero &= c == 0;\n        if (!zero) {\n            FPS<mint>\
-    \ g = f;\n            g.normalize();\n            if (g.size() > 1)\n        \
-    \        for (int x = 0; x < p; x++)\n                    if (eval(f, mint(x))\
-    \ == 0) expect.push_back(mint(x));\n        }\n        check(polynomial_roots(f)\
-    \ == expect, \"\u5C0F\u3055\u3044\u6CD5\");\n    }\n}\n\nint main() {\n    std::mt19937_64\
-    \ rng(314);\n    test_small<static_modint<13>>(rng);\n    test_small<static_modint<101>>(rng);\n\
-    \n    using mint = static_modint<998244353>;\n    for (int rep = 0; rep < 300\
-    \ && ok; rep++) {\n        std::set<unsigned> want;\n        FPS<mint> f = {1};\n\
-    \        int k = rng() % 12;\n        for (int i = 0; i < k; i++) {\n        \
-    \    mint r = rng() % 3 == 0 ? mint(rng() % 3) : mint(rng() % mint::mod());  //\
-    \ 0 \u3084\u91CD\u6839\u3082\u51FA\u3059\n            want.insert(r.val());\n\
+    \        }\n        std::vector<mint> expect;\n        FPS<mint> g = f;\n    \
+    \    g.normalize();\n        if (g.empty()) continue;  // 0 \u306E\u591A\u9805\
+    \u5F0F\u306F\u524D\u63D0\u9055\u53CD\n        if (g.size() > 1)\n            for\
+    \ (int x = 0; x < p; x++)\n                if (eval(f, mint(x)) == 0) expect.push_back(mint(x));\n\
+    \        check(polynomial_roots(f) == expect, \"\u5C0F\u3055\u3044\u6CD5\");\n\
+    \    }\n}\n\nint main() {\n    std::mt19937_64 rng(314);\n    test_small<static_modint<13>>(rng);\n\
+    \    test_small<static_modint<101>>(rng);\n\n    using mint = static_modint<998244353>;\n\
+    \    for (int rep = 0; rep < 300 && ok; rep++) {\n        std::set<unsigned> want;\n\
+    \        FPS<mint> f = {1};\n        int k = rng() % 12;\n        for (int i =\
+    \ 0; i < k; i++) {\n            mint r = rng() % 3 == 0 ? mint(rng() % 3) : mint(rng()\
+    \ % mint::mod());  // 0 \u3084\u91CD\u6839\u3082\u51FA\u3059\n            want.insert(r.val());\n\
     \            int e = rng() % 3 + 1;\n            for (int t = 0; t < e; t++) f\
     \ = f * FPS<mint>{-r, 1};\n        }\n        // \u6839\u3092\u6301\u3064\u304B\
     \u3082\u3057\u308C\u306A\u3044\u5225\u306E\u56E0\u5B50\u3082\u639B\u3051\u308B\
@@ -1191,10 +1196,12 @@ data:
     \ == roots.size(), \"\u76F8\u7570\u306A\u308B\");\n        for (auto r : want)\
     \ check(got.count(r), \"\u6C7A\u3081\u305F\u6839\u304C\u898B\u3064\u304B\u308B\
     \");\n        check(std::is_sorted(roots.begin(), roots.end(), [](mint a, mint\
-    \ b) { return a.val() < b.val(); }), \"\u6607\u9806\");\n    }\n    // \u5B9A\u6570\
-    \u30FB0 \u306E\u591A\u9805\u5F0F\u306F\u6839\u306A\u3057 (\u7A7A)\n    check(polynomial_roots(FPS<mint>{5}).empty()\
-    \ && polynomial_roots(FPS<mint>{0, 0}).empty(), \"\u5B9A\u6570\");\n    if (ok)\
-    \ std::cout << \"Hello World\" << std::endl;\n}\n"
+    \ b) { return a.val() < b.val(); }), \"\u6607\u9806\");\n    }\n    // 0 \u3067\
+    \u306A\u3044\u5B9A\u6570\u306E\u591A\u9805\u5F0F\u306F\u6839\u306A\u3057 (\u7A7A\
+    )\u3002\u672B\u5C3E\u306E 0 \u306F\u53D6\u308A\u9664\u3044\u3066\u304B\u3089\u5224\
+    \u5B9A\u3059\u308B\n    check(polynomial_roots(FPS<mint>{5}).empty() && polynomial_roots(FPS<mint>{5,\
+    \ 0, 0}).empty(), \"\u5B9A\u6570\");\n    if (ok) std::cout << \"Hello World\"\
+    \ << std::endl;\n}\n"
   dependsOn:
   - src/math/polynomial-roots.hpp
   - src/math/fps.hpp
@@ -1206,7 +1213,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/polynomial-roots.test.cpp
   requiredBy: []
-  timestamp: '2026-10-23 21:53:50+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/polynomial-roots.test.cpp

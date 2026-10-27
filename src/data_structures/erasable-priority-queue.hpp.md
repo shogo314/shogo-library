@@ -45,13 +45,15 @@ data:
     x \u306F\u542B\u307E\u308C\u3066\u3044\u308B\u3053\u3068 (\u542B\u307E\u308C\u3066\
     \u3044\u306A\u3044\u8981\u7D20\u3092\u524A\u9664\u3059\u308B\u3068\u58CA\u308C\
     \u308B)\n     * \u6BD4\u8F03\u95A2\u6570\u3067\u7B49\u3057\u3044\u8981\u7D20\u306F\
-    \u533A\u5225\u3057\u306A\u3044\n     */\n    void erase(const T& x) {\n      \
-    \  del.push(x);\n        normalize();\n    }\n    /**\n     * @brief \u5148\u982D\
-    \ (\u65E2\u5B9A\u3067\u306F\u6700\u5927) \u306E\u8981\u7D20\n     */\n    const\
-    \ T& top() const {\n        assert(!empty());\n        return que.top();\n   \
-    \ }\n    /**\n     * @brief \u5148\u982D\u306E\u8981\u7D20\u3092\u524A\u9664\u3059\
-    \u308B\n     */\n    void pop() {\n        assert(!empty());\n        que.pop();\n\
-    \        normalize();\n    }\n};\n"
+    \u533A\u5225\u3057\u306A\u3044\u3002\u7A7A\u306A\u3089 assert \u3067\u843D\u3061\
+    \u308B\n     */\n    void erase(const T& x) {\n        assert(!empty());\n   \
+    \     del.push(x);\n        normalize();\n    }\n    /**\n     * @brief \u5148\
+    \u982D (\u65E2\u5B9A\u3067\u306F\u6700\u5927) \u306E\u8981\u7D20\u3002\u7A7A\u306A\
+    \u3089 assert \u3067\u843D\u3061\u308B\n     */\n    const T& top() const {\n\
+    \        assert(!empty());\n        return que.top();\n    }\n    /**\n     *\
+    \ @brief \u5148\u982D\u306E\u8981\u7D20\u3092\u524A\u9664\u3059\u308B\u3002\u7A7A\
+    \u306A\u3089 assert \u3067\u843D\u3061\u308B\n     */\n    void pop() {\n    \
+    \    assert(!empty());\n        que.pop();\n        normalize();\n    }\n};\n"
   code: "#pragma once\n\n/**\n * @file erasable-priority-queue.hpp\n * @brief \u524A\
     \u9664\u53EF\u80FD\u306A\u512A\u5148\u5EA6\u4ED8\u304D\u30AD\u30E5\u30FC\n */\n\
     \n#include <cassert>\n#include <functional>\n#include <queue>\n#include <vector>\n\
@@ -80,18 +82,20 @@ data:
     x \u306F\u542B\u307E\u308C\u3066\u3044\u308B\u3053\u3068 (\u542B\u307E\u308C\u3066\
     \u3044\u306A\u3044\u8981\u7D20\u3092\u524A\u9664\u3059\u308B\u3068\u58CA\u308C\
     \u308B)\n     * \u6BD4\u8F03\u95A2\u6570\u3067\u7B49\u3057\u3044\u8981\u7D20\u306F\
-    \u533A\u5225\u3057\u306A\u3044\n     */\n    void erase(const T& x) {\n      \
-    \  del.push(x);\n        normalize();\n    }\n    /**\n     * @brief \u5148\u982D\
-    \ (\u65E2\u5B9A\u3067\u306F\u6700\u5927) \u306E\u8981\u7D20\n     */\n    const\
-    \ T& top() const {\n        assert(!empty());\n        return que.top();\n   \
-    \ }\n    /**\n     * @brief \u5148\u982D\u306E\u8981\u7D20\u3092\u524A\u9664\u3059\
-    \u308B\n     */\n    void pop() {\n        assert(!empty());\n        que.pop();\n\
-    \        normalize();\n    }\n};\n"
+    \u533A\u5225\u3057\u306A\u3044\u3002\u7A7A\u306A\u3089 assert \u3067\u843D\u3061\
+    \u308B\n     */\n    void erase(const T& x) {\n        assert(!empty());\n   \
+    \     del.push(x);\n        normalize();\n    }\n    /**\n     * @brief \u5148\
+    \u982D (\u65E2\u5B9A\u3067\u306F\u6700\u5927) \u306E\u8981\u7D20\u3002\u7A7A\u306A\
+    \u3089 assert \u3067\u843D\u3061\u308B\n     */\n    const T& top() const {\n\
+    \        assert(!empty());\n        return que.top();\n    }\n    /**\n     *\
+    \ @brief \u5148\u982D\u306E\u8981\u7D20\u3092\u524A\u9664\u3059\u308B\u3002\u7A7A\
+    \u306A\u3089 assert \u3067\u843D\u3061\u308B\n     */\n    void pop() {\n    \
+    \    assert(!empty());\n        que.pop();\n        normalize();\n    }\n};\n"
   dependsOn: []
   isVerificationFile: false
   path: src/data_structures/erasable-priority-queue.hpp
   requiredBy: []
-  timestamp: '2026-10-15 07:35:57+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/erasable-priority-queue.test.cpp
@@ -120,9 +124,9 @@ pq.top();  // 3
 |---|---|---|
 | `ErasablePriorityQueue(comp = Compare())` | 空のキューを作る | $O(1)$ |
 | `push(x)` | `x` を追加 | 償却 $O(\log n)$ |
-| `erase(x)` | `x` を 1 つ削除。`x` はキューに含まれていること (含まれていない要素を削除すると壊れる) | 償却 $O(\log n)$ |
-| `top()` | 先頭 (既定では最大) の要素 | $O(1)$ |
-| `pop()` | 先頭の要素を削除 | 償却 $O(\log n)$ |
+| `erase(x)` | `x` を 1 つ削除。`x` はキューに含まれていること (含まれていない要素を削除すると壊れる。空なら assert で落ちる) | 償却 $O(\log n)$ |
+| `top()` | 先頭 (既定では最大) の要素。空なら assert で落ちる | $O(1)$ |
+| `pop()` | 先頭の要素を削除。空なら assert で落ちる | 償却 $O(\log n)$ |
 | `size()`、`empty()` | 要素数、空か | $O(1)$ |
 
 `Compare` で等しい要素 (`!comp(x, y) && !comp(y, x)`) は区別しません。

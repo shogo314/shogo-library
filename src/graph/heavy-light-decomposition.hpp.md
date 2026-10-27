@@ -294,17 +294,18 @@ data:
     \ root) {\n        build();\n    }\n\n    /**\n     * @brief \u9802\u70B9u\u304B\
     \u3089k\u56DE\u3092\u6839\u306E\u65B9\u5411\u306B\u9061\u3063\u305F\u9802\u70B9\
     \n     *\n     * @param u \u5143\u306E\u9802\u70B9\n     * @param k \u767B\u308B\
-    \u6BB5\u6570\n     * @return long long k\u56DE\u767B\u3063\u305F\u9802\u70B9\n\
-    \     */\n    long long hop(long long u, long long k) const {\n        assert(0\
-    \ <= u && u < this->n && k >= 0);\n        if (k > this->unweighted_depth[u])\
-    \ return -1;\n        for (long long i = 0; i < h; i++) {\n            if (k >>\
-    \ i & 1) u = doubling_par[i][u];\n            if (u == -1) return -1;\n      \
-    \  }\n        return u;\n    }\n\n    /**\n     * @brief \u6700\u5C0F\u5171\u901A\
-    \u7956\u5148\n     *\n     * @param u \u9802\u70B91\n     * @param v \u9802\u70B9\
-    2\n     * @return long long LCA\u306E\u9802\u70B9\u756A\u53F7\n     */\n    long\
-    \ long lca(long long u, long long v) const {\n        assert(0 <= u && u < this->n\
-    \ && 0 <= v && v < this->n);\n        if (this->unweighted_depth[u] > this->unweighted_depth[v])\
-    \ std::swap(u, v);\n        v = hop(v, this->unweighted_depth[v] - this->unweighted_depth[u]);\n\
+    \u6BB5\u6570\n     * @return long long k\u56DE\u767B\u3063\u305F\u9802\u70B9 (\u5B58\
+    \u5728\u3057\u306A\u3051\u308C\u3070 -1)\n     */\n    long long hop(long long\
+    \ u, long long k) const {\n        assert(0 <= u && u < this->n && k >= 0);\n\
+    \        if (k > this->unweighted_depth[u]) return -1;\n        for (long long\
+    \ i = 0; i < h; i++) {\n            if (k >> i & 1) u = doubling_par[i][u];\n\
+    \            if (u == -1) return -1;\n        }\n        return u;\n    }\n\n\
+    \    /**\n     * @brief \u6700\u5C0F\u5171\u901A\u7956\u5148\n     *\n     * @param\
+    \ u \u9802\u70B91\n     * @param v \u9802\u70B92\n     * @return long long LCA\u306E\
+    \u9802\u70B9\u756A\u53F7\n     */\n    long long lca(long long u, long long v)\
+    \ const {\n        assert(0 <= u && u < this->n && 0 <= v && v < this->n);\n \
+    \       if (this->unweighted_depth[u] > this->unweighted_depth[v]) std::swap(u,\
+    \ v);\n        v = hop(v, this->unweighted_depth[v] - this->unweighted_depth[u]);\n\
     \        if (u == v) return u;\n        for (long long i = h - 1; i >= 0; i--)\
     \ {\n            long long nu = doubling_par[i][u];\n            long long nv\
     \ = doubling_par[i][v];\n            if (nu == -1) continue;\n            if (nu\
@@ -313,15 +314,16 @@ data:
     \u70B9\u9593\u8DDD\u96E2(\u91CD\u307F\u4ED8\u304D)\n     *\n     * @param u \u9802\
     \u70B91\n     * @param v \u9802\u70B92\n     * @return Cost u\u3068v\u9593\u306E\
     \u6700\u77ED\u7D4C\u8DEF\u306E\u8FBA\u306E\u91CD\u307F\u306E\u548C\n     */\n\
-    \    Cost dist(long long u, long long v) const {\n        return this->depth[u]\
-    \ + this->depth[v] - this->depth[lca(u, v)] * 2;\n    }\n\n   private:\n    void\
-    \ build() {\n        long long n = this->n;\n        h = 1;\n        while ((1LL\
-    \ << h) < n) h++;\n        doubling_par.assign(h, std::vector<long long>(n, -1));\n\
-    \        for (long long i = 0; i < n; i++) doubling_par[0][i] = this->par[i];\n\
-    \        for (long long i = 0; i < h - 1; i++) {\n            for (long long j\
-    \ = 0; j < n; j++) {\n                if (doubling_par[i][j] != -1) {\n      \
-    \              doubling_par[i + 1][j] = doubling_par[i][doubling_par[i][j]];\n\
-    \                }\n            }\n        }\n    }\n};\n#line 14 \"src/graph/heavy-light-decomposition.hpp\"\
+    \    Cost dist(long long u, long long v) const {\n        assert(0 <= u && u <\
+    \ this->n && 0 <= v && v < this->n);\n        return this->depth[u] + this->depth[v]\
+    \ - this->depth[lca(u, v)] * 2;\n    }\n\n   private:\n    void build() {\n  \
+    \      long long n = this->n;\n        h = 1;\n        while ((1LL << h) < n)\
+    \ h++;\n        doubling_par.assign(h, std::vector<long long>(n, -1));\n     \
+    \   for (long long i = 0; i < n; i++) doubling_par[0][i] = this->par[i];\n   \
+    \     for (long long i = 0; i < h - 1; i++) {\n            for (long long j =\
+    \ 0; j < n; j++) {\n                if (doubling_par[i][j] != -1) {\n        \
+    \            doubling_par[i + 1][j] = doubling_par[i][doubling_par[i][j]];\n \
+    \               }\n            }\n        }\n    }\n};\n#line 14 \"src/graph/heavy-light-decomposition.hpp\"\
     \n\n/**\n * @brief HL \u5206\u89E3 (Heavy-Light Decomposition)\n *\n * \u6728\u306E\
     \u9802\u70B9\u3092\u3001\u3069\u306E\u30D1\u30B9\u3082 O(log n) \u500B\u306E\u533A\
     \u9593\u306B\u5206\u304B\u308C\u3001\u3069\u306E\u90E8\u5206\u6728\u3082 1 \u3064\
@@ -366,57 +368,60 @@ data:
     \ = head[v];\n                st.push_back(heavy[v]);\n            }\n       \
     \ }\n    }\n\n    long long size() const { return n; }\n    /**\n     * @brief\
     \ \u9802\u70B9 v \u306E\u5217\u3067\u306E\u4F4D\u7F6E\n     */\n    long long\
-    \ index(long long v) const { return in[v]; }\n    /**\n     * @brief \u5217\u306E\
-    \ i \u756A\u76EE\u306E\u9802\u70B9 (index \u306E\u9006)\n     */\n    long long\
-    \ vertex(long long i) const { return order[i]; }\n    /**\n     * @brief v \u306E\
-    \u89AA (\u6839\u306A\u3089 -1)\n     */\n    long long parent(long long v) const\
-    \ { return par[v]; }\n    /**\n     * @brief v \u306E\u6DF1\u3055 (\u6839\u306F\
-    \ 0\u3001\u8FBA\u306E\u672C\u6570)\n     */\n    long long depth(long long v)\
-    \ const { return dep[v]; }\n    /**\n     * @brief v \u3092\u6839\u3068\u3059\u308B\
-    \u90E8\u5206\u6728\u306E\u9802\u70B9\u306E\u500B\u6570\n     */\n    long long\
-    \ subtree_size(long long v) const { return sz[v]; }\n    /**\n     * @brief v\
-    \ \u3092\u6839\u3068\u3059\u308B\u90E8\u5206\u6728\u306E\u9802\u70B9\u306B\u5BFE\
-    \u5FDC\u3059\u308B\u533A\u9593 [l, r)\n     */\n    std::pair<long long, long\
-    \ long> subtree(long long v) const { return {in[v], in[v] + sz[v]}; }\n\n    /**\n\
-    \     * @brief u \u3068 v \u306E\u6700\u5C0F\u5171\u901A\u7956\u5148 O(log n)\n\
-    \     */\n    long long lca(long long u, long long v) const {\n        assert(0\
-    \ <= u && u < n && 0 <= v && v < n);\n        while (head[u] != head[v]) {\n \
-    \           if (dep[head[u]] < dep[head[v]]) std::swap(u, v);\n            u =\
-    \ par[head[u]];\n        }\n        return dep[u] < dep[v] ? u : v;\n    }\n \
-    \   /**\n     * @brief u \u3068 v \u306E\u9593\u306E\u8FBA\u306E\u672C\u6570 O(log\
-    \ n)\n     */\n    long long dist(long long u, long long v) const { return dep[u]\
-    \ + dep[v] - 2 * dep[lca(u, v)]; }\n    /**\n     * @brief v \u304B\u3089\u6839\
-    \u306E\u65B9\u3078 k \u672C\u306E\u8FBA\u3092\u9032\u3093\u3060\u9802\u70B9 (k\
-    \ > depth(v) \u306A\u3089 -1) O(log n)\n     */\n    long long hop(long long v,\
-    \ long long k) const {\n        assert(0 <= v && v < n && k >= 0);\n        if\
-    \ (k > dep[v]) return -1;\n        while (true) {\n            long long h = head[v];\n\
-    \            if (in[v] - in[h] >= k) return order[in[v] - k];\n            k -=\
-    \ in[v] - in[h] + 1;\n            v = par[h];\n        }\n    }\n    /**\n   \
-    \  * @brief u \u304B\u3089 v \u3078\u306E\u30D1\u30B9\u3067\u3001u \u304B\u3089\
-    \ k \u672C\u306E\u8FBA\u3092\u9032\u3093\u3060\u9802\u70B9 (k > dist(u, v) \u306A\
-    \u3089 -1) O(log n)\n     */\n    long long jump(long long u, long long v, long\
-    \ long k) const {\n        assert(0 <= u && u < n && 0 <= v && v < n && k >= 0);\n\
-    \        long long w = lca(u, v);\n        long long du = dep[u] - dep[w], dv\
-    \ = dep[v] - dep[w];\n        if (k <= du) return hop(u, k);\n        if (k <=\
-    \ du + dv) return hop(v, du + dv - k);\n        return -1;\n    }\n\n    /**\n\
-    \     * @brief u \u304B\u3089 v \u3078\u306E\u30D1\u30B9\u3092\u3001\u5217\u306E\
-    \u533A\u9593\u306B\u5206\u3051\u3066 u \u5074\u304B\u3089\u9806\u306B\u4E26\u3079\
-    \u308B O(log n)\n     *\n     * \u5404\u8981\u7D20 (a, b) \u306F\u3001\u5217\u306E\
-    \ a \u756A\u76EE\u304B\u3089 b \u756A\u76EE\u307E\u3067 (\u4E21\u7AEF\u3092\u542B\
-    \u3080) \u3092\u3001a \u304B\u3089 b \u306E\u5411\u304D\u306B\u305F\u3069\u308B\
-    \u3053\u3068\u3092\u8868\u3059\n     * \u5411\u304D\u3092\u8868\u3059\u305F\u3081\
-    \u3001\u3053\u306E\u30E9\u30A4\u30D6\u30E9\u30EA\u306E\u4ED6\u306E\u533A\u9593\
-    \ (\u534A\u958B\u533A\u9593 [l, r)) \u3068\u9055\u3063\u3066\u9589\u533A\u9593\
-    \u306B\u306A\u3063\u3066\u3044\u308B\n     * a > b \u306A\u3089 index \u304C\u6E1B\
-    \u308B\u5411\u304D (\u6839\u306B\u8FD1\u3065\u304F\u5411\u304D) \u306B\u305F\u3069\
-    \u308B\n     * \u4EA4\u63DB\u6CD5\u5247\u304C\u6210\u308A\u7ACB\u305F\u306A\u3044\
-    \u6F14\u7B97\u3067\u306F\u3001a > b \u306E\u533A\u9593\u306F\u9006\u9806\u306E\
-    \u7A4D\u3092\u4F7F\u3046\n     * @param edge true \u306A\u3089\u8FBA\u306B\u3064\
-    \u3044\u3066\u306E\u30D1\u30B9\u306B\u3059\u308B\u3002\u8FBA (parent(v), v) \u3092\
-    \ index(v) \u756A\u76EE\u306B\u5BFE\u5FDC\u3055\u305B\u3001lca \u306E\u4F4D\u7F6E\
-    \u3092\u542B\u3081\u306A\u3044\n     */\n    std::vector<std::pair<long long,\
-    \ long long>> path(long long u, long long v, bool edge = false) const {\n    \
-    \    assert(0 <= u && u < n && 0 <= v && v < n);\n        std::vector<std::pair<long\
+    \ index(long long v) const {\n        assert(0 <= v && v < n);\n        return\
+    \ in[v];\n    }\n    /**\n     * @brief \u5217\u306E i \u756A\u76EE\u306E\u9802\
+    \u70B9 (index \u306E\u9006)\n     */\n    long long vertex(long long i) const\
+    \ {\n        assert(0 <= i && i < n);\n        return order[i];\n    }\n    /**\n\
+    \     * @brief v \u306E\u89AA (\u6839\u306A\u3089 -1)\n     */\n    long long\
+    \ parent(long long v) const {\n        assert(0 <= v && v < n);\n        return\
+    \ par[v];\n    }\n    /**\n     * @brief v \u306E\u6DF1\u3055 (\u6839\u306F 0\u3001\
+    \u8FBA\u306E\u672C\u6570)\n     */\n    long long depth(long long v) const {\n\
+    \        assert(0 <= v && v < n);\n        return dep[v];\n    }\n    /**\n  \
+    \   * @brief v \u3092\u6839\u3068\u3059\u308B\u90E8\u5206\u6728\u306E\u9802\u70B9\
+    \u306E\u500B\u6570\n     */\n    long long subtree_size(long long v) const {\n\
+    \        assert(0 <= v && v < n);\n        return sz[v];\n    }\n    /**\n   \
+    \  * @brief v \u3092\u6839\u3068\u3059\u308B\u90E8\u5206\u6728\u306E\u9802\u70B9\
+    \u306B\u5BFE\u5FDC\u3059\u308B\u533A\u9593 [l, r)\n     */\n    std::pair<long\
+    \ long, long long> subtree(long long v) const { return {in[v], in[v] + sz[v]};\
+    \ }\n\n    /**\n     * @brief u \u3068 v \u306E\u6700\u5C0F\u5171\u901A\u7956\u5148\
+    \ O(log n)\n     */\n    long long lca(long long u, long long v) const {\n   \
+    \     assert(0 <= u && u < n && 0 <= v && v < n);\n        while (head[u] != head[v])\
+    \ {\n            if (dep[head[u]] < dep[head[v]]) std::swap(u, v);\n         \
+    \   u = par[head[u]];\n        }\n        return dep[u] < dep[v] ? u : v;\n  \
+    \  }\n    /**\n     * @brief u \u3068 v \u306E\u9593\u306E\u8FBA\u306E\u672C\u6570\
+    \ O(log n)\n     */\n    long long dist(long long u, long long v) const { return\
+    \ dep[u] + dep[v] - 2 * dep[lca(u, v)]; }\n    /**\n     * @brief v \u304B\u3089\
+    \u6839\u306E\u65B9\u3078 k \u672C\u306E\u8FBA\u3092\u9032\u3093\u3060\u9802\u70B9\
+    \ (k > depth(v) \u306A\u3089 -1) O(log n)\n     */\n    long long hop(long long\
+    \ v, long long k) const {\n        assert(0 <= v && v < n && k >= 0);\n      \
+    \  if (k > dep[v]) return -1;\n        while (true) {\n            long long h\
+    \ = head[v];\n            if (in[v] - in[h] >= k) return order[in[v] - k];\n \
+    \           k -= in[v] - in[h] + 1;\n            v = par[h];\n        }\n    }\n\
+    \    /**\n     * @brief u \u304B\u3089 v \u3078\u306E\u30D1\u30B9\u3067\u3001\
+    u \u304B\u3089 k \u672C\u306E\u8FBA\u3092\u9032\u3093\u3060\u9802\u70B9 (k > dist(u,\
+    \ v) \u306A\u3089 -1) O(log n)\n     */\n    long long jump(long long u, long\
+    \ long v, long long k) const {\n        assert(0 <= u && u < n && 0 <= v && v\
+    \ < n && k >= 0);\n        long long w = lca(u, v);\n        long long du = dep[u]\
+    \ - dep[w], dv = dep[v] - dep[w];\n        if (k <= du) return hop(u, k);\n  \
+    \      if (k <= du + dv) return hop(v, du + dv - k);\n        return -1;\n   \
+    \ }\n\n    /**\n     * @brief u \u304B\u3089 v \u3078\u306E\u30D1\u30B9\u3092\u3001\
+    \u5217\u306E\u533A\u9593\u306B\u5206\u3051\u3066 u \u5074\u304B\u3089\u9806\u306B\
+    \u4E26\u3079\u308B O(log n)\n     *\n     * \u5404\u8981\u7D20 (a, b) \u306F\u3001\
+    \u5217\u306E a \u756A\u76EE\u304B\u3089 b \u756A\u76EE\u307E\u3067 (\u4E21\u7AEF\
+    \u3092\u542B\u3080) \u3092\u3001a \u304B\u3089 b \u306E\u5411\u304D\u306B\u305F\
+    \u3069\u308B\u3053\u3068\u3092\u8868\u3059\n     * \u5411\u304D\u3092\u8868\u3059\
+    \u305F\u3081\u3001\u3053\u306E\u30E9\u30A4\u30D6\u30E9\u30EA\u306E\u4ED6\u306E\
+    \u533A\u9593 (\u534A\u958B\u533A\u9593 [l, r)) \u3068\u9055\u3063\u3066\u9589\u533A\
+    \u9593\u306B\u306A\u3063\u3066\u3044\u308B\n     * a > b \u306A\u3089 index \u304C\
+    \u6E1B\u308B\u5411\u304D (\u6839\u306B\u8FD1\u3065\u304F\u5411\u304D) \u306B\u305F\
+    \u3069\u308B\n     * \u4EA4\u63DB\u6CD5\u5247\u304C\u6210\u308A\u7ACB\u305F\u306A\
+    \u3044\u6F14\u7B97\u3067\u306F\u3001a > b \u306E\u533A\u9593\u306F\u9006\u9806\
+    \u306E\u7A4D\u3092\u4F7F\u3046\n     * @param edge true \u306A\u3089\u8FBA\u306B\
+    \u3064\u3044\u3066\u306E\u30D1\u30B9\u306B\u3059\u308B\u3002\u8FBA (parent(v),\
+    \ v) \u3092 index(v) \u756A\u76EE\u306B\u5BFE\u5FDC\u3055\u305B\u3001lca \u306E\
+    \u4F4D\u7F6E\u3092\u542B\u3081\u306A\u3044\n     */\n    std::vector<std::pair<long\
+    \ long, long long>> path(long long u, long long v, bool edge = false) const {\n\
+    \        assert(0 <= u && u < n && 0 <= v && v < n);\n        std::vector<std::pair<long\
     \ long, long long>> up, down;\n        while (head[u] != head[v]) {\n        \
     \    if (dep[head[u]] >= dep[head[v]]) {\n                up.emplace_back(in[u],\
     \ in[head[u]]);\n                u = par[head[u]];\n            } else {\n   \
@@ -474,57 +479,60 @@ data:
     \ = head[v];\n                st.push_back(heavy[v]);\n            }\n       \
     \ }\n    }\n\n    long long size() const { return n; }\n    /**\n     * @brief\
     \ \u9802\u70B9 v \u306E\u5217\u3067\u306E\u4F4D\u7F6E\n     */\n    long long\
-    \ index(long long v) const { return in[v]; }\n    /**\n     * @brief \u5217\u306E\
-    \ i \u756A\u76EE\u306E\u9802\u70B9 (index \u306E\u9006)\n     */\n    long long\
-    \ vertex(long long i) const { return order[i]; }\n    /**\n     * @brief v \u306E\
-    \u89AA (\u6839\u306A\u3089 -1)\n     */\n    long long parent(long long v) const\
-    \ { return par[v]; }\n    /**\n     * @brief v \u306E\u6DF1\u3055 (\u6839\u306F\
-    \ 0\u3001\u8FBA\u306E\u672C\u6570)\n     */\n    long long depth(long long v)\
-    \ const { return dep[v]; }\n    /**\n     * @brief v \u3092\u6839\u3068\u3059\u308B\
-    \u90E8\u5206\u6728\u306E\u9802\u70B9\u306E\u500B\u6570\n     */\n    long long\
-    \ subtree_size(long long v) const { return sz[v]; }\n    /**\n     * @brief v\
-    \ \u3092\u6839\u3068\u3059\u308B\u90E8\u5206\u6728\u306E\u9802\u70B9\u306B\u5BFE\
-    \u5FDC\u3059\u308B\u533A\u9593 [l, r)\n     */\n    std::pair<long long, long\
-    \ long> subtree(long long v) const { return {in[v], in[v] + sz[v]}; }\n\n    /**\n\
-    \     * @brief u \u3068 v \u306E\u6700\u5C0F\u5171\u901A\u7956\u5148 O(log n)\n\
-    \     */\n    long long lca(long long u, long long v) const {\n        assert(0\
-    \ <= u && u < n && 0 <= v && v < n);\n        while (head[u] != head[v]) {\n \
-    \           if (dep[head[u]] < dep[head[v]]) std::swap(u, v);\n            u =\
-    \ par[head[u]];\n        }\n        return dep[u] < dep[v] ? u : v;\n    }\n \
-    \   /**\n     * @brief u \u3068 v \u306E\u9593\u306E\u8FBA\u306E\u672C\u6570 O(log\
-    \ n)\n     */\n    long long dist(long long u, long long v) const { return dep[u]\
-    \ + dep[v] - 2 * dep[lca(u, v)]; }\n    /**\n     * @brief v \u304B\u3089\u6839\
-    \u306E\u65B9\u3078 k \u672C\u306E\u8FBA\u3092\u9032\u3093\u3060\u9802\u70B9 (k\
-    \ > depth(v) \u306A\u3089 -1) O(log n)\n     */\n    long long hop(long long v,\
-    \ long long k) const {\n        assert(0 <= v && v < n && k >= 0);\n        if\
-    \ (k > dep[v]) return -1;\n        while (true) {\n            long long h = head[v];\n\
-    \            if (in[v] - in[h] >= k) return order[in[v] - k];\n            k -=\
-    \ in[v] - in[h] + 1;\n            v = par[h];\n        }\n    }\n    /**\n   \
-    \  * @brief u \u304B\u3089 v \u3078\u306E\u30D1\u30B9\u3067\u3001u \u304B\u3089\
-    \ k \u672C\u306E\u8FBA\u3092\u9032\u3093\u3060\u9802\u70B9 (k > dist(u, v) \u306A\
-    \u3089 -1) O(log n)\n     */\n    long long jump(long long u, long long v, long\
-    \ long k) const {\n        assert(0 <= u && u < n && 0 <= v && v < n && k >= 0);\n\
-    \        long long w = lca(u, v);\n        long long du = dep[u] - dep[w], dv\
-    \ = dep[v] - dep[w];\n        if (k <= du) return hop(u, k);\n        if (k <=\
-    \ du + dv) return hop(v, du + dv - k);\n        return -1;\n    }\n\n    /**\n\
-    \     * @brief u \u304B\u3089 v \u3078\u306E\u30D1\u30B9\u3092\u3001\u5217\u306E\
-    \u533A\u9593\u306B\u5206\u3051\u3066 u \u5074\u304B\u3089\u9806\u306B\u4E26\u3079\
-    \u308B O(log n)\n     *\n     * \u5404\u8981\u7D20 (a, b) \u306F\u3001\u5217\u306E\
-    \ a \u756A\u76EE\u304B\u3089 b \u756A\u76EE\u307E\u3067 (\u4E21\u7AEF\u3092\u542B\
-    \u3080) \u3092\u3001a \u304B\u3089 b \u306E\u5411\u304D\u306B\u305F\u3069\u308B\
-    \u3053\u3068\u3092\u8868\u3059\n     * \u5411\u304D\u3092\u8868\u3059\u305F\u3081\
-    \u3001\u3053\u306E\u30E9\u30A4\u30D6\u30E9\u30EA\u306E\u4ED6\u306E\u533A\u9593\
-    \ (\u534A\u958B\u533A\u9593 [l, r)) \u3068\u9055\u3063\u3066\u9589\u533A\u9593\
-    \u306B\u306A\u3063\u3066\u3044\u308B\n     * a > b \u306A\u3089 index \u304C\u6E1B\
-    \u308B\u5411\u304D (\u6839\u306B\u8FD1\u3065\u304F\u5411\u304D) \u306B\u305F\u3069\
-    \u308B\n     * \u4EA4\u63DB\u6CD5\u5247\u304C\u6210\u308A\u7ACB\u305F\u306A\u3044\
-    \u6F14\u7B97\u3067\u306F\u3001a > b \u306E\u533A\u9593\u306F\u9006\u9806\u306E\
-    \u7A4D\u3092\u4F7F\u3046\n     * @param edge true \u306A\u3089\u8FBA\u306B\u3064\
-    \u3044\u3066\u306E\u30D1\u30B9\u306B\u3059\u308B\u3002\u8FBA (parent(v), v) \u3092\
-    \ index(v) \u756A\u76EE\u306B\u5BFE\u5FDC\u3055\u305B\u3001lca \u306E\u4F4D\u7F6E\
-    \u3092\u542B\u3081\u306A\u3044\n     */\n    std::vector<std::pair<long long,\
-    \ long long>> path(long long u, long long v, bool edge = false) const {\n    \
-    \    assert(0 <= u && u < n && 0 <= v && v < n);\n        std::vector<std::pair<long\
+    \ index(long long v) const {\n        assert(0 <= v && v < n);\n        return\
+    \ in[v];\n    }\n    /**\n     * @brief \u5217\u306E i \u756A\u76EE\u306E\u9802\
+    \u70B9 (index \u306E\u9006)\n     */\n    long long vertex(long long i) const\
+    \ {\n        assert(0 <= i && i < n);\n        return order[i];\n    }\n    /**\n\
+    \     * @brief v \u306E\u89AA (\u6839\u306A\u3089 -1)\n     */\n    long long\
+    \ parent(long long v) const {\n        assert(0 <= v && v < n);\n        return\
+    \ par[v];\n    }\n    /**\n     * @brief v \u306E\u6DF1\u3055 (\u6839\u306F 0\u3001\
+    \u8FBA\u306E\u672C\u6570)\n     */\n    long long depth(long long v) const {\n\
+    \        assert(0 <= v && v < n);\n        return dep[v];\n    }\n    /**\n  \
+    \   * @brief v \u3092\u6839\u3068\u3059\u308B\u90E8\u5206\u6728\u306E\u9802\u70B9\
+    \u306E\u500B\u6570\n     */\n    long long subtree_size(long long v) const {\n\
+    \        assert(0 <= v && v < n);\n        return sz[v];\n    }\n    /**\n   \
+    \  * @brief v \u3092\u6839\u3068\u3059\u308B\u90E8\u5206\u6728\u306E\u9802\u70B9\
+    \u306B\u5BFE\u5FDC\u3059\u308B\u533A\u9593 [l, r)\n     */\n    std::pair<long\
+    \ long, long long> subtree(long long v) const { return {in[v], in[v] + sz[v]};\
+    \ }\n\n    /**\n     * @brief u \u3068 v \u306E\u6700\u5C0F\u5171\u901A\u7956\u5148\
+    \ O(log n)\n     */\n    long long lca(long long u, long long v) const {\n   \
+    \     assert(0 <= u && u < n && 0 <= v && v < n);\n        while (head[u] != head[v])\
+    \ {\n            if (dep[head[u]] < dep[head[v]]) std::swap(u, v);\n         \
+    \   u = par[head[u]];\n        }\n        return dep[u] < dep[v] ? u : v;\n  \
+    \  }\n    /**\n     * @brief u \u3068 v \u306E\u9593\u306E\u8FBA\u306E\u672C\u6570\
+    \ O(log n)\n     */\n    long long dist(long long u, long long v) const { return\
+    \ dep[u] + dep[v] - 2 * dep[lca(u, v)]; }\n    /**\n     * @brief v \u304B\u3089\
+    \u6839\u306E\u65B9\u3078 k \u672C\u306E\u8FBA\u3092\u9032\u3093\u3060\u9802\u70B9\
+    \ (k > depth(v) \u306A\u3089 -1) O(log n)\n     */\n    long long hop(long long\
+    \ v, long long k) const {\n        assert(0 <= v && v < n && k >= 0);\n      \
+    \  if (k > dep[v]) return -1;\n        while (true) {\n            long long h\
+    \ = head[v];\n            if (in[v] - in[h] >= k) return order[in[v] - k];\n \
+    \           k -= in[v] - in[h] + 1;\n            v = par[h];\n        }\n    }\n\
+    \    /**\n     * @brief u \u304B\u3089 v \u3078\u306E\u30D1\u30B9\u3067\u3001\
+    u \u304B\u3089 k \u672C\u306E\u8FBA\u3092\u9032\u3093\u3060\u9802\u70B9 (k > dist(u,\
+    \ v) \u306A\u3089 -1) O(log n)\n     */\n    long long jump(long long u, long\
+    \ long v, long long k) const {\n        assert(0 <= u && u < n && 0 <= v && v\
+    \ < n && k >= 0);\n        long long w = lca(u, v);\n        long long du = dep[u]\
+    \ - dep[w], dv = dep[v] - dep[w];\n        if (k <= du) return hop(u, k);\n  \
+    \      if (k <= du + dv) return hop(v, du + dv - k);\n        return -1;\n   \
+    \ }\n\n    /**\n     * @brief u \u304B\u3089 v \u3078\u306E\u30D1\u30B9\u3092\u3001\
+    \u5217\u306E\u533A\u9593\u306B\u5206\u3051\u3066 u \u5074\u304B\u3089\u9806\u306B\
+    \u4E26\u3079\u308B O(log n)\n     *\n     * \u5404\u8981\u7D20 (a, b) \u306F\u3001\
+    \u5217\u306E a \u756A\u76EE\u304B\u3089 b \u756A\u76EE\u307E\u3067 (\u4E21\u7AEF\
+    \u3092\u542B\u3080) \u3092\u3001a \u304B\u3089 b \u306E\u5411\u304D\u306B\u305F\
+    \u3069\u308B\u3053\u3068\u3092\u8868\u3059\n     * \u5411\u304D\u3092\u8868\u3059\
+    \u305F\u3081\u3001\u3053\u306E\u30E9\u30A4\u30D6\u30E9\u30EA\u306E\u4ED6\u306E\
+    \u533A\u9593 (\u534A\u958B\u533A\u9593 [l, r)) \u3068\u9055\u3063\u3066\u9589\u533A\
+    \u9593\u306B\u306A\u3063\u3066\u3044\u308B\n     * a > b \u306A\u3089 index \u304C\
+    \u6E1B\u308B\u5411\u304D (\u6839\u306B\u8FD1\u3065\u304F\u5411\u304D) \u306B\u305F\
+    \u3069\u308B\n     * \u4EA4\u63DB\u6CD5\u5247\u304C\u6210\u308A\u7ACB\u305F\u306A\
+    \u3044\u6F14\u7B97\u3067\u306F\u3001a > b \u306E\u533A\u9593\u306F\u9006\u9806\
+    \u306E\u7A4D\u3092\u4F7F\u3046\n     * @param edge true \u306A\u3089\u8FBA\u306B\
+    \u3064\u3044\u3066\u306E\u30D1\u30B9\u306B\u3059\u308B\u3002\u8FBA (parent(v),\
+    \ v) \u3092 index(v) \u756A\u76EE\u306B\u5BFE\u5FDC\u3055\u305B\u3001lca \u306E\
+    \u4F4D\u7F6E\u3092\u542B\u3081\u306A\u3044\n     */\n    std::vector<std::pair<long\
+    \ long, long long>> path(long long u, long long v, bool edge = false) const {\n\
+    \        assert(0 <= u && u < n && 0 <= v && v < n);\n        std::vector<std::pair<long\
     \ long, long long>> up, down;\n        while (head[u] != head[v]) {\n        \
     \    if (dep[head[u]] >= dep[head[v]]) {\n                up.emplace_back(in[u],\
     \ in[head[u]]);\n                u = par[head[u]];\n            } else {\n   \
@@ -542,7 +550,7 @@ data:
   path: src/graph/heavy-light-decomposition.hpp
   requiredBy:
   - src/graph/auxiliary-tree.hpp
-  timestamp: '2026-10-22 19:53:10+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/graph/lowlink.test.cpp

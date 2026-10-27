@@ -84,15 +84,16 @@ data:
     \ + l);\n            std::copy(buf.begin() + l, buf.begin() + r, p.begin() + l);\n\
     \        }\n    }\n    return res;\n}\n// \u5148\u982D\u306B 0 \u3092\u4ED8\u3051\
     \u305F\u7D2F\u7A4D\u548C\ntemplate <typename T>\nstd::vector<T> prefix_sums(const\
-    \ std::vector<T>& a) {\n    std::vector<T> p(a.size() + 1, T{});\n    for (size_t\
-    \ i = 0; i < a.size(); i++) p[i + 1] = p[i] + a[i];\n    return p;\n}\n}  // namespace\
-    \ internal_subarray_sum\n\n/**\n * @brief \u548C\u304C k \u4EE5\u4E0B\u306E\u533A\
-    \u9593 [l, r) (l < r) \u306E\u500B\u6570\n * \u7D2F\u7A4D\u548C P \u306B\u3064\
-    \u3044\u3066\u3001l < r \u304B\u3064 P[r] - P[l] <= k \u3068\u306A\u308B\u7D44\
-    \u3092\u6570\u3048\u308B\u3002\u8981\u7D20\u304C\u3059\u3079\u3066 0 \u4EE5\u4E0A\
-    \u306A\u3089\u5C3A\u53D6\u308A\u6CD5\u3067 O(n)\u3001\u305D\u3046\u3067\u306A\u3051\
-    \u308C\u3070 O(n log n)\n */\ntemplate <typename T>\nlong long count_subarrays_with_sum_at_most(const\
-    \ std::vector<T>& a, T k) {\n    return internal_subarray_sum::count_pairs_at_most(internal_subarray_sum::prefix_sums(a),\
+    \ std::vector<T>& a) {\n    std::vector<T> p(a.size() + 1, T{});\n    for (long\
+    \ long i = 0; i < static_cast<long long>(a.size()); i++) p[i + 1] = p[i] + a[i];\n\
+    \    return p;\n}\n}  // namespace internal_subarray_sum\n\n/**\n * @brief \u548C\
+    \u304C k \u4EE5\u4E0B\u306E\u533A\u9593 [l, r) (l < r) \u306E\u500B\u6570\n *\
+    \ \u7D2F\u7A4D\u548C P \u306B\u3064\u3044\u3066\u3001l < r \u304B\u3064 P[r] -\
+    \ P[l] <= k \u3068\u306A\u308B\u7D44\u3092\u6570\u3048\u308B\u3002\u8981\u7D20\
+    \u304C\u3059\u3079\u3066 0 \u4EE5\u4E0A\u306A\u3089\u5C3A\u53D6\u308A\u6CD5\u3067\
+    \ O(n)\u3001\u305D\u3046\u3067\u306A\u3051\u308C\u3070 O(n log n)\n */\ntemplate\
+    \ <typename T>\nlong long count_subarrays_with_sum_at_most(const std::vector<T>&\
+    \ a, T k) {\n    return internal_subarray_sum::count_pairs_at_most(internal_subarray_sum::prefix_sums(a),\
     \ k);\n}\n\n/**\n * @brief \u548C\u304C\u3061\u3087\u3046\u3069 k \u306E\u533A\
     \u9593 [l, r) (l < r) \u306E\u500B\u6570\n * (\u548C\u304C k \u4EE5\u4E0B\u306E\
     \u500B\u6570) - (\u548C\u304C k - 1 \u4EE5\u4E0B\u306E\u500B\u6570) \u3067\u6C42\
@@ -153,7 +154,7 @@ data:
   isVerificationFile: true
   path: test/unittest/others/subarray-sum.test.cpp
   requiredBy: []
-  timestamp: '2026-10-24 23:17:26+09:00'
+  timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/others/subarray-sum.test.cpp

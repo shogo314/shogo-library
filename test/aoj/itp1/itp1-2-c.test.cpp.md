@@ -114,7 +114,7 @@ data:
     \n#include <functional>\n#include <initializer_list>\n#include <iterator>\n#include\
     \ <numeric>\n#include <type_traits>\n#line 17 \"src/utility/container_func.hpp\"\
     \n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief\
-    \ \u578B\u7279\u6027\n */\n\n#line 13 \"src/utility/traits.hpp\"\n\nnamespace\
+    \ \u578B\u7279\u6027\n */\n\n#line 14 \"src/utility/traits.hpp\"\n\nnamespace\
     \ internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T, class =\
     \ void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct\
     \ is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
@@ -156,14 +156,19 @@ data:
     HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
     HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
     \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
-    \ntemplate <class C>\nusing mem_value_type = typename C::value_type;\ntemplate\
-    \ <class C>\nusing mem_difference_type = typename C::difference_type;\n\nnamespace\
-    \ internal_traits {\ntemplate <class T, class = void>\nstruct is_sorted_container_impl\
-    \ : std::false_type {};\ntemplate <class T>\nstruct is_sorted_container_impl<std::set<T>>\
-    \ : std::true_type {};\ntemplate <class T>\nstruct is_sorted_container_impl<std::multiset<T>>\
-    \ : std::true_type {};\n}  // namespace internal_traits\ntemplate <class T>\n\
-    struct is_sorted_container : internal_traits::is_sorted_container_impl<T>::type\
-    \ {};\ntemplate <class T>\ninline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
+    \nnamespace internal_traits {\n// \u5C04\u5F71 (proj) \u306E\u65E2\u5B9A\u5024\
+    \n#if __cplusplus >= 202002L\nusing identity = std::identity;\n#else\nstruct identity\
+    \ {\n    using is_transparent = void;\n    template <class T>\n    constexpr T&&\
+    \ operator()(T&& x) const noexcept {\n        return std::forward<T>(x);\n   \
+    \ }\n};\n#endif\n}  // namespace internal_traits\n\ntemplate <class C>\nusing\
+    \ mem_value_type = typename C::value_type;\ntemplate <class C>\nusing mem_difference_type\
+    \ = typename C::difference_type;\n\nnamespace internal_traits {\ntemplate <class\
+    \ T, class = void>\nstruct is_sorted_container_impl : std::false_type {};\ntemplate\
+    \ <class T>\nstruct is_sorted_container_impl<std::set<T>> : std::true_type {};\n\
+    template <class T>\nstruct is_sorted_container_impl<std::multiset<T>> : std::true_type\
+    \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
+    \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
+    inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
     #line 19 \"src/utility/container_func.hpp\"\n\n#define METHOD_EXPAND(func)   \
     \                                     \\\n    template <typename T, ENABLE_IF_T(has_##func##_v<T>)>\
     \          \\\n    inline constexpr auto func(const T& t) -> decltype(t.func())\
@@ -180,18 +185,30 @@ data:
     \          \\\n        return std::func(t.begin(), t.end(), u);              \
     \            \\\n    }\n\nMETHOD_EXPAND(reversed)\ntemplate <class C, ENABLE_IF_T(!has_reversed_v<C>)>\n\
     inline constexpr C reversed(C t) {\n    std::reverse(t.begin(), t.end());\n  \
-    \  return t;\n}\n\nMETHOD_EXPAND(sorted)\ntemplate <class C, ENABLE_IF_T(!has_sorted_v<C>)>\n\
-    inline constexpr C sorted(C t) {\n    std::sort(t.begin(), t.end());\n    return\
-    \ t;\n}\ntemplate <class C, class F, ENABLE_IF_T(!has_sorted_v<C> && std::is_invocable_r_v<bool,\
-    \ F, mem_value_type<C>, mem_value_type<C>>)>\ninline constexpr C sorted(C t, F\
-    \ f) {\n    std::sort(t.begin(), t.end(), f);\n    return t;\n}\n\ntemplate <class\
-    \ C>\ninline constexpr void sort(C& t) {\n    std::sort(t.begin(), t.end());\n\
-    }\ntemplate <class C, class F, ENABLE_IF_T(std::is_invocable_r_v<bool, F, mem_value_type<C>,\
-    \ mem_value_type<C>>)>\ninline constexpr void sort(C& t, F f) {\n    std::sort(t.begin(),\
-    \ t.end(), f);\n}\ntemplate <class C, class F, ENABLE_IF_T(std::is_invocable_v<F,\
-    \ mem_value_type<C>>)>\ninline constexpr void sort_by_key(C& t, F f) {\n    std::sort(t.begin(),\
-    \ t.end(), [&](const mem_value_type<C>& left, const mem_value_type<C>& right)\
-    \ {\n        return f(left) < f(right);\n    });\n}\n\ntemplate <class C>\ninline\
+    \  return t;\n}\n\nnamespace internal_container_func {\n// comp(proj(a), proj(b))\
+    \ \u3067\u6BD4\u3079\u3089\u308C\u308B\u304B\ntemplate <class C, class F, class\
+    \ P, class = void>\nstruct is_projected_comp : std::false_type {};\ntemplate <class\
+    \ C, class F, class P>\nstruct is_projected_comp<C, F, P, std::void_t<std::invoke_result_t<P&,\
+    \ const mem_value_type<C>&>>>\n    : std::is_invocable_r<bool, F&, std::invoke_result_t<P&,\
+    \ const mem_value_type<C>&>, std::invoke_result_t<P&, const mem_value_type<C>&>>\
+    \ {};\n}  // namespace internal_container_func\n\nMETHOD_EXPAND(sorted)\ntemplate\
+    \ <class C, class F = std::less<>, class P = internal_traits::identity, ENABLE_IF_T(!has_sorted_v<C>\
+    \ && internal_container_func::is_projected_comp<C, F, P>::value)>\ninline constexpr\
+    \ C sorted(C t, F comp = F(), P proj = P()) {\n    std::sort(t.begin(), t.end(),\
+    \ [&](const mem_value_type<C>& a, const mem_value_type<C>& b) {\n        return\
+    \ std::invoke(comp, std::invoke(proj, a), std::invoke(proj, b));\n    });\n  \
+    \  return t;\n}\n\ntemplate <class C, class F = std::less<>, class P = internal_traits::identity,\
+    \ ENABLE_IF_T(internal_container_func::is_projected_comp<C, F, P>::value)>\ninline\
+    \ constexpr void sort(C& t, F comp = F(), P proj = P()) {\n    std::sort(t.begin(),\
+    \ t.end(), [&](const mem_value_type<C>& a, const mem_value_type<C>& b) {\n   \
+    \     return std::invoke(comp, std::invoke(proj, a), std::invoke(proj, b));\n\
+    \    });\n}\n// sort(c, {}, proj) \u7528\u3002std::vector \u306A\u3069\u3067\u306F\
+    \ ADL \u3067 std::sort(first, last, comp) \u3082\u5019\u88DC\u306B\u306A\u308A\
+    \u3001\n// {} \u3092 F \u3067\u53D7\u3051\u308B\u3068 std::sort \u304C\u9078\u3070\
+    \u308C\u308B\u306E\u3067\u3001{} \u304C\u6A19\u6E96\u5909\u63DB\u3067\u6E21\u308B\
+    \ std::nullptr_t \u3067\u53D7\u3051\u308B\ntemplate <class C, class P, ENABLE_IF_T(internal_container_func::is_projected_comp<C,\
+    \ std::less<>, P>::value)>\ninline constexpr void sort(C& t, std::nullptr_t, P\
+    \ proj) {\n    sort(t, std::less<>(), proj);\n}\n\ntemplate <class C>\ninline\
     \ constexpr void reverse(C& t) {\n    std::reverse(t.begin(), t.end());\n}\n\n\
     METHOD_EXPAND(max)\ntemplate <class C, ENABLE_IF_T(!has_max_v<C> && is_sorted_container_v<C>)>\n\
     inline constexpr mem_value_type<C> max(const C& v) {\n    assert(v.begin() !=\
@@ -281,7 +298,7 @@ data:
   isVerificationFile: true
   path: test/aoj/itp1/itp1-2-c.test.cpp
   requiredBy: []
-  timestamp: '2026-10-30 17:07:55+09:00'
+  timestamp: '2026-10-31 05:46:56+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/itp1/itp1-2-c.test.cpp

@@ -25,8 +25,8 @@ data:
     #include <cmath>\n#include <cstddef>\n#include <functional>\n#include <numeric>\n\
     #include <type_traits>\n#line 16 \"src/utility/vector_func.hpp\"\n\n#line 2 \"\
     src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\
-    \n */\n\n#line 9 \"src/utility/traits.hpp\"\n#include <iterator>\n#include <set>\n\
-    #line 12 \"src/utility/traits.hpp\"\n#include <utility>\n\nnamespace internal_traits\
+    \n */\n\n#line 10 \"src/utility/traits.hpp\"\n#include <iterator>\n#include <set>\n\
+    #line 13 \"src/utility/traits.hpp\"\n#include <utility>\n\nnamespace internal_traits\
     \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
     \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
     \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
@@ -67,42 +67,50 @@ data:
     HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
     HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
     \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
-    \ntemplate <class C>\nusing mem_value_type = typename C::value_type;\ntemplate\
-    \ <class C>\nusing mem_difference_type = typename C::difference_type;\n\nnamespace\
-    \ internal_traits {\ntemplate <class T, class = void>\nstruct is_sorted_container_impl\
-    \ : std::false_type {};\ntemplate <class T>\nstruct is_sorted_container_impl<std::set<T>>\
-    \ : std::true_type {};\ntemplate <class T>\nstruct is_sorted_container_impl<std::multiset<T>>\
-    \ : std::true_type {};\n}  // namespace internal_traits\ntemplate <class T>\n\
-    struct is_sorted_container : internal_traits::is_sorted_container_impl<T>::type\
-    \ {};\ntemplate <class T>\ninline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
-    #line 18 \"src/utility/vector_func.hpp\"\n\n/**\n * @brief \u5024\u3092 comp \u306E\
-    \u9806\u306B\u5B89\u5B9A\u30BD\u30FC\u30C8\u3057\u305F\u3068\u304D\u306E\u6DFB\
-    \u5B57\u306E\u4E26\u3073 (APL \u306E grade up)\n */\ntemplate <typename T, typename\
-    \ F = std::less<>>\nstd::vector<long long> argsort(const std::vector<T>& v, F\
-    \ comp = F()) {\n    std::vector<long long> ret(v.size());\n    std::iota(ret.begin(),\
+    \nnamespace internal_traits {\n// \u5C04\u5F71 (proj) \u306E\u65E2\u5B9A\u5024\
+    \n#if __cplusplus >= 202002L\nusing identity = std::identity;\n#else\nstruct identity\
+    \ {\n    using is_transparent = void;\n    template <class T>\n    constexpr T&&\
+    \ operator()(T&& x) const noexcept {\n        return std::forward<T>(x);\n   \
+    \ }\n};\n#endif\n}  // namespace internal_traits\n\ntemplate <class C>\nusing\
+    \ mem_value_type = typename C::value_type;\ntemplate <class C>\nusing mem_difference_type\
+    \ = typename C::difference_type;\n\nnamespace internal_traits {\ntemplate <class\
+    \ T, class = void>\nstruct is_sorted_container_impl : std::false_type {};\ntemplate\
+    \ <class T>\nstruct is_sorted_container_impl<std::set<T>> : std::true_type {};\n\
+    template <class T>\nstruct is_sorted_container_impl<std::multiset<T>> : std::true_type\
+    \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
+    \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
+    inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
+    #line 18 \"src/utility/vector_func.hpp\"\n\n/**\n * @brief \u5024\u3092 proj \u3067\
+    \u5199\u3057\u3066 comp \u306E\u9806\u306B\u5B89\u5B9A\u30BD\u30FC\u30C8\u3057\
+    \u305F\u3068\u304D\u306E\u6DFB\u5B57\u306E\u4E26\u3073 (APL \u306E grade up)\n\
+    \ */\ntemplate <typename T, typename F = std::less<>, typename P = internal_traits::identity>\n\
+    std::vector<long long> argsort(const std::vector<T>& v, F comp = F(), P proj =\
+    \ P()) {\n    std::vector<long long> ret(v.size());\n    std::iota(ret.begin(),\
     \ ret.end(), 0LL);\n    std::stable_sort(ret.begin(), ret.end(), [&](long long\
-    \ i, long long j) {\n        return comp(v[i], v[j]);\n    });\n    return ret;\n\
-    }\n\n/**\n * @brief \u5404\u8981\u7D20\u306E\u9806\u4F4D (comp \u306E\u9806\u3067\
-    \ v[i] \u3088\u308A\u524D\u306B\u6765\u308B\u8981\u7D20\u306E\u500B\u6570)\u3002\
-    \u540C\u7387\u306F\u540C\u3058\u9806\u4F4D\u3067\u3001\u6B21\u306E\u9806\u4F4D\
-    \u306F\u98DB\u3070\u3059\n */\ntemplate <typename T, typename F = std::less<>>\n\
-    std::vector<long long> rank(const std::vector<T>& v, F comp = F()) {\n    const\
-    \ long long n = v.size();\n    std::vector<long long> p = argsort(v, comp), ret(n);\n\
-    \    for (long long i = 0; i < n; i++) {\n        ret[p[i]] = i > 0 && !comp(v[p[i\
-    \ - 1]], v[p[i]]) ? ret[p[i - 1]] : i;\n    }\n    return ret;\n}\n\n/**\n * @brief\
-    \ \u9006\u7F6E\u63DB (ret[p[i]] = i)\u3002p \u306F 0, ..., n-1 \u306E\u7F6E\u63DB\
-    \u3067\u3042\u308B\u3053\u3068\n */\ntemplate <typename I, ENABLE_IF_T(std::is_integral_v<I>)>\n\
-    std::vector<long long> inverse_permutation(const std::vector<I>& p) {\n    const\
-    \ long long n = p.size();\n    std::vector<long long> ret(n, -1);\n    for (long\
-    \ long i = 0; i < n; i++) {\n        const long long x = static_cast<long long>(p[i]);\n\
-    \        assert(0 <= x && x < n && ret[x] == -1);\n        ret[x] = i;\n    }\n\
-    \    return ret;\n}\n\n/**\n * @brief {v[idx[0]], v[idx[1]], ...} (Uiua \u306E\
-    \ select)\n */\ntemplate <typename T, typename I, ENABLE_IF_T(std::is_integral_v<I>)>\n\
-    std::vector<T> select(const std::vector<T>& v, const std::vector<I>& idx) {\n\
-    \    std::vector<T> ret;\n    ret.reserve(idx.size());\n    for (I i : idx) {\n\
-    \        assert(0 <= static_cast<long long>(i) && static_cast<long long>(i) <\
-    \ static_cast<long long>(v.size()));\n        ret.push_back(v[i]);\n    }\n  \
-    \  return ret;\n}\n\ntemplate <typename T>\ninline std::vector<T>& operator++(std::vector<T>&\
+    \ i, long long j) {\n        return std::invoke(comp, std::invoke(proj, v[i]),\
+    \ std::invoke(proj, v[j]));\n    });\n    return ret;\n}\n\n/**\n * @brief \u5404\
+    \u8981\u7D20\u306E\u9806\u4F4D (proj \u3067\u5199\u3057\u3066 comp \u306E\u9806\
+    \u3067 v[i] \u3088\u308A\u524D\u306B\u6765\u308B\u8981\u7D20\u306E\u500B\u6570\
+    )\u3002\u540C\u7387\u306F\u540C\u3058\u9806\u4F4D\u3067\u3001\u6B21\u306E\u9806\
+    \u4F4D\u306F\u98DB\u3070\u3059\n */\ntemplate <typename T, typename F = std::less<>,\
+    \ typename P = internal_traits::identity>\nstd::vector<long long> rank(const std::vector<T>&\
+    \ v, F comp = F(), P proj = P()) {\n    const long long n = v.size();\n    std::vector<long\
+    \ long> p = argsort(v, comp, proj), ret(n);\n    for (long long i = 0; i < n;\
+    \ i++) {\n        ret[p[i]] = i > 0 && !std::invoke(comp, std::invoke(proj, v[p[i\
+    \ - 1]]), std::invoke(proj, v[p[i]])) ? ret[p[i - 1]] : i;\n    }\n    return\
+    \ ret;\n}\n\n/**\n * @brief \u9006\u7F6E\u63DB (ret[p[i]] = i)\u3002p \u306F 0,\
+    \ ..., n-1 \u306E\u7F6E\u63DB\u3067\u3042\u308B\u3053\u3068\n */\ntemplate <typename\
+    \ I, ENABLE_IF_T(std::is_integral_v<I>)>\nstd::vector<long long> inverse_permutation(const\
+    \ std::vector<I>& p) {\n    const long long n = p.size();\n    std::vector<long\
+    \ long> ret(n, -1);\n    for (long long i = 0; i < n; i++) {\n        const long\
+    \ long x = static_cast<long long>(p[i]);\n        assert(0 <= x && x < n && ret[x]\
+    \ == -1);\n        ret[x] = i;\n    }\n    return ret;\n}\n\n/**\n * @brief {v[idx[0]],\
+    \ v[idx[1]], ...} (Uiua \u306E select)\n */\ntemplate <typename T, typename I,\
+    \ ENABLE_IF_T(std::is_integral_v<I>)>\nstd::vector<T> select(const std::vector<T>&\
+    \ v, const std::vector<I>& idx) {\n    std::vector<T> ret;\n    ret.reserve(idx.size());\n\
+    \    for (I i : idx) {\n        assert(0 <= static_cast<long long>(i) && static_cast<long\
+    \ long>(i) < static_cast<long long>(v.size()));\n        ret.push_back(v[i]);\n\
+    \    }\n    return ret;\n}\n\ntemplate <typename T>\ninline std::vector<T>& operator++(std::vector<T>&\
     \ v) {\n    for (auto& e : v) e++;\n    return v;\n}\ntemplate <typename T>\n\
     inline std::vector<T> operator++(std::vector<T>& v, int) {\n    auto res = v;\n\
     \    for (auto& e : v) e++;\n    return res;\n}\ntemplate <typename T>\ninline\
@@ -193,7 +201,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/data_structure/static-range-sum.test.cpp
   requiredBy: []
-  timestamp: '2026-10-31 05:30:08+09:00'
+  timestamp: '2026-10-31 05:46:56+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/data_structure/static-range-sum.test.cpp

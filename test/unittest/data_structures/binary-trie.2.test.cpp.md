@@ -110,8 +110,8 @@ data:
     \        root_ptr = std::make_shared<BinaryTrieNode>(d);\n    }\n};\n#line 4 \"\
     test/unittest/data_structures/binary-trie.2.test.cpp\"\n\n#include <assert.h>\n\
     \n#include <algorithm>\n#include <iostream>\n#include <random>\n#include <vector>\n\
-    \nusing namespace std;\n\nint main(void) {\n    std::random_device rd;\n    std::mt19937\
-    \ gen(rd());\n    std::uniform_int_distribution<unsigned long long> dist(0, UINT64_MAX);\n\
+    \nint main(void) {\n    std::random_device rd;\n    std::mt19937 gen(rd());\n\
+    \    std::uniform_int_distribution<unsigned long long> dist(0, UINT64_MAX);\n\
     \    std::vector<unsigned long long> pool;\n    for (int i = 0; i < 24; ++i) {\n\
     \        pool.push_back(dist(gen));\n    }\n    pool.push_back(UINT64_MAX);\n\n\
     \    auto randgen_from_pool = [&]() {\n        return pool[dist(gen) % pool.size()];\n\
@@ -142,8 +142,8 @@ data:
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n#include \"../../../src/data_structures/binary-trie.hpp\"\n\n#include <assert.h>\n\
     \n#include <algorithm>\n#include <iostream>\n#include <random>\n#include <vector>\n\
-    \nusing namespace std;\n\nint main(void) {\n    std::random_device rd;\n    std::mt19937\
-    \ gen(rd());\n    std::uniform_int_distribution<unsigned long long> dist(0, UINT64_MAX);\n\
+    \nint main(void) {\n    std::random_device rd;\n    std::mt19937 gen(rd());\n\
+    \    std::uniform_int_distribution<unsigned long long> dist(0, UINT64_MAX);\n\
     \    std::vector<unsigned long long> pool;\n    for (int i = 0; i < 24; ++i) {\n\
     \        pool.push_back(dist(gen));\n    }\n    pool.push_back(UINT64_MAX);\n\n\
     \    auto randgen_from_pool = [&]() {\n        return pool[dist(gen) % pool.size()];\n\
@@ -176,7 +176,7 @@ data:
   isVerificationFile: true
   path: test/unittest/data_structures/binary-trie.2.test.cpp
   requiredBy: []
-  timestamp: '2026-10-23 06:33:25+09:00'
+  timestamp: '2026-10-31 05:46:56+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/data_structures/binary-trie.2.test.cpp

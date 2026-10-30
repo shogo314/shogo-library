@@ -27,8 +27,8 @@ data:
     \n */\n\n#include <algorithm>\n#include <cassert>\n#include <cmath>\n#include\
     \ <cstddef>\n#include <functional>\n#include <numeric>\n#include <type_traits>\n\
     #include <vector>\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n\
-    \ * @brief \u578B\u7279\u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\n#include\
-    \ <iterator>\n#include <set>\n#line 12 \"src/utility/traits.hpp\"\n#include <utility>\n\
+    \ * @brief \u578B\u7279\u6027\n */\n\n#line 10 \"src/utility/traits.hpp\"\n#include\
+    \ <iterator>\n#include <set>\n#line 13 \"src/utility/traits.hpp\"\n#include <utility>\n\
     \nnamespace internal_traits {\nusing std::begin, std::end;\n\ntemplate <class\
     \ T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class\
     \ T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
@@ -70,31 +70,146 @@ data:
     HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
     HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
     \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
-    \ntemplate <class C>\nusing mem_value_type = typename C::value_type;\ntemplate\
-    \ <class C>\nusing mem_difference_type = typename C::difference_type;\n\nnamespace\
-    \ internal_traits {\ntemplate <class T, class = void>\nstruct is_sorted_container_impl\
-    \ : std::false_type {};\ntemplate <class T>\nstruct is_sorted_container_impl<std::set<T>>\
-    \ : std::true_type {};\ntemplate <class T>\nstruct is_sorted_container_impl<std::multiset<T>>\
-    \ : std::true_type {};\n}  // namespace internal_traits\ntemplate <class T>\n\
-    struct is_sorted_container : internal_traits::is_sorted_container_impl<T>::type\
-    \ {};\ntemplate <class T>\ninline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
-    #line 18 \"src/utility/vector_func.hpp\"\n\n/**\n * @brief \u5024\u3092 comp \u306E\
-    \u9806\u306B\u5B89\u5B9A\u30BD\u30FC\u30C8\u3057\u305F\u3068\u304D\u306E\u6DFB\
-    \u5B57\u306E\u4E26\u3073 (APL \u306E grade up)\n */\ntemplate <typename T, typename\
-    \ F = std::less<>>\nstd::vector<long long> argsort(const std::vector<T>& v, F\
-    \ comp = F()) {\n    std::vector<long long> ret(v.size());\n    std::iota(ret.begin(),\
+    \nnamespace internal_traits {\n// \u5C04\u5F71 (proj) \u306E\u65E2\u5B9A\u5024\
+    \n#if __cplusplus >= 202002L\nusing identity = std::identity;\n#else\nstruct identity\
+    \ {\n    using is_transparent = void;\n    template <class T>\n    constexpr T&&\
+    \ operator()(T&& x) const noexcept {\n        return std::forward<T>(x);\n   \
+    \ }\n};\n#endif\n}  // namespace internal_traits\n\ntemplate <class C>\nusing\
+    \ mem_value_type = typename C::value_type;\ntemplate <class C>\nusing mem_difference_type\
+    \ = typename C::difference_type;\n\nnamespace internal_traits {\ntemplate <class\
+    \ T, class = void>\nstruct is_sorted_container_impl : std::false_type {};\ntemplate\
+    \ <class T>\nstruct is_sorted_container_impl<std::set<T>> : std::true_type {};\n\
+    template <class T>\nstruct is_sorted_container_impl<std::multiset<T>> : std::true_type\
+    \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
+    \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
+    inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
+    #line 18 \"src/utility/vector_func.hpp\"\n\n/**\n * @brief \u5024\u3092 proj \u3067\
+    \u5199\u3057\u3066 comp \u306E\u9806\u306B\u5B89\u5B9A\u30BD\u30FC\u30C8\u3057\
+    \u305F\u3068\u304D\u306E\u6DFB\u5B57\u306E\u4E26\u3073 (APL \u306E grade up)\n\
+    \ */\ntemplate <typename T, typename F = std::less<>, typename P = internal_traits::identity>\n\
+    std::vector<long long> argsort(const std::vector<T>& v, F comp = F(), P proj =\
+    \ P()) {\n    std::vector<long long> ret(v.size());\n    std::iota(ret.begin(),\
     \ ret.end(), 0LL);\n    std::stable_sort(ret.begin(), ret.end(), [&](long long\
-    \ i, long long j) {\n        return comp(v[i], v[j]);\n    });\n    return ret;\n\
-    }\n\n/**\n * @brief \u5404\u8981\u7D20\u306E\u9806\u4F4D (comp \u306E\u9806\u3067\
-    \ v[i] \u3088\u308A\u524D\u306B\u6765\u308B\u8981\u7D20\u306E\u500B\u6570)\u3002\
-    \u540C\u7387\u306F\u540C\u3058\u9806\u4F4D\u3067\u3001\u6B21\u306E\u9806\u4F4D\
-    \u306F\u98DB\u3070\u3059\n */\ntemplate <typename T, typename F = std::less<>>\n\
-    std::vector<long long> rank(const std::vector<T>& v, F comp = F()) {\n    const\
-    \ long long n = v.size();\n    std::vector<long long> p = argsort(v, comp), ret(n);\n\
-    \    for (long long i = 0; i < n; i++) {\n        ret[p[i]] = i > 0 && !comp(v[p[i\
-    \ - 1]], v[p[i]]) ? ret[p[i - 1]] : i;\n    }\n    return ret;\n}\n\n/**\n * @brief\
-    \ \u9006\u7F6E\u63DB (ret[p[i]] = i)\u3002p \u306F 0, ..., n-1 \u306E\u7F6E\u63DB\
-    \u3067\u3042\u308B\u3053\u3068\n */\ntemplate <typename I, ENABLE_IF_T(std::is_integral_v<I>)>\n\
+    \ i, long long j) {\n        return std::invoke(comp, std::invoke(proj, v[i]),\
+    \ std::invoke(proj, v[j]));\n    });\n    return ret;\n}\n\n/**\n * @brief \u5404\
+    \u8981\u7D20\u306E\u9806\u4F4D (proj \u3067\u5199\u3057\u3066 comp \u306E\u9806\
+    \u3067 v[i] \u3088\u308A\u524D\u306B\u6765\u308B\u8981\u7D20\u306E\u500B\u6570\
+    )\u3002\u540C\u7387\u306F\u540C\u3058\u9806\u4F4D\u3067\u3001\u6B21\u306E\u9806\
+    \u4F4D\u306F\u98DB\u3070\u3059\n */\ntemplate <typename T, typename F = std::less<>,\
+    \ typename P = internal_traits::identity>\nstd::vector<long long> rank(const std::vector<T>&\
+    \ v, F comp = F(), P proj = P()) {\n    const long long n = v.size();\n    std::vector<long\
+    \ long> p = argsort(v, comp, proj), ret(n);\n    for (long long i = 0; i < n;\
+    \ i++) {\n        ret[p[i]] = i > 0 && !std::invoke(comp, std::invoke(proj, v[p[i\
+    \ - 1]]), std::invoke(proj, v[p[i]])) ? ret[p[i - 1]] : i;\n    }\n    return\
+    \ ret;\n}\n\n/**\n * @brief \u9006\u7F6E\u63DB (ret[p[i]] = i)\u3002p \u306F 0,\
+    \ ..., n-1 \u306E\u7F6E\u63DB\u3067\u3042\u308B\u3053\u3068\n */\ntemplate <typename\
+    \ I, ENABLE_IF_T(std::is_integral_v<I>)>\nstd::vector<long long> inverse_permutation(const\
+    \ std::vector<I>& p) {\n    const long long n = p.size();\n    std::vector<long\
+    \ long> ret(n, -1);\n    for (long long i = 0; i < n; i++) {\n        const long\
+    \ long x = static_cast<long long>(p[i]);\n        assert(0 <= x && x < n && ret[x]\
+    \ == -1);\n        ret[x] = i;\n    }\n    return ret;\n}\n\n/**\n * @brief {v[idx[0]],\
+    \ v[idx[1]], ...} (Uiua \u306E select)\n */\ntemplate <typename T, typename I,\
+    \ ENABLE_IF_T(std::is_integral_v<I>)>\nstd::vector<T> select(const std::vector<T>&\
+    \ v, const std::vector<I>& idx) {\n    std::vector<T> ret;\n    ret.reserve(idx.size());\n\
+    \    for (I i : idx) {\n        assert(0 <= static_cast<long long>(i) && static_cast<long\
+    \ long>(i) < static_cast<long long>(v.size()));\n        ret.push_back(v[i]);\n\
+    \    }\n    return ret;\n}\n\ntemplate <typename T>\ninline std::vector<T>& operator++(std::vector<T>&\
+    \ v) {\n    for (auto& e : v) e++;\n    return v;\n}\ntemplate <typename T>\n\
+    inline std::vector<T> operator++(std::vector<T>& v, int) {\n    auto res = v;\n\
+    \    for (auto& e : v) e++;\n    return res;\n}\ntemplate <typename T>\ninline\
+    \ std::vector<T>& operator--(std::vector<T>& v) {\n    for (auto& e : v) e--;\n\
+    \    return v;\n}\ntemplate <typename T>\ninline std::vector<T> operator--(std::vector<T>&\
+    \ v, int) {\n    auto res = v;\n    for (auto& e : v) e--;\n    return res;\n\
+    }\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\n\
+    inline std::vector<T>& operator+=(std::vector<T>& v1, const std::vector<U>& v2)\
+    \ {\n    if (v2.size() > v1.size()) {\n        v1.resize(v2.size());\n    }\n\
+    \    for (std::size_t i = 0; i < v2.size(); i++) {\n        v1[i] += v2[i];\n\
+    \    }\n    return v1;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
+    \ T>)>\ninline std::vector<T> operator+(const std::vector<T>& v1, const std::vector<U>&\
+    \ v2) {\n    std::vector<T> res(v1);\n    return res += v2;\n}\n\ntemplate <typename\
+    \ T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>&\
+    \ operator+=(std::vector<T>& v, const U& u) {\n    for (T& e : v) {\n        e\
+    \ += u;\n    }\n    return v;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
+    \ T>)>\ninline std::vector<T> operator+(const std::vector<T>& v, const U& u) {\n\
+    \    std::vector<T> res(v);\n    return res += u;\n}\n\ntemplate <typename T,\
+    \ typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>\
+    \ operator+(const U& u, const std::vector<T>& v) {\n    std::vector<T> res(v);\n\
+    \    return res += u;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
+    \ T>)>\ninline std::vector<T>& operator*=(std::vector<T>& v1, const std::vector<U>&\
+    \ v2) {\n    if (v2.size() > v1.size()) {\n        v1.resize(v2.size());\n   \
+    \ }\n    for (std::size_t i = 0; i < v2.size(); i++) {\n        v1[i] *= v2[i];\n\
+    \    }\n    for (std::size_t i = v2.size(); i < v1.size(); i++) {\n        v1[i]\
+    \ *= U(0);\n    }\n    return v1;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
+    \ T>)>\ninline std::vector<T> operator*(const std::vector<T>& v1, const std::vector<U>&\
+    \ v2) {\n    std::vector<T> res(v1);\n    return res *= v2;\n}\n\ntemplate <typename\
+    \ T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>&\
+    \ operator*=(std::vector<T>& v, const U& u) {\n    for (T& e : v) {\n        e\
+    \ *= u;\n    }\n    return v;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
+    \ T>)>\ninline std::vector<T> operator*(const std::vector<T>& v, const U& u) {\n\
+    \    std::vector<T> res(v);\n    return res *= u;\n}\n\ntemplate <typename T,\
+    \ typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>\
+    \ operator*(const U& u, const std::vector<T>& v) {\n    std::vector<T> res(v);\n\
+    \    return res *= u;\n}\n\ntemplate <typename T, typename U>\ninline std::vector<T>&\
+    \ assign(std::vector<T>& v1, const std::vector<U>& v2) {\n    v1.assign(v2.begin(),\
+    \ v2.end());\n    return v1;\n}\n\ntemplate <typename T, typename U>\ninline std::vector<T>&\
+    \ extend(std::vector<T>& v1, const std::vector<U>& v2) {\n    v1.insert(v1.end(),\
+    \ v2.begin(), v2.end());\n    return v1;\n}\n\ntemplate <typename T, typename\
+    \ U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>& operator|=(std::vector<T>&\
+    \ v1, const std::vector<U>& v2) {\n    return extend(v1, v2);\n}\n\ntemplate <typename\
+    \ T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>\ninline std::vector<T>& operator|=(std::vector<T>&\
+    \ v, const U& u) {\n    if constexpr (std::is_signed_v<U>) assert(u >= 0);\n \
+    \   std::vector<T> w(v);\n    v.clear();\n    for (long long i = 0; i < static_cast<long\
+    \ long>(u); i++) {\n        extend(v, w);\n    }\n    return v;\n}\n\ntemplate\
+    \ <typename T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>\ninline std::vector<T>\
+    \ operator|(const std::vector<T>& v, const U& u) {\n    std::vector<T> res(v);\n\
+    \    return res |= u;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>\n\
+    inline std::vector<T> operator|(const U& u, const std::vector<T>& v) {\n    std::vector<T>\
+    \ res(v);\n    return res |= u;\n}\n\ntemplate <typename T>\ninline std::vector<T>\
+    \ abs(const std::vector<T>& v) {\n    std::vector<T> ret;\n    ret.reserve(v.size());\n\
+    \    for (const T& e : v) ret.push_back(std::abs(e));\n    return ret;\n}\n\n\
+    template <typename T>\nstd::vector<T> cumulative_sum(std::vector<T> v) {\n   \
+    \ v.insert(v.begin(), T{});\n    std::vector<T> ret(v.size());\n    std::partial_sum(v.begin(),\
+    \ v.end(), ret.begin());\n    return ret;\n}\n\ntemplate <typename T, ENABLE_IF_T(std::is_integral_v<T>)>\n\
+    std::vector<T> iota(T n) {\n    assert(n >= 0);\n    std::vector<T> ret(n);\n\
+    \    std::iota(ret.begin(), ret.end(), 0);\n    return ret;\n}\n\ntemplate <typename\
+    \ T, typename U>\nlong long hamming_distance(const std::vector<T>& v1, const std::vector<U>&\
+    \ v2) {\n    assert(v1.size() == v2.size());\n    long long res = 0;\n    for\
+    \ (std::size_t i = 0; i < v1.size(); i++) {\n        if (!(v1[i] == v2[i])) res++;\n\
+    \    }\n    return res;\n}\n\ntemplate <typename T>\nstd::vector<T> unique(const\
+    \ std::vector<T>& v) {\n    std::vector<T> res(v);\n    std::sort(res.begin(),\
+    \ res.end());\n    res.erase(std::unique(res.begin(), res.end()), res.end());\n\
+    \    return res;\n}\n\ninline long long radix_convert(const std::vector<long long>&\
+    \ v, int base = 10) {\n    assert(base >= 2);\n    long long res = 0;\n    for\
+    \ (long long d : v) {\n        assert(0 <= d && d < base);\n        res = res\
+    \ * base + d;\n    }\n    return res;\n}\n\ninline std::vector<long long> radix_convert(long\
+    \ long v, int base = 10) {\n    assert(v >= 0 && base >= 2);\n    std::vector<long\
+    \ long> res;\n    while (v > 0) {\n        res.push_back(v % base);\n        v\
+    \ /= base;\n    }\n    std::reverse(res.begin(), res.end());\n    return res;\n\
+    }\n"
+  code: "#pragma once\n\n/**\n * @file vector_func.hpp\n * @brief vector \u306B\u5BFE\
+    \u3059\u308B\u6F14\u7B97\u5B50\u3068\u95A2\u6570\n */\n\n#include <algorithm>\n\
+    #include <cassert>\n#include <cmath>\n#include <cstddef>\n#include <functional>\n\
+    #include <numeric>\n#include <type_traits>\n#include <vector>\n\n#include \"traits.hpp\"\
+    \n\n/**\n * @brief \u5024\u3092 proj \u3067\u5199\u3057\u3066 comp \u306E\u9806\
+    \u306B\u5B89\u5B9A\u30BD\u30FC\u30C8\u3057\u305F\u3068\u304D\u306E\u6DFB\u5B57\
+    \u306E\u4E26\u3073 (APL \u306E grade up)\n */\ntemplate <typename T, typename\
+    \ F = std::less<>, typename P = internal_traits::identity>\nstd::vector<long long>\
+    \ argsort(const std::vector<T>& v, F comp = F(), P proj = P()) {\n    std::vector<long\
+    \ long> ret(v.size());\n    std::iota(ret.begin(), ret.end(), 0LL);\n    std::stable_sort(ret.begin(),\
+    \ ret.end(), [&](long long i, long long j) {\n        return std::invoke(comp,\
+    \ std::invoke(proj, v[i]), std::invoke(proj, v[j]));\n    });\n    return ret;\n\
+    }\n\n/**\n * @brief \u5404\u8981\u7D20\u306E\u9806\u4F4D (proj \u3067\u5199\u3057\
+    \u3066 comp \u306E\u9806\u3067 v[i] \u3088\u308A\u524D\u306B\u6765\u308B\u8981\
+    \u7D20\u306E\u500B\u6570)\u3002\u540C\u7387\u306F\u540C\u3058\u9806\u4F4D\u3067\
+    \u3001\u6B21\u306E\u9806\u4F4D\u306F\u98DB\u3070\u3059\n */\ntemplate <typename\
+    \ T, typename F = std::less<>, typename P = internal_traits::identity>\nstd::vector<long\
+    \ long> rank(const std::vector<T>& v, F comp = F(), P proj = P()) {\n    const\
+    \ long long n = v.size();\n    std::vector<long long> p = argsort(v, comp, proj),\
+    \ ret(n);\n    for (long long i = 0; i < n; i++) {\n        ret[p[i]] = i > 0\
+    \ && !std::invoke(comp, std::invoke(proj, v[p[i - 1]]), std::invoke(proj, v[p[i]]))\
+    \ ? ret[p[i - 1]] : i;\n    }\n    return ret;\n}\n\n/**\n * @brief \u9006\u7F6E\
+    \u63DB (ret[p[i]] = i)\u3002p \u306F 0, ..., n-1 \u306E\u7F6E\u63DB\u3067\u3042\
+    \u308B\u3053\u3068\n */\ntemplate <typename I, ENABLE_IF_T(std::is_integral_v<I>)>\n\
     std::vector<long long> inverse_permutation(const std::vector<I>& p) {\n    const\
     \ long long n = p.size();\n    std::vector<long long> ret(n, -1);\n    for (long\
     \ long i = 0; i < n; i++) {\n        const long long x = static_cast<long long>(p[i]);\n\
@@ -178,115 +293,12 @@ data:
     \ long> res;\n    while (v > 0) {\n        res.push_back(v % base);\n        v\
     \ /= base;\n    }\n    std::reverse(res.begin(), res.end());\n    return res;\n\
     }\n"
-  code: "#pragma once\n\n/**\n * @file vector_func.hpp\n * @brief vector \u306B\u5BFE\
-    \u3059\u308B\u6F14\u7B97\u5B50\u3068\u95A2\u6570\n */\n\n#include <algorithm>\n\
-    #include <cassert>\n#include <cmath>\n#include <cstddef>\n#include <functional>\n\
-    #include <numeric>\n#include <type_traits>\n#include <vector>\n\n#include \"traits.hpp\"\
-    \n\n/**\n * @brief \u5024\u3092 comp \u306E\u9806\u306B\u5B89\u5B9A\u30BD\u30FC\
-    \u30C8\u3057\u305F\u3068\u304D\u306E\u6DFB\u5B57\u306E\u4E26\u3073 (APL \u306E\
-    \ grade up)\n */\ntemplate <typename T, typename F = std::less<>>\nstd::vector<long\
-    \ long> argsort(const std::vector<T>& v, F comp = F()) {\n    std::vector<long\
-    \ long> ret(v.size());\n    std::iota(ret.begin(), ret.end(), 0LL);\n    std::stable_sort(ret.begin(),\
-    \ ret.end(), [&](long long i, long long j) {\n        return comp(v[i], v[j]);\n\
-    \    });\n    return ret;\n}\n\n/**\n * @brief \u5404\u8981\u7D20\u306E\u9806\u4F4D\
-    \ (comp \u306E\u9806\u3067 v[i] \u3088\u308A\u524D\u306B\u6765\u308B\u8981\u7D20\
-    \u306E\u500B\u6570)\u3002\u540C\u7387\u306F\u540C\u3058\u9806\u4F4D\u3067\u3001\
-    \u6B21\u306E\u9806\u4F4D\u306F\u98DB\u3070\u3059\n */\ntemplate <typename T, typename\
-    \ F = std::less<>>\nstd::vector<long long> rank(const std::vector<T>& v, F comp\
-    \ = F()) {\n    const long long n = v.size();\n    std::vector<long long> p =\
-    \ argsort(v, comp), ret(n);\n    for (long long i = 0; i < n; i++) {\n       \
-    \ ret[p[i]] = i > 0 && !comp(v[p[i - 1]], v[p[i]]) ? ret[p[i - 1]] : i;\n    }\n\
-    \    return ret;\n}\n\n/**\n * @brief \u9006\u7F6E\u63DB (ret[p[i]] = i)\u3002\
-    p \u306F 0, ..., n-1 \u306E\u7F6E\u63DB\u3067\u3042\u308B\u3053\u3068\n */\ntemplate\
-    \ <typename I, ENABLE_IF_T(std::is_integral_v<I>)>\nstd::vector<long long> inverse_permutation(const\
-    \ std::vector<I>& p) {\n    const long long n = p.size();\n    std::vector<long\
-    \ long> ret(n, -1);\n    for (long long i = 0; i < n; i++) {\n        const long\
-    \ long x = static_cast<long long>(p[i]);\n        assert(0 <= x && x < n && ret[x]\
-    \ == -1);\n        ret[x] = i;\n    }\n    return ret;\n}\n\n/**\n * @brief {v[idx[0]],\
-    \ v[idx[1]], ...} (Uiua \u306E select)\n */\ntemplate <typename T, typename I,\
-    \ ENABLE_IF_T(std::is_integral_v<I>)>\nstd::vector<T> select(const std::vector<T>&\
-    \ v, const std::vector<I>& idx) {\n    std::vector<T> ret;\n    ret.reserve(idx.size());\n\
-    \    for (I i : idx) {\n        assert(0 <= static_cast<long long>(i) && static_cast<long\
-    \ long>(i) < static_cast<long long>(v.size()));\n        ret.push_back(v[i]);\n\
-    \    }\n    return ret;\n}\n\ntemplate <typename T>\ninline std::vector<T>& operator++(std::vector<T>&\
-    \ v) {\n    for (auto& e : v) e++;\n    return v;\n}\ntemplate <typename T>\n\
-    inline std::vector<T> operator++(std::vector<T>& v, int) {\n    auto res = v;\n\
-    \    for (auto& e : v) e++;\n    return res;\n}\ntemplate <typename T>\ninline\
-    \ std::vector<T>& operator--(std::vector<T>& v) {\n    for (auto& e : v) e--;\n\
-    \    return v;\n}\ntemplate <typename T>\ninline std::vector<T> operator--(std::vector<T>&\
-    \ v, int) {\n    auto res = v;\n    for (auto& e : v) e--;\n    return res;\n\
-    }\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\n\
-    inline std::vector<T>& operator+=(std::vector<T>& v1, const std::vector<U>& v2)\
-    \ {\n    if (v2.size() > v1.size()) {\n        v1.resize(v2.size());\n    }\n\
-    \    for (std::size_t i = 0; i < v2.size(); i++) {\n        v1[i] += v2[i];\n\
-    \    }\n    return v1;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
-    \ T>)>\ninline std::vector<T> operator+(const std::vector<T>& v1, const std::vector<U>&\
-    \ v2) {\n    std::vector<T> res(v1);\n    return res += v2;\n}\n\ntemplate <typename\
-    \ T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>&\
-    \ operator+=(std::vector<T>& v, const U& u) {\n    for (T& e : v) {\n        e\
-    \ += u;\n    }\n    return v;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
-    \ T>)>\ninline std::vector<T> operator+(const std::vector<T>& v, const U& u) {\n\
-    \    std::vector<T> res(v);\n    return res += u;\n}\n\ntemplate <typename T,\
-    \ typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>\
-    \ operator+(const U& u, const std::vector<T>& v) {\n    std::vector<T> res(v);\n\
-    \    return res += u;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
-    \ T>)>\ninline std::vector<T>& operator*=(std::vector<T>& v1, const std::vector<U>&\
-    \ v2) {\n    if (v2.size() > v1.size()) {\n        v1.resize(v2.size());\n   \
-    \ }\n    for (std::size_t i = 0; i < v2.size(); i++) {\n        v1[i] *= v2[i];\n\
-    \    }\n    for (std::size_t i = v2.size(); i < v1.size(); i++) {\n        v1[i]\
-    \ *= U(0);\n    }\n    return v1;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
-    \ T>)>\ninline std::vector<T> operator*(const std::vector<T>& v1, const std::vector<U>&\
-    \ v2) {\n    std::vector<T> res(v1);\n    return res *= v2;\n}\n\ntemplate <typename\
-    \ T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>&\
-    \ operator*=(std::vector<T>& v, const U& u) {\n    for (T& e : v) {\n        e\
-    \ *= u;\n    }\n    return v;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
-    \ T>)>\ninline std::vector<T> operator*(const std::vector<T>& v, const U& u) {\n\
-    \    std::vector<T> res(v);\n    return res *= u;\n}\n\ntemplate <typename T,\
-    \ typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>\
-    \ operator*(const U& u, const std::vector<T>& v) {\n    std::vector<T> res(v);\n\
-    \    return res *= u;\n}\n\ntemplate <typename T, typename U>\ninline std::vector<T>&\
-    \ assign(std::vector<T>& v1, const std::vector<U>& v2) {\n    v1.assign(v2.begin(),\
-    \ v2.end());\n    return v1;\n}\n\ntemplate <typename T, typename U>\ninline std::vector<T>&\
-    \ extend(std::vector<T>& v1, const std::vector<U>& v2) {\n    v1.insert(v1.end(),\
-    \ v2.begin(), v2.end());\n    return v1;\n}\n\ntemplate <typename T, typename\
-    \ U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>& operator|=(std::vector<T>&\
-    \ v1, const std::vector<U>& v2) {\n    return extend(v1, v2);\n}\n\ntemplate <typename\
-    \ T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>\ninline std::vector<T>& operator|=(std::vector<T>&\
-    \ v, const U& u) {\n    if constexpr (std::is_signed_v<U>) assert(u >= 0);\n \
-    \   std::vector<T> w(v);\n    v.clear();\n    for (long long i = 0; i < static_cast<long\
-    \ long>(u); i++) {\n        extend(v, w);\n    }\n    return v;\n}\n\ntemplate\
-    \ <typename T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>\ninline std::vector<T>\
-    \ operator|(const std::vector<T>& v, const U& u) {\n    std::vector<T> res(v);\n\
-    \    return res |= u;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_integral_v<U>)>\n\
-    inline std::vector<T> operator|(const U& u, const std::vector<T>& v) {\n    std::vector<T>\
-    \ res(v);\n    return res |= u;\n}\n\ntemplate <typename T>\ninline std::vector<T>\
-    \ abs(const std::vector<T>& v) {\n    std::vector<T> ret;\n    ret.reserve(v.size());\n\
-    \    for (const T& e : v) ret.push_back(std::abs(e));\n    return ret;\n}\n\n\
-    template <typename T>\nstd::vector<T> cumulative_sum(std::vector<T> v) {\n   \
-    \ v.insert(v.begin(), T{});\n    std::vector<T> ret(v.size());\n    std::partial_sum(v.begin(),\
-    \ v.end(), ret.begin());\n    return ret;\n}\n\ntemplate <typename T, ENABLE_IF_T(std::is_integral_v<T>)>\n\
-    std::vector<T> iota(T n) {\n    assert(n >= 0);\n    std::vector<T> ret(n);\n\
-    \    std::iota(ret.begin(), ret.end(), 0);\n    return ret;\n}\n\ntemplate <typename\
-    \ T, typename U>\nlong long hamming_distance(const std::vector<T>& v1, const std::vector<U>&\
-    \ v2) {\n    assert(v1.size() == v2.size());\n    long long res = 0;\n    for\
-    \ (std::size_t i = 0; i < v1.size(); i++) {\n        if (!(v1[i] == v2[i])) res++;\n\
-    \    }\n    return res;\n}\n\ntemplate <typename T>\nstd::vector<T> unique(const\
-    \ std::vector<T>& v) {\n    std::vector<T> res(v);\n    std::sort(res.begin(),\
-    \ res.end());\n    res.erase(std::unique(res.begin(), res.end()), res.end());\n\
-    \    return res;\n}\n\ninline long long radix_convert(const std::vector<long long>&\
-    \ v, int base = 10) {\n    assert(base >= 2);\n    long long res = 0;\n    for\
-    \ (long long d : v) {\n        assert(0 <= d && d < base);\n        res = res\
-    \ * base + d;\n    }\n    return res;\n}\n\ninline std::vector<long long> radix_convert(long\
-    \ long v, int base = 10) {\n    assert(v >= 0 && base >= 2);\n    std::vector<long\
-    \ long> res;\n    while (v > 0) {\n        res.push_back(v % base);\n        v\
-    \ /= base;\n    }\n    std::reverse(res.begin(), res.end());\n    return res;\n\
-    }\n"
   dependsOn:
   - src/utility/traits.hpp
   isVerificationFile: false
   path: src/utility/vector_func.hpp
   requiredBy: []
-  timestamp: '2026-10-31 05:30:08+09:00'
+  timestamp: '2026-10-31 05:46:56+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/utility/vector_func.test.cpp
@@ -310,13 +322,13 @@ auto c = select(a, idx);          // {2, 1, 0}
 
 ## 順位の求め方
 
-`p = argsort(v)` は「`k` 番目に小さい要素の添字が `p[k]`」という置換です。これをもう一度 `argsort` すると逆置換になり、「`v[i]` が何番目に小さいか」が得られます (APL の ⍋⍋)。`argsort` は安定なので、同率は添字の小さい順に別の順位になり、結果は必ず $0, \ldots, n-1$ の置換です。転倒数に渡すときなど、置換がほしいときはこれを使います。2 回目の `argsort` は逆置換を求めているだけなので、`inverse_permutation(argsort(v))` と書くと $O(n)$ で済みます (結果は同じ)。
+`p = argsort(v)` は「`k` 番目に小さい要素の添字が `p[k]`」という置換です。これをもう一度 `argsort` すると逆置換になり、「`v[i]` が何番目に小さいか」が得られます (APL・Uiua の ⍋⍋・⍏⍏)。`argsort` は安定なので、同率は添字の小さい順に別の順位になり、結果は必ず $0, \ldots, n-1$ の置換です。転倒数に渡すときなど、置換がほしいときはこれを使います。2 回目の `argsort` は逆置換を求めているだけなので、`inverse_permutation(argsort(v))` と書いても同じ結果になります。こちらは 2 回目が $O(n)$ で済みますが、全体の計算量は 1 回目のソートで決まり、$O(n \log n)$ のままです。APL や Uiua に慣れているなら `argsort(argsort(v))` のほうが読みやすく、「逆置換を取っている」と明示したいなら `inverse_permutation(argsort(v))` を使います。
 
 同率の扱いで、次の 3 つを使い分けます。
 
 | 書き方 | `{20, 10, 20, 30}` の結果 | 同率の扱い |
 |---|---|---|
-| `argsort(argsort(v))` | `{1, 0, 2, 3}` | 添字の小さい順に別の順位を付ける (置換になる) |
+| `argsort(argsort(v))`<br>`inverse_permutation(argsort(v))` | `{1, 0, 2, 3}` | 添字の小さい順に別の順位を付ける (置換になる) |
 | `rank(v)` | `{1, 0, 1, 3}` | 同じ順位にして、次の順位を飛ばす |
 | `Compress(v).ids(v)` | `{1, 0, 1, 2}` | 同じ番号にして、詰める ([座標圧縮](compress.hpp)) |
 
@@ -336,9 +348,9 @@ auto c = select(a, idx);          // {2, 1, 0}
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `argsort(v)` / `argsort(v, comp)` | 値を昇順 (`comp` の順) に安定ソートしたときの添字のリスト (`std::vector<long long>`)。APL の grade up。降順は `argsort(v, std::greater<>())`。`argsort(argsort(v))` は各要素の順位 (同率は添字の小さい順に別の順位を付けた置換) | $O(n \log n)$ |
+| `argsort(v)` / `argsort(v, comp)` / `argsort(v, comp, proj)` | 値を昇順 (`comp` の順) に安定ソートしたときの添字のリスト (`std::vector<long long>`)。APL の grade up。降順は `argsort(v, std::greater<>())`。`proj` を渡すと `comp(proj(a), proj(b))` で比べる (`std::ranges::sort` と同じ。キーだけなら `argsort(v, {}, key)`、メンバポインタ `&T::x` も渡せる)。`argsort(argsort(v))` は各要素の順位 (同率は添字の小さい順に別の順位を付けた置換) で、`inverse_permutation(argsort(v))` と同じ | $O(n \log n)$ |
 | `inverse_permutation(p)` | 逆置換 (`ret[p[i]] = i`)。`p` は整数型の `vector` で、$0, \ldots, n-1$ の置換でなければ assert で落ちる。`inverse_permutation(argsort(v))` は `argsort(argsort(v))` と同じ | $O(n)$ |
-| `rank(v)` / `rank(v, comp)` | 各要素の順位 (`v[i]` より前に来る要素の個数)。同率は同じ順位で、次の順位は飛ばす (`{30, 10, 30, 20}` なら `{2, 0, 2, 1}`)。飛ばさずに詰めるなら [座標圧縮](compress.hpp) の `Compress(v).ids(v)` | $O(n \log n)$ |
+| `rank(v)` / `rank(v, comp)` / `rank(v, comp, proj)` | 各要素の順位 (`v[i]` より前に来る要素の個数)。`comp`・`proj` は `argsort` と同じ。同率は同じ順位で、次の順位は飛ばす (`{30, 10, 30, 20}` なら `{2, 0, 2, 1}`)。飛ばさずに詰めるなら [座標圧縮](compress.hpp) の `Compress(v).ids(v)` | $O(n \log n)$ |
 | `select(v, idx)` | `{v[idx[0]], v[idx[1]], ...}`。`idx` は整数型の `vector` で、範囲外なら assert で落ちる。`select(a, argsort(b))` で `b` の昇順に `a` を並べる | $O(\lvert \mathit{idx} \rvert)$ |
 | `cumulative_sum(v)` | 先頭に 0 を付けた累積和 (長さ `size + 1`) | $O(n)$ |
 | `iota(n)` | `{0, 1, ..., n-1}` | $O(n)$ |

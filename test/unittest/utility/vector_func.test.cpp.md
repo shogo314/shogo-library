@@ -28,8 +28,8 @@ data:
     #include <algorithm>\n#include <cassert>\n#include <cmath>\n#include <cstddef>\n\
     #include <functional>\n#include <numeric>\n#include <type_traits>\n#include <vector>\n\
     \n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\
-    \u7279\u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\n#include <iterator>\n\
-    #include <set>\n#line 12 \"src/utility/traits.hpp\"\n#include <utility>\n\nnamespace\
+    \u7279\u6027\n */\n\n#line 10 \"src/utility/traits.hpp\"\n#include <iterator>\n\
+    #include <set>\n#line 13 \"src/utility/traits.hpp\"\n#include <utility>\n\nnamespace\
     \ internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T, class =\
     \ void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct\
     \ is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
@@ -71,42 +71,50 @@ data:
     HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
     HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
     \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
-    \ntemplate <class C>\nusing mem_value_type = typename C::value_type;\ntemplate\
-    \ <class C>\nusing mem_difference_type = typename C::difference_type;\n\nnamespace\
-    \ internal_traits {\ntemplate <class T, class = void>\nstruct is_sorted_container_impl\
-    \ : std::false_type {};\ntemplate <class T>\nstruct is_sorted_container_impl<std::set<T>>\
-    \ : std::true_type {};\ntemplate <class T>\nstruct is_sorted_container_impl<std::multiset<T>>\
-    \ : std::true_type {};\n}  // namespace internal_traits\ntemplate <class T>\n\
-    struct is_sorted_container : internal_traits::is_sorted_container_impl<T>::type\
-    \ {};\ntemplate <class T>\ninline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
-    #line 18 \"src/utility/vector_func.hpp\"\n\n/**\n * @brief \u5024\u3092 comp \u306E\
-    \u9806\u306B\u5B89\u5B9A\u30BD\u30FC\u30C8\u3057\u305F\u3068\u304D\u306E\u6DFB\
-    \u5B57\u306E\u4E26\u3073 (APL \u306E grade up)\n */\ntemplate <typename T, typename\
-    \ F = std::less<>>\nstd::vector<long long> argsort(const std::vector<T>& v, F\
-    \ comp = F()) {\n    std::vector<long long> ret(v.size());\n    std::iota(ret.begin(),\
+    \nnamespace internal_traits {\n// \u5C04\u5F71 (proj) \u306E\u65E2\u5B9A\u5024\
+    \n#if __cplusplus >= 202002L\nusing identity = std::identity;\n#else\nstruct identity\
+    \ {\n    using is_transparent = void;\n    template <class T>\n    constexpr T&&\
+    \ operator()(T&& x) const noexcept {\n        return std::forward<T>(x);\n   \
+    \ }\n};\n#endif\n}  // namespace internal_traits\n\ntemplate <class C>\nusing\
+    \ mem_value_type = typename C::value_type;\ntemplate <class C>\nusing mem_difference_type\
+    \ = typename C::difference_type;\n\nnamespace internal_traits {\ntemplate <class\
+    \ T, class = void>\nstruct is_sorted_container_impl : std::false_type {};\ntemplate\
+    \ <class T>\nstruct is_sorted_container_impl<std::set<T>> : std::true_type {};\n\
+    template <class T>\nstruct is_sorted_container_impl<std::multiset<T>> : std::true_type\
+    \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
+    \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
+    inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
+    #line 18 \"src/utility/vector_func.hpp\"\n\n/**\n * @brief \u5024\u3092 proj \u3067\
+    \u5199\u3057\u3066 comp \u306E\u9806\u306B\u5B89\u5B9A\u30BD\u30FC\u30C8\u3057\
+    \u305F\u3068\u304D\u306E\u6DFB\u5B57\u306E\u4E26\u3073 (APL \u306E grade up)\n\
+    \ */\ntemplate <typename T, typename F = std::less<>, typename P = internal_traits::identity>\n\
+    std::vector<long long> argsort(const std::vector<T>& v, F comp = F(), P proj =\
+    \ P()) {\n    std::vector<long long> ret(v.size());\n    std::iota(ret.begin(),\
     \ ret.end(), 0LL);\n    std::stable_sort(ret.begin(), ret.end(), [&](long long\
-    \ i, long long j) {\n        return comp(v[i], v[j]);\n    });\n    return ret;\n\
-    }\n\n/**\n * @brief \u5404\u8981\u7D20\u306E\u9806\u4F4D (comp \u306E\u9806\u3067\
-    \ v[i] \u3088\u308A\u524D\u306B\u6765\u308B\u8981\u7D20\u306E\u500B\u6570)\u3002\
-    \u540C\u7387\u306F\u540C\u3058\u9806\u4F4D\u3067\u3001\u6B21\u306E\u9806\u4F4D\
-    \u306F\u98DB\u3070\u3059\n */\ntemplate <typename T, typename F = std::less<>>\n\
-    std::vector<long long> rank(const std::vector<T>& v, F comp = F()) {\n    const\
-    \ long long n = v.size();\n    std::vector<long long> p = argsort(v, comp), ret(n);\n\
-    \    for (long long i = 0; i < n; i++) {\n        ret[p[i]] = i > 0 && !comp(v[p[i\
-    \ - 1]], v[p[i]]) ? ret[p[i - 1]] : i;\n    }\n    return ret;\n}\n\n/**\n * @brief\
-    \ \u9006\u7F6E\u63DB (ret[p[i]] = i)\u3002p \u306F 0, ..., n-1 \u306E\u7F6E\u63DB\
-    \u3067\u3042\u308B\u3053\u3068\n */\ntemplate <typename I, ENABLE_IF_T(std::is_integral_v<I>)>\n\
-    std::vector<long long> inverse_permutation(const std::vector<I>& p) {\n    const\
-    \ long long n = p.size();\n    std::vector<long long> ret(n, -1);\n    for (long\
-    \ long i = 0; i < n; i++) {\n        const long long x = static_cast<long long>(p[i]);\n\
-    \        assert(0 <= x && x < n && ret[x] == -1);\n        ret[x] = i;\n    }\n\
-    \    return ret;\n}\n\n/**\n * @brief {v[idx[0]], v[idx[1]], ...} (Uiua \u306E\
-    \ select)\n */\ntemplate <typename T, typename I, ENABLE_IF_T(std::is_integral_v<I>)>\n\
-    std::vector<T> select(const std::vector<T>& v, const std::vector<I>& idx) {\n\
-    \    std::vector<T> ret;\n    ret.reserve(idx.size());\n    for (I i : idx) {\n\
-    \        assert(0 <= static_cast<long long>(i) && static_cast<long long>(i) <\
-    \ static_cast<long long>(v.size()));\n        ret.push_back(v[i]);\n    }\n  \
-    \  return ret;\n}\n\ntemplate <typename T>\ninline std::vector<T>& operator++(std::vector<T>&\
+    \ i, long long j) {\n        return std::invoke(comp, std::invoke(proj, v[i]),\
+    \ std::invoke(proj, v[j]));\n    });\n    return ret;\n}\n\n/**\n * @brief \u5404\
+    \u8981\u7D20\u306E\u9806\u4F4D (proj \u3067\u5199\u3057\u3066 comp \u306E\u9806\
+    \u3067 v[i] \u3088\u308A\u524D\u306B\u6765\u308B\u8981\u7D20\u306E\u500B\u6570\
+    )\u3002\u540C\u7387\u306F\u540C\u3058\u9806\u4F4D\u3067\u3001\u6B21\u306E\u9806\
+    \u4F4D\u306F\u98DB\u3070\u3059\n */\ntemplate <typename T, typename F = std::less<>,\
+    \ typename P = internal_traits::identity>\nstd::vector<long long> rank(const std::vector<T>&\
+    \ v, F comp = F(), P proj = P()) {\n    const long long n = v.size();\n    std::vector<long\
+    \ long> p = argsort(v, comp, proj), ret(n);\n    for (long long i = 0; i < n;\
+    \ i++) {\n        ret[p[i]] = i > 0 && !std::invoke(comp, std::invoke(proj, v[p[i\
+    \ - 1]]), std::invoke(proj, v[p[i]])) ? ret[p[i - 1]] : i;\n    }\n    return\
+    \ ret;\n}\n\n/**\n * @brief \u9006\u7F6E\u63DB (ret[p[i]] = i)\u3002p \u306F 0,\
+    \ ..., n-1 \u306E\u7F6E\u63DB\u3067\u3042\u308B\u3053\u3068\n */\ntemplate <typename\
+    \ I, ENABLE_IF_T(std::is_integral_v<I>)>\nstd::vector<long long> inverse_permutation(const\
+    \ std::vector<I>& p) {\n    const long long n = p.size();\n    std::vector<long\
+    \ long> ret(n, -1);\n    for (long long i = 0; i < n; i++) {\n        const long\
+    \ long x = static_cast<long long>(p[i]);\n        assert(0 <= x && x < n && ret[x]\
+    \ == -1);\n        ret[x] = i;\n    }\n    return ret;\n}\n\n/**\n * @brief {v[idx[0]],\
+    \ v[idx[1]], ...} (Uiua \u306E select)\n */\ntemplate <typename T, typename I,\
+    \ ENABLE_IF_T(std::is_integral_v<I>)>\nstd::vector<T> select(const std::vector<T>&\
+    \ v, const std::vector<I>& idx) {\n    std::vector<T> ret;\n    ret.reserve(idx.size());\n\
+    \    for (I i : idx) {\n        assert(0 <= static_cast<long long>(i) && static_cast<long\
+    \ long>(i) < static_cast<long long>(v.size()));\n        ret.push_back(v[i]);\n\
+    \    }\n    return ret;\n}\n\ntemplate <typename T>\ninline std::vector<T>& operator++(std::vector<T>&\
     \ v) {\n    for (auto& e : v) e++;\n    return v;\n}\ntemplate <typename T>\n\
     inline std::vector<T> operator++(std::vector<T>& v, int) {\n    auto res = v;\n\
     \    for (auto& e : v) e++;\n    return res;\n}\ntemplate <typename T>\ninline\
@@ -258,30 +266,42 @@ data:
     \ == n;\n            for (int i = 0; i < n && is_inv; i++) is_inv = p[q[i]] ==\
     \ i && q[p[i]] == i;\n            check(is_inv, \"inverse_permutation\");\n  \
     \          std::vector<int> pi(p.begin(), p.end());\n            check(inverse_permutation(pi)\
-    \ == q, \"inverse_permutation (int)\");\n        }\n\n        // select: \u6DFB\
-    \u5B57\u306E\u5217\u3067\u53D6\u308A\u51FA\u3059\n        {\n            std::vector<int>\
-    \ idx(n);\n            for (auto& i : idx) i = static_cast<int>(rng() % std::max(n,\
-    \ 1));\n            auto s = select(a, idx);\n            bool ok = static_cast<int>(s.size())\
-    \ == n;\n            for (int i = 0; i < n && ok; i++) ok = s[i] == a[idx[i]];\n\
-    \            check(ok, \"select\");\n            std::vector<long long> expect\
-    \ = a;\n            std::sort(expect.begin(), expect.end());\n            check(select(a,\
-    \ argsort(a)) == expect, \"select(v, argsort(v))\");\n        }\n\n        //\
-    \ hamming_distance (\u540C\u3058\u9577\u3055\u3069\u3046\u3057\u3001\u578B\u304C\
-    \u7570\u306A\u3063\u3066\u3082\u3088\u3044)\n        {\n            std::vector<long\
-    \ long> d = rand_vec(n);\n            std::vector<int> e(d.begin(), d.end());\n\
-    \            long long hd = 0;\n            for (int i = 0; i < n; i++) hd +=\
-    \ a[i] != d[i];\n            check(hamming_distance(a, d) == hd && hamming_distance(a,\
-    \ e) == hd, \"hamming_distance\");\n        }\n\n        // iota\n        {\n\
-    \            std::vector<int> expect(n);\n            for (int i = 0; i < n; i++)\
-    \ expect[i] = i;\n            check(iota(n) == expect, \"iota\");\n        }\n\
-    \n        // radix_convert: \u6574\u6570 -> \u6841 (\u4E0A\u4F4D\u304B\u3089)\
-    \ -> \u6574\u6570\n        {\n            int base = rng() % 15 + 2;\n       \
-    \     long long x = rng() % 1000000000000LL;\n            std::vector<long long>\
-    \ digits;\n            for (long long y = x; y > 0; y /= base) digits.push_back(y\
-    \ % base);\n            std::reverse(digits.begin(), digits.end());\n        \
-    \    check(radix_convert(x, base) == digits, \"radix_convert(x, base)\");\n  \
-    \          check(radix_convert(digits, base) == x, \"radix_convert(digits, base)\"\
-    );\n        }\n    }\n\n    // \u6C7A\u307E\u3063\u305F\u5024\n    check(radix_convert(123,\
+    \ == q, \"inverse_permutation (int)\");\n        }\n\n        // argsort / rank\
+    \ (\u5C04\u5F71\u3064\u304D): \u5199\u3057\u305F\u5024\u306E\u5217\u306B\u5BFE\
+    \u3059\u308B\u7D50\u679C\u3068\u4E00\u81F4\u3059\u308B\n        {\n          \
+    \  auto key = [](long long x) { return x * x; };\n            std::vector<long\
+    \ long> b(n);\n            for (int i = 0; i < n; i++) b[i] = key(a[i]);\n   \
+    \         check(argsort(a, {}, key) == argsort(b), \"argsort(v, {}, proj)\");\n\
+    \            check(argsort(a, std::greater<>(), key) == argsort(b, std::greater<>()),\
+    \ \"argsort(v, comp, proj)\");\n            check(rank(a, {}, key) == rank(b),\
+    \ \"rank(v, {}, proj)\");\n            check(rank(a, std::greater<>(), key) ==\
+    \ rank(b, std::greater<>()), \"rank(v, comp, proj)\");\n            std::vector<std::pair<long\
+    \ long, long long>> ps(n);\n            for (int i = 0; i < n; i++) ps[i] = {a[i],\
+    \ -i};\n            check(argsort(ps, {}, &std::pair<long long, long long>::first)\
+    \ == argsort(a), \"argsort(v, {}, &T::member)\");\n        }\n\n        // select:\
+    \ \u6DFB\u5B57\u306E\u5217\u3067\u53D6\u308A\u51FA\u3059\n        {\n        \
+    \    std::vector<int> idx(n);\n            for (auto& i : idx) i = static_cast<int>(rng()\
+    \ % std::max(n, 1));\n            auto s = select(a, idx);\n            bool ok\
+    \ = static_cast<int>(s.size()) == n;\n            for (int i = 0; i < n && ok;\
+    \ i++) ok = s[i] == a[idx[i]];\n            check(ok, \"select\");\n         \
+    \   std::vector<long long> expect = a;\n            std::sort(expect.begin(),\
+    \ expect.end());\n            check(select(a, argsort(a)) == expect, \"select(v,\
+    \ argsort(v))\");\n        }\n\n        // hamming_distance (\u540C\u3058\u9577\
+    \u3055\u3069\u3046\u3057\u3001\u578B\u304C\u7570\u306A\u3063\u3066\u3082\u3088\
+    \u3044)\n        {\n            std::vector<long long> d = rand_vec(n);\n    \
+    \        std::vector<int> e(d.begin(), d.end());\n            long long hd = 0;\n\
+    \            for (int i = 0; i < n; i++) hd += a[i] != d[i];\n            check(hamming_distance(a,\
+    \ d) == hd && hamming_distance(a, e) == hd, \"hamming_distance\");\n        }\n\
+    \n        // iota\n        {\n            std::vector<int> expect(n);\n      \
+    \      for (int i = 0; i < n; i++) expect[i] = i;\n            check(iota(n) ==\
+    \ expect, \"iota\");\n        }\n\n        // radix_convert: \u6574\u6570 -> \u6841\
+    \ (\u4E0A\u4F4D\u304B\u3089) -> \u6574\u6570\n        {\n            int base\
+    \ = rng() % 15 + 2;\n            long long x = rng() % 1000000000000LL;\n    \
+    \        std::vector<long long> digits;\n            for (long long y = x; y >\
+    \ 0; y /= base) digits.push_back(y % base);\n            std::reverse(digits.begin(),\
+    \ digits.end());\n            check(radix_convert(x, base) == digits, \"radix_convert(x,\
+    \ base)\");\n            check(radix_convert(digits, base) == x, \"radix_convert(digits,\
+    \ base)\");\n        }\n    }\n\n    // \u6C7A\u307E\u3063\u305F\u5024\n    check(radix_convert(123,\
     \ 10) == std::vector<long long>{1, 2, 3}, \"radix_convert(123)\");\n    check(radix_convert(std::vector<long\
     \ long>{1, 0, 1, 1}, 2) == 11, \"radix_convert({1,0,1,1}, 2)\");\n    check(radix_convert(0,\
     \ 10).empty() && radix_convert(std::vector<long long>{}, 10) == 0, \"radix_convert\
@@ -373,30 +393,42 @@ data:
     \ == n;\n            for (int i = 0; i < n && is_inv; i++) is_inv = p[q[i]] ==\
     \ i && q[p[i]] == i;\n            check(is_inv, \"inverse_permutation\");\n  \
     \          std::vector<int> pi(p.begin(), p.end());\n            check(inverse_permutation(pi)\
-    \ == q, \"inverse_permutation (int)\");\n        }\n\n        // select: \u6DFB\
-    \u5B57\u306E\u5217\u3067\u53D6\u308A\u51FA\u3059\n        {\n            std::vector<int>\
-    \ idx(n);\n            for (auto& i : idx) i = static_cast<int>(rng() % std::max(n,\
-    \ 1));\n            auto s = select(a, idx);\n            bool ok = static_cast<int>(s.size())\
-    \ == n;\n            for (int i = 0; i < n && ok; i++) ok = s[i] == a[idx[i]];\n\
-    \            check(ok, \"select\");\n            std::vector<long long> expect\
-    \ = a;\n            std::sort(expect.begin(), expect.end());\n            check(select(a,\
-    \ argsort(a)) == expect, \"select(v, argsort(v))\");\n        }\n\n        //\
-    \ hamming_distance (\u540C\u3058\u9577\u3055\u3069\u3046\u3057\u3001\u578B\u304C\
-    \u7570\u306A\u3063\u3066\u3082\u3088\u3044)\n        {\n            std::vector<long\
-    \ long> d = rand_vec(n);\n            std::vector<int> e(d.begin(), d.end());\n\
-    \            long long hd = 0;\n            for (int i = 0; i < n; i++) hd +=\
-    \ a[i] != d[i];\n            check(hamming_distance(a, d) == hd && hamming_distance(a,\
-    \ e) == hd, \"hamming_distance\");\n        }\n\n        // iota\n        {\n\
-    \            std::vector<int> expect(n);\n            for (int i = 0; i < n; i++)\
-    \ expect[i] = i;\n            check(iota(n) == expect, \"iota\");\n        }\n\
-    \n        // radix_convert: \u6574\u6570 -> \u6841 (\u4E0A\u4F4D\u304B\u3089)\
-    \ -> \u6574\u6570\n        {\n            int base = rng() % 15 + 2;\n       \
-    \     long long x = rng() % 1000000000000LL;\n            std::vector<long long>\
-    \ digits;\n            for (long long y = x; y > 0; y /= base) digits.push_back(y\
-    \ % base);\n            std::reverse(digits.begin(), digits.end());\n        \
-    \    check(radix_convert(x, base) == digits, \"radix_convert(x, base)\");\n  \
-    \          check(radix_convert(digits, base) == x, \"radix_convert(digits, base)\"\
-    );\n        }\n    }\n\n    // \u6C7A\u307E\u3063\u305F\u5024\n    check(radix_convert(123,\
+    \ == q, \"inverse_permutation (int)\");\n        }\n\n        // argsort / rank\
+    \ (\u5C04\u5F71\u3064\u304D): \u5199\u3057\u305F\u5024\u306E\u5217\u306B\u5BFE\
+    \u3059\u308B\u7D50\u679C\u3068\u4E00\u81F4\u3059\u308B\n        {\n          \
+    \  auto key = [](long long x) { return x * x; };\n            std::vector<long\
+    \ long> b(n);\n            for (int i = 0; i < n; i++) b[i] = key(a[i]);\n   \
+    \         check(argsort(a, {}, key) == argsort(b), \"argsort(v, {}, proj)\");\n\
+    \            check(argsort(a, std::greater<>(), key) == argsort(b, std::greater<>()),\
+    \ \"argsort(v, comp, proj)\");\n            check(rank(a, {}, key) == rank(b),\
+    \ \"rank(v, {}, proj)\");\n            check(rank(a, std::greater<>(), key) ==\
+    \ rank(b, std::greater<>()), \"rank(v, comp, proj)\");\n            std::vector<std::pair<long\
+    \ long, long long>> ps(n);\n            for (int i = 0; i < n; i++) ps[i] = {a[i],\
+    \ -i};\n            check(argsort(ps, {}, &std::pair<long long, long long>::first)\
+    \ == argsort(a), \"argsort(v, {}, &T::member)\");\n        }\n\n        // select:\
+    \ \u6DFB\u5B57\u306E\u5217\u3067\u53D6\u308A\u51FA\u3059\n        {\n        \
+    \    std::vector<int> idx(n);\n            for (auto& i : idx) i = static_cast<int>(rng()\
+    \ % std::max(n, 1));\n            auto s = select(a, idx);\n            bool ok\
+    \ = static_cast<int>(s.size()) == n;\n            for (int i = 0; i < n && ok;\
+    \ i++) ok = s[i] == a[idx[i]];\n            check(ok, \"select\");\n         \
+    \   std::vector<long long> expect = a;\n            std::sort(expect.begin(),\
+    \ expect.end());\n            check(select(a, argsort(a)) == expect, \"select(v,\
+    \ argsort(v))\");\n        }\n\n        // hamming_distance (\u540C\u3058\u9577\
+    \u3055\u3069\u3046\u3057\u3001\u578B\u304C\u7570\u306A\u3063\u3066\u3082\u3088\
+    \u3044)\n        {\n            std::vector<long long> d = rand_vec(n);\n    \
+    \        std::vector<int> e(d.begin(), d.end());\n            long long hd = 0;\n\
+    \            for (int i = 0; i < n; i++) hd += a[i] != d[i];\n            check(hamming_distance(a,\
+    \ d) == hd && hamming_distance(a, e) == hd, \"hamming_distance\");\n        }\n\
+    \n        // iota\n        {\n            std::vector<int> expect(n);\n      \
+    \      for (int i = 0; i < n; i++) expect[i] = i;\n            check(iota(n) ==\
+    \ expect, \"iota\");\n        }\n\n        // radix_convert: \u6574\u6570 -> \u6841\
+    \ (\u4E0A\u4F4D\u304B\u3089) -> \u6574\u6570\n        {\n            int base\
+    \ = rng() % 15 + 2;\n            long long x = rng() % 1000000000000LL;\n    \
+    \        std::vector<long long> digits;\n            for (long long y = x; y >\
+    \ 0; y /= base) digits.push_back(y % base);\n            std::reverse(digits.begin(),\
+    \ digits.end());\n            check(radix_convert(x, base) == digits, \"radix_convert(x,\
+    \ base)\");\n            check(radix_convert(digits, base) == x, \"radix_convert(digits,\
+    \ base)\");\n        }\n    }\n\n    // \u6C7A\u307E\u3063\u305F\u5024\n    check(radix_convert(123,\
     \ 10) == std::vector<long long>{1, 2, 3}, \"radix_convert(123)\");\n    check(radix_convert(std::vector<long\
     \ long>{1, 0, 1, 1}, 2) == 11, \"radix_convert({1,0,1,1}, 2)\");\n    check(radix_convert(0,\
     \ 10).empty() && radix_convert(std::vector<long long>{}, 10) == 0, \"radix_convert\
@@ -410,7 +442,7 @@ data:
   isVerificationFile: true
   path: test/unittest/utility/vector_func.test.cpp
   requiredBy: []
-  timestamp: '2026-10-31 05:30:08+09:00'
+  timestamp: '2026-10-31 05:46:56+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/utility/vector_func.test.cpp

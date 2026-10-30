@@ -16,13 +16,13 @@ auto c = select(a, idx);          // {2, 1, 0}
 
 ## 順位の求め方
 
-`p = argsort(v)` は「`k` 番目に小さい要素の添字が `p[k]`」という置換です。これをもう一度 `argsort` すると逆置換になり、「`v[i]` が何番目に小さいか」が得られます (APL の ⍋⍋)。`argsort` は安定なので、同率は添字の小さい順に別の順位になり、結果は必ず $0, \ldots, n-1$ の置換です。転倒数に渡すときなど、置換がほしいときはこれを使います。2 回目の `argsort` は逆置換を求めているだけなので、`inverse_permutation(argsort(v))` と書くと $O(n)$ で済みます (結果は同じ)。
+`p = argsort(v)` は「`k` 番目に小さい要素の添字が `p[k]`」という置換です。これをもう一度 `argsort` すると逆置換になり、「`v[i]` が何番目に小さいか」が得られます (APL・Uiua の ⍋⍋・⍏⍏)。`argsort` は安定なので、同率は添字の小さい順に別の順位になり、結果は必ず $0, \ldots, n-1$ の置換です。転倒数に渡すときなど、置換がほしいときはこれを使います。2 回目の `argsort` は逆置換を求めているだけなので、`inverse_permutation(argsort(v))` と書いても同じ結果になります。こちらは 2 回目が $O(n)$ で済みますが、全体の計算量は 1 回目のソートで決まり、$O(n \log n)$ のままです。APL や Uiua に慣れているなら `argsort(argsort(v))` のほうが読みやすく、「逆置換を取っている」と明示したいなら `inverse_permutation(argsort(v))` を使います。
 
 同率の扱いで、次の 3 つを使い分けます。
 
 | 書き方 | `{20, 10, 20, 30}` の結果 | 同率の扱い |
 |---|---|---|
-| `argsort(argsort(v))` | `{1, 0, 2, 3}` | 添字の小さい順に別の順位を付ける (置換になる) |
+| `argsort(argsort(v))`<br>`inverse_permutation(argsort(v))` | `{1, 0, 2, 3}` | 添字の小さい順に別の順位を付ける (置換になる) |
 | `rank(v)` | `{1, 0, 1, 3}` | 同じ順位にして、次の順位を飛ばす |
 | `Compress(v).ids(v)` | `{1, 0, 1, 2}` | 同じ番号にして、詰める ([座標圧縮](compress.hpp)) |
 
@@ -42,7 +42,7 @@ auto c = select(a, idx);          // {2, 1, 0}
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `argsort(v)` / `argsort(v, comp)` | 値を昇順 (`comp` の順) に安定ソートしたときの添字のリスト (`std::vector<long long>`)。APL の grade up。降順は `argsort(v, std::greater<>())`。`argsort(argsort(v))` は各要素の順位 (同率は添字の小さい順に別の順位を付けた置換) | $O(n \log n)$ |
+| `argsort(v)` / `argsort(v, comp)` | 値を昇順 (`comp` の順) に安定ソートしたときの添字のリスト (`std::vector<long long>`)。APL の grade up。降順は `argsort(v, std::greater<>())`。`argsort(argsort(v))` は各要素の順位 (同率は添字の小さい順に別の順位を付けた置換) で、`inverse_permutation(argsort(v))` と同じ | $O(n \log n)$ |
 | `inverse_permutation(p)` | 逆置換 (`ret[p[i]] = i`)。`p` は整数型の `vector` で、$0, \ldots, n-1$ の置換でなければ assert で落ちる。`inverse_permutation(argsort(v))` は `argsort(argsort(v))` と同じ | $O(n)$ |
 | `rank(v)` / `rank(v, comp)` | 各要素の順位 (`v[i]` より前に来る要素の個数)。同率は同じ順位で、次の順位は飛ばす (`{30, 10, 30, 20}` なら `{2, 0, 2, 1}`)。飛ばさずに詰めるなら [座標圧縮](compress.hpp) の `Compress(v).ids(v)` | $O(n \log n)$ |
 | `select(v, idx)` | `{v[idx[0]], v[idx[1]], ...}`。`idx` は整数型の `vector` で、範囲外なら assert で落ちる。`select(a, argsort(b))` で `b` の昇順に `a` を並べる | $O(\lvert \mathit{idx} \rvert)$ |

@@ -43,6 +43,21 @@ std::vector<long long> rank(const std::vector<T>& v, F comp = F()) {
 }
 
 /**
+ * @brief 逆置換 (ret[p[i]] = i)。p は 0, ..., n-1 の置換であること
+ */
+template <typename I, ENABLE_IF_T(std::is_integral_v<I>)>
+std::vector<long long> inverse_permutation(const std::vector<I>& p) {
+    const long long n = p.size();
+    std::vector<long long> ret(n, -1);
+    for (long long i = 0; i < n; i++) {
+        const long long x = static_cast<long long>(p[i]);
+        assert(0 <= x && x < n && ret[x] == -1);
+        ret[x] = i;
+    }
+    return ret;
+}
+
+/**
  * @brief {v[idx[0]], v[idx[1]], ...} (Uiua の select)
  */
 template <typename T, typename I, ENABLE_IF_T(std::is_integral_v<I>)>

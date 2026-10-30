@@ -144,6 +144,18 @@ int main() {
             }
         }
 
+        // inverse_permutation: argsort(argsort(v)) と一致し、元の置換と合成すると恒等置換
+        {
+            auto p = argsort(a);
+            auto q = inverse_permutation(p);
+            check(q == argsort(p), "inverse_permutation == argsort(argsort(v))");
+            bool is_inv = static_cast<int>(q.size()) == n;
+            for (int i = 0; i < n && is_inv; i++) is_inv = p[q[i]] == i && q[p[i]] == i;
+            check(is_inv, "inverse_permutation");
+            std::vector<int> pi(p.begin(), p.end());
+            check(inverse_permutation(pi) == q, "inverse_permutation (int)");
+        }
+
         // select: 添字の列で取り出す
         {
             std::vector<int> idx(n);

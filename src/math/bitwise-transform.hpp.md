@@ -314,11 +314,11 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/math/bitwise-transform.test.cpp
+  - test/yosupo/set_power_series/subset-convolution.test.cpp
+  - test/yosupo/set_power_series/exp-of-set-power-series.test.cpp
+  - test/yosupo/set_power_series/log-of-set-power-series.test.cpp
   - test/yosupo/convolution/bitwise-xor-convolution.test.cpp
   - test/yosupo/convolution/bitwise-and-convolution.test.cpp
-  - test/yosupo/set_power_series/log-of-set-power-series.test.cpp
-  - test/yosupo/set_power_series/exp-of-set-power-series.test.cpp
-  - test/yosupo/set_power_series/subset-convolution.test.cpp
 documentation_of: src/math/bitwise-transform.hpp
 layout: document
 title: "\u90E8\u5206\u96C6\u5408\u30FB\u4E0A\u4F4D\u96C6\u5408\u306E\u30BC\u30FC\u30BF\

@@ -125,27 +125,25 @@ data:
     \            \\\n    }\n\nMETHOD_EXPAND(reversed)\ntemplate <class C, ENABLE_IF_T(!has_reversed_v<C>)>\n\
     inline constexpr C reversed(C t) {\n    std::reverse(t.begin(), t.end());\n  \
     \  return t;\n}\n\nMETHOD_EXPAND(sorted)\ntemplate <class C, ENABLE_IF_T(!has_sorted_v<C>)>\n\
-    inline constexpr C sorted(C t, bool reverse = false) {\n    std::sort(t.begin(),\
-    \ t.end());\n    if (reverse) std::reverse(t.begin(), t.end());\n    return t;\n\
-    }\ntemplate <class C, class F, ENABLE_IF_T(!has_sorted_v<C> && std::is_invocable_r_v<bool,\
+    inline constexpr C sorted(C t) {\n    std::sort(t.begin(), t.end());\n    return\
+    \ t;\n}\ntemplate <class C, class F, ENABLE_IF_T(!has_sorted_v<C> && std::is_invocable_r_v<bool,\
     \ F, mem_value_type<C>, mem_value_type<C>>)>\ninline constexpr C sorted(C t, F\
     \ f) {\n    std::sort(t.begin(), t.end(), f);\n    return t;\n}\n\ntemplate <class\
-    \ C>\ninline constexpr void sort(C& t, bool reverse = false) {\n    std::sort(t.begin(),\
-    \ t.end());\n    if (reverse) std::reverse(t.begin(), t.end());\n}\ntemplate <class\
-    \ C, class F, ENABLE_IF_T(std::is_invocable_r_v<bool, F, mem_value_type<C>, mem_value_type<C>>)>\n\
-    inline constexpr void sort(C& t, F f) {\n    std::sort(t.begin(), t.end(), f);\n\
-    }\ntemplate <class C, class F, ENABLE_IF_T(std::is_invocable_v<F, mem_value_type<C>>)>\n\
-    inline constexpr void sort_by_key(C& t, F f) {\n    std::sort(t.begin(), t.end(),\
-    \ [&](const mem_value_type<C>& left, const mem_value_type<C>& right) {\n     \
-    \   return f(left) < f(right);\n    });\n}\n\ntemplate <class C>\ninline constexpr\
-    \ void reverse(C& t) {\n    std::reverse(t.begin(), t.end());\n}\n\nMETHOD_EXPAND(max)\n\
-    template <class C, ENABLE_IF_T(!has_max_v<C> && is_sorted_container_v<C>)>\ninline\
-    \ constexpr mem_value_type<C> max(const C& v) {\n    assert(v.begin() != v.end());\n\
-    \    return *v.rbegin();\n}\ntemplate <class C, ENABLE_IF_T(!has_max_v<C> && !is_sorted_container_v<C>)>\n\
+    \ C>\ninline constexpr void sort(C& t) {\n    std::sort(t.begin(), t.end());\n\
+    }\ntemplate <class C, class F, ENABLE_IF_T(std::is_invocable_r_v<bool, F, mem_value_type<C>,\
+    \ mem_value_type<C>>)>\ninline constexpr void sort(C& t, F f) {\n    std::sort(t.begin(),\
+    \ t.end(), f);\n}\ntemplate <class C, class F, ENABLE_IF_T(std::is_invocable_v<F,\
+    \ mem_value_type<C>>)>\ninline constexpr void sort_by_key(C& t, F f) {\n    std::sort(t.begin(),\
+    \ t.end(), [&](const mem_value_type<C>& left, const mem_value_type<C>& right)\
+    \ {\n        return f(left) < f(right);\n    });\n}\n\ntemplate <class C>\ninline\
+    \ constexpr void reverse(C& t) {\n    std::reverse(t.begin(), t.end());\n}\n\n\
+    METHOD_EXPAND(max)\ntemplate <class C, ENABLE_IF_T(!has_max_v<C> && is_sorted_container_v<C>)>\n\
     inline constexpr mem_value_type<C> max(const C& v) {\n    assert(v.begin() !=\
-    \ v.end());\n    return *std::max_element(v.begin(), v.end());\n}\ntemplate <typename\
-    \ T>\ninline constexpr T max(const std::initializer_list<T>& v) {\n    return\
-    \ std::max(v);\n}\n\nMETHOD_EXPAND(min)\ntemplate <class C, ENABLE_IF_T(!has_min_v<C>\
+    \ v.end());\n    return *v.rbegin();\n}\ntemplate <class C, ENABLE_IF_T(!has_max_v<C>\
+    \ && !is_sorted_container_v<C>)>\ninline constexpr mem_value_type<C> max(const\
+    \ C& v) {\n    assert(v.begin() != v.end());\n    return *std::max_element(v.begin(),\
+    \ v.end());\n}\ntemplate <typename T>\ninline constexpr T max(const std::initializer_list<T>&\
+    \ v) {\n    return std::max(v);\n}\n\nMETHOD_EXPAND(min)\ntemplate <class C, ENABLE_IF_T(!has_min_v<C>\
     \ && is_sorted_container_v<C>)>\ninline constexpr mem_value_type<C> min(const\
     \ C& v) {\n    assert(v.begin() != v.end());\n    return *v.begin();\n}\ntemplate\
     \ <class C, ENABLE_IF_T(!has_min_v<C> && !is_sorted_container_v<C>)>\ninline constexpr\
@@ -232,27 +230,25 @@ data:
     \            \\\n    }\n\nMETHOD_EXPAND(reversed)\ntemplate <class C, ENABLE_IF_T(!has_reversed_v<C>)>\n\
     inline constexpr C reversed(C t) {\n    std::reverse(t.begin(), t.end());\n  \
     \  return t;\n}\n\nMETHOD_EXPAND(sorted)\ntemplate <class C, ENABLE_IF_T(!has_sorted_v<C>)>\n\
-    inline constexpr C sorted(C t, bool reverse = false) {\n    std::sort(t.begin(),\
-    \ t.end());\n    if (reverse) std::reverse(t.begin(), t.end());\n    return t;\n\
-    }\ntemplate <class C, class F, ENABLE_IF_T(!has_sorted_v<C> && std::is_invocable_r_v<bool,\
+    inline constexpr C sorted(C t) {\n    std::sort(t.begin(), t.end());\n    return\
+    \ t;\n}\ntemplate <class C, class F, ENABLE_IF_T(!has_sorted_v<C> && std::is_invocable_r_v<bool,\
     \ F, mem_value_type<C>, mem_value_type<C>>)>\ninline constexpr C sorted(C t, F\
     \ f) {\n    std::sort(t.begin(), t.end(), f);\n    return t;\n}\n\ntemplate <class\
-    \ C>\ninline constexpr void sort(C& t, bool reverse = false) {\n    std::sort(t.begin(),\
-    \ t.end());\n    if (reverse) std::reverse(t.begin(), t.end());\n}\ntemplate <class\
-    \ C, class F, ENABLE_IF_T(std::is_invocable_r_v<bool, F, mem_value_type<C>, mem_value_type<C>>)>\n\
-    inline constexpr void sort(C& t, F f) {\n    std::sort(t.begin(), t.end(), f);\n\
-    }\ntemplate <class C, class F, ENABLE_IF_T(std::is_invocable_v<F, mem_value_type<C>>)>\n\
-    inline constexpr void sort_by_key(C& t, F f) {\n    std::sort(t.begin(), t.end(),\
-    \ [&](const mem_value_type<C>& left, const mem_value_type<C>& right) {\n     \
-    \   return f(left) < f(right);\n    });\n}\n\ntemplate <class C>\ninline constexpr\
-    \ void reverse(C& t) {\n    std::reverse(t.begin(), t.end());\n}\n\nMETHOD_EXPAND(max)\n\
-    template <class C, ENABLE_IF_T(!has_max_v<C> && is_sorted_container_v<C>)>\ninline\
-    \ constexpr mem_value_type<C> max(const C& v) {\n    assert(v.begin() != v.end());\n\
-    \    return *v.rbegin();\n}\ntemplate <class C, ENABLE_IF_T(!has_max_v<C> && !is_sorted_container_v<C>)>\n\
+    \ C>\ninline constexpr void sort(C& t) {\n    std::sort(t.begin(), t.end());\n\
+    }\ntemplate <class C, class F, ENABLE_IF_T(std::is_invocable_r_v<bool, F, mem_value_type<C>,\
+    \ mem_value_type<C>>)>\ninline constexpr void sort(C& t, F f) {\n    std::sort(t.begin(),\
+    \ t.end(), f);\n}\ntemplate <class C, class F, ENABLE_IF_T(std::is_invocable_v<F,\
+    \ mem_value_type<C>>)>\ninline constexpr void sort_by_key(C& t, F f) {\n    std::sort(t.begin(),\
+    \ t.end(), [&](const mem_value_type<C>& left, const mem_value_type<C>& right)\
+    \ {\n        return f(left) < f(right);\n    });\n}\n\ntemplate <class C>\ninline\
+    \ constexpr void reverse(C& t) {\n    std::reverse(t.begin(), t.end());\n}\n\n\
+    METHOD_EXPAND(max)\ntemplate <class C, ENABLE_IF_T(!has_max_v<C> && is_sorted_container_v<C>)>\n\
     inline constexpr mem_value_type<C> max(const C& v) {\n    assert(v.begin() !=\
-    \ v.end());\n    return *std::max_element(v.begin(), v.end());\n}\ntemplate <typename\
-    \ T>\ninline constexpr T max(const std::initializer_list<T>& v) {\n    return\
-    \ std::max(v);\n}\n\nMETHOD_EXPAND(min)\ntemplate <class C, ENABLE_IF_T(!has_min_v<C>\
+    \ v.end());\n    return *v.rbegin();\n}\ntemplate <class C, ENABLE_IF_T(!has_max_v<C>\
+    \ && !is_sorted_container_v<C>)>\ninline constexpr mem_value_type<C> max(const\
+    \ C& v) {\n    assert(v.begin() != v.end());\n    return *std::max_element(v.begin(),\
+    \ v.end());\n}\ntemplate <typename T>\ninline constexpr T max(const std::initializer_list<T>&\
+    \ v) {\n    return std::max(v);\n}\n\nMETHOD_EXPAND(min)\ntemplate <class C, ENABLE_IF_T(!has_min_v<C>\
     \ && is_sorted_container_v<C>)>\ninline constexpr mem_value_type<C> min(const\
     \ C& v) {\n    assert(v.begin() != v.end());\n    return *v.begin();\n}\ntemplate\
     \ <class C, ENABLE_IF_T(!has_min_v<C> && !is_sorted_container_v<C>)>\ninline constexpr\
@@ -323,22 +319,22 @@ data:
   isVerificationFile: false
   path: src/utility/container_func.hpp
   requiredBy: []
-  timestamp: '2026-10-18 01:03:35+09:00'
+  timestamp: '2026-10-30 17:07:55+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/utility/container_func.test.cpp
   - test/unittest/utility/container_func-member.test.cpp
-  - test/aoj/alds1/alds1-1-b.test.cpp
-  - test/aoj/alds1/alds1-4-b.test.cpp
-  - test/aoj/dsl/dsl-4-a.1.test.cpp
-  - test/aoj/itp2/itp2-5-a.1.test.cpp
-  - test/aoj/itp2/itp2-3-c.test.cpp
-  - test/aoj/itp2/itp2-5-b.test.cpp
-  - test/aoj/itp2/itp2-5-a.2.test.cpp
-  - test/aoj/itp1/itp1-4-d.test.cpp
   - test/aoj/itp1/itp1-10-c.test.cpp
   - test/aoj/itp1/itp1-6-a.test.cpp
   - test/aoj/itp1/itp1-2-c.test.cpp
+  - test/aoj/itp1/itp1-4-d.test.cpp
+  - test/aoj/itp2/itp2-5-a.1.test.cpp
+  - test/aoj/itp2/itp2-3-c.test.cpp
+  - test/aoj/itp2/itp2-5-a.2.test.cpp
+  - test/aoj/itp2/itp2-5-b.test.cpp
+  - test/aoj/dsl/dsl-4-a.1.test.cpp
+  - test/aoj/alds1/alds1-4-b.test.cpp
+  - test/aoj/alds1/alds1-1-b.test.cpp
 documentation_of: src/utility/container_func.hpp
 layout: document
 title: "\u30B3\u30F3\u30C6\u30CA\u306B\u5BFE\u3059\u308B\u95A2\u6570 (sorted, max,\
@@ -362,9 +358,9 @@ auto odd = indices_if(v, [](int x) { return x % 2 == 1; });  // {0, 1, 3, 4}
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `sorted(c, reverse = false)` / `sorted(c, comp)` | ソートしたコピーを返す | $O(n \log n)$ |
+| `sorted(c)` / `sorted(c, comp)` | ソートしたコピーを返す。降順は `sorted(c, std::greater<>())` | $O(n \log n)$ |
 | `reversed(c)` | 逆順にしたコピーを返す | $O(n)$ |
-| `sort(c, reverse = false)` / `sort(c, comp)` | その場でソート | $O(n \log n)$ |
+| `sort(c)` / `sort(c, comp)` | その場でソート。降順は `sort(c, std::greater<>())` | $O(n \log n)$ |
 | `sort_by_key(c, key)` | `key(x)` の昇順にその場でソート (比較のたびに `key` を呼ぶ) | `key` の呼び出し $O(n \log n)$ 回 |
 | `reverse(c)` | その場で逆順にする | $O(n)$ |
 

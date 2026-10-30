@@ -234,11 +234,11 @@ data:
   timestamp: '2026-10-19 05:13:57+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/string/longest-common-substring.test.cpp
   - test/unittest/string/suffix-array.test.cpp
+  - test/unittest/string/longest-common-substring.test.cpp
   - test/yosupo/string/number-of-substrings.1.test.cpp
-  - test/yosupo/string/longest-common-substring.test.cpp
   - test/yosupo/string/suffixarray.test.cpp
+  - test/yosupo/string/longest-common-substring.test.cpp
 documentation_of: src/string/suffix-array.hpp
 layout: document
 title: "Suffix Array \u3068 LCP \u914D\u5217"

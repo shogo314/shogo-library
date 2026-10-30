@@ -582,9 +582,9 @@ data:
   - test/unittest/data_structures/potentialized-unionfind.test.cpp
   - test/unittest/algebra/mapping.test.cpp
   - test/unittest/algebra/monoid.test.cpp
-  - test/aoj/dsl/dsl-1-b.2.test.cpp
-  - test/aoj/dsl/dsl-1-b.1.test.cpp
   - test/aoj/volume29/2971.test.cpp
+  - test/aoj/dsl/dsl-1-b.1.test.cpp
+  - test/aoj/dsl/dsl-1-b.2.test.cpp
   - test/yosupo/data_structure/unionfind-with-potential.test.cpp
   - test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
 documentation_of: src/data_structures/potentialized-unionfind.hpp

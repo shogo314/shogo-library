@@ -1002,15 +1002,15 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/geometry/circle.test.cpp
+  - test/aoj/cgl/cgl-7-b.test.cpp
   - test/aoj/cgl/cgl-7-d.test.cpp
-  - test/aoj/cgl/cgl-7-f.test.cpp
+  - test/aoj/cgl/cgl-7-g.test.cpp
+  - test/aoj/cgl/cgl-7-e.test.cpp
   - test/aoj/cgl/cgl-7-c.test.cpp
-  - test/aoj/cgl/cgl-7-i.test.cpp
   - test/aoj/cgl/cgl-7-a.test.cpp
   - test/aoj/cgl/cgl-7-h.test.cpp
-  - test/aoj/cgl/cgl-7-e.test.cpp
-  - test/aoj/cgl/cgl-7-b.test.cpp
-  - test/aoj/cgl/cgl-7-g.test.cpp
+  - test/aoj/cgl/cgl-7-f.test.cpp
+  - test/aoj/cgl/cgl-7-i.test.cpp
   - test/yosupo/geo/minimum-enclosing-circle.test.cpp
 documentation_of: src/geometry/circle.hpp
 layout: document

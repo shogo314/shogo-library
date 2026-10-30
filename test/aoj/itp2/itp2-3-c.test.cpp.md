@@ -93,27 +93,25 @@ data:
     \            \\\n    }\n\nMETHOD_EXPAND(reversed)\ntemplate <class C, ENABLE_IF_T(!has_reversed_v<C>)>\n\
     inline constexpr C reversed(C t) {\n    std::reverse(t.begin(), t.end());\n  \
     \  return t;\n}\n\nMETHOD_EXPAND(sorted)\ntemplate <class C, ENABLE_IF_T(!has_sorted_v<C>)>\n\
-    inline constexpr C sorted(C t, bool reverse = false) {\n    std::sort(t.begin(),\
-    \ t.end());\n    if (reverse) std::reverse(t.begin(), t.end());\n    return t;\n\
-    }\ntemplate <class C, class F, ENABLE_IF_T(!has_sorted_v<C> && std::is_invocable_r_v<bool,\
+    inline constexpr C sorted(C t) {\n    std::sort(t.begin(), t.end());\n    return\
+    \ t;\n}\ntemplate <class C, class F, ENABLE_IF_T(!has_sorted_v<C> && std::is_invocable_r_v<bool,\
     \ F, mem_value_type<C>, mem_value_type<C>>)>\ninline constexpr C sorted(C t, F\
     \ f) {\n    std::sort(t.begin(), t.end(), f);\n    return t;\n}\n\ntemplate <class\
-    \ C>\ninline constexpr void sort(C& t, bool reverse = false) {\n    std::sort(t.begin(),\
-    \ t.end());\n    if (reverse) std::reverse(t.begin(), t.end());\n}\ntemplate <class\
-    \ C, class F, ENABLE_IF_T(std::is_invocable_r_v<bool, F, mem_value_type<C>, mem_value_type<C>>)>\n\
-    inline constexpr void sort(C& t, F f) {\n    std::sort(t.begin(), t.end(), f);\n\
-    }\ntemplate <class C, class F, ENABLE_IF_T(std::is_invocable_v<F, mem_value_type<C>>)>\n\
-    inline constexpr void sort_by_key(C& t, F f) {\n    std::sort(t.begin(), t.end(),\
-    \ [&](const mem_value_type<C>& left, const mem_value_type<C>& right) {\n     \
-    \   return f(left) < f(right);\n    });\n}\n\ntemplate <class C>\ninline constexpr\
-    \ void reverse(C& t) {\n    std::reverse(t.begin(), t.end());\n}\n\nMETHOD_EXPAND(max)\n\
-    template <class C, ENABLE_IF_T(!has_max_v<C> && is_sorted_container_v<C>)>\ninline\
-    \ constexpr mem_value_type<C> max(const C& v) {\n    assert(v.begin() != v.end());\n\
-    \    return *v.rbegin();\n}\ntemplate <class C, ENABLE_IF_T(!has_max_v<C> && !is_sorted_container_v<C>)>\n\
+    \ C>\ninline constexpr void sort(C& t) {\n    std::sort(t.begin(), t.end());\n\
+    }\ntemplate <class C, class F, ENABLE_IF_T(std::is_invocable_r_v<bool, F, mem_value_type<C>,\
+    \ mem_value_type<C>>)>\ninline constexpr void sort(C& t, F f) {\n    std::sort(t.begin(),\
+    \ t.end(), f);\n}\ntemplate <class C, class F, ENABLE_IF_T(std::is_invocable_v<F,\
+    \ mem_value_type<C>>)>\ninline constexpr void sort_by_key(C& t, F f) {\n    std::sort(t.begin(),\
+    \ t.end(), [&](const mem_value_type<C>& left, const mem_value_type<C>& right)\
+    \ {\n        return f(left) < f(right);\n    });\n}\n\ntemplate <class C>\ninline\
+    \ constexpr void reverse(C& t) {\n    std::reverse(t.begin(), t.end());\n}\n\n\
+    METHOD_EXPAND(max)\ntemplate <class C, ENABLE_IF_T(!has_max_v<C> && is_sorted_container_v<C>)>\n\
     inline constexpr mem_value_type<C> max(const C& v) {\n    assert(v.begin() !=\
-    \ v.end());\n    return *std::max_element(v.begin(), v.end());\n}\ntemplate <typename\
-    \ T>\ninline constexpr T max(const std::initializer_list<T>& v) {\n    return\
-    \ std::max(v);\n}\n\nMETHOD_EXPAND(min)\ntemplate <class C, ENABLE_IF_T(!has_min_v<C>\
+    \ v.end());\n    return *v.rbegin();\n}\ntemplate <class C, ENABLE_IF_T(!has_max_v<C>\
+    \ && !is_sorted_container_v<C>)>\ninline constexpr mem_value_type<C> max(const\
+    \ C& v) {\n    assert(v.begin() != v.end());\n    return *std::max_element(v.begin(),\
+    \ v.end());\n}\ntemplate <typename T>\ninline constexpr T max(const std::initializer_list<T>&\
+    \ v) {\n    return std::max(v);\n}\n\nMETHOD_EXPAND(min)\ntemplate <class C, ENABLE_IF_T(!has_min_v<C>\
     \ && is_sorted_container_v<C>)>\ninline constexpr mem_value_type<C> min(const\
     \ C& v) {\n    assert(v.begin() != v.end());\n    return *v.begin();\n}\ntemplate\
     \ <class C, ENABLE_IF_T(!has_min_v<C> && !is_sorted_container_v<C>)>\ninline constexpr\
@@ -197,7 +195,7 @@ data:
   isVerificationFile: true
   path: test/aoj/itp2/itp2-3-c.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:37:20+09:00'
+  timestamp: '2026-10-30 17:07:55+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/itp2/itp2-3-c.test.cpp

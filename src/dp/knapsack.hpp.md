@@ -336,11 +336,11 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/dp/knapsack.test.cpp
+  - test/aoj/dpl/dpl-1-b.test.cpp
+  - test/aoj/dpl/dpl-1-g.test.cpp
+  - test/aoj/dpl/dpl-1-h.test.cpp
   - test/aoj/dpl/dpl-1-f.test.cpp
   - test/aoj/dpl/dpl-1-c.test.cpp
-  - test/aoj/dpl/dpl-1-b.test.cpp
-  - test/aoj/dpl/dpl-1-h.test.cpp
-  - test/aoj/dpl/dpl-1-g.test.cpp
 documentation_of: src/dp/knapsack.hpp
 layout: document
 title: "\u30CA\u30C3\u30D7\u30B5\u30C3\u30AF\u554F\u984C"

@@ -82,8 +82,8 @@ data:
   timestamp: '2026-10-20 17:46:58+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/math/lagrange-interpolation.test.cpp
   - test/unittest/math/sum-of-exp-times-poly.test.cpp
+  - test/unittest/math/lagrange-interpolation.test.cpp
   - test/yosupo/other/sum-of-exponential-times-polynomial-limit.test.cpp
   - test/yosupo/other/sum-of-exponential-times-polynomial.test.cpp
 documentation_of: src/math/lagrange-interpolation.hpp

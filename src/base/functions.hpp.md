@@ -151,19 +151,19 @@ data:
   isVerificationFile: false
   path: src/base/functions.hpp
   requiredBy:
-  - src/math/stern-brocot.hpp
   - src/math/rational.hpp
+  - src/math/stern-brocot.hpp
   timestamp: '2026-10-20 02:23:35+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/base/functions.test.cpp
-  - test/unittest/math/rational.test.cpp
   - test/unittest/math/stern-brocot.test.cpp
-  - test/aoj/volume11/1160.test.cpp
+  - test/unittest/math/rational.test.cpp
   - test/aoj/ntl/ntl-1-e.test.cpp
+  - test/aoj/volume11/1160.test.cpp
   - test/aoj/dsl/dsl-5-a.test.cpp
-  - test/yosupo/number_theory/rational-approximation.test.cpp
   - test/yosupo/number_theory/stern-brocot-tree.test.cpp
+  - test/yosupo/number_theory/rational-approximation.test.cpp
 documentation_of: src/base/functions.hpp
 layout: document
 title: "\u6C4E\u7528\u95A2\u6570 (chmin, chmax \u306A\u3069)"

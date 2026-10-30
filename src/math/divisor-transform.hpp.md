@@ -396,8 +396,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/math/divisor-transform.test.cpp
-  - test/yosupo/convolution/gcd-convolution.test.cpp
   - test/yosupo/convolution/lcm-convolution.test.cpp
+  - test/yosupo/convolution/gcd-convolution.test.cpp
 documentation_of: src/math/divisor-transform.hpp
 layout: document
 title: "\u7D04\u6570\u30FB\u500D\u6570\u306E\u30BC\u30FC\u30BF\u5909\u63DB\u3001\u30E1\

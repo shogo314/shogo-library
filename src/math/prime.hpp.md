@@ -585,34 +585,34 @@ data:
   isVerificationFile: false
   path: src/math/prime.hpp
   requiredBy:
-  - src/math/sum-of-exp-times-poly.hpp
-  - src/math/divisor-transform.hpp
   - src/math/gaussian-integer.hpp
+  - src/math/divisor-transform.hpp
+  - src/math/sum-of-exp-times-poly.hpp
   timestamp: '2026-10-23 19:32:11+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/math/divisor-transform.test.cpp
+  - test/unittest/math/prime.test.cpp
+  - test/unittest/math/gaussian-integer.test.cpp
   - test/unittest/math/sum-of-exp-times-poly.test.cpp
   - test/unittest/math/prime-counting.test.cpp
-  - test/unittest/math/prime.test.cpp
-  - test/unittest/math/divisor-transform.test.cpp
-  - test/unittest/math/gaussian-integer.test.cpp
+  - test/aoj/volume0/0009.test.cpp
+  - test/aoj/itp1/itp1-3-d.test.cpp
   - test/aoj/ntl/ntl-1-a.test.cpp
   - test/aoj/ntl/ntl-1-d.test.cpp
   - test/aoj/alds1/alds1-1-c.test.cpp
-  - test/aoj/volume0/0009.test.cpp
-  - test/aoj/itp1/itp1-3-d.test.cpp
-  - test/yosupo/convolution/gcd-convolution.test.cpp
-  - test/yosupo/convolution/lcm-convolution.test.cpp
   - test/yosupo/other/sum-of-exponential-times-polynomial-limit.test.cpp
   - test/yosupo/other/sum-of-exponential-times-polynomial.test.cpp
-  - test/yosupo/number_theory/kth-root-mod.test.cpp
-  - test/yosupo/number_theory/two-square-sum.test.cpp
-  - test/yosupo/number_theory/primitive-root.test.cpp
-  - test/yosupo/number_theory/gcd-of-gaussian-integers.test.cpp
-  - test/yosupo/number_theory/primality-test.test.cpp
-  - test/yosupo/number_theory/tetration-mod.test.cpp
-  - test/yosupo/number_theory/enumerate-primes.test.cpp
+  - test/yosupo/convolution/lcm-convolution.test.cpp
+  - test/yosupo/convolution/gcd-convolution.test.cpp
   - test/yosupo/number_theory/factorize.test.cpp
+  - test/yosupo/number_theory/primitive-root.test.cpp
+  - test/yosupo/number_theory/enumerate-primes.test.cpp
+  - test/yosupo/number_theory/tetration-mod.test.cpp
+  - test/yosupo/number_theory/gcd-of-gaussian-integers.test.cpp
+  - test/yosupo/number_theory/two-square-sum.test.cpp
+  - test/yosupo/number_theory/primality-test.test.cpp
+  - test/yosupo/number_theory/kth-root-mod.test.cpp
 documentation_of: src/math/prime.hpp
 layout: document
 title: "\u7D20\u6570 (\u7D20\u6570\u5224\u5B9A\u3001\u7D20\u56E0\u6570\u5206\u89E3\

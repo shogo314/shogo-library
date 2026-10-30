@@ -802,233 +802,233 @@ data:
   isVerificationFile: false
   path: src/utility/traits.hpp
   requiredBy:
-  - src/utility/repr.hpp
-  - src/utility/vector_func.hpp
-  - src/utility/container_func.hpp
-  - src/utility/binary-search.hpp
   - src/dp/subset-sum-count.hpp
-  - src/data_structures/counter.hpp
-  - src/data_structures/priority_counter.hpp
-  - src/data_structures/interval-set.hpp
-  - src/data_structures/convex-hull-trick.hpp
-  - src/geometry/manhattan-mst.hpp
+  - src/geometry/circle.hpp
   - src/geometry/axis-parallel-segments.hpp
   - src/geometry/vector.hpp
-  - src/geometry/circle.hpp
-  - src/math/convolution.hpp
-  - src/math/modint.hpp
-  - src/math/sparse-fps.hpp
-  - src/math/fps.hpp
-  - src/math/multipoint.hpp
+  - src/geometry/manhattan-mst.hpp
+  - src/utility/repr.hpp
+  - src/utility/binary-search.hpp
+  - src/utility/vector_func.hpp
+  - src/utility/container_func.hpp
   - src/math/combinatorial-sequences.hpp
-  - src/math/polynomial-roots.hpp
-  - src/math/fps-composition.hpp
+  - src/math/sparse-fps.hpp
   - src/math/linear-recurrence.hpp
+  - src/math/fps.hpp
+  - src/math/convolution.hpp
+  - src/math/polynomial-roots.hpp
+  - src/math/multipoint.hpp
+  - src/math/modint.hpp
+  - src/math/fps-composition.hpp
+  - src/data_structures/priority_counter.hpp
+  - src/data_structures/convex-hull-trick.hpp
+  - src/data_structures/counter.hpp
+  - src/data_structures/interval-set.hpp
   - src/string/rolling-hash.hpp
   - src/string/wildcard-matching.hpp
   timestamp: '2026-10-14 11:44:51+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/yukicoder/674.2.test.cpp
+  - test/yukicoder/117.test.cpp
+  - test/yukicoder/1340.test.cpp
+  - test/yukicoder/3770.test.cpp
+  - test/yukicoder/3771.test.cpp
   - test/unittest/base/functions.test.cpp
+  - test/unittest/dp/subset-sum.test.cpp
+  - test/unittest/geometry/manhattan-mst.test.cpp
+  - test/unittest/geometry/vector.test.cpp
+  - test/unittest/geometry/angle.test.cpp
+  - test/unittest/geometry/circle.test.cpp
+  - test/unittest/geometry/vector-line.test.cpp
+  - test/unittest/geometry/vector-polygon.test.cpp
+  - test/unittest/geometry/axis-parallel-segments.test.cpp
   - test/unittest/utility/container_func.test.cpp
   - test/unittest/utility/repr.test.cpp
   - test/unittest/utility/container_func-member.test.cpp
   - test/unittest/utility/vector_func.test.cpp
-  - test/unittest/dp/subset-sum.test.cpp
-  - test/unittest/data_structures/counter.test.cpp
-  - test/unittest/data_structures/interval-set.test.cpp
-  - test/unittest/data_structures/persistent-lazy-segtree.test.cpp
-  - test/unittest/data_structures/dual-segtree.test.cpp
-  - test/unittest/data_structures/convex-hull-trick.test.cpp
-  - test/unittest/data_structures/dynamic-segtree.test.cpp
-  - test/unittest/data_structures/persistent-segtree.test.cpp
-  - test/unittest/data_structures/priority_counter.test.cpp
-  - test/unittest/data_structures/sliding-window-aggregation.test.cpp
-  - test/unittest/data_structures/rbst.test.cpp
-  - test/unittest/data_structures/dynamic-lazy-segtree.test.cpp
-  - test/unittest/data_structures/link-cut-tree.test.cpp
-  - test/unittest/geometry/manhattan-mst.test.cpp
-  - test/unittest/geometry/axis-parallel-segments.test.cpp
-  - test/unittest/geometry/circle.test.cpp
-  - test/unittest/geometry/angle.test.cpp
-  - test/unittest/geometry/vector.test.cpp
-  - test/unittest/geometry/vector-polygon.test.cpp
-  - test/unittest/geometry/vector-line.test.cpp
-  - test/unittest/math/modint.test.cpp
-  - test/unittest/math/combinatorics.test.cpp
-  - test/unittest/math/combinatorial-sequences.test.cpp
-  - test/unittest/math/sparse-fps.test.cpp
-  - test/unittest/math/lagrange-interpolation.test.cpp
-  - test/unittest/math/fps-composition.test.cpp
   - test/unittest/math/convolution.test.cpp
-  - test/unittest/math/fps-gcd.test.cpp
-  - test/unittest/math/sum-of-exp-times-poly.test.cpp
-  - test/unittest/math/prime-counting.test.cpp
-  - test/unittest/math/multipoint.test.cpp
-  - test/unittest/math/linear-recurrence.test.cpp
-  - test/unittest/math/bitwise-transform.test.cpp
-  - test/unittest/math/polynomial-roots.test.cpp
   - test/unittest/math/divisor-transform.test.cpp
-  - test/unittest/math/matrix.test.cpp
+  - test/unittest/math/combinatorial-sequences.test.cpp
+  - test/unittest/math/linear-recurrence.test.cpp
   - test/unittest/math/fps.test.cpp
+  - test/unittest/math/combinatorics.test.cpp
+  - test/unittest/math/fps-gcd.test.cpp
+  - test/unittest/math/modint.test.cpp
+  - test/unittest/math/fps-composition.test.cpp
+  - test/unittest/math/sum-of-exp-times-poly.test.cpp
+  - test/unittest/math/lagrange-interpolation.test.cpp
+  - test/unittest/math/prime-counting.test.cpp
+  - test/unittest/math/matrix.test.cpp
+  - test/unittest/math/sparse-fps.test.cpp
+  - test/unittest/math/polynomial-roots.test.cpp
+  - test/unittest/math/multipoint.test.cpp
+  - test/unittest/math/bitwise-transform.test.cpp
+  - test/unittest/data_structures/dual-segtree.test.cpp
+  - test/unittest/data_structures/counter.test.cpp
+  - test/unittest/data_structures/sliding-window-aggregation.test.cpp
+  - test/unittest/data_structures/persistent-segtree.test.cpp
+  - test/unittest/data_structures/persistent-lazy-segtree.test.cpp
+  - test/unittest/data_structures/convex-hull-trick.test.cpp
+  - test/unittest/data_structures/interval-set.test.cpp
+  - test/unittest/data_structures/priority_counter.test.cpp
+  - test/unittest/data_structures/link-cut-tree.test.cpp
+  - test/unittest/data_structures/dynamic-segtree.test.cpp
+  - test/unittest/data_structures/dynamic-lazy-segtree.test.cpp
+  - test/unittest/data_structures/rbst.test.cpp
+  - test/unittest/algebra/acted-monoid.test.cpp
   - test/unittest/string/rolling-hash.test.cpp
   - test/unittest/string/wildcard-matching.test.cpp
-  - test/unittest/algebra/acted-monoid.test.cpp
-  - test/aoj/volume33/3314.test.cpp
-  - test/aoj/dpl/dpl-5-d.1.test.cpp
-  - test/aoj/dpl/dpl-5-e.1.test.cpp
-  - test/aoj/dpl/dpl-5-f.test.cpp
-  - test/aoj/dpl/dpl-5-b.1.test.cpp
-  - test/aoj/dpl/dpl-5-e.2.test.cpp
-  - test/aoj/dpl/dpl-5-d.2.test.cpp
-  - test/aoj/dpl/dpl-5-b.2.test.cpp
-  - test/aoj/cgl/cgl-7-d.test.cpp
-  - test/aoj/cgl/cgl-4-c.test.cpp
-  - test/aoj/cgl/cgl-7-f.test.cpp
-  - test/aoj/cgl/cgl-1-a.test.cpp
-  - test/aoj/cgl/cgl-7-c.test.cpp
-  - test/aoj/cgl/cgl-7-i.test.cpp
-  - test/aoj/cgl/cgl-1-b.test.cpp
-  - test/aoj/cgl/cgl-3-a.test.cpp
-  - test/aoj/cgl/cgl-7-a.test.cpp
-  - test/aoj/cgl/cgl-6-a.test.cpp
-  - test/aoj/cgl/cgl-7-h.test.cpp
-  - test/aoj/cgl/cgl-2-a.test.cpp
-  - test/aoj/cgl/cgl-1-c.test.cpp
-  - test/aoj/cgl/cgl-4-b.test.cpp
-  - test/aoj/cgl/cgl-7-e.test.cpp
-  - test/aoj/cgl/cgl-2-c.test.cpp
-  - test/aoj/cgl/cgl-5-a.test.cpp
-  - test/aoj/cgl/cgl-4-a.test.cpp
-  - test/aoj/cgl/cgl-7-b.test.cpp
-  - test/aoj/cgl/cgl-2-d.test.cpp
-  - test/aoj/cgl/cgl-3-c.test.cpp
-  - test/aoj/cgl/cgl-3-b.test.cpp
-  - test/aoj/cgl/cgl-7-g.test.cpp
-  - test/aoj/cgl/cgl-2-b.test.cpp
-  - test/aoj/alds1/alds1-14-c.test.cpp
-  - test/aoj/alds1/alds1-1-b.test.cpp
-  - test/aoj/alds1/alds1-14-b.1.test.cpp
-  - test/aoj/alds1/alds1-4-b.test.cpp
-  - test/aoj/alds1/alds1-4-d.test.cpp
   - test/aoj/volume0/0029.test.cpp
-  - test/aoj/dsl/dsl-4-a.1.test.cpp
-  - test/aoj/itp2/itp2-5-a.1.test.cpp
-  - test/aoj/itp2/itp2-3-c.test.cpp
-  - test/aoj/itp2/itp2-5-b.test.cpp
-  - test/aoj/itp2/itp2-5-a.2.test.cpp
-  - test/aoj/itp2/itp2-7-d.test.cpp
   - test/aoj/volume29/2971.test.cpp
-  - test/aoj/itp1/itp1-4-d.test.cpp
+  - test/aoj/cgl/cgl-6-a.test.cpp
+  - test/aoj/cgl/cgl-3-b.test.cpp
+  - test/aoj/cgl/cgl-7-b.test.cpp
+  - test/aoj/cgl/cgl-7-d.test.cpp
+  - test/aoj/cgl/cgl-5-a.test.cpp
+  - test/aoj/cgl/cgl-1-c.test.cpp
+  - test/aoj/cgl/cgl-1-b.test.cpp
+  - test/aoj/cgl/cgl-2-a.test.cpp
+  - test/aoj/cgl/cgl-7-g.test.cpp
+  - test/aoj/cgl/cgl-2-c.test.cpp
+  - test/aoj/cgl/cgl-7-e.test.cpp
+  - test/aoj/cgl/cgl-3-a.test.cpp
+  - test/aoj/cgl/cgl-7-c.test.cpp
+  - test/aoj/cgl/cgl-7-a.test.cpp
+  - test/aoj/cgl/cgl-4-c.test.cpp
+  - test/aoj/cgl/cgl-2-b.test.cpp
+  - test/aoj/cgl/cgl-7-h.test.cpp
+  - test/aoj/cgl/cgl-7-f.test.cpp
+  - test/aoj/cgl/cgl-3-c.test.cpp
+  - test/aoj/cgl/cgl-1-a.test.cpp
+  - test/aoj/cgl/cgl-4-b.test.cpp
+  - test/aoj/cgl/cgl-7-i.test.cpp
+  - test/aoj/cgl/cgl-4-a.test.cpp
+  - test/aoj/cgl/cgl-2-d.test.cpp
   - test/aoj/itp1/itp1-10-c.test.cpp
   - test/aoj/itp1/itp1-6-a.test.cpp
   - test/aoj/itp1/itp1-2-c.test.cpp
-  - test/yosupo/polynomial/sqrt-of-formal-power-series.test.cpp
-  - test/yosupo/polynomial/exp-of-fps.test.cpp
-  - test/yosupo/polynomial/pow-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/polynomial/polynomial-interpolation-on-geometric-sequence.test.cpp
-  - test/yosupo/polynomial/inv-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/polynomial/multipoint-evaluation.test.cpp
-  - test/yosupo/polynomial/product-of-polynomial-sequence.test.cpp
-  - test/yosupo/polynomial/exp-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/polynomial/inv-of-fps.test.cpp
-  - test/yosupo/polynomial/division-of-polynomials.test.cpp
-  - test/yosupo/polynomial/sqrt-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/polynomial/pow-of-fps.test.cpp
-  - test/yosupo/polynomial/log-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/polynomial/polynomial-taylor-shift.test.cpp
-  - test/yosupo/polynomial/shift-of-sampling-points-of-polynomial.test.cpp
-  - test/yosupo/polynomial/polynomial-root-finding.test.cpp
-  - test/yosupo/polynomial/compositional-inverse-of-formal-power-series.test.cpp
-  - test/yosupo/polynomial/composition-of-formal-power-series.test.cpp
-  - test/yosupo/polynomial/log-of-fps.test.cpp
-  - test/yosupo/polynomial/compositional-inverse-of-formal-power-series-large.test.cpp
-  - test/yosupo/polynomial/composition-of-formal-power-series-large.test.cpp
-  - test/yosupo/polynomial/multipoint-evaluation-on-geometric-sequence.test.cpp
-  - test/yosupo/polynomial/polynomial-interpolation.test.cpp
-  - test/yosupo/polynomial/inv-of-polynomials.test.cpp
+  - test/aoj/itp1/itp1-4-d.test.cpp
+  - test/aoj/itp2/itp2-5-a.1.test.cpp
+  - test/aoj/itp2/itp2-3-c.test.cpp
+  - test/aoj/itp2/itp2-5-a.2.test.cpp
+  - test/aoj/itp2/itp2-7-d.test.cpp
+  - test/aoj/itp2/itp2-5-b.test.cpp
+  - test/aoj/dpl/dpl-5-d.2.test.cpp
+  - test/aoj/dpl/dpl-5-d.1.test.cpp
+  - test/aoj/dpl/dpl-5-e.1.test.cpp
+  - test/aoj/dpl/dpl-5-b.1.test.cpp
+  - test/aoj/dpl/dpl-5-e.2.test.cpp
+  - test/aoj/dpl/dpl-5-b.2.test.cpp
+  - test/aoj/dpl/dpl-5-f.test.cpp
+  - test/aoj/volume33/3314.test.cpp
+  - test/aoj/dsl/dsl-4-a.1.test.cpp
+  - test/aoj/alds1/alds1-14-c.test.cpp
+  - test/aoj/alds1/alds1-14-b.1.test.cpp
+  - test/aoj/alds1/alds1-4-b.test.cpp
+  - test/aoj/alds1/alds1-1-b.test.cpp
+  - test/aoj/alds1/alds1-4-d.test.cpp
+  - test/yosupo/geo/furthest-pair.test.cpp
+  - test/yosupo/geo/static-convex-hull.test.cpp
+  - test/yosupo/geo/sort-points-by-argument.1.test.cpp
+  - test/yosupo/geo/closest-pair.test.cpp
+  - test/yosupo/geo/manhattanmst.test.cpp
+  - test/yosupo/geo/minimum-enclosing-circle.test.cpp
+  - test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.2.test.cpp
+  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
+  - test/yosupo/enumerative_combinatorics/binomial-coefficient-prime-mod.2.test.cpp
+  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind-fixed-k.test.cpp
+  - test/yosupo/enumerative_combinatorics/binomial-coefficient-prime-mod.1.test.cpp
+  - test/yosupo/enumerative_combinatorics/factorial.test.cpp
+  - test/yosupo/enumerative_combinatorics/partition-function.1.test.cpp
+  - test/yosupo/enumerative_combinatorics/partition-function.3.test.cpp
+  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind-fixed-k.test.cpp
+  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind.test.cpp
+  - test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.1.test.cpp
+  - test/yosupo/enumerative_combinatorics/partition-function.2.test.cpp
+  - test/yosupo/enumerative_combinatorics/bell-number.test.cpp
+  - test/yosupo/other/sum-of-exponential-times-polynomial-limit.test.cpp
+  - test/yosupo/other/kth-term-of-linearly-recurrent-sequence.test.cpp
+  - test/yosupo/other/find-linear-recurrence.test.cpp
+  - test/yosupo/other/sum-of-exponential-times-polynomial.test.cpp
+  - test/yosupo/set_power_series/subset-convolution.test.cpp
+  - test/yosupo/set_power_series/exp-of-set-power-series.test.cpp
+  - test/yosupo/set_power_series/log-of-set-power-series.test.cpp
   - test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
   - test/yosupo/graph/enumerate-triangles.test.cpp
   - test/yosupo/graph/counting-spanning-tree-directed.test.cpp
+  - test/yosupo/convolution/bitwise-xor-convolution.test.cpp
+  - test/yosupo/convolution/lcm-convolution.test.cpp
   - test/yosupo/convolution/gcd-convolution.test.cpp
   - test/yosupo/convolution/convolution-mod-2-64.1.test.cpp
-  - test/yosupo/convolution/bitwise-xor-convolution.test.cpp
-  - test/yosupo/convolution/convolution-mod-1000000007.test.cpp
-  - test/yosupo/convolution/lcm-convolution.test.cpp
   - test/yosupo/convolution/bitwise-and-convolution.test.cpp
+  - test/yosupo/convolution/convolution-mod-1000000007.test.cpp
   - test/yosupo/convolution/convolution-mod-2-64.2.test.cpp
   - test/yosupo/convolution/convolution-mod.test.cpp
-  - test/yosupo/data_structure/queue-operate-all-composite.test.cpp
-  - test/yosupo/data_structure/persistent-range-affine-range-sum.test.cpp
-  - test/yosupo/data_structure/static-range-sum.test.cpp
-  - test/yosupo/data_structure/point-set-range-composite.4.test.cpp
-  - test/yosupo/data_structure/range-affine-range-sum.2.test.cpp
-  - test/yosupo/data_structure/range-affine-range-sum.3.test.cpp
-  - test/yosupo/data_structure/range-affine-range-sum-large-array.test.cpp
-  - test/yosupo/data_structure/segment-add-get-min.test.cpp
-  - test/yosupo/data_structure/range-affine-point-get.1.test.cpp
-  - test/yosupo/data_structure/unionfind-with-potential.test.cpp
-  - test/yosupo/data_structure/point-set-range-composite.3.test.cpp
-  - test/yosupo/data_structure/range-set-range-composite.test.cpp
-  - test/yosupo/data_structure/range-affine-point-get.2.test.cpp
-  - test/yosupo/data_structure/point-set-range-composite.1.test.cpp
-  - test/yosupo/data_structure/point-set-range-composite.2.test.cpp
-  - test/yosupo/data_structure/line-add-get-min.2.test.cpp
-  - test/yosupo/data_structure/point-set-range-composite-large-array.test.cpp
-  - test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
-  - test/yosupo/data_structure/line-add-get-min.1.test.cpp
-  - test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
-  - test/yosupo/data_structure/associative-array.test.cpp
-  - test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
-  - test/yosupo/data_structure/range-affine-range-sum.1.test.cpp
-  - test/yosupo/data_structure/deque-operate-all-composite.test.cpp
-  - test/yosupo/linear_algebra/pow-of-matrix.test.cpp
-  - test/yosupo/linear_algebra/characteristic-polynomial.test.cpp
-  - test/yosupo/linear_algebra/matrix-product.test.cpp
-  - test/yosupo/linear_algebra/inverse-matrix.test.cpp
-  - test/yosupo/linear_algebra/matrix-rank.test.cpp
-  - test/yosupo/linear_algebra/system-of-linear-equations.test.cpp
-  - test/yosupo/linear_algebra/matrix-det.test.cpp
-  - test/yosupo/set_power_series/log-of-set-power-series.test.cpp
-  - test/yosupo/set_power_series/exp-of-set-power-series.test.cpp
-  - test/yosupo/set_power_series/subset-convolution.test.cpp
-  - test/yosupo/other/sum-of-exponential-times-polynomial-limit.test.cpp
-  - test/yosupo/other/kth-term-of-linearly-recurrent-sequence.test.cpp
-  - test/yosupo/other/sum-of-exponential-times-polynomial.test.cpp
-  - test/yosupo/other/find-linear-recurrence.test.cpp
-  - test/yosupo/number_theory/bernoulli-number.test.cpp
+  - test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
+  - test/yosupo/tree/vertex-set-path-composite.test.cpp
+  - test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
+  - test/yosupo/tree/tree-path-composite-sum.test.cpp
+  - test/yosupo/polynomial/polynomial-root-finding.test.cpp
+  - test/yosupo/polynomial/multipoint-evaluation-on-geometric-sequence.test.cpp
+  - test/yosupo/polynomial/multipoint-evaluation.test.cpp
+  - test/yosupo/polynomial/compositional-inverse-of-formal-power-series-large.test.cpp
+  - test/yosupo/polynomial/pow-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/polynomial/polynomial-taylor-shift.test.cpp
+  - test/yosupo/polynomial/polynomial-interpolation-on-geometric-sequence.test.cpp
+  - test/yosupo/polynomial/sqrt-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/polynomial/product-of-polynomial-sequence.test.cpp
+  - test/yosupo/polynomial/shift-of-sampling-points-of-polynomial.test.cpp
+  - test/yosupo/polynomial/composition-of-formal-power-series-large.test.cpp
+  - test/yosupo/polynomial/inv-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/polynomial/pow-of-fps.test.cpp
+  - test/yosupo/polynomial/polynomial-interpolation.test.cpp
+  - test/yosupo/polynomial/inv-of-polynomials.test.cpp
+  - test/yosupo/polynomial/log-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/polynomial/division-of-polynomials.test.cpp
+  - test/yosupo/polynomial/inv-of-fps.test.cpp
+  - test/yosupo/polynomial/log-of-fps.test.cpp
+  - test/yosupo/polynomial/composition-of-formal-power-series.test.cpp
+  - test/yosupo/polynomial/compositional-inverse-of-formal-power-series.test.cpp
+  - test/yosupo/polynomial/sqrt-of-formal-power-series.test.cpp
+  - test/yosupo/polynomial/exp-of-fps.test.cpp
+  - test/yosupo/polynomial/exp-of-formal-power-series-sparse.test.cpp
   - test/yosupo/number_theory/sum-of-multiplicative-function.test.cpp
   - test/yosupo/number_theory/sum-of-totient-function.test.cpp
-  - test/yosupo/geo/static-convex-hull.test.cpp
-  - test/yosupo/geo/sort-points-by-argument.1.test.cpp
-  - test/yosupo/geo/minimum-enclosing-circle.test.cpp
-  - test/yosupo/geo/closest-pair.test.cpp
-  - test/yosupo/geo/furthest-pair.test.cpp
-  - test/yosupo/geo/manhattanmst.test.cpp
+  - test/yosupo/number_theory/bernoulli-number.test.cpp
+  - test/yosupo/data_structure/range-affine-range-sum.1.test.cpp
+  - test/yosupo/data_structure/segment-add-get-min.test.cpp
+  - test/yosupo/data_structure/point-set-range-composite.1.test.cpp
+  - test/yosupo/data_structure/point-set-range-composite-large-array.test.cpp
+  - test/yosupo/data_structure/range-affine-range-sum-large-array.test.cpp
+  - test/yosupo/data_structure/unionfind-with-potential.test.cpp
+  - test/yosupo/data_structure/line-add-get-min.1.test.cpp
+  - test/yosupo/data_structure/line-add-get-min.2.test.cpp
+  - test/yosupo/data_structure/range-affine-range-sum.2.test.cpp
+  - test/yosupo/data_structure/point-set-range-composite.3.test.cpp
+  - test/yosupo/data_structure/static-range-sum.test.cpp
+  - test/yosupo/data_structure/range-affine-range-sum.3.test.cpp
+  - test/yosupo/data_structure/point-set-range-composite.2.test.cpp
+  - test/yosupo/data_structure/point-set-range-composite.4.test.cpp
+  - test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
+  - test/yosupo/data_structure/persistent-range-affine-range-sum.test.cpp
+  - test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
+  - test/yosupo/data_structure/deque-operate-all-composite.test.cpp
+  - test/yosupo/data_structure/range-affine-point-get.1.test.cpp
+  - test/yosupo/data_structure/queue-operate-all-composite.test.cpp
+  - test/yosupo/data_structure/associative-array.test.cpp
+  - test/yosupo/data_structure/range-affine-point-get.2.test.cpp
+  - test/yosupo/data_structure/range-set-range-composite.test.cpp
+  - test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
+  - test/yosupo/linear_algebra/inverse-matrix.test.cpp
+  - test/yosupo/linear_algebra/characteristic-polynomial.test.cpp
+  - test/yosupo/linear_algebra/pow-of-matrix.test.cpp
+  - test/yosupo/linear_algebra/system-of-linear-equations.test.cpp
+  - test/yosupo/linear_algebra/matrix-det.test.cpp
+  - test/yosupo/linear_algebra/matrix-rank.test.cpp
+  - test/yosupo/linear_algebra/matrix-product.test.cpp
   - test/yosupo/string/wildcard-pattern-matching.test.cpp
   - test/yosupo/string/enumerate-palindromes.1.test.cpp
-  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
-  - test/yosupo/enumerative_combinatorics/binomial-coefficient-prime-mod.1.test.cpp
-  - test/yosupo/enumerative_combinatorics/partition-function.3.test.cpp
-  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind-fixed-k.test.cpp
-  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind.test.cpp
-  - test/yosupo/enumerative_combinatorics/bell-number.test.cpp
-  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind-fixed-k.test.cpp
-  - test/yosupo/enumerative_combinatorics/binomial-coefficient-prime-mod.2.test.cpp
-  - test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.2.test.cpp
-  - test/yosupo/enumerative_combinatorics/sharp-p-subset-sum.1.test.cpp
-  - test/yosupo/enumerative_combinatorics/factorial.test.cpp
-  - test/yosupo/enumerative_combinatorics/partition-function.1.test.cpp
-  - test/yosupo/enumerative_combinatorics/partition-function.2.test.cpp
-  - test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
-  - test/yosupo/tree/tree-path-composite-sum.test.cpp
-  - test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
-  - test/yosupo/tree/vertex-set-path-composite.test.cpp
-  - test/yukicoder/3770.test.cpp
-  - test/yukicoder/674.2.test.cpp
-  - test/yukicoder/3771.test.cpp
-  - test/yukicoder/117.test.cpp
-  - test/yukicoder/1340.test.cpp
 documentation_of: src/utility/traits.hpp
 layout: document
 title: "\u578B\u7279\u6027"

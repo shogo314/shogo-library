@@ -947,29 +947,29 @@ data:
   isVerificationFile: false
   path: src/graph/graph_util.hpp
   requiredBy:
-  - src/graph/two-sat.hpp
   - src/geometry/manhattan-mst.hpp
+  - src/graph/two-sat.hpp
   timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/geometry/manhattan-mst.test.cpp
   - test/unittest/graph/two-sat.test.cpp
   - test/unittest/data_structures/graph_util.test.cpp
   - test/unittest/data_structures/find-cycle.test.cpp
-  - test/unittest/geometry/manhattan-mst.test.cpp
-  - test/aoj/grl/grl-4-a.test.cpp
   - test/aoj/grl/grl-2-a.test.cpp
+  - test/aoj/grl/grl-4-a.test.cpp
   - test/aoj/alds1/alds1-11-d.1.test.cpp
-  - test/yosupo/graph/cycle-detection-undirected.test.cpp
-  - test/yosupo/graph/chromatic-number.1.test.cpp
-  - test/yosupo/graph/minimum-spanning-tree.2.test.cpp
-  - test/yosupo/graph/connected-components-of-complement-graph.test.cpp
-  - test/yosupo/graph/minimum-steiner-tree.test.cpp
-  - test/yosupo/graph/enumerate-triangles.test.cpp
-  - test/yosupo/graph/scc.test.cpp
-  - test/yosupo/graph/cycle-detection.test.cpp
-  - test/yosupo/graph/maximum-independent-set.test.cpp
-  - test/yosupo/other/two-sat.test.cpp
   - test/yosupo/geo/manhattanmst.test.cpp
+  - test/yosupo/other/two-sat.test.cpp
+  - test/yosupo/graph/enumerate-triangles.test.cpp
+  - test/yosupo/graph/connected-components-of-complement-graph.test.cpp
+  - test/yosupo/graph/chromatic-number.1.test.cpp
+  - test/yosupo/graph/minimum-steiner-tree.test.cpp
+  - test/yosupo/graph/scc.test.cpp
+  - test/yosupo/graph/cycle-detection-undirected.test.cpp
+  - test/yosupo/graph/maximum-independent-set.test.cpp
+  - test/yosupo/graph/cycle-detection.test.cpp
+  - test/yosupo/graph/minimum-spanning-tree.2.test.cpp
 documentation_of: src/graph/graph_util.hpp
 layout: document
 title: "\u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570"

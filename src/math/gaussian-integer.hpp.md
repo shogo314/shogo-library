@@ -458,8 +458,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/math/gaussian-integer.test.cpp
-  - test/yosupo/number_theory/two-square-sum.test.cpp
   - test/yosupo/number_theory/gcd-of-gaussian-integers.test.cpp
+  - test/yosupo/number_theory/two-square-sum.test.cpp
 documentation_of: src/math/gaussian-integer.hpp
 layout: document
 title: "\u30AC\u30A6\u30B9\u6574\u6570\u3068\u4E8C\u5E73\u65B9\u548C"

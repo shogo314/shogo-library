@@ -298,10 +298,10 @@ data:
   timestamp: '2026-10-20 02:23:35+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/math/rational.test.cpp
   - test/unittest/math/stern-brocot.test.cpp
-  - test/yosupo/number_theory/rational-approximation.test.cpp
+  - test/unittest/math/rational.test.cpp
   - test/yosupo/number_theory/stern-brocot-tree.test.cpp
+  - test/yosupo/number_theory/rational-approximation.test.cpp
 documentation_of: src/math/rational.hpp
 layout: document
 title: "\u6709\u7406\u6570"

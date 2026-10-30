@@ -601,8 +601,8 @@ data:
   verifiedWith:
   - test/unittest/data_structures/sliding-window-aggregation.test.cpp
   - test/aoj/dsl/dsl-3-d.test.cpp
-  - test/yosupo/data_structure/queue-operate-all-composite.test.cpp
   - test/yosupo/data_structure/deque-operate-all-composite.test.cpp
+  - test/yosupo/data_structure/queue-operate-all-composite.test.cpp
 documentation_of: src/data_structures/sliding-window-aggregation.hpp
 layout: document
 title: "Sliding Window Aggregation (\u30AD\u30E5\u30FC\u3068\u4E21\u7AEF\u30AD\u30E5\

@@ -96,27 +96,25 @@ data:
     \            \\\n    }\n\nMETHOD_EXPAND(reversed)\ntemplate <class C, ENABLE_IF_T(!has_reversed_v<C>)>\n\
     inline constexpr C reversed(C t) {\n    std::reverse(t.begin(), t.end());\n  \
     \  return t;\n}\n\nMETHOD_EXPAND(sorted)\ntemplate <class C, ENABLE_IF_T(!has_sorted_v<C>)>\n\
-    inline constexpr C sorted(C t, bool reverse = false) {\n    std::sort(t.begin(),\
-    \ t.end());\n    if (reverse) std::reverse(t.begin(), t.end());\n    return t;\n\
-    }\ntemplate <class C, class F, ENABLE_IF_T(!has_sorted_v<C> && std::is_invocable_r_v<bool,\
+    inline constexpr C sorted(C t) {\n    std::sort(t.begin(), t.end());\n    return\
+    \ t;\n}\ntemplate <class C, class F, ENABLE_IF_T(!has_sorted_v<C> && std::is_invocable_r_v<bool,\
     \ F, mem_value_type<C>, mem_value_type<C>>)>\ninline constexpr C sorted(C t, F\
     \ f) {\n    std::sort(t.begin(), t.end(), f);\n    return t;\n}\n\ntemplate <class\
-    \ C>\ninline constexpr void sort(C& t, bool reverse = false) {\n    std::sort(t.begin(),\
-    \ t.end());\n    if (reverse) std::reverse(t.begin(), t.end());\n}\ntemplate <class\
-    \ C, class F, ENABLE_IF_T(std::is_invocable_r_v<bool, F, mem_value_type<C>, mem_value_type<C>>)>\n\
-    inline constexpr void sort(C& t, F f) {\n    std::sort(t.begin(), t.end(), f);\n\
-    }\ntemplate <class C, class F, ENABLE_IF_T(std::is_invocable_v<F, mem_value_type<C>>)>\n\
-    inline constexpr void sort_by_key(C& t, F f) {\n    std::sort(t.begin(), t.end(),\
-    \ [&](const mem_value_type<C>& left, const mem_value_type<C>& right) {\n     \
-    \   return f(left) < f(right);\n    });\n}\n\ntemplate <class C>\ninline constexpr\
-    \ void reverse(C& t) {\n    std::reverse(t.begin(), t.end());\n}\n\nMETHOD_EXPAND(max)\n\
-    template <class C, ENABLE_IF_T(!has_max_v<C> && is_sorted_container_v<C>)>\ninline\
-    \ constexpr mem_value_type<C> max(const C& v) {\n    assert(v.begin() != v.end());\n\
-    \    return *v.rbegin();\n}\ntemplate <class C, ENABLE_IF_T(!has_max_v<C> && !is_sorted_container_v<C>)>\n\
+    \ C>\ninline constexpr void sort(C& t) {\n    std::sort(t.begin(), t.end());\n\
+    }\ntemplate <class C, class F, ENABLE_IF_T(std::is_invocable_r_v<bool, F, mem_value_type<C>,\
+    \ mem_value_type<C>>)>\ninline constexpr void sort(C& t, F f) {\n    std::sort(t.begin(),\
+    \ t.end(), f);\n}\ntemplate <class C, class F, ENABLE_IF_T(std::is_invocable_v<F,\
+    \ mem_value_type<C>>)>\ninline constexpr void sort_by_key(C& t, F f) {\n    std::sort(t.begin(),\
+    \ t.end(), [&](const mem_value_type<C>& left, const mem_value_type<C>& right)\
+    \ {\n        return f(left) < f(right);\n    });\n}\n\ntemplate <class C>\ninline\
+    \ constexpr void reverse(C& t) {\n    std::reverse(t.begin(), t.end());\n}\n\n\
+    METHOD_EXPAND(max)\ntemplate <class C, ENABLE_IF_T(!has_max_v<C> && is_sorted_container_v<C>)>\n\
     inline constexpr mem_value_type<C> max(const C& v) {\n    assert(v.begin() !=\
-    \ v.end());\n    return *std::max_element(v.begin(), v.end());\n}\ntemplate <typename\
-    \ T>\ninline constexpr T max(const std::initializer_list<T>& v) {\n    return\
-    \ std::max(v);\n}\n\nMETHOD_EXPAND(min)\ntemplate <class C, ENABLE_IF_T(!has_min_v<C>\
+    \ v.end());\n    return *v.rbegin();\n}\ntemplate <class C, ENABLE_IF_T(!has_max_v<C>\
+    \ && !is_sorted_container_v<C>)>\ninline constexpr mem_value_type<C> max(const\
+    \ C& v) {\n    assert(v.begin() != v.end());\n    return *std::max_element(v.begin(),\
+    \ v.end());\n}\ntemplate <typename T>\ninline constexpr T max(const std::initializer_list<T>&\
+    \ v) {\n    return std::max(v);\n}\n\nMETHOD_EXPAND(min)\ntemplate <class C, ENABLE_IF_T(!has_min_v<C>\
     \ && is_sorted_container_v<C>)>\ninline constexpr mem_value_type<C> min(const\
     \ C& v) {\n    assert(v.begin() != v.end());\n    return *v.begin();\n}\ntemplate\
     \ <class C, ENABLE_IF_T(!has_min_v<C> && !is_sorted_container_v<C>)>\ninline constexpr\
@@ -184,22 +182,30 @@ data:
     \ upper_bound(v, x)));\n}\n#line 2 \"src/utility/vector_func.hpp\"\n\n/**\n *\
     \ @file vector_func.hpp\n * @brief vector \u306B\u5BFE\u3059\u308B\u6F14\u7B97\
     \u5B50\u3068\u95A2\u6570\n */\n\n#line 10 \"src/utility/vector_func.hpp\"\n#include\
-    \ <cmath>\n#line 15 \"src/utility/vector_func.hpp\"\n\n#line 17 \"src/utility/vector_func.hpp\"\
-    \n\ntemplate <typename T>\nstd::vector<long long> sorted_idx(const std::vector<T>&\
-    \ v, bool reverse = false) {\n    std::vector<long long> ret(v.size());\n    std::iota(ret.begin(),\
-    \ ret.end(), 0LL);\n    std::sort(ret.begin(), ret.end(), [&](long long i, long\
-    \ long j) {\n        return v[i] < v[j];\n    });\n    if (reverse) std::reverse(ret.begin(),\
-    \ ret.end());\n    return ret;\n}\n\ntemplate <typename T>\ninline std::vector<T>&\
-    \ operator++(std::vector<T>& v) {\n    for (auto& e : v) e++;\n    return v;\n\
-    }\ntemplate <typename T>\ninline std::vector<T> operator++(std::vector<T>& v,\
-    \ int) {\n    auto res = v;\n    for (auto& e : v) e++;\n    return res;\n}\n\
-    template <typename T>\ninline std::vector<T>& operator--(std::vector<T>& v) {\n\
-    \    for (auto& e : v) e--;\n    return v;\n}\ntemplate <typename T>\ninline std::vector<T>\
-    \ operator--(std::vector<T>& v, int) {\n    auto res = v;\n    for (auto& e :\
-    \ v) e--;\n    return res;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
-    \ T>)>\ninline std::vector<T>& operator+=(std::vector<T>& v1, const std::vector<U>&\
-    \ v2) {\n    if (v2.size() > v1.size()) {\n        v1.resize(v2.size());\n   \
-    \ }\n    for (std::size_t i = 0; i < v2.size(); i++) {\n        v1[i] += v2[i];\n\
+    \ <cmath>\n#line 16 \"src/utility/vector_func.hpp\"\n\n#line 18 \"src/utility/vector_func.hpp\"\
+    \n\n/**\n * @brief \u5024\u3092 comp \u306E\u9806\u306B\u5B89\u5B9A\u30BD\u30FC\
+    \u30C8\u3057\u305F\u3068\u304D\u306E\u6DFB\u5B57\u306E\u4E26\u3073 (APL \u306E\
+    \ grade up)\n */\ntemplate <typename T, typename F = std::less<>>\nstd::vector<long\
+    \ long> argsort(const std::vector<T>& v, F comp = F()) {\n    std::vector<long\
+    \ long> ret(v.size());\n    std::iota(ret.begin(), ret.end(), 0LL);\n    std::stable_sort(ret.begin(),\
+    \ ret.end(), [&](long long i, long long j) {\n        return comp(v[i], v[j]);\n\
+    \    });\n    return ret;\n}\n\n/**\n * @brief {v[idx[0]], v[idx[1]], ...} (Uiua\
+    \ \u306E select)\n */\ntemplate <typename T, typename I, ENABLE_IF_T(std::is_integral_v<I>)>\n\
+    std::vector<T> select(const std::vector<T>& v, const std::vector<I>& idx) {\n\
+    \    std::vector<T> ret;\n    ret.reserve(idx.size());\n    for (I i : idx) {\n\
+    \        assert(0 <= static_cast<long long>(i) && static_cast<long long>(i) <\
+    \ static_cast<long long>(v.size()));\n        ret.push_back(v[i]);\n    }\n  \
+    \  return ret;\n}\n\ntemplate <typename T>\ninline std::vector<T>& operator++(std::vector<T>&\
+    \ v) {\n    for (auto& e : v) e++;\n    return v;\n}\ntemplate <typename T>\n\
+    inline std::vector<T> operator++(std::vector<T>& v, int) {\n    auto res = v;\n\
+    \    for (auto& e : v) e++;\n    return res;\n}\ntemplate <typename T>\ninline\
+    \ std::vector<T>& operator--(std::vector<T>& v) {\n    for (auto& e : v) e--;\n\
+    \    return v;\n}\ntemplate <typename T>\ninline std::vector<T> operator--(std::vector<T>&\
+    \ v, int) {\n    auto res = v;\n    for (auto& e : v) e--;\n    return res;\n\
+    }\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\n\
+    inline std::vector<T>& operator+=(std::vector<T>& v1, const std::vector<U>& v2)\
+    \ {\n    if (v2.size() > v1.size()) {\n        v1.resize(v2.size());\n    }\n\
+    \    for (std::size_t i = 0; i < v2.size(); i++) {\n        v1[i] += v2[i];\n\
     \    }\n    return v1;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
     \ T>)>\ninline std::vector<T> operator+(const std::vector<T>& v1, const std::vector<U>&\
     \ v2) {\n    std::vector<T> res(v1);\n    return res += v2;\n}\n\ntemplate <typename\
@@ -302,7 +308,7 @@ data:
   isVerificationFile: true
   path: test/aoj/dsl/dsl-4-a.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-27 20:28:53+09:00'
+  timestamp: '2026-10-30 17:07:55+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/dsl/dsl-4-a.1.test.cpp

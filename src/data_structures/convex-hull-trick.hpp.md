@@ -319,8 +319,8 @@ data:
   verifiedWith:
   - test/unittest/data_structures/convex-hull-trick.test.cpp
   - test/yosupo/data_structure/segment-add-get-min.test.cpp
-  - test/yosupo/data_structure/line-add-get-min.2.test.cpp
   - test/yosupo/data_structure/line-add-get-min.1.test.cpp
+  - test/yosupo/data_structure/line-add-get-min.2.test.cpp
 documentation_of: src/data_structures/convex-hull-trick.hpp
 layout: document
 title: Convex Hull Trick

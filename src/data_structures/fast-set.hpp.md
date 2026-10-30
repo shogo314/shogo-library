@@ -202,8 +202,8 @@ data:
   verifiedWith:
   - test/unittest/data_structures/fast-set.test.cpp
   - test/unittest/data_structures/sortable-segtree.test.cpp
-  - test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
   - test/yosupo/data_structure/predecessor-problem.test.cpp
+  - test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
 documentation_of: src/data_structures/fast-set.hpp
 layout: document
 title: "64 \u5206\u6728 (FastSet)"

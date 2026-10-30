@@ -556,8 +556,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/math/stern-brocot.test.cpp
-  - test/yosupo/number_theory/rational-approximation.test.cpp
   - test/yosupo/number_theory/stern-brocot-tree.test.cpp
+  - test/yosupo/number_theory/rational-approximation.test.cpp
 documentation_of: src/math/stern-brocot.hpp
 layout: document
 title: "Stern\u2013Brocot \u6728\u3068\u9023\u5206\u6570"

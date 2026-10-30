@@ -177,8 +177,8 @@ data:
   timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/data_structures/interval-set.test.cpp
   - test/yukicoder/674.2.test.cpp
+  - test/unittest/data_structures/interval-set.test.cpp
 documentation_of: src/data_structures/interval-set.hpp
 layout: document
 title: "\u534A\u958B\u533A\u9593\u306E\u96C6\u5408"

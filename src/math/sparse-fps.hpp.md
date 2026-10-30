@@ -1300,10 +1300,10 @@ data:
   verifiedWith:
   - test/unittest/math/sparse-fps.test.cpp
   - test/yosupo/polynomial/pow-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/polynomial/inv-of-formal-power-series-sparse.test.cpp
-  - test/yosupo/polynomial/exp-of-formal-power-series-sparse.test.cpp
   - test/yosupo/polynomial/sqrt-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/polynomial/inv-of-formal-power-series-sparse.test.cpp
   - test/yosupo/polynomial/log-of-formal-power-series-sparse.test.cpp
+  - test/yosupo/polynomial/exp-of-formal-power-series-sparse.test.cpp
 documentation_of: src/math/sparse-fps.hpp
 layout: document
 title: "\u758E\u306A\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570 (inv\u30FBlog\u30FBexp\u30FB\

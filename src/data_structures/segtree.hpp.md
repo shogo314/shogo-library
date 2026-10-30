@@ -632,29 +632,29 @@ data:
   timestamp: '2026-10-27 20:28:53+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/yukicoder/1641.test.cpp
+  - test/yukicoder/1036.1.test.cpp
+  - test/yukicoder/1036.2.test.cpp
+  - test/yukicoder/3652.test.cpp
   - test/unittest/data_structures/dual-segtree.test.cpp
   - test/unittest/data_structures/sortable-segtree.test.cpp
   - test/unittest/algebra/mapping.test.cpp
   - test/unittest/algebra/monoid.test.cpp
   - test/aoj/ntl/ntl-1-c.test.cpp
-  - test/aoj/dsl/dsl-2-a.test.cpp
-  - test/aoj/dsl/dsl-2-b.1.test.cpp
   - test/aoj/itp2/itp2-3-b.1.test.cpp
   - test/aoj/itp2/itp2-3-b.2.test.cpp
   - test/aoj/itp2/itp2-3-b.3.test.cpp
-  - test/yosupo/data_structure/point-set-range-composite.3.test.cpp
-  - test/yosupo/data_structure/point-set-range-composite.1.test.cpp
-  - test/yosupo/data_structure/point-set-range-composite.2.test.cpp
-  - test/yosupo/data_structure/point-add-range-sum.2.test.cpp
-  - test/yosupo/data_structure/rectangle-sum.3.test.cpp
-  - test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
+  - test/aoj/dsl/dsl-2-b.1.test.cpp
+  - test/aoj/dsl/dsl-2-a.test.cpp
   - test/yosupo/tree/vertex-add-subtree-sum.1.test.cpp
   - test/yosupo/tree/vertex-set-path-composite.test.cpp
   - test/yosupo/tree/lca.2.test.cpp
-  - test/yukicoder/1036.1.test.cpp
-  - test/yukicoder/1036.2.test.cpp
-  - test/yukicoder/3652.test.cpp
-  - test/yukicoder/1641.test.cpp
+  - test/yosupo/data_structure/rectangle-sum.3.test.cpp
+  - test/yosupo/data_structure/point-set-range-composite.1.test.cpp
+  - test/yosupo/data_structure/point-set-range-composite.3.test.cpp
+  - test/yosupo/data_structure/point-set-range-composite.2.test.cpp
+  - test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
+  - test/yosupo/data_structure/point-add-range-sum.2.test.cpp
 documentation_of: src/data_structures/segtree.hpp
 layout: document
 title: "\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"

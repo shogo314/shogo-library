@@ -1515,23 +1515,23 @@ data:
   timestamp: '2026-10-27 23:41:27+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/math/combinatorial-sequences.test.cpp
-  - test/unittest/math/multipoint.test.cpp
-  - test/yosupo/polynomial/polynomial-interpolation-on-geometric-sequence.test.cpp
-  - test/yosupo/polynomial/multipoint-evaluation.test.cpp
-  - test/yosupo/polynomial/shift-of-sampling-points-of-polynomial.test.cpp
-  - test/yosupo/polynomial/multipoint-evaluation-on-geometric-sequence.test.cpp
-  - test/yosupo/polynomial/polynomial-interpolation.test.cpp
-  - test/yosupo/number_theory/bernoulli-number.test.cpp
-  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
-  - test/yosupo/enumerative_combinatorics/partition-function.3.test.cpp
-  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind-fixed-k.test.cpp
-  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind.test.cpp
-  - test/yosupo/enumerative_combinatorics/bell-number.test.cpp
-  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind-fixed-k.test.cpp
-  - test/yosupo/enumerative_combinatorics/factorial.test.cpp
   - test/yukicoder/3770.test.cpp
   - test/yukicoder/3771.test.cpp
+  - test/unittest/math/combinatorial-sequences.test.cpp
+  - test/unittest/math/multipoint.test.cpp
+  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind.test.cpp
+  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind-fixed-k.test.cpp
+  - test/yosupo/enumerative_combinatorics/factorial.test.cpp
+  - test/yosupo/enumerative_combinatorics/partition-function.3.test.cpp
+  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind-fixed-k.test.cpp
+  - test/yosupo/enumerative_combinatorics/stirling-number-of-the-first-kind.test.cpp
+  - test/yosupo/enumerative_combinatorics/bell-number.test.cpp
+  - test/yosupo/polynomial/multipoint-evaluation-on-geometric-sequence.test.cpp
+  - test/yosupo/polynomial/multipoint-evaluation.test.cpp
+  - test/yosupo/polynomial/polynomial-interpolation-on-geometric-sequence.test.cpp
+  - test/yosupo/polynomial/shift-of-sampling-points-of-polynomial.test.cpp
+  - test/yosupo/polynomial/polynomial-interpolation.test.cpp
+  - test/yosupo/number_theory/bernoulli-number.test.cpp
 documentation_of: src/math/multipoint.hpp
 layout: document
 title: "\u591A\u70B9\u8A55\u4FA1\u30FB\u591A\u9805\u5F0F\u88DC\u9593\u30FB\u6A19\u672C\

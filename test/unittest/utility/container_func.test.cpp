@@ -45,6 +45,36 @@ int main() {
             check(w == expect, "sort(c, f)");
         }
 
+        // sorted / sort (射影つき): comp(proj(a), proj(b)) で比べる
+        {
+            auto key = [](long long x) { return x * x; };
+            auto by_key = [&](bool rev) {
+                std::vector<long long> e = v;
+                std::sort(e.begin(), e.end(), [&](long long a, long long b) { return rev ? key(a) > key(b) : key(a) < key(b); });
+                return e;
+            };
+            auto same_keys = [&](const std::vector<long long>& x, const std::vector<long long>& y) {
+                if (x.size() != y.size()) return false;
+                for (int i = 0; i < static_cast<int>(x.size()); i++) {
+                    if (key(x[i]) != key(y[i])) return false;
+                }
+                return true;
+            };
+            check(same_keys(sorted(v, {}, key), by_key(false)), "sorted(c, {}, proj)");
+            check(same_keys(sorted(v, std::greater<>(), key), by_key(true)), "sorted(c, comp, proj)");
+            std::vector<long long> w = v;
+            sort(w, {}, key);
+            check(same_keys(w, by_key(false)), "sort(c, {}, proj)");
+
+            // メンバポインタを射影にする
+            std::vector<std::pair<long long, long long>> ps(n);
+            for (int i = 0; i < n; i++) ps[i] = {v[i], i};
+            auto qs = sorted(ps, std::greater<>(), &std::pair<long long, long long>::first);
+            bool ok2 = true;
+            for (int i = 0; i + 1 < n; i++) ok2 &= qs[i].first >= qs[i + 1].first;
+            check(ok2 && sorted(qs) == sorted(ps), "sorted(c, comp, &T::member)");
+        }
+
         // set / multiset に対する max / min (ソート済みのコンテナは先頭と末尾)
         {
             std::set<long long> s(v.begin(), v.end());

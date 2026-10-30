@@ -42,31 +42,35 @@ inline constexpr C reversed(C t) {
     return t;
 }
 
+namespace internal_container_func {
+// comp(proj(a), proj(b)) で比べられるか
+template <class C, class F, class P, class = void>
+struct is_projected_comp : std::false_type {};
+template <class C, class F, class P>
+struct is_projected_comp<C, F, P, std::void_t<std::invoke_result_t<P&, const mem_value_type<C>&>>>
+    : std::is_invocable_r<bool, F&, std::invoke_result_t<P&, const mem_value_type<C>&>, std::invoke_result_t<P&, const mem_value_type<C>&>> {};
+}  // namespace internal_container_func
+
 METHOD_EXPAND(sorted)
-template <class C, ENABLE_IF_T(!has_sorted_v<C>)>
-inline constexpr C sorted(C t) {
-    std::sort(t.begin(), t.end());
-    return t;
-}
-template <class C, class F, ENABLE_IF_T(!has_sorted_v<C> && std::is_invocable_r_v<bool, F, mem_value_type<C>, mem_value_type<C>>)>
-inline constexpr C sorted(C t, F f) {
-    std::sort(t.begin(), t.end(), f);
+template <class C, class F = std::less<>, class P = internal_traits::identity, ENABLE_IF_T(!has_sorted_v<C> && internal_container_func::is_projected_comp<C, F, P>::value)>
+inline constexpr C sorted(C t, F comp = F(), P proj = P()) {
+    std::sort(t.begin(), t.end(), [&](const mem_value_type<C>& a, const mem_value_type<C>& b) {
+        return std::invoke(comp, std::invoke(proj, a), std::invoke(proj, b));
+    });
     return t;
 }
 
-template <class C>
-inline constexpr void sort(C& t) {
-    std::sort(t.begin(), t.end());
-}
-template <class C, class F, ENABLE_IF_T(std::is_invocable_r_v<bool, F, mem_value_type<C>, mem_value_type<C>>)>
-inline constexpr void sort(C& t, F f) {
-    std::sort(t.begin(), t.end(), f);
-}
-template <class C, class F, ENABLE_IF_T(std::is_invocable_v<F, mem_value_type<C>>)>
-inline constexpr void sort_by_key(C& t, F f) {
-    std::sort(t.begin(), t.end(), [&](const mem_value_type<C>& left, const mem_value_type<C>& right) {
-        return f(left) < f(right);
+template <class C, class F = std::less<>, class P = internal_traits::identity, ENABLE_IF_T(internal_container_func::is_projected_comp<C, F, P>::value)>
+inline constexpr void sort(C& t, F comp = F(), P proj = P()) {
+    std::sort(t.begin(), t.end(), [&](const mem_value_type<C>& a, const mem_value_type<C>& b) {
+        return std::invoke(comp, std::invoke(proj, a), std::invoke(proj, b));
     });
+}
+// sort(c, {}, proj) 用。std::vector などでは ADL で std::sort(first, last, comp) も候補になり、
+// {} を F で受けると std::sort が選ばれるので、{} が標準変換で渡る std::nullptr_t で受ける
+template <class C, class P, ENABLE_IF_T(internal_container_func::is_projected_comp<C, std::less<>, P>::value)>
+inline constexpr void sort(C& t, std::nullptr_t, P proj) {
+    sort(t, std::less<>(), proj);
 }
 
 template <class C>

@@ -17,27 +17,27 @@
 #include "traits.hpp"
 
 /**
- * @brief 値を comp の順に安定ソートしたときの添字の並び (APL の grade up)
+ * @brief 値を proj で写して comp の順に安定ソートしたときの添字の並び (APL の grade up)
  */
-template <typename T, typename F = std::less<>>
-std::vector<long long> argsort(const std::vector<T>& v, F comp = F()) {
+template <typename T, typename F = std::less<>, typename P = internal_traits::identity>
+std::vector<long long> argsort(const std::vector<T>& v, F comp = F(), P proj = P()) {
     std::vector<long long> ret(v.size());
     std::iota(ret.begin(), ret.end(), 0LL);
     std::stable_sort(ret.begin(), ret.end(), [&](long long i, long long j) {
-        return comp(v[i], v[j]);
+        return std::invoke(comp, std::invoke(proj, v[i]), std::invoke(proj, v[j]));
     });
     return ret;
 }
 
 /**
- * @brief 各要素の順位 (comp の順で v[i] より前に来る要素の個数)。同率は同じ順位で、次の順位は飛ばす
+ * @brief 各要素の順位 (proj で写して comp の順で v[i] より前に来る要素の個数)。同率は同じ順位で、次の順位は飛ばす
  */
-template <typename T, typename F = std::less<>>
-std::vector<long long> rank(const std::vector<T>& v, F comp = F()) {
+template <typename T, typename F = std::less<>, typename P = internal_traits::identity>
+std::vector<long long> rank(const std::vector<T>& v, F comp = F(), P proj = P()) {
     const long long n = v.size();
-    std::vector<long long> p = argsort(v, comp), ret(n);
+    std::vector<long long> p = argsort(v, comp, proj), ret(n);
     for (long long i = 0; i < n; i++) {
-        ret[p[i]] = i > 0 && !comp(v[p[i - 1]], v[p[i]]) ? ret[p[i - 1]] : i;
+        ret[p[i]] = i > 0 && !std::invoke(comp, std::invoke(proj, v[p[i - 1]]), std::invoke(proj, v[p[i]])) ? ret[p[i - 1]] : i;
     }
     return ret;
 }

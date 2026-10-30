@@ -42,9 +42,9 @@ auto c = select(a, idx);          // {2, 1, 0}
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `argsort(v)` / `argsort(v, comp)` | 値を昇順 (`comp` の順) に安定ソートしたときの添字のリスト (`std::vector<long long>`)。APL の grade up。降順は `argsort(v, std::greater<>())`。`argsort(argsort(v))` は各要素の順位 (同率は添字の小さい順に別の順位を付けた置換) で、`inverse_permutation(argsort(v))` と同じ | $O(n \log n)$ |
+| `argsort(v)` / `argsort(v, comp)` / `argsort(v, comp, proj)` | 値を昇順 (`comp` の順) に安定ソートしたときの添字のリスト (`std::vector<long long>`)。APL の grade up。降順は `argsort(v, std::greater<>())`。`proj` を渡すと `comp(proj(a), proj(b))` で比べる (`std::ranges::sort` と同じ。キーだけなら `argsort(v, {}, key)`、メンバポインタ `&T::x` も渡せる)。`argsort(argsort(v))` は各要素の順位 (同率は添字の小さい順に別の順位を付けた置換) で、`inverse_permutation(argsort(v))` と同じ | $O(n \log n)$ |
 | `inverse_permutation(p)` | 逆置換 (`ret[p[i]] = i`)。`p` は整数型の `vector` で、$0, \ldots, n-1$ の置換でなければ assert で落ちる。`inverse_permutation(argsort(v))` は `argsort(argsort(v))` と同じ | $O(n)$ |
-| `rank(v)` / `rank(v, comp)` | 各要素の順位 (`v[i]` より前に来る要素の個数)。同率は同じ順位で、次の順位は飛ばす (`{30, 10, 30, 20}` なら `{2, 0, 2, 1}`)。飛ばさずに詰めるなら [座標圧縮](compress.hpp) の `Compress(v).ids(v)` | $O(n \log n)$ |
+| `rank(v)` / `rank(v, comp)` / `rank(v, comp, proj)` | 各要素の順位 (`v[i]` より前に来る要素の個数)。`comp`・`proj` は `argsort` と同じ。同率は同じ順位で、次の順位は飛ばす (`{30, 10, 30, 20}` なら `{2, 0, 2, 1}`)。飛ばさずに詰めるなら [座標圧縮](compress.hpp) の `Compress(v).ids(v)` | $O(n \log n)$ |
 | `select(v, idx)` | `{v[idx[0]], v[idx[1]], ...}`。`idx` は整数型の `vector` で、範囲外なら assert で落ちる。`select(a, argsort(b))` で `b` の昇順に `a` を並べる | $O(\lvert \mathit{idx} \rvert)$ |
 | `cumulative_sum(v)` | 先頭に 0 を付けた累積和 (長さ `size + 1`) | $O(n)$ |
 | `iota(n)` | `{0, 1, ..., n-1}` | $O(n)$ |

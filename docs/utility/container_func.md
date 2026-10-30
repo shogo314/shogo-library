@@ -20,10 +20,9 @@ auto odd = indices_if(v, [](int x) { return x % 2 == 1; });  // {0, 1, 3, 4}
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `sorted(c)` / `sorted(c, comp)` | ソートしたコピーを返す。降順は `sorted(c, std::greater<>())` | $O(n \log n)$ |
+| `sorted(c)` / `sorted(c, comp)` / `sorted(c, comp, proj)` | ソートしたコピーを返す。降順は `sorted(c, std::greater<>())`。`proj` を渡すと `comp(proj(a), proj(b))` で比べる (`std::ranges::sort` と同じ。`proj` には `&T::x` のようなメンバポインタも渡せる)。キーだけなら `sorted(c, {}, key)` | $O(n \log n)$ |
 | `reversed(c)` | 逆順にしたコピーを返す | $O(n)$ |
-| `sort(c)` / `sort(c, comp)` | その場でソート。降順は `sort(c, std::greater<>())` | $O(n \log n)$ |
-| `sort_by_key(c, key)` | `key(x)` の昇順にその場でソート (比較のたびに `key` を呼ぶ) | `key` の呼び出し $O(n \log n)$ 回 |
+| `sort(c)` / `sort(c, comp)` / `sort(c, comp, proj)` | その場でソート。降順は `sort(c, std::greater<>())`。`proj` は `sorted` と同じ。キーだけなら `sort(c, {}, key)` | $O(n \log n)$ |
 | `reverse(c)` | その場で逆順にする | $O(n)$ |
 
 ## 集計

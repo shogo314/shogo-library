@@ -156,6 +156,20 @@ int main() {
             check(inverse_permutation(pi) == q, "inverse_permutation (int)");
         }
 
+        // argsort / rank (射影つき): 写した値の列に対する結果と一致する
+        {
+            auto key = [](long long x) { return x * x; };
+            std::vector<long long> b(n);
+            for (int i = 0; i < n; i++) b[i] = key(a[i]);
+            check(argsort(a, {}, key) == argsort(b), "argsort(v, {}, proj)");
+            check(argsort(a, std::greater<>(), key) == argsort(b, std::greater<>()), "argsort(v, comp, proj)");
+            check(rank(a, {}, key) == rank(b), "rank(v, {}, proj)");
+            check(rank(a, std::greater<>(), key) == rank(b, std::greater<>()), "rank(v, comp, proj)");
+            std::vector<std::pair<long long, long long>> ps(n);
+            for (int i = 0; i < n; i++) ps[i] = {a[i], -i};
+            check(argsort(ps, {}, &std::pair<long long, long long>::first) == argsort(a), "argsort(v, {}, &T::member)");
+        }
+
         // select: 添字の列で取り出す
         {
             std::vector<int> idx(n);

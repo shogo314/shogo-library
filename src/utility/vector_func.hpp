@@ -30,6 +30,19 @@ std::vector<long long> argsort(const std::vector<T>& v, F comp = F()) {
 }
 
 /**
+ * @brief 各要素の順位 (comp の順で v[i] より前に来る要素の個数)。同率は同じ順位で、次の順位は飛ばす
+ */
+template <typename T, typename F = std::less<>>
+std::vector<long long> rank(const std::vector<T>& v, F comp = F()) {
+    const long long n = v.size();
+    std::vector<long long> p = argsort(v, comp), ret(n);
+    for (long long i = 0; i < n; i++) {
+        ret[p[i]] = i > 0 && !comp(v[p[i - 1]], v[p[i]]) ? ret[p[i - 1]] : i;
+    }
+    return ret;
+}
+
+/**
  * @brief {v[idx[0]], v[idx[1]], ...} (Uiua の select)
  */
 template <typename T, typename I, ENABLE_IF_T(std::is_integral_v<I>)>

@@ -14,6 +14,18 @@ auto idx = argsort(a, std::greater<>());  // 値の降順に並べた添字: {2,
 auto c = select(a, idx);          // {2, 1, 0}
 ```
 
+## 順位の求め方
+
+`p = argsort(v)` は「`k` 番目に小さい要素の添字が `p[k]`」という置換です。これをもう一度 `argsort` すると逆置換になり、「`v[i]` が何番目に小さいか」が得られます (APL の ⍋⍋)。`argsort` は安定なので、同率は添字の小さい順に別の順位になり、結果は必ず $0, \ldots, n-1$ の置換です。転倒数に渡すときなど、置換がほしいときはこれを使います。
+
+同率の扱いで、次の 3 つを使い分けます。
+
+| 書き方 | `{20, 10, 20, 30}` の結果 | 同率の扱い |
+|---|---|---|
+| `argsort(argsort(v))` | `{1, 0, 2, 3}` | 添字の小さい順に別の順位を付ける (置換になる) |
+| `rank(v)` | `{1, 0, 1, 3}` | 同じ順位にして、次の順位を飛ばす |
+| `Compress(v).ids(v)` | `{1, 0, 1, 2}` | 同じ番号にして、詰める ([座標圧縮](compress.hpp)) |
+
 ## 演算子
 
 | 演算子 | 説明 | 計算量 |
@@ -30,7 +42,8 @@ auto c = select(a, idx);          // {2, 1, 0}
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `argsort(v)` / `argsort(v, comp)` | 値を昇順 (`comp` の順) に安定ソートしたときの添字のリスト (`std::vector<long long>`)。APL の grade up。降順は `argsort(v, std::greater<>())` | $O(n \log n)$ |
+| `argsort(v)` / `argsort(v, comp)` | 値を昇順 (`comp` の順) に安定ソートしたときの添字のリスト (`std::vector<long long>`)。APL の grade up。降順は `argsort(v, std::greater<>())`。`argsort(argsort(v))` は各要素の順位 (同率は添字の小さい順に別の順位を付けた置換) | $O(n \log n)$ |
+| `rank(v)` / `rank(v, comp)` | 各要素の順位 (`v[i]` より前に来る要素の個数)。同率は同じ順位で、次の順位は飛ばす (`{30, 10, 30, 20}` なら `{2, 0, 2, 1}`)。飛ばさずに詰めるなら [座標圧縮](compress.hpp) の `Compress(v).ids(v)` | $O(n \log n)$ |
 | `select(v, idx)` | `{v[idx[0]], v[idx[1]], ...}`。`idx` は整数型の `vector` で、範囲外なら assert で落ちる。`select(a, argsort(b))` で `b` の昇順に `a` を並べる | $O(\lvert \mathit{idx} \rvert)$ |
 | `cumulative_sum(v)` | 先頭に 0 を付けた累積和 (長さ `size + 1`) | $O(n)$ |
 | `iota(n)` | `{0, 1, ..., n-1}` | $O(n)$ |

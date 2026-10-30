@@ -130,6 +130,20 @@ int main() {
             }
         }
 
+        // rank: v[i] より小さい (降順なら大きい) 要素の個数
+        {
+            for (bool rev : {false, true}) {
+                auto r = rev ? rank(a, std::greater<>()) : rank(a);
+                bool same = static_cast<int>(r.size()) == n;
+                for (int i = 0; i < n && same; i++) {
+                    long long cnt = 0;
+                    for (int j = 0; j < n; j++) cnt += rev ? a[j] > a[i] : a[j] < a[i];
+                    same = r[i] == cnt;
+                }
+                check(same, "rank");
+            }
+        }
+
         // select: 添字の列で取り出す
         {
             std::vector<int> idx(n);

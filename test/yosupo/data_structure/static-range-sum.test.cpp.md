@@ -90,22 +90,29 @@ data:
     \ long long n = v.size();\n    std::vector<long long> p = argsort(v, comp), ret(n);\n\
     \    for (long long i = 0; i < n; i++) {\n        ret[p[i]] = i > 0 && !comp(v[p[i\
     \ - 1]], v[p[i]]) ? ret[p[i - 1]] : i;\n    }\n    return ret;\n}\n\n/**\n * @brief\
-    \ {v[idx[0]], v[idx[1]], ...} (Uiua \u306E select)\n */\ntemplate <typename T,\
-    \ typename I, ENABLE_IF_T(std::is_integral_v<I>)>\nstd::vector<T> select(const\
-    \ std::vector<T>& v, const std::vector<I>& idx) {\n    std::vector<T> ret;\n \
-    \   ret.reserve(idx.size());\n    for (I i : idx) {\n        assert(0 <= static_cast<long\
-    \ long>(i) && static_cast<long long>(i) < static_cast<long long>(v.size()));\n\
-    \        ret.push_back(v[i]);\n    }\n    return ret;\n}\n\ntemplate <typename\
-    \ T>\ninline std::vector<T>& operator++(std::vector<T>& v) {\n    for (auto& e\
-    \ : v) e++;\n    return v;\n}\ntemplate <typename T>\ninline std::vector<T> operator++(std::vector<T>&\
-    \ v, int) {\n    auto res = v;\n    for (auto& e : v) e++;\n    return res;\n\
-    }\ntemplate <typename T>\ninline std::vector<T>& operator--(std::vector<T>& v)\
-    \ {\n    for (auto& e : v) e--;\n    return v;\n}\ntemplate <typename T>\ninline\
-    \ std::vector<T> operator--(std::vector<T>& v, int) {\n    auto res = v;\n   \
-    \ for (auto& e : v) e--;\n    return res;\n}\n\ntemplate <typename T, typename\
-    \ U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>& operator+=(std::vector<T>&\
-    \ v1, const std::vector<U>& v2) {\n    if (v2.size() > v1.size()) {\n        v1.resize(v2.size());\n\
-    \    }\n    for (std::size_t i = 0; i < v2.size(); i++) {\n        v1[i] += v2[i];\n\
+    \ \u9006\u7F6E\u63DB (ret[p[i]] = i)\u3002p \u306F 0, ..., n-1 \u306E\u7F6E\u63DB\
+    \u3067\u3042\u308B\u3053\u3068\n */\ntemplate <typename I, ENABLE_IF_T(std::is_integral_v<I>)>\n\
+    std::vector<long long> inverse_permutation(const std::vector<I>& p) {\n    const\
+    \ long long n = p.size();\n    std::vector<long long> ret(n, -1);\n    for (long\
+    \ long i = 0; i < n; i++) {\n        const long long x = static_cast<long long>(p[i]);\n\
+    \        assert(0 <= x && x < n && ret[x] == -1);\n        ret[x] = i;\n    }\n\
+    \    return ret;\n}\n\n/**\n * @brief {v[idx[0]], v[idx[1]], ...} (Uiua \u306E\
+    \ select)\n */\ntemplate <typename T, typename I, ENABLE_IF_T(std::is_integral_v<I>)>\n\
+    std::vector<T> select(const std::vector<T>& v, const std::vector<I>& idx) {\n\
+    \    std::vector<T> ret;\n    ret.reserve(idx.size());\n    for (I i : idx) {\n\
+    \        assert(0 <= static_cast<long long>(i) && static_cast<long long>(i) <\
+    \ static_cast<long long>(v.size()));\n        ret.push_back(v[i]);\n    }\n  \
+    \  return ret;\n}\n\ntemplate <typename T>\ninline std::vector<T>& operator++(std::vector<T>&\
+    \ v) {\n    for (auto& e : v) e++;\n    return v;\n}\ntemplate <typename T>\n\
+    inline std::vector<T> operator++(std::vector<T>& v, int) {\n    auto res = v;\n\
+    \    for (auto& e : v) e++;\n    return res;\n}\ntemplate <typename T>\ninline\
+    \ std::vector<T>& operator--(std::vector<T>& v) {\n    for (auto& e : v) e--;\n\
+    \    return v;\n}\ntemplate <typename T>\ninline std::vector<T> operator--(std::vector<T>&\
+    \ v, int) {\n    auto res = v;\n    for (auto& e : v) e--;\n    return res;\n\
+    }\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\n\
+    inline std::vector<T>& operator+=(std::vector<T>& v1, const std::vector<U>& v2)\
+    \ {\n    if (v2.size() > v1.size()) {\n        v1.resize(v2.size());\n    }\n\
+    \    for (std::size_t i = 0; i < v2.size(); i++) {\n        v1[i] += v2[i];\n\
     \    }\n    return v1;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
     \ T>)>\ninline std::vector<T> operator+(const std::vector<T>& v1, const std::vector<U>&\
     \ v2) {\n    std::vector<T> res(v1);\n    return res += v2;\n}\n\ntemplate <typename\
@@ -186,7 +193,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/data_structure/static-range-sum.test.cpp
   requiredBy: []
-  timestamp: '2026-10-30 22:43:40+09:00'
+  timestamp: '2026-10-31 05:30:08+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/data_structure/static-range-sum.test.cpp

@@ -197,13 +197,19 @@ data:
     \ = F()) {\n    const long long n = v.size();\n    std::vector<long long> p =\
     \ argsort(v, comp), ret(n);\n    for (long long i = 0; i < n; i++) {\n       \
     \ ret[p[i]] = i > 0 && !comp(v[p[i - 1]], v[p[i]]) ? ret[p[i - 1]] : i;\n    }\n\
-    \    return ret;\n}\n\n/**\n * @brief {v[idx[0]], v[idx[1]], ...} (Uiua \u306E\
-    \ select)\n */\ntemplate <typename T, typename I, ENABLE_IF_T(std::is_integral_v<I>)>\n\
-    std::vector<T> select(const std::vector<T>& v, const std::vector<I>& idx) {\n\
-    \    std::vector<T> ret;\n    ret.reserve(idx.size());\n    for (I i : idx) {\n\
-    \        assert(0 <= static_cast<long long>(i) && static_cast<long long>(i) <\
-    \ static_cast<long long>(v.size()));\n        ret.push_back(v[i]);\n    }\n  \
-    \  return ret;\n}\n\ntemplate <typename T>\ninline std::vector<T>& operator++(std::vector<T>&\
+    \    return ret;\n}\n\n/**\n * @brief \u9006\u7F6E\u63DB (ret[p[i]] = i)\u3002\
+    p \u306F 0, ..., n-1 \u306E\u7F6E\u63DB\u3067\u3042\u308B\u3053\u3068\n */\ntemplate\
+    \ <typename I, ENABLE_IF_T(std::is_integral_v<I>)>\nstd::vector<long long> inverse_permutation(const\
+    \ std::vector<I>& p) {\n    const long long n = p.size();\n    std::vector<long\
+    \ long> ret(n, -1);\n    for (long long i = 0; i < n; i++) {\n        const long\
+    \ long x = static_cast<long long>(p[i]);\n        assert(0 <= x && x < n && ret[x]\
+    \ == -1);\n        ret[x] = i;\n    }\n    return ret;\n}\n\n/**\n * @brief {v[idx[0]],\
+    \ v[idx[1]], ...} (Uiua \u306E select)\n */\ntemplate <typename T, typename I,\
+    \ ENABLE_IF_T(std::is_integral_v<I>)>\nstd::vector<T> select(const std::vector<T>&\
+    \ v, const std::vector<I>& idx) {\n    std::vector<T> ret;\n    ret.reserve(idx.size());\n\
+    \    for (I i : idx) {\n        assert(0 <= static_cast<long long>(i) && static_cast<long\
+    \ long>(i) < static_cast<long long>(v.size()));\n        ret.push_back(v[i]);\n\
+    \    }\n    return ret;\n}\n\ntemplate <typename T>\ninline std::vector<T>& operator++(std::vector<T>&\
     \ v) {\n    for (auto& e : v) e++;\n    return v;\n}\ntemplate <typename T>\n\
     inline std::vector<T> operator++(std::vector<T>& v, int) {\n    auto res = v;\n\
     \    for (auto& e : v) e++;\n    return res;\n}\ntemplate <typename T>\ninline\
@@ -316,7 +322,7 @@ data:
   isVerificationFile: true
   path: test/aoj/dsl/dsl-4-a.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-30 22:43:40+09:00'
+  timestamp: '2026-10-31 05:30:08+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/dsl/dsl-4-a.1.test.cpp

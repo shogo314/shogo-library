@@ -8,6 +8,8 @@
 #include "math/modint.hpp"
 ```
 
+`using namespace std;` は使わないでください。このライブラリには `sort`・`max`・`rank` など std と同じ名前のグローバル関数があり、`using namespace std;` があると呼び出しが曖昧になってコンパイルできないことがあります。std のものは `std::` を付けて書きます。
+
 データ構造には `algebra/` のモノイドを渡します。ラムダ式から作ることもできます。
 
 ```cpp

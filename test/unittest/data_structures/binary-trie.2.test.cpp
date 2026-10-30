@@ -9,8 +9,6 @@
 #include <random>
 #include <vector>
 
-using namespace std;
-
 int main(void) {
     std::random_device rd;
     std::mt19937 gen(rd());

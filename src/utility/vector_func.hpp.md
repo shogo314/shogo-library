@@ -85,23 +85,30 @@ data:
     \ comp = F()) {\n    std::vector<long long> ret(v.size());\n    std::iota(ret.begin(),\
     \ ret.end(), 0LL);\n    std::stable_sort(ret.begin(), ret.end(), [&](long long\
     \ i, long long j) {\n        return comp(v[i], v[j]);\n    });\n    return ret;\n\
-    }\n\n/**\n * @brief {v[idx[0]], v[idx[1]], ...} (Uiua \u306E select)\n */\ntemplate\
-    \ <typename T, typename I, ENABLE_IF_T(std::is_integral_v<I>)>\nstd::vector<T>\
-    \ select(const std::vector<T>& v, const std::vector<I>& idx) {\n    std::vector<T>\
-    \ ret;\n    ret.reserve(idx.size());\n    for (I i : idx) {\n        assert(0\
-    \ <= static_cast<long long>(i) && static_cast<long long>(i) < static_cast<long\
-    \ long>(v.size()));\n        ret.push_back(v[i]);\n    }\n    return ret;\n}\n\
-    \ntemplate <typename T>\ninline std::vector<T>& operator++(std::vector<T>& v)\
-    \ {\n    for (auto& e : v) e++;\n    return v;\n}\ntemplate <typename T>\ninline\
-    \ std::vector<T> operator++(std::vector<T>& v, int) {\n    auto res = v;\n   \
-    \ for (auto& e : v) e++;\n    return res;\n}\ntemplate <typename T>\ninline std::vector<T>&\
-    \ operator--(std::vector<T>& v) {\n    for (auto& e : v) e--;\n    return v;\n\
-    }\ntemplate <typename T>\ninline std::vector<T> operator--(std::vector<T>& v,\
-    \ int) {\n    auto res = v;\n    for (auto& e : v) e--;\n    return res;\n}\n\n\
-    template <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\n\
-    inline std::vector<T>& operator+=(std::vector<T>& v1, const std::vector<U>& v2)\
-    \ {\n    if (v2.size() > v1.size()) {\n        v1.resize(v2.size());\n    }\n\
-    \    for (std::size_t i = 0; i < v2.size(); i++) {\n        v1[i] += v2[i];\n\
+    }\n\n/**\n * @brief \u5404\u8981\u7D20\u306E\u9806\u4F4D (comp \u306E\u9806\u3067\
+    \ v[i] \u3088\u308A\u524D\u306B\u6765\u308B\u8981\u7D20\u306E\u500B\u6570)\u3002\
+    \u540C\u7387\u306F\u540C\u3058\u9806\u4F4D\u3067\u3001\u6B21\u306E\u9806\u4F4D\
+    \u306F\u98DB\u3070\u3059\n */\ntemplate <typename T, typename F = std::less<>>\n\
+    std::vector<long long> rank(const std::vector<T>& v, F comp = F()) {\n    const\
+    \ long long n = v.size();\n    std::vector<long long> p = argsort(v, comp), ret(n);\n\
+    \    for (long long i = 0; i < n; i++) {\n        ret[p[i]] = i > 0 && !comp(v[p[i\
+    \ - 1]], v[p[i]]) ? ret[p[i - 1]] : i;\n    }\n    return ret;\n}\n\n/**\n * @brief\
+    \ {v[idx[0]], v[idx[1]], ...} (Uiua \u306E select)\n */\ntemplate <typename T,\
+    \ typename I, ENABLE_IF_T(std::is_integral_v<I>)>\nstd::vector<T> select(const\
+    \ std::vector<T>& v, const std::vector<I>& idx) {\n    std::vector<T> ret;\n \
+    \   ret.reserve(idx.size());\n    for (I i : idx) {\n        assert(0 <= static_cast<long\
+    \ long>(i) && static_cast<long long>(i) < static_cast<long long>(v.size()));\n\
+    \        ret.push_back(v[i]);\n    }\n    return ret;\n}\n\ntemplate <typename\
+    \ T>\ninline std::vector<T>& operator++(std::vector<T>& v) {\n    for (auto& e\
+    \ : v) e++;\n    return v;\n}\ntemplate <typename T>\ninline std::vector<T> operator++(std::vector<T>&\
+    \ v, int) {\n    auto res = v;\n    for (auto& e : v) e++;\n    return res;\n\
+    }\ntemplate <typename T>\ninline std::vector<T>& operator--(std::vector<T>& v)\
+    \ {\n    for (auto& e : v) e--;\n    return v;\n}\ntemplate <typename T>\ninline\
+    \ std::vector<T> operator--(std::vector<T>& v, int) {\n    auto res = v;\n   \
+    \ for (auto& e : v) e--;\n    return res;\n}\n\ntemplate <typename T, typename\
+    \ U, ENABLE_IF_T(std::is_convertible_v<U, T>)>\ninline std::vector<T>& operator+=(std::vector<T>&\
+    \ v1, const std::vector<U>& v2) {\n    if (v2.size() > v1.size()) {\n        v1.resize(v2.size());\n\
+    \    }\n    for (std::size_t i = 0; i < v2.size(); i++) {\n        v1[i] += v2[i];\n\
     \    }\n    return v1;\n}\n\ntemplate <typename T, typename U, ENABLE_IF_T(std::is_convertible_v<U,\
     \ T>)>\ninline std::vector<T> operator+(const std::vector<T>& v1, const std::vector<U>&\
     \ v2) {\n    std::vector<T> res(v1);\n    return res += v2;\n}\n\ntemplate <typename\
@@ -174,8 +181,16 @@ data:
     \ long> argsort(const std::vector<T>& v, F comp = F()) {\n    std::vector<long\
     \ long> ret(v.size());\n    std::iota(ret.begin(), ret.end(), 0LL);\n    std::stable_sort(ret.begin(),\
     \ ret.end(), [&](long long i, long long j) {\n        return comp(v[i], v[j]);\n\
-    \    });\n    return ret;\n}\n\n/**\n * @brief {v[idx[0]], v[idx[1]], ...} (Uiua\
-    \ \u306E select)\n */\ntemplate <typename T, typename I, ENABLE_IF_T(std::is_integral_v<I>)>\n\
+    \    });\n    return ret;\n}\n\n/**\n * @brief \u5404\u8981\u7D20\u306E\u9806\u4F4D\
+    \ (comp \u306E\u9806\u3067 v[i] \u3088\u308A\u524D\u306B\u6765\u308B\u8981\u7D20\
+    \u306E\u500B\u6570)\u3002\u540C\u7387\u306F\u540C\u3058\u9806\u4F4D\u3067\u3001\
+    \u6B21\u306E\u9806\u4F4D\u306F\u98DB\u3070\u3059\n */\ntemplate <typename T, typename\
+    \ F = std::less<>>\nstd::vector<long long> rank(const std::vector<T>& v, F comp\
+    \ = F()) {\n    const long long n = v.size();\n    std::vector<long long> p =\
+    \ argsort(v, comp), ret(n);\n    for (long long i = 0; i < n; i++) {\n       \
+    \ ret[p[i]] = i > 0 && !comp(v[p[i - 1]], v[p[i]]) ? ret[p[i - 1]] : i;\n    }\n\
+    \    return ret;\n}\n\n/**\n * @brief {v[idx[0]], v[idx[1]], ...} (Uiua \u306E\
+    \ select)\n */\ntemplate <typename T, typename I, ENABLE_IF_T(std::is_integral_v<I>)>\n\
     std::vector<T> select(const std::vector<T>& v, const std::vector<I>& idx) {\n\
     \    std::vector<T> ret;\n    ret.reserve(idx.size());\n    for (I i : idx) {\n\
     \        assert(0 <= static_cast<long long>(i) && static_cast<long long>(i) <\
@@ -258,7 +273,7 @@ data:
   isVerificationFile: false
   path: src/utility/vector_func.hpp
   requiredBy: []
-  timestamp: '2026-10-30 17:07:55+09:00'
+  timestamp: '2026-10-30 22:43:40+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/utility/vector_func.test.cpp
@@ -280,6 +295,18 @@ auto idx = argsort(a, std::greater<>());  // 値の降順に並べた添字: {2,
 auto c = select(a, idx);          // {2, 1, 0}
 ```
 
+## 順位の求め方
+
+`p = argsort(v)` は「`k` 番目に小さい要素の添字が `p[k]`」という置換です。これをもう一度 `argsort` すると逆置換になり、「`v[i]` が何番目に小さいか」が得られます (APL の ⍋⍋)。`argsort` は安定なので、同率は添字の小さい順に別の順位になり、結果は必ず $0, \ldots, n-1$ の置換です。転倒数に渡すときなど、置換がほしいときはこれを使います。
+
+同率の扱いで、次の 3 つを使い分けます。
+
+| 書き方 | `{20, 10, 20, 30}` の結果 | 同率の扱い |
+|---|---|---|
+| `argsort(argsort(v))` | `{1, 0, 2, 3}` | 添字の小さい順に別の順位を付ける (置換になる) |
+| `rank(v)` | `{1, 0, 1, 3}` | 同じ順位にして、次の順位を飛ばす |
+| `Compress(v).ids(v)` | `{1, 0, 1, 2}` | 同じ番号にして、詰める ([座標圧縮](compress.hpp)) |
+
 ## 演算子
 
 | 演算子 | 説明 | 計算量 |
@@ -296,7 +323,8 @@ auto c = select(a, idx);          // {2, 1, 0}
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `argsort(v)` / `argsort(v, comp)` | 値を昇順 (`comp` の順) に安定ソートしたときの添字のリスト (`std::vector<long long>`)。APL の grade up。降順は `argsort(v, std::greater<>())` | $O(n \log n)$ |
+| `argsort(v)` / `argsort(v, comp)` | 値を昇順 (`comp` の順) に安定ソートしたときの添字のリスト (`std::vector<long long>`)。APL の grade up。降順は `argsort(v, std::greater<>())`。`argsort(argsort(v))` は各要素の順位 (同率は添字の小さい順に別の順位を付けた置換) | $O(n \log n)$ |
+| `rank(v)` / `rank(v, comp)` | 各要素の順位 (`v[i]` より前に来る要素の個数)。同率は同じ順位で、次の順位は飛ばす (`{30, 10, 30, 20}` なら `{2, 0, 2, 1}`)。飛ばさずに詰めるなら [座標圧縮](compress.hpp) の `Compress(v).ids(v)` | $O(n \log n)$ |
 | `select(v, idx)` | `{v[idx[0]], v[idx[1]], ...}`。`idx` は整数型の `vector` で、範囲外なら assert で落ちる。`select(a, argsort(b))` で `b` の昇順に `a` を並べる | $O(\lvert \mathit{idx} \rvert)$ |
 | `cumulative_sum(v)` | 先頭に 0 を付けた累積和 (長さ `size + 1`) | $O(n)$ |
 | `iota(n)` | `{0, 1, ..., n-1}` | $O(n)$ |

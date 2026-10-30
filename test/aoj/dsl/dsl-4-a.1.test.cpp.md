@@ -189,8 +189,16 @@ data:
     \ long> argsort(const std::vector<T>& v, F comp = F()) {\n    std::vector<long\
     \ long> ret(v.size());\n    std::iota(ret.begin(), ret.end(), 0LL);\n    std::stable_sort(ret.begin(),\
     \ ret.end(), [&](long long i, long long j) {\n        return comp(v[i], v[j]);\n\
-    \    });\n    return ret;\n}\n\n/**\n * @brief {v[idx[0]], v[idx[1]], ...} (Uiua\
-    \ \u306E select)\n */\ntemplate <typename T, typename I, ENABLE_IF_T(std::is_integral_v<I>)>\n\
+    \    });\n    return ret;\n}\n\n/**\n * @brief \u5404\u8981\u7D20\u306E\u9806\u4F4D\
+    \ (comp \u306E\u9806\u3067 v[i] \u3088\u308A\u524D\u306B\u6765\u308B\u8981\u7D20\
+    \u306E\u500B\u6570)\u3002\u540C\u7387\u306F\u540C\u3058\u9806\u4F4D\u3067\u3001\
+    \u6B21\u306E\u9806\u4F4D\u306F\u98DB\u3070\u3059\n */\ntemplate <typename T, typename\
+    \ F = std::less<>>\nstd::vector<long long> rank(const std::vector<T>& v, F comp\
+    \ = F()) {\n    const long long n = v.size();\n    std::vector<long long> p =\
+    \ argsort(v, comp), ret(n);\n    for (long long i = 0; i < n; i++) {\n       \
+    \ ret[p[i]] = i > 0 && !comp(v[p[i - 1]], v[p[i]]) ? ret[p[i - 1]] : i;\n    }\n\
+    \    return ret;\n}\n\n/**\n * @brief {v[idx[0]], v[idx[1]], ...} (Uiua \u306E\
+    \ select)\n */\ntemplate <typename T, typename I, ENABLE_IF_T(std::is_integral_v<I>)>\n\
     std::vector<T> select(const std::vector<T>& v, const std::vector<I>& idx) {\n\
     \    std::vector<T> ret;\n    ret.reserve(idx.size());\n    for (I i : idx) {\n\
     \        assert(0 <= static_cast<long long>(i) && static_cast<long long>(i) <\
@@ -308,7 +316,7 @@ data:
   isVerificationFile: true
   path: test/aoj/dsl/dsl-4-a.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-30 17:07:55+09:00'
+  timestamp: '2026-10-30 22:43:40+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/dsl/dsl-4-a.1.test.cpp

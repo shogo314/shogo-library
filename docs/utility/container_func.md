@@ -20,9 +20,9 @@ auto odd = indices_if(v, [](int x) { return x % 2 == 1; });  // {0, 1, 3, 4}
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `sorted(c, reverse = false)` / `sorted(c, comp)` | ソートしたコピーを返す | $O(n \log n)$ |
+| `sorted(c)` / `sorted(c, comp)` | ソートしたコピーを返す。降順は `sorted(c, std::greater<>())` | $O(n \log n)$ |
 | `reversed(c)` | 逆順にしたコピーを返す | $O(n)$ |
-| `sort(c, reverse = false)` / `sort(c, comp)` | その場でソート | $O(n \log n)$ |
+| `sort(c)` / `sort(c, comp)` | その場でソート。降順は `sort(c, std::greater<>())` | $O(n \log n)$ |
 | `sort_by_key(c, key)` | `key(x)` の昇順にその場でソート (比較のたびに `key` を呼ぶ) | `key` の呼び出し $O(n \log n)$ 回 |
 | `reverse(c)` | その場で逆順にする | $O(n)$ |
 

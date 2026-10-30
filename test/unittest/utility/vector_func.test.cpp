@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <cstdlib>
+#include <functional>
 #include <iostream>
 #include <random>
 #include <vector>
@@ -111,20 +112,35 @@ int main() {
             check(abs(a) == expect, "abs");
         }
 
-        // sorted_idx: 値の昇順 (降順) に並べた添字の並び替え
+        // argsort: 値の昇順 (降順) に安定ソートした添字の並び
         {
             for (bool rev : {false, true}) {
-                auto idx = sorted_idx(a, rev);
+                auto idx = rev ? argsort(a, std::greater<>()) : argsort(a);
                 std::vector<long long> perm = idx;
                 std::sort(perm.begin(), perm.end());
                 bool is_perm = static_cast<int>(perm.size()) == n;
                 for (int i = 0; i < static_cast<int>(perm.size()) && is_perm; i++) is_perm = perm[i] == i;
                 bool is_sorted = true;
                 for (int i = 0; i + 1 < static_cast<int>(idx.size()); i++) {
-                    if (rev ? a[idx[i]] < a[idx[i + 1]] : a[idx[i]] > a[idx[i + 1]]) is_sorted = false;
+                    long long x = a[idx[i]], y = a[idx[i + 1]];
+                    if (rev ? x < y : x > y) is_sorted = false;
+                    if (x == y && idx[i] > idx[i + 1]) is_sorted = false;  // 安定
                 }
-                check(is_perm && is_sorted, "sorted_idx");
+                check(is_perm && is_sorted, "argsort");
             }
+        }
+
+        // select: 添字の列で取り出す
+        {
+            std::vector<int> idx(n);
+            for (auto& i : idx) i = static_cast<int>(rng() % std::max(n, 1));
+            auto s = select(a, idx);
+            bool ok = static_cast<int>(s.size()) == n;
+            for (int i = 0; i < n && ok; i++) ok = s[i] == a[idx[i]];
+            check(ok, "select");
+            std::vector<long long> expect = a;
+            std::sort(expect.begin(), expect.end());
+            check(select(a, argsort(a)) == expect, "select(v, argsort(v))");
         }
 
         // hamming_distance (同じ長さどうし、型が異なってもよい)

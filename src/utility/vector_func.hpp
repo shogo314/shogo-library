@@ -9,20 +9,37 @@
 #include <cassert>
 #include <cmath>
 #include <cstddef>
+#include <functional>
 #include <numeric>
 #include <type_traits>
 #include <vector>
 
 #include "traits.hpp"
 
-template <typename T>
-std::vector<long long> sorted_idx(const std::vector<T>& v, bool reverse = false) {
+/**
+ * @brief 値を comp の順に安定ソートしたときの添字の並び (APL の grade up)
+ */
+template <typename T, typename F = std::less<>>
+std::vector<long long> argsort(const std::vector<T>& v, F comp = F()) {
     std::vector<long long> ret(v.size());
     std::iota(ret.begin(), ret.end(), 0LL);
-    std::sort(ret.begin(), ret.end(), [&](long long i, long long j) {
-        return v[i] < v[j];
+    std::stable_sort(ret.begin(), ret.end(), [&](long long i, long long j) {
+        return comp(v[i], v[j]);
     });
-    if (reverse) std::reverse(ret.begin(), ret.end());
+    return ret;
+}
+
+/**
+ * @brief {v[idx[0]], v[idx[1]], ...} (Uiua の select)
+ */
+template <typename T, typename I, ENABLE_IF_T(std::is_integral_v<I>)>
+std::vector<T> select(const std::vector<T>& v, const std::vector<I>& idx) {
+    std::vector<T> ret;
+    ret.reserve(idx.size());
+    for (I i : idx) {
+        assert(0 <= static_cast<long long>(i) && static_cast<long long>(i) < static_cast<long long>(v.size()));
+        ret.push_back(v[i]);
+    }
     return ret;
 }
 

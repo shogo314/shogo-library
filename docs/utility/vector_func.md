@@ -10,7 +10,8 @@ std::vector<int> a = {1, 2, 3};
 a--;                              // 0-indexed にする: {0, 1, 2}
 auto s = cumulative_sum(a);       // {0, 0, 1, 3}
 auto b = a | 2;                   // {0, 1, 2, 0, 1, 2}
-auto idx = sorted_idx(a, true);   // 値の降順に並べた添字
+auto idx = argsort(a, std::greater<>());  // 値の降順に並べた添字: {2, 1, 0}
+auto c = select(a, idx);          // {2, 1, 0}
 ```
 
 ## 演算子
@@ -29,7 +30,8 @@ auto idx = sorted_idx(a, true);   // 値の降順に並べた添字
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `sorted_idx(v, reverse = false)` | 値の昇順 (降順) に並べた添字のリスト (`std::vector<long long>`) | $O(n \log n)$ |
+| `argsort(v)` / `argsort(v, comp)` | 値を昇順 (`comp` の順) に安定ソートしたときの添字のリスト (`std::vector<long long>`)。APL の grade up。降順は `argsort(v, std::greater<>())` | $O(n \log n)$ |
+| `select(v, idx)` | `{v[idx[0]], v[idx[1]], ...}`。`idx` は整数型の `vector` で、範囲外なら assert で落ちる。`select(a, argsort(b))` で `b` の昇順に `a` を並べる | $O(\lvert \mathit{idx} \rvert)$ |
 | `cumulative_sum(v)` | 先頭に 0 を付けた累積和 (長さ `size + 1`) | $O(n)$ |
 | `iota(n)` | `{0, 1, ..., n-1}` | $O(n)$ |
 | `unique(v)` | ソートして重複を除いたコピー | $O(n \log n)$ |

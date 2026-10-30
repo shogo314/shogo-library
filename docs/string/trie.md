@@ -67,7 +67,7 @@ auto d = shortest_path(g, 0, false).dist;
 Trie<9, 1> trie;  // 文字は 1〜9
 std::vector<long long> node(n, -1);
 node[0] = 0;
-for (long long u : sorted_idx(d)) {
+for (long long u : argsort(d)) {
     for (auto& e : g[u]) {
         if (d[e.dst] != d[u] + 1) continue;
         long long v = trie.extend(node[u], e.cost);

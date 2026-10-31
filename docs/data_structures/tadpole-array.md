@@ -20,5 +20,4 @@ int b = t[1000000000000LL];   // 2
 
 ## 関連
 
-- 先頭からループする配列は [円環](circular-ring.hpp)
 - [ファンクショナルグラフ](../graph/functional-graph.hpp)

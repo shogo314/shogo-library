@@ -32,7 +32,7 @@ auto [cost, edges] = minimum_spanning_tree(g);
 | `minimum_spanning_tree(g)` | 最小全域木 (Kruskal 法)。`cost` (コストの総和) と `edges` (使った辺) を持つ構造体を返す。連結でなければ最小全域森 | 無向 | $O(m \log m)$ |
 | `minimum_steiner_tree(g, X, inf = max / 4)` | 頂点集合 `X` をすべて含む部分木の辺の重みの総和の最小値 (`std::optional<Cost>`)。`X` が空なら 0、`X` を連結にできなければ `std::nullopt` | 無向 | $O(3^k n + 2^k m \log m)$ ($k = \lvert X \rvert$) |
 | `minimum_steiner_tree_restore(g, X, inf = max / 4)` | 頂点集合 `X` をすべて含む重み最小の部分木を 1 つ求め、その辺の番号を昇順に並べたもの (`std::optional<std::vector<long long>>`)。`X` が空なら空、`X` を連結にできなければ `std::nullopt` | 無向 | `minimum_steiner_tree` と同じ |
-| `chromatic_number(g)` | 彩色数 (隣り合う頂点が同じ色にならないように塗るときの色の最小数)。頂点がなければ 0、自己ループがあれば -1。頂点数 20 程度まで。確率的なアルゴリズムでよければ、[集合の被覆](../dp/set-cover.hpp) の `min_set_cover` (独立集合で覆う、$O(2^n n)$) で速くできる | 無向 | $O(3^n)$ より速い |
+| `chromatic_number(g)` | 彩色数 (隣り合う頂点が同じ色にならないように塗るときの色の最小数)。頂点がなければ 0、自己ループがあれば -1。頂点数 20 程度まで。確率的なアルゴリズムでよければ、[集合の被覆](../dp/set-cover.hpp) の `min_set_cover` (独立集合で覆う、$O(2^n n)$) で速くできる | 無向 | $O(3^n)$ (枝刈りで定数倍は速いが、2 頂点ずつ辺で結んだグラフなどでは $3^n / 2$ 回近くまわる) |
 | `maximum_independent_set(g)` | 最大独立集合 (どの 2 頂点も隣り合わない頂点集合で要素数が最大のもの) の頂点を昇順に返す。頂点数 64 以下 (40 程度なら十分速い)。自己ループのある頂点は選ばない | 無向 | $O(1.39^n)$ 程度 |
 | `enumerate_triangles(g, f)` | 三角形 (互いに隣り合う 3 頂点) をすべて列挙し、それぞれについて `f(a, b, c)` ($a < b < c$) を呼ぶ。自己ループと多重辺はないこと | 無向 | $O(m \sqrt{m})$ |
 

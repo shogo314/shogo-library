@@ -87,55 +87,58 @@ data:
     \ long v) const {\n        return g[v];\n    }\n    /**\n     * @brief \u8FBA\u306E\
     \u30EA\u30B9\u30C8\n     * @return std::vector<Edge> \u8FBA\u306E\u30EA\u30B9\u30C8\
     (id\u306E\u6607\u9806)\n     *\n     * \u7121\u5411\u8FBA\u306F\u4EE3\u8868\u3057\
-    \u30661\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\n     */\n    std::vector<Edge>\
-    \ edges() const {\n        std::vector<Edge> res(m);\n        for (long long i\
-    \ = 0; i < n; i++) {\n            for (auto& e : g[i]) {\n                res[e.id]\
-    \ = e;\n            }\n        }\n        return res;\n    }\n};\n#line 13 \"\
-    src/graph/dominator-tree.hpp\"\n\n/**\n * @brief \u6709\u5411\u30B0\u30E9\u30D5\
-    \u306E\u652F\u914D\u6728 (Lengauer\u2013Tarjan) O(m log n)\n *\n * root \u304B\
-    \u3089 v \u3078\u306E\u3069\u306E\u9053\u3082\u901A\u308B\u9802\u70B9\u306E\u3046\
-    \u3061\u3001v \u4EE5\u5916\u3067 v \u306B\u6700\u3082\u8FD1\u3044\u3082\u306E\
-    \ (\u76F4\u8FD1\u652F\u914D\u70B9) \u3092\u6C42\u3081\u308B\n * @return \u5404\
-    \u9802\u70B9\u306E\u76F4\u8FD1\u652F\u914D\u70B9\u3002root \u3068\u3001root \u304B\
-    \u3089\u5230\u9054\u3067\u304D\u306A\u3044\u9802\u70B9\u306F -1\n */\ntemplate\
-    \ <typename Cost>\nstd::vector<long long> dominator_tree(const Graph<Cost>& graph,\
-    \ long long root) {\n    const long long n = graph.n;\n    assert(0 <= root &&\
-    \ root < n);\n    std::vector<std::vector<long long>> radj(n);\n    for (long\
-    \ long u = 0; u < n; u++) {\n        for (const auto& e : graph[u]) radj[e.dst].push_back(u);\n\
-    \    }\n    // DFS \u306E\u884C\u304D\u304C\u3051\u9806\u3002\u4EE5\u4E0B\u306F\
-    \u9802\u70B9\u3067\u306F\u306A\u304F\u3001\u3053\u306E\u9806\u756A (0 \u304C root)\
-    \ \u3067\u6271\u3046\n    std::vector<long long> ord(n, -1), vertex, par;\n  \
-    \  {\n        std::vector<std::pair<long long, long long>> stk = {{root, -1}};\n\
-    \        while (!stk.empty()) {\n            auto [u, p] = stk.back();\n     \
-    \       stk.pop_back();\n            if (ord[u] != -1) continue;\n           \
-    \ ord[u] = vertex.size();\n            vertex.push_back(u);\n            par.push_back(p);\n\
-    \            for (const auto& e : graph[u]) {\n                if (ord[e.dst]\
-    \ == -1) stk.emplace_back(e.dst, ord[u]);\n            }\n        }\n    }\n \
-    \   const long long k = vertex.size();\n    // semi: \u6E96\u652F\u914D\u70B9\u3001\
-    anc\u30FBlabel: \u51E6\u7406\u6E08\u307F\u306E\u68EE (\u7D4C\u8DEF\u5727\u7E2E\
-    \u3064\u304D) \u3067 semi \u304C\u6700\u5C0F\u306E\u9802\u70B9\u3092\u6C42\u3081\
-    \u308B\u305F\u3081\u306E\u3082\u306E\n    std::vector<long long> semi(k), idom(k,\
-    \ -1), anc(k, -1), label(k);\n    std::vector<std::vector<long long>> bucket(k);\n\
-    \    for (long long i = 0; i < k; i++) semi[i] = label[i] = i;\n    std::vector<long\
-    \ long> path;\n    // v \u304B\u3089\u68EE\u306E\u6839\u306E\u624B\u524D\u307E\
-    \u3067\u3067\u3001semi \u304C\u6700\u5C0F\u306E\u9802\u70B9\n    auto eval = [&](long\
-    \ long v) {\n        if (anc[v] == -1) return v;\n        for (long long x = v;\
-    \ anc[anc[x]] != -1; x = anc[x]) path.push_back(x);\n        // \u6839\u306B\u8FD1\
-    \u3044\u65B9\u304B\u3089\u5727\u7E2E\u3059\u308B\n        while (!path.empty())\
-    \ {\n            long long x = path.back();\n            path.pop_back();\n  \
-    \          if (semi[label[anc[x]]] < semi[label[x]]) label[x] = label[anc[x]];\n\
-    \            anc[x] = anc[anc[x]];\n        }\n        return label[v];\n    };\n\
-    \    for (long long w = k - 1; w >= 1; w--) {\n        for (long long u : radj[vertex[w]])\
-    \ {\n            if (ord[u] == -1) continue;\n            semi[w] = std::min(semi[w],\
-    \ semi[eval(ord[u])]);\n        }\n        bucket[semi[w]].push_back(w);\n   \
-    \     anc[w] = par[w];\n        for (long long v : bucket[par[w]]) {\n       \
-    \     long long u = eval(v);\n            idom[v] = semi[u] < semi[v] ? u : par[w];\n\
-    \        }\n        bucket[par[w]].clear();\n    }\n    for (long long w = 1;\
-    \ w < k; w++) {\n        if (idom[w] != semi[w]) idom[w] = idom[idom[w]];\n  \
-    \  }\n    std::vector<long long> res(n, -1);\n    for (long long w = 1; w < k;\
-    \ w++) res[vertex[w]] = vertex[idom[w]];\n    return res;\n}\n#line 6 \"test/yosupo/graph/dominatortree.test.cpp\"\
-    \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
-    \    int n, m, s;\n    std::cin >> n >> m >> s;\n    Graph<int> g(n);\n    g.read(m,\
+    \u30661\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\u3002\u305D\u306E src\
+    \ \u3068 dst \u306E\u5411\u304D\u306F\u898F\u5B9A\u3057\u306A\u3044\n     * \u6709\
+    \u5411\u8FBA\u306F\u8FFD\u52A0\u3057\u305F\u3068\u304D\u306E\u5411\u304D\u306E\
+    \u307E\u307E\u683C\u7D0D\u3055\u308C\u308B\n     */\n    std::vector<Edge> edges()\
+    \ const {\n        std::vector<Edge> res(m);\n        for (long long i = 0; i\
+    \ < n; i++) {\n            for (auto& e : g[i]) {\n                res[e.id] =\
+    \ e;\n            }\n        }\n        return res;\n    }\n};\n#line 13 \"src/graph/dominator-tree.hpp\"\
+    \n\n/**\n * @brief \u6709\u5411\u30B0\u30E9\u30D5\u306E\u652F\u914D\u6728 (Lengauer\u2013\
+    Tarjan) O(m log n)\n *\n * root \u304B\u3089 v \u3078\u306E\u3069\u306E\u9053\u3082\
+    \u901A\u308B\u9802\u70B9\u306E\u3046\u3061\u3001v \u4EE5\u5916\u3067 v \u306B\u6700\
+    \u3082\u8FD1\u3044\u3082\u306E (\u76F4\u8FD1\u652F\u914D\u70B9) \u3092\u6C42\u3081\
+    \u308B\n * @return \u5404\u9802\u70B9\u306E\u76F4\u8FD1\u652F\u914D\u70B9\u3002\
+    root \u3068\u3001root \u304B\u3089\u5230\u9054\u3067\u304D\u306A\u3044\u9802\u70B9\
+    \u306F -1\n */\ntemplate <typename Cost>\nstd::vector<long long> dominator_tree(const\
+    \ Graph<Cost>& graph, long long root) {\n    const long long n = graph.n;\n  \
+    \  assert(0 <= root && root < n);\n    std::vector<std::vector<long long>> radj(n);\n\
+    \    for (long long u = 0; u < n; u++) {\n        for (const auto& e : graph[u])\
+    \ radj[e.dst].push_back(u);\n    }\n    // DFS \u306E\u884C\u304D\u304C\u3051\u9806\
+    \u3002\u4EE5\u4E0B\u306F\u9802\u70B9\u3067\u306F\u306A\u304F\u3001\u3053\u306E\
+    \u9806\u756A (0 \u304C root) \u3067\u6271\u3046\n    std::vector<long long> ord(n,\
+    \ -1), vertex, par;\n    {\n        std::vector<std::pair<long long, long long>>\
+    \ stk = {{root, -1}};\n        while (!stk.empty()) {\n            auto [u, p]\
+    \ = stk.back();\n            stk.pop_back();\n            if (ord[u] != -1) continue;\n\
+    \            ord[u] = vertex.size();\n            vertex.push_back(u);\n     \
+    \       par.push_back(p);\n            for (const auto& e : graph[u]) {\n    \
+    \            if (ord[e.dst] == -1) stk.emplace_back(e.dst, ord[u]);\n        \
+    \    }\n        }\n    }\n    const long long k = vertex.size();\n    // semi:\
+    \ \u6E96\u652F\u914D\u70B9\u3001anc\u30FBlabel: \u51E6\u7406\u6E08\u307F\u306E\
+    \u68EE (\u7D4C\u8DEF\u5727\u7E2E\u3064\u304D) \u3067 semi \u304C\u6700\u5C0F\u306E\
+    \u9802\u70B9\u3092\u6C42\u3081\u308B\u305F\u3081\u306E\u3082\u306E\n    std::vector<long\
+    \ long> semi(k), idom(k, -1), anc(k, -1), label(k);\n    std::vector<std::vector<long\
+    \ long>> bucket(k);\n    for (long long i = 0; i < k; i++) semi[i] = label[i]\
+    \ = i;\n    std::vector<long long> path;\n    // v \u304B\u3089\u68EE\u306E\u6839\
+    \u306E\u624B\u524D\u307E\u3067\u3067\u3001semi \u304C\u6700\u5C0F\u306E\u9802\u70B9\
+    \n    auto eval = [&](long long v) {\n        if (anc[v] == -1) return v;\n  \
+    \      for (long long x = v; anc[anc[x]] != -1; x = anc[x]) path.push_back(x);\n\
+    \        // \u6839\u306B\u8FD1\u3044\u65B9\u304B\u3089\u5727\u7E2E\u3059\u308B\
+    \n        while (!path.empty()) {\n            long long x = path.back();\n  \
+    \          path.pop_back();\n            if (semi[label[anc[x]]] < semi[label[x]])\
+    \ label[x] = label[anc[x]];\n            anc[x] = anc[anc[x]];\n        }\n  \
+    \      return label[v];\n    };\n    for (long long w = k - 1; w >= 1; w--) {\n\
+    \        for (long long u : radj[vertex[w]]) {\n            if (ord[u] == -1)\
+    \ continue;\n            semi[w] = std::min(semi[w], semi[eval(ord[u])]);\n  \
+    \      }\n        bucket[semi[w]].push_back(w);\n        anc[w] = par[w];\n  \
+    \      for (long long v : bucket[par[w]]) {\n            long long u = eval(v);\n\
+    \            idom[v] = semi[u] < semi[v] ? u : par[w];\n        }\n        bucket[par[w]].clear();\n\
+    \    }\n    for (long long w = 1; w < k; w++) {\n        if (idom[w] != semi[w])\
+    \ idom[w] = idom[idom[w]];\n    }\n    std::vector<long long> res(n, -1);\n  \
+    \  for (long long w = 1; w < k; w++) res[vertex[w]] = vertex[idom[w]];\n    return\
+    \ res;\n}\n#line 6 \"test/yosupo/graph/dominatortree.test.cpp\"\n\nint main()\
+    \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    int\
+    \ n, m, s;\n    std::cin >> n >> m >> s;\n    Graph<int> g(n);\n    g.read(m,\
     \ 0, false, true);\n    auto idom = dominator_tree(g, s);\n    for (int v = 0;\
     \ v < n; v++) std::cout << (v == s ? s : idom[v]) << \" \\n\"[v == n - 1];\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/dominatortree\"\n\n#include\
@@ -150,7 +153,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/graph/dominatortree.test.cpp
   requiredBy: []
-  timestamp: '2026-10-23 13:31:57+09:00'
+  timestamp: '2026-10-31 18:12:46+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/graph/dominatortree.test.cpp

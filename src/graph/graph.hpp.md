@@ -119,6 +119,9 @@ data:
     path: test/unittest/graph/general-matching.test.cpp
     title: test/unittest/graph/general-matching.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/graph/graph-edges.test.cpp
+    title: test/unittest/graph/graph-edges.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/graph/graph.test.cpp
     title: test/unittest/graph/graph.test.cpp
   - icon: ':heavy_check_mark:'
@@ -136,6 +139,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/graph/shortest-path.test.cpp
     title: test/unittest/graph/shortest-path.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/graph/tree-member.test.cpp
+    title: test/unittest/graph/tree-member.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/graph/tree.test.cpp
     title: test/unittest/graph/tree.test.cpp
@@ -328,10 +334,13 @@ data:
     \ long v) const {\n        return g[v];\n    }\n    /**\n     * @brief \u8FBA\u306E\
     \u30EA\u30B9\u30C8\n     * @return std::vector<Edge> \u8FBA\u306E\u30EA\u30B9\u30C8\
     (id\u306E\u6607\u9806)\n     *\n     * \u7121\u5411\u8FBA\u306F\u4EE3\u8868\u3057\
-    \u30661\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\n     */\n    std::vector<Edge>\
-    \ edges() const {\n        std::vector<Edge> res(m);\n        for (long long i\
-    \ = 0; i < n; i++) {\n            for (auto& e : g[i]) {\n                res[e.id]\
-    \ = e;\n            }\n        }\n        return res;\n    }\n};\n"
+    \u30661\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\u3002\u305D\u306E src\
+    \ \u3068 dst \u306E\u5411\u304D\u306F\u898F\u5B9A\u3057\u306A\u3044\n     * \u6709\
+    \u5411\u8FBA\u306F\u8FFD\u52A0\u3057\u305F\u3068\u304D\u306E\u5411\u304D\u306E\
+    \u307E\u307E\u683C\u7D0D\u3055\u308C\u308B\n     */\n    std::vector<Edge> edges()\
+    \ const {\n        std::vector<Edge> res(m);\n        for (long long i = 0; i\
+    \ < n; i++) {\n            for (auto& e : g[i]) {\n                res[e.id] =\
+    \ e;\n            }\n        }\n        return res;\n    }\n};\n"
   code: "#pragma once\n\n/**\n * @file graph.hpp\n * @brief \u30B0\u30E9\u30D5\n */\n\
     \n#include <cassert>\n#include <iostream>\n#include <vector>\n\n/**\n * @brief\
     \ \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam Cost\
@@ -398,10 +407,13 @@ data:
     \   }\n    /**\n     * @brief \u8FBA\u306E\u30EA\u30B9\u30C8\n     * @return std::vector<Edge>\
     \ \u8FBA\u306E\u30EA\u30B9\u30C8(id\u306E\u6607\u9806)\n     *\n     * \u7121\u5411\
     \u8FBA\u306F\u4EE3\u8868\u3057\u30661\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\
-    \u308B\n     */\n    std::vector<Edge> edges() const {\n        std::vector<Edge>\
-    \ res(m);\n        for (long long i = 0; i < n; i++) {\n            for (auto&\
-    \ e : g[i]) {\n                res[e.id] = e;\n            }\n        }\n    \
-    \    return res;\n    }\n};\n"
+    \u308B\u3002\u305D\u306E src \u3068 dst \u306E\u5411\u304D\u306F\u898F\u5B9A\u3057\
+    \u306A\u3044\n     * \u6709\u5411\u8FBA\u306F\u8FFD\u52A0\u3057\u305F\u3068\u304D\
+    \u306E\u5411\u304D\u306E\u307E\u307E\u683C\u7D0D\u3055\u308C\u308B\n     */\n\
+    \    std::vector<Edge> edges() const {\n        std::vector<Edge> res(m);\n  \
+    \      for (long long i = 0; i < n; i++) {\n            for (auto& e : g[i]) {\n\
+    \                res[e.id] = e;\n            }\n        }\n        return res;\n\
+    \    }\n};\n"
   dependsOn: []
   isVerificationFile: false
   path: src/graph/graph.hpp
@@ -422,7 +434,7 @@ data:
   - src/graph/heavy-light-decomposition.hpp
   - src/graph/centroid-decomposition.hpp
   - src/graph/minimum-arborescence.hpp
-  timestamp: '2026-10-22 13:40:29+09:00'
+  timestamp: '2026-10-31 18:12:46+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/yukicoder/1641.test.cpp
@@ -431,6 +443,7 @@ data:
   - test/unittest/graph/tree_util.test.cpp
   - test/unittest/graph/minimum-arborescence.test.cpp
   - test/unittest/graph/tree.test.cpp
+  - test/unittest/graph/graph-edges.test.cpp
   - test/unittest/graph/auxiliary-tree.test.cpp
   - test/unittest/graph/dominator-tree.test.cpp
   - test/unittest/graph/rerooting-dp.test.cpp
@@ -441,6 +454,7 @@ data:
   - test/unittest/graph/general-matching.test.cpp
   - test/unittest/graph/two-sat.test.cpp
   - test/unittest/graph/centroid-decomposition.test.cpp
+  - test/unittest/graph/tree-member.test.cpp
   - test/unittest/graph/shortest-path.test.cpp
   - test/unittest/data_structures/graph_util.test.cpp
   - test/unittest/data_structures/find-cycle.test.cpp
@@ -517,6 +531,8 @@ for (auto& e : g[u]) { /* e.src, e.dst, e.cost, e.id */ }
 | `read(m, padding = -1, weighted = false, directed = false)` | 標準入力から `m` 本の辺を読む。頂点番号に `padding` を足す | $O(m)$ |
 | `g[v]` | `v` から出る辺 (`Edge`) のリスト | $O(1)$ |
 | `edges()` | 全辺のリスト (`id` 順、無向辺は 1 本だけ) | $O(n + m)$ |
+
+`edges()` の `i` 番目は `id` が `i` の辺です。無向辺は `src` と `dst` のどちらが追加したときの `u` になるかを決めていないので、向きに頼らないでください。有向辺は追加したときの向きのままです。
 
 `Edge` は `src`、`dst`、`cost`、`id` (追加順の番号、無向辺は両方向で同じ) を持ち、`long long` に変換すると `dst` になります。`src`・`dst`・`id` は `long long` です。
 

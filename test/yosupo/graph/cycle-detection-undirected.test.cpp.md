@@ -89,25 +89,28 @@ data:
     \ * @brief \u8FBA\u306E\u30EA\u30B9\u30C8\n     * @return std::vector<Edge> \u8FBA\
     \u306E\u30EA\u30B9\u30C8(id\u306E\u6607\u9806)\n     *\n     * \u7121\u5411\u8FBA\
     \u306F\u4EE3\u8868\u3057\u30661\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\
-    \n     */\n    std::vector<Edge> edges() const {\n        std::vector<Edge> res(m);\n\
-    \        for (long long i = 0; i < n; i++) {\n            for (auto& e : g[i])\
-    \ {\n                res[e.id] = e;\n            }\n        }\n        return\
-    \ res;\n    }\n};\n#line 2 \"src/graph/graph_util.hpp\"\n\n/**\n * @file graph_util.hpp\n\
-    \ * @brief \u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570\n */\n\n#include\
-    \ <algorithm>\n#line 10 \"src/graph/graph_util.hpp\"\n#include <functional>\n\
-    #include <limits>\n#include <optional>\n#include <queue>\n#include <stack>\n#include\
-    \ <utility>\n#line 17 \"src/graph/graph_util.hpp\"\n\n#line 2 \"src/data_structures/unionfind.hpp\"\
-    \n\n/**\n * @file unionfind.hpp\n * @brief UnionFind\n */\n\n#line 12 \"src/data_structures/unionfind.hpp\"\
-    \n\nnamespace internal_unionfind {\n/**\n * @brief \u5404\u8981\u7D20\u306E\u4EE3\
-    \u8868\u5143\u304B\u3089\u3001\u9023\u7D50\u6210\u5206\u3054\u3068\u306E\u8981\
-    \u7D20\u306E\u30EA\u30B9\u30C8\u3092\u4F5C\u308B\n * @param leader \u8981\u7D20\
-    \ a \u306E\u4EE3\u8868\u5143\u3092\u8FD4\u3059\u95A2\u6570\n */\ntemplate <typename\
-    \ F>\nstd::vector<std::vector<long long>> groups(long long n, F leader) {\n  \
-    \  std::vector<long long> leader_buf(n), group_size(n);\n    for (long long i\
-    \ = 0; i < n; i++) {\n        leader_buf[i] = leader(i);\n        group_size[leader_buf[i]]++;\n\
-    \    }\n    std::vector<std::vector<long long>> result(n);\n    for (long long\
-    \ i = 0; i < n; i++) {\n        result[i].reserve(group_size[i]);\n    }\n   \
-    \ for (long long i = 0; i < n; i++) {\n        result[leader_buf[i]].push_back(i);\n\
+    \u3002\u305D\u306E src \u3068 dst \u306E\u5411\u304D\u306F\u898F\u5B9A\u3057\u306A\
+    \u3044\n     * \u6709\u5411\u8FBA\u306F\u8FFD\u52A0\u3057\u305F\u3068\u304D\u306E\
+    \u5411\u304D\u306E\u307E\u307E\u683C\u7D0D\u3055\u308C\u308B\n     */\n    std::vector<Edge>\
+    \ edges() const {\n        std::vector<Edge> res(m);\n        for (long long i\
+    \ = 0; i < n; i++) {\n            for (auto& e : g[i]) {\n                res[e.id]\
+    \ = e;\n            }\n        }\n        return res;\n    }\n};\n#line 2 \"src/graph/graph_util.hpp\"\
+    \n\n/**\n * @file graph_util.hpp\n * @brief \u30B0\u30E9\u30D5\u306B\u95A2\u3059\
+    \u308B\u95A2\u6570\n */\n\n#include <algorithm>\n#line 10 \"src/graph/graph_util.hpp\"\
+    \n#include <functional>\n#include <limits>\n#include <optional>\n#include <queue>\n\
+    #include <stack>\n#include <utility>\n#line 17 \"src/graph/graph_util.hpp\"\n\n\
+    #line 2 \"src/data_structures/unionfind.hpp\"\n\n/**\n * @file unionfind.hpp\n\
+    \ * @brief UnionFind\n */\n\n#line 12 \"src/data_structures/unionfind.hpp\"\n\n\
+    namespace internal_unionfind {\n/**\n * @brief \u5404\u8981\u7D20\u306E\u4EE3\u8868\
+    \u5143\u304B\u3089\u3001\u9023\u7D50\u6210\u5206\u3054\u3068\u306E\u8981\u7D20\
+    \u306E\u30EA\u30B9\u30C8\u3092\u4F5C\u308B\n * @param leader \u8981\u7D20 a \u306E\
+    \u4EE3\u8868\u5143\u3092\u8FD4\u3059\u95A2\u6570\n */\ntemplate <typename F>\n\
+    std::vector<std::vector<long long>> groups(long long n, F leader) {\n    std::vector<long\
+    \ long> leader_buf(n), group_size(n);\n    for (long long i = 0; i < n; i++) {\n\
+    \        leader_buf[i] = leader(i);\n        group_size[leader_buf[i]]++;\n  \
+    \  }\n    std::vector<std::vector<long long>> result(n);\n    for (long long i\
+    \ = 0; i < n; i++) {\n        result[i].reserve(group_size[i]);\n    }\n    for\
+    \ (long long i = 0; i < n; i++) {\n        result[leader_buf[i]].push_back(i);\n\
     \    }\n    result.erase(std::remove_if(result.begin(), result.end(), [&](const\
     \ std::vector<long long>& v) { return v.empty(); }), result.end());\n    return\
     \ result;\n}\n}  // namespace internal_unionfind\n\n/**\n * @brief \u7121\u5411\
@@ -546,7 +549,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/graph/cycle-detection-undirected.test.cpp
   requiredBy: []
-  timestamp: '2026-10-31 17:31:56+09:00'
+  timestamp: '2026-10-31 18:12:46+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/graph/cycle-detection-undirected.test.cpp

@@ -1184,6 +1184,9 @@ data:
       path: test/unittest/graph/general-matching.test.cpp
       title: test/unittest/graph/general-matching.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/graph/graph-edges.test.cpp
+      title: test/unittest/graph/graph-edges.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/graph/graph.test.cpp
       title: test/unittest/graph/graph.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1213,6 +1216,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/graph/shortest-path.test.cpp
       title: test/unittest/graph/shortest-path.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/graph/tree-member.test.cpp
+      title: test/unittest/graph/tree-member.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/graph/tree.test.cpp
       title: test/unittest/graph/tree.test.cpp
@@ -1359,6 +1365,9 @@ data:
       title: test/unittest/string/wildcard-matching.test.cpp
   - name: test/unittest/utility
     pages:
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/utility/binary-search.test.cpp
+      title: test/unittest/utility/binary-search.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/utility/bit.test.cpp
       title: test/unittest/utility/bit.test.cpp

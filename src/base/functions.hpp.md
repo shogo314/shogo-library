@@ -8,7 +8,13 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/math/stern-brocot.hpp
     title: "Stern\u2013Brocot \u6728\u3068\u9023\u5206\u6570"
+  - icon: ':heavy_check_mark:'
+    path: src/utility/binary-search.hpp
+    title: "\u4E8C\u5206\u63A2\u7D22"
   _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/alds1/alds1-4-d.test.cpp
+    title: test/aoj/alds1/alds1-4-d.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/dsl/dsl-5-a.test.cpp
     title: test/aoj/dsl/dsl-5-a.test.cpp
@@ -27,6 +33,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/math/stern-brocot.test.cpp
     title: test/unittest/math/stern-brocot.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/utility/binary-search.test.cpp
+    title: test/unittest/utility/binary-search.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/number_theory/rational-approximation.test.cpp
     title: test/yosupo/number_theory/rational-approximation.test.cpp
@@ -151,17 +160,20 @@ data:
   isVerificationFile: false
   path: src/base/functions.hpp
   requiredBy:
+  - src/utility/binary-search.hpp
   - src/math/rational.hpp
   - src/math/stern-brocot.hpp
   timestamp: '2026-10-20 02:23:35+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/base/functions.test.cpp
+  - test/unittest/utility/binary-search.test.cpp
   - test/unittest/math/stern-brocot.test.cpp
   - test/unittest/math/rational.test.cpp
   - test/aoj/ntl/ntl-1-e.test.cpp
   - test/aoj/volume11/1160.test.cpp
   - test/aoj/dsl/dsl-5-a.test.cpp
+  - test/aoj/alds1/alds1-4-d.test.cpp
   - test/yosupo/number_theory/stern-brocot-tree.test.cpp
   - test/yosupo/number_theory/rational-approximation.test.cpp
 documentation_of: src/base/functions.hpp

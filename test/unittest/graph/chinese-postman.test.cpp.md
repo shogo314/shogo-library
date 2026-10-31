@@ -107,26 +107,28 @@ data:
     \   }\n    /**\n     * @brief \u8FBA\u306E\u30EA\u30B9\u30C8\n     * @return std::vector<Edge>\
     \ \u8FBA\u306E\u30EA\u30B9\u30C8(id\u306E\u6607\u9806)\n     *\n     * \u7121\u5411\
     \u8FBA\u306F\u4EE3\u8868\u3057\u30661\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\
-    \u308B\n     */\n    std::vector<Edge> edges() const {\n        std::vector<Edge>\
-    \ res(m);\n        for (long long i = 0; i < n; i++) {\n            for (auto&\
-    \ e : g[i]) {\n                res[e.id] = e;\n            }\n        }\n    \
-    \    return res;\n    }\n};\n#line 2 \"src/graph/shortest-path.hpp\"\n\n/**\n\
-    \ * @file shortest-path.hpp\n * @brief \u6700\u77ED\u8DEF\n */\n\n#line 10 \"\
-    src/graph/shortest-path.hpp\"\n#include <deque>\n#include <functional>\n#line\
-    \ 14 \"src/graph/shortest-path.hpp\"\n#include <queue>\n#include <utility>\n#line\
-    \ 17 \"src/graph/shortest-path.hpp\"\n\n#line 19 \"src/graph/shortest-path.hpp\"\
-    \n\n/**\n * @brief \u6700\u77ED\u8DEF\u306E\u7D50\u679C\n *\n * auto [dist, prev]\
-    \ = shortest_path(g, s); \u306E\u3088\u3046\u306B\u53D7\u3051\u53D6\u308C\u308B\
-    \n */\ntemplate <typename Cost>\nstruct ShortestPath {\n    using Edge = typename\
-    \ Graph<Cost>::Edge;\n    std::vector<Cost> dist;  //!< \u5404\u9802\u70B9\u3078\
-    \u306E\u6700\u77ED\u8DEF\u9577\n    std::vector<Edge> prev;  //!< \u5404\u9802\
-    \u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA (\u59CB\
-    \u70B9\u3068\u672A\u5230\u9054\u306E\u9802\u70B9\u3067\u306F src == -1)\n    /**\n\
-    \     * @brief \u59CB\u70B9\u304B\u3089 t \u3078\u306E\u6700\u77ED\u8DEF\u3092\
-    \u69CB\u6210\u3059\u308B\u8FBA\u306E\u30EA\u30B9\u30C8 (\u59CB\u70B9\u5074\u304B\
-    \u3089\u9806\u306B)\n     * @return std::optional<std::vector<Edge>> t \u304C\u59CB\
-    \u70B9\u306A\u3089\u7A7A\u3001\u672A\u5230\u9054\u306A\u3089 std::nullopt\n  \
-    \   * @note \u8CA0\u9589\u8DEF\u306E\u5F71\u97FF\u3092\u53D7\u3051\u308B\u9802\
+    \u308B\u3002\u305D\u306E src \u3068 dst \u306E\u5411\u304D\u306F\u898F\u5B9A\u3057\
+    \u306A\u3044\n     * \u6709\u5411\u8FBA\u306F\u8FFD\u52A0\u3057\u305F\u3068\u304D\
+    \u306E\u5411\u304D\u306E\u307E\u307E\u683C\u7D0D\u3055\u308C\u308B\n     */\n\
+    \    std::vector<Edge> edges() const {\n        std::vector<Edge> res(m);\n  \
+    \      for (long long i = 0; i < n; i++) {\n            for (auto& e : g[i]) {\n\
+    \                res[e.id] = e;\n            }\n        }\n        return res;\n\
+    \    }\n};\n#line 2 \"src/graph/shortest-path.hpp\"\n\n/**\n * @file shortest-path.hpp\n\
+    \ * @brief \u6700\u77ED\u8DEF\n */\n\n#line 10 \"src/graph/shortest-path.hpp\"\
+    \n#include <deque>\n#include <functional>\n#line 14 \"src/graph/shortest-path.hpp\"\
+    \n#include <queue>\n#include <utility>\n#line 17 \"src/graph/shortest-path.hpp\"\
+    \n\n#line 19 \"src/graph/shortest-path.hpp\"\n\n/**\n * @brief \u6700\u77ED\u8DEF\
+    \u306E\u7D50\u679C\n *\n * auto [dist, prev] = shortest_path(g, s); \u306E\u3088\
+    \u3046\u306B\u53D7\u3051\u53D6\u308C\u308B\n */\ntemplate <typename Cost>\nstruct\
+    \ ShortestPath {\n    using Edge = typename Graph<Cost>::Edge;\n    std::vector<Cost>\
+    \ dist;  //!< \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u9577\n    std::vector<Edge>\
+    \ prev;  //!< \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\u306E\u76F4\
+    \u524D\u306E\u8FBA (\u59CB\u70B9\u3068\u672A\u5230\u9054\u306E\u9802\u70B9\u3067\
+    \u306F src == -1)\n    /**\n     * @brief \u59CB\u70B9\u304B\u3089 t \u3078\u306E\
+    \u6700\u77ED\u8DEF\u3092\u69CB\u6210\u3059\u308B\u8FBA\u306E\u30EA\u30B9\u30C8\
+    \ (\u59CB\u70B9\u5074\u304B\u3089\u9806\u306B)\n     * @return std::optional<std::vector<Edge>>\
+    \ t \u304C\u59CB\u70B9\u306A\u3089\u7A7A\u3001\u672A\u5230\u9054\u306A\u3089 std::nullopt\n\
+    \     * @note \u8CA0\u9589\u8DEF\u306E\u5F71\u97FF\u3092\u53D7\u3051\u308B\u9802\
     \u70B9\u3067\u306F\u6700\u77ED\u8DEF\u304C\u5B9A\u307E\u3089\u306A\u3044 (assert\
     \ \u3067\u843D\u3061\u308B)\n     */\n    std::optional<std::vector<Edge>> path(long\
     \ long t) const {\n        // \u76F4\u524D\u306E\u8FBA\u304C\u306A\u3044\u306E\
@@ -411,7 +413,7 @@ data:
   isVerificationFile: true
   path: test/unittest/graph/chinese-postman.test.cpp
   requiredBy: []
-  timestamp: '2026-10-27 20:28:53+09:00'
+  timestamp: '2026-10-31 18:12:46+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/graph/chinese-postman.test.cpp

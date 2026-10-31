@@ -143,7 +143,7 @@ data:
     \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
     \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
     inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
-    #line 12 \"src/utility/binary-search.hpp\"\n\n/**\n * f(ok) \u304C\u771F\u3001\
+    #line 13 \"src/utility/binary-search.hpp\"\n\n/**\n * f(ok) \u304C\u771F\u3001\
     f(ng) \u304C\u507D\u3068\u3057\u3066\u3001\u5883\u754C\u3067 f \u304C\u771F\u306B\
     \u306A\u308B\u5074\u306E\u5024\u3092\u8FD4\u3059\n * \u6574\u6570\u306A\u3089\
     \ ok \u3068 ng \u306E\u5DEE\u304C 1 \u306B\u306A\u308B\u307E\u3067\u3001\u6D6E\
@@ -151,16 +151,22 @@ data:
     \ */\ntemplate <typename M, typename N, class F, ENABLE_IF_T(std::is_integral_v<std::common_type_t<M,\
     \ N>>and std::is_invocable_r_v<bool, F, std::common_type_t<M, N>>)>\ninline constexpr\
     \ std::common_type_t<M, N> binary_search(const M& ok, const N& ng, F f) {\n  \
-    \  std::common_type_t<M, N> _ok = ok, _ng = ng;\n    while (std::abs(_ok - _ng)\
-    \ > 1) {\n        std::common_type_t<M, N> mid = (_ok + _ng) / 2;\n        if\
+    \  using T = std::common_type_t<M, N>;\n    using U = std::make_unsigned_t<T>;\n\
+    \    T _ok = ok, _ng = ng;\n    // \u5DEE\u306F\u7B26\u53F7\u306A\u3057\u3067\u6C42\
+    \u3081\u308B\u3068\u3042\u3075\u308C\u306A\u3044 (LLONG_MIN \u3068 LLONG_MAX \u306E\
+    \u5DEE\u3082 U \u306B\u53CE\u307E\u308B)\n    // \u4E2D\u70B9\u306F midpoint \u3067\
+    \u6C42\u3081\u308B (\u3042\u3075\u308C\u305A\u3001ok \u306E\u5074\u306B\u4E38\u3081\
+    \u308B)\n    while ((_ok < _ng ? static_cast<U>(static_cast<U>(_ng) - static_cast<U>(_ok))\
+    \ : static_cast<U>(static_cast<U>(_ok) - static_cast<U>(_ng))) > 1) {\n      \
+    \  T mid = midpoint(_ok, _ng);\n        if (f(mid)) {\n            _ok = mid;\n\
+    \        } else {\n            _ng = mid;\n        }\n    }\n    return _ok;\n\
+    }\n\ntemplate <typename M, typename N, class F, ENABLE_IF_T(!std::is_integral_v<std::common_type_t<M,\
+    \ N>> && std::is_invocable_r_v<bool, F, std::common_type_t<M, N>>)>\ninline constexpr\
+    \ std::common_type_t<M, N> binary_search(const M& ok, const N& ng, F f) {\n  \
+    \  std::common_type_t<M, N> _ok = ok, _ng = ng;\n    for (int i = 0; i < 100;\
+    \ i++) {\n        std::common_type_t<M, N> mid = (_ok + _ng) / 2;\n        if\
     \ (f(mid)) {\n            _ok = mid;\n        } else {\n            _ng = mid;\n\
-    \        }\n    }\n    return _ok;\n}\n\ntemplate <typename M, typename N, class\
-    \ F, ENABLE_IF_T(!std::is_integral_v<std::common_type_t<M, N>> && std::is_invocable_r_v<bool,\
-    \ F, std::common_type_t<M, N>>)>\ninline constexpr std::common_type_t<M, N> binary_search(const\
-    \ M& ok, const N& ng, F f) {\n    std::common_type_t<M, N> _ok = ok, _ng = ng;\n\
-    \    for (int i = 0; i < 100; i++) {\n        std::common_type_t<M, N> mid = (_ok\
-    \ + _ng) / 2;\n        if (f(mid)) {\n            _ok = mid;\n        } else {\n\
-    \            _ng = mid;\n        }\n    }\n    return _ok;\n}\n#line 25 \"test/unittest/base/functions.test.cpp\"\
+    \        }\n    }\n    return _ok;\n}\n#line 25 \"test/unittest/base/functions.test.cpp\"\
     \n\nbool ok = true;\n\nvoid check(bool cond, const char* what) {\n    if (!cond)\
     \ {\n        if (ok) std::cerr << \"failed: \" << what << std::endl;\n       \
     \ ok = false;\n    }\n}\n\n// midpoint \u306E\u7B54\u3048: (a + b) / 2 \u3092\
@@ -442,7 +448,7 @@ data:
   isVerificationFile: true
   path: test/unittest/base/functions.test.cpp
   requiredBy: []
-  timestamp: '2026-10-31 05:46:56+09:00'
+  timestamp: '2026-10-31 18:12:46+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/base/functions.test.cpp

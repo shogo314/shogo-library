@@ -88,10 +88,13 @@ data:
     \ long v) const {\n        return g[v];\n    }\n    /**\n     * @brief \u8FBA\u306E\
     \u30EA\u30B9\u30C8\n     * @return std::vector<Edge> \u8FBA\u306E\u30EA\u30B9\u30C8\
     (id\u306E\u6607\u9806)\n     *\n     * \u7121\u5411\u8FBA\u306F\u4EE3\u8868\u3057\
-    \u30661\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\n     */\n    std::vector<Edge>\
-    \ edges() const {\n        std::vector<Edge> res(m);\n        for (long long i\
-    \ = 0; i < n; i++) {\n            for (auto& e : g[i]) {\n                res[e.id]\
-    \ = e;\n            }\n        }\n        return res;\n    }\n};\n#line 2 \"src/graph/graph_util.hpp\"\
+    \u30661\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\u3002\u305D\u306E src\
+    \ \u3068 dst \u306E\u5411\u304D\u306F\u898F\u5B9A\u3057\u306A\u3044\n     * \u6709\
+    \u5411\u8FBA\u306F\u8FFD\u52A0\u3057\u305F\u3068\u304D\u306E\u5411\u304D\u306E\
+    \u307E\u307E\u683C\u7D0D\u3055\u308C\u308B\n     */\n    std::vector<Edge> edges()\
+    \ const {\n        std::vector<Edge> res(m);\n        for (long long i = 0; i\
+    \ < n; i++) {\n            for (auto& e : g[i]) {\n                res[e.id] =\
+    \ e;\n            }\n        }\n        return res;\n    }\n};\n#line 2 \"src/graph/graph_util.hpp\"\
     \n\n/**\n * @file graph_util.hpp\n * @brief \u30B0\u30E9\u30D5\u306B\u95A2\u3059\
     \u308B\u95A2\u6570\n */\n\n#include <algorithm>\n#line 10 \"src/graph/graph_util.hpp\"\
     \n#include <functional>\n#include <limits>\n#include <optional>\n#include <queue>\n\
@@ -542,7 +545,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/graph/cycle-detection.test.cpp
   requiredBy: []
-  timestamp: '2026-10-31 17:31:56+09:00'
+  timestamp: '2026-10-31 18:12:46+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/graph/cycle-detection.test.cpp

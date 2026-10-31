@@ -107,22 +107,26 @@ data:
     \   }\n    /**\n     * @brief \u8FBA\u306E\u30EA\u30B9\u30C8\n     * @return std::vector<Edge>\
     \ \u8FBA\u306E\u30EA\u30B9\u30C8(id\u306E\u6607\u9806)\n     *\n     * \u7121\u5411\
     \u8FBA\u306F\u4EE3\u8868\u3057\u30661\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\
-    \u308B\n     */\n    std::vector<Edge> edges() const {\n        std::vector<Edge>\
-    \ res(m);\n        for (long long i = 0; i < n; i++) {\n            for (auto&\
-    \ e : g[i]) {\n                res[e.id] = e;\n            }\n        }\n    \
-    \    return res;\n    }\n};\n#line 16 \"src/graph/tree.hpp\"\n\ntemplate <typename>\n\
-    class RootedTree;\ntemplate <typename>\nclass DoublingClimbTree;\n\n/**\n * @brief\
-    \ \u6839\u306A\u3057\u6728\n *\n * @tparam Cost = long long \u8FBA\u306E\u91CD\
-    \u307F\n *\n * Graph<Cost>\u3092\u7D99\u627F\u3057\u3001\u3059\u3079\u3066\u7121\
-    \u5411\u8FBA\u3067\u8868\u3059\n */\ntemplate <typename Cost = long long>\nstruct\
-    \ Tree : private Graph<Cost> {\n    // Graph<Cost>* g = new Tree<Cost>(); \u304C\
-    \u3067\u304D\u3066\u3057\u307E\u3046\u3068\u3001delete\u6642\u306B\u30E1\u30E2\
-    \u30EA\u30EA\u30FC\u30AF\u304C\u767A\u751F\n    // \u56DE\u907F\u3059\u308B\u305F\
-    \u3081private\u7D99\u627F\u306B\u3057\u3066\u3001\u30E1\u30F3\u30D0\u3092\u3059\
-    \u3079\u3066using\u5BA3\u8A00\n    using Edge = typename Graph<Cost>::Edge;\n\
-    \    using Graph<Cost>::n;\n    using Graph<Cost>::size;\n    using Graph<Cost>::m;\n\
-    \    using Graph<Cost>::g;\n    using Graph<Cost>::Graph;\n    using Graph<Cost>::add_edge;\n\
-    \    using Graph<Cost>::add_directed_edge;\n    using Graph<Cost>::operator[];\n\
+    \u308B\u3002\u305D\u306E src \u3068 dst \u306E\u5411\u304D\u306F\u898F\u5B9A\u3057\
+    \u306A\u3044\n     * \u6709\u5411\u8FBA\u306F\u8FFD\u52A0\u3057\u305F\u3068\u304D\
+    \u306E\u5411\u304D\u306E\u307E\u307E\u683C\u7D0D\u3055\u308C\u308B\n     */\n\
+    \    std::vector<Edge> edges() const {\n        std::vector<Edge> res(m);\n  \
+    \      for (long long i = 0; i < n; i++) {\n            for (auto& e : g[i]) {\n\
+    \                res[e.id] = e;\n            }\n        }\n        return res;\n\
+    \    }\n};\n#line 16 \"src/graph/tree.hpp\"\n\ntemplate <typename>\nclass RootedTree;\n\
+    template <typename>\nclass DoublingClimbTree;\n\n/**\n * @brief \u6839\u306A\u3057\
+    \u6728\n *\n * @tparam Cost = long long \u8FBA\u306E\u91CD\u307F\n *\n * Graph<Cost>\u3092\
+    \u7D99\u627F\u3057\u3001\u3059\u3079\u3066\u7121\u5411\u8FBA\u3067\u8868\u3059\
+    \n */\ntemplate <typename Cost = long long>\nstruct Tree : private Graph<Cost>\
+    \ {\n    // Graph<Cost>* g = new Tree<Cost>(); \u304C\u3067\u304D\u3066\u3057\u307E\
+    \u3046\u3068\u3001delete\u6642\u306B\u30E1\u30E2\u30EA\u30EA\u30FC\u30AF\u304C\
+    \u767A\u751F\n    // \u56DE\u907F\u3059\u308B\u305F\u3081private\u7D99\u627F\u306B\
+    \u3057\u3066\u3001\u516C\u958B\u3059\u308B\u30E1\u30F3\u30D0\u3092using\u5BA3\u8A00\
+    \u3059\u308B\n    // add_directed_edge \u306F\u6728\u3067\u306A\u304F\u306A\u308B\
+    \u306E\u3067\u516C\u958B\u3057\u306A\u3044 (read \u306F Tree::read \u3067\u96A0\
+    \u3059)\n    using Edge = typename Graph<Cost>::Edge;\n    using Graph<Cost>::n;\n\
+    \    using Graph<Cost>::size;\n    using Graph<Cost>::m;\n    using Graph<Cost>::g;\n\
+    \    using Graph<Cost>::Graph;\n    using Graph<Cost>::add_edge;\n    using Graph<Cost>::operator[];\n\
     \    using Graph<Cost>::edges;\n\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\
     \u30E9\u30AF\u30BF\n     *\n     * @param n \u30CE\u30FC\u30C9\u6570\n     */\n\
     \    explicit Tree(long long n = 0) : Graph<Cost>(n) {}\n\n    /**\n     * @brief\
@@ -544,7 +548,7 @@ data:
   isVerificationFile: true
   path: test/unittest/graph/centroid-decomposition.test.cpp
   requiredBy: []
-  timestamp: '2026-10-27 20:28:53+09:00'
+  timestamp: '2026-10-31 18:12:46+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/graph/centroid-decomposition.test.cpp

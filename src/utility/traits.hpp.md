@@ -418,6 +418,9 @@ data:
     path: test/unittest/string/wildcard-matching.test.cpp
     title: test/unittest/string/wildcard-matching.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/utility/binary-search.test.cpp
+    title: test/unittest/utility/binary-search.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/utility/container_func-member.test.cpp
     title: test/unittest/utility/container_func-member.test.cpp
   - icon: ':heavy_check_mark:'
@@ -933,6 +936,7 @@ data:
   - test/unittest/utility/container_func.test.cpp
   - test/unittest/utility/repr.test.cpp
   - test/unittest/utility/container_func-member.test.cpp
+  - test/unittest/utility/binary-search.test.cpp
   - test/unittest/utility/vector_func.test.cpp
   - test/unittest/math/convolution.test.cpp
   - test/unittest/math/divisor-transform.test.cpp

@@ -88,18 +88,21 @@ data:
     \ * @brief \u8FBA\u306E\u30EA\u30B9\u30C8\n     * @return std::vector<Edge> \u8FBA\
     \u306E\u30EA\u30B9\u30C8(id\u306E\u6607\u9806)\n     *\n     * \u7121\u5411\u8FBA\
     \u306F\u4EE3\u8868\u3057\u30661\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\
-    \n     */\n    std::vector<Edge> edges() const {\n        std::vector<Edge> res(m);\n\
-    \        for (long long i = 0; i < n; i++) {\n            for (auto& e : g[i])\
-    \ {\n                res[e.id] = e;\n            }\n        }\n        return\
-    \ res;\n    }\n};\n#line 14 \"src/graph/minimum-arborescence.hpp\"\n\nnamespace\
-    \ internal_minimum_arborescence {\n\n/**\n * @brief \u5168\u4F53\u3078\u306E\u52A0\
-    \u7B97\u304C\u3067\u304D\u308B leftist heap (\u30CE\u30FC\u30C9\u306F\u6DFB\u5B57\
-    \u3067\u6301\u3064)\n */\ntemplate <typename Cost>\nclass LeftistHeap {\n   public:\n\
-    \    int make(Cost key, long long value) {\n        nodes.push_back({key, Cost{},\
-    \ value, -1, -1, 1});\n        return static_cast<int>(nodes.size()) - 1;\n  \
-    \  }\n    int merge(int a, int b) {\n        if (a == -1) return b;\n        if\
-    \ (b == -1) return a;\n        push(a), push(b);\n        if (nodes[b].key < nodes[a].key)\
-    \ std::swap(a, b);\n        nodes[a].r = merge(nodes[a].r, b);\n        if (rank(nodes[a].l)\
+    \u3002\u305D\u306E src \u3068 dst \u306E\u5411\u304D\u306F\u898F\u5B9A\u3057\u306A\
+    \u3044\n     * \u6709\u5411\u8FBA\u306F\u8FFD\u52A0\u3057\u305F\u3068\u304D\u306E\
+    \u5411\u304D\u306E\u307E\u307E\u683C\u7D0D\u3055\u308C\u308B\n     */\n    std::vector<Edge>\
+    \ edges() const {\n        std::vector<Edge> res(m);\n        for (long long i\
+    \ = 0; i < n; i++) {\n            for (auto& e : g[i]) {\n                res[e.id]\
+    \ = e;\n            }\n        }\n        return res;\n    }\n};\n#line 14 \"\
+    src/graph/minimum-arborescence.hpp\"\n\nnamespace internal_minimum_arborescence\
+    \ {\n\n/**\n * @brief \u5168\u4F53\u3078\u306E\u52A0\u7B97\u304C\u3067\u304D\u308B\
+    \ leftist heap (\u30CE\u30FC\u30C9\u306F\u6DFB\u5B57\u3067\u6301\u3064)\n */\n\
+    template <typename Cost>\nclass LeftistHeap {\n   public:\n    int make(Cost key,\
+    \ long long value) {\n        nodes.push_back({key, Cost{}, value, -1, -1, 1});\n\
+    \        return static_cast<int>(nodes.size()) - 1;\n    }\n    int merge(int\
+    \ a, int b) {\n        if (a == -1) return b;\n        if (b == -1) return a;\n\
+    \        push(a), push(b);\n        if (nodes[b].key < nodes[a].key) std::swap(a,\
+    \ b);\n        nodes[a].r = merge(nodes[a].r, b);\n        if (rank(nodes[a].l)\
     \ < rank(nodes[a].r)) std::swap(nodes[a].l, nodes[a].r);\n        nodes[a].rank\
     \ = rank(nodes[a].r) + 1;\n        return a;\n    }\n    std::pair<Cost, long\
     \ long> top(int a) {\n        push(a);\n        return {nodes[a].key, nodes[a].value};\n\
@@ -195,7 +198,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/graph/directedmst.test.cpp
   requiredBy: []
-  timestamp: '2026-10-27 20:28:53+09:00'
+  timestamp: '2026-10-31 18:12:46+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/graph/directedmst.test.cpp

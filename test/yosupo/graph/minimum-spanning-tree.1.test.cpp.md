@@ -141,10 +141,13 @@ data:
     \ long v) const {\n        return g[v];\n    }\n    /**\n     * @brief \u8FBA\u306E\
     \u30EA\u30B9\u30C8\n     * @return std::vector<Edge> \u8FBA\u306E\u30EA\u30B9\u30C8\
     (id\u306E\u6607\u9806)\n     *\n     * \u7121\u5411\u8FBA\u306F\u4EE3\u8868\u3057\
-    \u30661\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\n     */\n    std::vector<Edge>\
-    \ edges() const {\n        std::vector<Edge> res(m);\n        for (long long i\
-    \ = 0; i < n; i++) {\n            for (auto& e : g[i]) {\n                res[e.id]\
-    \ = e;\n            }\n        }\n        return res;\n    }\n};\n#line 9 \"test/yosupo/graph/minimum-spanning-tree.1.test.cpp\"\
+    \u30661\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\u3002\u305D\u306E src\
+    \ \u3068 dst \u306E\u5411\u304D\u306F\u898F\u5B9A\u3057\u306A\u3044\n     * \u6709\
+    \u5411\u8FBA\u306F\u8FFD\u52A0\u3057\u305F\u3068\u304D\u306E\u5411\u304D\u306E\
+    \u307E\u307E\u683C\u7D0D\u3055\u308C\u308B\n     */\n    std::vector<Edge> edges()\
+    \ const {\n        std::vector<Edge> res(m);\n        for (long long i = 0; i\
+    \ < n; i++) {\n            for (auto& e : g[i]) {\n                res[e.id] =\
+    \ e;\n            }\n        }\n        return res;\n    }\n};\n#line 9 \"test/yosupo/graph/minimum-spanning-tree.1.test.cpp\"\
     \n\nint main() {\n    int n, m;\n    std::cin >> n >> m;\n    Graph<long long>\
     \ g(n);\n    g.read(m, 0, true);\n    // edges() \u306F\u8FBA\u306E\u756A\u53F7\
     \u9806 (\u5165\u529B\u9806) \u306B\u4E26\u3076\n    auto es = g.edges();\n   \
@@ -174,7 +177,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/graph/minimum-spanning-tree.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 13:40:29+09:00'
+  timestamp: '2026-10-31 18:12:46+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/graph/minimum-spanning-tree.1.test.cpp

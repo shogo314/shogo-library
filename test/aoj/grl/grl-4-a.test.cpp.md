@@ -146,38 +146,41 @@ data:
     \ long v) const {\n        return g[v];\n    }\n    /**\n     * @brief \u8FBA\u306E\
     \u30EA\u30B9\u30C8\n     * @return std::vector<Edge> \u8FBA\u306E\u30EA\u30B9\u30C8\
     (id\u306E\u6607\u9806)\n     *\n     * \u7121\u5411\u8FBA\u306F\u4EE3\u8868\u3057\
-    \u30661\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\n     */\n    std::vector<Edge>\
-    \ edges() const {\n        std::vector<Edge> res(m);\n        for (long long i\
-    \ = 0; i < n; i++) {\n            for (auto& e : g[i]) {\n                res[e.id]\
-    \ = e;\n            }\n        }\n        return res;\n    }\n};\n#line 20 \"\
-    src/graph/graph_util.hpp\"\n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\
-    \u3064\u3044\u3066\u3001\u4E8C\u90E8\u30B0\u30E9\u30D5\u306A\u30890\u30681\u306B\
-    \u5F69\u8272\u3057\u305F\u7D50\u679C\u3092\u3072\u3068\u3064\u8FD4\u3057\u3001\
-    \u4E8C\u90E8\u30B0\u30E9\u30D5\u3067\u306A\u3044\u306A\u3089std::nullopt\u3092\
-    \u8FD4\u3059\u3002\n * \u9023\u7D50\u6210\u5206\u306E\u3046\u3061\u3001\u30A4\u30F3\
-    \u30C7\u30C3\u30AF\u30B9\u306E\u6700\u3082\u5C0F\u3055\u3044\u3082\u306E\u3092\
-    0\u306B\u3059\u308B\u3002\n * @return std::optional<std::vector<int>> \u5404\u9802\
-    \u70B9\u306E\u5F69\u8272\u7D50\u679C\n */\ntemplate <typename Cost = long long>\n\
-    std::optional<std::vector<int>> bipartite_coloring(const Graph<Cost>& graph) {\n\
-    \    std::vector<int> color(graph.n, -1);\n    for (long long i = 0; i < graph.n;\
-    \ i++) {\n        if (color[i] != -1) continue;\n        std::stack<long long>\
-    \ stk;\n        stk.push(i);\n        color[i] = 0;\n        while (!stk.empty())\
-    \ {\n            long long u = stk.top();\n            stk.pop();\n          \
-    \  for (long long v : graph[u]) {\n                if (color[v] == -1) {\n   \
-    \                 color[v] = color[u] ^ 1;\n                    stk.push(v);\n\
-    \                } else {\n                    if (color[u] == color[v]) return\
-    \ std::nullopt;\n                }\n            }\n        }\n    }\n    return\
-    \ color;\n}\n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u3064\u3044\
-    \u3066\u3001\u4E8C\u90E8\u30B0\u30E9\u30D5\u304B\u3069\u3046\u304B\u3092\u5224\
-    \u5B9A\u3059\u308B\u3002\n * @return bool \u4E8C\u90E8\u30B0\u30E9\u30D5\u306A\
-    \u3089true\u3001\u4E8C\u90E8\u30B0\u30E9\u30D5\u3067\u306A\u3044\u306A\u3089false\u3092\
-    \u8FD4\u3059\u3002\n */\ntemplate <typename Cost = long long>\nbool is_bipartite(const\
-    \ Graph<Cost>& graph) {\n    return bipartite_coloring(graph).has_value();\n}\n\
-    \n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u3064\u3044\u3066\u3001\u9023\
-    \u7D50\u6210\u5206\u5206\u89E3\u3059\u308B\u3002\n * @return std::vector<std::vector<long\
-    \ long>> \u300C\u540C\u3058\u9023\u7D50\u6210\u5206\u3068\u306A\u308B\u9802\u70B9\
-    \u306E\u30EA\u30B9\u30C8\u300D\u306E\u30EA\u30B9\u30C8\n */\ntemplate <typename\
-    \ Cost = long long>\nstd::vector<std::vector<long long>> connected_components(const\
+    \u30661\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\u3002\u305D\u306E src\
+    \ \u3068 dst \u306E\u5411\u304D\u306F\u898F\u5B9A\u3057\u306A\u3044\n     * \u6709\
+    \u5411\u8FBA\u306F\u8FFD\u52A0\u3057\u305F\u3068\u304D\u306E\u5411\u304D\u306E\
+    \u307E\u307E\u683C\u7D0D\u3055\u308C\u308B\n     */\n    std::vector<Edge> edges()\
+    \ const {\n        std::vector<Edge> res(m);\n        for (long long i = 0; i\
+    \ < n; i++) {\n            for (auto& e : g[i]) {\n                res[e.id] =\
+    \ e;\n            }\n        }\n        return res;\n    }\n};\n#line 20 \"src/graph/graph_util.hpp\"\
+    \n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306B\u3064\u3044\u3066\u3001\
+    \u4E8C\u90E8\u30B0\u30E9\u30D5\u306A\u30890\u30681\u306B\u5F69\u8272\u3057\u305F\
+    \u7D50\u679C\u3092\u3072\u3068\u3064\u8FD4\u3057\u3001\u4E8C\u90E8\u30B0\u30E9\
+    \u30D5\u3067\u306A\u3044\u306A\u3089std::nullopt\u3092\u8FD4\u3059\u3002\n * \u9023\
+    \u7D50\u6210\u5206\u306E\u3046\u3061\u3001\u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\
+    \u306E\u6700\u3082\u5C0F\u3055\u3044\u3082\u306E\u30920\u306B\u3059\u308B\u3002\
+    \n * @return std::optional<std::vector<int>> \u5404\u9802\u70B9\u306E\u5F69\u8272\
+    \u7D50\u679C\n */\ntemplate <typename Cost = long long>\nstd::optional<std::vector<int>>\
+    \ bipartite_coloring(const Graph<Cost>& graph) {\n    std::vector<int> color(graph.n,\
+    \ -1);\n    for (long long i = 0; i < graph.n; i++) {\n        if (color[i] !=\
+    \ -1) continue;\n        std::stack<long long> stk;\n        stk.push(i);\n  \
+    \      color[i] = 0;\n        while (!stk.empty()) {\n            long long u\
+    \ = stk.top();\n            stk.pop();\n            for (long long v : graph[u])\
+    \ {\n                if (color[v] == -1) {\n                    color[v] = color[u]\
+    \ ^ 1;\n                    stk.push(v);\n                } else {\n         \
+    \           if (color[u] == color[v]) return std::nullopt;\n                }\n\
+    \            }\n        }\n    }\n    return color;\n}\n\n/**\n * @brief \u7121\
+    \u5411\u30B0\u30E9\u30D5\u306B\u3064\u3044\u3066\u3001\u4E8C\u90E8\u30B0\u30E9\
+    \u30D5\u304B\u3069\u3046\u304B\u3092\u5224\u5B9A\u3059\u308B\u3002\n * @return\
+    \ bool \u4E8C\u90E8\u30B0\u30E9\u30D5\u306A\u3089true\u3001\u4E8C\u90E8\u30B0\u30E9\
+    \u30D5\u3067\u306A\u3044\u306A\u3089false\u3092\u8FD4\u3059\u3002\n */\ntemplate\
+    \ <typename Cost = long long>\nbool is_bipartite(const Graph<Cost>& graph) {\n\
+    \    return bipartite_coloring(graph).has_value();\n}\n\n/**\n * @brief \u7121\
+    \u5411\u30B0\u30E9\u30D5\u306B\u3064\u3044\u3066\u3001\u9023\u7D50\u6210\u5206\
+    \u5206\u89E3\u3059\u308B\u3002\n * @return std::vector<std::vector<long long>>\
+    \ \u300C\u540C\u3058\u9023\u7D50\u6210\u5206\u3068\u306A\u308B\u9802\u70B9\u306E\
+    \u30EA\u30B9\u30C8\u300D\u306E\u30EA\u30B9\u30C8\n */\ntemplate <typename Cost\
+    \ = long long>\nstd::vector<std::vector<long long>> connected_components(const\
     \ Graph<Cost>& graph) {\n    std::vector<std::vector<long long>> groups;\n   \
     \ std::vector<bool> visited(graph.n);\n    for (long long i = 0; i < graph.n;\
     \ i++) {\n        if (visited[i]) continue;\n        std::stack<long long> stk;\n\
@@ -534,7 +537,7 @@ data:
   isVerificationFile: true
   path: test/aoj/grl/grl-4-a.test.cpp
   requiredBy: []
-  timestamp: '2026-10-31 17:31:56+09:00'
+  timestamp: '2026-10-31 18:12:46+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/grl/grl-4-a.test.cpp

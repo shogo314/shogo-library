@@ -7,6 +7,7 @@
 #include "../../../src/base/io.hpp"
 
 #include <array>
+#include <iomanip>
 #include <iostream>
 #include <random>
 #include <set>
@@ -109,6 +110,92 @@ int main() {
         decltype(t) u;
         is3 >> u;
         check(t == u, "tuple round trip");
+    }
+
+    // 128 bit 整数
+    {
+        const __uint128_t umax = ~static_cast<__uint128_t>(0);
+        const __int128_t imax = static_cast<__int128_t>(umax >> 1), imin = -imax - 1;
+        check(to_str(static_cast<__int128_t>(0)) == "0", "<< int128 (0)");
+        check(to_str(static_cast<__int128_t>(-42)) == "-42", "<< int128 (負)");
+        check(to_str(imax) == "170141183460469231731687303715884105727", "<< int128 (最大値)");
+        check(to_str(imin) == "-170141183460469231731687303715884105728", "<< int128 (最小値)");
+        check(to_str(umax) == "340282366920938463463374607431768211455", "<< uint128 (最大値)");
+        check(to_str(std::vector<__int128_t>{1, -2}) == "1 -2", "<< vector<int128>");
+        std::ostringstream w;
+        w << std::setw(5) << static_cast<__int128_t>(-7);
+        check(w.str() == "   -7", "<< int128 (setw)");
+
+        std::istringstream is("170141183460469231731687303715884105727 -170141183460469231731687303715884105728 +5 340282366920938463463374607431768211455 3 -4");
+        __int128_t a, b, c;
+        __uint128_t d;
+        std::pair<__int128_t, __int128_t> p;
+        is >> a >> b >> c >> d >> p;
+        check(a == imax && b == imin && c == 5 && d == umax && p == std::make_pair<__int128_t, __int128_t>(3, -4), ">> int128");
+        check(static_cast<bool>(is), ">> int128 (stream state)");
+        // 範囲外や数でないものは failbit
+        for (std::string bad : {"170141183460469231731687303715884105728", "-170141183460469231731687303715884105729", "12a", "-", "x"}) {
+            std::istringstream bs(bad);
+            __int128_t x;
+            bs >> x;
+            check(bs.fail(), ">> int128 (不正)");
+        }
+        for (std::string bad : {"340282366920938463463374607431768211456", "-1"}) {
+            std::istringstream bs(bad);
+            __uint128_t x;
+            bs >> x;
+            check(bs.fail(), ">> uint128 (不正)");
+        }
+        std::istringstream zs("-0");
+        __uint128_t z = 1;
+        zs >> z;
+        check(!zs.fail() && z == 0, ">> uint128 (-0)");
+        // ランダム: long long の積で作った値を書いて読み戻す
+        for (int rep = 0; rep < 2000; rep++) {
+            __int128_t x = static_cast<__int128_t>(static_cast<long long>(rng())) * static_cast<long long>(rng() * 1000003ULL);
+            if (rng() % 2) x = -x;
+            std::istringstream rs(to_str(x));
+            __int128_t y = 0;
+            rs >> y;
+            check(x == y, "int128 round trip");
+            // long long に収まるなら long long と同じ表記
+            if (-1000000000000000000 <= x && x <= 1000000000000000000) check(to_str(x) == std::to_string(static_cast<long long>(x)), "<< int128 (long long と比べる)");
+        }
+        // 先頭の 0 は桁数に数えない
+        std::istringstream lz("000000000000000000000000000000000000000000000123 -0000 +00340282366920938463463374607431768211455");
+        __int128_t l1, l2;
+        __uint128_t l3;
+        lz >> l1 >> l2 >> l3;
+        check(!lz.fail() && l1 == 123 && l2 == 0 && l3 == umax, ">> int128 (先頭の 0)");
+        // ランダム: 全範囲の値を 1 桁ずつ愚直に変換したものと比べる (18 桁ずつ分ける境目を通る)
+        for (int rep = 0; rep < 20000; rep++) {
+            __uint128_t u = 0;
+            for (int k = 0; k < 4; k++) u = u << 32 | rng();
+            u >>= rng() % 128;
+            std::string expect;
+            for (__uint128_t y = u; expect.empty() || y > 0; y /= 10) expect.insert(expect.begin(), static_cast<char>('0' + static_cast<int>(y % 10)));
+            check(to_str(u) == expect, "<< uint128 (random)");
+            std::istringstream us(expect);
+            __uint128_t v = 0;
+            us >> v;
+            check(!us.fail() && u == v, ">> uint128 (random)");
+            const __int128_t x = static_cast<__int128_t>(u >> 1), nx = -x;
+            check(to_str(nx) == (x == 0 ? "" : "-") + to_str(static_cast<__uint128_t>(x)), "<< int128 (random 負)");
+            std::istringstream ns(to_str(nx));
+            __int128_t y = 0;
+            ns >> y;
+            check(!ns.fail() && y == nx, ">> int128 (random 負)");
+            // 最大値の付近: imax - 10 + r は r <= 10 なら読めて、そうでなければ範囲外
+            const int r = rng() % 21;
+            std::istringstream near(to_str(static_cast<__uint128_t>(imax) - 10 + r));
+            __int128_t a = 0;
+            near >> a;
+            check(near.fail() == (r > 10) && (r > 10 || a == imax - 10 + r), ">> int128 (最大値の付近)");
+            std::istringstream near_neg("-" + to_str(static_cast<__uint128_t>(imax) - 9 + r));
+            near_neg >> a;
+            check(near_neg.fail() == (r > 10) && (r > 10 || a == -imax + 9 - r), ">> int128 (最小値の付近)");
+        }
+        check(capture(std::cout, [&] { print(imin, umax); }) == "-170141183460469231731687303715884105728 340282366920938463463374607431768211455\n", "print(int128)");
     }
 
     // print: std::cout に空白区切りで出力して改行

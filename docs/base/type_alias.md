@@ -17,6 +17,7 @@ al<3> t;                    // std::array<long long, 3>
 | 別名 | 実体 |
 |---|---|
 | `ll` / `ull` / `ld` | `long long` / `unsigned long long` / `long double` |
+| `int128_t` / `uint128_t` | `__int128_t` / `__uint128_t` (GNU 拡張) |
 | `str` | `std::string` |
 | `vec<T>` / `vv<T>` / `vvv<T>` | 1 / 2 / 3 次元の `std::vector<T>` |
 | `ary<T, N>` | `std::array<T, N>` |

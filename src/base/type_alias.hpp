@@ -20,6 +20,8 @@
 using ll = long long;
 using ull = unsigned long long;
 using ld = long double;
+using int128_t = __int128_t;  // GNU 拡張
+using uint128_t = __uint128_t;
 
 template <typename T>
 using vec = std::vector<T>;

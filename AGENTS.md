@@ -5,6 +5,7 @@
 ## 置き場所と名前
 
 - ライブラリ本体は必ず `src/` の下に置き、`src/` の外のファイルに依存させない。利用時は `src/` だけを展開して `#include "shogo-library/math/modint.hpp"` の形で使う。
+- `src/base/` (`functions.hpp` の `midpoint` など) にはどのファイルから依存してもよい。同じ処理を手で書き直さず、base のものを使う。
 - ファイル名のハイフンとアンダースコアは使い分けている。ハイフンは「ほぼ一単語」とみなせる名前 (`lazy-segtree`, `number-theory`)、アンダースコアは別々の語をつなぐ名前 (`graph_util`, `vector_func`, `type_alias`)。どちらかに統一しない。
 - 内部の namespace は `internal_<ファイル名>` にする。
 - docs は `docs/<分類>/<名前>.md` に置き、`documentation_of` でヘッダに対応付ける。

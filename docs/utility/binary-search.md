@@ -16,7 +16,7 @@ double s = binary_search(0.0, 10.0, [](double m) { return m * m <= 2; });       
 |---|---|---|
 | `binary_search(ok, ng, f)` | `f(ok)` が真、`f(ng)` が偽として、境界で `f` が真になる側の値を返す。整数なら `ok` と `ng` の差が 1 になるまで、浮動小数点数なら 100 回二分する | `f` の呼び出し $O(\log \lvert ok - ng \rvert)$ 回 (浮動小数点数なら 100 回) |
 
-`ok` と `ng` はどちらが大きくてもかまいません。型が違う場合は `std::common_type_t` にそろえます。
+`ok` と `ng` はどちらが大きくてもかまいません。型が違う場合は `std::common_type_t` にそろえます。整数では差を符号なしで求め、中点を [汎用関数](../base/functions.hpp) の `midpoint` で求めるので、`LLONG_MIN` と `LLONG_MAX` や `0` と `ULLONG_MAX` のように型の全範囲を渡してもあふれません。
 
 ## 関連
 

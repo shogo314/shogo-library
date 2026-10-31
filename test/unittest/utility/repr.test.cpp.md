@@ -112,21 +112,24 @@ data:
     \ repr(const unsigned long&);\n\ninline std::string type_str(const unsigned long\
     \ long&);\ninline std::string initializer_str(const unsigned long long&);\ninline\
     \ std::string repr(const unsigned long long&);\n\ninline std::string type_str(const\
-    \ std::string&);\ninline std::string initializer_str(const std::string&);\ninline\
-    \ std::string repr(const std::string&);\n\ninline std::string type_str(const float&);\n\
-    inline std::string initializer_str(const float&);\ninline std::string repr(const\
-    \ float&);\n\ninline std::string type_str(const double&);\ninline std::string\
-    \ initializer_str(const double&);\ninline std::string repr(const double&);\n\n\
-    inline std::string type_str(const long double&);\ninline std::string initializer_str(const\
-    \ long double&);\ninline std::string repr(const long double&);\n\ntemplate <typename\
-    \ T>\ninline std::string type_str(const std::vector<T>&);\ntemplate <typename\
-    \ T>\ninline std::string initializer_str(const std::vector<T>&);\ntemplate <typename\
-    \ T>\ninline std::string repr(const std::vector<T>&);\n\ntemplate <typename T>\n\
-    inline std::string type_str(const std::set<T>&);\ntemplate <typename T>\ninline\
-    \ std::string initializer_str(const std::set<T>&);\ntemplate <typename T>\ninline\
-    \ std::string repr(const std::set<T>&);\n\ntemplate <typename T1, typename T2>\n\
-    inline std::string type_str(const std::pair<T1, T2>&);\ntemplate <typename T1,\
-    \ typename T2>\ninline std::string initializer_str(const std::pair<T1, T2>&);\n\
+    \ __int128_t&);\ninline std::string initializer_str(const __int128_t&);\ninline\
+    \ std::string repr(const __int128_t&);\n\ninline std::string type_str(const __uint128_t&);\n\
+    inline std::string initializer_str(const __uint128_t&);\ninline std::string repr(const\
+    \ __uint128_t&);\n\ninline std::string type_str(const std::string&);\ninline std::string\
+    \ initializer_str(const std::string&);\ninline std::string repr(const std::string&);\n\
+    \ninline std::string type_str(const float&);\ninline std::string initializer_str(const\
+    \ float&);\ninline std::string repr(const float&);\n\ninline std::string type_str(const\
+    \ double&);\ninline std::string initializer_str(const double&);\ninline std::string\
+    \ repr(const double&);\n\ninline std::string type_str(const long double&);\ninline\
+    \ std::string initializer_str(const long double&);\ninline std::string repr(const\
+    \ long double&);\n\ntemplate <typename T>\ninline std::string type_str(const std::vector<T>&);\n\
+    template <typename T>\ninline std::string initializer_str(const std::vector<T>&);\n\
+    template <typename T>\ninline std::string repr(const std::vector<T>&);\n\ntemplate\
+    \ <typename T>\ninline std::string type_str(const std::set<T>&);\ntemplate <typename\
+    \ T>\ninline std::string initializer_str(const std::set<T>&);\ntemplate <typename\
+    \ T>\ninline std::string repr(const std::set<T>&);\n\ntemplate <typename T1, typename\
+    \ T2>\ninline std::string type_str(const std::pair<T1, T2>&);\ntemplate <typename\
+    \ T1, typename T2>\ninline std::string initializer_str(const std::pair<T1, T2>&);\n\
     template <typename T1, typename T2>\ninline std::string repr(const std::pair<T1,\
     \ T2>&);\n\ntemplate <typename T1, typename T2>\ninline std::string type_str(const\
     \ std::map<T1, T2>&);\ntemplate <typename T1, typename T2>\ninline std::string\
@@ -183,7 +186,29 @@ data:
     \ long long\";\n}\ninline std::string initializer_str(const unsigned long long&\
     \ t) {\n    return std::to_string(t) + \"ull\";\n}\ninline std::string repr(const\
     \ unsigned long long& t) {\n    return internal_repr::initializer_str(t);\n}\n\
-    \ninline std::string type_str(const std::string&) {\n    return \"std::string\"\
+    \n// 128 bit \u6574\u6570\u306E\u30EA\u30C6\u30E9\u30EB\u306F\u306A\u3044\u306E\
+    \u3067\u300110^18 \u3054\u3068\u306B\u533A\u5207\u3063\u305F\u5F0F\u306B\u3059\
+    \u308B (\u5404\u533A\u5207\u308A\u306B\u7B26\u53F7\u3092\u4ED8\u3051\u308B\u306E\
+    \u3067\u3001\u9014\u4E2D\u3067\u3042\u3075\u308C\u306A\u3044)\n// \u4F8B: (__int128_t{-170}\
+    \ * 1000000000000000000 - 141183460469231731) * 1000000000000000000 - 687303715884105728\n\
+    inline std::string int128_str(const std::string& type, unsigned __int128 u, bool\
+    \ neg) {\n    constexpr unsigned long long B = 1000000000000000000ULL;\n    std::vector<unsigned\
+    \ long long> c;\n    do {\n        c.push_back(static_cast<unsigned long long>(u\
+    \ % B));\n        u /= B;\n    } while (u > 0);\n    const std::string sign =\
+    \ neg ? \"-\" : \"\";\n    std::string ret = type + \"{\" + sign + std::to_string(c.back())\
+    \ + \"}\";\n    for (int i = static_cast<int>(c.size()) - 2; i >= 0; i--) {\n\
+    \        if (i + 2 < static_cast<int>(c.size())) ret = \"(\" + ret + \")\";\n\
+    \        ret += \" * 1000000000000000000 \" + std::string(neg ? \"-\" : \"+\"\
+    ) + \" \" + std::to_string(c[i]);\n    }\n    return ret;\n}\n\ninline std::string\
+    \ type_str(const __int128_t&) {\n    return \"__int128_t\";\n}\ninline std::string\
+    \ initializer_str(const __int128_t& t) {\n    return internal_repr::int128_str(\"\
+    __int128_t\", t < 0 ? -static_cast<unsigned __int128>(t) : static_cast<unsigned\
+    \ __int128>(t), t < 0);\n}\ninline std::string repr(const __int128_t& t) {\n \
+    \   return internal_repr::initializer_str(t);\n}\n\ninline std::string type_str(const\
+    \ __uint128_t&) {\n    return \"__uint128_t\";\n}\ninline std::string initializer_str(const\
+    \ __uint128_t& t) {\n    return internal_repr::int128_str(\"__uint128_t\", t,\
+    \ false);\n}\ninline std::string repr(const __uint128_t& t) {\n    return internal_repr::initializer_str(t);\n\
+    }\n\ninline std::string type_str(const std::string&) {\n    return \"std::string\"\
     ;\n}\ninline std::string initializer_str(const std::string& t) {\n    return \"\
     \\\"\" + t + \"\\\"\";\n}\ninline std::string repr(const std::string& t) {\n \
     \   return internal_repr::type_str(t) + \"{\" + internal_repr::initializer_str(t)\
@@ -593,28 +618,64 @@ data:
     \ long long\", \"type_str (unsigned)\");\n    check(type_str(1.0f) == \"float\"\
     \ && type_str(1.0) == \"double\" && type_str(1.0L) == \"long double\", \"type_str\
     \ (floating)\");\n    check(initializer_str(5LL) == \"5ll\" && initializer_str(1.5f)\
-    \ == \"1.500000f\", \"initializer_str (number)\");\n\n    // char\n    CHECK_REPR('a',\
-    \ 'a');\n    CHECK_REPR('\\n', '\\n');\n    CHECK_REPR('\\0', '\\0');\n    CHECK_REPR('\\\
-    '', '\\'');\n    CHECK_REPR('\\\\', '\\\\');\n    CHECK_REPR(static_cast<char>(1),\
-    \ '\\001');\n    CHECK_REPR(static_cast<char>(127), '\\177');\n    CHECK_REPR(static_cast<char>(-61),\
-    \ '\\303');  // UTF-8 \u306E\u6587\u5B57\u306E\u30D0\u30A4\u30C8\u306A\u3069\u3001\
-    \u8CA0\u306E\u5024\u306E char\n    check(type_str('a') == \"char\" && initializer_str('a')\
-    \ == \"'a'\", \"type_str / initializer_str (char)\");\n    for (int i = -128;\
-    \ i <= 127; i++) {\n        char c = static_cast<char>(i);\n        check(repr(c)\
-    \ == naive_char_repr(c), \"repr(char) for all values\");\n    }\n\n    // \u6587\
-    \u5B57\u5217\n    {\n        const char* s = \"abc\";\n        check(repr(s) ==\
-    \ \"\\\"abc\\\"\" && type_str(s) == \"char*\" && initializer_str(s) == \"\\\"\
-    abc\\\"\", \"const char*\");\n    }\n    CHECK_REPR(std::string(\"abc\"), std::string{\"\
-    abc\"});\n    CHECK_REPR(std::string(), std::string{\"\"});\n    check(type_str(std::string())\
-    \ == \"std::string\" && initializer_str(std::string(\"x\")) == \"\\\"x\\\"\",\
-    \ \"type_str / initializer_str (string)\");\n\n    // \u30B3\u30F3\u30C6\u30CA\
-    \n    CHECK_REPR((std::vector<int>{1, 2, 3}), std::vector<int>{1, 2, 3});\n  \
-    \  CHECK_REPR(std::vector<int>(), std::vector<int>{});\n    CHECK_REPR((std::vector<std::vector<long\
-    \ long>>{{1, 2}, {}}), std::vector<std::vector<long long>>{{1ll, 2ll}, {}});\n\
-    \    CHECK_REPR((std::set<int>{3, 1, 2}), std::set<int>{1, 2, 3});\n    CHECK_REPR((std::pair<int,\
-    \ std::string>{1, \"a\"}), std::pair<int, std::string>{1, \"a\"});\n    CHECK_REPR((std::pair<char,\
-    \ double>{'x', 0.5}), std::pair<char, double>{'x', 0.500000});\n    CHECK_REPR((std::map<int,\
-    \ char>{{2, 'b'}, {1, 'a'}}), std::map<int, char>{{1, 'a'}, {2, 'b'}});\n    CHECK_REPR((std::map<std::string,\
+    \ == \"1.500000f\", \"initializer_str (number)\");\n\n    // 128 bit \u6574\u6570\
+    : \u30EA\u30C6\u30E9\u30EB\u304C\u306A\u3044\u306E\u3067 10^18 \u3054\u3068\u306B\
+    \u533A\u5207\u3063\u305F\u5F0F\u306B\u3059\u308B\n    {\n        const __uint128_t\
+    \ umax = ~static_cast<__uint128_t>(0);\n        const __int128_t imax = static_cast<__int128_t>(umax\
+    \ >> 1), imin = -imax - 1;\n        CHECK_REPR(static_cast<__int128_t>(0), __int128_t{0});\n\
+    \        CHECK_REPR(static_cast<__int128_t>(-42), __int128_t{-42});\n        CHECK_REPR(static_cast<__int128_t>(1000000000000000000LL),\
+    \ __int128_t{1} * 1000000000000000000 + 0);\n        CHECK_REPR(imax, (__int128_t{170}\
+    \ * 1000000000000000000 + 141183460469231731) * 1000000000000000000 + 687303715884105727);\n\
+    \        CHECK_REPR(imin, (__int128_t{-170} * 1000000000000000000 - 141183460469231731)\
+    \ * 1000000000000000000 - 687303715884105728);\n        CHECK_REPR(umax, (__uint128_t{340}\
+    \ * 1000000000000000000 + 282366920938463463) * 1000000000000000000 + 374607431768211455);\n\
+    \        CHECK_REPR(static_cast<__uint128_t>(7), __uint128_t{7});\n        CHECK_REPR((std::vector<__int128_t>{1,\
+    \ -2}), std::vector<__int128_t>{__int128_t{1}, __int128_t{-2}});\n        check(type_str(imax)\
+    \ == \"__int128_t\" && type_str(umax) == \"__uint128_t\", \"type_str (128 bit)\"\
+    );\n        // \u533A\u5207\u308A\u306E\u4E0B\u306E\u6841\u304C 0 \u304B\u3089\
+    \u59CB\u307E\u3063\u3066\u3082 8 \u9032\u6570\u306E\u30EA\u30C6\u30E9\u30EB\u306B\
+    \u306A\u3089\u306A\u3044\n        CHECK_REPR(static_cast<__int128_t>(1000000000000000007LL),\
+    \ __int128_t{1} * 1000000000000000000 + 7);\n        // \u30E9\u30F3\u30C0\u30E0\
+    : \u5168\u7BC4\u56F2\u306E\u5024\u3067\u3001\u5F0F\u3092\u5DE6\u304B\u3089\u8A08\
+    \u7B97\u3057\u76F4\u3059\u3068\u5143\u306E\u5024\u306B\u306A\u308B\n        for\
+    \ (int rep = 0; rep < 20000 && ok; rep++) {\n            __uint128_t u = 0;\n\
+    \            for (int k = 0; k < 4; k++) u = u << 32 | rng();\n            u >>=\
+    \ rng() % 128;\n            const __int128_t x = static_cast<__int128_t>(u);\n\
+    \            const std::string s = repr(x);\n            // \"__int128_t{a}\"\
+    \ \u306E\u3042\u3068\u306B \" * 1000000000000000000 \xB1 c\" \u304C\u7D9A\u304F\
+    \ (\u62EC\u5F27\u306F\u98DB\u3070\u3059)\n            std::size_t i = s.find('{')\
+    \ + 1;\n            auto number = [&](std::size_t& j) {\n                bool\
+    \ neg = s[j] == '-';\n                if (neg) j++;\n                __int128_t\
+    \ v = 0;\n                for (; j < s.size() && '0' <= s[j] && s[j] <= '9'; j++)\
+    \ v = v * 10 + (s[j] - '0');\n                return neg ? -v : v;\n         \
+    \   };\n            __int128_t v = number(i);\n            const std::string sep\
+    \ = \" * 1000000000000000000 \";\n            for (; (i = s.find(sep, i)) != std::string::npos;)\
+    \ {\n                i += sep.size();\n                const bool minus = s[i]\
+    \ == '-';\n                i += 2;\n                const __int128_t c = number(i);\n\
+    \                v = v * 1000000000000000000 + (minus ? -c : c);\n           \
+    \ }\n            check(v == x, \"repr(__int128_t) (random)\");\n        }\n  \
+    \  }\n\n    // char\n    CHECK_REPR('a', 'a');\n    CHECK_REPR('\\n', '\\n');\n\
+    \    CHECK_REPR('\\0', '\\0');\n    CHECK_REPR('\\'', '\\'');\n    CHECK_REPR('\\\
+    \\', '\\\\');\n    CHECK_REPR(static_cast<char>(1), '\\001');\n    CHECK_REPR(static_cast<char>(127),\
+    \ '\\177');\n    CHECK_REPR(static_cast<char>(-61), '\\303');  // UTF-8 \u306E\
+    \u6587\u5B57\u306E\u30D0\u30A4\u30C8\u306A\u3069\u3001\u8CA0\u306E\u5024\u306E\
+    \ char\n    check(type_str('a') == \"char\" && initializer_str('a') == \"'a'\"\
+    , \"type_str / initializer_str (char)\");\n    for (int i = -128; i <= 127; i++)\
+    \ {\n        char c = static_cast<char>(i);\n        check(repr(c) == naive_char_repr(c),\
+    \ \"repr(char) for all values\");\n    }\n\n    // \u6587\u5B57\u5217\n    {\n\
+    \        const char* s = \"abc\";\n        check(repr(s) == \"\\\"abc\\\"\" &&\
+    \ type_str(s) == \"char*\" && initializer_str(s) == \"\\\"abc\\\"\", \"const char*\"\
+    );\n    }\n    CHECK_REPR(std::string(\"abc\"), std::string{\"abc\"});\n    CHECK_REPR(std::string(),\
+    \ std::string{\"\"});\n    check(type_str(std::string()) == \"std::string\" &&\
+    \ initializer_str(std::string(\"x\")) == \"\\\"x\\\"\", \"type_str / initializer_str\
+    \ (string)\");\n\n    // \u30B3\u30F3\u30C6\u30CA\n    CHECK_REPR((std::vector<int>{1,\
+    \ 2, 3}), std::vector<int>{1, 2, 3});\n    CHECK_REPR(std::vector<int>(), std::vector<int>{});\n\
+    \    CHECK_REPR((std::vector<std::vector<long long>>{{1, 2}, {}}), std::vector<std::vector<long\
+    \ long>>{{1ll, 2ll}, {}});\n    CHECK_REPR((std::set<int>{3, 1, 2}), std::set<int>{1,\
+    \ 2, 3});\n    CHECK_REPR((std::pair<int, std::string>{1, \"a\"}), std::pair<int,\
+    \ std::string>{1, \"a\"});\n    CHECK_REPR((std::pair<char, double>{'x', 0.5}),\
+    \ std::pair<char, double>{'x', 0.500000});\n    CHECK_REPR((std::map<int, char>{{2,\
+    \ 'b'}, {1, 'a'}}), std::map<int, char>{{1, 'a'}, {2, 'b'}});\n    CHECK_REPR((std::map<std::string,\
     \ std::vector<int>>{{\"k\", {1}}}), std::map<std::string, std::vector<int>>{{\"\
     k\", {1}}});\n    CHECK_REPR((std::array<int, 3>{1, 2, 3}), std::array<int, 3>{1,\
     \ 2, 3});\n    CHECK_REPR((std::vector<std::pair<int, unsigned>>{{1, 2u}}), std::vector<std::pair<int,\
@@ -692,28 +753,64 @@ data:
     \ == \"unsigned long long\", \"type_str (unsigned)\");\n    check(type_str(1.0f)\
     \ == \"float\" && type_str(1.0) == \"double\" && type_str(1.0L) == \"long double\"\
     , \"type_str (floating)\");\n    check(initializer_str(5LL) == \"5ll\" && initializer_str(1.5f)\
-    \ == \"1.500000f\", \"initializer_str (number)\");\n\n    // char\n    CHECK_REPR('a',\
-    \ 'a');\n    CHECK_REPR('\\n', '\\n');\n    CHECK_REPR('\\0', '\\0');\n    CHECK_REPR('\\\
-    '', '\\'');\n    CHECK_REPR('\\\\', '\\\\');\n    CHECK_REPR(static_cast<char>(1),\
-    \ '\\001');\n    CHECK_REPR(static_cast<char>(127), '\\177');\n    CHECK_REPR(static_cast<char>(-61),\
-    \ '\\303');  // UTF-8 \u306E\u6587\u5B57\u306E\u30D0\u30A4\u30C8\u306A\u3069\u3001\
-    \u8CA0\u306E\u5024\u306E char\n    check(type_str('a') == \"char\" && initializer_str('a')\
-    \ == \"'a'\", \"type_str / initializer_str (char)\");\n    for (int i = -128;\
-    \ i <= 127; i++) {\n        char c = static_cast<char>(i);\n        check(repr(c)\
-    \ == naive_char_repr(c), \"repr(char) for all values\");\n    }\n\n    // \u6587\
-    \u5B57\u5217\n    {\n        const char* s = \"abc\";\n        check(repr(s) ==\
-    \ \"\\\"abc\\\"\" && type_str(s) == \"char*\" && initializer_str(s) == \"\\\"\
-    abc\\\"\", \"const char*\");\n    }\n    CHECK_REPR(std::string(\"abc\"), std::string{\"\
-    abc\"});\n    CHECK_REPR(std::string(), std::string{\"\"});\n    check(type_str(std::string())\
-    \ == \"std::string\" && initializer_str(std::string(\"x\")) == \"\\\"x\\\"\",\
-    \ \"type_str / initializer_str (string)\");\n\n    // \u30B3\u30F3\u30C6\u30CA\
-    \n    CHECK_REPR((std::vector<int>{1, 2, 3}), std::vector<int>{1, 2, 3});\n  \
-    \  CHECK_REPR(std::vector<int>(), std::vector<int>{});\n    CHECK_REPR((std::vector<std::vector<long\
-    \ long>>{{1, 2}, {}}), std::vector<std::vector<long long>>{{1ll, 2ll}, {}});\n\
-    \    CHECK_REPR((std::set<int>{3, 1, 2}), std::set<int>{1, 2, 3});\n    CHECK_REPR((std::pair<int,\
-    \ std::string>{1, \"a\"}), std::pair<int, std::string>{1, \"a\"});\n    CHECK_REPR((std::pair<char,\
-    \ double>{'x', 0.5}), std::pair<char, double>{'x', 0.500000});\n    CHECK_REPR((std::map<int,\
-    \ char>{{2, 'b'}, {1, 'a'}}), std::map<int, char>{{1, 'a'}, {2, 'b'}});\n    CHECK_REPR((std::map<std::string,\
+    \ == \"1.500000f\", \"initializer_str (number)\");\n\n    // 128 bit \u6574\u6570\
+    : \u30EA\u30C6\u30E9\u30EB\u304C\u306A\u3044\u306E\u3067 10^18 \u3054\u3068\u306B\
+    \u533A\u5207\u3063\u305F\u5F0F\u306B\u3059\u308B\n    {\n        const __uint128_t\
+    \ umax = ~static_cast<__uint128_t>(0);\n        const __int128_t imax = static_cast<__int128_t>(umax\
+    \ >> 1), imin = -imax - 1;\n        CHECK_REPR(static_cast<__int128_t>(0), __int128_t{0});\n\
+    \        CHECK_REPR(static_cast<__int128_t>(-42), __int128_t{-42});\n        CHECK_REPR(static_cast<__int128_t>(1000000000000000000LL),\
+    \ __int128_t{1} * 1000000000000000000 + 0);\n        CHECK_REPR(imax, (__int128_t{170}\
+    \ * 1000000000000000000 + 141183460469231731) * 1000000000000000000 + 687303715884105727);\n\
+    \        CHECK_REPR(imin, (__int128_t{-170} * 1000000000000000000 - 141183460469231731)\
+    \ * 1000000000000000000 - 687303715884105728);\n        CHECK_REPR(umax, (__uint128_t{340}\
+    \ * 1000000000000000000 + 282366920938463463) * 1000000000000000000 + 374607431768211455);\n\
+    \        CHECK_REPR(static_cast<__uint128_t>(7), __uint128_t{7});\n        CHECK_REPR((std::vector<__int128_t>{1,\
+    \ -2}), std::vector<__int128_t>{__int128_t{1}, __int128_t{-2}});\n        check(type_str(imax)\
+    \ == \"__int128_t\" && type_str(umax) == \"__uint128_t\", \"type_str (128 bit)\"\
+    );\n        // \u533A\u5207\u308A\u306E\u4E0B\u306E\u6841\u304C 0 \u304B\u3089\
+    \u59CB\u307E\u3063\u3066\u3082 8 \u9032\u6570\u306E\u30EA\u30C6\u30E9\u30EB\u306B\
+    \u306A\u3089\u306A\u3044\n        CHECK_REPR(static_cast<__int128_t>(1000000000000000007LL),\
+    \ __int128_t{1} * 1000000000000000000 + 7);\n        // \u30E9\u30F3\u30C0\u30E0\
+    : \u5168\u7BC4\u56F2\u306E\u5024\u3067\u3001\u5F0F\u3092\u5DE6\u304B\u3089\u8A08\
+    \u7B97\u3057\u76F4\u3059\u3068\u5143\u306E\u5024\u306B\u306A\u308B\n        for\
+    \ (int rep = 0; rep < 20000 && ok; rep++) {\n            __uint128_t u = 0;\n\
+    \            for (int k = 0; k < 4; k++) u = u << 32 | rng();\n            u >>=\
+    \ rng() % 128;\n            const __int128_t x = static_cast<__int128_t>(u);\n\
+    \            const std::string s = repr(x);\n            // \"__int128_t{a}\"\
+    \ \u306E\u3042\u3068\u306B \" * 1000000000000000000 \xB1 c\" \u304C\u7D9A\u304F\
+    \ (\u62EC\u5F27\u306F\u98DB\u3070\u3059)\n            std::size_t i = s.find('{')\
+    \ + 1;\n            auto number = [&](std::size_t& j) {\n                bool\
+    \ neg = s[j] == '-';\n                if (neg) j++;\n                __int128_t\
+    \ v = 0;\n                for (; j < s.size() && '0' <= s[j] && s[j] <= '9'; j++)\
+    \ v = v * 10 + (s[j] - '0');\n                return neg ? -v : v;\n         \
+    \   };\n            __int128_t v = number(i);\n            const std::string sep\
+    \ = \" * 1000000000000000000 \";\n            for (; (i = s.find(sep, i)) != std::string::npos;)\
+    \ {\n                i += sep.size();\n                const bool minus = s[i]\
+    \ == '-';\n                i += 2;\n                const __int128_t c = number(i);\n\
+    \                v = v * 1000000000000000000 + (minus ? -c : c);\n           \
+    \ }\n            check(v == x, \"repr(__int128_t) (random)\");\n        }\n  \
+    \  }\n\n    // char\n    CHECK_REPR('a', 'a');\n    CHECK_REPR('\\n', '\\n');\n\
+    \    CHECK_REPR('\\0', '\\0');\n    CHECK_REPR('\\'', '\\'');\n    CHECK_REPR('\\\
+    \\', '\\\\');\n    CHECK_REPR(static_cast<char>(1), '\\001');\n    CHECK_REPR(static_cast<char>(127),\
+    \ '\\177');\n    CHECK_REPR(static_cast<char>(-61), '\\303');  // UTF-8 \u306E\
+    \u6587\u5B57\u306E\u30D0\u30A4\u30C8\u306A\u3069\u3001\u8CA0\u306E\u5024\u306E\
+    \ char\n    check(type_str('a') == \"char\" && initializer_str('a') == \"'a'\"\
+    , \"type_str / initializer_str (char)\");\n    for (int i = -128; i <= 127; i++)\
+    \ {\n        char c = static_cast<char>(i);\n        check(repr(c) == naive_char_repr(c),\
+    \ \"repr(char) for all values\");\n    }\n\n    // \u6587\u5B57\u5217\n    {\n\
+    \        const char* s = \"abc\";\n        check(repr(s) == \"\\\"abc\\\"\" &&\
+    \ type_str(s) == \"char*\" && initializer_str(s) == \"\\\"abc\\\"\", \"const char*\"\
+    );\n    }\n    CHECK_REPR(std::string(\"abc\"), std::string{\"abc\"});\n    CHECK_REPR(std::string(),\
+    \ std::string{\"\"});\n    check(type_str(std::string()) == \"std::string\" &&\
+    \ initializer_str(std::string(\"x\")) == \"\\\"x\\\"\", \"type_str / initializer_str\
+    \ (string)\");\n\n    // \u30B3\u30F3\u30C6\u30CA\n    CHECK_REPR((std::vector<int>{1,\
+    \ 2, 3}), std::vector<int>{1, 2, 3});\n    CHECK_REPR(std::vector<int>(), std::vector<int>{});\n\
+    \    CHECK_REPR((std::vector<std::vector<long long>>{{1, 2}, {}}), std::vector<std::vector<long\
+    \ long>>{{1ll, 2ll}, {}});\n    CHECK_REPR((std::set<int>{3, 1, 2}), std::set<int>{1,\
+    \ 2, 3});\n    CHECK_REPR((std::pair<int, std::string>{1, \"a\"}), std::pair<int,\
+    \ std::string>{1, \"a\"});\n    CHECK_REPR((std::pair<char, double>{'x', 0.5}),\
+    \ std::pair<char, double>{'x', 0.500000});\n    CHECK_REPR((std::map<int, char>{{2,\
+    \ 'b'}, {1, 'a'}}), std::map<int, char>{{1, 'a'}, {2, 'b'}});\n    CHECK_REPR((std::map<std::string,\
     \ std::vector<int>>{{\"k\", {1}}}), std::map<std::string, std::vector<int>>{{\"\
     k\", {1}}});\n    CHECK_REPR((std::array<int, 3>{1, 2, 3}), std::array<int, 3>{1,\
     \ 2, 3});\n    CHECK_REPR((std::vector<std::pair<int, unsigned>>{{1, 2u}}), std::vector<std::pair<int,\
@@ -748,7 +845,7 @@ data:
   isVerificationFile: true
   path: test/unittest/utility/repr.test.cpp
   requiredBy: []
-  timestamp: '2026-10-31 05:46:56+09:00'
+  timestamp: '2026-10-31 16:48:46+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/utility/repr.test.cpp

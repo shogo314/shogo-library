@@ -364,14 +364,17 @@ data:
     \u30D5\u306E\u5F69\u8272\u6570 (\u96A3\u308A\u5408\u3046\u9802\u70B9\u304C\u540C\
     \u3058\u8272\u306B\u306A\u3089\u306A\u3044\u3088\u3046\u306B\u5857\u308B\u3068\
     \u304D\u306E\u8272\u306E\u6700\u5C0F\u6570\u3002\u9802\u70B9\u6570 20 \u7A0B\u5EA6\
-    \u307E\u3067) O(3^n) \u3088\u308A\u5C11\u3057\u901F\u3044\n * \u72EC\u7ACB\u96C6\
-    \u5408\u306E\u8868\u3092 O(2^n) \u3067\u4F5C\u308A\u3001dp[S] = min (dp[S \\ T]\
-    \ + 1) \u3092\u3001T \u3092\u300CS \u306E\u6700\u5C0F\u306E\u9802\u70B9 v \u3092\
-    \u542B\u307F\u3001v \u3068\u96A3\u308A\u5408\u308F\u306A\u3044 S \u306E\u9802\u70B9\
-    \u304B\u3089\u306A\u308B\u72EC\u7ACB\u96C6\u5408\u300D\u306B\u9650\u3063\u3066\
-    \u6C42\u3081\u308B\n * \u9802\u70B9\u304C\u306A\u3051\u308C\u3070 0\u3002\u81EA\
-    \u5DF1\u30EB\u30FC\u30D7\u304C\u3042\u308C\u3070\u5857\u308C\u306A\u3044\u306E\
-    \u3067 -1\n */\ntemplate <typename Cost = long long>\nlong long chromatic_number(const\
+    \u307E\u3067) O(3^n)\n * \u72EC\u7ACB\u96C6\u5408\u306E\u8868\u3092 O(2^n) \u3067\
+    \u4F5C\u308A\u3001dp[S] = min (dp[S \\ T] + 1) \u3092\u3001T \u3092\u300CS \u306E\
+    \u6700\u5C0F\u306E\u9802\u70B9 v \u3092\u542B\u307F\u3001v \u3068\u96A3\u308A\u5408\
+    \u308F\u306A\u3044 S \u306E\u9802\u70B9\u304B\u3089\u306A\u308B\u72EC\u7ACB\u96C6\
+    \u5408\u300D\u306B\u9650\u3063\u3066\u6C42\u3081\u308B\n * \u679D\u5208\u308A\u3067\
+    \u901F\u304F\u306A\u308B\u306E\u306F\u5B9A\u6570\u500D\u3060\u3051\u3067\u3001\
+    2 \u9802\u70B9\u305A\u3064\u8FBA\u3067\u7D50\u3093\u3060\u30B0\u30E9\u30D5\u306A\
+    \u3069\u3067\u306F\u5185\u5074\u306E\u30EB\u30FC\u30D7\u304C 3^n / 2 \u56DE\u8FD1\
+    \u304F\u307E\u308F\u308B\n * \u9802\u70B9\u304C\u306A\u3051\u308C\u3070 0\u3002\
+    \u81EA\u5DF1\u30EB\u30FC\u30D7\u304C\u3042\u308C\u3070\u5857\u308C\u306A\u3044\
+    \u306E\u3067 -1\n */\ntemplate <typename Cost = long long>\nlong long chromatic_number(const\
     \ Graph<Cost>& graph) {\n    const int n = graph.n;\n    if (n == 0) return 0;\n\
     \    assert(n <= 30);\n    std::vector<int> adj(n, 0);\n    for (int v = 0; v\
     \ < n; v++) {\n        for (const auto& e : graph[v]) {\n            if (e.dst\
@@ -532,7 +535,7 @@ data:
   isVerificationFile: true
   path: test/aoj/grl/grl-2-a.test.cpp
   requiredBy: []
-  timestamp: '2026-10-27 20:28:53+09:00'
+  timestamp: '2026-10-31 17:31:56+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/grl/grl-2-a.test.cpp

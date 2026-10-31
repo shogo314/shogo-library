@@ -32,6 +32,33 @@ data:
     title: "\u30DE\u30F3\u30CF\u30C3\u30BF\u30F3\u8DDD\u96E2\u306E\u6700\u5C0F\u5168\
       \u57DF\u6728"
   - icon: ':heavy_check_mark:'
+    path: src/geometry/manhattan.hpp
+    title: "\u30DE\u30F3\u30CF\u30C3\u30BF\u30F3\u8DDD\u96E2 (\u6700\u8FD1\u70B9\u5BFE\
+      \u30FB\u6700\u9060\u70B9\u5BFE\u3001\u5404\u70B9\u304B\u3089\u6700\u3082\u8FD1\
+      \u3044\u70B9\u30FB\u6700\u3082\u9060\u3044\u70B9)"
+  - icon: ':heavy_check_mark:'
+    path: src/geometry/point-pair.hpp
+    title: "\u6700\u8FD1\u70B9\u5BFE\u30FB\u6700\u9060\u70B9\u5BFE"
+  - icon: ':heavy_check_mark:'
+    path: src/geometry/polygon.hpp
+    title: "\u591A\u89D2\u5F62 (\u9762\u7A4D\u3001\u91CD\u5FC3\u3001\u5185\u5916\u5224\
+      \u5B9A\u3001\u51F8\u6027\u3001\u51F8\u5305\u3001\u51F8\u591A\u89D2\u5F62\u306E\
+      \u5207\u65AD)"
+  - icon: ':heavy_check_mark:'
+    path: src/geometry/segment-3d.hpp
+    title: "3 \u6B21\u5143\u306E\u76F4\u7DDA\u30FB\u7DDA\u5206\u30FB\u5E73\u9762 (\u8DDD\
+      \u96E2\u3001\u76F4\u7DDA\u3068\u5E73\u9762\u306E\u4EA4\u70B9\u3001\u7DDA\u5206\
+      \u3068\u4E09\u89D2\u5F62\u306E\u4EA4\u5DEE)"
+  - icon: ':heavy_check_mark:'
+    path: src/geometry/segment.hpp
+    title: "\u76F4\u7DDA\u30FB\u7DDA\u5206 (\u4EA4\u5DEE\u5224\u5B9A\u3001\u4EA4\u70B9\
+      \u3001\u5C04\u5F71\u3001\u8DDD\u96E2)"
+  - icon: ':heavy_check_mark:'
+    path: src/geometry/sphere.hpp
+    title: "\u7403 (\u76F4\u7DDA\u3068\u306E\u4EA4\u70B9\u3001\u7403\u3069\u3046\u3057\
+      \u306E\u4EA4\u308F\u308A\u3001\u5171\u901A\u90E8\u5206\u306E\u4F53\u7A4D\u3001\
+      \u5927\u5186\u8DDD\u96E2)"
+  - icon: ':heavy_check_mark:'
     path: src/geometry/vector.hpp
     title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"
   - icon: ':heavy_check_mark:'
@@ -232,6 +259,18 @@ data:
     path: test/aoj/volume0/0029.test.cpp
     title: test/aoj/volume0/0029.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/aoj/volume1/0115.test.cpp
+    title: test/aoj/volume1/0115.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/volume1/0177.test.cpp
+    title: test/aoj/volume1/0177.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/volume12/1289.test.cpp
+    title: test/aoj/volume12/1289.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/volume26/2641.test.cpp
+    title: test/aoj/volume26/2641.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/aoj/volume29/2971.test.cpp
     title: test/aoj/volume29/2971.test.cpp
   - icon: ':heavy_check_mark:'
@@ -298,14 +337,26 @@ data:
     path: test/unittest/geometry/manhattan-mst.test.cpp
     title: test/unittest/geometry/manhattan-mst.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/geometry/vector-centroid.test.cpp
-    title: test/unittest/geometry/vector-centroid.test.cpp
+    path: test/unittest/geometry/manhattan.test.cpp
+    title: test/unittest/geometry/manhattan.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/geometry/vector-line.test.cpp
-    title: test/unittest/geometry/vector-line.test.cpp
+    path: test/unittest/geometry/point-pair.test.cpp
+    title: test/unittest/geometry/point-pair.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/geometry/vector-polygon.test.cpp
-    title: test/unittest/geometry/vector-polygon.test.cpp
+    path: test/unittest/geometry/polygon-centroid.test.cpp
+    title: test/unittest/geometry/polygon-centroid.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/geometry/polygon-convex-cut.test.cpp
+    title: test/unittest/geometry/polygon-convex-cut.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/geometry/segment-3d.test.cpp
+    title: test/unittest/geometry/segment-3d.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/geometry/segment.test.cpp
+    title: test/unittest/geometry/segment.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/geometry/sphere.test.cpp
+    title: test/unittest/geometry/sphere.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/geometry/vector.test.cpp
     title: test/unittest/geometry/vector.test.cpp
@@ -685,8 +736,14 @@ data:
     path: test/yukicoder/117.test.cpp
     title: test/yukicoder/117.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yukicoder/132.test.cpp
+    title: test/yukicoder/132.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yukicoder/1340.test.cpp
     title: test/yukicoder/1340.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yukicoder/3672.test.cpp
+    title: test/yukicoder/3672.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/3770.test.cpp
     title: test/yukicoder/3770.test.cpp
@@ -820,7 +877,13 @@ data:
   path: src/utility/traits.hpp
   requiredBy:
   - src/dp/subset-sum-count.hpp
+  - src/geometry/point-pair.hpp
+  - src/geometry/polygon.hpp
+  - src/geometry/manhattan.hpp
+  - src/geometry/segment-3d.hpp
+  - src/geometry/segment.hpp
   - src/geometry/circle.hpp
+  - src/geometry/sphere.hpp
   - src/geometry/axis-parallel-segments.hpp
   - src/geometry/vector.hpp
   - src/geometry/manhattan-mst.hpp
@@ -847,20 +910,26 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/yukicoder/674.2.test.cpp
+  - test/yukicoder/3672.test.cpp
   - test/yukicoder/117.test.cpp
+  - test/yukicoder/132.test.cpp
   - test/yukicoder/1340.test.cpp
   - test/yukicoder/3770.test.cpp
   - test/yukicoder/3771.test.cpp
   - test/unittest/base/functions.test.cpp
   - test/unittest/dp/subset-sum.test.cpp
+  - test/unittest/geometry/manhattan.test.cpp
+  - test/unittest/geometry/point-pair.test.cpp
   - test/unittest/geometry/manhattan-mst.test.cpp
+  - test/unittest/geometry/sphere.test.cpp
   - test/unittest/geometry/vector.test.cpp
   - test/unittest/geometry/angle.test.cpp
   - test/unittest/geometry/circle.test.cpp
-  - test/unittest/geometry/vector-line.test.cpp
-  - test/unittest/geometry/vector-polygon.test.cpp
+  - test/unittest/geometry/segment-3d.test.cpp
+  - test/unittest/geometry/polygon-centroid.test.cpp
   - test/unittest/geometry/axis-parallel-segments.test.cpp
-  - test/unittest/geometry/vector-centroid.test.cpp
+  - test/unittest/geometry/polygon-convex-cut.test.cpp
+  - test/unittest/geometry/segment.test.cpp
   - test/unittest/utility/container_func.test.cpp
   - test/unittest/utility/repr.test.cpp
   - test/unittest/utility/container_func-member.test.cpp
@@ -899,6 +968,8 @@ data:
   - test/unittest/string/rolling-hash.test.cpp
   - test/unittest/string/wildcard-matching.test.cpp
   - test/aoj/volume0/0029.test.cpp
+  - test/aoj/volume1/0115.test.cpp
+  - test/aoj/volume1/0177.test.cpp
   - test/aoj/volume29/2971.test.cpp
   - test/aoj/cgl/cgl-6-a.test.cpp
   - test/aoj/cgl/cgl-3-b.test.cpp
@@ -924,10 +995,12 @@ data:
   - test/aoj/cgl/cgl-7-i.test.cpp
   - test/aoj/cgl/cgl-4-a.test.cpp
   - test/aoj/cgl/cgl-2-d.test.cpp
+  - test/aoj/volume26/2641.test.cpp
   - test/aoj/itp1/itp1-10-c.test.cpp
   - test/aoj/itp1/itp1-6-a.test.cpp
   - test/aoj/itp1/itp1-2-c.test.cpp
   - test/aoj/itp1/itp1-4-d.test.cpp
+  - test/aoj/volume12/1289.test.cpp
   - test/aoj/itp2/itp2-5-a.1.test.cpp
   - test/aoj/itp2/itp2-3-c.test.cpp
   - test/aoj/itp2/itp2-5-a.2.test.cpp

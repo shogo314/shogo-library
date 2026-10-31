@@ -7,8 +7,8 @@ data:
     path: test/unittest/data_structures/circular-sum.test.cpp
     title: test/unittest/data_structures/circular-sum.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/geometry/vector-centroid.test.cpp
-    title: test/unittest/geometry/vector-centroid.test.cpp
+    path: test/unittest/geometry/polygon-centroid.test.cpp
+    title: test/unittest/geometry/polygon-centroid.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -64,7 +64,7 @@ data:
   timestamp: '2026-10-31 15:34:18+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/unittest/geometry/vector-centroid.test.cpp
+  - test/unittest/geometry/polygon-centroid.test.cpp
   - test/unittest/data_structures/circular-sum.test.cpp
 documentation_of: src/data_structures/circular-sum.hpp
 layout: document

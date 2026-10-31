@@ -541,6 +541,37 @@ double polygon_area(const std::vector<Vector<T, 2>>& polygon) {
 }
 
 /**
+ * @brief 多角形の辺 p→q の寄与 {2S, 6S gx, 6S gy}
+ * 辺ごとの和を取ると、多角形の符号付き面積 S の 2 倍と、重心 (gx, gy) に 6S を掛けたものになる
+ * 部分多角形のクエリは、寄与の累積和 (CircularSum など) で求められる
+ *
+ * @tparam T 座標の型。整数型なら __int128 で計算する (座標が 1e9 なら 6S gx は 1e27 程度になる)
+ */
+template <typename T>
+auto polygon_moment(const Vector<T, 2>& p, const Vector<T, 2>& q) {
+    using W = std::conditional_t<std::is_integral_v<T>, __int128_t, T>;
+    const W c = static_cast<W>(p[0]) * q[1] - static_cast<W>(p[1]) * q[0];
+    return Vector<W, 3>(c, (static_cast<W>(p[0]) + q[0]) * c, (static_cast<W>(p[1]) + q[1]) * c);
+}
+
+/**
+ * @brief 多角形 (の領域) の重心
+ *
+ * @tparam T 座標の型
+ * @param polygon 頂点の座標(順番、反時計回りか時計回りかは問わない。面積が 0 なら assert で落ちる)
+ * @return Vector<double, 2> 重心
+ */
+template <typename T>
+Vector<double, 2> polygon_centroid(const std::vector<Vector<T, 2>>& polygon) {
+    const int n = static_cast<int>(polygon.size());
+    decltype(polygon_moment(polygon[0], polygon[0])) m;
+    for (int i = 0; i < n; i++) m += polygon_moment(polygon[i], polygon[i + 1 == n ? 0 : i + 1]);
+    assert(m[0] != 0 && "polygon_centroid: area must be nonzero");
+    const double a = static_cast<double>(m[0]) * 3;
+    return Vector<double, 2>(static_cast<double>(m[1]) / a, static_cast<double>(m[2]) / a);
+}
+
+/**
  * @brief 多角形の凸性判定
  *
  * @tparam T 座標の型

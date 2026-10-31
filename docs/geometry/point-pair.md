@@ -28,3 +28,4 @@ auto f = farthest_point_pair(ps);         // f.dist = √29、f.i = 0、f.j = 3
 
 - 点・ベクトルの型は [幾何ベクトル](vector.hpp)
 - 最遠点対が使う凸包は [多角形](polygon.hpp) の `convex_hull`
+- マンハッタン距離の最近点対・最遠点対は [マンハッタン距離](manhattan.hpp)

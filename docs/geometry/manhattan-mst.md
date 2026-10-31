@@ -25,3 +25,4 @@ for (const auto& e : mst.edges) {
 ## 関連
 
 - 一般のグラフの最小全域木は [グラフに関する関数](../graph/graph_util.hpp) の `minimum_spanning_tree`
+- 各点から最も近い・遠い点や、最近点対・最遠点対は [マンハッタン距離](manhattan.hpp)

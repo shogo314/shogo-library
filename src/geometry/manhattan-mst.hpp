@@ -5,12 +5,10 @@
  * @brief マンハッタン距離の最小全域木
  */
 
-#include <algorithm>
-#include <map>
-#include <numeric>
 #include <vector>
 
 #include "../graph/graph_util.hpp"
+#include "manhattan.hpp"
 #include "vector.hpp"
 
 /**
@@ -21,32 +19,8 @@
  * @return 最小全域木 (辺の src、dst は点の番号、cost は距離)
  */
 template <typename T>
-MinimumSpanningTree<T> manhattan_mst(std::vector<Vector<T, 2>> p) {
-    const long long n = p.size();
-    Graph<T> g(n);
-    std::vector<long long> id(n);
-    std::iota(id.begin(), id.end(), 0);
-    for (int k = 0; k < 4; k++) {
-        // x + y の昇順に見て、x - y の条件を満たす中で y が近い点を map から取り出す
-        std::sort(id.begin(), id.end(), [&](long long i, long long j) { return p[i][0] + p[i][1] < p[j][0] + p[j][1]; });
-        std::map<T, long long> sweep;  // -y -> 点
-        for (long long i : id) {
-            for (auto it = sweep.lower_bound(-p[i][1]); it != sweep.end(); it = sweep.erase(it)) {
-                const long long j = it->second;
-                const T dx = p[i][0] - p[j][0], dy = p[i][1] - p[j][1];
-                if (dy > dx) break;
-                g.add_edge(i, j, dx + dy);
-            }
-            sweep[-p[i][1]] = i;
-        }
-        // 4 つの向き: (x, y) -> (y, x) -> (-y, x) -> (x, -y) と変える
-        for (auto& v : p) {
-            if (k % 2 == 0) {
-                std::swap(v[0], v[1]);
-            } else {
-                v[0] = -v[0];
-            }
-        }
-    }
+MinimumSpanningTree<T> manhattan_mst(const std::vector<Vector<T, 2>>& p) {
+    Graph<T> g(p.size());
+    internal_manhattan::octant_nearest(p, [&](long long j, long long i, T d) { g.add_edge(i, j, d); });
     return minimum_spanning_tree(g);
 }

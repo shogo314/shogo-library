@@ -114,7 +114,8 @@ class Graph {
      * @brief 辺のリスト
      * @return std::vector<Edge> 辺のリスト(idの昇順)
      *
-     * 無向辺は代表して1つだけ格納される
+     * 無向辺は代表して1つだけ格納される。その src と dst の向きは規定しない
+     * 有向辺は追加したときの向きのまま格納される
      */
     std::vector<Edge> edges() const {
         std::vector<Edge> res(m);

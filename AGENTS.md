@@ -20,10 +20,11 @@
 - unittest のファイル名は src のファイル名に合わせる (`container_func.test.cpp`)。観点を足すなら `container_func-member`・`vector-line` のようにする。
 - 同じ問題を別の解き方で解いたテストは `.1`・`.2` と番号を付ける (`dpl-5-e.1.test.cpp`)。
 - テストを新しく書く前に、`grep -rl 'problem/<問題名>"' test` のように PROBLEM の URL で既存のテストを探す。ファイル名で探すと見落とすことがある。あれば既存のものを `git mv` で `.1` にして、新しいものを `.2` にする。`cat >` は既存のファイルを黙って上書きするので、書いたあとに `git status` で `M` になっていないか確かめる。
-- CI は `-std=c++17 -Wall -Wextra -O2` で検証する。新しいテストは手元で `-std=c++17` と `-std=c++20` の両方で通ることを確かめる。
+- CI は `-std=gnu++17 -Wall -Wextra -O2` で検証する。新しいテストは手元で `-std=gnu++17` と `-std=gnu++20` の両方で通ることを確かめる。
 
 ## 書き方
 
+- GNU 拡張 (GCC) を前提にしてよい。`__int128` は GNU モードでは `std::is_integral`・`std::is_scalar` などが真になるので、`Vector<__int128_t, 3>` のように普通の整数型と同じに使える。std の型特性を特殊化したり、独自の型特性で包んだりはしない。
 - C++20 で自然な書き方を優先し、`#if __cplusplus >= 202002L` で C++17 版も置く (例: `bit.hpp`・`saturating.hpp`・`functions.hpp`)。制約は C++20 で concept・requires、C++17 で `ENABLE_IF_T` マクロ。
 - 公開 API の添字・サイズ・個数・長さ・次数は `long long` にする。外から見えない内部の格納や計算は、問題がなければ `int` でよい。`size_t` は使わない (-1 の番兵や逆順ループが壊れる)。ビット位置や ccw の符号のような「種類を表す値」は `int`。
 - 型を省略したときの既定は `long long` にする (`int` だと重み 1e9 の和が黙ってあふれる)。値から型を推論できるよう推論ガイドを付ける。

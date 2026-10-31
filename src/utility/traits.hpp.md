@@ -244,6 +244,9 @@ data:
     path: test/unittest/base/functions.test.cpp
     title: test/unittest/base/functions.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/circular-sum.test.cpp
+    title: test/unittest/data_structures/circular-sum.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/convex-hull-trick.test.cpp
     title: test/unittest/data_structures/convex-hull-trick.test.cpp
   - icon: ':heavy_check_mark:'
@@ -294,6 +297,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/geometry/manhattan-mst.test.cpp
     title: test/unittest/geometry/manhattan-mst.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/geometry/vector-centroid.test.cpp
+    title: test/unittest/geometry/vector-centroid.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/geometry/vector-line.test.cpp
     title: test/unittest/geometry/vector-line.test.cpp
@@ -854,6 +860,7 @@ data:
   - test/unittest/geometry/vector-line.test.cpp
   - test/unittest/geometry/vector-polygon.test.cpp
   - test/unittest/geometry/axis-parallel-segments.test.cpp
+  - test/unittest/geometry/vector-centroid.test.cpp
   - test/unittest/utility/container_func.test.cpp
   - test/unittest/utility/repr.test.cpp
   - test/unittest/utility/container_func-member.test.cpp
@@ -881,6 +888,7 @@ data:
   - test/unittest/data_structures/persistent-segtree.test.cpp
   - test/unittest/data_structures/persistent-lazy-segtree.test.cpp
   - test/unittest/data_structures/convex-hull-trick.test.cpp
+  - test/unittest/data_structures/circular-sum.test.cpp
   - test/unittest/data_structures/interval-set.test.cpp
   - test/unittest/data_structures/priority_counter.test.cpp
   - test/unittest/data_structures/link-cut-tree.test.cpp

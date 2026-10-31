@@ -344,24 +344,48 @@ data:
     \u554F\u308F\u306A\u3044)\n * @return double \u9762\u7A4D\n */\ntemplate <typename\
     \ T>\ndouble polygon_area(const std::vector<Vector<T, 2>>& polygon) {\n    return\
     \ std::abs(polygon_area_doubled(polygon)) / 2.;\n}\n\n/**\n * @brief \u591A\u89D2\
-    \u5F62\u306E\u51F8\u6027\u5224\u5B9A\n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\
-    \n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19(\u53CD\u6642\u8A08\u56DE\u308A\
-    )\n * @return true \u51F8\n * @return false \u51F9\n */\ntemplate <typename T>\n\
-    bool polygon_is_convex(const std::vector<Vector<T, 2>>& polygon) {\n    int n\
-    \ = polygon.size();\n    for (int i = 0; i < n; i++) {\n        int j = i + 1;\n\
-    \        if (j == n) j = 0;\n        int k = j + 1;\n        if (k == n) k = 0;\n\
-    \        if (cross(polygon[j] - polygon[i], polygon[k] - polygon[j]) < 0) return\
-    \ false;\n    }\n    return true;\n}\n\n/**\n * @brief \u70B9\u306E\u591A\u89D2\
-    \u5F62\u5185\u5305\u542B\u5224\u5B9A\n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\
-    \n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19(\u53CD\u6642\u8A08\u56DE\u308A\
-    )\n * @param p \u70B9\u306E\u5EA7\u6A19\n * @return int 0: \u5916\u90E8, 1: \u8FBA\
-    \u4E0A, 2: \u5185\u90E8\n */\ntemplate <typename T>\nint polygon_contains(const\
-    \ std::vector<Vector<T, 2>>& polygon, const Vector<T, 2>& p) {\n    bool in =\
-    \ false;\n    for (int i = 0; i < static_cast<int>(polygon.size()); i++) {\n \
-    \       int j = i + 1;\n        if (j == static_cast<int>(polygon.size())) j =\
-    \ 0;\n        Vector<T> v1 = polygon[i] - p, v2 = polygon[j] - p;\n        if\
-    \ (v1[1] > v2[1]) std::swap(v1, v2);\n        T c = cross(v1, v2);\n        if\
-    \ (v1[1] <= 0 && v2[1] > 0 && c < 0) in = !in;\n        if (c == 0 && dot(v1,\
+    \u5F62\u306E\u8FBA p\u2192q \u306E\u5BC4\u4E0E {2S, 6S gx, 6S gy}\n * \u8FBA\u3054\
+    \u3068\u306E\u548C\u3092\u53D6\u308B\u3068\u3001\u591A\u89D2\u5F62\u306E\u7B26\
+    \u53F7\u4ED8\u304D\u9762\u7A4D S \u306E 2 \u500D\u3068\u3001\u91CD\u5FC3 (gx,\
+    \ gy) \u306B 6S \u3092\u639B\u3051\u305F\u3082\u306E\u306B\u306A\u308B\n * \u90E8\
+    \u5206\u591A\u89D2\u5F62\u306E\u30AF\u30A8\u30EA\u306F\u3001\u5BC4\u4E0E\u306E\
+    \u7D2F\u7A4D\u548C (CircularSum \u306A\u3069) \u3067\u6C42\u3081\u3089\u308C\u308B\
+    \n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\u3002\u6574\u6570\u578B\u306A\u3089\
+    \ __int128 \u3067\u8A08\u7B97\u3059\u308B (\u5EA7\u6A19\u304C 1e9 \u306A\u3089\
+    \ 6S gx \u306F 1e27 \u7A0B\u5EA6\u306B\u306A\u308B)\n */\ntemplate <typename T>\n\
+    auto polygon_moment(const Vector<T, 2>& p, const Vector<T, 2>& q) {\n    using\
+    \ W = std::conditional_t<std::is_integral_v<T>, __int128_t, T>;\n    const W c\
+    \ = static_cast<W>(p[0]) * q[1] - static_cast<W>(p[1]) * q[0];\n    return Vector<W,\
+    \ 3>(c, (static_cast<W>(p[0]) + q[0]) * c, (static_cast<W>(p[1]) + q[1]) * c);\n\
+    }\n\n/**\n * @brief \u591A\u89D2\u5F62 (\u306E\u9818\u57DF) \u306E\u91CD\u5FC3\
+    \n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\u306E\
+    \u5EA7\u6A19(\u9806\u756A\u3001\u53CD\u6642\u8A08\u56DE\u308A\u304B\u6642\u8A08\
+    \u56DE\u308A\u304B\u306F\u554F\u308F\u306A\u3044\u3002\u9762\u7A4D\u304C 0 \u306A\
+    \u3089 assert \u3067\u843D\u3061\u308B)\n * @return Vector<double, 2> \u91CD\u5FC3\
+    \n */\ntemplate <typename T>\nVector<double, 2> polygon_centroid(const std::vector<Vector<T,\
+    \ 2>>& polygon) {\n    const int n = static_cast<int>(polygon.size());\n    decltype(polygon_moment(polygon[0],\
+    \ polygon[0])) m;\n    for (int i = 0; i < n; i++) m += polygon_moment(polygon[i],\
+    \ polygon[i + 1 == n ? 0 : i + 1]);\n    assert(m[0] != 0 && \"polygon_centroid:\
+    \ area must be nonzero\");\n    const double a = static_cast<double>(m[0]) * 3;\n\
+    \    return Vector<double, 2>(static_cast<double>(m[1]) / a, static_cast<double>(m[2])\
+    \ / a);\n}\n\n/**\n * @brief \u591A\u89D2\u5F62\u306E\u51F8\u6027\u5224\u5B9A\n\
+    \ *\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\u306E\
+    \u5EA7\u6A19(\u53CD\u6642\u8A08\u56DE\u308A)\n * @return true \u51F8\n * @return\
+    \ false \u51F9\n */\ntemplate <typename T>\nbool polygon_is_convex(const std::vector<Vector<T,\
+    \ 2>>& polygon) {\n    int n = polygon.size();\n    for (int i = 0; i < n; i++)\
+    \ {\n        int j = i + 1;\n        if (j == n) j = 0;\n        int k = j + 1;\n\
+    \        if (k == n) k = 0;\n        if (cross(polygon[j] - polygon[i], polygon[k]\
+    \ - polygon[j]) < 0) return false;\n    }\n    return true;\n}\n\n/**\n * @brief\
+    \ \u70B9\u306E\u591A\u89D2\u5F62\u5185\u5305\u542B\u5224\u5B9A\n *\n * @tparam\
+    \ T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19\
+    (\u53CD\u6642\u8A08\u56DE\u308A)\n * @param p \u70B9\u306E\u5EA7\u6A19\n * @return\
+    \ int 0: \u5916\u90E8, 1: \u8FBA\u4E0A, 2: \u5185\u90E8\n */\ntemplate <typename\
+    \ T>\nint polygon_contains(const std::vector<Vector<T, 2>>& polygon, const Vector<T,\
+    \ 2>& p) {\n    bool in = false;\n    for (int i = 0; i < static_cast<int>(polygon.size());\
+    \ i++) {\n        int j = i + 1;\n        if (j == static_cast<int>(polygon.size()))\
+    \ j = 0;\n        Vector<T> v1 = polygon[i] - p, v2 = polygon[j] - p;\n      \
+    \  if (v1[1] > v2[1]) std::swap(v1, v2);\n        T c = cross(v1, v2);\n     \
+    \   if (v1[1] <= 0 && v2[1] > 0 && c < 0) in = !in;\n        if (c == 0 && dot(v1,\
     \ v2) <= 0) return 1;\n    }\n    return in ? 2 : 0;\n}\n\n/**\n * @brief \u591A\
     \u89D2\u5F62\u306E\u534A\u51F8\u5305\n * \u4E0E\u3048\u3089\u308C\u305F\u9802\u70B9\
     \u30EA\u30B9\u30C8\u306E\u9806\u756A\u3092\u4FDD\u3063\u3066\u53CD\u6642\u8A08\
@@ -759,7 +783,7 @@ data:
   isVerificationFile: true
   path: test/aoj/cgl/cgl-7-b.test.cpp
   requiredBy: []
-  timestamp: '2026-10-31 05:46:56+09:00'
+  timestamp: '2026-10-31 15:34:18+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/cgl/cgl-7-b.test.cpp

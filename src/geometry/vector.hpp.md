@@ -95,6 +95,9 @@ data:
     path: test/aoj/volume33/3314.test.cpp
     title: test/aoj/volume33/3314.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/circular-sum.test.cpp
+    title: test/unittest/data_structures/circular-sum.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/dual-segtree.test.cpp
     title: test/unittest/data_structures/dual-segtree.test.cpp
   - icon: ':heavy_check_mark:'
@@ -109,6 +112,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/geometry/manhattan-mst.test.cpp
     title: test/unittest/geometry/manhattan-mst.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/geometry/vector-centroid.test.cpp
+    title: test/unittest/geometry/vector-centroid.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/geometry/vector-line.test.cpp
     title: test/unittest/geometry/vector-line.test.cpp
@@ -456,24 +462,48 @@ data:
     \u554F\u308F\u306A\u3044)\n * @return double \u9762\u7A4D\n */\ntemplate <typename\
     \ T>\ndouble polygon_area(const std::vector<Vector<T, 2>>& polygon) {\n    return\
     \ std::abs(polygon_area_doubled(polygon)) / 2.;\n}\n\n/**\n * @brief \u591A\u89D2\
-    \u5F62\u306E\u51F8\u6027\u5224\u5B9A\n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\
-    \n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19(\u53CD\u6642\u8A08\u56DE\u308A\
-    )\n * @return true \u51F8\n * @return false \u51F9\n */\ntemplate <typename T>\n\
-    bool polygon_is_convex(const std::vector<Vector<T, 2>>& polygon) {\n    int n\
-    \ = polygon.size();\n    for (int i = 0; i < n; i++) {\n        int j = i + 1;\n\
-    \        if (j == n) j = 0;\n        int k = j + 1;\n        if (k == n) k = 0;\n\
-    \        if (cross(polygon[j] - polygon[i], polygon[k] - polygon[j]) < 0) return\
-    \ false;\n    }\n    return true;\n}\n\n/**\n * @brief \u70B9\u306E\u591A\u89D2\
-    \u5F62\u5185\u5305\u542B\u5224\u5B9A\n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\
-    \n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19(\u53CD\u6642\u8A08\u56DE\u308A\
-    )\n * @param p \u70B9\u306E\u5EA7\u6A19\n * @return int 0: \u5916\u90E8, 1: \u8FBA\
-    \u4E0A, 2: \u5185\u90E8\n */\ntemplate <typename T>\nint polygon_contains(const\
-    \ std::vector<Vector<T, 2>>& polygon, const Vector<T, 2>& p) {\n    bool in =\
-    \ false;\n    for (int i = 0; i < static_cast<int>(polygon.size()); i++) {\n \
-    \       int j = i + 1;\n        if (j == static_cast<int>(polygon.size())) j =\
-    \ 0;\n        Vector<T> v1 = polygon[i] - p, v2 = polygon[j] - p;\n        if\
-    \ (v1[1] > v2[1]) std::swap(v1, v2);\n        T c = cross(v1, v2);\n        if\
-    \ (v1[1] <= 0 && v2[1] > 0 && c < 0) in = !in;\n        if (c == 0 && dot(v1,\
+    \u5F62\u306E\u8FBA p\u2192q \u306E\u5BC4\u4E0E {2S, 6S gx, 6S gy}\n * \u8FBA\u3054\
+    \u3068\u306E\u548C\u3092\u53D6\u308B\u3068\u3001\u591A\u89D2\u5F62\u306E\u7B26\
+    \u53F7\u4ED8\u304D\u9762\u7A4D S \u306E 2 \u500D\u3068\u3001\u91CD\u5FC3 (gx,\
+    \ gy) \u306B 6S \u3092\u639B\u3051\u305F\u3082\u306E\u306B\u306A\u308B\n * \u90E8\
+    \u5206\u591A\u89D2\u5F62\u306E\u30AF\u30A8\u30EA\u306F\u3001\u5BC4\u4E0E\u306E\
+    \u7D2F\u7A4D\u548C (CircularSum \u306A\u3069) \u3067\u6C42\u3081\u3089\u308C\u308B\
+    \n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\u3002\u6574\u6570\u578B\u306A\u3089\
+    \ __int128 \u3067\u8A08\u7B97\u3059\u308B (\u5EA7\u6A19\u304C 1e9 \u306A\u3089\
+    \ 6S gx \u306F 1e27 \u7A0B\u5EA6\u306B\u306A\u308B)\n */\ntemplate <typename T>\n\
+    auto polygon_moment(const Vector<T, 2>& p, const Vector<T, 2>& q) {\n    using\
+    \ W = std::conditional_t<std::is_integral_v<T>, __int128_t, T>;\n    const W c\
+    \ = static_cast<W>(p[0]) * q[1] - static_cast<W>(p[1]) * q[0];\n    return Vector<W,\
+    \ 3>(c, (static_cast<W>(p[0]) + q[0]) * c, (static_cast<W>(p[1]) + q[1]) * c);\n\
+    }\n\n/**\n * @brief \u591A\u89D2\u5F62 (\u306E\u9818\u57DF) \u306E\u91CD\u5FC3\
+    \n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\u306E\
+    \u5EA7\u6A19(\u9806\u756A\u3001\u53CD\u6642\u8A08\u56DE\u308A\u304B\u6642\u8A08\
+    \u56DE\u308A\u304B\u306F\u554F\u308F\u306A\u3044\u3002\u9762\u7A4D\u304C 0 \u306A\
+    \u3089 assert \u3067\u843D\u3061\u308B)\n * @return Vector<double, 2> \u91CD\u5FC3\
+    \n */\ntemplate <typename T>\nVector<double, 2> polygon_centroid(const std::vector<Vector<T,\
+    \ 2>>& polygon) {\n    const int n = static_cast<int>(polygon.size());\n    decltype(polygon_moment(polygon[0],\
+    \ polygon[0])) m;\n    for (int i = 0; i < n; i++) m += polygon_moment(polygon[i],\
+    \ polygon[i + 1 == n ? 0 : i + 1]);\n    assert(m[0] != 0 && \"polygon_centroid:\
+    \ area must be nonzero\");\n    const double a = static_cast<double>(m[0]) * 3;\n\
+    \    return Vector<double, 2>(static_cast<double>(m[1]) / a, static_cast<double>(m[2])\
+    \ / a);\n}\n\n/**\n * @brief \u591A\u89D2\u5F62\u306E\u51F8\u6027\u5224\u5B9A\n\
+    \ *\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\u306E\
+    \u5EA7\u6A19(\u53CD\u6642\u8A08\u56DE\u308A)\n * @return true \u51F8\n * @return\
+    \ false \u51F9\n */\ntemplate <typename T>\nbool polygon_is_convex(const std::vector<Vector<T,\
+    \ 2>>& polygon) {\n    int n = polygon.size();\n    for (int i = 0; i < n; i++)\
+    \ {\n        int j = i + 1;\n        if (j == n) j = 0;\n        int k = j + 1;\n\
+    \        if (k == n) k = 0;\n        if (cross(polygon[j] - polygon[i], polygon[k]\
+    \ - polygon[j]) < 0) return false;\n    }\n    return true;\n}\n\n/**\n * @brief\
+    \ \u70B9\u306E\u591A\u89D2\u5F62\u5185\u5305\u542B\u5224\u5B9A\n *\n * @tparam\
+    \ T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19\
+    (\u53CD\u6642\u8A08\u56DE\u308A)\n * @param p \u70B9\u306E\u5EA7\u6A19\n * @return\
+    \ int 0: \u5916\u90E8, 1: \u8FBA\u4E0A, 2: \u5185\u90E8\n */\ntemplate <typename\
+    \ T>\nint polygon_contains(const std::vector<Vector<T, 2>>& polygon, const Vector<T,\
+    \ 2>& p) {\n    bool in = false;\n    for (int i = 0; i < static_cast<int>(polygon.size());\
+    \ i++) {\n        int j = i + 1;\n        if (j == static_cast<int>(polygon.size()))\
+    \ j = 0;\n        Vector<T> v1 = polygon[i] - p, v2 = polygon[j] - p;\n      \
+    \  if (v1[1] > v2[1]) std::swap(v1, v2);\n        T c = cross(v1, v2);\n     \
+    \   if (v1[1] <= 0 && v2[1] > 0 && c < 0) in = !in;\n        if (c == 0 && dot(v1,\
     \ v2) <= 0) return 1;\n    }\n    return in ? 2 : 0;\n}\n\n/**\n * @brief \u591A\
     \u89D2\u5F62\u306E\u534A\u51F8\u5305\n * \u4E0E\u3048\u3089\u308C\u305F\u9802\u70B9\
     \u30EA\u30B9\u30C8\u306E\u9806\u756A\u3092\u4FDD\u3063\u3066\u53CD\u6642\u8A08\
@@ -890,24 +920,48 @@ data:
     \u554F\u308F\u306A\u3044)\n * @return double \u9762\u7A4D\n */\ntemplate <typename\
     \ T>\ndouble polygon_area(const std::vector<Vector<T, 2>>& polygon) {\n    return\
     \ std::abs(polygon_area_doubled(polygon)) / 2.;\n}\n\n/**\n * @brief \u591A\u89D2\
-    \u5F62\u306E\u51F8\u6027\u5224\u5B9A\n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\
-    \n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19(\u53CD\u6642\u8A08\u56DE\u308A\
-    )\n * @return true \u51F8\n * @return false \u51F9\n */\ntemplate <typename T>\n\
-    bool polygon_is_convex(const std::vector<Vector<T, 2>>& polygon) {\n    int n\
-    \ = polygon.size();\n    for (int i = 0; i < n; i++) {\n        int j = i + 1;\n\
-    \        if (j == n) j = 0;\n        int k = j + 1;\n        if (k == n) k = 0;\n\
-    \        if (cross(polygon[j] - polygon[i], polygon[k] - polygon[j]) < 0) return\
-    \ false;\n    }\n    return true;\n}\n\n/**\n * @brief \u70B9\u306E\u591A\u89D2\
-    \u5F62\u5185\u5305\u542B\u5224\u5B9A\n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\
-    \n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19(\u53CD\u6642\u8A08\u56DE\u308A\
-    )\n * @param p \u70B9\u306E\u5EA7\u6A19\n * @return int 0: \u5916\u90E8, 1: \u8FBA\
-    \u4E0A, 2: \u5185\u90E8\n */\ntemplate <typename T>\nint polygon_contains(const\
-    \ std::vector<Vector<T, 2>>& polygon, const Vector<T, 2>& p) {\n    bool in =\
-    \ false;\n    for (int i = 0; i < static_cast<int>(polygon.size()); i++) {\n \
-    \       int j = i + 1;\n        if (j == static_cast<int>(polygon.size())) j =\
-    \ 0;\n        Vector<T> v1 = polygon[i] - p, v2 = polygon[j] - p;\n        if\
-    \ (v1[1] > v2[1]) std::swap(v1, v2);\n        T c = cross(v1, v2);\n        if\
-    \ (v1[1] <= 0 && v2[1] > 0 && c < 0) in = !in;\n        if (c == 0 && dot(v1,\
+    \u5F62\u306E\u8FBA p\u2192q \u306E\u5BC4\u4E0E {2S, 6S gx, 6S gy}\n * \u8FBA\u3054\
+    \u3068\u306E\u548C\u3092\u53D6\u308B\u3068\u3001\u591A\u89D2\u5F62\u306E\u7B26\
+    \u53F7\u4ED8\u304D\u9762\u7A4D S \u306E 2 \u500D\u3068\u3001\u91CD\u5FC3 (gx,\
+    \ gy) \u306B 6S \u3092\u639B\u3051\u305F\u3082\u306E\u306B\u306A\u308B\n * \u90E8\
+    \u5206\u591A\u89D2\u5F62\u306E\u30AF\u30A8\u30EA\u306F\u3001\u5BC4\u4E0E\u306E\
+    \u7D2F\u7A4D\u548C (CircularSum \u306A\u3069) \u3067\u6C42\u3081\u3089\u308C\u308B\
+    \n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\u3002\u6574\u6570\u578B\u306A\u3089\
+    \ __int128 \u3067\u8A08\u7B97\u3059\u308B (\u5EA7\u6A19\u304C 1e9 \u306A\u3089\
+    \ 6S gx \u306F 1e27 \u7A0B\u5EA6\u306B\u306A\u308B)\n */\ntemplate <typename T>\n\
+    auto polygon_moment(const Vector<T, 2>& p, const Vector<T, 2>& q) {\n    using\
+    \ W = std::conditional_t<std::is_integral_v<T>, __int128_t, T>;\n    const W c\
+    \ = static_cast<W>(p[0]) * q[1] - static_cast<W>(p[1]) * q[0];\n    return Vector<W,\
+    \ 3>(c, (static_cast<W>(p[0]) + q[0]) * c, (static_cast<W>(p[1]) + q[1]) * c);\n\
+    }\n\n/**\n * @brief \u591A\u89D2\u5F62 (\u306E\u9818\u57DF) \u306E\u91CD\u5FC3\
+    \n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\u306E\
+    \u5EA7\u6A19(\u9806\u756A\u3001\u53CD\u6642\u8A08\u56DE\u308A\u304B\u6642\u8A08\
+    \u56DE\u308A\u304B\u306F\u554F\u308F\u306A\u3044\u3002\u9762\u7A4D\u304C 0 \u306A\
+    \u3089 assert \u3067\u843D\u3061\u308B)\n * @return Vector<double, 2> \u91CD\u5FC3\
+    \n */\ntemplate <typename T>\nVector<double, 2> polygon_centroid(const std::vector<Vector<T,\
+    \ 2>>& polygon) {\n    const int n = static_cast<int>(polygon.size());\n    decltype(polygon_moment(polygon[0],\
+    \ polygon[0])) m;\n    for (int i = 0; i < n; i++) m += polygon_moment(polygon[i],\
+    \ polygon[i + 1 == n ? 0 : i + 1]);\n    assert(m[0] != 0 && \"polygon_centroid:\
+    \ area must be nonzero\");\n    const double a = static_cast<double>(m[0]) * 3;\n\
+    \    return Vector<double, 2>(static_cast<double>(m[1]) / a, static_cast<double>(m[2])\
+    \ / a);\n}\n\n/**\n * @brief \u591A\u89D2\u5F62\u306E\u51F8\u6027\u5224\u5B9A\n\
+    \ *\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\u306E\
+    \u5EA7\u6A19(\u53CD\u6642\u8A08\u56DE\u308A)\n * @return true \u51F8\n * @return\
+    \ false \u51F9\n */\ntemplate <typename T>\nbool polygon_is_convex(const std::vector<Vector<T,\
+    \ 2>>& polygon) {\n    int n = polygon.size();\n    for (int i = 0; i < n; i++)\
+    \ {\n        int j = i + 1;\n        if (j == n) j = 0;\n        int k = j + 1;\n\
+    \        if (k == n) k = 0;\n        if (cross(polygon[j] - polygon[i], polygon[k]\
+    \ - polygon[j]) < 0) return false;\n    }\n    return true;\n}\n\n/**\n * @brief\
+    \ \u70B9\u306E\u591A\u89D2\u5F62\u5185\u5305\u542B\u5224\u5B9A\n *\n * @tparam\
+    \ T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19\
+    (\u53CD\u6642\u8A08\u56DE\u308A)\n * @param p \u70B9\u306E\u5EA7\u6A19\n * @return\
+    \ int 0: \u5916\u90E8, 1: \u8FBA\u4E0A, 2: \u5185\u90E8\n */\ntemplate <typename\
+    \ T>\nint polygon_contains(const std::vector<Vector<T, 2>>& polygon, const Vector<T,\
+    \ 2>& p) {\n    bool in = false;\n    for (int i = 0; i < static_cast<int>(polygon.size());\
+    \ i++) {\n        int j = i + 1;\n        if (j == static_cast<int>(polygon.size()))\
+    \ j = 0;\n        Vector<T> v1 = polygon[i] - p, v2 = polygon[j] - p;\n      \
+    \  if (v1[1] > v2[1]) std::swap(v1, v2);\n        T c = cross(v1, v2);\n     \
+    \   if (v1[1] <= 0 && v2[1] > 0 && c < 0) in = !in;\n        if (c == 0 && dot(v1,\
     \ v2) <= 0) return 1;\n    }\n    return in ? 2 : 0;\n}\n\n/**\n * @brief \u591A\
     \u89D2\u5F62\u306E\u534A\u51F8\u5305\n * \u4E0E\u3048\u3089\u308C\u305F\u9802\u70B9\
     \u30EA\u30B9\u30C8\u306E\u9806\u756A\u3092\u4FDD\u3063\u3066\u53CD\u6642\u8A08\
@@ -1074,7 +1128,7 @@ data:
   - src/geometry/circle.hpp
   - src/geometry/axis-parallel-segments.hpp
   - src/geometry/manhattan-mst.hpp
-  timestamp: '2026-10-31 05:46:56+09:00'
+  timestamp: '2026-10-31 15:34:18+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/geometry/manhattan-mst.test.cpp
@@ -1084,7 +1138,9 @@ data:
   - test/unittest/geometry/vector-line.test.cpp
   - test/unittest/geometry/vector-polygon.test.cpp
   - test/unittest/geometry/axis-parallel-segments.test.cpp
+  - test/unittest/geometry/vector-centroid.test.cpp
   - test/unittest/data_structures/dual-segtree.test.cpp
+  - test/unittest/data_structures/circular-sum.test.cpp
   - test/aoj/cgl/cgl-6-a.test.cpp
   - test/aoj/cgl/cgl-3-b.test.cpp
   - test/aoj/cgl/cgl-7-b.test.cpp
@@ -1171,6 +1227,8 @@ std::sort(ps.begin(), ps.end(), [](const P& a, const P& b) { return Angle(a) < A
 | `distance_segments(p1, p2, q1, q2)` | 線分 $p_1 p_2$ と $q_1 q_2$ の距離 (`double`、交われば 0) | ✓ | $O(1)$ |
 | `polygon_area_doubled(poly)` | 多角形の符号付き面積の2倍 (反時計回りなら正) | ✓ | $O(n)$ |
 | `polygon_area(poly)` | 多角形の面積 (`double`、向きは問わない) | ✓ | $O(n)$ |
+| `polygon_centroid(poly)` | 多角形の領域の重心 (`Vector<double, 2>`、向きは問わない。面積が 0 なら assert で落ちる) | ✓ | $O(n)$ |
+| `polygon_moment(p, q)` | 辺 $p \to q$ の寄与 `{2S, 6S gx, 6S gy}` (`Vector<W, 3>`。`W` は整数型なら `__int128_t`)。全辺の和が面積の2倍と重心の6S倍になる | ✓ | $O(1)$ |
 | `polygon_is_convex(poly)` | 多角形 (反時計回り) が凸か | ✓ | $O(n)$ |
 | `polygon_contains(poly, p)` | 点が多角形 (反時計回り) の 0: 外部、1: 辺上、2: 内部 | ✓ | $O(n)$ |
 | `convex_hull(ps, include_straight = false)` | 凸包 (反時計回り)。`include_straight` で 180 度の頂点を含めるか選ぶ | ✓ | $O(n \log n)$ |
@@ -1180,6 +1238,17 @@ std::sort(ps.begin(), ps.end(), [](const P& a, const P& b) { return Angle(a) < A
 | `farthest_point_pair_squared(ps)` | 最遠点対の距離の2乗と添字 (`.squared_dist`、`.i`、`.j`。$i \ne j$)。凸包を作り、回転キャリパー法で調べる。点は 2 個以上 | ✓ | $O(n \log n)$ |
 | `farthest_point_pair(ps)` | 最遠点対の距離と添字 (`.dist`、`.i`、`.j`)。凸多角形の直径にも使える | ✓ | $O(n \log n)$ |
 | `convex_cut(poly, p1, p2)` | 凸多角形 (反時計回り) を直線 $p_1 p_2$ で切った、直線の左側 ($p_1$ から $p_2$ を見て左) の凸多角形。左側に何もなければ空 | 浮動小数点型のみ | $O(n)$ |
+
+部分多角形 (頂点 $u, u+1, \dots, v$ を順に結んで閉じたもの) の面積や重心をたくさん求めるときは、`polygon_moment` の寄与を [円環上の区間和](../data_structures/circular-sum.hpp) で足し、閉じる辺 $v \to u$ の寄与を加えます。
+
+```cpp
+using P = Vector<long long>;
+std::vector<decltype(polygon_moment(P(), P()))> e(n);
+for (int i = 0; i < n; i++) e[i] = polygon_moment(ps[i], ps[(i + 1) % n]);
+CircularSum cs(e);
+auto m = cs.sum(u, v) + polygon_moment(ps[v], ps[u]);  // m[0] = 2S
+double gx = static_cast<double>(m[1]) / static_cast<double>(m[0]) / 3;
+```
 
 浮動小数点型でも、`ccw` や `is_parallel` などの判定は誤差を考えずに `0` と比べます。誤差が問題になる場合は、整数座標で計算してください。
 

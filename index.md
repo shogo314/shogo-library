@@ -40,8 +40,8 @@ data:
       path: src/data_structures/cartesian-tree.hpp
       title: "Cartesian \u6728"
     - icon: ':heavy_check_mark:'
-      path: src/data_structures/circular-ring.hpp
-      title: "\u5186\u74B0"
+      path: src/data_structures/circular-sum.hpp
+      title: "\u5186\u74B0\u4E0A\u306E\u533A\u9593\u548C"
     - icon: ':heavy_check_mark:'
       path: src/data_structures/convex-hull-trick.hpp
       title: Convex Hull Trick
@@ -917,8 +917,8 @@ data:
       path: test/unittest/data_structures/cartesian-tree.test.cpp
       title: test/unittest/data_structures/cartesian-tree.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/unittest/data_structures/circular-ring.test.cpp
-      title: test/unittest/data_structures/circular-ring.test.cpp
+      path: test/unittest/data_structures/circular-sum.test.cpp
+      title: test/unittest/data_structures/circular-sum.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/data_structures/convex-hull-trick.test.cpp
       title: test/unittest/data_structures/convex-hull-trick.test.cpp
@@ -1088,6 +1088,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/geometry/rectangle-union.test.cpp
       title: test/unittest/geometry/rectangle-union.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/geometry/vector-centroid.test.cpp
+      title: test/unittest/geometry/vector-centroid.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/geometry/vector-line.test.cpp
       title: test/unittest/geometry/vector-line.test.cpp
@@ -1878,6 +1881,11 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/polynomial/sqrt-of-formal-power-series.test.cpp
       title: test/yosupo/polynomial/sqrt-of-formal-power-series.test.cpp
+  - name: test/yosupo/sample
+    pages:
+    - icon: ':heavy_check_mark:'
+      path: test/yosupo/sample/many-aplusb-128bit.test.cpp
+      title: test/yosupo/sample/many-aplusb-128bit.test.cpp
   - name: test/yosupo/set_power_series
     pages:
     - icon: ':heavy_check_mark:'
@@ -2044,6 +2052,8 @@ layout: toppage
 #include "data_structures/segtree.hpp"
 #include "math/modint.hpp"
 ```
+
+C++17 以上の GNU 拡張つき (`-std=gnu++17` など。AtCoder の GCC と同じ) で使うことを前提にしています。`__int128` を整数型として扱うところがあるので、`-std=c++17` のような厳密な規格モードではコンパイルできないことがあります。
 
 `using namespace std;` は使わないでください。このライブラリには `sort`・`max`・`rank` など std と同じ名前のグローバル関数があり、`using namespace std;` があると呼び出しが曖昧になってコンパイルできないことがあります。std のものは `std::` を付けて書きます。
 

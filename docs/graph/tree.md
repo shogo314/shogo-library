@@ -35,6 +35,8 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 | `set_root(r)` | 根を `r` にした `RootedTree` を返す | $O(n)$ |
 | `build_lca(r)` | 根を `r` にした `DoublingClimbTree` を返す | $O(n \log n)$ |
 
+木でなくなるので、`Graph` の `add_directed_edge` は使えません。
+
 ## `RootedTree<Cost = long long>` (根付き木)
 
 `Tree` の `set_root(r)` か、次のコンストラクタで作ります。

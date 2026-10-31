@@ -28,6 +28,7 @@ DEBUG(n);                               // 標準エラー出力に "n = 3"
 |---|---|
 | `int` / `long` / `long long` | `3` / `3l` / `3ll` |
 | `unsigned int` / `unsigned long` / `unsigned long long` | `3u` / `3ul` / `3ull` |
+| `__int128_t` / `__uint128_t` | `__int128_t{-3}` / `__uint128_t{3}`。リテラルがないので、$10^{18}$ 以上は `__int128_t{1} * 1000000000000000000 + 7` のように $10^{18}$ ごとに区切った式 (負なら各区切りに `-` を付ける) |
 | `float` / `double` / `long double` | `1.500000f` / `1.500000` / `1.500000l` (`std::to_string` を使うので小数点以下 6 桁) |
 | `char` | `'a'`、`'\n'` などのエスケープ、表示できない文字は 8 進数 |
 | `const char*` / `std::string` | `"abc"` / `std::string{"abc"}` |

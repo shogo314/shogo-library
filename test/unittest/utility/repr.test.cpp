@@ -88,6 +88,50 @@ int main() {
     check(type_str(1.0f) == "float" && type_str(1.0) == "double" && type_str(1.0L) == "long double", "type_str (floating)");
     check(initializer_str(5LL) == "5ll" && initializer_str(1.5f) == "1.500000f", "initializer_str (number)");
 
+    // 128 bit 整数: リテラルがないので 10^18 ごとに区切った式にする
+    {
+        const __uint128_t umax = ~static_cast<__uint128_t>(0);
+        const __int128_t imax = static_cast<__int128_t>(umax >> 1), imin = -imax - 1;
+        CHECK_REPR(static_cast<__int128_t>(0), __int128_t{0});
+        CHECK_REPR(static_cast<__int128_t>(-42), __int128_t{-42});
+        CHECK_REPR(static_cast<__int128_t>(1000000000000000000LL), __int128_t{1} * 1000000000000000000 + 0);
+        CHECK_REPR(imax, (__int128_t{170} * 1000000000000000000 + 141183460469231731) * 1000000000000000000 + 687303715884105727);
+        CHECK_REPR(imin, (__int128_t{-170} * 1000000000000000000 - 141183460469231731) * 1000000000000000000 - 687303715884105728);
+        CHECK_REPR(umax, (__uint128_t{340} * 1000000000000000000 + 282366920938463463) * 1000000000000000000 + 374607431768211455);
+        CHECK_REPR(static_cast<__uint128_t>(7), __uint128_t{7});
+        CHECK_REPR((std::vector<__int128_t>{1, -2}), std::vector<__int128_t>{__int128_t{1}, __int128_t{-2}});
+        check(type_str(imax) == "__int128_t" && type_str(umax) == "__uint128_t", "type_str (128 bit)");
+        // 区切りの下の桁が 0 から始まっても 8 進数のリテラルにならない
+        CHECK_REPR(static_cast<__int128_t>(1000000000000000007LL), __int128_t{1} * 1000000000000000000 + 7);
+        // ランダム: 全範囲の値で、式を左から計算し直すと元の値になる
+        for (int rep = 0; rep < 20000 && ok; rep++) {
+            __uint128_t u = 0;
+            for (int k = 0; k < 4; k++) u = u << 32 | rng();
+            u >>= rng() % 128;
+            const __int128_t x = static_cast<__int128_t>(u);
+            const std::string s = repr(x);
+            // "__int128_t{a}" のあとに " * 1000000000000000000 ± c" が続く (括弧は飛ばす)
+            std::size_t i = s.find('{') + 1;
+            auto number = [&](std::size_t& j) {
+                bool neg = s[j] == '-';
+                if (neg) j++;
+                __int128_t v = 0;
+                for (; j < s.size() && '0' <= s[j] && s[j] <= '9'; j++) v = v * 10 + (s[j] - '0');
+                return neg ? -v : v;
+            };
+            __int128_t v = number(i);
+            const std::string sep = " * 1000000000000000000 ";
+            for (; (i = s.find(sep, i)) != std::string::npos;) {
+                i += sep.size();
+                const bool minus = s[i] == '-';
+                i += 2;
+                const __int128_t c = number(i);
+                v = v * 1000000000000000000 + (minus ? -c : c);
+            }
+            check(v == x, "repr(__int128_t) (random)");
+        }
+    }
+
     // char
     CHECK_REPR('a', 'a');
     CHECK_REPR('\n', '\n');

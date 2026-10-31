@@ -1,7 +1,9 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
-// geometry/vector.hpp の直線・線分の関数 (ccw、平行・直交、射影、反射、交点、距離) を、定義から確かめる
+// geometry/segment.hpp の直線・線分の関数 (ccw、平行・直交、射影、反射、交点、距離) を、定義から確かめる
 // 問題の入力は使わず、すべて成り立ったら Hello World を出力する
+
+#include "../../../src/geometry/segment.hpp"
 
 #include <algorithm>
 #include <cmath>

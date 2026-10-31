@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
-// geometry/vector.hpp の polygon_centroid と polygon_edge_moment (PolygonMoment) を確かめる
+// geometry/polygon.hpp の polygon_centroid と polygon_edge_moment (PolygonMoment) を確かめる
 // polygon_centroid は、頂点 0 から三角形に分けて、三角形の重心を面積で重み付けしたものと比べる
 // polygon_edge_moment は、座標が 1e9 で long long をあふれる大きさでも正確なことと、CircularSum で部分多角形を求められることを確かめる
 // 問題の入力は使わず、すべて成り立ったら Hello World を出力する
@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "../../../src/data_structures/circular-sum.hpp"
+#include "../../../src/geometry/polygon.hpp"
 #include "../../../src/geometry/vector.hpp"
 
 using P = Vector<long long>;

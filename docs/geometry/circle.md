@@ -68,4 +68,5 @@ Circle<double> d = c.circle();               // 中心 (2, 2)、半径 2√2
 
 ## 関連
 
-- 直線・線分の交点や距離は [幾何ベクトル](vector.hpp)
+- 直線・線分の交点や距離は [直線・線分](segment.hpp)
+- 3 次元の球は [球](sphere.hpp)

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 
+#include "../../../src/geometry/polygon.hpp"
 #include "../../../src/geometry/vector.hpp"
 
 int main() {

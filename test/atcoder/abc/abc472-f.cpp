@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "../../../src/data_structures/circular-sum.hpp"
+#include "../../../src/geometry/polygon.hpp"
 #include "../../../src/geometry/vector.hpp"
 
 int main() {

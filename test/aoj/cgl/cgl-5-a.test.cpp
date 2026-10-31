@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <iostream>
 
+#include "../../../src/geometry/point-pair.hpp"
 #include "../../../src/geometry/vector.hpp"
 
 int main(void) {

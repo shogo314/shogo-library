@@ -11,6 +11,8 @@
 #include <utility>
 #include <vector>
 
+#include "../../../src/geometry/segment.hpp"
+
 int main() {
     std::mt19937_64 rng(314);
     bool ok = true;

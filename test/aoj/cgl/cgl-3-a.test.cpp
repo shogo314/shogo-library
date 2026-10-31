@@ -3,6 +3,7 @@
 #include <iomanip>
 
 #include "../../../src/base/io.hpp"
+#include "../../../src/geometry/polygon.hpp"
 #include "../../../src/geometry/vector.hpp"
 
 int main(void) {

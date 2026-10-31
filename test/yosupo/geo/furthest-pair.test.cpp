@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 
+#include "../../../src/geometry/point-pair.hpp"
 #include "../../../src/geometry/vector.hpp"
 
 int main() {

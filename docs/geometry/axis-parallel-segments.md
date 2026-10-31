@@ -28,4 +28,4 @@ y の小さい順に走査し、そのときの y をまたいでいる垂直な
 
 ## 関連
 
-- 一般の 2 本の線分の交差判定は [幾何ベクトル](vector.hpp) の `segments_intersect`
+- 一般の 2 本の線分の交差判定は [直線・線分](segment.hpp) の `segments_intersect`

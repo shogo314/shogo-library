@@ -14,6 +14,7 @@
 #include <utility>
 #include <vector>
 
+#include "segment.hpp"
 #include "vector.hpp"
 
 /**

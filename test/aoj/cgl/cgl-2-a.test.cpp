@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "../../../src/geometry/segment.hpp"
 #include "../../../src/geometry/vector.hpp"
 
 int main() {

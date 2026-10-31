@@ -541,17 +541,57 @@ double polygon_area(const std::vector<Vector<T, 2>>& polygon) {
 }
 
 /**
- * @brief 多角形の辺 p→q の寄与 {2S, 6S gx, 6S gy}
- * 辺ごとの和を取ると、多角形の符号付き面積 S の 2 倍と、重心 (gx, gy) に 6S を掛けたものになる
- * 部分多角形のクエリは、寄与の累積和 (CircularSum など) で求められる
+ * @brief 多角形の面積と一次モーメント (polygon_edge_moment の戻り値)
+ * 辺ごとの値を足すと、多角形全体の値になる。+ と - があるので、CircularSum などの累積和に載せられる
  *
- * @tparam T 座標の型。整数型なら __int128 で計算する (座標が 1e9 なら 6S gx は 1e27 程度になる)
+ * @tparam T 座標の型。整数型なら値は __int128_t で持つ (座標が 1e9 なら mx は 1e27 程度になる)
  */
 template <typename T>
-auto polygon_moment(const Vector<T, 2>& p, const Vector<T, 2>& q) {
+struct PolygonMoment {
     using W = std::conditional_t<std::is_integral_v<T>, __int128_t, T>;
+    W area2 = 0;       //!< 符号付き面積 S の 2 倍 (反時計回りなら正)
+    W mx = 0, my = 0;  //!< 一次モーメントの 6 倍 (6S gx, 6S gy。(gx, gy) は重心)
+
+    PolygonMoment& operator+=(const PolygonMoment& rhs) {
+        area2 += rhs.area2, mx += rhs.mx, my += rhs.my;
+        return *this;
+    }
+    PolygonMoment& operator-=(const PolygonMoment& rhs) {
+        area2 -= rhs.area2, mx -= rhs.mx, my -= rhs.my;
+        return *this;
+    }
+    friend PolygonMoment operator+(PolygonMoment lhs, const PolygonMoment& rhs) { return lhs += rhs; }
+    friend PolygonMoment operator-(PolygonMoment lhs, const PolygonMoment& rhs) { return lhs -= rhs; }
+    friend bool operator==(const PolygonMoment& lhs, const PolygonMoment& rhs) {
+        return lhs.area2 == rhs.area2 && lhs.mx == rhs.mx && lhs.my == rhs.my;
+    }
+    friend bool operator!=(const PolygonMoment& lhs, const PolygonMoment& rhs) { return !(lhs == rhs); }
+
+    /**
+     * @brief 符号付き面積 (反時計回りなら正)
+     */
+    double area() const { return static_cast<double>(area2) / 2; }
+    /**
+     * @brief 重心 (面積が 0 なら assert で落ちる)
+     */
+    Vector<double, 2> centroid() const {
+        assert(area2 != 0 && "PolygonMoment::centroid: area must be nonzero");
+        const double a = static_cast<double>(area2) * 3;
+        return Vector<double, 2>(static_cast<double>(mx) / a, static_cast<double>(my) / a);
+    }
+};
+
+/**
+ * @brief 多角形の辺 p→q の寄与 (原点と p, q でできる三角形の面積と一次モーメント)
+ * 全辺の寄与の和が多角形の値になる。部分多角形のクエリは、寄与の累積和 (CircularSum など) で求められる
+ *
+ * @tparam T 座標の型
+ */
+template <typename T>
+PolygonMoment<T> polygon_edge_moment(const Vector<T, 2>& p, const Vector<T, 2>& q) {
+    using W = typename PolygonMoment<T>::W;
     const W c = static_cast<W>(p[0]) * q[1] - static_cast<W>(p[1]) * q[0];
-    return Vector<W, 3>(c, (static_cast<W>(p[0]) + q[0]) * c, (static_cast<W>(p[1]) + q[1]) * c);
+    return {c, (static_cast<W>(p[0]) + q[0]) * c, (static_cast<W>(p[1]) + q[1]) * c};
 }
 
 /**
@@ -564,11 +604,9 @@ auto polygon_moment(const Vector<T, 2>& p, const Vector<T, 2>& q) {
 template <typename T>
 Vector<double, 2> polygon_centroid(const std::vector<Vector<T, 2>>& polygon) {
     const int n = static_cast<int>(polygon.size());
-    decltype(polygon_moment(polygon[0], polygon[0])) m;
-    for (int i = 0; i < n; i++) m += polygon_moment(polygon[i], polygon[i + 1 == n ? 0 : i + 1]);
-    assert(m[0] != 0 && "polygon_centroid: area must be nonzero");
-    const double a = static_cast<double>(m[0]) * 3;
-    return Vector<double, 2>(static_cast<double>(m[1]) / a, static_cast<double>(m[2]) / a);
+    PolygonMoment<T> m;
+    for (int i = 0; i < n; i++) m += polygon_edge_moment(polygon[i], polygon[i + 1 == n ? 0 : i + 1]);
+    return m.centroid();
 }
 
 /**

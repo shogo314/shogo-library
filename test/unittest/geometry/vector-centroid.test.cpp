@@ -1,8 +1,8 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
-// geometry/vector.hpp の polygon_centroid と polygon_moment を確かめる
+// geometry/vector.hpp の polygon_centroid と polygon_edge_moment (PolygonMoment) を確かめる
 // polygon_centroid は、頂点 0 から三角形に分けて、三角形の重心を面積で重み付けしたものと比べる
-// polygon_moment は、座標が 1e9 で long long をあふれる大きさでも正確なことと、CircularSum で部分多角形を求められることを確かめる
+// polygon_edge_moment は、座標が 1e9 で long long をあふれる大きさでも正確なことと、CircularSum で部分多角形を求められることを確かめる
 // 問題の入力は使わず、すべて成り立ったら Hello World を出力する
 
 #include <algorithm>
@@ -46,11 +46,14 @@ int main() {
         std::vector<P> r(p.rbegin(), p.rend());
         if (!near(polygon_centroid(r), naive_centroid(p))) ok = false;
 
-        // 辺ごとの寄与の和の 0 成分は面積の 2 倍
-        Vector<__int128_t, 3> m;
-        std::vector<Vector<__int128_t, 3>> e(n);
-        for (int i = 0; i < n; i++) m += e[i] = polygon_moment(p[i], p[(i + 1) % n]);
-        if (m[0] != polygon_area_doubled(p)) ok = false;
+        // 辺ごとの寄与の和の area2 は面積の 2 倍、centroid は重心
+        PolygonMoment<long long> m;
+        std::vector<PolygonMoment<long long>> e(n);
+        for (int i = 0; i < n; i++) m += e[i] = polygon_edge_moment(p[i], p[(i + 1) % n]);
+        if (m.area2 != polygon_area_doubled(p)) ok = false;
+        if (std::abs(m.area() - polygon_area_doubled(p) / 2.0) > 1e-9) ok = false;
+        if (!near(m.centroid(), naive_centroid(p))) ok = false;
+        if (m - e[0] + e[0] != m) ok = false;
 
         // 部分多角形 u, u+1, ..., v (円環上) を CircularSum で求める
         CircularSum cs(e);
@@ -62,22 +65,21 @@ int main() {
                     sub.push_back(p[i]);
                     if (i == v) break;
                 }
-                auto s = cs.sum(u, v) + polygon_moment(p[v], p[u]);
-                if (s[0] != polygon_area_doubled(sub)) ok = false;
-                if (s[0] == 0) continue;
-                Vector<double, 2> g(static_cast<double>(s[1]) / static_cast<double>(s[0]) / 3, static_cast<double>(s[2]) / static_cast<double>(s[0]) / 3);
-                if (!near(g, polygon_centroid(sub))) ok = false;
+                auto s = cs.sum(u, v) + polygon_edge_moment(p[v], p[u]);
+                if (s.area2 != polygon_area_doubled(sub)) ok = false;
+                if (s.area2 == 0) continue;
+                if (!near(s.centroid(), polygon_centroid(sub))) ok = false;
             }
         }
     }
 
-    // 座標が 1e9 の正方形: 6S gx = 6 * 1e18 * 5e8 = 3e27 は long long をあふれる
+    // 座標が 1e9 の正方形: mx = 6S gx = 6 * 1e18 * 5e8 = 3e27 は long long をあふれる
     const long long L = 1000000000;
     std::vector<P> sq = {P(0, 0), P(L, 0), P(L, L), P(0, L)};
-    Vector<__int128_t, 3> m;
-    for (int i = 0; i < 4; i++) m += polygon_moment(sq[i], sq[(i + 1) % 4]);
+    PolygonMoment<long long> m;
+    for (int i = 0; i < 4; i++) m += polygon_edge_moment(sq[i], sq[(i + 1) % 4]);
     const __int128_t s2 = static_cast<__int128_t>(L) * L * 2;
-    if (m[0] != s2 || m[1] != s2 * 3 * (L / 2) || m[2] != s2 * 3 * (L / 2)) ok = false;
+    if (m.area2 != s2 || m.mx != s2 * 3 * (L / 2) || m.my != s2 * 3 * (L / 2)) ok = false;
     if (!near(polygon_centroid(sq), Vector<double, 2>(L / 2.0, L / 2.0))) ok = false;
 
     // 浮動小数点型の座標でも使える

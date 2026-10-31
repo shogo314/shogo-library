@@ -20,4 +20,5 @@ int b = t[1000000000000LL];   // 2
 
 ## 関連
 
+- 先頭からループする配列の区間和は [円環上の区間和](circular-sum.hpp)
 - [ファンクショナルグラフ](../graph/functional-graph.hpp)

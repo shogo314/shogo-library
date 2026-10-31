@@ -28,50 +28,55 @@ data:
     \u307F\u4ED8\u304D\u30FB\u91CD\u307F\u306A\u3057\u306E\u4E21\u65B9\u3067\u3001\
     \u8FD4\u3059\u8FBA\u306E\u5217\u304C\u7AEF\u70B9\u304B\u3089\u9806\u306B\u3064\
     \u306A\u304C\u3063\u3066\u3044\u3066\u3001\u9577\u3055\u304C\u76F4\u5F84\u3068\
-    \u4E00\u81F4\u3059\u308B\u304B\u3092\u78BA\u304B\u3081\u308B\n// rooted_tree_isomorphism:\
-    \ \u90E8\u5206\u6728\u306E\u62EC\u5F27\u5217\u306B\u3088\u308B\u6B63\u898F\u5F62\
-    \u3068\u6BD4\u3079\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\
-    \u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\
-    \u529B\u3059\u308B\n\n#line 2 \"src/graph/tree_util.hpp\"\n\n/**\n * @file tree_util.hpp\n\
-    \ * @brief \u6728\u306B\u95A2\u3059\u308B\u95A2\u6570\n */\n\n#include <algorithm>\n\
-    #include <cassert>\n#include <map>\n#include <utility>\n#include <vector>\n\n\
-    #line 2 \"src/graph/tree.hpp\"\n\n/**\n * @file tree.hpp\n * @brief \u6728\u306E\
-    \u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n */\n\n#line 10 \"src/graph/tree.hpp\"\
-    \n#include <stack>\n#include <type_traits>\n#line 14 \"src/graph/tree.hpp\"\n\n\
-    #line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file graph.hpp\n * @brief \u30B0\u30E9\
-    \u30D5\n */\n\n#line 9 \"src/graph/graph.hpp\"\n#include <iostream>\n#line 11\
-    \ \"src/graph/graph.hpp\"\n\n/**\n * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\
-    \u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u578B\
-    \ \u7701\u7565\u3057\u305F\u3089 long long (\u91CD\u307F\u306E\u548C\u3084\u672A\
-    \u5230\u9054\u3092\u8868\u3059 max / 4 \u304C\u3042\u3075\u308C\u306B\u304F\u3044\
-    \u3088\u3046\u306B)\n */\ntemplate <typename Cost = long long>\nclass Graph {\n\
-    \   public:\n    /**\n     * @brief \u6709\u5411\u8FBA\u306E\u69CB\u9020\u4F53\
-    \n     *\n     * operator long long()\u3092\u5B9A\u7FA9\u3057\u3066\u3044\u308B\
-    \u306E\u3067\u3001\u6574\u6570\u578B\u306B\u30AD\u30E3\u30B9\u30C8\u3059\u308B\
-    \u3068\u52DD\u624B\u306Bdst\u306B\u306A\u308B\n     * \u4F8B\u3048\u3070\u3001\
-    \n     * for (auto& e : g[v]) \u3092\u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\
-    \u308B\u8FBA\u304C\u5217\u6319\u3055\u308C\u308B\u304C\u3001\n     * for (long\
-    \ long dst : g[v]) \u3068\u3059\u308B\u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\
-    \u306E\u884C\u304D\u5148\u304C\u5217\u6319\u3055\u308C\u308B\n     */\n    struct\
-    \ Edge {\n        long long src = -1;  //!< \u59CB\u70B9\n        long long dst\
-    \ = -1;  //!< \u7D42\u70B9\n        Cost cost = {};      //!< \u30B3\u30B9\u30C8\
-    \n        long long id = -1;   //!< \u8FBA\u306E\u756A\u53F7(\u8FFD\u52A0\u3055\
-    \u308C\u305F\u9806\u3001\u7121\u5411\u8FBA\u306E\u5834\u5408\u306Fid\u304C\u540C\
-    \u3058\u3067\u65B9\u5411\u304C\u9006\u306E\u3082\u306E\u304C2\u3064\u5B58\u5728\
-    \u3059\u308B)\n        Edge() = default;\n        Edge(long long src, long long\
-    \ dst, Cost cost = 1, long long id = -1) : src(src), dst(dst), cost(cost), id(id)\
-    \ {}\n        operator long long() const { return dst; }\n    };\n\n    long long\
-    \ n;                       //!< \u9802\u70B9\u6570\n    long long m;         \
-    \              //!< \u8FBA\u6570\n    std::vector<std::vector<Edge>> g;  //!<\
-    \ \u30B0\u30E9\u30D5\u306E\u96A3\u63A5\u30EA\u30B9\u30C8\u8868\u73FE\n\n    /**\n\
-    \     * @brief \u30C7\u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\
-    \u30BF\n     */\n    Graph() : n(0), m(0), g(0) {}\n    /**\n     * @brief \u30B3\
-    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param n \u9802\u70B9\u6570\n   \
-    \  */\n    explicit Graph(long long n) : n(n), m(0), g(n) {}\n    /**\n     *\
-    \ @brief \u9802\u70B9\u6570\n     */\n    long long size() const { return n; }\n\
-    \    /**\n     * @brief \u7121\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n   \
-    \  * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n     * @param w \u30B3\
-    \u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n    void add_edge(long\
+    \u4E00\u81F4\u3059\u308B\u304B\u3092\u78BA\u304B\u3081\u308B\n// tree_center:\
+    \ \u6700\u3082\u9060\u3044\u9802\u70B9\u307E\u3067\u306E\u8DDD\u96E2\u304C\u6700\
+    \u5C0F\u306E\u9802\u70B9\u306E\u96C6\u5408\u3068\u6BD4\u3079\u308B\n// tree_diameter_endpoint_groups:\
+    \ \u300C\u7570\u306A\u308B\u30B0\u30EB\u30FC\u30D7\u306B\u3042\u308B\u300D\u3068\
+    \u300C\u8DDD\u96E2\u304C\u76F4\u5F84\u306B\u7B49\u3057\u3044\u300D\u304C\u5168\
+    \u70B9\u5BFE\u3067\u4E00\u81F4\u3059\u308B\u304B\u3092\u78BA\u304B\u3081\u308B\
+    \n// rooted_tree_isomorphism: \u90E8\u5206\u6728\u306E\u62EC\u5F27\u5217\u306B\
+    \u3088\u308B\u6B63\u898F\u5F62\u3068\u6BD4\u3079\u308B\n// \u554F\u984C\u306E\u5165\
+    \u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\
+    \u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/graph/tree_util.hpp\"\
+    \n\n/**\n * @file tree_util.hpp\n * @brief \u6728\u306B\u95A2\u3059\u308B\u95A2\
+    \u6570\n */\n\n#include <algorithm>\n#include <cassert>\n#include <map>\n#include\
+    \ <utility>\n#include <vector>\n\n#line 2 \"src/graph/tree.hpp\"\n\n/**\n * @file\
+    \ tree.hpp\n * @brief \u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\
+    \n */\n\n#line 10 \"src/graph/tree.hpp\"\n#include <stack>\n#include <type_traits>\n\
+    #line 14 \"src/graph/tree.hpp\"\n\n#line 2 \"src/graph/graph.hpp\"\n\n/**\n *\
+    \ @file graph.hpp\n * @brief \u30B0\u30E9\u30D5\n */\n\n#line 9 \"src/graph/graph.hpp\"\
+    \n#include <iostream>\n#line 11 \"src/graph/graph.hpp\"\n\n/**\n * @brief \u30B0\
+    \u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\
+    \u30B3\u30B9\u30C8\u306E\u578B \u7701\u7565\u3057\u305F\u3089 long long (\u91CD\
+    \u307F\u306E\u548C\u3084\u672A\u5230\u9054\u3092\u8868\u3059 max / 4 \u304C\u3042\
+    \u3075\u308C\u306B\u304F\u3044\u3088\u3046\u306B)\n */\ntemplate <typename Cost\
+    \ = long long>\nclass Graph {\n   public:\n    /**\n     * @brief \u6709\u5411\
+    \u8FBA\u306E\u69CB\u9020\u4F53\n     *\n     * operator long long()\u3092\u5B9A\
+    \u7FA9\u3057\u3066\u3044\u308B\u306E\u3067\u3001\u6574\u6570\u578B\u306B\u30AD\
+    \u30E3\u30B9\u30C8\u3059\u308B\u3068\u52DD\u624B\u306Bdst\u306B\u306A\u308B\n\
+    \     * \u4F8B\u3048\u3070\u3001\n     * for (auto& e : g[v]) \u3092\u3059\u308B\
+    \u3068\u3001v\u304B\u3089\u51FA\u308B\u8FBA\u304C\u5217\u6319\u3055\u308C\u308B\
+    \u304C\u3001\n     * for (long long dst : g[v]) \u3068\u3059\u308B\u3068\u3001\
+    v\u304B\u3089\u51FA\u308B\u8FBA\u306E\u884C\u304D\u5148\u304C\u5217\u6319\u3055\
+    \u308C\u308B\n     */\n    struct Edge {\n        long long src = -1;  //!< \u59CB\
+    \u70B9\n        long long dst = -1;  //!< \u7D42\u70B9\n        Cost cost = {};\
+    \      //!< \u30B3\u30B9\u30C8\n        long long id = -1;   //!< \u8FBA\u306E\
+    \u756A\u53F7(\u8FFD\u52A0\u3055\u308C\u305F\u9806\u3001\u7121\u5411\u8FBA\u306E\
+    \u5834\u5408\u306Fid\u304C\u540C\u3058\u3067\u65B9\u5411\u304C\u9006\u306E\u3082\
+    \u306E\u304C2\u3064\u5B58\u5728\u3059\u308B)\n        Edge() = default;\n    \
+    \    Edge(long long src, long long dst, Cost cost = 1, long long id = -1) : src(src),\
+    \ dst(dst), cost(cost), id(id) {}\n        operator long long() const { return\
+    \ dst; }\n    };\n\n    long long n;                       //!< \u9802\u70B9\u6570\
+    \n    long long m;                       //!< \u8FBA\u6570\n    std::vector<std::vector<Edge>>\
+    \ g;  //!< \u30B0\u30E9\u30D5\u306E\u96A3\u63A5\u30EA\u30B9\u30C8\u8868\u73FE\n\
+    \n    /**\n     * @brief \u30C7\u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\
+    \u30E9\u30AF\u30BF\n     */\n    Graph() : n(0), m(0), g(0) {}\n    /**\n    \
+    \ * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param n \u9802\u70B9\
+    \u6570\n     */\n    explicit Graph(long long n) : n(n), m(0), g(n) {}\n    /**\n\
+    \     * @brief \u9802\u70B9\u6570\n     */\n    long long size() const { return\
+    \ n; }\n    /**\n     * @brief \u7121\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\
+    \n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n     * @param w\
+    \ \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n    void add_edge(long\
     \ long u, long long v, Cost w = 1) {\n        assert(0 <= u && u < n && 0 <= v\
     \ && v < n);\n        g[u].push_back({u, v, w, m});\n        g[v].push_back({v,\
     \ u, w, m++});\n    }\n    /**\n     * @brief \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\
@@ -326,10 +331,21 @@ data:
     \        for (const auto& e : tree[u]) {\n            if (e.id == prev[u].id)\
     \ continue;\n            prev[e.dst] = e;\n            dist[e.dst] = dist[u] +\
     \ (weighted ? e.cost : Cost{1});\n            stk.push_back(e.dst);\n        }\n\
-    \    }\n    return {dist, prev};\n}\n\n}  // namespace internal_tree_util\n\n\
-    /**\n * @brief \u6728\u306E\u76F4\u5F84\n *\n * @param tree \u6728 (\u9802\u70B9\
-    \u6570 1 \u4EE5\u4E0A)\n * @param weighted = true \u91CD\u307F\u4ED8\u304D\u304B\
-    \n * @return std::vector<typename Tree<Cost>::Edge> \u76F4\u5F84\u3092\u69CB\u6210\
+    \    }\n    return {dist, prev};\n}\n\n// \u91CD\u307F\u306A\u3057\u3067 c \u304B\
+    \u3089\u5404\u9802\u70B9\u3078\u306E\u8DDD\u96E2\u3068\u3001c \u306E\u3069\u306E\
+    \u96A3\u63A5\u9802\u70B9\u306E\u5074\u306B\u3042\u308B\u304B (c \u3067\u306F -1)\
+    \ \u3092\u6C42\u3081\u308B\ntemplate <typename Cost>\nstd::pair<std::vector<long\
+    \ long>, std::vector<long long>> branch_depths(const Tree<Cost>& tree, long long\
+    \ c) {\n    long long n = tree.size();\n    std::vector<long long> dist(n, -1),\
+    \ branch(n, -1);\n    std::vector<long long> stk = {c};\n    dist[c] = 0;\n  \
+    \  while (!stk.empty()) {\n        long long u = stk.back();\n        stk.pop_back();\n\
+    \        for (const auto& e : tree[u]) {\n            if (dist[e.dst] != -1) continue;\n\
+    \            dist[e.dst] = dist[u] + 1;\n            branch[e.dst] = u == c ?\
+    \ e.dst : branch[u];\n            stk.push_back(e.dst);\n        }\n    }\n  \
+    \  return {dist, branch};\n}\n\n}  // namespace internal_tree_util\n\n/**\n *\
+    \ @brief \u6728\u306E\u76F4\u5F84\n *\n * @param tree \u6728 (\u9802\u70B9\u6570\
+    \ 1 \u4EE5\u4E0A)\n * @param weighted = true \u91CD\u307F\u4ED8\u304D\u304B\n\
+    \ * @return std::vector<typename Tree<Cost>::Edge> \u76F4\u5F84\u3092\u69CB\u6210\
     \u3059\u308B\u8FBA\u306E\u30EA\u30B9\u30C8 (\u7AEF\u70B9\u304B\u3089\u9806\u306B\
     )\n */\ntemplate <typename Cost>\nstd::vector<typename Tree<Cost>::Edge> tree_diameter(const\
     \ Tree<Cost>& tree, bool weighted = true) {\n    assert(tree.size() > 0);\n  \
@@ -339,21 +355,57 @@ data:
     \    long long v = std::max_element(dist.begin(), dist.end()) - dist.begin();\n\
     \    std::vector<typename Tree<Cost>::Edge> path;\n    for (long long w = v; w\
     \ != u; w = prev[w].src) path.push_back(prev[w]);\n    std::reverse(path.begin(),\
-    \ path.end());\n    return path;\n}\n\n/**\n * @brief root \u3092\u6839\u3068\u3059\
-    \u308B\u6839\u4ED8\u304D\u6728\u3067\u3001\u5404\u9802\u70B9\u3092\u6839\u3068\
-    \u3059\u308B\u90E8\u5206\u6728\u3092\u540C\u578B\u306A\u3082\u306E\u3054\u3068\
-    \u306B\u5206\u985E\u3059\u308B O(n log n)\n *\n * \u30CF\u30C3\u30B7\u30E5\u3067\
-    \u306F\u306A\u304F\u3001\u5B50\u306E\u5206\u985E\u756A\u53F7\u3092\u4E26\u3079\
-    \u305F\u5217\u306B\u756A\u53F7\u3092\u632F\u308B\u306E\u3067\u3001\u885D\u7A81\
-    \u3057\u306A\u3044\n * @return \u5404\u9802\u70B9\u306E\u5206\u985E\u756A\u53F7\
-    \ (0 \u304B\u3089\u9806\u306B\u632F\u308B)\u30022 \u3064\u306E\u9802\u70B9\u306E\
-    \u90E8\u5206\u6728\u304C\u540C\u578B\u306A\u3068\u304D\u3001\u304B\u3064\u305D\
-    \u306E\u3068\u304D\u306B\u9650\u308A\u540C\u3058\u756A\u53F7\n */\ntemplate <typename\
-    \ Cost>\nstd::vector<long long> rooted_tree_isomorphism(const Tree<Cost>& tree,\
-    \ long long root) {\n    const long long n = tree.size();\n    assert(0 <= root\
-    \ && root < n);\n    // BFS \u306E\u9806\u306B\u4E26\u3079\u3001\u8449\u306E\u5074\
-    \u304B\u3089\u756A\u53F7\u3092\u6C7A\u3081\u308B\n    std::vector<long long> order\
-    \ = {root}, parent(n, -1);\n    for (long long i = 0; i < static_cast<long long>(order.size());\
+    \ path.end());\n    return path;\n}\n\n/**\n * @brief \u6728\u306E\u4E2D\u5FC3\
+    \ (\u91CD\u307F\u306A\u3057)\n *\n * \u6700\u3082\u9060\u3044\u9802\u70B9\u307E\
+    \u3067\u306E\u8FBA\u306E\u672C\u6570\u304C\u6700\u5C0F\u306B\u306A\u308B\u9802\
+    \u70B9\u3002\u76F4\u5F84\u306E\u4E2D\u70B9\u306B\u3042\u305F\u308B\n * @param\
+    \ tree \u6728 (\u9802\u70B9\u6570 1 \u4EE5\u4E0A)\n * @return std::vector<long\
+    \ long> \u4E2D\u5FC3 (1 \u3064\u304B 2 \u3064\u30022 \u3064\u306A\u3089\u96A3\u63A5\
+    \u3057\u3066\u3044\u3066\u3001\u5C0F\u3055\u3044\u9806)\n */\ntemplate <typename\
+    \ Cost>\nstd::vector<long long> tree_center(const Tree<Cost>& tree) {\n    auto\
+    \ path = tree_diameter(tree, false);\n    long long d = path.size();\n    if (d\
+    \ == 0) return {0};\n    long long c = path[d / 2].src;\n    if (d % 2 == 0) return\
+    \ {c};\n    long long c2 = path[d / 2].dst;\n    return {std::min(c, c2), std::max(c,\
+    \ c2)};\n}\n\n/**\n * @brief \u76F4\u5F84 (\u91CD\u307F\u306A\u3057) \u306E\u7AEF\
+    \u70B9\u3092\u30012 \u70B9\u304C\u3061\u3087\u3046\u3069\u76F4\u5F84\u306E\u4E21\
+    \u7AEF\u306B\u306A\u308B\u306E\u306F\u7570\u306A\u308B\u30B0\u30EB\u30FC\u30D7\
+    \u306B\u3042\u308B\u3068\u304D\u3001\u304B\u3064\u305D\u306E\u3068\u304D\u306B\
+    \u9650\u308B\u3088\u3046\u306B\u5206\u3051\u308B\n *\n * \u76F4\u5F84\u306E\u9577\
+    \u3055\u304C\u5076\u6570\u306A\u3089\u4E2D\u5FC3\u306E\u96A3\u63A5\u9802\u70B9\
+    \u3054\u3068\u3001\u5947\u6570\u306A\u3089\u4E2D\u5FC3\u306E\u8FBA\u306E\u3069\
+    \u3061\u3089\u306E\u5074\u304B\u3067\u5206\u3051\u308B\n * @param tree \u6728\
+    \ (\u9802\u70B9\u6570 1 \u4EE5\u4E0A)\n * @return std::vector<std::vector<long\
+    \ long>> \u5404\u30B0\u30EB\u30FC\u30D7\u306E\u9802\u70B9 (\u3069\u308C\u3082\u7A7A\
+    \u3067\u306A\u304F\u30012 \u3064\u4EE5\u4E0A\u3002\u9802\u70B9\u6570 1 \u306A\u3089\
+    \ {{0}})\n */\ntemplate <typename Cost>\nstd::vector<std::vector<long long>> tree_diameter_endpoint_groups(const\
+    \ Tree<Cost>& tree) {\n    long long n = tree.size();\n    if (n == 1) return\
+    \ {{0}};\n    auto center = tree_center(tree);\n    long long c = center[0];\n\
+    \    auto [dist, branch] = internal_tree_util::branch_depths(tree, c);\n    long\
+    \ long r = *std::max_element(dist.begin(), dist.end());\n    std::vector<std::vector<long\
+    \ long>> groups;\n    if (center.size() == 2) {\n        // c \u306E\u5074\u306F\
+    \ c \u304B\u3089\u306E\u8DDD\u96E2\u304C r - 1\u3001\u3082\u3046\u4E00\u65B9\u306E\
+    \u4E2D\u5FC3\u306E\u5074\u306F r\n        groups.resize(2);\n        for (long\
+    \ long v = 0; v < n; v++) {\n            bool other = branch[v] == center[1];\n\
+    \            if (dist[v] == (other ? r : r - 1)) groups[other].push_back(v);\n\
+    \        }\n        return groups;\n    }\n    std::vector<long long> id(n, -1);\n\
+    \    for (long long v = 0; v < n; v++) {\n        if (dist[v] != r) continue;\n\
+    \        if (id[branch[v]] == -1) {\n            id[branch[v]] = groups.size();\n\
+    \            groups.emplace_back();\n        }\n        groups[id[branch[v]]].push_back(v);\n\
+    \    }\n    return groups;\n}\n\n/**\n * @brief root \u3092\u6839\u3068\u3059\u308B\
+    \u6839\u4ED8\u304D\u6728\u3067\u3001\u5404\u9802\u70B9\u3092\u6839\u3068\u3059\
+    \u308B\u90E8\u5206\u6728\u3092\u540C\u578B\u306A\u3082\u306E\u3054\u3068\u306B\
+    \u5206\u985E\u3059\u308B O(n log n)\n *\n * \u30CF\u30C3\u30B7\u30E5\u3067\u306F\
+    \u306A\u304F\u3001\u5B50\u306E\u5206\u985E\u756A\u53F7\u3092\u4E26\u3079\u305F\
+    \u5217\u306B\u756A\u53F7\u3092\u632F\u308B\u306E\u3067\u3001\u885D\u7A81\u3057\
+    \u306A\u3044\n * @return \u5404\u9802\u70B9\u306E\u5206\u985E\u756A\u53F7 (0 \u304B\
+    \u3089\u9806\u306B\u632F\u308B)\u30022 \u3064\u306E\u9802\u70B9\u306E\u90E8\u5206\
+    \u6728\u304C\u540C\u578B\u306A\u3068\u304D\u3001\u304B\u3064\u305D\u306E\u3068\
+    \u304D\u306B\u9650\u308A\u540C\u3058\u756A\u53F7\n */\ntemplate <typename Cost>\n\
+    std::vector<long long> rooted_tree_isomorphism(const Tree<Cost>& tree, long long\
+    \ root) {\n    const long long n = tree.size();\n    assert(0 <= root && root\
+    \ < n);\n    // BFS \u306E\u9806\u306B\u4E26\u3079\u3001\u8449\u306E\u5074\u304B\
+    \u3089\u756A\u53F7\u3092\u6C7A\u3081\u308B\n    std::vector<long long> order =\
+    \ {root}, parent(n, -1);\n    for (long long i = 0; i < static_cast<long long>(order.size());\
     \ i++) {\n        long long u = order[i];\n        for (const auto& e : tree[u])\
     \ {\n            if (e.dst == parent[u]) continue;\n            parent[e.dst]\
     \ = u;\n            order.push_back(e.dst);\n        }\n    }\n    std::vector<std::vector<long\
@@ -363,42 +415,61 @@ data:
     \ std::sort(c.begin(), c.end());\n        auto [it, inserted] = ids.emplace(std::move(c),\
     \ static_cast<long long>(ids.size()));\n        res[u] = it->second;\n       \
     \ if (parent[u] != -1) children[parent[u]].push_back(res[u]);\n    }\n    return\
-    \ res;\n}\n#line 9 \"test/unittest/graph/tree_util.test.cpp\"\n\n#line 12 \"test/unittest/graph/tree_util.test.cpp\"\
-    \n#include <random>\n#include <string>\n#line 15 \"test/unittest/graph/tree_util.test.cpp\"\
-    \n\nint main() {\n    std::mt19937_64 rng(314);\n    bool ok = true;\n    for\
-    \ (int rep = 0; rep < 2000 && ok; rep++) {\n        int n = rng() % 12 + 1;\n\
-    \        Tree<long long> tree(n);\n        std::vector<std::vector<long long>>\
-    \ dw(n, std::vector<long long>(n, 1LL << 60)), du = dw;\n        for (int i =\
-    \ 0; i < n; i++) dw[i][i] = du[i][i] = 0;\n        for (int i = 1; i < n; i++)\
-    \ {\n            int p = rng() % i;\n            long long w = rng() % 10;\n \
-    \           tree.add_edge(i, p, w);\n            dw[i][p] = dw[p][i] = w;\n  \
-    \          du[i][p] = du[p][i] = 1;\n        }\n        for (int k = 0; k < n;\
-    \ k++) {\n            for (int i = 0; i < n; i++) {\n                for (int\
-    \ j = 0; j < n; j++) {\n                    dw[i][j] = std::min(dw[i][j], dw[i][k]\
-    \ + dw[k][j]);\n                    du[i][j] = std::min(du[i][j], du[i][k] + du[k][j]);\n\
-    \                }\n            }\n        }\n        for (bool weighted : {true,\
-    \ false}) {\n            const auto& d = weighted ? dw : du;\n            long\
-    \ long expected = 0;\n            for (int i = 0; i < n; i++) {\n            \
-    \    for (int j = 0; j < n; j++) expected = std::max(expected, d[i][j]);\n   \
-    \         }\n            auto path = tree_diameter(tree, weighted);\n        \
-    \    long long len = 0;\n            for (int i = 0; i < static_cast<int>(path.size());\
-    \ i++) {\n                if (i > 0 && path[i - 1].dst != path[i].src) ok = false;\n\
-    \                len += weighted ? path[i].cost : 1;\n            }\n        \
-    \    if (len != expected) ok = false;\n            if (!path.empty() && d[path.front().src][path.back().dst]\
-    \ != expected) ok = false;\n            if (n == 1 && !path.empty()) ok = false;\n\
-    \        }\n    }\n\n    // rooted_tree_isomorphism: \u90E8\u5206\u6728\u3092\u62EC\
-    \u5F27\u5217 (\u5B50\u306E\u62EC\u5F27\u5217\u3092\u6574\u5217\u3057\u3066\u4E26\
-    \u3079\u305F\u3082\u306E) \u306B\u3057\u305F\u6B63\u898F\u5F62\u3068\u6BD4\u3079\
-    \u308B\n    for (int rep = 0; rep < 2000 && ok; rep++) {\n        int n = rng()\
-    \ % 12 + 1, root = rng() % n;\n        Tree<int> tree(n);\n        std::vector<std::vector<int>>\
-    \ adj(n);\n        for (int i = 1; i < n; i++) {\n            // \u5C0F\u3055\u3044\
-    \u6728\u3067\u306F\u540C\u578B\u306A\u90E8\u5206\u6728\u304C\u3088\u304F\u51FA\
-    \u308B\u3088\u3046\u306B\u3001\u89AA\u3092\u8FD1\u304F\u304B\u3089\u9078\u3076\
-    \u3053\u3068\u3082\u591A\u304F\u3059\u308B\n            int p = rng() % 2 ? i\
-    \ - 1 : rng() % i;\n            tree.add_edge(i, p);\n            adj[i].push_back(p),\
-    \ adj[p].push_back(i);\n        }\n        std::vector<std::string> canon(n);\n\
-    \        auto dfs = [&](auto self, int u, int par) -> void {\n            std::vector<std::string>\
-    \ cs;\n            for (int v : adj[u]) {\n                if (v == par) continue;\n\
+    \ res;\n}\n#line 11 \"test/unittest/graph/tree_util.test.cpp\"\n\n#line 14 \"\
+    test/unittest/graph/tree_util.test.cpp\"\n#include <random>\n#include <string>\n\
+    #line 17 \"test/unittest/graph/tree_util.test.cpp\"\n\nint main() {\n    std::mt19937_64\
+    \ rng(314);\n    bool ok = true;\n    for (int rep = 0; rep < 2000 && ok; rep++)\
+    \ {\n        int n = rng() % 12 + 1;\n        Tree<long long> tree(n);\n     \
+    \   std::vector<std::vector<long long>> dw(n, std::vector<long long>(n, 1LL <<\
+    \ 60)), du = dw;\n        for (int i = 0; i < n; i++) dw[i][i] = du[i][i] = 0;\n\
+    \        for (int i = 1; i < n; i++) {\n            int p = rng() % i;\n     \
+    \       long long w = rng() % 10;\n            tree.add_edge(i, p, w);\n     \
+    \       dw[i][p] = dw[p][i] = w;\n            du[i][p] = du[p][i] = 1;\n     \
+    \   }\n        for (int k = 0; k < n; k++) {\n            for (int i = 0; i <\
+    \ n; i++) {\n                for (int j = 0; j < n; j++) {\n                 \
+    \   dw[i][j] = std::min(dw[i][j], dw[i][k] + dw[k][j]);\n                    du[i][j]\
+    \ = std::min(du[i][j], du[i][k] + du[k][j]);\n                }\n            }\n\
+    \        }\n        for (bool weighted : {true, false}) {\n            const auto&\
+    \ d = weighted ? dw : du;\n            long long expected = 0;\n            for\
+    \ (int i = 0; i < n; i++) {\n                for (int j = 0; j < n; j++) expected\
+    \ = std::max(expected, d[i][j]);\n            }\n            auto path = tree_diameter(tree,\
+    \ weighted);\n            long long len = 0;\n            for (int i = 0; i <\
+    \ static_cast<int>(path.size()); i++) {\n                if (i > 0 && path[i -\
+    \ 1].dst != path[i].src) ok = false;\n                len += weighted ? path[i].cost\
+    \ : 1;\n            }\n            if (len != expected) ok = false;\n        \
+    \    if (!path.empty() && d[path.front().src][path.back().dst] != expected) ok\
+    \ = false;\n            if (n == 1 && !path.empty()) ok = false;\n        }\n\n\
+    \        // tree_center \u3068 tree_diameter_endpoint_groups (\u91CD\u307F\u306A\
+    \u3057)\n        long long diam = 0, rad = 1LL << 60;\n        std::vector<long\
+    \ long> ecc(n);\n        for (int i = 0; i < n; i++) {\n            for (int j\
+    \ = 0; j < n; j++) ecc[i] = std::max(ecc[i], du[i][j]);\n            diam = std::max(diam,\
+    \ ecc[i]);\n            rad = std::min(rad, ecc[i]);\n        }\n        std::vector<long\
+    \ long> center;\n        for (int i = 0; i < n; i++) {\n            if (ecc[i]\
+    \ == rad) center.push_back(i);\n        }\n        if (tree_center(tree) != center)\
+    \ ok = false;\n        auto groups = tree_diameter_endpoint_groups(tree);\n  \
+    \      std::vector<int> gid(n, -1);\n        for (int k = 0; k < static_cast<int>(groups.size());\
+    \ k++) {\n            if (groups[k].empty()) ok = false;\n            for (long\
+    \ long v : groups[k]) {\n                if (gid[v] != -1) ok = false;\n     \
+    \           gid[v] = k;\n            }\n        }\n        if (n == 1) {\n   \
+    \         if (groups != std::vector<std::vector<long long>>{{0}}) ok = false;\n\
+    \        } else {\n            if (groups.size() < 2) ok = false;\n          \
+    \  for (int i = 0; i < n; i++) {\n                for (int j = 0; j < n; j++)\
+    \ {\n                    bool across = gid[i] != -1 && gid[j] != -1 && gid[i]\
+    \ != gid[j];\n                    if (across != (du[i][j] == diam)) ok = false;\n\
+    \                }\n            }\n        }\n    }\n\n    // rooted_tree_isomorphism:\
+    \ \u90E8\u5206\u6728\u3092\u62EC\u5F27\u5217 (\u5B50\u306E\u62EC\u5F27\u5217\u3092\
+    \u6574\u5217\u3057\u3066\u4E26\u3079\u305F\u3082\u306E) \u306B\u3057\u305F\u6B63\
+    \u898F\u5F62\u3068\u6BD4\u3079\u308B\n    for (int rep = 0; rep < 2000 && ok;\
+    \ rep++) {\n        int n = rng() % 12 + 1, root = rng() % n;\n        Tree<int>\
+    \ tree(n);\n        std::vector<std::vector<int>> adj(n);\n        for (int i\
+    \ = 1; i < n; i++) {\n            // \u5C0F\u3055\u3044\u6728\u3067\u306F\u540C\
+    \u578B\u306A\u90E8\u5206\u6728\u304C\u3088\u304F\u51FA\u308B\u3088\u3046\u306B\
+    \u3001\u89AA\u3092\u8FD1\u304F\u304B\u3089\u9078\u3076\u3053\u3068\u3082\u591A\
+    \u304F\u3059\u308B\n            int p = rng() % 2 ? i - 1 : rng() % i;\n     \
+    \       tree.add_edge(i, p);\n            adj[i].push_back(p), adj[p].push_back(i);\n\
+    \        }\n        std::vector<std::string> canon(n);\n        auto dfs = [&](auto\
+    \ self, int u, int par) -> void {\n            std::vector<std::string> cs;\n\
+    \            for (int v : adj[u]) {\n                if (v == par) continue;\n\
     \                self(self, v, u);\n                cs.push_back(canon[v]);\n\
     \            }\n            std::sort(cs.begin(), cs.end());\n            canon[u]\
     \ = \"(\";\n            for (auto& c : cs) canon[u] += c;\n            canon[u]\
@@ -418,15 +489,20 @@ data:
     \u91CD\u307F\u4ED8\u304D\u30FB\u91CD\u307F\u306A\u3057\u306E\u4E21\u65B9\u3067\
     \u3001\u8FD4\u3059\u8FBA\u306E\u5217\u304C\u7AEF\u70B9\u304B\u3089\u9806\u306B\
     \u3064\u306A\u304C\u3063\u3066\u3044\u3066\u3001\u9577\u3055\u304C\u76F4\u5F84\
-    \u3068\u4E00\u81F4\u3059\u308B\u304B\u3092\u78BA\u304B\u3081\u308B\n// rooted_tree_isomorphism:\
-    \ \u90E8\u5206\u6728\u306E\u62EC\u5F27\u5217\u306B\u3088\u308B\u6B63\u898F\u5F62\
-    \u3068\u6BD4\u3079\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\
-    \u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\
-    \u529B\u3059\u308B\n\n#include \"../../../src/graph/tree_util.hpp\"\n\n#include\
-    \ <algorithm>\n#include <iostream>\n#include <random>\n#include <string>\n#include\
-    \ <vector>\n\nint main() {\n    std::mt19937_64 rng(314);\n    bool ok = true;\n\
-    \    for (int rep = 0; rep < 2000 && ok; rep++) {\n        int n = rng() % 12\
-    \ + 1;\n        Tree<long long> tree(n);\n        std::vector<std::vector<long\
+    \u3068\u4E00\u81F4\u3059\u308B\u304B\u3092\u78BA\u304B\u3081\u308B\n// tree_center:\
+    \ \u6700\u3082\u9060\u3044\u9802\u70B9\u307E\u3067\u306E\u8DDD\u96E2\u304C\u6700\
+    \u5C0F\u306E\u9802\u70B9\u306E\u96C6\u5408\u3068\u6BD4\u3079\u308B\n// tree_diameter_endpoint_groups:\
+    \ \u300C\u7570\u306A\u308B\u30B0\u30EB\u30FC\u30D7\u306B\u3042\u308B\u300D\u3068\
+    \u300C\u8DDD\u96E2\u304C\u76F4\u5F84\u306B\u7B49\u3057\u3044\u300D\u304C\u5168\
+    \u70B9\u5BFE\u3067\u4E00\u81F4\u3059\u308B\u304B\u3092\u78BA\u304B\u3081\u308B\
+    \n// rooted_tree_isomorphism: \u90E8\u5206\u6728\u306E\u62EC\u5F27\u5217\u306B\
+    \u3088\u308B\u6B63\u898F\u5F62\u3068\u6BD4\u3079\u308B\n// \u554F\u984C\u306E\u5165\
+    \u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\
+    \u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../../src/graph/tree_util.hpp\"\
+    \n\n#include <algorithm>\n#include <iostream>\n#include <random>\n#include <string>\n\
+    #include <vector>\n\nint main() {\n    std::mt19937_64 rng(314);\n    bool ok\
+    \ = true;\n    for (int rep = 0; rep < 2000 && ok; rep++) {\n        int n = rng()\
+    \ % 12 + 1;\n        Tree<long long> tree(n);\n        std::vector<std::vector<long\
     \ long>> dw(n, std::vector<long long>(n, 1LL << 60)), du = dw;\n        for (int\
     \ i = 0; i < n; i++) dw[i][i] = du[i][i] = 0;\n        for (int i = 1; i < n;\
     \ i++) {\n            int p = rng() % i;\n            long long w = rng() % 10;\n\
@@ -445,19 +521,37 @@ data:
     \                len += weighted ? path[i].cost : 1;\n            }\n        \
     \    if (len != expected) ok = false;\n            if (!path.empty() && d[path.front().src][path.back().dst]\
     \ != expected) ok = false;\n            if (n == 1 && !path.empty()) ok = false;\n\
-    \        }\n    }\n\n    // rooted_tree_isomorphism: \u90E8\u5206\u6728\u3092\u62EC\
-    \u5F27\u5217 (\u5B50\u306E\u62EC\u5F27\u5217\u3092\u6574\u5217\u3057\u3066\u4E26\
-    \u3079\u305F\u3082\u306E) \u306B\u3057\u305F\u6B63\u898F\u5F62\u3068\u6BD4\u3079\
-    \u308B\n    for (int rep = 0; rep < 2000 && ok; rep++) {\n        int n = rng()\
-    \ % 12 + 1, root = rng() % n;\n        Tree<int> tree(n);\n        std::vector<std::vector<int>>\
-    \ adj(n);\n        for (int i = 1; i < n; i++) {\n            // \u5C0F\u3055\u3044\
-    \u6728\u3067\u306F\u540C\u578B\u306A\u90E8\u5206\u6728\u304C\u3088\u304F\u51FA\
-    \u308B\u3088\u3046\u306B\u3001\u89AA\u3092\u8FD1\u304F\u304B\u3089\u9078\u3076\
-    \u3053\u3068\u3082\u591A\u304F\u3059\u308B\n            int p = rng() % 2 ? i\
-    \ - 1 : rng() % i;\n            tree.add_edge(i, p);\n            adj[i].push_back(p),\
-    \ adj[p].push_back(i);\n        }\n        std::vector<std::string> canon(n);\n\
-    \        auto dfs = [&](auto self, int u, int par) -> void {\n            std::vector<std::string>\
-    \ cs;\n            for (int v : adj[u]) {\n                if (v == par) continue;\n\
+    \        }\n\n        // tree_center \u3068 tree_diameter_endpoint_groups (\u91CD\
+    \u307F\u306A\u3057)\n        long long diam = 0, rad = 1LL << 60;\n        std::vector<long\
+    \ long> ecc(n);\n        for (int i = 0; i < n; i++) {\n            for (int j\
+    \ = 0; j < n; j++) ecc[i] = std::max(ecc[i], du[i][j]);\n            diam = std::max(diam,\
+    \ ecc[i]);\n            rad = std::min(rad, ecc[i]);\n        }\n        std::vector<long\
+    \ long> center;\n        for (int i = 0; i < n; i++) {\n            if (ecc[i]\
+    \ == rad) center.push_back(i);\n        }\n        if (tree_center(tree) != center)\
+    \ ok = false;\n        auto groups = tree_diameter_endpoint_groups(tree);\n  \
+    \      std::vector<int> gid(n, -1);\n        for (int k = 0; k < static_cast<int>(groups.size());\
+    \ k++) {\n            if (groups[k].empty()) ok = false;\n            for (long\
+    \ long v : groups[k]) {\n                if (gid[v] != -1) ok = false;\n     \
+    \           gid[v] = k;\n            }\n        }\n        if (n == 1) {\n   \
+    \         if (groups != std::vector<std::vector<long long>>{{0}}) ok = false;\n\
+    \        } else {\n            if (groups.size() < 2) ok = false;\n          \
+    \  for (int i = 0; i < n; i++) {\n                for (int j = 0; j < n; j++)\
+    \ {\n                    bool across = gid[i] != -1 && gid[j] != -1 && gid[i]\
+    \ != gid[j];\n                    if (across != (du[i][j] == diam)) ok = false;\n\
+    \                }\n            }\n        }\n    }\n\n    // rooted_tree_isomorphism:\
+    \ \u90E8\u5206\u6728\u3092\u62EC\u5F27\u5217 (\u5B50\u306E\u62EC\u5F27\u5217\u3092\
+    \u6574\u5217\u3057\u3066\u4E26\u3079\u305F\u3082\u306E) \u306B\u3057\u305F\u6B63\
+    \u898F\u5F62\u3068\u6BD4\u3079\u308B\n    for (int rep = 0; rep < 2000 && ok;\
+    \ rep++) {\n        int n = rng() % 12 + 1, root = rng() % n;\n        Tree<int>\
+    \ tree(n);\n        std::vector<std::vector<int>> adj(n);\n        for (int i\
+    \ = 1; i < n; i++) {\n            // \u5C0F\u3055\u3044\u6728\u3067\u306F\u540C\
+    \u578B\u306A\u90E8\u5206\u6728\u304C\u3088\u304F\u51FA\u308B\u3088\u3046\u306B\
+    \u3001\u89AA\u3092\u8FD1\u304F\u304B\u3089\u9078\u3076\u3053\u3068\u3082\u591A\
+    \u304F\u3059\u308B\n            int p = rng() % 2 ? i - 1 : rng() % i;\n     \
+    \       tree.add_edge(i, p);\n            adj[i].push_back(p), adj[p].push_back(i);\n\
+    \        }\n        std::vector<std::string> canon(n);\n        auto dfs = [&](auto\
+    \ self, int u, int par) -> void {\n            std::vector<std::string> cs;\n\
+    \            for (int v : adj[u]) {\n                if (v == par) continue;\n\
     \                self(self, v, u);\n                cs.push_back(canon[v]);\n\
     \            }\n            std::sort(cs.begin(), cs.end());\n            canon[u]\
     \ = \"(\";\n            for (auto& c : cs) canon[u] += c;\n            canon[u]\
@@ -477,7 +571,7 @@ data:
   isVerificationFile: true
   path: test/unittest/graph/tree_util.test.cpp
   requiredBy: []
-  timestamp: '2026-10-31 18:12:46+09:00'
+  timestamp: '2026-11-01 04:00:51+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/graph/tree_util.test.cpp

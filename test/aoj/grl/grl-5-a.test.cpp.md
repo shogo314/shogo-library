@@ -23,10 +23,10 @@ data:
   bundledCode: "#line 1 \"test/aoj/grl/grl-5-a.test.cpp\"\n#define PROBLEM \"https://onlinejudge.u-aizu.ac.jp/problems/GRL_5_A\"\
     \n\n#include <iostream>\n\n#line 2 \"src/graph/tree_util.hpp\"\n\n/**\n * @file\
     \ tree_util.hpp\n * @brief \u6728\u306B\u95A2\u3059\u308B\u95A2\u6570\n */\n\n\
-    #include <algorithm>\n#include <cassert>\n#include <map>\n#include <utility>\n\
-    #include <vector>\n\n#line 2 \"src/graph/tree.hpp\"\n\n/**\n * @file tree.hpp\n\
-    \ * @brief \u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n */\n\
-    \n#line 10 \"src/graph/tree.hpp\"\n#include <stack>\n#include <type_traits>\n\
+    #include <algorithm>\n#include <cassert>\n#include <map>\n#include <tuple>\n#include\
+    \ <utility>\n#include <vector>\n\n#line 2 \"src/graph/tree.hpp\"\n\n/**\n * @file\
+    \ tree.hpp\n * @brief \u6728\u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\
+    \n */\n\n#line 10 \"src/graph/tree.hpp\"\n#include <stack>\n#include <type_traits>\n\
     #line 14 \"src/graph/tree.hpp\"\n\n#line 2 \"src/graph/graph.hpp\"\n\n/**\n *\
     \ @file graph.hpp\n * @brief \u30B0\u30E9\u30D5\n */\n\n#line 11 \"src/graph/graph.hpp\"\
     \n\n/**\n * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n\
@@ -303,7 +303,7 @@ data:
     \     for (long long i = 0; i < h - 1; i++) {\n            for (long long j =\
     \ 0; j < n; j++) {\n                if (doubling_par[i][j] != -1) {\n        \
     \            doubling_par[i + 1][j] = doubling_par[i][doubling_par[i][j]];\n \
-    \               }\n            }\n        }\n    }\n};\n#line 15 \"src/graph/tree_util.hpp\"\
+    \               }\n            }\n        }\n    }\n};\n#line 16 \"src/graph/tree_util.hpp\"\
     \n\nnamespace internal_tree_util {\n\n// s \u304B\u3089\u5404\u9802\u70B9\u3078\
     \u306E\u8DDD\u96E2\u3068\u3001\u5404\u9802\u70B9\u3078\u5411\u304B\u3046\u8FBA\
     \ (s \u3067\u306F Edge()) \u3092 DFS \u3067\u6C42\u3081\u308B\ntemplate <typename\
@@ -326,42 +326,67 @@ data:
     \        for (const auto& e : tree[u]) {\n            if (dist[e.dst] != -1) continue;\n\
     \            dist[e.dst] = dist[u] + 1;\n            branch[e.dst] = u == c ?\
     \ e.dst : branch[u];\n            stk.push_back(e.dst);\n        }\n    }\n  \
-    \  return {dist, branch};\n}\n\n}  // namespace internal_tree_util\n\n/**\n *\
-    \ @brief \u6728\u306E\u76F4\u5F84\n *\n * @param tree \u6728 (\u9802\u70B9\u6570\
-    \ 1 \u4EE5\u4E0A)\n * @param weighted = true \u91CD\u307F\u4ED8\u304D\u304B\n\
-    \ * @return std::vector<typename Tree<Cost>::Edge> \u76F4\u5F84\u3092\u69CB\u6210\
-    \u3059\u308B\u8FBA\u306E\u30EA\u30B9\u30C8 (\u7AEF\u70B9\u304B\u3089\u9806\u306B\
-    )\n */\ntemplate <typename Cost>\nstd::vector<typename Tree<Cost>::Edge> tree_diameter(const\
-    \ Tree<Cost>& tree, bool weighted = true) {\n    assert(tree.size() > 0);\n  \
-    \  auto [dist0, prev0] = internal_tree_util::tree_distances(tree, 0, weighted);\n\
-    \    long long u = std::max_element(dist0.begin(), dist0.end()) - dist0.begin();\n\
-    \    auto [dist, prev] = internal_tree_util::tree_distances(tree, u, weighted);\n\
-    \    long long v = std::max_element(dist.begin(), dist.end()) - dist.begin();\n\
-    \    std::vector<typename Tree<Cost>::Edge> path;\n    for (long long w = v; w\
-    \ != u; w = prev[w].src) path.push_back(prev[w]);\n    std::reverse(path.begin(),\
-    \ path.end());\n    return path;\n}\n\n/**\n * @brief \u6728\u306E\u4E2D\u5FC3\
-    \ (\u91CD\u307F\u306A\u3057)\n *\n * \u6700\u3082\u9060\u3044\u9802\u70B9\u307E\
-    \u3067\u306E\u8FBA\u306E\u672C\u6570\u304C\u6700\u5C0F\u306B\u306A\u308B\u9802\
-    \u70B9\u3002\u76F4\u5F84\u306E\u4E2D\u70B9\u306B\u3042\u305F\u308B\n * @param\
-    \ tree \u6728 (\u9802\u70B9\u6570 1 \u4EE5\u4E0A)\n * @return std::vector<long\
-    \ long> \u4E2D\u5FC3 (1 \u3064\u304B 2 \u3064\u30022 \u3064\u306A\u3089\u96A3\u63A5\
-    \u3057\u3066\u3044\u3066\u3001\u5C0F\u3055\u3044\u9806)\n */\ntemplate <typename\
-    \ Cost>\nstd::vector<long long> tree_center(const Tree<Cost>& tree) {\n    auto\
-    \ path = tree_diameter(tree, false);\n    long long d = path.size();\n    if (d\
-    \ == 0) return {0};\n    long long c = path[d / 2].src;\n    if (d % 2 == 0) return\
-    \ {c};\n    long long c2 = path[d / 2].dst;\n    return {std::min(c, c2), std::max(c,\
-    \ c2)};\n}\n\n/**\n * @brief \u76F4\u5F84 (\u91CD\u307F\u306A\u3057) \u306E\u7AEF\
-    \u70B9\u3092\u30012 \u70B9\u304C\u3061\u3087\u3046\u3069\u76F4\u5F84\u306E\u4E21\
-    \u7AEF\u306B\u306A\u308B\u306E\u306F\u7570\u306A\u308B\u30B0\u30EB\u30FC\u30D7\
-    \u306B\u3042\u308B\u3068\u304D\u3001\u304B\u3064\u305D\u306E\u3068\u304D\u306B\
-    \u9650\u308B\u3088\u3046\u306B\u5206\u3051\u308B\n *\n * \u76F4\u5F84\u306E\u9577\
-    \u3055\u304C\u5076\u6570\u306A\u3089\u4E2D\u5FC3\u306E\u96A3\u63A5\u9802\u70B9\
-    \u3054\u3068\u3001\u5947\u6570\u306A\u3089\u4E2D\u5FC3\u306E\u8FBA\u306E\u3069\
-    \u3061\u3089\u306E\u5074\u304B\u3067\u5206\u3051\u308B\n * @param tree \u6728\
-    \ (\u9802\u70B9\u6570 1 \u4EE5\u4E0A)\n * @return std::vector<std::vector<long\
-    \ long>> \u5404\u30B0\u30EB\u30FC\u30D7\u306E\u9802\u70B9 (\u3069\u308C\u3082\u7A7A\
-    \u3067\u306A\u304F\u30012 \u3064\u4EE5\u4E0A\u3002\u9802\u70B9\u6570 1 \u306A\u3089\
-    \ {{0}})\n */\ntemplate <typename Cost>\nstd::vector<std::vector<long long>> tree_diameter_endpoint_groups(const\
+    \  return {dist, branch};\n}\n\n// \u76F4\u5F84\u306E\u4E21\u7AEF u, v \u3068\u3001\
+    u \u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u8DDD\u96E2\u3068\u8FBA (tree_distances\
+    \ \u306E\u7D50\u679C) \u3092\u6C42\u3081\u308B\ntemplate <typename Cost>\nstd::tuple<long\
+    \ long, long long, std::vector<Cost>, std::vector<typename Tree<Cost>::Edge>>\
+    \ diameter_endpoints(const Tree<Cost>& tree, bool weighted) {\n    assert(tree.size()\
+    \ > 0);\n    auto dist0 = tree_distances(tree, 0, weighted).first;\n    long long\
+    \ u = std::max_element(dist0.begin(), dist0.end()) - dist0.begin();\n    auto\
+    \ [dist, prev] = tree_distances(tree, u, weighted);\n    long long v = std::max_element(dist.begin(),\
+    \ dist.end()) - dist.begin();\n    return {u, v, std::move(dist), std::move(prev)};\n\
+    }\n\n}  // namespace internal_tree_util\n\n/**\n * @brief \u6728\u306E\u76F4\u5F84\
+    \u306E\u9577\u3055\n *\n * @param tree \u6728 (\u9802\u70B9\u6570 1 \u4EE5\u4E0A\
+    \u3001\u8FBA\u306E\u91CD\u307F\u306F\u975E\u8CA0)\n * @param weighted = true \u91CD\
+    \u307F\u4ED8\u304D\u304B\u3002false \u306A\u3089\u8FBA\u306E\u672C\u6570\u3067\
+    \u6E2C\u308B\n * @return Cost \u76F4\u5F84\u306E\u9577\u3055 (\u9802\u70B9\u6570\
+    \ 1 \u306A\u3089 0)\n */\ntemplate <typename Cost>\nCost tree_diameter(const Tree<Cost>&\
+    \ tree, bool weighted = true) {\n    auto [u, v, dist, prev] = internal_tree_util::diameter_endpoints(tree,\
+    \ weighted);\n    return dist[v];\n}\n\n/**\n * @brief \u6728\u306E\u76F4\u5F84\
+    \u306E\u7D50\u679C\n *\n * auto [length, vertices, edges] = tree_diameter_restore(tree);\
+    \ \u306E\u3088\u3046\u306B\u53D7\u3051\u53D6\u308C\u308B\n */\ntemplate <typename\
+    \ Cost>\nstruct TreeDiameter {\n    Cost length;                             \
+    \      //!< \u76F4\u5F84\u306E\u9577\u3055\n    std::vector<long long> vertices;\
+    \               //!< \u4E00\u65B9\u306E\u7AEF\u70B9\u304B\u3089\u4ED6\u65B9\u306E\
+    \u7AEF\u70B9\u307E\u3067\u306E\u9802\u70B9\u306E\u5217 (\u9802\u70B9\u6570 1 \u306A\
+    \u3089 {0})\n    std::vector<typename Tree<Cost>::Edge> edges;  //!< vertices\
+    \ \u306E\u9806\u306B\u305F\u3069\u308B\u8FBA\u306E\u5217 (edges[k] \u306F vertices[k]\
+    \ \u304B\u3089 vertices[k + 1] \u3078\u3002\u9802\u70B9\u6570 1 \u306A\u3089\u7A7A\
+    )\n};\n\n/**\n * @brief \u6728\u306E\u76F4\u5F84\u3092\u3001\u9577\u3055\u30FB\
+    \u9802\u70B9\u306E\u5217\u30FB\u8FBA\u306E\u5217\u3067\u6C42\u3081\u308B\n *\n\
+    \ * @param tree \u6728 (\u9802\u70B9\u6570 1 \u4EE5\u4E0A\u3001\u8FBA\u306E\u91CD\
+    \u307F\u306F\u975E\u8CA0)\n * @param weighted = true \u91CD\u307F\u4ED8\u304D\u304B\
+    \u3002false \u306A\u3089\u8FBA\u306E\u672C\u6570\u3067\u6E2C\u308B\n * @return\
+    \ TreeDiameter<Cost> \u9577\u3055\u30FB\u9802\u70B9\u306E\u5217\u30FB\u8FBA\u306E\
+    \u5217\n */\ntemplate <typename Cost>\nTreeDiameter<Cost> tree_diameter_restore(const\
+    \ Tree<Cost>& tree, bool weighted = true) {\n    auto [u, v, dist, prev] = internal_tree_util::diameter_endpoints(tree,\
+    \ weighted);\n    TreeDiameter<Cost> res{dist[v], {v}, {}};\n    for (long long\
+    \ w = v; w != u; w = prev[w].src) {\n        res.vertices.push_back(prev[w].src);\n\
+    \        res.edges.push_back(prev[w]);\n    }\n    std::reverse(res.vertices.begin(),\
+    \ res.vertices.end());\n    std::reverse(res.edges.begin(), res.edges.end());\n\
+    \    return res;\n}\n\n/**\n * @brief \u6728\u306E\u4E2D\u5FC3 (\u91CD\u307F\u306A\
+    \u3057)\n *\n * \u6700\u3082\u9060\u3044\u9802\u70B9\u307E\u3067\u306E\u8FBA\u306E\
+    \u672C\u6570\u304C\u6700\u5C0F\u306B\u306A\u308B\u9802\u70B9\u3002\u76F4\u5F84\
+    \u306E\u4E2D\u70B9\u306B\u3042\u305F\u308B\n * @param tree \u6728 (\u9802\u70B9\
+    \u6570 1 \u4EE5\u4E0A)\n * @return std::vector<long long> \u4E2D\u5FC3 (1 \u3064\
+    \u304B 2 \u3064\u30022 \u3064\u306A\u3089\u96A3\u63A5\u3057\u3066\u3044\u3066\u3001\
+    \u5C0F\u3055\u3044\u9806)\n */\ntemplate <typename Cost>\nstd::vector<long long>\
+    \ tree_center(const Tree<Cost>& tree) {\n    auto path = tree_diameter_restore(tree,\
+    \ false).vertices;\n    long long d = path.size() - 1;\n    long long c = path[d\
+    \ / 2];\n    if (d % 2 == 0) return {c};\n    long long c2 = path[d / 2 + 1];\n\
+    \    return {std::min(c, c2), std::max(c, c2)};\n}\n\n/**\n * @brief \u76F4\u5F84\
+    \ (\u91CD\u307F\u306A\u3057) \u306E\u7AEF\u70B9\u3092\u30012 \u70B9\u304C\u3061\
+    \u3087\u3046\u3069\u76F4\u5F84\u306E\u4E21\u7AEF\u306B\u306A\u308B\u306E\u306F\
+    \u7570\u306A\u308B\u30B0\u30EB\u30FC\u30D7\u306B\u3042\u308B\u3068\u304D\u3001\
+    \u304B\u3064\u305D\u306E\u3068\u304D\u306B\u9650\u308B\u3088\u3046\u306B\u5206\
+    \u3051\u308B\n *\n * \u76F4\u5F84\u306E\u9577\u3055\u304C\u5076\u6570\u306A\u3089\
+    \u4E2D\u5FC3\u306E\u96A3\u63A5\u9802\u70B9\u3054\u3068\u3001\u5947\u6570\u306A\
+    \u3089\u4E2D\u5FC3\u306E\u8FBA\u306E\u3069\u3061\u3089\u306E\u5074\u304B\u3067\
+    \u5206\u3051\u308B\n * @param tree \u6728 (\u9802\u70B9\u6570 1 \u4EE5\u4E0A)\n\
+    \ * @return std::vector<std::vector<long long>> \u5404\u30B0\u30EB\u30FC\u30D7\
+    \u306E\u9802\u70B9 (\u3069\u308C\u3082\u7A7A\u3067\u306A\u304F\u30012 \u3064\u4EE5\
+    \u4E0A\u3002\u9802\u70B9\u6570 1 \u306A\u3089 {{0}})\n */\ntemplate <typename\
+    \ Cost>\nstd::vector<std::vector<long long>> tree_diameter_endpoint_groups(const\
     \ Tree<Cost>& tree) {\n    long long n = tree.size();\n    if (n == 1) return\
     \ {{0}};\n    auto center = tree_center(tree);\n    long long c = center[0];\n\
     \    auto [dist, branch] = internal_tree_util::branch_depths(tree, c);\n    long\
@@ -401,13 +426,11 @@ data:
     \ if (parent[u] != -1) children[parent[u]].push_back(res[u]);\n    }\n    return\
     \ res;\n}\n#line 6 \"test/aoj/grl/grl-5-a.test.cpp\"\n\nint main(void) {\n   \
     \ int n;\n    std::cin >> n;\n    Tree<int> tree(n);\n    tree.read(0, true);\n\
-    \    auto diameter = tree_diameter(tree);\n    int ans = 0;\n    for (auto& e\
-    \ : diameter) ans += e.cost;\n    std::cout << ans << '\\n';\n}\n"
+    \    std::cout << tree_diameter(tree) << '\\n';\n}\n"
   code: "#define PROBLEM \"https://onlinejudge.u-aizu.ac.jp/problems/GRL_5_A\"\n\n\
     #include <iostream>\n\n#include \"../../../src/graph/tree_util.hpp\"\n\nint main(void)\
     \ {\n    int n;\n    std::cin >> n;\n    Tree<int> tree(n);\n    tree.read(0,\
-    \ true);\n    auto diameter = tree_diameter(tree);\n    int ans = 0;\n    for\
-    \ (auto& e : diameter) ans += e.cost;\n    std::cout << ans << '\\n';\n}"
+    \ true);\n    std::cout << tree_diameter(tree) << '\\n';\n}"
   dependsOn:
   - src/graph/tree_util.hpp
   - src/graph/tree.hpp
@@ -415,7 +438,7 @@ data:
   isVerificationFile: true
   path: test/aoj/grl/grl-5-a.test.cpp
   requiredBy: []
-  timestamp: '2026-11-01 04:00:51+09:00'
+  timestamp: '2026-11-02 00:39:47+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/grl/grl-5-a.test.cpp

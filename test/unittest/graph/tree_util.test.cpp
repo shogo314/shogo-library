@@ -1,7 +1,8 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
 // tree_util.hpp の関数を愚直な実装とランダムに比較する
-// tree_diameter: 全点対の距離の最大と比べる。重み付き・重みなしの両方で、返す辺の列が端点から順につながっていて、長さが直径と一致するかを確かめる
+// tree_diameter: 全点対の距離の最大と比べる (重み付き・重みなしの両方)
+// tree_diameter_restore: 長さが直径と一致し、頂点の列の両端の距離が直径と一致し、辺の列が頂点の列を順にたどっていて重みの和が直径と一致するかを確かめる
 // tree_center: 最も遠い頂点までの距離が最小の頂点の集合と比べる
 // tree_diameter_endpoint_groups: 「異なるグループにある」と「距離が直径に等しい」が全点対で一致するかを確かめる
 // rooted_tree_isomorphism: 部分木の括弧列による正規形と比べる
@@ -44,15 +45,23 @@ int main() {
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) expected = std::max(expected, d[i][j]);
             }
-            auto path = tree_diameter(tree, weighted);
+            if (tree_diameter(tree, weighted) != expected) ok = false;
+            auto [length, path, edges] = tree_diameter_restore(tree, weighted);
+            if (length != expected) ok = false;
+            if (path.empty() || edges.size() + 1 != path.size()) {
+                ok = false;
+                continue;
+            }
             long long len = 0;
-            for (int i = 0; i < static_cast<int>(path.size()); i++) {
-                if (i > 0 && path[i - 1].dst != path[i].src) ok = false;
-                len += weighted ? path[i].cost : 1;
+            for (int i = 0; i < static_cast<int>(edges.size()); i++) {
+                if (edges[i].src != path[i] || edges[i].dst != path[i + 1]) ok = false;
+                if (du[path[i]][path[i + 1]] != 1) ok = false;
+                if (dw[edges[i].src][edges[i].dst] != edges[i].cost) ok = false;
+                len += weighted ? edges[i].cost : 1;
             }
             if (len != expected) ok = false;
-            if (!path.empty() && d[path.front().src][path.back().dst] != expected) ok = false;
-            if (n == 1 && !path.empty()) ok = false;
+            if (d[path.front()][path.back()] != expected) ok = false;
+            if (n == 1 && path != std::vector<long long>{0}) ok = false;
         }
 
         // tree_center と tree_diameter_endpoint_groups (重みなし)

@@ -9,8 +9,5 @@ int main(void) {
     std::cin >> n;
     Tree<int> tree(n);
     tree.read(0, true);
-    auto diameter = tree_diameter(tree);
-    int ans = 0;
-    for (auto& e : diameter) ans += e.cost;
-    std::cout << ans << '\n';
+    std::cout << tree_diameter(tree) << '\n';
 }

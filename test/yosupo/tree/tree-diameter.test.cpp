@@ -10,18 +10,7 @@ int main() {
     std::cin >> n;
     Tree<long long> tree(n);
     tree.read(0, true);
-    auto path = tree_diameter(tree);
-    long long x = 0;
-    std::vector<int> vs;
-    if (path.empty()) {
-        vs.push_back(0);  // n = 1
-    } else {
-        vs.push_back(path[0].src);
-        for (const auto& e : path) {
-            x += e.cost;
-            vs.push_back(e.dst);
-        }
-    }
-    std::cout << x << ' ' << vs.size() << '\n';
-    for (int i = 0; i < static_cast<int>(vs.size()); i++) std::cout << vs[i] << " \n"[i + 1 == static_cast<int>(vs.size())];
+    auto [length, path, edges] = tree_diameter_restore(tree);
+    std::cout << length << ' ' << path.size() << '\n';
+    for (int i = 0; i < static_cast<int>(path.size()); i++) std::cout << path[i] << " \n"[i + 1 == static_cast<int>(path.size())];
 }

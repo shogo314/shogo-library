@@ -60,9 +60,16 @@ class SlopeTrick {
      */
     T min() const { return min_f; }
     /**
+     * @brief argmin の結果。f が最小値をとる区間 [lower, upper]
+     */
+    struct Argmin {
+        T lower;  //!< 左端 (なければ -inf())
+        T upper;  //!< 右端 (なければ inf())
+    };
+    /**
      * @brief f が最小値をとる区間 [lower, upper]。端がなければ -inf()、inf()
      */
-    std::pair<T, T> argmin() const { return {top_l(), top_r()}; }
+    Argmin argmin() const { return {top_l(), top_r()}; }
     /**
      * @brief f に定数 a を足す
      */

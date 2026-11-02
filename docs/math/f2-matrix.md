@@ -37,7 +37,7 @@ std::cout << C << '\n';      // '0' と '1' の文字列で 1 行ずつ出力
 | `solve(b)` | 連立一次方程式 $Ax = b$ の解 `Solution` (`x` と `basis`)。解がなければ `std::nullopt` | $O(nm \min(n, m) / w)$ |
 | `rank()` | ランク | $O(nm \min(n, m) / w)$ |
 | `kernel()` | $Ax = 0$ の解空間の基底 (長さ $m$ のベクトルを $m - \mathrm{rank}$ 個) | $O(nm \min(n, m) / w)$ |
-| `reduced_row_echelon()` | 簡約化した行列と、各行の主成分の列 `{R, pivots}` | $O(nm \min(n, m) / w)$ |
+| `reduced_row_echelon()` | 簡約化した行列と、各行の主成分の列をまとめた `ReducedRowEchelon {matrix, pivots}` | $O(nm \min(n, m) / w)$ |
 | `det()` | 行列式 (`bool`、正方行列)。正則なら `true` | $O(n^3 / w)$ |
 | `inv()` | 逆行列 (正方行列)。正則でなければ `std::nullopt` | $O(n^3 / w)$ |
 | `to_strings()` / `os << A` | 各行を `'0'` と `'1'` の文字列にしたもの / 改行区切りで出力 | $O(nm)$ |

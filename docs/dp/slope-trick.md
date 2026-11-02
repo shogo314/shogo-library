@@ -25,7 +25,7 @@ long long cost = st.min();
 |---|---|---|
 | `SlopeTrick<T>()` | $f(x) = 0$ (`T` は符号付き整数) | $O(1)$ |
 | `min()` | $f$ の最小値 | $O(1)$ |
-| `argmin()` | $f$ が最小値をとる区間 $[\mathit{lower}, \mathit{upper}]$ (`std::pair`)。端がなければ `-inf()`、`inf()` | $O(1)$ |
+| `argmin()` | $f$ が最小値をとる区間 $[\mathit{lower}, \mathit{upper}]$ (`Argmin {lower, upper}`)。端がなければ `-inf()`、`inf()` | $O(1)$ |
 | `get(x)` | $f(x)$ | $O(n \log n)$ |
 | `add_constant(a)` | $f$ に $a$ を足す | $O(1)$ |
 | `add_x_minus_a(a)` | $f$ に $\max(0, x - a)$ を足す | $O(\log n)$ |

@@ -96,7 +96,7 @@ int main() {
         for (int t = 0; t < 5; t++) {
             std::string text = rng() % 5 == 0 ? std::string() : random_string(30);
             std::vector<long long> each(m, 0);
-            std::vector<std::pair<long long, long long>> all;                // (開始位置, 番号)
+            std::vector<decltype(ac)::Match> all;                            // (開始位置, 番号)
             std::vector<std::tuple<long long, long long, long long>> order;  // (終わる位置, -長さ, 番号) の順に並べる
             for (long long end = 1; end <= static_cast<long long>(text.size()); end++) {
                 for (int i = 0; i < m; i++) {
@@ -108,7 +108,7 @@ int main() {
                 }
             }
             std::sort(order.begin(), order.end());
-            for (auto [end, neg_len, i] : order) all.emplace_back(end + neg_len, i);
+            for (auto [end, neg_len, i] : order) all.push_back({end + neg_len, i});
             long long total = 0;
             for (long long x : each) total += x;
             check(ac.count(text) == total, "count");

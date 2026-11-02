@@ -53,7 +53,7 @@ mint y = f.eval(2);            // f(2)
 | `modinv(f, g)` | $fh \equiv 1 \pmod g$ で $\deg h < \deg g$ となる $h$ (`std::optional<FPS>`)。$\gcd(f, g)$ が定数でなければ `std::nullopt`。$g$ が定数なら $h = 0$ (空) | $g \neq 0$ | $O(n \log^2 n)$ |
 | `modpow(f, e, m)` | $f^e \bmod m$ (多項式の余り) | | $O(\lvert m \rvert \log \lvert m \rvert \log e)$ |
 | `polynomial_product(fs)` | 多項式の列 `fs` (`std::vector<FPS>`) の積。次数の小さいものから 2 つずつ掛ける。`fs` が空なら 1 | | $O(N \log^2 N)$ ($N$ は次数の和) |
-| `sum_of_fractions(nums, dens)` | 分数の和 $\sum_i \mathit{nums}_i / \mathit{dens}_i$ を 1 つの分数にまとめ、`std::pair` で {分子, 分母} を返す。分母は `dens` の積。半分ずつに分けて $a/b + c/d = (ad + cb)/bd$ とまとめる。空なら $0 / 1$ | | $O(N \log^2 N)$ ($N$ は長さの和) |
+| `sum_of_fractions(nums, dens)` | 分数の和 $\sum_i \mathit{nums}_i / \mathit{dens}_i$ を 1 つの分数にまとめ、分子 `num` と分母 `den` を持つ `SumOfFractions<mint>` で返す。分母は `dens` の積。半分ずつに分けて $a/b + c/d = (ad + cb)/bd$ とまとめる。空なら $0 / 1$ | | $O(N \log^2 N)$ ($N$ は長さの和) |
 
 法が NTT に向く素数 (998244353 など) なら、`inv` と `exp` は NTT した値を使い回して倍々に伸ばします (`inv` は 1 段あたり長さ $2m$ の NTT 5 回、`exp` は $\exp f$ と $1 / \exp f$ を同時に伸ばす)。`log`・`pow`・`sqrt` もこれらを通して速くなり、$n = 5 \times 10^5$ の `exp` は 0.2 秒ほどです。それ以外の法では畳み込みを繰り返す実装を使います。
 

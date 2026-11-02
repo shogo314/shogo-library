@@ -12,5 +12,5 @@ int main() {
     int n;
     std::string s;
     std::cin >> n >> s;
-    std::cout << std::get<2>(longest_non_overlapping_repeated_substring(s)) << '\n';
+    std::cout << longest_non_overlapping_repeated_substring(s).length << '\n';
 }

@@ -100,10 +100,10 @@ int main() {
         check(stern_brocot::decode_path(path) == x, "decode_path");
         check(stern_brocot::depth(x) == static_cast<long long>(w.path.size()), "depth");
         auto [lo, hi] = stern_brocot::range(x);
-        check(lo == std::make_pair(w.lo_num, w.lo_den) && hi == std::make_pair(w.hi_num, w.hi_den), "range");
+        check(lo.num == w.lo_num && lo.den == w.lo_den && hi.num == w.hi_num && hi.den == w.hi_den, "range");
     }
     check(stern_brocot::encode_path(Q(1)).empty(), "encode_path 1/1");
-    check((stern_brocot::range(Q(1)) == std::pair<std::pair<long long, long long>, std::pair<long long, long long>>{{0, 1}, {1, 0}}), "range 1/1");
+    check((stern_brocot::range(Q(1)) == stern_brocot::Interval<long long>{{0, 1}, {1, 0}}), "range 1/1");
     // 同じ文字が続く道や回数 0 も受け付ける
     check((stern_brocot::decode_path(std::vector<std::pair<char, long long>>{{'R', 1}, {'R', 0}, {'R', 1}, {'L', 2}}) == naive_decode("RRLL")), "decode_path 続く文字");
 
@@ -179,7 +179,7 @@ int main() {
 
     // binary_search: 分母・分子の上限内の分数を全探索して、pred が true の最大と false の最小を求める愚直な実装と比べる
     {
-        using P = std::pair<long long, long long>;
+        using P = stern_brocot::Endpoint<long long>;
         auto naive = [&](long long max_den, long long max_num, auto pred) {
             Q lo(0), hi(0);
             bool has_hi = false;
@@ -193,7 +193,7 @@ int main() {
                     }
                 }
             }
-            return std::make_pair(P{lo.num(), lo.den()}, has_hi ? P{hi.num(), hi.den()} : P{1, 0});
+            return stern_brocot::Interval<long long>{P{lo.num(), lo.den()}, has_hi ? P{hi.num(), hi.den()} : P{1, 0}};
         };
         for (int rep = 0; rep < 3000 && ok; rep++) {
             long long max_den = rng() % 12 + 1, max_num = rng() % 12;
@@ -207,7 +207,7 @@ int main() {
         }
         // pred がずっと true なら上側は +∞
         auto all = stern_brocot::binary_search(5LL, [](const Q&) { return true; }, 7LL);
-        check(all.first == P{7, 1} && all.second == P{1, 0}, "binary_search +∞");
+        check(all.lower == P{7, 1} && all.upper == P{1, 0}, "binary_search +∞");
         // √2 の両側: 分母 10^9 以下で最も近い分数。pred を呼ぶ回数も数える
         const long long n = 1000000000;
         int calls = 0;
@@ -215,10 +215,10 @@ int main() {
             calls++;
             return y.num() * y.num() <= 2 * y.den() * y.den();
         });
-        Q l(lo.first, lo.second), h(hi.first, hi.second);
+        Q l(lo.num, lo.den), h(hi.num, hi.den);
         // 隣り合う分数 (間に分母 n 以下の分数がない) で、√2 を挟む
-        check(lo.second <= n && hi.second <= n && lo.second + hi.second > n, "binary_search √2 分母");
-        check(hi.first * lo.second - lo.first * hi.second == 1, "binary_search √2 隣り合う");
+        check(lo.den <= n && hi.den <= n && lo.den + hi.den > n, "binary_search √2 分母");
+        check(hi.num * lo.den - lo.num * hi.den == 1, "binary_search √2 隣り合う");
         check(l * l < Q(2) && Q(2) < h * h, "binary_search √2 挟む");
         check(calls <= 200, "binary_search √2 呼ぶ回数");
         // best_approximation と一致する
@@ -228,7 +228,7 @@ int main() {
             auto [bl, bu] = stern_brocot::best_approximation(x, m);
             auto [sl, su] = stern_brocot::binary_search(m, [&](const Q& y) { return y <= x; });
             // x 自身の分母が m 以下なら、下側は x、上側は x の次の分数になる
-            check(Q(sl.first, sl.second) == bl && (bl == bu || Q(su.first, su.second) == bu), "binary_search と best_approximation");
+            check(Q(sl.num, sl.den) == bl && (bl == bu || Q(su.num, su.den) == bu), "binary_search と best_approximation");
         }
     }
 

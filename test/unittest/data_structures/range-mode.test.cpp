@@ -34,6 +34,6 @@ int main() {
     // 文字列でも使える
     std::vector<std::string> s = {"b", "a", "b", "c", "a", "b"};
     RangeMode rs(s);
-    if (rs.mode(0, 6) != std::make_pair(std::string("b"), 3LL) || rs.mode(1, 5).second != 2) ok = false;
+    if (rs.mode(0, 6).value != "b" || rs.mode(0, 6).count != 3 || rs.mode(1, 5).count != 2) ok = false;
     if (ok) std::cout << "Hello World" << std::endl;
 }

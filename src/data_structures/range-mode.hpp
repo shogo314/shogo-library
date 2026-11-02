@@ -64,10 +64,17 @@ class RangeMode {
      */
     long long size() const { return n; }
     /**
-     * @brief a[l], ..., a[r-1] の最頻値の 1 つと、その出現回数 {値, 回数}
+     * @brief mode の結果。最頻値 value とその出現回数 count
+     */
+    struct Mode {
+        T value;          //!< 最頻値
+        long long count;  //!< 出現回数
+    };
+    /**
+     * @brief a[l], ..., a[r-1] の最頻値の 1 つと、その出現回数 {value, count}
      * @pre l < r
      */
-    std::pair<T, long long> mode(long long l, long long r) const {
+    Mode mode(long long l, long long r) const {
         assert(0 <= l && l < r && r <= n);
         // 間にあるブロック [bl, br]。なければ空にして、すべて端として扱う
         const long long bl = (l + B - 1) / B, br = r / B - 1;

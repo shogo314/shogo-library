@@ -205,14 +205,11 @@ class F2Matrix {
         return T;
     }
 
+    struct ReducedRowEchelon;  // reduced_row_echelon の結果 (クラスの後で定義する)
     /**
-     * @brief 簡約化した行列と、各行の主成分の列 (個数がランク) O(nm min(n, m) / 64)
+     * @brief 簡約化した行列と、各行の主成分の列 (個数がランク) {matrix, pivots} O(nm min(n, m) / 64)
      */
-    std::pair<F2Matrix, std::vector<long long>> reduced_row_echelon() const {
-        F2Matrix A = *this;
-        std::vector<long long> pivots = reduce(A.a, n, w, m);
-        return {A, pivots};
-    }
+    ReducedRowEchelon reduced_row_echelon() const;
     /**
      * @brief ランク O(nm min(n, m) / 64)
      */
@@ -300,3 +297,18 @@ class F2Matrix {
         return os;
     }
 };
+
+/**
+ * @brief F2Matrix::reduced_row_echelon の結果
+ *
+ * auto [R, pivots] = A.reduced_row_echelon(); のように受け取れる
+ */
+struct F2Matrix::ReducedRowEchelon {
+    F2Matrix matrix;                //!< 簡約化した行列
+    std::vector<long long> pivots;  //!< 各行の主成分の列 (個数がランク)
+};
+inline F2Matrix::ReducedRowEchelon F2Matrix::reduced_row_echelon() const {
+    F2Matrix A = *this;
+    std::vector<long long> pivots = reduce(A.a, n, w, m);
+    return {A, pivots};
+}

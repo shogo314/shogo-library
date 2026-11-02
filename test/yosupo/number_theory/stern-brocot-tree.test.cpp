@@ -48,7 +48,7 @@ int main() {
             long long a, b;
             std::cin >> a >> b;
             auto [lo, hi] = stern_brocot::range(Q(a, b));
-            std::cout << lo.first << ' ' << lo.second << ' ' << hi.first << ' ' << hi.second << '\n';
+            std::cout << lo.num << ' ' << lo.den << ' ' << hi.num << ' ' << hi.den << '\n';
         }
     }
 }

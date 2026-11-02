@@ -205,10 +205,3 @@ FarthestPair farthest_point_pair(const std::vector<Vector<T, 2>>& points) {
     auto [d2, i, j] = farthest_point_pair_squared(points);
     return {std::sqrt(static_cast<double>(d2)), i, j};
 }
-/**
- * @deprecated closest_point_pair_squared を使うこと(綴りの誤りを直して改名した)
- */
-template <typename T>
-[[deprecated("use closest_point_pair_squared")]] ClosestPairSquared<T> closest_point_pair_squred(const std::vector<Vector<T, 2>>& points) {
-    return closest_point_pair_squared(points);
-}

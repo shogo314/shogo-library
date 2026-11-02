@@ -11,21 +11,19 @@ int main() {
     int n, m;
     std::cin >> n >> m;
     Graph<long long> g(n);
-    std::vector<long long> w(m);
     for (int i = 0; i < m; i++) {
         int u, v;
-        std::cin >> u >> v >> w[i];
-        g.add_edge(u, v, w[i]);
+        long long w;
+        std::cin >> u >> v >> w;
+        g.add_edge(u, v, w);
     }
     int k;
     std::cin >> k;
     std::vector<int> x(k);
     for (auto& v : x) std::cin >> v;
     // 問題の制約でグラフは連結
-    const auto edges = *minimum_steiner_tree_restore(g, x);
-    long long sum = 0;
-    for (auto e : edges) sum += w[e];
-    std::cout << sum << ' ' << edges.size() << '\n';
-    for (int i = 0; i < static_cast<int>(edges.size()); i++) std::cout << (i ? " " : "") << edges[i];
+    const auto [cost, edges] = *minimum_steiner_tree_restore(g, x);
+    std::cout << cost << ' ' << edges.size() << '\n';
+    for (int i = 0; i < static_cast<int>(edges.size()); i++) std::cout << (i ? " " : "") << edges[i].id;
     std::cout << '\n';
 }

@@ -33,11 +33,21 @@ long long longest_common_subsequence(const R1& s, const R2& t) {
 }
 
 /**
+ * @brief 最長共通部分列の復元の結果
+ *
+ * auto [length, indices] = longest_common_subsequence_restore(s, t); のように受け取れる
+ */
+struct LongestCommonSubsequence {
+    long long length;                                      //!< 長さ
+    std::vector<std::pair<long long, long long>> indices;  //!< s[i] == t[j] として選んだ添字の組 (i, j) の昇順のリスト
+};
+
+/**
  * @brief s と t の最長共通部分列を 1 つ求める O(nm)
- * s[i] == t[j] として選んだ添字の組 (i, j) を、昇順に並べたリストを返す。メモリは O(nm)
+ * 長さと、s[i] == t[j] として選んだ添字の組 (i, j) を昇順に並べたリストを返す。メモリは O(nm)
  */
 template <typename R1, typename R2>
-std::vector<std::pair<long long, long long>> longest_common_subsequence_restore(const R1& s, const R2& t) {
+LongestCommonSubsequence longest_common_subsequence_restore(const R1& s, const R2& t) {
     auto a = std::begin(s);
     auto b = std::begin(t);
     long long n = std::end(s) - a, m = std::end(t) - b;
@@ -61,5 +71,5 @@ std::vector<std::pair<long long, long long>> longest_common_subsequence_restore(
         }
     }
     std::reverse(res.begin(), res.end());
-    return res;
+    return {static_cast<long long>(res.size()), res};
 }

@@ -53,16 +53,27 @@ long long longest_increasing_subsequence(const std::vector<T>& a, bool strict = 
 }
 
 /**
- * @brief 最長増加部分列を 1 つ求め、その添字の昇順のリストを返す O(n log n)
+ * @brief 最長増加部分列の復元の結果
+ *
+ * auto [length, indices] = longest_increasing_subsequence_restore(a); のように受け取れる
+ */
+struct LongestIncreasingSubsequence {
+    long long length;                //!< 長さ
+    std::vector<long long> indices;  //!< 選んだ添字の昇順のリスト
+};
+
+/**
+ * @brief 最長増加部分列を 1 つ求め、長さと添字の昇順のリストを返す O(n log n)
  * @param strict true なら狭義単調増加 (comp(前, 後) が成り立つ)、false なら広義単調増加 (comp(後, 前) が成り立たない)
  * @param comp 大小の比較。std::greater<T>() を渡すと減少列になる
  */
 template <typename T, typename Compare = std::less<T>>
-std::vector<long long> longest_increasing_subsequence_restore(const std::vector<T>& a, bool strict = true,
-                                                              Compare comp = Compare()) {
+LongestIncreasingSubsequence longest_increasing_subsequence_restore(const std::vector<T>& a, bool strict = true,
+                                                                    Compare comp = Compare()) {
     std::vector<long long> len = longest_increasing_subsequence_lengths(a, strict, comp);
     long long k = len.empty() ? 0 : *std::max_element(len.begin(), len.end());
     // 後ろから、長さが 1 ずつ減り、値が条件を満たす添字を選ぶ
+    const long long length = k;
     std::vector<long long> res(k);
     long long last = -1;
     for (long long i = static_cast<long long>(a.size()) - 1; i >= 0 && k > 0; i--) {
@@ -71,5 +82,5 @@ std::vector<long long> longest_increasing_subsequence_restore(const std::vector<
         res[--k] = i;
         last = i;
     }
-    return res;
+    return {length, res};
 }

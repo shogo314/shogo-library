@@ -220,16 +220,18 @@ int main() {
             continue;
         }
         // 復元: 辺の番号が昇順で重複がなく、重みの和が最小で、terminals をつなぐ
-        const auto& used = *restored;
-        if (!std::is_sorted(used.begin(), used.end()) || std::adjacent_find(used.begin(), used.end()) != used.end()) ok = false;
+        const auto& used = restored->edges;
+        for (int k = 1; k < static_cast<int>(used.size()); k++)
+            if (used[k - 1].id >= used[k].id) ok = false;
         int cost = 0;
         UnionFind uf(n);
-        for (auto i : used) {
-            auto [u, v, w] = edges[i];
+        for (const auto& e : used) {
+            auto [u, v, w] = edges[e.id];
+            if (!((e.src == u && e.dst == v) || (e.src == v && e.dst == u)) || e.cost != w) ok = false;
             cost += w;
             uf.merge(u, v);
         }
-        if (cost != best) ok = false;
+        if (cost != best || restored->cost != best) ok = false;
         for (int v : terminals)
             if (!uf.same(v, terminals[0])) ok = false;
     }
@@ -240,7 +242,7 @@ int main() {
         Graph<int> graph(3);
         const auto c = minimum_steiner_tree(graph, std::vector<int>{});
         const auto r = minimum_steiner_tree_restore(graph, std::vector<int>{});
-        if (!c || *c != 0 || !r || !r->empty()) ok = false;
+        if (!c || *c != 0 || !r || r->cost != 0 || !r->edges.empty()) ok = false;
     }
 
     // maximum_independent_set: 頂点の部分集合を全探索する。自己ループ・多重辺も混ぜる

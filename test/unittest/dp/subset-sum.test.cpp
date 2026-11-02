@@ -39,14 +39,15 @@ int main() {
         auto r = subset_sum_restore(a, S);
         ok = ok && r.has_value() == (cnt[S] > 0);
         if (ok && r) {
+            const auto& idx = r->indices;
             long long s = 0;
-            for (int k = 0; k < static_cast<int>(r->size()); k++) {
-                if ((*r)[k] < 0 || (*r)[k] >= n || (k && (*r)[k - 1] >= (*r)[k]))
+            for (int k = 0; k < static_cast<int>(idx.size()); k++) {
+                if (idx[k] < 0 || idx[k] >= n || (k && idx[k - 1] >= idx[k]))
                     ok = false;
                 else
-                    s += a[(*r)[k]];
+                    s += a[idx[k]];
             }
-            ok = ok && s == S;
+            ok = ok && s == S && r->sum == S;
         }
         // S 以下の最大値と、その復元
         long long best = 0;
@@ -55,7 +56,7 @@ int main() {
         }
         ok = ok && subset_sum_max(a, S) == best && subset_sum_max_bitset(a, S) == best;
         ok = ok && subset_sum_max_meet_in_the_middle(a, S) == best;
-        auto mr = subset_sum_max_restore(a, S);
+        auto [msum, mr] = subset_sum_max_restore(a, S);
         long long ms = 0;
         for (int k = 0; k < static_cast<int>(mr.size()); k++) {
             if (mr[k] < 0 || mr[k] >= n || (k && mr[k - 1] >= mr[k]))
@@ -63,7 +64,7 @@ int main() {
             else
                 ms += a[mr[k]];
         }
-        ok = ok && ms == best;
+        ok = ok && ms == best && msum == best;
         // 個数
         int t = S;
         auto c1 = subset_sum_count_dp<long long>(a, t);
@@ -87,21 +88,22 @@ int main() {
             if (s <= S) best = std::max(best, s);
         }
         ok = ok && subset_sum_max(a, S) == best;
-        auto mr = subset_sum_max_restore(a, S);
+        auto [msum, mr] = subset_sum_max_restore(a, S);
         long long ms = 0;
         for (int k = 0; k < static_cast<int>(mr.size()); k++) {
             if (k && mr[k - 1] >= mr[k]) ok = false;
             ms += a[mr[k]];
         }
-        ok = ok && ms == best;
+        ok = ok && ms == best && msum == best;
     }
 
     // 例
     std::vector<long long> a = {3, 5, 9};
     auto r = subset_sum_restore(a, 14);
-    ok = ok && r && *r == std::vector<long long>{1, 2};
+    ok = ok && r && r->sum == 14 && r->indices == std::vector<long long>{1, 2};
     ok = ok && !subset_sum_restore(a, 13);
-    ok = ok && subset_sum_restore(a, 0) == std::vector<long long>{};
+    const auto r0 = subset_sum_restore(a, 0);
+    ok = ok && r0 && r0->sum == 0 && r0->indices.empty();
 
     if (ok)
         std::cout << "Hello World" << std::endl;

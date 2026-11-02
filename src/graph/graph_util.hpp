@@ -557,15 +557,26 @@ std::optional<Cost> minimum_steiner_tree(const Graph<Cost>& graph, const std::ve
 }
 
 /**
- * @brief 頂点集合 X をすべて含む重み最小の部分木を 1 つ求め、その辺の番号を昇順に返す
+ * @brief minimum_steiner_tree_restore の結果
+ *
+ * auto [cost, edges] = *minimum_steiner_tree_restore(g, X); のように受け取れる
+ */
+template <typename Cost>
+struct MinimumSteinerTree {
+    Cost cost;                                      //!< 使った辺の重みの総和
+    std::vector<typename Graph<Cost>::Edge> edges;  //!< 使った辺 (辺の番号順)
+};
+
+/**
+ * @brief 頂点集合 X をすべて含む重み最小の部分木を 1 つ求め、重みの総和と使った辺を返す
  * 計算量は minimum_steiner_tree と同じ
  * @param inf minimum_steiner_tree と同じ
- * @return std::optional<std::vector<long long>> 辺の番号のリスト。X を連結にできなければ std::nullopt
- * @note 無向グラフ。X が空なら空の vector
+ * @return std::optional<MinimumSteinerTree<Cost>> 重みの総和と、使った辺 (辺の番号順)。X を連結にできなければ std::nullopt
+ * @note 無向グラフ。X が空なら重み 0 で辺は空
  */
 template <typename Cost, typename T>
-std::optional<std::vector<long long>> minimum_steiner_tree_restore(const Graph<Cost>& graph, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max() / 4) {
-    if (X.empty()) return std::vector<long long>{};
+std::optional<MinimumSteinerTree<Cost>> minimum_steiner_tree_restore(const Graph<Cost>& graph, const std::vector<T>& X, Cost inf = std::numeric_limits<Cost>::max() / 4) {
+    if (X.empty()) return MinimumSteinerTree<Cost>{Cost{}, {}};
     const auto [dp, from] = internal_graph_util::steiner_dp(graph, X, inf, true);
     const long long root = internal_graph_util::steiner_root(dp, inf);
     if (root == -1) return std::nullopt;
@@ -586,5 +597,8 @@ std::optional<std::vector<long long>> minimum_steiner_tree_restore(const Graph<C
     }
     std::sort(res.begin(), res.end());
     res.erase(std::unique(res.begin(), res.end()), res.end());
-    return res;
+    const auto all = graph.edges();
+    MinimumSteinerTree<Cost> tree{dp[root].back(), {}};
+    for (long long id : res) tree.edges.push_back(all[id]);
+    return tree;
 }

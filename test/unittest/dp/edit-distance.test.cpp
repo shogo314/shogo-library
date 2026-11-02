@@ -46,8 +46,8 @@ int main() {
         ok = ok && longest_common_subsequence(s, t) == len;
 
         // 復元: 長さが最長で、添字が両方とも狭義単調増加し、要素が一致する
-        auto idx = longest_common_subsequence_restore(s, t);
-        ok = ok && static_cast<int>(idx.size()) == len;
+        auto [length, idx] = longest_common_subsequence_restore(s, t);
+        ok = ok && length == len && static_cast<int>(idx.size()) == len;
         for (int p = 0; p < static_cast<int>(idx.size()) && ok; p++) {
             auto [i, j] = idx[p];
             ok = 0 <= i && i < n && 0 <= j && j < m && s[i] == t[j];
@@ -61,7 +61,7 @@ int main() {
     ok = ok && edit_distance(std::string(""), std::string("abc")) == 3;
     ok = ok && longest_common_subsequence(std::string("abcbdab"), std::string("bdcaba")) == 4;
     ok = ok && longest_common_subsequence(std::vector<int>{1, 2, 3}, std::vector<long long>{3, 1, 2}) == 2;
-    ok = ok && longest_common_subsequence_restore(std::string(""), std::string("abc")).empty();
+    ok = ok && longest_common_subsequence_restore(std::string(""), std::string("abc")).indices.empty();
 
     if (ok)
         std::cout << "Hello World" << std::endl;

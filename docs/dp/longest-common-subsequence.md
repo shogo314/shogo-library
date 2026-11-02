@@ -8,7 +8,7 @@ documentation_of: //src/dp/longest-common-subsequence.hpp
 ```cpp
 std::string s = "abcbdab", t = "bdcaba";
 long long k = longest_common_subsequence(s, t);        // 4
-auto idx = longest_common_subsequence_restore(s, t);  // 添字の組 (i, j) のリスト。長さは 4
+auto [len, idx] = longest_common_subsequence_restore(s, t);  // 長さ 4 と、添字の組 (i, j) のリスト
 std::string lcs;
 for (auto [i, j] : idx) lcs += s[i];                   // 共通部分列の 1 つ
 ```
@@ -18,7 +18,7 @@ for (auto [i, j] : idx) lcs += s[i];                   // 共通部分列の 1 �
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `longest_common_subsequence(s, t)` | 最長共通部分列の長さ (`long long`) | 時間 $O(nm)$、メモリ $O(m)$ |
-| `longest_common_subsequence_restore(s, t)` | 最長共通部分列を 1 つ求め、`s[i] == t[j]` として選んだ添字の組 `(i, j)` を昇順に並べたリスト (`std::vector<std::pair<long long, long long>>`) | 時間 $O(nm)$、メモリ $O(nm)$ |
+| `longest_common_subsequence_restore(s, t)` | 最長共通部分列を 1 つ求め、長さ `length` と、`s[i] == t[j]` として選んだ添字の組 `(i, j)` を昇順に並べたリスト `indices` (`std::vector<std::pair<long long, long long>>`) をまとめた `LongestCommonSubsequence` を返す | 時間 $O(nm)$、メモリ $O(nm)$ |
 
 復元では $(n + 1)(m + 1)$ 個の `int` の表を作るので、メモリに注意してください ($n = m = 5000$ で約 100 MB)。
 

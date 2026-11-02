@@ -96,23 +96,32 @@ ShortestPath<Cost> dijkstra(const Graph<Cost>& graph, long long s, Cost inf) {
 }  // namespace internal_shortest_path
 
 /**
- * @brief ある頂点から各頂点への最短路
+ * @brief ある頂点から各頂点への最短路 (Dijkstra) O(m log m)
  *
  * @param s 始点
- * @param weighted 1以外のコストの辺が存在するか 省略するとtrue
- * @param inf コストのminの単位元 未到達の頂点への距離はinfになる 省略すると std::numeric_limits<Cost>::max() / 4
+ * @param inf 未到達の頂点への距離 省略すると std::numeric_limits<Cost>::max() / 4
  * @return ShortestPath 各頂点への最短路長 (dist) と、各頂点への最短路上の直前の辺 (prev)
- * @note weighted なら Dijkstra なので、負の辺があると assert で落ちる (負の辺があるなら bellman_ford)
+ * @note 負の辺があると assert で落ちる (負の辺があるなら bellman_ford)
  */
 template <typename Cost = long long>
-ShortestPath<Cost> shortest_path(const Graph<Cost>& graph, long long s, bool weighted = true, Cost inf = std::numeric_limits<Cost>::max() / 4) {
+ShortestPath<Cost> shortest_path(const Graph<Cost>& graph, long long s, Cost inf = std::numeric_limits<Cost>::max() / 4) {
     assert(0 <= s && s < graph.n);
-    if (weighted) {
-        for (long long v = 0; v < graph.n; v++) {
-            for (const auto& e : graph[v]) assert(!(e.cost < Cost{}) && "shortest_path: negative edge (use bellman_ford)");
-        }
-        return internal_shortest_path::dijkstra(graph, s, inf);
+    for (long long v = 0; v < graph.n; v++) {
+        for (const auto& e : graph[v]) assert(!(e.cost < Cost{}) && "shortest_path: negative edge (use bellman_ford)");
     }
+    return internal_shortest_path::dijkstra(graph, s, inf);
+}
+
+/**
+ * @brief 辺の重みをすべて 1 とみなして、ある頂点から各頂点への最短路 (BFS) O(n + m)
+ *
+ * @param s 始点
+ * @param inf 未到達の頂点への距離 省略すると std::numeric_limits<Cost>::max() / 4
+ * @return ShortestPath 各頂点への最短路長 (辺の本数、dist) と、各頂点への最短路上の直前の辺 (prev)
+ */
+template <typename Cost = long long>
+ShortestPath<Cost> shortest_path_bfs(const Graph<Cost>& graph, long long s, Cost inf = std::numeric_limits<Cost>::max() / 4) {
+    assert(0 <= s && s < graph.n);
     return internal_shortest_path::bfs(graph, s, inf);
 }
 

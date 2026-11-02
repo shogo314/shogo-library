@@ -17,13 +17,13 @@ auto d = floyd_warshall(g);          // d[i][j] が i から j への距離
 | 関数 | 説明 | 未到達の頂点の距離 | 計算量 |
 |---|---|---|---|
 | `shortest_path(g, s)` | Dijkstra (負の辺があると assert で落ちる) | `inf` (省略時 `max / 4`) | $O(m \log m)$ |
-| `shortest_path(g, s, false)` | BFS (辺の重みを 1 とみなす) | `inf` (省略時 `max / 4`) | $O(n + m)$ |
+| `shortest_path_bfs(g, s)` | BFS (辺の重みを 1 とみなす) | `inf` (省略時 `max / 4`) | $O(n + m)$ |
 | `bellman_ford(g, s)` | Bellman-Ford (負の辺も可) | `inf` (省略時 `max / 4`)。負閉路の影響を受ける頂点は `-inf` | $O(nm)$ |
 | `shortest_path_01bfs(g, s)` | 01-BFS (辺のコストは 0 か 1 だけ。それ以外は assert で落ちる) | `inf` (省略時 `max / 4`) | $O(n + m)$ |
 
 `shortest_path(g, s)` は、はじめにすべての辺のコストが 0 以上であることを assert で確かめます ($O(n + m)$)。負の辺があるときは `bellman_ford` を使います。
 
-`inf` は `shortest_path(g, s, weighted, inf)`、`bellman_ford(g, s, inf)`、`shortest_path_01bfs(g, s, inf)` のように最後の引数で渡します。
+`inf` は `shortest_path(g, s, inf)`、`bellman_ford(g, s, inf)`、`shortest_path_01bfs(g, s, inf)` のように最後の引数で渡します。
 
 いずれも `ShortestPath<Cost>` を返します。`auto [dist, prev] = shortest_path(g, s);` のように受け取ることもできます。
 

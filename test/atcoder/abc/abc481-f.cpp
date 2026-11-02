@@ -15,7 +15,7 @@ int main() {
     Graph<long long> g(n);
     g.read(m, -1, true, true);
     // 数字に 0 がないので、辺の数が少ないほどスコアは小さい。辺の数が同じなら数字の列の辞書順で比べる
-    auto d = shortest_path(g, 0, false).dist;
+    auto d = shortest_path_bfs(g, 0).dist;
     Trie<9, 1> trie;
     std::vector<long long> node(n, -1), val(n);
     node[0] = 0;

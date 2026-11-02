@@ -41,7 +41,7 @@ std::optional<Cost> chinese_postman(const Graph<Cost>& graph, Cost inf = std::nu
     }
     if (some == -1) return Cost{};
     // 辺を持つ頂点がすべて連結か
-    std::vector<Cost> d = shortest_path(graph, some, true, inf).dist;
+    std::vector<Cost> d = shortest_path(graph, some, inf).dist;
     for (long long v = 0; v < n; v++) {
         if (!graph[v].empty() && d[v] == inf) return std::nullopt;
     }
@@ -49,7 +49,7 @@ std::optional<Cost> chinese_postman(const Graph<Cost>& graph, Cost inf = std::nu
     assert(k < 31);
     std::vector<std::vector<Cost>> dist(k);
     for (int i = 0; i < k; i++) {
-        std::vector<Cost> di = shortest_path(graph, odd[i], true, inf).dist;
+        std::vector<Cost> di = shortest_path(graph, odd[i], inf).dist;
         for (int j = 0; j < k; j++) dist[i].push_back(di[odd[j]]);
     }
     // dp[S]: 奇数次数の頂点の集合 S を組にする最小コスト。S の最小の頂点の相手を決める

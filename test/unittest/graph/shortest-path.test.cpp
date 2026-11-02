@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
-// shortest-path.hpp の 01-BFS と Floyd-Warshall を、Dijkstra と Bellman-Ford の結果と比べる
+// shortest-path.hpp の BFS・01-BFS と Floyd-Warshall を、Dijkstra と Bellman-Ford の結果と比べる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../../src/graph/shortest-path.hpp"
@@ -13,6 +13,28 @@
 int main() {
     std::mt19937_64 rng(314);
     bool ok = true;
+
+    // shortest_path_bfs: 重みを無視して辺の本数で測る。重みをすべて 1 にしたグラフの Dijkstra と比べる
+    for (int rep = 0; rep < 2000 && ok; rep++) {
+        int n = rng() % 10 + 1, m = rng() % 25;
+        Graph<int> g(n), g1(n);
+        for (int i = 0; i < m; i++) {
+            int u = rng() % n, v = rng() % n, w = rng() % 100;
+            if (rng() % 2)
+                g.add_edge(u, v, w), g1.add_edge(u, v, 1);
+            else
+                g.add_directed_edge(u, v, w), g1.add_directed_edge(u, v, 1);
+        }
+        for (int s = 0; s < n; s++) {
+            auto a = shortest_path_bfs(g, s);
+            if (a.dist != shortest_path(g1, s).dist) ok = false;
+            for (int t = 0; t < n; t++) {
+                auto p = a.path(t);
+                if (p.has_value() != (a.dist[t] != std::numeric_limits<int>::max() / 4)) ok = false;
+                if (p && static_cast<int>(p->size()) != a.dist[t]) ok = false;
+            }
+        }
+    }
 
     // shortest_path_01bfs: コスト 0 / 1 のグラフで Dijkstra と比べる
     for (int rep = 0; rep < 2000 && ok; rep++) {

@@ -21,6 +21,6 @@ int main() {
         }
         // 分子・分母が n 以下の分数で、x / y 以下の最大と x / y より大きい最小
         auto [lo, hi] = stern_brocot::binary_search(n, [&](const Rational<long long>& a) { return a <= r; }, n);
-        std::cout << lo.first << ' ' << lo.second << ' ' << hi.first << ' ' << hi.second << '\n';
+        std::cout << lo.num << ' ' << lo.den << ' ' << hi.num << ' ' << hi.den << '\n';
     }
 }

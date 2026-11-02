@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
-// axis-parallel-segments.hpp の count_axis_parallel_intersections を、すべての組を segments_intersect で調べたものと比べる
+// axis-parallel-segments.hpp の axis_parallel_intersection_count を、すべての組を segments_intersect で調べたものと比べる
 // 端点で接する組や、端点が同じ座標に重なる組も調べる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
@@ -34,7 +34,7 @@ int main() {
                 if (!vertical[i] && vertical[j] && segments_intersect(segs[i].first, segs[i].second, segs[j].first, segs[j].second)) expected++;
             }
         }
-        if (count_axis_parallel_intersections(segs) != expected) ok = false;
+        if (axis_parallel_intersection_count(segs) != expected) ok = false;
     }
     if (ok) std::cout << "Hello World" << std::endl;
 }

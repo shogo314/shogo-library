@@ -60,7 +60,7 @@ inline std::optional<CRTResult> crt(const std::vector<long long>& r, const std::
     for (int i = 1; i < n; i++) {
         long long rr = (r[i] % m[i] + m[i]) % m[i], mm = m[i];
         if (!coprimize_simultaneous_congruence_equation(ans, m_lcm, rr, mm)) return std::nullopt;
-        long long t = ((rr - ans) * modinv(m_lcm, mm)) % mm;
+        long long t = ((rr - ans) * inv_mod(m_lcm, mm)) % mm;
         if (t < 0) t += mm;
         ans += t * m_lcm;
         m_lcm *= mm;
@@ -91,7 +91,7 @@ inline std::optional<CRTResult> crt(const std::vector<long long>& r, const std::
     std::vector<long long> prod(n + 1, 1);  // m2[0] * ... * m2[i - 1] mod m2[i]
     std::vector<long long> x(n + 1, 0);     // i番目までの解 mod m2[i]
     for (int i = 0; i < n; i++) {
-        long long t = (r2[i] - x[i]) * modinv(prod[i], m2[i]) % m2[i];
+        long long t = (r2[i] - x[i]) * inv_mod(prod[i], m2[i]) % m2[i];
         if (t < 0) t += m2[i];
         for (int j = i + 1; j <= n; j++) {
             (x[j] += t * prod[j]) %= m2[j];

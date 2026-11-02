@@ -147,7 +147,7 @@ int main() {
             check(kth_set_bit(a, kk) == pos, "kth_set_bit");
         }
     }
-    // xor_upto / count_bit_upto: 小さい n は 1 つずつ数える
+    // xor_upto / bit_count_upto: 小さい n は 1 つずつ数える
     {
         long long x = 0;
         std::vector<long long> cnt(63, 0);
@@ -156,11 +156,11 @@ int main() {
             check(xor_upto(n) == x, "xor_upto");
             for (int i = 0; i < 63; i++) {
                 cnt[i] += n >> i & 1;
-                check(count_bit_upto(n, i) == cnt[i], "count_bit_upto");
+                check(bit_count_upto(n, i) == cnt[i], "bit_count_upto");
             }
         }
         long long mx = std::numeric_limits<long long>::max();
-        // 大きい n: count_bit_upto の和は 0..n の popcount の和で、0..n を 2 つに分けて数えても同じ
+        // 大きい n: bit_count_upto の和は 0..n の popcount の和で、0..n を 2 つに分けて数えても同じ
         for (int rep = 0; rep < 1000 && ok; rep++) {
             long long n = static_cast<long long>(rng() >> 1);
             if (n == mx) n--;
@@ -169,13 +169,13 @@ int main() {
             for (int i = 0; i < 63; i++) {
                 long long direct = 0;
                 for (long long v = n - m + 1; v <= n; v++) direct += v >> i & 1;
-                check(count_bit_upto(n, i) - (n - m < 0 ? 0 : count_bit_upto(n - m, i)) == direct, "count_bit_upto 大きい n");
+                check(bit_count_upto(n, i) - (n - m < 0 ? 0 : bit_count_upto(n - m, i)) == direct, "bit_count_upto 大きい n");
             }
             long long xr = xor_upto(n - m);
             for (long long v = n - m + 1; v <= n; v++) xr ^= v;
             check(xor_upto(n) == xr, "xor_upto 大きい n");
         }
-        check(count_bit_upto(mx - 1, 62) == mx - (1LL << 62), "count_bit_upto 上限");
+        check(bit_count_upto(mx - 1, 62) == mx - (1LL << 62), "bit_count_upto 上限");
         check(xor_upto(0) == 0 && xor_upto(3) == 0 && xor_upto(mx - 1) == mx && xor_upto(mx) == 0, "xor_upto 境界");
     }
 

@@ -524,7 +524,7 @@ FPS<mint> gcd(const FPS<mint>& f, const FPS<mint>& g) {
  * @brief f^n mod m (m は末尾が 0 でないこと) O(d log d log n) (d は m の次数)
  */
 template <typename mint>
-FPS<mint> modpow(const FPS<mint>& f, long long n, const FPS<mint>& m) {
+FPS<mint> pow_mod(const FPS<mint>& f, long long n, const FPS<mint>& m) {
     assert(!m.empty() && m.back() != 0);
     const long long d = static_cast<long long>(m.size()) - 1;  // m の次数
     if (d == 0) return FPS<mint>();
@@ -573,7 +573,7 @@ FPS<mint> extgcd(const FPS<mint>& f, const FPS<mint>& g, FPS<mint>& a, FPS<mint>
  * g は 0 でないこと。g が定数ならすべてが 0 と合同なので、h = 0 (空) を返す。h は末尾の 0 を取り除いた形
  */
 template <typename mint>
-std::optional<FPS<mint>> modinv(const FPS<mint>& f, const FPS<mint>& g) {
+std::optional<FPS<mint>> inv_mod(const FPS<mint>& f, const FPS<mint>& g) {
     using namespace internal_fps;
     const FPS<mint> gs = shrink(g);
     assert(!gs.empty());

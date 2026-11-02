@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
-// FPS の単項の -、定数を引く -、eval、gcd、modpow、divmod を愚直な多項式演算と比較する
+// FPS の単項の -、定数を引く -、eval、gcd、pow_mod、divmod を愚直な多項式演算と比較する
 // sqrt は 2 乗して元に戻るか、polynomial_product は順に掛けたものと比べる
 // sum_of_fractions は、分子が Σ_i nums_i Π_{j != i} dens_j、分母が Π dens_j になることを確かめる
 // FPS の + と - は結果の末尾の 0 を取り除く (仕様) ので、多項式としての比較は末尾の 0 を除いて行う
@@ -122,24 +122,24 @@ int main() {
         if (monic(P(gcd(F(), F(a)))) != monic(a)) ok = false;
     }
 
-    // modpow: f^n mod m を、愚直に掛けて余りを取ったものと比べる
+    // pow_mod: f^n mod m を、愚直に掛けて余りを取ったものと比べる
     for (int rep = 0; rep < 200 && ok; rep++) {
         int deg_m = rng() % 6 + 1;  // m の次数は 1 以上
         if (rep % 10 == 0) deg_m = 40;
         P m = random_poly(rng, deg_m + 1, true);
         P f = random_poly(rng, rng() % 8, false);
         long long n = (rep % 3 == 0) ? static_cast<long long>(rng() % 1000000000000LL) : static_cast<long long>(rng() % 20);
-        F got = modpow(F(f), n, F(m));
+        F got = pow_mod(F(f), n, F(m));
         // 愚直: 繰り返し二乗法を愚直な掛け算と余りで行う
         P res = naive_mod(P{1}, m), base = naive_mod(f, m);
         for (long long k = n; k > 0; k >>= 1) {
             if (k & 1) res = naive_mod(naive_mul(res, base), m);
             base = naive_mod(naive_mul(base, base), m);
         }
-        if (trim(P(got)) != trim(res)) ok = false, std::cerr << "modpow " << rep << std::endl;
+        if (trim(P(got)) != trim(res)) ok = false, std::cerr << "pow_mod " << rep << std::endl;
     }
     // n = 0 は 1
-    if (P(modpow(F(P{5, 6}), 0, F(P{1, 1, 1}))) != P{1}) ok = false;
+    if (P(pow_mod(F(P{5, 6}), 0, F(P{1, 1, 1}))) != P{1}) ok = false;
 
     // divmod: f = q g + r、deg r < deg g を満たし、f / g、f % g と一致する。NTT を使う長さも含める
     for (int rep = 0; rep < 300 && ok; rep++) {

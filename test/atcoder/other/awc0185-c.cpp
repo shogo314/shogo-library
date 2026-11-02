@@ -14,5 +14,5 @@ int main() {
     std::cin >> n >> k;
     std::vector<long long> a(n);
     for (auto& x : a) std::cin >> x;
-    std::cout << count_subarrays_with_sum(a, k) << '\n';
+    std::cout << subarray_sum_count(a, k) << '\n';
 }

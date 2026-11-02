@@ -58,14 +58,14 @@ C++20 の `<bit>` にはない関数です。ビットの位置 `i` は $0 \le i
 | `kth_set_bit(mask, k)` | `mask` の立っているビットのうち、下から $k$ 番目 (0-indexed) の位置 ($k <$ `popcount(mask)`) | $O(\log 64)$ |
 | `next_combination_mask(s)` | 立っているビットの数が `s` と同じで、`s` より大きい最小の値 (Gosper's hack)。`long long` に収まらなければ -1。$s > 0$ | $O(1)$ |
 | `xor_upto(n)` | $0 \oplus 1 \oplus \cdots \oplus n$ | $O(1)$ |
-| `count_bit_upto(n, i)` | $0$ 以上 $n$ 以下の整数のうち、`i` ビット目が立っているものの数 | $O(1)$ |
+| `bit_count_upto(n, i)` | $0$ 以上 $n$ 以下の整数のうち、`i` ビット目が立っているものの数 | $O(1)$ |
 
-`xor_upto` を使うと、区間 $[l, r]$ の XOR は `xor_upto(r) ^ xor_upto(l - 1)` ($l \ge 1$) です。`count_bit_upto` は、整数の範囲にわたるビットごとの寄与を数えるのに使えます。
+`xor_upto` を使うと、区間 $[l, r]$ の XOR は `xor_upto(r) ^ xor_upto(l - 1)` ($l \ge 1$) です。`bit_count_upto` は、整数の範囲にわたるビットごとの寄与を数えるのに使えます。
 
 ```cpp
 // 0 以上 n 以下の整数の popcount の和
 long long sum = 0;
-for (long long i = 0; i < 63; i++) sum += count_bit_upto(n, i);
+for (long long i = 0; i < 63; i++) sum += bit_count_upto(n, i);
 ```
 
 ## 列挙

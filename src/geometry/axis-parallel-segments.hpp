@@ -23,7 +23,7 @@
  * @return long long 共有点を持つ (水平な線分, 垂直な線分) の組の個数
  */
 template <typename T>
-long long count_axis_parallel_intersections(const std::vector<std::pair<Vector<T, 2>, Vector<T, 2>>>& segments) {
+long long axis_parallel_intersection_count(const std::vector<std::pair<Vector<T, 2>, Vector<T, 2>>>& segments) {
     std::vector<T> xs;
     // (y, 種類, x1, x2)。種類は 0: 垂直な線分の始まり、1: 水平な線分、2: 垂直な線分の終わり (同じ y ではこの順に処理する)
     std::vector<std::tuple<T, int, T, T>> events;
@@ -34,7 +34,7 @@ long long count_axis_parallel_intersections(const std::vector<std::pair<Vector<T
             events.emplace_back(y2, 2, p[0], p[0]);
             xs.push_back(p[0]);
         } else {
-            assert(p[1] == q[1] && "count_axis_parallel_intersections: segment is not axis-parallel");
+            assert(p[1] == q[1] && "axis_parallel_intersection_count: segment is not axis-parallel");
             events.emplace_back(p[1], 1, std::min(p[0], q[0]), std::max(p[0], q[0]));
         }
     }

@@ -39,15 +39,15 @@ int main() {
         ok = ok && knapsack_meet_in_the_middle(v, w, W) == a && knapsack(v, w, W) == a;
 
         long long b = naive(v, w, m, W);
-        ok = ok && bounded_knapsack_by_weight(v, w, m, W) == b && bounded_knapsack_by_value(v, w, m, W) == b;
-        ok = ok && bounded_knapsack(v, w, m, W) == b;
+        ok = ok && knapsack_bounded_by_weight(v, w, m, W) == b && knapsack_bounded_by_value(v, w, m, W) == b;
+        ok = ok && knapsack_bounded(v, w, m, W) == b;
 
         // 個数制限なし (重さ 0 で価値が正の品物は除く)
         for (int i = 0; i < n; i++) {
             if (w[i] == 0) v[i] = 0;
             many[i] = w[i] == 0 ? 0 : W / w[i];
         }
-        ok = ok && unbounded_knapsack(v, w, W) == naive(v, w, many, W);
+        ok = ok && knapsack_unbounded(v, w, W) == naive(v, w, many, W);
     }
 
     // 重さが大きいときは、価値についての DP か半分全列挙が選ばれる (重さについての DP では時間がかかりすぎる)
@@ -68,7 +68,7 @@ int main() {
     std::vector<long long> bv(3), bw(3), bm(3);
     bv = {3, 5, 7}, bw = {1000000000000LL, 2000000000000LL, 3000000000000LL}, bm = {1000000, 1000000, 1000000};
     // 重さの単位を 10^12 とすると容量 10 で、1 つ目を 10 個選ぶのが最適
-    ok = ok && bounded_knapsack(bv, bw, bm, 10000000000000LL) == 30;
+    ok = ok && knapsack_bounded(bv, bw, bm, 10000000000000LL) == 30;
 
     if (ok)
         std::cout << "Hello World" << std::endl;

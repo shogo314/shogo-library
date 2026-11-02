@@ -6,9 +6,9 @@ documentation_of: //src/math/modular-arithmetic.hpp
 `long long` の値どうしの mod 演算です。法 `m` は $1 \le m < 2^{63}$ で、途中の積は `__int128` で計算するのであふれません。どれも `constexpr` です。
 
 ```cpp
-long long x = modinv(3, 7);         // 5
-long long y = modpow(2, 10, 1000);  // 24
-long long z = modmul(1LL << 62, 4, 1000000007);
+long long x = inv_mod(3, 7);         // 5
+long long y = pow_mod(2, 10, 1000);  // 24
+long long z = mul_mod(1LL << 62, 4, 1000000007);
 long long k = discrete_log(3, 13, 17);  // 3^k ≡ 13 (mod 17) となる最小の k = 4
 long long r = sqrt_mod(2, 7);           // r^2 ≡ 2 (mod 7) となる小さい方の r = 3
 ```
@@ -17,9 +17,9 @@ long long r = sqrt_mod(2, 7);           // r^2 ≡ 2 (mod 7) となる小さい�
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `modmul(a, b, m)` | $ab \bmod m$ (`a`、`b` は負でもよい。結果は $[0, m)$) | $O(1)$ |
-| `modinv(a, m)` | $a^{-1} \bmod m$ (`a` と `m` が互いに素でなければ assert で落ちる) | $O(\log m)$ |
-| `modpow(a, n, m)` | $a^n \bmod m$ (`n` は負でもよく、そのときは `a` と `m` が互いに素であること) | $O(\log \lvert n \rvert)$ |
+| `mul_mod(a, b, m)` | $ab \bmod m$ (`a`、`b` は負でもよい。結果は $[0, m)$) | $O(1)$ |
+| `inv_mod(a, m)` | $a^{-1} \bmod m$ (`a` と `m` が互いに素でなければ assert で落ちる) | $O(\log m)$ |
+| `pow_mod(a, n, m)` | $a^n \bmod m$ (`n` は負でもよく、そのときは `a` と `m` が互いに素であること) | $O(\log \lvert n \rvert)$ |
 | `discrete_log(a, b, m)` | $a^x \equiv b \pmod m$ となる最小の $x \ge 0$ (なければ -1)。`a` と `m` は互いに素でなくてもよい。Baby-step Giant-step | $O(\sqrt m)$ (メモリも) |
 | `sqrt_mod(a, p)` | 素数 `p` について $x^2 \equiv a \pmod p$ となる $x$ のうち小さい方 (なければ -1)。もう一方は $p - x$。Tonelli-Shanks | $O(\log^2 p)$ |
 

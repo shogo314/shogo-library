@@ -7,8 +7,8 @@ documentation_of: //src/others/subarray-sum.hpp
 
 ```cpp
 std::vector<long long> a = {1, 2, 3, 2, 1, 4};
-long long x = count_subarrays_with_sum(a, 5LL);           // 3 ([2, 3]、[3, 2]、[1, 4])
-long long y = count_subarrays_with_sum_at_most(a, 3LL);   // 7
+long long x = subarray_sum_count(a, 5LL);           // 3 ([2, 3]、[3, 2]、[1, 4])
+long long y = subarray_sum_count_at_most(a, 3LL);   // 7
 ```
 
 `k` は列の要素と同じ型で渡します (`long long` の列なら `5LL`)。
@@ -17,8 +17,8 @@ long long y = count_subarrays_with_sum_at_most(a, 3LL);   // 7
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `count_subarrays_with_sum(a, k)` | 和がちょうど `k` の区間の個数。要素は整数型であること | 要素がすべて 0 以上なら $O(n)$、そうでなければ $O(n \log n)$ |
-| `count_subarrays_with_sum_at_most(a, k)` | 和が `k` 以下の区間の個数。要素は浮動小数点型でもよい | 要素がすべて 0 以上なら $O(n)$、そうでなければ $O(n \log n)$ |
+| `subarray_sum_count(a, k)` | 和がちょうど `k` の区間の個数。要素は整数型であること | 要素がすべて 0 以上なら $O(n)$、そうでなければ $O(n \log n)$ |
+| `subarray_sum_count_at_most(a, k)` | 和が `k` 以下の区間の個数。要素は浮動小数点型でもよい | 要素がすべて 0 以上なら $O(n)$、そうでなければ $O(n \log n)$ |
 
 - 累積和 $P$ (先頭に 0 を付けたもの) について、$l < r$ かつ $P_r - P_l \le k$ となる組を数えます。要素がすべて 0 以上なら $P$ は単調なので尺取り法で、そうでなければ [転倒数](inversion-number.hpp) と同じマージソートで数えます。
 - ちょうど $k$ の個数は、($k$ 以下の個数) $-$ ($k - 1$ 以下の個数) で求めます。

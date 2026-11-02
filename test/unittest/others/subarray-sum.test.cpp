@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
-// subarray-sum.hpp の count_subarrays_with_sum・count_subarrays_with_sum_at_most を、すべての区間の和を調べる愚直な方法と比べる
+// subarray-sum.hpp の subarray_sum_count・subarray_sum_count_at_most を、すべての区間の和を調べる愚直な方法と比べる
 // 要素がすべて 0 以上の列 (尺取り法) と負を含む列 (マージソート) の両方で、k も負から正まで調べる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
@@ -27,12 +27,12 @@ int main() {
                     eq += s == k, le += s <= k;
                 }
             }
-            if (count_subarrays_with_sum(a, k) != eq || count_subarrays_with_sum_at_most(a, k) != le) ok = false;
+            if (subarray_sum_count(a, k) != eq || subarray_sum_count_at_most(a, k) != le) ok = false;
         }
     }
     // 例: AtCoder AWC 0185 C の入力例 1
-    if (count_subarrays_with_sum(std::vector<long long>{1, 2, 3, 2, 1, 4}, 5LL) != 3) ok = false;
+    if (subarray_sum_count(std::vector<long long>{1, 2, 3, 2, 1, 4}, 5LL) != 3) ok = false;
     // double でも k 以下の個数は数えられる
-    if (count_subarrays_with_sum_at_most(std::vector<double>{0.5, -1.5, 2.0}, 0.5) != 4) ok = false;
+    if (subarray_sum_count_at_most(std::vector<double>{0.5, -1.5, 2.0}, 0.5) != 4) ok = false;
     if (ok) std::cout << "Hello World" << std::endl;
 }

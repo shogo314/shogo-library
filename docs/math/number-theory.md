@@ -3,7 +3,7 @@ title: 数論 (中国剰余定理)
 documentation_of: //src/math/number-theory.hpp
 ---
 
-中国剰余定理の関数です。`modinv`、`modpow` は [mod 演算](modular-arithmetic.hpp) にあり、このファイルからも使えます。
+中国剰余定理の関数です。`inv_mod`、`pow_mod` は [mod 演算](modular-arithmetic.hpp) にあり、このファイルからも使えます。
 
 ```cpp
 auto res = crt({2, 3}, {3, 5});             // res->x == 8, res->lcm == 15
@@ -31,7 +31,7 @@ if (auto res = crt(r, m)) {
 
 ## 関連
 
-- mod 演算 (`modinv`、`modpow`) は [mod 演算](modular-arithmetic.hpp)
+- mod 演算 (`inv_mod`、`pow_mod`) は [mod 演算](modular-arithmetic.hpp)
 - 畳み込みは [畳み込み](convolution.hpp)
 - 二項係数などは [組み合わせ](combinatorics.hpp)
 - 一次関数の床関数の和は [floor sum](floor-sum.hpp)

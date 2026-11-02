@@ -2,7 +2,7 @@
 
 // gcd・extgcd (Half-GCD) を確かめる。gcd は最高次の係数が 1 で、素朴な互除法と一致すること
 // extgcd は a f + b g = d、d の最高次の係数が 1、d が f と g を割り切ることを確かめ、d を素朴な gcd と比べる
-// modinv は f h ≡ 1 (mod g) と次数を確かめ、std::nullopt になるのは gcd が定数でないときだけかを見る
+// inv_mod は f h ≡ 1 (mod g) と次数を確かめ、std::nullopt になるのは gcd が定数でないときだけかを見る
 // 共通因子を持つ f, g も作る。問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include <iostream>
@@ -62,14 +62,14 @@ void test(std::mt19937_64& rng) {
             check(F(f % d).normalize().empty() && F(g % d).normalize().empty(), "extgcd: d が f と g を割り切る");
         }
         if (g.empty()) continue;
-        auto h = modinv(f, g);
+        auto h = inv_mod(f, g);
         bool exists = g.size() == 1 || d.size() == 1;
-        check(h.has_value() == exists, "modinv: 存在の判定");
+        check(h.has_value() == exists, "inv_mod: 存在の判定");
         if (h && g.size() > 1) {
-            check(h->size() < g.size(), "modinv: 次数");
-            check(F(*h * f % g).normalize() == F{1}, "modinv: f h ≡ 1");
+            check(h->size() < g.size(), "inv_mod: 次数");
+            check(F(*h * f % g).normalize() == F{1}, "inv_mod: f h ≡ 1");
         }
-        if (h && g.size() == 1) check(h->empty(), "modinv: g が定数");
+        if (h && g.size() == 1) check(h->empty(), "inv_mod: g が定数");
     }
 }
 

@@ -28,7 +28,7 @@ class QBinomial {
     void build(long long n, F term, std::vector<std::uint32_t>& f, std::vector<std::uint32_t>& g) const {
         f.assign(n + 1, 1), g.assign(n + 1, 1);
         for (long long i = 1; i <= n; i++) f[i] = static_cast<long long>(f[i - 1]) * term(i) % p;
-        g[n] = modinv(f[n], p);
+        g[n] = inv_mod(f[n], p);
         for (long long i = n; i >= 1; i--) g[i - 1] = static_cast<long long>(g[i]) * term(i) % p;
     }
 

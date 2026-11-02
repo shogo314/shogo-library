@@ -49,7 +49,10 @@
 
 - 同じ意味の操作は同じ名前にする: 値の取得は `val()`、祖先への移動は `hop`、成分 (連結成分・UnionFind のグループなど) は `groups`。
 - 二分探索は、イテレータを返すなら `lower_bound`・`upper_bound`、添字を返すなら `bisect_left`・`bisect_right`。
-- 同じ系統の関数は対象を先に書き、エディタの補完で並ぶようにする (`subset_sum`・`subset_sum_max`・`subset_sum_count`)。
+- 同じ系統の関数は対象を先に書き、エディタの補完で並ぶようにする (`subset_sum`・`subset_sum_max`・`subset_sum_count`、`knapsack`・`knapsack_bounded`・`knapsack_unbounded`)。`convex_hull`・`edit_distance` のように言葉として決まっている名前はそのまま。
+- 個数を返す自由関数は `<対象>_count` (`prime_count`・`subset_sum_count`・`subarray_sum_count`)。メンバ関数で、引数を渡して数える操作は `std::count`・`count_if` と同じく `count`・`count_<対象>` (`count_prefix`・`count_less`)、持っている数を返すだけのものは `size()` と同じく名詞 (`pattern_count`)。
+- mod を法とする演算は `_mod` を後ろに付ける (`pow_mod`・`inv_mod`・`mul_mod`・`sqrt_mod`・`det_mod`。ACL・Library Checker と同じ)。
+- 列を返すものは `enumerate_`、関数を受け取って呼ぶものは `for_each_` (`enumerate_quotients`・`for_each_quotient`)。
 - 変種は接尾辞で表す: `_directed`・`_undirected`、`_by_weight`・`_by_value`、`_meet_in_the_middle`、`_bitset`、`_geometric`、`_2d`、`_mod`。整数のまま正確に返す版は `_squared`・`_doubled` (`closest_point_pair_squared`・`polygon_area_doubled`)。
 - 最小化・最大化する問題の名前は、省略せず `minimum_`・`maximum_` にする (`minimum_spanning_tree`・`minimum_set_cover`・`maximum_independent_set`。Library Checker の問題名とも揃う)。演算の名前や ACL・std 由来のものは `min`・`max` のまま (`min_plus_convolution_*`・`min_cut`・`min_left`・`max_right`・`subset_sum_max`)。
 - 誤字は直す。改名したら古い名前は残さない (`[[deprecated]]` の別名も置かない)。

@@ -235,7 +235,7 @@ struct CombinationPQ {
                 fact_p[i] = static_cast<long long>(fact_p[i - 1]) * i % pq;
         }
         inv_fact_p.resize(pq);
-        inv_fact_p[pq - 1] = modinv(fact_p[pq - 1], pq);
+        inv_fact_p[pq - 1] = inv_mod(fact_p[pq - 1], pq);
         for (int i = pq - 1; i > 0; i--) {
             if (i % p == 0)
                 inv_fact_p[i - 1] = inv_fact_p[i];

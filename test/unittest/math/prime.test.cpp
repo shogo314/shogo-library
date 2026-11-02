@@ -3,7 +3,7 @@
 // prime.hpp の関数と Sieve を愚直な実装とランダムに比較する
 // primitive_root は、位数を愚直に数えて最小の原始根を求めたものと比べる
 // kth_root_mod は、小さい素数で解の有無を全探索と比べ、返した値が解になっているかを確かめる
-// tetration_mod は、指数が long long に収まる範囲で modpow を使った値と比べる
+// tetration_mod は、指数が long long に収まる範囲で pow_mod を使った値と比べる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../../src/math/prime.hpp"
@@ -121,7 +121,7 @@ int main() {
         long long g = primitive_root(p);
         auto is_root = [&](long long h) {
             for (auto [q, e] : factorize(p - 1))
-                if (modpow(h, (p - 1) / q, p) == 1) return false;
+                if (pow_mod(h, (p - 1) / q, p) == 1) return false;
             return true;
         };
         ok = ok && g >= 2 && is_root(g);
@@ -154,11 +154,11 @@ int main() {
     // 大きい素数でも、返した x が解になっているか
     for (int rep = 0; rep < 300 && ok; rep++) {
         long long p = 998244353, k = rng() % 1000000000, x0 = rng() % p;
-        long long a = modpow(x0, k, p), x = kth_root_mod(k, a, p);
-        if (x == -1 || modpow(x, k, p) != a) ok = false;
+        long long a = pow_mod(x0, k, p), x = kth_root_mod(k, a, p);
+        if (x == -1 || pow_mod(x, k, p) != a) ok = false;
     }
 
-    // tetration_mod: a↑↑(b - 1) が long long に収まるとき、a↑↑b = a^(a↑↑(b - 1)) を modpow で求めたものと比べる
+    // tetration_mod: a↑↑(b - 1) が long long に収まるとき、a↑↑b = a^(a↑↑(b - 1)) を pow_mod で求めたものと比べる
     for (long long a = 0; a <= 12 && ok; a++) {
         for (long long b = 0; b <= 6; b++) {
             // t = a↑↑(b - 1)。収まらなければ -1
@@ -177,7 +177,7 @@ int main() {
             }
             if (t == -1) continue;
             for (long long m = 1; m <= 60; m++) {
-                long long expect = b == 0 ? 1 % m : (a == 0 && t == 0 ? 1 % m : modpow(a, t, m));
+                long long expect = b == 0 ? 1 % m : (a == 0 && t == 0 ? 1 % m : pow_mod(a, t, m));
                 if (tetration_mod(a, b, m) != expect) ok = false;
             }
         }

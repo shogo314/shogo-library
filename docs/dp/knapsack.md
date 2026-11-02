@@ -10,9 +10,9 @@ documentation_of: //src/dp/knapsack.hpp
 ```cpp
 std::vector<long long> v = {4, 5, 2, 8}, w = {2, 2, 1, 3};
 long long a = knapsack(v, w, 5);                 // 13 (0/1 ナップサック)
-long long b = unbounded_knapsack(v, w, 8);       // 21 (何個でも選べる)
+long long b = knapsack_unbounded(v, w, 8);       // 21 (何個でも選べる)
 std::vector<long long> m = {2, 1, 4, 2};
-long long c = bounded_knapsack(v, w, m, 8);      // 21 (品物 i は m[i] 個まで)
+long long c = knapsack_bounded(v, w, m, 8);      // 21 (品物 i は m[i] 個まで)
 ```
 
 ## 0/1 ナップサック (各品物は 1 個まで)
@@ -32,7 +32,7 @@ $N$ は品物の個数、$V$ は価値の和です。
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `unbounded_knapsack(v, w, W)` | 重さについての DP | $O(NW)$ |
+| `knapsack_unbounded(v, w, W)` | 重さについての DP | $O(NW)$ |
 
 重さ 0 で価値が正の品物があると答えが無限大になるので、assert で止めます。
 
@@ -40,13 +40,13 @@ $N$ は品物の個数、$V$ は価値の和です。
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `bounded_knapsack(v, w, m, W)` | 下のうち計算量が最も小さいものを選ぶ。迷ったらこれ | 下のうち最小 |
-| `bounded_knapsack_by_weight(v, w, m, W)` | 重さについての DP。`W` が小さいときに向く。`m[i]` は大きくてよい | $O(NW)$ |
-| `bounded_knapsack_by_value(v, w, m, W)` | 価値についての DP。価値の和が小さいときに向く | $O(V' \sum_i \log m_i)$ ($V' = \sum_i v_i m_i$) |
+| `knapsack_bounded(v, w, m, W)` | 下のうち計算量が最も小さいものを選ぶ。迷ったらこれ | 下のうち最小 |
+| `knapsack_bounded_by_weight(v, w, m, W)` | 重さについての DP。`W` が小さいときに向く。`m[i]` は大きくてよい | $O(NW)$ |
+| `knapsack_bounded_by_value(v, w, m, W)` | 価値についての DP。価値の和が小さいときに向く | $O(V' \sum_i \log m_i)$ ($V' = \sum_i v_i m_i$) |
 
-- `bounded_knapsack_by_weight` は、重さを `w[i]` で割った余りごとにスライド最大値を使います。
-- `bounded_knapsack_by_value` は、品物を個数 $1, 2, 4, \dots$ (と残り) の組に分けて 0/1 ナップサックにします (二進分割)。`W / w[i]` を超える個数は使えないので、先に `m[i]` をそこまで減らします。
-- `bounded_knapsack` は、重さについての DP と、二進分割した後の価値についての DP・半分全列挙のうち、計算量が最も小さいものを選びます。
+- `knapsack_bounded_by_weight` は、重さを `w[i]` で割った余りごとにスライド最大値を使います。
+- `knapsack_bounded_by_value` は、品物を個数 $1, 2, 4, \dots$ (と残り) の組に分けて 0/1 ナップサックにします (二進分割)。`W / w[i]` を超える個数は使えないので、先に `m[i]` をそこまで減らします。
+- `knapsack_bounded` は、重さについての DP と、二進分割した後の価値についての DP・半分全列挙のうち、計算量が最も小さいものを選びます。
 
 ## 関連
 

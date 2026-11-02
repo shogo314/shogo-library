@@ -46,7 +46,7 @@ inline int calc_primitive_root(int MOD) {
     for (int g = 2;; ++g) {
         bool ok = true;
         for (int i = 0; i < cnt; i++) {
-            if (modpow(g, (MOD - 1) / divs[i], MOD) == 1) {
+            if (pow_mod(g, (MOD - 1) / divs[i], MOD) == 1) {
                 ok = false;
                 break;
             }
@@ -267,8 +267,8 @@ static constexpr int MOD2 = 469762049;
 using mint0 = static_modint<MOD0>;
 using mint1 = static_modint<MOD1>;
 using mint2 = static_modint<MOD2>;
-static const mint1 imod0 = 95869806;    // modinv(MOD0, MOD1);
-static const mint2 imod1 = 104391568;   // modinv(MOD1, MOD2);
+static const mint1 imod0 = 95869806;    // inv_mod(MOD0, MOD1);
+static const mint2 imod1 = 104391568;   // inv_mod(MOD1, MOD2);
 static const mint2 imod01 = 187290749;  // imod1 / MOD0;
 
 /**

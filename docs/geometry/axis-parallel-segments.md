@@ -11,7 +11,7 @@ std::vector<std::pair<P, P>> segs = {
     {P(2, 2), P(2, 5)},  // 垂直
     {P(1, 3), P(5, 3)},  // 水平
 };
-long long k = count_axis_parallel_intersections(segs);  // 1
+long long k = axis_parallel_intersection_count(segs);  // 1
 ```
 
 y の小さい順に走査し、そのときの y をまたいでいる垂直な線分の x を数えておきます。水平な線分に来たら、その x の範囲にある垂直な線分の個数を足します。
@@ -24,7 +24,7 @@ y の小さい順に走査し、そのときの y をまたいでいる垂直な
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `count_axis_parallel_intersections(segs)` | 共有点を持つ (水平な線分, 垂直な線分) の組の個数 (`long long`)。`segs` は端点の組 `std::pair<Vector<T, 2>, Vector<T, 2>>` のリスト | $O(n \log n)$ |
+| `axis_parallel_intersection_count(segs)` | 共有点を持つ (水平な線分, 垂直な線分) の組の個数 (`long long`)。`segs` は端点の組 `std::pair<Vector<T, 2>, Vector<T, 2>>` のリスト | $O(n \log n)$ |
 
 ## 関連
 

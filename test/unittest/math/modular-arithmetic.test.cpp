@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
-// modmul・modpow・modinv・discrete_log・sqrt_mod を愚直な計算と比較する
+// mul_mod・pow_mod・inv_mod・discrete_log・sqrt_mod を愚直な計算と比較する
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../../src/math/modular-arithmetic.hpp"
@@ -10,10 +10,10 @@
 #include <numeric>
 #include <random>
 
-static_assert(modpow(2, 10, 1000) == 24);
-static_assert(modinv(3, 7) == 5);
-static_assert(modpow(3, -1, 7) == 5);
-static_assert(modpow(5, 0, 1) == 0);
+static_assert(pow_mod(2, 10, 1000) == 24);
+static_assert(inv_mod(3, 7) == 5);
+static_assert(pow_mod(3, -1, 7) == 5);
+static_assert(pow_mod(5, 0, 1) == 0);
 
 int main() {
     bool ok = true;
@@ -25,16 +25,16 @@ int main() {
             long long r = ((a % m) + m) % m;
             long long p = 1 % m;
             for (int n = 0; n <= 20; n++) {
-                if (modpow(a, n, m) != p) ok = false, std::cerr << "modpow " << a << " " << n << " " << m << std::endl;
+                if (pow_mod(a, n, m) != p) ok = false, std::cerr << "pow_mod " << a << " " << n << " " << m << std::endl;
                 p = p * r % m;
             }
             for (long long b = -5; b <= 5; b++) {
-                if (modmul(a, b, m) != (((a * b) % m) + m) % m) ok = false, std::cerr << "modmul " << a << " " << b << std::endl;
+                if (mul_mod(a, b, m) != (((a * b) % m) + m) % m) ok = false, std::cerr << "mul_mod " << a << " " << b << std::endl;
             }
             if (std::gcd(r, m) == 1) {
-                long long x = modinv(a, m);
-                if (!(0 <= x && x < m && x * r % m == 1 % m)) ok = false, std::cerr << "modinv " << a << " " << m << std::endl;
-                if (modpow(a, -3, m) != modpow(x, 3, m)) ok = false, std::cerr << "modpow neg " << a << " " << m << std::endl;
+                long long x = inv_mod(a, m);
+                if (!(0 <= x && x < m && x * r % m == 1 % m)) ok = false, std::cerr << "inv_mod " << a << " " << m << std::endl;
+                if (pow_mod(a, -3, m) != pow_mod(x, 3, m)) ok = false, std::cerr << "pow_mod neg " << a << " " << m << std::endl;
             }
         }
     }
@@ -43,10 +43,10 @@ int main() {
     const long long P = (1LL << 61) - 1;  // 素数
     for (int rep = 0; rep < 1000; rep++) {
         long long a = rng() % (P - 1) + 1;
-        if (modpow(a, P - 1, P) != 1) ok = false, std::cerr << "fermat " << a << std::endl;
-        if (modmul(a, modinv(a, P), P) != 1) ok = false, std::cerr << "inv " << a << std::endl;
+        if (pow_mod(a, P - 1, P) != 1) ok = false, std::cerr << "fermat " << a << std::endl;
+        if (mul_mod(a, inv_mod(a, P), P) != 1) ok = false, std::cerr << "inv " << a << std::endl;
         long long b = rng() % P;
-        if (modmul(a, b, P) != static_cast<long long>(static_cast<__int128>(a) * b % P)) ok = false, std::cerr << "mul " << a << std::endl;
+        if (mul_mod(a, b, P) != static_cast<long long>(static_cast<__int128>(a) * b % P)) ok = false, std::cerr << "mul " << a << std::endl;
     }
 
     // discrete_log: 小さい法で、x を 0 から順に試して最小のものと比べる (a と m が互いに素でない場合も)
@@ -68,8 +68,8 @@ int main() {
     // 大きい法: 答えを作ってから解き、a^x ≡ b となり、作った値以下であることを確かめる
     for (int rep = 0; rep < 200; rep++) {
         long long m = rng() % 1000000000 + 1, a = rng() % m, x = rng() % 1000000;
-        long long b = modpow(a, x, m), y = discrete_log(a, b, m);
-        if (!(0 <= y && y <= x && modpow(a, y, m) == b)) ok = false, std::cerr << "discrete_log big " << a << " " << m << std::endl;
+        long long b = pow_mod(a, x, m), y = discrete_log(a, b, m);
+        if (!(0 <= y && y <= x && pow_mod(a, y, m) == b)) ok = false, std::cerr << "discrete_log big " << a << " " << m << std::endl;
     }
 
     // sqrt_mod: 小さい素数で、全ての x を試して平方根があるかと最小の根を比べる
@@ -91,12 +91,12 @@ int main() {
     // 大きい素数 (p - 1 が 2 で何度も割れるものを含む): x^2 から平方根を求めて元に戻る
     for (long long p : {998244353LL, 1000000007LL, (1LL << 61) - 1, 4611686018427387847LL}) {
         for (int rep = 0; rep < 300; rep++) {
-            long long x = rng() % p, a = modmul(x, x, p), y = sqrt_mod(a, p);
+            long long x = rng() % p, a = mul_mod(x, x, p), y = sqrt_mod(a, p);
             if (!(y == std::min(x, p - x) || (x == 0 && y == 0))) ok = false, std::cerr << "sqrt_mod big " << p << std::endl;
         }
         // 平方非剰余なら -1
         long long z = 2;
-        while (modpow(z, (p - 1) / 2, p) == 1) z++;
+        while (pow_mod(z, (p - 1) / 2, p) == 1) z++;
         if (sqrt_mod(z, p) != -1) ok = false, std::cerr << "sqrt_mod non-residue " << p << std::endl;
     }
 

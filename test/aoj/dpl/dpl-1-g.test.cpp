@@ -11,5 +11,5 @@ int main() {
     std::cin >> n >> W;
     std::vector<long long> v(n), w(n), m(n);
     for (int i = 0; i < n; i++) std::cin >> v[i] >> w[i] >> m[i];
-    std::cout << bounded_knapsack_by_weight(v, w, m, W) << '\n';
+    std::cout << knapsack_bounded_by_weight(v, w, m, W) << '\n';
 }

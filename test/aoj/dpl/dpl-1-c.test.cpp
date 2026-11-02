@@ -11,5 +11,5 @@ int main() {
     std::cin >> n >> W;
     std::vector<long long> v(n), w(n);
     for (int i = 0; i < n; i++) std::cin >> v[i] >> w[i];
-    std::cout << unbounded_knapsack(v, w, W) << '\n';
+    std::cout << knapsack_unbounded(v, w, W) << '\n';
 }

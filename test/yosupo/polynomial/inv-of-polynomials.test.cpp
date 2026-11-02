@@ -15,7 +15,7 @@ int main() {
     FPS<mint> f(n), g(m);
     for (auto& x : f) std::cin >> x;
     for (auto& x : g) std::cin >> x;
-    auto h = modinv(f, g);
+    auto h = inv_mod(f, g);
     if (!h) {
         std::cout << -1 << '\n';
         return 0;

@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
-// min_set_partition を、集合の分け方をすべて試す愚直な実装と比べる
+// minimum_set_partition を、集合の分け方をすべて試す愚直な実装と比べる
 // 使ってよい集合族が部分集合について閉じている場合と、閉じていない場合の両方を試す
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
@@ -38,7 +38,7 @@ int main() {
             while (i < n && ++b[i] == n) b[i++] = 0;
             if (i == n) break;
         }
-        if (min_set_partition(n, feasible) != expect) ok = false, std::cerr << "min_set_partition" << std::endl;
+        if (minimum_set_partition(n, feasible) != expect) ok = false, std::cerr << "minimum_set_partition" << std::endl;
     }
     if (ok) std::cout << "Hello World" << std::endl;
 }

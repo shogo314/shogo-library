@@ -13,7 +13,7 @@
  * feasible の大きさは 2^n。dp[S] = min (dp[S \ T] + 1) を、T を「S の最小の要素を含む S の部分集合」に限って求める
  * 使ってよい集合族が部分集合について閉じているなら、重なりを許して覆うときの最小個数とも一致する
  */
-inline long long min_set_partition(int n, const std::vector<bool>& feasible) {
+inline long long minimum_set_partition(int n, const std::vector<bool>& feasible) {
     assert(static_cast<long long>(feasible.size()) == (1LL << n));
     const int INF = n + 1;
     std::vector<int> dp(1 << n, INF);

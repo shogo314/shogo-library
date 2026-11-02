@@ -1,7 +1,7 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
-// min_set_cover を、覆える集合を個数の小さい順に広げていく愚直な実装と比べる
-// 使ってよい集合族が部分集合について閉じている場合は min_set_partition とも比べる
+// minimum_set_cover を、覆える集合を個数の小さい順に広げていく愚直な実装と比べる
+// 使ってよい集合族が部分集合について閉じている場合は minimum_set_partition とも比べる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../../src/dp/set-cover.hpp"
@@ -43,9 +43,9 @@ int main() {
             reach = next;
             if (reach[N - 1]) expect = k;
         }
-        long long res = min_set_cover(n, feasible);
-        if (res != expect) ok = false, std::cerr << "min_set_cover " << rep << ' ' << res << ' ' << expect << std::endl;
-        if (closed && res != min_set_partition(n, feasible)) ok = false, std::cerr << "min_set_partition との違い" << std::endl;
+        long long res = minimum_set_cover(n, feasible);
+        if (res != expect) ok = false, std::cerr << "minimum_set_cover " << rep << ' ' << res << ' ' << expect << std::endl;
+        if (closed && res != minimum_set_partition(n, feasible)) ok = false, std::cerr << "minimum_set_partition との違い" << std::endl;
     }
     if (ok) std::cout << "Hello World" << std::endl;
 }

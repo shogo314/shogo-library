@@ -51,6 +51,7 @@
 - 二分探索は、イテレータを返すなら `lower_bound`・`upper_bound`、添字を返すなら `bisect_left`・`bisect_right`。
 - 同じ系統の関数は対象を先に書き、エディタの補完で並ぶようにする (`subset_sum`・`subset_sum_max`・`subset_sum_count`)。
 - 変種は接尾辞で表す: `_directed`・`_undirected`、`_by_weight`・`_by_value`、`_meet_in_the_middle`、`_bitset`、`_geometric`、`_2d`、`_mod`。整数のまま正確に返す版は `_squared`・`_doubled` (`closest_point_pair_squared`・`polygon_area_doubled`)。
+- 最小化・最大化する問題の名前は、省略せず `minimum_`・`maximum_` にする (`minimum_spanning_tree`・`minimum_set_cover`・`maximum_independent_set`。Library Checker の問題名とも揃う)。演算の名前や ACL・std 由来のものは `min`・`max` のまま (`min_plus_convolution_*`・`min_cut`・`min_left`・`max_right`・`subset_sum_max`)。
 - 誤字は直す。改名したら古い名前は残さない (`[[deprecated]]` の別名も置かない)。
 
 ## 整形

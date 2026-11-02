@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/chromatic_number"
 
-// 独立集合で頂点全体を覆う最小個数として、包除原理の min_set_cover で求める
+// 独立集合で頂点全体を覆う最小個数として、包除原理の minimum_set_cover で求める
 
 #include <iostream>
 #include <vector>
@@ -25,5 +25,5 @@ int main() {
         const int v = __builtin_ctz(S), rest = S & (S - 1);
         indep[S] = indep[rest] && !(adj[v] & rest);
     }
-    std::cout << min_set_cover(n, indep) << '\n';
+    std::cout << minimum_set_cover(n, indep) << '\n';
 }

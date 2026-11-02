@@ -13,7 +13,7 @@
  * feasible の大きさは 2^n。f(S) を S に含まれる使ってよい集合の数とすると、全体を覆う k 個組の数は Σ_S (-1)^{n - |S|} f(S)^k。
  * これが 0 でない最小の k を求める。数は 2 つの素数の mod で数えるので、0 でないのに 0 と誤る確率がわずかにある
  */
-inline long long min_set_cover(int n, const std::vector<bool>& feasible) {
+inline long long minimum_set_cover(int n, const std::vector<bool>& feasible) {
     assert(0 <= n && n < 31);
     assert(static_cast<long long>(feasible.size()) == (1LL << n));
     if (n == 0) return 0;

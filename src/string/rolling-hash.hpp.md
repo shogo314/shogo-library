@@ -654,5 +654,5 @@ auto pos = pattern_match_2d(g, std::vector<std::string>{"ba", "ab"});  // {(0, 1
 
 ## 関連
 
-- ハッシュを使わずに文字列を探すには [文字列アルゴリズム](string.hpp) の KMP 法・Z-algorithm
+- ハッシュを使わずに文字列を探すには [KMP 法](kmp.hpp)・[Z-algorithm](z-algorithm.hpp)
 - 接尾辞の辞書順や LCP は [Suffix Array と LCP 配列](suffix-array.hpp)

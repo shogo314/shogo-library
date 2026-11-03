@@ -381,5 +381,5 @@ for (long long u : argsort(d)) {
 ## 関連
 
 - 整数を 2 進数で入れる Trie は [Binary Trie](../data_structures/binary-trie.hpp)
-- 1 つのパターンの検索は [文字列アルゴリズム](string.hpp) の KMP 法
+- 1 つのパターンの検索は [KMP 法](kmp.hpp)
 - 複数のパターンを文字列の中から一度に探すなら [Aho-Corasick](aho-corasick.hpp)

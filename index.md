@@ -472,19 +472,24 @@ data:
       path: src/string/aho-corasick.hpp
       title: Aho-Corasick
     - icon: ':heavy_check_mark:'
+      path: src/string/kmp.hpp
+      title: "KMP \u6CD5"
+    - icon: ':heavy_check_mark:'
       path: src/string/longest-common-substring.hpp
       title: "\u6700\u9577\u5171\u901A\u90E8\u5206\u6587\u5B57\u5217\u3068\u3001\u6700\
         \u9577\u306E\u7E70\u308A\u8FD4\u3057\u90E8\u5206\u6587\u5B57\u5217"
+    - icon: ':heavy_check_mark:'
+      path: src/string/lyndon.hpp
+      title: "Lyndon \u5206\u89E3"
+    - icon: ':heavy_check_mark:'
+      path: src/string/manacher.hpp
+      title: "Manacher \u6CD5"
     - icon: ':heavy_check_mark:'
       path: src/string/palindromic-tree.hpp
       title: "\u56DE\u6587\u6728 (Eertree)"
     - icon: ':heavy_check_mark:'
       path: src/string/rolling-hash.hpp
       title: "\u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5"
-    - icon: ':heavy_check_mark:'
-      path: src/string/string.hpp
-      title: "\u6587\u5B57\u5217\u30A2\u30EB\u30B4\u30EA\u30BA\u30E0 (Z-algorithm\u3001\
-        KMP\u3001Manacher\u3001Lyndon \u5206\u89E3)"
     - icon: ':heavy_check_mark:'
       path: src/string/suffix-array.hpp
       title: "Suffix Array \u3068 LCP \u914D\u5217"
@@ -498,6 +503,9 @@ data:
       path: src/string/wildcard-matching.hpp
       title: "\u30EF\u30A4\u30EB\u30C9\u30AB\u30FC\u30C9\u3064\u304D\u306E\u30D1\u30BF\
         \u30FC\u30F3\u30DE\u30C3\u30C1\u30F3\u30B0"
+    - icon: ':heavy_check_mark:'
+      path: src/string/z-algorithm.hpp
+      title: Z-algorithm
   - name: src/utility
     pages:
     - icon: ':heavy_check_mark:'
@@ -1340,17 +1348,23 @@ data:
       path: test/unittest/string/aho-corasick.test.cpp
       title: test/unittest/string/aho-corasick.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/string/kmp.test.cpp
+      title: test/unittest/string/kmp.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/string/longest-common-substring.test.cpp
       title: test/unittest/string/longest-common-substring.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/string/lyndon.test.cpp
+      title: test/unittest/string/lyndon.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/string/manacher.test.cpp
+      title: test/unittest/string/manacher.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/string/palindromic-tree.test.cpp
       title: test/unittest/string/palindromic-tree.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/string/rolling-hash.test.cpp
       title: test/unittest/string/rolling-hash.test.cpp
-    - icon: ':heavy_check_mark:'
-      path: test/unittest/string/string.test.cpp
-      title: test/unittest/string/string.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/string/suffix-array.test.cpp
       title: test/unittest/string/suffix-array.test.cpp
@@ -1363,6 +1377,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/string/wildcard-matching.test.cpp
       title: test/unittest/string/wildcard-matching.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/string/z-algorithm.test.cpp
+      title: test/unittest/string/z-algorithm.test.cpp
   - name: test/unittest/utility
     pages:
     - icon: ':heavy_check_mark:'

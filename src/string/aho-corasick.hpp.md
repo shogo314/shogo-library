@@ -366,4 +366,4 @@ $L$ をパターンの長さの合計 (ノード数は $L + 1$ 以下)、$P$ を
 ## 関連
 
 - パターンを増やしたり減らしたりしながら接頭辞を数えるなら [Trie](trie.hpp)
-- パターンが 1 つなら [文字列アルゴリズム](string.hpp) の KMP 法や Z-algorithm
+- パターンが 1 つなら [KMP 法](kmp.hpp) や [Z-algorithm](z-algorithm.hpp)

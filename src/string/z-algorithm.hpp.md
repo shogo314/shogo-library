@@ -1,0 +1,92 @@
+---
+data:
+  _extendedDependsOn: []
+  _extendedRequiredBy: []
+  _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/string/z-algorithm.test.cpp
+    title: test/unittest/string/z-algorithm.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/string/zalgorithm.test.cpp
+    title: test/yosupo/string/zalgorithm.test.cpp
+  _isVerificationFailed: false
+  _pathExtension: hpp
+  _verificationStatusIcon: ':heavy_check_mark:'
+  attributes:
+    document_title: Z-algorithm
+    links: []
+  bundledCode: "#line 2 \"src/string/z-algorithm.hpp\"\n\n/**\n * @file z-algorithm.hpp\n\
+    \ * @brief Z-algorithm\n */\n\n#include <iterator>\n#include <vector>\n\n/**\n\
+    \ * @brief Z-algorithm\n * s[0:]\u3068s[i:]\u306ELCP\u306E\u9577\u3055\u3092\u5404\
+    i\u306B\u3064\u3044\u3066\u6C42\u3081\u308B \u5168\u4F53\u3067O(N)\n *\n * @tparam\
+    \ It \u914D\u5217\u306E\u30A4\u30C6\u30EC\u30FC\u30BF\n * @param begin \u914D\u5217\
+    \u306E\u958B\u59CB\u30A4\u30C6\u30EC\u30FC\u30BF\n * @param end \u914D\u5217\u306E\
+    \u7D42\u4E86\u30A4\u30C6\u30EC\u30FC\u30BF\n * @return std::vector<long long>\
+    \ z\n */\ntemplate <typename It>\nstd::vector<long long> z_algorithm(It begin,\
+    \ It end) {\n    long long n = end - begin;\n    if (n == 0) return {};\n    std::vector<long\
+    \ long> z(n);\n    z[0] = n;\n    for (long long i = 1, j = 0; i < n;) {\n   \
+    \     // [0, j)\u3068[i, i + j)\u304C\u4E00\u81F4\u3057\u3066\u3044\u308B\n  \
+    \      while (i + j < n && begin[j] == begin[i + j]) j++;\n        z[i] = j;\n\
+    \        long long k = 1;  // [k,)\u3068[i+k,)\u306FLCP\u304C\u7B49\u3057\u3044\
+    \u3068\u78BA\u5B9A\u3057\u3066\u3044\u308B\n        for (; k < j && k + z[k] <\
+    \ j; k++) {\n            z[i + k] = z[k];\n        }\n        i += k;\n      \
+    \  if (j) j -= k;\n    }\n    return z;\n}\n\n/**\n * @brief Z-algorithm\n * s[0:]\u3068\
+    s[i:]\u306ELCP\u306E\u9577\u3055\u3092\u5404i\u306B\u3064\u3044\u3066\u6C42\u3081\
+    \u308B \u5168\u4F53\u3067O(N)\n *\n * @tparam R \u914D\u5217\u306E\u578B\n * @param\
+    \ s \u914D\u5217\n * @return std::vector<long long> z\n */\ntemplate <typename\
+    \ R>\nstd::vector<long long> z_algorithm(const R& s) {\n    return z_algorithm(std::begin(s),\
+    \ std::end(s));\n}\n"
+  code: "#pragma once\n\n/**\n * @file z-algorithm.hpp\n * @brief Z-algorithm\n */\n\
+    \n#include <iterator>\n#include <vector>\n\n/**\n * @brief Z-algorithm\n * s[0:]\u3068\
+    s[i:]\u306ELCP\u306E\u9577\u3055\u3092\u5404i\u306B\u3064\u3044\u3066\u6C42\u3081\
+    \u308B \u5168\u4F53\u3067O(N)\n *\n * @tparam It \u914D\u5217\u306E\u30A4\u30C6\
+    \u30EC\u30FC\u30BF\n * @param begin \u914D\u5217\u306E\u958B\u59CB\u30A4\u30C6\
+    \u30EC\u30FC\u30BF\n * @param end \u914D\u5217\u306E\u7D42\u4E86\u30A4\u30C6\u30EC\
+    \u30FC\u30BF\n * @return std::vector<long long> z\n */\ntemplate <typename It>\n\
+    std::vector<long long> z_algorithm(It begin, It end) {\n    long long n = end\
+    \ - begin;\n    if (n == 0) return {};\n    std::vector<long long> z(n);\n   \
+    \ z[0] = n;\n    for (long long i = 1, j = 0; i < n;) {\n        // [0, j)\u3068\
+    [i, i + j)\u304C\u4E00\u81F4\u3057\u3066\u3044\u308B\n        while (i + j < n\
+    \ && begin[j] == begin[i + j]) j++;\n        z[i] = j;\n        long long k =\
+    \ 1;  // [k,)\u3068[i+k,)\u306FLCP\u304C\u7B49\u3057\u3044\u3068\u78BA\u5B9A\u3057\
+    \u3066\u3044\u308B\n        for (; k < j && k + z[k] < j; k++) {\n           \
+    \ z[i + k] = z[k];\n        }\n        i += k;\n        if (j) j -= k;\n    }\n\
+    \    return z;\n}\n\n/**\n * @brief Z-algorithm\n * s[0:]\u3068s[i:]\u306ELCP\u306E\
+    \u9577\u3055\u3092\u5404i\u306B\u3064\u3044\u3066\u6C42\u3081\u308B \u5168\u4F53\
+    \u3067O(N)\n *\n * @tparam R \u914D\u5217\u306E\u578B\n * @param s \u914D\u5217\
+    \n * @return std::vector<long long> z\n */\ntemplate <typename R>\nstd::vector<long\
+    \ long> z_algorithm(const R& s) {\n    return z_algorithm(std::begin(s), std::end(s));\n\
+    }\n"
+  dependsOn: []
+  isVerificationFile: false
+  path: src/string/z-algorithm.hpp
+  requiredBy: []
+  timestamp: '2026-11-03 20:20:26+09:00'
+  verificationStatus: LIBRARY_ALL_AC
+  verifiedWith:
+  - test/unittest/string/z-algorithm.test.cpp
+  - test/yosupo/string/zalgorithm.test.cpp
+documentation_of: src/string/z-algorithm.hpp
+layout: document
+title: Z-algorithm
+---
+
+各 $i$ について、列 `s` と `s[i:]` の最長共通接頭辞の長さを $O(n)$ で求めます。文字列のほか、`vector` などの列にも使えます (要素は `==` で比べます)。
+
+```cpp
+auto z = z_algorithm(std::string("aabaab"));  // {6, 1, 0, 3, 1, 0}
+```
+
+パターン `p` の出現位置は、区切りの文字 (どちらにも現れない値) をはさんで `p + '$' + s` の Z 配列を作り、`z[m + 1 + i] >= m` となる `i` を探せば求められます。
+
+## 関数
+
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `z_algorithm(s)` / `z_algorithm(begin, end)` | 各 $i$ について、`s` と `s[i:]` の最長共通接頭辞の長さ `z[i]` を並べた `std::vector<long long>` (`z[0]` は `s` の長さ) | $O(n)$ |
+
+## 関連
+
+- 接頭辞関数と KMP 法は [KMP 法](kmp.hpp)
+- 接尾辞どうしの最長共通接頭辞は [Suffix Array と LCP 配列](suffix-array.hpp)
+- 部分文字列の一致判定をハッシュで行うには [ローリングハッシュ](rolling-hash.hpp)

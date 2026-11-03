@@ -212,10 +212,20 @@ data:
     \        i++;\n    }\n    return res;\n}\n\n// f(x) \u304C true \u306B\u306A\u308B\
     \u8981\u7D20\u306E\u500B\u6570\ntemplate <class C, class F>\ninline constexpr\
     \ long long count_if(const C& v, F f) {\n    long long res = 0;\n    for (const\
-    \ auto& e : v) {\n        if (f(e)) res++;\n    }\n    return res;\n}\n\ntemplate\
-    \ <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\ninline constexpr\
-    \ mem_value_type<C> mex(const C& v) {\n    std::vector<bool> b(v.size() + 1);\n\
-    \    for (const auto& a : v) {\n        if (0 <= a && static_cast<std::size_t>(a)\
+    \ auto& e : v) {\n        if (f(e)) res++;\n    }\n    return res;\n}\n\n/**\n\
+    \ * @brief \u540C\u3058\u9577\u3055\u306E 2 \u3064\u306E\u5217\u306E\u30CF\u30DF\
+    \u30F3\u30B0\u8DDD\u96E2 (\u8981\u7D20\u304C\u7570\u306A\u308B\u4F4D\u7F6E\u306E\
+    \u6570) O(N)\n *\n * @tparam R1 \u914D\u5217\u306E\u578B\n * @tparam R2 \u914D\
+    \u5217\u306E\u578B\n * @param s \u914D\u5217\n * @param t \u914D\u5217 (s \u3068\
+    \u540C\u3058\u9577\u3055)\n * @return long long \u30CF\u30DF\u30F3\u30B0\u8DDD\
+    \u96E2\n */\ntemplate <typename R1, typename R2>\ninline constexpr auto hamming_distance(const\
+    \ R1& s, const R2& t) -> decltype(std::begin(s), std::begin(t), 0LL) {\n    auto\
+    \ a = std::begin(s);\n    auto b = std::begin(t);\n    long long n = std::end(s)\
+    \ - a;\n    assert(n == std::end(t) - b);\n    long long res = 0;\n    for (long\
+    \ long i = 0; i < n; i++) {\n        if (!(a[i] == b[i])) res++;\n    }\n    return\
+    \ res;\n}\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
+    inline constexpr mem_value_type<C> mex(const C& v) {\n    std::vector<bool> b(v.size()\
+    \ + 1);\n    for (const auto& a : v) {\n        if (0 <= a && static_cast<std::size_t>(a)\
     \ < b.size()) {\n            b[a] = true;\n        }\n    }\n    mem_value_type<C>\
     \ ret = 0;  // b \u306E\u8981\u7D20\u6570\u306F v \u3088\u308A 1 \u591A\u3044\u306E\
     \u3067\u3001\u4E0B\u306E\u30EB\u30FC\u30D7\u3067\u5FC5\u305A\u898B\u3064\u304B\
@@ -329,10 +339,20 @@ data:
     \        i++;\n    }\n    return res;\n}\n\n// f(x) \u304C true \u306B\u306A\u308B\
     \u8981\u7D20\u306E\u500B\u6570\ntemplate <class C, class F>\ninline constexpr\
     \ long long count_if(const C& v, F f) {\n    long long res = 0;\n    for (const\
-    \ auto& e : v) {\n        if (f(e)) res++;\n    }\n    return res;\n}\n\ntemplate\
-    \ <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\ninline constexpr\
-    \ mem_value_type<C> mex(const C& v) {\n    std::vector<bool> b(v.size() + 1);\n\
-    \    for (const auto& a : v) {\n        if (0 <= a && static_cast<std::size_t>(a)\
+    \ auto& e : v) {\n        if (f(e)) res++;\n    }\n    return res;\n}\n\n/**\n\
+    \ * @brief \u540C\u3058\u9577\u3055\u306E 2 \u3064\u306E\u5217\u306E\u30CF\u30DF\
+    \u30F3\u30B0\u8DDD\u96E2 (\u8981\u7D20\u304C\u7570\u306A\u308B\u4F4D\u7F6E\u306E\
+    \u6570) O(N)\n *\n * @tparam R1 \u914D\u5217\u306E\u578B\n * @tparam R2 \u914D\
+    \u5217\u306E\u578B\n * @param s \u914D\u5217\n * @param t \u914D\u5217 (s \u3068\
+    \u540C\u3058\u9577\u3055)\n * @return long long \u30CF\u30DF\u30F3\u30B0\u8DDD\
+    \u96E2\n */\ntemplate <typename R1, typename R2>\ninline constexpr auto hamming_distance(const\
+    \ R1& s, const R2& t) -> decltype(std::begin(s), std::begin(t), 0LL) {\n    auto\
+    \ a = std::begin(s);\n    auto b = std::begin(t);\n    long long n = std::end(s)\
+    \ - a;\n    assert(n == std::end(t) - b);\n    long long res = 0;\n    for (long\
+    \ long i = 0; i < n; i++) {\n        if (!(a[i] == b[i])) res++;\n    }\n    return\
+    \ res;\n}\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
+    inline constexpr mem_value_type<C> mex(const C& v) {\n    std::vector<bool> b(v.size()\
+    \ + 1);\n    for (const auto& a : v) {\n        if (0 <= a && static_cast<std::size_t>(a)\
     \ < b.size()) {\n            b[a] = true;\n        }\n    }\n    mem_value_type<C>\
     \ ret = 0;  // b \u306E\u8981\u7D20\u6570\u306F v \u3088\u308A 1 \u591A\u3044\u306E\
     \u3067\u3001\u4E0B\u306E\u30EB\u30FC\u30D7\u3067\u5FC5\u305A\u898B\u3064\u304B\
@@ -348,7 +368,7 @@ data:
   isVerificationFile: false
   path: src/utility/container_func.hpp
   requiredBy: []
-  timestamp: '2026-10-31 05:46:56+09:00'
+  timestamp: '2026-11-03 20:20:26+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/utility/container_func.test.cpp
@@ -404,6 +424,7 @@ auto odd = indices_if(v, [](int x) { return x % 2 == 1; });  // {0, 1, 3, 4}
 | `average(c)` | 平均 (`sum(c) / size`、整数型なら 0 方向に切り捨て。空なら assert で落ちる) | $O(n)$ |
 | `median(c)` | 中央値 (要素数が偶数なら中央 2 つの平均。空なら assert で落ちる) | $O(n \log n)$ |
 | `mex(c)` | 含まれない最小の非負整数 | $O(n)$ |
+| `hamming_distance(s, t)` | 同じ長さの列 `s` と `t` で要素が異なる位置の数 (`long long`。型が違ってもよく、`string` と `vector<int>` なども比べられる。長さが違うと assert で落ちる) | $O(n)$ |
 
 ## 検索
 
@@ -431,5 +452,5 @@ if (cand.size() == 1) vote[cand[0]]++;
 
 ## 関連
 
-- `hamming_distance` は [文字列アルゴリズム](../string/string.hpp)
+- 整数のハミング距離は [ビット演算](bit.hpp) の `hamming_distance`
 - `std::vector` に対する演算子と関数は [vector に対する演算子と関数](vector_func.hpp)

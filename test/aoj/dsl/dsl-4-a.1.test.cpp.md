@@ -183,10 +183,20 @@ data:
     \        i++;\n    }\n    return res;\n}\n\n// f(x) \u304C true \u306B\u306A\u308B\
     \u8981\u7D20\u306E\u500B\u6570\ntemplate <class C, class F>\ninline constexpr\
     \ long long count_if(const C& v, F f) {\n    long long res = 0;\n    for (const\
-    \ auto& e : v) {\n        if (f(e)) res++;\n    }\n    return res;\n}\n\ntemplate\
-    \ <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\ninline constexpr\
-    \ mem_value_type<C> mex(const C& v) {\n    std::vector<bool> b(v.size() + 1);\n\
-    \    for (const auto& a : v) {\n        if (0 <= a && static_cast<std::size_t>(a)\
+    \ auto& e : v) {\n        if (f(e)) res++;\n    }\n    return res;\n}\n\n/**\n\
+    \ * @brief \u540C\u3058\u9577\u3055\u306E 2 \u3064\u306E\u5217\u306E\u30CF\u30DF\
+    \u30F3\u30B0\u8DDD\u96E2 (\u8981\u7D20\u304C\u7570\u306A\u308B\u4F4D\u7F6E\u306E\
+    \u6570) O(N)\n *\n * @tparam R1 \u914D\u5217\u306E\u578B\n * @tparam R2 \u914D\
+    \u5217\u306E\u578B\n * @param s \u914D\u5217\n * @param t \u914D\u5217 (s \u3068\
+    \u540C\u3058\u9577\u3055)\n * @return long long \u30CF\u30DF\u30F3\u30B0\u8DDD\
+    \u96E2\n */\ntemplate <typename R1, typename R2>\ninline constexpr auto hamming_distance(const\
+    \ R1& s, const R2& t) -> decltype(std::begin(s), std::begin(t), 0LL) {\n    auto\
+    \ a = std::begin(s);\n    auto b = std::begin(t);\n    long long n = std::end(s)\
+    \ - a;\n    assert(n == std::end(t) - b);\n    long long res = 0;\n    for (long\
+    \ long i = 0; i < n; i++) {\n        if (!(a[i] == b[i])) res++;\n    }\n    return\
+    \ res;\n}\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
+    inline constexpr mem_value_type<C> mex(const C& v) {\n    std::vector<bool> b(v.size()\
+    \ + 1);\n    for (const auto& a : v) {\n        if (0 <= a && static_cast<std::size_t>(a)\
     \ < b.size()) {\n            b[a] = true;\n        }\n    }\n    mem_value_type<C>\
     \ ret = 0;  // b \u306E\u8981\u7D20\u6570\u306F v \u3088\u308A 1 \u591A\u3044\u306E\
     \u3067\u3001\u4E0B\u306E\u30EB\u30FC\u30D7\u3067\u5FC5\u305A\u898B\u3064\u304B\
@@ -289,23 +299,19 @@ data:
     \ v.end(), ret.begin());\n    return ret;\n}\n\ntemplate <typename T, ENABLE_IF_T(std::is_integral_v<T>)>\n\
     std::vector<T> iota(T n) {\n    assert(n >= 0);\n    std::vector<T> ret(n);\n\
     \    std::iota(ret.begin(), ret.end(), 0);\n    return ret;\n}\n\ntemplate <typename\
-    \ T, typename U>\nlong long hamming_distance(const std::vector<T>& v1, const std::vector<U>&\
-    \ v2) {\n    assert(v1.size() == v2.size());\n    long long res = 0;\n    for\
-    \ (std::size_t i = 0; i < v1.size(); i++) {\n        if (!(v1[i] == v2[i])) res++;\n\
-    \    }\n    return res;\n}\n\ntemplate <typename T>\nstd::vector<T> unique(const\
-    \ std::vector<T>& v) {\n    std::vector<T> res(v);\n    std::sort(res.begin(),\
-    \ res.end());\n    res.erase(std::unique(res.begin(), res.end()), res.end());\n\
-    \    return res;\n}\n\ninline long long radix_convert(const std::vector<long long>&\
-    \ v, int base = 10) {\n    assert(base >= 2);\n    long long res = 0;\n    for\
-    \ (long long d : v) {\n        assert(0 <= d && d < base);\n        res = res\
-    \ * base + d;\n    }\n    return res;\n}\n\ninline std::vector<long long> radix_convert(long\
-    \ long v, int base = 10) {\n    assert(v >= 0 && base >= 2);\n    std::vector<long\
-    \ long> res;\n    while (v > 0) {\n        res.push_back(v % base);\n        v\
-    \ /= base;\n    }\n    std::reverse(res.begin(), res.end());\n    return res;\n\
-    }\n#line 8 \"test/aoj/dsl/dsl-4-a.1.test.cpp\"\n\nint main() {\n    int n;\n \
-    \   std::cin >> n;\n    std::vector<long long> x1(n), y1(n), x2(n), y2(n);\n \
-    \   std::vector<long long> xs, ys;\n    for (int i = 0; i < n; i++) {\n      \
-    \  std::cin >> x1[i] >> y1[i] >> x2[i] >> y2[i];\n        xs.push_back(x1[i]),\
+    \ T>\nstd::vector<T> unique(const std::vector<T>& v) {\n    std::vector<T> res(v);\n\
+    \    std::sort(res.begin(), res.end());\n    res.erase(std::unique(res.begin(),\
+    \ res.end()), res.end());\n    return res;\n}\n\ninline long long radix_convert(const\
+    \ std::vector<long long>& v, int base = 10) {\n    assert(base >= 2);\n    long\
+    \ long res = 0;\n    for (long long d : v) {\n        assert(0 <= d && d < base);\n\
+    \        res = res * base + d;\n    }\n    return res;\n}\n\ninline std::vector<long\
+    \ long> radix_convert(long long v, int base = 10) {\n    assert(v >= 0 && base\
+    \ >= 2);\n    std::vector<long long> res;\n    while (v > 0) {\n        res.push_back(v\
+    \ % base);\n        v /= base;\n    }\n    std::reverse(res.begin(), res.end());\n\
+    \    return res;\n}\n#line 8 \"test/aoj/dsl/dsl-4-a.1.test.cpp\"\n\nint main()\
+    \ {\n    int n;\n    std::cin >> n;\n    std::vector<long long> x1(n), y1(n),\
+    \ x2(n), y2(n);\n    std::vector<long long> xs, ys;\n    for (int i = 0; i < n;\
+    \ i++) {\n        std::cin >> x1[i] >> y1[i] >> x2[i] >> y2[i];\n        xs.push_back(x1[i]),\
     \ xs.push_back(x2[i]);\n        ys.push_back(y1[i]), ys.push_back(y2[i]);\n  \
     \  }\n    // \u5EA7\u6A19\u5727\u7E2E\n    xs = unique(xs);\n    ys = unique(ys);\n\
     \    int w = xs.size(), h = ys.size();\n    std::vector<std::vector<int>> imos(w,\
@@ -343,7 +349,7 @@ data:
   isVerificationFile: true
   path: test/aoj/dsl/dsl-4-a.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-31 05:46:56+09:00'
+  timestamp: '2026-11-03 20:20:26+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/dsl/dsl-4-a.1.test.cpp

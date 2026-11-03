@@ -184,10 +184,20 @@ data:
     \        i++;\n    }\n    return res;\n}\n\n// f(x) \u304C true \u306B\u306A\u308B\
     \u8981\u7D20\u306E\u500B\u6570\ntemplate <class C, class F>\ninline constexpr\
     \ long long count_if(const C& v, F f) {\n    long long res = 0;\n    for (const\
-    \ auto& e : v) {\n        if (f(e)) res++;\n    }\n    return res;\n}\n\ntemplate\
-    \ <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\ninline constexpr\
-    \ mem_value_type<C> mex(const C& v) {\n    std::vector<bool> b(v.size() + 1);\n\
-    \    for (const auto& a : v) {\n        if (0 <= a && static_cast<std::size_t>(a)\
+    \ auto& e : v) {\n        if (f(e)) res++;\n    }\n    return res;\n}\n\n/**\n\
+    \ * @brief \u540C\u3058\u9577\u3055\u306E 2 \u3064\u306E\u5217\u306E\u30CF\u30DF\
+    \u30F3\u30B0\u8DDD\u96E2 (\u8981\u7D20\u304C\u7570\u306A\u308B\u4F4D\u7F6E\u306E\
+    \u6570) O(N)\n *\n * @tparam R1 \u914D\u5217\u306E\u578B\n * @tparam R2 \u914D\
+    \u5217\u306E\u578B\n * @param s \u914D\u5217\n * @param t \u914D\u5217 (s \u3068\
+    \u540C\u3058\u9577\u3055)\n * @return long long \u30CF\u30DF\u30F3\u30B0\u8DDD\
+    \u96E2\n */\ntemplate <typename R1, typename R2>\ninline constexpr auto hamming_distance(const\
+    \ R1& s, const R2& t) -> decltype(std::begin(s), std::begin(t), 0LL) {\n    auto\
+    \ a = std::begin(s);\n    auto b = std::begin(t);\n    long long n = std::end(s)\
+    \ - a;\n    assert(n == std::end(t) - b);\n    long long res = 0;\n    for (long\
+    \ long i = 0; i < n; i++) {\n        if (!(a[i] == b[i])) res++;\n    }\n    return\
+    \ res;\n}\n\ntemplate <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>\n\
+    inline constexpr mem_value_type<C> mex(const C& v) {\n    std::vector<bool> b(v.size()\
+    \ + 1);\n    for (const auto& a : v) {\n        if (0 <= a && static_cast<std::size_t>(a)\
     \ < b.size()) {\n            b[a] = true;\n        }\n    }\n    mem_value_type<C>\
     \ ret = 0;  // b \u306E\u8981\u7D20\u6570\u306F v \u3088\u308A 1 \u591A\u3044\u306E\
     \u3067\u3001\u4E0B\u306E\u30EB\u30FC\u30D7\u3067\u5FC5\u305A\u898B\u3064\u304B\
@@ -331,8 +341,19 @@ data:
     \u3059\u3079\u3066\u542B\u3080\");\n    check(product(std::vector<int>{}) == 1\
     \ && product_xor(std::vector<int>{}) == 0, \"product \u7A7A\");\n    check(index(std::vector<int>{},\
     \ 3) == -1, \"index \u7A7A\");\n    check(sorted(std::string(\"bca\"), std::greater<char>())\
-    \ == \"cba\", \"sorted(string, f)\");\n\n    if (ok) std::cout << \"Hello World\"\
-    \ << std::endl;\n}\n"
+    \ == \"cba\", \"sorted(string, f)\");\n\n    // hamming_distance: \u540C\u3058\
+    \u9577\u3055\u306E\u5217\u3069\u3046\u3057 (\u578B\u304C\u7570\u306A\u3063\u3066\
+    \u3082\u3088\u3044)\n    for (int rep = 0; rep < 1000; rep++) {\n        int n\
+    \ = rng() % 10;\n        std::string s(n, 'a'), t(n, 'a');\n        for (auto&\
+    \ c : s) c = 'a' + rng() % 3;\n        for (auto& c : t) c = 'a' + rng() % 3;\n\
+    \        long long hd = 0;\n        for (int i = 0; i < n; i++) hd += s[i] !=\
+    \ t[i];\n        std::vector<int> v(t.begin(), t.end());\n        check(hamming_distance(s,\
+    \ t) == hd && hamming_distance(s, v) == hd, \"hamming_distance\");\n    }\n  \
+    \  check(hamming_distance(std::string(\"karolin\"), std::string(\"kathrin\"))\
+    \ == 3, \"hamming_distance(string)\");\n    check(hamming_distance(std::vector<int>{1,\
+    \ 2, 3}, std::vector<long long>{1, 0, 3}) == 1, \"hamming_distance(vector)\");\n\
+    \    check(hamming_distance(std::string(\"\"), std::string(\"\")) == 0, \"hamming_distance\
+    \ \u7A7A\");\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// container_func.hpp \u306E\u95A2\u6570\u3092\u611A\u76F4\u306A\u5B9F\u88C5\
     \u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\
@@ -469,15 +490,26 @@ data:
     \u3059\u3079\u3066\u542B\u3080\");\n    check(product(std::vector<int>{}) == 1\
     \ && product_xor(std::vector<int>{}) == 0, \"product \u7A7A\");\n    check(index(std::vector<int>{},\
     \ 3) == -1, \"index \u7A7A\");\n    check(sorted(std::string(\"bca\"), std::greater<char>())\
-    \ == \"cba\", \"sorted(string, f)\");\n\n    if (ok) std::cout << \"Hello World\"\
-    \ << std::endl;\n}\n"
+    \ == \"cba\", \"sorted(string, f)\");\n\n    // hamming_distance: \u540C\u3058\
+    \u9577\u3055\u306E\u5217\u3069\u3046\u3057 (\u578B\u304C\u7570\u306A\u3063\u3066\
+    \u3082\u3088\u3044)\n    for (int rep = 0; rep < 1000; rep++) {\n        int n\
+    \ = rng() % 10;\n        std::string s(n, 'a'), t(n, 'a');\n        for (auto&\
+    \ c : s) c = 'a' + rng() % 3;\n        for (auto& c : t) c = 'a' + rng() % 3;\n\
+    \        long long hd = 0;\n        for (int i = 0; i < n; i++) hd += s[i] !=\
+    \ t[i];\n        std::vector<int> v(t.begin(), t.end());\n        check(hamming_distance(s,\
+    \ t) == hd && hamming_distance(s, v) == hd, \"hamming_distance\");\n    }\n  \
+    \  check(hamming_distance(std::string(\"karolin\"), std::string(\"kathrin\"))\
+    \ == 3, \"hamming_distance(string)\");\n    check(hamming_distance(std::vector<int>{1,\
+    \ 2, 3}, std::vector<long long>{1, 0, 3}) == 1, \"hamming_distance(vector)\");\n\
+    \    check(hamming_distance(std::string(\"\"), std::string(\"\")) == 0, \"hamming_distance\
+    \ \u7A7A\");\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/utility/container_func.hpp
   - src/utility/traits.hpp
   isVerificationFile: true
   path: test/unittest/utility/container_func.test.cpp
   requiredBy: []
-  timestamp: '2026-10-31 05:46:56+09:00'
+  timestamp: '2026-11-03 20:20:26+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/utility/container_func.test.cpp

@@ -172,20 +172,16 @@ data:
     \ v.end(), ret.begin());\n    return ret;\n}\n\ntemplate <typename T, ENABLE_IF_T(std::is_integral_v<T>)>\n\
     std::vector<T> iota(T n) {\n    assert(n >= 0);\n    std::vector<T> ret(n);\n\
     \    std::iota(ret.begin(), ret.end(), 0);\n    return ret;\n}\n\ntemplate <typename\
-    \ T, typename U>\nlong long hamming_distance(const std::vector<T>& v1, const std::vector<U>&\
-    \ v2) {\n    assert(v1.size() == v2.size());\n    long long res = 0;\n    for\
-    \ (std::size_t i = 0; i < v1.size(); i++) {\n        if (!(v1[i] == v2[i])) res++;\n\
-    \    }\n    return res;\n}\n\ntemplate <typename T>\nstd::vector<T> unique(const\
-    \ std::vector<T>& v) {\n    std::vector<T> res(v);\n    std::sort(res.begin(),\
-    \ res.end());\n    res.erase(std::unique(res.begin(), res.end()), res.end());\n\
-    \    return res;\n}\n\ninline long long radix_convert(const std::vector<long long>&\
-    \ v, int base = 10) {\n    assert(base >= 2);\n    long long res = 0;\n    for\
-    \ (long long d : v) {\n        assert(0 <= d && d < base);\n        res = res\
-    \ * base + d;\n    }\n    return res;\n}\n\ninline std::vector<long long> radix_convert(long\
-    \ long v, int base = 10) {\n    assert(v >= 0 && base >= 2);\n    std::vector<long\
-    \ long> res;\n    while (v > 0) {\n        res.push_back(v % base);\n        v\
-    \ /= base;\n    }\n    std::reverse(res.begin(), res.end());\n    return res;\n\
-    }\n"
+    \ T>\nstd::vector<T> unique(const std::vector<T>& v) {\n    std::vector<T> res(v);\n\
+    \    std::sort(res.begin(), res.end());\n    res.erase(std::unique(res.begin(),\
+    \ res.end()), res.end());\n    return res;\n}\n\ninline long long radix_convert(const\
+    \ std::vector<long long>& v, int base = 10) {\n    assert(base >= 2);\n    long\
+    \ long res = 0;\n    for (long long d : v) {\n        assert(0 <= d && d < base);\n\
+    \        res = res * base + d;\n    }\n    return res;\n}\n\ninline std::vector<long\
+    \ long> radix_convert(long long v, int base = 10) {\n    assert(v >= 0 && base\
+    \ >= 2);\n    std::vector<long long> res;\n    while (v > 0) {\n        res.push_back(v\
+    \ % base);\n        v /= base;\n    }\n    std::reverse(res.begin(), res.end());\n\
+    \    return res;\n}\n"
   code: "#pragma once\n\n/**\n * @file vector_func.hpp\n * @brief vector \u306B\u5BFE\
     \u3059\u308B\u6F14\u7B97\u5B50\u3068\u95A2\u6570\n */\n\n#include <algorithm>\n\
     #include <cassert>\n#include <cmath>\n#include <cstddef>\n#include <functional>\n\
@@ -279,26 +275,22 @@ data:
     \ v.end(), ret.begin());\n    return ret;\n}\n\ntemplate <typename T, ENABLE_IF_T(std::is_integral_v<T>)>\n\
     std::vector<T> iota(T n) {\n    assert(n >= 0);\n    std::vector<T> ret(n);\n\
     \    std::iota(ret.begin(), ret.end(), 0);\n    return ret;\n}\n\ntemplate <typename\
-    \ T, typename U>\nlong long hamming_distance(const std::vector<T>& v1, const std::vector<U>&\
-    \ v2) {\n    assert(v1.size() == v2.size());\n    long long res = 0;\n    for\
-    \ (std::size_t i = 0; i < v1.size(); i++) {\n        if (!(v1[i] == v2[i])) res++;\n\
-    \    }\n    return res;\n}\n\ntemplate <typename T>\nstd::vector<T> unique(const\
-    \ std::vector<T>& v) {\n    std::vector<T> res(v);\n    std::sort(res.begin(),\
-    \ res.end());\n    res.erase(std::unique(res.begin(), res.end()), res.end());\n\
-    \    return res;\n}\n\ninline long long radix_convert(const std::vector<long long>&\
-    \ v, int base = 10) {\n    assert(base >= 2);\n    long long res = 0;\n    for\
-    \ (long long d : v) {\n        assert(0 <= d && d < base);\n        res = res\
-    \ * base + d;\n    }\n    return res;\n}\n\ninline std::vector<long long> radix_convert(long\
-    \ long v, int base = 10) {\n    assert(v >= 0 && base >= 2);\n    std::vector<long\
-    \ long> res;\n    while (v > 0) {\n        res.push_back(v % base);\n        v\
-    \ /= base;\n    }\n    std::reverse(res.begin(), res.end());\n    return res;\n\
-    }\n"
+    \ T>\nstd::vector<T> unique(const std::vector<T>& v) {\n    std::vector<T> res(v);\n\
+    \    std::sort(res.begin(), res.end());\n    res.erase(std::unique(res.begin(),\
+    \ res.end()), res.end());\n    return res;\n}\n\ninline long long radix_convert(const\
+    \ std::vector<long long>& v, int base = 10) {\n    assert(base >= 2);\n    long\
+    \ long res = 0;\n    for (long long d : v) {\n        assert(0 <= d && d < base);\n\
+    \        res = res * base + d;\n    }\n    return res;\n}\n\ninline std::vector<long\
+    \ long> radix_convert(long long v, int base = 10) {\n    assert(v >= 0 && base\
+    \ >= 2);\n    std::vector<long long> res;\n    while (v > 0) {\n        res.push_back(v\
+    \ % base);\n        v /= base;\n    }\n    std::reverse(res.begin(), res.end());\n\
+    \    return res;\n}\n"
   dependsOn:
   - src/utility/traits.hpp
   isVerificationFile: false
   path: src/utility/vector_func.hpp
   requiredBy: []
-  timestamp: '2026-10-31 05:46:56+09:00'
+  timestamp: '2026-11-03 20:20:26+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/utility/vector_func.test.cpp
@@ -356,7 +348,6 @@ auto c = select(a, idx);          // {2, 1, 0}
 | `iota(n)` | `{0, 1, ..., n-1}` | $O(n)$ |
 | `unique(v)` | ソートして重複を除いたコピー | $O(n \log n)$ |
 | `abs(v)` | 全要素の絶対値 | $O(n)$ |
-| `hamming_distance(v, w)` | 同じ長さの `v` と `w` で要素が異なる位置の数 (長さが違うと assert で落ちる) | $O(n)$ |
 | `extend(v, w)` | `w` を末尾に連結 | $O(m)$ |
 | `assign(v, w)` | `w` の内容で置き換える (型の変換つき) | $O(m)$ |
 | `radix_convert(x, base = 10)` | 整数 `x` を `base` 進数の桁のリスト (上位桁から) にする。`x = 0` なら空のリスト。`x >= 0`、`base >= 2` でなければ assert で落ちる | $O(\log_{base} x)$ |
@@ -364,5 +355,5 @@ auto c = select(a, idx);          // {2, 1, 0}
 
 ## 関連
 
-- 文字列などの列のハミング距離は [文字列アルゴリズム](../string/string.hpp)、整数のハミング距離は [ビット演算](bit.hpp) の `hamming_distance`
+- 列のハミング距離は [コンテナに対する関数](container_func.hpp)、整数のハミング距離は [ビット演算](bit.hpp) の `hamming_distance`
 - コンテナ全般に使える関数 (`sorted`、`sum`、`bisect_left` など) は [コンテナに対する関数](container_func.hpp)

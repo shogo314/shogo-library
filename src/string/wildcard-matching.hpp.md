@@ -738,5 +738,5 @@ auto q = wildcard_pattern_matching(std::vector<int>{1, -1, 2}, std::vector<int>{
 
 ## 関連
 
-- ワイルドカードがなければ [文字列アルゴリズム](string.hpp) の `kmp_search` ($O(n + m)$)
+- ワイルドカードがなければ [KMP 法](kmp.hpp) の `kmp_search` ($O(n + m)$)
 - 畳み込みは [畳み込み](../math/convolution.hpp)

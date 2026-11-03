@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "../../../src/string/string.hpp"
+#include "../../../src/string/manacher.hpp"
 
 int main() {
     std::cin.tie(nullptr);

@@ -8,7 +8,7 @@
 #include <iostream>
 #include <string>
 
-#include "../../../src/string/string.hpp"
+#include "../../../src/string/z-algorithm.hpp"
 
 int main() {
     int n;

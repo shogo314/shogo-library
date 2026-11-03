@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-#include "../../../src/string/string.hpp"
+#include "../../../src/string/lyndon.hpp"
 
 int main() {
     std::ios::sync_with_stdio(false);

@@ -53,5 +53,5 @@ for (long long i = 0; i < pt.length(); i++) total += depth[pt.longest_suffix(i)]
 
 ## 関連
 
-- 各位置を中心とする最長の回文の半径は [文字列アルゴリズム](string.hpp) の Manacher のアルゴリズム
+- 各位置を中心とする最長の回文の半径は [Manacher 法](manacher.hpp)
 - 複数の文字列の接頭辞を扱う木は [Trie](trie.hpp)

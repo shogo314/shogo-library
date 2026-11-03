@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-#include "../../../src/string/string.hpp"
+#include "../../../src/string/z-algorithm.hpp"
 
 int main(void) {
     std::string s;

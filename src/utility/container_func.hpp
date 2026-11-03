@@ -221,6 +221,28 @@ inline constexpr long long count_if(const C& v, F f) {
     return res;
 }
 
+/**
+ * @brief 同じ長さの 2 つの列のハミング距離 (要素が異なる位置の数) O(N)
+ *
+ * @tparam R1 配列の型
+ * @tparam R2 配列の型
+ * @param s 配列
+ * @param t 配列 (s と同じ長さ)
+ * @return long long ハミング距離
+ */
+template <typename R1, typename R2>
+inline constexpr auto hamming_distance(const R1& s, const R2& t) -> decltype(std::begin(s), std::begin(t), 0LL) {
+    auto a = std::begin(s);
+    auto b = std::begin(t);
+    long long n = std::end(s) - a;
+    assert(n == std::end(t) - b);
+    long long res = 0;
+    for (long long i = 0; i < n; i++) {
+        if (!(a[i] == b[i])) res++;
+    }
+    return res;
+}
+
 template <class C, ENABLE_IF_T(std::is_integral_v<mem_value_type<C>>)>
 inline constexpr mem_value_type<C> mex(const C& v) {
     std::vector<bool> b(v.size() + 1);

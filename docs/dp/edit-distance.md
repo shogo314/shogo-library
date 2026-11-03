@@ -18,5 +18,5 @@ edit_distance(std::vector<int>{1, 2, 3}, std::vector<int>{2, 3, 4});        // 2
 
 ## 関連
 
-- 置換だけを許す場合 (同じ長さの列で異なる位置の数) は [文字列アルゴリズム](../string/string.hpp) の `hamming_distance`
+- 置換だけを許す場合 (同じ長さの列で異なる位置の数) は [コンテナに対する関数](../utility/container_func.hpp) の `hamming_distance`
 - 挿入と削除だけを許す場合の最小回数は、[最長共通部分列 (LCS)](longest-common-subsequence.hpp) の長さ $L$ を使って $n + m - 2L$

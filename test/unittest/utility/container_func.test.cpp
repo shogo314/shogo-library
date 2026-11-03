@@ -200,5 +200,20 @@ int main() {
     check(index(std::vector<int>{}, 3) == -1, "index 空");
     check(sorted(std::string("bca"), std::greater<char>()) == "cba", "sorted(string, f)");
 
+    // hamming_distance: 同じ長さの列どうし (型が異なってもよい)
+    for (int rep = 0; rep < 1000; rep++) {
+        int n = rng() % 10;
+        std::string s(n, 'a'), t(n, 'a');
+        for (auto& c : s) c = 'a' + rng() % 3;
+        for (auto& c : t) c = 'a' + rng() % 3;
+        long long hd = 0;
+        for (int i = 0; i < n; i++) hd += s[i] != t[i];
+        std::vector<int> v(t.begin(), t.end());
+        check(hamming_distance(s, t) == hd && hamming_distance(s, v) == hd, "hamming_distance");
+    }
+    check(hamming_distance(std::string("karolin"), std::string("kathrin")) == 3, "hamming_distance(string)");
+    check(hamming_distance(std::vector<int>{1, 2, 3}, std::vector<long long>{1, 0, 3}) == 1, "hamming_distance(vector)");
+    check(hamming_distance(std::string(""), std::string("")) == 0, "hamming_distance 空");
+
     if (ok) std::cout << "Hello World" << std::endl;
 }

@@ -109,5 +109,5 @@ for (auto [S, T] : subset_pairs(n)) chmin(dp[S], cost[T] + cost[S ^ T]);
 
 - 部分集合・上位集合についての和を $O(n 2^n)$ で求めるには [部分集合・上位集合のゼータ変換、メビウス変換とビット演算の畳み込み](../math/bitwise-transform.hpp)
 
-- 文字列や配列のハミング距離は [文字列アルゴリズム](../string/string.hpp) の `hamming_distance`
+- 文字列や配列のハミング距離は [コンテナに対する関数](container_func.hpp) の `hamming_distance`
 - 2 進数以外の桁への変換は [vector に対する演算子と関数](vector_func.hpp) の `radix_convert`

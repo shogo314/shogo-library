@@ -37,6 +37,7 @@ auto odd = indices_if(v, [](int x) { return x % 2 == 1; });  // {0, 1, 3, 4}
 | `average(c)` | 平均 (`sum(c) / size`、整数型なら 0 方向に切り捨て。空なら assert で落ちる) | $O(n)$ |
 | `median(c)` | 中央値 (要素数が偶数なら中央 2 つの平均。空なら assert で落ちる) | $O(n \log n)$ |
 | `mex(c)` | 含まれない最小の非負整数 | $O(n)$ |
+| `hamming_distance(s, t)` | 同じ長さの列 `s` と `t` で要素が異なる位置の数 (`long long`。型が違ってもよく、`string` と `vector<int>` なども比べられる。長さが違うと assert で落ちる) | $O(n)$ |
 
 ## 検索
 
@@ -64,5 +65,5 @@ if (cand.size() == 1) vote[cand[0]]++;
 
 ## 関連
 
-- `hamming_distance` は [文字列アルゴリズム](../string/string.hpp)
+- 整数のハミング距離は [ビット演算](bit.hpp) の `hamming_distance`
 - `std::vector` に対する演算子と関数は [vector に対する演算子と関数](vector_func.hpp)

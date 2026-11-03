@@ -36,5 +36,5 @@ for (long long h : lcp_array(s, suffix_array(s))) ans -= h;
 ## 関連
 
 - 2 つの列の最長共通部分文字列は [最長共通部分文字列](longest-common-substring.hpp)
-- Z-algorithm・KMP・Manacher は [文字列アルゴリズム](string.hpp)
+- [Z-algorithm](z-algorithm.hpp)・[KMP 法](kmp.hpp)・[Manacher 法](manacher.hpp)・[Lyndon 分解](lyndon.hpp)
 - 部分文字列の判定・出現回数を 1 文字ずつ追加しながら求めるなら [Suffix Automaton](suffix-automaton.hpp)

@@ -34,7 +34,7 @@
 - 復元が要るときは、値を返す関数と `_restore` の 2 本にする。
   - `_restore` は値も含めた構造体を返す (`{length, indices}`・`{cost, edges}` など)。
   - 辺は番号でなく `Edge` で返す。
-  - 値と復元が手間をかけずに一緒に求まるなら、2 本に分けず 1 つの構造体で返してよい (`shortest_path`・`minimum_spanning_tree`・`hungarian`)。
+  - 値と復元が手間をかけずに一緒に求まるなら、2 本に分けず 1 つの構造体で返してよい (`shortest_path_dijkstra`・`minimum_spanning_tree`・`hungarian`)。
   - 値を返す版がない関数 (`general_matching` など) には `_restore` を付けない。
 - `.first`・`.second`・`std::get` では中身が読み取りにくい組は、名前付きのメンバを持つ型で返す。メンバは構造化束縛で受け取る順に並べる。
   - 型名は関数名をキャメルケースにしたもの (`MinimumSpanningTree`・`TreeDiameter`)。複数の関数で共有するもの、関数名が動詞やアルゴリズム名のものは中身を表す名詞にする (`SubsetSum`・`LongestSubstring`・`Match`・`Assignment`)。
@@ -53,6 +53,7 @@
 - 個数を返す自由関数は `<対象>_count` (`prime_count`・`subset_sum_count`・`subarray_sum_count`)。メンバ関数で、引数を渡して数える操作は `std::count`・`count_if` と同じく `count`・`count_<対象>` (`count_prefix`・`count_less`)、持っている数を返すだけのものは `size()` と同じく名詞 (`pattern_count`)。
 - mod を法とする演算は `_mod` を後ろに付ける (`pow_mod`・`inv_mod`・`mul_mod`・`sqrt_mod`・`det_mod`。ACL・Library Checker と同じ)。
 - 列を返すものは `enumerate_`、関数を受け取って呼ぶものは `for_each_` (`enumerate_quotients`・`for_each_quotient`)。
+- 同じ問題を解くアルゴリズムが複数あるなら `<問題>_<アルゴリズム>` にする (`shortest_path_dijkstra`・`shortest_path_bellman_ford`・`subset_sum_max_bitset`)。問題そのものの名前 (`shortest_path(g, s, t)`) は、いちばん普通に使う形に付ける。
 - 変種は接尾辞で表す: `_directed`・`_undirected`、`_by_weight`・`_by_value`、`_meet_in_the_middle`、`_bitset`、`_geometric`、`_2d`、`_mod`。整数のまま正確に返す版は `_squared`・`_doubled` (`closest_point_pair_squared`・`polygon_area_doubled`)。
 - 最小化・最大化する問題の名前は、省略せず `minimum_`・`maximum_` にする (`minimum_spanning_tree`・`minimum_set_cover`・`maximum_independent_set`。Library Checker の問題名とも揃う)。演算の名前や ACL・std 由来のものは `min`・`max` のまま (`min_plus_convolution_*`・`min_cut`・`min_left`・`max_right`・`subset_sum_max`)。
 - 誤字は直す。改名したら古い名前は残さない (`[[deprecated]]` の別名も置かない)。

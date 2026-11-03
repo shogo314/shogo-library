@@ -31,7 +31,7 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 | `size()` | 頂点数 (`RootedTree`・`DoublingClimbTree` でも使える) | $O(1)$ |
 | `add_edge(u, v, w = 1)` | 辺を追加 | $O(1)$ |
 | `read(padding = -1, weighted = false)` | 標準入力から `n - 1` 本の辺を読む | $O(n)$ |
-| `graph()` | この木を `const Graph<Cost>&` として返す。`shortest_path` や [グラフに関する関数](graph_util.hpp) など、`Graph` を受け取る関数に渡すときに使う (`RootedTree`・`DoublingClimbTree` でも使える) | $O(1)$ |
+| `graph()` | この木を `const Graph<Cost>&` として返す。`shortest_path_dijkstra` や [グラフに関する関数](graph_util.hpp) など、`Graph` を受け取る関数に渡すときに使う (`RootedTree`・`DoublingClimbTree` でも使える) | $O(1)$ |
 | `set_root(r)` | 根を `r` にした `RootedTree` を返す | $O(n)$ |
 | `build_lca(r)` | 根を `r` にした `DoublingClimbTree` を返す | $O(n \log n)$ |
 

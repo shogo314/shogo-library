@@ -9,14 +9,13 @@ int main() {
     std::cin >> n >> m >> s >> t;
     Graph<long long> g(n);
     g.read(m, 0, true, true);
-    auto sp = shortest_path(g, s);
-    auto route = sp.path(t);
+    auto route = shortest_path(g, s, t);
     if (!route) {
         std::cout << -1 << '\n';
         return 0;
     }
-    std::cout << sp.dist[t] << ' ' << route->size() << '\n';
-    for (auto& e : *route) {
+    std::cout << route->cost << ' ' << route->edges.size() << '\n';
+    for (auto& e : route->edges) {
         std::cout << e.src << ' ' << e.dst << '\n';
     }
 }

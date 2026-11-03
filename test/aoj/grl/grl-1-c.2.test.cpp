@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_C"
 
-// floyd_warshall を使う
+// shortest_path_floyd_warshall を使う
 
 #include <iostream>
 #include <limits>
@@ -13,7 +13,7 @@ int main() {
     Graph<long long> g(n);
     g.read(m, 0, true, true);
     const long long inf = std::numeric_limits<long long>::max() / 4;
-    auto d = floyd_warshall(g, inf);
+    auto d = shortest_path_floyd_warshall(g, inf);
     for (int i = 0; i < n; i++) {
         if (d[i][i] < 0) {
             std::cout << "NEGATIVE CYCLE" << '\n';

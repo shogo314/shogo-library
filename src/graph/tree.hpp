@@ -51,7 +51,7 @@ struct Tree : private Graph<Cost> {
     /**
      * @brief Graph として見る
      *
-     * Graph を受け取る関数 (shortest_path など) に渡すときに使う
+     * Graph を受け取る関数 (shortest_path_dijkstra など) に渡すときに使う
      * @return const Graph<Cost>& この木を表すグラフ
      */
     const Graph<Cost>& graph() const { return *this; }

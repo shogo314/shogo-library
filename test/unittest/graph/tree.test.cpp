@@ -2,7 +2,7 @@
 
 // tree.hpp の DoublingClimbTree(Tree&&, root) (ムーブで作るコンストラクタ) を愚直な実装とランダムに比較する
 // 親のリストから作るコンストラクタは、std::vector<int> と std::vector<long long> の両方で作って比べる
-// graph() で取り出した Graph に shortest_path を使い、dist と比べる
+// graph() で取り出した Graph に shortest_path_dijkstra を使い、dist と比べる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
 
 #include "../../../src/graph/tree.hpp"
@@ -87,7 +87,7 @@ int main() {
                 if (dt.dist(u, v) != wdep[u] + wdep[v] - 2 * wdep[a]) ok = false;
             }
             // graph() で Graph として渡せる
-            auto sp = shortest_path(dt.graph(), u);
+            auto sp = shortest_path_dijkstra(dt.graph(), u);
             for (int v = 0; v < n; v++) {
                 if (sp.dist[v] != dt.dist(u, v)) ok = false;
             }

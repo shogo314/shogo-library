@@ -18,9 +18,20 @@
 #include "graph.hpp"
 
 /**
- * @brief 最短路の結果
+ * @brief 経路。長さ cost と、たどる辺の列 edges
  *
- * auto [dist, prev] = shortest_path(g, s); のように受け取れる
+ * auto [cost, edges] = *shortest_path(g, s, t); のように受け取れる
+ */
+template <typename Cost>
+struct Path {
+    Cost cost;                                      //!< 経路の長さ (辺のコストの和)
+    std::vector<typename Graph<Cost>::Edge> edges;  //!< たどる辺 (始点側から順に)
+};
+
+/**
+ * @brief 1 点から全点への最短路の結果
+ *
+ * auto [dist, prev] = shortest_path_dijkstra(g, s); のように受け取れる
  */
 template <typename Cost>
 struct ShortestPath {
@@ -28,20 +39,20 @@ struct ShortestPath {
     std::vector<Cost> dist;  //!< 各頂点への最短路長
     std::vector<Edge> prev;  //!< 各頂点への最短路上の直前の辺 (始点と未到達の頂点では src == -1)
     /**
-     * @brief 始点から t への最短路を構成する辺のリスト (始点側から順に)
-     * @return std::optional<std::vector<Edge>> t が始点なら空、未到達なら std::nullopt
+     * @brief 始点から t への最短路 (長さと、始点側から順にたどる辺)
+     * @return std::optional<Path<Cost>> t が始点なら長さ 0 で辺は空、未到達なら std::nullopt
      * @note 負閉路の影響を受ける頂点では最短路が定まらない (assert で落ちる)
      */
-    std::optional<std::vector<Edge>> path(long long t) const {
+    std::optional<Path<Cost>> path(long long t) const {
         // 直前の辺がないのは始点と未到達の頂点。始点の距離は 0 で、未到達の距離 inf は正なので区別できる
         if (prev[t].src == -1 && dist[t] != Cost{}) return std::nullopt;
-        std::vector<Edge> res;
+        Path<Cost> res{dist[t], {}};
         while (prev[t].src != -1) {
-            res.push_back(prev[t]);
-            assert(res.size() < prev.size() && "path: negative cycle");
+            res.edges.push_back(prev[t]);
+            assert(res.edges.size() < prev.size() && "path: negative cycle");
             t = prev[t].src;
         }
-        std::reverse(res.begin(), res.end());
+        std::reverse(res.edges.begin(), res.edges.end());
         return res;
     }
 };
@@ -69,8 +80,12 @@ ShortestPath<Cost> bfs(const Graph<Cost>& graph, long long s, Cost inf) {
     return {dist, prev};
 }
 
+// target が -1 でなければ、target の距離が決まった時点で打ち切る
 template <typename Cost>
-ShortestPath<Cost> dijkstra(const Graph<Cost>& graph, long long s, Cost inf) {
+ShortestPath<Cost> dijkstra(const Graph<Cost>& graph, long long s, Cost inf, long long target = -1) {
+    for (long long v = 0; v < graph.n; v++) {
+        for (const auto& e : graph[v]) assert(!(e.cost < Cost{}) && "negative edge (use shortest_path_bellman_ford)");
+    }
     std::vector<Cost> dist(graph.n, inf);
     std::vector<typename Graph<Cost>::Edge> prev(graph.n);
     using Node = std::pair<Cost, long long>;
@@ -82,6 +97,7 @@ ShortestPath<Cost> dijkstra(const Graph<Cost>& graph, long long s, Cost inf) {
         que.pop();
         if (d > dist[u])
             continue;
+        if (u == target) break;
         for (auto& e : graph[u]) {
             if (dist[e.dst] == inf || dist[e.dst] > dist[e.src] + e.cost) {
                 dist[e.dst] = dist[e.src] + e.cost;
@@ -96,19 +112,29 @@ ShortestPath<Cost> dijkstra(const Graph<Cost>& graph, long long s, Cost inf) {
 }  // namespace internal_shortest_path
 
 /**
+ * @brief s から t への最短路 (Dijkstra。t の距離が決まった時点で打ち切る) O(m log m)
+ *
+ * @return std::optional<Path<Cost>> 長さと、s 側から順にたどる辺。届かなければ std::nullopt。s == t なら長さ 0 で辺は空
+ * @note 負の辺があると assert で落ちる (負の辺があるなら shortest_path_bellman_ford)
+ */
+template <typename Cost = long long>
+std::optional<Path<Cost>> shortest_path(const Graph<Cost>& graph, long long s, long long t) {
+    assert(0 <= s && s < graph.n);
+    assert(0 <= t && t < graph.n);
+    return internal_shortest_path::dijkstra(graph, s, std::numeric_limits<Cost>::max() / 4, t).path(t);
+}
+
+/**
  * @brief ある頂点から各頂点への最短路 (Dijkstra) O(m log m)
  *
  * @param s 始点
  * @param inf 未到達の頂点への距離 省略すると std::numeric_limits<Cost>::max() / 4
  * @return ShortestPath 各頂点への最短路長 (dist) と、各頂点への最短路上の直前の辺 (prev)
- * @note 負の辺があると assert で落ちる (負の辺があるなら bellman_ford)
+ * @note 負の辺があると assert で落ちる (負の辺があるなら shortest_path_bellman_ford)
  */
 template <typename Cost = long long>
-ShortestPath<Cost> shortest_path(const Graph<Cost>& graph, long long s, Cost inf = std::numeric_limits<Cost>::max() / 4) {
+ShortestPath<Cost> shortest_path_dijkstra(const Graph<Cost>& graph, long long s, Cost inf = std::numeric_limits<Cost>::max() / 4) {
     assert(0 <= s && s < graph.n);
-    for (long long v = 0; v < graph.n; v++) {
-        for (const auto& e : graph[v]) assert(!(e.cost < Cost{}) && "shortest_path: negative edge (use bellman_ford)");
-    }
     return internal_shortest_path::dijkstra(graph, s, inf);
 }
 
@@ -133,7 +159,7 @@ ShortestPath<Cost> shortest_path_bfs(const Graph<Cost>& graph, long long s, Cost
  * @return ShortestPath 各頂点への最短路長 (dist) と、各頂点への最短路上の直前の辺 (prev)
  */
 template <typename Cost = long long>
-ShortestPath<Cost> bellman_ford(const Graph<Cost>& graph, long long s, Cost inf = std::numeric_limits<Cost>::max() / 4) {
+ShortestPath<Cost> shortest_path_bellman_ford(const Graph<Cost>& graph, long long s, Cost inf = std::numeric_limits<Cost>::max() / 4) {
     assert(0 <= s && s < graph.n);
     const long long n = graph.n;
     std::vector<Cost> dist(n, inf);
@@ -217,7 +243,7 @@ ShortestPath<Cost> shortest_path_01bfs(const Graph<Cost>& graph, long long s, Co
  * 負閉路があるときの値は -inf 以上に切り詰めるので、あふれない (負閉路の影響を受ける組の値は最短路長ではない)
  */
 template <typename Cost = long long>
-std::vector<std::vector<Cost>> floyd_warshall(const Graph<Cost>& graph, Cost inf = std::numeric_limits<Cost>::max() / 4) {
+std::vector<std::vector<Cost>> shortest_path_floyd_warshall(const Graph<Cost>& graph, Cost inf = std::numeric_limits<Cost>::max() / 4) {
     const long long n = graph.n;
     std::vector<std::vector<Cost>> dist(n, std::vector<Cost>(n, inf));
     for (long long i = 0; i < n; i++) dist[i][i] = Cost{};

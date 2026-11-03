@@ -27,11 +27,39 @@ int main() {
         }
         for (int s = 0; s < n; s++) {
             auto a = shortest_path_bfs(g, s);
-            if (a.dist != shortest_path(g1, s).dist) ok = false;
+            if (a.dist != shortest_path_dijkstra(g1, s).dist) ok = false;
             for (int t = 0; t < n; t++) {
                 auto p = a.path(t);
                 if (p.has_value() != (a.dist[t] != std::numeric_limits<int>::max() / 4)) ok = false;
-                if (p && static_cast<int>(p->size()) != a.dist[t]) ok = false;
+                if (p && (static_cast<int>(p->edges.size()) != a.dist[t] || p->cost != a.dist[t])) ok = false;
+            }
+        }
+    }
+
+    // shortest_path(g, s, t): 途中で打ち切っても、全点の Dijkstra と長さが一致し、s から t へつながる辺の列を返す
+    for (int rep = 0; rep < 2000 && ok; rep++) {
+        int n = rng() % 10 + 1, m = rng() % 25;
+        Graph<long long> g(n);
+        for (int i = 0; i < m; i++) {
+            int u = rng() % n, v = rng() % n, w = rng() % 10;
+            if (rng() % 2)
+                g.add_edge(u, v, w);
+            else
+                g.add_directed_edge(u, v, w);
+        }
+        for (int s = 0; s < n; s++) {
+            auto all = shortest_path_dijkstra(g, s);
+            for (int t = 0; t < n; t++) {
+                auto p = shortest_path(g, s, t);
+                if (p.has_value() != (all.dist[t] != std::numeric_limits<long long>::max() / 4)) ok = false;
+                if (!p) continue;
+                if (p->cost != all.dist[t]) ok = false;
+                long long cur = s, len = 0;
+                for (auto& e : p->edges) {
+                    if (e.src != cur) ok = false;
+                    cur = e.dst, len += e.cost;
+                }
+                if (cur != t || len != p->cost) ok = false;
             }
         }
     }
@@ -49,7 +77,7 @@ int main() {
         }
         for (int s = 0; s < n; s++) {
             auto a = shortest_path_01bfs(g, s);
-            auto b = shortest_path(g, s);
+            auto b = shortest_path_dijkstra(g, s);
             if (a.dist != b.dist) ok = false;
             // prev をたどった経路の長さが dist と一致する
             for (int t = 0; t < n; t++) {
@@ -57,15 +85,15 @@ int main() {
                 auto p = a.path(t);
                 if (p.has_value() != (a.dist[t] != std::numeric_limits<int>::max() / 4)) ok = false;
                 if (!p) continue;
-                if (t == s && !p->empty()) ok = false;
+                if (t == s && !p->edges.empty()) ok = false;
                 int len = 0;
-                for (auto& e : *p) len += e.cost;
-                if (len != a.dist[t]) ok = false;
+                for (auto& e : p->edges) len += e.cost;
+                if (len != a.dist[t] || p->cost != a.dist[t]) ok = false;
             }
         }
     }
 
-    // floyd_warshall: 負の辺を含む有向グラフで、各始点からの Bellman-Ford と比べる
+    // shortest_path_floyd_warshall: 負の辺を含む有向グラフで、各始点からの Bellman-Ford と比べる
     for (int rep = 0; rep < 2000 && ok; rep++) {
         int n = rng() % 8 + 1, m = rng() % 20;
         Graph<long long> g(n);
@@ -75,10 +103,10 @@ int main() {
             g.add_directed_edge(u, v, w);
         }
         const long long inf = std::numeric_limits<long long>::max() / 4;
-        auto d = floyd_warshall(g);
+        auto d = shortest_path_floyd_warshall(g);
         bool negative = false;
         for (int s = 0; s < n; s++) {
-            auto b = bellman_ford(g, s);
+            auto b = shortest_path_bellman_ford(g, s);
             for (int t = 0; t < n; t++) negative |= b.dist[t] == -inf;
         }
         bool negative_fw = false;
@@ -86,20 +114,20 @@ int main() {
         if (negative != negative_fw) ok = false;
         if (!negative) {
             for (int s = 0; s < n; s++) {
-                auto b = bellman_ford(g, s);
+                auto b = shortest_path_bellman_ford(g, s);
                 if (d[s] != b.dist) ok = false;
             }
         }
     }
 
-    // floyd_warshall: 負閉路があっても値は -inf 以上に収まり、あふれない。dist[i][i] < 0 で負閉路を判定できる
+    // shortest_path_floyd_warshall: 負閉路があっても値は -inf 以上に収まり、あふれない。dist[i][i] < 0 で負閉路を判定できる
     for (int n : {2, 10, 40}) {
         const long long inf = std::numeric_limits<long long>::max() / 4;
         Graph<long long> g(n);
         for (int u = 0; u < n; u++) {
             for (int v = 0; v < n; v++) g.add_directed_edge(u, v, -1000000000000000LL);
         }
-        auto d = floyd_warshall(g);
+        auto d = shortest_path_floyd_warshall(g);
         for (int i = 0; i < n; i++) {
             if (d[i][i] >= 0) ok = false;
             for (int j = 0; j < n; j++) {
@@ -113,7 +141,7 @@ int main() {
         g.add_directed_edge(0, 1, -5);
         g.add_directed_edge(1, 0, -5);
         g.add_directed_edge(2, 3, 7);
-        auto d = floyd_warshall(g);
+        auto d = shortest_path_floyd_warshall(g);
         const long long inf = std::numeric_limits<long long>::max() / 4;
         if (d[2][3] != 7 || d[3][2] != inf || d[2][0] != inf || d[0][0] >= 0 || d[2][2] != 0) ok = false;
     }

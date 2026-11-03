@@ -10,7 +10,7 @@ int main(void) {
     std::cin >> n >> m >> r;
     Graph<int> graph(n);
     graph.read(m, 0, true, true);
-    std::vector<int> ans = bellman_ford(graph, r, INF).dist;
+    std::vector<int> ans = shortest_path_bellman_ford(graph, r, INF).dist;
     for (int i = 0; i < n; i++) {
         if (ans[i] <= -INF) {
             std::cout << "NEGATIVE CYCLE" << std::endl;

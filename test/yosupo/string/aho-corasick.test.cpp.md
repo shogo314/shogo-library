@@ -137,21 +137,26 @@ data:
     \ += visit[u];\n        }\n        std::vector<long long> res(pattern_node.size());\n\
     \        for (int i = 0; i < static_cast<int>(pattern_node.size()); i++) res[i]\
     \ = visit[pattern_node[i]];\n        return res;\n    }\n    /**\n     * @brief\
+    \ find_all \u304C\u8FD4\u3059\u3001\u30D1\u30BF\u30FC\u30F3\u304C\u73FE\u308C\u305F\
+    \u4F4D\u7F6E\n     */\n    struct Match {\n        long long pos;  //!< \u958B\
+    \u59CB\u4F4D\u7F6E\n        long long id;   //!< \u30D1\u30BF\u30FC\u30F3\u306E\
+    \u756A\u53F7\n        friend bool operator==(const Match& a, const Match& b) {\
+    \ return a.pos == b.pos && a.id == b.id; }\n        friend bool operator!=(const\
+    \ Match& a, const Match& b) { return !(a == b); }\n    };\n    /**\n     * @brief\
     \ text \u306B\u73FE\u308C\u308B\u30D1\u30BF\u30FC\u30F3\u3092\u3059\u3079\u3066\
-    \ (\u958B\u59CB\u4F4D\u7F6E, \u30D1\u30BF\u30FC\u30F3\u306E\u756A\u53F7) \u306E\
-    \u7D44\u3067\u8FD4\u3059 O(|text| + \u51FA\u529B\u306E\u500B\u6570)\n     * \u7D42\
+    \ {\u958B\u59CB\u4F4D\u7F6E pos, \u30D1\u30BF\u30FC\u30F3\u306E\u756A\u53F7 id}\
+    \ \u3067\u8FD4\u3059 O(|text| + \u51FA\u529B\u306E\u500B\u6570)\n     * \u7D42\
     \u308F\u308B\u4F4D\u7F6E\u306E\u9806\u306B\u4E26\u3073\u3001\u540C\u3058\u4F4D\
     \u7F6E\u3067\u7D42\u308F\u308B\u3082\u306E\u306F\u9577\u3044\u30D1\u30BF\u30FC\
     \u30F3\u304B\u3089\u3001\u540C\u3058\u30D1\u30BF\u30FC\u30F3\u306F\u756A\u53F7\
     \u306E\u5C0F\u3055\u3044\u9806\u306B\u4E26\u3076\n     */\n    template <typename\
-    \ R>\n    std::vector<std::pair<long long, long long>> find_all(const R& text)\
-    \ const {\n        assert(built);\n        std::vector<std::pair<long long, long\
-    \ long>> res;\n        int v = 0;\n        long long pos = 0;\n        for (auto\
-    \ c : text) {\n            v = nodes[v].next[index(c)];\n            pos++;\n\
-    \            for (int u = nodes[v].head != -1 ? v : nodes[v].out; u != -1; u =\
-    \ nodes[u].out) {\n                for (int id = nodes[u].head; id != -1; id =\
-    \ next_pattern[id]) res.emplace_back(pos - nodes[u].depth, id);\n            }\n\
-    \        }\n        return res;\n    }\n};\n#line 4 \"test/yosupo/string/aho-corasick.test.cpp\"\
+    \ R>\n    std::vector<Match> find_all(const R& text) const {\n        assert(built);\n\
+    \        std::vector<Match> res;\n        int v = 0;\n        long long pos =\
+    \ 0;\n        for (auto c : text) {\n            v = nodes[v].next[index(c)];\n\
+    \            pos++;\n            for (int u = nodes[v].head != -1 ? v : nodes[v].out;\
+    \ u != -1; u = nodes[u].out) {\n                for (int id = nodes[u].head; id\
+    \ != -1; id = next_pattern[id]) res.push_back({pos - nodes[u].depth, id});\n \
+    \           }\n        }\n        return res;\n    }\n};\n#line 4 \"test/yosupo/string/aho-corasick.test.cpp\"\
     \n\n#include <iostream>\n#include <string>\n#line 8 \"test/yosupo/string/aho-corasick.test.cpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    int n;\n    std::cin >> n;\n    AhoCorasick<26, 'a'> ac;\n    std::vector<long\
@@ -180,7 +185,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/string/aho-corasick.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:37:20+09:00'
+  timestamp: '2026-11-03 08:22:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/string/aho-corasick.test.cpp

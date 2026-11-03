@@ -467,12 +467,7 @@ data:
     \ * @return FarthestPair \u6700\u9060\u70B9\u5BFE\u306E\u8DDD\u96E2\u3068\u6DFB\
     \u5B57\n */\ntemplate <typename T>\nFarthestPair farthest_point_pair(const std::vector<Vector<T,\
     \ 2>>& points) {\n    auto [d2, i, j] = farthest_point_pair_squared(points);\n\
-    \    return {std::sqrt(static_cast<double>(d2)), i, j};\n}\n/**\n * @deprecated\
-    \ closest_point_pair_squared \u3092\u4F7F\u3046\u3053\u3068(\u7DB4\u308A\u306E\
-    \u8AA4\u308A\u3092\u76F4\u3057\u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename\
-    \ T>\n[[deprecated(\"use closest_point_pair_squared\")]] ClosestPairSquared<T>\
-    \ closest_point_pair_squred(const std::vector<Vector<T, 2>>& points) {\n    return\
-    \ closest_point_pair_squared(points);\n}\n"
+    \    return {std::sqrt(static_cast<double>(d2)), i, j};\n}\n"
   code: "#pragma once\n\n/**\n * @file point-pair.hpp\n * @brief \u6700\u8FD1\u70B9\
     \u5BFE\u30FB\u6700\u9060\u70B9\u5BFE\n */\n\n#include <algorithm>\n#include <cassert>\n\
     #include <cmath>\n#include <limits>\n#include <numeric>\n#include <stack>\n#include\
@@ -578,12 +573,7 @@ data:
     \ * @return FarthestPair \u6700\u9060\u70B9\u5BFE\u306E\u8DDD\u96E2\u3068\u6DFB\
     \u5B57\n */\ntemplate <typename T>\nFarthestPair farthest_point_pair(const std::vector<Vector<T,\
     \ 2>>& points) {\n    auto [d2, i, j] = farthest_point_pair_squared(points);\n\
-    \    return {std::sqrt(static_cast<double>(d2)), i, j};\n}\n/**\n * @deprecated\
-    \ closest_point_pair_squared \u3092\u4F7F\u3046\u3053\u3068(\u7DB4\u308A\u306E\
-    \u8AA4\u308A\u3092\u76F4\u3057\u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename\
-    \ T>\n[[deprecated(\"use closest_point_pair_squared\")]] ClosestPairSquared<T>\
-    \ closest_point_pair_squred(const std::vector<Vector<T, 2>>& points) {\n    return\
-    \ closest_point_pair_squared(points);\n}\n"
+    \    return {std::sqrt(static_cast<double>(d2)), i, j};\n}\n"
   dependsOn:
   - src/geometry/polygon.hpp
   - src/geometry/vector.hpp
@@ -591,7 +581,7 @@ data:
   isVerificationFile: false
   path: src/geometry/point-pair.hpp
   requiredBy: []
-  timestamp: '2026-10-31 17:14:03+09:00'
+  timestamp: '2026-11-03 08:17:43+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/geometry/point-pair.test.cpp

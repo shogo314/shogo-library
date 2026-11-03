@@ -459,12 +459,7 @@ data:
     \ * @return FarthestPair \u6700\u9060\u70B9\u5BFE\u306E\u8DDD\u96E2\u3068\u6DFB\
     \u5B57\n */\ntemplate <typename T>\nFarthestPair farthest_point_pair(const std::vector<Vector<T,\
     \ 2>>& points) {\n    auto [d2, i, j] = farthest_point_pair_squared(points);\n\
-    \    return {std::sqrt(static_cast<double>(d2)), i, j};\n}\n/**\n * @deprecated\
-    \ closest_point_pair_squared \u3092\u4F7F\u3046\u3053\u3068(\u7DB4\u308A\u306E\
-    \u8AA4\u308A\u3092\u76F4\u3057\u3066\u6539\u540D\u3057\u305F)\n */\ntemplate <typename\
-    \ T>\n[[deprecated(\"use closest_point_pair_squared\")]] ClosestPairSquared<T>\
-    \ closest_point_pair_squred(const std::vector<Vector<T, 2>>& points) {\n    return\
-    \ closest_point_pair_squared(points);\n}\n#line 8 \"test/yosupo/geo/furthest-pair.test.cpp\"\
+    \    return {std::sqrt(static_cast<double>(d2)), i, j};\n}\n#line 8 \"test/yosupo/geo/furthest-pair.test.cpp\"\
     \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
     \    int t;\n    std::cin >> t;\n    while (t--) {\n        int n;\n        std::cin\
     \ >> n;\n        std::vector<Vector<long long>> p(n);\n        for (auto& x :\
@@ -485,7 +480,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/geo/furthest-pair.test.cpp
   requiredBy: []
-  timestamp: '2026-10-31 17:14:03+09:00'
+  timestamp: '2026-11-03 08:17:43+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/geo/furthest-pair.test.cpp

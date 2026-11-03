@@ -60,91 +60,91 @@ data:
     \n#include <cmath>\n#line 12 \"src/math/modular-arithmetic.hpp\"\n#include <unordered_map>\n\
     \n/**\n * @brief a * b mod m \u3092\u8FD4\u3059 (\u9014\u4E2D\u3067 __int128 \u3092\
     \u4F7F\u3046\u306E\u3067 m < 2^63 \u306A\u3089\u3042\u3075\u308C\u306A\u3044)\n\
-    \ */\nconstexpr long long modmul(long long a, long long b, long long m) {\n  \
-    \  long long res = static_cast<long long>(static_cast<__int128>(a) * b % m);\n\
+    \ */\nconstexpr long long mul_mod(long long a, long long b, long long m) {\n \
+    \   long long res = static_cast<long long>(static_cast<__int128>(a) * b % m);\n\
     \    if (res < 0) res += m;\n    return res;\n}\n\n/**\n * @brief a^(-1) mod m\
     \ \u3092\u8FD4\u3059\n * @note a \u3068 m \u306F\u4E92\u3044\u306B\u7D20\u3067\
-    \u3042\u308B\u3053\u3068\u3002O(log m)\n */\nconstexpr long long modinv(long long\
-    \ a, long long m) {\n    assert(m >= 1);\n    a %= m;\n    if (a < 0) a += m;\n\
-    \    long long b = m, u = 1, v = 0;\n    while (b) {\n        // std::swap \u306F\
-    \ C++17 \u3067\u306F constexpr \u3067\u306A\u3044\u306E\u3067\u3001\u4F7F\u308F\
-    \u305A\u306B\u66F8\u304F\n        long long t = a / b;\n        long long c =\
-    \ a - t * b;\n        a = b, b = c;\n        long long w = u - t * v;\n      \
-    \  u = v, v = w;\n    }\n    assert(a == 1 && \"a and m must be coprime\");\n\
-    \    u %= m;\n    if (u < 0) u += m;\n    return u;\n}\n\n/**\n * @brief a^n mod\
-    \ m \u3092\u8FD4\u3059\n * @note n \u304C\u8CA0\u306A\u3089 a^(-1) \u306E -n \u4E57\
-    \ (a \u3068 m \u306F\u4E92\u3044\u306B\u7D20\u3067\u3042\u308B\u3053\u3068)\u3002\
-    O(log |n|)\n */\nconstexpr long long modpow(long long a, long long n, long long\
-    \ m) {\n    assert(m >= 1);\n    a %= m;\n    if (a < 0) a += m;\n    if (n <\
-    \ 0) {\n        n = -n;\n        a = modinv(a, m);\n    }\n    long long res =\
-    \ 1 % m;\n    while (n > 0) {\n        if (n & 1) res = modmul(res, a, m);\n \
-    \       a = modmul(a, a, m);\n        n >>= 1;\n    }\n    return res;\n}\n\n\
-    /**\n * @brief a^x \u2261 b (mod m) \u3068\u306A\u308B\u6700\u5C0F\u306E x >=\
-    \ 0 (\u306A\u3051\u308C\u3070 -1)\n * @note a \u3068 m \u306F\u4E92\u3044\u306B\
-    \u7D20\u3067\u306A\u304F\u3066\u3082\u3088\u3044\u3002Baby-step Giant-step \u3067\
-    \ O(\u221Am) \u306E\u6642\u9593\u3068\u30E1\u30E2\u30EA\n */\ninline long long\
-    \ discrete_log(long long a, long long b, long long m) {\n    assert(m >= 1);\n\
-    \    a %= m, b %= m;\n    if (a < 0) a += m;\n    if (b < 0) b += m;\n    if (m\
-    \ == 1) return 0;\n    // a \u3068 m \u304C\u4E92\u3044\u306B\u7D20\u306B\u306A\
-    \u308B\u307E\u3067\u4E21\u8FBA\u3092 gcd \u3067\u5272\u308B\u3002k = a^add / (\u5272\
-    \u3063\u305F gcd \u306E\u7A4D) mod m\n    long long k = 1, add = 0, g;\n    while\
-    \ ((g = std::gcd(a, m)) > 1) {\n        if (b == k) return add;\n        if (b\
-    \ % g != 0) return -1;\n        b /= g, m /= g, add++;\n        k = modmul(k,\
-    \ a / g, m);\n    }\n    // k a^x \u2261 b \u3092 x = n p - q (1 <= p <= n\u3001\
-    0 <= q <= n) \u3068\u66F8\u3044\u3066\u89E3\u304F\n    const long long n = static_cast<long\
-    \ long>(std::sqrt(static_cast<long double>(m))) + 1;\n    std::unordered_map<long\
-    \ long, long long> baby;\n    baby.reserve(2 * n + 2);\n    // b a^q \u3092 q\
-    \ \u306E\u5C0F\u3055\u3044\u9806\u306B\u5165\u308C\u3001\u540C\u3058\u5024\u306A\
-    \u3089\u5927\u304D\u3044 q \u3067\u4E0A\u66F8\u304D\u3059\u308B (x \u3092\u5C0F\
-    \u3055\u304F\u3059\u308B\u305F\u3081)\n    for (long long q = 0, cur = b; q <=\
-    \ n; q++, cur = modmul(cur, a, m)) baby[cur] = q;\n    const long long an = modpow(a,\
-    \ n, m);\n    for (long long p = 1, cur = k; p <= n; p++) {\n        cur = modmul(cur,\
-    \ an, m);\n        auto it = baby.find(cur);\n        if (it != baby.end()) return\
-    \ n * p - it->second + add;\n    }\n    return -1;\n}\n\n/**\n * @brief \u7D20\
-    \u6570 p \u306B\u3064\u3044\u3066 x^2 \u2261 a (mod p) \u3068\u306A\u308B x \u306E\
-    \u3046\u3061\u5C0F\u3055\u3044\u65B9 (\u306A\u3051\u308C\u3070 -1)\n * @note \u3082\
-    \u3046\u4E00\u65B9\u306E\u89E3\u306F p - x\u3002Tonelli-Shanks \u3067 O(log^2\
-    \ p)\n */\ninline long long sqrt_mod(long long a, long long p) {\n    assert(p\
-    \ >= 2);\n    a %= p;\n    if (a < 0) a += p;\n    if (a == 0 || p == 2) return\
-    \ a;\n    // \u30AA\u30A4\u30E9\u30FC\u306E\u898F\u6E96: a^((p-1)/2) \u304C 1\
-    \ \u3067\u306A\u3051\u308C\u3070\u5E73\u65B9\u975E\u5270\u4F59\n    if (modpow(a,\
-    \ (p - 1) / 2, p) != 1) return -1;\n    long long q = p - 1, s = 0;\n    while\
-    \ (q % 2 == 0) q /= 2, s++;\n    // \u5E73\u65B9\u975E\u5270\u4F59 z \u3092\u63A2\
-    \u3059\n    long long z = 2;\n    while (modpow(z, (p - 1) / 2, p) != p - 1) z++;\n\
-    \    long long c = modpow(z, q, p), t = modpow(a, q, p), r = modpow(a, (q + 1)\
-    \ / 2, p);\n    // r^2 = a t \u3092\u4FDD\u3061\u306A\u304C\u3089\u3001t \u306E\
-    \u4F4D\u6570\u3092\u4E0B\u3052\u3066\u3044\u304F\n    while (t != 1) {\n     \
-    \   long long i = 0, tt = t;\n        while (tt != 1) tt = modmul(tt, tt, p),\
-    \ i++;\n        long long b = c;\n        for (long long j = 0; j < s - i - 1;\
-    \ j++) b = modmul(b, b, p);\n        s = i;\n        c = modmul(b, b, p);\n  \
-    \      t = modmul(t, c, p);\n        r = modmul(r, b, p);\n    }\n    return std::min(r,\
-    \ p - r);\n}\n#line 15 \"src/math/combinatorics.hpp\"\n\n/**\n * @brief \u7D20\
-    \u6570 mod \u3067\u306E\u968E\u4E57\u30FB\u4E8C\u9805\u4FC2\u6570\u306A\u3069\n\
-    \ *\n * \u4F8B:\n * using C = Combination<static_modint<998244353>>;\n * C::C(5,\
-    \ 2);  // 10\n *\n * static \u30E1\u30F3\u30D0\u95A2\u6570\u3060\u3051\u306E\u30AF\
-    \u30E9\u30B9\u3002\u968E\u4E57\u3068\u305D\u306E\u9006\u5143\u3092\u5FC5\u8981\
-    \u306B\u306A\u3063\u305F\u5206\u3060\u3051\u524D\u8A08\u7B97\u3057\u3001\u540C\
-    \u3058 Modint \u306E\u547C\u3073\u51FA\u3057\u3067\u4F7F\u3044\u56DE\u3059\n *\
-    \ \u524D\u8A08\u7B97\u3092\u4F7F\u3046\u95A2\u6570 (factorial\u30FBC \u306A\u3069\
-    ) \u306F\u3001n \u304C mod \u672A\u6E80\u3067\u3042\u308B\u3053\u3068 (n! \u304C\
-    \ 0 \u306B\u306A\u308A\u9006\u5143\u304C\u306A\u3044)\u3002\n * n \u304C mod \u4EE5\
-    \u4E0A\u306A\u3089\u3001r \u304C\u5C0F\u3055\u3044\u3068\u304D\u306F C_loop\u3001\
-    mod \u304C\u5C0F\u3055\u3044\u3068\u304D\u306F C_lucas \u3092\u4F7F\u3046\n *\n\
-    \ * @tparam Modint \u6CD5\u304C\u7D20\u6570\u306E modint (dynamic_modint \u3067\
-    \u6CD5\u3092\u5909\u3048\u305F\u3089\u524D\u8A08\u7B97\u3092\u3084\u308A\u76F4\
-    \u3059)\n */\ntemplate <typename Modint>\nclass Combination {\n    static std::vector<Modint>\
-    \ fact, inv_fact;\n    static long long cached_mod;  // dynamic_modint \u3067\
-    \ mod \u304C\u5909\u308F\u3063\u305F\u3089\u524D\u8A08\u7B97\u3092\u3084\u308A\
-    \u76F4\u3059\n\n   public:\n    /**\n     * @brief n \u307E\u3067\u306E\u968E\u4E57\
-    \u3068\u305D\u306E\u9006\u5143\u3092\u524D\u8A08\u7B97\u3059\u308B\n     * @param\
-    \ n \u524D\u8A08\u7B97\u3059\u308B\u4E0A\u9650 (mod \u672A\u6E80)\n     * @note\
-    \ O(n)\u3002\u5404\u95A2\u6570\u304C\u5FC5\u8981\u306A\u5206\u3060\u3051\u81EA\
-    \u52D5\u3067\u547C\u3076\u3002\u5C0F\u3055\u3044 n \u304B\u3089\u5C11\u3057\u305A\
-    \u3064\u4F38\u3073\u308B\u3068\u9006\u5143\u306E\u8A08\u7B97 (O(log mod)) \u304C\
-    \u6BCE\u56DE\u5165\u308B\u306E\u3067\u3001\n     * \u4F7F\u3046\u6700\u5927\u306E\
-    \ n \u304C\u5206\u304B\u3063\u3066\u3044\u308C\u3070\u6700\u521D\u306B\u547C\u3093\
-    \u3067\u304A\u304F\u3068\u3088\u3044\n     */\n    inline static void extend(long\
-    \ long n) {\n        if (cached_mod != static_cast<long long>(Modint::mod()))\
+    \u3042\u308B\u3053\u3068\u3002O(log m)\n */\nconstexpr long long inv_mod(long\
+    \ long a, long long m) {\n    assert(m >= 1);\n    a %= m;\n    if (a < 0) a +=\
+    \ m;\n    long long b = m, u = 1, v = 0;\n    while (b) {\n        // std::swap\
+    \ \u306F C++17 \u3067\u306F constexpr \u3067\u306A\u3044\u306E\u3067\u3001\u4F7F\
+    \u308F\u305A\u306B\u66F8\u304F\n        long long t = a / b;\n        long long\
+    \ c = a - t * b;\n        a = b, b = c;\n        long long w = u - t * v;\n  \
+    \      u = v, v = w;\n    }\n    assert(a == 1 && \"a and m must be coprime\"\
+    );\n    u %= m;\n    if (u < 0) u += m;\n    return u;\n}\n\n/**\n * @brief a^n\
+    \ mod m \u3092\u8FD4\u3059\n * @note n \u304C\u8CA0\u306A\u3089 a^(-1) \u306E\
+    \ -n \u4E57 (a \u3068 m \u306F\u4E92\u3044\u306B\u7D20\u3067\u3042\u308B\u3053\
+    \u3068)\u3002O(log |n|)\n */\nconstexpr long long pow_mod(long long a, long long\
+    \ n, long long m) {\n    assert(m >= 1);\n    a %= m;\n    if (a < 0) a += m;\n\
+    \    if (n < 0) {\n        n = -n;\n        a = inv_mod(a, m);\n    }\n    long\
+    \ long res = 1 % m;\n    while (n > 0) {\n        if (n & 1) res = mul_mod(res,\
+    \ a, m);\n        a = mul_mod(a, a, m);\n        n >>= 1;\n    }\n    return res;\n\
+    }\n\n/**\n * @brief a^x \u2261 b (mod m) \u3068\u306A\u308B\u6700\u5C0F\u306E\
+    \ x >= 0 (\u306A\u3051\u308C\u3070 -1)\n * @note a \u3068 m \u306F\u4E92\u3044\
+    \u306B\u7D20\u3067\u306A\u304F\u3066\u3082\u3088\u3044\u3002Baby-step Giant-step\
+    \ \u3067 O(\u221Am) \u306E\u6642\u9593\u3068\u30E1\u30E2\u30EA\n */\ninline long\
+    \ long discrete_log(long long a, long long b, long long m) {\n    assert(m >=\
+    \ 1);\n    a %= m, b %= m;\n    if (a < 0) a += m;\n    if (b < 0) b += m;\n \
+    \   if (m == 1) return 0;\n    // a \u3068 m \u304C\u4E92\u3044\u306B\u7D20\u306B\
+    \u306A\u308B\u307E\u3067\u4E21\u8FBA\u3092 gcd \u3067\u5272\u308B\u3002k = a^add\
+    \ / (\u5272\u3063\u305F gcd \u306E\u7A4D) mod m\n    long long k = 1, add = 0,\
+    \ g;\n    while ((g = std::gcd(a, m)) > 1) {\n        if (b == k) return add;\n\
+    \        if (b % g != 0) return -1;\n        b /= g, m /= g, add++;\n        k\
+    \ = mul_mod(k, a / g, m);\n    }\n    // k a^x \u2261 b \u3092 x = n p - q (1\
+    \ <= p <= n\u30010 <= q <= n) \u3068\u66F8\u3044\u3066\u89E3\u304F\n    const\
+    \ long long n = static_cast<long long>(std::sqrt(static_cast<long double>(m)))\
+    \ + 1;\n    std::unordered_map<long long, long long> baby;\n    baby.reserve(2\
+    \ * n + 2);\n    // b a^q \u3092 q \u306E\u5C0F\u3055\u3044\u9806\u306B\u5165\u308C\
+    \u3001\u540C\u3058\u5024\u306A\u3089\u5927\u304D\u3044 q \u3067\u4E0A\u66F8\u304D\
+    \u3059\u308B (x \u3092\u5C0F\u3055\u304F\u3059\u308B\u305F\u3081)\n    for (long\
+    \ long q = 0, cur = b; q <= n; q++, cur = mul_mod(cur, a, m)) baby[cur] = q;\n\
+    \    const long long an = pow_mod(a, n, m);\n    for (long long p = 1, cur = k;\
+    \ p <= n; p++) {\n        cur = mul_mod(cur, an, m);\n        auto it = baby.find(cur);\n\
+    \        if (it != baby.end()) return n * p - it->second + add;\n    }\n    return\
+    \ -1;\n}\n\n/**\n * @brief \u7D20\u6570 p \u306B\u3064\u3044\u3066 x^2 \u2261\
+    \ a (mod p) \u3068\u306A\u308B x \u306E\u3046\u3061\u5C0F\u3055\u3044\u65B9 (\u306A\
+    \u3051\u308C\u3070 -1)\n * @note \u3082\u3046\u4E00\u65B9\u306E\u89E3\u306F p\
+    \ - x\u3002Tonelli-Shanks \u3067 O(log^2 p)\n */\ninline long long sqrt_mod(long\
+    \ long a, long long p) {\n    assert(p >= 2);\n    a %= p;\n    if (a < 0) a +=\
+    \ p;\n    if (a == 0 || p == 2) return a;\n    // \u30AA\u30A4\u30E9\u30FC\u306E\
+    \u898F\u6E96: a^((p-1)/2) \u304C 1 \u3067\u306A\u3051\u308C\u3070\u5E73\u65B9\u975E\
+    \u5270\u4F59\n    if (pow_mod(a, (p - 1) / 2, p) != 1) return -1;\n    long long\
+    \ q = p - 1, s = 0;\n    while (q % 2 == 0) q /= 2, s++;\n    // \u5E73\u65B9\u975E\
+    \u5270\u4F59 z \u3092\u63A2\u3059\n    long long z = 2;\n    while (pow_mod(z,\
+    \ (p - 1) / 2, p) != p - 1) z++;\n    long long c = pow_mod(z, q, p), t = pow_mod(a,\
+    \ q, p), r = pow_mod(a, (q + 1) / 2, p);\n    // r^2 = a t \u3092\u4FDD\u3061\u306A\
+    \u304C\u3089\u3001t \u306E\u4F4D\u6570\u3092\u4E0B\u3052\u3066\u3044\u304F\n \
+    \   while (t != 1) {\n        long long i = 0, tt = t;\n        while (tt != 1)\
+    \ tt = mul_mod(tt, tt, p), i++;\n        long long b = c;\n        for (long long\
+    \ j = 0; j < s - i - 1; j++) b = mul_mod(b, b, p);\n        s = i;\n        c\
+    \ = mul_mod(b, b, p);\n        t = mul_mod(t, c, p);\n        r = mul_mod(r, b,\
+    \ p);\n    }\n    return std::min(r, p - r);\n}\n#line 15 \"src/math/combinatorics.hpp\"\
+    \n\n/**\n * @brief \u7D20\u6570 mod \u3067\u306E\u968E\u4E57\u30FB\u4E8C\u9805\
+    \u4FC2\u6570\u306A\u3069\n *\n * \u4F8B:\n * using C = Combination<static_modint<998244353>>;\n\
+    \ * C::C(5, 2);  // 10\n *\n * static \u30E1\u30F3\u30D0\u95A2\u6570\u3060\u3051\
+    \u306E\u30AF\u30E9\u30B9\u3002\u968E\u4E57\u3068\u305D\u306E\u9006\u5143\u3092\
+    \u5FC5\u8981\u306B\u306A\u3063\u305F\u5206\u3060\u3051\u524D\u8A08\u7B97\u3057\
+    \u3001\u540C\u3058 Modint \u306E\u547C\u3073\u51FA\u3057\u3067\u4F7F\u3044\u56DE\
+    \u3059\n * \u524D\u8A08\u7B97\u3092\u4F7F\u3046\u95A2\u6570 (factorial\u30FBC\
+    \ \u306A\u3069) \u306F\u3001n \u304C mod \u672A\u6E80\u3067\u3042\u308B\u3053\u3068\
+    \ (n! \u304C 0 \u306B\u306A\u308A\u9006\u5143\u304C\u306A\u3044)\u3002\n * n \u304C\
+    \ mod \u4EE5\u4E0A\u306A\u3089\u3001r \u304C\u5C0F\u3055\u3044\u3068\u304D\u306F\
+    \ C_loop\u3001mod \u304C\u5C0F\u3055\u3044\u3068\u304D\u306F C_lucas \u3092\u4F7F\
+    \u3046\n *\n * @tparam Modint \u6CD5\u304C\u7D20\u6570\u306E modint (dynamic_modint\
+    \ \u3067\u6CD5\u3092\u5909\u3048\u305F\u3089\u524D\u8A08\u7B97\u3092\u3084\u308A\
+    \u76F4\u3059)\n */\ntemplate <typename Modint>\nclass Combination {\n    static\
+    \ std::vector<Modint> fact, inv_fact;\n    static long long cached_mod;  // dynamic_modint\
+    \ \u3067 mod \u304C\u5909\u308F\u3063\u305F\u3089\u524D\u8A08\u7B97\u3092\u3084\
+    \u308A\u76F4\u3059\n\n   public:\n    /**\n     * @brief n \u307E\u3067\u306E\u968E\
+    \u4E57\u3068\u305D\u306E\u9006\u5143\u3092\u524D\u8A08\u7B97\u3059\u308B\n   \
+    \  * @param n \u524D\u8A08\u7B97\u3059\u308B\u4E0A\u9650 (mod \u672A\u6E80)\n\
+    \     * @note O(n)\u3002\u5404\u95A2\u6570\u304C\u5FC5\u8981\u306A\u5206\u3060\
+    \u3051\u81EA\u52D5\u3067\u547C\u3076\u3002\u5C0F\u3055\u3044 n \u304B\u3089\u5C11\
+    \u3057\u305A\u3064\u4F38\u3073\u308B\u3068\u9006\u5143\u306E\u8A08\u7B97 (O(log\
+    \ mod)) \u304C\u6BCE\u56DE\u5165\u308B\u306E\u3067\u3001\n     * \u4F7F\u3046\u6700\
+    \u5927\u306E n \u304C\u5206\u304B\u3063\u3066\u3044\u308C\u3070\u6700\u521D\u306B\
+    \u547C\u3093\u3067\u304A\u304F\u3068\u3088\u3044\n     */\n    inline static void\
+    \ extend(long long n) {\n        if (cached_mod != static_cast<long long>(Modint::mod()))\
     \ {\n            cached_mod = Modint::mod();\n            fact = {1, 1};\n   \
     \         inv_fact = {1, 1};\n        }\n        const long long m = fact.size();\n\
     \        if (n < m) return;\n        assert(n < static_cast<long long>(Modint::mod())\
@@ -256,7 +256,7 @@ data:
     \     for (int i = 1; i < pq; i++) {\n            if (i % p == 0)\n          \
     \      fact_p[i] = fact_p[i - 1];\n            else\n                fact_p[i]\
     \ = static_cast<long long>(fact_p[i - 1]) * i % pq;\n        }\n        inv_fact_p.resize(pq);\n\
-    \        inv_fact_p[pq - 1] = modinv(fact_p[pq - 1], pq);\n        for (int i\
+    \        inv_fact_p[pq - 1] = inv_mod(fact_p[pq - 1], pq);\n        for (int i\
     \ = pq - 1; i > 0; i--) {\n            if (i % p == 0)\n                inv_fact_p[i\
     \ - 1] = inv_fact_p[i];\n            else\n                inv_fact_p[i - 1] =\
     \ static_cast<long long>(inv_fact_p[i]) * i % pq;\n        }\n        if (p ==\
@@ -579,7 +579,7 @@ data:
     \ {\n        if (x % i == 0) {\n            divs[cnt++] = i;\n            while\
     \ (x % i == 0) x /= i;\n        }\n    }\n    if (x > 1) divs[cnt++] = x;\n  \
     \  for (int g = 2;; ++g) {\n        bool ok = true;\n        for (int i = 0; i\
-    \ < cnt; i++) {\n            if (modpow(g, (MOD - 1) / divs[i], MOD) == 1) {\n\
+    \ < cnt; i++) {\n            if (pow_mod(g, (MOD - 1) / divs[i], MOD) == 1) {\n\
     \                ok = false;\n                break;\n            }\n        }\n\
     \        if (ok) return g;\n    }\n}\n\n/**\n * @brief \u7573\u307F\u8FBC\u307F\
     \u306E\u30B5\u30A4\u30BA\u30922\u306E\u3079\u304D\u4E57\u306B\u3059\u308B\n */\n\
@@ -699,7 +699,7 @@ data:
     \ int MOD0 = 754974721;\nstatic constexpr int MOD1 = 167772161;\nstatic constexpr\
     \ int MOD2 = 469762049;\nusing mint0 = static_modint<MOD0>;\nusing mint1 = static_modint<MOD1>;\n\
     using mint2 = static_modint<MOD2>;\nstatic const mint1 imod0 = 95869806;    //\
-    \ modinv(MOD0, MOD1);\nstatic const mint2 imod1 = 104391568;   // modinv(MOD1,\
+    \ inv_mod(MOD0, MOD1);\nstatic const mint2 imod1 = 104391568;   // inv_mod(MOD1,\
     \ MOD2);\nstatic const mint2 imod01 = 187290749;  // imod1 / MOD0;\n\n/**\n *\
     \ @brief \u914D\u5217\u306E\u30B5\u30A4\u30BA\u304C\u5C0F\u3055\u3044\u3068\u304D\
     \u306E\u7573\u307F\u8FBC\u307F\n * @param T mint, long long\n * @param A vector<T>\n\
@@ -1085,7 +1085,7 @@ data:
     \ p);\n    }\n    if (!p.first.empty()) p.first /= p.first.back();\n    return\
     \ p.first;\n}\n}  // namespace internal_fps\n\n/**\n * @brief f^n mod m (m \u306F\
     \u672B\u5C3E\u304C 0 \u3067\u306A\u3044\u3053\u3068) O(d log d log n) (d \u306F\
-    \ m \u306E\u6B21\u6570)\n */\ntemplate <typename mint>\nFPS<mint> modpow(const\
+    \ m \u306E\u6B21\u6570)\n */\ntemplate <typename mint>\nFPS<mint> pow_mod(const\
     \ FPS<mint>& f, long long n, const FPS<mint>& m) {\n    assert(!m.empty() && m.back()\
     \ != 0);\n    const long long d = static_cast<long long>(m.size()) - 1;  // m\
     \ \u306E\u6B21\u6570\n    if (d == 0) return FPS<mint>();\n    // h (\u6B21\u6570\
@@ -1118,7 +1118,7 @@ data:
     \u6570\u306A\u3089\u3059\u3079\u3066\u304C 0 \u3068\u5408\u540C\u306A\u306E\u3067\
     \u3001h = 0 (\u7A7A) \u3092\u8FD4\u3059\u3002h \u306F\u672B\u5C3E\u306E 0 \u3092\
     \u53D6\u308A\u9664\u3044\u305F\u5F62\n */\ntemplate <typename mint>\nstd::optional<FPS<mint>>\
-    \ modinv(const FPS<mint>& f, const FPS<mint>& g) {\n    using namespace internal_fps;\n\
+    \ inv_mod(const FPS<mint>& f, const FPS<mint>& g) {\n    using namespace internal_fps;\n\
     \    const FPS<mint> gs = shrink(g);\n    assert(!gs.empty());\n    if (gs.size()\
     \ == 1) return FPS<mint>();\n    FPS<mint> a, b;\n    const FPS<mint> d = extgcd(shrink(f\
     \ % gs), gs, a, b);\n    if (d.size() != 1) return std::nullopt;\n    return shrink(a\
@@ -1134,39 +1134,43 @@ data:
     \       int b = pq.top();\n        pq.pop();\n        // \u7A7A\u306E\u591A\u9805\
     \u5F0F (0) \u3068\u306E\u7A4D\u306F 0\n        fs[a] = fs[a].empty() || fs[b].empty()\
     \ ? FPS<mint>() : fs[a] * fs[b];\n        FPS<mint>().swap(fs[b]);\n        pq.push(a);\n\
-    \    }\n    return fs[pq.top()];\n}\n\n/**\n * @brief \u5206\u6570\u306E\u548C\
-    \ \u03A3_i nums[i] / dens[i] \u3092 1 \u3064\u306E\u5206\u6570 num / den \u306B\
-    \u307E\u3068\u3081\u308B O(N log^2 N) (N \u306F\u591A\u9805\u5F0F\u306E\u9577\u3055\
-    \u306E\u548C)\n * \u534A\u5206\u305A\u3064\u306B\u5206\u3051\u3066 a / b + c /\
-    \ d = (ad + cb) / bd \u3068\u307E\u3068\u3081\u308B\u3002den \u306F dens \u306E\
-    \u7A4D\u3002\u7A7A\u306A\u3089 0 / 1\n * @return std::pair<FPS<mint>, FPS<mint>>\
-    \ {num, den}\n */\ntemplate <typename mint>\nstd::pair<FPS<mint>, FPS<mint>> sum_of_fractions(const\
+    \    }\n    return fs[pq.top()];\n}\n\n/**\n * @brief sum_of_fractions \u306E\u7D50\
+    \u679C\u3002\u5206\u6570 num / den\n *\n * auto [num, den] = sum_of_fractions(nums,\
+    \ dens); \u306E\u3088\u3046\u306B\u53D7\u3051\u53D6\u308C\u308B\n */\ntemplate\
+    \ <typename mint>\nstruct SumOfFractions {\n    FPS<mint> num;  //!< \u5206\u5B50\
+    \n    FPS<mint> den;  //!< \u5206\u6BCD\n};\n\n/**\n * @brief \u5206\u6570\u306E\
+    \u548C \u03A3_i nums[i] / dens[i] \u3092 1 \u3064\u306E\u5206\u6570 num / den\
+    \ \u306B\u307E\u3068\u3081\u308B O(N log^2 N) (N \u306F\u591A\u9805\u5F0F\u306E\
+    \u9577\u3055\u306E\u548C)\n * \u534A\u5206\u305A\u3064\u306B\u5206\u3051\u3066\
+    \ a / b + c / d = (ad + cb) / bd \u3068\u307E\u3068\u3081\u308B\u3002den \u306F\
+    \ dens \u306E\u7A4D\u3002\u7A7A\u306A\u3089 0 / 1\n * @return SumOfFractions<mint>\
+    \ {num, den}\n */\ntemplate <typename mint>\nSumOfFractions<mint> sum_of_fractions(const\
     \ std::vector<FPS<mint>>& nums, const std::vector<FPS<mint>>& dens) {\n    assert(nums.size()\
     \ == dens.size());\n    if (nums.empty()) return {FPS<mint>(), FPS<mint>{1}};\n\
-    \    auto rec = [&](auto&& self, long long l, long long r) -> std::pair<FPS<mint>,\
-    \ FPS<mint>> {\n        if (r - l == 1) return {nums[l], dens[l]};\n        long\
-    \ long m = (l + r) / 2;\n        auto [a, b] = self(self, l, m);\n        auto\
-    \ [c, d] = self(self, m, r);\n        return {a * d + c * b, b * d};\n    };\n\
-    \    return rec(rec, 0, nums.size());\n}\n#line 2 \"src/math/multipoint.hpp\"\n\
-    \n/**\n * @file multipoint.hpp\n * @brief \u591A\u70B9\u8A55\u4FA1\u30FB\u591A\
-    \u9805\u5F0F\u88DC\u9593\u30FB\u6A19\u672C\u70B9\u306E\u305A\u3089\u3057\n */\n\
-    \n#line 11 \"src/math/multipoint.hpp\"\n\n#line 15 \"src/math/multipoint.hpp\"\
-    \n\nnamespace internal_multipoint {\n// \u70B9 xs \u306E subproduct tree: tree[k]\
-    \ \u306F\u9802\u70B9 k \u304C\u53D7\u3051\u6301\u3064\u70B9 x_i \u306B\u3064\u3044\
-    \u3066 \u03A0 (x - x_i)\u3002\u8449\u306F sz + i\ntemplate <typename mint>\nstruct\
-    \ SubproductTree {\n    long long n, sz;\n    std::vector<FPS<mint>> tree;\n \
-    \   explicit SubproductTree(const std::vector<mint>& xs) : n(xs.size()), sz(1)\
-    \ {\n        while (sz < n) sz <<= 1;\n        tree.assign(2 * sz, FPS<mint>{1});\n\
-    \        for (long long i = 0; i < n; i++) tree[sz + i] = FPS<mint>{-xs[i], 1};\n\
-    \        for (long long k = sz - 1; k >= 1; k--) tree[k] = tree[2 * k] * tree[2\
-    \ * k + 1];\n    }\n};\n}  // namespace internal_multipoint\n\n/**\n * @brief\
-    \ \u591A\u9805\u5F0F f \u306E\u3001\u70B9 xs \u3067\u306E\u5024 f(x_0), ..., f(x_{m-1})\
-    \ O((n + m) log^2 (n + m))\n * subproduct tree \u306E\u6839\u304B\u3089\u3001\u5404\
-    \u9802\u70B9\u306E\u591A\u9805\u5F0F\u3067\u5272\u3063\u305F\u4F59\u308A\u3092\
-    \u4E0B\u308D\u3057\u3066\u3044\u304F\u3002\u4F59\u308A\u304C\u77ED\u304F\u306A\
-    \u3063\u305F\u3089\u76F4\u63A5\u8A08\u7B97\u3059\u308B\n */\ntemplate <typename\
-    \ mint>\nstd::vector<mint> multipoint_evaluation(const FPS<mint>& f, const std::vector<mint>&\
-    \ xs) {\n    const long long m = xs.size();\n    if (m == 0) return {};\n    internal_multipoint::SubproductTree<mint>\
+    \    auto rec = [&](auto&& self, long long l, long long r) -> SumOfFractions<mint>\
+    \ {\n        if (r - l == 1) return {nums[l], dens[l]};\n        long long m =\
+    \ (l + r) / 2;\n        auto [a, b] = self(self, l, m);\n        auto [c, d] =\
+    \ self(self, m, r);\n        return {a * d + c * b, b * d};\n    };\n    return\
+    \ rec(rec, 0, nums.size());\n}\n#line 2 \"src/math/multipoint.hpp\"\n\n/**\n *\
+    \ @file multipoint.hpp\n * @brief \u591A\u70B9\u8A55\u4FA1\u30FB\u591A\u9805\u5F0F\
+    \u88DC\u9593\u30FB\u6A19\u672C\u70B9\u306E\u305A\u3089\u3057\n */\n\n#line 11\
+    \ \"src/math/multipoint.hpp\"\n\n#line 15 \"src/math/multipoint.hpp\"\n\nnamespace\
+    \ internal_multipoint {\n// \u70B9 xs \u306E subproduct tree: tree[k] \u306F\u9802\
+    \u70B9 k \u304C\u53D7\u3051\u6301\u3064\u70B9 x_i \u306B\u3064\u3044\u3066 \u03A0\
+    \ (x - x_i)\u3002\u8449\u306F sz + i\ntemplate <typename mint>\nstruct SubproductTree\
+    \ {\n    long long n, sz;\n    std::vector<FPS<mint>> tree;\n    explicit SubproductTree(const\
+    \ std::vector<mint>& xs) : n(xs.size()), sz(1) {\n        while (sz < n) sz <<=\
+    \ 1;\n        tree.assign(2 * sz, FPS<mint>{1});\n        for (long long i = 0;\
+    \ i < n; i++) tree[sz + i] = FPS<mint>{-xs[i], 1};\n        for (long long k =\
+    \ sz - 1; k >= 1; k--) tree[k] = tree[2 * k] * tree[2 * k + 1];\n    }\n};\n}\
+    \  // namespace internal_multipoint\n\n/**\n * @brief \u591A\u9805\u5F0F f \u306E\
+    \u3001\u70B9 xs \u3067\u306E\u5024 f(x_0), ..., f(x_{m-1}) O((n + m) log^2 (n\
+    \ + m))\n * subproduct tree \u306E\u6839\u304B\u3089\u3001\u5404\u9802\u70B9\u306E\
+    \u591A\u9805\u5F0F\u3067\u5272\u3063\u305F\u4F59\u308A\u3092\u4E0B\u308D\u3057\
+    \u3066\u3044\u304F\u3002\u4F59\u308A\u304C\u77ED\u304F\u306A\u3063\u305F\u3089\
+    \u76F4\u63A5\u8A08\u7B97\u3059\u308B\n */\ntemplate <typename mint>\nstd::vector<mint>\
+    \ multipoint_evaluation(const FPS<mint>& f, const std::vector<mint>& xs) {\n \
+    \   const long long m = xs.size();\n    if (m == 0) return {};\n    internal_multipoint::SubproductTree<mint>\
     \ t(xs);\n    std::vector<mint> res(m);\n    // \u9802\u70B9 k \u306B f \u306E\
     \u4F59\u308A g \u304C\u5C4A\u3044\u305F\u3068\u304D\u3001\u53D7\u3051\u6301\u3064\
     \u70B9\u306E\u5024\u3092\u6C42\u3081\u308B\n    auto rec = [&](auto&& self, long\
@@ -1424,7 +1428,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind-fixed-k.test.cpp
   requiredBy: []
-  timestamp: '2026-10-31 05:46:56+09:00'
+  timestamp: '2026-11-03 08:52:44+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/enumerative_combinatorics/stirling-number-of-the-second-kind-fixed-k.test.cpp

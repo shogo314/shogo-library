@@ -43,7 +43,7 @@ data:
     \u306E\u6C4E\u7528\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n */\n\n#include <algorithm>\n\
     #line 10 \"src/graph/tree.hpp\"\n#include <stack>\n#include <type_traits>\n#line\
     \ 14 \"src/graph/tree.hpp\"\n\n#line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file\
-    \ graph.hpp\n * @brief \u30B0\u30E9\u30D5\n */\n\n#line 11 \"src/graph/graph.hpp\"\
+    \ graph.hpp\n * @brief \u30B0\u30E9\u30D5\n */\n\n#line 12 \"src/graph/graph.hpp\"\
     \n\n/**\n * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n\
     \ * @tparam Cost \u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u578B \u7701\u7565\u3057\
     \u305F\u3089 long long (\u91CD\u307F\u306E\u548C\u3084\u672A\u5230\u9054\u3092\
@@ -114,7 +114,28 @@ data:
     \u307E\u307E\u683C\u7D0D\u3055\u308C\u308B\n     */\n    std::vector<Edge> edges()\
     \ const {\n        std::vector<Edge> res(m);\n        for (long long i = 0; i\
     \ < n; i++) {\n            for (auto& e : g[i]) {\n                res[e.id] =\
-    \ e;\n            }\n        }\n        return res;\n    }\n};\n#line 16 \"src/graph/tree.hpp\"\
+    \ e;\n            }\n        }\n        return res;\n    }\n};\n\n/**\n * @brief\
+    \ \u7D4C\u8DEF (\u8DEF\u30FB\u9589\u8DEF)\u3002\u9577\u3055 cost\u3001\u305F\u3069\
+    \u308B\u9802\u70B9\u306E\u5217 vertices\u3001\u305F\u3069\u308B\u8FBA\u306E\u5217\
+    \ edges\n *\n * edges[k] \u306F vertices[k] \u304B\u3089 vertices[k + 1] \u3078\
+    \u5411\u304B\u3046 (edges[k].src == vertices[k]\u3001edges[k].dst == vertices[k\
+    \ + 1])\n * vertices \u306F edges \u3088\u308A 1 \u3064\u591A\u3044\u3002\u8FBA\
+    \u304C\u306A\u304F\u3066\u3082\u59CB\u70B9 1 \u3064\u304C\u5165\u308B\u3002\u9589\
+    \u8DEF\u306A\u3089 vertices.front() == vertices.back()\n * auto [cost, vertices,\
+    \ edges] = *shortest_path(g, s, t); \u306E\u3088\u3046\u306B\u53D7\u3051\u53D6\
+    \u308C\u308B\n */\ntemplate <typename Cost>\nstruct Path {\n    Cost cost;   \
+    \                                   //!< \u9577\u3055 (\u8FBA\u306E\u30B3\u30B9\
+    \u30C8\u306E\u548C)\n    std::vector<long long> vertices;                //!<\
+    \ \u305F\u3069\u308B\u9802\u70B9 (\u59CB\u70B9\u304B\u3089\u9806\u306B)\n    std::vector<typename\
+    \ Graph<Cost>::Edge> edges;  //!< \u305F\u3069\u308B\u8FBA (\u59CB\u70B9\u5074\
+    \u304B\u3089\u9806\u306B)\n};\n\nnamespace internal_graph {\n/**\n * @brief \u59CB\
+    \u70B9 s \u3068\u3001s \u304B\u3089\u305F\u3069\u308B\u9806\u306B\u4E26\u3079\u305F\
+    \u8FBA edges \u304B\u3089 Path \u3092\u4F5C\u308B\u3002cost \u306F\u8FBA\u306E\
+    \u30B3\u30B9\u30C8\u306E\u548C\n */\ntemplate <typename Cost>\nPath<Cost> make_path(long\
+    \ long s, std::vector<typename Graph<Cost>::Edge> edges) {\n    Path<Cost> res{Cost{},\
+    \ {s}, std::move(edges)};\n    for (const auto& e : res.edges) {\n        assert(e.src\
+    \ == res.vertices.back());\n        res.cost += e.cost;\n        res.vertices.push_back(e.dst);\n\
+    \    }\n    return res;\n}\n}  // namespace internal_graph\n#line 16 \"src/graph/tree.hpp\"\
     \n\ntemplate <typename>\nclass RootedTree;\ntemplate <typename>\nclass DoublingClimbTree;\n\
     \n/**\n * @brief \u6839\u306A\u3057\u6728\n *\n * @tparam Cost = long long \u8FBA\
     \u306E\u91CD\u307F\n *\n * Graph<Cost>\u3092\u7D99\u627F\u3057\u3001\u3059\u3079\
@@ -133,15 +154,15 @@ data:
     \u30AF\u30BF\n     *\n     * @param n \u30CE\u30FC\u30C9\u6570\n     */\n    explicit\
     \ Tree(long long n = 0) : Graph<Cost>(n) {}\n\n    /**\n     * @brief Graph \u3068\
     \u3057\u3066\u898B\u308B\n     *\n     * Graph \u3092\u53D7\u3051\u53D6\u308B\u95A2\
-    \u6570 (shortest_path \u306A\u3069) \u306B\u6E21\u3059\u3068\u304D\u306B\u4F7F\
-    \u3046\n     * @return const Graph<Cost>& \u3053\u306E\u6728\u3092\u8868\u3059\
-    \u30B0\u30E9\u30D5\n     */\n    const Graph<Cost>& graph() const { return *this;\
-    \ }\n\n    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\
-    \u529B\u304B\u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\u308B\n   \
-    \  * @param padding  = -1 \u9802\u70B9\u756A\u53F7\u3092\u5165\u529B\u304B\u3089\
-    \u3044\u304F\u3064\u305A\u3089\u3059\u304B\n     * @param weighted = false \u8FBA\
-    \u306E\u91CD\u307F\u304C\u5165\u529B\u3055\u308C\u308B\u304B\n     */\n    void\
-    \ read(long long padding = -1, bool weighted = false) {\n        Graph<Cost>::read(this->n\
+    \u6570 (shortest_path_dijkstra \u306A\u3069) \u306B\u6E21\u3059\u3068\u304D\u306B\
+    \u4F7F\u3046\n     * @return const Graph<Cost>& \u3053\u306E\u6728\u3092\u8868\
+    \u3059\u30B0\u30E9\u30D5\n     */\n    const Graph<Cost>& graph() const { return\
+    \ *this; }\n\n    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\u6E96\
+    \u5165\u529B\u304B\u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\u308B\
+    \n     * @param padding  = -1 \u9802\u70B9\u756A\u53F7\u3092\u5165\u529B\u304B\
+    \u3089\u3044\u304F\u3064\u305A\u3089\u3059\u304B\n     * @param weighted = false\
+    \ \u8FBA\u306E\u91CD\u307F\u304C\u5165\u529B\u3055\u308C\u308B\u304B\n     */\n\
+    \    void read(long long padding = -1, bool weighted = false) {\n        Graph<Cost>::read(this->n\
     \ - 1, padding, weighted, false);\n    }\n\n    /**\n     * @brief \u6839\u4ED8\
     \u304D\u6728\u306B\u3059\u308B\n     *\n     * @param root \u6839\n     * @return\
     \ RootedTree<Cost> \u6839\u4ED8\u304D\u6728\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\
@@ -697,11 +718,11 @@ data:
     \u6839)\n */\n\n#line 10 \"src/math/modular-arithmetic.hpp\"\n#include <cmath>\n\
     #include <numeric>\n#include <unordered_map>\n\n/**\n * @brief a * b mod m \u3092\
     \u8FD4\u3059 (\u9014\u4E2D\u3067 __int128 \u3092\u4F7F\u3046\u306E\u3067 m < 2^63\
-    \ \u306A\u3089\u3042\u3075\u308C\u306A\u3044)\n */\nconstexpr long long modmul(long\
+    \ \u306A\u3089\u3042\u3075\u308C\u306A\u3044)\n */\nconstexpr long long mul_mod(long\
     \ long a, long long b, long long m) {\n    long long res = static_cast<long long>(static_cast<__int128>(a)\
     \ * b % m);\n    if (res < 0) res += m;\n    return res;\n}\n\n/**\n * @brief\
     \ a^(-1) mod m \u3092\u8FD4\u3059\n * @note a \u3068 m \u306F\u4E92\u3044\u306B\
-    \u7D20\u3067\u3042\u308B\u3053\u3068\u3002O(log m)\n */\nconstexpr long long modinv(long\
+    \u7D20\u3067\u3042\u308B\u3053\u3068\u3002O(log m)\n */\nconstexpr long long inv_mod(long\
     \ long a, long long m) {\n    assert(m >= 1);\n    a %= m;\n    if (a < 0) a +=\
     \ m;\n    long long b = m, u = 1, v = 0;\n    while (b) {\n        // std::swap\
     \ \u306F C++17 \u3067\u306F constexpr \u3067\u306A\u3044\u306E\u3067\u3001\u4F7F\
@@ -711,11 +732,11 @@ data:
     );\n    u %= m;\n    if (u < 0) u += m;\n    return u;\n}\n\n/**\n * @brief a^n\
     \ mod m \u3092\u8FD4\u3059\n * @note n \u304C\u8CA0\u306A\u3089 a^(-1) \u306E\
     \ -n \u4E57 (a \u3068 m \u306F\u4E92\u3044\u306B\u7D20\u3067\u3042\u308B\u3053\
-    \u3068)\u3002O(log |n|)\n */\nconstexpr long long modpow(long long a, long long\
+    \u3068)\u3002O(log |n|)\n */\nconstexpr long long pow_mod(long long a, long long\
     \ n, long long m) {\n    assert(m >= 1);\n    a %= m;\n    if (a < 0) a += m;\n\
-    \    if (n < 0) {\n        n = -n;\n        a = modinv(a, m);\n    }\n    long\
-    \ long res = 1 % m;\n    while (n > 0) {\n        if (n & 1) res = modmul(res,\
-    \ a, m);\n        a = modmul(a, a, m);\n        n >>= 1;\n    }\n    return res;\n\
+    \    if (n < 0) {\n        n = -n;\n        a = inv_mod(a, m);\n    }\n    long\
+    \ long res = 1 % m;\n    while (n > 0) {\n        if (n & 1) res = mul_mod(res,\
+    \ a, m);\n        a = mul_mod(a, a, m);\n        n >>= 1;\n    }\n    return res;\n\
     }\n\n/**\n * @brief a^x \u2261 b (mod m) \u3068\u306A\u308B\u6700\u5C0F\u306E\
     \ x >= 0 (\u306A\u3051\u308C\u3070 -1)\n * @note a \u3068 m \u306F\u4E92\u3044\
     \u306B\u7D20\u3067\u306A\u304F\u3066\u3082\u3088\u3044\u3002Baby-step Giant-step\
@@ -727,16 +748,16 @@ data:
     \ / (\u5272\u3063\u305F gcd \u306E\u7A4D) mod m\n    long long k = 1, add = 0,\
     \ g;\n    while ((g = std::gcd(a, m)) > 1) {\n        if (b == k) return add;\n\
     \        if (b % g != 0) return -1;\n        b /= g, m /= g, add++;\n        k\
-    \ = modmul(k, a / g, m);\n    }\n    // k a^x \u2261 b \u3092 x = n p - q (1 <=\
-    \ p <= n\u30010 <= q <= n) \u3068\u66F8\u3044\u3066\u89E3\u304F\n    const long\
-    \ long n = static_cast<long long>(std::sqrt(static_cast<long double>(m))) + 1;\n\
-    \    std::unordered_map<long long, long long> baby;\n    baby.reserve(2 * n +\
-    \ 2);\n    // b a^q \u3092 q \u306E\u5C0F\u3055\u3044\u9806\u306B\u5165\u308C\u3001\
-    \u540C\u3058\u5024\u306A\u3089\u5927\u304D\u3044 q \u3067\u4E0A\u66F8\u304D\u3059\
-    \u308B (x \u3092\u5C0F\u3055\u304F\u3059\u308B\u305F\u3081)\n    for (long long\
-    \ q = 0, cur = b; q <= n; q++, cur = modmul(cur, a, m)) baby[cur] = q;\n    const\
-    \ long long an = modpow(a, n, m);\n    for (long long p = 1, cur = k; p <= n;\
-    \ p++) {\n        cur = modmul(cur, an, m);\n        auto it = baby.find(cur);\n\
+    \ = mul_mod(k, a / g, m);\n    }\n    // k a^x \u2261 b \u3092 x = n p - q (1\
+    \ <= p <= n\u30010 <= q <= n) \u3068\u66F8\u3044\u3066\u89E3\u304F\n    const\
+    \ long long n = static_cast<long long>(std::sqrt(static_cast<long double>(m)))\
+    \ + 1;\n    std::unordered_map<long long, long long> baby;\n    baby.reserve(2\
+    \ * n + 2);\n    // b a^q \u3092 q \u306E\u5C0F\u3055\u3044\u9806\u306B\u5165\u308C\
+    \u3001\u540C\u3058\u5024\u306A\u3089\u5927\u304D\u3044 q \u3067\u4E0A\u66F8\u304D\
+    \u3059\u308B (x \u3092\u5C0F\u3055\u304F\u3059\u308B\u305F\u3081)\n    for (long\
+    \ long q = 0, cur = b; q <= n; q++, cur = mul_mod(cur, a, m)) baby[cur] = q;\n\
+    \    const long long an = pow_mod(a, n, m);\n    for (long long p = 1, cur = k;\
+    \ p <= n; p++) {\n        cur = mul_mod(cur, an, m);\n        auto it = baby.find(cur);\n\
     \        if (it != baby.end()) return n * p - it->second + add;\n    }\n    return\
     \ -1;\n}\n\n/**\n * @brief \u7D20\u6570 p \u306B\u3064\u3044\u3066 x^2 \u2261\
     \ a (mod p) \u3068\u306A\u308B x \u306E\u3046\u3061\u5C0F\u3055\u3044\u65B9 (\u306A\
@@ -745,17 +766,17 @@ data:
     \ long a, long long p) {\n    assert(p >= 2);\n    a %= p;\n    if (a < 0) a +=\
     \ p;\n    if (a == 0 || p == 2) return a;\n    // \u30AA\u30A4\u30E9\u30FC\u306E\
     \u898F\u6E96: a^((p-1)/2) \u304C 1 \u3067\u306A\u3051\u308C\u3070\u5E73\u65B9\u975E\
-    \u5270\u4F59\n    if (modpow(a, (p - 1) / 2, p) != 1) return -1;\n    long long\
+    \u5270\u4F59\n    if (pow_mod(a, (p - 1) / 2, p) != 1) return -1;\n    long long\
     \ q = p - 1, s = 0;\n    while (q % 2 == 0) q /= 2, s++;\n    // \u5E73\u65B9\u975E\
-    \u5270\u4F59 z \u3092\u63A2\u3059\n    long long z = 2;\n    while (modpow(z,\
-    \ (p - 1) / 2, p) != p - 1) z++;\n    long long c = modpow(z, q, p), t = modpow(a,\
-    \ q, p), r = modpow(a, (q + 1) / 2, p);\n    // r^2 = a t \u3092\u4FDD\u3061\u306A\
+    \u5270\u4F59 z \u3092\u63A2\u3059\n    long long z = 2;\n    while (pow_mod(z,\
+    \ (p - 1) / 2, p) != p - 1) z++;\n    long long c = pow_mod(z, q, p), t = pow_mod(a,\
+    \ q, p), r = pow_mod(a, (q + 1) / 2, p);\n    // r^2 = a t \u3092\u4FDD\u3061\u306A\
     \u304C\u3089\u3001t \u306E\u4F4D\u6570\u3092\u4E0B\u3052\u3066\u3044\u304F\n \
     \   while (t != 1) {\n        long long i = 0, tt = t;\n        while (tt != 1)\
-    \ tt = modmul(tt, tt, p), i++;\n        long long b = c;\n        for (long long\
-    \ j = 0; j < s - i - 1; j++) b = modmul(b, b, p);\n        s = i;\n        c =\
-    \ modmul(b, b, p);\n        t = modmul(t, c, p);\n        r = modmul(r, b, p);\n\
-    \    }\n    return std::min(r, p - r);\n}\n#line 18 \"src/math/convolution.hpp\"\
+    \ tt = mul_mod(tt, tt, p), i++;\n        long long b = c;\n        for (long long\
+    \ j = 0; j < s - i - 1; j++) b = mul_mod(b, b, p);\n        s = i;\n        c\
+    \ = mul_mod(b, b, p);\n        t = mul_mod(t, c, p);\n        r = mul_mod(r, b,\
+    \ p);\n    }\n    return std::min(r, p - r);\n}\n#line 18 \"src/math/convolution.hpp\"\
     \n\n/**\n * @brief \u7573\u307F\u8FBC\u307F\n */\nnamespace internal_convolution\
     \ {\n/**\n * @brief \u539F\u5B50\u6839\n * @param MOD int\n * @return int\n */\n\
     inline int calc_primitive_root(int MOD) {\n    if (MOD == 2) return 1;\n    if\
@@ -766,7 +787,7 @@ data:
     \ {\n        if (x % i == 0) {\n            divs[cnt++] = i;\n            while\
     \ (x % i == 0) x /= i;\n        }\n    }\n    if (x > 1) divs[cnt++] = x;\n  \
     \  for (int g = 2;; ++g) {\n        bool ok = true;\n        for (int i = 0; i\
-    \ < cnt; i++) {\n            if (modpow(g, (MOD - 1) / divs[i], MOD) == 1) {\n\
+    \ < cnt; i++) {\n            if (pow_mod(g, (MOD - 1) / divs[i], MOD) == 1) {\n\
     \                ok = false;\n                break;\n            }\n        }\n\
     \        if (ok) return g;\n    }\n}\n\n/**\n * @brief \u7573\u307F\u8FBC\u307F\
     \u306E\u30B5\u30A4\u30BA\u30922\u306E\u3079\u304D\u4E57\u306B\u3059\u308B\n */\n\
@@ -886,7 +907,7 @@ data:
     \ int MOD0 = 754974721;\nstatic constexpr int MOD1 = 167772161;\nstatic constexpr\
     \ int MOD2 = 469762049;\nusing mint0 = static_modint<MOD0>;\nusing mint1 = static_modint<MOD1>;\n\
     using mint2 = static_modint<MOD2>;\nstatic const mint1 imod0 = 95869806;    //\
-    \ modinv(MOD0, MOD1);\nstatic const mint2 imod1 = 104391568;   // modinv(MOD1,\
+    \ inv_mod(MOD0, MOD1);\nstatic const mint2 imod1 = 104391568;   // inv_mod(MOD1,\
     \ MOD2);\nstatic const mint2 imod01 = 187290749;  // imod1 / MOD0;\n\n/**\n *\
     \ @brief \u914D\u5217\u306E\u30B5\u30A4\u30BA\u304C\u5C0F\u3055\u3044\u3068\u304D\
     \u306E\u7573\u307F\u8FBC\u307F\n * @param T mint, long long\n * @param A vector<T>\n\
@@ -1046,7 +1067,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
   requiredBy: []
-  timestamp: '2026-10-31 18:12:46+09:00'
+  timestamp: '2026-11-03 09:10:34+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/tree/frequency-table-of-tree-distance.test.cpp

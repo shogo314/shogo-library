@@ -30,10 +30,34 @@
 - 公開 API の添字・サイズ・個数・長さ・次数は `long long` にする。外から見えない内部の格納や計算は、問題がなければ `int` でよい。`size_t` は使わない (-1 の番兵や逆順ループが壊れる)。ビット位置や ccw の符号のような「種類を表す値」は `int`。
 - 型を省略したときの既定は `long long` にする (`int` だと重み 1e9 の和が黙ってあふれる)。値から型を推論できるよう推論ガイドを付ける。
 - 組み込み型へのキャストは `static_cast` にする。`(T)x` や `int(x)` は使わない。`T(1)` や `mint(x)` は構築なのでそのままでよい。
-- 区間は半開区間。前提違反は `assert`。解なしは、添字か 0 以上の整数の値 (個数・最小値・離散対数など) なら -1、ほかの値なら `optional`。`Cost` のようなテンプレートの値型は、0 以上でも `optional` にする (double のこともあり -1 は合わない)。列も `std::optional<std::vector<T>>` にする (空の列が正しい答えになることがあり、空で解なしを表すと区別できない)。未到達の距離は `max / 4`。復元が要るときは、値を返す関数と `_restore` の 2 本にする。
+- 区間は半開区間。前提違反は `assert`。解なしは、添字か 0 以上の整数の値 (個数・最小値・離散対数など) なら -1、ほかの値なら `optional`。`Cost` のようなテンプレートの値型は、0 以上でも `optional` にする (double のこともあり -1 は合わない)。列も `std::optional<std::vector<T>>` にする (空の列が正しい答えになることがあり、空で解なしを表すと区別できない)。未到達の距離は `max / 4`。
+- 復元が要るときは、値を返す関数と `_restore` の 2 本にする。
+  - `_restore` は値も含めた構造体を返す (`{length, indices}`・`{cost, edges}` など)。
+  - 辺は番号でなく `Edge` で返す。
+  - グラフの経路 (路・閉路) は `graph.hpp` の `Path<Cost> {cost, vertices, edges}` で返す (`shortest_path`・`tree_diameter_restore`・`eulerian_trail_*`・`find_cycle_*`・`chinese_postman_restore`)。`vertices` は `edges` より 1 つ多く、辺がなくても始点を入れる。
+  - 値と復元が手間をかけずに一緒に求まるなら、2 本に分けず 1 つの構造体で返してよい (`shortest_path_dijkstra`・`minimum_spanning_tree`・`hungarian`)。
+  - 値を返す版がない関数 (`general_matching` など) には `_restore` を付けない。
+- `.first`・`.second`・`std::get` では中身が読み取りにくい組は、名前付きのメンバを持つ型で返す。メンバは構造化束縛で受け取る順に並べる。
+  - 型名は関数名をキャメルケースにしたもの (`MinimumSpanningTree`・`ShortestPath`)。複数の関数で共有するもの、関数名が動詞やアルゴリズム名のものは中身を表す名詞にする (`SubsetSum`・`LongestSubstring`・`Match`・`Assignment`)。
+  - メンバ関数の結果の型はクラスの中に置く (`RangeMode::Mode`・`Matrix::ReducedRowEchelon`)。
+  - 意味が決まっている組は `pair` のままでよい: `divmod` の (商, 余り)、`factorize` の (素数, 指数)、区間 `[l, r)`、map と同じ (キー, 値)、ACL と同じ API (`MinCostFlow::flow`・`slope`、二部マッチング)。
+- `inf` を受け取る関数は、最後の引数にして既定を `max / 4` にする。
 - グラフのアルゴリズムは `const Graph<Cost>&` を受け取る自由関数にする。Graph のメンバは表現の操作 (`add_edge`, `read`, `operator[]`, `edges` など) だけにする。木は `Graph` を private 継承しているので、`tree.graph()` を通して渡す。木専用の関数は `const Tree<Cost>&` を受け取り、`tree_util.hpp` に置く。
 - グリッドは `Rect` (`src/utility/range.hpp`) の `contains`・`index`・`neighbors4/8` を使う。`DXY` のような方向の配列は足さない。
 - 1 引数のコンストラクタには `explicit` を付ける。ただし Matrix・FPS・modint などの値型には付けない。
+
+## 関数と型の名前
+
+- 同じ意味の操作は同じ名前にする: 値の取得は `val()`、祖先への移動は `hop`、成分 (連結成分・UnionFind のグループなど) は `groups`。
+- 二分探索は、イテレータを返すなら `lower_bound`・`upper_bound`、添字を返すなら `bisect_left`・`bisect_right`。
+- 同じ系統の関数は対象を先に書き、エディタの補完で並ぶようにする (`subset_sum`・`subset_sum_max`・`subset_sum_count`、`knapsack`・`knapsack_bounded`・`knapsack_unbounded`)。`convex_hull`・`edit_distance` のように言葉として決まっている名前はそのまま。
+- 個数を返す自由関数は `<対象>_count` (`prime_count`・`subset_sum_count`・`subarray_sum_count`)。メンバ関数で、引数を渡して数える操作は `std::count`・`count_if` と同じく `count`・`count_<対象>` (`count_prefix`・`count_less`)、持っている数を返すだけのものは `size()` と同じく名詞 (`pattern_count`)。
+- mod を法とする演算は `_mod` を後ろに付ける (`pow_mod`・`inv_mod`・`mul_mod`・`sqrt_mod`・`det_mod`。ACL・Library Checker と同じ)。
+- 列を返すものは `enumerate_`、関数を受け取って呼ぶものは `for_each_` (`enumerate_quotients`・`for_each_quotient`)。
+- 同じ問題を解くアルゴリズムが複数あるなら `<問題>_<アルゴリズム>` にする (`shortest_path_dijkstra`・`shortest_path_bellman_ford`・`subset_sum_max_bitset`)。問題そのものの名前 (`shortest_path(g, s, t)`) は、いちばん普通に使う形に付ける。
+- 変種は接尾辞で表す: `_directed`・`_undirected`、`_by_weight`・`_by_value`、`_meet_in_the_middle`、`_bitset`、`_geometric`、`_2d`、`_mod`。整数のまま正確に返す版は `_squared`・`_doubled` (`closest_point_pair_squared`・`polygon_area_doubled`)。
+- 最小化・最大化する問題の名前は、省略せず `minimum_`・`maximum_` にする (`minimum_spanning_tree`・`minimum_set_cover`・`maximum_independent_set`。Library Checker の問題名とも揃う)。演算の名前や ACL・std 由来のものは `min`・`max` のまま (`min_plus_convolution_*`・`min_cut`・`min_left`・`max_right`・`subset_sum_max`)。
+- 誤字は直す。改名したら古い名前は残さない (`[[deprecated]]` の別名も置かない)。
 
 ## 整形
 

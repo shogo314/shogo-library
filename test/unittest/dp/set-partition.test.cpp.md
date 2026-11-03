@@ -17,14 +17,14 @@ data:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
   bundledCode: "#line 1 \"test/unittest/dp/set-partition.test.cpp\"\n#define PROBLEM\
     \ \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\n\n//\
-    \ min_set_partition \u3092\u3001\u96C6\u5408\u306E\u5206\u3051\u65B9\u3092\u3059\
-    \u3079\u3066\u8A66\u3059\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u6BD4\u3079\u308B\
-    \n// \u4F7F\u3063\u3066\u3088\u3044\u96C6\u5408\u65CF\u304C\u90E8\u5206\u96C6\u5408\
-    \u306B\u3064\u3044\u3066\u9589\u3058\u3066\u3044\u308B\u5834\u5408\u3068\u3001\
-    \u9589\u3058\u3066\u3044\u306A\u3044\u5834\u5408\u306E\u4E21\u65B9\u3092\u8A66\
-    \u3059\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\
-    \u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\
-    \n\n#line 2 \"src/dp/set-partition.hpp\"\n\n/**\n * @file set-partition.hpp\n\
+    \ minimum_set_partition \u3092\u3001\u96C6\u5408\u306E\u5206\u3051\u65B9\u3092\
+    \u3059\u3079\u3066\u8A66\u3059\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u6BD4\u3079\
+    \u308B\n// \u4F7F\u3063\u3066\u3088\u3044\u96C6\u5408\u65CF\u304C\u90E8\u5206\u96C6\
+    \u5408\u306B\u3064\u3044\u3066\u9589\u3058\u3066\u3044\u308B\u5834\u5408\u3068\
+    \u3001\u9589\u3058\u3066\u3044\u306A\u3044\u5834\u5408\u306E\u4E21\u65B9\u3092\
+    \u8A66\u3059\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\
+    \u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\
+    \u308B\n\n#line 2 \"src/dp/set-partition.hpp\"\n\n/**\n * @file set-partition.hpp\n\
     \ * @brief \u96C6\u5408\u3092\u300C\u4F7F\u3063\u3066\u3088\u3044\u96C6\u5408\u300D\
     \u306B\u5206\u3051\u308B\u3068\u304D\u306E\u6700\u5C0F\u500B\u6570 (\u8981\u7D20\
     \u304C 16 \u500B\u7A0B\u5EA6\u307E\u3067)\n */\n\n#include <cassert>\n#include\
@@ -38,8 +38,8 @@ data:
     \u3088\u3044\u96C6\u5408\u65CF\u304C\u90E8\u5206\u96C6\u5408\u306B\u3064\u3044\
     \u3066\u9589\u3058\u3066\u3044\u308B\u306A\u3089\u3001\u91CD\u306A\u308A\u3092\
     \u8A31\u3057\u3066\u8986\u3046\u3068\u304D\u306E\u6700\u5C0F\u500B\u6570\u3068\
-    \u3082\u4E00\u81F4\u3059\u308B\n */\ninline long long min_set_partition(int n,\
-    \ const std::vector<bool>& feasible) {\n    assert(static_cast<long long>(feasible.size())\
+    \u3082\u4E00\u81F4\u3059\u308B\n */\ninline long long minimum_set_partition(int\
+    \ n, const std::vector<bool>& feasible) {\n    assert(static_cast<long long>(feasible.size())\
     \ == (1LL << n));\n    const int INF = n + 1;\n    std::vector<int> dp(1 << n,\
     \ INF);\n    dp[0] = 0;\n    for (int S = 1; S < (1 << n); S++) {\n        const\
     \ int low = S & -S, rest = S ^ low;\n        // rest \u306E\u90E8\u5206\u96C6\u5408\
@@ -67,11 +67,11 @@ data:
     \ good = true;\n            for (int p : parts) good &= p != 0 && feasible[p];\n\
     \            if (good && (expect == -1 || k < expect)) expect = k;\n         \
     \   int i = 0;\n            while (i < n && ++b[i] == n) b[i++] = 0;\n       \
-    \     if (i == n) break;\n        }\n        if (min_set_partition(n, feasible)\
-    \ != expect) ok = false, std::cerr << \"min_set_partition\" << std::endl;\n  \
-    \  }\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \     if (i == n) break;\n        }\n        if (minimum_set_partition(n, feasible)\
+    \ != expect) ok = false, std::cerr << \"minimum_set_partition\" << std::endl;\n\
+    \    }\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
-    \n\n// min_set_partition \u3092\u3001\u96C6\u5408\u306E\u5206\u3051\u65B9\u3092\
+    \n\n// minimum_set_partition \u3092\u3001\u96C6\u5408\u306E\u5206\u3051\u65B9\u3092\
     \u3059\u3079\u3066\u8A66\u3059\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u6BD4\u3079\
     \u308B\n// \u4F7F\u3063\u3066\u3088\u3044\u96C6\u5408\u65CF\u304C\u90E8\u5206\u96C6\
     \u5408\u306B\u3064\u3044\u3066\u9589\u3058\u3066\u3044\u308B\u5834\u5408\u3068\
@@ -98,15 +98,15 @@ data:
     \ p : parts) good &= p != 0 && feasible[p];\n            if (good && (expect ==\
     \ -1 || k < expect)) expect = k;\n            int i = 0;\n            while (i\
     \ < n && ++b[i] == n) b[i++] = 0;\n            if (i == n) break;\n        }\n\
-    \        if (min_set_partition(n, feasible) != expect) ok = false, std::cerr <<\
-    \ \"min_set_partition\" << std::endl;\n    }\n    if (ok) std::cout << \"Hello\
-    \ World\" << std::endl;\n}\n"
+    \        if (minimum_set_partition(n, feasible) != expect) ok = false, std::cerr\
+    \ << \"minimum_set_partition\" << std::endl;\n    }\n    if (ok) std::cout <<\
+    \ \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/dp/set-partition.hpp
   isVerificationFile: true
   path: test/unittest/dp/set-partition.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:32:25+09:00'
+  timestamp: '2026-11-03 08:30:39+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/dp/set-partition.test.cpp

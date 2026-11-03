@@ -76,7 +76,7 @@ data:
     \u30C8\u300D\u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<std::vector<long\
     \ long>> groups() {\n        return internal_unionfind::groups(_n, [&](long long\
     \ a) { return leader(a); });\n    }\n};\n#line 2 \"src/graph/graph.hpp\"\n\n/**\n\
-    \ * @file graph.hpp\n * @brief \u30B0\u30E9\u30D5\n */\n\n#line 11 \"src/graph/graph.hpp\"\
+    \ * @file graph.hpp\n * @brief \u30B0\u30E9\u30D5\n */\n\n#line 12 \"src/graph/graph.hpp\"\
     \n\n/**\n * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n\
     \ * @tparam Cost \u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u578B \u7701\u7565\u3057\
     \u305F\u3089 long long (\u91CD\u307F\u306E\u548C\u3084\u672A\u5230\u9054\u3092\
@@ -147,7 +147,28 @@ data:
     \u307E\u307E\u683C\u7D0D\u3055\u308C\u308B\n     */\n    std::vector<Edge> edges()\
     \ const {\n        std::vector<Edge> res(m);\n        for (long long i = 0; i\
     \ < n; i++) {\n            for (auto& e : g[i]) {\n                res[e.id] =\
-    \ e;\n            }\n        }\n        return res;\n    }\n};\n#line 9 \"test/yosupo/graph/minimum-spanning-tree.1.test.cpp\"\
+    \ e;\n            }\n        }\n        return res;\n    }\n};\n\n/**\n * @brief\
+    \ \u7D4C\u8DEF (\u8DEF\u30FB\u9589\u8DEF)\u3002\u9577\u3055 cost\u3001\u305F\u3069\
+    \u308B\u9802\u70B9\u306E\u5217 vertices\u3001\u305F\u3069\u308B\u8FBA\u306E\u5217\
+    \ edges\n *\n * edges[k] \u306F vertices[k] \u304B\u3089 vertices[k + 1] \u3078\
+    \u5411\u304B\u3046 (edges[k].src == vertices[k]\u3001edges[k].dst == vertices[k\
+    \ + 1])\n * vertices \u306F edges \u3088\u308A 1 \u3064\u591A\u3044\u3002\u8FBA\
+    \u304C\u306A\u304F\u3066\u3082\u59CB\u70B9 1 \u3064\u304C\u5165\u308B\u3002\u9589\
+    \u8DEF\u306A\u3089 vertices.front() == vertices.back()\n * auto [cost, vertices,\
+    \ edges] = *shortest_path(g, s, t); \u306E\u3088\u3046\u306B\u53D7\u3051\u53D6\
+    \u308C\u308B\n */\ntemplate <typename Cost>\nstruct Path {\n    Cost cost;   \
+    \                                   //!< \u9577\u3055 (\u8FBA\u306E\u30B3\u30B9\
+    \u30C8\u306E\u548C)\n    std::vector<long long> vertices;                //!<\
+    \ \u305F\u3069\u308B\u9802\u70B9 (\u59CB\u70B9\u304B\u3089\u9806\u306B)\n    std::vector<typename\
+    \ Graph<Cost>::Edge> edges;  //!< \u305F\u3069\u308B\u8FBA (\u59CB\u70B9\u5074\
+    \u304B\u3089\u9806\u306B)\n};\n\nnamespace internal_graph {\n/**\n * @brief \u59CB\
+    \u70B9 s \u3068\u3001s \u304B\u3089\u305F\u3069\u308B\u9806\u306B\u4E26\u3079\u305F\
+    \u8FBA edges \u304B\u3089 Path \u3092\u4F5C\u308B\u3002cost \u306F\u8FBA\u306E\
+    \u30B3\u30B9\u30C8\u306E\u548C\n */\ntemplate <typename Cost>\nPath<Cost> make_path(long\
+    \ long s, std::vector<typename Graph<Cost>::Edge> edges) {\n    Path<Cost> res{Cost{},\
+    \ {s}, std::move(edges)};\n    for (const auto& e : res.edges) {\n        assert(e.src\
+    \ == res.vertices.back());\n        res.cost += e.cost;\n        res.vertices.push_back(e.dst);\n\
+    \    }\n    return res;\n}\n}  // namespace internal_graph\n#line 9 \"test/yosupo/graph/minimum-spanning-tree.1.test.cpp\"\
     \n\nint main() {\n    int n, m;\n    std::cin >> n >> m;\n    Graph<long long>\
     \ g(n);\n    g.read(m, 0, true);\n    // edges() \u306F\u8FBA\u306E\u756A\u53F7\
     \u9806 (\u5165\u529B\u9806) \u306B\u4E26\u3076\n    auto es = g.edges();\n   \
@@ -177,7 +198,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/graph/minimum-spanning-tree.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-31 18:12:46+09:00'
+  timestamp: '2026-11-03 09:10:34+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/graph/minimum-spanning-tree.1.test.cpp

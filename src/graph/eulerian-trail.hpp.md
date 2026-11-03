@@ -4,8 +4,14 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/graph/graph.hpp
     title: "\u30B0\u30E9\u30D5"
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':heavy_check_mark:'
+    path: src/graph/chinese-postman.hpp
+    title: "\u4E2D\u56FD\u4EBA\u90F5\u4FBF\u914D\u9054\u554F\u984C"
   _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/graph/chinese-postman.test.cpp
+    title: test/unittest/graph/chinese-postman.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/eulerian-trail-directed.test.cpp
     title: test/yosupo/graph/eulerian-trail-directed.test.cpp
@@ -22,7 +28,7 @@ data:
     \ * @brief \u30AA\u30A4\u30E9\u30FC\u8DEF\n */\n\n#include <algorithm>\n#include\
     \ <cstdlib>\n#include <optional>\n#include <utility>\n#include <vector>\n\n#line\
     \ 2 \"src/graph/graph.hpp\"\n\n/**\n * @file graph.hpp\n * @brief \u30B0\u30E9\
-    \u30D5\n */\n\n#include <cassert>\n#include <iostream>\n#line 11 \"src/graph/graph.hpp\"\
+    \u30D5\n */\n\n#include <cassert>\n#include <iostream>\n#line 12 \"src/graph/graph.hpp\"\
     \n\n/**\n * @brief \u30B0\u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n\
     \ * @tparam Cost \u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u578B \u7701\u7565\u3057\
     \u305F\u3089 long long (\u91CD\u307F\u306E\u548C\u3084\u672A\u5230\u9054\u3092\
@@ -93,7 +99,28 @@ data:
     \u307E\u307E\u683C\u7D0D\u3055\u308C\u308B\n     */\n    std::vector<Edge> edges()\
     \ const {\n        std::vector<Edge> res(m);\n        for (long long i = 0; i\
     \ < n; i++) {\n            for (auto& e : g[i]) {\n                res[e.id] =\
-    \ e;\n            }\n        }\n        return res;\n    }\n};\n#line 15 \"src/graph/eulerian-trail.hpp\"\
+    \ e;\n            }\n        }\n        return res;\n    }\n};\n\n/**\n * @brief\
+    \ \u7D4C\u8DEF (\u8DEF\u30FB\u9589\u8DEF)\u3002\u9577\u3055 cost\u3001\u305F\u3069\
+    \u308B\u9802\u70B9\u306E\u5217 vertices\u3001\u305F\u3069\u308B\u8FBA\u306E\u5217\
+    \ edges\n *\n * edges[k] \u306F vertices[k] \u304B\u3089 vertices[k + 1] \u3078\
+    \u5411\u304B\u3046 (edges[k].src == vertices[k]\u3001edges[k].dst == vertices[k\
+    \ + 1])\n * vertices \u306F edges \u3088\u308A 1 \u3064\u591A\u3044\u3002\u8FBA\
+    \u304C\u306A\u304F\u3066\u3082\u59CB\u70B9 1 \u3064\u304C\u5165\u308B\u3002\u9589\
+    \u8DEF\u306A\u3089 vertices.front() == vertices.back()\n * auto [cost, vertices,\
+    \ edges] = *shortest_path(g, s, t); \u306E\u3088\u3046\u306B\u53D7\u3051\u53D6\
+    \u308C\u308B\n */\ntemplate <typename Cost>\nstruct Path {\n    Cost cost;   \
+    \                                   //!< \u9577\u3055 (\u8FBA\u306E\u30B3\u30B9\
+    \u30C8\u306E\u548C)\n    std::vector<long long> vertices;                //!<\
+    \ \u305F\u3069\u308B\u9802\u70B9 (\u59CB\u70B9\u304B\u3089\u9806\u306B)\n    std::vector<typename\
+    \ Graph<Cost>::Edge> edges;  //!< \u305F\u3069\u308B\u8FBA (\u59CB\u70B9\u5074\
+    \u304B\u3089\u9806\u306B)\n};\n\nnamespace internal_graph {\n/**\n * @brief \u59CB\
+    \u70B9 s \u3068\u3001s \u304B\u3089\u305F\u3069\u308B\u9806\u306B\u4E26\u3079\u305F\
+    \u8FBA edges \u304B\u3089 Path \u3092\u4F5C\u308B\u3002cost \u306F\u8FBA\u306E\
+    \u30B3\u30B9\u30C8\u306E\u548C\n */\ntemplate <typename Cost>\nPath<Cost> make_path(long\
+    \ long s, std::vector<typename Graph<Cost>::Edge> edges) {\n    Path<Cost> res{Cost{},\
+    \ {s}, std::move(edges)};\n    for (const auto& e : res.edges) {\n        assert(e.src\
+    \ == res.vertices.back());\n        res.cost += e.cost;\n        res.vertices.push_back(e.dst);\n\
+    \    }\n    return res;\n}\n}  // namespace internal_graph\n#line 15 \"src/graph/eulerian-trail.hpp\"\
     \n\nnamespace internal_eulerian_trail {\n\n/**\n * @brief s \u304B\u3089 Hierholzer\
     \ \u6CD5\u3067\u305F\u3069\u308A\u3001\u4F7F\u3063\u305F\u8FBA\u3092\u305F\u3069\
     \u308B\u9806\u306B\u4E26\u3079\u308B\n *\n * \u8FBA\u3092\u756A\u53F7\u3067\u4F7F\
@@ -115,47 +142,57 @@ data:
     \  } else {\n            const Edge& e = graph[v][it++];\n            used[e.id]\
     \ = true;\n            st.push_back({e.dst, e});\n        }\n    }\n    if (static_cast<long\
     \ long>(res.size()) != graph.m) return std::nullopt;\n    std::reverse(res.begin(),\
-    \ res.end());\n    return res;\n}\n\n}  // namespace internal_eulerian_trail\n\
+    \ res.end());\n    return res;\n}\n\n// \u8FBA\u304C\u306A\u3044\u30B0\u30E9\u30D5\
+    \u306E\u30AA\u30A4\u30E9\u30FC\u8DEF\u3002\u9802\u70B9 0 \u3060\u3051\u306E\u8DEF\
+    \ (\u9802\u70B9\u3082\u306A\u3051\u308C\u3070\u7A7A)\ntemplate <typename Cost>\n\
+    Path<Cost> empty_trail(const Graph<Cost>& graph) {\n    if (graph.n == 0) return\
+    \ {Cost{}, {}, {}};\n    return {Cost{}, {0}, {}};\n}\n\n}  // namespace internal_eulerian_trail\n\
     \n/**\n * @brief \u6709\u5411\u30B0\u30E9\u30D5\u306E\u30AA\u30A4\u30E9\u30FC\u8DEF\
     \ (\u3059\u3079\u3066\u306E\u8FBA\u3092\u3061\u3087\u3046\u3069 1 \u56DE\u305A\
     \u3064\u901A\u308B\u8DEF) \u3092 1 \u3064\u6C42\u3081\u308B\n *\n * Hierholzer\
-    \ \u6CD5 O(n + m)\n * @return std::optional<std::vector<Edge>> \u8DEF\u306E\u8FBA\
-    \u3092\u3001\u305F\u3069\u308B\u9806\u306B\u4E26\u3079\u305F\u3082\u306E (e[k].dst\
-    \ == e[k + 1].src)\u3002\u30AA\u30A4\u30E9\u30FC\u8DEF\u304C\u306A\u3051\u308C\
-    \u3070 std::nullopt\n * \u8FBA\u304C\u306A\u3044\u3068\u304D\u306F\u7A7A\u306E\
-    \u8DEF\u3092\u8FD4\u3059\u3002\u59CB\u70B9\u3068\u7D42\u70B9\u304C\u540C\u3058\
-    \u306B\u306A\u308B\u306E\u306F\u3001\u9589\u8DEF\u3068\u3057\u3066\u56DE\u308C\
-    \u308B\u3068\u304D\u3060\u3051\n */\ntemplate <typename Cost = long long>\nstd::optional<std::vector<typename\
-    \ Graph<Cost>::Edge>> eulerian_trail_directed(const Graph<Cost>& graph) {\n  \
-    \  if (graph.m == 0) return std::vector<typename Graph<Cost>::Edge>();\n    std::vector<long\
-    \ long> diff(graph.n, 0);  // \u51FA\u6B21\u6570 - \u5165\u6B21\u6570\n    for\
-    \ (long long v = 0; v < graph.n; v++) {\n        for (long long u : graph[v])\
-    \ diff[v]++, diff[u]--;\n    }\n    // \u51FA\u6B21\u6570\u304C 1 \u591A\u3044\
-    \u9802\u70B9\u304C\u3042\u308C\u3070\u305D\u3053\u304B\u3089\u59CB\u3081\u308B\
-    \u3002\u306A\u3051\u308C\u3070\u8FBA\u3092\u6301\u3064\u9802\u70B9\u304B\u3089\
-    \n    long long s = -1, plus = 0;\n    for (long long v = 0; v < graph.n; v++)\
-    \ {\n        if (std::abs(diff[v]) > 1) return std::nullopt;\n        if (diff[v]\
-    \ == 1) s = v, plus++;\n    }\n    if (plus > 1) return std::nullopt;\n    for\
-    \ (long long v = 0; s == -1; v++) {\n        if (!graph[v].empty()) s = v;\n \
-    \   }\n    return internal_eulerian_trail::hierholzer(graph, s);\n}\n\n/**\n *\
-    \ @brief \u7121\u5411\u30B0\u30E9\u30D5\u306E\u30AA\u30A4\u30E9\u30FC\u8DEF (\u3059\
-    \u3079\u3066\u306E\u8FBA\u3092\u3061\u3087\u3046\u3069 1 \u56DE\u305A\u3064\u901A\
-    \u308B\u8DEF) \u3092 1 \u3064\u6C42\u3081\u308B\n *\n * Hierholzer \u6CD5 O(n\
-    \ + m)\n * @return std::optional<std::vector<Edge>> \u8DEF\u306E\u8FBA\u3092\u3001\
-    \u305F\u3069\u308B\u5411\u304D\u306B\u3057\u3066\u4E26\u3079\u305F\u3082\u306E\
-    \ (e[k].dst == e[k + 1].src)\u3002\u30AA\u30A4\u30E9\u30FC\u8DEF\u304C\u306A\u3051\
-    \u308C\u3070 std::nullopt\n * \u8FBA\u304C\u306A\u3044\u3068\u304D\u306F\u7A7A\
-    \u306E\u8DEF\u3092\u8FD4\u3059\u3002\u81EA\u5DF1\u30EB\u30FC\u30D7\u30FB\u591A\
-    \u91CD\u8FBA\u304C\u3042\u3063\u3066\u3082\u3088\u3044\n */\ntemplate <typename\
-    \ Cost = long long>\nstd::optional<std::vector<typename Graph<Cost>::Edge>> eulerian_trail_undirected(const\
-    \ Graph<Cost>& graph) {\n    if (graph.m == 0) return std::vector<typename Graph<Cost>::Edge>();\n\
-    \    // \u6B21\u6570\u304C\u5947\u6570\u306E\u9802\u70B9\u304C 2 \u500B\u306A\u3089\
-    \u305D\u306E\u4E00\u65B9\u304B\u3089\u30010 \u500B\u306A\u3089\u8FBA\u3092\u6301\
-    \u3064\u9802\u70B9\u304B\u3089\u59CB\u3081\u308B\n    long long s = -1, odd =\
-    \ 0;\n    for (long long v = 0; v < graph.n; v++) {\n        if (graph[v].size()\
-    \ % 2 == 1) s = v, odd++;\n    }\n    if (odd > 2) return std::nullopt;\n    for\
-    \ (long long v = 0; s == -1; v++) {\n        if (!graph[v].empty()) s = v;\n \
-    \   }\n    return internal_eulerian_trail::hierholzer(graph, s);\n}\n"
+    \ \u6CD5 O(n + m)\n * @return std::optional<Path<Cost>> \u8DEF (\u9577\u3055\u306F\
+    \u3059\u3079\u3066\u306E\u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u548C\u3001\u305F\
+    \u3069\u308B\u9802\u70B9\u3001\u305F\u3069\u308B\u8FBA)\u3002\u30AA\u30A4\u30E9\
+    \u30FC\u8DEF\u304C\u306A\u3051\u308C\u3070 std::nullopt\n * \u8FBA\u304C\u306A\
+    \u3044\u3068\u304D\u306F\u3001\u9802\u70B9 0 \u3060\u3051\u306E\u8DEF\u3092\u8FD4\
+    \u3059 (\u9802\u70B9\u3082\u306A\u3051\u308C\u3070\u9802\u70B9\u306E\u5217\u3082\
+    \u7A7A)\u3002\u59CB\u70B9\u3068\u7D42\u70B9\u304C\u540C\u3058\u306B\u306A\u308B\
+    \u306E\u306F\u3001\u9589\u8DEF\u3068\u3057\u3066\u56DE\u308C\u308B\u3068\u304D\
+    \u3060\u3051\n */\ntemplate <typename Cost = long long>\nstd::optional<Path<Cost>>\
+    \ eulerian_trail_directed(const Graph<Cost>& graph) {\n    if (graph.m == 0) return\
+    \ internal_eulerian_trail::empty_trail(graph);\n    std::vector<long long> diff(graph.n,\
+    \ 0);  // \u51FA\u6B21\u6570 - \u5165\u6B21\u6570\n    for (long long v = 0; v\
+    \ < graph.n; v++) {\n        for (long long u : graph[v]) diff[v]++, diff[u]--;\n\
+    \    }\n    // \u51FA\u6B21\u6570\u304C 1 \u591A\u3044\u9802\u70B9\u304C\u3042\
+    \u308C\u3070\u305D\u3053\u304B\u3089\u59CB\u3081\u308B\u3002\u306A\u3051\u308C\
+    \u3070\u8FBA\u3092\u6301\u3064\u9802\u70B9\u304B\u3089\n    long long s = -1,\
+    \ plus = 0;\n    for (long long v = 0; v < graph.n; v++) {\n        if (std::abs(diff[v])\
+    \ > 1) return std::nullopt;\n        if (diff[v] == 1) s = v, plus++;\n    }\n\
+    \    if (plus > 1) return std::nullopt;\n    for (long long v = 0; s == -1; v++)\
+    \ {\n        if (!graph[v].empty()) s = v;\n    }\n    auto trail = internal_eulerian_trail::hierholzer(graph,\
+    \ s);\n    if (!trail) return std::nullopt;\n    return internal_graph::make_path<Cost>(s,\
+    \ std::move(*trail));\n}\n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306E\
+    \u30AA\u30A4\u30E9\u30FC\u8DEF (\u3059\u3079\u3066\u306E\u8FBA\u3092\u3061\u3087\
+    \u3046\u3069 1 \u56DE\u305A\u3064\u901A\u308B\u8DEF) \u3092 1 \u3064\u6C42\u3081\
+    \u308B\n *\n * Hierholzer \u6CD5 O(n + m)\n * @return std::optional<Path<Cost>>\
+    \ \u8DEF (\u9577\u3055\u306F\u3059\u3079\u3066\u306E\u8FBA\u306E\u30B3\u30B9\u30C8\
+    \u306E\u548C\u3001\u305F\u3069\u308B\u9802\u70B9\u3001\u8FBA\u306F\u305F\u3069\
+    \u308B\u5411\u304D\u306B\u3057\u305F\u3082\u306E)\u3002\u30AA\u30A4\u30E9\u30FC\
+    \u8DEF\u304C\u306A\u3051\u308C\u3070 std::nullopt\n * \u8FBA\u304C\u306A\u3044\
+    \u3068\u304D\u306F\u3001\u9802\u70B9 0 \u3060\u3051\u306E\u8DEF\u3092\u8FD4\u3059\
+    \ (\u9802\u70B9\u3082\u306A\u3051\u308C\u3070\u9802\u70B9\u306E\u5217\u3082\u7A7A\
+    )\u3002\u81EA\u5DF1\u30EB\u30FC\u30D7\u30FB\u591A\u91CD\u8FBA\u304C\u3042\u3063\
+    \u3066\u3082\u3088\u3044\n */\ntemplate <typename Cost = long long>\nstd::optional<Path<Cost>>\
+    \ eulerian_trail_undirected(const Graph<Cost>& graph) {\n    if (graph.m == 0)\
+    \ return internal_eulerian_trail::empty_trail(graph);\n    // \u6B21\u6570\u304C\
+    \u5947\u6570\u306E\u9802\u70B9\u304C 2 \u500B\u306A\u3089\u305D\u306E\u4E00\u65B9\
+    \u304B\u3089\u30010 \u500B\u306A\u3089\u8FBA\u3092\u6301\u3064\u9802\u70B9\u304B\
+    \u3089\u59CB\u3081\u308B\n    long long s = -1, odd = 0;\n    for (long long v\
+    \ = 0; v < graph.n; v++) {\n        if (graph[v].size() % 2 == 1) s = v, odd++;\n\
+    \    }\n    if (odd > 2) return std::nullopt;\n    for (long long v = 0; s ==\
+    \ -1; v++) {\n        if (!graph[v].empty()) s = v;\n    }\n    auto trail = internal_eulerian_trail::hierholzer(graph,\
+    \ s);\n    if (!trail) return std::nullopt;\n    return internal_graph::make_path<Cost>(s,\
+    \ std::move(*trail));\n}\n"
   code: "#pragma once\n\n/**\n * @file eulerian-trail.hpp\n * @brief \u30AA\u30A4\u30E9\
     \u30FC\u8DEF\n */\n\n#include <algorithm>\n#include <cstdlib>\n#include <optional>\n\
     #include <utility>\n#include <vector>\n\n#include \"graph.hpp\"\n\nnamespace internal_eulerian_trail\
@@ -179,20 +216,26 @@ data:
     \            st.pop_back();\n        } else {\n            const Edge& e = graph[v][it++];\n\
     \            used[e.id] = true;\n            st.push_back({e.dst, e});\n     \
     \   }\n    }\n    if (static_cast<long long>(res.size()) != graph.m) return std::nullopt;\n\
-    \    std::reverse(res.begin(), res.end());\n    return res;\n}\n\n}  // namespace\
-    \ internal_eulerian_trail\n\n/**\n * @brief \u6709\u5411\u30B0\u30E9\u30D5\u306E\
-    \u30AA\u30A4\u30E9\u30FC\u8DEF (\u3059\u3079\u3066\u306E\u8FBA\u3092\u3061\u3087\
-    \u3046\u3069 1 \u56DE\u305A\u3064\u901A\u308B\u8DEF) \u3092 1 \u3064\u6C42\u3081\
-    \u308B\n *\n * Hierholzer \u6CD5 O(n + m)\n * @return std::optional<std::vector<Edge>>\
-    \ \u8DEF\u306E\u8FBA\u3092\u3001\u305F\u3069\u308B\u9806\u306B\u4E26\u3079\u305F\
-    \u3082\u306E (e[k].dst == e[k + 1].src)\u3002\u30AA\u30A4\u30E9\u30FC\u8DEF\u304C\
-    \u306A\u3051\u308C\u3070 std::nullopt\n * \u8FBA\u304C\u306A\u3044\u3068\u304D\
-    \u306F\u7A7A\u306E\u8DEF\u3092\u8FD4\u3059\u3002\u59CB\u70B9\u3068\u7D42\u70B9\
-    \u304C\u540C\u3058\u306B\u306A\u308B\u306E\u306F\u3001\u9589\u8DEF\u3068\u3057\
-    \u3066\u56DE\u308C\u308B\u3068\u304D\u3060\u3051\n */\ntemplate <typename Cost\
-    \ = long long>\nstd::optional<std::vector<typename Graph<Cost>::Edge>> eulerian_trail_directed(const\
-    \ Graph<Cost>& graph) {\n    if (graph.m == 0) return std::vector<typename Graph<Cost>::Edge>();\n\
-    \    std::vector<long long> diff(graph.n, 0);  // \u51FA\u6B21\u6570 - \u5165\u6B21\
+    \    std::reverse(res.begin(), res.end());\n    return res;\n}\n\n// \u8FBA\u304C\
+    \u306A\u3044\u30B0\u30E9\u30D5\u306E\u30AA\u30A4\u30E9\u30FC\u8DEF\u3002\u9802\
+    \u70B9 0 \u3060\u3051\u306E\u8DEF (\u9802\u70B9\u3082\u306A\u3051\u308C\u3070\u7A7A\
+    )\ntemplate <typename Cost>\nPath<Cost> empty_trail(const Graph<Cost>& graph)\
+    \ {\n    if (graph.n == 0) return {Cost{}, {}, {}};\n    return {Cost{}, {0},\
+    \ {}};\n}\n\n}  // namespace internal_eulerian_trail\n\n/**\n * @brief \u6709\u5411\
+    \u30B0\u30E9\u30D5\u306E\u30AA\u30A4\u30E9\u30FC\u8DEF (\u3059\u3079\u3066\u306E\
+    \u8FBA\u3092\u3061\u3087\u3046\u3069 1 \u56DE\u305A\u3064\u901A\u308B\u8DEF) \u3092\
+    \ 1 \u3064\u6C42\u3081\u308B\n *\n * Hierholzer \u6CD5 O(n + m)\n * @return std::optional<Path<Cost>>\
+    \ \u8DEF (\u9577\u3055\u306F\u3059\u3079\u3066\u306E\u8FBA\u306E\u30B3\u30B9\u30C8\
+    \u306E\u548C\u3001\u305F\u3069\u308B\u9802\u70B9\u3001\u305F\u3069\u308B\u8FBA\
+    )\u3002\u30AA\u30A4\u30E9\u30FC\u8DEF\u304C\u306A\u3051\u308C\u3070 std::nullopt\n\
+    \ * \u8FBA\u304C\u306A\u3044\u3068\u304D\u306F\u3001\u9802\u70B9 0 \u3060\u3051\
+    \u306E\u8DEF\u3092\u8FD4\u3059 (\u9802\u70B9\u3082\u306A\u3051\u308C\u3070\u9802\
+    \u70B9\u306E\u5217\u3082\u7A7A)\u3002\u59CB\u70B9\u3068\u7D42\u70B9\u304C\u540C\
+    \u3058\u306B\u306A\u308B\u306E\u306F\u3001\u9589\u8DEF\u3068\u3057\u3066\u56DE\
+    \u308C\u308B\u3068\u304D\u3060\u3051\n */\ntemplate <typename Cost = long long>\n\
+    std::optional<Path<Cost>> eulerian_trail_directed(const Graph<Cost>& graph) {\n\
+    \    if (graph.m == 0) return internal_eulerian_trail::empty_trail(graph);\n \
+    \   std::vector<long long> diff(graph.n, 0);  // \u51FA\u6B21\u6570 - \u5165\u6B21\
     \u6570\n    for (long long v = 0; v < graph.n; v++) {\n        for (long long\
     \ u : graph[v]) diff[v]++, diff[u]--;\n    }\n    // \u51FA\u6B21\u6570\u304C\
     \ 1 \u591A\u3044\u9802\u70B9\u304C\u3042\u308C\u3070\u305D\u3053\u304B\u3089\u59CB\
@@ -201,34 +244,40 @@ data:
     \ v++) {\n        if (std::abs(diff[v]) > 1) return std::nullopt;\n        if\
     \ (diff[v] == 1) s = v, plus++;\n    }\n    if (plus > 1) return std::nullopt;\n\
     \    for (long long v = 0; s == -1; v++) {\n        if (!graph[v].empty()) s =\
-    \ v;\n    }\n    return internal_eulerian_trail::hierholzer(graph, s);\n}\n\n\
-    /**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306E\u30AA\u30A4\u30E9\u30FC\u8DEF\
-    \ (\u3059\u3079\u3066\u306E\u8FBA\u3092\u3061\u3087\u3046\u3069 1 \u56DE\u305A\
-    \u3064\u901A\u308B\u8DEF) \u3092 1 \u3064\u6C42\u3081\u308B\n *\n * Hierholzer\
-    \ \u6CD5 O(n + m)\n * @return std::optional<std::vector<Edge>> \u8DEF\u306E\u8FBA\
-    \u3092\u3001\u305F\u3069\u308B\u5411\u304D\u306B\u3057\u3066\u4E26\u3079\u305F\
-    \u3082\u306E (e[k].dst == e[k + 1].src)\u3002\u30AA\u30A4\u30E9\u30FC\u8DEF\u304C\
-    \u306A\u3051\u308C\u3070 std::nullopt\n * \u8FBA\u304C\u306A\u3044\u3068\u304D\
-    \u306F\u7A7A\u306E\u8DEF\u3092\u8FD4\u3059\u3002\u81EA\u5DF1\u30EB\u30FC\u30D7\
-    \u30FB\u591A\u91CD\u8FBA\u304C\u3042\u3063\u3066\u3082\u3088\u3044\n */\ntemplate\
-    \ <typename Cost = long long>\nstd::optional<std::vector<typename Graph<Cost>::Edge>>\
+    \ v;\n    }\n    auto trail = internal_eulerian_trail::hierholzer(graph, s);\n\
+    \    if (!trail) return std::nullopt;\n    return internal_graph::make_path<Cost>(s,\
+    \ std::move(*trail));\n}\n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306E\
+    \u30AA\u30A4\u30E9\u30FC\u8DEF (\u3059\u3079\u3066\u306E\u8FBA\u3092\u3061\u3087\
+    \u3046\u3069 1 \u56DE\u305A\u3064\u901A\u308B\u8DEF) \u3092 1 \u3064\u6C42\u3081\
+    \u308B\n *\n * Hierholzer \u6CD5 O(n + m)\n * @return std::optional<Path<Cost>>\
+    \ \u8DEF (\u9577\u3055\u306F\u3059\u3079\u3066\u306E\u8FBA\u306E\u30B3\u30B9\u30C8\
+    \u306E\u548C\u3001\u305F\u3069\u308B\u9802\u70B9\u3001\u8FBA\u306F\u305F\u3069\
+    \u308B\u5411\u304D\u306B\u3057\u305F\u3082\u306E)\u3002\u30AA\u30A4\u30E9\u30FC\
+    \u8DEF\u304C\u306A\u3051\u308C\u3070 std::nullopt\n * \u8FBA\u304C\u306A\u3044\
+    \u3068\u304D\u306F\u3001\u9802\u70B9 0 \u3060\u3051\u306E\u8DEF\u3092\u8FD4\u3059\
+    \ (\u9802\u70B9\u3082\u306A\u3051\u308C\u3070\u9802\u70B9\u306E\u5217\u3082\u7A7A\
+    )\u3002\u81EA\u5DF1\u30EB\u30FC\u30D7\u30FB\u591A\u91CD\u8FBA\u304C\u3042\u3063\
+    \u3066\u3082\u3088\u3044\n */\ntemplate <typename Cost = long long>\nstd::optional<Path<Cost>>\
     \ eulerian_trail_undirected(const Graph<Cost>& graph) {\n    if (graph.m == 0)\
-    \ return std::vector<typename Graph<Cost>::Edge>();\n    // \u6B21\u6570\u304C\
+    \ return internal_eulerian_trail::empty_trail(graph);\n    // \u6B21\u6570\u304C\
     \u5947\u6570\u306E\u9802\u70B9\u304C 2 \u500B\u306A\u3089\u305D\u306E\u4E00\u65B9\
     \u304B\u3089\u30010 \u500B\u306A\u3089\u8FBA\u3092\u6301\u3064\u9802\u70B9\u304B\
     \u3089\u59CB\u3081\u308B\n    long long s = -1, odd = 0;\n    for (long long v\
     \ = 0; v < graph.n; v++) {\n        if (graph[v].size() % 2 == 1) s = v, odd++;\n\
     \    }\n    if (odd > 2) return std::nullopt;\n    for (long long v = 0; s ==\
-    \ -1; v++) {\n        if (!graph[v].empty()) s = v;\n    }\n    return internal_eulerian_trail::hierholzer(graph,\
-    \ s);\n}\n"
+    \ -1; v++) {\n        if (!graph[v].empty()) s = v;\n    }\n    auto trail = internal_eulerian_trail::hierholzer(graph,\
+    \ s);\n    if (!trail) return std::nullopt;\n    return internal_graph::make_path<Cost>(s,\
+    \ std::move(*trail));\n}\n"
   dependsOn:
   - src/graph/graph.hpp
   isVerificationFile: false
   path: src/graph/eulerian-trail.hpp
-  requiredBy: []
-  timestamp: '2026-10-31 18:12:46+09:00'
+  requiredBy:
+  - src/graph/chinese-postman.hpp
+  timestamp: '2026-11-03 09:10:34+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/graph/chinese-postman.test.cpp
   - test/yosupo/graph/eulerian-trail-undirected.test.cpp
   - test/yosupo/graph/eulerian-trail-directed.test.cpp
 documentation_of: src/graph/eulerian-trail.hpp
@@ -242,27 +291,26 @@ title: "\u30AA\u30A4\u30E9\u30FC\u8DEF"
 Graph g(n);
 g.read(m, 0, false, true);               // 有向辺を m 本読む
 auto trail = eulerian_trail_directed(g); // なければ std::nullopt
-if (trail && !trail->empty()) {
-    std::vector<long long> vs;           // 通る頂点の列 (m + 1 個)
-    for (auto& e : *trail) vs.push_back(e.src);
-    vs.push_back(trail->back().dst);
+if (trail) {
+    trail->vertices;                     // 通る頂点の列 (m + 1 個)
+    trail->edges;                        // 通る辺の列 (m 本)
 }
 ```
 
-返すのは辺のリスト (`std::optional<std::vector<Edge>>`) で、たどる順に並び、向きもたどる向きです (`(*trail)[k].dst == (*trail)[k + 1].src`)。辺の番号は `id` で分かります。
+返すのは経路 [`Path<Cost>`](graph.hpp) (`std::optional`) で、`cost` はすべての辺のコストの和です。辺はたどる順に並び、向きもたどる向きです (`edges[k]` は `vertices[k]` から `vertices[k + 1]` へ)。辺の番号は `id` で分かります。
 
-辺が 1 本もないときは、空のリストを返します (オイラー路は自明に存在します)。
+辺が 1 本もないときは、頂点 0 だけの路を返します (オイラー路は自明に存在します。頂点もなければ頂点の列も空)。
 
-結果は、変数に受けてから使います。`for (const auto& e : *eulerian_trail_directed(g))` と書くと、一時オブジェクトの `std::optional` が先に破棄され、壊れた値を読みます。
+結果は、変数に受けてから使います。`for (const auto& e : eulerian_trail_directed(g)->edges)` と書くと、一時オブジェクトの `std::optional` が先に破棄され、壊れた値を読みます。
 
-始点と終点が同じ路 (オイラー閉路) が欲しいときは、返った路で `trail->front().src == trail->back().dst` かを確かめます。オイラー閉路があれば、必ず閉路になった路が返ります。
+始点と終点が同じ路 (オイラー閉路) が欲しいときは、返った路で `vertices.front() == vertices.back()` かを確かめます。オイラー閉路があれば、必ず閉路になった路が返ります。
 
 ## 関数
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `eulerian_trail_directed(g)` | 有向グラフのオイラー路 (`std::optional<std::vector<Edge>>`)。なければ `std::nullopt` | $O(n + m)$ |
-| `eulerian_trail_undirected(g)` | 無向グラフのオイラー路 (`std::optional<std::vector<Edge>>`)。なければ `std::nullopt`。自己ループ・多重辺があってもよい | $O(n + m)$ |
+| `eulerian_trail_directed(g)` | 有向グラフのオイラー路 (`std::optional<Path<Cost>>`)。なければ `std::nullopt` | $O(n + m)$ |
+| `eulerian_trail_undirected(g)` | 無向グラフのオイラー路 (`std::optional<Path<Cost>>`)。なければ `std::nullopt`。自己ループ・多重辺があってもよい | $O(n + m)$ |
 
 ## 関連
 

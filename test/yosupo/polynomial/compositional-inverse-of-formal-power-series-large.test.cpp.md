@@ -338,11 +338,11 @@ data:
     \u6839)\n */\n\n#line 10 \"src/math/modular-arithmetic.hpp\"\n#include <cmath>\n\
     #include <numeric>\n#include <unordered_map>\n\n/**\n * @brief a * b mod m \u3092\
     \u8FD4\u3059 (\u9014\u4E2D\u3067 __int128 \u3092\u4F7F\u3046\u306E\u3067 m < 2^63\
-    \ \u306A\u3089\u3042\u3075\u308C\u306A\u3044)\n */\nconstexpr long long modmul(long\
+    \ \u306A\u3089\u3042\u3075\u308C\u306A\u3044)\n */\nconstexpr long long mul_mod(long\
     \ long a, long long b, long long m) {\n    long long res = static_cast<long long>(static_cast<__int128>(a)\
     \ * b % m);\n    if (res < 0) res += m;\n    return res;\n}\n\n/**\n * @brief\
     \ a^(-1) mod m \u3092\u8FD4\u3059\n * @note a \u3068 m \u306F\u4E92\u3044\u306B\
-    \u7D20\u3067\u3042\u308B\u3053\u3068\u3002O(log m)\n */\nconstexpr long long modinv(long\
+    \u7D20\u3067\u3042\u308B\u3053\u3068\u3002O(log m)\n */\nconstexpr long long inv_mod(long\
     \ long a, long long m) {\n    assert(m >= 1);\n    a %= m;\n    if (a < 0) a +=\
     \ m;\n    long long b = m, u = 1, v = 0;\n    while (b) {\n        // std::swap\
     \ \u306F C++17 \u3067\u306F constexpr \u3067\u306A\u3044\u306E\u3067\u3001\u4F7F\
@@ -352,11 +352,11 @@ data:
     );\n    u %= m;\n    if (u < 0) u += m;\n    return u;\n}\n\n/**\n * @brief a^n\
     \ mod m \u3092\u8FD4\u3059\n * @note n \u304C\u8CA0\u306A\u3089 a^(-1) \u306E\
     \ -n \u4E57 (a \u3068 m \u306F\u4E92\u3044\u306B\u7D20\u3067\u3042\u308B\u3053\
-    \u3068)\u3002O(log |n|)\n */\nconstexpr long long modpow(long long a, long long\
+    \u3068)\u3002O(log |n|)\n */\nconstexpr long long pow_mod(long long a, long long\
     \ n, long long m) {\n    assert(m >= 1);\n    a %= m;\n    if (a < 0) a += m;\n\
-    \    if (n < 0) {\n        n = -n;\n        a = modinv(a, m);\n    }\n    long\
-    \ long res = 1 % m;\n    while (n > 0) {\n        if (n & 1) res = modmul(res,\
-    \ a, m);\n        a = modmul(a, a, m);\n        n >>= 1;\n    }\n    return res;\n\
+    \    if (n < 0) {\n        n = -n;\n        a = inv_mod(a, m);\n    }\n    long\
+    \ long res = 1 % m;\n    while (n > 0) {\n        if (n & 1) res = mul_mod(res,\
+    \ a, m);\n        a = mul_mod(a, a, m);\n        n >>= 1;\n    }\n    return res;\n\
     }\n\n/**\n * @brief a^x \u2261 b (mod m) \u3068\u306A\u308B\u6700\u5C0F\u306E\
     \ x >= 0 (\u306A\u3051\u308C\u3070 -1)\n * @note a \u3068 m \u306F\u4E92\u3044\
     \u306B\u7D20\u3067\u306A\u304F\u3066\u3082\u3088\u3044\u3002Baby-step Giant-step\
@@ -368,16 +368,16 @@ data:
     \ / (\u5272\u3063\u305F gcd \u306E\u7A4D) mod m\n    long long k = 1, add = 0,\
     \ g;\n    while ((g = std::gcd(a, m)) > 1) {\n        if (b == k) return add;\n\
     \        if (b % g != 0) return -1;\n        b /= g, m /= g, add++;\n        k\
-    \ = modmul(k, a / g, m);\n    }\n    // k a^x \u2261 b \u3092 x = n p - q (1 <=\
-    \ p <= n\u30010 <= q <= n) \u3068\u66F8\u3044\u3066\u89E3\u304F\n    const long\
-    \ long n = static_cast<long long>(std::sqrt(static_cast<long double>(m))) + 1;\n\
-    \    std::unordered_map<long long, long long> baby;\n    baby.reserve(2 * n +\
-    \ 2);\n    // b a^q \u3092 q \u306E\u5C0F\u3055\u3044\u9806\u306B\u5165\u308C\u3001\
-    \u540C\u3058\u5024\u306A\u3089\u5927\u304D\u3044 q \u3067\u4E0A\u66F8\u304D\u3059\
-    \u308B (x \u3092\u5C0F\u3055\u304F\u3059\u308B\u305F\u3081)\n    for (long long\
-    \ q = 0, cur = b; q <= n; q++, cur = modmul(cur, a, m)) baby[cur] = q;\n    const\
-    \ long long an = modpow(a, n, m);\n    for (long long p = 1, cur = k; p <= n;\
-    \ p++) {\n        cur = modmul(cur, an, m);\n        auto it = baby.find(cur);\n\
+    \ = mul_mod(k, a / g, m);\n    }\n    // k a^x \u2261 b \u3092 x = n p - q (1\
+    \ <= p <= n\u30010 <= q <= n) \u3068\u66F8\u3044\u3066\u89E3\u304F\n    const\
+    \ long long n = static_cast<long long>(std::sqrt(static_cast<long double>(m)))\
+    \ + 1;\n    std::unordered_map<long long, long long> baby;\n    baby.reserve(2\
+    \ * n + 2);\n    // b a^q \u3092 q \u306E\u5C0F\u3055\u3044\u9806\u306B\u5165\u308C\
+    \u3001\u540C\u3058\u5024\u306A\u3089\u5927\u304D\u3044 q \u3067\u4E0A\u66F8\u304D\
+    \u3059\u308B (x \u3092\u5C0F\u3055\u304F\u3059\u308B\u305F\u3081)\n    for (long\
+    \ long q = 0, cur = b; q <= n; q++, cur = mul_mod(cur, a, m)) baby[cur] = q;\n\
+    \    const long long an = pow_mod(a, n, m);\n    for (long long p = 1, cur = k;\
+    \ p <= n; p++) {\n        cur = mul_mod(cur, an, m);\n        auto it = baby.find(cur);\n\
     \        if (it != baby.end()) return n * p - it->second + add;\n    }\n    return\
     \ -1;\n}\n\n/**\n * @brief \u7D20\u6570 p \u306B\u3064\u3044\u3066 x^2 \u2261\
     \ a (mod p) \u3068\u306A\u308B x \u306E\u3046\u3061\u5C0F\u3055\u3044\u65B9 (\u306A\
@@ -386,17 +386,17 @@ data:
     \ long a, long long p) {\n    assert(p >= 2);\n    a %= p;\n    if (a < 0) a +=\
     \ p;\n    if (a == 0 || p == 2) return a;\n    // \u30AA\u30A4\u30E9\u30FC\u306E\
     \u898F\u6E96: a^((p-1)/2) \u304C 1 \u3067\u306A\u3051\u308C\u3070\u5E73\u65B9\u975E\
-    \u5270\u4F59\n    if (modpow(a, (p - 1) / 2, p) != 1) return -1;\n    long long\
+    \u5270\u4F59\n    if (pow_mod(a, (p - 1) / 2, p) != 1) return -1;\n    long long\
     \ q = p - 1, s = 0;\n    while (q % 2 == 0) q /= 2, s++;\n    // \u5E73\u65B9\u975E\
-    \u5270\u4F59 z \u3092\u63A2\u3059\n    long long z = 2;\n    while (modpow(z,\
-    \ (p - 1) / 2, p) != p - 1) z++;\n    long long c = modpow(z, q, p), t = modpow(a,\
-    \ q, p), r = modpow(a, (q + 1) / 2, p);\n    // r^2 = a t \u3092\u4FDD\u3061\u306A\
+    \u5270\u4F59 z \u3092\u63A2\u3059\n    long long z = 2;\n    while (pow_mod(z,\
+    \ (p - 1) / 2, p) != p - 1) z++;\n    long long c = pow_mod(z, q, p), t = pow_mod(a,\
+    \ q, p), r = pow_mod(a, (q + 1) / 2, p);\n    // r^2 = a t \u3092\u4FDD\u3061\u306A\
     \u304C\u3089\u3001t \u306E\u4F4D\u6570\u3092\u4E0B\u3052\u3066\u3044\u304F\n \
     \   while (t != 1) {\n        long long i = 0, tt = t;\n        while (tt != 1)\
-    \ tt = modmul(tt, tt, p), i++;\n        long long b = c;\n        for (long long\
-    \ j = 0; j < s - i - 1; j++) b = modmul(b, b, p);\n        s = i;\n        c =\
-    \ modmul(b, b, p);\n        t = modmul(t, c, p);\n        r = modmul(r, b, p);\n\
-    \    }\n    return std::min(r, p - r);\n}\n#line 18 \"src/math/convolution.hpp\"\
+    \ tt = mul_mod(tt, tt, p), i++;\n        long long b = c;\n        for (long long\
+    \ j = 0; j < s - i - 1; j++) b = mul_mod(b, b, p);\n        s = i;\n        c\
+    \ = mul_mod(b, b, p);\n        t = mul_mod(t, c, p);\n        r = mul_mod(r, b,\
+    \ p);\n    }\n    return std::min(r, p - r);\n}\n#line 18 \"src/math/convolution.hpp\"\
     \n\n/**\n * @brief \u7573\u307F\u8FBC\u307F\n */\nnamespace internal_convolution\
     \ {\n/**\n * @brief \u539F\u5B50\u6839\n * @param MOD int\n * @return int\n */\n\
     inline int calc_primitive_root(int MOD) {\n    if (MOD == 2) return 1;\n    if\
@@ -407,7 +407,7 @@ data:
     \ {\n        if (x % i == 0) {\n            divs[cnt++] = i;\n            while\
     \ (x % i == 0) x /= i;\n        }\n    }\n    if (x > 1) divs[cnt++] = x;\n  \
     \  for (int g = 2;; ++g) {\n        bool ok = true;\n        for (int i = 0; i\
-    \ < cnt; i++) {\n            if (modpow(g, (MOD - 1) / divs[i], MOD) == 1) {\n\
+    \ < cnt; i++) {\n            if (pow_mod(g, (MOD - 1) / divs[i], MOD) == 1) {\n\
     \                ok = false;\n                break;\n            }\n        }\n\
     \        if (ok) return g;\n    }\n}\n\n/**\n * @brief \u7573\u307F\u8FBC\u307F\
     \u306E\u30B5\u30A4\u30BA\u30922\u306E\u3079\u304D\u4E57\u306B\u3059\u308B\n */\n\
@@ -527,7 +527,7 @@ data:
     \ int MOD0 = 754974721;\nstatic constexpr int MOD1 = 167772161;\nstatic constexpr\
     \ int MOD2 = 469762049;\nusing mint0 = static_modint<MOD0>;\nusing mint1 = static_modint<MOD1>;\n\
     using mint2 = static_modint<MOD2>;\nstatic const mint1 imod0 = 95869806;    //\
-    \ modinv(MOD0, MOD1);\nstatic const mint2 imod1 = 104391568;   // modinv(MOD1,\
+    \ inv_mod(MOD0, MOD1);\nstatic const mint2 imod1 = 104391568;   // inv_mod(MOD1,\
     \ MOD2);\nstatic const mint2 imod01 = 187290749;  // imod1 / MOD0;\n\n/**\n *\
     \ @brief \u914D\u5217\u306E\u30B5\u30A4\u30BA\u304C\u5C0F\u3055\u3044\u3068\u304D\
     \u306E\u7573\u307F\u8FBC\u307F\n * @param T mint, long long\n * @param A vector<T>\n\
@@ -776,7 +776,7 @@ data:
     \     for (int i = 1; i < pq; i++) {\n            if (i % p == 0)\n          \
     \      fact_p[i] = fact_p[i - 1];\n            else\n                fact_p[i]\
     \ = static_cast<long long>(fact_p[i - 1]) * i % pq;\n        }\n        inv_fact_p.resize(pq);\n\
-    \        inv_fact_p[pq - 1] = modinv(fact_p[pq - 1], pq);\n        for (int i\
+    \        inv_fact_p[pq - 1] = inv_mod(fact_p[pq - 1], pq);\n        for (int i\
     \ = pq - 1; i > 0; i--) {\n            if (i % p == 0)\n                inv_fact_p[i\
     \ - 1] = inv_fact_p[i];\n            else\n                inv_fact_p[i - 1] =\
     \ static_cast<long long>(inv_fact_p[i]) * i % pq;\n        }\n        if (p ==\
@@ -1076,7 +1076,7 @@ data:
     \ p);\n    }\n    if (!p.first.empty()) p.first /= p.first.back();\n    return\
     \ p.first;\n}\n}  // namespace internal_fps\n\n/**\n * @brief f^n mod m (m \u306F\
     \u672B\u5C3E\u304C 0 \u3067\u306A\u3044\u3053\u3068) O(d log d log n) (d \u306F\
-    \ m \u306E\u6B21\u6570)\n */\ntemplate <typename mint>\nFPS<mint> modpow(const\
+    \ m \u306E\u6B21\u6570)\n */\ntemplate <typename mint>\nFPS<mint> pow_mod(const\
     \ FPS<mint>& f, long long n, const FPS<mint>& m) {\n    assert(!m.empty() && m.back()\
     \ != 0);\n    const long long d = static_cast<long long>(m.size()) - 1;  // m\
     \ \u306E\u6B21\u6570\n    if (d == 0) return FPS<mint>();\n    // h (\u6B21\u6570\
@@ -1109,7 +1109,7 @@ data:
     \u6570\u306A\u3089\u3059\u3079\u3066\u304C 0 \u3068\u5408\u540C\u306A\u306E\u3067\
     \u3001h = 0 (\u7A7A) \u3092\u8FD4\u3059\u3002h \u306F\u672B\u5C3E\u306E 0 \u3092\
     \u53D6\u308A\u9664\u3044\u305F\u5F62\n */\ntemplate <typename mint>\nstd::optional<FPS<mint>>\
-    \ modinv(const FPS<mint>& f, const FPS<mint>& g) {\n    using namespace internal_fps;\n\
+    \ inv_mod(const FPS<mint>& f, const FPS<mint>& g) {\n    using namespace internal_fps;\n\
     \    const FPS<mint> gs = shrink(g);\n    assert(!gs.empty());\n    if (gs.size()\
     \ == 1) return FPS<mint>();\n    FPS<mint> a, b;\n    const FPS<mint> d = extgcd(shrink(f\
     \ % gs), gs, a, b);\n    if (d.size() != 1) return std::nullopt;\n    return shrink(a\
@@ -1125,125 +1125,128 @@ data:
     \       int b = pq.top();\n        pq.pop();\n        // \u7A7A\u306E\u591A\u9805\
     \u5F0F (0) \u3068\u306E\u7A4D\u306F 0\n        fs[a] = fs[a].empty() || fs[b].empty()\
     \ ? FPS<mint>() : fs[a] * fs[b];\n        FPS<mint>().swap(fs[b]);\n        pq.push(a);\n\
-    \    }\n    return fs[pq.top()];\n}\n\n/**\n * @brief \u5206\u6570\u306E\u548C\
-    \ \u03A3_i nums[i] / dens[i] \u3092 1 \u3064\u306E\u5206\u6570 num / den \u306B\
-    \u307E\u3068\u3081\u308B O(N log^2 N) (N \u306F\u591A\u9805\u5F0F\u306E\u9577\u3055\
-    \u306E\u548C)\n * \u534A\u5206\u305A\u3064\u306B\u5206\u3051\u3066 a / b + c /\
-    \ d = (ad + cb) / bd \u3068\u307E\u3068\u3081\u308B\u3002den \u306F dens \u306E\
-    \u7A4D\u3002\u7A7A\u306A\u3089 0 / 1\n * @return std::pair<FPS<mint>, FPS<mint>>\
-    \ {num, den}\n */\ntemplate <typename mint>\nstd::pair<FPS<mint>, FPS<mint>> sum_of_fractions(const\
+    \    }\n    return fs[pq.top()];\n}\n\n/**\n * @brief sum_of_fractions \u306E\u7D50\
+    \u679C\u3002\u5206\u6570 num / den\n *\n * auto [num, den] = sum_of_fractions(nums,\
+    \ dens); \u306E\u3088\u3046\u306B\u53D7\u3051\u53D6\u308C\u308B\n */\ntemplate\
+    \ <typename mint>\nstruct SumOfFractions {\n    FPS<mint> num;  //!< \u5206\u5B50\
+    \n    FPS<mint> den;  //!< \u5206\u6BCD\n};\n\n/**\n * @brief \u5206\u6570\u306E\
+    \u548C \u03A3_i nums[i] / dens[i] \u3092 1 \u3064\u306E\u5206\u6570 num / den\
+    \ \u306B\u307E\u3068\u3081\u308B O(N log^2 N) (N \u306F\u591A\u9805\u5F0F\u306E\
+    \u9577\u3055\u306E\u548C)\n * \u534A\u5206\u305A\u3064\u306B\u5206\u3051\u3066\
+    \ a / b + c / d = (ad + cb) / bd \u3068\u307E\u3068\u3081\u308B\u3002den \u306F\
+    \ dens \u306E\u7A4D\u3002\u7A7A\u306A\u3089 0 / 1\n * @return SumOfFractions<mint>\
+    \ {num, den}\n */\ntemplate <typename mint>\nSumOfFractions<mint> sum_of_fractions(const\
     \ std::vector<FPS<mint>>& nums, const std::vector<FPS<mint>>& dens) {\n    assert(nums.size()\
     \ == dens.size());\n    if (nums.empty()) return {FPS<mint>(), FPS<mint>{1}};\n\
-    \    auto rec = [&](auto&& self, long long l, long long r) -> std::pair<FPS<mint>,\
-    \ FPS<mint>> {\n        if (r - l == 1) return {nums[l], dens[l]};\n        long\
-    \ long m = (l + r) / 2;\n        auto [a, b] = self(self, l, m);\n        auto\
-    \ [c, d] = self(self, m, r);\n        return {a * d + c * b, b * d};\n    };\n\
-    \    return rec(rec, 0, nums.size());\n}\n#line 14 \"src/math/fps-composition.hpp\"\
-    \n\nnamespace internal_fps_composition {\n// 2 \u5909\u6570\u591A\u9805\u5F0F\
-    \ A(x, y) \u3092\u3001x \u306E\u6B21\u6570\u3054\u3068\u306B y \u306E\u4FC2\u6570\
-    \u3092\u5E45 w \u3067\u4E26\u3079\u305F 1 \u6B21\u5143\u306E\u914D\u5217\u3067\
-    \u6301\u3064 (A[i * w + j] \u304C x^i y^j \u306E\u4FC2\u6570)\n// Q(x, y) = 1\
-    \ - y g(x) \u304B\u3089\u59CB\u3081\u3001Q(x, y) Q(-x, y) \u306E x \u306E\u5076\
-    \u6570\u6B21\u3060\u3051\u3092\u6B8B\u3057\u3066 x \u306E\u6B21\u6570\u3092\u534A\
-    \u5206\u306B\u3057\u3066\u3044\u304F\n// qs[t] \u306F t \u6BB5\u76EE\u306E Q \u3067\
-    \u3001x \u306F nx[t] \u9805\u3001y \u306F 2^t + 1 \u9805\u3002\u6700\u5F8C\u306E\
-    \u6BB5\u3067 nx = 1 \u306B\u306A\u308B\ntemplate <typename mint>\nstruct Graeffe\
-    \ {\n    std::vector<std::vector<mint>> qs;\n    std::vector<long long> nx;\n\
-    \    Graeffe(const FPS<mint>& g, long long n) {\n        long long x = n, w =\
-    \ 2;\n        std::vector<mint> q(x * w);\n        q[0] = 1;\n        for (long\
-    \ long i = 0; i < x && i < static_cast<long long>(g.size()); i++) q[i * w + 1]\
-    \ = -g[i];\n        while (x > 1) {\n            qs.push_back(q);\n          \
-    \  nx.push_back(x);\n            // y \u306E\u5E45\u3092 2w - 1 \u306B\u5E83\u3052\
-    \u3066\u8A70\u3081\u76F4\u3059\u3068\u30011 \u6B21\u5143\u306E\u7573\u307F\u8FBC\
-    \u307F\u304C 2 \u6B21\u5143\u306E\u7A4D\u306B\u306A\u308B\n            const long\
-    \ long nw = 2 * w - 1;\n            std::vector<mint> a(x * nw), b(x * nw);\n\
-    \            for (long long i = 0; i < x; i++) {\n                for (long long\
-    \ j = 0; j < w; j++) {\n                    a[i * nw + j] = q[i * w + j];\n  \
-    \                  b[i * nw + j] = i % 2 == 0 ? q[i * w + j] : -q[i * w + j];\n\
-    \                }\n            }\n            std::vector<mint> c = convolution(a,\
-    \ b);\n            const long long x2 = (x + 1) / 2;\n            q.assign(x2\
-    \ * nw, 0);\n            for (long long i = 0; i < x2; i++) {\n              \
-    \  for (long long j = 0; j < nw; j++) q[i * nw + j] = c[2 * i * nw + j];\n   \
-    \         }\n            x = x2, w = nw;\n        }\n    }\n    long long depth()\
-    \ const { return qs.size(); }\n};\n\n// h_i = \u03A3_k w_k [x^k] g^i (0 <= i <\
-    \ m) O(n log^2 n) (n = |w|)\u3002g_0 = 0 \u3067\u3042\u308B\u3053\u3068\n// [x^{n-1}]\
-    \ W(x) / (1 - y g(x)) (W(x) = \u03A3_k w_k x^{n-1-k}) \u3092\u3001x \u306B\u3064\
-    \u3044\u3066 Bostan-Mori \u6CD5\u3067\u6C42\u3081\u308B\ntemplate <typename mint>\n\
-    std::vector<mint> power_projection(const std::vector<mint>& wt, const FPS<mint>&\
-    \ g, long long m) {\n    const long long n = wt.size();\n    std::vector<mint>\
-    \ res(m);\n    if (n == 0) return res;\n    Graeffe<mint> gr(g, n);\n    // p\
-    \ \u306F t \u6BB5\u76EE\u306E\u5206\u5B50\u3067\u3001x \u306F nx[t] \u9805\u3001\
-    y \u306F 2^t \u9805\n    std::vector<mint> p(n);\n    for (long long k = 0; k\
-    \ < n; k++) p[n - 1 - k] = wt[k];\n    long long e = 1;\n    for (long long t\
-    \ = 0; t < gr.depth(); t++) {\n        const long long x = gr.nx[t], w = e + 1,\
-    \ nw = 2 * e;\n        const auto& q = gr.qs[t];\n        std::vector<mint> a(x\
-    \ * nw), b(x * nw);\n        for (long long i = 0; i < x; i++) {\n           \
-    \ for (long long j = 0; j < e; j++) a[i * nw + j] = p[i * e + j];\n          \
-    \  for (long long j = 0; j < w; j++) b[i * nw + j] = i % 2 == 0 ? q[i * w + j]\
-    \ : -q[i * w + j];\n        }\n        std::vector<mint> c = convolution(a, b);\n\
-    \        // [x^{x-1}] \u3092\u53D6\u308A\u51FA\u3059\u306E\u3067\u3001x - 1 \u3068\
-    \u540C\u3058\u5076\u5947\u306E\u9805\u3060\u3051\u3092\u6B8B\u3059\n        const\
-    \ long long par = (x - 1) % 2, x2 = (x + 1) / 2;\n        p.assign(x2 * nw, 0);\n\
-    \        for (long long i = 0; i < x2; i++) {\n            for (long long j =\
-    \ 0; j < nw; j++) p[i * nw + j] = c[(2 * i + par) * nw + j];\n        }\n    \
-    \    e = nw;\n    }\n    // \u6700\u5F8C\u306E\u6BB5\u3067\u306F x \u304C 1 \u9805\
-    \u3067\u3001\u5206\u6BCD\u306E\u5B9A\u6570\u9805 (x^0) \u306F 1\n    for (long\
-    \ long i = 0; i < m && i < e; i++) res[i] = p[i];\n    return res;\n}\n\n// \u03A3\
-    _i f_i g^i \u306E x^n \u672A\u6E80 O(n log^2 n)\u3002g_0 = 0\u3001|f| <= n \u3067\
-    \u3042\u308B\u3053\u3068\n// power_projection \u306E\u8EE2\u7F6E\u3067\u3001power_projection\
-    \ \u306E\u5404\u6BB5\u3092\u9006\u5411\u304D\u306B\u305F\u3069\u308B\ntemplate\
-    \ <typename mint>\nFPS<mint> composition_zero(const FPS<mint>& f, const FPS<mint>&\
-    \ g, long long n) {\n    Graeffe<mint> gr(g, n);\n    const long long depth =\
-    \ gr.depth();\n    // \u6700\u5F8C\u306E\u6BB5\u306E\u5206\u5B50\u306E y \u306E\
-    \u9805\u6570\u306F 2^depth\n    long long e = 1LL << depth;\n    std::vector<mint>\
-    \ p(e);\n    for (long long i = 0; i < e && i < static_cast<long long>(f.size());\
-    \ i++) p[i] = f[i];\n    for (long long t = depth - 1; t >= 0; t--) {\n      \
-    \  const long long x = gr.nx[t], w = e / 2 + 1, pe = e / 2;\n        const auto&\
-    \ q = gr.qs[t];\n        // \u53D6\u308A\u51FA\u3057\u305F\u5076\u5947\u306E\u4F4D\
-    \u7F6E\u306B\u623B\u3057 (r)\u3001Q(-x, y) \u3068\u306E\u7A4D\u306E\u8EE2\u7F6E\
-    \ (\u4E21\u65B9\u5411\u3092\u53CD\u8EE2\u3057\u305F Q(-x, y) \u3068\u306E\u7573\
-    \u307F\u8FBC\u307F) \u3092\u53D6\u308B\n        const long long par = (x - 1)\
-    \ % 2, x2 = (x + 1) / 2, nw = e + w - 1;\n        std::vector<mint> r(x * nw),\
-    \ b(x * nw);\n        for (long long i = 0; i < x2; i++) {\n            for (long\
-    \ long j = 0; j < e; j++) r[(2 * i + par) * nw + j] = p[i * e + j];\n        }\n\
-    \        for (long long i = 0; i < x; i++) {\n            for (long long j = 0;\
-    \ j < w; j++) {\n                const mint v = q[i * w + j];\n              \
-    \  b[(x - 1 - i) * nw + (w - 1 - j)] = i % 2 == 0 ? v : -v;\n            }\n \
-    \       }\n        std::vector<mint> c = convolution(r, b);\n        p.assign(x\
-    \ * pe, 0);\n        for (long long i = 0; i < x; i++) {\n            for (long\
-    \ long j = 0; j < pe; j++) p[i * pe + j] = c[(i + x - 1) * nw + (j + w - 1)];\n\
-    \        }\n        e = pe;\n    }\n    FPS<mint> res(n);\n    for (long long\
-    \ k = 0; k < n; k++) res[k] = p[n - 1 - k];\n    return res;\n}\n}  // namespace\
-    \ internal_fps_composition\n\n/**\n * @brief f(g(x)) \u306E x^deg \u672A\u6E80\
-    \u306E\u9805 O(n log^2 n) (n = deg\u3001g_0 != 0 \u306A\u3089 O(|f| log |f|) \u3092\
-    \u8DB3\u3059)\n * g \u304C x^v \u304B\u3089\u59CB\u307E\u308B\u306A\u3089 f \u306E\
-    \u6B21\u6570 ceil(deg / v) \u4EE5\u4E0A\u306E\u9805\u306F\u4F7F\u308F\u305A\u3001\
-    \u6B8B\u308A\u304C max(32, 4 log2(deg)) \u9805\u4EE5\u4E0B\u306A\u3089 Horner\
-    \ \u6CD5\u3067 O(|f| n log n) \u306B\u3059\u308B\n * f \u306F\u591A\u9805\u5F0F\
-    \u3068\u3057\u3066\u6271\u3046\u306E\u3067\u3001g \u306E\u5B9A\u6570\u9805\u306F\
-    \ 0 \u3067\u306A\u304F\u3066\u3082\u3088\u3044 (f(x + g_0) \u306B\u76F4\u3057\u3066\
-    \u304B\u3089\u6C42\u3081\u308B\u3002|f| \u306F\u6CD5\u3088\u308A\u5C0F\u3055\u3044\
-    \u3053\u3068)\u3002\n * deg \u3092\u7701\u7565\u3059\u308B\u304B\u8CA0\u306E\u5024\
-    \u3092\u6E21\u3059\u3068 max(|f|, |g|)\n */\ntemplate <typename mint>\nFPS<mint>\
-    \ composition(FPS<mint> f, FPS<mint> g, long long deg = -1) {\n    if (deg < 0)\
-    \ deg = std::max(f.size(), g.size());\n    if (deg == 0) return FPS<mint>();\n\
-    \    if (!g.empty() && g[0] != 0) {\n        f = taylor_shift(f, g[0]);\n    \
-    \    g[0] = 0;\n    }\n    g = g.pre(deg);\n    // g \u306E\u6700\u4F4E\u6B21\u306E\
-    \u9805\u3092 x^v \u3068\u3059\u308B\u3068\u3001g^k \u306F x^{kv} \u304B\u3089\u59CB\
-    \u307E\u308B\u306E\u3067\u3001f \u306E k >= ceil(deg / v) \u306E\u9805\u306F\u52B9\
-    \u304B\u306A\u3044\n    long long v = 1;\n    while (v < static_cast<long long>(g.size())\
-    \ && g[v] == 0) v++;\n    const long long need = v >= static_cast<long long>(g.size())\
-    \ ? 1 : (deg - 1) / v + 1;\n    if (static_cast<long long>(f.size()) > need) f.resize(need);\n\
-    \    // f \u304C\u77ED\u3044\u3068\u304D\u306F Horner \u6CD5 (\u639B\u3051\u7B97\
-    \ |f| \u56DE) \u306E\u307B\u3046\u304C\u901F\u3044\n    // (Kinoshita\u2013Li\
-    \ \u306F\u9577\u3055 deg \u306E\u639B\u3051\u7B97\u306E 4 log2(deg)\u301C7 log2(deg)\
-    \ \u56DE\u5206\u307B\u3069\u3002deg = 10^4 \u3067 55 \u56DE\u30012 * 10^5 \u3067\
-    \ 130 \u56DE)\n    long long log_deg = 0;\n    while ((1LL << log_deg) < deg)\
-    \ log_deg++;\n    if (static_cast<long long>(f.size()) <= std::max(32LL, 4 * log_deg))\
-    \ {\n        FPS<mint> res(deg);\n        for (long long i = static_cast<long\
-    \ long>(f.size()) - 1; i >= 0; i--) {\n            res = (res * g).pre(deg);\n\
-    \            res.resize(deg);\n            res[0] += f[i];\n        }\n      \
-    \  return res;\n    }\n    return internal_fps_composition::composition_zero(f,\
+    \    auto rec = [&](auto&& self, long long l, long long r) -> SumOfFractions<mint>\
+    \ {\n        if (r - l == 1) return {nums[l], dens[l]};\n        long long m =\
+    \ (l + r) / 2;\n        auto [a, b] = self(self, l, m);\n        auto [c, d] =\
+    \ self(self, m, r);\n        return {a * d + c * b, b * d};\n    };\n    return\
+    \ rec(rec, 0, nums.size());\n}\n#line 14 \"src/math/fps-composition.hpp\"\n\n\
+    namespace internal_fps_composition {\n// 2 \u5909\u6570\u591A\u9805\u5F0F A(x,\
+    \ y) \u3092\u3001x \u306E\u6B21\u6570\u3054\u3068\u306B y \u306E\u4FC2\u6570\u3092\
+    \u5E45 w \u3067\u4E26\u3079\u305F 1 \u6B21\u5143\u306E\u914D\u5217\u3067\u6301\
+    \u3064 (A[i * w + j] \u304C x^i y^j \u306E\u4FC2\u6570)\n// Q(x, y) = 1 - y g(x)\
+    \ \u304B\u3089\u59CB\u3081\u3001Q(x, y) Q(-x, y) \u306E x \u306E\u5076\u6570\u6B21\
+    \u3060\u3051\u3092\u6B8B\u3057\u3066 x \u306E\u6B21\u6570\u3092\u534A\u5206\u306B\
+    \u3057\u3066\u3044\u304F\n// qs[t] \u306F t \u6BB5\u76EE\u306E Q \u3067\u3001\
+    x \u306F nx[t] \u9805\u3001y \u306F 2^t + 1 \u9805\u3002\u6700\u5F8C\u306E\u6BB5\
+    \u3067 nx = 1 \u306B\u306A\u308B\ntemplate <typename mint>\nstruct Graeffe {\n\
+    \    std::vector<std::vector<mint>> qs;\n    std::vector<long long> nx;\n    Graeffe(const\
+    \ FPS<mint>& g, long long n) {\n        long long x = n, w = 2;\n        std::vector<mint>\
+    \ q(x * w);\n        q[0] = 1;\n        for (long long i = 0; i < x && i < static_cast<long\
+    \ long>(g.size()); i++) q[i * w + 1] = -g[i];\n        while (x > 1) {\n     \
+    \       qs.push_back(q);\n            nx.push_back(x);\n            // y \u306E\
+    \u5E45\u3092 2w - 1 \u306B\u5E83\u3052\u3066\u8A70\u3081\u76F4\u3059\u3068\u3001\
+    1 \u6B21\u5143\u306E\u7573\u307F\u8FBC\u307F\u304C 2 \u6B21\u5143\u306E\u7A4D\u306B\
+    \u306A\u308B\n            const long long nw = 2 * w - 1;\n            std::vector<mint>\
+    \ a(x * nw), b(x * nw);\n            for (long long i = 0; i < x; i++) {\n   \
+    \             for (long long j = 0; j < w; j++) {\n                    a[i * nw\
+    \ + j] = q[i * w + j];\n                    b[i * nw + j] = i % 2 == 0 ? q[i *\
+    \ w + j] : -q[i * w + j];\n                }\n            }\n            std::vector<mint>\
+    \ c = convolution(a, b);\n            const long long x2 = (x + 1) / 2;\n    \
+    \        q.assign(x2 * nw, 0);\n            for (long long i = 0; i < x2; i++)\
+    \ {\n                for (long long j = 0; j < nw; j++) q[i * nw + j] = c[2 *\
+    \ i * nw + j];\n            }\n            x = x2, w = nw;\n        }\n    }\n\
+    \    long long depth() const { return qs.size(); }\n};\n\n// h_i = \u03A3_k w_k\
+    \ [x^k] g^i (0 <= i < m) O(n log^2 n) (n = |w|)\u3002g_0 = 0 \u3067\u3042\u308B\
+    \u3053\u3068\n// [x^{n-1}] W(x) / (1 - y g(x)) (W(x) = \u03A3_k w_k x^{n-1-k})\
+    \ \u3092\u3001x \u306B\u3064\u3044\u3066 Bostan-Mori \u6CD5\u3067\u6C42\u3081\u308B\
+    \ntemplate <typename mint>\nstd::vector<mint> power_projection(const std::vector<mint>&\
+    \ wt, const FPS<mint>& g, long long m) {\n    const long long n = wt.size();\n\
+    \    std::vector<mint> res(m);\n    if (n == 0) return res;\n    Graeffe<mint>\
+    \ gr(g, n);\n    // p \u306F t \u6BB5\u76EE\u306E\u5206\u5B50\u3067\u3001x \u306F\
+    \ nx[t] \u9805\u3001y \u306F 2^t \u9805\n    std::vector<mint> p(n);\n    for\
+    \ (long long k = 0; k < n; k++) p[n - 1 - k] = wt[k];\n    long long e = 1;\n\
+    \    for (long long t = 0; t < gr.depth(); t++) {\n        const long long x =\
+    \ gr.nx[t], w = e + 1, nw = 2 * e;\n        const auto& q = gr.qs[t];\n      \
+    \  std::vector<mint> a(x * nw), b(x * nw);\n        for (long long i = 0; i <\
+    \ x; i++) {\n            for (long long j = 0; j < e; j++) a[i * nw + j] = p[i\
+    \ * e + j];\n            for (long long j = 0; j < w; j++) b[i * nw + j] = i %\
+    \ 2 == 0 ? q[i * w + j] : -q[i * w + j];\n        }\n        std::vector<mint>\
+    \ c = convolution(a, b);\n        // [x^{x-1}] \u3092\u53D6\u308A\u51FA\u3059\u306E\
+    \u3067\u3001x - 1 \u3068\u540C\u3058\u5076\u5947\u306E\u9805\u3060\u3051\u3092\
+    \u6B8B\u3059\n        const long long par = (x - 1) % 2, x2 = (x + 1) / 2;\n \
+    \       p.assign(x2 * nw, 0);\n        for (long long i = 0; i < x2; i++) {\n\
+    \            for (long long j = 0; j < nw; j++) p[i * nw + j] = c[(2 * i + par)\
+    \ * nw + j];\n        }\n        e = nw;\n    }\n    // \u6700\u5F8C\u306E\u6BB5\
+    \u3067\u306F x \u304C 1 \u9805\u3067\u3001\u5206\u6BCD\u306E\u5B9A\u6570\u9805\
+    \ (x^0) \u306F 1\n    for (long long i = 0; i < m && i < e; i++) res[i] = p[i];\n\
+    \    return res;\n}\n\n// \u03A3_i f_i g^i \u306E x^n \u672A\u6E80 O(n log^2 n)\u3002\
+    g_0 = 0\u3001|f| <= n \u3067\u3042\u308B\u3053\u3068\n// power_projection \u306E\
+    \u8EE2\u7F6E\u3067\u3001power_projection \u306E\u5404\u6BB5\u3092\u9006\u5411\u304D\
+    \u306B\u305F\u3069\u308B\ntemplate <typename mint>\nFPS<mint> composition_zero(const\
+    \ FPS<mint>& f, const FPS<mint>& g, long long n) {\n    Graeffe<mint> gr(g, n);\n\
+    \    const long long depth = gr.depth();\n    // \u6700\u5F8C\u306E\u6BB5\u306E\
+    \u5206\u5B50\u306E y \u306E\u9805\u6570\u306F 2^depth\n    long long e = 1LL <<\
+    \ depth;\n    std::vector<mint> p(e);\n    for (long long i = 0; i < e && i <\
+    \ static_cast<long long>(f.size()); i++) p[i] = f[i];\n    for (long long t =\
+    \ depth - 1; t >= 0; t--) {\n        const long long x = gr.nx[t], w = e / 2 +\
+    \ 1, pe = e / 2;\n        const auto& q = gr.qs[t];\n        // \u53D6\u308A\u51FA\
+    \u3057\u305F\u5076\u5947\u306E\u4F4D\u7F6E\u306B\u623B\u3057 (r)\u3001Q(-x, y)\
+    \ \u3068\u306E\u7A4D\u306E\u8EE2\u7F6E (\u4E21\u65B9\u5411\u3092\u53CD\u8EE2\u3057\
+    \u305F Q(-x, y) \u3068\u306E\u7573\u307F\u8FBC\u307F) \u3092\u53D6\u308B\n   \
+    \     const long long par = (x - 1) % 2, x2 = (x + 1) / 2, nw = e + w - 1;\n \
+    \       std::vector<mint> r(x * nw), b(x * nw);\n        for (long long i = 0;\
+    \ i < x2; i++) {\n            for (long long j = 0; j < e; j++) r[(2 * i + par)\
+    \ * nw + j] = p[i * e + j];\n        }\n        for (long long i = 0; i < x; i++)\
+    \ {\n            for (long long j = 0; j < w; j++) {\n                const mint\
+    \ v = q[i * w + j];\n                b[(x - 1 - i) * nw + (w - 1 - j)] = i % 2\
+    \ == 0 ? v : -v;\n            }\n        }\n        std::vector<mint> c = convolution(r,\
+    \ b);\n        p.assign(x * pe, 0);\n        for (long long i = 0; i < x; i++)\
+    \ {\n            for (long long j = 0; j < pe; j++) p[i * pe + j] = c[(i + x -\
+    \ 1) * nw + (j + w - 1)];\n        }\n        e = pe;\n    }\n    FPS<mint> res(n);\n\
+    \    for (long long k = 0; k < n; k++) res[k] = p[n - 1 - k];\n    return res;\n\
+    }\n}  // namespace internal_fps_composition\n\n/**\n * @brief f(g(x)) \u306E x^deg\
+    \ \u672A\u6E80\u306E\u9805 O(n log^2 n) (n = deg\u3001g_0 != 0 \u306A\u3089 O(|f|\
+    \ log |f|) \u3092\u8DB3\u3059)\n * g \u304C x^v \u304B\u3089\u59CB\u307E\u308B\
+    \u306A\u3089 f \u306E\u6B21\u6570 ceil(deg / v) \u4EE5\u4E0A\u306E\u9805\u306F\
+    \u4F7F\u308F\u305A\u3001\u6B8B\u308A\u304C max(32, 4 log2(deg)) \u9805\u4EE5\u4E0B\
+    \u306A\u3089 Horner \u6CD5\u3067 O(|f| n log n) \u306B\u3059\u308B\n * f \u306F\
+    \u591A\u9805\u5F0F\u3068\u3057\u3066\u6271\u3046\u306E\u3067\u3001g \u306E\u5B9A\
+    \u6570\u9805\u306F 0 \u3067\u306A\u304F\u3066\u3082\u3088\u3044 (f(x + g_0) \u306B\
+    \u76F4\u3057\u3066\u304B\u3089\u6C42\u3081\u308B\u3002|f| \u306F\u6CD5\u3088\u308A\
+    \u5C0F\u3055\u3044\u3053\u3068)\u3002\n * deg \u3092\u7701\u7565\u3059\u308B\u304B\
+    \u8CA0\u306E\u5024\u3092\u6E21\u3059\u3068 max(|f|, |g|)\n */\ntemplate <typename\
+    \ mint>\nFPS<mint> composition(FPS<mint> f, FPS<mint> g, long long deg = -1) {\n\
+    \    if (deg < 0) deg = std::max(f.size(), g.size());\n    if (deg == 0) return\
+    \ FPS<mint>();\n    if (!g.empty() && g[0] != 0) {\n        f = taylor_shift(f,\
+    \ g[0]);\n        g[0] = 0;\n    }\n    g = g.pre(deg);\n    // g \u306E\u6700\
+    \u4F4E\u6B21\u306E\u9805\u3092 x^v \u3068\u3059\u308B\u3068\u3001g^k \u306F x^{kv}\
+    \ \u304B\u3089\u59CB\u307E\u308B\u306E\u3067\u3001f \u306E k >= ceil(deg / v)\
+    \ \u306E\u9805\u306F\u52B9\u304B\u306A\u3044\n    long long v = 1;\n    while\
+    \ (v < static_cast<long long>(g.size()) && g[v] == 0) v++;\n    const long long\
+    \ need = v >= static_cast<long long>(g.size()) ? 1 : (deg - 1) / v + 1;\n    if\
+    \ (static_cast<long long>(f.size()) > need) f.resize(need);\n    // f \u304C\u77ED\
+    \u3044\u3068\u304D\u306F Horner \u6CD5 (\u639B\u3051\u7B97 |f| \u56DE) \u306E\u307B\
+    \u3046\u304C\u901F\u3044\n    // (Kinoshita\u2013Li \u306F\u9577\u3055 deg \u306E\
+    \u639B\u3051\u7B97\u306E 4 log2(deg)\u301C7 log2(deg) \u56DE\u5206\u307B\u3069\
+    \u3002deg = 10^4 \u3067 55 \u56DE\u30012 * 10^5 \u3067 130 \u56DE)\n    long long\
+    \ log_deg = 0;\n    while ((1LL << log_deg) < deg) log_deg++;\n    if (static_cast<long\
+    \ long>(f.size()) <= std::max(32LL, 4 * log_deg)) {\n        FPS<mint> res(deg);\n\
+    \        for (long long i = static_cast<long long>(f.size()) - 1; i >= 0; i--)\
+    \ {\n            res = (res * g).pre(deg);\n            res.resize(deg);\n   \
+    \         res[0] += f[i];\n        }\n        return res;\n    }\n    return internal_fps_composition::composition_zero(f,\
     \ g, deg);\n}\n\n/**\n * @brief f(h(x)) = x \u3068\u306A\u308B h \u306E x^deg\
     \ \u672A\u6E80\u306E\u9805 O(n log^2 n) (n = deg)\n * f_0 = 0\u3001f_1 != 0 \u3067\
     \u3042\u308B\u3053\u3068\u3002deg \u3092\u7701\u7565\u3059\u308B\u304B\u8CA0\u306E\
@@ -1286,7 +1289,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/polynomial/compositional-inverse-of-formal-power-series-large.test.cpp
   requiredBy: []
-  timestamp: '2026-10-31 05:46:56+09:00'
+  timestamp: '2026-11-03 08:52:44+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/polynomial/compositional-inverse-of-formal-power-series-large.test.cpp

@@ -59,31 +59,34 @@ data:
     \ > cur.second) cur = {id[j], cnt[id[j]]};\n                if (j % B == B - 1\
     \ || j == n - 1) best[i][j / B] = cur;\n            }\n        }\n    }\n    /**\n\
     \     * @brief \u8981\u7D20\u6570\n     */\n    long long size() const { return\
-    \ n; }\n    /**\n     * @brief a[l], ..., a[r-1] \u306E\u6700\u983B\u5024\u306E\
-    \ 1 \u3064\u3068\u3001\u305D\u306E\u51FA\u73FE\u56DE\u6570 {\u5024, \u56DE\u6570\
-    }\n     * @pre l < r\n     */\n    std::pair<T, long long> mode(long long l, long\
-    \ long r) const {\n        assert(0 <= l && l < r && r <= n);\n        // \u9593\
-    \u306B\u3042\u308B\u30D6\u30ED\u30C3\u30AF [bl, br]\u3002\u306A\u3051\u308C\u3070\
-    \u7A7A\u306B\u3057\u3066\u3001\u3059\u3079\u3066\u7AEF\u3068\u3057\u3066\u6271\
-    \u3046\n        const long long bl = (l + B - 1) / B, br = r / B - 1;\n      \
-    \  long long v = -1, f = 0, mid_l = r, mid_r = r;\n        if (bl <= br) v = best[bl][br].first,\
-    \ f = best[bl][br].second, mid_l = bl * B, mid_r = (br + 1) * B;\n        // \u5DE6\
-    \u7AEF: i \u304B\u3089\u53F3\u306B f + 1 \u500B\u76EE\u306E\u51FA\u73FE\u304C\
-    \ r \u3088\u308A\u524D\u306B\u3042\u308C\u3070\u5897\u3084\u3059\n        for\
-    \ (long long i = l; i < mid_l; i++) {\n            const auto& p = pos[id[i]];\n\
-    \            while (rank[i] + f < static_cast<long long>(p.size()) && p[rank[i]\
-    \ + f] < r) v = id[i], f++;\n        }\n        // \u53F3\u7AEF: i \u304B\u3089\
-    \u5DE6\u306B f + 1 \u500B\u76EE\u306E\u51FA\u73FE\u304C l \u4EE5\u4E0A\u306A\u3089\
-    \u5897\u3084\u3059\n        for (long long i = mid_r; i < r; i++) {\n        \
-    \    const auto& p = pos[id[i]];\n            while (rank[i] - f >= 0 && p[rank[i]\
-    \ - f] >= l) v = id[i], f++;\n        }\n        return {vals[v], f};\n    }\n\
-    };\n\ntemplate <typename T>\nRangeMode(std::vector<T>) -> RangeMode<T>;\n#line\
-    \ 7 \"test/yosupo/data_structure/static-range-mode-query.test.cpp\"\n\nint main()\
-    \ {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    int\
-    \ n, q;\n    std::cin >> n >> q;\n    std::vector<int> a(n);\n    for (auto& x\
-    \ : a) std::cin >> x;\n    RangeMode rm(a);\n    while (q--) {\n        int l,\
-    \ r;\n        std::cin >> l >> r;\n        auto [v, c] = rm.mode(l, r);\n    \
-    \    std::cout << v << ' ' << c << '\\n';\n    }\n}\n"
+    \ n; }\n    /**\n     * @brief mode \u306E\u7D50\u679C\u3002\u6700\u983B\u5024\
+    \ value \u3068\u305D\u306E\u51FA\u73FE\u56DE\u6570 count\n     */\n    struct\
+    \ Mode {\n        T value;          //!< \u6700\u983B\u5024\n        long long\
+    \ count;  //!< \u51FA\u73FE\u56DE\u6570\n    };\n    /**\n     * @brief a[l],\
+    \ ..., a[r-1] \u306E\u6700\u983B\u5024\u306E 1 \u3064\u3068\u3001\u305D\u306E\u51FA\
+    \u73FE\u56DE\u6570 {value, count}\n     * @pre l < r\n     */\n    Mode mode(long\
+    \ long l, long long r) const {\n        assert(0 <= l && l < r && r <= n);\n \
+    \       // \u9593\u306B\u3042\u308B\u30D6\u30ED\u30C3\u30AF [bl, br]\u3002\u306A\
+    \u3051\u308C\u3070\u7A7A\u306B\u3057\u3066\u3001\u3059\u3079\u3066\u7AEF\u3068\
+    \u3057\u3066\u6271\u3046\n        const long long bl = (l + B - 1) / B, br = r\
+    \ / B - 1;\n        long long v = -1, f = 0, mid_l = r, mid_r = r;\n        if\
+    \ (bl <= br) v = best[bl][br].first, f = best[bl][br].second, mid_l = bl * B,\
+    \ mid_r = (br + 1) * B;\n        // \u5DE6\u7AEF: i \u304B\u3089\u53F3\u306B f\
+    \ + 1 \u500B\u76EE\u306E\u51FA\u73FE\u304C r \u3088\u308A\u524D\u306B\u3042\u308C\
+    \u3070\u5897\u3084\u3059\n        for (long long i = l; i < mid_l; i++) {\n  \
+    \          const auto& p = pos[id[i]];\n            while (rank[i] + f < static_cast<long\
+    \ long>(p.size()) && p[rank[i] + f] < r) v = id[i], f++;\n        }\n        //\
+    \ \u53F3\u7AEF: i \u304B\u3089\u5DE6\u306B f + 1 \u500B\u76EE\u306E\u51FA\u73FE\
+    \u304C l \u4EE5\u4E0A\u306A\u3089\u5897\u3084\u3059\n        for (long long i\
+    \ = mid_r; i < r; i++) {\n            const auto& p = pos[id[i]];\n          \
+    \  while (rank[i] - f >= 0 && p[rank[i] - f] >= l) v = id[i], f++;\n        }\n\
+    \        return {vals[v], f};\n    }\n};\n\ntemplate <typename T>\nRangeMode(std::vector<T>)\
+    \ -> RangeMode<T>;\n#line 7 \"test/yosupo/data_structure/static-range-mode-query.test.cpp\"\
+    \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
+    \    int n, q;\n    std::cin >> n >> q;\n    std::vector<int> a(n);\n    for (auto&\
+    \ x : a) std::cin >> x;\n    RangeMode rm(a);\n    while (q--) {\n        int\
+    \ l, r;\n        std::cin >> l >> r;\n        auto [v, c] = rm.mode(l, r);\n \
+    \       std::cout << v << ' ' << c << '\\n';\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/static_range_mode_query\"\
     \n\n#include <iostream>\n#include <vector>\n\n#include \"../../../src/data_structures/range-mode.hpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
@@ -96,7 +99,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/data_structure/static-range-mode-query.test.cpp
   requiredBy: []
-  timestamp: '2026-10-23 19:38:47+09:00'
+  timestamp: '2026-11-03 08:22:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/data_structure/static-range-mode-query.test.cpp

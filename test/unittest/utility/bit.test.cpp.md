@@ -159,7 +159,7 @@ data:
     \ : 0;\n    // clang-format on\n}\n/**\n * @brief 0 \u4EE5\u4E0A n \u4EE5\u4E0B\
     \u306E\u6574\u6570\u306E\u3046\u3061\u3001i \u30D3\u30C3\u30C8\u76EE\u304C\u7ACB\
     \u3063\u3066\u3044\u308B\u3082\u306E\u306E\u6570\n */\ninline constexpr long long\
-    \ count_bit_upto(long long n, long long i) {\n    assert(0 <= n && n < 0x7fffffffffffffffLL\
+    \ bit_count_upto(long long n, long long i) {\n    assert(0 <= n && n < 0x7fffffffffffffffLL\
     \ && 0 <= i && i < 63);\n    // 2^(i + 1) \u3054\u3068\u306B\u3001\u5F8C\u534A\
     \u306E 2^i \u500B\u3067\u7ACB\u3064\n    unsigned long long m = static_cast<unsigned\
     \ long long>(n) + 1, half = 1ULL << i, cycle = half << 1;\n    unsigned long long\
@@ -365,14 +365,14 @@ data:
     \   for (int j = 0, c = 0; j < 63; j++) {\n                if (a >> j & 1) {\n\
     \                    if (c == kk) pos = j;\n                    c++;\n       \
     \         }\n            }\n            check(kth_set_bit(a, kk) == pos, \"kth_set_bit\"\
-    );\n        }\n    }\n    // xor_upto / count_bit_upto: \u5C0F\u3055\u3044 n \u306F\
+    );\n        }\n    }\n    // xor_upto / bit_count_upto: \u5C0F\u3055\u3044 n \u306F\
     \ 1 \u3064\u305A\u3064\u6570\u3048\u308B\n    {\n        long long x = 0;\n  \
     \      std::vector<long long> cnt(63, 0);\n        for (long long n = 0; n < 5000\
     \ && ok; n++) {\n            x ^= n;\n            check(xor_upto(n) == x, \"xor_upto\"\
     );\n            for (int i = 0; i < 63; i++) {\n                cnt[i] += n >>\
-    \ i & 1;\n                check(count_bit_upto(n, i) == cnt[i], \"count_bit_upto\"\
+    \ i & 1;\n                check(bit_count_upto(n, i) == cnt[i], \"bit_count_upto\"\
     );\n            }\n        }\n        long long mx = std::numeric_limits<long\
-    \ long>::max();\n        // \u5927\u304D\u3044 n: count_bit_upto \u306E\u548C\u306F\
+    \ long>::max();\n        // \u5927\u304D\u3044 n: bit_count_upto \u306E\u548C\u306F\
     \ 0..n \u306E popcount \u306E\u548C\u3067\u30010..n \u3092 2 \u3064\u306B\u5206\
     \u3051\u3066\u6570\u3048\u3066\u3082\u540C\u3058\n        for (int rep = 0; rep\
     \ < 1000 && ok; rep++) {\n            long long n = static_cast<long long>(rng()\
@@ -380,12 +380,12 @@ data:
     \ long>(rng() % 1000);\n            if (n < m) continue;\n            for (int\
     \ i = 0; i < 63; i++) {\n                long long direct = 0;\n             \
     \   for (long long v = n - m + 1; v <= n; v++) direct += v >> i & 1;\n       \
-    \         check(count_bit_upto(n, i) - (n - m < 0 ? 0 : count_bit_upto(n - m,\
-    \ i)) == direct, \"count_bit_upto \u5927\u304D\u3044 n\");\n            }\n  \
+    \         check(bit_count_upto(n, i) - (n - m < 0 ? 0 : bit_count_upto(n - m,\
+    \ i)) == direct, \"bit_count_upto \u5927\u304D\u3044 n\");\n            }\n  \
     \          long long xr = xor_upto(n - m);\n            for (long long v = n -\
     \ m + 1; v <= n; v++) xr ^= v;\n            check(xor_upto(n) == xr, \"xor_upto\
-    \ \u5927\u304D\u3044 n\");\n        }\n        check(count_bit_upto(mx - 1, 62)\
-    \ == mx - (1LL << 62), \"count_bit_upto \u4E0A\u9650\");\n        check(xor_upto(0)\
+    \ \u5927\u304D\u3044 n\");\n        }\n        check(bit_count_upto(mx - 1, 62)\
+    \ == mx - (1LL << 62), \"bit_count_upto \u4E0A\u9650\");\n        check(xor_upto(0)\
     \ == 0 && xor_upto(3) == 0 && xor_upto(mx - 1) == mx && xor_upto(mx) == 0, \"\
     xor_upto \u5883\u754C\");\n    }\n\n    // subsets / supersets / bits / combinations_mask\
     \ / add_one / remove_one \u3092\u3001\u3059\u3079\u3066\u306E\u5024\u3092\u8ABF\
@@ -596,14 +596,14 @@ data:
     \   for (int j = 0, c = 0; j < 63; j++) {\n                if (a >> j & 1) {\n\
     \                    if (c == kk) pos = j;\n                    c++;\n       \
     \         }\n            }\n            check(kth_set_bit(a, kk) == pos, \"kth_set_bit\"\
-    );\n        }\n    }\n    // xor_upto / count_bit_upto: \u5C0F\u3055\u3044 n \u306F\
+    );\n        }\n    }\n    // xor_upto / bit_count_upto: \u5C0F\u3055\u3044 n \u306F\
     \ 1 \u3064\u305A\u3064\u6570\u3048\u308B\n    {\n        long long x = 0;\n  \
     \      std::vector<long long> cnt(63, 0);\n        for (long long n = 0; n < 5000\
     \ && ok; n++) {\n            x ^= n;\n            check(xor_upto(n) == x, \"xor_upto\"\
     );\n            for (int i = 0; i < 63; i++) {\n                cnt[i] += n >>\
-    \ i & 1;\n                check(count_bit_upto(n, i) == cnt[i], \"count_bit_upto\"\
+    \ i & 1;\n                check(bit_count_upto(n, i) == cnt[i], \"bit_count_upto\"\
     );\n            }\n        }\n        long long mx = std::numeric_limits<long\
-    \ long>::max();\n        // \u5927\u304D\u3044 n: count_bit_upto \u306E\u548C\u306F\
+    \ long>::max();\n        // \u5927\u304D\u3044 n: bit_count_upto \u306E\u548C\u306F\
     \ 0..n \u306E popcount \u306E\u548C\u3067\u30010..n \u3092 2 \u3064\u306B\u5206\
     \u3051\u3066\u6570\u3048\u3066\u3082\u540C\u3058\n        for (int rep = 0; rep\
     \ < 1000 && ok; rep++) {\n            long long n = static_cast<long long>(rng()\
@@ -611,12 +611,12 @@ data:
     \ long>(rng() % 1000);\n            if (n < m) continue;\n            for (int\
     \ i = 0; i < 63; i++) {\n                long long direct = 0;\n             \
     \   for (long long v = n - m + 1; v <= n; v++) direct += v >> i & 1;\n       \
-    \         check(count_bit_upto(n, i) - (n - m < 0 ? 0 : count_bit_upto(n - m,\
-    \ i)) == direct, \"count_bit_upto \u5927\u304D\u3044 n\");\n            }\n  \
+    \         check(bit_count_upto(n, i) - (n - m < 0 ? 0 : bit_count_upto(n - m,\
+    \ i)) == direct, \"bit_count_upto \u5927\u304D\u3044 n\");\n            }\n  \
     \          long long xr = xor_upto(n - m);\n            for (long long v = n -\
     \ m + 1; v <= n; v++) xr ^= v;\n            check(xor_upto(n) == xr, \"xor_upto\
-    \ \u5927\u304D\u3044 n\");\n        }\n        check(count_bit_upto(mx - 1, 62)\
-    \ == mx - (1LL << 62), \"count_bit_upto \u4E0A\u9650\");\n        check(xor_upto(0)\
+    \ \u5927\u304D\u3044 n\");\n        }\n        check(bit_count_upto(mx - 1, 62)\
+    \ == mx - (1LL << 62), \"bit_count_upto \u4E0A\u9650\");\n        check(xor_upto(0)\
     \ == 0 && xor_upto(3) == 0 && xor_upto(mx - 1) == mx && xor_upto(mx) == 0, \"\
     xor_upto \u5883\u754C\");\n    }\n\n    // subsets / supersets / bits / combinations_mask\
     \ / add_one / remove_one \u3092\u3001\u3059\u3079\u3066\u306E\u5024\u3092\u8ABF\
@@ -744,7 +744,7 @@ data:
   isVerificationFile: true
   path: test/unittest/utility/bit.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:32:25+09:00'
+  timestamp: '2026-11-03 08:52:44+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/utility/bit.test.cpp

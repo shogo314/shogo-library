@@ -196,40 +196,59 @@ data:
     \ {\u6587\u5B57, \u56DE\u6570} \u306E\u5217\u3067\u8868\u3059\n * \u4F8B:\n *\
     \ stern_brocot::encode_path(Rational<>(3, 2));                     // {{'R', 1},\
     \ {'L', 1}}\n * stern_brocot::simplest_between(Rational<>(1, 3), Rational<>(1,\
-    \ 2));  // 2/5\n */\nnamespace stern_brocot {\n\n/**\n * @brief \u9023\u5206\u6570\
-    \u5C55\u958B x = a0 + 1 / (a1 + 1 / (... + 1 / an))\n * a0 = floor(x)\u3001i >=\
-    \ 1 \u3067\u306F ai >= 1\u3002n >= 1 \u306A\u3089 an >= 2 (\u8868\u3057\u65B9\u304C\
-    \ 1 \u901A\u308A\u306B\u6C7A\u307E\u308B)\n */\ntemplate <typename T>\nstd::vector<T>\
-    \ continued_fraction(const Rational<T>& x) {\n    std::vector<T> res;\n    T p\
-    \ = x.num(), q = x.den();\n    T a = x.floor();\n    res.push_back(a);\n    p\
-    \ -= a * q;\n    while (p != 0) {\n        // \u5C0F\u6570\u90E8\u5206 p / q \u306E\
-    \u9006\u6570 q / p \u306E\u6574\u6570\u90E8\u5206\n        T t = q / p, r = q\
-    \ - t * p;\n        res.push_back(t);\n        q = p, p = r;\n    }\n    return\
-    \ res;\n}\n\n/**\n * @brief \u9023\u5206\u6570 [a0; a1, ..., an] \u304C\u8868\u3059\
-    \u6709\u7406\u6570\n * @pre a \u306F\u7A7A\u3067\u306A\u304F\u3001i >= 1 \u3067\
-    \u306F ai >= 1\n */\ntemplate <typename T>\nRational<T> from_continued_fraction(const\
-    \ std::vector<T>& a) {\n    assert(!a.empty());\n    // \u5F8C\u308D\u304B\u3089\
-    \ p / q = ai + 1 / (p / q) \u3092\u305F\u3069\u308B\n    T p = a.back(), q = 1;\n\
-    \    for (int i = static_cast<int>(a.size()) - 2; i >= 0; i--) {\n        assert(a[i\
-    \ + 1] >= 1);\n        T np = a[i] * p + q;\n        q = p, p = np;\n    }\n \
-    \   return Rational<T>(p, q);\n}\n\n/**\n * @brief \u6839 1/1 \u304B\u3089 x \u3078\
-    \u306E\u9053\n * @pre x > 0\n */\ntemplate <typename T>\nstd::vector<std::pair<char,\
-    \ T>> encode_path(const Rational<T>& x) {\n    assert(x > 0);\n    std::vector<T>\
-    \ a = continued_fraction(x);\n    // x = [a0; a1, ..., an] \u3078\u306E\u9053\u306F\
-    \ R^a0 L^a1 R^a2 ... \u3067\u3001\u6700\u5F8C\u306E\u9805\u3060\u3051 1 \u5C11\
-    \u306A\u3044\n    a.back() -= 1;\n    std::vector<std::pair<char, T>> res;\n \
-    \   for (int i = 0; i < static_cast<int>(a.size()); i++) {\n        if (a[i] >\
-    \ 0) res.emplace_back(i % 2 == 0 ? 'R' : 'L', a[i]);\n    }\n    return res;\n\
-    }\n\nnamespace internal {\n// \u9053\u3092\u305F\u3069\u3063\u305F\u3042\u3068\
-    \u306E\u9802\u70B9\u306E\u3001\u5B50\u5B6B\u306E\u7BC4\u56F2\u306E\u4E21\u7AEF\
-    \ (\u4E0B\u7AEF lo\u3001\u4E0A\u7AEF hi)\u3002\u5206\u6BCD\u304C 0 \u306A\u3089\
-    \ +\u221E\ntemplate <typename T>\nstruct Bounds {\n    T lo_num = 0, lo_den =\
-    \ 1, hi_num = 1, hi_den = 0;\n    // 'R' \u3078 n \u56DE: \u4E0B\u7AEF\u304C\u4ECA\
-    \u306E\u9802\u70B9 (lo + hi) \u306B n \u56DE\u7F6E\u304D\u63DB\u308F\u308B\n \
-    \   void move(char c, T n) {\n        assert(c == 'L' || c == 'R');\n        if\
-    \ (c == 'R') {\n            lo_num += n * hi_num, lo_den += n * hi_den;\n    \
-    \    } else {\n            hi_num += n * lo_num, hi_den += n * lo_den;\n     \
-    \   }\n    }\n    Rational<T> node() const { return Rational<T>(lo_num + hi_num,\
+    \ 2));  // 2/5\n */\nnamespace stern_brocot {\n\n/**\n * @brief range\u30FBbinary_search\
+    \ \u304C\u8FD4\u3059\u533A\u9593\u306E\u7AEF\u306E\u5206\u6570 num / den\n * den\
+    \ == 0 \u306A\u3089 +\u221E \u3092\u8868\u3059 (Rational \u3067\u306F\u8868\u305B\
+    \u306A\u3044\u306E\u3067\u3001\u5206\u5B50\u3068\u5206\u6BCD\u3092\u305D\u306E\
+    \u307E\u307E\u6301\u3064)\n */\ntemplate <typename T>\nstruct Endpoint {\n   \
+    \ T num;  //!< \u5206\u5B50\n    T den;  //!< \u5206\u6BCD (+\u221E \u306A\u3089\
+    \ 0)\n    friend bool operator==(const Endpoint& a, const Endpoint& b) { return\
+    \ a.num == b.num && a.den == b.den; }\n    friend bool operator!=(const Endpoint&\
+    \ a, const Endpoint& b) { return !(a == b); }\n};\n\n/**\n * @brief range\u30FB\
+    binary_search \u306E\u7D50\u679C\u3002\u4E0B\u7AEF lower \u3068\u4E0A\u7AEF upper\n\
+    \ *\n * auto [lower, upper] = stern_brocot::range(x); \u306E\u3088\u3046\u306B\
+    \u53D7\u3051\u53D6\u308C\u308B\n */\ntemplate <typename T>\nstruct Interval {\n\
+    \    Endpoint<T> lower;  //!< \u4E0B\u7AEF\n    Endpoint<T> upper;  //!< \u4E0A\
+    \u7AEF\n    friend bool operator==(const Interval& a, const Interval& b) { return\
+    \ a.lower == b.lower && a.upper == b.upper; }\n    friend bool operator!=(const\
+    \ Interval& a, const Interval& b) { return !(a == b); }\n};\n\n/**\n * @brief\
+    \ best_approximation \u306E\u7D50\u679C\u3002x \u4EE5\u4E0B\u3067\u6700\u5927\u306E\
+    \u3082\u306E lower \u3068 x \u4EE5\u4E0A\u3067\u6700\u5C0F\u306E\u3082\u306E upper\n\
+    \ */\ntemplate <typename T>\nstruct BestApproximation {\n    Rational<T> lower;\
+    \  //!< x \u4EE5\u4E0B\u3067\u6700\u5927\n    Rational<T> upper;  //!< x \u4EE5\
+    \u4E0A\u3067\u6700\u5C0F\n};\n\n/**\n * @brief \u9023\u5206\u6570\u5C55\u958B\
+    \ x = a0 + 1 / (a1 + 1 / (... + 1 / an))\n * a0 = floor(x)\u3001i >= 1 \u3067\u306F\
+    \ ai >= 1\u3002n >= 1 \u306A\u3089 an >= 2 (\u8868\u3057\u65B9\u304C 1 \u901A\u308A\
+    \u306B\u6C7A\u307E\u308B)\n */\ntemplate <typename T>\nstd::vector<T> continued_fraction(const\
+    \ Rational<T>& x) {\n    std::vector<T> res;\n    T p = x.num(), q = x.den();\n\
+    \    T a = x.floor();\n    res.push_back(a);\n    p -= a * q;\n    while (p !=\
+    \ 0) {\n        // \u5C0F\u6570\u90E8\u5206 p / q \u306E\u9006\u6570 q / p \u306E\
+    \u6574\u6570\u90E8\u5206\n        T t = q / p, r = q - t * p;\n        res.push_back(t);\n\
+    \        q = p, p = r;\n    }\n    return res;\n}\n\n/**\n * @brief \u9023\u5206\
+    \u6570 [a0; a1, ..., an] \u304C\u8868\u3059\u6709\u7406\u6570\n * @pre a \u306F\
+    \u7A7A\u3067\u306A\u304F\u3001i >= 1 \u3067\u306F ai >= 1\n */\ntemplate <typename\
+    \ T>\nRational<T> from_continued_fraction(const std::vector<T>& a) {\n    assert(!a.empty());\n\
+    \    // \u5F8C\u308D\u304B\u3089 p / q = ai + 1 / (p / q) \u3092\u305F\u3069\u308B\
+    \n    T p = a.back(), q = 1;\n    for (int i = static_cast<int>(a.size()) - 2;\
+    \ i >= 0; i--) {\n        assert(a[i + 1] >= 1);\n        T np = a[i] * p + q;\n\
+    \        q = p, p = np;\n    }\n    return Rational<T>(p, q);\n}\n\n/**\n * @brief\
+    \ \u6839 1/1 \u304B\u3089 x \u3078\u306E\u9053\n * @pre x > 0\n */\ntemplate <typename\
+    \ T>\nstd::vector<std::pair<char, T>> encode_path(const Rational<T>& x) {\n  \
+    \  assert(x > 0);\n    std::vector<T> a = continued_fraction(x);\n    // x = [a0;\
+    \ a1, ..., an] \u3078\u306E\u9053\u306F R^a0 L^a1 R^a2 ... \u3067\u3001\u6700\u5F8C\
+    \u306E\u9805\u3060\u3051 1 \u5C11\u306A\u3044\n    a.back() -= 1;\n    std::vector<std::pair<char,\
+    \ T>> res;\n    for (int i = 0; i < static_cast<int>(a.size()); i++) {\n     \
+    \   if (a[i] > 0) res.emplace_back(i % 2 == 0 ? 'R' : 'L', a[i]);\n    }\n   \
+    \ return res;\n}\n\nnamespace internal {\n// \u9053\u3092\u305F\u3069\u3063\u305F\
+    \u3042\u3068\u306E\u9802\u70B9\u306E\u3001\u5B50\u5B6B\u306E\u7BC4\u56F2\u306E\
+    \u4E21\u7AEF (\u4E0B\u7AEF lo\u3001\u4E0A\u7AEF hi)\u3002\u5206\u6BCD\u304C 0\
+    \ \u306A\u3089 +\u221E\ntemplate <typename T>\nstruct Bounds {\n    T lo_num =\
+    \ 0, lo_den = 1, hi_num = 1, hi_den = 0;\n    // 'R' \u3078 n \u56DE: \u4E0B\u7AEF\
+    \u304C\u4ECA\u306E\u9802\u70B9 (lo + hi) \u306B n \u56DE\u7F6E\u304D\u63DB\u308F\
+    \u308B\n    void move(char c, T n) {\n        assert(c == 'L' || c == 'R');\n\
+    \        if (c == 'R') {\n            lo_num += n * hi_num, lo_den += n * hi_den;\n\
+    \        } else {\n            hi_num += n * lo_num, hi_den += n * lo_den;\n \
+    \       }\n    }\n    Rational<T> node() const { return Rational<T>(lo_num + hi_num,\
     \ lo_den + hi_den); }\n};\ntemplate <typename T>\nBounds<T> walk(const std::vector<std::pair<char,\
     \ T>>& path) {\n    Bounds<T> b;\n    for (auto [c, n] : path) {\n        assert(n\
     \ >= 0);\n        b.move(c, n);\n    }\n    return b;\n}\n}  // namespace internal\n\
@@ -255,46 +274,45 @@ data:
     \  T m = std::min(n, k);\n        path.emplace_back(c, m);\n        k -= m;\n\
     \    }\n    if (k > 0) return std::nullopt;\n    return decode_path(path);\n}\n\
     \n/**\n * @brief x \u306E\u5B50\u5B6B (x \u81EA\u8EAB\u3092\u542B\u3080) \u304C\
-    \u8986\u3046\u958B\u533A\u9593\u306E {{\u4E0B\u7AEF\u306E\u5206\u5B50, \u5206\u6BCD\
-    }, {\u4E0A\u7AEF\u306E\u5206\u5B50, \u5206\u6BCD}}\n * \u4E0B\u7AEF\u306F 0 \u306A\
-    \u3089 {0, 1}\u3001\u4E0A\u7AEF\u306F +\u221E \u306A\u3089 {1, 0}\n * @pre x >\
-    \ 0\n */\ntemplate <typename T>\nstd::pair<std::pair<T, T>, std::pair<T, T>> range(const\
-    \ Rational<T>& x) {\n    internal::Bounds<T> b = internal::walk(encode_path(x));\n\
-    \    return {{b.lo_num, b.lo_den}, {b.hi_num, b.hi_den}};\n}\n\nnamespace internal\
-    \ {\n// 0 <= a / b < c / d (b, d > 0) \u306E\u3068\u304D\u3001\u958B\u533A\u9593\
-    \ (a / b, c / d) \u3067\u5206\u6BCD\u304C\u6700\u5C0F\u306E\u5206\u6570 {\u5206\
-    \u5B50, \u5206\u6BCD}\n// \u5206\u6BCD\u304C\u6700\u5C0F\u306E\u3082\u306E\u306F\
-    \ 1 \u3064\u306B\u6C7A\u307E\u308A\u3001\u5206\u5B50\u3082\u6700\u5C0F\u306B\u306A\
-    \u308B\u3002\u639B\u3051\u7B97\u3092\u3057\u306A\u3044\u306E\u3067 a, b, c, d\
-    \ \u306E\u7BC4\u56F2\u3067\u3042\u3075\u308C\u306A\u3044\ntemplate <typename T>\n\
-    std::pair<T, T> simplest_open(T a, T b, T c, T d) {\n    T k = a / b;\n    //\
-    \ k + 1 < c / d \u306A\u3089 k + 1\n    if (k + 1 <= (c - 1) / d) return {k +\
-    \ 1, 1};\n    // \u6574\u6570\u90E8\u5206 k \u3092\u5F15\u304F\u30020 <= a / b\
-    \ < 1\u30010 < c / d <= 1\n    a -= k * b, c -= k * d;\n    if (a == 0) {\n  \
-    \      // 0 < 1 / q < c / d \u3068\u306A\u308B\u6700\u5C0F\u306E q\n        T\
-    \ q = d / c + 1;\n        return {k * q + 1, q};\n    }\n    // \u9006\u6570\u3092\
-    \u3068\u308B\u3068 d / c < q / p < b / a\n    auto [u, v] = simplest_open(d, c,\
-    \ b, a);\n    return {k * u + v, u};\n}\n\n// \u5F15\u6570\u306E\u578B\u306E\u63A8\
-    \u8AD6\u306B\u4F7F\u308F\u305B\u306A\u3044 (binary_search \u306E max_num \u306B\
-    \ T \u306E\u5024\u3092\u305D\u306E\u307E\u307E\u6E21\u305B\u308B\u3088\u3046\u306B\
-    \u3059\u308B)\n#if __cplusplus >= 202002L\ntemplate <typename T>\nusing non_deduced_t\
-    \ = std::type_identity_t<T>;\n#else\ntemplate <typename T>\nstruct type_identity\
-    \ {\n    using type = T;\n};\ntemplate <typename T>\nusing non_deduced_t = typename\
-    \ type_identity<T>::type;\n#endif\n}  // namespace internal\n\n/**\n * @brief\
-    \ lo \u3068 hi \u306E\u9593\u3067\u6700\u3082\u5358\u7D14\u306A (\u5206\u6BCD\u304C\
-    \u6700\u5C0F\u3067\u3001\u305D\u306E\u4E2D\u3067\u5206\u5B50\u306E\u7D76\u5BFE\
-    \u5024\u304C\u6700\u5C0F\u306E) \u5206\u6570\n * \u65E2\u5B9A\u306F\u958B\u533A\
-    \u9593 (lo, hi)\u3002include_lo, include_hi \u304C true \u306A\u3089\u3001\u305D\
-    \u306E\u7AEF\u3082\u542B\u3081\u308B\n * \u5206\u6BCD\u304C\u6700\u5C0F\u306E\u3082\
-    \u306E\u306F 1 \u3064\u306B\u6C7A\u307E\u308B\n * @pre lo < hi (\u4E21\u7AEF\u3092\
-    \u542B\u3080\u306A\u3089 lo <= hi)\n */\ntemplate <typename T>\nRational<T> simplest_between(const\
-    \ Rational<T>& lo, const Rational<T>& hi, bool include_lo = false, bool include_hi\
-    \ = false) {\n    if (lo == hi) {\n        assert(include_lo && include_hi);\n\
-    \        return lo;\n    }\n    assert(lo < hi);\n    // 0 \u3092\u542B\u3080\u306A\
-    \u3089 0\n    if ((lo < 0 || (lo == 0 && include_lo)) && (0 < hi || (hi == 0 &&\
-    \ include_hi))) return Rational<T>(0);\n    // \u8CA0\u306E\u533A\u9593\u306F\u7B26\
-    \u53F7\u3092\u53CD\u8EE2\u3057\u3066\u6C42\u3081\u308B\n    if (hi <= 0) return\
-    \ -simplest_between(-hi, -lo, include_hi, include_lo);\n    auto [p, q] = internal::simplest_open(lo.num(),\
+    \u8986\u3046\u958B\u533A\u9593 {lower, upper}\n * \u4E0B\u7AEF\u306F 0 \u306A\u3089\
+    \ {0, 1}\u3001\u4E0A\u7AEF\u306F +\u221E \u306A\u3089 {1, 0}\n * @pre x > 0\n\
+    \ */\ntemplate <typename T>\nInterval<T> range(const Rational<T>& x) {\n    internal::Bounds<T>\
+    \ b = internal::walk(encode_path(x));\n    return {{b.lo_num, b.lo_den}, {b.hi_num,\
+    \ b.hi_den}};\n}\n\nnamespace internal {\n// 0 <= a / b < c / d (b, d > 0) \u306E\
+    \u3068\u304D\u3001\u958B\u533A\u9593 (a / b, c / d) \u3067\u5206\u6BCD\u304C\u6700\
+    \u5C0F\u306E\u5206\u6570 {\u5206\u5B50, \u5206\u6BCD}\n// \u5206\u6BCD\u304C\u6700\
+    \u5C0F\u306E\u3082\u306E\u306F 1 \u3064\u306B\u6C7A\u307E\u308A\u3001\u5206\u5B50\
+    \u3082\u6700\u5C0F\u306B\u306A\u308B\u3002\u639B\u3051\u7B97\u3092\u3057\u306A\
+    \u3044\u306E\u3067 a, b, c, d \u306E\u7BC4\u56F2\u3067\u3042\u3075\u308C\u306A\
+    \u3044\ntemplate <typename T>\nstd::pair<T, T> simplest_open(T a, T b, T c, T\
+    \ d) {\n    T k = a / b;\n    // k + 1 < c / d \u306A\u3089 k + 1\n    if (k +\
+    \ 1 <= (c - 1) / d) return {k + 1, 1};\n    // \u6574\u6570\u90E8\u5206 k \u3092\
+    \u5F15\u304F\u30020 <= a / b < 1\u30010 < c / d <= 1\n    a -= k * b, c -= k *\
+    \ d;\n    if (a == 0) {\n        // 0 < 1 / q < c / d \u3068\u306A\u308B\u6700\
+    \u5C0F\u306E q\n        T q = d / c + 1;\n        return {k * q + 1, q};\n   \
+    \ }\n    // \u9006\u6570\u3092\u3068\u308B\u3068 d / c < q / p < b / a\n    auto\
+    \ [u, v] = simplest_open(d, c, b, a);\n    return {k * u + v, u};\n}\n\n// \u5F15\
+    \u6570\u306E\u578B\u306E\u63A8\u8AD6\u306B\u4F7F\u308F\u305B\u306A\u3044 (binary_search\
+    \ \u306E max_num \u306B T \u306E\u5024\u3092\u305D\u306E\u307E\u307E\u6E21\u305B\
+    \u308B\u3088\u3046\u306B\u3059\u308B)\n#if __cplusplus >= 202002L\ntemplate <typename\
+    \ T>\nusing non_deduced_t = std::type_identity_t<T>;\n#else\ntemplate <typename\
+    \ T>\nstruct type_identity {\n    using type = T;\n};\ntemplate <typename T>\n\
+    using non_deduced_t = typename type_identity<T>::type;\n#endif\n}  // namespace\
+    \ internal\n\n/**\n * @brief lo \u3068 hi \u306E\u9593\u3067\u6700\u3082\u5358\
+    \u7D14\u306A (\u5206\u6BCD\u304C\u6700\u5C0F\u3067\u3001\u305D\u306E\u4E2D\u3067\
+    \u5206\u5B50\u306E\u7D76\u5BFE\u5024\u304C\u6700\u5C0F\u306E) \u5206\u6570\n *\
+    \ \u65E2\u5B9A\u306F\u958B\u533A\u9593 (lo, hi)\u3002include_lo, include_hi \u304C\
+    \ true \u306A\u3089\u3001\u305D\u306E\u7AEF\u3082\u542B\u3081\u308B\n * \u5206\
+    \u6BCD\u304C\u6700\u5C0F\u306E\u3082\u306E\u306F 1 \u3064\u306B\u6C7A\u307E\u308B\
+    \n * @pre lo < hi (\u4E21\u7AEF\u3092\u542B\u3080\u306A\u3089 lo <= hi)\n */\n\
+    template <typename T>\nRational<T> simplest_between(const Rational<T>& lo, const\
+    \ Rational<T>& hi, bool include_lo = false, bool include_hi = false) {\n    if\
+    \ (lo == hi) {\n        assert(include_lo && include_hi);\n        return lo;\n\
+    \    }\n    assert(lo < hi);\n    // 0 \u3092\u542B\u3080\u306A\u3089 0\n    if\
+    \ ((lo < 0 || (lo == 0 && include_lo)) && (0 < hi || (hi == 0 && include_hi)))\
+    \ return Rational<T>(0);\n    // \u8CA0\u306E\u533A\u9593\u306F\u7B26\u53F7\u3092\
+    \u53CD\u8EE2\u3057\u3066\u6C42\u3081\u308B\n    if (hi <= 0) return -simplest_between(-hi,\
+    \ -lo, include_hi, include_lo);\n    auto [p, q] = internal::simplest_open(lo.num(),\
     \ lo.den(), hi.num(), hi.den());\n    Rational<T> res(p, q);\n    // \u542B\u3081\
     \u308B\u7AEF\u306E\u65B9\u304C\u5358\u7D14\u306A\u3089\u3001\u305D\u3061\u3089\
     \u3092\u9078\u3076\n    auto simpler = [](const Rational<T>& x, const Rational<T>&\
@@ -304,35 +322,34 @@ data:
     \u304C n \u4EE5\u4E0B\u306E\u5206\u6570\u306E\u3046\u3061\u3001x \u4EE5\u4E0B\u3067\
     \u6700\u5927\u306E\u3082\u306E\u3068 x \u4EE5\u4E0A\u3067\u6700\u5C0F\u306E\u3082\
     \u306E {lower, upper}\n * x \u306E\u5206\u6BCD\u304C n \u4EE5\u4E0B\u306A\u3089\
-    \ {x, x}\n * @pre n >= 1\n */\ntemplate <typename T>\nstd::pair<Rational<T>, Rational<T>>\
-    \ best_approximation(const Rational<T>& x, T n) {\n    assert(n >= 1);\n    if\
-    \ (x.den() <= n) return {x, x};\n    // \u6574\u6570\u90E8\u5206\u3092\u5F15\u3044\
-    \u305F 0 < x - k < 1 \u3067\u6728\u3092\u305F\u3069\u308B (\u5206\u6BCD\u306F\u5909\
-    \u308F\u3089\u306A\u3044)\n    T k = x.floor();\n    internal::Bounds<T> b;\n\
-    \    for (auto [c, m] : encode_path(x - k)) {\n        // \u9032\u3080\u3068\u52D5\
-    \u304F\u65B9\u306E\u7AEF\u306E\u5206\u6BCD\u304C n \u3092\u8D85\u3048\u306A\u3044\
-    \u56DE\u6570\u3060\u3051\u9032\u3080 (\u8DB3\u3059\u65B9\u306E\u7AEF\u304C +\u221E\
-    \ \u306A\u3089\u5206\u6BCD\u306F\u5909\u308F\u3089\u306A\u3044)\n        T add_den\
-    \ = c == 'R' ? b.hi_den : b.lo_den, cur_den = c == 'R' ? b.lo_den : b.hi_den;\n\
-    \        T step = add_den == 0 ? m : (n - cur_den) / add_den;\n        b.move(c,\
-    \ std::min(m, step));\n        if (step < m) break;\n    }\n    return {Rational<T>(b.lo_num,\
-    \ b.lo_den) + k, Rational<T>(b.hi_num, b.hi_den) + k};\n}\n\n/**\n * @brief \u5206\
-    \u6BCD\u304C max_den \u4EE5\u4E0B (max_num \u3092\u6E21\u3059\u3068\u5206\u5B50\
-    \u3082 max_num \u4EE5\u4E0B) \u306E 0 \u4EE5\u4E0A\u306E\u5206\u6570\u306E\u4E2D\
-    \u3067\u3001\u5358\u8ABF\u306A pred \u306E\u5883\u76EE\u3092\u6C42\u3081\u308B\
-    \n * pred(x) \u306F\u5C0F\u3055\u3044 x \u3067 true\u3001\u5927\u304D\u3044 x\
-    \ \u3067 false \u3068\u306A\u308B\u5358\u8ABF\u306A\u95A2\u6570\u3067\u3001pred(0)\
-    \ \u306F true \u3067\u3042\u308B\u3053\u3068\n * \u623B\u308A\u5024\u306F {{pred\
-    \ \u304C true \u306E\u6700\u5927\u306E\u5206\u6570\u306E\u5206\u5B50, \u5206\u6BCD\
-    }, {pred \u304C false \u306E\u6700\u5C0F\u306E\u5206\u6570\u306E\u5206\u5B50,\
-    \ \u5206\u6BCD}}\u3002false \u306E\u5074\u304C\u306A\u3051\u308C\u3070 {1, 0}\
-    \ (+\u221E)\n * max_num \u3092\u6E21\u3055\u306A\u3044\u306A\u3089\u3001pred \u306F\
-    \u3069\u3053\u304B\u3067 false \u306B\u306A\u308B\u3053\u3068 (\u305D\u3046\u3067\
-    \u306A\u3044\u3068\u7D42\u308F\u3089\u306A\u3044)\n * pred \u3092\u547C\u3076\u56DE\
-    \u6570\u306F O(log max_den) \u7A0B\u5EA6 (max_num \u3092\u6E21\u3055\u306A\u3044\
-    \u306A\u3089 O(log (max_den + \u5883\u76EE\u306E\u5024)))\n * @pre max_den >=\
-    \ 1\n */\ntemplate <typename T, typename Pred>\nstd::pair<std::pair<T, T>, std::pair<T,\
-    \ T>> binary_search(T max_den, Pred pred, std::optional<internal::non_deduced_t<T>>\
+    \ {x, x}\n * @pre n >= 1\n */\ntemplate <typename T>\nBestApproximation<T> best_approximation(const\
+    \ Rational<T>& x, T n) {\n    assert(n >= 1);\n    if (x.den() <= n) return {x,\
+    \ x};\n    // \u6574\u6570\u90E8\u5206\u3092\u5F15\u3044\u305F 0 < x - k < 1 \u3067\
+    \u6728\u3092\u305F\u3069\u308B (\u5206\u6BCD\u306F\u5909\u308F\u3089\u306A\u3044\
+    )\n    T k = x.floor();\n    internal::Bounds<T> b;\n    for (auto [c, m] : encode_path(x\
+    \ - k)) {\n        // \u9032\u3080\u3068\u52D5\u304F\u65B9\u306E\u7AEF\u306E\u5206\
+    \u6BCD\u304C n \u3092\u8D85\u3048\u306A\u3044\u56DE\u6570\u3060\u3051\u9032\u3080\
+    \ (\u8DB3\u3059\u65B9\u306E\u7AEF\u304C +\u221E \u306A\u3089\u5206\u6BCD\u306F\
+    \u5909\u308F\u3089\u306A\u3044)\n        T add_den = c == 'R' ? b.hi_den : b.lo_den,\
+    \ cur_den = c == 'R' ? b.lo_den : b.hi_den;\n        T step = add_den == 0 ? m\
+    \ : (n - cur_den) / add_den;\n        b.move(c, std::min(m, step));\n        if\
+    \ (step < m) break;\n    }\n    return {Rational<T>(b.lo_num, b.lo_den) + k, Rational<T>(b.hi_num,\
+    \ b.hi_den) + k};\n}\n\n/**\n * @brief \u5206\u6BCD\u304C max_den \u4EE5\u4E0B\
+    \ (max_num \u3092\u6E21\u3059\u3068\u5206\u5B50\u3082 max_num \u4EE5\u4E0B) \u306E\
+    \ 0 \u4EE5\u4E0A\u306E\u5206\u6570\u306E\u4E2D\u3067\u3001\u5358\u8ABF\u306A pred\
+    \ \u306E\u5883\u76EE\u3092\u6C42\u3081\u308B\n * pred(x) \u306F\u5C0F\u3055\u3044\
+    \ x \u3067 true\u3001\u5927\u304D\u3044 x \u3067 false \u3068\u306A\u308B\u5358\
+    \u8ABF\u306A\u95A2\u6570\u3067\u3001pred(0) \u306F true \u3067\u3042\u308B\u3053\
+    \u3068\n * \u623B\u308A\u5024\u306F {lower, upper}\u3002lower \u306F pred \u304C\
+    \ true \u306E\u6700\u5927\u306E\u5206\u6570\u3001upper \u306F pred \u304C false\
+    \ \u306E\u6700\u5C0F\u306E\u5206\u6570\u3067\u3001false \u306E\u5074\u304C\u306A\
+    \u3051\u308C\u3070 {1, 0} (+\u221E)\n * max_num \u3092\u6E21\u3055\u306A\u3044\
+    \u306A\u3089\u3001pred \u306F\u3069\u3053\u304B\u3067 false \u306B\u306A\u308B\
+    \u3053\u3068 (\u305D\u3046\u3067\u306A\u3044\u3068\u7D42\u308F\u3089\u306A\u3044\
+    )\n * pred \u3092\u547C\u3076\u56DE\u6570\u306F O(log max_den) \u7A0B\u5EA6 (max_num\
+    \ \u3092\u6E21\u3055\u306A\u3044\u306A\u3089 O(log (max_den + \u5883\u76EE\u306E\
+    \u5024)))\n * @pre max_den >= 1\n */\ntemplate <typename T, typename Pred>\nInterval<T>\
+    \ binary_search(T max_den, Pred pred, std::optional<internal::non_deduced_t<T>>\
     \ max_num = std::nullopt) {\n    assert(max_den >= 1);\n    assert(!max_num ||\
     \ *max_num >= 0);\n    assert(pred(Rational<T>(0)));\n    internal::Bounds<T>\
     \ b;\n    // \u5206\u5B50\u304C 0 \u4EE5\u4E0B\u306A\u3089 0 \u3057\u304B\u9078\
@@ -423,17 +440,17 @@ data:
     \ \u306F\u9023\u9577\u5727\u7E2E\");\n        check(stern_brocot::decode_path(path)\
     \ == x, \"decode_path\");\n        check(stern_brocot::depth(x) == static_cast<long\
     \ long>(w.path.size()), \"depth\");\n        auto [lo, hi] = stern_brocot::range(x);\n\
-    \        check(lo == std::make_pair(w.lo_num, w.lo_den) && hi == std::make_pair(w.hi_num,\
-    \ w.hi_den), \"range\");\n    }\n    check(stern_brocot::encode_path(Q(1)).empty(),\
-    \ \"encode_path 1/1\");\n    check((stern_brocot::range(Q(1)) == std::pair<std::pair<long\
-    \ long, long long>, std::pair<long long, long long>>{{0, 1}, {1, 0}}), \"range\
-    \ 1/1\");\n    // \u540C\u3058\u6587\u5B57\u304C\u7D9A\u304F\u9053\u3084\u56DE\
-    \u6570 0 \u3082\u53D7\u3051\u4ED8\u3051\u308B\n    check((stern_brocot::decode_path(std::vector<std::pair<char,\
-    \ long long>>{{'R', 1}, {'R', 0}, {'R', 1}, {'L', 2}}) == naive_decode(\"RRLL\"\
-    )), \"decode_path \u7D9A\u304F\u6587\u5B57\");\n\n    // lca / ancestor: \u9053\
-    \u306E\u6587\u5B57\u5217\u306E\u5171\u901A\u90E8\u5206\u30FB\u5148\u982D\u90E8\
-    \u5206\u3068\u6BD4\u3079\u308B\n    for (int rep = 0; rep < 3000 && ok; rep++)\
-    \ {\n        Q x = gen_pos(40), y = gen_pos(40);\n        std::string px = naive_walk(x).path,\
+    \        check(lo.num == w.lo_num && lo.den == w.lo_den && hi.num == w.hi_num\
+    \ && hi.den == w.hi_den, \"range\");\n    }\n    check(stern_brocot::encode_path(Q(1)).empty(),\
+    \ \"encode_path 1/1\");\n    check((stern_brocot::range(Q(1)) == stern_brocot::Interval<long\
+    \ long>{{0, 1}, {1, 0}}), \"range 1/1\");\n    // \u540C\u3058\u6587\u5B57\u304C\
+    \u7D9A\u304F\u9053\u3084\u56DE\u6570 0 \u3082\u53D7\u3051\u4ED8\u3051\u308B\n\
+    \    check((stern_brocot::decode_path(std::vector<std::pair<char, long long>>{{'R',\
+    \ 1}, {'R', 0}, {'R', 1}, {'L', 2}}) == naive_decode(\"RRLL\")), \"decode_path\
+    \ \u7D9A\u304F\u6587\u5B57\");\n\n    // lca / ancestor: \u9053\u306E\u6587\u5B57\
+    \u5217\u306E\u5171\u901A\u90E8\u5206\u30FB\u5148\u982D\u90E8\u5206\u3068\u6BD4\
+    \u3079\u308B\n    for (int rep = 0; rep < 3000 && ok; rep++) {\n        Q x =\
+    \ gen_pos(40), y = gen_pos(40);\n        std::string px = naive_walk(x).path,\
     \ py = naive_walk(y).path;\n        size_t k = 0;\n        while (k < px.size()\
     \ && k < py.size() && px[k] == py[k]) k++;\n        check(stern_brocot::lca(x,\
     \ y) == naive_decode(px.substr(0, k)), \"lca\");\n        for (long long d = 0;\
@@ -492,50 +509,50 @@ data:
     \u5B50\u306E\u4E0A\u9650\u5185\u306E\u5206\u6570\u3092\u5168\u63A2\u7D22\u3057\
     \u3066\u3001pred \u304C true \u306E\u6700\u5927\u3068 false \u306E\u6700\u5C0F\
     \u3092\u6C42\u3081\u308B\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u6BD4\u3079\u308B\
-    \n    {\n        using P = std::pair<long long, long long>;\n        auto naive\
+    \n    {\n        using P = stern_brocot::Endpoint<long long>;\n        auto naive\
     \ = [&](long long max_den, long long max_num, auto pred) {\n            Q lo(0),\
     \ hi(0);\n            bool has_hi = false;\n            for (long long q = 1;\
     \ q <= max_den; q++) {\n                for (long long p = 0; p <= max_num; p++)\
     \ {\n                    Q x(p, q);\n                    if (pred(x)) {\n    \
     \                    if (lo < x) lo = x;\n                    } else if (!has_hi\
     \ || x < hi) {\n                        hi = x, has_hi = true;\n             \
-    \       }\n                }\n            }\n            return std::make_pair(P{lo.num(),\
-    \ lo.den()}, has_hi ? P{hi.num(), hi.den()} : P{1, 0});\n        };\n        for\
-    \ (int rep = 0; rep < 3000 && ok; rep++) {\n            long long max_den = rng()\
-    \ % 12 + 1, max_num = rng() % 12;\n            Q x = gen_pos(15);\n          \
-    \  bool strict = rng() % 2;\n            auto pred = [&](const Q& y) { return\
-    \ strict ? y < x || y == Q(0) : y <= x; };\n            auto expect = naive(max_den,\
-    \ max_num, pred);\n            check(stern_brocot::binary_search(max_den, pred,\
-    \ max_num) == expect, \"binary_search \u5206\u5B50\u306E\u4E0A\u9650\u3042\u308A\
-    \");\n            // \u5206\u5B50\u306E\u4E0A\u9650\u306A\u3057: \u5206\u5B50\u304C\
-    \u5341\u5206\u5927\u304D\u3044\u7BC4\u56F2\u306E\u5168\u63A2\u7D22\u3068\u540C\
-    \u3058\n            check(stern_brocot::binary_search(max_den, pred) == naive(max_den,\
-    \ 16 * max_den, pred), \"binary_search \u5206\u5B50\u306E\u4E0A\u9650\u306A\u3057\
-    \");\n        }\n        // pred \u304C\u305A\u3063\u3068 true \u306A\u3089\u4E0A\
-    \u5074\u306F +\u221E\n        auto all = stern_brocot::binary_search(5LL, [](const\
-    \ Q&) { return true; }, 7LL);\n        check(all.first == P{7, 1} && all.second\
-    \ == P{1, 0}, \"binary_search +\u221E\");\n        // \u221A2 \u306E\u4E21\u5074\
-    : \u5206\u6BCD 10^9 \u4EE5\u4E0B\u3067\u6700\u3082\u8FD1\u3044\u5206\u6570\u3002\
-    pred \u3092\u547C\u3076\u56DE\u6570\u3082\u6570\u3048\u308B\n        const long\
-    \ long n = 1000000000;\n        int calls = 0;\n        auto [lo, hi] = stern_brocot::binary_search(n,\
-    \ [&](const Q& y) {\n            calls++;\n            return y.num() * y.num()\
-    \ <= 2 * y.den() * y.den();\n        });\n        Q l(lo.first, lo.second), h(hi.first,\
-    \ hi.second);\n        // \u96A3\u308A\u5408\u3046\u5206\u6570 (\u9593\u306B\u5206\
-    \u6BCD n \u4EE5\u4E0B\u306E\u5206\u6570\u304C\u306A\u3044) \u3067\u3001\u221A\
-    2 \u3092\u631F\u3080\n        check(lo.second <= n && hi.second <= n && lo.second\
-    \ + hi.second > n, \"binary_search \u221A2 \u5206\u6BCD\");\n        check(hi.first\
-    \ * lo.second - lo.first * hi.second == 1, \"binary_search \u221A2 \u96A3\u308A\
-    \u5408\u3046\");\n        check(l * l < Q(2) && Q(2) < h * h, \"binary_search\
-    \ \u221A2 \u631F\u3080\");\n        check(calls <= 200, \"binary_search \u221A\
-    2 \u547C\u3076\u56DE\u6570\");\n        // best_approximation \u3068\u4E00\u81F4\
-    \u3059\u308B\n        for (int rep = 0; rep < 1000 && ok; rep++) {\n         \
-    \   Q x = gen_pos(1000000);\n            long long m = rng() % 1000 + 1;\n   \
-    \         auto [bl, bu] = stern_brocot::best_approximation(x, m);\n          \
-    \  auto [sl, su] = stern_brocot::binary_search(m, [&](const Q& y) { return y <=\
-    \ x; });\n            // x \u81EA\u8EAB\u306E\u5206\u6BCD\u304C m \u4EE5\u4E0B\
+    \       }\n                }\n            }\n            return stern_brocot::Interval<long\
+    \ long>{P{lo.num(), lo.den()}, has_hi ? P{hi.num(), hi.den()} : P{1, 0}};\n  \
+    \      };\n        for (int rep = 0; rep < 3000 && ok; rep++) {\n            long\
+    \ long max_den = rng() % 12 + 1, max_num = rng() % 12;\n            Q x = gen_pos(15);\n\
+    \            bool strict = rng() % 2;\n            auto pred = [&](const Q& y)\
+    \ { return strict ? y < x || y == Q(0) : y <= x; };\n            auto expect =\
+    \ naive(max_den, max_num, pred);\n            check(stern_brocot::binary_search(max_den,\
+    \ pred, max_num) == expect, \"binary_search \u5206\u5B50\u306E\u4E0A\u9650\u3042\
+    \u308A\");\n            // \u5206\u5B50\u306E\u4E0A\u9650\u306A\u3057: \u5206\u5B50\
+    \u304C\u5341\u5206\u5927\u304D\u3044\u7BC4\u56F2\u306E\u5168\u63A2\u7D22\u3068\
+    \u540C\u3058\n            check(stern_brocot::binary_search(max_den, pred) ==\
+    \ naive(max_den, 16 * max_den, pred), \"binary_search \u5206\u5B50\u306E\u4E0A\
+    \u9650\u306A\u3057\");\n        }\n        // pred \u304C\u305A\u3063\u3068 true\
+    \ \u306A\u3089\u4E0A\u5074\u306F +\u221E\n        auto all = stern_brocot::binary_search(5LL,\
+    \ [](const Q&) { return true; }, 7LL);\n        check(all.lower == P{7, 1} &&\
+    \ all.upper == P{1, 0}, \"binary_search +\u221E\");\n        // \u221A2 \u306E\
+    \u4E21\u5074: \u5206\u6BCD 10^9 \u4EE5\u4E0B\u3067\u6700\u3082\u8FD1\u3044\u5206\
+    \u6570\u3002pred \u3092\u547C\u3076\u56DE\u6570\u3082\u6570\u3048\u308B\n    \
+    \    const long long n = 1000000000;\n        int calls = 0;\n        auto [lo,\
+    \ hi] = stern_brocot::binary_search(n, [&](const Q& y) {\n            calls++;\n\
+    \            return y.num() * y.num() <= 2 * y.den() * y.den();\n        });\n\
+    \        Q l(lo.num, lo.den), h(hi.num, hi.den);\n        // \u96A3\u308A\u5408\
+    \u3046\u5206\u6570 (\u9593\u306B\u5206\u6BCD n \u4EE5\u4E0B\u306E\u5206\u6570\u304C\
+    \u306A\u3044) \u3067\u3001\u221A2 \u3092\u631F\u3080\n        check(lo.den <=\
+    \ n && hi.den <= n && lo.den + hi.den > n, \"binary_search \u221A2 \u5206\u6BCD\
+    \");\n        check(hi.num * lo.den - lo.num * hi.den == 1, \"binary_search \u221A\
+    2 \u96A3\u308A\u5408\u3046\");\n        check(l * l < Q(2) && Q(2) < h * h, \"\
+    binary_search \u221A2 \u631F\u3080\");\n        check(calls <= 200, \"binary_search\
+    \ \u221A2 \u547C\u3076\u56DE\u6570\");\n        // best_approximation \u3068\u4E00\
+    \u81F4\u3059\u308B\n        for (int rep = 0; rep < 1000 && ok; rep++) {\n   \
+    \         Q x = gen_pos(1000000);\n            long long m = rng() % 1000 + 1;\n\
+    \            auto [bl, bu] = stern_brocot::best_approximation(x, m);\n       \
+    \     auto [sl, su] = stern_brocot::binary_search(m, [&](const Q& y) { return\
+    \ y <= x; });\n            // x \u81EA\u8EAB\u306E\u5206\u6BCD\u304C m \u4EE5\u4E0B\
     \u306A\u3089\u3001\u4E0B\u5074\u306F x\u3001\u4E0A\u5074\u306F x \u306E\u6B21\u306E\
-    \u5206\u6570\u306B\u306A\u308B\n            check(Q(sl.first, sl.second) == bl\
-    \ && (bl == bu || Q(su.first, su.second) == bu), \"binary_search \u3068 best_approximation\"\
+    \u5206\u6570\u306B\u306A\u308B\n            check(Q(sl.num, sl.den) == bl && (bl\
+    \ == bu || Q(su.num, su.den) == bu), \"binary_search \u3068 best_approximation\"\
     );\n        }\n    }\n\n    // ABC408 G \u306E\u5165\u51FA\u529B\u4F8B: A/B <\
     \ p/q < C/D \u3068\u306A\u308B\u6700\u5C0F\u306E q\n    {\n        long long in[5][4]\
     \ = {{3, 2, 2, 1}, {5, 2, 8, 3}, {1, 2, 2, 1}, {60, 191, 11, 35}, {40, 191, 71,\
@@ -605,17 +622,17 @@ data:
     \ \u306F\u9023\u9577\u5727\u7E2E\");\n        check(stern_brocot::decode_path(path)\
     \ == x, \"decode_path\");\n        check(stern_brocot::depth(x) == static_cast<long\
     \ long>(w.path.size()), \"depth\");\n        auto [lo, hi] = stern_brocot::range(x);\n\
-    \        check(lo == std::make_pair(w.lo_num, w.lo_den) && hi == std::make_pair(w.hi_num,\
-    \ w.hi_den), \"range\");\n    }\n    check(stern_brocot::encode_path(Q(1)).empty(),\
-    \ \"encode_path 1/1\");\n    check((stern_brocot::range(Q(1)) == std::pair<std::pair<long\
-    \ long, long long>, std::pair<long long, long long>>{{0, 1}, {1, 0}}), \"range\
-    \ 1/1\");\n    // \u540C\u3058\u6587\u5B57\u304C\u7D9A\u304F\u9053\u3084\u56DE\
-    \u6570 0 \u3082\u53D7\u3051\u4ED8\u3051\u308B\n    check((stern_brocot::decode_path(std::vector<std::pair<char,\
-    \ long long>>{{'R', 1}, {'R', 0}, {'R', 1}, {'L', 2}}) == naive_decode(\"RRLL\"\
-    )), \"decode_path \u7D9A\u304F\u6587\u5B57\");\n\n    // lca / ancestor: \u9053\
-    \u306E\u6587\u5B57\u5217\u306E\u5171\u901A\u90E8\u5206\u30FB\u5148\u982D\u90E8\
-    \u5206\u3068\u6BD4\u3079\u308B\n    for (int rep = 0; rep < 3000 && ok; rep++)\
-    \ {\n        Q x = gen_pos(40), y = gen_pos(40);\n        std::string px = naive_walk(x).path,\
+    \        check(lo.num == w.lo_num && lo.den == w.lo_den && hi.num == w.hi_num\
+    \ && hi.den == w.hi_den, \"range\");\n    }\n    check(stern_brocot::encode_path(Q(1)).empty(),\
+    \ \"encode_path 1/1\");\n    check((stern_brocot::range(Q(1)) == stern_brocot::Interval<long\
+    \ long>{{0, 1}, {1, 0}}), \"range 1/1\");\n    // \u540C\u3058\u6587\u5B57\u304C\
+    \u7D9A\u304F\u9053\u3084\u56DE\u6570 0 \u3082\u53D7\u3051\u4ED8\u3051\u308B\n\
+    \    check((stern_brocot::decode_path(std::vector<std::pair<char, long long>>{{'R',\
+    \ 1}, {'R', 0}, {'R', 1}, {'L', 2}}) == naive_decode(\"RRLL\")), \"decode_path\
+    \ \u7D9A\u304F\u6587\u5B57\");\n\n    // lca / ancestor: \u9053\u306E\u6587\u5B57\
+    \u5217\u306E\u5171\u901A\u90E8\u5206\u30FB\u5148\u982D\u90E8\u5206\u3068\u6BD4\
+    \u3079\u308B\n    for (int rep = 0; rep < 3000 && ok; rep++) {\n        Q x =\
+    \ gen_pos(40), y = gen_pos(40);\n        std::string px = naive_walk(x).path,\
     \ py = naive_walk(y).path;\n        size_t k = 0;\n        while (k < px.size()\
     \ && k < py.size() && px[k] == py[k]) k++;\n        check(stern_brocot::lca(x,\
     \ y) == naive_decode(px.substr(0, k)), \"lca\");\n        for (long long d = 0;\
@@ -674,50 +691,50 @@ data:
     \u5B50\u306E\u4E0A\u9650\u5185\u306E\u5206\u6570\u3092\u5168\u63A2\u7D22\u3057\
     \u3066\u3001pred \u304C true \u306E\u6700\u5927\u3068 false \u306E\u6700\u5C0F\
     \u3092\u6C42\u3081\u308B\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u6BD4\u3079\u308B\
-    \n    {\n        using P = std::pair<long long, long long>;\n        auto naive\
+    \n    {\n        using P = stern_brocot::Endpoint<long long>;\n        auto naive\
     \ = [&](long long max_den, long long max_num, auto pred) {\n            Q lo(0),\
     \ hi(0);\n            bool has_hi = false;\n            for (long long q = 1;\
     \ q <= max_den; q++) {\n                for (long long p = 0; p <= max_num; p++)\
     \ {\n                    Q x(p, q);\n                    if (pred(x)) {\n    \
     \                    if (lo < x) lo = x;\n                    } else if (!has_hi\
     \ || x < hi) {\n                        hi = x, has_hi = true;\n             \
-    \       }\n                }\n            }\n            return std::make_pair(P{lo.num(),\
-    \ lo.den()}, has_hi ? P{hi.num(), hi.den()} : P{1, 0});\n        };\n        for\
-    \ (int rep = 0; rep < 3000 && ok; rep++) {\n            long long max_den = rng()\
-    \ % 12 + 1, max_num = rng() % 12;\n            Q x = gen_pos(15);\n          \
-    \  bool strict = rng() % 2;\n            auto pred = [&](const Q& y) { return\
-    \ strict ? y < x || y == Q(0) : y <= x; };\n            auto expect = naive(max_den,\
-    \ max_num, pred);\n            check(stern_brocot::binary_search(max_den, pred,\
-    \ max_num) == expect, \"binary_search \u5206\u5B50\u306E\u4E0A\u9650\u3042\u308A\
-    \");\n            // \u5206\u5B50\u306E\u4E0A\u9650\u306A\u3057: \u5206\u5B50\u304C\
-    \u5341\u5206\u5927\u304D\u3044\u7BC4\u56F2\u306E\u5168\u63A2\u7D22\u3068\u540C\
-    \u3058\n            check(stern_brocot::binary_search(max_den, pred) == naive(max_den,\
-    \ 16 * max_den, pred), \"binary_search \u5206\u5B50\u306E\u4E0A\u9650\u306A\u3057\
-    \");\n        }\n        // pred \u304C\u305A\u3063\u3068 true \u306A\u3089\u4E0A\
-    \u5074\u306F +\u221E\n        auto all = stern_brocot::binary_search(5LL, [](const\
-    \ Q&) { return true; }, 7LL);\n        check(all.first == P{7, 1} && all.second\
-    \ == P{1, 0}, \"binary_search +\u221E\");\n        // \u221A2 \u306E\u4E21\u5074\
-    : \u5206\u6BCD 10^9 \u4EE5\u4E0B\u3067\u6700\u3082\u8FD1\u3044\u5206\u6570\u3002\
-    pred \u3092\u547C\u3076\u56DE\u6570\u3082\u6570\u3048\u308B\n        const long\
-    \ long n = 1000000000;\n        int calls = 0;\n        auto [lo, hi] = stern_brocot::binary_search(n,\
-    \ [&](const Q& y) {\n            calls++;\n            return y.num() * y.num()\
-    \ <= 2 * y.den() * y.den();\n        });\n        Q l(lo.first, lo.second), h(hi.first,\
-    \ hi.second);\n        // \u96A3\u308A\u5408\u3046\u5206\u6570 (\u9593\u306B\u5206\
-    \u6BCD n \u4EE5\u4E0B\u306E\u5206\u6570\u304C\u306A\u3044) \u3067\u3001\u221A\
-    2 \u3092\u631F\u3080\n        check(lo.second <= n && hi.second <= n && lo.second\
-    \ + hi.second > n, \"binary_search \u221A2 \u5206\u6BCD\");\n        check(hi.first\
-    \ * lo.second - lo.first * hi.second == 1, \"binary_search \u221A2 \u96A3\u308A\
-    \u5408\u3046\");\n        check(l * l < Q(2) && Q(2) < h * h, \"binary_search\
-    \ \u221A2 \u631F\u3080\");\n        check(calls <= 200, \"binary_search \u221A\
-    2 \u547C\u3076\u56DE\u6570\");\n        // best_approximation \u3068\u4E00\u81F4\
-    \u3059\u308B\n        for (int rep = 0; rep < 1000 && ok; rep++) {\n         \
-    \   Q x = gen_pos(1000000);\n            long long m = rng() % 1000 + 1;\n   \
-    \         auto [bl, bu] = stern_brocot::best_approximation(x, m);\n          \
-    \  auto [sl, su] = stern_brocot::binary_search(m, [&](const Q& y) { return y <=\
-    \ x; });\n            // x \u81EA\u8EAB\u306E\u5206\u6BCD\u304C m \u4EE5\u4E0B\
+    \       }\n                }\n            }\n            return stern_brocot::Interval<long\
+    \ long>{P{lo.num(), lo.den()}, has_hi ? P{hi.num(), hi.den()} : P{1, 0}};\n  \
+    \      };\n        for (int rep = 0; rep < 3000 && ok; rep++) {\n            long\
+    \ long max_den = rng() % 12 + 1, max_num = rng() % 12;\n            Q x = gen_pos(15);\n\
+    \            bool strict = rng() % 2;\n            auto pred = [&](const Q& y)\
+    \ { return strict ? y < x || y == Q(0) : y <= x; };\n            auto expect =\
+    \ naive(max_den, max_num, pred);\n            check(stern_brocot::binary_search(max_den,\
+    \ pred, max_num) == expect, \"binary_search \u5206\u5B50\u306E\u4E0A\u9650\u3042\
+    \u308A\");\n            // \u5206\u5B50\u306E\u4E0A\u9650\u306A\u3057: \u5206\u5B50\
+    \u304C\u5341\u5206\u5927\u304D\u3044\u7BC4\u56F2\u306E\u5168\u63A2\u7D22\u3068\
+    \u540C\u3058\n            check(stern_brocot::binary_search(max_den, pred) ==\
+    \ naive(max_den, 16 * max_den, pred), \"binary_search \u5206\u5B50\u306E\u4E0A\
+    \u9650\u306A\u3057\");\n        }\n        // pred \u304C\u305A\u3063\u3068 true\
+    \ \u306A\u3089\u4E0A\u5074\u306F +\u221E\n        auto all = stern_brocot::binary_search(5LL,\
+    \ [](const Q&) { return true; }, 7LL);\n        check(all.lower == P{7, 1} &&\
+    \ all.upper == P{1, 0}, \"binary_search +\u221E\");\n        // \u221A2 \u306E\
+    \u4E21\u5074: \u5206\u6BCD 10^9 \u4EE5\u4E0B\u3067\u6700\u3082\u8FD1\u3044\u5206\
+    \u6570\u3002pred \u3092\u547C\u3076\u56DE\u6570\u3082\u6570\u3048\u308B\n    \
+    \    const long long n = 1000000000;\n        int calls = 0;\n        auto [lo,\
+    \ hi] = stern_brocot::binary_search(n, [&](const Q& y) {\n            calls++;\n\
+    \            return y.num() * y.num() <= 2 * y.den() * y.den();\n        });\n\
+    \        Q l(lo.num, lo.den), h(hi.num, hi.den);\n        // \u96A3\u308A\u5408\
+    \u3046\u5206\u6570 (\u9593\u306B\u5206\u6BCD n \u4EE5\u4E0B\u306E\u5206\u6570\u304C\
+    \u306A\u3044) \u3067\u3001\u221A2 \u3092\u631F\u3080\n        check(lo.den <=\
+    \ n && hi.den <= n && lo.den + hi.den > n, \"binary_search \u221A2 \u5206\u6BCD\
+    \");\n        check(hi.num * lo.den - lo.num * hi.den == 1, \"binary_search \u221A\
+    2 \u96A3\u308A\u5408\u3046\");\n        check(l * l < Q(2) && Q(2) < h * h, \"\
+    binary_search \u221A2 \u631F\u3080\");\n        check(calls <= 200, \"binary_search\
+    \ \u221A2 \u547C\u3076\u56DE\u6570\");\n        // best_approximation \u3068\u4E00\
+    \u81F4\u3059\u308B\n        for (int rep = 0; rep < 1000 && ok; rep++) {\n   \
+    \         Q x = gen_pos(1000000);\n            long long m = rng() % 1000 + 1;\n\
+    \            auto [bl, bu] = stern_brocot::best_approximation(x, m);\n       \
+    \     auto [sl, su] = stern_brocot::binary_search(m, [&](const Q& y) { return\
+    \ y <= x; });\n            // x \u81EA\u8EAB\u306E\u5206\u6BCD\u304C m \u4EE5\u4E0B\
     \u306A\u3089\u3001\u4E0B\u5074\u306F x\u3001\u4E0A\u5074\u306F x \u306E\u6B21\u306E\
-    \u5206\u6570\u306B\u306A\u308B\n            check(Q(sl.first, sl.second) == bl\
-    \ && (bl == bu || Q(su.first, su.second) == bu), \"binary_search \u3068 best_approximation\"\
+    \u5206\u6570\u306B\u306A\u308B\n            check(Q(sl.num, sl.den) == bl && (bl\
+    \ == bu || Q(su.num, su.den) == bu), \"binary_search \u3068 best_approximation\"\
     );\n        }\n    }\n\n    // ABC408 G \u306E\u5165\u51FA\u529B\u4F8B: A/B <\
     \ p/q < C/D \u3068\u306A\u308B\u6700\u5C0F\u306E q\n    {\n        long long in[5][4]\
     \ = {{3, 2, 2, 1}, {5, 2, 8, 3}, {1, 2, 2, 1}, {60, 191, 11, 35}, {40, 191, 71,\
@@ -732,7 +749,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/stern-brocot.test.cpp
   requiredBy: []
-  timestamp: '2026-10-23 13:29:09+09:00'
+  timestamp: '2026-11-03 08:22:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/stern-brocot.test.cpp

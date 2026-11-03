@@ -641,7 +641,7 @@ data:
     \ x \u5EA7\u6A19\u304B y \u5EA7\u6A19\u304C\u7B49\u3057\u3044\u3053\u3068)\n *\
     \ @return long long \u5171\u6709\u70B9\u3092\u6301\u3064 (\u6C34\u5E73\u306A\u7DDA\
     \u5206, \u5782\u76F4\u306A\u7DDA\u5206) \u306E\u7D44\u306E\u500B\u6570\n */\n\
-    template <typename T>\nlong long count_axis_parallel_intersections(const std::vector<std::pair<Vector<T,\
+    template <typename T>\nlong long axis_parallel_intersection_count(const std::vector<std::pair<Vector<T,\
     \ 2>, Vector<T, 2>>>& segments) {\n    std::vector<T> xs;\n    // (y, \u7A2E\u985E\
     , x1, x2)\u3002\u7A2E\u985E\u306F 0: \u5782\u76F4\u306A\u7DDA\u5206\u306E\u59CB\
     \u307E\u308A\u30011: \u6C34\u5E73\u306A\u7DDA\u5206\u30012: \u5782\u76F4\u306A\
@@ -651,7 +651,7 @@ data:
     \        T y1 = std::min(p[1], q[1]), y2 = std::max(p[1], q[1]);\n           \
     \ events.emplace_back(y1, 0, p[0], p[0]);\n            events.emplace_back(y2,\
     \ 2, p[0], p[0]);\n            xs.push_back(p[0]);\n        } else {\n       \
-    \     assert(p[1] == q[1] && \"count_axis_parallel_intersections: segment is not\
+    \     assert(p[1] == q[1] && \"axis_parallel_intersection_count: segment is not\
     \ axis-parallel\");\n            events.emplace_back(p[1], 1, std::min(p[0], q[0]),\
     \ std::max(p[0], q[0]));\n        }\n    }\n    std::sort(xs.begin(), xs.end());\n\
     \    xs.erase(std::unique(xs.begin(), xs.end()), xs.end());\n    auto index =\
@@ -681,7 +681,7 @@ data:
     \u7D44 (\u5404\u7DDA\u5206\u306F x \u5EA7\u6A19\u304B y \u5EA7\u6A19\u304C\u7B49\
     \u3057\u3044\u3053\u3068)\n * @return long long \u5171\u6709\u70B9\u3092\u6301\
     \u3064 (\u6C34\u5E73\u306A\u7DDA\u5206, \u5782\u76F4\u306A\u7DDA\u5206) \u306E\
-    \u7D44\u306E\u500B\u6570\n */\ntemplate <typename T>\nlong long count_axis_parallel_intersections(const\
+    \u7D44\u306E\u500B\u6570\n */\ntemplate <typename T>\nlong long axis_parallel_intersection_count(const\
     \ std::vector<std::pair<Vector<T, 2>, Vector<T, 2>>>& segments) {\n    std::vector<T>\
     \ xs;\n    // (y, \u7A2E\u985E, x1, x2)\u3002\u7A2E\u985E\u306F 0: \u5782\u76F4\
     \u306A\u7DDA\u5206\u306E\u59CB\u307E\u308A\u30011: \u6C34\u5E73\u306A\u7DDA\u5206\
@@ -691,7 +691,7 @@ data:
     \ == q[0]) {\n            T y1 = std::min(p[1], q[1]), y2 = std::max(p[1], q[1]);\n\
     \            events.emplace_back(y1, 0, p[0], p[0]);\n            events.emplace_back(y2,\
     \ 2, p[0], p[0]);\n            xs.push_back(p[0]);\n        } else {\n       \
-    \     assert(p[1] == q[1] && \"count_axis_parallel_intersections: segment is not\
+    \     assert(p[1] == q[1] && \"axis_parallel_intersection_count: segment is not\
     \ axis-parallel\");\n            events.emplace_back(p[1], 1, std::min(p[0], q[0]),\
     \ std::max(p[0], q[0]));\n        }\n    }\n    std::sort(xs.begin(), xs.end());\n\
     \    xs.erase(std::unique(xs.begin(), xs.end()), xs.end());\n    auto index =\
@@ -712,7 +712,7 @@ data:
   isVerificationFile: false
   path: src/geometry/axis-parallel-segments.hpp
   requiredBy: []
-  timestamp: '2026-10-31 17:14:03+09:00'
+  timestamp: '2026-11-03 08:52:44+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/geometry/axis-parallel-segments.test.cpp
@@ -730,7 +730,7 @@ std::vector<std::pair<P, P>> segs = {
     {P(2, 2), P(2, 5)},  // 垂直
     {P(1, 3), P(5, 3)},  // 水平
 };
-long long k = count_axis_parallel_intersections(segs);  // 1
+long long k = axis_parallel_intersection_count(segs);  // 1
 ```
 
 y の小さい順に走査し、そのときの y をまたいでいる垂直な線分の x を数えておきます。水平な線分に来たら、その x の範囲にある垂直な線分の個数を足します。
@@ -743,7 +743,7 @@ y の小さい順に走査し、そのときの y をまたいでいる垂直な
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `count_axis_parallel_intersections(segs)` | 共有点を持つ (水平な線分, 垂直な線分) の組の個数 (`long long`)。`segs` は端点の組 `std::pair<Vector<T, 2>, Vector<T, 2>>` のリスト | $O(n \log n)$ |
+| `axis_parallel_intersection_count(segs)` | 共有点を持つ (水平な線分, 垂直な線分) の組の個数 (`long long`)。`segs` は端点の組 `std::pair<Vector<T, 2>, Vector<T, 2>>` のリスト | $O(n \log n)$ |
 
 ## 関連
 

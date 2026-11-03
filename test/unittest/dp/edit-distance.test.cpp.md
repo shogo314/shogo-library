@@ -57,32 +57,39 @@ data:
     \ \u306E\u9577\u3055\n        for (long long j = 1; j <= m; j++) {\n         \
     \   long long up = dp[j];\n            dp[j] = a[i - 1] == b[j - 1] ? diag + 1\
     \ : std::max(dp[j], dp[j - 1]);\n            diag = up;\n        }\n    }\n  \
-    \  return dp[m];\n}\n\n/**\n * @brief s \u3068 t \u306E\u6700\u9577\u5171\u901A\
-    \u90E8\u5206\u5217\u3092 1 \u3064\u6C42\u3081\u308B O(nm)\n * s[i] == t[j] \u3068\
-    \u3057\u3066\u9078\u3093\u3060\u6DFB\u5B57\u306E\u7D44 (i, j) \u3092\u3001\u6607\
-    \u9806\u306B\u4E26\u3079\u305F\u30EA\u30B9\u30C8\u3092\u8FD4\u3059\u3002\u30E1\
-    \u30E2\u30EA\u306F O(nm)\n */\ntemplate <typename R1, typename R2>\nstd::vector<std::pair<long\
-    \ long, long long>> longest_common_subsequence_restore(const R1& s, const R2&\
-    \ t) {\n    auto a = std::begin(s);\n    auto b = std::begin(t);\n    long long\
-    \ n = std::end(s) - a, m = std::end(t) - b;\n    // dp[i][j] \u306F s[0, i) \u3068\
-    \ t[0, j) \u306E LCS \u306E\u9577\u3055\n    std::vector<std::vector<int>> dp(n\
-    \ + 1, std::vector<int>(m + 1));\n    for (long long i = 1; i <= n; i++) {\n \
-    \       for (long long j = 1; j <= m; j++) {\n            dp[i][j] = a[i - 1]\
-    \ == b[j - 1] ? dp[i - 1][j - 1] + 1 : std::max(dp[i - 1][j], dp[i][j - 1]);\n\
+    \  return dp[m];\n}\n\n/**\n * @brief \u6700\u9577\u5171\u901A\u90E8\u5206\u5217\
+    \u306E\u5FA9\u5143\u306E\u7D50\u679C\n *\n * auto [length, indices] = longest_common_subsequence_restore(s,\
+    \ t); \u306E\u3088\u3046\u306B\u53D7\u3051\u53D6\u308C\u308B\n */\nstruct LongestCommonSubsequence\
+    \ {\n    long long length;                                      //!< \u9577\u3055\
+    \n    std::vector<std::pair<long long, long long>> indices;  //!< s[i] == t[j]\
+    \ \u3068\u3057\u3066\u9078\u3093\u3060\u6DFB\u5B57\u306E\u7D44 (i, j) \u306E\u6607\
+    \u9806\u306E\u30EA\u30B9\u30C8\n};\n\n/**\n * @brief s \u3068 t \u306E\u6700\u9577\
+    \u5171\u901A\u90E8\u5206\u5217\u3092 1 \u3064\u6C42\u3081\u308B O(nm)\n * \u9577\
+    \u3055\u3068\u3001s[i] == t[j] \u3068\u3057\u3066\u9078\u3093\u3060\u6DFB\u5B57\
+    \u306E\u7D44 (i, j) \u3092\u6607\u9806\u306B\u4E26\u3079\u305F\u30EA\u30B9\u30C8\
+    \u3092\u8FD4\u3059\u3002\u30E1\u30E2\u30EA\u306F O(nm)\n */\ntemplate <typename\
+    \ R1, typename R2>\nLongestCommonSubsequence longest_common_subsequence_restore(const\
+    \ R1& s, const R2& t) {\n    auto a = std::begin(s);\n    auto b = std::begin(t);\n\
+    \    long long n = std::end(s) - a, m = std::end(t) - b;\n    // dp[i][j] \u306F\
+    \ s[0, i) \u3068 t[0, j) \u306E LCS \u306E\u9577\u3055\n    std::vector<std::vector<int>>\
+    \ dp(n + 1, std::vector<int>(m + 1));\n    for (long long i = 1; i <= n; i++)\
+    \ {\n        for (long long j = 1; j <= m; j++) {\n            dp[i][j] = a[i\
+    \ - 1] == b[j - 1] ? dp[i - 1][j - 1] + 1 : std::max(dp[i - 1][j], dp[i][j - 1]);\n\
     \        }\n    }\n    // \u5F8C\u308D\u304B\u3089\u305F\u3069\u308B\n    std::vector<std::pair<long\
     \ long, long long>> res;\n    for (long long i = n, j = m; i > 0 && j > 0;) {\n\
     \        if (a[i - 1] == b[j - 1]) {\n            res.emplace_back(i - 1, j -\
     \ 1);\n            i--, j--;\n        } else if (dp[i - 1][j] >= dp[i][j - 1])\
     \ {\n            i--;\n        } else {\n            j--;\n        }\n    }\n\
-    \    std::reverse(res.begin(), res.end());\n    return res;\n}\n#line 15 \"test/unittest/dp/edit-distance.test.cpp\"\
-    \n\n// s[i:] \u3068 t[j:] \u306E\u7DE8\u96C6\u8DDD\u96E2\nint naive_edit(const\
-    \ std::string& s, const std::string& t, int i, int j) {\n    if (i == static_cast<int>(s.size()))\
-    \ return t.size() - j;\n    if (j == static_cast<int>(t.size())) return s.size()\
-    \ - i;\n    int res = naive_edit(s, t, i + 1, j + 1) + (s[i] != t[j]);\n    res\
-    \ = std::min(res, naive_edit(s, t, i + 1, j) + 1);\n    res = std::min(res, naive_edit(s,\
-    \ t, i, j + 1) + 1);\n    return res;\n}\n\n// s[i:] \u3068 t[j:] \u306E LCS \u306E\
-    \u9577\u3055\nint naive_lcs(const std::string& s, const std::string& t, int i,\
-    \ int j) {\n    if (i == static_cast<int>(s.size()) || j == static_cast<int>(t.size()))\
+    \    std::reverse(res.begin(), res.end());\n    return {static_cast<long long>(res.size()),\
+    \ res};\n}\n#line 15 \"test/unittest/dp/edit-distance.test.cpp\"\n\n// s[i:] \u3068\
+    \ t[j:] \u306E\u7DE8\u96C6\u8DDD\u96E2\nint naive_edit(const std::string& s, const\
+    \ std::string& t, int i, int j) {\n    if (i == static_cast<int>(s.size())) return\
+    \ t.size() - j;\n    if (j == static_cast<int>(t.size())) return s.size() - i;\n\
+    \    int res = naive_edit(s, t, i + 1, j + 1) + (s[i] != t[j]);\n    res = std::min(res,\
+    \ naive_edit(s, t, i + 1, j) + 1);\n    res = std::min(res, naive_edit(s, t, i,\
+    \ j + 1) + 1);\n    return res;\n}\n\n// s[i:] \u3068 t[j:] \u306E LCS \u306E\u9577\
+    \u3055\nint naive_lcs(const std::string& s, const std::string& t, int i, int j)\
+    \ {\n    if (i == static_cast<int>(s.size()) || j == static_cast<int>(t.size()))\
     \ return 0;\n    int res = std::max(naive_lcs(s, t, i + 1, j), naive_lcs(s, t,\
     \ i, j + 1));\n    if (s[i] == t[j]) res = std::max(res, naive_lcs(s, t, i + 1,\
     \ j + 1) + 1);\n    return res;\n}\n\nint main() {\n    std::mt19937 rng(314);\n\
@@ -94,20 +101,21 @@ data:
     \      ok = ok && longest_common_subsequence(s, t) == len;\n\n        // \u5FA9\
     \u5143: \u9577\u3055\u304C\u6700\u9577\u3067\u3001\u6DFB\u5B57\u304C\u4E21\u65B9\
     \u3068\u3082\u72ED\u7FA9\u5358\u8ABF\u5897\u52A0\u3057\u3001\u8981\u7D20\u304C\
-    \u4E00\u81F4\u3059\u308B\n        auto idx = longest_common_subsequence_restore(s,\
-    \ t);\n        ok = ok && static_cast<int>(idx.size()) == len;\n        for (int\
-    \ p = 0; p < static_cast<int>(idx.size()) && ok; p++) {\n            auto [i,\
-    \ j] = idx[p];\n            ok = 0 <= i && i < n && 0 <= j && j < m && s[i] ==\
-    \ t[j];\n            if (p > 0) ok = ok && idx[p - 1].first < i && idx[p - 1].second\
-    \ < j;\n        }\n    }\n\n    // \u4F8B\n    ok = ok && edit_distance(std::string(\"\
-    kitten\"), std::string(\"sitting\")) == 3;\n    ok = ok && edit_distance(std::vector<int>{1,\
-    \ 2, 3}, std::vector<int>{2, 3, 4}) == 2;\n    ok = ok && edit_distance(std::string(\"\
-    \"), std::string(\"abc\")) == 3;\n    ok = ok && longest_common_subsequence(std::string(\"\
-    abcbdab\"), std::string(\"bdcaba\")) == 4;\n    ok = ok && longest_common_subsequence(std::vector<int>{1,\
+    \u4E00\u81F4\u3059\u308B\n        auto [length, idx] = longest_common_subsequence_restore(s,\
+    \ t);\n        ok = ok && length == len && static_cast<int>(idx.size()) == len;\n\
+    \        for (int p = 0; p < static_cast<int>(idx.size()) && ok; p++) {\n    \
+    \        auto [i, j] = idx[p];\n            ok = 0 <= i && i < n && 0 <= j &&\
+    \ j < m && s[i] == t[j];\n            if (p > 0) ok = ok && idx[p - 1].first <\
+    \ i && idx[p - 1].second < j;\n        }\n    }\n\n    // \u4F8B\n    ok = ok\
+    \ && edit_distance(std::string(\"kitten\"), std::string(\"sitting\")) == 3;\n\
+    \    ok = ok && edit_distance(std::vector<int>{1, 2, 3}, std::vector<int>{2, 3,\
+    \ 4}) == 2;\n    ok = ok && edit_distance(std::string(\"\"), std::string(\"abc\"\
+    )) == 3;\n    ok = ok && longest_common_subsequence(std::string(\"abcbdab\"),\
+    \ std::string(\"bdcaba\")) == 4;\n    ok = ok && longest_common_subsequence(std::vector<int>{1,\
     \ 2, 3}, std::vector<long long>{3, 1, 2}) == 2;\n    ok = ok && longest_common_subsequence_restore(std::string(\"\
-    \"), std::string(\"abc\")).empty();\n\n    if (ok)\n        std::cout << \"Hello\
-    \ World\" << std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n\
-    }\n"
+    \"), std::string(\"abc\")).indices.empty();\n\n    if (ok)\n        std::cout\
+    \ << \"Hello World\" << std::endl;\n    else\n        std::cerr << \"failed\"\
+    \ << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// edit_distance \u3068 longest_common_subsequence\u3001\u305D\u306E\u5FA9\
     \u5143\u3092\u3001\u518D\u5E30\u306B\u3088\u308B\u611A\u76F4\u306A\u65B9\u6CD5\
@@ -135,27 +143,28 @@ data:
     \      ok = ok && longest_common_subsequence(s, t) == len;\n\n        // \u5FA9\
     \u5143: \u9577\u3055\u304C\u6700\u9577\u3067\u3001\u6DFB\u5B57\u304C\u4E21\u65B9\
     \u3068\u3082\u72ED\u7FA9\u5358\u8ABF\u5897\u52A0\u3057\u3001\u8981\u7D20\u304C\
-    \u4E00\u81F4\u3059\u308B\n        auto idx = longest_common_subsequence_restore(s,\
-    \ t);\n        ok = ok && static_cast<int>(idx.size()) == len;\n        for (int\
-    \ p = 0; p < static_cast<int>(idx.size()) && ok; p++) {\n            auto [i,\
-    \ j] = idx[p];\n            ok = 0 <= i && i < n && 0 <= j && j < m && s[i] ==\
-    \ t[j];\n            if (p > 0) ok = ok && idx[p - 1].first < i && idx[p - 1].second\
-    \ < j;\n        }\n    }\n\n    // \u4F8B\n    ok = ok && edit_distance(std::string(\"\
-    kitten\"), std::string(\"sitting\")) == 3;\n    ok = ok && edit_distance(std::vector<int>{1,\
-    \ 2, 3}, std::vector<int>{2, 3, 4}) == 2;\n    ok = ok && edit_distance(std::string(\"\
-    \"), std::string(\"abc\")) == 3;\n    ok = ok && longest_common_subsequence(std::string(\"\
-    abcbdab\"), std::string(\"bdcaba\")) == 4;\n    ok = ok && longest_common_subsequence(std::vector<int>{1,\
+    \u4E00\u81F4\u3059\u308B\n        auto [length, idx] = longest_common_subsequence_restore(s,\
+    \ t);\n        ok = ok && length == len && static_cast<int>(idx.size()) == len;\n\
+    \        for (int p = 0; p < static_cast<int>(idx.size()) && ok; p++) {\n    \
+    \        auto [i, j] = idx[p];\n            ok = 0 <= i && i < n && 0 <= j &&\
+    \ j < m && s[i] == t[j];\n            if (p > 0) ok = ok && idx[p - 1].first <\
+    \ i && idx[p - 1].second < j;\n        }\n    }\n\n    // \u4F8B\n    ok = ok\
+    \ && edit_distance(std::string(\"kitten\"), std::string(\"sitting\")) == 3;\n\
+    \    ok = ok && edit_distance(std::vector<int>{1, 2, 3}, std::vector<int>{2, 3,\
+    \ 4}) == 2;\n    ok = ok && edit_distance(std::string(\"\"), std::string(\"abc\"\
+    )) == 3;\n    ok = ok && longest_common_subsequence(std::string(\"abcbdab\"),\
+    \ std::string(\"bdcaba\")) == 4;\n    ok = ok && longest_common_subsequence(std::vector<int>{1,\
     \ 2, 3}, std::vector<long long>{3, 1, 2}) == 2;\n    ok = ok && longest_common_subsequence_restore(std::string(\"\
-    \"), std::string(\"abc\")).empty();\n\n    if (ok)\n        std::cout << \"Hello\
-    \ World\" << std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n\
-    }\n"
+    \"), std::string(\"abc\")).indices.empty();\n\n    if (ok)\n        std::cout\
+    \ << \"Hello World\" << std::endl;\n    else\n        std::cerr << \"failed\"\
+    \ << std::endl;\n}\n"
   dependsOn:
   - src/dp/edit-distance.hpp
   - src/dp/longest-common-subsequence.hpp
   isVerificationFile: true
   path: test/unittest/dp/edit-distance.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:32:25+09:00'
+  timestamp: '2026-11-03 08:17:29+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/dp/edit-distance.test.cpp

@@ -116,10 +116,10 @@ data:
     \ cm) return knapsack_by_value(v, w, W);\n    return knapsack_meet_in_the_middle(v,\
     \ w, W);\n}\n\n/**\n * @brief \u500B\u6570\u5236\u9650\u306A\u3057\u30CA\u30C3\
     \u30D7\u30B5\u30C3\u30AF (\u540C\u3058\u54C1\u7269\u3092\u4F55\u500B\u3067\u3082\
-    \u9078\u3079\u308B) O(N W)\n */\ninline long long unbounded_knapsack(const std::vector<long\
+    \u9078\u3079\u308B) O(N W)\n */\ninline long long knapsack_unbounded(const std::vector<long\
     \ long>& v, const std::vector<long long>& w, long long W) {\n    internal_knapsack::check(v,\
     \ w, W);\n    for (int i = 0; i < static_cast<int>(v.size()); i++) assert((w[i]\
-    \ > 0 || v[i] == 0) && \"unbounded_knapsack: infinite value\");\n    std::vector<long\
+    \ > 0 || v[i] == 0) && \"knapsack_unbounded: infinite value\");\n    std::vector<long\
     \ long> dp(W + 1, 0);\n    for (int i = 0; i < static_cast<int>(v.size()); i++)\
     \ {\n        if (w[i] == 0 || w[i] > W) continue;\n        for (long long j =\
     \ w[i]; j <= W; j++) dp[j] = std::max(dp[j], dp[j - w[i]] + v[i]);\n    }\n  \
@@ -128,7 +128,7 @@ data:
     \u3079\u308B\u3001\u91CD\u3055\u306B\u3064\u3044\u3066\u306E DP) O(N W)\n * \u91CD\
     \u3055\u3092 w[i] \u3067\u5272\u3063\u305F\u4F59\u308A\u3054\u3068\u306B\u3001\
     \u30B9\u30E9\u30A4\u30C9\u6700\u5927\u5024\u3092\u4F7F\u3046\n */\ninline long\
-    \ long bounded_knapsack_by_weight(const std::vector<long long>& v, const std::vector<long\
+    \ long knapsack_bounded_by_weight(const std::vector<long long>& v, const std::vector<long\
     \ long>& w,\n                                            const std::vector<long\
     \ long>& m, long long W) {\n    internal_knapsack::check(v, w, W);\n    assert(m.size()\
     \ == v.size());\n    std::vector<long long> dp(W + 1, 0), cur;\n    std::deque<std::pair<long\
@@ -149,7 +149,7 @@ data:
     \u4ED8\u304D\u30CA\u30C3\u30D7\u30B5\u30C3\u30AF (\u4E8C\u9032\u5206\u5272\u3067\
     \ 0/1 \u30CA\u30C3\u30D7\u30B5\u30C3\u30AF\u306B\u3057\u3066\u3001\u4FA1\u5024\
     \u306B\u3064\u3044\u3066\u306E DP) O(V sum log m[i]) (V \u306F v[i] m[i] \u306E\
-    \u548C)\n */\ninline long long bounded_knapsack_by_value(const std::vector<long\
+    \u548C)\n */\ninline long long knapsack_bounded_by_value(const std::vector<long\
     \ long>& v, const std::vector<long long>& w,\n                               \
     \            const std::vector<long long>& m, long long W) {\n    internal_knapsack::check(v,\
     \ w, W);\n    assert(m.size() == v.size());\n    std::vector<long long> v2, w2;\n\
@@ -157,10 +157,10 @@ data:
     \ w2, W);\n}\n\n/**\n * @brief \u500B\u6570\u5236\u9650\u4ED8\u304D\u30CA\u30C3\
     \u30D7\u30B5\u30C3\u30AF\u3002\u5165\u529B\u306E\u5927\u304D\u3055\u304B\u3089\
     \u3001\u8A08\u7B97\u91CF\u304C\u6700\u3082\u5C0F\u3055\u3044\u30A2\u30EB\u30B4\
-    \u30EA\u30BA\u30E0\u3092\u9078\u3076\n *\n * bounded_knapsack_by_weight O(N W)\u3001\
+    \u30EA\u30BA\u30E0\u3092\u9078\u3076\n *\n * knapsack_bounded_by_weight O(N W)\u3001\
     \u4E8C\u9032\u5206\u5272\u3057\u305F\u5F8C\u306E 0/1 \u30CA\u30C3\u30D7\u30B5\u30C3\
     \u30AF\u306E\u4FA1\u5024\u306B\u3064\u3044\u3066\u306E DP \u304B\u534A\u5206\u5168\
-    \u5217\u6319\u306E\u3044\u305A\u308C\u304B\n */\ninline long long bounded_knapsack(const\
+    \u5217\u6319\u306E\u3044\u305A\u308C\u304B\n */\ninline long long knapsack_bounded(const\
     \ std::vector<long long>& v, const std::vector<long long>& w,\n              \
     \                    const std::vector<long long>& m, long long W) {\n    using\
     \ namespace internal_knapsack;\n    check(v, w, W);\n    assert(m.size() == v.size());\n\
@@ -174,7 +174,7 @@ data:
     \ double cv = pieces > 1e9 ? std::numeric_limits<long double>::infinity() : cost_by_value(static_cast<int>(pieces),\
     \ value_sum);\n    long double cm = pieces > 80 ? std::numeric_limits<long double>::infinity()\
     \ : cost_meet_in_the_middle(static_cast<int>(pieces));\n    if (cw <= cv && cw\
-    \ <= cm) return bounded_knapsack_by_weight(v, w, m, W);\n    std::vector<long\
+    \ <= cm) return knapsack_bounded_by_weight(v, w, m, W);\n    std::vector<long\
     \ long> v2, w2;\n    binary_split(v, w, m, W, v2, w2);\n    if (cv <= cm) return\
     \ knapsack_by_value(v2, w2, W);\n    return knapsack_meet_in_the_middle(v2, w2,\
     \ W);\n}\n"
@@ -266,10 +266,10 @@ data:
     \ cm) return knapsack_by_value(v, w, W);\n    return knapsack_meet_in_the_middle(v,\
     \ w, W);\n}\n\n/**\n * @brief \u500B\u6570\u5236\u9650\u306A\u3057\u30CA\u30C3\
     \u30D7\u30B5\u30C3\u30AF (\u540C\u3058\u54C1\u7269\u3092\u4F55\u500B\u3067\u3082\
-    \u9078\u3079\u308B) O(N W)\n */\ninline long long unbounded_knapsack(const std::vector<long\
+    \u9078\u3079\u308B) O(N W)\n */\ninline long long knapsack_unbounded(const std::vector<long\
     \ long>& v, const std::vector<long long>& w, long long W) {\n    internal_knapsack::check(v,\
     \ w, W);\n    for (int i = 0; i < static_cast<int>(v.size()); i++) assert((w[i]\
-    \ > 0 || v[i] == 0) && \"unbounded_knapsack: infinite value\");\n    std::vector<long\
+    \ > 0 || v[i] == 0) && \"knapsack_unbounded: infinite value\");\n    std::vector<long\
     \ long> dp(W + 1, 0);\n    for (int i = 0; i < static_cast<int>(v.size()); i++)\
     \ {\n        if (w[i] == 0 || w[i] > W) continue;\n        for (long long j =\
     \ w[i]; j <= W; j++) dp[j] = std::max(dp[j], dp[j - w[i]] + v[i]);\n    }\n  \
@@ -278,7 +278,7 @@ data:
     \u3079\u308B\u3001\u91CD\u3055\u306B\u3064\u3044\u3066\u306E DP) O(N W)\n * \u91CD\
     \u3055\u3092 w[i] \u3067\u5272\u3063\u305F\u4F59\u308A\u3054\u3068\u306B\u3001\
     \u30B9\u30E9\u30A4\u30C9\u6700\u5927\u5024\u3092\u4F7F\u3046\n */\ninline long\
-    \ long bounded_knapsack_by_weight(const std::vector<long long>& v, const std::vector<long\
+    \ long knapsack_bounded_by_weight(const std::vector<long long>& v, const std::vector<long\
     \ long>& w,\n                                            const std::vector<long\
     \ long>& m, long long W) {\n    internal_knapsack::check(v, w, W);\n    assert(m.size()\
     \ == v.size());\n    std::vector<long long> dp(W + 1, 0), cur;\n    std::deque<std::pair<long\
@@ -299,7 +299,7 @@ data:
     \u4ED8\u304D\u30CA\u30C3\u30D7\u30B5\u30C3\u30AF (\u4E8C\u9032\u5206\u5272\u3067\
     \ 0/1 \u30CA\u30C3\u30D7\u30B5\u30C3\u30AF\u306B\u3057\u3066\u3001\u4FA1\u5024\
     \u306B\u3064\u3044\u3066\u306E DP) O(V sum log m[i]) (V \u306F v[i] m[i] \u306E\
-    \u548C)\n */\ninline long long bounded_knapsack_by_value(const std::vector<long\
+    \u548C)\n */\ninline long long knapsack_bounded_by_value(const std::vector<long\
     \ long>& v, const std::vector<long long>& w,\n                               \
     \            const std::vector<long long>& m, long long W) {\n    internal_knapsack::check(v,\
     \ w, W);\n    assert(m.size() == v.size());\n    std::vector<long long> v2, w2;\n\
@@ -307,10 +307,10 @@ data:
     \ w2, W);\n}\n\n/**\n * @brief \u500B\u6570\u5236\u9650\u4ED8\u304D\u30CA\u30C3\
     \u30D7\u30B5\u30C3\u30AF\u3002\u5165\u529B\u306E\u5927\u304D\u3055\u304B\u3089\
     \u3001\u8A08\u7B97\u91CF\u304C\u6700\u3082\u5C0F\u3055\u3044\u30A2\u30EB\u30B4\
-    \u30EA\u30BA\u30E0\u3092\u9078\u3076\n *\n * bounded_knapsack_by_weight O(N W)\u3001\
+    \u30EA\u30BA\u30E0\u3092\u9078\u3076\n *\n * knapsack_bounded_by_weight O(N W)\u3001\
     \u4E8C\u9032\u5206\u5272\u3057\u305F\u5F8C\u306E 0/1 \u30CA\u30C3\u30D7\u30B5\u30C3\
     \u30AF\u306E\u4FA1\u5024\u306B\u3064\u3044\u3066\u306E DP \u304B\u534A\u5206\u5168\
-    \u5217\u6319\u306E\u3044\u305A\u308C\u304B\n */\ninline long long bounded_knapsack(const\
+    \u5217\u6319\u306E\u3044\u305A\u308C\u304B\n */\ninline long long knapsack_bounded(const\
     \ std::vector<long long>& v, const std::vector<long long>& w,\n              \
     \                    const std::vector<long long>& m, long long W) {\n    using\
     \ namespace internal_knapsack;\n    check(v, w, W);\n    assert(m.size() == v.size());\n\
@@ -324,7 +324,7 @@ data:
     \ double cv = pieces > 1e9 ? std::numeric_limits<long double>::infinity() : cost_by_value(static_cast<int>(pieces),\
     \ value_sum);\n    long double cm = pieces > 80 ? std::numeric_limits<long double>::infinity()\
     \ : cost_meet_in_the_middle(static_cast<int>(pieces));\n    if (cw <= cv && cw\
-    \ <= cm) return bounded_knapsack_by_weight(v, w, m, W);\n    std::vector<long\
+    \ <= cm) return knapsack_bounded_by_weight(v, w, m, W);\n    std::vector<long\
     \ long> v2, w2;\n    binary_split(v, w, m, W, v2, w2);\n    if (cv <= cm) return\
     \ knapsack_by_value(v2, w2, W);\n    return knapsack_meet_in_the_middle(v2, w2,\
     \ W);\n}\n"
@@ -332,7 +332,7 @@ data:
   isVerificationFile: false
   path: src/dp/knapsack.hpp
   requiredBy: []
-  timestamp: '2026-10-19 05:13:57+09:00'
+  timestamp: '2026-11-03 08:52:44+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/dp/knapsack.test.cpp
@@ -353,9 +353,9 @@ title: "\u30CA\u30C3\u30D7\u30B5\u30C3\u30AF\u554F\u984C"
 ```cpp
 std::vector<long long> v = {4, 5, 2, 8}, w = {2, 2, 1, 3};
 long long a = knapsack(v, w, 5);                 // 13 (0/1 ナップサック)
-long long b = unbounded_knapsack(v, w, 8);       // 21 (何個でも選べる)
+long long b = knapsack_unbounded(v, w, 8);       // 21 (何個でも選べる)
 std::vector<long long> m = {2, 1, 4, 2};
-long long c = bounded_knapsack(v, w, m, 8);      // 21 (品物 i は m[i] 個まで)
+long long c = knapsack_bounded(v, w, m, 8);      // 21 (品物 i は m[i] 個まで)
 ```
 
 ## 0/1 ナップサック (各品物は 1 個まで)
@@ -375,7 +375,7 @@ $N$ は品物の個数、$V$ は価値の和です。
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `unbounded_knapsack(v, w, W)` | 重さについての DP | $O(NW)$ |
+| `knapsack_unbounded(v, w, W)` | 重さについての DP | $O(NW)$ |
 
 重さ 0 で価値が正の品物があると答えが無限大になるので、assert で止めます。
 
@@ -383,13 +383,13 @@ $N$ は品物の個数、$V$ は価値の和です。
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `bounded_knapsack(v, w, m, W)` | 下のうち計算量が最も小さいものを選ぶ。迷ったらこれ | 下のうち最小 |
-| `bounded_knapsack_by_weight(v, w, m, W)` | 重さについての DP。`W` が小さいときに向く。`m[i]` は大きくてよい | $O(NW)$ |
-| `bounded_knapsack_by_value(v, w, m, W)` | 価値についての DP。価値の和が小さいときに向く | $O(V' \sum_i \log m_i)$ ($V' = \sum_i v_i m_i$) |
+| `knapsack_bounded(v, w, m, W)` | 下のうち計算量が最も小さいものを選ぶ。迷ったらこれ | 下のうち最小 |
+| `knapsack_bounded_by_weight(v, w, m, W)` | 重さについての DP。`W` が小さいときに向く。`m[i]` は大きくてよい | $O(NW)$ |
+| `knapsack_bounded_by_value(v, w, m, W)` | 価値についての DP。価値の和が小さいときに向く | $O(V' \sum_i \log m_i)$ ($V' = \sum_i v_i m_i$) |
 
-- `bounded_knapsack_by_weight` は、重さを `w[i]` で割った余りごとにスライド最大値を使います。
-- `bounded_knapsack_by_value` は、品物を個数 $1, 2, 4, \dots$ (と残り) の組に分けて 0/1 ナップサックにします (二進分割)。`W / w[i]` を超える個数は使えないので、先に `m[i]` をそこまで減らします。
-- `bounded_knapsack` は、重さについての DP と、二進分割した後の価値についての DP・半分全列挙のうち、計算量が最も小さいものを選びます。
+- `knapsack_bounded_by_weight` は、重さを `w[i]` で割った余りごとにスライド最大値を使います。
+- `knapsack_bounded_by_value` は、品物を個数 $1, 2, 4, \dots$ (と残り) の組に分けて 0/1 ナップサックにします (二進分割)。`W / w[i]` を超える個数は使えないので、先に `m[i]` をそこまで減らします。
+- `knapsack_bounded` は、重さについての DP と、二進分割した後の価値についての DP・半分全列挙のうち、計算量が最も小さいものを選びます。
 
 ## 関連
 

@@ -66,41 +66,44 @@ data:
     \ > cur.second) cur = {id[j], cnt[id[j]]};\n                if (j % B == B - 1\
     \ || j == n - 1) best[i][j / B] = cur;\n            }\n        }\n    }\n    /**\n\
     \     * @brief \u8981\u7D20\u6570\n     */\n    long long size() const { return\
-    \ n; }\n    /**\n     * @brief a[l], ..., a[r-1] \u306E\u6700\u983B\u5024\u306E\
-    \ 1 \u3064\u3068\u3001\u305D\u306E\u51FA\u73FE\u56DE\u6570 {\u5024, \u56DE\u6570\
-    }\n     * @pre l < r\n     */\n    std::pair<T, long long> mode(long long l, long\
-    \ long r) const {\n        assert(0 <= l && l < r && r <= n);\n        // \u9593\
-    \u306B\u3042\u308B\u30D6\u30ED\u30C3\u30AF [bl, br]\u3002\u306A\u3051\u308C\u3070\
-    \u7A7A\u306B\u3057\u3066\u3001\u3059\u3079\u3066\u7AEF\u3068\u3057\u3066\u6271\
-    \u3046\n        const long long bl = (l + B - 1) / B, br = r / B - 1;\n      \
-    \  long long v = -1, f = 0, mid_l = r, mid_r = r;\n        if (bl <= br) v = best[bl][br].first,\
-    \ f = best[bl][br].second, mid_l = bl * B, mid_r = (br + 1) * B;\n        // \u5DE6\
-    \u7AEF: i \u304B\u3089\u53F3\u306B f + 1 \u500B\u76EE\u306E\u51FA\u73FE\u304C\
-    \ r \u3088\u308A\u524D\u306B\u3042\u308C\u3070\u5897\u3084\u3059\n        for\
-    \ (long long i = l; i < mid_l; i++) {\n            const auto& p = pos[id[i]];\n\
-    \            while (rank[i] + f < static_cast<long long>(p.size()) && p[rank[i]\
-    \ + f] < r) v = id[i], f++;\n        }\n        // \u53F3\u7AEF: i \u304B\u3089\
-    \u5DE6\u306B f + 1 \u500B\u76EE\u306E\u51FA\u73FE\u304C l \u4EE5\u4E0A\u306A\u3089\
-    \u5897\u3084\u3059\n        for (long long i = mid_r; i < r; i++) {\n        \
-    \    const auto& p = pos[id[i]];\n            while (rank[i] - f >= 0 && p[rank[i]\
-    \ - f] >= l) v = id[i], f++;\n        }\n        return {vals[v], f};\n    }\n\
-    };\n\ntemplate <typename T>\nRangeMode(std::vector<T>) -> RangeMode<T>;\n#line\
-    \ 8 \"test/unittest/data_structures/range-mode.test.cpp\"\n\n#include <iostream>\n\
-    #include <map>\n#include <random>\n#include <string>\n#line 14 \"test/unittest/data_structures/range-mode.test.cpp\"\
-    \n\nint main() {\n    std::mt19937_64 rng(314);\n    bool ok = true;\n    for\
-    \ (int rep = 0; rep < 300 && ok; rep++) {\n        int n = rng() % 60 + 1, kinds\
-    \ = rng() % 8 + 1;\n        std::vector<int> a(n);\n        for (auto& x : a)\
-    \ x = static_cast<int>(rng() % kinds) * 1000 - 3000;\n        RangeMode rm(a);\n\
-    \        if (rm.size() != n) ok = false;\n        for (int l = 0; l < n; l++)\
-    \ {\n            std::map<int, long long> cnt;\n            long long mx = 0;\n\
-    \            for (int r = l + 1; r <= n; r++) {\n                mx = std::max(mx,\
-    \ ++cnt[a[r - 1]]);\n                auto [v, c] = rm.mode(l, r);\n          \
-    \      if (c != mx || cnt[v] != mx) ok = false;\n            }\n        }\n  \
-    \  }\n    // \u6587\u5B57\u5217\u3067\u3082\u4F7F\u3048\u308B\n    std::vector<std::string>\
-    \ s = {\"b\", \"a\", \"b\", \"c\", \"a\", \"b\"};\n    RangeMode rs(s);\n    if\
-    \ (rs.mode(0, 6) != std::make_pair(std::string(\"b\"), 3LL) || rs.mode(1, 5).second\
-    \ != 2) ok = false;\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
-    }\n"
+    \ n; }\n    /**\n     * @brief mode \u306E\u7D50\u679C\u3002\u6700\u983B\u5024\
+    \ value \u3068\u305D\u306E\u51FA\u73FE\u56DE\u6570 count\n     */\n    struct\
+    \ Mode {\n        T value;          //!< \u6700\u983B\u5024\n        long long\
+    \ count;  //!< \u51FA\u73FE\u56DE\u6570\n    };\n    /**\n     * @brief a[l],\
+    \ ..., a[r-1] \u306E\u6700\u983B\u5024\u306E 1 \u3064\u3068\u3001\u305D\u306E\u51FA\
+    \u73FE\u56DE\u6570 {value, count}\n     * @pre l < r\n     */\n    Mode mode(long\
+    \ long l, long long r) const {\n        assert(0 <= l && l < r && r <= n);\n \
+    \       // \u9593\u306B\u3042\u308B\u30D6\u30ED\u30C3\u30AF [bl, br]\u3002\u306A\
+    \u3051\u308C\u3070\u7A7A\u306B\u3057\u3066\u3001\u3059\u3079\u3066\u7AEF\u3068\
+    \u3057\u3066\u6271\u3046\n        const long long bl = (l + B - 1) / B, br = r\
+    \ / B - 1;\n        long long v = -1, f = 0, mid_l = r, mid_r = r;\n        if\
+    \ (bl <= br) v = best[bl][br].first, f = best[bl][br].second, mid_l = bl * B,\
+    \ mid_r = (br + 1) * B;\n        // \u5DE6\u7AEF: i \u304B\u3089\u53F3\u306B f\
+    \ + 1 \u500B\u76EE\u306E\u51FA\u73FE\u304C r \u3088\u308A\u524D\u306B\u3042\u308C\
+    \u3070\u5897\u3084\u3059\n        for (long long i = l; i < mid_l; i++) {\n  \
+    \          const auto& p = pos[id[i]];\n            while (rank[i] + f < static_cast<long\
+    \ long>(p.size()) && p[rank[i] + f] < r) v = id[i], f++;\n        }\n        //\
+    \ \u53F3\u7AEF: i \u304B\u3089\u5DE6\u306B f + 1 \u500B\u76EE\u306E\u51FA\u73FE\
+    \u304C l \u4EE5\u4E0A\u306A\u3089\u5897\u3084\u3059\n        for (long long i\
+    \ = mid_r; i < r; i++) {\n            const auto& p = pos[id[i]];\n          \
+    \  while (rank[i] - f >= 0 && p[rank[i] - f] >= l) v = id[i], f++;\n        }\n\
+    \        return {vals[v], f};\n    }\n};\n\ntemplate <typename T>\nRangeMode(std::vector<T>)\
+    \ -> RangeMode<T>;\n#line 8 \"test/unittest/data_structures/range-mode.test.cpp\"\
+    \n\n#include <iostream>\n#include <map>\n#include <random>\n#include <string>\n\
+    #line 14 \"test/unittest/data_structures/range-mode.test.cpp\"\n\nint main() {\n\
+    \    std::mt19937_64 rng(314);\n    bool ok = true;\n    for (int rep = 0; rep\
+    \ < 300 && ok; rep++) {\n        int n = rng() % 60 + 1, kinds = rng() % 8 + 1;\n\
+    \        std::vector<int> a(n);\n        for (auto& x : a) x = static_cast<int>(rng()\
+    \ % kinds) * 1000 - 3000;\n        RangeMode rm(a);\n        if (rm.size() !=\
+    \ n) ok = false;\n        for (int l = 0; l < n; l++) {\n            std::map<int,\
+    \ long long> cnt;\n            long long mx = 0;\n            for (int r = l +\
+    \ 1; r <= n; r++) {\n                mx = std::max(mx, ++cnt[a[r - 1]]);\n   \
+    \             auto [v, c] = rm.mode(l, r);\n                if (c != mx || cnt[v]\
+    \ != mx) ok = false;\n            }\n        }\n    }\n    // \u6587\u5B57\u5217\
+    \u3067\u3082\u4F7F\u3048\u308B\n    std::vector<std::string> s = {\"b\", \"a\"\
+    , \"b\", \"c\", \"a\", \"b\"};\n    RangeMode rs(s);\n    if (rs.mode(0, 6).value\
+    \ != \"b\" || rs.mode(0, 6).count != 3 || rs.mode(1, 5).count != 2) ok = false;\n\
+    \    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// range-mode.hpp \u306E RangeMode \u3092\u3001\u533A\u9593\u306E\u5024\u3092\
     \u6570\u3048\u308B\u611A\u76F4\u306A\u65B9\u6CD5\u3068\u6BD4\u3079\u308B\n// \u8FD4\
@@ -122,7 +125,7 @@ data:
     \                if (c != mx || cnt[v] != mx) ok = false;\n            }\n   \
     \     }\n    }\n    // \u6587\u5B57\u5217\u3067\u3082\u4F7F\u3048\u308B\n    std::vector<std::string>\
     \ s = {\"b\", \"a\", \"b\", \"c\", \"a\", \"b\"};\n    RangeMode rs(s);\n    if\
-    \ (rs.mode(0, 6) != std::make_pair(std::string(\"b\"), 3LL) || rs.mode(1, 5).second\
+    \ (rs.mode(0, 6).value != \"b\" || rs.mode(0, 6).count != 3 || rs.mode(1, 5).count\
     \ != 2) ok = false;\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
     }\n"
   dependsOn:
@@ -130,7 +133,7 @@ data:
   isVerificationFile: true
   path: test/unittest/data_structures/range-mode.test.cpp
   requiredBy: []
-  timestamp: '2026-10-23 19:38:47+09:00'
+  timestamp: '2026-11-03 08:22:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/data_structures/range-mode.test.cpp

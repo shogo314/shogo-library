@@ -53,20 +53,24 @@ data:
     \u5074\u306E\u7AEF\u3092\u8868\u3059\u5024 std::numeric_limits<T>::max() / 4\n\
     \     */\n    static constexpr T inf() { return std::numeric_limits<T>::max()\
     \ / 4; }\n\n    /**\n     * @brief f \u306E\u6700\u5C0F\u5024\n     */\n    T\
-    \ min() const { return min_f; }\n    /**\n     * @brief f \u304C\u6700\u5C0F\u5024\
-    \u3092\u3068\u308B\u533A\u9593 [lower, upper]\u3002\u7AEF\u304C\u306A\u3051\u308C\
-    \u3070 -inf()\u3001inf()\n     */\n    std::pair<T, T> argmin() const { return\
-    \ {top_l(), top_r()}; }\n    /**\n     * @brief f \u306B\u5B9A\u6570 a \u3092\u8DB3\
-    \u3059\n     */\n    void add_constant(T a) { min_f += a; }\n    /**\n     * @brief\
-    \ f \u306B max(0, x - a) \u3092\u8DB3\u3059 O(log n)\n     */\n    void add_x_minus_a(T\
-    \ a) {\n        min_f += std::max(T(0), top_l() - a);\n        push_l(a);\n  \
-    \      push_r(pop_l());\n    }\n    /**\n     * @brief f \u306B max(0, a - x)\
-    \ \u3092\u8DB3\u3059 O(log n)\n     */\n    void add_a_minus_x(T a) {\n      \
-    \  min_f += std::max(T(0), a - top_r());\n        push_r(a);\n        push_l(pop_r());\n\
-    \    }\n    /**\n     * @brief f \u306B |x - a| \u3092\u8DB3\u3059 O(log n)\n\
-    \     */\n    void add_abs(T a) {\n        add_x_minus_a(a);\n        add_a_minus_x(a);\n\
-    \    }\n    /**\n     * @brief f(x) \u3092 min_{y <= x} f(y) \u306B\u3059\u308B\
-    \ (\u53F3\u5074\u3092\u5E73\u3089\u306B\u3059\u308B) O(1)\n     */\n    void prefix_min()\
+    \ min() const { return min_f; }\n    /**\n     * @brief argmin \u306E\u7D50\u679C\
+    \u3002f \u304C\u6700\u5C0F\u5024\u3092\u3068\u308B\u533A\u9593 [lower, upper]\n\
+    \     */\n    struct Argmin {\n        T lower;  //!< \u5DE6\u7AEF (\u306A\u3051\
+    \u308C\u3070 -inf())\n        T upper;  //!< \u53F3\u7AEF (\u306A\u3051\u308C\u3070\
+    \ inf())\n    };\n    /**\n     * @brief f \u304C\u6700\u5C0F\u5024\u3092\u3068\
+    \u308B\u533A\u9593 [lower, upper]\u3002\u7AEF\u304C\u306A\u3051\u308C\u3070 -inf()\u3001\
+    inf()\n     */\n    Argmin argmin() const { return {top_l(), top_r()}; }\n   \
+    \ /**\n     * @brief f \u306B\u5B9A\u6570 a \u3092\u8DB3\u3059\n     */\n    void\
+    \ add_constant(T a) { min_f += a; }\n    /**\n     * @brief f \u306B max(0, x\
+    \ - a) \u3092\u8DB3\u3059 O(log n)\n     */\n    void add_x_minus_a(T a) {\n \
+    \       min_f += std::max(T(0), top_l() - a);\n        push_l(a);\n        push_r(pop_l());\n\
+    \    }\n    /**\n     * @brief f \u306B max(0, a - x) \u3092\u8DB3\u3059 O(log\
+    \ n)\n     */\n    void add_a_minus_x(T a) {\n        min_f += std::max(T(0),\
+    \ a - top_r());\n        push_r(a);\n        push_l(pop_r());\n    }\n    /**\n\
+    \     * @brief f \u306B |x - a| \u3092\u8DB3\u3059 O(log n)\n     */\n    void\
+    \ add_abs(T a) {\n        add_x_minus_a(a);\n        add_a_minus_x(a);\n    }\n\
+    \    /**\n     * @brief f(x) \u3092 min_{y <= x} f(y) \u306B\u3059\u308B (\u53F3\
+    \u5074\u3092\u5E73\u3089\u306B\u3059\u308B) O(1)\n     */\n    void prefix_min()\
     \ { R = {}; }\n    /**\n     * @brief f(x) \u3092 min_{y >= x} f(y) \u306B\u3059\
     \u308B (\u5DE6\u5074\u3092\u5E73\u3089\u306B\u3059\u308B) O(1)\n     */\n    void\
     \ suffix_min() { L = {}; }\n    /**\n     * @brief f(x) \u3092 min_{x - b <= y\
@@ -219,7 +223,7 @@ data:
   isVerificationFile: true
   path: test/unittest/dp/slope-trick.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 04:34:17+09:00'
+  timestamp: '2026-11-03 08:22:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/dp/slope-trick.test.cpp

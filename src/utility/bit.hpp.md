@@ -153,7 +153,7 @@ data:
     \ : 0;\n    // clang-format on\n}\n/**\n * @brief 0 \u4EE5\u4E0A n \u4EE5\u4E0B\
     \u306E\u6574\u6570\u306E\u3046\u3061\u3001i \u30D3\u30C3\u30C8\u76EE\u304C\u7ACB\
     \u3063\u3066\u3044\u308B\u3082\u306E\u306E\u6570\n */\ninline constexpr long long\
-    \ count_bit_upto(long long n, long long i) {\n    assert(0 <= n && n < 0x7fffffffffffffffLL\
+    \ bit_count_upto(long long n, long long i) {\n    assert(0 <= n && n < 0x7fffffffffffffffLL\
     \ && 0 <= i && i < 63);\n    // 2^(i + 1) \u3054\u3068\u306B\u3001\u5F8C\u534A\
     \u306E 2^i \u500B\u3067\u7ACB\u3064\n    unsigned long long m = static_cast<unsigned\
     \ long long>(n) + 1, half = 1ULL << i, cycle = half << 1;\n    unsigned long long\
@@ -415,7 +415,7 @@ data:
     \ : 0;\n    // clang-format on\n}\n/**\n * @brief 0 \u4EE5\u4E0A n \u4EE5\u4E0B\
     \u306E\u6574\u6570\u306E\u3046\u3061\u3001i \u30D3\u30C3\u30C8\u76EE\u304C\u7ACB\
     \u3063\u3066\u3044\u308B\u3082\u306E\u306E\u6570\n */\ninline constexpr long long\
-    \ count_bit_upto(long long n, long long i) {\n    assert(0 <= n && n < 0x7fffffffffffffffLL\
+    \ bit_count_upto(long long n, long long i) {\n    assert(0 <= n && n < 0x7fffffffffffffffLL\
     \ && 0 <= i && i < 63);\n    // 2^(i + 1) \u3054\u3068\u306B\u3001\u5F8C\u534A\
     \u306E 2^i \u500B\u3067\u7ACB\u3064\n    unsigned long long m = static_cast<unsigned\
     \ long long>(n) + 1, half = 1ULL << i, cycle = half << 1;\n    unsigned long long\
@@ -544,7 +544,7 @@ data:
   isVerificationFile: false
   path: src/utility/bit.hpp
   requiredBy: []
-  timestamp: '2026-10-19 12:29:38+09:00'
+  timestamp: '2026-11-03 08:52:44+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/utility/bit.test.cpp
@@ -609,14 +609,14 @@ C++20 の `<bit>` にはない関数です。ビットの位置 `i` は $0 \le i
 | `kth_set_bit(mask, k)` | `mask` の立っているビットのうち、下から $k$ 番目 (0-indexed) の位置 ($k <$ `popcount(mask)`) | $O(\log 64)$ |
 | `next_combination_mask(s)` | 立っているビットの数が `s` と同じで、`s` より大きい最小の値 (Gosper's hack)。`long long` に収まらなければ -1。$s > 0$ | $O(1)$ |
 | `xor_upto(n)` | $0 \oplus 1 \oplus \cdots \oplus n$ | $O(1)$ |
-| `count_bit_upto(n, i)` | $0$ 以上 $n$ 以下の整数のうち、`i` ビット目が立っているものの数 | $O(1)$ |
+| `bit_count_upto(n, i)` | $0$ 以上 $n$ 以下の整数のうち、`i` ビット目が立っているものの数 | $O(1)$ |
 
-`xor_upto` を使うと、区間 $[l, r]$ の XOR は `xor_upto(r) ^ xor_upto(l - 1)` ($l \ge 1$) です。`count_bit_upto` は、整数の範囲にわたるビットごとの寄与を数えるのに使えます。
+`xor_upto` を使うと、区間 $[l, r]$ の XOR は `xor_upto(r) ^ xor_upto(l - 1)` ($l \ge 1$) です。`bit_count_upto` は、整数の範囲にわたるビットごとの寄与を数えるのに使えます。
 
 ```cpp
 // 0 以上 n 以下の整数の popcount の和
 long long sum = 0;
-for (long long i = 0; i < 63; i++) sum += count_bit_upto(n, i);
+for (long long i = 0; i < 63; i++) sum += bit_count_upto(n, i);
 ```
 
 ## 列挙

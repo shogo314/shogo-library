@@ -31,8 +31,8 @@ data:
     \u3088\u3044\u96C6\u5408\u65CF\u304C\u90E8\u5206\u96C6\u5408\u306B\u3064\u3044\
     \u3066\u9589\u3058\u3066\u3044\u308B\u306A\u3089\u3001\u91CD\u306A\u308A\u3092\
     \u8A31\u3057\u3066\u8986\u3046\u3068\u304D\u306E\u6700\u5C0F\u500B\u6570\u3068\
-    \u3082\u4E00\u81F4\u3059\u308B\n */\ninline long long min_set_partition(int n,\
-    \ const std::vector<bool>& feasible) {\n    assert(static_cast<long long>(feasible.size())\
+    \u3082\u4E00\u81F4\u3059\u308B\n */\ninline long long minimum_set_partition(int\
+    \ n, const std::vector<bool>& feasible) {\n    assert(static_cast<long long>(feasible.size())\
     \ == (1LL << n));\n    const int INF = n + 1;\n    std::vector<int> dp(1 << n,\
     \ INF);\n    dp[0] = 0;\n    for (int S = 1; S < (1 << n); S++) {\n        const\
     \ int low = S & -S, rest = S ^ low;\n        // rest \u306E\u90E8\u5206\u96C6\u5408\
@@ -55,7 +55,7 @@ data:
     \u5408\u65CF\u304C\u90E8\u5206\u96C6\u5408\u306B\u3064\u3044\u3066\u9589\u3058\
     \u3066\u3044\u308B\u306A\u3089\u3001\u91CD\u306A\u308A\u3092\u8A31\u3057\u3066\
     \u8986\u3046\u3068\u304D\u306E\u6700\u5C0F\u500B\u6570\u3068\u3082\u4E00\u81F4\
-    \u3059\u308B\n */\ninline long long min_set_partition(int n, const std::vector<bool>&\
+    \u3059\u308B\n */\ninline long long minimum_set_partition(int n, const std::vector<bool>&\
     \ feasible) {\n    assert(static_cast<long long>(feasible.size()) == (1LL << n));\n\
     \    const int INF = n + 1;\n    std::vector<int> dp(1 << n, INF);\n    dp[0]\
     \ = 0;\n    for (int S = 1; S < (1 << n); S++) {\n        const int low = S &\
@@ -69,7 +69,7 @@ data:
   isVerificationFile: false
   path: src/dp/set-partition.hpp
   requiredBy: []
-  timestamp: '2026-10-21 05:55:54+09:00'
+  timestamp: '2026-11-03 08:30:39+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/dp/set-partition.test.cpp
@@ -90,18 +90,18 @@ for (int S = 0; S < (1 << n); S++) {
     for (int i = 0; i < n; i++) if (S >> i & 1) sum += w[i];
     feasible[S] = sum <= C;
 }
-long long k = min_set_partition(n, feasible);
+long long k = minimum_set_partition(n, feasible);
 ```
 
 ## 関数
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `min_set_partition(n, feasible)` | `feasible[T]` (大きさ $2^n$ の `std::vector<bool>`) が `true` の集合 $T$ に、全体を重ならないように分けるときの最小個数。分けられなければ -1、$n = 0$ なら 0 | $O(3^n)$ |
+| `minimum_set_partition(n, feasible)` | `feasible[T]` (大きさ $2^n$ の `std::vector<bool>`) が `true` の集合 $T$ に、全体を重ならないように分けるときの最小個数。分けられなければ -1、$n = 0$ なら 0 | $O(3^n)$ |
 
 - $\mathrm{dp}_S = \min (\mathrm{dp}_{S \setminus T} + 1)$ を、$T$ を「$S$ の最小の要素を含む $S$ の部分集合」に限って求めます。どの分け方でも最小の要素を含む組はちょうど 1 つなので、こう限っても答えは変わらず、列挙は半分になります。
 - 使ってよい集合族が部分集合について閉じている (使ってよい集合の部分集合も使ってよい) なら、重なりを許して覆うときの最小個数とも一致します。
-- 包除原理で「覆う $k$ 個組の数」を数えれば $O(2^n n)$ にできますが、数が大きくなるので素数の mod で数える必要があり、まれに誤ります。ここでは誤りのない $O(3^n)$ の方法にしています。$O(2^n n)$ の方法は [集合の被覆](set-cover.hpp) の `min_set_cover` です。
+- 包除原理で「覆う $k$ 個組の数」を数えれば $O(2^n n)$ にできますが、数が大きくなるので素数の mod で数える必要があり、まれに誤ります。ここでは誤りのない $O(3^n)$ の方法にしています。$O(2^n n)$ の方法は [集合の被覆](set-cover.hpp) の `minimum_set_cover` です。
 
 ## 関連
 

@@ -365,7 +365,7 @@ for (long long v = 1; v < trie.size(); v++) {
 各辺に文字が書かれたグラフで、始点から各頂点への最短路のうち文字列が辞書順最小のものを求めます。BFS の順に、前の層の頂点のノードを `extend` で伸ばし、`less` で最小を選びます (ABC481 F)。
 
 ```cpp
-auto d = shortest_path(g, 0, false).dist;
+auto d = shortest_path_bfs(g, 0).dist;
 Trie<9, 1> trie;  // 文字は 1〜9
 std::vector<long long> node(n, -1);
 node[0] = 0;

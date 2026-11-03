@@ -23,7 +23,7 @@ data:
     #include <cassert>\n#include <deque>\n#include <functional>\n#include <limits>\n\
     #include <optional>\n#include <queue>\n#include <utility>\n#include <vector>\n\
     \n#line 2 \"src/graph/graph.hpp\"\n\n/**\n * @file graph.hpp\n * @brief \u30B0\
-    \u30E9\u30D5\n */\n\n#line 11 \"src/graph/graph.hpp\"\n\n/**\n * @brief \u30B0\
+    \u30E9\u30D5\n */\n\n#line 12 \"src/graph/graph.hpp\"\n\n/**\n * @brief \u30B0\
     \u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\
     \u30B3\u30B9\u30C8\u306E\u578B \u7701\u7565\u3057\u305F\u3089 long long (\u91CD\
     \u307F\u306E\u548C\u3084\u672A\u5230\u9054\u3092\u8868\u3059 max / 4 \u304C\u3042\
@@ -94,159 +94,207 @@ data:
     \    std::vector<Edge> edges() const {\n        std::vector<Edge> res(m);\n  \
     \      for (long long i = 0; i < n; i++) {\n            for (auto& e : g[i]) {\n\
     \                res[e.id] = e;\n            }\n        }\n        return res;\n\
-    \    }\n};\n#line 19 \"src/graph/shortest-path.hpp\"\n\n/**\n * @brief \u6700\u77ED\
-    \u8DEF\u306E\u7D50\u679C\n *\n * auto [dist, prev] = shortest_path(g, s); \u306E\
+    \    }\n};\n\n/**\n * @brief \u7D4C\u8DEF (\u8DEF\u30FB\u9589\u8DEF)\u3002\u9577\
+    \u3055 cost\u3001\u305F\u3069\u308B\u9802\u70B9\u306E\u5217 vertices\u3001\u305F\
+    \u3069\u308B\u8FBA\u306E\u5217 edges\n *\n * edges[k] \u306F vertices[k] \u304B\
+    \u3089 vertices[k + 1] \u3078\u5411\u304B\u3046 (edges[k].src == vertices[k]\u3001\
+    edges[k].dst == vertices[k + 1])\n * vertices \u306F edges \u3088\u308A 1 \u3064\
+    \u591A\u3044\u3002\u8FBA\u304C\u306A\u304F\u3066\u3082\u59CB\u70B9 1 \u3064\u304C\
+    \u5165\u308B\u3002\u9589\u8DEF\u306A\u3089 vertices.front() == vertices.back()\n\
+    \ * auto [cost, vertices, edges] = *shortest_path(g, s, t); \u306E\u3088\u3046\
+    \u306B\u53D7\u3051\u53D6\u308C\u308B\n */\ntemplate <typename Cost>\nstruct Path\
+    \ {\n    Cost cost;                                      //!< \u9577\u3055 (\u8FBA\
+    \u306E\u30B3\u30B9\u30C8\u306E\u548C)\n    std::vector<long long> vertices;  \
+    \              //!< \u305F\u3069\u308B\u9802\u70B9 (\u59CB\u70B9\u304B\u3089\u9806\
+    \u306B)\n    std::vector<typename Graph<Cost>::Edge> edges;  //!< \u305F\u3069\
+    \u308B\u8FBA (\u59CB\u70B9\u5074\u304B\u3089\u9806\u306B)\n};\n\nnamespace internal_graph\
+    \ {\n/**\n * @brief \u59CB\u70B9 s \u3068\u3001s \u304B\u3089\u305F\u3069\u308B\
+    \u9806\u306B\u4E26\u3079\u305F\u8FBA edges \u304B\u3089 Path \u3092\u4F5C\u308B\
+    \u3002cost \u306F\u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u548C\n */\ntemplate <typename\
+    \ Cost>\nPath<Cost> make_path(long long s, std::vector<typename Graph<Cost>::Edge>\
+    \ edges) {\n    Path<Cost> res{Cost{}, {s}, std::move(edges)};\n    for (const\
+    \ auto& e : res.edges) {\n        assert(e.src == res.vertices.back());\n    \
+    \    res.cost += e.cost;\n        res.vertices.push_back(e.dst);\n    }\n    return\
+    \ res;\n}\n}  // namespace internal_graph\n#line 19 \"src/graph/shortest-path.hpp\"\
+    \n\n/**\n * @brief 1 \u70B9\u304B\u3089\u5168\u70B9\u3078\u306E\u6700\u77ED\u8DEF\
+    \u306E\u7D50\u679C\n *\n * auto [dist, prev] = shortest_path_dijkstra(g, s); \u306E\
     \u3088\u3046\u306B\u53D7\u3051\u53D6\u308C\u308B\n */\ntemplate <typename Cost>\n\
     struct ShortestPath {\n    using Edge = typename Graph<Cost>::Edge;\n    std::vector<Cost>\
     \ dist;  //!< \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u9577\n    std::vector<Edge>\
     \ prev;  //!< \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\u306E\u76F4\
     \u524D\u306E\u8FBA (\u59CB\u70B9\u3068\u672A\u5230\u9054\u306E\u9802\u70B9\u3067\
     \u306F src == -1)\n    /**\n     * @brief \u59CB\u70B9\u304B\u3089 t \u3078\u306E\
-    \u6700\u77ED\u8DEF\u3092\u69CB\u6210\u3059\u308B\u8FBA\u306E\u30EA\u30B9\u30C8\
-    \ (\u59CB\u70B9\u5074\u304B\u3089\u9806\u306B)\n     * @return std::optional<std::vector<Edge>>\
-    \ t \u304C\u59CB\u70B9\u306A\u3089\u7A7A\u3001\u672A\u5230\u9054\u306A\u3089 std::nullopt\n\
-    \     * @note \u8CA0\u9589\u8DEF\u306E\u5F71\u97FF\u3092\u53D7\u3051\u308B\u9802\
-    \u70B9\u3067\u306F\u6700\u77ED\u8DEF\u304C\u5B9A\u307E\u3089\u306A\u3044 (assert\
-    \ \u3067\u843D\u3061\u308B)\n     */\n    std::optional<std::vector<Edge>> path(long\
-    \ long t) const {\n        // \u76F4\u524D\u306E\u8FBA\u304C\u306A\u3044\u306E\
-    \u306F\u59CB\u70B9\u3068\u672A\u5230\u9054\u306E\u9802\u70B9\u3002\u59CB\u70B9\
-    \u306E\u8DDD\u96E2\u306F 0 \u3067\u3001\u672A\u5230\u9054\u306E\u8DDD\u96E2 inf\
-    \ \u306F\u6B63\u306A\u306E\u3067\u533A\u5225\u3067\u304D\u308B\n        if (prev[t].src\
-    \ == -1 && dist[t] != Cost{}) return std::nullopt;\n        std::vector<Edge>\
-    \ res;\n        while (prev[t].src != -1) {\n            res.push_back(prev[t]);\n\
-    \            assert(res.size() < prev.size() && \"path: negative cycle\");\n \
-    \           t = prev[t].src;\n        }\n        std::reverse(res.begin(), res.end());\n\
-    \        return res;\n    }\n};\n\nnamespace internal_shortest_path {\n\ntemplate\
-    \ <typename Cost>\nShortestPath<Cost> bfs(const Graph<Cost>& graph, long long\
-    \ s, Cost inf) {\n    std::vector<Cost> dist(graph.n, inf);\n    std::vector<typename\
-    \ Graph<Cost>::Edge> prev(graph.n);\n    std::queue<long long> que;\n    dist[s]\
-    \ = 0;\n    que.push(s);\n    while (!que.empty()) {\n        long long u = que.front();\n\
-    \        que.pop();\n        for (auto& e : graph[u]) {\n            if (dist[e.dst]\
-    \ == inf) {\n                dist[e.dst] = dist[e.src] + 1;\n                prev[e.dst]\
-    \ = e;\n                que.push(e.dst);\n            }\n        }\n    }\n  \
-    \  return {dist, prev};\n}\n\ntemplate <typename Cost>\nShortestPath<Cost> dijkstra(const\
-    \ Graph<Cost>& graph, long long s, Cost inf) {\n    std::vector<Cost> dist(graph.n,\
-    \ inf);\n    std::vector<typename Graph<Cost>::Edge> prev(graph.n);\n    using\
-    \ Node = std::pair<Cost, long long>;\n    std::priority_queue<Node, std::vector<Node>,\
-    \ std::greater<Node>> que;\n    dist[s] = 0;\n    que.push({0, s});\n    while\
-    \ (!que.empty()) {\n        auto [d, u] = que.top();\n        que.pop();\n   \
-    \     if (d > dist[u])\n            continue;\n        for (auto& e : graph[u])\
+    \u6700\u77ED\u8DEF (\u9577\u3055\u3001\u305F\u3069\u308B\u9802\u70B9\u3001\u305F\
+    \u3069\u308B\u8FBA)\n     * cost \u306F dist[t] (shortest_path_bfs \u3067\u306F\
+    \u8FBA\u306E\u672C\u6570)\n     * @return std::optional<Path<Cost>> t \u304C\u59CB\
+    \u70B9\u306A\u3089\u9577\u3055 0\u3001\u9802\u70B9\u306F t \u3060\u3051\u3001\u8FBA\
+    \u306F\u7A7A\u3002\u672A\u5230\u9054\u306A\u3089 std::nullopt\n     * @note \u8CA0\
+    \u9589\u8DEF\u306E\u5F71\u97FF\u3092\u53D7\u3051\u308B\u9802\u70B9\u3067\u306F\
+    \u6700\u77ED\u8DEF\u304C\u5B9A\u307E\u3089\u306A\u3044 (assert \u3067\u843D\u3061\
+    \u308B)\n     */\n    std::optional<Path<Cost>> path(long long t) const {\n  \
+    \      // \u76F4\u524D\u306E\u8FBA\u304C\u306A\u3044\u306E\u306F\u59CB\u70B9\u3068\
+    \u672A\u5230\u9054\u306E\u9802\u70B9\u3002\u59CB\u70B9\u306E\u8DDD\u96E2\u306F\
+    \ 0 \u3067\u3001\u672A\u5230\u9054\u306E\u8DDD\u96E2 inf \u306F\u6B63\u306A\u306E\
+    \u3067\u533A\u5225\u3067\u304D\u308B\n        if (prev[t].src == -1 && dist[t]\
+    \ != Cost{}) return std::nullopt;\n        Path<Cost> res{dist[t], {t}, {}};\n\
+    \        while (prev[t].src != -1) {\n            res.edges.push_back(prev[t]);\n\
+    \            assert(res.edges.size() < prev.size() && \"path: negative cycle\"\
+    );\n            t = prev[t].src;\n            res.vertices.push_back(t);\n   \
+    \     }\n        std::reverse(res.vertices.begin(), res.vertices.end());\n   \
+    \     std::reverse(res.edges.begin(), res.edges.end());\n        return res;\n\
+    \    }\n};\n\nnamespace internal_shortest_path {\n\ntemplate <typename Cost>\n\
+    ShortestPath<Cost> bfs(const Graph<Cost>& graph, long long s, Cost inf) {\n  \
+    \  std::vector<Cost> dist(graph.n, inf);\n    std::vector<typename Graph<Cost>::Edge>\
+    \ prev(graph.n);\n    std::queue<long long> que;\n    dist[s] = 0;\n    que.push(s);\n\
+    \    while (!que.empty()) {\n        long long u = que.front();\n        que.pop();\n\
+    \        for (auto& e : graph[u]) {\n            if (dist[e.dst] == inf) {\n \
+    \               dist[e.dst] = dist[e.src] + 1;\n                prev[e.dst] =\
+    \ e;\n                que.push(e.dst);\n            }\n        }\n    }\n    return\
+    \ {dist, prev};\n}\n\n// target \u304C -1 \u3067\u306A\u3051\u308C\u3070\u3001\
+    target \u306E\u8DDD\u96E2\u304C\u6C7A\u307E\u3063\u305F\u6642\u70B9\u3067\u6253\
+    \u3061\u5207\u308B\ntemplate <typename Cost>\nShortestPath<Cost> dijkstra(const\
+    \ Graph<Cost>& graph, long long s, Cost inf, long long target = -1) {\n    for\
+    \ (long long v = 0; v < graph.n; v++) {\n        for (const auto& e : graph[v])\
+    \ assert(!(e.cost < Cost{}) && \"negative edge (use shortest_path_bellman_ford)\"\
+    );\n    }\n    std::vector<Cost> dist(graph.n, inf);\n    std::vector<typename\
+    \ Graph<Cost>::Edge> prev(graph.n);\n    using Node = std::pair<Cost, long long>;\n\
+    \    std::priority_queue<Node, std::vector<Node>, std::greater<Node>> que;\n \
+    \   dist[s] = 0;\n    que.push({0, s});\n    while (!que.empty()) {\n        auto\
+    \ [d, u] = que.top();\n        que.pop();\n        if (d > dist[u])\n        \
+    \    continue;\n        if (u == target) break;\n        for (auto& e : graph[u])\
     \ {\n            if (dist[e.dst] == inf || dist[e.dst] > dist[e.src] + e.cost)\
     \ {\n                dist[e.dst] = dist[e.src] + e.cost;\n                prev[e.dst]\
     \ = e;\n                que.push({dist[e.dst], e.dst});\n            }\n     \
     \   }\n    }\n    return {dist, prev};\n}\n\n}  // namespace internal_shortest_path\n\
-    \n/**\n * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\
-    \u6700\u77ED\u8DEF\n *\n * @param s \u59CB\u70B9\n * @param weighted 1\u4EE5\u5916\
-    \u306E\u30B3\u30B9\u30C8\u306E\u8FBA\u304C\u5B58\u5728\u3059\u308B\u304B \u7701\
-    \u7565\u3059\u308B\u3068true\n * @param inf \u30B3\u30B9\u30C8\u306Emin\u306E\u5358\
-    \u4F4D\u5143 \u672A\u5230\u9054\u306E\u9802\u70B9\u3078\u306E\u8DDD\u96E2\u306F\
-    inf\u306B\u306A\u308B \u7701\u7565\u3059\u308B\u3068 std::numeric_limits<Cost>::max()\
-    \ / 4\n * @return ShortestPath \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\
-    \u9577 (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\
-    \u306E\u76F4\u524D\u306E\u8FBA (prev)\n * @note weighted \u306A\u3089 Dijkstra\
-    \ \u306A\u306E\u3067\u3001\u8CA0\u306E\u8FBA\u304C\u3042\u308B\u3068 assert \u3067\
-    \u843D\u3061\u308B (\u8CA0\u306E\u8FBA\u304C\u3042\u308B\u306A\u3089 bellman_ford)\n\
-    \ */\ntemplate <typename Cost = long long>\nShortestPath<Cost> shortest_path(const\
-    \ Graph<Cost>& graph, long long s, bool weighted = true, Cost inf = std::numeric_limits<Cost>::max()\
-    \ / 4) {\n    assert(0 <= s && s < graph.n);\n    if (weighted) {\n        for\
-    \ (long long v = 0; v < graph.n; v++) {\n            for (const auto& e : graph[v])\
-    \ assert(!(e.cost < Cost{}) && \"shortest_path: negative edge (use bellman_ford)\"\
-    );\n        }\n        return internal_shortest_path::dijkstra(graph, s, inf);\n\
-    \    }\n    return internal_shortest_path::bfs(graph, s, inf);\n}\n\n/**\n * @brief\
-    \ \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\
-    \u8DEF\n *\n * @param s \u59CB\u70B9\n * @param inf \u30B3\u30B9\u30C8\u306Emin\u306E\
-    \u5358\u4F4D\u5143 \u672A\u5230\u9054\u306E\u9802\u70B9\u3078\u306E\u8DDD\u96E2\
-    \u306Finf\u306B\u306A\u308B \u7701\u7565\u3059\u308B\u3068 std::numeric_limits<Cost>::max()\
+    \n/**\n * @brief s \u304B\u3089 t \u3078\u306E\u6700\u77ED\u8DEF (Dijkstra\u3002\
+    t \u306E\u8DDD\u96E2\u304C\u6C7A\u307E\u3063\u305F\u6642\u70B9\u3067\u6253\u3061\
+    \u5207\u308B) O(m log m)\n *\n * @return std::optional<Path<Cost>> \u9577\u3055\
+    \u3001\u305F\u3069\u308B\u9802\u70B9\u3001\u305F\u3069\u308B\u8FBA\u3002\u5C4A\
+    \u304B\u306A\u3051\u308C\u3070 std::nullopt\u3002s == t \u306A\u3089\u9577\u3055\
+    \ 0\u3001\u9802\u70B9\u306F s \u3060\u3051\u3001\u8FBA\u306F\u7A7A\n * @note \u8CA0\
+    \u306E\u8FBA\u304C\u3042\u308B\u3068 assert \u3067\u843D\u3061\u308B (\u8CA0\u306E\
+    \u8FBA\u304C\u3042\u308B\u306A\u3089 shortest_path_bellman_ford)\n */\ntemplate\
+    \ <typename Cost = long long>\nstd::optional<Path<Cost>> shortest_path(const Graph<Cost>&\
+    \ graph, long long s, long long t) {\n    assert(0 <= s && s < graph.n);\n   \
+    \ assert(0 <= t && t < graph.n);\n    return internal_shortest_path::dijkstra(graph,\
+    \ s, std::numeric_limits<Cost>::max() / 4, t).path(t);\n}\n\n/**\n * @brief \u3042\
+    \u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\
+    \ (Dijkstra) O(m log m)\n *\n * @param s \u59CB\u70B9\n * @param inf \u672A\u5230\
+    \u9054\u306E\u9802\u70B9\u3078\u306E\u8DDD\u96E2 \u7701\u7565\u3059\u308B\u3068\
+    \ std::numeric_limits<Cost>::max() / 4\n * @return ShortestPath \u5404\u9802\u70B9\
+    \u3078\u306E\u6700\u77ED\u8DEF\u9577 (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\
+    \u306E\u6700\u77ED\u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA (prev)\n * @note\
+    \ \u8CA0\u306E\u8FBA\u304C\u3042\u308B\u3068 assert \u3067\u843D\u3061\u308B (\u8CA0\
+    \u306E\u8FBA\u304C\u3042\u308B\u306A\u3089 shortest_path_bellman_ford)\n */\n\
+    template <typename Cost = long long>\nShortestPath<Cost> shortest_path_dijkstra(const\
+    \ Graph<Cost>& graph, long long s, Cost inf = std::numeric_limits<Cost>::max()\
+    \ / 4) {\n    assert(0 <= s && s < graph.n);\n    return internal_shortest_path::dijkstra(graph,\
+    \ s, inf);\n}\n\n/**\n * @brief \u8FBA\u306E\u91CD\u307F\u3092\u3059\u3079\u3066\
+    \ 1 \u3068\u307F\u306A\u3057\u3066\u3001\u3042\u308B\u9802\u70B9\u304B\u3089\u5404\
+    \u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF (BFS) O(n + m)\n *\n * @param s \u59CB\
+    \u70B9\n * @param inf \u672A\u5230\u9054\u306E\u9802\u70B9\u3078\u306E\u8DDD\u96E2\
+    \ \u7701\u7565\u3059\u308B\u3068 std::numeric_limits<Cost>::max() / 4\n * @return\
+    \ ShortestPath \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u9577 (\u8FBA\u306E\
+    \u672C\u6570\u3001dist) \u3068\u3001\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\
+    \u8DEF\u4E0A\u306E\u76F4\u524D\u306E\u8FBA (prev)\n */\ntemplate <typename Cost\
+    \ = long long>\nShortestPath<Cost> shortest_path_bfs(const Graph<Cost>& graph,\
+    \ long long s, Cost inf = std::numeric_limits<Cost>::max() / 4) {\n    assert(0\
+    \ <= s && s < graph.n);\n    return internal_shortest_path::bfs(graph, s, inf);\n\
+    }\n\n/**\n * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\
+    \u306E\u6700\u77ED\u8DEF\n *\n * @param s \u59CB\u70B9\n * @param inf \u30B3\u30B9\
+    \u30C8\u306Emin\u306E\u5358\u4F4D\u5143 \u672A\u5230\u9054\u306E\u9802\u70B9\u3078\
+    \u306E\u8DDD\u96E2\u306Finf\u306B\u306A\u308B \u7701\u7565\u3059\u308B\u3068 std::numeric_limits<Cost>::max()\
     \ / 4 \u8CA0\u9589\u8DEF\u306E\u5F71\u97FF\u3092\u53D7\u3051\u308B\u70B9\u306F\
     \ -inf\n * @return ShortestPath \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\
     \u9577 (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\
     \u306E\u76F4\u524D\u306E\u8FBA (prev)\n */\ntemplate <typename Cost = long long>\n\
-    ShortestPath<Cost> bellman_ford(const Graph<Cost>& graph, long long s, Cost inf\
-    \ = std::numeric_limits<Cost>::max() / 4) {\n    assert(0 <= s && s < graph.n);\n\
-    \    const long long n = graph.n;\n    std::vector<Cost> dist(n, inf);\n    std::vector<typename\
-    \ Graph<Cost>::Edge> prev(n);\n    dist[s] = Cost{};\n\n    for (long long i =\
-    \ 1; i < n; i++) {\n        bool changed = false;\n        for (long long j =\
-    \ 0; j < n; j++)\n            for (const auto& e : graph[j]) {\n             \
-    \   if (dist[e.src] == inf)\n                    continue;\n                if\
-    \ (dist[e.dst] > dist[e.src] + e.cost) {\n                    dist[e.dst] = dist[e.src]\
-    \ + e.cost;\n                    if (dist[e.dst] < -inf)\n                   \
-    \     dist[e.dst] = -inf;\n                    prev[e.dst] = e;\n            \
-    \        changed = true;\n                }\n            }\n        if (!changed)\n\
-    \            break;\n    }\n    for (long long i = 0; i < n; i++) {\n        bool\
-    \ changed = false;\n        for (long long j = 0; j < n; j++)\n            for\
-    \ (const auto& e : graph[j]) {\n                if (dist[e.src] == inf)\n    \
-    \                continue;\n                if (dist[e.dst] > dist[e.src] + e.cost)\
-    \ {\n                    dist[e.dst] = -inf;\n                    prev[e.dst]\
+    ShortestPath<Cost> shortest_path_bellman_ford(const Graph<Cost>& graph, long long\
+    \ s, Cost inf = std::numeric_limits<Cost>::max() / 4) {\n    assert(0 <= s &&\
+    \ s < graph.n);\n    const long long n = graph.n;\n    std::vector<Cost> dist(n,\
+    \ inf);\n    std::vector<typename Graph<Cost>::Edge> prev(n);\n    dist[s] = Cost{};\n\
+    \n    for (long long i = 1; i < n; i++) {\n        bool changed = false;\n   \
+    \     for (long long j = 0; j < n; j++)\n            for (const auto& e : graph[j])\
+    \ {\n                if (dist[e.src] == inf)\n                    continue;\n\
+    \                if (dist[e.dst] > dist[e.src] + e.cost) {\n                 \
+    \   dist[e.dst] = dist[e.src] + e.cost;\n                    if (dist[e.dst] <\
+    \ -inf)\n                        dist[e.dst] = -inf;\n                    prev[e.dst]\
     \ = e;\n                    changed = true;\n                }\n            }\n\
-    \        if (!changed)\n            break;\n    }\n    return {dist, prev};\n\
-    }\n\n/**\n * @brief \u8FBA\u306E\u30B3\u30B9\u30C8\u304C 0 \u304B 1 \u3060\u3051\
-    \u306E\u30B0\u30E9\u30D5\u3067\u3001\u3042\u308B\u9802\u70B9\u304B\u3089\u5404\
-    \u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF (01-BFS) O(n + m)\n *\n * @param s\
-    \ \u59CB\u70B9\n * @param inf \u672A\u5230\u9054\u306E\u9802\u70B9\u3078\u306E\
-    \u8DDD\u96E2 \u7701\u7565\u3059\u308B\u3068 std::numeric_limits<Cost>::max() /\
-    \ 4\n * @return ShortestPath \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u9577\
-    \ (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\u306E\
-    \u76F4\u524D\u306E\u8FBA (prev)\n */\ntemplate <typename Cost = long long>\nShortestPath<Cost>\
-    \ shortest_path_01bfs(const Graph<Cost>& graph, long long s, Cost inf = std::numeric_limits<Cost>::max()\
-    \ / 4) {\n    assert(0 <= s && s < graph.n);\n    std::vector<Cost> dist(graph.n,\
-    \ inf);\n    std::vector<typename Graph<Cost>::Edge> prev(graph.n);\n    std::deque<long\
-    \ long> que;\n    dist[s] = 0;\n    que.push_back(s);\n    while (!que.empty())\
-    \ {\n        long long u = que.front();\n        que.pop_front();\n        for\
-    \ (auto& e : graph[u]) {\n            assert(e.cost == 0 || e.cost == 1);\n  \
-    \          if (dist[e.dst] == inf || dist[e.dst] > dist[u] + e.cost) {\n     \
-    \           dist[e.dst] = dist[u] + e.cost;\n                prev[e.dst] = e;\n\
-    \                if (e.cost == 0)\n                    que.push_front(e.dst);\n\
-    \                else\n                    que.push_back(e.dst);\n           \
-    \ }\n        }\n    }\n    return {dist, prev};\n}\n\n/**\n * @brief \u5168\u70B9\
-    \u5BFE\u9593\u306E\u6700\u77ED\u8DEF\u9577 (Floyd-Warshall) O(n^3)\n *\n * @param\
-    \ inf \u672A\u5230\u9054\u3092\u8868\u3059\u5024 \u7701\u7565\u3059\u308B\u3068\
-    \ std::numeric_limits<Cost>::max() / 4\n * @return std::vector<std::vector<Cost>>\
-    \ dist[i][j] \u304C i \u304B\u3089 j \u3078\u306E\u6700\u77ED\u8DEF\u9577 (\u5230\
-    \u9054\u3067\u304D\u306A\u3051\u308C\u3070 inf)\n * @note \u8CA0\u306E\u8FBA\u304C\
-    \u3042\u3063\u3066\u3082\u3088\u3044\u3002dist[i][i] < 0 \u3068\u306A\u308B i\
-    \ \u304C\u3042\u308C\u3070\u8CA0\u9589\u8DEF\u304C\u3042\u308B\n * \u8CA0\u9589\
-    \u8DEF\u304C\u3042\u308B\u3068\u304D\u306E\u5024\u306F -inf \u4EE5\u4E0A\u306B\
-    \u5207\u308A\u8A70\u3081\u308B\u306E\u3067\u3001\u3042\u3075\u308C\u306A\u3044\
-    \ (\u8CA0\u9589\u8DEF\u306E\u5F71\u97FF\u3092\u53D7\u3051\u308B\u7D44\u306E\u5024\
-    \u306F\u6700\u77ED\u8DEF\u9577\u3067\u306F\u306A\u3044)\n */\ntemplate <typename\
-    \ Cost = long long>\nstd::vector<std::vector<Cost>> floyd_warshall(const Graph<Cost>&\
-    \ graph, Cost inf = std::numeric_limits<Cost>::max() / 4) {\n    const long long\
-    \ n = graph.n;\n    std::vector<std::vector<Cost>> dist(n, std::vector<Cost>(n,\
-    \ inf));\n    for (long long i = 0; i < n; i++) dist[i][i] = Cost{};\n    for\
-    \ (long long i = 0; i < n; i++) {\n        for (auto& e : graph[i]) dist[i][e.dst]\
-    \ = std::min(dist[i][e.dst], e.cost);\n    }\n    for (long long k = 0; k < n;\
-    \ k++) {\n        for (long long i = 0; i < n; i++) {\n            if (dist[i][k]\
-    \ == inf) continue;\n            for (long long j = 0; j < n; j++) {\n       \
-    \         if (dist[k][j] == inf) continue;\n                // dist \u306F -inf\
-    \ \u4EE5\u4E0A inf \u4EE5\u4E0B\u306A\u306E\u3067\u3001\u548C\u306F -2 inf \u4EE5\
-    \u4E0A\u3067\u3042\u3075\u308C\u306A\u3044\n                Cost d = dist[i][k]\
-    \ + dist[k][j];\n                if (d < -inf) d = -inf;\n                if (d\
-    \ < dist[i][j]) dist[i][j] = d;\n            }\n        }\n    }\n    return dist;\n\
-    }\n#line 6 \"test/aoj/grl/grl-1-b.test.cpp\"\n\nint main(void) {\n    constexpr\
-    \ int INF = 1e8;\n    int n, m, r;\n    std::cin >> n >> m >> r;\n    Graph<int>\
-    \ graph(n);\n    graph.read(m, 0, true, true);\n    std::vector<int> ans = bellman_ford(graph,\
-    \ r, INF).dist;\n    for (int i = 0; i < n; i++) {\n        if (ans[i] <= -INF)\
-    \ {\n            std::cout << \"NEGATIVE CYCLE\" << std::endl;\n            return\
-    \ 0;\n        }\n    }\n    for (int i = 0; i < n; i++) {\n        if (ans[i]\
-    \ >= INF) {\n            std::cout << \"INF\" << std::endl;\n        } else {\n\
-    \            std::cout << ans[i] << std::endl;\n        }\n    }\n}\n"
+    \        if (!changed)\n            break;\n    }\n    for (long long i = 0; i\
+    \ < n; i++) {\n        bool changed = false;\n        for (long long j = 0; j\
+    \ < n; j++)\n            for (const auto& e : graph[j]) {\n                if\
+    \ (dist[e.src] == inf)\n                    continue;\n                if (dist[e.dst]\
+    \ > dist[e.src] + e.cost) {\n                    dist[e.dst] = -inf;\n       \
+    \             prev[e.dst] = e;\n                    changed = true;\n        \
+    \        }\n            }\n        if (!changed)\n            break;\n    }\n\
+    \    return {dist, prev};\n}\n\n/**\n * @brief \u8FBA\u306E\u30B3\u30B9\u30C8\u304C\
+    \ 0 \u304B 1 \u3060\u3051\u306E\u30B0\u30E9\u30D5\u3067\u3001\u3042\u308B\u9802\
+    \u70B9\u304B\u3089\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF (01-BFS) O(n\
+    \ + m)\n *\n * @param s \u59CB\u70B9\n * @param inf \u672A\u5230\u9054\u306E\u9802\
+    \u70B9\u3078\u306E\u8DDD\u96E2 \u7701\u7565\u3059\u308B\u3068 std::numeric_limits<Cost>::max()\
+    \ / 4\n * @return ShortestPath \u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\
+    \u9577 (dist) \u3068\u3001\u5404\u9802\u70B9\u3078\u306E\u6700\u77ED\u8DEF\u4E0A\
+    \u306E\u76F4\u524D\u306E\u8FBA (prev)\n */\ntemplate <typename Cost = long long>\n\
+    ShortestPath<Cost> shortest_path_01bfs(const Graph<Cost>& graph, long long s,\
+    \ Cost inf = std::numeric_limits<Cost>::max() / 4) {\n    assert(0 <= s && s <\
+    \ graph.n);\n    std::vector<Cost> dist(graph.n, inf);\n    std::vector<typename\
+    \ Graph<Cost>::Edge> prev(graph.n);\n    std::deque<long long> que;\n    dist[s]\
+    \ = 0;\n    que.push_back(s);\n    while (!que.empty()) {\n        long long u\
+    \ = que.front();\n        que.pop_front();\n        for (auto& e : graph[u]) {\n\
+    \            assert(e.cost == 0 || e.cost == 1);\n            if (dist[e.dst]\
+    \ == inf || dist[e.dst] > dist[u] + e.cost) {\n                dist[e.dst] = dist[u]\
+    \ + e.cost;\n                prev[e.dst] = e;\n                if (e.cost == 0)\n\
+    \                    que.push_front(e.dst);\n                else\n          \
+    \          que.push_back(e.dst);\n            }\n        }\n    }\n    return\
+    \ {dist, prev};\n}\n\n/**\n * @brief \u5168\u70B9\u5BFE\u9593\u306E\u6700\u77ED\
+    \u8DEF\u9577 (Floyd-Warshall) O(n^3)\n *\n * @param inf \u672A\u5230\u9054\u3092\
+    \u8868\u3059\u5024 \u7701\u7565\u3059\u308B\u3068 std::numeric_limits<Cost>::max()\
+    \ / 4\n * @return std::vector<std::vector<Cost>> dist[i][j] \u304C i \u304B\u3089\
+    \ j \u3078\u306E\u6700\u77ED\u8DEF\u9577 (\u5230\u9054\u3067\u304D\u306A\u3051\
+    \u308C\u3070 inf)\n * @note \u8CA0\u306E\u8FBA\u304C\u3042\u3063\u3066\u3082\u3088\
+    \u3044\u3002dist[i][i] < 0 \u3068\u306A\u308B i \u304C\u3042\u308C\u3070\u8CA0\
+    \u9589\u8DEF\u304C\u3042\u308B\n * \u8CA0\u9589\u8DEF\u304C\u3042\u308B\u3068\u304D\
+    \u306E\u5024\u306F -inf \u4EE5\u4E0A\u306B\u5207\u308A\u8A70\u3081\u308B\u306E\
+    \u3067\u3001\u3042\u3075\u308C\u306A\u3044 (\u8CA0\u9589\u8DEF\u306E\u5F71\u97FF\
+    \u3092\u53D7\u3051\u308B\u7D44\u306E\u5024\u306F\u6700\u77ED\u8DEF\u9577\u3067\
+    \u306F\u306A\u3044)\n */\ntemplate <typename Cost = long long>\nstd::vector<std::vector<Cost>>\
+    \ shortest_path_floyd_warshall(const Graph<Cost>& graph, Cost inf = std::numeric_limits<Cost>::max()\
+    \ / 4) {\n    const long long n = graph.n;\n    std::vector<std::vector<Cost>>\
+    \ dist(n, std::vector<Cost>(n, inf));\n    for (long long i = 0; i < n; i++) dist[i][i]\
+    \ = Cost{};\n    for (long long i = 0; i < n; i++) {\n        for (auto& e : graph[i])\
+    \ dist[i][e.dst] = std::min(dist[i][e.dst], e.cost);\n    }\n    for (long long\
+    \ k = 0; k < n; k++) {\n        for (long long i = 0; i < n; i++) {\n        \
+    \    if (dist[i][k] == inf) continue;\n            for (long long j = 0; j < n;\
+    \ j++) {\n                if (dist[k][j] == inf) continue;\n                //\
+    \ dist \u306F -inf \u4EE5\u4E0A inf \u4EE5\u4E0B\u306A\u306E\u3067\u3001\u548C\
+    \u306F -2 inf \u4EE5\u4E0A\u3067\u3042\u3075\u308C\u306A\u3044\n             \
+    \   Cost d = dist[i][k] + dist[k][j];\n                if (d < -inf) d = -inf;\n\
+    \                if (d < dist[i][j]) dist[i][j] = d;\n            }\n        }\n\
+    \    }\n    return dist;\n}\n#line 6 \"test/aoj/grl/grl-1-b.test.cpp\"\n\nint\
+    \ main(void) {\n    constexpr int INF = 1e8;\n    int n, m, r;\n    std::cin >>\
+    \ n >> m >> r;\n    Graph<int> graph(n);\n    graph.read(m, 0, true, true);\n\
+    \    std::vector<int> ans = shortest_path_bellman_ford(graph, r, INF).dist;\n\
+    \    for (int i = 0; i < n; i++) {\n        if (ans[i] <= -INF) {\n          \
+    \  std::cout << \"NEGATIVE CYCLE\" << std::endl;\n            return 0;\n    \
+    \    }\n    }\n    for (int i = 0; i < n; i++) {\n        if (ans[i] >= INF) {\n\
+    \            std::cout << \"INF\" << std::endl;\n        } else {\n          \
+    \  std::cout << ans[i] << std::endl;\n        }\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_B\"\
     \n\n#include <iostream>\n\n#include \"../../../src/graph/shortest-path.hpp\"\n\
     \nint main(void) {\n    constexpr int INF = 1e8;\n    int n, m, r;\n    std::cin\
     \ >> n >> m >> r;\n    Graph<int> graph(n);\n    graph.read(m, 0, true, true);\n\
-    \    std::vector<int> ans = bellman_ford(graph, r, INF).dist;\n    for (int i\
-    \ = 0; i < n; i++) {\n        if (ans[i] <= -INF) {\n            std::cout <<\
-    \ \"NEGATIVE CYCLE\" << std::endl;\n            return 0;\n        }\n    }\n\
-    \    for (int i = 0; i < n; i++) {\n        if (ans[i] >= INF) {\n           \
-    \ std::cout << \"INF\" << std::endl;\n        } else {\n            std::cout\
-    \ << ans[i] << std::endl;\n        }\n    }\n}\n"
+    \    std::vector<int> ans = shortest_path_bellman_ford(graph, r, INF).dist;\n\
+    \    for (int i = 0; i < n; i++) {\n        if (ans[i] <= -INF) {\n          \
+    \  std::cout << \"NEGATIVE CYCLE\" << std::endl;\n            return 0;\n    \
+    \    }\n    }\n    for (int i = 0; i < n; i++) {\n        if (ans[i] >= INF) {\n\
+    \            std::cout << \"INF\" << std::endl;\n        } else {\n          \
+    \  std::cout << ans[i] << std::endl;\n        }\n    }\n}\n"
   dependsOn:
   - src/graph/shortest-path.hpp
   - src/graph/graph.hpp
   isVerificationFile: true
   path: test/aoj/grl/grl-1-b.test.cpp
   requiredBy: []
-  timestamp: '2026-10-31 18:12:46+09:00'
+  timestamp: '2026-11-03 09:10:34+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/grl/grl-1-b.test.cpp

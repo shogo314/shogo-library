@@ -29,24 +29,31 @@ data:
     \ t[0, j - 1) \u306E LCS \u306E\u9577\u3055\n        for (long long j = 1; j <=\
     \ m; j++) {\n            long long up = dp[j];\n            dp[j] = a[i - 1] ==\
     \ b[j - 1] ? diag + 1 : std::max(dp[j], dp[j - 1]);\n            diag = up;\n\
-    \        }\n    }\n    return dp[m];\n}\n\n/**\n * @brief s \u3068 t \u306E\u6700\
-    \u9577\u5171\u901A\u90E8\u5206\u5217\u3092 1 \u3064\u6C42\u3081\u308B O(nm)\n\
-    \ * s[i] == t[j] \u3068\u3057\u3066\u9078\u3093\u3060\u6DFB\u5B57\u306E\u7D44\
-    \ (i, j) \u3092\u3001\u6607\u9806\u306B\u4E26\u3079\u305F\u30EA\u30B9\u30C8\u3092\
-    \u8FD4\u3059\u3002\u30E1\u30E2\u30EA\u306F O(nm)\n */\ntemplate <typename R1,\
-    \ typename R2>\nstd::vector<std::pair<long long, long long>> longest_common_subsequence_restore(const\
-    \ R1& s, const R2& t) {\n    auto a = std::begin(s);\n    auto b = std::begin(t);\n\
-    \    long long n = std::end(s) - a, m = std::end(t) - b;\n    // dp[i][j] \u306F\
-    \ s[0, i) \u3068 t[0, j) \u306E LCS \u306E\u9577\u3055\n    std::vector<std::vector<int>>\
-    \ dp(n + 1, std::vector<int>(m + 1));\n    for (long long i = 1; i <= n; i++)\
-    \ {\n        for (long long j = 1; j <= m; j++) {\n            dp[i][j] = a[i\
-    \ - 1] == b[j - 1] ? dp[i - 1][j - 1] + 1 : std::max(dp[i - 1][j], dp[i][j - 1]);\n\
-    \        }\n    }\n    // \u5F8C\u308D\u304B\u3089\u305F\u3069\u308B\n    std::vector<std::pair<long\
-    \ long, long long>> res;\n    for (long long i = n, j = m; i > 0 && j > 0;) {\n\
-    \        if (a[i - 1] == b[j - 1]) {\n            res.emplace_back(i - 1, j -\
-    \ 1);\n            i--, j--;\n        } else if (dp[i - 1][j] >= dp[i][j - 1])\
-    \ {\n            i--;\n        } else {\n            j--;\n        }\n    }\n\
-    \    std::reverse(res.begin(), res.end());\n    return res;\n}\n"
+    \        }\n    }\n    return dp[m];\n}\n\n/**\n * @brief \u6700\u9577\u5171\u901A\
+    \u90E8\u5206\u5217\u306E\u5FA9\u5143\u306E\u7D50\u679C\n *\n * auto [length, indices]\
+    \ = longest_common_subsequence_restore(s, t); \u306E\u3088\u3046\u306B\u53D7\u3051\
+    \u53D6\u308C\u308B\n */\nstruct LongestCommonSubsequence {\n    long long length;\
+    \                                      //!< \u9577\u3055\n    std::vector<std::pair<long\
+    \ long, long long>> indices;  //!< s[i] == t[j] \u3068\u3057\u3066\u9078\u3093\
+    \u3060\u6DFB\u5B57\u306E\u7D44 (i, j) \u306E\u6607\u9806\u306E\u30EA\u30B9\u30C8\
+    \n};\n\n/**\n * @brief s \u3068 t \u306E\u6700\u9577\u5171\u901A\u90E8\u5206\u5217\
+    \u3092 1 \u3064\u6C42\u3081\u308B O(nm)\n * \u9577\u3055\u3068\u3001s[i] == t[j]\
+    \ \u3068\u3057\u3066\u9078\u3093\u3060\u6DFB\u5B57\u306E\u7D44 (i, j) \u3092\u6607\
+    \u9806\u306B\u4E26\u3079\u305F\u30EA\u30B9\u30C8\u3092\u8FD4\u3059\u3002\u30E1\
+    \u30E2\u30EA\u306F O(nm)\n */\ntemplate <typename R1, typename R2>\nLongestCommonSubsequence\
+    \ longest_common_subsequence_restore(const R1& s, const R2& t) {\n    auto a =\
+    \ std::begin(s);\n    auto b = std::begin(t);\n    long long n = std::end(s) -\
+    \ a, m = std::end(t) - b;\n    // dp[i][j] \u306F s[0, i) \u3068 t[0, j) \u306E\
+    \ LCS \u306E\u9577\u3055\n    std::vector<std::vector<int>> dp(n + 1, std::vector<int>(m\
+    \ + 1));\n    for (long long i = 1; i <= n; i++) {\n        for (long long j =\
+    \ 1; j <= m; j++) {\n            dp[i][j] = a[i - 1] == b[j - 1] ? dp[i - 1][j\
+    \ - 1] + 1 : std::max(dp[i - 1][j], dp[i][j - 1]);\n        }\n    }\n    // \u5F8C\
+    \u308D\u304B\u3089\u305F\u3069\u308B\n    std::vector<std::pair<long long, long\
+    \ long>> res;\n    for (long long i = n, j = m; i > 0 && j > 0;) {\n        if\
+    \ (a[i - 1] == b[j - 1]) {\n            res.emplace_back(i - 1, j - 1);\n    \
+    \        i--, j--;\n        } else if (dp[i - 1][j] >= dp[i][j - 1]) {\n     \
+    \       i--;\n        } else {\n            j--;\n        }\n    }\n    std::reverse(res.begin(),\
+    \ res.end());\n    return {static_cast<long long>(res.size()), res};\n}\n"
   code: "#pragma once\n\n/**\n * @file longest-common-subsequence.hpp\n * @brief \u6700\
     \u9577\u5171\u901A\u90E8\u5206\u5217 (LCS)\n */\n\n#include <algorithm>\n#include\
     \ <iterator>\n#include <utility>\n#include <vector>\n\n/**\n * @brief s \u3068\
@@ -61,29 +68,36 @@ data:
     \    for (long long j = 1; j <= m; j++) {\n            long long up = dp[j];\n\
     \            dp[j] = a[i - 1] == b[j - 1] ? diag + 1 : std::max(dp[j], dp[j -\
     \ 1]);\n            diag = up;\n        }\n    }\n    return dp[m];\n}\n\n/**\n\
-    \ * @brief s \u3068 t \u306E\u6700\u9577\u5171\u901A\u90E8\u5206\u5217\u3092 1\
-    \ \u3064\u6C42\u3081\u308B O(nm)\n * s[i] == t[j] \u3068\u3057\u3066\u9078\u3093\
-    \u3060\u6DFB\u5B57\u306E\u7D44 (i, j) \u3092\u3001\u6607\u9806\u306B\u4E26\u3079\
-    \u305F\u30EA\u30B9\u30C8\u3092\u8FD4\u3059\u3002\u30E1\u30E2\u30EA\u306F O(nm)\n\
-    \ */\ntemplate <typename R1, typename R2>\nstd::vector<std::pair<long long, long\
-    \ long>> longest_common_subsequence_restore(const R1& s, const R2& t) {\n    auto\
-    \ a = std::begin(s);\n    auto b = std::begin(t);\n    long long n = std::end(s)\
-    \ - a, m = std::end(t) - b;\n    // dp[i][j] \u306F s[0, i) \u3068 t[0, j) \u306E\
-    \ LCS \u306E\u9577\u3055\n    std::vector<std::vector<int>> dp(n + 1, std::vector<int>(m\
-    \ + 1));\n    for (long long i = 1; i <= n; i++) {\n        for (long long j =\
-    \ 1; j <= m; j++) {\n            dp[i][j] = a[i - 1] == b[j - 1] ? dp[i - 1][j\
-    \ - 1] + 1 : std::max(dp[i - 1][j], dp[i][j - 1]);\n        }\n    }\n    // \u5F8C\
-    \u308D\u304B\u3089\u305F\u3069\u308B\n    std::vector<std::pair<long long, long\
-    \ long>> res;\n    for (long long i = n, j = m; i > 0 && j > 0;) {\n        if\
-    \ (a[i - 1] == b[j - 1]) {\n            res.emplace_back(i - 1, j - 1);\n    \
-    \        i--, j--;\n        } else if (dp[i - 1][j] >= dp[i][j - 1]) {\n     \
-    \       i--;\n        } else {\n            j--;\n        }\n    }\n    std::reverse(res.begin(),\
-    \ res.end());\n    return res;\n}\n"
+    \ * @brief \u6700\u9577\u5171\u901A\u90E8\u5206\u5217\u306E\u5FA9\u5143\u306E\u7D50\
+    \u679C\n *\n * auto [length, indices] = longest_common_subsequence_restore(s,\
+    \ t); \u306E\u3088\u3046\u306B\u53D7\u3051\u53D6\u308C\u308B\n */\nstruct LongestCommonSubsequence\
+    \ {\n    long long length;                                      //!< \u9577\u3055\
+    \n    std::vector<std::pair<long long, long long>> indices;  //!< s[i] == t[j]\
+    \ \u3068\u3057\u3066\u9078\u3093\u3060\u6DFB\u5B57\u306E\u7D44 (i, j) \u306E\u6607\
+    \u9806\u306E\u30EA\u30B9\u30C8\n};\n\n/**\n * @brief s \u3068 t \u306E\u6700\u9577\
+    \u5171\u901A\u90E8\u5206\u5217\u3092 1 \u3064\u6C42\u3081\u308B O(nm)\n * \u9577\
+    \u3055\u3068\u3001s[i] == t[j] \u3068\u3057\u3066\u9078\u3093\u3060\u6DFB\u5B57\
+    \u306E\u7D44 (i, j) \u3092\u6607\u9806\u306B\u4E26\u3079\u305F\u30EA\u30B9\u30C8\
+    \u3092\u8FD4\u3059\u3002\u30E1\u30E2\u30EA\u306F O(nm)\n */\ntemplate <typename\
+    \ R1, typename R2>\nLongestCommonSubsequence longest_common_subsequence_restore(const\
+    \ R1& s, const R2& t) {\n    auto a = std::begin(s);\n    auto b = std::begin(t);\n\
+    \    long long n = std::end(s) - a, m = std::end(t) - b;\n    // dp[i][j] \u306F\
+    \ s[0, i) \u3068 t[0, j) \u306E LCS \u306E\u9577\u3055\n    std::vector<std::vector<int>>\
+    \ dp(n + 1, std::vector<int>(m + 1));\n    for (long long i = 1; i <= n; i++)\
+    \ {\n        for (long long j = 1; j <= m; j++) {\n            dp[i][j] = a[i\
+    \ - 1] == b[j - 1] ? dp[i - 1][j - 1] + 1 : std::max(dp[i - 1][j], dp[i][j - 1]);\n\
+    \        }\n    }\n    // \u5F8C\u308D\u304B\u3089\u305F\u3069\u308B\n    std::vector<std::pair<long\
+    \ long, long long>> res;\n    for (long long i = n, j = m; i > 0 && j > 0;) {\n\
+    \        if (a[i - 1] == b[j - 1]) {\n            res.emplace_back(i - 1, j -\
+    \ 1);\n            i--, j--;\n        } else if (dp[i - 1][j] >= dp[i][j - 1])\
+    \ {\n            i--;\n        } else {\n            j--;\n        }\n    }\n\
+    \    std::reverse(res.begin(), res.end());\n    return {static_cast<long long>(res.size()),\
+    \ res};\n}\n"
   dependsOn: []
   isVerificationFile: false
   path: src/dp/longest-common-subsequence.hpp
   requiredBy: []
-  timestamp: '2026-10-17 23:17:28+09:00'
+  timestamp: '2026-11-03 08:17:29+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/dp/edit-distance.test.cpp
@@ -98,7 +112,7 @@ title: "\u6700\u9577\u5171\u901A\u90E8\u5206\u5217 (LCS)"
 ```cpp
 std::string s = "abcbdab", t = "bdcaba";
 long long k = longest_common_subsequence(s, t);        // 4
-auto idx = longest_common_subsequence_restore(s, t);  // 添字の組 (i, j) のリスト。長さは 4
+auto [len, idx] = longest_common_subsequence_restore(s, t);  // 長さ 4 と、添字の組 (i, j) のリスト
 std::string lcs;
 for (auto [i, j] : idx) lcs += s[i];                   // 共通部分列の 1 つ
 ```
@@ -108,7 +122,7 @@ for (auto [i, j] : idx) lcs += s[i];                   // 共通部分列の 1 �
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `longest_common_subsequence(s, t)` | 最長共通部分列の長さ (`long long`) | 時間 $O(nm)$、メモリ $O(m)$ |
-| `longest_common_subsequence_restore(s, t)` | 最長共通部分列を 1 つ求め、`s[i] == t[j]` として選んだ添字の組 `(i, j)` を昇順に並べたリスト (`std::vector<std::pair<long long, long long>>`) | 時間 $O(nm)$、メモリ $O(nm)$ |
+| `longest_common_subsequence_restore(s, t)` | 最長共通部分列を 1 つ求め、長さ `length` と、`s[i] == t[j]` として選んだ添字の組 `(i, j)` を昇順に並べたリスト `indices` (`std::vector<std::pair<long long, long long>>`) をまとめた `LongestCommonSubsequence` を返す | 時間 $O(nm)$、メモリ $O(nm)$ |
 
 復元では $(n + 1)(m + 1)$ 個の `int` の表を作るので、メモリに注意してください ($n = m = 5000$ で約 100 MB)。
 

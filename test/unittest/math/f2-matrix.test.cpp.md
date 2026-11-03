@@ -134,34 +134,34 @@ data:
     \     */\n    F2Matrix transpose() const {\n        F2Matrix T(m, n);\n      \
     \  for (long long i = 0; i < n; i++)\n            for (long long j = 0; j < m;\
     \ j++)\n                if (get(i, j)) T.set(j, i, true);\n        return T;\n\
-    \    }\n\n    /**\n     * @brief \u7C21\u7D04\u5316\u3057\u305F\u884C\u5217\u3068\
-    \u3001\u5404\u884C\u306E\u4E3B\u6210\u5206\u306E\u5217 (\u500B\u6570\u304C\u30E9\
-    \u30F3\u30AF) O(nm min(n, m) / 64)\n     */\n    std::pair<F2Matrix, std::vector<long\
-    \ long>> reduced_row_echelon() const {\n        F2Matrix A = *this;\n        std::vector<long\
-    \ long> pivots = reduce(A.a, n, w, m);\n        return {A, pivots};\n    }\n \
-    \   /**\n     * @brief \u30E9\u30F3\u30AF O(nm min(n, m) / 64)\n     */\n    long\
-    \ long rank() const {\n        auto d = a;\n        return reduce(d, n, w, m).size();\n\
-    \    }\n    /**\n     * @brief \u884C\u5217\u5F0F (\u6B63\u65B9\u884C\u5217) O(n^3\
-    \ / 64)\n     */\n    bool det() const {\n        assert(n == m);\n        return\
-    \ rank() == n;\n    }\n    /**\n     * @brief \u9006\u884C\u5217 (\u6B63\u65B9\
-    \u884C\u5217)\u3002\u6B63\u5247\u3067\u306A\u3051\u308C\u3070 std::nullopt O(n^3\
-    \ / 64)\n     */\n    std::optional<F2Matrix> inv() const {\n        assert(n\
-    \ == m);\n        // [A | I] \u3092 A \u306E\u5217\u3060\u3051\u3067\u7C21\u7D04\
-    \u5316\u3059\u308B\u3068 [I | A^-1] \u306B\u306A\u308B\n        const long long\
-    \ w2 = (2 * n + 63) / 64;\n        std::vector<std::uint64_t> d(n * w2, 0);\n\
-    \        for (long long i = 0; i < n; i++) {\n            for (long long k = 0;\
-    \ k < w; k++) d[i * w2 + k] = a[i * w + k];\n            d[i * w2 + ((n + i) >>\
-    \ 6)] |= std::uint64_t(1) << ((n + i) & 63);\n        }\n        if (static_cast<long\
-    \ long>(reduce(d, n, w2, n).size()) < n) return std::nullopt;\n        F2Matrix\
-    \ res(n, n);\n        for (long long i = 0; i < n; i++)\n            for (long\
-    \ long j = 0; j < n; j++)\n                if (get_bit(d, w2, i, n + j)) res.set(i,\
-    \ j, true);\n        return res;\n    }\n    /**\n     * @brief Ax = 0 \u306E\u89E3\
-    \u7A7A\u9593\u306E\u57FA\u5E95 (\u9577\u3055 m \u306E\u30D9\u30AF\u30C8\u30EB\u3092\
-    \ m - rank \u500B) O(nm min(n, m) / 64)\n     */\n    std::vector<std::vector<bool>>\
-    \ kernel() const {\n        auto d = a;\n        std::vector<long long> pivots\
-    \ = reduce(d, n, w, m);\n        return kernel_from_reduced(d, w, pivots);\n \
-    \   }\n    /**\n     * @brief \u9023\u7ACB\u4E00\u6B21\u65B9\u7A0B\u5F0F Ax =\
-    \ b \u3092\u89E3\u304F\u3002\u89E3\u304C\u306A\u3051\u308C\u3070 std::nullopt\
+    \    }\n\n    struct ReducedRowEchelon;  // reduced_row_echelon \u306E\u7D50\u679C\
+    \ (\u30AF\u30E9\u30B9\u306E\u5F8C\u3067\u5B9A\u7FA9\u3059\u308B)\n    /**\n  \
+    \   * @brief \u7C21\u7D04\u5316\u3057\u305F\u884C\u5217\u3068\u3001\u5404\u884C\
+    \u306E\u4E3B\u6210\u5206\u306E\u5217 (\u500B\u6570\u304C\u30E9\u30F3\u30AF) {matrix,\
+    \ pivots} O(nm min(n, m) / 64)\n     */\n    ReducedRowEchelon reduced_row_echelon()\
+    \ const;\n    /**\n     * @brief \u30E9\u30F3\u30AF O(nm min(n, m) / 64)\n   \
+    \  */\n    long long rank() const {\n        auto d = a;\n        return reduce(d,\
+    \ n, w, m).size();\n    }\n    /**\n     * @brief \u884C\u5217\u5F0F (\u6B63\u65B9\
+    \u884C\u5217) O(n^3 / 64)\n     */\n    bool det() const {\n        assert(n ==\
+    \ m);\n        return rank() == n;\n    }\n    /**\n     * @brief \u9006\u884C\
+    \u5217 (\u6B63\u65B9\u884C\u5217)\u3002\u6B63\u5247\u3067\u306A\u3051\u308C\u3070\
+    \ std::nullopt O(n^3 / 64)\n     */\n    std::optional<F2Matrix> inv() const {\n\
+    \        assert(n == m);\n        // [A | I] \u3092 A \u306E\u5217\u3060\u3051\
+    \u3067\u7C21\u7D04\u5316\u3059\u308B\u3068 [I | A^-1] \u306B\u306A\u308B\n   \
+    \     const long long w2 = (2 * n + 63) / 64;\n        std::vector<std::uint64_t>\
+    \ d(n * w2, 0);\n        for (long long i = 0; i < n; i++) {\n            for\
+    \ (long long k = 0; k < w; k++) d[i * w2 + k] = a[i * w + k];\n            d[i\
+    \ * w2 + ((n + i) >> 6)] |= std::uint64_t(1) << ((n + i) & 63);\n        }\n \
+    \       if (static_cast<long long>(reduce(d, n, w2, n).size()) < n) return std::nullopt;\n\
+    \        F2Matrix res(n, n);\n        for (long long i = 0; i < n; i++)\n    \
+    \        for (long long j = 0; j < n; j++)\n                if (get_bit(d, w2,\
+    \ i, n + j)) res.set(i, j, true);\n        return res;\n    }\n    /**\n     *\
+    \ @brief Ax = 0 \u306E\u89E3\u7A7A\u9593\u306E\u57FA\u5E95 (\u9577\u3055 m \u306E\
+    \u30D9\u30AF\u30C8\u30EB\u3092 m - rank \u500B) O(nm min(n, m) / 64)\n     */\n\
+    \    std::vector<std::vector<bool>> kernel() const {\n        auto d = a;\n  \
+    \      std::vector<long long> pivots = reduce(d, n, w, m);\n        return kernel_from_reduced(d,\
+    \ w, pivots);\n    }\n    /**\n     * @brief \u9023\u7ACB\u4E00\u6B21\u65B9\u7A0B\
+    \u5F0F Ax = b \u3092\u89E3\u304F\u3002\u89E3\u304C\u306A\u3051\u308C\u3070 std::nullopt\
     \ O(nm min(n, m) / 64)\n     */\n    std::optional<Solution> solve(const std::vector<bool>&\
     \ b) const {\n        assert(static_cast<long long>(b.size()) == n);\n       \
     \ // \u62E1\u5927\u4FC2\u6570\u884C\u5217 [A | b] \u3092\u3001A \u306E\u5217\u3060\
@@ -185,11 +185,19 @@ data:
     \u3067\u51FA\u529B\u3059\u308B\n     */\n    friend std::ostream& operator<<(std::ostream&\
     \ os, const F2Matrix& A) {\n        auto s = A.to_strings();\n        for (long\
     \ long i = 0; i < A.n; i++) {\n            if (i != 0) os << '\\n';\n        \
-    \    os << s[i];\n        }\n        return os;\n    }\n};\n#line 8 \"test/unittest/math/f2-matrix.test.cpp\"\
-    \n\n#include <iostream>\n#include <random>\n#include <sstream>\n#line 14 \"test/unittest/math/f2-matrix.test.cpp\"\
-    \n\n#line 2 \"src/math/matrix.hpp\"\n\n/**\n * @file matrix.hpp\n * @brief \u884C\
-    \u5217\n */\n\n#line 10 \"src/math/matrix.hpp\"\n#include <cmath>\n#if __cplusplus\
-    \ >= 202002L\n#include <concepts>\n#endif\n#include <cstddef>\n#line 16 \"src/math/matrix.hpp\"\
+    \    os << s[i];\n        }\n        return os;\n    }\n};\n\n/**\n * @brief F2Matrix::reduced_row_echelon\
+    \ \u306E\u7D50\u679C\n *\n * auto [R, pivots] = A.reduced_row_echelon(); \u306E\
+    \u3088\u3046\u306B\u53D7\u3051\u53D6\u308C\u308B\n */\nstruct F2Matrix::ReducedRowEchelon\
+    \ {\n    F2Matrix matrix;                //!< \u7C21\u7D04\u5316\u3057\u305F\u884C\
+    \u5217\n    std::vector<long long> pivots;  //!< \u5404\u884C\u306E\u4E3B\u6210\
+    \u5206\u306E\u5217 (\u500B\u6570\u304C\u30E9\u30F3\u30AF)\n};\ninline F2Matrix::ReducedRowEchelon\
+    \ F2Matrix::reduced_row_echelon() const {\n    F2Matrix A = *this;\n    std::vector<long\
+    \ long> pivots = reduce(A.a, n, w, m);\n    return {A, pivots};\n}\n#line 8 \"\
+    test/unittest/math/f2-matrix.test.cpp\"\n\n#include <iostream>\n#include <random>\n\
+    #include <sstream>\n#line 14 \"test/unittest/math/f2-matrix.test.cpp\"\n\n#line\
+    \ 2 \"src/math/matrix.hpp\"\n\n/**\n * @file matrix.hpp\n * @brief \u884C\u5217\
+    \n */\n\n#line 10 \"src/math/matrix.hpp\"\n#include <cmath>\n#if __cplusplus >=\
+    \ 202002L\n#include <concepts>\n#endif\n#include <cstddef>\n#line 16 \"src/math/matrix.hpp\"\
     \n#include <initializer_list>\n#line 19 \"src/math/matrix.hpp\"\n#include <type_traits>\n\
     #line 21 \"src/math/matrix.hpp\"\n#include <valarray>\n#line 23 \"src/math/matrix.hpp\"\
     \n\nnamespace matrix {\ntemplate <typename T>\nstruct OperatorPropertyDefault\
@@ -518,51 +526,52 @@ data:
     \ x + c_0 basis[0] + c_1 basis[1] + ... (c_i \u306F\u4EFB\u610F)\n     */\n  \
     \  struct Solution {\n        std::vector<T> x;                   //!< \u89E3\u306E\
     \ 1 \u3064 (\u7279\u6B8A\u89E3)\n        std::vector<std::vector<T>> basis;  //!<\
-    \ Ax = 0 \u306E\u89E3\u7A7A\u9593\u306E\u57FA\u5E95\n    };\n\n    /**\n     *\
-    \ @brief \u7C21\u7D04\u5316\u3057\u305F\u884C\u5217 (\u884C\u57FA\u672C\u5909\u5F62\
-    \u3067\u3001\u5404\u884C\u306E\u4E3B\u6210\u5206\u3092 1 \u306B\u3057\u3001\u4E3B\
-    \u6210\u5206\u306E\u3042\u308B\u5217\u306E\u4ED6\u306E\u6210\u5206\u3092 0 \u306B\
-    \u3057\u305F\u3082\u306E) \u3068\u3001\u5404\u884C\u306E\u4E3B\u6210\u5206\u306E\
-    \u5217\n     * \u4E3B\u6210\u5206\u306E\u5217\u306E\u500B\u6570\u304C\u30E9\u30F3\
-    \u30AF\u30020 \u3060\u3051\u306E\u884C\u306F\u4E0B\u306B\u307E\u3068\u307E\u308B\
-    \n     * @note \u5272\u308A\u7B97\u3092\u4F7F\u3046\u306E\u3067\u3001\u8981\u7D20\
-    \u306F\u4F53 (modint \u306A\u3069) \u3067\u3042\u308B\u3053\u3068\u3002\u6D6E\u52D5\
-    \u5C0F\u6570\u70B9\u578B\u306F\u8AA4\u5DEE\u3092\u8003\u3048\u306A\u3044\u306E\
-    \u3067\u4F7F\u3048\u306A\u3044\n     */\n    [[nodiscard]]\n    std::pair<Matrix,\
-    \ std::vector<long long>> reduced_row_echelon() const {\n        Matrix A = *this;\n\
-    \        std::vector<long long> pivots = reduce(A.v, m);\n        return {A, pivots};\n\
-    \    }\n    /**\n     * @brief \u30E9\u30F3\u30AF O(nm min(n, m))\n     */\n \
-    \   [[nodiscard]]\n    long long rank() const {\n        auto A = v;\n       \
-    \ return reduce(A, m).size();\n    }\n    /**\n     * @brief Ax = 0 \u306E\u89E3\
-    \u7A7A\u9593\u306E\u57FA\u5E95 (\u9577\u3055 m \u306E\u30D9\u30AF\u30C8\u30EB\u3092\
-    \ m - rank \u500B) O(nm min(n, m))\n     */\n    [[nodiscard]]\n    std::vector<std::vector<T>>\
-    \ kernel() const {\n        auto A = v;\n        std::vector<long long> pivots\
-    \ = reduce(A, m);\n        return kernel_from_reduced(A, pivots);\n    }\n   \
-    \ /**\n     * @brief \u9023\u7ACB\u4E00\u6B21\u65B9\u7A0B\u5F0F Ax = b \u3092\u89E3\
-    \u304F\u3002\u89E3\u304C\u306A\u3051\u308C\u3070 std::nullopt O(nm min(n, m))\n\
-    \     */\n    [[nodiscard]]\n    std::optional<Solution> solve(const std::vector<T>&\
-    \ b) const {\n        assert(static_cast<long long>(b.size()) == n);\n       \
-    \ // \u62E1\u5927\u4FC2\u6570\u884C\u5217 [A | b] \u3092\u3001A \u306E\u5217\u3060\
-    \u3051\u3067\u7C21\u7D04\u5316\u3059\u308B\n        std::vector<std::vector<T>>\
-    \ A(n);\n        for (long long i = 0; i < n; i++) {\n            A[i] = v[i];\n\
-    \            A[i].push_back(b[i]);\n        }\n        std::vector<long long>\
-    \ pivots = reduce(A, m);\n        const long long r = pivots.size();\n       \
-    \ // \u5DE6\u5074\u304C 0 \u306B\u306A\u3063\u305F\u884C\u306E\u53F3\u8FBA\u304C\
-    \ 0 \u3067\u306A\u3051\u308C\u3070\u89E3\u306A\u3057\n        for (long long i\
-    \ = r; i < n; i++) {\n            if (A[i][m] != OperatorProperty::zero()) return\
-    \ std::nullopt;\n        }\n        Solution sol;\n        sol.x.assign(m, OperatorProperty::zero());\n\
-    \        for (long long i = 0; i < r; i++) sol.x[pivots[i]] = A[i][m];\n     \
-    \   sol.basis = kernel_from_reduced(A, pivots);\n        return sol;\n    }\n\n\
-    \   private:\n    // A \u306E\u5DE6\u304B\u3089 cols \u5217\u3092\u4F7F\u3063\u3066\
-    \u7C21\u7D04\u5316\u3057\u3001\u5404\u884C\u306E\u4E3B\u6210\u5206\u306E\u5217\
-    \u3092\u8FD4\u3059 (\u5217\u304C cols \u3088\u308A\u591A\u3044\u90E8\u5206\u3082\
-    \u4E00\u7DD2\u306B\u5909\u5F62\u3059\u308B)\n    static std::vector<long long>\
-    \ reduce(std::vector<std::vector<T>>& A, long long cols) {\n        const long\
-    \ long rows = A.size();\n        std::vector<long long> pivots;\n        for (long\
-    \ long c = 0, r = 0; c < cols && r < rows; c++) {\n            long long p = r;\n\
-    \            while (p < rows && A[p][c] == OperatorProperty::zero()) p++;\n  \
-    \          if (p == rows) continue;\n            std::swap(A[r], A[p]);\n    \
-    \        const long long w = A[r].size();\n            T scale = OperatorProperty::inv(A[r][c]);\n\
+    \ Ax = 0 \u306E\u89E3\u7A7A\u9593\u306E\u57FA\u5E95\n    };\n\n    struct ReducedRowEchelon;\
+    \  // reduced_row_echelon \u306E\u7D50\u679C (\u30AF\u30E9\u30B9\u306E\u5F8C\u3067\
+    \u5B9A\u7FA9\u3059\u308B)\n    /**\n     * @brief \u7C21\u7D04\u5316\u3057\u305F\
+    \u884C\u5217 (\u884C\u57FA\u672C\u5909\u5F62\u3067\u3001\u5404\u884C\u306E\u4E3B\
+    \u6210\u5206\u3092 1 \u306B\u3057\u3001\u4E3B\u6210\u5206\u306E\u3042\u308B\u5217\
+    \u306E\u4ED6\u306E\u6210\u5206\u3092 0 \u306B\u3057\u305F\u3082\u306E) \u3068\u3001\
+    \u5404\u884C\u306E\u4E3B\u6210\u5206\u306E\u5217 {matrix, pivots}\n     * \u4E3B\
+    \u6210\u5206\u306E\u5217\u306E\u500B\u6570\u304C\u30E9\u30F3\u30AF\u30020 \u3060\
+    \u3051\u306E\u884C\u306F\u4E0B\u306B\u307E\u3068\u307E\u308B\n     * @note \u5272\
+    \u308A\u7B97\u3092\u4F7F\u3046\u306E\u3067\u3001\u8981\u7D20\u306F\u4F53 (modint\
+    \ \u306A\u3069) \u3067\u3042\u308B\u3053\u3068\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\
+    \u578B\u306F\u8AA4\u5DEE\u3092\u8003\u3048\u306A\u3044\u306E\u3067\u4F7F\u3048\
+    \u306A\u3044\n     */\n    [[nodiscard]]\n    ReducedRowEchelon reduced_row_echelon()\
+    \ const {\n        Matrix A = *this;\n        std::vector<long long> pivots =\
+    \ reduce(A.v, m);\n        return {A, pivots};\n    }\n    /**\n     * @brief\
+    \ \u30E9\u30F3\u30AF O(nm min(n, m))\n     */\n    [[nodiscard]]\n    long long\
+    \ rank() const {\n        auto A = v;\n        return reduce(A, m).size();\n \
+    \   }\n    /**\n     * @brief Ax = 0 \u306E\u89E3\u7A7A\u9593\u306E\u57FA\u5E95\
+    \ (\u9577\u3055 m \u306E\u30D9\u30AF\u30C8\u30EB\u3092 m - rank \u500B) O(nm min(n,\
+    \ m))\n     */\n    [[nodiscard]]\n    std::vector<std::vector<T>> kernel() const\
+    \ {\n        auto A = v;\n        std::vector<long long> pivots = reduce(A, m);\n\
+    \        return kernel_from_reduced(A, pivots);\n    }\n    /**\n     * @brief\
+    \ \u9023\u7ACB\u4E00\u6B21\u65B9\u7A0B\u5F0F Ax = b \u3092\u89E3\u304F\u3002\u89E3\
+    \u304C\u306A\u3051\u308C\u3070 std::nullopt O(nm min(n, m))\n     */\n    [[nodiscard]]\n\
+    \    std::optional<Solution> solve(const std::vector<T>& b) const {\n        assert(static_cast<long\
+    \ long>(b.size()) == n);\n        // \u62E1\u5927\u4FC2\u6570\u884C\u5217 [A |\
+    \ b] \u3092\u3001A \u306E\u5217\u3060\u3051\u3067\u7C21\u7D04\u5316\u3059\u308B\
+    \n        std::vector<std::vector<T>> A(n);\n        for (long long i = 0; i <\
+    \ n; i++) {\n            A[i] = v[i];\n            A[i].push_back(b[i]);\n   \
+    \     }\n        std::vector<long long> pivots = reduce(A, m);\n        const\
+    \ long long r = pivots.size();\n        // \u5DE6\u5074\u304C 0 \u306B\u306A\u3063\
+    \u305F\u884C\u306E\u53F3\u8FBA\u304C 0 \u3067\u306A\u3051\u308C\u3070\u89E3\u306A\
+    \u3057\n        for (long long i = r; i < n; i++) {\n            if (A[i][m] !=\
+    \ OperatorProperty::zero()) return std::nullopt;\n        }\n        Solution\
+    \ sol;\n        sol.x.assign(m, OperatorProperty::zero());\n        for (long\
+    \ long i = 0; i < r; i++) sol.x[pivots[i]] = A[i][m];\n        sol.basis = kernel_from_reduced(A,\
+    \ pivots);\n        return sol;\n    }\n\n   private:\n    // A \u306E\u5DE6\u304B\
+    \u3089 cols \u5217\u3092\u4F7F\u3063\u3066\u7C21\u7D04\u5316\u3057\u3001\u5404\
+    \u884C\u306E\u4E3B\u6210\u5206\u306E\u5217\u3092\u8FD4\u3059 (\u5217\u304C cols\
+    \ \u3088\u308A\u591A\u3044\u90E8\u5206\u3082\u4E00\u7DD2\u306B\u5909\u5F62\u3059\
+    \u308B)\n    static std::vector<long long> reduce(std::vector<std::vector<T>>&\
+    \ A, long long cols) {\n        const long long rows = A.size();\n        std::vector<long\
+    \ long> pivots;\n        for (long long c = 0, r = 0; c < cols && r < rows; c++)\
+    \ {\n            long long p = r;\n            while (p < rows && A[p][c] == OperatorProperty::zero())\
+    \ p++;\n            if (p == rows) continue;\n            std::swap(A[r], A[p]);\n\
+    \            const long long w = A[r].size();\n            T scale = OperatorProperty::inv(A[r][c]);\n\
     \            for (long long k = c; k < w; k++) A[r][k] = OperatorProperty::mul(A[r][k],\
     \ scale);\n            for (long long i = 0; i < rows; i++) {\n              \
     \  if (i == r || A[i][c] == OperatorProperty::zero()) continue;\n            \
@@ -632,31 +641,37 @@ data:
     \                for (long long k = pivot_col[i]; k < w; k++) {\n            \
     \        A[j][k] = OperatorProperty::add(A[j][k], OperatorProperty::neg(OperatorProperty::mul(A[i][k],\
     \ scale)));\n                }\n            }\n        }\n        return d;\n\
-    \    }\n};\n\n/**\n * @brief \u884C\u306E\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\
-    \u3068\u304D\u306E\u63A8\u8AD6\u30AC\u30A4\u30C9\u3002\u8981\u7D20\u306E\u578B\
-    \u306F\u5404\u884C\u306E value_type \u306B\u3059\u308B\n *\n * Matrix(std::vector<std::vector<int>>)\
-    \ \u306F Matrix<int>\u3001Matrix(std::vector<std::string>) \u306F Matrix<char>\n\
-    \ */\ntemplate <typename Iterable>\nMatrix(const std::vector<Iterable>&) -> Matrix<typename\
-    \ Iterable::value_type>;\n#line 16 \"test/unittest/math/f2-matrix.test.cpp\"\n\
-    \n// xor \u3068 and \u306B\u3088\u308B\u4F53 GF(2)\nstruct GF2 {\n    static int\
-    \ zero() { return 0; }\n    static int add(const int& a, const int& b) { return\
-    \ a ^ b; }\n    static int neg(const int& a) { return a; }\n    static int one()\
-    \ { return 1; }\n    static int mul(const int& a, const int& b) { return a & b;\
-    \ }\n    static int inv(const int& a) { return a; }\n};\nusing M2 = Matrix<int,\
-    \ GF2>;\n\nbool ok = true;\nvoid check(bool cond, const char* what) {\n    if\
-    \ (!cond && ok) std::cerr << \"failed: \" << what << std::endl;\n    if (!cond)\
-    \ ok = false;\n}\n\nstd::vector<std::vector<int>> random_bits(std::mt19937_64&\
-    \ rng, int n, int m) {\n    std::vector<std::vector<int>> a(n, std::vector<int>(m));\n\
-    \    for (auto& row : a)\n        for (auto& x : row) x = rng() % 2;\n    // \u30E9\
-    \u30F3\u30AF\u304C\u5C0F\u3055\u3044\u884C\u5217\u3082\u4F5C\u308B (\u3042\u308B\
-    \u884C\u3092\u5225\u306E\u884C\u306B\u305D\u308D\u3048\u308B)\n    if (n >= 2\
-    \ && rng() % 2) a[rng() % n] = a[rng() % n];\n    return a;\n}\nbool same(const\
-    \ F2Matrix& A, const M2& B) {\n    if (A.n != B.n || A.m != B.m) return false;\n\
-    \    for (long long i = 0; i < A.n; i++)\n        for (long long j = 0; j < A.m;\
-    \ j++)\n            if (A.get(i, j) != (B[i][j] == 1)) return false;\n    return\
-    \ true;\n}\nstd::vector<bool> mul(const std::vector<std::vector<int>>& a, const\
-    \ std::vector<bool>& x) {\n    std::vector<bool> y(a.size(), false);\n    for\
-    \ (size_t i = 0; i < a.size(); i++)\n        for (size_t j = 0; j < x.size();\
+    \    }\n};\n\n/**\n * @brief Matrix::reduced_row_echelon \u306E\u7D50\u679C\n\
+    \ *\n * auto [R, pivots] = A.reduced_row_echelon(); \u306E\u3088\u3046\u306B\u53D7\
+    \u3051\u53D6\u308C\u308B\n */\ntemplate <class T, class OperatorProperty>\nstruct\
+    \ Matrix<T, OperatorProperty>::ReducedRowEchelon {\n    Matrix matrix;       \
+    \           //!< \u7C21\u7D04\u5316\u3057\u305F\u884C\u5217\n    std::vector<long\
+    \ long> pivots;  //!< \u5404\u884C\u306E\u4E3B\u6210\u5206\u306E\u5217 (\u500B\
+    \u6570\u304C\u30E9\u30F3\u30AF)\n};\n\n/**\n * @brief \u884C\u306E\u30EA\u30B9\
+    \u30C8\u304B\u3089\u4F5C\u308B\u3068\u304D\u306E\u63A8\u8AD6\u30AC\u30A4\u30C9\
+    \u3002\u8981\u7D20\u306E\u578B\u306F\u5404\u884C\u306E value_type \u306B\u3059\
+    \u308B\n *\n * Matrix(std::vector<std::vector<int>>) \u306F Matrix<int>\u3001\
+    Matrix(std::vector<std::string>) \u306F Matrix<char>\n */\ntemplate <typename\
+    \ Iterable>\nMatrix(const std::vector<Iterable>&) -> Matrix<typename Iterable::value_type>;\n\
+    #line 16 \"test/unittest/math/f2-matrix.test.cpp\"\n\n// xor \u3068 and \u306B\
+    \u3088\u308B\u4F53 GF(2)\nstruct GF2 {\n    static int zero() { return 0; }\n\
+    \    static int add(const int& a, const int& b) { return a ^ b; }\n    static\
+    \ int neg(const int& a) { return a; }\n    static int one() { return 1; }\n  \
+    \  static int mul(const int& a, const int& b) { return a & b; }\n    static int\
+    \ inv(const int& a) { return a; }\n};\nusing M2 = Matrix<int, GF2>;\n\nbool ok\
+    \ = true;\nvoid check(bool cond, const char* what) {\n    if (!cond && ok) std::cerr\
+    \ << \"failed: \" << what << std::endl;\n    if (!cond) ok = false;\n}\n\nstd::vector<std::vector<int>>\
+    \ random_bits(std::mt19937_64& rng, int n, int m) {\n    std::vector<std::vector<int>>\
+    \ a(n, std::vector<int>(m));\n    for (auto& row : a)\n        for (auto& x :\
+    \ row) x = rng() % 2;\n    // \u30E9\u30F3\u30AF\u304C\u5C0F\u3055\u3044\u884C\
+    \u5217\u3082\u4F5C\u308B (\u3042\u308B\u884C\u3092\u5225\u306E\u884C\u306B\u305D\
+    \u308D\u3048\u308B)\n    if (n >= 2 && rng() % 2) a[rng() % n] = a[rng() % n];\n\
+    \    return a;\n}\nbool same(const F2Matrix& A, const M2& B) {\n    if (A.n !=\
+    \ B.n || A.m != B.m) return false;\n    for (long long i = 0; i < A.n; i++)\n\
+    \        for (long long j = 0; j < A.m; j++)\n            if (A.get(i, j) != (B[i][j]\
+    \ == 1)) return false;\n    return true;\n}\nstd::vector<bool> mul(const std::vector<std::vector<int>>&\
+    \ a, const std::vector<bool>& x) {\n    std::vector<bool> y(a.size(), false);\n\
+    \    for (size_t i = 0; i < a.size(); i++)\n        for (size_t j = 0; j < x.size();\
     \ j++) y[i] = y[i] ^ (a[i][j] && x[j]);\n    return y;\n}\n\nint main() {\n  \
     \  std::mt19937_64 rng(314);\n    // \u5217\u6570\u3068\u3057\u3066 64 \u306E\u524D\
     \u5F8C\u3082\u8A66\u3059\n    auto gen_size = [&] {\n        int t = rng() % 4;\n\
@@ -833,7 +848,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/f2-matrix.test.cpp
   requiredBy: []
-  timestamp: '2026-10-27 20:28:53+09:00'
+  timestamp: '2026-11-03 08:22:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/f2-matrix.test.cpp

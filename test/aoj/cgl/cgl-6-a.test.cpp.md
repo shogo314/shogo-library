@@ -642,7 +642,7 @@ data:
     \ x \u5EA7\u6A19\u304B y \u5EA7\u6A19\u304C\u7B49\u3057\u3044\u3053\u3068)\n *\
     \ @return long long \u5171\u6709\u70B9\u3092\u6301\u3064 (\u6C34\u5E73\u306A\u7DDA\
     \u5206, \u5782\u76F4\u306A\u7DDA\u5206) \u306E\u7D44\u306E\u500B\u6570\n */\n\
-    template <typename T>\nlong long count_axis_parallel_intersections(const std::vector<std::pair<Vector<T,\
+    template <typename T>\nlong long axis_parallel_intersection_count(const std::vector<std::pair<Vector<T,\
     \ 2>, Vector<T, 2>>>& segments) {\n    std::vector<T> xs;\n    // (y, \u7A2E\u985E\
     , x1, x2)\u3002\u7A2E\u985E\u306F 0: \u5782\u76F4\u306A\u7DDA\u5206\u306E\u59CB\
     \u307E\u308A\u30011: \u6C34\u5E73\u306A\u7DDA\u5206\u30012: \u5782\u76F4\u306A\
@@ -652,7 +652,7 @@ data:
     \        T y1 = std::min(p[1], q[1]), y2 = std::max(p[1], q[1]);\n           \
     \ events.emplace_back(y1, 0, p[0], p[0]);\n            events.emplace_back(y2,\
     \ 2, p[0], p[0]);\n            xs.push_back(p[0]);\n        } else {\n       \
-    \     assert(p[1] == q[1] && \"count_axis_parallel_intersections: segment is not\
+    \     assert(p[1] == q[1] && \"axis_parallel_intersection_count: segment is not\
     \ axis-parallel\");\n            events.emplace_back(p[1], 1, std::min(p[0], q[0]),\
     \ std::max(p[0], q[0]));\n        }\n    }\n    std::sort(xs.begin(), xs.end());\n\
     \    xs.erase(std::unique(xs.begin(), xs.end()), xs.end());\n    auto index =\
@@ -667,15 +667,15 @@ data:
     \ \"test/aoj/cgl/cgl-6-a.test.cpp\"\n\nint main() {\n    std::cin.tie(nullptr);\n\
     \    std::ios::sync_with_stdio(false);\n    int n;\n    std::cin >> n;\n    std::vector<std::pair<Vector<long\
     \ long>, Vector<long long>>> segs(n);\n    for (auto& [p, q] : segs) std::cin\
-    \ >> p >> q;\n    std::cout << count_axis_parallel_intersections(segs) << '\\\
-    n';\n}\n"
+    \ >> p >> q;\n    std::cout << axis_parallel_intersection_count(segs) << '\\n';\n\
+    }\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_6_A\"\
     \n\n#include <iostream>\n#include <utility>\n#include <vector>\n\n#include \"\
     ../../../src/geometry/axis-parallel-segments.hpp\"\n\nint main() {\n    std::cin.tie(nullptr);\n\
     \    std::ios::sync_with_stdio(false);\n    int n;\n    std::cin >> n;\n    std::vector<std::pair<Vector<long\
     \ long>, Vector<long long>>> segs(n);\n    for (auto& [p, q] : segs) std::cin\
-    \ >> p >> q;\n    std::cout << count_axis_parallel_intersections(segs) << '\\\
-    n';\n}\n"
+    \ >> p >> q;\n    std::cout << axis_parallel_intersection_count(segs) << '\\n';\n\
+    }\n"
   dependsOn:
   - src/geometry/axis-parallel-segments.hpp
   - src/algebra/group.hpp
@@ -686,7 +686,7 @@ data:
   isVerificationFile: true
   path: test/aoj/cgl/cgl-6-a.test.cpp
   requiredBy: []
-  timestamp: '2026-10-31 17:14:03+09:00'
+  timestamp: '2026-11-03 08:52:44+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/cgl/cgl-6-a.test.cpp

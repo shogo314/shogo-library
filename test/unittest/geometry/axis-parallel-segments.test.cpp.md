@@ -36,7 +36,7 @@ data:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
   bundledCode: "#line 1 \"test/unittest/geometry/axis-parallel-segments.test.cpp\"\
     \n#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
-    \n\n// axis-parallel-segments.hpp \u306E count_axis_parallel_intersections \u3092\
+    \n\n// axis-parallel-segments.hpp \u306E axis_parallel_intersection_count \u3092\
     \u3001\u3059\u3079\u3066\u306E\u7D44\u3092 segments_intersect \u3067\u8ABF\u3079\
     \u305F\u3082\u306E\u3068\u6BD4\u3079\u308B\n// \u7AEF\u70B9\u3067\u63A5\u3059\u308B\
     \u7D44\u3084\u3001\u7AEF\u70B9\u304C\u540C\u3058\u5EA7\u6A19\u306B\u91CD\u306A\
@@ -652,7 +652,7 @@ data:
     \ x \u5EA7\u6A19\u304B y \u5EA7\u6A19\u304C\u7B49\u3057\u3044\u3053\u3068)\n *\
     \ @return long long \u5171\u6709\u70B9\u3092\u6301\u3064 (\u6C34\u5E73\u306A\u7DDA\
     \u5206, \u5782\u76F4\u306A\u7DDA\u5206) \u306E\u7D44\u306E\u500B\u6570\n */\n\
-    template <typename T>\nlong long count_axis_parallel_intersections(const std::vector<std::pair<Vector<T,\
+    template <typename T>\nlong long axis_parallel_intersection_count(const std::vector<std::pair<Vector<T,\
     \ 2>, Vector<T, 2>>>& segments) {\n    std::vector<T> xs;\n    // (y, \u7A2E\u985E\
     , x1, x2)\u3002\u7A2E\u985E\u306F 0: \u5782\u76F4\u306A\u7DDA\u5206\u306E\u59CB\
     \u307E\u308A\u30011: \u6C34\u5E73\u306A\u7DDA\u5206\u30012: \u5782\u76F4\u306A\
@@ -662,7 +662,7 @@ data:
     \        T y1 = std::min(p[1], q[1]), y2 = std::max(p[1], q[1]);\n           \
     \ events.emplace_back(y1, 0, p[0], p[0]);\n            events.emplace_back(y2,\
     \ 2, p[0], p[0]);\n            xs.push_back(p[0]);\n        } else {\n       \
-    \     assert(p[1] == q[1] && \"count_axis_parallel_intersections: segment is not\
+    \     assert(p[1] == q[1] && \"axis_parallel_intersection_count: segment is not\
     \ axis-parallel\");\n            events.emplace_back(p[1], 1, std::min(p[0], q[0]),\
     \ std::max(p[0], q[0]));\n        }\n    }\n    std::sort(xs.begin(), xs.end());\n\
     \    xs.erase(std::unique(xs.begin(), xs.end()), xs.end());\n    auto index =\
@@ -801,11 +801,11 @@ data:
     \ a));\n        }\n        long long expected = 0;\n        for (int i = 0; i\
     \ < n; i++) {\n            for (int j = 0; j < n; j++) {\n                if (!vertical[i]\
     \ && vertical[j] && segments_intersect(segs[i].first, segs[i].second, segs[j].first,\
-    \ segs[j].second)) expected++;\n            }\n        }\n        if (count_axis_parallel_intersections(segs)\
+    \ segs[j].second)) expected++;\n            }\n        }\n        if (axis_parallel_intersection_count(segs)\
     \ != expected) ok = false;\n    }\n    if (ok) std::cout << \"Hello World\" <<\
     \ std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
-    \n\n// axis-parallel-segments.hpp \u306E count_axis_parallel_intersections \u3092\
+    \n\n// axis-parallel-segments.hpp \u306E axis_parallel_intersection_count \u3092\
     \u3001\u3059\u3079\u3066\u306E\u7D44\u3092 segments_intersect \u3067\u8ABF\u3079\
     \u305F\u3082\u306E\u3068\u6BD4\u3079\u308B\n// \u7AEF\u70B9\u3067\u63A5\u3059\u308B\
     \u7D44\u3084\u3001\u7AEF\u70B9\u304C\u540C\u3058\u5EA7\u6A19\u306B\u91CD\u306A\
@@ -825,7 +825,7 @@ data:
     \     }\n        long long expected = 0;\n        for (int i = 0; i < n; i++)\
     \ {\n            for (int j = 0; j < n; j++) {\n                if (!vertical[i]\
     \ && vertical[j] && segments_intersect(segs[i].first, segs[i].second, segs[j].first,\
-    \ segs[j].second)) expected++;\n            }\n        }\n        if (count_axis_parallel_intersections(segs)\
+    \ segs[j].second)) expected++;\n            }\n        }\n        if (axis_parallel_intersection_count(segs)\
     \ != expected) ok = false;\n    }\n    if (ok) std::cout << \"Hello World\" <<\
     \ std::endl;\n}\n"
   dependsOn:
@@ -839,7 +839,7 @@ data:
   isVerificationFile: true
   path: test/unittest/geometry/axis-parallel-segments.test.cpp
   requiredBy: []
-  timestamp: '2026-10-31 17:14:03+09:00'
+  timestamp: '2026-11-03 08:52:44+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/geometry/axis-parallel-segments.test.cpp

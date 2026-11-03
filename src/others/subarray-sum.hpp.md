@@ -80,17 +80,16 @@ data:
     \ P[l] <= k \u3068\u306A\u308B\u7D44\u3092\u6570\u3048\u308B\u3002\u8981\u7D20\
     \u304C\u3059\u3079\u3066 0 \u4EE5\u4E0A\u306A\u3089\u5C3A\u53D6\u308A\u6CD5\u3067\
     \ O(n)\u3001\u305D\u3046\u3067\u306A\u3051\u308C\u3070 O(n log n)\n */\ntemplate\
-    \ <typename T>\nlong long count_subarrays_with_sum_at_most(const std::vector<T>&\
-    \ a, T k) {\n    return internal_subarray_sum::count_pairs_at_most(internal_subarray_sum::prefix_sums(a),\
+    \ <typename T>\nlong long subarray_sum_count_at_most(const std::vector<T>& a,\
+    \ T k) {\n    return internal_subarray_sum::count_pairs_at_most(internal_subarray_sum::prefix_sums(a),\
     \ k);\n}\n\n/**\n * @brief \u548C\u304C\u3061\u3087\u3046\u3069 k \u306E\u533A\
     \u9593 [l, r) (l < r) \u306E\u500B\u6570\n * (\u548C\u304C k \u4EE5\u4E0B\u306E\
     \u500B\u6570) - (\u548C\u304C k - 1 \u4EE5\u4E0B\u306E\u500B\u6570) \u3067\u6C42\
     \u3081\u308B\u3002\u8981\u7D20\u304C\u3059\u3079\u3066 0 \u4EE5\u4E0A\u306A\u3089\
     \ O(n)\u3001\u305D\u3046\u3067\u306A\u3051\u308C\u3070 O(n log n)\n * @note \u8981\
     \u7D20\u306F\u6574\u6570\u578B\u3067\u3042\u308B\u3053\u3068\n */\ntemplate <typename\
-    \ T>\nlong long count_subarrays_with_sum(const std::vector<T>& a, T k) {\n   \
-    \ static_assert(std::is_integral_v<T>, \"count_subarrays_with_sum: T must be an\
-    \ integer type\");\n    const auto p = internal_subarray_sum::prefix_sums(a);\n\
+    \ T>\nlong long subarray_sum_count(const std::vector<T>& a, T k) {\n    static_assert(std::is_integral_v<T>,\
+    \ \"subarray_sum_count: T must be an integer type\");\n    const auto p = internal_subarray_sum::prefix_sums(a);\n\
     \    return internal_subarray_sum::count_pairs_at_most(p, k) - internal_subarray_sum::count_pairs_at_most(p,\
     \ k - 1);\n}\n"
   code: "#pragma once\n\n/**\n * @file subarray-sum.hpp\n * @brief \u548C\u304C\u6761\
@@ -128,17 +127,16 @@ data:
     \ P[l] <= k \u3068\u306A\u308B\u7D44\u3092\u6570\u3048\u308B\u3002\u8981\u7D20\
     \u304C\u3059\u3079\u3066 0 \u4EE5\u4E0A\u306A\u3089\u5C3A\u53D6\u308A\u6CD5\u3067\
     \ O(n)\u3001\u305D\u3046\u3067\u306A\u3051\u308C\u3070 O(n log n)\n */\ntemplate\
-    \ <typename T>\nlong long count_subarrays_with_sum_at_most(const std::vector<T>&\
-    \ a, T k) {\n    return internal_subarray_sum::count_pairs_at_most(internal_subarray_sum::prefix_sums(a),\
+    \ <typename T>\nlong long subarray_sum_count_at_most(const std::vector<T>& a,\
+    \ T k) {\n    return internal_subarray_sum::count_pairs_at_most(internal_subarray_sum::prefix_sums(a),\
     \ k);\n}\n\n/**\n * @brief \u548C\u304C\u3061\u3087\u3046\u3069 k \u306E\u533A\
     \u9593 [l, r) (l < r) \u306E\u500B\u6570\n * (\u548C\u304C k \u4EE5\u4E0B\u306E\
     \u500B\u6570) - (\u548C\u304C k - 1 \u4EE5\u4E0B\u306E\u500B\u6570) \u3067\u6C42\
     \u3081\u308B\u3002\u8981\u7D20\u304C\u3059\u3079\u3066 0 \u4EE5\u4E0A\u306A\u3089\
     \ O(n)\u3001\u305D\u3046\u3067\u306A\u3051\u308C\u3070 O(n log n)\n * @note \u8981\
     \u7D20\u306F\u6574\u6570\u578B\u3067\u3042\u308B\u3053\u3068\n */\ntemplate <typename\
-    \ T>\nlong long count_subarrays_with_sum(const std::vector<T>& a, T k) {\n   \
-    \ static_assert(std::is_integral_v<T>, \"count_subarrays_with_sum: T must be an\
-    \ integer type\");\n    const auto p = internal_subarray_sum::prefix_sums(a);\n\
+    \ T>\nlong long subarray_sum_count(const std::vector<T>& a, T k) {\n    static_assert(std::is_integral_v<T>,\
+    \ \"subarray_sum_count: T must be an integer type\");\n    const auto p = internal_subarray_sum::prefix_sums(a);\n\
     \    return internal_subarray_sum::count_pairs_at_most(p, k) - internal_subarray_sum::count_pairs_at_most(p,\
     \ k - 1);\n}\n"
   dependsOn:
@@ -146,7 +144,7 @@ data:
   isVerificationFile: false
   path: src/others/subarray-sum.hpp
   requiredBy: []
-  timestamp: '2026-10-27 20:28:53+09:00'
+  timestamp: '2026-11-03 08:52:44+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/others/subarray-sum.test.cpp
@@ -159,8 +157,8 @@ title: "\u548C\u304C\u6761\u4EF6\u3092\u6E80\u305F\u3059\u533A\u9593\u306E\u500B
 
 ```cpp
 std::vector<long long> a = {1, 2, 3, 2, 1, 4};
-long long x = count_subarrays_with_sum(a, 5LL);           // 3 ([2, 3]、[3, 2]、[1, 4])
-long long y = count_subarrays_with_sum_at_most(a, 3LL);   // 7
+long long x = subarray_sum_count(a, 5LL);           // 3 ([2, 3]、[3, 2]、[1, 4])
+long long y = subarray_sum_count_at_most(a, 3LL);   // 7
 ```
 
 `k` は列の要素と同じ型で渡します (`long long` の列なら `5LL`)。
@@ -169,8 +167,8 @@ long long y = count_subarrays_with_sum_at_most(a, 3LL);   // 7
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `count_subarrays_with_sum(a, k)` | 和がちょうど `k` の区間の個数。要素は整数型であること | 要素がすべて 0 以上なら $O(n)$、そうでなければ $O(n \log n)$ |
-| `count_subarrays_with_sum_at_most(a, k)` | 和が `k` 以下の区間の個数。要素は浮動小数点型でもよい | 要素がすべて 0 以上なら $O(n)$、そうでなければ $O(n \log n)$ |
+| `subarray_sum_count(a, k)` | 和がちょうど `k` の区間の個数。要素は整数型であること | 要素がすべて 0 以上なら $O(n)$、そうでなければ $O(n \log n)$ |
+| `subarray_sum_count_at_most(a, k)` | 和が `k` 以下の区間の個数。要素は浮動小数点型でもよい | 要素がすべて 0 以上なら $O(n)$、そうでなければ $O(n \log n)$ |
 
 - 累積和 $P$ (先頭に 0 を付けたもの) について、$l < r$ かつ $P_r - P_l \le k$ となる組を数えます。要素がすべて 0 以上なら $P$ は単調なので尺取り法で、そうでなければ [転倒数](inversion-number.hpp) と同じマージソートで数えます。
 - ちょうど $k$ の個数は、($k$ 以下の個数) $-$ ($k - 1$ 以下の個数) で求めます。

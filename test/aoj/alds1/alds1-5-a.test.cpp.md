@@ -98,20 +98,26 @@ data:
     \ subset_sum(const std::vector<long long>& a, long long S) {\n    auto bits =\
     \ internal_subset_sum::build(a, S, nullptr);\n    std::vector<bool> res(S + 1);\n\
     \    for (long long s = 0; s <= S; s++) res[s] = internal_subset_sum::test(bits,\
-    \ s);\n    return res;\n}\n\n/**\n * @brief a \u306E\u90E8\u5206\u96C6\u5408 (\u5404\
-    \u8981\u7D20\u306F 1 \u56DE\u307E\u3067) \u3067\u548C\u304C\u3061\u3087\u3046\u3069\
-    \ S \u306B\u306A\u308B\u3082\u306E\u3092 1 \u3064\u6C42\u3081\u3001\u305D\u306E\
-    \u6DFB\u5B57\u3092\u6607\u9806\u306B\u8FD4\u3059 O(N S / 64 + S)\n * @param a\
-    \ 0 \u4EE5\u4E0A\u306E\u6574\u6570\u306E\u5217\n * @return \u4F5C\u308C\u306A\u3051\
-    \u308C\u3070 std::nullopt\n */\ninline std::optional<std::vector<long long>> subset_sum_restore(const\
-    \ std::vector<long long>& a, long long S) {\n    std::vector<int> from;\n    auto\
-    \ bits = internal_subset_sum::build(a, S, &from);\n    if (!internal_subset_sum::test(bits,\
-    \ S)) return std::nullopt;\n    return internal_subset_sum::trace(a, from, S);\n\
-    }\n\n/**\n * @brief a \u306E\u90E8\u5206\u96C6\u5408 (\u5404\u8981\u7D20\u306F\
-    \ 1 \u56DE\u307E\u3067) \u306E\u548C\u306E\u3046\u3061\u3001S \u4EE5\u4E0B\u306E\
-    \u6700\u5927\u5024 (bitset) O(N S / 64)\n * @param a 0 \u4EE5\u4E0A\u306E\u6574\
-    \u6570\u306E\u5217\n */\ninline long long subset_sum_max_bitset(const std::vector<long\
-    \ long>& a, long long S) {\n    return internal_subset_sum::max_bit(internal_subset_sum::build(a,\
+    \ s);\n    return res;\n}\n\n/**\n * @brief subset_sum_restore\u30FBsubset_sum_max_restore\
+    \ \u306E\u7D50\u679C\n *\n * auto [sum, indices] = subset_sum_max_restore(a, S);\
+    \ \u306E\u3088\u3046\u306B\u53D7\u3051\u53D6\u308C\u308B\n */\nstruct SubsetSum\
+    \ {\n    long long sum;                   //!< \u9078\u3093\u3060\u8981\u7D20\u306E\
+    \u548C\n    std::vector<long long> indices;  //!< \u9078\u3093\u3060\u6DFB\u5B57\
+    \u306E\u6607\u9806\u306E\u30EA\u30B9\u30C8\n};\n\n/**\n * @brief a \u306E\u90E8\
+    \u5206\u96C6\u5408 (\u5404\u8981\u7D20\u306F 1 \u56DE\u307E\u3067) \u3067\u548C\
+    \u304C\u3061\u3087\u3046\u3069 S \u306B\u306A\u308B\u3082\u306E\u3092 1 \u3064\
+    \u6C42\u3081\u3001\u548C\u3068\u6DFB\u5B57\u306E\u6607\u9806\u306E\u30EA\u30B9\
+    \u30C8\u3092\u8FD4\u3059 O(N S / 64 + S)\n * @param a 0 \u4EE5\u4E0A\u306E\u6574\
+    \u6570\u306E\u5217\n * @return \u4F5C\u308C\u306A\u3051\u308C\u3070 std::nullopt\n\
+    \ */\ninline std::optional<SubsetSum> subset_sum_restore(const std::vector<long\
+    \ long>& a, long long S) {\n    std::vector<int> from;\n    auto bits = internal_subset_sum::build(a,\
+    \ S, &from);\n    if (!internal_subset_sum::test(bits, S)) return std::nullopt;\n\
+    \    return SubsetSum{S, internal_subset_sum::trace(a, from, S)};\n}\n\n/**\n\
+    \ * @brief a \u306E\u90E8\u5206\u96C6\u5408 (\u5404\u8981\u7D20\u306F 1 \u56DE\
+    \u307E\u3067) \u306E\u548C\u306E\u3046\u3061\u3001S \u4EE5\u4E0B\u306E\u6700\u5927\
+    \u5024 (bitset) O(N S / 64)\n * @param a 0 \u4EE5\u4E0A\u306E\u6574\u6570\u306E\
+    \u5217\n */\ninline long long subset_sum_max_bitset(const std::vector<long long>&\
+    \ a, long long S) {\n    return internal_subset_sum::max_bit(internal_subset_sum::build(a,\
     \ S, nullptr), S);\n}\n\n/**\n * @brief a \u306E\u90E8\u5206\u96C6\u5408 (\u5404\
     \u8981\u7D20\u306F 1 \u56DE\u307E\u3067) \u306E\u548C\u306E\u3046\u3061\u3001\
     S \u4EE5\u4E0B\u306E\u6700\u5927\u5024 (\u534A\u5206\u5168\u5217\u6319) O(2^(N/2))\n\
@@ -130,18 +136,19 @@ data:
     \    return subset_sum_max_meet_in_the_middle(a, S);\n}\n\n/**\n * @brief \u548C\
     \u304C S \u4EE5\u4E0B\u3067\u6700\u5927\u306B\u306A\u308B\u90E8\u5206\u96C6\u5408\
     \ (\u5404\u8981\u7D20\u306F 1 \u56DE\u307E\u3067) \u3092 1 \u3064\u6C42\u3081\u3001\
-    \u305D\u306E\u6DFB\u5B57\u3092\u6607\u9806\u306B\u8FD4\u3059\n *\n * subset_sum_max\
-    \ \u3068\u540C\u3058\u304F\u3001bitset O(N S / 64 + S) \u3068\u534A\u5206\u5168\
-    \u5217\u6319 O(2^(N/2)) \u306E\u3046\u3061\u8A08\u7B97\u91CF\u304C\u5C0F\u3055\
-    \u3044\u65B9\u3092\u9078\u3076\n * @param a 0 \u4EE5\u4E0A\u306E\u6574\u6570\u306E\
-    \u5217\n */\ninline std::vector<long long> subset_sum_max_restore(const std::vector<long\
-    \ long>& a, long long S) {\n    using namespace internal_subset_sum;\n    int\
-    \ n = a.size();\n    if (cost_bitset(n, S) <= cost_meet_in_the_middle(n)) {\n\
-    \        std::vector<int> from;\n        auto bits = build(a, S, &from);\n   \
-    \     return trace(a, from, max_bit(bits, S));\n    }\n    MitmResult r = meet_in_the_middle(a,\
-    \ S);\n    std::vector<long long> res;\n    for (long long i = 0; i < n / 2; i++)\
-    \ {\n        if (r.left >> i & 1) res.push_back(i);\n    }\n    for (long long\
-    \ i = n / 2; i < n; i++) {\n        if (r.right >> (i - n / 2) & 1) res.push_back(i);\n\
+    \u548C\u3068\u6DFB\u5B57\u306E\u6607\u9806\u306E\u30EA\u30B9\u30C8\u3092\u8FD4\
+    \u3059\n *\n * subset_sum_max \u3068\u540C\u3058\u304F\u3001bitset O(N S / 64\
+    \ + S) \u3068\u534A\u5206\u5168\u5217\u6319 O(2^(N/2)) \u306E\u3046\u3061\u8A08\
+    \u7B97\u91CF\u304C\u5C0F\u3055\u3044\u65B9\u3092\u9078\u3076\n * @param a 0 \u4EE5\
+    \u4E0A\u306E\u6574\u6570\u306E\u5217\n */\ninline SubsetSum subset_sum_max_restore(const\
+    \ std::vector<long long>& a, long long S) {\n    using namespace internal_subset_sum;\n\
+    \    int n = a.size();\n    if (cost_bitset(n, S) <= cost_meet_in_the_middle(n))\
+    \ {\n        std::vector<int> from;\n        auto bits = build(a, S, &from);\n\
+    \        const long long sum = max_bit(bits, S);\n        return {sum, trace(a,\
+    \ from, sum)};\n    }\n    MitmResult r = meet_in_the_middle(a, S);\n    SubsetSum\
+    \ res{r.sum, {}};\n    for (long long i = 0; i < n / 2; i++) {\n        if (r.left\
+    \ >> i & 1) res.indices.push_back(i);\n    }\n    for (long long i = n / 2; i\
+    \ < n; i++) {\n        if (r.right >> (i - n / 2) & 1) res.indices.push_back(i);\n\
     \    }\n    return res;\n}\n#line 7 \"test/aoj/alds1/alds1-5-a.test.cpp\"\n\n\
     int main() {\n    int n;\n    std::cin >> n;\n    std::vector<long long> a(n);\n\
     \    for (auto& x : a) std::cin >> x;\n    std::vector<bool> can = subset_sum(a,\
@@ -160,7 +167,7 @@ data:
   isVerificationFile: true
   path: test/aoj/alds1/alds1-5-a.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:37:20+09:00'
+  timestamp: '2026-11-03 08:17:29+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/alds1/alds1-5-a.test.cpp

@@ -137,34 +137,34 @@ data:
     \     */\n    F2Matrix transpose() const {\n        F2Matrix T(m, n);\n      \
     \  for (long long i = 0; i < n; i++)\n            for (long long j = 0; j < m;\
     \ j++)\n                if (get(i, j)) T.set(j, i, true);\n        return T;\n\
-    \    }\n\n    /**\n     * @brief \u7C21\u7D04\u5316\u3057\u305F\u884C\u5217\u3068\
-    \u3001\u5404\u884C\u306E\u4E3B\u6210\u5206\u306E\u5217 (\u500B\u6570\u304C\u30E9\
-    \u30F3\u30AF) O(nm min(n, m) / 64)\n     */\n    std::pair<F2Matrix, std::vector<long\
-    \ long>> reduced_row_echelon() const {\n        F2Matrix A = *this;\n        std::vector<long\
-    \ long> pivots = reduce(A.a, n, w, m);\n        return {A, pivots};\n    }\n \
-    \   /**\n     * @brief \u30E9\u30F3\u30AF O(nm min(n, m) / 64)\n     */\n    long\
-    \ long rank() const {\n        auto d = a;\n        return reduce(d, n, w, m).size();\n\
-    \    }\n    /**\n     * @brief \u884C\u5217\u5F0F (\u6B63\u65B9\u884C\u5217) O(n^3\
-    \ / 64)\n     */\n    bool det() const {\n        assert(n == m);\n        return\
-    \ rank() == n;\n    }\n    /**\n     * @brief \u9006\u884C\u5217 (\u6B63\u65B9\
-    \u884C\u5217)\u3002\u6B63\u5247\u3067\u306A\u3051\u308C\u3070 std::nullopt O(n^3\
-    \ / 64)\n     */\n    std::optional<F2Matrix> inv() const {\n        assert(n\
-    \ == m);\n        // [A | I] \u3092 A \u306E\u5217\u3060\u3051\u3067\u7C21\u7D04\
-    \u5316\u3059\u308B\u3068 [I | A^-1] \u306B\u306A\u308B\n        const long long\
-    \ w2 = (2 * n + 63) / 64;\n        std::vector<std::uint64_t> d(n * w2, 0);\n\
-    \        for (long long i = 0; i < n; i++) {\n            for (long long k = 0;\
-    \ k < w; k++) d[i * w2 + k] = a[i * w + k];\n            d[i * w2 + ((n + i) >>\
-    \ 6)] |= std::uint64_t(1) << ((n + i) & 63);\n        }\n        if (static_cast<long\
-    \ long>(reduce(d, n, w2, n).size()) < n) return std::nullopt;\n        F2Matrix\
-    \ res(n, n);\n        for (long long i = 0; i < n; i++)\n            for (long\
-    \ long j = 0; j < n; j++)\n                if (get_bit(d, w2, i, n + j)) res.set(i,\
-    \ j, true);\n        return res;\n    }\n    /**\n     * @brief Ax = 0 \u306E\u89E3\
-    \u7A7A\u9593\u306E\u57FA\u5E95 (\u9577\u3055 m \u306E\u30D9\u30AF\u30C8\u30EB\u3092\
-    \ m - rank \u500B) O(nm min(n, m) / 64)\n     */\n    std::vector<std::vector<bool>>\
-    \ kernel() const {\n        auto d = a;\n        std::vector<long long> pivots\
-    \ = reduce(d, n, w, m);\n        return kernel_from_reduced(d, w, pivots);\n \
-    \   }\n    /**\n     * @brief \u9023\u7ACB\u4E00\u6B21\u65B9\u7A0B\u5F0F Ax =\
-    \ b \u3092\u89E3\u304F\u3002\u89E3\u304C\u306A\u3051\u308C\u3070 std::nullopt\
+    \    }\n\n    struct ReducedRowEchelon;  // reduced_row_echelon \u306E\u7D50\u679C\
+    \ (\u30AF\u30E9\u30B9\u306E\u5F8C\u3067\u5B9A\u7FA9\u3059\u308B)\n    /**\n  \
+    \   * @brief \u7C21\u7D04\u5316\u3057\u305F\u884C\u5217\u3068\u3001\u5404\u884C\
+    \u306E\u4E3B\u6210\u5206\u306E\u5217 (\u500B\u6570\u304C\u30E9\u30F3\u30AF) {matrix,\
+    \ pivots} O(nm min(n, m) / 64)\n     */\n    ReducedRowEchelon reduced_row_echelon()\
+    \ const;\n    /**\n     * @brief \u30E9\u30F3\u30AF O(nm min(n, m) / 64)\n   \
+    \  */\n    long long rank() const {\n        auto d = a;\n        return reduce(d,\
+    \ n, w, m).size();\n    }\n    /**\n     * @brief \u884C\u5217\u5F0F (\u6B63\u65B9\
+    \u884C\u5217) O(n^3 / 64)\n     */\n    bool det() const {\n        assert(n ==\
+    \ m);\n        return rank() == n;\n    }\n    /**\n     * @brief \u9006\u884C\
+    \u5217 (\u6B63\u65B9\u884C\u5217)\u3002\u6B63\u5247\u3067\u306A\u3051\u308C\u3070\
+    \ std::nullopt O(n^3 / 64)\n     */\n    std::optional<F2Matrix> inv() const {\n\
+    \        assert(n == m);\n        // [A | I] \u3092 A \u306E\u5217\u3060\u3051\
+    \u3067\u7C21\u7D04\u5316\u3059\u308B\u3068 [I | A^-1] \u306B\u306A\u308B\n   \
+    \     const long long w2 = (2 * n + 63) / 64;\n        std::vector<std::uint64_t>\
+    \ d(n * w2, 0);\n        for (long long i = 0; i < n; i++) {\n            for\
+    \ (long long k = 0; k < w; k++) d[i * w2 + k] = a[i * w + k];\n            d[i\
+    \ * w2 + ((n + i) >> 6)] |= std::uint64_t(1) << ((n + i) & 63);\n        }\n \
+    \       if (static_cast<long long>(reduce(d, n, w2, n).size()) < n) return std::nullopt;\n\
+    \        F2Matrix res(n, n);\n        for (long long i = 0; i < n; i++)\n    \
+    \        for (long long j = 0; j < n; j++)\n                if (get_bit(d, w2,\
+    \ i, n + j)) res.set(i, j, true);\n        return res;\n    }\n    /**\n     *\
+    \ @brief Ax = 0 \u306E\u89E3\u7A7A\u9593\u306E\u57FA\u5E95 (\u9577\u3055 m \u306E\
+    \u30D9\u30AF\u30C8\u30EB\u3092 m - rank \u500B) O(nm min(n, m) / 64)\n     */\n\
+    \    std::vector<std::vector<bool>> kernel() const {\n        auto d = a;\n  \
+    \      std::vector<long long> pivots = reduce(d, n, w, m);\n        return kernel_from_reduced(d,\
+    \ w, pivots);\n    }\n    /**\n     * @brief \u9023\u7ACB\u4E00\u6B21\u65B9\u7A0B\
+    \u5F0F Ax = b \u3092\u89E3\u304F\u3002\u89E3\u304C\u306A\u3051\u308C\u3070 std::nullopt\
     \ O(nm min(n, m) / 64)\n     */\n    std::optional<Solution> solve(const std::vector<bool>&\
     \ b) const {\n        assert(static_cast<long long>(b.size()) == n);\n       \
     \ // \u62E1\u5927\u4FC2\u6570\u884C\u5217 [A | b] \u3092\u3001A \u306E\u5217\u3060\
@@ -188,7 +188,14 @@ data:
     \u3067\u51FA\u529B\u3059\u308B\n     */\n    friend std::ostream& operator<<(std::ostream&\
     \ os, const F2Matrix& A) {\n        auto s = A.to_strings();\n        for (long\
     \ long i = 0; i < A.n; i++) {\n            if (i != 0) os << '\\n';\n        \
-    \    os << s[i];\n        }\n        return os;\n    }\n};\n"
+    \    os << s[i];\n        }\n        return os;\n    }\n};\n\n/**\n * @brief F2Matrix::reduced_row_echelon\
+    \ \u306E\u7D50\u679C\n *\n * auto [R, pivots] = A.reduced_row_echelon(); \u306E\
+    \u3088\u3046\u306B\u53D7\u3051\u53D6\u308C\u308B\n */\nstruct F2Matrix::ReducedRowEchelon\
+    \ {\n    F2Matrix matrix;                //!< \u7C21\u7D04\u5316\u3057\u305F\u884C\
+    \u5217\n    std::vector<long long> pivots;  //!< \u5404\u884C\u306E\u4E3B\u6210\
+    \u5206\u306E\u5217 (\u500B\u6570\u304C\u30E9\u30F3\u30AF)\n};\ninline F2Matrix::ReducedRowEchelon\
+    \ F2Matrix::reduced_row_echelon() const {\n    F2Matrix A = *this;\n    std::vector<long\
+    \ long> pivots = reduce(A.a, n, w, m);\n    return {A, pivots};\n}\n"
   code: "#pragma once\n\n/**\n * @file f2-matrix.hpp\n * @brief F2 (mod 2) \u306E\u884C\
     \u5217\n */\n\n#include <algorithm>\n#include <cassert>\n#include <cstdint>\n\
     #include <optional>\n#include <ostream>\n#include <string>\n#include <utility>\n\
@@ -298,34 +305,34 @@ data:
     \     */\n    F2Matrix transpose() const {\n        F2Matrix T(m, n);\n      \
     \  for (long long i = 0; i < n; i++)\n            for (long long j = 0; j < m;\
     \ j++)\n                if (get(i, j)) T.set(j, i, true);\n        return T;\n\
-    \    }\n\n    /**\n     * @brief \u7C21\u7D04\u5316\u3057\u305F\u884C\u5217\u3068\
-    \u3001\u5404\u884C\u306E\u4E3B\u6210\u5206\u306E\u5217 (\u500B\u6570\u304C\u30E9\
-    \u30F3\u30AF) O(nm min(n, m) / 64)\n     */\n    std::pair<F2Matrix, std::vector<long\
-    \ long>> reduced_row_echelon() const {\n        F2Matrix A = *this;\n        std::vector<long\
-    \ long> pivots = reduce(A.a, n, w, m);\n        return {A, pivots};\n    }\n \
-    \   /**\n     * @brief \u30E9\u30F3\u30AF O(nm min(n, m) / 64)\n     */\n    long\
-    \ long rank() const {\n        auto d = a;\n        return reduce(d, n, w, m).size();\n\
-    \    }\n    /**\n     * @brief \u884C\u5217\u5F0F (\u6B63\u65B9\u884C\u5217) O(n^3\
-    \ / 64)\n     */\n    bool det() const {\n        assert(n == m);\n        return\
-    \ rank() == n;\n    }\n    /**\n     * @brief \u9006\u884C\u5217 (\u6B63\u65B9\
-    \u884C\u5217)\u3002\u6B63\u5247\u3067\u306A\u3051\u308C\u3070 std::nullopt O(n^3\
-    \ / 64)\n     */\n    std::optional<F2Matrix> inv() const {\n        assert(n\
-    \ == m);\n        // [A | I] \u3092 A \u306E\u5217\u3060\u3051\u3067\u7C21\u7D04\
-    \u5316\u3059\u308B\u3068 [I | A^-1] \u306B\u306A\u308B\n        const long long\
-    \ w2 = (2 * n + 63) / 64;\n        std::vector<std::uint64_t> d(n * w2, 0);\n\
-    \        for (long long i = 0; i < n; i++) {\n            for (long long k = 0;\
-    \ k < w; k++) d[i * w2 + k] = a[i * w + k];\n            d[i * w2 + ((n + i) >>\
-    \ 6)] |= std::uint64_t(1) << ((n + i) & 63);\n        }\n        if (static_cast<long\
-    \ long>(reduce(d, n, w2, n).size()) < n) return std::nullopt;\n        F2Matrix\
-    \ res(n, n);\n        for (long long i = 0; i < n; i++)\n            for (long\
-    \ long j = 0; j < n; j++)\n                if (get_bit(d, w2, i, n + j)) res.set(i,\
-    \ j, true);\n        return res;\n    }\n    /**\n     * @brief Ax = 0 \u306E\u89E3\
-    \u7A7A\u9593\u306E\u57FA\u5E95 (\u9577\u3055 m \u306E\u30D9\u30AF\u30C8\u30EB\u3092\
-    \ m - rank \u500B) O(nm min(n, m) / 64)\n     */\n    std::vector<std::vector<bool>>\
-    \ kernel() const {\n        auto d = a;\n        std::vector<long long> pivots\
-    \ = reduce(d, n, w, m);\n        return kernel_from_reduced(d, w, pivots);\n \
-    \   }\n    /**\n     * @brief \u9023\u7ACB\u4E00\u6B21\u65B9\u7A0B\u5F0F Ax =\
-    \ b \u3092\u89E3\u304F\u3002\u89E3\u304C\u306A\u3051\u308C\u3070 std::nullopt\
+    \    }\n\n    struct ReducedRowEchelon;  // reduced_row_echelon \u306E\u7D50\u679C\
+    \ (\u30AF\u30E9\u30B9\u306E\u5F8C\u3067\u5B9A\u7FA9\u3059\u308B)\n    /**\n  \
+    \   * @brief \u7C21\u7D04\u5316\u3057\u305F\u884C\u5217\u3068\u3001\u5404\u884C\
+    \u306E\u4E3B\u6210\u5206\u306E\u5217 (\u500B\u6570\u304C\u30E9\u30F3\u30AF) {matrix,\
+    \ pivots} O(nm min(n, m) / 64)\n     */\n    ReducedRowEchelon reduced_row_echelon()\
+    \ const;\n    /**\n     * @brief \u30E9\u30F3\u30AF O(nm min(n, m) / 64)\n   \
+    \  */\n    long long rank() const {\n        auto d = a;\n        return reduce(d,\
+    \ n, w, m).size();\n    }\n    /**\n     * @brief \u884C\u5217\u5F0F (\u6B63\u65B9\
+    \u884C\u5217) O(n^3 / 64)\n     */\n    bool det() const {\n        assert(n ==\
+    \ m);\n        return rank() == n;\n    }\n    /**\n     * @brief \u9006\u884C\
+    \u5217 (\u6B63\u65B9\u884C\u5217)\u3002\u6B63\u5247\u3067\u306A\u3051\u308C\u3070\
+    \ std::nullopt O(n^3 / 64)\n     */\n    std::optional<F2Matrix> inv() const {\n\
+    \        assert(n == m);\n        // [A | I] \u3092 A \u306E\u5217\u3060\u3051\
+    \u3067\u7C21\u7D04\u5316\u3059\u308B\u3068 [I | A^-1] \u306B\u306A\u308B\n   \
+    \     const long long w2 = (2 * n + 63) / 64;\n        std::vector<std::uint64_t>\
+    \ d(n * w2, 0);\n        for (long long i = 0; i < n; i++) {\n            for\
+    \ (long long k = 0; k < w; k++) d[i * w2 + k] = a[i * w + k];\n            d[i\
+    \ * w2 + ((n + i) >> 6)] |= std::uint64_t(1) << ((n + i) & 63);\n        }\n \
+    \       if (static_cast<long long>(reduce(d, n, w2, n).size()) < n) return std::nullopt;\n\
+    \        F2Matrix res(n, n);\n        for (long long i = 0; i < n; i++)\n    \
+    \        for (long long j = 0; j < n; j++)\n                if (get_bit(d, w2,\
+    \ i, n + j)) res.set(i, j, true);\n        return res;\n    }\n    /**\n     *\
+    \ @brief Ax = 0 \u306E\u89E3\u7A7A\u9593\u306E\u57FA\u5E95 (\u9577\u3055 m \u306E\
+    \u30D9\u30AF\u30C8\u30EB\u3092 m - rank \u500B) O(nm min(n, m) / 64)\n     */\n\
+    \    std::vector<std::vector<bool>> kernel() const {\n        auto d = a;\n  \
+    \      std::vector<long long> pivots = reduce(d, n, w, m);\n        return kernel_from_reduced(d,\
+    \ w, pivots);\n    }\n    /**\n     * @brief \u9023\u7ACB\u4E00\u6B21\u65B9\u7A0B\
+    \u5F0F Ax = b \u3092\u89E3\u304F\u3002\u89E3\u304C\u306A\u3051\u308C\u3070 std::nullopt\
     \ O(nm min(n, m) / 64)\n     */\n    std::optional<Solution> solve(const std::vector<bool>&\
     \ b) const {\n        assert(static_cast<long long>(b.size()) == n);\n       \
     \ // \u62E1\u5927\u4FC2\u6570\u884C\u5217 [A | b] \u3092\u3001A \u306E\u5217\u3060\
@@ -349,12 +356,19 @@ data:
     \u3067\u51FA\u529B\u3059\u308B\n     */\n    friend std::ostream& operator<<(std::ostream&\
     \ os, const F2Matrix& A) {\n        auto s = A.to_strings();\n        for (long\
     \ long i = 0; i < A.n; i++) {\n            if (i != 0) os << '\\n';\n        \
-    \    os << s[i];\n        }\n        return os;\n    }\n};\n"
+    \    os << s[i];\n        }\n        return os;\n    }\n};\n\n/**\n * @brief F2Matrix::reduced_row_echelon\
+    \ \u306E\u7D50\u679C\n *\n * auto [R, pivots] = A.reduced_row_echelon(); \u306E\
+    \u3088\u3046\u306B\u53D7\u3051\u53D6\u308C\u308B\n */\nstruct F2Matrix::ReducedRowEchelon\
+    \ {\n    F2Matrix matrix;                //!< \u7C21\u7D04\u5316\u3057\u305F\u884C\
+    \u5217\n    std::vector<long long> pivots;  //!< \u5404\u884C\u306E\u4E3B\u6210\
+    \u5206\u306E\u5217 (\u500B\u6570\u304C\u30E9\u30F3\u30AF)\n};\ninline F2Matrix::ReducedRowEchelon\
+    \ F2Matrix::reduced_row_echelon() const {\n    F2Matrix A = *this;\n    std::vector<long\
+    \ long> pivots = reduce(A.a, n, w, m);\n    return {A, pivots};\n}\n"
   dependsOn: []
   isVerificationFile: false
   path: src/math/f2-matrix.hpp
   requiredBy: []
-  timestamp: '2026-10-19 20:29:35+09:00'
+  timestamp: '2026-11-03 08:22:07+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/math/f2-matrix.test.cpp
@@ -402,7 +416,7 @@ std::cout << C << '\n';      // '0' と '1' の文字列で 1 行ずつ出力
 | `solve(b)` | 連立一次方程式 $Ax = b$ の解 `Solution` (`x` と `basis`)。解がなければ `std::nullopt` | $O(nm \min(n, m) / w)$ |
 | `rank()` | ランク | $O(nm \min(n, m) / w)$ |
 | `kernel()` | $Ax = 0$ の解空間の基底 (長さ $m$ のベクトルを $m - \mathrm{rank}$ 個) | $O(nm \min(n, m) / w)$ |
-| `reduced_row_echelon()` | 簡約化した行列と、各行の主成分の列 `{R, pivots}` | $O(nm \min(n, m) / w)$ |
+| `reduced_row_echelon()` | 簡約化した行列と、各行の主成分の列をまとめた `ReducedRowEchelon {matrix, pivots}` | $O(nm \min(n, m) / w)$ |
 | `det()` | 行列式 (`bool`、正方行列)。正則なら `true` | $O(n^3 / w)$ |
 | `inv()` | 逆行列 (正方行列)。正則でなければ `std::nullopt` | $O(n^3 / w)$ |
 | `to_strings()` / `os << A` | 各行を `'0'` と `'1'` の文字列にしたもの / 改行区切りで出力 | $O(nm)$ |

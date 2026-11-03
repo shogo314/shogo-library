@@ -20,12 +20,12 @@ data:
     links:
     - https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A
   bundledCode: "#line 1 \"test/unittest/dp/set-cover.test.cpp\"\n#define PROBLEM \"\
-    https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\n\n// min_set_cover\
+    https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\n\n// minimum_set_cover\
     \ \u3092\u3001\u8986\u3048\u308B\u96C6\u5408\u3092\u500B\u6570\u306E\u5C0F\u3055\
     \u3044\u9806\u306B\u5E83\u3052\u3066\u3044\u304F\u611A\u76F4\u306A\u5B9F\u88C5\
     \u3068\u6BD4\u3079\u308B\n// \u4F7F\u3063\u3066\u3088\u3044\u96C6\u5408\u65CF\u304C\
     \u90E8\u5206\u96C6\u5408\u306B\u3064\u3044\u3066\u9589\u3058\u3066\u3044\u308B\
-    \u5834\u5408\u306F min_set_partition \u3068\u3082\u6BD4\u3079\u308B\n// \u554F\
+    \u5834\u5408\u306F minimum_set_partition \u3068\u3082\u6BD4\u3079\u308B\n// \u554F\
     \u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\
     \u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2\
     \ \"src/dp/set-cover.hpp\"\n\n/**\n * @file set-cover.hpp\n * @brief \u96C6\u5408\
@@ -42,7 +42,7 @@ data:
     \n * \u3053\u308C\u304C 0 \u3067\u306A\u3044\u6700\u5C0F\u306E k \u3092\u6C42\u3081\
     \u308B\u3002\u6570\u306F 2 \u3064\u306E\u7D20\u6570\u306E mod \u3067\u6570\u3048\
     \u308B\u306E\u3067\u30010 \u3067\u306A\u3044\u306E\u306B 0 \u3068\u8AA4\u308B\u78BA\
-    \u7387\u304C\u308F\u305A\u304B\u306B\u3042\u308B\n */\ninline long long min_set_cover(int\
+    \u7387\u304C\u308F\u305A\u304B\u306B\u3042\u308B\n */\ninline long long minimum_set_cover(int\
     \ n, const std::vector<bool>& feasible) {\n    assert(0 <= n && n < 31);\n   \
     \ assert(static_cast<long long>(feasible.size()) == (1LL << n));\n    if (n ==\
     \ 0) return 0;\n    const int N = 1 << n;\n    // f[S] = S \u306B\u542B\u307E\u308C\
@@ -80,7 +80,7 @@ data:
     \u3044\u96C6\u5408\u65CF\u304C\u90E8\u5206\u96C6\u5408\u306B\u3064\u3044\u3066\
     \u9589\u3058\u3066\u3044\u308B\u306A\u3089\u3001\u91CD\u306A\u308A\u3092\u8A31\
     \u3057\u3066\u8986\u3046\u3068\u304D\u306E\u6700\u5C0F\u500B\u6570\u3068\u3082\
-    \u4E00\u81F4\u3059\u308B\n */\ninline long long min_set_partition(int n, const\
+    \u4E00\u81F4\u3059\u308B\n */\ninline long long minimum_set_partition(int n, const\
     \ std::vector<bool>& feasible) {\n    assert(static_cast<long long>(feasible.size())\
     \ == (1LL << n));\n    const int INF = n + 1;\n    std::vector<int> dp(1 << n,\
     \ INF);\n    dp[0] = 0;\n    for (int S = 1; S < (1 << n); S++) {\n        const\
@@ -110,21 +110,21 @@ data:
     \         for (int U = 0; U < N; U++)\n                if (reach[U])\n       \
     \             for (int T : sets) next[U | T] = true;\n            reach = next;\n\
     \            if (reach[N - 1]) expect = k;\n        }\n        long long res =\
-    \ min_set_cover(n, feasible);\n        if (res != expect) ok = false, std::cerr\
-    \ << \"min_set_cover \" << rep << ' ' << res << ' ' << expect << std::endl;\n\
-    \        if (closed && res != min_set_partition(n, feasible)) ok = false, std::cerr\
-    \ << \"min_set_partition \u3068\u306E\u9055\u3044\" << std::endl;\n    }\n   \
-    \ if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \ minimum_set_cover(n, feasible);\n        if (res != expect) ok = false, std::cerr\
+    \ << \"minimum_set_cover \" << rep << ' ' << res << ' ' << expect << std::endl;\n\
+    \        if (closed && res != minimum_set_partition(n, feasible)) ok = false,\
+    \ std::cerr << \"minimum_set_partition \u3068\u306E\u9055\u3044\" << std::endl;\n\
+    \    }\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
-    \n\n// min_set_cover \u3092\u3001\u8986\u3048\u308B\u96C6\u5408\u3092\u500B\u6570\
-    \u306E\u5C0F\u3055\u3044\u9806\u306B\u5E83\u3052\u3066\u3044\u304F\u611A\u76F4\
-    \u306A\u5B9F\u88C5\u3068\u6BD4\u3079\u308B\n// \u4F7F\u3063\u3066\u3088\u3044\u96C6\
-    \u5408\u65CF\u304C\u90E8\u5206\u96C6\u5408\u306B\u3064\u3044\u3066\u9589\u3058\
-    \u3066\u3044\u308B\u5834\u5408\u306F min_set_partition \u3068\u3082\u6BD4\u3079\
-    \u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\
-    \u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\
-    \n\n#include \"../../../src/dp/set-cover.hpp\"\n\n#include <iostream>\n#include\
-    \ <random>\n#include <vector>\n\n#include \"../../../src/dp/set-partition.hpp\"\
+    \n\n// minimum_set_cover \u3092\u3001\u8986\u3048\u308B\u96C6\u5408\u3092\u500B\
+    \u6570\u306E\u5C0F\u3055\u3044\u9806\u306B\u5E83\u3052\u3066\u3044\u304F\u611A\
+    \u76F4\u306A\u5B9F\u88C5\u3068\u6BD4\u3079\u308B\n// \u4F7F\u3063\u3066\u3088\u3044\
+    \u96C6\u5408\u65CF\u304C\u90E8\u5206\u96C6\u5408\u306B\u3064\u3044\u3066\u9589\
+    \u3058\u3066\u3044\u308B\u5834\u5408\u306F minimum_set_partition \u3068\u3082\u6BD4\
+    \u3079\u308B\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\
+    \u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\
+    \u308B\n\n#include \"../../../src/dp/set-cover.hpp\"\n\n#include <iostream>\n\
+    #include <random>\n#include <vector>\n\n#include \"../../../src/dp/set-partition.hpp\"\
     \n\nint main() {\n    std::mt19937_64 rng(314);\n    bool ok = true;\n    for\
     \ (int rep = 0; rep < 3000 && ok; rep++) {\n        int n = rng() % (rep < 2000\
     \ ? 9 : 13);\n        const int N = 1 << n;\n        std::vector<bool> feasible(N);\n\
@@ -145,18 +145,18 @@ data:
     \         for (int U = 0; U < N; U++)\n                if (reach[U])\n       \
     \             for (int T : sets) next[U | T] = true;\n            reach = next;\n\
     \            if (reach[N - 1]) expect = k;\n        }\n        long long res =\
-    \ min_set_cover(n, feasible);\n        if (res != expect) ok = false, std::cerr\
-    \ << \"min_set_cover \" << rep << ' ' << res << ' ' << expect << std::endl;\n\
-    \        if (closed && res != min_set_partition(n, feasible)) ok = false, std::cerr\
-    \ << \"min_set_partition \u3068\u306E\u9055\u3044\" << std::endl;\n    }\n   \
-    \ if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \ minimum_set_cover(n, feasible);\n        if (res != expect) ok = false, std::cerr\
+    \ << \"minimum_set_cover \" << rep << ' ' << res << ' ' << expect << std::endl;\n\
+    \        if (closed && res != minimum_set_partition(n, feasible)) ok = false,\
+    \ std::cerr << \"minimum_set_partition \u3068\u306E\u9055\u3044\" << std::endl;\n\
+    \    }\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/dp/set-cover.hpp
   - src/dp/set-partition.hpp
   isVerificationFile: true
   path: test/unittest/dp/set-cover.test.cpp
   requiredBy: []
-  timestamp: '2026-10-22 01:08:21+09:00'
+  timestamp: '2026-11-03 08:30:39+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/dp/set-cover.test.cpp

@@ -144,21 +144,26 @@ data:
     \ += visit[u];\n        }\n        std::vector<long long> res(pattern_node.size());\n\
     \        for (int i = 0; i < static_cast<int>(pattern_node.size()); i++) res[i]\
     \ = visit[pattern_node[i]];\n        return res;\n    }\n    /**\n     * @brief\
+    \ find_all \u304C\u8FD4\u3059\u3001\u30D1\u30BF\u30FC\u30F3\u304C\u73FE\u308C\u305F\
+    \u4F4D\u7F6E\n     */\n    struct Match {\n        long long pos;  //!< \u958B\
+    \u59CB\u4F4D\u7F6E\n        long long id;   //!< \u30D1\u30BF\u30FC\u30F3\u306E\
+    \u756A\u53F7\n        friend bool operator==(const Match& a, const Match& b) {\
+    \ return a.pos == b.pos && a.id == b.id; }\n        friend bool operator!=(const\
+    \ Match& a, const Match& b) { return !(a == b); }\n    };\n    /**\n     * @brief\
     \ text \u306B\u73FE\u308C\u308B\u30D1\u30BF\u30FC\u30F3\u3092\u3059\u3079\u3066\
-    \ (\u958B\u59CB\u4F4D\u7F6E, \u30D1\u30BF\u30FC\u30F3\u306E\u756A\u53F7) \u306E\
-    \u7D44\u3067\u8FD4\u3059 O(|text| + \u51FA\u529B\u306E\u500B\u6570)\n     * \u7D42\
+    \ {\u958B\u59CB\u4F4D\u7F6E pos, \u30D1\u30BF\u30FC\u30F3\u306E\u756A\u53F7 id}\
+    \ \u3067\u8FD4\u3059 O(|text| + \u51FA\u529B\u306E\u500B\u6570)\n     * \u7D42\
     \u308F\u308B\u4F4D\u7F6E\u306E\u9806\u306B\u4E26\u3073\u3001\u540C\u3058\u4F4D\
     \u7F6E\u3067\u7D42\u308F\u308B\u3082\u306E\u306F\u9577\u3044\u30D1\u30BF\u30FC\
     \u30F3\u304B\u3089\u3001\u540C\u3058\u30D1\u30BF\u30FC\u30F3\u306F\u756A\u53F7\
     \u306E\u5C0F\u3055\u3044\u9806\u306B\u4E26\u3076\n     */\n    template <typename\
-    \ R>\n    std::vector<std::pair<long long, long long>> find_all(const R& text)\
-    \ const {\n        assert(built);\n        std::vector<std::pair<long long, long\
-    \ long>> res;\n        int v = 0;\n        long long pos = 0;\n        for (auto\
-    \ c : text) {\n            v = nodes[v].next[index(c)];\n            pos++;\n\
-    \            for (int u = nodes[v].head != -1 ? v : nodes[v].out; u != -1; u =\
-    \ nodes[u].out) {\n                for (int id = nodes[u].head; id != -1; id =\
-    \ next_pattern[id]) res.emplace_back(pos - nodes[u].depth, id);\n            }\n\
-    \        }\n        return res;\n    }\n};\n#line 8 \"test/unittest/string/aho-corasick.test.cpp\"\
+    \ R>\n    std::vector<Match> find_all(const R& text) const {\n        assert(built);\n\
+    \        std::vector<Match> res;\n        int v = 0;\n        long long pos =\
+    \ 0;\n        for (auto c : text) {\n            v = nodes[v].next[index(c)];\n\
+    \            pos++;\n            for (int u = nodes[v].head != -1 ? v : nodes[v].out;\
+    \ u != -1; u = nodes[u].out) {\n                for (int id = nodes[u].head; id\
+    \ != -1; id = next_pattern[id]) res.push_back({pos - nodes[u].depth, id});\n \
+    \           }\n        }\n        return res;\n    }\n};\n#line 8 \"test/unittest/string/aho-corasick.test.cpp\"\
     \n\n#include <algorithm>\n#include <iostream>\n#include <random>\n#include <string>\n\
     #include <tuple>\n#line 16 \"test/unittest/string/aho-corasick.test.cpp\"\n\n\
     bool ok = true;\nvoid check(bool cond, const char* what) {\n    if (!cond) {\n\
@@ -210,7 +215,7 @@ data:
     \ \u7167\u5408: \u611A\u76F4\u306B\u5168\u4F4D\u7F6E\u3067\u6BD4\u3079\u308B\n\
     \        for (int t = 0; t < 5; t++) {\n            std::string text = rng() %\
     \ 5 == 0 ? std::string() : random_string(30);\n            std::vector<long long>\
-    \ each(m, 0);\n            std::vector<std::pair<long long, long long>> all; \
+    \ each(m, 0);\n            std::vector<decltype(ac)::Match> all;             \
     \               // (\u958B\u59CB\u4F4D\u7F6E, \u756A\u53F7)\n            std::vector<std::tuple<long\
     \ long, long long, long long>> order;  // (\u7D42\u308F\u308B\u4F4D\u7F6E, -\u9577\
     \u3055, \u756A\u53F7) \u306E\u9806\u306B\u4E26\u3079\u308B\n            for (long\
@@ -220,7 +225,7 @@ data:
     \ 0) {\n                        each[i]++;\n                        order.emplace_back(end,\
     \ -len, i);\n                    }\n                }\n            }\n       \
     \     std::sort(order.begin(), order.end());\n            for (auto [end, neg_len,\
-    \ i] : order) all.emplace_back(end + neg_len, i);\n            long long total\
+    \ i] : order) all.push_back({end + neg_len, i});\n            long long total\
     \ = 0;\n            for (long long x : each) total += x;\n            check(ac.count(text)\
     \ == total, \"count\");\n            check(ac.count_each(text) == each, \"count_each\"\
     );\n            check(ac.find_all(text) == all, \"find_all\");\n        }\n  \
@@ -289,8 +294,8 @@ data:
     \n        // \u7167\u5408: \u611A\u76F4\u306B\u5168\u4F4D\u7F6E\u3067\u6BD4\u3079\
     \u308B\n        for (int t = 0; t < 5; t++) {\n            std::string text =\
     \ rng() % 5 == 0 ? std::string() : random_string(30);\n            std::vector<long\
-    \ long> each(m, 0);\n            std::vector<std::pair<long long, long long>>\
-    \ all;                // (\u958B\u59CB\u4F4D\u7F6E, \u756A\u53F7)\n          \
+    \ long> each(m, 0);\n            std::vector<decltype(ac)::Match> all;       \
+    \                     // (\u958B\u59CB\u4F4D\u7F6E, \u756A\u53F7)\n          \
     \  std::vector<std::tuple<long long, long long, long long>> order;  // (\u7D42\
     \u308F\u308B\u4F4D\u7F6E, -\u9577\u3055, \u756A\u53F7) \u306E\u9806\u306B\u4E26\
     \u3079\u308B\n            for (long long end = 1; end <= static_cast<long long>(text.size());\
@@ -299,8 +304,8 @@ data:
     \ - len, len, pats[i]) == 0) {\n                        each[i]++;\n         \
     \               order.emplace_back(end, -len, i);\n                    }\n   \
     \             }\n            }\n            std::sort(order.begin(), order.end());\n\
-    \            for (auto [end, neg_len, i] : order) all.emplace_back(end + neg_len,\
-    \ i);\n            long long total = 0;\n            for (long long x : each)\
+    \            for (auto [end, neg_len, i] : order) all.push_back({end + neg_len,\
+    \ i});\n            long long total = 0;\n            for (long long x : each)\
     \ total += x;\n            check(ac.count(text) == total, \"count\");\n      \
     \      check(ac.count_each(text) == each, \"count_each\");\n            check(ac.find_all(text)\
     \ == all, \"find_all\");\n        }\n    }\n    // std::vector<int> \u306E\u6587\
@@ -315,7 +320,7 @@ data:
   isVerificationFile: true
   path: test/unittest/string/aho-corasick.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:32:25+09:00'
+  timestamp: '2026-11-03 08:22:07+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/string/aho-corasick.test.cpp

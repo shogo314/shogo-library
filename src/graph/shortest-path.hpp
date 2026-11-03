@@ -18,17 +18,6 @@
 #include "graph.hpp"
 
 /**
- * @brief 経路。長さ cost と、たどる辺の列 edges
- *
- * auto [cost, edges] = *shortest_path(g, s, t); のように受け取れる
- */
-template <typename Cost>
-struct Path {
-    Cost cost;                                      //!< 経路の長さ (辺のコストの和)
-    std::vector<typename Graph<Cost>::Edge> edges;  //!< たどる辺 (始点側から順に)
-};
-
-/**
  * @brief 1 点から全点への最短路の結果
  *
  * auto [dist, prev] = shortest_path_dijkstra(g, s); のように受け取れる
@@ -39,19 +28,22 @@ struct ShortestPath {
     std::vector<Cost> dist;  //!< 各頂点への最短路長
     std::vector<Edge> prev;  //!< 各頂点への最短路上の直前の辺 (始点と未到達の頂点では src == -1)
     /**
-     * @brief 始点から t への最短路 (長さと、始点側から順にたどる辺)
-     * @return std::optional<Path<Cost>> t が始点なら長さ 0 で辺は空、未到達なら std::nullopt
+     * @brief 始点から t への最短路 (長さ、たどる頂点、たどる辺)
+     * cost は dist[t] (shortest_path_bfs では辺の本数)
+     * @return std::optional<Path<Cost>> t が始点なら長さ 0、頂点は t だけ、辺は空。未到達なら std::nullopt
      * @note 負閉路の影響を受ける頂点では最短路が定まらない (assert で落ちる)
      */
     std::optional<Path<Cost>> path(long long t) const {
         // 直前の辺がないのは始点と未到達の頂点。始点の距離は 0 で、未到達の距離 inf は正なので区別できる
         if (prev[t].src == -1 && dist[t] != Cost{}) return std::nullopt;
-        Path<Cost> res{dist[t], {}};
+        Path<Cost> res{dist[t], {t}, {}};
         while (prev[t].src != -1) {
             res.edges.push_back(prev[t]);
             assert(res.edges.size() < prev.size() && "path: negative cycle");
             t = prev[t].src;
+            res.vertices.push_back(t);
         }
+        std::reverse(res.vertices.begin(), res.vertices.end());
         std::reverse(res.edges.begin(), res.edges.end());
         return res;
     }
@@ -114,7 +106,7 @@ ShortestPath<Cost> dijkstra(const Graph<Cost>& graph, long long s, Cost inf, lon
 /**
  * @brief s から t への最短路 (Dijkstra。t の距離が決まった時点で打ち切る) O(m log m)
  *
- * @return std::optional<Path<Cost>> 長さと、s 側から順にたどる辺。届かなければ std::nullopt。s == t なら長さ 0 で辺は空
+ * @return std::optional<Path<Cost>> 長さ、たどる頂点、たどる辺。届かなければ std::nullopt。s == t なら長さ 0、頂点は s だけ、辺は空
  * @note 負の辺があると assert で落ちる (負の辺があるなら shortest_path_bellman_ford)
  */
 template <typename Cost = long long>

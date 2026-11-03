@@ -1,6 +1,7 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
 // chinese-postman.hpp の chinese_postman を、辺を何回通るかをすべて試す愚直な実装と比べる
+// chinese_postman_restore は、返した閉路がつながっていて、すべての辺を 1 回以上通り、長さが最小値と一致するかを確かめる
 // 各辺を 1 回か 2 回通るとしてよい (3 回以上通るなら 2 回減らしても条件を満たす) ので、
 // 2 回通る辺の集合を全探索し、すべての頂点の次数が偶数になるものの最小を求める
 // 自己ループ・多重辺・辺を持たない頂点・連結でないグラフも調べる
@@ -20,6 +21,8 @@ int main() {
     {
         Graph<long long> g(3);
         if (chinese_postman(g) != 0LL) ok = false;
+        auto r = chinese_postman_restore(g);
+        if (!r || r->cost != 0 || r->vertices != std::vector<long long>{0} || !r->edges.empty()) ok = false;
     }
     for (int rep = 0; rep < 3000 && ok; rep++) {
         int n = rng() % 7 + 1, m = rng() % 11;
@@ -51,11 +54,35 @@ int main() {
             }
         }
         auto res = chinese_postman(g);
+        auto path = chinese_postman_restore(g);
         if (!connected) {
-            if (res) ok = false;
-        } else if (!res || *res != best) {
-            ok = false;
+            if (res || path) ok = false;
+            continue;
         }
+        if (!res || *res != best || !path) {
+            ok = false;
+            continue;
+        }
+        // 閉路: 頂点の列と辺の列がつながっていて始点に戻り、元の辺をすべて 1 回以上通り、長さが最小値
+        const auto& [cost, vertices, edges] = *path;
+        if (cost != best || vertices.size() != edges.size() + 1 || vertices.front() != vertices.back()) ok = false;
+        std::vector<int> times(m, 0);
+        long long len = 0;
+        for (int k = 0; k < static_cast<int>(edges.size()) && ok; k++) {
+            const auto& e = edges[k];
+            if (e.src != vertices[k] || e.dst != vertices[k + 1] || e.id < 0 || e.id >= m) {
+                ok = false;
+                break;
+            }
+            bool same = e.src == us[e.id] && e.dst == vs[e.id];
+            bool rev = e.src == vs[e.id] && e.dst == us[e.id];
+            if (!(same || rev) || e.cost != ws[e.id]) ok = false;
+            times[e.id]++;
+            len += e.cost;
+        }
+        for (int i = 0; i < m; i++)
+            if (times[i] == 0) ok = false;
+        if (len != best) ok = false;
     }
     if (ok) std::cout << "Hello World" << std::endl;
 }

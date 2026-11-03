@@ -30,6 +30,16 @@ for (auto& e : g[u]) { /* e.src, e.dst, e.cost, e.id */ }
 
 頂点番号・辺の番号・頂点数 (`n`・`m`・`size()`) は `long long` です。
 
+## 経路 Path
+
+経路 (路・閉路) を返す関数 (`shortest_path`・`tree_diameter_restore`・`eulerian_trail_*`・`find_cycle_*`・`chinese_postman_restore`) は、`Path<Cost>` を返します。`auto [cost, vertices, edges] = *shortest_path(g, s, t);` のように受け取れます。
+
+| 変数 | 説明 |
+|---|---|
+| `cost` | 長さ (辺のコストの和) |
+| `vertices` | たどる頂点の列 (`std::vector<long long>`、始点から順に)。`edges` より 1 つ多く、辺がなくても始点が入る。閉路なら `vertices.front() == vertices.back()` |
+| `edges` | たどる辺の列 (`std::vector<Edge>`)。`edges[k]` は `vertices[k]` から `vertices[k + 1]` へ向かう (無向辺もたどる向きにしてある) |
+
 ## メンバ変数
 
 | 変数 | 説明 |

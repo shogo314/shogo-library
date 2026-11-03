@@ -186,11 +186,11 @@ bool has_cycle_undirected(const Graph<Cost>& graph) {
  * @brief 有向グラフの閉路を 1 つ求める
  *
  * DFS を再帰を使わずに行う。O(n + m)
- * @return std::optional<std::vector<Edge>> 閉路の辺を、たどる順に並べたもの (e[k].dst == e[k + 1].src、末尾の dst は先頭の src)。閉路がなければ std::nullopt
- * 自己ループは長さ 1 の閉路になる。頂点の列は各辺の src で得られる
+ * @return std::optional<Path<Cost>> 閉路 (重みの和、たどる頂点、たどる辺)。vertices.front() == vertices.back()。閉路がなければ std::nullopt
+ * 自己ループは辺 1 本の閉路になる
  */
 template <typename Cost = long long>
-std::optional<std::vector<typename Graph<Cost>::Edge>> find_cycle_directed(const Graph<Cost>& graph) {
+std::optional<Path<Cost>> find_cycle_directed(const Graph<Cost>& graph) {
     using Edge = typename Graph<Cost>::Edge;
     // state: 0 は未訪問、1 は DFS のスタック上、2 は探索済み
     std::vector<int> state(graph.n, 0), iter(graph.n, 0);
@@ -217,7 +217,7 @@ std::optional<std::vector<typename Graph<Cost>::Edge>> find_cycle_directed(const
                 std::vector<Edge> res = {e};
                 for (long long w = v; w != u; w = in[w].src) res.push_back(in[w]);
                 std::reverse(res.begin(), res.end());
-                return res;
+                return internal_graph::make_path<Cost>(u, std::move(res));
             }
         }
     }
@@ -228,11 +228,11 @@ std::optional<std::vector<typename Graph<Cost>::Edge>> find_cycle_directed(const
  * @brief 無向グラフの閉路を 1 つ求める
  *
  * DFS を再帰を使わずに行う。O(n + m)
- * @return std::optional<std::vector<Edge>> 閉路の辺を、たどる順に並べたもの (e[k].dst == e[k + 1].src、末尾の dst は先頭の src)。閉路がなければ std::nullopt
- * 自己ループは長さ 1、多重辺は長さ 2 の閉路になる (同じ辺を戻ることはない)。頂点の列は各辺の src で得られる
+ * @return std::optional<Path<Cost>> 閉路 (重みの和、たどる頂点、たどる辺)。vertices.front() == vertices.back()。閉路がなければ std::nullopt
+ * 自己ループは辺 1 本、多重辺は辺 2 本の閉路になる (同じ辺を戻ることはない)
  */
 template <typename Cost = long long>
-std::optional<std::vector<typename Graph<Cost>::Edge>> find_cycle_undirected(const Graph<Cost>& graph) {
+std::optional<Path<Cost>> find_cycle_undirected(const Graph<Cost>& graph) {
     using Edge = typename Graph<Cost>::Edge;
     std::vector<int> state(graph.n, 0), iter(graph.n, 0);
     std::vector<Edge> in(graph.n);
@@ -260,7 +260,7 @@ std::optional<std::vector<typename Graph<Cost>::Edge>> find_cycle_undirected(con
                 std::vector<Edge> res = {e};
                 for (long long w = v; w != u; w = in[w].src) res.push_back(in[w]);
                 std::reverse(res.begin(), res.end());
-                return res;
+                return internal_graph::make_path<Cost>(u, std::move(res));
             }
             // state[u] == 2 にはならない (なるなら、u の側でこの辺により閉路が見つかっている)
         }

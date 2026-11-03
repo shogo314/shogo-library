@@ -17,7 +17,7 @@ int main() {
         std::cout << -1 << '\n';
         return 0;
     }
-    auto& cycle = *res;
+    const auto& cycle = res->edges;
     int l = cycle.size();
     std::cout << l << '\n';
     for (int i = 0; i < l; i++) std::cout << cycle[i].src << " \n"[i + 1 == l];

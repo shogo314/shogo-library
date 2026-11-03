@@ -19,14 +19,10 @@ int main() {
             std::cout << "No\n";
             continue;
         }
-        auto& trail = *res;
+        const auto& [cost, vertices, edges] = *res;
         std::cout << "Yes\n";
-        if (m == 0) {
-            std::cout << "0\n\n";
-            continue;
-        }
-        for (auto& e : trail) std::cout << e.src << ' ';
-        std::cout << trail.back().dst << '\n';
-        for (int i = 0; i < m; i++) std::cout << trail[i].id << " \n"[i == m - 1];
+        for (int i = 0; i <= m; i++) std::cout << vertices[i] << " \n"[i == m];
+        for (int i = 0; i < m; i++) std::cout << edges[i].id << " \n"[i == m - 1];
+        if (m == 0) std::cout << '\n';
     }
 }

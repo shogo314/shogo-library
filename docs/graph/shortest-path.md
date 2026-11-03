@@ -9,7 +9,7 @@ documentation_of: //src/graph/shortest-path.hpp
 Graph<long long> g(n);
 g.read(m, -1, true);
 auto route = shortest_path(g, s, t);       // s から t への最短路。届かなければ std::nullopt
-if (route) route->cost, route->edges;      // 長さと、たどる辺
+if (route) route->cost, route->vertices, route->edges;  // 長さ、たどる頂点、たどる辺
 auto sp = shortest_path_dijkstra(g, 0);    // sp.dist[v] が距離、sp.path(v) が経路
 auto d = shortest_path_floyd_warshall(g);  // d[i][j] が i から j への距離
 ```
@@ -20,14 +20,9 @@ auto d = shortest_path_floyd_warshall(g);  // d[i][j] が i から j への距�
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `shortest_path(g, s, t)` | `s` から `t` への最短路を `std::optional<Path<Cost>>` で返す (Dijkstra。`t` の距離が決まった時点で打ち切る)。届かなければ `std::nullopt`、`s == t` なら長さ 0 で辺は空。負の辺があると assert で落ちる | $O(m \log m)$ |
+| `shortest_path(g, s, t)` | `s` から `t` への最短路を `std::optional<Path<Cost>>` で返す (Dijkstra。`t` の距離が決まった時点で打ち切る)。届かなければ `std::nullopt`、`s == t` なら長さ 0、頂点は `s` だけ、辺は空。負の辺があると assert で落ちる | $O(m \log m)$ |
 
-`Path<Cost>` は経路を表す型で、`auto [cost, edges] = *shortest_path(g, s, t);` のように受け取れます。
-
-| 変数 | 説明 |
-|---|---|
-| `cost` | 経路の長さ |
-| `edges` | たどる辺のリスト (`std::vector<Edge>`、始点側から順に) |
+[`Path<Cost>`](graph.hpp) は経路を表す型で、`auto [cost, vertices, edges] = *shortest_path(g, s, t);` のように受け取れます。`cost` は長さ、`vertices` はたどる頂点の列 (`edges` より 1 つ多い)、`edges` はたどる辺の列です。
 
 ## 1 点から全点への最短路
 
@@ -51,7 +46,7 @@ auto d = shortest_path_floyd_warshall(g);  // d[i][j] が i から j への距�
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `path(t)` | 始点から `t` への最短路 (`std::optional<Path<Cost>>`)。`cost` は `dist[t]` (`shortest_path_bfs` では辺の本数)。`t` が始点なら長さ 0 で辺は空、未到達なら `std::nullopt`。負閉路の影響を受ける頂点では assert で落ちる | $O(\text{経路の辺数})$ |
+| `path(t)` | 始点から `t` への最短路 (`std::optional<Path<Cost>>`)。`cost` は `dist[t]` (`shortest_path_bfs` では辺の本数)。`t` が始点なら長さ 0、頂点は `t` だけ、辺は空、未到達なら `std::nullopt`。負閉路の影響を受ける頂点では assert で落ちる | $O(\text{経路の辺数})$ |
 
 `path(t)` の結果は、変数に受けてから使います。`for (const auto& e : sp.path(t)->edges)` と書くと、一時オブジェクトの `std::optional` が先に破棄され、壊れた値を読みます。
 

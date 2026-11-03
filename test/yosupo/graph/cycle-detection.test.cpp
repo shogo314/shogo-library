@@ -17,7 +17,7 @@ int main() {
         std::cout << -1 << '\n';
         return 0;
     }
-    auto& cycle = *res;
+    const auto& cycle = res->edges;
     std::cout << cycle.size() << '\n';
     for (auto& e : cycle) std::cout << e.id << '\n';
 }

@@ -14,9 +14,15 @@
 #include "../../../src/graph/graph.hpp"
 #include "../../../src/graph/graph_util.hpp"
 
-// 辺の列が閉路になっているか (つながっていて、辺の番号が重複せず、どれも実在する辺)
-template <typename E>
-bool is_cycle(const std::vector<E>& c, const std::vector<std::tuple<int, int, int>>& es, bool directed) {
+// 閉路になっているか (つながっていて、辺の番号が重複せず、どれも実在する辺。頂点の列と重みの和も合う)
+template <typename P>
+bool is_cycle(const P& path, const std::vector<std::tuple<int, int, int>>& es, bool directed) {
+    const auto& c = path.edges;
+    if (c.empty() || path.vertices.size() != c.size() + 1 || path.vertices.front() != path.vertices.back()) return false;
+    if (path.cost != static_cast<int>(c.size())) return false;  // 重みはすべて 1
+    for (int k = 0; k < static_cast<int>(c.size()); k++) {
+        if (c[k].src != path.vertices[k] || c[k].dst != path.vertices[k + 1]) return false;
+    }
     std::set<int> ids;
     for (int k = 0; k < static_cast<int>(c.size()); k++) {
         if (c[k].dst != c[(k + 1) % c.size()].src) return false;
@@ -47,9 +53,9 @@ int main() {
             if (!uf.merge(u, v)) undirected_cycle = true;
         }
         auto dc = find_cycle_directed(dg);
-        ok = ok && dc.has_value() == has_cycle_directed(dg) && (!dc || (!dc->empty() && is_cycle(*dc, es, true)));
+        ok = ok && dc.has_value() == has_cycle_directed(dg) && (!dc || is_cycle(*dc, es, true));
         auto uc = find_cycle_undirected(ug);
-        ok = ok && uc.has_value() == undirected_cycle && (!uc || (!uc->empty() && is_cycle(*uc, es, false)));
+        ok = ok && uc.has_value() == undirected_cycle && (!uc || is_cycle(*uc, es, false));
         ok = ok && has_cycle_undirected(ug) == undirected_cycle;
     }
 
@@ -59,12 +65,13 @@ int main() {
     g.add_directed_edge(1, 2);
     g.add_directed_edge(2, 0);
     auto c = find_cycle_directed(g);
-    ok = ok && c && c->size() == 3 && (*c)[0].id == 0 && (*c)[1].id == 1 && (*c)[2].id == 2;
+    ok = ok && c && c->edges.size() == 3 && c->edges[0].id == 0 && c->edges[1].id == 1 && c->edges[2].id == 2;
+    ok = ok && c->vertices == std::vector<long long>{0, 1, 2, 0} && c->cost == 3;
     // 多重辺は長さ 2 の閉路
     Graph<int> h(2);
     h.add_edge(0, 1);
     h.add_edge(0, 1);
-    ok = ok && find_cycle_undirected(h)->size() == 2;
+    ok = ok && find_cycle_undirected(h)->edges.size() == 2;
     ok = ok && has_cycle_undirected(h);
     // 自己ループも閉路
     Graph<int> sl(1);

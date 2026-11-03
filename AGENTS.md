@@ -34,10 +34,11 @@
 - 復元が要るときは、値を返す関数と `_restore` の 2 本にする。
   - `_restore` は値も含めた構造体を返す (`{length, indices}`・`{cost, edges}` など)。
   - 辺は番号でなく `Edge` で返す。
+  - グラフの経路 (路・閉路) は `graph.hpp` の `Path<Cost> {cost, vertices, edges}` で返す (`shortest_path`・`tree_diameter_restore`・`eulerian_trail_*`・`find_cycle_*`・`chinese_postman_restore`)。`vertices` は `edges` より 1 つ多く、辺がなくても始点を入れる。
   - 値と復元が手間をかけずに一緒に求まるなら、2 本に分けず 1 つの構造体で返してよい (`shortest_path_dijkstra`・`minimum_spanning_tree`・`hungarian`)。
   - 値を返す版がない関数 (`general_matching` など) には `_restore` を付けない。
 - `.first`・`.second`・`std::get` では中身が読み取りにくい組は、名前付きのメンバを持つ型で返す。メンバは構造化束縛で受け取る順に並べる。
-  - 型名は関数名をキャメルケースにしたもの (`MinimumSpanningTree`・`TreeDiameter`)。複数の関数で共有するもの、関数名が動詞やアルゴリズム名のものは中身を表す名詞にする (`SubsetSum`・`LongestSubstring`・`Match`・`Assignment`)。
+  - 型名は関数名をキャメルケースにしたもの (`MinimumSpanningTree`・`ShortestPath`)。複数の関数で共有するもの、関数名が動詞やアルゴリズム名のものは中身を表す名詞にする (`SubsetSum`・`LongestSubstring`・`Match`・`Assignment`)。
   - メンバ関数の結果の型はクラスの中に置く (`RangeMode::Mode`・`Matrix::ReducedRowEchelon`)。
   - 意味が決まっている組は `pair` のままでよい: `divmod` の (商, 余り)、`factorize` の (素数, 指数)、区間 `[l, r)`、map と同じ (キー, 値)、ACL と同じ API (`MinCostFlow::flow`・`slope`、二部マッチング)。
 - `inf` を受け取る関数は、最後の引数にして既定を `max / 4` にする。

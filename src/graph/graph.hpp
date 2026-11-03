@@ -7,6 +7,7 @@
 
 #include <cassert>
 #include <iostream>
+#include <utility>
 #include <vector>
 
 /**
@@ -127,3 +128,33 @@ class Graph {
         return res;
     }
 };
+
+/**
+ * @brief 経路 (路・閉路)。長さ cost、たどる頂点の列 vertices、たどる辺の列 edges
+ *
+ * edges[k] は vertices[k] から vertices[k + 1] へ向かう (edges[k].src == vertices[k]、edges[k].dst == vertices[k + 1])
+ * vertices は edges より 1 つ多い。辺がなくても始点 1 つが入る。閉路なら vertices.front() == vertices.back()
+ * auto [cost, vertices, edges] = *shortest_path(g, s, t); のように受け取れる
+ */
+template <typename Cost>
+struct Path {
+    Cost cost;                                      //!< 長さ (辺のコストの和)
+    std::vector<long long> vertices;                //!< たどる頂点 (始点から順に)
+    std::vector<typename Graph<Cost>::Edge> edges;  //!< たどる辺 (始点側から順に)
+};
+
+namespace internal_graph {
+/**
+ * @brief 始点 s と、s からたどる順に並べた辺 edges から Path を作る。cost は辺のコストの和
+ */
+template <typename Cost>
+Path<Cost> make_path(long long s, std::vector<typename Graph<Cost>::Edge> edges) {
+    Path<Cost> res{Cost{}, {s}, std::move(edges)};
+    for (const auto& e : res.edges) {
+        assert(e.src == res.vertices.back());
+        res.cost += e.cost;
+        res.vertices.push_back(e.dst);
+    }
+    return res;
+}
+}  // namespace internal_graph

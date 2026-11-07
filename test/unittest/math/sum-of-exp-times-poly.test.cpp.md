@@ -23,7 +23,7 @@ data:
     path: src/math/sum-of-exp-times-poly.hpp
     title: "\u03A3 r^i f(i) (\u6307\u6570\u95A2\u6570\u3068\u591A\u9805\u5F0F\u306E\
       \u7A4D\u306E\u548C)"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []

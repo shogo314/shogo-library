@@ -49,7 +49,7 @@ data:
       path: src/data_structures/counter-segtree.hpp
       title: "\u533A\u9593\u5185\u306E\u5024\u306E\u500B\u6570\u3092\u6570\u3048\u308B\
         \u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: src/data_structures/counter.hpp
       title: "\u5024\u306E\u500B\u6570\u3092\u6570\u3048\u308B\u591A\u91CD\u96C6\u5408\
         \ (Counter)"
@@ -529,7 +529,7 @@ data:
       path: src/utility/repr.hpp
       title: "\u51FA\u529B\u3092\u305D\u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\u30E9\
         \u30AF\u30BF\u306B\u4F7F\u3048\u308B\u6587\u5B57\u5217\u5316 (repr)"
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: src/utility/traits.hpp
       title: "\u578B\u7279\u6027"
     - icon: ':heavy_check_mark:'
@@ -859,7 +859,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/aoj/itp2/itp2-5-b.test.cpp
       title: test/aoj/itp2/itp2-5-b.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/aoj/itp2/itp2-7-d.test.cpp
       title: test/aoj/itp2/itp2-7-d.test.cpp
   - name: test/aoj/ntl

@@ -21,7 +21,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/math/polynomial-roots.hpp
     title: "\u591A\u9805\u5F0F\u306E\u6839 (Cantor-Zassenhaus \u6CD5)"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []

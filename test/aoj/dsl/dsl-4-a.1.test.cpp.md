@@ -5,7 +5,7 @@ data:
     path: src/utility/container_func.hpp
     title: "\u30B3\u30F3\u30C6\u30CA\u306B\u5BFE\u3059\u308B\u95A2\u6570 (sorted,\
       \ max, sum \u306A\u3069)"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   - icon: ':heavy_check_mark:'

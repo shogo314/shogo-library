@@ -5,7 +5,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/data_structures/convex-hull-trick.hpp
     title: Convex Hull Trick
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: src/data_structures/counter.hpp
     title: "\u5024\u306E\u500B\u6570\u3092\u6570\u3048\u308B\u591A\u91CD\u96C6\u5408\
       \ (Counter)"
@@ -252,7 +252,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj/itp2/itp2-5-b.test.cpp
     title: test/aoj/itp2/itp2-5-b.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/aoj/itp2/itp2-7-d.test.cpp
     title: test/aoj/itp2/itp2-7-d.test.cpp
   - icon: ':heavy_check_mark:'
@@ -756,9 +756,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/674.2.test.cpp
     title: test/yukicoder/674.2.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     document_title: "\u578B\u7279\u6027"
     links: []
@@ -910,7 +910,7 @@ data:
   - src/string/rolling-hash.hpp
   - src/string/wildcard-matching.hpp
   timestamp: '2026-10-31 05:46:56+09:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/yukicoder/674.2.test.cpp
   - test/yukicoder/3672.test.cpp

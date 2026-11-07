@@ -12,7 +12,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/math/sqrt.hpp
     title: "\u6574\u6570\u306E\u5E73\u65B9\u6839\u30FBk \u4E57\u6839"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []

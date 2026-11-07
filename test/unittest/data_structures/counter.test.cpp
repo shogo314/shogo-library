@@ -35,6 +35,17 @@ bool same(const Counter<int>& c, const Model& m) {
     // begin / end で走査した結果が値の昇順に一致する
     std::vector<std::pair<int, long long>> a(c.begin(), c.end()), b(mm.begin(), mm.end());
     if (a != b) return false;
+    // 最頻値は同数なら最小の値。空なら nullopt
+    auto mode = c.mode();
+    if (mm.empty()) {
+        if (mode) return false;
+    } else {
+        auto best = mm.begin();
+        for (auto itr = mm.begin(); itr != mm.end(); ++itr) {
+            if (itr->second > best->second) best = itr;
+        }
+        if (!mode || mode->value != best->first || mode->count != best->second) return false;
+    }
     // const な [] と get
     for (int x = -1; x <= 10; x++) {
         long long expect = mm.count(x) ? mm.at(x) : 0;
@@ -73,7 +84,7 @@ int main() {
         Counter<int> one(5);
         check(same(one, {{5, 1}}), "Counter(x)");
         std::vector<int> v = {3, 1, 3, 2, 3};
-        Counter<int> from_vec(v);
+        Counter from_vec(v);
         check(same(from_vec, {{1, 1}, {2, 1}, {3, 3}}), "Counter(range)");
         Counter<int> from_il{{1, 2}, {4, 0}, {7, 3}, {1, 1}};
         check(same(from_il, {{1, 3}, {7, 3}}), "Counter(initializer_list)");
@@ -131,6 +142,7 @@ int main() {
                 d[x] = k;
                 md[x] = k;
             }
+            check(same(d, md), "mode after update");
             // 参照からの読み取り
             long long expect = normalize(md).count(x) ? normalize(md).at(x) : 0;
             check(static_cast<long long>(d[x]) == expect, "CounterReference -> mapped_type");

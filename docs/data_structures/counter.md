@@ -3,17 +3,20 @@ title: 値の個数を数える多重集合 (Counter)
 documentation_of: //src/data_structures/counter.hpp
 ---
 
-値ごとの個数を `std::map` で管理する多重集合 `Counter<T>` です (Python の `collections.Counter`)。個数が 0 になった値は自動で取り除かれます。
+値ごとの個数を `std::map` で管理する多重集合 `Counter<T>` です (Python の `collections.Counter`)。個数が 0 になった値は自動で取り除かれます。出現回数順の `std::set` も管理し、最頻値を $O(1)$ で取得できます。
 
 ```cpp
 std::vector<int> v = {3, 1, 3, 2, 3};
 Counter<int> c(v);
 c[1] += 2;                        // 1 を 2 個追加
 long long k = c[3];               // 3
+auto [value, count] = *c.mode();  // 最頻値とその個数 (空でない場合)
 auto top = c.most_common();       // 個数の多い順
 for (auto [x, cnt] : c) { }       // 値の昇順に走査
 Counter<int> d = c + Counter<int>(3);  // 3 を 1 個足した Counter
 ```
+
+空の `Counter` の `mode()` は `std::nullopt` を返します。同数なら最小の値を選びます。内部の map は非公開です。個数の変更には `[]`・`set`・`inc` を使います。
 
 ## メンバ関数
 
@@ -33,13 +36,8 @@ Counter<int> d = c + Counter<int>(3);  // 3 を 1 個足した Counter
 | `for (auto [x, cnt] : c)` | `{値, 個数}` を値の昇順に走査 | $O(n)$ |
 | `c.size()` | 異なる値の個数 (重複は数えない) | $O(1)$ |
 | `c.total()` | 重複を含めた要素数 (個数の総和。Python の `Counter.total()` と同じ) | $O(n)$ |
-| `c.most_common()` | `{値, 個数}` のリスト。個数の降順、同数なら値の昇順 | $O(n \log n)$ |
-
-## メンバ変数
-
-| 変数 | 説明 |
-|---|---|
-| `data` | 中身の `std::map<T, long long>` (値の昇順に走査できる) |
+| `c.mode()` | 最頻値と個数を `std::optional<Mode>` (`Mode {value, count}`) で返す。同数なら最小の値を選び、空なら `std::nullopt` を返す | $O(1)$ |
+| `c.most_common()` | `{値, 個数}` のリスト。個数の降順、同数なら値の昇順 | $O(n)$ |
 
 ## 関連
 

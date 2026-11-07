@@ -12,6 +12,7 @@ c[1] += 2;                        // 1 を 2 個追加
 long long k = c[3];               // 3
 auto [value, count] = *c.mode();  // 最頻値とその個数 (空でない場合)
 auto top = c.most_common();       // 個数の多い順
+auto top2 = c.most_common(2);     // 上位 2 件 (値, 個数)
 for (auto [x, cnt] : c) { }       // 値の昇順に走査
 Counter<int> d = c + Counter<int>(3);  // 3 を 1 個足した Counter
 ```
@@ -38,6 +39,7 @@ Counter<int> d = c + Counter<int>(3);  // 3 を 1 個足した Counter
 | `c.total()` | 重複を含めた要素数 (個数の総和。Python の `Counter.total()` と同じ) | $O(n)$ |
 | `c.mode()` | 最頻値と個数を `std::optional<Mode>` (`Mode {value, count}`) で返す。同数なら最小の値を選び、空なら `std::nullopt` を返す | $O(1)$ |
 | `c.most_common()` | `{値, 個数}` のリスト。個数の降順、同数なら値の昇順 | $O(n)$ |
+| `c.most_common(k)` | 同じ順序で上位 `k` 件を返す (`k >= 0`)。`k > n` なら全件、`k = 0` または空なら空のリスト | $O(\min(k, n))$ |
 
 ## 関連
 

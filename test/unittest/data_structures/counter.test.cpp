@@ -154,6 +154,11 @@ int main() {
         std::vector<std::pair<int, long long>> expect(nm.begin(), nm.end());
         std::stable_sort(expect.begin(), expect.end(), [](const auto& p, const auto& q) { return p.second > q.second; });
         check(d.most_common() == expect, "most_common");
+        for (long long k = 0; k <= d.size() + 2; ++k) {
+            auto top = expect;
+            if (k < static_cast<long long>(top.size())) top.resize(k);
+            check(d.most_common(k) == top, "most_common(k)");
+        }
     }
 
     // 自分自身を引くと空になる (走査中の要素を消しても壊れない)
@@ -161,6 +166,7 @@ int main() {
         Counter<int> c{{1, 2}, {3, 1}, {5, 4}};
         c -= c;
         check(same(c, {}), "self operator-=");
+        check(c.most_common(2).empty(), "most_common(k) of empty");
         Counter<int> d{{1, 2}, {3, 1}};
         d += d;
         check(same(d, {{1, 4}, {3, 2}}), "self operator+=");

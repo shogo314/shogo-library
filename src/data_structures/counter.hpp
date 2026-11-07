@@ -130,6 +130,19 @@ struct Counter {
     std::vector<value_type> most_common() const {
         return {frequency.begin(), frequency.end()};
     }
+    /**
+     * @brief 個数の多い順に上位 k 件を返す。同数なら値の昇順。k >= 0
+     * @note k が異なる値の個数より大きければ全件を返す。O(min(k, size()))
+     */
+    std::vector<value_type> most_common(long long k) const {
+        assert(k >= 0);
+        if (k > size()) k = size();
+        std::vector<value_type> result;
+        result.reserve(k);
+        auto itr = frequency.begin();
+        for (long long i = 0; i < k; ++i, ++itr) result.push_back(*itr);
+        return result;
+    }
     class CounterReference {
         Counter& base;
         key_type key;

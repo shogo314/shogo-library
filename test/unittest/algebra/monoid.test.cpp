@@ -241,19 +241,22 @@ int main() {
         check(group::Xor<int>::inv(x) == x, "group::Xor::inv");
     }
 
-    // PrefixSumMax / PrefixSumMin / SuffixSumMax / SuffixSumMin / MaxSubarraySum: 空を含む prefix・suffix・連続部分列の和
+    // PrefixSumMax / PrefixSumMin / PrefixSumMinMax / SuffixSumMax / SuffixSumMin / MaxSubarraySum: 空を含む prefix・suffix・連続部分列の和
     for (int rep = 0; rep < 300 && ok; rep++) {
         int n = rng() % 12 + 1;
         std::vector<long long> a(n);
         for (auto& x : a) x = static_cast<long long>(rng() % 21) - 10;
         SegTree<monoid::PrefixSumMax<long long>> pmax(std::vector<monoid::PrefixSumMax<long long>::S>(a.begin(), a.end()));
         SegTree<monoid::PrefixSumMin<long long>> pmin(std::vector<monoid::PrefixSumMin<long long>::S>(a.begin(), a.end()));
+        using PM = monoid::PrefixSumMinMax<>;
+        SegTree<PM> pminmax(std::vector<PM::S>(a.begin(), a.end()));
         SegTree<monoid::SuffixSumMax<long long>> smax(std::vector<monoid::SuffixSumMax<long long>::S>(a.begin(), a.end()));
         SegTree<monoid::SuffixSumMin<long long>> smin(std::vector<monoid::SuffixSumMin<long long>::S>(a.begin(), a.end()));
         SegTree<monoid::MaxSubarraySum<long long>> msub(std::vector<monoid::MaxSubarraySum<long long>::S>(a.begin(), a.end()));
         for (int q = 0; q < 10 && ok; q++) {
             int k = rng() % n;
             a[k] = static_cast<long long>(rng() % 21) - 10;
+            pminmax.set(k, a[k]);
             pmax.set(k, a[k]), pmin.set(k, a[k]), smax.set(k, a[k]), smin.set(k, a[k]), msub.set(k, a[k]);
             for (int l = 0; l <= n; l++) {
                 for (int r = l; r <= n; r++) {
@@ -274,6 +277,12 @@ int main() {
                     }
                     check(pmax.prod(l, r) == monoid::PrefixSumMax<long long>::S(sum, pre_max), "PrefixSumMax");
                     check(pmin.prod(l, r) == monoid::PrefixSumMin<long long>::S(sum, pre_min), "PrefixSumMin");
+                    check(pminmax.prod(l, r) == PM::S(sum, pre_min, pre_max), "PrefixSumMinMax");
+                    check(PM::op(PM::e(), pminmax.prod(l, r)) == pminmax.prod(l, r) &&
+                              PM::op(pminmax.prod(l, r), PM::e()) == pminmax.prod(l, r),
+                          "PrefixSumMinMax identity");
+                    int m = (l + r) / 2;
+                    check(PM::op(pminmax.prod(l, m), pminmax.prod(m, r)) == pminmax.prod(l, r), "PrefixSumMinMax concatenate");
                     check(smax.prod(l, r) == monoid::SuffixSumMax<long long>::S(sum, suf_max), "SuffixSumMax");
                     check(smin.prod(l, r) == monoid::SuffixSumMin<long long>::S(sum, suf_min), "SuffixSumMin");
                     check(msub.prod(l, r) == monoid::MaxSubarraySum<long long>::S(sum, pre_max, suf_max, best), "MaxSubarraySum");

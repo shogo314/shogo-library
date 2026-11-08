@@ -40,6 +40,7 @@ SegTree seg2(v, Monoid([](int a, int b) { return a + b; }, 0));  // ラムダ式
 | `MinCount<T, U = long long>` | `pair<T, U>` | 最小値とその個数 | `{型の最大値, 0}` |
 | `MaxCount<T, U = long long>` | `pair<T, U>` | 最大値とその個数 | `{型の最小値, 0}` |
 | `PrefixSumMax<T>` / `PrefixSumMin<T>` | `PrefixSumMax<T>::S` など | 区間の和 `sum` と、空を含む prefix の和の最大値 `max` (最小値 `min`) | 空の区間 `{0, 0}` |
+| `PrefixSumMinMax<T = long long>` | `PrefixSumMinMax<T>::S` | 区間の和 `sum` と、空を含む prefix の和の最小値 `min`・最大値 `max` | 空の区間 `{0, 0, 0}` |
 | `SuffixSumMax<T>` / `SuffixSumMin<T>` | `SuffixSumMax<T>::S` など | 区間の和 `sum` と、空を含む suffix の和の最大値 `max` (最小値 `min`) | 空の区間 `{0, 0}` |
 | `MaxSubarraySum<T>` | `MaxSubarraySum<T>::S` | 区間の和 `sum`、空を含む prefix・suffix の和の最大値 `prefix`・`suffix`、空を含む連続部分列の和の最大値 `best` | 空の区間 `{0, 0, 0, 0}` |
 | `Reverse<M>` | `M::S` | `M::op(b, a)` (積の順序を逆にする) | `M::e()` |
@@ -50,7 +51,7 @@ SegTree seg2(v, Monoid([](int a, int b) { return a + b; }, 0));  // ラムダ式
 
 ## prefix・suffix の和と連続部分列の和
 
-`PrefixSumMax<T>`、`PrefixSumMin<T>`、`SuffixSumMax<T>`、`SuffixSumMin<T>`、`MaxSubarraySum<T>` は、区間の和と一緒に prefix の和などの最大値・最小値を持ちます。どれも**空の prefix・suffix・部分列を含めて**数えるので、最大値は 0 以上、最小値は 0 以下になり、単位元は空の区間 (すべて 0) です。値の prefix max ではなく、prefix の**和**の最大値であることに注意してください。
+`PrefixSumMax<T>`、`PrefixSumMin<T>`、`PrefixSumMinMax<T>`、`SuffixSumMax<T>`、`SuffixSumMin<T>`、`MaxSubarraySum<T>` は、区間の和と一緒に prefix の和などの最大値・最小値を持ちます。どれも**空の prefix・suffix・部分列を含めて**数えるので、最大値は 0 以上、最小値は 0 以下になり、単位元は空の区間 (すべて 0) です。値の prefix max ではなく、prefix の**和**の最大値であることに注意してください。
 
 要素は `S(x)` で値 `x` の1要素から作れます。`std::vector<T>` から `std::vector<S>(a.begin(), a.end())` で変換することもできます。`==`、`!=` で比較できます。
 
@@ -60,6 +61,11 @@ SegTree<M> seg(std::vector<M::S>(a.begin(), a.end()));
 long long m = seg.prod(l, r).max;  // max(0, a[l], a[l] + a[l+1], ..., a[l] + ... + a[r-1])
 // l から足していって和が初めて正になる位置 (なければ n)
 long long j = seg.max_right(l, [](const M::S& s) { return s.max <= 0; });
+
+using PM = monoid::PrefixSumMinMax<>;
+SegTree<PM> both(std::vector<PM::S>(a.begin(), a.end()));
+auto [sum, mn, mx] = both.prod(l, r);  // 区間の和、累積和の最小値・最大値
+both.set(i, x);
 
 SegTree<monoid::MaxSubarraySum<long long>> seg2(n);
 seg2.set(i, x);

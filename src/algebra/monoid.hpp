@@ -438,6 +438,28 @@ struct PrefixSumMin {
 };
 
 /**
+ * @brief 区間の和と、空を含む prefix の和の最小値・最大値
+ * S(x) で値 x の1要素を表す要素を作る。単位元は空の区間 {0, 0, 0}
+ */
+template <typename T = long long>
+struct PrefixSumMinMax {
+    struct S {
+        T sum;  // 区間の和
+        T min;  // 空を含む prefix の和の最小値 (0 以下)
+        T max;  // 空を含む prefix の和の最大値 (0 以上)
+        constexpr S() : sum(0), min(0), max(0) {}
+        constexpr S(const T& x) : sum(x), min(T(0) < x ? T(0) : x), max(x < T(0) ? T(0) : x) {}
+        constexpr S(const T& sum, const T& min, const T& max) : sum(sum), min(min), max(max) {}
+        friend constexpr bool operator==(const S& a, const S& b) { return a.sum == b.sum && a.min == b.min && a.max == b.max; }
+        friend constexpr bool operator!=(const S& a, const S& b) { return !(a == b); }
+    };
+    static constexpr S op(const S& a, const S& b) {
+        return S(a.sum + b.sum, std::min(a.min, a.sum + b.min), std::max(a.max, a.sum + b.max));
+    }
+    static constexpr S e() { return S(); }
+};
+
+/**
  * @brief 区間の和と、空を含む suffix の和の最大値
  * S(x) で値 x の1要素を表す要素を作る。単位元は空の区間 {0, 0}
  */

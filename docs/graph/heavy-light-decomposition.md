@@ -13,20 +13,20 @@ FenwickTree<group::Sum<long long>> ft(init);
 
 ft.apply(hld.index(v), x);             // 頂点 v に x を足す
 long long sum = 0;                     // u から v へのパスの和
-for (auto [l, r] : hld.path(u, v)) sum += ft.prod(std::min(l, r), std::max(l, r) + 1);
+for (auto [l, r, reverse] : hld.path(u, v)) sum += ft.prod(l, r);
 auto [l, r] = hld.subtree(v);          // 部分木の和は ft.prod(l, r)
 ```
 
 ## パスの分解 `path(u, v, edge = false)`
 
-`u` から `v` へのパスを列の区間に分け、`u` 側から順に並べたリストを返します。各要素 `(a, b)` は、列の `a` 番目から `b` 番目まで (両端を含む) を `a` から `b` の向きにたどることを表します。向きを表すため、`subtree` などの半開区間 `[l, r)` と違って **閉区間** です。`a > b` なら index が減る向き、つまり根に近づく向きにたどります。
+`u` から `v` へのパスを列の区間に分け、`u` 側から順に並べたリストを返します。各要素は `HeavyLightDecomposition::PathSegment {l, r, reverse}` です。区間は常に `l < r` の半開区間 `[l, r)` で、`reverse = false` なら `l` から `r - 1` へ、`true` なら `r - 1` から `l` へたどります。頂点のパスでは `u = v` のときも 1 頂点の区間を返し、辺のパスでは空のリストを返します。
 
 1 次関数の合成のように交換法則が成り立たない演算では、向きを区別します。index の昇順に適用するセグメント木と、降順に適用するセグメント木の 2 本を用意します。`monoid::Composite` の積は $f \circ g$ ($g$ を先に適用) なので、昇順に適用する側は積の順序を逆にした `monoid::Reverse` を使います。
 
 ```cpp
 SegTree<monoid::Reverse<monoid::Composite<mint>>> forward(init);
 SegTree<monoid::Composite<mint>> backward(init);
-for (auto [a, b] : hld.path(u, v)) x = a <= b ? forward.prod(a, b + 1)(x) : backward.prod(b, a + 1)(x);
+for (auto [l, r, reverse] : hld.path(u, v)) x = reverse ? backward.prod(l, r)(x) : forward.prod(l, r)(x);
 ```
 
 `edge = true` にすると辺についてのパスになります。辺 (`parent(v)`, `v`) の値を `index(v)` 番目に置き、`lca` の位置を含めません。
@@ -39,7 +39,7 @@ for (auto [a, b] : hld.path(u, v)) x = a <= b ? forward.prod(a, b + 1)(x) : back
 | `index(v)` / `vertex(i)` | 頂点 `v` の列での位置 / 列の `i` 番目の頂点 | $O(1)$ |
 | `parent(v)` / `depth(v)` / `subtree_size(v)` | 親 (根は `-1`) / 深さ (辺の本数) / 部分木の頂点数 | $O(1)$ |
 | `subtree(v)` | `v` の部分木に対応する区間 `[l, r)` | $O(1)$ |
-| `path(u, v, edge = false)` | `u` から `v` へのパスに対応する閉区間 `[a, b]` のリスト (上の説明を参照) | $O(\log n)$ |
+| `path(u, v, edge = false)` | `u` から `v` へのパスに対応する半開区間と向きを持つ `PathSegment` のリスト (上の説明を参照) | $O(\log n)$ |
 | `lca(u, v)` | 最小共通祖先 | $O(\log n)$ |
 | `dist(u, v)` | `u` と `v` の間の辺の本数 | $O(\log n)$ |
 | `hop(v, k)` | `v` から根の方へ `k` 本進んだ頂点 (なければ `-1`) | $O(\log n)$ |

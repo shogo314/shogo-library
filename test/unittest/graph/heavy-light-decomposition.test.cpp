@@ -90,20 +90,22 @@ int main() {
                 }
                 // path が返す区間をつなげると、u から v への頂点の列になる
                 std::vector<int> got, got_edge;
-                for (auto [a, b] : hld.path(u, v)) {
-                    int step = a <= b ? 1 : -1;
-                    for (int i = a;; i += step) {
-                        got.push_back(hld.vertex(i));
-                        if (i == b) break;
+                for (auto [l, r, reverse] : hld.path(u, v)) {
+                    if (!(0 <= l && l < r && r <= n)) ok = false;
+                    if (reverse) {
+                        for (long long i = r; i-- > l;) got.push_back(hld.vertex(i));
+                    } else {
+                        for (long long i = l; i < r; i++) got.push_back(hld.vertex(i));
                     }
                 }
                 if (got != p) ok = false;
                 // 辺のパス: lca を除いた頂点 (その頂点と親を結ぶ辺) の列
-                for (auto [a, b] : hld.path(u, v, true)) {
-                    int step = a <= b ? 1 : -1;
-                    for (int i = a;; i += step) {
-                        got_edge.push_back(hld.vertex(i));
-                        if (i == b) break;
+                for (auto [l, r, reverse] : hld.path(u, v, true)) {
+                    if (!(0 <= l && l < r && r <= n)) ok = false;
+                    if (reverse) {
+                        for (long long i = r; i-- > l;) got_edge.push_back(hld.vertex(i));
+                    } else {
+                        for (long long i = l; i < r; i++) got_edge.push_back(hld.vertex(i));
                     }
                 }
                 std::vector<int> expect_edge;

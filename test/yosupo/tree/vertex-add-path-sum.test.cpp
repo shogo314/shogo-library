@@ -36,7 +36,7 @@ int main() {
             int u, v;
             std::cin >> u >> v;
             long long sum = 0;
-            for (auto [l, r] : hld.path(u, v)) sum += ft.prod(std::min(l, r), std::max(l, r) + 1);
+            for (auto [l, r, reverse] : hld.path(u, v)) sum += ft.prod(l, r);
             std::cout << sum << '\n';
         }
     }

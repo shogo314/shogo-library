@@ -44,8 +44,8 @@ int main() {
             int u, v;
             mint x;
             std::cin >> u >> v >> x;
-            for (auto [l, r] : hld.path(u, v)) {
-                x = l <= r ? forward.prod(l, r + 1)(x) : backward.prod(r, l + 1)(x);
+            for (auto [l, r, reverse] : hld.path(u, v)) {
+                x = reverse ? backward.prod(l, r)(x) : forward.prod(l, r)(x);
             }
             std::cout << x << '\n';
         }

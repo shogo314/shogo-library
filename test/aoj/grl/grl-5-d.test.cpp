@@ -42,7 +42,7 @@ int main() {
             int u;
             std::cin >> u;
             long long sum = 0;
-            for (auto [l, r] : hld.path(0, u, true)) sum += ft.prod(std::min(l, r), std::max(l, r) + 1);
+            for (auto [l, r, reverse] : hld.path(0, u, true)) sum += ft.prod(l, r);
             std::cout << sum << '\n';
         }
     }

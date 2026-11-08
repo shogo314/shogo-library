@@ -84,7 +84,7 @@ inline std::vector<Cost> distance_sums(const Tree<Cost>& tree) {
         [](P a, Cost c, long long) { return P{a.first + a.second * c, a.second}; },
         [](P a, long long) { return P{a.first, a.second + 1}; });
     std::vector<Cost> res;
-    res.reserve(tree.n);
+    res.reserve(tree.size());
     for (const P& s : tmp) res.push_back(s.first);
     return res;
 }

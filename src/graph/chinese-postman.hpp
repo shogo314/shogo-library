@@ -32,7 +32,7 @@ struct Solver {
 };
 template <typename Cost>
 Solver<Cost> solve(const Graph<Cost>& graph, Cost inf) {
-    const long long n = graph.n;
+    const long long n = graph.size();
     Solver<Cost> res;
     Cost total{};
     for (const auto& e : graph.edges()) {
@@ -107,9 +107,9 @@ std::optional<Path<Cost>> chinese_postman_restore(const Graph<Cost>& graph, Cost
     using Edge = typename Graph<Cost>::Edge;
     auto res = internal_chinese_postman::solve(graph, inf);
     if (!res.cost) return std::nullopt;
-    if (res.start == -1) return Path<Cost>{Cost{}, graph.n == 0 ? std::vector<long long>{} : std::vector<long long>{0}, {}};
+    if (res.start == -1) return Path<Cost>{Cost{}, graph.size() == 0 ? std::vector<long long>{} : std::vector<long long>{0}, {}};
     // 元の辺と、組の間の最短路の辺を複製したものを並べた多重グラフ。orig[新しい番号] は元の辺の番号
-    Graph<Cost> h(graph.n);
+    Graph<Cost> h(graph.size());
     std::vector<long long> orig;
     auto add = [&](const Edge& e) {
         h.add_edge(e.src, e.dst, e.cost);

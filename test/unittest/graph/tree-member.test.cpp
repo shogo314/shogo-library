@@ -43,11 +43,11 @@ int main() {
         t.add_edge(0, 1, 5);
         t.add_edge(1, 2);
         t.add_edge(3, 1, 7);
-        if (t.size() != 4 || t.m != 3) ok = false;
+        if (t.size() != 4 || t.edge_count() != 3) ok = false;
         if (t[1].size() != 3 || t[0].size() != 1 || t[2].size() != 1 || t[3].size() != 1) ok = false;
         if (t[0][0].dst != 1 || t[0][0].cost != 5 || t[2][0].cost != 1 || t[3][0].cost != 7) ok = false;
         const Graph<long long>& g = t.graph();
-        if (g.m != 3 || &g[1] != &t[1]) ok = false;
+        if (g.edge_count() != 3 || &g[1] != &t[1]) ok = false;
         if (t.set_root(0).depth(3) != 12) ok = false;
     }
 
@@ -59,7 +59,7 @@ int main() {
         t.read(-1, true);
         std::cin.rdbuf(old);
         auto es = t.edges();
-        if (t.m != 3 || es.size() != 3) ok = false;
+        if (t.edge_count() != 3 || es.size() != 3) ok = false;
         long long expect[3][3] = {{0, 1, 10}, {1, 2, 20}, {1, 3, 30}};
         for (int i = 0; i < 3; i++) {
             // 無向辺の向きは規定しないので、端点を集合として比べる
@@ -75,7 +75,7 @@ int main() {
         Tree<int> t(3);
         t.read(0);
         std::cin.rdbuf(old);
-        if (t.m != 2 || t[0].size() != 2 || t[0][0].cost != 1 || t[0][1].dst != 2) ok = false;
+        if (t.edge_count() != 2 || t[0].size() != 2 || t[0][0].cost != 1 || t[0][1].dst != 2) ok = false;
     }
 
     if (ok) std::cout << "Hello World" << std::endl;

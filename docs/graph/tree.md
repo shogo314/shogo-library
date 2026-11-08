@@ -28,14 +28,14 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `Tree(n)` | 頂点数 `n` の空の木 | $O(n)$ |
-| `size()` | 頂点数 (`RootedTree`・`DoublingClimbTree` でも使える) | $O(1)$ |
+| `size()` / `edge_count()` | 頂点数 / 辺数 (`RootedTree`・`DoublingClimbTree` でも使える) | $O(1)$ |
 | `add_edge(u, v, w = 1)` | 辺を追加 | $O(1)$ |
 | `read(padding = -1, weighted = false)` | 標準入力から `n - 1` 本の辺を読む | $O(n)$ |
 | `graph()` | この木を `const Graph<Cost>&` として返す。`shortest_path_dijkstra` や [グラフに関する関数](graph_util.hpp) など、`Graph` を受け取る関数に渡すときに使う (`RootedTree`・`DoublingClimbTree` でも使える) | $O(1)$ |
 | `set_root(r)` | 根を `r` にした `RootedTree` を返す | $O(n)$ |
 | `build_lca(r)` | 根を `r` にした `DoublingClimbTree` を返す | $O(n \log n)$ |
 
-木でなくなるので、`Graph` の `add_directed_edge` は使えません。
+隣接リストは `tree[v]` で読み取り専用で参照し、辺は `add_edge`・`read` で追加します。木でなくなるので、`Graph` の `add_directed_edge` は使えません。
 
 ## `RootedTree<Cost = long long>` (根付き木)
 

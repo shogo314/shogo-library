@@ -53,8 +53,8 @@ namespace internal_shortest_path {
 
 template <typename Cost>
 ShortestPath<Cost> bfs(const Graph<Cost>& graph, long long s, Cost inf) {
-    std::vector<Cost> dist(graph.n, inf);
-    std::vector<typename Graph<Cost>::Edge> prev(graph.n);
+    std::vector<Cost> dist(graph.size(), inf);
+    std::vector<typename Graph<Cost>::Edge> prev(graph.size());
     std::queue<long long> que;
     dist[s] = 0;
     que.push(s);
@@ -75,11 +75,11 @@ ShortestPath<Cost> bfs(const Graph<Cost>& graph, long long s, Cost inf) {
 // target が -1 でなければ、target の距離が決まった時点で打ち切る
 template <typename Cost>
 ShortestPath<Cost> dijkstra(const Graph<Cost>& graph, long long s, Cost inf, long long target = -1) {
-    for (long long v = 0; v < graph.n; v++) {
+    for (long long v = 0; v < graph.size(); v++) {
         for (const auto& e : graph[v]) assert(!(e.cost < Cost{}) && "negative edge (use shortest_path_bellman_ford)");
     }
-    std::vector<Cost> dist(graph.n, inf);
-    std::vector<typename Graph<Cost>::Edge> prev(graph.n);
+    std::vector<Cost> dist(graph.size(), inf);
+    std::vector<typename Graph<Cost>::Edge> prev(graph.size());
     using Node = std::pair<Cost, long long>;
     std::priority_queue<Node, std::vector<Node>, std::greater<Node>> que;
     dist[s] = 0;
@@ -111,8 +111,8 @@ ShortestPath<Cost> dijkstra(const Graph<Cost>& graph, long long s, Cost inf, lon
  */
 template <typename Cost = long long>
 std::optional<Path<Cost>> shortest_path(const Graph<Cost>& graph, long long s, long long t) {
-    assert(0 <= s && s < graph.n);
-    assert(0 <= t && t < graph.n);
+    assert(0 <= s && s < graph.size());
+    assert(0 <= t && t < graph.size());
     return internal_shortest_path::dijkstra(graph, s, std::numeric_limits<Cost>::max() / 4, t).path(t);
 }
 
@@ -126,7 +126,7 @@ std::optional<Path<Cost>> shortest_path(const Graph<Cost>& graph, long long s, l
  */
 template <typename Cost = long long>
 ShortestPath<Cost> shortest_path_dijkstra(const Graph<Cost>& graph, long long s, Cost inf = std::numeric_limits<Cost>::max() / 4) {
-    assert(0 <= s && s < graph.n);
+    assert(0 <= s && s < graph.size());
     return internal_shortest_path::dijkstra(graph, s, inf);
 }
 
@@ -139,7 +139,7 @@ ShortestPath<Cost> shortest_path_dijkstra(const Graph<Cost>& graph, long long s,
  */
 template <typename Cost = long long>
 ShortestPath<Cost> shortest_path_bfs(const Graph<Cost>& graph, long long s, Cost inf = std::numeric_limits<Cost>::max() / 4) {
-    assert(0 <= s && s < graph.n);
+    assert(0 <= s && s < graph.size());
     return internal_shortest_path::bfs(graph, s, inf);
 }
 
@@ -152,8 +152,8 @@ ShortestPath<Cost> shortest_path_bfs(const Graph<Cost>& graph, long long s, Cost
  */
 template <typename Cost = long long>
 ShortestPath<Cost> shortest_path_bellman_ford(const Graph<Cost>& graph, long long s, Cost inf = std::numeric_limits<Cost>::max() / 4) {
-    assert(0 <= s && s < graph.n);
-    const long long n = graph.n;
+    assert(0 <= s && s < graph.size());
+    const long long n = graph.size();
     std::vector<Cost> dist(n, inf);
     std::vector<typename Graph<Cost>::Edge> prev(n);
     dist[s] = Cost{};
@@ -202,9 +202,9 @@ ShortestPath<Cost> shortest_path_bellman_ford(const Graph<Cost>& graph, long lon
  */
 template <typename Cost = long long>
 ShortestPath<Cost> shortest_path_01bfs(const Graph<Cost>& graph, long long s, Cost inf = std::numeric_limits<Cost>::max() / 4) {
-    assert(0 <= s && s < graph.n);
-    std::vector<Cost> dist(graph.n, inf);
-    std::vector<typename Graph<Cost>::Edge> prev(graph.n);
+    assert(0 <= s && s < graph.size());
+    std::vector<Cost> dist(graph.size(), inf);
+    std::vector<typename Graph<Cost>::Edge> prev(graph.size());
     std::deque<long long> que;
     dist[s] = 0;
     que.push_back(s);
@@ -236,7 +236,7 @@ ShortestPath<Cost> shortest_path_01bfs(const Graph<Cost>& graph, long long s, Co
  */
 template <typename Cost = long long>
 std::vector<std::vector<Cost>> shortest_path_floyd_warshall(const Graph<Cost>& graph, Cost inf = std::numeric_limits<Cost>::max() / 4) {
-    const long long n = graph.n;
+    const long long n = graph.size();
     std::vector<std::vector<Cost>> dist(n, std::vector<Cost>(n, inf));
     for (long long i = 0; i < n; i++) dist[i][i] = Cost{};
     for (long long i = 0; i < n; i++) {

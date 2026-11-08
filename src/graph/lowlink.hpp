@@ -50,11 +50,11 @@ class LowLink {
         return low_data[v];
     }
 
-    explicit LowLink(const Graph<Cost>& graph) : n(graph.n), art(n), bridge(graph.m), comp(n, -1), bc_edge_id(graph.m, -1), ord_data(n, -1), low_data(n) {
+    explicit LowLink(const Graph<Cost>& graph) : n(graph.size()), art(n), bridge(graph.edge_count()), comp(n, -1), bc_edge_id(graph.edge_count(), -1), ord_data(n, -1), low_data(n) {
         std::vector<int> parent(n, -1), parent_edge(n, -1), iter(n, 0);
         std::vector<long long> st;
         // 二重頂点連結成分を作るために、通った辺 (木の辺と、子孫から祖先への後退辺) を積む
-        std::vector<long long> edge_st, edge_src(graph.m), edge_dst(graph.m), last_block(n, -1);
+        std::vector<long long> edge_st, edge_src(graph.edge_count()), edge_dst(graph.edge_count()), last_block(n, -1);
         auto push_edge = [&](long long id, long long a, long long b) {
             edge_st.push_back(id);
             edge_src[id] = a, edge_dst[id] = b;
@@ -120,7 +120,7 @@ class LowLink {
         for (long long v = 0; v < n; v++) {
             if (art[v]) arts.push_back(v);
         }
-        for (long long id = 0; id < graph.m; id++) {
+        for (long long id = 0; id < graph.edge_count(); id++) {
             if (bridge[id]) bridge_ids.push_back(id);
         }
         // 橋を通らずに行ける頂点をまとめる

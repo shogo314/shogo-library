@@ -32,10 +32,8 @@ struct Tree : private Graph<Cost> {
     // 回避するためprivate継承にして、公開するメンバをusing宣言する
     // add_directed_edge は木でなくなるので公開しない (read は Tree::read で隠す)
     using Edge = typename Graph<Cost>::Edge;
-    using Graph<Cost>::n;
     using Graph<Cost>::size;
-    using Graph<Cost>::m;
-    using Graph<Cost>::g;
+    using Graph<Cost>::edge_count;
     using Graph<Cost>::Graph;
     using Graph<Cost>::add_edge;
     using Graph<Cost>::operator[];
@@ -62,7 +60,7 @@ struct Tree : private Graph<Cost> {
      * @param weighted = false 辺の重みが入力されるか
      */
     void read(long long padding = -1, bool weighted = false) {
-        Graph<Cost>::read(this->n - 1, padding, weighted, false);
+        Graph<Cost>::read(this->size() - 1, padding, weighted, false);
     }
 
     /**
@@ -120,6 +118,7 @@ class RootedTree : private Tree<Cost> {
    public:
     using Edge = typename Tree<Cost>::Edge;
     using Tree<Cost>::size;
+    using Tree<Cost>::edge_count;
     using Tree<Cost>::edges;
     using Tree<Cost>::graph;
 
@@ -244,7 +243,7 @@ class RootedTree : private Tree<Cost> {
 
    private:
     void build() {
-        long long n = this->n;
+        long long n = this->size();
         assert(n > 0);
         assert(0 <= _root && _root < n);
         _par.resize(n);
@@ -263,8 +262,8 @@ class RootedTree : private Tree<Cost> {
             stk.pop();
             _euler_tour.emplace_back(u, cnt);
             if (iter[u] == 0) _preorder.push_back(u);
-            while (iter[u] < static_cast<int>(this->g[u].size()) && this->g[u][iter[u]].dst == _par[u]) iter[u]++;
-            if (iter[u] == static_cast<int>(this->g[u].size())) {
+            while (iter[u] < static_cast<int>((*this)[u].size()) && (*this)[u][iter[u]].dst == _par[u]) iter[u]++;
+            if (iter[u] == static_cast<int>((*this)[u].size())) {
                 _postorder.push_back(u);
                 _sz[u] = 1;
                 _height[u] = 0;
@@ -279,7 +278,7 @@ class RootedTree : private Tree<Cost> {
                     }
                 }
             } else {
-                auto& e = this->g[u][iter[u]++];
+                auto& e = (*this)[u][iter[u]++];
                 _par[e.dst] = {e.dst, u, e.cost, e.id};
                 _child[u].push_back(e);
                 _depth[e.dst] = _depth[u] + e.cost;
@@ -301,6 +300,7 @@ class DoublingClimbTree : private RootedTree<Cost> {
    public:
     using Edge = typename RootedTree<Cost>::Edge;
     using RootedTree<Cost>::size;
+    using RootedTree<Cost>::edge_count;
     using RootedTree<Cost>::operator[];
     using RootedTree<Cost>::edges;
     using RootedTree<Cost>::graph;

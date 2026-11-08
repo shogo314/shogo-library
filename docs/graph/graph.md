@@ -18,17 +18,18 @@ for (auto& e : g[u]) { /* e.src, e.dst, e.cost, e.id */ }
 |---|---|---|
 | `Graph(n)` | 頂点数 `n` の空グラフ | $O(n)$ |
 | `size()` | 頂点数 | $O(1)$ |
+| `edge_count()` | 辺数 (無向辺は 1 本と数える) | $O(1)$ |
 | `add_edge(u, v, w = 1)` | 無向辺を追加 | ならし $O(1)$ |
 | `add_directed_edge(u, v, w = 1)` | 有向辺を追加 | ならし $O(1)$ |
 | `read(m, padding = -1, weighted = false, directed = false)` | 標準入力から `m` 本の辺を読む。頂点番号に `padding` を足す | $O(m)$ |
-| `g[v]` | `v` から出る辺 (`Edge`) のリスト | $O(1)$ |
+| `g[v]` | `v` から出る辺 (`Edge`) のリストの const 参照 | $O(1)$ |
 | `edges()` | 全辺のリスト (`id` 順、無向辺は 1 本だけ) | $O(n + m)$ |
 
 `edges()` の `i` 番目は `id` が `i` の辺です。無向辺は `src` と `dst` のどちらが追加したときの `u` になるかを決めていないので、向きに頼らないでください。有向辺は追加したときの向きのままです。
 
 `Edge` は `src`、`dst`、`cost`、`id` (追加順の番号、無向辺は両方向で同じ) を持ち、`long long` に変換すると `dst` になります。`src`・`dst`・`id` は `long long` です。
 
-頂点番号・辺の番号・頂点数 (`n`・`m`・`size()`) は `long long` です。
+頂点番号・辺の番号・頂点数・辺数は `long long` です。辺は `add_edge`・`add_directed_edge`・`read` で追加します。
 
 ## 経路 Path
 
@@ -39,13 +40,6 @@ for (auto& e : g[u]) { /* e.src, e.dst, e.cost, e.id */ }
 | `cost` | 長さ (辺のコストの和) |
 | `vertices` | たどる頂点の列 (`std::vector<long long>`、始点から順に)。`edges` より 1 つ多く、辺がなくても始点が入る。閉路なら `vertices.front() == vertices.back()` |
 | `edges` | たどる辺の列 (`std::vector<Edge>`)。`edges[k]` は `vertices[k]` から `vertices[k + 1]` へ向かう (無向辺もたどる向きにしてある) |
-
-## メンバ変数
-
-| 変数 | 説明 |
-|---|---|
-| `n` / `m` | 頂点数 (`size()` と同じ) / 辺数 |
-| `g` | 隣接リスト (`g[v]` は `v` から出る辺のリスト) |
 
 ## 関連
 

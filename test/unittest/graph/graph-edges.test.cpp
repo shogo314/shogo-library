@@ -34,7 +34,7 @@ int main() {
             added.push_back({u, v, w, directed});
         }
         std::vector<Graph<long long>::Edge> es = g.edges();
-        if (static_cast<long long>(es.size()) != g.m || g.m != m) ok = false;
+        if (static_cast<long long>(es.size()) != g.edge_count() || g.edge_count() != m) ok = false;
         for (int i = 0; i < m && ok; i++) {
             const E& a = added[i];
             const auto& e = es[i];

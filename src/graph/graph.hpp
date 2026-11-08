@@ -36,10 +36,12 @@ class Graph {
         operator long long() const { return dst; }
     };
 
+   private:
     long long n;                       //!< 頂点数
     long long m;                       //!< 辺数
     std::vector<std::vector<Edge>> g;  //!< グラフの隣接リスト表現
 
+   public:
     /**
      * @brief デフォルトコンストラクタ
      */
@@ -53,6 +55,10 @@ class Graph {
      * @brief 頂点数
      */
     long long size() const { return n; }
+    /**
+     * @brief 辺数 (無向辺は 1 本と数える)
+     */
+    long long edge_count() const { return m; }
     /**
      * @brief 無向辺を追加する
      * @param u 始点
@@ -98,17 +104,10 @@ class Graph {
     /**
      * @brief ある頂点から出る辺を列挙する
      * @param v 頂点番号
-     * @return std::vector<Edge>& vから出る辺のリスト
-     */
-    std::vector<Edge>& operator[](long long v) {
-        return g[v];
-    }
-    /**
-     * @brief ある頂点から出る辺を列挙する
-     * @param v 頂点番号
      * @return const std::vector<Edge>& vから出る辺のリスト
      */
     const std::vector<Edge>& operator[](long long v) const {
+        assert(0 <= v && v < n);
         return g[v];
     }
     /**

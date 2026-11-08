@@ -19,7 +19,7 @@
  */
 template <typename Cost>
 std::vector<long long> dominator_tree(const Graph<Cost>& graph, long long root) {
-    const long long n = graph.n;
+    const long long n = graph.size();
     assert(0 <= root && root < n);
     std::vector<std::vector<long long>> radj(n);
     for (long long u = 0; u < n; u++) {

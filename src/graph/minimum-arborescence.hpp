@@ -84,7 +84,7 @@ struct MinimumArborescence {
 template <typename Cost = long long>
 std::optional<MinimumArborescence<Cost>> minimum_arborescence(const Graph<Cost>& graph, long long root) {
     using Edge = typename Graph<Cost>::Edge;
-    const long long n = graph.n;
+    const long long n = graph.size();
     assert(0 <= root && root < n);
     std::vector<Edge> es;
     for (long long v = 0; v < n; v++) {

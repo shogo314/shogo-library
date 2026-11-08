@@ -161,9 +161,9 @@ int main() {
         }
         // Block-Cut Tree は森で、元の頂点の次数は入っている成分の数
         Tree<int> t = ll.block_cut_tree();
-        if (t.n != n + static_cast<long long>(bc.size())) ok = false;
-        UnionFind tuf(t.n);
-        for (long long v = 0; v < t.n; v++) {
+        if (t.size() != n + static_cast<long long>(bc.size())) ok = false;
+        UnionFind tuf(t.size());
+        for (long long v = 0; v < t.size(); v++) {
             for (const auto& e : t[v]) {
                 if (v < e.dst && !tuf.merge(v, e.dst)) ok = false;  // 閉路があれば木ではない
             }

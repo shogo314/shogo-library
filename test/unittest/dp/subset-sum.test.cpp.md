@@ -25,7 +25,7 @@ data:
     path: src/math/modular-arithmetic.hpp
     title: "mod \u6F14\u7B97 (\u7A4D\u3001\u51AA\u4E57\u3001\u9006\u5143\u3001\u96E2\
       \u6563\u5BFE\u6570\u3001\u5E73\u65B9\u6839)"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []

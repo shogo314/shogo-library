@@ -1,12 +1,12 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/aoj/itp2/itp2-7-d.test.cpp
     title: test/aoj/itp2/itp2-7-d.test.cpp
   - icon: ':heavy_check_mark:'
@@ -18,9 +18,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/associative-array.test.cpp
     title: test/yosupo/data_structure/associative-array.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "\u5024\u306E\u500B\u6570\u3092\u6570\u3048\u308B\u591A\u91CD\u96C6\
       \u5408 (Counter)"
@@ -116,48 +116,55 @@ data:
     \        }\n        return *this;\n    }\n    friend Counter operator-(const Counter&\
     \ a, const Counter& b) {\n        Counter res(a);\n        return res -= b;\n\
     \    }\n    auto begin() const { return data.begin(); }\n    auto end() const\
-    \ { return data.end(); }\n    /**\n     * @brief \u7570\u306A\u308B\u5024\u306E\
-    \u500B\u6570 (\u91CD\u8907\u306F\u6570\u3048\u306A\u3044)\n     */\n    long long\
-    \ size() const {\n        return static_cast<long long>(data.size());\n    }\n\
-    \    /**\n     * @brief \u91CD\u8907\u3092\u542B\u3081\u305F\u8981\u7D20\u6570\
-    \ (\u500B\u6570\u306E\u7DCF\u548C)\n     * @note Python \u306E collections.Counter.total()\
-    \ \u3068\u540C\u3058\u3002O(\u7570\u306A\u308B\u5024\u306E\u500B\u6570)\n    \
-    \ */\n    mapped_type total() const {\n        mapped_type ret = 0;\n        for\
-    \ (const auto& [key, cnt] : data) ret += cnt;\n        return ret;\n    }\n  \
-    \  mapped_type get(const key_type& key) const {\n        auto itr = data.find(key);\n\
-    \        if (itr == data.end()) return 0;\n        return itr->second;\n    }\n\
-    \    void set(const key_type& key, const mapped_type& t) {\n        assert(t >=\
-    \ 0);\n        auto itr = data.find(key);\n        if (itr != data.end()) frequency.erase(*itr);\n\
-    \        if (t > 0) {\n            data[key] = t;\n            frequency.emplace(key,\
-    \ t);\n        } else if (itr != data.end()) {\n            data.erase(itr);\n\
-    \        }\n    }\n    struct Mode {\n        T value;\n        long long count;\n\
-    \    };\n    /**\n     * @brief \u6700\u983B\u5024\u3068\u305D\u306E\u500B\u6570\
-    \u3092\u8FD4\u3059\u3002\u540C\u6570\u306A\u3089\u6700\u5C0F\u306E\u5024\u3092\
-    \u9078\u3073\u3001\u7A7A\u306A\u3089 std::nullopt \u3092\u8FD4\u3059\n     * @note\
-    \ O(1)\n     */\n    std::optional<Mode> mode() const {\n        if (frequency.empty())\
-    \ return std::nullopt;\n        const auto& [value, count] = *frequency.begin();\n\
-    \        return Mode{value, count};\n    }\n    std::vector<value_type> most_common()\
-    \ const {\n        return {frequency.begin(), frequency.end()};\n    }\n    /**\n\
-    \     * @brief \u500B\u6570\u306E\u591A\u3044\u9806\u306B\u4E0A\u4F4D k \u4EF6\
-    \u3092\u8FD4\u3059\u3002\u540C\u6570\u306A\u3089\u5024\u306E\u6607\u9806\u3002\
-    k >= 0\n     * @note k \u304C\u7570\u306A\u308B\u5024\u306E\u500B\u6570\u3088\u308A\
-    \u5927\u304D\u3051\u308C\u3070\u5168\u4EF6\u3092\u8FD4\u3059\u3002O(min(k, size()))\n\
-    \     */\n    std::vector<value_type> most_common(long long k) const {\n     \
-    \   assert(k >= 0);\n        if (k > size()) k = size();\n        std::vector<value_type>\
-    \ result;\n        result.reserve(k);\n        auto itr = frequency.begin();\n\
-    \        for (long long i = 0; i < k; ++i, ++itr) result.push_back(*itr);\n  \
-    \      return result;\n    }\n    class CounterReference {\n        Counter& base;\n\
-    \        key_type key;\n\n       public:\n        CounterReference(Counter& base,\
-    \ key_type key) : base(base), key(key) {}\n        CounterReference& operator=(const\
-    \ mapped_type& x) {\n            base.set(key, x);\n            return *this;\n\
-    \        }\n        CounterReference& operator+=(const mapped_type& x) {\n   \
-    \         base.inc(key, x);\n            return *this;\n        }\n        CounterReference&\
-    \ operator-=(const mapped_type& x) {\n            base.inc(key, -x);\n       \
-    \     return *this;\n        }\n        operator mapped_type() const {\n     \
-    \       return base.get(key);\n        }\n    };\n    mapped_type operator[](const\
-    \ key_type& key) const {\n        return get(key);\n    }\n    CounterReference\
-    \ operator[](const key_type& key) {\n        return CounterReference(*this, key);\n\
-    \    }\n};\n\ntemplate <typename T>\nCounter(std::vector<T>) -> Counter<T>;\n"
+    \ { return data.end(); }\n    /** @brief key \u4EE5\u4E0A\u306E\u6700\u521D\u306E\
+    \u5024\u306E\u8AAD\u307F\u53D6\u308A\u5C02\u7528\u30A4\u30C6\u30EC\u30FC\u30BF\
+    \ (\u306A\u3051\u308C\u3070 end()) */\n    auto lower_bound(const key_type& key)\
+    \ const { return data.lower_bound(key); }\n    /** @brief key \u3088\u308A\u5927\
+    \u304D\u3044\u6700\u521D\u306E\u5024\u306E\u8AAD\u307F\u53D6\u308A\u5C02\u7528\
+    \u30A4\u30C6\u30EC\u30FC\u30BF (\u306A\u3051\u308C\u3070 end()) */\n    auto upper_bound(const\
+    \ key_type& key) const { return data.upper_bound(key); }\n    /**\n     * @brief\
+    \ \u7570\u306A\u308B\u5024\u306E\u500B\u6570 (\u91CD\u8907\u306F\u6570\u3048\u306A\
+    \u3044)\n     */\n    long long size() const {\n        return static_cast<long\
+    \ long>(data.size());\n    }\n    /**\n     * @brief \u91CD\u8907\u3092\u542B\u3081\
+    \u305F\u8981\u7D20\u6570 (\u500B\u6570\u306E\u7DCF\u548C)\n     * @note Python\
+    \ \u306E collections.Counter.total() \u3068\u540C\u3058\u3002O(\u7570\u306A\u308B\
+    \u5024\u306E\u500B\u6570)\n     */\n    mapped_type total() const {\n        mapped_type\
+    \ ret = 0;\n        for (const auto& [key, cnt] : data) ret += cnt;\n        return\
+    \ ret;\n    }\n    mapped_type get(const key_type& key) const {\n        auto\
+    \ itr = data.find(key);\n        if (itr == data.end()) return 0;\n        return\
+    \ itr->second;\n    }\n    void set(const key_type& key, const mapped_type& t)\
+    \ {\n        assert(t >= 0);\n        auto itr = data.find(key);\n        if (itr\
+    \ != data.end()) frequency.erase(*itr);\n        if (t > 0) {\n            data[key]\
+    \ = t;\n            frequency.emplace(key, t);\n        } else if (itr != data.end())\
+    \ {\n            data.erase(itr);\n        }\n    }\n    struct Mode {\n     \
+    \   T value;\n        long long count;\n    };\n    /**\n     * @brief \u6700\u983B\
+    \u5024\u3068\u305D\u306E\u500B\u6570\u3092\u8FD4\u3059\u3002\u540C\u6570\u306A\
+    \u3089\u6700\u5C0F\u306E\u5024\u3092\u9078\u3073\u3001\u7A7A\u306A\u3089 std::nullopt\
+    \ \u3092\u8FD4\u3059\n     * @note O(1)\n     */\n    std::optional<Mode> mode()\
+    \ const {\n        if (frequency.empty()) return std::nullopt;\n        const\
+    \ auto& [value, count] = *frequency.begin();\n        return Mode{value, count};\n\
+    \    }\n    std::vector<value_type> most_common() const {\n        return {frequency.begin(),\
+    \ frequency.end()};\n    }\n    /**\n     * @brief \u500B\u6570\u306E\u591A\u3044\
+    \u9806\u306B\u4E0A\u4F4D k \u4EF6\u3092\u8FD4\u3059\u3002\u540C\u6570\u306A\u3089\
+    \u5024\u306E\u6607\u9806\u3002k >= 0\n     * @note k \u304C\u7570\u306A\u308B\u5024\
+    \u306E\u500B\u6570\u3088\u308A\u5927\u304D\u3051\u308C\u3070\u5168\u4EF6\u3092\
+    \u8FD4\u3059\u3002O(min(k, size()))\n     */\n    std::vector<value_type> most_common(long\
+    \ long k) const {\n        assert(k >= 0);\n        if (k > size()) k = size();\n\
+    \        std::vector<value_type> result;\n        result.reserve(k);\n       \
+    \ auto itr = frequency.begin();\n        for (long long i = 0; i < k; ++i, ++itr)\
+    \ result.push_back(*itr);\n        return result;\n    }\n    class CounterReference\
+    \ {\n        Counter& base;\n        key_type key;\n\n       public:\n       \
+    \ CounterReference(Counter& base, key_type key) : base(base), key(key) {}\n  \
+    \      CounterReference& operator=(const mapped_type& x) {\n            base.set(key,\
+    \ x);\n            return *this;\n        }\n        CounterReference& operator+=(const\
+    \ mapped_type& x) {\n            base.inc(key, x);\n            return *this;\n\
+    \        }\n        CounterReference& operator-=(const mapped_type& x) {\n   \
+    \         base.inc(key, -x);\n            return *this;\n        }\n        operator\
+    \ mapped_type() const {\n            return base.get(key);\n        }\n    };\n\
+    \    mapped_type operator[](const key_type& key) const {\n        return get(key);\n\
+    \    }\n    CounterReference operator[](const key_type& key) {\n        return\
+    \ CounterReference(*this, key);\n    }\n};\n\ntemplate <typename T>\nCounter(std::vector<T>)\
+    \ -> Counter<T>;\n"
   code: "#pragma once\n\n/**\n * @file counter.hpp\n * @brief \u5024\u306E\u500B\u6570\
     \u3092\u6570\u3048\u308B\u591A\u91CD\u96C6\u5408 (Counter)\n */\n\n#include <cassert>\n\
     #include <cstddef>\n#include <initializer_list>\n#include <iterator>\n#include\
@@ -192,55 +199,62 @@ data:
     \        }\n        return *this;\n    }\n    friend Counter operator-(const Counter&\
     \ a, const Counter& b) {\n        Counter res(a);\n        return res -= b;\n\
     \    }\n    auto begin() const { return data.begin(); }\n    auto end() const\
-    \ { return data.end(); }\n    /**\n     * @brief \u7570\u306A\u308B\u5024\u306E\
-    \u500B\u6570 (\u91CD\u8907\u306F\u6570\u3048\u306A\u3044)\n     */\n    long long\
-    \ size() const {\n        return static_cast<long long>(data.size());\n    }\n\
-    \    /**\n     * @brief \u91CD\u8907\u3092\u542B\u3081\u305F\u8981\u7D20\u6570\
-    \ (\u500B\u6570\u306E\u7DCF\u548C)\n     * @note Python \u306E collections.Counter.total()\
-    \ \u3068\u540C\u3058\u3002O(\u7570\u306A\u308B\u5024\u306E\u500B\u6570)\n    \
-    \ */\n    mapped_type total() const {\n        mapped_type ret = 0;\n        for\
-    \ (const auto& [key, cnt] : data) ret += cnt;\n        return ret;\n    }\n  \
-    \  mapped_type get(const key_type& key) const {\n        auto itr = data.find(key);\n\
-    \        if (itr == data.end()) return 0;\n        return itr->second;\n    }\n\
-    \    void set(const key_type& key, const mapped_type& t) {\n        assert(t >=\
-    \ 0);\n        auto itr = data.find(key);\n        if (itr != data.end()) frequency.erase(*itr);\n\
-    \        if (t > 0) {\n            data[key] = t;\n            frequency.emplace(key,\
-    \ t);\n        } else if (itr != data.end()) {\n            data.erase(itr);\n\
-    \        }\n    }\n    struct Mode {\n        T value;\n        long long count;\n\
-    \    };\n    /**\n     * @brief \u6700\u983B\u5024\u3068\u305D\u306E\u500B\u6570\
-    \u3092\u8FD4\u3059\u3002\u540C\u6570\u306A\u3089\u6700\u5C0F\u306E\u5024\u3092\
-    \u9078\u3073\u3001\u7A7A\u306A\u3089 std::nullopt \u3092\u8FD4\u3059\n     * @note\
-    \ O(1)\n     */\n    std::optional<Mode> mode() const {\n        if (frequency.empty())\
-    \ return std::nullopt;\n        const auto& [value, count] = *frequency.begin();\n\
-    \        return Mode{value, count};\n    }\n    std::vector<value_type> most_common()\
-    \ const {\n        return {frequency.begin(), frequency.end()};\n    }\n    /**\n\
-    \     * @brief \u500B\u6570\u306E\u591A\u3044\u9806\u306B\u4E0A\u4F4D k \u4EF6\
-    \u3092\u8FD4\u3059\u3002\u540C\u6570\u306A\u3089\u5024\u306E\u6607\u9806\u3002\
-    k >= 0\n     * @note k \u304C\u7570\u306A\u308B\u5024\u306E\u500B\u6570\u3088\u308A\
-    \u5927\u304D\u3051\u308C\u3070\u5168\u4EF6\u3092\u8FD4\u3059\u3002O(min(k, size()))\n\
-    \     */\n    std::vector<value_type> most_common(long long k) const {\n     \
-    \   assert(k >= 0);\n        if (k > size()) k = size();\n        std::vector<value_type>\
-    \ result;\n        result.reserve(k);\n        auto itr = frequency.begin();\n\
-    \        for (long long i = 0; i < k; ++i, ++itr) result.push_back(*itr);\n  \
-    \      return result;\n    }\n    class CounterReference {\n        Counter& base;\n\
-    \        key_type key;\n\n       public:\n        CounterReference(Counter& base,\
-    \ key_type key) : base(base), key(key) {}\n        CounterReference& operator=(const\
-    \ mapped_type& x) {\n            base.set(key, x);\n            return *this;\n\
-    \        }\n        CounterReference& operator+=(const mapped_type& x) {\n   \
-    \         base.inc(key, x);\n            return *this;\n        }\n        CounterReference&\
-    \ operator-=(const mapped_type& x) {\n            base.inc(key, -x);\n       \
-    \     return *this;\n        }\n        operator mapped_type() const {\n     \
-    \       return base.get(key);\n        }\n    };\n    mapped_type operator[](const\
-    \ key_type& key) const {\n        return get(key);\n    }\n    CounterReference\
-    \ operator[](const key_type& key) {\n        return CounterReference(*this, key);\n\
-    \    }\n};\n\ntemplate <typename T>\nCounter(std::vector<T>) -> Counter<T>;\n"
+    \ { return data.end(); }\n    /** @brief key \u4EE5\u4E0A\u306E\u6700\u521D\u306E\
+    \u5024\u306E\u8AAD\u307F\u53D6\u308A\u5C02\u7528\u30A4\u30C6\u30EC\u30FC\u30BF\
+    \ (\u306A\u3051\u308C\u3070 end()) */\n    auto lower_bound(const key_type& key)\
+    \ const { return data.lower_bound(key); }\n    /** @brief key \u3088\u308A\u5927\
+    \u304D\u3044\u6700\u521D\u306E\u5024\u306E\u8AAD\u307F\u53D6\u308A\u5C02\u7528\
+    \u30A4\u30C6\u30EC\u30FC\u30BF (\u306A\u3051\u308C\u3070 end()) */\n    auto upper_bound(const\
+    \ key_type& key) const { return data.upper_bound(key); }\n    /**\n     * @brief\
+    \ \u7570\u306A\u308B\u5024\u306E\u500B\u6570 (\u91CD\u8907\u306F\u6570\u3048\u306A\
+    \u3044)\n     */\n    long long size() const {\n        return static_cast<long\
+    \ long>(data.size());\n    }\n    /**\n     * @brief \u91CD\u8907\u3092\u542B\u3081\
+    \u305F\u8981\u7D20\u6570 (\u500B\u6570\u306E\u7DCF\u548C)\n     * @note Python\
+    \ \u306E collections.Counter.total() \u3068\u540C\u3058\u3002O(\u7570\u306A\u308B\
+    \u5024\u306E\u500B\u6570)\n     */\n    mapped_type total() const {\n        mapped_type\
+    \ ret = 0;\n        for (const auto& [key, cnt] : data) ret += cnt;\n        return\
+    \ ret;\n    }\n    mapped_type get(const key_type& key) const {\n        auto\
+    \ itr = data.find(key);\n        if (itr == data.end()) return 0;\n        return\
+    \ itr->second;\n    }\n    void set(const key_type& key, const mapped_type& t)\
+    \ {\n        assert(t >= 0);\n        auto itr = data.find(key);\n        if (itr\
+    \ != data.end()) frequency.erase(*itr);\n        if (t > 0) {\n            data[key]\
+    \ = t;\n            frequency.emplace(key, t);\n        } else if (itr != data.end())\
+    \ {\n            data.erase(itr);\n        }\n    }\n    struct Mode {\n     \
+    \   T value;\n        long long count;\n    };\n    /**\n     * @brief \u6700\u983B\
+    \u5024\u3068\u305D\u306E\u500B\u6570\u3092\u8FD4\u3059\u3002\u540C\u6570\u306A\
+    \u3089\u6700\u5C0F\u306E\u5024\u3092\u9078\u3073\u3001\u7A7A\u306A\u3089 std::nullopt\
+    \ \u3092\u8FD4\u3059\n     * @note O(1)\n     */\n    std::optional<Mode> mode()\
+    \ const {\n        if (frequency.empty()) return std::nullopt;\n        const\
+    \ auto& [value, count] = *frequency.begin();\n        return Mode{value, count};\n\
+    \    }\n    std::vector<value_type> most_common() const {\n        return {frequency.begin(),\
+    \ frequency.end()};\n    }\n    /**\n     * @brief \u500B\u6570\u306E\u591A\u3044\
+    \u9806\u306B\u4E0A\u4F4D k \u4EF6\u3092\u8FD4\u3059\u3002\u540C\u6570\u306A\u3089\
+    \u5024\u306E\u6607\u9806\u3002k >= 0\n     * @note k \u304C\u7570\u306A\u308B\u5024\
+    \u306E\u500B\u6570\u3088\u308A\u5927\u304D\u3051\u308C\u3070\u5168\u4EF6\u3092\
+    \u8FD4\u3059\u3002O(min(k, size()))\n     */\n    std::vector<value_type> most_common(long\
+    \ long k) const {\n        assert(k >= 0);\n        if (k > size()) k = size();\n\
+    \        std::vector<value_type> result;\n        result.reserve(k);\n       \
+    \ auto itr = frequency.begin();\n        for (long long i = 0; i < k; ++i, ++itr)\
+    \ result.push_back(*itr);\n        return result;\n    }\n    class CounterReference\
+    \ {\n        Counter& base;\n        key_type key;\n\n       public:\n       \
+    \ CounterReference(Counter& base, key_type key) : base(base), key(key) {}\n  \
+    \      CounterReference& operator=(const mapped_type& x) {\n            base.set(key,\
+    \ x);\n            return *this;\n        }\n        CounterReference& operator+=(const\
+    \ mapped_type& x) {\n            base.inc(key, x);\n            return *this;\n\
+    \        }\n        CounterReference& operator-=(const mapped_type& x) {\n   \
+    \         base.inc(key, -x);\n            return *this;\n        }\n        operator\
+    \ mapped_type() const {\n            return base.get(key);\n        }\n    };\n\
+    \    mapped_type operator[](const key_type& key) const {\n        return get(key);\n\
+    \    }\n    CounterReference operator[](const key_type& key) {\n        return\
+    \ CounterReference(*this, key);\n    }\n};\n\ntemplate <typename T>\nCounter(std::vector<T>)\
+    \ -> Counter<T>;\n"
   dependsOn:
   - src/utility/traits.hpp
   isVerificationFile: false
   path: src/data_structures/counter.hpp
   requiredBy: []
-  timestamp: '2026-11-08 03:29:53+09:00'
-  verificationStatus: LIBRARY_SOME_WA
+  timestamp: '2026-11-08 18:12:59+09:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/counter.test.cpp
   - test/aoj/volume0/0029.test.cpp
@@ -283,6 +297,7 @@ Counter<int> d = c + Counter<int>(3);  // 3 を 1 個足した Counter
 | `c + d`、`c += d` | 個数を足し合わせる | $O(m \log (n + m))$ ($m$ は `d` の異なる値の個数) |
 | `c - d`、`c -= d` | 個数を引く (負になると assert で落ちる)。`c -= c` で空になる | $O(m \log n)$ |
 | `for (auto [x, cnt] : c)` | `{値, 個数}` を値の昇順に走査 | $O(n)$ |
+| `c.lower_bound(x)` / `c.upper_bound(x)` | 値が `x` 以上 / より大きい最初の要素の読み取り専用イテレータ。なければ `end()` | $O(\log n)$ |
 | `c.size()` | 異なる値の個数 (重複は数えない) | $O(1)$ |
 | `c.total()` | 重複を含めた要素数 (個数の総和。Python の `Counter.total()` と同じ) | $O(n)$ |
 | `c.mode()` | 最頻値と個数を `std::optional<Mode>` (`Mode {value, count}`) で返す。同数なら最小の値を選び、空なら `std::nullopt` を返す | $O(1)$ |

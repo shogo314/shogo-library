@@ -1,11 +1,11 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: src/data_structures/counter.hpp
     title: "\u5024\u306E\u500B\u6570\u3092\u6570\u3048\u308B\u591A\u91CD\u96C6\u5408\
       \ (Counter)"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
@@ -114,97 +114,111 @@ data:
     \        }\n        return *this;\n    }\n    friend Counter operator-(const Counter&\
     \ a, const Counter& b) {\n        Counter res(a);\n        return res -= b;\n\
     \    }\n    auto begin() const { return data.begin(); }\n    auto end() const\
-    \ { return data.end(); }\n    /**\n     * @brief \u7570\u306A\u308B\u5024\u306E\
-    \u500B\u6570 (\u91CD\u8907\u306F\u6570\u3048\u306A\u3044)\n     */\n    long long\
-    \ size() const {\n        return static_cast<long long>(data.size());\n    }\n\
-    \    /**\n     * @brief \u91CD\u8907\u3092\u542B\u3081\u305F\u8981\u7D20\u6570\
-    \ (\u500B\u6570\u306E\u7DCF\u548C)\n     * @note Python \u306E collections.Counter.total()\
-    \ \u3068\u540C\u3058\u3002O(\u7570\u306A\u308B\u5024\u306E\u500B\u6570)\n    \
-    \ */\n    mapped_type total() const {\n        mapped_type ret = 0;\n        for\
-    \ (const auto& [key, cnt] : data) ret += cnt;\n        return ret;\n    }\n  \
-    \  mapped_type get(const key_type& key) const {\n        auto itr = data.find(key);\n\
-    \        if (itr == data.end()) return 0;\n        return itr->second;\n    }\n\
-    \    void set(const key_type& key, const mapped_type& t) {\n        assert(t >=\
-    \ 0);\n        auto itr = data.find(key);\n        if (itr != data.end()) frequency.erase(*itr);\n\
-    \        if (t > 0) {\n            data[key] = t;\n            frequency.emplace(key,\
-    \ t);\n        } else if (itr != data.end()) {\n            data.erase(itr);\n\
-    \        }\n    }\n    struct Mode {\n        T value;\n        long long count;\n\
-    \    };\n    /**\n     * @brief \u6700\u983B\u5024\u3068\u305D\u306E\u500B\u6570\
-    \u3092\u8FD4\u3059\u3002\u540C\u6570\u306A\u3089\u6700\u5C0F\u306E\u5024\u3092\
-    \u9078\u3073\u3001\u7A7A\u306A\u3089 std::nullopt \u3092\u8FD4\u3059\n     * @note\
-    \ O(1)\n     */\n    std::optional<Mode> mode() const {\n        if (frequency.empty())\
-    \ return std::nullopt;\n        const auto& [value, count] = *frequency.begin();\n\
-    \        return Mode{value, count};\n    }\n    std::vector<value_type> most_common()\
-    \ const {\n        return {frequency.begin(), frequency.end()};\n    }\n    /**\n\
-    \     * @brief \u500B\u6570\u306E\u591A\u3044\u9806\u306B\u4E0A\u4F4D k \u4EF6\
-    \u3092\u8FD4\u3059\u3002\u540C\u6570\u306A\u3089\u5024\u306E\u6607\u9806\u3002\
-    k >= 0\n     * @note k \u304C\u7570\u306A\u308B\u5024\u306E\u500B\u6570\u3088\u308A\
-    \u5927\u304D\u3051\u308C\u3070\u5168\u4EF6\u3092\u8FD4\u3059\u3002O(min(k, size()))\n\
-    \     */\n    std::vector<value_type> most_common(long long k) const {\n     \
-    \   assert(k >= 0);\n        if (k > size()) k = size();\n        std::vector<value_type>\
-    \ result;\n        result.reserve(k);\n        auto itr = frequency.begin();\n\
-    \        for (long long i = 0; i < k; ++i, ++itr) result.push_back(*itr);\n  \
-    \      return result;\n    }\n    class CounterReference {\n        Counter& base;\n\
-    \        key_type key;\n\n       public:\n        CounterReference(Counter& base,\
-    \ key_type key) : base(base), key(key) {}\n        CounterReference& operator=(const\
-    \ mapped_type& x) {\n            base.set(key, x);\n            return *this;\n\
-    \        }\n        CounterReference& operator+=(const mapped_type& x) {\n   \
-    \         base.inc(key, x);\n            return *this;\n        }\n        CounterReference&\
-    \ operator-=(const mapped_type& x) {\n            base.inc(key, -x);\n       \
-    \     return *this;\n        }\n        operator mapped_type() const {\n     \
-    \       return base.get(key);\n        }\n    };\n    mapped_type operator[](const\
-    \ key_type& key) const {\n        return get(key);\n    }\n    CounterReference\
-    \ operator[](const key_type& key) {\n        return CounterReference(*this, key);\n\
-    \    }\n};\n\ntemplate <typename T>\nCounter(std::vector<T>) -> Counter<T>;\n\
-    #line 7 \"test/unittest/data_structures/counter.test.cpp\"\n\n#include <algorithm>\n\
-    #include <iostream>\n#line 11 \"test/unittest/data_structures/counter.test.cpp\"\
-    \n#include <random>\n#include <string>\n#line 14 \"test/unittest/data_structures/counter.test.cpp\"\
-    \n\nusing Model = std::map<int, long long>;\n\n// \u500B\u6570 0 \u306E\u5024\u3092\
-    \u53D6\u308A\u9664\u3044\u305F map \u306B\u3059\u308B\nModel normalize(Model m)\
-    \ {\n    for (auto itr = m.begin(); itr != m.end();) {\n        if (itr->second\
-    \ == 0)\n            itr = m.erase(itr);\n        else\n            ++itr;\n \
-    \   }\n    return m;\n}\n\nbool same(const Counter<int>& c, const Model& m) {\n\
-    \    Model mm = normalize(m);\n    if (c.size() != static_cast<int>(mm.size()))\
-    \ return false;\n    // total \u306F\u91CD\u8907\u3092\u542B\u3081\u305F\u8981\
-    \u7D20\u6570 (\u500B\u6570\u306E\u7DCF\u548C)\n    long long sum = 0;\n    for\
-    \ (auto [x, cnt] : mm) sum += cnt;\n    if (c.total() != sum) return false;\n\
-    \    // begin / end \u3067\u8D70\u67FB\u3057\u305F\u7D50\u679C\u304C\u5024\u306E\
-    \u6607\u9806\u306B\u4E00\u81F4\u3059\u308B\n    std::vector<std::pair<int, long\
-    \ long>> a(c.begin(), c.end()), b(mm.begin(), mm.end());\n    if (a != b) return\
-    \ false;\n    // \u6700\u983B\u5024\u306F\u540C\u6570\u306A\u3089\u6700\u5C0F\u306E\
-    \u5024\u3002\u7A7A\u306A\u3089 nullopt\n    auto mode = c.mode();\n    if (mm.empty())\
-    \ {\n        if (mode) return false;\n    } else {\n        auto best = mm.begin();\n\
-    \        for (auto itr = mm.begin(); itr != mm.end(); ++itr) {\n            if\
-    \ (itr->second > best->second) best = itr;\n        }\n        if (!mode || mode->value\
-    \ != best->first || mode->count != best->second) return false;\n    }\n    //\
-    \ const \u306A [] \u3068 get\n    for (int x = -1; x <= 10; x++) {\n        long\
-    \ long expect = mm.count(x) ? mm.at(x) : 0;\n        if (c[x] != expect || c.get(x)\
-    \ != expect) return false;\n    }\n    return true;\n}\n\nModel random_model(std::mt19937&\
-    \ rng) {\n    Model m;\n    int k = rng() % 6;\n    for (int i = 0; i < k; i++)\
-    \ m[rng() % 10] += rng() % 4;\n    return m;\n}\n\nCounter<int> from_model(const\
-    \ Model& m) {\n    Counter<int> c;\n    for (auto [x, cnt] : m) c[x] = cnt;\n\
-    \    return c;\n}\n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n\
-    \    auto check = [&](bool cond, const char* what) {\n        if (!cond && ok)\
-    \ {\n            std::cerr << \"failed: \" << what << std::endl;\n           \
-    \ ok = false;\n        }\n    };\n\n    // \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\
-    \u30BF\n    {\n        Counter<int> empty;\n        check(same(empty, {}), \"\
-    default constructor\");\n        Counter<int> one(5);\n        check(same(one,\
-    \ {{5, 1}}), \"Counter(x)\");\n        std::vector<int> v = {3, 1, 3, 2, 3};\n\
-    \        Counter from_vec(v);\n        check(same(from_vec, {{1, 1}, {2, 1}, {3,\
-    \ 3}}), \"Counter(range)\");\n        Counter<int> from_il{{1, 2}, {4, 0}, {7,\
-    \ 3}, {1, 1}};\n        check(same(from_il, {{1, 3}, {7, 3}}), \"Counter(initializer_list)\"\
-    );\n        // const \u3067\u306A\u3044\u5DE6\u8FBA\u5024\u304B\u3089\u306E\u30B3\
-    \u30D4\u30FC\u304C\u7BC4\u56F2\u306E\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\
-    \u306B\u6A2A\u53D6\u308A\u3055\u308C\u306A\u3044\n        Counter<int> copy(from_vec);\n\
-    \        check(same(copy, {{1, 1}, {2, 1}, {3, 3}}), \"copy constructor\");\n\
-    \        // key_type \u304C\u7BC4\u56F2\u3067\u3082\u3042\u308B\u5834\u5408\u306F\
-    \u5024 1 \u500B\u3068\u3057\u3066\u6570\u3048\u308B\n        Counter<std::string>\
-    \ s(std::string(\"ab\"));\n        check(s.size() == 1 && s[\"ab\"] == 1, \"Counter<std::string>(x)\"\
-    );\n        Counter<char> chars(std::string(\"aab\"));\n        check(chars['a']\
-    \ == 2 && chars['b'] == 1 && chars.size() == 2, \"Counter<char>(string)\");\n\
-    \        // size \u306F\u7570\u306A\u308B\u5024\u306E\u500B\u6570\u3001total \u306F\
-    \u91CD\u8907\u3092\u542B\u3081\u305F\u8981\u7D20\u6570\n        Counter<int> dup(std::vector<int>{3,\
-    \ 3, 3, 5});\n        check(dup.size() == 2 && dup.total() == 4, \"size / total\"\
+    \ { return data.end(); }\n    /** @brief key \u4EE5\u4E0A\u306E\u6700\u521D\u306E\
+    \u5024\u306E\u8AAD\u307F\u53D6\u308A\u5C02\u7528\u30A4\u30C6\u30EC\u30FC\u30BF\
+    \ (\u306A\u3051\u308C\u3070 end()) */\n    auto lower_bound(const key_type& key)\
+    \ const { return data.lower_bound(key); }\n    /** @brief key \u3088\u308A\u5927\
+    \u304D\u3044\u6700\u521D\u306E\u5024\u306E\u8AAD\u307F\u53D6\u308A\u5C02\u7528\
+    \u30A4\u30C6\u30EC\u30FC\u30BF (\u306A\u3051\u308C\u3070 end()) */\n    auto upper_bound(const\
+    \ key_type& key) const { return data.upper_bound(key); }\n    /**\n     * @brief\
+    \ \u7570\u306A\u308B\u5024\u306E\u500B\u6570 (\u91CD\u8907\u306F\u6570\u3048\u306A\
+    \u3044)\n     */\n    long long size() const {\n        return static_cast<long\
+    \ long>(data.size());\n    }\n    /**\n     * @brief \u91CD\u8907\u3092\u542B\u3081\
+    \u305F\u8981\u7D20\u6570 (\u500B\u6570\u306E\u7DCF\u548C)\n     * @note Python\
+    \ \u306E collections.Counter.total() \u3068\u540C\u3058\u3002O(\u7570\u306A\u308B\
+    \u5024\u306E\u500B\u6570)\n     */\n    mapped_type total() const {\n        mapped_type\
+    \ ret = 0;\n        for (const auto& [key, cnt] : data) ret += cnt;\n        return\
+    \ ret;\n    }\n    mapped_type get(const key_type& key) const {\n        auto\
+    \ itr = data.find(key);\n        if (itr == data.end()) return 0;\n        return\
+    \ itr->second;\n    }\n    void set(const key_type& key, const mapped_type& t)\
+    \ {\n        assert(t >= 0);\n        auto itr = data.find(key);\n        if (itr\
+    \ != data.end()) frequency.erase(*itr);\n        if (t > 0) {\n            data[key]\
+    \ = t;\n            frequency.emplace(key, t);\n        } else if (itr != data.end())\
+    \ {\n            data.erase(itr);\n        }\n    }\n    struct Mode {\n     \
+    \   T value;\n        long long count;\n    };\n    /**\n     * @brief \u6700\u983B\
+    \u5024\u3068\u305D\u306E\u500B\u6570\u3092\u8FD4\u3059\u3002\u540C\u6570\u306A\
+    \u3089\u6700\u5C0F\u306E\u5024\u3092\u9078\u3073\u3001\u7A7A\u306A\u3089 std::nullopt\
+    \ \u3092\u8FD4\u3059\n     * @note O(1)\n     */\n    std::optional<Mode> mode()\
+    \ const {\n        if (frequency.empty()) return std::nullopt;\n        const\
+    \ auto& [value, count] = *frequency.begin();\n        return Mode{value, count};\n\
+    \    }\n    std::vector<value_type> most_common() const {\n        return {frequency.begin(),\
+    \ frequency.end()};\n    }\n    /**\n     * @brief \u500B\u6570\u306E\u591A\u3044\
+    \u9806\u306B\u4E0A\u4F4D k \u4EF6\u3092\u8FD4\u3059\u3002\u540C\u6570\u306A\u3089\
+    \u5024\u306E\u6607\u9806\u3002k >= 0\n     * @note k \u304C\u7570\u306A\u308B\u5024\
+    \u306E\u500B\u6570\u3088\u308A\u5927\u304D\u3051\u308C\u3070\u5168\u4EF6\u3092\
+    \u8FD4\u3059\u3002O(min(k, size()))\n     */\n    std::vector<value_type> most_common(long\
+    \ long k) const {\n        assert(k >= 0);\n        if (k > size()) k = size();\n\
+    \        std::vector<value_type> result;\n        result.reserve(k);\n       \
+    \ auto itr = frequency.begin();\n        for (long long i = 0; i < k; ++i, ++itr)\
+    \ result.push_back(*itr);\n        return result;\n    }\n    class CounterReference\
+    \ {\n        Counter& base;\n        key_type key;\n\n       public:\n       \
+    \ CounterReference(Counter& base, key_type key) : base(base), key(key) {}\n  \
+    \      CounterReference& operator=(const mapped_type& x) {\n            base.set(key,\
+    \ x);\n            return *this;\n        }\n        CounterReference& operator+=(const\
+    \ mapped_type& x) {\n            base.inc(key, x);\n            return *this;\n\
+    \        }\n        CounterReference& operator-=(const mapped_type& x) {\n   \
+    \         base.inc(key, -x);\n            return *this;\n        }\n        operator\
+    \ mapped_type() const {\n            return base.get(key);\n        }\n    };\n\
+    \    mapped_type operator[](const key_type& key) const {\n        return get(key);\n\
+    \    }\n    CounterReference operator[](const key_type& key) {\n        return\
+    \ CounterReference(*this, key);\n    }\n};\n\ntemplate <typename T>\nCounter(std::vector<T>)\
+    \ -> Counter<T>;\n#line 7 \"test/unittest/data_structures/counter.test.cpp\"\n\
+    \n#include <algorithm>\n#include <iostream>\n#line 11 \"test/unittest/data_structures/counter.test.cpp\"\
+    \n#include <random>\n#include <string>\n#line 16 \"test/unittest/data_structures/counter.test.cpp\"\
+    \n\nusing Model = std::map<int, long long>;\n\nstatic_assert(!std::is_assignable_v<decltype((std::declval<Counter<int>&>().lower_bound(0)->second)),\
+    \ long long>);\nstatic_assert(!std::is_assignable_v<decltype((std::declval<Counter<int>&>().upper_bound(0)->second)),\
+    \ long long>);\n\n// \u500B\u6570 0 \u306E\u5024\u3092\u53D6\u308A\u9664\u3044\
+    \u305F map \u306B\u3059\u308B\nModel normalize(Model m) {\n    for (auto itr =\
+    \ m.begin(); itr != m.end();) {\n        if (itr->second == 0)\n            itr\
+    \ = m.erase(itr);\n        else\n            ++itr;\n    }\n    return m;\n}\n\
+    \nbool same(const Counter<int>& c, const Model& m) {\n    Model mm = normalize(m);\n\
+    \    if (c.size() != static_cast<int>(mm.size())) return false;\n    // total\
+    \ \u306F\u91CD\u8907\u3092\u542B\u3081\u305F\u8981\u7D20\u6570 (\u500B\u6570\u306E\
+    \u7DCF\u548C)\n    long long sum = 0;\n    for (auto [x, cnt] : mm) sum += cnt;\n\
+    \    if (c.total() != sum) return false;\n    // begin / end \u3067\u8D70\u67FB\
+    \u3057\u305F\u7D50\u679C\u304C\u5024\u306E\u6607\u9806\u306B\u4E00\u81F4\u3059\
+    \u308B\n    std::vector<std::pair<int, long long>> a(c.begin(), c.end()), b(mm.begin(),\
+    \ mm.end());\n    if (a != b) return false;\n    // \u6700\u983B\u5024\u306F\u540C\
+    \u6570\u306A\u3089\u6700\u5C0F\u306E\u5024\u3002\u7A7A\u306A\u3089 nullopt\n \
+    \   auto mode = c.mode();\n    if (mm.empty()) {\n        if (mode) return false;\n\
+    \    } else {\n        auto best = mm.begin();\n        for (auto itr = mm.begin();\
+    \ itr != mm.end(); ++itr) {\n            if (itr->second > best->second) best\
+    \ = itr;\n        }\n        if (!mode || mode->value != best->first || mode->count\
+    \ != best->second) return false;\n    }\n    // const \u306A [] \u3068 get\n \
+    \   for (int x = -1; x <= 10; x++) {\n        long long expect = mm.count(x) ?\
+    \ mm.at(x) : 0;\n        if (c[x] != expect || c.get(x) != expect) return false;\n\
+    \        const auto lower = c.lower_bound(x), upper = c.upper_bound(x);\n    \
+    \    const auto expected_lower = mm.lower_bound(x), expected_upper = mm.upper_bound(x);\n\
+    \        if ((lower == c.end()) != (expected_lower == mm.end())) return false;\n\
+    \        if ((upper == c.end()) != (expected_upper == mm.end())) return false;\n\
+    \        if (lower != c.end() && *lower != *expected_lower) return false;\n  \
+    \      if (upper != c.end() && *upper != *expected_upper) return false;\n    }\n\
+    \    return true;\n}\n\nModel random_model(std::mt19937& rng) {\n    Model m;\n\
+    \    int k = rng() % 6;\n    for (int i = 0; i < k; i++) m[rng() % 10] += rng()\
+    \ % 4;\n    return m;\n}\n\nCounter<int> from_model(const Model& m) {\n    Counter<int>\
+    \ c;\n    for (auto [x, cnt] : m) c[x] = cnt;\n    return c;\n}\n\nint main()\
+    \ {\n    std::mt19937 rng(314);\n    bool ok = true;\n    auto check = [&](bool\
+    \ cond, const char* what) {\n        if (!cond && ok) {\n            std::cerr\
+    \ << \"failed: \" << what << std::endl;\n            ok = false;\n        }\n\
+    \    };\n\n    // \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n    {\n        Counter<int>\
+    \ empty;\n        check(same(empty, {}), \"default constructor\");\n        Counter<int>\
+    \ one(5);\n        check(same(one, {{5, 1}}), \"Counter(x)\");\n        std::vector<int>\
+    \ v = {3, 1, 3, 2, 3};\n        Counter from_vec(v);\n        check(same(from_vec,\
+    \ {{1, 1}, {2, 1}, {3, 3}}), \"Counter(range)\");\n        Counter<int> from_il{{1,\
+    \ 2}, {4, 0}, {7, 3}, {1, 1}};\n        check(same(from_il, {{1, 3}, {7, 3}}),\
+    \ \"Counter(initializer_list)\");\n        // const \u3067\u306A\u3044\u5DE6\u8FBA\
+    \u5024\u304B\u3089\u306E\u30B3\u30D4\u30FC\u304C\u7BC4\u56F2\u306E\u30B3\u30F3\
+    \u30B9\u30C8\u30E9\u30AF\u30BF\u306B\u6A2A\u53D6\u308A\u3055\u308C\u306A\u3044\
+    \n        Counter<int> copy(from_vec);\n        check(same(copy, {{1, 1}, {2,\
+    \ 1}, {3, 3}}), \"copy constructor\");\n        // key_type \u304C\u7BC4\u56F2\
+    \u3067\u3082\u3042\u308B\u5834\u5408\u306F\u5024 1 \u500B\u3068\u3057\u3066\u6570\
+    \u3048\u308B\n        Counter<std::string> s(std::string(\"ab\"));\n        check(s.size()\
+    \ == 1 && s[\"ab\"] == 1, \"Counter<std::string>(x)\");\n        Counter<char>\
+    \ chars(std::string(\"aab\"));\n        check(chars['a'] == 2 && chars['b'] ==\
+    \ 1 && chars.size() == 2, \"Counter<char>(string)\");\n        // size \u306F\u7570\
+    \u306A\u308B\u5024\u306E\u500B\u6570\u3001total \u306F\u91CD\u8907\u3092\u542B\
+    \u3081\u305F\u8981\u7D20\u6570\n        Counter<int> dup(std::vector<int>{3, 3,\
+    \ 3, 5});\n        check(dup.size() == 2 && dup.total() == 4, \"size / total\"\
     );\n        check(Counter<int>().total() == 0, \"total of empty\");\n    }\n\n\
     \    for (int rep = 0; rep < 3000 && ok; rep++) {\n        Model ma = random_model(rng),\
     \ mb = random_model(rng);\n        Counter<int> a = from_model(ma), b = from_model(mb);\n\
@@ -251,30 +265,38 @@ data:
     \u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\
     \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../../src/data_structures/counter.hpp\"\
     \n\n#include <algorithm>\n#include <iostream>\n#include <map>\n#include <random>\n\
-    #include <string>\n#include <vector>\n\nusing Model = std::map<int, long long>;\n\
-    \n// \u500B\u6570 0 \u306E\u5024\u3092\u53D6\u308A\u9664\u3044\u305F map \u306B\
-    \u3059\u308B\nModel normalize(Model m) {\n    for (auto itr = m.begin(); itr !=\
-    \ m.end();) {\n        if (itr->second == 0)\n            itr = m.erase(itr);\n\
-    \        else\n            ++itr;\n    }\n    return m;\n}\n\nbool same(const\
-    \ Counter<int>& c, const Model& m) {\n    Model mm = normalize(m);\n    if (c.size()\
-    \ != static_cast<int>(mm.size())) return false;\n    // total \u306F\u91CD\u8907\
-    \u3092\u542B\u3081\u305F\u8981\u7D20\u6570 (\u500B\u6570\u306E\u7DCF\u548C)\n\
-    \    long long sum = 0;\n    for (auto [x, cnt] : mm) sum += cnt;\n    if (c.total()\
-    \ != sum) return false;\n    // begin / end \u3067\u8D70\u67FB\u3057\u305F\u7D50\
-    \u679C\u304C\u5024\u306E\u6607\u9806\u306B\u4E00\u81F4\u3059\u308B\n    std::vector<std::pair<int,\
-    \ long long>> a(c.begin(), c.end()), b(mm.begin(), mm.end());\n    if (a != b)\
-    \ return false;\n    // \u6700\u983B\u5024\u306F\u540C\u6570\u306A\u3089\u6700\
-    \u5C0F\u306E\u5024\u3002\u7A7A\u306A\u3089 nullopt\n    auto mode = c.mode();\n\
-    \    if (mm.empty()) {\n        if (mode) return false;\n    } else {\n      \
-    \  auto best = mm.begin();\n        for (auto itr = mm.begin(); itr != mm.end();\
-    \ ++itr) {\n            if (itr->second > best->second) best = itr;\n        }\n\
-    \        if (!mode || mode->value != best->first || mode->count != best->second)\
-    \ return false;\n    }\n    // const \u306A [] \u3068 get\n    for (int x = -1;\
-    \ x <= 10; x++) {\n        long long expect = mm.count(x) ? mm.at(x) : 0;\n  \
-    \      if (c[x] != expect || c.get(x) != expect) return false;\n    }\n    return\
-    \ true;\n}\n\nModel random_model(std::mt19937& rng) {\n    Model m;\n    int k\
-    \ = rng() % 6;\n    for (int i = 0; i < k; i++) m[rng() % 10] += rng() % 4;\n\
-    \    return m;\n}\n\nCounter<int> from_model(const Model& m) {\n    Counter<int>\
+    #include <string>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\
+    \nusing Model = std::map<int, long long>;\n\nstatic_assert(!std::is_assignable_v<decltype((std::declval<Counter<int>&>().lower_bound(0)->second)),\
+    \ long long>);\nstatic_assert(!std::is_assignable_v<decltype((std::declval<Counter<int>&>().upper_bound(0)->second)),\
+    \ long long>);\n\n// \u500B\u6570 0 \u306E\u5024\u3092\u53D6\u308A\u9664\u3044\
+    \u305F map \u306B\u3059\u308B\nModel normalize(Model m) {\n    for (auto itr =\
+    \ m.begin(); itr != m.end();) {\n        if (itr->second == 0)\n            itr\
+    \ = m.erase(itr);\n        else\n            ++itr;\n    }\n    return m;\n}\n\
+    \nbool same(const Counter<int>& c, const Model& m) {\n    Model mm = normalize(m);\n\
+    \    if (c.size() != static_cast<int>(mm.size())) return false;\n    // total\
+    \ \u306F\u91CD\u8907\u3092\u542B\u3081\u305F\u8981\u7D20\u6570 (\u500B\u6570\u306E\
+    \u7DCF\u548C)\n    long long sum = 0;\n    for (auto [x, cnt] : mm) sum += cnt;\n\
+    \    if (c.total() != sum) return false;\n    // begin / end \u3067\u8D70\u67FB\
+    \u3057\u305F\u7D50\u679C\u304C\u5024\u306E\u6607\u9806\u306B\u4E00\u81F4\u3059\
+    \u308B\n    std::vector<std::pair<int, long long>> a(c.begin(), c.end()), b(mm.begin(),\
+    \ mm.end());\n    if (a != b) return false;\n    // \u6700\u983B\u5024\u306F\u540C\
+    \u6570\u306A\u3089\u6700\u5C0F\u306E\u5024\u3002\u7A7A\u306A\u3089 nullopt\n \
+    \   auto mode = c.mode();\n    if (mm.empty()) {\n        if (mode) return false;\n\
+    \    } else {\n        auto best = mm.begin();\n        for (auto itr = mm.begin();\
+    \ itr != mm.end(); ++itr) {\n            if (itr->second > best->second) best\
+    \ = itr;\n        }\n        if (!mode || mode->value != best->first || mode->count\
+    \ != best->second) return false;\n    }\n    // const \u306A [] \u3068 get\n \
+    \   for (int x = -1; x <= 10; x++) {\n        long long expect = mm.count(x) ?\
+    \ mm.at(x) : 0;\n        if (c[x] != expect || c.get(x) != expect) return false;\n\
+    \        const auto lower = c.lower_bound(x), upper = c.upper_bound(x);\n    \
+    \    const auto expected_lower = mm.lower_bound(x), expected_upper = mm.upper_bound(x);\n\
+    \        if ((lower == c.end()) != (expected_lower == mm.end())) return false;\n\
+    \        if ((upper == c.end()) != (expected_upper == mm.end())) return false;\n\
+    \        if (lower != c.end() && *lower != *expected_lower) return false;\n  \
+    \      if (upper != c.end() && *upper != *expected_upper) return false;\n    }\n\
+    \    return true;\n}\n\nModel random_model(std::mt19937& rng) {\n    Model m;\n\
+    \    int k = rng() % 6;\n    for (int i = 0; i < k; i++) m[rng() % 10] += rng()\
+    \ % 4;\n    return m;\n}\n\nCounter<int> from_model(const Model& m) {\n    Counter<int>\
     \ c;\n    for (auto [x, cnt] : m) c[x] = cnt;\n    return c;\n}\n\nint main()\
     \ {\n    std::mt19937 rng(314);\n    bool ok = true;\n    auto check = [&](bool\
     \ cond, const char* what) {\n        if (!cond && ok) {\n            std::cerr\
@@ -344,7 +366,7 @@ data:
   isVerificationFile: true
   path: test/unittest/data_structures/counter.test.cpp
   requiredBy: []
-  timestamp: '2026-11-08 03:29:53+09:00'
+  timestamp: '2026-11-08 18:12:59+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/data_structures/counter.test.cpp

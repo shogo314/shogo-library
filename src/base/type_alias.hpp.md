@@ -7,9 +7,6 @@ data:
     title: "\u30DE\u30AF\u30ED (rep \u306A\u3069)"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
-    path: test/aoj/volume11/1160.test.cpp
-    title: test/aoj/volume11/1160.test.cpp
-  - icon: ':heavy_check_mark:'
     path: test/unittest/base/macro.test.cpp
     title: test/unittest/base/macro.test.cpp
   _isVerificationFailed: false
@@ -74,7 +71,6 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/base/macro.test.cpp
-  - test/aoj/volume11/1160.test.cpp
 documentation_of: src/base/type_alias.hpp
 layout: document
 title: "\u578B\u306E\u5225\u540D"

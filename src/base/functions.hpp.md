@@ -22,9 +22,6 @@ data:
     path: test/aoj/ntl/ntl-1-e.test.cpp
     title: test/aoj/ntl/ntl-1-e.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/volume11/1160.test.cpp
-    title: test/aoj/volume11/1160.test.cpp
-  - icon: ':heavy_check_mark:'
     path: test/unittest/base/functions.test.cpp
     title: test/unittest/base/functions.test.cpp
   - icon: ':heavy_check_mark:'
@@ -171,7 +168,6 @@ data:
   - test/unittest/math/stern-brocot.test.cpp
   - test/unittest/math/rational.test.cpp
   - test/aoj/ntl/ntl-1-e.test.cpp
-  - test/aoj/volume11/1160.test.cpp
   - test/aoj/dsl/dsl-5-a.test.cpp
   - test/aoj/alds1/alds1-4-d.test.cpp
   - test/yosupo/number_theory/stern-brocot-tree.test.cpp

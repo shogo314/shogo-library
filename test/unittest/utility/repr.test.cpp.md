@@ -4,7 +4,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/utility/range.hpp
     title: "Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\u5217\u3068\u3001\
-      \u305D\u306E\u76F4\u7A4D\u306E Rect"
+      \u305D\u306E\u76F4\u7A4D\u306E Grid"
   - icon: ':heavy_check_mark:'
     path: src/utility/repr.hpp
     title: "\u51FA\u529B\u3092\u305D\u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\u30E9\
@@ -276,7 +276,7 @@ data:
     \n#include <random>\n#line 15 \"test/unittest/utility/repr.test.cpp\"\n#include\
     \ <sstream>\n#line 19 \"test/unittest/utility/repr.test.cpp\"\n\n#line 2 \"src/utility/range.hpp\"\
     \n\n/**\n * @file range.hpp\n * @brief Python \u306E range \u306E\u3088\u3046\u306A\
-    \u6574\u6570\u5217\u3068\u3001\u305D\u306E\u76F4\u7A4D\u306E Rect\n */\n\n#include\
+    \u6574\u6570\u5217\u3068\u3001\u305D\u306E\u76F4\u7A4D\u306E Grid\n */\n\n#include\
     \ <cassert>\n#line 15 \"src/utility/range.hpp\"\n\nstruct Range {\n   public:\n\
     \    using value_type = long long;\n    using const_reference = const value_type&;\n\
     \    using size_type = long long;\n    using difference_type = std::ptrdiff_t;\n\
@@ -468,24 +468,24 @@ data:
     \ * @brief 2 \u3064\u306E Range \u306E\u76F4\u7A4D rows \xD7 cols\n * (i, j) \u3092\
     \ i \u306E\u6607\u9806\u3001\u540C\u3058 i \u3067\u306F j \u306E\u6607\u9806 (\u884C\
     \u512A\u5148) \u306B\u4E26\u3079\u305F\u3082\u306E\u3068\u3057\u3066\u6271\u3046\
-    \n */\nstruct Rect {\n   public:\n    using value_type = std::pair<long long,\
+    \n */\nstruct Grid {\n   public:\n    using value_type = std::pair<long long,\
     \ long long>;\n    using size_type = long long;\n    using difference_type = std::ptrdiff_t;\n\
     \n    const Range rows;\n    const Range cols;\n\n   private:\n    const long\
     \ long width;  // cols.size() (index \u3084 at \u3067\u6BCE\u56DE\u5272\u308A\u7B97\
     \u3057\u306A\u3044\u3088\u3046\u306B\u6301\u3063\u3066\u304A\u304F)\n\n   public:\n\
-    \    /**\n     * @brief [0, h) \xD7 [0, w)\n     */\n    constexpr Rect(long long\
-    \ h, long long w) : rows(h), cols(w), width(cols.size()) {}\n    constexpr Rect(const\
+    \    /**\n     * @brief [0, h) \xD7 [0, w)\n     */\n    constexpr Grid(long long\
+    \ h, long long w) : rows(h), cols(w), width(cols.size()) {}\n    constexpr Grid(const\
     \ Range& _rows, const Range& _cols) : rows(_rows), cols(_cols), width(cols.size())\
-    \ {}\n    constexpr Rect(const Rect& o) = default;\n    Rect& operator=(const\
-    \ Rect& o) = delete;\n\n    struct const_iterator {\n       public:\n        using\
-    \ difference_type = Rect::difference_type;\n        using value_type = Rect::value_type;\n\
+    \ {}\n    constexpr Grid(const Grid& o) = default;\n    Grid& operator=(const\
+    \ Grid& o) = delete;\n\n    struct const_iterator {\n       public:\n        using\
+    \ difference_type = Grid::difference_type;\n        using value_type = Grid::value_type;\n\
     \        using pointer = void;\n        using reference = value_type;\n      \
     \  using iterator_category = std::forward_iterator_tag;\n\n       private:\n \
-    \       const Rect* rect = nullptr;\n        long long w = 0;   // cols.size()\n\
+    \       const Grid* rect = nullptr;\n        long long w = 0;   // cols.size()\n\
     \        long long ic = 0;  // rows \u306E\u4F55\u756A\u76EE\u304B\n        long\
     \ long jc = 0;  // cols \u306E\u4F55\u756A\u76EE\u304B\n\n       public:\n   \
     \     constexpr const_iterator() noexcept = default;\n        constexpr const_iterator(const\
-    \ Rect* _rect, long long _w, long long _ic, long long _jc) noexcept\n        \
+    \ Grid* _rect, long long _w, long long _ic, long long _jc) noexcept\n        \
     \    : rect(_rect), w(_w), ic(_ic), jc(_jc) {}\n        constexpr value_type operator*()\
     \ const noexcept {\n            return {rect->rows.start + ic * rect->rows.step,\
     \ rect->cols.start + jc * rect->cols.step};\n        }\n        constexpr const_iterator&\
@@ -519,7 +519,7 @@ data:
     \ {\n        assert(0 <= k && k < size());\n        return {rows[k / width], cols[k\
     \ % width]};\n    }\n    constexpr value_type operator[](size_type k) const {\n\
     \        return at(k);\n    }\n\n   private:\n    // \u8FD1\u508D\u306E\u65B9\u5411\
-    \ (rows\u30FBcols \u306E\u4E2D\u3067\u306E\u4F4D\u7F6E\u306E\u5DEE) \u3092 Rect\
+    \ (rows\u30FBcols \u306E\u4E2D\u3067\u306E\u4F4D\u7F6E\u306E\u5DEE) \u3092 Grid\
     \ \u306E\u9806\u306B\u4E26\u3079\u305F\u3082\u306E\u3002\u5148\u982D 4 \u3064\u306F\
     \u4E0A\u4E0B\u5DE6\u53F3\u3060\u3051\u3092\u4E26\u3079\u305F\u5225\u306E\u8868\
     \n    // 4 \u8FD1\u508D\u3068 8 \u8FD1\u508D\u306E\u5883\u76EE\u304C\u5206\u304B\
@@ -529,14 +529,14 @@ data:
     \                                     {-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0,\
     \ 1}, {1, -1}, {1, 0}, {1, 1}};\n    // clang-format on\n\n   public:\n    /**\n\
     \     * @brief neighbors4 / neighbors8 \u306E\u623B\u308A\u5024 (\u7BC4\u56F2\
-    \ for \u3067\u4F7F\u3046)\n     * \u4F5C\u308B\u3068\u304D\u306B Rect \u306B\u542B\
+    \ for \u3067\u4F7F\u3046)\n     * \u4F5C\u308B\u3068\u304D\u306B Grid \u306B\u542B\
     \u307E\u308C\u308B\u65B9\u5411\u3092\u30D3\u30C3\u30C8\u3067\u6301\u3063\u3066\
     \u304A\u304D\u3001\u7ACB\u3063\u3066\u3044\u308B\u30D3\u30C3\u30C8\u3092\u9806\
     \u306B\u8FD4\u3059\n     */\n    struct Neighbors {\n        long long i, j, row_step,\
     \ col_step;\n        int first;      // neighbor_dirs[first + k] \u304C\u30D3\u30C3\
-    \u30C8 k \u306E\u65B9\u5411\n        unsigned mask;  // Rect \u306B\u542B\u307E\
+    \u30C8 k \u306E\u65B9\u5411\n        unsigned mask;  // Grid \u306B\u542B\u307E\
     \u308C\u308B\u65B9\u5411\n\n        struct iterator {\n            using difference_type\
-    \ = std::ptrdiff_t;\n            using value_type = Rect::value_type;\n      \
+    \ = std::ptrdiff_t;\n            using value_type = Grid::value_type;\n      \
     \      using pointer = void;\n            using reference = value_type;\n    \
     \        using iterator_category = std::forward_iterator_tag;\n\n            const\
     \ Neighbors* nb = nullptr;\n            unsigned rest = 0;  // \u307E\u3060\u8FD4\
@@ -561,26 +561,26 @@ data:
     \ * rows.step, j + neighbor_dirs[k][1] * cols.step)) mask |= 1u << (k - first);\n\
     \        }\n        return {i, j, rows.step, cols.step, first, mask};\n    }\n\
     \n   public:\n    /**\n     * @brief (i, j) \u306E\u4E0A\u4E0B\u5DE6\u53F3\u306E\
-    \u3046\u3061 Rect \u306B\u542B\u307E\u308C\u308B\u3082\u306E\u3092\u3001Rect \u306E\
+    \u3046\u3061 Grid \u306B\u542B\u307E\u308C\u308B\u3082\u306E\u3092\u3001Grid \u306E\
     \u9806\u306B\u8FD4\u3059\n     * \u96A3\u306F rows\u30FBcols \u306E\u4E2D\u3067\
     \u96A3\u308A\u5408\u3046\u8981\u7D20 (i \xB1 rows.step \u306A\u3069)\u3002(i,\
     \ j) \u304C\u542B\u307E\u308C\u306A\u3044\u3068\u30A8\u30E9\u30FC\n     */\n \
     \   constexpr Neighbors neighbors4(long long i, long long j) const {\n       \
     \ return neighbors(i, j, 0, 4);\n    }\n    constexpr Neighbors neighbors4(const\
     \ value_type& p) const {\n        return neighbors4(p.first, p.second);\n    }\n\
-    \    /**\n     * @brief (i, j) \u3092\u56F2\u3080 8 \u3064\u306E\u3046\u3061 Rect\
-    \ \u306B\u542B\u307E\u308C\u308B\u3082\u306E\u3092\u3001Rect \u306E\u9806\u306B\
+    \    /**\n     * @brief (i, j) \u3092\u56F2\u3080 8 \u3064\u306E\u3046\u3061 Grid\
+    \ \u306B\u542B\u307E\u308C\u308B\u3082\u306E\u3092\u3001Grid \u306E\u9806\u306B\
     \u8FD4\u3059\n     */\n    constexpr Neighbors neighbors8(long long i, long long\
     \ j) const {\n        return neighbors(i, j, 4, 12);\n    }\n    constexpr Neighbors\
     \ neighbors8(const value_type& p) const {\n        return neighbors8(p.first,\
     \ p.second);\n    }\n\n    static std::string type_str() {\n        return \"\
-    Rect\";\n    }\n    std::string initializer_str() const {\n        return \"{\"\
+    Grid\";\n    }\n    std::string initializer_str() const {\n        return \"{\"\
     \ + rows.initializer_str() + \", \" + cols.initializer_str() + \"}\";\n    }\n\
-    \    std::string repr() const {\n        return \"Rect(\" + rows.repr() + \",\
+    \    std::string repr() const {\n        return \"Grid(\" + rows.repr() + \",\
     \ \" + cols.repr() + \")\";\n    }\n\n    constexpr friend bool operator==(const\
-    \ Rect& a, const Rect& b) noexcept {\n        if (a.empty() && b.empty()) return\
+    \ Grid& a, const Grid& b) noexcept {\n        if (a.empty() && b.empty()) return\
     \ true;\n        return a.rows == b.rows && a.cols == b.cols;\n    }\n    constexpr\
-    \ friend bool operator!=(const Rect& a, const Rect& b) noexcept {\n        return\
+    \ friend bool operator!=(const Grid& a, const Grid& b) noexcept {\n        return\
     \ !(a == b);\n    }\n};\n#line 21 \"test/unittest/utility/repr.test.cpp\"\n\n\
     bool ok = true;\nvoid check(bool cond, const std::string& what) {\n    if (!cond)\
     \ {\n        if (ok) std::cerr << \"failed: \" << what << std::endl;\n       \
@@ -845,7 +845,7 @@ data:
   isVerificationFile: true
   path: test/unittest/utility/repr.test.cpp
   requiredBy: []
-  timestamp: '2026-10-31 16:48:46+09:00'
+  timestamp: '2026-11-08 14:38:55+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/utility/repr.test.cpp

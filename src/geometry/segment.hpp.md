@@ -2,6 +2,13 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
+    path: src/geometry/internal/predicates.hpp
+    title: "\u5E7E\u4F55\u306E\u5185\u90E8\u8A08\u7B97 (\u6574\u6570\u5EA7\u6A19\u306E\
+      \u62E1\u5F35\u3001\u5411\u304D\u3001\u30CE\u30EB\u30E0)"
+  - icon: ':heavy_check_mark:'
+    path: src/geometry/line.hpp
+    title: "2 \u6B21\u5143\u30FB3 \u6B21\u5143\u306E\u76F4\u7DDA"
+  - icon: ':heavy_check_mark:'
     path: src/geometry/vector.hpp
     title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"
   - icon: ':question:'
@@ -9,33 +16,18 @@ data:
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
+    path: src/geometry/axis-parallel-segments.hpp
+    title: "\u8EF8\u306B\u5E73\u884C\u306A\u7DDA\u5206\u306E\u4EA4\u70B9\u306E\u500B\
+      \u6570"
+  - icon: ':heavy_check_mark:'
     path: src/geometry/circle.hpp
     title: "\u5186 (\u4F4D\u7F6E\u95A2\u4FC2\u3001\u4EA4\u70B9\u3001\u63A5\u7DDA\u3001\
       \u5185\u63A5\u5186\u3001\u5916\u63A5\u5186\u3001\u5171\u901A\u90E8\u5206\u306E\
       \u9762\u7A4D\u3001\u6700\u5C0F\u5305\u542B\u5186)"
   - icon: ':heavy_check_mark:'
-    path: src/geometry/segment-3d.hpp
-    title: "3 \u6B21\u5143\u306E\u76F4\u7DDA\u30FB\u7DDA\u5206\u30FB\u5E73\u9762 (\u8DDD\
-      \u96E2\u3001\u76F4\u7DDA\u3068\u5E73\u9762\u306E\u4EA4\u70B9\u3001\u7DDA\u5206\
-      \u3068\u4E09\u89D2\u5F62\u306E\u4EA4\u5DEE)"
-  - icon: ':heavy_check_mark:'
-    path: src/geometry/sphere.hpp
-    title: "\u7403 (\u76F4\u7DDA\u3068\u306E\u4EA4\u70B9\u3001\u7403\u3069\u3046\u3057\
-      \u306E\u4EA4\u308F\u308A\u3001\u5171\u901A\u90E8\u5206\u306E\u4F53\u7A4D\u3001\
-      \u5927\u5186\u8DDD\u96E2)"
+    path: src/geometry/triangle.hpp
+    title: "2 \u6B21\u5143\u30FB3 \u6B21\u5143\u306E\u4E09\u89D2\u5F62"
   _extendedVerifiedWith:
-  - icon: ':heavy_check_mark:'
-    path: test/aoj/cgl/cgl-1-a.test.cpp
-    title: test/aoj/cgl/cgl-1-a.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/aoj/cgl/cgl-1-b.test.cpp
-    title: test/aoj/cgl/cgl-1-b.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/aoj/cgl/cgl-1-c.test.cpp
-    title: test/aoj/cgl/cgl-1-c.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/aoj/cgl/cgl-2-a.test.cpp
-    title: test/aoj/cgl/cgl-2-a.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/cgl/cgl-2-b.test.cpp
     title: test/aoj/cgl/cgl-2-b.test.cpp
@@ -45,6 +37,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj/cgl/cgl-2-d.test.cpp
     title: test/aoj/cgl/cgl-2-d.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/cgl/cgl-6-a.test.cpp
+    title: test/aoj/cgl/cgl-6-a.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/cgl/cgl-7-a.test.cpp
     title: test/aoj/cgl/cgl-7-a.test.cpp
@@ -76,12 +71,6 @@ data:
     path: test/aoj/volume1/0115.test.cpp
     title: test/aoj/volume1/0115.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/volume1/0177.test.cpp
-    title: test/aoj/volume1/0177.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/aoj/volume12/1289.test.cpp
-    title: test/aoj/volume12/1289.test.cpp
-  - icon: ':heavy_check_mark:'
     path: test/aoj/volume26/2641.test.cpp
     title: test/aoj/volume26/2641.test.cpp
   - icon: ':heavy_check_mark:'
@@ -91,41 +80,37 @@ data:
     path: test/unittest/geometry/circle.test.cpp
     title: test/unittest/geometry/circle.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/geometry/segment-3d.test.cpp
-    title: test/unittest/geometry/segment-3d.test.cpp
+    path: test/unittest/geometry/plane.test.cpp
+    title: test/unittest/geometry/plane.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/geometry/segment.test.cpp
     title: test/unittest/geometry/segment.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/geometry/sphere.test.cpp
-    title: test/unittest/geometry/sphere.test.cpp
+    path: test/unittest/geometry/triangle.test.cpp
+    title: test/unittest/geometry/triangle.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/geo/minimum-enclosing-circle.test.cpp
     title: test/yosupo/geo/minimum-enclosing-circle.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/yukicoder/132.test.cpp
-    title: test/yukicoder/132.test.cpp
-  - icon: ':heavy_check_mark:'
-    path: test/yukicoder/3672.test.cpp
-    title: test/yukicoder/3672.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
-    document_title: "2 \u6B21\u5143\u306E\u70B9\u30FB\u76F4\u7DDA\u30FB\u7DDA\u5206\
-      \ (\u4EA4\u5DEE\u5224\u5B9A\u3001\u4EA4\u70B9\u3001\u5C04\u5F71\u3001\u8DDD\u96E2\
-      )"
+    document_title: "2 \u6B21\u5143\u30FB3 \u6B21\u5143\u306E\u7DDA\u5206 (\u4EA4\u5DEE\
+      \u5224\u5B9A\u3001\u5171\u6709\u70B9\u3001\u8DDD\u96E2)"
     links: []
   bundledCode: "#line 2 \"src/geometry/segment.hpp\"\n\n/**\n * @file segment.hpp\n\
-    \ * @brief 2 \u6B21\u5143\u306E\u70B9\u30FB\u76F4\u7DDA\u30FB\u7DDA\u5206 (\u4EA4\
-    \u5DEE\u5224\u5B9A\u3001\u4EA4\u70B9\u3001\u5C04\u5F71\u3001\u8DDD\u96E2)\n */\n\
-    \n#include <algorithm>\n#include <cassert>\n#include <cmath>\n#include <optional>\n\
-    #include <type_traits>\n\n#line 2 \"src/geometry/vector.hpp\"\n\n/**\n * @file\
-    \ vector.hpp\n * @brief \u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB\n */\n\n#include\
-    \ <array>\n#line 11 \"src/geometry/vector.hpp\"\n#include <istream>\n#include\
-    \ <ostream>\n#line 14 \"src/geometry/vector.hpp\"\n#include <utility>\n\n#line\
-    \ 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\
-    \u6027\n */\n\n#include <cstddef>\n#include <functional>\n#include <iterator>\n\
+    \ * @brief 2 \u6B21\u5143\u30FB3 \u6B21\u5143\u306E\u7DDA\u5206 (\u4EA4\u5DEE\u5224\
+    \u5B9A\u3001\u5171\u6709\u70B9\u3001\u8DDD\u96E2)\n */\n\n#include <algorithm>\n\
+    #include <cassert>\n#include <cmath>\n#include <optional>\n#include <type_traits>\n\
+    \n#line 2 \"src/geometry/internal/predicates.hpp\"\n\n/**\n * @file predicates.hpp\n\
+    \ * @brief \u5E7E\u4F55\u306E\u5185\u90E8\u8A08\u7B97 (\u6574\u6570\u5EA7\u6A19\
+    \u306E\u62E1\u5F35\u3001\u5411\u304D\u3001\u30CE\u30EB\u30E0)\n */\n\n#line 10\
+    \ \"src/geometry/internal/predicates.hpp\"\n\n#line 2 \"src/geometry/vector.hpp\"\
+    \n\n/**\n * @file vector.hpp\n * @brief \u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB\n\
+    \ */\n\n#include <array>\n#line 11 \"src/geometry/vector.hpp\"\n#include <istream>\n\
+    #include <ostream>\n#line 14 \"src/geometry/vector.hpp\"\n#include <utility>\n\
+    \n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\
+    \u7279\u6027\n */\n\n#include <cstddef>\n#include <functional>\n#include <iterator>\n\
     #include <set>\n#line 14 \"src/utility/traits.hpp\"\n\nnamespace internal_traits\
     \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
     \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
@@ -309,18 +294,146 @@ data:
     constexpr Vector<T, 3> cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs)\
     \ noexcept {\n    Vector<T, 3> ret;\n    ret[0] = lhs[1] * rhs[2] - lhs[2] * rhs[1];\n\
     \    ret[1] = lhs[2] * rhs[0] - lhs[0] * rhs[2];\n    ret[2] = lhs[0] * rhs[1]\
-    \ - lhs[1] * rhs[0];\n    return ret;\n}\n#line 15 \"src/geometry/segment.hpp\"\
-    \n\n/**\n * @brief \u7DDA\u5206\u306E\u4EA4\u5DEE\u5224\u5B9A\n *\n * \u6574\u6570\
-    \u578B\u3067\u3082\u4F7F\u3048\u308B\u3002\u5916\u7A4D\u3092\u8A08\u7B97\u3059\
-    \u308B\u305F\u3081\u3001\u5EA7\u6A19\u306E\u7D76\u5BFE\u5024\u306E2\u4E57\u306E\
-    \u6570\u500D\u304CT\u306B\u53CE\u307E\u308B\u5FC5\u8981\u304C\u3042\u308B\n *\n\
-    \ * @param p1 1\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B91\n * @param p2\
-    \ 1\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B92\n * @param q1 2\u672C\u76EE\
-    \u306E\u7DDA\u5206\u306E\u7AEF\u70B91\n * @param q2 2\u672C\u76EE\u306E\u7DDA\u5206\
-    \u306E\u7AEF\u70B92\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @return bool \u5171\
-    \u6709\u70B9\u3092\u6301\u3064\u304B\n */\ntemplate <typename T>\nconstexpr bool\
-    \ segments_intersect(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const Vector<T,\
-    \ 2>& q1, const Vector<T, 2>& q2) {\n    assert(p1 != p2 && q1 != q2 && \"segments_intersect:\
+    \ - lhs[1] * rhs[0];\n    return ret;\n}\n\n/**\n * @brief 3\u70B9\u306E\u4F4D\
+    \u7F6E\u95A2\u4FC2 (counter-clockwise)\n *\n * \u6574\u6570\u578B\u3067\u3082\u4F7F\
+    \u3048\u308B\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u3067\u306F\u8AA4\u5DEE\
+    \u3092\u8003\u3048\u305A\u306B\u6BD4\u8F03\u3059\u308B\n *\n * @tparam T \u5EA7\
+    \u6A19\u306E\u578B\n * @return int 1: a\u2192b\u2192c \u304C\u53CD\u6642\u8A08\
+    \u56DE\u308A, -1: \u6642\u8A08\u56DE\u308A, 2: c, a, b \u306E\u9806\u306B\u4E00\
+    \u76F4\u7DDA\u4E0A, -2: a, b, c \u306E\u9806\u306B\u4E00\u76F4\u7DDA\u4E0A, 0:\
+    \ c \u304C\u7DDA\u5206 ab \u4E0A\n */\ntemplate <typename T>\nconstexpr int ccw(const\
+    \ Vector<T, 2>& a, const Vector<T, 2>& b, const Vector<T, 2>& c) {\n    Vector<T,\
+    \ 2> u = b - a, v = c - a;\n    T cr = cross(u, v);\n    if (cr > 0) return 1;\n\
+    \    if (cr < 0) return -1;\n    if (dot(u, v) < 0) return 2;\n    if (u.squared_norm()\
+    \ < v.squared_norm()) return -2;\n    return 0;\n}\n#line 12 \"src/geometry/internal/predicates.hpp\"\
+    \n\nnamespace internal_predicates {\n// \u6574\u6570\u5EA7\u6A19\u306E\u5916\u7A4D\
+    \u30FB\u4F53\u7A4D\u306E\u8A08\u7B97\u306B\u4F7F\u3046\u578B (\u5EA7\u6A19\u304C\
+    \ 1e9 \u306A\u3089\u4F53\u7A4D\u306F 1e27 \u7A0B\u5EA6\u306B\u306A\u308B)\ntemplate\
+    \ <typename T>\nusing Wide = std::conditional_t<std::is_integral_v<T>, __int128_t,\
+    \ T>;\ntemplate <typename T, int Dim>\nconstexpr Vector<Wide<T>, Dim> widen(const\
+    \ Vector<T, Dim>& p) {\n    Vector<Wide<T>, Dim> result;\n    for (int i = 0;\
+    \ i < Dim; ++i) result[i] = static_cast<Wide<T>>(p[i]);\n    return result;\n\
+    }\n// \u56DB\u9762\u4F53 abcd \u306E\u7B26\u53F7\u4ED8\u304D\u4F53\u7A4D\u306E\
+    \ 6 \u500D\u306E\u7B26\u53F7 (d \u304C\u5E73\u9762 abc \u306E\u3001abc \u304C\u53CD\
+    \u6642\u8A08\u56DE\u308A\u306B\u898B\u3048\u308B\u5074\u306A\u3089\u6B63)\ntemplate\
+    \ <typename T>\nint orient(const Vector<T, 3>& a, const Vector<T, 3>& b, const\
+    \ Vector<T, 3>& c, const Vector<T, 3>& d) {\n    const auto wa = widen(a);\n \
+    \   const auto v = dot(cross(widen(b) - wa, widen(c) - wa), widen(d) - wa);\n\
+    \    return (v > 0) - (v < 0);\n}\ntemplate <typename T>\ndouble norm(const Vector<T,\
+    \ 3>& v) {\n    const double x = static_cast<double>(v[0]), y = static_cast<double>(v[1]),\
+    \ z = static_cast<double>(v[2]);\n    return std::sqrt(x * x + y * y + z * z);\n\
+    }\n}  // namespace internal_predicates\n#line 2 \"src/geometry/line.hpp\"\n\n\
+    /**\n * @file line.hpp\n * @brief 2 \u6B21\u5143\u30FB3 \u6B21\u5143\u306E\u76F4\
+    \u7DDA (\u5E73\u884C\u30FB\u76F4\u4EA4\u3001\u5C04\u5F71\u30FB\u53CD\u5C04\u3001\
+    \u4EA4\u70B9\u3001\u8DDD\u96E2)\n */\n\n#line 12 \"src/geometry/line.hpp\"\n\n\
+    #line 15 \"src/geometry/line.hpp\"\n\n/**\n * @brief 2 \u70B9\u3067\u8868\u3059\
+    \u76F4\u7DDA\u3002p1 != p2 \u304C\u5FC5\u8981\u3002\u7B49\u5024\u6BD4\u8F03\u306F\
+    \u540C\u3058\u76F4\u7DDA\u304B\u3092\u5224\u5B9A\u3059\u308B\n */\ntemplate <typename\
+    \ T = long long, int Dim = 2>\nstruct Line {\n    static_assert(Dim >= 2, \"dimension\
+    \ must be at least 2\");\n    Vector<T, Dim> p1, p2;\n\n    constexpr Line(const\
+    \ Vector<T, Dim>& p1, const Vector<T, Dim>& p2) : p1(p1), p2(p2) {\n        assert(p1\
+    \ != p2 && \"Line: degenerate line\");\n    }\n    constexpr bool operator==(const\
+    \ Line& other) const {\n        assert(p1 != p2 && other.p1 != other.p2 && \"\
+    Line: degenerate line\");\n        using Wide = std::conditional_t<std::is_integral_v<T>,\
+    \ __int128_t, T>;\n        auto on_line = [&](const Vector<T, Dim>& p) {\n   \
+    \         for (int i = 0; i < Dim; ++i) {\n                for (int j = i + 1;\
+    \ j < Dim; ++j) {\n                    Wide di = static_cast<Wide>(p2[i]) - p1[i],\
+    \ dj = static_cast<Wide>(p2[j]) - p1[j];\n                    Wide vi = static_cast<Wide>(p[i])\
+    \ - p1[i], vj = static_cast<Wide>(p[j]) - p1[j];\n                    if (di *\
+    \ vj != dj * vi) return false;\n                }\n            }\n           \
+    \ return true;\n        };\n        return on_line(other.p1) && on_line(other.p2);\n\
+    \    }\n    constexpr bool operator!=(const Line& other) const { return !(*this\
+    \ == other); }\n};\n\ntemplate <typename T, int Dim>\nLine(const Vector<T, Dim>&,\
+    \ const Vector<T, Dim>&) -> Line<T, Dim>;\n\n/**\n * @brief \u76F4\u7DDA p1p2\
+    \ \u3068\u76F4\u7DDA q1q2 \u304C\u5E73\u884C\u304B (\u6574\u6570\u578B\u3067\u3082\
+    \u4F7F\u3048\u308B)\n */\ntemplate <typename T>\nconstexpr bool is_parallel(const\
+    \ Line<T>& first, const Line<T>& second) {\n    const auto& [p1, p2] = first;\n\
+    \    const auto& [q1, q2] = second;\n    return cross(p2 - p1, q2 - q1) == 0;\n\
+    }\n/**\n * @brief \u76F4\u7DDA p1p2 \u3068\u76F4\u7DDA q1q2 \u304C\u76F4\u4EA4\
+    \u3059\u308B\u304B (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate\
+    \ <typename T>\nconstexpr bool is_orthogonal(const Line<T>& first, const Line<T>&\
+    \ second) {\n    const auto& [p1, p2] = first;\n    const auto& [q1, q2] = second;\n\
+    \    return dot(p2 - p1, q2 - q1) == 0;\n}\n\n/**\n * @brief \u70B9 p \u304B\u3089\
+    \u76F4\u7DDA p1p2 \u306B\u4E0B\u308D\u3057\u305F\u5782\u7DDA\u306E\u8DB3 (\u5C04\
+    \u5F71)\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n */\ntemplate <typename\
+    \ T>\nconstexpr Vector<T, 2> projection(const Line<T>& object, const Vector<T,\
+    \ 2>& p) {\n    const auto& [p1, p2] = object;\n    static_assert(std::is_floating_point_v<T>,\
+    \ \"projection: T must be a floating point type\");\n    assert(p1 != p2 && \"\
+    projection: degenerate line\");\n    Vector<T, 2> d = p2 - p1;\n    return p1\
+    \ + d * (dot(p - p1, d) / d.squared_norm());\n}\n/**\n * @brief \u76F4\u7DDA p1p2\
+    \ \u306B\u3064\u3044\u3066\u70B9 p \u3068\u5BFE\u79F0\u306A\u70B9 (\u53CD\u5C04\
+    )\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n */\ntemplate <typename\
+    \ T>\nconstexpr Vector<T, 2> reflection(const Line<T>& object, const Vector<T,\
+    \ 2>& p) {\n    return projection(object, p) * T(2) - p;\n}\n\n/**\n * @brief\
+    \ \u76F4\u7DDA p1p2 \u3068\u76F4\u7DDA q1q2 \u306E\u4EA4\u70B9\u3002\u6D6E\u52D5\
+    \u5C0F\u6570\u70B9\u578B\u9650\u5B9A\u3002p1 != p2 \u304B\u3064 q1 != q2 \u3067\
+    \u3042\u308B\u3053\u3068\n * @return std::optional<Vector<T, 2>> \u4EA4\u70B9\
+    \ (\u5E73\u884C (\u91CD\u306A\u308B\u76F4\u7DDA\u3082\u542B\u3080) \u306A\u3089\
+    \ std::nullopt)\n */\ntemplate <typename T>\nconstexpr std::optional<Vector<T,\
+    \ 2>> line_intersection(const Line<T>& first, const Line<T>& second) {\n    const\
+    \ auto& [p1, p2] = first;\n    const auto& [q1, q2] = second;\n    static_assert(std::is_floating_point_v<T>,\
+    \ \"line_intersection: T must be a floating point type\");\n    assert(p1 != p2\
+    \ && q1 != q2 && \"line_intersection: degenerate line\");\n    Vector<T, 2> d\
+    \ = p2 - p1, e = q2 - q1;\n    T c = cross(e, d);\n    if (c == 0) return std::nullopt;\n\
+    \    // p1 + d t \u304C\u76F4\u7DDA q1q2 \u4E0A\u306B\u3042\u308B t\n    return\
+    \ p1 + d * (cross(e, q1 - p1) / c);\n}\n\n/**\n * @brief \u70B9 p \u3068\u76F4\
+    \u7DDA p1p2 \u306E\u8DDD\u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B\
+    )\n */\ntemplate <typename T>\ndouble distance_point_line(const Line<T>& object,\
+    \ const Vector<T, 2>& p) {\n    const auto& [p1, p2] = object;\n    assert(p1\
+    \ != p2 && \"distance_point_line: degenerate line\");\n    return std::abs(static_cast<double>(cross(p2\
+    \ - p1, p - p1))) / (p2 - p1).abs();\n}\n/** @brief 3 \u6B21\u5143\u306E\u76F4\
+    \u7DDA\u540C\u58EB\u304C\u5E73\u884C\u304B\u3002\u4E00\u81F4\u3059\u308B\u5834\
+    \u5408\u3082 true */\ntemplate <typename T>\nconstexpr bool is_parallel(const\
+    \ Line<T, 3>& first, const Line<T, 3>& second) {\n    using internal_predicates::widen;\n\
+    \    const auto u = widen(first.p2) - widen(first.p1), v = widen(second.p2) -\
+    \ widen(second.p1);\n    assert((u[0] != 0 || u[1] != 0 || u[2] != 0) && \"is_parallel:\
+    \ degenerate line\");\n    assert((v[0] != 0 || v[1] != 0 || v[2] != 0) && \"\
+    is_parallel: degenerate line\");\n    const auto n = cross(u, v);\n    return\
+    \ n[0] == 0 && n[1] == 0 && n[2] == 0;\n}\n\n/**\n * @brief \u70B9 p \u304B\u3089\
+    \u76F4\u7DDA p1p2 \u306B\u4E0B\u308D\u3057\u305F\u5782\u7DDA\u306E\u8DB3 (\u5C04\
+    \u5F71)\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n */\ntemplate <typename\
+    \ T>\nconstexpr Vector<T, 3> projection(const Line<T, 3>& object, const Vector<T,\
+    \ 3>& p) {\n    const auto& [p1, p2] = object;\n    static_assert(std::is_floating_point_v<T>,\
+    \ \"projection: T must be a floating point type\");\n    assert(p1 != p2 && \"\
+    projection: degenerate line\");\n    Vector<T, 3> d = p2 - p1;\n    return p1\
+    \ + d * (dot(p - p1, d) / d.squared_norm());\n}\n\n/**\n * @brief \u70B9 p \u3068\
+    \u76F4\u7DDA p1p2 \u306E\u8DDD\u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\
+    \u308B)\n */\ntemplate <typename T>\ndouble distance_point_line(const Line<T,\
+    \ 3>& object, const Vector<T, 3>& p) {\n    const auto& [p1, p2] = object;\n \
+    \   using namespace internal_predicates;\n    assert(p1 != p2 && \"distance_point_line:\
+    \ degenerate line\");\n    return norm(cross(widen(p2) - widen(p1), widen(p) -\
+    \ widen(p1))) / norm(p2 - p1);\n}\n/**\n * @brief \u76F4\u7DDA p1p2 \u3068\u76F4\
+    \u7DDA q1q2 \u306E\u8DDD\u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B\
+    )\u3002p1 != p2 \u304B\u3064 q1 != q2 \u3067\u3042\u308B\u3053\u3068\n */\ntemplate\
+    \ <typename T>\ndouble distance_lines(const Line<T, 3>& first, const Line<T, 3>&\
+    \ second) {\n    const auto& [p1, p2] = first;\n    const auto& [q1, q2] = second;\n\
+    \    using namespace internal_predicates;\n    assert(p1 != p2 && q1 != q2 &&\
+    \ \"distance_lines: degenerate line\");\n    const auto n = cross(widen(p2) -\
+    \ widen(p1), widen(q2) - widen(q1));\n    // \u5E73\u884C\u306A\u3089\u3001\u4E00\
+    \u65B9\u306E\u76F4\u7DDA\u4E0A\u306E\u70B9\u3068\u3082\u3046\u4E00\u65B9\u306E\
+    \u76F4\u7DDA\u306E\u8DDD\u96E2\n    if (n == decltype(n)()) return distance_point_line(Line(p1,\
+    \ p2), q1);\n    return std::abs(static_cast<double>(dot(n, widen(q1) - widen(p1))))\
+    \ / norm(n);\n}\n#line 16 \"src/geometry/segment.hpp\"\n\n/**\n * @brief 2 \u7AEF\
+    \u70B9\u3067\u8868\u3059\u7DDA\u5206\u3002\u9577\u3055 0 \u3082\u8A31\u3059\u3002\
+    \u7B49\u5024\u6BD4\u8F03\u3067\u306F\u7AEF\u70B9\u306E\u9806\u5E8F\u3092\u7121\
+    \u8996\u3059\u308B\n */\ntemplate <typename T = long long, int Dim = 2>\nstruct\
+    \ Segment {\n    static_assert(Dim >= 2, \"dimension must be at least 2\");\n\
+    \    Vector<T, Dim> p1, p2;\n\n    constexpr Segment() = default;\n    constexpr\
+    \ Segment(const Vector<T, Dim>& p1, const Vector<T, Dim>& p2) : p1(p1), p2(p2)\
+    \ {}\n    constexpr bool operator==(const Segment& other) const {\n        return\
+    \ (p1 == other.p1 && p2 == other.p2) || (p1 == other.p2 && p2 == other.p1);\n\
+    \    }\n    constexpr bool operator!=(const Segment& other) const { return !(*this\
+    \ == other); }\n};\n\ntemplate <typename T, int Dim>\nSegment(const Vector<T,\
+    \ Dim>&, const Vector<T, Dim>&) -> Segment<T, Dim>;\n\n/**\n * @brief \u7DDA\u5206\
+    \u306E\u4EA4\u5DEE\u5224\u5B9A\n *\n * \u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\
+    \u308B\u3002\u5916\u7A4D\u3092\u8A08\u7B97\u3059\u308B\u305F\u3081\u3001\u5EA7\
+    \u6A19\u306E\u7D76\u5BFE\u5024\u306E2\u4E57\u306E\u6570\u500D\u304CT\u306B\u53CE\
+    \u307E\u308B\u5FC5\u8981\u304C\u3042\u308B\n *\n * @param first 1 \u672C\u76EE\
+    \u306E\u7DDA\u5206\n * @param second 2 \u672C\u76EE\u306E\u7DDA\u5206\n * @tparam\
+    \ T \u5EA7\u6A19\u306E\u578B\n * @return bool \u5171\u6709\u70B9\u3092\u6301\u3064\
+    \u304B\n */\ntemplate <typename T>\nconstexpr bool segments_intersect(const Segment<T>&\
+    \ first, const Segment<T>& second) {\n    const auto& [p1, p2] = first;\n    const\
+    \ auto& [q1, q2] = second;\n    assert(p1 != p2 && q1 != q2 && \"segments_intersect:\
     \ degenerate segment\");\n    auto sign = [](T x) { return (x > 0) - (x < 0);\
     \ };\n    int q1_section = sign(cross(p2 - p1, q1 - p1));  // \u76F4\u7DDAp1p2\u306B\
     \u5BFE\u3057\u3066q1\u304C\u3069\u306E\u4F4D\u7F6E\u306B\u3042\u308B\u304B\n \
@@ -339,104 +452,90 @@ data:
     \u4E00\u822C\u306B\u6574\u6570\u306B\u306A\u3089\u306A\u3044\u305F\u3081\u3001\
     \u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n * \u6574\u6570\u5EA7\u6A19\u3067\
     \u4EA4\u5DEE\u5224\u5B9A\u3060\u3051\u3057\u305F\u3044\u5834\u5408\u306F segments_intersect\
-    \ \u3092\u4F7F\u3046\n *\n * @param p1 1\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\
-    \u70B91\n * @param p2 1\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B92\n * @param\
-    \ q1 2\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B91\n * @param q2 2\u672C\u76EE\
-    \u306E\u7DDA\u5206\u306E\u7AEF\u70B92\n * @tparam T \u5EA7\u6A19\u306E\u578B\n\
-    \ * @return std::optional<Vector<T, 2>> \u5171\u6709\u70B9\u306E1\u4F8B (\u5171\
-    \u6709\u70B9\u304C\u306A\u3051\u308C\u3070 std::nullopt)\n */\ntemplate <typename\
-    \ T>\nconstexpr std::optional<Vector<T, 2>> segment_intersection(const Vector<T,\
-    \ 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& q1, const Vector<T, 2>&\
-    \ q2) {\n    static_assert(std::is_floating_point_v<T>, \"segment_intersection:\
-    \ T must be a floating point type (use segments_intersect for integers)\");\n\
-    \    if (!segments_intersect(p1, p2, q1, q2)) return std::nullopt;\n    if (cross(p2\
-    \ - p1, q1 - p1) == 0 && cross(p2 - p1, q2 - p1) == 0) {\n        // 4\u70B9\u304C\
-    \u540C\u4E00\u76F4\u7DDA\u4E0A\u306B\u3042\u308B\u5834\u5408\n        if (dot(q1\
-    \ - p1, q2 - p1) <= 0) return p1;\n        if (dot(q1 - p2, q2 - p2) <= 0) return\
-    \ p2;\n        return q1;\n    }\n    T area = cross(p2 - p1, q2 - q1);      \
-    \    // 4\u70B9\u3092\u9802\u70B9\u3068\u3059\u308B\u56DB\u89D2\u5F62\u306E\u7B26\
-    \u53F7\u4ED8\u304D\u9762\u7A4D\n    T partial_area = cross(q2 - q1, p1 - q1);\
-    \  // \u4E09\u89D2\u5F62q1q2p1\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\n   \
-    \ return p1 + (p2 - p1) * partial_area / area;\n}\n\n/**\n * @brief 3\u70B9\u306E\
-    \u4F4D\u7F6E\u95A2\u4FC2 (counter-clockwise)\n *\n * \u6574\u6570\u578B\u3067\u3082\
-    \u4F7F\u3048\u308B\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u3067\u306F\u8AA4\
-    \u5DEE\u3092\u8003\u3048\u305A\u306B\u6BD4\u8F03\u3059\u308B\n *\n * @tparam T\
-    \ \u5EA7\u6A19\u306E\u578B\n * @return int 1: a\u2192b\u2192c \u304C\u53CD\u6642\
-    \u8A08\u56DE\u308A, -1: \u6642\u8A08\u56DE\u308A, 2: c, a, b \u306E\u9806\u306B\
-    \u4E00\u76F4\u7DDA\u4E0A, -2: a, b, c \u306E\u9806\u306B\u4E00\u76F4\u7DDA\u4E0A\
-    , 0: c \u304C\u7DDA\u5206 ab \u4E0A\n */\ntemplate <typename T>\nconstexpr int\
-    \ ccw(const Vector<T, 2>& a, const Vector<T, 2>& b, const Vector<T, 2>& c) {\n\
-    \    Vector<T, 2> u = b - a, v = c - a;\n    T cr = cross(u, v);\n    if (cr >\
-    \ 0) return 1;\n    if (cr < 0) return -1;\n    if (dot(u, v) < 0) return 2;\n\
-    \    if (u.squared_norm() < v.squared_norm()) return -2;\n    return 0;\n}\n\n\
-    /**\n * @brief \u76F4\u7DDA p1p2 \u3068\u76F4\u7DDA q1q2 \u304C\u5E73\u884C\u304B\
+    \ \u3092\u4F7F\u3046\n *\n * @param first 1 \u672C\u76EE\u306E\u7DDA\u5206\n *\
+    \ @param second 2 \u672C\u76EE\u306E\u7DDA\u5206\n * @tparam T \u5EA7\u6A19\u306E\
+    \u578B\n * @return std::optional<Vector<T, 2>> \u5171\u6709\u70B9\u306E1\u4F8B\
+    \ (\u5171\u6709\u70B9\u304C\u306A\u3051\u308C\u3070 std::nullopt)\n */\ntemplate\
+    \ <typename T>\nconstexpr std::optional<Vector<T, 2>> segment_intersection(const\
+    \ Segment<T>& first, const Segment<T>& second) {\n    const auto& [p1, p2] = first;\n\
+    \    const auto& [q1, q2] = second;\n    static_assert(std::is_floating_point_v<T>,\
+    \ \"segment_intersection: T must be a floating point type (use segments_intersect\
+    \ for integers)\");\n    if (!segments_intersect(first, second)) return std::nullopt;\n\
+    \    if (cross(p2 - p1, q1 - p1) == 0 && cross(p2 - p1, q2 - p1) == 0) {\n   \
+    \     // 4\u70B9\u304C\u540C\u4E00\u76F4\u7DDA\u4E0A\u306B\u3042\u308B\u5834\u5408\
+    \n        if (dot(q1 - p1, q2 - p1) <= 0) return p1;\n        if (dot(q1 - p2,\
+    \ q2 - p2) <= 0) return p2;\n        return q1;\n    }\n    T area = cross(p2\
+    \ - p1, q2 - q1);          // 4\u70B9\u3092\u9802\u70B9\u3068\u3059\u308B\u56DB\
+    \u89D2\u5F62\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\n    T partial_area = cross(q2\
+    \ - q1, p1 - q1);  // \u4E09\u89D2\u5F62q1q2p1\u306E\u7B26\u53F7\u4ED8\u304D\u9762\
+    \u7A4D\n    return p1 + (p2 - p1) * partial_area / area;\n}\n\n/**\n * @brief\
+    \ \u70B9 p \u3068\u7DDA\u5206 p1p2 \u306E\u8DDD\u96E2 (\u6574\u6570\u578B\u3067\
+    \u3082\u4F7F\u3048\u308B)\n */\ntemplate <typename T>\ndouble distance_point_segment(const\
+    \ Segment<T>& object, const Vector<T, 2>& p) {\n    const auto& [p1, p2] = object;\n\
+    \    if (p1 == p2) return (p - p1).abs();\n    // \u5782\u7DDA\u306E\u8DB3\u304C\
+    \u7DDA\u5206\u306E\u5916\u306A\u3089\u3001\u8FD1\u3044\u65B9\u306E\u7AEF\u70B9\
+    \u3068\u306E\u8DDD\u96E2\n    if (dot(p2 - p1, p - p1) < 0) return (p - p1).abs();\n\
+    \    if (dot(p1 - p2, p - p2) < 0) return (p - p2).abs();\n    return distance_point_line(Line(p1,\
+    \ p2), p);\n}\n/**\n * @brief \u7DDA\u5206 p1p2 \u3068\u7DDA\u5206 q1q2 \u306E\
+    \u8DDD\u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate\
+    \ <typename T>\ndouble distance_segments(const Segment<T>& first, const Segment<T>&\
+    \ second) {\n    const auto& [p1, p2] = first;\n    const auto& [q1, q2] = second;\n\
+    \    if (p1 != p2 && q1 != q2 && segments_intersect(first, second)) return 0;\n\
+    \    return std::min({distance_point_segment(first, q1), distance_point_segment(first,\
+    \ q2),\n                     distance_point_segment(second, p1), distance_point_segment(second,\
+    \ p2)});\n}\n/**\n * @brief \u70B9 p \u3068\u7DDA\u5206 p1p2 \u306E\u8DDD\u96E2\
     \ (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate <typename\
-    \ T>\nconstexpr bool is_parallel(const Vector<T, 2>& p1, const Vector<T, 2>& p2,\
-    \ const Vector<T, 2>& q1, const Vector<T, 2>& q2) {\n    return cross(p2 - p1,\
-    \ q2 - q1) == 0;\n}\n/**\n * @brief \u76F4\u7DDA p1p2 \u3068\u76F4\u7DDA q1q2\
-    \ \u304C\u76F4\u4EA4\u3059\u308B\u304B (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\
-    \u308B)\n */\ntemplate <typename T>\nconstexpr bool is_orthogonal(const Vector<T,\
-    \ 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& q1, const Vector<T, 2>&\
-    \ q2) {\n    return dot(p2 - p1, q2 - q1) == 0;\n}\n\n/**\n * @brief \u70B9 p\
-    \ \u304B\u3089\u76F4\u7DDA p1p2 \u306B\u4E0B\u308D\u3057\u305F\u5782\u7DDA\u306E\
-    \u8DB3 (\u5C04\u5F71)\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n\
-    \ */\ntemplate <typename T>\nconstexpr Vector<T, 2> projection(const Vector<T,\
-    \ 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& p) {\n    static_assert(std::is_floating_point_v<T>,\
-    \ \"projection: T must be a floating point type\");\n    assert(p1 != p2 && \"\
-    projection: degenerate line\");\n    Vector<T, 2> d = p2 - p1;\n    return p1\
-    \ + d * (dot(p - p1, d) / d.squared_norm());\n}\n/**\n * @brief \u76F4\u7DDA p1p2\
-    \ \u306B\u3064\u3044\u3066\u70B9 p \u3068\u5BFE\u79F0\u306A\u70B9 (\u53CD\u5C04\
-    )\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n */\ntemplate <typename\
-    \ T>\nconstexpr Vector<T, 2> reflection(const Vector<T, 2>& p1, const Vector<T,\
-    \ 2>& p2, const Vector<T, 2>& p) {\n    return projection(p1, p2, p) * T(2) -\
-    \ p;\n}\n\n/**\n * @brief \u76F4\u7DDA p1p2 \u3068\u76F4\u7DDA q1q2 \u306E\u4EA4\
-    \u70B9\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\u3002p1 != p2 \u304B\
-    \u3064 q1 != q2 \u3067\u3042\u308B\u3053\u3068\n * @return std::optional<Vector<T,\
-    \ 2>> \u4EA4\u70B9 (\u5E73\u884C (\u91CD\u306A\u308B\u76F4\u7DDA\u3082\u542B\u3080\
-    ) \u306A\u3089 std::nullopt)\n */\ntemplate <typename T>\nconstexpr std::optional<Vector<T,\
-    \ 2>> line_intersection(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const\
-    \ Vector<T, 2>& q1, const Vector<T, 2>& q2) {\n    static_assert(std::is_floating_point_v<T>,\
-    \ \"line_intersection: T must be a floating point type\");\n    assert(p1 != p2\
-    \ && q1 != q2 && \"line_intersection: degenerate line\");\n    Vector<T, 2> d\
-    \ = p2 - p1, e = q2 - q1;\n    T c = cross(e, d);\n    if (c == 0) return std::nullopt;\n\
-    \    // p1 + d t \u304C\u76F4\u7DDA q1q2 \u4E0A\u306B\u3042\u308B t\n    return\
-    \ p1 + d * (cross(e, q1 - p1) / c);\n}\n\n/**\n * @brief \u70B9 p \u3068\u76F4\
-    \u7DDA p1p2 \u306E\u8DDD\u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B\
-    )\n */\ntemplate <typename T>\ndouble distance_point_line(const Vector<T, 2>&\
-    \ p1, const Vector<T, 2>& p2, const Vector<T, 2>& p) {\n    assert(p1 != p2 &&\
-    \ \"distance_point_line: degenerate line\");\n    return std::abs(static_cast<double>(cross(p2\
-    \ - p1, p - p1))) / (p2 - p1).abs();\n}\n/**\n * @brief \u70B9 p \u3068\u7DDA\u5206\
-    \ p1p2 \u306E\u8DDD\u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n\
-    \ */\ntemplate <typename T>\ndouble distance_point_segment(const Vector<T, 2>&\
-    \ p1, const Vector<T, 2>& p2, const Vector<T, 2>& p) {\n    if (p1 == p2) return\
-    \ (p - p1).abs();\n    // \u5782\u7DDA\u306E\u8DB3\u304C\u7DDA\u5206\u306E\u5916\
-    \u306A\u3089\u3001\u8FD1\u3044\u65B9\u306E\u7AEF\u70B9\u3068\u306E\u8DDD\u96E2\
-    \n    if (dot(p2 - p1, p - p1) < 0) return (p - p1).abs();\n    if (dot(p1 - p2,\
-    \ p - p2) < 0) return (p - p2).abs();\n    return distance_point_line(p1, p2,\
-    \ p);\n}\n/**\n * @brief \u7DDA\u5206 p1p2 \u3068\u7DDA\u5206 q1q2 \u306E\u8DDD\
-    \u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate <typename\
-    \ T>\ndouble distance_segments(const Vector<T, 2>& p1, const Vector<T, 2>& p2,\
-    \ const Vector<T, 2>& q1, const Vector<T, 2>& q2) {\n    if (p1 != p2 && q1 !=\
-    \ q2 && segments_intersect(p1, p2, q1, q2)) return 0;\n    return std::min({distance_point_segment(p1,\
-    \ p2, q1), distance_point_segment(p1, p2, q2),\n                     distance_point_segment(q1,\
-    \ q2, p1), distance_point_segment(q1, q2, p2)});\n}\n"
-  code: "#pragma once\n\n/**\n * @file segment.hpp\n * @brief 2 \u6B21\u5143\u306E\
-    \u70B9\u30FB\u76F4\u7DDA\u30FB\u7DDA\u5206 (\u4EA4\u5DEE\u5224\u5B9A\u3001\u4EA4\
-    \u70B9\u3001\u5C04\u5F71\u3001\u8DDD\u96E2)\n */\n\n#include <algorithm>\n#include\
-    \ <cassert>\n#include <cmath>\n#include <optional>\n#include <type_traits>\n\n\
-    #include \"vector.hpp\"\n\n/**\n * @brief \u7DDA\u5206\u306E\u4EA4\u5DEE\u5224\
-    \u5B9A\n *\n * \u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B\u3002\u5916\u7A4D\
-    \u3092\u8A08\u7B97\u3059\u308B\u305F\u3081\u3001\u5EA7\u6A19\u306E\u7D76\u5BFE\
-    \u5024\u306E2\u4E57\u306E\u6570\u500D\u304CT\u306B\u53CE\u307E\u308B\u5FC5\u8981\
-    \u304C\u3042\u308B\n *\n * @param p1 1\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\
-    \u70B91\n * @param p2 1\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B92\n * @param\
-    \ q1 2\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B91\n * @param q2 2\u672C\u76EE\
-    \u306E\u7DDA\u5206\u306E\u7AEF\u70B92\n * @tparam T \u5EA7\u6A19\u306E\u578B\n\
-    \ * @return bool \u5171\u6709\u70B9\u3092\u6301\u3064\u304B\n */\ntemplate <typename\
-    \ T>\nconstexpr bool segments_intersect(const Vector<T, 2>& p1, const Vector<T,\
-    \ 2>& p2, const Vector<T, 2>& q1, const Vector<T, 2>& q2) {\n    assert(p1 !=\
-    \ p2 && q1 != q2 && \"segments_intersect: degenerate segment\");\n    auto sign\
-    \ = [](T x) { return (x > 0) - (x < 0); };\n    int q1_section = sign(cross(p2\
+    \ T>\ndouble distance_point_segment(const Segment<T, 3>& object, const Vector<T,\
+    \ 3>& p) {\n    const auto& [p1, p2] = object;\n    using namespace internal_predicates;\n\
+    \    if (p1 == p2) return norm(p - p1);\n    // \u5782\u7DDA\u306E\u8DB3\u304C\
+    \u7DDA\u5206\u306E\u5916\u306A\u3089\u3001\u8FD1\u3044\u65B9\u306E\u7AEF\u70B9\
+    \u3068\u306E\u8DDD\u96E2\n    if (dot(widen(p2) - widen(p1), widen(p) - widen(p1))\
+    \ < 0) return norm(p - p1);\n    if (dot(widen(p1) - widen(p2), widen(p) - widen(p2))\
+    \ < 0) return norm(p - p2);\n    return distance_point_line(Line(p1, p2), p);\n\
+    }\n/**\n * @brief \u7DDA\u5206 p1p2 \u3068\u7DDA\u5206 q1q2 \u306E\u8DDD\u96E2\
+    \ (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate <typename\
+    \ T>\ndouble distance_segments(const Segment<T, 3>& first, const Segment<T, 3>&\
+    \ second) {\n    const auto& [p1, p2] = first;\n    const auto& [q1, q2] = second;\n\
+    \    double res = std::min({distance_point_segment(first, q1), distance_point_segment(first,\
+    \ q2),\n                           distance_point_segment(second, p1), distance_point_segment(second,\
+    \ p2)});\n    if (p1 == p2 || q1 == q2) return res;\n    // \u8DDD\u96E2\u306E\
+    \ 2 \u4E57\u306F (s, t) \u2208 [0, 1]^2 \u3067\u51F8\u306A\u306E\u3067\u3001\u6700\
+    \u5C0F\u306F\u5185\u90E8\u306E\u505C\u7559\u70B9\u304B\u5883\u754C (\u7AEF\u70B9\
+    \u3068\u7DDA\u5206\u306E\u8DDD\u96E2) \u306B\u3042\u308B\n    using L = long double;\n\
+    \    auto to = [](const Vector<T, 3>& v) { return Vector<L, 3>(v[0], v[1], v[2]);\
+    \ };\n    const Vector<L, 3> d = to(p2) - to(p1), e = to(q2) - to(q1), r = to(p1)\
+    \ - to(q1);\n    const L a = dot(d, d), b = dot(d, e), c = dot(e, e), f = dot(d,\
+    \ r), g = dot(e, r);\n    const L den = a * c - b * b;\n    if (den > 0) {\n \
+    \       // p1 + d s \u3068 q1 + e t \u304C\u6700\u3082\u8FD1\u3044 s, t\n    \
+    \    const L s = (b * g - c * f) / den, t = (a * g - b * f) / den;\n        if\
+    \ (0 <= s && s <= 1 && 0 <= t && t <= 1) res = std::min(res, static_cast<double>((r\
+    \ + d * s - e * t).abs()));\n    }\n    return res;\n}\n"
+  code: "#pragma once\n\n/**\n * @file segment.hpp\n * @brief 2 \u6B21\u5143\u30FB\
+    3 \u6B21\u5143\u306E\u7DDA\u5206 (\u4EA4\u5DEE\u5224\u5B9A\u3001\u5171\u6709\u70B9\
+    \u3001\u8DDD\u96E2)\n */\n\n#include <algorithm>\n#include <cassert>\n#include\
+    \ <cmath>\n#include <optional>\n#include <type_traits>\n\n#include \"internal/predicates.hpp\"\
+    \n#include \"line.hpp\"\n\n/**\n * @brief 2 \u7AEF\u70B9\u3067\u8868\u3059\u7DDA\
+    \u5206\u3002\u9577\u3055 0 \u3082\u8A31\u3059\u3002\u7B49\u5024\u6BD4\u8F03\u3067\
+    \u306F\u7AEF\u70B9\u306E\u9806\u5E8F\u3092\u7121\u8996\u3059\u308B\n */\ntemplate\
+    \ <typename T = long long, int Dim = 2>\nstruct Segment {\n    static_assert(Dim\
+    \ >= 2, \"dimension must be at least 2\");\n    Vector<T, Dim> p1, p2;\n\n   \
+    \ constexpr Segment() = default;\n    constexpr Segment(const Vector<T, Dim>&\
+    \ p1, const Vector<T, Dim>& p2) : p1(p1), p2(p2) {}\n    constexpr bool operator==(const\
+    \ Segment& other) const {\n        return (p1 == other.p1 && p2 == other.p2) ||\
+    \ (p1 == other.p2 && p2 == other.p1);\n    }\n    constexpr bool operator!=(const\
+    \ Segment& other) const { return !(*this == other); }\n};\n\ntemplate <typename\
+    \ T, int Dim>\nSegment(const Vector<T, Dim>&, const Vector<T, Dim>&) -> Segment<T,\
+    \ Dim>;\n\n/**\n * @brief \u7DDA\u5206\u306E\u4EA4\u5DEE\u5224\u5B9A\n *\n * \u6574\
+    \u6570\u578B\u3067\u3082\u4F7F\u3048\u308B\u3002\u5916\u7A4D\u3092\u8A08\u7B97\
+    \u3059\u308B\u305F\u3081\u3001\u5EA7\u6A19\u306E\u7D76\u5BFE\u5024\u306E2\u4E57\
+    \u306E\u6570\u500D\u304CT\u306B\u53CE\u307E\u308B\u5FC5\u8981\u304C\u3042\u308B\
+    \n *\n * @param first 1 \u672C\u76EE\u306E\u7DDA\u5206\n * @param second 2 \u672C\
+    \u76EE\u306E\u7DDA\u5206\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @return bool\
+    \ \u5171\u6709\u70B9\u3092\u6301\u3064\u304B\n */\ntemplate <typename T>\nconstexpr\
+    \ bool segments_intersect(const Segment<T>& first, const Segment<T>& second) {\n\
+    \    const auto& [p1, p2] = first;\n    const auto& [q1, q2] = second;\n    assert(p1\
+    \ != p2 && q1 != q2 && \"segments_intersect: degenerate segment\");\n    auto\
+    \ sign = [](T x) { return (x > 0) - (x < 0); };\n    int q1_section = sign(cross(p2\
     \ - p1, q1 - p1));  // \u76F4\u7DDAp1p2\u306B\u5BFE\u3057\u3066q1\u304C\u3069\u306E\
     \u4F4D\u7F6E\u306B\u3042\u308B\u304B\n    int q2_section = sign(cross(p2 - p1,\
     \ q2 - p1));  // \u76F4\u7DDAp1p2\u306B\u5BFE\u3057\u3066q2\u304C\u3069\u306E\u4F4D\
@@ -454,112 +553,87 @@ data:
     \u3089\u306A\u3044\u305F\u3081\u3001\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\
     \u5B9A\n * \u6574\u6570\u5EA7\u6A19\u3067\u4EA4\u5DEE\u5224\u5B9A\u3060\u3051\u3057\
     \u305F\u3044\u5834\u5408\u306F segments_intersect \u3092\u4F7F\u3046\n *\n * @param\
-    \ p1 1\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B91\n * @param p2 1\u672C\u76EE\
-    \u306E\u7DDA\u5206\u306E\u7AEF\u70B92\n * @param q1 2\u672C\u76EE\u306E\u7DDA\u5206\
-    \u306E\u7AEF\u70B91\n * @param q2 2\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B9\
-    2\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @return std::optional<Vector<T, 2>>\
-    \ \u5171\u6709\u70B9\u306E1\u4F8B (\u5171\u6709\u70B9\u304C\u306A\u3051\u308C\u3070\
-    \ std::nullopt)\n */\ntemplate <typename T>\nconstexpr std::optional<Vector<T,\
-    \ 2>> segment_intersection(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const\
-    \ Vector<T, 2>& q1, const Vector<T, 2>& q2) {\n    static_assert(std::is_floating_point_v<T>,\
-    \ \"segment_intersection: T must be a floating point type (use segments_intersect\
-    \ for integers)\");\n    if (!segments_intersect(p1, p2, q1, q2)) return std::nullopt;\n\
-    \    if (cross(p2 - p1, q1 - p1) == 0 && cross(p2 - p1, q2 - p1) == 0) {\n   \
-    \     // 4\u70B9\u304C\u540C\u4E00\u76F4\u7DDA\u4E0A\u306B\u3042\u308B\u5834\u5408\
-    \n        if (dot(q1 - p1, q2 - p1) <= 0) return p1;\n        if (dot(q1 - p2,\
-    \ q2 - p2) <= 0) return p2;\n        return q1;\n    }\n    T area = cross(p2\
-    \ - p1, q2 - q1);          // 4\u70B9\u3092\u9802\u70B9\u3068\u3059\u308B\u56DB\
-    \u89D2\u5F62\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\n    T partial_area = cross(q2\
-    \ - q1, p1 - q1);  // \u4E09\u89D2\u5F62q1q2p1\u306E\u7B26\u53F7\u4ED8\u304D\u9762\
-    \u7A4D\n    return p1 + (p2 - p1) * partial_area / area;\n}\n\n/**\n * @brief\
-    \ 3\u70B9\u306E\u4F4D\u7F6E\u95A2\u4FC2 (counter-clockwise)\n *\n * \u6574\u6570\
-    \u578B\u3067\u3082\u4F7F\u3048\u308B\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\
-    \u3067\u306F\u8AA4\u5DEE\u3092\u8003\u3048\u305A\u306B\u6BD4\u8F03\u3059\u308B\
-    \n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @return int 1: a\u2192b\u2192\
-    c \u304C\u53CD\u6642\u8A08\u56DE\u308A, -1: \u6642\u8A08\u56DE\u308A, 2: c, a,\
-    \ b \u306E\u9806\u306B\u4E00\u76F4\u7DDA\u4E0A, -2: a, b, c \u306E\u9806\u306B\
-    \u4E00\u76F4\u7DDA\u4E0A, 0: c \u304C\u7DDA\u5206 ab \u4E0A\n */\ntemplate <typename\
-    \ T>\nconstexpr int ccw(const Vector<T, 2>& a, const Vector<T, 2>& b, const Vector<T,\
-    \ 2>& c) {\n    Vector<T, 2> u = b - a, v = c - a;\n    T cr = cross(u, v);\n\
-    \    if (cr > 0) return 1;\n    if (cr < 0) return -1;\n    if (dot(u, v) < 0)\
-    \ return 2;\n    if (u.squared_norm() < v.squared_norm()) return -2;\n    return\
-    \ 0;\n}\n\n/**\n * @brief \u76F4\u7DDA p1p2 \u3068\u76F4\u7DDA q1q2 \u304C\u5E73\
-    \u884C\u304B (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate\
-    \ <typename T>\nconstexpr bool is_parallel(const Vector<T, 2>& p1, const Vector<T,\
-    \ 2>& p2, const Vector<T, 2>& q1, const Vector<T, 2>& q2) {\n    return cross(p2\
-    \ - p1, q2 - q1) == 0;\n}\n/**\n * @brief \u76F4\u7DDA p1p2 \u3068\u76F4\u7DDA\
-    \ q1q2 \u304C\u76F4\u4EA4\u3059\u308B\u304B (\u6574\u6570\u578B\u3067\u3082\u4F7F\
-    \u3048\u308B)\n */\ntemplate <typename T>\nconstexpr bool is_orthogonal(const\
-    \ Vector<T, 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& q1, const Vector<T,\
-    \ 2>& q2) {\n    return dot(p2 - p1, q2 - q1) == 0;\n}\n\n/**\n * @brief \u70B9\
-    \ p \u304B\u3089\u76F4\u7DDA p1p2 \u306B\u4E0B\u308D\u3057\u305F\u5782\u7DDA\u306E\
-    \u8DB3 (\u5C04\u5F71)\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n\
-    \ */\ntemplate <typename T>\nconstexpr Vector<T, 2> projection(const Vector<T,\
-    \ 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& p) {\n    static_assert(std::is_floating_point_v<T>,\
-    \ \"projection: T must be a floating point type\");\n    assert(p1 != p2 && \"\
-    projection: degenerate line\");\n    Vector<T, 2> d = p2 - p1;\n    return p1\
-    \ + d * (dot(p - p1, d) / d.squared_norm());\n}\n/**\n * @brief \u76F4\u7DDA p1p2\
-    \ \u306B\u3064\u3044\u3066\u70B9 p \u3068\u5BFE\u79F0\u306A\u70B9 (\u53CD\u5C04\
-    )\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n */\ntemplate <typename\
-    \ T>\nconstexpr Vector<T, 2> reflection(const Vector<T, 2>& p1, const Vector<T,\
-    \ 2>& p2, const Vector<T, 2>& p) {\n    return projection(p1, p2, p) * T(2) -\
-    \ p;\n}\n\n/**\n * @brief \u76F4\u7DDA p1p2 \u3068\u76F4\u7DDA q1q2 \u306E\u4EA4\
-    \u70B9\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\u3002p1 != p2 \u304B\
-    \u3064 q1 != q2 \u3067\u3042\u308B\u3053\u3068\n * @return std::optional<Vector<T,\
-    \ 2>> \u4EA4\u70B9 (\u5E73\u884C (\u91CD\u306A\u308B\u76F4\u7DDA\u3082\u542B\u3080\
-    ) \u306A\u3089 std::nullopt)\n */\ntemplate <typename T>\nconstexpr std::optional<Vector<T,\
-    \ 2>> line_intersection(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const\
-    \ Vector<T, 2>& q1, const Vector<T, 2>& q2) {\n    static_assert(std::is_floating_point_v<T>,\
-    \ \"line_intersection: T must be a floating point type\");\n    assert(p1 != p2\
-    \ && q1 != q2 && \"line_intersection: degenerate line\");\n    Vector<T, 2> d\
-    \ = p2 - p1, e = q2 - q1;\n    T c = cross(e, d);\n    if (c == 0) return std::nullopt;\n\
-    \    // p1 + d t \u304C\u76F4\u7DDA q1q2 \u4E0A\u306B\u3042\u308B t\n    return\
-    \ p1 + d * (cross(e, q1 - p1) / c);\n}\n\n/**\n * @brief \u70B9 p \u3068\u76F4\
-    \u7DDA p1p2 \u306E\u8DDD\u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B\
-    )\n */\ntemplate <typename T>\ndouble distance_point_line(const Vector<T, 2>&\
-    \ p1, const Vector<T, 2>& p2, const Vector<T, 2>& p) {\n    assert(p1 != p2 &&\
-    \ \"distance_point_line: degenerate line\");\n    return std::abs(static_cast<double>(cross(p2\
-    \ - p1, p - p1))) / (p2 - p1).abs();\n}\n/**\n * @brief \u70B9 p \u3068\u7DDA\u5206\
-    \ p1p2 \u306E\u8DDD\u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n\
-    \ */\ntemplate <typename T>\ndouble distance_point_segment(const Vector<T, 2>&\
-    \ p1, const Vector<T, 2>& p2, const Vector<T, 2>& p) {\n    if (p1 == p2) return\
-    \ (p - p1).abs();\n    // \u5782\u7DDA\u306E\u8DB3\u304C\u7DDA\u5206\u306E\u5916\
-    \u306A\u3089\u3001\u8FD1\u3044\u65B9\u306E\u7AEF\u70B9\u3068\u306E\u8DDD\u96E2\
-    \n    if (dot(p2 - p1, p - p1) < 0) return (p - p1).abs();\n    if (dot(p1 - p2,\
-    \ p - p2) < 0) return (p - p2).abs();\n    return distance_point_line(p1, p2,\
+    \ first 1 \u672C\u76EE\u306E\u7DDA\u5206\n * @param second 2 \u672C\u76EE\u306E\
+    \u7DDA\u5206\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @return std::optional<Vector<T,\
+    \ 2>> \u5171\u6709\u70B9\u306E1\u4F8B (\u5171\u6709\u70B9\u304C\u306A\u3051\u308C\
+    \u3070 std::nullopt)\n */\ntemplate <typename T>\nconstexpr std::optional<Vector<T,\
+    \ 2>> segment_intersection(const Segment<T>& first, const Segment<T>& second)\
+    \ {\n    const auto& [p1, p2] = first;\n    const auto& [q1, q2] = second;\n \
+    \   static_assert(std::is_floating_point_v<T>, \"segment_intersection: T must\
+    \ be a floating point type (use segments_intersect for integers)\");\n    if (!segments_intersect(first,\
+    \ second)) return std::nullopt;\n    if (cross(p2 - p1, q1 - p1) == 0 && cross(p2\
+    \ - p1, q2 - p1) == 0) {\n        // 4\u70B9\u304C\u540C\u4E00\u76F4\u7DDA\u4E0A\
+    \u306B\u3042\u308B\u5834\u5408\n        if (dot(q1 - p1, q2 - p1) <= 0) return\
+    \ p1;\n        if (dot(q1 - p2, q2 - p2) <= 0) return p2;\n        return q1;\n\
+    \    }\n    T area = cross(p2 - p1, q2 - q1);          // 4\u70B9\u3092\u9802\u70B9\
+    \u3068\u3059\u308B\u56DB\u89D2\u5F62\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\
+    \n    T partial_area = cross(q2 - q1, p1 - q1);  // \u4E09\u89D2\u5F62q1q2p1\u306E\
+    \u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\n    return p1 + (p2 - p1) * partial_area\
+    \ / area;\n}\n\n/**\n * @brief \u70B9 p \u3068\u7DDA\u5206 p1p2 \u306E\u8DDD\u96E2\
+    \ (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate <typename\
+    \ T>\ndouble distance_point_segment(const Segment<T>& object, const Vector<T,\
+    \ 2>& p) {\n    const auto& [p1, p2] = object;\n    if (p1 == p2) return (p -\
+    \ p1).abs();\n    // \u5782\u7DDA\u306E\u8DB3\u304C\u7DDA\u5206\u306E\u5916\u306A\
+    \u3089\u3001\u8FD1\u3044\u65B9\u306E\u7AEF\u70B9\u3068\u306E\u8DDD\u96E2\n   \
+    \ if (dot(p2 - p1, p - p1) < 0) return (p - p1).abs();\n    if (dot(p1 - p2, p\
+    \ - p2) < 0) return (p - p2).abs();\n    return distance_point_line(Line(p1, p2),\
     \ p);\n}\n/**\n * @brief \u7DDA\u5206 p1p2 \u3068\u7DDA\u5206 q1q2 \u306E\u8DDD\
     \u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate <typename\
-    \ T>\ndouble distance_segments(const Vector<T, 2>& p1, const Vector<T, 2>& p2,\
-    \ const Vector<T, 2>& q1, const Vector<T, 2>& q2) {\n    if (p1 != p2 && q1 !=\
-    \ q2 && segments_intersect(p1, p2, q1, q2)) return 0;\n    return std::min({distance_point_segment(p1,\
-    \ p2, q1), distance_point_segment(p1, p2, q2),\n                     distance_point_segment(q1,\
-    \ q2, p1), distance_point_segment(q1, q2, p2)});\n}\n"
+    \ T>\ndouble distance_segments(const Segment<T>& first, const Segment<T>& second)\
+    \ {\n    const auto& [p1, p2] = first;\n    const auto& [q1, q2] = second;\n \
+    \   if (p1 != p2 && q1 != q2 && segments_intersect(first, second)) return 0;\n\
+    \    return std::min({distance_point_segment(first, q1), distance_point_segment(first,\
+    \ q2),\n                     distance_point_segment(second, p1), distance_point_segment(second,\
+    \ p2)});\n}\n/**\n * @brief \u70B9 p \u3068\u7DDA\u5206 p1p2 \u306E\u8DDD\u96E2\
+    \ (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate <typename\
+    \ T>\ndouble distance_point_segment(const Segment<T, 3>& object, const Vector<T,\
+    \ 3>& p) {\n    const auto& [p1, p2] = object;\n    using namespace internal_predicates;\n\
+    \    if (p1 == p2) return norm(p - p1);\n    // \u5782\u7DDA\u306E\u8DB3\u304C\
+    \u7DDA\u5206\u306E\u5916\u306A\u3089\u3001\u8FD1\u3044\u65B9\u306E\u7AEF\u70B9\
+    \u3068\u306E\u8DDD\u96E2\n    if (dot(widen(p2) - widen(p1), widen(p) - widen(p1))\
+    \ < 0) return norm(p - p1);\n    if (dot(widen(p1) - widen(p2), widen(p) - widen(p2))\
+    \ < 0) return norm(p - p2);\n    return distance_point_line(Line(p1, p2), p);\n\
+    }\n/**\n * @brief \u7DDA\u5206 p1p2 \u3068\u7DDA\u5206 q1q2 \u306E\u8DDD\u96E2\
+    \ (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate <typename\
+    \ T>\ndouble distance_segments(const Segment<T, 3>& first, const Segment<T, 3>&\
+    \ second) {\n    const auto& [p1, p2] = first;\n    const auto& [q1, q2] = second;\n\
+    \    double res = std::min({distance_point_segment(first, q1), distance_point_segment(first,\
+    \ q2),\n                           distance_point_segment(second, p1), distance_point_segment(second,\
+    \ p2)});\n    if (p1 == p2 || q1 == q2) return res;\n    // \u8DDD\u96E2\u306E\
+    \ 2 \u4E57\u306F (s, t) \u2208 [0, 1]^2 \u3067\u51F8\u306A\u306E\u3067\u3001\u6700\
+    \u5C0F\u306F\u5185\u90E8\u306E\u505C\u7559\u70B9\u304B\u5883\u754C (\u7AEF\u70B9\
+    \u3068\u7DDA\u5206\u306E\u8DDD\u96E2) \u306B\u3042\u308B\n    using L = long double;\n\
+    \    auto to = [](const Vector<T, 3>& v) { return Vector<L, 3>(v[0], v[1], v[2]);\
+    \ };\n    const Vector<L, 3> d = to(p2) - to(p1), e = to(q2) - to(q1), r = to(p1)\
+    \ - to(q1);\n    const L a = dot(d, d), b = dot(d, e), c = dot(e, e), f = dot(d,\
+    \ r), g = dot(e, r);\n    const L den = a * c - b * b;\n    if (den > 0) {\n \
+    \       // p1 + d s \u3068 q1 + e t \u304C\u6700\u3082\u8FD1\u3044 s, t\n    \
+    \    const L s = (b * g - c * f) / den, t = (a * g - b * f) / den;\n        if\
+    \ (0 <= s && s <= 1 && 0 <= t && t <= 1) res = std::min(res, static_cast<double>((r\
+    \ + d * s - e * t).abs()));\n    }\n    return res;\n}\n"
   dependsOn:
+  - src/geometry/internal/predicates.hpp
   - src/geometry/vector.hpp
   - src/utility/traits.hpp
+  - src/geometry/line.hpp
   isVerificationFile: false
   path: src/geometry/segment.hpp
   requiredBy:
-  - src/geometry/segment-3d.hpp
+  - src/geometry/triangle.hpp
   - src/geometry/circle.hpp
-  - src/geometry/sphere.hpp
-  timestamp: '2026-10-31 17:14:03+09:00'
+  - src/geometry/axis-parallel-segments.hpp
+  timestamp: '2026-11-08 17:10:03+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/yukicoder/3672.test.cpp
-  - test/yukicoder/132.test.cpp
-  - test/unittest/geometry/sphere.test.cpp
   - test/unittest/geometry/circle.test.cpp
-  - test/unittest/geometry/segment-3d.test.cpp
+  - test/unittest/geometry/plane.test.cpp
+  - test/unittest/geometry/triangle.test.cpp
   - test/unittest/geometry/axis-parallel-segments.test.cpp
   - test/unittest/geometry/segment.test.cpp
   - test/aoj/volume1/0115.test.cpp
-  - test/aoj/volume1/0177.test.cpp
+  - test/aoj/cgl/cgl-6-a.test.cpp
   - test/aoj/cgl/cgl-7-b.test.cpp
   - test/aoj/cgl/cgl-7-d.test.cpp
-  - test/aoj/cgl/cgl-1-c.test.cpp
-  - test/aoj/cgl/cgl-1-b.test.cpp
-  - test/aoj/cgl/cgl-2-a.test.cpp
   - test/aoj/cgl/cgl-7-g.test.cpp
   - test/aoj/cgl/cgl-2-c.test.cpp
   - test/aoj/cgl/cgl-7-e.test.cpp
@@ -568,49 +642,57 @@ data:
   - test/aoj/cgl/cgl-2-b.test.cpp
   - test/aoj/cgl/cgl-7-h.test.cpp
   - test/aoj/cgl/cgl-7-f.test.cpp
-  - test/aoj/cgl/cgl-1-a.test.cpp
   - test/aoj/cgl/cgl-7-i.test.cpp
   - test/aoj/cgl/cgl-2-d.test.cpp
   - test/aoj/volume26/2641.test.cpp
-  - test/aoj/volume12/1289.test.cpp
   - test/yosupo/geo/minimum-enclosing-circle.test.cpp
 documentation_of: src/geometry/segment.hpp
 layout: document
-title: "\u76F4\u7DDA\u30FB\u7DDA\u5206 (\u4EA4\u5DEE\u5224\u5B9A\u3001\u4EA4\u70B9\
-  \u3001\u5C04\u5F71\u3001\u8DDD\u96E2)"
+title: "2 \u6B21\u5143\u30FB3 \u6B21\u5143\u306E\u7DDA\u5206"
 ---
 
-2 次元の点 `Vector<T, 2>` ([幾何ベクトル](vector.hpp)) を使う、点・直線・線分の関数です。整数座標でも使える関数は、外積を計算するので座標の絶対値の2乗の数倍が `T` に収まる必要があります。
+2 端点 `p1, p2` を持つ `Segment<T, Dim>` と、線分の関数です。`T` の既定は `long long`、`Dim` の既定は 2 で、2 点から座標型と次元を推論します。
 
 ```cpp
-using P = Vector<long long>;
-bool b = segments_intersect(P(0, 0), P(2, 2), P(0, 2), P(2, 0));  // true
-int k = ccw(P(0, 0), P(1, 0), P(1, 1));                           // 1 (反時計回り)
-using D = Vector<double>;
-auto x = line_intersection(D(0.0, 0.0), D(1.0, 1.0), D(0.0, 2.0), D(2.0, 0.0));  // (1, 1)
-double d = distance_point_segment(P(0, 0), P(2, 0), P(3, 4));      // √17
+using P = Vector<long long, 2>;
+Segment s(P(0, 0), P(2, 2)), t(P(0, 2), P(2, 0));
+bool hit = segments_intersect(s, t);  // true
+bool same = s == Segment(P(2, 2), P(0, 0));  // true
+using Q = Vector<long long, 3>;
+double d = distance_segments(Segment(Q(0, 0, 0), Q(2, 0, 0)), Segment(Q(1, 1, 1), Q(1, 1, 3)));  // √2
 ```
+
+長さ 0 の線分も表せますが、`segments_intersect`・`segment_intersection` は長さ 0 の線分を受け取ると assert で落ちます。距離の計算には使えます。浮動小数点型の判定では誤差を考慮しません。
+
+## メンバ関数
+
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `Segment<T, Dim>()` | 原点だけからなる長さ 0 の線分を作る | $O(1)$ |
+| `Segment<T, Dim>(p1, p2)` | 2 点を端点とする線分を作る | $O(1)$ |
+| `s == t` / `s != t` | 同じ線分か / 異なる線分か。端点の順序は無視する | $O(1)$ |
 
 ## 関数
 
-| 関数 | 説明 | 整数型 | 計算量 |
-|---|---|:-:|---|
-| `segments_intersect(p1, p2, q1, q2)` | 線分 $p_1 p_2$ と $q_1 q_2$ が共有点を持つか (長さ 0 の線分は assert で落ちる) | ✓ | $O(1)$ |
-| `segment_intersection(p1, p2, q1, q2)` | 共有点の1つを `std::optional` で返す (共有点がなければ `std::nullopt`。長さ 0 の線分は assert で落ちる) | 浮動小数点型のみ | $O(1)$ |
-| `ccw(a, b, c)` | 3点の位置関係。1: $a \to b \to c$ が反時計回り、-1: 時計回り、2: $c, a, b$ の順に一直線上、-2: $a, b, c$ の順に一直線上、0: $c$ が線分 $ab$ 上 | ✓ | $O(1)$ |
-| `is_parallel(p1, p2, q1, q2)` / `is_orthogonal(p1, p2, q1, q2)` | 直線 $p_1 p_2$ と $q_1 q_2$ が平行か / 直交するか | ✓ | $O(1)$ |
-| `projection(p1, p2, p)` | 点 $p$ から直線 $p_1 p_2$ に下ろした垂線の足 | 浮動小数点型のみ | $O(1)$ |
-| `reflection(p1, p2, p)` | 直線 $p_1 p_2$ について $p$ と対称な点 | 浮動小数点型のみ | $O(1)$ |
-| `line_intersection(p1, p2, q1, q2)` | 直線 $p_1 p_2$ と $q_1 q_2$ の交点を `std::optional` で返す (平行 (重なる直線も含む) なら `std::nullopt`。$p_1 = p_2$ や $q_1 = q_2$ は assert で落ちる) | 浮動小数点型のみ | $O(1)$ |
-| `distance_point_line(p1, p2, p)` | 点 $p$ と直線 $p_1 p_2$ の距離 (`double`) | ✓ | $O(1)$ |
-| `distance_point_segment(p1, p2, p)` | 点 $p$ と線分 $p_1 p_2$ の距離 (`double`) | ✓ | $O(1)$ |
-| `distance_segments(p1, p2, q1, q2)` | 線分 $p_1 p_2$ と $q_1 q_2$ の距離 (`double`、交われば 0) | ✓ | $O(1)$ |
+`s, t` は同じ座標型・次元の `Segment`、`p` は点です。点と線分の関数は線分を先に渡します。
 
-浮動小数点型でも、`ccw` や `is_parallel` などの判定は誤差を考えずに `0` と比べます。誤差が問題になる場合は、整数座標で計算してください。
+| 関数 | 説明 | 次元 | 計算量 |
+|---|---|---|---|
+| `segments_intersect(s, t)` | 共有点を持つか。端点で接する場合・重なる場合も `true`。整数型でも使える | 2 | $O(1)$ |
+| `segment_intersection(s, t)` | 共有点の 1 つを `std::optional<Vector<T, 2>>` で返す。共有点がなければ `std::nullopt`。浮動小数点型のみ | 2 | $O(1)$ |
+| `distance_point_segment(s, p)` | 点と線分の距離 (`double`)。整数型でも使える | 2・3 | $O(1)$ |
+| `distance_segments(s, t)` | 線分同士の距離 (`double`)。整数型でも使える | 2・3 | $O(1)$ |
+
+2 次元の整数座標では外積や内積が `T` に収まる必要があります。3 次元では整数の外積・内積を `__int128_t` で計算し、座標の絶対値が $10^9$ 程度まで使えます。
+
+## メンバ変数
+
+| 変数 | 説明 |
+|---|---|
+| `p1` / `p2` | 2 端点 (`Vector<T, Dim>`) |
 
 ## 関連
 
-- 点・ベクトルの型と内積・外積は [幾何ベクトル](vector.hpp)
-- 多角形は [多角形](polygon.hpp)、円は [円](circle.hpp)
-- x 軸・y 軸に平行な線分の交差を数えるなら [軸に平行な線分の交点の個数](axis-parallel-segments.hpp)
-- 3 次元の直線・線分は [3 次元の直線・線分・平面](segment-3d.hpp)
+- 直線は [直線](line.hpp)、3 点の位置関係 `ccw` は [幾何ベクトル](vector.hpp)
+- 3 次元の線分と三角形の交差は [三角形](triangle.hpp)
+- 軸に平行な線分の交点の個数は [軸に平行な線分](axis-parallel-segments.hpp)

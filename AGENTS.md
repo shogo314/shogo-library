@@ -43,7 +43,7 @@
   - 意味が決まっている組は `pair` のままでよい: `divmod` の (商, 余り)、`factorize` の (素数, 指数)、区間 `[l, r)`、map と同じ (キー, 値)、ACL と同じ API (`MinCostFlow::flow`・`slope`、二部マッチング)。
 - `inf` を受け取る関数は、最後の引数にして既定を `max / 4` にする。
 - グラフのアルゴリズムは `const Graph<Cost>&` を受け取る自由関数にする。Graph のメンバは表現の操作 (`add_edge`, `read`, `operator[]`, `edges` など) だけにする。木は `Graph` を private 継承しているので、`tree.graph()` を通して渡す。木専用の関数は `const Tree<Cost>&` を受け取り、`tree_util.hpp` に置く。
-- グリッドは `Rect` (`src/utility/range.hpp`) の `contains`・`index`・`neighbors4/8` を使う。`DXY` のような方向の配列は足さない。
+- グリッドは `Grid` (`src/utility/range.hpp`) の `contains`・`index`・`neighbors4/8` を使う。`DXY` のような方向の配列は足さない。
 - 1 引数のコンストラクタには `explicit` を付ける。ただし Matrix・FPS・modint などの値型には付けない。
 
 ## 関数と型の名前

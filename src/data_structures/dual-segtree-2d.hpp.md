@@ -7,6 +7,15 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
+  - icon: ':heavy_check_mark:'
+    path: src/geometry/rectangle.hpp
+    title: "\u8EF8\u306B\u5E73\u884C\u306A\u9577\u65B9\u5F62"
+  - icon: ':heavy_check_mark:'
+    path: src/geometry/vector.hpp
+    title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"
+  - icon: ':question:'
+    path: src/utility/traits.hpp
+    title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
@@ -593,16 +602,335 @@ data:
     \ }\n    constexpr F id() const { return lazy_identity; }\n};\ntemplate <typename\
     \ Op, typename T, typename Mapping, typename Composition, typename U>\nActedMonoid(Op,\
     \ T, Mapping, Composition, U) -> ActedMonoid<T, Op, U, Mapping, Composition>;\n\
-    #line 15 \"src/data_structures/dual-segtree-2d.hpp\"\n\n/**\n * @brief 2\u6B21\
-    \u5143\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u53D6\u5F97\u3059\u308B\
-    \u70B9\u3092\u5148\u8AAD\u307F\u3059\u308B)\n *\n * x \u5EA7\u6A19\u306E\u30BB\
-    \u30B0\u30E1\u30F3\u30C8\u6728\u306E\u5404\u30CE\u30FC\u30C9\u306B\u3001\u305D\
-    \u306E\u90E8\u5206\u6728\u306B\u3042\u308B\u70B9\u306E y \u5EA7\u6A19\u306E\u5217\
-    \u3068\u3001\u305D\u306E\u4E0A\u306E\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\
-    \u6728\u3092\u6301\u305F\u305B\u308B\u3002\n * \u4F5C\u7528\u7D20\u3092\u4E0B\u3078\
-    \u4F1D\u3048\u306A\u3044\u306E\u3067\u3001\u4F5C\u7528\u7D20\u306E\u5408\u6210\
-    \u306F\u53EF\u63DB\u3067\u306A\u3051\u308C\u3070\u306A\u3089\u306A\u3044\n *\n\
-    \ * @tparam A \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9 (algebra/acted-monoid.hpp)\u3002\
+    #line 2 \"src/geometry/rectangle.hpp\"\n\n/**\n * @file rectangle.hpp\n * @brief\
+    \ \u8EF8\u306B\u5E73\u884C\u306A\u9577\u65B9\u5F62\n */\n\n#line 11 \"src/geometry/rectangle.hpp\"\
+    \n\n#line 2 \"src/geometry/vector.hpp\"\n\n/**\n * @file vector.hpp\n * @brief\
+    \ \u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB\n */\n\n#line 10 \"src/geometry/vector.hpp\"\
+    \n#include <cmath>\n#line 15 \"src/geometry/vector.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\
+    \n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 9 \"\
+    src/utility/traits.hpp\"\n#include <functional>\n#line 11 \"src/utility/traits.hpp\"\
+    \n#include <set>\n#line 14 \"src/utility/traits.hpp\"\n\nnamespace internal_traits\
+    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
+    \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
+    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
+    \n#define HAS_METHOD(func_name)                                              \
+    \                \\\n    namespace internal_traits {                         \
+    \                                   \\\n    template <class T, class = void> \
+    \                                                      \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                    \\\n    template <class\
+    \ T>                                                                     \\\n\
+    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                    \\\n    }                                               \
+    \                                       \\\n    template <class T>           \
+    \                                                          \\\n    struct has_##func_name\
+    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
+    \ <class T>                                                                  \
+    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
+    \n#define HAS_METHOD_ARG(func_name)                                          \
+    \                                    \\\n    namespace internal_traits {     \
+    \                                                                           \\\
+    \n    template <class T, typename U, class = void>                           \
+    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                                        \\\n    template\
+    \ <class T, typename U>                                                      \
+    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                                        \\\n    }                           \
+    \                                                                            \
+    \   \\\n    template <class T, typename U>                                   \
+    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \ U>::type {};                           \\\n    template <class T, typename U>\
+    \                                                                            \
+    \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
+    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
+    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
+    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
+    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
+    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
+    \nnamespace internal_traits {\n// \u5C04\u5F71 (proj) \u306E\u65E2\u5B9A\u5024\
+    \n#if __cplusplus >= 202002L\nusing identity = std::identity;\n#else\nstruct identity\
+    \ {\n    using is_transparent = void;\n    template <class T>\n    constexpr T&&\
+    \ operator()(T&& x) const noexcept {\n        return std::forward<T>(x);\n   \
+    \ }\n};\n#endif\n}  // namespace internal_traits\n\ntemplate <class C>\nusing\
+    \ mem_value_type = typename C::value_type;\ntemplate <class C>\nusing mem_difference_type\
+    \ = typename C::difference_type;\n\nnamespace internal_traits {\ntemplate <class\
+    \ T, class = void>\nstruct is_sorted_container_impl : std::false_type {};\ntemplate\
+    \ <class T>\nstruct is_sorted_container_impl<std::set<T>> : std::true_type {};\n\
+    template <class T>\nstruct is_sorted_container_impl<std::multiset<T>> : std::true_type\
+    \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
+    \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
+    inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
+    #line 17 \"src/geometry/vector.hpp\"\n\n/**\n * @brief \u5E7E\u4F55\u5B66\u3068\
+    \u3057\u3066\u306E\u30D9\u30AF\u30C8\u30EB\n *\n * @tparam T \u578B \u7701\u7565\
+    \u3057\u305F\u3089double\n * @tparam Dim \u6B21\u5143 \u7701\u7565\u3057\u305F\
+    \u30892\n */\ntemplate <typename T = double, int Dim = 2, ENABLE_IF_T(std::is_scalar_v<T>\
+    \ && (Dim > 0))>\nstruct Vector {\n    std::array<T, Dim> v;  //!< \u30D9\u30AF\
+    \u30C8\u30EB\u306E\u6210\u5206\u8868\u793A\n\n    /**\n     * @brief \u30C7\u30D5\
+    \u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * \u30BC\u30ED\
+    \u30D9\u30AF\u30C8\u30EB\n     */\n    constexpr Vector() noexcept : v() {}\n\
+    \    /**\n     * @brief \u53EF\u5909\u9577\u5F15\u6570\u306B\u3088\u308B\u30B3\
+    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * \u5404\u6210\u5206\u3092\
+    \ T \u306B\u5909\u63DB\u3057\u3066\u5165\u308C\u308B (Vector(1, 2.5) \u306E\u3088\
+    \u3046\u306B\u578B\u304C\u6DF7\u3056\u3063\u3066\u3082\u7E2E\u5C0F\u5909\u63DB\
+    \u306E\u8B66\u544A\u3092\u51FA\u3055\u306A\u3044)\n     * @tparam Args\n     */\n\
+    \    template <typename... Args>\n    constexpr Vector(Args... args) noexcept\
+    \ : v{static_cast<T>(args)...} {}\n\n    /**\n     * @brief i\u756A\u76EE\u306E\
+    \u6210\u5206\u3092\u8FD4\u3059\n     *\n     * @param i\n     * @return T&\n \
+    \    */\n    constexpr T& operator[](long long i) noexcept {\n        return v[i];\n\
+    \    }\n    /**\n     * @brief i\u756A\u76EE\u306E\u6210\u5206\u3092\u8FD4\u3059\
+    \n     *\n     * @param i\n     * @return T&\n     */\n    constexpr const T&\
+    \ operator[](long long i) const noexcept {\n        return v[i];\n    }\n\n  \
+    \  /**\n     * @brief \u52A0\u7B97\u4EE3\u5165\u6F14\u7B97\u5B50\n     *\n   \
+    \  * @param rhs\n     * @return Vector&\n     */\n    constexpr Vector& operator+=(const\
+    \ Vector& rhs) noexcept {\n        for (int i = 0; i < Dim; i++) v[i] += rhs[i];\n\
+    \        return *this;\n    }\n    /**\n     * @brief \u6E1B\u7B97\u4EE3\u5165\
+    \u6F14\u7B97\u5B50\n     *\n     * @param rhs\n     * @return Vector&\n     */\n\
+    \    constexpr Vector& operator-=(const Vector& rhs) noexcept {\n        for (int\
+    \ i = 0; i < Dim; i++) v[i] -= rhs.v[i];\n        return *this;\n    }\n    /**\n\
+    \     * @brief \u30B9\u30AB\u30E9\u30FC\u500D\u4EE3\u5165\u6F14\u7B97\u5B50\n\
+    \     *\n     * @param coef\n     * @return Vector&\n     */\n    constexpr Vector&\
+    \ operator*=(const T& coef) noexcept {\n        for (int i = 0; i < Dim; i++)\
+    \ v[i] *= coef;\n        return *this;\n    }\n    /**\n     * @brief \u30B9\u30AB\
+    \u30E9\u30FC\u306E\u9006\u6570\u500D\u4EE3\u5165\u6F14\u7B97\u5B50\n     *\n \
+    \    * @param coef\n     * @return Vector&\n     */\n    constexpr Vector& operator/=(const\
+    \ T& coef) {\n        for (int i = 0; i < Dim; i++) {\n            if constexpr\
+    \ (std::is_integral_v<T>) {\n                assert(v[i] % coef == 0 && \"Vector::operator/=\
+    \ : coef must be a divisor of all elements\");\n            }\n            v[i]\
+    \ /= coef;\n        }\n        return *this;\n    }\n\n    /**\n     * @brief\
+    \ \u5358\u9805\u30D7\u30E9\u30B9\u6F14\u7B97\u5B50\n     *\n     * @return Vector\n\
+    \     */\n    [[nodiscard]]\n    constexpr Vector operator+() const noexcept {\n\
+    \        return *this;\n    }\n    /**\n     * @brief \u5358\u9805\u30DE\u30A4\
+    \u30CA\u30B9\u6F14\u7B97\u5B50\n     *\n     * @return Vector\n     */\n    [[nodiscard]]\n\
+    \    constexpr Vector operator-() const noexcept {\n        return *this * (-1);\n\
+    \    }\n\n    /**\n     * @brief \u52A0\u7B97\u6F14\u7B97\u5B50\n     *\n    \
+    \ * @param lhs\n     * @param rhs\n     * @return Vector\n     */\n    [[nodiscard]]\n\
+    \    friend constexpr Vector operator+(const Vector& lhs, const Vector& rhs) noexcept\
+    \ {\n        return std::move(Vector(lhs) += rhs);\n    }\n\n    /**\n     * @brief\
+    \ \u6E1B\u7B97\u6F14\u7B97\u5B50\n     *\n     * @param lhs\n     * @param rhs\n\
+    \     * @return Vector\n     */\n    [[nodiscard]]\n    friend constexpr Vector\
+    \ operator-(const Vector& lhs, const Vector& rhs) noexcept {\n        return std::move(Vector(lhs)\
+    \ -= rhs);\n    }\n\n    /**\n     * @brief \u30B9\u30AB\u30E9\u30FC\u500D\u6F14\
+    \u7B97\u5B50\n     *\n     * @param lhs\n     * @param coef\n     * @return Vector\n\
+    \     */\n    [[nodiscard]]\n    friend constexpr Vector operator*(const Vector&\
+    \ lhs, const T& coef) noexcept {\n        return std::move(Vector(lhs) *= coef);\n\
+    \    }\n\n    /**\n     * @brief \u30B9\u30AB\u30E9\u30FC\u500D\u6F14\u7B97\u5B50\
+    \n     *\n     * @param coef\n     * @param rhs\n     * @return Vector\n     */\n\
+    \    [[nodiscard]]\n    friend constexpr Vector operator*(const T& coef, const\
+    \ Vector& rhs) noexcept {\n        return std::move(Vector(rhs) *= coef);\n  \
+    \  }\n\n    /**\n     * @brief \u30B9\u30AB\u30E9\u30FC\u306E\u9006\u6570\u500D\
+    \u6F14\u7B97\u5B50\n     *\n     * @param lhs\n     * @param coef\n     * @return\
+    \ Vector\n     */\n    [[nodiscard]]\n    friend constexpr Vector operator/(const\
+    \ Vector& lhs, const T& coef) {\n        return std::move(Vector(lhs) /= coef);\n\
+    \    }\n\n    /**\n     * @brief \u7B49\u4FA1\u6F14\u7B97\u5B50\n     *\n    \
+    \ * @param lhs\n     * @param rhs\n     * @return bool\n     */\n    [[nodiscard]]\n\
+    \    friend constexpr bool operator==(const Vector& lhs, const Vector& rhs) noexcept\
+    \ {\n        return lhs.v == rhs.v;\n    }\n\n    /**\n     * @brief \u975E\u7B49\
+    \u4FA1\u6F14\u7B97\u5B50\n     *\n     * @param lhs\n     * @param rhs\n     *\
+    \ @return bool\n     */\n    [[nodiscard]]\n    friend constexpr bool operator!=(const\
+    \ Vector& lhs, const Vector& rhs) noexcept {\n        return lhs.v != rhs.v;\n\
+    \    }\n\n    /**\n     * @brief \u5C0F\u306A\u308A\u6F14\u7B97\u5B50\n     *\n\
+    \     * @param lhs\n     * @param rhs\n     * @return bool\n     */\n    [[nodiscard]]\n\
+    \    friend constexpr bool operator<(const Vector& lhs, const Vector& rhs) noexcept\
+    \ {\n        return lhs.v < rhs.v;\n    }\n    /**\n     * @brief \u5927\u306A\
+    \u308A\u6F14\u7B97\u5B50\n     *\n     * @param lhs\n     * @param rhs\n     *\
+    \ @return bool\n     */\n    [[nodiscard]]\n    friend constexpr bool operator>(const\
+    \ Vector& lhs, const Vector& rhs) noexcept {\n        return lhs.v > rhs.v;\n\
+    \    }\n    /**\n     * @brief \u5C0F\u306A\u308A\u30A4\u30B3\u30FC\u30EB\u6F14\
+    \u7B97\u5B50\n     *\n     * @param lhs\n     * @param rhs\n     * @return bool\n\
+    \     */\n    [[nodiscard]]\n    friend constexpr bool operator<=(const Vector&\
+    \ lhs, const Vector& rhs) noexcept {\n        return lhs.v <= rhs.v;\n    }\n\
+    \    /**\n     * @brief \u5927\u306A\u308A\u30A4\u30B3\u30FC\u30EB\u6F14\u7B97\
+    \u5B50\n     *\n     * @param lhs\n     * @param rhs\n     * @return bool\n  \
+    \   */\n    [[nodiscard]]\n    friend constexpr bool operator>=(const Vector&\
+    \ lhs, const Vector& rhs) noexcept {\n        return lhs.v >= rhs.v;\n    }\n\n\
+    \    /**\n     * @brief \u5165\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u304B\u3089\
+    \u306E\u8AAD\u307F\u8FBC\u307F\n     *\n     * @tparam CharT \u5165\u529B\u30B9\
+    \u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n     * @tparam Traits \u5165\
+    \u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\u6027\n   \
+    \  * @param is\n     * @param rhs\n     * @return std::basic_istream<CharT, Traits>&\n\
+    \     */\n    template <class CharT, class Traits>\n    friend std::basic_istream<CharT,\
+    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Vector& rhs) {\n\
+    \        for (int i = 0; i < Dim; i++) is >> rhs.v[i];\n        return is;\n \
+    \   }\n    /**\n     * @brief \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u3078\
+    \u306E\u66F8\u304D\u8FBC\u307F\n     *\n     * @tparam CharT \u51FA\u529B\u30B9\
+    \u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n     * @tparam Traits \u51FA\
+    \u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\u6027\n   \
+    \  * @param is\n     * @param rhs\n     * @return std::basic_ostream<CharT, Traits>&\n\
+    \     */\n    template <class CharT, class Traits>\n    friend std::basic_ostream<CharT,\
+    \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const Vector& rhs)\
+    \ {\n        for (int i = 0; i < Dim; i++) {\n            if (i != 0) os << CharT('\
+    \ ');\n            os << rhs.v[i];\n        }\n        return os;\n    }\n\n \
+    \   /**\n     * @brief \u5185\u7A4D\n     *\n     * @param lhs\n     * @param\
+    \ rhs\n     * @return T\n     */\n    friend constexpr T dot(const Vector& lhs,\
+    \ const Vector& rhs) noexcept {\n        T ret = 0;\n        for (int i = 0; i\
+    \ < Dim; i++) ret += lhs[i] * rhs[i];\n        return ret;\n    }\n\n    /**\n\
+    \     * @brief \u7D76\u5BFE\u5024\u306E2\u4E57\n     *\n     * @return T\n   \
+    \  */\n    constexpr T squared_norm() const noexcept {\n        return dot(*this,\
+    \ *this);\n    }\n    /**\n     * @brief \u7D76\u5BFE\u5024\n     *\n     * @return\
+    \ double\n     */\n    constexpr double abs() const noexcept {\n        return\
+    \ std::sqrt(squared_norm());\n    }\n};\n\n/**\n * @brief \u6210\u5206\u304B\u3089\
+    \u4F5C\u308B\u3068\u304D\u306E\u63A8\u8AD6\u30AC\u30A4\u30C9\u3002\u578B\u306F\
+    \u6210\u5206\u306E\u5171\u901A\u306E\u578B\u3001\u6B21\u5143\u306F\u6210\u5206\
+    \u306E\u500B\u6570\u306B\u3059\u308B\n *\n * Vector(2LL, 3LL) \u306F Vector<long\
+    \ long, 2>\u3001Vector(1, 2, 3) \u306F Vector<int, 3>\u3001Vector(0.0, 0.0) \u306F\
+    \ Vector<double, 2>\n * (\u3053\u308C\u304C\u306A\u3044\u3068\u3001\u30C6\u30F3\
+    \u30D7\u30EC\u30FC\u30C8\u5F15\u6570\u306E\u7701\u7565\u6642\u306E\u5024\u304B\
+    \u3089 Vector<double, 2> \u306B\u306A\u3063\u3066\u3057\u307E\u3046)\n */\ntemplate\
+    \ <typename T, typename... U, ENABLE_IF_T(std::is_scalar_v<T> && (std::is_scalar_v<U>\
+    \ && ...))>\nVector(T, U...) -> Vector<std::common_type_t<T, U...>, 1 + sizeof...(U)>;\n\
+    \n/**\n * @brief \u4E8C\u6B21\u5143\u30D9\u30AF\u30C8\u30EB\u3069\u3046\u3057\u306E\
+    \u5916\u7A4D(\u5E73\u884C\u56DB\u8FBA\u5F62\u306E\u7B26\u53F7\u4ED8\u304D\u9762\
+    \u7A4D)\n *\n * @param lhs\n * @param rhs\n * @tparam T \u5EA7\u6A19\u306E\u578B\
+    \n * @return T\n */\ntemplate <typename T>\nconstexpr T cross(const Vector<T,\
+    \ 2>& lhs, const Vector<T, 2>& rhs) noexcept {\n    return lhs[0] * rhs[1] - lhs[1]\
+    \ * rhs[0];\n}\n/**\n * @brief \u4E09\u6B21\u5143\u30D9\u30AF\u30C8\u30EB\u3069\
+    \u3046\u3057\u306E\u5916\u7A4D\n *\n * @param lhs\n * @param rhs\n * @tparam T\
+    \ \u5EA7\u6A19\u306E\u578B\n * @return Vector<T, 3>\n */\ntemplate <typename T>\n\
+    constexpr Vector<T, 3> cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs)\
+    \ noexcept {\n    Vector<T, 3> ret;\n    ret[0] = lhs[1] * rhs[2] - lhs[2] * rhs[1];\n\
+    \    ret[1] = lhs[2] * rhs[0] - lhs[0] * rhs[2];\n    ret[2] = lhs[0] * rhs[1]\
+    \ - lhs[1] * rhs[0];\n    return ret;\n}\n\n/**\n * @brief 3\u70B9\u306E\u4F4D\
+    \u7F6E\u95A2\u4FC2 (counter-clockwise)\n *\n * \u6574\u6570\u578B\u3067\u3082\u4F7F\
+    \u3048\u308B\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u3067\u306F\u8AA4\u5DEE\
+    \u3092\u8003\u3048\u305A\u306B\u6BD4\u8F03\u3059\u308B\n *\n * @tparam T \u5EA7\
+    \u6A19\u306E\u578B\n * @return int 1: a\u2192b\u2192c \u304C\u53CD\u6642\u8A08\
+    \u56DE\u308A, -1: \u6642\u8A08\u56DE\u308A, 2: c, a, b \u306E\u9806\u306B\u4E00\
+    \u76F4\u7DDA\u4E0A, -2: a, b, c \u306E\u9806\u306B\u4E00\u76F4\u7DDA\u4E0A, 0:\
+    \ c \u304C\u7DDA\u5206 ab \u4E0A\n */\ntemplate <typename T>\nconstexpr int ccw(const\
+    \ Vector<T, 2>& a, const Vector<T, 2>& b, const Vector<T, 2>& c) {\n    Vector<T,\
+    \ 2> u = b - a, v = c - a;\n    T cr = cross(u, v);\n    if (cr > 0) return 1;\n\
+    \    if (cr < 0) return -1;\n    if (dot(u, v) < 0) return 2;\n    if (u.squared_norm()\
+    \ < v.squared_norm()) return -2;\n    return 0;\n}\n#line 13 \"src/geometry/rectangle.hpp\"\
+    \n\n/**\n * @brief \u534A\u958B\u9818\u57DF [left, right) \xD7 [bottom, top)\u3002\
+    \u5E45\u30FB\u9AD8\u3055 0 \u3082\u8A31\u3059\n * @tparam T \u5EA7\u6A19\u306E\
+    \u578B\u3002\u7701\u7565\u3057\u305F\u3089 long long\n */\ntemplate <typename\
+    \ T = long long>\nstruct Rectangle {\n    T left{}, bottom{}, right{}, top{};\n\
+    \n    constexpr Rectangle() = default;\n    constexpr Rectangle(T left, T bottom,\
+    \ T right, T top) : left(left), bottom(bottom), right(right), top(top) {\n   \
+    \     assert(left <= right && bottom <= top);\n    }\n    constexpr T width()\
+    \ const { return right - left; }\n    constexpr T height() const { return top\
+    \ - bottom; }\n    constexpr T area() const { return width() * height(); }\n \
+    \   constexpr bool empty() const { return left == right || bottom == top; }\n\
+    \    /** @brief \u5DE6\u8FBA\u30FB\u4E0B\u8FBA\u3092\u542B\u307F\u3001\u53F3\u8FBA\
+    \u30FB\u4E0A\u8FBA\u3092\u542B\u307E\u306A\u3044\u5305\u542B\u5224\u5B9A */\n\
+    \    constexpr bool contains(T x, T y) const {\n        return left <= x && x\
+    \ < right && bottom <= y && y < top;\n    }\n    constexpr bool contains(const\
+    \ Vector<T, 2>& p) const { return contains(p[0], p[1]); }\n    /** @brief 4 \u8FBA\
+    \u306E\u5EA7\u6A19\u304C\u3059\u3079\u3066\u7B49\u3057\u3044\u304B (\u7A7A\u306E\
+    \u9577\u65B9\u5F62\u3067\u3082\u5EA7\u6A19\u3092\u6BD4\u8F03\u3059\u308B) */\n\
+    \    constexpr bool operator==(const Rectangle& other) const {\n        return\
+    \ left == other.left && bottom == other.bottom && right == other.right && top\
+    \ == other.top;\n    }\n    constexpr bool operator!=(const Rectangle& other)\
+    \ const { return !(*this == other); }\n\n    /** @brief left bottom right top\
+    \ \u306E\u9806\u306B\u8AAD\u307F\u8FBC\u3080 */\n    template <class CharT, class\
+    \ Traits>\n    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    \ Traits>& is, Rectangle& rhs) {\n        if (is >> rhs.left >> rhs.bottom >>\
+    \ rhs.right >> rhs.top) {\n            assert(rhs.left <= rhs.right && rhs.bottom\
+    \ <= rhs.top);\n        }\n        return is;\n    }\n};\n\ntemplate <typename\
+    \ A, typename B, typename C, typename D>\nRectangle(A, B, C, D) -> Rectangle<std::common_type_t<A,\
+    \ B, C, D>>;\n#line 16 \"src/data_structures/dual-segtree-2d.hpp\"\n\n/**\n *\
+    \ @brief 2\u6B21\u5143\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u53D6\
+    \u5F97\u3059\u308B\u70B9\u3092\u5148\u8AAD\u307F\u3059\u308B)\n *\n * x \u5EA7\
+    \u6A19\u306E\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\u306E\u5404\u30CE\u30FC\u30C9\
+    \u306B\u3001\u305D\u306E\u90E8\u5206\u6728\u306B\u3042\u308B\u70B9\u306E y \u5EA7\
+    \u6A19\u306E\u5217\u3068\u3001\u305D\u306E\u4E0A\u306E\u53CC\u5BFE\u30BB\u30B0\
+    \u30E1\u30F3\u30C8\u6728\u3092\u6301\u305F\u305B\u308B\u3002\n * \u4F5C\u7528\u7D20\
+    \u3092\u4E0B\u3078\u4F1D\u3048\u306A\u3044\u306E\u3067\u3001\u4F5C\u7528\u7D20\
+    \u306E\u5408\u6210\u306F\u53EF\u63DB\u3067\u306A\u3051\u308C\u3070\u306A\u3089\
+    \u306A\u3044\n *\n * @tparam A \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\
+    \u30C9 (algebra/acted-monoid.hpp)\u3002composition \u306F\u53EF\u63DB\n */\ntemplate\
+    \ <typename A>\nclass DualSegTree2D {\n   public:\n    using S = typename A::S;\n\
+    \    using F = typename A::F;\n\n   private:\n    A a;\n    F composition(const\
+    \ F& f, const F& g) const { return a.composition(f, g); }\n    F id() const {\
+    \ return a.id(); }\n\n    int n;                                  // x \u5EA7\u6A19\
+    \u306E\u7A2E\u985E\u6570\n    S init;                                 // \u5404\
+    \u70B9\u306E\u521D\u671F\u5024\n    std::vector<long long> xs, ys;          //\
+    \ \u5727\u7E2E\u3057\u305F\u5EA7\u6A19\n    std::vector<std::vector<int>> node_ys;\
+    \  // \u5404\u30CE\u30FC\u30C9\u306B\u3042\u308B\u70B9\u306E y \u306E\u756A\u53F7\
+    \ (\u6607\u9806)\n    std::vector<std::vector<F>> lazy;       // \u5404\u30CE\u30FC\
+    \u30C9\u306E y \u306E\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u5927\u304D\
+    \u3055\u306F 2 * node_ys[k].size())\n\n    int lower(int k, int yi) const { return\
+    \ static_cast<int>(std::lower_bound(node_ys[k].begin(), node_ys[k].end(), yi)\
+    \ - node_ys[k].begin()); }\n\n    void construct(const std::vector<std::pair<long\
+    \ long, long long>>& points) {\n        for (auto [x, y] : points) {\n       \
+    \     xs.push_back(x);\n            ys.push_back(y);\n        }\n        std::sort(xs.begin(),\
+    \ xs.end());\n        xs.erase(std::unique(xs.begin(), xs.end()), xs.end());\n\
+    \        std::sort(ys.begin(), ys.end());\n        ys.erase(std::unique(ys.begin(),\
+    \ ys.end()), ys.end());\n        n = static_cast<int>(xs.size());\n        node_ys.resize(2\
+    \ * n);\n        for (auto [x, y] : points) {\n            int xi = static_cast<int>(std::lower_bound(xs.begin(),\
+    \ xs.end(), x) - xs.begin());\n            node_ys[n + xi].push_back(static_cast<int>(std::lower_bound(ys.begin(),\
+    \ ys.end(), y) - ys.begin()));\n        }\n        for (int k = n; k < 2 * n;\
+    \ k++) {\n            std::sort(node_ys[k].begin(), node_ys[k].end());\n     \
+    \       node_ys[k].erase(std::unique(node_ys[k].begin(), node_ys[k].end()), node_ys[k].end());\n\
+    \        }\n        for (int k = n - 1; k >= 1; k--) {\n            const auto\
+    \ &l = node_ys[2 * k], &r = node_ys[2 * k + 1];\n            std::set_union(l.begin(),\
+    \ l.end(), r.begin(), r.end(), std::back_inserter(node_ys[k]));\n        }\n \
+    \       lazy.resize(2 * n);\n        for (int k = 1; k < 2 * n; k++) lazy[k].assign(2\
+    \ * node_ys[k].size(), id());\n    }\n\n   public:\n    /**\n     * @param points\
+    \ get \u3059\u308B\u70B9 (x, y) \u306E\u5217 (\u91CD\u8907\u3057\u3066\u3088\u3044\
+    )\u3002\u5404\u70B9\u306F S() \u3067\u521D\u671F\u5316\u3059\u308B\n     * @param\
+    \ a \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n     */\n    explicit\
+    \ DualSegTree2D(const std::vector<std::pair<long long, long long>>& points = {},\
+    \ A a = A()) : DualSegTree2D(points, S(), std::move(a)) {}\n    /**\n     * @param\
+    \ points get \u3059\u308B\u70B9 (x, y) \u306E\u5217 (\u91CD\u8907\u3057\u3066\u3088\
+    \u3044)\n     * @param value \u5404\u70B9\u306E\u521D\u671F\u5024\n     * @param\
+    \ a \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n     */\n    DualSegTree2D(const\
+    \ std::vector<std::pair<long long, long long>>& points, const S& value, A a =\
+    \ A()) : a(std::move(a)), init(value) { construct(points); }\n\n    /**\n    \
+    \ * @brief [lx, rx) x [ly, ry) \u306B\u3042\u308B\u70B9\u306E\u5024\u306B f \u3092\
+    \u4F5C\u7528\u3055\u305B\u308B O(log^2 P)\n     */\n    void apply(const Rectangle<long\
+    \ long>& rect, const F& f) {\n        const auto& [lx, ly, rx, ry] = rect;\n \
+    \       assert(lx <= rx && ly <= ry);\n        int l = static_cast<int>(std::lower_bound(xs.begin(),\
+    \ xs.end(), lx) - xs.begin()) + n;\n        int r = static_cast<int>(std::lower_bound(xs.begin(),\
+    \ xs.end(), rx) - xs.begin()) + n;\n        int lyi = static_cast<int>(std::lower_bound(ys.begin(),\
+    \ ys.end(), ly) - ys.begin());\n        int ryi = static_cast<int>(std::lower_bound(ys.begin(),\
+    \ ys.end(), ry) - ys.begin());\n        auto apply_node = [&](int k) {\n     \
+    \       int len = static_cast<int>(node_ys[k].size());\n            for (int i\
+    \ = lower(k, lyi) + len, j = lower(k, ryi) + len; i < j; i >>= 1, j >>= 1) {\n\
+    \                if (i & 1) lazy[k][i] = composition(f, lazy[k][i]), i++;\n  \
+    \              if (j & 1) --j, lazy[k][j] = composition(f, lazy[k][j]);\n    \
+    \        }\n        };\n        for (; l < r; l >>= 1, r >>= 1) {\n          \
+    \  if (l & 1) apply_node(l++);\n            if (r & 1) apply_node(--r);\n    \
+    \    }\n    }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u70B9\u306E\
+    \u5024\u3092\u8FD4\u3059 (\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u6E21\
+    \u3057\u305F\u70B9\u306E\u307F) O(log^2 P)\n     */\n    S get(long long x, long\
+    \ long y) const {\n        auto ix = std::lower_bound(xs.begin(), xs.end(), x);\n\
+    \        auto iy = std::lower_bound(ys.begin(), ys.end(), y);\n        assert(ix\
+    \ != xs.end() && *ix == x && iy != ys.end() && *iy == y);\n        int yi = static_cast<int>(iy\
+    \ - ys.begin());\n        F f = id();\n        for (int k = n + static_cast<int>(ix\
+    \ - xs.begin()); k >= 1; k >>= 1) {\n            int p = lower(k, yi);\n     \
+    \       assert(p < static_cast<int>(node_ys[k].size()) && node_ys[k][p] == yi);\
+    \  // \u6E21\u3057\u305F\u70B9\u304B\n            for (p += static_cast<int>(node_ys[k].size());\
+    \ p >= 1; p >>= 1) f = composition(lazy[k][p], f);\n        }\n        return\
+    \ acted_monoid::apply_mapping(a, f, init, 0, 1);\n    }\n};\n\ntemplate <typename\
+    \ A>\nDualSegTree2D(std::vector<std::pair<long long, long long>>, A) -> DualSegTree2D<A>;\n\
+    template <typename A>\nDualSegTree2D(std::vector<std::pair<long long, long long>>,\
+    \ typename A::S, A) -> DualSegTree2D<A>;\n\n// \u5225\u540D (\u4F5C\u7528\u7D20\
+    \u306E\u5408\u6210\u304C\u53EF\u63DB\u306A\u3082\u306E\u3060\u3051\u3002DualSegTree\
+    \ \u306E\u5225\u540D\u3068\u540C\u3058\u304F Min \u7CFB\u3092\u5B9F\u4F53\u306B\
+    \u3059\u308B)\n\n/**\n * @brief \u9577\u65B9\u5F62\u52A0\u7B97\u30011\u70B9\u53D6\
+    \u5F97\n *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RAddQ2D = DualSegTree2D<acted_monoid::AddMin<S>>;\n\
+    /**\n * @brief \u9577\u65B9\u5F62 chmin\u30011\u70B9\u53D6\u5F97\n *\n * @tparam\
+    \ S \u578B\n */\ntemplate <typename S>\nusing RChminQ2D = DualSegTree2D<acted_monoid::ChminMin<S>>;\n\
+    /**\n * @brief \u9577\u65B9\u5F62 chmax\u30011\u70B9\u53D6\u5F97\n *\n * @tparam\
+    \ S \u578B\n */\ntemplate <typename S>\nusing RChmaxQ2D = DualSegTree2D<acted_monoid::ChmaxMax<S>>;\n"
+  code: "#pragma once\n\n/**\n * @file dual-segtree-2d.hpp\n * @brief 2\u6B21\u5143\
+    \u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u9577\u65B9\u5F62\u4F5C\u7528\
+    \u30011\u70B9\u53D6\u5F97)\n */\n\n#include <algorithm>\n#include <cassert>\n\
+    #include <iterator>\n#include <utility>\n#include <vector>\n\n#include \"../algebra/acted-monoid.hpp\"\
+    \n#include \"../geometry/rectangle.hpp\"\n\n/**\n * @brief 2\u6B21\u5143\u53CC\
+    \u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u53D6\u5F97\u3059\u308B\u70B9\u3092\
+    \u5148\u8AAD\u307F\u3059\u308B)\n *\n * x \u5EA7\u6A19\u306E\u30BB\u30B0\u30E1\
+    \u30F3\u30C8\u6728\u306E\u5404\u30CE\u30FC\u30C9\u306B\u3001\u305D\u306E\u90E8\
+    \u5206\u6728\u306B\u3042\u308B\u70B9\u306E y \u5EA7\u6A19\u306E\u5217\u3068\u3001\
+    \u305D\u306E\u4E0A\u306E\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\u3092\
+    \u6301\u305F\u305B\u308B\u3002\n * \u4F5C\u7528\u7D20\u3092\u4E0B\u3078\u4F1D\u3048\
+    \u306A\u3044\u306E\u3067\u3001\u4F5C\u7528\u7D20\u306E\u5408\u6210\u306F\u53EF\
+    \u63DB\u3067\u306A\u3051\u308C\u3070\u306A\u3089\u306A\u3044\n *\n * @tparam A\
+    \ \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9 (algebra/acted-monoid.hpp)\u3002\
     composition \u306F\u53EF\u63DB\n */\ntemplate <typename A>\nclass DualSegTree2D\
     \ {\n   public:\n    using S = typename A::S;\n    using F = typename A::F;\n\n\
     \   private:\n    A a;\n    F composition(const F& f, const F& g) const { return\
@@ -642,98 +970,9 @@ data:
     \ std::vector<std::pair<long long, long long>>& points, const S& value, A a =\
     \ A()) : a(std::move(a)), init(value) { construct(points); }\n\n    /**\n    \
     \ * @brief [lx, rx) x [ly, ry) \u306B\u3042\u308B\u70B9\u306E\u5024\u306B f \u3092\
-    \u4F5C\u7528\u3055\u305B\u308B O(log^2 P)\n     */\n    void apply(long long lx,\
-    \ long long rx, long long ly, long long ry, const F& f) {\n        assert(lx <=\
-    \ rx && ly <= ry);\n        int l = static_cast<int>(std::lower_bound(xs.begin(),\
-    \ xs.end(), lx) - xs.begin()) + n;\n        int r = static_cast<int>(std::lower_bound(xs.begin(),\
-    \ xs.end(), rx) - xs.begin()) + n;\n        int lyi = static_cast<int>(std::lower_bound(ys.begin(),\
-    \ ys.end(), ly) - ys.begin());\n        int ryi = static_cast<int>(std::lower_bound(ys.begin(),\
-    \ ys.end(), ry) - ys.begin());\n        auto apply_node = [&](int k) {\n     \
-    \       int len = static_cast<int>(node_ys[k].size());\n            for (int i\
-    \ = lower(k, lyi) + len, j = lower(k, ryi) + len; i < j; i >>= 1, j >>= 1) {\n\
-    \                if (i & 1) lazy[k][i] = composition(f, lazy[k][i]), i++;\n  \
-    \              if (j & 1) --j, lazy[k][j] = composition(f, lazy[k][j]);\n    \
-    \        }\n        };\n        for (; l < r; l >>= 1, r >>= 1) {\n          \
-    \  if (l & 1) apply_node(l++);\n            if (r & 1) apply_node(--r);\n    \
-    \    }\n    }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u70B9\u306E\
-    \u5024\u3092\u8FD4\u3059 (\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u6E21\
-    \u3057\u305F\u70B9\u306E\u307F) O(log^2 P)\n     */\n    S get(long long x, long\
-    \ long y) const {\n        auto ix = std::lower_bound(xs.begin(), xs.end(), x);\n\
-    \        auto iy = std::lower_bound(ys.begin(), ys.end(), y);\n        assert(ix\
-    \ != xs.end() && *ix == x && iy != ys.end() && *iy == y);\n        int yi = static_cast<int>(iy\
-    \ - ys.begin());\n        F f = id();\n        for (int k = n + static_cast<int>(ix\
-    \ - xs.begin()); k >= 1; k >>= 1) {\n            int p = lower(k, yi);\n     \
-    \       assert(p < static_cast<int>(node_ys[k].size()) && node_ys[k][p] == yi);\
-    \  // \u6E21\u3057\u305F\u70B9\u304B\n            for (p += static_cast<int>(node_ys[k].size());\
-    \ p >= 1; p >>= 1) f = composition(lazy[k][p], f);\n        }\n        return\
-    \ acted_monoid::apply_mapping(a, f, init, 0, 1);\n    }\n};\n\ntemplate <typename\
-    \ A>\nDualSegTree2D(std::vector<std::pair<long long, long long>>, A) -> DualSegTree2D<A>;\n\
-    template <typename A>\nDualSegTree2D(std::vector<std::pair<long long, long long>>,\
-    \ typename A::S, A) -> DualSegTree2D<A>;\n\n// \u5225\u540D (\u4F5C\u7528\u7D20\
-    \u306E\u5408\u6210\u304C\u53EF\u63DB\u306A\u3082\u306E\u3060\u3051\u3002DualSegTree\
-    \ \u306E\u5225\u540D\u3068\u540C\u3058\u304F Min \u7CFB\u3092\u5B9F\u4F53\u306B\
-    \u3059\u308B)\n\n/**\n * @brief \u9577\u65B9\u5F62\u52A0\u7B97\u30011\u70B9\u53D6\
-    \u5F97\n *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RAddQ2D = DualSegTree2D<acted_monoid::AddMin<S>>;\n\
-    /**\n * @brief \u9577\u65B9\u5F62 chmin\u30011\u70B9\u53D6\u5F97\n *\n * @tparam\
-    \ S \u578B\n */\ntemplate <typename S>\nusing RChminQ2D = DualSegTree2D<acted_monoid::ChminMin<S>>;\n\
-    /**\n * @brief \u9577\u65B9\u5F62 chmax\u30011\u70B9\u53D6\u5F97\n *\n * @tparam\
-    \ S \u578B\n */\ntemplate <typename S>\nusing RChmaxQ2D = DualSegTree2D<acted_monoid::ChmaxMax<S>>;\n"
-  code: "#pragma once\n\n/**\n * @file dual-segtree-2d.hpp\n * @brief 2\u6B21\u5143\
-    \u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u9577\u65B9\u5F62\u4F5C\u7528\
-    \u30011\u70B9\u53D6\u5F97)\n */\n\n#include <algorithm>\n#include <cassert>\n\
-    #include <iterator>\n#include <utility>\n#include <vector>\n\n#include \"../algebra/acted-monoid.hpp\"\
-    \n\n/**\n * @brief 2\u6B21\u5143\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\
-    \ (\u53D6\u5F97\u3059\u308B\u70B9\u3092\u5148\u8AAD\u307F\u3059\u308B)\n *\n *\
-    \ x \u5EA7\u6A19\u306E\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\u306E\u5404\u30CE\u30FC\
-    \u30C9\u306B\u3001\u305D\u306E\u90E8\u5206\u6728\u306B\u3042\u308B\u70B9\u306E\
-    \ y \u5EA7\u6A19\u306E\u5217\u3068\u3001\u305D\u306E\u4E0A\u306E\u53CC\u5BFE\u30BB\
-    \u30B0\u30E1\u30F3\u30C8\u6728\u3092\u6301\u305F\u305B\u308B\u3002\n * \u4F5C\u7528\
-    \u7D20\u3092\u4E0B\u3078\u4F1D\u3048\u306A\u3044\u306E\u3067\u3001\u4F5C\u7528\
-    \u7D20\u306E\u5408\u6210\u306F\u53EF\u63DB\u3067\u306A\u3051\u308C\u3070\u306A\
-    \u3089\u306A\u3044\n *\n * @tparam A \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\
-    \u30A4\u30C9 (algebra/acted-monoid.hpp)\u3002composition \u306F\u53EF\u63DB\n\
-    \ */\ntemplate <typename A>\nclass DualSegTree2D {\n   public:\n    using S =\
-    \ typename A::S;\n    using F = typename A::F;\n\n   private:\n    A a;\n    F\
-    \ composition(const F& f, const F& g) const { return a.composition(f, g); }\n\
-    \    F id() const { return a.id(); }\n\n    int n;                           \
-    \       // x \u5EA7\u6A19\u306E\u7A2E\u985E\u6570\n    S init;               \
-    \                  // \u5404\u70B9\u306E\u521D\u671F\u5024\n    std::vector<long\
-    \ long> xs, ys;          // \u5727\u7E2E\u3057\u305F\u5EA7\u6A19\n    std::vector<std::vector<int>>\
-    \ node_ys;  // \u5404\u30CE\u30FC\u30C9\u306B\u3042\u308B\u70B9\u306E y \u306E\
-    \u756A\u53F7 (\u6607\u9806)\n    std::vector<std::vector<F>> lazy;       // \u5404\
-    \u30CE\u30FC\u30C9\u306E y \u306E\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\
-    \ (\u5927\u304D\u3055\u306F 2 * node_ys[k].size())\n\n    int lower(int k, int\
-    \ yi) const { return static_cast<int>(std::lower_bound(node_ys[k].begin(), node_ys[k].end(),\
-    \ yi) - node_ys[k].begin()); }\n\n    void construct(const std::vector<std::pair<long\
-    \ long, long long>>& points) {\n        for (auto [x, y] : points) {\n       \
-    \     xs.push_back(x);\n            ys.push_back(y);\n        }\n        std::sort(xs.begin(),\
-    \ xs.end());\n        xs.erase(std::unique(xs.begin(), xs.end()), xs.end());\n\
-    \        std::sort(ys.begin(), ys.end());\n        ys.erase(std::unique(ys.begin(),\
-    \ ys.end()), ys.end());\n        n = static_cast<int>(xs.size());\n        node_ys.resize(2\
-    \ * n);\n        for (auto [x, y] : points) {\n            int xi = static_cast<int>(std::lower_bound(xs.begin(),\
-    \ xs.end(), x) - xs.begin());\n            node_ys[n + xi].push_back(static_cast<int>(std::lower_bound(ys.begin(),\
-    \ ys.end(), y) - ys.begin()));\n        }\n        for (int k = n; k < 2 * n;\
-    \ k++) {\n            std::sort(node_ys[k].begin(), node_ys[k].end());\n     \
-    \       node_ys[k].erase(std::unique(node_ys[k].begin(), node_ys[k].end()), node_ys[k].end());\n\
-    \        }\n        for (int k = n - 1; k >= 1; k--) {\n            const auto\
-    \ &l = node_ys[2 * k], &r = node_ys[2 * k + 1];\n            std::set_union(l.begin(),\
-    \ l.end(), r.begin(), r.end(), std::back_inserter(node_ys[k]));\n        }\n \
-    \       lazy.resize(2 * n);\n        for (int k = 1; k < 2 * n; k++) lazy[k].assign(2\
-    \ * node_ys[k].size(), id());\n    }\n\n   public:\n    /**\n     * @param points\
-    \ get \u3059\u308B\u70B9 (x, y) \u306E\u5217 (\u91CD\u8907\u3057\u3066\u3088\u3044\
-    )\u3002\u5404\u70B9\u306F S() \u3067\u521D\u671F\u5316\u3059\u308B\n     * @param\
-    \ a \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n     */\n    explicit\
-    \ DualSegTree2D(const std::vector<std::pair<long long, long long>>& points = {},\
-    \ A a = A()) : DualSegTree2D(points, S(), std::move(a)) {}\n    /**\n     * @param\
-    \ points get \u3059\u308B\u70B9 (x, y) \u306E\u5217 (\u91CD\u8907\u3057\u3066\u3088\
-    \u3044)\n     * @param value \u5404\u70B9\u306E\u521D\u671F\u5024\n     * @param\
-    \ a \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n     */\n    DualSegTree2D(const\
-    \ std::vector<std::pair<long long, long long>>& points, const S& value, A a =\
-    \ A()) : a(std::move(a)), init(value) { construct(points); }\n\n    /**\n    \
-    \ * @brief [lx, rx) x [ly, ry) \u306B\u3042\u308B\u70B9\u306E\u5024\u306B f \u3092\
-    \u4F5C\u7528\u3055\u305B\u308B O(log^2 P)\n     */\n    void apply(long long lx,\
-    \ long long rx, long long ly, long long ry, const F& f) {\n        assert(lx <=\
-    \ rx && ly <= ry);\n        int l = static_cast<int>(std::lower_bound(xs.begin(),\
+    \u4F5C\u7528\u3055\u305B\u308B O(log^2 P)\n     */\n    void apply(const Rectangle<long\
+    \ long>& rect, const F& f) {\n        const auto& [lx, ly, rx, ry] = rect;\n \
+    \       assert(lx <= rx && ly <= ry);\n        int l = static_cast<int>(std::lower_bound(xs.begin(),\
     \ xs.end(), lx) - xs.begin()) + n;\n        int r = static_cast<int>(std::lower_bound(xs.begin(),\
     \ xs.end(), rx) - xs.begin()) + n;\n        int lyi = static_cast<int>(std::lower_bound(ys.begin(),\
     \ ys.end(), ly) - ys.begin());\n        int ryi = static_cast<int>(std::lower_bound(ys.begin(),\
@@ -770,10 +1009,13 @@ data:
   dependsOn:
   - src/algebra/acted-monoid.hpp
   - src/algebra/monoid.hpp
+  - src/geometry/rectangle.hpp
+  - src/geometry/vector.hpp
+  - src/utility/traits.hpp
   isVerificationFile: false
   path: src/data_structures/dual-segtree-2d.hpp
   requiredBy: []
-  timestamp: '2026-10-27 20:28:53+09:00'
+  timestamp: '2026-11-08 17:10:03+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/dual-segtree-2d.test.cpp
@@ -789,8 +1031,8 @@ title: "2\u6B21\u5143\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u9577\u6
 ```cpp
 std::vector<std::pair<long long, long long>> points = { {1, 2}, {3, 4}, {-1000000000000, 0} };  // get する点 (x, y)
 RAddQ2D<long long> seg(points);
-seg.apply(0, 4, 0, 3, 5);  // [0, 4) x [0, 3) に 5 を足す
-seg.apply(1, 4, 2, 5, 7);  // [1, 4) x [2, 5) に 7 を足す
+seg.apply(Rectangle<>(0, 0, 4, 3), 5);  // [0, 4) x [0, 3) に 5 を足す
+seg.apply(Rectangle<>(1, 2, 4, 5), 7);  // [1, 4) x [2, 5) に 7 を足す
 seg.get(1, 2);             // 12
 seg.get(3, 4);             // 7
 
@@ -816,6 +1058,8 @@ RChminQ2D<int> seg2(points, 1000000000);  // 長方形 chmin、初期値を指�
 
 [双対セグメント木](dual-segtree.hpp) の別名と同じく、`mapping` が区間の長さを使わない `Min` 系を実体にしています。
 
+領域 `rect` は [Rectangle](../geometry/rectangle.hpp) で渡します。座標の順序は `(left, bottom, right, top)` です。
+
 ## メンバ関数
 
 $P$ を渡した点の数とします。
@@ -824,7 +1068,7 @@ $P$ を渡した点の数とします。
 |---|---|---|
 | `DualSegTree2D<A>(points)` | 点の列 `points` を先読みする。各点は `S()` で初期化 | $O(P \log P)$ |
 | `DualSegTree2D<A>(points, x)` | 各点を `x` で初期化 | $O(P \log P)$ |
-| `apply(lx, rx, ly, ry, f)` | $[l_x, r_x) \times [l_y, r_y)$ にある点の値に `f` を作用 | $O(\log^2 P)$ |
+| `apply(rect, f)` | $[l_x, r_x) \times [l_y, r_y)$ にある点の値に `f` を作用 | $O(\log^2 P)$ |
 | `get(x, y)` | $(x, y)$ の値 | $O(\log^2 P)$ |
 
 メモリは $O(P \log P)$ です。

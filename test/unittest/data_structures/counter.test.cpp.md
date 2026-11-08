@@ -135,20 +135,29 @@ data:
     \ O(1)\n     */\n    std::optional<Mode> mode() const {\n        if (frequency.empty())\
     \ return std::nullopt;\n        const auto& [value, count] = *frequency.begin();\n\
     \        return Mode{value, count};\n    }\n    std::vector<value_type> most_common()\
-    \ const {\n        return {frequency.begin(), frequency.end()};\n    }\n    class\
-    \ CounterReference {\n        Counter& base;\n        key_type key;\n\n      \
-    \ public:\n        CounterReference(Counter& base, key_type key) : base(base),\
-    \ key(key) {}\n        CounterReference& operator=(const mapped_type& x) {\n \
-    \           base.set(key, x);\n            return *this;\n        }\n        CounterReference&\
-    \ operator+=(const mapped_type& x) {\n            base.inc(key, x);\n        \
-    \    return *this;\n        }\n        CounterReference& operator-=(const mapped_type&\
-    \ x) {\n            base.inc(key, -x);\n            return *this;\n        }\n\
-    \        operator mapped_type() const {\n            return base.get(key);\n \
-    \       }\n    };\n    mapped_type operator[](const key_type& key) const {\n \
-    \       return get(key);\n    }\n    CounterReference operator[](const key_type&\
-    \ key) {\n        return CounterReference(*this, key);\n    }\n};\n\ntemplate\
-    \ <typename T>\nCounter(std::vector<T>) -> Counter<T>;\n#line 7 \"test/unittest/data_structures/counter.test.cpp\"\
-    \n\n#include <algorithm>\n#include <iostream>\n#line 11 \"test/unittest/data_structures/counter.test.cpp\"\
+    \ const {\n        return {frequency.begin(), frequency.end()};\n    }\n    /**\n\
+    \     * @brief \u500B\u6570\u306E\u591A\u3044\u9806\u306B\u4E0A\u4F4D k \u4EF6\
+    \u3092\u8FD4\u3059\u3002\u540C\u6570\u306A\u3089\u5024\u306E\u6607\u9806\u3002\
+    k >= 0\n     * @note k \u304C\u7570\u306A\u308B\u5024\u306E\u500B\u6570\u3088\u308A\
+    \u5927\u304D\u3051\u308C\u3070\u5168\u4EF6\u3092\u8FD4\u3059\u3002O(min(k, size()))\n\
+    \     */\n    std::vector<value_type> most_common(long long k) const {\n     \
+    \   assert(k >= 0);\n        if (k > size()) k = size();\n        std::vector<value_type>\
+    \ result;\n        result.reserve(k);\n        auto itr = frequency.begin();\n\
+    \        for (long long i = 0; i < k; ++i, ++itr) result.push_back(*itr);\n  \
+    \      return result;\n    }\n    class CounterReference {\n        Counter& base;\n\
+    \        key_type key;\n\n       public:\n        CounterReference(Counter& base,\
+    \ key_type key) : base(base), key(key) {}\n        CounterReference& operator=(const\
+    \ mapped_type& x) {\n            base.set(key, x);\n            return *this;\n\
+    \        }\n        CounterReference& operator+=(const mapped_type& x) {\n   \
+    \         base.inc(key, x);\n            return *this;\n        }\n        CounterReference&\
+    \ operator-=(const mapped_type& x) {\n            base.inc(key, -x);\n       \
+    \     return *this;\n        }\n        operator mapped_type() const {\n     \
+    \       return base.get(key);\n        }\n    };\n    mapped_type operator[](const\
+    \ key_type& key) const {\n        return get(key);\n    }\n    CounterReference\
+    \ operator[](const key_type& key) {\n        return CounterReference(*this, key);\n\
+    \    }\n};\n\ntemplate <typename T>\nCounter(std::vector<T>) -> Counter<T>;\n\
+    #line 7 \"test/unittest/data_structures/counter.test.cpp\"\n\n#include <algorithm>\n\
+    #include <iostream>\n#line 11 \"test/unittest/data_structures/counter.test.cpp\"\
     \n#include <random>\n#include <string>\n#line 14 \"test/unittest/data_structures/counter.test.cpp\"\
     \n\nusing Model = std::map<int, long long>;\n\n// \u500B\u6570 0 \u306E\u5024\u3092\
     \u53D6\u308A\u9664\u3044\u305F map \u306B\u3059\u308B\nModel normalize(Model m)\
@@ -225,12 +234,16 @@ data:
     \        std::vector<std::pair<int, long long>> expect(nm.begin(), nm.end());\n\
     \        std::stable_sort(expect.begin(), expect.end(), [](const auto& p, const\
     \ auto& q) { return p.second > q.second; });\n        check(d.most_common() ==\
-    \ expect, \"most_common\");\n    }\n\n    // \u81EA\u5206\u81EA\u8EAB\u3092\u5F15\
-    \u304F\u3068\u7A7A\u306B\u306A\u308B (\u8D70\u67FB\u4E2D\u306E\u8981\u7D20\u3092\
-    \u6D88\u3057\u3066\u3082\u58CA\u308C\u306A\u3044)\n    if (ok) {\n        Counter<int>\
-    \ c{{1, 2}, {3, 1}, {5, 4}};\n        c -= c;\n        check(same(c, {}), \"self\
-    \ operator-=\");\n        Counter<int> d{{1, 2}, {3, 1}};\n        d += d;\n \
-    \       check(same(d, {{1, 4}, {3, 2}}), \"self operator+=\");\n    }\n\n    if\
+    \ expect, \"most_common\");\n        for (long long k = 0; k <= d.size() + 2;\
+    \ ++k) {\n            auto top = expect;\n            if (k < static_cast<long\
+    \ long>(top.size())) top.resize(k);\n            check(d.most_common(k) == top,\
+    \ \"most_common(k)\");\n        }\n    }\n\n    // \u81EA\u5206\u81EA\u8EAB\u3092\
+    \u5F15\u304F\u3068\u7A7A\u306B\u306A\u308B (\u8D70\u67FB\u4E2D\u306E\u8981\u7D20\
+    \u3092\u6D88\u3057\u3066\u3082\u58CA\u308C\u306A\u3044)\n    if (ok) {\n     \
+    \   Counter<int> c{{1, 2}, {3, 1}, {5, 4}};\n        c -= c;\n        check(same(c,\
+    \ {}), \"self operator-=\");\n        check(c.most_common(2).empty(), \"most_common(k)\
+    \ of empty\");\n        Counter<int> d{{1, 2}, {3, 1}};\n        d += d;\n   \
+    \     check(same(d, {{1, 4}, {3, 2}}), \"self operator+=\");\n    }\n\n    if\
     \ (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// Counter \u3092 std::map \u306B\u3088\u308B\u611A\u76F4\u306A\u5B9F\u88C5\
@@ -314,12 +327,16 @@ data:
     \        std::vector<std::pair<int, long long>> expect(nm.begin(), nm.end());\n\
     \        std::stable_sort(expect.begin(), expect.end(), [](const auto& p, const\
     \ auto& q) { return p.second > q.second; });\n        check(d.most_common() ==\
-    \ expect, \"most_common\");\n    }\n\n    // \u81EA\u5206\u81EA\u8EAB\u3092\u5F15\
-    \u304F\u3068\u7A7A\u306B\u306A\u308B (\u8D70\u67FB\u4E2D\u306E\u8981\u7D20\u3092\
-    \u6D88\u3057\u3066\u3082\u58CA\u308C\u306A\u3044)\n    if (ok) {\n        Counter<int>\
-    \ c{{1, 2}, {3, 1}, {5, 4}};\n        c -= c;\n        check(same(c, {}), \"self\
-    \ operator-=\");\n        Counter<int> d{{1, 2}, {3, 1}};\n        d += d;\n \
-    \       check(same(d, {{1, 4}, {3, 2}}), \"self operator+=\");\n    }\n\n    if\
+    \ expect, \"most_common\");\n        for (long long k = 0; k <= d.size() + 2;\
+    \ ++k) {\n            auto top = expect;\n            if (k < static_cast<long\
+    \ long>(top.size())) top.resize(k);\n            check(d.most_common(k) == top,\
+    \ \"most_common(k)\");\n        }\n    }\n\n    // \u81EA\u5206\u81EA\u8EAB\u3092\
+    \u5F15\u304F\u3068\u7A7A\u306B\u306A\u308B (\u8D70\u67FB\u4E2D\u306E\u8981\u7D20\
+    \u3092\u6D88\u3057\u3066\u3082\u58CA\u308C\u306A\u3044)\n    if (ok) {\n     \
+    \   Counter<int> c{{1, 2}, {3, 1}, {5, 4}};\n        c -= c;\n        check(same(c,\
+    \ {}), \"self operator-=\");\n        check(c.most_common(2).empty(), \"most_common(k)\
+    \ of empty\");\n        Counter<int> d{{1, 2}, {3, 1}};\n        d += d;\n   \
+    \     check(same(d, {{1, 4}, {3, 2}}), \"self operator+=\");\n    }\n\n    if\
     \ (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/data_structures/counter.hpp
@@ -327,7 +344,7 @@ data:
   isVerificationFile: true
   path: test/unittest/data_structures/counter.test.cpp
   requiredBy: []
-  timestamp: '2026-11-07 22:59:54+09:00'
+  timestamp: '2026-11-08 03:29:53+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/data_structures/counter.test.cpp

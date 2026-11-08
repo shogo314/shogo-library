@@ -6,6 +6,16 @@ data:
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
+    path: src/data_structures/dual-segtree-2d.hpp
+    title: "2\u6B21\u5143\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u9577\u65B9\
+      \u5F62\u4F5C\u7528\u30011\u70B9\u53D6\u5F97)"
+  - icon: ':heavy_check_mark:'
+    path: src/data_structures/kd-tree.hpp
+    title: kd-tree
+  - icon: ':heavy_check_mark:'
+    path: src/data_structures/segtree-2d.hpp
+    title: "2\u6B21\u5143\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
+  - icon: ':heavy_check_mark:'
     path: src/geometry/axis-parallel-segments.hpp
     title: "\u8EF8\u306B\u5E73\u884C\u306A\u7DDA\u5206\u306E\u4EA4\u70B9\u306E\u500B\
       \u6570"
@@ -14,6 +24,13 @@ data:
     title: "\u5186 (\u4F4D\u7F6E\u95A2\u4FC2\u3001\u4EA4\u70B9\u3001\u63A5\u7DDA\u3001\
       \u5185\u63A5\u5186\u3001\u5916\u63A5\u5186\u3001\u5171\u901A\u90E8\u5206\u306E\
       \u9762\u7A4D\u3001\u6700\u5C0F\u5305\u542B\u5186)"
+  - icon: ':heavy_check_mark:'
+    path: src/geometry/internal/predicates.hpp
+    title: "\u5E7E\u4F55\u306E\u5185\u90E8\u8A08\u7B97 (\u6574\u6570\u5EA7\u6A19\u306E\
+      \u62E1\u5F35\u3001\u5411\u304D\u3001\u30CE\u30EB\u30E0)"
+  - icon: ':heavy_check_mark:'
+    path: src/geometry/line.hpp
+    title: "2 \u6B21\u5143\u30FB3 \u6B21\u5143\u306E\u76F4\u7DDA"
   - icon: ':heavy_check_mark:'
     path: src/geometry/manhattan-mst.hpp
     title: "\u30DE\u30F3\u30CF\u30C3\u30BF\u30F3\u8DDD\u96E2\u306E\u6700\u5C0F\u5168\
@@ -24,6 +41,10 @@ data:
       \u30FB\u6700\u9060\u70B9\u5BFE\u3001\u5404\u70B9\u304B\u3089\u6700\u3082\u8FD1\
       \u3044\u70B9\u30FB\u6700\u3082\u9060\u3044\u70B9)"
   - icon: ':heavy_check_mark:'
+    path: src/geometry/plane.hpp
+    title: "\u5E73\u9762 (\u5305\u542B\u30FB\u5E73\u884C\u5224\u5B9A\u3001\u8DDD\u96E2\
+      \u3001\u76F4\u7DDA\u3068\u306E\u4EA4\u70B9)"
+  - icon: ':heavy_check_mark:'
     path: src/geometry/point-pair.hpp
     title: "\u6700\u8FD1\u70B9\u5BFE\u30FB\u6700\u9060\u70B9\u5BFE"
   - icon: ':heavy_check_mark:'
@@ -32,19 +53,22 @@ data:
       \u5B9A\u3001\u51F8\u6027\u3001\u51F8\u5305\u3001\u51F8\u591A\u89D2\u5F62\u306E\
       \u5207\u65AD)"
   - icon: ':heavy_check_mark:'
-    path: src/geometry/segment-3d.hpp
-    title: "3 \u6B21\u5143\u306E\u76F4\u7DDA\u30FB\u7DDA\u5206\u30FB\u5E73\u9762 (\u8DDD\
-      \u96E2\u3001\u76F4\u7DDA\u3068\u5E73\u9762\u306E\u4EA4\u70B9\u3001\u7DDA\u5206\
-      \u3068\u4E09\u89D2\u5F62\u306E\u4EA4\u5DEE)"
+    path: src/geometry/rectangle-union.hpp
+    title: "\u9577\u65B9\u5F62\u306E\u548C\u96C6\u5408\u306E\u9762\u7A4D"
+  - icon: ':heavy_check_mark:'
+    path: src/geometry/rectangle.hpp
+    title: "\u8EF8\u306B\u5E73\u884C\u306A\u9577\u65B9\u5F62"
   - icon: ':heavy_check_mark:'
     path: src/geometry/segment.hpp
-    title: "\u76F4\u7DDA\u30FB\u7DDA\u5206 (\u4EA4\u5DEE\u5224\u5B9A\u3001\u4EA4\u70B9\
-      \u3001\u5C04\u5F71\u3001\u8DDD\u96E2)"
+    title: "2 \u6B21\u5143\u30FB3 \u6B21\u5143\u306E\u7DDA\u5206"
   - icon: ':heavy_check_mark:'
     path: src/geometry/sphere.hpp
     title: "\u7403 (\u76F4\u7DDA\u3068\u306E\u4EA4\u70B9\u3001\u7403\u3069\u3046\u3057\
       \u306E\u4EA4\u308F\u308A\u3001\u5171\u901A\u90E8\u5206\u306E\u4F53\u7A4D\u3001\
       \u5927\u5186\u8DDD\u96E2)"
+  - icon: ':heavy_check_mark:'
+    path: src/geometry/triangle.hpp
+    title: "2 \u6B21\u5143\u30FB3 \u6B21\u5143\u306E\u4E09\u89D2\u5F62"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/cgl/cgl-1-a.test.cpp
@@ -119,6 +143,18 @@ data:
     path: test/aoj/cgl/cgl-7-i.test.cpp
     title: test/aoj/cgl/cgl-7-i.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl/dsl-2-c.test.cpp
+    title: test/aoj/dsl/dsl-2-c.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl/dsl-4-a.1.test.cpp
+    title: test/aoj/dsl/dsl-4-a.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl/dsl-4-a.2.test.cpp
+    title: test/aoj/dsl/dsl-4-a.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl/dsl-4-a.3.test.cpp
+    title: test/aoj/dsl/dsl-4-a.3.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/aoj/volume1/0115.test.cpp
     title: test/aoj/volume1/0115.test.cpp
   - icon: ':heavy_check_mark:'
@@ -137,8 +173,17 @@ data:
     path: test/unittest/data_structures/circular-sum.test.cpp
     title: test/unittest/data_structures/circular-sum.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/dual-segtree-2d.test.cpp
+    title: test/unittest/data_structures/dual-segtree-2d.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/dual-segtree.test.cpp
     title: test/unittest/data_structures/dual-segtree.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/kd-tree.test.cpp
+    title: test/unittest/data_structures/kd-tree.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/segtree-2d.test.cpp
+    title: test/unittest/data_structures/segtree-2d.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/geometry/angle.test.cpp
     title: test/unittest/geometry/angle.test.cpp
@@ -155,6 +200,9 @@ data:
     path: test/unittest/geometry/manhattan.test.cpp
     title: test/unittest/geometry/manhattan.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/geometry/plane.test.cpp
+    title: test/unittest/geometry/plane.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/geometry/point-pair.test.cpp
     title: test/unittest/geometry/point-pair.test.cpp
   - icon: ':heavy_check_mark:'
@@ -164,8 +212,11 @@ data:
     path: test/unittest/geometry/polygon-convex-cut.test.cpp
     title: test/unittest/geometry/polygon-convex-cut.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/geometry/segment-3d.test.cpp
-    title: test/unittest/geometry/segment-3d.test.cpp
+    path: test/unittest/geometry/rectangle-union.test.cpp
+    title: test/unittest/geometry/rectangle-union.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/geometry/rectangle.test.cpp
+    title: test/unittest/geometry/rectangle.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/geometry/segment.test.cpp
     title: test/unittest/geometry/segment.test.cpp
@@ -173,8 +224,29 @@ data:
     path: test/unittest/geometry/sphere.test.cpp
     title: test/unittest/geometry/sphere.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/geometry/triangle.test.cpp
+    title: test/unittest/geometry/triangle.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/geometry/vector.test.cpp
     title: test/unittest/geometry/vector.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/area-of-union-of-rectangles.1.test.cpp
+    title: test/yosupo/data_structure/area-of-union-of-rectangles.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/area-of-union-of-rectangles.2.test.cpp
+    title: test/yosupo/data_structure/area-of-union-of-rectangles.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/area-of-union-of-rectangles.3.test.cpp
+    title: test/yosupo/data_structure/area-of-union-of-rectangles.3.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/point-add-rectangle-sum.test.cpp
+    title: test/yosupo/data_structure/point-add-rectangle-sum.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
+    title: test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/rectangle-add-point-get.2.test.cpp
+    title: test/yosupo/data_structure/rectangle-add-point-get.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/geo/closest-pair.test.cpp
     title: test/yosupo/geo/closest-pair.test.cpp
@@ -394,7 +466,18 @@ data:
     constexpr Vector<T, 3> cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs)\
     \ noexcept {\n    Vector<T, 3> ret;\n    ret[0] = lhs[1] * rhs[2] - lhs[2] * rhs[1];\n\
     \    ret[1] = lhs[2] * rhs[0] - lhs[0] * rhs[2];\n    ret[2] = lhs[0] * rhs[1]\
-    \ - lhs[1] * rhs[0];\n    return ret;\n}\n"
+    \ - lhs[1] * rhs[0];\n    return ret;\n}\n\n/**\n * @brief 3\u70B9\u306E\u4F4D\
+    \u7F6E\u95A2\u4FC2 (counter-clockwise)\n *\n * \u6574\u6570\u578B\u3067\u3082\u4F7F\
+    \u3048\u308B\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u3067\u306F\u8AA4\u5DEE\
+    \u3092\u8003\u3048\u305A\u306B\u6BD4\u8F03\u3059\u308B\n *\n * @tparam T \u5EA7\
+    \u6A19\u306E\u578B\n * @return int 1: a\u2192b\u2192c \u304C\u53CD\u6642\u8A08\
+    \u56DE\u308A, -1: \u6642\u8A08\u56DE\u308A, 2: c, a, b \u306E\u9806\u306B\u4E00\
+    \u76F4\u7DDA\u4E0A, -2: a, b, c \u306E\u9806\u306B\u4E00\u76F4\u7DDA\u4E0A, 0:\
+    \ c \u304C\u7DDA\u5206 ab \u4E0A\n */\ntemplate <typename T>\nconstexpr int ccw(const\
+    \ Vector<T, 2>& a, const Vector<T, 2>& b, const Vector<T, 2>& c) {\n    Vector<T,\
+    \ 2> u = b - a, v = c - a;\n    T cr = cross(u, v);\n    if (cr > 0) return 1;\n\
+    \    if (cr < 0) return -1;\n    if (dot(u, v) < 0) return 2;\n    if (u.squared_norm()\
+    \ < v.squared_norm()) return -2;\n    return 0;\n}\n"
   code: "#pragma once\n\n/**\n * @file vector.hpp\n * @brief \u5E7E\u4F55\u30D9\u30AF\
     \u30C8\u30EB\n */\n\n#include <array>\n#include <cassert>\n#include <cmath>\n\
     #include <istream>\n#include <ostream>\n#include <type_traits>\n#include <utility>\n\
@@ -527,22 +610,41 @@ data:
     constexpr Vector<T, 3> cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs)\
     \ noexcept {\n    Vector<T, 3> ret;\n    ret[0] = lhs[1] * rhs[2] - lhs[2] * rhs[1];\n\
     \    ret[1] = lhs[2] * rhs[0] - lhs[0] * rhs[2];\n    ret[2] = lhs[0] * rhs[1]\
-    \ - lhs[1] * rhs[0];\n    return ret;\n}\n"
+    \ - lhs[1] * rhs[0];\n    return ret;\n}\n\n/**\n * @brief 3\u70B9\u306E\u4F4D\
+    \u7F6E\u95A2\u4FC2 (counter-clockwise)\n *\n * \u6574\u6570\u578B\u3067\u3082\u4F7F\
+    \u3048\u308B\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u3067\u306F\u8AA4\u5DEE\
+    \u3092\u8003\u3048\u305A\u306B\u6BD4\u8F03\u3059\u308B\n *\n * @tparam T \u5EA7\
+    \u6A19\u306E\u578B\n * @return int 1: a\u2192b\u2192c \u304C\u53CD\u6642\u8A08\
+    \u56DE\u308A, -1: \u6642\u8A08\u56DE\u308A, 2: c, a, b \u306E\u9806\u306B\u4E00\
+    \u76F4\u7DDA\u4E0A, -2: a, b, c \u306E\u9806\u306B\u4E00\u76F4\u7DDA\u4E0A, 0:\
+    \ c \u304C\u7DDA\u5206 ab \u4E0A\n */\ntemplate <typename T>\nconstexpr int ccw(const\
+    \ Vector<T, 2>& a, const Vector<T, 2>& b, const Vector<T, 2>& c) {\n    Vector<T,\
+    \ 2> u = b - a, v = c - a;\n    T cr = cross(u, v);\n    if (cr > 0) return 1;\n\
+    \    if (cr < 0) return -1;\n    if (dot(u, v) < 0) return 2;\n    if (u.squared_norm()\
+    \ < v.squared_norm()) return -2;\n    return 0;\n}\n"
   dependsOn:
   - src/utility/traits.hpp
   isVerificationFile: false
   path: src/geometry/vector.hpp
   requiredBy:
   - src/geometry/point-pair.hpp
+  - src/geometry/rectangle-union.hpp
+  - src/geometry/line.hpp
   - src/geometry/polygon.hpp
+  - src/geometry/triangle.hpp
   - src/geometry/manhattan.hpp
-  - src/geometry/segment-3d.hpp
   - src/geometry/segment.hpp
+  - src/geometry/internal/predicates.hpp
   - src/geometry/circle.hpp
   - src/geometry/sphere.hpp
+  - src/geometry/rectangle.hpp
   - src/geometry/axis-parallel-segments.hpp
+  - src/geometry/plane.hpp
   - src/geometry/manhattan-mst.hpp
-  timestamp: '2026-10-31 17:14:03+09:00'
+  - src/data_structures/kd-tree.hpp
+  - src/data_structures/dual-segtree-2d.hpp
+  - src/data_structures/segtree-2d.hpp
+  timestamp: '2026-11-08 17:10:03+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/yukicoder/3672.test.cpp
@@ -552,15 +654,21 @@ data:
   - test/unittest/geometry/manhattan-mst.test.cpp
   - test/unittest/geometry/sphere.test.cpp
   - test/unittest/geometry/vector.test.cpp
+  - test/unittest/geometry/rectangle-union.test.cpp
   - test/unittest/geometry/angle.test.cpp
   - test/unittest/geometry/circle.test.cpp
-  - test/unittest/geometry/segment-3d.test.cpp
+  - test/unittest/geometry/rectangle.test.cpp
   - test/unittest/geometry/polygon-centroid.test.cpp
+  - test/unittest/geometry/plane.test.cpp
+  - test/unittest/geometry/triangle.test.cpp
   - test/unittest/geometry/axis-parallel-segments.test.cpp
   - test/unittest/geometry/polygon-convex-cut.test.cpp
   - test/unittest/geometry/segment.test.cpp
+  - test/unittest/data_structures/dual-segtree-2d.test.cpp
   - test/unittest/data_structures/dual-segtree.test.cpp
+  - test/unittest/data_structures/kd-tree.test.cpp
   - test/unittest/data_structures/circular-sum.test.cpp
+  - test/unittest/data_structures/segtree-2d.test.cpp
   - test/aoj/volume1/0115.test.cpp
   - test/aoj/volume1/0177.test.cpp
   - test/aoj/cgl/cgl-6-a.test.cpp
@@ -590,18 +698,28 @@ data:
   - test/aoj/volume26/2641.test.cpp
   - test/aoj/volume12/1289.test.cpp
   - test/aoj/volume33/3314.test.cpp
+  - test/aoj/dsl/dsl-2-c.test.cpp
+  - test/aoj/dsl/dsl-4-a.3.test.cpp
+  - test/aoj/dsl/dsl-4-a.1.test.cpp
+  - test/aoj/dsl/dsl-4-a.2.test.cpp
   - test/yosupo/geo/furthest-pair.test.cpp
   - test/yosupo/geo/static-convex-hull.test.cpp
   - test/yosupo/geo/sort-points-by-argument.1.test.cpp
   - test/yosupo/geo/closest-pair.test.cpp
   - test/yosupo/geo/manhattanmst.test.cpp
   - test/yosupo/geo/minimum-enclosing-circle.test.cpp
+  - test/yosupo/data_structure/rectangle-add-point-get.2.test.cpp
+  - test/yosupo/data_structure/area-of-union-of-rectangles.1.test.cpp
+  - test/yosupo/data_structure/area-of-union-of-rectangles.3.test.cpp
+  - test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
+  - test/yosupo/data_structure/area-of-union-of-rectangles.2.test.cpp
+  - test/yosupo/data_structure/point-add-rectangle-sum.test.cpp
 documentation_of: src/geometry/vector.hpp
 layout: document
 title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"
 ---
 
-点・ベクトルを表す `Vector<T = double, Dim = 2>` と、内積・外積です。幾何の関数は、話題ごとに [直線・線分](segment.hpp)・[多角形](polygon.hpp)・[最近点対・最遠点対](point-pair.hpp) などに分けてあります。
+点・ベクトルを表す `Vector<T = double, Dim = 2>` と、内積・外積です。幾何の関数は、話題ごとに [線分](segment.hpp)・[多角形](polygon.hpp)・[最近点対・最遠点対](point-pair.hpp) などに分けてあります。
 
 ```cpp
 using P = Vector<long long>;
@@ -641,11 +759,20 @@ Vector<double, 3> u(1.0, 0.0, 0.0), w = cross(u, Vector<double, 3>(0.0, 1.0, 0.0
 |---|---|:-:|---|
 | `cross(p, q)` | 外積。2次元ではスカラー (符号付き面積)、3次元ではベクトル | ✓ | $O(1)$ |
 
+## 3 点の位置関係
+
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `ccw(a, b, c)` | 2 次元の 3 点の位置関係。1: 反時計回り、-1: 時計回り、2: `c, a, b` の順に一直線上、-2: `a, b, c` の順に一直線上、0: `c` が線分 `ab` 上 | $O(1)$ |
+
+整数型でも使えます。内積・外積は座標型に収まる必要があり、浮動小数点型の判定では誤差を考慮しません。
+
 ## 関連
 
-- 2 次元の点・直線・線分 (交差判定、交点、射影、距離) は [直線・線分](segment.hpp)
+- 直線 (平行判定・射影・交点) は [直線](line.hpp)、線分 (交差判定・距離) は [線分](segment.hpp)
 - 多角形 (面積、重心、内外判定、凸包、切断) は [多角形](polygon.hpp)
+- 3 頂点をまとめる型は [三角形](triangle.hpp) の `Triangle<T, Dim>`
 - 最近点対・最遠点対は [最近点対・最遠点対](point-pair.hpp)
 - 円は [円](circle.hpp)、偏角ソートは [偏角](angle.hpp) の `Angle` (`Angle(p) < Angle(q)` で比べる)
-- 3 次元の点・直線・平面は [3 次元の直線・線分・平面](segment-3d.hpp)、球は [球](sphere.hpp)
+- 平面は [平面](plane.hpp)、球は [球](sphere.hpp)
 - 傾きや比を誤差なく比べるには [有理数](../math/rational.hpp)

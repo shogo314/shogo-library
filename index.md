@@ -235,6 +235,9 @@ data:
         \u3001\u5185\u63A5\u5186\u3001\u5916\u63A5\u5186\u3001\u5171\u901A\u90E8\u5206\
         \u306E\u9762\u7A4D\u3001\u6700\u5C0F\u5305\u542B\u5186)"
     - icon: ':heavy_check_mark:'
+      path: src/geometry/line.hpp
+      title: "2 \u6B21\u5143\u30FB3 \u6B21\u5143\u306E\u76F4\u7DDA"
+    - icon: ':heavy_check_mark:'
       path: src/geometry/manhattan-mst.hpp
       title: "\u30DE\u30F3\u30CF\u30C3\u30BF\u30F3\u8DDD\u96E2\u306E\u6700\u5C0F\u5168\
         \u57DF\u6728"
@@ -243,6 +246,10 @@ data:
       title: "\u30DE\u30F3\u30CF\u30C3\u30BF\u30F3\u8DDD\u96E2 (\u6700\u8FD1\u70B9\
         \u5BFE\u30FB\u6700\u9060\u70B9\u5BFE\u3001\u5404\u70B9\u304B\u3089\u6700\u3082\
         \u8FD1\u3044\u70B9\u30FB\u6700\u3082\u9060\u3044\u70B9)"
+    - icon: ':heavy_check_mark:'
+      path: src/geometry/plane.hpp
+      title: "\u5E73\u9762 (\u5305\u542B\u30FB\u5E73\u884C\u5224\u5B9A\u3001\u8DDD\
+        \u96E2\u3001\u76F4\u7DDA\u3068\u306E\u4EA4\u70B9)"
     - icon: ':heavy_check_mark:'
       path: src/geometry/point-pair.hpp
       title: "\u6700\u8FD1\u70B9\u5BFE\u30FB\u6700\u9060\u70B9\u5BFE"
@@ -255,22 +262,28 @@ data:
       path: src/geometry/rectangle-union.hpp
       title: "\u9577\u65B9\u5F62\u306E\u548C\u96C6\u5408\u306E\u9762\u7A4D"
     - icon: ':heavy_check_mark:'
-      path: src/geometry/segment-3d.hpp
-      title: "3 \u6B21\u5143\u306E\u76F4\u7DDA\u30FB\u7DDA\u5206\u30FB\u5E73\u9762\
-        \ (\u8DDD\u96E2\u3001\u76F4\u7DDA\u3068\u5E73\u9762\u306E\u4EA4\u70B9\u3001\
-        \u7DDA\u5206\u3068\u4E09\u89D2\u5F62\u306E\u4EA4\u5DEE)"
+      path: src/geometry/rectangle.hpp
+      title: "\u8EF8\u306B\u5E73\u884C\u306A\u9577\u65B9\u5F62"
     - icon: ':heavy_check_mark:'
       path: src/geometry/segment.hpp
-      title: "\u76F4\u7DDA\u30FB\u7DDA\u5206 (\u4EA4\u5DEE\u5224\u5B9A\u3001\u4EA4\
-        \u70B9\u3001\u5C04\u5F71\u3001\u8DDD\u96E2)"
+      title: "2 \u6B21\u5143\u30FB3 \u6B21\u5143\u306E\u7DDA\u5206"
     - icon: ':heavy_check_mark:'
       path: src/geometry/sphere.hpp
       title: "\u7403 (\u76F4\u7DDA\u3068\u306E\u4EA4\u70B9\u3001\u7403\u3069\u3046\
         \u3057\u306E\u4EA4\u308F\u308A\u3001\u5171\u901A\u90E8\u5206\u306E\u4F53\u7A4D\
         \u3001\u5927\u5186\u8DDD\u96E2)"
     - icon: ':heavy_check_mark:'
+      path: src/geometry/triangle.hpp
+      title: "2 \u6B21\u5143\u30FB3 \u6B21\u5143\u306E\u4E09\u89D2\u5F62"
+    - icon: ':heavy_check_mark:'
       path: src/geometry/vector.hpp
       title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"
+  - name: src/geometry/internal
+    pages:
+    - icon: ':heavy_check_mark:'
+      path: src/geometry/internal/predicates.hpp
+      title: "\u5E7E\u4F55\u306E\u5185\u90E8\u8A08\u7B97 (\u6574\u6570\u5EA7\u6A19\
+        \u306E\u62E1\u5F35\u3001\u5411\u304D\u3001\u30CE\u30EB\u30E0)"
   - name: src/graph
     pages:
     - icon: ':heavy_check_mark:'
@@ -524,7 +537,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/utility/range.hpp
       title: "Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\u5217\u3068\
-        \u3001\u305D\u306E\u76F4\u7A4D\u306E Rect"
+        \u3001\u305D\u306E\u76F4\u7A4D\u306E Grid"
     - icon: ':heavy_check_mark:'
       path: src/utility/repr.hpp
       title: "\u51FA\u529B\u3092\u305D\u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\u30E9\
@@ -1142,6 +1155,9 @@ data:
       path: test/unittest/geometry/manhattan.test.cpp
       title: test/unittest/geometry/manhattan.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/geometry/plane.test.cpp
+      title: test/unittest/geometry/plane.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/geometry/point-pair.test.cpp
       title: test/unittest/geometry/point-pair.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1154,14 +1170,17 @@ data:
       path: test/unittest/geometry/rectangle-union.test.cpp
       title: test/unittest/geometry/rectangle-union.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/unittest/geometry/segment-3d.test.cpp
-      title: test/unittest/geometry/segment-3d.test.cpp
+      path: test/unittest/geometry/rectangle.test.cpp
+      title: test/unittest/geometry/rectangle.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/geometry/segment.test.cpp
       title: test/unittest/geometry/segment.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/geometry/sphere.test.cpp
       title: test/unittest/geometry/sphere.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/geometry/triangle.test.cpp
+      title: test/unittest/geometry/triangle.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/geometry/vector.test.cpp
       title: test/unittest/geometry/vector.test.cpp
@@ -1398,8 +1417,8 @@ data:
       path: test/unittest/utility/container_func.test.cpp
       title: test/unittest/utility/container_func.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/unittest/utility/range-rect.test.cpp
-      title: test/unittest/utility/range-rect.test.cpp
+      path: test/unittest/utility/range-grid.test.cpp
+      title: test/unittest/utility/range-grid.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/utility/range.test.cpp
       title: test/unittest/utility/range.test.cpp

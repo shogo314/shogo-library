@@ -37,9 +37,6 @@ data:
     path: test/aoj/itp2/itp2-5-b.test.cpp
     title: test/aoj/itp2/itp2-5-b.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/aoj/volume11/1160.test.cpp
-    title: test/aoj/volume11/1160.test.cpp
-  - icon: ':heavy_check_mark:'
     path: test/unittest/base/io.test.cpp
     title: test/unittest/base/io.test.cpp
   - icon: ':heavy_check_mark:'
@@ -370,7 +367,6 @@ data:
   - test/aoj/cgl/cgl-4-b.test.cpp
   - test/aoj/itp1/itp1-6-a.test.cpp
   - test/aoj/itp1/itp1-2-c.test.cpp
-  - test/aoj/volume11/1160.test.cpp
   - test/aoj/itp2/itp2-5-a.1.test.cpp
   - test/aoj/itp2/itp2-5-b.test.cpp
   - test/yosupo/convolution/convolution-mod-2-64.1.test.cpp

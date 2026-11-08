@@ -252,7 +252,18 @@ data:
     constexpr Vector<T, 3> cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs)\
     \ noexcept {\n    Vector<T, 3> ret;\n    ret[0] = lhs[1] * rhs[2] - lhs[2] * rhs[1];\n\
     \    ret[1] = lhs[2] * rhs[0] - lhs[0] * rhs[2];\n    ret[2] = lhs[0] * rhs[1]\
-    \ - lhs[1] * rhs[0];\n    return ret;\n}\n#line 16 \"src/geometry/polygon.hpp\"\
+    \ - lhs[1] * rhs[0];\n    return ret;\n}\n\n/**\n * @brief 3\u70B9\u306E\u4F4D\
+    \u7F6E\u95A2\u4FC2 (counter-clockwise)\n *\n * \u6574\u6570\u578B\u3067\u3082\u4F7F\
+    \u3048\u308B\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u3067\u306F\u8AA4\u5DEE\
+    \u3092\u8003\u3048\u305A\u306B\u6BD4\u8F03\u3059\u308B\n *\n * @tparam T \u5EA7\
+    \u6A19\u306E\u578B\n * @return int 1: a\u2192b\u2192c \u304C\u53CD\u6642\u8A08\
+    \u56DE\u308A, -1: \u6642\u8A08\u56DE\u308A, 2: c, a, b \u306E\u9806\u306B\u4E00\
+    \u76F4\u7DDA\u4E0A, -2: a, b, c \u306E\u9806\u306B\u4E00\u76F4\u7DDA\u4E0A, 0:\
+    \ c \u304C\u7DDA\u5206 ab \u4E0A\n */\ntemplate <typename T>\nconstexpr int ccw(const\
+    \ Vector<T, 2>& a, const Vector<T, 2>& b, const Vector<T, 2>& c) {\n    Vector<T,\
+    \ 2> u = b - a, v = c - a;\n    T cr = cross(u, v);\n    if (cr > 0) return 1;\n\
+    \    if (cr < 0) return -1;\n    if (dot(u, v) < 0) return 2;\n    if (u.squared_norm()\
+    \ < v.squared_norm()) return -2;\n    return 0;\n}\n#line 16 \"src/geometry/polygon.hpp\"\
     \n\n/**\n * @brief \u591A\u89D2\u5F62\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\
     \u306E2\u500D\n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\
     \u70B9\u306E\u5EA7\u6A19\n * @return T \u9762\u7A4D\u306E2\u500D(\u53CD\u6642\u8A08\
@@ -378,62 +389,63 @@ data:
     \u7A7A\n */\ntemplate <typename T>\nstd::vector<Vector<T, 2>> convex_cut(const\
     \ std::vector<Vector<T, 2>>& polygon, const Vector<T, 2>& p1, const Vector<T,\
     \ 2>& p2) {\n    static_assert(std::is_floating_point_v<T>, \"convex_cut: T must\
-    \ be a floating point type\");\n    std::vector<Vector<T, 2>> res;\n    const\
-    \ int n = static_cast<int>(polygon.size());\n    for (int i = 0; i < n; i++) {\n\
-    \        const Vector<T, 2>&a = polygon[i], &b = polygon[i + 1 == n ? 0 : i +\
-    \ 1];\n        T ca = cross(p2 - p1, a - p1), cb = cross(p2 - p1, b - p1);\n \
-    \       if (ca >= 0) res.push_back(a);\n        // \u8FBA ab \u304C\u76F4\u7DDA\
-    \u3092\u307E\u305F\u3050\u306A\u3089\u3001\u4EA4\u70B9\u3092\u5165\u308C\u308B\
-    \n        if ((ca > 0 && cb < 0) || (ca < 0 && cb > 0)) res.push_back(a + (b -\
-    \ a) * (ca / (ca - cb)));\n    }\n    return res;\n}\n#line 17 \"test/unittest/geometry/polygon-centroid.test.cpp\"\
-    \n\nusing P = Vector<long long>;\n\n// \u9802\u70B9 0 \u304B\u3089\u4E09\u89D2\
-    \u5F62\u306B\u5206\u3051\u3066\u6C42\u3081\u305F\u91CD\u5FC3\nVector<double, 2>\
-    \ naive_centroid(const std::vector<P>& p) {\n    long double s = 0, gx = 0, gy\
-    \ = 0;\n    for (int i = 1; i + 1 < static_cast<int>(p.size()); i++) {\n     \
-    \   long double c = cross(p[i] - p[0], p[i + 1] - p[0]);\n        s += c;\n  \
-    \      gx += c * (p[0][0] + p[i][0] + p[i + 1][0]) / 3;\n        gy += c * (p[0][1]\
-    \ + p[i][1] + p[i + 1][1]) / 3;\n    }\n    return Vector<double, 2>(static_cast<double>(gx\
-    \ / s), static_cast<double>(gy / s));\n}\n\nbool near(const Vector<double, 2>&\
-    \ a, const Vector<double, 2>& b) {\n    return std::abs(a[0] - b[0]) <= 1e-6 *\
-    \ std::max(1.0, std::abs(b[0])) && std::abs(a[1] - b[1]) <= 1e-6 * std::max(1.0,\
-    \ std::abs(b[1]));\n}\n\nint main() {\n    std::mt19937 rng(314);\n    bool ok\
-    \ = true;\n    for (int rep = 0; rep < 20000 && ok; rep++) {\n        int n =\
-    \ rng() % 8 + 3, w = rng() % 2 ? 3 : 1000;\n        std::vector<P> p(n);\n   \
-    \     for (auto& x : p) x = P(static_cast<long long>(rng() % (2 * w + 1)) - w,\
-    \ static_cast<long long>(rng() % (2 * w + 1)) - w);\n        if (polygon_area_doubled(p)\
-    \ == 0) continue;\n\n        if (!near(polygon_centroid(p), naive_centroid(p)))\
-    \ ok = false;\n        // \u5411\u304D\u3092\u9006\u306B\u3057\u3066\u3082\u540C\
-    \u3058\n        std::vector<P> r(p.rbegin(), p.rend());\n        if (!near(polygon_centroid(r),\
-    \ naive_centroid(p))) ok = false;\n\n        // \u8FBA\u3054\u3068\u306E\u5BC4\
-    \u4E0E\u306E\u548C\u306E area2 \u306F\u9762\u7A4D\u306E 2 \u500D\u3001centroid\
-    \ \u306F\u91CD\u5FC3\n        PolygonMoment<long long> m;\n        std::vector<PolygonMoment<long\
-    \ long>> e(n);\n        for (int i = 0; i < n; i++) m += e[i] = polygon_edge_moment(p[i],\
-    \ p[(i + 1) % n]);\n        if (m.area2 != polygon_area_doubled(p)) ok = false;\n\
-    \        if (std::abs(m.area() - polygon_area_doubled(p) / 2.0) > 1e-9) ok = false;\n\
-    \        if (!near(m.centroid(), naive_centroid(p))) ok = false;\n        if (m\
-    \ - e[0] + e[0] != m) ok = false;\n\n        // \u90E8\u5206\u591A\u89D2\u5F62\
-    \ u, u+1, ..., v (\u5186\u74B0\u4E0A) \u3092 CircularSum \u3067\u6C42\u3081\u308B\
-    \n        CircularSum cs(e);\n        for (int u = 0; u < n; u++) {\n        \
-    \    for (int v = 0; v < n; v++) {\n                if (u == v) continue;\n  \
-    \              std::vector<P> sub;\n                for (int i = u;; i = (i +\
-    \ 1) % n) {\n                    sub.push_back(p[i]);\n                    if\
-    \ (i == v) break;\n                }\n                auto s = cs.sum(u, v) +\
-    \ polygon_edge_moment(p[v], p[u]);\n                if (s.area2 != polygon_area_doubled(sub))\
-    \ ok = false;\n                if (s.area2 == 0) continue;\n                if\
-    \ (!near(s.centroid(), polygon_centroid(sub))) ok = false;\n            }\n  \
-    \      }\n    }\n\n    // \u5EA7\u6A19\u304C 1e9 \u306E\u6B63\u65B9\u5F62: mx\
-    \ = 6S gx = 6 * 1e18 * 5e8 = 3e27 \u306F long long \u3092\u3042\u3075\u308C\u308B\
-    \n    const long long L = 1000000000;\n    std::vector<P> sq = {P(0, 0), P(L,\
-    \ 0), P(L, L), P(0, L)};\n    PolygonMoment<long long> m;\n    for (int i = 0;\
-    \ i < 4; i++) m += polygon_edge_moment(sq[i], sq[(i + 1) % 4]);\n    const __int128_t\
-    \ s2 = static_cast<__int128_t>(L) * L * 2;\n    if (m.area2 != s2 || m.mx != s2\
-    \ * 3 * (L / 2) || m.my != s2 * 3 * (L / 2)) ok = false;\n    if (!near(polygon_centroid(sq),\
-    \ Vector<double, 2>(L / 2.0, L / 2.0))) ok = false;\n\n    // \u6D6E\u52D5\u5C0F\
-    \u6570\u70B9\u578B\u306E\u5EA7\u6A19\u3067\u3082\u4F7F\u3048\u308B\n    std::vector<Vector<double,\
-    \ 2>> tri = {Vector<double, 2>(0.0, 0.0), Vector<double, 2>(3.0, 0.0), Vector<double,\
-    \ 2>(0.0, 3.0)};\n    if (!near(polygon_centroid(tri), Vector<double, 2>(1.0,\
-    \ 1.0))) ok = false;\n\n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n\
-    \    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
+    \ be a floating point type\");\n    assert(p1 != p2 && \"convex_cut: degenerate\
+    \ line\");\n    std::vector<Vector<T, 2>> res;\n    const int n = static_cast<int>(polygon.size());\n\
+    \    for (int i = 0; i < n; i++) {\n        const Vector<T, 2>&a = polygon[i],\
+    \ &b = polygon[i + 1 == n ? 0 : i + 1];\n        T ca = cross(p2 - p1, a - p1),\
+    \ cb = cross(p2 - p1, b - p1);\n        if (ca >= 0) res.push_back(a);\n     \
+    \   // \u8FBA ab \u304C\u76F4\u7DDA\u3092\u307E\u305F\u3050\u306A\u3089\u3001\u4EA4\
+    \u70B9\u3092\u5165\u308C\u308B\n        if ((ca > 0 && cb < 0) || (ca < 0 && cb\
+    \ > 0)) res.push_back(a + (b - a) * (ca / (ca - cb)));\n    }\n    return res;\n\
+    }\n#line 17 \"test/unittest/geometry/polygon-centroid.test.cpp\"\n\nusing P =\
+    \ Vector<long long>;\n\n// \u9802\u70B9 0 \u304B\u3089\u4E09\u89D2\u5F62\u306B\
+    \u5206\u3051\u3066\u6C42\u3081\u305F\u91CD\u5FC3\nVector<double, 2> naive_centroid(const\
+    \ std::vector<P>& p) {\n    long double s = 0, gx = 0, gy = 0;\n    for (int i\
+    \ = 1; i + 1 < static_cast<int>(p.size()); i++) {\n        long double c = cross(p[i]\
+    \ - p[0], p[i + 1] - p[0]);\n        s += c;\n        gx += c * (p[0][0] + p[i][0]\
+    \ + p[i + 1][0]) / 3;\n        gy += c * (p[0][1] + p[i][1] + p[i + 1][1]) / 3;\n\
+    \    }\n    return Vector<double, 2>(static_cast<double>(gx / s), static_cast<double>(gy\
+    \ / s));\n}\n\nbool near(const Vector<double, 2>& a, const Vector<double, 2>&\
+    \ b) {\n    return std::abs(a[0] - b[0]) <= 1e-6 * std::max(1.0, std::abs(b[0]))\
+    \ && std::abs(a[1] - b[1]) <= 1e-6 * std::max(1.0, std::abs(b[1]));\n}\n\nint\
+    \ main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int rep\
+    \ = 0; rep < 20000 && ok; rep++) {\n        int n = rng() % 8 + 3, w = rng() %\
+    \ 2 ? 3 : 1000;\n        std::vector<P> p(n);\n        for (auto& x : p) x = P(static_cast<long\
+    \ long>(rng() % (2 * w + 1)) - w, static_cast<long long>(rng() % (2 * w + 1))\
+    \ - w);\n        if (polygon_area_doubled(p) == 0) continue;\n\n        if (!near(polygon_centroid(p),\
+    \ naive_centroid(p))) ok = false;\n        // \u5411\u304D\u3092\u9006\u306B\u3057\
+    \u3066\u3082\u540C\u3058\n        std::vector<P> r(p.rbegin(), p.rend());\n  \
+    \      if (!near(polygon_centroid(r), naive_centroid(p))) ok = false;\n\n    \
+    \    // \u8FBA\u3054\u3068\u306E\u5BC4\u4E0E\u306E\u548C\u306E area2 \u306F\u9762\
+    \u7A4D\u306E 2 \u500D\u3001centroid \u306F\u91CD\u5FC3\n        PolygonMoment<long\
+    \ long> m;\n        std::vector<PolygonMoment<long long>> e(n);\n        for (int\
+    \ i = 0; i < n; i++) m += e[i] = polygon_edge_moment(p[i], p[(i + 1) % n]);\n\
+    \        if (m.area2 != polygon_area_doubled(p)) ok = false;\n        if (std::abs(m.area()\
+    \ - polygon_area_doubled(p) / 2.0) > 1e-9) ok = false;\n        if (!near(m.centroid(),\
+    \ naive_centroid(p))) ok = false;\n        if (m - e[0] + e[0] != m) ok = false;\n\
+    \n        // \u90E8\u5206\u591A\u89D2\u5F62 u, u+1, ..., v (\u5186\u74B0\u4E0A\
+    ) \u3092 CircularSum \u3067\u6C42\u3081\u308B\n        CircularSum cs(e);\n  \
+    \      for (int u = 0; u < n; u++) {\n            for (int v = 0; v < n; v++)\
+    \ {\n                if (u == v) continue;\n                std::vector<P> sub;\n\
+    \                for (int i = u;; i = (i + 1) % n) {\n                    sub.push_back(p[i]);\n\
+    \                    if (i == v) break;\n                }\n                auto\
+    \ s = cs.sum(u, v) + polygon_edge_moment(p[v], p[u]);\n                if (s.area2\
+    \ != polygon_area_doubled(sub)) ok = false;\n                if (s.area2 == 0)\
+    \ continue;\n                if (!near(s.centroid(), polygon_centroid(sub))) ok\
+    \ = false;\n            }\n        }\n    }\n\n    // \u5EA7\u6A19\u304C 1e9 \u306E\
+    \u6B63\u65B9\u5F62: mx = 6S gx = 6 * 1e18 * 5e8 = 3e27 \u306F long long \u3092\
+    \u3042\u3075\u308C\u308B\n    const long long L = 1000000000;\n    std::vector<P>\
+    \ sq = {P(0, 0), P(L, 0), P(L, L), P(0, L)};\n    PolygonMoment<long long> m;\n\
+    \    for (int i = 0; i < 4; i++) m += polygon_edge_moment(sq[i], sq[(i + 1) %\
+    \ 4]);\n    const __int128_t s2 = static_cast<__int128_t>(L) * L * 2;\n    if\
+    \ (m.area2 != s2 || m.mx != s2 * 3 * (L / 2) || m.my != s2 * 3 * (L / 2)) ok =\
+    \ false;\n    if (!near(polygon_centroid(sq), Vector<double, 2>(L / 2.0, L / 2.0)))\
+    \ ok = false;\n\n    // \u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u306E\u5EA7\u6A19\
+    \u3067\u3082\u4F7F\u3048\u308B\n    std::vector<Vector<double, 2>> tri = {Vector<double,\
+    \ 2>(0.0, 0.0), Vector<double, 2>(3.0, 0.0), Vector<double, 2>(0.0, 3.0)};\n \
+    \   if (!near(polygon_centroid(tri), Vector<double, 2>(1.0, 1.0))) ok = false;\n\
+    \n    if (ok)\n        std::cout << \"Hello World\" << std::endl;\n    else\n\
+    \        std::cerr << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// geometry/polygon.hpp \u306E polygon_centroid \u3068 polygon_edge_moment\
     \ (PolygonMoment) \u3092\u78BA\u304B\u3081\u308B\n// polygon_centroid \u306F\u3001\
@@ -504,7 +516,7 @@ data:
   isVerificationFile: true
   path: test/unittest/geometry/polygon-centroid.test.cpp
   requiredBy: []
-  timestamp: '2026-10-31 17:14:03+09:00'
+  timestamp: '2026-11-08 17:10:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/geometry/polygon-centroid.test.cpp

@@ -2,9 +2,18 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
+    path: src/geometry/internal/predicates.hpp
+    title: "\u5E7E\u4F55\u306E\u5185\u90E8\u8A08\u7B97 (\u6574\u6570\u5EA7\u6A19\u306E\
+      \u62E1\u5F35\u3001\u5411\u304D\u3001\u30CE\u30EB\u30E0)"
+  - icon: ':heavy_check_mark:'
+    path: src/geometry/line.hpp
+    title: "2 \u6B21\u5143\u30FB3 \u6B21\u5143\u306E\u76F4\u7DDA"
+  - icon: ':heavy_check_mark:'
     path: src/geometry/segment.hpp
-    title: "\u76F4\u7DDA\u30FB\u7DDA\u5206 (\u4EA4\u5DEE\u5224\u5B9A\u3001\u4EA4\u70B9\
-      \u3001\u5C04\u5F71\u3001\u8DDD\u96E2)"
+    title: "2 \u6B21\u5143\u30FB3 \u6B21\u5143\u306E\u7DDA\u5206"
+  - icon: ':heavy_check_mark:'
+    path: src/geometry/triangle.hpp
+    title: "2 \u6B21\u5143\u30FB3 \u6B21\u5143\u306E\u4E09\u89D2\u5F62"
   - icon: ':heavy_check_mark:'
     path: src/geometry/vector.hpp
     title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"
@@ -59,15 +68,18 @@ data:
     \u3001\u5185\u63A5\u5186\u3001\u5916\u63A5\u5186\u3001\u5171\u901A\u90E8\u5206\
     \u306E\u9762\u7A4D\u3001\u6700\u5C0F\u5305\u542B\u5186)\n */\n\n#include <algorithm>\n\
     #include <cassert>\n#include <cmath>\n#include <istream>\n#include <random>\n\
-    #include <type_traits>\n#include <utility>\n#include <vector>\n\n#line 2 \"src/geometry/segment.hpp\"\
-    \n\n/**\n * @file segment.hpp\n * @brief 2 \u6B21\u5143\u306E\u70B9\u30FB\u76F4\
-    \u7DDA\u30FB\u7DDA\u5206 (\u4EA4\u5DEE\u5224\u5B9A\u3001\u4EA4\u70B9\u3001\u5C04\
-    \u5F71\u3001\u8DDD\u96E2)\n */\n\n#line 11 \"src/geometry/segment.hpp\"\n#include\
-    \ <optional>\n#line 13 \"src/geometry/segment.hpp\"\n\n#line 2 \"src/geometry/vector.hpp\"\
-    \n\n/**\n * @file vector.hpp\n * @brief \u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB\n\
-    \ */\n\n#include <array>\n#line 12 \"src/geometry/vector.hpp\"\n#include <ostream>\n\
-    #line 15 \"src/geometry/vector.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n\
-    /**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n\
+    #include <type_traits>\n#include <utility>\n#include <vector>\n\n#line 2 \"src/geometry/line.hpp\"\
+    \n\n/**\n * @file line.hpp\n * @brief 2 \u6B21\u5143\u30FB3 \u6B21\u5143\u306E\
+    \u76F4\u7DDA (\u5E73\u884C\u30FB\u76F4\u4EA4\u3001\u5C04\u5F71\u30FB\u53CD\u5C04\
+    \u3001\u4EA4\u70B9\u3001\u8DDD\u96E2)\n */\n\n#line 10 \"src/geometry/line.hpp\"\
+    \n#include <optional>\n#line 12 \"src/geometry/line.hpp\"\n\n#line 2 \"src/geometry/internal/predicates.hpp\"\
+    \n\n/**\n * @file predicates.hpp\n * @brief \u5E7E\u4F55\u306E\u5185\u90E8\u8A08\
+    \u7B97 (\u6574\u6570\u5EA7\u6A19\u306E\u62E1\u5F35\u3001\u5411\u304D\u3001\u30CE\
+    \u30EB\u30E0)\n */\n\n#line 10 \"src/geometry/internal/predicates.hpp\"\n\n#line\
+    \ 2 \"src/geometry/vector.hpp\"\n\n/**\n * @file vector.hpp\n * @brief \u5E7E\u4F55\
+    \u30D9\u30AF\u30C8\u30EB\n */\n\n#include <array>\n#line 12 \"src/geometry/vector.hpp\"\
+    \n#include <ostream>\n#line 15 \"src/geometry/vector.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\
+    \n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n\
     #include <functional>\n#include <iterator>\n#include <set>\n#line 14 \"src/utility/traits.hpp\"\
     \n\nnamespace internal_traits {\nusing std::begin, std::end;\n\ntemplate <class\
     \ T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class\
@@ -252,18 +264,148 @@ data:
     constexpr Vector<T, 3> cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs)\
     \ noexcept {\n    Vector<T, 3> ret;\n    ret[0] = lhs[1] * rhs[2] - lhs[2] * rhs[1];\n\
     \    ret[1] = lhs[2] * rhs[0] - lhs[0] * rhs[2];\n    ret[2] = lhs[0] * rhs[1]\
-    \ - lhs[1] * rhs[0];\n    return ret;\n}\n#line 15 \"src/geometry/segment.hpp\"\
-    \n\n/**\n * @brief \u7DDA\u5206\u306E\u4EA4\u5DEE\u5224\u5B9A\n *\n * \u6574\u6570\
-    \u578B\u3067\u3082\u4F7F\u3048\u308B\u3002\u5916\u7A4D\u3092\u8A08\u7B97\u3059\
-    \u308B\u305F\u3081\u3001\u5EA7\u6A19\u306E\u7D76\u5BFE\u5024\u306E2\u4E57\u306E\
-    \u6570\u500D\u304CT\u306B\u53CE\u307E\u308B\u5FC5\u8981\u304C\u3042\u308B\n *\n\
-    \ * @param p1 1\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B91\n * @param p2\
-    \ 1\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B92\n * @param q1 2\u672C\u76EE\
-    \u306E\u7DDA\u5206\u306E\u7AEF\u70B91\n * @param q2 2\u672C\u76EE\u306E\u7DDA\u5206\
-    \u306E\u7AEF\u70B92\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @return bool \u5171\
-    \u6709\u70B9\u3092\u6301\u3064\u304B\n */\ntemplate <typename T>\nconstexpr bool\
-    \ segments_intersect(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const Vector<T,\
-    \ 2>& q1, const Vector<T, 2>& q2) {\n    assert(p1 != p2 && q1 != q2 && \"segments_intersect:\
+    \ - lhs[1] * rhs[0];\n    return ret;\n}\n\n/**\n * @brief 3\u70B9\u306E\u4F4D\
+    \u7F6E\u95A2\u4FC2 (counter-clockwise)\n *\n * \u6574\u6570\u578B\u3067\u3082\u4F7F\
+    \u3048\u308B\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u3067\u306F\u8AA4\u5DEE\
+    \u3092\u8003\u3048\u305A\u306B\u6BD4\u8F03\u3059\u308B\n *\n * @tparam T \u5EA7\
+    \u6A19\u306E\u578B\n * @return int 1: a\u2192b\u2192c \u304C\u53CD\u6642\u8A08\
+    \u56DE\u308A, -1: \u6642\u8A08\u56DE\u308A, 2: c, a, b \u306E\u9806\u306B\u4E00\
+    \u76F4\u7DDA\u4E0A, -2: a, b, c \u306E\u9806\u306B\u4E00\u76F4\u7DDA\u4E0A, 0:\
+    \ c \u304C\u7DDA\u5206 ab \u4E0A\n */\ntemplate <typename T>\nconstexpr int ccw(const\
+    \ Vector<T, 2>& a, const Vector<T, 2>& b, const Vector<T, 2>& c) {\n    Vector<T,\
+    \ 2> u = b - a, v = c - a;\n    T cr = cross(u, v);\n    if (cr > 0) return 1;\n\
+    \    if (cr < 0) return -1;\n    if (dot(u, v) < 0) return 2;\n    if (u.squared_norm()\
+    \ < v.squared_norm()) return -2;\n    return 0;\n}\n#line 12 \"src/geometry/internal/predicates.hpp\"\
+    \n\nnamespace internal_predicates {\n// \u6574\u6570\u5EA7\u6A19\u306E\u5916\u7A4D\
+    \u30FB\u4F53\u7A4D\u306E\u8A08\u7B97\u306B\u4F7F\u3046\u578B (\u5EA7\u6A19\u304C\
+    \ 1e9 \u306A\u3089\u4F53\u7A4D\u306F 1e27 \u7A0B\u5EA6\u306B\u306A\u308B)\ntemplate\
+    \ <typename T>\nusing Wide = std::conditional_t<std::is_integral_v<T>, __int128_t,\
+    \ T>;\ntemplate <typename T, int Dim>\nconstexpr Vector<Wide<T>, Dim> widen(const\
+    \ Vector<T, Dim>& p) {\n    Vector<Wide<T>, Dim> result;\n    for (int i = 0;\
+    \ i < Dim; ++i) result[i] = static_cast<Wide<T>>(p[i]);\n    return result;\n\
+    }\n// \u56DB\u9762\u4F53 abcd \u306E\u7B26\u53F7\u4ED8\u304D\u4F53\u7A4D\u306E\
+    \ 6 \u500D\u306E\u7B26\u53F7 (d \u304C\u5E73\u9762 abc \u306E\u3001abc \u304C\u53CD\
+    \u6642\u8A08\u56DE\u308A\u306B\u898B\u3048\u308B\u5074\u306A\u3089\u6B63)\ntemplate\
+    \ <typename T>\nint orient(const Vector<T, 3>& a, const Vector<T, 3>& b, const\
+    \ Vector<T, 3>& c, const Vector<T, 3>& d) {\n    const auto wa = widen(a);\n \
+    \   const auto v = dot(cross(widen(b) - wa, widen(c) - wa), widen(d) - wa);\n\
+    \    return (v > 0) - (v < 0);\n}\ntemplate <typename T>\ndouble norm(const Vector<T,\
+    \ 3>& v) {\n    const double x = static_cast<double>(v[0]), y = static_cast<double>(v[1]),\
+    \ z = static_cast<double>(v[2]);\n    return std::sqrt(x * x + y * y + z * z);\n\
+    }\n}  // namespace internal_predicates\n#line 15 \"src/geometry/line.hpp\"\n\n\
+    /**\n * @brief 2 \u70B9\u3067\u8868\u3059\u76F4\u7DDA\u3002p1 != p2 \u304C\u5FC5\
+    \u8981\u3002\u7B49\u5024\u6BD4\u8F03\u306F\u540C\u3058\u76F4\u7DDA\u304B\u3092\
+    \u5224\u5B9A\u3059\u308B\n */\ntemplate <typename T = long long, int Dim = 2>\n\
+    struct Line {\n    static_assert(Dim >= 2, \"dimension must be at least 2\");\n\
+    \    Vector<T, Dim> p1, p2;\n\n    constexpr Line(const Vector<T, Dim>& p1, const\
+    \ Vector<T, Dim>& p2) : p1(p1), p2(p2) {\n        assert(p1 != p2 && \"Line: degenerate\
+    \ line\");\n    }\n    constexpr bool operator==(const Line& other) const {\n\
+    \        assert(p1 != p2 && other.p1 != other.p2 && \"Line: degenerate line\"\
+    );\n        using Wide = std::conditional_t<std::is_integral_v<T>, __int128_t,\
+    \ T>;\n        auto on_line = [&](const Vector<T, Dim>& p) {\n            for\
+    \ (int i = 0; i < Dim; ++i) {\n                for (int j = i + 1; j < Dim; ++j)\
+    \ {\n                    Wide di = static_cast<Wide>(p2[i]) - p1[i], dj = static_cast<Wide>(p2[j])\
+    \ - p1[j];\n                    Wide vi = static_cast<Wide>(p[i]) - p1[i], vj\
+    \ = static_cast<Wide>(p[j]) - p1[j];\n                    if (di * vj != dj *\
+    \ vi) return false;\n                }\n            }\n            return true;\n\
+    \        };\n        return on_line(other.p1) && on_line(other.p2);\n    }\n \
+    \   constexpr bool operator!=(const Line& other) const { return !(*this == other);\
+    \ }\n};\n\ntemplate <typename T, int Dim>\nLine(const Vector<T, Dim>&, const Vector<T,\
+    \ Dim>&) -> Line<T, Dim>;\n\n/**\n * @brief \u76F4\u7DDA p1p2 \u3068\u76F4\u7DDA\
+    \ q1q2 \u304C\u5E73\u884C\u304B (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B\
+    )\n */\ntemplate <typename T>\nconstexpr bool is_parallel(const Line<T>& first,\
+    \ const Line<T>& second) {\n    const auto& [p1, p2] = first;\n    const auto&\
+    \ [q1, q2] = second;\n    return cross(p2 - p1, q2 - q1) == 0;\n}\n/**\n * @brief\
+    \ \u76F4\u7DDA p1p2 \u3068\u76F4\u7DDA q1q2 \u304C\u76F4\u4EA4\u3059\u308B\u304B\
+    \ (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate <typename\
+    \ T>\nconstexpr bool is_orthogonal(const Line<T>& first, const Line<T>& second)\
+    \ {\n    const auto& [p1, p2] = first;\n    const auto& [q1, q2] = second;\n \
+    \   return dot(p2 - p1, q2 - q1) == 0;\n}\n\n/**\n * @brief \u70B9 p \u304B\u3089\
+    \u76F4\u7DDA p1p2 \u306B\u4E0B\u308D\u3057\u305F\u5782\u7DDA\u306E\u8DB3 (\u5C04\
+    \u5F71)\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n */\ntemplate <typename\
+    \ T>\nconstexpr Vector<T, 2> projection(const Line<T>& object, const Vector<T,\
+    \ 2>& p) {\n    const auto& [p1, p2] = object;\n    static_assert(std::is_floating_point_v<T>,\
+    \ \"projection: T must be a floating point type\");\n    assert(p1 != p2 && \"\
+    projection: degenerate line\");\n    Vector<T, 2> d = p2 - p1;\n    return p1\
+    \ + d * (dot(p - p1, d) / d.squared_norm());\n}\n/**\n * @brief \u76F4\u7DDA p1p2\
+    \ \u306B\u3064\u3044\u3066\u70B9 p \u3068\u5BFE\u79F0\u306A\u70B9 (\u53CD\u5C04\
+    )\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n */\ntemplate <typename\
+    \ T>\nconstexpr Vector<T, 2> reflection(const Line<T>& object, const Vector<T,\
+    \ 2>& p) {\n    return projection(object, p) * T(2) - p;\n}\n\n/**\n * @brief\
+    \ \u76F4\u7DDA p1p2 \u3068\u76F4\u7DDA q1q2 \u306E\u4EA4\u70B9\u3002\u6D6E\u52D5\
+    \u5C0F\u6570\u70B9\u578B\u9650\u5B9A\u3002p1 != p2 \u304B\u3064 q1 != q2 \u3067\
+    \u3042\u308B\u3053\u3068\n * @return std::optional<Vector<T, 2>> \u4EA4\u70B9\
+    \ (\u5E73\u884C (\u91CD\u306A\u308B\u76F4\u7DDA\u3082\u542B\u3080) \u306A\u3089\
+    \ std::nullopt)\n */\ntemplate <typename T>\nconstexpr std::optional<Vector<T,\
+    \ 2>> line_intersection(const Line<T>& first, const Line<T>& second) {\n    const\
+    \ auto& [p1, p2] = first;\n    const auto& [q1, q2] = second;\n    static_assert(std::is_floating_point_v<T>,\
+    \ \"line_intersection: T must be a floating point type\");\n    assert(p1 != p2\
+    \ && q1 != q2 && \"line_intersection: degenerate line\");\n    Vector<T, 2> d\
+    \ = p2 - p1, e = q2 - q1;\n    T c = cross(e, d);\n    if (c == 0) return std::nullopt;\n\
+    \    // p1 + d t \u304C\u76F4\u7DDA q1q2 \u4E0A\u306B\u3042\u308B t\n    return\
+    \ p1 + d * (cross(e, q1 - p1) / c);\n}\n\n/**\n * @brief \u70B9 p \u3068\u76F4\
+    \u7DDA p1p2 \u306E\u8DDD\u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B\
+    )\n */\ntemplate <typename T>\ndouble distance_point_line(const Line<T>& object,\
+    \ const Vector<T, 2>& p) {\n    const auto& [p1, p2] = object;\n    assert(p1\
+    \ != p2 && \"distance_point_line: degenerate line\");\n    return std::abs(static_cast<double>(cross(p2\
+    \ - p1, p - p1))) / (p2 - p1).abs();\n}\n/** @brief 3 \u6B21\u5143\u306E\u76F4\
+    \u7DDA\u540C\u58EB\u304C\u5E73\u884C\u304B\u3002\u4E00\u81F4\u3059\u308B\u5834\
+    \u5408\u3082 true */\ntemplate <typename T>\nconstexpr bool is_parallel(const\
+    \ Line<T, 3>& first, const Line<T, 3>& second) {\n    using internal_predicates::widen;\n\
+    \    const auto u = widen(first.p2) - widen(first.p1), v = widen(second.p2) -\
+    \ widen(second.p1);\n    assert((u[0] != 0 || u[1] != 0 || u[2] != 0) && \"is_parallel:\
+    \ degenerate line\");\n    assert((v[0] != 0 || v[1] != 0 || v[2] != 0) && \"\
+    is_parallel: degenerate line\");\n    const auto n = cross(u, v);\n    return\
+    \ n[0] == 0 && n[1] == 0 && n[2] == 0;\n}\n\n/**\n * @brief \u70B9 p \u304B\u3089\
+    \u76F4\u7DDA p1p2 \u306B\u4E0B\u308D\u3057\u305F\u5782\u7DDA\u306E\u8DB3 (\u5C04\
+    \u5F71)\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n */\ntemplate <typename\
+    \ T>\nconstexpr Vector<T, 3> projection(const Line<T, 3>& object, const Vector<T,\
+    \ 3>& p) {\n    const auto& [p1, p2] = object;\n    static_assert(std::is_floating_point_v<T>,\
+    \ \"projection: T must be a floating point type\");\n    assert(p1 != p2 && \"\
+    projection: degenerate line\");\n    Vector<T, 3> d = p2 - p1;\n    return p1\
+    \ + d * (dot(p - p1, d) / d.squared_norm());\n}\n\n/**\n * @brief \u70B9 p \u3068\
+    \u76F4\u7DDA p1p2 \u306E\u8DDD\u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\
+    \u308B)\n */\ntemplate <typename T>\ndouble distance_point_line(const Line<T,\
+    \ 3>& object, const Vector<T, 3>& p) {\n    const auto& [p1, p2] = object;\n \
+    \   using namespace internal_predicates;\n    assert(p1 != p2 && \"distance_point_line:\
+    \ degenerate line\");\n    return norm(cross(widen(p2) - widen(p1), widen(p) -\
+    \ widen(p1))) / norm(p2 - p1);\n}\n/**\n * @brief \u76F4\u7DDA p1p2 \u3068\u76F4\
+    \u7DDA q1q2 \u306E\u8DDD\u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B\
+    )\u3002p1 != p2 \u304B\u3064 q1 != q2 \u3067\u3042\u308B\u3053\u3068\n */\ntemplate\
+    \ <typename T>\ndouble distance_lines(const Line<T, 3>& first, const Line<T, 3>&\
+    \ second) {\n    const auto& [p1, p2] = first;\n    const auto& [q1, q2] = second;\n\
+    \    using namespace internal_predicates;\n    assert(p1 != p2 && q1 != q2 &&\
+    \ \"distance_lines: degenerate line\");\n    const auto n = cross(widen(p2) -\
+    \ widen(p1), widen(q2) - widen(q1));\n    // \u5E73\u884C\u306A\u3089\u3001\u4E00\
+    \u65B9\u306E\u76F4\u7DDA\u4E0A\u306E\u70B9\u3068\u3082\u3046\u4E00\u65B9\u306E\
+    \u76F4\u7DDA\u306E\u8DDD\u96E2\n    if (n == decltype(n)()) return distance_point_line(Line(p1,\
+    \ p2), q1);\n    return std::abs(static_cast<double>(dot(n, widen(q1) - widen(p1))))\
+    \ / norm(n);\n}\n#line 2 \"src/geometry/triangle.hpp\"\n\n/**\n * @file triangle.hpp\n\
+    \ * @brief 2 \u6B21\u5143\u30FB3 \u6B21\u5143\u306E\u4E09\u89D2\u5F62\n */\n\n\
+    #line 10 \"src/geometry/triangle.hpp\"\n\n#line 2 \"src/geometry/segment.hpp\"\
+    \n\n/**\n * @file segment.hpp\n * @brief 2 \u6B21\u5143\u30FB3 \u6B21\u5143\u306E\
+    \u7DDA\u5206 (\u4EA4\u5DEE\u5224\u5B9A\u3001\u5171\u6709\u70B9\u3001\u8DDD\u96E2\
+    )\n */\n\n#line 13 \"src/geometry/segment.hpp\"\n\n#line 16 \"src/geometry/segment.hpp\"\
+    \n\n/**\n * @brief 2 \u7AEF\u70B9\u3067\u8868\u3059\u7DDA\u5206\u3002\u9577\u3055\
+    \ 0 \u3082\u8A31\u3059\u3002\u7B49\u5024\u6BD4\u8F03\u3067\u306F\u7AEF\u70B9\u306E\
+    \u9806\u5E8F\u3092\u7121\u8996\u3059\u308B\n */\ntemplate <typename T = long long,\
+    \ int Dim = 2>\nstruct Segment {\n    static_assert(Dim >= 2, \"dimension must\
+    \ be at least 2\");\n    Vector<T, Dim> p1, p2;\n\n    constexpr Segment() = default;\n\
+    \    constexpr Segment(const Vector<T, Dim>& p1, const Vector<T, Dim>& p2) : p1(p1),\
+    \ p2(p2) {}\n    constexpr bool operator==(const Segment& other) const {\n   \
+    \     return (p1 == other.p1 && p2 == other.p2) || (p1 == other.p2 && p2 == other.p1);\n\
+    \    }\n    constexpr bool operator!=(const Segment& other) const { return !(*this\
+    \ == other); }\n};\n\ntemplate <typename T, int Dim>\nSegment(const Vector<T,\
+    \ Dim>&, const Vector<T, Dim>&) -> Segment<T, Dim>;\n\n/**\n * @brief \u7DDA\u5206\
+    \u306E\u4EA4\u5DEE\u5224\u5B9A\n *\n * \u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\
+    \u308B\u3002\u5916\u7A4D\u3092\u8A08\u7B97\u3059\u308B\u305F\u3081\u3001\u5EA7\
+    \u6A19\u306E\u7D76\u5BFE\u5024\u306E2\u4E57\u306E\u6570\u500D\u304CT\u306B\u53CE\
+    \u307E\u308B\u5FC5\u8981\u304C\u3042\u308B\n *\n * @param first 1 \u672C\u76EE\
+    \u306E\u7DDA\u5206\n * @param second 2 \u672C\u76EE\u306E\u7DDA\u5206\n * @tparam\
+    \ T \u5EA7\u6A19\u306E\u578B\n * @return bool \u5171\u6709\u70B9\u3092\u6301\u3064\
+    \u304B\n */\ntemplate <typename T>\nconstexpr bool segments_intersect(const Segment<T>&\
+    \ first, const Segment<T>& second) {\n    const auto& [p1, p2] = first;\n    const\
+    \ auto& [q1, q2] = second;\n    assert(p1 != p2 && q1 != q2 && \"segments_intersect:\
     \ degenerate segment\");\n    auto sign = [](T x) { return (x > 0) - (x < 0);\
     \ };\n    int q1_section = sign(cross(p2 - p1, q1 - p1));  // \u76F4\u7DDAp1p2\u306B\
     \u5BFE\u3057\u3066q1\u304C\u3069\u306E\u4F4D\u7F6E\u306B\u3042\u308B\u304B\n \
@@ -282,87 +424,123 @@ data:
     \u4E00\u822C\u306B\u6574\u6570\u306B\u306A\u3089\u306A\u3044\u305F\u3081\u3001\
     \u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n * \u6574\u6570\u5EA7\u6A19\u3067\
     \u4EA4\u5DEE\u5224\u5B9A\u3060\u3051\u3057\u305F\u3044\u5834\u5408\u306F segments_intersect\
-    \ \u3092\u4F7F\u3046\n *\n * @param p1 1\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\
-    \u70B91\n * @param p2 1\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B92\n * @param\
-    \ q1 2\u672C\u76EE\u306E\u7DDA\u5206\u306E\u7AEF\u70B91\n * @param q2 2\u672C\u76EE\
-    \u306E\u7DDA\u5206\u306E\u7AEF\u70B92\n * @tparam T \u5EA7\u6A19\u306E\u578B\n\
-    \ * @return std::optional<Vector<T, 2>> \u5171\u6709\u70B9\u306E1\u4F8B (\u5171\
-    \u6709\u70B9\u304C\u306A\u3051\u308C\u3070 std::nullopt)\n */\ntemplate <typename\
-    \ T>\nconstexpr std::optional<Vector<T, 2>> segment_intersection(const Vector<T,\
-    \ 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& q1, const Vector<T, 2>&\
-    \ q2) {\n    static_assert(std::is_floating_point_v<T>, \"segment_intersection:\
-    \ T must be a floating point type (use segments_intersect for integers)\");\n\
-    \    if (!segments_intersect(p1, p2, q1, q2)) return std::nullopt;\n    if (cross(p2\
-    \ - p1, q1 - p1) == 0 && cross(p2 - p1, q2 - p1) == 0) {\n        // 4\u70B9\u304C\
-    \u540C\u4E00\u76F4\u7DDA\u4E0A\u306B\u3042\u308B\u5834\u5408\n        if (dot(q1\
-    \ - p1, q2 - p1) <= 0) return p1;\n        if (dot(q1 - p2, q2 - p2) <= 0) return\
-    \ p2;\n        return q1;\n    }\n    T area = cross(p2 - p1, q2 - q1);      \
-    \    // 4\u70B9\u3092\u9802\u70B9\u3068\u3059\u308B\u56DB\u89D2\u5F62\u306E\u7B26\
-    \u53F7\u4ED8\u304D\u9762\u7A4D\n    T partial_area = cross(q2 - q1, p1 - q1);\
-    \  // \u4E09\u89D2\u5F62q1q2p1\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\n   \
-    \ return p1 + (p2 - p1) * partial_area / area;\n}\n\n/**\n * @brief 3\u70B9\u306E\
-    \u4F4D\u7F6E\u95A2\u4FC2 (counter-clockwise)\n *\n * \u6574\u6570\u578B\u3067\u3082\
-    \u4F7F\u3048\u308B\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u3067\u306F\u8AA4\
-    \u5DEE\u3092\u8003\u3048\u305A\u306B\u6BD4\u8F03\u3059\u308B\n *\n * @tparam T\
-    \ \u5EA7\u6A19\u306E\u578B\n * @return int 1: a\u2192b\u2192c \u304C\u53CD\u6642\
-    \u8A08\u56DE\u308A, -1: \u6642\u8A08\u56DE\u308A, 2: c, a, b \u306E\u9806\u306B\
-    \u4E00\u76F4\u7DDA\u4E0A, -2: a, b, c \u306E\u9806\u306B\u4E00\u76F4\u7DDA\u4E0A\
-    , 0: c \u304C\u7DDA\u5206 ab \u4E0A\n */\ntemplate <typename T>\nconstexpr int\
-    \ ccw(const Vector<T, 2>& a, const Vector<T, 2>& b, const Vector<T, 2>& c) {\n\
-    \    Vector<T, 2> u = b - a, v = c - a;\n    T cr = cross(u, v);\n    if (cr >\
-    \ 0) return 1;\n    if (cr < 0) return -1;\n    if (dot(u, v) < 0) return 2;\n\
-    \    if (u.squared_norm() < v.squared_norm()) return -2;\n    return 0;\n}\n\n\
-    /**\n * @brief \u76F4\u7DDA p1p2 \u3068\u76F4\u7DDA q1q2 \u304C\u5E73\u884C\u304B\
+    \ \u3092\u4F7F\u3046\n *\n * @param first 1 \u672C\u76EE\u306E\u7DDA\u5206\n *\
+    \ @param second 2 \u672C\u76EE\u306E\u7DDA\u5206\n * @tparam T \u5EA7\u6A19\u306E\
+    \u578B\n * @return std::optional<Vector<T, 2>> \u5171\u6709\u70B9\u306E1\u4F8B\
+    \ (\u5171\u6709\u70B9\u304C\u306A\u3051\u308C\u3070 std::nullopt)\n */\ntemplate\
+    \ <typename T>\nconstexpr std::optional<Vector<T, 2>> segment_intersection(const\
+    \ Segment<T>& first, const Segment<T>& second) {\n    const auto& [p1, p2] = first;\n\
+    \    const auto& [q1, q2] = second;\n    static_assert(std::is_floating_point_v<T>,\
+    \ \"segment_intersection: T must be a floating point type (use segments_intersect\
+    \ for integers)\");\n    if (!segments_intersect(first, second)) return std::nullopt;\n\
+    \    if (cross(p2 - p1, q1 - p1) == 0 && cross(p2 - p1, q2 - p1) == 0) {\n   \
+    \     // 4\u70B9\u304C\u540C\u4E00\u76F4\u7DDA\u4E0A\u306B\u3042\u308B\u5834\u5408\
+    \n        if (dot(q1 - p1, q2 - p1) <= 0) return p1;\n        if (dot(q1 - p2,\
+    \ q2 - p2) <= 0) return p2;\n        return q1;\n    }\n    T area = cross(p2\
+    \ - p1, q2 - q1);          // 4\u70B9\u3092\u9802\u70B9\u3068\u3059\u308B\u56DB\
+    \u89D2\u5F62\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\n    T partial_area = cross(q2\
+    \ - q1, p1 - q1);  // \u4E09\u89D2\u5F62q1q2p1\u306E\u7B26\u53F7\u4ED8\u304D\u9762\
+    \u7A4D\n    return p1 + (p2 - p1) * partial_area / area;\n}\n\n/**\n * @brief\
+    \ \u70B9 p \u3068\u7DDA\u5206 p1p2 \u306E\u8DDD\u96E2 (\u6574\u6570\u578B\u3067\
+    \u3082\u4F7F\u3048\u308B)\n */\ntemplate <typename T>\ndouble distance_point_segment(const\
+    \ Segment<T>& object, const Vector<T, 2>& p) {\n    const auto& [p1, p2] = object;\n\
+    \    if (p1 == p2) return (p - p1).abs();\n    // \u5782\u7DDA\u306E\u8DB3\u304C\
+    \u7DDA\u5206\u306E\u5916\u306A\u3089\u3001\u8FD1\u3044\u65B9\u306E\u7AEF\u70B9\
+    \u3068\u306E\u8DDD\u96E2\n    if (dot(p2 - p1, p - p1) < 0) return (p - p1).abs();\n\
+    \    if (dot(p1 - p2, p - p2) < 0) return (p - p2).abs();\n    return distance_point_line(Line(p1,\
+    \ p2), p);\n}\n/**\n * @brief \u7DDA\u5206 p1p2 \u3068\u7DDA\u5206 q1q2 \u306E\
+    \u8DDD\u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate\
+    \ <typename T>\ndouble distance_segments(const Segment<T>& first, const Segment<T>&\
+    \ second) {\n    const auto& [p1, p2] = first;\n    const auto& [q1, q2] = second;\n\
+    \    if (p1 != p2 && q1 != q2 && segments_intersect(first, second)) return 0;\n\
+    \    return std::min({distance_point_segment(first, q1), distance_point_segment(first,\
+    \ q2),\n                     distance_point_segment(second, p1), distance_point_segment(second,\
+    \ p2)});\n}\n/**\n * @brief \u70B9 p \u3068\u7DDA\u5206 p1p2 \u306E\u8DDD\u96E2\
     \ (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate <typename\
-    \ T>\nconstexpr bool is_parallel(const Vector<T, 2>& p1, const Vector<T, 2>& p2,\
-    \ const Vector<T, 2>& q1, const Vector<T, 2>& q2) {\n    return cross(p2 - p1,\
-    \ q2 - q1) == 0;\n}\n/**\n * @brief \u76F4\u7DDA p1p2 \u3068\u76F4\u7DDA q1q2\
-    \ \u304C\u76F4\u4EA4\u3059\u308B\u304B (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\
-    \u308B)\n */\ntemplate <typename T>\nconstexpr bool is_orthogonal(const Vector<T,\
-    \ 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& q1, const Vector<T, 2>&\
-    \ q2) {\n    return dot(p2 - p1, q2 - q1) == 0;\n}\n\n/**\n * @brief \u70B9 p\
-    \ \u304B\u3089\u76F4\u7DDA p1p2 \u306B\u4E0B\u308D\u3057\u305F\u5782\u7DDA\u306E\
-    \u8DB3 (\u5C04\u5F71)\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n\
-    \ */\ntemplate <typename T>\nconstexpr Vector<T, 2> projection(const Vector<T,\
-    \ 2>& p1, const Vector<T, 2>& p2, const Vector<T, 2>& p) {\n    static_assert(std::is_floating_point_v<T>,\
-    \ \"projection: T must be a floating point type\");\n    assert(p1 != p2 && \"\
-    projection: degenerate line\");\n    Vector<T, 2> d = p2 - p1;\n    return p1\
-    \ + d * (dot(p - p1, d) / d.squared_norm());\n}\n/**\n * @brief \u76F4\u7DDA p1p2\
-    \ \u306B\u3064\u3044\u3066\u70B9 p \u3068\u5BFE\u79F0\u306A\u70B9 (\u53CD\u5C04\
-    )\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n */\ntemplate <typename\
-    \ T>\nconstexpr Vector<T, 2> reflection(const Vector<T, 2>& p1, const Vector<T,\
-    \ 2>& p2, const Vector<T, 2>& p) {\n    return projection(p1, p2, p) * T(2) -\
-    \ p;\n}\n\n/**\n * @brief \u76F4\u7DDA p1p2 \u3068\u76F4\u7DDA q1q2 \u306E\u4EA4\
-    \u70B9\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\u3002p1 != p2 \u304B\
-    \u3064 q1 != q2 \u3067\u3042\u308B\u3053\u3068\n * @return std::optional<Vector<T,\
-    \ 2>> \u4EA4\u70B9 (\u5E73\u884C (\u91CD\u306A\u308B\u76F4\u7DDA\u3082\u542B\u3080\
-    ) \u306A\u3089 std::nullopt)\n */\ntemplate <typename T>\nconstexpr std::optional<Vector<T,\
-    \ 2>> line_intersection(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const\
-    \ Vector<T, 2>& q1, const Vector<T, 2>& q2) {\n    static_assert(std::is_floating_point_v<T>,\
-    \ \"line_intersection: T must be a floating point type\");\n    assert(p1 != p2\
-    \ && q1 != q2 && \"line_intersection: degenerate line\");\n    Vector<T, 2> d\
-    \ = p2 - p1, e = q2 - q1;\n    T c = cross(e, d);\n    if (c == 0) return std::nullopt;\n\
-    \    // p1 + d t \u304C\u76F4\u7DDA q1q2 \u4E0A\u306B\u3042\u308B t\n    return\
-    \ p1 + d * (cross(e, q1 - p1) / c);\n}\n\n/**\n * @brief \u70B9 p \u3068\u76F4\
-    \u7DDA p1p2 \u306E\u8DDD\u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B\
-    )\n */\ntemplate <typename T>\ndouble distance_point_line(const Vector<T, 2>&\
-    \ p1, const Vector<T, 2>& p2, const Vector<T, 2>& p) {\n    assert(p1 != p2 &&\
-    \ \"distance_point_line: degenerate line\");\n    return std::abs(static_cast<double>(cross(p2\
-    \ - p1, p - p1))) / (p2 - p1).abs();\n}\n/**\n * @brief \u70B9 p \u3068\u7DDA\u5206\
-    \ p1p2 \u306E\u8DDD\u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n\
-    \ */\ntemplate <typename T>\ndouble distance_point_segment(const Vector<T, 2>&\
-    \ p1, const Vector<T, 2>& p2, const Vector<T, 2>& p) {\n    if (p1 == p2) return\
-    \ (p - p1).abs();\n    // \u5782\u7DDA\u306E\u8DB3\u304C\u7DDA\u5206\u306E\u5916\
-    \u306A\u3089\u3001\u8FD1\u3044\u65B9\u306E\u7AEF\u70B9\u3068\u306E\u8DDD\u96E2\
-    \n    if (dot(p2 - p1, p - p1) < 0) return (p - p1).abs();\n    if (dot(p1 - p2,\
-    \ p - p2) < 0) return (p - p2).abs();\n    return distance_point_line(p1, p2,\
-    \ p);\n}\n/**\n * @brief \u7DDA\u5206 p1p2 \u3068\u7DDA\u5206 q1q2 \u306E\u8DDD\
-    \u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate <typename\
-    \ T>\ndouble distance_segments(const Vector<T, 2>& p1, const Vector<T, 2>& p2,\
-    \ const Vector<T, 2>& q1, const Vector<T, 2>& q2) {\n    if (p1 != p2 && q1 !=\
-    \ q2 && segments_intersect(p1, p2, q1, q2)) return 0;\n    return std::min({distance_point_segment(p1,\
-    \ p2, q1), distance_point_segment(p1, p2, q2),\n                     distance_point_segment(q1,\
-    \ q2, p1), distance_point_segment(q1, q2, p2)});\n}\n#line 19 \"src/geometry/circle.hpp\"\
+    \ T>\ndouble distance_point_segment(const Segment<T, 3>& object, const Vector<T,\
+    \ 3>& p) {\n    const auto& [p1, p2] = object;\n    using namespace internal_predicates;\n\
+    \    if (p1 == p2) return norm(p - p1);\n    // \u5782\u7DDA\u306E\u8DB3\u304C\
+    \u7DDA\u5206\u306E\u5916\u306A\u3089\u3001\u8FD1\u3044\u65B9\u306E\u7AEF\u70B9\
+    \u3068\u306E\u8DDD\u96E2\n    if (dot(widen(p2) - widen(p1), widen(p) - widen(p1))\
+    \ < 0) return norm(p - p1);\n    if (dot(widen(p1) - widen(p2), widen(p) - widen(p2))\
+    \ < 0) return norm(p - p2);\n    return distance_point_line(Line(p1, p2), p);\n\
+    }\n/**\n * @brief \u7DDA\u5206 p1p2 \u3068\u7DDA\u5206 q1q2 \u306E\u8DDD\u96E2\
+    \ (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate <typename\
+    \ T>\ndouble distance_segments(const Segment<T, 3>& first, const Segment<T, 3>&\
+    \ second) {\n    const auto& [p1, p2] = first;\n    const auto& [q1, q2] = second;\n\
+    \    double res = std::min({distance_point_segment(first, q1), distance_point_segment(first,\
+    \ q2),\n                           distance_point_segment(second, p1), distance_point_segment(second,\
+    \ p2)});\n    if (p1 == p2 || q1 == q2) return res;\n    // \u8DDD\u96E2\u306E\
+    \ 2 \u4E57\u306F (s, t) \u2208 [0, 1]^2 \u3067\u51F8\u306A\u306E\u3067\u3001\u6700\
+    \u5C0F\u306F\u5185\u90E8\u306E\u505C\u7559\u70B9\u304B\u5883\u754C (\u7AEF\u70B9\
+    \u3068\u7DDA\u5206\u306E\u8DDD\u96E2) \u306B\u3042\u308B\n    using L = long double;\n\
+    \    auto to = [](const Vector<T, 3>& v) { return Vector<L, 3>(v[0], v[1], v[2]);\
+    \ };\n    const Vector<L, 3> d = to(p2) - to(p1), e = to(q2) - to(q1), r = to(p1)\
+    \ - to(q1);\n    const L a = dot(d, d), b = dot(d, e), c = dot(e, e), f = dot(d,\
+    \ r), g = dot(e, r);\n    const L den = a * c - b * b;\n    if (den > 0) {\n \
+    \       // p1 + d s \u3068 q1 + e t \u304C\u6700\u3082\u8FD1\u3044 s, t\n    \
+    \    const L s = (b * g - c * f) / den, t = (a * g - b * f) / den;\n        if\
+    \ (0 <= s && s <= 1 && 0 <= t && t <= 1) res = std::min(res, static_cast<double>((r\
+    \ + d * s - e * t).abs()));\n    }\n    return res;\n}\n#line 14 \"src/geometry/triangle.hpp\"\
+    \n\n/**\n * @brief \u4E00\u76F4\u7DDA\u4E0A\u306B\u306A\u3044 3 \u9802\u70B9\u3067\
+    \u8868\u3059\u4E09\u89D2\u5F62\u3002\u7B49\u5024\u6BD4\u8F03\u3067\u306F\u9802\
+    \u70B9\u306E\u9806\u5E8F\u3092\u7121\u8996\u3059\u308B\n * @tparam T \u5EA7\u6A19\
+    \u306E\u578B\u3002\u7701\u7565\u3057\u305F\u3089 long long\n * @tparam Dim \u6B21\
+    \u5143 (2 \u307E\u305F\u306F 3)\u3002\u7701\u7565\u3057\u305F\u3089 2\n */\ntemplate\
+    \ <typename T = long long, int Dim = 2>\nstruct Triangle {\n    static_assert(Dim\
+    \ == 2 || Dim == 3, \"Triangle: dimension must be 2 or 3\");\n    Vector<T, Dim>\
+    \ p1, p2, p3;\n\n   private:\n    constexpr void assert_valid() const {\n    \
+    \    using internal_predicates::widen;\n        const auto a = widen(p1), u =\
+    \ widen(p2) - a, v = widen(p3) - a;\n        if constexpr (Dim == 2) {\n     \
+    \       assert(cross(u, v) != 0 && \"Triangle: collinear vertices\");\n      \
+    \  } else {\n            const auto n = cross(u, v);\n            assert((n[0]\
+    \ != 0 || n[1] != 0 || n[2] != 0) && \"Triangle: collinear vertices\");\n    \
+    \    }\n    }\n\n   public:\n    constexpr Triangle(const Vector<T, Dim>& p1,\
+    \ const Vector<T, Dim>& p2, const Vector<T, Dim>& p3) : p1(p1), p2(p2), p3(p3)\
+    \ {\n        assert_valid();\n    }\n    constexpr bool operator==(const Triangle&\
+    \ other) const {\n        assert_valid();\n        other.assert_valid();\n   \
+    \     auto has_vertex = [&](const Vector<T, Dim>& p) { return p == other.p1 ||\
+    \ p == other.p2 || p == other.p3; };\n        return has_vertex(p1) && has_vertex(p2)\
+    \ && has_vertex(p3);\n    }\n    constexpr bool operator!=(const Triangle& other)\
+    \ const { return !(*this == other); }\n};\n\ntemplate <typename T, int Dim>\n\
+    Triangle(const Vector<T, Dim>&, const Vector<T, Dim>&, const Vector<T, Dim>&)\
+    \ -> Triangle<T, Dim>;\n\n/**\n * @brief \u7DDA\u5206 p1p2 \u3068\u4E09\u89D2\u5F62\
+    \ abc (\u5468\u3092\u542B\u3080) \u304C\u5171\u6709\u70B9\u3092\u6301\u3064\u304B\
+    \ (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B\u3002\u6574\u6570\u5EA7\u6A19\
+    \u306A\u3089\u6B63\u78BA)\n * \u4E09\u89D2\u5F62\u306F\u9000\u5316\u3057\u3066\
+    \u3044\u306A\u3044 (a, b, c \u304C\u4E00\u76F4\u7DDA\u4E0A\u306B\u306A\u3044)\
+    \ \u3053\u3068\n */\ntemplate <typename T>\nbool segment_triangle_intersect(const\
+    \ Segment<T, 3>& object, const Triangle<T, 3>& triangle) {\n    const auto& [p1,\
+    \ p2] = object;\n    const auto& [a, b, c] = triangle;\n    using internal_predicates::orient;\n\
+    \    using internal_predicates::widen;\n    const auto n = cross(widen(b) - widen(a),\
+    \ widen(c) - widen(a));\n    assert(n != decltype(n)() && \"segment_triangle_intersect:\
+    \ degenerate triangle\");\n    const int s1 = orient(a, b, c, p1), s2 = orient(a,\
+    \ b, c, p2);\n    if (s1 * s2 > 0) return false;\n    if (s1 != 0 || s2 != 0)\
+    \ {\n        // \u7DDA\u5206\u304C\u5E73\u9762\u3092\u8CAB\u304F\u304B\u7247\u65B9\
+    \u306E\u7AEF\u70B9\u304C\u5E73\u9762\u4E0A\u306B\u3042\u308B\u3002\u76F4\u7DDA\
+    \ p1p2 \u304B\u3089\u898B\u3066\u30013 \u8FBA\u304C\u540C\u3058\u5411\u304D\u306B\
+    \u56DE\u3063\u3066\u3044\u308C\u3070\u4E09\u89D2\u5F62\u3092\u901A\u308B\n   \
+    \     const int o1 = orient(p1, p2, a, b), o2 = orient(p1, p2, b, c), o3 = orient(p1,\
+    \ p2, c, a);\n        return !((o1 < 0 || o2 < 0 || o3 < 0) && (o1 > 0 || o2 >\
+    \ 0 || o3 > 0));\n    }\n    // \u540C\u3058\u5E73\u9762\u4E0A: \u6CD5\u7DDA\u306E\
+    \u6210\u5206\u304C\u6700\u3082\u5927\u304D\u3044\u8EF8\u3092\u843D\u3068\u3057\
+    \u3066 2 \u6B21\u5143\u3067\u5224\u5B9A\u3059\u308B\n    int k = 0;\n    for (int\
+    \ i = 1; i < 3; i++) {\n        if ((n[i] < 0 ? -n[i] : n[i]) > (n[k] < 0 ? -n[k]\
+    \ : n[k])) k = i;\n    }\n    const int i0 = k == 0 ? 1 : 0, i1 = k == 2 ? 1 :\
+    \ 2;\n    auto flat = [&](const Vector<T, 3>& p) { return Vector<T, 2>(p[i0],\
+    \ p[i1]); };\n    const Vector<T, 2> q1 = flat(p1), q2 = flat(p2), ta = flat(a),\
+    \ tb = flat(b), tc = flat(c);\n    // \u7AEF\u70B9 q1 \u304C\u4E09\u89D2\u5F62\
+    \u306E\u5185\u90E8 (\u5468\u3092\u542B\u3080) \u306B\u3042\u308B\u304B\u3001\u7DDA\
+    \u5206\u304C\u8FBA\u3068\u4EA4\u308F\u308B (q1 \u304C\u5916\u3067 q2 \u304C\u5185\
+    \u306A\u3089\u8FBA\u3068\u4EA4\u308F\u308B)\n    // 3 \u8FBA\u304B\u3089\u898B\
+    \u305F\u5411\u304D\u304C\u6DF7\u3056\u3089\u306A\u3051\u308C\u3070\u5185\u90E8\
+    \u3002\u8FBA\u306E\u5EF6\u9577\u4E0A (ccw \u304C \xB12) \u306E\u70B9\u306F\u3001\
+    \u6B8B\u308A\u306E 2 \u8FBA\u3067\u5411\u304D\u304C\u9006\u306B\u306A\u308B\n\
+    \    bool pos = false, neg = false;\n    for (int o : {ccw(ta, tb, q1), ccw(tb,\
+    \ tc, q1), ccw(tc, ta, q1)}) pos |= o == 1, neg |= o == -1;\n    if (!(pos &&\
+    \ neg)) return true;\n    if (q1 == q2) return false;\n    return segments_intersect(Segment(q1,\
+    \ q2), Segment(ta, tb)) || segments_intersect(Segment(q1, q2), Segment(tb, tc))\
+    \ || segments_intersect(Segment(q1, q2), Segment(tc, ta));\n}\n#line 20 \"src/geometry/circle.hpp\"\
     \n\n/**\n * @brief \u5186\n *\n * @tparam T \u5EA7\u6A19\u3068\u534A\u5F84\u306E\
     \u578B \u7701\u7565\u3057\u305F\u3089double\n */\ntemplate <typename T = double>\n\
     struct Circle {\n    Vector<T, 2> c;  //!< \u4E2D\u5FC3\n    T r;            \
@@ -386,7 +564,7 @@ data:
     \u89D2\u5F62 abc \u306E\u5185\u63A5\u5186\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\
     \u9650\u5B9A\u30023\u70B9\u304C\u4E00\u76F4\u7DDA\u4E0A\u306B\u3042\u3063\u3066\
     \u306F\u306A\u3089\u306A\u3044\n */\ntemplate <typename T>\nCircle<T> incircle(const\
-    \ Vector<T, 2>& a, const Vector<T, 2>& b, const Vector<T, 2>& c) {\n    static_assert(std::is_floating_point_v<T>,\
+    \ Triangle<T>& triangle) {\n    const auto& [a, b, c] = triangle;\n    static_assert(std::is_floating_point_v<T>,\
     \ \"incircle: T must be a floating point type\");\n    assert(cross(b - a, c -\
     \ a) != 0 && \"incircle: collinear points\");\n    T la = (b - c).abs(), lb =\
     \ (c - a).abs(), lc = (a - b).abs();\n    T s = la + lb + lc;\n    // \u4E2D\u5FC3\
@@ -396,8 +574,8 @@ data:
     }\n\n/**\n * @brief \u4E09\u89D2\u5F62 abc \u306E\u5916\u63A5\u5186\u3002\u6D6E\
     \u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\u30023\u70B9\u304C\u4E00\u76F4\u7DDA\
     \u4E0A\u306B\u3042\u3063\u3066\u306F\u306A\u3089\u306A\u3044\n */\ntemplate <typename\
-    \ T>\nCircle<T> circumcircle(const Vector<T, 2>& a, const Vector<T, 2>& b, const\
-    \ Vector<T, 2>& c) {\n    static_assert(std::is_floating_point_v<T>, \"circumcircle:\
+    \ T>\nCircle<T> circumcircle(const Triangle<T>& triangle) {\n    const auto& [a,\
+    \ b, c] = triangle;\n    static_assert(std::is_floating_point_v<T>, \"circumcircle:\
     \ T must be a floating point type\");\n    Vector<T, 2> u = b - a, v = c - a;\n\
     \    T d = cross(u, v) * 2;\n    assert(d != 0 && \"circumcircle: collinear points\"\
     );\n    T nu = u.squared_norm(), nv = v.squared_norm();\n    // a \u3092\u539F\
@@ -409,174 +587,184 @@ data:
     \ * @param eps \u63A5\u3059\u308B (\u4EA4\u70B9\u304C1\u500B) \u3068\u307F\u306A\
     \u3059\u3001\u4E2D\u5FC3\u3068\u76F4\u7DDA\u306E\u8DDD\u96E2\u3068\u534A\u5F84\
     \u306E\u5DEE\n */\ntemplate <typename T>\nstd::vector<Vector<T, 2>> circle_line_intersection(const\
-    \ Circle<T>& c, const Vector<T, 2>& p1, const Vector<T, 2>& p2, T eps = 1e-9)\
-    \ {\n    static_assert(std::is_floating_point_v<T>, \"circle_line_intersection:\
-    \ T must be a floating point type\");\n    Vector<T, 2> h = projection(p1, p2,\
-    \ c.c);\n    T d = (h - c.c).abs();\n    if (d > c.r + eps) return {};\n    //\
-    \ \u63A5\u3059\u308B\u304B\u3069\u3046\u304B\u306F\u3001\u4E2D\u5FC3\u3068\u76F4\
-    \u7DDA\u306E\u8DDD\u96E2\u3068\u534A\u5F84\u306E\u5DEE\u3067\u5224\u5B9A\u3059\
-    \u308B\n    if (d >= c.r - eps) return {h};\n    T t = std::sqrt(c.r * c.r - d\
-    \ * d);\n    Vector<T, 2> u = (p2 - p1) / static_cast<T>((p2 - p1).abs());\n \
-    \   std::vector<Vector<T, 2>> res = {h - u * t, h + u * t};\n    std::sort(res.begin(),\
-    \ res.end());\n    return res;\n}\n\n/**\n * @brief 2\u3064\u306E\u5186\u306E\u4EA4\
-    \u70B9 (0\u301C2\u500B\u3001\u5EA7\u6A19\u306E\u6607\u9806)\u3002\u6D6E\u52D5\u5C0F\
-    \u6570\u70B9\u578B\u9650\u5B9A\n *\n * \u540C\u5FC3\u3067\u534A\u5F84\u304C\u9055\
-    \u3046\u306A\u3089\u7A7A\u3092\u8FD4\u3059\u3002\u540C\u3058\u5186 (\u4E2D\u5FC3\
-    \u9593\u306E\u8DDD\u96E2\u3068\u534A\u5F84\u306E\u5DEE\u304C\u3068\u3082\u306B\
-    \ eps \u4EE5\u4E0B) \u306F\u4EA4\u70B9\u304C\u7121\u6570\u306B\u3042\u308B\u306E\
-    \u3067 assert \u3067\u843D\u3068\u3059\n * @param eps \u63A5\u3059\u308B (\u4EA4\
-    \u70B9\u304C1\u500B) \u3068\u307F\u306A\u3059\u3001\u4E2D\u5FC3\u9593\u306E\u8DDD\
-    \u96E2\u3068\u534A\u5F84\u306E\u548C\u30FB\u5DEE\u306E\u5DEE\n */\ntemplate <typename\
-    \ T>\nstd::vector<Vector<T, 2>> circle_circle_intersection(const Circle<T>& c1,\
-    \ const Circle<T>& c2, T eps = 1e-9) {\n    static_assert(std::is_floating_point_v<T>,\
-    \ \"circle_circle_intersection: T must be a floating point type\");\n    Vector<T,\
-    \ 2> v = c2.c - c1.c;\n    T d = v.abs();\n    if (d <= eps) {\n        assert(std::abs(c1.r\
-    \ - c2.r) > eps && \"circle_circle_intersection: same circles\");\n        return\
-    \ {};\n    }\n    T s = c1.r + c2.r, t = std::abs(c1.r - c2.r);\n    if (d > s\
-    \ + eps || d < t - eps) return {};\n    // c1 \u306E\u4E2D\u5FC3\u304B\u3089\u3001\
-    2\u3064\u306E\u4EA4\u70B9\u3092\u7D50\u3076\u7DDA\u5206\u306E\u4E2D\u70B9\u307E\
-    \u3067\u306E\u8DDD\u96E2\n    T a = (d * d + c1.r * c1.r - c2.r * c2.r) / (2 *\
-    \ d);\n    Vector<T, 2> u = v / d;\n    Vector<T, 2> m = c1.c + u * a, n(-u[1],\
-    \ u[0]);\n    // \u63A5\u3059\u308B\u304B\u3069\u3046\u304B\u306F\u3001\u4E2D\u5FC3\
-    \u9593\u306E\u8DDD\u96E2\u3068\u534A\u5F84\u306E\u548C\u30FB\u5DEE\u3067\u5224\
-    \u5B9A\u3059\u308B\n    if (d >= s - eps || d <= t + eps) return {m};\n    T h\
-    \ = std::sqrt(std::max<T>(c1.r * c1.r - a * a, 0));\n    std::vector<Vector<T,\
-    \ 2>> res = {m + n * h, m - n * h};\n    std::sort(res.begin(), res.end());\n\
-    \    return res;\n}\n\n/**\n * @brief \u70B9 p \u304B\u3089\u5186 c \u306B\u5F15\
-    \u3044\u305F\u63A5\u7DDA\u306E\u63A5\u70B9 (0\u301C2\u500B\u3001\u5EA7\u6A19\u306E\
-    \u6607\u9806)\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n *\n * p\
-    \ \u304C\u5186\u306E\u5185\u90E8\u306A\u3089\u7A7A\u3001\u5186\u5468\u4E0A\u306A\
-    \u3089 p \u3060\u3051\u3092\u8FD4\u3059\n * @param eps p \u304C\u5186\u5468\u4E0A\
-    \u306B\u3042\u308B\u3068\u307F\u306A\u3059\u8AA4\u5DEE\n */\ntemplate <typename\
-    \ T>\nstd::vector<Vector<T, 2>> tangent_points(const Circle<T>& c, const Vector<T,\
-    \ 2>& p, T eps = 1e-9) {\n    static_assert(std::is_floating_point_v<T>, \"tangent_points:\
-    \ T must be a floating point type\");\n    Vector<T, 2> v = p - c.c;\n    T d2\
-    \ = v.squared_norm(), r2 = c.r * c.r;\n    T d = std::sqrt(d2);\n    if (std::abs(d\
-    \ - c.r) <= eps) return {p};\n    if (d < c.r) return {};\n    // \u63A5\u70B9\
-    \u306F c.c + (v r^2 \xB1 v \u306E\u6CD5\u7DDA r sqrt(d^2 - r^2)) / d^2\n    T\
-    \ s = c.r * std::sqrt(d2 - r2);\n    Vector<T, 2> n(-v[1], v[0]);\n    std::vector<Vector<T,\
-    \ 2>> res = {c.c + (v * r2 + n * s) / d2, c.c + (v * r2 - n * s) / d2};\n    std::sort(res.begin(),\
-    \ res.end());\n    return res;\n}\n\n/**\n * @brief 2\u3064\u306E\u5186\u306E\u5171\
-    \u901A\u63A5\u7DDA (0\u301C4\u672C)\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\
-    \u5B9A\n *\n * \u540C\u5FC3\u3067\u534A\u5F84\u304C\u9055\u3046\u306A\u3089\u7A7A\
-    \u3092\u8FD4\u3059\u3002\u540C\u3058\u5186 (\u4E2D\u5FC3\u9593\u306E\u8DDD\u96E2\
-    \u3068\u534A\u5F84\u306E\u5DEE\u304C\u3068\u3082\u306B eps \u4EE5\u4E0B) \u306F\
-    \u63A5\u7DDA\u304C\u7121\u6570\u306B\u3042\u308B\u306E\u3067 assert \u3067\u843D\
-    \u3068\u3059\u3002\n * \u5404\u63A5\u7DDA\u3092 (c1 \u3068\u306E\u63A5\u70B9,\
-    \ c2 \u3068\u306E\u63A5\u70B9) \u306E\u7D44\u3067\u8FD4\u3057\u3001c1 \u3068\u306E\
-    \u63A5\u70B9\u306E\u5EA7\u6A19\u306E\u6607\u9806\u306B\u4E26\u3079\u308B\u3002\
-    \n * 2\u3064\u306E\u5186\u304C\u63A5\u3059\u308B\u70B9\u3067\u306E\u63A5\u7DDA\
-    \u306F\u30012\u3064\u306E\u63A5\u70B9\u304C\u540C\u3058\u70B9\u306B\u306A\u308B\
-    \ (\u63A5\u7DDA\u306F\u4E2D\u5FC3\u3092\u7D50\u3076\u76F4\u7DDA\u306B\u5782\u76F4\
-    )\n * @param eps \u63A5\u3059\u308B (\u305D\u306E\u7A2E\u985E\u306E\u63A5\u7DDA\
-    \u304C1\u672C) \u3068\u307F\u306A\u3059\u3001\u4E2D\u5FC3\u9593\u306E\u8DDD\u96E2\
-    \u3068\u534A\u5F84\u306E\u548C\u30FB\u5DEE\u306E\u5DEE\n */\ntemplate <typename\
-    \ T>\nstd::vector<std::pair<Vector<T, 2>, Vector<T, 2>>> common_tangents(const\
-    \ Circle<T>& c1, const Circle<T>& c2, T eps = 1e-9) {\n    static_assert(std::is_floating_point_v<T>,\
-    \ \"common_tangents: T must be a floating point type\");\n    Vector<T, 2> d =\
-    \ c2.c - c1.c;\n    T d2 = d.squared_norm(), dist = std::sqrt(d2);\n    if (dist\
-    \ <= eps) {\n        assert(std::abs(c1.r - c2.r) > eps && \"common_tangents:\
-    \ same circles\");\n        return {};\n    }\n    std::vector<std::pair<Vector<T,\
-    \ 2>, Vector<T, 2>>> res;\n    // \u5171\u901A\u5916\u63A5\u7DDA\u306F c2 \u306E\
-    \u534A\u5F84\u3092 r2\u3001\u5171\u901A\u5185\u63A5\u7DDA\u306F -r2 \u3068\u3057\
-    \u3066\u540C\u3058\u5F0F\u3067\u6C42\u3081\u308B\n    for (T r2 : {c2.r, -c2.r})\
-    \ {\n        T dr = c1.r - r2;\n        if (dist < std::abs(dr) - eps) continue;\n\
-    \        bool touch = std::abs(dist - std::abs(dr)) <= eps;\n        T h = touch\
-    \ ? T(0) : std::sqrt(std::max<T>(d2 - dr * dr, 0));\n        for (int sign : {1,\
-    \ -1}) {\n            // \u4E2D\u5FC3\u304B\u3089\u63A5\u70B9\u3078\u306E\u5358\
-    \u4F4D\u30D9\u30AF\u30C8\u30EB\n            Vector<T, 2> v = (d * dr + Vector<T,\
-    \ 2>(-d[1], d[0]) * (h * sign)) / d2;\n            res.push_back({c1.c + v * c1.r,\
-    \ c2.c + v * r2});\n            if (touch) break;\n        }\n    }\n    std::sort(res.begin(),\
-    \ res.end());\n    return res;\n}\n\n/**\n * @brief 2\u3064\u306E\u5186\u306E\u5171\
-    \u901A\u90E8\u5206\u306E\u9762\u7A4D\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\
-    \u9650\u5B9A\n */\ntemplate <typename T>\nT circle_circle_intersection_area(const\
-    \ Circle<T>& c1, const Circle<T>& c2) {\n    static_assert(std::is_floating_point_v<T>,\
-    \ \"circle_circle_intersection_area: T must be a floating point type\");\n   \
-    \ const T pi = std::acos(T(-1));\n    T d = (c1.c - c2.c).abs();\n    if (d >=\
-    \ c1.r + c2.r) return 0;\n    if (d <= std::abs(c1.r - c2.r)) {\n        T r =\
-    \ std::min(c1.r, c2.r);\n        return pi * r * r;\n    }\n    // \u5404\u5186\
-    \u306E\u3001\u4EA4\u70B9\u3092\u7D50\u3076\u5F26\u3067\u5207\u3063\u305F\u5F13\
-    \u5F62\u306E\u9762\u7A4D\u306E\u548C\n    auto segment = [&](T r, T R) {\n   \
-    \     T a = std::acos(std::clamp((d * d + r * r - R * R) / (2 * d * r), T(-1),\
-    \ T(1)));  // \u4E2D\u5FC3\u89D2\u306E\u534A\u5206\n        return r * r * (a\
-    \ - std::sin(2 * a) / 2);\n    };\n    return segment(c1.r, c2.r) + segment(c2.r,\
-    \ c1.r);\n}\n\n/**\n * @brief \u5186\u3068\u591A\u89D2\u5F62\u306E\u5171\u901A\
-    \u90E8\u5206\u306E\u9762\u7A4D\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\
-    \u5B9A O(n)\n *\n * \u5186\u306E\u4E2D\u5FC3\u3068\u591A\u89D2\u5F62\u306E\u5404\
-    \u8FBA\u304C\u306A\u3059\u4E09\u89D2\u5F62\u3068\u5186\u306E\u5171\u901A\u90E8\
-    \u5206\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\u3092\u8DB3\u3059\n * @param\
-    \ polygon \u9802\u70B9\u306E\u5EA7\u6A19 (\u53CD\u6642\u8A08\u56DE\u308A\u3067\
-    \u3082\u6642\u8A08\u56DE\u308A\u3067\u3082\u3088\u3044)\u3002\u51F8\u3067\u306A\
-    \u304F\u3066\u3082\u3088\u3044\n */\ntemplate <typename T>\nT circle_polygon_intersection_area(const\
-    \ Circle<T>& c, const std::vector<Vector<T, 2>>& polygon) {\n    static_assert(std::is_floating_point_v<T>,\
-    \ \"circle_polygon_intersection_area: T must be a floating point type\");\n  \
-    \  const T r = c.r;\n    // \u539F\u70B9 (\u5186\u306E\u4E2D\u5FC3)\u3001a\u3001\
-    b \u306E\u4E09\u89D2\u5F62\u3068\u5186\u306E\u5171\u901A\u90E8\u5206\u306E\u7B26\
-    \u53F7\u4ED8\u304D\u9762\u7A4D\n    auto triangle = [&](const Vector<T, 2>& a,\
-    \ const Vector<T, 2>& b) {\n        // \u7DDA\u5206 ab \u3092\u5186\u5468\u3068\
-    \u306E\u4EA4\u70B9\u3067\u5206\u3051\u308B\n        std::vector<Vector<T, 2>>\
-    \ ps = {a};\n        Vector<T, 2> v = b - a;\n        T A = v.squared_norm(),\
-    \ B = dot(a, v), C = a.squared_norm() - r * r;\n        T disc = B * B - A * C;\n\
-    \        if (A > 0 && disc > 0) {\n            T s = std::sqrt(disc);\n      \
-    \      for (T t : {(-B - s) / A, (-B + s) / A}) {\n                if (0 < t &&\
-    \ t < 1) ps.push_back(a + v * t);\n            }\n        }\n        ps.push_back(b);\n\
-    \        T res = 0;\n        for (int i = 0; i + 1 < static_cast<int>(ps.size());\
-    \ i++) {\n            const Vector<T, 2>&p = ps[i], &q = ps[i + 1];\n        \
-    \    // \u4E21\u7AEF\u304C\u5186\u306E\u5185\u90E8 (\u5186\u5468\u4E0A\u3092\u542B\
-    \u3080) \u306A\u3089\u533A\u9593\u5168\u4F53\u304C\u5185\u90E8\u306A\u306E\u3067\
-    \u4E09\u89D2\u5F62\u3001\u305D\u3046\u3067\u306A\u3051\u308C\u3070\u6247\u5F62\
-    \n            // (\u4E2D\u70B9\u3067\u5224\u5B9A\u3059\u308B\u3068\u3001\u5186\
-    \u306B\u63A5\u3059\u308B\u8FBA\u3092\u5185\u90E8\u3068\u307F\u306A\u3057\u3066\
-    \u3057\u307E\u3046)\n            const T lim = r * r * (1 + 1e-9);\n         \
-    \   if (p.squared_norm() <= lim && q.squared_norm() <= lim)\n                res\
-    \ += cross(p, q) / 2;\n            else\n                res += r * r * std::atan2(cross(p,\
-    \ q), dot(p, q)) / 2;\n        }\n        return res;\n    };\n    T res = 0;\n\
-    \    const int n = static_cast<int>(polygon.size());\n    for (int i = 0; i <\
-    \ n; i++) res += triangle(polygon[i] - c.c, polygon[i + 1 == n ? 0 : i + 1] -\
-    \ c.c);\n    return std::abs(res);\n}\n\n/**\n * @brief minimum_enclosing_circle\
-    \ \u306E\u623B\u308A\u5024\u3002\u5186\u5468\u4E0A\u306B\u3042\u3063\u3066\u5186\
-    \u3092\u6C7A\u3081\u308B 1 \u301C 3 \u70B9\u3067\u8868\u3059\n * @tparam T \u5EA7\
-    \u6A19\u306E\u578B\u3002\u6574\u6570\u578B\u306A\u3089 side \u306F __int128 \u3067\
-    \u6B63\u78BA\u306B\u5224\u5B9A\u3059\u308B\n */\ntemplate <typename T>\nstruct\
-    \ EnclosingCircle {\n    std::vector<Vector<T, 2>> support;  //!< \u5186\u3092\
-    \u6C7A\u3081\u308B\u70B9 (1 \u70B9\u306A\u3089\u534A\u5F84 0\u30012 \u70B9\u306A\
-    \u3089\u305D\u308C\u3092\u76F4\u5F84\u3068\u3059\u308B\u5186\u30013 \u70B9\u306A\
-    \u3089\u305D\u306E\u5916\u63A5\u5186)\n\n    /**\n     * @brief \u70B9 p \u304C\
-    \u5186\u306E\u5185\u5074\u306A\u3089 -1\u3001\u5186\u5468\u4E0A\u306A\u3089 0\u3001\
-    \u5916\u5074\u306A\u3089 1 (\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u3067\u306F\u8AA4\
-    \u5DEE\u3092\u8003\u3048\u306A\u3044)\n     */\n    int side(const Vector<T, 2>&\
-    \ p) const {\n        using W = std::conditional_t<std::is_integral_v<T>, __int128,\
-    \ T>;\n        auto sgn = [](W x) { return x > 0 ? 1 : x < 0 ? -1\n          \
-    \                                            : 0; };\n        if (support.size()\
-    \ == 1) return p == support[0] ? 0 : 1;\n        if (support.size() == 2) {\n\
-    \            // \u76F4\u5F84\u306E\u4E21\u7AEF\u304B\u3089\u898B\u305F\u5411\u304D\
-    \u306E\u5185\u7A4D\u306E\u7B26\u53F7\n            const Vector<T, 2> a = support[0]\
-    \ - p, b = support[1] - p;\n            return sgn(static_cast<W>(a[0]) * b[0]\
-    \ + static_cast<W>(a[1]) * b[1]);\n        }\n        // \u5916\u63A5\u5186\u306E\
-    \u5185\u5916\u5224\u5B9A (incircle \u306E\u884C\u5217\u5F0F)\u3002\u4E09\u89D2\
-    \u5F62\u304C\u6642\u8A08\u56DE\u308A\u306A\u3089\u7B26\u53F7\u3092\u53CD\u8EE2\
-    \u3059\u308B\n        W m[3][3];\n        for (int i = 0; i < 3; i++) {\n    \
-    \        const W x = support[i][0] - p[0], y = support[i][1] - p[1];\n       \
-    \     m[i][0] = x, m[i][1] = y, m[i][2] = x * x + y * y;\n        }\n        const\
-    \ W det = m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) - m[0][1] * (m[1][0]\
-    \ * m[2][2] - m[1][2] * m[2][0]) + m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);\n\
-    \        const Vector<T, 2> u = support[1] - support[0], v = support[2] - support[0];\n\
-    \        const int orient = sgn(static_cast<W>(u[0]) * v[1] - static_cast<W>(u[1])\
-    \ * v[0]);\n        return -sgn(det) * orient;\n    }\n    /**\n     * @brief\
-    \ \u4E2D\u5FC3\u3068\u534A\u5F84 (double)\n     */\n    Circle<double> circle()\
-    \ const {\n        auto to = [](const Vector<T, 2>& a) { return Vector<double,\
-    \ 2>(static_cast<double>(a[0]), static_cast<double>(a[1])); };\n        if (support.size()\
-    \ == 1) return Circle<double>(to(support[0]), 0);\n        if (support.size()\
-    \ == 2) {\n            const Vector<double, 2> a = to(support[0]), b = to(support[1]);\n\
-    \            return Circle<double>((a + b) / 2.0, (a - b).abs() / 2);\n      \
-    \  }\n        return circumcircle(to(support[0]), to(support[1]), to(support[2]));\n\
-    \    }\n};\n\n/**\n * @brief \u70B9\u306E\u96C6\u5408\u3092\u542B\u3080\u6700\u5C0F\
-    \u306E\u5186 (Welzl \u306E\u4E71\u629E\u30A2\u30EB\u30B4\u30EA\u30BA\u30E0) \u671F\
-    \u5F85 O(n)\n * \u70B9\u306E\u9806\u756A\u3092\u4E71\u629E\u3067\u5165\u308C\u66FF\
-    \u3048\u3001\u5916\u306B\u3042\u308B\u70B9\u304C\u898B\u3064\u304B\u308B\u305F\
-    \u3073\u306B\u3001\u305D\u306E\u70B9\u3092\u5186\u5468\u4E0A\u306B\u56FA\u5B9A\
-    \u3057\u3066\u4F5C\u308A\u76F4\u3059\n * @pre \u70B9\u306F 1 \u3064\u4EE5\u4E0A\
-    \n */\ntemplate <typename T>\nEnclosingCircle<T> minimum_enclosing_circle(std::vector<Vector<T,\
+    \ Circle<T>& c, const Line<T>& line, T eps = 1e-9) {\n    const auto& [p1, p2]\
+    \ = line;\n    static_assert(std::is_floating_point_v<T>, \"circle_line_intersection:\
+    \ T must be a floating point type\");\n    Vector<T, 2> h = projection(line, c.c);\n\
+    \    T d = (h - c.c).abs();\n    if (d > c.r + eps) return {};\n    // \u63A5\u3059\
+    \u308B\u304B\u3069\u3046\u304B\u306F\u3001\u4E2D\u5FC3\u3068\u76F4\u7DDA\u306E\
+    \u8DDD\u96E2\u3068\u534A\u5F84\u306E\u5DEE\u3067\u5224\u5B9A\u3059\u308B\n   \
+    \ if (d >= c.r - eps) return {h};\n    T t = std::sqrt(c.r * c.r - d * d);\n \
+    \   Vector<T, 2> u = (p2 - p1) / static_cast<T>((p2 - p1).abs());\n    std::vector<Vector<T,\
+    \ 2>> res = {h - u * t, h + u * t};\n    std::sort(res.begin(), res.end());\n\
+    \    return res;\n}\n\n/**\n * @brief 2\u3064\u306E\u5186\u306E\u4EA4\u70B9 (0\u301C\
+    2\u500B\u3001\u5EA7\u6A19\u306E\u6607\u9806)\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\
+    \u578B\u9650\u5B9A\n *\n * \u540C\u5FC3\u3067\u534A\u5F84\u304C\u9055\u3046\u306A\
+    \u3089\u7A7A\u3092\u8FD4\u3059\u3002\u540C\u3058\u5186 (\u4E2D\u5FC3\u9593\u306E\
+    \u8DDD\u96E2\u3068\u534A\u5F84\u306E\u5DEE\u304C\u3068\u3082\u306B eps \u4EE5\u4E0B\
+    ) \u306F\u4EA4\u70B9\u304C\u7121\u6570\u306B\u3042\u308B\u306E\u3067 assert \u3067\
+    \u843D\u3068\u3059\n * @param eps \u63A5\u3059\u308B (\u4EA4\u70B9\u304C1\u500B\
+    ) \u3068\u307F\u306A\u3059\u3001\u4E2D\u5FC3\u9593\u306E\u8DDD\u96E2\u3068\u534A\
+    \u5F84\u306E\u548C\u30FB\u5DEE\u306E\u5DEE\n */\ntemplate <typename T>\nstd::vector<Vector<T,\
+    \ 2>> circle_circle_intersection(const Circle<T>& c1, const Circle<T>& c2, T eps\
+    \ = 1e-9) {\n    static_assert(std::is_floating_point_v<T>, \"circle_circle_intersection:\
+    \ T must be a floating point type\");\n    Vector<T, 2> v = c2.c - c1.c;\n   \
+    \ T d = v.abs();\n    if (d <= eps) {\n        assert(std::abs(c1.r - c2.r) >\
+    \ eps && \"circle_circle_intersection: same circles\");\n        return {};\n\
+    \    }\n    T s = c1.r + c2.r, t = std::abs(c1.r - c2.r);\n    if (d > s + eps\
+    \ || d < t - eps) return {};\n    // c1 \u306E\u4E2D\u5FC3\u304B\u3089\u30012\u3064\
+    \u306E\u4EA4\u70B9\u3092\u7D50\u3076\u7DDA\u5206\u306E\u4E2D\u70B9\u307E\u3067\
+    \u306E\u8DDD\u96E2\n    T a = (d * d + c1.r * c1.r - c2.r * c2.r) / (2 * d);\n\
+    \    Vector<T, 2> u = v / d;\n    Vector<T, 2> m = c1.c + u * a, n(-u[1], u[0]);\n\
+    \    // \u63A5\u3059\u308B\u304B\u3069\u3046\u304B\u306F\u3001\u4E2D\u5FC3\u9593\
+    \u306E\u8DDD\u96E2\u3068\u534A\u5F84\u306E\u548C\u30FB\u5DEE\u3067\u5224\u5B9A\
+    \u3059\u308B\n    if (d >= s - eps || d <= t + eps) return {m};\n    T h = std::sqrt(std::max<T>(c1.r\
+    \ * c1.r - a * a, 0));\n    std::vector<Vector<T, 2>> res = {m + n * h, m - n\
+    \ * h};\n    std::sort(res.begin(), res.end());\n    return res;\n}\n\n/**\n *\
+    \ @brief \u70B9 p \u304B\u3089\u5186 c \u306B\u5F15\u3044\u305F\u63A5\u7DDA\u306E\
+    \u63A5\u70B9 (0\u301C2\u500B\u3001\u5EA7\u6A19\u306E\u6607\u9806)\u3002\u6D6E\u52D5\
+    \u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n *\n * p \u304C\u5186\u306E\u5185\u90E8\u306A\
+    \u3089\u7A7A\u3001\u5186\u5468\u4E0A\u306A\u3089 p \u3060\u3051\u3092\u8FD4\u3059\
+    \n * @param eps p \u304C\u5186\u5468\u4E0A\u306B\u3042\u308B\u3068\u307F\u306A\
+    \u3059\u8AA4\u5DEE\n */\ntemplate <typename T>\nstd::vector<Vector<T, 2>> tangent_points(const\
+    \ Circle<T>& c, const Vector<T, 2>& p, T eps = 1e-9) {\n    static_assert(std::is_floating_point_v<T>,\
+    \ \"tangent_points: T must be a floating point type\");\n    Vector<T, 2> v =\
+    \ p - c.c;\n    T d2 = v.squared_norm(), r2 = c.r * c.r;\n    T d = std::sqrt(d2);\n\
+    \    if (std::abs(d - c.r) <= eps) return {p};\n    if (d < c.r) return {};\n\
+    \    // \u63A5\u70B9\u306F c.c + (v r^2 \xB1 v \u306E\u6CD5\u7DDA r sqrt(d^2 -\
+    \ r^2)) / d^2\n    T s = c.r * std::sqrt(d2 - r2);\n    Vector<T, 2> n(-v[1],\
+    \ v[0]);\n    std::vector<Vector<T, 2>> res = {c.c + (v * r2 + n * s) / d2, c.c\
+    \ + (v * r2 - n * s) / d2};\n    std::sort(res.begin(), res.end());\n    return\
+    \ res;\n}\n\n/** @brief \u5171\u901A\u63A5\u7DDA\u3068\u3001\u5404\u5186\u3068\
+    \u306E\u63A5\u70B9 */\ntemplate <typename T>\nstruct CommonTangent {\n    Line<T>\
+    \ line;\n    Vector<T, 2> contact1, contact2;\n};\n\n/**\n * @brief 2\u3064\u306E\
+    \u5186\u306E\u5171\u901A\u63A5\u7DDA (0\u301C4\u672C)\u3002\u6D6E\u52D5\u5C0F\u6570\
+    \u70B9\u578B\u9650\u5B9A\n *\n * \u540C\u5FC3\u3067\u534A\u5F84\u304C\u9055\u3046\
+    \u306A\u3089\u7A7A\u3092\u8FD4\u3059\u3002\u540C\u3058\u5186 (\u4E2D\u5FC3\u9593\
+    \u306E\u8DDD\u96E2\u3068\u534A\u5F84\u306E\u5DEE\u304C\u3068\u3082\u306B eps \u4EE5\
+    \u4E0B) \u306F\u63A5\u7DDA\u304C\u7121\u6570\u306B\u3042\u308B\u306E\u3067 assert\
+    \ \u3067\u843D\u3068\u3059\u3002\n * \u5404\u63A5\u7DDA\u3092 CommonTangent {line,\
+    \ contact1, contact2} \u3067\u8FD4\u3057\u3001c1 \u3068\u306E\u63A5\u70B9\u306E\
+    \u5EA7\u6A19\u306E\u6607\u9806\u306B\u4E26\u3079\u308B\u3002\n * 2\u3064\u306E\
+    \u5186\u304C\u63A5\u3059\u308B\u70B9\u3067\u306E\u63A5\u7DDA\u306F\u30012\u3064\
+    \u306E\u63A5\u70B9\u304C\u540C\u3058\u70B9\u306B\u306A\u308B (\u63A5\u7DDA\u306F\
+    \u4E2D\u5FC3\u3092\u7D50\u3076\u76F4\u7DDA\u306B\u5782\u76F4)\n * @param eps \u63A5\
+    \u3059\u308B (\u305D\u306E\u7A2E\u985E\u306E\u63A5\u7DDA\u304C1\u672C) \u3068\u307F\
+    \u306A\u3059\u3001\u4E2D\u5FC3\u9593\u306E\u8DDD\u96E2\u3068\u534A\u5F84\u306E\
+    \u548C\u30FB\u5DEE\u306E\u5DEE\n */\ntemplate <typename T>\nstd::vector<CommonTangent<T>>\
+    \ common_tangents(const Circle<T>& c1, const Circle<T>& c2, T eps = 1e-9) {\n\
+    \    static_assert(std::is_floating_point_v<T>, \"common_tangents: T must be a\
+    \ floating point type\");\n    Vector<T, 2> d = c2.c - c1.c;\n    T d2 = d.squared_norm(),\
+    \ dist = std::sqrt(d2);\n    if (dist <= eps) {\n        assert(std::abs(c1.r\
+    \ - c2.r) > eps && \"common_tangents: same circles\");\n        return {};\n \
+    \   }\n    std::vector<CommonTangent<T>> res;\n    // \u5171\u901A\u5916\u63A5\
+    \u7DDA\u306F c2 \u306E\u534A\u5F84\u3092 r2\u3001\u5171\u901A\u5185\u63A5\u7DDA\
+    \u306F -r2 \u3068\u3057\u3066\u540C\u3058\u5F0F\u3067\u6C42\u3081\u308B\n    for\
+    \ (T r2 : {c2.r, -c2.r}) {\n        T dr = c1.r - r2;\n        if (dist < std::abs(dr)\
+    \ - eps) continue;\n        bool touch = std::abs(dist - std::abs(dr)) <= eps;\n\
+    \        T h = touch ? T(0) : std::sqrt(std::max<T>(d2 - dr * dr, 0));\n     \
+    \   for (int sign : {1, -1}) {\n            // \u4E2D\u5FC3\u304B\u3089\u63A5\u70B9\
+    \u3078\u306E\u5358\u4F4D\u30D9\u30AF\u30C8\u30EB\n            Vector<T, 2> v =\
+    \ (d * dr + Vector<T, 2>(-d[1], d[0]) * (h * sign)) / d2;\n            Vector<T,\
+    \ 2> p = c1.c + v * c1.r, q = c2.c + v * r2;\n            // \u63A5\u70B9\u304C\
+    \u4E00\u81F4\u3059\u308B\u3068\u304D\u306F\u534A\u5F84\u306B\u5782\u76F4\u306A\
+    \u65B9\u5411\u3092\u4F7F\u3046\u3002\n            // \u5927\u304D\u306A\u5EA7\u6A19\
+    \u3067\u3082\u65B9\u5411\u3092\u8DB3\u3057\u305F\u70B9\u304C\u4E38\u3081\u3067\
+    \ p \u306B\u623B\u3089\u306A\u3044\u3088\u3046\u3001\u5EA7\u6A19\u306B\u5408\u308F\
+    \u305B\u3066\u62E1\u5927\u3059\u308B\u3002\n            T scale = std::max({T(1),\
+    \ std::abs(p[0]), std::abs(p[1])});\n            Vector<T, 2> second = touch ||\
+    \ p == q ? p + Vector<T, 2>(-v[1], v[0]) * scale : q;\n            res.push_back({Line(p,\
+    \ second), p, q});\n            if (touch) break;\n        }\n    }\n    std::sort(res.begin(),\
+    \ res.end(), [](const auto& a, const auto& b) {\n        return a.contact1 < b.contact1\
+    \ || (!(b.contact1 < a.contact1) && a.contact2 < b.contact2);\n    });\n    return\
+    \ res;\n}\n\n/**\n * @brief 2\u3064\u306E\u5186\u306E\u5171\u901A\u90E8\u5206\u306E\
+    \u9762\u7A4D\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n */\ntemplate\
+    \ <typename T>\nT circle_circle_intersection_area(const Circle<T>& c1, const Circle<T>&\
+    \ c2) {\n    static_assert(std::is_floating_point_v<T>, \"circle_circle_intersection_area:\
+    \ T must be a floating point type\");\n    const T pi = std::acos(T(-1));\n  \
+    \  T d = (c1.c - c2.c).abs();\n    if (d >= c1.r + c2.r) return 0;\n    if (d\
+    \ <= std::abs(c1.r - c2.r)) {\n        T r = std::min(c1.r, c2.r);\n        return\
+    \ pi * r * r;\n    }\n    // \u5404\u5186\u306E\u3001\u4EA4\u70B9\u3092\u7D50\u3076\
+    \u5F26\u3067\u5207\u3063\u305F\u5F13\u5F62\u306E\u9762\u7A4D\u306E\u548C\n   \
+    \ auto segment = [&](T r, T R) {\n        T a = std::acos(std::clamp((d * d +\
+    \ r * r - R * R) / (2 * d * r), T(-1), T(1)));  // \u4E2D\u5FC3\u89D2\u306E\u534A\
+    \u5206\n        return r * r * (a - std::sin(2 * a) / 2);\n    };\n    return\
+    \ segment(c1.r, c2.r) + segment(c2.r, c1.r);\n}\n\n/**\n * @brief \u5186\u3068\
+    \u591A\u89D2\u5F62\u306E\u5171\u901A\u90E8\u5206\u306E\u9762\u7A4D\u3002\u6D6E\
+    \u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A O(n)\n *\n * \u5186\u306E\u4E2D\u5FC3\
+    \u3068\u591A\u89D2\u5F62\u306E\u5404\u8FBA\u304C\u306A\u3059\u4E09\u89D2\u5F62\
+    \u3068\u5186\u306E\u5171\u901A\u90E8\u5206\u306E\u7B26\u53F7\u4ED8\u304D\u9762\
+    \u7A4D\u3092\u8DB3\u3059\n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19 (\u53CD\
+    \u6642\u8A08\u56DE\u308A\u3067\u3082\u6642\u8A08\u56DE\u308A\u3067\u3082\u3088\
+    \u3044)\u3002\u51F8\u3067\u306A\u304F\u3066\u3082\u3088\u3044\n */\ntemplate <typename\
+    \ T>\nT circle_polygon_intersection_area(const Circle<T>& c, const std::vector<Vector<T,\
+    \ 2>>& polygon) {\n    static_assert(std::is_floating_point_v<T>, \"circle_polygon_intersection_area:\
+    \ T must be a floating point type\");\n    const T r = c.r;\n    // \u539F\u70B9\
+    \ (\u5186\u306E\u4E2D\u5FC3)\u3001a\u3001b \u306E\u4E09\u89D2\u5F62\u3068\u5186\
+    \u306E\u5171\u901A\u90E8\u5206\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\n   \
+    \ auto triangle = [&](const Vector<T, 2>& a, const Vector<T, 2>& b) {\n      \
+    \  // \u7DDA\u5206 ab \u3092\u5186\u5468\u3068\u306E\u4EA4\u70B9\u3067\u5206\u3051\
+    \u308B\n        std::vector<Vector<T, 2>> ps = {a};\n        Vector<T, 2> v =\
+    \ b - a;\n        T A = v.squared_norm(), B = dot(a, v), C = a.squared_norm()\
+    \ - r * r;\n        T disc = B * B - A * C;\n        if (A > 0 && disc > 0) {\n\
+    \            T s = std::sqrt(disc);\n            for (T t : {(-B - s) / A, (-B\
+    \ + s) / A}) {\n                if (0 < t && t < 1) ps.push_back(a + v * t);\n\
+    \            }\n        }\n        ps.push_back(b);\n        T res = 0;\n    \
+    \    for (int i = 0; i + 1 < static_cast<int>(ps.size()); i++) {\n           \
+    \ const Vector<T, 2>&p = ps[i], &q = ps[i + 1];\n            // \u4E21\u7AEF\u304C\
+    \u5186\u306E\u5185\u90E8 (\u5186\u5468\u4E0A\u3092\u542B\u3080) \u306A\u3089\u533A\
+    \u9593\u5168\u4F53\u304C\u5185\u90E8\u306A\u306E\u3067\u4E09\u89D2\u5F62\u3001\
+    \u305D\u3046\u3067\u306A\u3051\u308C\u3070\u6247\u5F62\n            // (\u4E2D\
+    \u70B9\u3067\u5224\u5B9A\u3059\u308B\u3068\u3001\u5186\u306B\u63A5\u3059\u308B\
+    \u8FBA\u3092\u5185\u90E8\u3068\u307F\u306A\u3057\u3066\u3057\u307E\u3046)\n  \
+    \          const T lim = r * r * (1 + 1e-9);\n            if (p.squared_norm()\
+    \ <= lim && q.squared_norm() <= lim)\n                res += cross(p, q) / 2;\n\
+    \            else\n                res += r * r * std::atan2(cross(p, q), dot(p,\
+    \ q)) / 2;\n        }\n        return res;\n    };\n    T res = 0;\n    const\
+    \ int n = static_cast<int>(polygon.size());\n    for (int i = 0; i < n; i++) res\
+    \ += triangle(polygon[i] - c.c, polygon[i + 1 == n ? 0 : i + 1] - c.c);\n    return\
+    \ std::abs(res);\n}\n\n/**\n * @brief minimum_enclosing_circle \u306E\u623B\u308A\
+    \u5024\u3002\u5186\u5468\u4E0A\u306B\u3042\u3063\u3066\u5186\u3092\u6C7A\u3081\
+    \u308B 1 \u301C 3 \u70B9\u3067\u8868\u3059\n * @tparam T \u5EA7\u6A19\u306E\u578B\
+    \u3002\u6574\u6570\u578B\u306A\u3089 side \u306F __int128 \u3067\u6B63\u78BA\u306B\
+    \u5224\u5B9A\u3059\u308B\n */\ntemplate <typename T>\nstruct EnclosingCircle {\n\
+    \    std::vector<Vector<T, 2>> support;  //!< \u5186\u3092\u6C7A\u3081\u308B\u70B9\
+    \ (1 \u70B9\u306A\u3089\u534A\u5F84 0\u30012 \u70B9\u306A\u3089\u305D\u308C\u3092\
+    \u76F4\u5F84\u3068\u3059\u308B\u5186\u30013 \u70B9\u306A\u3089\u305D\u306E\u5916\
+    \u63A5\u5186)\n\n    /**\n     * @brief \u70B9 p \u304C\u5186\u306E\u5185\u5074\
+    \u306A\u3089 -1\u3001\u5186\u5468\u4E0A\u306A\u3089 0\u3001\u5916\u5074\u306A\u3089\
+    \ 1 (\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u3067\u306F\u8AA4\u5DEE\u3092\u8003\u3048\
+    \u306A\u3044)\n     */\n    int side(const Vector<T, 2>& p) const {\n        using\
+    \ W = std::conditional_t<std::is_integral_v<T>, __int128, T>;\n        auto sgn\
+    \ = [](W x) { return x > 0 ? 1 : x < 0 ? -1\n                                \
+    \                      : 0; };\n        if (support.size() == 1) return p == support[0]\
+    \ ? 0 : 1;\n        if (support.size() == 2) {\n            // \u76F4\u5F84\u306E\
+    \u4E21\u7AEF\u304B\u3089\u898B\u305F\u5411\u304D\u306E\u5185\u7A4D\u306E\u7B26\
+    \u53F7\n            const Vector<T, 2> a = support[0] - p, b = support[1] - p;\n\
+    \            return sgn(static_cast<W>(a[0]) * b[0] + static_cast<W>(a[1]) * b[1]);\n\
+    \        }\n        // \u5916\u63A5\u5186\u306E\u5185\u5916\u5224\u5B9A (incircle\
+    \ \u306E\u884C\u5217\u5F0F)\u3002\u4E09\u89D2\u5F62\u304C\u6642\u8A08\u56DE\u308A\
+    \u306A\u3089\u7B26\u53F7\u3092\u53CD\u8EE2\u3059\u308B\n        W m[3][3];\n \
+    \       for (int i = 0; i < 3; i++) {\n            const W x = support[i][0] -\
+    \ p[0], y = support[i][1] - p[1];\n            m[i][0] = x, m[i][1] = y, m[i][2]\
+    \ = x * x + y * y;\n        }\n        const W det = m[0][0] * (m[1][1] * m[2][2]\
+    \ - m[1][2] * m[2][1]) - m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0]) + m[0][2]\
+    \ * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);\n        const Vector<T, 2> u = support[1]\
+    \ - support[0], v = support[2] - support[0];\n        const int orient = sgn(static_cast<W>(u[0])\
+    \ * v[1] - static_cast<W>(u[1]) * v[0]);\n        return -sgn(det) * orient;\n\
+    \    }\n    /**\n     * @brief \u4E2D\u5FC3\u3068\u534A\u5F84 (double)\n     */\n\
+    \    Circle<double> circle() const {\n        auto to = [](const Vector<T, 2>&\
+    \ a) { return Vector<double, 2>(static_cast<double>(a[0]), static_cast<double>(a[1]));\
+    \ };\n        if (support.size() == 1) return Circle<double>(to(support[0]), 0);\n\
+    \        if (support.size() == 2) {\n            const Vector<double, 2> a = to(support[0]),\
+    \ b = to(support[1]);\n            return Circle<double>((a + b) / 2.0, (a - b).abs()\
+    \ / 2);\n        }\n        return circumcircle(Triangle(to(support[0]), to(support[1]),\
+    \ to(support[2])));\n    }\n};\n\n/**\n * @brief \u70B9\u306E\u96C6\u5408\u3092\
+    \u542B\u3080\u6700\u5C0F\u306E\u5186 (Welzl \u306E\u4E71\u629E\u30A2\u30EB\u30B4\
+    \u30EA\u30BA\u30E0) \u671F\u5F85 O(n)\n * \u70B9\u306E\u9806\u756A\u3092\u4E71\
+    \u629E\u3067\u5165\u308C\u66FF\u3048\u3001\u5916\u306B\u3042\u308B\u70B9\u304C\
+    \u898B\u3064\u304B\u308B\u305F\u3073\u306B\u3001\u305D\u306E\u70B9\u3092\u5186\
+    \u5468\u4E0A\u306B\u56FA\u5B9A\u3057\u3066\u4F5C\u308A\u76F4\u3059\n * @pre \u70B9\
+    \u306F 1 \u3064\u4EE5\u4E0A\n */\ntemplate <typename T>\nEnclosingCircle<T> minimum_enclosing_circle(std::vector<Vector<T,\
     \ 2>> p) {\n    assert(!p.empty());\n    static std::mt19937_64 rng(std::random_device{}());\n\
     \    std::shuffle(p.begin(), p.end(), rng);\n    const long long n = p.size();\n\
     \    EnclosingCircle<T> c{{p[0]}};\n    for (long long i = 1; i < n; i++) {\n\
@@ -591,31 +779,32 @@ data:
     \u63A5\u5186\u3001\u5171\u901A\u90E8\u5206\u306E\u9762\u7A4D\u3001\u6700\u5C0F\
     \u5305\u542B\u5186)\n */\n\n#include <algorithm>\n#include <cassert>\n#include\
     \ <cmath>\n#include <istream>\n#include <random>\n#include <type_traits>\n#include\
-    \ <utility>\n#include <vector>\n\n#include \"segment.hpp\"\n#include \"vector.hpp\"\
-    \n\n/**\n * @brief \u5186\n *\n * @tparam T \u5EA7\u6A19\u3068\u534A\u5F84\u306E\
-    \u578B \u7701\u7565\u3057\u305F\u3089double\n */\ntemplate <typename T = double>\n\
-    struct Circle {\n    Vector<T, 2> c;  //!< \u4E2D\u5FC3\n    T r;            \
-    \ //!< \u534A\u5F84\n\n    constexpr Circle() : c(), r() {}\n    constexpr Circle(const\
-    \ Vector<T, 2>& c, T r) : c(c), r(r) {}\n\n    /**\n     * @brief \"x y r\" \u306E\
-    \u9806\u306B\u8AAD\u307F\u8FBC\u3080\n     */\n    template <class CharT, class\
-    \ Traits>\n    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
-    \ Traits>& is, Circle& rhs) {\n        return is >> rhs.c >> rhs.r;\n    }\n};\n\
-    \n/**\n * @brief 2\u3064\u306E\u5186\u306E\u4F4D\u7F6E\u95A2\u4FC2\u3092\u3001\
-    \u5171\u901A\u63A5\u7DDA\u306E\u672C\u6570\u3067\u8FD4\u3059 (\u6574\u6570\u578B\
-    \u3067\u3082\u4F7F\u3048\u308B\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u3067\
-    \u306F\u8AA4\u5DEE\u3092\u8003\u3048\u305A\u306B\u6BD4\u8F03\u3059\u308B)\n *\
-    \ @return int 4: \u96E2\u308C\u3066\u3044\u308B, 3: \u5916\u63A5, 2: 2\u70B9\u3067\
-    \u4EA4\u308F\u308B, 1: \u5185\u63A5, 0: \u4E00\u65B9\u304C\u4ED6\u65B9\u306E\u5185\
-    \u90E8\u306B\u3042\u308B (2\u3064\u306E\u5186\u304C\u4E00\u81F4\u3059\u308B\u5834\
-    \u5408\u3082 1 \u3092\u8FD4\u3059)\n */\ntemplate <typename T>\nconstexpr int\
-    \ circle_relation(const Circle<T>& c1, const Circle<T>& c2) {\n    T d2 = (c1.c\
-    \ - c2.c).squared_norm();\n    T s = c1.r + c2.r, t = c1.r - c2.r;\n    if (d2\
-    \ > s * s) return 4;\n    if (d2 == s * s) return 3;\n    if (d2 > t * t) return\
-    \ 2;\n    if (d2 == t * t) return 1;\n    return 0;\n}\n\n/**\n * @brief \u4E09\
-    \u89D2\u5F62 abc \u306E\u5185\u63A5\u5186\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\
-    \u9650\u5B9A\u30023\u70B9\u304C\u4E00\u76F4\u7DDA\u4E0A\u306B\u3042\u3063\u3066\
-    \u306F\u306A\u3089\u306A\u3044\n */\ntemplate <typename T>\nCircle<T> incircle(const\
-    \ Vector<T, 2>& a, const Vector<T, 2>& b, const Vector<T, 2>& c) {\n    static_assert(std::is_floating_point_v<T>,\
+    \ <utility>\n#include <vector>\n\n#include \"line.hpp\"\n#include \"triangle.hpp\"\
+    \n#include \"vector.hpp\"\n\n/**\n * @brief \u5186\n *\n * @tparam T \u5EA7\u6A19\
+    \u3068\u534A\u5F84\u306E\u578B \u7701\u7565\u3057\u305F\u3089double\n */\ntemplate\
+    \ <typename T = double>\nstruct Circle {\n    Vector<T, 2> c;  //!< \u4E2D\u5FC3\
+    \n    T r;             //!< \u534A\u5F84\n\n    constexpr Circle() : c(), r()\
+    \ {}\n    constexpr Circle(const Vector<T, 2>& c, T r) : c(c), r(r) {}\n\n   \
+    \ /**\n     * @brief \"x y r\" \u306E\u9806\u306B\u8AAD\u307F\u8FBC\u3080\n  \
+    \   */\n    template <class CharT, class Traits>\n    friend std::basic_istream<CharT,\
+    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Circle& rhs) {\n\
+    \        return is >> rhs.c >> rhs.r;\n    }\n};\n\n/**\n * @brief 2\u3064\u306E\
+    \u5186\u306E\u4F4D\u7F6E\u95A2\u4FC2\u3092\u3001\u5171\u901A\u63A5\u7DDA\u306E\
+    \u672C\u6570\u3067\u8FD4\u3059 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B\
+    \u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u3067\u306F\u8AA4\u5DEE\u3092\u8003\
+    \u3048\u305A\u306B\u6BD4\u8F03\u3059\u308B)\n * @return int 4: \u96E2\u308C\u3066\
+    \u3044\u308B, 3: \u5916\u63A5, 2: 2\u70B9\u3067\u4EA4\u308F\u308B, 1: \u5185\u63A5\
+    , 0: \u4E00\u65B9\u304C\u4ED6\u65B9\u306E\u5185\u90E8\u306B\u3042\u308B (2\u3064\
+    \u306E\u5186\u304C\u4E00\u81F4\u3059\u308B\u5834\u5408\u3082 1 \u3092\u8FD4\u3059\
+    )\n */\ntemplate <typename T>\nconstexpr int circle_relation(const Circle<T>&\
+    \ c1, const Circle<T>& c2) {\n    T d2 = (c1.c - c2.c).squared_norm();\n    T\
+    \ s = c1.r + c2.r, t = c1.r - c2.r;\n    if (d2 > s * s) return 4;\n    if (d2\
+    \ == s * s) return 3;\n    if (d2 > t * t) return 2;\n    if (d2 == t * t) return\
+    \ 1;\n    return 0;\n}\n\n/**\n * @brief \u4E09\u89D2\u5F62 abc \u306E\u5185\u63A5\
+    \u5186\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\u30023\u70B9\u304C\
+    \u4E00\u76F4\u7DDA\u4E0A\u306B\u3042\u3063\u3066\u306F\u306A\u3089\u306A\u3044\
+    \n */\ntemplate <typename T>\nCircle<T> incircle(const Triangle<T>& triangle)\
+    \ {\n    const auto& [a, b, c] = triangle;\n    static_assert(std::is_floating_point_v<T>,\
     \ \"incircle: T must be a floating point type\");\n    assert(cross(b - a, c -\
     \ a) != 0 && \"incircle: collinear points\");\n    T la = (b - c).abs(), lb =\
     \ (c - a).abs(), lc = (a - b).abs();\n    T s = la + lb + lc;\n    // \u4E2D\u5FC3\
@@ -625,8 +814,8 @@ data:
     }\n\n/**\n * @brief \u4E09\u89D2\u5F62 abc \u306E\u5916\u63A5\u5186\u3002\u6D6E\
     \u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\u30023\u70B9\u304C\u4E00\u76F4\u7DDA\
     \u4E0A\u306B\u3042\u3063\u3066\u306F\u306A\u3089\u306A\u3044\n */\ntemplate <typename\
-    \ T>\nCircle<T> circumcircle(const Vector<T, 2>& a, const Vector<T, 2>& b, const\
-    \ Vector<T, 2>& c) {\n    static_assert(std::is_floating_point_v<T>, \"circumcircle:\
+    \ T>\nCircle<T> circumcircle(const Triangle<T>& triangle) {\n    const auto& [a,\
+    \ b, c] = triangle;\n    static_assert(std::is_floating_point_v<T>, \"circumcircle:\
     \ T must be a floating point type\");\n    Vector<T, 2> u = b - a, v = c - a;\n\
     \    T d = cross(u, v) * 2;\n    assert(d != 0 && \"circumcircle: collinear points\"\
     );\n    T nu = u.squared_norm(), nv = v.squared_norm();\n    // a \u3092\u539F\
@@ -638,174 +827,184 @@ data:
     \ * @param eps \u63A5\u3059\u308B (\u4EA4\u70B9\u304C1\u500B) \u3068\u307F\u306A\
     \u3059\u3001\u4E2D\u5FC3\u3068\u76F4\u7DDA\u306E\u8DDD\u96E2\u3068\u534A\u5F84\
     \u306E\u5DEE\n */\ntemplate <typename T>\nstd::vector<Vector<T, 2>> circle_line_intersection(const\
-    \ Circle<T>& c, const Vector<T, 2>& p1, const Vector<T, 2>& p2, T eps = 1e-9)\
-    \ {\n    static_assert(std::is_floating_point_v<T>, \"circle_line_intersection:\
-    \ T must be a floating point type\");\n    Vector<T, 2> h = projection(p1, p2,\
-    \ c.c);\n    T d = (h - c.c).abs();\n    if (d > c.r + eps) return {};\n    //\
-    \ \u63A5\u3059\u308B\u304B\u3069\u3046\u304B\u306F\u3001\u4E2D\u5FC3\u3068\u76F4\
-    \u7DDA\u306E\u8DDD\u96E2\u3068\u534A\u5F84\u306E\u5DEE\u3067\u5224\u5B9A\u3059\
-    \u308B\n    if (d >= c.r - eps) return {h};\n    T t = std::sqrt(c.r * c.r - d\
-    \ * d);\n    Vector<T, 2> u = (p2 - p1) / static_cast<T>((p2 - p1).abs());\n \
-    \   std::vector<Vector<T, 2>> res = {h - u * t, h + u * t};\n    std::sort(res.begin(),\
-    \ res.end());\n    return res;\n}\n\n/**\n * @brief 2\u3064\u306E\u5186\u306E\u4EA4\
-    \u70B9 (0\u301C2\u500B\u3001\u5EA7\u6A19\u306E\u6607\u9806)\u3002\u6D6E\u52D5\u5C0F\
-    \u6570\u70B9\u578B\u9650\u5B9A\n *\n * \u540C\u5FC3\u3067\u534A\u5F84\u304C\u9055\
-    \u3046\u306A\u3089\u7A7A\u3092\u8FD4\u3059\u3002\u540C\u3058\u5186 (\u4E2D\u5FC3\
-    \u9593\u306E\u8DDD\u96E2\u3068\u534A\u5F84\u306E\u5DEE\u304C\u3068\u3082\u306B\
-    \ eps \u4EE5\u4E0B) \u306F\u4EA4\u70B9\u304C\u7121\u6570\u306B\u3042\u308B\u306E\
-    \u3067 assert \u3067\u843D\u3068\u3059\n * @param eps \u63A5\u3059\u308B (\u4EA4\
-    \u70B9\u304C1\u500B) \u3068\u307F\u306A\u3059\u3001\u4E2D\u5FC3\u9593\u306E\u8DDD\
-    \u96E2\u3068\u534A\u5F84\u306E\u548C\u30FB\u5DEE\u306E\u5DEE\n */\ntemplate <typename\
-    \ T>\nstd::vector<Vector<T, 2>> circle_circle_intersection(const Circle<T>& c1,\
-    \ const Circle<T>& c2, T eps = 1e-9) {\n    static_assert(std::is_floating_point_v<T>,\
-    \ \"circle_circle_intersection: T must be a floating point type\");\n    Vector<T,\
-    \ 2> v = c2.c - c1.c;\n    T d = v.abs();\n    if (d <= eps) {\n        assert(std::abs(c1.r\
-    \ - c2.r) > eps && \"circle_circle_intersection: same circles\");\n        return\
-    \ {};\n    }\n    T s = c1.r + c2.r, t = std::abs(c1.r - c2.r);\n    if (d > s\
-    \ + eps || d < t - eps) return {};\n    // c1 \u306E\u4E2D\u5FC3\u304B\u3089\u3001\
-    2\u3064\u306E\u4EA4\u70B9\u3092\u7D50\u3076\u7DDA\u5206\u306E\u4E2D\u70B9\u307E\
-    \u3067\u306E\u8DDD\u96E2\n    T a = (d * d + c1.r * c1.r - c2.r * c2.r) / (2 *\
-    \ d);\n    Vector<T, 2> u = v / d;\n    Vector<T, 2> m = c1.c + u * a, n(-u[1],\
-    \ u[0]);\n    // \u63A5\u3059\u308B\u304B\u3069\u3046\u304B\u306F\u3001\u4E2D\u5FC3\
-    \u9593\u306E\u8DDD\u96E2\u3068\u534A\u5F84\u306E\u548C\u30FB\u5DEE\u3067\u5224\
-    \u5B9A\u3059\u308B\n    if (d >= s - eps || d <= t + eps) return {m};\n    T h\
-    \ = std::sqrt(std::max<T>(c1.r * c1.r - a * a, 0));\n    std::vector<Vector<T,\
-    \ 2>> res = {m + n * h, m - n * h};\n    std::sort(res.begin(), res.end());\n\
-    \    return res;\n}\n\n/**\n * @brief \u70B9 p \u304B\u3089\u5186 c \u306B\u5F15\
-    \u3044\u305F\u63A5\u7DDA\u306E\u63A5\u70B9 (0\u301C2\u500B\u3001\u5EA7\u6A19\u306E\
-    \u6607\u9806)\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n *\n * p\
-    \ \u304C\u5186\u306E\u5185\u90E8\u306A\u3089\u7A7A\u3001\u5186\u5468\u4E0A\u306A\
-    \u3089 p \u3060\u3051\u3092\u8FD4\u3059\n * @param eps p \u304C\u5186\u5468\u4E0A\
-    \u306B\u3042\u308B\u3068\u307F\u306A\u3059\u8AA4\u5DEE\n */\ntemplate <typename\
-    \ T>\nstd::vector<Vector<T, 2>> tangent_points(const Circle<T>& c, const Vector<T,\
-    \ 2>& p, T eps = 1e-9) {\n    static_assert(std::is_floating_point_v<T>, \"tangent_points:\
-    \ T must be a floating point type\");\n    Vector<T, 2> v = p - c.c;\n    T d2\
-    \ = v.squared_norm(), r2 = c.r * c.r;\n    T d = std::sqrt(d2);\n    if (std::abs(d\
-    \ - c.r) <= eps) return {p};\n    if (d < c.r) return {};\n    // \u63A5\u70B9\
-    \u306F c.c + (v r^2 \xB1 v \u306E\u6CD5\u7DDA r sqrt(d^2 - r^2)) / d^2\n    T\
-    \ s = c.r * std::sqrt(d2 - r2);\n    Vector<T, 2> n(-v[1], v[0]);\n    std::vector<Vector<T,\
-    \ 2>> res = {c.c + (v * r2 + n * s) / d2, c.c + (v * r2 - n * s) / d2};\n    std::sort(res.begin(),\
-    \ res.end());\n    return res;\n}\n\n/**\n * @brief 2\u3064\u306E\u5186\u306E\u5171\
-    \u901A\u63A5\u7DDA (0\u301C4\u672C)\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\
-    \u5B9A\n *\n * \u540C\u5FC3\u3067\u534A\u5F84\u304C\u9055\u3046\u306A\u3089\u7A7A\
-    \u3092\u8FD4\u3059\u3002\u540C\u3058\u5186 (\u4E2D\u5FC3\u9593\u306E\u8DDD\u96E2\
-    \u3068\u534A\u5F84\u306E\u5DEE\u304C\u3068\u3082\u306B eps \u4EE5\u4E0B) \u306F\
-    \u63A5\u7DDA\u304C\u7121\u6570\u306B\u3042\u308B\u306E\u3067 assert \u3067\u843D\
-    \u3068\u3059\u3002\n * \u5404\u63A5\u7DDA\u3092 (c1 \u3068\u306E\u63A5\u70B9,\
-    \ c2 \u3068\u306E\u63A5\u70B9) \u306E\u7D44\u3067\u8FD4\u3057\u3001c1 \u3068\u306E\
-    \u63A5\u70B9\u306E\u5EA7\u6A19\u306E\u6607\u9806\u306B\u4E26\u3079\u308B\u3002\
-    \n * 2\u3064\u306E\u5186\u304C\u63A5\u3059\u308B\u70B9\u3067\u306E\u63A5\u7DDA\
-    \u306F\u30012\u3064\u306E\u63A5\u70B9\u304C\u540C\u3058\u70B9\u306B\u306A\u308B\
-    \ (\u63A5\u7DDA\u306F\u4E2D\u5FC3\u3092\u7D50\u3076\u76F4\u7DDA\u306B\u5782\u76F4\
-    )\n * @param eps \u63A5\u3059\u308B (\u305D\u306E\u7A2E\u985E\u306E\u63A5\u7DDA\
-    \u304C1\u672C) \u3068\u307F\u306A\u3059\u3001\u4E2D\u5FC3\u9593\u306E\u8DDD\u96E2\
-    \u3068\u534A\u5F84\u306E\u548C\u30FB\u5DEE\u306E\u5DEE\n */\ntemplate <typename\
-    \ T>\nstd::vector<std::pair<Vector<T, 2>, Vector<T, 2>>> common_tangents(const\
-    \ Circle<T>& c1, const Circle<T>& c2, T eps = 1e-9) {\n    static_assert(std::is_floating_point_v<T>,\
-    \ \"common_tangents: T must be a floating point type\");\n    Vector<T, 2> d =\
-    \ c2.c - c1.c;\n    T d2 = d.squared_norm(), dist = std::sqrt(d2);\n    if (dist\
-    \ <= eps) {\n        assert(std::abs(c1.r - c2.r) > eps && \"common_tangents:\
-    \ same circles\");\n        return {};\n    }\n    std::vector<std::pair<Vector<T,\
-    \ 2>, Vector<T, 2>>> res;\n    // \u5171\u901A\u5916\u63A5\u7DDA\u306F c2 \u306E\
-    \u534A\u5F84\u3092 r2\u3001\u5171\u901A\u5185\u63A5\u7DDA\u306F -r2 \u3068\u3057\
-    \u3066\u540C\u3058\u5F0F\u3067\u6C42\u3081\u308B\n    for (T r2 : {c2.r, -c2.r})\
-    \ {\n        T dr = c1.r - r2;\n        if (dist < std::abs(dr) - eps) continue;\n\
-    \        bool touch = std::abs(dist - std::abs(dr)) <= eps;\n        T h = touch\
-    \ ? T(0) : std::sqrt(std::max<T>(d2 - dr * dr, 0));\n        for (int sign : {1,\
-    \ -1}) {\n            // \u4E2D\u5FC3\u304B\u3089\u63A5\u70B9\u3078\u306E\u5358\
-    \u4F4D\u30D9\u30AF\u30C8\u30EB\n            Vector<T, 2> v = (d * dr + Vector<T,\
-    \ 2>(-d[1], d[0]) * (h * sign)) / d2;\n            res.push_back({c1.c + v * c1.r,\
-    \ c2.c + v * r2});\n            if (touch) break;\n        }\n    }\n    std::sort(res.begin(),\
-    \ res.end());\n    return res;\n}\n\n/**\n * @brief 2\u3064\u306E\u5186\u306E\u5171\
-    \u901A\u90E8\u5206\u306E\u9762\u7A4D\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\
-    \u9650\u5B9A\n */\ntemplate <typename T>\nT circle_circle_intersection_area(const\
-    \ Circle<T>& c1, const Circle<T>& c2) {\n    static_assert(std::is_floating_point_v<T>,\
-    \ \"circle_circle_intersection_area: T must be a floating point type\");\n   \
-    \ const T pi = std::acos(T(-1));\n    T d = (c1.c - c2.c).abs();\n    if (d >=\
-    \ c1.r + c2.r) return 0;\n    if (d <= std::abs(c1.r - c2.r)) {\n        T r =\
-    \ std::min(c1.r, c2.r);\n        return pi * r * r;\n    }\n    // \u5404\u5186\
-    \u306E\u3001\u4EA4\u70B9\u3092\u7D50\u3076\u5F26\u3067\u5207\u3063\u305F\u5F13\
-    \u5F62\u306E\u9762\u7A4D\u306E\u548C\n    auto segment = [&](T r, T R) {\n   \
-    \     T a = std::acos(std::clamp((d * d + r * r - R * R) / (2 * d * r), T(-1),\
-    \ T(1)));  // \u4E2D\u5FC3\u89D2\u306E\u534A\u5206\n        return r * r * (a\
-    \ - std::sin(2 * a) / 2);\n    };\n    return segment(c1.r, c2.r) + segment(c2.r,\
-    \ c1.r);\n}\n\n/**\n * @brief \u5186\u3068\u591A\u89D2\u5F62\u306E\u5171\u901A\
-    \u90E8\u5206\u306E\u9762\u7A4D\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\
-    \u5B9A O(n)\n *\n * \u5186\u306E\u4E2D\u5FC3\u3068\u591A\u89D2\u5F62\u306E\u5404\
-    \u8FBA\u304C\u306A\u3059\u4E09\u89D2\u5F62\u3068\u5186\u306E\u5171\u901A\u90E8\
-    \u5206\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\u3092\u8DB3\u3059\n * @param\
-    \ polygon \u9802\u70B9\u306E\u5EA7\u6A19 (\u53CD\u6642\u8A08\u56DE\u308A\u3067\
-    \u3082\u6642\u8A08\u56DE\u308A\u3067\u3082\u3088\u3044)\u3002\u51F8\u3067\u306A\
-    \u304F\u3066\u3082\u3088\u3044\n */\ntemplate <typename T>\nT circle_polygon_intersection_area(const\
-    \ Circle<T>& c, const std::vector<Vector<T, 2>>& polygon) {\n    static_assert(std::is_floating_point_v<T>,\
-    \ \"circle_polygon_intersection_area: T must be a floating point type\");\n  \
-    \  const T r = c.r;\n    // \u539F\u70B9 (\u5186\u306E\u4E2D\u5FC3)\u3001a\u3001\
-    b \u306E\u4E09\u89D2\u5F62\u3068\u5186\u306E\u5171\u901A\u90E8\u5206\u306E\u7B26\
-    \u53F7\u4ED8\u304D\u9762\u7A4D\n    auto triangle = [&](const Vector<T, 2>& a,\
-    \ const Vector<T, 2>& b) {\n        // \u7DDA\u5206 ab \u3092\u5186\u5468\u3068\
-    \u306E\u4EA4\u70B9\u3067\u5206\u3051\u308B\n        std::vector<Vector<T, 2>>\
-    \ ps = {a};\n        Vector<T, 2> v = b - a;\n        T A = v.squared_norm(),\
-    \ B = dot(a, v), C = a.squared_norm() - r * r;\n        T disc = B * B - A * C;\n\
-    \        if (A > 0 && disc > 0) {\n            T s = std::sqrt(disc);\n      \
-    \      for (T t : {(-B - s) / A, (-B + s) / A}) {\n                if (0 < t &&\
-    \ t < 1) ps.push_back(a + v * t);\n            }\n        }\n        ps.push_back(b);\n\
-    \        T res = 0;\n        for (int i = 0; i + 1 < static_cast<int>(ps.size());\
-    \ i++) {\n            const Vector<T, 2>&p = ps[i], &q = ps[i + 1];\n        \
-    \    // \u4E21\u7AEF\u304C\u5186\u306E\u5185\u90E8 (\u5186\u5468\u4E0A\u3092\u542B\
-    \u3080) \u306A\u3089\u533A\u9593\u5168\u4F53\u304C\u5185\u90E8\u306A\u306E\u3067\
-    \u4E09\u89D2\u5F62\u3001\u305D\u3046\u3067\u306A\u3051\u308C\u3070\u6247\u5F62\
-    \n            // (\u4E2D\u70B9\u3067\u5224\u5B9A\u3059\u308B\u3068\u3001\u5186\
-    \u306B\u63A5\u3059\u308B\u8FBA\u3092\u5185\u90E8\u3068\u307F\u306A\u3057\u3066\
-    \u3057\u307E\u3046)\n            const T lim = r * r * (1 + 1e-9);\n         \
-    \   if (p.squared_norm() <= lim && q.squared_norm() <= lim)\n                res\
-    \ += cross(p, q) / 2;\n            else\n                res += r * r * std::atan2(cross(p,\
-    \ q), dot(p, q)) / 2;\n        }\n        return res;\n    };\n    T res = 0;\n\
-    \    const int n = static_cast<int>(polygon.size());\n    for (int i = 0; i <\
-    \ n; i++) res += triangle(polygon[i] - c.c, polygon[i + 1 == n ? 0 : i + 1] -\
-    \ c.c);\n    return std::abs(res);\n}\n\n/**\n * @brief minimum_enclosing_circle\
-    \ \u306E\u623B\u308A\u5024\u3002\u5186\u5468\u4E0A\u306B\u3042\u3063\u3066\u5186\
-    \u3092\u6C7A\u3081\u308B 1 \u301C 3 \u70B9\u3067\u8868\u3059\n * @tparam T \u5EA7\
-    \u6A19\u306E\u578B\u3002\u6574\u6570\u578B\u306A\u3089 side \u306F __int128 \u3067\
-    \u6B63\u78BA\u306B\u5224\u5B9A\u3059\u308B\n */\ntemplate <typename T>\nstruct\
-    \ EnclosingCircle {\n    std::vector<Vector<T, 2>> support;  //!< \u5186\u3092\
-    \u6C7A\u3081\u308B\u70B9 (1 \u70B9\u306A\u3089\u534A\u5F84 0\u30012 \u70B9\u306A\
-    \u3089\u305D\u308C\u3092\u76F4\u5F84\u3068\u3059\u308B\u5186\u30013 \u70B9\u306A\
-    \u3089\u305D\u306E\u5916\u63A5\u5186)\n\n    /**\n     * @brief \u70B9 p \u304C\
-    \u5186\u306E\u5185\u5074\u306A\u3089 -1\u3001\u5186\u5468\u4E0A\u306A\u3089 0\u3001\
-    \u5916\u5074\u306A\u3089 1 (\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u3067\u306F\u8AA4\
-    \u5DEE\u3092\u8003\u3048\u306A\u3044)\n     */\n    int side(const Vector<T, 2>&\
-    \ p) const {\n        using W = std::conditional_t<std::is_integral_v<T>, __int128,\
-    \ T>;\n        auto sgn = [](W x) { return x > 0 ? 1 : x < 0 ? -1\n          \
-    \                                            : 0; };\n        if (support.size()\
-    \ == 1) return p == support[0] ? 0 : 1;\n        if (support.size() == 2) {\n\
-    \            // \u76F4\u5F84\u306E\u4E21\u7AEF\u304B\u3089\u898B\u305F\u5411\u304D\
-    \u306E\u5185\u7A4D\u306E\u7B26\u53F7\n            const Vector<T, 2> a = support[0]\
-    \ - p, b = support[1] - p;\n            return sgn(static_cast<W>(a[0]) * b[0]\
-    \ + static_cast<W>(a[1]) * b[1]);\n        }\n        // \u5916\u63A5\u5186\u306E\
-    \u5185\u5916\u5224\u5B9A (incircle \u306E\u884C\u5217\u5F0F)\u3002\u4E09\u89D2\
-    \u5F62\u304C\u6642\u8A08\u56DE\u308A\u306A\u3089\u7B26\u53F7\u3092\u53CD\u8EE2\
-    \u3059\u308B\n        W m[3][3];\n        for (int i = 0; i < 3; i++) {\n    \
-    \        const W x = support[i][0] - p[0], y = support[i][1] - p[1];\n       \
-    \     m[i][0] = x, m[i][1] = y, m[i][2] = x * x + y * y;\n        }\n        const\
-    \ W det = m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) - m[0][1] * (m[1][0]\
-    \ * m[2][2] - m[1][2] * m[2][0]) + m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);\n\
-    \        const Vector<T, 2> u = support[1] - support[0], v = support[2] - support[0];\n\
-    \        const int orient = sgn(static_cast<W>(u[0]) * v[1] - static_cast<W>(u[1])\
-    \ * v[0]);\n        return -sgn(det) * orient;\n    }\n    /**\n     * @brief\
-    \ \u4E2D\u5FC3\u3068\u534A\u5F84 (double)\n     */\n    Circle<double> circle()\
-    \ const {\n        auto to = [](const Vector<T, 2>& a) { return Vector<double,\
-    \ 2>(static_cast<double>(a[0]), static_cast<double>(a[1])); };\n        if (support.size()\
-    \ == 1) return Circle<double>(to(support[0]), 0);\n        if (support.size()\
-    \ == 2) {\n            const Vector<double, 2> a = to(support[0]), b = to(support[1]);\n\
-    \            return Circle<double>((a + b) / 2.0, (a - b).abs() / 2);\n      \
-    \  }\n        return circumcircle(to(support[0]), to(support[1]), to(support[2]));\n\
-    \    }\n};\n\n/**\n * @brief \u70B9\u306E\u96C6\u5408\u3092\u542B\u3080\u6700\u5C0F\
-    \u306E\u5186 (Welzl \u306E\u4E71\u629E\u30A2\u30EB\u30B4\u30EA\u30BA\u30E0) \u671F\
-    \u5F85 O(n)\n * \u70B9\u306E\u9806\u756A\u3092\u4E71\u629E\u3067\u5165\u308C\u66FF\
-    \u3048\u3001\u5916\u306B\u3042\u308B\u70B9\u304C\u898B\u3064\u304B\u308B\u305F\
-    \u3073\u306B\u3001\u305D\u306E\u70B9\u3092\u5186\u5468\u4E0A\u306B\u56FA\u5B9A\
-    \u3057\u3066\u4F5C\u308A\u76F4\u3059\n * @pre \u70B9\u306F 1 \u3064\u4EE5\u4E0A\
-    \n */\ntemplate <typename T>\nEnclosingCircle<T> minimum_enclosing_circle(std::vector<Vector<T,\
+    \ Circle<T>& c, const Line<T>& line, T eps = 1e-9) {\n    const auto& [p1, p2]\
+    \ = line;\n    static_assert(std::is_floating_point_v<T>, \"circle_line_intersection:\
+    \ T must be a floating point type\");\n    Vector<T, 2> h = projection(line, c.c);\n\
+    \    T d = (h - c.c).abs();\n    if (d > c.r + eps) return {};\n    // \u63A5\u3059\
+    \u308B\u304B\u3069\u3046\u304B\u306F\u3001\u4E2D\u5FC3\u3068\u76F4\u7DDA\u306E\
+    \u8DDD\u96E2\u3068\u534A\u5F84\u306E\u5DEE\u3067\u5224\u5B9A\u3059\u308B\n   \
+    \ if (d >= c.r - eps) return {h};\n    T t = std::sqrt(c.r * c.r - d * d);\n \
+    \   Vector<T, 2> u = (p2 - p1) / static_cast<T>((p2 - p1).abs());\n    std::vector<Vector<T,\
+    \ 2>> res = {h - u * t, h + u * t};\n    std::sort(res.begin(), res.end());\n\
+    \    return res;\n}\n\n/**\n * @brief 2\u3064\u306E\u5186\u306E\u4EA4\u70B9 (0\u301C\
+    2\u500B\u3001\u5EA7\u6A19\u306E\u6607\u9806)\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\
+    \u578B\u9650\u5B9A\n *\n * \u540C\u5FC3\u3067\u534A\u5F84\u304C\u9055\u3046\u306A\
+    \u3089\u7A7A\u3092\u8FD4\u3059\u3002\u540C\u3058\u5186 (\u4E2D\u5FC3\u9593\u306E\
+    \u8DDD\u96E2\u3068\u534A\u5F84\u306E\u5DEE\u304C\u3068\u3082\u306B eps \u4EE5\u4E0B\
+    ) \u306F\u4EA4\u70B9\u304C\u7121\u6570\u306B\u3042\u308B\u306E\u3067 assert \u3067\
+    \u843D\u3068\u3059\n * @param eps \u63A5\u3059\u308B (\u4EA4\u70B9\u304C1\u500B\
+    ) \u3068\u307F\u306A\u3059\u3001\u4E2D\u5FC3\u9593\u306E\u8DDD\u96E2\u3068\u534A\
+    \u5F84\u306E\u548C\u30FB\u5DEE\u306E\u5DEE\n */\ntemplate <typename T>\nstd::vector<Vector<T,\
+    \ 2>> circle_circle_intersection(const Circle<T>& c1, const Circle<T>& c2, T eps\
+    \ = 1e-9) {\n    static_assert(std::is_floating_point_v<T>, \"circle_circle_intersection:\
+    \ T must be a floating point type\");\n    Vector<T, 2> v = c2.c - c1.c;\n   \
+    \ T d = v.abs();\n    if (d <= eps) {\n        assert(std::abs(c1.r - c2.r) >\
+    \ eps && \"circle_circle_intersection: same circles\");\n        return {};\n\
+    \    }\n    T s = c1.r + c2.r, t = std::abs(c1.r - c2.r);\n    if (d > s + eps\
+    \ || d < t - eps) return {};\n    // c1 \u306E\u4E2D\u5FC3\u304B\u3089\u30012\u3064\
+    \u306E\u4EA4\u70B9\u3092\u7D50\u3076\u7DDA\u5206\u306E\u4E2D\u70B9\u307E\u3067\
+    \u306E\u8DDD\u96E2\n    T a = (d * d + c1.r * c1.r - c2.r * c2.r) / (2 * d);\n\
+    \    Vector<T, 2> u = v / d;\n    Vector<T, 2> m = c1.c + u * a, n(-u[1], u[0]);\n\
+    \    // \u63A5\u3059\u308B\u304B\u3069\u3046\u304B\u306F\u3001\u4E2D\u5FC3\u9593\
+    \u306E\u8DDD\u96E2\u3068\u534A\u5F84\u306E\u548C\u30FB\u5DEE\u3067\u5224\u5B9A\
+    \u3059\u308B\n    if (d >= s - eps || d <= t + eps) return {m};\n    T h = std::sqrt(std::max<T>(c1.r\
+    \ * c1.r - a * a, 0));\n    std::vector<Vector<T, 2>> res = {m + n * h, m - n\
+    \ * h};\n    std::sort(res.begin(), res.end());\n    return res;\n}\n\n/**\n *\
+    \ @brief \u70B9 p \u304B\u3089\u5186 c \u306B\u5F15\u3044\u305F\u63A5\u7DDA\u306E\
+    \u63A5\u70B9 (0\u301C2\u500B\u3001\u5EA7\u6A19\u306E\u6607\u9806)\u3002\u6D6E\u52D5\
+    \u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n *\n * p \u304C\u5186\u306E\u5185\u90E8\u306A\
+    \u3089\u7A7A\u3001\u5186\u5468\u4E0A\u306A\u3089 p \u3060\u3051\u3092\u8FD4\u3059\
+    \n * @param eps p \u304C\u5186\u5468\u4E0A\u306B\u3042\u308B\u3068\u307F\u306A\
+    \u3059\u8AA4\u5DEE\n */\ntemplate <typename T>\nstd::vector<Vector<T, 2>> tangent_points(const\
+    \ Circle<T>& c, const Vector<T, 2>& p, T eps = 1e-9) {\n    static_assert(std::is_floating_point_v<T>,\
+    \ \"tangent_points: T must be a floating point type\");\n    Vector<T, 2> v =\
+    \ p - c.c;\n    T d2 = v.squared_norm(), r2 = c.r * c.r;\n    T d = std::sqrt(d2);\n\
+    \    if (std::abs(d - c.r) <= eps) return {p};\n    if (d < c.r) return {};\n\
+    \    // \u63A5\u70B9\u306F c.c + (v r^2 \xB1 v \u306E\u6CD5\u7DDA r sqrt(d^2 -\
+    \ r^2)) / d^2\n    T s = c.r * std::sqrt(d2 - r2);\n    Vector<T, 2> n(-v[1],\
+    \ v[0]);\n    std::vector<Vector<T, 2>> res = {c.c + (v * r2 + n * s) / d2, c.c\
+    \ + (v * r2 - n * s) / d2};\n    std::sort(res.begin(), res.end());\n    return\
+    \ res;\n}\n\n/** @brief \u5171\u901A\u63A5\u7DDA\u3068\u3001\u5404\u5186\u3068\
+    \u306E\u63A5\u70B9 */\ntemplate <typename T>\nstruct CommonTangent {\n    Line<T>\
+    \ line;\n    Vector<T, 2> contact1, contact2;\n};\n\n/**\n * @brief 2\u3064\u306E\
+    \u5186\u306E\u5171\u901A\u63A5\u7DDA (0\u301C4\u672C)\u3002\u6D6E\u52D5\u5C0F\u6570\
+    \u70B9\u578B\u9650\u5B9A\n *\n * \u540C\u5FC3\u3067\u534A\u5F84\u304C\u9055\u3046\
+    \u306A\u3089\u7A7A\u3092\u8FD4\u3059\u3002\u540C\u3058\u5186 (\u4E2D\u5FC3\u9593\
+    \u306E\u8DDD\u96E2\u3068\u534A\u5F84\u306E\u5DEE\u304C\u3068\u3082\u306B eps \u4EE5\
+    \u4E0B) \u306F\u63A5\u7DDA\u304C\u7121\u6570\u306B\u3042\u308B\u306E\u3067 assert\
+    \ \u3067\u843D\u3068\u3059\u3002\n * \u5404\u63A5\u7DDA\u3092 CommonTangent {line,\
+    \ contact1, contact2} \u3067\u8FD4\u3057\u3001c1 \u3068\u306E\u63A5\u70B9\u306E\
+    \u5EA7\u6A19\u306E\u6607\u9806\u306B\u4E26\u3079\u308B\u3002\n * 2\u3064\u306E\
+    \u5186\u304C\u63A5\u3059\u308B\u70B9\u3067\u306E\u63A5\u7DDA\u306F\u30012\u3064\
+    \u306E\u63A5\u70B9\u304C\u540C\u3058\u70B9\u306B\u306A\u308B (\u63A5\u7DDA\u306F\
+    \u4E2D\u5FC3\u3092\u7D50\u3076\u76F4\u7DDA\u306B\u5782\u76F4)\n * @param eps \u63A5\
+    \u3059\u308B (\u305D\u306E\u7A2E\u985E\u306E\u63A5\u7DDA\u304C1\u672C) \u3068\u307F\
+    \u306A\u3059\u3001\u4E2D\u5FC3\u9593\u306E\u8DDD\u96E2\u3068\u534A\u5F84\u306E\
+    \u548C\u30FB\u5DEE\u306E\u5DEE\n */\ntemplate <typename T>\nstd::vector<CommonTangent<T>>\
+    \ common_tangents(const Circle<T>& c1, const Circle<T>& c2, T eps = 1e-9) {\n\
+    \    static_assert(std::is_floating_point_v<T>, \"common_tangents: T must be a\
+    \ floating point type\");\n    Vector<T, 2> d = c2.c - c1.c;\n    T d2 = d.squared_norm(),\
+    \ dist = std::sqrt(d2);\n    if (dist <= eps) {\n        assert(std::abs(c1.r\
+    \ - c2.r) > eps && \"common_tangents: same circles\");\n        return {};\n \
+    \   }\n    std::vector<CommonTangent<T>> res;\n    // \u5171\u901A\u5916\u63A5\
+    \u7DDA\u306F c2 \u306E\u534A\u5F84\u3092 r2\u3001\u5171\u901A\u5185\u63A5\u7DDA\
+    \u306F -r2 \u3068\u3057\u3066\u540C\u3058\u5F0F\u3067\u6C42\u3081\u308B\n    for\
+    \ (T r2 : {c2.r, -c2.r}) {\n        T dr = c1.r - r2;\n        if (dist < std::abs(dr)\
+    \ - eps) continue;\n        bool touch = std::abs(dist - std::abs(dr)) <= eps;\n\
+    \        T h = touch ? T(0) : std::sqrt(std::max<T>(d2 - dr * dr, 0));\n     \
+    \   for (int sign : {1, -1}) {\n            // \u4E2D\u5FC3\u304B\u3089\u63A5\u70B9\
+    \u3078\u306E\u5358\u4F4D\u30D9\u30AF\u30C8\u30EB\n            Vector<T, 2> v =\
+    \ (d * dr + Vector<T, 2>(-d[1], d[0]) * (h * sign)) / d2;\n            Vector<T,\
+    \ 2> p = c1.c + v * c1.r, q = c2.c + v * r2;\n            // \u63A5\u70B9\u304C\
+    \u4E00\u81F4\u3059\u308B\u3068\u304D\u306F\u534A\u5F84\u306B\u5782\u76F4\u306A\
+    \u65B9\u5411\u3092\u4F7F\u3046\u3002\n            // \u5927\u304D\u306A\u5EA7\u6A19\
+    \u3067\u3082\u65B9\u5411\u3092\u8DB3\u3057\u305F\u70B9\u304C\u4E38\u3081\u3067\
+    \ p \u306B\u623B\u3089\u306A\u3044\u3088\u3046\u3001\u5EA7\u6A19\u306B\u5408\u308F\
+    \u305B\u3066\u62E1\u5927\u3059\u308B\u3002\n            T scale = std::max({T(1),\
+    \ std::abs(p[0]), std::abs(p[1])});\n            Vector<T, 2> second = touch ||\
+    \ p == q ? p + Vector<T, 2>(-v[1], v[0]) * scale : q;\n            res.push_back({Line(p,\
+    \ second), p, q});\n            if (touch) break;\n        }\n    }\n    std::sort(res.begin(),\
+    \ res.end(), [](const auto& a, const auto& b) {\n        return a.contact1 < b.contact1\
+    \ || (!(b.contact1 < a.contact1) && a.contact2 < b.contact2);\n    });\n    return\
+    \ res;\n}\n\n/**\n * @brief 2\u3064\u306E\u5186\u306E\u5171\u901A\u90E8\u5206\u306E\
+    \u9762\u7A4D\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n */\ntemplate\
+    \ <typename T>\nT circle_circle_intersection_area(const Circle<T>& c1, const Circle<T>&\
+    \ c2) {\n    static_assert(std::is_floating_point_v<T>, \"circle_circle_intersection_area:\
+    \ T must be a floating point type\");\n    const T pi = std::acos(T(-1));\n  \
+    \  T d = (c1.c - c2.c).abs();\n    if (d >= c1.r + c2.r) return 0;\n    if (d\
+    \ <= std::abs(c1.r - c2.r)) {\n        T r = std::min(c1.r, c2.r);\n        return\
+    \ pi * r * r;\n    }\n    // \u5404\u5186\u306E\u3001\u4EA4\u70B9\u3092\u7D50\u3076\
+    \u5F26\u3067\u5207\u3063\u305F\u5F13\u5F62\u306E\u9762\u7A4D\u306E\u548C\n   \
+    \ auto segment = [&](T r, T R) {\n        T a = std::acos(std::clamp((d * d +\
+    \ r * r - R * R) / (2 * d * r), T(-1), T(1)));  // \u4E2D\u5FC3\u89D2\u306E\u534A\
+    \u5206\n        return r * r * (a - std::sin(2 * a) / 2);\n    };\n    return\
+    \ segment(c1.r, c2.r) + segment(c2.r, c1.r);\n}\n\n/**\n * @brief \u5186\u3068\
+    \u591A\u89D2\u5F62\u306E\u5171\u901A\u90E8\u5206\u306E\u9762\u7A4D\u3002\u6D6E\
+    \u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A O(n)\n *\n * \u5186\u306E\u4E2D\u5FC3\
+    \u3068\u591A\u89D2\u5F62\u306E\u5404\u8FBA\u304C\u306A\u3059\u4E09\u89D2\u5F62\
+    \u3068\u5186\u306E\u5171\u901A\u90E8\u5206\u306E\u7B26\u53F7\u4ED8\u304D\u9762\
+    \u7A4D\u3092\u8DB3\u3059\n * @param polygon \u9802\u70B9\u306E\u5EA7\u6A19 (\u53CD\
+    \u6642\u8A08\u56DE\u308A\u3067\u3082\u6642\u8A08\u56DE\u308A\u3067\u3082\u3088\
+    \u3044)\u3002\u51F8\u3067\u306A\u304F\u3066\u3082\u3088\u3044\n */\ntemplate <typename\
+    \ T>\nT circle_polygon_intersection_area(const Circle<T>& c, const std::vector<Vector<T,\
+    \ 2>>& polygon) {\n    static_assert(std::is_floating_point_v<T>, \"circle_polygon_intersection_area:\
+    \ T must be a floating point type\");\n    const T r = c.r;\n    // \u539F\u70B9\
+    \ (\u5186\u306E\u4E2D\u5FC3)\u3001a\u3001b \u306E\u4E09\u89D2\u5F62\u3068\u5186\
+    \u306E\u5171\u901A\u90E8\u5206\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\n   \
+    \ auto triangle = [&](const Vector<T, 2>& a, const Vector<T, 2>& b) {\n      \
+    \  // \u7DDA\u5206 ab \u3092\u5186\u5468\u3068\u306E\u4EA4\u70B9\u3067\u5206\u3051\
+    \u308B\n        std::vector<Vector<T, 2>> ps = {a};\n        Vector<T, 2> v =\
+    \ b - a;\n        T A = v.squared_norm(), B = dot(a, v), C = a.squared_norm()\
+    \ - r * r;\n        T disc = B * B - A * C;\n        if (A > 0 && disc > 0) {\n\
+    \            T s = std::sqrt(disc);\n            for (T t : {(-B - s) / A, (-B\
+    \ + s) / A}) {\n                if (0 < t && t < 1) ps.push_back(a + v * t);\n\
+    \            }\n        }\n        ps.push_back(b);\n        T res = 0;\n    \
+    \    for (int i = 0; i + 1 < static_cast<int>(ps.size()); i++) {\n           \
+    \ const Vector<T, 2>&p = ps[i], &q = ps[i + 1];\n            // \u4E21\u7AEF\u304C\
+    \u5186\u306E\u5185\u90E8 (\u5186\u5468\u4E0A\u3092\u542B\u3080) \u306A\u3089\u533A\
+    \u9593\u5168\u4F53\u304C\u5185\u90E8\u306A\u306E\u3067\u4E09\u89D2\u5F62\u3001\
+    \u305D\u3046\u3067\u306A\u3051\u308C\u3070\u6247\u5F62\n            // (\u4E2D\
+    \u70B9\u3067\u5224\u5B9A\u3059\u308B\u3068\u3001\u5186\u306B\u63A5\u3059\u308B\
+    \u8FBA\u3092\u5185\u90E8\u3068\u307F\u306A\u3057\u3066\u3057\u307E\u3046)\n  \
+    \          const T lim = r * r * (1 + 1e-9);\n            if (p.squared_norm()\
+    \ <= lim && q.squared_norm() <= lim)\n                res += cross(p, q) / 2;\n\
+    \            else\n                res += r * r * std::atan2(cross(p, q), dot(p,\
+    \ q)) / 2;\n        }\n        return res;\n    };\n    T res = 0;\n    const\
+    \ int n = static_cast<int>(polygon.size());\n    for (int i = 0; i < n; i++) res\
+    \ += triangle(polygon[i] - c.c, polygon[i + 1 == n ? 0 : i + 1] - c.c);\n    return\
+    \ std::abs(res);\n}\n\n/**\n * @brief minimum_enclosing_circle \u306E\u623B\u308A\
+    \u5024\u3002\u5186\u5468\u4E0A\u306B\u3042\u3063\u3066\u5186\u3092\u6C7A\u3081\
+    \u308B 1 \u301C 3 \u70B9\u3067\u8868\u3059\n * @tparam T \u5EA7\u6A19\u306E\u578B\
+    \u3002\u6574\u6570\u578B\u306A\u3089 side \u306F __int128 \u3067\u6B63\u78BA\u306B\
+    \u5224\u5B9A\u3059\u308B\n */\ntemplate <typename T>\nstruct EnclosingCircle {\n\
+    \    std::vector<Vector<T, 2>> support;  //!< \u5186\u3092\u6C7A\u3081\u308B\u70B9\
+    \ (1 \u70B9\u306A\u3089\u534A\u5F84 0\u30012 \u70B9\u306A\u3089\u305D\u308C\u3092\
+    \u76F4\u5F84\u3068\u3059\u308B\u5186\u30013 \u70B9\u306A\u3089\u305D\u306E\u5916\
+    \u63A5\u5186)\n\n    /**\n     * @brief \u70B9 p \u304C\u5186\u306E\u5185\u5074\
+    \u306A\u3089 -1\u3001\u5186\u5468\u4E0A\u306A\u3089 0\u3001\u5916\u5074\u306A\u3089\
+    \ 1 (\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u3067\u306F\u8AA4\u5DEE\u3092\u8003\u3048\
+    \u306A\u3044)\n     */\n    int side(const Vector<T, 2>& p) const {\n        using\
+    \ W = std::conditional_t<std::is_integral_v<T>, __int128, T>;\n        auto sgn\
+    \ = [](W x) { return x > 0 ? 1 : x < 0 ? -1\n                                \
+    \                      : 0; };\n        if (support.size() == 1) return p == support[0]\
+    \ ? 0 : 1;\n        if (support.size() == 2) {\n            // \u76F4\u5F84\u306E\
+    \u4E21\u7AEF\u304B\u3089\u898B\u305F\u5411\u304D\u306E\u5185\u7A4D\u306E\u7B26\
+    \u53F7\n            const Vector<T, 2> a = support[0] - p, b = support[1] - p;\n\
+    \            return sgn(static_cast<W>(a[0]) * b[0] + static_cast<W>(a[1]) * b[1]);\n\
+    \        }\n        // \u5916\u63A5\u5186\u306E\u5185\u5916\u5224\u5B9A (incircle\
+    \ \u306E\u884C\u5217\u5F0F)\u3002\u4E09\u89D2\u5F62\u304C\u6642\u8A08\u56DE\u308A\
+    \u306A\u3089\u7B26\u53F7\u3092\u53CD\u8EE2\u3059\u308B\n        W m[3][3];\n \
+    \       for (int i = 0; i < 3; i++) {\n            const W x = support[i][0] -\
+    \ p[0], y = support[i][1] - p[1];\n            m[i][0] = x, m[i][1] = y, m[i][2]\
+    \ = x * x + y * y;\n        }\n        const W det = m[0][0] * (m[1][1] * m[2][2]\
+    \ - m[1][2] * m[2][1]) - m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0]) + m[0][2]\
+    \ * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);\n        const Vector<T, 2> u = support[1]\
+    \ - support[0], v = support[2] - support[0];\n        const int orient = sgn(static_cast<W>(u[0])\
+    \ * v[1] - static_cast<W>(u[1]) * v[0]);\n        return -sgn(det) * orient;\n\
+    \    }\n    /**\n     * @brief \u4E2D\u5FC3\u3068\u534A\u5F84 (double)\n     */\n\
+    \    Circle<double> circle() const {\n        auto to = [](const Vector<T, 2>&\
+    \ a) { return Vector<double, 2>(static_cast<double>(a[0]), static_cast<double>(a[1]));\
+    \ };\n        if (support.size() == 1) return Circle<double>(to(support[0]), 0);\n\
+    \        if (support.size() == 2) {\n            const Vector<double, 2> a = to(support[0]),\
+    \ b = to(support[1]);\n            return Circle<double>((a + b) / 2.0, (a - b).abs()\
+    \ / 2);\n        }\n        return circumcircle(Triangle(to(support[0]), to(support[1]),\
+    \ to(support[2])));\n    }\n};\n\n/**\n * @brief \u70B9\u306E\u96C6\u5408\u3092\
+    \u542B\u3080\u6700\u5C0F\u306E\u5186 (Welzl \u306E\u4E71\u629E\u30A2\u30EB\u30B4\
+    \u30EA\u30BA\u30E0) \u671F\u5F85 O(n)\n * \u70B9\u306E\u9806\u756A\u3092\u4E71\
+    \u629E\u3067\u5165\u308C\u66FF\u3048\u3001\u5916\u306B\u3042\u308B\u70B9\u304C\
+    \u898B\u3064\u304B\u308B\u305F\u3073\u306B\u3001\u305D\u306E\u70B9\u3092\u5186\
+    \u5468\u4E0A\u306B\u56FA\u5B9A\u3057\u3066\u4F5C\u308A\u76F4\u3059\n * @pre \u70B9\
+    \u306F 1 \u3064\u4EE5\u4E0A\n */\ntemplate <typename T>\nEnclosingCircle<T> minimum_enclosing_circle(std::vector<Vector<T,\
     \ 2>> p) {\n    assert(!p.empty());\n    static std::mt19937_64 rng(std::random_device{}());\n\
     \    std::shuffle(p.begin(), p.end(), rng);\n    const long long n = p.size();\n\
     \    EnclosingCircle<T> c{{p[0]}};\n    for (long long i = 1; i < n; i++) {\n\
@@ -816,13 +1015,16 @@ data:
     \  c.support = {p[i], p[j], p[k]};\n            }\n        }\n    }\n    return\
     \ c;\n}\n"
   dependsOn:
-  - src/geometry/segment.hpp
+  - src/geometry/line.hpp
+  - src/geometry/internal/predicates.hpp
   - src/geometry/vector.hpp
   - src/utility/traits.hpp
+  - src/geometry/triangle.hpp
+  - src/geometry/segment.hpp
   isVerificationFile: false
   path: src/geometry/circle.hpp
   requiredBy: []
-  timestamp: '2026-10-31 17:14:03+09:00'
+  timestamp: '2026-11-08 17:10:03+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/geometry/circle.test.cpp
@@ -849,7 +1051,7 @@ title: "\u5186 (\u4F4D\u7F6E\u95A2\u4FC2\u3001\u4EA4\u70B9\u3001\u63A5\u7DDA\u30
 Circle c1(Vector(0.0, 0.0), 2.0), c2(Vector(2.0, 0.0), 2.0);
 int k = circle_relation(c1, c2);                 // 2 (2点で交わる)
 auto ps = circle_circle_intersection(c1, c2);    // (1, -√3), (1, √3)
-Circle out = circumcircle(Vector(0.0, 3.0), Vector(4.0, 0.0), Vector(0.0, 0.0));  // 中心 (2, 1.5)、半径 2.5
+Circle out = circumcircle(Triangle(Vector(0.0, 3.0), Vector(4.0, 0.0), Vector(0.0, 0.0)));  // 中心 (2, 1.5)、半径 2.5
 ```
 
 ## メンバ関数
@@ -866,26 +1068,39 @@ Circle out = circumcircle(Vector(0.0, 3.0), Vector(4.0, 0.0), Vector(0.0, 0.0));
 | `c` | 中心 (`Vector<T, 2>`) |
 | `r` | 半径 |
 
+三角形は [Triangle](triangle.hpp) で渡します。
+
 ## 関数
 
 | 関数 | 説明 | 整数型 | 計算量 |
 |---|---|:-:|---|
 | `circle_relation(c1, c2)` | 2つの円の位置関係を、共通接線の本数で返す。4: 離れている、3: 外接、2: 2点で交わる、1: 内接、0: 一方が他方の内部 (2つの円が一致する場合は 1) | ✓ | $O(1)$ |
-| `incircle(a, b, c)` | 三角形 $abc$ の内接円 (3点は一直線上にないこと) | 浮動小数点型のみ | $O(1)$ |
-| `circumcircle(a, b, c)` | 三角形 $abc$ の外接円 (3点は一直線上にないこと) | 浮動小数点型のみ | $O(1)$ |
-| `circle_line_intersection(c, p1, p2, eps = 1e-9)` | 円と直線 $p_1 p_2$ の交点 (0〜2個)。$p_1 = p_2$ なら assert で落ちる | 浮動小数点型のみ | $O(1)$ |
+| `incircle(triangle)` | 三角形 $abc$ の内接円 (3点は一直線上にないこと) | 浮動小数点型のみ | $O(1)$ |
+| `circumcircle(triangle)` | 三角形 $abc$ の外接円 (3点は一直線上にないこと) | 浮動小数点型のみ | $O(1)$ |
+| `circle_line_intersection(c, line, eps = 1e-9)` | 円と直線 $p_1 p_2$ の交点 (0〜2個)。$p_1 = p_2$ なら assert で落ちる | 浮動小数点型のみ | $O(1)$ |
 | `circle_circle_intersection(c1, c2, eps = 1e-9)` | 2つの円の交点 (0〜2個)。同心で半径が違うなら空。同じ円は assert で落ちる | 浮動小数点型のみ | $O(1)$ |
 | `tangent_points(c, p, eps = 1e-9)` | 点 $p$ から円に引いた接線の接点 (0〜2個)。$p$ が円の内部なら空、円周上なら $p$ だけ | 浮動小数点型のみ | $O(1)$ |
-| `common_tangents(c1, c2, eps = 1e-9)` | 2つの円の共通接線 (0〜4本、本数は同じ円を除いて `circle_relation` と同じ)。各接線を (`c1` との接点, `c2` との接点) の `std::pair` で返す。同心で半径が違うなら空。同じ円は assert で落ちる | 浮動小数点型のみ | $O(1)$ |
+| `common_tangents(c1, c2, eps = 1e-9)` | 2つの円の共通接線 (0〜4本、本数は同じ円を除いて `circle_relation` と同じ)。各接線を `CommonTangent<T> {line, contact1, contact2}` で返す。同心で半径が違うなら空。同じ円は assert で落ちる | 浮動小数点型のみ | $O(1)$ |
 | `circle_circle_intersection_area(c1, c2)` | 2つの円の共通部分の面積 | 浮動小数点型のみ | $O(1)$ |
 | `circle_polygon_intersection_area(c, poly)` | 円と多角形の共通部分の面積。多角形は凸でなくてもよく、向きも問わない | 浮動小数点型のみ | $O(n)$ |
 | `minimum_enclosing_circle(points)` | 点の集合 (1 個以上) を含む最小の円 (`EnclosingCircle<T>`)。Welzl の乱択アルゴリズム | 使える (判定が正確になる) | 期待 $O(n)$ |
+
+`circle_line_intersection` の `line` は `Line<T>` です。
 
 - 交点や接点は `std::vector` で返し、座標の昇順 (x が小さい順、同じなら y が小さい順) に並べます。
 - `common_tangents` は `c1` との接点の座標の昇順に並べます。2つの円が接する点での接線は、2つの接点が同じ点になります (接線は中心を結ぶ直線に垂直です)。
 - 交点が 1 個 (接する) かどうかは、距離の差が `eps` 以下かで判定します。例えば `circle_line_intersection` では、中心と直線の距離と半径の差を見ます。
 - `circle_circle_intersection` と `common_tangents` は、中心間の距離と半径の差がともに `eps` 以下なら同じ円とみなします。同じ円は交点や接線が無数にあるので、assert で落ちます。
 - `circle_relation` は誤差を考えずに比べます。座標と半径が整数なら `Circle<long long>` を使うと正確です。
+
+## 共通接線 `CommonTangent<T>`
+
+| メンバ | 説明 |
+|---|---|
+| `line` | 共通接線 (`Line<T>`) |
+| `contact1` / `contact2` | `c1` / `c2` との接点 (`Vector<T, 2>`) |
+
+接点が同じ場合も `line` の 2 点は異なるため、距離や交点の計算にそのまま使えます。
 
 ## 最小包含円 `EnclosingCircle<T>`
 
@@ -908,5 +1123,5 @@ Circle<double> d = c.circle();               // 中心 (2, 2)、半径 2√2
 
 ## 関連
 
-- 直線・線分の交点や距離は [直線・線分](segment.hpp)
+- 直線・線分の交点や距離は [直線](line.hpp)・[線分](segment.hpp)
 - 3 次元の球は [球](sphere.hpp)

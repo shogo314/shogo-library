@@ -10,11 +10,21 @@ data:
     title: "\u5024\u306E\u500B\u6570\u3092\u6570\u3048\u308B\u591A\u91CD\u96C6\u5408\
       \ (Counter)"
   - icon: ':heavy_check_mark:'
+    path: src/data_structures/dual-segtree-2d.hpp
+    title: "2\u6B21\u5143\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u9577\u65B9\
+      \u5F62\u4F5C\u7528\u30011\u70B9\u53D6\u5F97)"
+  - icon: ':heavy_check_mark:'
     path: src/data_structures/interval-set.hpp
     title: "\u534A\u958B\u533A\u9593\u306E\u96C6\u5408"
   - icon: ':heavy_check_mark:'
+    path: src/data_structures/kd-tree.hpp
+    title: kd-tree
+  - icon: ':heavy_check_mark:'
     path: src/data_structures/priority_counter.hpp
     title: "\u4E0A\u4F4D K \u500B\u306E\u5024\u3068\u305D\u306E\u500B\u6570"
+  - icon: ':heavy_check_mark:'
+    path: src/data_structures/segtree-2d.hpp
+    title: "2\u6B21\u5143\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
   - icon: ':heavy_check_mark:'
     path: src/dp/subset-sum-count.hpp
     title: "\u90E8\u5206\u548C\u306E\u500B\u6570"
@@ -28,6 +38,13 @@ data:
       \u5185\u63A5\u5186\u3001\u5916\u63A5\u5186\u3001\u5171\u901A\u90E8\u5206\u306E\
       \u9762\u7A4D\u3001\u6700\u5C0F\u5305\u542B\u5186)"
   - icon: ':heavy_check_mark:'
+    path: src/geometry/internal/predicates.hpp
+    title: "\u5E7E\u4F55\u306E\u5185\u90E8\u8A08\u7B97 (\u6574\u6570\u5EA7\u6A19\u306E\
+      \u62E1\u5F35\u3001\u5411\u304D\u3001\u30CE\u30EB\u30E0)"
+  - icon: ':heavy_check_mark:'
+    path: src/geometry/line.hpp
+    title: "2 \u6B21\u5143\u30FB3 \u6B21\u5143\u306E\u76F4\u7DDA"
+  - icon: ':heavy_check_mark:'
     path: src/geometry/manhattan-mst.hpp
     title: "\u30DE\u30F3\u30CF\u30C3\u30BF\u30F3\u8DDD\u96E2\u306E\u6700\u5C0F\u5168\
       \u57DF\u6728"
@@ -37,6 +54,10 @@ data:
       \u30FB\u6700\u9060\u70B9\u5BFE\u3001\u5404\u70B9\u304B\u3089\u6700\u3082\u8FD1\
       \u3044\u70B9\u30FB\u6700\u3082\u9060\u3044\u70B9)"
   - icon: ':heavy_check_mark:'
+    path: src/geometry/plane.hpp
+    title: "\u5E73\u9762 (\u5305\u542B\u30FB\u5E73\u884C\u5224\u5B9A\u3001\u8DDD\u96E2\
+      \u3001\u76F4\u7DDA\u3068\u306E\u4EA4\u70B9)"
+  - icon: ':heavy_check_mark:'
     path: src/geometry/point-pair.hpp
     title: "\u6700\u8FD1\u70B9\u5BFE\u30FB\u6700\u9060\u70B9\u5BFE"
   - icon: ':heavy_check_mark:'
@@ -45,19 +66,22 @@ data:
       \u5B9A\u3001\u51F8\u6027\u3001\u51F8\u5305\u3001\u51F8\u591A\u89D2\u5F62\u306E\
       \u5207\u65AD)"
   - icon: ':heavy_check_mark:'
-    path: src/geometry/segment-3d.hpp
-    title: "3 \u6B21\u5143\u306E\u76F4\u7DDA\u30FB\u7DDA\u5206\u30FB\u5E73\u9762 (\u8DDD\
-      \u96E2\u3001\u76F4\u7DDA\u3068\u5E73\u9762\u306E\u4EA4\u70B9\u3001\u7DDA\u5206\
-      \u3068\u4E09\u89D2\u5F62\u306E\u4EA4\u5DEE)"
+    path: src/geometry/rectangle-union.hpp
+    title: "\u9577\u65B9\u5F62\u306E\u548C\u96C6\u5408\u306E\u9762\u7A4D"
+  - icon: ':heavy_check_mark:'
+    path: src/geometry/rectangle.hpp
+    title: "\u8EF8\u306B\u5E73\u884C\u306A\u9577\u65B9\u5F62"
   - icon: ':heavy_check_mark:'
     path: src/geometry/segment.hpp
-    title: "\u76F4\u7DDA\u30FB\u7DDA\u5206 (\u4EA4\u5DEE\u5224\u5B9A\u3001\u4EA4\u70B9\
-      \u3001\u5C04\u5F71\u3001\u8DDD\u96E2)"
+    title: "2 \u6B21\u5143\u30FB3 \u6B21\u5143\u306E\u7DDA\u5206"
   - icon: ':heavy_check_mark:'
     path: src/geometry/sphere.hpp
     title: "\u7403 (\u76F4\u7DDA\u3068\u306E\u4EA4\u70B9\u3001\u7403\u3069\u3046\u3057\
       \u306E\u4EA4\u308F\u308A\u3001\u5171\u901A\u90E8\u5206\u306E\u4F53\u7A4D\u3001\
       \u5927\u5186\u8DDD\u96E2)"
+  - icon: ':heavy_check_mark:'
+    path: src/geometry/triangle.hpp
+    title: "2 \u6B21\u5143\u30FB3 \u6B21\u5143\u306E\u4E09\u89D2\u5F62"
   - icon: ':heavy_check_mark:'
     path: src/geometry/vector.hpp
     title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"
@@ -226,8 +250,17 @@ data:
     path: test/aoj/dpl/dpl-5-f.test.cpp
     title: test/aoj/dpl/dpl-5-f.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl/dsl-2-c.test.cpp
+    title: test/aoj/dsl/dsl-2-c.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/aoj/dsl/dsl-4-a.1.test.cpp
     title: test/aoj/dsl/dsl-4-a.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl/dsl-4-a.2.test.cpp
+    title: test/aoj/dsl/dsl-4-a.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl/dsl-4-a.3.test.cpp
+    title: test/aoj/dsl/dsl-4-a.3.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/itp1/itp1-10-c.test.cpp
     title: test/aoj/itp1/itp1-10-c.test.cpp
@@ -292,6 +325,9 @@ data:
     path: test/unittest/data_structures/counter.test.cpp
     title: test/unittest/data_structures/counter.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/dual-segtree-2d.test.cpp
+    title: test/unittest/data_structures/dual-segtree-2d.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/dual-segtree.test.cpp
     title: test/unittest/data_structures/dual-segtree.test.cpp
   - icon: ':heavy_check_mark:'
@@ -303,6 +339,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/interval-set.test.cpp
     title: test/unittest/data_structures/interval-set.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/kd-tree.test.cpp
+    title: test/unittest/data_structures/kd-tree.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/link-cut-tree.test.cpp
     title: test/unittest/data_structures/link-cut-tree.test.cpp
@@ -318,6 +357,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/rbst.test.cpp
     title: test/unittest/data_structures/rbst.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/segtree-2d.test.cpp
+    title: test/unittest/data_structures/segtree-2d.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/sliding-window-aggregation.test.cpp
     title: test/unittest/data_structures/sliding-window-aggregation.test.cpp
@@ -340,6 +382,9 @@ data:
     path: test/unittest/geometry/manhattan.test.cpp
     title: test/unittest/geometry/manhattan.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/geometry/plane.test.cpp
+    title: test/unittest/geometry/plane.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/geometry/point-pair.test.cpp
     title: test/unittest/geometry/point-pair.test.cpp
   - icon: ':heavy_check_mark:'
@@ -349,14 +394,20 @@ data:
     path: test/unittest/geometry/polygon-convex-cut.test.cpp
     title: test/unittest/geometry/polygon-convex-cut.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/geometry/segment-3d.test.cpp
-    title: test/unittest/geometry/segment-3d.test.cpp
+    path: test/unittest/geometry/rectangle-union.test.cpp
+    title: test/unittest/geometry/rectangle-union.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/geometry/rectangle.test.cpp
+    title: test/unittest/geometry/rectangle.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/geometry/segment.test.cpp
     title: test/unittest/geometry/segment.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/geometry/sphere.test.cpp
     title: test/unittest/geometry/sphere.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/geometry/triangle.test.cpp
+    title: test/unittest/geometry/triangle.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/geometry/vector.test.cpp
     title: test/unittest/geometry/vector.test.cpp
@@ -457,6 +508,15 @@ data:
     path: test/yosupo/convolution/lcm-convolution.test.cpp
     title: test/yosupo/convolution/lcm-convolution.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/area-of-union-of-rectangles.1.test.cpp
+    title: test/yosupo/data_structure/area-of-union-of-rectangles.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/area-of-union-of-rectangles.2.test.cpp
+    title: test/yosupo/data_structure/area-of-union-of-rectangles.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/area-of-union-of-rectangles.3.test.cpp
+    title: test/yosupo/data_structure/area-of-union-of-rectangles.3.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/associative-array.test.cpp
     title: test/yosupo/data_structure/associative-array.test.cpp
   - icon: ':heavy_check_mark:'
@@ -474,6 +534,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/persistent-range-affine-range-sum.test.cpp
     title: test/yosupo/data_structure/persistent-range-affine-range-sum.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/point-add-rectangle-sum.test.cpp
+    title: test/yosupo/data_structure/point-add-rectangle-sum.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/point-set-range-composite-large-array.test.cpp
     title: test/yosupo/data_structure/point-set-range-composite-large-array.test.cpp
@@ -516,6 +579,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/range-set-range-composite.test.cpp
     title: test/yosupo/data_structure/range-set-range-composite.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
+    title: test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/rectangle-add-point-get.2.test.cpp
+    title: test/yosupo/data_structure/rectangle-add-point-get.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/segment-add-get-min.test.cpp
     title: test/yosupo/data_structure/segment-add-get-min.test.cpp
@@ -881,14 +950,19 @@ data:
   requiredBy:
   - src/dp/subset-sum-count.hpp
   - src/geometry/point-pair.hpp
+  - src/geometry/rectangle-union.hpp
+  - src/geometry/line.hpp
   - src/geometry/polygon.hpp
+  - src/geometry/triangle.hpp
   - src/geometry/manhattan.hpp
-  - src/geometry/segment-3d.hpp
   - src/geometry/segment.hpp
+  - src/geometry/internal/predicates.hpp
   - src/geometry/circle.hpp
   - src/geometry/sphere.hpp
+  - src/geometry/rectangle.hpp
   - src/geometry/axis-parallel-segments.hpp
   - src/geometry/vector.hpp
+  - src/geometry/plane.hpp
   - src/geometry/manhattan-mst.hpp
   - src/utility/repr.hpp
   - src/utility/binary-search.hpp
@@ -904,6 +978,9 @@ data:
   - src/math/modint.hpp
   - src/math/fps-composition.hpp
   - src/data_structures/priority_counter.hpp
+  - src/data_structures/kd-tree.hpp
+  - src/data_structures/dual-segtree-2d.hpp
+  - src/data_structures/segtree-2d.hpp
   - src/data_structures/convex-hull-trick.hpp
   - src/data_structures/counter.hpp
   - src/data_structures/interval-set.hpp
@@ -926,10 +1003,13 @@ data:
   - test/unittest/geometry/manhattan-mst.test.cpp
   - test/unittest/geometry/sphere.test.cpp
   - test/unittest/geometry/vector.test.cpp
+  - test/unittest/geometry/rectangle-union.test.cpp
   - test/unittest/geometry/angle.test.cpp
   - test/unittest/geometry/circle.test.cpp
-  - test/unittest/geometry/segment-3d.test.cpp
+  - test/unittest/geometry/rectangle.test.cpp
   - test/unittest/geometry/polygon-centroid.test.cpp
+  - test/unittest/geometry/plane.test.cpp
+  - test/unittest/geometry/triangle.test.cpp
   - test/unittest/geometry/axis-parallel-segments.test.cpp
   - test/unittest/geometry/polygon-convex-cut.test.cpp
   - test/unittest/geometry/segment.test.cpp
@@ -955,13 +1035,16 @@ data:
   - test/unittest/math/polynomial-roots.test.cpp
   - test/unittest/math/multipoint.test.cpp
   - test/unittest/math/bitwise-transform.test.cpp
+  - test/unittest/data_structures/dual-segtree-2d.test.cpp
   - test/unittest/data_structures/dual-segtree.test.cpp
   - test/unittest/data_structures/counter.test.cpp
   - test/unittest/data_structures/sliding-window-aggregation.test.cpp
   - test/unittest/data_structures/persistent-segtree.test.cpp
   - test/unittest/data_structures/persistent-lazy-segtree.test.cpp
+  - test/unittest/data_structures/kd-tree.test.cpp
   - test/unittest/data_structures/convex-hull-trick.test.cpp
   - test/unittest/data_structures/circular-sum.test.cpp
+  - test/unittest/data_structures/segtree-2d.test.cpp
   - test/unittest/data_structures/interval-set.test.cpp
   - test/unittest/data_structures/priority_counter.test.cpp
   - test/unittest/data_structures/link-cut-tree.test.cpp
@@ -1018,7 +1101,10 @@ data:
   - test/aoj/dpl/dpl-5-b.2.test.cpp
   - test/aoj/dpl/dpl-5-f.test.cpp
   - test/aoj/volume33/3314.test.cpp
+  - test/aoj/dsl/dsl-2-c.test.cpp
+  - test/aoj/dsl/dsl-4-a.3.test.cpp
   - test/aoj/dsl/dsl-4-a.1.test.cpp
+  - test/aoj/dsl/dsl-4-a.2.test.cpp
   - test/aoj/alds1/alds1-14-c.test.cpp
   - test/aoj/alds1/alds1-14-b.1.test.cpp
   - test/aoj/alds1/alds1-4-b.test.cpp
@@ -1094,9 +1180,12 @@ data:
   - test/yosupo/number_theory/bernoulli-number.test.cpp
   - test/yosupo/data_structure/range-affine-range-sum.1.test.cpp
   - test/yosupo/data_structure/segment-add-get-min.test.cpp
+  - test/yosupo/data_structure/rectangle-add-point-get.2.test.cpp
+  - test/yosupo/data_structure/area-of-union-of-rectangles.1.test.cpp
   - test/yosupo/data_structure/point-set-range-composite.1.test.cpp
   - test/yosupo/data_structure/point-set-range-composite-large-array.test.cpp
   - test/yosupo/data_structure/range-affine-range-sum-large-array.test.cpp
+  - test/yosupo/data_structure/area-of-union-of-rectangles.3.test.cpp
   - test/yosupo/data_structure/unionfind-with-potential.test.cpp
   - test/yosupo/data_structure/line-add-get-min.1.test.cpp
   - test/yosupo/data_structure/line-add-get-min.2.test.cpp
@@ -1104,11 +1193,14 @@ data:
   - test/yosupo/data_structure/point-set-range-composite.3.test.cpp
   - test/yosupo/data_structure/static-range-sum.test.cpp
   - test/yosupo/data_structure/range-affine-range-sum.3.test.cpp
+  - test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
   - test/yosupo/data_structure/point-set-range-composite.2.test.cpp
+  - test/yosupo/data_structure/area-of-union-of-rectangles.2.test.cpp
   - test/yosupo/data_structure/point-set-range-composite.4.test.cpp
   - test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
   - test/yosupo/data_structure/persistent-range-affine-range-sum.test.cpp
   - test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
+  - test/yosupo/data_structure/point-add-rectangle-sum.test.cpp
   - test/yosupo/data_structure/deque-operate-all-composite.test.cpp
   - test/yosupo/data_structure/range-affine-point-get.1.test.cpp
   - test/yosupo/data_structure/queue-operate-all-composite.test.cpp

@@ -1,0 +1,566 @@
+---
+data:
+  _extendedDependsOn:
+  - icon: ':heavy_check_mark:'
+    path: src/geometry/internal/predicates.hpp
+    title: "\u5E7E\u4F55\u306E\u5185\u90E8\u8A08\u7B97 (\u6574\u6570\u5EA7\u6A19\u306E\
+      \u62E1\u5F35\u3001\u5411\u304D\u3001\u30CE\u30EB\u30E0)"
+  - icon: ':heavy_check_mark:'
+    path: src/geometry/line.hpp
+    title: "2 \u6B21\u5143\u30FB3 \u6B21\u5143\u306E\u76F4\u7DDA"
+  - icon: ':heavy_check_mark:'
+    path: src/geometry/vector.hpp
+    title: "\u5E7E\u4F55\u30D9\u30AF\u30C8\u30EB"
+  - icon: ':question:'
+    path: src/utility/traits.hpp
+    title: "\u578B\u7279\u6027"
+  _extendedRequiredBy: []
+  _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/geometry/plane.test.cpp
+    title: test/unittest/geometry/plane.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yukicoder/132.test.cpp
+    title: test/yukicoder/132.test.cpp
+  _isVerificationFailed: false
+  _pathExtension: hpp
+  _verificationStatusIcon: ':heavy_check_mark:'
+  attributes:
+    document_title: "\u5E73\u9762 (\u5305\u542B\u30FB\u5E73\u884C\u5224\u5B9A\u3001\
+      \u8DDD\u96E2\u3001\u76F4\u7DDA\u3068\u306E\u4EA4\u70B9)"
+    links: []
+  bundledCode: "#line 2 \"src/geometry/plane.hpp\"\n\n/**\n * @file plane.hpp\n *\
+    \ @brief \u5E73\u9762 (\u5305\u542B\u30FB\u5E73\u884C\u5224\u5B9A\u3001\u8DDD\u96E2\
+    \u3001\u76F4\u7DDA\u3068\u306E\u4EA4\u70B9)\n */\n\n#include <cassert>\n#include\
+    \ <cmath>\n#include <optional>\n#include <type_traits>\n\n#line 2 \"src/geometry/internal/predicates.hpp\"\
+    \n\n/**\n * @file predicates.hpp\n * @brief \u5E7E\u4F55\u306E\u5185\u90E8\u8A08\
+    \u7B97 (\u6574\u6570\u5EA7\u6A19\u306E\u62E1\u5F35\u3001\u5411\u304D\u3001\u30CE\
+    \u30EB\u30E0)\n */\n\n#line 10 \"src/geometry/internal/predicates.hpp\"\n\n#line\
+    \ 2 \"src/geometry/vector.hpp\"\n\n/**\n * @file vector.hpp\n * @brief \u5E7E\u4F55\
+    \u30D9\u30AF\u30C8\u30EB\n */\n\n#include <array>\n#line 11 \"src/geometry/vector.hpp\"\
+    \n#include <istream>\n#include <ostream>\n#line 14 \"src/geometry/vector.hpp\"\
+    \n#include <utility>\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n\
+    \ * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n#include <functional>\n\
+    #include <iterator>\n#include <set>\n#line 14 \"src/utility/traits.hpp\"\n\nnamespace\
+    \ internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T, class =\
+    \ void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct\
+    \ is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
+    \ : std::true_type {};\n}  // namespace internal_traits\n\ntemplate <class T>\n\
+    struct is_range : internal_traits::is_range_impl<T>::type {};\ntemplate <class\
+    \ T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define HAS_METHOD(func_name)\
+    \                                                              \\\n    namespace\
+    \ internal_traits {                                                          \
+    \  \\\n    template <class T, class = void>                                  \
+    \                     \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                    \\\n    template <class T>          \
+    \                                                           \\\n    struct has_##func_name##_impl<T,\
+    \ std::void_t<decltype(std::declval<T>().func_name())>> \\\n        : std::true_type\
+    \ {};                                                               \\\n    }\
+    \                                                                            \
+    \          \\\n    template <class T>                                        \
+    \                             \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T>::type\
+    \ {};          \\\n    template <class T>                                    \
+    \                                 \\\n    inline constexpr bool has_##func_name##_v\
+    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
+    \                                                                    \\\n    namespace\
+    \ internal_traits {                                                          \
+    \                      \\\n    template <class T, typename U, class = void>  \
+    \                                                             \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                                      \
+    \  \\\n    template <class T, typename U>                                    \
+    \                                         \\\n    struct has_##func_name##_impl<T,\
+    \ U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>> \\\
+    \n        : std::true_type {};                                               \
+    \                                    \\\n    }                               \
+    \                                                                           \\\
+    \n    template <class T, typename U>                                         \
+    \                                    \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \ U>::type {};                           \\\n    template <class T, typename U>\
+    \                                                                            \
+    \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
+    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
+    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
+    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
+    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
+    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
+    \nnamespace internal_traits {\n// \u5C04\u5F71 (proj) \u306E\u65E2\u5B9A\u5024\
+    \n#if __cplusplus >= 202002L\nusing identity = std::identity;\n#else\nstruct identity\
+    \ {\n    using is_transparent = void;\n    template <class T>\n    constexpr T&&\
+    \ operator()(T&& x) const noexcept {\n        return std::forward<T>(x);\n   \
+    \ }\n};\n#endif\n}  // namespace internal_traits\n\ntemplate <class C>\nusing\
+    \ mem_value_type = typename C::value_type;\ntemplate <class C>\nusing mem_difference_type\
+    \ = typename C::difference_type;\n\nnamespace internal_traits {\ntemplate <class\
+    \ T, class = void>\nstruct is_sorted_container_impl : std::false_type {};\ntemplate\
+    \ <class T>\nstruct is_sorted_container_impl<std::set<T>> : std::true_type {};\n\
+    template <class T>\nstruct is_sorted_container_impl<std::multiset<T>> : std::true_type\
+    \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
+    \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
+    inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
+    #line 17 \"src/geometry/vector.hpp\"\n\n/**\n * @brief \u5E7E\u4F55\u5B66\u3068\
+    \u3057\u3066\u306E\u30D9\u30AF\u30C8\u30EB\n *\n * @tparam T \u578B \u7701\u7565\
+    \u3057\u305F\u3089double\n * @tparam Dim \u6B21\u5143 \u7701\u7565\u3057\u305F\
+    \u30892\n */\ntemplate <typename T = double, int Dim = 2, ENABLE_IF_T(std::is_scalar_v<T>\
+    \ && (Dim > 0))>\nstruct Vector {\n    std::array<T, Dim> v;  //!< \u30D9\u30AF\
+    \u30C8\u30EB\u306E\u6210\u5206\u8868\u793A\n\n    /**\n     * @brief \u30C7\u30D5\
+    \u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * \u30BC\u30ED\
+    \u30D9\u30AF\u30C8\u30EB\n     */\n    constexpr Vector() noexcept : v() {}\n\
+    \    /**\n     * @brief \u53EF\u5909\u9577\u5F15\u6570\u306B\u3088\u308B\u30B3\
+    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * \u5404\u6210\u5206\u3092\
+    \ T \u306B\u5909\u63DB\u3057\u3066\u5165\u308C\u308B (Vector(1, 2.5) \u306E\u3088\
+    \u3046\u306B\u578B\u304C\u6DF7\u3056\u3063\u3066\u3082\u7E2E\u5C0F\u5909\u63DB\
+    \u306E\u8B66\u544A\u3092\u51FA\u3055\u306A\u3044)\n     * @tparam Args\n     */\n\
+    \    template <typename... Args>\n    constexpr Vector(Args... args) noexcept\
+    \ : v{static_cast<T>(args)...} {}\n\n    /**\n     * @brief i\u756A\u76EE\u306E\
+    \u6210\u5206\u3092\u8FD4\u3059\n     *\n     * @param i\n     * @return T&\n \
+    \    */\n    constexpr T& operator[](long long i) noexcept {\n        return v[i];\n\
+    \    }\n    /**\n     * @brief i\u756A\u76EE\u306E\u6210\u5206\u3092\u8FD4\u3059\
+    \n     *\n     * @param i\n     * @return T&\n     */\n    constexpr const T&\
+    \ operator[](long long i) const noexcept {\n        return v[i];\n    }\n\n  \
+    \  /**\n     * @brief \u52A0\u7B97\u4EE3\u5165\u6F14\u7B97\u5B50\n     *\n   \
+    \  * @param rhs\n     * @return Vector&\n     */\n    constexpr Vector& operator+=(const\
+    \ Vector& rhs) noexcept {\n        for (int i = 0; i < Dim; i++) v[i] += rhs[i];\n\
+    \        return *this;\n    }\n    /**\n     * @brief \u6E1B\u7B97\u4EE3\u5165\
+    \u6F14\u7B97\u5B50\n     *\n     * @param rhs\n     * @return Vector&\n     */\n\
+    \    constexpr Vector& operator-=(const Vector& rhs) noexcept {\n        for (int\
+    \ i = 0; i < Dim; i++) v[i] -= rhs.v[i];\n        return *this;\n    }\n    /**\n\
+    \     * @brief \u30B9\u30AB\u30E9\u30FC\u500D\u4EE3\u5165\u6F14\u7B97\u5B50\n\
+    \     *\n     * @param coef\n     * @return Vector&\n     */\n    constexpr Vector&\
+    \ operator*=(const T& coef) noexcept {\n        for (int i = 0; i < Dim; i++)\
+    \ v[i] *= coef;\n        return *this;\n    }\n    /**\n     * @brief \u30B9\u30AB\
+    \u30E9\u30FC\u306E\u9006\u6570\u500D\u4EE3\u5165\u6F14\u7B97\u5B50\n     *\n \
+    \    * @param coef\n     * @return Vector&\n     */\n    constexpr Vector& operator/=(const\
+    \ T& coef) {\n        for (int i = 0; i < Dim; i++) {\n            if constexpr\
+    \ (std::is_integral_v<T>) {\n                assert(v[i] % coef == 0 && \"Vector::operator/=\
+    \ : coef must be a divisor of all elements\");\n            }\n            v[i]\
+    \ /= coef;\n        }\n        return *this;\n    }\n\n    /**\n     * @brief\
+    \ \u5358\u9805\u30D7\u30E9\u30B9\u6F14\u7B97\u5B50\n     *\n     * @return Vector\n\
+    \     */\n    [[nodiscard]]\n    constexpr Vector operator+() const noexcept {\n\
+    \        return *this;\n    }\n    /**\n     * @brief \u5358\u9805\u30DE\u30A4\
+    \u30CA\u30B9\u6F14\u7B97\u5B50\n     *\n     * @return Vector\n     */\n    [[nodiscard]]\n\
+    \    constexpr Vector operator-() const noexcept {\n        return *this * (-1);\n\
+    \    }\n\n    /**\n     * @brief \u52A0\u7B97\u6F14\u7B97\u5B50\n     *\n    \
+    \ * @param lhs\n     * @param rhs\n     * @return Vector\n     */\n    [[nodiscard]]\n\
+    \    friend constexpr Vector operator+(const Vector& lhs, const Vector& rhs) noexcept\
+    \ {\n        return std::move(Vector(lhs) += rhs);\n    }\n\n    /**\n     * @brief\
+    \ \u6E1B\u7B97\u6F14\u7B97\u5B50\n     *\n     * @param lhs\n     * @param rhs\n\
+    \     * @return Vector\n     */\n    [[nodiscard]]\n    friend constexpr Vector\
+    \ operator-(const Vector& lhs, const Vector& rhs) noexcept {\n        return std::move(Vector(lhs)\
+    \ -= rhs);\n    }\n\n    /**\n     * @brief \u30B9\u30AB\u30E9\u30FC\u500D\u6F14\
+    \u7B97\u5B50\n     *\n     * @param lhs\n     * @param coef\n     * @return Vector\n\
+    \     */\n    [[nodiscard]]\n    friend constexpr Vector operator*(const Vector&\
+    \ lhs, const T& coef) noexcept {\n        return std::move(Vector(lhs) *= coef);\n\
+    \    }\n\n    /**\n     * @brief \u30B9\u30AB\u30E9\u30FC\u500D\u6F14\u7B97\u5B50\
+    \n     *\n     * @param coef\n     * @param rhs\n     * @return Vector\n     */\n\
+    \    [[nodiscard]]\n    friend constexpr Vector operator*(const T& coef, const\
+    \ Vector& rhs) noexcept {\n        return std::move(Vector(rhs) *= coef);\n  \
+    \  }\n\n    /**\n     * @brief \u30B9\u30AB\u30E9\u30FC\u306E\u9006\u6570\u500D\
+    \u6F14\u7B97\u5B50\n     *\n     * @param lhs\n     * @param coef\n     * @return\
+    \ Vector\n     */\n    [[nodiscard]]\n    friend constexpr Vector operator/(const\
+    \ Vector& lhs, const T& coef) {\n        return std::move(Vector(lhs) /= coef);\n\
+    \    }\n\n    /**\n     * @brief \u7B49\u4FA1\u6F14\u7B97\u5B50\n     *\n    \
+    \ * @param lhs\n     * @param rhs\n     * @return bool\n     */\n    [[nodiscard]]\n\
+    \    friend constexpr bool operator==(const Vector& lhs, const Vector& rhs) noexcept\
+    \ {\n        return lhs.v == rhs.v;\n    }\n\n    /**\n     * @brief \u975E\u7B49\
+    \u4FA1\u6F14\u7B97\u5B50\n     *\n     * @param lhs\n     * @param rhs\n     *\
+    \ @return bool\n     */\n    [[nodiscard]]\n    friend constexpr bool operator!=(const\
+    \ Vector& lhs, const Vector& rhs) noexcept {\n        return lhs.v != rhs.v;\n\
+    \    }\n\n    /**\n     * @brief \u5C0F\u306A\u308A\u6F14\u7B97\u5B50\n     *\n\
+    \     * @param lhs\n     * @param rhs\n     * @return bool\n     */\n    [[nodiscard]]\n\
+    \    friend constexpr bool operator<(const Vector& lhs, const Vector& rhs) noexcept\
+    \ {\n        return lhs.v < rhs.v;\n    }\n    /**\n     * @brief \u5927\u306A\
+    \u308A\u6F14\u7B97\u5B50\n     *\n     * @param lhs\n     * @param rhs\n     *\
+    \ @return bool\n     */\n    [[nodiscard]]\n    friend constexpr bool operator>(const\
+    \ Vector& lhs, const Vector& rhs) noexcept {\n        return lhs.v > rhs.v;\n\
+    \    }\n    /**\n     * @brief \u5C0F\u306A\u308A\u30A4\u30B3\u30FC\u30EB\u6F14\
+    \u7B97\u5B50\n     *\n     * @param lhs\n     * @param rhs\n     * @return bool\n\
+    \     */\n    [[nodiscard]]\n    friend constexpr bool operator<=(const Vector&\
+    \ lhs, const Vector& rhs) noexcept {\n        return lhs.v <= rhs.v;\n    }\n\
+    \    /**\n     * @brief \u5927\u306A\u308A\u30A4\u30B3\u30FC\u30EB\u6F14\u7B97\
+    \u5B50\n     *\n     * @param lhs\n     * @param rhs\n     * @return bool\n  \
+    \   */\n    [[nodiscard]]\n    friend constexpr bool operator>=(const Vector&\
+    \ lhs, const Vector& rhs) noexcept {\n        return lhs.v >= rhs.v;\n    }\n\n\
+    \    /**\n     * @brief \u5165\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u304B\u3089\
+    \u306E\u8AAD\u307F\u8FBC\u307F\n     *\n     * @tparam CharT \u5165\u529B\u30B9\
+    \u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n     * @tparam Traits \u5165\
+    \u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\u6027\n   \
+    \  * @param is\n     * @param rhs\n     * @return std::basic_istream<CharT, Traits>&\n\
+    \     */\n    template <class CharT, class Traits>\n    friend std::basic_istream<CharT,\
+    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Vector& rhs) {\n\
+    \        for (int i = 0; i < Dim; i++) is >> rhs.v[i];\n        return is;\n \
+    \   }\n    /**\n     * @brief \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u3078\
+    \u306E\u66F8\u304D\u8FBC\u307F\n     *\n     * @tparam CharT \u51FA\u529B\u30B9\
+    \u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n     * @tparam Traits \u51FA\
+    \u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\u6027\n   \
+    \  * @param is\n     * @param rhs\n     * @return std::basic_ostream<CharT, Traits>&\n\
+    \     */\n    template <class CharT, class Traits>\n    friend std::basic_ostream<CharT,\
+    \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const Vector& rhs)\
+    \ {\n        for (int i = 0; i < Dim; i++) {\n            if (i != 0) os << CharT('\
+    \ ');\n            os << rhs.v[i];\n        }\n        return os;\n    }\n\n \
+    \   /**\n     * @brief \u5185\u7A4D\n     *\n     * @param lhs\n     * @param\
+    \ rhs\n     * @return T\n     */\n    friend constexpr T dot(const Vector& lhs,\
+    \ const Vector& rhs) noexcept {\n        T ret = 0;\n        for (int i = 0; i\
+    \ < Dim; i++) ret += lhs[i] * rhs[i];\n        return ret;\n    }\n\n    /**\n\
+    \     * @brief \u7D76\u5BFE\u5024\u306E2\u4E57\n     *\n     * @return T\n   \
+    \  */\n    constexpr T squared_norm() const noexcept {\n        return dot(*this,\
+    \ *this);\n    }\n    /**\n     * @brief \u7D76\u5BFE\u5024\n     *\n     * @return\
+    \ double\n     */\n    constexpr double abs() const noexcept {\n        return\
+    \ std::sqrt(squared_norm());\n    }\n};\n\n/**\n * @brief \u6210\u5206\u304B\u3089\
+    \u4F5C\u308B\u3068\u304D\u306E\u63A8\u8AD6\u30AC\u30A4\u30C9\u3002\u578B\u306F\
+    \u6210\u5206\u306E\u5171\u901A\u306E\u578B\u3001\u6B21\u5143\u306F\u6210\u5206\
+    \u306E\u500B\u6570\u306B\u3059\u308B\n *\n * Vector(2LL, 3LL) \u306F Vector<long\
+    \ long, 2>\u3001Vector(1, 2, 3) \u306F Vector<int, 3>\u3001Vector(0.0, 0.0) \u306F\
+    \ Vector<double, 2>\n * (\u3053\u308C\u304C\u306A\u3044\u3068\u3001\u30C6\u30F3\
+    \u30D7\u30EC\u30FC\u30C8\u5F15\u6570\u306E\u7701\u7565\u6642\u306E\u5024\u304B\
+    \u3089 Vector<double, 2> \u306B\u306A\u3063\u3066\u3057\u307E\u3046)\n */\ntemplate\
+    \ <typename T, typename... U, ENABLE_IF_T(std::is_scalar_v<T> && (std::is_scalar_v<U>\
+    \ && ...))>\nVector(T, U...) -> Vector<std::common_type_t<T, U...>, 1 + sizeof...(U)>;\n\
+    \n/**\n * @brief \u4E8C\u6B21\u5143\u30D9\u30AF\u30C8\u30EB\u3069\u3046\u3057\u306E\
+    \u5916\u7A4D(\u5E73\u884C\u56DB\u8FBA\u5F62\u306E\u7B26\u53F7\u4ED8\u304D\u9762\
+    \u7A4D)\n *\n * @param lhs\n * @param rhs\n * @tparam T \u5EA7\u6A19\u306E\u578B\
+    \n * @return T\n */\ntemplate <typename T>\nconstexpr T cross(const Vector<T,\
+    \ 2>& lhs, const Vector<T, 2>& rhs) noexcept {\n    return lhs[0] * rhs[1] - lhs[1]\
+    \ * rhs[0];\n}\n/**\n * @brief \u4E09\u6B21\u5143\u30D9\u30AF\u30C8\u30EB\u3069\
+    \u3046\u3057\u306E\u5916\u7A4D\n *\n * @param lhs\n * @param rhs\n * @tparam T\
+    \ \u5EA7\u6A19\u306E\u578B\n * @return Vector<T, 3>\n */\ntemplate <typename T>\n\
+    constexpr Vector<T, 3> cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs)\
+    \ noexcept {\n    Vector<T, 3> ret;\n    ret[0] = lhs[1] * rhs[2] - lhs[2] * rhs[1];\n\
+    \    ret[1] = lhs[2] * rhs[0] - lhs[0] * rhs[2];\n    ret[2] = lhs[0] * rhs[1]\
+    \ - lhs[1] * rhs[0];\n    return ret;\n}\n\n/**\n * @brief 3\u70B9\u306E\u4F4D\
+    \u7F6E\u95A2\u4FC2 (counter-clockwise)\n *\n * \u6574\u6570\u578B\u3067\u3082\u4F7F\
+    \u3048\u308B\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u3067\u306F\u8AA4\u5DEE\
+    \u3092\u8003\u3048\u305A\u306B\u6BD4\u8F03\u3059\u308B\n *\n * @tparam T \u5EA7\
+    \u6A19\u306E\u578B\n * @return int 1: a\u2192b\u2192c \u304C\u53CD\u6642\u8A08\
+    \u56DE\u308A, -1: \u6642\u8A08\u56DE\u308A, 2: c, a, b \u306E\u9806\u306B\u4E00\
+    \u76F4\u7DDA\u4E0A, -2: a, b, c \u306E\u9806\u306B\u4E00\u76F4\u7DDA\u4E0A, 0:\
+    \ c \u304C\u7DDA\u5206 ab \u4E0A\n */\ntemplate <typename T>\nconstexpr int ccw(const\
+    \ Vector<T, 2>& a, const Vector<T, 2>& b, const Vector<T, 2>& c) {\n    Vector<T,\
+    \ 2> u = b - a, v = c - a;\n    T cr = cross(u, v);\n    if (cr > 0) return 1;\n\
+    \    if (cr < 0) return -1;\n    if (dot(u, v) < 0) return 2;\n    if (u.squared_norm()\
+    \ < v.squared_norm()) return -2;\n    return 0;\n}\n#line 12 \"src/geometry/internal/predicates.hpp\"\
+    \n\nnamespace internal_predicates {\n// \u6574\u6570\u5EA7\u6A19\u306E\u5916\u7A4D\
+    \u30FB\u4F53\u7A4D\u306E\u8A08\u7B97\u306B\u4F7F\u3046\u578B (\u5EA7\u6A19\u304C\
+    \ 1e9 \u306A\u3089\u4F53\u7A4D\u306F 1e27 \u7A0B\u5EA6\u306B\u306A\u308B)\ntemplate\
+    \ <typename T>\nusing Wide = std::conditional_t<std::is_integral_v<T>, __int128_t,\
+    \ T>;\ntemplate <typename T, int Dim>\nconstexpr Vector<Wide<T>, Dim> widen(const\
+    \ Vector<T, Dim>& p) {\n    Vector<Wide<T>, Dim> result;\n    for (int i = 0;\
+    \ i < Dim; ++i) result[i] = static_cast<Wide<T>>(p[i]);\n    return result;\n\
+    }\n// \u56DB\u9762\u4F53 abcd \u306E\u7B26\u53F7\u4ED8\u304D\u4F53\u7A4D\u306E\
+    \ 6 \u500D\u306E\u7B26\u53F7 (d \u304C\u5E73\u9762 abc \u306E\u3001abc \u304C\u53CD\
+    \u6642\u8A08\u56DE\u308A\u306B\u898B\u3048\u308B\u5074\u306A\u3089\u6B63)\ntemplate\
+    \ <typename T>\nint orient(const Vector<T, 3>& a, const Vector<T, 3>& b, const\
+    \ Vector<T, 3>& c, const Vector<T, 3>& d) {\n    const auto wa = widen(a);\n \
+    \   const auto v = dot(cross(widen(b) - wa, widen(c) - wa), widen(d) - wa);\n\
+    \    return (v > 0) - (v < 0);\n}\ntemplate <typename T>\ndouble norm(const Vector<T,\
+    \ 3>& v) {\n    const double x = static_cast<double>(v[0]), y = static_cast<double>(v[1]),\
+    \ z = static_cast<double>(v[2]);\n    return std::sqrt(x * x + y * y + z * z);\n\
+    }\n}  // namespace internal_predicates\n#line 2 \"src/geometry/line.hpp\"\n\n\
+    /**\n * @file line.hpp\n * @brief 2 \u6B21\u5143\u30FB3 \u6B21\u5143\u306E\u76F4\
+    \u7DDA (\u5E73\u884C\u30FB\u76F4\u4EA4\u3001\u5C04\u5F71\u30FB\u53CD\u5C04\u3001\
+    \u4EA4\u70B9\u3001\u8DDD\u96E2)\n */\n\n#line 12 \"src/geometry/line.hpp\"\n\n\
+    #line 15 \"src/geometry/line.hpp\"\n\n/**\n * @brief 2 \u70B9\u3067\u8868\u3059\
+    \u76F4\u7DDA\u3002p1 != p2 \u304C\u5FC5\u8981\u3002\u7B49\u5024\u6BD4\u8F03\u306F\
+    \u540C\u3058\u76F4\u7DDA\u304B\u3092\u5224\u5B9A\u3059\u308B\n */\ntemplate <typename\
+    \ T = long long, int Dim = 2>\nstruct Line {\n    static_assert(Dim >= 2, \"dimension\
+    \ must be at least 2\");\n    Vector<T, Dim> p1, p2;\n\n    constexpr Line(const\
+    \ Vector<T, Dim>& p1, const Vector<T, Dim>& p2) : p1(p1), p2(p2) {\n        assert(p1\
+    \ != p2 && \"Line: degenerate line\");\n    }\n    constexpr bool operator==(const\
+    \ Line& other) const {\n        assert(p1 != p2 && other.p1 != other.p2 && \"\
+    Line: degenerate line\");\n        using Wide = std::conditional_t<std::is_integral_v<T>,\
+    \ __int128_t, T>;\n        auto on_line = [&](const Vector<T, Dim>& p) {\n   \
+    \         for (int i = 0; i < Dim; ++i) {\n                for (int j = i + 1;\
+    \ j < Dim; ++j) {\n                    Wide di = static_cast<Wide>(p2[i]) - p1[i],\
+    \ dj = static_cast<Wide>(p2[j]) - p1[j];\n                    Wide vi = static_cast<Wide>(p[i])\
+    \ - p1[i], vj = static_cast<Wide>(p[j]) - p1[j];\n                    if (di *\
+    \ vj != dj * vi) return false;\n                }\n            }\n           \
+    \ return true;\n        };\n        return on_line(other.p1) && on_line(other.p2);\n\
+    \    }\n    constexpr bool operator!=(const Line& other) const { return !(*this\
+    \ == other); }\n};\n\ntemplate <typename T, int Dim>\nLine(const Vector<T, Dim>&,\
+    \ const Vector<T, Dim>&) -> Line<T, Dim>;\n\n/**\n * @brief \u76F4\u7DDA p1p2\
+    \ \u3068\u76F4\u7DDA q1q2 \u304C\u5E73\u884C\u304B (\u6574\u6570\u578B\u3067\u3082\
+    \u4F7F\u3048\u308B)\n */\ntemplate <typename T>\nconstexpr bool is_parallel(const\
+    \ Line<T>& first, const Line<T>& second) {\n    const auto& [p1, p2] = first;\n\
+    \    const auto& [q1, q2] = second;\n    return cross(p2 - p1, q2 - q1) == 0;\n\
+    }\n/**\n * @brief \u76F4\u7DDA p1p2 \u3068\u76F4\u7DDA q1q2 \u304C\u76F4\u4EA4\
+    \u3059\u308B\u304B (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B)\n */\ntemplate\
+    \ <typename T>\nconstexpr bool is_orthogonal(const Line<T>& first, const Line<T>&\
+    \ second) {\n    const auto& [p1, p2] = first;\n    const auto& [q1, q2] = second;\n\
+    \    return dot(p2 - p1, q2 - q1) == 0;\n}\n\n/**\n * @brief \u70B9 p \u304B\u3089\
+    \u76F4\u7DDA p1p2 \u306B\u4E0B\u308D\u3057\u305F\u5782\u7DDA\u306E\u8DB3 (\u5C04\
+    \u5F71)\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n */\ntemplate <typename\
+    \ T>\nconstexpr Vector<T, 2> projection(const Line<T>& object, const Vector<T,\
+    \ 2>& p) {\n    const auto& [p1, p2] = object;\n    static_assert(std::is_floating_point_v<T>,\
+    \ \"projection: T must be a floating point type\");\n    assert(p1 != p2 && \"\
+    projection: degenerate line\");\n    Vector<T, 2> d = p2 - p1;\n    return p1\
+    \ + d * (dot(p - p1, d) / d.squared_norm());\n}\n/**\n * @brief \u76F4\u7DDA p1p2\
+    \ \u306B\u3064\u3044\u3066\u70B9 p \u3068\u5BFE\u79F0\u306A\u70B9 (\u53CD\u5C04\
+    )\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n */\ntemplate <typename\
+    \ T>\nconstexpr Vector<T, 2> reflection(const Line<T>& object, const Vector<T,\
+    \ 2>& p) {\n    return projection(object, p) * T(2) - p;\n}\n\n/**\n * @brief\
+    \ \u76F4\u7DDA p1p2 \u3068\u76F4\u7DDA q1q2 \u306E\u4EA4\u70B9\u3002\u6D6E\u52D5\
+    \u5C0F\u6570\u70B9\u578B\u9650\u5B9A\u3002p1 != p2 \u304B\u3064 q1 != q2 \u3067\
+    \u3042\u308B\u3053\u3068\n * @return std::optional<Vector<T, 2>> \u4EA4\u70B9\
+    \ (\u5E73\u884C (\u91CD\u306A\u308B\u76F4\u7DDA\u3082\u542B\u3080) \u306A\u3089\
+    \ std::nullopt)\n */\ntemplate <typename T>\nconstexpr std::optional<Vector<T,\
+    \ 2>> line_intersection(const Line<T>& first, const Line<T>& second) {\n    const\
+    \ auto& [p1, p2] = first;\n    const auto& [q1, q2] = second;\n    static_assert(std::is_floating_point_v<T>,\
+    \ \"line_intersection: T must be a floating point type\");\n    assert(p1 != p2\
+    \ && q1 != q2 && \"line_intersection: degenerate line\");\n    Vector<T, 2> d\
+    \ = p2 - p1, e = q2 - q1;\n    T c = cross(e, d);\n    if (c == 0) return std::nullopt;\n\
+    \    // p1 + d t \u304C\u76F4\u7DDA q1q2 \u4E0A\u306B\u3042\u308B t\n    return\
+    \ p1 + d * (cross(e, q1 - p1) / c);\n}\n\n/**\n * @brief \u70B9 p \u3068\u76F4\
+    \u7DDA p1p2 \u306E\u8DDD\u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B\
+    )\n */\ntemplate <typename T>\ndouble distance_point_line(const Line<T>& object,\
+    \ const Vector<T, 2>& p) {\n    const auto& [p1, p2] = object;\n    assert(p1\
+    \ != p2 && \"distance_point_line: degenerate line\");\n    return std::abs(static_cast<double>(cross(p2\
+    \ - p1, p - p1))) / (p2 - p1).abs();\n}\n/** @brief 3 \u6B21\u5143\u306E\u76F4\
+    \u7DDA\u540C\u58EB\u304C\u5E73\u884C\u304B\u3002\u4E00\u81F4\u3059\u308B\u5834\
+    \u5408\u3082 true */\ntemplate <typename T>\nconstexpr bool is_parallel(const\
+    \ Line<T, 3>& first, const Line<T, 3>& second) {\n    using internal_predicates::widen;\n\
+    \    const auto u = widen(first.p2) - widen(first.p1), v = widen(second.p2) -\
+    \ widen(second.p1);\n    assert((u[0] != 0 || u[1] != 0 || u[2] != 0) && \"is_parallel:\
+    \ degenerate line\");\n    assert((v[0] != 0 || v[1] != 0 || v[2] != 0) && \"\
+    is_parallel: degenerate line\");\n    const auto n = cross(u, v);\n    return\
+    \ n[0] == 0 && n[1] == 0 && n[2] == 0;\n}\n\n/**\n * @brief \u70B9 p \u304B\u3089\
+    \u76F4\u7DDA p1p2 \u306B\u4E0B\u308D\u3057\u305F\u5782\u7DDA\u306E\u8DB3 (\u5C04\
+    \u5F71)\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\n */\ntemplate <typename\
+    \ T>\nconstexpr Vector<T, 3> projection(const Line<T, 3>& object, const Vector<T,\
+    \ 3>& p) {\n    const auto& [p1, p2] = object;\n    static_assert(std::is_floating_point_v<T>,\
+    \ \"projection: T must be a floating point type\");\n    assert(p1 != p2 && \"\
+    projection: degenerate line\");\n    Vector<T, 3> d = p2 - p1;\n    return p1\
+    \ + d * (dot(p - p1, d) / d.squared_norm());\n}\n\n/**\n * @brief \u70B9 p \u3068\
+    \u76F4\u7DDA p1p2 \u306E\u8DDD\u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\
+    \u308B)\n */\ntemplate <typename T>\ndouble distance_point_line(const Line<T,\
+    \ 3>& object, const Vector<T, 3>& p) {\n    const auto& [p1, p2] = object;\n \
+    \   using namespace internal_predicates;\n    assert(p1 != p2 && \"distance_point_line:\
+    \ degenerate line\");\n    return norm(cross(widen(p2) - widen(p1), widen(p) -\
+    \ widen(p1))) / norm(p2 - p1);\n}\n/**\n * @brief \u76F4\u7DDA p1p2 \u3068\u76F4\
+    \u7DDA q1q2 \u306E\u8DDD\u96E2 (\u6574\u6570\u578B\u3067\u3082\u4F7F\u3048\u308B\
+    )\u3002p1 != p2 \u304B\u3064 q1 != q2 \u3067\u3042\u308B\u3053\u3068\n */\ntemplate\
+    \ <typename T>\ndouble distance_lines(const Line<T, 3>& first, const Line<T, 3>&\
+    \ second) {\n    const auto& [p1, p2] = first;\n    const auto& [q1, q2] = second;\n\
+    \    using namespace internal_predicates;\n    assert(p1 != p2 && q1 != q2 &&\
+    \ \"distance_lines: degenerate line\");\n    const auto n = cross(widen(p2) -\
+    \ widen(p1), widen(q2) - widen(q1));\n    // \u5E73\u884C\u306A\u3089\u3001\u4E00\
+    \u65B9\u306E\u76F4\u7DDA\u4E0A\u306E\u70B9\u3068\u3082\u3046\u4E00\u65B9\u306E\
+    \u76F4\u7DDA\u306E\u8DDD\u96E2\n    if (n == decltype(n)()) return distance_point_line(Line(p1,\
+    \ p2), q1);\n    return std::abs(static_cast<double>(dot(n, widen(q1) - widen(p1))))\
+    \ / norm(n);\n}\n#line 15 \"src/geometry/plane.hpp\"\n\n/**\n * @brief \u4E00\u76F4\
+    \u7DDA\u4E0A\u306B\u306A\u3044 3 \u70B9\u3067\u8868\u3059\u5E73\u9762\u3002\u7B49\
+    \u5024\u6BD4\u8F03\u306F\u70B9\u306E\u9078\u3073\u65B9\u30FB\u9806\u5E8F\u306B\
+    \u3088\u3089\u305A\u540C\u3058\u5E73\u9762\u304B\u3092\u5224\u5B9A\u3059\u308B\
+    \n * @tparam T \u5EA7\u6A19\u306E\u578B\u3002\u7701\u7565\u3057\u305F\u3089 long\
+    \ long\n */\ntemplate <typename T = long long>\nstruct Plane {\n    Vector<T,\
+    \ 3> p1, p2, p3;\n\n   private:\n    constexpr void assert_valid() const {\n \
+    \       using internal_predicates::widen;\n        const auto n = cross(widen(p2)\
+    \ - widen(p1), widen(p3) - widen(p1));\n        assert((n[0] != 0 || n[1] != 0\
+    \ || n[2] != 0) && \"Plane: collinear points\");\n    }\n\n   public:\n    constexpr\
+    \ Plane(const Vector<T, 3>& p1, const Vector<T, 3>& p2, const Vector<T, 3>& p3)\
+    \ : p1(p1), p2(p2), p3(p3) {\n        assert_valid();\n    }\n    /** @brief \u70B9\
+    \ p \u304C\u5E73\u9762\u4E0A\u306B\u3042\u308B\u304B\u3002\u6D6E\u52D5\u5C0F\u6570\
+    \u70B9\u578B\u3067\u306F\u8AA4\u5DEE\u3092\u8003\u616E\u3057\u306A\u3044 */\n\
+    \    constexpr bool contains(const Vector<T, 3>& p) const {\n        assert_valid();\n\
+    \        using internal_predicates::widen;\n        const auto a = widen(p1),\
+    \ n = cross(widen(p2) - a, widen(p3) - a);\n        return dot(n, widen(p) - a)\
+    \ == 0;\n    }\n    /** @brief \u76F4\u7DDA\u5168\u4F53\u304C\u5E73\u9762\u5185\
+    \u306B\u3042\u308B\u304B\u3002\u5E73\u9762\u3068\u5E73\u884C\u3067\u3082\u96E2\
+    \u308C\u3066\u3044\u308B\u76F4\u7DDA\u306F false */\n    constexpr bool contains(const\
+    \ Line<T, 3>& line) const {\n        assert((line.p1[0] != line.p2[0] || line.p1[1]\
+    \ != line.p2[1] || line.p1[2] != line.p2[2]) && \"Plane::contains: degenerate\
+    \ line\");\n        return contains(line.p1) && contains(line.p2);\n    }\n  \
+    \  constexpr bool operator==(const Plane& other) const {\n        assert_valid();\n\
+    \        other.assert_valid();\n        using internal_predicates::widen;\n  \
+    \      const auto a = widen(p1), n = cross(widen(p2) - a, widen(p3) - a);\n  \
+    \      return dot(n, widen(other.p1) - a) == 0 && dot(n, widen(other.p2) - a)\
+    \ == 0 && dot(n, widen(other.p3) - a) == 0;\n    }\n    constexpr bool operator!=(const\
+    \ Plane& other) const { return !(*this == other); }\n};\n\ntemplate <typename\
+    \ T>\nPlane(const Vector<T, 3>&, const Vector<T, 3>&, const Vector<T, 3>&) ->\
+    \ Plane<T>;\n\n/** @brief \u76F4\u7DDA\u3068\u5E73\u9762\u304C\u5E73\u884C\u304B\
+    \u3002\u76F4\u7DDA\u304C\u5E73\u9762\u306B\u542B\u307E\u308C\u308B\u5834\u5408\
+    \u3082 true */\ntemplate <typename T>\nconstexpr bool is_parallel(const Line<T,\
+    \ 3>& line, const Plane<T>& plane) {\n    using internal_predicates::widen;\n\
+    \    const auto d = widen(line.p2) - widen(line.p1);\n    const auto a = widen(plane.p1),\
+    \ n = cross(widen(plane.p2) - a, widen(plane.p3) - a);\n    assert((d[0] != 0\
+    \ || d[1] != 0 || d[2] != 0) && \"is_parallel: degenerate line\");\n    assert((n[0]\
+    \ != 0 || n[1] != 0 || n[2] != 0) && \"is_parallel: degenerate plane\");\n   \
+    \ return dot(n, d) == 0;\n}\n\n/** @brief \u5E73\u9762\u3068\u76F4\u7DDA\u304C\
+    \u5E73\u884C\u304B\u3002\u76F4\u7DDA\u304C\u5E73\u9762\u306B\u542B\u307E\u308C\
+    \u308B\u5834\u5408\u3082 true */\ntemplate <typename T>\nconstexpr bool is_parallel(const\
+    \ Plane<T>& plane, const Line<T, 3>& line) {\n    return is_parallel(line, plane);\n\
+    }\n\n/** @brief \u5E73\u9762\u540C\u58EB\u304C\u5E73\u884C\u304B\u3002\u4E00\u81F4\
+    \u3059\u308B\u5834\u5408\u3082 true */\ntemplate <typename T>\nconstexpr bool\
+    \ is_parallel(const Plane<T>& first, const Plane<T>& second) {\n    using internal_predicates::widen;\n\
+    \    const auto a = widen(first.p1), n = cross(widen(first.p2) - a, widen(first.p3)\
+    \ - a);\n    const auto b = widen(second.p1), u = widen(second.p2) - b, v = widen(second.p3)\
+    \ - b;\n    const auto m = cross(u, v);\n    assert((n[0] != 0 || n[1] != 0 ||\
+    \ n[2] != 0) && \"is_parallel: degenerate plane\");\n    assert((m[0] != 0 ||\
+    \ m[1] != 0 || m[2] != 0) && \"is_parallel: degenerate plane\");\n    // \u6CD5\
+    \u7DDA\u540C\u58EB\u306E\u5916\u7A4D (\u5EA7\u6A19\u306E\u5DEE\u306E 4 \u4E57\
+    ) \u3092\u907F\u3051\u30013 \u4E57\u307E\u3067\u306E\u8A08\u7B97\u3067\u5224\u5B9A\
+    \u3059\u308B\u3002\n    return dot(n, u) == 0 && dot(n, v) == 0;\n}\n\n/**\n *\
+    \ @brief \u70B9 p \u3068\u5E73\u9762 abc \u306E\u8DDD\u96E2 (\u6574\u6570\u578B\
+    \u3067\u3082\u4F7F\u3048\u308B)\u3002a, b, c \u306F\u4E00\u76F4\u7DDA\u4E0A\u306B\
+    \u306A\u3044\u3053\u3068\n */\ntemplate <typename T>\ndouble distance_point_plane(const\
+    \ Plane<T>& plane, const Vector<T, 3>& p) {\n    const auto& [a, b, c] = plane;\n\
+    \    using namespace internal_predicates;\n    const auto wa = widen(a);\n   \
+    \ const auto n = cross(widen(b) - wa, widen(c) - wa);\n    assert(n != decltype(n)()\
+    \ && \"distance_point_plane: degenerate plane\");\n    return std::abs(static_cast<double>(dot(n,\
+    \ widen(p) - wa))) / norm(n);\n}\n/**\n * @brief \u76F4\u7DDA p1p2 \u3068\u5E73\
+    \u9762 abc \u306E\u4EA4\u70B9\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\
+    \u3002p1 != p2 \u3067\u3001a, b, c \u306F\u4E00\u76F4\u7DDA\u4E0A\u306B\u306A\u3044\
+    \u3053\u3068\n * @return std::optional<Vector<T, 3>> \u4EA4\u70B9 (\u5E73\u884C\
+    \ (\u5E73\u9762\u306B\u542B\u307E\u308C\u308B\u5834\u5408\u3082\u542B\u3080) \u306A\
+    \u3089 std::nullopt)\n */\ntemplate <typename T>\nstd::optional<Vector<T, 3>>\
+    \ line_plane_intersection(const Line<T, 3>& object, const Plane<T>& plane) {\n\
+    \    const auto& [p1, p2] = object;\n    const auto& [a, b, c] = plane;\n    static_assert(std::is_floating_point_v<T>,\
+    \ \"line_plane_intersection: T must be a floating point type\");\n    assert(p1\
+    \ != p2 && \"line_plane_intersection: degenerate line\");\n    const Vector<T,\
+    \ 3> n = cross(b - a, c - a), d = p2 - p1;\n    assert((n != Vector<T, 3>()) &&\
+    \ \"line_plane_intersection: degenerate plane\");\n    const T den = dot(n, d);\n\
+    \    if (den == 0) return std::nullopt;\n    // p1 + d t \u304C\u5E73\u9762\u4E0A\
+    \u306B\u3042\u308B t\n    return p1 + d * (dot(n, a - p1) / den);\n}\n"
+  code: "#pragma once\n\n/**\n * @file plane.hpp\n * @brief \u5E73\u9762 (\u5305\u542B\
+    \u30FB\u5E73\u884C\u5224\u5B9A\u3001\u8DDD\u96E2\u3001\u76F4\u7DDA\u3068\u306E\
+    \u4EA4\u70B9)\n */\n\n#include <cassert>\n#include <cmath>\n#include <optional>\n\
+    #include <type_traits>\n\n#include \"internal/predicates.hpp\"\n#include \"line.hpp\"\
+    \n\n/**\n * @brief \u4E00\u76F4\u7DDA\u4E0A\u306B\u306A\u3044 3 \u70B9\u3067\u8868\
+    \u3059\u5E73\u9762\u3002\u7B49\u5024\u6BD4\u8F03\u306F\u70B9\u306E\u9078\u3073\
+    \u65B9\u30FB\u9806\u5E8F\u306B\u3088\u3089\u305A\u540C\u3058\u5E73\u9762\u304B\
+    \u3092\u5224\u5B9A\u3059\u308B\n * @tparam T \u5EA7\u6A19\u306E\u578B\u3002\u7701\
+    \u7565\u3057\u305F\u3089 long long\n */\ntemplate <typename T = long long>\nstruct\
+    \ Plane {\n    Vector<T, 3> p1, p2, p3;\n\n   private:\n    constexpr void assert_valid()\
+    \ const {\n        using internal_predicates::widen;\n        const auto n = cross(widen(p2)\
+    \ - widen(p1), widen(p3) - widen(p1));\n        assert((n[0] != 0 || n[1] != 0\
+    \ || n[2] != 0) && \"Plane: collinear points\");\n    }\n\n   public:\n    constexpr\
+    \ Plane(const Vector<T, 3>& p1, const Vector<T, 3>& p2, const Vector<T, 3>& p3)\
+    \ : p1(p1), p2(p2), p3(p3) {\n        assert_valid();\n    }\n    /** @brief \u70B9\
+    \ p \u304C\u5E73\u9762\u4E0A\u306B\u3042\u308B\u304B\u3002\u6D6E\u52D5\u5C0F\u6570\
+    \u70B9\u578B\u3067\u306F\u8AA4\u5DEE\u3092\u8003\u616E\u3057\u306A\u3044 */\n\
+    \    constexpr bool contains(const Vector<T, 3>& p) const {\n        assert_valid();\n\
+    \        using internal_predicates::widen;\n        const auto a = widen(p1),\
+    \ n = cross(widen(p2) - a, widen(p3) - a);\n        return dot(n, widen(p) - a)\
+    \ == 0;\n    }\n    /** @brief \u76F4\u7DDA\u5168\u4F53\u304C\u5E73\u9762\u5185\
+    \u306B\u3042\u308B\u304B\u3002\u5E73\u9762\u3068\u5E73\u884C\u3067\u3082\u96E2\
+    \u308C\u3066\u3044\u308B\u76F4\u7DDA\u306F false */\n    constexpr bool contains(const\
+    \ Line<T, 3>& line) const {\n        assert((line.p1[0] != line.p2[0] || line.p1[1]\
+    \ != line.p2[1] || line.p1[2] != line.p2[2]) && \"Plane::contains: degenerate\
+    \ line\");\n        return contains(line.p1) && contains(line.p2);\n    }\n  \
+    \  constexpr bool operator==(const Plane& other) const {\n        assert_valid();\n\
+    \        other.assert_valid();\n        using internal_predicates::widen;\n  \
+    \      const auto a = widen(p1), n = cross(widen(p2) - a, widen(p3) - a);\n  \
+    \      return dot(n, widen(other.p1) - a) == 0 && dot(n, widen(other.p2) - a)\
+    \ == 0 && dot(n, widen(other.p3) - a) == 0;\n    }\n    constexpr bool operator!=(const\
+    \ Plane& other) const { return !(*this == other); }\n};\n\ntemplate <typename\
+    \ T>\nPlane(const Vector<T, 3>&, const Vector<T, 3>&, const Vector<T, 3>&) ->\
+    \ Plane<T>;\n\n/** @brief \u76F4\u7DDA\u3068\u5E73\u9762\u304C\u5E73\u884C\u304B\
+    \u3002\u76F4\u7DDA\u304C\u5E73\u9762\u306B\u542B\u307E\u308C\u308B\u5834\u5408\
+    \u3082 true */\ntemplate <typename T>\nconstexpr bool is_parallel(const Line<T,\
+    \ 3>& line, const Plane<T>& plane) {\n    using internal_predicates::widen;\n\
+    \    const auto d = widen(line.p2) - widen(line.p1);\n    const auto a = widen(plane.p1),\
+    \ n = cross(widen(plane.p2) - a, widen(plane.p3) - a);\n    assert((d[0] != 0\
+    \ || d[1] != 0 || d[2] != 0) && \"is_parallel: degenerate line\");\n    assert((n[0]\
+    \ != 0 || n[1] != 0 || n[2] != 0) && \"is_parallel: degenerate plane\");\n   \
+    \ return dot(n, d) == 0;\n}\n\n/** @brief \u5E73\u9762\u3068\u76F4\u7DDA\u304C\
+    \u5E73\u884C\u304B\u3002\u76F4\u7DDA\u304C\u5E73\u9762\u306B\u542B\u307E\u308C\
+    \u308B\u5834\u5408\u3082 true */\ntemplate <typename T>\nconstexpr bool is_parallel(const\
+    \ Plane<T>& plane, const Line<T, 3>& line) {\n    return is_parallel(line, plane);\n\
+    }\n\n/** @brief \u5E73\u9762\u540C\u58EB\u304C\u5E73\u884C\u304B\u3002\u4E00\u81F4\
+    \u3059\u308B\u5834\u5408\u3082 true */\ntemplate <typename T>\nconstexpr bool\
+    \ is_parallel(const Plane<T>& first, const Plane<T>& second) {\n    using internal_predicates::widen;\n\
+    \    const auto a = widen(first.p1), n = cross(widen(first.p2) - a, widen(first.p3)\
+    \ - a);\n    const auto b = widen(second.p1), u = widen(second.p2) - b, v = widen(second.p3)\
+    \ - b;\n    const auto m = cross(u, v);\n    assert((n[0] != 0 || n[1] != 0 ||\
+    \ n[2] != 0) && \"is_parallel: degenerate plane\");\n    assert((m[0] != 0 ||\
+    \ m[1] != 0 || m[2] != 0) && \"is_parallel: degenerate plane\");\n    // \u6CD5\
+    \u7DDA\u540C\u58EB\u306E\u5916\u7A4D (\u5EA7\u6A19\u306E\u5DEE\u306E 4 \u4E57\
+    ) \u3092\u907F\u3051\u30013 \u4E57\u307E\u3067\u306E\u8A08\u7B97\u3067\u5224\u5B9A\
+    \u3059\u308B\u3002\n    return dot(n, u) == 0 && dot(n, v) == 0;\n}\n\n/**\n *\
+    \ @brief \u70B9 p \u3068\u5E73\u9762 abc \u306E\u8DDD\u96E2 (\u6574\u6570\u578B\
+    \u3067\u3082\u4F7F\u3048\u308B)\u3002a, b, c \u306F\u4E00\u76F4\u7DDA\u4E0A\u306B\
+    \u306A\u3044\u3053\u3068\n */\ntemplate <typename T>\ndouble distance_point_plane(const\
+    \ Plane<T>& plane, const Vector<T, 3>& p) {\n    const auto& [a, b, c] = plane;\n\
+    \    using namespace internal_predicates;\n    const auto wa = widen(a);\n   \
+    \ const auto n = cross(widen(b) - wa, widen(c) - wa);\n    assert(n != decltype(n)()\
+    \ && \"distance_point_plane: degenerate plane\");\n    return std::abs(static_cast<double>(dot(n,\
+    \ widen(p) - wa))) / norm(n);\n}\n/**\n * @brief \u76F4\u7DDA p1p2 \u3068\u5E73\
+    \u9762 abc \u306E\u4EA4\u70B9\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u9650\u5B9A\
+    \u3002p1 != p2 \u3067\u3001a, b, c \u306F\u4E00\u76F4\u7DDA\u4E0A\u306B\u306A\u3044\
+    \u3053\u3068\n * @return std::optional<Vector<T, 3>> \u4EA4\u70B9 (\u5E73\u884C\
+    \ (\u5E73\u9762\u306B\u542B\u307E\u308C\u308B\u5834\u5408\u3082\u542B\u3080) \u306A\
+    \u3089 std::nullopt)\n */\ntemplate <typename T>\nstd::optional<Vector<T, 3>>\
+    \ line_plane_intersection(const Line<T, 3>& object, const Plane<T>& plane) {\n\
+    \    const auto& [p1, p2] = object;\n    const auto& [a, b, c] = plane;\n    static_assert(std::is_floating_point_v<T>,\
+    \ \"line_plane_intersection: T must be a floating point type\");\n    assert(p1\
+    \ != p2 && \"line_plane_intersection: degenerate line\");\n    const Vector<T,\
+    \ 3> n = cross(b - a, c - a), d = p2 - p1;\n    assert((n != Vector<T, 3>()) &&\
+    \ \"line_plane_intersection: degenerate plane\");\n    const T den = dot(n, d);\n\
+    \    if (den == 0) return std::nullopt;\n    // p1 + d t \u304C\u5E73\u9762\u4E0A\
+    \u306B\u3042\u308B t\n    return p1 + d * (dot(n, a - p1) / den);\n}\n"
+  dependsOn:
+  - src/geometry/internal/predicates.hpp
+  - src/geometry/vector.hpp
+  - src/utility/traits.hpp
+  - src/geometry/line.hpp
+  isVerificationFile: false
+  path: src/geometry/plane.hpp
+  requiredBy: []
+  timestamp: '2026-11-08 17:10:03+09:00'
+  verificationStatus: LIBRARY_ALL_AC
+  verifiedWith:
+  - test/yukicoder/132.test.cpp
+  - test/unittest/geometry/plane.test.cpp
+documentation_of: src/geometry/plane.hpp
+layout: document
+title: "\u5E73\u9762 (\u5305\u542B\u30FB\u5E73\u884C\u5224\u5B9A\u3001\u8DDD\u96E2\
+  \u3001\u76F4\u7DDA\u3068\u306E\u4EA4\u70B9)"
+---
+
+平面上の一直線上にない 3 点 `p1, p2, p3` を持つ `Plane<T>` と、平面の関数です。`T` の既定は `long long` で、3 点から座標型を推論します。
+
+```cpp
+using P = Vector<long long, 3>;
+Plane plane(P(0, 0, 0), P(1, 0, 0), P(0, 1, 0));
+Plane other(P(2, 3, 0), P(2, 4, 0), P(3, 3, 0));
+bool same = plane == other;  // true
+bool on = plane.contains(P(2, 3, 0));  // true
+bool inside = plane.contains(Line(P(0, 0, 0), P(1, 1, 0)));  // true
+Line outside(P(0, 0, 1), P(1, 0, 1));
+bool parallel = is_parallel(outside, plane);  // true
+bool contained = plane.contains(outside);    // false
+using D = Vector<double, 3>;
+auto x = line_plane_intersection(Line(D(0, 0, 5), D(1, 1, 4)), Plane(D(0, 0, 0), D(1, 0, 0), D(0, 1, 0)));  // (5, 5, 0)
+```
+
+係数への変換・正規化はしません。法線は `cross(p2 - p1, p3 - p1)` です。3 点が一直線上にある場合 (重複した点を含む場合も含む) は assert で落ちます。公開メンバを変更するときもこの条件を保ってください。
+
+整数座標の外積・体積は `__int128_t` で計算し、座標の絶対値が $10^9$ 程度まで使えます。浮動小数点型の判定では誤差を考慮しません。
+
+## メンバ関数
+
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `Plane<T>(p1, p2, p3)` | 3 点を通る平面を作る | $O(1)$ |
+| `contains(p)` | 点 `p` (`Vector<T, 3>`) が平面上にあるか | $O(1)$ |
+| `contains(line)` | `Line<T, 3>` 全体が平面内にあるか。平行でも平面外なら `false` | $O(1)$ |
+| `a == b` / `a != b` | 同じ平面か / 異なる平面か。点の選び方・順序・法線の向きによらない | $O(1)$ |
+
+## 関数
+
+| 関数 | 説明 | 計算量 |
+|---|---|---|
+| `is_parallel(line, plane)` / `is_parallel(plane, line)` | 直線と平面が平行か。直線が平面内にある場合も `true` | $O(1)$ |
+| `is_parallel(a, b)` (`Plane<T>` 同士) | 平面が平行か。一致する場合も `true` | $O(1)$ |
+| `distance_point_plane(plane, p)` | 点と平面の距離 (`double`)。整数型でも使える | $O(1)$ |
+| `line_plane_intersection(line, plane)` | 交点を `std::optional<Vector<T, 3>>` で返す。平行 (平面に含まれる場合も含む) なら `std::nullopt`。浮動小数点型のみ | $O(1)$ |
+
+`line` は異なる 2 点で表した `Line<T, 3>` を渡します。
+
+## メンバ変数
+
+| 変数 | 説明 |
+|---|---|
+| `p1` / `p2` / `p3` | 平面上の一直線上にない 3 点 (`Vector<T, 3>`) |
+
+## 関連
+
+- 直線は [直線](line.hpp)、線分は [線分](segment.hpp)
+- 三角形の有限の領域は [三角形](triangle.hpp)、球は [球](sphere.hpp)

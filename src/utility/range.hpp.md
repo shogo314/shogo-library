@@ -1,30 +1,79 @@
 ---
 data:
   _extendedDependsOn: []
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':heavy_check_mark:'
+    path: src/data_structures/imos-2d.hpp
+    title: "2 \u6B21\u5143\u306E\u3044\u3082\u3059\u6CD5"
+  - icon: ':heavy_check_mark:'
+    path: src/dp/largest-rectangle.hpp
+    title: "\u30D2\u30B9\u30C8\u30B0\u30E9\u30E0\u30FB\u30B0\u30EA\u30C3\u30C9\u306E\
+      \u6700\u5927\u9577\u65B9\u5F62\u3068\u6700\u5927\u6B63\u65B9\u5F62"
+  - icon: ':heavy_check_mark:'
+    path: src/string/rolling-hash.hpp
+    title: "\u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5"
   _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/alds1/alds1-14-b.1.test.cpp
+    title: test/aoj/alds1/alds1-14-b.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/alds1/alds1-14-c.test.cpp
+    title: test/aoj/alds1/alds1-14-c.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dpl/dpl-3-a.test.cpp
+    title: test/aoj/dpl/dpl-3-a.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dpl/dpl-3-b.test.cpp
+    title: test/aoj/dpl/dpl-3-b.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dpl/dpl-3-c.test.cpp
+    title: test/aoj/dpl/dpl-3-c.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl/dsl-4-a.1.test.cpp
+    title: test/aoj/dsl/dsl-4-a.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl/dsl-4-a.2.test.cpp
+    title: test/aoj/dsl/dsl-4-a.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl/dsl-5-b.test.cpp
+    title: test/aoj/dsl/dsl-5-b.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/itp1/itp1-7-b.test.cpp
     title: test/aoj/itp1/itp1-7-b.test.cpp
   - icon: ':heavy_check_mark:'
-    path: test/unittest/utility/range-rect.test.cpp
-    title: test/unittest/utility/range-rect.test.cpp
+    path: test/aoj/volume11/1160.test.cpp
+    title: test/aoj/volume11/1160.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/imos-2d.test.cpp
+    title: test/unittest/data_structures/imos-2d.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/dp/largest-rectangle.test.cpp
+    title: test/unittest/dp/largest-rectangle.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/string/rolling-hash.test.cpp
+    title: test/unittest/string/rolling-hash.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/utility/range-grid.test.cpp
+    title: test/unittest/utility/range-grid.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/utility/range.test.cpp
     title: test/unittest/utility/range.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/utility/repr.test.cpp
     title: test/unittest/utility/repr.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/string/enumerate-palindromes.1.test.cpp
+    title: test/yosupo/string/enumerate-palindromes.1.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\u5217\
-      \u3068\u3001\u305D\u306E\u76F4\u7A4D\u306E Rect"
+      \u3068\u3001\u305D\u306E\u76F4\u7A4D\u306E Grid"
     links: []
   bundledCode: "#line 2 \"src/utility/range.hpp\"\n\n/**\n * @file range.hpp\n * @brief\
     \ Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\u5217\u3068\u3001\u305D\
-    \u306E\u76F4\u7A4D\u306E Rect\n */\n\n#include <cassert>\n#include <cstddef>\n\
+    \u306E\u76F4\u7A4D\u306E Grid\n */\n\n#include <cassert>\n#include <cstddef>\n\
     #include <iterator>\n#include <string>\n#include <type_traits>\n#include <utility>\n\
     #include <vector>\n\nstruct Range {\n   public:\n    using value_type = long long;\n\
     \    using const_reference = const value_type&;\n    using size_type = long long;\n\
@@ -217,24 +266,24 @@ data:
     \ * @brief 2 \u3064\u306E Range \u306E\u76F4\u7A4D rows \xD7 cols\n * (i, j) \u3092\
     \ i \u306E\u6607\u9806\u3001\u540C\u3058 i \u3067\u306F j \u306E\u6607\u9806 (\u884C\
     \u512A\u5148) \u306B\u4E26\u3079\u305F\u3082\u306E\u3068\u3057\u3066\u6271\u3046\
-    \n */\nstruct Rect {\n   public:\n    using value_type = std::pair<long long,\
+    \n */\nstruct Grid {\n   public:\n    using value_type = std::pair<long long,\
     \ long long>;\n    using size_type = long long;\n    using difference_type = std::ptrdiff_t;\n\
     \n    const Range rows;\n    const Range cols;\n\n   private:\n    const long\
     \ long width;  // cols.size() (index \u3084 at \u3067\u6BCE\u56DE\u5272\u308A\u7B97\
     \u3057\u306A\u3044\u3088\u3046\u306B\u6301\u3063\u3066\u304A\u304F)\n\n   public:\n\
-    \    /**\n     * @brief [0, h) \xD7 [0, w)\n     */\n    constexpr Rect(long long\
-    \ h, long long w) : rows(h), cols(w), width(cols.size()) {}\n    constexpr Rect(const\
+    \    /**\n     * @brief [0, h) \xD7 [0, w)\n     */\n    constexpr Grid(long long\
+    \ h, long long w) : rows(h), cols(w), width(cols.size()) {}\n    constexpr Grid(const\
     \ Range& _rows, const Range& _cols) : rows(_rows), cols(_cols), width(cols.size())\
-    \ {}\n    constexpr Rect(const Rect& o) = default;\n    Rect& operator=(const\
-    \ Rect& o) = delete;\n\n    struct const_iterator {\n       public:\n        using\
-    \ difference_type = Rect::difference_type;\n        using value_type = Rect::value_type;\n\
+    \ {}\n    constexpr Grid(const Grid& o) = default;\n    Grid& operator=(const\
+    \ Grid& o) = delete;\n\n    struct const_iterator {\n       public:\n        using\
+    \ difference_type = Grid::difference_type;\n        using value_type = Grid::value_type;\n\
     \        using pointer = void;\n        using reference = value_type;\n      \
     \  using iterator_category = std::forward_iterator_tag;\n\n       private:\n \
-    \       const Rect* rect = nullptr;\n        long long w = 0;   // cols.size()\n\
+    \       const Grid* rect = nullptr;\n        long long w = 0;   // cols.size()\n\
     \        long long ic = 0;  // rows \u306E\u4F55\u756A\u76EE\u304B\n        long\
     \ long jc = 0;  // cols \u306E\u4F55\u756A\u76EE\u304B\n\n       public:\n   \
     \     constexpr const_iterator() noexcept = default;\n        constexpr const_iterator(const\
-    \ Rect* _rect, long long _w, long long _ic, long long _jc) noexcept\n        \
+    \ Grid* _rect, long long _w, long long _ic, long long _jc) noexcept\n        \
     \    : rect(_rect), w(_w), ic(_ic), jc(_jc) {}\n        constexpr value_type operator*()\
     \ const noexcept {\n            return {rect->rows.start + ic * rect->rows.step,\
     \ rect->cols.start + jc * rect->cols.step};\n        }\n        constexpr const_iterator&\
@@ -268,7 +317,7 @@ data:
     \ {\n        assert(0 <= k && k < size());\n        return {rows[k / width], cols[k\
     \ % width]};\n    }\n    constexpr value_type operator[](size_type k) const {\n\
     \        return at(k);\n    }\n\n   private:\n    // \u8FD1\u508D\u306E\u65B9\u5411\
-    \ (rows\u30FBcols \u306E\u4E2D\u3067\u306E\u4F4D\u7F6E\u306E\u5DEE) \u3092 Rect\
+    \ (rows\u30FBcols \u306E\u4E2D\u3067\u306E\u4F4D\u7F6E\u306E\u5DEE) \u3092 Grid\
     \ \u306E\u9806\u306B\u4E26\u3079\u305F\u3082\u306E\u3002\u5148\u982D 4 \u3064\u306F\
     \u4E0A\u4E0B\u5DE6\u53F3\u3060\u3051\u3092\u4E26\u3079\u305F\u5225\u306E\u8868\
     \n    // 4 \u8FD1\u508D\u3068 8 \u8FD1\u508D\u306E\u5883\u76EE\u304C\u5206\u304B\
@@ -278,14 +327,14 @@ data:
     \                                     {-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0,\
     \ 1}, {1, -1}, {1, 0}, {1, 1}};\n    // clang-format on\n\n   public:\n    /**\n\
     \     * @brief neighbors4 / neighbors8 \u306E\u623B\u308A\u5024 (\u7BC4\u56F2\
-    \ for \u3067\u4F7F\u3046)\n     * \u4F5C\u308B\u3068\u304D\u306B Rect \u306B\u542B\
+    \ for \u3067\u4F7F\u3046)\n     * \u4F5C\u308B\u3068\u304D\u306B Grid \u306B\u542B\
     \u307E\u308C\u308B\u65B9\u5411\u3092\u30D3\u30C3\u30C8\u3067\u6301\u3063\u3066\
     \u304A\u304D\u3001\u7ACB\u3063\u3066\u3044\u308B\u30D3\u30C3\u30C8\u3092\u9806\
     \u306B\u8FD4\u3059\n     */\n    struct Neighbors {\n        long long i, j, row_step,\
     \ col_step;\n        int first;      // neighbor_dirs[first + k] \u304C\u30D3\u30C3\
-    \u30C8 k \u306E\u65B9\u5411\n        unsigned mask;  // Rect \u306B\u542B\u307E\
+    \u30C8 k \u306E\u65B9\u5411\n        unsigned mask;  // Grid \u306B\u542B\u307E\
     \u308C\u308B\u65B9\u5411\n\n        struct iterator {\n            using difference_type\
-    \ = std::ptrdiff_t;\n            using value_type = Rect::value_type;\n      \
+    \ = std::ptrdiff_t;\n            using value_type = Grid::value_type;\n      \
     \      using pointer = void;\n            using reference = value_type;\n    \
     \        using iterator_category = std::forward_iterator_tag;\n\n            const\
     \ Neighbors* nb = nullptr;\n            unsigned rest = 0;  // \u307E\u3060\u8FD4\
@@ -310,30 +359,30 @@ data:
     \ * rows.step, j + neighbor_dirs[k][1] * cols.step)) mask |= 1u << (k - first);\n\
     \        }\n        return {i, j, rows.step, cols.step, first, mask};\n    }\n\
     \n   public:\n    /**\n     * @brief (i, j) \u306E\u4E0A\u4E0B\u5DE6\u53F3\u306E\
-    \u3046\u3061 Rect \u306B\u542B\u307E\u308C\u308B\u3082\u306E\u3092\u3001Rect \u306E\
+    \u3046\u3061 Grid \u306B\u542B\u307E\u308C\u308B\u3082\u306E\u3092\u3001Grid \u306E\
     \u9806\u306B\u8FD4\u3059\n     * \u96A3\u306F rows\u30FBcols \u306E\u4E2D\u3067\
     \u96A3\u308A\u5408\u3046\u8981\u7D20 (i \xB1 rows.step \u306A\u3069)\u3002(i,\
     \ j) \u304C\u542B\u307E\u308C\u306A\u3044\u3068\u30A8\u30E9\u30FC\n     */\n \
     \   constexpr Neighbors neighbors4(long long i, long long j) const {\n       \
     \ return neighbors(i, j, 0, 4);\n    }\n    constexpr Neighbors neighbors4(const\
     \ value_type& p) const {\n        return neighbors4(p.first, p.second);\n    }\n\
-    \    /**\n     * @brief (i, j) \u3092\u56F2\u3080 8 \u3064\u306E\u3046\u3061 Rect\
-    \ \u306B\u542B\u307E\u308C\u308B\u3082\u306E\u3092\u3001Rect \u306E\u9806\u306B\
+    \    /**\n     * @brief (i, j) \u3092\u56F2\u3080 8 \u3064\u306E\u3046\u3061 Grid\
+    \ \u306B\u542B\u307E\u308C\u308B\u3082\u306E\u3092\u3001Grid \u306E\u9806\u306B\
     \u8FD4\u3059\n     */\n    constexpr Neighbors neighbors8(long long i, long long\
     \ j) const {\n        return neighbors(i, j, 4, 12);\n    }\n    constexpr Neighbors\
     \ neighbors8(const value_type& p) const {\n        return neighbors8(p.first,\
     \ p.second);\n    }\n\n    static std::string type_str() {\n        return \"\
-    Rect\";\n    }\n    std::string initializer_str() const {\n        return \"{\"\
+    Grid\";\n    }\n    std::string initializer_str() const {\n        return \"{\"\
     \ + rows.initializer_str() + \", \" + cols.initializer_str() + \"}\";\n    }\n\
-    \    std::string repr() const {\n        return \"Rect(\" + rows.repr() + \",\
+    \    std::string repr() const {\n        return \"Grid(\" + rows.repr() + \",\
     \ \" + cols.repr() + \")\";\n    }\n\n    constexpr friend bool operator==(const\
-    \ Rect& a, const Rect& b) noexcept {\n        if (a.empty() && b.empty()) return\
+    \ Grid& a, const Grid& b) noexcept {\n        if (a.empty() && b.empty()) return\
     \ true;\n        return a.rows == b.rows && a.cols == b.cols;\n    }\n    constexpr\
-    \ friend bool operator!=(const Rect& a, const Rect& b) noexcept {\n        return\
+    \ friend bool operator!=(const Grid& a, const Grid& b) noexcept {\n        return\
     \ !(a == b);\n    }\n};\n"
   code: "#pragma once\n\n/**\n * @file range.hpp\n * @brief Python \u306E range \u306E\
     \u3088\u3046\u306A\u6574\u6570\u5217\u3068\u3001\u305D\u306E\u76F4\u7A4D\u306E\
-    \ Rect\n */\n\n#include <cassert>\n#include <cstddef>\n#include <iterator>\n#include\
+    \ Grid\n */\n\n#include <cassert>\n#include <cstddef>\n#include <iterator>\n#include\
     \ <string>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\n\
     struct Range {\n   public:\n    using value_type = long long;\n    using const_reference\
     \ = const value_type&;\n    using size_type = long long;\n    using difference_type\
@@ -525,24 +574,24 @@ data:
     \ * @brief 2 \u3064\u306E Range \u306E\u76F4\u7A4D rows \xD7 cols\n * (i, j) \u3092\
     \ i \u306E\u6607\u9806\u3001\u540C\u3058 i \u3067\u306F j \u306E\u6607\u9806 (\u884C\
     \u512A\u5148) \u306B\u4E26\u3079\u305F\u3082\u306E\u3068\u3057\u3066\u6271\u3046\
-    \n */\nstruct Rect {\n   public:\n    using value_type = std::pair<long long,\
+    \n */\nstruct Grid {\n   public:\n    using value_type = std::pair<long long,\
     \ long long>;\n    using size_type = long long;\n    using difference_type = std::ptrdiff_t;\n\
     \n    const Range rows;\n    const Range cols;\n\n   private:\n    const long\
     \ long width;  // cols.size() (index \u3084 at \u3067\u6BCE\u56DE\u5272\u308A\u7B97\
     \u3057\u306A\u3044\u3088\u3046\u306B\u6301\u3063\u3066\u304A\u304F)\n\n   public:\n\
-    \    /**\n     * @brief [0, h) \xD7 [0, w)\n     */\n    constexpr Rect(long long\
-    \ h, long long w) : rows(h), cols(w), width(cols.size()) {}\n    constexpr Rect(const\
+    \    /**\n     * @brief [0, h) \xD7 [0, w)\n     */\n    constexpr Grid(long long\
+    \ h, long long w) : rows(h), cols(w), width(cols.size()) {}\n    constexpr Grid(const\
     \ Range& _rows, const Range& _cols) : rows(_rows), cols(_cols), width(cols.size())\
-    \ {}\n    constexpr Rect(const Rect& o) = default;\n    Rect& operator=(const\
-    \ Rect& o) = delete;\n\n    struct const_iterator {\n       public:\n        using\
-    \ difference_type = Rect::difference_type;\n        using value_type = Rect::value_type;\n\
+    \ {}\n    constexpr Grid(const Grid& o) = default;\n    Grid& operator=(const\
+    \ Grid& o) = delete;\n\n    struct const_iterator {\n       public:\n        using\
+    \ difference_type = Grid::difference_type;\n        using value_type = Grid::value_type;\n\
     \        using pointer = void;\n        using reference = value_type;\n      \
     \  using iterator_category = std::forward_iterator_tag;\n\n       private:\n \
-    \       const Rect* rect = nullptr;\n        long long w = 0;   // cols.size()\n\
+    \       const Grid* rect = nullptr;\n        long long w = 0;   // cols.size()\n\
     \        long long ic = 0;  // rows \u306E\u4F55\u756A\u76EE\u304B\n        long\
     \ long jc = 0;  // cols \u306E\u4F55\u756A\u76EE\u304B\n\n       public:\n   \
     \     constexpr const_iterator() noexcept = default;\n        constexpr const_iterator(const\
-    \ Rect* _rect, long long _w, long long _ic, long long _jc) noexcept\n        \
+    \ Grid* _rect, long long _w, long long _ic, long long _jc) noexcept\n        \
     \    : rect(_rect), w(_w), ic(_ic), jc(_jc) {}\n        constexpr value_type operator*()\
     \ const noexcept {\n            return {rect->rows.start + ic * rect->rows.step,\
     \ rect->cols.start + jc * rect->cols.step};\n        }\n        constexpr const_iterator&\
@@ -576,7 +625,7 @@ data:
     \ {\n        assert(0 <= k && k < size());\n        return {rows[k / width], cols[k\
     \ % width]};\n    }\n    constexpr value_type operator[](size_type k) const {\n\
     \        return at(k);\n    }\n\n   private:\n    // \u8FD1\u508D\u306E\u65B9\u5411\
-    \ (rows\u30FBcols \u306E\u4E2D\u3067\u306E\u4F4D\u7F6E\u306E\u5DEE) \u3092 Rect\
+    \ (rows\u30FBcols \u306E\u4E2D\u3067\u306E\u4F4D\u7F6E\u306E\u5DEE) \u3092 Grid\
     \ \u306E\u9806\u306B\u4E26\u3079\u305F\u3082\u306E\u3002\u5148\u982D 4 \u3064\u306F\
     \u4E0A\u4E0B\u5DE6\u53F3\u3060\u3051\u3092\u4E26\u3079\u305F\u5225\u306E\u8868\
     \n    // 4 \u8FD1\u508D\u3068 8 \u8FD1\u508D\u306E\u5883\u76EE\u304C\u5206\u304B\
@@ -586,14 +635,14 @@ data:
     \                                     {-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0,\
     \ 1}, {1, -1}, {1, 0}, {1, 1}};\n    // clang-format on\n\n   public:\n    /**\n\
     \     * @brief neighbors4 / neighbors8 \u306E\u623B\u308A\u5024 (\u7BC4\u56F2\
-    \ for \u3067\u4F7F\u3046)\n     * \u4F5C\u308B\u3068\u304D\u306B Rect \u306B\u542B\
+    \ for \u3067\u4F7F\u3046)\n     * \u4F5C\u308B\u3068\u304D\u306B Grid \u306B\u542B\
     \u307E\u308C\u308B\u65B9\u5411\u3092\u30D3\u30C3\u30C8\u3067\u6301\u3063\u3066\
     \u304A\u304D\u3001\u7ACB\u3063\u3066\u3044\u308B\u30D3\u30C3\u30C8\u3092\u9806\
     \u306B\u8FD4\u3059\n     */\n    struct Neighbors {\n        long long i, j, row_step,\
     \ col_step;\n        int first;      // neighbor_dirs[first + k] \u304C\u30D3\u30C3\
-    \u30C8 k \u306E\u65B9\u5411\n        unsigned mask;  // Rect \u306B\u542B\u307E\
+    \u30C8 k \u306E\u65B9\u5411\n        unsigned mask;  // Grid \u306B\u542B\u307E\
     \u308C\u308B\u65B9\u5411\n\n        struct iterator {\n            using difference_type\
-    \ = std::ptrdiff_t;\n            using value_type = Rect::value_type;\n      \
+    \ = std::ptrdiff_t;\n            using value_type = Grid::value_type;\n      \
     \      using pointer = void;\n            using reference = value_type;\n    \
     \        using iterator_category = std::forward_iterator_tag;\n\n            const\
     \ Neighbors* nb = nullptr;\n            unsigned rest = 0;  // \u307E\u3060\u8FD4\
@@ -618,42 +667,58 @@ data:
     \ * rows.step, j + neighbor_dirs[k][1] * cols.step)) mask |= 1u << (k - first);\n\
     \        }\n        return {i, j, rows.step, cols.step, first, mask};\n    }\n\
     \n   public:\n    /**\n     * @brief (i, j) \u306E\u4E0A\u4E0B\u5DE6\u53F3\u306E\
-    \u3046\u3061 Rect \u306B\u542B\u307E\u308C\u308B\u3082\u306E\u3092\u3001Rect \u306E\
+    \u3046\u3061 Grid \u306B\u542B\u307E\u308C\u308B\u3082\u306E\u3092\u3001Grid \u306E\
     \u9806\u306B\u8FD4\u3059\n     * \u96A3\u306F rows\u30FBcols \u306E\u4E2D\u3067\
     \u96A3\u308A\u5408\u3046\u8981\u7D20 (i \xB1 rows.step \u306A\u3069)\u3002(i,\
     \ j) \u304C\u542B\u307E\u308C\u306A\u3044\u3068\u30A8\u30E9\u30FC\n     */\n \
     \   constexpr Neighbors neighbors4(long long i, long long j) const {\n       \
     \ return neighbors(i, j, 0, 4);\n    }\n    constexpr Neighbors neighbors4(const\
     \ value_type& p) const {\n        return neighbors4(p.first, p.second);\n    }\n\
-    \    /**\n     * @brief (i, j) \u3092\u56F2\u3080 8 \u3064\u306E\u3046\u3061 Rect\
-    \ \u306B\u542B\u307E\u308C\u308B\u3082\u306E\u3092\u3001Rect \u306E\u9806\u306B\
+    \    /**\n     * @brief (i, j) \u3092\u56F2\u3080 8 \u3064\u306E\u3046\u3061 Grid\
+    \ \u306B\u542B\u307E\u308C\u308B\u3082\u306E\u3092\u3001Grid \u306E\u9806\u306B\
     \u8FD4\u3059\n     */\n    constexpr Neighbors neighbors8(long long i, long long\
     \ j) const {\n        return neighbors(i, j, 4, 12);\n    }\n    constexpr Neighbors\
     \ neighbors8(const value_type& p) const {\n        return neighbors8(p.first,\
     \ p.second);\n    }\n\n    static std::string type_str() {\n        return \"\
-    Rect\";\n    }\n    std::string initializer_str() const {\n        return \"{\"\
+    Grid\";\n    }\n    std::string initializer_str() const {\n        return \"{\"\
     \ + rows.initializer_str() + \", \" + cols.initializer_str() + \"}\";\n    }\n\
-    \    std::string repr() const {\n        return \"Rect(\" + rows.repr() + \",\
+    \    std::string repr() const {\n        return \"Grid(\" + rows.repr() + \",\
     \ \" + cols.repr() + \")\";\n    }\n\n    constexpr friend bool operator==(const\
-    \ Rect& a, const Rect& b) noexcept {\n        if (a.empty() && b.empty()) return\
+    \ Grid& a, const Grid& b) noexcept {\n        if (a.empty() && b.empty()) return\
     \ true;\n        return a.rows == b.rows && a.cols == b.cols;\n    }\n    constexpr\
-    \ friend bool operator!=(const Rect& a, const Rect& b) noexcept {\n        return\
+    \ friend bool operator!=(const Grid& a, const Grid& b) noexcept {\n        return\
     \ !(a == b);\n    }\n};\n"
   dependsOn: []
   isVerificationFile: false
   path: src/utility/range.hpp
-  requiredBy: []
-  timestamp: '2026-10-19 12:29:38+09:00'
+  requiredBy:
+  - src/dp/largest-rectangle.hpp
+  - src/data_structures/imos-2d.hpp
+  - src/string/rolling-hash.hpp
+  timestamp: '2026-11-08 14:38:55+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/unittest/dp/largest-rectangle.test.cpp
+  - test/unittest/utility/range-grid.test.cpp
   - test/unittest/utility/range.test.cpp
   - test/unittest/utility/repr.test.cpp
-  - test/unittest/utility/range-rect.test.cpp
+  - test/unittest/data_structures/imos-2d.test.cpp
+  - test/unittest/string/rolling-hash.test.cpp
   - test/aoj/itp1/itp1-7-b.test.cpp
+  - test/aoj/volume11/1160.test.cpp
+  - test/aoj/dpl/dpl-3-a.test.cpp
+  - test/aoj/dpl/dpl-3-b.test.cpp
+  - test/aoj/dpl/dpl-3-c.test.cpp
+  - test/aoj/dsl/dsl-4-a.1.test.cpp
+  - test/aoj/dsl/dsl-5-b.test.cpp
+  - test/aoj/dsl/dsl-4-a.2.test.cpp
+  - test/aoj/alds1/alds1-14-c.test.cpp
+  - test/aoj/alds1/alds1-14-b.1.test.cpp
+  - test/yosupo/string/enumerate-palindromes.1.test.cpp
 documentation_of: src/utility/range.hpp
 layout: document
 title: "Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\u5217\u3068\u3001\
-  \u305D\u306E\u76F4\u7A4D\u306E Rect"
+  \u305D\u306E\u76F4\u7A4D\u306E Grid"
 ---
 
 Python の `range` のような、等差数列を表す `Range` です。要素を実際には持たないので、長い列でもメモリを使いません。
@@ -701,38 +766,40 @@ Range(10).product_xor();  // 0 ^ 1 ^ ... ^ 9 = 1
 |---|---|
 | `start` / `stop` / `step` | コンストラクタに渡した値 (`const` なので読むだけ) |
 
-## Rect
+## Grid
+
+セルの値は保持せず、整数の行・列の範囲を表します。幾何の長方形は [Rectangle](../geometry/rectangle.hpp) を使います。
 
 2 つの `Range` の直積 `rows × cols` です。`(i, j)` を `i` の昇順、同じ `i` では `j` の昇順 (行優先) に並べた列として扱います。グリッドの走査や範囲内の判定、頂点番号への変換に使います。
 
 ```cpp
-for (auto [i, j] : Rect(h, w)) { /* (0, 0), (0, 1), ..., (h-1, w-1) */ }
-const Rect grid(h, w);
+for (auto [i, j] : Grid(h, w)) { /* (0, 0), (0, 1), ..., (h-1, w-1) */ }
+const Grid grid(h, w);
 grid.contains(ni, nj);    // 0 <= ni < h かつ 0 <= nj < w か (inrect と同じ)
 grid.index(i, j);         // i * w + j
 grid[k];                  // index の逆 (k / w, k % w)
 for (auto [ni, nj] : grid.neighbors4(i, j)) { /* 範囲内の上下左右 */ }
-Rect({1, 4}, {10, 0, -5}) // {1, 2, 3} × {10, 5}
+Grid({1, 4}, {10, 0, -5}) // {1, 2, 3} × {10, 5}
 ```
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
-| `Rect(h, w)` | $[0, h) \times [0, w)$ | $O(1)$ |
-| `Rect(rows, cols)` | `Range` 2 つの直積。`Rect({1, 4}, {0, 10, 2})` のように `Range` の初期化子を直接書ける | $O(1)$ |
+| `Grid(h, w)` | $[0, h) \times [0, w)$ | $O(1)$ |
+| `Grid(rows, cols)` | `Range` 2 つの直積。`Grid({1, 4}, {0, 10, 2})` のように `Range` の初期化子を直接書ける | $O(1)$ |
 | `begin()` / `end()` | 前方向イテレータ。要素は `std::pair<long long, long long>` で、`auto [i, j]` で受け取れる | $O(1)$ |
 | `size()` / `empty()` | 要素数 (`long long`) / 空か | $O(1)$ |
 | `contains(i, j)` / `contains(p)` | `(i, j)` を含むか | $O(1)$ |
 | `index(i, j)` / `index(p)` | 行優先での位置 (含まなければ assert で落ちる) | $O(1)$ |
 | `r[k]` / `at(k)` | 行優先で `k` 番目の要素 | $O(1)$ |
-| `neighbors4(i, j)` / `neighbors4(p)` | `(i, j)` の上下左右のうち `Rect` に含まれるもの (`(i, j)` は含まれていること) | $O(1)$ |
-| `neighbors8(i, j)` / `neighbors8(p)` | `(i, j)` を囲む 8 つのうち `Rect` に含まれるもの | $O(1)$ |
+| `neighbors4(i, j)` / `neighbors4(p)` | `(i, j)` の上下左右のうち `Grid` に含まれるもの (`(i, j)` は含まれていること) | $O(1)$ |
+| `neighbors8(i, j)` / `neighbors8(p)` | `(i, j)` を囲む 8 つのうち `Grid` に含まれるもの | $O(1)$ |
 | `==`、`!=` | 要素の列として等しいか | $O(1)$ |
-| `repr()` | `"Rect(Range(...), Range(...))"` ([repr](repr.hpp) 用) | $O(1)$ |
+| `repr()` | `"Grid(Range(...), Range(...))"` ([repr](repr.hpp) 用) | $O(1)$ |
 | `rows` / `cols` | 行と列の `Range` (`const` なので読むだけ) | |
 
-`neighbors4` / `neighbors8` は範囲 for で回せるもの (`size()`、`empty()` もある) を返し、要素は `Rect` の順 (行優先) に並びます。隣は `rows`・`cols` の中で隣り合う要素なので、`step` が 1 でなければ `i ± rows.step` などになります。
+`neighbors4` / `neighbors8` は範囲 for で回せるもの (`size()`、`empty()` もある) を返し、要素は `Grid` の順 (行優先) に並びます。隣は `rows`・`cols` の中で隣り合う要素なので、`step` が 1 でなければ `i ± rows.step` などになります。
 
-その場で作った `Rect(h, w).contains(i, j)` は `inrect(i, j, h, w)` と同じ速さです。変数に入れた `Rect` でも、`step` が 1 なら割り算をしないので、ほぼ同じ速さになります。`for (auto [i, j] : Rect(h, w))` は、ループの中身がごく軽いと 2 重ループより 3 割ほど遅くなります。`neighbors4` を使ったグリッドの BFS も、`dx`、`dy` の配列と `inrect` で書いたものより 3 割ほど遅くなります。C++20 では `std::ranges::forward_range` と `sized_range` を満たします。ただし `Range` と同じく代入できないので、`views` に渡すときは一時オブジェクトではなく変数を渡します。
+その場で作った `Grid(h, w).contains(i, j)` は `inrect(i, j, h, w)` と同じ速さです。変数に入れた `Grid` でも、`step` が 1 なら割り算をしないので、ほぼ同じ速さになります。`for (auto [i, j] : Grid(h, w))` は、ループの中身がごく軽いと 2 重ループより 3 割ほど遅くなります。`neighbors4` を使ったグリッドの BFS も、`dx`、`dy` の配列と `inrect` で書いたものより 3 割ほど遅くなります。C++20 では `std::ranges::forward_range` と `sized_range` を満たします。ただし `Range` と同じく代入できないので、`views` に渡すときは一時オブジェクトではなく変数を渡します。
 
 ## 関連
 

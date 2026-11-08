@@ -283,4 +283,4 @@ Angle d = Angle(0, 1) - Angle(1, 1);  // π/4 から π/2 へ反時計回りに�
 
 ## 関連
 
-- 点・ベクトルの型は [幾何ベクトル](vector.hpp)、直線・線分は [直線・線分](segment.hpp)
+- 点・ベクトルの型は [幾何ベクトル](vector.hpp)、直線は [直線](line.hpp)、線分は [線分](segment.hpp)

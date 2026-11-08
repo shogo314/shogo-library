@@ -225,7 +225,18 @@ data:
     constexpr Vector<T, 3> cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs)\
     \ noexcept {\n    Vector<T, 3> ret;\n    ret[0] = lhs[1] * rhs[2] - lhs[2] * rhs[1];\n\
     \    ret[1] = lhs[2] * rhs[0] - lhs[0] * rhs[2];\n    ret[2] = lhs[0] * rhs[1]\
-    \ - lhs[1] * rhs[0];\n    return ret;\n}\n#line 16 \"src/geometry/polygon.hpp\"\
+    \ - lhs[1] * rhs[0];\n    return ret;\n}\n\n/**\n * @brief 3\u70B9\u306E\u4F4D\
+    \u7F6E\u95A2\u4FC2 (counter-clockwise)\n *\n * \u6574\u6570\u578B\u3067\u3082\u4F7F\
+    \u3048\u308B\u3002\u6D6E\u52D5\u5C0F\u6570\u70B9\u578B\u3067\u306F\u8AA4\u5DEE\
+    \u3092\u8003\u3048\u305A\u306B\u6BD4\u8F03\u3059\u308B\n *\n * @tparam T \u5EA7\
+    \u6A19\u306E\u578B\n * @return int 1: a\u2192b\u2192c \u304C\u53CD\u6642\u8A08\
+    \u56DE\u308A, -1: \u6642\u8A08\u56DE\u308A, 2: c, a, b \u306E\u9806\u306B\u4E00\
+    \u76F4\u7DDA\u4E0A, -2: a, b, c \u306E\u9806\u306B\u4E00\u76F4\u7DDA\u4E0A, 0:\
+    \ c \u304C\u7DDA\u5206 ab \u4E0A\n */\ntemplate <typename T>\nconstexpr int ccw(const\
+    \ Vector<T, 2>& a, const Vector<T, 2>& b, const Vector<T, 2>& c) {\n    Vector<T,\
+    \ 2> u = b - a, v = c - a;\n    T cr = cross(u, v);\n    if (cr > 0) return 1;\n\
+    \    if (cr < 0) return -1;\n    if (dot(u, v) < 0) return 2;\n    if (u.squared_norm()\
+    \ < v.squared_norm()) return -2;\n    return 0;\n}\n#line 16 \"src/geometry/polygon.hpp\"\
     \n\n/**\n * @brief \u591A\u89D2\u5F62\u306E\u7B26\u53F7\u4ED8\u304D\u9762\u7A4D\
     \u306E2\u500D\n *\n * @tparam T \u5EA7\u6A19\u306E\u578B\n * @param polygon \u9802\
     \u70B9\u306E\u5EA7\u6A19\n * @return T \u9762\u7A4D\u306E2\u500D(\u53CD\u6642\u8A08\
@@ -351,18 +362,19 @@ data:
     \u7A7A\n */\ntemplate <typename T>\nstd::vector<Vector<T, 2>> convex_cut(const\
     \ std::vector<Vector<T, 2>>& polygon, const Vector<T, 2>& p1, const Vector<T,\
     \ 2>& p2) {\n    static_assert(std::is_floating_point_v<T>, \"convex_cut: T must\
-    \ be a floating point type\");\n    std::vector<Vector<T, 2>> res;\n    const\
-    \ int n = static_cast<int>(polygon.size());\n    for (int i = 0; i < n; i++) {\n\
-    \        const Vector<T, 2>&a = polygon[i], &b = polygon[i + 1 == n ? 0 : i +\
-    \ 1];\n        T ca = cross(p2 - p1, a - p1), cb = cross(p2 - p1, b - p1);\n \
-    \       if (ca >= 0) res.push_back(a);\n        // \u8FBA ab \u304C\u76F4\u7DDA\
-    \u3092\u307E\u305F\u3050\u306A\u3089\u3001\u4EA4\u70B9\u3092\u5165\u308C\u308B\
-    \n        if ((ca > 0 && cb < 0) || (ca < 0 && cb > 0)) res.push_back(a + (b -\
-    \ a) * (ca / (ca - cb)));\n    }\n    return res;\n}\n#line 14 \"test/unittest/geometry/polygon-convex-cut.test.cpp\"\
-    \n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    using P\
-    \ = Vector<double>;\n    for (int rep = 0; rep < 20000 && ok; rep++) {\n     \
-    \   std::vector<P> pts(rng() % 10 + 3);\n        for (auto& x : pts) x = P(static_cast<double>(rng()\
-    \ % 21) - 10, static_cast<double>(rng() % 21) - 10);\n        auto poly = convex_hull(pts);\n\
+    \ be a floating point type\");\n    assert(p1 != p2 && \"convex_cut: degenerate\
+    \ line\");\n    std::vector<Vector<T, 2>> res;\n    const int n = static_cast<int>(polygon.size());\n\
+    \    for (int i = 0; i < n; i++) {\n        const Vector<T, 2>&a = polygon[i],\
+    \ &b = polygon[i + 1 == n ? 0 : i + 1];\n        T ca = cross(p2 - p1, a - p1),\
+    \ cb = cross(p2 - p1, b - p1);\n        if (ca >= 0) res.push_back(a);\n     \
+    \   // \u8FBA ab \u304C\u76F4\u7DDA\u3092\u307E\u305F\u3050\u306A\u3089\u3001\u4EA4\
+    \u70B9\u3092\u5165\u308C\u308B\n        if ((ca > 0 && cb < 0) || (ca < 0 && cb\
+    \ > 0)) res.push_back(a + (b - a) * (ca / (ca - cb)));\n    }\n    return res;\n\
+    }\n#line 14 \"test/unittest/geometry/polygon-convex-cut.test.cpp\"\n\nint main()\
+    \ {\n    std::mt19937 rng(314);\n    bool ok = true;\n    using P = Vector<double>;\n\
+    \    for (int rep = 0; rep < 20000 && ok; rep++) {\n        std::vector<P> pts(rng()\
+    \ % 10 + 3);\n        for (auto& x : pts) x = P(static_cast<double>(rng() % 21)\
+    \ - 10, static_cast<double>(rng() % 21) - 10);\n        auto poly = convex_hull(pts);\n\
     \        if (poly.size() < 3) continue;\n        P p1(static_cast<double>(rng()\
     \ % 31) - 15, static_cast<double>(rng() % 31) - 15), p2(static_cast<double>(rng()\
     \ % 31) - 15, static_cast<double>(rng() % 31) - 15);\n        if (p1 == p2) continue;\n\
@@ -402,7 +414,7 @@ data:
   isVerificationFile: true
   path: test/unittest/geometry/polygon-convex-cut.test.cpp
   requiredBy: []
-  timestamp: '2026-10-31 17:14:03+09:00'
+  timestamp: '2026-11-08 17:10:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/geometry/polygon-convex-cut.test.cpp

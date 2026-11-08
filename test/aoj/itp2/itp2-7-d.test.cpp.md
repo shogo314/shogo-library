@@ -131,34 +131,42 @@ data:
     \ O(1)\n     */\n    std::optional<Mode> mode() const {\n        if (frequency.empty())\
     \ return std::nullopt;\n        const auto& [value, count] = *frequency.begin();\n\
     \        return Mode{value, count};\n    }\n    std::vector<value_type> most_common()\
-    \ const {\n        return {frequency.begin(), frequency.end()};\n    }\n    class\
-    \ CounterReference {\n        Counter& base;\n        key_type key;\n\n      \
-    \ public:\n        CounterReference(Counter& base, key_type key) : base(base),\
-    \ key(key) {}\n        CounterReference& operator=(const mapped_type& x) {\n \
-    \           base.set(key, x);\n            return *this;\n        }\n        CounterReference&\
-    \ operator+=(const mapped_type& x) {\n            base.inc(key, x);\n        \
-    \    return *this;\n        }\n        CounterReference& operator-=(const mapped_type&\
-    \ x) {\n            base.inc(key, -x);\n            return *this;\n        }\n\
-    \        operator mapped_type() const {\n            return base.get(key);\n \
-    \       }\n    };\n    mapped_type operator[](const key_type& key) const {\n \
-    \       return get(key);\n    }\n    CounterReference operator[](const key_type&\
-    \ key) {\n        return CounterReference(*this, key);\n    }\n};\n\ntemplate\
-    \ <typename T>\nCounter(std::vector<T>) -> Counter<T>;\n#line 6 \"test/aoj/itp2/itp2-7-d.test.cpp\"\
-    \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
-    \    int q;\n    std::cin >> q;\n    Counter<long long> s;\n    long long total\
-    \ = 0;  // \u8981\u7D20\u6570 (\u91CD\u8907\u3092\u542B\u3080)\n    while (q--)\
-    \ {\n        int op;\n        std::cin >> op;\n        if (op == 0) {\n      \
-    \      long long x;\n            std::cin >> x;\n            s.inc(x, 1);\n  \
-    \          total++;\n            std::cout << total << '\\n';\n        } else\
-    \ if (op == 1) {\n            long long x;\n            std::cin >> x;\n     \
-    \       std::cout << s[x] << '\\n';\n        } else if (op == 2) {\n         \
-    \   long long x;\n            std::cin >> x;\n            total -= s[x];\n   \
-    \         s[x] = 0;  // \u500B\u6570\u3092 0 \u306B\u3059\u308B\u3068\u53D6\u308A\
-    \u9664\u304B\u308C\u308B\n        } else {\n            long long l, r;\n    \
-    \        std::cin >> l >> r;\n            for (auto it = s.data.lower_bound(l);\
-    \ it != s.data.end() && it->first <= r; ++it) {\n                for (long long\
-    \ i = 0; i < it->second; i++) std::cout << it->first << '\\n';\n            }\n\
-    \        }\n    }\n}\n"
+    \ const {\n        return {frequency.begin(), frequency.end()};\n    }\n    /**\n\
+    \     * @brief \u500B\u6570\u306E\u591A\u3044\u9806\u306B\u4E0A\u4F4D k \u4EF6\
+    \u3092\u8FD4\u3059\u3002\u540C\u6570\u306A\u3089\u5024\u306E\u6607\u9806\u3002\
+    k >= 0\n     * @note k \u304C\u7570\u306A\u308B\u5024\u306E\u500B\u6570\u3088\u308A\
+    \u5927\u304D\u3051\u308C\u3070\u5168\u4EF6\u3092\u8FD4\u3059\u3002O(min(k, size()))\n\
+    \     */\n    std::vector<value_type> most_common(long long k) const {\n     \
+    \   assert(k >= 0);\n        if (k > size()) k = size();\n        std::vector<value_type>\
+    \ result;\n        result.reserve(k);\n        auto itr = frequency.begin();\n\
+    \        for (long long i = 0; i < k; ++i, ++itr) result.push_back(*itr);\n  \
+    \      return result;\n    }\n    class CounterReference {\n        Counter& base;\n\
+    \        key_type key;\n\n       public:\n        CounterReference(Counter& base,\
+    \ key_type key) : base(base), key(key) {}\n        CounterReference& operator=(const\
+    \ mapped_type& x) {\n            base.set(key, x);\n            return *this;\n\
+    \        }\n        CounterReference& operator+=(const mapped_type& x) {\n   \
+    \         base.inc(key, x);\n            return *this;\n        }\n        CounterReference&\
+    \ operator-=(const mapped_type& x) {\n            base.inc(key, -x);\n       \
+    \     return *this;\n        }\n        operator mapped_type() const {\n     \
+    \       return base.get(key);\n        }\n    };\n    mapped_type operator[](const\
+    \ key_type& key) const {\n        return get(key);\n    }\n    CounterReference\
+    \ operator[](const key_type& key) {\n        return CounterReference(*this, key);\n\
+    \    }\n};\n\ntemplate <typename T>\nCounter(std::vector<T>) -> Counter<T>;\n\
+    #line 6 \"test/aoj/itp2/itp2-7-d.test.cpp\"\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
+    \    std::cin.tie(nullptr);\n    int q;\n    std::cin >> q;\n    Counter<long\
+    \ long> s;\n    long long total = 0;  // \u8981\u7D20\u6570 (\u91CD\u8907\u3092\
+    \u542B\u3080)\n    while (q--) {\n        int op;\n        std::cin >> op;\n \
+    \       if (op == 0) {\n            long long x;\n            std::cin >> x;\n\
+    \            s.inc(x, 1);\n            total++;\n            std::cout << total\
+    \ << '\\n';\n        } else if (op == 1) {\n            long long x;\n       \
+    \     std::cin >> x;\n            std::cout << s[x] << '\\n';\n        } else\
+    \ if (op == 2) {\n            long long x;\n            std::cin >> x;\n     \
+    \       total -= s[x];\n            s[x] = 0;  // \u500B\u6570\u3092 0 \u306B\u3059\
+    \u308B\u3068\u53D6\u308A\u9664\u304B\u308C\u308B\n        } else {\n         \
+    \   long long l, r;\n            std::cin >> l >> r;\n            for (auto it\
+    \ = s.data.lower_bound(l); it != s.data.end() && it->first <= r; ++it) {\n   \
+    \             for (long long i = 0; i < it->second; i++) std::cout << it->first\
+    \ << '\\n';\n            }\n        }\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP2_7_D\"\
     \n\n#include <iostream>\n\n#include \"../../../src/data_structures/counter.hpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
@@ -182,7 +190,7 @@ data:
   isVerificationFile: true
   path: test/aoj/itp2/itp2-7-d.test.cpp
   requiredBy: []
-  timestamp: '2026-11-07 22:59:54+09:00'
+  timestamp: '2026-11-08 03:29:53+09:00'
   verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/aoj/itp2/itp2-7-d.test.cpp

@@ -22,16 +22,10 @@ bool p = (t + u).is_palindrome();              // "aba" は回文: true
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `RollingHash(base = 0)` | 基数を指定して作る (0 ならランダム) | $O(1)$ |
+| `base()` | 基数を返す | $O(1)$ |
 | `build(s)` / `build(first, last)` | 長さ $n + 1$ の配列 `h` (`h[i]` は先頭 `i` 文字のハッシュ) | $O(n)$ |
 | `query(h, l, r)` | $[l, r)$ のハッシュ (`l`、`r` は `long long`) | $O(1)$ (初回は $O(r - l)$) |
 | `RollingHash::to_value(x)` | 要素を $[0, 2^{61} - 1)$ の値に変換する (static) | $O(1)$ |
-
-## `RollingHash` のメンバ変数
-
-| 変数 | 説明 |
-|---|---|
-| `base` | 基数 |
-| `power` | `power[i]` は `base` の `i` 乗 (mod $2^{61} - 1$)。必要になった分だけ伸ばす |
 
 ## `RHString` のメンバ関数
 

@@ -28,6 +28,8 @@ static_assert(!has_add_directed_edge<RootedTree<long long>>::value);
 static_assert(!has_add_directed_edge<DoublingClimbTree<long long>>::value);
 static_assert(has_add_edge<Tree<long long>>::value);
 static_assert(!has_add_edge<RootedTree<long long>>::value);
+static_assert(std::is_same_v<decltype(std::declval<RootedTree<long long>&>()[0]), const std::vector<Graph<long long>::Edge>&>);
+static_assert(std::is_same_v<decltype(std::declval<DoublingClimbTree<long long>&>()[0]), const std::vector<Graph<long long>::Edge>&>);
 
 int main() {
     bool ok = true;

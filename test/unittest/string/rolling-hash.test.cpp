@@ -25,6 +25,7 @@ int main() {
             ok = false;
         }
     };
+    check(rh.base() == 1000003, "base");
     auto random_string = [&](int max_len) {
         std::string s(rng() % (max_len + 1), 'a');
         for (char& c : s) c = 'a' + rng() % 3;  // 回文や一致が起きやすいよう文字を絞る

@@ -34,7 +34,7 @@ int main() {
         std::vector<long long> x, y;
         for (long long i = 0; i < static_cast<long long>(factors.size()); ++i) {
             x.push_back(combpq[i].C(n, k));
-            y.push_back(combpq[i].pq);
+            y.push_back(combpq[i].mod());
         }
         std::cout << crt(x, y)->x << std::endl;
     }

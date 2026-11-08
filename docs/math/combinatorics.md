@@ -29,7 +29,7 @@ int d = cpq.C(5, 2);                     // 10 mod 8 = 2
 
 ```cpp
 CombinationPQ c4(2, 2), c3(3, 1);
-auto res = crt({c4.C(5, 2), c3.C(5, 2)}, {c4.pq, c3.pq});  // res->x = 10 (= 5C2 mod 12)
+auto res = crt({c4.C(5, 2), c3.C(5, 2)}, {c4.mod(), c3.mod()});  // res->x = 10 (= 5C2 mod 12)
 ```
 
 ## `Combination<Modint>` のメンバ関数
@@ -64,15 +64,9 @@ static メンバ関数だけのクラスで、`Combination<mint>::C(n, r)` の�
 
 | 関数 | 説明 | 計算量 |
 |---|---|---|
+| `mod()` | 法 $p^q$ を返す | $O(1)$ |
 | `CombinationPQ(p, q)` | 前計算。$p$ は素数、$q \ge 1$。$p^q$ は $10^7$ 程度まで (`int` の配列を 2 本持つ) | $O(p^q)$ |
 | `C(n, r)` | ${}_n C_r \bmod p^q$ を $[0, p^q)$ の `int` で返す。$r < 0$ か $n < r$ なら 0 | $O(\log_p n)$ |
-
-## `CombinationPQ` のメンバ変数
-
-| 変数 | 説明 |
-|---|---|
-| `p`, `q` | 作るときに渡した $p$、$q$ |
-| `pq` | $p^q$ (法) |
 
 ## 関連
 

@@ -122,8 +122,6 @@ class RootedTree : private Tree<Cost> {
     using Tree<Cost>::n;
     using Tree<Cost>::size;
     using Tree<Cost>::m;
-    using Tree<Cost>::g;
-    using Tree<Cost>::operator[];
     using Tree<Cost>::edges;
     using Tree<Cost>::graph;
 
@@ -138,6 +136,11 @@ class RootedTree : private Tree<Cost> {
     std::vector<long long> preorder;                          //!< 先行順巡回
     std::vector<long long> postorder;                         //!< 後行順巡回
     std::vector<std::pair<long long, long long>> euler_tour;  //!< オイラーツアー DFS中にとおった頂点の(頂点番号,その頂点を通った回数)のリスト
+
+    /**
+     * @brief 頂点 v から出る辺を列挙する
+     */
+    const std::vector<Edge>& operator[](long long v) const { return Tree<Cost>::operator[](v); }
 
     RootedTree() = delete;
 
@@ -256,7 +259,6 @@ class DoublingClimbTree : private RootedTree<Cost> {
     using RootedTree<Cost>::n;
     using RootedTree<Cost>::size;
     using RootedTree<Cost>::m;
-    using RootedTree<Cost>::g;
     using RootedTree<Cost>::operator[];
     using RootedTree<Cost>::edges;
     using RootedTree<Cost>::graph;

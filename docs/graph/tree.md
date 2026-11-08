@@ -39,6 +39,8 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 
 ## `RootedTree<Cost = long long>` (根付き木)
 
+`RootedTree` と `DoublingClimbTree` の隣接リストは `tree[v]` で読み取れます。構築後の辺の変更はできません。
+
 `Tree` の `set_root(r)` か、次のコンストラクタで作ります。
 
 | 関数 | 説明 | 計算量 |

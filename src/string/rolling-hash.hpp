@@ -45,13 +45,13 @@ class RollingHash {
     }
 
     void expand(long long n) {
-        while (static_cast<long long>(power.size()) <= n) power.push_back(mul(power.back(), base));
+        while (static_cast<long long>(power.size()) <= n) power.push_back(mul(power.back(), _base));
     }
     // base の逆元の累乗を n 乗まで用意する (RHString の端を削るときだけ使う)
     void expand_inv(long long n) {
         if (inv_power.empty()) {
             // MOD は素数なので base^(MOD - 2) が逆元
-            unsigned long long inv = 1, b = base, e = MOD - 2;
+            unsigned long long inv = 1, b = _base, e = MOD - 2;
             for (; e > 0; e >>= 1, b = mul(b, b))
                 if (e & 1) inv = mul(inv, b);
             inv_base = inv;
@@ -80,18 +80,25 @@ class RollingHash {
         }
     }
 
-    unsigned int base;                      //!< ハッシュの基数
-    std::vector<unsigned long long> power;  //!< baseの累乗
+   private:
+    unsigned int _base;
+    std::vector<unsigned long long> power;
+
+   public:
+    /**
+     * @brief ハッシュの基数
+     */
+    unsigned int base() const { return _base; }
 
     /**
      * @brief コンストラクタ
      *
      * @param base ハッシュの基数 省略するとランダム
      */
-    explicit RollingHash(unsigned int base = 0) : base(base) {
+    explicit RollingHash(unsigned int base = 0) : _base(base) {
         if (base == 0) {
             std::mt19937 mt(std::random_device{}());
-            this->base = std::uniform_int_distribution<unsigned int>(129, ~0U)(mt);
+            _base = std::uniform_int_distribution<unsigned int>(129, ~0U)(mt);
         }
         power = {1};
     }
@@ -112,7 +119,7 @@ class RollingHash {
         }
         res.push_back(0);
         for (; first != last; ++first) {
-            res.push_back(add(mul(res.back(), base), to_value(*first)));
+            res.push_back(add(mul(res.back(), _base), to_value(*first)));
         }
         return res;
     }
@@ -365,7 +372,7 @@ class RollingHash2D {
         using std::size;
         const long long h = size(grid), w = h == 0 ? 0 : size(grid[0]);
         std::vector<std::vector<ull>> res(h + 1, std::vector<ull>(w + 1, 0));
-        const ull b1 = rh1.base, b2 = rh2.base, b12 = mul(b1, b2);
+        const ull b1 = rh1.base(), b2 = rh2.base(), b12 = mul(b1, b2);
         for (long long i = 0; i < h; i++) {
             assert(static_cast<long long>(size(grid[i])) == w);
             for (long long j = 0; j < w; j++) {

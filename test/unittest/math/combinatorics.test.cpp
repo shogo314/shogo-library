@@ -57,6 +57,23 @@ bool check(long long m, int lim) {
 
 int main() {
     bool ok = true;
+    // 素数冪の法と二項係数を、Pascal の三角形と比較する
+    for (int p : {2, 3, 5, 7}) {
+        for (int q = 1; q <= 3; q++) {
+            CombinationPQ comb(p, q);
+            int mod = 1;
+            for (int i = 0; i < q; i++) mod *= p;
+            if (comb.mod() != mod) ok = false;
+            std::vector<long long> row(61);
+            row[0] = 1;
+            for (int n = 0; n <= 60; n++) {
+                for (int r = 0; r <= n; r++) {
+                    if (comb.C(n, r) != row[r]) ok = false;
+                }
+                for (int r = std::min(n + 1, 60); r > 0; r--) row[r] = (row[r] + row[r - 1]) % mod;
+            }
+        }
+    }
     if (!check<static_modint<998244353>>(998244353, 60)) ok = false, std::cerr << "998244353" << std::endl;
     if (!check<static_modint<1000000007>>(1000000007, 60)) ok = false, std::cerr << "1000000007" << std::endl;
 

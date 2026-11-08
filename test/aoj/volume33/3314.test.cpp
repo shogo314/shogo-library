@@ -1,6 +1,7 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=3314"
 #define ERROR 1e-6
 
+#include <algorithm>
 #include <iomanip>
 #include <iostream>
 
@@ -26,7 +27,7 @@ int main() {
     Vector<double, 3> base_g = (base[0] + base[1] + base[2]) / 3;
     double k = base_g.abs() * (base[1] - base[0]).abs() / (cross(base[1] - base[0], base[2] - base[0])).abs();
     Matrix<double> base_abc(3, 3);
-    for (int i = 0; i < 3; i++) base_abc[i].assign(base[i].v.begin(), base[i].v.end());
+    for (int i = 0; i < 3; i++) std::copy(base[i].v.begin(), base[i].v.end(), base_abc[i].begin());
 
     Vector<double, 3> a, b, c;
     std::cin >> a >> b >> c;

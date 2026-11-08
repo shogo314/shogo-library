@@ -23,18 +23,22 @@ auto t = g.rotate(1).vstr();          // 時計回りに 90 度回して vector<
 | `Matrix({ {a, b}, {c, d} })` | 初期化子リストから作る | $O(nm)$ |
 | `Matrix(v)` | `vector<vector<T>>` や `vector<string>` から作る。型を省くと、要素の型は各行の `value_type` になる (`vector<vector<int>>` なら `Matrix<int>`、`vector<string>` なら `Matrix<char>`) | $O(nm)$ |
 | `Matrix(n, m, val = 0)` | `n` 行 `m` 列で、要素はすべて `val` | $O(nm)$ |
-| `A.size()` | 行数 (`long long`) | $O(1)$ |
-| `A[i][j]` | 要素 | $O(1)$ |
-| `for (auto& row : A)` | 各行を走査 | $O(n)$ |
+| `A.size()` / `A.height()` | 行数 (`long long`) | $O(1)$ |
+| `A.width()` | 列数 (`long long`) | $O(1)$ |
+| `A[i]` | 行ビュー。添字アクセス・`size()`・`empty()`・`begin()`・`end()` が使える | $O(1)$ |
+| `A[i][j]` | 要素 (const な行列では読み取り専用) | $O(1)$ |
+| `for (auto row : A)` | 各行のビューを走査。`for (auto& x : row)` で要素を変更できる | $O(n)$ |
 | `A.col(j)` | `j` 列目 | $O(n)$ |
 | `A.str(i)` / `A.vstr()` | `i` 行目を `string` で / 全体を `vector<string>` で返す | $O(m)$ / $O(nm)$ |
 | `==`、`!=` | 比較 | $O(nm)$ |
 
-## メンバ変数
+行ビューから要素を変更できますが、行の長さを変えたり行を丸ごと代入したりはできません。ビューは元の行列の生存中に使い、行列への代入や `*=` などで格納領域が変わった後は取り直してください。`Matrix(v)`・初期化子リスト・`vector<vector<T>>` からの代入では、すべての行の長さが等しいことが前提です。
 
-| 変数 | 説明 |
-|---|---|
-| `n` / `m` | 行数 / 列数 (`long long`) |
+```cpp
+for (auto row : A) {
+    for (auto& x : row) std::cin >> x;
+}
+```
 
 ## 線形代数
 

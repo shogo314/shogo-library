@@ -17,13 +17,25 @@
 #include <iostream>
 #include <numeric>
 #include <random>
+#if __cplusplus >= 202002L
+#include <ranges>
+#endif
 #include <string>
 #include <type_traits>
+#include <utility>
 #include <vector>
 
 #include "../../../src/math/modint.hpp"
 
 using mint = static_modint<998244353>;
+
+static_assert(std::is_same_v<decltype(std::declval<Matrix<int>&>()[0][0]), int&>);
+static_assert(std::is_same_v<decltype(std::declval<const Matrix<int>&>()[0][0]), const int&>);
+static_assert(!std::is_assignable_v<Matrix<int>::RowView<false>&, Matrix<int>::RowView<false>>);
+#if __cplusplus >= 202002L
+static_assert(std::ranges::input_range<Matrix<int>>);
+static_assert(std::ranges::input_range<const Matrix<int>>);
+#endif
 
 // 推論ガイド: 要素の型は各行の value_type
 static_assert(std::is_same_v<decltype(Matrix(std::vector<std::vector<long long>>())), Matrix<long long>>);
@@ -44,7 +56,7 @@ struct ModProp : matrix::OperatorPropertyDefault<mint> {};
 
 VV random_vv(std::mt19937_64& rng, int n, int m, int lo, int hi) {
     VV a(n, std::vector<long long>(m));
-    for (auto& row : a)
+    for (auto row : a)
         for (auto& x : row) x = lo + static_cast<long long>(rng() % (hi - lo + 1));
     return a;
 }
@@ -91,7 +103,7 @@ bool check_linear(std::mt19937_64& rng, int p, ToT to_t) {
     for (int rep = 0; rep < 500; rep++) {
         int n = rng() % 5 + 1, m = rng() % 5 + 1;
         std::vector<std::vector<T>> a(n, std::vector<T>(m));
-        for (auto& row : a)
+        for (auto row : a)
             for (auto& x : row) x = to_t(rng() % p);
         // ランクが小さい行列も作る (ある行を別の行の定数倍にする)
         if (n >= 2 && rng() % 2) {
@@ -157,12 +169,39 @@ int main() {
     std::mt19937_64 rng(314);
     bool ok = true;
 
+    // 行ビューと行イテレータからの変更は元の行列に反映される
+    {
+        Matrix<int> A({{1, 2}, {3, 4}});
+        auto row = A[0];
+        row[1] = 7;
+        auto it = A.begin();
+        if (it->size() != 2) ok = false;
+        if ((*it++).size() != 2) ok = false;
+        std::fill((*it).begin(), (*it).end(), 9);
+        if (A[0][1] != 7 || A[1][0] != 9 || A[1][1] != 9) ok = false;
+        const auto& C = A;
+        if (std::distance(C.begin(), C.end()) != 2 || C[0].empty()) ok = false;
+        Matrix<int> copy = A;
+        copy[0][0] = 8;
+        if (A[0][0] != 1) ok = false;
+        Matrix<int> empty(0, 3), no_cols(2, 0);
+        if (empty.height() != 0 || empty.width() != 3 || empty.begin() != empty.end()) ok = false;
+        for (auto r : no_cols) {
+            if (!r.empty() || r.begin() != r.end()) ok = false;
+        }
+        Matrix<bool> bits({{true, false}});
+        for (auto r : bits)
+            for (auto&& x : r) x = !x;
+        const auto& const_bits = bits;
+        if (const_bits[0][0] || !const_bits[0][1]) ok = false;
+    }
+
     // 初期化子リスト・代入・走査・==
     {
         Matrix<long long> A({{1, 2, 3}, {4, 5, 6}});
-        if (A.n != 2 || A.m != 3 || A[1][2] != 6 || A.size() != 2) ok = false;
+        if (A.height() != 2 || A.width() != 3 || A[1][2] != 6 || A.size() != 2) ok = false;
         long long s = 0;
-        for (auto& row : A)
+        for (auto row : A)
             for (auto& x : row) s += x, x *= 2;  // 書き換えもできる
         const Matrix<long long>& C = A;
         long long s2 = 0;
@@ -171,7 +210,7 @@ int main() {
         if (s != 21 || s2 != 42) ok = false;
         Matrix<long long> B(1, 1);
         B = VV{{2, 4, 6}, {8, 10, 12}};
-        if (B.n != 2 || B.m != 3) ok = false;
+        if (B.height() != 2 || B.width() != 3) ok = false;
         if (!(A == B) || A != B) ok = false;
         B[0][0] = 0;
         if (A == B || !(A != B)) ok = false;
@@ -225,7 +264,7 @@ int main() {
     for (int rep = 0; rep < 500; rep++) {
         int n = rng() % 7 + 1;
         std::vector<std::vector<int>> a(n, std::vector<int>(n));
-        for (auto& row : a)
+        for (auto row : a)
             for (auto& x : row) x = rng() % 2;
         Matrix<int, GF2> A(a);
         int d = A.det();
@@ -252,7 +291,7 @@ int main() {
         int n = rng() % 6 + 1;
         std::vector<std::vector<mint>> a(n, std::vector<mint>(n));
         bool small = rng() % 2;
-        for (auto& row : a)
+        for (auto row : a)
             for (auto& x : row) x = small ? static_cast<long long>(rng() % 3) : static_cast<long long>(rng() % 998244353);
         Matrix<mint> A(a);
         Matrix<mint, ModProp> B(a);
@@ -334,7 +373,7 @@ int main() {
         for (int rep = 0; rep < 300 && ok; rep++) {
             int n = rng() % 6;
             std::vector<std::vector<M>> a(n, std::vector<M>(n));
-            for (auto& row : a)
+            for (auto row : a)
                 for (auto& x : row) x = rng() % mod_range;
             std::vector<M> expect(n + 1, M(0));
             std::vector<int> perm(n);
@@ -368,7 +407,7 @@ int main() {
         int n = rng() % 6;
         long long mod = rng() % 30 + 1;
         std::vector<std::vector<long long>> a(n, std::vector<long long>(n));
-        for (auto& row : a)
+        for (auto row : a)
             for (auto& x : row) x = static_cast<long long>(rng() % 21) - 10;
         std::vector<int> perm(n);
         std::iota(perm.begin(), perm.end(), 0);
@@ -404,15 +443,15 @@ int main() {
             return A;
         };
         auto same = [&](const Matrix<M>& A, const std::vector<std::vector<unsigned long long>>& c, int cols) {
-            if (A.n != static_cast<long long>(c.size()) || A.m != cols) return false;
-            for (int i = 0; i < A.n; i++)
+            if (A.height() != static_cast<long long>(c.size()) || A.width() != cols) return false;
+            for (int i = 0; i < A.height(); i++)
                 for (int j = 0; j < cols; j++)
                     if (A[i][j].val() != c[i][j]) return false;
             return true;
         };
         auto random_mat = [&](int n, int m) {
             std::vector<std::vector<unsigned long long>> a(n, std::vector<unsigned long long>(m));
-            for (auto& row : a)
+            for (auto row : a)
                 for (auto& x : row) x = rng() % 4 == 0 ? mod - 1 : rng() % mod;  // 最大の値を多めに入れてあふれを試す
             return a;
         };

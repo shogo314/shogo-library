@@ -14,7 +14,7 @@ int main() {
     int n;
     std::cin >> n;
     std::vector<std::vector<mint>> a(n, std::vector<mint>(n));
-    for (auto& row : a)
+    for (auto row : a)
         for (auto& x : row) std::cin >> x;
     Matrix<mint> A(a);
     auto B = A.inv();

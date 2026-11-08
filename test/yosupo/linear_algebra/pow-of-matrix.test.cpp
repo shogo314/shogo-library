@@ -15,7 +15,7 @@ int main() {
     long long k;
     std::cin >> n >> k;
     std::vector<std::vector<mint>> a(n, std::vector<mint>(n));
-    for (auto& row : a)
+    for (auto row : a)
         for (auto& x : row) std::cin >> x;
     Matrix<mint> B = Matrix<mint>(a).pow(k);
     for (int i = 0; i < n; i++) {

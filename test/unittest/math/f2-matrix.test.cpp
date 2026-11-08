@@ -40,7 +40,7 @@ std::vector<std::vector<int>> random_bits(std::mt19937_64& rng, int n, int m) {
     return a;
 }
 bool same(const F2Matrix& A, const M2& B) {
-    if (A.n != B.n || A.m != B.m) return false;
+    if (A.n != B.height() || A.m != B.width()) return false;
     for (long long i = 0; i < A.n; i++)
         for (long long j = 0; j < A.m; j++)
             if (A.get(i, j) != (B[i][j] == 1)) return false;

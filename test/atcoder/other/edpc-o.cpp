@@ -13,7 +13,7 @@ int main() {
     int n;
     std::cin >> n;
     std::vector<std::vector<modint1000000007>> a(n, std::vector<modint1000000007>(n));
-    for (auto& row : a) {
+    for (auto row : a) {
         for (auto& x : row) {
             int b;
             std::cin >> b;

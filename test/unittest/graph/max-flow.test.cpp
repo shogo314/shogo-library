@@ -17,6 +17,27 @@ static_assert(std::is_same_v<decltype(MaxFlow(3)), MaxFlow<long long>>);
 int main() {
     std::mt19937 rng(314);
     bool ok = true;
+    // 再帰ではスタックが足りなくなる深い一本道。
+    {
+        constexpr int N = 200000;
+        MaxFlow<> mf(N);
+        for (int i = 0; i + 1 < N; i++) mf.add_edge(i, i + 1, 3);
+        if (mf.flow(0, N - 1, 1) != 1 || mf.flow(0, N - 1) != 2) ok = false;
+        for (const auto& e : mf.edges()) {
+            if (e.flow != 3) ok = false;
+        }
+    }
+    // 長い共通経路の先に多数の分岐がある。共通経路を増加路ごとにたどり直さない。
+    {
+        constexpr int DEPTH = 150000, BRANCHES = 50000, SINK = DEPTH + BRANCHES;
+        MaxFlow<> mf(SINK + 1);
+        for (int i = 0; i + 1 < DEPTH; i++) mf.add_edge(i, i + 1, BRANCHES);
+        for (int i = 0; i < BRANCHES; i++) {
+            mf.add_edge(DEPTH - 1, DEPTH + i, 1);
+            mf.add_edge(DEPTH + i, SINK, 1);
+        }
+        if (mf.flow(0, SINK) != BRANCHES || mf.flow(0, SINK) != 0) ok = false;
+    }
     for (int rep = 0; rep < 3000 && ok; rep++) {
         int n = rng() % 7 + 2, m = rng() % 15;
         int s = rng() % n, t = rng() % (n - 1);
@@ -86,6 +107,8 @@ int main() {
 
     if (ok)
         std::cout << "Hello World" << std::endl;
-    else
+    else {
         std::cerr << "failed" << std::endl;
+        return 1;
+    }
 }

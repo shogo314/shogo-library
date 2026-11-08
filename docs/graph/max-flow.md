@@ -5,6 +5,8 @@ documentation_of: //src/graph/max-flow.hpp
 
 有向グラフの最大流を Dinic 法で求める `MaxFlow<Cap = long long>` です。`Cap` は容量の型で、省くと `long long` になります (`MaxFlow mf(n);` と書けます)。計算量は $O(n^2 m)$ ですが、実際にはずっと速いことが多いです。容量がすべて 1 なら $O(m \min(\sqrt{m}, n^{2/3}))$ です。
 
+増加路を探す DFS は再帰を使わず、深いグラフでも呼び出しスタックを消費しません。作業用スタックのメモリは $O(n)$ です。
+
 ```cpp
 MaxFlow<long long> mf(n);
 long long id = mf.add_edge(0, 1, 5);  // 0 から 1 へ容量 5 の辺。辺の番号を返す

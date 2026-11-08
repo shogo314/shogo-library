@@ -141,32 +141,42 @@ data:
     \ \u3092\u8FD4\u3059\n     * @note O(1)\n     */\n    std::optional<Mode> mode()\
     \ const {\n        if (frequency.empty()) return std::nullopt;\n        const\
     \ auto& [value, count] = *frequency.begin();\n        return Mode{value, count};\n\
-    \    }\n    std::vector<value_type> most_common() const {\n        return {frequency.begin(),\
-    \ frequency.end()};\n    }\n    /**\n     * @brief \u500B\u6570\u306E\u591A\u3044\
-    \u9806\u306B\u4E0A\u4F4D k \u4EF6\u3092\u8FD4\u3059\u3002\u540C\u6570\u306A\u3089\
-    \u5024\u306E\u6607\u9806\u3002k >= 0\n     * @note k \u304C\u7570\u306A\u308B\u5024\
-    \u306E\u500B\u6570\u3088\u308A\u5927\u304D\u3051\u308C\u3070\u5168\u4EF6\u3092\
-    \u8FD4\u3059\u3002O(min(k, size()))\n     */\n    std::vector<value_type> most_common(long\
-    \ long k) const {\n        assert(k >= 0);\n        if (k > size()) k = size();\n\
-    \        std::vector<value_type> result;\n        result.reserve(k);\n       \
-    \ auto itr = frequency.begin();\n        for (long long i = 0; i < k; ++i, ++itr)\
-    \ result.push_back(*itr);\n        return result;\n    }\n    class CounterReference\
-    \ {\n        Counter& base;\n        key_type key;\n\n       public:\n       \
-    \ CounterReference(Counter& base, key_type key) : base(base), key(key) {}\n  \
-    \      CounterReference& operator=(const mapped_type& x) {\n            base.set(key,\
-    \ x);\n            return *this;\n        }\n        CounterReference& operator+=(const\
-    \ mapped_type& x) {\n            base.inc(key, x);\n            return *this;\n\
-    \        }\n        CounterReference& operator-=(const mapped_type& x) {\n   \
-    \         base.inc(key, -x);\n            return *this;\n        }\n        operator\
-    \ mapped_type() const {\n            return base.get(key);\n        }\n    };\n\
-    \    mapped_type operator[](const key_type& key) const {\n        return get(key);\n\
-    \    }\n    CounterReference operator[](const key_type& key) {\n        return\
-    \ CounterReference(*this, key);\n    }\n};\n\ntemplate <typename T>\nCounter(std::vector<T>)\
-    \ -> Counter<T>;\n#line 7 \"test/unittest/data_structures/counter.test.cpp\"\n\
-    \n#include <algorithm>\n#include <iostream>\n#line 11 \"test/unittest/data_structures/counter.test.cpp\"\
+    \    }\n    /**\n     * @brief \u500B\u6570\u306E\u964D\u9806\u3001\u540C\u6570\
+    \u306A\u3089\u5024\u306E\u6607\u9806\u306B\u4E26\u3079\u305F\u5185\u90E8 set \u306E\
+    \ const \u53C2\u7167 (\u30B3\u30D4\u30FC\u3057\u306A\u3044)\n     * @note O(1)\u3002\
+    Counter \u306E\u66F4\u65B0\u306F\u53C2\u7167\u5148\u306B\u3082\u53CD\u6620\u3055\
+    \u308C\u308B\u3002\u66F4\u65B0\u3057\u305F\u5024\u306E\u8981\u7D20\u3078\u306E\
+    \u30A4\u30C6\u30EC\u30FC\u30BF\u306F\u5931\u52B9\u3059\u308B\n     */\n    const\
+    \ auto& by_frequency() const { return frequency; }\n    std::vector<value_type>\
+    \ most_common() const {\n        return {frequency.begin(), frequency.end()};\n\
+    \    }\n    /**\n     * @brief \u500B\u6570\u306E\u591A\u3044\u9806\u306B\u4E0A\
+    \u4F4D k \u4EF6\u3092\u8FD4\u3059\u3002\u540C\u6570\u306A\u3089\u5024\u306E\u6607\
+    \u9806\u3002k >= 0\n     * @note k \u304C\u7570\u306A\u308B\u5024\u306E\u500B\u6570\
+    \u3088\u308A\u5927\u304D\u3051\u308C\u3070\u5168\u4EF6\u3092\u8FD4\u3059\u3002\
+    O(min(k, size()))\n     */\n    std::vector<value_type> most_common(long long\
+    \ k) const {\n        assert(k >= 0);\n        if (k > size()) k = size();\n \
+    \       std::vector<value_type> result;\n        result.reserve(k);\n        auto\
+    \ itr = frequency.begin();\n        for (long long i = 0; i < k; ++i, ++itr) result.push_back(*itr);\n\
+    \        return result;\n    }\n    class CounterReference {\n        Counter&\
+    \ base;\n        key_type key;\n\n       public:\n        CounterReference(Counter&\
+    \ base, key_type key) : base(base), key(key) {}\n        CounterReference& operator=(const\
+    \ mapped_type& x) {\n            base.set(key, x);\n            return *this;\n\
+    \        }\n        CounterReference& operator+=(const mapped_type& x) {\n   \
+    \         base.inc(key, x);\n            return *this;\n        }\n        CounterReference&\
+    \ operator-=(const mapped_type& x) {\n            base.inc(key, -x);\n       \
+    \     return *this;\n        }\n        operator mapped_type() const {\n     \
+    \       return base.get(key);\n        }\n    };\n    mapped_type operator[](const\
+    \ key_type& key) const {\n        return get(key);\n    }\n    CounterReference\
+    \ operator[](const key_type& key) {\n        return CounterReference(*this, key);\n\
+    \    }\n};\n\ntemplate <typename T>\nCounter(std::vector<T>) -> Counter<T>;\n\
+    #line 7 \"test/unittest/data_structures/counter.test.cpp\"\n\n#include <algorithm>\n\
+    #include <iostream>\n#line 11 \"test/unittest/data_structures/counter.test.cpp\"\
     \n#include <random>\n#include <string>\n#line 16 \"test/unittest/data_structures/counter.test.cpp\"\
     \n\nusing Model = std::map<int, long long>;\n\nstatic_assert(!std::is_assignable_v<decltype((std::declval<Counter<int>&>().lower_bound(0)->second)),\
     \ long long>);\nstatic_assert(!std::is_assignable_v<decltype((std::declval<Counter<int>&>().upper_bound(0)->second)),\
+    \ long long>);\nusing FrequencyReference = decltype(std::declval<Counter<int>&>().by_frequency());\n\
+    static_assert(std::is_lvalue_reference_v<FrequencyReference>);\nstatic_assert(std::is_const_v<std::remove_reference_t<FrequencyReference>>);\n\
+    static_assert(!std::is_assignable_v<decltype((std::declval<FrequencyReference>().begin()->second)),\
     \ long long>);\n\n// \u500B\u6570 0 \u306E\u5024\u3092\u53D6\u308A\u9664\u3044\
     \u305F map \u306B\u3059\u308B\nModel normalize(Model m) {\n    for (auto itr =\
     \ m.begin(); itr != m.end();) {\n        if (itr->second == 0)\n            itr\
@@ -178,18 +188,25 @@ data:
     \    if (c.total() != sum) return false;\n    // begin / end \u3067\u8D70\u67FB\
     \u3057\u305F\u7D50\u679C\u304C\u5024\u306E\u6607\u9806\u306B\u4E00\u81F4\u3059\
     \u308B\n    std::vector<std::pair<int, long long>> a(c.begin(), c.end()), b(mm.begin(),\
-    \ mm.end());\n    if (a != b) return false;\n    // \u6700\u983B\u5024\u306F\u540C\
-    \u6570\u306A\u3089\u6700\u5C0F\u306E\u5024\u3002\u7A7A\u306A\u3089 nullopt\n \
-    \   auto mode = c.mode();\n    if (mm.empty()) {\n        if (mode) return false;\n\
-    \    } else {\n        auto best = mm.begin();\n        for (auto itr = mm.begin();\
-    \ itr != mm.end(); ++itr) {\n            if (itr->second > best->second) best\
-    \ = itr;\n        }\n        if (!mode || mode->value != best->first || mode->count\
-    \ != best->second) return false;\n    }\n    // const \u306A [] \u3068 get\n \
-    \   for (int x = -1; x <= 10; x++) {\n        long long expect = mm.count(x) ?\
-    \ mm.at(x) : 0;\n        if (c[x] != expect || c.get(x) != expect) return false;\n\
-    \        const auto lower = c.lower_bound(x), upper = c.upper_bound(x);\n    \
-    \    const auto expected_lower = mm.lower_bound(x), expected_upper = mm.upper_bound(x);\n\
-    \        if ((lower == c.end()) != (expected_lower == mm.end())) return false;\n\
+    \ mm.end());\n    if (a != b) return false;\n    // \u983B\u5EA6\u9806\u306E\u8D70\
+    \u67FB\u3092\u3001map \u304B\u3089\u72EC\u7ACB\u306B\u4E26\u3079\u66FF\u3048\u305F\
+    \u5217\u3068\u6BD4\u3079\u308B\n    std::stable_sort(b.begin(), b.end(), [](const\
+    \ auto& p, const auto& q) { return p.second > q.second; });\n    const auto& frequency\
+    \ = c.by_frequency();\n    if (std::vector<std::pair<int, long long>>(frequency.begin(),\
+    \ frequency.end()) != b) return false;\n    std::reverse(b.begin(), b.end());\n\
+    \    if (std::vector<std::pair<int, long long>>(frequency.rbegin(), frequency.rend())\
+    \ != b) return false;\n    // \u6700\u983B\u5024\u306F\u540C\u6570\u306A\u3089\
+    \u6700\u5C0F\u306E\u5024\u3002\u7A7A\u306A\u3089 nullopt\n    auto mode = c.mode();\n\
+    \    if (mm.empty()) {\n        if (mode) return false;\n    } else {\n      \
+    \  auto best = mm.begin();\n        for (auto itr = mm.begin(); itr != mm.end();\
+    \ ++itr) {\n            if (itr->second > best->second) best = itr;\n        }\n\
+    \        if (!mode || mode->value != best->first || mode->count != best->second)\
+    \ return false;\n    }\n    // const \u306A [] \u3068 get\n    for (int x = -1;\
+    \ x <= 10; x++) {\n        long long expect = mm.count(x) ? mm.at(x) : 0;\n  \
+    \      if (c[x] != expect || c.get(x) != expect) return false;\n        const\
+    \ auto lower = c.lower_bound(x), upper = c.upper_bound(x);\n        const auto\
+    \ expected_lower = mm.lower_bound(x), expected_upper = mm.upper_bound(x);\n  \
+    \      if ((lower == c.end()) != (expected_lower == mm.end())) return false;\n\
     \        if ((upper == c.end()) != (expected_upper == mm.end())) return false;\n\
     \        if (lower != c.end() && *lower != *expected_lower) return false;\n  \
     \      if (upper != c.end() && *upper != *expected_upper) return false;\n    }\n\
@@ -257,8 +274,17 @@ data:
     \   Counter<int> c{{1, 2}, {3, 1}, {5, 4}};\n        c -= c;\n        check(same(c,\
     \ {}), \"self operator-=\");\n        check(c.most_common(2).empty(), \"most_common(k)\
     \ of empty\");\n        Counter<int> d{{1, 2}, {3, 1}};\n        d += d;\n   \
-    \     check(same(d, {{1, 4}, {3, 2}}), \"self operator+=\");\n    }\n\n    if\
-    \ (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \     check(same(d, {{1, 4}, {3, 2}}), \"self operator+=\");\n    }\n\n    {\n\
+    \        Counter<int> c{{1, 2}, {3, 2}, {5, 1}};\n        const auto& frequency\
+    \ = c.by_frequency();\n        check(*frequency.lower_bound({2, 2}) == std::make_pair(3,\
+    \ 2LL), \"frequency lower_bound\");\n        check(*frequency.upper_bound({3,\
+    \ 2}) == std::make_pair(5, 1LL), \"frequency upper_bound\");\n        c[5] +=\
+    \ 3;\n        check(&frequency == &c.by_frequency() && *frequency.begin() == std::make_pair(5,\
+    \ 4LL), \"frequency reference follows updates\");\n        c[5] = 0;\n       \
+    \ check(frequency.size() == 2 && *frequency.rbegin() == std::make_pair(3, 2LL),\
+    \ \"frequency reference follows erasure\");\n        c -= c;\n        check(frequency.empty(),\
+    \ \"frequency reference follows clearing\");\n    }\n\n    if (ok) std::cout <<\
+    \ \"Hello World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// Counter \u3092 std::map \u306B\u3088\u308B\u611A\u76F4\u306A\u5B9F\u88C5\
     \u3068\u30E9\u30F3\u30C0\u30E0\u306B\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\
@@ -268,6 +294,9 @@ data:
     #include <string>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\
     \nusing Model = std::map<int, long long>;\n\nstatic_assert(!std::is_assignable_v<decltype((std::declval<Counter<int>&>().lower_bound(0)->second)),\
     \ long long>);\nstatic_assert(!std::is_assignable_v<decltype((std::declval<Counter<int>&>().upper_bound(0)->second)),\
+    \ long long>);\nusing FrequencyReference = decltype(std::declval<Counter<int>&>().by_frequency());\n\
+    static_assert(std::is_lvalue_reference_v<FrequencyReference>);\nstatic_assert(std::is_const_v<std::remove_reference_t<FrequencyReference>>);\n\
+    static_assert(!std::is_assignable_v<decltype((std::declval<FrequencyReference>().begin()->second)),\
     \ long long>);\n\n// \u500B\u6570 0 \u306E\u5024\u3092\u53D6\u308A\u9664\u3044\
     \u305F map \u306B\u3059\u308B\nModel normalize(Model m) {\n    for (auto itr =\
     \ m.begin(); itr != m.end();) {\n        if (itr->second == 0)\n            itr\
@@ -279,18 +308,25 @@ data:
     \    if (c.total() != sum) return false;\n    // begin / end \u3067\u8D70\u67FB\
     \u3057\u305F\u7D50\u679C\u304C\u5024\u306E\u6607\u9806\u306B\u4E00\u81F4\u3059\
     \u308B\n    std::vector<std::pair<int, long long>> a(c.begin(), c.end()), b(mm.begin(),\
-    \ mm.end());\n    if (a != b) return false;\n    // \u6700\u983B\u5024\u306F\u540C\
-    \u6570\u306A\u3089\u6700\u5C0F\u306E\u5024\u3002\u7A7A\u306A\u3089 nullopt\n \
-    \   auto mode = c.mode();\n    if (mm.empty()) {\n        if (mode) return false;\n\
-    \    } else {\n        auto best = mm.begin();\n        for (auto itr = mm.begin();\
-    \ itr != mm.end(); ++itr) {\n            if (itr->second > best->second) best\
-    \ = itr;\n        }\n        if (!mode || mode->value != best->first || mode->count\
-    \ != best->second) return false;\n    }\n    // const \u306A [] \u3068 get\n \
-    \   for (int x = -1; x <= 10; x++) {\n        long long expect = mm.count(x) ?\
-    \ mm.at(x) : 0;\n        if (c[x] != expect || c.get(x) != expect) return false;\n\
-    \        const auto lower = c.lower_bound(x), upper = c.upper_bound(x);\n    \
-    \    const auto expected_lower = mm.lower_bound(x), expected_upper = mm.upper_bound(x);\n\
-    \        if ((lower == c.end()) != (expected_lower == mm.end())) return false;\n\
+    \ mm.end());\n    if (a != b) return false;\n    // \u983B\u5EA6\u9806\u306E\u8D70\
+    \u67FB\u3092\u3001map \u304B\u3089\u72EC\u7ACB\u306B\u4E26\u3079\u66FF\u3048\u305F\
+    \u5217\u3068\u6BD4\u3079\u308B\n    std::stable_sort(b.begin(), b.end(), [](const\
+    \ auto& p, const auto& q) { return p.second > q.second; });\n    const auto& frequency\
+    \ = c.by_frequency();\n    if (std::vector<std::pair<int, long long>>(frequency.begin(),\
+    \ frequency.end()) != b) return false;\n    std::reverse(b.begin(), b.end());\n\
+    \    if (std::vector<std::pair<int, long long>>(frequency.rbegin(), frequency.rend())\
+    \ != b) return false;\n    // \u6700\u983B\u5024\u306F\u540C\u6570\u306A\u3089\
+    \u6700\u5C0F\u306E\u5024\u3002\u7A7A\u306A\u3089 nullopt\n    auto mode = c.mode();\n\
+    \    if (mm.empty()) {\n        if (mode) return false;\n    } else {\n      \
+    \  auto best = mm.begin();\n        for (auto itr = mm.begin(); itr != mm.end();\
+    \ ++itr) {\n            if (itr->second > best->second) best = itr;\n        }\n\
+    \        if (!mode || mode->value != best->first || mode->count != best->second)\
+    \ return false;\n    }\n    // const \u306A [] \u3068 get\n    for (int x = -1;\
+    \ x <= 10; x++) {\n        long long expect = mm.count(x) ? mm.at(x) : 0;\n  \
+    \      if (c[x] != expect || c.get(x) != expect) return false;\n        const\
+    \ auto lower = c.lower_bound(x), upper = c.upper_bound(x);\n        const auto\
+    \ expected_lower = mm.lower_bound(x), expected_upper = mm.upper_bound(x);\n  \
+    \      if ((lower == c.end()) != (expected_lower == mm.end())) return false;\n\
     \        if ((upper == c.end()) != (expected_upper == mm.end())) return false;\n\
     \        if (lower != c.end() && *lower != *expected_lower) return false;\n  \
     \      if (upper != c.end() && *upper != *expected_upper) return false;\n    }\n\
@@ -358,15 +394,24 @@ data:
     \   Counter<int> c{{1, 2}, {3, 1}, {5, 4}};\n        c -= c;\n        check(same(c,\
     \ {}), \"self operator-=\");\n        check(c.most_common(2).empty(), \"most_common(k)\
     \ of empty\");\n        Counter<int> d{{1, 2}, {3, 1}};\n        d += d;\n   \
-    \     check(same(d, {{1, 4}, {3, 2}}), \"self operator+=\");\n    }\n\n    if\
-    \ (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    \     check(same(d, {{1, 4}, {3, 2}}), \"self operator+=\");\n    }\n\n    {\n\
+    \        Counter<int> c{{1, 2}, {3, 2}, {5, 1}};\n        const auto& frequency\
+    \ = c.by_frequency();\n        check(*frequency.lower_bound({2, 2}) == std::make_pair(3,\
+    \ 2LL), \"frequency lower_bound\");\n        check(*frequency.upper_bound({3,\
+    \ 2}) == std::make_pair(5, 1LL), \"frequency upper_bound\");\n        c[5] +=\
+    \ 3;\n        check(&frequency == &c.by_frequency() && *frequency.begin() == std::make_pair(5,\
+    \ 4LL), \"frequency reference follows updates\");\n        c[5] = 0;\n       \
+    \ check(frequency.size() == 2 && *frequency.rbegin() == std::make_pair(3, 2LL),\
+    \ \"frequency reference follows erasure\");\n        c -= c;\n        check(frequency.empty(),\
+    \ \"frequency reference follows clearing\");\n    }\n\n    if (ok) std::cout <<\
+    \ \"Hello World\" << std::endl;\n}\n"
   dependsOn:
   - src/data_structures/counter.hpp
   - src/utility/traits.hpp
   isVerificationFile: true
   path: test/unittest/data_structures/counter.test.cpp
   requiredBy: []
-  timestamp: '2026-11-08 18:12:59+09:00'
+  timestamp: '2026-11-08 18:34:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/data_structures/counter.test.cpp

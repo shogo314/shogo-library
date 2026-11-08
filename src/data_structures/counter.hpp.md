@@ -143,28 +143,34 @@ data:
     \ \u3092\u8FD4\u3059\n     * @note O(1)\n     */\n    std::optional<Mode> mode()\
     \ const {\n        if (frequency.empty()) return std::nullopt;\n        const\
     \ auto& [value, count] = *frequency.begin();\n        return Mode{value, count};\n\
-    \    }\n    std::vector<value_type> most_common() const {\n        return {frequency.begin(),\
-    \ frequency.end()};\n    }\n    /**\n     * @brief \u500B\u6570\u306E\u591A\u3044\
-    \u9806\u306B\u4E0A\u4F4D k \u4EF6\u3092\u8FD4\u3059\u3002\u540C\u6570\u306A\u3089\
-    \u5024\u306E\u6607\u9806\u3002k >= 0\n     * @note k \u304C\u7570\u306A\u308B\u5024\
-    \u306E\u500B\u6570\u3088\u308A\u5927\u304D\u3051\u308C\u3070\u5168\u4EF6\u3092\
-    \u8FD4\u3059\u3002O(min(k, size()))\n     */\n    std::vector<value_type> most_common(long\
-    \ long k) const {\n        assert(k >= 0);\n        if (k > size()) k = size();\n\
-    \        std::vector<value_type> result;\n        result.reserve(k);\n       \
-    \ auto itr = frequency.begin();\n        for (long long i = 0; i < k; ++i, ++itr)\
-    \ result.push_back(*itr);\n        return result;\n    }\n    class CounterReference\
-    \ {\n        Counter& base;\n        key_type key;\n\n       public:\n       \
-    \ CounterReference(Counter& base, key_type key) : base(base), key(key) {}\n  \
-    \      CounterReference& operator=(const mapped_type& x) {\n            base.set(key,\
-    \ x);\n            return *this;\n        }\n        CounterReference& operator+=(const\
-    \ mapped_type& x) {\n            base.inc(key, x);\n            return *this;\n\
-    \        }\n        CounterReference& operator-=(const mapped_type& x) {\n   \
-    \         base.inc(key, -x);\n            return *this;\n        }\n        operator\
-    \ mapped_type() const {\n            return base.get(key);\n        }\n    };\n\
-    \    mapped_type operator[](const key_type& key) const {\n        return get(key);\n\
-    \    }\n    CounterReference operator[](const key_type& key) {\n        return\
-    \ CounterReference(*this, key);\n    }\n};\n\ntemplate <typename T>\nCounter(std::vector<T>)\
-    \ -> Counter<T>;\n"
+    \    }\n    /**\n     * @brief \u500B\u6570\u306E\u964D\u9806\u3001\u540C\u6570\
+    \u306A\u3089\u5024\u306E\u6607\u9806\u306B\u4E26\u3079\u305F\u5185\u90E8 set \u306E\
+    \ const \u53C2\u7167 (\u30B3\u30D4\u30FC\u3057\u306A\u3044)\n     * @note O(1)\u3002\
+    Counter \u306E\u66F4\u65B0\u306F\u53C2\u7167\u5148\u306B\u3082\u53CD\u6620\u3055\
+    \u308C\u308B\u3002\u66F4\u65B0\u3057\u305F\u5024\u306E\u8981\u7D20\u3078\u306E\
+    \u30A4\u30C6\u30EC\u30FC\u30BF\u306F\u5931\u52B9\u3059\u308B\n     */\n    const\
+    \ auto& by_frequency() const { return frequency; }\n    std::vector<value_type>\
+    \ most_common() const {\n        return {frequency.begin(), frequency.end()};\n\
+    \    }\n    /**\n     * @brief \u500B\u6570\u306E\u591A\u3044\u9806\u306B\u4E0A\
+    \u4F4D k \u4EF6\u3092\u8FD4\u3059\u3002\u540C\u6570\u306A\u3089\u5024\u306E\u6607\
+    \u9806\u3002k >= 0\n     * @note k \u304C\u7570\u306A\u308B\u5024\u306E\u500B\u6570\
+    \u3088\u308A\u5927\u304D\u3051\u308C\u3070\u5168\u4EF6\u3092\u8FD4\u3059\u3002\
+    O(min(k, size()))\n     */\n    std::vector<value_type> most_common(long long\
+    \ k) const {\n        assert(k >= 0);\n        if (k > size()) k = size();\n \
+    \       std::vector<value_type> result;\n        result.reserve(k);\n        auto\
+    \ itr = frequency.begin();\n        for (long long i = 0; i < k; ++i, ++itr) result.push_back(*itr);\n\
+    \        return result;\n    }\n    class CounterReference {\n        Counter&\
+    \ base;\n        key_type key;\n\n       public:\n        CounterReference(Counter&\
+    \ base, key_type key) : base(base), key(key) {}\n        CounterReference& operator=(const\
+    \ mapped_type& x) {\n            base.set(key, x);\n            return *this;\n\
+    \        }\n        CounterReference& operator+=(const mapped_type& x) {\n   \
+    \         base.inc(key, x);\n            return *this;\n        }\n        CounterReference&\
+    \ operator-=(const mapped_type& x) {\n            base.inc(key, -x);\n       \
+    \     return *this;\n        }\n        operator mapped_type() const {\n     \
+    \       return base.get(key);\n        }\n    };\n    mapped_type operator[](const\
+    \ key_type& key) const {\n        return get(key);\n    }\n    CounterReference\
+    \ operator[](const key_type& key) {\n        return CounterReference(*this, key);\n\
+    \    }\n};\n\ntemplate <typename T>\nCounter(std::vector<T>) -> Counter<T>;\n"
   code: "#pragma once\n\n/**\n * @file counter.hpp\n * @brief \u5024\u306E\u500B\u6570\
     \u3092\u6570\u3048\u308B\u591A\u91CD\u96C6\u5408 (Counter)\n */\n\n#include <cassert>\n\
     #include <cstddef>\n#include <initializer_list>\n#include <iterator>\n#include\
@@ -226,34 +232,40 @@ data:
     \ \u3092\u8FD4\u3059\n     * @note O(1)\n     */\n    std::optional<Mode> mode()\
     \ const {\n        if (frequency.empty()) return std::nullopt;\n        const\
     \ auto& [value, count] = *frequency.begin();\n        return Mode{value, count};\n\
-    \    }\n    std::vector<value_type> most_common() const {\n        return {frequency.begin(),\
-    \ frequency.end()};\n    }\n    /**\n     * @brief \u500B\u6570\u306E\u591A\u3044\
-    \u9806\u306B\u4E0A\u4F4D k \u4EF6\u3092\u8FD4\u3059\u3002\u540C\u6570\u306A\u3089\
-    \u5024\u306E\u6607\u9806\u3002k >= 0\n     * @note k \u304C\u7570\u306A\u308B\u5024\
-    \u306E\u500B\u6570\u3088\u308A\u5927\u304D\u3051\u308C\u3070\u5168\u4EF6\u3092\
-    \u8FD4\u3059\u3002O(min(k, size()))\n     */\n    std::vector<value_type> most_common(long\
-    \ long k) const {\n        assert(k >= 0);\n        if (k > size()) k = size();\n\
-    \        std::vector<value_type> result;\n        result.reserve(k);\n       \
-    \ auto itr = frequency.begin();\n        for (long long i = 0; i < k; ++i, ++itr)\
-    \ result.push_back(*itr);\n        return result;\n    }\n    class CounterReference\
-    \ {\n        Counter& base;\n        key_type key;\n\n       public:\n       \
-    \ CounterReference(Counter& base, key_type key) : base(base), key(key) {}\n  \
-    \      CounterReference& operator=(const mapped_type& x) {\n            base.set(key,\
-    \ x);\n            return *this;\n        }\n        CounterReference& operator+=(const\
-    \ mapped_type& x) {\n            base.inc(key, x);\n            return *this;\n\
-    \        }\n        CounterReference& operator-=(const mapped_type& x) {\n   \
-    \         base.inc(key, -x);\n            return *this;\n        }\n        operator\
-    \ mapped_type() const {\n            return base.get(key);\n        }\n    };\n\
-    \    mapped_type operator[](const key_type& key) const {\n        return get(key);\n\
-    \    }\n    CounterReference operator[](const key_type& key) {\n        return\
-    \ CounterReference(*this, key);\n    }\n};\n\ntemplate <typename T>\nCounter(std::vector<T>)\
-    \ -> Counter<T>;\n"
+    \    }\n    /**\n     * @brief \u500B\u6570\u306E\u964D\u9806\u3001\u540C\u6570\
+    \u306A\u3089\u5024\u306E\u6607\u9806\u306B\u4E26\u3079\u305F\u5185\u90E8 set \u306E\
+    \ const \u53C2\u7167 (\u30B3\u30D4\u30FC\u3057\u306A\u3044)\n     * @note O(1)\u3002\
+    Counter \u306E\u66F4\u65B0\u306F\u53C2\u7167\u5148\u306B\u3082\u53CD\u6620\u3055\
+    \u308C\u308B\u3002\u66F4\u65B0\u3057\u305F\u5024\u306E\u8981\u7D20\u3078\u306E\
+    \u30A4\u30C6\u30EC\u30FC\u30BF\u306F\u5931\u52B9\u3059\u308B\n     */\n    const\
+    \ auto& by_frequency() const { return frequency; }\n    std::vector<value_type>\
+    \ most_common() const {\n        return {frequency.begin(), frequency.end()};\n\
+    \    }\n    /**\n     * @brief \u500B\u6570\u306E\u591A\u3044\u9806\u306B\u4E0A\
+    \u4F4D k \u4EF6\u3092\u8FD4\u3059\u3002\u540C\u6570\u306A\u3089\u5024\u306E\u6607\
+    \u9806\u3002k >= 0\n     * @note k \u304C\u7570\u306A\u308B\u5024\u306E\u500B\u6570\
+    \u3088\u308A\u5927\u304D\u3051\u308C\u3070\u5168\u4EF6\u3092\u8FD4\u3059\u3002\
+    O(min(k, size()))\n     */\n    std::vector<value_type> most_common(long long\
+    \ k) const {\n        assert(k >= 0);\n        if (k > size()) k = size();\n \
+    \       std::vector<value_type> result;\n        result.reserve(k);\n        auto\
+    \ itr = frequency.begin();\n        for (long long i = 0; i < k; ++i, ++itr) result.push_back(*itr);\n\
+    \        return result;\n    }\n    class CounterReference {\n        Counter&\
+    \ base;\n        key_type key;\n\n       public:\n        CounterReference(Counter&\
+    \ base, key_type key) : base(base), key(key) {}\n        CounterReference& operator=(const\
+    \ mapped_type& x) {\n            base.set(key, x);\n            return *this;\n\
+    \        }\n        CounterReference& operator+=(const mapped_type& x) {\n   \
+    \         base.inc(key, x);\n            return *this;\n        }\n        CounterReference&\
+    \ operator-=(const mapped_type& x) {\n            base.inc(key, -x);\n       \
+    \     return *this;\n        }\n        operator mapped_type() const {\n     \
+    \       return base.get(key);\n        }\n    };\n    mapped_type operator[](const\
+    \ key_type& key) const {\n        return get(key);\n    }\n    CounterReference\
+    \ operator[](const key_type& key) {\n        return CounterReference(*this, key);\n\
+    \    }\n};\n\ntemplate <typename T>\nCounter(std::vector<T>) -> Counter<T>;\n"
   dependsOn:
   - src/utility/traits.hpp
   isVerificationFile: false
   path: src/data_structures/counter.hpp
   requiredBy: []
-  timestamp: '2026-11-08 18:12:59+09:00'
+  timestamp: '2026-11-08 18:34:11+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/counter.test.cpp
@@ -276,10 +288,15 @@ auto [value, count] = *c.mode();  // 最頻値とその個数 (空でない場�
 auto top = c.most_common();       // 個数の多い順
 auto top2 = c.most_common(2);     // 上位 2 件 (値, 個数)
 for (auto [x, cnt] : c) { }       // 値の昇順に走査
+for (auto [x, cnt] : c.by_frequency()) { }  // 個数の降順、同数なら値の昇順。コピーなし
 Counter<int> d = c + Counter<int>(3);  // 3 を 1 個足した Counter
 ```
 
 空の `Counter` の `mode()` は `std::nullopt` を返します。同数なら最小の値を選びます。内部の map は非公開です。個数の変更には `[]`・`set`・`inc` を使います。
+
+`by_frequency()` は内部の `std::set<value_type, CompareFrequency>` の const 参照を返します (`value_type` は `{値, 個数}` の組)。保持するときは `const auto& freq = c.by_frequency();` と書きます。`begin()`・`rbegin()`・`lower_bound()` などを使え、境界検索の順序も個数の降順・同数なら値の昇順です。
+
+参照先には `Counter` の更新が反映されます。更新した値の要素へのイテレータは失効します。参照は元の `Counter` の生存中に使ってください。
 
 ## メンバ関数
 
@@ -301,6 +318,7 @@ Counter<int> d = c + Counter<int>(3);  // 3 を 1 個足した Counter
 | `c.size()` | 異なる値の個数 (重複は数えない) | $O(1)$ |
 | `c.total()` | 重複を含めた要素数 (個数の総和。Python の `Counter.total()` と同じ) | $O(n)$ |
 | `c.mode()` | 最頻値と個数を `std::optional<Mode>` (`Mode {value, count}`) で返す。同数なら最小の値を選び、空なら `std::nullopt` を返す | $O(1)$ |
+| `c.by_frequency()` | 頻度順の内部 set の const 参照。個数の降順、同数なら値の昇順 | $O(1)$ |
 | `c.most_common()` | `{値, 個数}` のリスト。個数の降順、同数なら値の昇順 | $O(n)$ |
 | `c.most_common(k)` | 同じ順序で上位 `k` 件を返す (`k >= 0`)。`k > n` なら全件、`k = 0` または空なら空のリスト | $O(\min(k, n))$ |
 

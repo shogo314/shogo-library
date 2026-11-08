@@ -52,11 +52,28 @@ data:
     \ \"src/math/modint.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file\
     \ traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n#include\
     \ <functional>\n#include <iterator>\n#include <set>\n#line 14 \"src/utility/traits.hpp\"\
-    \n\nnamespace internal_traits {\nusing std::begin, std::end;\n\ntemplate <class\
-    \ T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class\
-    \ T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
-    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
-    \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
+    \n\n#if __cplusplus >= 202002L\n#include <ranges>\n#endif\n\nnamespace internal_traits\
+    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n\n// \u30B5\u30A4\u30BA\u4ED8\
+    \u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\u3059\
+    \u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\u308B\
+    \u3002\n#if __cplusplus >= 202002L\ntemplate <class R, class S>\nconcept sized_constructible_range\
+    \ = std::ranges::input_range<R> && std::ranges::sized_range<R> &&\n          \
+    \                          std::is_constructible_v<S, std::ranges::range_reference_t<R>>;\n\
+    \ntemplate <class R>\nauto range_size(R& r) {\n    return std::ranges::size(r);\n\
+    }\ntemplate <class R>\nauto range_begin(R& r) {\n    return std::ranges::begin(r);\n\
+    }\ntemplate <class R>\nusing range_value_t = std::ranges::range_value_t<R>;\n\
+    #else\nusing std::size;\ntemplate <class R>\nauto range_size(R& r) -> decltype(size(r))\
+    \ {\n    return size(r);\n}\ntemplate <class R>\nauto range_begin(R& r) -> decltype(begin(r))\
+    \ {\n    return begin(r);\n}\ntemplate <class R>\nusing range_value_t = typename\
+    \ std::iterator_traits<decltype(range_begin(std::declval<R&>()))>::value_type;\n\
+    \ntemplate <class R, class S, class = void>\nstruct is_sized_constructible_range\
+    \ : std::false_type {};\ntemplate <class R, class S>\nstruct is_sized_constructible_range<R,\
+    \ S, std::void_t<decltype(range_size(std::declval<R&>())), decltype(++std::declval<decltype(begin(std::declval<R&>()))&>()),\
+    \ decltype(begin(std::declval<R&>()) != end(std::declval<R&>())), decltype(*begin(std::declval<R&>()))>>\n\
+    \    : std::is_constructible<S, decltype(*begin(std::declval<R&>()))> {};\n#endif\n\
+    }  // namespace internal_traits\n\ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
     \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
     \n#define HAS_METHOD(func_name)                                              \
     \                \\\n    namespace internal_traits {                         \
@@ -790,7 +807,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/convolution.test.cpp
   requiredBy: []
-  timestamp: '2026-11-03 08:52:44+09:00'
+  timestamp: '2026-11-08 20:13:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/convolution.test.cpp

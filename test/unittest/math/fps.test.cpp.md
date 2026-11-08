@@ -52,11 +52,86 @@ data:
     \u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\
     \u529B\u3059\u308B\n\n#line 2 \"src/math/fps.hpp\"\n\n/**\n * @file fps.hpp\n\
     \ * @brief \u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\n */\n\n#include <algorithm>\n\
-    #include <cassert>\n#include <optional>\n#include <queue>\n#include <utility>\n\
-    #include <vector>\n\n#line 2 \"src/math/combinatorics.hpp\"\n\n/**\n * @file combinatorics.hpp\n\
-    \ * @brief \u7D44\u307F\u5408\u308F\u305B\n *\n * \u7D20\u6570 mod \u3067\u306E\
-    \u968E\u4E57\u30FB\u4E8C\u9805\u4FC2\u6570\u306F Combination\u3001\u7D20\u6570\
-    \u51AA p^q \u3092\u6CD5\u3068\u3059\u308B\u4E8C\u9805\u4FC2\u6570\u306F CombinationPQ\n\
+    #include <cassert>\n#include <initializer_list>\n#include <optional>\n#include\
+    \ <queue>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\n#line\
+    \ 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\
+    \u6027\n */\n\n#include <cstddef>\n#include <functional>\n#include <iterator>\n\
+    #include <set>\n#line 14 \"src/utility/traits.hpp\"\n\n#if __cplusplus >= 202002L\n\
+    #include <ranges>\n#endif\n\nnamespace internal_traits {\nusing std::begin, std::end;\n\
+    \ntemplate <class T, class = void>\nstruct is_range_impl : std::false_type {};\n\
+    template <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n\n// \u30B5\u30A4\u30BA\u4ED8\
+    \u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\u3059\
+    \u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\u308B\
+    \u3002\n#if __cplusplus >= 202002L\ntemplate <class R, class S>\nconcept sized_constructible_range\
+    \ = std::ranges::input_range<R> && std::ranges::sized_range<R> &&\n          \
+    \                          std::is_constructible_v<S, std::ranges::range_reference_t<R>>;\n\
+    \ntemplate <class R>\nauto range_size(R& r) {\n    return std::ranges::size(r);\n\
+    }\ntemplate <class R>\nauto range_begin(R& r) {\n    return std::ranges::begin(r);\n\
+    }\ntemplate <class R>\nusing range_value_t = std::ranges::range_value_t<R>;\n\
+    #else\nusing std::size;\ntemplate <class R>\nauto range_size(R& r) -> decltype(size(r))\
+    \ {\n    return size(r);\n}\ntemplate <class R>\nauto range_begin(R& r) -> decltype(begin(r))\
+    \ {\n    return begin(r);\n}\ntemplate <class R>\nusing range_value_t = typename\
+    \ std::iterator_traits<decltype(range_begin(std::declval<R&>()))>::value_type;\n\
+    \ntemplate <class R, class S, class = void>\nstruct is_sized_constructible_range\
+    \ : std::false_type {};\ntemplate <class R, class S>\nstruct is_sized_constructible_range<R,\
+    \ S, std::void_t<decltype(range_size(std::declval<R&>())), decltype(++std::declval<decltype(begin(std::declval<R&>()))&>()),\
+    \ decltype(begin(std::declval<R&>()) != end(std::declval<R&>())), decltype(*begin(std::declval<R&>()))>>\n\
+    \    : std::is_constructible<S, decltype(*begin(std::declval<R&>()))> {};\n#endif\n\
+    }  // namespace internal_traits\n\ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
+    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
+    \n#define HAS_METHOD(func_name)                                              \
+    \                \\\n    namespace internal_traits {                         \
+    \                                   \\\n    template <class T, class = void> \
+    \                                                      \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                    \\\n    template <class\
+    \ T>                                                                     \\\n\
+    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                    \\\n    }                                               \
+    \                                       \\\n    template <class T>           \
+    \                                                          \\\n    struct has_##func_name\
+    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
+    \ <class T>                                                                  \
+    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
+    \n#define HAS_METHOD_ARG(func_name)                                          \
+    \                                    \\\n    namespace internal_traits {     \
+    \                                                                           \\\
+    \n    template <class T, typename U, class = void>                           \
+    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                                        \\\n    template\
+    \ <class T, typename U>                                                      \
+    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                                        \\\n    }                           \
+    \                                                                            \
+    \   \\\n    template <class T, typename U>                                   \
+    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \ U>::type {};                           \\\n    template <class T, typename U>\
+    \                                                                            \
+    \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
+    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
+    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
+    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
+    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
+    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
+    \nnamespace internal_traits {\n// \u5C04\u5F71 (proj) \u306E\u65E2\u5B9A\u5024\
+    \n#if __cplusplus >= 202002L\nusing identity = std::identity;\n#else\nstruct identity\
+    \ {\n    using is_transparent = void;\n    template <class T>\n    constexpr T&&\
+    \ operator()(T&& x) const noexcept {\n        return std::forward<T>(x);\n   \
+    \ }\n};\n#endif\n}  // namespace internal_traits\n\ntemplate <class C>\nusing\
+    \ mem_value_type = typename C::value_type;\ntemplate <class C>\nusing mem_difference_type\
+    \ = typename C::difference_type;\n\nnamespace internal_traits {\ntemplate <class\
+    \ T, class = void>\nstruct is_sorted_container_impl : std::false_type {};\ntemplate\
+    \ <class T>\nstruct is_sorted_container_impl<std::set<T>> : std::true_type {};\n\
+    template <class T>\nstruct is_sorted_container_impl<std::multiset<T>> : std::true_type\
+    \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
+    \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
+    inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
+    #line 2 \"src/math/combinatorics.hpp\"\n\n/**\n * @file combinatorics.hpp\n *\
+    \ @brief \u7D44\u307F\u5408\u308F\u305B\n *\n * \u7D20\u6570 mod \u3067\u306E\u968E\
+    \u4E57\u30FB\u4E8C\u9805\u4FC2\u6570\u306F Combination\u3001\u7D20\u6570\u51AA\
+    \ p^q \u3092\u6CD5\u3068\u3059\u308B\u4E8C\u9805\u4FC2\u6570\u306F CombinationPQ\n\
     \ */\n\n#line 11 \"src/math/combinatorics.hpp\"\n#include <numeric>\n#line 13\
     \ \"src/math/combinatorics.hpp\"\n\n#line 2 \"src/math/modular-arithmetic.hpp\"\
     \n\n/**\n * @file modular-arithmetic.hpp\n * @brief mod \u6F14\u7B97 (\u7A4D\u3001\
@@ -284,68 +359,11 @@ data:
     };\n#line 2 \"src/math/convolution.hpp\"\n\n/**\n * @file convolution.hpp\n *\
     \ @brief \u7573\u307F\u8FBC\u307F (NTT)\n */\n\n#line 9 \"src/math/convolution.hpp\"\
     \n#include <array>\n#line 11 \"src/math/convolution.hpp\"\n#include <cstdint>\n\
-    #include <type_traits>\n#line 15 \"src/math/convolution.hpp\"\n\n#line 2 \"src/math/modint.hpp\"\
-    \n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\
-    \u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line\
-    \ 10 \"src/math/modint.hpp\"\n#include <iostream>\n#include <limits>\n#line 14\
-    \ \"src/math/modint.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file\
-    \ traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n#include\
-    \ <functional>\n#include <iterator>\n#include <set>\n#line 14 \"src/utility/traits.hpp\"\
-    \n\nnamespace internal_traits {\nusing std::begin, std::end;\n\ntemplate <class\
-    \ T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class\
-    \ T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
-    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
-    \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
-    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
-    \n#define HAS_METHOD(func_name)                                              \
-    \                \\\n    namespace internal_traits {                         \
-    \                                   \\\n    template <class T, class = void> \
-    \                                                      \\\n    struct has_##func_name##_impl\
-    \ : std::false_type {};                                    \\\n    template <class\
-    \ T>                                                                     \\\n\
-    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
-    \ \\\n        : std::true_type {};                                           \
-    \                    \\\n    }                                               \
-    \                                       \\\n    template <class T>           \
-    \                                                          \\\n    struct has_##func_name\
-    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
-    \ <class T>                                                                  \
-    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
-    \n#define HAS_METHOD_ARG(func_name)                                          \
-    \                                    \\\n    namespace internal_traits {     \
-    \                                                                           \\\
-    \n    template <class T, typename U, class = void>                           \
-    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
-    \ {};                                                        \\\n    template\
-    \ <class T, typename U>                                                      \
-    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
-    \ \\\n        : std::true_type {};                                           \
-    \                                        \\\n    }                           \
-    \                                                                            \
-    \   \\\n    template <class T, typename U>                                   \
-    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
-    \ U>::type {};                           \\\n    template <class T, typename U>\
-    \                                                                            \
-    \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
-    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
-    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
-    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
-    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
-    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
-    \nnamespace internal_traits {\n// \u5C04\u5F71 (proj) \u306E\u65E2\u5B9A\u5024\
-    \n#if __cplusplus >= 202002L\nusing identity = std::identity;\n#else\nstruct identity\
-    \ {\n    using is_transparent = void;\n    template <class T>\n    constexpr T&&\
-    \ operator()(T&& x) const noexcept {\n        return std::forward<T>(x);\n   \
-    \ }\n};\n#endif\n}  // namespace internal_traits\n\ntemplate <class C>\nusing\
-    \ mem_value_type = typename C::value_type;\ntemplate <class C>\nusing mem_difference_type\
-    \ = typename C::difference_type;\n\nnamespace internal_traits {\ntemplate <class\
-    \ T, class = void>\nstruct is_sorted_container_impl : std::false_type {};\ntemplate\
-    \ <class T>\nstruct is_sorted_container_impl<std::set<T>> : std::true_type {};\n\
-    template <class T>\nstruct is_sorted_container_impl<std::multiset<T>> : std::true_type\
-    \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
-    \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
-    inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
-    #line 16 \"src/math/modint.hpp\"\n\nnamespace internal_modint {\n// clang-format\
+    #line 15 \"src/math/convolution.hpp\"\n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n\
+    \ * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\
+    \u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line 10 \"\
+    src/math/modint.hpp\"\n#include <iostream>\n#include <limits>\n#line 14 \"src/math/modint.hpp\"\
+    \n\n#line 16 \"src/math/modint.hpp\"\n\nnamespace internal_modint {\n// clang-format\
     \ off\nstatic constexpr std::uint16_t prime32_bases[] {\n    15591,  2018,  166,\
     \ 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,  3620,   560,  3128, \
     \ 5212,  2657,\n     2300,  2021, 4652, 1471,  9336,  4018,  2398, 20462, 10277,\
@@ -806,7 +824,7 @@ data:
     \ - y0) - imod1 * y1).val();\n        return y0 + static_cast<unsigned long long>(y1)\
     \ * MOD0 + y2 * mod01;\n    };\n    std::vector<unsigned long long> res(N + M\
     \ - 1);\n    for (int i = 0; i < N + M - 1; ++i) res[i] = restore(p0[i], p1[i],\
-    \ p2[i]) + (restore(q0[i], q1[i], q2[i]) << 32);\n    return res;\n}\n#line 18\
+    \ p2[i]) + (restore(q0[i], q1[i], q2[i]) << 32);\n    return res;\n}\n#line 21\
     \ \"src/math/fps.hpp\"\n\ntemplate <typename mint>\nstruct FPS;\n\nnamespace internal_fps\
     \ {\ntemplate <typename mint>\nFPS<mint> gcd(const FPS<mint>& f, const FPS<mint>&\
     \ g);\n\n// \u4EE5\u4E0B\u306F\u6CD5\u304C NTT \u306B\u5411\u304F\u7D20\u6570\u306E\
@@ -875,14 +893,19 @@ data:
     \        b.insert(b.end(), x.begin() + m, x.end());\n    }\n    b.resize(deg);\n\
     \    return b;\n}\n}  // namespace internal_fps\n\ntemplate <typename mint>\n\
     struct FPS : std::vector<mint> {\n    using std::vector<mint>::vector;\n\n   \
-    \ // constructor\n    FPS(const std::vector<mint>& r) : std::vector<mint>(r) {}\n\
-    \n    // core operator\n    inline FPS pre(long long siz) const {\n        return\
-    \ FPS(begin(*this), begin(*this) + std::min(static_cast<long long>(this->size()),\
-    \ siz));\n    }\n    inline FPS rev() const {\n        FPS res = *this;\n    \
-    \    reverse(begin(res), end(res));\n        return res;\n    }\n    inline FPS&\
-    \ normalize() {\n        while (!this->empty() && this->back() == 0) this->pop_back();\n\
-    \        return *this;\n    }\n\n    // basic operator\n    inline FPS operator-()\
-    \ const noexcept {\n        FPS res = (*this);\n        for (int i = 0; i < static_cast<int>(res.size());\
+    \ // constructor\n#if __cplusplus >= 202002L\n    template <class R = std::initializer_list<mint>>\n\
+    \        requires(internal_traits::sized_constructible_range<R, mint> && !std::is_same_v<std::decay_t<R>,\
+    \ FPS>)\n#else\n    template <class R = std::initializer_list<mint>, ENABLE_IF_T(internal_traits::is_sized_constructible_range<R,\
+    \ mint>::value && !std::is_same_v<std::decay_t<R>, FPS>)>\n#endif\n    FPS(R&&\
+    \ r) {\n        this->reserve(internal_traits::range_size(r));\n        for (auto&&\
+    \ x : r) this->emplace_back(std::forward<decltype(x)>(x));\n    }\n\n    // core\
+    \ operator\n    inline FPS pre(long long siz) const {\n        return FPS(begin(*this),\
+    \ begin(*this) + std::min(static_cast<long long>(this->size()), siz));\n    }\n\
+    \    inline FPS rev() const {\n        FPS res = *this;\n        reverse(begin(res),\
+    \ end(res));\n        return res;\n    }\n    inline FPS& normalize() {\n    \
+    \    while (!this->empty() && this->back() == 0) this->pop_back();\n        return\
+    \ *this;\n    }\n\n    // basic operator\n    inline FPS operator-() const noexcept\
+    \ {\n        FPS res = (*this);\n        for (int i = 0; i < static_cast<int>(res.size());\
     \ ++i) res[i] = -res[i];\n        return res;\n    }\n    inline FPS operator+(const\
     \ mint& v) const { return FPS(*this) += v; }\n    inline FPS operator+(const FPS&\
     \ r) const { return FPS(*this) += r; }\n    inline FPS operator-(const mint& v)\
@@ -1152,65 +1175,83 @@ data:
     \ {\n        if (r - l == 1) return {nums[l], dens[l]};\n        long long m =\
     \ (l + r) / 2;\n        auto [a, b] = self(self, l, m);\n        auto [c, d] =\
     \ self(self, m, r);\n        return {a * d + c * b, b * d};\n    };\n    return\
-    \ rec(rec, 0, nums.size());\n}\n#line 12 \"test/unittest/math/fps.test.cpp\"\n\
-    \n#line 15 \"test/unittest/math/fps.test.cpp\"\n#include <random>\n#line 17 \"\
-    test/unittest/math/fps.test.cpp\"\n\nusing mint = static_modint<998244353>;\n\
-    using F = FPS<mint>;\nusing P = std::vector<mint>;\n\nP trim(P a) {\n    while\
-    \ (!a.empty() && a.back() == 0) a.pop_back();\n    return a;\n}\nP naive_mul(const\
-    \ P& a, const P& b) {\n    if (a.empty() || b.empty()) return {};\n    P c(a.size()\
-    \ + b.size() - 1);\n    for (size_t i = 0; i < a.size(); i++)\n        for (size_t\
-    \ j = 0; j < b.size(); j++) c[i + j] += a[i] * b[j];\n    return c;\n}\n// \u591A\
-    \u9805\u5F0F\u306E\u4F59\u308A (b \u306F\u672B\u5C3E\u304C 0 \u3067\u306A\u3044\
-    \u3053\u3068)\nP naive_mod(P a, const P& b) {\n    a = trim(a);\n    while (a.size()\
-    \ >= b.size()) {\n        mint c = a.back() / b.back();\n        size_t s = a.size()\
-    \ - b.size();\n        for (size_t i = 0; i < b.size(); i++) a[s + i] -= c * b[i];\n\
-    \        a = trim(a);\n    }\n    return a;\n}\n// \u6700\u9AD8\u6B21\u306E\u4FC2\
-    \u6570\u3092 1 \u306B\u3059\u308B\nP monic(P a) {\n    a = trim(a);\n    if (a.empty())\
-    \ return a;\n    mint c = a.back().inv();\n    for (auto& x : a) x *= c;\n   \
-    \ return a;\n}\nP naive_gcd(P a, P b) {\n    a = trim(a), b = trim(b);\n    while\
-    \ (!b.empty()) {\n        P r = naive_mod(a, b);\n        a = b;\n        b =\
-    \ r;\n    }\n    return monic(a);\n}\nP random_poly(std::mt19937_64& rng, int\
-    \ n, bool nonzero_lead) {\n    P a(n);\n    for (auto& x : a) x = static_cast<long\
-    \ long>(rng() % 998244353);\n    if (rng() % 4 == 0)\n        for (auto& x : a)\
-    \ x = static_cast<long long>(rng() % 3);  // 0 \u3092\u591A\u3081\u306B\u542B\u3080\
-    \n    if (nonzero_lead && n > 0 && a.back() == 0) a.back() = 1;\n    return a;\n\
-    }\n\nint main() {\n    std::mt19937_64 rng(314);\n    bool ok = true;\n\n    for\
-    \ (int rep = 0; rep < 300; rep++) {\n        int n = rng() % 8;\n        P a =\
-    \ random_poly(rng, n, false);\n        F f(a);\n        // \u5358\u9805\u306E\
-    \ -: \u5404\u4FC2\u6570\u306E\u7B26\u53F7\u3092\u53CD\u8EE2\u3057\u3001\u9577\u3055\
-    \u306F\u5909\u308F\u3089\u306A\u3044\n        F g = -f;\n        if (g.size()\
-    \ != a.size()) ok = false;\n        for (size_t i = 0; i < a.size(); i++)\n  \
-    \          if (g[i] != -a[i]) ok = false;\n        // \u5B9A\u6570\u3092\u5F15\
-    \u304F: \u5B9A\u6570\u9805\u304B\u3089\u5F15\u304F (\u7A7A\u306A\u3089\u9577\u3055\
-    \ 1 \u306B\u306A\u308B)\u3002\u9577\u3055\u306F\u305D\u308C\u4EE5\u5916\u5909\u308F\
-    \u3089\u306A\u3044\n        mint c = static_cast<long long>(rng() % 998244353);\n\
-    \        F h = f - c;\n        P e = a.empty() ? P{-c} : a;\n        if (!a.empty())\
-    \ e[0] -= c;\n        if (P(h) != e) ok = false;\n        F h2 = f;\n        h2\
-    \ -= c;\n        if (P(h2) != e) ok = false;\n        // \u5B9A\u6570\u3092\u8DB3\
-    \u3059\u306E\u3068\u6253\u3061\u6D88\u3057\u5408\u3046\n        if (P(f - c +\
-    \ c) != (a.empty() ? P{0} : a)) ok = false;\n        // eval: f(x) \u3092\u611A\
-    \u76F4\u306B\u8A08\u7B97\u3057\u305F\u3082\u306E\u3068\u4E00\u81F4\u3059\u308B\
-    \n        for (int t = 0; t < 5; t++) {\n            mint x = (t == 0) ? mint(0)\
-    \ : mint(static_cast<long long>(rng() % 998244353));\n            mint s = 0,\
-    \ pw = 1;\n            for (auto& coef : a) s += coef * pw, pw *= x;\n       \
-    \     if (f.eval(x) != s) ok = false;\n        }\n    }\n    if (!ok) std::cerr\
-    \ << \"unary minus / minus const / eval\" << std::endl;\n\n    // gcd: \u5171\u901A\
-    \u56E0\u5B50 h \u3092\u639B\u3051\u305F 2 \u3064\u306E\u591A\u9805\u5F0F\u306E\
-    \ gcd \u304C h \u306E\u5B9A\u6570\u500D\u306B\u306A\u308B\u3002NTT \u3092\u4F7F\
-    \u3046\u9577\u3055\u3082\u542B\u3081\u308B\n    for (int rep = 0; rep < 150 &&\
-    \ ok; rep++) {\n        int big = (rep % 5 == 0) ? 40 : 0;\n        P h = random_poly(rng,\
-    \ rng() % 5 + 1 + big / 4, true);\n        P x = random_poly(rng, rng() % 6 +\
-    \ 1 + big, true);\n        P y = random_poly(rng, rng() % 6 + 1 + big, true);\n\
-    \        P a = trim(naive_mul(h, x)), b = trim(naive_mul(h, y));\n        F d\
-    \ = gcd(F(a), F(b));\n        if (monic(P(d)) != naive_gcd(a, b)) ok = false,\
-    \ std::cerr << \"gcd \" << rep << std::endl;\n        // \u5F15\u6570\u306E\u9806\
-    \u3092\u5165\u308C\u66FF\u3048\u3066\u3082\u540C\u3058 (\u5B9A\u6570\u500D\u3092\
-    \u9664\u3044\u3066)\n        if (monic(P(gcd(F(b), F(a)))) != naive_gcd(a, b))\
-    \ ok = false;\n        // \u5272\u308A\u5207\u308B\n        if (!trim(P(F(a) %\
-    \ d)).empty() || !trim(P(F(b) % d)).empty()) ok = false;\n    }\n    // \u7247\
-    \u65B9\u304C 0 (\u7A7A) \u306A\u3089\u3001\u3082\u3046\u7247\u65B9\u3092\u8FD4\
-    \u3059\n    {\n        P a = {1, 2, 3};\n        if (monic(P(gcd(F(a), F())))\
-    \ != monic(a)) ok = false;\n        if (monic(P(gcd(F(), F(a)))) != monic(a))\
+    \ rec(rec, 0, nums.size());\n}\n\ntemplate <class R>\nFPS(R&&) -> FPS<internal_traits::range_value_t<R>>;\n\
+    #line 12 \"test/unittest/math/fps.test.cpp\"\n\n#line 15 \"test/unittest/math/fps.test.cpp\"\
+    \n#include <forward_list>\n#line 17 \"test/unittest/math/fps.test.cpp\"\n#include\
+    \ <list>\n#include <random>\n#include <string>\n#line 22 \"test/unittest/math/fps.test.cpp\"\
+    \n\nusing mint = static_modint<998244353>;\nusing F = FPS<mint>;\nusing P = std::vector<mint>;\n\
+    \nP trim(P a) {\n    while (!a.empty() && a.back() == 0) a.pop_back();\n    return\
+    \ a;\n}\nP naive_mul(const P& a, const P& b) {\n    if (a.empty() || b.empty())\
+    \ return {};\n    P c(a.size() + b.size() - 1);\n    for (size_t i = 0; i < a.size();\
+    \ i++)\n        for (size_t j = 0; j < b.size(); j++) c[i + j] += a[i] * b[j];\n\
+    \    return c;\n}\n// \u591A\u9805\u5F0F\u306E\u4F59\u308A (b \u306F\u672B\u5C3E\
+    \u304C 0 \u3067\u306A\u3044\u3053\u3068)\nP naive_mod(P a, const P& b) {\n   \
+    \ a = trim(a);\n    while (a.size() >= b.size()) {\n        mint c = a.back()\
+    \ / b.back();\n        size_t s = a.size() - b.size();\n        for (size_t i\
+    \ = 0; i < b.size(); i++) a[s + i] -= c * b[i];\n        a = trim(a);\n    }\n\
+    \    return a;\n}\n// \u6700\u9AD8\u6B21\u306E\u4FC2\u6570\u3092 1 \u306B\u3059\
+    \u308B\nP monic(P a) {\n    a = trim(a);\n    if (a.empty()) return a;\n    mint\
+    \ c = a.back().inv();\n    for (auto& x : a) x *= c;\n    return a;\n}\nP naive_gcd(P\
+    \ a, P b) {\n    a = trim(a), b = trim(b);\n    while (!b.empty()) {\n       \
+    \ P r = naive_mod(a, b);\n        a = b;\n        b = r;\n    }\n    return monic(a);\n\
+    }\nP random_poly(std::mt19937_64& rng, int n, bool nonzero_lead) {\n    P a(n);\n\
+    \    for (auto& x : a) x = static_cast<long long>(rng() % 998244353);\n    if\
+    \ (rng() % 4 == 0)\n        for (auto& x : a) x = static_cast<long long>(rng()\
+    \ % 3);  // 0 \u3092\u591A\u3081\u306B\u542B\u3080\n    if (nonzero_lead && n\
+    \ > 0 && a.back() == 0) a.back() = 1;\n    return a;\n}\n\nint main() {\n    std::mt19937_64\
+    \ rng(314);\n    bool ok = true;\n    auto verify_range = [&](auto&& r) {\n  \
+    \      F f(std::forward<decltype(r)>(r));\n        if (f != F{1, -2, 0} || f.size()\
+    \ != 3) ok = false;\n    };\n    int raw[] = {1, -2, 0};\n    const std::array<long\
+    \ long, 3> arr = {1, -2, 0};\n    verify_range(raw);\n    verify_range(arr);\n\
+    \    verify_range(std::list<int>{1, -2, 0});\n    F empty_range(std::array<int,\
+    \ 0>{});\n    if (!empty_range.empty()) ok = false;\n    const P coefficients{1,\
+    \ -2, 0};\n    FPS deduced(coefficients);\n    static_assert(std::is_same_v<decltype(deduced),\
+    \ F>);\n    if (deduced != F{1, -2, 0}) ok = false;\n    static_assert(!std::is_constructible_v<F,\
+    \ std::forward_list<int>&>);\n    static_assert(!std::is_constructible_v<F, std::array<std::string,\
+    \ 3>&>);\n#if __cplusplus >= 202002L\n    verify_range(std::views::iota(0, 3)\
+    \ | std::views::transform([&](int i) { return raw[i]; }));\n#endif\n    static_assert(std::is_constructible_v<F,\
+    \ const std::vector<int>&>);\n    static_assert(!std::is_constructible_v<F, const\
+    \ std::vector<std::string>&>);\n    const std::vector<int> ints = {1, -2, 0};\n\
+    \    F from_int(ints);\n    F from_long = std::vector<long long>{998244354LL,\
+    \ -2, 0};\n    F from_empty(std::vector<int>{});\n    if (from_int != F{1, -2,\
+    \ 0} || from_long != from_int || !from_empty.empty() || from_int.size() != 3)\
+    \ {\n        std::cerr << \"FPS vector conversion failed\\n\";\n        return\
+    \ 1;\n    }\n\n    for (int rep = 0; rep < 300; rep++) {\n        int n = rng()\
+    \ % 8;\n        P a = random_poly(rng, n, false);\n        F f(a);\n        //\
+    \ \u5358\u9805\u306E -: \u5404\u4FC2\u6570\u306E\u7B26\u53F7\u3092\u53CD\u8EE2\
+    \u3057\u3001\u9577\u3055\u306F\u5909\u308F\u3089\u306A\u3044\n        F g = -f;\n\
+    \        if (g.size() != a.size()) ok = false;\n        for (size_t i = 0; i <\
+    \ a.size(); i++)\n            if (g[i] != -a[i]) ok = false;\n        // \u5B9A\
+    \u6570\u3092\u5F15\u304F: \u5B9A\u6570\u9805\u304B\u3089\u5F15\u304F (\u7A7A\u306A\
+    \u3089\u9577\u3055 1 \u306B\u306A\u308B)\u3002\u9577\u3055\u306F\u305D\u308C\u4EE5\
+    \u5916\u5909\u308F\u3089\u306A\u3044\n        mint c = static_cast<long long>(rng()\
+    \ % 998244353);\n        F h = f - c;\n        P e = a.empty() ? P{-c} : a;\n\
+    \        if (!a.empty()) e[0] -= c;\n        if (P(h) != e) ok = false;\n    \
+    \    F h2 = f;\n        h2 -= c;\n        if (P(h2) != e) ok = false;\n      \
+    \  // \u5B9A\u6570\u3092\u8DB3\u3059\u306E\u3068\u6253\u3061\u6D88\u3057\u5408\
+    \u3046\n        if (P(f - c + c) != (a.empty() ? P{0} : a)) ok = false;\n    \
+    \    // eval: f(x) \u3092\u611A\u76F4\u306B\u8A08\u7B97\u3057\u305F\u3082\u306E\
+    \u3068\u4E00\u81F4\u3059\u308B\n        for (int t = 0; t < 5; t++) {\n      \
+    \      mint x = (t == 0) ? mint(0) : mint(static_cast<long long>(rng() % 998244353));\n\
+    \            mint s = 0, pw = 1;\n            for (auto& coef : a) s += coef *\
+    \ pw, pw *= x;\n            if (f.eval(x) != s) ok = false;\n        }\n    }\n\
+    \    if (!ok) std::cerr << \"unary minus / minus const / eval\" << std::endl;\n\
+    \n    // gcd: \u5171\u901A\u56E0\u5B50 h \u3092\u639B\u3051\u305F 2 \u3064\u306E\
+    \u591A\u9805\u5F0F\u306E gcd \u304C h \u306E\u5B9A\u6570\u500D\u306B\u306A\u308B\
+    \u3002NTT \u3092\u4F7F\u3046\u9577\u3055\u3082\u542B\u3081\u308B\n    for (int\
+    \ rep = 0; rep < 150 && ok; rep++) {\n        int big = (rep % 5 == 0) ? 40 :\
+    \ 0;\n        P h = random_poly(rng, rng() % 5 + 1 + big / 4, true);\n       \
+    \ P x = random_poly(rng, rng() % 6 + 1 + big, true);\n        P y = random_poly(rng,\
+    \ rng() % 6 + 1 + big, true);\n        P a = trim(naive_mul(h, x)), b = trim(naive_mul(h,\
+    \ y));\n        F d = gcd(F(a), F(b));\n        if (monic(P(d)) != naive_gcd(a,\
+    \ b)) ok = false, std::cerr << \"gcd \" << rep << std::endl;\n        // \u5F15\
+    \u6570\u306E\u9806\u3092\u5165\u308C\u66FF\u3048\u3066\u3082\u540C\u3058 (\u5B9A\
+    \u6570\u500D\u3092\u9664\u3044\u3066)\n        if (monic(P(gcd(F(b), F(a)))) !=\
+    \ naive_gcd(a, b)) ok = false;\n        // \u5272\u308A\u5207\u308B\n        if\
+    \ (!trim(P(F(a) % d)).empty() || !trim(P(F(b) % d)).empty()) ok = false;\n   \
+    \ }\n    // \u7247\u65B9\u304C 0 (\u7A7A) \u306A\u3089\u3001\u3082\u3046\u7247\
+    \u65B9\u3092\u8FD4\u3059\n    {\n        P a = {1, 2, 3};\n        if (monic(P(gcd(F(a),\
+    \ F()))) != monic(a)) ok = false;\n        if (monic(P(gcd(F(), F(a)))) != monic(a))\
     \ ok = false;\n    }\n\n    // pow_mod: f^n mod m \u3092\u3001\u611A\u76F4\u306B\
     \u639B\u3051\u3066\u4F59\u308A\u3092\u53D6\u3063\u305F\u3082\u306E\u3068\u6BD4\
     \u3079\u308B\n    for (int rep = 0; rep < 200 && ok; rep++) {\n        int deg_m\
@@ -1366,63 +1407,81 @@ data:
     \u3092\u901A\u308B)\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\
     \u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\
     \u529B\u3059\u308B\n\n#include \"../../../src/math/fps.hpp\"\n\n#include <algorithm>\n\
-    #include <iostream>\n#include <random>\n#include <vector>\n\nusing mint = static_modint<998244353>;\n\
-    using F = FPS<mint>;\nusing P = std::vector<mint>;\n\nP trim(P a) {\n    while\
-    \ (!a.empty() && a.back() == 0) a.pop_back();\n    return a;\n}\nP naive_mul(const\
-    \ P& a, const P& b) {\n    if (a.empty() || b.empty()) return {};\n    P c(a.size()\
-    \ + b.size() - 1);\n    for (size_t i = 0; i < a.size(); i++)\n        for (size_t\
-    \ j = 0; j < b.size(); j++) c[i + j] += a[i] * b[j];\n    return c;\n}\n// \u591A\
-    \u9805\u5F0F\u306E\u4F59\u308A (b \u306F\u672B\u5C3E\u304C 0 \u3067\u306A\u3044\
-    \u3053\u3068)\nP naive_mod(P a, const P& b) {\n    a = trim(a);\n    while (a.size()\
-    \ >= b.size()) {\n        mint c = a.back() / b.back();\n        size_t s = a.size()\
-    \ - b.size();\n        for (size_t i = 0; i < b.size(); i++) a[s + i] -= c * b[i];\n\
-    \        a = trim(a);\n    }\n    return a;\n}\n// \u6700\u9AD8\u6B21\u306E\u4FC2\
-    \u6570\u3092 1 \u306B\u3059\u308B\nP monic(P a) {\n    a = trim(a);\n    if (a.empty())\
-    \ return a;\n    mint c = a.back().inv();\n    for (auto& x : a) x *= c;\n   \
-    \ return a;\n}\nP naive_gcd(P a, P b) {\n    a = trim(a), b = trim(b);\n    while\
-    \ (!b.empty()) {\n        P r = naive_mod(a, b);\n        a = b;\n        b =\
-    \ r;\n    }\n    return monic(a);\n}\nP random_poly(std::mt19937_64& rng, int\
-    \ n, bool nonzero_lead) {\n    P a(n);\n    for (auto& x : a) x = static_cast<long\
-    \ long>(rng() % 998244353);\n    if (rng() % 4 == 0)\n        for (auto& x : a)\
-    \ x = static_cast<long long>(rng() % 3);  // 0 \u3092\u591A\u3081\u306B\u542B\u3080\
-    \n    if (nonzero_lead && n > 0 && a.back() == 0) a.back() = 1;\n    return a;\n\
-    }\n\nint main() {\n    std::mt19937_64 rng(314);\n    bool ok = true;\n\n    for\
-    \ (int rep = 0; rep < 300; rep++) {\n        int n = rng() % 8;\n        P a =\
-    \ random_poly(rng, n, false);\n        F f(a);\n        // \u5358\u9805\u306E\
-    \ -: \u5404\u4FC2\u6570\u306E\u7B26\u53F7\u3092\u53CD\u8EE2\u3057\u3001\u9577\u3055\
-    \u306F\u5909\u308F\u3089\u306A\u3044\n        F g = -f;\n        if (g.size()\
-    \ != a.size()) ok = false;\n        for (size_t i = 0; i < a.size(); i++)\n  \
-    \          if (g[i] != -a[i]) ok = false;\n        // \u5B9A\u6570\u3092\u5F15\
-    \u304F: \u5B9A\u6570\u9805\u304B\u3089\u5F15\u304F (\u7A7A\u306A\u3089\u9577\u3055\
-    \ 1 \u306B\u306A\u308B)\u3002\u9577\u3055\u306F\u305D\u308C\u4EE5\u5916\u5909\u308F\
-    \u3089\u306A\u3044\n        mint c = static_cast<long long>(rng() % 998244353);\n\
-    \        F h = f - c;\n        P e = a.empty() ? P{-c} : a;\n        if (!a.empty())\
-    \ e[0] -= c;\n        if (P(h) != e) ok = false;\n        F h2 = f;\n        h2\
-    \ -= c;\n        if (P(h2) != e) ok = false;\n        // \u5B9A\u6570\u3092\u8DB3\
-    \u3059\u306E\u3068\u6253\u3061\u6D88\u3057\u5408\u3046\n        if (P(f - c +\
-    \ c) != (a.empty() ? P{0} : a)) ok = false;\n        // eval: f(x) \u3092\u611A\
-    \u76F4\u306B\u8A08\u7B97\u3057\u305F\u3082\u306E\u3068\u4E00\u81F4\u3059\u308B\
-    \n        for (int t = 0; t < 5; t++) {\n            mint x = (t == 0) ? mint(0)\
-    \ : mint(static_cast<long long>(rng() % 998244353));\n            mint s = 0,\
-    \ pw = 1;\n            for (auto& coef : a) s += coef * pw, pw *= x;\n       \
-    \     if (f.eval(x) != s) ok = false;\n        }\n    }\n    if (!ok) std::cerr\
-    \ << \"unary minus / minus const / eval\" << std::endl;\n\n    // gcd: \u5171\u901A\
-    \u56E0\u5B50 h \u3092\u639B\u3051\u305F 2 \u3064\u306E\u591A\u9805\u5F0F\u306E\
-    \ gcd \u304C h \u306E\u5B9A\u6570\u500D\u306B\u306A\u308B\u3002NTT \u3092\u4F7F\
-    \u3046\u9577\u3055\u3082\u542B\u3081\u308B\n    for (int rep = 0; rep < 150 &&\
-    \ ok; rep++) {\n        int big = (rep % 5 == 0) ? 40 : 0;\n        P h = random_poly(rng,\
-    \ rng() % 5 + 1 + big / 4, true);\n        P x = random_poly(rng, rng() % 6 +\
-    \ 1 + big, true);\n        P y = random_poly(rng, rng() % 6 + 1 + big, true);\n\
-    \        P a = trim(naive_mul(h, x)), b = trim(naive_mul(h, y));\n        F d\
-    \ = gcd(F(a), F(b));\n        if (monic(P(d)) != naive_gcd(a, b)) ok = false,\
-    \ std::cerr << \"gcd \" << rep << std::endl;\n        // \u5F15\u6570\u306E\u9806\
-    \u3092\u5165\u308C\u66FF\u3048\u3066\u3082\u540C\u3058 (\u5B9A\u6570\u500D\u3092\
-    \u9664\u3044\u3066)\n        if (monic(P(gcd(F(b), F(a)))) != naive_gcd(a, b))\
-    \ ok = false;\n        // \u5272\u308A\u5207\u308B\n        if (!trim(P(F(a) %\
-    \ d)).empty() || !trim(P(F(b) % d)).empty()) ok = false;\n    }\n    // \u7247\
-    \u65B9\u304C 0 (\u7A7A) \u306A\u3089\u3001\u3082\u3046\u7247\u65B9\u3092\u8FD4\
-    \u3059\n    {\n        P a = {1, 2, 3};\n        if (monic(P(gcd(F(a), F())))\
-    \ != monic(a)) ok = false;\n        if (monic(P(gcd(F(), F(a)))) != monic(a))\
+    #include <array>\n#include <forward_list>\n#include <iostream>\n#include <list>\n\
+    #include <random>\n#include <string>\n#include <type_traits>\n#include <vector>\n\
+    \nusing mint = static_modint<998244353>;\nusing F = FPS<mint>;\nusing P = std::vector<mint>;\n\
+    \nP trim(P a) {\n    while (!a.empty() && a.back() == 0) a.pop_back();\n    return\
+    \ a;\n}\nP naive_mul(const P& a, const P& b) {\n    if (a.empty() || b.empty())\
+    \ return {};\n    P c(a.size() + b.size() - 1);\n    for (size_t i = 0; i < a.size();\
+    \ i++)\n        for (size_t j = 0; j < b.size(); j++) c[i + j] += a[i] * b[j];\n\
+    \    return c;\n}\n// \u591A\u9805\u5F0F\u306E\u4F59\u308A (b \u306F\u672B\u5C3E\
+    \u304C 0 \u3067\u306A\u3044\u3053\u3068)\nP naive_mod(P a, const P& b) {\n   \
+    \ a = trim(a);\n    while (a.size() >= b.size()) {\n        mint c = a.back()\
+    \ / b.back();\n        size_t s = a.size() - b.size();\n        for (size_t i\
+    \ = 0; i < b.size(); i++) a[s + i] -= c * b[i];\n        a = trim(a);\n    }\n\
+    \    return a;\n}\n// \u6700\u9AD8\u6B21\u306E\u4FC2\u6570\u3092 1 \u306B\u3059\
+    \u308B\nP monic(P a) {\n    a = trim(a);\n    if (a.empty()) return a;\n    mint\
+    \ c = a.back().inv();\n    for (auto& x : a) x *= c;\n    return a;\n}\nP naive_gcd(P\
+    \ a, P b) {\n    a = trim(a), b = trim(b);\n    while (!b.empty()) {\n       \
+    \ P r = naive_mod(a, b);\n        a = b;\n        b = r;\n    }\n    return monic(a);\n\
+    }\nP random_poly(std::mt19937_64& rng, int n, bool nonzero_lead) {\n    P a(n);\n\
+    \    for (auto& x : a) x = static_cast<long long>(rng() % 998244353);\n    if\
+    \ (rng() % 4 == 0)\n        for (auto& x : a) x = static_cast<long long>(rng()\
+    \ % 3);  // 0 \u3092\u591A\u3081\u306B\u542B\u3080\n    if (nonzero_lead && n\
+    \ > 0 && a.back() == 0) a.back() = 1;\n    return a;\n}\n\nint main() {\n    std::mt19937_64\
+    \ rng(314);\n    bool ok = true;\n    auto verify_range = [&](auto&& r) {\n  \
+    \      F f(std::forward<decltype(r)>(r));\n        if (f != F{1, -2, 0} || f.size()\
+    \ != 3) ok = false;\n    };\n    int raw[] = {1, -2, 0};\n    const std::array<long\
+    \ long, 3> arr = {1, -2, 0};\n    verify_range(raw);\n    verify_range(arr);\n\
+    \    verify_range(std::list<int>{1, -2, 0});\n    F empty_range(std::array<int,\
+    \ 0>{});\n    if (!empty_range.empty()) ok = false;\n    const P coefficients{1,\
+    \ -2, 0};\n    FPS deduced(coefficients);\n    static_assert(std::is_same_v<decltype(deduced),\
+    \ F>);\n    if (deduced != F{1, -2, 0}) ok = false;\n    static_assert(!std::is_constructible_v<F,\
+    \ std::forward_list<int>&>);\n    static_assert(!std::is_constructible_v<F, std::array<std::string,\
+    \ 3>&>);\n#if __cplusplus >= 202002L\n    verify_range(std::views::iota(0, 3)\
+    \ | std::views::transform([&](int i) { return raw[i]; }));\n#endif\n    static_assert(std::is_constructible_v<F,\
+    \ const std::vector<int>&>);\n    static_assert(!std::is_constructible_v<F, const\
+    \ std::vector<std::string>&>);\n    const std::vector<int> ints = {1, -2, 0};\n\
+    \    F from_int(ints);\n    F from_long = std::vector<long long>{998244354LL,\
+    \ -2, 0};\n    F from_empty(std::vector<int>{});\n    if (from_int != F{1, -2,\
+    \ 0} || from_long != from_int || !from_empty.empty() || from_int.size() != 3)\
+    \ {\n        std::cerr << \"FPS vector conversion failed\\n\";\n        return\
+    \ 1;\n    }\n\n    for (int rep = 0; rep < 300; rep++) {\n        int n = rng()\
+    \ % 8;\n        P a = random_poly(rng, n, false);\n        F f(a);\n        //\
+    \ \u5358\u9805\u306E -: \u5404\u4FC2\u6570\u306E\u7B26\u53F7\u3092\u53CD\u8EE2\
+    \u3057\u3001\u9577\u3055\u306F\u5909\u308F\u3089\u306A\u3044\n        F g = -f;\n\
+    \        if (g.size() != a.size()) ok = false;\n        for (size_t i = 0; i <\
+    \ a.size(); i++)\n            if (g[i] != -a[i]) ok = false;\n        // \u5B9A\
+    \u6570\u3092\u5F15\u304F: \u5B9A\u6570\u9805\u304B\u3089\u5F15\u304F (\u7A7A\u306A\
+    \u3089\u9577\u3055 1 \u306B\u306A\u308B)\u3002\u9577\u3055\u306F\u305D\u308C\u4EE5\
+    \u5916\u5909\u308F\u3089\u306A\u3044\n        mint c = static_cast<long long>(rng()\
+    \ % 998244353);\n        F h = f - c;\n        P e = a.empty() ? P{-c} : a;\n\
+    \        if (!a.empty()) e[0] -= c;\n        if (P(h) != e) ok = false;\n    \
+    \    F h2 = f;\n        h2 -= c;\n        if (P(h2) != e) ok = false;\n      \
+    \  // \u5B9A\u6570\u3092\u8DB3\u3059\u306E\u3068\u6253\u3061\u6D88\u3057\u5408\
+    \u3046\n        if (P(f - c + c) != (a.empty() ? P{0} : a)) ok = false;\n    \
+    \    // eval: f(x) \u3092\u611A\u76F4\u306B\u8A08\u7B97\u3057\u305F\u3082\u306E\
+    \u3068\u4E00\u81F4\u3059\u308B\n        for (int t = 0; t < 5; t++) {\n      \
+    \      mint x = (t == 0) ? mint(0) : mint(static_cast<long long>(rng() % 998244353));\n\
+    \            mint s = 0, pw = 1;\n            for (auto& coef : a) s += coef *\
+    \ pw, pw *= x;\n            if (f.eval(x) != s) ok = false;\n        }\n    }\n\
+    \    if (!ok) std::cerr << \"unary minus / minus const / eval\" << std::endl;\n\
+    \n    // gcd: \u5171\u901A\u56E0\u5B50 h \u3092\u639B\u3051\u305F 2 \u3064\u306E\
+    \u591A\u9805\u5F0F\u306E gcd \u304C h \u306E\u5B9A\u6570\u500D\u306B\u306A\u308B\
+    \u3002NTT \u3092\u4F7F\u3046\u9577\u3055\u3082\u542B\u3081\u308B\n    for (int\
+    \ rep = 0; rep < 150 && ok; rep++) {\n        int big = (rep % 5 == 0) ? 40 :\
+    \ 0;\n        P h = random_poly(rng, rng() % 5 + 1 + big / 4, true);\n       \
+    \ P x = random_poly(rng, rng() % 6 + 1 + big, true);\n        P y = random_poly(rng,\
+    \ rng() % 6 + 1 + big, true);\n        P a = trim(naive_mul(h, x)), b = trim(naive_mul(h,\
+    \ y));\n        F d = gcd(F(a), F(b));\n        if (monic(P(d)) != naive_gcd(a,\
+    \ b)) ok = false, std::cerr << \"gcd \" << rep << std::endl;\n        // \u5F15\
+    \u6570\u306E\u9806\u3092\u5165\u308C\u66FF\u3048\u3066\u3082\u540C\u3058 (\u5B9A\
+    \u6570\u500D\u3092\u9664\u3044\u3066)\n        if (monic(P(gcd(F(b), F(a)))) !=\
+    \ naive_gcd(a, b)) ok = false;\n        // \u5272\u308A\u5207\u308B\n        if\
+    \ (!trim(P(F(a) % d)).empty() || !trim(P(F(b) % d)).empty()) ok = false;\n   \
+    \ }\n    // \u7247\u65B9\u304C 0 (\u7A7A) \u306A\u3089\u3001\u3082\u3046\u7247\
+    \u65B9\u3092\u8FD4\u3059\n    {\n        P a = {1, 2, 3};\n        if (monic(P(gcd(F(a),\
+    \ F()))) != monic(a)) ok = false;\n        if (monic(P(gcd(F(), F(a)))) != monic(a))\
     \ ok = false;\n    }\n\n    // pow_mod: f^n mod m \u3092\u3001\u611A\u76F4\u306B\
     \u639B\u3051\u3066\u4F59\u308A\u3092\u53D6\u3063\u305F\u3082\u306E\u3068\u6BD4\
     \u3079\u308B\n    for (int rep = 0; rep < 200 && ok; rep++) {\n        int deg_m\
@@ -1560,15 +1619,15 @@ data:
     \ World\" << std::endl;\n}\n"
   dependsOn:
   - src/math/fps.hpp
+  - src/utility/traits.hpp
   - src/math/combinatorics.hpp
   - src/math/modular-arithmetic.hpp
   - src/math/convolution.hpp
   - src/math/modint.hpp
-  - src/utility/traits.hpp
   isVerificationFile: true
   path: test/unittest/math/fps.test.cpp
   requiredBy: []
-  timestamp: '2026-11-03 08:52:44+09:00'
+  timestamp: '2026-11-08 20:13:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/fps.test.cpp

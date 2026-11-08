@@ -14,17 +14,58 @@ data:
     title: "2\u6B21\u5143\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u9577\u65B9\
       \u5F62\u4F5C\u7528\u30011\u70B9\u53D6\u5F97)"
   - icon: ':heavy_check_mark:'
+    path: src/data_structures/dual-segtree.hpp
+    title: "\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u533A\u9593\u4F5C\u7528\
+      \u30011\u70B9\u53D6\u5F97)"
+  - icon: ':heavy_check_mark:'
+    path: src/data_structures/fenwick-tree.hpp
+    title: Fenwick Tree (Binary Indexed Tree)
+  - icon: ':heavy_check_mark:'
+    path: src/data_structures/imos.hpp
+    title: "imos\u6CD5\u3067\u533A\u9593\u4F5C\u7528\u30011\u70B9\u53D6\u5F97"
+  - icon: ':heavy_check_mark:'
     path: src/data_structures/interval-set.hpp
     title: "\u534A\u958B\u533A\u9593\u306E\u96C6\u5408"
   - icon: ':heavy_check_mark:'
     path: src/data_structures/kd-tree.hpp
     title: kd-tree
   - icon: ':heavy_check_mark:'
+    path: src/data_structures/lazy-segtree.hpp
+    title: "\u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
+  - icon: ':heavy_check_mark:'
+    path: src/data_structures/link-cut-tree.hpp
+    title: Link-Cut Tree
+  - icon: ':heavy_check_mark:'
+    path: src/data_structures/monoid-unionfind.hpp
+    title: "\u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\u3092\u4E57\u305B\u308BUnionFind"
+  - icon: ':heavy_check_mark:'
+    path: src/data_structures/persistent-lazy-segtree.hpp
+    title: "\u6C38\u7D9A\u9045\u5EF6\u4F1D\u642C\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
+  - icon: ':heavy_check_mark:'
+    path: src/data_structures/persistent-segtree.hpp
+    title: "\u6C38\u7D9A\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
+  - icon: ':heavy_check_mark:'
     path: src/data_structures/priority_counter.hpp
     title: "\u4E0A\u4F4D K \u500B\u306E\u5024\u3068\u305D\u306E\u500B\u6570"
   - icon: ':heavy_check_mark:'
+    path: src/data_structures/rbst.hpp
+    title: "\u5E73\u8861\u4E8C\u5206\u6728 (RBST)"
+  - icon: ':heavy_check_mark:'
     path: src/data_structures/segtree-2d.hpp
     title: "2\u6B21\u5143\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
+  - icon: ':heavy_check_mark:'
+    path: src/data_structures/segtree-beats.hpp
+    title: Segment Tree Beats
+  - icon: ':heavy_check_mark:'
+    path: src/data_structures/segtree.hpp
+    title: "\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
+  - icon: ':heavy_check_mark:'
+    path: src/data_structures/sortable-segtree.hpp
+    title: "\u533A\u9593\u30BD\u30FC\u30C8\u306E\u3067\u304D\u308B\u30BB\u30B0\u30E1\
+      \u30F3\u30C8\u6728"
+  - icon: ':heavy_check_mark:'
+    path: src/data_structures/sparse-table.hpp
+    title: Sparse Table
   - icon: ':heavy_check_mark:'
     path: src/dp/subset-sum-count.hpp
     title: "\u90E8\u5206\u548C\u306E\u500B\u6570"
@@ -250,8 +291,38 @@ data:
     path: test/aoj/dpl/dpl-5-f.test.cpp
     title: test/aoj/dpl/dpl-5-f.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl/dsl-2-a.test.cpp
+    title: test/aoj/dsl/dsl-2-a.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl/dsl-2-b.1.test.cpp
+    title: test/aoj/dsl/dsl-2-b.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl/dsl-2-b.2.test.cpp
+    title: test/aoj/dsl/dsl-2-b.2.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/aoj/dsl/dsl-2-c.test.cpp
     title: test/aoj/dsl/dsl-2-c.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl/dsl-2-d.test.cpp
+    title: test/aoj/dsl/dsl-2-d.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl/dsl-2-e.test.cpp
+    title: test/aoj/dsl/dsl-2-e.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl/dsl-2-f.test.cpp
+    title: test/aoj/dsl/dsl-2-f.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl/dsl-2-g.test.cpp
+    title: test/aoj/dsl/dsl-2-g.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl/dsl-2-h.1.test.cpp
+    title: test/aoj/dsl/dsl-2-h.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl/dsl-2-h.2.test.cpp
+    title: test/aoj/dsl/dsl-2-h.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl/dsl-2-i.test.cpp
+    title: test/aoj/dsl/dsl-2-i.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/dsl/dsl-4-a.1.test.cpp
     title: test/aoj/dsl/dsl-4-a.1.test.cpp
@@ -261,6 +332,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj/dsl/dsl-4-a.3.test.cpp
     title: test/aoj/dsl/dsl-4-a.3.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/dsl/dsl-5-a.test.cpp
+    title: test/aoj/dsl/dsl-5-a.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/grl/grl-5-d.test.cpp
+    title: test/aoj/grl/grl-5-d.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/itp1/itp1-10-c.test.cpp
     title: test/aoj/itp1/itp1-10-c.test.cpp
@@ -273,6 +350,15 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj/itp1/itp1-6-a.test.cpp
     title: test/aoj/itp1/itp1-6-a.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/itp2/itp2-3-b.1.test.cpp
+    title: test/aoj/itp2/itp2-3-b.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/itp2/itp2-3-b.2.test.cpp
+    title: test/aoj/itp2/itp2-3-b.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/itp2/itp2-3-b.3.test.cpp
+    title: test/aoj/itp2/itp2-3-b.3.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/itp2/itp2-3-c.test.cpp
     title: test/aoj/itp2/itp2-3-c.test.cpp
@@ -288,6 +374,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj/itp2/itp2-7-d.test.cpp
     title: test/aoj/itp2/itp2-7-d.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/aoj/ntl/ntl-1-c.test.cpp
+    title: test/aoj/ntl/ntl-1-c.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/aoj/volume0/0029.test.cpp
     title: test/aoj/volume0/0029.test.cpp
@@ -313,6 +402,15 @@ data:
     path: test/unittest/algebra/acted-monoid.test.cpp
     title: test/unittest/algebra/acted-monoid.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/algebra/beats-acted-monoid.test.cpp
+    title: test/unittest/algebra/beats-acted-monoid.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/algebra/mapping.test.cpp
+    title: test/unittest/algebra/mapping.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/algebra/monoid.test.cpp
+    title: test/unittest/algebra/monoid.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/base/functions.test.cpp
     title: test/unittest/base/functions.test.cpp
   - icon: ':heavy_check_mark:'
@@ -337,6 +435,12 @@ data:
     path: test/unittest/data_structures/dynamic-segtree.test.cpp
     title: test/unittest/data_structures/dynamic-segtree.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/fenwick-tree.test.cpp
+    title: test/unittest/data_structures/fenwick-tree.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/imos.test.cpp
+    title: test/unittest/data_structures/imos.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/interval-set.test.cpp
     title: test/unittest/data_structures/interval-set.test.cpp
   - icon: ':heavy_check_mark:'
@@ -345,6 +449,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/link-cut-tree.test.cpp
     title: test/unittest/data_structures/link-cut-tree.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/monoid-unionfind.test.cpp
+    title: test/unittest/data_structures/monoid-unionfind.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/persistent-lazy-segtree.test.cpp
     title: test/unittest/data_structures/persistent-lazy-segtree.test.cpp
@@ -361,8 +468,17 @@ data:
     path: test/unittest/data_structures/segtree-2d.test.cpp
     title: test/unittest/data_structures/segtree-2d.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/segtree-beats.test.cpp
+    title: test/unittest/data_structures/segtree-beats.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/sliding-window-aggregation.test.cpp
     title: test/unittest/data_structures/sliding-window-aggregation.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/sortable-segtree.test.cpp
+    title: test/unittest/data_structures/sortable-segtree.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/sparse-table.test.cpp
+    title: test/unittest/data_structures/sparse-table.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/dp/subset-sum.test.cpp
     title: test/unittest/dp/subset-sum.test.cpp
@@ -535,6 +651,15 @@ data:
     path: test/yosupo/data_structure/persistent-range-affine-range-sum.test.cpp
     title: test/yosupo/data_structure/persistent-range-affine-range-sum.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/point-add-range-sum.1.test.cpp
+    title: test/yosupo/data_structure/point-add-range-sum.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/point-add-range-sum.2.test.cpp
+    title: test/yosupo/data_structure/point-add-range-sum.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/point-add-range-sum.3.test.cpp
+    title: test/yosupo/data_structure/point-add-range-sum.3.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/point-add-rectangle-sum.test.cpp
     title: test/yosupo/data_structure/point-add-rectangle-sum.test.cpp
   - icon: ':heavy_check_mark:'
@@ -559,6 +684,9 @@ data:
     path: test/yosupo/data_structure/queue-operate-all-composite.test.cpp
     title: test/yosupo/data_structure/queue-operate-all-composite.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/range-add-range-min.test.cpp
+    title: test/yosupo/data_structure/range-add-range-min.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/range-affine-point-get.1.test.cpp
     title: test/yosupo/data_structure/range-affine-point-get.1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -577,6 +705,18 @@ data:
     path: test/yosupo/data_structure/range-affine-range-sum.3.test.cpp
     title: test/yosupo/data_structure/range-affine-range-sum.3.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.1.test.cpp
+    title: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.2.test.cpp
+    title: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
+    title: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/range-reverse-range-sum.test.cpp
+    title: test/yosupo/data_structure/range-reverse-range-sum.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/range-set-range-composite.test.cpp
     title: test/yosupo/data_structure/range-set-range-composite.test.cpp
   - icon: ':heavy_check_mark:'
@@ -586,11 +726,20 @@ data:
     path: test/yosupo/data_structure/rectangle-add-point-get.2.test.cpp
     title: test/yosupo/data_structure/rectangle-add-point-get.2.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/rectangle-sum.3.test.cpp
+    title: test/yosupo/data_structure/rectangle-sum.3.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/rectangle-sum.4.test.cpp
+    title: test/yosupo/data_structure/rectangle-sum.4.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/segment-add-get-min.test.cpp
     title: test/yosupo/data_structure/segment-add-get-min.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/static-range-sum.test.cpp
     title: test/yosupo/data_structure/static-range-sum.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/data_structure/staticrmq.test.cpp
+    title: test/yosupo/data_structure/staticrmq.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
     title: test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
@@ -663,6 +812,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/enumerate-triangles.test.cpp
     title: test/yosupo/graph/enumerate-triangles.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/graph/incremental-minimum-spanning-forest.test.cpp
+    title: test/yosupo/graph/incremental-minimum-spanning-forest.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/characteristic-polynomial.test.cpp
     title: test/yosupo/linear_algebra/characteristic-polynomial.test.cpp
@@ -793,17 +945,41 @@ data:
     path: test/yosupo/string/wildcard-pattern-matching.test.cpp
     title: test/yosupo/string/wildcard-pattern-matching.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/tree/dynamic-tree-vertex-add-path-sum.test.cpp
+    title: test/yosupo/tree/dynamic-tree-vertex-add-path-sum.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/tree/dynamic-tree-vertex-add-subtree-sum.test.cpp
+    title: test/yosupo/tree/dynamic-tree-vertex-add-subtree-sum.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
     title: test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
     title: test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/tree/lca.2.test.cpp
+    title: test/yosupo/tree/lca.2.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/tree/tree-path-composite-sum.test.cpp
     title: test/yosupo/tree/tree-path-composite-sum.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yosupo/tree/vertex-add-path-sum.test.cpp
+    title: test/yosupo/tree/vertex-add-path-sum.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/tree/vertex-add-subtree-sum.1.test.cpp
+    title: test/yosupo/tree/vertex-add-subtree-sum.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp
+    title: test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/tree/vertex-set-path-composite.test.cpp
     title: test/yosupo/tree/vertex-set-path-composite.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yukicoder/1036.1.test.cpp
+    title: test/yukicoder/1036.1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yukicoder/1036.2.test.cpp
+    title: test/yukicoder/1036.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/117.test.cpp
     title: test/yukicoder/117.test.cpp
@@ -814,6 +990,15 @@ data:
     path: test/yukicoder/1340.test.cpp
     title: test/yukicoder/1340.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/yukicoder/1641.test.cpp
+    title: test/yukicoder/1641.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yukicoder/2292.test.cpp
+    title: test/yukicoder/2292.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yukicoder/3652.test.cpp
+    title: test/yukicoder/3652.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/yukicoder/3672.test.cpp
     title: test/yukicoder/3672.test.cpp
   - icon: ':heavy_check_mark:'
@@ -822,6 +1007,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/3771.test.cpp
     title: test/yukicoder/3771.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yukicoder/674.1.test.cpp
+    title: test/yukicoder/674.1.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/674.2.test.cpp
     title: test/yukicoder/674.2.test.cpp
@@ -834,11 +1022,28 @@ data:
   bundledCode: "#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n *\
     \ @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n#include <functional>\n\
     #include <iterator>\n#include <set>\n#include <type_traits>\n#include <utility>\n\
-    \nnamespace internal_traits {\nusing std::begin, std::end;\n\ntemplate <class\
-    \ T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class\
-    \ T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
-    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
-    \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
+    \n#if __cplusplus >= 202002L\n#include <ranges>\n#endif\n\nnamespace internal_traits\
+    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n\n// \u30B5\u30A4\u30BA\u4ED8\
+    \u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\u3059\
+    \u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\u308B\
+    \u3002\n#if __cplusplus >= 202002L\ntemplate <class R, class S>\nconcept sized_constructible_range\
+    \ = std::ranges::input_range<R> && std::ranges::sized_range<R> &&\n          \
+    \                          std::is_constructible_v<S, std::ranges::range_reference_t<R>>;\n\
+    \ntemplate <class R>\nauto range_size(R& r) {\n    return std::ranges::size(r);\n\
+    }\ntemplate <class R>\nauto range_begin(R& r) {\n    return std::ranges::begin(r);\n\
+    }\ntemplate <class R>\nusing range_value_t = std::ranges::range_value_t<R>;\n\
+    #else\nusing std::size;\ntemplate <class R>\nauto range_size(R& r) -> decltype(size(r))\
+    \ {\n    return size(r);\n}\ntemplate <class R>\nauto range_begin(R& r) -> decltype(begin(r))\
+    \ {\n    return begin(r);\n}\ntemplate <class R>\nusing range_value_t = typename\
+    \ std::iterator_traits<decltype(range_begin(std::declval<R&>()))>::value_type;\n\
+    \ntemplate <class R, class S, class = void>\nstruct is_sized_constructible_range\
+    \ : std::false_type {};\ntemplate <class R, class S>\nstruct is_sized_constructible_range<R,\
+    \ S, std::void_t<decltype(range_size(std::declval<R&>())), decltype(++std::declval<decltype(begin(std::declval<R&>()))&>()),\
+    \ decltype(begin(std::declval<R&>()) != end(std::declval<R&>())), decltype(*begin(std::declval<R&>()))>>\n\
+    \    : std::is_constructible<S, decltype(*begin(std::declval<R&>()))> {};\n#endif\n\
+    }  // namespace internal_traits\n\ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
     \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
     \n#define HAS_METHOD(func_name)                                              \
     \                \\\n    namespace internal_traits {                         \
@@ -890,11 +1095,29 @@ data:
     inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n"
   code: "#pragma once\n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n\
     \ */\n\n#include <cstddef>\n#include <functional>\n#include <iterator>\n#include\
-    \ <set>\n#include <type_traits>\n#include <utility>\n\nnamespace internal_traits\
-    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
-    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
-    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
-    \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
+    \ <set>\n#include <type_traits>\n#include <utility>\n\n#if __cplusplus >= 202002L\n\
+    #include <ranges>\n#endif\n\nnamespace internal_traits {\nusing std::begin, std::end;\n\
+    \ntemplate <class T, class = void>\nstruct is_range_impl : std::false_type {};\n\
+    template <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n\n// \u30B5\u30A4\u30BA\u4ED8\
+    \u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\u3059\
+    \u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\u308B\
+    \u3002\n#if __cplusplus >= 202002L\ntemplate <class R, class S>\nconcept sized_constructible_range\
+    \ = std::ranges::input_range<R> && std::ranges::sized_range<R> &&\n          \
+    \                          std::is_constructible_v<S, std::ranges::range_reference_t<R>>;\n\
+    \ntemplate <class R>\nauto range_size(R& r) {\n    return std::ranges::size(r);\n\
+    }\ntemplate <class R>\nauto range_begin(R& r) {\n    return std::ranges::begin(r);\n\
+    }\ntemplate <class R>\nusing range_value_t = std::ranges::range_value_t<R>;\n\
+    #else\nusing std::size;\ntemplate <class R>\nauto range_size(R& r) -> decltype(size(r))\
+    \ {\n    return size(r);\n}\ntemplate <class R>\nauto range_begin(R& r) -> decltype(begin(r))\
+    \ {\n    return begin(r);\n}\ntemplate <class R>\nusing range_value_t = typename\
+    \ std::iterator_traits<decltype(range_begin(std::declval<R&>()))>::value_type;\n\
+    \ntemplate <class R, class S, class = void>\nstruct is_sized_constructible_range\
+    \ : std::false_type {};\ntemplate <class R, class S>\nstruct is_sized_constructible_range<R,\
+    \ S, std::void_t<decltype(range_size(std::declval<R&>())), decltype(++std::declval<decltype(begin(std::declval<R&>()))&>()),\
+    \ decltype(begin(std::declval<R&>()) != end(std::declval<R&>())), decltype(*begin(std::declval<R&>()))>>\n\
+    \    : std::is_constructible<S, decltype(*begin(std::declval<R&>()))> {};\n#endif\n\
+    }  // namespace internal_traits\n\ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
     \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
     \n#define HAS_METHOD(func_name)                                              \
     \                \\\n    namespace internal_traits {                         \
@@ -977,19 +1200,38 @@ data:
   - src/math/multipoint.hpp
   - src/math/modint.hpp
   - src/math/fps-composition.hpp
+  - src/data_structures/rbst.hpp
+  - src/data_structures/persistent-lazy-segtree.hpp
+  - src/data_structures/fenwick-tree.hpp
+  - src/data_structures/lazy-segtree.hpp
   - src/data_structures/priority_counter.hpp
   - src/data_structures/kd-tree.hpp
   - src/data_structures/dual-segtree-2d.hpp
+  - src/data_structures/persistent-segtree.hpp
   - src/data_structures/segtree-2d.hpp
+  - src/data_structures/sortable-segtree.hpp
+  - src/data_structures/dual-segtree.hpp
+  - src/data_structures/sparse-table.hpp
+  - src/data_structures/imos.hpp
+  - src/data_structures/link-cut-tree.hpp
   - src/data_structures/convex-hull-trick.hpp
+  - src/data_structures/monoid-unionfind.hpp
+  - src/data_structures/segtree-beats.hpp
   - src/data_structures/counter.hpp
   - src/data_structures/interval-set.hpp
+  - src/data_structures/segtree.hpp
   - src/string/rolling-hash.hpp
   - src/string/wildcard-matching.hpp
-  timestamp: '2026-10-31 05:46:56+09:00'
+  timestamp: '2026-11-08 20:13:03+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/yukicoder/1641.test.cpp
   - test/yukicoder/674.2.test.cpp
+  - test/yukicoder/1036.1.test.cpp
+  - test/yukicoder/1036.2.test.cpp
+  - test/yukicoder/3652.test.cpp
+  - test/yukicoder/674.1.test.cpp
+  - test/yukicoder/2292.test.cpp
   - test/yukicoder/3672.test.cpp
   - test/yukicoder/117.test.cpp
   - test/yukicoder/132.test.cpp
@@ -1036,22 +1278,31 @@ data:
   - test/unittest/math/multipoint.test.cpp
   - test/unittest/math/bitwise-transform.test.cpp
   - test/unittest/data_structures/dual-segtree-2d.test.cpp
+  - test/unittest/data_structures/fenwick-tree.test.cpp
+  - test/unittest/data_structures/sparse-table.test.cpp
   - test/unittest/data_structures/dual-segtree.test.cpp
+  - test/unittest/data_structures/monoid-unionfind.test.cpp
   - test/unittest/data_structures/counter.test.cpp
   - test/unittest/data_structures/sliding-window-aggregation.test.cpp
   - test/unittest/data_structures/persistent-segtree.test.cpp
   - test/unittest/data_structures/persistent-lazy-segtree.test.cpp
   - test/unittest/data_structures/kd-tree.test.cpp
   - test/unittest/data_structures/convex-hull-trick.test.cpp
+  - test/unittest/data_structures/sortable-segtree.test.cpp
   - test/unittest/data_structures/circular-sum.test.cpp
   - test/unittest/data_structures/segtree-2d.test.cpp
+  - test/unittest/data_structures/segtree-beats.test.cpp
   - test/unittest/data_structures/interval-set.test.cpp
   - test/unittest/data_structures/priority_counter.test.cpp
   - test/unittest/data_structures/link-cut-tree.test.cpp
   - test/unittest/data_structures/dynamic-segtree.test.cpp
   - test/unittest/data_structures/dynamic-lazy-segtree.test.cpp
+  - test/unittest/data_structures/imos.test.cpp
   - test/unittest/data_structures/rbst.test.cpp
+  - test/unittest/algebra/mapping.test.cpp
   - test/unittest/algebra/acted-monoid.test.cpp
+  - test/unittest/algebra/beats-acted-monoid.test.cpp
+  - test/unittest/algebra/monoid.test.cpp
   - test/unittest/string/rolling-hash.test.cpp
   - test/unittest/string/wildcard-matching.test.cpp
   - test/aoj/volume0/0029.test.cpp
@@ -1083,15 +1334,20 @@ data:
   - test/aoj/cgl/cgl-4-a.test.cpp
   - test/aoj/cgl/cgl-2-d.test.cpp
   - test/aoj/volume26/2641.test.cpp
+  - test/aoj/grl/grl-5-d.test.cpp
   - test/aoj/itp1/itp1-10-c.test.cpp
   - test/aoj/itp1/itp1-6-a.test.cpp
   - test/aoj/itp1/itp1-2-c.test.cpp
   - test/aoj/itp1/itp1-4-d.test.cpp
+  - test/aoj/ntl/ntl-1-c.test.cpp
   - test/aoj/volume12/1289.test.cpp
+  - test/aoj/itp2/itp2-3-b.1.test.cpp
   - test/aoj/itp2/itp2-5-a.1.test.cpp
   - test/aoj/itp2/itp2-3-c.test.cpp
+  - test/aoj/itp2/itp2-3-b.2.test.cpp
   - test/aoj/itp2/itp2-5-a.2.test.cpp
   - test/aoj/itp2/itp2-7-d.test.cpp
+  - test/aoj/itp2/itp2-3-b.3.test.cpp
   - test/aoj/itp2/itp2-5-b.test.cpp
   - test/aoj/dpl/dpl-5-d.2.test.cpp
   - test/aoj/dpl/dpl-5-d.1.test.cpp
@@ -1101,10 +1357,21 @@ data:
   - test/aoj/dpl/dpl-5-b.2.test.cpp
   - test/aoj/dpl/dpl-5-f.test.cpp
   - test/aoj/volume33/3314.test.cpp
+  - test/aoj/dsl/dsl-2-h.2.test.cpp
+  - test/aoj/dsl/dsl-2-i.test.cpp
+  - test/aoj/dsl/dsl-2-b.1.test.cpp
   - test/aoj/dsl/dsl-2-c.test.cpp
+  - test/aoj/dsl/dsl-2-b.2.test.cpp
   - test/aoj/dsl/dsl-4-a.3.test.cpp
   - test/aoj/dsl/dsl-4-a.1.test.cpp
+  - test/aoj/dsl/dsl-5-a.test.cpp
   - test/aoj/dsl/dsl-4-a.2.test.cpp
+  - test/aoj/dsl/dsl-2-h.1.test.cpp
+  - test/aoj/dsl/dsl-2-d.test.cpp
+  - test/aoj/dsl/dsl-2-e.test.cpp
+  - test/aoj/dsl/dsl-2-f.test.cpp
+  - test/aoj/dsl/dsl-2-a.test.cpp
+  - test/aoj/dsl/dsl-2-g.test.cpp
   - test/aoj/alds1/alds1-14-c.test.cpp
   - test/aoj/alds1/alds1-14-b.1.test.cpp
   - test/aoj/alds1/alds1-4-b.test.cpp
@@ -1139,6 +1406,7 @@ data:
   - test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
   - test/yosupo/graph/enumerate-triangles.test.cpp
   - test/yosupo/graph/counting-spanning-tree-directed.test.cpp
+  - test/yosupo/graph/incremental-minimum-spanning-forest.test.cpp
   - test/yosupo/convolution/bitwise-xor-convolution.test.cpp
   - test/yosupo/convolution/lcm-convolution.test.cpp
   - test/yosupo/convolution/gcd-convolution.test.cpp
@@ -1148,9 +1416,15 @@ data:
   - test/yosupo/convolution/convolution-mod-2-64.2.test.cpp
   - test/yosupo/convolution/convolution-mod.test.cpp
   - test/yosupo/tree/frequency-table-of-tree-distance.test.cpp
+  - test/yosupo/tree/vertex-add-subtree-sum.1.test.cpp
   - test/yosupo/tree/vertex-set-path-composite.test.cpp
+  - test/yosupo/tree/dynamic-tree-vertex-add-subtree-sum.test.cpp
   - test/yosupo/tree/dynamic-tree-vertex-set-path-composite.test.cpp
+  - test/yosupo/tree/vertex-add-path-sum.test.cpp
+  - test/yosupo/tree/dynamic-tree-vertex-add-path-sum.test.cpp
   - test/yosupo/tree/tree-path-composite-sum.test.cpp
+  - test/yosupo/tree/lca.2.test.cpp
+  - test/yosupo/tree/vertex-add-subtree-sum.2.test.cpp
   - test/yosupo/polynomial/polynomial-root-finding.test.cpp
   - test/yosupo/polynomial/multipoint-evaluation-on-geometric-sequence.test.cpp
   - test/yosupo/polynomial/multipoint-evaluation.test.cpp
@@ -1178,6 +1452,7 @@ data:
   - test/yosupo/number_theory/sum-of-multiplicative-function.test.cpp
   - test/yosupo/number_theory/sum-of-totient-function.test.cpp
   - test/yosupo/number_theory/bernoulli-number.test.cpp
+  - test/yosupo/data_structure/rectangle-sum.3.test.cpp
   - test/yosupo/data_structure/range-affine-range-sum.1.test.cpp
   - test/yosupo/data_structure/segment-add-get-min.test.cpp
   - test/yosupo/data_structure/rectangle-add-point-get.2.test.cpp
@@ -1185,14 +1460,19 @@ data:
   - test/yosupo/data_structure/point-set-range-composite.1.test.cpp
   - test/yosupo/data_structure/point-set-range-composite-large-array.test.cpp
   - test/yosupo/data_structure/range-affine-range-sum-large-array.test.cpp
+  - test/yosupo/data_structure/range-reverse-range-sum.test.cpp
   - test/yosupo/data_structure/area-of-union-of-rectangles.3.test.cpp
   - test/yosupo/data_structure/unionfind-with-potential.test.cpp
+  - test/yosupo/data_structure/staticrmq.test.cpp
   - test/yosupo/data_structure/line-add-get-min.1.test.cpp
   - test/yosupo/data_structure/line-add-get-min.2.test.cpp
   - test/yosupo/data_structure/range-affine-range-sum.2.test.cpp
+  - test/yosupo/data_structure/rectangle-sum.4.test.cpp
+  - test/yosupo/data_structure/range-add-range-min.test.cpp
   - test/yosupo/data_structure/point-set-range-composite.3.test.cpp
   - test/yosupo/data_structure/static-range-sum.test.cpp
   - test/yosupo/data_structure/range-affine-range-sum.3.test.cpp
+  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.2.test.cpp
   - test/yosupo/data_structure/rectangle-add-point-get.1.test.cpp
   - test/yosupo/data_structure/point-set-range-composite.2.test.cpp
   - test/yosupo/data_structure/area-of-union-of-rectangles.2.test.cpp
@@ -1200,13 +1480,18 @@ data:
   - test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
   - test/yosupo/data_structure/persistent-range-affine-range-sum.test.cpp
   - test/yosupo/data_structure/unionfind-with-potential-non-commutative-group.test.cpp
+  - test/yosupo/data_structure/point-add-range-sum.2.test.cpp
   - test/yosupo/data_structure/point-add-rectangle-sum.test.cpp
   - test/yosupo/data_structure/deque-operate-all-composite.test.cpp
   - test/yosupo/data_structure/range-affine-point-get.1.test.cpp
   - test/yosupo/data_structure/queue-operate-all-composite.test.cpp
   - test/yosupo/data_structure/associative-array.test.cpp
   - test/yosupo/data_structure/range-affine-point-get.2.test.cpp
+  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
+  - test/yosupo/data_structure/point-add-range-sum.1.test.cpp
+  - test/yosupo/data_structure/point-add-range-sum.3.test.cpp
   - test/yosupo/data_structure/range-set-range-composite.test.cpp
+  - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.1.test.cpp
   - test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
   - test/yosupo/linear_algebra/inverse-matrix.test.cpp
   - test/yosupo/linear_algebra/characteristic-polynomial.test.cpp

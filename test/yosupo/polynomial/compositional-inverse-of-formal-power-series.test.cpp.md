@@ -51,11 +51,28 @@ data:
     #line 14 \"src/math/modint.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n\
     \ * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n\
     #include <functional>\n#include <iterator>\n#include <set>\n#line 14 \"src/utility/traits.hpp\"\
-    \n\nnamespace internal_traits {\nusing std::begin, std::end;\n\ntemplate <class\
-    \ T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class\
-    \ T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
-    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
-    \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
+    \n\n#if __cplusplus >= 202002L\n#include <ranges>\n#endif\n\nnamespace internal_traits\
+    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n\n// \u30B5\u30A4\u30BA\u4ED8\
+    \u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\u3059\
+    \u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\u308B\
+    \u3002\n#if __cplusplus >= 202002L\ntemplate <class R, class S>\nconcept sized_constructible_range\
+    \ = std::ranges::input_range<R> && std::ranges::sized_range<R> &&\n          \
+    \                          std::is_constructible_v<S, std::ranges::range_reference_t<R>>;\n\
+    \ntemplate <class R>\nauto range_size(R& r) {\n    return std::ranges::size(r);\n\
+    }\ntemplate <class R>\nauto range_begin(R& r) {\n    return std::ranges::begin(r);\n\
+    }\ntemplate <class R>\nusing range_value_t = std::ranges::range_value_t<R>;\n\
+    #else\nusing std::size;\ntemplate <class R>\nauto range_size(R& r) -> decltype(size(r))\
+    \ {\n    return size(r);\n}\ntemplate <class R>\nauto range_begin(R& r) -> decltype(begin(r))\
+    \ {\n    return begin(r);\n}\ntemplate <class R>\nusing range_value_t = typename\
+    \ std::iterator_traits<decltype(range_begin(std::declval<R&>()))>::value_type;\n\
+    \ntemplate <class R, class S, class = void>\nstruct is_sized_constructible_range\
+    \ : std::false_type {};\ntemplate <class R, class S>\nstruct is_sized_constructible_range<R,\
+    \ S, std::void_t<decltype(range_size(std::declval<R&>())), decltype(++std::declval<decltype(begin(std::declval<R&>()))&>()),\
+    \ decltype(begin(std::declval<R&>()) != end(std::declval<R&>())), decltype(*begin(std::declval<R&>()))>>\n\
+    \    : std::is_constructible<S, decltype(*begin(std::declval<R&>()))> {};\n#endif\n\
+    }  // namespace internal_traits\n\ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
     \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
     \n#define HAS_METHOD(func_name)                                              \
     \                \\\n    namespace internal_traits {                         \
@@ -632,39 +649,39 @@ data:
     \ - 1);\n    for (int i = 0; i < N + M - 1; ++i) res[i] = restore(p0[i], p1[i],\
     \ p2[i]) + (restore(q0[i], q1[i], q2[i]) << 32);\n    return res;\n}\n#line 2\
     \ \"src/math/fps.hpp\"\n\n/**\n * @file fps.hpp\n * @brief \u5F62\u5F0F\u7684\u51AA\
-    \u7D1A\u6570\n */\n\n#line 10 \"src/math/fps.hpp\"\n#include <optional>\n#include\
-    \ <queue>\n#line 14 \"src/math/fps.hpp\"\n\n#line 2 \"src/math/combinatorics.hpp\"\
-    \n\n/**\n * @file combinatorics.hpp\n * @brief \u7D44\u307F\u5408\u308F\u305B\n\
-    \ *\n * \u7D20\u6570 mod \u3067\u306E\u968E\u4E57\u30FB\u4E8C\u9805\u4FC2\u6570\
-    \u306F Combination\u3001\u7D20\u6570\u51AA p^q \u3092\u6CD5\u3068\u3059\u308B\u4E8C\
-    \u9805\u4FC2\u6570\u306F CombinationPQ\n */\n\n#line 13 \"src/math/combinatorics.hpp\"\
-    \n\n#line 15 \"src/math/combinatorics.hpp\"\n\n/**\n * @brief \u7D20\u6570 mod\
-    \ \u3067\u306E\u968E\u4E57\u30FB\u4E8C\u9805\u4FC2\u6570\u306A\u3069\n *\n * \u4F8B\
-    :\n * using C = Combination<static_modint<998244353>>;\n * C::C(5, 2);  // 10\n\
-    \ *\n * static \u30E1\u30F3\u30D0\u95A2\u6570\u3060\u3051\u306E\u30AF\u30E9\u30B9\
-    \u3002\u968E\u4E57\u3068\u305D\u306E\u9006\u5143\u3092\u5FC5\u8981\u306B\u306A\
-    \u3063\u305F\u5206\u3060\u3051\u524D\u8A08\u7B97\u3057\u3001\u540C\u3058 Modint\
-    \ \u306E\u547C\u3073\u51FA\u3057\u3067\u4F7F\u3044\u56DE\u3059\n * \u524D\u8A08\
-    \u7B97\u3092\u4F7F\u3046\u95A2\u6570 (factorial\u30FBC \u306A\u3069) \u306F\u3001\
-    n \u304C mod \u672A\u6E80\u3067\u3042\u308B\u3053\u3068 (n! \u304C 0 \u306B\u306A\
-    \u308A\u9006\u5143\u304C\u306A\u3044)\u3002\n * n \u304C mod \u4EE5\u4E0A\u306A\
-    \u3089\u3001r \u304C\u5C0F\u3055\u3044\u3068\u304D\u306F C_loop\u3001mod \u304C\
-    \u5C0F\u3055\u3044\u3068\u304D\u306F C_lucas \u3092\u4F7F\u3046\n *\n * @tparam\
-    \ Modint \u6CD5\u304C\u7D20\u6570\u306E modint (dynamic_modint \u3067\u6CD5\u3092\
-    \u5909\u3048\u305F\u3089\u524D\u8A08\u7B97\u3092\u3084\u308A\u76F4\u3059)\n */\n\
-    template <typename Modint>\nclass Combination {\n    static std::vector<Modint>\
-    \ fact, inv_fact;\n    static long long cached_mod;  // dynamic_modint \u3067\
-    \ mod \u304C\u5909\u308F\u3063\u305F\u3089\u524D\u8A08\u7B97\u3092\u3084\u308A\
-    \u76F4\u3059\n\n   public:\n    /**\n     * @brief n \u307E\u3067\u306E\u968E\u4E57\
-    \u3068\u305D\u306E\u9006\u5143\u3092\u524D\u8A08\u7B97\u3059\u308B\n     * @param\
-    \ n \u524D\u8A08\u7B97\u3059\u308B\u4E0A\u9650 (mod \u672A\u6E80)\n     * @note\
-    \ O(n)\u3002\u5404\u95A2\u6570\u304C\u5FC5\u8981\u306A\u5206\u3060\u3051\u81EA\
-    \u52D5\u3067\u547C\u3076\u3002\u5C0F\u3055\u3044 n \u304B\u3089\u5C11\u3057\u305A\
-    \u3064\u4F38\u3073\u308B\u3068\u9006\u5143\u306E\u8A08\u7B97 (O(log mod)) \u304C\
-    \u6BCE\u56DE\u5165\u308B\u306E\u3067\u3001\n     * \u4F7F\u3046\u6700\u5927\u306E\
-    \ n \u304C\u5206\u304B\u3063\u3066\u3044\u308C\u3070\u6700\u521D\u306B\u547C\u3093\
-    \u3067\u304A\u304F\u3068\u3088\u3044\n     */\n    inline static void extend(long\
-    \ long n) {\n        if (cached_mod != static_cast<long long>(Modint::mod()))\
+    \u7D1A\u6570\n */\n\n#line 10 \"src/math/fps.hpp\"\n#include <initializer_list>\n\
+    #include <optional>\n#include <queue>\n#line 16 \"src/math/fps.hpp\"\n\n#line\
+    \ 2 \"src/math/combinatorics.hpp\"\n\n/**\n * @file combinatorics.hpp\n * @brief\
+    \ \u7D44\u307F\u5408\u308F\u305B\n *\n * \u7D20\u6570 mod \u3067\u306E\u968E\u4E57\
+    \u30FB\u4E8C\u9805\u4FC2\u6570\u306F Combination\u3001\u7D20\u6570\u51AA p^q \u3092\
+    \u6CD5\u3068\u3059\u308B\u4E8C\u9805\u4FC2\u6570\u306F CombinationPQ\n */\n\n\
+    #line 13 \"src/math/combinatorics.hpp\"\n\n#line 15 \"src/math/combinatorics.hpp\"\
+    \n\n/**\n * @brief \u7D20\u6570 mod \u3067\u306E\u968E\u4E57\u30FB\u4E8C\u9805\
+    \u4FC2\u6570\u306A\u3069\n *\n * \u4F8B:\n * using C = Combination<static_modint<998244353>>;\n\
+    \ * C::C(5, 2);  // 10\n *\n * static \u30E1\u30F3\u30D0\u95A2\u6570\u3060\u3051\
+    \u306E\u30AF\u30E9\u30B9\u3002\u968E\u4E57\u3068\u305D\u306E\u9006\u5143\u3092\
+    \u5FC5\u8981\u306B\u306A\u3063\u305F\u5206\u3060\u3051\u524D\u8A08\u7B97\u3057\
+    \u3001\u540C\u3058 Modint \u306E\u547C\u3073\u51FA\u3057\u3067\u4F7F\u3044\u56DE\
+    \u3059\n * \u524D\u8A08\u7B97\u3092\u4F7F\u3046\u95A2\u6570 (factorial\u30FBC\
+    \ \u306A\u3069) \u306F\u3001n \u304C mod \u672A\u6E80\u3067\u3042\u308B\u3053\u3068\
+    \ (n! \u304C 0 \u306B\u306A\u308A\u9006\u5143\u304C\u306A\u3044)\u3002\n * n \u304C\
+    \ mod \u4EE5\u4E0A\u306A\u3089\u3001r \u304C\u5C0F\u3055\u3044\u3068\u304D\u306F\
+    \ C_loop\u3001mod \u304C\u5C0F\u3055\u3044\u3068\u304D\u306F C_lucas \u3092\u4F7F\
+    \u3046\n *\n * @tparam Modint \u6CD5\u304C\u7D20\u6570\u306E modint (dynamic_modint\
+    \ \u3067\u6CD5\u3092\u5909\u3048\u305F\u3089\u524D\u8A08\u7B97\u3092\u3084\u308A\
+    \u76F4\u3059)\n */\ntemplate <typename Modint>\nclass Combination {\n    static\
+    \ std::vector<Modint> fact, inv_fact;\n    static long long cached_mod;  // dynamic_modint\
+    \ \u3067 mod \u304C\u5909\u308F\u3063\u305F\u3089\u524D\u8A08\u7B97\u3092\u3084\
+    \u308A\u76F4\u3059\n\n   public:\n    /**\n     * @brief n \u307E\u3067\u306E\u968E\
+    \u4E57\u3068\u305D\u306E\u9006\u5143\u3092\u524D\u8A08\u7B97\u3059\u308B\n   \
+    \  * @param n \u524D\u8A08\u7B97\u3059\u308B\u4E0A\u9650 (mod \u672A\u6E80)\n\
+    \     * @note O(n)\u3002\u5404\u95A2\u6570\u304C\u5FC5\u8981\u306A\u5206\u3060\
+    \u3051\u81EA\u52D5\u3067\u547C\u3076\u3002\u5C0F\u3055\u3044 n \u304B\u3089\u5C11\
+    \u3057\u305A\u3064\u4F38\u3073\u308B\u3068\u9006\u5143\u306E\u8A08\u7B97 (O(log\
+    \ mod)) \u304C\u6BCE\u56DE\u5165\u308B\u306E\u3067\u3001\n     * \u4F7F\u3046\u6700\
+    \u5927\u306E n \u304C\u5206\u304B\u3063\u3066\u3044\u308C\u3070\u6700\u521D\u306B\
+    \u547C\u3093\u3067\u304A\u304F\u3068\u3088\u3044\n     */\n    inline static void\
+    \ extend(long long n) {\n        if (cached_mod != static_cast<long long>(Modint::mod()))\
     \ {\n            cached_mod = Modint::mod();\n            fact = {1, 1};\n   \
     \         inv_fact = {1, 1};\n        }\n        const long long m = fact.size();\n\
     \        if (n < m) return;\n        assert(n < static_cast<long long>(Modint::mod())\
@@ -797,7 +814,7 @@ data:
     \ epsilon.end(), 0);\n        if (e >= q)\n            ans = 0;\n        else\
     \ {\n            for (int i = 0; i < e; i++) {\n                ans = static_cast<long\
     \ long>(ans) * p % pq;\n            }\n        }\n        return ans;\n    }\n\
-    };\n#line 18 \"src/math/fps.hpp\"\n\ntemplate <typename mint>\nstruct FPS;\n\n\
+    };\n#line 21 \"src/math/fps.hpp\"\n\ntemplate <typename mint>\nstruct FPS;\n\n\
     namespace internal_fps {\ntemplate <typename mint>\nFPS<mint> gcd(const FPS<mint>&\
     \ f, const FPS<mint>& g);\n\n// \u4EE5\u4E0B\u306F\u6CD5\u304C NTT \u306B\u5411\
     \u304F\u7D20\u6570\u306E\u3068\u304D\u306E inv\u30FBexp\u3002NTT \u3057\u305F\u5024\
@@ -865,14 +882,19 @@ data:
     \        b.insert(b.end(), x.begin() + m, x.end());\n    }\n    b.resize(deg);\n\
     \    return b;\n}\n}  // namespace internal_fps\n\ntemplate <typename mint>\n\
     struct FPS : std::vector<mint> {\n    using std::vector<mint>::vector;\n\n   \
-    \ // constructor\n    FPS(const std::vector<mint>& r) : std::vector<mint>(r) {}\n\
-    \n    // core operator\n    inline FPS pre(long long siz) const {\n        return\
-    \ FPS(begin(*this), begin(*this) + std::min(static_cast<long long>(this->size()),\
-    \ siz));\n    }\n    inline FPS rev() const {\n        FPS res = *this;\n    \
-    \    reverse(begin(res), end(res));\n        return res;\n    }\n    inline FPS&\
-    \ normalize() {\n        while (!this->empty() && this->back() == 0) this->pop_back();\n\
-    \        return *this;\n    }\n\n    // basic operator\n    inline FPS operator-()\
-    \ const noexcept {\n        FPS res = (*this);\n        for (int i = 0; i < static_cast<int>(res.size());\
+    \ // constructor\n#if __cplusplus >= 202002L\n    template <class R = std::initializer_list<mint>>\n\
+    \        requires(internal_traits::sized_constructible_range<R, mint> && !std::is_same_v<std::decay_t<R>,\
+    \ FPS>)\n#else\n    template <class R = std::initializer_list<mint>, ENABLE_IF_T(internal_traits::is_sized_constructible_range<R,\
+    \ mint>::value && !std::is_same_v<std::decay_t<R>, FPS>)>\n#endif\n    FPS(R&&\
+    \ r) {\n        this->reserve(internal_traits::range_size(r));\n        for (auto&&\
+    \ x : r) this->emplace_back(std::forward<decltype(x)>(x));\n    }\n\n    // core\
+    \ operator\n    inline FPS pre(long long siz) const {\n        return FPS(begin(*this),\
+    \ begin(*this) + std::min(static_cast<long long>(this->size()), siz));\n    }\n\
+    \    inline FPS rev() const {\n        FPS res = *this;\n        reverse(begin(res),\
+    \ end(res));\n        return res;\n    }\n    inline FPS& normalize() {\n    \
+    \    while (!this->empty() && this->back() == 0) this->pop_back();\n        return\
+    \ *this;\n    }\n\n    // basic operator\n    inline FPS operator-() const noexcept\
+    \ {\n        FPS res = (*this);\n        for (int i = 0; i < static_cast<int>(res.size());\
     \ ++i) res[i] = -res[i];\n        return res;\n    }\n    inline FPS operator+(const\
     \ mint& v) const { return FPS(*this) += v; }\n    inline FPS operator+(const FPS&\
     \ r) const { return FPS(*this) += r; }\n    inline FPS operator-(const mint& v)\
@@ -1142,19 +1164,20 @@ data:
     \ {\n        if (r - l == 1) return {nums[l], dens[l]};\n        long long m =\
     \ (l + r) / 2;\n        auto [a, b] = self(self, l, m);\n        auto [c, d] =\
     \ self(self, m, r);\n        return {a * d + c * b, b * d};\n    };\n    return\
-    \ rec(rec, 0, nums.size());\n}\n#line 14 \"src/math/fps-composition.hpp\"\n\n\
-    namespace internal_fps_composition {\n// 2 \u5909\u6570\u591A\u9805\u5F0F A(x,\
-    \ y) \u3092\u3001x \u306E\u6B21\u6570\u3054\u3068\u306B y \u306E\u4FC2\u6570\u3092\
-    \u5E45 w \u3067\u4E26\u3079\u305F 1 \u6B21\u5143\u306E\u914D\u5217\u3067\u6301\
-    \u3064 (A[i * w + j] \u304C x^i y^j \u306E\u4FC2\u6570)\n// Q(x, y) = 1 - y g(x)\
-    \ \u304B\u3089\u59CB\u3081\u3001Q(x, y) Q(-x, y) \u306E x \u306E\u5076\u6570\u6B21\
-    \u3060\u3051\u3092\u6B8B\u3057\u3066 x \u306E\u6B21\u6570\u3092\u534A\u5206\u306B\
-    \u3057\u3066\u3044\u304F\n// qs[t] \u306F t \u6BB5\u76EE\u306E Q \u3067\u3001\
-    x \u306F nx[t] \u9805\u3001y \u306F 2^t + 1 \u9805\u3002\u6700\u5F8C\u306E\u6BB5\
-    \u3067 nx = 1 \u306B\u306A\u308B\ntemplate <typename mint>\nstruct Graeffe {\n\
-    \    std::vector<std::vector<mint>> qs;\n    std::vector<long long> nx;\n    Graeffe(const\
-    \ FPS<mint>& g, long long n) {\n        long long x = n, w = 2;\n        std::vector<mint>\
-    \ q(x * w);\n        q[0] = 1;\n        for (long long i = 0; i < x && i < static_cast<long\
+    \ rec(rec, 0, nums.size());\n}\n\ntemplate <class R>\nFPS(R&&) -> FPS<internal_traits::range_value_t<R>>;\n\
+    #line 14 \"src/math/fps-composition.hpp\"\n\nnamespace internal_fps_composition\
+    \ {\n// 2 \u5909\u6570\u591A\u9805\u5F0F A(x, y) \u3092\u3001x \u306E\u6B21\u6570\
+    \u3054\u3068\u306B y \u306E\u4FC2\u6570\u3092\u5E45 w \u3067\u4E26\u3079\u305F\
+    \ 1 \u6B21\u5143\u306E\u914D\u5217\u3067\u6301\u3064 (A[i * w + j] \u304C x^i\
+    \ y^j \u306E\u4FC2\u6570)\n// Q(x, y) = 1 - y g(x) \u304B\u3089\u59CB\u3081\u3001\
+    Q(x, y) Q(-x, y) \u306E x \u306E\u5076\u6570\u6B21\u3060\u3051\u3092\u6B8B\u3057\
+    \u3066 x \u306E\u6B21\u6570\u3092\u534A\u5206\u306B\u3057\u3066\u3044\u304F\n\
+    // qs[t] \u306F t \u6BB5\u76EE\u306E Q \u3067\u3001x \u306F nx[t] \u9805\u3001\
+    y \u306F 2^t + 1 \u9805\u3002\u6700\u5F8C\u306E\u6BB5\u3067 nx = 1 \u306B\u306A\
+    \u308B\ntemplate <typename mint>\nstruct Graeffe {\n    std::vector<std::vector<mint>>\
+    \ qs;\n    std::vector<long long> nx;\n    Graeffe(const FPS<mint>& g, long long\
+    \ n) {\n        long long x = n, w = 2;\n        std::vector<mint> q(x * w);\n\
+    \        q[0] = 1;\n        for (long long i = 0; i < x && i < static_cast<long\
     \ long>(g.size()); i++) q[i * w + 1] = -g[i];\n        while (x > 1) {\n     \
     \       qs.push_back(q);\n            nx.push_back(x);\n            // y \u306E\
     \u5E45\u3092 2w - 1 \u306B\u5E83\u3052\u3066\u8A70\u3081\u76F4\u3059\u3068\u3001\
@@ -1289,7 +1312,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/polynomial/compositional-inverse-of-formal-power-series.test.cpp
   requiredBy: []
-  timestamp: '2026-11-03 08:52:44+09:00'
+  timestamp: '2026-11-08 20:13:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/polynomial/compositional-inverse-of-formal-power-series.test.cpp

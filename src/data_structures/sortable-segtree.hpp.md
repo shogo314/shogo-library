@@ -10,8 +10,14 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/data_structures/segtree.hpp
     title: "\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
+  - icon: ':heavy_check_mark:'
+    path: src/utility/traits.hpp
+    title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
   _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/algebra/monoid.test.cpp
+    title: test/unittest/algebra/monoid.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/sortable-segtree.test.cpp
     title: test/unittest/data_structures/sortable-segtree.test.cpp
@@ -28,18 +34,93 @@ data:
   bundledCode: "#line 2 \"src/data_structures/sortable-segtree.hpp\"\n\n/**\n * @file\
     \ sortable-segtree.hpp\n * @brief \u533A\u9593\u30BD\u30FC\u30C8\u306E\u3067\u304D\
     \u308B\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n */\n\n#include <cassert>\n#include\
-    \ <utility>\n#include <vector>\n\n#line 2 \"src/data_structures/fast-set.hpp\"\
-    \n\n/**\n * @file fast-set.hpp\n * @brief 64 \u5206\u6728\u306B\u3088\u308B\u6574\
-    \u6570\u306E\u96C6\u5408 (FastSet)\n */\n\n#line 9 \"src/data_structures/fast-set.hpp\"\
-    \n#include <cstdint>\n#line 11 \"src/data_structures/fast-set.hpp\"\n\n/**\n *\
-    \ @brief [0, n) \u306E\u6574\u6570\u306E\u96C6\u5408\u3092 64 \u5206\u6728\u3067\
-    \u6301\u3064\n *\n * \u5404\u6BB5\u306F 64 bit \u306E\u914D\u5217\u3067\u3001\u4E0A\
-    \u306E\u6BB5\u306E bit \u306F\u4E0B\u306E\u6BB5\u306E 64 bit \u304C 0 \u3067\u306A\
-    \u3044\u304B\u3092\u8868\u3059\n * \u633F\u5165\u30FB\u524A\u9664\u30FBx \u4EE5\
-    \u4E0A\u306E\u6700\u5C0F\u30FBx \u4EE5\u4E0B\u306E\u6700\u5927\u3092 O(log_64\
-    \ n) \u3067\u884C\u3046 (n = 10^9 \u3067\u3082 5 \u6BB5\u7A0B\u5EA6)\n * \u4F8B\
-    :\n * FastSet s(n);\n * s.insert(3); s.insert(10);\n * s.next(4);  // 10\n * s.prev(4);\
-    \  // 3\n */\nclass FastSet {\n    long long n, cnt = 0;\n    std::vector<std::vector<std::uint64_t>>\
+    \ <initializer_list>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\
+    \n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\
+    \u7279\u6027\n */\n\n#include <cstddef>\n#include <functional>\n#include <iterator>\n\
+    #include <set>\n#line 14 \"src/utility/traits.hpp\"\n\n#if __cplusplus >= 202002L\n\
+    #include <ranges>\n#endif\n\nnamespace internal_traits {\nusing std::begin, std::end;\n\
+    \ntemplate <class T, class = void>\nstruct is_range_impl : std::false_type {};\n\
+    template <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n\n// \u30B5\u30A4\u30BA\u4ED8\
+    \u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\u3059\
+    \u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\u308B\
+    \u3002\n#if __cplusplus >= 202002L\ntemplate <class R, class S>\nconcept sized_constructible_range\
+    \ = std::ranges::input_range<R> && std::ranges::sized_range<R> &&\n          \
+    \                          std::is_constructible_v<S, std::ranges::range_reference_t<R>>;\n\
+    \ntemplate <class R>\nauto range_size(R& r) {\n    return std::ranges::size(r);\n\
+    }\ntemplate <class R>\nauto range_begin(R& r) {\n    return std::ranges::begin(r);\n\
+    }\ntemplate <class R>\nusing range_value_t = std::ranges::range_value_t<R>;\n\
+    #else\nusing std::size;\ntemplate <class R>\nauto range_size(R& r) -> decltype(size(r))\
+    \ {\n    return size(r);\n}\ntemplate <class R>\nauto range_begin(R& r) -> decltype(begin(r))\
+    \ {\n    return begin(r);\n}\ntemplate <class R>\nusing range_value_t = typename\
+    \ std::iterator_traits<decltype(range_begin(std::declval<R&>()))>::value_type;\n\
+    \ntemplate <class R, class S, class = void>\nstruct is_sized_constructible_range\
+    \ : std::false_type {};\ntemplate <class R, class S>\nstruct is_sized_constructible_range<R,\
+    \ S, std::void_t<decltype(range_size(std::declval<R&>())), decltype(++std::declval<decltype(begin(std::declval<R&>()))&>()),\
+    \ decltype(begin(std::declval<R&>()) != end(std::declval<R&>())), decltype(*begin(std::declval<R&>()))>>\n\
+    \    : std::is_constructible<S, decltype(*begin(std::declval<R&>()))> {};\n#endif\n\
+    }  // namespace internal_traits\n\ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
+    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
+    \n#define HAS_METHOD(func_name)                                              \
+    \                \\\n    namespace internal_traits {                         \
+    \                                   \\\n    template <class T, class = void> \
+    \                                                      \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                    \\\n    template <class\
+    \ T>                                                                     \\\n\
+    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                    \\\n    }                                               \
+    \                                       \\\n    template <class T>           \
+    \                                                          \\\n    struct has_##func_name\
+    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
+    \ <class T>                                                                  \
+    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
+    \n#define HAS_METHOD_ARG(func_name)                                          \
+    \                                    \\\n    namespace internal_traits {     \
+    \                                                                           \\\
+    \n    template <class T, typename U, class = void>                           \
+    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                                        \\\n    template\
+    \ <class T, typename U>                                                      \
+    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                                        \\\n    }                           \
+    \                                                                            \
+    \   \\\n    template <class T, typename U>                                   \
+    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \ U>::type {};                           \\\n    template <class T, typename U>\
+    \                                                                            \
+    \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
+    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
+    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
+    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
+    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
+    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
+    \nnamespace internal_traits {\n// \u5C04\u5F71 (proj) \u306E\u65E2\u5B9A\u5024\
+    \n#if __cplusplus >= 202002L\nusing identity = std::identity;\n#else\nstruct identity\
+    \ {\n    using is_transparent = void;\n    template <class T>\n    constexpr T&&\
+    \ operator()(T&& x) const noexcept {\n        return std::forward<T>(x);\n   \
+    \ }\n};\n#endif\n}  // namespace internal_traits\n\ntemplate <class C>\nusing\
+    \ mem_value_type = typename C::value_type;\ntemplate <class C>\nusing mem_difference_type\
+    \ = typename C::difference_type;\n\nnamespace internal_traits {\ntemplate <class\
+    \ T, class = void>\nstruct is_sorted_container_impl : std::false_type {};\ntemplate\
+    \ <class T>\nstruct is_sorted_container_impl<std::set<T>> : std::true_type {};\n\
+    template <class T>\nstruct is_sorted_container_impl<std::multiset<T>> : std::true_type\
+    \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
+    \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
+    inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
+    #line 2 \"src/data_structures/fast-set.hpp\"\n\n/**\n * @file fast-set.hpp\n *\
+    \ @brief 64 \u5206\u6728\u306B\u3088\u308B\u6574\u6570\u306E\u96C6\u5408 (FastSet)\n\
+    \ */\n\n#line 9 \"src/data_structures/fast-set.hpp\"\n#include <cstdint>\n#line\
+    \ 11 \"src/data_structures/fast-set.hpp\"\n\n/**\n * @brief [0, n) \u306E\u6574\
+    \u6570\u306E\u96C6\u5408\u3092 64 \u5206\u6728\u3067\u6301\u3064\n *\n * \u5404\
+    \u6BB5\u306F 64 bit \u306E\u914D\u5217\u3067\u3001\u4E0A\u306E\u6BB5\u306E bit\
+    \ \u306F\u4E0B\u306E\u6BB5\u306E 64 bit \u304C 0 \u3067\u306A\u3044\u304B\u3092\
+    \u8868\u3059\n * \u633F\u5165\u30FB\u524A\u9664\u30FBx \u4EE5\u4E0A\u306E\u6700\
+    \u5C0F\u30FBx \u4EE5\u4E0B\u306E\u6700\u5927\u3092 O(log_64 n) \u3067\u884C\u3046\
+    \ (n = 10^9 \u3067\u3082 5 \u6BB5\u7A0B\u5EA6)\n * \u4F8B:\n * FastSet s(n);\n\
+    \ * s.insert(3); s.insert(10);\n * s.next(4);  // 10\n * s.prev(4);  // 3\n */\n\
+    class FastSet {\n    long long n, cnt = 0;\n    std::vector<std::vector<std::uint64_t>>\
     \ seg;  // seg[0] \u304C\u8981\u7D20\u306E bit\u3001seg[h + 1] \u306F seg[h] \u306E\
     \u5404 64 bit \u304C 0 \u3067\u306A\u3044\u304B\n\n    void build_levels() {\n\
     \        // 1 \u3064\u306E 64 bit \u306B\u53CE\u307E\u308B\u307E\u3067\u6BB5\u3092\
@@ -113,8 +194,8 @@ data:
     \   void clear() {\n        for (auto& level : seg) level.assign(level.size(),\
     \ 0);\n        cnt = 0;\n    }\n};\n#line 2 \"src/data_structures/segtree.hpp\"\
     \n\n/**\n * @file segtree.hpp\n * @brief \u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n\
-    \ */\n\n#line 9 \"src/data_structures/segtree.hpp\"\n#include <ostream>\n#line\
-    \ 12 \"src/data_structures/segtree.hpp\"\n\n#line 2 \"src/algebra/monoid.hpp\"\
+    \ */\n\n#line 11 \"src/data_structures/segtree.hpp\"\n#include <ostream>\n#line\
+    \ 15 \"src/data_structures/segtree.hpp\"\n\n#line 2 \"src/algebra/monoid.hpp\"\
     \n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
     \n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
     \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\
@@ -122,21 +203,21 @@ data:
     \ \u5358\u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\
     \u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\
     \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\
-    \u51FA\u3059)\n */\n\n#include <algorithm>\n#include <array>\n#include <cstddef>\n\
-    #include <istream>\n#include <limits>\n#include <numeric>\n#include <optional>\n\
-    #line 22 \"src/algebra/monoid.hpp\"\n#include <type_traits>\n#line 24 \"src/algebra/monoid.hpp\"\
-    \n\n/**\n * @brief 1\u6B21\u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite\
-    \ \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\
-    \u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\
-    \u3059\u308B\u3068\u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\n\
-    struct Affine {\n    T a = T(1);  //!< \u50BE\u304D\n    T b = T(0);  //!< \u5207\
-    \u7247\n    constexpr T operator()(const T& x) const { return a * x + b; }\n \
-    \   friend constexpr bool operator==(const Affine& f, const Affine& g) { return\
-    \ f.a == g.a && f.b == g.b; }\n    friend constexpr bool operator!=(const Affine&\
-    \ f, const Affine& g) { return !(f == g); }\n    template <class CharT, class\
-    \ Traits>\n    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
-    \ Traits>& is, Affine& f) {\n        return is >> f.a >> f.b;\n    }\n    template\
-    \ <class CharT, class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \u51FA\u3059)\n */\n\n#include <algorithm>\n#include <array>\n#line 17 \"src/algebra/monoid.hpp\"\
+    \n#include <istream>\n#include <limits>\n#include <numeric>\n#include <optional>\n\
+    #line 24 \"src/algebra/monoid.hpp\"\n\n/**\n * @brief 1\u6B21\u95A2\u6570 f(x)\
+    \ = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum\
+    \ \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3};\
+    \ f(x) \u306F 2x + 3\u3002\u7701\u7565\u3059\u308B\u3068\u6052\u7B49\u5199\u50CF\
+    \ {1, 0}\n */\ntemplate <typename T>\nstruct Affine {\n    T a = T(1);  //!< \u50BE\
+    \u304D\n    T b = T(0);  //!< \u5207\u7247\n    constexpr T operator()(const T&\
+    \ x) const { return a * x + b; }\n    friend constexpr bool operator==(const Affine&\
+    \ f, const Affine& g) { return f.a == g.a && f.b == g.b; }\n    friend constexpr\
+    \ bool operator!=(const Affine& f, const Affine& g) { return !(f == g); }\n  \
+    \  template <class CharT, class Traits>\n    friend std::basic_istream<CharT,\
+    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Affine& f) {\n  \
+    \      return is >> f.a >> f.b;\n    }\n    template <class CharT, class Traits>\n\
+    \    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const Affine& f) {\n        return os << f.a << CharT(' ') << f.b;\n\
     \    }\n};\n\n/**\n * @brief clamp \u3059\u308B\u95A2\u6570 f(x) = min(max(x,\
     \ lb), ub)\n *\n * monoid::ClampComposite \u306E\u8981\u7D20\u3084 acted_monoid::ClampMin\
@@ -451,7 +532,7 @@ data:
     \ Monoid(Op op, const S& e) : op_object(std::move(op)), identity(e) {}\n    constexpr\
     \ S op(const S& a, const S& b) const { return op_object(a, b); }\n    constexpr\
     \ S e() const { return identity; }\n};\ntemplate <typename Op, typename T>\nMonoid(Op,\
-    \ T) -> Monoid<T, Op>;\n#line 14 \"src/data_structures/segtree.hpp\"\n\n/**\n\
+    \ T) -> Monoid<T, Op>;\n#line 18 \"src/data_structures/segtree.hpp\"\n\n/**\n\
     \ * @brief \u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n *\n * \u4F8B:\n * SegTree<monoid::Max<int>>\
     \ seg(n);\n * SegTree seg(v, Monoid([](int a, int b) { return a + b; }, 0));\n\
     \ *\n * @tparam M \u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\n */\ntemplate\
@@ -472,92 +553,97 @@ data:
     \ SegTree(long long n = 0, M m = M()) : m(std::move(m)), n(n) {\n        construct_data();\n\
     \    }\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n  \
     \   *\n     * @param v \u521D\u671F\u306E\u8981\u7D20\n     * @param m \u30E2\u30CE\
-    \u30A4\u30C9\n     */\n    explicit SegTree(const std::vector<S>& v, M m = M())\
-    \ : SegTree(v.size(), std::move(m)) {\n        for (long long i = 0; i < n; i++)\
-    \ data[sz + i] = v[i];\n        for (long long i = sz - 1; i > 0; i--) update(i);\n\
-    \    }\n\n    /**\n     * @brief \u8981\u7D20\u6570\u3092\u8FD4\u3059\n     */\n\
-    \    long long size() const { return n; }\n\n    /**\n     * @brief \u6307\u5B9A\
-    \u3055\u308C\u305F\u8981\u7D20\u306E\u5024\u3092\u8FD4\u3059\n     *\n     * @param\
-    \ k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * @return S \u5024\n     */\n \
-    \   S get(long long k) const {\n        assert(0 <= k && k < n);\n        return\
-    \ data[sz + k];\n    }\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\
-    \u7D20\u306E\u5024\u3092\u8FD4\u3059\n     *\n     * @param k \u30A4\u30F3\u30C7\
-    \u30C3\u30AF\u30B9\n     * @return S \u5024\n     */\n    S operator[](long long\
-    \ k) const { return get(k); }\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\
-    \u305F\u8981\u7D20\u3078\u306E\u53C2\u7167\u3092\u8FD4\u3059\n     *\n     * @param\
-    \ k\n     * @return SegTreeReference \u8981\u7D20\u3078\u306E\u53C2\u7167 \u4EE3\
-    \u5165\u3055\u308C\u308B\u3068set()\u304C\u547C\u3070\u308C\u308B\n     */\n \
-    \   SegTreeReference operator[](long long k) { return SegTreeReference(*this,\
-    \ k); }\n\n    /**\n     * @brief \u5185\u5BB9\u3092\u51FA\u529B\u3059\u308B\n\
-    \     *\n     * @tparam CharT \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\
-    \u6587\u5B57\u578B\n     * @tparam Traits \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\
-    \u30E0\u306E\u6587\u5B57\u578B\u7279\u6027\n     * @param os \u51FA\u529B\u30B9\
-    \u30C8\u30EA\u30FC\u30E0\n     * @param rhs \u30BB\u30B0\u30E1\u30F3\u30C8\u6728\
-    \n     * @return std::basic_ostream<CharT, Traits>& \u51FA\u529B\u30B9\u30C8\u30EA\
-    \u30FC\u30E0\n     */\n    template <class CharT, class Traits>\n    friend std::basic_ostream<CharT,\
-    \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const SegTree& rhs)\
-    \ {\n        for (long long i = 0; i < rhs.n; i++) {\n            if (i != 0)\
-    \ os << CharT(' ');\n            os << rhs[i];\n        }\n        return os;\n\
-    \    }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\
-    \u5024\u3092x\u306B\u66F4\u65B0\u3059\u308B\n     *\n     * @param k \u30A4\u30F3\
-    \u30C7\u30C3\u30AF\u30B9\n     * @param x \u65B0\u3057\u3044\u5024\n     */\n\
-    \    void set(long long k, const S& x) {\n        assert(0 <= k && k < n);\n \
-    \       k += sz;\n        data[k] = x;\n        for (int i = 1; i <= height; i++)\
-    \ update(k >> i);\n    }\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\
-    \u8981\u7D20\u306E\u5024\u306Bx\u3092\u4F5C\u7528\u3055\u305B\u308B\n     *\n\
-    \     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * @param x \u4F5C\u7528\
-    \u7D20\n     */\n    void apply(long long k, const S& x) { set(k, op(get(k), x));\
-    \ }\n\n    /**\n     * @brief [l, r)\u306E\u533A\u9593\u306E\u7DCF\u7A4D\u3092\
-    \u8FD4\u3059\n     *\n     * @param l \u534A\u958B\u533A\u9593\u306E\u958B\u59CB\
-    \n     * @param r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF 0<=l<=r<=n\n    \
-    \ * @return S \u7DCF\u7A4D\n     */\n    S prod(long long l, long long r) const\
-    \ {\n        assert(0 <= l && l <= r && r <= n);\n        S left_prod = e(), right_prod\
-    \ = e();\n        l += sz;\n        r += sz;\n        while (l < r) {\n      \
-    \      if (l & 1) left_prod = op(left_prod, data[l++]);\n            if (r & 1)\
-    \ right_prod = op(data[--r], right_prod);\n            l >>= 1;\n            r\
-    \ >>= 1;\n        }\n        return op(left_prod, right_prod);\n    }\n    /**\n\
-    \     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\u306E\u7DCF\u7A4D\u3092\u8FD4\
-    \u3059\n     *\n     * @return S \u7DCF\u7A4D\n     */\n    S all_prod() const\
-    \ { return data[1]; }\n\n    /**\n     * @brief (r = l or f(prod([l, r))) = true)\
-    \ and (r = n or f(prod([l, r+1))) = false)\u3068\u306A\u308Br\u3092\u8FD4\u3059\
-    \n     * f\u304C\u5358\u8ABF\u306A\u3089\u3001f(prod([l, r))) = true\u3068\u306A\
-    \u308B\u6700\u5927\u306Er\n     *\n     * @tparam F\n     * @param l \u534A\u958B\
-    \u533A\u9593\u306E\u958B\u59CB 0<=l<=n\n     * @param f \u5224\u5B9A\u95A2\u6570\
-    \ f(e) = true\n     * @return long long\n     */\n    template <typename F>\n\
-    \    long long max_right(long long l, F f) const {\n        assert(f(e()));\n\
-    \        assert(0 <= l && l <= n);\n        if (l == n) return n;\n        l +=\
-    \ sz;\n        while (l % 2 == 0) l >>= 1;\n        S sum = e();\n        while\
-    \ (f(op(sum, data[l]))) {\n            sum = op(sum, data[l]);\n            l++;\n\
-    \            while (l % 2 == 0) l >>= 1;\n            if (l == 1) return n;\n\
-    \        }\n        while (l < sz) {\n            if (!f(op(sum, data[l * 2])))\n\
-    \                l *= 2;\n            else {\n                sum = op(sum, data[l\
-    \ * 2]);\n                l = l * 2 + 1;\n            }\n        }\n        return\
-    \ l - sz;\n    }\n    /**\n     * @brief (l = 0 or f(prod([l, r))) = true) and\
-    \ (l = r or f(prod([l-1, r))) = false)\u3068\u306A\u308Bl\u3092\u8FD4\u3059\n\
-    \     * f\u304C\u5358\u8ABF\u306A\u3089\u3001f(prod([l, r))) = true\u3068\u306A\
-    \u308B\u6700\u5C0F\u306El\n     *\n     * @tparam F\n     * @param r \u534A\u958B\
-    \u533A\u9593\u306E\u7D42\u7AEF 0<=r<=n\n     * @param f \u5224\u5B9A\u95A2\u6570\
-    \ f(e) = true\n     * @return long long\n     */\n    template <typename F>\n\
-    \    long long min_left(long long r, F f) const {\n        assert(f(e()));\n \
-    \       assert(0 <= r && r <= n);\n        if (r == 0) return 0;\n        r +=\
-    \ sz;\n        S sum = e();\n        do {\n            r--;\n            while\
-    \ (r > 1 && r % 2 == 1) r >>= 1;\n            if (!f(op(data[r], sum))) {\n  \
-    \              while (r < sz) {\n                    r = r * 2 + 1;\n        \
-    \            if (f(op(data[r], sum))) {\n                        sum = op(data[r],\
-    \ sum);\n                        r--;\n                    }\n               \
-    \ }\n                return r + 1 - sz;\n            }\n            sum = op(data[r],\
-    \ sum);\n        } while ((r & -r) != r);\n        return 0;\n    }\n};\n\ntemplate\
-    \ <typename M>\nSegTree(long long, M) -> SegTree<M>;\ntemplate <typename M>\n\
-    SegTree(std::vector<typename M::S>, M) -> SegTree<M>;\n\n/**\n * @brief RangeMaxQuery\n\
-    \ *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RMaxQ = SegTree<monoid::Max<S>>;\n\
-    /**\n * @brief RangeMinQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename\
-    \ S>\nusing RMinQ = SegTree<monoid::Min<S>>;\n/**\n * @brief RangeSumQuery\n *\n\
-    \ * @tparam S \u578B\n */\ntemplate <typename S>\nusing RSumQ = SegTree<monoid::Sum<S>>;\n\
-    /**\n * @brief RangeProdQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename\
-    \ S>\nusing RProdQ = SegTree<monoid::Prod<S>>;\n/**\n * @brief RangeXorQuery\n\
-    \ *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RXorQ = SegTree<monoid::Xor<S>>;\n\
+    \u30A4\u30C9\n     */\n#if __cplusplus >= 202002L\n    template <class R = std::initializer_list<S>>\n\
+    \        requires internal_traits::sized_constructible_range<R, S>\n#else\n  \
+    \  template <class R = std::initializer_list<S>, ENABLE_IF_T(internal_traits::is_sized_constructible_range<R,\
+    \ S>::value)>\n#endif\n    explicit SegTree(R&& v, M m = M()) : SegTree(static_cast<long\
+    \ long>(internal_traits::range_size(v)), std::move(m)) {\n        long long k\
+    \ = sz;\n        for (auto&& x : v) data[k++] = S(std::forward<decltype(x)>(x));\n\
+    \        for (long long i = sz - 1; i > 0; i--) update(i);\n    }\n\n    /**\n\
+    \     * @brief \u8981\u7D20\u6570\u3092\u8FD4\u3059\n     */\n    long long size()\
+    \ const { return n; }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\
+    \u8981\u7D20\u306E\u5024\u3092\u8FD4\u3059\n     *\n     * @param k \u30A4\u30F3\
+    \u30C7\u30C3\u30AF\u30B9\n     * @return S \u5024\n     */\n    S get(long long\
+    \ k) const {\n        assert(0 <= k && k < n);\n        return data[sz + k];\n\
+    \    }\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\
+    \u5024\u3092\u8FD4\u3059\n     *\n     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\
+    \u30B9\n     * @return S \u5024\n     */\n    S operator[](long long k) const\
+    \ { return get(k); }\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\
+    \u7D20\u3078\u306E\u53C2\u7167\u3092\u8FD4\u3059\n     *\n     * @param k\n  \
+    \   * @return SegTreeReference \u8981\u7D20\u3078\u306E\u53C2\u7167 \u4EE3\u5165\
+    \u3055\u308C\u308B\u3068set()\u304C\u547C\u3070\u308C\u308B\n     */\n    SegTreeReference\
+    \ operator[](long long k) { return SegTreeReference(*this, k); }\n\n    /**\n\
+    \     * @brief \u5185\u5BB9\u3092\u51FA\u529B\u3059\u308B\n     *\n     * @tparam\
+    \ CharT \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n \
+    \    * @tparam Traits \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\
+    \u578B\u7279\u6027\n     * @param os \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\
+    \n     * @param rhs \u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n     * @return std::basic_ostream<CharT,\
+    \ Traits>& \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\n     */\n    template <class\
+    \ CharT, class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \ Traits>& os, const SegTree& rhs) {\n        for (long long i = 0; i < rhs.n;\
+    \ i++) {\n            if (i != 0) os << CharT(' ');\n            os << rhs[i];\n\
+    \        }\n        return os;\n    }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\
+    \u308C\u305F\u8981\u7D20\u306E\u5024\u3092x\u306B\u66F4\u65B0\u3059\u308B\n  \
+    \   *\n     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * @param x \u65B0\
+    \u3057\u3044\u5024\n     */\n    void set(long long k, const S& x) {\n       \
+    \ assert(0 <= k && k < n);\n        k += sz;\n        data[k] = x;\n        for\
+    \ (int i = 1; i <= height; i++) update(k >> i);\n    }\n    /**\n     * @brief\
+    \ \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\u5024\u306Bx\u3092\u4F5C\u7528\
+    \u3055\u305B\u308B\n     *\n     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\
+    \n     * @param x \u4F5C\u7528\u7D20\n     */\n    void apply(long long k, const\
+    \ S& x) { set(k, op(get(k), x)); }\n\n    /**\n     * @brief [l, r)\u306E\u533A\
+    \u9593\u306E\u7DCF\u7A4D\u3092\u8FD4\u3059\n     *\n     * @param l \u534A\u958B\
+    \u533A\u9593\u306E\u958B\u59CB\n     * @param r \u534A\u958B\u533A\u9593\u306E\
+    \u7D42\u7AEF 0<=l<=r<=n\n     * @return S \u7DCF\u7A4D\n     */\n    S prod(long\
+    \ long l, long long r) const {\n        assert(0 <= l && l <= r && r <= n);\n\
+    \        S left_prod = e(), right_prod = e();\n        l += sz;\n        r +=\
+    \ sz;\n        while (l < r) {\n            if (l & 1) left_prod = op(left_prod,\
+    \ data[l++]);\n            if (r & 1) right_prod = op(data[--r], right_prod);\n\
+    \            l >>= 1;\n            r >>= 1;\n        }\n        return op(left_prod,\
+    \ right_prod);\n    }\n    /**\n     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\
+    \u306E\u7DCF\u7A4D\u3092\u8FD4\u3059\n     *\n     * @return S \u7DCF\u7A4D\n\
+    \     */\n    S all_prod() const { return data[1]; }\n\n    /**\n     * @brief\
+    \ (r = l or f(prod([l, r))) = true) and (r = n or f(prod([l, r+1))) = false)\u3068\
+    \u306A\u308Br\u3092\u8FD4\u3059\n     * f\u304C\u5358\u8ABF\u306A\u3089\u3001\
+    f(prod([l, r))) = true\u3068\u306A\u308B\u6700\u5927\u306Er\n     *\n     * @tparam\
+    \ F\n     * @param l \u534A\u958B\u533A\u9593\u306E\u958B\u59CB 0<=l<=n\n    \
+    \ * @param f \u5224\u5B9A\u95A2\u6570 f(e) = true\n     * @return long long\n\
+    \     */\n    template <typename F>\n    long long max_right(long long l, F f)\
+    \ const {\n        assert(f(e()));\n        assert(0 <= l && l <= n);\n      \
+    \  if (l == n) return n;\n        l += sz;\n        while (l % 2 == 0) l >>= 1;\n\
+    \        S sum = e();\n        while (f(op(sum, data[l]))) {\n            sum\
+    \ = op(sum, data[l]);\n            l++;\n            while (l % 2 == 0) l >>=\
+    \ 1;\n            if (l == 1) return n;\n        }\n        while (l < sz) {\n\
+    \            if (!f(op(sum, data[l * 2])))\n                l *= 2;\n        \
+    \    else {\n                sum = op(sum, data[l * 2]);\n                l =\
+    \ l * 2 + 1;\n            }\n        }\n        return l - sz;\n    }\n    /**\n\
+    \     * @brief (l = 0 or f(prod([l, r))) = true) and (l = r or f(prod([l-1, r)))\
+    \ = false)\u3068\u306A\u308Bl\u3092\u8FD4\u3059\n     * f\u304C\u5358\u8ABF\u306A\
+    \u3089\u3001f(prod([l, r))) = true\u3068\u306A\u308B\u6700\u5C0F\u306El\n    \
+    \ *\n     * @tparam F\n     * @param r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF\
+    \ 0<=r<=n\n     * @param f \u5224\u5B9A\u95A2\u6570 f(e) = true\n     * @return\
+    \ long long\n     */\n    template <typename F>\n    long long min_left(long long\
+    \ r, F f) const {\n        assert(f(e()));\n        assert(0 <= r && r <= n);\n\
+    \        if (r == 0) return 0;\n        r += sz;\n        S sum = e();\n     \
+    \   do {\n            r--;\n            while (r > 1 && r % 2 == 1) r >>= 1;\n\
+    \            if (!f(op(data[r], sum))) {\n                while (r < sz) {\n \
+    \                   r = r * 2 + 1;\n                    if (f(op(data[r], sum)))\
+    \ {\n                        sum = op(data[r], sum);\n                       \
+    \ r--;\n                    }\n                }\n                return r + 1\
+    \ - sz;\n            }\n            sum = op(data[r], sum);\n        } while ((r\
+    \ & -r) != r);\n        return 0;\n    }\n};\n\ntemplate <typename M>\nSegTree(long\
+    \ long, M) -> SegTree<M>;\ntemplate <class R, typename M>\nSegTree(R&&, M) ->\
+    \ SegTree<M>;\ntemplate <typename M>\nSegTree(std::initializer_list<typename M::S>,\
+    \ M) -> SegTree<M>;\n\n/**\n * @brief RangeMaxQuery\n *\n * @tparam S \u578B\n\
+    \ */\ntemplate <typename S>\nusing RMaxQ = SegTree<monoid::Max<S>>;\n/**\n * @brief\
+    \ RangeMinQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RMinQ\
+    \ = SegTree<monoid::Min<S>>;\n/**\n * @brief RangeSumQuery\n *\n * @tparam S \u578B\
+    \n */\ntemplate <typename S>\nusing RSumQ = SegTree<monoid::Sum<S>>;\n/**\n *\
+    \ @brief RangeProdQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename S>\n\
+    using RProdQ = SegTree<monoid::Prod<S>>;\n/**\n * @brief RangeXorQuery\n *\n *\
+    \ @tparam S \u578B\n */\ntemplate <typename S>\nusing RXorQ = SegTree<monoid::Xor<S>>;\n\
     /**\n * @brief RangeGcdQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename\
-    \ S>\nusing RGcdQ = SegTree<monoid::Gcd<S>>;\n#line 14 \"src/data_structures/sortable-segtree.hpp\"\
+    \ S>\nusing RGcdQ = SegTree<monoid::Gcd<S>>;\n#line 17 \"src/data_structures/sortable-segtree.hpp\"\
     \n\n/**\n * @brief \u5404\u4F4D\u7F6E\u306B\u30AD\u30FC\u3068\u5024\u3092\u6301\
     \u3064\u5217\u3067\u30011 \u70B9\u306E\u5909\u66F4\u30FB\u533A\u9593\u306E\u7A4D\
     \u30FB\u533A\u9593\u3092\u30AD\u30FC\u3067\u4E26\u3079\u66FF\u3048\u308B\u64CD\
@@ -633,88 +719,99 @@ data:
     \n     * @param keys \u30AD\u30FC (0 <= \u30AD\u30FC < key_limit\u3001\u3059\u3079\
     \u3066\u7570\u306A\u308B\u3053\u3068)\n     * @param key_limit \u30AD\u30FC\u306E\
     \u4E0A\u9650 (1 \u70B9\u306E\u5909\u66F4\u3067\u4F7F\u3046\u30AD\u30FC\u3082\u3053\
-    \u308C\u672A\u6E80\u3067\u3042\u308B\u3053\u3068)\n     */\n    SortableSegTree(const\
-    \ std::vector<long long>& keys, const std::vector<S>& values, long long key_limit,\
-    \ M m = M())\n        : m(m), n(keys.size()), bits(1), root(n), rev(n, false),\
-    \ starts(n), seg(std::vector<S>(values), m) {\n        assert(keys.size() == values.size());\n\
+    \u308C\u672A\u6E80\u3067\u3042\u308B\u3053\u3068)\n     */\n#if __cplusplus >=\
+    \ 202002L\n    template <class K = std::initializer_list<long long>, class R =\
+    \ std::initializer_list<S>>\n        requires(internal_traits::sized_constructible_range<K,\
+    \ long long> && internal_traits::sized_constructible_range<R, S>)\n#else\n   \
+    \ template <class K = std::initializer_list<long long>, class R = std::initializer_list<S>,\n\
+    \              ENABLE_IF_T(internal_traits::is_sized_constructible_range<K, long\
+    \ long>::value&& internal_traits::is_sized_constructible_range<R, S>::value)>\n\
+    #endif\n    SortableSegTree(K&& keys, R&& values, long long key_limit, M m = M())\n\
+    \        : m(m), n(internal_traits::range_size(keys)), bits(1), root(n), rev(n,\
+    \ false), starts(n), seg(values, m) {\n        assert(n == static_cast<long long>(internal_traits::range_size(values)));\n\
     \        while ((1LL << bits) < key_limit) bits++;\n        nodes.reserve(n *\
     \ (bits + 2) + 1);\n        nodes.push_back(Node{{0, 0}, 0, this->m.e(), this->m.e()});\n\
-    \        for (long long i = 0; i < n; i++) root[i] = make(keys[i], values[i]),\
-    \ starts.insert(i);\n    }\n\n    /**\n     * @brief \u8981\u7D20\u6570\n    \
-    \ */\n    long long size() const { return n; }\n    /**\n     * @brief \u4F4D\u7F6E\
-    \ i \u306E\u30AD\u30FC\u3068\u5024\u3092\u5909\u3048\u308B \u306A\u3089\u3057\
-    \ O(log K)\n     */\n    void set(long long i, long long k, const S& x) {\n  \
-    \      assert(0 <= i && i < n);\n        cut(i), cut(i + 1);\n        root[i]\
-    \ = make(k, x), rev[i] = false;\n        seg.set(i, x);\n    }\n    /**\n    \
-    \ * @brief a[l] a[l+1] ... a[r-1] \u306E\u7A4D \u306A\u3089\u3057 O(log K + log\
-    \ N)\n     */\n    S prod(long long l, long long r) {\n        assert(0 <= l &&\
-    \ l <= r && r <= n);\n        if (l == r) return m.e();\n        cut(l), cut(r);\n\
-    \        return seg.prod(l, r);\n    }\n    /**\n     * @brief [l, r) \u3092\u30AD\
-    \u30FC\u306E\u6607\u9806 (reverse \u306A\u3089\u964D\u9806) \u306B\u4E26\u3079\
-    \u66FF\u3048\u308B \u306A\u3089\u3057 O(log K + \u533A\u9593\u306E\u500B\u6570\
-    )\n     */\n    void sort(long long l, long long r, bool reverse = false) {\n\
-    \        assert(0 <= l && l <= r && r <= n);\n        if (l == r) return;\n  \
-    \      cut(l), cut(r);\n        int t = 0;\n        for (long long s = l; s !=\
-    \ -1 && s < r; s = starts.next(s + 1)) {\n            t = merge(t, root[s], bits\
-    \ - 1);\n            if (s != l) starts.erase(s), seg.set(s, m.e()), root[s] =\
-    \ 0;\n        }\n        root[l] = t, rev[l] = reverse;\n        seg.set(l, value(l));\n\
-    \    }\n};\n"
+    \        long long i = 0;\n        for (auto&& key : keys) {\n            root[i]\
+    \ = make(static_cast<long long>(std::forward<decltype(key)>(key)), seg.get(i));\n\
+    \            starts.insert(i++);\n        }\n    }\n\n    /**\n     * @brief \u8981\
+    \u7D20\u6570\n     */\n    long long size() const { return n; }\n    /**\n   \
+    \  * @brief \u4F4D\u7F6E i \u306E\u30AD\u30FC\u3068\u5024\u3092\u5909\u3048\u308B\
+    \ \u306A\u3089\u3057 O(log K)\n     */\n    void set(long long i, long long k,\
+    \ const S& x) {\n        assert(0 <= i && i < n);\n        cut(i), cut(i + 1);\n\
+    \        root[i] = make(k, x), rev[i] = false;\n        seg.set(i, x);\n    }\n\
+    \    /**\n     * @brief a[l] a[l+1] ... a[r-1] \u306E\u7A4D \u306A\u3089\u3057\
+    \ O(log K + log N)\n     */\n    S prod(long long l, long long r) {\n        assert(0\
+    \ <= l && l <= r && r <= n);\n        if (l == r) return m.e();\n        cut(l),\
+    \ cut(r);\n        return seg.prod(l, r);\n    }\n    /**\n     * @brief [l, r)\
+    \ \u3092\u30AD\u30FC\u306E\u6607\u9806 (reverse \u306A\u3089\u964D\u9806) \u306B\
+    \u4E26\u3079\u66FF\u3048\u308B \u306A\u3089\u3057 O(log K + \u533A\u9593\u306E\
+    \u500B\u6570)\n     */\n    void sort(long long l, long long r, bool reverse =\
+    \ false) {\n        assert(0 <= l && l <= r && r <= n);\n        if (l == r) return;\n\
+    \        cut(l), cut(r);\n        int t = 0;\n        for (long long s = l; s\
+    \ != -1 && s < r; s = starts.next(s + 1)) {\n            t = merge(t, root[s],\
+    \ bits - 1);\n            if (s != l) starts.erase(s), seg.set(s, m.e()), root[s]\
+    \ = 0;\n        }\n        root[l] = t, rev[l] = reverse;\n        seg.set(l,\
+    \ value(l));\n    }\n};\n\ntemplate <class K, class R, typename M>\nSortableSegTree(K&&,\
+    \ R&&, long long, M) -> SortableSegTree<M>;\ntemplate <typename M>\nSortableSegTree(std::initializer_list<long\
+    \ long>, std::initializer_list<typename M::S>, long long, M) -> SortableSegTree<M>;\n"
   code: "#pragma once\n\n/**\n * @file sortable-segtree.hpp\n * @brief \u533A\u9593\
     \u30BD\u30FC\u30C8\u306E\u3067\u304D\u308B\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\
-    \n */\n\n#include <cassert>\n#include <utility>\n#include <vector>\n\n#include\
-    \ \"fast-set.hpp\"\n#include \"segtree.hpp\"\n\n/**\n * @brief \u5404\u4F4D\u7F6E\
-    \u306B\u30AD\u30FC\u3068\u5024\u3092\u6301\u3064\u5217\u3067\u30011 \u70B9\u306E\
-    \u5909\u66F4\u30FB\u533A\u9593\u306E\u7A4D\u30FB\u533A\u9593\u3092\u30AD\u30FC\
-    \u3067\u4E26\u3079\u66FF\u3048\u308B\u64CD\u4F5C\u3092\u884C\u3046\n *\n * \u4E26\
-    \u3079\u66FF\u3048\u305F\u533A\u9593\u3054\u3068\u306B\u3001\u305D\u306E\u8981\
-    \u7D20\u3092\u30AD\u30FC\u306E\u4E8C\u5206\u30C8\u30E9\u30A4 (\u52D5\u7684\u30BB\
-    \u30B0\u30E1\u30F3\u30C8\u6728) \u3067\u6301\u3061\u3001\u6607\u9806\u3068\u964D\
-    \u9806\u306E\u7A4D\u3092\u4FDD\u3064\u3002\n * \u533A\u9593\u306E\u5148\u982D\u306E\
-    \u4F4D\u7F6E\u306B\u300C\u533A\u9593\u306E\u5411\u304D\u306B\u5408\u308F\u305B\
-    \u305F\u7A4D\u300D\u3092\u7F6E\u3044\u305F\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\
-    \u3067\u533A\u9593\u306E\u7A4D\u3092\u6C42\u3081\u308B\u3002\n * \u4E26\u3079\u66FF\
-    \u3048\u306F\u30C8\u30E9\u30A4\u306E\u4F75\u5408\u3001\u533A\u9593\u306E\u5883\
-    \u76EE\u306F\u30C8\u30E9\u30A4\u3092\u500B\u6570\u3067\u5206\u3051\u308B\u3053\
-    \u3068\u3067\u4F5C\u308B\n * \u8A08\u7B97\u91CF\u306F\u306A\u3089\u3057 O((N +\
-    \ Q) log K) (K \u306F\u30AD\u30FC\u306E\u4E0A\u9650)\u3002\u30E1\u30E2\u30EA\u306F\
-    \ O((N + Q) log K)\n * \u4F8B:\n * SortableSegTree<monoid::Sum<long long>> st(keys,\
-    \ values, 1LL << 30);\n * st.sort(l, r);         // [l, r) \u3092\u30AD\u30FC\u306E\
-    \u6607\u9806\u306B\u4E26\u3079\u66FF\u3048\u308B\n * st.sort(l, r, true);   //\
-    \ \u964D\u9806\n * st.prod(l, r);\n *\n * @tparam M \u30E2\u30CE\u30A4\u30C9 (\u7A4D\
-    \u306E\u9806\u756A\u306F\u5217\u306E\u9806\u756A)\n */\ntemplate <typename M>\n\
-    class SortableSegTree {\n    using S = typename M::S;\n    struct Node {\n   \
-    \     int child[2] = {0, 0};\n        int cnt = 0;\n        S asc, desc;  // \u30AD\
-    \u30FC\u306E\u6607\u9806\u30FB\u964D\u9806\u306B\u4E26\u3079\u305F\u3068\u304D\
-    \u306E\u7A4D\n    };\n    M m;\n    long long n;\n    int bits;\n    std::vector<Node>\
-    \ nodes;  // nodes[0] \u306F\u7A7A\u306E\u30C8\u30E9\u30A4\n    std::vector<int>\
-    \ root;    // root[s]: s \u304B\u3089\u59CB\u307E\u308B\u533A\u9593\u306E\u30C8\
-    \u30E9\u30A4\n    std::vector<bool> rev;    // rev[s]: s \u304B\u3089\u59CB\u307E\
-    \u308B\u533A\u9593\u304C\u964D\u9806\u304B\n    FastSet starts;           // \u533A\
-    \u9593\u306E\u5148\u982D\n    SegTree<M> seg;\n\n    int new_node() {\n      \
-    \  nodes.push_back(Node{{0, 0}, 0, m.e(), m.e()});\n        return static_cast<int>(nodes.size())\
-    \ - 1;\n    }\n    void pull(int t) {\n        const Node &a = nodes[nodes[t].child[0]],\
-    \ &b = nodes[nodes[t].child[1]];\n        nodes[t].cnt = a.cnt + b.cnt;\n    \
-    \    nodes[t].asc = m.op(a.asc, b.asc);\n        nodes[t].desc = m.op(b.desc,\
-    \ a.desc);\n    }\n    // \u30AD\u30FC k\u3001\u5024 x \u3060\u3051\u3092\u6301\
-    \u3064\u30C8\u30E9\u30A4\n    int make(long long k, const S& x) {\n        assert(0\
-    \ <= k && k < (1LL << bits));\n        std::vector<int> path = {new_node()};\n\
-    \        for (int d = bits - 1; d >= 0; d--) {\n            const int c = new_node();\n\
-    \            nodes[path.back()].child[k >> d & 1] = c;\n            path.push_back(c);\n\
-    \        }\n        nodes[path.back()].cnt = 1, nodes[path.back()].asc = nodes[path.back()].desc\
-    \ = x;\n        for (int i = static_cast<int>(path.size()) - 2; i >= 0; i--) pull(path[i]);\n\
-    \        return path[0];\n    }\n    // 2 \u3064\u306E\u30C8\u30E9\u30A4\u3092\
-    \u4F75\u5408\u3059\u308B (\u30AD\u30FC\u306F\u91CD\u306A\u3089\u306A\u3044\u3053\
-    \u3068)\n    int merge(int a, int b, int d) {\n        if (a == 0) return b;\n\
-    \        if (b == 0) return a;\n        assert(d >= 0 && \"SortableSegTree: \u30AD\
-    \u30FC\u304C\u91CD\u306A\u3063\u3066\u3044\u308B\");\n        for (int c = 0;\
-    \ c < 2; c++) {\n            int x = merge(nodes[a].child[c], nodes[b].child[c],\
-    \ d - 1);\n            nodes[a].child[c] = x;\n        }\n        pull(a);\n \
-    \       return a;\n    }\n    // \u30AD\u30FC\u306E\u5C0F\u3055\u3044\u65B9\u304B\
-    \u3089 k \u500B\u3068\u6B8B\u308A\u306B\u5206\u3051\u308B\n    std::pair<int,\
-    \ int> split(int t, int k, int d) {\n        if (t == 0 || k == 0) return {0,\
-    \ t};\n        if (k >= nodes[t].cnt) return {t, 0};\n        // \u3053\u3053\u306B\
-    \u6765\u308B\u306A\u3089 cnt >= 2 \u306A\u306E\u3067\u8449\u3067\u306F\u306A\u3044\
-    \n        int s = new_node();\n        const int lc = nodes[t].child[0], left_cnt\
+    \n */\n\n#include <cassert>\n#include <initializer_list>\n#include <type_traits>\n\
+    #include <utility>\n#include <vector>\n\n#include \"../utility/traits.hpp\"\n\
+    #include \"fast-set.hpp\"\n#include \"segtree.hpp\"\n\n/**\n * @brief \u5404\u4F4D\
+    \u7F6E\u306B\u30AD\u30FC\u3068\u5024\u3092\u6301\u3064\u5217\u3067\u30011 \u70B9\
+    \u306E\u5909\u66F4\u30FB\u533A\u9593\u306E\u7A4D\u30FB\u533A\u9593\u3092\u30AD\
+    \u30FC\u3067\u4E26\u3079\u66FF\u3048\u308B\u64CD\u4F5C\u3092\u884C\u3046\n *\n\
+    \ * \u4E26\u3079\u66FF\u3048\u305F\u533A\u9593\u3054\u3068\u306B\u3001\u305D\u306E\
+    \u8981\u7D20\u3092\u30AD\u30FC\u306E\u4E8C\u5206\u30C8\u30E9\u30A4 (\u52D5\u7684\
+    \u30BB\u30B0\u30E1\u30F3\u30C8\u6728) \u3067\u6301\u3061\u3001\u6607\u9806\u3068\
+    \u964D\u9806\u306E\u7A4D\u3092\u4FDD\u3064\u3002\n * \u533A\u9593\u306E\u5148\u982D\
+    \u306E\u4F4D\u7F6E\u306B\u300C\u533A\u9593\u306E\u5411\u304D\u306B\u5408\u308F\
+    \u305B\u305F\u7A4D\u300D\u3092\u7F6E\u3044\u305F\u30BB\u30B0\u30E1\u30F3\u30C8\
+    \u6728\u3067\u533A\u9593\u306E\u7A4D\u3092\u6C42\u3081\u308B\u3002\n * \u4E26\u3079\
+    \u66FF\u3048\u306F\u30C8\u30E9\u30A4\u306E\u4F75\u5408\u3001\u533A\u9593\u306E\
+    \u5883\u76EE\u306F\u30C8\u30E9\u30A4\u3092\u500B\u6570\u3067\u5206\u3051\u308B\
+    \u3053\u3068\u3067\u4F5C\u308B\n * \u8A08\u7B97\u91CF\u306F\u306A\u3089\u3057\
+    \ O((N + Q) log K) (K \u306F\u30AD\u30FC\u306E\u4E0A\u9650)\u3002\u30E1\u30E2\u30EA\
+    \u306F O((N + Q) log K)\n * \u4F8B:\n * SortableSegTree<monoid::Sum<long long>>\
+    \ st(keys, values, 1LL << 30);\n * st.sort(l, r);         // [l, r) \u3092\u30AD\
+    \u30FC\u306E\u6607\u9806\u306B\u4E26\u3079\u66FF\u3048\u308B\n * st.sort(l, r,\
+    \ true);   // \u964D\u9806\n * st.prod(l, r);\n *\n * @tparam M \u30E2\u30CE\u30A4\
+    \u30C9 (\u7A4D\u306E\u9806\u756A\u306F\u5217\u306E\u9806\u756A)\n */\ntemplate\
+    \ <typename M>\nclass SortableSegTree {\n    using S = typename M::S;\n    struct\
+    \ Node {\n        int child[2] = {0, 0};\n        int cnt = 0;\n        S asc,\
+    \ desc;  // \u30AD\u30FC\u306E\u6607\u9806\u30FB\u964D\u9806\u306B\u4E26\u3079\
+    \u305F\u3068\u304D\u306E\u7A4D\n    };\n    M m;\n    long long n;\n    int bits;\n\
+    \    std::vector<Node> nodes;  // nodes[0] \u306F\u7A7A\u306E\u30C8\u30E9\u30A4\
+    \n    std::vector<int> root;    // root[s]: s \u304B\u3089\u59CB\u307E\u308B\u533A\
+    \u9593\u306E\u30C8\u30E9\u30A4\n    std::vector<bool> rev;    // rev[s]: s \u304B\
+    \u3089\u59CB\u307E\u308B\u533A\u9593\u304C\u964D\u9806\u304B\n    FastSet starts;\
+    \           // \u533A\u9593\u306E\u5148\u982D\n    SegTree<M> seg;\n\n    int\
+    \ new_node() {\n        nodes.push_back(Node{{0, 0}, 0, m.e(), m.e()});\n    \
+    \    return static_cast<int>(nodes.size()) - 1;\n    }\n    void pull(int t) {\n\
+    \        const Node &a = nodes[nodes[t].child[0]], &b = nodes[nodes[t].child[1]];\n\
+    \        nodes[t].cnt = a.cnt + b.cnt;\n        nodes[t].asc = m.op(a.asc, b.asc);\n\
+    \        nodes[t].desc = m.op(b.desc, a.desc);\n    }\n    // \u30AD\u30FC k\u3001\
+    \u5024 x \u3060\u3051\u3092\u6301\u3064\u30C8\u30E9\u30A4\n    int make(long long\
+    \ k, const S& x) {\n        assert(0 <= k && k < (1LL << bits));\n        std::vector<int>\
+    \ path = {new_node()};\n        for (int d = bits - 1; d >= 0; d--) {\n      \
+    \      const int c = new_node();\n            nodes[path.back()].child[k >> d\
+    \ & 1] = c;\n            path.push_back(c);\n        }\n        nodes[path.back()].cnt\
+    \ = 1, nodes[path.back()].asc = nodes[path.back()].desc = x;\n        for (int\
+    \ i = static_cast<int>(path.size()) - 2; i >= 0; i--) pull(path[i]);\n       \
+    \ return path[0];\n    }\n    // 2 \u3064\u306E\u30C8\u30E9\u30A4\u3092\u4F75\u5408\
+    \u3059\u308B (\u30AD\u30FC\u306F\u91CD\u306A\u3089\u306A\u3044\u3053\u3068)\n\
+    \    int merge(int a, int b, int d) {\n        if (a == 0) return b;\n       \
+    \ if (b == 0) return a;\n        assert(d >= 0 && \"SortableSegTree: \u30AD\u30FC\
+    \u304C\u91CD\u306A\u3063\u3066\u3044\u308B\");\n        for (int c = 0; c < 2;\
+    \ c++) {\n            int x = merge(nodes[a].child[c], nodes[b].child[c], d -\
+    \ 1);\n            nodes[a].child[c] = x;\n        }\n        pull(a);\n     \
+    \   return a;\n    }\n    // \u30AD\u30FC\u306E\u5C0F\u3055\u3044\u65B9\u304B\u3089\
+    \ k \u500B\u3068\u6B8B\u308A\u306B\u5206\u3051\u308B\n    std::pair<int, int>\
+    \ split(int t, int k, int d) {\n        if (t == 0 || k == 0) return {0, t};\n\
+    \        if (k >= nodes[t].cnt) return {t, 0};\n        // \u3053\u3053\u306B\u6765\
+    \u308B\u306A\u3089 cnt >= 2 \u306A\u306E\u3067\u8449\u3067\u306F\u306A\u3044\n\
+    \        int s = new_node();\n        const int lc = nodes[t].child[0], left_cnt\
     \ = nodes[lc].cnt;\n        if (k <= left_cnt) {\n            auto [a, b] = split(lc,\
     \ k, d - 1);\n            nodes[t].child[0] = a;\n            nodes[s].child[0]\
     \ = b, nodes[s].child[1] = nodes[t].child[1];\n            nodes[t].child[1] =\
@@ -737,43 +834,54 @@ data:
     \n     * @param keys \u30AD\u30FC (0 <= \u30AD\u30FC < key_limit\u3001\u3059\u3079\
     \u3066\u7570\u306A\u308B\u3053\u3068)\n     * @param key_limit \u30AD\u30FC\u306E\
     \u4E0A\u9650 (1 \u70B9\u306E\u5909\u66F4\u3067\u4F7F\u3046\u30AD\u30FC\u3082\u3053\
-    \u308C\u672A\u6E80\u3067\u3042\u308B\u3053\u3068)\n     */\n    SortableSegTree(const\
-    \ std::vector<long long>& keys, const std::vector<S>& values, long long key_limit,\
-    \ M m = M())\n        : m(m), n(keys.size()), bits(1), root(n), rev(n, false),\
-    \ starts(n), seg(std::vector<S>(values), m) {\n        assert(keys.size() == values.size());\n\
+    \u308C\u672A\u6E80\u3067\u3042\u308B\u3053\u3068)\n     */\n#if __cplusplus >=\
+    \ 202002L\n    template <class K = std::initializer_list<long long>, class R =\
+    \ std::initializer_list<S>>\n        requires(internal_traits::sized_constructible_range<K,\
+    \ long long> && internal_traits::sized_constructible_range<R, S>)\n#else\n   \
+    \ template <class K = std::initializer_list<long long>, class R = std::initializer_list<S>,\n\
+    \              ENABLE_IF_T(internal_traits::is_sized_constructible_range<K, long\
+    \ long>::value&& internal_traits::is_sized_constructible_range<R, S>::value)>\n\
+    #endif\n    SortableSegTree(K&& keys, R&& values, long long key_limit, M m = M())\n\
+    \        : m(m), n(internal_traits::range_size(keys)), bits(1), root(n), rev(n,\
+    \ false), starts(n), seg(values, m) {\n        assert(n == static_cast<long long>(internal_traits::range_size(values)));\n\
     \        while ((1LL << bits) < key_limit) bits++;\n        nodes.reserve(n *\
     \ (bits + 2) + 1);\n        nodes.push_back(Node{{0, 0}, 0, this->m.e(), this->m.e()});\n\
-    \        for (long long i = 0; i < n; i++) root[i] = make(keys[i], values[i]),\
-    \ starts.insert(i);\n    }\n\n    /**\n     * @brief \u8981\u7D20\u6570\n    \
-    \ */\n    long long size() const { return n; }\n    /**\n     * @brief \u4F4D\u7F6E\
-    \ i \u306E\u30AD\u30FC\u3068\u5024\u3092\u5909\u3048\u308B \u306A\u3089\u3057\
-    \ O(log K)\n     */\n    void set(long long i, long long k, const S& x) {\n  \
-    \      assert(0 <= i && i < n);\n        cut(i), cut(i + 1);\n        root[i]\
-    \ = make(k, x), rev[i] = false;\n        seg.set(i, x);\n    }\n    /**\n    \
-    \ * @brief a[l] a[l+1] ... a[r-1] \u306E\u7A4D \u306A\u3089\u3057 O(log K + log\
-    \ N)\n     */\n    S prod(long long l, long long r) {\n        assert(0 <= l &&\
-    \ l <= r && r <= n);\n        if (l == r) return m.e();\n        cut(l), cut(r);\n\
-    \        return seg.prod(l, r);\n    }\n    /**\n     * @brief [l, r) \u3092\u30AD\
-    \u30FC\u306E\u6607\u9806 (reverse \u306A\u3089\u964D\u9806) \u306B\u4E26\u3079\
-    \u66FF\u3048\u308B \u306A\u3089\u3057 O(log K + \u533A\u9593\u306E\u500B\u6570\
-    )\n     */\n    void sort(long long l, long long r, bool reverse = false) {\n\
-    \        assert(0 <= l && l <= r && r <= n);\n        if (l == r) return;\n  \
-    \      cut(l), cut(r);\n        int t = 0;\n        for (long long s = l; s !=\
-    \ -1 && s < r; s = starts.next(s + 1)) {\n            t = merge(t, root[s], bits\
-    \ - 1);\n            if (s != l) starts.erase(s), seg.set(s, m.e()), root[s] =\
-    \ 0;\n        }\n        root[l] = t, rev[l] = reverse;\n        seg.set(l, value(l));\n\
-    \    }\n};\n"
+    \        long long i = 0;\n        for (auto&& key : keys) {\n            root[i]\
+    \ = make(static_cast<long long>(std::forward<decltype(key)>(key)), seg.get(i));\n\
+    \            starts.insert(i++);\n        }\n    }\n\n    /**\n     * @brief \u8981\
+    \u7D20\u6570\n     */\n    long long size() const { return n; }\n    /**\n   \
+    \  * @brief \u4F4D\u7F6E i \u306E\u30AD\u30FC\u3068\u5024\u3092\u5909\u3048\u308B\
+    \ \u306A\u3089\u3057 O(log K)\n     */\n    void set(long long i, long long k,\
+    \ const S& x) {\n        assert(0 <= i && i < n);\n        cut(i), cut(i + 1);\n\
+    \        root[i] = make(k, x), rev[i] = false;\n        seg.set(i, x);\n    }\n\
+    \    /**\n     * @brief a[l] a[l+1] ... a[r-1] \u306E\u7A4D \u306A\u3089\u3057\
+    \ O(log K + log N)\n     */\n    S prod(long long l, long long r) {\n        assert(0\
+    \ <= l && l <= r && r <= n);\n        if (l == r) return m.e();\n        cut(l),\
+    \ cut(r);\n        return seg.prod(l, r);\n    }\n    /**\n     * @brief [l, r)\
+    \ \u3092\u30AD\u30FC\u306E\u6607\u9806 (reverse \u306A\u3089\u964D\u9806) \u306B\
+    \u4E26\u3079\u66FF\u3048\u308B \u306A\u3089\u3057 O(log K + \u533A\u9593\u306E\
+    \u500B\u6570)\n     */\n    void sort(long long l, long long r, bool reverse =\
+    \ false) {\n        assert(0 <= l && l <= r && r <= n);\n        if (l == r) return;\n\
+    \        cut(l), cut(r);\n        int t = 0;\n        for (long long s = l; s\
+    \ != -1 && s < r; s = starts.next(s + 1)) {\n            t = merge(t, root[s],\
+    \ bits - 1);\n            if (s != l) starts.erase(s), seg.set(s, m.e()), root[s]\
+    \ = 0;\n        }\n        root[l] = t, rev[l] = reverse;\n        seg.set(l,\
+    \ value(l));\n    }\n};\n\ntemplate <class K, class R, typename M>\nSortableSegTree(K&&,\
+    \ R&&, long long, M) -> SortableSegTree<M>;\ntemplate <typename M>\nSortableSegTree(std::initializer_list<long\
+    \ long>, std::initializer_list<typename M::S>, long long, M) -> SortableSegTree<M>;\n"
   dependsOn:
+  - src/utility/traits.hpp
   - src/data_structures/fast-set.hpp
   - src/data_structures/segtree.hpp
   - src/algebra/monoid.hpp
   isVerificationFile: false
   path: src/data_structures/sortable-segtree.hpp
   requiredBy: []
-  timestamp: '2026-11-08 19:03:35+09:00'
+  timestamp: '2026-11-08 20:13:03+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/sortable-segtree.test.cpp
+  - test/unittest/algebra/monoid.test.cpp
   - test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
 documentation_of: src/data_structures/sortable-segtree.hpp
 layout: document
@@ -791,6 +899,8 @@ st.sort(l, r, true);        // 降順に並べ替える
 st.set(i, key, x);          // 位置 i のキーと値を変える
 long long s = st.prod(l, r);
 ```
+
+サイズを取得でき、各要素から `S` を構築できる範囲を直接渡せます。`std::vector`・`std::array`・`std::list`・組み込み配列などに対応します。C++20 ではサイズ付きの入力範囲 (`input_range` かつ `sized_range`) のビューも使えます。各要素を内部へ直接構築するので、`explicit` なコンストラクタにも対応します。初期化リストも使えます。 キー列もサイズを取得できる範囲を受け取り、各要素を `long long` に変換します。
 
 ## メンバ関数
 

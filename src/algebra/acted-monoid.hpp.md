@@ -63,6 +63,9 @@ data:
     path: test/unittest/algebra/beats-acted-monoid.test.cpp
     title: test/unittest/algebra/beats-acted-monoid.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/algebra/monoid.test.cpp
+    title: test/unittest/algebra/monoid.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/dual-segtree-2d.test.cpp
     title: test/unittest/data_structures/dual-segtree-2d.test.cpp
   - icon: ':heavy_check_mark:'
@@ -1006,6 +1009,7 @@ data:
   - test/unittest/data_structures/rbst.test.cpp
   - test/unittest/algebra/acted-monoid.test.cpp
   - test/unittest/algebra/beats-acted-monoid.test.cpp
+  - test/unittest/algebra/monoid.test.cpp
   - test/aoj/dsl/dsl-2-h.2.test.cpp
   - test/aoj/dsl/dsl-2-i.test.cpp
   - test/aoj/dsl/dsl-5-a.test.cpp

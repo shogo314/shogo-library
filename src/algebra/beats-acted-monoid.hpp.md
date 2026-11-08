@@ -13,6 +13,9 @@ data:
     path: test/unittest/algebra/beats-acted-monoid.test.cpp
     title: test/unittest/algebra/beats-acted-monoid.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/algebra/monoid.test.cpp
+    title: test/unittest/algebra/monoid.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/dual-segtree.test.cpp
     title: test/unittest/data_structures/dual-segtree.test.cpp
   - icon: ':heavy_check_mark:'
@@ -648,6 +651,7 @@ data:
   - test/unittest/data_structures/dual-segtree.test.cpp
   - test/unittest/data_structures/segtree-beats.test.cpp
   - test/unittest/algebra/beats-acted-monoid.test.cpp
+  - test/unittest/algebra/monoid.test.cpp
   - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.2.test.cpp
   - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
   - test/yosupo/data_structure/range-chmin-chmax-add-range-sum.1.test.cpp
@@ -661,7 +665,7 @@ title: "Segment Tree Beats \u7528\u306E\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30C
 
 ```cpp
 using A = beats_acted_monoid::ChminChmaxAddSum<long long>;
-SegTreeBeats<A> seg(std::vector<A::S>(a.begin(), a.end()));  // a は std::vector<long long>
+SegTreeBeats<A> seg(a);  // a は std::vector<long long>
 seg.apply(l, r, A::chmin(x));   // [l, r) を min(a[i], x) に
 seg.apply(l, r, A::add(x));     // [l, r) に x を足す
 A::S s = seg.prod(l, r);

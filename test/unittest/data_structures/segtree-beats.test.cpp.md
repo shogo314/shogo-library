@@ -14,6 +14,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/data_structures/segtree-beats.hpp
     title: Segment Tree Beats
+  - icon: ':heavy_check_mark:'
+    path: src/utility/traits.hpp
+    title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
@@ -33,48 +36,48 @@ data:
     \u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089\
     \ Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/data_structures/segtree-beats.hpp\"\
     \n\n/**\n * @file segtree-beats.hpp\n * @brief Segment Tree Beats\n */\n\n#include\
-    \ <algorithm>\n#include <cassert>\n#include <ostream>\n#include <tuple>\n#include\
-    \ <utility>\n#include <vector>\n\n#line 2 \"src/algebra/acted-monoid.hpp\"\n\n\
-    /**\n * @file acted-monoid.hpp\n * @brief \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
-    \u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
-    \u30CE\u30A4\u30C9\u306F\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp) \u306E\u30E1\
-    \u30F3\u30D0\u306B\u52A0\u3048\u3066\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
-    \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using F: \u4F5C\u7528\u7D20\u306E\
-    \u578B\n * - S mapping(const F& f, const S& x): \u4F5C\u7528\u7D20\u306E\u9069\
-    \u7528 f(x)\n *   \u533A\u9593\u306E\u60C5\u5831\u304C\u5FC5\u8981\u306A\u5834\
-    \u5408\u306F mapping(f, x, sz) (sz \u306F\u533A\u9593\u306E\u9577\u3055) \u3084\
-    \ mapping(f, x, l, r) (\u533A\u9593 [l, r)) \u3067\u3082\u3088\u3044\n *   sz,\
-    \ l, r \u306F long long \u3067\u6E21\u3059 (\u52D5\u7684\u30BB\u30B0\u30E1\u30F3\
-    \u30C8\u6728\u3067\u306F int \u306B\u53CE\u307E\u3089\u306A\u3044\u3053\u3068\u304C\
-    \u3042\u308B)\n * - F composition(const F& f, const F& g): \u4F5C\u7528\u7D20\u306E\
-    \u5408\u6210 f\u2218g (g\u3092\u9069\u7528\u3057\u305F\u5F8C\u306Bf\u3092\u9069\
-    \u7528\u3059\u308B)\n * - F id(): \u6052\u7B49\u5199\u50CF\n * \u4F5C\u7528\u7D20\
-    \u304C\u7FA4\u3092\u306A\u3059\u5834\u5408 (imos.hpp \u3067\u4F7F\u3046) \u306F\
-    \n * - F inv(const F& f): \u9006\u4F5C\u7528\u7D20\n */\n\n#line 19 \"src/algebra/acted-monoid.hpp\"\
+    \ <algorithm>\n#include <cassert>\n#include <initializer_list>\n#include <ostream>\n\
+    #include <tuple>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\
+    \n#line 2 \"src/algebra/acted-monoid.hpp\"\n\n/**\n * @file acted-monoid.hpp\n\
+    \ * @brief \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
+    \n *\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306F\u30E2\u30CE\
+    \u30A4\u30C9 (algebra/monoid.hpp) \u306E\u30E1\u30F3\u30D0\u306B\u52A0\u3048\u3066\
+    \u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\
+    \u3059\n * - using F: \u4F5C\u7528\u7D20\u306E\u578B\n * - S mapping(const F&\
+    \ f, const S& x): \u4F5C\u7528\u7D20\u306E\u9069\u7528 f(x)\n *   \u533A\u9593\
+    \u306E\u60C5\u5831\u304C\u5FC5\u8981\u306A\u5834\u5408\u306F mapping(f, x, sz)\
+    \ (sz \u306F\u533A\u9593\u306E\u9577\u3055) \u3084 mapping(f, x, l, r) (\u533A\
+    \u9593 [l, r)) \u3067\u3082\u3088\u3044\n *   sz, l, r \u306F long long \u3067\
+    \u6E21\u3059 (\u52D5\u7684\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\u3067\u306F int\
+    \ \u306B\u53CE\u307E\u3089\u306A\u3044\u3053\u3068\u304C\u3042\u308B)\n * - F\
+    \ composition(const F& f, const F& g): \u4F5C\u7528\u7D20\u306E\u5408\u6210 f\u2218\
+    g (g\u3092\u9069\u7528\u3057\u305F\u5F8C\u306Bf\u3092\u9069\u7528\u3059\u308B\
+    )\n * - F id(): \u6052\u7B49\u5199\u50CF\n * \u4F5C\u7528\u7D20\u304C\u7FA4\u3092\
+    \u306A\u3059\u5834\u5408 (imos.hpp \u3067\u4F7F\u3046) \u306F\n * - F inv(const\
+    \ F& f): \u9006\u4F5C\u7528\u7D20\n */\n\n#line 19 \"src/algebra/acted-monoid.hpp\"\
     \n#include <array>\n#include <cstddef>\n#include <limits>\n#include <optional>\n\
-    #include <type_traits>\n#line 25 \"src/algebra/acted-monoid.hpp\"\n\n#line 2 \"\
-    src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\
-    \u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\
-    \u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using\
-    \ S: \u8981\u7D20\u306E\u578B\n * - S op(const S& a, const S& b): \u7A4D (\u7D50\
-    \u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n * op, e \u306F static \u3067\u3082\
-    \u975E static \u3067\u3082\u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\
-    \u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\
-    \u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\n#line 17 \"src/algebra/monoid.hpp\"\
-    \n#include <istream>\n#line 19 \"src/algebra/monoid.hpp\"\n#include <numeric>\n\
-    #line 24 \"src/algebra/monoid.hpp\"\n\n/**\n * @brief 1\u6B21\u95A2\u6570 f(x)\
-    \ = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum\
-    \ \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3};\
-    \ f(x) \u306F 2x + 3\u3002\u7701\u7565\u3059\u308B\u3068\u6052\u7B49\u5199\u50CF\
-    \ {1, 0}\n */\ntemplate <typename T>\nstruct Affine {\n    T a = T(1);  //!< \u50BE\
-    \u304D\n    T b = T(0);  //!< \u5207\u7247\n    constexpr T operator()(const T&\
-    \ x) const { return a * x + b; }\n    friend constexpr bool operator==(const Affine&\
-    \ f, const Affine& g) { return f.a == g.a && f.b == g.b; }\n    friend constexpr\
-    \ bool operator!=(const Affine& f, const Affine& g) { return !(f == g); }\n  \
-    \  template <class CharT, class Traits>\n    friend std::basic_istream<CharT,\
-    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Affine& f) {\n  \
-    \      return is >> f.a >> f.b;\n    }\n    template <class CharT, class Traits>\n\
-    \    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    #line 25 \"src/algebra/acted-monoid.hpp\"\n\n#line 2 \"src/algebra/monoid.hpp\"\
+    \n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
+    \n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
+    \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\
+    \n * - S op(const S& a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e():\
+    \ \u5358\u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\
+    \u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\
+    \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\
+    \u51FA\u3059)\n */\n\n#line 17 \"src/algebra/monoid.hpp\"\n#include <istream>\n\
+    #line 19 \"src/algebra/monoid.hpp\"\n#include <numeric>\n#line 24 \"src/algebra/monoid.hpp\"\
+    \n\n/**\n * @brief 1\u6B21\u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite\
+    \ \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\
+    \u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\
+    \u3059\u308B\u3068\u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\n\
+    struct Affine {\n    T a = T(1);  //!< \u50BE\u304D\n    T b = T(0);  //!< \u5207\
+    \u7247\n    constexpr T operator()(const T& x) const { return a * x + b; }\n \
+    \   friend constexpr bool operator==(const Affine& f, const Affine& g) { return\
+    \ f.a == g.a && f.b == g.b; }\n    friend constexpr bool operator!=(const Affine&\
+    \ f, const Affine& g) { return !(f == g); }\n    template <class CharT, class\
+    \ Traits>\n    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
+    \ Traits>& is, Affine& f) {\n        return is >> f.a >> f.b;\n    }\n    template\
+    \ <class CharT, class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const Affine& f) {\n        return os << f.a << CharT(' ') << f.b;\n\
     \    }\n};\n\n/**\n * @brief clamp \u3059\u308B\u95A2\u6570 f(x) = min(max(x,\
     \ lb), ub)\n *\n * monoid::ClampComposite \u306E\u8981\u7D20\u3084 acted_monoid::ClampMin\
@@ -749,69 +752,146 @@ data:
     \u7528\u3057\u305F\u5F8C\u306B f \u3092\u9069\u7528\u3059\u308B\n    static constexpr\
     \ F composition(const F& f, const F& g) { return monoid::ClampAddComposite<T>::op(f,\
     \ g); }\n    static constexpr F id() { return {lowest, highest, T(0)}; }\n};\n\
-    \n}  // namespace beats_acted_monoid\n#line 17 \"src/data_structures/segtree-beats.hpp\"\
-    \n\n/**\n * @brief Segment Tree Beats\n *\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
-    \u30CE\u30A4\u30C9 (algebra/acted-monoid.hpp) \u3068\u540C\u3058\u5F62\u306E\u578B\
-    \u3092\u53D7\u3051\u53D6\u308B\u304C\u3001\n * mapping \u306F std::pair<bool,\
-    \ S> (\u4F5C\u7528\u306B\u5931\u6557\u3057\u305F\u304B, \u4F5C\u7528\u5F8C\u306E\
-    \u5024) \u3092\u8FD4\u3059\n * \u5931\u6557\u3057\u305F\u5834\u5408\u306F\u5B50\
-    \u306B\u4F1D\u642C\u3057\u3066\u304B\u3089\u8A08\u7B97\u3057\u76F4\u3059\n *\n\
-    \ * @tparam A \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n */\ntemplate\
-    \ <typename A>\nclass SegTreeBeats {\n   public:\n    using S = typename A::S;\n\
-    \    using F = typename A::F;\n\n   private:\n    A a;\n    S op(const S& x, const\
-    \ S& y) const { return a.op(x, y); }\n    S e() const { return a.e(); }\n    std::pair<bool,\
-    \ S> mapping(const F& f, const S& x, long long l, long long r) const { return\
-    \ acted_monoid::apply_mapping(a, f, x, l, r); }\n    F composition(const F& f,\
-    \ const F& g) const { return a.composition(f, g); }\n    F id() const { return\
-    \ a.id(); }\n\n    long long n, sz;\n    int height;\n    std::vector<S> data;\n\
-    \    std::vector<int> fail;\n    std::vector<F> lazy;\n\n    void update(long\
-    \ long k) {\n        data[k] = op(data[2 * k], data[2 * k + 1]);\n        fail[k]\
-    \ = false;\n    }\n    void apply_node(long long k, int h, const F& f) {\n   \
-    \     // \u672B\u5C3E\u306E\u8981\u7D20\u6570\u3092 2 \u3079\u304D\u306B\u305D\
-    \u308D\u3048\u308B\u305F\u3081\u306E\u4F59\u308A\u306E\u90E8\u5206\u306F\u533A\
-    \u9593\u306B\u542B\u3081\u306A\u3044\n        long long l = std::min((k << h)\
-    \ & (sz - 1), n);\n        long long r = std::min(((k << h) & (sz - 1)) + (1LL\
-    \ << h), n);\n        std::tie(fail[k], data[k]) = mapping(f, data[k], l, r);\n\
-    \        if (k < sz) {\n            lazy[k] = composition(f, lazy[k]);\n     \
-    \       if (fail[k]) {\n                push(k, h);\n                update(k);\n\
-    \            }\n        }\n    }\n    void push(long long k, int h) {\n      \
-    \  apply_node(2 * k, h - 1, lazy[k]);\n        apply_node(2 * k + 1, h - 1, lazy[k]);\n\
-    \        lazy[k] = id();\n    }\n\n    class SegTreeBeatsReference {\n       \
-    \ SegTreeBeats& segtree;\n        long long k;\n\n       public:\n        SegTreeBeatsReference(SegTreeBeats&\
-    \ segtree, long long k) : segtree(segtree), k(k) {}\n        SegTreeBeatsReference&\
-    \ operator=(const S& x) {\n            segtree.set(k, x);\n            return\
-    \ *this;\n        }\n        operator S() { return segtree.get(k); }\n    };\n\
-    \n    void construct_data() {\n        sz = 1;\n        height = 0;\n        while\
-    \ (sz < n) {\n            sz <<= 1;\n            height++;\n        }\n      \
-    \  data.assign(sz * 2, e());\n        fail.assign(sz * 2, false);\n        lazy.assign(sz\
-    \ * 2, id());\n    }\n\n   public:\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\
-    \u30E9\u30AF\u30BF\n     *\n     * @param n \u8981\u7D20\u6570\n     * @param\
-    \ a \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n     */\n    explicit\
-    \ SegTreeBeats(long long n = 0, A a = A()) : a(std::move(a)), n(n) {\n       \
-    \ construct_data();\n    }\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\
-    \u30AF\u30BF\n     *\n     * @param v \u521D\u671F\u306E\u8981\u7D20\n     * @param\
-    \ a \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n     */\n    explicit\
-    \ SegTreeBeats(const std::vector<S>& v, A a = A()) : SegTreeBeats(v.size(), std::move(a))\
-    \ {\n        for (long long i = 0; i < n; i++) data[sz + i] = v[i];\n        for\
-    \ (long long i = sz - 1; i > 0; i--) update(i);\n    }\n\n    /**\n     * @brief\
-    \ \u8981\u7D20\u6570\u3092\u8FD4\u3059\n     */\n    long long size() const {\
-    \ return n; }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\
-    \u306E\u5024\u3092\u8FD4\u3059\n     *\n     * @param k \u30A4\u30F3\u30C7\u30C3\
-    \u30AF\u30B9\n     * @return S \u5024\n     */\n    S get(long long k) {\n   \
-    \     assert(0 <= k && k < n);\n        k += sz;\n        for (int h = height;\
-    \ h > 0; h--) {\n            push(k >> h, h);\n        }\n        return data[k];\n\
-    \    }\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u3078\
-    \u306E\u53C2\u7167\u3092\u8FD4\u3059\n     *\n     * @param k\n     * @return\
-    \ SegTreeReference \u8981\u7D20\u3078\u306E\u53C2\u7167 \u4EE3\u5165\u3055\u308C\
-    \u308B\u3068set()\u304C\u547C\u3070\u308C\u308B\n     */\n    SegTreeBeatsReference\
-    \ operator[](long long k) { return SegTreeBeatsReference(*this, k); }\n\n    /**\n\
-    \     * @brief \u5185\u5BB9\u3092\u51FA\u529B\u3059\u308B\n     *\n     * @tparam\
-    \ CharT \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n \
-    \    * @tparam Traits \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\
-    \u578B\u7279\u6027\n     * @param os \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\
-    \n     * @param rhs \u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n     * @return std::basic_ostream<CharT,\
-    \ Traits>& \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\n     */\n    template <class\
-    \ CharT, class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \n}  // namespace beats_acted_monoid\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n\
+    \ * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\
+    \n#include <functional>\n#include <iterator>\n#include <set>\n#line 14 \"src/utility/traits.hpp\"\
+    \n\n#if __cplusplus >= 202002L\n#include <ranges>\n#endif\n\nnamespace internal_traits\
+    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n\n// \u30B5\u30A4\u30BA\u4ED8\
+    \u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\u3059\
+    \u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\u308B\
+    \u3002\n#if __cplusplus >= 202002L\ntemplate <class R, class S>\nconcept sized_constructible_range\
+    \ = std::ranges::input_range<R> && std::ranges::sized_range<R> &&\n          \
+    \                          std::is_constructible_v<S, std::ranges::range_reference_t<R>>;\n\
+    \ntemplate <class R>\nauto range_size(R& r) {\n    return std::ranges::size(r);\n\
+    }\ntemplate <class R>\nauto range_begin(R& r) {\n    return std::ranges::begin(r);\n\
+    }\ntemplate <class R>\nusing range_value_t = std::ranges::range_value_t<R>;\n\
+    #else\nusing std::size;\ntemplate <class R>\nauto range_size(R& r) -> decltype(size(r))\
+    \ {\n    return size(r);\n}\ntemplate <class R>\nauto range_begin(R& r) -> decltype(begin(r))\
+    \ {\n    return begin(r);\n}\ntemplate <class R>\nusing range_value_t = typename\
+    \ std::iterator_traits<decltype(range_begin(std::declval<R&>()))>::value_type;\n\
+    \ntemplate <class R, class S, class = void>\nstruct is_sized_constructible_range\
+    \ : std::false_type {};\ntemplate <class R, class S>\nstruct is_sized_constructible_range<R,\
+    \ S, std::void_t<decltype(range_size(std::declval<R&>())), decltype(++std::declval<decltype(begin(std::declval<R&>()))&>()),\
+    \ decltype(begin(std::declval<R&>()) != end(std::declval<R&>())), decltype(*begin(std::declval<R&>()))>>\n\
+    \    : std::is_constructible<S, decltype(*begin(std::declval<R&>()))> {};\n#endif\n\
+    }  // namespace internal_traits\n\ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
+    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
+    \n#define HAS_METHOD(func_name)                                              \
+    \                \\\n    namespace internal_traits {                         \
+    \                                   \\\n    template <class T, class = void> \
+    \                                                      \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                    \\\n    template <class\
+    \ T>                                                                     \\\n\
+    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                    \\\n    }                                               \
+    \                                       \\\n    template <class T>           \
+    \                                                          \\\n    struct has_##func_name\
+    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
+    \ <class T>                                                                  \
+    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
+    \n#define HAS_METHOD_ARG(func_name)                                          \
+    \                                    \\\n    namespace internal_traits {     \
+    \                                                                           \\\
+    \n    template <class T, typename U, class = void>                           \
+    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                                        \\\n    template\
+    \ <class T, typename U>                                                      \
+    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                                        \\\n    }                           \
+    \                                                                            \
+    \   \\\n    template <class T, typename U>                                   \
+    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \ U>::type {};                           \\\n    template <class T, typename U>\
+    \                                                                            \
+    \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
+    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
+    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
+    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
+    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
+    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
+    \nnamespace internal_traits {\n// \u5C04\u5F71 (proj) \u306E\u65E2\u5B9A\u5024\
+    \n#if __cplusplus >= 202002L\nusing identity = std::identity;\n#else\nstruct identity\
+    \ {\n    using is_transparent = void;\n    template <class T>\n    constexpr T&&\
+    \ operator()(T&& x) const noexcept {\n        return std::forward<T>(x);\n   \
+    \ }\n};\n#endif\n}  // namespace internal_traits\n\ntemplate <class C>\nusing\
+    \ mem_value_type = typename C::value_type;\ntemplate <class C>\nusing mem_difference_type\
+    \ = typename C::difference_type;\n\nnamespace internal_traits {\ntemplate <class\
+    \ T, class = void>\nstruct is_sorted_container_impl : std::false_type {};\ntemplate\
+    \ <class T>\nstruct is_sorted_container_impl<std::set<T>> : std::true_type {};\n\
+    template <class T>\nstruct is_sorted_container_impl<std::multiset<T>> : std::true_type\
+    \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
+    \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
+    inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
+    #line 20 \"src/data_structures/segtree-beats.hpp\"\n\n/**\n * @brief Segment Tree\
+    \ Beats\n *\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9 (algebra/acted-monoid.hpp)\
+    \ \u3068\u540C\u3058\u5F62\u306E\u578B\u3092\u53D7\u3051\u53D6\u308B\u304C\u3001\
+    \n * mapping \u306F std::pair<bool, S> (\u4F5C\u7528\u306B\u5931\u6557\u3057\u305F\
+    \u304B, \u4F5C\u7528\u5F8C\u306E\u5024) \u3092\u8FD4\u3059\n * \u5931\u6557\u3057\
+    \u305F\u5834\u5408\u306F\u5B50\u306B\u4F1D\u642C\u3057\u3066\u304B\u3089\u8A08\
+    \u7B97\u3057\u76F4\u3059\n *\n * @tparam A \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
+    \u30CE\u30A4\u30C9\n */\ntemplate <typename A>\nclass SegTreeBeats {\n   public:\n\
+    \    using S = typename A::S;\n    using F = typename A::F;\n\n   private:\n \
+    \   A a;\n    S op(const S& x, const S& y) const { return a.op(x, y); }\n    S\
+    \ e() const { return a.e(); }\n    std::pair<bool, S> mapping(const F& f, const\
+    \ S& x, long long l, long long r) const { return acted_monoid::apply_mapping(a,\
+    \ f, x, l, r); }\n    F composition(const F& f, const F& g) const { return a.composition(f,\
+    \ g); }\n    F id() const { return a.id(); }\n\n    long long n, sz;\n    int\
+    \ height;\n    std::vector<S> data;\n    std::vector<int> fail;\n    std::vector<F>\
+    \ lazy;\n\n    void update(long long k) {\n        data[k] = op(data[2 * k], data[2\
+    \ * k + 1]);\n        fail[k] = false;\n    }\n    void apply_node(long long k,\
+    \ int h, const F& f) {\n        // \u672B\u5C3E\u306E\u8981\u7D20\u6570\u3092\
+    \ 2 \u3079\u304D\u306B\u305D\u308D\u3048\u308B\u305F\u3081\u306E\u4F59\u308A\u306E\
+    \u90E8\u5206\u306F\u533A\u9593\u306B\u542B\u3081\u306A\u3044\n        long long\
+    \ l = std::min((k << h) & (sz - 1), n);\n        long long r = std::min(((k <<\
+    \ h) & (sz - 1)) + (1LL << h), n);\n        std::tie(fail[k], data[k]) = mapping(f,\
+    \ data[k], l, r);\n        if (k < sz) {\n            lazy[k] = composition(f,\
+    \ lazy[k]);\n            if (fail[k]) {\n                push(k, h);\n       \
+    \         update(k);\n            }\n        }\n    }\n    void push(long long\
+    \ k, int h) {\n        apply_node(2 * k, h - 1, lazy[k]);\n        apply_node(2\
+    \ * k + 1, h - 1, lazy[k]);\n        lazy[k] = id();\n    }\n\n    class SegTreeBeatsReference\
+    \ {\n        SegTreeBeats& segtree;\n        long long k;\n\n       public:\n\
+    \        SegTreeBeatsReference(SegTreeBeats& segtree, long long k) : segtree(segtree),\
+    \ k(k) {}\n        SegTreeBeatsReference& operator=(const S& x) {\n          \
+    \  segtree.set(k, x);\n            return *this;\n        }\n        operator\
+    \ S() { return segtree.get(k); }\n    };\n\n    void construct_data() {\n    \
+    \    sz = 1;\n        height = 0;\n        while (sz < n) {\n            sz <<=\
+    \ 1;\n            height++;\n        }\n        data.assign(sz * 2, e());\n  \
+    \      fail.assign(sz * 2, false);\n        lazy.assign(sz * 2, id());\n    }\n\
+    \n   public:\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\
+    \n     *\n     * @param n \u8981\u7D20\u6570\n     * @param a \u4F5C\u7528\u7D20\
+    \u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n     */\n    explicit SegTreeBeats(long\
+    \ long n = 0, A a = A()) : a(std::move(a)), n(n) {\n        construct_data();\n\
+    \    }\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n  \
+    \   *\n     * @param v \u521D\u671F\u306E\u8981\u7D20\n     * @param a \u4F5C\u7528\
+    \u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n     */\n#if __cplusplus >= 202002L\n\
+    \    template <class R = std::initializer_list<S>>\n        requires internal_traits::sized_constructible_range<R,\
+    \ S>\n#else\n    template <class R = std::initializer_list<S>, ENABLE_IF_T(internal_traits::is_sized_constructible_range<R,\
+    \ S>::value)>\n#endif\n    explicit SegTreeBeats(R&& v, A a = A()) : SegTreeBeats(internal_traits::range_size(v),\
+    \ std::move(a)) {\n        long long k = sz;\n        for (auto&& x : v) data[k++]\
+    \ = S(std::forward<decltype(x)>(x));\n        for (long long i = sz - 1; i > 0;\
+    \ i--) update(i);\n    }\n\n    /**\n     * @brief \u8981\u7D20\u6570\u3092\u8FD4\
+    \u3059\n     */\n    long long size() const { return n; }\n\n    /**\n     * @brief\
+    \ \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\u5024\u3092\u8FD4\u3059\n \
+    \    *\n     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * @return S\
+    \ \u5024\n     */\n    S get(long long k) {\n        assert(0 <= k && k < n);\n\
+    \        k += sz;\n        for (int h = height; h > 0; h--) {\n            push(k\
+    \ >> h, h);\n        }\n        return data[k];\n    }\n    /**\n     * @brief\
+    \ \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u3078\u306E\u53C2\u7167\u3092\u8FD4\
+    \u3059\n     *\n     * @param k\n     * @return SegTreeReference \u8981\u7D20\u3078\
+    \u306E\u53C2\u7167 \u4EE3\u5165\u3055\u308C\u308B\u3068set()\u304C\u547C\u3070\
+    \u308C\u308B\n     */\n    SegTreeBeatsReference operator[](long long k) { return\
+    \ SegTreeBeatsReference(*this, k); }\n\n    /**\n     * @brief \u5185\u5BB9\u3092\
+    \u51FA\u529B\u3059\u308B\n     *\n     * @tparam CharT \u51FA\u529B\u30B9\u30C8\
+    \u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n     * @tparam Traits \u51FA\u529B\
+    \u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\u6027\n     * @param\
+    \ os \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\n     * @param rhs \u30BB\u30B0\
+    \u30E1\u30F3\u30C8\u6728\n     * @return std::basic_ostream<CharT, Traits>& \u51FA\
+    \u529B\u30B9\u30C8\u30EA\u30FC\u30E0\n     */\n    template <class CharT, class\
+    \ Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, SegTreeBeats& rhs) {\n        for (long long i = 0; i < rhs.n;\
     \ i++) {\n            if (i != 0) os << CharT(' ');\n            os << rhs[i];\n\
     \        }\n        return os;\n    }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\
@@ -890,7 +970,8 @@ data:
     \        r--;\n                    }\n                }\n                return\
     \ r + 1 - sz;\n            }\n            sum = op(data[r], sum);\n        } while\
     \ ((r & -r) != r);\n        return 0;\n    }\n};\n\ntemplate <typename A>\nSegTreeBeats(long\
-    \ long, A) -> SegTreeBeats<A>;\ntemplate <typename A>\nSegTreeBeats(std::vector<typename\
+    \ long, A) -> SegTreeBeats<A>;\ntemplate <class R, typename A>\nSegTreeBeats(R&&,\
+    \ A) -> SegTreeBeats<A>;\ntemplate <typename A>\nSegTreeBeats(std::initializer_list<typename\
     \ A::S>, A) -> SegTreeBeats<A>;\n\n/**\n * @brief \u533A\u9593 chmin\u3001\u533A\
     \u9593\u548C\u30FB\u6700\u5927\u5024\n *\n * @tparam S \u578B\n */\ntemplate <typename\
     \ S>\nusing RChminSumQ = SegTreeBeats<beats_acted_monoid::ChminSum<S>>;\n/**\n\
@@ -1109,10 +1190,11 @@ data:
   - src/algebra/acted-monoid.hpp
   - src/algebra/monoid.hpp
   - src/algebra/beats-acted-monoid.hpp
+  - src/utility/traits.hpp
   isVerificationFile: true
   path: test/unittest/data_structures/segtree-beats.test.cpp
   requiredBy: []
-  timestamp: '2026-11-08 19:03:35+09:00'
+  timestamp: '2026-11-08 20:13:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/data_structures/segtree-beats.test.cpp

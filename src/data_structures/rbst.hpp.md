@@ -7,8 +7,14 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
+  - icon: ':heavy_check_mark:'
+    path: src/utility/traits.hpp
+    title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
   _extendedVerifiedWith:
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/algebra/monoid.test.cpp
+    title: test/unittest/algebra/monoid.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/rbst.test.cpp
     title: test/unittest/data_structures/rbst.test.cpp
@@ -26,26 +32,27 @@ data:
     links: []
   bundledCode: "#line 2 \"src/data_structures/rbst.hpp\"\n\n/**\n * @file rbst.hpp\n\
     \ * @brief \u5E73\u8861\u4E8C\u5206\u6728 (RBST) \u306B\u3088\u308B\u5217\n */\n\
-    \n#include <cassert>\n#include <cstddef>\n#include <cstdint>\n#include <ostream>\n\
-    #include <type_traits>\n#include <utility>\n#include <vector>\n\n#line 2 \"src/algebra/acted-monoid.hpp\"\
-    \n\n/**\n * @file acted-monoid.hpp\n * @brief \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
-    \u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
-    \u30CE\u30A4\u30C9\u306F\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp) \u306E\u30E1\
-    \u30F3\u30D0\u306B\u52A0\u3048\u3066\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
-    \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using F: \u4F5C\u7528\u7D20\u306E\
-    \u578B\n * - S mapping(const F& f, const S& x): \u4F5C\u7528\u7D20\u306E\u9069\
-    \u7528 f(x)\n *   \u533A\u9593\u306E\u60C5\u5831\u304C\u5FC5\u8981\u306A\u5834\
-    \u5408\u306F mapping(f, x, sz) (sz \u306F\u533A\u9593\u306E\u9577\u3055) \u3084\
-    \ mapping(f, x, l, r) (\u533A\u9593 [l, r)) \u3067\u3082\u3088\u3044\n *   sz,\
-    \ l, r \u306F long long \u3067\u6E21\u3059 (\u52D5\u7684\u30BB\u30B0\u30E1\u30F3\
-    \u30C8\u6728\u3067\u306F int \u306B\u53CE\u307E\u3089\u306A\u3044\u3053\u3068\u304C\
-    \u3042\u308B)\n * - F composition(const F& f, const F& g): \u4F5C\u7528\u7D20\u306E\
-    \u5408\u6210 f\u2218g (g\u3092\u9069\u7528\u3057\u305F\u5F8C\u306Bf\u3092\u9069\
-    \u7528\u3059\u308B)\n * - F id(): \u6052\u7B49\u5199\u50CF\n * \u4F5C\u7528\u7D20\
-    \u304C\u7FA4\u3092\u306A\u3059\u5834\u5408 (imos.hpp \u3067\u4F7F\u3046) \u306F\
-    \n * - F inv(const F& f): \u9006\u4F5C\u7528\u7D20\n */\n\n#include <algorithm>\n\
-    #include <array>\n#line 21 \"src/algebra/acted-monoid.hpp\"\n#include <limits>\n\
-    #include <optional>\n#line 25 \"src/algebra/acted-monoid.hpp\"\n\n#line 2 \"src/algebra/monoid.hpp\"\
+    \n#include <cassert>\n#include <cstddef>\n#include <cstdint>\n#include <initializer_list>\n\
+    #include <ostream>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\
+    \n#line 2 \"src/algebra/acted-monoid.hpp\"\n\n/**\n * @file acted-monoid.hpp\n\
+    \ * @brief \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
+    \n *\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306F\u30E2\u30CE\
+    \u30A4\u30C9 (algebra/monoid.hpp) \u306E\u30E1\u30F3\u30D0\u306B\u52A0\u3048\u3066\
+    \u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\
+    \u3059\n * - using F: \u4F5C\u7528\u7D20\u306E\u578B\n * - S mapping(const F&\
+    \ f, const S& x): \u4F5C\u7528\u7D20\u306E\u9069\u7528 f(x)\n *   \u533A\u9593\
+    \u306E\u60C5\u5831\u304C\u5FC5\u8981\u306A\u5834\u5408\u306F mapping(f, x, sz)\
+    \ (sz \u306F\u533A\u9593\u306E\u9577\u3055) \u3084 mapping(f, x, l, r) (\u533A\
+    \u9593 [l, r)) \u3067\u3082\u3088\u3044\n *   sz, l, r \u306F long long \u3067\
+    \u6E21\u3059 (\u52D5\u7684\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\u3067\u306F int\
+    \ \u306B\u53CE\u307E\u3089\u306A\u3044\u3053\u3068\u304C\u3042\u308B)\n * - F\
+    \ composition(const F& f, const F& g): \u4F5C\u7528\u7D20\u306E\u5408\u6210 f\u2218\
+    g (g\u3092\u9069\u7528\u3057\u305F\u5F8C\u306Bf\u3092\u9069\u7528\u3059\u308B\
+    )\n * - F id(): \u6052\u7B49\u5199\u50CF\n * \u4F5C\u7528\u7D20\u304C\u7FA4\u3092\
+    \u306A\u3059\u5834\u5408 (imos.hpp \u3067\u4F7F\u3046) \u306F\n * - F inv(const\
+    \ F& f): \u9006\u4F5C\u7528\u7D20\n */\n\n#include <algorithm>\n#include <array>\n\
+    #line 21 \"src/algebra/acted-monoid.hpp\"\n#include <limits>\n#include <optional>\n\
+    #line 25 \"src/algebra/acted-monoid.hpp\"\n\n#line 2 \"src/algebra/monoid.hpp\"\
     \n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
     \n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
     \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\
@@ -610,7 +617,81 @@ data:
     \ }\n    constexpr F id() const { return lazy_identity; }\n};\ntemplate <typename\
     \ Op, typename T, typename Mapping, typename Composition, typename U>\nActedMonoid(Op,\
     \ T, Mapping, Composition, U) -> ActedMonoid<T, Op, U, Mapping, Composition>;\n\
-    #line 17 \"src/data_structures/rbst.hpp\"\n\nnamespace internal_rbst {\ntemplate\
+    #line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\
+    \u7279\u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\n#include <functional>\n\
+    #include <iterator>\n#include <set>\n#line 14 \"src/utility/traits.hpp\"\n\n#if\
+    \ __cplusplus >= 202002L\n#include <ranges>\n#endif\n\nnamespace internal_traits\
+    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n\n// \u30B5\u30A4\u30BA\u4ED8\
+    \u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\u3059\
+    \u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\u308B\
+    \u3002\n#if __cplusplus >= 202002L\ntemplate <class R, class S>\nconcept sized_constructible_range\
+    \ = std::ranges::input_range<R> && std::ranges::sized_range<R> &&\n          \
+    \                          std::is_constructible_v<S, std::ranges::range_reference_t<R>>;\n\
+    \ntemplate <class R>\nauto range_size(R& r) {\n    return std::ranges::size(r);\n\
+    }\ntemplate <class R>\nauto range_begin(R& r) {\n    return std::ranges::begin(r);\n\
+    }\ntemplate <class R>\nusing range_value_t = std::ranges::range_value_t<R>;\n\
+    #else\nusing std::size;\ntemplate <class R>\nauto range_size(R& r) -> decltype(size(r))\
+    \ {\n    return size(r);\n}\ntemplate <class R>\nauto range_begin(R& r) -> decltype(begin(r))\
+    \ {\n    return begin(r);\n}\ntemplate <class R>\nusing range_value_t = typename\
+    \ std::iterator_traits<decltype(range_begin(std::declval<R&>()))>::value_type;\n\
+    \ntemplate <class R, class S, class = void>\nstruct is_sized_constructible_range\
+    \ : std::false_type {};\ntemplate <class R, class S>\nstruct is_sized_constructible_range<R,\
+    \ S, std::void_t<decltype(range_size(std::declval<R&>())), decltype(++std::declval<decltype(begin(std::declval<R&>()))&>()),\
+    \ decltype(begin(std::declval<R&>()) != end(std::declval<R&>())), decltype(*begin(std::declval<R&>()))>>\n\
+    \    : std::is_constructible<S, decltype(*begin(std::declval<R&>()))> {};\n#endif\n\
+    }  // namespace internal_traits\n\ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
+    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
+    \n#define HAS_METHOD(func_name)                                              \
+    \                \\\n    namespace internal_traits {                         \
+    \                                   \\\n    template <class T, class = void> \
+    \                                                      \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                    \\\n    template <class\
+    \ T>                                                                     \\\n\
+    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                    \\\n    }                                               \
+    \                                       \\\n    template <class T>           \
+    \                                                          \\\n    struct has_##func_name\
+    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
+    \ <class T>                                                                  \
+    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
+    \n#define HAS_METHOD_ARG(func_name)                                          \
+    \                                    \\\n    namespace internal_traits {     \
+    \                                                                           \\\
+    \n    template <class T, typename U, class = void>                           \
+    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                                        \\\n    template\
+    \ <class T, typename U>                                                      \
+    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                                        \\\n    }                           \
+    \                                                                            \
+    \   \\\n    template <class T, typename U>                                   \
+    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \ U>::type {};                           \\\n    template <class T, typename U>\
+    \                                                                            \
+    \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
+    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
+    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
+    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
+    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
+    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
+    \nnamespace internal_traits {\n// \u5C04\u5F71 (proj) \u306E\u65E2\u5B9A\u5024\
+    \n#if __cplusplus >= 202002L\nusing identity = std::identity;\n#else\nstruct identity\
+    \ {\n    using is_transparent = void;\n    template <class T>\n    constexpr T&&\
+    \ operator()(T&& x) const noexcept {\n        return std::forward<T>(x);\n   \
+    \ }\n};\n#endif\n}  // namespace internal_traits\n\ntemplate <class C>\nusing\
+    \ mem_value_type = typename C::value_type;\ntemplate <class C>\nusing mem_difference_type\
+    \ = typename C::difference_type;\n\nnamespace internal_traits {\ntemplate <class\
+    \ T, class = void>\nstruct is_sorted_container_impl : std::false_type {};\ntemplate\
+    \ <class T>\nstruct is_sorted_container_impl<std::set<T>> : std::true_type {};\n\
+    template <class T>\nstruct is_sorted_container_impl<std::multiset<T>> : std::true_type\
+    \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
+    \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
+    inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
+    #line 19 \"src/data_structures/rbst.hpp\"\n\nnamespace internal_rbst {\ntemplate\
     \ <typename M, typename = void>\nstruct has_acted : std::false_type {};\ntemplate\
     \ <typename M>\nstruct has_acted<M, std::void_t<typename M::F>> : std::true_type\
     \ {};\n// \u4F5C\u7528\u7D20\u4ED8\u304D\u3067\u306A\u3044\u30E2\u30CE\u30A4\u30C9\
@@ -708,34 +789,39 @@ data:
     \ k);\n            node(t).l = b;\n            update(t);\n            return\
     \ {a, t};\n        }\n        auto [a, b] = split_node(node(t).r, k - ls - 1);\n\
     \        node(t).r = a;\n        update(t);\n        return {t, b};\n    }\n \
-    \   int build(const std::vector<S>& v, int lo, int hi) {\n        if (lo >= hi)\
-    \ return 0;\n        int mid = (lo + hi) / 2;\n        int lc = build(v, lo, mid);\n\
-    \        int t = new_node(v[mid]);\n        int rc = build(v, mid + 1, hi);\n\
-    \        node(t).l = lc, node(t).r = rc;\n        update(t);\n        return t;\n\
-    \    }\n    // [l, r) \u3092\u53D6\u308A\u51FA\u3057\u3066 f \u3092\u4F5C\u7528\
-    \u3055\u305B\u3001\u5143\u306B\u623B\u3059\n    template <typename Fn>\n    auto\
-    \ with_range(long long l, long long r, Fn fn) {\n        assert(0 <= l && l <=\
-    \ r && r <= size());\n        auto [a, bc] = split_node(root, static_cast<int>(l));\n\
-    \        auto [b, c] = split_node(bc, static_cast<int>(r - l));\n        if constexpr\
-    \ (std::is_void_v<decltype(fn(b))>) {\n            fn(b);\n            root =\
-    \ merge_node(merge_node(a, b), c);\n        } else {\n            auto res = fn(b);\n\
-    \            root = merge_node(merge_node(a, b), c);\n            return res;\n\
-    \        }\n    }\n    void to_vector(int t, std::vector<S>& res) {\n        if\
-    \ (!t) return;\n        push(t);\n        to_vector(node(t).l, res);\n       \
-    \ res.push_back(node(t).val);\n        to_vector(node(t).r, res);\n    }\n\n \
-    \   class RBSTReference {\n        RBST& t;\n        long long k;\n\n       public:\n\
-    \        RBSTReference(RBST& t, long long k) : t(t), k(k) {}\n        RBSTReference&\
-    \ operator=(const S& x) {\n            t.set(k, x);\n            return *this;\n\
-    \        }\n        operator S() { return t.get(k); }\n    };\n\n    struct FromRoot\
-    \ {};\n    RBST(int root, const M& m, FromRoot) : m(m), root(root) {}\n\n   public:\n\
-    \    /**\n     * @brief \u7A7A\u306E\u5217\n     */\n    explicit RBST(M m = M())\
-    \ : m(std::move(m)) {}\n    /**\n     * @brief \u9577\u3055 n \u3067\u3001\u3059\
-    \u3079\u3066\u5358\u4F4D\u5143\u306E\u5217\n     */\n    explicit RBST(long long\
-    \ n, M m = M()) : RBST(std::vector<S>(n, m.e()), m) {}\n    /**\n     * @brief\
-    \ v \u306E\u5217 O(n)\n     */\n    explicit RBST(const std::vector<S>& v, M m\
-    \ = M()) : m(std::move(m)) { root = build(v, 0, static_cast<int>(v.size())); }\n\
-    \    /**\n     * @brief \u8907\u88FD\u3059\u308B O(n)\n     */\n    RBST(const\
-    \ RBST& o) : m(o.m) { root = const_cast<RBST&>(o).clone_tree(o.root); }\n    RBST(RBST&&\
+    \   template <class It>\n    int build(It& it, int lo, int hi) {\n        if (lo\
+    \ >= hi) return 0;\n        int mid = (lo + hi) / 2;\n        int lc = build(it,\
+    \ lo, mid);\n        int t = new_node(S(*it));\n        ++it;\n        int rc\
+    \ = build(it, mid + 1, hi);\n        node(t).l = lc, node(t).r = rc;\n       \
+    \ update(t);\n        return t;\n    }\n    // [l, r) \u3092\u53D6\u308A\u51FA\
+    \u3057\u3066 f \u3092\u4F5C\u7528\u3055\u305B\u3001\u5143\u306B\u623B\u3059\n\
+    \    template <typename Fn>\n    auto with_range(long long l, long long r, Fn\
+    \ fn) {\n        assert(0 <= l && l <= r && r <= size());\n        auto [a, bc]\
+    \ = split_node(root, static_cast<int>(l));\n        auto [b, c] = split_node(bc,\
+    \ static_cast<int>(r - l));\n        if constexpr (std::is_void_v<decltype(fn(b))>)\
+    \ {\n            fn(b);\n            root = merge_node(merge_node(a, b), c);\n\
+    \        } else {\n            auto res = fn(b);\n            root = merge_node(merge_node(a,\
+    \ b), c);\n            return res;\n        }\n    }\n    void to_vector(int t,\
+    \ std::vector<S>& res) {\n        if (!t) return;\n        push(t);\n        to_vector(node(t).l,\
+    \ res);\n        res.push_back(node(t).val);\n        to_vector(node(t).r, res);\n\
+    \    }\n\n    class RBSTReference {\n        RBST& t;\n        long long k;\n\n\
+    \       public:\n        RBSTReference(RBST& t, long long k) : t(t), k(k) {}\n\
+    \        RBSTReference& operator=(const S& x) {\n            t.set(k, x);\n  \
+    \          return *this;\n        }\n        operator S() { return t.get(k); }\n\
+    \    };\n\n    struct FromRoot {};\n    RBST(int root, const M& m, FromRoot) :\
+    \ m(m), root(root) {}\n\n   public:\n    /**\n     * @brief \u7A7A\u306E\u5217\
+    \n     */\n    explicit RBST(M m = M()) : m(std::move(m)) {}\n    /**\n     *\
+    \ @brief \u9577\u3055 n \u3067\u3001\u3059\u3079\u3066\u5358\u4F4D\u5143\u306E\
+    \u5217\n     */\n    explicit RBST(long long n, M m = M()) : RBST(std::vector<S>(n,\
+    \ m.e()), m) {}\n    /**\n     * @brief v \u306E\u5217 O(n)\n     */\n#if __cplusplus\
+    \ >= 202002L\n    template <class R = std::initializer_list<S>>\n        requires\
+    \ internal_traits::sized_constructible_range<R, S>\n#else\n    template <class\
+    \ R = std::initializer_list<S>, ENABLE_IF_T(internal_traits::is_sized_constructible_range<R,\
+    \ S>::value)>\n#endif\n    explicit RBST(R&& v, M m = M()) : m(std::move(m)) {\n\
+    \        auto it = internal_traits::range_begin(v);\n        root = build(it,\
+    \ 0, static_cast<int>(internal_traits::range_size(v)));\n    }\n\n    /**\n  \
+    \   * @brief \u8907\u88FD\u3059\u308B O(n)\n     */\n    RBST(const RBST& o) :\
+    \ m(o.m) { root = const_cast<RBST&>(o).clone_tree(o.root); }\n    RBST(RBST&&\
     \ o) noexcept : m(std::move(o.m)), root(o.root) { o.root = 0; }\n    RBST& operator=(const\
     \ RBST& o) {\n        if (this != &o) {\n            int c = const_cast<RBST&>(o).clone_tree(o.root);\n\
     \            free_tree(root);\n            m = o.m, root = c;\n        }\n   \
@@ -826,39 +912,40 @@ data:
     \ Traits>& os, RBST& t) {\n        std::vector<S> v = t.to_vector();\n       \
     \ for (int i = 0; i < static_cast<int>(v.size()); i++) {\n            if (i !=\
     \ 0) os << CharT(' ');\n            os << v[i];\n        }\n        return os;\n\
-    \    }\n};\n"
+    \    }\n};\n\ntemplate <class R, typename M>\nRBST(R&&, M) -> RBST<M>;\ntemplate\
+    \ <typename M>\nRBST(std::initializer_list<typename M::S>, M) -> RBST<M>;\n"
   code: "#pragma once\n\n/**\n * @file rbst.hpp\n * @brief \u5E73\u8861\u4E8C\u5206\
     \u6728 (RBST) \u306B\u3088\u308B\u5217\n */\n\n#include <cassert>\n#include <cstddef>\n\
-    #include <cstdint>\n#include <ostream>\n#include <type_traits>\n#include <utility>\n\
-    #include <vector>\n\n#include \"../algebra/acted-monoid.hpp\"\n\nnamespace internal_rbst\
-    \ {\ntemplate <typename M, typename = void>\nstruct has_acted : std::false_type\
-    \ {};\ntemplate <typename M>\nstruct has_acted<M, std::void_t<typename M::F>>\
-    \ : std::true_type {};\n// \u4F5C\u7528\u7D20\u4ED8\u304D\u3067\u306A\u3044\u30E2\
-    \u30CE\u30A4\u30C9\u306E\u3068\u304D\u306E\u4F5C\u7528\u7D20\u306E\u578B\nstruct\
-    \ NoAct {\n    using F = NoAct;\n};\n}  // namespace internal_rbst\n\n/**\n *\
-    \ @brief \u5E73\u8861\u4E8C\u5206\u6728 (RBST) \u306B\u3088\u308B\u5217\n *\n\
-    \ * \u4F4D\u7F6E\u3067\u6271\u3046\u5217\u3002k \u756A\u76EE\u3078\u306E\u633F\
-    \u5165\u30FB\u524A\u9664\u3001\u533A\u9593\u7A4D\u3001\u533A\u9593\u53CD\u8EE2\
-    \u3001split\u30FBmerge \u3092\u671F\u5F85 O(log n) \u3067\u884C\u3046\n * \u30E2\
-    \u30CE\u30A4\u30C9 (algebra/monoid.hpp) \u304B\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
-    \u30CE\u30A4\u30C9 (algebra/acted-monoid.hpp) \u3092\u4E57\u305B\u308B\u3002\u4F5C\
-    \u7528\u7D20\u4ED8\u304D\u306A\u3089\u533A\u9593\u4F5C\u7528\u3082\u3067\u304D\
-    \u308B\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\u306E mapping\
-    \ \u306F (f, x) \u304B (f, x, sz) \u306E\u5F62\u306B\u3059\u308B (\u5217\u306E\
-    \u4F4D\u7F6E\u306F\u633F\u5165\u30FB\u524A\u9664\u3067\u5909\u308F\u308B\u306E\
-    \u3067 (f, x, l, r) \u306F\u4F7F\u3048\u306A\u3044)\n * \u9802\u70B9\u306F\u578B\
-    \u3054\u3068\u306B\u5171\u6709\u3059\u308B\u914D\u5217\u306B\u7F6E\u304F\u306E\
-    \u3067\u3001\u540C\u3058\u578B\u306E\u6728\u3069\u3046\u3057\u3067 split\u30FB\
-    merge \u3067\u304D\u308B\n * \u4F8B:\n * RBST<acted_monoid::AddSum<long long>>\
-    \ t(v);\n * t.insert(2, x); t.erase(0); t.reverse(1, 4); t.apply(0, 3, 10); t.prod(1,\
-    \ 3);\n * RBST<acted_monoid::AddSum<long long>> u = t.split(2);  // t \u306F\u5148\
-    \u982D 2 \u500B\u3001u \u306F\u6B8B\u308A\n * t.merge(std::move(u));         \
-    \                        // \u5143\u306B\u623B\u3059\n *\n * @tparam M \u30E2\u30CE\
-    \u30A4\u30C9\u304B\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9\n */\n\
-    template <typename M>\nclass RBST {\n   public:\n    using S = typename M::S;\n\
-    \    static constexpr bool acted = internal_rbst::has_acted<M>::value;\n    using\
-    \ F = typename std::conditional_t<acted, M, internal_rbst::NoAct>::F;\n\n   private:\n\
-    \    static_assert(!acted || !internal_acted_monoid::has_mapping_lr<M>::value,\
+    #include <cstdint>\n#include <initializer_list>\n#include <ostream>\n#include\
+    \ <type_traits>\n#include <utility>\n#include <vector>\n\n#include \"../algebra/acted-monoid.hpp\"\
+    \n#include \"../utility/traits.hpp\"\n\nnamespace internal_rbst {\ntemplate <typename\
+    \ M, typename = void>\nstruct has_acted : std::false_type {};\ntemplate <typename\
+    \ M>\nstruct has_acted<M, std::void_t<typename M::F>> : std::true_type {};\n//\
+    \ \u4F5C\u7528\u7D20\u4ED8\u304D\u3067\u306A\u3044\u30E2\u30CE\u30A4\u30C9\u306E\
+    \u3068\u304D\u306E\u4F5C\u7528\u7D20\u306E\u578B\nstruct NoAct {\n    using F\
+    \ = NoAct;\n};\n}  // namespace internal_rbst\n\n/**\n * @brief \u5E73\u8861\u4E8C\
+    \u5206\u6728 (RBST) \u306B\u3088\u308B\u5217\n *\n * \u4F4D\u7F6E\u3067\u6271\u3046\
+    \u5217\u3002k \u756A\u76EE\u3078\u306E\u633F\u5165\u30FB\u524A\u9664\u3001\u533A\
+    \u9593\u7A4D\u3001\u533A\u9593\u53CD\u8EE2\u3001split\u30FBmerge \u3092\u671F\u5F85\
+    \ O(log n) \u3067\u884C\u3046\n * \u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\
+    \ \u304B\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\u30C9 (algebra/acted-monoid.hpp)\
+    \ \u3092\u4E57\u305B\u308B\u3002\u4F5C\u7528\u7D20\u4ED8\u304D\u306A\u3089\u533A\
+    \u9593\u4F5C\u7528\u3082\u3067\u304D\u308B\n * \u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\
+    \u30CE\u30A4\u30C9\u306E mapping \u306F (f, x) \u304B (f, x, sz) \u306E\u5F62\u306B\
+    \u3059\u308B (\u5217\u306E\u4F4D\u7F6E\u306F\u633F\u5165\u30FB\u524A\u9664\u3067\
+    \u5909\u308F\u308B\u306E\u3067 (f, x, l, r) \u306F\u4F7F\u3048\u306A\u3044)\n\
+    \ * \u9802\u70B9\u306F\u578B\u3054\u3068\u306B\u5171\u6709\u3059\u308B\u914D\u5217\
+    \u306B\u7F6E\u304F\u306E\u3067\u3001\u540C\u3058\u578B\u306E\u6728\u3069\u3046\
+    \u3057\u3067 split\u30FBmerge \u3067\u304D\u308B\n * \u4F8B:\n * RBST<acted_monoid::AddSum<long\
+    \ long>> t(v);\n * t.insert(2, x); t.erase(0); t.reverse(1, 4); t.apply(0, 3,\
+    \ 10); t.prod(1, 3);\n * RBST<acted_monoid::AddSum<long long>> u = t.split(2);\
+    \  // t \u306F\u5148\u982D 2 \u500B\u3001u \u306F\u6B8B\u308A\n * t.merge(std::move(u));\
+    \                                 // \u5143\u306B\u623B\u3059\n *\n * @tparam\
+    \ M \u30E2\u30CE\u30A4\u30C9\u304B\u4F5C\u7528\u7D20\u4ED8\u304D\u30E2\u30CE\u30A4\
+    \u30C9\n */\ntemplate <typename M>\nclass RBST {\n   public:\n    using S = typename\
+    \ M::S;\n    static constexpr bool acted = internal_rbst::has_acted<M>::value;\n\
+    \    using F = typename std::conditional_t<acted, M, internal_rbst::NoAct>::F;\n\
+    \n   private:\n    static_assert(!acted || !internal_acted_monoid::has_mapping_lr<M>::value,\
     \ \"RBST: mapping(f, x, l, r) \u306F\u4F7F\u3048\u306A\u3044\");\n\n    // \u9802\
     \u70B9 0 \u306F\u7A7A\u306E\u6728\u3092\u8868\u3059\n    struct Node {\n     \
     \   S val, sum, rsum;  // \u5024\u3001\u90E8\u5206\u6728\u306E\u7A4D\u3001\u90E8\
@@ -929,34 +1016,39 @@ data:
     \ k);\n            node(t).l = b;\n            update(t);\n            return\
     \ {a, t};\n        }\n        auto [a, b] = split_node(node(t).r, k - ls - 1);\n\
     \        node(t).r = a;\n        update(t);\n        return {t, b};\n    }\n \
-    \   int build(const std::vector<S>& v, int lo, int hi) {\n        if (lo >= hi)\
-    \ return 0;\n        int mid = (lo + hi) / 2;\n        int lc = build(v, lo, mid);\n\
-    \        int t = new_node(v[mid]);\n        int rc = build(v, mid + 1, hi);\n\
-    \        node(t).l = lc, node(t).r = rc;\n        update(t);\n        return t;\n\
-    \    }\n    // [l, r) \u3092\u53D6\u308A\u51FA\u3057\u3066 f \u3092\u4F5C\u7528\
-    \u3055\u305B\u3001\u5143\u306B\u623B\u3059\n    template <typename Fn>\n    auto\
-    \ with_range(long long l, long long r, Fn fn) {\n        assert(0 <= l && l <=\
-    \ r && r <= size());\n        auto [a, bc] = split_node(root, static_cast<int>(l));\n\
-    \        auto [b, c] = split_node(bc, static_cast<int>(r - l));\n        if constexpr\
-    \ (std::is_void_v<decltype(fn(b))>) {\n            fn(b);\n            root =\
-    \ merge_node(merge_node(a, b), c);\n        } else {\n            auto res = fn(b);\n\
-    \            root = merge_node(merge_node(a, b), c);\n            return res;\n\
-    \        }\n    }\n    void to_vector(int t, std::vector<S>& res) {\n        if\
-    \ (!t) return;\n        push(t);\n        to_vector(node(t).l, res);\n       \
-    \ res.push_back(node(t).val);\n        to_vector(node(t).r, res);\n    }\n\n \
-    \   class RBSTReference {\n        RBST& t;\n        long long k;\n\n       public:\n\
-    \        RBSTReference(RBST& t, long long k) : t(t), k(k) {}\n        RBSTReference&\
-    \ operator=(const S& x) {\n            t.set(k, x);\n            return *this;\n\
-    \        }\n        operator S() { return t.get(k); }\n    };\n\n    struct FromRoot\
-    \ {};\n    RBST(int root, const M& m, FromRoot) : m(m), root(root) {}\n\n   public:\n\
-    \    /**\n     * @brief \u7A7A\u306E\u5217\n     */\n    explicit RBST(M m = M())\
-    \ : m(std::move(m)) {}\n    /**\n     * @brief \u9577\u3055 n \u3067\u3001\u3059\
-    \u3079\u3066\u5358\u4F4D\u5143\u306E\u5217\n     */\n    explicit RBST(long long\
-    \ n, M m = M()) : RBST(std::vector<S>(n, m.e()), m) {}\n    /**\n     * @brief\
-    \ v \u306E\u5217 O(n)\n     */\n    explicit RBST(const std::vector<S>& v, M m\
-    \ = M()) : m(std::move(m)) { root = build(v, 0, static_cast<int>(v.size())); }\n\
-    \    /**\n     * @brief \u8907\u88FD\u3059\u308B O(n)\n     */\n    RBST(const\
-    \ RBST& o) : m(o.m) { root = const_cast<RBST&>(o).clone_tree(o.root); }\n    RBST(RBST&&\
+    \   template <class It>\n    int build(It& it, int lo, int hi) {\n        if (lo\
+    \ >= hi) return 0;\n        int mid = (lo + hi) / 2;\n        int lc = build(it,\
+    \ lo, mid);\n        int t = new_node(S(*it));\n        ++it;\n        int rc\
+    \ = build(it, mid + 1, hi);\n        node(t).l = lc, node(t).r = rc;\n       \
+    \ update(t);\n        return t;\n    }\n    // [l, r) \u3092\u53D6\u308A\u51FA\
+    \u3057\u3066 f \u3092\u4F5C\u7528\u3055\u305B\u3001\u5143\u306B\u623B\u3059\n\
+    \    template <typename Fn>\n    auto with_range(long long l, long long r, Fn\
+    \ fn) {\n        assert(0 <= l && l <= r && r <= size());\n        auto [a, bc]\
+    \ = split_node(root, static_cast<int>(l));\n        auto [b, c] = split_node(bc,\
+    \ static_cast<int>(r - l));\n        if constexpr (std::is_void_v<decltype(fn(b))>)\
+    \ {\n            fn(b);\n            root = merge_node(merge_node(a, b), c);\n\
+    \        } else {\n            auto res = fn(b);\n            root = merge_node(merge_node(a,\
+    \ b), c);\n            return res;\n        }\n    }\n    void to_vector(int t,\
+    \ std::vector<S>& res) {\n        if (!t) return;\n        push(t);\n        to_vector(node(t).l,\
+    \ res);\n        res.push_back(node(t).val);\n        to_vector(node(t).r, res);\n\
+    \    }\n\n    class RBSTReference {\n        RBST& t;\n        long long k;\n\n\
+    \       public:\n        RBSTReference(RBST& t, long long k) : t(t), k(k) {}\n\
+    \        RBSTReference& operator=(const S& x) {\n            t.set(k, x);\n  \
+    \          return *this;\n        }\n        operator S() { return t.get(k); }\n\
+    \    };\n\n    struct FromRoot {};\n    RBST(int root, const M& m, FromRoot) :\
+    \ m(m), root(root) {}\n\n   public:\n    /**\n     * @brief \u7A7A\u306E\u5217\
+    \n     */\n    explicit RBST(M m = M()) : m(std::move(m)) {}\n    /**\n     *\
+    \ @brief \u9577\u3055 n \u3067\u3001\u3059\u3079\u3066\u5358\u4F4D\u5143\u306E\
+    \u5217\n     */\n    explicit RBST(long long n, M m = M()) : RBST(std::vector<S>(n,\
+    \ m.e()), m) {}\n    /**\n     * @brief v \u306E\u5217 O(n)\n     */\n#if __cplusplus\
+    \ >= 202002L\n    template <class R = std::initializer_list<S>>\n        requires\
+    \ internal_traits::sized_constructible_range<R, S>\n#else\n    template <class\
+    \ R = std::initializer_list<S>, ENABLE_IF_T(internal_traits::is_sized_constructible_range<R,\
+    \ S>::value)>\n#endif\n    explicit RBST(R&& v, M m = M()) : m(std::move(m)) {\n\
+    \        auto it = internal_traits::range_begin(v);\n        root = build(it,\
+    \ 0, static_cast<int>(internal_traits::range_size(v)));\n    }\n\n    /**\n  \
+    \   * @brief \u8907\u88FD\u3059\u308B O(n)\n     */\n    RBST(const RBST& o) :\
+    \ m(o.m) { root = const_cast<RBST&>(o).clone_tree(o.root); }\n    RBST(RBST&&\
     \ o) noexcept : m(std::move(o.m)), root(o.root) { o.root = 0; }\n    RBST& operator=(const\
     \ RBST& o) {\n        if (this != &o) {\n            int c = const_cast<RBST&>(o).clone_tree(o.root);\n\
     \            free_tree(root);\n            m = o.m, root = c;\n        }\n   \
@@ -1047,17 +1139,20 @@ data:
     \ Traits>& os, RBST& t) {\n        std::vector<S> v = t.to_vector();\n       \
     \ for (int i = 0; i < static_cast<int>(v.size()); i++) {\n            if (i !=\
     \ 0) os << CharT(' ');\n            os << v[i];\n        }\n        return os;\n\
-    \    }\n};\n"
+    \    }\n};\n\ntemplate <class R, typename M>\nRBST(R&&, M) -> RBST<M>;\ntemplate\
+    \ <typename M>\nRBST(std::initializer_list<typename M::S>, M) -> RBST<M>;\n"
   dependsOn:
   - src/algebra/acted-monoid.hpp
   - src/algebra/monoid.hpp
+  - src/utility/traits.hpp
   isVerificationFile: false
   path: src/data_structures/rbst.hpp
   requiredBy: []
-  timestamp: '2026-11-08 19:03:35+09:00'
+  timestamp: '2026-11-08 20:13:03+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/rbst.test.cpp
+  - test/unittest/algebra/monoid.test.cpp
   - test/yosupo/data_structure/range-reverse-range-sum.test.cpp
   - test/yosupo/data_structure/dynamic-sequence-range-affine-range-sum.test.cpp
 documentation_of: src/data_structures/rbst.hpp
@@ -1085,6 +1180,13 @@ u.merge(std::move(back));           // 後ろ側を反転してつなぎ直す
 - 区間反転のために、各頂点に部分木の逆順の積も持ちます。そのため、可換でないモノイド (1 次関数の合成など) を乗せても、反転した区間の積は正しくなります。
 - 頂点は、乗せる型ごとに共有する配列に置きます。そのため、同じ型の木どうしで `split`・`merge` できます。削除した頂点や、破棄した木の頂点は再利用します。
 - 木をコピーすると、すべての頂点を複製します ($O(n)$)。`split` で切り取った木や `merge` で渡す木は、コピーせずに頂点をそのまま移します。
+
+サイズを取得でき、各要素から `S` を構築できる範囲を直接渡せます。`std::vector`・`std::array`・`std::list`・組み込み配列などに対応します。C++20 ではサイズ付きの入力範囲 (`input_range` かつ `sized_range`) のビューも使えます。各要素を内部へ直接構築するので、`explicit` なコンストラクタにも対応します。初期化リストも使えます。
+
+```cpp
+int a[] = {1, 2, 3};
+RBST t(a, monoid::Sum<long long>{});
+```
 
 ## メンバ関数
 

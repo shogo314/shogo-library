@@ -7,6 +7,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/data_structures/sparse-table.hpp
     title: Sparse Table
+  - icon: ':heavy_check_mark:'
+    path: src/utility/traits.hpp
+    title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
@@ -358,33 +361,113 @@ data:
     \ S e() const { return identity; }\n};\ntemplate <typename Op, typename T>\nMonoid(Op,\
     \ T) -> Monoid<T, Op>;\n#line 2 \"src/data_structures/sparse-table.hpp\"\n\n/**\n\
     \ * @file sparse-table.hpp\n * @brief Sparse Table\n */\n\n#include <cassert>\n\
-    #line 11 \"src/data_structures/sparse-table.hpp\"\n\n#line 13 \"src/data_structures/sparse-table.hpp\"\
-    \n\n/**\n * @brief Sparse Table\n *\n * \u9759\u7684\u306A\u5217\u306E\u533A\u9593\
-    \u7A4D\u3092\u3001\u524D\u8A08\u7B97 O(n log n)\u3001\u30AF\u30A8\u30EA O(1) \u3067\
-    \u6C42\u3081\u308B\n * \u4F8B:\n * SparseTable<monoid::Min<int>> st(v);\n * st.prod(l,\
-    \ r);  // min(v[l], ..., v[r-1])\n *\n * @tparam M \u51AA\u7B49\u306A\u30E2\u30CE\
-    \u30A4\u30C9 (op(x, x) = x \u3068\u306A\u308B\u3082\u306E\u3002monoid::Min\u3001\
-    Max\u3001Gcd\u3001And\u3001Or \u306A\u3069)\n */\ntemplate <typename M>\nclass\
-    \ SparseTable {\n   public:\n    using S = typename M::S;\n\n   private:\n   \
-    \ M m;\n    long long n;\n    // table[k][i] \u306F v[i] \u304B\u3089 v[i + 2^k\
-    \ - 1] \u307E\u3067\u306E\u7A4D\n    std::vector<std::vector<S>> table;\n    std::vector<int>\
-    \ lg;  // lg[x] = floor(log2(x))\n    S op(const S& a, const S& b) const { return\
-    \ m.op(a, b); }\n    S e() const { return m.e(); }\n\n   public:\n    explicit\
-    \ SparseTable(const std::vector<S>& v = {}, M m = M()) : m(std::move(m)), n(v.size()),\
-    \ table(1, v), lg(n + 1, 0) {\n        for (long long x = 2; x <= n; x++) lg[x]\
-    \ = lg[x / 2] + 1;\n        for (int k = 1; (1LL << k) <= n; k++) {\n        \
-    \    const auto& prev = table[k - 1];\n            std::vector<S> cur(n - (1LL\
-    \ << k) + 1);\n            for (long long i = 0; i + (1LL << k) <= n; i++) cur[i]\
-    \ = op(prev[i], prev[i + (1LL << (k - 1))]);\n            table.push_back(std::move(cur));\n\
-    \        }\n    }\n\n    long long size() const { return n; }\n\n    /**\n   \
-    \  * @brief v[k]\n     */\n    S get(long long k) const {\n        assert(0 <=\
-    \ k && k < n);\n        return table[0][k];\n    }\n    /**\n     * @brief v[l]\
-    \ \u304B\u3089 v[r-1] \u307E\u3067\u306E\u7A4D O(1)\u3002l = r \u306A\u3089\u5358\
-    \u4F4D\u5143\n     */\n    S prod(long long l, long long r) const {\n        assert(0\
-    \ <= l && l <= r && r <= n);\n        if (l == r) return e();\n        int k =\
-    \ lg[r - l];\n        return op(table[k][l], table[k][r - (1LL << k)]);\n    }\n\
-    \    S all_prod() const { return prod(0, n); }\n};\n\ntemplate <typename M>\n\
-    SparseTable(std::vector<typename M::S>, M) -> SparseTable<M>;\n#line 8 \"test/yosupo/data_structure/staticrmq.test.cpp\"\
+    #include <initializer_list>\n#line 13 \"src/data_structures/sparse-table.hpp\"\
+    \n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief\
+    \ \u578B\u7279\u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\n#include <functional>\n\
+    #include <iterator>\n#include <set>\n#line 14 \"src/utility/traits.hpp\"\n\n#if\
+    \ __cplusplus >= 202002L\n#include <ranges>\n#endif\n\nnamespace internal_traits\
+    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n\n// \u30B5\u30A4\u30BA\u4ED8\
+    \u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\u3059\
+    \u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\u308B\
+    \u3002\n#if __cplusplus >= 202002L\ntemplate <class R, class S>\nconcept sized_constructible_range\
+    \ = std::ranges::input_range<R> && std::ranges::sized_range<R> &&\n          \
+    \                          std::is_constructible_v<S, std::ranges::range_reference_t<R>>;\n\
+    \ntemplate <class R>\nauto range_size(R& r) {\n    return std::ranges::size(r);\n\
+    }\ntemplate <class R>\nauto range_begin(R& r) {\n    return std::ranges::begin(r);\n\
+    }\ntemplate <class R>\nusing range_value_t = std::ranges::range_value_t<R>;\n\
+    #else\nusing std::size;\ntemplate <class R>\nauto range_size(R& r) -> decltype(size(r))\
+    \ {\n    return size(r);\n}\ntemplate <class R>\nauto range_begin(R& r) -> decltype(begin(r))\
+    \ {\n    return begin(r);\n}\ntemplate <class R>\nusing range_value_t = typename\
+    \ std::iterator_traits<decltype(range_begin(std::declval<R&>()))>::value_type;\n\
+    \ntemplate <class R, class S, class = void>\nstruct is_sized_constructible_range\
+    \ : std::false_type {};\ntemplate <class R, class S>\nstruct is_sized_constructible_range<R,\
+    \ S, std::void_t<decltype(range_size(std::declval<R&>())), decltype(++std::declval<decltype(begin(std::declval<R&>()))&>()),\
+    \ decltype(begin(std::declval<R&>()) != end(std::declval<R&>())), decltype(*begin(std::declval<R&>()))>>\n\
+    \    : std::is_constructible<S, decltype(*begin(std::declval<R&>()))> {};\n#endif\n\
+    }  // namespace internal_traits\n\ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
+    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
+    \n#define HAS_METHOD(func_name)                                              \
+    \                \\\n    namespace internal_traits {                         \
+    \                                   \\\n    template <class T, class = void> \
+    \                                                      \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                    \\\n    template <class\
+    \ T>                                                                     \\\n\
+    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                    \\\n    }                                               \
+    \                                       \\\n    template <class T>           \
+    \                                                          \\\n    struct has_##func_name\
+    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
+    \ <class T>                                                                  \
+    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
+    \n#define HAS_METHOD_ARG(func_name)                                          \
+    \                                    \\\n    namespace internal_traits {     \
+    \                                                                           \\\
+    \n    template <class T, typename U, class = void>                           \
+    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                                        \\\n    template\
+    \ <class T, typename U>                                                      \
+    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                                        \\\n    }                           \
+    \                                                                            \
+    \   \\\n    template <class T, typename U>                                   \
+    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \ U>::type {};                           \\\n    template <class T, typename U>\
+    \                                                                            \
+    \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
+    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
+    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
+    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
+    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
+    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
+    \nnamespace internal_traits {\n// \u5C04\u5F71 (proj) \u306E\u65E2\u5B9A\u5024\
+    \n#if __cplusplus >= 202002L\nusing identity = std::identity;\n#else\nstruct identity\
+    \ {\n    using is_transparent = void;\n    template <class T>\n    constexpr T&&\
+    \ operator()(T&& x) const noexcept {\n        return std::forward<T>(x);\n   \
+    \ }\n};\n#endif\n}  // namespace internal_traits\n\ntemplate <class C>\nusing\
+    \ mem_value_type = typename C::value_type;\ntemplate <class C>\nusing mem_difference_type\
+    \ = typename C::difference_type;\n\nnamespace internal_traits {\ntemplate <class\
+    \ T, class = void>\nstruct is_sorted_container_impl : std::false_type {};\ntemplate\
+    \ <class T>\nstruct is_sorted_container_impl<std::set<T>> : std::true_type {};\n\
+    template <class T>\nstruct is_sorted_container_impl<std::multiset<T>> : std::true_type\
+    \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
+    \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
+    inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
+    #line 16 \"src/data_structures/sparse-table.hpp\"\n\n/**\n * @brief Sparse Table\n\
+    \ *\n * \u9759\u7684\u306A\u5217\u306E\u533A\u9593\u7A4D\u3092\u3001\u524D\u8A08\
+    \u7B97 O(n log n)\u3001\u30AF\u30A8\u30EA O(1) \u3067\u6C42\u3081\u308B\n * \u4F8B\
+    :\n * SparseTable<monoid::Min<int>> st(v);\n * st.prod(l, r);  // min(v[l], ...,\
+    \ v[r-1])\n *\n * @tparam M \u51AA\u7B49\u306A\u30E2\u30CE\u30A4\u30C9 (op(x,\
+    \ x) = x \u3068\u306A\u308B\u3082\u306E\u3002monoid::Min\u3001Max\u3001Gcd\u3001\
+    And\u3001Or \u306A\u3069)\n */\ntemplate <typename M>\nclass SparseTable {\n \
+    \  public:\n    using S = typename M::S;\n\n   private:\n    M m;\n    long long\
+    \ n;\n    // table[k][i] \u306F v[i] \u304B\u3089 v[i + 2^k - 1] \u307E\u3067\u306E\
+    \u7A4D\n    std::vector<std::vector<S>> table;\n    std::vector<int> lg;  // lg[x]\
+    \ = floor(log2(x))\n    S op(const S& a, const S& b) const { return m.op(a, b);\
+    \ }\n    S e() const { return m.e(); }\n\n   public:\n#if __cplusplus >= 202002L\n\
+    \    template <class R = std::initializer_list<S>>\n        requires internal_traits::sized_constructible_range<R,\
+    \ S>\n#else\n    template <class R = std::initializer_list<S>, ENABLE_IF_T(internal_traits::is_sized_constructible_range<R,\
+    \ S>::value)>\n#endif\n    explicit SparseTable(R&& v = {}, M m = M()) : m(std::move(m)),\
+    \ n(internal_traits::range_size(v)), lg(n + 1, 0) {\n        table.emplace_back();\n\
+    \        table[0].reserve(n);\n        for (auto&& x : v) table[0].emplace_back(std::forward<decltype(x)>(x));\n\
+    \        for (long long x = 2; x <= n; x++) lg[x] = lg[x / 2] + 1;\n        for\
+    \ (int k = 1; (1LL << k) <= n; k++) {\n            const auto& prev = table[k\
+    \ - 1];\n            std::vector<S> cur(n - (1LL << k) + 1);\n            for\
+    \ (long long i = 0; i + (1LL << k) <= n; i++) cur[i] = op(prev[i], prev[i + (1LL\
+    \ << (k - 1))]);\n            table.push_back(std::move(cur));\n        }\n  \
+    \  }\n\n    long long size() const { return n; }\n\n    /**\n     * @brief v[k]\n\
+    \     */\n    S get(long long k) const {\n        assert(0 <= k && k < n);\n \
+    \       return table[0][k];\n    }\n    /**\n     * @brief v[l] \u304B\u3089 v[r-1]\
+    \ \u307E\u3067\u306E\u7A4D O(1)\u3002l = r \u306A\u3089\u5358\u4F4D\u5143\n  \
+    \   */\n    S prod(long long l, long long r) const {\n        assert(0 <= l &&\
+    \ l <= r && r <= n);\n        if (l == r) return e();\n        int k = lg[r -\
+    \ l];\n        return op(table[k][l], table[k][r - (1LL << k)]);\n    }\n    S\
+    \ all_prod() const { return prod(0, n); }\n};\n\ntemplate <class R, typename M>\n\
+    SparseTable(R&&, M) -> SparseTable<M>;\ntemplate <typename M>\nSparseTable(std::initializer_list<typename\
+    \ M::S>, M) -> SparseTable<M>;\n#line 8 \"test/yosupo/data_structure/staticrmq.test.cpp\"\
     \n\nint main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
     \    int n, q;\n    std::cin >> n >> q;\n    std::vector<int> a(n);\n    for (auto&\
     \ x : a) std::cin >> x;\n    SparseTable<monoid::Min<int>> st(a);\n    while (q--)\
@@ -401,10 +484,11 @@ data:
   dependsOn:
   - src/algebra/monoid.hpp
   - src/data_structures/sparse-table.hpp
+  - src/utility/traits.hpp
   isVerificationFile: true
   path: test/yosupo/data_structure/staticrmq.test.cpp
   requiredBy: []
-  timestamp: '2026-11-08 19:03:35+09:00'
+  timestamp: '2026-11-08 20:13:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/data_structure/staticrmq.test.cpp

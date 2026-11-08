@@ -290,11 +290,28 @@ data:
     #include <limits>\n#line 14 \"src/math/modint.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\
     \n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n\
     #include <functional>\n#include <iterator>\n#include <set>\n#line 14 \"src/utility/traits.hpp\"\
-    \n\nnamespace internal_traits {\nusing std::begin, std::end;\n\ntemplate <class\
-    \ T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class\
-    \ T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
-    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
-    \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
+    \n\n#if __cplusplus >= 202002L\n#include <ranges>\n#endif\n\nnamespace internal_traits\
+    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n\n// \u30B5\u30A4\u30BA\u4ED8\
+    \u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\u3059\
+    \u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\u308B\
+    \u3002\n#if __cplusplus >= 202002L\ntemplate <class R, class S>\nconcept sized_constructible_range\
+    \ = std::ranges::input_range<R> && std::ranges::sized_range<R> &&\n          \
+    \                          std::is_constructible_v<S, std::ranges::range_reference_t<R>>;\n\
+    \ntemplate <class R>\nauto range_size(R& r) {\n    return std::ranges::size(r);\n\
+    }\ntemplate <class R>\nauto range_begin(R& r) {\n    return std::ranges::begin(r);\n\
+    }\ntemplate <class R>\nusing range_value_t = std::ranges::range_value_t<R>;\n\
+    #else\nusing std::size;\ntemplate <class R>\nauto range_size(R& r) -> decltype(size(r))\
+    \ {\n    return size(r);\n}\ntemplate <class R>\nauto range_begin(R& r) -> decltype(begin(r))\
+    \ {\n    return begin(r);\n}\ntemplate <class R>\nusing range_value_t = typename\
+    \ std::iterator_traits<decltype(range_begin(std::declval<R&>()))>::value_type;\n\
+    \ntemplate <class R, class S, class = void>\nstruct is_sized_constructible_range\
+    \ : std::false_type {};\ntemplate <class R, class S>\nstruct is_sized_constructible_range<R,\
+    \ S, std::void_t<decltype(range_size(std::declval<R&>())), decltype(++std::declval<decltype(begin(std::declval<R&>()))&>()),\
+    \ decltype(begin(std::declval<R&>()) != end(std::declval<R&>())), decltype(*begin(std::declval<R&>()))>>\n\
+    \    : std::is_constructible<S, decltype(*begin(std::declval<R&>()))> {};\n#endif\n\
+    }  // namespace internal_traits\n\ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
     \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
     \n#define HAS_METHOD(func_name)                                              \
     \                \\\n    namespace internal_traits {                         \
@@ -807,21 +824,21 @@ data:
     \ - 1);\n    for (int i = 0; i < N + M - 1; ++i) res[i] = restore(p0[i], p1[i],\
     \ p2[i]) + (restore(q0[i], q1[i], q2[i]) << 32);\n    return res;\n}\n#line 2\
     \ \"src/math/fps.hpp\"\n\n/**\n * @file fps.hpp\n * @brief \u5F62\u5F0F\u7684\u51AA\
-    \u7D1A\u6570\n */\n\n#line 10 \"src/math/fps.hpp\"\n#include <optional>\n#include\
-    \ <queue>\n#line 14 \"src/math/fps.hpp\"\n\n#line 18 \"src/math/fps.hpp\"\n\n\
-    template <typename mint>\nstruct FPS;\n\nnamespace internal_fps {\ntemplate <typename\
-    \ mint>\nFPS<mint> gcd(const FPS<mint>& f, const FPS<mint>& g);\n\n// \u4EE5\u4E0B\
-    \u306F\u6CD5\u304C NTT \u306B\u5411\u304F\u7D20\u6570\u306E\u3068\u304D\u306E\
-    \ inv\u30FBexp\u3002NTT \u3057\u305F\u5024\u3092\u4F7F\u3044\u56DE\u3057\u3001\
-    \u5DE1\u56DE\u7573\u307F\u8FBC\u307F\u3067\u6C5A\u308C\u306A\u3044\u4FC2\u6570\
-    \u3060\u3051\u3092\u53D6\u308A\u51FA\u3059\u3002\n// butterfly \u306E\u7D50\u679C\
-    \u306F\u30D3\u30C3\u30C8\u53CD\u8EE2\u3057\u305F\u9806\u306B\u4E26\u3076\u306E\
-    \u3067\u3001\u9577\u3055 2m \u306E\u5909\u63DB\u306E\u524D\u534A\u306F\u3001x^m\
-    \ - 1 \u3067\u5272\u3063\u305F\u4F59\u308A\u306E\u9577\u3055 m \u306E\u5909\u63DB\
-    \u306B\u306A\u308B\n\n// \u9577\u3055 2^k \u306E NTT \u3068\u9006\u5909\u63DB\
-    \ (n \u3067\u5272\u308B)\ntemplate <typename mint>\nvoid ntt(std::vector<mint>&\
-    \ a) {\n    internal_convolution::butterfly(a);\n}\ntemplate <typename mint>\n\
-    void intt(std::vector<mint>& a) {\n    internal_convolution::butterfly_inv(a);\n\
+    \u7D1A\u6570\n */\n\n#line 10 \"src/math/fps.hpp\"\n#include <initializer_list>\n\
+    #include <optional>\n#include <queue>\n#line 16 \"src/math/fps.hpp\"\n\n#line\
+    \ 21 \"src/math/fps.hpp\"\n\ntemplate <typename mint>\nstruct FPS;\n\nnamespace\
+    \ internal_fps {\ntemplate <typename mint>\nFPS<mint> gcd(const FPS<mint>& f,\
+    \ const FPS<mint>& g);\n\n// \u4EE5\u4E0B\u306F\u6CD5\u304C NTT \u306B\u5411\u304F\
+    \u7D20\u6570\u306E\u3068\u304D\u306E inv\u30FBexp\u3002NTT \u3057\u305F\u5024\u3092\
+    \u4F7F\u3044\u56DE\u3057\u3001\u5DE1\u56DE\u7573\u307F\u8FBC\u307F\u3067\u6C5A\
+    \u308C\u306A\u3044\u4FC2\u6570\u3060\u3051\u3092\u53D6\u308A\u51FA\u3059\u3002\
+    \n// butterfly \u306E\u7D50\u679C\u306F\u30D3\u30C3\u30C8\u53CD\u8EE2\u3057\u305F\
+    \u9806\u306B\u4E26\u3076\u306E\u3067\u3001\u9577\u3055 2m \u306E\u5909\u63DB\u306E\
+    \u524D\u534A\u306F\u3001x^m - 1 \u3067\u5272\u3063\u305F\u4F59\u308A\u306E\u9577\
+    \u3055 m \u306E\u5909\u63DB\u306B\u306A\u308B\n\n// \u9577\u3055 2^k \u306E NTT\
+    \ \u3068\u9006\u5909\u63DB (n \u3067\u5272\u308B)\ntemplate <typename mint>\n\
+    void ntt(std::vector<mint>& a) {\n    internal_convolution::butterfly(a);\n}\n\
+    template <typename mint>\nvoid intt(std::vector<mint>& a) {\n    internal_convolution::butterfly_inv(a);\n\
     \    const mint in = mint(a.size()).inv();\n    for (auto& x : a) x *= in;\n}\n\
     \n// \u9577\u3055 n \u4EE5\u4E0A\u306E\u5909\u63DB\u3092 mint \u3067\u76F4\u63A5\
     \ NTT \u3067\u304D\u308B\u304B (internal_convolution::ntt_candidate<mint>() \u306E\
@@ -877,14 +894,19 @@ data:
     \        b.insert(b.end(), x.begin() + m, x.end());\n    }\n    b.resize(deg);\n\
     \    return b;\n}\n}  // namespace internal_fps\n\ntemplate <typename mint>\n\
     struct FPS : std::vector<mint> {\n    using std::vector<mint>::vector;\n\n   \
-    \ // constructor\n    FPS(const std::vector<mint>& r) : std::vector<mint>(r) {}\n\
-    \n    // core operator\n    inline FPS pre(long long siz) const {\n        return\
-    \ FPS(begin(*this), begin(*this) + std::min(static_cast<long long>(this->size()),\
-    \ siz));\n    }\n    inline FPS rev() const {\n        FPS res = *this;\n    \
-    \    reverse(begin(res), end(res));\n        return res;\n    }\n    inline FPS&\
-    \ normalize() {\n        while (!this->empty() && this->back() == 0) this->pop_back();\n\
-    \        return *this;\n    }\n\n    // basic operator\n    inline FPS operator-()\
-    \ const noexcept {\n        FPS res = (*this);\n        for (int i = 0; i < static_cast<int>(res.size());\
+    \ // constructor\n#if __cplusplus >= 202002L\n    template <class R = std::initializer_list<mint>>\n\
+    \        requires(internal_traits::sized_constructible_range<R, mint> && !std::is_same_v<std::decay_t<R>,\
+    \ FPS>)\n#else\n    template <class R = std::initializer_list<mint>, ENABLE_IF_T(internal_traits::is_sized_constructible_range<R,\
+    \ mint>::value && !std::is_same_v<std::decay_t<R>, FPS>)>\n#endif\n    FPS(R&&\
+    \ r) {\n        this->reserve(internal_traits::range_size(r));\n        for (auto&&\
+    \ x : r) this->emplace_back(std::forward<decltype(x)>(x));\n    }\n\n    // core\
+    \ operator\n    inline FPS pre(long long siz) const {\n        return FPS(begin(*this),\
+    \ begin(*this) + std::min(static_cast<long long>(this->size()), siz));\n    }\n\
+    \    inline FPS rev() const {\n        FPS res = *this;\n        reverse(begin(res),\
+    \ end(res));\n        return res;\n    }\n    inline FPS& normalize() {\n    \
+    \    while (!this->empty() && this->back() == 0) this->pop_back();\n        return\
+    \ *this;\n    }\n\n    // basic operator\n    inline FPS operator-() const noexcept\
+    \ {\n        FPS res = (*this);\n        for (int i = 0; i < static_cast<int>(res.size());\
     \ ++i) res[i] = -res[i];\n        return res;\n    }\n    inline FPS operator+(const\
     \ mint& v) const { return FPS(*this) += v; }\n    inline FPS operator+(const FPS&\
     \ r) const { return FPS(*this) += r; }\n    inline FPS operator-(const mint& v)\
@@ -1154,40 +1176,41 @@ data:
     \ {\n        if (r - l == 1) return {nums[l], dens[l]};\n        long long m =\
     \ (l + r) / 2;\n        auto [a, b] = self(self, l, m);\n        auto [c, d] =\
     \ self(self, m, r);\n        return {a * d + c * b, b * d};\n    };\n    return\
-    \ rec(rec, 0, nums.size());\n}\n#line 15 \"src/math/multipoint.hpp\"\n\nnamespace\
-    \ internal_multipoint {\n// \u70B9 xs \u306E subproduct tree: tree[k] \u306F\u9802\
-    \u70B9 k \u304C\u53D7\u3051\u6301\u3064\u70B9 x_i \u306B\u3064\u3044\u3066 \u03A0\
-    \ (x - x_i)\u3002\u8449\u306F sz + i\ntemplate <typename mint>\nstruct SubproductTree\
-    \ {\n    long long n, sz;\n    std::vector<FPS<mint>> tree;\n    explicit SubproductTree(const\
-    \ std::vector<mint>& xs) : n(xs.size()), sz(1) {\n        while (sz < n) sz <<=\
-    \ 1;\n        tree.assign(2 * sz, FPS<mint>{1});\n        for (long long i = 0;\
-    \ i < n; i++) tree[sz + i] = FPS<mint>{-xs[i], 1};\n        for (long long k =\
-    \ sz - 1; k >= 1; k--) tree[k] = tree[2 * k] * tree[2 * k + 1];\n    }\n};\n}\
-    \  // namespace internal_multipoint\n\n/**\n * @brief \u591A\u9805\u5F0F f \u306E\
-    \u3001\u70B9 xs \u3067\u306E\u5024 f(x_0), ..., f(x_{m-1}) O((n + m) log^2 (n\
-    \ + m))\n * subproduct tree \u306E\u6839\u304B\u3089\u3001\u5404\u9802\u70B9\u306E\
-    \u591A\u9805\u5F0F\u3067\u5272\u3063\u305F\u4F59\u308A\u3092\u4E0B\u308D\u3057\
-    \u3066\u3044\u304F\u3002\u4F59\u308A\u304C\u77ED\u304F\u306A\u3063\u305F\u3089\
-    \u76F4\u63A5\u8A08\u7B97\u3059\u308B\n */\ntemplate <typename mint>\nstd::vector<mint>\
-    \ multipoint_evaluation(const FPS<mint>& f, const std::vector<mint>& xs) {\n \
-    \   const long long m = xs.size();\n    if (m == 0) return {};\n    internal_multipoint::SubproductTree<mint>\
-    \ t(xs);\n    std::vector<mint> res(m);\n    // \u9802\u70B9 k \u306B f \u306E\
-    \u4F59\u308A g \u304C\u5C4A\u3044\u305F\u3068\u304D\u3001\u53D7\u3051\u6301\u3064\
-    \u70B9\u306E\u5024\u3092\u6C42\u3081\u308B\n    auto rec = [&](auto&& self, long\
-    \ long k, long long l, long long r, FPS<mint> g) -> void {\n        if (l >= m)\
-    \ return;\n        // \u6B21\u6570\u304C\u5C0F\u3055\u3051\u308C\u3070 Horner\
-    \ \u6CD5\u3067\u76F4\u63A5\u6C42\u3081\u308B\n        if (r - l <= 32) {\n   \
-    \         for (long long i = l; i < std::min(r, m); i++) res[i] = g.eval(xs[i]);\n\
-    \            return;\n        }\n        const long long mid = (l + r) / 2;\n\
-    \        self(self, 2 * k, l, mid, g % t.tree[2 * k]);\n        self(self, 2 *\
-    \ k + 1, mid, r, g % t.tree[2 * k + 1]);\n    };\n    FPS<mint> g = f;\n    g.normalize();\n\
-    \    rec(rec, 1, 0, t.sz, g % t.tree[1]);\n    return res;\n}\n\n/**\n * @brief\
-    \ \u70B9 (x_i, y_i) (x_i \u306F\u4E92\u3044\u306B\u7570\u306A\u308B) \u3092\u3059\
-    \u3079\u3066\u901A\u308B n - 1 \u6B21\u4EE5\u4E0B\u306E\u591A\u9805\u5F0F (\u9577\
-    \u3055 n) O(n log^2 n)\n * g = \u03A0 (x - x_i) \u3068\u3059\u308B\u3068 f = \u03A3\
-    \ y_i / g'(x_i) \u03A0_{j != i} (x - x_j)\u3002g'(x_i) \u3092\u591A\u70B9\u8A55\
-    \u4FA1\u3057\u3001\u548C\u3092 subproduct tree \u306E\u4E0B\u304B\u3089\u7D44\u307F\
-    \u7ACB\u3066\u308B\n */\ntemplate <typename mint>\nFPS<mint> polynomial_interpolation(const\
+    \ rec(rec, 0, nums.size());\n}\n\ntemplate <class R>\nFPS(R&&) -> FPS<internal_traits::range_value_t<R>>;\n\
+    #line 15 \"src/math/multipoint.hpp\"\n\nnamespace internal_multipoint {\n// \u70B9\
+    \ xs \u306E subproduct tree: tree[k] \u306F\u9802\u70B9 k \u304C\u53D7\u3051\u6301\
+    \u3064\u70B9 x_i \u306B\u3064\u3044\u3066 \u03A0 (x - x_i)\u3002\u8449\u306F sz\
+    \ + i\ntemplate <typename mint>\nstruct SubproductTree {\n    long long n, sz;\n\
+    \    std::vector<FPS<mint>> tree;\n    explicit SubproductTree(const std::vector<mint>&\
+    \ xs) : n(xs.size()), sz(1) {\n        while (sz < n) sz <<= 1;\n        tree.assign(2\
+    \ * sz, FPS<mint>{1});\n        for (long long i = 0; i < n; i++) tree[sz + i]\
+    \ = FPS<mint>{-xs[i], 1};\n        for (long long k = sz - 1; k >= 1; k--) tree[k]\
+    \ = tree[2 * k] * tree[2 * k + 1];\n    }\n};\n}  // namespace internal_multipoint\n\
+    \n/**\n * @brief \u591A\u9805\u5F0F f \u306E\u3001\u70B9 xs \u3067\u306E\u5024\
+    \ f(x_0), ..., f(x_{m-1}) O((n + m) log^2 (n + m))\n * subproduct tree \u306E\u6839\
+    \u304B\u3089\u3001\u5404\u9802\u70B9\u306E\u591A\u9805\u5F0F\u3067\u5272\u3063\
+    \u305F\u4F59\u308A\u3092\u4E0B\u308D\u3057\u3066\u3044\u304F\u3002\u4F59\u308A\
+    \u304C\u77ED\u304F\u306A\u3063\u305F\u3089\u76F4\u63A5\u8A08\u7B97\u3059\u308B\
+    \n */\ntemplate <typename mint>\nstd::vector<mint> multipoint_evaluation(const\
+    \ FPS<mint>& f, const std::vector<mint>& xs) {\n    const long long m = xs.size();\n\
+    \    if (m == 0) return {};\n    internal_multipoint::SubproductTree<mint> t(xs);\n\
+    \    std::vector<mint> res(m);\n    // \u9802\u70B9 k \u306B f \u306E\u4F59\u308A\
+    \ g \u304C\u5C4A\u3044\u305F\u3068\u304D\u3001\u53D7\u3051\u6301\u3064\u70B9\u306E\
+    \u5024\u3092\u6C42\u3081\u308B\n    auto rec = [&](auto&& self, long long k, long\
+    \ long l, long long r, FPS<mint> g) -> void {\n        if (l >= m) return;\n \
+    \       // \u6B21\u6570\u304C\u5C0F\u3055\u3051\u308C\u3070 Horner \u6CD5\u3067\
+    \u76F4\u63A5\u6C42\u3081\u308B\n        if (r - l <= 32) {\n            for (long\
+    \ long i = l; i < std::min(r, m); i++) res[i] = g.eval(xs[i]);\n            return;\n\
+    \        }\n        const long long mid = (l + r) / 2;\n        self(self, 2 *\
+    \ k, l, mid, g % t.tree[2 * k]);\n        self(self, 2 * k + 1, mid, r, g % t.tree[2\
+    \ * k + 1]);\n    };\n    FPS<mint> g = f;\n    g.normalize();\n    rec(rec, 1,\
+    \ 0, t.sz, g % t.tree[1]);\n    return res;\n}\n\n/**\n * @brief \u70B9 (x_i,\
+    \ y_i) (x_i \u306F\u4E92\u3044\u306B\u7570\u306A\u308B) \u3092\u3059\u3079\u3066\
+    \u901A\u308B n - 1 \u6B21\u4EE5\u4E0B\u306E\u591A\u9805\u5F0F (\u9577\u3055 n)\
+    \ O(n log^2 n)\n * g = \u03A0 (x - x_i) \u3068\u3059\u308B\u3068 f = \u03A3 y_i\
+    \ / g'(x_i) \u03A0_{j != i} (x - x_j)\u3002g'(x_i) \u3092\u591A\u70B9\u8A55\u4FA1\
+    \u3057\u3001\u548C\u3092 subproduct tree \u306E\u4E0B\u304B\u3089\u7D44\u307F\u7ACB\
+    \u3066\u308B\n */\ntemplate <typename mint>\nFPS<mint> polynomial_interpolation(const\
     \ std::vector<mint>& xs, const std::vector<mint>& ys) {\n    assert(xs.size()\
     \ == ys.size());\n    const long long n = xs.size();\n    if (n == 0) return FPS<mint>();\n\
     \    internal_multipoint::SubproductTree<mint> t(xs);\n    std::vector<mint> d\
@@ -1472,7 +1495,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/multipoint.test.cpp
   requiredBy: []
-  timestamp: '2026-11-03 08:52:44+09:00'
+  timestamp: '2026-11-08 20:13:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/multipoint.test.cpp

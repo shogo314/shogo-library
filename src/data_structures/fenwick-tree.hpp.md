@@ -7,6 +7,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/algebra/monoid.hpp
     title: "\u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9"
+  - icon: ':heavy_check_mark:'
+    path: src/utility/traits.hpp
+    title: "\u578B\u7279\u6027"
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
     path: src/geometry/axis-parallel-segments.hpp
@@ -22,6 +25,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/aoj/grl/grl-5-d.test.cpp
     title: test/aoj/grl/grl-5-d.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/algebra/monoid.test.cpp
+    title: test/unittest/algebra/monoid.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/fenwick-tree.test.cpp
     title: test/unittest/data_structures/fenwick-tree.test.cpp
@@ -45,34 +51,35 @@ data:
     links: []
   bundledCode: "#line 2 \"src/data_structures/fenwick-tree.hpp\"\n\n/**\n * @file\
     \ fenwick-tree.hpp\n * @brief Fenwick Tree (Binary Indexed Tree)\n */\n\n#include\
-    \ <cassert>\n#include <utility>\n#include <vector>\n\n#line 2 \"src/algebra/group.hpp\"\
-    \n\n/**\n * @file group.hpp\n * @brief \u7FA4\u306E\u5B9A\u7FA9\n *\n * \u7FA4\
-    \u306F\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp) \u306E\u30E1\u30F3\u30D0\u306B\
-    \u52A0\u3048\u3066\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\
-    \u3057\u3066\u8868\u3059\n * - S inv(const S& a): \u9006\u5143\n */\n\n#include\
-    \ <array>\n#include <cstddef>\n#line 14 \"src/algebra/group.hpp\"\n\n#line 2 \"\
-    src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\
-    \u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\
-    \u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using\
-    \ S: \u8981\u7D20\u306E\u578B\n * - S op(const S& a, const S& b): \u7A4D (\u7D50\
-    \u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n * op, e \u306F static \u3067\u3082\
-    \u975E static \u3067\u3082\u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\
-    \u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\
-    \u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\n#include <algorithm>\n#line 17 \"\
-    src/algebra/monoid.hpp\"\n#include <istream>\n#include <limits>\n#include <numeric>\n\
-    #include <optional>\n#include <ostream>\n#include <type_traits>\n#line 24 \"src/algebra/monoid.hpp\"\
-    \n\n/**\n * @brief 1\u6B21\u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite\
-    \ \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\
-    \u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\
-    \u3059\u308B\u3068\u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\n\
-    struct Affine {\n    T a = T(1);  //!< \u50BE\u304D\n    T b = T(0);  //!< \u5207\
-    \u7247\n    constexpr T operator()(const T& x) const { return a * x + b; }\n \
-    \   friend constexpr bool operator==(const Affine& f, const Affine& g) { return\
-    \ f.a == g.a && f.b == g.b; }\n    friend constexpr bool operator!=(const Affine&\
-    \ f, const Affine& g) { return !(f == g); }\n    template <class CharT, class\
-    \ Traits>\n    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
-    \ Traits>& is, Affine& f) {\n        return is >> f.a >> f.b;\n    }\n    template\
-    \ <class CharT, class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \ <cassert>\n#include <initializer_list>\n#include <type_traits>\n#include <utility>\n\
+    #include <vector>\n\n#line 2 \"src/algebra/group.hpp\"\n\n/**\n * @file group.hpp\n\
+    \ * @brief \u7FA4\u306E\u5B9A\u7FA9\n *\n * \u7FA4\u306F\u30E2\u30CE\u30A4\u30C9\
+    \ (algebra/monoid.hpp) \u306E\u30E1\u30F3\u30D0\u306B\u52A0\u3048\u3066\u6B21\u306E\
+    \u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * -\
+    \ S inv(const S& a): \u9006\u5143\n */\n\n#include <array>\n#include <cstddef>\n\
+    #line 14 \"src/algebra/group.hpp\"\n\n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n\
+    \ * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n\
+    \ * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\
+    \u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\n\
+    \ * - S op(const S& a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e(): \u5358\
+    \u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\u3088\
+    \u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\
+    \u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\
+    \u3059)\n */\n\n#include <algorithm>\n#line 17 \"src/algebra/monoid.hpp\"\n#include\
+    \ <istream>\n#include <limits>\n#include <numeric>\n#include <optional>\n#include\
+    \ <ostream>\n#line 24 \"src/algebra/monoid.hpp\"\n\n/**\n * @brief 1\u6B21\u95A2\
+    \u6570 f(x) = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum\
+    \ \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3};\
+    \ f(x) \u306F 2x + 3\u3002\u7701\u7565\u3059\u308B\u3068\u6052\u7B49\u5199\u50CF\
+    \ {1, 0}\n */\ntemplate <typename T>\nstruct Affine {\n    T a = T(1);  //!< \u50BE\
+    \u304D\n    T b = T(0);  //!< \u5207\u7247\n    constexpr T operator()(const T&\
+    \ x) const { return a * x + b; }\n    friend constexpr bool operator==(const Affine&\
+    \ f, const Affine& g) { return f.a == g.a && f.b == g.b; }\n    friend constexpr\
+    \ bool operator!=(const Affine& f, const Affine& g) { return !(f == g); }\n  \
+    \  template <class CharT, class Traits>\n    friend std::basic_istream<CharT,\
+    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Affine& f) {\n  \
+    \      return is >> f.a >> f.b;\n    }\n    template <class CharT, class Traits>\n\
+    \    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const Affine& f) {\n        return os << f.a << CharT(' ') << f.b;\n\
     \    }\n};\n\n/**\n * @brief clamp \u3059\u308B\u95A2\u6570 f(x) = min(max(x,\
     \ lb), ub)\n *\n * monoid::ClampComposite \u306E\u8981\u7D20\u3084 acted_monoid::ClampMin\
@@ -416,34 +423,112 @@ data:
     \ {}\n    constexpr S op(const S& a, const S& b) const { return op_object(a, b);\
     \ }\n    constexpr S e() const { return identity; }\n    constexpr S inv(const\
     \ S& a) const { return inv_object(a); }\n};\ntemplate <typename Op, typename T,\
-    \ typename Inv>\nGroup(Op, T, Inv) -> Group<T, Op, Inv>;\n#line 13 \"src/data_structures/fenwick-tree.hpp\"\
-    \n\n/**\n * @brief Fenwick Tree (Binary Indexed Tree)\n *\n * 1 \u70B9\u3078\u306E\
-    \u4F5C\u7528\u3068\u533A\u9593\u7A4D\u3092 O(log n) \u3067\u884C\u3046\n * \u4F8B\
-    :\n * FenwickTree<group::Sum<long long>> ft(n);\n * ft.apply(i, x);  // a[i] +=\
-    \ x\n * ft.prod(l, r);   // a[l] + ... + a[r-1]\n *\n * @tparam G \u53EF\u63DB\
-    \u306A\u7FA4 (algebra/group.hpp)\u3002prefix_prod \u3068 max_right \u3060\u3051\
-    \u306A\u3089\u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\u3067\u3082\u3088\u3044\n */\n\
-    template <typename G>\nclass FenwickTree {\n   public:\n    using S = typename\
-    \ G::S;\n\n   private:\n    G g;\n    long long n;\n    // data[i] \u306F a[i\
-    \ - (i & -i)] \u304B\u3089 a[i-1] \u307E\u3067\u306E\u7A4D (1-indexed)\n    std::vector<S>\
-    \ data;\n    S op(const S& a, const S& b) const { return g.op(a, b); }\n    S\
-    \ e() const { return g.e(); }\n    S inv(const S& a) const { return g.inv(a);\
-    \ }\n\n   public:\n    /**\n     * @brief \u8981\u7D20\u6570 n \u3067\u3001\u3059\
-    \u3079\u3066\u306E\u8981\u7D20\u304C\u5358\u4F4D\u5143\u306E Fenwick Tree \u3092\
-    \u4F5C\u308B\n     */\n    explicit FenwickTree(long long n = 0, G g = G()) :\
-    \ g(std::move(g)), n(n), data(n + 1, e()) {}\n    /**\n     * @brief v \u3092\u521D\
-    \u671F\u5024\u3068\u3059\u308B Fenwick Tree \u3092\u4F5C\u308B O(n)\n     */\n\
-    \    explicit FenwickTree(const std::vector<S>& v, G g = G()) : FenwickTree(v.size(),\
-    \ std::move(g)) {\n        for (long long i = 1; i <= n; i++) {\n            data[i]\
-    \ = op(data[i], v[i - 1]);\n            long long j = i + (i & -i);\n        \
-    \    if (j <= n) data[j] = op(data[j], data[i]);\n        }\n    }\n\n    long\
-    \ long size() const { return n; }\n\n    /**\n     * @brief a[k] \u3092 op(a[k],\
-    \ x) \u306B\u3059\u308B O(log n)\n     */\n    void apply(long long k, const S&\
-    \ x) {\n        assert(0 <= k && k < n);\n        for (k++; k <= n; k += k & -k)\
-    \ data[k] = op(data[k], x);\n    }\n    /**\n     * @brief a[0] \u304B\u3089 a[r-1]\
-    \ \u307E\u3067\u306E\u7A4D O(log n)\n     */\n    S prefix_prod(long long r) const\
-    \ {\n        assert(0 <= r && r <= n);\n        S res = e();\n        for (; r\
-    \ > 0; r -= r & -r) res = op(data[r], res);\n        return res;\n    }\n    /**\n\
+    \ typename Inv>\nGroup(Op, T, Inv) -> Group<T, Op, Inv>;\n#line 2 \"src/utility/traits.hpp\"\
+    \n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 9 \"\
+    src/utility/traits.hpp\"\n#include <functional>\n#include <iterator>\n#include\
+    \ <set>\n#line 14 \"src/utility/traits.hpp\"\n\n#if __cplusplus >= 202002L\n#include\
+    \ <ranges>\n#endif\n\nnamespace internal_traits {\nusing std::begin, std::end;\n\
+    \ntemplate <class T, class = void>\nstruct is_range_impl : std::false_type {};\n\
+    template <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n\n// \u30B5\u30A4\u30BA\u4ED8\
+    \u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\u3059\
+    \u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\u308B\
+    \u3002\n#if __cplusplus >= 202002L\ntemplate <class R, class S>\nconcept sized_constructible_range\
+    \ = std::ranges::input_range<R> && std::ranges::sized_range<R> &&\n          \
+    \                          std::is_constructible_v<S, std::ranges::range_reference_t<R>>;\n\
+    \ntemplate <class R>\nauto range_size(R& r) {\n    return std::ranges::size(r);\n\
+    }\ntemplate <class R>\nauto range_begin(R& r) {\n    return std::ranges::begin(r);\n\
+    }\ntemplate <class R>\nusing range_value_t = std::ranges::range_value_t<R>;\n\
+    #else\nusing std::size;\ntemplate <class R>\nauto range_size(R& r) -> decltype(size(r))\
+    \ {\n    return size(r);\n}\ntemplate <class R>\nauto range_begin(R& r) -> decltype(begin(r))\
+    \ {\n    return begin(r);\n}\ntemplate <class R>\nusing range_value_t = typename\
+    \ std::iterator_traits<decltype(range_begin(std::declval<R&>()))>::value_type;\n\
+    \ntemplate <class R, class S, class = void>\nstruct is_sized_constructible_range\
+    \ : std::false_type {};\ntemplate <class R, class S>\nstruct is_sized_constructible_range<R,\
+    \ S, std::void_t<decltype(range_size(std::declval<R&>())), decltype(++std::declval<decltype(begin(std::declval<R&>()))&>()),\
+    \ decltype(begin(std::declval<R&>()) != end(std::declval<R&>())), decltype(*begin(std::declval<R&>()))>>\n\
+    \    : std::is_constructible<S, decltype(*begin(std::declval<R&>()))> {};\n#endif\n\
+    }  // namespace internal_traits\n\ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
+    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
+    \n#define HAS_METHOD(func_name)                                              \
+    \                \\\n    namespace internal_traits {                         \
+    \                                   \\\n    template <class T, class = void> \
+    \                                                      \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                    \\\n    template <class\
+    \ T>                                                                     \\\n\
+    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                    \\\n    }                                               \
+    \                                       \\\n    template <class T>           \
+    \                                                          \\\n    struct has_##func_name\
+    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
+    \ <class T>                                                                  \
+    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
+    \n#define HAS_METHOD_ARG(func_name)                                          \
+    \                                    \\\n    namespace internal_traits {     \
+    \                                                                           \\\
+    \n    template <class T, typename U, class = void>                           \
+    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                                        \\\n    template\
+    \ <class T, typename U>                                                      \
+    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                                        \\\n    }                           \
+    \                                                                            \
+    \   \\\n    template <class T, typename U>                                   \
+    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \ U>::type {};                           \\\n    template <class T, typename U>\
+    \                                                                            \
+    \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
+    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
+    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
+    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
+    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
+    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
+    \nnamespace internal_traits {\n// \u5C04\u5F71 (proj) \u306E\u65E2\u5B9A\u5024\
+    \n#if __cplusplus >= 202002L\nusing identity = std::identity;\n#else\nstruct identity\
+    \ {\n    using is_transparent = void;\n    template <class T>\n    constexpr T&&\
+    \ operator()(T&& x) const noexcept {\n        return std::forward<T>(x);\n   \
+    \ }\n};\n#endif\n}  // namespace internal_traits\n\ntemplate <class C>\nusing\
+    \ mem_value_type = typename C::value_type;\ntemplate <class C>\nusing mem_difference_type\
+    \ = typename C::difference_type;\n\nnamespace internal_traits {\ntemplate <class\
+    \ T, class = void>\nstruct is_sorted_container_impl : std::false_type {};\ntemplate\
+    \ <class T>\nstruct is_sorted_container_impl<std::set<T>> : std::true_type {};\n\
+    template <class T>\nstruct is_sorted_container_impl<std::multiset<T>> : std::true_type\
+    \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
+    \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
+    inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
+    #line 16 \"src/data_structures/fenwick-tree.hpp\"\n\n/**\n * @brief Fenwick Tree\
+    \ (Binary Indexed Tree)\n *\n * 1 \u70B9\u3078\u306E\u4F5C\u7528\u3068\u533A\u9593\
+    \u7A4D\u3092 O(log n) \u3067\u884C\u3046\n * \u4F8B:\n * FenwickTree<group::Sum<long\
+    \ long>> ft(n);\n * ft.apply(i, x);  // a[i] += x\n * ft.prod(l, r);   // a[l]\
+    \ + ... + a[r-1]\n *\n * @tparam G \u53EF\u63DB\u306A\u7FA4 (algebra/group.hpp)\u3002\
+    prefix_prod \u3068 max_right \u3060\u3051\u306A\u3089\u53EF\u63DB\u30E2\u30CE\u30A4\
+    \u30C9\u3067\u3082\u3088\u3044\n */\ntemplate <typename G>\nclass FenwickTree\
+    \ {\n   public:\n    using S = typename G::S;\n\n   private:\n    G g;\n    long\
+    \ long n;\n    // data[i] \u306F a[i - (i & -i)] \u304B\u3089 a[i-1] \u307E\u3067\
+    \u306E\u7A4D (1-indexed)\n    std::vector<S> data;\n    S op(const S& a, const\
+    \ S& b) const { return g.op(a, b); }\n    S e() const { return g.e(); }\n    S\
+    \ inv(const S& a) const { return g.inv(a); }\n\n   public:\n    /**\n     * @brief\
+    \ \u8981\u7D20\u6570 n \u3067\u3001\u3059\u3079\u3066\u306E\u8981\u7D20\u304C\u5358\
+    \u4F4D\u5143\u306E Fenwick Tree \u3092\u4F5C\u308B\n     */\n    explicit FenwickTree(long\
+    \ long n = 0, G g = G()) : g(std::move(g)), n(n), data(n + 1, e()) {}\n    /**\n\
+    \     * @brief v \u3092\u521D\u671F\u5024\u3068\u3059\u308B Fenwick Tree \u3092\
+    \u4F5C\u308B O(n)\n     */\n#if __cplusplus >= 202002L\n    template <class R\
+    \ = std::initializer_list<S>>\n        requires internal_traits::sized_constructible_range<R,\
+    \ S>\n#else\n    template <class R = std::initializer_list<S>, ENABLE_IF_T(internal_traits::is_sized_constructible_range<R,\
+    \ S>::value)>\n#endif\n    explicit FenwickTree(R&& v, G g = G()) : FenwickTree(internal_traits::range_size(v),\
+    \ std::move(g)) {\n        auto it = internal_traits::range_begin(v);\n      \
+    \  for (long long i = 1; i <= n; i++) {\n            data[i] = op(data[i], S(*it));\n\
+    \            ++it;\n            long long j = i + (i & -i);\n            if (j\
+    \ <= n) data[j] = op(data[j], data[i]);\n        }\n    }\n\n    long long size()\
+    \ const { return n; }\n\n    /**\n     * @brief a[k] \u3092 op(a[k], x) \u306B\
+    \u3059\u308B O(log n)\n     */\n    void apply(long long k, const S& x) {\n  \
+    \      assert(0 <= k && k < n);\n        for (k++; k <= n; k += k & -k) data[k]\
+    \ = op(data[k], x);\n    }\n    /**\n     * @brief a[0] \u304B\u3089 a[r-1] \u307E\
+    \u3067\u306E\u7A4D O(log n)\n     */\n    S prefix_prod(long long r) const {\n\
+    \        assert(0 <= r && r <= n);\n        S res = e();\n        for (; r > 0;\
+    \ r -= r & -r) res = op(data[r], res);\n        return res;\n    }\n    /**\n\
     \     * @brief a[l] \u304B\u3089 a[r-1] \u307E\u3067\u306E\u7A4D O(log n)\u3002\
     \u9006\u5143\u3092\u4F7F\u3046\n     */\n    S prod(long long l, long long r)\
     \ const {\n        assert(0 <= l && l <= r && r <= n);\n        return op(inv(prefix_prod(l)),\
@@ -462,11 +547,13 @@ data:
     \        for (; step > 0; step /= 2) {\n            if (r + step <= n && f(op(sum,\
     \ data[r + step]))) {\n                r += step;\n                sum = op(sum,\
     \ data[r]);\n            }\n        }\n        return r;\n    }\n};\n\ntemplate\
-    \ <typename G>\nFenwickTree(long long, G) -> FenwickTree<G>;\ntemplate <typename\
-    \ G>\nFenwickTree(std::vector<typename G::S>, G) -> FenwickTree<G>;\n"
+    \ <typename G>\nFenwickTree(long long, G) -> FenwickTree<G>;\ntemplate <class\
+    \ R, typename G>\nFenwickTree(R&&, G) -> FenwickTree<G>;\ntemplate <typename G>\n\
+    FenwickTree(std::initializer_list<typename G::S>, G) -> FenwickTree<G>;\n"
   code: "#pragma once\n\n/**\n * @file fenwick-tree.hpp\n * @brief Fenwick Tree (Binary\
-    \ Indexed Tree)\n */\n\n#include <cassert>\n#include <utility>\n#include <vector>\n\
-    \n#include \"../algebra/group.hpp\"\n\n/**\n * @brief Fenwick Tree (Binary Indexed\
+    \ Indexed Tree)\n */\n\n#include <cassert>\n#include <initializer_list>\n#include\
+    \ <type_traits>\n#include <utility>\n#include <vector>\n\n#include \"../algebra/group.hpp\"\
+    \n#include \"../utility/traits.hpp\"\n\n/**\n * @brief Fenwick Tree (Binary Indexed\
     \ Tree)\n *\n * 1 \u70B9\u3078\u306E\u4F5C\u7528\u3068\u533A\u9593\u7A4D\u3092\
     \ O(log n) \u3067\u884C\u3046\n * \u4F8B:\n * FenwickTree<group::Sum<long long>>\
     \ ft(n);\n * ft.apply(i, x);  // a[i] += x\n * ft.prod(l, r);   // a[l] + ...\
@@ -482,50 +569,56 @@ data:
     \u4F4D\u5143\u306E Fenwick Tree \u3092\u4F5C\u308B\n     */\n    explicit FenwickTree(long\
     \ long n = 0, G g = G()) : g(std::move(g)), n(n), data(n + 1, e()) {}\n    /**\n\
     \     * @brief v \u3092\u521D\u671F\u5024\u3068\u3059\u308B Fenwick Tree \u3092\
-    \u4F5C\u308B O(n)\n     */\n    explicit FenwickTree(const std::vector<S>& v,\
-    \ G g = G()) : FenwickTree(v.size(), std::move(g)) {\n        for (long long i\
-    \ = 1; i <= n; i++) {\n            data[i] = op(data[i], v[i - 1]);\n        \
-    \    long long j = i + (i & -i);\n            if (j <= n) data[j] = op(data[j],\
-    \ data[i]);\n        }\n    }\n\n    long long size() const { return n; }\n\n\
-    \    /**\n     * @brief a[k] \u3092 op(a[k], x) \u306B\u3059\u308B O(log n)\n\
-    \     */\n    void apply(long long k, const S& x) {\n        assert(0 <= k &&\
-    \ k < n);\n        for (k++; k <= n; k += k & -k) data[k] = op(data[k], x);\n\
-    \    }\n    /**\n     * @brief a[0] \u304B\u3089 a[r-1] \u307E\u3067\u306E\u7A4D\
-    \ O(log n)\n     */\n    S prefix_prod(long long r) const {\n        assert(0\
-    \ <= r && r <= n);\n        S res = e();\n        for (; r > 0; r -= r & -r) res\
-    \ = op(data[r], res);\n        return res;\n    }\n    /**\n     * @brief a[l]\
-    \ \u304B\u3089 a[r-1] \u307E\u3067\u306E\u7A4D O(log n)\u3002\u9006\u5143\u3092\
-    \u4F7F\u3046\n     */\n    S prod(long long l, long long r) const {\n        assert(0\
-    \ <= l && l <= r && r <= n);\n        return op(inv(prefix_prod(l)), prefix_prod(r));\n\
-    \    }\n    S all_prod() const { return prefix_prod(n); }\n    /**\n     * @brief\
-    \ a[k] O(log n)\u3002\u9006\u5143\u3092\u4F7F\u3046\n     */\n    S get(long long\
-    \ k) const {\n        assert(0 <= k && k < n);\n        return prod(k, k + 1);\n\
-    \    }\n    /**\n     * @brief a[k] \u3092 x \u306B\u3059\u308B O(log n)\u3002\
-    \u9006\u5143\u3092\u4F7F\u3046\n     */\n    void set(long long k, const S& x)\
-    \ { apply(k, op(inv(get(k)), x)); }\n\n    /**\n     * @brief f(prefix_prod(r))\
-    \ = true \u3068\u306A\u308B\u6700\u5927\u306E r \u3092\u8FD4\u3059 O(log n)\n\
-    \     * f \u306F\u5358\u8ABF (\u3042\u308B r \u307E\u3067\u306F true \u3067\u305D\
-    \u308C\u4EE5\u964D\u306F false) \u3067\u3042\u308B\u3053\u3068\u3002f(e()) = true\n\
-    \     */\n    template <typename F>\n    long long max_right(F f) const {\n  \
-    \      assert(f(e()));\n        long long r = 0;\n        S sum = e();\n     \
-    \   long long step = 1;\n        while (step * 2 <= n) step *= 2;\n        for\
-    \ (; step > 0; step /= 2) {\n            if (r + step <= n && f(op(sum, data[r\
-    \ + step]))) {\n                r += step;\n                sum = op(sum, data[r]);\n\
-    \            }\n        }\n        return r;\n    }\n};\n\ntemplate <typename\
-    \ G>\nFenwickTree(long long, G) -> FenwickTree<G>;\ntemplate <typename G>\nFenwickTree(std::vector<typename\
-    \ G::S>, G) -> FenwickTree<G>;\n"
+    \u4F5C\u308B O(n)\n     */\n#if __cplusplus >= 202002L\n    template <class R\
+    \ = std::initializer_list<S>>\n        requires internal_traits::sized_constructible_range<R,\
+    \ S>\n#else\n    template <class R = std::initializer_list<S>, ENABLE_IF_T(internal_traits::is_sized_constructible_range<R,\
+    \ S>::value)>\n#endif\n    explicit FenwickTree(R&& v, G g = G()) : FenwickTree(internal_traits::range_size(v),\
+    \ std::move(g)) {\n        auto it = internal_traits::range_begin(v);\n      \
+    \  for (long long i = 1; i <= n; i++) {\n            data[i] = op(data[i], S(*it));\n\
+    \            ++it;\n            long long j = i + (i & -i);\n            if (j\
+    \ <= n) data[j] = op(data[j], data[i]);\n        }\n    }\n\n    long long size()\
+    \ const { return n; }\n\n    /**\n     * @brief a[k] \u3092 op(a[k], x) \u306B\
+    \u3059\u308B O(log n)\n     */\n    void apply(long long k, const S& x) {\n  \
+    \      assert(0 <= k && k < n);\n        for (k++; k <= n; k += k & -k) data[k]\
+    \ = op(data[k], x);\n    }\n    /**\n     * @brief a[0] \u304B\u3089 a[r-1] \u307E\
+    \u3067\u306E\u7A4D O(log n)\n     */\n    S prefix_prod(long long r) const {\n\
+    \        assert(0 <= r && r <= n);\n        S res = e();\n        for (; r > 0;\
+    \ r -= r & -r) res = op(data[r], res);\n        return res;\n    }\n    /**\n\
+    \     * @brief a[l] \u304B\u3089 a[r-1] \u307E\u3067\u306E\u7A4D O(log n)\u3002\
+    \u9006\u5143\u3092\u4F7F\u3046\n     */\n    S prod(long long l, long long r)\
+    \ const {\n        assert(0 <= l && l <= r && r <= n);\n        return op(inv(prefix_prod(l)),\
+    \ prefix_prod(r));\n    }\n    S all_prod() const { return prefix_prod(n); }\n\
+    \    /**\n     * @brief a[k] O(log n)\u3002\u9006\u5143\u3092\u4F7F\u3046\n  \
+    \   */\n    S get(long long k) const {\n        assert(0 <= k && k < n);\n   \
+    \     return prod(k, k + 1);\n    }\n    /**\n     * @brief a[k] \u3092 x \u306B\
+    \u3059\u308B O(log n)\u3002\u9006\u5143\u3092\u4F7F\u3046\n     */\n    void set(long\
+    \ long k, const S& x) { apply(k, op(inv(get(k)), x)); }\n\n    /**\n     * @brief\
+    \ f(prefix_prod(r)) = true \u3068\u306A\u308B\u6700\u5927\u306E r \u3092\u8FD4\
+    \u3059 O(log n)\n     * f \u306F\u5358\u8ABF (\u3042\u308B r \u307E\u3067\u306F\
+    \ true \u3067\u305D\u308C\u4EE5\u964D\u306F false) \u3067\u3042\u308B\u3053\u3068\
+    \u3002f(e()) = true\n     */\n    template <typename F>\n    long long max_right(F\
+    \ f) const {\n        assert(f(e()));\n        long long r = 0;\n        S sum\
+    \ = e();\n        long long step = 1;\n        while (step * 2 <= n) step *= 2;\n\
+    \        for (; step > 0; step /= 2) {\n            if (r + step <= n && f(op(sum,\
+    \ data[r + step]))) {\n                r += step;\n                sum = op(sum,\
+    \ data[r]);\n            }\n        }\n        return r;\n    }\n};\n\ntemplate\
+    \ <typename G>\nFenwickTree(long long, G) -> FenwickTree<G>;\ntemplate <class\
+    \ R, typename G>\nFenwickTree(R&&, G) -> FenwickTree<G>;\ntemplate <typename G>\n\
+    FenwickTree(std::initializer_list<typename G::S>, G) -> FenwickTree<G>;\n"
   dependsOn:
   - src/algebra/group.hpp
   - src/algebra/monoid.hpp
+  - src/utility/traits.hpp
   isVerificationFile: false
   path: src/data_structures/fenwick-tree.hpp
   requiredBy:
   - src/geometry/axis-parallel-segments.hpp
-  timestamp: '2026-11-08 19:03:35+09:00'
+  timestamp: '2026-11-08 20:13:03+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/geometry/axis-parallel-segments.test.cpp
   - test/unittest/data_structures/fenwick-tree.test.cpp
+  - test/unittest/algebra/monoid.test.cpp
   - test/aoj/cgl/cgl-6-a.test.cpp
   - test/aoj/grl/grl-5-d.test.cpp
   - test/aoj/dsl/dsl-2-b.2.test.cpp
@@ -546,6 +639,8 @@ ft.apply(i, x);                             // a[i] += x
 long long s = ft.prod(l, r);                // a[l] + ... + a[r-1]
 long long k = ft.max_right([&](long long v) { return v <= w; });  // 先頭からの和が w 以下になる最大の長さ
 ```
+
+サイズを取得でき、各要素から `S` を構築できる範囲を直接渡せます。`std::vector`・`std::array`・`std::list`・組み込み配列などに対応します。C++20 ではサイズ付きの入力範囲 (`input_range` かつ `sized_range`) のビューも使えます。各要素を内部へ直接構築するので、`explicit` なコンストラクタにも対応します。初期化リストも使えます。
 
 ## メンバ関数
 

@@ -10,6 +10,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/data_structures/unionfind.hpp
     title: UnionFind
+  - icon: ':heavy_check_mark:'
+    path: src/utility/traits.hpp
+    title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
@@ -30,30 +33,30 @@ data:
     \u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\
     \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/data_structures/monoid-unionfind.hpp\"\
     \n\n/**\n * @file monoid-unionfind.hpp\n * @brief \u53EF\u63DB\u30E2\u30CE\u30A4\
-    \u30C9\u3092\u4E57\u305B\u308BUnionFind\n */\n\n#include <cassert>\n#include <utility>\n\
-    #include <vector>\n\n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n\
-    \ * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\
-    \u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\
-    \u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S&\
-    \ a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n\
-    \ * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\
-    \u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\
-    \u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\
-    \n#include <algorithm>\n#include <array>\n#include <cstddef>\n#include <istream>\n\
-    #include <limits>\n#include <numeric>\n#include <optional>\n#include <ostream>\n\
-    #include <type_traits>\n#line 24 \"src/algebra/monoid.hpp\"\n\n/**\n * @brief\
-    \ 1\u6B21\u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\
-    \u3084 acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n *\
-    \ \u4F8B: Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\u3059\u308B\
-    \u3068\u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\nstruct Affine\
-    \ {\n    T a = T(1);  //!< \u50BE\u304D\n    T b = T(0);  //!< \u5207\u7247\n\
-    \    constexpr T operator()(const T& x) const { return a * x + b; }\n    friend\
-    \ constexpr bool operator==(const Affine& f, const Affine& g) { return f.a ==\
-    \ g.a && f.b == g.b; }\n    friend constexpr bool operator!=(const Affine& f,\
-    \ const Affine& g) { return !(f == g); }\n    template <class CharT, class Traits>\n\
-    \    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT,\
-    \ Traits>& is, Affine& f) {\n        return is >> f.a >> f.b;\n    }\n    template\
-    \ <class CharT, class Traits>\n    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
+    \u30C9\u3092\u4E57\u305B\u308BUnionFind\n */\n\n#include <cassert>\n#include <initializer_list>\n\
+    #include <type_traits>\n#include <utility>\n#include <vector>\n\n#line 2 \"src/algebra/monoid.hpp\"\
+    \n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
+    \n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
+    \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\
+    \n * - S op(const S& a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e():\
+    \ \u5358\u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\
+    \u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\
+    \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\
+    \u51FA\u3059)\n */\n\n#include <algorithm>\n#include <array>\n#include <cstddef>\n\
+    #include <istream>\n#include <limits>\n#include <numeric>\n#include <optional>\n\
+    #include <ostream>\n#line 24 \"src/algebra/monoid.hpp\"\n\n/**\n * @brief 1\u6B21\
+    \u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\u3084\
+    \ acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n * \u4F8B\
+    : Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\u3059\u308B\u3068\
+    \u6052\u7B49\u5199\u50CF {1, 0}\n */\ntemplate <typename T>\nstruct Affine {\n\
+    \    T a = T(1);  //!< \u50BE\u304D\n    T b = T(0);  //!< \u5207\u7247\n    constexpr\
+    \ T operator()(const T& x) const { return a * x + b; }\n    friend constexpr bool\
+    \ operator==(const Affine& f, const Affine& g) { return f.a == g.a && f.b == g.b;\
+    \ }\n    friend constexpr bool operator!=(const Affine& f, const Affine& g) {\
+    \ return !(f == g); }\n    template <class CharT, class Traits>\n    friend std::basic_istream<CharT,\
+    \ Traits>& operator>>(std::basic_istream<CharT, Traits>& is, Affine& f) {\n  \
+    \      return is >> f.a >> f.b;\n    }\n    template <class CharT, class Traits>\n\
+    \    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
     \ Traits>& os, const Affine& f) {\n        return os << f.a << CharT(' ') << f.b;\n\
     \    }\n};\n\n/**\n * @brief clamp \u3059\u308B\u95A2\u6570 f(x) = min(max(x,\
     \ lb), ub)\n *\n * monoid::ClampComposite \u306E\u8981\u7D20\u3084 acted_monoid::ClampMin\
@@ -368,18 +371,92 @@ data:
     \ Monoid(Op op, const S& e) : op_object(std::move(op)), identity(e) {}\n    constexpr\
     \ S op(const S& a, const S& b) const { return op_object(a, b); }\n    constexpr\
     \ S e() const { return identity; }\n};\ntemplate <typename Op, typename T>\nMonoid(Op,\
-    \ T) -> Monoid<T, Op>;\n#line 2 \"src/data_structures/unionfind.hpp\"\n\n/**\n\
-    \ * @file unionfind.hpp\n * @brief UnionFind\n */\n\n#line 12 \"src/data_structures/unionfind.hpp\"\
-    \n\nnamespace internal_unionfind {\n/**\n * @brief \u5404\u8981\u7D20\u306E\u4EE3\
-    \u8868\u5143\u304B\u3089\u3001\u9023\u7D50\u6210\u5206\u3054\u3068\u306E\u8981\
-    \u7D20\u306E\u30EA\u30B9\u30C8\u3092\u4F5C\u308B\n * @param leader \u8981\u7D20\
-    \ a \u306E\u4EE3\u8868\u5143\u3092\u8FD4\u3059\u95A2\u6570\n */\ntemplate <typename\
-    \ F>\nstd::vector<std::vector<long long>> groups(long long n, F leader) {\n  \
-    \  std::vector<long long> leader_buf(n), group_size(n);\n    for (long long i\
-    \ = 0; i < n; i++) {\n        leader_buf[i] = leader(i);\n        group_size[leader_buf[i]]++;\n\
-    \    }\n    std::vector<std::vector<long long>> result(n);\n    for (long long\
-    \ i = 0; i < n; i++) {\n        result[i].reserve(group_size[i]);\n    }\n   \
-    \ for (long long i = 0; i < n; i++) {\n        result[leader_buf[i]].push_back(i);\n\
+    \ T) -> Monoid<T, Op>;\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n\
+    \ * @brief \u578B\u7279\u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\n#include\
+    \ <functional>\n#include <iterator>\n#include <set>\n#line 14 \"src/utility/traits.hpp\"\
+    \n\n#if __cplusplus >= 202002L\n#include <ranges>\n#endif\n\nnamespace internal_traits\
+    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n\n// \u30B5\u30A4\u30BA\u4ED8\
+    \u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\u3059\
+    \u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\u308B\
+    \u3002\n#if __cplusplus >= 202002L\ntemplate <class R, class S>\nconcept sized_constructible_range\
+    \ = std::ranges::input_range<R> && std::ranges::sized_range<R> &&\n          \
+    \                          std::is_constructible_v<S, std::ranges::range_reference_t<R>>;\n\
+    \ntemplate <class R>\nauto range_size(R& r) {\n    return std::ranges::size(r);\n\
+    }\ntemplate <class R>\nauto range_begin(R& r) {\n    return std::ranges::begin(r);\n\
+    }\ntemplate <class R>\nusing range_value_t = std::ranges::range_value_t<R>;\n\
+    #else\nusing std::size;\ntemplate <class R>\nauto range_size(R& r) -> decltype(size(r))\
+    \ {\n    return size(r);\n}\ntemplate <class R>\nauto range_begin(R& r) -> decltype(begin(r))\
+    \ {\n    return begin(r);\n}\ntemplate <class R>\nusing range_value_t = typename\
+    \ std::iterator_traits<decltype(range_begin(std::declval<R&>()))>::value_type;\n\
+    \ntemplate <class R, class S, class = void>\nstruct is_sized_constructible_range\
+    \ : std::false_type {};\ntemplate <class R, class S>\nstruct is_sized_constructible_range<R,\
+    \ S, std::void_t<decltype(range_size(std::declval<R&>())), decltype(++std::declval<decltype(begin(std::declval<R&>()))&>()),\
+    \ decltype(begin(std::declval<R&>()) != end(std::declval<R&>())), decltype(*begin(std::declval<R&>()))>>\n\
+    \    : std::is_constructible<S, decltype(*begin(std::declval<R&>()))> {};\n#endif\n\
+    }  // namespace internal_traits\n\ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
+    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
+    \n#define HAS_METHOD(func_name)                                              \
+    \                \\\n    namespace internal_traits {                         \
+    \                                   \\\n    template <class T, class = void> \
+    \                                                      \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                    \\\n    template <class\
+    \ T>                                                                     \\\n\
+    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                    \\\n    }                                               \
+    \                                       \\\n    template <class T>           \
+    \                                                          \\\n    struct has_##func_name\
+    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
+    \ <class T>                                                                  \
+    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
+    \n#define HAS_METHOD_ARG(func_name)                                          \
+    \                                    \\\n    namespace internal_traits {     \
+    \                                                                           \\\
+    \n    template <class T, typename U, class = void>                           \
+    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                                        \\\n    template\
+    \ <class T, typename U>                                                      \
+    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                                        \\\n    }                           \
+    \                                                                            \
+    \   \\\n    template <class T, typename U>                                   \
+    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \ U>::type {};                           \\\n    template <class T, typename U>\
+    \                                                                            \
+    \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
+    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
+    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
+    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
+    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
+    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
+    \nnamespace internal_traits {\n// \u5C04\u5F71 (proj) \u306E\u65E2\u5B9A\u5024\
+    \n#if __cplusplus >= 202002L\nusing identity = std::identity;\n#else\nstruct identity\
+    \ {\n    using is_transparent = void;\n    template <class T>\n    constexpr T&&\
+    \ operator()(T&& x) const noexcept {\n        return std::forward<T>(x);\n   \
+    \ }\n};\n#endif\n}  // namespace internal_traits\n\ntemplate <class C>\nusing\
+    \ mem_value_type = typename C::value_type;\ntemplate <class C>\nusing mem_difference_type\
+    \ = typename C::difference_type;\n\nnamespace internal_traits {\ntemplate <class\
+    \ T, class = void>\nstruct is_sorted_container_impl : std::false_type {};\ntemplate\
+    \ <class T>\nstruct is_sorted_container_impl<std::set<T>> : std::true_type {};\n\
+    template <class T>\nstruct is_sorted_container_impl<std::multiset<T>> : std::true_type\
+    \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
+    \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
+    inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
+    #line 2 \"src/data_structures/unionfind.hpp\"\n\n/**\n * @file unionfind.hpp\n\
+    \ * @brief UnionFind\n */\n\n#line 12 \"src/data_structures/unionfind.hpp\"\n\n\
+    namespace internal_unionfind {\n/**\n * @brief \u5404\u8981\u7D20\u306E\u4EE3\u8868\
+    \u5143\u304B\u3089\u3001\u9023\u7D50\u6210\u5206\u3054\u3068\u306E\u8981\u7D20\
+    \u306E\u30EA\u30B9\u30C8\u3092\u4F5C\u308B\n * @param leader \u8981\u7D20 a \u306E\
+    \u4EE3\u8868\u5143\u3092\u8FD4\u3059\u95A2\u6570\n */\ntemplate <typename F>\n\
+    std::vector<std::vector<long long>> groups(long long n, F leader) {\n    std::vector<long\
+    \ long> leader_buf(n), group_size(n);\n    for (long long i = 0; i < n; i++) {\n\
+    \        leader_buf[i] = leader(i);\n        group_size[leader_buf[i]]++;\n  \
+    \  }\n    std::vector<std::vector<long long>> result(n);\n    for (long long i\
+    \ = 0; i < n; i++) {\n        result[i].reserve(group_size[i]);\n    }\n    for\
+    \ (long long i = 0; i < n; i++) {\n        result[leader_buf[i]].push_back(i);\n\
     \    }\n    result.erase(std::remove_if(result.begin(), result.end(), [&](const\
     \ std::vector<long long>& v) { return v.empty(); }), result.end());\n    return\
     \ result;\n}\n}  // namespace internal_unionfind\n\n/**\n * @brief \u7121\u5411\
@@ -423,7 +500,7 @@ data:
     \u306E\u9023\u7D50\u6210\u5206\u306E\u9802\u70B9\u756A\u53F7\u306E\u30EA\u30B9\
     \u30C8\u300D\u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<std::vector<long\
     \ long>> groups() {\n        return internal_unionfind::groups(_n, [&](long long\
-    \ a) { return leader(a); });\n    }\n};\n#line 14 \"src/data_structures/monoid-unionfind.hpp\"\
+    \ a) { return leader(a); });\n    }\n};\n#line 17 \"src/data_structures/monoid-unionfind.hpp\"\
     \n\n/**\n * @brief \u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\u3092\u4E57\u305B\u308B\
     UnionFind\n *\n * @tparam M \u53EF\u63DB\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\n\
     \ */\ntemplate <typename M>\nclass MonoidUnionFind : private UnionFind {\n   public:\n\
@@ -436,7 +513,14 @@ data:
     \    /**\n     * @param v \u5404\u8981\u7D20\u306E\u521D\u671F\u5024\n     * @param\
     \ m \u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\n     */\n    explicit MonoidUnionFind(std::vector<S>\
     \ v, M m = M()) : UnionFind(v.size()), m(std::move(m)), val(std::move(v)) {}\n\
-    \    using MergeResult = UnionFind::MergeResult;\n    using UnionFind::groups;\n\
+    \n    /**\n     * @brief \u5404\u8981\u7D20\u3092 S(x) \u3067\u69CB\u7BC9\u3057\
+    \u3066\u521D\u671F\u5316\u3059\u308B\n     */\n#if __cplusplus >= 202002L\n  \
+    \  template <class R = std::initializer_list<S>>\n        requires internal_traits::sized_constructible_range<R,\
+    \ S>\n#else\n    template <class R = std::initializer_list<S>, ENABLE_IF_T(internal_traits::is_sized_constructible_range<R,\
+    \ S>::value)>\n#endif\n    explicit MonoidUnionFind(R&& v, M m = M())\n      \
+    \  : UnionFind(internal_traits::range_size(v)), m(std::move(m)) {\n        val.reserve(internal_traits::range_size(v));\n\
+    \        for (auto&& x : v) val.emplace_back(std::forward<decltype(x)>(x));\n\
+    \    }\n\n    using MergeResult = UnionFind::MergeResult;\n    using UnionFind::groups;\n\
     \    using UnionFind::leader;\n    using UnionFind::same;\n    using UnionFind::size;\n\
     \    /**\n     * @brief a \u3068 b \u306E\u9023\u7D50\u6210\u5206\u3092\u7D71\u5408\
     \u3057\u3001\u5024\u306E\u7A4D\u3092\u53D6\u308B\n     * @return \u7D71\u5408\u5F8C\
@@ -450,10 +534,11 @@ data:
     a\u306E\u5C5E\u3059\u308B\u9023\u7D50\u6210\u5206\u306E\u5024\u306E\u7DCF\u7A4D\
     \n     */\n    const S& prod(long long a) {\n        return val[leader(a)];\n\
     \    }\n};\n\ntemplate <typename M>\nMonoidUnionFind(long long, M) -> MonoidUnionFind<M>;\n\
-    template <typename M>\nMonoidUnionFind(std::vector<typename M::S>, M) -> MonoidUnionFind<M>;\n\
-    #line 8 \"test/unittest/data_structures/monoid-unionfind.test.cpp\"\n\n#line 10\
-    \ \"test/unittest/data_structures/monoid-unionfind.test.cpp\"\n#include <iostream>\n\
-    #include <random>\n#line 13 \"test/unittest/data_structures/monoid-unionfind.test.cpp\"\
+    template <class R, typename M>\nMonoidUnionFind(R&&, M) -> MonoidUnionFind<M>;\n\
+    template <typename M>\nMonoidUnionFind(std::initializer_list<typename M::S>, M)\
+    \ -> MonoidUnionFind<M>;\n#line 8 \"test/unittest/data_structures/monoid-unionfind.test.cpp\"\
+    \n\n#line 10 \"test/unittest/data_structures/monoid-unionfind.test.cpp\"\n#include\
+    \ <iostream>\n#include <random>\n#line 13 \"test/unittest/data_structures/monoid-unionfind.test.cpp\"\
     \n\nint main() {\n    std::mt19937 rng(314);\n    bool ok = true;\n    for (int\
     \ rep = 0; rep < 3000 && ok; rep++) {\n        int n = rng() % 10 + 1;\n     \
     \   bool by_size = rep % 2 == 0;\n        std::vector<long long> v(n, 0);\n  \
@@ -514,11 +599,12 @@ data:
   dependsOn:
   - src/data_structures/monoid-unionfind.hpp
   - src/algebra/monoid.hpp
+  - src/utility/traits.hpp
   - src/data_structures/unionfind.hpp
   isVerificationFile: true
   path: test/unittest/data_structures/monoid-unionfind.test.cpp
   requiredBy: []
-  timestamp: '2026-11-08 19:03:35+09:00'
+  timestamp: '2026-11-08 20:13:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/data_structures/monoid-unionfind.test.cpp

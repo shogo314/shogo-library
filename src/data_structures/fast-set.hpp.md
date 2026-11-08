@@ -8,6 +8,9 @@ data:
       \u30F3\u30C8\u6728"
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
+    path: test/unittest/algebra/monoid.test.cpp
+    title: test/unittest/algebra/monoid.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/fast-set.test.cpp
     title: test/unittest/data_structures/fast-set.test.cpp
   - icon: ':heavy_check_mark:'
@@ -202,6 +205,7 @@ data:
   verifiedWith:
   - test/unittest/data_structures/fast-set.test.cpp
   - test/unittest/data_structures/sortable-segtree.test.cpp
+  - test/unittest/algebra/monoid.test.cpp
   - test/yosupo/data_structure/predecessor-problem.test.cpp
   - test/yosupo/data_structure/point-set-range-sort-range-composite.test.cpp
 documentation_of: src/data_structures/fast-set.hpp

@@ -41,7 +41,82 @@ data:
     \u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\
     \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/data_structures/link-cut-tree.hpp\"\
     \n\n/**\n * @file link-cut-tree.hpp\n * @brief Link-Cut Tree\n */\n\n#include\
-    \ <cassert>\n#include <utility>\n#include <vector>\n\n/**\n * @brief Link-Cut\
+    \ <cassert>\n#include <initializer_list>\n#include <type_traits>\n#include <utility>\n\
+    #include <vector>\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n\
+    \ * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n#include <functional>\n\
+    #include <iterator>\n#include <set>\n#line 14 \"src/utility/traits.hpp\"\n\n#if\
+    \ __cplusplus >= 202002L\n#include <ranges>\n#endif\n\nnamespace internal_traits\
+    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n\n// \u30B5\u30A4\u30BA\u4ED8\
+    \u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\u3059\
+    \u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\u308B\
+    \u3002\n#if __cplusplus >= 202002L\ntemplate <class R, class S>\nconcept sized_constructible_range\
+    \ = std::ranges::input_range<R> && std::ranges::sized_range<R> &&\n          \
+    \                          std::is_constructible_v<S, std::ranges::range_reference_t<R>>;\n\
+    \ntemplate <class R>\nauto range_size(R& r) {\n    return std::ranges::size(r);\n\
+    }\ntemplate <class R>\nauto range_begin(R& r) {\n    return std::ranges::begin(r);\n\
+    }\ntemplate <class R>\nusing range_value_t = std::ranges::range_value_t<R>;\n\
+    #else\nusing std::size;\ntemplate <class R>\nauto range_size(R& r) -> decltype(size(r))\
+    \ {\n    return size(r);\n}\ntemplate <class R>\nauto range_begin(R& r) -> decltype(begin(r))\
+    \ {\n    return begin(r);\n}\ntemplate <class R>\nusing range_value_t = typename\
+    \ std::iterator_traits<decltype(range_begin(std::declval<R&>()))>::value_type;\n\
+    \ntemplate <class R, class S, class = void>\nstruct is_sized_constructible_range\
+    \ : std::false_type {};\ntemplate <class R, class S>\nstruct is_sized_constructible_range<R,\
+    \ S, std::void_t<decltype(range_size(std::declval<R&>())), decltype(++std::declval<decltype(begin(std::declval<R&>()))&>()),\
+    \ decltype(begin(std::declval<R&>()) != end(std::declval<R&>())), decltype(*begin(std::declval<R&>()))>>\n\
+    \    : std::is_constructible<S, decltype(*begin(std::declval<R&>()))> {};\n#endif\n\
+    }  // namespace internal_traits\n\ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
+    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
+    \n#define HAS_METHOD(func_name)                                              \
+    \                \\\n    namespace internal_traits {                         \
+    \                                   \\\n    template <class T, class = void> \
+    \                                                      \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                    \\\n    template <class\
+    \ T>                                                                     \\\n\
+    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                    \\\n    }                                               \
+    \                                       \\\n    template <class T>           \
+    \                                                          \\\n    struct has_##func_name\
+    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
+    \ <class T>                                                                  \
+    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
+    \n#define HAS_METHOD_ARG(func_name)                                          \
+    \                                    \\\n    namespace internal_traits {     \
+    \                                                                           \\\
+    \n    template <class T, typename U, class = void>                           \
+    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                                        \\\n    template\
+    \ <class T, typename U>                                                      \
+    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                                        \\\n    }                           \
+    \                                                                            \
+    \   \\\n    template <class T, typename U>                                   \
+    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \ U>::type {};                           \\\n    template <class T, typename U>\
+    \                                                                            \
+    \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
+    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
+    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
+    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
+    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
+    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
+    \nnamespace internal_traits {\n// \u5C04\u5F71 (proj) \u306E\u65E2\u5B9A\u5024\
+    \n#if __cplusplus >= 202002L\nusing identity = std::identity;\n#else\nstruct identity\
+    \ {\n    using is_transparent = void;\n    template <class T>\n    constexpr T&&\
+    \ operator()(T&& x) const noexcept {\n        return std::forward<T>(x);\n   \
+    \ }\n};\n#endif\n}  // namespace internal_traits\n\ntemplate <class C>\nusing\
+    \ mem_value_type = typename C::value_type;\ntemplate <class C>\nusing mem_difference_type\
+    \ = typename C::difference_type;\n\nnamespace internal_traits {\ntemplate <class\
+    \ T, class = void>\nstruct is_sorted_container_impl : std::false_type {};\ntemplate\
+    \ <class T>\nstruct is_sorted_container_impl<std::set<T>> : std::true_type {};\n\
+    template <class T>\nstruct is_sorted_container_impl<std::multiset<T>> : std::true_type\
+    \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
+    \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
+    inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
+    #line 15 \"src/data_structures/link-cut-tree.hpp\"\n\n/**\n * @brief Link-Cut\
     \ Tree (\u68EE\u3067\u3001\u8FBA\u306E\u8FFD\u52A0\u30FB\u524A\u9664\u3068\u30D1\
     \u30B9\u4E0A\u306E\u5024\u306E\u96C6\u7D04\u304C\u3067\u304D\u308B)\n *\n * \u5404\
     \u64CD\u4F5C\u306F\u306A\u3089\u3057 O(log n)\u3002\u5185\u90E8\u306E\u914D\u5217\
@@ -88,10 +163,14 @@ data:
     \ LinkCutTree(long long n = 0, M m = M()) : m(std::move(m)) {\n        Node x;\n\
     \        x.val = x.sum = x.rsum = e();\n        t.assign(n, x);\n    }\n    /**\n\
     \     * @brief \u9802\u70B9 i \u306E\u5024\u304C a[i]\u3001\u8FBA\u306A\u3057\n\
-    \     */\n    explicit LinkCutTree(const std::vector<S>& a, M m = M()) : LinkCutTree(a.size(),\
-    \ std::move(m)) {\n        for (int i = 0; i < static_cast<int>(a.size()); i++)\
-    \ t[i].val = t[i].sum = t[i].rsum = a[i];\n    }\n    /**\n     * @brief \u9802\
-    \u70B9\u6570\n     */\n    long long size() const { return static_cast<long long>(t.size());\
+    \     */\n#if __cplusplus >= 202002L\n    template <class R = std::initializer_list<S>>\n\
+    \        requires internal_traits::sized_constructible_range<R, S>\n#else\n  \
+    \  template <class R = std::initializer_list<S>, ENABLE_IF_T(internal_traits::is_sized_constructible_range<R,\
+    \ S>::value)>\n#endif\n    explicit LinkCutTree(R&& a, M m = M()) : LinkCutTree(internal_traits::range_size(a),\
+    \ std::move(m)) {\n        long long i = 0;\n        for (auto&& x : a) {\n  \
+    \          t[i].val = t[i].sum = t[i].rsum = S(std::forward<decltype(x)>(x));\n\
+    \            ++i;\n        }\n    }\n\n    /**\n     * @brief \u9802\u70B9\u6570\
+    \n     */\n    long long size() const { return static_cast<long long>(t.size());\
     \ }\n    /**\n     * @brief v \u3092\u6839\u306B\u3059\u308B\n     */\n    void\
     \ evert(long long v) {\n        access(v);\n        toggle(v);\n        push(v);\n\
     \    }\n    /**\n     * @brief \u8FBA (u, v) \u3092\u8FFD\u52A0\u3059\u308B\u3002\
@@ -133,7 +212,8 @@ data:
     \ \u3092\u89AA\u3068\u3057\u305F\u3068\u304D\u306E 1 \u306E\u90E8\u5206\u6728\u306E\
     \u548C\n *\n * @tparam G \u53EF\u63DB\u306A\u7FA4 (algebra/group.hpp)\n */\n\n\
     template <typename M>\nLinkCutTree(long long, M) -> LinkCutTree<M>;\ntemplate\
-    \ <typename M>\nLinkCutTree(std::vector<typename M::S>, M) -> LinkCutTree<M>;\n\
+    \ <class R, typename M>\nLinkCutTree(R&&, M) -> LinkCutTree<M>;\ntemplate <typename\
+    \ M>\nLinkCutTree(std::initializer_list<typename M::S>, M) -> LinkCutTree<M>;\n\
     \ntemplate <typename G>\nclass SubtreeLinkCutTree {\n    using S = typename G::S;\n\
     \    struct Node {\n        int l = -1, r = -1, p = -1;\n        bool rev = false;\n\
     \        S val, path, virt, sum;  // path \u306F\u30D1\u30B9\u4E0A\u3001sum \u306F\
@@ -168,55 +248,59 @@ data:
     \  t[y].r = last;\n            update(y);\n            last = y;\n        }\n\
     \        splay(x);\n        return last;\n    }\n\n   public:\n    explicit SubtreeLinkCutTree(long\
     \ long n = 0, G g = G()) : g(std::move(g)) {\n        Node x;\n        x.val =\
-    \ x.path = x.virt = x.sum = e();\n        t.assign(n, x);\n    }\n    explicit\
-    \ SubtreeLinkCutTree(const std::vector<S>& a, G g = G()) : SubtreeLinkCutTree(a.size(),\
-    \ std::move(g)) {\n        for (int i = 0; i < static_cast<int>(a.size()); i++)\
-    \ t[i].val = t[i].path = t[i].sum = a[i];\n    }\n    long long size() const {\
-    \ return static_cast<long long>(t.size()); }\n    void evert(long long v) {\n\
-    \        access(v);\n        toggle(v);\n        push(v);\n    }\n    void link(long\
-    \ long u, long long v) {\n        assert(!connected(u, v));\n        evert(u);\n\
-    \        access(v);\n        t[u].p = static_cast<int>(v);\n        t[v].virt\
-    \ = op(t[v].virt, t[u].sum);\n        update(v);\n    }\n    void cut(long long\
-    \ u, long long v) {\n        evert(u);\n        access(v);\n        assert(t[v].l\
-    \ == u && t[u].r == -1);\n        t[v].l = t[u].p = -1;\n        update(v);\n\
-    \    }\n    long long root(long long v) {\n        access(v);\n        int x =\
-    \ static_cast<int>(v);\n        while (push(x), t[x].l != -1) x = t[x].l;\n  \
-    \      splay(x);\n        return x;\n    }\n    bool connected(long long u, long\
-    \ long v) { return u == v || root(u) == root(v); }\n    long long lca(long long\
-    \ u, long long v) {\n        assert(connected(u, v));\n        access(u);\n  \
-    \      return access(v);\n    }\n    void set(long long v, const S& x) {\n   \
-    \     access(v);\n        t[v].val = x;\n        update(v);\n    }\n    S get(long\
-    \ long v) const { return t[v].val; }\n    void apply(long long v, const S& x)\
-    \ { set(v, op(t[v].val, x)); }\n    /**\n     * @brief u \u304B\u3089 v \u3078\
-    \u306E\u30D1\u30B9\u4E0A\u306E\u9802\u70B9 (\u7AEF\u70B9\u3092\u542B\u3080) \u306E\
-    \u5024\u306E\u548C\u3002u \u3068 v \u306F\u540C\u3058\u6728\u306B\u3042\u308B\u3053\
-    \u3068\n     */\n    S prod(long long u, long long v) {\n        assert(connected(u,\
-    \ v));\n        evert(u);\n        access(v);\n        return t[v].path;\n   \
-    \ }\n    /**\n     * @brief p \u3092\u6839\u3068\u3057\u305F\u3068\u304D\u306E\
-    \ v \u306E\u90E8\u5206\u6728\u306E\u5024\u306E\u548C (p == v \u306A\u3089\u6728\
-    \u5168\u4F53)\u3002v \u3068 p \u306F\u540C\u3058\u6728\u306B\u3042\u308B\u3053\
-    \u3068\n     *\n     * p \u304C\u6839\u306B\u306A\u308B\n     */\n    S subtree_prod(long\
-    \ long v, long long p) {\n        assert(connected(v, p));\n        evert(p);\n\
-    \        access(v);\n        return op(t[v].val, t[v].virt);\n    }\n};\n\ntemplate\
-    \ <typename G>\nSubtreeLinkCutTree(long long, G) -> SubtreeLinkCutTree<G>;\ntemplate\
-    \ <typename G>\nSubtreeLinkCutTree(std::vector<typename G::S>, G) -> SubtreeLinkCutTree<G>;\n\
-    #line 9 \"test/unittest/data_structures/link-cut-tree.test.cpp\"\n\n#include <algorithm>\n\
-    #include <iostream>\n#include <random>\n#line 14 \"test/unittest/data_structures/link-cut-tree.test.cpp\"\
-    \n\n#line 2 \"src/algebra/group.hpp\"\n\n/**\n * @file group.hpp\n * @brief \u7FA4\
-    \u306E\u5B9A\u7FA9\n *\n * \u7FA4\u306F\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\
-    \ \u306E\u30E1\u30F3\u30D0\u306B\u52A0\u3048\u3066\u6B21\u306E\u30E1\u30F3\u30D0\
-    \u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - S inv(const S& a):\
-    \ \u9006\u5143\n */\n\n#include <array>\n#include <cstddef>\n#line 14 \"src/algebra/group.hpp\"\
-    \n\n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n * @brief\
-    \ \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\
-    \u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\u3066\u8868\
-    \u3059\n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S& a, const S&\
-    \ b): \u7A4D (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n * op, e \u306F\
-    \ static \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\u30FC\u30BF\
-    \u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\
-    \u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\n#line 17\
-    \ \"src/algebra/monoid.hpp\"\n#include <istream>\n#include <limits>\n#include\
-    \ <numeric>\n#include <optional>\n#include <ostream>\n#include <type_traits>\n\
+    \ x.path = x.virt = x.sum = e();\n        t.assign(n, x);\n    }\n#if __cplusplus\
+    \ >= 202002L\n    template <class R = std::initializer_list<S>>\n        requires\
+    \ internal_traits::sized_constructible_range<R, S>\n#else\n    template <class\
+    \ R = std::initializer_list<S>, ENABLE_IF_T(internal_traits::is_sized_constructible_range<R,\
+    \ S>::value)>\n#endif\n    explicit SubtreeLinkCutTree(R&& a, G g = G()) : SubtreeLinkCutTree(internal_traits::range_size(a),\
+    \ std::move(g)) {\n        long long i = 0;\n        for (auto&& x : a) {\n  \
+    \          t[i].val = t[i].path = t[i].sum = S(std::forward<decltype(x)>(x));\n\
+    \            ++i;\n        }\n    }\n\n    long long size() const { return static_cast<long\
+    \ long>(t.size()); }\n    void evert(long long v) {\n        access(v);\n    \
+    \    toggle(v);\n        push(v);\n    }\n    void link(long long u, long long\
+    \ v) {\n        assert(!connected(u, v));\n        evert(u);\n        access(v);\n\
+    \        t[u].p = static_cast<int>(v);\n        t[v].virt = op(t[v].virt, t[u].sum);\n\
+    \        update(v);\n    }\n    void cut(long long u, long long v) {\n       \
+    \ evert(u);\n        access(v);\n        assert(t[v].l == u && t[u].r == -1);\n\
+    \        t[v].l = t[u].p = -1;\n        update(v);\n    }\n    long long root(long\
+    \ long v) {\n        access(v);\n        int x = static_cast<int>(v);\n      \
+    \  while (push(x), t[x].l != -1) x = t[x].l;\n        splay(x);\n        return\
+    \ x;\n    }\n    bool connected(long long u, long long v) { return u == v || root(u)\
+    \ == root(v); }\n    long long lca(long long u, long long v) {\n        assert(connected(u,\
+    \ v));\n        access(u);\n        return access(v);\n    }\n    void set(long\
+    \ long v, const S& x) {\n        access(v);\n        t[v].val = x;\n        update(v);\n\
+    \    }\n    S get(long long v) const { return t[v].val; }\n    void apply(long\
+    \ long v, const S& x) { set(v, op(t[v].val, x)); }\n    /**\n     * @brief u \u304B\
+    \u3089 v \u3078\u306E\u30D1\u30B9\u4E0A\u306E\u9802\u70B9 (\u7AEF\u70B9\u3092\u542B\
+    \u3080) \u306E\u5024\u306E\u548C\u3002u \u3068 v \u306F\u540C\u3058\u6728\u306B\
+    \u3042\u308B\u3053\u3068\n     */\n    S prod(long long u, long long v) {\n  \
+    \      assert(connected(u, v));\n        evert(u);\n        access(v);\n     \
+    \   return t[v].path;\n    }\n    /**\n     * @brief p \u3092\u6839\u3068\u3057\
+    \u305F\u3068\u304D\u306E v \u306E\u90E8\u5206\u6728\u306E\u5024\u306E\u548C (p\
+    \ == v \u306A\u3089\u6728\u5168\u4F53)\u3002v \u3068 p \u306F\u540C\u3058\u6728\
+    \u306B\u3042\u308B\u3053\u3068\n     *\n     * p \u304C\u6839\u306B\u306A\u308B\
+    \n     */\n    S subtree_prod(long long v, long long p) {\n        assert(connected(v,\
+    \ p));\n        evert(p);\n        access(v);\n        return op(t[v].val, t[v].virt);\n\
+    \    }\n};\n\ntemplate <typename G>\nSubtreeLinkCutTree(long long, G) -> SubtreeLinkCutTree<G>;\n\
+    template <class R, typename G>\nSubtreeLinkCutTree(R&&, G) -> SubtreeLinkCutTree<G>;\n\
+    template <typename G>\nSubtreeLinkCutTree(std::initializer_list<typename G::S>,\
+    \ G) -> SubtreeLinkCutTree<G>;\n#line 9 \"test/unittest/data_structures/link-cut-tree.test.cpp\"\
+    \n\n#include <algorithm>\n#include <iostream>\n#include <random>\n#line 14 \"\
+    test/unittest/data_structures/link-cut-tree.test.cpp\"\n\n#line 2 \"src/algebra/group.hpp\"\
+    \n\n/**\n * @file group.hpp\n * @brief \u7FA4\u306E\u5B9A\u7FA9\n *\n * \u7FA4\
+    \u306F\u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp) \u306E\u30E1\u30F3\u30D0\u306B\
+    \u52A0\u3048\u3066\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\
+    \u3057\u3066\u8868\u3059\n * - S inv(const S& a): \u9006\u5143\n */\n\n#include\
+    \ <array>\n#line 14 \"src/algebra/group.hpp\"\n\n#line 2 \"src/algebra/monoid.hpp\"\
+    \n\n/**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
+    \n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
+    \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\
+    \n * - S op(const S& a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e():\
+    \ \u5358\u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\
+    \u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\
+    \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\
+    \u51FA\u3059)\n */\n\n#line 17 \"src/algebra/monoid.hpp\"\n#include <istream>\n\
+    #include <limits>\n#include <numeric>\n#include <optional>\n#include <ostream>\n\
     #line 24 \"src/algebra/monoid.hpp\"\n\n/**\n * @brief 1\u6B21\u95A2\u6570 f(x)\
     \ = a * x + b\n *\n * monoid::Composite \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum\
     \ \u306E\u4F5C\u7528\u7D20\u306B\u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3};\
@@ -577,64 +661,7 @@ data:
     \n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\
     \u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line\
     \ 9 \"src/math/modint.hpp\"\n#include <cstdint>\n#line 14 \"src/math/modint.hpp\"\
-    \n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief\
-    \ \u578B\u7279\u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\n#include <functional>\n\
-    #include <iterator>\n#include <set>\n#line 14 \"src/utility/traits.hpp\"\n\nnamespace\
-    \ internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T, class =\
-    \ void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct\
-    \ is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
-    \ : std::true_type {};\n}  // namespace internal_traits\n\ntemplate <class T>\n\
-    struct is_range : internal_traits::is_range_impl<T>::type {};\ntemplate <class\
-    \ T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define HAS_METHOD(func_name)\
-    \                                                              \\\n    namespace\
-    \ internal_traits {                                                          \
-    \  \\\n    template <class T, class = void>                                  \
-    \                     \\\n    struct has_##func_name##_impl : std::false_type\
-    \ {};                                    \\\n    template <class T>          \
-    \                                                           \\\n    struct has_##func_name##_impl<T,\
-    \ std::void_t<decltype(std::declval<T>().func_name())>> \\\n        : std::true_type\
-    \ {};                                                               \\\n    }\
-    \                                                                            \
-    \          \\\n    template <class T>                                        \
-    \                             \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T>::type\
-    \ {};          \\\n    template <class T>                                    \
-    \                                 \\\n    inline constexpr bool has_##func_name##_v\
-    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
-    \                                                                    \\\n    namespace\
-    \ internal_traits {                                                          \
-    \                      \\\n    template <class T, typename U, class = void>  \
-    \                                                             \\\n    struct has_##func_name##_impl\
-    \ : std::false_type {};                                                      \
-    \  \\\n    template <class T, typename U>                                    \
-    \                                         \\\n    struct has_##func_name##_impl<T,\
-    \ U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>> \\\
-    \n        : std::true_type {};                                               \
-    \                                    \\\n    }                               \
-    \                                                                           \\\
-    \n    template <class T, typename U>                                         \
-    \                                    \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
-    \ U>::type {};                           \\\n    template <class T, typename U>\
-    \                                                                            \
-    \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
-    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
-    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
-    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
-    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
-    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
-    \nnamespace internal_traits {\n// \u5C04\u5F71 (proj) \u306E\u65E2\u5B9A\u5024\
-    \n#if __cplusplus >= 202002L\nusing identity = std::identity;\n#else\nstruct identity\
-    \ {\n    using is_transparent = void;\n    template <class T>\n    constexpr T&&\
-    \ operator()(T&& x) const noexcept {\n        return std::forward<T>(x);\n   \
-    \ }\n};\n#endif\n}  // namespace internal_traits\n\ntemplate <class C>\nusing\
-    \ mem_value_type = typename C::value_type;\ntemplate <class C>\nusing mem_difference_type\
-    \ = typename C::difference_type;\n\nnamespace internal_traits {\ntemplate <class\
-    \ T, class = void>\nstruct is_sorted_container_impl : std::false_type {};\ntemplate\
-    \ <class T>\nstruct is_sorted_container_impl<std::set<T>> : std::true_type {};\n\
-    template <class T>\nstruct is_sorted_container_impl<std::multiset<T>> : std::true_type\
-    \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
-    \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
-    inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
-    #line 16 \"src/math/modint.hpp\"\n\nnamespace internal_modint {\n// clang-format\
+    \n\n#line 16 \"src/math/modint.hpp\"\n\nnamespace internal_modint {\n// clang-format\
     \ off\nstatic constexpr std::uint16_t prime32_bases[] {\n    15591,  2018,  166,\
     \ 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,  3620,   560,  3128, \
     \ 5212,  2657,\n     2300,  2021, 4652, 1471,  9336,  4018,  2398, 20462, 10277,\
@@ -1013,14 +1040,14 @@ data:
     }\n"
   dependsOn:
   - src/data_structures/link-cut-tree.hpp
+  - src/utility/traits.hpp
   - src/algebra/group.hpp
   - src/algebra/monoid.hpp
   - src/math/modint.hpp
-  - src/utility/traits.hpp
   isVerificationFile: true
   path: test/unittest/data_structures/link-cut-tree.test.cpp
   requiredBy: []
-  timestamp: '2026-11-08 19:03:35+09:00'
+  timestamp: '2026-11-08 20:13:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/data_structures/link-cut-tree.test.cpp

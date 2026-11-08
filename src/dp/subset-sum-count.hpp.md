@@ -41,13 +41,88 @@ data:
     \u90E8\u5206\u96C6\u5408\u306E\u500B\u6570)\n */\n\n#include <cassert>\n#include\
     \ <climits>\n#include <cmath>\n#include <vector>\n\n#line 2 \"src/math/fps.hpp\"\
     \n\n/**\n * @file fps.hpp\n * @brief \u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\n */\n\
-    \n#include <algorithm>\n#line 10 \"src/math/fps.hpp\"\n#include <optional>\n#include\
-    \ <queue>\n#include <utility>\n#line 14 \"src/math/fps.hpp\"\n\n#line 2 \"src/math/combinatorics.hpp\"\
-    \n\n/**\n * @file combinatorics.hpp\n * @brief \u7D44\u307F\u5408\u308F\u305B\n\
-    \ *\n * \u7D20\u6570 mod \u3067\u306E\u968E\u4E57\u30FB\u4E8C\u9805\u4FC2\u6570\
-    \u306F Combination\u3001\u7D20\u6570\u51AA p^q \u3092\u6CD5\u3068\u3059\u308B\u4E8C\
-    \u9805\u4FC2\u6570\u306F CombinationPQ\n */\n\n#line 11 \"src/math/combinatorics.hpp\"\
-    \n#include <numeric>\n#line 13 \"src/math/combinatorics.hpp\"\n\n#line 2 \"src/math/modular-arithmetic.hpp\"\
+    \n#include <algorithm>\n#line 10 \"src/math/fps.hpp\"\n#include <initializer_list>\n\
+    #include <optional>\n#include <queue>\n#include <type_traits>\n#include <utility>\n\
+    #line 16 \"src/math/fps.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n *\
+    \ @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n\
+    #include <functional>\n#include <iterator>\n#include <set>\n#line 14 \"src/utility/traits.hpp\"\
+    \n\n#if __cplusplus >= 202002L\n#include <ranges>\n#endif\n\nnamespace internal_traits\
+    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n\n// \u30B5\u30A4\u30BA\u4ED8\
+    \u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\u3059\
+    \u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\u308B\
+    \u3002\n#if __cplusplus >= 202002L\ntemplate <class R, class S>\nconcept sized_constructible_range\
+    \ = std::ranges::input_range<R> && std::ranges::sized_range<R> &&\n          \
+    \                          std::is_constructible_v<S, std::ranges::range_reference_t<R>>;\n\
+    \ntemplate <class R>\nauto range_size(R& r) {\n    return std::ranges::size(r);\n\
+    }\ntemplate <class R>\nauto range_begin(R& r) {\n    return std::ranges::begin(r);\n\
+    }\ntemplate <class R>\nusing range_value_t = std::ranges::range_value_t<R>;\n\
+    #else\nusing std::size;\ntemplate <class R>\nauto range_size(R& r) -> decltype(size(r))\
+    \ {\n    return size(r);\n}\ntemplate <class R>\nauto range_begin(R& r) -> decltype(begin(r))\
+    \ {\n    return begin(r);\n}\ntemplate <class R>\nusing range_value_t = typename\
+    \ std::iterator_traits<decltype(range_begin(std::declval<R&>()))>::value_type;\n\
+    \ntemplate <class R, class S, class = void>\nstruct is_sized_constructible_range\
+    \ : std::false_type {};\ntemplate <class R, class S>\nstruct is_sized_constructible_range<R,\
+    \ S, std::void_t<decltype(range_size(std::declval<R&>())), decltype(++std::declval<decltype(begin(std::declval<R&>()))&>()),\
+    \ decltype(begin(std::declval<R&>()) != end(std::declval<R&>())), decltype(*begin(std::declval<R&>()))>>\n\
+    \    : std::is_constructible<S, decltype(*begin(std::declval<R&>()))> {};\n#endif\n\
+    }  // namespace internal_traits\n\ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
+    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
+    \n#define HAS_METHOD(func_name)                                              \
+    \                \\\n    namespace internal_traits {                         \
+    \                                   \\\n    template <class T, class = void> \
+    \                                                      \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                    \\\n    template <class\
+    \ T>                                                                     \\\n\
+    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                    \\\n    }                                               \
+    \                                       \\\n    template <class T>           \
+    \                                                          \\\n    struct has_##func_name\
+    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
+    \ <class T>                                                                  \
+    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
+    \n#define HAS_METHOD_ARG(func_name)                                          \
+    \                                    \\\n    namespace internal_traits {     \
+    \                                                                           \\\
+    \n    template <class T, typename U, class = void>                           \
+    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                                        \\\n    template\
+    \ <class T, typename U>                                                      \
+    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                                        \\\n    }                           \
+    \                                                                            \
+    \   \\\n    template <class T, typename U>                                   \
+    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \ U>::type {};                           \\\n    template <class T, typename U>\
+    \                                                                            \
+    \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
+    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
+    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
+    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
+    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
+    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
+    \nnamespace internal_traits {\n// \u5C04\u5F71 (proj) \u306E\u65E2\u5B9A\u5024\
+    \n#if __cplusplus >= 202002L\nusing identity = std::identity;\n#else\nstruct identity\
+    \ {\n    using is_transparent = void;\n    template <class T>\n    constexpr T&&\
+    \ operator()(T&& x) const noexcept {\n        return std::forward<T>(x);\n   \
+    \ }\n};\n#endif\n}  // namespace internal_traits\n\ntemplate <class C>\nusing\
+    \ mem_value_type = typename C::value_type;\ntemplate <class C>\nusing mem_difference_type\
+    \ = typename C::difference_type;\n\nnamespace internal_traits {\ntemplate <class\
+    \ T, class = void>\nstruct is_sorted_container_impl : std::false_type {};\ntemplate\
+    \ <class T>\nstruct is_sorted_container_impl<std::set<T>> : std::true_type {};\n\
+    template <class T>\nstruct is_sorted_container_impl<std::multiset<T>> : std::true_type\
+    \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
+    \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
+    inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
+    #line 2 \"src/math/combinatorics.hpp\"\n\n/**\n * @file combinatorics.hpp\n *\
+    \ @brief \u7D44\u307F\u5408\u308F\u305B\n *\n * \u7D20\u6570 mod \u3067\u306E\u968E\
+    \u4E57\u30FB\u4E8C\u9805\u4FC2\u6570\u306F Combination\u3001\u7D20\u6570\u51AA\
+    \ p^q \u3092\u6CD5\u3068\u3059\u308B\u4E8C\u9805\u4FC2\u6570\u306F CombinationPQ\n\
+    \ */\n\n#line 11 \"src/math/combinatorics.hpp\"\n#include <numeric>\n#line 13\
+    \ \"src/math/combinatorics.hpp\"\n\n#line 2 \"src/math/modular-arithmetic.hpp\"\
     \n\n/**\n * @file modular-arithmetic.hpp\n * @brief mod \u6F14\u7B97 (\u7A4D\u3001\
     \u51AA\u4E57\u3001\u9006\u5143\u3001\u96E2\u6563\u5BFE\u6570\u3001\u5E73\u65B9\
     \u6839)\n */\n\n#line 12 \"src/math/modular-arithmetic.hpp\"\n#include <unordered_map>\n\
@@ -273,68 +348,11 @@ data:
     };\n#line 2 \"src/math/convolution.hpp\"\n\n/**\n * @file convolution.hpp\n *\
     \ @brief \u7573\u307F\u8FBC\u307F (NTT)\n */\n\n#line 9 \"src/math/convolution.hpp\"\
     \n#include <array>\n#line 11 \"src/math/convolution.hpp\"\n#include <cstdint>\n\
-    #include <type_traits>\n#line 15 \"src/math/convolution.hpp\"\n\n#line 2 \"src/math/modint.hpp\"\
-    \n\n/**\n * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\
-    \u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line\
-    \ 10 \"src/math/modint.hpp\"\n#include <iostream>\n#include <limits>\n#line 14\
-    \ \"src/math/modint.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file\
-    \ traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#include <cstddef>\n#include\
-    \ <functional>\n#include <iterator>\n#include <set>\n#line 14 \"src/utility/traits.hpp\"\
-    \n\nnamespace internal_traits {\nusing std::begin, std::end;\n\ntemplate <class\
-    \ T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class\
-    \ T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
-    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
-    \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
-    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
-    \n#define HAS_METHOD(func_name)                                              \
-    \                \\\n    namespace internal_traits {                         \
-    \                                   \\\n    template <class T, class = void> \
-    \                                                      \\\n    struct has_##func_name##_impl\
-    \ : std::false_type {};                                    \\\n    template <class\
-    \ T>                                                                     \\\n\
-    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
-    \ \\\n        : std::true_type {};                                           \
-    \                    \\\n    }                                               \
-    \                                       \\\n    template <class T>           \
-    \                                                          \\\n    struct has_##func_name\
-    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
-    \ <class T>                                                                  \
-    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
-    \n#define HAS_METHOD_ARG(func_name)                                          \
-    \                                    \\\n    namespace internal_traits {     \
-    \                                                                           \\\
-    \n    template <class T, typename U, class = void>                           \
-    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
-    \ {};                                                        \\\n    template\
-    \ <class T, typename U>                                                      \
-    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
-    \ \\\n        : std::true_type {};                                           \
-    \                                        \\\n    }                           \
-    \                                                                            \
-    \   \\\n    template <class T, typename U>                                   \
-    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
-    \ U>::type {};                           \\\n    template <class T, typename U>\
-    \                                                                            \
-    \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
-    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
-    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
-    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
-    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
-    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
-    \nnamespace internal_traits {\n// \u5C04\u5F71 (proj) \u306E\u65E2\u5B9A\u5024\
-    \n#if __cplusplus >= 202002L\nusing identity = std::identity;\n#else\nstruct identity\
-    \ {\n    using is_transparent = void;\n    template <class T>\n    constexpr T&&\
-    \ operator()(T&& x) const noexcept {\n        return std::forward<T>(x);\n   \
-    \ }\n};\n#endif\n}  // namespace internal_traits\n\ntemplate <class C>\nusing\
-    \ mem_value_type = typename C::value_type;\ntemplate <class C>\nusing mem_difference_type\
-    \ = typename C::difference_type;\n\nnamespace internal_traits {\ntemplate <class\
-    \ T, class = void>\nstruct is_sorted_container_impl : std::false_type {};\ntemplate\
-    \ <class T>\nstruct is_sorted_container_impl<std::set<T>> : std::true_type {};\n\
-    template <class T>\nstruct is_sorted_container_impl<std::multiset<T>> : std::true_type\
-    \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
-    \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
-    inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
-    #line 16 \"src/math/modint.hpp\"\n\nnamespace internal_modint {\n// clang-format\
+    #line 15 \"src/math/convolution.hpp\"\n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n\
+    \ * @file modint.hpp\n * @brief \u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\
+    \u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\u30AF\u30E9\u30B9\n */\n\n#line 10 \"\
+    src/math/modint.hpp\"\n#include <iostream>\n#include <limits>\n#line 14 \"src/math/modint.hpp\"\
+    \n\n#line 16 \"src/math/modint.hpp\"\n\nnamespace internal_modint {\n// clang-format\
     \ off\nstatic constexpr std::uint16_t prime32_bases[] {\n    15591,  2018,  166,\
     \ 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,  3620,   560,  3128, \
     \ 5212,  2657,\n     2300,  2021, 4652, 1471,  9336,  4018,  2398, 20462, 10277,\
@@ -795,7 +813,7 @@ data:
     \ - y0) - imod1 * y1).val();\n        return y0 + static_cast<unsigned long long>(y1)\
     \ * MOD0 + y2 * mod01;\n    };\n    std::vector<unsigned long long> res(N + M\
     \ - 1);\n    for (int i = 0; i < N + M - 1; ++i) res[i] = restore(p0[i], p1[i],\
-    \ p2[i]) + (restore(q0[i], q1[i], q2[i]) << 32);\n    return res;\n}\n#line 18\
+    \ p2[i]) + (restore(q0[i], q1[i], q2[i]) << 32);\n    return res;\n}\n#line 21\
     \ \"src/math/fps.hpp\"\n\ntemplate <typename mint>\nstruct FPS;\n\nnamespace internal_fps\
     \ {\ntemplate <typename mint>\nFPS<mint> gcd(const FPS<mint>& f, const FPS<mint>&\
     \ g);\n\n// \u4EE5\u4E0B\u306F\u6CD5\u304C NTT \u306B\u5411\u304F\u7D20\u6570\u306E\
@@ -864,14 +882,19 @@ data:
     \        b.insert(b.end(), x.begin() + m, x.end());\n    }\n    b.resize(deg);\n\
     \    return b;\n}\n}  // namespace internal_fps\n\ntemplate <typename mint>\n\
     struct FPS : std::vector<mint> {\n    using std::vector<mint>::vector;\n\n   \
-    \ // constructor\n    FPS(const std::vector<mint>& r) : std::vector<mint>(r) {}\n\
-    \n    // core operator\n    inline FPS pre(long long siz) const {\n        return\
-    \ FPS(begin(*this), begin(*this) + std::min(static_cast<long long>(this->size()),\
-    \ siz));\n    }\n    inline FPS rev() const {\n        FPS res = *this;\n    \
-    \    reverse(begin(res), end(res));\n        return res;\n    }\n    inline FPS&\
-    \ normalize() {\n        while (!this->empty() && this->back() == 0) this->pop_back();\n\
-    \        return *this;\n    }\n\n    // basic operator\n    inline FPS operator-()\
-    \ const noexcept {\n        FPS res = (*this);\n        for (int i = 0; i < static_cast<int>(res.size());\
+    \ // constructor\n#if __cplusplus >= 202002L\n    template <class R = std::initializer_list<mint>>\n\
+    \        requires(internal_traits::sized_constructible_range<R, mint> && !std::is_same_v<std::decay_t<R>,\
+    \ FPS>)\n#else\n    template <class R = std::initializer_list<mint>, ENABLE_IF_T(internal_traits::is_sized_constructible_range<R,\
+    \ mint>::value && !std::is_same_v<std::decay_t<R>, FPS>)>\n#endif\n    FPS(R&&\
+    \ r) {\n        this->reserve(internal_traits::range_size(r));\n        for (auto&&\
+    \ x : r) this->emplace_back(std::forward<decltype(x)>(x));\n    }\n\n    // core\
+    \ operator\n    inline FPS pre(long long siz) const {\n        return FPS(begin(*this),\
+    \ begin(*this) + std::min(static_cast<long long>(this->size()), siz));\n    }\n\
+    \    inline FPS rev() const {\n        FPS res = *this;\n        reverse(begin(res),\
+    \ end(res));\n        return res;\n    }\n    inline FPS& normalize() {\n    \
+    \    while (!this->empty() && this->back() == 0) this->pop_back();\n        return\
+    \ *this;\n    }\n\n    // basic operator\n    inline FPS operator-() const noexcept\
+    \ {\n        FPS res = (*this);\n        for (int i = 0; i < static_cast<int>(res.size());\
     \ ++i) res[i] = -res[i];\n        return res;\n    }\n    inline FPS operator+(const\
     \ mint& v) const { return FPS(*this) += v; }\n    inline FPS operator+(const FPS&\
     \ r) const { return FPS(*this) += r; }\n    inline FPS operator-(const mint& v)\
@@ -1141,39 +1164,40 @@ data:
     \ {\n        if (r - l == 1) return {nums[l], dens[l]};\n        long long m =\
     \ (l + r) / 2;\n        auto [a, b] = self(self, l, m);\n        auto [c, d] =\
     \ self(self, m, r);\n        return {a * d + c * b, b * d};\n    };\n    return\
-    \ rec(rec, 0, nums.size());\n}\n#line 14 \"src/dp/subset-sum-count.hpp\"\n\n/**\n\
-    \ * @brief \u548C\u304C s \u306B\u306A\u308B\u90E8\u5206\u96C6\u5408 (\u5404\u8981\
-    \u7D20\u306F 1 \u56DE\u307E\u3067) \u306E\u500B\u6570\u3092\u3001s = 0, 1, ...,\
-    \ S \u306B\u3064\u3044\u3066\u6C42\u3081\u308B (DP) O(N S)\n * @tparam T \u500B\
-    \u6570\u306E\u578B (modint \u3084 long long)\n * @param a 0 \u4EE5\u4E0A\u306E\
-    \u6574\u6570\u306E\u5217\n */\ntemplate <typename T>\nstd::vector<T> subset_sum_count_dp(const\
-    \ std::vector<long long>& a, long long S) {\n    assert(0 <= S && S < INT_MAX);\n\
-    \    const int t = static_cast<int>(S);\n    std::vector<T> dp(t + 1, T(0));\n\
-    \    dp[0] = T(1);\n    for (long long x : a) {\n        assert(x >= 0);\n   \
-    \     if (x > t) continue;\n        if (x == 0) {\n            // \u9078\u3076\
-    \u304B\u9078\u3070\u306A\u3044\u304B\u3067 2 \u500D\n            for (auto& y\
-    \ : dp) y += y;\n            continue;\n        }\n        for (int s = t; s >=\
-    \ x; s--) dp[s] += dp[s - x];\n    }\n    return dp;\n}\n\n/**\n * @brief \u548C\
-    \u304C s \u306B\u306A\u308B\u90E8\u5206\u96C6\u5408 (\u5404\u8981\u7D20\u306F\
-    \ 1 \u56DE\u307E\u3067) \u306E\u500B\u6570\u3092\u3001s = 0, 1, ..., S \u306B\u3064\
-    \u3044\u3066\u6C42\u3081\u308B (\u5F62\u5F0F\u7684\u51AA\u7D1A\u6570\u306E exp)\
-    \ O(S log S)\n *\n * prod (1 + x^a_i) = exp(sum_i log(1 + x^a_i)) \u3092\u4F7F\
-    \u3046\n * @tparam mint modint\u3002mod \u306F S \u3088\u308A\u5927\u304D\u3044\
-    \u7D20\u6570\u3067\u3042\u308B\u3053\u3068\n * @param a 0 \u4EE5\u4E0A\u306E\u6574\
-    \u6570\u306E\u5217\n */\ntemplate <typename mint>\nstd::vector<mint> subset_sum_count_fps(const\
-    \ std::vector<long long>& a, long long S) {\n    assert(0 <= S && S < INT_MAX);\n\
-    \    const int t = static_cast<int>(S);\n    std::vector<int> cnt(t + 1);\n  \
-    \  mint zero_factor = 1;  // 0 \u306E\u8981\u7D20\u306F\u3001\u9078\u3076\u304B\
-    \u9078\u3070\u306A\u3044\u304B\u3067 2 \u500D\n    for (long long x : a) {\n \
-    \       assert(x >= 0);\n        if (x == 0)\n            zero_factor += zero_factor;\n\
-    \        else if (x <= t)\n            cnt[x]++;\n    }\n    std::vector<mint>\
-    \ inv(t + 1, mint(1));\n    for (int i = 2; i <= t; i++) inv[i] = -inv[mint::mod()\
-    \ % i] * mint(mint::mod() / i);\n    // log(1 + x^k) = sum_{j >= 1} (-1)^(j +\
-    \ 1) x^(k j) / j\n    FPS<mint> f(t + 1);\n    for (int k = 1; k <= t; k++) {\n\
-    \        if (cnt[k] == 0) continue;\n        for (int j = 1; k * j <= t; j++)\
-    \ {\n            if (j & 1)\n                f[k * j] += mint(cnt[k]) * inv[j];\n\
-    \            else\n                f[k * j] -= mint(cnt[k]) * inv[j];\n      \
-    \  }\n    }\n    FPS<mint> g = exp(f, t + 1);\n    std::vector<mint> res(t + 1);\n\
+    \ rec(rec, 0, nums.size());\n}\n\ntemplate <class R>\nFPS(R&&) -> FPS<internal_traits::range_value_t<R>>;\n\
+    #line 14 \"src/dp/subset-sum-count.hpp\"\n\n/**\n * @brief \u548C\u304C s \u306B\
+    \u306A\u308B\u90E8\u5206\u96C6\u5408 (\u5404\u8981\u7D20\u306F 1 \u56DE\u307E\u3067\
+    ) \u306E\u500B\u6570\u3092\u3001s = 0, 1, ..., S \u306B\u3064\u3044\u3066\u6C42\
+    \u3081\u308B (DP) O(N S)\n * @tparam T \u500B\u6570\u306E\u578B (modint \u3084\
+    \ long long)\n * @param a 0 \u4EE5\u4E0A\u306E\u6574\u6570\u306E\u5217\n */\n\
+    template <typename T>\nstd::vector<T> subset_sum_count_dp(const std::vector<long\
+    \ long>& a, long long S) {\n    assert(0 <= S && S < INT_MAX);\n    const int\
+    \ t = static_cast<int>(S);\n    std::vector<T> dp(t + 1, T(0));\n    dp[0] = T(1);\n\
+    \    for (long long x : a) {\n        assert(x >= 0);\n        if (x > t) continue;\n\
+    \        if (x == 0) {\n            // \u9078\u3076\u304B\u9078\u3070\u306A\u3044\
+    \u304B\u3067 2 \u500D\n            for (auto& y : dp) y += y;\n            continue;\n\
+    \        }\n        for (int s = t; s >= x; s--) dp[s] += dp[s - x];\n    }\n\
+    \    return dp;\n}\n\n/**\n * @brief \u548C\u304C s \u306B\u306A\u308B\u90E8\u5206\
+    \u96C6\u5408 (\u5404\u8981\u7D20\u306F 1 \u56DE\u307E\u3067) \u306E\u500B\u6570\
+    \u3092\u3001s = 0, 1, ..., S \u306B\u3064\u3044\u3066\u6C42\u3081\u308B (\u5F62\
+    \u5F0F\u7684\u51AA\u7D1A\u6570\u306E exp) O(S log S)\n *\n * prod (1 + x^a_i)\
+    \ = exp(sum_i log(1 + x^a_i)) \u3092\u4F7F\u3046\n * @tparam mint modint\u3002\
+    mod \u306F S \u3088\u308A\u5927\u304D\u3044\u7D20\u6570\u3067\u3042\u308B\u3053\
+    \u3068\n * @param a 0 \u4EE5\u4E0A\u306E\u6574\u6570\u306E\u5217\n */\ntemplate\
+    \ <typename mint>\nstd::vector<mint> subset_sum_count_fps(const std::vector<long\
+    \ long>& a, long long S) {\n    assert(0 <= S && S < INT_MAX);\n    const int\
+    \ t = static_cast<int>(S);\n    std::vector<int> cnt(t + 1);\n    mint zero_factor\
+    \ = 1;  // 0 \u306E\u8981\u7D20\u306F\u3001\u9078\u3076\u304B\u9078\u3070\u306A\
+    \u3044\u304B\u3067 2 \u500D\n    for (long long x : a) {\n        assert(x >=\
+    \ 0);\n        if (x == 0)\n            zero_factor += zero_factor;\n        else\
+    \ if (x <= t)\n            cnt[x]++;\n    }\n    std::vector<mint> inv(t + 1,\
+    \ mint(1));\n    for (int i = 2; i <= t; i++) inv[i] = -inv[mint::mod() % i] *\
+    \ mint(mint::mod() / i);\n    // log(1 + x^k) = sum_{j >= 1} (-1)^(j + 1) x^(k\
+    \ j) / j\n    FPS<mint> f(t + 1);\n    for (int k = 1; k <= t; k++) {\n      \
+    \  if (cnt[k] == 0) continue;\n        for (int j = 1; k * j <= t; j++) {\n  \
+    \          if (j & 1)\n                f[k * j] += mint(cnt[k]) * inv[j];\n  \
+    \          else\n                f[k * j] -= mint(cnt[k]) * inv[j];\n        }\n\
+    \    }\n    FPS<mint> g = exp(f, t + 1);\n    std::vector<mint> res(t + 1);\n\
     \    for (int s = 0; s <= t && s < static_cast<int>(g.size()); s++) res[s] = g[s]\
     \ * zero_factor;\n    return res;\n}\n\n/**\n * @brief \u548C\u304C s \u306B\u306A\
     \u308B\u90E8\u5206\u96C6\u5408 (\u5404\u8981\u7D20\u306F 1 \u56DE\u307E\u3067\
@@ -1242,15 +1266,15 @@ data:
     \ S);\n}\n"
   dependsOn:
   - src/math/fps.hpp
+  - src/utility/traits.hpp
   - src/math/combinatorics.hpp
   - src/math/modular-arithmetic.hpp
   - src/math/convolution.hpp
   - src/math/modint.hpp
-  - src/utility/traits.hpp
   isVerificationFile: false
   path: src/dp/subset-sum-count.hpp
   requiredBy: []
-  timestamp: '2026-11-03 08:52:44+09:00'
+  timestamp: '2026-11-08 20:13:03+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/dp/subset-sum.test.cpp

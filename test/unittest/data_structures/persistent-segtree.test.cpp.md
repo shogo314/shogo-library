@@ -37,18 +37,18 @@ data:
     \u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello\
     \ World \u3092\u51FA\u529B\u3059\u308B\n\n#line 2 \"src/data_structures/persistent-segtree.hpp\"\
     \n\n/**\n * @file persistent-segtree.hpp\n * @brief \u6C38\u7D9A\u30BB\u30B0\u30E1\
-    \u30F3\u30C8\u6728\n */\n\n#include <cassert>\n#include <memory>\n#include <ostream>\n\
-    #include <utility>\n#include <vector>\n\n#line 2 \"src/algebra/monoid.hpp\"\n\n\
-    /**\n * @file monoid.hpp\n * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\
-    \n *\n * \u30E2\u30CE\u30A4\u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\
-    \u3064\u578B\u3068\u3057\u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\
-    \n * - S op(const S& a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e():\
-    \ \u5358\u4F4D\u5143\n * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\
-    \u3088\u3044 (\u30C7\u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\
-    \u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\
-    \u51FA\u3059)\n */\n\n#include <algorithm>\n#include <array>\n#include <cstddef>\n\
-    #include <istream>\n#include <limits>\n#include <numeric>\n#include <optional>\n\
-    #line 22 \"src/algebra/monoid.hpp\"\n#include <type_traits>\n#line 24 \"src/algebra/monoid.hpp\"\
+    \u30F3\u30C8\u6728\n */\n\n#include <cassert>\n#include <initializer_list>\n#include\
+    \ <memory>\n#include <ostream>\n#include <type_traits>\n#include <utility>\n#include\
+    \ <vector>\n\n#line 2 \"src/algebra/monoid.hpp\"\n\n/**\n * @file monoid.hpp\n\
+    \ * @brief \u30E2\u30CE\u30A4\u30C9\u306E\u5B9A\u7FA9\n *\n * \u30E2\u30CE\u30A4\
+    \u30C9\u306F\u6B21\u306E\u30E1\u30F3\u30D0\u3092\u6301\u3064\u578B\u3068\u3057\
+    \u3066\u8868\u3059\n * - using S: \u8981\u7D20\u306E\u578B\n * - S op(const S&\
+    \ a, const S& b): \u7A4D (\u7D50\u5408\u7684)\n * - S e(): \u5358\u4F4D\u5143\n\
+    \ * op, e \u306F static \u3067\u3082\u975E static \u3067\u3082\u3088\u3044 (\u30C7\
+    \u30FC\u30BF\u69CB\u9020\u306F\u30E2\u30CE\u30A4\u30C9\u306E\u30AA\u30D6\u30B8\
+    \u30A7\u30AF\u30C8\u3092\u4FDD\u6301\u3057\u3066\u547C\u3073\u51FA\u3059)\n */\n\
+    \n#include <algorithm>\n#include <array>\n#include <cstddef>\n#include <istream>\n\
+    #include <limits>\n#include <numeric>\n#include <optional>\n#line 24 \"src/algebra/monoid.hpp\"\
     \n\n/**\n * @brief 1\u6B21\u95A2\u6570 f(x) = a * x + b\n *\n * monoid::Composite\
     \ \u306E\u8981\u7D20\u3084 acted_monoid::AffineSum \u306E\u4F5C\u7528\u7D20\u306B\
     \u4F7F\u3046\n * \u4F8B: Affine<mint> f{2, 3}; f(x) \u306F 2x + 3\u3002\u7701\u7565\
@@ -375,172 +375,31 @@ data:
     \ Monoid(Op op, const S& e) : op_object(std::move(op)), identity(e) {}\n    constexpr\
     \ S op(const S& a, const S& b) const { return op_object(a, b); }\n    constexpr\
     \ S e() const { return identity; }\n};\ntemplate <typename Op, typename T>\nMonoid(Op,\
-    \ T) -> Monoid<T, Op>;\n#line 15 \"src/data_structures/persistent-segtree.hpp\"\
-    \n\n/**\n * @brief \u6C38\u7D9A\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n *\n * \u66F4\
-    \u65B0\u3059\u308B\u3068\u65B0\u3057\u3044\u7248\u3092\u8FD4\u3057\u3001\u5143\
-    \u306E\u7248\u306F\u5909\u308F\u3089\u306A\u3044\u3002\u540C\u3058\u6728\u304B\
-    \u3089\u4F5C\u3063\u305F\u7248\u306F\u30CE\u30FC\u30C9\u3092\u5171\u6709\u3059\
-    \u308B\n * \u4F8B:\n * PersistentSegTree<monoid::Sum<long long>> s0(n);\n * auto\
-    \ s1 = s0.set(3, 10);  // s0 \u306F\u305D\u306E\u307E\u307E\n * s1.prod(0, 5);\
-    \            // 10\n *\n * @tparam M \u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\n\
-    \ */\ntemplate <typename M>\nclass PersistentSegTree {\n   public:\n    using\
-    \ S = typename M::S;\n\n   private:\n    // \u3059\u3079\u3066\u306E\u7248\u306E\
-    \u30CE\u30FC\u30C9\u3092\u6301\u3064\u3002\u30CE\u30FC\u30C9\u306F\u524A\u9664\
-    \u3057\u306A\u3044\n    struct Pool {\n        M m;\n        std::vector<S> val;\n\
-    \        std::vector<int> left, right;  // \u8449\u3067\u306F -1\n        explicit\
-    \ Pool(M m) : m(std::move(m)) {}\n        int make_leaf(const S& x) {\n      \
-    \      val.push_back(x);\n            left.push_back(-1);\n            right.push_back(-1);\n\
-    \            return static_cast<int>(val.size()) - 1;\n        }\n        int\
-    \ make_node(int l, int r) {\n            val.push_back(m.op(val[l], val[r]));\n\
-    \            left.push_back(l);\n            right.push_back(r);\n           \
-    \ return static_cast<int>(val.size()) - 1;\n        }\n    };\n\n    std::shared_ptr<Pool>\
-    \ pool;\n    long long n, sz;\n    int root;\n\n    S op(const S& a, const S&\
-    \ b) const { return pool->m.op(a, b); }\n    S e() const { return pool->m.e();\
-    \ }\n\n    PersistentSegTree(std::shared_ptr<Pool> pool, long long n, long long\
-    \ sz, int root) : pool(std::move(pool)), n(n), sz(sz), root(root) {}\n\n    void\
-    \ init_size() {\n        sz = 1;\n        while (sz < n) sz <<= 1;\n    }\n  \
-    \  int build(const std::vector<S>& v, long long a, long long b) {\n        if\
-    \ (b - a == 1) return pool->make_leaf(a < n ? v[a] : e());\n        long long\
-    \ mid = (a + b) / 2;\n        int l = build(v, a, mid);\n        int r = build(v,\
-    \ mid, b);\n        return pool->make_node(l, r);\n    }\n    int set_rec(int\
-    \ t, long long a, long long b, long long k, const S& x) const {\n        if (b\
-    \ - a == 1) return pool->make_leaf(x);\n        long long mid = (a + b) / 2;\n\
-    \        int l = pool->left[t], r = pool->right[t];\n        if (k < mid)\n  \
-    \          l = set_rec(l, a, mid, k, x);\n        else\n            r = set_rec(r,\
-    \ mid, b, k, x);\n        return pool->make_node(l, r);\n    }\n    // t \u306E\
-    \ [l, r) \u3092 u \u306B\u7F6E\u304D\u63DB\u3048\u308B\n    int copy_rec(int t,\
-    \ int u, long long a, long long b, long long l, long long r) const {\n       \
-    \ if (r <= a || b <= l) return t;\n        if (l <= a && b <= r) return u;\n \
-    \       long long mid = (a + b) / 2;\n        int lc = copy_rec(pool->left[t],\
-    \ pool->left[u], a, mid, l, r);\n        int rc = copy_rec(pool->right[t], pool->right[u],\
-    \ mid, b, l, r);\n        return pool->make_node(lc, rc);\n    }\n    S prod_rec(int\
-    \ t, long long a, long long b, long long l, long long r) const {\n        if (r\
-    \ <= a || b <= l) return e();\n        if (l <= a && b <= r) return pool->val[t];\n\
-    \        long long mid = (a + b) / 2;\n        return op(prod_rec(pool->left[t],\
-    \ a, mid, l, r), prod_rec(pool->right[t], mid, b, l, r));\n    }\n    // [a, b)\
-    \ \u306E\u3046\u3061 l \u4EE5\u964D\u3067\u3001sum \u306B\u639B\u3051\u308B\u3068\
-    \ f \u304C\u507D\u306B\u306A\u308B\u6700\u521D\u306E\u4F4D\u7F6E (\u306A\u3051\
-    \u308C\u3070 b)\n    template <typename F>\n    long long max_right_rec(int t,\
-    \ long long a, long long b, long long l, F& f, S& sum) const {\n        if (b\
-    \ <= l) return b;\n        if (l <= a) {\n            S s = op(sum, pool->val[t]);\n\
-    \            if (f(s)) {\n                sum = s;\n                return b;\n\
-    \            }\n            if (b - a == 1) return a;\n        }\n        long\
-    \ long mid = (a + b) / 2;\n        long long x = max_right_rec(pool->left[t],\
-    \ a, mid, l, f, sum);\n        if (x < mid) return x;\n        return max_right_rec(pool->right[t],\
-    \ mid, b, l, f, sum);\n    }\n    // [a, b) \u306E\u3046\u3061 r \u3088\u308A\u524D\
-    \u3067\u3001sum \u306B\u5DE6\u304B\u3089\u639B\u3051\u308B\u3068 f \u304C\u507D\
-    \u306B\u306A\u308B\u6700\u5F8C\u306E\u4F4D\u7F6E + 1 (\u306A\u3051\u308C\u3070\
-    \ a)\n    template <typename F>\n    long long min_left_rec(int t, long long a,\
-    \ long long b, long long r, F& f, S& sum) const {\n        if (r <= a) return\
-    \ a;\n        if (b <= r) {\n            S s = op(pool->val[t], sum);\n      \
-    \      if (f(s)) {\n                sum = s;\n                return a;\n    \
-    \        }\n            if (b - a == 1) return b;\n        }\n        long long\
-    \ mid = (a + b) / 2;\n        long long x = min_left_rec(pool->right[t], mid,\
-    \ b, r, f, sum);\n        if (x > mid) return x;\n        return min_left_rec(pool->left[t],\
-    \ a, mid, r, f, sum);\n    }\n\n   public:\n    /**\n     * @brief \u30B3\u30F3\
-    \u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * \u3059\u3079\u3066\u306E\u8981\u7D20\
-    \u3092\u5358\u4F4D\u5143\u3067\u521D\u671F\u5316\u3059\u308B\u3002\u5358\u4F4D\
-    \u5143\u306E\u90E8\u5206\u6728\u306F\u5171\u6709\u3059\u308B\u306E\u3067\u3001\
-    n \u304C\u5927\u304D\u304F\u3066\u3082 O(log n) \u3067\u4F5C\u308C\u308B\n   \
-    \  *\n     * @param n \u8981\u7D20\u6570\n     * @param m \u30E2\u30CE\u30A4\u30C9\
-    \n     */\n    explicit PersistentSegTree(long long n = 0, M m = M()) : pool(std::make_shared<Pool>(std::move(m))),\
-    \ n(n) {\n        assert(0 <= n);\n        init_size();\n        root = pool->make_leaf(e());\n\
-    \        for (long long w = 1; w < sz; w <<= 1) root = pool->make_node(root, root);\n\
-    \    }\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n  \
-    \   *\n     * @param v \u521D\u671F\u306E\u8981\u7D20\n     * @param m \u30E2\u30CE\
-    \u30A4\u30C9\n     */\n    explicit PersistentSegTree(const std::vector<S>& v,\
-    \ M m = M()) : pool(std::make_shared<Pool>(std::move(m))), n(v.size()) {\n   \
-    \     init_size();\n        root = build(v, 0, sz);\n    }\n\n    /**\n     *\
-    \ @brief \u8981\u7D20\u6570\u3092\u8FD4\u3059\n     */\n    long long size() const\
-    \ { return n; }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\
-    \u7D20\u306E\u5024\u3092\u8FD4\u3059\n     *\n     * @param k \u30A4\u30F3\u30C7\
-    \u30C3\u30AF\u30B9\n     * @return S \u5024\n     */\n    S get(long long k) const\
-    \ {\n        assert(0 <= k && k < n);\n        int t = root;\n        long long\
-    \ a = 0, b = sz;\n        while (b - a > 1) {\n            long long mid = (a\
-    \ + b) / 2;\n            if (k < mid) {\n                t = pool->left[t];\n\
-    \                b = mid;\n            } else {\n                t = pool->right[t];\n\
-    \                a = mid;\n            }\n        }\n        return pool->val[t];\n\
-    \    }\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\
-    \u5024\u3092\u8FD4\u3059\n     *\n     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\
-    \u30B9\n     * @return S \u5024\n     */\n    S operator[](long long k) const\
-    \ { return get(k); }\n\n    /**\n     * @brief \u5185\u5BB9\u3092\u51FA\u529B\u3059\
-    \u308B\n     *\n     * @tparam CharT \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\
-    \u306E\u6587\u5B57\u578B\n     * @tparam Traits \u51FA\u529B\u30B9\u30C8\u30EA\
-    \u30FC\u30E0\u306E\u6587\u5B57\u578B\u7279\u6027\n     * @param os \u51FA\u529B\
-    \u30B9\u30C8\u30EA\u30FC\u30E0\n     * @param rhs \u6C38\u7D9A\u30BB\u30B0\u30E1\
-    \u30F3\u30C8\u6728\n     * @return std::basic_ostream<CharT, Traits>& \u51FA\u529B\
-    \u30B9\u30C8\u30EA\u30FC\u30E0\n     */\n    template <class CharT, class Traits>\n\
-    \    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT,\
-    \ Traits>& os, const PersistentSegTree& rhs) {\n        for (long long i = 0;\
-    \ i < rhs.n; i++) {\n            if (i != 0) os << CharT(' ');\n            os\
-    \ << rhs[i];\n        }\n        return os;\n    }\n\n    /**\n     * @brief \u6307\
-    \u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\u5024\u3092x\u306B\u3057\u305F\u65B0\
-    \u3057\u3044\u7248\u3092\u8FD4\u3059\n     *\n     * @param k \u30A4\u30F3\u30C7\
-    \u30C3\u30AF\u30B9\n     * @param x \u65B0\u3057\u3044\u5024\n     * @return PersistentSegTree\
-    \ \u65B0\u3057\u3044\u7248 (\u81EA\u8EAB\u306F\u5909\u308F\u3089\u306A\u3044)\n\
-    \     */\n    PersistentSegTree set(long long k, const S& x) const {\n       \
-    \ assert(0 <= k && k < n);\n        return PersistentSegTree(pool, n, sz, set_rec(root,\
-    \ 0, sz, k, x));\n    }\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\
-    \u8981\u7D20\u306E\u5024\u306Bx\u3092\u4F5C\u7528\u3055\u305B\u305F\u65B0\u3057\
-    \u3044\u7248\u3092\u8FD4\u3059\n     *\n     * @param k \u30A4\u30F3\u30C7\u30C3\
-    \u30AF\u30B9\n     * @param x \u4F5C\u7528\u7D20\n     * @return PersistentSegTree\
-    \ \u65B0\u3057\u3044\u7248 (\u81EA\u8EAB\u306F\u5909\u308F\u3089\u306A\u3044)\n\
-    \     */\n    PersistentSegTree apply(long long k, const S& x) const { return\
-    \ set(k, op(get(k), x)); }\n\n    /**\n     * @brief [l, r)\u306E\u533A\u9593\u3092\
-    \u5225\u306E\u7248\u306E\u5024\u306B\u3057\u305F\u65B0\u3057\u3044\u7248\u3092\
-    \u8FD4\u3059\n     *\n     * @param other \u5199\u3059\u5143\u306E\u7248 (\u81EA\
-    \u8EAB\u3068\u540C\u3058\u6728\u304B\u3089\u4F5C\u3063\u305F\u3082\u306E)\n  \
-    \   * @param l \u534A\u958B\u533A\u9593\u306E\u958B\u59CB\n     * @param r \u534A\
-    \u958B\u533A\u9593\u306E\u7D42\u7AEF 0<=l<=r<=n\n     * @return PersistentSegTree\
-    \ \u65B0\u3057\u3044\u7248 (\u81EA\u8EAB\u3082 other \u3082\u5909\u308F\u3089\u306A\
-    \u3044)\n     */\n    PersistentSegTree copy(const PersistentSegTree& other, long\
-    \ long l, long long r) const {\n        assert(pool == other.pool);\n        assert(0\
-    \ <= l && l <= r && r <= n);\n        if (l == r) return *this;\n        return\
-    \ PersistentSegTree(pool, n, sz, copy_rec(root, other.root, 0, sz, l, r));\n \
-    \   }\n\n    /**\n     * @brief [l, r)\u306E\u533A\u9593\u306E\u7DCF\u7A4D\u3092\
-    \u8FD4\u3059\n     *\n     * @param l \u534A\u958B\u533A\u9593\u306E\u958B\u59CB\
-    \n     * @param r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF 0<=l<=r<=n\n    \
-    \ * @return S \u7DCF\u7A4D\n     */\n    S prod(long long l, long long r) const\
-    \ {\n        assert(0 <= l && l <= r && r <= n);\n        return prod_rec(root,\
-    \ 0, sz, l, r);\n    }\n    /**\n     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\
-    \u306E\u7DCF\u7A4D\u3092\u8FD4\u3059\n     *\n     * @return S \u7DCF\u7A4D\n\
-    \     */\n    S all_prod() const { return pool->val[root]; }\n\n    /**\n    \
-    \ * @brief (r = l or f(prod([l, r))) = true) and (r = n or f(prod([l, r+1))) =\
-    \ false)\u3068\u306A\u308Br\u3092\u8FD4\u3059\n     * f\u304C\u5358\u8ABF\u306A\
-    \u3089\u3001f(prod([l, r))) = true\u3068\u306A\u308B\u6700\u5927\u306Er\n    \
-    \ *\n     * @tparam F\n     * @param l \u534A\u958B\u533A\u9593\u306E\u958B\u59CB\
-    \ 0<=l<=n\n     * @param f \u5224\u5B9A\u95A2\u6570 f(e) = true\n     * @return\
-    \ long long\n     */\n    template <typename F>\n    long long max_right(long\
-    \ long l, F f) const {\n        assert(f(e()));\n        assert(0 <= l && l <=\
-    \ n);\n        if (l == n) return n;\n        S sum = e();\n        long long\
-    \ r = max_right_rec(root, 0, sz, l, f, sum);\n        return r < n ? r : n;\n\
-    \    }\n    /**\n     * @brief (l = 0 or f(prod([l, r))) = true) and (l = r or\
-    \ f(prod([l-1, r))) = false)\u3068\u306A\u308Bl\u3092\u8FD4\u3059\n     * f\u304C\
-    \u5358\u8ABF\u306A\u3089\u3001f(prod([l, r))) = true\u3068\u306A\u308B\u6700\u5C0F\
-    \u306El\n     *\n     * @tparam F\n     * @param r \u534A\u958B\u533A\u9593\u306E\
-    \u7D42\u7AEF 0<=r<=n\n     * @param f \u5224\u5B9A\u95A2\u6570 f(e) = true\n \
-    \    * @return long long\n     */\n    template <typename F>\n    long long min_left(long\
-    \ long r, F f) const {\n        assert(f(e()));\n        assert(0 <= r && r <=\
-    \ n);\n        if (r == 0) return 0;\n        S sum = e();\n        return min_left_rec(root,\
-    \ 0, sz, r, f, sum);\n    }\n\n    /**\n     * @brief \u3059\u3079\u3066\u306E\
-    \u8981\u7D20\u3092\u4E26\u3079\u305F\u5217\u3092\u8FD4\u3059\n     */\n    std::vector<S>\
-    \ to_vector() const {\n        std::vector<S> res(n);\n        for (long long\
-    \ i = 0; i < n; i++) res[i] = get(i);\n        return res;\n    }\n};\n\ntemplate\
-    \ <typename M>\nPersistentSegTree(long long, M) -> PersistentSegTree<M>;\ntemplate\
-    \ <typename M>\nPersistentSegTree(std::vector<typename M::S>, M) -> PersistentSegTree<M>;\n\
-    #line 9 \"test/unittest/data_structures/persistent-segtree.test.cpp\"\n\n#include\
-    \ <iostream>\n#include <random>\n#include <sstream>\n#line 14 \"test/unittest/data_structures/persistent-segtree.test.cpp\"\
-    \n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\
-    \u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\
-    \u30AF\u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\n#include <cstdint>\n\
-    #line 14 \"src/math/modint.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n\
-    \ * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\
-    \n#include <functional>\n#include <iterator>\n#include <set>\n#line 14 \"src/utility/traits.hpp\"\
-    \n\nnamespace internal_traits {\nusing std::begin, std::end;\n\ntemplate <class\
-    \ T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate <class\
-    \ T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
-    \ end(std::declval<T&>()))>> : std::true_type {};\n}  // namespace internal_traits\n\
-    \ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
+    \ T) -> Monoid<T, Op>;\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n\
+    \ * @brief \u578B\u7279\u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\n#include\
+    \ <functional>\n#include <iterator>\n#include <set>\n#line 14 \"src/utility/traits.hpp\"\
+    \n\n#if __cplusplus >= 202002L\n#include <ranges>\n#endif\n\nnamespace internal_traits\
+    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n\n// \u30B5\u30A4\u30BA\u4ED8\
+    \u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\u3059\
+    \u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\u308B\
+    \u3002\n#if __cplusplus >= 202002L\ntemplate <class R, class S>\nconcept sized_constructible_range\
+    \ = std::ranges::input_range<R> && std::ranges::sized_range<R> &&\n          \
+    \                          std::is_constructible_v<S, std::ranges::range_reference_t<R>>;\n\
+    \ntemplate <class R>\nauto range_size(R& r) {\n    return std::ranges::size(r);\n\
+    }\ntemplate <class R>\nauto range_begin(R& r) {\n    return std::ranges::begin(r);\n\
+    }\ntemplate <class R>\nusing range_value_t = std::ranges::range_value_t<R>;\n\
+    #else\nusing std::size;\ntemplate <class R>\nauto range_size(R& r) -> decltype(size(r))\
+    \ {\n    return size(r);\n}\ntemplate <class R>\nauto range_begin(R& r) -> decltype(begin(r))\
+    \ {\n    return begin(r);\n}\ntemplate <class R>\nusing range_value_t = typename\
+    \ std::iterator_traits<decltype(range_begin(std::declval<R&>()))>::value_type;\n\
+    \ntemplate <class R, class S, class = void>\nstruct is_sized_constructible_range\
+    \ : std::false_type {};\ntemplate <class R, class S>\nstruct is_sized_constructible_range<R,\
+    \ S, std::void_t<decltype(range_size(std::declval<R&>())), decltype(++std::declval<decltype(begin(std::declval<R&>()))&>()),\
+    \ decltype(begin(std::declval<R&>()) != end(std::declval<R&>())), decltype(*begin(std::declval<R&>()))>>\n\
+    \    : std::is_constructible<S, decltype(*begin(std::declval<R&>()))> {};\n#endif\n\
+    }  // namespace internal_traits\n\ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
     \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
     \n#define HAS_METHOD(func_name)                                              \
     \                \\\n    namespace internal_traits {                         \
@@ -590,60 +449,224 @@ data:
     \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
     \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
     inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
-    #line 16 \"src/math/modint.hpp\"\n\nnamespace internal_modint {\n// clang-format\
-    \ off\nstatic constexpr std::uint16_t prime32_bases[] {\n    15591,  2018,  166,\
-    \ 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,  3620,   560,  3128, \
-    \ 5212,  2657,\n     2300,  2021, 4652, 1471,  9336,  4018,  2398, 20462, 10277,\
-    \  8028, 2213,  6219,   620,  3763,  4852,  5012,\n     3185,  1333, 6227, 5298,\
-    \  1074,  2391,  5113,  7061,   803,  1269, 3875,   422,   751,   580,  4729,\
-    \ 10239,\n      746,  2951,  556, 2206,  3778,   481,  1522,  3476,   481,  2487,\
-    \ 3266,  5633,   488,  3373,  6441,  3344,\n       17, 15105, 1490, 4154,  2036,\
-    \  1882,  1813,   467,  3307, 14042, 6371,   658,  1005,   903,   737,  1887,\n\
-    \     7447,  1888, 2848, 1784,  7559,  3400,   951, 13969,  4304,   177,   41,\
-    \ 19875,  3110, 13221,  8726,   571,\n     7043,  6943, 1199,  352,  6435,   165,\
-    \  1169,  3315,   978,   233, 3003,  2562,  2994, 10587, 10030,  2377,\n     1902,\
-    \  5354, 4447, 1555,   263, 27027,  2283,   305,   669,  1912,  601,  6186,  \
-    \ 429,  1930, 14873,  1784,\n     1661,   524, 3577,  236,  2360,  6146,  2850,\
-    \ 55637,  1753,  4178, 8466,   222,  2579,  2743,  2031,  2226,\n     2276,  \
-    \ 374, 2132,  813, 23788,  1610,  4422,  5159,  1725,  3597, 3366, 14336,   579,\
-    \   165,  1375, 10018,\n    12616,  9816, 1371,  536,  1867, 10864,   857,  2206,\
-    \  5788,   434, 8085, 17618,   727,  3639,  1595,  4944,\n     2129,  2029, 8195,\
-    \ 8344,  6232,  9183,  8126,  1870,  3296,  7455, 8947, 25017,   541, 19115, \
-    \  368,   566,\n     5674,   411,  522, 1027,  8215,  2050,  6544, 10049,   614,\
-    \   774, 2333,  3007, 35201,  4706,  1152,  1785,\n     1028,  1540, 3743,  493,\
-    \  4474,  2521, 26845,  8354,   864, 18915, 5465,  2447,    42,  4511,  1660,\
-    \   166,\n     1249,  6259, 2553,  304,   272,  7286,    73,  6554,   899,  2816,\
-    \ 5197, 13330,  7054,  2818,  3199,   811,\n      922,   350, 7514, 4452,  3449,\
-    \  2663,  4708,   418,  1621,  1171, 3471,    88, 11345,   412,  1559,   194,\n\
-    };\n// clang-format on\n\nstatic constexpr bool is_SPRP(std::uint32_t n, std::uint32_t\
-    \ a) noexcept {\n    std::uint32_t d = n - 1;\n    std::uint32_t s = 0;\n    while\
-    \ ((d & 1) == 0) {\n        ++s;\n        d >>= 1;\n    }\n    std::uint64_t cur\
-    \ = 1;\n    std::uint64_t pw = d;\n    while (pw) {\n        if (pw & 1) cur =\
-    \ (cur * a) % n;\n        a = (static_cast<std::uint64_t>(a) * a) % n;\n     \
-    \   pw >>= 1;\n    }\n    if (cur == 1) return true;\n    for (std::uint32_t r\
-    \ = 0; r < s; ++r) {\n        if (cur == n - 1) return true;\n        cur = (cur\
-    \ * cur) % n;\n    }\n    return false;\n}\n\n// 32\u30D3\u30C3\u30C8\u7B26\u53F7\
-    \u306A\u3057\u6574\u6570\u306E\u7D20\u6570\u5224\u5B9A\n// \u53C2\u8003: M. Forisek\
-    \ and J. Jancina, \u201CFast Primality Testing for Integers That Fit into a Machine\
-    \ Word,\u201D presented at the Conference on Current Trends in Theory and Practice\
-    \ of Informatics, 2015.\n[[nodiscard]]\nstatic constexpr bool is_prime32(std::uint32_t\
-    \ x) noexcept {\n    if (x == 2 || x == 3 || x == 5 || x == 7) return true;\n\
-    \    if (x % 2 == 0 || x % 3 == 0 || x % 5 == 0 || x % 7 == 0) return false;\n\
-    \    if (x < 121) return (x > 1);\n    std::uint64_t h = x;\n    h = ((h >> 16)\
-    \ ^ h) * 0x45d9f3b;\n    h = ((h >> 16) ^ h) * 0x45d9f3b;\n    h = ((h >> 16)\
-    \ ^ h) & 0xff;\n    return is_SPRP(x, prime32_bases[h]);\n}\n}  // namespace internal_modint\n\
-    \n/// @brief static_modint \u3068 dynamic_modint \u306E\u5B9F\u88C5\u3092 CRTP\
-    \ \u306B\u3088\u3063\u3066\u884C\u3046\u305F\u3081\u306E\u30AF\u30E9\u30B9\u30C6\
-    \u30F3\u30D7\u30EC\u30FC\u30C8\n/// @tparam Modint \u3053\u306E\u30AF\u30E9\u30B9\
-    \u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\u3092\u7D99\u627F\u3059\u308B\u30AF\u30E9\
-    \u30B9\ntemplate <class Modint>\nclass modint_base {\n   public:\n    /// @brief\
-    \ \u4FDD\u6301\u3059\u308B\u5024\u306E\u578B\n    using value_type = std::uint32_t;\n\
-    \n    /// @brief 0 \u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    constexpr\
-    \ modint_base() noexcept\n        : m_value{0} {}\n\n    /// @brief @c value \u306E\
-    \u5270\u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\u3002\n    /// @param value\
-    \ \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\n    template <class SignedIntegral,\
-    \ ENABLE_IF_T((std::is_integral_v<SignedIntegral> && std::is_signed_v<SignedIntegral>))>\n\
-    \    constexpr modint_base(SignedIntegral value) noexcept\n        : m_value{static_cast<value_type>((static_cast<long\
+    #line 18 \"src/data_structures/persistent-segtree.hpp\"\n\n/**\n * @brief \u6C38\
+    \u7D9A\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n *\n * \u66F4\u65B0\u3059\u308B\u3068\
+    \u65B0\u3057\u3044\u7248\u3092\u8FD4\u3057\u3001\u5143\u306E\u7248\u306F\u5909\
+    \u308F\u3089\u306A\u3044\u3002\u540C\u3058\u6728\u304B\u3089\u4F5C\u3063\u305F\
+    \u7248\u306F\u30CE\u30FC\u30C9\u3092\u5171\u6709\u3059\u308B\n * \u4F8B:\n * PersistentSegTree<monoid::Sum<long\
+    \ long>> s0(n);\n * auto s1 = s0.set(3, 10);  // s0 \u306F\u305D\u306E\u307E\u307E\
+    \n * s1.prod(0, 5);            // 10\n *\n * @tparam M \u30E2\u30CE\u30A4\u30C9\
+    \ (algebra/monoid.hpp)\n */\ntemplate <typename M>\nclass PersistentSegTree {\n\
+    \   public:\n    using S = typename M::S;\n\n   private:\n    // \u3059\u3079\u3066\
+    \u306E\u7248\u306E\u30CE\u30FC\u30C9\u3092\u6301\u3064\u3002\u30CE\u30FC\u30C9\
+    \u306F\u524A\u9664\u3057\u306A\u3044\n    struct Pool {\n        M m;\n      \
+    \  std::vector<S> val;\n        std::vector<int> left, right;  // \u8449\u3067\
+    \u306F -1\n        explicit Pool(M m) : m(std::move(m)) {}\n        int make_leaf(const\
+    \ S& x) {\n            val.push_back(x);\n            left.push_back(-1);\n  \
+    \          right.push_back(-1);\n            return static_cast<int>(val.size())\
+    \ - 1;\n        }\n        int make_node(int l, int r) {\n            val.push_back(m.op(val[l],\
+    \ val[r]));\n            left.push_back(l);\n            right.push_back(r);\n\
+    \            return static_cast<int>(val.size()) - 1;\n        }\n    };\n\n \
+    \   std::shared_ptr<Pool> pool;\n    long long n, sz;\n    int root;\n\n    S\
+    \ op(const S& a, const S& b) const { return pool->m.op(a, b); }\n    S e() const\
+    \ { return pool->m.e(); }\n\n    PersistentSegTree(std::shared_ptr<Pool> pool,\
+    \ long long n, long long sz, int root) : pool(std::move(pool)), n(n), sz(sz),\
+    \ root(root) {}\n\n    void init_size() {\n        sz = 1;\n        while (sz\
+    \ < n) sz <<= 1;\n    }\n    template <class It>\n    int build(It& it, long long\
+    \ a, long long b) {\n        if (b - a == 1) {\n            if (a >= n) return\
+    \ pool->make_leaf(e());\n            S x(*it);\n            ++it;\n          \
+    \  return pool->make_leaf(x);\n        }\n        long long mid = (a + b) / 2;\n\
+    \        int l = build(it, a, mid);\n        int r = build(it, mid, b);\n    \
+    \    return pool->make_node(l, r);\n    }\n    int set_rec(int t, long long a,\
+    \ long long b, long long k, const S& x) const {\n        if (b - a == 1) return\
+    \ pool->make_leaf(x);\n        long long mid = (a + b) / 2;\n        int l = pool->left[t],\
+    \ r = pool->right[t];\n        if (k < mid)\n            l = set_rec(l, a, mid,\
+    \ k, x);\n        else\n            r = set_rec(r, mid, b, k, x);\n        return\
+    \ pool->make_node(l, r);\n    }\n    // t \u306E [l, r) \u3092 u \u306B\u7F6E\u304D\
+    \u63DB\u3048\u308B\n    int copy_rec(int t, int u, long long a, long long b, long\
+    \ long l, long long r) const {\n        if (r <= a || b <= l) return t;\n    \
+    \    if (l <= a && b <= r) return u;\n        long long mid = (a + b) / 2;\n \
+    \       int lc = copy_rec(pool->left[t], pool->left[u], a, mid, l, r);\n     \
+    \   int rc = copy_rec(pool->right[t], pool->right[u], mid, b, l, r);\n       \
+    \ return pool->make_node(lc, rc);\n    }\n    S prod_rec(int t, long long a, long\
+    \ long b, long long l, long long r) const {\n        if (r <= a || b <= l) return\
+    \ e();\n        if (l <= a && b <= r) return pool->val[t];\n        long long\
+    \ mid = (a + b) / 2;\n        return op(prod_rec(pool->left[t], a, mid, l, r),\
+    \ prod_rec(pool->right[t], mid, b, l, r));\n    }\n    // [a, b) \u306E\u3046\u3061\
+    \ l \u4EE5\u964D\u3067\u3001sum \u306B\u639B\u3051\u308B\u3068 f \u304C\u507D\u306B\
+    \u306A\u308B\u6700\u521D\u306E\u4F4D\u7F6E (\u306A\u3051\u308C\u3070 b)\n    template\
+    \ <typename F>\n    long long max_right_rec(int t, long long a, long long b, long\
+    \ long l, F& f, S& sum) const {\n        if (b <= l) return b;\n        if (l\
+    \ <= a) {\n            S s = op(sum, pool->val[t]);\n            if (f(s)) {\n\
+    \                sum = s;\n                return b;\n            }\n        \
+    \    if (b - a == 1) return a;\n        }\n        long long mid = (a + b) / 2;\n\
+    \        long long x = max_right_rec(pool->left[t], a, mid, l, f, sum);\n    \
+    \    if (x < mid) return x;\n        return max_right_rec(pool->right[t], mid,\
+    \ b, l, f, sum);\n    }\n    // [a, b) \u306E\u3046\u3061 r \u3088\u308A\u524D\
+    \u3067\u3001sum \u306B\u5DE6\u304B\u3089\u639B\u3051\u308B\u3068 f \u304C\u507D\
+    \u306B\u306A\u308B\u6700\u5F8C\u306E\u4F4D\u7F6E + 1 (\u306A\u3051\u308C\u3070\
+    \ a)\n    template <typename F>\n    long long min_left_rec(int t, long long a,\
+    \ long long b, long long r, F& f, S& sum) const {\n        if (r <= a) return\
+    \ a;\n        if (b <= r) {\n            S s = op(pool->val[t], sum);\n      \
+    \      if (f(s)) {\n                sum = s;\n                return a;\n    \
+    \        }\n            if (b - a == 1) return b;\n        }\n        long long\
+    \ mid = (a + b) / 2;\n        long long x = min_left_rec(pool->right[t], mid,\
+    \ b, r, f, sum);\n        if (x > mid) return x;\n        return min_left_rec(pool->left[t],\
+    \ a, mid, r, f, sum);\n    }\n\n   public:\n    /**\n     * @brief \u30B3\u30F3\
+    \u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * \u3059\u3079\u3066\u306E\u8981\u7D20\
+    \u3092\u5358\u4F4D\u5143\u3067\u521D\u671F\u5316\u3059\u308B\u3002\u5358\u4F4D\
+    \u5143\u306E\u90E8\u5206\u6728\u306F\u5171\u6709\u3059\u308B\u306E\u3067\u3001\
+    n \u304C\u5927\u304D\u304F\u3066\u3082 O(log n) \u3067\u4F5C\u308C\u308B\n   \
+    \  *\n     * @param n \u8981\u7D20\u6570\n     * @param m \u30E2\u30CE\u30A4\u30C9\
+    \n     */\n    explicit PersistentSegTree(long long n = 0, M m = M()) : pool(std::make_shared<Pool>(std::move(m))),\
+    \ n(n) {\n        assert(0 <= n);\n        init_size();\n        root = pool->make_leaf(e());\n\
+    \        for (long long w = 1; w < sz; w <<= 1) root = pool->make_node(root, root);\n\
+    \    }\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n  \
+    \   *\n     * @param v \u521D\u671F\u306E\u8981\u7D20\n     * @param m \u30E2\u30CE\
+    \u30A4\u30C9\n     */\n#if __cplusplus >= 202002L\n    template <class R = std::initializer_list<S>>\n\
+    \        requires internal_traits::sized_constructible_range<R, S>\n#else\n  \
+    \  template <class R = std::initializer_list<S>, ENABLE_IF_T(internal_traits::is_sized_constructible_range<R,\
+    \ S>::value)>\n#endif\n    explicit PersistentSegTree(R&& v, M m = M()) : pool(std::make_shared<Pool>(std::move(m))),\
+    \ n(internal_traits::range_size(v)) {\n        init_size();\n        auto it =\
+    \ internal_traits::range_begin(v);\n        root = build(it, 0, sz);\n    }\n\n\
+    \    /**\n     * @brief \u8981\u7D20\u6570\u3092\u8FD4\u3059\n     */\n    long\
+    \ long size() const { return n; }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\
+    \u308C\u305F\u8981\u7D20\u306E\u5024\u3092\u8FD4\u3059\n     *\n     * @param\
+    \ k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * @return S \u5024\n     */\n \
+    \   S get(long long k) const {\n        assert(0 <= k && k < n);\n        int\
+    \ t = root;\n        long long a = 0, b = sz;\n        while (b - a > 1) {\n \
+    \           long long mid = (a + b) / 2;\n            if (k < mid) {\n       \
+    \         t = pool->left[t];\n                b = mid;\n            } else {\n\
+    \                t = pool->right[t];\n                a = mid;\n            }\n\
+    \        }\n        return pool->val[t];\n    }\n    /**\n     * @brief \u6307\
+    \u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\u5024\u3092\u8FD4\u3059\n     *\n \
+    \    * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * @return S \u5024\n\
+    \     */\n    S operator[](long long k) const { return get(k); }\n\n    /**\n\
+    \     * @brief \u5185\u5BB9\u3092\u51FA\u529B\u3059\u308B\n     *\n     * @tparam\
+    \ CharT \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\u578B\n \
+    \    * @tparam Traits \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\u306E\u6587\u5B57\
+    \u578B\u7279\u6027\n     * @param os \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\
+    \n     * @param rhs \u6C38\u7D9A\u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n     * @return\
+    \ std::basic_ostream<CharT, Traits>& \u51FA\u529B\u30B9\u30C8\u30EA\u30FC\u30E0\
+    \n     */\n    template <class CharT, class Traits>\n    friend std::basic_ostream<CharT,\
+    \ Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const PersistentSegTree&\
+    \ rhs) {\n        for (long long i = 0; i < rhs.n; i++) {\n            if (i !=\
+    \ 0) os << CharT(' ');\n            os << rhs[i];\n        }\n        return os;\n\
+    \    }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\
+    \u5024\u3092x\u306B\u3057\u305F\u65B0\u3057\u3044\u7248\u3092\u8FD4\u3059\n  \
+    \   *\n     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * @param x \u65B0\
+    \u3057\u3044\u5024\n     * @return PersistentSegTree \u65B0\u3057\u3044\u7248\
+    \ (\u81EA\u8EAB\u306F\u5909\u308F\u3089\u306A\u3044)\n     */\n    PersistentSegTree\
+    \ set(long long k, const S& x) const {\n        assert(0 <= k && k < n);\n   \
+    \     return PersistentSegTree(pool, n, sz, set_rec(root, 0, sz, k, x));\n   \
+    \ }\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\u8981\u7D20\u306E\u5024\
+    \u306Bx\u3092\u4F5C\u7528\u3055\u305B\u305F\u65B0\u3057\u3044\u7248\u3092\u8FD4\
+    \u3059\n     *\n     * @param k \u30A4\u30F3\u30C7\u30C3\u30AF\u30B9\n     * @param\
+    \ x \u4F5C\u7528\u7D20\n     * @return PersistentSegTree \u65B0\u3057\u3044\u7248\
+    \ (\u81EA\u8EAB\u306F\u5909\u308F\u3089\u306A\u3044)\n     */\n    PersistentSegTree\
+    \ apply(long long k, const S& x) const { return set(k, op(get(k), x)); }\n\n \
+    \   /**\n     * @brief [l, r)\u306E\u533A\u9593\u3092\u5225\u306E\u7248\u306E\u5024\
+    \u306B\u3057\u305F\u65B0\u3057\u3044\u7248\u3092\u8FD4\u3059\n     *\n     * @param\
+    \ other \u5199\u3059\u5143\u306E\u7248 (\u81EA\u8EAB\u3068\u540C\u3058\u6728\u304B\
+    \u3089\u4F5C\u3063\u305F\u3082\u306E)\n     * @param l \u534A\u958B\u533A\u9593\
+    \u306E\u958B\u59CB\n     * @param r \u534A\u958B\u533A\u9593\u306E\u7D42\u7AEF\
+    \ 0<=l<=r<=n\n     * @return PersistentSegTree \u65B0\u3057\u3044\u7248 (\u81EA\
+    \u8EAB\u3082 other \u3082\u5909\u308F\u3089\u306A\u3044)\n     */\n    PersistentSegTree\
+    \ copy(const PersistentSegTree& other, long long l, long long r) const {\n   \
+    \     assert(pool == other.pool);\n        assert(0 <= l && l <= r && r <= n);\n\
+    \        if (l == r) return *this;\n        return PersistentSegTree(pool, n,\
+    \ sz, copy_rec(root, other.root, 0, sz, l, r));\n    }\n\n    /**\n     * @brief\
+    \ [l, r)\u306E\u533A\u9593\u306E\u7DCF\u7A4D\u3092\u8FD4\u3059\n     *\n     *\
+    \ @param l \u534A\u958B\u533A\u9593\u306E\u958B\u59CB\n     * @param r \u534A\u958B\
+    \u533A\u9593\u306E\u7D42\u7AEF 0<=l<=r<=n\n     * @return S \u7DCF\u7A4D\n   \
+    \  */\n    S prod(long long l, long long r) const {\n        assert(0 <= l &&\
+    \ l <= r && r <= n);\n        return prod_rec(root, 0, sz, l, r);\n    }\n   \
+    \ /**\n     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\u306E\u7DCF\u7A4D\u3092\
+    \u8FD4\u3059\n     *\n     * @return S \u7DCF\u7A4D\n     */\n    S all_prod()\
+    \ const { return pool->val[root]; }\n\n    /**\n     * @brief (r = l or f(prod([l,\
+    \ r))) = true) and (r = n or f(prod([l, r+1))) = false)\u3068\u306A\u308Br\u3092\
+    \u8FD4\u3059\n     * f\u304C\u5358\u8ABF\u306A\u3089\u3001f(prod([l, r))) = true\u3068\
+    \u306A\u308B\u6700\u5927\u306Er\n     *\n     * @tparam F\n     * @param l \u534A\
+    \u958B\u533A\u9593\u306E\u958B\u59CB 0<=l<=n\n     * @param f \u5224\u5B9A\u95A2\
+    \u6570 f(e) = true\n     * @return long long\n     */\n    template <typename\
+    \ F>\n    long long max_right(long long l, F f) const {\n        assert(f(e()));\n\
+    \        assert(0 <= l && l <= n);\n        if (l == n) return n;\n        S sum\
+    \ = e();\n        long long r = max_right_rec(root, 0, sz, l, f, sum);\n     \
+    \   return r < n ? r : n;\n    }\n    /**\n     * @brief (l = 0 or f(prod([l,\
+    \ r))) = true) and (l = r or f(prod([l-1, r))) = false)\u3068\u306A\u308Bl\u3092\
+    \u8FD4\u3059\n     * f\u304C\u5358\u8ABF\u306A\u3089\u3001f(prod([l, r))) = true\u3068\
+    \u306A\u308B\u6700\u5C0F\u306El\n     *\n     * @tparam F\n     * @param r \u534A\
+    \u958B\u533A\u9593\u306E\u7D42\u7AEF 0<=r<=n\n     * @param f \u5224\u5B9A\u95A2\
+    \u6570 f(e) = true\n     * @return long long\n     */\n    template <typename\
+    \ F>\n    long long min_left(long long r, F f) const {\n        assert(f(e()));\n\
+    \        assert(0 <= r && r <= n);\n        if (r == 0) return 0;\n        S sum\
+    \ = e();\n        return min_left_rec(root, 0, sz, r, f, sum);\n    }\n\n    /**\n\
+    \     * @brief \u3059\u3079\u3066\u306E\u8981\u7D20\u3092\u4E26\u3079\u305F\u5217\
+    \u3092\u8FD4\u3059\n     */\n    std::vector<S> to_vector() const {\n        std::vector<S>\
+    \ res(n);\n        for (long long i = 0; i < n; i++) res[i] = get(i);\n      \
+    \  return res;\n    }\n};\n\ntemplate <typename M>\nPersistentSegTree(long long,\
+    \ M) -> PersistentSegTree<M>;\ntemplate <class R, typename M>\nPersistentSegTree(R&&,\
+    \ M) -> PersistentSegTree<M>;\ntemplate <typename M>\nPersistentSegTree(std::initializer_list<typename\
+    \ M::S>, M) -> PersistentSegTree<M>;\n#line 9 \"test/unittest/data_structures/persistent-segtree.test.cpp\"\
+    \n\n#include <iostream>\n#include <random>\n#include <sstream>\n#line 14 \"test/unittest/data_structures/persistent-segtree.test.cpp\"\
+    \n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\
+    \u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\
+    \u30AF\u30E9\u30B9\n */\n\n#line 9 \"src/math/modint.hpp\"\n#include <cstdint>\n\
+    #line 14 \"src/math/modint.hpp\"\n\n#line 16 \"src/math/modint.hpp\"\n\nnamespace\
+    \ internal_modint {\n// clang-format off\nstatic constexpr std::uint16_t prime32_bases[]\
+    \ {\n    15591,  2018,  166, 7429,  8064, 16045, 10503,  4399,  1949,  1295, 2776,\
+    \  3620,   560,  3128,  5212,  2657,\n     2300,  2021, 4652, 1471,  9336,  4018,\
+    \  2398, 20462, 10277,  8028, 2213,  6219,   620,  3763,  4852,  5012,\n     3185,\
+    \  1333, 6227, 5298,  1074,  2391,  5113,  7061,   803,  1269, 3875,   422,  \
+    \ 751,   580,  4729, 10239,\n      746,  2951,  556, 2206,  3778,   481,  1522,\
+    \  3476,   481,  2487, 3266,  5633,   488,  3373,  6441,  3344,\n       17, 15105,\
+    \ 1490, 4154,  2036,  1882,  1813,   467,  3307, 14042, 6371,   658,  1005,  \
+    \ 903,   737,  1887,\n     7447,  1888, 2848, 1784,  7559,  3400,   951, 13969,\
+    \  4304,   177,   41, 19875,  3110, 13221,  8726,   571,\n     7043,  6943, 1199,\
+    \  352,  6435,   165,  1169,  3315,   978,   233, 3003,  2562,  2994, 10587, 10030,\
+    \  2377,\n     1902,  5354, 4447, 1555,   263, 27027,  2283,   305,   669,  1912,\
+    \  601,  6186,   429,  1930, 14873,  1784,\n     1661,   524, 3577,  236,  2360,\
+    \  6146,  2850, 55637,  1753,  4178, 8466,   222,  2579,  2743,  2031,  2226,\n\
+    \     2276,   374, 2132,  813, 23788,  1610,  4422,  5159,  1725,  3597, 3366,\
+    \ 14336,   579,   165,  1375, 10018,\n    12616,  9816, 1371,  536,  1867, 10864,\
+    \   857,  2206,  5788,   434, 8085, 17618,   727,  3639,  1595,  4944,\n     2129,\
+    \  2029, 8195, 8344,  6232,  9183,  8126,  1870,  3296,  7455, 8947, 25017,  \
+    \ 541, 19115,   368,   566,\n     5674,   411,  522, 1027,  8215,  2050,  6544,\
+    \ 10049,   614,   774, 2333,  3007, 35201,  4706,  1152,  1785,\n     1028,  1540,\
+    \ 3743,  493,  4474,  2521, 26845,  8354,   864, 18915, 5465,  2447,    42,  4511,\
+    \  1660,   166,\n     1249,  6259, 2553,  304,   272,  7286,    73,  6554,   899,\
+    \  2816, 5197, 13330,  7054,  2818,  3199,   811,\n      922,   350, 7514, 4452,\
+    \  3449,  2663,  4708,   418,  1621,  1171, 3471,    88, 11345,   412,  1559,\
+    \   194,\n};\n// clang-format on\n\nstatic constexpr bool is_SPRP(std::uint32_t\
+    \ n, std::uint32_t a) noexcept {\n    std::uint32_t d = n - 1;\n    std::uint32_t\
+    \ s = 0;\n    while ((d & 1) == 0) {\n        ++s;\n        d >>= 1;\n    }\n\
+    \    std::uint64_t cur = 1;\n    std::uint64_t pw = d;\n    while (pw) {\n   \
+    \     if (pw & 1) cur = (cur * a) % n;\n        a = (static_cast<std::uint64_t>(a)\
+    \ * a) % n;\n        pw >>= 1;\n    }\n    if (cur == 1) return true;\n    for\
+    \ (std::uint32_t r = 0; r < s; ++r) {\n        if (cur == n - 1) return true;\n\
+    \        cur = (cur * cur) % n;\n    }\n    return false;\n}\n\n// 32\u30D3\u30C3\
+    \u30C8\u7B26\u53F7\u306A\u3057\u6574\u6570\u306E\u7D20\u6570\u5224\u5B9A\n// \u53C2\
+    \u8003: M. Forisek and J. Jancina, \u201CFast Primality Testing for Integers That\
+    \ Fit into a Machine Word,\u201D presented at the Conference on Current Trends\
+    \ in Theory and Practice of Informatics, 2015.\n[[nodiscard]]\nstatic constexpr\
+    \ bool is_prime32(std::uint32_t x) noexcept {\n    if (x == 2 || x == 3 || x ==\
+    \ 5 || x == 7) return true;\n    if (x % 2 == 0 || x % 3 == 0 || x % 5 == 0 ||\
+    \ x % 7 == 0) return false;\n    if (x < 121) return (x > 1);\n    std::uint64_t\
+    \ h = x;\n    h = ((h >> 16) ^ h) * 0x45d9f3b;\n    h = ((h >> 16) ^ h) * 0x45d9f3b;\n\
+    \    h = ((h >> 16) ^ h) & 0xff;\n    return is_SPRP(x, prime32_bases[h]);\n}\n\
+    }  // namespace internal_modint\n\n/// @brief static_modint \u3068 dynamic_modint\
+    \ \u306E\u5B9F\u88C5\u3092 CRTP \u306B\u3088\u3063\u3066\u884C\u3046\u305F\u3081\
+    \u306E\u30AF\u30E9\u30B9\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\n/// @tparam Modint\
+    \ \u3053\u306E\u30AF\u30E9\u30B9\u30C6\u30F3\u30D7\u30EC\u30FC\u30C8\u3092\u7D99\
+    \u627F\u3059\u308B\u30AF\u30E9\u30B9\ntemplate <class Modint>\nclass modint_base\
+    \ {\n   public:\n    /// @brief \u4FDD\u6301\u3059\u308B\u5024\u306E\u578B\n \
+    \   using value_type = std::uint32_t;\n\n    /// @brief 0 \u3067\u521D\u671F\u5316\
+    \u3057\u307E\u3059\u3002\n    constexpr modint_base() noexcept\n        : m_value{0}\
+    \ {}\n\n    /// @brief @c value \u306E\u5270\u4F59\u3067\u521D\u671F\u5316\u3057\
+    \u307E\u3059\u3002\n    /// @param value \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\
+    \n    template <class SignedIntegral, ENABLE_IF_T((std::is_integral_v<SignedIntegral>\
+    \ && std::is_signed_v<SignedIntegral>))>\n    constexpr modint_base(SignedIntegral\
+    \ value) noexcept\n        : m_value{static_cast<value_type>((static_cast<long\
     \ long>(value) % Modint::mod() + Modint::mod()) % Modint::mod())} {}\n\n    ///\
     \ @brief @c value \u306E\u5270\u4F59\u3067\u521D\u671F\u5316\u3057\u307E\u3059\
     \u3002\n    /// @param value \u521D\u671F\u5316\u306B\u4F7F\u3046\u5024\n    template\
@@ -980,12 +1003,12 @@ data:
   dependsOn:
   - src/data_structures/persistent-segtree.hpp
   - src/algebra/monoid.hpp
-  - src/math/modint.hpp
   - src/utility/traits.hpp
+  - src/math/modint.hpp
   isVerificationFile: true
   path: test/unittest/data_structures/persistent-segtree.test.cpp
   requiredBy: []
-  timestamp: '2026-11-08 19:03:35+09:00'
+  timestamp: '2026-11-08 20:13:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/data_structures/persistent-segtree.test.cpp

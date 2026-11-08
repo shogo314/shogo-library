@@ -16,6 +16,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/data_structures/unionfind.hpp
     title: UnionFind
+  - icon: ':heavy_check_mark:'
+    path: src/utility/traits.hpp
+    title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
   _isVerificationFailed: false
@@ -520,30 +523,109 @@ data:
     \ {\n        leader(a);\n        return diff_weight[a];\n    }\n};\n\ntemplate\
     \ <typename G>\nPotentializedUnionFind(long long, G) -> PotentializedUnionFind<G>;\n\
     #line 2 \"src/data_structures/segtree.hpp\"\n\n/**\n * @file segtree.hpp\n * @brief\
-    \ \u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n */\n\n#line 12 \"src/data_structures/segtree.hpp\"\
-    \n\n#line 14 \"src/data_structures/segtree.hpp\"\n\n/**\n * @brief \u30BB\u30B0\
-    \u30E1\u30F3\u30C8\u6728\n *\n * \u4F8B:\n * SegTree<monoid::Max<int>> seg(n);\n\
-    \ * SegTree seg(v, Monoid([](int a, int b) { return a + b; }, 0));\n *\n * @tparam\
-    \ M \u30E2\u30CE\u30A4\u30C9 (algebra/monoid.hpp)\n */\ntemplate <typename M>\n\
-    class SegTree {\n   public:\n    using S = typename M::S;\n\n   private:\n   \
-    \ M m;\n    S op(const S& a, const S& b) const { return m.op(a, b); }\n    S e()\
-    \ const { return m.e(); }\n\n    long long n, sz;\n    int height;\n    std::vector<S>\
-    \ data;\n    void update(long long k) { data[k] = op(data[2 * k], data[2 * k +\
-    \ 1]); }\n\n    class SegTreeReference {\n        SegTree& segtree;\n        long\
-    \ long k;\n\n       public:\n        SegTreeReference(SegTree& segtree, long long\
-    \ k) : segtree(segtree), k(k) {}\n        SegTreeReference& operator=(const S&\
-    \ x) {\n            segtree.set(k, x);\n            return *this;\n        }\n\
-    \        operator S() const { return segtree.get(k); }\n    };\n\n    void construct_data()\
-    \ {\n        sz = 1;\n        height = 0;\n        while (sz < n) {\n        \
-    \    sz <<= 1;\n            height++;\n        }\n        data.assign(sz * 2,\
-    \ e());\n    }\n\n   public:\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\
-    \u30AF\u30BF\n     *\n     * @param n \u8981\u7D20\u6570\n     * @param m \u30E2\
-    \u30CE\u30A4\u30C9\n     */\n    explicit SegTree(long long n = 0, M m = M())\
-    \ : m(std::move(m)), n(n) {\n        construct_data();\n    }\n    /**\n     *\
-    \ @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @param v \u521D\
-    \u671F\u306E\u8981\u7D20\n     * @param m \u30E2\u30CE\u30A4\u30C9\n     */\n\
-    \    explicit SegTree(const std::vector<S>& v, M m = M()) : SegTree(v.size(),\
-    \ std::move(m)) {\n        for (long long i = 0; i < n; i++) data[sz + i] = v[i];\n\
+    \ \u30BB\u30B0\u30E1\u30F3\u30C8\u6728\n */\n\n#line 9 \"src/data_structures/segtree.hpp\"\
+    \n#include <initializer_list>\n#include <iterator>\n#line 15 \"src/data_structures/segtree.hpp\"\
+    \n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief\
+    \ \u578B\u7279\u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\n#include <functional>\n\
+    #line 11 \"src/utility/traits.hpp\"\n#include <set>\n#line 14 \"src/utility/traits.hpp\"\
+    \n\n#if __cplusplus >= 202002L\n#include <ranges>\n#endif\n\nnamespace internal_traits\
+    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
+    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n\n// \u30B5\u30A4\u30BA\u4ED8\
+    \u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\u3059\
+    \u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\u308B\
+    \u3002\n#if __cplusplus >= 202002L\ntemplate <class R, class S>\nconcept sized_constructible_range\
+    \ = std::ranges::input_range<R> && std::ranges::sized_range<R> &&\n          \
+    \                          std::is_constructible_v<S, std::ranges::range_reference_t<R>>;\n\
+    \ntemplate <class R>\nauto range_size(R& r) {\n    return std::ranges::size(r);\n\
+    }\ntemplate <class R>\nauto range_begin(R& r) {\n    return std::ranges::begin(r);\n\
+    }\ntemplate <class R>\nusing range_value_t = std::ranges::range_value_t<R>;\n\
+    #else\nusing std::size;\ntemplate <class R>\nauto range_size(R& r) -> decltype(size(r))\
+    \ {\n    return size(r);\n}\ntemplate <class R>\nauto range_begin(R& r) -> decltype(begin(r))\
+    \ {\n    return begin(r);\n}\ntemplate <class R>\nusing range_value_t = typename\
+    \ std::iterator_traits<decltype(range_begin(std::declval<R&>()))>::value_type;\n\
+    \ntemplate <class R, class S, class = void>\nstruct is_sized_constructible_range\
+    \ : std::false_type {};\ntemplate <class R, class S>\nstruct is_sized_constructible_range<R,\
+    \ S, std::void_t<decltype(range_size(std::declval<R&>())), decltype(++std::declval<decltype(begin(std::declval<R&>()))&>()),\
+    \ decltype(begin(std::declval<R&>()) != end(std::declval<R&>())), decltype(*begin(std::declval<R&>()))>>\n\
+    \    : std::is_constructible<S, decltype(*begin(std::declval<R&>()))> {};\n#endif\n\
+    }  // namespace internal_traits\n\ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
+    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
+    \n#define HAS_METHOD(func_name)                                              \
+    \                \\\n    namespace internal_traits {                         \
+    \                                   \\\n    template <class T, class = void> \
+    \                                                      \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                    \\\n    template <class\
+    \ T>                                                                     \\\n\
+    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                    \\\n    }                                               \
+    \                                       \\\n    template <class T>           \
+    \                                                          \\\n    struct has_##func_name\
+    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
+    \ <class T>                                                                  \
+    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
+    \n#define HAS_METHOD_ARG(func_name)                                          \
+    \                                    \\\n    namespace internal_traits {     \
+    \                                                                           \\\
+    \n    template <class T, typename U, class = void>                           \
+    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                                        \\\n    template\
+    \ <class T, typename U>                                                      \
+    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                                        \\\n    }                           \
+    \                                                                            \
+    \   \\\n    template <class T, typename U>                                   \
+    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \ U>::type {};                           \\\n    template <class T, typename U>\
+    \                                                                            \
+    \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
+    \nHAS_METHOD(repr)\nHAS_METHOD(type_str)\nHAS_METHOD(initializer_str)\nHAS_METHOD(max)\n\
+    HAS_METHOD(min)\nHAS_METHOD(reversed)\nHAS_METHOD(sorted)\nHAS_METHOD(sum)\nHAS_METHOD(product)\n\
+    HAS_METHOD(product_xor)\nHAS_METHOD_ARG(count)\nHAS_METHOD_ARG(find)\nHAS_METHOD_ARG(lower_bound)\n\
+    HAS_METHOD_ARG(upper_bound)\n\n#define ENABLE_IF_T_IMPL(expr) std::enable_if_t<expr,\
+    \ std::nullptr_t> = nullptr\n#define ENABLE_IF_T(...) ENABLE_IF_T_IMPL((__VA_ARGS__))\n\
+    \nnamespace internal_traits {\n// \u5C04\u5F71 (proj) \u306E\u65E2\u5B9A\u5024\
+    \n#if __cplusplus >= 202002L\nusing identity = std::identity;\n#else\nstruct identity\
+    \ {\n    using is_transparent = void;\n    template <class T>\n    constexpr T&&\
+    \ operator()(T&& x) const noexcept {\n        return std::forward<T>(x);\n   \
+    \ }\n};\n#endif\n}  // namespace internal_traits\n\ntemplate <class C>\nusing\
+    \ mem_value_type = typename C::value_type;\ntemplate <class C>\nusing mem_difference_type\
+    \ = typename C::difference_type;\n\nnamespace internal_traits {\ntemplate <class\
+    \ T, class = void>\nstruct is_sorted_container_impl : std::false_type {};\ntemplate\
+    \ <class T>\nstruct is_sorted_container_impl<std::set<T>> : std::true_type {};\n\
+    template <class T>\nstruct is_sorted_container_impl<std::multiset<T>> : std::true_type\
+    \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
+    \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
+    inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
+    #line 18 \"src/data_structures/segtree.hpp\"\n\n/**\n * @brief \u30BB\u30B0\u30E1\
+    \u30F3\u30C8\u6728\n *\n * \u4F8B:\n * SegTree<monoid::Max<int>> seg(n);\n * SegTree\
+    \ seg(v, Monoid([](int a, int b) { return a + b; }, 0));\n *\n * @tparam M \u30E2\
+    \u30CE\u30A4\u30C9 (algebra/monoid.hpp)\n */\ntemplate <typename M>\nclass SegTree\
+    \ {\n   public:\n    using S = typename M::S;\n\n   private:\n    M m;\n    S\
+    \ op(const S& a, const S& b) const { return m.op(a, b); }\n    S e() const { return\
+    \ m.e(); }\n\n    long long n, sz;\n    int height;\n    std::vector<S> data;\n\
+    \    void update(long long k) { data[k] = op(data[2 * k], data[2 * k + 1]); }\n\
+    \n    class SegTreeReference {\n        SegTree& segtree;\n        long long k;\n\
+    \n       public:\n        SegTreeReference(SegTree& segtree, long long k) : segtree(segtree),\
+    \ k(k) {}\n        SegTreeReference& operator=(const S& x) {\n            segtree.set(k,\
+    \ x);\n            return *this;\n        }\n        operator S() const { return\
+    \ segtree.get(k); }\n    };\n\n    void construct_data() {\n        sz = 1;\n\
+    \        height = 0;\n        while (sz < n) {\n            sz <<= 1;\n      \
+    \      height++;\n        }\n        data.assign(sz * 2, e());\n    }\n\n   public:\n\
+    \    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n \
+    \    * @param n \u8981\u7D20\u6570\n     * @param m \u30E2\u30CE\u30A4\u30C9\n\
+    \     */\n    explicit SegTree(long long n = 0, M m = M()) : m(std::move(m)),\
+    \ n(n) {\n        construct_data();\n    }\n    /**\n     * @brief \u30B3\u30F3\
+    \u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @param v \u521D\u671F\u306E\u8981\
+    \u7D20\n     * @param m \u30E2\u30CE\u30A4\u30C9\n     */\n#if __cplusplus >=\
+    \ 202002L\n    template <class R = std::initializer_list<S>>\n        requires\
+    \ internal_traits::sized_constructible_range<R, S>\n#else\n    template <class\
+    \ R = std::initializer_list<S>, ENABLE_IF_T(internal_traits::is_sized_constructible_range<R,\
+    \ S>::value)>\n#endif\n    explicit SegTree(R&& v, M m = M()) : SegTree(static_cast<long\
+    \ long>(internal_traits::range_size(v)), std::move(m)) {\n        long long k\
+    \ = sz;\n        for (auto&& x : v) data[k++] = S(std::forward<decltype(x)>(x));\n\
     \        for (long long i = sz - 1; i > 0; i--) update(i);\n    }\n\n    /**\n\
     \     * @brief \u8981\u7D20\u6570\u3092\u8FD4\u3059\n     */\n    long long size()\
     \ const { return n; }\n\n    /**\n     * @brief \u6307\u5B9A\u3055\u308C\u305F\
@@ -617,15 +699,16 @@ data:
     \ r--;\n                    }\n                }\n                return r + 1\
     \ - sz;\n            }\n            sum = op(data[r], sum);\n        } while ((r\
     \ & -r) != r);\n        return 0;\n    }\n};\n\ntemplate <typename M>\nSegTree(long\
-    \ long, M) -> SegTree<M>;\ntemplate <typename M>\nSegTree(std::vector<typename\
-    \ M::S>, M) -> SegTree<M>;\n\n/**\n * @brief RangeMaxQuery\n *\n * @tparam S \u578B\
-    \n */\ntemplate <typename S>\nusing RMaxQ = SegTree<monoid::Max<S>>;\n/**\n *\
-    \ @brief RangeMinQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename S>\n\
-    using RMinQ = SegTree<monoid::Min<S>>;\n/**\n * @brief RangeSumQuery\n *\n * @tparam\
-    \ S \u578B\n */\ntemplate <typename S>\nusing RSumQ = SegTree<monoid::Sum<S>>;\n\
-    /**\n * @brief RangeProdQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename\
-    \ S>\nusing RProdQ = SegTree<monoid::Prod<S>>;\n/**\n * @brief RangeXorQuery\n\
-    \ *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RXorQ = SegTree<monoid::Xor<S>>;\n\
+    \ long, M) -> SegTree<M>;\ntemplate <class R, typename M>\nSegTree(R&&, M) ->\
+    \ SegTree<M>;\ntemplate <typename M>\nSegTree(std::initializer_list<typename M::S>,\
+    \ M) -> SegTree<M>;\n\n/**\n * @brief RangeMaxQuery\n *\n * @tparam S \u578B\n\
+    \ */\ntemplate <typename S>\nusing RMaxQ = SegTree<monoid::Max<S>>;\n/**\n * @brief\
+    \ RangeMinQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename S>\nusing RMinQ\
+    \ = SegTree<monoid::Min<S>>;\n/**\n * @brief RangeSumQuery\n *\n * @tparam S \u578B\
+    \n */\ntemplate <typename S>\nusing RSumQ = SegTree<monoid::Sum<S>>;\n/**\n *\
+    \ @brief RangeProdQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename S>\n\
+    using RProdQ = SegTree<monoid::Prod<S>>;\n/**\n * @brief RangeXorQuery\n *\n *\
+    \ @tparam S \u578B\n */\ntemplate <typename S>\nusing RXorQ = SegTree<monoid::Xor<S>>;\n\
     /**\n * @brief RangeGcdQuery\n *\n * @tparam S \u578B\n */\ntemplate <typename\
     \ S>\nusing RGcdQ = SegTree<monoid::Gcd<S>>;\n#line 16 \"test/unittest/algebra/mapping.test.cpp\"\
     \n\n// std::array \u306E == \u306F C++17 \u3067\u306F constexpr \u3067\u306A\u3044\
@@ -773,10 +856,11 @@ data:
   - src/data_structures/potentialized-unionfind.hpp
   - src/data_structures/unionfind.hpp
   - src/data_structures/segtree.hpp
+  - src/utility/traits.hpp
   isVerificationFile: true
   path: test/unittest/algebra/mapping.test.cpp
   requiredBy: []
-  timestamp: '2026-11-08 19:03:35+09:00'
+  timestamp: '2026-11-08 20:13:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/algebra/mapping.test.cpp

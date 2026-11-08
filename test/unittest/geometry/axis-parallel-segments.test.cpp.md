@@ -424,99 +424,61 @@ data:
     \ S& a) const { return inv_object(a); }\n};\ntemplate <typename Op, typename T,\
     \ typename Inv>\nGroup(Op, T, Inv) -> Group<T, Op, Inv>;\n#line 2 \"src/data_structures/fenwick-tree.hpp\"\
     \n\n/**\n * @file fenwick-tree.hpp\n * @brief Fenwick Tree (Binary Indexed Tree)\n\
-    \ */\n\n#line 11 \"src/data_structures/fenwick-tree.hpp\"\n\n#line 13 \"src/data_structures/fenwick-tree.hpp\"\
-    \n\n/**\n * @brief Fenwick Tree (Binary Indexed Tree)\n *\n * 1 \u70B9\u3078\u306E\
-    \u4F5C\u7528\u3068\u533A\u9593\u7A4D\u3092 O(log n) \u3067\u884C\u3046\n * \u4F8B\
-    :\n * FenwickTree<group::Sum<long long>> ft(n);\n * ft.apply(i, x);  // a[i] +=\
-    \ x\n * ft.prod(l, r);   // a[l] + ... + a[r-1]\n *\n * @tparam G \u53EF\u63DB\
-    \u306A\u7FA4 (algebra/group.hpp)\u3002prefix_prod \u3068 max_right \u3060\u3051\
-    \u306A\u3089\u53EF\u63DB\u30E2\u30CE\u30A4\u30C9\u3067\u3082\u3088\u3044\n */\n\
-    template <typename G>\nclass FenwickTree {\n   public:\n    using S = typename\
-    \ G::S;\n\n   private:\n    G g;\n    long long n;\n    // data[i] \u306F a[i\
-    \ - (i & -i)] \u304B\u3089 a[i-1] \u307E\u3067\u306E\u7A4D (1-indexed)\n    std::vector<S>\
-    \ data;\n    S op(const S& a, const S& b) const { return g.op(a, b); }\n    S\
-    \ e() const { return g.e(); }\n    S inv(const S& a) const { return g.inv(a);\
-    \ }\n\n   public:\n    /**\n     * @brief \u8981\u7D20\u6570 n \u3067\u3001\u3059\
-    \u3079\u3066\u306E\u8981\u7D20\u304C\u5358\u4F4D\u5143\u306E Fenwick Tree \u3092\
-    \u4F5C\u308B\n     */\n    explicit FenwickTree(long long n = 0, G g = G()) :\
-    \ g(std::move(g)), n(n), data(n + 1, e()) {}\n    /**\n     * @brief v \u3092\u521D\
-    \u671F\u5024\u3068\u3059\u308B Fenwick Tree \u3092\u4F5C\u308B O(n)\n     */\n\
-    \    explicit FenwickTree(const std::vector<S>& v, G g = G()) : FenwickTree(v.size(),\
-    \ std::move(g)) {\n        for (long long i = 1; i <= n; i++) {\n            data[i]\
-    \ = op(data[i], v[i - 1]);\n            long long j = i + (i & -i);\n        \
-    \    if (j <= n) data[j] = op(data[j], data[i]);\n        }\n    }\n\n    long\
-    \ long size() const { return n; }\n\n    /**\n     * @brief a[k] \u3092 op(a[k],\
-    \ x) \u306B\u3059\u308B O(log n)\n     */\n    void apply(long long k, const S&\
-    \ x) {\n        assert(0 <= k && k < n);\n        for (k++; k <= n; k += k & -k)\
-    \ data[k] = op(data[k], x);\n    }\n    /**\n     * @brief a[0] \u304B\u3089 a[r-1]\
-    \ \u307E\u3067\u306E\u7A4D O(log n)\n     */\n    S prefix_prod(long long r) const\
-    \ {\n        assert(0 <= r && r <= n);\n        S res = e();\n        for (; r\
-    \ > 0; r -= r & -r) res = op(data[r], res);\n        return res;\n    }\n    /**\n\
-    \     * @brief a[l] \u304B\u3089 a[r-1] \u307E\u3067\u306E\u7A4D O(log n)\u3002\
-    \u9006\u5143\u3092\u4F7F\u3046\n     */\n    S prod(long long l, long long r)\
-    \ const {\n        assert(0 <= l && l <= r && r <= n);\n        return op(inv(prefix_prod(l)),\
-    \ prefix_prod(r));\n    }\n    S all_prod() const { return prefix_prod(n); }\n\
-    \    /**\n     * @brief a[k] O(log n)\u3002\u9006\u5143\u3092\u4F7F\u3046\n  \
-    \   */\n    S get(long long k) const {\n        assert(0 <= k && k < n);\n   \
-    \     return prod(k, k + 1);\n    }\n    /**\n     * @brief a[k] \u3092 x \u306B\
-    \u3059\u308B O(log n)\u3002\u9006\u5143\u3092\u4F7F\u3046\n     */\n    void set(long\
-    \ long k, const S& x) { apply(k, op(inv(get(k)), x)); }\n\n    /**\n     * @brief\
-    \ f(prefix_prod(r)) = true \u3068\u306A\u308B\u6700\u5927\u306E r \u3092\u8FD4\
-    \u3059 O(log n)\n     * f \u306F\u5358\u8ABF (\u3042\u308B r \u307E\u3067\u306F\
-    \ true \u3067\u305D\u308C\u4EE5\u964D\u306F false) \u3067\u3042\u308B\u3053\u3068\
-    \u3002f(e()) = true\n     */\n    template <typename F>\n    long long max_right(F\
-    \ f) const {\n        assert(f(e()));\n        long long r = 0;\n        S sum\
-    \ = e();\n        long long step = 1;\n        while (step * 2 <= n) step *= 2;\n\
-    \        for (; step > 0; step /= 2) {\n            if (r + step <= n && f(op(sum,\
-    \ data[r + step]))) {\n                r += step;\n                sum = op(sum,\
-    \ data[r]);\n            }\n        }\n        return r;\n    }\n};\n\ntemplate\
-    \ <typename G>\nFenwickTree(long long, G) -> FenwickTree<G>;\ntemplate <typename\
-    \ G>\nFenwickTree(std::vector<typename G::S>, G) -> FenwickTree<G>;\n#line 2 \"\
-    src/geometry/segment.hpp\"\n\n/**\n * @file segment.hpp\n * @brief 2 \u6B21\u5143\
-    \u30FB3 \u6B21\u5143\u306E\u7DDA\u5206 (\u4EA4\u5DEE\u5224\u5B9A\u3001\u5171\u6709\
-    \u70B9\u3001\u8DDD\u96E2)\n */\n\n#line 10 \"src/geometry/segment.hpp\"\n#include\
-    \ <cmath>\n#line 13 \"src/geometry/segment.hpp\"\n\n#line 2 \"src/geometry/internal/predicates.hpp\"\
-    \n\n/**\n * @file predicates.hpp\n * @brief \u5E7E\u4F55\u306E\u5185\u90E8\u8A08\
-    \u7B97 (\u6574\u6570\u5EA7\u6A19\u306E\u62E1\u5F35\u3001\u5411\u304D\u3001\u30CE\
-    \u30EB\u30E0)\n */\n\n#line 10 \"src/geometry/internal/predicates.hpp\"\n\n#line\
-    \ 2 \"src/geometry/vector.hpp\"\n\n/**\n * @file vector.hpp\n * @brief \u5E7E\u4F55\
-    \u30D9\u30AF\u30C8\u30EB\n */\n\n#line 15 \"src/geometry/vector.hpp\"\n\n#line\
-    \ 2 \"src/utility/traits.hpp\"\n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\
-    \u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\n#include <functional>\n#include\
-    \ <iterator>\n#include <set>\n#line 14 \"src/utility/traits.hpp\"\n\nnamespace\
-    \ internal_traits {\nusing std::begin, std::end;\n\ntemplate <class T, class =\
-    \ void>\nstruct is_range_impl : std::false_type {};\ntemplate <class T>\nstruct\
-    \ is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()), end(std::declval<T&>()))>>\
-    \ : std::true_type {};\n}  // namespace internal_traits\n\ntemplate <class T>\n\
-    struct is_range : internal_traits::is_range_impl<T>::type {};\ntemplate <class\
-    \ T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\n#define HAS_METHOD(func_name)\
-    \                                                              \\\n    namespace\
-    \ internal_traits {                                                          \
-    \  \\\n    template <class T, class = void>                                  \
-    \                     \\\n    struct has_##func_name##_impl : std::false_type\
-    \ {};                                    \\\n    template <class T>          \
-    \                                                           \\\n    struct has_##func_name##_impl<T,\
-    \ std::void_t<decltype(std::declval<T>().func_name())>> \\\n        : std::true_type\
-    \ {};                                                               \\\n    }\
-    \                                                                            \
-    \          \\\n    template <class T>                                        \
-    \                             \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T>::type\
-    \ {};          \\\n    template <class T>                                    \
-    \                                 \\\n    inline constexpr bool has_##func_name##_v\
-    \ = has_##func_name<T>::value;\n\n#define HAS_METHOD_ARG(func_name)          \
-    \                                                                    \\\n    namespace\
-    \ internal_traits {                                                          \
-    \                      \\\n    template <class T, typename U, class = void>  \
-    \                                                             \\\n    struct has_##func_name##_impl\
-    \ : std::false_type {};                                                      \
-    \  \\\n    template <class T, typename U>                                    \
-    \                                         \\\n    struct has_##func_name##_impl<T,\
-    \ U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>> \\\
-    \n        : std::true_type {};                                               \
-    \                                    \\\n    }                               \
+    \ */\n\n#line 9 \"src/data_structures/fenwick-tree.hpp\"\n#include <initializer_list>\n\
+    #line 13 \"src/data_structures/fenwick-tree.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\
+    \n\n/**\n * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 9 \"\
+    src/utility/traits.hpp\"\n#include <functional>\n#include <iterator>\n#include\
+    \ <set>\n#line 14 \"src/utility/traits.hpp\"\n\n#if __cplusplus >= 202002L\n#include\
+    \ <ranges>\n#endif\n\nnamespace internal_traits {\nusing std::begin, std::end;\n\
+    \ntemplate <class T, class = void>\nstruct is_range_impl : std::false_type {};\n\
+    template <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \ end(std::declval<T&>()))>> : std::true_type {};\n\n// \u30B5\u30A4\u30BA\u4ED8\
+    \u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\u3059\
+    \u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\u308B\
+    \u3002\n#if __cplusplus >= 202002L\ntemplate <class R, class S>\nconcept sized_constructible_range\
+    \ = std::ranges::input_range<R> && std::ranges::sized_range<R> &&\n          \
+    \                          std::is_constructible_v<S, std::ranges::range_reference_t<R>>;\n\
+    \ntemplate <class R>\nauto range_size(R& r) {\n    return std::ranges::size(r);\n\
+    }\ntemplate <class R>\nauto range_begin(R& r) {\n    return std::ranges::begin(r);\n\
+    }\ntemplate <class R>\nusing range_value_t = std::ranges::range_value_t<R>;\n\
+    #else\nusing std::size;\ntemplate <class R>\nauto range_size(R& r) -> decltype(size(r))\
+    \ {\n    return size(r);\n}\ntemplate <class R>\nauto range_begin(R& r) -> decltype(begin(r))\
+    \ {\n    return begin(r);\n}\ntemplate <class R>\nusing range_value_t = typename\
+    \ std::iterator_traits<decltype(range_begin(std::declval<R&>()))>::value_type;\n\
+    \ntemplate <class R, class S, class = void>\nstruct is_sized_constructible_range\
+    \ : std::false_type {};\ntemplate <class R, class S>\nstruct is_sized_constructible_range<R,\
+    \ S, std::void_t<decltype(range_size(std::declval<R&>())), decltype(++std::declval<decltype(begin(std::declval<R&>()))&>()),\
+    \ decltype(begin(std::declval<R&>()) != end(std::declval<R&>())), decltype(*begin(std::declval<R&>()))>>\n\
+    \    : std::is_constructible<S, decltype(*begin(std::declval<R&>()))> {};\n#endif\n\
+    }  // namespace internal_traits\n\ntemplate <class T>\nstruct is_range : internal_traits::is_range_impl<T>::type\
+    \ {};\ntemplate <class T>\ninline constexpr bool is_range_v = is_range<T>::value;\n\
+    \n#define HAS_METHOD(func_name)                                              \
+    \                \\\n    namespace internal_traits {                         \
+    \                                   \\\n    template <class T, class = void> \
+    \                                                      \\\n    struct has_##func_name##_impl\
+    \ : std::false_type {};                                    \\\n    template <class\
+    \ T>                                                                     \\\n\
+    \    struct has_##func_name##_impl<T, std::void_t<decltype(std::declval<T>().func_name())>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                    \\\n    }                                               \
+    \                                       \\\n    template <class T>           \
+    \                                                          \\\n    struct has_##func_name\
+    \ : internal_traits::has_##func_name##_impl<T>::type {};          \\\n    template\
+    \ <class T>                                                                  \
+    \   \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T>::value;\n\
+    \n#define HAS_METHOD_ARG(func_name)                                          \
+    \                                    \\\n    namespace internal_traits {     \
     \                                                                           \\\
-    \n    template <class T, typename U>                                         \
-    \                                    \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
+    \n    template <class T, typename U, class = void>                           \
+    \                                    \\\n    struct has_##func_name##_impl : std::false_type\
+    \ {};                                                        \\\n    template\
+    \ <class T, typename U>                                                      \
+    \                       \\\n    struct has_##func_name##_impl<T, U, std::void_t<decltype(std::declval<T>().func_name(std::declval<U>()))>>\
+    \ \\\n        : std::true_type {};                                           \
+    \                                        \\\n    }                           \
+    \                                                                            \
+    \   \\\n    template <class T, typename U>                                   \
+    \                                          \\\n    struct has_##func_name : internal_traits::has_##func_name##_impl<T,\
     \ U>::type {};                           \\\n    template <class T, typename U>\
     \                                                                            \
     \ \\\n    inline constexpr bool has_##func_name##_v = has_##func_name<T, U>::value;\n\
@@ -538,10 +500,71 @@ data:
     \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
     \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
     inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
-    #line 17 \"src/geometry/vector.hpp\"\n\n/**\n * @brief \u5E7E\u4F55\u5B66\u3068\
-    \u3057\u3066\u306E\u30D9\u30AF\u30C8\u30EB\n *\n * @tparam T \u578B \u7701\u7565\
-    \u3057\u305F\u3089double\n * @tparam Dim \u6B21\u5143 \u7701\u7565\u3057\u305F\
-    \u30892\n */\ntemplate <typename T = double, int Dim = 2, ENABLE_IF_T(std::is_scalar_v<T>\
+    #line 16 \"src/data_structures/fenwick-tree.hpp\"\n\n/**\n * @brief Fenwick Tree\
+    \ (Binary Indexed Tree)\n *\n * 1 \u70B9\u3078\u306E\u4F5C\u7528\u3068\u533A\u9593\
+    \u7A4D\u3092 O(log n) \u3067\u884C\u3046\n * \u4F8B:\n * FenwickTree<group::Sum<long\
+    \ long>> ft(n);\n * ft.apply(i, x);  // a[i] += x\n * ft.prod(l, r);   // a[l]\
+    \ + ... + a[r-1]\n *\n * @tparam G \u53EF\u63DB\u306A\u7FA4 (algebra/group.hpp)\u3002\
+    prefix_prod \u3068 max_right \u3060\u3051\u306A\u3089\u53EF\u63DB\u30E2\u30CE\u30A4\
+    \u30C9\u3067\u3082\u3088\u3044\n */\ntemplate <typename G>\nclass FenwickTree\
+    \ {\n   public:\n    using S = typename G::S;\n\n   private:\n    G g;\n    long\
+    \ long n;\n    // data[i] \u306F a[i - (i & -i)] \u304B\u3089 a[i-1] \u307E\u3067\
+    \u306E\u7A4D (1-indexed)\n    std::vector<S> data;\n    S op(const S& a, const\
+    \ S& b) const { return g.op(a, b); }\n    S e() const { return g.e(); }\n    S\
+    \ inv(const S& a) const { return g.inv(a); }\n\n   public:\n    /**\n     * @brief\
+    \ \u8981\u7D20\u6570 n \u3067\u3001\u3059\u3079\u3066\u306E\u8981\u7D20\u304C\u5358\
+    \u4F4D\u5143\u306E Fenwick Tree \u3092\u4F5C\u308B\n     */\n    explicit FenwickTree(long\
+    \ long n = 0, G g = G()) : g(std::move(g)), n(n), data(n + 1, e()) {}\n    /**\n\
+    \     * @brief v \u3092\u521D\u671F\u5024\u3068\u3059\u308B Fenwick Tree \u3092\
+    \u4F5C\u308B O(n)\n     */\n#if __cplusplus >= 202002L\n    template <class R\
+    \ = std::initializer_list<S>>\n        requires internal_traits::sized_constructible_range<R,\
+    \ S>\n#else\n    template <class R = std::initializer_list<S>, ENABLE_IF_T(internal_traits::is_sized_constructible_range<R,\
+    \ S>::value)>\n#endif\n    explicit FenwickTree(R&& v, G g = G()) : FenwickTree(internal_traits::range_size(v),\
+    \ std::move(g)) {\n        auto it = internal_traits::range_begin(v);\n      \
+    \  for (long long i = 1; i <= n; i++) {\n            data[i] = op(data[i], S(*it));\n\
+    \            ++it;\n            long long j = i + (i & -i);\n            if (j\
+    \ <= n) data[j] = op(data[j], data[i]);\n        }\n    }\n\n    long long size()\
+    \ const { return n; }\n\n    /**\n     * @brief a[k] \u3092 op(a[k], x) \u306B\
+    \u3059\u308B O(log n)\n     */\n    void apply(long long k, const S& x) {\n  \
+    \      assert(0 <= k && k < n);\n        for (k++; k <= n; k += k & -k) data[k]\
+    \ = op(data[k], x);\n    }\n    /**\n     * @brief a[0] \u304B\u3089 a[r-1] \u307E\
+    \u3067\u306E\u7A4D O(log n)\n     */\n    S prefix_prod(long long r) const {\n\
+    \        assert(0 <= r && r <= n);\n        S res = e();\n        for (; r > 0;\
+    \ r -= r & -r) res = op(data[r], res);\n        return res;\n    }\n    /**\n\
+    \     * @brief a[l] \u304B\u3089 a[r-1] \u307E\u3067\u306E\u7A4D O(log n)\u3002\
+    \u9006\u5143\u3092\u4F7F\u3046\n     */\n    S prod(long long l, long long r)\
+    \ const {\n        assert(0 <= l && l <= r && r <= n);\n        return op(inv(prefix_prod(l)),\
+    \ prefix_prod(r));\n    }\n    S all_prod() const { return prefix_prod(n); }\n\
+    \    /**\n     * @brief a[k] O(log n)\u3002\u9006\u5143\u3092\u4F7F\u3046\n  \
+    \   */\n    S get(long long k) const {\n        assert(0 <= k && k < n);\n   \
+    \     return prod(k, k + 1);\n    }\n    /**\n     * @brief a[k] \u3092 x \u306B\
+    \u3059\u308B O(log n)\u3002\u9006\u5143\u3092\u4F7F\u3046\n     */\n    void set(long\
+    \ long k, const S& x) { apply(k, op(inv(get(k)), x)); }\n\n    /**\n     * @brief\
+    \ f(prefix_prod(r)) = true \u3068\u306A\u308B\u6700\u5927\u306E r \u3092\u8FD4\
+    \u3059 O(log n)\n     * f \u306F\u5358\u8ABF (\u3042\u308B r \u307E\u3067\u306F\
+    \ true \u3067\u305D\u308C\u4EE5\u964D\u306F false) \u3067\u3042\u308B\u3053\u3068\
+    \u3002f(e()) = true\n     */\n    template <typename F>\n    long long max_right(F\
+    \ f) const {\n        assert(f(e()));\n        long long r = 0;\n        S sum\
+    \ = e();\n        long long step = 1;\n        while (step * 2 <= n) step *= 2;\n\
+    \        for (; step > 0; step /= 2) {\n            if (r + step <= n && f(op(sum,\
+    \ data[r + step]))) {\n                r += step;\n                sum = op(sum,\
+    \ data[r]);\n            }\n        }\n        return r;\n    }\n};\n\ntemplate\
+    \ <typename G>\nFenwickTree(long long, G) -> FenwickTree<G>;\ntemplate <class\
+    \ R, typename G>\nFenwickTree(R&&, G) -> FenwickTree<G>;\ntemplate <typename G>\n\
+    FenwickTree(std::initializer_list<typename G::S>, G) -> FenwickTree<G>;\n#line\
+    \ 2 \"src/geometry/segment.hpp\"\n\n/**\n * @file segment.hpp\n * @brief 2 \u6B21\
+    \u5143\u30FB3 \u6B21\u5143\u306E\u7DDA\u5206 (\u4EA4\u5DEE\u5224\u5B9A\u3001\u5171\
+    \u6709\u70B9\u3001\u8DDD\u96E2)\n */\n\n#line 10 \"src/geometry/segment.hpp\"\n\
+    #include <cmath>\n#line 13 \"src/geometry/segment.hpp\"\n\n#line 2 \"src/geometry/internal/predicates.hpp\"\
+    \n\n/**\n * @file predicates.hpp\n * @brief \u5E7E\u4F55\u306E\u5185\u90E8\u8A08\
+    \u7B97 (\u6574\u6570\u5EA7\u6A19\u306E\u62E1\u5F35\u3001\u5411\u304D\u3001\u30CE\
+    \u30EB\u30E0)\n */\n\n#line 10 \"src/geometry/internal/predicates.hpp\"\n\n#line\
+    \ 2 \"src/geometry/vector.hpp\"\n\n/**\n * @file vector.hpp\n * @brief \u5E7E\u4F55\
+    \u30D9\u30AF\u30C8\u30EB\n */\n\n#line 15 \"src/geometry/vector.hpp\"\n\n#line\
+    \ 17 \"src/geometry/vector.hpp\"\n\n/**\n * @brief \u5E7E\u4F55\u5B66\u3068\u3057\
+    \u3066\u306E\u30D9\u30AF\u30C8\u30EB\n *\n * @tparam T \u578B \u7701\u7565\u3057\
+    \u305F\u3089double\n * @tparam Dim \u6B21\u5143 \u7701\u7565\u3057\u305F\u3089\
+    2\n */\ntemplate <typename T = double, int Dim = 2, ENABLE_IF_T(std::is_scalar_v<T>\
     \ && (Dim > 0))>\nstruct Vector {\n    std::array<T, Dim> v;  //!< \u30D9\u30AF\
     \u30C8\u30EB\u306E\u6210\u5206\u8868\u793A\n\n    /**\n     * @brief \u30C7\u30D5\
     \u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * \u30BC\u30ED\
@@ -963,15 +986,15 @@ data:
   - src/algebra/group.hpp
   - src/algebra/monoid.hpp
   - src/data_structures/fenwick-tree.hpp
+  - src/utility/traits.hpp
   - src/geometry/segment.hpp
   - src/geometry/internal/predicates.hpp
   - src/geometry/vector.hpp
-  - src/utility/traits.hpp
   - src/geometry/line.hpp
   isVerificationFile: true
   path: test/unittest/geometry/axis-parallel-segments.test.cpp
   requiredBy: []
-  timestamp: '2026-11-08 19:03:35+09:00'
+  timestamp: '2026-11-08 20:13:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/geometry/axis-parallel-segments.test.cpp

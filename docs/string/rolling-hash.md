@@ -39,6 +39,7 @@ bool p = (t + u).is_palindrome();              // "aba" は回文: true
 | `t == u`、`t != u` | 一致判定 | $O(1)$ |
 | `t = s`、`t.assign(s)` | 再代入 | $O(n)$ |
 | `t.remove_prefix(x)` / `t.remove_suffix(x)` | 先頭 / 末尾の `x` を取り除く。`x` は `RHString` か、`RHString` を作れるもの (文字列や 1 文字)。端が本当に `x` であること (ハッシュからは確かめられず、違うと値が壊れる) | $O(1)$ (初回は長さ分) |
+| `t.val()` / `t.reverse_val()` | 正順 / 逆順のハッシュを返す | $O(1)$ |
 | `t.is_palindrome()` | 回文か | $O(1)$ |
 | `t.size()`、`t.empty()`、`t.clear()` | 長さ (`long long`)・空か・空にする | $O(1)$ |
 
@@ -51,15 +52,6 @@ for (int i = 0; i < n; i++) {
     if (i >= k) w.remove_prefix(s[i - k]);  // w は s[i - k + 1, i]
 }
 ```
-
-## `RHString` のメンバ変数
-
-| 変数 | 説明 |
-|---|---|
-| `rh` | 使う `RollingHash` への参照 |
-| `sz` | 長さ (`long long`) |
-| `hash1` | 正順のハッシュ |
-| `hash2` | 逆順のハッシュ (回文判定に使う) |
 
 ## `RollingHash2D` のメンバ関数
 

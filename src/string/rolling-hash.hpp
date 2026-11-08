@@ -17,7 +17,7 @@
 #include "../utility/range.hpp"
 #include "../utility/traits.hpp"
 
-struct RHString;
+class RHString;
 class RollingHash2D;
 
 /**
@@ -157,11 +157,16 @@ class RollingHash {
 /**
  * @brief ローリングハッシュによって管理される文字列型
  */
-struct RHString {
+class RHString {
     RollingHash& rh;
     long long sz;              //!< 長さ
     unsigned long long hash1;  //!< 正順
     unsigned long long hash2;  //!< 逆順
+   public:
+    /** @brief 正順のハッシュ */
+    unsigned long long val() const { return hash1; }
+    /** @brief 逆順のハッシュ */
+    unsigned long long reverse_val() const { return hash2; }
     /**
      * @brief コンストラクタ
      * 予めRollingHashをインスタンス化しておく必要がある

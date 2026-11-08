@@ -35,7 +35,7 @@ int main() {
     // RHString の中身が s と一致するか (長さ・正順のハッシュ・逆順のハッシュ)
     auto same = [&](const RHString& t, const std::string& s) {
         std::string r(s.rbegin(), s.rend());
-        return t.size() == static_cast<long long>(s.size()) && t.hash1 == rh.build(s).back() && t.hash2 == rh.build(r).back();
+        return t.size() == static_cast<long long>(s.size()) && t.val() == rh.build(s).back() && t.reverse_val() == rh.build(r).back();
     };
 
     for (int rep = 0; rep < 3000 && ok; rep++) {
@@ -53,7 +53,7 @@ int main() {
         if (!s.empty()) check(same(RHString(rh, s[0]), s.substr(0, 1)), "char constructor");
         RHString copy(a);
         check(copy == a && same(copy, s), "copy constructor");
-        RHString raw(rh, a.size(), a.hash1, a.hash2);
+        RHString raw(rh, a.size(), a.val(), a.reverse_val());
         check(raw == a, "hash constructor");
 
         // 連結: +, +=

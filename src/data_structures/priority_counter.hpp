@@ -21,8 +21,16 @@ struct PriorityCounter {
     using value_type = std::pair<key_type, mapped_type>;
     inline constexpr static std::size_t k = K;
 
+   private:
     // C++17 の constexpr コンストラクタではすべてのメンバの初期化が必要なので、値初期化しておく
     std::array<value_type, K> data{};
+
+   public:
+    /** @brief 上位から i 番目の値と個数。size() <= i < K では個数は 0 */
+    constexpr const value_type& operator[](long long i) const {
+        assert(0 <= i && i < static_cast<long long>(K));
+        return data[i];
+    }
 
     constexpr PriorityCounter() {}
     explicit constexpr PriorityCounter(const key_type& x) : PriorityCounter() {

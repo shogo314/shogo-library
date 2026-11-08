@@ -31,18 +31,18 @@ std::vector<V> rerooting_dp(const Tree<Cost>& tree, E e, Merge merge, AddEdge ad
     static_assert(std::is_invocable_r_v<E, AddEdge, V, Cost, long long>);
     static_assert(std::is_invocable_r_v<V, AddNode, E, long long>);
     RootedTree<Cost> rooted(tree, 0);
-    std::vector<V> subdp(rooted.n);
-    for (long long u : rooted.postorder) {
+    std::vector<V> subdp(rooted.size());
+    for (long long u : rooted.postorder()) {
         E tmp = e;
-        for (auto edge : rooted.child[u]) {
+        for (auto edge : rooted.children(u)) {
             tmp = merge(tmp, addedge(subdp[edge.dst], edge.cost, edge.id));
         }
         subdp[u] = addnode(tmp, u);
     }
-    std::vector<V> dp(rooted.n);
-    std::vector<E> pe(rooted.n, e);
-    for (long long u : rooted.preorder) {
-        const auto& ch = rooted.child[u];
+    std::vector<V> dp(rooted.size());
+    std::vector<E> pe(rooted.size(), e);
+    for (long long u : rooted.preorder()) {
+        const auto& ch = rooted.children(u);
         const long long d = static_cast<long long>(ch.size());
         std::vector<E> ri(d + 1, e);
         for (long long i = d - 1; i >= 0; i--) {

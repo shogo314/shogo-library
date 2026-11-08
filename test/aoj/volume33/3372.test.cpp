@@ -20,7 +20,7 @@ int main() {
     auto rt = tr.set_root(0);
     Tree<ll> tr_costed(n);
     for (int u = 0; u < n; u++) {
-        for (int v : rt.child[u]) {
+        for (int v : rt.children(u)) {
             tr_costed.add_edge(u, v, a[v]);
         }
     }

@@ -18,7 +18,7 @@ int main() {
     // 部分木は行きがけ順で連続する区間になる
     RootedTree<int> rooted = std::move(tree).set_root(0);
     std::vector<int> pos(n);
-    for (int i = 0; i < n; i++) pos[rooted.preorder[i]] = i;
+    for (int i = 0; i < n; i++) pos[rooted.preorder()[i]] = i;
     std::vector<int> v(n);
     for (int i = 0; i < n; i++) v[pos[i]] = c[i];
     SegTree<monoid::Xor<int>> seg(v);
@@ -29,7 +29,7 @@ int main() {
         if (t == 1) {
             seg.apply(pos[x], y);
         } else {
-            std::cout << seg.prod(pos[x], pos[x] + rooted.sz[x]) << '\n';
+            std::cout << seg.prod(pos[x], pos[x] + rooted.subtree_size(x)) << '\n';
         }
     }
 }

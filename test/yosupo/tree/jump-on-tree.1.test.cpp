@@ -17,8 +17,8 @@ int main() {
         int s, t, i;
         std::cin >> s >> t >> i;
         int l = dt.lca(s, t);
-        int ds = dt.unweighted_depth[s] - dt.unweighted_depth[l];
-        int dist = ds + dt.unweighted_depth[t] - dt.unweighted_depth[l];
+        int ds = dt.unweighted_depth(s) - dt.unweighted_depth(l);
+        int dist = ds + dt.unweighted_depth(t) - dt.unweighted_depth(l);
         if (i > dist) {
             std::cout << -1 << '\n';
         } else if (i <= ds) {

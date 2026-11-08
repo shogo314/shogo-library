@@ -19,7 +19,7 @@ int main() {
     RootedTree<int> tree(par, 0);
     // 行きがけ順で並べると、部分木は連続した区間 [in[u], in[u] + sz[u]) になる
     std::vector<int> in(n);
-    for (int i = 0; i < n; i++) in[tree.preorder[i]] = i;
+    for (int i = 0; i < n; i++) in[tree.preorder()[i]] = i;
     std::vector<long long> init(n);
     for (int u = 0; u < n; u++) init[in[u]] = a[u];
     RSumQ<long long> seg(init);
@@ -31,7 +31,7 @@ int main() {
             std::cin >> x;
             seg.apply(in[u], x);
         } else {
-            std::cout << seg.prod(in[u], in[u] + tree.sz[u]) << '\n';
+            std::cout << seg.prod(in[u], in[u] + tree.subtree_size(u)) << '\n';
         }
     }
 }

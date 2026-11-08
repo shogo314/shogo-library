@@ -30,6 +30,9 @@ static_assert(has_add_edge<Tree<long long>>::value);
 static_assert(!has_add_edge<RootedTree<long long>>::value);
 static_assert(std::is_same_v<decltype(std::declval<RootedTree<long long>&>()[0]), const std::vector<Graph<long long>::Edge>&>);
 static_assert(std::is_same_v<decltype(std::declval<DoublingClimbTree<long long>&>()[0]), const std::vector<Graph<long long>::Edge>&>);
+static_assert(std::is_same_v<decltype(std::declval<RootedTree<long long>&>().parent_edge(0)), const Graph<long long>::Edge&>);
+static_assert(std::is_same_v<decltype(std::declval<RootedTree<long long>&>().children(0)), const std::vector<Graph<long long>::Edge>&>);
+static_assert(std::is_same_v<decltype(std::declval<DoublingClimbTree<long long>&>().preorder()), const std::vector<long long>&>);
 
 int main() {
     bool ok = true;
@@ -45,7 +48,7 @@ int main() {
         if (t[0][0].dst != 1 || t[0][0].cost != 5 || t[2][0].cost != 1 || t[3][0].cost != 7) ok = false;
         const Graph<long long>& g = t.graph();
         if (g.m != 3 || &g[1] != &t[1]) ok = false;
-        if (t.set_root(0).depth[3] != 12) ok = false;
+        if (t.set_root(0).depth(3) != 12) ok = false;
     }
 
     // read: n - 1 本の辺を 1-indexed・重み付きで読む

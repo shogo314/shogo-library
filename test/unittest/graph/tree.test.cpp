@@ -40,8 +40,8 @@ int main() {
         DoublingClimbTree<int> from_ll(par_ll, 0);
         RootedTree<int> rooted_ll(par_ll, 0);
         for (int u = 0; u < n; u++) {
-            if (from_int.par[u].dst != from_ll.par[u].dst || rooted_ll.par[u].dst != from_ll.par[u].dst) ok = false;
-            if (u > 0 && from_ll.par[u].dst != par_ll[u - 1]) ok = false;
+            if (from_int.parent_edge(u).dst != from_ll.parent_edge(u).dst || rooted_ll.parent_edge(u).dst != from_ll.parent_edge(u).dst) ok = false;
+            if (u > 0 && from_ll.parent_edge(u).dst != par_ll[u - 1]) ok = false;
             for (int v = 0; v < n; v++) {
                 if (from_int.lca(u, v) != from_ll.lca(u, v)) ok = false;
             }
@@ -65,15 +65,34 @@ int main() {
                 stk.push_back(v);
             }
         }
-        if (dt.n != n || dt.root != root) ok = false;
+        if (dt.size() != n || dt.root() != root) ok = false;
+        std::vector<long long> subtree_size(n), unweighted_height(n), height(n);
+        for (int u = 0; u < n; u++) {
+            for (int v = u; v != -1; v = par[v]) {
+                subtree_size[v]++;
+                unweighted_height[v] = std::max(unweighted_height[v], static_cast<long long>(dep[u] - dep[v]));
+                height[v] = std::max(height[v], wdep[u] - wdep[v]);
+            }
+        }
+        std::vector<int> pre_pos(n), post_pos(n), child_count(n);
+        if (static_cast<int>(dt.preorder().size()) != n || static_cast<int>(dt.postorder().size()) != n) ok = false;
+        for (int i = 0; i < n; i++) pre_pos[dt.preorder()[i]] = i, post_pos[dt.postorder()[i]] = i;
         for (int v = 0; v < n; v++) {
-            if (dt.par[v].dst != par[v] || dt.unweighted_depth[v] != dep[v] || dt.depth[v] != wdep[v]) ok = false;
+            if (dt.parent_edge(v).dst != par[v] || dt.unweighted_depth(v) != dep[v] || dt.depth(v) != wdep[v]) ok = false;
+            if (dt.subtree_size(v) != subtree_size[v] || dt.unweighted_height(v) != unweighted_height[v] || dt.height(v) != height[v]) ok = false;
+            for (const auto& e : dt.children(v)) {
+                if (par[e.dst] != v || pre_pos[v] >= pre_pos[e.dst] || post_pos[v] <= post_pos[e.dst]) ok = false;
+                child_count[e.dst]++;
+            }
             // hop: k 個上の祖先 (存在しなければ -1)
             int x = v;
             for (int k = 0; k <= n; k++) {
                 if (dt.hop(v, k) != x) ok = false;
                 if (x != -1) x = par[x];
             }
+        }
+        for (int v = 0; v < n; v++) {
+            if (child_count[v] != (v != root)) ok = false;
         }
         for (int u = 0; u < n; u++) {
             for (int v = 0; v < n; v++) {

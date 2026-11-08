@@ -69,6 +69,18 @@ std::vector<int> naive_edge_blocks(int n, const std::vector<std::pair<int, int>>
 int main() {
     std::mt19937 rng(314);
     bool ok = true;
+    {
+        Graph<> g(5);
+        g.add_edge(0, 1);
+        g.add_edge(1, 2);
+        g.add_edge(2, 0);
+        g.add_edge(2, 3);
+        LowLink ll(g);
+        const std::vector<long long> expected_low = {0, 0, 0, 3, 4};
+        for (long long v = 0; v < 5; v++) {
+            if (ll.ord(v) != v || ll.low(v) != expected_low[v]) ok = false;
+        }
+    }
     for (int rep = 0; rep < 3000 && ok; rep++) {
         int n = rng() % 9 + 1, m = rng() % 14;
         Graph<int> g(n);

@@ -48,19 +48,16 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 | `RootedTree(tree, r)` | 木 `tree` の根を `r` にする | $O(n)$ |
 | `RootedTree(par, padding = -1)` | 頂点 1, ..., n-1 の親のリスト `par` (`std::vector<long long>` か `std::vector<int>`) から、根が 0 の木を作る。頂点番号に `padding` を足す | $O(n)$ |
 | `build_lca()` | `DoublingClimbTree` に変換する | $O(n \log n)$ |
+| `root()` | 根の頂点番号 | $O(1)$ |
+| `parent_edge(v)` | 親へ向かう辺の const 参照。根では `dst == -1` | $O(1)$ |
+| `children(v)` | 子へ向かう辺のリストの const 参照 | $O(1)$ |
+| `depth(v)` / `unweighted_depth(v)` | 根からの距離 (重み付き / 重みなし) | $O(1)$ |
+| `height(v)` / `unweighted_height(v)` | 部分木の高さ (重み付き / 重みなし) | $O(1)$ |
+| `subtree_size(v)` | 部分木の頂点数 | $O(1)$ |
+| `preorder()` / `postorder()` | 行きがけ順 / 帰りがけ順の頂点列の const 参照 | $O(1)$ |
+| `euler_tour()` | DFS で通った `(頂点, その頂点を通った回数)` の列の const 参照 | $O(1)$ |
 
-| 変数 | 説明 |
-|---|---|
-| `root` | 根 |
-| `par[v]` | 親へ向かう辺 (根では `dst == -1`) |
-| `child[v]` | 子へ向かう辺のリスト |
-| `depth[v]` / `unweighted_depth[v]` | 根からの距離 (重み付き / 重みなし) |
-| `height[v]` / `unweighted_height[v]` | 部分木の高さ (重み付き / 重みなし) |
-| `sz[v]` | 部分木の頂点数 |
-| `preorder` / `postorder` | 行きがけ順 / 帰りがけ順 |
-| `euler_tour` | オイラーツアー。DFS で通った `(頂点, その頂点を通った回数)` の列 |
-
-`root` と、`unweighted_depth`・`unweighted_height`・`sz`・`preorder`・`postorder`・`euler_tour` の要素は `long long` です。
+`root()` と、重みなしの深さ・高さ・部分木サイズ・巡回順の頂点番号は `long long` です。重み付きの深さ・高さは `Cost` です。
 
 ## `DoublingClimbTree<Cost = long long>` (ダブリング済み根付き木)
 
@@ -71,13 +68,6 @@ DoublingClimbTree dt = t.build_lca(0); // LCA・k 個上の祖先・2頂点間�
 | `hop(u, k)` | `u` から `k` 個上の祖先 (存在しなければ `-1`) | $O(\log n)$ |
 | `lca(u, v)` | 最小共通祖先 | $O(\log n)$ |
 | `dist(u, v)` | 2頂点間の距離 (重み付き) | $O(\log n)$ |
-
-| 変数 | 説明 |
-|---|---|
-| `h` | ダブリングの段数 |
-| `doubling_par[i][v]` | `v` から $2^i$ 個上の祖先 (存在しなければ `-1`) |
-
-頂点番号・段数は `long long` です。
 
 ## 関連
 

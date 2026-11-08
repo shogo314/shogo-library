@@ -13,18 +13,18 @@ int main(void) {
     std::vector<int> dp(n);
     std::vector<int> ans(n);
     for (int i = 0; i < n; i++) {
-        int u = rooted_tree.preorder[i];
-        ans[u] = std::max(dp[u], rooted_tree.height[u]);
-        auto& child = rooted_tree.child[u];
+        int u = rooted_tree.preorder()[i];
+        ans[u] = std::max(dp[u], rooted_tree.height(u));
+        auto& child = rooted_tree.children(u);
         int s = child.size();
         std::vector<int> height_lmax(s + 1), height_rmax(s + 1);
         for (int j = 0; j < s; j++) {
             auto& e = child[j];
-            height_lmax[j + 1] = std::max(height_lmax[j], rooted_tree.height[e] + e.cost);
+            height_lmax[j + 1] = std::max(height_lmax[j], rooted_tree.height(e) + e.cost);
         }
         for (int j = s - 1; j >= 0; j--) {
             auto& e = child[j];
-            height_rmax[j] = std::max(height_rmax[j + 1], rooted_tree.height[e] + e.cost);
+            height_rmax[j] = std::max(height_rmax[j + 1], rooted_tree.height(e) + e.cost);
         }
         for (int j = 0; j < s; j++) {
             auto& e = child[j];

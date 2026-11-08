@@ -27,6 +27,8 @@ Tree<int> bct = ll.block_cut_tree();             // 頂点 n + b が成分 b
 | `articulation_points()` | 関節点 (取り除くと連結成分が増える頂点) の番号の昇順のリスト | $O(1)$ |
 | `is_articulation_point(v)` | `v` が関節点か | $O(1)$ |
 | `bridges()` | 橋 (取り除くと連結成分が増える辺) の辺の番号 (`Edge::id`) の昇順のリスト | $O(1)$ |
+| `ord(v)` | DFS で頂点 `v` を訪れた順番 | $O(1)$ |
+| `low(v)` | DFS 木の子孫から、木の辺を逆にたどらずに 1 本の後退辺で行ける頂点の `ord` の最小値 | $O(1)$ |
 | `is_bridge(id)` | 番号 `id` の辺が橋か | $O(1)$ |
 | `two_edge_connected_groups()` | 二重辺連結成分 (橋をすべて取り除いたときの連結成分) ごとの頂点のリスト | $O(1)$ |
 | `two_edge_connected_group_id(v)` | `v` が属する二重辺連結成分の番号 (`two_edge_connected_groups()` の添字) | $O(1)$ |
@@ -36,13 +38,6 @@ Tree<int> bct = ll.block_cut_tree();             // 頂点 n + b が成分 b
 | `block_cut_tree()` | Block-Cut Tree を [`Tree<int>`](tree.hpp) で返す (下を参照) | $O(n + m)$ |
 
 頂点番号・辺の番号・成分の番号は `long long` です。
-
-## メンバ変数
-
-| 変数 | 説明 |
-|---|---|
-| `ord[v]` | DFS で訪れた順番 |
-| `low[v]` | DFS 木の子孫から、木の辺を逆にたどらずに 1 本の後退辺で行ける頂点の `ord` の最小値 (lowlink の値) |
 
 ## 二重頂点連結成分と Block-Cut Tree
 

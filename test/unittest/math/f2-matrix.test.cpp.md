@@ -4,7 +4,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/math/f2-matrix.hpp
     title: "F2 \u306E\u884C\u5217 (mod 2)"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: src/math/matrix.hpp
     title: "\u884C\u5217"
   _extendedRequiredBy: []

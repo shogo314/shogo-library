@@ -1,14 +1,14 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: src/math/matrix.hpp
     title: "\u884C\u5217"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/matrix_det_arbitrary_mod
@@ -510,14 +510,14 @@ data:
     #line 7 \"test/yosupo/linear_algebra/matrix-det-arbitrary-mod.test.cpp\"\n\nint\
     \ main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    int n;\n    long long mod;\n    std::cin >> n >> mod;\n    std::vector<std::vector<long\
-    \ long>> a(n, std::vector<long long>(n));\n    for (auto row : a)\n        for\
+    \ long>> a(n, std::vector<long long>(n));\n    for (auto& row : a)\n        for\
     \ (auto& x : row) std::cin >> x;\n    std::cout << Matrix<long long>(a).det_mod(mod)\
     \ << '\\n';\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/matrix_det_arbitrary_mod\"\
     \n\n#include <iostream>\n#include <vector>\n\n#include \"../../../src/math/matrix.hpp\"\
     \n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    int n;\n    long long mod;\n    std::cin >> n >> mod;\n    std::vector<std::vector<long\
-    \ long>> a(n, std::vector<long long>(n));\n    for (auto row : a)\n        for\
+    \ long>> a(n, std::vector<long long>(n));\n    for (auto& row : a)\n        for\
     \ (auto& x : row) std::cin >> x;\n    std::cout << Matrix<long long>(a).det_mod(mod)\
     \ << '\\n';\n}\n"
   dependsOn:
@@ -525,8 +525,8 @@ data:
   isVerificationFile: true
   path: test/yosupo/linear_algebra/matrix-det-arbitrary-mod.test.cpp
   requiredBy: []
-  timestamp: '2026-11-09 06:22:11+09:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2026-11-09 07:00:50+09:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/linear_algebra/matrix-det-arbitrary-mod.test.cpp
 layout: document

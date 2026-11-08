@@ -147,7 +147,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/math/linear-recurrence.hpp
     title: "\u7DDA\u5F62\u6F38\u5316\u5F0F (Bostan-Mori\u30FBBerlekamp-Massey)"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: src/math/modint.hpp
     title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
       \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9"
@@ -821,22 +821,22 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/incremental-minimum-spanning-forest.test.cpp
     title: test/yosupo/graph/incremental-minimum-spanning-forest.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/characteristic-polynomial.test.cpp
     title: test/yosupo/linear_algebra/characteristic-polynomial.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/inverse-matrix.test.cpp
     title: test/yosupo/linear_algebra/inverse-matrix.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/matrix-det.test.cpp
     title: test/yosupo/linear_algebra/matrix-det.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/matrix-product.test.cpp
     title: test/yosupo/linear_algebra/matrix-product.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/matrix-rank.test.cpp
     title: test/yosupo/linear_algebra/matrix-rank.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/pow-of-matrix.test.cpp
     title: test/yosupo/linear_algebra/pow-of-matrix.test.cpp
   - icon: ':heavy_check_mark:'
@@ -1019,9 +1019,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/674.2.test.cpp
     title: test/yukicoder/674.2.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "\u578B\u7279\u6027"
     links: []
@@ -1230,7 +1230,7 @@ data:
   - src/string/rolling-hash.hpp
   - src/string/wildcard-matching.hpp
   timestamp: '2026-11-08 20:13:03+09:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/yukicoder/1641.test.cpp
   - test/yukicoder/674.2.test.cpp

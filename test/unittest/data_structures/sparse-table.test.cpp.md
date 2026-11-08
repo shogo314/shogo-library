@@ -7,7 +7,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/data_structures/sparse-table.hpp
     title: Sparse Table
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []

@@ -1,21 +1,21 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: src/math/matrix.hpp
     title: "\u884C\u5217"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: src/math/modint.hpp
     title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
       \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: cpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/inverse_matrix
@@ -822,7 +822,7 @@ data:
     using modint = dynamic_modint<-1>;\n#line 8 \"test/yosupo/linear_algebra/inverse-matrix.test.cpp\"\
     \n\nusing mint = modint998244353;\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
     \    std::cin.tie(nullptr);\n    int n;\n    std::cin >> n;\n    std::vector<std::vector<mint>>\
-    \ a(n, std::vector<mint>(n));\n    for (auto row : a)\n        for (auto& x :\
+    \ a(n, std::vector<mint>(n));\n    for (auto& row : a)\n        for (auto& x :\
     \ row) std::cin >> x;\n    Matrix<mint> A(a);\n    auto B = A.inv();\n    if (!B)\
     \ {\n        std::cout << -1 << '\\n';\n        return 0;\n    }\n    for (int\
     \ i = 0; i < n; i++) {\n        for (int j = 0; j < n; j++) std::cout << (*B)[i][j]\
@@ -832,7 +832,7 @@ data:
     #include \"../../../src/math/modint.hpp\"\n\nusing mint = modint998244353;\n\n\
     int main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    int n;\n    std::cin >> n;\n    std::vector<std::vector<mint>> a(n, std::vector<mint>(n));\n\
-    \    for (auto row : a)\n        for (auto& x : row) std::cin >> x;\n    Matrix<mint>\
+    \    for (auto& row : a)\n        for (auto& x : row) std::cin >> x;\n    Matrix<mint>\
     \ A(a);\n    auto B = A.inv();\n    if (!B) {\n        std::cout << -1 << '\\\
     n';\n        return 0;\n    }\n    for (int i = 0; i < n; i++) {\n        for\
     \ (int j = 0; j < n; j++) std::cout << (*B)[i][j] << \" \\n\"[j == n - 1];\n \
@@ -844,8 +844,8 @@ data:
   isVerificationFile: true
   path: test/yosupo/linear_algebra/inverse-matrix.test.cpp
   requiredBy: []
-  timestamp: '2026-11-09 06:22:11+09:00'
-  verificationStatus: TEST_WRONG_ANSWER
+  timestamp: '2026-11-09 07:00:50+09:00'
+  verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/linear_algebra/inverse-matrix.test.cpp
 layout: document

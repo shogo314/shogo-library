@@ -4,7 +4,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/base/functions.hpp
     title: "\u6C4E\u7528\u95A2\u6570 (chmin, chmax \u306A\u3069)"
-  - icon: ':question:'
+  - icon: ':heavy_check_mark:'
     path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []

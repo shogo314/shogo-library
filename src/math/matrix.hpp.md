@@ -18,25 +18,25 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
     title: test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/characteristic-polynomial.test.cpp
     title: test/yosupo/linear_algebra/characteristic-polynomial.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/inverse-matrix.test.cpp
     title: test/yosupo/linear_algebra/inverse-matrix.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/matrix-det-arbitrary-mod.test.cpp
     title: test/yosupo/linear_algebra/matrix-det-arbitrary-mod.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/matrix-det.test.cpp
     title: test/yosupo/linear_algebra/matrix-det.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/matrix-product.test.cpp
     title: test/yosupo/linear_algebra/matrix-product.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/matrix-rank.test.cpp
     title: test/yosupo/linear_algebra/matrix-rank.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/pow-of-matrix.test.cpp
     title: test/yosupo/linear_algebra/pow-of-matrix.test.cpp
   - icon: ':heavy_check_mark:'
@@ -51,9 +51,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/565.2.test.cpp
     title: test/yukicoder/565.2.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: "\u884C\u5217"
     links: []
@@ -1043,7 +1043,7 @@ data:
   path: src/math/matrix.hpp
   requiredBy: []
   timestamp: '2026-11-09 06:22:11+09:00'
-  verificationStatus: LIBRARY_SOME_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/yukicoder/565.2.test.cpp
   - test/yukicoder/565.1.test.cpp

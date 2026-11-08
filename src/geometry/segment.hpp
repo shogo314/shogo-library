@@ -14,6 +14,44 @@
 #include "vector.hpp"
 
 /**
+ * @brief 2 点で表す直線。p1 != p2 が必要。等値比較は同じ直線かを判定する
+ */
+template <typename T = long long>
+struct Line {
+    Vector<T, 2> p1, p2;
+
+    constexpr Line(const Vector<T, 2>& p1, const Vector<T, 2>& p2) : p1(p1), p2(p2) {
+        assert(p1 != p2 && "Line: degenerate line");
+    }
+    constexpr bool operator==(const Line& other) const {
+        assert(p1 != p2 && other.p1 != other.p2 && "Line: degenerate line");
+        return cross(p2 - p1, other.p1 - p1) == 0 && cross(p2 - p1, other.p2 - p1) == 0;
+    }
+    constexpr bool operator!=(const Line& other) const { return !(*this == other); }
+};
+
+template <typename T>
+Line(const Vector<T, 2>&, const Vector<T, 2>&) -> Line<T>;
+
+/**
+ * @brief 2 端点で表す線分。長さ 0 も許す。等値比較では端点の順序を無視する
+ */
+template <typename T = long long>
+struct Segment {
+    Vector<T, 2> p1, p2;
+
+    constexpr Segment() = default;
+    constexpr Segment(const Vector<T, 2>& p1, const Vector<T, 2>& p2) : p1(p1), p2(p2) {}
+    constexpr bool operator==(const Segment& other) const {
+        return (p1 == other.p1 && p2 == other.p2) || (p1 == other.p2 && p2 == other.p1);
+    }
+    constexpr bool operator!=(const Segment& other) const { return !(*this == other); }
+};
+
+template <typename T>
+Segment(const Vector<T, 2>&, const Vector<T, 2>&) -> Segment<T>;
+
+/**
  * @brief 線分の交差判定
  *
  * 整数型でも使える。外積を計算するため、座標の絶対値の2乗の数倍がTに収まる必要がある
@@ -162,4 +200,64 @@ double distance_segments(const Vector<T, 2>& p1, const Vector<T, 2>& p2, const V
     if (p1 != p2 && q1 != q2 && segments_intersect(p1, p2, q1, q2)) return 0;
     return std::min({distance_point_segment(p1, p2, q1), distance_point_segment(p1, p2, q2),
                      distance_point_segment(q1, q2, p1), distance_point_segment(q1, q2, p2)});
+}
+
+/** @brief 線分の型を受け取る segments_intersect */
+template <typename T>
+constexpr bool segments_intersect(const Segment<T>& a, const Segment<T>& b) {
+    return segments_intersect(a.p1, a.p2, b.p1, b.p2);
+}
+
+/** @brief 線分の型を受け取る segment_intersection */
+template <typename T>
+constexpr std::optional<Vector<T, 2>> segment_intersection(const Segment<T>& a, const Segment<T>& b) {
+    return segment_intersection(a.p1, a.p2, b.p1, b.p2);
+}
+
+/** @brief 直線の型を受け取る is_parallel */
+template <typename T>
+constexpr bool is_parallel(const Line<T>& a, const Line<T>& b) {
+    return is_parallel(a.p1, a.p2, b.p1, b.p2);
+}
+
+/** @brief 直線の型を受け取る is_orthogonal */
+template <typename T>
+constexpr bool is_orthogonal(const Line<T>& a, const Line<T>& b) {
+    return is_orthogonal(a.p1, a.p2, b.p1, b.p2);
+}
+
+/** @brief 直線の型を受け取る line_intersection */
+template <typename T>
+constexpr std::optional<Vector<T, 2>> line_intersection(const Line<T>& a, const Line<T>& b) {
+    return line_intersection(a.p1, a.p2, b.p1, b.p2);
+}
+
+/** @brief 直線の型を受け取る projection */
+template <typename T>
+constexpr Vector<T, 2> projection(const Line<T>& a, const Vector<T, 2>& p) {
+    return projection(a.p1, a.p2, p);
+}
+
+/** @brief 直線の型を受け取る reflection */
+template <typename T>
+constexpr Vector<T, 2> reflection(const Line<T>& a, const Vector<T, 2>& p) {
+    return reflection(a.p1, a.p2, p);
+}
+
+/** @brief 直線の型を受け取る distance_point_line */
+template <typename T>
+double distance_point_line(const Line<T>& a, const Vector<T, 2>& p) {
+    return distance_point_line(a.p1, a.p2, p);
+}
+
+/** @brief 線分の型を受け取る distance_point_segment */
+template <typename T>
+double distance_point_segment(const Segment<T>& a, const Vector<T, 2>& p) {
+    return distance_point_segment(a.p1, a.p2, p);
+}
+
+/** @brief 線分の型を受け取る distance_segments */
+template <typename T>
+double distance_segments(const Segment<T>& a, const Segment<T>& b) {
+    return distance_segments(a.p1, a.p2, b.p1, b.p2);
 }

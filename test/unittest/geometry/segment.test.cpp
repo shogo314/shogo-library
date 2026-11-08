@@ -40,6 +40,11 @@ int main() {
         }
         if (a == b || c == d) continue;
 
+        Line ab(a, b), cd(c, d);
+        ok = ok && ab == Line(b, a) && ab == Line(a + (b - a) * 3, a - (b - a) * 2);
+        ok = ok && (ab == cd) == (cross(b - a, c - a) == 0 && cross(b - a, d - a) == 0);
+        ok = ok && (ab != cd) == !(ab == cd);
+
         ok = ok && is_parallel(a, b, c, d) == (cross(b - a, d - c) == 0);
         ok = ok && is_orthogonal(a, b, c, d) == (dot(b - a, d - c) == 0);
 
@@ -75,6 +80,31 @@ int main() {
             ok = ok && dss > 0 && near(dss, std::min({distance_point_segment(a, b, c), distance_point_segment(a, b, d), distance_point_segment(c, d, a), distance_point_segment(c, d, b)}));
         }
         ok = ok && near(distance_segments(pa, pb, pc, pd), dss);
+    }
+
+    // 直線は選んだ点や方向によらず一致し、線分は端点の順序によらず一致する
+    {
+        Line a(L(0, 0), L(2, 2));
+        Line b(L(5, 5), L(-1, -1));
+        Line parallel(L(0, 1), L(2, 3));
+        Line crossing(L(0, 2), L(2, 0));
+        ok = ok && a == b && b == a && a != parallel && a != crossing;
+        ok = ok && is_parallel(a, b) && is_parallel(a, parallel) && is_orthogonal(a, crossing);
+        Segment s(L(0, 0), L(2, 2)), reversed(L(2, 2), L(0, 0));
+        Segment t(L(0, 2), L(2, 0)), longer(L(0, 0), L(3, 3));
+        ok = ok && s == reversed && reversed == s && s != longer;
+        ok = ok && segments_intersect(s, t) && distance_segments(s, t) == 0;
+        Segment point(L(1, 1), L(1, 1));
+        ok = ok && near(distance_point_segment(point, L(4, 5)), 5);
+        ok = ok && distance_segments(point, s) == 0;
+        ok = ok && near(distance_point_line(a, L(0, 2)), std::sqrt(2.0));
+        Line horizontal(P(0, 0), P(2, 0)), vertical(P(1, -1), P(1, 1));
+        ok = ok && line_intersection(horizontal, vertical) == std::optional<P>(P(1, 0));
+        ok = ok && !line_intersection(horizontal, Line(P(3, 0), P(4, 0)));
+        ok = ok && projection(horizontal, P(1, 3)) == P(1, 0);
+        ok = ok && reflection(horizontal, P(1, 3)) == P(1, -3);
+        ok = ok && segment_intersection(Segment(P(0, 0), P(2, 2)), Segment(P(0, 2), P(2, 0))) == std::optional<P>(P(1, 1));
+        ok = ok && !segment_intersection(Segment(P(0, 0), P(1, 0)), Segment(P(2, 0), P(3, 0)));
     }
 
     // 例

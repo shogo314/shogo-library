@@ -28,4 +28,4 @@ long long s = largest_square(4, 5, f);     // 2 (2 × 2)
 
 ## 関連
 
-- グリッドの近傍をたどるには [Python の range のような整数列と、その直積の Rect](../utility/range.hpp) の `Rect`
+- グリッドの近傍をたどるには [Python の range のような整数列と、その直積の Grid](../utility/range.hpp) の `Grid`

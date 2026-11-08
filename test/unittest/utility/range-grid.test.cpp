@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A"
 
-// Rect (2 つの Range の直積) を、2 重ループで愚直に作った (i, j) の列とランダムに比較する
+// Grid (2 つの Range の直積) を、2 重ループで愚直に作った (i, j) の列とランダムに比較する
 // neighbors4 / neighbors8 は、位置の差で愚直に選んだものと比べる
 // Range::contains の step = 1 の近道も、愚直な判定と比べる
 // 問題の入力は使わず、すべて一致したら Hello World を出力する
@@ -31,23 +31,23 @@ std::vector<ll> naive_range(ll start, ll stop, ll step) {
 }
 
 // コンパイル時にも使える
-static_assert(Rect(3, 4).size() == 12);
-static_assert(Rect(3, 4).index(2, 1) == 9);
-static_assert(Rect(3, 4)[9] == P(2, 1));
-static_assert(Rect(3, 4).contains(2, 3) && !Rect(3, 4).contains(3, 0) && !Rect(3, 4).contains(0, -1));
-static_assert(Rect({1, 4}, {10, 0, -5}).size() == 6);
+static_assert(Grid(3, 4).size() == 12);
+static_assert(Grid(3, 4).index(2, 1) == 9);
+static_assert(Grid(3, 4)[9] == P(2, 1));
+static_assert(Grid(3, 4).contains(2, 3) && !Grid(3, 4).contains(3, 0) && !Grid(3, 4).contains(0, -1));
+static_assert(Grid({1, 4}, {10, 0, -5}).size() == 6);
 constexpr ll sum_in_constexpr() {
     ll s = 0;
-    for (auto [i, j] : Rect(3, 4)) s += i * 10 + j;
+    for (auto [i, j] : Grid(3, 4)) s += i * 10 + j;
     return s;
 }
-static_assert(Rect(3, 4).neighbors4(0, 0).size() == 2 && Rect(3, 4).neighbors8(1, 1).size() == 8);
-static_assert(*++Rect(3, 4).neighbors4(2, 3).begin() == P(2, 2));
+static_assert(Grid(3, 4).neighbors4(0, 0).size() == 2 && Grid(3, 4).neighbors8(1, 1).size() == 8);
+static_assert(*++Grid(3, 4).neighbors4(2, 3).begin() == P(2, 2));
 static_assert(sum_in_constexpr() == 4 * (0 + 10 + 20) + 3 * (0 + 1 + 2 + 3));
-static_assert(std::is_same_v<std::iterator_traits<Rect::const_iterator>::iterator_category, std::forward_iterator_tag>);
+static_assert(std::is_same_v<std::iterator_traits<Grid::const_iterator>::iterator_category, std::forward_iterator_tag>);
 #if __cplusplus >= 202002L
-static_assert(std::forward_iterator<Rect::const_iterator>);
-static_assert(std::ranges::forward_range<Rect> && std::ranges::sized_range<Rect>);
+static_assert(std::forward_iterator<Grid::const_iterator>);
+static_assert(std::ranges::forward_range<Grid> && std::ranges::sized_range<Grid>);
 #endif
 
 int main() {
@@ -69,7 +69,7 @@ int main() {
 
     for (int rep = 0; rep < 3000 && ok; rep++) {
         const Range r = random_range(), c = random_range();
-        const Rect rect(r, c);
+        const Grid rect(r, c);
         std::vector<ll> rv = naive_range(r.start, r.stop, r.step), cv = naive_range(c.start, c.stop, c.step);
         std::vector<P> expected;
         for (ll i : rv)
@@ -102,7 +102,7 @@ int main() {
             check(rect.contains(i, j) == in && rect.contains(P(i, j)) == in, "contains");
         }
 
-        // neighbors4 / neighbors8: 位置 (rows・cols の何番目か) の差が 1 以内のものを Rect の順に
+        // neighbors4 / neighbors8: 位置 (rows・cols の何番目か) の差が 1 以内のものを Grid の順に
         for (ll k = 0; k < static_cast<ll>(expected.size()); k++) {
             const ll w = static_cast<ll>(cv.size()), ki = k / w, kj = k % w;
             std::vector<P> e4, e8;
@@ -119,9 +119,9 @@ int main() {
         }
 
         // ==: 要素の列として等しいか
-        const Rect same(Range(r.start, r.stop, r.step), Range(c.start, c.stop, c.step));
+        const Grid same(Range(r.start, r.stop, r.step), Range(c.start, c.stop, c.step));
         check(rect == same && !(rect != same), "== 同じもの");
-        const Rect other(random_range(), random_range());
+        const Grid other(random_range(), random_range());
         std::vector<P> ov(other.begin(), other.end());
         check((rect == other) == (ov == expected), "== ランダム");
     }
@@ -139,27 +139,27 @@ int main() {
 
     // 決まった値
     {
-        Rect g(2, 3);
+        Grid g(2, 3);
         std::vector<P> v(g.begin(), g.end());
-        check(v == std::vector<P>{{0, 0}, {0, 1}, {0, 2}, {1, 0}, {1, 1}, {1, 2}}, "Rect(2, 3)");
-        check(Rect(0, 5).empty() && Rect(5, 0).empty() && Rect(-1, 3).empty() && Rect(0, 5).begin() == Rect(0, 5).end(), "空");
-        check(Rect(0, 5) == Rect(3, 0), "空どうしは等しい");
-        check(g.repr() == "Rect(Range(0, 2, 1), Range(0, 3, 1))" && g.initializer_str() == "{{0, 2, 1}, {0, 3, 1}}" && Rect::type_str() == "Rect", "repr");
+        check(v == std::vector<P>{{0, 0}, {0, 1}, {0, 2}, {1, 0}, {1, 1}, {1, 2}}, "Grid(2, 3)");
+        check(Grid(0, 5).empty() && Grid(5, 0).empty() && Grid(-1, 3).empty() && Grid(0, 5).begin() == Grid(0, 5).end(), "空");
+        check(Grid(0, 5) == Grid(3, 0), "空どうしは等しい");
+        check(g.repr() == "Grid(Range(0, 2, 1), Range(0, 3, 1))" && g.initializer_str() == "{{0, 2, 1}, {0, 3, 1}}" && Grid::type_str() == "Grid", "repr");
         std::vector<P> n4, n8;
         for (auto [i, j] : g.neighbors4(1, 1)) n4.emplace_back(i, j);
         for (auto [i, j] : g.neighbors8({0, 0})) n8.emplace_back(i, j);
         check(n4 == std::vector<P>{{0, 1}, {1, 0}, {1, 2}} && n8 == std::vector<P>{{0, 1}, {1, 0}, {1, 1}}, "neighbors 決まった値");
-        check(Rect(1, 1).neighbors8(0, 0).empty(), "neighbors 1 マス");
-        Rect h(g);  // コピー
+        check(Grid(1, 1).neighbors8(0, 0).empty(), "neighbors 1 マス");
+        Grid h(g);  // コピー
         check(h == g, "copy");
     }
 #if __cplusplus >= 202002L
     {
         // C++20 の range として views と組み合わせられる (代入できないので、一時オブジェクトではなく変数を渡す)
         ll cnt = 0;
-        const Rect g(4, 4);
+        const Grid g(4, 4);
         for (auto [i, j] : g | std::views::filter([](P p) { return p.first == p.second; })) cnt += i + j;
-        check(cnt == 12 && std::ranges::size(Rect(3, 5)) == 15, "views");
+        check(cnt == 12 && std::ranges::size(Grid(3, 5)) == 15, "views");
     }
 #endif
 

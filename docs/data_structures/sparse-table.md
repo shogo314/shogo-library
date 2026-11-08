@@ -32,4 +32,6 @@ SparseTable st(v, Monoid([](int a, int b) { return std::max(a, b); }, 0));
 
 ## 関連
 
+- 冪等でないモノイドの静的な区間積は [Disjoint Sparse Table](disjoint-sparse-table.hpp)
+
 - 値の変更が必要なら [セグメント木](segtree.hpp)

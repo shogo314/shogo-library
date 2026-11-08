@@ -2,6 +2,9 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
+    path: src/base/functions.hpp
+    title: "\u6C4E\u7528\u95A2\u6570 (chmin, chmax \u306A\u3069)"
+  - icon: ':heavy_check_mark:'
     path: src/math/modint.hpp
     title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
       \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9"
@@ -756,91 +759,169 @@ data:
     \ long j = 0; j < sz; j++) res.push_back(res[j] * pw);\n            }\n      \
     \  }\n        std::sort(res.begin(), res.end());\n        return res;\n    }\n\
     };\n#line 2 \"src/math/quotients.hpp\"\n\n/**\n * @file quotients.hpp\n * @brief\
-    \ \u5546\u306E\u5217\u6319 (floor(n / i) \u304C\u540C\u3058\u5024\u306B\u306A\u308B\
-    \ i \u306E\u533A\u9593)\n */\n\n#line 10 \"src/math/quotients.hpp\"\n\n/**\n *\
-    \ @brief \u5546 q = floor(n / i) \u3068\u3001\u305D\u308C\u3092\u3068\u308B i\
-    \ \u306E\u533A\u9593 [l, r]\n */\nstruct QuotientRange {\n    long long q;  //!<\
+    \ \u5546\u306E\u5217\u6319 (floor(n / i)\u30FBfloor((a x + b) / m) \u304C\u4E00\
+    \u5B9A\u306E\u533A\u9593)\n */\n\n#line 11 \"src/math/quotients.hpp\"\n\n#line\
+    \ 2 \"src/base/functions.hpp\"\n\n/**\n * @file functions.hpp\n * @brief \u6C4E\
+    \u7528\u95A2\u6570 (chmin, chmax \u306A\u3069)\n */\n\n#line 13 \"src/base/functions.hpp\"\
+    \n#if __cplusplus >= 202002L\n#include <ranges>\n#endif\n#line 18 \"src/base/functions.hpp\"\
+    \n\ntemplate <typename T1, typename T2>\ninline constexpr bool chmin(T1& a, T2\
+    \ b) {\n    if (a > b) {\n        a = b;\n        return true;\n    }\n    return\
+    \ false;\n}\n\ntemplate <typename T1, typename T2>\ninline constexpr bool chmax(T1&\
+    \ a, T2 b) {\n    if (a < b) {\n        a = b;\n        return true;\n    }\n\
+    \    return false;\n}\n\ninline constexpr long long max(const long long& t1, const\
+    \ long long& t2) {\n    return std::max<long long>(t1, t2);\n}\n\ninline constexpr\
+    \ long long min(const long long& t1, const long long& t2) {\n    return std::min<long\
+    \ long>(t1, t2);\n}\n\nusing std::abs;\nusing std::gcd;\nusing std::lcm;\nusing\
+    \ std::size;\n\n#if __cplusplus >= 202002L\nusing std::midpoint;\n#else\n// C++20\
+    \ \u306E std::midpoint \u3068\u540C\u3058 (\u6574\u6570\u306F a \u306E\u5074\u306B\
+    \u4E38\u3081\u3001\u3042\u3075\u308C\u306A\u3044)\ntemplate <typename T>\ninline\
+    \ constexpr std::enable_if_t<std::is_integral_v<T> && !std::is_same_v<T, bool>,\
+    \ T> midpoint(T a, T b) noexcept {\n    using U = std::make_unsigned_t<T>;\n \
+    \   if (a <= b) return static_cast<T>(a + static_cast<T>(static_cast<U>(static_cast<U>(b)\
+    \ - static_cast<U>(a)) >> 1));\n    return static_cast<T>(a - static_cast<T>(static_cast<U>(static_cast<U>(a)\
+    \ - static_cast<U>(b)) >> 1));\n}\ntemplate <typename T>\ninline constexpr std::enable_if_t<std::is_floating_point_v<T>,\
+    \ T> midpoint(T a, T b) noexcept {\n    constexpr T lo = std::numeric_limits<T>::min()\
+    \ * 2;\n    constexpr T hi = std::numeric_limits<T>::max() / 2;\n    const T abs_a\
+    \ = a < 0 ? -a : a, abs_b = b < 0 ? -b : b;\n    if (abs_a <= hi && abs_b <= hi)\
+    \ return (a + b) / 2;\n    if (abs_a < lo) return a + b / 2;\n    if (abs_b <\
+    \ lo) return a / 2 + b;\n    return a / 2 + b / 2;\n}\ntemplate <typename T>\n\
+    inline constexpr std::enable_if_t<std::is_object_v<T>, T*> midpoint(T* a, T* b)\
+    \ noexcept {\n    return a + (b - a) / 2;\n}\n#endif\n\n/**\n * \u8981\u7D20\u6570\
+    \u3092 long long \u3067\u8FD4\u3059 (std::ssize \u306E long long \u7248)\n * size()\
+    \ \u3092\u6301\u3064\u578B\u306A\u3089\u3001begin() \u3068 end() \u3092\u6301\u305F\
+    \u306A\u3044\u81EA\u4F5C\u306E\u578B\u306B\u3082\u4F7F\u3048\u308B\n */\n#if __cplusplus\
+    \ >= 202002L\ntemplate <typename R>\n    requires requires(R& r) { std::ranges::size(r);\
+    \ }\ninline constexpr long long len(R&& r) {\n    return static_cast<long long>(std::ranges::size(r));\n\
+    }\n#else\ntemplate <typename C>\ninline constexpr auto len(const C& c) -> decltype(static_cast<long\
+    \ long>(std::size(c))) {\n    return static_cast<long long>(std::size(c));\n}\n\
+    #endif\n\ntemplate <typename T>\nconstexpr T extgcd(const T& a, const T& b, T&\
+    \ x, T& y) {\n    T d = a;\n    if (b != 0) {\n        d = extgcd(b, a % b, y,\
+    \ x);\n        y -= (a / b) * x;\n    } else {\n        x = 1;\n        y = 0;\n\
+    \    }\n    return d;\n}\n\n/**\n * floor(a / b) (b != 0\u3001\u8CA0\u306E\u6570\
+    \u3082\u53EF)\n */\ntemplate <typename T1, typename T2>\ninline constexpr std::common_type_t<T1,\
+    \ T2> floordiv(T1 a, T2 b) {\n    return a / b - (a % b != 0 && (a < 0) != (b\
+    \ < 0));\n}\n/**\n * ceil(a / b) (b != 0\u3001\u8CA0\u306E\u6570\u3082\u53EF)\n\
+    \ */\ntemplate <typename T1, typename T2>\ninline constexpr std::common_type_t<T1,\
+    \ T2> ceildiv(T1 a, T2 b) {\n    return a / b + (a % b != 0 && (a < 0) == (b <\
+    \ 0));\n}\n/**\n * {floor(a / b), a - b * floor(a / b)} (b != 0\u3001\u8CA0\u306E\
+    \u6570\u3082\u53EF)\n * \u4F59\u308A\u306F 0 \u307E\u305F\u306F b \u3068\u540C\
+    \u3058\u7B26\u53F7\u306B\u306A\u308B\n */\ntemplate <typename T1, typename T2>\n\
+    inline constexpr std::pair<std::common_type_t<T1, T2>, std::common_type_t<T1,\
+    \ T2>> divmod(T1 a, T2 b) {\n    std::common_type_t<T1, T2> q = floordiv(a, b);\n\
+    \    return {q, a - q * b};\n}\n\n/**\n * 0 <= x < a\n */\ninline constexpr bool\
+    \ inrange(long long x, long long a) {\n    return 0 <= x && x < a;\n}\n/**\n *\
+    \ a <= x < b\n */\ninline constexpr bool inrange(long long x, long long a, long\
+    \ long b) {\n    return a <= x && x < b;\n}\n/**\n * 0 <= x < a and 0 <= y < b\n\
+    \ */\ninline constexpr bool inrect(long long x, long long y, long long a, long\
+    \ long b) {\n    return 0 <= x && x < a && 0 <= y && y < b;\n}\n#line 13 \"src/math/quotients.hpp\"\
+    \n\n/**\n * @brief \u5546 q \u3068\u3001\u305D\u308C\u3092\u3068\u308B\u6DFB\u5B57\
+    \u306E\u533A\u9593 [l, r)\n */\nstruct QuotientRange {\n    long long q;  //!<\
     \ \u5546\n    long long l;  //!< \u533A\u9593\u306E\u5DE6\u7AEF (\u542B\u3080\
-    )\n    long long r;  //!< \u533A\u9593\u306E\u53F3\u7AEF (\u542B\u3080)\n};\n\n\
-    /**\n * @brief i = 1, ..., n \u3092 floor(n / i) \u306E\u5024\u3067\u533A\u9593\
-    \u306B\u5206\u3051\u3001i \u306E\u6607\u9806 (\u5546\u306E\u964D\u9806) \u306B\
-    \ f(q, l, r) \u3092\u547C\u3076 O(sqrt(n))\n * l <= i <= r \u306A\u3089 floor(n\
-    \ / i) == q\n */\ntemplate <typename F>\nvoid for_each_quotient(long long n, F\
-    \ f) {\n    assert(n >= 0);\n    for (long long l = 1; l <= n;) {\n        long\
-    \ long q = n / l, r = n / q;\n        f(q, l, r);\n        l = r + 1;\n    }\n\
-    }\n\n/**\n * @brief i = 1, ..., n \u3092 floor(n / i) \u306E\u5024\u3067\u533A\
-    \u9593\u306B\u5206\u3051\u305F\u3082\u306E (i \u306E\u6607\u9806\u3001\u3064\u307E\
-    \u308A\u5546\u306E\u964D\u9806) O(sqrt(n))\n * \u533A\u9593\u306E\u500B\u6570\u306F\
-    \ 2 sqrt(n) \u4EE5\u4E0B\n */\ninline std::vector<QuotientRange> enumerate_quotients(long\
-    \ long n) {\n    std::vector<QuotientRange> res;\n    for_each_quotient(n, [&](long\
-    \ long q, long long l, long long r) { res.push_back({q, l, r}); });\n    return\
-    \ res;\n}\n#line 16 \"test/unittest/math/prime-counting.test.cpp\"\n\nusing mint\
-    \ = static_modint<998244353>;\n\nbool ok = true;\nvoid check(bool cond, const\
-    \ char* what) {\n    if (!cond && ok) std::cerr << \"failed: \" << what << std::endl;\n\
-    \    if (!cond) ok = false;\n}\n\nint main() {\n    const long long N = 10000000;\n\
-    \    Sieve sv(N);\n    // cnt[v]: v \u4EE5\u4E0B\u306E\u7D20\u6570\u306E\u500B\
-    \u6570\u3001sum[v]: v \u4EE5\u4E0B\u306E\u7D20\u6570\u306E\u548C\u3001sq[v]: v\
-    \ \u4EE5\u4E0B\u306E\u7D20\u6570\u306E 2 \u4E57\u306E\u548C (mod)\n    std::vector<long\
-    \ long> cnt(N + 1, 0);\n    std::vector<__int128> sum(N + 1, 0);\n    std::vector<mint>\
-    \ sq(N + 1, 0);\n    for (long long v = 1; v <= N; v++) {\n        bool p = sv.is_prime(v);\n\
-    \        cnt[v] = cnt[v - 1] + p;\n        sum[v] = sum[v - 1] + (p ? v : 0);\n\
-    \        sq[v] = sq[v - 1] + (p ? mint(v) * v : mint(0));\n    }\n\n    // \u5C0F\
-    \u3055\u3044 n \u306F\u3059\u3079\u3066\u3001\u8868\u306E\u3059\u3079\u3066\u306E\
-    \u5024\u307E\u3067\u6BD4\u3079\u308B\n    for (long long n = 1; n <= 3000 && ok;\
-    \ n++) {\n        check(prime_count(n) == cnt[n], \"prime_count \u5C0F\u3055\u3044\
-    \ n\");\n        auto t = prime_count_table(n);\n        for (auto [q, l, r] :\
-    \ enumerate_quotients(n)) check(t(q) == cnt[q], \"prime_count_table\");\n    \
-    \    // values() \u306F floor(n / k) \u306E\u3068\u308B\u5024\u306E\u6607\u9806\
-    \n        std::vector<long long> qs;\n        for (auto [q, l, r] : enumerate_quotients(n))\
-    \ qs.insert(qs.begin(), q);\n        check(t.values() == qs, \"values\");\n  \
-    \  }\n    check(prime_count(0) == 0 && prime_count(1) == 0 && prime_count(2) ==\
-    \ 1, \"prime_count 0, 1, 2\");\n\n    // \u30E9\u30F3\u30C0\u30E0\u306A n (10^7\
-    \ \u307E\u3067)\u3002\u7D20\u6570\u306E\u548C (__int128) \u3068 2 \u4E57\u306E\
-    \u548C (mod) \u3082\u6BD4\u3079\u308B\n    std::mt19937_64 rng(314);\n    for\
-    \ (int rep = 0; rep < 30 && ok; rep++) {\n        long long n = rep < 3 ? N -\
-    \ rep : static_cast<long long>(rng() % N) + 1;\n        check(prime_count(n) ==\
-    \ cnt[n], \"prime_count\");\n        PrimeSumTable<__int128> s(n, [](long long\
-    \ v) { return static_cast<__int128>(v) * (v + 1) / 2 - 1; }, [](long long p) {\
-    \ return static_cast<__int128>(p); });\n        PrimeSumTable<mint> s2(\n    \
-    \        n, [](long long v) { mint x = v; return x * (x + 1) * (2 * x + 1) / 6\
-    \ - 1; }, [](long long p) { return mint(p) * p; });\n        for (auto [q, l,\
-    \ r] : enumerate_quotients(n)) {\n            check(s(q) == sum[q], \"PrimeSumTable\
-    \ \u7D20\u6570\u306E\u548C\");\n            check(s2(q) == sq[q], \"PrimeSumTable\
-    \ \u7D20\u6570\u306E 2 \u4E57\u306E\u548C\");\n        }\n    }\n\n    // \u5927\
-    \u304D\u3044 n: \u65E2\u77E5\u306E\u5024 \u03C0(10^k)\n    check(prime_count(1000000000LL)\
-    \ == 50847534, \"\u03C0(10^9)\");\n    check(prime_count(10000000000LL) == 455052511,\
-    \ \"\u03C0(10^10)\");\n\n    // multiplicative_sum: \u03C6\u30FB\u30E1\u30D3\u30A6\
-    \u30B9\u95A2\u6570 \u03BC\u30FB\u7D04\u6570\u306E\u548C \u03C3 \u3092\u3001\u7BE9\
-    \u3067\u6C42\u3081\u305F\u5024\u3092\u8DB3\u3057\u305F\u3082\u306E\u3068\u6BD4\
-    \u3079\u308B\n    {\n        const int N = 3000;\n        // \u6700\u5C0F\u7D20\
-    \u56E0\u6570\u3067\u5272\u3063\u3066\u3044\u304D\u3001\u4E57\u6CD5\u7684\u95A2\
-    \u6570\u3092\u7D20\u56E0\u6570\u5206\u89E3\u304B\u3089\u6C42\u3081\u308B\n   \
-    \     std::vector<int> lpf(N + 1, 0);\n        for (int i = 2; i <= N; i++)\n\
-    \            if (lpf[i] == 0)\n                for (int j = i; j <= N; j += i)\n\
-    \                    if (lpf[j] == 0) lpf[j] = i;\n        auto eval = [&](int\
-    \ i, auto f_pe) {\n            long long r = 1;\n            while (i > 1) {\n\
-    \                int p = lpf[i], e = 0;\n                while (i % p == 0) i\
-    \ /= p, e++;\n                r *= f_pe(p, e);\n            }\n            return\
-    \ r;\n        };\n        auto power = [](long long p, long long e) {\n      \
-    \      long long r = 1;\n            while (e--) r *= p;\n            return r;\n\
-    \        };\n        auto phi = [&](long long p, long long e) { return power(p,\
-    \ e) - power(p, e - 1); };\n        auto mu = [](long long, long long e) { return\
-    \ e == 1 ? -1LL : 0LL; };\n        auto sigma = [&](long long p, long long e)\
-    \ { return (power(p, e + 1) - 1) / (p - 1); };\n        for (int n = 0; n <= N\
-    \ && ok; n += (n < 100 ? 1 : 37)) {\n            long long e_phi = 0, e_mu = 0,\
-    \ e_sigma = 0;\n            for (int i = 1; i <= n; i++) e_phi += eval(i, phi),\
-    \ e_mu += eval(i, mu), e_sigma += eval(i, sigma);\n            if (n == 0) {\n\
-    \                check(multiplicative_sum(0, [](long long) { return 0LL; }, phi)\
-    \ == 0, \"multiplicative_sum n = 0\");\n                continue;\n          \
-    \  }\n            PrimeSumTable<long long> cnt(n, [](long long v) { return v -\
-    \ 1; }, [](long long) { return 1LL; });\n            PrimeSumTable<long long>\
-    \ sum(n, [](long long v) { return v * (v + 1) / 2 - 1; }, [](long long p) { return\
-    \ p; });\n            check(multiplicative_sum(n, [&](long long v) { return sum(v)\
-    \ - cnt(v); }, phi) == e_phi, \"multiplicative_sum \u03C6\");\n            check(multiplicative_sum(n,\
-    \ [&](long long v) { return -cnt(v); }, mu) == e_mu, \"multiplicative_sum \u03BC\
-    \");\n            check(multiplicative_sum(n, [&](long long v) { return sum(v)\
-    \ + cnt(v); }, sigma) == e_sigma, \"multiplicative_sum \u03C3\");\n        }\n\
-    \    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n}\n"
+    )\n    long long r;  //!< \u533A\u9593\u306E\u53F3\u7AEF (\u542B\u307E\u306A\u3044\
+    )\n};\n\n/**\n * @brief i = 1, ..., n \u3092 floor(n / i) \u306E\u5024\u3067\u533A\
+    \u9593\u306B\u5206\u3051\u3001i \u306E\u6607\u9806 (\u5546\u306E\u964D\u9806)\
+    \ \u306B f(q, l, r) \u3092\u547C\u3076 O(sqrt(n))\n * l <= i < r \u306A\u3089\
+    \ floor(n / i) == q\n * @pre 0 <= n < std::numeric_limits<long long>::max()\n\
+    \ */\ntemplate <typename F>\nvoid for_each_quotient(long long n, F f) {\n    assert(0\
+    \ <= n && n < std::numeric_limits<long long>::max());\n    for (long long l =\
+    \ 1; l <= n;) {\n        long long q = n / l, r = n / q + 1;\n        f(q, l,\
+    \ r);\n        l = r;\n    }\n}\n\n/**\n * @brief i = 1, ..., n \u3092 floor(n\
+    \ / i) \u306E\u5024\u3067\u533A\u9593\u306B\u5206\u3051\u305F\u3082\u306E (i \u306E\
+    \u6607\u9806\u3001\u3064\u307E\u308A\u5546\u306E\u964D\u9806) O(sqrt(n))\n * \u533A\
+    \u9593\u306E\u500B\u6570\u306F 2 sqrt(n) \u4EE5\u4E0B\n */\ninline std::vector<QuotientRange>\
+    \ enumerate_quotients(long long n) {\n    std::vector<QuotientRange> res;\n  \
+    \  for_each_quotient(n, [&](long long q, long long l, long long r) { res.push_back({q,\
+    \ l, r}); });\n    return res;\n}\n\n/**\n * @brief x = 0, ..., n - 1 \u3092 floor((a\
+    \ x + b) / m) \u306E\u5024\u3067\u533A\u9593\u306B\u5206\u3051\u3001x \u306E\u6607\
+    \u9806\u306B f(q, l, r) \u3092\u547C\u3076 O(\u533A\u9593\u6570)\n * @pre n >=\
+    \ 0\u3001m >= 1\u3001\u5404\u5546\u304C long long \u306B\u53CE\u307E\u308B\u3053\
+    \u3068\u3002a, b \u306F\u8CA0\u3067\u3082\u3088\u3044\n */\ntemplate <typename\
+    \ F>\nvoid for_each_quotient_linear(long long n, long long m, long long a, long\
+    \ long b, F f) {\n    assert(n >= 0 && m >= 1);\n    const __int128_t slope =\
+    \ a;\n    for (long long l = 0; l < n;) {\n        auto [q, rem] = divmod(slope\
+    \ * l + b, static_cast<__int128_t>(m));\n        assert(std::numeric_limits<long\
+    \ long>::min() <= q && q <= std::numeric_limits<long long>::max());\n        __int128_t\
+    \ length = n - l;\n        // \u6B63\u306E\u50BE\u304D\u3067\u306F\u6B21\u306E\
+    \u5546\u306B\u5C4A\u304F\u307E\u3067\u3001\u8CA0\u306E\u50BE\u304D\u3067\u306F\
+    \u4F59\u308A\u304C\u8CA0\u306B\u306A\u308B\u307E\u3067\u9032\u3080\n        if\
+    \ (a > 0) chmin(length, ceildiv(m - rem, slope));\n        if (a < 0) chmin(length,\
+    \ rem / (-slope) + 1);\n        const long long r = l + static_cast<long long>(length);\n\
+    \        f(static_cast<long long>(q), l, r);\n        l = r;\n    }\n}\n\n/**\n\
+    \ * @brief x = 0, ..., n - 1 \u3092 floor((a x + b) / m) \u306E\u5024\u3067\u533A\
+    \u9593\u306B\u5206\u3051\u305F\u3082\u306E (x \u306E\u6607\u9806) O(\u533A\u9593\
+    \u6570)\n * @pre n >= 0\u3001m >= 1\u3001\u5404\u5546\u304C long long \u306B\u53CE\
+    \u307E\u308B\u3053\u3068\u3002a, b \u306F\u8CA0\u3067\u3082\u3088\u3044\n */\n\
+    inline std::vector<QuotientRange> enumerate_quotients_linear(long long n, long\
+    \ long m, long long a, long long b) {\n    std::vector<QuotientRange> res;\n \
+    \   for_each_quotient_linear(n, m, a, b, [&](long long q, long long l, long long\
+    \ r) { res.push_back({q, l, r}); });\n    return res;\n}\n#line 16 \"test/unittest/math/prime-counting.test.cpp\"\
+    \n\nusing mint = static_modint<998244353>;\n\nbool ok = true;\nvoid check(bool\
+    \ cond, const char* what) {\n    if (!cond && ok) std::cerr << \"failed: \" <<\
+    \ what << std::endl;\n    if (!cond) ok = false;\n}\n\nint main() {\n    const\
+    \ long long N = 10000000;\n    Sieve sv(N);\n    // cnt[v]: v \u4EE5\u4E0B\u306E\
+    \u7D20\u6570\u306E\u500B\u6570\u3001sum[v]: v \u4EE5\u4E0B\u306E\u7D20\u6570\u306E\
+    \u548C\u3001sq[v]: v \u4EE5\u4E0B\u306E\u7D20\u6570\u306E 2 \u4E57\u306E\u548C\
+    \ (mod)\n    std::vector<long long> cnt(N + 1, 0);\n    std::vector<__int128>\
+    \ sum(N + 1, 0);\n    std::vector<mint> sq(N + 1, 0);\n    for (long long v =\
+    \ 1; v <= N; v++) {\n        bool p = sv.is_prime(v);\n        cnt[v] = cnt[v\
+    \ - 1] + p;\n        sum[v] = sum[v - 1] + (p ? v : 0);\n        sq[v] = sq[v\
+    \ - 1] + (p ? mint(v) * v : mint(0));\n    }\n\n    // \u5C0F\u3055\u3044 n \u306F\
+    \u3059\u3079\u3066\u3001\u8868\u306E\u3059\u3079\u3066\u306E\u5024\u307E\u3067\
+    \u6BD4\u3079\u308B\n    for (long long n = 1; n <= 3000 && ok; n++) {\n      \
+    \  check(prime_count(n) == cnt[n], \"prime_count \u5C0F\u3055\u3044 n\");\n  \
+    \      auto t = prime_count_table(n);\n        for (auto [q, l, r] : enumerate_quotients(n))\
+    \ check(t(q) == cnt[q], \"prime_count_table\");\n        // values() \u306F floor(n\
+    \ / k) \u306E\u3068\u308B\u5024\u306E\u6607\u9806\n        std::vector<long long>\
+    \ qs;\n        for (auto [q, l, r] : enumerate_quotients(n)) qs.insert(qs.begin(),\
+    \ q);\n        check(t.values() == qs, \"values\");\n    }\n    check(prime_count(0)\
+    \ == 0 && prime_count(1) == 0 && prime_count(2) == 1, \"prime_count 0, 1, 2\"\
+    );\n\n    // \u30E9\u30F3\u30C0\u30E0\u306A n (10^7 \u307E\u3067)\u3002\u7D20\u6570\
+    \u306E\u548C (__int128) \u3068 2 \u4E57\u306E\u548C (mod) \u3082\u6BD4\u3079\u308B\
+    \n    std::mt19937_64 rng(314);\n    for (int rep = 0; rep < 30 && ok; rep++)\
+    \ {\n        long long n = rep < 3 ? N - rep : static_cast<long long>(rng() %\
+    \ N) + 1;\n        check(prime_count(n) == cnt[n], \"prime_count\");\n       \
+    \ PrimeSumTable<__int128> s(n, [](long long v) { return static_cast<__int128>(v)\
+    \ * (v + 1) / 2 - 1; }, [](long long p) { return static_cast<__int128>(p); });\n\
+    \        PrimeSumTable<mint> s2(\n            n, [](long long v) { mint x = v;\
+    \ return x * (x + 1) * (2 * x + 1) / 6 - 1; }, [](long long p) { return mint(p)\
+    \ * p; });\n        for (auto [q, l, r] : enumerate_quotients(n)) {\n        \
+    \    check(s(q) == sum[q], \"PrimeSumTable \u7D20\u6570\u306E\u548C\");\n    \
+    \        check(s2(q) == sq[q], \"PrimeSumTable \u7D20\u6570\u306E 2 \u4E57\u306E\
+    \u548C\");\n        }\n    }\n\n    // \u5927\u304D\u3044 n: \u65E2\u77E5\u306E\
+    \u5024 \u03C0(10^k)\n    check(prime_count(1000000000LL) == 50847534, \"\u03C0\
+    (10^9)\");\n    check(prime_count(10000000000LL) == 455052511, \"\u03C0(10^10)\"\
+    );\n\n    // multiplicative_sum: \u03C6\u30FB\u30E1\u30D3\u30A6\u30B9\u95A2\u6570\
+    \ \u03BC\u30FB\u7D04\u6570\u306E\u548C \u03C3 \u3092\u3001\u7BE9\u3067\u6C42\u3081\
+    \u305F\u5024\u3092\u8DB3\u3057\u305F\u3082\u306E\u3068\u6BD4\u3079\u308B\n   \
+    \ {\n        const int N = 3000;\n        // \u6700\u5C0F\u7D20\u56E0\u6570\u3067\
+    \u5272\u3063\u3066\u3044\u304D\u3001\u4E57\u6CD5\u7684\u95A2\u6570\u3092\u7D20\
+    \u56E0\u6570\u5206\u89E3\u304B\u3089\u6C42\u3081\u308B\n        std::vector<int>\
+    \ lpf(N + 1, 0);\n        for (int i = 2; i <= N; i++)\n            if (lpf[i]\
+    \ == 0)\n                for (int j = i; j <= N; j += i)\n                   \
+    \ if (lpf[j] == 0) lpf[j] = i;\n        auto eval = [&](int i, auto f_pe) {\n\
+    \            long long r = 1;\n            while (i > 1) {\n                int\
+    \ p = lpf[i], e = 0;\n                while (i % p == 0) i /= p, e++;\n      \
+    \          r *= f_pe(p, e);\n            }\n            return r;\n        };\n\
+    \        auto power = [](long long p, long long e) {\n            long long r\
+    \ = 1;\n            while (e--) r *= p;\n            return r;\n        };\n \
+    \       auto phi = [&](long long p, long long e) { return power(p, e) - power(p,\
+    \ e - 1); };\n        auto mu = [](long long, long long e) { return e == 1 ? -1LL\
+    \ : 0LL; };\n        auto sigma = [&](long long p, long long e) { return (power(p,\
+    \ e + 1) - 1) / (p - 1); };\n        for (int n = 0; n <= N && ok; n += (n < 100\
+    \ ? 1 : 37)) {\n            long long e_phi = 0, e_mu = 0, e_sigma = 0;\n    \
+    \        for (int i = 1; i <= n; i++) e_phi += eval(i, phi), e_mu += eval(i, mu),\
+    \ e_sigma += eval(i, sigma);\n            if (n == 0) {\n                check(multiplicative_sum(0,\
+    \ [](long long) { return 0LL; }, phi) == 0, \"multiplicative_sum n = 0\");\n \
+    \               continue;\n            }\n            PrimeSumTable<long long>\
+    \ cnt(n, [](long long v) { return v - 1; }, [](long long) { return 1LL; });\n\
+    \            PrimeSumTable<long long> sum(n, [](long long v) { return v * (v +\
+    \ 1) / 2 - 1; }, [](long long p) { return p; });\n            check(multiplicative_sum(n,\
+    \ [&](long long v) { return sum(v) - cnt(v); }, phi) == e_phi, \"multiplicative_sum\
+    \ \u03C6\");\n            check(multiplicative_sum(n, [&](long long v) { return\
+    \ -cnt(v); }, mu) == e_mu, \"multiplicative_sum \u03BC\");\n            check(multiplicative_sum(n,\
+    \ [&](long long v) { return sum(v) + cnt(v); }, sigma) == e_sigma, \"multiplicative_sum\
+    \ \u03C3\");\n        }\n    }\n\n    if (ok) std::cout << \"Hello World\" <<\
+    \ std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// prime_count\u30FBprime_count_table\u30FBPrimeSumTable \u3092\u3001\u7BE9\
     \u3067\u6570\u3048\u305F\u5024\u3068\u6BD4\u3079\u308B\n// multiplicative_sum\
@@ -925,10 +1006,11 @@ data:
   - src/math/prime.hpp
   - src/math/modular-arithmetic.hpp
   - src/math/quotients.hpp
+  - src/base/functions.hpp
   isVerificationFile: true
   path: test/unittest/math/prime-counting.test.cpp
   requiredBy: []
-  timestamp: '2026-11-08 23:01:44+09:00'
+  timestamp: '2026-11-09 03:52:38+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/prime-counting.test.cpp

@@ -1344,6 +1344,9 @@ data:
       path: test/unittest/math/q-binomial.test.cpp
       title: test/unittest/math/q-binomial.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/math/quotients-linear.test.cpp
+      title: test/unittest/math/quotients-linear.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/math/quotients.test.cpp
       title: test/unittest/math/quotients.test.cpp
     - icon: ':heavy_check_mark:'

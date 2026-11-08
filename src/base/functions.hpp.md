@@ -3,6 +3,9 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy:
   - icon: ':heavy_check_mark:'
+    path: src/math/quotients.hpp
+    title: "\u5546\u306E\u5217\u6319"
+  - icon: ':heavy_check_mark:'
     path: src/math/rational.hpp
     title: "\u6709\u7406\u6570"
   - icon: ':heavy_check_mark:'
@@ -25,6 +28,15 @@ data:
     path: test/unittest/base/functions.test.cpp
     title: test/unittest/base/functions.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/math/prime-counting.test.cpp
+    title: test/unittest/math/prime-counting.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/math/quotients-linear.test.cpp
+    title: test/unittest/math/quotients-linear.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/math/quotients.test.cpp
+    title: test/unittest/math/quotients.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/math/rational.test.cpp
     title: test/unittest/math/rational.test.cpp
   - icon: ':heavy_check_mark:'
@@ -33,6 +45,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/utility/binary-search.test.cpp
     title: test/unittest/utility/binary-search.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/number_theory/enumerate-quotients.2.test.cpp
+    title: test/yosupo/number_theory/enumerate-quotients.2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/number_theory/rational-approximation.test.cpp
     title: test/yosupo/number_theory/rational-approximation.test.cpp
@@ -158,6 +173,7 @@ data:
   path: src/base/functions.hpp
   requiredBy:
   - src/utility/binary-search.hpp
+  - src/math/quotients.hpp
   - src/math/rational.hpp
   - src/math/stern-brocot.hpp
   timestamp: '2026-10-20 02:23:35+09:00'
@@ -165,12 +181,16 @@ data:
   verifiedWith:
   - test/unittest/base/functions.test.cpp
   - test/unittest/utility/binary-search.test.cpp
+  - test/unittest/math/quotients-linear.test.cpp
   - test/unittest/math/stern-brocot.test.cpp
   - test/unittest/math/rational.test.cpp
+  - test/unittest/math/quotients.test.cpp
+  - test/unittest/math/prime-counting.test.cpp
   - test/aoj/ntl/ntl-1-e.test.cpp
   - test/aoj/dsl/dsl-5-a.test.cpp
   - test/aoj/alds1/alds1-4-d.test.cpp
   - test/yosupo/number_theory/stern-brocot-tree.test.cpp
+  - test/yosupo/number_theory/enumerate-quotients.2.test.cpp
   - test/yosupo/number_theory/rational-approximation.test.cpp
 documentation_of: src/base/functions.hpp
 layout: document

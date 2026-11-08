@@ -310,8 +310,7 @@ int main() {
         int n = rng() % 16 + 1;
         std::string s(n, '(');
         for (char& c : s) c = rng() % 2 ? '(' : ')';
-        std::vector<monoid::Parenthesis::S> v(s.begin(), s.end());
-        SegTree<monoid::Parenthesis> seg(v);
+        SegTree<monoid::Parenthesis> seg(s);
         for (int l = 0; l <= n; l++) {
             for (int r = l; r <= n; r++) {
                 int depth = 0, min_depth = 0;
@@ -471,13 +470,13 @@ int main() {
         int n = rng() % 12 + 1;
         std::vector<long long> a(n);
         for (auto& x : a) x = static_cast<long long>(rng() % 21) - 10;
-        SegTree<monoid::PrefixSumMax<long long>> pmax(std::vector<monoid::PrefixSumMax<long long>::S>(a.begin(), a.end()));
-        SegTree<monoid::PrefixSumMin<long long>> pmin(std::vector<monoid::PrefixSumMin<long long>::S>(a.begin(), a.end()));
+        SegTree<monoid::PrefixSumMax<long long>> pmax(a);
+        SegTree<monoid::PrefixSumMin<long long>> pmin(a);
         using PM = monoid::PrefixSumMinMax<>;
         SegTree<PM> pminmax(a);
-        SegTree<monoid::SuffixSumMax<long long>> smax(std::vector<monoid::SuffixSumMax<long long>::S>(a.begin(), a.end()));
-        SegTree<monoid::SuffixSumMin<long long>> smin(std::vector<monoid::SuffixSumMin<long long>::S>(a.begin(), a.end()));
-        SegTree<monoid::MaxSubarraySum<long long>> msub(std::vector<monoid::MaxSubarraySum<long long>::S>(a.begin(), a.end()));
+        SegTree<monoid::SuffixSumMax<long long>> smax(a);
+        SegTree<monoid::SuffixSumMin<long long>> smin(a);
+        SegTree<monoid::MaxSubarraySum<long long>> msub(a);
         for (int q = 0; q < 10 && ok; q++) {
             int k = rng() % n;
             a[k] = static_cast<long long>(rng() % 21) - 10;

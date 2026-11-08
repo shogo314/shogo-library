@@ -11,12 +11,8 @@ int main(void) {
     using A = beats_acted_monoid::ChminChmaxAddSum<long long>;
     int n, q;
     std::cin >> n >> q;
-    std::vector<A::S> v(n);
-    for (int i = 0; i < n; i++) {
-        long long a;
-        std::cin >> a;
-        v[i] = A::S(a);
-    }
+    std::vector<long long> v(n);
+    for (auto& x : v) std::cin >> x;
     RChminChmaxAddSumQ<long long> seg(v);
     while (q--) {
         int op, l, r;

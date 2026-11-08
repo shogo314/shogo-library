@@ -37,7 +37,7 @@ void test_one_side(std::mt19937_64& rng) {
         std::vector<long long> a(n);
         for (auto& x : a) x = gen();
         using Seg = std::conditional_t<is_min, RChminSumQ<long long>, RChmaxSumQ<long long>>;
-        Seg seg(std::vector<typename Seg::S>(a.begin(), a.end()));
+        Seg seg(a);
         for (int q = 0; q < 100 && ok; q++) {
             int l = rng() % (n + 1), r = rng() % (n + 1);
             if (l > r) std::swap(l, r);
@@ -74,7 +74,7 @@ void test_chmin_chmax_add_sum(std::mt19937_64& rng) {
         auto gen = [&] { return static_cast<long long>(rng() % (2 * w + 1)) - w; };
         std::vector<long long> a(n);
         for (auto& x : a) x = gen();
-        RChminChmaxAddSumQ<long long> seg(std::vector<A::S>(a.begin(), a.end()));
+        RChminChmaxAddSumQ<long long> seg(a);
         for (int q = 0; q < 100 && ok; q++) {
             int t = rng() % 6;
             int l = rng() % (n + 1), r = rng() % (n + 1);

@@ -14,8 +14,10 @@
 #include <array>
 #include <forward_list>
 #include <iostream>
+#include <iterator>
 #include <list>
 #include <random>
+#include <sstream>
 #include <string>
 #include <type_traits>
 #include <vector>
@@ -72,6 +74,19 @@ P random_poly(std::mt19937_64& rng, int n, bool nonzero_lead) {
     return a;
 }
 
+// istream_iterator は入力を共有し、一度進めた位置には戻れない。
+struct InputCoefficients {
+    std::istringstream input;
+    long long count;
+    int begin_count = 0;
+    auto begin() {
+        ++begin_count;
+        return std::istream_iterator<long long>(input);
+    }
+    auto end() const { return std::istream_iterator<long long>(); }
+    long long size() const { return count; }
+};
+
 int main() {
     std::mt19937_64 rng(314);
     bool ok = true;
@@ -84,6 +99,12 @@ int main() {
     verify_range(raw);
     verify_range(arr);
     verify_range(std::list<int>{1, -2, 0});
+    InputCoefficients input{std::istringstream("1 -2 0"), 3};
+    verify_range(input);
+    if (input.begin_count != 1) ok = false;
+    InputCoefficients empty_input{std::istringstream(), 0};
+    F from_input(empty_input);
+    if (!from_input.empty() || empty_input.begin_count != 1) ok = false;
     F empty_range(std::array<int, 0>{});
     if (!empty_range.empty()) ok = false;
     const P coefficients{1, -2, 0};
@@ -93,6 +114,8 @@ int main() {
     static_assert(!std::is_constructible_v<F, std::forward_list<int>&>);
     static_assert(!std::is_constructible_v<F, std::array<std::string, 3>&>);
 #if __cplusplus >= 202002L
+    static_assert(std::ranges::input_range<InputCoefficients> && std::ranges::sized_range<InputCoefficients>);
+    static_assert(!std::ranges::forward_range<InputCoefficients>);
     verify_range(std::views::iota(0, 3) | std::views::transform([&](int i) { return raw[i]; }));
 #endif
     static_assert(std::is_constructible_v<F, const std::vector<int>&>);

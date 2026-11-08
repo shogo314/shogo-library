@@ -6,28 +6,30 @@
  */
 
 #include <cassert>
+#include <limits>
 #include <vector>
 
 /**
- * @brief 商 q = floor(n / i) と、それをとる i の区間 [l, r]
+ * @brief 商 q = floor(n / i) と、それをとる i の区間 [l, r)
  */
 struct QuotientRange {
     long long q;  //!< 商
     long long l;  //!< 区間の左端 (含む)
-    long long r;  //!< 区間の右端 (含む)
+    long long r;  //!< 区間の右端 (含まない)
 };
 
 /**
  * @brief i = 1, ..., n を floor(n / i) の値で区間に分け、i の昇順 (商の降順) に f(q, l, r) を呼ぶ O(sqrt(n))
- * l <= i <= r なら floor(n / i) == q
+ * l <= i < r なら floor(n / i) == q
+ * @pre 0 <= n < std::numeric_limits<long long>::max()
  */
 template <typename F>
 void for_each_quotient(long long n, F f) {
-    assert(n >= 0);
+    assert(0 <= n && n < std::numeric_limits<long long>::max());
     for (long long l = 1; l <= n;) {
-        long long q = n / l, r = n / q;
+        long long q = n / l, r = n / q + 1;
         f(q, l, r);
-        l = r + 1;
+        l = r;
     }
 }
 

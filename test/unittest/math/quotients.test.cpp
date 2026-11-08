@@ -16,10 +16,10 @@ int main() {
         long long next = 1;
         for (int k = 0; k < static_cast<int>(qs.size()); k++) {
             auto [q, l, r] = qs[k];
-            if (l != next || l > r) ok = false;
-            if (n / l != q || n / r != q) ok = false;
+            if (l != next || l >= r) ok = false;
+            if (n / l != q || n / (r - 1) != q) ok = false;
             if (k > 0 && qs[k - 1].q <= q) ok = false;
-            next = r + 1;
+            next = r;
         }
         if (next != n + 1) ok = false;
         // 区間の個数は 2 sqrt(n) 以下
@@ -28,7 +28,7 @@ int main() {
         // 約数の個数の和 sum_{k <= n} d(k) = sum_{i <= n} floor(n / i)
         long long expected = 0, sum = 0;
         for (long long i = 1; i <= n; i++) expected += n / i;
-        for_each_quotient(n, [&](long long q, long long l, long long r) { sum += q * (r - l + 1); });
+        for_each_quotient(n, [&](long long q, long long l, long long r) { sum += q * (r - l); });
         ok = ok && sum == expected;
     }
 
@@ -37,7 +37,7 @@ int main() {
     std::vector<long long> q, l, r;
     for (auto x : qs) q.push_back(x.q), l.push_back(x.l), r.push_back(x.r);
     ok = ok && q == std::vector<long long>{10, 5, 3, 2, 1} && l == std::vector<long long>{1, 2, 3, 4, 6};
-    ok = ok && r == std::vector<long long>{1, 2, 3, 5, 10};
+    ok = ok && r == std::vector<long long>{2, 3, 4, 6, 11};
     // 大きい n でも区間の個数は 2 sqrt(n) 程度
     ok = ok && enumerate_quotients(1000000000000LL).size() == 1999999;
 

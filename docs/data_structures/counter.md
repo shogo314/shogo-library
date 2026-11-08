@@ -18,7 +18,7 @@ for (auto [x, cnt] : c.by_frequency()) { }  // 個数の降順、同数なら値
 Counter<int> d = c + Counter<int>(3);  // 3 を 1 個足した Counter
 ```
 
-空の `Counter` の `mode()` は `std::nullopt` を返します。同数なら最小の値を選びます。内部の map は非公開です。個数の変更には `[]`・`set`・`inc` を使います。
+空の `Counter` の `mode()` は `std::nullopt` を返します。同数なら最小の値を選びます。個数の変更には `[]`・`set`・`inc` を使います。
 
 `by_frequency()` は内部の `std::set<value_type, CompareFrequency>` の const 参照を返します (`value_type` は `{値, 個数}` の組)。保持するときは `const auto& freq = c.by_frequency();` と書きます。`begin()`・`rbegin()`・`lower_bound()` などを使え、境界検索の順序も個数の降順・同数なら値の昇順です。
 

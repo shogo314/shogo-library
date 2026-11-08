@@ -14,9 +14,9 @@ int main() {
     int n, m, k;
     std::cin >> n >> m >> k;
     std::vector<std::vector<mint>> a(n, std::vector<mint>(m)), b(m, std::vector<mint>(k));
-    for (auto row : a)
+    for (auto& row : a)
         for (auto& x : row) std::cin >> x;
-    for (auto row : b)
+    for (auto& row : b)
         for (auto& x : row) std::cin >> x;
     Matrix<mint> C = Matrix<mint>(a) * Matrix<mint>(b);
     for (int i = 0; i < n; i++) {

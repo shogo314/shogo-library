@@ -83,6 +83,10 @@ struct Counter {
     }
     auto begin() const { return data.begin(); }
     auto end() const { return data.end(); }
+    /** @brief key 以上の最初の値の読み取り専用イテレータ (なければ end()) */
+    auto lower_bound(const key_type& key) const { return data.lower_bound(key); }
+    /** @brief key より大きい最初の値の読み取り専用イテレータ (なければ end()) */
+    auto upper_bound(const key_type& key) const { return data.upper_bound(key); }
     /**
      * @brief 異なる値の個数 (重複は数えない)
      */

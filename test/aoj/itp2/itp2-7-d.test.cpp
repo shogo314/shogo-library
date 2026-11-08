@@ -32,7 +32,7 @@ int main() {
         } else {
             long long l, r;
             std::cin >> l >> r;
-            for (auto it = s.data.lower_bound(l); it != s.data.end() && it->first <= r; ++it) {
+            for (auto it = s.lower_bound(l); it != s.end() && it->first <= r; ++it) {
                 for (long long i = 0; i < it->second; i++) std::cout << it->first << '\n';
             }
         }

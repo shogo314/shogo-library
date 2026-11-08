@@ -10,9 +10,14 @@
 #include <map>
 #include <random>
 #include <string>
+#include <type_traits>
+#include <utility>
 #include <vector>
 
 using Model = std::map<int, long long>;
+
+static_assert(!std::is_assignable_v<decltype((std::declval<Counter<int>&>().lower_bound(0)->second)), long long>);
+static_assert(!std::is_assignable_v<decltype((std::declval<Counter<int>&>().upper_bound(0)->second)), long long>);
 
 // 個数 0 の値を取り除いた map にする
 Model normalize(Model m) {
@@ -50,6 +55,12 @@ bool same(const Counter<int>& c, const Model& m) {
     for (int x = -1; x <= 10; x++) {
         long long expect = mm.count(x) ? mm.at(x) : 0;
         if (c[x] != expect || c.get(x) != expect) return false;
+        const auto lower = c.lower_bound(x), upper = c.upper_bound(x);
+        const auto expected_lower = mm.lower_bound(x), expected_upper = mm.upper_bound(x);
+        if ((lower == c.end()) != (expected_lower == mm.end())) return false;
+        if ((upper == c.end()) != (expected_upper == mm.end())) return false;
+        if (lower != c.end() && *lower != *expected_lower) return false;
+        if (upper != c.end() && *upper != *expected_upper) return false;
     }
     return true;
 }

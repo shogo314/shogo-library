@@ -35,6 +35,7 @@ Counter<int> d = c + Counter<int>(3);  // 3 を 1 個足した Counter
 | `c + d`、`c += d` | 個数を足し合わせる | $O(m \log (n + m))$ ($m$ は `d` の異なる値の個数) |
 | `c - d`、`c -= d` | 個数を引く (負になると assert で落ちる)。`c -= c` で空になる | $O(m \log n)$ |
 | `for (auto [x, cnt] : c)` | `{値, 個数}` を値の昇順に走査 | $O(n)$ |
+| `c.lower_bound(x)` / `c.upper_bound(x)` | 値が `x` 以上 / より大きい最初の要素の読み取り専用イテレータ。なければ `end()` | $O(\log n)$ |
 | `c.size()` | 異なる値の個数 (重複は数えない) | $O(1)$ |
 | `c.total()` | 重複を含めた要素数 (個数の総和。Python の `Counter.total()` と同じ) | $O(n)$ |
 | `c.mode()` | 最頻値と個数を `std::optional<Mode>` (`Mode {value, count}`) で返す。同数なら最小の値を選び、空なら `std::nullopt` を返す | $O(1)$ |

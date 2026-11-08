@@ -14,10 +14,15 @@ auto [value, count] = *c.mode();  // 最頻値とその個数 (空でない場�
 auto top = c.most_common();       // 個数の多い順
 auto top2 = c.most_common(2);     // 上位 2 件 (値, 個数)
 for (auto [x, cnt] : c) { }       // 値の昇順に走査
+for (auto [x, cnt] : c.by_frequency()) { }  // 個数の降順、同数なら値の昇順。コピーなし
 Counter<int> d = c + Counter<int>(3);  // 3 を 1 個足した Counter
 ```
 
 空の `Counter` の `mode()` は `std::nullopt` を返します。同数なら最小の値を選びます。内部の map は非公開です。個数の変更には `[]`・`set`・`inc` を使います。
+
+`by_frequency()` は内部の `std::set<value_type, CompareFrequency>` の const 参照を返します (`value_type` は `{値, 個数}` の組)。保持するときは `const auto& freq = c.by_frequency();` と書きます。`begin()`・`rbegin()`・`lower_bound()` などを使え、境界検索の順序も個数の降順・同数なら値の昇順です。
+
+参照先には `Counter` の更新が反映されます。更新した値の要素へのイテレータは失効します。参照は元の `Counter` の生存中に使ってください。
 
 ## メンバ関数
 
@@ -39,6 +44,7 @@ Counter<int> d = c + Counter<int>(3);  // 3 を 1 個足した Counter
 | `c.size()` | 異なる値の個数 (重複は数えない) | $O(1)$ |
 | `c.total()` | 重複を含めた要素数 (個数の総和。Python の `Counter.total()` と同じ) | $O(n)$ |
 | `c.mode()` | 最頻値と個数を `std::optional<Mode>` (`Mode {value, count}`) で返す。同数なら最小の値を選び、空なら `std::nullopt` を返す | $O(1)$ |
+| `c.by_frequency()` | 頻度順の内部 set の const 参照。個数の降順、同数なら値の昇順 | $O(1)$ |
 | `c.most_common()` | `{値, 個数}` のリスト。個数の降順、同数なら値の昇順 | $O(n)$ |
 | `c.most_common(k)` | 同じ順序で上位 `k` 件を返す (`k >= 0`)。`k > n` なら全件、`k = 0` または空なら空のリスト | $O(\min(k, n))$ |
 

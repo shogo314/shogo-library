@@ -131,6 +131,11 @@ struct Counter {
         const auto& [value, count] = *frequency.begin();
         return Mode{value, count};
     }
+    /**
+     * @brief 個数の降順、同数なら値の昇順に並べた内部 set の const 参照 (コピーしない)
+     * @note O(1)。Counter の更新は参照先にも反映される。更新した値の要素へのイテレータは失効する
+     */
+    const auto& by_frequency() const { return frequency; }
     std::vector<value_type> most_common() const {
         return {frequency.begin(), frequency.end()};
     }

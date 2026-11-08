@@ -18,6 +18,10 @@ using Model = std::map<int, long long>;
 
 static_assert(!std::is_assignable_v<decltype((std::declval<Counter<int>&>().lower_bound(0)->second)), long long>);
 static_assert(!std::is_assignable_v<decltype((std::declval<Counter<int>&>().upper_bound(0)->second)), long long>);
+using FrequencyReference = decltype(std::declval<Counter<int>&>().by_frequency());
+static_assert(std::is_lvalue_reference_v<FrequencyReference>);
+static_assert(std::is_const_v<std::remove_reference_t<FrequencyReference>>);
+static_assert(!std::is_assignable_v<decltype((std::declval<FrequencyReference>().begin()->second)), long long>);
 
 // 個数 0 の値を取り除いた map にする
 Model normalize(Model m) {
@@ -40,6 +44,12 @@ bool same(const Counter<int>& c, const Model& m) {
     // begin / end で走査した結果が値の昇順に一致する
     std::vector<std::pair<int, long long>> a(c.begin(), c.end()), b(mm.begin(), mm.end());
     if (a != b) return false;
+    // 頻度順の走査を、map から独立に並べ替えた列と比べる
+    std::stable_sort(b.begin(), b.end(), [](const auto& p, const auto& q) { return p.second > q.second; });
+    const auto& frequency = c.by_frequency();
+    if (std::vector<std::pair<int, long long>>(frequency.begin(), frequency.end()) != b) return false;
+    std::reverse(b.begin(), b.end());
+    if (std::vector<std::pair<int, long long>>(frequency.rbegin(), frequency.rend()) != b) return false;
     // 最頻値は同数なら最小の値。空なら nullopt
     auto mode = c.mode();
     if (mm.empty()) {
@@ -181,6 +191,19 @@ int main() {
         Counter<int> d{{1, 2}, {3, 1}};
         d += d;
         check(same(d, {{1, 4}, {3, 2}}), "self operator+=");
+    }
+
+    {
+        Counter<int> c{{1, 2}, {3, 2}, {5, 1}};
+        const auto& frequency = c.by_frequency();
+        check(*frequency.lower_bound({2, 2}) == std::make_pair(3, 2LL), "frequency lower_bound");
+        check(*frequency.upper_bound({3, 2}) == std::make_pair(5, 1LL), "frequency upper_bound");
+        c[5] += 3;
+        check(&frequency == &c.by_frequency() && *frequency.begin() == std::make_pair(5, 4LL), "frequency reference follows updates");
+        c[5] = 0;
+        check(frequency.size() == 2 && *frequency.rbegin() == std::make_pair(3, 2LL), "frequency reference follows erasure");
+        c -= c;
+        check(frequency.empty(), "frequency reference follows clearing");
     }
 
     if (ok) std::cout << "Hello World" << std::endl;

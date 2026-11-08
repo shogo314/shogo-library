@@ -121,68 +121,79 @@ data:
     \u91CF\n    };\n    long long n;\n    std::vector<std::vector<InnerEdge>> g;\n\
     \    std::vector<std::pair<int, int>> pos;  // \u8FFD\u52A0\u3057\u305F\u8FBA\u304C\
     \ g \u306E\u3069\u3053\u306B\u3042\u308B\u304B\n    std::vector<int> level, iter;\n\
-    \n    bool bfs(int s, int t) {\n        level.assign(n, -1);\n        level[s]\
-    \ = 0;\n        std::queue<int> que;\n        que.push(s);\n        while (!que.empty())\
-    \ {\n            int v = que.front();\n            que.pop();\n            for\
-    \ (const auto& e : g[v]) {\n                if (e.cap > 0 && level[e.to] == -1)\
-    \ {\n                    level[e.to] = level[v] + 1;\n                    que.push(e.to);\n\
-    \                }\n            }\n        }\n        return level[t] != -1;\n\
-    \    }\n    // v \u304B\u3089 t \u3078\u3001up \u3092\u4E0A\u9650\u3068\u3057\u3066\
-    \u30EC\u30D9\u30EB\u30B0\u30E9\u30D5\u4E0A\u3067\u6D41\u3059\n    Cap dfs(int\
-    \ v, int t, Cap up) {\n        if (v == t) return up;\n        Cap res = 0;\n\
-    \        for (int& i = iter[v]; i < static_cast<int>(g[v].size()); i++) {\n  \
-    \          InnerEdge& e = g[v][i];\n            if (e.cap <= 0 || level[e.to]\
-    \ != level[v] + 1) continue;\n            Cap d = dfs(e.to, t, std::min(up - res,\
-    \ e.cap));\n            if (d <= 0) continue;\n            e.cap -= d;\n     \
-    \       g[e.to][e.rev].cap += d;\n            res += d;\n            if (res ==\
-    \ up) return res;\n        }\n        // \u3053\u308C\u4EE5\u4E0A\u6D41\u305B\u306A\
-    \u3044\u306E\u3067\u3001\u3053\u306E\u30D5\u30A7\u30FC\u30BA\u3067\u306F\u4F7F\
-    \u308F\u306A\u3044\n        level[v] = n;\n        return res;\n    }\n\n   public:\n\
-    \    explicit MaxFlow(long long n = 0) : n(n), g(n) {}\n\n    long long size()\
-    \ const { return n; }\n\n    /**\n     * @brief from \u304B\u3089 to \u3078\u306E\
-    \u5BB9\u91CF cap \u306E\u8FBA\u3092\u8FFD\u52A0\u3057\u3001\u8FBA\u306E\u756A\u53F7\
-    \ (\u8FFD\u52A0\u3057\u305F\u9806\u306B 0, 1, ...) \u3092\u8FD4\u3059\n     */\n\
-    \    long long add_edge(long long from, long long to, Cap cap) {\n        assert(0\
-    \ <= from && from < n && 0 <= to && to < n && cap >= 0);\n        long long id\
-    \ = pos.size();\n        int from_id = g[from].size();\n        int to_id = g[to].size()\
-    \ + (from == to);\n        pos.emplace_back(from, from_id);\n        g[from].push_back({static_cast<int>(to),\
-    \ to_id, cap});\n        g[to].push_back({static_cast<int>(from), from_id, 0});\n\
-    \        return id;\n    }\n\n    /**\n     * @brief s \u304B\u3089 t \u3078\u3001\
-    limit \u3092\u4E0A\u9650\u3068\u3057\u3066\u3067\u304D\u308B\u3060\u3051\u6D41\
-    \u3057\u3001\u6D41\u3057\u305F\u91CF\u3092\u8FD4\u3059\n     * \u4F55\u5EA6\u3082\
-    \u547C\u3076\u3068\u3001\u524D\u56DE\u307E\u3067\u306E\u6D41\u308C\u306B\u8FFD\
-    \u52A0\u3057\u3066\u6D41\u3059\n     */\n    Cap flow(long long s, long long t,\
-    \ Cap limit = std::numeric_limits<Cap>::max()) {\n        assert(0 <= s && s <\
-    \ n && 0 <= t && t < n && s != t);\n        Cap res = 0;\n        while (res <\
-    \ limit && bfs(s, t)) {\n            iter.assign(n, 0);\n            Cap f = dfs(s,\
-    \ t, limit - res);\n            if (f == 0) break;\n            res += f;\n  \
-    \      }\n        return res;\n    }\n\n    /**\n     * @brief \u756A\u53F7 i\
-    \ \u306E\u8FBA\u306E\u60C5\u5831\n     */\n    Edge get_edge(long long i) const\
-    \ {\n        assert(0 <= i && i < static_cast<long long>(pos.size()));\n     \
-    \   const auto& e = g[pos[i].first][pos[i].second];\n        const auto& re =\
-    \ g[e.to][e.rev];\n        return {pos[i].first, e.to, e.cap + re.cap, re.cap};\n\
-    \    }\n    /**\n     * @brief \u756A\u53F7 i \u306E\u8FBA\u306E\u5BB9\u91CF\u3092\
-    \ new_cap \u306B\u3001\u6D41\u308C\u3066\u3044\u308B\u91CF\u3092 new_flow \u306B\
-    \u5909\u3048\u308B\n     * \u307B\u304B\u306E\u8FBA\u306E\u6D41\u91CF\u306F\u5909\
-    \u3048\u306A\u3044\u306E\u3067\u3001\u6D41\u91CF\u306E\u4FDD\u5B58\u5247\u304C\
-    \u5D29\u308C\u308B\u3053\u3068\u304C\u3042\u308B\n     */\n    void change_edge(long\
-    \ long i, Cap new_cap, Cap new_flow) {\n        assert(0 <= i && i < static_cast<long\
-    \ long>(pos.size()) && 0 <= new_flow && new_flow <= new_cap);\n        auto& e\
-    \ = g[pos[i].first][pos[i].second];\n        auto& re = g[e.to][e.rev];\n    \
-    \    e.cap = new_cap - new_flow;\n        re.cap = new_flow;\n    }\n    /**\n\
-    \     * @brief \u3059\u3079\u3066\u306E\u8FBA\u306E\u60C5\u5831 (\u8FFD\u52A0\u3057\
-    \u305F\u9806)\n     */\n    std::vector<Edge> edges() const {\n        std::vector<Edge>\
-    \ res;\n        for (long long i = 0; i < static_cast<long long>(pos.size());\
-    \ i++) res.push_back(get_edge(i));\n        return res;\n    }\n\n    /**\n  \
-    \   * @brief \u76F4\u524D\u306E flow(s, t) \u306E\u5F8C\u3067\u3001\u6B8B\u4F59\
-    \u30B0\u30E9\u30D5\u3067 s \u304B\u3089\u884C\u3051\u308B\u9802\u70B9\u304B\n\
-    \     * flow(s, t) \u3067\u6D41\u3057\u304D\u3063\u3066\u3044\u308C\u3070\u3001\
-    true \u306E\u9802\u70B9\u306E\u96C6\u5408\u304C\u6700\u5C0F\u30AB\u30C3\u30C8\u306E\
-    \ s \u5074\u306B\u306A\u308B\n     */\n    std::vector<bool> min_cut(long long\
-    \ s) const {\n        std::vector<bool> visited(n);\n        std::vector<long\
-    \ long> st = {s};\n        visited[s] = true;\n        while (!st.empty()) {\n\
-    \            long long v = st.back();\n            st.pop_back();\n          \
-    \  for (const auto& e : g[v]) {\n                if (e.cap > 0 && !visited[e.to])\
+    \    struct DfsFrame {\n        int v;\n        Cap up, flow;\n    };\n    std::vector<DfsFrame>\
+    \ dfs_stack;\n\n    bool bfs(int s, int t) {\n        level.assign(n, -1);\n \
+    \       level[s] = 0;\n        std::queue<int> que;\n        que.push(s);\n  \
+    \      while (!que.empty()) {\n            int v = que.front();\n            que.pop();\n\
+    \            for (const auto& e : g[v]) {\n                if (e.cap > 0 && level[e.to]\
+    \ == -1) {\n                    level[e.to] = level[v] + 1;\n                \
+    \    que.push(e.to);\n                }\n            }\n        }\n        return\
+    \ level[t] != -1;\n    }\n    // \u518D\u5E30 DFS \u306E\u547C\u3073\u51FA\u3057\
+    \u3068\u3001\u5404\u9802\u70B9\u304B\u3089\u8FD4\u3059\u6D41\u91CF\u3092\u660E\
+    \u793A\u7684\u306A\u30B9\u30BF\u30C3\u30AF\u3067\u7BA1\u7406\u3059\u308B\u3002\
+    \n    Cap dfs(int s, int t, Cap up) {\n        dfs_stack.clear();\n        dfs_stack.push_back({s,\
+    \ up, 0});\n        while (!dfs_stack.empty()) {\n            auto& frame = dfs_stack.back();\n\
+    \            const int v = frame.v;\n            if (v != t && frame.flow < frame.up)\
+    \ {\n                int& i = iter[v];\n                while (i < static_cast<int>(g[v].size()))\
+    \ {\n                    const auto& e = g[v][i];\n                    if (e.cap\
+    \ > 0 && level[e.to] == level[v] + 1) break;\n                    ++i;\n     \
+    \           }\n                if (i < static_cast<int>(g[v].size())) {\n    \
+    \                const auto& e = g[v][i];\n                    Cap next_up = std::min(frame.up\
+    \ - frame.flow, e.cap);\n                    dfs_stack.push_back({e.to, next_up,\
+    \ 0});\n                    continue;\n                }\n                // \u3053\
+    \u308C\u4EE5\u4E0A\u6D41\u305B\u306A\u3044\u306E\u3067\u3001\u3053\u306E\u30D5\
+    \u30A7\u30FC\u30BA\u3067\u306F\u4F7F\u308F\u306A\u3044\u3002\n               \
+    \ level[v] = n;\n            }\n            const Cap pushed = v == t ? frame.up\
+    \ : frame.flow;\n            dfs_stack.pop_back();\n            if (dfs_stack.empty())\
+    \ return pushed;\n            auto& parent = dfs_stack.back();\n            auto&\
+    \ e = g[parent.v][iter[parent.v]];\n            e.cap -= pushed;\n           \
+    \ g[v][e.rev].cap += pushed;\n            parent.flow += pushed;\n           \
+    \ if (parent.flow < parent.up) ++iter[parent.v];\n        }\n        return 0;\n\
+    \    }\n\n   public:\n    explicit MaxFlow(long long n = 0) : n(n), g(n) {}\n\n\
+    \    long long size() const { return n; }\n\n    /**\n     * @brief from \u304B\
+    \u3089 to \u3078\u306E\u5BB9\u91CF cap \u306E\u8FBA\u3092\u8FFD\u52A0\u3057\u3001\
+    \u8FBA\u306E\u756A\u53F7 (\u8FFD\u52A0\u3057\u305F\u9806\u306B 0, 1, ...) \u3092\
+    \u8FD4\u3059\n     */\n    long long add_edge(long long from, long long to, Cap\
+    \ cap) {\n        assert(0 <= from && from < n && 0 <= to && to < n && cap >=\
+    \ 0);\n        long long id = pos.size();\n        int from_id = g[from].size();\n\
+    \        int to_id = g[to].size() + (from == to);\n        pos.emplace_back(from,\
+    \ from_id);\n        g[from].push_back({static_cast<int>(to), to_id, cap});\n\
+    \        g[to].push_back({static_cast<int>(from), from_id, 0});\n        return\
+    \ id;\n    }\n\n    /**\n     * @brief s \u304B\u3089 t \u3078\u3001limit \u3092\
+    \u4E0A\u9650\u3068\u3057\u3066\u3067\u304D\u308B\u3060\u3051\u6D41\u3057\u3001\
+    \u6D41\u3057\u305F\u91CF\u3092\u8FD4\u3059\n     * \u4F55\u5EA6\u3082\u547C\u3076\
+    \u3068\u3001\u524D\u56DE\u307E\u3067\u306E\u6D41\u308C\u306B\u8FFD\u52A0\u3057\
+    \u3066\u6D41\u3059\n     */\n    Cap flow(long long s, long long t, Cap limit\
+    \ = std::numeric_limits<Cap>::max()) {\n        assert(0 <= s && s < n && 0 <=\
+    \ t && t < n && s != t);\n        Cap res = 0;\n        while (res < limit &&\
+    \ bfs(s, t)) {\n            iter.assign(n, 0);\n            Cap f = dfs(s, t,\
+    \ limit - res);\n            if (f == 0) break;\n            res += f;\n     \
+    \   }\n        return res;\n    }\n\n    /**\n     * @brief \u756A\u53F7 i \u306E\
+    \u8FBA\u306E\u60C5\u5831\n     */\n    Edge get_edge(long long i) const {\n  \
+    \      assert(0 <= i && i < static_cast<long long>(pos.size()));\n        const\
+    \ auto& e = g[pos[i].first][pos[i].second];\n        const auto& re = g[e.to][e.rev];\n\
+    \        return {pos[i].first, e.to, e.cap + re.cap, re.cap};\n    }\n    /**\n\
+    \     * @brief \u756A\u53F7 i \u306E\u8FBA\u306E\u5BB9\u91CF\u3092 new_cap \u306B\
+    \u3001\u6D41\u308C\u3066\u3044\u308B\u91CF\u3092 new_flow \u306B\u5909\u3048\u308B\
+    \n     * \u307B\u304B\u306E\u8FBA\u306E\u6D41\u91CF\u306F\u5909\u3048\u306A\u3044\
+    \u306E\u3067\u3001\u6D41\u91CF\u306E\u4FDD\u5B58\u5247\u304C\u5D29\u308C\u308B\
+    \u3053\u3068\u304C\u3042\u308B\n     */\n    void change_edge(long long i, Cap\
+    \ new_cap, Cap new_flow) {\n        assert(0 <= i && i < static_cast<long long>(pos.size())\
+    \ && 0 <= new_flow && new_flow <= new_cap);\n        auto& e = g[pos[i].first][pos[i].second];\n\
+    \        auto& re = g[e.to][e.rev];\n        e.cap = new_cap - new_flow;\n   \
+    \     re.cap = new_flow;\n    }\n    /**\n     * @brief \u3059\u3079\u3066\u306E\
+    \u8FBA\u306E\u60C5\u5831 (\u8FFD\u52A0\u3057\u305F\u9806)\n     */\n    std::vector<Edge>\
+    \ edges() const {\n        std::vector<Edge> res;\n        for (long long i =\
+    \ 0; i < static_cast<long long>(pos.size()); i++) res.push_back(get_edge(i));\n\
+    \        return res;\n    }\n\n    /**\n     * @brief \u76F4\u524D\u306E flow(s,\
+    \ t) \u306E\u5F8C\u3067\u3001\u6B8B\u4F59\u30B0\u30E9\u30D5\u3067 s \u304B\u3089\
+    \u884C\u3051\u308B\u9802\u70B9\u304B\n     * flow(s, t) \u3067\u6D41\u3057\u304D\
+    \u3063\u3066\u3044\u308C\u3070\u3001true \u306E\u9802\u70B9\u306E\u96C6\u5408\u304C\
+    \u6700\u5C0F\u30AB\u30C3\u30C8\u306E s \u5074\u306B\u306A\u308B\n     */\n   \
+    \ std::vector<bool> min_cut(long long s) const {\n        std::vector<bool> visited(n);\n\
+    \        std::vector<long long> st = {s};\n        visited[s] = true;\n      \
+    \  while (!st.empty()) {\n            long long v = st.back();\n            st.pop_back();\n\
+    \            for (const auto& e : g[v]) {\n                if (e.cap > 0 && !visited[e.to])\
     \ {\n                    visited[e.to] = true;\n                    st.push_back(e.to);\n\
     \                }\n            }\n        }\n        return visited;\n    }\n\
     };\n#line 15 \"test/unittest/graph/bipartite-matching.test.cpp\"\n\nint main()\
@@ -242,7 +253,7 @@ data:
   isVerificationFile: true
   path: test/unittest/graph/bipartite-matching.test.cpp
   requiredBy: []
-  timestamp: '2026-10-27 20:28:53+09:00'
+  timestamp: '2026-11-08 23:01:08+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/graph/bipartite-matching.test.cpp

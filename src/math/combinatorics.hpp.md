@@ -255,24 +255,25 @@ data:
     \ -n \u4E57 (a \u3068 m \u306F\u4E92\u3044\u306B\u7D20\u3067\u3042\u308B\u3053\
     \u3068)\u3002O(log |n|)\n */\nconstexpr long long pow_mod(long long a, long long\
     \ n, long long m) {\n    assert(m >= 1);\n    a %= m;\n    if (a < 0) a += m;\n\
-    \    if (n < 0) {\n        n = -n;\n        a = inv_mod(a, m);\n    }\n    long\
-    \ long res = 1 % m;\n    while (n > 0) {\n        if (n & 1) res = mul_mod(res,\
-    \ a, m);\n        a = mul_mod(a, a, m);\n        n >>= 1;\n    }\n    return res;\n\
-    }\n\n/**\n * @brief a^x \u2261 b (mod m) \u3068\u306A\u308B\u6700\u5C0F\u306E\
-    \ x >= 0 (\u306A\u3051\u308C\u3070 -1)\n * @note a \u3068 m \u306F\u4E92\u3044\
-    \u306B\u7D20\u3067\u306A\u304F\u3066\u3082\u3088\u3044\u3002Baby-step Giant-step\
-    \ \u3067 O(\u221Am) \u306E\u6642\u9593\u3068\u30E1\u30E2\u30EA\n */\ninline long\
-    \ long discrete_log(long long a, long long b, long long m) {\n    assert(m >=\
-    \ 1);\n    a %= m, b %= m;\n    if (a < 0) a += m;\n    if (b < 0) b += m;\n \
-    \   if (m == 1) return 0;\n    // a \u3068 m \u304C\u4E92\u3044\u306B\u7D20\u306B\
-    \u306A\u308B\u307E\u3067\u4E21\u8FBA\u3092 gcd \u3067\u5272\u308B\u3002k = a^add\
-    \ / (\u5272\u3063\u305F gcd \u306E\u7A4D) mod m\n    long long k = 1, add = 0,\
-    \ g;\n    while ((g = std::gcd(a, m)) > 1) {\n        if (b == k) return add;\n\
-    \        if (b % g != 0) return -1;\n        b /= g, m /= g, add++;\n        k\
-    \ = mul_mod(k, a / g, m);\n    }\n    // k a^x \u2261 b \u3092 x = n p - q (1\
-    \ <= p <= n\u30010 <= q <= n) \u3068\u66F8\u3044\u3066\u89E3\u304F\n    const\
-    \ long long n = static_cast<long long>(std::sqrt(static_cast<long double>(m)))\
-    \ + 1;\n    std::unordered_map<long long, long long> baby;\n    baby.reserve(2\
+    \    unsigned long long exponent = static_cast<unsigned long long>(n);\n    if\
+    \ (n < 0) {\n        exponent = 0ULL - exponent;\n        a = inv_mod(a, m);\n\
+    \    }\n    long long res = 1 % m;\n    while (exponent > 0) {\n        if (exponent\
+    \ & 1) res = mul_mod(res, a, m);\n        a = mul_mod(a, a, m);\n        exponent\
+    \ >>= 1;\n    }\n    return res;\n}\n\n/**\n * @brief a^x \u2261 b (mod m) \u3068\
+    \u306A\u308B\u6700\u5C0F\u306E x >= 0 (\u306A\u3051\u308C\u3070 -1)\n * @note\
+    \ a \u3068 m \u306F\u4E92\u3044\u306B\u7D20\u3067\u306A\u304F\u3066\u3082\u3088\
+    \u3044\u3002Baby-step Giant-step \u3067 O(\u221Am) \u306E\u6642\u9593\u3068\u30E1\
+    \u30E2\u30EA\n */\ninline long long discrete_log(long long a, long long b, long\
+    \ long m) {\n    assert(m >= 1);\n    a %= m, b %= m;\n    if (a < 0) a += m;\n\
+    \    if (b < 0) b += m;\n    if (m == 1) return 0;\n    // a \u3068 m \u304C\u4E92\
+    \u3044\u306B\u7D20\u306B\u306A\u308B\u307E\u3067\u4E21\u8FBA\u3092 gcd \u3067\u5272\
+    \u308B\u3002k = a^add / (\u5272\u3063\u305F gcd \u306E\u7A4D) mod m\n    long\
+    \ long k = 1, add = 0, g;\n    while ((g = std::gcd(a, m)) > 1) {\n        if\
+    \ (b == k) return add;\n        if (b % g != 0) return -1;\n        b /= g, m\
+    \ /= g, add++;\n        k = mul_mod(k, a / g, m);\n    }\n    // k a^x \u2261\
+    \ b \u3092 x = n p - q (1 <= p <= n\u30010 <= q <= n) \u3068\u66F8\u3044\u3066\
+    \u89E3\u304F\n    const long long n = static_cast<long long>(std::sqrt(static_cast<long\
+    \ double>(m))) + 1;\n    std::unordered_map<long long, long long> baby;\n    baby.reserve(2\
     \ * n + 2);\n    // b a^q \u3092 q \u306E\u5C0F\u3055\u3044\u9806\u306B\u5165\u308C\
     \u3001\u540C\u3058\u5024\u306A\u3089\u5927\u304D\u3044 q \u3067\u4E0A\u66F8\u304D\
     \u3059\u308B (x \u3092\u5C0F\u3055\u304F\u3059\u308B\u305F\u3081)\n    for (long\
@@ -634,7 +635,7 @@ data:
   - src/math/multipoint.hpp
   - src/math/fps-composition.hpp
   - src/math/sum-of-exp-times-poly.hpp
-  timestamp: '2026-11-03 08:52:44+09:00'
+  timestamp: '2026-11-08 23:01:44+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/yukicoder/117.test.cpp

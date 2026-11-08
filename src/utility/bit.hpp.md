@@ -1,11 +1,17 @@
 ---
 data:
   _extendedDependsOn: []
-  _extendedRequiredBy: []
+  _extendedRequiredBy:
+  - icon: ':heavy_check_mark:'
+    path: src/data_structures/disjoint-sparse-table.hpp
+    title: Disjoint Sparse Table
   _extendedVerifiedWith:
   - icon: ':heavy_check_mark:'
     path: test/aoj/itp2/itp2-10-c.test.cpp
     title: test/aoj/itp2/itp2-10-c.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/disjoint-sparse-table.test.cpp
+    title: test/unittest/data_structures/disjoint-sparse-table.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/utility/bit.test.cpp
     title: test/unittest/utility/bit.test.cpp
@@ -543,11 +549,13 @@ data:
   dependsOn: []
   isVerificationFile: false
   path: src/utility/bit.hpp
-  requiredBy: []
+  requiredBy:
+  - src/data_structures/disjoint-sparse-table.hpp
   timestamp: '2026-11-03 08:52:44+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/utility/bit.test.cpp
+  - test/unittest/data_structures/disjoint-sparse-table.test.cpp
   - test/aoj/itp2/itp2-10-c.test.cpp
 documentation_of: src/utility/bit.hpp
 layout: document

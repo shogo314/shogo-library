@@ -42,24 +42,25 @@ data:
     \ -n \u4E57 (a \u3068 m \u306F\u4E92\u3044\u306B\u7D20\u3067\u3042\u308B\u3053\
     \u3068)\u3002O(log |n|)\n */\nconstexpr long long pow_mod(long long a, long long\
     \ n, long long m) {\n    assert(m >= 1);\n    a %= m;\n    if (a < 0) a += m;\n\
-    \    if (n < 0) {\n        n = -n;\n        a = inv_mod(a, m);\n    }\n    long\
-    \ long res = 1 % m;\n    while (n > 0) {\n        if (n & 1) res = mul_mod(res,\
-    \ a, m);\n        a = mul_mod(a, a, m);\n        n >>= 1;\n    }\n    return res;\n\
-    }\n\n/**\n * @brief a^x \u2261 b (mod m) \u3068\u306A\u308B\u6700\u5C0F\u306E\
-    \ x >= 0 (\u306A\u3051\u308C\u3070 -1)\n * @note a \u3068 m \u306F\u4E92\u3044\
-    \u306B\u7D20\u3067\u306A\u304F\u3066\u3082\u3088\u3044\u3002Baby-step Giant-step\
-    \ \u3067 O(\u221Am) \u306E\u6642\u9593\u3068\u30E1\u30E2\u30EA\n */\ninline long\
-    \ long discrete_log(long long a, long long b, long long m) {\n    assert(m >=\
-    \ 1);\n    a %= m, b %= m;\n    if (a < 0) a += m;\n    if (b < 0) b += m;\n \
-    \   if (m == 1) return 0;\n    // a \u3068 m \u304C\u4E92\u3044\u306B\u7D20\u306B\
-    \u306A\u308B\u307E\u3067\u4E21\u8FBA\u3092 gcd \u3067\u5272\u308B\u3002k = a^add\
-    \ / (\u5272\u3063\u305F gcd \u306E\u7A4D) mod m\n    long long k = 1, add = 0,\
-    \ g;\n    while ((g = std::gcd(a, m)) > 1) {\n        if (b == k) return add;\n\
-    \        if (b % g != 0) return -1;\n        b /= g, m /= g, add++;\n        k\
-    \ = mul_mod(k, a / g, m);\n    }\n    // k a^x \u2261 b \u3092 x = n p - q (1\
-    \ <= p <= n\u30010 <= q <= n) \u3068\u66F8\u3044\u3066\u89E3\u304F\n    const\
-    \ long long n = static_cast<long long>(std::sqrt(static_cast<long double>(m)))\
-    \ + 1;\n    std::unordered_map<long long, long long> baby;\n    baby.reserve(2\
+    \    unsigned long long exponent = static_cast<unsigned long long>(n);\n    if\
+    \ (n < 0) {\n        exponent = 0ULL - exponent;\n        a = inv_mod(a, m);\n\
+    \    }\n    long long res = 1 % m;\n    while (exponent > 0) {\n        if (exponent\
+    \ & 1) res = mul_mod(res, a, m);\n        a = mul_mod(a, a, m);\n        exponent\
+    \ >>= 1;\n    }\n    return res;\n}\n\n/**\n * @brief a^x \u2261 b (mod m) \u3068\
+    \u306A\u308B\u6700\u5C0F\u306E x >= 0 (\u306A\u3051\u308C\u3070 -1)\n * @note\
+    \ a \u3068 m \u306F\u4E92\u3044\u306B\u7D20\u3067\u306A\u304F\u3066\u3082\u3088\
+    \u3044\u3002Baby-step Giant-step \u3067 O(\u221Am) \u306E\u6642\u9593\u3068\u30E1\
+    \u30E2\u30EA\n */\ninline long long discrete_log(long long a, long long b, long\
+    \ long m) {\n    assert(m >= 1);\n    a %= m, b %= m;\n    if (a < 0) a += m;\n\
+    \    if (b < 0) b += m;\n    if (m == 1) return 0;\n    // a \u3068 m \u304C\u4E92\
+    \u3044\u306B\u7D20\u306B\u306A\u308B\u307E\u3067\u4E21\u8FBA\u3092 gcd \u3067\u5272\
+    \u308B\u3002k = a^add / (\u5272\u3063\u305F gcd \u306E\u7A4D) mod m\n    long\
+    \ long k = 1, add = 0, g;\n    while ((g = std::gcd(a, m)) > 1) {\n        if\
+    \ (b == k) return add;\n        if (b % g != 0) return -1;\n        b /= g, m\
+    \ /= g, add++;\n        k = mul_mod(k, a / g, m);\n    }\n    // k a^x \u2261\
+    \ b \u3092 x = n p - q (1 <= p <= n\u30010 <= q <= n) \u3068\u66F8\u3044\u3066\
+    \u89E3\u304F\n    const long long n = static_cast<long long>(std::sqrt(static_cast<long\
+    \ double>(m))) + 1;\n    std::unordered_map<long long, long long> baby;\n    baby.reserve(2\
     \ * n + 2);\n    // b a^q \u3092 q \u306E\u5C0F\u3055\u3044\u9806\u306B\u5165\u308C\
     \u3001\u540C\u3058\u5024\u306A\u3089\u5927\u304D\u3044 q \u3067\u4E0A\u66F8\u304D\
     \u3059\u308B (x \u3092\u5C0F\u3055\u304F\u3059\u308B\u305F\u3081)\n    for (long\
@@ -86,157 +87,177 @@ data:
     \ = mul_mod(b, b, p);\n        t = mul_mod(t, c, p);\n        r = mul_mod(r, b,\
     \ p);\n    }\n    return std::min(r, p - r);\n}\n#line 7 \"test/unittest/math/modular-arithmetic.test.cpp\"\
     \n\n#line 9 \"test/unittest/math/modular-arithmetic.test.cpp\"\n#include <iostream>\n\
-    #line 11 \"test/unittest/math/modular-arithmetic.test.cpp\"\n#include <random>\n\
-    \nstatic_assert(pow_mod(2, 10, 1000) == 24);\nstatic_assert(inv_mod(3, 7) == 5);\n\
-    static_assert(pow_mod(3, -1, 7) == 5);\nstatic_assert(pow_mod(5, 0, 1) == 0);\n\
-    \nint main() {\n    bool ok = true;\n    std::mt19937_64 rng(314);\n\n    // \u5C0F\
-    \u3055\u3044\u6CD5\u3067\u611A\u76F4\u306B\u6BD4\u3079\u308B (\u8CA0\u306E a \u3082\
-    )\n    for (long long m = 1; m <= 60; m++) {\n        for (long long a = -70;\
-    \ a <= 70; a++) {\n            long long r = ((a % m) + m) % m;\n            long\
-    \ long p = 1 % m;\n            for (int n = 0; n <= 20; n++) {\n             \
-    \   if (pow_mod(a, n, m) != p) ok = false, std::cerr << \"pow_mod \" << a << \"\
-    \ \" << n << \" \" << m << std::endl;\n                p = p * r % m;\n      \
-    \      }\n            for (long long b = -5; b <= 5; b++) {\n                if\
-    \ (mul_mod(a, b, m) != (((a * b) % m) + m) % m) ok = false, std::cerr << \"mul_mod\
-    \ \" << a << \" \" << b << std::endl;\n            }\n            if (std::gcd(r,\
-    \ m) == 1) {\n                long long x = inv_mod(a, m);\n                if\
-    \ (!(0 <= x && x < m && x * r % m == 1 % m)) ok = false, std::cerr << \"inv_mod\
-    \ \" << a << \" \" << m << std::endl;\n                if (pow_mod(a, -3, m) !=\
-    \ pow_mod(x, 3, m)) ok = false, std::cerr << \"pow_mod neg \" << a << \" \" <<\
-    \ m << std::endl;\n            }\n        }\n    }\n\n    // \u5927\u304D\u3044\
-    \u6CD5 (\u7A4D\u304C long long \u306B\u53CE\u307E\u3089\u306A\u3044) \u3067\u3001\
-    \u30D5\u30A7\u30EB\u30DE\u30FC\u306E\u5C0F\u5B9A\u7406\u3068\u9006\u5143\u3092\
-    \u78BA\u304B\u3081\u308B\n    const long long P = (1LL << 61) - 1;  // \u7D20\u6570\
-    \n    for (int rep = 0; rep < 1000; rep++) {\n        long long a = rng() % (P\
-    \ - 1) + 1;\n        if (pow_mod(a, P - 1, P) != 1) ok = false, std::cerr << \"\
-    fermat \" << a << std::endl;\n        if (mul_mod(a, inv_mod(a, P), P) != 1) ok\
-    \ = false, std::cerr << \"inv \" << a << std::endl;\n        long long b = rng()\
-    \ % P;\n        if (mul_mod(a, b, P) != static_cast<long long>(static_cast<__int128>(a)\
-    \ * b % P)) ok = false, std::cerr << \"mul \" << a << std::endl;\n    }\n\n  \
-    \  // discrete_log: \u5C0F\u3055\u3044\u6CD5\u3067\u3001x \u3092 0 \u304B\u3089\
-    \u9806\u306B\u8A66\u3057\u3066\u6700\u5C0F\u306E\u3082\u306E\u3068\u6BD4\u3079\
-    \u308B (a \u3068 m \u304C\u4E92\u3044\u306B\u7D20\u3067\u306A\u3044\u5834\u5408\
-    \u3082)\n    for (long long m = 1; m <= 40; m++) {\n        for (long long a =\
-    \ -3; a < m; a++) {\n            for (long long b = -3; b < m; b++) {\n      \
-    \          long long r = ((a % m) + m) % m, t = ((b % m) + m) % m, cur = 1 % m,\
-    \ expect = -1;\n                // a^x mod m \u306F 2m \u56DE\u4EE5\u5185\u306B\
-    \u5468\u671F\u306B\u5165\u308B\u306E\u3067\u3001\u305D\u308C\u307E\u3067\u8A66\
-    \u305B\u3070\u5341\u5206\n                for (long long x = 0; x <= 2 * m; x++,\
-    \ cur = cur * r % m) {\n                    if (cur == t) {\n                \
-    \        expect = x;\n                        break;\n                    }\n\
-    \                }\n                if (discrete_log(a, b, m) != expect) ok =\
-    \ false, std::cerr << \"discrete_log \" << a << \" \" << b << \" \" << m << std::endl;\n\
-    \            }\n        }\n    }\n    // \u5927\u304D\u3044\u6CD5: \u7B54\u3048\
-    \u3092\u4F5C\u3063\u3066\u304B\u3089\u89E3\u304D\u3001a^x \u2261 b \u3068\u306A\
-    \u308A\u3001\u4F5C\u3063\u305F\u5024\u4EE5\u4E0B\u3067\u3042\u308B\u3053\u3068\
-    \u3092\u78BA\u304B\u3081\u308B\n    for (int rep = 0; rep < 200; rep++) {\n  \
-    \      long long m = rng() % 1000000000 + 1, a = rng() % m, x = rng() % 1000000;\n\
-    \        long long b = pow_mod(a, x, m), y = discrete_log(a, b, m);\n        if\
-    \ (!(0 <= y && y <= x && pow_mod(a, y, m) == b)) ok = false, std::cerr << \"discrete_log\
-    \ big \" << a << \" \" << m << std::endl;\n    }\n\n    // sqrt_mod: \u5C0F\u3055\
-    \u3044\u7D20\u6570\u3067\u3001\u5168\u3066\u306E x \u3092\u8A66\u3057\u3066\u5E73\
-    \u65B9\u6839\u304C\u3042\u308B\u304B\u3068\u6700\u5C0F\u306E\u6839\u3092\u6BD4\
-    \u3079\u308B\n    for (long long p = 2; p <= 300; p++) {\n        bool prime =\
-    \ true;\n        for (long long d = 2; d * d <= p; d++) prime &= p % d != 0;\n\
-    \        if (!prime) continue;\n        for (long long a = -2; a < p; a++) {\n\
-    \            long long r = ((a % p) + p) % p, expect = -1;\n            for (long\
-    \ long x = 0; x < p; x++) {\n                if (x * x % p == r) {\n         \
-    \           expect = x;\n                    break;\n                }\n     \
-    \       }\n            if (sqrt_mod(a, p) != expect) ok = false, std::cerr <<\
-    \ \"sqrt_mod \" << a << \" \" << p << std::endl;\n        }\n    }\n    // \u5927\
-    \u304D\u3044\u7D20\u6570 (p - 1 \u304C 2 \u3067\u4F55\u5EA6\u3082\u5272\u308C\u308B\
-    \u3082\u306E\u3092\u542B\u3080): x^2 \u304B\u3089\u5E73\u65B9\u6839\u3092\u6C42\
-    \u3081\u3066\u5143\u306B\u623B\u308B\n    for (long long p : {998244353LL, 1000000007LL,\
-    \ (1LL << 61) - 1, 4611686018427387847LL}) {\n        for (int rep = 0; rep <\
-    \ 300; rep++) {\n            long long x = rng() % p, a = mul_mod(x, x, p), y\
-    \ = sqrt_mod(a, p);\n            if (!(y == std::min(x, p - x) || (x == 0 && y\
-    \ == 0))) ok = false, std::cerr << \"sqrt_mod big \" << p << std::endl;\n    \
-    \    }\n        // \u5E73\u65B9\u975E\u5270\u4F59\u306A\u3089 -1\n        long\
-    \ long z = 2;\n        while (pow_mod(z, (p - 1) / 2, p) == 1) z++;\n        if\
-    \ (sqrt_mod(z, p) != -1) ok = false, std::cerr << \"sqrt_mod non-residue \" <<\
-    \ p << std::endl;\n    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
+    #include <limits>\n#line 12 \"test/unittest/math/modular-arithmetic.test.cpp\"\
+    \n#include <random>\n\nstatic_assert(pow_mod(2, 10, 1000) == 24);\nstatic_assert(inv_mod(3,\
+    \ 7) == 5);\nstatic_assert(pow_mod(3, -1, 7) == 5);\nstatic_assert(pow_mod(5,\
+    \ 0, 1) == 0);\nstatic_assert(pow_mod(2, std::numeric_limits<long long>::lowest(),\
+    \ 7) == 2);\nstatic_assert(pow_mod(0, std::numeric_limits<long long>::lowest(),\
+    \ 1) == 0);\n\nint main() {\n    bool ok = true;\n    std::mt19937_64 rng(314);\n\
+    \n    // \u5C0F\u3055\u3044\u6CD5\u3067\u611A\u76F4\u306B\u6BD4\u3079\u308B (\u8CA0\
+    \u306E a \u3082)\n    for (long long m = 1; m <= 60; m++) {\n        for (long\
+    \ long a = -70; a <= 70; a++) {\n            long long r = ((a % m) + m) % m;\n\
+    \            long long p = 1 % m;\n            for (int n = 0; n <= 20; n++) {\n\
+    \                if (pow_mod(a, n, m) != p) ok = false, std::cerr << \"pow_mod\
+    \ \" << a << \" \" << n << \" \" << m << std::endl;\n                p = p * r\
+    \ % m;\n            }\n            for (long long b = -5; b <= 5; b++) {\n   \
+    \             if (mul_mod(a, b, m) != (((a * b) % m) + m) % m) ok = false, std::cerr\
+    \ << \"mul_mod \" << a << \" \" << b << std::endl;\n            }\n          \
+    \  if (std::gcd(r, m) == 1) {\n                long long x = inv_mod(a, m);\n\
+    \                if (!(0 <= x && x < m && x * r % m == 1 % m)) ok = false, std::cerr\
+    \ << \"inv_mod \" << a << \" \" << m << std::endl;\n                if (pow_mod(a,\
+    \ -3, m) != pow_mod(x, 3, m)) ok = false, std::cerr << \"pow_mod neg \" << a <<\
+    \ \" \" << m << std::endl;\n            }\n        }\n    }\n\n    // \u5927\u304D\
+    \u3044\u6CD5 (\u7A4D\u304C long long \u306B\u53CE\u307E\u3089\u306A\u3044) \u3067\
+    \u3001\u30D5\u30A7\u30EB\u30DE\u30FC\u306E\u5C0F\u5B9A\u7406\u3068\u9006\u5143\
+    \u3092\u78BA\u304B\u3081\u308B\n    const long long P = (1LL << 61) - 1;  // \u7D20\
+    \u6570\n    for (int rep = 0; rep < 1000; rep++) {\n        long long a = rng()\
+    \ % (P - 1) + 1;\n        if (pow_mod(a, P - 1, P) != 1) ok = false, std::cerr\
+    \ << \"fermat \" << a << std::endl;\n        if (mul_mod(a, inv_mod(a, P), P)\
+    \ != 1) ok = false, std::cerr << \"inv \" << a << std::endl;\n        // \u6700\
+    \u5C0F\u306E\u8CA0\u6307\u6570\u3082\u3001\u30D5\u30A7\u30EB\u30DE\u30FC\u306E\
+    \u5C0F\u5B9A\u7406\u3067\u6307\u6570\u3092\u5270\u4F59\u306B\u3057\u3066\u6BD4\
+    \u8F03\u3059\u308B\u3002\n        constexpr long long LOWEST = std::numeric_limits<long\
+    \ long>::lowest();\n        const long long reduced = LOWEST % (P - 1) + (P -\
+    \ 1);\n        if (pow_mod(a, LOWEST, P) != pow_mod(a, reduced, P)) ok = false,\
+    \ std::cerr << \"pow_mod lowest\" << std::endl;\n        if (mul_mod(mul_mod(pow_mod(a,\
+    \ LOWEST, P), pow_mod(a, std::numeric_limits<long long>::max(), P), P), a, P)\
+    \ != 1) ok = false;\n        long long b = rng() % P;\n        if (mul_mod(a,\
+    \ b, P) != static_cast<long long>(static_cast<__int128>(a) * b % P)) ok = false,\
+    \ std::cerr << \"mul \" << a << std::endl;\n    }\n\n    // discrete_log: \u5C0F\
+    \u3055\u3044\u6CD5\u3067\u3001x \u3092 0 \u304B\u3089\u9806\u306B\u8A66\u3057\u3066\
+    \u6700\u5C0F\u306E\u3082\u306E\u3068\u6BD4\u3079\u308B (a \u3068 m \u304C\u4E92\
+    \u3044\u306B\u7D20\u3067\u306A\u3044\u5834\u5408\u3082)\n    for (long long m\
+    \ = 1; m <= 40; m++) {\n        for (long long a = -3; a < m; a++) {\n       \
+    \     for (long long b = -3; b < m; b++) {\n                long long r = ((a\
+    \ % m) + m) % m, t = ((b % m) + m) % m, cur = 1 % m, expect = -1;\n          \
+    \      // a^x mod m \u306F 2m \u56DE\u4EE5\u5185\u306B\u5468\u671F\u306B\u5165\
+    \u308B\u306E\u3067\u3001\u305D\u308C\u307E\u3067\u8A66\u305B\u3070\u5341\u5206\
+    \n                for (long long x = 0; x <= 2 * m; x++, cur = cur * r % m) {\n\
+    \                    if (cur == t) {\n                        expect = x;\n  \
+    \                      break;\n                    }\n                }\n    \
+    \            if (discrete_log(a, b, m) != expect) ok = false, std::cerr << \"\
+    discrete_log \" << a << \" \" << b << \" \" << m << std::endl;\n            }\n\
+    \        }\n    }\n    // \u5927\u304D\u3044\u6CD5: \u7B54\u3048\u3092\u4F5C\u3063\
+    \u3066\u304B\u3089\u89E3\u304D\u3001a^x \u2261 b \u3068\u306A\u308A\u3001\u4F5C\
+    \u3063\u305F\u5024\u4EE5\u4E0B\u3067\u3042\u308B\u3053\u3068\u3092\u78BA\u304B\
+    \u3081\u308B\n    for (int rep = 0; rep < 200; rep++) {\n        long long m =\
+    \ rng() % 1000000000 + 1, a = rng() % m, x = rng() % 1000000;\n        long long\
+    \ b = pow_mod(a, x, m), y = discrete_log(a, b, m);\n        if (!(0 <= y && y\
+    \ <= x && pow_mod(a, y, m) == b)) ok = false, std::cerr << \"discrete_log big\
+    \ \" << a << \" \" << m << std::endl;\n    }\n\n    // sqrt_mod: \u5C0F\u3055\u3044\
+    \u7D20\u6570\u3067\u3001\u5168\u3066\u306E x \u3092\u8A66\u3057\u3066\u5E73\u65B9\
+    \u6839\u304C\u3042\u308B\u304B\u3068\u6700\u5C0F\u306E\u6839\u3092\u6BD4\u3079\
+    \u308B\n    for (long long p = 2; p <= 300; p++) {\n        bool prime = true;\n\
+    \        for (long long d = 2; d * d <= p; d++) prime &= p % d != 0;\n       \
+    \ if (!prime) continue;\n        for (long long a = -2; a < p; a++) {\n      \
+    \      long long r = ((a % p) + p) % p, expect = -1;\n            for (long long\
+    \ x = 0; x < p; x++) {\n                if (x * x % p == r) {\n              \
+    \      expect = x;\n                    break;\n                }\n          \
+    \  }\n            if (sqrt_mod(a, p) != expect) ok = false, std::cerr << \"sqrt_mod\
+    \ \" << a << \" \" << p << std::endl;\n        }\n    }\n    // \u5927\u304D\u3044\
+    \u7D20\u6570 (p - 1 \u304C 2 \u3067\u4F55\u5EA6\u3082\u5272\u308C\u308B\u3082\u306E\
+    \u3092\u542B\u3080): x^2 \u304B\u3089\u5E73\u65B9\u6839\u3092\u6C42\u3081\u3066\
+    \u5143\u306B\u623B\u308B\n    for (long long p : {998244353LL, 1000000007LL, (1LL\
+    \ << 61) - 1, 4611686018427387847LL}) {\n        for (int rep = 0; rep < 300;\
+    \ rep++) {\n            long long x = rng() % p, a = mul_mod(x, x, p), y = sqrt_mod(a,\
+    \ p);\n            if (!(y == std::min(x, p - x) || (x == 0 && y == 0))) ok =\
+    \ false, std::cerr << \"sqrt_mod big \" << p << std::endl;\n        }\n      \
+    \  // \u5E73\u65B9\u975E\u5270\u4F59\u306A\u3089 -1\n        long long z = 2;\n\
+    \        while (pow_mod(z, (p - 1) / 2, p) == 1) z++;\n        if (sqrt_mod(z,\
+    \ p) != -1) ok = false, std::cerr << \"sqrt_mod non-residue \" << p << std::endl;\n\
+    \    }\n\n    if (!ok) return 1;\n    std::cout << \"Hello World\" << std::endl;\n\
     }\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// mul_mod\u30FBpow_mod\u30FBinv_mod\u30FBdiscrete_log\u30FBsqrt_mod \u3092\
     \u611A\u76F4\u306A\u8A08\u7B97\u3068\u6BD4\u8F03\u3059\u308B\n// \u554F\u984C\u306E\
     \u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\
     \u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include \"../../../src/math/modular-arithmetic.hpp\"\
-    \n\n#include <algorithm>\n#include <iostream>\n#include <numeric>\n#include <random>\n\
-    \nstatic_assert(pow_mod(2, 10, 1000) == 24);\nstatic_assert(inv_mod(3, 7) == 5);\n\
-    static_assert(pow_mod(3, -1, 7) == 5);\nstatic_assert(pow_mod(5, 0, 1) == 0);\n\
-    \nint main() {\n    bool ok = true;\n    std::mt19937_64 rng(314);\n\n    // \u5C0F\
-    \u3055\u3044\u6CD5\u3067\u611A\u76F4\u306B\u6BD4\u3079\u308B (\u8CA0\u306E a \u3082\
-    )\n    for (long long m = 1; m <= 60; m++) {\n        for (long long a = -70;\
-    \ a <= 70; a++) {\n            long long r = ((a % m) + m) % m;\n            long\
-    \ long p = 1 % m;\n            for (int n = 0; n <= 20; n++) {\n             \
-    \   if (pow_mod(a, n, m) != p) ok = false, std::cerr << \"pow_mod \" << a << \"\
-    \ \" << n << \" \" << m << std::endl;\n                p = p * r % m;\n      \
-    \      }\n            for (long long b = -5; b <= 5; b++) {\n                if\
-    \ (mul_mod(a, b, m) != (((a * b) % m) + m) % m) ok = false, std::cerr << \"mul_mod\
-    \ \" << a << \" \" << b << std::endl;\n            }\n            if (std::gcd(r,\
-    \ m) == 1) {\n                long long x = inv_mod(a, m);\n                if\
-    \ (!(0 <= x && x < m && x * r % m == 1 % m)) ok = false, std::cerr << \"inv_mod\
-    \ \" << a << \" \" << m << std::endl;\n                if (pow_mod(a, -3, m) !=\
-    \ pow_mod(x, 3, m)) ok = false, std::cerr << \"pow_mod neg \" << a << \" \" <<\
-    \ m << std::endl;\n            }\n        }\n    }\n\n    // \u5927\u304D\u3044\
-    \u6CD5 (\u7A4D\u304C long long \u306B\u53CE\u307E\u3089\u306A\u3044) \u3067\u3001\
-    \u30D5\u30A7\u30EB\u30DE\u30FC\u306E\u5C0F\u5B9A\u7406\u3068\u9006\u5143\u3092\
-    \u78BA\u304B\u3081\u308B\n    const long long P = (1LL << 61) - 1;  // \u7D20\u6570\
-    \n    for (int rep = 0; rep < 1000; rep++) {\n        long long a = rng() % (P\
-    \ - 1) + 1;\n        if (pow_mod(a, P - 1, P) != 1) ok = false, std::cerr << \"\
-    fermat \" << a << std::endl;\n        if (mul_mod(a, inv_mod(a, P), P) != 1) ok\
-    \ = false, std::cerr << \"inv \" << a << std::endl;\n        long long b = rng()\
-    \ % P;\n        if (mul_mod(a, b, P) != static_cast<long long>(static_cast<__int128>(a)\
-    \ * b % P)) ok = false, std::cerr << \"mul \" << a << std::endl;\n    }\n\n  \
-    \  // discrete_log: \u5C0F\u3055\u3044\u6CD5\u3067\u3001x \u3092 0 \u304B\u3089\
-    \u9806\u306B\u8A66\u3057\u3066\u6700\u5C0F\u306E\u3082\u306E\u3068\u6BD4\u3079\
-    \u308B (a \u3068 m \u304C\u4E92\u3044\u306B\u7D20\u3067\u306A\u3044\u5834\u5408\
-    \u3082)\n    for (long long m = 1; m <= 40; m++) {\n        for (long long a =\
-    \ -3; a < m; a++) {\n            for (long long b = -3; b < m; b++) {\n      \
-    \          long long r = ((a % m) + m) % m, t = ((b % m) + m) % m, cur = 1 % m,\
-    \ expect = -1;\n                // a^x mod m \u306F 2m \u56DE\u4EE5\u5185\u306B\
-    \u5468\u671F\u306B\u5165\u308B\u306E\u3067\u3001\u305D\u308C\u307E\u3067\u8A66\
-    \u305B\u3070\u5341\u5206\n                for (long long x = 0; x <= 2 * m; x++,\
-    \ cur = cur * r % m) {\n                    if (cur == t) {\n                \
-    \        expect = x;\n                        break;\n                    }\n\
-    \                }\n                if (discrete_log(a, b, m) != expect) ok =\
-    \ false, std::cerr << \"discrete_log \" << a << \" \" << b << \" \" << m << std::endl;\n\
-    \            }\n        }\n    }\n    // \u5927\u304D\u3044\u6CD5: \u7B54\u3048\
-    \u3092\u4F5C\u3063\u3066\u304B\u3089\u89E3\u304D\u3001a^x \u2261 b \u3068\u306A\
-    \u308A\u3001\u4F5C\u3063\u305F\u5024\u4EE5\u4E0B\u3067\u3042\u308B\u3053\u3068\
-    \u3092\u78BA\u304B\u3081\u308B\n    for (int rep = 0; rep < 200; rep++) {\n  \
-    \      long long m = rng() % 1000000000 + 1, a = rng() % m, x = rng() % 1000000;\n\
-    \        long long b = pow_mod(a, x, m), y = discrete_log(a, b, m);\n        if\
-    \ (!(0 <= y && y <= x && pow_mod(a, y, m) == b)) ok = false, std::cerr << \"discrete_log\
-    \ big \" << a << \" \" << m << std::endl;\n    }\n\n    // sqrt_mod: \u5C0F\u3055\
-    \u3044\u7D20\u6570\u3067\u3001\u5168\u3066\u306E x \u3092\u8A66\u3057\u3066\u5E73\
-    \u65B9\u6839\u304C\u3042\u308B\u304B\u3068\u6700\u5C0F\u306E\u6839\u3092\u6BD4\
-    \u3079\u308B\n    for (long long p = 2; p <= 300; p++) {\n        bool prime =\
-    \ true;\n        for (long long d = 2; d * d <= p; d++) prime &= p % d != 0;\n\
-    \        if (!prime) continue;\n        for (long long a = -2; a < p; a++) {\n\
-    \            long long r = ((a % p) + p) % p, expect = -1;\n            for (long\
-    \ long x = 0; x < p; x++) {\n                if (x * x % p == r) {\n         \
-    \           expect = x;\n                    break;\n                }\n     \
-    \       }\n            if (sqrt_mod(a, p) != expect) ok = false, std::cerr <<\
-    \ \"sqrt_mod \" << a << \" \" << p << std::endl;\n        }\n    }\n    // \u5927\
-    \u304D\u3044\u7D20\u6570 (p - 1 \u304C 2 \u3067\u4F55\u5EA6\u3082\u5272\u308C\u308B\
-    \u3082\u306E\u3092\u542B\u3080): x^2 \u304B\u3089\u5E73\u65B9\u6839\u3092\u6C42\
-    \u3081\u3066\u5143\u306B\u623B\u308B\n    for (long long p : {998244353LL, 1000000007LL,\
-    \ (1LL << 61) - 1, 4611686018427387847LL}) {\n        for (int rep = 0; rep <\
-    \ 300; rep++) {\n            long long x = rng() % p, a = mul_mod(x, x, p), y\
-    \ = sqrt_mod(a, p);\n            if (!(y == std::min(x, p - x) || (x == 0 && y\
-    \ == 0))) ok = false, std::cerr << \"sqrt_mod big \" << p << std::endl;\n    \
-    \    }\n        // \u5E73\u65B9\u975E\u5270\u4F59\u306A\u3089 -1\n        long\
-    \ long z = 2;\n        while (pow_mod(z, (p - 1) / 2, p) == 1) z++;\n        if\
-    \ (sqrt_mod(z, p) != -1) ok = false, std::cerr << \"sqrt_mod non-residue \" <<\
-    \ p << std::endl;\n    }\n\n    if (ok) std::cout << \"Hello World\" << std::endl;\n\
+    \n\n#include <algorithm>\n#include <iostream>\n#include <limits>\n#include <numeric>\n\
+    #include <random>\n\nstatic_assert(pow_mod(2, 10, 1000) == 24);\nstatic_assert(inv_mod(3,\
+    \ 7) == 5);\nstatic_assert(pow_mod(3, -1, 7) == 5);\nstatic_assert(pow_mod(5,\
+    \ 0, 1) == 0);\nstatic_assert(pow_mod(2, std::numeric_limits<long long>::lowest(),\
+    \ 7) == 2);\nstatic_assert(pow_mod(0, std::numeric_limits<long long>::lowest(),\
+    \ 1) == 0);\n\nint main() {\n    bool ok = true;\n    std::mt19937_64 rng(314);\n\
+    \n    // \u5C0F\u3055\u3044\u6CD5\u3067\u611A\u76F4\u306B\u6BD4\u3079\u308B (\u8CA0\
+    \u306E a \u3082)\n    for (long long m = 1; m <= 60; m++) {\n        for (long\
+    \ long a = -70; a <= 70; a++) {\n            long long r = ((a % m) + m) % m;\n\
+    \            long long p = 1 % m;\n            for (int n = 0; n <= 20; n++) {\n\
+    \                if (pow_mod(a, n, m) != p) ok = false, std::cerr << \"pow_mod\
+    \ \" << a << \" \" << n << \" \" << m << std::endl;\n                p = p * r\
+    \ % m;\n            }\n            for (long long b = -5; b <= 5; b++) {\n   \
+    \             if (mul_mod(a, b, m) != (((a * b) % m) + m) % m) ok = false, std::cerr\
+    \ << \"mul_mod \" << a << \" \" << b << std::endl;\n            }\n          \
+    \  if (std::gcd(r, m) == 1) {\n                long long x = inv_mod(a, m);\n\
+    \                if (!(0 <= x && x < m && x * r % m == 1 % m)) ok = false, std::cerr\
+    \ << \"inv_mod \" << a << \" \" << m << std::endl;\n                if (pow_mod(a,\
+    \ -3, m) != pow_mod(x, 3, m)) ok = false, std::cerr << \"pow_mod neg \" << a <<\
+    \ \" \" << m << std::endl;\n            }\n        }\n    }\n\n    // \u5927\u304D\
+    \u3044\u6CD5 (\u7A4D\u304C long long \u306B\u53CE\u307E\u3089\u306A\u3044) \u3067\
+    \u3001\u30D5\u30A7\u30EB\u30DE\u30FC\u306E\u5C0F\u5B9A\u7406\u3068\u9006\u5143\
+    \u3092\u78BA\u304B\u3081\u308B\n    const long long P = (1LL << 61) - 1;  // \u7D20\
+    \u6570\n    for (int rep = 0; rep < 1000; rep++) {\n        long long a = rng()\
+    \ % (P - 1) + 1;\n        if (pow_mod(a, P - 1, P) != 1) ok = false, std::cerr\
+    \ << \"fermat \" << a << std::endl;\n        if (mul_mod(a, inv_mod(a, P), P)\
+    \ != 1) ok = false, std::cerr << \"inv \" << a << std::endl;\n        // \u6700\
+    \u5C0F\u306E\u8CA0\u6307\u6570\u3082\u3001\u30D5\u30A7\u30EB\u30DE\u30FC\u306E\
+    \u5C0F\u5B9A\u7406\u3067\u6307\u6570\u3092\u5270\u4F59\u306B\u3057\u3066\u6BD4\
+    \u8F03\u3059\u308B\u3002\n        constexpr long long LOWEST = std::numeric_limits<long\
+    \ long>::lowest();\n        const long long reduced = LOWEST % (P - 1) + (P -\
+    \ 1);\n        if (pow_mod(a, LOWEST, P) != pow_mod(a, reduced, P)) ok = false,\
+    \ std::cerr << \"pow_mod lowest\" << std::endl;\n        if (mul_mod(mul_mod(pow_mod(a,\
+    \ LOWEST, P), pow_mod(a, std::numeric_limits<long long>::max(), P), P), a, P)\
+    \ != 1) ok = false;\n        long long b = rng() % P;\n        if (mul_mod(a,\
+    \ b, P) != static_cast<long long>(static_cast<__int128>(a) * b % P)) ok = false,\
+    \ std::cerr << \"mul \" << a << std::endl;\n    }\n\n    // discrete_log: \u5C0F\
+    \u3055\u3044\u6CD5\u3067\u3001x \u3092 0 \u304B\u3089\u9806\u306B\u8A66\u3057\u3066\
+    \u6700\u5C0F\u306E\u3082\u306E\u3068\u6BD4\u3079\u308B (a \u3068 m \u304C\u4E92\
+    \u3044\u306B\u7D20\u3067\u306A\u3044\u5834\u5408\u3082)\n    for (long long m\
+    \ = 1; m <= 40; m++) {\n        for (long long a = -3; a < m; a++) {\n       \
+    \     for (long long b = -3; b < m; b++) {\n                long long r = ((a\
+    \ % m) + m) % m, t = ((b % m) + m) % m, cur = 1 % m, expect = -1;\n          \
+    \      // a^x mod m \u306F 2m \u56DE\u4EE5\u5185\u306B\u5468\u671F\u306B\u5165\
+    \u308B\u306E\u3067\u3001\u305D\u308C\u307E\u3067\u8A66\u305B\u3070\u5341\u5206\
+    \n                for (long long x = 0; x <= 2 * m; x++, cur = cur * r % m) {\n\
+    \                    if (cur == t) {\n                        expect = x;\n  \
+    \                      break;\n                    }\n                }\n    \
+    \            if (discrete_log(a, b, m) != expect) ok = false, std::cerr << \"\
+    discrete_log \" << a << \" \" << b << \" \" << m << std::endl;\n            }\n\
+    \        }\n    }\n    // \u5927\u304D\u3044\u6CD5: \u7B54\u3048\u3092\u4F5C\u3063\
+    \u3066\u304B\u3089\u89E3\u304D\u3001a^x \u2261 b \u3068\u306A\u308A\u3001\u4F5C\
+    \u3063\u305F\u5024\u4EE5\u4E0B\u3067\u3042\u308B\u3053\u3068\u3092\u78BA\u304B\
+    \u3081\u308B\n    for (int rep = 0; rep < 200; rep++) {\n        long long m =\
+    \ rng() % 1000000000 + 1, a = rng() % m, x = rng() % 1000000;\n        long long\
+    \ b = pow_mod(a, x, m), y = discrete_log(a, b, m);\n        if (!(0 <= y && y\
+    \ <= x && pow_mod(a, y, m) == b)) ok = false, std::cerr << \"discrete_log big\
+    \ \" << a << \" \" << m << std::endl;\n    }\n\n    // sqrt_mod: \u5C0F\u3055\u3044\
+    \u7D20\u6570\u3067\u3001\u5168\u3066\u306E x \u3092\u8A66\u3057\u3066\u5E73\u65B9\
+    \u6839\u304C\u3042\u308B\u304B\u3068\u6700\u5C0F\u306E\u6839\u3092\u6BD4\u3079\
+    \u308B\n    for (long long p = 2; p <= 300; p++) {\n        bool prime = true;\n\
+    \        for (long long d = 2; d * d <= p; d++) prime &= p % d != 0;\n       \
+    \ if (!prime) continue;\n        for (long long a = -2; a < p; a++) {\n      \
+    \      long long r = ((a % p) + p) % p, expect = -1;\n            for (long long\
+    \ x = 0; x < p; x++) {\n                if (x * x % p == r) {\n              \
+    \      expect = x;\n                    break;\n                }\n          \
+    \  }\n            if (sqrt_mod(a, p) != expect) ok = false, std::cerr << \"sqrt_mod\
+    \ \" << a << \" \" << p << std::endl;\n        }\n    }\n    // \u5927\u304D\u3044\
+    \u7D20\u6570 (p - 1 \u304C 2 \u3067\u4F55\u5EA6\u3082\u5272\u308C\u308B\u3082\u306E\
+    \u3092\u542B\u3080): x^2 \u304B\u3089\u5E73\u65B9\u6839\u3092\u6C42\u3081\u3066\
+    \u5143\u306B\u623B\u308B\n    for (long long p : {998244353LL, 1000000007LL, (1LL\
+    \ << 61) - 1, 4611686018427387847LL}) {\n        for (int rep = 0; rep < 300;\
+    \ rep++) {\n            long long x = rng() % p, a = mul_mod(x, x, p), y = sqrt_mod(a,\
+    \ p);\n            if (!(y == std::min(x, p - x) || (x == 0 && y == 0))) ok =\
+    \ false, std::cerr << \"sqrt_mod big \" << p << std::endl;\n        }\n      \
+    \  // \u5E73\u65B9\u975E\u5270\u4F59\u306A\u3089 -1\n        long long z = 2;\n\
+    \        while (pow_mod(z, (p - 1) / 2, p) == 1) z++;\n        if (sqrt_mod(z,\
+    \ p) != -1) ok = false, std::cerr << \"sqrt_mod non-residue \" << p << std::endl;\n\
+    \    }\n\n    if (!ok) return 1;\n    std::cout << \"Hello World\" << std::endl;\n\
     }\n"
   dependsOn:
   - src/math/modular-arithmetic.hpp
   isVerificationFile: true
   path: test/unittest/math/modular-arithmetic.test.cpp
   requiredBy: []
-  timestamp: '2026-11-03 08:52:44+09:00'
+  timestamp: '2026-11-08 23:01:44+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/modular-arithmetic.test.cpp

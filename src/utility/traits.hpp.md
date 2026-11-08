@@ -10,6 +10,9 @@ data:
     title: "\u5024\u306E\u500B\u6570\u3092\u6570\u3048\u308B\u591A\u91CD\u96C6\u5408\
       \ (Counter)"
   - icon: ':heavy_check_mark:'
+    path: src/data_structures/disjoint-sparse-table.hpp
+    title: Disjoint Sparse Table
+  - icon: ':heavy_check_mark:'
     path: src/data_structures/dual-segtree-2d.hpp
     title: "2\u6B21\u5143\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u9577\u65B9\
       \u5F62\u4F5C\u7528\u30011\u70B9\u53D6\u5F97)"
@@ -422,6 +425,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/counter.test.cpp
     title: test/unittest/data_structures/counter.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/disjoint-sparse-table.test.cpp
+    title: test/unittest/data_structures/disjoint-sparse-table.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/dual-segtree-2d.test.cpp
     title: test/unittest/data_structures/dual-segtree-2d.test.cpp
@@ -1201,6 +1207,7 @@ data:
   - src/math/modint.hpp
   - src/math/fps-composition.hpp
   - src/data_structures/rbst.hpp
+  - src/data_structures/disjoint-sparse-table.hpp
   - src/data_structures/persistent-lazy-segtree.hpp
   - src/data_structures/fenwick-tree.hpp
   - src/data_structures/lazy-segtree.hpp
@@ -1278,6 +1285,7 @@ data:
   - test/unittest/math/multipoint.test.cpp
   - test/unittest/math/bitwise-transform.test.cpp
   - test/unittest/data_structures/dual-segtree-2d.test.cpp
+  - test/unittest/data_structures/disjoint-sparse-table.test.cpp
   - test/unittest/data_structures/fenwick-tree.test.cpp
   - test/unittest/data_structures/sparse-table.test.cpp
   - test/unittest/data_structures/dual-segtree.test.cpp

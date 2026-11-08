@@ -71,6 +71,9 @@ data:
     path: test/unittest/algebra/acted-monoid.test.cpp
     title: test/unittest/algebra/acted-monoid.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/disjoint-sparse-table.test.cpp
+    title: test/unittest/data_structures/disjoint-sparse-table.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/dual-segtree.test.cpp
     title: test/unittest/data_structures/dual-segtree.test.cpp
   - icon: ':heavy_check_mark:'
@@ -1015,6 +1018,7 @@ data:
   - test/unittest/math/polynomial-roots.test.cpp
   - test/unittest/math/multipoint.test.cpp
   - test/unittest/math/bitwise-transform.test.cpp
+  - test/unittest/data_structures/disjoint-sparse-table.test.cpp
   - test/unittest/data_structures/dual-segtree.test.cpp
   - test/unittest/data_structures/sliding-window-aggregation.test.cpp
   - test/unittest/data_structures/persistent-segtree.test.cpp

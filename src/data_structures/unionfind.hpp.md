@@ -12,12 +12,18 @@ data:
     path: src/data_structures/potentialized-unionfind.hpp
     title: "\u30DD\u30C6\u30F3\u30B7\u30E3\u30EB\u4ED8\u304DUnionFind"
   - icon: ':heavy_check_mark:'
+    path: src/data_structures/rollback-unionfind.hpp
+    title: "\u5DFB\u304D\u623B\u3057\u306E\u3067\u304D\u308B UnionFind"
+  - icon: ':heavy_check_mark:'
     path: src/geometry/manhattan-mst.hpp
     title: "\u30DE\u30F3\u30CF\u30C3\u30BF\u30F3\u8DDD\u96E2\u306E\u6700\u5C0F\u5168\
       \u57DF\u6728"
   - icon: ':heavy_check_mark:'
     path: src/graph/graph_util.hpp
     title: "\u30B0\u30E9\u30D5\u306B\u95A2\u3059\u308B\u95A2\u6570"
+  - icon: ':heavy_check_mark:'
+    path: src/graph/minimum-arborescence.hpp
+    title: "\u6700\u5C0F\u5168\u57DF\u6709\u5411\u6728"
   - icon: ':heavy_check_mark:'
     path: src/graph/two-sat.hpp
     title: 2-SAT
@@ -65,6 +71,9 @@ data:
     path: test/unittest/data_structures/potentialized-unionfind.test.cpp
     title: test/unittest/data_structures/potentialized-unionfind.test.cpp
   - icon: ':heavy_check_mark:'
+    path: test/unittest/data_structures/rollback-unionfind.test.cpp
+    title: test/unittest/data_structures/rollback-unionfind.test.cpp
+  - icon: ':heavy_check_mark:'
     path: test/unittest/data_structures/unionfind.test.cpp
     title: test/unittest/data_structures/unionfind.test.cpp
   - icon: ':heavy_check_mark:'
@@ -76,6 +85,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/unittest/graph/lowlink.test.cpp
     title: test/unittest/graph/lowlink.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/unittest/graph/minimum-arborescence.test.cpp
+    title: test/unittest/graph/minimum-arborescence.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/unittest/graph/two-sat.test.cpp
     title: test/unittest/graph/two-sat.test.cpp
@@ -106,6 +118,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/cycle-detection.test.cpp
     title: test/yosupo/graph/cycle-detection.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/yosupo/graph/directedmst.test.cpp
+    title: test/yosupo/graph/directedmst.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/enumerate-triangles.test.cpp
     title: test/yosupo/graph/enumerate-triangles.test.cpp
@@ -255,6 +270,8 @@ data:
   - src/geometry/manhattan-mst.hpp
   - src/graph/graph_util.hpp
   - src/graph/two-sat.hpp
+  - src/graph/minimum-arborescence.hpp
+  - src/data_structures/rollback-unionfind.hpp
   - src/data_structures/persistent-unionfind.hpp
   - src/data_structures/potentialized-unionfind.hpp
   - src/data_structures/monoid-unionfind.hpp
@@ -263,11 +280,13 @@ data:
   verifiedWith:
   - test/yukicoder/674.1.test.cpp
   - test/unittest/geometry/manhattan-mst.test.cpp
+  - test/unittest/graph/minimum-arborescence.test.cpp
   - test/unittest/graph/chinese-postman.test.cpp
   - test/unittest/graph/lowlink.test.cpp
   - test/unittest/graph/two-sat.test.cpp
   - test/unittest/data_structures/graph_util.test.cpp
   - test/unittest/data_structures/monoid-unionfind.test.cpp
+  - test/unittest/data_structures/rollback-unionfind.test.cpp
   - test/unittest/data_structures/potentialized-unionfind.test.cpp
   - test/unittest/data_structures/find-cycle.test.cpp
   - test/unittest/data_structures/unionfind.test.cpp
@@ -283,6 +302,7 @@ data:
   - test/aoj/alds1/alds1-11-d.1.test.cpp
   - test/yosupo/geo/manhattanmst.test.cpp
   - test/yosupo/other/two-sat.test.cpp
+  - test/yosupo/graph/directedmst.test.cpp
   - test/yosupo/graph/enumerate-triangles.test.cpp
   - test/yosupo/graph/connected-components-of-complement-graph.test.cpp
   - test/yosupo/graph/chromatic-number.1.test.cpp
@@ -346,3 +366,5 @@ auto [r, merged] = uf.merge(u, v);  // 代表元も受け取る
 - 連結成分ごとに値 (和・最小値など) を持つなら [可換モノイドを乗せるUnionFind](monoid-unionfind.hpp)
 - 頂点間のポテンシャルの差を管理するなら [ポテンシャル付きUnionFind](potentialized-unionfind.hpp)
 - 過去の版も使うなら [永続UnionFind](persistent-unionfind.hpp)
+
+- 履歴を巻き戻すなら [RollbackUnionFind](rollback-unionfind.hpp)

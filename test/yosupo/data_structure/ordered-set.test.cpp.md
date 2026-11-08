@@ -38,9 +38,19 @@ data:
     \         if (children[0])\n                children[0]->xval ^= xval;\n     \
     \       if (children[1])\n                children[1]->xval ^= xval;\n       \
     \     xval = 0;\n        }\n    };\n    using NodePtr = std::shared_ptr<BinaryTrieNode>;\n\
-    \    NodePtr root_ptr = std::make_shared<BinaryTrieNode>(d);\n\n   public:\n \
-    \   /**\n     * @brief \u96C6\u5408\u306Bn\u3092\u8FFD\u52A0 (O(d))\n     */\n\
-    \    void insert(T n) {\n        NodePtr cur_ptr = root_ptr;\n        while (!cur_ptr->is_leaf())\
+    \    NodePtr root_ptr = std::make_shared<BinaryTrieNode>(d);\n\n    static NodePtr\
+    \ clone(const NodePtr& node) {\n        if (!node) return nullptr;\n        auto\
+    \ copy = std::make_shared<BinaryTrieNode>(node->level);\n        copy->subcnt\
+    \ = node->subcnt;\n        copy->xval = node->xval;\n        copy->children[0]\
+    \ = clone(node->children[0]);\n        copy->children[1] = clone(node->children[1]);\n\
+    \        return copy;\n    }\n\n   public:\n    BinaryTrie() = default;\n    BinaryTrie(const\
+    \ BinaryTrie& other) : root_ptr(clone(other.root_ptr)) {}\n    BinaryTrie& operator=(const\
+    \ BinaryTrie& other) {\n        if (this != &other) root_ptr = clone(other.root_ptr);\n\
+    \        return *this;\n    }\n    BinaryTrie(BinaryTrie&&) noexcept = default;\n\
+    \    BinaryTrie& operator=(BinaryTrie&&) noexcept = default;\n\n    /**\n    \
+    \ * @brief \u96C6\u5408\u306Bn\u3092\u8FFD\u52A0 (O(d))\n     */\n    void insert(T\
+    \ n) {\n        if constexpr (d < std::numeric_limits<T>::digits) assert((n >>\
+    \ d) == 0);\n        NodePtr cur_ptr = root_ptr;\n        while (!cur_ptr->is_leaf())\
     \ {\n            cur_ptr->affect_xor();\n            cur_ptr->subcnt += 1;\n \
     \           NodePtr& nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n     \
     \       if (!nxt_ptr) {\n                nxt_ptr = std::make_shared<BinaryTrieNode>(cur_ptr->level\
@@ -48,27 +58,28 @@ data:
     \        cur_ptr->subcnt += 1;\n    }\n\n    long long size() const { return root_ptr->subcnt;\
     \ }\n\n    /**\n     * @brief \u96C6\u5408\u304B\u3089n\u3092\u691C\u7D22\u3057\
     \u3001\u898B\u3064\u304B\u3063\u305F\u6570\u3092\u6C42\u3081\u308B (O(d))\n  \
-    \   */\n    long long count(T n) const {\n        NodePtr cur_ptr = root_ptr;\n\
-    \        while (!cur_ptr->is_leaf()) {\n            cur_ptr->affect_xor();\n \
-    \           NodePtr& nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n     \
-    \       if (!nxt_ptr) {\n                return 0;\n            }\n          \
-    \  cur_ptr = nxt_ptr;\n        }\n        return (cur_ptr ? cur_ptr->subcnt :\
+    \   */\n    long long count(T n) const {\n        if constexpr (d < std::numeric_limits<T>::digits)\
+    \ {\n            if ((n >> d) != 0) return 0;\n        }\n        NodePtr cur_ptr\
+    \ = root_ptr;\n        while (!cur_ptr->is_leaf()) {\n            cur_ptr->affect_xor();\n\
+    \            NodePtr& nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n    \
+    \        if (!nxt_ptr) {\n                return 0;\n            }\n         \
+    \   cur_ptr = nxt_ptr;\n        }\n        return (cur_ptr ? cur_ptr->subcnt :\
     \ 0);\n    }\n\n    /**\n     * @brief \u96C6\u5408\u304B\u3089n\u3092\u524A\u9664\
     \ (O(d))\n     * @note \u5B58\u5728\u3057\u306A\u3044\u8981\u7D20\u3092\u6307\u5B9A\
     \u3057\u305F\u3068\u304D\u3001\u4F55\u3082\u8D77\u3053\u3089\u306A\u3044\n   \
     \  */\n    void erase(T n) {\n        unsigned int cnt = count(n);\n        if\
     \ (cnt == 0)\n            return;\n        NodePtr cur_ptr = root_ptr;\n     \
-    \   while (true) {\n            cur_ptr->affect_xor();\n            cur_ptr->subcnt\
-    \ -= cnt;\n            NodePtr& nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n\
+    \   while (!cur_ptr->is_leaf()) {\n            cur_ptr->affect_xor();\n      \
+    \      cur_ptr->subcnt -= cnt;\n            NodePtr& nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n\
     \            if (nxt_ptr->subcnt == cnt) {\n                nxt_ptr = nullptr;\n\
     \                return;\n            }\n            cur_ptr = nxt_ptr;\n    \
-    \    }\n    }\n\n    /**\n     * @brief \u96C6\u5408\u304B\u3089n\u3092\u4E00\u3064\
-    \u3060\u3051\u524A\u9664 (O(d))\n     * @note \u5B58\u5728\u3057\u306A\u3044\u8981\
-    \u7D20\u3092\u6307\u5B9A\u3057\u305F\u3068\u304D\u3001\u4F55\u3082\u8D77\u3053\
-    \u3089\u306A\u3044\n     */\n    void erase_one_element(T n) {\n        if (count(n)\
-    \ == 0)\n            return;\n        NodePtr cur_ptr = root_ptr;\n        while\
-    \ (!cur_ptr->is_leaf()) {\n            cur_ptr->affect_xor();\n            cur_ptr->subcnt\
-    \ -= 1;\n            NodePtr& nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n\
+    \    }\n        cur_ptr->subcnt -= cnt;\n    }\n\n    /**\n     * @brief \u96C6\
+    \u5408\u304B\u3089n\u3092\u4E00\u3064\u3060\u3051\u524A\u9664 (O(d))\n     * @note\
+    \ \u5B58\u5728\u3057\u306A\u3044\u8981\u7D20\u3092\u6307\u5B9A\u3057\u305F\u3068\
+    \u304D\u3001\u4F55\u3082\u8D77\u3053\u3089\u306A\u3044\n     */\n    void erase_one_element(T\
+    \ n) {\n        if (count(n) == 0)\n            return;\n        NodePtr cur_ptr\
+    \ = root_ptr;\n        while (!cur_ptr->is_leaf()) {\n            cur_ptr->affect_xor();\n\
+    \            cur_ptr->subcnt -= 1;\n            NodePtr& nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];\n\
     \            if (nxt_ptr->subcnt == 1) {\n                nxt_ptr = nullptr;\n\
     \                return;\n            }\n            cur_ptr = nxt_ptr;\n    \
     \    }\n        cur_ptr->subcnt -= 1;\n    }\n\n    /**\n     * @brief \u6607\u9806\
@@ -104,24 +115,26 @@ data:
     \ {\n        return (n < std::numeric_limits<T>::max() ? bisect_left(n + 1) :\
     \ size());\n    }\n\n    /**\n     * @brief \u96C6\u5408\u306E\u3059\u3079\u3066\
     \u306E\u8981\u7D20\u306Bxor\u3092\u4F5C\u7528\n     */\n    void apply_xor(T n)\
-    \ { root_ptr->xval ^= n; }\n\n    /**\n     * @brief \u8981\u7D20\u3092\u3059\u3079\
-    \u3066\u524A\u9664\u3059\u308B\u3002\u78BA\u4FDD\u3057\u305F\u30E1\u30E2\u30EA\
-    \u9818\u57DF\u3082\u524A\u9664\u3055\u308C\u308B\n     */\n    void clear() {\n\
-    \        root_ptr = std::make_shared<BinaryTrieNode>(d);\n    }\n};\n#line 6 \"\
-    test/yosupo/data_structure/ordered-set.test.cpp\"\n\nint main() {\n    std::cin.tie(nullptr);\n\
-    \    std::ios::sync_with_stdio(false);\n    int n, q;\n    std::cin >> n >> q;\n\
-    \    BinaryTrie<30> s;\n    for (int i = 0; i < n; i++) {\n        unsigned long\
-    \ long a;\n        std::cin >> a;\n        s.insert(a);\n    }\n    while (q--)\
-    \ {\n        int t;\n        unsigned long long x;\n        std::cin >> t >> x;\n\
-    \        if (t == 0) {\n            if (s.count(x) == 0) s.insert(x);\n      \
-    \  } else if (t == 1) {\n            s.erase(x);\n        } else if (t == 2) {\n\
-    \            if (static_cast<long long>(x) > s.size()) {\n                std::cout\
-    \ << -1 << '\\n';\n            } else {\n                std::cout << s.nth_element(x\
-    \ - 1) << '\\n';\n            }\n        } else if (t == 3) {\n            std::cout\
-    \ << s.bisect_right(x) << '\\n';\n        } else if (t == 4) {\n            long\
-    \ long k = s.bisect_right(x);\n            if (k == 0) {\n                std::cout\
-    \ << -1 << '\\n';\n            } else {\n                std::cout << s.nth_element(k\
-    \ - 1) << '\\n';\n            }\n        } else {\n            long long k = s.bisect_left(x);\n\
+    \ {\n        if constexpr (d < std::numeric_limits<T>::digits) assert((n >> d)\
+    \ == 0);\n        root_ptr->xval ^= n;\n    }\n\n    /**\n     * @brief \u8981\
+    \u7D20\u3092\u3059\u3079\u3066\u524A\u9664\u3059\u308B\u3002\u78BA\u4FDD\u3057\
+    \u305F\u30E1\u30E2\u30EA\u9818\u57DF\u3082\u524A\u9664\u3055\u308C\u308B\n   \
+    \  */\n    void clear() {\n        root_ptr = std::make_shared<BinaryTrieNode>(d);\n\
+    \    }\n};\n#line 6 \"test/yosupo/data_structure/ordered-set.test.cpp\"\n\nint\
+    \ main() {\n    std::cin.tie(nullptr);\n    std::ios::sync_with_stdio(false);\n\
+    \    int n, q;\n    std::cin >> n >> q;\n    BinaryTrie<30> s;\n    for (int i\
+    \ = 0; i < n; i++) {\n        unsigned long long a;\n        std::cin >> a;\n\
+    \        s.insert(a);\n    }\n    while (q--) {\n        int t;\n        unsigned\
+    \ long long x;\n        std::cin >> t >> x;\n        if (t == 0) {\n         \
+    \   if (s.count(x) == 0) s.insert(x);\n        } else if (t == 1) {\n        \
+    \    s.erase(x);\n        } else if (t == 2) {\n            if (static_cast<long\
+    \ long>(x) > s.size()) {\n                std::cout << -1 << '\\n';\n        \
+    \    } else {\n                std::cout << s.nth_element(x - 1) << '\\n';\n \
+    \           }\n        } else if (t == 3) {\n            std::cout << s.bisect_right(x)\
+    \ << '\\n';\n        } else if (t == 4) {\n            long long k = s.bisect_right(x);\n\
+    \            if (k == 0) {\n                std::cout << -1 << '\\n';\n      \
+    \      } else {\n                std::cout << s.nth_element(k - 1) << '\\n';\n\
+    \            }\n        } else {\n            long long k = s.bisect_left(x);\n\
     \            if (k == s.size()) {\n                std::cout << -1 << '\\n';\n\
     \            } else {\n                std::cout << s.nth_element(k) << '\\n';\n\
     \            }\n        }\n    }\n}\n"
@@ -149,7 +162,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/data_structure/ordered-set.test.cpp
   requiredBy: []
-  timestamp: '2026-10-24 03:52:01+09:00'
+  timestamp: '2026-11-08 23:03:03+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/data_structure/ordered-set.test.cpp

@@ -54,6 +54,9 @@ data:
       title: "\u5024\u306E\u500B\u6570\u3092\u6570\u3048\u308B\u591A\u91CD\u96C6\u5408\
         \ (Counter)"
     - icon: ':heavy_check_mark:'
+      path: src/data_structures/disjoint-sparse-table.hpp
+      title: Disjoint Sparse Table
+    - icon: ':heavy_check_mark:'
       path: src/data_structures/dual-segtree-2d.hpp
       title: "2\u6B21\u5143\u53CC\u5BFE\u30BB\u30B0\u30E1\u30F3\u30C8\u6728 (\u9577\
         \u65B9\u5F62\u4F5C\u7528\u30011\u70B9\u53D6\u5F97)"
@@ -140,6 +143,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/data_structures/rbst.hpp
       title: "\u5E73\u8861\u4E8C\u5206\u6728 (RBST)"
+    - icon: ':heavy_check_mark:'
+      path: src/data_structures/rollback-unionfind.hpp
+      title: "\u5DFB\u304D\u623B\u3057\u306E\u3067\u304D\u308B UnionFind"
     - icon: ':heavy_check_mark:'
       path: src/data_structures/segtree-2d.hpp
       title: "2\u6B21\u5143\u30BB\u30B0\u30E1\u30F3\u30C8\u6728"
@@ -551,6 +557,11 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/utility/vector_func.hpp
       title: "vector \u306B\u5BFE\u3059\u308B\u6F14\u7B97\u5B50\u3068\u95A2\u6570"
+  - name: tools
+    pages:
+    - icon: ':warning:'
+      path: tools/check_library.py
+      title: tools/check_library.py
   verificationCategories:
   - name: test/aoj/alds1
     pages:
@@ -995,6 +1006,9 @@ data:
       path: test/unittest/data_structures/counter.test.cpp
       title: test/unittest/data_structures/counter.test.cpp
     - icon: ':heavy_check_mark:'
+      path: test/unittest/data_structures/disjoint-sparse-table.test.cpp
+      title: test/unittest/data_structures/disjoint-sparse-table.test.cpp
+    - icon: ':heavy_check_mark:'
       path: test/unittest/data_structures/dual-segtree-2d.test.cpp
       title: test/unittest/data_structures/dual-segtree-2d.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1078,6 +1092,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/unittest/data_structures/rbst.test.cpp
       title: test/unittest/data_structures/rbst.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/unittest/data_structures/rollback-unionfind.test.cpp
+      title: test/unittest/data_structures/rollback-unionfind.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/unittest/data_structures/segtree-2d.test.cpp
       title: test/unittest/data_structures/segtree-2d.test.cpp

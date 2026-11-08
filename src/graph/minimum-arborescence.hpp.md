@@ -2,6 +2,12 @@
 data:
   _extendedDependsOn:
   - icon: ':heavy_check_mark:'
+    path: src/data_structures/rollback-unionfind.hpp
+    title: "\u5DFB\u304D\u623B\u3057\u306E\u3067\u304D\u308B UnionFind"
+  - icon: ':heavy_check_mark:'
+    path: src/data_structures/unionfind.hpp
+    title: UnionFind
+  - icon: ':heavy_check_mark:'
     path: src/graph/graph.hpp
     title: "\u30B0\u30E9\u30D5"
   _extendedRequiredBy: []
@@ -20,8 +26,92 @@ data:
     links: []
   bundledCode: "#line 2 \"src/graph/minimum-arborescence.hpp\"\n\n/**\n * @file minimum-arborescence.hpp\n\
     \ * @brief \u6700\u5C0F\u5168\u57DF\u6709\u5411\u6728\n */\n\n#include <cassert>\n\
-    #include <optional>\n#include <utility>\n#include <vector>\n\n#line 2 \"src/graph/graph.hpp\"\
-    \n\n/**\n * @file graph.hpp\n * @brief \u30B0\u30E9\u30D5\n */\n\n#line 9 \"src/graph/graph.hpp\"\
+    #include <optional>\n#include <utility>\n#include <vector>\n\n#line 2 \"src/data_structures/rollback-unionfind.hpp\"\
+    \n\n/**\n * @file rollback-unionfind.hpp\n * @brief \u5DFB\u304D\u623B\u3057\u306E\
+    \u3067\u304D\u308B UnionFind\n */\n\n#line 11 \"src/data_structures/rollback-unionfind.hpp\"\
+    \n\n#line 2 \"src/data_structures/unionfind.hpp\"\n\n/**\n * @file unionfind.hpp\n\
+    \ * @brief UnionFind\n */\n\n#include <algorithm>\n#line 12 \"src/data_structures/unionfind.hpp\"\
+    \n\nnamespace internal_unionfind {\n/**\n * @brief \u5404\u8981\u7D20\u306E\u4EE3\
+    \u8868\u5143\u304B\u3089\u3001\u9023\u7D50\u6210\u5206\u3054\u3068\u306E\u8981\
+    \u7D20\u306E\u30EA\u30B9\u30C8\u3092\u4F5C\u308B\n * @param leader \u8981\u7D20\
+    \ a \u306E\u4EE3\u8868\u5143\u3092\u8FD4\u3059\u95A2\u6570\n */\ntemplate <typename\
+    \ F>\nstd::vector<std::vector<long long>> groups(long long n, F leader) {\n  \
+    \  std::vector<long long> leader_buf(n), group_size(n);\n    for (long long i\
+    \ = 0; i < n; i++) {\n        leader_buf[i] = leader(i);\n        group_size[leader_buf[i]]++;\n\
+    \    }\n    std::vector<std::vector<long long>> result(n);\n    for (long long\
+    \ i = 0; i < n; i++) {\n        result[i].reserve(group_size[i]);\n    }\n   \
+    \ for (long long i = 0; i < n; i++) {\n        result[leader_buf[i]].push_back(i);\n\
+    \    }\n    result.erase(std::remove_if(result.begin(), result.end(), [&](const\
+    \ std::vector<long long>& v) { return v.empty(); }), result.end());\n    return\
+    \ result;\n}\n}  // namespace internal_unionfind\n\n/**\n * @brief \u7121\u5411\
+    \u30B0\u30E9\u30D5\u306B\u5BFE\u3057\u3066\u300C\u8FBA\u306E\u8FFD\u52A0\u300D\
+    \u3001\u300C2\u9802\u70B9\u304C\u9023\u7D50\u304B\u306E\u5224\u5B9A\u300D\u3092\
+    \u3059\u308B\n */\nclass UnionFind {\n   protected:\n    long long _n;\n    //\
+    \ \u8CA0\u306A\u3089\u30B5\u30A4\u30BA\u3001\u975E\u8CA0\u306A\u3089\u89AA (\u30E1\
+    \u30E2\u30EA\u3092\u6291\u3048\u308B\u305F\u3081 int \u3067\u6301\u3064)\n   \
+    \ std::vector<int> parent_or_size;\n\n   public:\n    /**\n     * @brief merge\
+    \ \u306E\u623B\u308A\u5024\n     *\n     * if (uf.merge(a, b)) \u3067\u65B0\u3057\
+    \u304F\u7D71\u5408\u3057\u305F\u304B\u3092\u5224\u5B9A\u3067\u304D\u3001\n   \
+    \  * auto [r, merged] = uf.merge(a, b); \u3067\u4EE3\u8868\u5143\u3082\u53D7\u3051\
+    \u53D6\u308C\u308B\n     */\n    struct MergeResult {\n        long long leader;\
+    \  //!< \u7D71\u5408\u5F8C\u306E\u4EE3\u8868\u5143\n        bool merged;     \
+    \  //!< \u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B (\u3082\u3068\u3082\u3068\
+    \u540C\u3058\u9023\u7D50\u6210\u5206\u306A\u3089 false)\n        explicit operator\
+    \ bool() const { return merged; }\n    };\n\n    UnionFind() : _n(0) {}\n    explicit\
+    \ UnionFind(long long n) : _n(n), parent_or_size(n, -1) {}\n\n    /**\n     *\
+    \ @brief \u8FBA(a,b)\u3092\u8DB3\u3059\n     * @return \u7D71\u5408\u5F8C\u306E\
+    \u4EE3\u8868\u5143\u3068\u3001\u65B0\u3057\u304F\u7D71\u5408\u3057\u305F\u304B\
+    \n     */\n    MergeResult merge(long long a, long long b) {\n        assert(0\
+    \ <= a && a < _n);\n        assert(0 <= b && b < _n);\n        long long x = leader(a),\
+    \ y = leader(b);\n        if (x == y) return {x, false};\n        if (-parent_or_size[x]\
+    \ < -parent_or_size[y]) std::swap(x, y);\n        parent_or_size[x] += parent_or_size[y];\n\
+    \        parent_or_size[y] = static_cast<int>(x);\n        return {x, true};\n\
+    \    }\n    /**\n     * @brief \u9802\u70B9a,b\u304C\u9023\u7D50\u304B\u3069\u3046\
+    \u304B\n     */\n    bool same(long long a, long long b) {\n        assert(0 <=\
+    \ a && a < _n);\n        assert(0 <= b && b < _n);\n        return leader(a) ==\
+    \ leader(b);\n    }\n    /**\n     * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\
+    \u9023\u7D50\u6210\u5206\u306E\u4EE3\u8868\u5143\n     */\n    long long leader(long\
+    \ long a) {\n        assert(0 <= a && a < _n);\n        if (parent_or_size[a]\
+    \ < 0) return a;\n        int x = static_cast<int>(a);\n        while (parent_or_size[x]\
+    \ >= 0) {\n            x = parent_or_size[x];\n        }\n        while (parent_or_size[a]\
+    \ >= 0) {\n            int t = parent_or_size[a];\n            parent_or_size[a]\
+    \ = x;\n            a = t;\n        }\n        return x;\n    }\n    /**\n   \
+    \  * @brief \u9802\u70B9a\u306E\u5C5E\u3059\u308B\u9023\u7D50\u6210\u5206\u306E\
+    \u30B5\u30A4\u30BA\n     */\n    long long size(long long a) {\n        assert(0\
+    \ <= a && a < _n);\n        return -parent_or_size[leader(a)];\n    }\n    /**\n\
+    \     * @brief \u30B0\u30E9\u30D5\u3092\u9023\u7D50\u6210\u5206\u306B\u5206\u3051\
+    \u3001\u305D\u306E\u60C5\u5831\u3092\u8FD4\u3059\n     * @return \u300C\u4E00\u3064\
+    \u306E\u9023\u7D50\u6210\u5206\u306E\u9802\u70B9\u756A\u53F7\u306E\u30EA\u30B9\
+    \u30C8\u300D\u306E\u30EA\u30B9\u30C8\n     */\n    std::vector<std::vector<long\
+    \ long>> groups() {\n        return internal_unionfind::groups(_n, [&](long long\
+    \ a) { return leader(a); });\n    }\n};\n#line 13 \"src/data_structures/rollback-unionfind.hpp\"\
+    \n\n/**\n * @brief union by size \u3092\u4F7F\u3044\u3001\u7D4C\u8DEF\u5727\u7E2E\
+    \u3092\u305B\u305A\u306B\u66F4\u65B0\u5C65\u6B74\u3092\u6B8B\u3059 UnionFind\n\
+    \ */\nclass RollbackUnionFind : private UnionFind {\n    struct Change {\n   \
+    \     int x, y, size_x, size_y;\n    };\n    std::vector<Change> history;\n\n\
+    \   public:\n    using MergeResult = UnionFind::MergeResult;\n\n    explicit RollbackUnionFind(long\
+    \ long n = 0) : UnionFind(n) { assert(n >= 0); }\n\n    long long leader(long\
+    \ long a) const {\n        assert(0 <= a && a < _n);\n        while (parent_or_size[a]\
+    \ >= 0) a = parent_or_size[a];\n        return a;\n    }\n    bool same(long long\
+    \ a, long long b) const { return leader(a) == leader(b); }\n    long long size(long\
+    \ long a) const { return -parent_or_size[leader(a)]; }\n\n    MergeResult merge(long\
+    \ long a, long long b) {\n        long long x = leader(a), y = leader(b);\n  \
+    \      if (x == y) return {x, false};\n        if (-parent_or_size[x] < -parent_or_size[y])\
+    \ std::swap(x, y);\n        history.push_back({static_cast<int>(x), static_cast<int>(y),\
+    \ parent_or_size[x], parent_or_size[y]});\n        parent_or_size[x] += parent_or_size[y];\n\
+    \        parent_or_size[y] = static_cast<int>(x);\n        return {x, true};\n\
+    \    }\n\n    /** @brief \u73FE\u5728\u306E\u5C65\u6B74\u306E\u4F4D\u7F6E\u3002\
+    \u540C\u3058\u6210\u5206\u3092 merge \u3057\u3066\u3082\u5897\u3048\u306A\u3044\
+    \ */\n    long long snapshot() const { return static_cast<long long>(history.size());\
+    \ }\n    /** @brief \u73FE\u5728\u306E\u5C65\u6B74\u4E0A\u306E\u3001snapshot \u3067\
+    \u53D6\u5F97\u3057\u305F\u4F4D\u7F6E\u307E\u3067\u5DFB\u304D\u623B\u3059 */\n\
+    \    void rollback(long long t) {\n        assert(0 <= t && t <= snapshot());\n\
+    \        while (snapshot() > t) {\n            const auto c = history.back();\n\
+    \            history.pop_back();\n            parent_or_size[c.x] = c.size_x;\n\
+    \            parent_or_size[c.y] = c.size_y;\n        }\n    }\n    std::vector<std::vector<long\
+    \ long>> groups() const {\n        return internal_unionfind::groups(_n, [&](long\
+    \ long a) { return leader(a); });\n    }\n};\n#line 2 \"src/graph/graph.hpp\"\n\
+    \n/**\n * @file graph.hpp\n * @brief \u30B0\u30E9\u30D5\n */\n\n#line 9 \"src/graph/graph.hpp\"\
     \n#include <iostream>\n#line 12 \"src/graph/graph.hpp\"\n\n/**\n * @brief \u30B0\
     \u30E9\u30D5\u306E\u6C4E\u7528\u30AF\u30E9\u30B9\n *\n * @tparam Cost \u8FBA\u306E\
     \u30B3\u30B9\u30C8\u306E\u578B \u7701\u7565\u3057\u305F\u3089 long long (\u91CD\
@@ -114,7 +204,7 @@ data:
     \ edges) {\n    Path<Cost> res{Cost{}, {s}, std::move(edges)};\n    for (const\
     \ auto& e : res.edges) {\n        assert(e.src == res.vertices.back());\n    \
     \    res.cost += e.cost;\n        res.vertices.push_back(e.dst);\n    }\n    return\
-    \ res;\n}\n}  // namespace internal_graph\n#line 14 \"src/graph/minimum-arborescence.hpp\"\
+    \ res;\n}\n}  // namespace internal_graph\n#line 15 \"src/graph/minimum-arborescence.hpp\"\
     \n\nnamespace internal_minimum_arborescence {\n\n/**\n * @brief \u5168\u4F53\u3078\
     \u306E\u52A0\u7B97\u304C\u3067\u304D\u308B leftist heap (\u30CE\u30FC\u30C9\u306F\
     \u6DFB\u5B57\u3067\u6301\u3064)\n */\ntemplate <typename Cost>\nclass LeftistHeap\
@@ -134,110 +224,7 @@ data:
     \ a) {\n        if (nodes[a].lazy == Cost{}) return;\n        nodes[a].key +=\
     \ nodes[a].lazy;\n        if (nodes[a].l != -1) nodes[nodes[a].l].lazy += nodes[a].lazy;\n\
     \        if (nodes[a].r != -1) nodes[nodes[a].r].lazy += nodes[a].lazy;\n    \
-    \    nodes[a].lazy = Cost{};\n    }\n};\n\n/**\n * @brief \u5DFB\u304D\u623B\u3057\
-    \u306E\u3067\u304D\u308B Union-Find (\u7D4C\u8DEF\u5727\u7E2E\u3092\u3057\u306A\
-    \u3044)\n */\nclass RollbackUnionFind {\n   public:\n    explicit RollbackUnionFind(long\
-    \ long n) : parent_or_size(n, -1) {}\n    long long find(long long x) const {\n\
-    \        while (parent_or_size[x] >= 0) x = parent_or_size[x];\n        return\
-    \ x;\n    }\n    bool merge(long long x, long long y) {\n        x = find(x),\
-    \ y = find(y);\n        if (x == y) return false;\n        if (parent_or_size[x]\
-    \ > parent_or_size[y]) std::swap(x, y);\n        history.push_back({x, parent_or_size[x]});\n\
-    \        history.push_back({y, parent_or_size[y]});\n        parent_or_size[x]\
-    \ += parent_or_size[y];\n        parent_or_size[y] = x;\n        return true;\n\
-    \    }\n    long long time() const { return static_cast<long long>(history.size());\
-    \ }\n    void rollback(long long t) {\n        while (time() > t) {\n        \
-    \    parent_or_size[history.back().first] = history.back().second;\n         \
-    \   history.pop_back();\n        }\n    }\n\n   private:\n    std::vector<long\
-    \ long> parent_or_size;\n    std::vector<std::pair<long long, long long>> history;\n\
-    };\n\n}  // namespace internal_minimum_arborescence\n\n/**\n * @brief \u6700\u5C0F\
-    \u5168\u57DF\u6709\u5411\u6728\u306E\u7D50\u679C\n */\ntemplate <typename Cost>\n\
-    struct MinimumArborescence {\n    Cost cost;                                 \
-    \           //!< \u4F7F\u3063\u305F\u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u7DCF\u548C\
-    \n    std::vector<typename Graph<Cost>::Edge> parent_edge;  //!< \u89AA\u304B\u3089\
-    \ v \u306B\u5165\u308B\u8FBA (\u6839\u3067\u306F src == -1)\n};\n\n/**\n * @brief\
-    \ \u6709\u5411\u30B0\u30E9\u30D5\u306E\u6700\u5C0F\u5168\u57DF\u6709\u5411\u6728\
-    \ (root \u3092\u6839\u3068\u3057\u3001root \u304B\u3089\u5168\u9802\u70B9\u3078\
-    \u5230\u9054\u3067\u304D\u308B\u5168\u57DF\u6728\u3067\u3001\u8FBA\u306E\u30B3\
-    \u30B9\u30C8\u306E\u7DCF\u548C\u304C\u6700\u5C0F\u306E\u3082\u306E)\n *\n * Chu-Liu/Edmonds\
-    \ \u6CD5\u3092 leftist heap \u3068\u5DFB\u304D\u623B\u3057\u306E\u3067\u304D\u308B\
-    \ Union-Find \u3067 O(m log m) \u306B\u3057\u305F\u3082\u306E\n * @param root\
-    \ \u6839\n * @return std::optional<MinimumArborescence<Cost>> root \u304B\u3089\
-    \u5230\u9054\u3067\u304D\u306A\u3044\u9802\u70B9\u304C\u3042\u308C\u3070 std::nullopt\n\
-    \ * @note \u8CA0\u306E\u30B3\u30B9\u30C8\u306E\u8FBA\u304C\u3042\u3063\u3066\u3082\
-    \u3088\u3044\u3002\u81EA\u5DF1\u30EB\u30FC\u30D7\u30FB\u591A\u91CD\u8FBA\u304C\
-    \u3042\u3063\u3066\u3082\u3088\u3044\n */\ntemplate <typename Cost = long long>\n\
-    std::optional<MinimumArborescence<Cost>> minimum_arborescence(const Graph<Cost>&\
-    \ graph, long long root) {\n    using Edge = typename Graph<Cost>::Edge;\n   \
-    \ const long long n = graph.n;\n    assert(0 <= root && root < n);\n    std::vector<Edge>\
-    \ es;\n    for (long long v = 0; v < n; v++) {\n        for (const auto& e : graph[v])\
-    \ es.push_back(e);\n    }\n    internal_minimum_arborescence::LeftistHeap<Cost>\
-    \ heap;\n    internal_minimum_arborescence::RollbackUnionFind uf(n);\n    std::vector<int>\
-    \ top(n, -1);  // \u5404\u6210\u5206\u306B\u5165\u308B\u8FBA\u306E\u30D2\u30FC\
-    \u30D7\n    for (long long i = 0; i < static_cast<long long>(es.size()); i++)\
-    \ {\n        top[es[i].dst] = heap.merge(top[es[i].dst], heap.make(es[i].cost,\
-    \ i));\n    }\n    struct Cycle {\n        long long u, time;\n        std::vector<long\
-    \ long> edges;\n    };\n    std::vector<Cycle> cycles;\n    Cost cost{};\n   \
-    \ std::vector<long long> seen(n, -1), path(n), queue(n), in(n, -1);\n    seen[root]\
-    \ = root;\n    for (long long s = 0; s < n; s++) {\n        long long u = s, qi\
-    \ = 0;\n        // s \u304B\u3089\u5165\u308B\u8FBA\u3092\u9006\u306B\u305F\u3069\
-    \u308A\u3001\u9589\u8DEF\u304C\u3067\u304D\u305F\u3089 1 \u3064\u306E\u9802\u70B9\
-    \u306B\u7E2E\u3081\u308B\n        while (seen[u] < 0) {\n            if (top[u]\
-    \ == -1) return std::nullopt;\n            auto [w, i] = heap.top(top[u]);\n \
-    \           heap.add(top[u], -w);\n            top[u] = heap.pop(top[u]);\n  \
-    \          queue[qi] = i, path[qi++] = u, seen[u] = s;\n            cost += w;\n\
-    \            u = uf.find(es[i].src);\n            if (seen[u] == s) {\n      \
-    \          int cycle = -1;\n                long long end = qi, time = uf.time(),\
-    \ v;\n                do {\n                    v = path[--qi];\n            \
-    \        cycle = heap.merge(cycle, top[v]);\n                } while (uf.merge(u,\
-    \ v));\n                u = uf.find(u), top[u] = cycle, seen[u] = -1;\n      \
-    \          cycles.push_back({u, time, std::vector<long long>(queue.begin() + qi,\
-    \ queue.begin() + end)});\n            }\n        }\n        for (long long i\
-    \ = 0; i < qi; i++) in[uf.find(es[queue[i]].dst)] = queue[i];\n    }\n    // \u7E2E\
-    \u3081\u305F\u9589\u8DEF\u3092\u65B0\u3057\u3044\u3082\u306E\u304B\u3089\u623B\
-    \u3057\u3001\u9589\u8DEF\u306E\u4E2D\u306E\u8FBA\u3092\u9078\u3073\u76F4\u3059\
-    \n    for (auto it = cycles.rbegin(); it != cycles.rend(); ++it) {\n        uf.rollback(it->time);\n\
-    \        long long in_edge = in[it->u];\n        for (long long i : it->edges)\
-    \ in[uf.find(es[i].dst)] = i;\n        in[uf.find(es[in_edge].dst)] = in_edge;\n\
-    \    }\n    std::vector<Edge> parent_edge(n);\n    for (long long v = 0; v < n;\
-    \ v++) {\n        if (v != root) parent_edge[v] = es[in[v]];\n    }\n    return\
-    \ MinimumArborescence<Cost>{cost, parent_edge};\n}\n"
-  code: "#pragma once\n\n/**\n * @file minimum-arborescence.hpp\n * @brief \u6700\u5C0F\
-    \u5168\u57DF\u6709\u5411\u6728\n */\n\n#include <cassert>\n#include <optional>\n\
-    #include <utility>\n#include <vector>\n\n#include \"graph.hpp\"\n\nnamespace internal_minimum_arborescence\
-    \ {\n\n/**\n * @brief \u5168\u4F53\u3078\u306E\u52A0\u7B97\u304C\u3067\u304D\u308B\
-    \ leftist heap (\u30CE\u30FC\u30C9\u306F\u6DFB\u5B57\u3067\u6301\u3064)\n */\n\
-    template <typename Cost>\nclass LeftistHeap {\n   public:\n    int make(Cost key,\
-    \ long long value) {\n        nodes.push_back({key, Cost{}, value, -1, -1, 1});\n\
-    \        return static_cast<int>(nodes.size()) - 1;\n    }\n    int merge(int\
-    \ a, int b) {\n        if (a == -1) return b;\n        if (b == -1) return a;\n\
-    \        push(a), push(b);\n        if (nodes[b].key < nodes[a].key) std::swap(a,\
-    \ b);\n        nodes[a].r = merge(nodes[a].r, b);\n        if (rank(nodes[a].l)\
-    \ < rank(nodes[a].r)) std::swap(nodes[a].l, nodes[a].r);\n        nodes[a].rank\
-    \ = rank(nodes[a].r) + 1;\n        return a;\n    }\n    std::pair<Cost, long\
-    \ long> top(int a) {\n        push(a);\n        return {nodes[a].key, nodes[a].value};\n\
-    \    }\n    int pop(int a) {\n        push(a);\n        return merge(nodes[a].l,\
-    \ nodes[a].r);\n    }\n    void add(int a, Cost x) { nodes[a].lazy += x; }\n\n\
-    \   private:\n    struct Node {\n        Cost key, lazy;\n        long long value;\n\
-    \        int l, r, rank;\n    };\n    std::vector<Node> nodes;\n    int rank(int\
-    \ a) const { return a == -1 ? 0 : nodes[a].rank; }\n    void push(int a) {\n \
-    \       if (nodes[a].lazy == Cost{}) return;\n        nodes[a].key += nodes[a].lazy;\n\
-    \        if (nodes[a].l != -1) nodes[nodes[a].l].lazy += nodes[a].lazy;\n    \
-    \    if (nodes[a].r != -1) nodes[nodes[a].r].lazy += nodes[a].lazy;\n        nodes[a].lazy\
-    \ = Cost{};\n    }\n};\n\n/**\n * @brief \u5DFB\u304D\u623B\u3057\u306E\u3067\u304D\
-    \u308B Union-Find (\u7D4C\u8DEF\u5727\u7E2E\u3092\u3057\u306A\u3044)\n */\nclass\
-    \ RollbackUnionFind {\n   public:\n    explicit RollbackUnionFind(long long n)\
-    \ : parent_or_size(n, -1) {}\n    long long find(long long x) const {\n      \
-    \  while (parent_or_size[x] >= 0) x = parent_or_size[x];\n        return x;\n\
-    \    }\n    bool merge(long long x, long long y) {\n        x = find(x), y = find(y);\n\
-    \        if (x == y) return false;\n        if (parent_or_size[x] > parent_or_size[y])\
-    \ std::swap(x, y);\n        history.push_back({x, parent_or_size[x]});\n     \
-    \   history.push_back({y, parent_or_size[y]});\n        parent_or_size[x] += parent_or_size[y];\n\
-    \        parent_or_size[y] = x;\n        return true;\n    }\n    long long time()\
-    \ const { return static_cast<long long>(history.size()); }\n    void rollback(long\
-    \ long t) {\n        while (time() > t) {\n            parent_or_size[history.back().first]\
-    \ = history.back().second;\n            history.pop_back();\n        }\n    }\n\
-    \n   private:\n    std::vector<long long> parent_or_size;\n    std::vector<std::pair<long\
-    \ long, long long>> history;\n};\n\n}  // namespace internal_minimum_arborescence\n\
+    \    nodes[a].lazy = Cost{};\n    }\n};\n\n}  // namespace internal_minimum_arborescence\n\
     \n/**\n * @brief \u6700\u5C0F\u5168\u57DF\u6709\u5411\u6728\u306E\u7D50\u679C\n\
     \ */\ntemplate <typename Cost>\nstruct MinimumArborescence {\n    Cost cost; \
     \                                           //!< \u4F7F\u3063\u305F\u8FBA\u306E\
@@ -259,42 +246,119 @@ data:
     \    const long long n = graph.n;\n    assert(0 <= root && root < n);\n    std::vector<Edge>\
     \ es;\n    for (long long v = 0; v < n; v++) {\n        for (const auto& e : graph[v])\
     \ es.push_back(e);\n    }\n    internal_minimum_arborescence::LeftistHeap<Cost>\
-    \ heap;\n    internal_minimum_arborescence::RollbackUnionFind uf(n);\n    std::vector<int>\
-    \ top(n, -1);  // \u5404\u6210\u5206\u306B\u5165\u308B\u8FBA\u306E\u30D2\u30FC\
-    \u30D7\n    for (long long i = 0; i < static_cast<long long>(es.size()); i++)\
-    \ {\n        top[es[i].dst] = heap.merge(top[es[i].dst], heap.make(es[i].cost,\
-    \ i));\n    }\n    struct Cycle {\n        long long u, time;\n        std::vector<long\
-    \ long> edges;\n    };\n    std::vector<Cycle> cycles;\n    Cost cost{};\n   \
-    \ std::vector<long long> seen(n, -1), path(n), queue(n), in(n, -1);\n    seen[root]\
-    \ = root;\n    for (long long s = 0; s < n; s++) {\n        long long u = s, qi\
-    \ = 0;\n        // s \u304B\u3089\u5165\u308B\u8FBA\u3092\u9006\u306B\u305F\u3069\
-    \u308A\u3001\u9589\u8DEF\u304C\u3067\u304D\u305F\u3089 1 \u3064\u306E\u9802\u70B9\
-    \u306B\u7E2E\u3081\u308B\n        while (seen[u] < 0) {\n            if (top[u]\
-    \ == -1) return std::nullopt;\n            auto [w, i] = heap.top(top[u]);\n \
-    \           heap.add(top[u], -w);\n            top[u] = heap.pop(top[u]);\n  \
-    \          queue[qi] = i, path[qi++] = u, seen[u] = s;\n            cost += w;\n\
-    \            u = uf.find(es[i].src);\n            if (seen[u] == s) {\n      \
-    \          int cycle = -1;\n                long long end = qi, time = uf.time(),\
-    \ v;\n                do {\n                    v = path[--qi];\n            \
-    \        cycle = heap.merge(cycle, top[v]);\n                } while (uf.merge(u,\
-    \ v));\n                u = uf.find(u), top[u] = cycle, seen[u] = -1;\n      \
-    \          cycles.push_back({u, time, std::vector<long long>(queue.begin() + qi,\
-    \ queue.begin() + end)});\n            }\n        }\n        for (long long i\
-    \ = 0; i < qi; i++) in[uf.find(es[queue[i]].dst)] = queue[i];\n    }\n    // \u7E2E\
-    \u3081\u305F\u9589\u8DEF\u3092\u65B0\u3057\u3044\u3082\u306E\u304B\u3089\u623B\
-    \u3057\u3001\u9589\u8DEF\u306E\u4E2D\u306E\u8FBA\u3092\u9078\u3073\u76F4\u3059\
-    \n    for (auto it = cycles.rbegin(); it != cycles.rend(); ++it) {\n        uf.rollback(it->time);\n\
-    \        long long in_edge = in[it->u];\n        for (long long i : it->edges)\
-    \ in[uf.find(es[i].dst)] = i;\n        in[uf.find(es[in_edge].dst)] = in_edge;\n\
-    \    }\n    std::vector<Edge> parent_edge(n);\n    for (long long v = 0; v < n;\
-    \ v++) {\n        if (v != root) parent_edge[v] = es[in[v]];\n    }\n    return\
-    \ MinimumArborescence<Cost>{cost, parent_edge};\n}\n"
+    \ heap;\n    RollbackUnionFind uf(n);\n    std::vector<int> top(n, -1);  // \u5404\
+    \u6210\u5206\u306B\u5165\u308B\u8FBA\u306E\u30D2\u30FC\u30D7\n    for (long long\
+    \ i = 0; i < static_cast<long long>(es.size()); i++) {\n        top[es[i].dst]\
+    \ = heap.merge(top[es[i].dst], heap.make(es[i].cost, i));\n    }\n    struct Cycle\
+    \ {\n        long long u, time;\n        std::vector<long long> edges;\n    };\n\
+    \    std::vector<Cycle> cycles;\n    Cost cost{};\n    std::vector<long long>\
+    \ seen(n, -1), path(n), queue(n), in(n, -1);\n    seen[root] = root;\n    for\
+    \ (long long s = 0; s < n; s++) {\n        long long u = s, qi = 0;\n        //\
+    \ s \u304B\u3089\u5165\u308B\u8FBA\u3092\u9006\u306B\u305F\u3069\u308A\u3001\u9589\
+    \u8DEF\u304C\u3067\u304D\u305F\u3089 1 \u3064\u306E\u9802\u70B9\u306B\u7E2E\u3081\
+    \u308B\n        while (seen[u] < 0) {\n            if (top[u] == -1) return std::nullopt;\n\
+    \            auto [w, i] = heap.top(top[u]);\n            heap.add(top[u], -w);\n\
+    \            top[u] = heap.pop(top[u]);\n            queue[qi] = i, path[qi++]\
+    \ = u, seen[u] = s;\n            cost += w;\n            u = uf.leader(es[i].src);\n\
+    \            if (seen[u] == s) {\n                int cycle = -1;\n          \
+    \      long long end = qi, time = uf.snapshot(), v;\n                do {\n  \
+    \                  v = path[--qi];\n                    cycle = heap.merge(cycle,\
+    \ top[v]);\n                } while (uf.merge(u, v));\n                u = uf.leader(u),\
+    \ top[u] = cycle, seen[u] = -1;\n                cycles.push_back({u, time, std::vector<long\
+    \ long>(queue.begin() + qi, queue.begin() + end)});\n            }\n        }\n\
+    \        for (long long i = 0; i < qi; i++) in[uf.leader(es[queue[i]].dst)] =\
+    \ queue[i];\n    }\n    // \u7E2E\u3081\u305F\u9589\u8DEF\u3092\u65B0\u3057\u3044\
+    \u3082\u306E\u304B\u3089\u623B\u3057\u3001\u9589\u8DEF\u306E\u4E2D\u306E\u8FBA\
+    \u3092\u9078\u3073\u76F4\u3059\n    for (auto it = cycles.rbegin(); it != cycles.rend();\
+    \ ++it) {\n        uf.rollback(it->time);\n        long long in_edge = in[it->u];\n\
+    \        for (long long i : it->edges) in[uf.leader(es[i].dst)] = i;\n       \
+    \ in[uf.leader(es[in_edge].dst)] = in_edge;\n    }\n    std::vector<Edge> parent_edge(n);\n\
+    \    for (long long v = 0; v < n; v++) {\n        if (v != root) parent_edge[v]\
+    \ = es[in[v]];\n    }\n    return MinimumArborescence<Cost>{cost, parent_edge};\n\
+    }\n"
+  code: "#pragma once\n\n/**\n * @file minimum-arborescence.hpp\n * @brief \u6700\u5C0F\
+    \u5168\u57DF\u6709\u5411\u6728\n */\n\n#include <cassert>\n#include <optional>\n\
+    #include <utility>\n#include <vector>\n\n#include \"../data_structures/rollback-unionfind.hpp\"\
+    \n#include \"graph.hpp\"\n\nnamespace internal_minimum_arborescence {\n\n/**\n\
+    \ * @brief \u5168\u4F53\u3078\u306E\u52A0\u7B97\u304C\u3067\u304D\u308B leftist\
+    \ heap (\u30CE\u30FC\u30C9\u306F\u6DFB\u5B57\u3067\u6301\u3064)\n */\ntemplate\
+    \ <typename Cost>\nclass LeftistHeap {\n   public:\n    int make(Cost key, long\
+    \ long value) {\n        nodes.push_back({key, Cost{}, value, -1, -1, 1});\n \
+    \       return static_cast<int>(nodes.size()) - 1;\n    }\n    int merge(int a,\
+    \ int b) {\n        if (a == -1) return b;\n        if (b == -1) return a;\n \
+    \       push(a), push(b);\n        if (nodes[b].key < nodes[a].key) std::swap(a,\
+    \ b);\n        nodes[a].r = merge(nodes[a].r, b);\n        if (rank(nodes[a].l)\
+    \ < rank(nodes[a].r)) std::swap(nodes[a].l, nodes[a].r);\n        nodes[a].rank\
+    \ = rank(nodes[a].r) + 1;\n        return a;\n    }\n    std::pair<Cost, long\
+    \ long> top(int a) {\n        push(a);\n        return {nodes[a].key, nodes[a].value};\n\
+    \    }\n    int pop(int a) {\n        push(a);\n        return merge(nodes[a].l,\
+    \ nodes[a].r);\n    }\n    void add(int a, Cost x) { nodes[a].lazy += x; }\n\n\
+    \   private:\n    struct Node {\n        Cost key, lazy;\n        long long value;\n\
+    \        int l, r, rank;\n    };\n    std::vector<Node> nodes;\n    int rank(int\
+    \ a) const { return a == -1 ? 0 : nodes[a].rank; }\n    void push(int a) {\n \
+    \       if (nodes[a].lazy == Cost{}) return;\n        nodes[a].key += nodes[a].lazy;\n\
+    \        if (nodes[a].l != -1) nodes[nodes[a].l].lazy += nodes[a].lazy;\n    \
+    \    if (nodes[a].r != -1) nodes[nodes[a].r].lazy += nodes[a].lazy;\n        nodes[a].lazy\
+    \ = Cost{};\n    }\n};\n\n}  // namespace internal_minimum_arborescence\n\n/**\n\
+    \ * @brief \u6700\u5C0F\u5168\u57DF\u6709\u5411\u6728\u306E\u7D50\u679C\n */\n\
+    template <typename Cost>\nstruct MinimumArborescence {\n    Cost cost;       \
+    \                                     //!< \u4F7F\u3063\u305F\u8FBA\u306E\u30B3\
+    \u30B9\u30C8\u306E\u7DCF\u548C\n    std::vector<typename Graph<Cost>::Edge> parent_edge;\
+    \  //!< \u89AA\u304B\u3089 v \u306B\u5165\u308B\u8FBA (\u6839\u3067\u306F src\
+    \ == -1)\n};\n\n/**\n * @brief \u6709\u5411\u30B0\u30E9\u30D5\u306E\u6700\u5C0F\
+    \u5168\u57DF\u6709\u5411\u6728 (root \u3092\u6839\u3068\u3057\u3001root \u304B\
+    \u3089\u5168\u9802\u70B9\u3078\u5230\u9054\u3067\u304D\u308B\u5168\u57DF\u6728\
+    \u3067\u3001\u8FBA\u306E\u30B3\u30B9\u30C8\u306E\u7DCF\u548C\u304C\u6700\u5C0F\
+    \u306E\u3082\u306E)\n *\n * Chu-Liu/Edmonds \u6CD5\u3092 leftist heap \u3068\u5DFB\
+    \u304D\u623B\u3057\u306E\u3067\u304D\u308B Union-Find \u3067 O(m log m) \u306B\
+    \u3057\u305F\u3082\u306E\n * @param root \u6839\n * @return std::optional<MinimumArborescence<Cost>>\
+    \ root \u304B\u3089\u5230\u9054\u3067\u304D\u306A\u3044\u9802\u70B9\u304C\u3042\
+    \u308C\u3070 std::nullopt\n * @note \u8CA0\u306E\u30B3\u30B9\u30C8\u306E\u8FBA\
+    \u304C\u3042\u3063\u3066\u3082\u3088\u3044\u3002\u81EA\u5DF1\u30EB\u30FC\u30D7\
+    \u30FB\u591A\u91CD\u8FBA\u304C\u3042\u3063\u3066\u3082\u3088\u3044\n */\ntemplate\
+    \ <typename Cost = long long>\nstd::optional<MinimumArborescence<Cost>> minimum_arborescence(const\
+    \ Graph<Cost>& graph, long long root) {\n    using Edge = typename Graph<Cost>::Edge;\n\
+    \    const long long n = graph.n;\n    assert(0 <= root && root < n);\n    std::vector<Edge>\
+    \ es;\n    for (long long v = 0; v < n; v++) {\n        for (const auto& e : graph[v])\
+    \ es.push_back(e);\n    }\n    internal_minimum_arborescence::LeftistHeap<Cost>\
+    \ heap;\n    RollbackUnionFind uf(n);\n    std::vector<int> top(n, -1);  // \u5404\
+    \u6210\u5206\u306B\u5165\u308B\u8FBA\u306E\u30D2\u30FC\u30D7\n    for (long long\
+    \ i = 0; i < static_cast<long long>(es.size()); i++) {\n        top[es[i].dst]\
+    \ = heap.merge(top[es[i].dst], heap.make(es[i].cost, i));\n    }\n    struct Cycle\
+    \ {\n        long long u, time;\n        std::vector<long long> edges;\n    };\n\
+    \    std::vector<Cycle> cycles;\n    Cost cost{};\n    std::vector<long long>\
+    \ seen(n, -1), path(n), queue(n), in(n, -1);\n    seen[root] = root;\n    for\
+    \ (long long s = 0; s < n; s++) {\n        long long u = s, qi = 0;\n        //\
+    \ s \u304B\u3089\u5165\u308B\u8FBA\u3092\u9006\u306B\u305F\u3069\u308A\u3001\u9589\
+    \u8DEF\u304C\u3067\u304D\u305F\u3089 1 \u3064\u306E\u9802\u70B9\u306B\u7E2E\u3081\
+    \u308B\n        while (seen[u] < 0) {\n            if (top[u] == -1) return std::nullopt;\n\
+    \            auto [w, i] = heap.top(top[u]);\n            heap.add(top[u], -w);\n\
+    \            top[u] = heap.pop(top[u]);\n            queue[qi] = i, path[qi++]\
+    \ = u, seen[u] = s;\n            cost += w;\n            u = uf.leader(es[i].src);\n\
+    \            if (seen[u] == s) {\n                int cycle = -1;\n          \
+    \      long long end = qi, time = uf.snapshot(), v;\n                do {\n  \
+    \                  v = path[--qi];\n                    cycle = heap.merge(cycle,\
+    \ top[v]);\n                } while (uf.merge(u, v));\n                u = uf.leader(u),\
+    \ top[u] = cycle, seen[u] = -1;\n                cycles.push_back({u, time, std::vector<long\
+    \ long>(queue.begin() + qi, queue.begin() + end)});\n            }\n        }\n\
+    \        for (long long i = 0; i < qi; i++) in[uf.leader(es[queue[i]].dst)] =\
+    \ queue[i];\n    }\n    // \u7E2E\u3081\u305F\u9589\u8DEF\u3092\u65B0\u3057\u3044\
+    \u3082\u306E\u304B\u3089\u623B\u3057\u3001\u9589\u8DEF\u306E\u4E2D\u306E\u8FBA\
+    \u3092\u9078\u3073\u76F4\u3059\n    for (auto it = cycles.rbegin(); it != cycles.rend();\
+    \ ++it) {\n        uf.rollback(it->time);\n        long long in_edge = in[it->u];\n\
+    \        for (long long i : it->edges) in[uf.leader(es[i].dst)] = i;\n       \
+    \ in[uf.leader(es[in_edge].dst)] = in_edge;\n    }\n    std::vector<Edge> parent_edge(n);\n\
+    \    for (long long v = 0; v < n; v++) {\n        if (v != root) parent_edge[v]\
+    \ = es[in[v]];\n    }\n    return MinimumArborescence<Cost>{cost, parent_edge};\n\
+    }\n"
   dependsOn:
+  - src/data_structures/rollback-unionfind.hpp
+  - src/data_structures/unionfind.hpp
   - src/graph/graph.hpp
   isVerificationFile: false
   path: src/graph/minimum-arborescence.hpp
   requiredBy: []
-  timestamp: '2026-11-03 09:10:34+09:00'
+  timestamp: '2026-11-08 23:19:19+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/graph/minimum-arborescence.test.cpp

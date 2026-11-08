@@ -3,7 +3,9 @@ title: Binary Trie
 documentation_of: //src/data_structures/binary-trie.hpp
 ---
 
-$d$ ビットの符号なし整数の多重集合を管理する Binary Trie `BinaryTrie<d, T = unsigned long long>` です。全要素への xor の作用ができます。
+$d$ ビットの符号なし整数の多重集合を管理する Binary Trie `BinaryTrie<d, T = unsigned long long>` です。全要素への xor の作用ができます。`0 <= d <= T のビット幅` で、`d = 0` では値 0 だけを扱います。`insert(x)` と `apply_xor(x)` の引数は d ビットに収まること。範囲外の値の `count(x)` は 0 です。
+
+コピーはノードを複製するので、コピー元とコピー先は独立して更新できます。コピーの時間・追加メモリはノード数に比例し、ムーブは $O(1)$ です。
 
 ```cpp
 BinaryTrie<30> bt;

@@ -47,11 +47,31 @@ class BinaryTrie {
     using NodePtr = std::shared_ptr<BinaryTrieNode>;
     NodePtr root_ptr = std::make_shared<BinaryTrieNode>(d);
 
+    static NodePtr clone(const NodePtr& node) {
+        if (!node) return nullptr;
+        auto copy = std::make_shared<BinaryTrieNode>(node->level);
+        copy->subcnt = node->subcnt;
+        copy->xval = node->xval;
+        copy->children[0] = clone(node->children[0]);
+        copy->children[1] = clone(node->children[1]);
+        return copy;
+    }
+
    public:
+    BinaryTrie() = default;
+    BinaryTrie(const BinaryTrie& other) : root_ptr(clone(other.root_ptr)) {}
+    BinaryTrie& operator=(const BinaryTrie& other) {
+        if (this != &other) root_ptr = clone(other.root_ptr);
+        return *this;
+    }
+    BinaryTrie(BinaryTrie&&) noexcept = default;
+    BinaryTrie& operator=(BinaryTrie&&) noexcept = default;
+
     /**
      * @brief 集合にnを追加 (O(d))
      */
     void insert(T n) {
+        if constexpr (d < std::numeric_limits<T>::digits) assert((n >> d) == 0);
         NodePtr cur_ptr = root_ptr;
         while (!cur_ptr->is_leaf()) {
             cur_ptr->affect_xor();
@@ -72,6 +92,9 @@ class BinaryTrie {
      * @brief 集合からnを検索し、見つかった数を求める (O(d))
      */
     long long count(T n) const {
+        if constexpr (d < std::numeric_limits<T>::digits) {
+            if ((n >> d) != 0) return 0;
+        }
         NodePtr cur_ptr = root_ptr;
         while (!cur_ptr->is_leaf()) {
             cur_ptr->affect_xor();
@@ -93,7 +116,7 @@ class BinaryTrie {
         if (cnt == 0)
             return;
         NodePtr cur_ptr = root_ptr;
-        while (true) {
+        while (!cur_ptr->is_leaf()) {
             cur_ptr->affect_xor();
             cur_ptr->subcnt -= cnt;
             NodePtr& nxt_ptr = cur_ptr->children[cur_ptr->get_bit(n)];
@@ -103,6 +126,7 @@ class BinaryTrie {
             }
             cur_ptr = nxt_ptr;
         }
+        cur_ptr->subcnt -= cnt;
     }
 
     /**
@@ -189,7 +213,10 @@ class BinaryTrie {
     /**
      * @brief 集合のすべての要素にxorを作用
      */
-    void apply_xor(T n) { root_ptr->xval ^= n; }
+    void apply_xor(T n) {
+        if constexpr (d < std::numeric_limits<T>::digits) assert((n >> d) == 0);
+        root_ptr->xval ^= n;
+    }
 
     /**
      * @brief 要素をすべて削除する。確保したメモリ領域も削除される

@@ -3,7 +3,7 @@ title: 商の列挙
 documentation_of: //src/math/quotients.hpp
 ---
 
-$i = 1, 2, \dots, n$ を、商 $\lfloor n / i \rfloor$ が同じ値になる区間に分けます。商がとる値は $O(\sqrt{n})$ 種類しかないので (区間の個数は $2\sqrt{n}$ 以下)、$\sum_{i=1}^{n} f(\lfloor n/i \rfloor)$ のような和を、区間ごとにまとめて $O(\sqrt{n})$ で計算できます。
+$\lfloor n / i \rfloor$、または $\lfloor (ax+b)/m \rfloor$ が同じ値になる最大の半開区間を列挙します。$\lfloor n / i \rfloor$ がとる値は $O(\sqrt{n})$ 種類しかないので (区間の個数は $2\sqrt{n}$ 以下)、$\sum_{i=1}^{n} f(\lfloor n/i \rfloor)$ のような和を、区間ごとにまとめて $O(\sqrt{n})$ で計算できます。
 
 例えば $n = 10$ では、次の 5 つの区間に分かれます。
 
@@ -19,7 +19,20 @@ for_each_quotient(n, [&](long long q, long long l, long long r) { sum += q * (r 
 for (auto [q, l, r] : enumerate_quotients(10)) {
     // (10, 1, 2), (5, 2, 3), (3, 3, 4), (2, 4, 6), (1, 6, 11) の順
 }
+
+// floor(x / 3) が同じになる区間 (0 <= x < 10)
+for (auto [q, l, r] : enumerate_quotients_linear(10, 3, 1, 0)) {
+    // (0, 0, 3), (1, 3, 6), (2, 6, 9), (3, 9, 10) の順
+}
+
+// sum_{x=0}^{n-1} floor((a*x+b)/m)
+long long linear_sum = 0;
+for_each_quotient_linear(n, m, a, b, [&](long long q, long long l, long long r) { linear_sum += q * (r - l); });
 ```
+
+`_linear` 版の引数順は `floor_sum(n, m, a, b)` と同じです。対象は `0 <= x < n` で、`a`、`b` は負でもよく、床関数は負の無限大方向への切り捨てです。`n >= 0`、`m >= 1`、各商が `long long` に収まることが前提です。中間計算には `__int128` を使います。
+
+どちらの版も添字の昇順に列挙し、`n = 0` では区間を返しません。`_linear` 版の商は `a > 0` なら昇順、`a < 0` なら降順です。`a = 0` で `n > 0` なら全域を 1 区間として返します。以下では `_linear` 版の出力区間数を $K$ とします。
 
 ## 関数
 
@@ -27,11 +40,14 @@ for (auto [q, l, r] : enumerate_quotients(10)) {
 |---|---|---|
 | `for_each_quotient(n, f)` | 区間ごとに `f(q, l, r)` を呼ぶ。$l \le i < r$ なら $\lfloor n/i \rfloor = q$ | $O(\sqrt{n})$ |
 | `enumerate_quotients(n)` | 区間を `QuotientRange` (メンバ `q`、`l`、`r`) のリストで返す | $O(\sqrt{n})$ |
+| `for_each_quotient_linear(n, m, a, b, f)` | $\lfloor (ax+b)/m \rfloor$ が一定の区間ごとに `f(q, l, r)` を呼ぶ | $O(K)$ |
+| `enumerate_quotients_linear(n, m, a, b)` | 上の区間を `QuotientRange` のリストで返す | $O(K)$ |
 
 - 区間 `[l, r)` は右端を含まない半開区間です。区間の長さは `r - l` です。
-- 前提は `0 <= n < std::numeric_limits<long long>::max()` です。`n = 0` では区間を返しません。
-- どちらも $i$ の昇順 (商の降順) に並びます。商の昇順が欲しいときは逆にたどります。
-- 区間の右端は $r = \lfloor n / \lfloor n/l \rfloor \rfloor + 1$ で求めています。
+- $\lfloor n/i \rfloor$ の版の前提は `0 <= n < std::numeric_limits<long long>::max()` です。商は降順に並びます。商の昇順が欲しいときは逆にたどります。
+- $\lfloor n/i \rfloor$ の区間の右端は $r = \lfloor n / \lfloor n/l \rfloor \rfloor + 1$ で求めています。
+- `_linear` 版は $K \le n$ ですが、平方根程度になる保証はありません。`for_each_quotient_linear` の追加領域は $O(1)$、`enumerate_quotients_linear` は $O(K)$ です (コールバックの時間・領域は除く)。
+- `a = 1, b = 0` のとき区間数は $\lceil n/m\rceil$ です。異なる正整数の `m` を $D$ 個処理する総区間数は $O(D+n\log(D+1))$ になります。
 
 ## 使い方の例
 

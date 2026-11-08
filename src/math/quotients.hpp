@@ -2,15 +2,17 @@
 
 /**
  * @file quotients.hpp
- * @brief 商の列挙 (floor(n / i) が同じ値になる i の区間)
+ * @brief 商の列挙 (floor(n / i)・floor((a x + b) / m) が一定の区間)
  */
 
 #include <cassert>
 #include <limits>
 #include <vector>
 
+#include "../base/functions.hpp"
+
 /**
- * @brief 商 q = floor(n / i) と、それをとる i の区間 [l, r)
+ * @brief 商 q と、それをとる添字の区間 [l, r)
  */
 struct QuotientRange {
     long long q;  //!< 商
@@ -40,5 +42,36 @@ void for_each_quotient(long long n, F f) {
 inline std::vector<QuotientRange> enumerate_quotients(long long n) {
     std::vector<QuotientRange> res;
     for_each_quotient(n, [&](long long q, long long l, long long r) { res.push_back({q, l, r}); });
+    return res;
+}
+
+/**
+ * @brief x = 0, ..., n - 1 を floor((a x + b) / m) の値で区間に分け、x の昇順に f(q, l, r) を呼ぶ O(区間数)
+ * @pre n >= 0、m >= 1、各商が long long に収まること。a, b は負でもよい
+ */
+template <typename F>
+void for_each_quotient_linear(long long n, long long m, long long a, long long b, F f) {
+    assert(n >= 0 && m >= 1);
+    const __int128_t slope = a;
+    for (long long l = 0; l < n;) {
+        auto [q, rem] = divmod(slope * l + b, static_cast<__int128_t>(m));
+        assert(std::numeric_limits<long long>::min() <= q && q <= std::numeric_limits<long long>::max());
+        __int128_t length = n - l;
+        // 正の傾きでは次の商に届くまで、負の傾きでは余りが負になるまで進む
+        if (a > 0) chmin(length, ceildiv(m - rem, slope));
+        if (a < 0) chmin(length, rem / (-slope) + 1);
+        const long long r = l + static_cast<long long>(length);
+        f(static_cast<long long>(q), l, r);
+        l = r;
+    }
+}
+
+/**
+ * @brief x = 0, ..., n - 1 を floor((a x + b) / m) の値で区間に分けたもの (x の昇順) O(区間数)
+ * @pre n >= 0、m >= 1、各商が long long に収まること。a, b は負でもよい
+ */
+inline std::vector<QuotientRange> enumerate_quotients_linear(long long n, long long m, long long a, long long b) {
+    std::vector<QuotientRange> res;
+    for_each_quotient_linear(n, m, a, b, [&](long long q, long long l, long long r) { res.push_back({q, l, r}); });
     return res;
 }

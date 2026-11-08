@@ -2858,24 +2858,23 @@ data:
     \ \u533A\u9593\u304C\u6B63\u3057\u3044\u62EC\u5F27\u5217\u304B\u3092 is_valid\
     \ \u3067\u5224\u5B9A\u3059\u308B\n    for (int rep = 0; rep < 300 && ok; rep++)\
     \ {\n        int n = rng() % 16 + 1;\n        std::string s(n, '(');\n       \
-    \ for (char& c : s) c = rng() % 2 ? '(' : ')';\n        std::vector<monoid::Parenthesis::S>\
-    \ v(s.begin(), s.end());\n        SegTree<monoid::Parenthesis> seg(v);\n     \
-    \   for (int l = 0; l <= n; l++) {\n            for (int r = l; r <= n; r++) {\n\
-    \                int depth = 0, min_depth = 0;\n                for (int i = l;\
-    \ i < r; i++) {\n                    depth += s[i] == '(' ? 1 : -1;\n        \
-    \            min_depth = std::min(min_depth, depth);\n                }\n    \
-    \            auto p = seg.prod(l, r);\n                check(p.is_valid() == (depth\
-    \ == 0 && min_depth == 0), \"Parenthesis::is_valid\");\n                check(p.close\
-    \ == -min_depth && p.open == depth - min_depth, \"Parenthesis::op\");\n      \
-    \      }\n        }\n    }\n\n    // Affine: ==, !=, \u51FA\u529B\n    {\n   \
-    \     Affine<long long> f{2, 3}, g{2, 3}, h{2, 4}, id;\n        check(f == g &&\
-    \ !(f != g), \"Affine ==\");\n        check(f != h && !(f == h), \"Affine !=\"\
-    );\n        check(id == Affine<long long>{1, 0}, \"Affine default\");\n      \
-    \  std::ostringstream os;\n        os << f;\n        check(os.str() == \"2 3\"\
-    , \"Affine <<\");\n        // Composite \u3067\u5408\u6210\u3057\u305F\u7D50\u679C\
-    \u304C\u95A2\u6570\u306E\u5408\u6210 a\u2218b \u3068\u4E00\u81F4\u3059\u308B\u3002\
-    Reverse \u306F b\u2218a\n        for (int rep = 0; rep < 1000 && ok; rep++) {\n\
-    \            Affine<long long> a{static_cast<long long>(rng() % 7) - 3, static_cast<long\
+    \ for (char& c : s) c = rng() % 2 ? '(' : ')';\n        SegTree<monoid::Parenthesis>\
+    \ seg(s);\n        for (int l = 0; l <= n; l++) {\n            for (int r = l;\
+    \ r <= n; r++) {\n                int depth = 0, min_depth = 0;\n            \
+    \    for (int i = l; i < r; i++) {\n                    depth += s[i] == '(' ?\
+    \ 1 : -1;\n                    min_depth = std::min(min_depth, depth);\n     \
+    \           }\n                auto p = seg.prod(l, r);\n                check(p.is_valid()\
+    \ == (depth == 0 && min_depth == 0), \"Parenthesis::is_valid\");\n           \
+    \     check(p.close == -min_depth && p.open == depth - min_depth, \"Parenthesis::op\"\
+    );\n            }\n        }\n    }\n\n    // Affine: ==, !=, \u51FA\u529B\n \
+    \   {\n        Affine<long long> f{2, 3}, g{2, 3}, h{2, 4}, id;\n        check(f\
+    \ == g && !(f != g), \"Affine ==\");\n        check(f != h && !(f == h), \"Affine\
+    \ !=\");\n        check(id == Affine<long long>{1, 0}, \"Affine default\");\n\
+    \        std::ostringstream os;\n        os << f;\n        check(os.str() == \"\
+    2 3\", \"Affine <<\");\n        // Composite \u3067\u5408\u6210\u3057\u305F\u7D50\
+    \u679C\u304C\u95A2\u6570\u306E\u5408\u6210 a\u2218b \u3068\u4E00\u81F4\u3059\u308B\
+    \u3002Reverse \u306F b\u2218a\n        for (int rep = 0; rep < 1000 && ok; rep++)\
+    \ {\n            Affine<long long> a{static_cast<long long>(rng() % 7) - 3, static_cast<long\
     \ long>(rng() % 7) - 3};\n            Affine<long long> b{static_cast<long long>(rng()\
     \ % 7) - 3, static_cast<long long>(rng() % 7) - 3};\n            long long x =\
     \ static_cast<long long>(rng() % 7) - 3;\n            auto c = monoid::Composite<long\
@@ -2988,78 +2987,74 @@ data:
     suffix\u30FB\u9023\u7D9A\u90E8\u5206\u5217\u306E\u548C\n    for (int rep = 0;\
     \ rep < 300 && ok; rep++) {\n        int n = rng() % 12 + 1;\n        std::vector<long\
     \ long> a(n);\n        for (auto& x : a) x = static_cast<long long>(rng() % 21)\
-    \ - 10;\n        SegTree<monoid::PrefixSumMax<long long>> pmax(std::vector<monoid::PrefixSumMax<long\
-    \ long>::S>(a.begin(), a.end()));\n        SegTree<monoid::PrefixSumMin<long long>>\
-    \ pmin(std::vector<monoid::PrefixSumMin<long long>::S>(a.begin(), a.end()));\n\
-    \        using PM = monoid::PrefixSumMinMax<>;\n        SegTree<PM> pminmax(a);\n\
-    \        SegTree<monoid::SuffixSumMax<long long>> smax(std::vector<monoid::SuffixSumMax<long\
-    \ long>::S>(a.begin(), a.end()));\n        SegTree<monoid::SuffixSumMin<long long>>\
-    \ smin(std::vector<monoid::SuffixSumMin<long long>::S>(a.begin(), a.end()));\n\
-    \        SegTree<monoid::MaxSubarraySum<long long>> msub(std::vector<monoid::MaxSubarraySum<long\
-    \ long>::S>(a.begin(), a.end()));\n        for (int q = 0; q < 10 && ok; q++)\
-    \ {\n            int k = rng() % n;\n            a[k] = static_cast<long long>(rng()\
-    \ % 21) - 10;\n            pminmax.set(k, a[k]);\n            pmax.set(k, a[k]),\
-    \ pmin.set(k, a[k]), smax.set(k, a[k]), smin.set(k, a[k]), msub.set(k, a[k]);\n\
-    \            for (int l = 0; l <= n; l++) {\n                for (int r = l; r\
-    \ <= n; r++) {\n                    long long sum = 0, pre_max = 0, pre_min =\
-    \ 0, suf_max = 0, suf_min = 0, best = 0;\n                    for (int i = l;\
-    \ i < r; i++) {\n                        sum += a[i];\n                      \
-    \  pre_max = std::max(pre_max, sum), pre_min = std::min(pre_min, sum);\n     \
-    \                   long long s = 0;\n                        for (int j = i;\
-    \ j < r; j++) {\n                            s += a[j];\n                    \
-    \        best = std::max(best, s);\n                        }\n              \
-    \      }\n                    long long s = 0;\n                    for (int i\
-    \ = r - 1; i >= l; i--) {\n                        s += a[i];\n              \
-    \          suf_max = std::max(suf_max, s), suf_min = std::min(suf_min, s);\n \
-    \                   }\n                    check(pmax.prod(l, r) == monoid::PrefixSumMax<long\
-    \ long>::S(sum, pre_max), \"PrefixSumMax\");\n                    check(pmin.prod(l,\
-    \ r) == monoid::PrefixSumMin<long long>::S(sum, pre_min), \"PrefixSumMin\");\n\
-    \                    check(pminmax.prod(l, r) == PM::S(sum, pre_min, pre_max),\
-    \ \"PrefixSumMinMax\");\n                    check(PM::op(PM::e(), pminmax.prod(l,\
-    \ r)) == pminmax.prod(l, r) &&\n                              PM::op(pminmax.prod(l,\
-    \ r), PM::e()) == pminmax.prod(l, r),\n                          \"PrefixSumMinMax\
-    \ identity\");\n                    int m = (l + r) / 2;\n                   \
-    \ check(PM::op(pminmax.prod(l, m), pminmax.prod(m, r)) == pminmax.prod(l, r),\
-    \ \"PrefixSumMinMax concatenate\");\n                    check(smax.prod(l, r)\
-    \ == monoid::SuffixSumMax<long long>::S(sum, suf_max), \"SuffixSumMax\");\n  \
-    \                  check(smin.prod(l, r) == monoid::SuffixSumMin<long long>::S(sum,\
-    \ suf_min), \"SuffixSumMin\");\n                    check(msub.prod(l, r) == monoid::MaxSubarraySum<long\
-    \ long>::S(sum, pre_max, suf_max, best), \"MaxSubarraySum\");\n              \
-    \  }\n            }\n            // max_right: l \u304B\u3089\u59CB\u3081\u3066\
-    \u548C\u304C\u521D\u3081\u3066\u6B63\u306B\u306A\u308B\u4F4D\u7F6E\n         \
-    \   int l = rng() % (n + 1);\n            long long sum = 0;\n            int\
-    \ expect = n;\n            for (int i = l; i < n; i++) {\n                sum\
-    \ += a[i];\n                if (sum > 0) {\n                    expect = i;\n\
-    \                    break;\n                }\n            }\n            check(pmax.max_right(l,\
-    \ [](const auto& s) { return s.max <= 0; }) == expect, \"PrefixSumMax max_right\"\
-    );\n        }\n    }\n\n    // MinWith / MaxWith: \u7A7A\u533A\u9593\u306F\u4F4D\
-    \u7F6E -1\u3002\u5024\u304C\u578B\u306E\u6700\u5927\u5024 (\u6700\u5C0F\u5024\
-    ) \u306E\u8981\u7D20\u304C\u3042\u3063\u3066\u3082\u5358\u4F4D\u5143\u3068\u3057\
-    \u3066\u50CD\u304D\u3001\u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\n    {\n  \
-    \      using Mn = monoid::MinWith<long long>;\n        using Mx = monoid::MaxWith<long\
-    \ long>;\n        constexpr long long INF = std::numeric_limits<long long>::max(),\
-    \ NINF = std::numeric_limits<long long>::lowest();\n        check(Mn::e() == std::pair<long\
-    \ long, long long>(INF, -1) && Mx::e() == std::pair<long long, long long>(NINF,\
-    \ -1), \"MinWith/MaxWith::e\");\n        check(Mn::op(Mn::e(), {INF, 3}) == std::pair<long\
-    \ long, long long>(INF, 3) && Mn::op({INF, 3}, Mn::e()) == std::pair<long long,\
-    \ long long>(INF, 3), \"MinWith e \u306F\u5358\u4F4D\u5143\");\n        check(Mx::op(Mx::e(),\
-    \ {NINF, 3}) == std::pair<long long, long long>(NINF, 3) && Mx::op({NINF, 3},\
-    \ Mx::e()) == std::pair<long long, long long>(NINF, 3), \"MaxWith e \u306F\u5358\
-    \u4F4D\u5143\");\n        for (int rep = 0; rep < 200 && ok; rep++) {\n      \
-    \      int n = rng() % 20 + 1;\n            std::vector<long long> a(n);\n   \
-    \         for (auto& x : a) x = rng() % 3 == 0 ? (rng() % 2 ? INF : NINF) : static_cast<long\
-    \ long>(rng() % 5);\n            std::vector<std::pair<long long, long long>>\
-    \ init(n);\n            for (int i = 0; i < n; i++) init[i] = {a[i], i};\n   \
-    \         SegTree<Mn> mn(init);\n            SegTree<Mx> mx(init);\n         \
-    \   for (int q = 0; q < 30; q++) {\n                int l = rng() % (n + 1), r\
-    \ = rng() % (n + 1);\n                if (l > r) std::swap(l, r);\n          \
-    \      std::pair<long long, long long> emn(INF, -1), emx(NINF, -1);\n        \
-    \        for (int i = l; i < r; i++) {\n                    if (emn.second ==\
-    \ -1 || a[i] < emn.first) emn = {a[i], i};\n                    if (emx.second\
-    \ == -1 || a[i] > emx.first) emx = {a[i], i};\n                }\n           \
-    \     check(mn.prod(l, r) == emn, \"MinWith prod\");\n                check(mx.prod(l,\
-    \ r) == emx, \"MaxWith prod\");\n            }\n        }\n    }\n\n    if (ok)\
-    \ std::cout << \"Hello World\" << std::endl;\n}\n"
+    \ - 10;\n        SegTree<monoid::PrefixSumMax<long long>> pmax(a);\n        SegTree<monoid::PrefixSumMin<long\
+    \ long>> pmin(a);\n        using PM = monoid::PrefixSumMinMax<>;\n        SegTree<PM>\
+    \ pminmax(a);\n        SegTree<monoid::SuffixSumMax<long long>> smax(a);\n   \
+    \     SegTree<monoid::SuffixSumMin<long long>> smin(a);\n        SegTree<monoid::MaxSubarraySum<long\
+    \ long>> msub(a);\n        for (int q = 0; q < 10 && ok; q++) {\n            int\
+    \ k = rng() % n;\n            a[k] = static_cast<long long>(rng() % 21) - 10;\n\
+    \            pminmax.set(k, a[k]);\n            pmax.set(k, a[k]), pmin.set(k,\
+    \ a[k]), smax.set(k, a[k]), smin.set(k, a[k]), msub.set(k, a[k]);\n          \
+    \  for (int l = 0; l <= n; l++) {\n                for (int r = l; r <= n; r++)\
+    \ {\n                    long long sum = 0, pre_max = 0, pre_min = 0, suf_max\
+    \ = 0, suf_min = 0, best = 0;\n                    for (int i = l; i < r; i++)\
+    \ {\n                        sum += a[i];\n                        pre_max = std::max(pre_max,\
+    \ sum), pre_min = std::min(pre_min, sum);\n                        long long s\
+    \ = 0;\n                        for (int j = i; j < r; j++) {\n              \
+    \              s += a[j];\n                            best = std::max(best, s);\n\
+    \                        }\n                    }\n                    long long\
+    \ s = 0;\n                    for (int i = r - 1; i >= l; i--) {\n           \
+    \             s += a[i];\n                        suf_max = std::max(suf_max,\
+    \ s), suf_min = std::min(suf_min, s);\n                    }\n               \
+    \     check(pmax.prod(l, r) == monoid::PrefixSumMax<long long>::S(sum, pre_max),\
+    \ \"PrefixSumMax\");\n                    check(pmin.prod(l, r) == monoid::PrefixSumMin<long\
+    \ long>::S(sum, pre_min), \"PrefixSumMin\");\n                    check(pminmax.prod(l,\
+    \ r) == PM::S(sum, pre_min, pre_max), \"PrefixSumMinMax\");\n                \
+    \    check(PM::op(PM::e(), pminmax.prod(l, r)) == pminmax.prod(l, r) &&\n    \
+    \                          PM::op(pminmax.prod(l, r), PM::e()) == pminmax.prod(l,\
+    \ r),\n                          \"PrefixSumMinMax identity\");\n            \
+    \        int m = (l + r) / 2;\n                    check(PM::op(pminmax.prod(l,\
+    \ m), pminmax.prod(m, r)) == pminmax.prod(l, r), \"PrefixSumMinMax concatenate\"\
+    );\n                    check(smax.prod(l, r) == monoid::SuffixSumMax<long long>::S(sum,\
+    \ suf_max), \"SuffixSumMax\");\n                    check(smin.prod(l, r) == monoid::SuffixSumMin<long\
+    \ long>::S(sum, suf_min), \"SuffixSumMin\");\n                    check(msub.prod(l,\
+    \ r) == monoid::MaxSubarraySum<long long>::S(sum, pre_max, suf_max, best), \"\
+    MaxSubarraySum\");\n                }\n            }\n            // max_right:\
+    \ l \u304B\u3089\u59CB\u3081\u3066\u548C\u304C\u521D\u3081\u3066\u6B63\u306B\u306A\
+    \u308B\u4F4D\u7F6E\n            int l = rng() % (n + 1);\n            long long\
+    \ sum = 0;\n            int expect = n;\n            for (int i = l; i < n; i++)\
+    \ {\n                sum += a[i];\n                if (sum > 0) {\n          \
+    \          expect = i;\n                    break;\n                }\n      \
+    \      }\n            check(pmax.max_right(l, [](const auto& s) { return s.max\
+    \ <= 0; }) == expect, \"PrefixSumMax max_right\");\n        }\n    }\n\n    //\
+    \ MinWith / MaxWith: \u7A7A\u533A\u9593\u306F\u4F4D\u7F6E -1\u3002\u5024\u304C\
+    \u578B\u306E\u6700\u5927\u5024 (\u6700\u5C0F\u5024) \u306E\u8981\u7D20\u304C\u3042\
+    \u3063\u3066\u3082\u5358\u4F4D\u5143\u3068\u3057\u3066\u50CD\u304D\u3001\u540C\
+    \u3058\u5024\u306A\u3089\u5DE6\u5074\n    {\n        using Mn = monoid::MinWith<long\
+    \ long>;\n        using Mx = monoid::MaxWith<long long>;\n        constexpr long\
+    \ long INF = std::numeric_limits<long long>::max(), NINF = std::numeric_limits<long\
+    \ long>::lowest();\n        check(Mn::e() == std::pair<long long, long long>(INF,\
+    \ -1) && Mx::e() == std::pair<long long, long long>(NINF, -1), \"MinWith/MaxWith::e\"\
+    );\n        check(Mn::op(Mn::e(), {INF, 3}) == std::pair<long long, long long>(INF,\
+    \ 3) && Mn::op({INF, 3}, Mn::e()) == std::pair<long long, long long>(INF, 3),\
+    \ \"MinWith e \u306F\u5358\u4F4D\u5143\");\n        check(Mx::op(Mx::e(), {NINF,\
+    \ 3}) == std::pair<long long, long long>(NINF, 3) && Mx::op({NINF, 3}, Mx::e())\
+    \ == std::pair<long long, long long>(NINF, 3), \"MaxWith e \u306F\u5358\u4F4D\u5143\
+    \");\n        for (int rep = 0; rep < 200 && ok; rep++) {\n            int n =\
+    \ rng() % 20 + 1;\n            std::vector<long long> a(n);\n            for (auto&\
+    \ x : a) x = rng() % 3 == 0 ? (rng() % 2 ? INF : NINF) : static_cast<long long>(rng()\
+    \ % 5);\n            std::vector<std::pair<long long, long long>> init(n);\n \
+    \           for (int i = 0; i < n; i++) init[i] = {a[i], i};\n            SegTree<Mn>\
+    \ mn(init);\n            SegTree<Mx> mx(init);\n            for (int q = 0; q\
+    \ < 30; q++) {\n                int l = rng() % (n + 1), r = rng() % (n + 1);\n\
+    \                if (l > r) std::swap(l, r);\n                std::pair<long long,\
+    \ long long> emn(INF, -1), emx(NINF, -1);\n                for (int i = l; i <\
+    \ r; i++) {\n                    if (emn.second == -1 || a[i] < emn.first) emn\
+    \ = {a[i], i};\n                    if (emx.second == -1 || a[i] > emx.first)\
+    \ emx = {a[i], i};\n                }\n                check(mn.prod(l, r) ==\
+    \ emn, \"MinWith prod\");\n                check(mx.prod(l, r) == emx, \"MaxWith\
+    \ prod\");\n            }\n        }\n    }\n\n    if (ok) std::cout << \"Hello\
+    \ World\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// monoid.hpp / group.hpp \u306E\u30E2\u30CE\u30A4\u30C9\u30FB\u7FA4\u3068\
     \ SegTree \u306E\u7D30\u304B\u3044\u6A5F\u80FD\u3092\u611A\u76F4\u306A\u5B9F\u88C5\
@@ -3238,24 +3233,23 @@ data:
     \ \u533A\u9593\u304C\u6B63\u3057\u3044\u62EC\u5F27\u5217\u304B\u3092 is_valid\
     \ \u3067\u5224\u5B9A\u3059\u308B\n    for (int rep = 0; rep < 300 && ok; rep++)\
     \ {\n        int n = rng() % 16 + 1;\n        std::string s(n, '(');\n       \
-    \ for (char& c : s) c = rng() % 2 ? '(' : ')';\n        std::vector<monoid::Parenthesis::S>\
-    \ v(s.begin(), s.end());\n        SegTree<monoid::Parenthesis> seg(v);\n     \
-    \   for (int l = 0; l <= n; l++) {\n            for (int r = l; r <= n; r++) {\n\
-    \                int depth = 0, min_depth = 0;\n                for (int i = l;\
-    \ i < r; i++) {\n                    depth += s[i] == '(' ? 1 : -1;\n        \
-    \            min_depth = std::min(min_depth, depth);\n                }\n    \
-    \            auto p = seg.prod(l, r);\n                check(p.is_valid() == (depth\
-    \ == 0 && min_depth == 0), \"Parenthesis::is_valid\");\n                check(p.close\
-    \ == -min_depth && p.open == depth - min_depth, \"Parenthesis::op\");\n      \
-    \      }\n        }\n    }\n\n    // Affine: ==, !=, \u51FA\u529B\n    {\n   \
-    \     Affine<long long> f{2, 3}, g{2, 3}, h{2, 4}, id;\n        check(f == g &&\
-    \ !(f != g), \"Affine ==\");\n        check(f != h && !(f == h), \"Affine !=\"\
-    );\n        check(id == Affine<long long>{1, 0}, \"Affine default\");\n      \
-    \  std::ostringstream os;\n        os << f;\n        check(os.str() == \"2 3\"\
-    , \"Affine <<\");\n        // Composite \u3067\u5408\u6210\u3057\u305F\u7D50\u679C\
-    \u304C\u95A2\u6570\u306E\u5408\u6210 a\u2218b \u3068\u4E00\u81F4\u3059\u308B\u3002\
-    Reverse \u306F b\u2218a\n        for (int rep = 0; rep < 1000 && ok; rep++) {\n\
-    \            Affine<long long> a{static_cast<long long>(rng() % 7) - 3, static_cast<long\
+    \ for (char& c : s) c = rng() % 2 ? '(' : ')';\n        SegTree<monoid::Parenthesis>\
+    \ seg(s);\n        for (int l = 0; l <= n; l++) {\n            for (int r = l;\
+    \ r <= n; r++) {\n                int depth = 0, min_depth = 0;\n            \
+    \    for (int i = l; i < r; i++) {\n                    depth += s[i] == '(' ?\
+    \ 1 : -1;\n                    min_depth = std::min(min_depth, depth);\n     \
+    \           }\n                auto p = seg.prod(l, r);\n                check(p.is_valid()\
+    \ == (depth == 0 && min_depth == 0), \"Parenthesis::is_valid\");\n           \
+    \     check(p.close == -min_depth && p.open == depth - min_depth, \"Parenthesis::op\"\
+    );\n            }\n        }\n    }\n\n    // Affine: ==, !=, \u51FA\u529B\n \
+    \   {\n        Affine<long long> f{2, 3}, g{2, 3}, h{2, 4}, id;\n        check(f\
+    \ == g && !(f != g), \"Affine ==\");\n        check(f != h && !(f == h), \"Affine\
+    \ !=\");\n        check(id == Affine<long long>{1, 0}, \"Affine default\");\n\
+    \        std::ostringstream os;\n        os << f;\n        check(os.str() == \"\
+    2 3\", \"Affine <<\");\n        // Composite \u3067\u5408\u6210\u3057\u305F\u7D50\
+    \u679C\u304C\u95A2\u6570\u306E\u5408\u6210 a\u2218b \u3068\u4E00\u81F4\u3059\u308B\
+    \u3002Reverse \u306F b\u2218a\n        for (int rep = 0; rep < 1000 && ok; rep++)\
+    \ {\n            Affine<long long> a{static_cast<long long>(rng() % 7) - 3, static_cast<long\
     \ long>(rng() % 7) - 3};\n            Affine<long long> b{static_cast<long long>(rng()\
     \ % 7) - 3, static_cast<long long>(rng() % 7) - 3};\n            long long x =\
     \ static_cast<long long>(rng() % 7) - 3;\n            auto c = monoid::Composite<long\
@@ -3368,78 +3362,74 @@ data:
     suffix\u30FB\u9023\u7D9A\u90E8\u5206\u5217\u306E\u548C\n    for (int rep = 0;\
     \ rep < 300 && ok; rep++) {\n        int n = rng() % 12 + 1;\n        std::vector<long\
     \ long> a(n);\n        for (auto& x : a) x = static_cast<long long>(rng() % 21)\
-    \ - 10;\n        SegTree<monoid::PrefixSumMax<long long>> pmax(std::vector<monoid::PrefixSumMax<long\
-    \ long>::S>(a.begin(), a.end()));\n        SegTree<monoid::PrefixSumMin<long long>>\
-    \ pmin(std::vector<monoid::PrefixSumMin<long long>::S>(a.begin(), a.end()));\n\
-    \        using PM = monoid::PrefixSumMinMax<>;\n        SegTree<PM> pminmax(a);\n\
-    \        SegTree<monoid::SuffixSumMax<long long>> smax(std::vector<monoid::SuffixSumMax<long\
-    \ long>::S>(a.begin(), a.end()));\n        SegTree<monoid::SuffixSumMin<long long>>\
-    \ smin(std::vector<monoid::SuffixSumMin<long long>::S>(a.begin(), a.end()));\n\
-    \        SegTree<monoid::MaxSubarraySum<long long>> msub(std::vector<monoid::MaxSubarraySum<long\
-    \ long>::S>(a.begin(), a.end()));\n        for (int q = 0; q < 10 && ok; q++)\
-    \ {\n            int k = rng() % n;\n            a[k] = static_cast<long long>(rng()\
-    \ % 21) - 10;\n            pminmax.set(k, a[k]);\n            pmax.set(k, a[k]),\
-    \ pmin.set(k, a[k]), smax.set(k, a[k]), smin.set(k, a[k]), msub.set(k, a[k]);\n\
-    \            for (int l = 0; l <= n; l++) {\n                for (int r = l; r\
-    \ <= n; r++) {\n                    long long sum = 0, pre_max = 0, pre_min =\
-    \ 0, suf_max = 0, suf_min = 0, best = 0;\n                    for (int i = l;\
-    \ i < r; i++) {\n                        sum += a[i];\n                      \
-    \  pre_max = std::max(pre_max, sum), pre_min = std::min(pre_min, sum);\n     \
-    \                   long long s = 0;\n                        for (int j = i;\
-    \ j < r; j++) {\n                            s += a[j];\n                    \
-    \        best = std::max(best, s);\n                        }\n              \
-    \      }\n                    long long s = 0;\n                    for (int i\
-    \ = r - 1; i >= l; i--) {\n                        s += a[i];\n              \
-    \          suf_max = std::max(suf_max, s), suf_min = std::min(suf_min, s);\n \
-    \                   }\n                    check(pmax.prod(l, r) == monoid::PrefixSumMax<long\
-    \ long>::S(sum, pre_max), \"PrefixSumMax\");\n                    check(pmin.prod(l,\
-    \ r) == monoid::PrefixSumMin<long long>::S(sum, pre_min), \"PrefixSumMin\");\n\
-    \                    check(pminmax.prod(l, r) == PM::S(sum, pre_min, pre_max),\
-    \ \"PrefixSumMinMax\");\n                    check(PM::op(PM::e(), pminmax.prod(l,\
-    \ r)) == pminmax.prod(l, r) &&\n                              PM::op(pminmax.prod(l,\
-    \ r), PM::e()) == pminmax.prod(l, r),\n                          \"PrefixSumMinMax\
-    \ identity\");\n                    int m = (l + r) / 2;\n                   \
-    \ check(PM::op(pminmax.prod(l, m), pminmax.prod(m, r)) == pminmax.prod(l, r),\
-    \ \"PrefixSumMinMax concatenate\");\n                    check(smax.prod(l, r)\
-    \ == monoid::SuffixSumMax<long long>::S(sum, suf_max), \"SuffixSumMax\");\n  \
-    \                  check(smin.prod(l, r) == monoid::SuffixSumMin<long long>::S(sum,\
-    \ suf_min), \"SuffixSumMin\");\n                    check(msub.prod(l, r) == monoid::MaxSubarraySum<long\
-    \ long>::S(sum, pre_max, suf_max, best), \"MaxSubarraySum\");\n              \
-    \  }\n            }\n            // max_right: l \u304B\u3089\u59CB\u3081\u3066\
-    \u548C\u304C\u521D\u3081\u3066\u6B63\u306B\u306A\u308B\u4F4D\u7F6E\n         \
-    \   int l = rng() % (n + 1);\n            long long sum = 0;\n            int\
-    \ expect = n;\n            for (int i = l; i < n; i++) {\n                sum\
-    \ += a[i];\n                if (sum > 0) {\n                    expect = i;\n\
-    \                    break;\n                }\n            }\n            check(pmax.max_right(l,\
-    \ [](const auto& s) { return s.max <= 0; }) == expect, \"PrefixSumMax max_right\"\
-    );\n        }\n    }\n\n    // MinWith / MaxWith: \u7A7A\u533A\u9593\u306F\u4F4D\
-    \u7F6E -1\u3002\u5024\u304C\u578B\u306E\u6700\u5927\u5024 (\u6700\u5C0F\u5024\
-    ) \u306E\u8981\u7D20\u304C\u3042\u3063\u3066\u3082\u5358\u4F4D\u5143\u3068\u3057\
-    \u3066\u50CD\u304D\u3001\u540C\u3058\u5024\u306A\u3089\u5DE6\u5074\n    {\n  \
-    \      using Mn = monoid::MinWith<long long>;\n        using Mx = monoid::MaxWith<long\
-    \ long>;\n        constexpr long long INF = std::numeric_limits<long long>::max(),\
-    \ NINF = std::numeric_limits<long long>::lowest();\n        check(Mn::e() == std::pair<long\
-    \ long, long long>(INF, -1) && Mx::e() == std::pair<long long, long long>(NINF,\
-    \ -1), \"MinWith/MaxWith::e\");\n        check(Mn::op(Mn::e(), {INF, 3}) == std::pair<long\
-    \ long, long long>(INF, 3) && Mn::op({INF, 3}, Mn::e()) == std::pair<long long,\
-    \ long long>(INF, 3), \"MinWith e \u306F\u5358\u4F4D\u5143\");\n        check(Mx::op(Mx::e(),\
-    \ {NINF, 3}) == std::pair<long long, long long>(NINF, 3) && Mx::op({NINF, 3},\
-    \ Mx::e()) == std::pair<long long, long long>(NINF, 3), \"MaxWith e \u306F\u5358\
-    \u4F4D\u5143\");\n        for (int rep = 0; rep < 200 && ok; rep++) {\n      \
-    \      int n = rng() % 20 + 1;\n            std::vector<long long> a(n);\n   \
-    \         for (auto& x : a) x = rng() % 3 == 0 ? (rng() % 2 ? INF : NINF) : static_cast<long\
-    \ long>(rng() % 5);\n            std::vector<std::pair<long long, long long>>\
-    \ init(n);\n            for (int i = 0; i < n; i++) init[i] = {a[i], i};\n   \
-    \         SegTree<Mn> mn(init);\n            SegTree<Mx> mx(init);\n         \
-    \   for (int q = 0; q < 30; q++) {\n                int l = rng() % (n + 1), r\
-    \ = rng() % (n + 1);\n                if (l > r) std::swap(l, r);\n          \
-    \      std::pair<long long, long long> emn(INF, -1), emx(NINF, -1);\n        \
-    \        for (int i = l; i < r; i++) {\n                    if (emn.second ==\
-    \ -1 || a[i] < emn.first) emn = {a[i], i};\n                    if (emx.second\
-    \ == -1 || a[i] > emx.first) emx = {a[i], i};\n                }\n           \
-    \     check(mn.prod(l, r) == emn, \"MinWith prod\");\n                check(mx.prod(l,\
-    \ r) == emx, \"MaxWith prod\");\n            }\n        }\n    }\n\n    if (ok)\
-    \ std::cout << \"Hello World\" << std::endl;\n}\n"
+    \ - 10;\n        SegTree<monoid::PrefixSumMax<long long>> pmax(a);\n        SegTree<monoid::PrefixSumMin<long\
+    \ long>> pmin(a);\n        using PM = monoid::PrefixSumMinMax<>;\n        SegTree<PM>\
+    \ pminmax(a);\n        SegTree<monoid::SuffixSumMax<long long>> smax(a);\n   \
+    \     SegTree<monoid::SuffixSumMin<long long>> smin(a);\n        SegTree<monoid::MaxSubarraySum<long\
+    \ long>> msub(a);\n        for (int q = 0; q < 10 && ok; q++) {\n            int\
+    \ k = rng() % n;\n            a[k] = static_cast<long long>(rng() % 21) - 10;\n\
+    \            pminmax.set(k, a[k]);\n            pmax.set(k, a[k]), pmin.set(k,\
+    \ a[k]), smax.set(k, a[k]), smin.set(k, a[k]), msub.set(k, a[k]);\n          \
+    \  for (int l = 0; l <= n; l++) {\n                for (int r = l; r <= n; r++)\
+    \ {\n                    long long sum = 0, pre_max = 0, pre_min = 0, suf_max\
+    \ = 0, suf_min = 0, best = 0;\n                    for (int i = l; i < r; i++)\
+    \ {\n                        sum += a[i];\n                        pre_max = std::max(pre_max,\
+    \ sum), pre_min = std::min(pre_min, sum);\n                        long long s\
+    \ = 0;\n                        for (int j = i; j < r; j++) {\n              \
+    \              s += a[j];\n                            best = std::max(best, s);\n\
+    \                        }\n                    }\n                    long long\
+    \ s = 0;\n                    for (int i = r - 1; i >= l; i--) {\n           \
+    \             s += a[i];\n                        suf_max = std::max(suf_max,\
+    \ s), suf_min = std::min(suf_min, s);\n                    }\n               \
+    \     check(pmax.prod(l, r) == monoid::PrefixSumMax<long long>::S(sum, pre_max),\
+    \ \"PrefixSumMax\");\n                    check(pmin.prod(l, r) == monoid::PrefixSumMin<long\
+    \ long>::S(sum, pre_min), \"PrefixSumMin\");\n                    check(pminmax.prod(l,\
+    \ r) == PM::S(sum, pre_min, pre_max), \"PrefixSumMinMax\");\n                \
+    \    check(PM::op(PM::e(), pminmax.prod(l, r)) == pminmax.prod(l, r) &&\n    \
+    \                          PM::op(pminmax.prod(l, r), PM::e()) == pminmax.prod(l,\
+    \ r),\n                          \"PrefixSumMinMax identity\");\n            \
+    \        int m = (l + r) / 2;\n                    check(PM::op(pminmax.prod(l,\
+    \ m), pminmax.prod(m, r)) == pminmax.prod(l, r), \"PrefixSumMinMax concatenate\"\
+    );\n                    check(smax.prod(l, r) == monoid::SuffixSumMax<long long>::S(sum,\
+    \ suf_max), \"SuffixSumMax\");\n                    check(smin.prod(l, r) == monoid::SuffixSumMin<long\
+    \ long>::S(sum, suf_min), \"SuffixSumMin\");\n                    check(msub.prod(l,\
+    \ r) == monoid::MaxSubarraySum<long long>::S(sum, pre_max, suf_max, best), \"\
+    MaxSubarraySum\");\n                }\n            }\n            // max_right:\
+    \ l \u304B\u3089\u59CB\u3081\u3066\u548C\u304C\u521D\u3081\u3066\u6B63\u306B\u306A\
+    \u308B\u4F4D\u7F6E\n            int l = rng() % (n + 1);\n            long long\
+    \ sum = 0;\n            int expect = n;\n            for (int i = l; i < n; i++)\
+    \ {\n                sum += a[i];\n                if (sum > 0) {\n          \
+    \          expect = i;\n                    break;\n                }\n      \
+    \      }\n            check(pmax.max_right(l, [](const auto& s) { return s.max\
+    \ <= 0; }) == expect, \"PrefixSumMax max_right\");\n        }\n    }\n\n    //\
+    \ MinWith / MaxWith: \u7A7A\u533A\u9593\u306F\u4F4D\u7F6E -1\u3002\u5024\u304C\
+    \u578B\u306E\u6700\u5927\u5024 (\u6700\u5C0F\u5024) \u306E\u8981\u7D20\u304C\u3042\
+    \u3063\u3066\u3082\u5358\u4F4D\u5143\u3068\u3057\u3066\u50CD\u304D\u3001\u540C\
+    \u3058\u5024\u306A\u3089\u5DE6\u5074\n    {\n        using Mn = monoid::MinWith<long\
+    \ long>;\n        using Mx = monoid::MaxWith<long long>;\n        constexpr long\
+    \ long INF = std::numeric_limits<long long>::max(), NINF = std::numeric_limits<long\
+    \ long>::lowest();\n        check(Mn::e() == std::pair<long long, long long>(INF,\
+    \ -1) && Mx::e() == std::pair<long long, long long>(NINF, -1), \"MinWith/MaxWith::e\"\
+    );\n        check(Mn::op(Mn::e(), {INF, 3}) == std::pair<long long, long long>(INF,\
+    \ 3) && Mn::op({INF, 3}, Mn::e()) == std::pair<long long, long long>(INF, 3),\
+    \ \"MinWith e \u306F\u5358\u4F4D\u5143\");\n        check(Mx::op(Mx::e(), {NINF,\
+    \ 3}) == std::pair<long long, long long>(NINF, 3) && Mx::op({NINF, 3}, Mx::e())\
+    \ == std::pair<long long, long long>(NINF, 3), \"MaxWith e \u306F\u5358\u4F4D\u5143\
+    \");\n        for (int rep = 0; rep < 200 && ok; rep++) {\n            int n =\
+    \ rng() % 20 + 1;\n            std::vector<long long> a(n);\n            for (auto&\
+    \ x : a) x = rng() % 3 == 0 ? (rng() % 2 ? INF : NINF) : static_cast<long long>(rng()\
+    \ % 5);\n            std::vector<std::pair<long long, long long>> init(n);\n \
+    \           for (int i = 0; i < n; i++) init[i] = {a[i], i};\n            SegTree<Mn>\
+    \ mn(init);\n            SegTree<Mx> mx(init);\n            for (int q = 0; q\
+    \ < 30; q++) {\n                int l = rng() % (n + 1), r = rng() % (n + 1);\n\
+    \                if (l > r) std::swap(l, r);\n                std::pair<long long,\
+    \ long long> emn(INF, -1), emx(NINF, -1);\n                for (int i = l; i <\
+    \ r; i++) {\n                    if (emn.second == -1 || a[i] < emn.first) emn\
+    \ = {a[i], i};\n                    if (emx.second == -1 || a[i] > emx.first)\
+    \ emx = {a[i], i};\n                }\n                check(mn.prod(l, r) ==\
+    \ emn, \"MinWith prod\");\n                check(mx.prod(l, r) == emx, \"MaxWith\
+    \ prod\");\n            }\n        }\n    }\n\n    if (ok) std::cout << \"Hello\
+    \ World\" << std::endl;\n}\n"
   dependsOn:
   - src/algebra/monoid.hpp
   - src/algebra/group.hpp
@@ -3465,7 +3455,7 @@ data:
   isVerificationFile: true
   path: test/unittest/algebra/monoid.test.cpp
   requiredBy: []
-  timestamp: '2026-11-08 20:13:03+09:00'
+  timestamp: '2026-11-08 21:31:08+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/algebra/monoid.test.cpp

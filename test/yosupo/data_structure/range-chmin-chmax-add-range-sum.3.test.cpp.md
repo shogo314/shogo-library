@@ -978,26 +978,26 @@ data:
     #line 7 \"test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp\"\
     \n\nint main(void) {\n    std::cin.tie(nullptr);\n    std::ios_base::sync_with_stdio(false);\n\
     \    using A = beats_acted_monoid::ChminChmaxAddSum<long long>;\n    int n, q;\n\
-    \    std::cin >> n >> q;\n    std::vector<A::S> v(n);\n    for (int i = 0; i <\
-    \ n; i++) {\n        long long a;\n        std::cin >> a;\n        v[i] = A::S(a);\n\
-    \    }\n    RChminChmaxAddSumQ<long long> seg(v);\n    while (q--) {\n       \
-    \ int op, l, r;\n        std::cin >> op >> l >> r;\n        if (op == 3) {\n \
-    \           std::cout << seg.prod(l, r).sum << '\\n';\n            continue;\n\
-    \        }\n        long long b;\n        std::cin >> b;\n        if (op == 0)\
-    \ seg.apply(l, r, A::chmin(b));\n        if (op == 1) seg.apply(l, r, A::chmax(b));\n\
-    \        if (op == 2) seg.apply(l, r, A::add(b));\n    }\n}\n"
+    \    std::cin >> n >> q;\n    std::vector<long long> v(n);\n    for (auto& x :\
+    \ v) std::cin >> x;\n    RChminChmaxAddSumQ<long long> seg(v);\n    while (q--)\
+    \ {\n        int op, l, r;\n        std::cin >> op >> l >> r;\n        if (op\
+    \ == 3) {\n            std::cout << seg.prod(l, r).sum << '\\n';\n           \
+    \ continue;\n        }\n        long long b;\n        std::cin >> b;\n       \
+    \ if (op == 0) seg.apply(l, r, A::chmin(b));\n        if (op == 1) seg.apply(l,\
+    \ r, A::chmax(b));\n        if (op == 2) seg.apply(l, r, A::add(b));\n    }\n\
+    }\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/range_chmin_chmax_add_range_sum\"\
     \n\n#include <iostream>\n#include <vector>\n\n#include \"../../../src/data_structures/segtree-beats.hpp\"\
     \n\nint main(void) {\n    std::cin.tie(nullptr);\n    std::ios_base::sync_with_stdio(false);\n\
     \    using A = beats_acted_monoid::ChminChmaxAddSum<long long>;\n    int n, q;\n\
-    \    std::cin >> n >> q;\n    std::vector<A::S> v(n);\n    for (int i = 0; i <\
-    \ n; i++) {\n        long long a;\n        std::cin >> a;\n        v[i] = A::S(a);\n\
-    \    }\n    RChminChmaxAddSumQ<long long> seg(v);\n    while (q--) {\n       \
-    \ int op, l, r;\n        std::cin >> op >> l >> r;\n        if (op == 3) {\n \
-    \           std::cout << seg.prod(l, r).sum << '\\n';\n            continue;\n\
-    \        }\n        long long b;\n        std::cin >> b;\n        if (op == 0)\
-    \ seg.apply(l, r, A::chmin(b));\n        if (op == 1) seg.apply(l, r, A::chmax(b));\n\
-    \        if (op == 2) seg.apply(l, r, A::add(b));\n    }\n}\n"
+    \    std::cin >> n >> q;\n    std::vector<long long> v(n);\n    for (auto& x :\
+    \ v) std::cin >> x;\n    RChminChmaxAddSumQ<long long> seg(v);\n    while (q--)\
+    \ {\n        int op, l, r;\n        std::cin >> op >> l >> r;\n        if (op\
+    \ == 3) {\n            std::cout << seg.prod(l, r).sum << '\\n';\n           \
+    \ continue;\n        }\n        long long b;\n        std::cin >> b;\n       \
+    \ if (op == 0) seg.apply(l, r, A::chmin(b));\n        if (op == 1) seg.apply(l,\
+    \ r, A::chmax(b));\n        if (op == 2) seg.apply(l, r, A::add(b));\n    }\n\
+    }\n"
   dependsOn:
   - src/data_structures/segtree-beats.hpp
   - src/algebra/acted-monoid.hpp
@@ -1007,7 +1007,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp
   requiredBy: []
-  timestamp: '2026-11-08 20:13:03+09:00'
+  timestamp: '2026-11-08 21:31:08+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/data_structure/range-chmin-chmax-add-range-sum.3.test.cpp

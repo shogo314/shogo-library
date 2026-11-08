@@ -1177,71 +1177,82 @@ data:
     \ self(self, m, r);\n        return {a * d + c * b, b * d};\n    };\n    return\
     \ rec(rec, 0, nums.size());\n}\n\ntemplate <class R>\nFPS(R&&) -> FPS<internal_traits::range_value_t<R>>;\n\
     #line 12 \"test/unittest/math/fps.test.cpp\"\n\n#line 15 \"test/unittest/math/fps.test.cpp\"\
-    \n#include <forward_list>\n#line 17 \"test/unittest/math/fps.test.cpp\"\n#include\
-    \ <list>\n#include <random>\n#include <string>\n#line 22 \"test/unittest/math/fps.test.cpp\"\
-    \n\nusing mint = static_modint<998244353>;\nusing F = FPS<mint>;\nusing P = std::vector<mint>;\n\
-    \nP trim(P a) {\n    while (!a.empty() && a.back() == 0) a.pop_back();\n    return\
-    \ a;\n}\nP naive_mul(const P& a, const P& b) {\n    if (a.empty() || b.empty())\
-    \ return {};\n    P c(a.size() + b.size() - 1);\n    for (size_t i = 0; i < a.size();\
-    \ i++)\n        for (size_t j = 0; j < b.size(); j++) c[i + j] += a[i] * b[j];\n\
-    \    return c;\n}\n// \u591A\u9805\u5F0F\u306E\u4F59\u308A (b \u306F\u672B\u5C3E\
-    \u304C 0 \u3067\u306A\u3044\u3053\u3068)\nP naive_mod(P a, const P& b) {\n   \
-    \ a = trim(a);\n    while (a.size() >= b.size()) {\n        mint c = a.back()\
-    \ / b.back();\n        size_t s = a.size() - b.size();\n        for (size_t i\
-    \ = 0; i < b.size(); i++) a[s + i] -= c * b[i];\n        a = trim(a);\n    }\n\
-    \    return a;\n}\n// \u6700\u9AD8\u6B21\u306E\u4FC2\u6570\u3092 1 \u306B\u3059\
-    \u308B\nP monic(P a) {\n    a = trim(a);\n    if (a.empty()) return a;\n    mint\
-    \ c = a.back().inv();\n    for (auto& x : a) x *= c;\n    return a;\n}\nP naive_gcd(P\
-    \ a, P b) {\n    a = trim(a), b = trim(b);\n    while (!b.empty()) {\n       \
-    \ P r = naive_mod(a, b);\n        a = b;\n        b = r;\n    }\n    return monic(a);\n\
-    }\nP random_poly(std::mt19937_64& rng, int n, bool nonzero_lead) {\n    P a(n);\n\
-    \    for (auto& x : a) x = static_cast<long long>(rng() % 998244353);\n    if\
-    \ (rng() % 4 == 0)\n        for (auto& x : a) x = static_cast<long long>(rng()\
-    \ % 3);  // 0 \u3092\u591A\u3081\u306B\u542B\u3080\n    if (nonzero_lead && n\
-    \ > 0 && a.back() == 0) a.back() = 1;\n    return a;\n}\n\nint main() {\n    std::mt19937_64\
-    \ rng(314);\n    bool ok = true;\n    auto verify_range = [&](auto&& r) {\n  \
-    \      F f(std::forward<decltype(r)>(r));\n        if (f != F{1, -2, 0} || f.size()\
-    \ != 3) ok = false;\n    };\n    int raw[] = {1, -2, 0};\n    const std::array<long\
-    \ long, 3> arr = {1, -2, 0};\n    verify_range(raw);\n    verify_range(arr);\n\
-    \    verify_range(std::list<int>{1, -2, 0});\n    F empty_range(std::array<int,\
-    \ 0>{});\n    if (!empty_range.empty()) ok = false;\n    const P coefficients{1,\
-    \ -2, 0};\n    FPS deduced(coefficients);\n    static_assert(std::is_same_v<decltype(deduced),\
-    \ F>);\n    if (deduced != F{1, -2, 0}) ok = false;\n    static_assert(!std::is_constructible_v<F,\
-    \ std::forward_list<int>&>);\n    static_assert(!std::is_constructible_v<F, std::array<std::string,\
-    \ 3>&>);\n#if __cplusplus >= 202002L\n    verify_range(std::views::iota(0, 3)\
-    \ | std::views::transform([&](int i) { return raw[i]; }));\n#endif\n    static_assert(std::is_constructible_v<F,\
-    \ const std::vector<int>&>);\n    static_assert(!std::is_constructible_v<F, const\
-    \ std::vector<std::string>&>);\n    const std::vector<int> ints = {1, -2, 0};\n\
-    \    F from_int(ints);\n    F from_long = std::vector<long long>{998244354LL,\
-    \ -2, 0};\n    F from_empty(std::vector<int>{});\n    if (from_int != F{1, -2,\
-    \ 0} || from_long != from_int || !from_empty.empty() || from_int.size() != 3)\
-    \ {\n        std::cerr << \"FPS vector conversion failed\\n\";\n        return\
-    \ 1;\n    }\n\n    for (int rep = 0; rep < 300; rep++) {\n        int n = rng()\
-    \ % 8;\n        P a = random_poly(rng, n, false);\n        F f(a);\n        //\
-    \ \u5358\u9805\u306E -: \u5404\u4FC2\u6570\u306E\u7B26\u53F7\u3092\u53CD\u8EE2\
-    \u3057\u3001\u9577\u3055\u306F\u5909\u308F\u3089\u306A\u3044\n        F g = -f;\n\
-    \        if (g.size() != a.size()) ok = false;\n        for (size_t i = 0; i <\
-    \ a.size(); i++)\n            if (g[i] != -a[i]) ok = false;\n        // \u5B9A\
-    \u6570\u3092\u5F15\u304F: \u5B9A\u6570\u9805\u304B\u3089\u5F15\u304F (\u7A7A\u306A\
-    \u3089\u9577\u3055 1 \u306B\u306A\u308B)\u3002\u9577\u3055\u306F\u305D\u308C\u4EE5\
-    \u5916\u5909\u308F\u3089\u306A\u3044\n        mint c = static_cast<long long>(rng()\
-    \ % 998244353);\n        F h = f - c;\n        P e = a.empty() ? P{-c} : a;\n\
-    \        if (!a.empty()) e[0] -= c;\n        if (P(h) != e) ok = false;\n    \
-    \    F h2 = f;\n        h2 -= c;\n        if (P(h2) != e) ok = false;\n      \
-    \  // \u5B9A\u6570\u3092\u8DB3\u3059\u306E\u3068\u6253\u3061\u6D88\u3057\u5408\
-    \u3046\n        if (P(f - c + c) != (a.empty() ? P{0} : a)) ok = false;\n    \
-    \    // eval: f(x) \u3092\u611A\u76F4\u306B\u8A08\u7B97\u3057\u305F\u3082\u306E\
-    \u3068\u4E00\u81F4\u3059\u308B\n        for (int t = 0; t < 5; t++) {\n      \
-    \      mint x = (t == 0) ? mint(0) : mint(static_cast<long long>(rng() % 998244353));\n\
-    \            mint s = 0, pw = 1;\n            for (auto& coef : a) s += coef *\
-    \ pw, pw *= x;\n            if (f.eval(x) != s) ok = false;\n        }\n    }\n\
-    \    if (!ok) std::cerr << \"unary minus / minus const / eval\" << std::endl;\n\
-    \n    // gcd: \u5171\u901A\u56E0\u5B50 h \u3092\u639B\u3051\u305F 2 \u3064\u306E\
-    \u591A\u9805\u5F0F\u306E gcd \u304C h \u306E\u5B9A\u6570\u500D\u306B\u306A\u308B\
-    \u3002NTT \u3092\u4F7F\u3046\u9577\u3055\u3082\u542B\u3081\u308B\n    for (int\
-    \ rep = 0; rep < 150 && ok; rep++) {\n        int big = (rep % 5 == 0) ? 40 :\
-    \ 0;\n        P h = random_poly(rng, rng() % 5 + 1 + big / 4, true);\n       \
-    \ P x = random_poly(rng, rng() % 6 + 1 + big, true);\n        P y = random_poly(rng,\
+    \n#include <forward_list>\n#line 18 \"test/unittest/math/fps.test.cpp\"\n#include\
+    \ <list>\n#include <random>\n#include <sstream>\n#include <string>\n#line 24 \"\
+    test/unittest/math/fps.test.cpp\"\n\nusing mint = static_modint<998244353>;\n\
+    using F = FPS<mint>;\nusing P = std::vector<mint>;\n\nP trim(P a) {\n    while\
+    \ (!a.empty() && a.back() == 0) a.pop_back();\n    return a;\n}\nP naive_mul(const\
+    \ P& a, const P& b) {\n    if (a.empty() || b.empty()) return {};\n    P c(a.size()\
+    \ + b.size() - 1);\n    for (size_t i = 0; i < a.size(); i++)\n        for (size_t\
+    \ j = 0; j < b.size(); j++) c[i + j] += a[i] * b[j];\n    return c;\n}\n// \u591A\
+    \u9805\u5F0F\u306E\u4F59\u308A (b \u306F\u672B\u5C3E\u304C 0 \u3067\u306A\u3044\
+    \u3053\u3068)\nP naive_mod(P a, const P& b) {\n    a = trim(a);\n    while (a.size()\
+    \ >= b.size()) {\n        mint c = a.back() / b.back();\n        size_t s = a.size()\
+    \ - b.size();\n        for (size_t i = 0; i < b.size(); i++) a[s + i] -= c * b[i];\n\
+    \        a = trim(a);\n    }\n    return a;\n}\n// \u6700\u9AD8\u6B21\u306E\u4FC2\
+    \u6570\u3092 1 \u306B\u3059\u308B\nP monic(P a) {\n    a = trim(a);\n    if (a.empty())\
+    \ return a;\n    mint c = a.back().inv();\n    for (auto& x : a) x *= c;\n   \
+    \ return a;\n}\nP naive_gcd(P a, P b) {\n    a = trim(a), b = trim(b);\n    while\
+    \ (!b.empty()) {\n        P r = naive_mod(a, b);\n        a = b;\n        b =\
+    \ r;\n    }\n    return monic(a);\n}\nP random_poly(std::mt19937_64& rng, int\
+    \ n, bool nonzero_lead) {\n    P a(n);\n    for (auto& x : a) x = static_cast<long\
+    \ long>(rng() % 998244353);\n    if (rng() % 4 == 0)\n        for (auto& x : a)\
+    \ x = static_cast<long long>(rng() % 3);  // 0 \u3092\u591A\u3081\u306B\u542B\u3080\
+    \n    if (nonzero_lead && n > 0 && a.back() == 0) a.back() = 1;\n    return a;\n\
+    }\n\n// istream_iterator \u306F\u5165\u529B\u3092\u5171\u6709\u3057\u3001\u4E00\
+    \u5EA6\u9032\u3081\u305F\u4F4D\u7F6E\u306B\u306F\u623B\u308C\u306A\u3044\u3002\
+    \nstruct InputCoefficients {\n    std::istringstream input;\n    long long count;\n\
+    \    int begin_count = 0;\n    auto begin() {\n        ++begin_count;\n      \
+    \  return std::istream_iterator<long long>(input);\n    }\n    auto end() const\
+    \ { return std::istream_iterator<long long>(); }\n    long long size() const {\
+    \ return count; }\n};\n\nint main() {\n    std::mt19937_64 rng(314);\n    bool\
+    \ ok = true;\n    auto verify_range = [&](auto&& r) {\n        F f(std::forward<decltype(r)>(r));\n\
+    \        if (f != F{1, -2, 0} || f.size() != 3) ok = false;\n    };\n    int raw[]\
+    \ = {1, -2, 0};\n    const std::array<long long, 3> arr = {1, -2, 0};\n    verify_range(raw);\n\
+    \    verify_range(arr);\n    verify_range(std::list<int>{1, -2, 0});\n    InputCoefficients\
+    \ input{std::istringstream(\"1 -2 0\"), 3};\n    verify_range(input);\n    if\
+    \ (input.begin_count != 1) ok = false;\n    InputCoefficients empty_input{std::istringstream(),\
+    \ 0};\n    F from_input(empty_input);\n    if (!from_input.empty() || empty_input.begin_count\
+    \ != 1) ok = false;\n    F empty_range(std::array<int, 0>{});\n    if (!empty_range.empty())\
+    \ ok = false;\n    const P coefficients{1, -2, 0};\n    FPS deduced(coefficients);\n\
+    \    static_assert(std::is_same_v<decltype(deduced), F>);\n    if (deduced !=\
+    \ F{1, -2, 0}) ok = false;\n    static_assert(!std::is_constructible_v<F, std::forward_list<int>&>);\n\
+    \    static_assert(!std::is_constructible_v<F, std::array<std::string, 3>&>);\n\
+    #if __cplusplus >= 202002L\n    static_assert(std::ranges::input_range<InputCoefficients>\
+    \ && std::ranges::sized_range<InputCoefficients>);\n    static_assert(!std::ranges::forward_range<InputCoefficients>);\n\
+    \    verify_range(std::views::iota(0, 3) | std::views::transform([&](int i) {\
+    \ return raw[i]; }));\n#endif\n    static_assert(std::is_constructible_v<F, const\
+    \ std::vector<int>&>);\n    static_assert(!std::is_constructible_v<F, const std::vector<std::string>&>);\n\
+    \    const std::vector<int> ints = {1, -2, 0};\n    F from_int(ints);\n    F from_long\
+    \ = std::vector<long long>{998244354LL, -2, 0};\n    F from_empty(std::vector<int>{});\n\
+    \    if (from_int != F{1, -2, 0} || from_long != from_int || !from_empty.empty()\
+    \ || from_int.size() != 3) {\n        std::cerr << \"FPS vector conversion failed\\\
+    n\";\n        return 1;\n    }\n\n    for (int rep = 0; rep < 300; rep++) {\n\
+    \        int n = rng() % 8;\n        P a = random_poly(rng, n, false);\n     \
+    \   F f(a);\n        // \u5358\u9805\u306E -: \u5404\u4FC2\u6570\u306E\u7B26\u53F7\
+    \u3092\u53CD\u8EE2\u3057\u3001\u9577\u3055\u306F\u5909\u308F\u3089\u306A\u3044\
+    \n        F g = -f;\n        if (g.size() != a.size()) ok = false;\n        for\
+    \ (size_t i = 0; i < a.size(); i++)\n            if (g[i] != -a[i]) ok = false;\n\
+    \        // \u5B9A\u6570\u3092\u5F15\u304F: \u5B9A\u6570\u9805\u304B\u3089\u5F15\
+    \u304F (\u7A7A\u306A\u3089\u9577\u3055 1 \u306B\u306A\u308B)\u3002\u9577\u3055\
+    \u306F\u305D\u308C\u4EE5\u5916\u5909\u308F\u3089\u306A\u3044\n        mint c =\
+    \ static_cast<long long>(rng() % 998244353);\n        F h = f - c;\n        P\
+    \ e = a.empty() ? P{-c} : a;\n        if (!a.empty()) e[0] -= c;\n        if (P(h)\
+    \ != e) ok = false;\n        F h2 = f;\n        h2 -= c;\n        if (P(h2) !=\
+    \ e) ok = false;\n        // \u5B9A\u6570\u3092\u8DB3\u3059\u306E\u3068\u6253\u3061\
+    \u6D88\u3057\u5408\u3046\n        if (P(f - c + c) != (a.empty() ? P{0} : a))\
+    \ ok = false;\n        // eval: f(x) \u3092\u611A\u76F4\u306B\u8A08\u7B97\u3057\
+    \u305F\u3082\u306E\u3068\u4E00\u81F4\u3059\u308B\n        for (int t = 0; t <\
+    \ 5; t++) {\n            mint x = (t == 0) ? mint(0) : mint(static_cast<long long>(rng()\
+    \ % 998244353));\n            mint s = 0, pw = 1;\n            for (auto& coef\
+    \ : a) s += coef * pw, pw *= x;\n            if (f.eval(x) != s) ok = false;\n\
+    \        }\n    }\n    if (!ok) std::cerr << \"unary minus / minus const / eval\"\
+    \ << std::endl;\n\n    // gcd: \u5171\u901A\u56E0\u5B50 h \u3092\u639B\u3051\u305F\
+    \ 2 \u3064\u306E\u591A\u9805\u5F0F\u306E gcd \u304C h \u306E\u5B9A\u6570\u500D\
+    \u306B\u306A\u308B\u3002NTT \u3092\u4F7F\u3046\u9577\u3055\u3082\u542B\u3081\u308B\
+    \n    for (int rep = 0; rep < 150 && ok; rep++) {\n        int big = (rep % 5\
+    \ == 0) ? 40 : 0;\n        P h = random_poly(rng, rng() % 5 + 1 + big / 4, true);\n\
+    \        P x = random_poly(rng, rng() % 6 + 1 + big, true);\n        P y = random_poly(rng,\
     \ rng() % 6 + 1 + big, true);\n        P a = trim(naive_mul(h, x)), b = trim(naive_mul(h,\
     \ y));\n        F d = gcd(F(a), F(b));\n        if (monic(P(d)) != naive_gcd(a,\
     \ b)) ok = false, std::cerr << \"gcd \" << rep << std::endl;\n        // \u5F15\
@@ -1407,71 +1418,82 @@ data:
     \u3092\u901A\u308B)\n// \u554F\u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\
     \u3001\u3059\u3079\u3066\u4E00\u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\
     \u529B\u3059\u308B\n\n#include \"../../../src/math/fps.hpp\"\n\n#include <algorithm>\n\
-    #include <array>\n#include <forward_list>\n#include <iostream>\n#include <list>\n\
-    #include <random>\n#include <string>\n#include <type_traits>\n#include <vector>\n\
-    \nusing mint = static_modint<998244353>;\nusing F = FPS<mint>;\nusing P = std::vector<mint>;\n\
-    \nP trim(P a) {\n    while (!a.empty() && a.back() == 0) a.pop_back();\n    return\
-    \ a;\n}\nP naive_mul(const P& a, const P& b) {\n    if (a.empty() || b.empty())\
-    \ return {};\n    P c(a.size() + b.size() - 1);\n    for (size_t i = 0; i < a.size();\
-    \ i++)\n        for (size_t j = 0; j < b.size(); j++) c[i + j] += a[i] * b[j];\n\
-    \    return c;\n}\n// \u591A\u9805\u5F0F\u306E\u4F59\u308A (b \u306F\u672B\u5C3E\
-    \u304C 0 \u3067\u306A\u3044\u3053\u3068)\nP naive_mod(P a, const P& b) {\n   \
-    \ a = trim(a);\n    while (a.size() >= b.size()) {\n        mint c = a.back()\
-    \ / b.back();\n        size_t s = a.size() - b.size();\n        for (size_t i\
-    \ = 0; i < b.size(); i++) a[s + i] -= c * b[i];\n        a = trim(a);\n    }\n\
-    \    return a;\n}\n// \u6700\u9AD8\u6B21\u306E\u4FC2\u6570\u3092 1 \u306B\u3059\
-    \u308B\nP monic(P a) {\n    a = trim(a);\n    if (a.empty()) return a;\n    mint\
-    \ c = a.back().inv();\n    for (auto& x : a) x *= c;\n    return a;\n}\nP naive_gcd(P\
-    \ a, P b) {\n    a = trim(a), b = trim(b);\n    while (!b.empty()) {\n       \
-    \ P r = naive_mod(a, b);\n        a = b;\n        b = r;\n    }\n    return monic(a);\n\
-    }\nP random_poly(std::mt19937_64& rng, int n, bool nonzero_lead) {\n    P a(n);\n\
-    \    for (auto& x : a) x = static_cast<long long>(rng() % 998244353);\n    if\
-    \ (rng() % 4 == 0)\n        for (auto& x : a) x = static_cast<long long>(rng()\
-    \ % 3);  // 0 \u3092\u591A\u3081\u306B\u542B\u3080\n    if (nonzero_lead && n\
-    \ > 0 && a.back() == 0) a.back() = 1;\n    return a;\n}\n\nint main() {\n    std::mt19937_64\
-    \ rng(314);\n    bool ok = true;\n    auto verify_range = [&](auto&& r) {\n  \
-    \      F f(std::forward<decltype(r)>(r));\n        if (f != F{1, -2, 0} || f.size()\
-    \ != 3) ok = false;\n    };\n    int raw[] = {1, -2, 0};\n    const std::array<long\
-    \ long, 3> arr = {1, -2, 0};\n    verify_range(raw);\n    verify_range(arr);\n\
-    \    verify_range(std::list<int>{1, -2, 0});\n    F empty_range(std::array<int,\
-    \ 0>{});\n    if (!empty_range.empty()) ok = false;\n    const P coefficients{1,\
-    \ -2, 0};\n    FPS deduced(coefficients);\n    static_assert(std::is_same_v<decltype(deduced),\
-    \ F>);\n    if (deduced != F{1, -2, 0}) ok = false;\n    static_assert(!std::is_constructible_v<F,\
-    \ std::forward_list<int>&>);\n    static_assert(!std::is_constructible_v<F, std::array<std::string,\
-    \ 3>&>);\n#if __cplusplus >= 202002L\n    verify_range(std::views::iota(0, 3)\
-    \ | std::views::transform([&](int i) { return raw[i]; }));\n#endif\n    static_assert(std::is_constructible_v<F,\
-    \ const std::vector<int>&>);\n    static_assert(!std::is_constructible_v<F, const\
-    \ std::vector<std::string>&>);\n    const std::vector<int> ints = {1, -2, 0};\n\
-    \    F from_int(ints);\n    F from_long = std::vector<long long>{998244354LL,\
-    \ -2, 0};\n    F from_empty(std::vector<int>{});\n    if (from_int != F{1, -2,\
-    \ 0} || from_long != from_int || !from_empty.empty() || from_int.size() != 3)\
-    \ {\n        std::cerr << \"FPS vector conversion failed\\n\";\n        return\
-    \ 1;\n    }\n\n    for (int rep = 0; rep < 300; rep++) {\n        int n = rng()\
-    \ % 8;\n        P a = random_poly(rng, n, false);\n        F f(a);\n        //\
-    \ \u5358\u9805\u306E -: \u5404\u4FC2\u6570\u306E\u7B26\u53F7\u3092\u53CD\u8EE2\
-    \u3057\u3001\u9577\u3055\u306F\u5909\u308F\u3089\u306A\u3044\n        F g = -f;\n\
-    \        if (g.size() != a.size()) ok = false;\n        for (size_t i = 0; i <\
-    \ a.size(); i++)\n            if (g[i] != -a[i]) ok = false;\n        // \u5B9A\
-    \u6570\u3092\u5F15\u304F: \u5B9A\u6570\u9805\u304B\u3089\u5F15\u304F (\u7A7A\u306A\
-    \u3089\u9577\u3055 1 \u306B\u306A\u308B)\u3002\u9577\u3055\u306F\u305D\u308C\u4EE5\
-    \u5916\u5909\u308F\u3089\u306A\u3044\n        mint c = static_cast<long long>(rng()\
-    \ % 998244353);\n        F h = f - c;\n        P e = a.empty() ? P{-c} : a;\n\
-    \        if (!a.empty()) e[0] -= c;\n        if (P(h) != e) ok = false;\n    \
-    \    F h2 = f;\n        h2 -= c;\n        if (P(h2) != e) ok = false;\n      \
-    \  // \u5B9A\u6570\u3092\u8DB3\u3059\u306E\u3068\u6253\u3061\u6D88\u3057\u5408\
-    \u3046\n        if (P(f - c + c) != (a.empty() ? P{0} : a)) ok = false;\n    \
-    \    // eval: f(x) \u3092\u611A\u76F4\u306B\u8A08\u7B97\u3057\u305F\u3082\u306E\
-    \u3068\u4E00\u81F4\u3059\u308B\n        for (int t = 0; t < 5; t++) {\n      \
-    \      mint x = (t == 0) ? mint(0) : mint(static_cast<long long>(rng() % 998244353));\n\
-    \            mint s = 0, pw = 1;\n            for (auto& coef : a) s += coef *\
-    \ pw, pw *= x;\n            if (f.eval(x) != s) ok = false;\n        }\n    }\n\
-    \    if (!ok) std::cerr << \"unary minus / minus const / eval\" << std::endl;\n\
-    \n    // gcd: \u5171\u901A\u56E0\u5B50 h \u3092\u639B\u3051\u305F 2 \u3064\u306E\
-    \u591A\u9805\u5F0F\u306E gcd \u304C h \u306E\u5B9A\u6570\u500D\u306B\u306A\u308B\
-    \u3002NTT \u3092\u4F7F\u3046\u9577\u3055\u3082\u542B\u3081\u308B\n    for (int\
-    \ rep = 0; rep < 150 && ok; rep++) {\n        int big = (rep % 5 == 0) ? 40 :\
-    \ 0;\n        P h = random_poly(rng, rng() % 5 + 1 + big / 4, true);\n       \
-    \ P x = random_poly(rng, rng() % 6 + 1 + big, true);\n        P y = random_poly(rng,\
+    #include <array>\n#include <forward_list>\n#include <iostream>\n#include <iterator>\n\
+    #include <list>\n#include <random>\n#include <sstream>\n#include <string>\n#include\
+    \ <type_traits>\n#include <vector>\n\nusing mint = static_modint<998244353>;\n\
+    using F = FPS<mint>;\nusing P = std::vector<mint>;\n\nP trim(P a) {\n    while\
+    \ (!a.empty() && a.back() == 0) a.pop_back();\n    return a;\n}\nP naive_mul(const\
+    \ P& a, const P& b) {\n    if (a.empty() || b.empty()) return {};\n    P c(a.size()\
+    \ + b.size() - 1);\n    for (size_t i = 0; i < a.size(); i++)\n        for (size_t\
+    \ j = 0; j < b.size(); j++) c[i + j] += a[i] * b[j];\n    return c;\n}\n// \u591A\
+    \u9805\u5F0F\u306E\u4F59\u308A (b \u306F\u672B\u5C3E\u304C 0 \u3067\u306A\u3044\
+    \u3053\u3068)\nP naive_mod(P a, const P& b) {\n    a = trim(a);\n    while (a.size()\
+    \ >= b.size()) {\n        mint c = a.back() / b.back();\n        size_t s = a.size()\
+    \ - b.size();\n        for (size_t i = 0; i < b.size(); i++) a[s + i] -= c * b[i];\n\
+    \        a = trim(a);\n    }\n    return a;\n}\n// \u6700\u9AD8\u6B21\u306E\u4FC2\
+    \u6570\u3092 1 \u306B\u3059\u308B\nP monic(P a) {\n    a = trim(a);\n    if (a.empty())\
+    \ return a;\n    mint c = a.back().inv();\n    for (auto& x : a) x *= c;\n   \
+    \ return a;\n}\nP naive_gcd(P a, P b) {\n    a = trim(a), b = trim(b);\n    while\
+    \ (!b.empty()) {\n        P r = naive_mod(a, b);\n        a = b;\n        b =\
+    \ r;\n    }\n    return monic(a);\n}\nP random_poly(std::mt19937_64& rng, int\
+    \ n, bool nonzero_lead) {\n    P a(n);\n    for (auto& x : a) x = static_cast<long\
+    \ long>(rng() % 998244353);\n    if (rng() % 4 == 0)\n        for (auto& x : a)\
+    \ x = static_cast<long long>(rng() % 3);  // 0 \u3092\u591A\u3081\u306B\u542B\u3080\
+    \n    if (nonzero_lead && n > 0 && a.back() == 0) a.back() = 1;\n    return a;\n\
+    }\n\n// istream_iterator \u306F\u5165\u529B\u3092\u5171\u6709\u3057\u3001\u4E00\
+    \u5EA6\u9032\u3081\u305F\u4F4D\u7F6E\u306B\u306F\u623B\u308C\u306A\u3044\u3002\
+    \nstruct InputCoefficients {\n    std::istringstream input;\n    long long count;\n\
+    \    int begin_count = 0;\n    auto begin() {\n        ++begin_count;\n      \
+    \  return std::istream_iterator<long long>(input);\n    }\n    auto end() const\
+    \ { return std::istream_iterator<long long>(); }\n    long long size() const {\
+    \ return count; }\n};\n\nint main() {\n    std::mt19937_64 rng(314);\n    bool\
+    \ ok = true;\n    auto verify_range = [&](auto&& r) {\n        F f(std::forward<decltype(r)>(r));\n\
+    \        if (f != F{1, -2, 0} || f.size() != 3) ok = false;\n    };\n    int raw[]\
+    \ = {1, -2, 0};\n    const std::array<long long, 3> arr = {1, -2, 0};\n    verify_range(raw);\n\
+    \    verify_range(arr);\n    verify_range(std::list<int>{1, -2, 0});\n    InputCoefficients\
+    \ input{std::istringstream(\"1 -2 0\"), 3};\n    verify_range(input);\n    if\
+    \ (input.begin_count != 1) ok = false;\n    InputCoefficients empty_input{std::istringstream(),\
+    \ 0};\n    F from_input(empty_input);\n    if (!from_input.empty() || empty_input.begin_count\
+    \ != 1) ok = false;\n    F empty_range(std::array<int, 0>{});\n    if (!empty_range.empty())\
+    \ ok = false;\n    const P coefficients{1, -2, 0};\n    FPS deduced(coefficients);\n\
+    \    static_assert(std::is_same_v<decltype(deduced), F>);\n    if (deduced !=\
+    \ F{1, -2, 0}) ok = false;\n    static_assert(!std::is_constructible_v<F, std::forward_list<int>&>);\n\
+    \    static_assert(!std::is_constructible_v<F, std::array<std::string, 3>&>);\n\
+    #if __cplusplus >= 202002L\n    static_assert(std::ranges::input_range<InputCoefficients>\
+    \ && std::ranges::sized_range<InputCoefficients>);\n    static_assert(!std::ranges::forward_range<InputCoefficients>);\n\
+    \    verify_range(std::views::iota(0, 3) | std::views::transform([&](int i) {\
+    \ return raw[i]; }));\n#endif\n    static_assert(std::is_constructible_v<F, const\
+    \ std::vector<int>&>);\n    static_assert(!std::is_constructible_v<F, const std::vector<std::string>&>);\n\
+    \    const std::vector<int> ints = {1, -2, 0};\n    F from_int(ints);\n    F from_long\
+    \ = std::vector<long long>{998244354LL, -2, 0};\n    F from_empty(std::vector<int>{});\n\
+    \    if (from_int != F{1, -2, 0} || from_long != from_int || !from_empty.empty()\
+    \ || from_int.size() != 3) {\n        std::cerr << \"FPS vector conversion failed\\\
+    n\";\n        return 1;\n    }\n\n    for (int rep = 0; rep < 300; rep++) {\n\
+    \        int n = rng() % 8;\n        P a = random_poly(rng, n, false);\n     \
+    \   F f(a);\n        // \u5358\u9805\u306E -: \u5404\u4FC2\u6570\u306E\u7B26\u53F7\
+    \u3092\u53CD\u8EE2\u3057\u3001\u9577\u3055\u306F\u5909\u308F\u3089\u306A\u3044\
+    \n        F g = -f;\n        if (g.size() != a.size()) ok = false;\n        for\
+    \ (size_t i = 0; i < a.size(); i++)\n            if (g[i] != -a[i]) ok = false;\n\
+    \        // \u5B9A\u6570\u3092\u5F15\u304F: \u5B9A\u6570\u9805\u304B\u3089\u5F15\
+    \u304F (\u7A7A\u306A\u3089\u9577\u3055 1 \u306B\u306A\u308B)\u3002\u9577\u3055\
+    \u306F\u305D\u308C\u4EE5\u5916\u5909\u308F\u3089\u306A\u3044\n        mint c =\
+    \ static_cast<long long>(rng() % 998244353);\n        F h = f - c;\n        P\
+    \ e = a.empty() ? P{-c} : a;\n        if (!a.empty()) e[0] -= c;\n        if (P(h)\
+    \ != e) ok = false;\n        F h2 = f;\n        h2 -= c;\n        if (P(h2) !=\
+    \ e) ok = false;\n        // \u5B9A\u6570\u3092\u8DB3\u3059\u306E\u3068\u6253\u3061\
+    \u6D88\u3057\u5408\u3046\n        if (P(f - c + c) != (a.empty() ? P{0} : a))\
+    \ ok = false;\n        // eval: f(x) \u3092\u611A\u76F4\u306B\u8A08\u7B97\u3057\
+    \u305F\u3082\u306E\u3068\u4E00\u81F4\u3059\u308B\n        for (int t = 0; t <\
+    \ 5; t++) {\n            mint x = (t == 0) ? mint(0) : mint(static_cast<long long>(rng()\
+    \ % 998244353));\n            mint s = 0, pw = 1;\n            for (auto& coef\
+    \ : a) s += coef * pw, pw *= x;\n            if (f.eval(x) != s) ok = false;\n\
+    \        }\n    }\n    if (!ok) std::cerr << \"unary minus / minus const / eval\"\
+    \ << std::endl;\n\n    // gcd: \u5171\u901A\u56E0\u5B50 h \u3092\u639B\u3051\u305F\
+    \ 2 \u3064\u306E\u591A\u9805\u5F0F\u306E gcd \u304C h \u306E\u5B9A\u6570\u500D\
+    \u306B\u306A\u308B\u3002NTT \u3092\u4F7F\u3046\u9577\u3055\u3082\u542B\u3081\u308B\
+    \n    for (int rep = 0; rep < 150 && ok; rep++) {\n        int big = (rep % 5\
+    \ == 0) ? 40 : 0;\n        P h = random_poly(rng, rng() % 5 + 1 + big / 4, true);\n\
+    \        P x = random_poly(rng, rng() % 6 + 1 + big, true);\n        P y = random_poly(rng,\
     \ rng() % 6 + 1 + big, true);\n        P a = trim(naive_mul(h, x)), b = trim(naive_mul(h,\
     \ y));\n        F d = gcd(F(a), F(b));\n        if (monic(P(d)) != naive_gcd(a,\
     \ b)) ok = false, std::cerr << \"gcd \" << rep << std::endl;\n        // \u5F15\
@@ -1627,7 +1649,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/fps.test.cpp
   requiredBy: []
-  timestamp: '2026-11-08 20:13:03+09:00'
+  timestamp: '2026-11-08 21:31:08+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/fps.test.cpp

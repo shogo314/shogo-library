@@ -999,43 +999,42 @@ data:
     \       long long w = rep % 2 ? 5 : 1000;\n        auto gen = [&] { return static_cast<long\
     \ long>(rng() % (2 * w + 1)) - w; };\n        std::vector<long long> a(n);\n \
     \       for (auto& x : a) x = gen();\n        using Seg = std::conditional_t<is_min,\
-    \ RChminSumQ<long long>, RChmaxSumQ<long long>>;\n        Seg seg(std::vector<typename\
-    \ Seg::S>(a.begin(), a.end()));\n        for (int q = 0; q < 100 && ok; q++) {\n\
-    \            int l = rng() % (n + 1), r = rng() % (n + 1);\n            if (l\
-    \ > r) std::swap(l, r);\n            if (rng() % 2) {\n                long long\
-    \ b = gen();\n                seg.apply(l, r, b);\n                for (int i\
-    \ = l; i < r; i++) a[i] = is_min ? std::min(a[i], b) : std::max(a[i], b);\n  \
-    \          } else {\n                auto s = seg.prod(l, r);\n              \
-    \  long long sum = 0;\n                for (int i = l; i < r; i++) sum += a[i];\n\
-    \                check(s.sum == sum, name);\n                if constexpr (is_min)\
-    \ {\n                    long long mx = std::numeric_limits<long long>::lowest();\n\
-    \                    for (int i = l; i < r; i++) mx = std::max(mx, a[i]);\n  \
-    \                  check(s.max1 == mx, name);\n                } else {\n    \
-    \                long long mn = std::numeric_limits<long long>::max();\n     \
-    \               for (int i = l; i < r; i++) mn = std::min(mn, a[i]);\n       \
-    \             check(s.min1 == mn, name);\n                }\n            }\n \
-    \       }\n        for (int i = 0; i < n && ok; i++) check(seg.get(i).sum == a[i],\
-    \ name);\n    }\n}\n\nvoid test_chmin_chmax_add_sum(std::mt19937_64& rng) {\n\
-    \    using A = beats_acted_monoid::ChminChmaxAddSum<long long>;\n    for (int\
-    \ rep = 0; rep < 300 && ok; rep++) {\n        int n = rng() % 30 + 1;\n      \
-    \  // \u5024\u306E\u5E45\u3092\u72ED\u304F\u3057\u3066\u3001\u5024\u304C 1 \u7A2E\
-    \u985E\u30FB2 \u7A2E\u985E\u306E\u30CE\u30FC\u30C9\u3082\u3088\u304F\u73FE\u308C\
-    \u308B\u3088\u3046\u306B\u3059\u308B\n        long long w = rep % 2 ? 5 : 1000;\n\
-    \        auto gen = [&] { return static_cast<long long>(rng() % (2 * w + 1)) -\
-    \ w; };\n        std::vector<long long> a(n);\n        for (auto& x : a) x = gen();\n\
-    \        RChminChmaxAddSumQ<long long> seg(std::vector<A::S>(a.begin(), a.end()));\n\
-    \        for (int q = 0; q < 100 && ok; q++) {\n            int t = rng() % 6;\n\
-    \            int l = rng() % (n + 1), r = rng() % (n + 1);\n            if (l\
-    \ > r) std::swap(l, r);\n            long long b = gen();\n            if (t ==\
-    \ 0) {\n                seg.apply(l, r, A::chmin(b));\n                for (int\
-    \ i = l; i < r; i++) a[i] = std::min(a[i], b);\n            } else if (t == 1)\
-    \ {\n                seg.apply(l, r, A::chmax(b));\n                for (int i\
-    \ = l; i < r; i++) a[i] = std::max(a[i], b);\n            } else if (t == 2) {\n\
-    \                seg.apply(l, r, A::add(b));\n                for (int i = l;\
-    \ i < r; i++) a[i] += b;\n            } else if (t == 3) {\n                seg.apply(l,\
-    \ r, A::update(b));\n                for (int i = l; i < r; i++) a[i] = b;\n \
-    \           } else {\n                A::S s = seg.prod(l, r);\n             \
-    \   long long sum = 0, mx = std::numeric_limits<long long>::lowest(), mn = std::numeric_limits<long\
+    \ RChminSumQ<long long>, RChmaxSumQ<long long>>;\n        Seg seg(a);\n      \
+    \  for (int q = 0; q < 100 && ok; q++) {\n            int l = rng() % (n + 1),\
+    \ r = rng() % (n + 1);\n            if (l > r) std::swap(l, r);\n            if\
+    \ (rng() % 2) {\n                long long b = gen();\n                seg.apply(l,\
+    \ r, b);\n                for (int i = l; i < r; i++) a[i] = is_min ? std::min(a[i],\
+    \ b) : std::max(a[i], b);\n            } else {\n                auto s = seg.prod(l,\
+    \ r);\n                long long sum = 0;\n                for (int i = l; i <\
+    \ r; i++) sum += a[i];\n                check(s.sum == sum, name);\n         \
+    \       if constexpr (is_min) {\n                    long long mx = std::numeric_limits<long\
+    \ long>::lowest();\n                    for (int i = l; i < r; i++) mx = std::max(mx,\
+    \ a[i]);\n                    check(s.max1 == mx, name);\n                } else\
+    \ {\n                    long long mn = std::numeric_limits<long long>::max();\n\
+    \                    for (int i = l; i < r; i++) mn = std::min(mn, a[i]);\n  \
+    \                  check(s.min1 == mn, name);\n                }\n           \
+    \ }\n        }\n        for (int i = 0; i < n && ok; i++) check(seg.get(i).sum\
+    \ == a[i], name);\n    }\n}\n\nvoid test_chmin_chmax_add_sum(std::mt19937_64&\
+    \ rng) {\n    using A = beats_acted_monoid::ChminChmaxAddSum<long long>;\n   \
+    \ for (int rep = 0; rep < 300 && ok; rep++) {\n        int n = rng() % 30 + 1;\n\
+    \        // \u5024\u306E\u5E45\u3092\u72ED\u304F\u3057\u3066\u3001\u5024\u304C\
+    \ 1 \u7A2E\u985E\u30FB2 \u7A2E\u985E\u306E\u30CE\u30FC\u30C9\u3082\u3088\u304F\
+    \u73FE\u308C\u308B\u3088\u3046\u306B\u3059\u308B\n        long long w = rep %\
+    \ 2 ? 5 : 1000;\n        auto gen = [&] { return static_cast<long long>(rng()\
+    \ % (2 * w + 1)) - w; };\n        std::vector<long long> a(n);\n        for (auto&\
+    \ x : a) x = gen();\n        RChminChmaxAddSumQ<long long> seg(a);\n        for\
+    \ (int q = 0; q < 100 && ok; q++) {\n            int t = rng() % 6;\n        \
+    \    int l = rng() % (n + 1), r = rng() % (n + 1);\n            if (l > r) std::swap(l,\
+    \ r);\n            long long b = gen();\n            if (t == 0) {\n         \
+    \       seg.apply(l, r, A::chmin(b));\n                for (int i = l; i < r;\
+    \ i++) a[i] = std::min(a[i], b);\n            } else if (t == 1) {\n         \
+    \       seg.apply(l, r, A::chmax(b));\n                for (int i = l; i < r;\
+    \ i++) a[i] = std::max(a[i], b);\n            } else if (t == 2) {\n         \
+    \       seg.apply(l, r, A::add(b));\n                for (int i = l; i < r; i++)\
+    \ a[i] += b;\n            } else if (t == 3) {\n                seg.apply(l, r,\
+    \ A::update(b));\n                for (int i = l; i < r; i++) a[i] = b;\n    \
+    \        } else {\n                A::S s = seg.prod(l, r);\n                long\
+    \ long sum = 0, mx = std::numeric_limits<long long>::lowest(), mn = std::numeric_limits<long\
     \ long>::max();\n                for (int i = l; i < r; i++) sum += a[i], mx =\
     \ std::max(mx, a[i]), mn = std::min(mn, a[i]);\n                check(s.sum ==\
     \ sum, \"ChminChmaxAddSum sum\");\n                check(s.max1 == mx, \"ChminChmaxAddSum\
@@ -1068,43 +1067,42 @@ data:
     \       long long w = rep % 2 ? 5 : 1000;\n        auto gen = [&] { return static_cast<long\
     \ long>(rng() % (2 * w + 1)) - w; };\n        std::vector<long long> a(n);\n \
     \       for (auto& x : a) x = gen();\n        using Seg = std::conditional_t<is_min,\
-    \ RChminSumQ<long long>, RChmaxSumQ<long long>>;\n        Seg seg(std::vector<typename\
-    \ Seg::S>(a.begin(), a.end()));\n        for (int q = 0; q < 100 && ok; q++) {\n\
-    \            int l = rng() % (n + 1), r = rng() % (n + 1);\n            if (l\
-    \ > r) std::swap(l, r);\n            if (rng() % 2) {\n                long long\
-    \ b = gen();\n                seg.apply(l, r, b);\n                for (int i\
-    \ = l; i < r; i++) a[i] = is_min ? std::min(a[i], b) : std::max(a[i], b);\n  \
-    \          } else {\n                auto s = seg.prod(l, r);\n              \
-    \  long long sum = 0;\n                for (int i = l; i < r; i++) sum += a[i];\n\
-    \                check(s.sum == sum, name);\n                if constexpr (is_min)\
-    \ {\n                    long long mx = std::numeric_limits<long long>::lowest();\n\
-    \                    for (int i = l; i < r; i++) mx = std::max(mx, a[i]);\n  \
-    \                  check(s.max1 == mx, name);\n                } else {\n    \
-    \                long long mn = std::numeric_limits<long long>::max();\n     \
-    \               for (int i = l; i < r; i++) mn = std::min(mn, a[i]);\n       \
-    \             check(s.min1 == mn, name);\n                }\n            }\n \
-    \       }\n        for (int i = 0; i < n && ok; i++) check(seg.get(i).sum == a[i],\
-    \ name);\n    }\n}\n\nvoid test_chmin_chmax_add_sum(std::mt19937_64& rng) {\n\
-    \    using A = beats_acted_monoid::ChminChmaxAddSum<long long>;\n    for (int\
-    \ rep = 0; rep < 300 && ok; rep++) {\n        int n = rng() % 30 + 1;\n      \
-    \  // \u5024\u306E\u5E45\u3092\u72ED\u304F\u3057\u3066\u3001\u5024\u304C 1 \u7A2E\
-    \u985E\u30FB2 \u7A2E\u985E\u306E\u30CE\u30FC\u30C9\u3082\u3088\u304F\u73FE\u308C\
-    \u308B\u3088\u3046\u306B\u3059\u308B\n        long long w = rep % 2 ? 5 : 1000;\n\
-    \        auto gen = [&] { return static_cast<long long>(rng() % (2 * w + 1)) -\
-    \ w; };\n        std::vector<long long> a(n);\n        for (auto& x : a) x = gen();\n\
-    \        RChminChmaxAddSumQ<long long> seg(std::vector<A::S>(a.begin(), a.end()));\n\
-    \        for (int q = 0; q < 100 && ok; q++) {\n            int t = rng() % 6;\n\
-    \            int l = rng() % (n + 1), r = rng() % (n + 1);\n            if (l\
-    \ > r) std::swap(l, r);\n            long long b = gen();\n            if (t ==\
-    \ 0) {\n                seg.apply(l, r, A::chmin(b));\n                for (int\
-    \ i = l; i < r; i++) a[i] = std::min(a[i], b);\n            } else if (t == 1)\
-    \ {\n                seg.apply(l, r, A::chmax(b));\n                for (int i\
-    \ = l; i < r; i++) a[i] = std::max(a[i], b);\n            } else if (t == 2) {\n\
-    \                seg.apply(l, r, A::add(b));\n                for (int i = l;\
-    \ i < r; i++) a[i] += b;\n            } else if (t == 3) {\n                seg.apply(l,\
-    \ r, A::update(b));\n                for (int i = l; i < r; i++) a[i] = b;\n \
-    \           } else {\n                A::S s = seg.prod(l, r);\n             \
-    \   long long sum = 0, mx = std::numeric_limits<long long>::lowest(), mn = std::numeric_limits<long\
+    \ RChminSumQ<long long>, RChmaxSumQ<long long>>;\n        Seg seg(a);\n      \
+    \  for (int q = 0; q < 100 && ok; q++) {\n            int l = rng() % (n + 1),\
+    \ r = rng() % (n + 1);\n            if (l > r) std::swap(l, r);\n            if\
+    \ (rng() % 2) {\n                long long b = gen();\n                seg.apply(l,\
+    \ r, b);\n                for (int i = l; i < r; i++) a[i] = is_min ? std::min(a[i],\
+    \ b) : std::max(a[i], b);\n            } else {\n                auto s = seg.prod(l,\
+    \ r);\n                long long sum = 0;\n                for (int i = l; i <\
+    \ r; i++) sum += a[i];\n                check(s.sum == sum, name);\n         \
+    \       if constexpr (is_min) {\n                    long long mx = std::numeric_limits<long\
+    \ long>::lowest();\n                    for (int i = l; i < r; i++) mx = std::max(mx,\
+    \ a[i]);\n                    check(s.max1 == mx, name);\n                } else\
+    \ {\n                    long long mn = std::numeric_limits<long long>::max();\n\
+    \                    for (int i = l; i < r; i++) mn = std::min(mn, a[i]);\n  \
+    \                  check(s.min1 == mn, name);\n                }\n           \
+    \ }\n        }\n        for (int i = 0; i < n && ok; i++) check(seg.get(i).sum\
+    \ == a[i], name);\n    }\n}\n\nvoid test_chmin_chmax_add_sum(std::mt19937_64&\
+    \ rng) {\n    using A = beats_acted_monoid::ChminChmaxAddSum<long long>;\n   \
+    \ for (int rep = 0; rep < 300 && ok; rep++) {\n        int n = rng() % 30 + 1;\n\
+    \        // \u5024\u306E\u5E45\u3092\u72ED\u304F\u3057\u3066\u3001\u5024\u304C\
+    \ 1 \u7A2E\u985E\u30FB2 \u7A2E\u985E\u306E\u30CE\u30FC\u30C9\u3082\u3088\u304F\
+    \u73FE\u308C\u308B\u3088\u3046\u306B\u3059\u308B\n        long long w = rep %\
+    \ 2 ? 5 : 1000;\n        auto gen = [&] { return static_cast<long long>(rng()\
+    \ % (2 * w + 1)) - w; };\n        std::vector<long long> a(n);\n        for (auto&\
+    \ x : a) x = gen();\n        RChminChmaxAddSumQ<long long> seg(a);\n        for\
+    \ (int q = 0; q < 100 && ok; q++) {\n            int t = rng() % 6;\n        \
+    \    int l = rng() % (n + 1), r = rng() % (n + 1);\n            if (l > r) std::swap(l,\
+    \ r);\n            long long b = gen();\n            if (t == 0) {\n         \
+    \       seg.apply(l, r, A::chmin(b));\n                for (int i = l; i < r;\
+    \ i++) a[i] = std::min(a[i], b);\n            } else if (t == 1) {\n         \
+    \       seg.apply(l, r, A::chmax(b));\n                for (int i = l; i < r;\
+    \ i++) a[i] = std::max(a[i], b);\n            } else if (t == 2) {\n         \
+    \       seg.apply(l, r, A::add(b));\n                for (int i = l; i < r; i++)\
+    \ a[i] += b;\n            } else if (t == 3) {\n                seg.apply(l, r,\
+    \ A::update(b));\n                for (int i = l; i < r; i++) a[i] = b;\n    \
+    \        } else {\n                A::S s = seg.prod(l, r);\n                long\
+    \ long sum = 0, mx = std::numeric_limits<long long>::lowest(), mn = std::numeric_limits<long\
     \ long>::max();\n                for (int i = l; i < r; i++) sum += a[i], mx =\
     \ std::max(mx, a[i]), mn = std::min(mn, a[i]);\n                check(s.sum ==\
     \ sum, \"ChminChmaxAddSum sum\");\n                check(s.max1 == mx, \"ChminChmaxAddSum\
@@ -1123,7 +1121,7 @@ data:
   isVerificationFile: true
   path: test/unittest/algebra/beats-acted-monoid.test.cpp
   requiredBy: []
-  timestamp: '2026-11-08 20:13:03+09:00'
+  timestamp: '2026-11-08 21:31:08+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/algebra/beats-acted-monoid.test.cpp

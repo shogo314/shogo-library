@@ -25,45 +25,45 @@ data:
     #include <iostream>\n#include <type_traits>\n#include <vector>\n\n/**\n * @brief\
     \ N\u9802\u70B9N\u8FBA\u306E\u6709\u5411\u30B0\u30E9\u30D5\u3067\u3001\u3059\u3079\
     \u3066\u306E\u9802\u70B9\u306E\u51FA\u6B21\u6570\u304C1\n */\nstruct FunctionalGraph\
-    \ {\n    long long n;                                   //!< \u9802\u70B9\u6570\
-    \n    std::vector<long long> g;                      //!< \u30B0\u30E9\u30D5\n\
-    \    std::vector<bool> is_cycle;                    //!< \u30B5\u30A4\u30AF\u30EB\
-    \u4E0A\u306E\u9802\u70B9\u304B\n    std::vector<long long> depth;            \
-    \      //!< \u30B5\u30A4\u30AF\u30EB\u4E0A\u306E\u9802\u70B9\u307E\u3067\u306E\
-    \u8DDD\u96E2\n    std::vector<long long> root;                   //!< \u6700\u3082\
-    \u8FD1\u3044\u30B5\u30A4\u30AF\u30EB\u4E0A\u306E\u9802\u70B9\n    std::vector<std::vector<long\
-    \ long>> groups;    //!< \u5404\u9023\u7D50\u6210\u5206\u306E\u30EA\u30B9\u30C8\
-    \n    std::vector<std::vector<long long>> cycles;    //!< \u5404\u9023\u7D50\u6210\
-    \u5206\u306E\u30B5\u30A4\u30AF\u30EB\n    std::vector<long long> group_id;   \
-    \            //!< \u305D\u306E\u9802\u70B9\u304C\u5C5E\u3059\u308B\u9023\u7D50\
-    \u6210\u5206\u306Eindex\n    std::vector<long long> root_index;             //!<\
-    \ root\u306Ecycles\u4E0A\u306Eindex\n    std::vector<std::vector<long long>> doubling;\
-    \  //!< DoublingClimbTree\n\n    void build() {\n        assert(static_cast<long\
-    \ long>(g.size()) == n);\n        for (long long i = 0; i < n; i++) assert(0 <=\
-    \ g[i] && g[i] < n);\n        is_cycle.assign(n, false);\n        depth.assign(n,\
-    \ 0);\n        root.assign(n, -1);\n        group_id.assign(n, 0);\n        root_index.assign(n,\
-    \ 0);\n        groups.clear();\n        cycles.clear();\n        std::vector<bool>\
-    \ visited(n);\n        for (long long i = 0; i < n; i++) {\n            if (visited[i])\
-    \ continue;\n            std::vector<long long> v;\n            long long u =\
-    \ i;\n            while (!visited[u]) {\n                visited[u] = true;\n\
-    \                v.push_back(u);\n                u = g[u];\n            }\n \
-    \           if (root[u] == -1) {\n                long long k = std::find(v.begin(),\
-    \ v.end(), u) - v.begin();\n                cycles.push_back({});\n          \
-    \      groups.push_back({});\n                for (long long j = 0; j < k; j++)\
-    \ {\n                    is_cycle[v[j]] = false;\n                    root[v[j]]\
-    \ = u;\n                    root_index[v[j]] = 0;\n                    group_id[v[j]]\
-    \ = cycles.size() - 1;\n                    depth[v[j]] = k - j;\n           \
-    \         groups.back().push_back(v[j]);\n                }\n                for\
-    \ (long long j = k; j < static_cast<long long>(v.size()); j++) {\n           \
-    \         is_cycle[v[j]] = true;\n                    root[v[j]] = v[j];\n   \
-    \                 cycles.back().push_back(v[j]);\n                    root_index[v[j]]\
-    \ = cycles.back().size() - 1;\n                    group_id[v[j]] = cycles.size()\
-    \ - 1;\n                    depth[v[j]] = 0;\n                    groups.back().push_back(v[j]);\n\
-    \                }\n            } else {\n                for (long long j = 0;\
-    \ j < static_cast<long long>(v.size()); j++) {\n                    is_cycle[v[j]]\
-    \ = false;\n                    root[v[j]] = root[u];\n                    root_index[v[j]]\
-    \ = root_index[u];\n                    group_id[v[j]] = group_id[u];\n      \
-    \              depth[v[j]] = depth[u] + static_cast<long long>(v.size()) - j;\n\
+    \ {\n    long long n;  //!< \u9802\u70B9\u6570\n\n   private:\n    std::vector<long\
+    \ long> g;\n\n   public:\n    std::vector<bool> is_cycle;                    //!<\
+    \ \u30B5\u30A4\u30AF\u30EB\u4E0A\u306E\u9802\u70B9\u304B\n    std::vector<long\
+    \ long> depth;                  //!< \u30B5\u30A4\u30AF\u30EB\u4E0A\u306E\u9802\
+    \u70B9\u307E\u3067\u306E\u8DDD\u96E2\n    std::vector<long long> root;       \
+    \            //!< \u6700\u3082\u8FD1\u3044\u30B5\u30A4\u30AF\u30EB\u4E0A\u306E\
+    \u9802\u70B9\n    std::vector<std::vector<long long>> groups;    //!< \u5404\u9023\
+    \u7D50\u6210\u5206\u306E\u30EA\u30B9\u30C8\n    std::vector<std::vector<long long>>\
+    \ cycles;    //!< \u5404\u9023\u7D50\u6210\u5206\u306E\u30B5\u30A4\u30AF\u30EB\
+    \n    std::vector<long long> group_id;               //!< \u305D\u306E\u9802\u70B9\
+    \u304C\u5C5E\u3059\u308B\u9023\u7D50\u6210\u5206\u306Eindex\n    std::vector<long\
+    \ long> root_index;             //!< root\u306Ecycles\u4E0A\u306Eindex\n    std::vector<std::vector<long\
+    \ long>> doubling;  //!< DoublingClimbTree\n\n   private:\n    void build() {\n\
+    \        assert(static_cast<long long>(g.size()) == n);\n        for (long long\
+    \ i = 0; i < n; i++) assert(0 <= g[i] && g[i] < n);\n        is_cycle.assign(n,\
+    \ false);\n        depth.assign(n, 0);\n        root.assign(n, -1);\n        group_id.assign(n,\
+    \ 0);\n        root_index.assign(n, 0);\n        groups.clear();\n        cycles.clear();\n\
+    \        std::vector<bool> visited(n);\n        for (long long i = 0; i < n; i++)\
+    \ {\n            if (visited[i]) continue;\n            std::vector<long long>\
+    \ v;\n            long long u = i;\n            while (!visited[u]) {\n      \
+    \          visited[u] = true;\n                v.push_back(u);\n             \
+    \   u = g[u];\n            }\n            if (root[u] == -1) {\n             \
+    \   long long k = std::find(v.begin(), v.end(), u) - v.begin();\n            \
+    \    cycles.push_back({});\n                groups.push_back({});\n          \
+    \      for (long long j = 0; j < k; j++) {\n                    is_cycle[v[j]]\
+    \ = false;\n                    root[v[j]] = u;\n                    root_index[v[j]]\
+    \ = 0;\n                    group_id[v[j]] = cycles.size() - 1;\n            \
+    \        depth[v[j]] = k - j;\n                    groups.back().push_back(v[j]);\n\
+    \                }\n                for (long long j = k; j < static_cast<long\
+    \ long>(v.size()); j++) {\n                    is_cycle[v[j]] = true;\n      \
+    \              root[v[j]] = v[j];\n                    cycles.back().push_back(v[j]);\n\
+    \                    root_index[v[j]] = cycles.back().size() - 1;\n          \
+    \          group_id[v[j]] = cycles.size() - 1;\n                    depth[v[j]]\
+    \ = 0;\n                    groups.back().push_back(v[j]);\n                }\n\
+    \            } else {\n                for (long long j = 0; j < static_cast<long\
+    \ long>(v.size()); j++) {\n                    is_cycle[v[j]] = false;\n     \
+    \               root[v[j]] = root[u];\n                    root_index[v[j]] =\
+    \ root_index[u];\n                    group_id[v[j]] = group_id[u];\n        \
+    \            depth[v[j]] = depth[u] + static_cast<long long>(v.size()) - j;\n\
     \                    groups[group_id[u]].push_back(v[j]);\n                }\n\
     \            }\n        }\n        doubling.assign(n, {});\n        std::vector<long\
     \ long> tmp;\n        for (long long i = 0; i < n; i++) {\n            if (is_cycle[i])\
@@ -73,14 +73,14 @@ data:
     \ < static_cast<int>(doubling[doubling[i][k]].size())) {\n                   \
     \ doubling[i].push_back(doubling[doubling[i][k]][k]);\n                    next_tmp.push_back(i);\n\
     \                }\n            }\n            tmp.swap(next_tmp);\n        }\n\
-    \    }\n\n    /**\n     * @brief \u30C7\u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\
-    \u30C8\u30E9\u30AF\u30BF\n     */\n    FunctionalGraph() : n(0), g(0) {}\n   \
-    \ /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param\
-    \ n \u9802\u70B9\u6570\n     */\n    explicit FunctionalGraph(long long n) : n(n),\
-    \ g(n) {}\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n\
-    \     * @tparam T \u9802\u70B9\u756A\u53F7\u306E\u6574\u6570\u578B (long long\
-    \ \u3084 int)\n     * @param g i -> g[i]\n     */\n    template <typename T =\
-    \ long long>\n    explicit FunctionalGraph(const std::vector<T>& g) : n(g.size()),\
+    \    }\n\n   public:\n    /**\n     * @brief \u30C7\u30D5\u30A9\u30EB\u30C8\u30B3\
+    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     */\n    FunctionalGraph() : n(0), g(0)\
+    \ {}\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n    \
+    \ * @param n \u9802\u70B9\u6570\n     */\n    explicit FunctionalGraph(long long\
+    \ n) : n(n), g(n) {}\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\
+    \u30BF\n     * @tparam T \u9802\u70B9\u756A\u53F7\u306E\u6574\u6570\u578B (long\
+    \ long \u3084 int)\n     * @param g i -> g[i]\n     */\n    template <typename\
+    \ T = long long>\n    explicit FunctionalGraph(const std::vector<T>& g) : n(g.size()),\
     \ g(g.begin(), g.end()) {\n        static_assert(std::is_integral_v<T>, \"FunctionalGraph:\
     \ g must be a vector of integers\");\n        build();\n    }\n    /**\n     *\
     \ @brief \u9802\u70B9\u6570\n     */\n    long long size() const { return n; }\n\
@@ -121,25 +121,26 @@ data:
     \ v = rng() % n;\n        FunctionalGraph fg(g);\n        // std::vector<long\
     \ long> \u304B\u3089\u4F5C\u3063\u3066\u3082\u540C\u3058\u306B\u306A\u308B\n \
     \       FunctionalGraph fg_ll(std::vector<long long>(g.begin(), g.end()));\n \
-    \       if (fg_ll.g != fg.g || fg_ll.depth != fg.depth || fg_ll.cycles != fg.cycles)\
-    \ ok = false;\n\n        // \u30B5\u30A4\u30AF\u30EB\u4E0A\u306E\u9802\u70B9:\
-    \ \u3042\u308B 1 <= j <= n \u3067 g^j(x) = x\n        std::vector<bool> on_cycle(n);\n\
-    \        for (int x = 0; x < n; x++) {\n            int y = x;\n            for\
-    \ (int j = 0; j < n; j++) {\n                y = g[y];\n                if (y\
-    \ == x) on_cycle[x] = true;\n            }\n        }\n        // cycles \u306E\
-    \u5404\u8981\u7D20\u306F g \u3067\u3064\u306A\u304C\u3063\u305F\u30B5\u30A4\u30AF\
-    \u30EB\u3067\u3001\u5168\u4F53\u3068\u3057\u3066\u30B5\u30A4\u30AF\u30EB\u4E0A\
-    \u306E\u9802\u70B9\u3092\u3061\u3087\u3046\u30691\u56DE\u305A\u3064\u542B\u3080\
-    \n        std::vector<int> cnt(n);\n        for (const auto& cycle : fg.cycles)\
-    \ {\n            for (int i = 0; i < static_cast<int>(cycle.size()); i++) {\n\
-    \                if (g[cycle[i]] != cycle[(i + 1) % cycle.size()]) ok = false;\n\
-    \                cnt[cycle[i]]++;\n            }\n        }\n        for (int\
-    \ x = 0; x < n; x++) {\n            if (cnt[x] != (on_cycle[x] ? 1 : 0)) ok =\
-    \ false;\n            if (fg.is_cycle[x] != on_cycle[x]) ok = false;\n       \
-    \ }\n\n        for (int x = 0; x < n; x++) {\n            // hopable: 0 \u56DE\
-    \u4EE5\u4E0A\u306E\u79FB\u52D5\u3067\u305F\u3069\u308A\u7740\u3051\u308B\u9802\
-    \u70B9\u306E\u500B\u6570\n            std::set<int> reach;\n            int y\
-    \ = x;\n            for (int j = 0; j <= n; j++) {\n                reach.insert(y);\n\
+    \       if (fg_ll.depth != fg.depth || fg_ll.cycles != fg.cycles) ok = false;\n\
+    \        for (int x = 0; x < n; x++) {\n            if (fg_ll.hop(x, 1) != g[x])\
+    \ ok = false;\n        }\n\n        // \u30B5\u30A4\u30AF\u30EB\u4E0A\u306E\u9802\
+    \u70B9: \u3042\u308B 1 <= j <= n \u3067 g^j(x) = x\n        std::vector<bool>\
+    \ on_cycle(n);\n        for (int x = 0; x < n; x++) {\n            int y = x;\n\
+    \            for (int j = 0; j < n; j++) {\n                y = g[y];\n      \
+    \          if (y == x) on_cycle[x] = true;\n            }\n        }\n       \
+    \ // cycles \u306E\u5404\u8981\u7D20\u306F g \u3067\u3064\u306A\u304C\u3063\u305F\
+    \u30B5\u30A4\u30AF\u30EB\u3067\u3001\u5168\u4F53\u3068\u3057\u3066\u30B5\u30A4\
+    \u30AF\u30EB\u4E0A\u306E\u9802\u70B9\u3092\u3061\u3087\u3046\u30691\u56DE\u305A\
+    \u3064\u542B\u3080\n        std::vector<int> cnt(n);\n        for (const auto&\
+    \ cycle : fg.cycles) {\n            for (int i = 0; i < static_cast<int>(cycle.size());\
+    \ i++) {\n                if (g[cycle[i]] != cycle[(i + 1) % cycle.size()]) ok\
+    \ = false;\n                cnt[cycle[i]]++;\n            }\n        }\n     \
+    \   for (int x = 0; x < n; x++) {\n            if (cnt[x] != (on_cycle[x] ? 1\
+    \ : 0)) ok = false;\n            if (fg.is_cycle[x] != on_cycle[x]) ok = false;\n\
+    \        }\n\n        for (int x = 0; x < n; x++) {\n            // hopable: 0\
+    \ \u56DE\u4EE5\u4E0A\u306E\u79FB\u52D5\u3067\u305F\u3069\u308A\u7740\u3051\u308B\
+    \u9802\u70B9\u306E\u500B\u6570\n            std::set<int> reach;\n           \
+    \ int y = x;\n            for (int j = 0; j <= n; j++) {\n                reach.insert(y);\n\
     \                y = g[y];\n            }\n            if (fg.hopable(x) != static_cast<int>(reach.size()))\
     \ ok = false;\n            // hop: \u5C0F\u3055\u3044 k \u3068\u5927\u304D\u3044\
     \ k\n            for (long long k = 0; k <= 3 * n; k++) {\n                if\
@@ -166,9 +167,10 @@ data:
     \ for (int& v : g) v = rng() % n;\n        FunctionalGraph fg(g);\n        //\
     \ std::vector<long long> \u304B\u3089\u4F5C\u3063\u3066\u3082\u540C\u3058\u306B\
     \u306A\u308B\n        FunctionalGraph fg_ll(std::vector<long long>(g.begin(),\
-    \ g.end()));\n        if (fg_ll.g != fg.g || fg_ll.depth != fg.depth || fg_ll.cycles\
-    \ != fg.cycles) ok = false;\n\n        // \u30B5\u30A4\u30AF\u30EB\u4E0A\u306E\
-    \u9802\u70B9: \u3042\u308B 1 <= j <= n \u3067 g^j(x) = x\n        std::vector<bool>\
+    \ g.end()));\n        if (fg_ll.depth != fg.depth || fg_ll.cycles != fg.cycles)\
+    \ ok = false;\n        for (int x = 0; x < n; x++) {\n            if (fg_ll.hop(x,\
+    \ 1) != g[x]) ok = false;\n        }\n\n        // \u30B5\u30A4\u30AF\u30EB\u4E0A\
+    \u306E\u9802\u70B9: \u3042\u308B 1 <= j <= n \u3067 g^j(x) = x\n        std::vector<bool>\
     \ on_cycle(n);\n        for (int x = 0; x < n; x++) {\n            int y = x;\n\
     \            for (int j = 0; j < n; j++) {\n                y = g[y];\n      \
     \          if (y == x) on_cycle[x] = true;\n            }\n        }\n       \
@@ -197,7 +199,7 @@ data:
   isVerificationFile: true
   path: test/unittest/graph/functional-graph.1.test.cpp
   requiredBy: []
-  timestamp: '2026-10-21 13:32:25+09:00'
+  timestamp: '2026-11-09 04:32:54+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/graph/functional-graph.1.test.cpp

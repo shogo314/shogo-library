@@ -187,8 +187,6 @@ saturating_cast<int>(-5LL);              // -5
 | `saturating_div(x, y)` | `x / y` (0 方向に切り捨て)。あふれるのは符号付きの最小値 / -1 だけで、そのときは最大値 ($y \ne 0$) | $O(1)$ |
 | `saturating_cast<R>(x)` | `x` を `R` に変換し、範囲外なら `R` の最大値・最小値に丸める (符号の有無が違っても値として比べる) | $O(1)$ |
 
-C++26 では `std::` 版を呼びます。C++17・C++20 では `__builtin_add_overflow` などで実装し、`saturating_cast` の比較には C++20 の `std::cmp_less` を使います (C++17 では同じものを自前で用意しています)。引数の型の制限は、C++20 では `requires`、C++17 では `enable_if` で行うので、整数型でない引数はオーバーロードの候補から外れます。
-
 ## 関連
 
 - 整数の切り捨て・切り上げの割り算は [汎用関数](../base/functions.hpp) の `floordiv`、`ceildiv`、`divmod`

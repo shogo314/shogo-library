@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <iterator>
 #include <random>
 #include <string>
 #include <vector>
@@ -31,6 +32,39 @@ int naive_lcs(const std::string& s, const std::string& t, int i, int j) {
     return res;
 }
 
+// 返された操作を実際に適用し、元の列の添字と目標の添字の整合性も確かめる。
+template <class R1, class R2>
+bool check_restore(const R1& s, const R2& t) {
+    auto a = std::begin(s);
+    auto b = std::begin(t);
+    const long long n = std::end(s) - a, m = std::end(t) - b;
+    const auto result = edit_distance_restore(s, t);
+    if (result.distance != edit_distance(s, t) || result.distance != static_cast<long long>(result.operations.size())) return false;
+    using T = typename std::iterator_traits<decltype(a)>::value_type;
+    std::vector<T> current(a, std::end(s));
+    long long consumed = 0;
+    for (const auto& operation : result.operations) {
+        auto [type, source, target] = operation;
+        if (source < consumed || source > n || target < 0 || target > static_cast<long long>(current.size())) return false;
+        if (type == EditDistance::Type::Insert) {
+            if (target >= m) return false;
+            current.insert(current.begin() + target, b[target]);
+            consumed = source;
+        } else {
+            if (source >= n || target >= static_cast<long long>(current.size()) || current[target] != a[source]) return false;
+            if (type == EditDistance::Type::Erase) {
+                if (target > m) return false;
+                current.erase(current.begin() + target);
+            } else {
+                if (target >= m) return false;
+                current[target] = b[target];
+            }
+            consumed = source + 1;
+        }
+    }
+    return std::equal(current.begin(), current.end(), b, std::end(t));
+}
+
 int main() {
     std::mt19937 rng(314);
     bool ok = true;
@@ -42,6 +76,7 @@ int main() {
         for (auto& c : t) c = 'a' + rng() % k;
 
         ok = ok && edit_distance(s, t) == naive_edit(s, t, 0, 0);
+        ok = ok && check_restore(s, t);
         int len = naive_lcs(s, t, 0, 0);
         ok = ok && longest_common_subsequence(s, t) == len;
 
@@ -55,6 +90,18 @@ int main() {
         }
     }
 
+    // 空列、末尾の挿入・削除、異なる要素型、ランダムアクセス可能な配列。
+    for (const std::string& s : {std::string{}, std::string("abc"), std::string("aaaa")}) {
+        for (const std::string& t : {std::string{}, std::string("xy"), std::string("abcde")}) {
+            ok = ok && check_restore(s, t);
+        }
+    }
+    ok = ok && check_restore(std::vector<int>{1, 2, 3}, std::vector<long long>{2, 4, 3, 5});
+    int a[] = {1, 2, 3};
+    long long b[] = {2, 3};
+    ok = ok && check_restore(a, b);
+    ok = ok && edit_distance_restore(std::string("abc"), std::string("abc")).operations.empty();
+
     // 例
     ok = ok && edit_distance(std::string("kitten"), std::string("sitting")) == 3;
     ok = ok && edit_distance(std::vector<int>{1, 2, 3}, std::vector<int>{2, 3, 4}) == 2;
@@ -65,6 +112,8 @@ int main() {
 
     if (ok)
         std::cout << "Hello World" << std::endl;
-    else
+    else {
         std::cerr << "failed" << std::endl;
+        return 1;
+    }
 }

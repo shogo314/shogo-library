@@ -6,12 +6,15 @@
  */
 
 #include <cassert>
+#include <initializer_list>
 #include <memory>
 #include <ostream>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
 #include "../algebra/monoid.hpp"
+#include "../utility/traits.hpp"
 
 /**
  * @brief 永続セグメント木
@@ -63,11 +66,17 @@ class PersistentSegTree {
         sz = 1;
         while (sz < n) sz <<= 1;
     }
-    int build(const std::vector<S>& v, long long a, long long b) {
-        if (b - a == 1) return pool->make_leaf(a < n ? v[a] : e());
+    template <class It>
+    int build(It& it, long long a, long long b) {
+        if (b - a == 1) {
+            if (a >= n) return pool->make_leaf(e());
+            S x(*it);
+            ++it;
+            return pool->make_leaf(x);
+        }
         long long mid = (a + b) / 2;
-        int l = build(v, a, mid);
-        int r = build(v, mid, b);
+        int l = build(it, a, mid);
+        int r = build(it, mid, b);
         return pool->make_node(l, r);
     }
     int set_rec(int t, long long a, long long b, long long k, const S& x) const {
@@ -151,9 +160,16 @@ class PersistentSegTree {
      * @param v 初期の要素
      * @param m モノイド
      */
-    explicit PersistentSegTree(const std::vector<S>& v, M m = M()) : pool(std::make_shared<Pool>(std::move(m))), n(v.size()) {
+#if __cplusplus >= 202002L
+    template <class R = std::initializer_list<S>>
+        requires internal_traits::sized_constructible_range<R, S>
+#else
+    template <class R = std::initializer_list<S>, ENABLE_IF_T(internal_traits::is_sized_constructible_range<R, S>::value)>
+#endif
+    explicit PersistentSegTree(R&& v, M m = M()) : pool(std::make_shared<Pool>(std::move(m))), n(internal_traits::range_size(v)) {
         init_size();
-        root = build(v, 0, sz);
+        auto it = internal_traits::range_begin(v);
+        root = build(it, 0, sz);
     }
 
     /**
@@ -310,5 +326,7 @@ class PersistentSegTree {
 
 template <typename M>
 PersistentSegTree(long long, M) -> PersistentSegTree<M>;
+template <class R, typename M>
+PersistentSegTree(R&&, M) -> PersistentSegTree<M>;
 template <typename M>
-PersistentSegTree(std::vector<typename M::S>, M) -> PersistentSegTree<M>;
+PersistentSegTree(std::initializer_list<typename M::S>, M) -> PersistentSegTree<M>;

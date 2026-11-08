@@ -13,6 +13,8 @@ long long s = ft.prod(l, r);                // a[l] + ... + a[r-1]
 long long k = ft.max_right([&](long long v) { return v <= w; });  // 先頭からの和が w 以下になる最大の長さ
 ```
 
+サイズを取得でき、各要素から `S` を構築できる範囲を直接渡せます。`std::vector`・`std::array`・`std::list`・組み込み配列などに対応します。C++20 ではサイズ付きの入力範囲 (`input_range` かつ `sized_range`) のビューも使えます。各要素を内部へ直接構築するので、`explicit` なコンストラクタにも対応します。初期化リストも使えます。
+
 ## メンバ関数
 
 | 関数 | 説明 | 計算量 |

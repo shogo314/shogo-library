@@ -9,10 +9,12 @@ documentation_of: //src/data_structures/segtree-beats.hpp
 
 ```cpp
 using A = beats_acted_monoid::ChminChmaxAddSum<long long>;
-RChminChmaxAddSumQ<long long> seg(std::vector<A::S>(a.begin(), a.end()));  // a は std::vector<long long>
+RChminChmaxAddSumQ<long long> seg(a);  // a は std::vector<long long>
 seg.apply(l, r, A::chmin(x));  // 区間 chmin
 seg.prod(l, r).sum;            // 区間和
 ```
+
+サイズを取得でき、各要素から `S` を構築できる範囲を直接渡せます。`std::vector`・`std::array`・`std::list`・組み込み配列などに対応します。C++20 ではサイズ付きの入力範囲 (`input_range` かつ `sized_range`) のビューも使えます。各要素を内部へ直接構築するので、`explicit` なコンストラクタにも対応します。初期化リストも使えます。
 
 ## 別名
 

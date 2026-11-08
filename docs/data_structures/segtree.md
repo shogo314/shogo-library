@@ -11,6 +11,18 @@ SegTree seg2(v, Monoid([](int a, int b) { return a + b; }, 0));  // ラムダ式
 RMinQ<long long> seg3(v);                                        // 別名を使う
 ```
 
+サイズを取得でき、各要素から `S` を構築できる範囲を直接渡せます。`std::vector`・`std::array`・`std::list`・組み込み配列などに対応します。C++20 では `sized_range` を満たす `input_range` (ビューも含む) を受け取れます。各要素を `S(x)` で内部へ直接構築するので、`explicit` なコンストラクタにも対応します。初期化リストも使えます。
+
+```cpp
+std::vector<long long> a = {2, -5, 4};
+SegTree<monoid::PrefixSumMinMax<>> seg(a);
+auto [sum, mn, mx] = seg.all_prod();  // 1, -3, 2
+
+int b[] = {1, 2, 3};
+SegTree seg2(b, monoid::Sum<long long>{});
+SegTree<monoid::Sum<long long>> seg3({1, 2, 3});
+```
+
 ## 別名
 
 | 別名 | 実体 | 用途 |
@@ -29,7 +41,7 @@ RMinQ<long long> seg3(v);                                        // 別名を使
 | 関数 | 説明 | 計算量 |
 |---|---|---|
 | `SegTree(n, m = M())` | 要素数 `n`、すべて単位元で初期化 | $O(n)$ |
-| `SegTree(v, m = M())` | `v` で初期化 | $O(n)$ |
+| `SegTree(v, m = M())` | サイズを取得できる範囲 `v` の各要素を `S(x)` で構築して初期化 | $O(n)$ |
 | `size()` | 要素数 | $O(1)$ |
 | `get(k)` / `seg[k]` | `k` 番目の値 | $O(1)$ |
 | `set(k, x)` / `seg[k] = x` | `k` 番目を `x` に更新 | $O(\log n)$ |

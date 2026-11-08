@@ -6,11 +6,15 @@
  */
 
 #include <cassert>
+#include <initializer_list>
+#include <iterator>
 #include <ostream>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
 #include "../algebra/monoid.hpp"
+#include "../utility/traits.hpp"
 
 /**
  * @brief セグメント木
@@ -75,8 +79,15 @@ class SegTree {
      * @param v 初期の要素
      * @param m モノイド
      */
-    explicit SegTree(const std::vector<S>& v, M m = M()) : SegTree(v.size(), std::move(m)) {
-        for (long long i = 0; i < n; i++) data[sz + i] = v[i];
+#if __cplusplus >= 202002L
+    template <class R = std::initializer_list<S>>
+        requires internal_traits::sized_constructible_range<R, S>
+#else
+    template <class R = std::initializer_list<S>, ENABLE_IF_T(internal_traits::is_sized_constructible_range<R, S>::value)>
+#endif
+    explicit SegTree(R&& v, M m = M()) : SegTree(static_cast<long long>(internal_traits::range_size(v)), std::move(m)) {
+        long long k = sz;
+        for (auto&& x : v) data[k++] = S(std::forward<decltype(x)>(x));
         for (long long i = sz - 1; i > 0; i--) update(i);
     }
 
@@ -245,8 +256,10 @@ class SegTree {
 
 template <typename M>
 SegTree(long long, M) -> SegTree<M>;
+template <class R, typename M>
+SegTree(R&&, M) -> SegTree<M>;
 template <typename M>
-SegTree(std::vector<typename M::S>, M) -> SegTree<M>;
+SegTree(std::initializer_list<typename M::S>, M) -> SegTree<M>;
 
 /**
  * @brief RangeMaxQuery

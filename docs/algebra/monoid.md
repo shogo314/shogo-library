@@ -57,13 +57,13 @@ SegTree seg2(v, Monoid([](int a, int b) { return a + b; }, 0));  // ラムダ式
 
 ```cpp
 using M = monoid::PrefixSumMax<long long>;
-SegTree<M> seg(std::vector<M::S>(a.begin(), a.end()));
+SegTree<M> seg(a);
 long long m = seg.prod(l, r).max;  // max(0, a[l], a[l] + a[l+1], ..., a[l] + ... + a[r-1])
 // l から足していって和が初めて正になる位置 (なければ n)
 long long j = seg.max_right(l, [](const M::S& s) { return s.max <= 0; });
 
 using PM = monoid::PrefixSumMinMax<>;
-SegTree<PM> both(std::vector<PM::S>(a.begin(), a.end()));
+SegTree<PM> both(a);
 auto [sum, mn, mx] = both.prod(l, r);  // 区間の和、累積和の最小値・最大値
 both.set(i, x);
 

@@ -5,8 +5,12 @@
 
 #include "../../../src/algebra/monoid.hpp"
 
+#include <array>
+#include <deque>
+#include <forward_list>
 #include <iostream>
 #include <limits>
+#include <list>
 #include <random>
 #include <sstream>
 #include <string>
@@ -15,8 +19,20 @@
 #include <vector>
 
 #include "../../../src/algebra/group.hpp"
+#include "../../../src/data_structures/dual-segtree.hpp"
+#include "../../../src/data_structures/fenwick-tree.hpp"
+#include "../../../src/data_structures/imos.hpp"
+#include "../../../src/data_structures/lazy-segtree.hpp"
+#include "../../../src/data_structures/link-cut-tree.hpp"
+#include "../../../src/data_structures/monoid-unionfind.hpp"
+#include "../../../src/data_structures/persistent-lazy-segtree.hpp"
+#include "../../../src/data_structures/persistent-segtree.hpp"
 #include "../../../src/data_structures/potentialized-unionfind.hpp"
+#include "../../../src/data_structures/rbst.hpp"
+#include "../../../src/data_structures/segtree-beats.hpp"
 #include "../../../src/data_structures/segtree.hpp"
+#include "../../../src/data_structures/sortable-segtree.hpp"
+#include "../../../src/data_structures/sparse-table.hpp"
 
 bool ok = true;
 void check(bool cond, const char* what) {
@@ -70,7 +86,216 @@ void test_segtree(Op op, typename M::S e, Gen gen, std::mt19937_64& rng, const c
     }
 }
 
+struct ExplicitSum {
+    struct S {
+        long long value;
+        S() : value(0) {}
+        explicit S(long long x) : value(x) {}
+    };
+    static S op(const S& a, const S& b) { return S(a.value + b.value); }
+    static S e() { return S(0); }
+};
+
+struct ExplicitAddSum : ExplicitSum {
+    using F = long long;
+    static S mapping(F f, const S& x, long long len) { return S(x.value + f * len); }
+    static F composition(F f, F g) { return f + g; }
+    static F id() { return 0; }
+    static F inv(F f) { return -f; }
+};
+
+struct ExplicitGroup : ExplicitSum {
+    static S inv(const S& x) { return S(-x.value); }
+};
+
+struct ExplicitMin : ExplicitSum {
+    static S op(const S& a, const S& b) { return S(std::min(a.value, b.value)); }
+    static S e() { return S(std::numeric_limits<long long>::max()); }
+};
+
+struct ExplicitBeats : ExplicitAddSum {
+    static std::pair<bool, S> mapping(F f, const S& x, long long len) { return {false, ExplicitAddSum::mapping(f, x, len)}; }
+};
+
+// begin は一度だけ。イテレータの後置 ++ は値を返さず、終端の型も異なる。
+struct SizedInputRange {
+    int values[3] = {2, -5, 4};
+    int pos = 0;
+    bool begun = false;
+    struct Sentinel {};
+    struct Iterator {
+        using value_type = int;
+        using difference_type = long long;
+        using iterator_category = std::input_iterator_tag;
+        SizedInputRange* range;
+        int operator*() const { return range->values[range->pos]; }
+        Iterator& operator++() {
+            ++range->pos;
+            return *this;
+        }
+        void operator++(int) { ++*this; }
+        friend bool operator==(Iterator it, Sentinel) { return it.range->pos == 3; }
+        friend bool operator!=(Iterator it, Sentinel s) { return !(it == s); }
+        friend bool operator==(Sentinel s, Iterator it) { return it == s; }
+        friend bool operator!=(Sentinel s, Iterator it) { return !(it == s); }
+    };
+    Iterator begin() {
+        check(!begun, "sized input range is traversed once");
+        begun = true;
+        return {this};
+    }
+    Sentinel end() const { return {}; }
+    long long size() const { return 3; }
+};
+
+template <template <typename> class Tree, typename M>
+void test_converting_tree(M m) {
+    auto verify_range = [&](auto&& r) {
+        Tree tree(std::forward<decltype(r)>(r), m);
+        check(tree.size() == 3 && tree.get(0).value == 2 && tree.get(1).value == -5 && tree.get(2).value == 4,
+              "tree family sized range / CTAD");
+    };
+    int raw[] = {2, -5, 4};
+    const std::array<int, 3> arr = {2, -5, 4};
+    verify_range(raw);
+    verify_range(arr);
+    verify_range(std::list<int>{2, -5, 4});
+    verify_range(std::deque<int>{2, -5, 4});
+    verify_range(SizedInputRange{});
+    Tree<M> empty_array(std::array<int, 0>{});
+    check(empty_array.size() == 0, "tree family empty array");
+    static_assert(!std::is_constructible_v<Tree<M>, std::forward_list<int>&>);
+    static_assert(!std::is_constructible_v<Tree<M>, std::array<std::string, 3>&>);
+#if __cplusplus >= 202002L
+    verify_range(std::views::iota(0, 3) | std::views::transform([&](int i) { return raw[i]; }));
+#endif
+    static_assert(std::is_constructible_v<Tree<M>, const std::vector<int>&, M>);
+    static_assert(!std::is_constructible_v<Tree<M>, const std::vector<std::string>&, M>);
+    Tree seg(std::vector<int>{2, -5, 4}, m);
+    check(seg.size() == 3 && seg.get(0).value == 2 && seg.get(1).value == -5 && seg.get(2).value == 4,
+          "segtree family explicit conversion / CTAD");
+    Tree<M> empty(std::vector<int>{});
+    check(empty.size() == 0, "segtree family conversion empty");
+    Tree<M> same(std::vector<typename M::S>{typename M::S(7)});
+    check(same.get(0).value == 7, "segtree family vector<S>");
+    Tree<M> list({typename M::S(8), typename M::S(9)});
+    check(list.get(1).value == 9, "segtree family initializer list");
+}
+
+template <class R>
+void test_segtree_range(R&& r) {
+    SegTree seg(std::forward<R>(r), ExplicitSum{});
+    check(seg.size() == 3 && seg.prod(0, 3).value == 1 && seg.prod(1, 3).value == -1, "SegTree sized range / CTAD");
+    seg.set(1, ExplicitSum::S(3));
+    check(seg.all_prod().value == 9, "SegTree sized range update");
+}
+
 int main() {
+    {
+        int a[] = {2, -5, 4};
+        const std::array<int, 3> b = {2, -5, 4};
+        test_segtree_range(a);
+        test_segtree_range(b);
+        test_segtree_range(std::list<int>{2, -5, 4});
+        test_segtree_range(std::deque<int>{2, -5, 4});
+        SegTree<ExplicitSum> empty(std::array<int, 0>{});
+        check(empty.size() == 0 && empty.all_prod().value == 0, "SegTree empty range");
+        SegTree braces({ExplicitSum::S(2), ExplicitSum::S(-5), ExplicitSum::S(4)}, ExplicitSum{});
+        check(braces.all_prod().value == 1, "SegTree initializer list / CTAD");
+        SegTree<ExplicitSum> original(a);
+        auto copied = original;
+        auto moved = std::move(copied);
+        check(moved.all_prod().value == 1 && original.all_prod().value == 1, "SegTree copy / move");
+        SegTree sized(3LL, ExplicitSum{});
+        check(sized.size() == 3 && sized.all_prod().value == 0, "SegTree size / CTAD");
+        static_assert(!std::is_constructible_v<SegTree<ExplicitSum>, std::forward_list<int>&>);
+        static_assert(!std::is_constructible_v<SegTree<ExplicitSum>, std::array<std::string, 3>&>);
+#if __cplusplus >= 202002L
+        test_segtree_range(std::views::all(a));
+        test_segtree_range(std::views::iota(0, 3) | std::views::transform([&](int i) { return a[i]; }));
+        SegTree view(a | std::views::take(2), ExplicitSum{});
+        check(view.size() == 2 && view.all_prod().value == -3, "SegTree partial view");
+#endif
+    }
+
+    test_converting_tree<SegTree>(ExplicitSum{});
+    test_converting_tree<RBST>(ExplicitSum{});
+    test_converting_tree<RBST>(ExplicitAddSum{});
+    test_converting_tree<FenwickTree>(ExplicitGroup{});
+    test_converting_tree<SparseTable>(ExplicitMin{});
+    test_converting_tree<LinkCutTree>(ExplicitSum{});
+    test_converting_tree<SubtreeLinkCutTree>(ExplicitGroup{});
+    {
+        auto verify = [](auto&& r) {
+            MonoidUnionFind uf(std::forward<decltype(r)>(r), ExplicitSum{});
+            uf.merge(0, 1);
+            check(uf.prod(0).value == -3 && uf.prod(2).value == 4, "MonoidUnionFind sized range / CTAD");
+        };
+        int raw[] = {2, -5, 4};
+        verify(raw);
+        verify(std::list<int>{2, -5, 4});
+        verify(SizedInputRange{});
+        std::vector<ExplicitSum::S> owned{ExplicitSum::S(7)};
+        const auto* ptr = owned.data();
+        MonoidUnionFind moved(std::move(owned), ExplicitSum{});
+        check(&moved.prod(0) == ptr, "MonoidUnionFind moves vector storage");
+        Imos from_range(SizedInputRange{}, ExplicitAddSum{});
+        from_range.apply(0, 2, 3);
+        check(from_range.get(0).value == 5 && from_range.get(1).value == -2 && from_range.get(2).value == 4,
+              "Imos sized input range / CTAD");
+        Imos from_list(std::list<int>{2, -5, 4}, ExplicitAddSum{});
+        check(from_list.get(1).value == -5, "Imos list");
+        Imos<ExplicitAddSum> empty_range(std::array<int, 0>{});
+        static_assert(!std::is_constructible_v<Imos<ExplicitAddSum>, std::forward_list<int>&>);
+        static_assert(!std::is_constructible_v<MonoidUnionFind<ExplicitSum>, const std::vector<std::string>&>);
+        MonoidUnionFind uf(std::vector<int>{2, -5, 4}, ExplicitSum{});
+        uf.merge(0, 1);
+        check(uf.prod(0).value == -3 && uf.prod(2).value == 4, "MonoidUnionFind conversion / CTAD");
+        MonoidUnionFind<ExplicitSum> empty(std::vector<int>{});
+        check(empty.groups().empty(), "MonoidUnionFind conversion empty");
+        Imos imos(std::vector<int>{2, -5, 4}, ExplicitAddSum{});
+        imos.apply(0, 2, 3);
+        check(imos.get(0).value == 5 && imos.get(1).value == -2 && imos.get(2).value == 4, "Imos conversion / CTAD");
+        Imos<ExplicitAddSum> empty_imos(std::vector<int>{});
+        static_assert(!std::is_constructible_v<Imos<ExplicitAddSum>, const std::vector<std::string>&>);
+    }
+
+    test_converting_tree<LazySegTree>(ExplicitAddSum{});
+    test_converting_tree<DualSegTree>(ExplicitAddSum{});
+    test_converting_tree<PersistentSegTree>(ExplicitSum{});
+    test_converting_tree<PersistentLazySegTree>(ExplicitAddSum{});
+    test_converting_tree<SegTreeBeats>(ExplicitBeats{});
+    {
+        auto verify = [](auto&& keys, auto&& values) {
+            SortableSegTree tree(std::forward<decltype(keys)>(keys), std::forward<decltype(values)>(values), 3, ExplicitSum{});
+            tree.sort(0, 3);
+            check(tree.prod(0, 1).value == -5 && tree.prod(0, 3).value == 1, "SortableSegTree sized ranges / sort / CTAD");
+        };
+        int keys[] = {2, 0, 1};
+        verify(keys, std::list<int>{2, -5, 4});
+        verify(std::list<int>{2, 0, 1}, SizedInputRange{});
+        SortableSegTree braces({2, 0, 1}, {ExplicitSum::S(2), ExplicitSum::S(-5), ExplicitSum::S(4)}, 3, ExplicitSum{});
+        check(braces.prod(0, 3).value == 1, "SortableSegTree initializer lists / CTAD");
+        SortableSegTree sorted(std::vector<long long>{2, 0, 1}, std::vector<int>{2, -5, 4}, 3, ExplicitSum{});
+        sorted.sort(0, 3);
+        check(sorted.prod(0, 1).value == -5 && sorted.prod(0, 3).value == 1, "SortableSegTree conversion / CTAD / sort");
+        SortableSegTree<ExplicitSum> empty(std::vector<long long>{}, std::vector<int>{}, 1);
+        check(empty.size() == 0, "SortableSegTree conversion empty");
+    }
+
+    {
+        static_assert(std::is_constructible_v<SegTree<ExplicitSum>, const std::vector<int>&>);
+        static_assert(!std::is_constructible_v<SegTree<ExplicitSum>, const std::vector<std::string>&>);
+        SegTree seg(std::vector<int>{2, -5, 4}, ExplicitSum{});
+        check(seg.prod(0, 3).value == 1 && seg.prod(1, 3).value == -1, "SegTree explicit conversion / CTAD");
+        SegTree<ExplicitSum> empty(std::vector<int>{});
+        check(empty.size() == 0 && empty.all_prod().value == 0, "SegTree conversion empty");
+        SegTree<monoid::Sum<long long>> ordinary({1, 2, 3});
+        check(ordinary.all_prod() == 6, "SegTree initializer list");
+        SegTree<monoid::Sum<long long>> widened(std::vector<int>{1, 2, 3});
+        check(widened.all_prod() == 6, "SegTree arithmetic conversion");
+    }
+
     std::mt19937_64 rng(314);
 
     // And / Or: 単位元はそれぞれ全ビット 1 と 0
@@ -249,7 +474,7 @@ int main() {
         SegTree<monoid::PrefixSumMax<long long>> pmax(std::vector<monoid::PrefixSumMax<long long>::S>(a.begin(), a.end()));
         SegTree<monoid::PrefixSumMin<long long>> pmin(std::vector<monoid::PrefixSumMin<long long>::S>(a.begin(), a.end()));
         using PM = monoid::PrefixSumMinMax<>;
-        SegTree<PM> pminmax(std::vector<PM::S>(a.begin(), a.end()));
+        SegTree<PM> pminmax(a);
         SegTree<monoid::SuffixSumMax<long long>> smax(std::vector<monoid::SuffixSumMax<long long>::S>(a.begin(), a.end()));
         SegTree<monoid::SuffixSumMin<long long>> smin(std::vector<monoid::SuffixSumMin<long long>::S>(a.begin(), a.end()));
         SegTree<monoid::MaxSubarraySum<long long>> msub(std::vector<monoid::MaxSubarraySum<long long>::S>(a.begin(), a.end()));

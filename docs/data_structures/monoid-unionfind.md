@@ -16,6 +16,8 @@ long long s = uf.prod(1);   // 1 + 2 = 3
 MonoidUnionFind uf2(v, Monoid([](int a, int b) { return std::min(a, b); }, INF));
 ```
 
+サイズを取得でき、各要素から `S` を構築できる範囲を直接渡せます。`std::vector`・`std::array`・`std::list`・組み込み配列などに対応します。C++20 ではサイズ付きの入力範囲 (`input_range` かつ `sized_range`) のビューも使えます。各要素を内部へ直接構築するので、`explicit` なコンストラクタにも対応します。初期化リストも使えます。
+
 ## メンバ関数
 
 | 関数 | 説明 | 計算量 |

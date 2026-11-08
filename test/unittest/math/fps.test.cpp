@@ -11,8 +11,13 @@
 #include "../../../src/math/fps.hpp"
 
 #include <algorithm>
+#include <array>
+#include <forward_list>
 #include <iostream>
+#include <list>
 #include <random>
+#include <string>
+#include <type_traits>
 #include <vector>
 
 using mint = static_modint<998244353>;
@@ -70,6 +75,36 @@ P random_poly(std::mt19937_64& rng, int n, bool nonzero_lead) {
 int main() {
     std::mt19937_64 rng(314);
     bool ok = true;
+    auto verify_range = [&](auto&& r) {
+        F f(std::forward<decltype(r)>(r));
+        if (f != F{1, -2, 0} || f.size() != 3) ok = false;
+    };
+    int raw[] = {1, -2, 0};
+    const std::array<long long, 3> arr = {1, -2, 0};
+    verify_range(raw);
+    verify_range(arr);
+    verify_range(std::list<int>{1, -2, 0});
+    F empty_range(std::array<int, 0>{});
+    if (!empty_range.empty()) ok = false;
+    const P coefficients{1, -2, 0};
+    FPS deduced(coefficients);
+    static_assert(std::is_same_v<decltype(deduced), F>);
+    if (deduced != F{1, -2, 0}) ok = false;
+    static_assert(!std::is_constructible_v<F, std::forward_list<int>&>);
+    static_assert(!std::is_constructible_v<F, std::array<std::string, 3>&>);
+#if __cplusplus >= 202002L
+    verify_range(std::views::iota(0, 3) | std::views::transform([&](int i) { return raw[i]; }));
+#endif
+    static_assert(std::is_constructible_v<F, const std::vector<int>&>);
+    static_assert(!std::is_constructible_v<F, const std::vector<std::string>&>);
+    const std::vector<int> ints = {1, -2, 0};
+    F from_int(ints);
+    F from_long = std::vector<long long>{998244354LL, -2, 0};
+    F from_empty(std::vector<int>{});
+    if (from_int != F{1, -2, 0} || from_long != from_int || !from_empty.empty() || from_int.size() != 3) {
+        std::cerr << "FPS vector conversion failed\n";
+        return 1;
+    }
 
     for (int rep = 0; rep < 300; rep++) {
         int n = rng() % 8;

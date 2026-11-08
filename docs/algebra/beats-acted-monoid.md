@@ -7,7 +7,7 @@ documentation_of: //src/algebra/beats-acted-monoid.hpp
 
 ```cpp
 using A = beats_acted_monoid::ChminChmaxAddSum<long long>;
-SegTreeBeats<A> seg(std::vector<A::S>(a.begin(), a.end()));  // a は std::vector<long long>
+SegTreeBeats<A> seg(a);  // a は std::vector<long long>
 seg.apply(l, r, A::chmin(x));   // [l, r) を min(a[i], x) に
 seg.apply(l, r, A::add(x));     // [l, r) に x を足す
 A::S s = seg.prod(l, r);

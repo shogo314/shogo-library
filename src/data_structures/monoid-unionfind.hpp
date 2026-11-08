@@ -6,10 +6,13 @@
  */
 
 #include <cassert>
+#include <initializer_list>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
 #include "../algebra/monoid.hpp"
+#include "../utility/traits.hpp"
 #include "unionfind.hpp"
 
 /**
@@ -39,6 +42,22 @@ class MonoidUnionFind : private UnionFind {
      * @param m 可換モノイド
      */
     explicit MonoidUnionFind(std::vector<S> v, M m = M()) : UnionFind(v.size()), m(std::move(m)), val(std::move(v)) {}
+
+    /**
+     * @brief 各要素を S(x) で構築して初期化する
+     */
+#if __cplusplus >= 202002L
+    template <class R = std::initializer_list<S>>
+        requires internal_traits::sized_constructible_range<R, S>
+#else
+    template <class R = std::initializer_list<S>, ENABLE_IF_T(internal_traits::is_sized_constructible_range<R, S>::value)>
+#endif
+    explicit MonoidUnionFind(R&& v, M m = M())
+        : UnionFind(internal_traits::range_size(v)), m(std::move(m)) {
+        val.reserve(internal_traits::range_size(v));
+        for (auto&& x : v) val.emplace_back(std::forward<decltype(x)>(x));
+    }
+
     using MergeResult = UnionFind::MergeResult;
     using UnionFind::groups;
     using UnionFind::leader;
@@ -69,5 +88,7 @@ class MonoidUnionFind : private UnionFind {
 
 template <typename M>
 MonoidUnionFind(long long, M) -> MonoidUnionFind<M>;
+template <class R, typename M>
+MonoidUnionFind(R&&, M) -> MonoidUnionFind<M>;
 template <typename M>
-MonoidUnionFind(std::vector<typename M::S>, M) -> MonoidUnionFind<M>;
+MonoidUnionFind(std::initializer_list<typename M::S>, M) -> MonoidUnionFind<M>;

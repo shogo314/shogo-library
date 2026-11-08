@@ -7,6 +7,7 @@
 #include "../../../src/math/number-theory.hpp"
 
 #include <iostream>
+#include <limits>
 #include <numeric>
 #include <random>
 #include <vector>
@@ -39,6 +40,38 @@ int main() {
         }
     }
 
+    // 正規化・逆元との積・Garner の更新が long long の上限をまたぐ場合。
+    constexpr long long HI = std::numeric_limits<long long>::max(), LO = std::numeric_limits<long long>::lowest();
+    auto check_big = [&](const std::vector<long long>& r, const std::vector<long long>& m, long long x, long long lcm) {
+        auto a = crt(r, m);
+        if (!a || a->x != x || a->lcm != lcm) ok = false;
+        for (long long mod : {1LL, 1000000007LL, HI}) {
+            auto b = crt(r, m, mod);
+            if (!b || b->x != x % mod || b->lcm != lcm % mod) ok = false;
+        }
+    };
+    check_big({HI - 1}, {HI}, HI - 1, HI);
+    check_big({LO}, {HI}, HI - 1, HI);
+    check_big({0, 1000000000000000000LL}, {3, 2000000000000000003LL}, 3000000000000000003LL, 6000000000000000009LL);
+    check_big({LO, HI}, {3, 5}, 7, 15);
+    // LCM 自体は long long に収まらないが、共通の解を作って mod 付き版を検証できる。
+    for (int rep = 0; rep < 3000; rep++) {
+        long long answer = static_cast<long long>(rng() % 1000000000) * (rng() % 1000000000);
+        std::vector<long long> mods = {4000000007LL, 4000000009LL, HI - rep};
+        std::vector<long long> residues;
+        for (long long mod : mods) residues.push_back(answer % mod);
+        auto c = crt(residues, mods, HI - 11);
+        __int128 lcm = static_cast<__int128>(mods[0]) * mods[1];
+        long long g = std::gcd(static_cast<long long>(lcm % mods[2]), mods[2]);
+        // 3 法の積は __int128 に収まる。
+        lcm = lcm / g * mods[2];
+        if (!c || c->x != answer % (HI - 11) || c->lcm != lcm % (HI - 11)) ok = false;
+    }
+    {
+        long long r1 = LO, m1 = 2, r2 = HI, m2 = 2;
+        if (coprimize_simultaneous_congruence_equation(r1, m1, r2, m2) || r1 != LO || r2 != HI || m1 != 2 || m2 != 2) ok = false;
+    }
+
     // MOD = 1 なら x も lcm も 0 (空でも)。空なら x = 0、lcm = 1 % MOD
     for (int k = 0; k <= 2; k++) {
         std::vector<long long> r(k, 1), m(k, 3);
@@ -50,5 +83,6 @@ int main() {
         if (!c || c->x != 0 || c->lcm != 1) ok = false, std::cerr << "crt empty" << std::endl;
     }
 
-    if (ok) std::cout << "Hello World" << std::endl;
+    if (!ok) return 1;
+    std::cout << "Hello World" << std::endl;
 }

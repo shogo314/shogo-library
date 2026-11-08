@@ -48,6 +48,49 @@ jobs:
         YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
       run: oj-verify all -j $(nproc) --timeout=6000
 
+  local-checks:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        standard: [gnu++17, gnu++20]
+
+    steps:
+    - uses: actions/checkout@v7
+    - uses: actions/setup-python@v7
+      with:
+        python-version: '3.11'
+    - name: Check standalone headers and unit tests
+      run: python3 tools/check_library.py headers unittests --std ${{ matrix.standard }} --jobs 2
+
+  sanitizers:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+
+    steps:
+    - uses: actions/checkout@v7
+    - uses: actions/setup-python@v7
+      with:
+        python-version: '3.11'
+    - name: Check boundary cases with AddressSanitizer and UBSan
+      run: python3 tools/check_library.py sanitizers --std gnu++20 --jobs 2
+
+  documentation:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+
+    steps:
+    - uses: actions/checkout@v7
+    - uses: actions/setup-python@v7
+      with:
+        python-version: '3.11'
+    - name: Check Liquid syntax and header references
+      run: python3 tools/check_library.py docs
+
   # .clang-format で整形済みかだけを確かめる (整形はしない)
   format:
     runs-on: ubuntu-24.04

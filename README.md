@@ -71,3 +71,16 @@ g++ -std=gnu++17 -I /path/to/shogo-library/src main.cpp
 
 - yukicoder のテストには `YUKICODER_TOKEN` が必要です。
 - `test/atcoder/` には AtCoder の問題で書いたテストを置いています。AtCoder のテストケースは CI で取得できないため、`*.test.cpp` にせず検証の対象外にしています。手元で `oj` を使って確認できます。
+
+外部ジャッジを使わない検証も CI で行います。C++17 / C++20 の両方で各ヘッダの単独 include と全単体テストを確認し、重点テストには AddressSanitizer・UBSan を使います。docs は Liquid の開始記法、`documentation_of` の参照先と公開ヘッダの対応を検査します。
+
+手元でも Python 3.11 以降と GCC があれば実行できます。
+
+```sh
+python3 tools/check_library.py headers unittests --std gnu++17 --jobs 2
+python3 tools/check_library.py headers unittests --std gnu++20 --jobs 2
+python3 tools/check_library.py sanitizers --std gnu++20 --jobs 2
+python3 tools/check_library.py docs
+```
+
+単体テストは終了コードだけでなく、標準出力が `Hello World` の 1 行だけになることも確認します。コンパイルした実行ファイルは一時ディレクトリに置き、検証後に削除します。

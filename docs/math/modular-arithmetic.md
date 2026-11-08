@@ -19,7 +19,7 @@ long long r = sqrt_mod(2, 7);           // r^2 ≡ 2 (mod 7) となる小さい�
 |---|---|---|
 | `mul_mod(a, b, m)` | $ab \bmod m$ (`a`、`b` は負でもよい。結果は $[0, m)$) | $O(1)$ |
 | `inv_mod(a, m)` | $a^{-1} \bmod m$ (`a` と `m` が互いに素でなければ assert で落ちる) | $O(\log m)$ |
-| `pow_mod(a, n, m)` | $a^n \bmod m$ (`n` は負でもよく、そのときは `a` と `m` が互いに素であること) | $O(\log \lvert n \rvert)$ |
+| `pow_mod(a, n, m)` | $a^n \bmod m$ (`n` は `long long` の最小値を含めて負でもよく、そのときは `a` と `m` が互いに素であること) | $O(\log \lvert n \rvert)$ |
 | `discrete_log(a, b, m)` | $a^x \equiv b \pmod m$ となる最小の $x \ge 0$ (なければ -1)。`a` と `m` は互いに素でなくてもよい。Baby-step Giant-step | $O(\sqrt m)$ (メモリも) |
 | `sqrt_mod(a, p)` | 素数 `p` について $x^2 \equiv a \pmod p$ となる $x$ のうち小さい方 (なければ -1)。もう一方は $p - x$。Tonelli-Shanks | $O(\log^2 p)$ |
 

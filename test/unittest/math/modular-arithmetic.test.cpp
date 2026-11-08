@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <limits>
 #include <numeric>
 #include <random>
 
@@ -14,6 +15,8 @@ static_assert(pow_mod(2, 10, 1000) == 24);
 static_assert(inv_mod(3, 7) == 5);
 static_assert(pow_mod(3, -1, 7) == 5);
 static_assert(pow_mod(5, 0, 1) == 0);
+static_assert(pow_mod(2, std::numeric_limits<long long>::lowest(), 7) == 2);
+static_assert(pow_mod(0, std::numeric_limits<long long>::lowest(), 1) == 0);
 
 int main() {
     bool ok = true;
@@ -45,6 +48,11 @@ int main() {
         long long a = rng() % (P - 1) + 1;
         if (pow_mod(a, P - 1, P) != 1) ok = false, std::cerr << "fermat " << a << std::endl;
         if (mul_mod(a, inv_mod(a, P), P) != 1) ok = false, std::cerr << "inv " << a << std::endl;
+        // 最小の負指数も、フェルマーの小定理で指数を剰余にして比較する。
+        constexpr long long LOWEST = std::numeric_limits<long long>::lowest();
+        const long long reduced = LOWEST % (P - 1) + (P - 1);
+        if (pow_mod(a, LOWEST, P) != pow_mod(a, reduced, P)) ok = false, std::cerr << "pow_mod lowest" << std::endl;
+        if (mul_mod(mul_mod(pow_mod(a, LOWEST, P), pow_mod(a, std::numeric_limits<long long>::max(), P), P), a, P) != 1) ok = false;
         long long b = rng() % P;
         if (mul_mod(a, b, P) != static_cast<long long>(static_cast<__int128>(a) * b % P)) ok = false, std::cerr << "mul " << a << std::endl;
     }
@@ -100,5 +108,6 @@ int main() {
         if (sqrt_mod(z, p) != -1) ok = false, std::cerr << "sqrt_mod non-residue " << p << std::endl;
     }
 
-    if (ok) std::cout << "Hello World" << std::endl;
+    if (!ok) return 1;
+    std::cout << "Hello World" << std::endl;
 }

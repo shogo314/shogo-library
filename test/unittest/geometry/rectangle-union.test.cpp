@@ -7,7 +7,6 @@
 #include "../../../src/geometry/rectangle-union.hpp"
 
 #include <algorithm>
-#include <array>
 #include <iostream>
 #include <random>
 #include <vector>
@@ -15,10 +14,10 @@
 int main() {
     std::mt19937_64 rng(314);
     bool ok = true;
-    if (rectangle_union_area(std::vector<std::array<long long, 4>>{}) != 0) ok = false;
+    if (rectangle_union_area(std::vector<Rectangle<long long>>{}) != 0) ok = false;
     for (int rep = 0; rep < 3000 && ok; rep++) {
         int n = rng() % 8 + 1, w = 10;
-        std::vector<std::array<long long, 4>> rects(n);
+        std::vector<Rectangle<long long>> rects(n);
         std::vector<std::vector<bool>> covered(w, std::vector<bool>(w, false));
         for (auto& [l, d, r, u] : rects) {
             l = rng() % (w + 1), r = rng() % (w + 1), d = rng() % (w + 1), u = rng() % (w + 1);
@@ -31,5 +30,7 @@ int main() {
         for (auto& row : covered) expected += std::count(row.begin(), row.end(), true);
         if (rectangle_union_area(rects) != expected) ok = false;
     }
+    std::vector<Rectangle<double>> fractional = {{0.0, 0.0, 1.5, 1.0}, {1.0, 0.0, 2.0, 1.0}, {0.0, 0.0, 0.0, 2.0}};
+    if (rectangle_union_area(fractional) != 2.0) ok = false;
     if (ok) std::cout << "Hello World" << std::endl;
 }

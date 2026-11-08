@@ -2,7 +2,6 @@
 
 // rectangle-union.hpp の rectangle_union_area を使う
 
-#include <array>
 #include <iostream>
 #include <vector>
 
@@ -13,7 +12,7 @@ int main() {
     std::ios::sync_with_stdio(false);
     int n;
     std::cin >> n;
-    std::vector<std::array<long long, 4>> rects(n);
-    for (auto& [l, d, r, u] : rects) std::cin >> l >> d >> r >> u;
+    std::vector<Rectangle<long long>> rects(n);
+    for (auto& rect : rects) std::cin >> rect;
     std::cout << rectangle_union_area(rects) << '\n';
 }

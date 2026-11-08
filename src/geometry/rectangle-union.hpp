@@ -6,10 +6,11 @@
  */
 
 #include <algorithm>
-#include <array>
 #include <cassert>
 #include <tuple>
 #include <vector>
+
+#include "rectangle.hpp"
 
 /**
  * @brief 軸に平行な長方形 [l, r) × [d, u) の和集合の面積 (走査線) O(n log n)
@@ -20,7 +21,7 @@
  * @return T 面積
  */
 template <typename T>
-T rectangle_union_area(const std::vector<std::array<T, 4>>& rects) {
+T rectangle_union_area(const std::vector<Rectangle<T>>& rects) {
     std::vector<T> ys;
     for (const auto& [l, d, r, u] : rects) {
         assert(l <= r && d <= u);

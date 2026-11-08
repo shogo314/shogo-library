@@ -13,6 +13,7 @@ bool b = fg.is_cycle[3];     // false
 ```
 
 `FunctionalGraph(n)` で作った場合は、`read()` で入力するまで前計算が行われません。
+頂点 `v` の遷移先は `hop(v, 1)` で取得できます。
 
 頂点番号・個数・距離は `long long` で、メンバ変数も `long long` で持ちます。`FunctionalGraph(g)` の `g` は `std::vector<long long>` でも `std::vector<int>` でもかまいません。
 
@@ -30,7 +31,7 @@ bool b = fg.is_cycle[3];     // false
 
 | 変数 | 説明 |
 |---|---|
-| `n` / `g` | 頂点数 (`size()` と同じ) / 各頂点の行き先 |
+| `n` | 頂点数 (`size()` と同じ) |
 | `is_cycle[v]` | `v` がサイクル上にあるか |
 | `depth[v]` | `v` からサイクルに入るまでの距離 (サイクル上なら 0) |
 | `root[v]` | `v` から進んで最初に着くサイクル上の頂点 |

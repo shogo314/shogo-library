@@ -14,8 +14,12 @@
  * @brief N頂点N辺の有向グラフで、すべての頂点の出次数が1
  */
 struct FunctionalGraph {
-    long long n;                                   //!< 頂点数
-    std::vector<long long> g;                      //!< グラフ
+    long long n;  //!< 頂点数
+
+   private:
+    std::vector<long long> g;
+
+   public:
     std::vector<bool> is_cycle;                    //!< サイクル上の頂点か
     std::vector<long long> depth;                  //!< サイクル上の頂点までの距離
     std::vector<long long> root;                   //!< 最も近いサイクル上の頂点
@@ -25,6 +29,7 @@ struct FunctionalGraph {
     std::vector<long long> root_index;             //!< rootのcycles上のindex
     std::vector<std::vector<long long>> doubling;  //!< DoublingClimbTree
 
+   private:
     void build() {
         assert(static_cast<long long>(g.size()) == n);
         for (long long i = 0; i < n; i++) assert(0 <= g[i] && g[i] < n);
@@ -96,6 +101,7 @@ struct FunctionalGraph {
         }
     }
 
+   public:
     /**
      * @brief デフォルトコンストラクタ
      */

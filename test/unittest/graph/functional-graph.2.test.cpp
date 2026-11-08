@@ -17,7 +17,7 @@ int main() {
     bool ok = true;
 
     FunctionalGraph empty;
-    if (empty.n != 0 || !empty.g.empty()) ok = false;
+    if (empty.size() != 0) ok = false;
 
     std::streambuf* original = std::cin.rdbuf();
     for (int rep = 0; rep < 2000 && ok; rep++) {
@@ -33,15 +33,15 @@ int main() {
             std::istringstream iss(input);
             std::cin.rdbuf(iss.rdbuf());
             FunctionalGraph fg(n);
-            if (fg.n != n || static_cast<int>(fg.g.size()) != n) ok = false;
+            if (fg.size() != n) ok = false;
             if (padding == -1)
                 fg.read();
             else
                 fg.read(padding);
             std::cin.rdbuf(original);
 
-            if (fg.g != std::vector<long long>(g.begin(), g.end())) ok = false;
             for (int x = 0; x < n; x++) {
+                if (fg.hop(x, 1) != g[x]) ok = false;
                 if (fg.is_cycle[x] != expected.is_cycle[x]) ok = false;
                 if (fg.hopable(x) != expected.hopable(x)) ok = false;
                 for (long long k : {0LL, 1LL, static_cast<long long>(n), static_cast<long long>(rng() % 1000000000000LL)}) {

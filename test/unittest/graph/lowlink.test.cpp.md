@@ -65,57 +65,56 @@ data:
     \u304C\u9006\u306E\u3082\u306E\u304C2\u3064\u5B58\u5728\u3059\u308B)\n       \
     \ Edge() = default;\n        Edge(long long src, long long dst, Cost cost = 1,\
     \ long long id = -1) : src(src), dst(dst), cost(cost), id(id) {}\n        operator\
-    \ long long() const { return dst; }\n    };\n\n    long long n;              \
-    \         //!< \u9802\u70B9\u6570\n    long long m;                       //!<\
-    \ \u8FBA\u6570\n    std::vector<std::vector<Edge>> g;  //!< \u30B0\u30E9\u30D5\
-    \u306E\u96A3\u63A5\u30EA\u30B9\u30C8\u8868\u73FE\n\n    /**\n     * @brief \u30C7\
-    \u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     */\n\
-    \    Graph() : n(0), m(0), g(0) {}\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\
-    \u30E9\u30AF\u30BF\n     * @param n \u9802\u70B9\u6570\n     */\n    explicit\
-    \ Graph(long long n) : n(n), m(0), g(n) {}\n    /**\n     * @brief \u9802\u70B9\
-    \u6570\n     */\n    long long size() const { return n; }\n    /**\n     * @brief\
-    \ \u7121\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n     * @param u \u59CB\u70B9\
-    \n     * @param v \u7D42\u70B9\n     * @param w \u30B3\u30B9\u30C8 \u7701\u7565\
-    \u3057\u305F\u30891\n     */\n    void add_edge(long long u, long long v, Cost\
-    \ w = 1) {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n        g[u].push_back({u,\
-    \ v, w, m});\n        g[v].push_back({v, u, w, m++});\n    }\n    /**\n     *\
-    \ @brief \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\n     * @param u \u59CB\
-    \u70B9\n     * @param v \u7D42\u70B9\n     * @param w \u30B3\u30B9\u30C8 \u7701\
-    \u7565\u3057\u305F\u30891\n     */\n    void add_directed_edge(long long u, long\
-    \ long v, Cost w = 1) {\n        assert(0 <= u && u < n && 0 <= v && v < n);\n\
-    \        g[u].push_back({u, v, w, m++});\n    }\n    /**\n     * @brief \u8FBA\
-    \u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\u529B\u304B\u3089\u53D7\u3051\u53D6\
-    \u3063\u3066\u8FFD\u52A0\u3059\u308B\n     * @param m \u8FBA\u306E\u6570\n   \
-    \  * @param padding \u9802\u70B9\u756A\u53F7\u3092\u5165\u529B\u304B\u3089\u3044\
-    \u304F\u3064\u305A\u3089\u3059\u304B \u7701\u7565\u3057\u305F\u3089-1\n     *\
-    \ @param weighted \u8FBA\u306E\u91CD\u307F\u304C\u5165\u529B\u3055\u308C\u308B\
-    \u304B \u7701\u7565\u3057\u305F\u3089false\u3068\u306A\u308A\u3001\u91CD\u307F\
-    1\u3067\u8FBA\u304C\u8FFD\u52A0\u3055\u308C\u308B\n     * @param directed \u6709\
-    \u5411\u30B0\u30E9\u30D5\u304B\u3069\u3046\u304B \u7701\u7565\u3057\u305F\u3089\
-    false\n     */\n    void read(long long m, long long padding = -1, bool weighted\
-    \ = false, bool directed = false) {\n        for (long long i = 0; i < m; i++)\
-    \ {\n            long long u, v;\n            std::cin >> u >> v;\n          \
-    \  u += padding, v += padding;\n            Cost c(1);\n            if (weighted)\n\
-    \                std::cin >> c;\n            if (directed)\n                add_directed_edge(u,\
-    \ v, c);\n            else\n                add_edge(u, v, c);\n        }\n  \
-    \  }\n    /**\n     * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u51FA\u308B\u8FBA\
-    \u3092\u5217\u6319\u3059\u308B\n     * @param v \u9802\u70B9\u756A\u53F7\n   \
-    \  * @return std::vector<Edge>& v\u304B\u3089\u51FA\u308B\u8FBA\u306E\u30EA\u30B9\
-    \u30C8\n     */\n    std::vector<Edge>& operator[](long long v) {\n        return\
-    \ g[v];\n    }\n    /**\n     * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u51FA\
-    \u308B\u8FBA\u3092\u5217\u6319\u3059\u308B\n     * @param v \u9802\u70B9\u756A\
-    \u53F7\n     * @return const std::vector<Edge>& v\u304B\u3089\u51FA\u308B\u8FBA\
-    \u306E\u30EA\u30B9\u30C8\n     */\n    const std::vector<Edge>& operator[](long\
-    \ long v) const {\n        return g[v];\n    }\n    /**\n     * @brief \u8FBA\u306E\
-    \u30EA\u30B9\u30C8\n     * @return std::vector<Edge> \u8FBA\u306E\u30EA\u30B9\u30C8\
-    (id\u306E\u6607\u9806)\n     *\n     * \u7121\u5411\u8FBA\u306F\u4EE3\u8868\u3057\
-    \u30661\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\u3002\u305D\u306E src\
-    \ \u3068 dst \u306E\u5411\u304D\u306F\u898F\u5B9A\u3057\u306A\u3044\n     * \u6709\
-    \u5411\u8FBA\u306F\u8FFD\u52A0\u3057\u305F\u3068\u304D\u306E\u5411\u304D\u306E\
-    \u307E\u307E\u683C\u7D0D\u3055\u308C\u308B\n     */\n    std::vector<Edge> edges()\
-    \ const {\n        std::vector<Edge> res(m);\n        for (long long i = 0; i\
-    \ < n; i++) {\n            for (auto& e : g[i]) {\n                res[e.id] =\
-    \ e;\n            }\n        }\n        return res;\n    }\n};\n\n/**\n * @brief\
+    \ long long() const { return dst; }\n    };\n\n   private:\n    long long n; \
+    \                      //!< \u9802\u70B9\u6570\n    long long m;             \
+    \          //!< \u8FBA\u6570\n    std::vector<std::vector<Edge>> g;  //!< \u30B0\
+    \u30E9\u30D5\u306E\u96A3\u63A5\u30EA\u30B9\u30C8\u8868\u73FE\n\n   public:\n \
+    \   /**\n     * @brief \u30C7\u30D5\u30A9\u30EB\u30C8\u30B3\u30F3\u30B9\u30C8\u30E9\
+    \u30AF\u30BF\n     */\n    Graph() : n(0), m(0), g(0) {}\n    /**\n     * @brief\
+    \ \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param n \u9802\u70B9\u6570\
+    \n     */\n    explicit Graph(long long n) : n(n), m(0), g(n) {}\n    /**\n  \
+    \   * @brief \u9802\u70B9\u6570\n     */\n    long long size() const { return\
+    \ n; }\n    /**\n     * @brief \u8FBA\u6570 (\u7121\u5411\u8FBA\u306F 1 \u672C\
+    \u3068\u6570\u3048\u308B)\n     */\n    long long edge_count() const { return\
+    \ m; }\n    /**\n     * @brief \u7121\u5411\u8FBA\u3092\u8FFD\u52A0\u3059\u308B\
+    \n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n     * @param w\
+    \ \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n    void add_edge(long\
+    \ long u, long long v, Cost w = 1) {\n        assert(0 <= u && u < n && 0 <= v\
+    \ && v < n);\n        g[u].push_back({u, v, w, m});\n        g[v].push_back({v,\
+    \ u, w, m++});\n    }\n    /**\n     * @brief \u6709\u5411\u8FBA\u3092\u8FFD\u52A0\
+    \u3059\u308B\n     * @param u \u59CB\u70B9\n     * @param v \u7D42\u70B9\n   \
+    \  * @param w \u30B3\u30B9\u30C8 \u7701\u7565\u3057\u305F\u30891\n     */\n  \
+    \  void add_directed_edge(long long u, long long v, Cost w = 1) {\n        assert(0\
+    \ <= u && u < n && 0 <= v && v < n);\n        g[u].push_back({u, v, w, m++});\n\
+    \    }\n    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\u6E96\u5165\
+    \u529B\u304B\u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\u308B\n   \
+    \  * @param m \u8FBA\u306E\u6570\n     * @param padding \u9802\u70B9\u756A\u53F7\
+    \u3092\u5165\u529B\u304B\u3089\u3044\u304F\u3064\u305A\u3089\u3059\u304B \u7701\
+    \u7565\u3057\u305F\u3089-1\n     * @param weighted \u8FBA\u306E\u91CD\u307F\u304C\
+    \u5165\u529B\u3055\u308C\u308B\u304B \u7701\u7565\u3057\u305F\u3089false\u3068\
+    \u306A\u308A\u3001\u91CD\u307F1\u3067\u8FBA\u304C\u8FFD\u52A0\u3055\u308C\u308B\
+    \n     * @param directed \u6709\u5411\u30B0\u30E9\u30D5\u304B\u3069\u3046\u304B\
+    \ \u7701\u7565\u3057\u305F\u3089false\n     */\n    void read(long long m, long\
+    \ long padding = -1, bool weighted = false, bool directed = false) {\n       \
+    \ for (long long i = 0; i < m; i++) {\n            long long u, v;\n         \
+    \   std::cin >> u >> v;\n            u += padding, v += padding;\n           \
+    \ Cost c(1);\n            if (weighted)\n                std::cin >> c;\n    \
+    \        if (directed)\n                add_directed_edge(u, v, c);\n        \
+    \    else\n                add_edge(u, v, c);\n        }\n    }\n    /**\n   \
+    \  * @brief \u3042\u308B\u9802\u70B9\u304B\u3089\u51FA\u308B\u8FBA\u3092\u5217\
+    \u6319\u3059\u308B\n     * @param v \u9802\u70B9\u756A\u53F7\n     * @return const\
+    \ std::vector<Edge>& v\u304B\u3089\u51FA\u308B\u8FBA\u306E\u30EA\u30B9\u30C8\n\
+    \     */\n    const std::vector<Edge>& operator[](long long v) const {\n     \
+    \   assert(0 <= v && v < n);\n        return g[v];\n    }\n    /**\n     * @brief\
+    \ \u8FBA\u306E\u30EA\u30B9\u30C8\n     * @return std::vector<Edge> \u8FBA\u306E\
+    \u30EA\u30B9\u30C8(id\u306E\u6607\u9806)\n     *\n     * \u7121\u5411\u8FBA\u306F\
+    \u4EE3\u8868\u3057\u30661\u3064\u3060\u3051\u683C\u7D0D\u3055\u308C\u308B\u3002\
+    \u305D\u306E src \u3068 dst \u306E\u5411\u304D\u306F\u898F\u5B9A\u3057\u306A\u3044\
+    \n     * \u6709\u5411\u8FBA\u306F\u8FFD\u52A0\u3057\u305F\u3068\u304D\u306E\u5411\
+    \u304D\u306E\u307E\u307E\u683C\u7D0D\u3055\u308C\u308B\n     */\n    std::vector<Edge>\
+    \ edges() const {\n        std::vector<Edge> res(m);\n        for (long long i\
+    \ = 0; i < n; i++) {\n            for (auto& e : g[i]) {\n                res[e.id]\
+    \ = e;\n            }\n        }\n        return res;\n    }\n};\n\n/**\n * @brief\
     \ \u7D4C\u8DEF (\u8DEF\u30FB\u9589\u8DEF)\u3002\u9577\u3055 cost\u3001\u305F\u3069\
     \u308B\u9802\u70B9\u306E\u5217 vertices\u3001\u305F\u3069\u308B\u8FBA\u306E\u5217\
     \ edges\n *\n * edges[k] \u306F vertices[k] \u304B\u3089 vertices[k + 1] \u3078\
@@ -151,30 +150,29 @@ data:
     \u30E1\u30F3\u30D0\u3092using\u5BA3\u8A00\u3059\u308B\n    // add_directed_edge\
     \ \u306F\u6728\u3067\u306A\u304F\u306A\u308B\u306E\u3067\u516C\u958B\u3057\u306A\
     \u3044 (read \u306F Tree::read \u3067\u96A0\u3059)\n    using Edge = typename\
-    \ Graph<Cost>::Edge;\n    using Graph<Cost>::n;\n    using Graph<Cost>::size;\n\
-    \    using Graph<Cost>::m;\n    using Graph<Cost>::g;\n    using Graph<Cost>::Graph;\n\
-    \    using Graph<Cost>::add_edge;\n    using Graph<Cost>::operator[];\n    using\
-    \ Graph<Cost>::edges;\n\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\
-    \u30AF\u30BF\n     *\n     * @param n \u30CE\u30FC\u30C9\u6570\n     */\n    explicit\
-    \ Tree(long long n = 0) : Graph<Cost>(n) {}\n\n    /**\n     * @brief Graph \u3068\
-    \u3057\u3066\u898B\u308B\n     *\n     * Graph \u3092\u53D7\u3051\u53D6\u308B\u95A2\
-    \u6570 (shortest_path_dijkstra \u306A\u3069) \u306B\u6E21\u3059\u3068\u304D\u306B\
-    \u4F7F\u3046\n     * @return const Graph<Cost>& \u3053\u306E\u6728\u3092\u8868\
-    \u3059\u30B0\u30E9\u30D5\n     */\n    const Graph<Cost>& graph() const { return\
-    \ *this; }\n\n    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\u6A19\u6E96\
-    \u5165\u529B\u304B\u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\u3059\u308B\
-    \n     * @param padding  = -1 \u9802\u70B9\u756A\u53F7\u3092\u5165\u529B\u304B\
-    \u3089\u3044\u304F\u3064\u305A\u3089\u3059\u304B\n     * @param weighted = false\
-    \ \u8FBA\u306E\u91CD\u307F\u304C\u5165\u529B\u3055\u308C\u308B\u304B\n     */\n\
-    \    void read(long long padding = -1, bool weighted = false) {\n        Graph<Cost>::read(this->n\
-    \ - 1, padding, weighted, false);\n    }\n\n    /**\n     * @brief \u6839\u4ED8\
-    \u304D\u6728\u306B\u3059\u308B\n     *\n     * @param root \u6839\n     * @return\
-    \ RootedTree<Cost> \u6839\u4ED8\u304D\u6728\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\
-    \u30C8\n     */\n    [[nodiscard]]\n    RootedTree<Cost> set_root(long long root)\
-    \ const& {\n        return RootedTree<Cost>(*this, root);\n    }\n    /**\n  \
-    \   * @brief \u6839\u4ED8\u304D\u6728\u306B\u3057\u3066\u8FD4\u3059\n     *\n\
-    \     * @param root \u6839\n     * @return RootedTree<Cost> \u6839\u4ED8\u304D\
-    \u6728\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\n     */\n    [[nodiscard]]\n\
+    \ Graph<Cost>::Edge;\n    using Graph<Cost>::size;\n    using Graph<Cost>::edge_count;\n\
+    \    using Graph<Cost>::Graph;\n    using Graph<Cost>::add_edge;\n    using Graph<Cost>::operator[];\n\
+    \    using Graph<Cost>::edges;\n\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\
+    \u30E9\u30AF\u30BF\n     *\n     * @param n \u30CE\u30FC\u30C9\u6570\n     */\n\
+    \    explicit Tree(long long n = 0) : Graph<Cost>(n) {}\n\n    /**\n     * @brief\
+    \ Graph \u3068\u3057\u3066\u898B\u308B\n     *\n     * Graph \u3092\u53D7\u3051\
+    \u53D6\u308B\u95A2\u6570 (shortest_path_dijkstra \u306A\u3069) \u306B\u6E21\u3059\
+    \u3068\u304D\u306B\u4F7F\u3046\n     * @return const Graph<Cost>& \u3053\u306E\
+    \u6728\u3092\u8868\u3059\u30B0\u30E9\u30D5\n     */\n    const Graph<Cost>& graph()\
+    \ const { return *this; }\n\n    /**\n     * @brief \u8FBA\u306E\u60C5\u5831\u3092\
+    \u6A19\u6E96\u5165\u529B\u304B\u3089\u53D7\u3051\u53D6\u3063\u3066\u8FFD\u52A0\
+    \u3059\u308B\n     * @param padding  = -1 \u9802\u70B9\u756A\u53F7\u3092\u5165\
+    \u529B\u304B\u3089\u3044\u304F\u3064\u305A\u3089\u3059\u304B\n     * @param weighted\
+    \ = false \u8FBA\u306E\u91CD\u307F\u304C\u5165\u529B\u3055\u308C\u308B\u304B\n\
+    \     */\n    void read(long long padding = -1, bool weighted = false) {\n   \
+    \     Graph<Cost>::read(this->size() - 1, padding, weighted, false);\n    }\n\n\
+    \    /**\n     * @brief \u6839\u4ED8\u304D\u6728\u306B\u3059\u308B\n     *\n \
+    \    * @param root \u6839\n     * @return RootedTree<Cost> \u6839\u4ED8\u304D\u6728\
+    \u306E\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\n     */\n    [[nodiscard]]\n    RootedTree<Cost>\
+    \ set_root(long long root) const& {\n        return RootedTree<Cost>(*this, root);\n\
+    \    }\n    /**\n     * @brief \u6839\u4ED8\u304D\u6728\u306B\u3057\u3066\u8FD4\
+    \u3059\n     *\n     * @param root \u6839\n     * @return RootedTree<Cost> \u6839\
+    \u4ED8\u304D\u6728\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8\n     */\n    [[nodiscard]]\n\
     \    RootedTree<Cost> set_root(long long root) && {\n        return RootedTree<Cost>(std::move(*this),\
     \ root);\n    }\n\n    /**\n     * @brief \u30C0\u30D6\u30EA\u30F3\u30B0LCA\u304C\
     \u4F7F\u3048\u308B\u6839\u4ED8\u304D\u6728\u3092\u8FD4\u3059\n     *\n     * @param\
@@ -192,158 +190,187 @@ data:
     \  }\n};\n\n/**\n * @brief \u6839\u4ED8\u304D\u6728\n *\n * @tparam Cost = long\
     \ long \u8FBA\u306E\u30B3\u30B9\u30C8\n */\ntemplate <typename Cost = long long>\n\
     class RootedTree : private Tree<Cost> {\n   public:\n    using Edge = typename\
-    \ Tree<Cost>::Edge;\n    using Tree<Cost>::n;\n    using Tree<Cost>::size;\n \
-    \   using Tree<Cost>::m;\n    using Tree<Cost>::g;\n    using Tree<Cost>::operator[];\n\
-    \    using Tree<Cost>::edges;\n    using Tree<Cost>::graph;\n\n    long long root;\
-    \                                           //!< \u6839\n    std::vector<Edge>\
-    \ par;                                    //!< \u89AA\u3078\u5411\u304B\u3046\u8FBA\
-    \n    std::vector<std::vector<Edge>> child;                     //!< \u5B50\u3078\
-    \u5411\u304B\u3046\u8FBA\u306E\u30EA\u30B9\u30C8\n    std::vector<Cost> depth;\
-    \                                  //!< \u6DF1\u3055\u306E\u30EA\u30B9\u30C8\n\
-    \    std::vector<Cost> height;                                 //!< \u90E8\u5206\
-    \u6728\u306E\u9AD8\u3055\u306E\u30EA\u30B9\u30C8\n    std::vector<long long> unweighted_depth;\
-    \                  //!< \u91CD\u307F\u306A\u3057\u306E\u6DF1\u3055\u306E\u30EA\
-    \u30B9\u30C8\n    std::vector<long long> unweighted_height;                 //!<\
-    \ \u91CD\u307F\u306A\u3057\u306E\u90E8\u5206\u6728\u306E\u9AD8\u3055\u306E\u30EA\
-    \u30B9\u30C8\n    std::vector<long long> sz;                                //!<\
-    \ \u90E8\u5206\u6728\u306E\u9802\u70B9\u6570\u306E\u30EA\u30B9\u30C8\n    std::vector<long\
-    \ long> preorder;                          //!< \u5148\u884C\u9806\u5DE1\u56DE\
-    \n    std::vector<long long> postorder;                         //!< \u5F8C\u884C\
-    \u9806\u5DE1\u56DE\n    std::vector<std::pair<long long, long long>> euler_tour;\
-    \  //!< \u30AA\u30A4\u30E9\u30FC\u30C4\u30A2\u30FC DFS\u4E2D\u306B\u3068\u304A\
-    \u3063\u305F\u9802\u70B9\u306E(\u9802\u70B9\u756A\u53F7,\u305D\u306E\u9802\u70B9\
-    \u3092\u901A\u3063\u305F\u56DE\u6570)\u306E\u30EA\u30B9\u30C8\n\n    RootedTree()\
-    \ = delete;\n\n    /**\n     * @brief \u89AA\u306E\u9802\u70B9\u306E\u30EA\u30B9\
-    \u30C8\u304B\u3089\u6839\u304C0\u306E\u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\
-    \u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @tparam\
-    \ T \u9802\u70B9\u756A\u53F7\u306E\u6574\u6570\u578B (long long \u3084 int)\n\
-    \     * @param par_ \u9802\u70B90\u4EE5\u5916\u306E\u89AA\u306E\u9802\u70B9\u306E\
-    \u30EA\u30B9\u30C8\n     * @param padding = -1 par\u306E\u9802\u70B9\u756A\u53F7\
-    \u3092\u3044\u304F\u3064\u305A\u3089\u3059\u304B\n     */\n    template <typename\
-    \ T = long long>\n    explicit RootedTree(const std::vector<T>& par_, long long\
-    \ padding = -1) : Tree<Cost>(par_.size() + 1), root(0) {\n        static_assert(std::is_integral_v<T>,\
-    \ \"RootedTree: par_ must be a vector of integers\");\n        for (long long\
-    \ i = 0; i < static_cast<long long>(par_.size()); i++) {\n            this->add_edge(i\
-    \ + 1, par_[i] + padding);\n        }\n        build();\n    }\n    /**\n    \
-    \ * @brief Tree\u304B\u3089\u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\
-    \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF(\u30B3\u30D4\u30FC)\n     *\n     *\
-    \ @param tree Tree \u9802\u70B9\u65701\u4EE5\u4E0A\n     * @param root \u6839\n\
-    \     */\n    RootedTree(const Tree<Cost>& tree, long long root) : Tree<Cost>(tree),\
-    \ root(root) {\n        build();\n    }\n    /**\n     * @brief Tree\u304B\u3089\
-    \u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\
-    \u30E9\u30AF\u30BF(\u30E0\u30FC\u30D6)\n     *\n     * @param tree Tree\n    \
-    \ * @param root \u6839\n     */\n    RootedTree(Tree<Cost>&& tree, long long root)\
-    \ : Tree<Cost>(std::move(tree)), root(root) {\n        build();\n    }\n\n   \
-    \ /**\n     * @brief \u30C0\u30D6\u30EA\u30F3\u30B0LCA\u304C\u4F7F\u3048\u308B\
-    \u6839\u4ED8\u304D\u6728\u3092\u5F97\u308B\n     *\n     * @return DoublingClimbTree<Cost>\
-    \ \u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\u307F\u6839\u4ED8\u304D\u6728\u306E\u30AA\
-    \u30D6\u30B8\u30A7\u30AF\u30C8\n     */\n    [[nodiscard]]\n    DoublingClimbTree<Cost>\
-    \ build_lca() const& {\n        return DoublingClimbTree<Cost>(*this);\n    }\n\
-    \n    /**\n     * @brief \u30C0\u30D6\u30EA\u30F3\u30B0LCA\u304C\u4F7F\u3048\u308B\
-    \u6839\u4ED8\u304D\u6728\u3092\u5F97\u308B\n     *\n     * @return DoublingClimbTree<Cost>\
+    \ Tree<Cost>::Edge;\n    using Tree<Cost>::size;\n    using Tree<Cost>::edge_count;\n\
+    \    using Tree<Cost>::edges;\n    using Tree<Cost>::graph;\n\n   private:\n \
+    \   long long _root;                                           //!< \u6839\n \
+    \   std::vector<Edge> _par;                                    //!< \u89AA\u3078\
+    \u5411\u304B\u3046\u8FBA\n    std::vector<std::vector<Edge>> _child;         \
+    \            //!< \u5B50\u3078\u5411\u304B\u3046\u8FBA\u306E\u30EA\u30B9\u30C8\
+    \n    std::vector<Cost> _depth;                                  //!< \u6DF1\u3055\
+    \u306E\u30EA\u30B9\u30C8\n    std::vector<Cost> _height;                     \
+    \            //!< \u90E8\u5206\u6728\u306E\u9AD8\u3055\u306E\u30EA\u30B9\u30C8\
+    \n    std::vector<long long> _unweighted_depth;                  //!< \u91CD\u307F\
+    \u306A\u3057\u306E\u6DF1\u3055\u306E\u30EA\u30B9\u30C8\n    std::vector<long long>\
+    \ _unweighted_height;                 //!< \u91CD\u307F\u306A\u3057\u306E\u90E8\
+    \u5206\u6728\u306E\u9AD8\u3055\u306E\u30EA\u30B9\u30C8\n    std::vector<long long>\
+    \ _sz;                                //!< \u90E8\u5206\u6728\u306E\u9802\u70B9\
+    \u6570\u306E\u30EA\u30B9\u30C8\n    std::vector<long long> _preorder;        \
+    \                  //!< \u5148\u884C\u9806\u5DE1\u56DE\n    std::vector<long long>\
+    \ _postorder;                         //!< \u5F8C\u884C\u9806\u5DE1\u56DE\n  \
+    \  std::vector<std::pair<long long, long long>> _euler_tour;  //!< \u30AA\u30A4\
+    \u30E9\u30FC\u30C4\u30A2\u30FC DFS\u4E2D\u306B\u3068\u304A\u3063\u305F\u9802\u70B9\
+    \u306E(\u9802\u70B9\u756A\u53F7,\u305D\u306E\u9802\u70B9\u3092\u901A\u3063\u305F\
+    \u56DE\u6570)\u306E\u30EA\u30B9\u30C8\n\n   public:\n    /**\n     * @brief \u9802\
+    \u70B9 v \u304B\u3089\u51FA\u308B\u8FBA\u3092\u5217\u6319\u3059\u308B\n     */\n\
+    \    const std::vector<Edge>& operator[](long long v) const { return Tree<Cost>::operator[](v);\
+    \ }\n\n    /** @brief \u6839 */\n    long long root() const { return _root; }\n\
+    \    /** @brief \u9802\u70B9 v \u306E\u89AA\u3078\u5411\u304B\u3046\u8FBA (\u6839\
+    \u3067\u306F dst == -1) */\n    const Edge& parent_edge(long long v) const {\n\
+    \        assert(0 <= v && v < size());\n        return _par[v];\n    }\n    /**\
+    \ @brief \u9802\u70B9 v \u306E\u5B50\u3078\u5411\u304B\u3046\u8FBA */\n    const\
+    \ std::vector<Edge>& children(long long v) const {\n        assert(0 <= v && v\
+    \ < size());\n        return _child[v];\n    }\n    /** @brief \u9802\u70B9 v\
+    \ \u306E\u6839\u304B\u3089\u306E\u8DDD\u96E2 */\n    Cost depth(long long v) const\
+    \ {\n        assert(0 <= v && v < size());\n        return _depth[v];\n    }\n\
+    \    /** @brief \u9802\u70B9 v \u306E\u90E8\u5206\u6728\u306E\u9AD8\u3055 */\n\
+    \    Cost height(long long v) const {\n        assert(0 <= v && v < size());\n\
+    \        return _height[v];\n    }\n    /** @brief \u9802\u70B9 v \u306E\u6839\
+    \u304B\u3089\u306E\u8FBA\u6570 */\n    long long unweighted_depth(long long v)\
+    \ const {\n        assert(0 <= v && v < size());\n        return _unweighted_depth[v];\n\
+    \    }\n    /** @brief \u9802\u70B9 v \u306E\u90E8\u5206\u6728\u306E\u9AD8\u3055\
+    \ (\u8FBA\u6570) */\n    long long unweighted_height(long long v) const {\n  \
+    \      assert(0 <= v && v < size());\n        return _unweighted_height[v];\n\
+    \    }\n    /** @brief \u9802\u70B9 v \u306E\u90E8\u5206\u6728\u306E\u9802\u70B9\
+    \u6570 */\n    long long subtree_size(long long v) const {\n        assert(0 <=\
+    \ v && v < size());\n        return _sz[v];\n    }\n    /** @brief \u884C\u304D\
+    \u304C\u3051\u9806 */\n    const std::vector<long long>& preorder() const { return\
+    \ _preorder; }\n    /** @brief \u5E30\u308A\u304C\u3051\u9806 */\n    const std::vector<long\
+    \ long>& postorder() const { return _postorder; }\n    /** @brief \u30AA\u30A4\
+    \u30E9\u30FC\u30C4\u30A2\u30FC (\u9802\u70B9\u3068\u8A2A\u554F\u56DE\u6570\u306E\
+    \u7D44) */\n    const std::vector<std::pair<long long, long long>>& euler_tour()\
+    \ const { return _euler_tour; }\n\n    RootedTree() = delete;\n\n    /**\n   \
+    \  * @brief \u89AA\u306E\u9802\u70B9\u306E\u30EA\u30B9\u30C8\u304B\u3089\u6839\
+    \u304C0\u306E\u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\
+    \u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @tparam T \u9802\u70B9\u756A\u53F7\
+    \u306E\u6574\u6570\u578B (long long \u3084 int)\n     * @param par_ \u9802\u70B9\
+    0\u4EE5\u5916\u306E\u89AA\u306E\u9802\u70B9\u306E\u30EA\u30B9\u30C8\n     * @param\
+    \ padding = -1 par\u306E\u9802\u70B9\u756A\u53F7\u3092\u3044\u304F\u3064\u305A\
+    \u3089\u3059\u304B\n     */\n    template <typename T = long long>\n    explicit\
+    \ RootedTree(const std::vector<T>& par_, long long padding = -1) : Tree<Cost>(par_.size()\
+    \ + 1), _root(0) {\n        static_assert(std::is_integral_v<T>, \"RootedTree:\
+    \ par_ must be a vector of integers\");\n        for (long long i = 0; i < static_cast<long\
+    \ long>(par_.size()); i++) {\n            this->add_edge(i + 1, par_[i] + padding);\n\
+    \        }\n        build();\n    }\n    /**\n     * @brief Tree\u304B\u3089\u6839\
+    \u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\
+    \u30AF\u30BF(\u30B3\u30D4\u30FC)\n     *\n     * @param tree Tree \u9802\u70B9\
+    \u65701\u4EE5\u4E0A\n     * @param root \u6839\n     */\n    RootedTree(const\
+    \ Tree<Cost>& tree, long long root) : Tree<Cost>(tree), _root(root) {\n      \
+    \  build();\n    }\n    /**\n     * @brief Tree\u304B\u3089\u6839\u4ED8\u304D\u6728\
+    \u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF(\u30E0\
+    \u30FC\u30D6)\n     *\n     * @param tree Tree\n     * @param root \u6839\n  \
+    \   */\n    RootedTree(Tree<Cost>&& tree, long long root) : Tree<Cost>(std::move(tree)),\
+    \ _root(root) {\n        build();\n    }\n\n    /**\n     * @brief \u30C0\u30D6\
+    \u30EA\u30F3\u30B0LCA\u304C\u4F7F\u3048\u308B\u6839\u4ED8\u304D\u6728\u3092\u5F97\
+    \u308B\n     *\n     * @return DoublingClimbTree<Cost> \u30C0\u30D6\u30EA\u30F3\
+    \u30B0\u6E08\u307F\u6839\u4ED8\u304D\u6728\u306E\u30AA\u30D6\u30B8\u30A7\u30AF\
+    \u30C8\n     */\n    [[nodiscard]]\n    DoublingClimbTree<Cost> build_lca() const&\
+    \ {\n        return DoublingClimbTree<Cost>(*this);\n    }\n\n    /**\n     *\
+    \ @brief \u30C0\u30D6\u30EA\u30F3\u30B0LCA\u304C\u4F7F\u3048\u308B\u6839\u4ED8\
+    \u304D\u6728\u3092\u5F97\u308B\n     *\n     * @return DoublingClimbTree<Cost>\
     \ \u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\u307F\u6839\u4ED8\u304D\u6728\u306E\u30AA\
     \u30D6\u30B8\u30A7\u30AF\u30C8\n     */\n    [[nodiscard]]\n    DoublingClimbTree<Cost>\
     \ build_lca() && {\n        return DoublingClimbTree<Cost>(std::move(*this));\n\
-    \    }\n\n   private:\n    void build() {\n        long long n = this->n;\n  \
-    \      assert(n > 0);\n        assert(0 <= root && root < n);\n        par.resize(n);\n\
-    \        par[root] = {root, -1, 0, -1};\n        child.resize(n);\n        depth.resize(n);\n\
-    \        unweighted_depth.resize(n);\n        height.resize(n);\n        unweighted_height.resize(n);\n\
-    \        sz.resize(n);\n        std::vector<int> iter(n);\n        std::stack<std::pair<int,\
-    \ int>> stk;\n        stk.emplace(root, 0);\n        while (!stk.empty()) {\n\
-    \            auto [u, cnt] = stk.top();\n            stk.pop();\n            euler_tour.emplace_back(u,\
-    \ cnt);\n            if (iter[u] == 0) preorder.push_back(u);\n            while\
-    \ (iter[u] < static_cast<int>(this->g[u].size()) && this->g[u][iter[u]].dst ==\
-    \ par[u]) iter[u]++;\n            if (iter[u] == static_cast<int>(this->g[u].size()))\
-    \ {\n                postorder.push_back(u);\n                sz[u] = 1;\n   \
-    \             height[u] = 0;\n                unweighted_height[u] = 0;\n    \
-    \            for (auto& e : child[u]) {\n                    sz[u] += sz[e.dst];\n\
-    \                    if (height[u] < height[e.dst] + e.cost) {\n             \
-    \           height[u] = height[e.dst] + e.cost;\n                    }\n     \
-    \               if (unweighted_height[u] < unweighted_height[e.dst] + 1) {\n \
-    \                       unweighted_height[u] = unweighted_height[e.dst] + 1;\n\
-    \                    }\n                }\n            } else {\n            \
-    \    auto& e = this->g[u][iter[u]++];\n                par[e.dst] = {e.dst, u,\
-    \ e.cost, e.id};\n                child[u].push_back(e);\n                depth[e.dst]\
-    \ = depth[u] + e.cost;\n                unweighted_depth[e.dst] = unweighted_depth[u]\
-    \ + 1;\n                stk.emplace(u, cnt + 1);\n                stk.emplace(e.dst,\
-    \ 0);\n            }\n        }\n    }\n};\n\n/**\n * @brief \u89AA\u9802\u70B9\
-    \u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\u307F\u6839\u4ED8\u304D\u6728\n *\n * @tparam\
-    \ Cost = long long \u8FBA\u306E\u91CD\u307F(\u6CE8: hop\u3067\u306F\u6839\u306E\
-    \u91CD\u307F\u306F\u8003\u3048\u306A\u3044)\n */\ntemplate <typename Cost = long\
-    \ long>\nclass DoublingClimbTree : private RootedTree<Cost> {\n   public:\n  \
-    \  using Edge = typename RootedTree<Cost>::Edge;\n    using RootedTree<Cost>::n;\n\
-    \    using RootedTree<Cost>::size;\n    using RootedTree<Cost>::m;\n    using\
-    \ RootedTree<Cost>::g;\n    using RootedTree<Cost>::operator[];\n    using RootedTree<Cost>::edges;\n\
-    \    using RootedTree<Cost>::graph;\n    using RootedTree<Cost>::root;\n    using\
-    \ RootedTree<Cost>::par;\n    using RootedTree<Cost>::child;\n    using RootedTree<Cost>::depth;\n\
-    \    using RootedTree<Cost>::height;\n    using RootedTree<Cost>::unweighted_depth;\n\
-    \    using RootedTree<Cost>::unweighted_height;\n    using RootedTree<Cost>::sz;\n\
+    \    }\n\n   private:\n    void build() {\n        long long n = this->size();\n\
+    \        assert(n > 0);\n        assert(0 <= _root && _root < n);\n        _par.resize(n);\n\
+    \        _par[_root] = {_root, -1, 0, -1};\n        _child.resize(n);\n      \
+    \  _depth.resize(n);\n        _unweighted_depth.resize(n);\n        _height.resize(n);\n\
+    \        _unweighted_height.resize(n);\n        _sz.resize(n);\n        std::vector<int>\
+    \ iter(n);\n        std::stack<std::pair<int, int>> stk;\n        stk.emplace(_root,\
+    \ 0);\n        while (!stk.empty()) {\n            auto [u, cnt] = stk.top();\n\
+    \            stk.pop();\n            _euler_tour.emplace_back(u, cnt);\n     \
+    \       if (iter[u] == 0) _preorder.push_back(u);\n            while (iter[u]\
+    \ < static_cast<int>((*this)[u].size()) && (*this)[u][iter[u]].dst == _par[u])\
+    \ iter[u]++;\n            if (iter[u] == static_cast<int>((*this)[u].size()))\
+    \ {\n                _postorder.push_back(u);\n                _sz[u] = 1;\n \
+    \               _height[u] = 0;\n                _unweighted_height[u] = 0;\n\
+    \                for (auto& e : _child[u]) {\n                    _sz[u] += _sz[e.dst];\n\
+    \                    if (_height[u] < _height[e.dst] + e.cost) {\n           \
+    \             _height[u] = _height[e.dst] + e.cost;\n                    }\n \
+    \                   if (_unweighted_height[u] < _unweighted_height[e.dst] + 1)\
+    \ {\n                        _unweighted_height[u] = _unweighted_height[e.dst]\
+    \ + 1;\n                    }\n                }\n            } else {\n     \
+    \           auto& e = (*this)[u][iter[u]++];\n                _par[e.dst] = {e.dst,\
+    \ u, e.cost, e.id};\n                _child[u].push_back(e);\n               \
+    \ _depth[e.dst] = _depth[u] + e.cost;\n                _unweighted_depth[e.dst]\
+    \ = _unweighted_depth[u] + 1;\n                stk.emplace(u, cnt + 1);\n    \
+    \            stk.emplace(e.dst, 0);\n            }\n        }\n    }\n};\n\n/**\n\
+    \ * @brief \u89AA\u9802\u70B9\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\u307F\u6839\u4ED8\
+    \u304D\u6728\n *\n * @tparam Cost = long long \u8FBA\u306E\u91CD\u307F(\u6CE8\
+    : hop\u3067\u306F\u6839\u306E\u91CD\u307F\u306F\u8003\u3048\u306A\u3044)\n */\n\
+    template <typename Cost = long long>\nclass DoublingClimbTree : private RootedTree<Cost>\
+    \ {\n   public:\n    using Edge = typename RootedTree<Cost>::Edge;\n    using\
+    \ RootedTree<Cost>::size;\n    using RootedTree<Cost>::edge_count;\n    using\
+    \ RootedTree<Cost>::operator[];\n    using RootedTree<Cost>::edges;\n    using\
+    \ RootedTree<Cost>::graph;\n    using RootedTree<Cost>::root;\n    using RootedTree<Cost>::parent_edge;\n\
+    \    using RootedTree<Cost>::children;\n    using RootedTree<Cost>::depth;\n \
+    \   using RootedTree<Cost>::height;\n    using RootedTree<Cost>::unweighted_depth;\n\
+    \    using RootedTree<Cost>::unweighted_height;\n    using RootedTree<Cost>::subtree_size;\n\
     \    using RootedTree<Cost>::preorder;\n    using RootedTree<Cost>::postorder;\n\
-    \    using RootedTree<Cost>::euler_tour;\n\n    long long h;                 \
-    \                      //!< \u30C0\u30D6\u30EA\u30F3\u30B0\u306E\u56DE\u6570\n\
-    \    std::vector<std::vector<long long>> doubling_par;  //!< j\u304B\u3089(1<<i)\u9802\
-    \u70B9\u767B\u3063\u305F\u9802\u70B9(\u5B58\u5728\u3057\u306A\u3044\u5834\u5408\
-    \u306F-1)\n\n    DoublingClimbTree() = delete;\n\n    /**\n     * @brief RootedTree\u304B\
-    \u3089\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\u307F\u6839\u4ED8\u304D\u6728\u3092\
-    \u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF(\u30B3\u30D4\
-    \u30FC)\n     *\n     * @param tree RootedTree\n     */\n    explicit DoublingClimbTree(const\
-    \ RootedTree<Cost>& tree) : RootedTree<Cost>(tree) {\n        build();\n    }\n\
-    \n    /**\n     * @brief RootedTree\u304B\u3089\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\
+    \    using RootedTree<Cost>::euler_tour;\n\n   private:\n    long long h;    \
+    \                                   //!< \u30C0\u30D6\u30EA\u30F3\u30B0\u306E\u56DE\
+    \u6570\n    std::vector<std::vector<long long>> doubling_par;  //!< j\u304B\u3089\
+    (1<<i)\u9802\u70B9\u767B\u3063\u305F\u9802\u70B9(\u5B58\u5728\u3057\u306A\u3044\
+    \u5834\u5408\u306F-1)\n\n   public:\n    DoublingClimbTree() = delete;\n\n   \
+    \ /**\n     * @brief RootedTree\u304B\u3089\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\
     \u307F\u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\
-    \u30C8\u30E9\u30AF\u30BF(\u30E0\u30FC\u30D6)\n     *\n     * @param tree RootedTree\n\
-    \     */\n    DoublingClimbTree(RootedTree<Cost>&& tree) : RootedTree<Cost>(std::move(tree))\
-    \ {\n        build();\n    }\n\n    /**\n     * @brief \u89AA\u306E\u9802\u70B9\
-    \u306E\u30EA\u30B9\u30C8\u304B\u3089\u6839\u304C0\u306E\u30C0\u30D6\u30EA\u30F3\
-    \u30B0\u6E08\u307F\u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\
-    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @tparam T \u9802\u70B9\u756A\
-    \u53F7\u306E\u6574\u6570\u578B (long long \u3084 int)\n     * @param par_ \u9802\
-    \u70B90\u4EE5\u5916\u306E\u89AA\u306E\u9802\u70B9\u306E\u30EA\u30B9\u30C8\n  \
-    \   * @param padding = -1 par\u306E\u9802\u70B9\u756A\u53F7\u3092\u3044\u304F\u3064\
-    \u305A\u3089\u3059\u304B\n     */\n    template <typename T = long long>\n   \
-    \ explicit DoublingClimbTree(const std::vector<T>& par_, long long padding = -1)\
-    \ : RootedTree<Cost>(par_, padding) {\n        build();\n    }\n    /**\n    \
-    \ * @brief Tree\u304B\u3089\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\u307F\u6839\u4ED8\
-    \u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\
-    \u30BF(\u30B3\u30D4\u30FC)\n     *\n     * @param tree Tree\n     * @param root\
-    \ \u6839\n     */\n    DoublingClimbTree(const Tree<Cost>& tree, long long root)\
-    \ : RootedTree<Cost>(tree, root) {\n        build();\n    }\n    /**\n     * @brief\
-    \ Tree\u304B\u3089\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\u307F\u6839\u4ED8\u304D\
+    \u30C8\u30E9\u30AF\u30BF(\u30B3\u30D4\u30FC)\n     *\n     * @param tree RootedTree\n\
+    \     */\n    explicit DoublingClimbTree(const RootedTree<Cost>& tree) : RootedTree<Cost>(tree)\
+    \ {\n        build();\n    }\n\n    /**\n     * @brief RootedTree\u304B\u3089\u30C0\
+    \u30D6\u30EA\u30F3\u30B0\u6E08\u307F\u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\
+    \u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF(\u30E0\u30FC\u30D6)\n \
+    \    *\n     * @param tree RootedTree\n     */\n    DoublingClimbTree(RootedTree<Cost>&&\
+    \ tree) : RootedTree<Cost>(std::move(tree)) {\n        build();\n    }\n\n   \
+    \ /**\n     * @brief \u89AA\u306E\u9802\u70B9\u306E\u30EA\u30B9\u30C8\u304B\u3089\
+    \u6839\u304C0\u306E\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\u307F\u6839\u4ED8\u304D\
     \u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\
-    (\u30E0\u30FC\u30D6)\n     *\n     * @param tree Tree\n     * @param root \u6839\
-    \n     */\n    DoublingClimbTree(Tree<Cost>&& tree, long long root) : RootedTree<Cost>(std::move(tree),\
-    \ root) {\n        build();\n    }\n\n    /**\n     * @brief \u9802\u70B9u\u304B\
-    \u3089k\u56DE\u3092\u6839\u306E\u65B9\u5411\u306B\u9061\u3063\u305F\u9802\u70B9\
-    \n     *\n     * @param u \u5143\u306E\u9802\u70B9\n     * @param k \u767B\u308B\
-    \u6BB5\u6570\n     * @return long long k\u56DE\u767B\u3063\u305F\u9802\u70B9 (\u5B58\
-    \u5728\u3057\u306A\u3051\u308C\u3070 -1)\n     */\n    long long hop(long long\
-    \ u, long long k) const {\n        assert(0 <= u && u < this->n && k >= 0);\n\
-    \        if (k > this->unweighted_depth[u]) return -1;\n        for (long long\
-    \ i = 0; i < h; i++) {\n            if (k >> i & 1) u = doubling_par[i][u];\n\
-    \            if (u == -1) return -1;\n        }\n        return u;\n    }\n\n\
-    \    /**\n     * @brief \u6700\u5C0F\u5171\u901A\u7956\u5148\n     *\n     * @param\
-    \ u \u9802\u70B91\n     * @param v \u9802\u70B92\n     * @return long long LCA\u306E\
-    \u9802\u70B9\u756A\u53F7\n     */\n    long long lca(long long u, long long v)\
-    \ const {\n        assert(0 <= u && u < this->n && 0 <= v && v < this->n);\n \
-    \       if (this->unweighted_depth[u] > this->unweighted_depth[v]) std::swap(u,\
-    \ v);\n        v = hop(v, this->unweighted_depth[v] - this->unweighted_depth[u]);\n\
+    \n     *\n     * @tparam T \u9802\u70B9\u756A\u53F7\u306E\u6574\u6570\u578B (long\
+    \ long \u3084 int)\n     * @param par_ \u9802\u70B90\u4EE5\u5916\u306E\u89AA\u306E\
+    \u9802\u70B9\u306E\u30EA\u30B9\u30C8\n     * @param padding = -1 par\u306E\u9802\
+    \u70B9\u756A\u53F7\u3092\u3044\u304F\u3064\u305A\u3089\u3059\u304B\n     */\n\
+    \    template <typename T = long long>\n    explicit DoublingClimbTree(const std::vector<T>&\
+    \ par_, long long padding = -1) : RootedTree<Cost>(par_, padding) {\n        build();\n\
+    \    }\n    /**\n     * @brief Tree\u304B\u3089\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\
+    \u307F\u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\
+    \u30C8\u30E9\u30AF\u30BF(\u30B3\u30D4\u30FC)\n     *\n     * @param tree Tree\n\
+    \     * @param root \u6839\n     */\n    DoublingClimbTree(const Tree<Cost>& tree,\
+    \ long long root) : RootedTree<Cost>(tree, root) {\n        build();\n    }\n\
+    \    /**\n     * @brief Tree\u304B\u3089\u30C0\u30D6\u30EA\u30F3\u30B0\u6E08\u307F\
+    \u6839\u4ED8\u304D\u6728\u3092\u69CB\u7BC9\u3059\u308B\u30B3\u30F3\u30B9\u30C8\
+    \u30E9\u30AF\u30BF(\u30E0\u30FC\u30D6)\n     *\n     * @param tree Tree\n    \
+    \ * @param root \u6839\n     */\n    DoublingClimbTree(Tree<Cost>&& tree, long\
+    \ long root) : RootedTree<Cost>(std::move(tree), root) {\n        build();\n \
+    \   }\n\n    /**\n     * @brief \u9802\u70B9u\u304B\u3089k\u56DE\u3092\u6839\u306E\
+    \u65B9\u5411\u306B\u9061\u3063\u305F\u9802\u70B9\n     *\n     * @param u \u5143\
+    \u306E\u9802\u70B9\n     * @param k \u767B\u308B\u6BB5\u6570\n     * @return long\
+    \ long k\u56DE\u767B\u3063\u305F\u9802\u70B9 (\u5B58\u5728\u3057\u306A\u3051\u308C\
+    \u3070 -1)\n     */\n    long long hop(long long u, long long k) const {\n   \
+    \     assert(0 <= u && u < this->size() && k >= 0);\n        if (k > this->unweighted_depth(u))\
+    \ return -1;\n        for (long long i = 0; i < h; i++) {\n            if (k >>\
+    \ i & 1) u = doubling_par[i][u];\n            if (u == -1) return -1;\n      \
+    \  }\n        return u;\n    }\n\n    /**\n     * @brief \u6700\u5C0F\u5171\u901A\
+    \u7956\u5148\n     *\n     * @param u \u9802\u70B91\n     * @param v \u9802\u70B9\
+    2\n     * @return long long LCA\u306E\u9802\u70B9\u756A\u53F7\n     */\n    long\
+    \ long lca(long long u, long long v) const {\n        assert(0 <= u && u < this->size()\
+    \ && 0 <= v && v < this->size());\n        if (this->unweighted_depth(u) > this->unweighted_depth(v))\
+    \ std::swap(u, v);\n        v = hop(v, this->unweighted_depth(v) - this->unweighted_depth(u));\n\
     \        if (u == v) return u;\n        for (long long i = h - 1; i >= 0; i--)\
     \ {\n            long long nu = doubling_par[i][u];\n            long long nv\
     \ = doubling_par[i][v];\n            if (nu == -1) continue;\n            if (nu\
     \ != nv) {\n                u = nu;\n                v = nv;\n            }\n\
-    \        }\n        return this->par[u];\n    }\n\n    /**\n     * @brief \u9802\
-    \u70B9\u9593\u8DDD\u96E2(\u91CD\u307F\u4ED8\u304D)\n     *\n     * @param u \u9802\
-    \u70B91\n     * @param v \u9802\u70B92\n     * @return Cost u\u3068v\u9593\u306E\
-    \u6700\u77ED\u7D4C\u8DEF\u306E\u8FBA\u306E\u91CD\u307F\u306E\u548C\n     */\n\
-    \    Cost dist(long long u, long long v) const {\n        assert(0 <= u && u <\
-    \ this->n && 0 <= v && v < this->n);\n        return this->depth[u] + this->depth[v]\
-    \ - this->depth[lca(u, v)] * 2;\n    }\n\n   private:\n    void build() {\n  \
-    \      long long n = this->n;\n        h = 1;\n        while ((1LL << h) < n)\
-    \ h++;\n        doubling_par.assign(h, std::vector<long long>(n, -1));\n     \
-    \   for (long long i = 0; i < n; i++) doubling_par[0][i] = this->par[i];\n   \
-    \     for (long long i = 0; i < h - 1; i++) {\n            for (long long j =\
-    \ 0; j < n; j++) {\n                if (doubling_par[i][j] != -1) {\n        \
-    \            doubling_par[i + 1][j] = doubling_par[i][doubling_par[i][j]];\n \
-    \               }\n            }\n        }\n    }\n};\n#line 14 \"src/graph/lowlink.hpp\"\
+    \        }\n        return this->parent_edge(u);\n    }\n\n    /**\n     * @brief\
+    \ \u9802\u70B9\u9593\u8DDD\u96E2(\u91CD\u307F\u4ED8\u304D)\n     *\n     * @param\
+    \ u \u9802\u70B91\n     * @param v \u9802\u70B92\n     * @return Cost u\u3068\
+    v\u9593\u306E\u6700\u77ED\u7D4C\u8DEF\u306E\u8FBA\u306E\u91CD\u307F\u306E\u548C\
+    \n     */\n    Cost dist(long long u, long long v) const {\n        assert(0 <=\
+    \ u && u < this->size() && 0 <= v && v < this->size());\n        return this->depth(u)\
+    \ + this->depth(v) - this->depth(lca(u, v)) * 2;\n    }\n\n   private:\n    void\
+    \ build() {\n        long long n = this->size();\n        h = 1;\n        while\
+    \ ((1LL << h) < n) h++;\n        doubling_par.assign(h, std::vector<long long>(n,\
+    \ -1));\n        for (long long i = 0; i < n; i++) doubling_par[0][i] = this->parent_edge(i);\n\
+    \        for (long long i = 0; i < h - 1; i++) {\n            for (long long j\
+    \ = 0; j < n; j++) {\n                if (doubling_par[i][j] != -1) {\n      \
+    \              doubling_par[i + 1][j] = doubling_par[i][doubling_par[i][j]];\n\
+    \                }\n            }\n        }\n    }\n};\n#line 14 \"src/graph/lowlink.hpp\"\
     \n\n/**\n * @brief \u7121\u5411\u30B0\u30E9\u30D5\u306E lowlink \u3092\u6C42\u3081\
     \u3001\u95A2\u7BC0\u70B9\u30FB\u6A4B\u30FB\u4E8C\u91CD\u8FBA\u9023\u7D50\u6210\
     \u5206\u30FB\u4E8C\u91CD\u9802\u70B9\u9023\u7D50\u6210\u5206\u3092\u6C42\u3081\
@@ -360,43 +387,49 @@ data:
     \    std::vector<long long> arts, bridge_ids;\n    std::vector<int> comp;\n  \
     \  std::vector<std::vector<long long>> groups;\n    std::vector<std::vector<long\
     \ long>> bc_groups, bc_edge_groups;\n    std::vector<long long> bc_edge_id;\n\n\
-    \   public:\n    std::vector<long long> ord;  //!< DFS \u3067\u8A2A\u308C\u305F\
-    \u9806\u756A\n    std::vector<long long> low;  //!< DFS \u6728\u306E\u5B50\u5B6B\
+    \    std::vector<long long> ord_data;  //!< DFS \u3067\u8A2A\u308C\u305F\u9806\
+    \u756A\n    std::vector<long long> low_data;  //!< DFS \u6728\u306E\u5B50\u5B6B\
     \u304B\u3089\u3001\u6728\u306E\u8FBA\u3092\u9006\u306B\u305F\u3069\u3089\u305A\
     \u306B 1 \u672C\u306E\u5F8C\u9000\u8FBA\u3067\u884C\u3051\u308B\u9802\u70B9\u306E\
-    \ ord \u306E\u6700\u5C0F\u5024\n\n    explicit LowLink(const Graph<Cost>& graph)\
-    \ : n(graph.n), art(n), bridge(graph.m), comp(n, -1), bc_edge_id(graph.m, -1),\
-    \ ord(n, -1), low(n) {\n        std::vector<int> parent(n, -1), parent_edge(n,\
+    \ ord \u306E\u6700\u5C0F\u5024\n\n   public:\n    /** @brief \u9802\u70B9 v \u3092\
+    \ DFS \u3067\u8A2A\u308C\u305F\u9806\u756A */\n    long long ord(long long v)\
+    \ const {\n        assert(0 <= v && v < n);\n        return ord_data[v];\n   \
+    \ }\n    /** @brief \u9802\u70B9 v \u306E lowlink \u306E\u5024 */\n    long long\
+    \ low(long long v) const {\n        assert(0 <= v && v < n);\n        return low_data[v];\n\
+    \    }\n\n    explicit LowLink(const Graph<Cost>& graph) : n(graph.size()), art(n),\
+    \ bridge(graph.edge_count()), comp(n, -1), bc_edge_id(graph.edge_count(), -1),\
+    \ ord_data(n, -1), low_data(n) {\n        std::vector<int> parent(n, -1), parent_edge(n,\
     \ -1), iter(n, 0);\n        std::vector<long long> st;\n        // \u4E8C\u91CD\
     \u9802\u70B9\u9023\u7D50\u6210\u5206\u3092\u4F5C\u308B\u305F\u3081\u306B\u3001\
     \u901A\u3063\u305F\u8FBA (\u6728\u306E\u8FBA\u3068\u3001\u5B50\u5B6B\u304B\u3089\
     \u7956\u5148\u3078\u306E\u5F8C\u9000\u8FBA) \u3092\u7A4D\u3080\n        std::vector<long\
-    \ long> edge_st, edge_src(graph.m), edge_dst(graph.m), last_block(n, -1);\n  \
-    \      auto push_edge = [&](long long id, long long a, long long b) {\n      \
-    \      edge_st.push_back(id);\n            edge_src[id] = a, edge_dst[id] = b;\n\
-    \        };\n        long long k = 0;\n        for (long long root = 0; root <\
-    \ n; root++) {\n            if (ord[root] != -1) continue;\n            int root_children\
-    \ = 0;\n            ord[root] = low[root] = k++;\n            st.push_back(root);\n\
-    \            while (!st.empty()) {\n                long long v = st.back();\n\
-    \                if (iter[v] < static_cast<int>(graph[v].size())) {\n        \
-    \            const auto& e = graph[v][iter[v]++];\n                    if (e.id\
-    \ == parent_edge[v]) continue;\n                    long long u = e.dst;\n   \
-    \                 if (ord[u] == -1) {\n                        parent[u] = v;\n\
-    \                        parent_edge[u] = e.id;\n                        ord[u]\
-    \ = low[u] = k++;\n                        st.push_back(u);\n                \
-    \        push_edge(e.id, v, u);\n                    } else {\n              \
-    \          low[v] = std::min(low[v], ord[u]);\n                        // \u5F8C\
-    \u9000\u8FBA\u306F\u5B50\u5B6B\u306E\u5074\u304B\u3089\u898B\u305F\u3068\u304D\
-    \u306B 1 \u56DE\u3060\u3051\u7A4D\u3080 (\u81EA\u5DF1\u30EB\u30FC\u30D7\u306F\u7A4D\
-    \u307E\u306A\u3044)\n                        if (ord[u] < ord[v]) push_edge(e.id,\
-    \ v, u);\n                    }\n                    continue;\n             \
-    \   }\n                st.pop_back();\n                if (v == root) continue;\n\
-    \                long long p = parent[v];\n                low[p] = std::min(low[p],\
-    \ low[v]);\n                if (low[v] > ord[p]) bridge[parent_edge[v]] = true;\n\
-    \                if (low[v] >= ord[p]) {\n                    // \u89AA\u3068\u306E\
-    \u8FBA\u307E\u3067\u304C 1 \u3064\u306E\u4E8C\u91CD\u9802\u70B9\u9023\u7D50\u6210\
-    \u5206\n                    long long b = bc_groups.size();\n                \
-    \    bc_groups.emplace_back();\n                    bc_edge_groups.emplace_back();\n\
+    \ long> edge_st, edge_src(graph.edge_count()), edge_dst(graph.edge_count()), last_block(n,\
+    \ -1);\n        auto push_edge = [&](long long id, long long a, long long b) {\n\
+    \            edge_st.push_back(id);\n            edge_src[id] = a, edge_dst[id]\
+    \ = b;\n        };\n        long long k = 0;\n        for (long long root = 0;\
+    \ root < n; root++) {\n            if (ord_data[root] != -1) continue;\n     \
+    \       int root_children = 0;\n            ord_data[root] = low_data[root] =\
+    \ k++;\n            st.push_back(root);\n            while (!st.empty()) {\n \
+    \               long long v = st.back();\n                if (iter[v] < static_cast<int>(graph[v].size()))\
+    \ {\n                    const auto& e = graph[v][iter[v]++];\n              \
+    \      if (e.id == parent_edge[v]) continue;\n                    long long u\
+    \ = e.dst;\n                    if (ord_data[u] == -1) {\n                   \
+    \     parent[u] = v;\n                        parent_edge[u] = e.id;\n       \
+    \                 ord_data[u] = low_data[u] = k++;\n                        st.push_back(u);\n\
+    \                        push_edge(e.id, v, u);\n                    } else {\n\
+    \                        low_data[v] = std::min(low_data[v], ord_data[u]);\n \
+    \                       // \u5F8C\u9000\u8FBA\u306F\u5B50\u5B6B\u306E\u5074\u304B\
+    \u3089\u898B\u305F\u3068\u304D\u306B 1 \u56DE\u3060\u3051\u7A4D\u3080 (\u81EA\u5DF1\
+    \u30EB\u30FC\u30D7\u306F\u7A4D\u307E\u306A\u3044)\n                        if\
+    \ (ord_data[u] < ord_data[v]) push_edge(e.id, v, u);\n                    }\n\
+    \                    continue;\n                }\n                st.pop_back();\n\
+    \                if (v == root) continue;\n                long long p = parent[v];\n\
+    \                low_data[p] = std::min(low_data[p], low_data[v]);\n         \
+    \       if (low_data[v] > ord_data[p]) bridge[parent_edge[v]] = true;\n      \
+    \          if (low_data[v] >= ord_data[p]) {\n                    // \u89AA\u3068\
+    \u306E\u8FBA\u307E\u3067\u304C 1 \u3064\u306E\u4E8C\u91CD\u9802\u70B9\u9023\u7D50\
+    \u6210\u5206\n                    long long b = bc_groups.size();\n          \
+    \          bc_groups.emplace_back();\n                    bc_edge_groups.emplace_back();\n\
     \                    while (true) {\n                        long long id = edge_st.back();\n\
     \                        edge_st.pop_back();\n                        bc_edge_id[id]\
     \ = b;\n                        bc_edge_groups[b].push_back(id);\n           \
@@ -404,34 +437,34 @@ data:
     \                 if (last_block[w] != b) last_block[w] = b, bc_groups[b].push_back(w);\n\
     \                        }\n                        if (id == parent_edge[v])\
     \ break;\n                    }\n                }\n                if (p == root)\n\
-    \                    root_children++;\n                else if (low[v] >= ord[p])\n\
-    \                    art[p] = true;\n            }\n            if (root_children\
-    \ >= 2) art[root] = true;\n            // \u307B\u304B\u306E\u9802\u70B9\u3068\
-    \u3064\u306A\u304C\u3063\u3066\u3044\u306A\u3044\u9802\u70B9\u306F\u3001\u305D\
-    \u308C\u3060\u3051\u3067 1 \u3064\u306E\u4E8C\u91CD\u9802\u70B9\u9023\u7D50\u6210\
-    \u5206\n            if (root_children == 0) {\n                bc_groups.push_back({root});\n\
-    \                bc_edge_groups.emplace_back();\n            }\n        }\n  \
-    \      for (long long v = 0; v < n; v++) {\n            if (art[v]) arts.push_back(v);\n\
-    \        }\n        for (long long id = 0; id < graph.m; id++) {\n           \
-    \ if (bridge[id]) bridge_ids.push_back(id);\n        }\n        // \u6A4B\u3092\
-    \u901A\u3089\u305A\u306B\u884C\u3051\u308B\u9802\u70B9\u3092\u307E\u3068\u3081\
-    \u308B\n        for (long long s = 0; s < n; s++) {\n            if (comp[s] !=\
-    \ -1) continue;\n            comp[s] = groups.size();\n            groups.push_back({s});\n\
-    \            for (long long i = 0; i < static_cast<long long>(groups.back().size());\
-    \ i++) {\n                long long v = groups.back()[i];\n                for\
-    \ (const auto& e : graph[v]) {\n                    if (bridge[e.id] || comp[e.dst]\
-    \ != -1) continue;\n                    comp[e.dst] = comp[s];\n             \
-    \       groups.back().push_back(e.dst);\n                }\n            }\n  \
-    \      }\n    }\n\n    /**\n     * @brief \u9802\u70B9\u6570\n     */\n    long\
-    \ long size() const { return n; }\n\n    /**\n     * @brief v \u304C\u95A2\u7BC0\
-    \u70B9 (\u53D6\u308A\u9664\u304F\u3068\u9023\u7D50\u6210\u5206\u304C\u5897\u3048\
-    \u308B\u9802\u70B9) \u304B\n     */\n    bool is_articulation_point(long long\
-    \ v) const {\n        assert(0 <= v && v < n);\n        return art[v];\n    }\n\
-    \    /**\n     * @brief \u756A\u53F7 id \u306E\u8FBA\u304C\u6A4B (\u53D6\u308A\
-    \u9664\u304F\u3068\u9023\u7D50\u6210\u5206\u304C\u5897\u3048\u308B\u8FBA) \u304B\
-    \n     */\n    bool is_bridge(long long id) const {\n        assert(0 <= id &&\
-    \ id < static_cast<long long>(bridge.size()));\n        return bridge[id];\n \
-    \   }\n    /**\n     * @brief \u95A2\u7BC0\u70B9\u306E\u9802\u70B9\u756A\u53F7\
+    \                    root_children++;\n                else if (low_data[v] >=\
+    \ ord_data[p])\n                    art[p] = true;\n            }\n          \
+    \  if (root_children >= 2) art[root] = true;\n            // \u307B\u304B\u306E\
+    \u9802\u70B9\u3068\u3064\u306A\u304C\u3063\u3066\u3044\u306A\u3044\u9802\u70B9\
+    \u306F\u3001\u305D\u308C\u3060\u3051\u3067 1 \u3064\u306E\u4E8C\u91CD\u9802\u70B9\
+    \u9023\u7D50\u6210\u5206\n            if (root_children == 0) {\n            \
+    \    bc_groups.push_back({root});\n                bc_edge_groups.emplace_back();\n\
+    \            }\n        }\n        for (long long v = 0; v < n; v++) {\n     \
+    \       if (art[v]) arts.push_back(v);\n        }\n        for (long long id =\
+    \ 0; id < graph.edge_count(); id++) {\n            if (bridge[id]) bridge_ids.push_back(id);\n\
+    \        }\n        // \u6A4B\u3092\u901A\u3089\u305A\u306B\u884C\u3051\u308B\u9802\
+    \u70B9\u3092\u307E\u3068\u3081\u308B\n        for (long long s = 0; s < n; s++)\
+    \ {\n            if (comp[s] != -1) continue;\n            comp[s] = groups.size();\n\
+    \            groups.push_back({s});\n            for (long long i = 0; i < static_cast<long\
+    \ long>(groups.back().size()); i++) {\n                long long v = groups.back()[i];\n\
+    \                for (const auto& e : graph[v]) {\n                    if (bridge[e.id]\
+    \ || comp[e.dst] != -1) continue;\n                    comp[e.dst] = comp[s];\n\
+    \                    groups.back().push_back(e.dst);\n                }\n    \
+    \        }\n        }\n    }\n\n    /**\n     * @brief \u9802\u70B9\u6570\n  \
+    \   */\n    long long size() const { return n; }\n\n    /**\n     * @brief v \u304C\
+    \u95A2\u7BC0\u70B9 (\u53D6\u308A\u9664\u304F\u3068\u9023\u7D50\u6210\u5206\u304C\
+    \u5897\u3048\u308B\u9802\u70B9) \u304B\n     */\n    bool is_articulation_point(long\
+    \ long v) const {\n        assert(0 <= v && v < n);\n        return art[v];\n\
+    \    }\n    /**\n     * @brief \u756A\u53F7 id \u306E\u8FBA\u304C\u6A4B (\u53D6\
+    \u308A\u9664\u304F\u3068\u9023\u7D50\u6210\u5206\u304C\u5897\u3048\u308B\u8FBA\
+    ) \u304B\n     */\n    bool is_bridge(long long id) const {\n        assert(0\
+    \ <= id && id < static_cast<long long>(bridge.size()));\n        return bridge[id];\n\
+    \    }\n    /**\n     * @brief \u95A2\u7BC0\u70B9\u306E\u9802\u70B9\u756A\u53F7\
     \u306E\u6607\u9806\u306E\u30EA\u30B9\u30C8\n     */\n    const std::vector<long\
     \ long>& articulation_points() const { return arts; }\n    /**\n     * @brief\
     \ \u6A4B\u306E\u8FBA\u306E\u756A\u53F7\u306E\u6607\u9806\u306E\u30EA\u30B9\u30C8\
@@ -674,53 +707,57 @@ data:
     \            }\n        };\n        used[s] = true;\n        dfs(s);\n    }\n\
     \    std::vector<int> res(m);\n    for (int i = 0; i < m; i++) res[i] = es[i].first\
     \ == es[i].second ? -1 : uf.leader(i);\n    return res;\n}\n\nint main() {\n \
-    \   std::mt19937 rng(314);\n    bool ok = true;\n    for (int rep = 0; rep < 3000\
-    \ && ok; rep++) {\n        int n = rng() % 9 + 1, m = rng() % 14;\n        Graph<int>\
-    \ g(n);\n        std::vector<std::pair<int, int>> es;\n        for (int i = 0;\
-    \ i < m; i++) {\n            int u = rng() % n, v = rng() % n;  // \u81EA\u5DF1\
-    \u30EB\u30FC\u30D7\u3068\u591A\u91CD\u8FBA\u3082\u542B\u3080\n            g.add_edge(u,\
-    \ v);\n            es.emplace_back(u, v);\n        }\n        LowLink ll(g);\n\
-    \        int base = count_components(n, es, -1, -1);\n        std::vector<long\
-    \ long> arts, bridges;\n        for (int v = 0; v < n; v++) {\n            //\
-    \ v \u3092\u53D6\u308A\u9664\u3044\u305F\u3068\u304D\u3001\u6B8B\u308A\u306E\u9802\
-    \u70B9\u306E\u9023\u7D50\u6210\u5206\u304C\u5897\u3048\u308B\u304B\n         \
-    \   // (v \u304C\u307B\u304B\u306E\u9802\u70B9\u3068\u3064\u306A\u304C\u3063\u3066\
-    \u3044\u306A\u3051\u308C\u3070\u3001v \u306E\u5206\u3060\u3051 1 \u6E1B\u308B\u306E\
-    \u304C\u666E\u901A)\n            bool isolated = true;\n            for (auto\
-    \ [a, b] : es) isolated &= !((a == v || b == v) && a != b);\n            bool\
-    \ art = count_components(n, es, v, -1) > base - (isolated ? 1 : 0);\n        \
-    \    if (art) arts.push_back(v);\n            if (ll.is_articulation_point(v)\
-    \ != art) ok = false;\n        }\n        for (int i = 0; i < m; i++) {\n    \
-    \        bool br = count_components(n, es, -1, i) > base;\n            if (br)\
-    \ bridges.push_back(i);\n            if (ll.is_bridge(i) != br) ok = false;\n\
-    \        }\n        if (ll.articulation_points() != arts || ll.bridges() != bridges)\
-    \ ok = false;\n\n        // \u4E8C\u91CD\u8FBA\u9023\u7D50\u6210\u5206: \u6A4B\
-    \u3092\u3059\u3079\u3066\u53D6\u308A\u9664\u3044\u305F\u3068\u304D\u306E\u9023\
-    \u7D50\u6210\u5206\u3068\u4E00\u81F4\u3059\u308B\n        UnionFind uf(n);\n \
-    \       for (int i = 0; i < m; i++) {\n            if (!ll.is_bridge(i)) uf.merge(es[i].first,\
-    \ es[i].second);\n        }\n        const auto& groups = ll.two_edge_connected_groups();\n\
-    \        int total = 0;\n        for (int k = 0; k < static_cast<int>(groups.size());\
-    \ k++) {\n            total += groups[k].size();\n            for (int v : groups[k])\
-    \ {\n                if (ll.two_edge_connected_group_id(v) != k || !uf.same(v,\
-    \ groups[k][0])) ok = false;\n            }\n        }\n        int uf_groups\
-    \ = 0;\n        for (int v = 0; v < n; v++) uf_groups += uf.leader(v) == v;\n\
-    \        if (total != n || static_cast<int>(groups.size()) != uf_groups) ok =\
-    \ false;\n\n        // \u4E8C\u91CD\u9802\u70B9\u9023\u7D50\u6210\u5206: \u8FBA\
-    \u306E\u7D44\u5206\u3051\u304C\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u4E00\u81F4\
-    \u3059\u308B\n        std::vector<int> naive = naive_edge_blocks(n, es);\n   \
-    \     const auto& bc = ll.two_vertex_connected_groups();\n        const auto&\
-    \ bce = ll.two_vertex_connected_edge_groups();\n        if (bc.size() != bce.size())\
-    \ ok = false;\n        for (int i = 0; i < m && ok; i++) {\n            for (int\
-    \ j = 0; j < m; j++) {\n                if (naive[i] == -1 || naive[j] == -1)\
-    \ continue;\n                if ((naive[i] == naive[j]) != (ll.two_vertex_connected_group_id(i)\
-    \ == ll.two_vertex_connected_group_id(j))) ok = false;\n            }\n      \
-    \      if ((naive[i] == -1) != (ll.two_vertex_connected_group_id(i) == -1)) ok\
-    \ = false;\n        }\n        // \u6210\u5206\u306E\u9802\u70B9\u306F\u8FBA\u306E\
-    \u7AEF\u70B9\u3067\u3001\u8FBA\u306E\u306A\u3044\u6210\u5206\u306F\u307B\u304B\
-    \u306E\u9802\u70B9\u3068\u3064\u306A\u304C\u3063\u3066\u3044\u306A\u3044 1 \u9802\
-    \u70B9\n        std::vector<int> block_count(n, 0);\n        for (int b = 0; b\
-    \ < static_cast<int>(bc.size()) && ok; b++) {\n            std::set<long long>\
-    \ ends;\n            for (long long id : bce[b]) {\n                if (ll.two_vertex_connected_group_id(id)\
+    \   std::mt19937 rng(314);\n    bool ok = true;\n    {\n        Graph<> g(5);\n\
+    \        g.add_edge(0, 1);\n        g.add_edge(1, 2);\n        g.add_edge(2, 0);\n\
+    \        g.add_edge(2, 3);\n        LowLink ll(g);\n        const std::vector<long\
+    \ long> expected_low = {0, 0, 0, 3, 4};\n        for (long long v = 0; v < 5;\
+    \ v++) {\n            if (ll.ord(v) != v || ll.low(v) != expected_low[v]) ok =\
+    \ false;\n        }\n    }\n    for (int rep = 0; rep < 3000 && ok; rep++) {\n\
+    \        int n = rng() % 9 + 1, m = rng() % 14;\n        Graph<int> g(n);\n  \
+    \      std::vector<std::pair<int, int>> es;\n        for (int i = 0; i < m; i++)\
+    \ {\n            int u = rng() % n, v = rng() % n;  // \u81EA\u5DF1\u30EB\u30FC\
+    \u30D7\u3068\u591A\u91CD\u8FBA\u3082\u542B\u3080\n            g.add_edge(u, v);\n\
+    \            es.emplace_back(u, v);\n        }\n        LowLink ll(g);\n     \
+    \   int base = count_components(n, es, -1, -1);\n        std::vector<long long>\
+    \ arts, bridges;\n        for (int v = 0; v < n; v++) {\n            // v \u3092\
+    \u53D6\u308A\u9664\u3044\u305F\u3068\u304D\u3001\u6B8B\u308A\u306E\u9802\u70B9\
+    \u306E\u9023\u7D50\u6210\u5206\u304C\u5897\u3048\u308B\u304B\n            // (v\
+    \ \u304C\u307B\u304B\u306E\u9802\u70B9\u3068\u3064\u306A\u304C\u3063\u3066\u3044\
+    \u306A\u3051\u308C\u3070\u3001v \u306E\u5206\u3060\u3051 1 \u6E1B\u308B\u306E\u304C\
+    \u666E\u901A)\n            bool isolated = true;\n            for (auto [a, b]\
+    \ : es) isolated &= !((a == v || b == v) && a != b);\n            bool art = count_components(n,\
+    \ es, v, -1) > base - (isolated ? 1 : 0);\n            if (art) arts.push_back(v);\n\
+    \            if (ll.is_articulation_point(v) != art) ok = false;\n        }\n\
+    \        for (int i = 0; i < m; i++) {\n            bool br = count_components(n,\
+    \ es, -1, i) > base;\n            if (br) bridges.push_back(i);\n            if\
+    \ (ll.is_bridge(i) != br) ok = false;\n        }\n        if (ll.articulation_points()\
+    \ != arts || ll.bridges() != bridges) ok = false;\n\n        // \u4E8C\u91CD\u8FBA\
+    \u9023\u7D50\u6210\u5206: \u6A4B\u3092\u3059\u3079\u3066\u53D6\u308A\u9664\u3044\
+    \u305F\u3068\u304D\u306E\u9023\u7D50\u6210\u5206\u3068\u4E00\u81F4\u3059\u308B\
+    \n        UnionFind uf(n);\n        for (int i = 0; i < m; i++) {\n          \
+    \  if (!ll.is_bridge(i)) uf.merge(es[i].first, es[i].second);\n        }\n   \
+    \     const auto& groups = ll.two_edge_connected_groups();\n        int total\
+    \ = 0;\n        for (int k = 0; k < static_cast<int>(groups.size()); k++) {\n\
+    \            total += groups[k].size();\n            for (int v : groups[k]) {\n\
+    \                if (ll.two_edge_connected_group_id(v) != k || !uf.same(v, groups[k][0]))\
+    \ ok = false;\n            }\n        }\n        int uf_groups = 0;\n        for\
+    \ (int v = 0; v < n; v++) uf_groups += uf.leader(v) == v;\n        if (total !=\
+    \ n || static_cast<int>(groups.size()) != uf_groups) ok = false;\n\n        //\
+    \ \u4E8C\u91CD\u9802\u70B9\u9023\u7D50\u6210\u5206: \u8FBA\u306E\u7D44\u5206\u3051\
+    \u304C\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u4E00\u81F4\u3059\u308B\n        std::vector<int>\
+    \ naive = naive_edge_blocks(n, es);\n        const auto& bc = ll.two_vertex_connected_groups();\n\
+    \        const auto& bce = ll.two_vertex_connected_edge_groups();\n        if\
+    \ (bc.size() != bce.size()) ok = false;\n        for (int i = 0; i < m && ok;\
+    \ i++) {\n            for (int j = 0; j < m; j++) {\n                if (naive[i]\
+    \ == -1 || naive[j] == -1) continue;\n                if ((naive[i] == naive[j])\
+    \ != (ll.two_vertex_connected_group_id(i) == ll.two_vertex_connected_group_id(j)))\
+    \ ok = false;\n            }\n            if ((naive[i] == -1) != (ll.two_vertex_connected_group_id(i)\
+    \ == -1)) ok = false;\n        }\n        // \u6210\u5206\u306E\u9802\u70B9\u306F\
+    \u8FBA\u306E\u7AEF\u70B9\u3067\u3001\u8FBA\u306E\u306A\u3044\u6210\u5206\u306F\
+    \u307B\u304B\u306E\u9802\u70B9\u3068\u3064\u306A\u304C\u3063\u3066\u3044\u306A\
+    \u3044 1 \u9802\u70B9\n        std::vector<int> block_count(n, 0);\n        for\
+    \ (int b = 0; b < static_cast<int>(bc.size()) && ok; b++) {\n            std::set<long\
+    \ long> ends;\n            for (long long id : bce[b]) {\n                if (ll.two_vertex_connected_group_id(id)\
     \ != b) ok = false;\n                ends.insert(es[id].first), ends.insert(es[id].second);\n\
     \            }\n            std::set<long long> vs(bc[b].begin(), bc[b].end());\n\
     \            if (vs.size() != bc[b].size()) ok = false;\n            if (bce[b].empty())\
@@ -733,37 +770,37 @@ data:
     \ >= 2) != ll.is_articulation_point(v) || block_count[v] == 0) ok = false;\n \
     \       }\n        // Block-Cut Tree \u306F\u68EE\u3067\u3001\u5143\u306E\u9802\
     \u70B9\u306E\u6B21\u6570\u306F\u5165\u3063\u3066\u3044\u308B\u6210\u5206\u306E\
-    \u6570\n        Tree<int> t = ll.block_cut_tree();\n        if (t.n != n + static_cast<long\
-    \ long>(bc.size())) ok = false;\n        UnionFind tuf(t.n);\n        for (long\
-    \ long v = 0; v < t.n; v++) {\n            for (const auto& e : t[v]) {\n    \
-    \            if (v < e.dst && !tuf.merge(v, e.dst)) ok = false;  // \u9589\u8DEF\
-    \u304C\u3042\u308C\u3070\u6728\u3067\u306F\u306A\u3044\n            }\n      \
-    \  }\n        for (int v = 0; v < n; v++) {\n            if (static_cast<int>(t[v].size())\
-    \ != block_count[v]) ok = false;\n        }\n    }\n\n    // \u9023\u7D50\u306A\
-    \u30B0\u30E9\u30D5\u3067\u3001u \u304B\u3089 v \u3078\u306E\u3069\u306E\u9053\u3082\
-    \u901A\u308B\u9802\u70B9 (u, v \u4EE5\u5916) \u306E\u500B\u6570\u306F\u3001\n\
-    \    // Block-Cut Tree \u4E0A\u306E u \u3068 v \u3092\u7D50\u3076\u30D1\u30B9\u306B\
-    \u3042\u308B\u5143\u306E\u9802\u70B9\u306E\u500B\u6570 (\u7AEF\u3092\u9664\u304F\
-    ) \u3068\u4E00\u81F4\u3059\u308B\u3002HL \u5206\u89E3\u306B\u6E21\u305B\u308B\u3053\
-    \u3068\u3082\u78BA\u304B\u3081\u308B\n    for (int rep = 0; rep < 1000 && ok;\
-    \ rep++) {\n        int n = rng() % 9 + 1, m = n - 1 + rng() % 6;\n        Graph<int>\
-    \ g(n);\n        std::vector<std::pair<int, int>> es;\n        for (int v = 1;\
-    \ v < n; v++) {\n            int p = rng() % v;\n            g.add_edge(p, v),\
-    \ es.emplace_back(p, v);\n        }\n        while (static_cast<int>(es.size())\
-    \ < m) {\n            int u = rng() % n, v = rng() % n;\n            g.add_edge(u,\
-    \ v), es.emplace_back(u, v);\n        }\n        LowLink ll(g);\n        HeavyLightDecomposition\
-    \ hld(ll.block_cut_tree());\n        for (int u = 0; u < n; u++) {\n         \
-    \   for (int v = 0; v < n; v++) {\n                if (u == v) continue;\n   \
-    \             int must = 0;\n                for (int x = 0; x < n; x++) {\n \
-    \                   if (x == u || x == v) continue;\n                    UnionFind\
-    \ uf(n);\n                    for (auto [a, b] : es) {\n                     \
-    \   if (a != x && b != x) uf.merge(a, b);\n                    }\n           \
-    \         must += !uf.same(u, v);\n                }\n                // \u30D1\
-    \u30B9\u306F \u5143\u306E\u9802\u70B9 - \u6210\u5206 - \u5143\u306E\u9802\u70B9\
-    \ - ... \u3068\u4EA4\u4E92\u306B\u4E26\u3076\n                if (hld.dist(u,\
-    \ v) / 2 - 1 != must) ok = false;\n            }\n        }\n    }\n\n    if (ok)\n\
-    \        std::cout << \"Hello World\" << std::endl;\n    else\n        std::cerr\
-    \ << \"failed\" << std::endl;\n}\n"
+    \u6570\n        Tree<int> t = ll.block_cut_tree();\n        if (t.size() != n\
+    \ + static_cast<long long>(bc.size())) ok = false;\n        UnionFind tuf(t.size());\n\
+    \        for (long long v = 0; v < t.size(); v++) {\n            for (const auto&\
+    \ e : t[v]) {\n                if (v < e.dst && !tuf.merge(v, e.dst)) ok = false;\
+    \  // \u9589\u8DEF\u304C\u3042\u308C\u3070\u6728\u3067\u306F\u306A\u3044\n   \
+    \         }\n        }\n        for (int v = 0; v < n; v++) {\n            if\
+    \ (static_cast<int>(t[v].size()) != block_count[v]) ok = false;\n        }\n \
+    \   }\n\n    // \u9023\u7D50\u306A\u30B0\u30E9\u30D5\u3067\u3001u \u304B\u3089\
+    \ v \u3078\u306E\u3069\u306E\u9053\u3082\u901A\u308B\u9802\u70B9 (u, v \u4EE5\u5916\
+    ) \u306E\u500B\u6570\u306F\u3001\n    // Block-Cut Tree \u4E0A\u306E u \u3068\
+    \ v \u3092\u7D50\u3076\u30D1\u30B9\u306B\u3042\u308B\u5143\u306E\u9802\u70B9\u306E\
+    \u500B\u6570 (\u7AEF\u3092\u9664\u304F) \u3068\u4E00\u81F4\u3059\u308B\u3002HL\
+    \ \u5206\u89E3\u306B\u6E21\u305B\u308B\u3053\u3068\u3082\u78BA\u304B\u3081\u308B\
+    \n    for (int rep = 0; rep < 1000 && ok; rep++) {\n        int n = rng() % 9\
+    \ + 1, m = n - 1 + rng() % 6;\n        Graph<int> g(n);\n        std::vector<std::pair<int,\
+    \ int>> es;\n        for (int v = 1; v < n; v++) {\n            int p = rng()\
+    \ % v;\n            g.add_edge(p, v), es.emplace_back(p, v);\n        }\n    \
+    \    while (static_cast<int>(es.size()) < m) {\n            int u = rng() % n,\
+    \ v = rng() % n;\n            g.add_edge(u, v), es.emplace_back(u, v);\n     \
+    \   }\n        LowLink ll(g);\n        HeavyLightDecomposition hld(ll.block_cut_tree());\n\
+    \        for (int u = 0; u < n; u++) {\n            for (int v = 0; v < n; v++)\
+    \ {\n                if (u == v) continue;\n                int must = 0;\n  \
+    \              for (int x = 0; x < n; x++) {\n                    if (x == u ||\
+    \ x == v) continue;\n                    UnionFind uf(n);\n                  \
+    \  for (auto [a, b] : es) {\n                        if (a != x && b != x) uf.merge(a,\
+    \ b);\n                    }\n                    must += !uf.same(u, v);\n  \
+    \              }\n                // \u30D1\u30B9\u306F \u5143\u306E\u9802\u70B9\
+    \ - \u6210\u5206 - \u5143\u306E\u9802\u70B9 - ... \u3068\u4EA4\u4E92\u306B\u4E26\
+    \u3076\n                if (hld.dist(u, v) / 2 - 1 != must) ok = false;\n    \
+    \        }\n        }\n    }\n\n    if (ok)\n        std::cout << \"Hello World\"\
+    \ << std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   code: "#define PROBLEM \"https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A\"\
     \n\n// LowLink \u3092\u3001\u9802\u70B9\u3084\u8FBA\u3092 1 \u3064\u53D6\u308A\
     \u9664\u3044\u3066\u9023\u7D50\u6210\u5206\u306E\u6570\u3092\u6570\u3048\u308B\
@@ -807,53 +844,57 @@ data:
     \            }\n        };\n        used[s] = true;\n        dfs(s);\n    }\n\
     \    std::vector<int> res(m);\n    for (int i = 0; i < m; i++) res[i] = es[i].first\
     \ == es[i].second ? -1 : uf.leader(i);\n    return res;\n}\n\nint main() {\n \
-    \   std::mt19937 rng(314);\n    bool ok = true;\n    for (int rep = 0; rep < 3000\
-    \ && ok; rep++) {\n        int n = rng() % 9 + 1, m = rng() % 14;\n        Graph<int>\
-    \ g(n);\n        std::vector<std::pair<int, int>> es;\n        for (int i = 0;\
-    \ i < m; i++) {\n            int u = rng() % n, v = rng() % n;  // \u81EA\u5DF1\
-    \u30EB\u30FC\u30D7\u3068\u591A\u91CD\u8FBA\u3082\u542B\u3080\n            g.add_edge(u,\
-    \ v);\n            es.emplace_back(u, v);\n        }\n        LowLink ll(g);\n\
-    \        int base = count_components(n, es, -1, -1);\n        std::vector<long\
-    \ long> arts, bridges;\n        for (int v = 0; v < n; v++) {\n            //\
-    \ v \u3092\u53D6\u308A\u9664\u3044\u305F\u3068\u304D\u3001\u6B8B\u308A\u306E\u9802\
-    \u70B9\u306E\u9023\u7D50\u6210\u5206\u304C\u5897\u3048\u308B\u304B\n         \
-    \   // (v \u304C\u307B\u304B\u306E\u9802\u70B9\u3068\u3064\u306A\u304C\u3063\u3066\
-    \u3044\u306A\u3051\u308C\u3070\u3001v \u306E\u5206\u3060\u3051 1 \u6E1B\u308B\u306E\
-    \u304C\u666E\u901A)\n            bool isolated = true;\n            for (auto\
-    \ [a, b] : es) isolated &= !((a == v || b == v) && a != b);\n            bool\
-    \ art = count_components(n, es, v, -1) > base - (isolated ? 1 : 0);\n        \
-    \    if (art) arts.push_back(v);\n            if (ll.is_articulation_point(v)\
-    \ != art) ok = false;\n        }\n        for (int i = 0; i < m; i++) {\n    \
-    \        bool br = count_components(n, es, -1, i) > base;\n            if (br)\
-    \ bridges.push_back(i);\n            if (ll.is_bridge(i) != br) ok = false;\n\
-    \        }\n        if (ll.articulation_points() != arts || ll.bridges() != bridges)\
-    \ ok = false;\n\n        // \u4E8C\u91CD\u8FBA\u9023\u7D50\u6210\u5206: \u6A4B\
-    \u3092\u3059\u3079\u3066\u53D6\u308A\u9664\u3044\u305F\u3068\u304D\u306E\u9023\
-    \u7D50\u6210\u5206\u3068\u4E00\u81F4\u3059\u308B\n        UnionFind uf(n);\n \
-    \       for (int i = 0; i < m; i++) {\n            if (!ll.is_bridge(i)) uf.merge(es[i].first,\
-    \ es[i].second);\n        }\n        const auto& groups = ll.two_edge_connected_groups();\n\
-    \        int total = 0;\n        for (int k = 0; k < static_cast<int>(groups.size());\
-    \ k++) {\n            total += groups[k].size();\n            for (int v : groups[k])\
-    \ {\n                if (ll.two_edge_connected_group_id(v) != k || !uf.same(v,\
-    \ groups[k][0])) ok = false;\n            }\n        }\n        int uf_groups\
-    \ = 0;\n        for (int v = 0; v < n; v++) uf_groups += uf.leader(v) == v;\n\
-    \        if (total != n || static_cast<int>(groups.size()) != uf_groups) ok =\
-    \ false;\n\n        // \u4E8C\u91CD\u9802\u70B9\u9023\u7D50\u6210\u5206: \u8FBA\
-    \u306E\u7D44\u5206\u3051\u304C\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u4E00\u81F4\
-    \u3059\u308B\n        std::vector<int> naive = naive_edge_blocks(n, es);\n   \
-    \     const auto& bc = ll.two_vertex_connected_groups();\n        const auto&\
-    \ bce = ll.two_vertex_connected_edge_groups();\n        if (bc.size() != bce.size())\
-    \ ok = false;\n        for (int i = 0; i < m && ok; i++) {\n            for (int\
-    \ j = 0; j < m; j++) {\n                if (naive[i] == -1 || naive[j] == -1)\
-    \ continue;\n                if ((naive[i] == naive[j]) != (ll.two_vertex_connected_group_id(i)\
-    \ == ll.two_vertex_connected_group_id(j))) ok = false;\n            }\n      \
-    \      if ((naive[i] == -1) != (ll.two_vertex_connected_group_id(i) == -1)) ok\
-    \ = false;\n        }\n        // \u6210\u5206\u306E\u9802\u70B9\u306F\u8FBA\u306E\
-    \u7AEF\u70B9\u3067\u3001\u8FBA\u306E\u306A\u3044\u6210\u5206\u306F\u307B\u304B\
-    \u306E\u9802\u70B9\u3068\u3064\u306A\u304C\u3063\u3066\u3044\u306A\u3044 1 \u9802\
-    \u70B9\n        std::vector<int> block_count(n, 0);\n        for (int b = 0; b\
-    \ < static_cast<int>(bc.size()) && ok; b++) {\n            std::set<long long>\
-    \ ends;\n            for (long long id : bce[b]) {\n                if (ll.two_vertex_connected_group_id(id)\
+    \   std::mt19937 rng(314);\n    bool ok = true;\n    {\n        Graph<> g(5);\n\
+    \        g.add_edge(0, 1);\n        g.add_edge(1, 2);\n        g.add_edge(2, 0);\n\
+    \        g.add_edge(2, 3);\n        LowLink ll(g);\n        const std::vector<long\
+    \ long> expected_low = {0, 0, 0, 3, 4};\n        for (long long v = 0; v < 5;\
+    \ v++) {\n            if (ll.ord(v) != v || ll.low(v) != expected_low[v]) ok =\
+    \ false;\n        }\n    }\n    for (int rep = 0; rep < 3000 && ok; rep++) {\n\
+    \        int n = rng() % 9 + 1, m = rng() % 14;\n        Graph<int> g(n);\n  \
+    \      std::vector<std::pair<int, int>> es;\n        for (int i = 0; i < m; i++)\
+    \ {\n            int u = rng() % n, v = rng() % n;  // \u81EA\u5DF1\u30EB\u30FC\
+    \u30D7\u3068\u591A\u91CD\u8FBA\u3082\u542B\u3080\n            g.add_edge(u, v);\n\
+    \            es.emplace_back(u, v);\n        }\n        LowLink ll(g);\n     \
+    \   int base = count_components(n, es, -1, -1);\n        std::vector<long long>\
+    \ arts, bridges;\n        for (int v = 0; v < n; v++) {\n            // v \u3092\
+    \u53D6\u308A\u9664\u3044\u305F\u3068\u304D\u3001\u6B8B\u308A\u306E\u9802\u70B9\
+    \u306E\u9023\u7D50\u6210\u5206\u304C\u5897\u3048\u308B\u304B\n            // (v\
+    \ \u304C\u307B\u304B\u306E\u9802\u70B9\u3068\u3064\u306A\u304C\u3063\u3066\u3044\
+    \u306A\u3051\u308C\u3070\u3001v \u306E\u5206\u3060\u3051 1 \u6E1B\u308B\u306E\u304C\
+    \u666E\u901A)\n            bool isolated = true;\n            for (auto [a, b]\
+    \ : es) isolated &= !((a == v || b == v) && a != b);\n            bool art = count_components(n,\
+    \ es, v, -1) > base - (isolated ? 1 : 0);\n            if (art) arts.push_back(v);\n\
+    \            if (ll.is_articulation_point(v) != art) ok = false;\n        }\n\
+    \        for (int i = 0; i < m; i++) {\n            bool br = count_components(n,\
+    \ es, -1, i) > base;\n            if (br) bridges.push_back(i);\n            if\
+    \ (ll.is_bridge(i) != br) ok = false;\n        }\n        if (ll.articulation_points()\
+    \ != arts || ll.bridges() != bridges) ok = false;\n\n        // \u4E8C\u91CD\u8FBA\
+    \u9023\u7D50\u6210\u5206: \u6A4B\u3092\u3059\u3079\u3066\u53D6\u308A\u9664\u3044\
+    \u305F\u3068\u304D\u306E\u9023\u7D50\u6210\u5206\u3068\u4E00\u81F4\u3059\u308B\
+    \n        UnionFind uf(n);\n        for (int i = 0; i < m; i++) {\n          \
+    \  if (!ll.is_bridge(i)) uf.merge(es[i].first, es[i].second);\n        }\n   \
+    \     const auto& groups = ll.two_edge_connected_groups();\n        int total\
+    \ = 0;\n        for (int k = 0; k < static_cast<int>(groups.size()); k++) {\n\
+    \            total += groups[k].size();\n            for (int v : groups[k]) {\n\
+    \                if (ll.two_edge_connected_group_id(v) != k || !uf.same(v, groups[k][0]))\
+    \ ok = false;\n            }\n        }\n        int uf_groups = 0;\n        for\
+    \ (int v = 0; v < n; v++) uf_groups += uf.leader(v) == v;\n        if (total !=\
+    \ n || static_cast<int>(groups.size()) != uf_groups) ok = false;\n\n        //\
+    \ \u4E8C\u91CD\u9802\u70B9\u9023\u7D50\u6210\u5206: \u8FBA\u306E\u7D44\u5206\u3051\
+    \u304C\u611A\u76F4\u306A\u5B9F\u88C5\u3068\u4E00\u81F4\u3059\u308B\n        std::vector<int>\
+    \ naive = naive_edge_blocks(n, es);\n        const auto& bc = ll.two_vertex_connected_groups();\n\
+    \        const auto& bce = ll.two_vertex_connected_edge_groups();\n        if\
+    \ (bc.size() != bce.size()) ok = false;\n        for (int i = 0; i < m && ok;\
+    \ i++) {\n            for (int j = 0; j < m; j++) {\n                if (naive[i]\
+    \ == -1 || naive[j] == -1) continue;\n                if ((naive[i] == naive[j])\
+    \ != (ll.two_vertex_connected_group_id(i) == ll.two_vertex_connected_group_id(j)))\
+    \ ok = false;\n            }\n            if ((naive[i] == -1) != (ll.two_vertex_connected_group_id(i)\
+    \ == -1)) ok = false;\n        }\n        // \u6210\u5206\u306E\u9802\u70B9\u306F\
+    \u8FBA\u306E\u7AEF\u70B9\u3067\u3001\u8FBA\u306E\u306A\u3044\u6210\u5206\u306F\
+    \u307B\u304B\u306E\u9802\u70B9\u3068\u3064\u306A\u304C\u3063\u3066\u3044\u306A\
+    \u3044 1 \u9802\u70B9\n        std::vector<int> block_count(n, 0);\n        for\
+    \ (int b = 0; b < static_cast<int>(bc.size()) && ok; b++) {\n            std::set<long\
+    \ long> ends;\n            for (long long id : bce[b]) {\n                if (ll.two_vertex_connected_group_id(id)\
     \ != b) ok = false;\n                ends.insert(es[id].first), ends.insert(es[id].second);\n\
     \            }\n            std::set<long long> vs(bc[b].begin(), bc[b].end());\n\
     \            if (vs.size() != bc[b].size()) ok = false;\n            if (bce[b].empty())\
@@ -866,37 +907,37 @@ data:
     \ >= 2) != ll.is_articulation_point(v) || block_count[v] == 0) ok = false;\n \
     \       }\n        // Block-Cut Tree \u306F\u68EE\u3067\u3001\u5143\u306E\u9802\
     \u70B9\u306E\u6B21\u6570\u306F\u5165\u3063\u3066\u3044\u308B\u6210\u5206\u306E\
-    \u6570\n        Tree<int> t = ll.block_cut_tree();\n        if (t.n != n + static_cast<long\
-    \ long>(bc.size())) ok = false;\n        UnionFind tuf(t.n);\n        for (long\
-    \ long v = 0; v < t.n; v++) {\n            for (const auto& e : t[v]) {\n    \
-    \            if (v < e.dst && !tuf.merge(v, e.dst)) ok = false;  // \u9589\u8DEF\
-    \u304C\u3042\u308C\u3070\u6728\u3067\u306F\u306A\u3044\n            }\n      \
-    \  }\n        for (int v = 0; v < n; v++) {\n            if (static_cast<int>(t[v].size())\
-    \ != block_count[v]) ok = false;\n        }\n    }\n\n    // \u9023\u7D50\u306A\
-    \u30B0\u30E9\u30D5\u3067\u3001u \u304B\u3089 v \u3078\u306E\u3069\u306E\u9053\u3082\
-    \u901A\u308B\u9802\u70B9 (u, v \u4EE5\u5916) \u306E\u500B\u6570\u306F\u3001\n\
-    \    // Block-Cut Tree \u4E0A\u306E u \u3068 v \u3092\u7D50\u3076\u30D1\u30B9\u306B\
-    \u3042\u308B\u5143\u306E\u9802\u70B9\u306E\u500B\u6570 (\u7AEF\u3092\u9664\u304F\
-    ) \u3068\u4E00\u81F4\u3059\u308B\u3002HL \u5206\u89E3\u306B\u6E21\u305B\u308B\u3053\
-    \u3068\u3082\u78BA\u304B\u3081\u308B\n    for (int rep = 0; rep < 1000 && ok;\
-    \ rep++) {\n        int n = rng() % 9 + 1, m = n - 1 + rng() % 6;\n        Graph<int>\
-    \ g(n);\n        std::vector<std::pair<int, int>> es;\n        for (int v = 1;\
-    \ v < n; v++) {\n            int p = rng() % v;\n            g.add_edge(p, v),\
-    \ es.emplace_back(p, v);\n        }\n        while (static_cast<int>(es.size())\
-    \ < m) {\n            int u = rng() % n, v = rng() % n;\n            g.add_edge(u,\
-    \ v), es.emplace_back(u, v);\n        }\n        LowLink ll(g);\n        HeavyLightDecomposition\
-    \ hld(ll.block_cut_tree());\n        for (int u = 0; u < n; u++) {\n         \
-    \   for (int v = 0; v < n; v++) {\n                if (u == v) continue;\n   \
-    \             int must = 0;\n                for (int x = 0; x < n; x++) {\n \
-    \                   if (x == u || x == v) continue;\n                    UnionFind\
-    \ uf(n);\n                    for (auto [a, b] : es) {\n                     \
-    \   if (a != x && b != x) uf.merge(a, b);\n                    }\n           \
-    \         must += !uf.same(u, v);\n                }\n                // \u30D1\
-    \u30B9\u306F \u5143\u306E\u9802\u70B9 - \u6210\u5206 - \u5143\u306E\u9802\u70B9\
-    \ - ... \u3068\u4EA4\u4E92\u306B\u4E26\u3076\n                if (hld.dist(u,\
-    \ v) / 2 - 1 != must) ok = false;\n            }\n        }\n    }\n\n    if (ok)\n\
-    \        std::cout << \"Hello World\" << std::endl;\n    else\n        std::cerr\
-    \ << \"failed\" << std::endl;\n}\n"
+    \u6570\n        Tree<int> t = ll.block_cut_tree();\n        if (t.size() != n\
+    \ + static_cast<long long>(bc.size())) ok = false;\n        UnionFind tuf(t.size());\n\
+    \        for (long long v = 0; v < t.size(); v++) {\n            for (const auto&\
+    \ e : t[v]) {\n                if (v < e.dst && !tuf.merge(v, e.dst)) ok = false;\
+    \  // \u9589\u8DEF\u304C\u3042\u308C\u3070\u6728\u3067\u306F\u306A\u3044\n   \
+    \         }\n        }\n        for (int v = 0; v < n; v++) {\n            if\
+    \ (static_cast<int>(t[v].size()) != block_count[v]) ok = false;\n        }\n \
+    \   }\n\n    // \u9023\u7D50\u306A\u30B0\u30E9\u30D5\u3067\u3001u \u304B\u3089\
+    \ v \u3078\u306E\u3069\u306E\u9053\u3082\u901A\u308B\u9802\u70B9 (u, v \u4EE5\u5916\
+    ) \u306E\u500B\u6570\u306F\u3001\n    // Block-Cut Tree \u4E0A\u306E u \u3068\
+    \ v \u3092\u7D50\u3076\u30D1\u30B9\u306B\u3042\u308B\u5143\u306E\u9802\u70B9\u306E\
+    \u500B\u6570 (\u7AEF\u3092\u9664\u304F) \u3068\u4E00\u81F4\u3059\u308B\u3002HL\
+    \ \u5206\u89E3\u306B\u6E21\u305B\u308B\u3053\u3068\u3082\u78BA\u304B\u3081\u308B\
+    \n    for (int rep = 0; rep < 1000 && ok; rep++) {\n        int n = rng() % 9\
+    \ + 1, m = n - 1 + rng() % 6;\n        Graph<int> g(n);\n        std::vector<std::pair<int,\
+    \ int>> es;\n        for (int v = 1; v < n; v++) {\n            int p = rng()\
+    \ % v;\n            g.add_edge(p, v), es.emplace_back(p, v);\n        }\n    \
+    \    while (static_cast<int>(es.size()) < m) {\n            int u = rng() % n,\
+    \ v = rng() % n;\n            g.add_edge(u, v), es.emplace_back(u, v);\n     \
+    \   }\n        LowLink ll(g);\n        HeavyLightDecomposition hld(ll.block_cut_tree());\n\
+    \        for (int u = 0; u < n; u++) {\n            for (int v = 0; v < n; v++)\
+    \ {\n                if (u == v) continue;\n                int must = 0;\n  \
+    \              for (int x = 0; x < n; x++) {\n                    if (x == u ||\
+    \ x == v) continue;\n                    UnionFind uf(n);\n                  \
+    \  for (auto [a, b] : es) {\n                        if (a != x && b != x) uf.merge(a,\
+    \ b);\n                    }\n                    must += !uf.same(u, v);\n  \
+    \              }\n                // \u30D1\u30B9\u306F \u5143\u306E\u9802\u70B9\
+    \ - \u6210\u5206 - \u5143\u306E\u9802\u70B9 - ... \u3068\u4EA4\u4E92\u306B\u4E26\
+    \u3076\n                if (hld.dist(u, v) / 2 - 1 != must) ok = false;\n    \
+    \        }\n        }\n    }\n\n    if (ok)\n        std::cout << \"Hello World\"\
+    \ << std::endl;\n    else\n        std::cerr << \"failed\" << std::endl;\n}\n"
   dependsOn:
   - src/graph/lowlink.hpp
   - src/graph/graph.hpp
@@ -906,7 +947,7 @@ data:
   isVerificationFile: true
   path: test/unittest/graph/lowlink.test.cpp
   requiredBy: []
-  timestamp: '2026-11-09 03:30:30+09:00'
+  timestamp: '2026-11-09 05:14:57+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/graph/lowlink.test.cpp

@@ -8,11 +8,11 @@ data:
       \u30C8\u6F14\u7B97 (AND\u30FBOR\u30FBXOR) \u306E\u7573\u307F\u8FBC\u307F\u3001\
       \u90E8\u5206\u96C6\u5408\u7573\u307F\u8FBC\u307F\u3001\u96C6\u5408\u51AA\u7D1A\
       \u6570\u306E exp\u30FBlog"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: src/math/modint.hpp
     title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
       \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []

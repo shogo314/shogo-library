@@ -8,7 +8,7 @@ data:
     path: src/utility/range.hpp
     title: "Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\u5217\u3068\u3001\
       \u305D\u306E\u76F4\u7A4D\u306E Grid"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
@@ -409,7 +409,7 @@ data:
     \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
     \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
     inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
-    #line 19 \"src/string/rolling-hash.hpp\"\n\nstruct RHString;\nclass RollingHash2D;\n\
+    #line 19 \"src/string/rolling-hash.hpp\"\n\nclass RHString;\nclass RollingHash2D;\n\
     \n/**\n * @brief \u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5\n *\n\
     \ * \u30D3\u30C3\u30C8\u6F14\u7B97\u306B\u3088\u308B\u9AD8\u901F\u5316\u306E\u305F\
     \u3081\u30CF\u30C3\u30B7\u30E5\u306FMOD = 2^61-1\u3067\u8A08\u7B97\u3055\u308C\
@@ -425,13 +425,13 @@ data:
     \        __uint128_t c = static_cast<__uint128_t>(a) * b;\n        return add(static_cast<unsigned\
     \ long long>(c >> 61), static_cast<unsigned long long>(c & MOD));\n    }\n\n \
     \   void expand(long long n) {\n        while (static_cast<long long>(power.size())\
-    \ <= n) power.push_back(mul(power.back(), base));\n    }\n    // base \u306E\u9006\
+    \ <= n) power.push_back(mul(power.back(), _base));\n    }\n    // base \u306E\u9006\
     \u5143\u306E\u7D2F\u4E57\u3092 n \u4E57\u307E\u3067\u7528\u610F\u3059\u308B (RHString\
     \ \u306E\u7AEF\u3092\u524A\u308B\u3068\u304D\u3060\u3051\u4F7F\u3046)\n    void\
     \ expand_inv(long long n) {\n        if (inv_power.empty()) {\n            //\
     \ MOD \u306F\u7D20\u6570\u306A\u306E\u3067 base^(MOD - 2) \u304C\u9006\u5143\n\
-    \            unsigned long long inv = 1, b = base, e = MOD - 2;\n            for\
-    \ (; e > 0; e >>= 1, b = mul(b, b))\n                if (e & 1) inv = mul(inv,\
+    \            unsigned long long inv = 1, b = _base, e = MOD - 2;\n           \
+    \ for (; e > 0; e >>= 1, b = mul(b, b))\n                if (e & 1) inv = mul(inv,\
     \ b);\n            inv_base = inv;\n            inv_power = {1};\n        }\n\
     \        while (static_cast<long long>(inv_power.size()) <= n) inv_power.push_back(mul(inv_power.back(),\
     \ inv_base));\n    }\n    unsigned long long inv_base = 0;\n    std::vector<unsigned\
@@ -446,27 +446,27 @@ data:
     \ (std::is_integral_v<U> && std::is_signed_v<U>) {\n            long long v =\
     \ static_cast<long long>(x) % static_cast<long long>(MOD);\n            return\
     \ v < 0 ? v + MOD : v;\n        } else {\n            return static_cast<unsigned\
-    \ long long>(x) % MOD;\n        }\n    }\n\n    unsigned int base;           \
-    \           //!< \u30CF\u30C3\u30B7\u30E5\u306E\u57FA\u6570\n    std::vector<unsigned\
-    \ long long> power;  //!< base\u306E\u7D2F\u4E57\n\n    /**\n     * @brief \u30B3\
-    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @param base \u30CF\u30C3\u30B7\
-    \u30E5\u306E\u57FA\u6570 \u7701\u7565\u3059\u308B\u3068\u30E9\u30F3\u30C0\u30E0\
-    \n     */\n    explicit RollingHash(unsigned int base = 0) : base(base) {\n  \
-    \      if (base == 0) {\n            std::mt19937 mt(std::random_device{}());\n\
-    \            this->base = std::uniform_int_distribution<unsigned int>(129, ~0U)(mt);\n\
-    \        }\n        power = {1};\n    }\n\n    /**\n     * @brief \u914D\u5217\
-    /\u6587\u5B57\u5217\u306E\u30A4\u30C6\u30EC\u30FC\u30BF\u9593\u306E\u30CF\u30C3\
-    \u30B7\u30E5\u306E\u8A08\u7B97(O(N))\n     *\n     * @tparam It \u30A4\u30C6\u30EC\
-    \u30FC\u30BF\n     * @param first \u914D\u5217\u306E\u958B\u59CB\u30A4\u30C6\u30EC\
-    \u30FC\u30BF\n     * @param last \u914D\u5217\u306E\u7D42\u4E86\u30A4\u30C6\u30EC\
-    \u30FC\u30BF\n     * @return std::vector<unsigned long long> \u5148\u982D\u304B\
-    \u3089\u5404\u8981\u7D20\u6570\u5206\u306E\u30CF\u30C3\u30B7\u30E5\n     */\n\
-    \    template <typename It>\n    std::vector<unsigned long long> build(It first,\
-    \ It last) {\n        std::vector<unsigned long long> res;\n        if constexpr\
-    \ (std::is_convertible_v<typename std::iterator_traits<It>::iterator_category,\
+    \ long long>(x) % MOD;\n        }\n    }\n\n   private:\n    unsigned int _base;\n\
+    \    std::vector<unsigned long long> power;\n\n   public:\n    /**\n     * @brief\
+    \ \u30CF\u30C3\u30B7\u30E5\u306E\u57FA\u6570\n     */\n    unsigned int base()\
+    \ const { return _base; }\n\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\
+    \u30AF\u30BF\n     *\n     * @param base \u30CF\u30C3\u30B7\u30E5\u306E\u57FA\u6570\
+    \ \u7701\u7565\u3059\u308B\u3068\u30E9\u30F3\u30C0\u30E0\n     */\n    explicit\
+    \ RollingHash(unsigned int base = 0) : _base(base) {\n        if (base == 0) {\n\
+    \            std::mt19937 mt(std::random_device{}());\n            _base = std::uniform_int_distribution<unsigned\
+    \ int>(129, ~0U)(mt);\n        }\n        power = {1};\n    }\n\n    /**\n   \
+    \  * @brief \u914D\u5217/\u6587\u5B57\u5217\u306E\u30A4\u30C6\u30EC\u30FC\u30BF\
+    \u9593\u306E\u30CF\u30C3\u30B7\u30E5\u306E\u8A08\u7B97(O(N))\n     *\n     * @tparam\
+    \ It \u30A4\u30C6\u30EC\u30FC\u30BF\n     * @param first \u914D\u5217\u306E\u958B\
+    \u59CB\u30A4\u30C6\u30EC\u30FC\u30BF\n     * @param last \u914D\u5217\u306E\u7D42\
+    \u4E86\u30A4\u30C6\u30EC\u30FC\u30BF\n     * @return std::vector<unsigned long\
+    \ long> \u5148\u982D\u304B\u3089\u5404\u8981\u7D20\u6570\u5206\u306E\u30CF\u30C3\
+    \u30B7\u30E5\n     */\n    template <typename It>\n    std::vector<unsigned long\
+    \ long> build(It first, It last) {\n        std::vector<unsigned long long> res;\n\
+    \        if constexpr (std::is_convertible_v<typename std::iterator_traits<It>::iterator_category,\
     \ std::random_access_iterator_tag>) {\n            res.reserve(last - first +\
     \ 1);\n        }\n        res.push_back(0);\n        for (; first != last; ++first)\
-    \ {\n            res.push_back(add(mul(res.back(), base), to_value(*first)));\n\
+    \ {\n            res.push_back(add(mul(res.back(), _base), to_value(*first)));\n\
     \        }\n        return res;\n    }\n\n    /**\n     * @brief \u914D\u5217\
     /\u6587\u5B57\u5217\u5168\u4F53\u306E\u30CF\u30C3\u30B7\u30E5\u306E\u8A08\u7B97\
     (O(N))\n     *\n     * @param s \u914D\u5217/\u6587\u5B57\u5217\n     * @return\
@@ -483,23 +483,27 @@ data:
     \        expand(r - l);\n        return add(hash[r], MOD - mul(hash[l], power[r\
     \ - l]));\n    }\n\n    friend RHString;\n    friend RollingHash2D;\n};\n\n/**\n\
     \ * @brief \u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5\u306B\u3088\u3063\
-    \u3066\u7BA1\u7406\u3055\u308C\u308B\u6587\u5B57\u5217\u578B\n */\nstruct RHString\
+    \u3066\u7BA1\u7406\u3055\u308C\u308B\u6587\u5B57\u5217\u578B\n */\nclass RHString\
     \ {\n    RollingHash& rh;\n    long long sz;              //!< \u9577\u3055\n\
     \    unsigned long long hash1;  //!< \u6B63\u9806\n    unsigned long long hash2;\
-    \  //!< \u9006\u9806\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\
-    \u30BF\n     * \u4E88\u3081RollingHash\u3092\u30A4\u30F3\u30B9\u30BF\u30F3\u30B9\
-    \u5316\u3057\u3066\u304A\u304F\u5FC5\u8981\u304C\u3042\u308B\n     */\n    explicit\
-    \ RHString(RollingHash& rh) : rh(rh), sz(0), hash1(0), hash2(0) {}\n    RHString(RollingHash&\
-    \ rh, long long sz, unsigned long long hash1, unsigned long long hash2) : rh(rh),\
-    \ sz(sz), hash1(hash1), hash2(hash2) {}\n    RHString(const RHString& o) : rh(o.rh),\
-    \ sz(o.sz), hash1(o.hash1), hash2(o.hash2) {}\n    /**\n     * @brief vector\u306A\
-    \u3069\u3067\u521D\u671F\u5316\u3059\u308B\n     */\n    template <class R, ENABLE_IF_T(is_range_v<R>\
-    \ && !std::is_convertible_v<R, std::string_view>)>\n    RHString(RollingHash&\
-    \ rh, R&& v) : rh(rh) {\n        using std::begin, std::end, std::rbegin, std::rend;\n\
-    \        sz = static_cast<long long>(std::distance(begin(v), end(v)));\n     \
-    \   hash1 = rh.build(begin(v), end(v)).back();\n        hash2 = rh.build(rbegin(v),\
-    \ rend(v)).back();\n    }\n    /**\n     * @brief char\u3084unsigned long long\u306A\
-    \u3069\u3067\u521D\u671F\u5316\u3059\u308B\n     */\n    template <class T, ENABLE_IF_T(std::is_convertible_v<T,\
+    \  //!< \u9006\u9806\n   public:\n    /** @brief \u6B63\u9806\u306E\u30CF\u30C3\
+    \u30B7\u30E5 */\n    unsigned long long val() const { return hash1; }\n    /**\
+    \ @brief \u9006\u9806\u306E\u30CF\u30C3\u30B7\u30E5 */\n    unsigned long long\
+    \ reverse_val() const { return hash2; }\n    /**\n     * @brief \u30B3\u30F3\u30B9\
+    \u30C8\u30E9\u30AF\u30BF\n     * \u4E88\u3081RollingHash\u3092\u30A4\u30F3\u30B9\
+    \u30BF\u30F3\u30B9\u5316\u3057\u3066\u304A\u304F\u5FC5\u8981\u304C\u3042\u308B\
+    \n     */\n    explicit RHString(RollingHash& rh) : rh(rh), sz(0), hash1(0), hash2(0)\
+    \ {}\n    RHString(RollingHash& rh, long long sz, unsigned long long hash1, unsigned\
+    \ long long hash2) : rh(rh), sz(sz), hash1(hash1), hash2(hash2) {}\n    RHString(const\
+    \ RHString& o) : rh(o.rh), sz(o.sz), hash1(o.hash1), hash2(o.hash2) {}\n    /**\n\
+    \     * @brief vector\u306A\u3069\u3067\u521D\u671F\u5316\u3059\u308B\n     */\n\
+    \    template <class R, ENABLE_IF_T(is_range_v<R> && !std::is_convertible_v<R,\
+    \ std::string_view>)>\n    RHString(RollingHash& rh, R&& v) : rh(rh) {\n     \
+    \   using std::begin, std::end, std::rbegin, std::rend;\n        sz = static_cast<long\
+    \ long>(std::distance(begin(v), end(v)));\n        hash1 = rh.build(begin(v),\
+    \ end(v)).back();\n        hash2 = rh.build(rbegin(v), rend(v)).back();\n    }\n\
+    \    /**\n     * @brief char\u3084unsigned long long\u306A\u3069\u3067\u521D\u671F\
+    \u5316\u3059\u308B\n     */\n    template <class T, ENABLE_IF_T(std::is_convertible_v<T,\
     \ unsigned long long> && !std::is_convertible_v<T, std::string_view>)>\n    RHString(RollingHash&\
     \ rh, T&& x) : rh(rh) {\n        sz = 1;\n        hash1 = RollingHash::to_value(x);\n\
     \        hash2 = hash1;\n    }\n    /**\n     * @brief \u6587\u5B57\u5217(string,\
@@ -605,10 +609,10 @@ data:
     \u30CF\u30C3\u30B7\u30E5\n     */\n    template <typename Grid>\n    std::vector<std::vector<ull>>\
     \ build(const Grid& grid) {\n        using std::size;\n        const long long\
     \ h = size(grid), w = h == 0 ? 0 : size(grid[0]);\n        std::vector<std::vector<ull>>\
-    \ res(h + 1, std::vector<ull>(w + 1, 0));\n        const ull b1 = rh1.base, b2\
-    \ = rh2.base, b12 = mul(b1, b2);\n        for (long long i = 0; i < h; i++) {\n\
-    \            assert(static_cast<long long>(size(grid[i])) == w);\n           \
-    \ for (long long j = 0; j < w; j++) {\n                ull v = add(mul(res[i][j\
+    \ res(h + 1, std::vector<ull>(w + 1, 0));\n        const ull b1 = rh1.base(),\
+    \ b2 = rh2.base(), b12 = mul(b1, b2);\n        for (long long i = 0; i < h; i++)\
+    \ {\n            assert(static_cast<long long>(size(grid[i])) == w);\n       \
+    \     for (long long j = 0; j < w; j++) {\n                ull v = add(mul(res[i][j\
     \ + 1], b1), mul(res[i + 1][j], b2));\n                res[i + 1][j + 1] = add(sub(v,\
     \ mul(res[i][j], b12)), RollingHash::to_value(grid[i][j]));\n            }\n \
     \       }\n        return res;\n    }\n\n    /**\n     * @brief region \u306E\u30CF\
@@ -660,7 +664,7 @@ data:
   isVerificationFile: true
   path: test/aoj/alds1/alds1-14-c.test.cpp
   requiredBy: []
-  timestamp: '2026-11-08 20:13:03+09:00'
+  timestamp: '2026-11-09 05:12:43+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/aoj/alds1/alds1-14-c.test.cpp

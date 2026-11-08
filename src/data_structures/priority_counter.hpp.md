@@ -1,7 +1,7 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
@@ -97,11 +97,15 @@ data:
     \ std::size_t K = 1, class Compare = std::less<T>, ENABLE_IF_T(K >= 1)>\nstruct\
     \ PriorityCounter {\n    using key_type = T;\n    using mapped_type = long long;\n\
     \    using value_type = std::pair<key_type, mapped_type>;\n    inline constexpr\
-    \ static std::size_t k = K;\n\n    // C++17 \u306E constexpr \u30B3\u30F3\u30B9\
-    \u30C8\u30E9\u30AF\u30BF\u3067\u306F\u3059\u3079\u3066\u306E\u30E1\u30F3\u30D0\
-    \u306E\u521D\u671F\u5316\u304C\u5FC5\u8981\u306A\u306E\u3067\u3001\u5024\u521D\
-    \u671F\u5316\u3057\u3066\u304A\u304F\n    std::array<value_type, K> data{};\n\n\
-    \    constexpr PriorityCounter() {}\n    explicit constexpr PriorityCounter(const\
+    \ static std::size_t k = K;\n\n   private:\n    // C++17 \u306E constexpr \u30B3\
+    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u306F\u3059\u3079\u3066\u306E\u30E1\
+    \u30F3\u30D0\u306E\u521D\u671F\u5316\u304C\u5FC5\u8981\u306A\u306E\u3067\u3001\
+    \u5024\u521D\u671F\u5316\u3057\u3066\u304A\u304F\n    std::array<value_type, K>\
+    \ data{};\n\n   public:\n    /** @brief \u4E0A\u4F4D\u304B\u3089 i \u756A\u76EE\
+    \u306E\u5024\u3068\u500B\u6570\u3002size() <= i < K \u3067\u306F\u500B\u6570\u306F\
+    \ 0 */\n    constexpr const value_type& operator[](long long i) const {\n    \
+    \    assert(0 <= i && i < static_cast<long long>(K));\n        return data[i];\n\
+    \    }\n\n    constexpr PriorityCounter() {}\n    explicit constexpr PriorityCounter(const\
     \ key_type& x) : PriorityCounter() {\n        data[0].first = x;\n        data[0].second\
     \ = 1;\n    }\n\n    constexpr long long size() const {\n        for (std::size_t\
     \ i = 0; i < k; i++) {\n            if (data[i].second == 0) {\n             \
@@ -137,11 +141,15 @@ data:
     \ T, std::size_t K = 1, class Compare = std::less<T>, ENABLE_IF_T(K >= 1)>\nstruct\
     \ PriorityCounter {\n    using key_type = T;\n    using mapped_type = long long;\n\
     \    using value_type = std::pair<key_type, mapped_type>;\n    inline constexpr\
-    \ static std::size_t k = K;\n\n    // C++17 \u306E constexpr \u30B3\u30F3\u30B9\
-    \u30C8\u30E9\u30AF\u30BF\u3067\u306F\u3059\u3079\u3066\u306E\u30E1\u30F3\u30D0\
-    \u306E\u521D\u671F\u5316\u304C\u5FC5\u8981\u306A\u306E\u3067\u3001\u5024\u521D\
-    \u671F\u5316\u3057\u3066\u304A\u304F\n    std::array<value_type, K> data{};\n\n\
-    \    constexpr PriorityCounter() {}\n    explicit constexpr PriorityCounter(const\
+    \ static std::size_t k = K;\n\n   private:\n    // C++17 \u306E constexpr \u30B3\
+    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u306F\u3059\u3079\u3066\u306E\u30E1\
+    \u30F3\u30D0\u306E\u521D\u671F\u5316\u304C\u5FC5\u8981\u306A\u306E\u3067\u3001\
+    \u5024\u521D\u671F\u5316\u3057\u3066\u304A\u304F\n    std::array<value_type, K>\
+    \ data{};\n\n   public:\n    /** @brief \u4E0A\u4F4D\u304B\u3089 i \u756A\u76EE\
+    \u306E\u5024\u3068\u500B\u6570\u3002size() <= i < K \u3067\u306F\u500B\u6570\u306F\
+    \ 0 */\n    constexpr const value_type& operator[](long long i) const {\n    \
+    \    assert(0 <= i && i < static_cast<long long>(K));\n        return data[i];\n\
+    \    }\n\n    constexpr PriorityCounter() {}\n    explicit constexpr PriorityCounter(const\
     \ key_type& x) : PriorityCounter() {\n        data[0].first = x;\n        data[0].second\
     \ = 1;\n    }\n\n    constexpr long long size() const {\n        for (std::size_t\
     \ i = 0; i < k; i++) {\n            if (data[i].second == 0) {\n             \
@@ -175,7 +183,7 @@ data:
   isVerificationFile: false
   path: src/data_structures/priority_counter.hpp
   requiredBy: []
-  timestamp: '2026-11-08 20:13:03+09:00'
+  timestamp: '2026-11-09 05:12:43+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/unittest/data_structures/priority_counter.test.cpp
@@ -191,10 +199,10 @@ title: "\u4E0A\u4F4D K \u500B\u306E\u5024\u3068\u305D\u306E\u500B\u6570"
 ```cpp
 MaxCounter<int, 2> pc;                 // 大きい方から 2 種類
 for (int x : {3, 5, 1, 5, 4}) pc.inc(x);
-// pc.data = { {5, 2}, {4, 1} }
+// pc[0] は {5, 2}、pc[1] は {4, 1}
 
 MaxCounter<int> a(3), b(3);
-auto c = a + b;                        // c.data[0] = {3, 2}
+auto c = a + b;                        // c[0] は {3, 2}
 ```
 
 ## 型
@@ -213,15 +221,10 @@ auto c = a + b;                        // c.data[0] = {3, 2}
 | `PriorityCounter(x)` | 値 `x` が 1 個 | $O(K)$ |
 | `inc(x, c = 1)` | 値 `x` を `c` 個追加する (`c > 0`)。上位 K 種類に入らなければ捨てる | $O(K)$ |
 | `a + b`、`a += b` | 合わせる | $O(K^2)$ |
+| `operator[](i)` | 上位から `i` 番目の `{値, 個数}` を const 参照で返す。`0 <= i < K`。`i >= size()` では個数が 0 | $O(1)$ |
 | `size()` | 保持している値の種類数 (K 以下) | $O(K)$ |
 
 値は追加されるだけなので、上位 K 種類から外れた値が再び上位に入ることはありません。そのため、追加の順番によらず上位 K 種類とその個数は正しく求まります。`c` は正の値にしてください (個数を減らす使い方はできません)。
-
-## メンバ変数
-
-| 変数 | 説明 |
-|---|---|
-| `data` | 長さ K の配列。`data[i]` は上位から `i` 番目の `{値, 個数}` で、`i >= size()` では個数が 0 |
 
 ## 関連
 

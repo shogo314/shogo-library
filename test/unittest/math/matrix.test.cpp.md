@@ -1,14 +1,14 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: src/math/matrix.hpp
     title: "\u884C\u5217"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: src/math/modint.hpp
     title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
       \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
@@ -48,17 +48,17 @@ data:
     \ @file matrix.hpp\n * @brief \u884C\u5217\n */\n\n#include <algorithm>\n#include\
     \ <cassert>\n#include <cmath>\n#if __cplusplus >= 202002L\n#include <concepts>\n\
     #endif\n#include <cstddef>\n#include <cstdint>\n#include <initializer_list>\n\
-    #include <optional>\n#include <string>\n#include <type_traits>\n#include <utility>\n\
-    #include <valarray>\n#include <vector>\n\nnamespace matrix {\ntemplate <typename\
-    \ T>\nstruct OperatorPropertyDefault {\n    constexpr static T zero() { return\
-    \ T(0); }\n    constexpr static T add(const T& a, const T& b) { return a + b;\
-    \ }\n    constexpr static T neg(const T& a) { return -a; }\n    constexpr static\
-    \ T one() { return T(1); }\n    constexpr static T mul(const T& a, const T& b)\
-    \ { return a * b; }\n    constexpr static T inv(const T& a) { return T(1) / a;\
-    \ }\n};\n}  // namespace matrix\n\nnamespace internal_matrix {\n// \u6CD5\u304C\
-    \ 2^31 \u672A\u6E80\u306E modint (mod() \u3068 val() \u3092\u6301\u3064\u578B\
-    ) \u304B\n#if __cplusplus >= 202002L\ntemplate <class T>\nconcept modint_like\
-    \ = requires(const T& x) {\n    { T::mod() } -> std::convertible_to<std::uint32_t>;\n\
+    #include <iterator>\n#include <optional>\n#include <string>\n#include <type_traits>\n\
+    #include <utility>\n#include <valarray>\n#include <vector>\n\nnamespace matrix\
+    \ {\ntemplate <typename T>\nstruct OperatorPropertyDefault {\n    constexpr static\
+    \ T zero() { return T(0); }\n    constexpr static T add(const T& a, const T& b)\
+    \ { return a + b; }\n    constexpr static T neg(const T& a) { return -a; }\n \
+    \   constexpr static T one() { return T(1); }\n    constexpr static T mul(const\
+    \ T& a, const T& b) { return a * b; }\n    constexpr static T inv(const T& a)\
+    \ { return T(1) / a; }\n};\n}  // namespace matrix\n\nnamespace internal_matrix\
+    \ {\n// \u6CD5\u304C 2^31 \u672A\u6E80\u306E modint (mod() \u3068 val() \u3092\
+    \u6301\u3064\u578B) \u304B\n#if __cplusplus >= 202002L\ntemplate <class T>\nconcept\
+    \ modint_like = requires(const T& x) {\n    { T::mod() } -> std::convertible_to<std::uint32_t>;\n\
     \    { x.val() } -> std::convertible_to<std::uint32_t>;\n};\ntemplate <class T>\n\
     inline constexpr bool is_modint_like_v = modint_like<T>;\n#else\ntemplate <class\
     \ T, class = void>\nstruct is_modint_like : std::false_type {};\ntemplate <class\
@@ -81,36 +81,68 @@ data:
     \u304F\u3066\u3082\u3088\u3044\uFF08\u5FC5\u8981\u306A\u3082\u306E\u304C\u306A\
     \u304B\u3063\u305F\u3089\u30B3\u30F3\u30D1\u30A4\u30EB\u30A8\u30E9\u30FC\u304C\
     \u767A\u751F\u3059\u308B\uFF09\n */\ntemplate <class T, class OperatorProperty\
-    \ = matrix::OperatorPropertyDefault<T>>\nclass Matrix {\n   public:\n    long\
-    \ long n, m;\n    std::vector<std::vector<T>> v;\n\n    /**\n     * @brief \u30B3\
-    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param v \u884C\u5217(\u30B0\u30EA\
-    \u30C3\u30C9)\u306E\u5143\u3068\u306A\u308B vector<string> \u3084 vector<vector<T>>\n\
-    \     * @return Matrix\n     */\n    template <typename Iterable>\n    Matrix(const\
-    \ std::vector<Iterable>& v_) noexcept : n(v_.size()), m(v_.size() == 0 ? 0 : v_[0].size())\
-    \ {\n        v.resize(n);\n        for (long long i = 0; i < n; i++) {\n     \
-    \       v[i].assign(v_[i].begin(), v_[i].end());\n        }\n    }\n\n    /**\n\
-    \     * @brief \u521D\u671F\u5316\u5B50\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\
-    \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * \u4F8B: Matrix<mint> A({{1,\
-    \ 1}, {1, 0}});\n     * @param il \u5404\u884C\u306E\u8981\u7D20\u306E\u30EA\u30B9\
-    \u30C8\n     */\n    Matrix(std::initializer_list<std::initializer_list<T>> il)\
-    \ : n(il.size()), m(il.size() == 0 ? 0 : il.begin()->size()) {\n        v.reserve(n);\n\
-    \        for (const auto& row : il) v.emplace_back(row);\n    }\n    /**\n   \
-    \  * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param _n \u884C\
-    \u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u884C\u6570\n     * @param _m \u884C\u5217\
-    (\u30B0\u30EA\u30C3\u30C9)\u306E\u5217\u6570\n     * @param _val \u884C\u5217\
-    (\u30B0\u30EA\u30C3\u30C9)\u306E\u8981\u7D20\u306E\u521D\u671F\u5024\n     * @return\
-    \ Matrix\n     */\n    Matrix(long long _n, long long _m, T _val = OperatorProperty::zero())\
-    \ : n(_n), m(_m), v(n, std::vector<T>(m, _val)) {}\n\n    auto begin() noexcept\
-    \ { return v.begin(); }\n    auto end() noexcept { return v.end(); }\n    auto\
-    \ begin() const noexcept { return v.begin(); }\n    auto end() const noexcept\
-    \ { return v.end(); }\n\n    /**\n     * @brief \u884C\u5217(\u30B0\u30EA\u30C3\
-    \u30C9)\u306E\u884C\u6570\n     * @return long long\n     */\n    [[nodiscard]]\n\
-    \    long long size() const { return v.size(); }\n\n    std::vector<T>& operator[](long\
-    \ long i) { return v[i]; }\n    const std::vector<T>& operator[](long long i)\
-    \ const { return v[i]; }\n    Matrix& operator=(const std::vector<std::vector<T>>&\
-    \ A) noexcept {\n        n = A.size();\n        m = (n == 0 ? 0 : A[0].size());\n\
-    \        v = A;\n        return *this;\n    }\n    bool operator==(const Matrix&\
-    \ A) const noexcept {\n        return this->v == A.v;\n    }\n    bool operator!=(const\
+    \ = matrix::OperatorPropertyDefault<T>>\nclass Matrix {\n    long long n, m;\n\
+    \    std::vector<std::vector<T>> v;\n\n   public:\n    template <bool IsConst>\n\
+    \    class RowView {\n        using Storage = std::conditional_t<IsConst, const\
+    \ std::vector<T>, std::vector<T>>;\n        Storage* row;\n        explicit RowView(Storage&\
+    \ row) : row(&row) {}\n        friend class Matrix;\n\n       public:\n      \
+    \  using value_type = T;\n\n        RowView(const RowView&) = default;\n     \
+    \   RowView& operator=(const RowView&) = delete;\n        long long size() const\
+    \ { return row->size(); }\n        bool empty() const { return row->empty(); }\n\
+    \        decltype(auto) operator[](long long j) const {\n            assert(0\
+    \ <= j && j < size());\n            return (*row)[j];\n        }\n        auto\
+    \ begin() const { return row->begin(); }\n        auto end() const { return row->end();\
+    \ }\n    };\n\n    template <bool IsConst>\n    class RowIterator {\n        using\
+    \ Owner = std::conditional_t<IsConst, const Matrix, Matrix>;\n        Owner* owner\
+    \ = nullptr;\n        long long index = 0;\n        RowIterator(Owner& owner,\
+    \ long long index) : owner(&owner), index(index) {}\n        friend class Matrix;\n\
+    \n       public:\n        using value_type = RowView<IsConst>;\n        using\
+    \ reference = value_type;\n        struct pointer {\n            value_type row;\n\
+    \            const value_type* operator->() const { return &row; }\n        };\n\
+    \        using difference_type = std::ptrdiff_t;\n        using iterator_category\
+    \ = std::input_iterator_tag;\n\n        RowIterator() = default;\n        reference\
+    \ operator*() const { return (*owner)[index]; }\n        pointer operator->()\
+    \ const { return {**this}; }\n        RowIterator& operator++() {\n          \
+    \  ++index;\n            return *this;\n        }\n        RowIterator operator++(int)\
+    \ {\n            auto old = *this;\n            ++*this;\n            return old;\n\
+    \        }\n        friend bool operator==(const RowIterator& a, const RowIterator&\
+    \ b) { return a.owner == b.owner && a.index == b.index; }\n        friend bool\
+    \ operator!=(const RowIterator& a, const RowIterator& b) { return !(a == b); }\n\
+    \    };\n\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n\
+    \     * @param v \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u5143\u3068\u306A\
+    \u308B vector<string> \u3084 vector<vector<T>>\n     * @return Matrix\n     */\n\
+    \    template <typename Iterable>\n    Matrix(const std::vector<Iterable>& v_)\
+    \ noexcept : n(v_.size()), m(v_.size() == 0 ? 0 : v_[0].size()) {\n        v.resize(n);\n\
+    \        for (long long i = 0; i < n; i++) {\n            assert(static_cast<long\
+    \ long>(v_[i].size()) == m);\n            v[i].assign(v_[i].begin(), v_[i].end());\n\
+    \        }\n    }\n\n    /**\n     * @brief \u521D\u671F\u5316\u5B50\u30EA\u30B9\
+    \u30C8\u304B\u3089\u4F5C\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n   \
+    \  * \u4F8B: Matrix<mint> A({{1, 1}, {1, 0}});\n     * @param il \u5404\u884C\u306E\
+    \u8981\u7D20\u306E\u30EA\u30B9\u30C8\n     */\n    Matrix(std::initializer_list<std::initializer_list<T>>\
+    \ il) : n(il.size()), m(il.size() == 0 ? 0 : il.begin()->size()) {\n        v.reserve(n);\n\
+    \        for (const auto& row : il) {\n            assert(static_cast<long long>(row.size())\
+    \ == m);\n            v.emplace_back(row);\n        }\n    }\n    /**\n     *\
+    \ @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param _n \u884C\u5217\
+    (\u30B0\u30EA\u30C3\u30C9)\u306E\u884C\u6570\n     * @param _m \u884C\u5217(\u30B0\
+    \u30EA\u30C3\u30C9)\u306E\u5217\u6570\n     * @param _val \u884C\u5217(\u30B0\u30EA\
+    \u30C3\u30C9)\u306E\u8981\u7D20\u306E\u521D\u671F\u5024\n     * @return Matrix\n\
+    \     */\n    Matrix(long long _n, long long _m, T _val = OperatorProperty::zero())\
+    \ : n(_n), m(_m), v(n, std::vector<T>(m, _val)) {}\n\n    RowIterator<false> begin()\
+    \ noexcept { return RowIterator<false>(*this, 0); }\n    RowIterator<false> end()\
+    \ noexcept { return RowIterator<false>(*this, n); }\n    RowIterator<true> begin()\
+    \ const noexcept { return RowIterator<true>(*this, 0); }\n    RowIterator<true>\
+    \ end() const noexcept { return RowIterator<true>(*this, n); }\n\n    /** @brief\
+    \ \u884C\u6570 */\n    long long size() const { return n; }\n    /** @brief \u884C\
+    \u6570 */\n    long long height() const { return n; }\n    /** @brief \u5217\u6570\
+    \ */\n    long long width() const { return m; }\n\n    RowView<false> operator[](long\
+    \ long i) {\n        assert(0 <= i && i < n);\n        return RowView<false>(v[i]);\n\
+    \    }\n    RowView<true> operator[](long long i) const {\n        assert(0 <=\
+    \ i && i < n);\n        return RowView<true>(v[i]);\n    }\n    Matrix& operator=(const\
+    \ std::vector<std::vector<T>>& A) noexcept {\n        const long long rows = A.size(),\
+    \ cols = (rows == 0 ? 0 : A[0].size());\n        for (const auto& row : A) assert(static_cast<long\
+    \ long>(row.size()) == cols);\n        n = rows;\n        m = cols;\n        v\
+    \ = A;\n        return *this;\n    }\n    bool operator==(const Matrix& A) const\
+    \ noexcept {\n        return this->v == A.v;\n    }\n    bool operator!=(const\
     \ Matrix& A) const noexcept {\n        return this->v != A.v;\n    }\n\n    /**\n\
     \     * @brief \u8EE2\u7F6E\n     * @return Matrix\n     */\n    [[nodiscard]]\n\
     \    Matrix transpose() const noexcept {\n        if (n == 0) return Matrix(v);\n\
@@ -504,16 +536,18 @@ data:
     Matrix(std::vector<std::string>) \u306F Matrix<char>\n */\ntemplate <typename\
     \ Iterable>\nMatrix(const std::vector<Iterable>&) -> Matrix<typename Iterable::value_type>;\n\
     #line 14 \"test/unittest/math/matrix.test.cpp\"\n\n#line 17 \"test/unittest/math/matrix.test.cpp\"\
-    \n#include <iostream>\n#include <numeric>\n#include <random>\n#line 23 \"test/unittest/math/matrix.test.cpp\"\
+    \n#include <iostream>\n#include <numeric>\n#include <random>\n#if __cplusplus\
+    \ >= 202002L\n#include <ranges>\n#endif\n#line 27 \"test/unittest/math/matrix.test.cpp\"\
     \n\n#line 2 \"src/math/modint.hpp\"\n\n/**\n * @file modint.hpp\n * @brief \u56DB\
     \u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod \u3092\u53D6\u308B\
     \u30AF\u30E9\u30B9\n */\n\n#line 11 \"src/math/modint.hpp\"\n#include <limits>\n\
     #line 14 \"src/math/modint.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n\
     \ * @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\
-    \n#include <functional>\n#include <iterator>\n#include <set>\n#line 14 \"src/utility/traits.hpp\"\
-    \n\n#if __cplusplus >= 202002L\n#include <ranges>\n#endif\n\nnamespace internal_traits\
-    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
-    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \n#include <functional>\n#line 11 \"src/utility/traits.hpp\"\n#include <set>\n\
+    #line 14 \"src/utility/traits.hpp\"\n\n#if __cplusplus >= 202002L\n#include <ranges>\n\
+    #endif\n\nnamespace internal_traits {\nusing std::begin, std::end;\n\ntemplate\
+    \ <class T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate\
+    \ <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
     \ end(std::declval<T&>()))>> : std::true_type {};\n\n// \u30B5\u30A4\u30BA\u4ED8\
     \u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\u3059\
     \u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\u308B\
@@ -809,10 +843,15 @@ data:
     \ dynamic_modint(SignedIntegral value) noexcept\n        : base_type{value} {}\n\
     \n   private:\n    inline static value_type modulus = 998244353;\n};\n\nusing\
     \ modint998244353 = static_modint<998244353>;\nusing modint1000000007 = static_modint<1000000007>;\n\
-    using modint = dynamic_modint<-1>;\n#line 25 \"test/unittest/math/matrix.test.cpp\"\
-    \n\nusing mint = static_modint<998244353>;\n\n// \u63A8\u8AD6\u30AC\u30A4\u30C9\
-    : \u8981\u7D20\u306E\u578B\u306F\u5404\u884C\u306E value_type\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::vector<long\
-    \ long>>())), Matrix<long long>>);\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::string>())),\
+    using modint = dynamic_modint<-1>;\n#line 29 \"test/unittest/math/matrix.test.cpp\"\
+    \n\nusing mint = static_modint<998244353>;\n\nstatic_assert(std::is_same_v<decltype(std::declval<Matrix<int>&>()[0][0]),\
+    \ int&>);\nstatic_assert(std::is_same_v<decltype(std::declval<const Matrix<int>&>()[0][0]),\
+    \ const int&>);\nstatic_assert(!std::is_assignable_v<Matrix<int>::RowView<false>&,\
+    \ Matrix<int>::RowView<false>>);\n#if __cplusplus >= 202002L\nstatic_assert(std::ranges::input_range<Matrix<int>>);\n\
+    static_assert(std::ranges::input_range<const Matrix<int>>);\n#endif\n\n// \u63A8\
+    \u8AD6\u30AC\u30A4\u30C9: \u8981\u7D20\u306E\u578B\u306F\u5404\u884C\u306E value_type\n\
+    static_assert(std::is_same_v<decltype(Matrix(std::vector<std::vector<long long>>())),\
+    \ Matrix<long long>>);\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::string>())),\
     \ Matrix<char>>);\nusing VV = std::vector<std::vector<long long>>;\n\n// xor \u3068\
     \ and \u306B\u3088\u308B\u4F53 GF(2)\nstruct GF2 {\n    static int zero() { return\
     \ 0; }\n    static int add(const int& a, const int& b) { return a ^ b; }\n   \
@@ -824,7 +863,7 @@ data:
     \u4F7F\u308F\u306A\u3044\u6C4E\u7528\u306E\u7D4C\u8DEF\u3092\u901A\u308B)\nstruct\
     \ ModProp : matrix::OperatorPropertyDefault<mint> {};\n\nVV random_vv(std::mt19937_64&\
     \ rng, int n, int m, int lo, int hi) {\n    VV a(n, std::vector<long long>(m));\n\
-    \    for (auto& row : a)\n        for (auto& x : row) x = lo + static_cast<long\
+    \    for (auto row : a)\n        for (auto& x : row) x = lo + static_cast<long\
     \ long>(rng() % (hi - lo + 1));\n    return a;\n}\n\n// GF(2) \u306E\u884C\u5217\
     \u5F0F (\u611A\u76F4\u306A\u30AC\u30A6\u30B9\u306E\u6D88\u53BB\u6CD5)\nint naive_det_gf2(std::vector<std::vector<int>>\
     \ a) {\n    int n = a.size();\n    for (int c = 0, r = 0; c < n; c++) {\n    \
@@ -848,7 +887,7 @@ data:
     \ P, typename ToT>\nbool check_linear(std::mt19937_64& rng, int p, ToT to_t) {\n\
     \    for (int rep = 0; rep < 500; rep++) {\n        int n = rng() % 5 + 1, m =\
     \ rng() % 5 + 1;\n        std::vector<std::vector<T>> a(n, std::vector<T>(m));\n\
-    \        for (auto& row : a)\n            for (auto& x : row) x = to_t(rng() %\
+    \        for (auto row : a)\n            for (auto& x : row) x = to_t(rng() %\
     \ p);\n        // \u30E9\u30F3\u30AF\u304C\u5C0F\u3055\u3044\u884C\u5217\u3082\
     \u4F5C\u308B (\u3042\u308B\u884C\u3092\u5225\u306E\u884C\u306E\u5B9A\u6570\u500D\
     \u306B\u3059\u308B)\n        if (n >= 2 && rng() % 2) {\n            int i = rng()\
@@ -888,30 +927,45 @@ data:
     \            if (i > 0 && piv[i] <= piv[i - 1]) return false;\n            for\
     \ (int k = 0; k < n; k++)\n                if (R[k][piv[i]] != (k == i ? P::one()\
     \ : P::zero())) return false;\n        }\n    }\n    return true;\n}\n\nint main()\
-    \ {\n    std::mt19937_64 rng(314);\n    bool ok = true;\n\n    // \u521D\u671F\
-    \u5316\u5B50\u30EA\u30B9\u30C8\u30FB\u4EE3\u5165\u30FB\u8D70\u67FB\u30FB==\n \
-    \   {\n        Matrix<long long> A({{1, 2, 3}, {4, 5, 6}});\n        if (A.n !=\
-    \ 2 || A.m != 3 || A[1][2] != 6 || A.size() != 2) ok = false;\n        long long\
-    \ s = 0;\n        for (auto& row : A)\n            for (auto& x : row) s += x,\
-    \ x *= 2;  // \u66F8\u304D\u63DB\u3048\u3082\u3067\u304D\u308B\n        const\
-    \ Matrix<long long>& C = A;\n        long long s2 = 0;\n        for (const auto&\
-    \ row : C)\n            for (long long x : row) s2 += x;\n        if (s != 21\
-    \ || s2 != 42) ok = false;\n        Matrix<long long> B(1, 1);\n        B = VV{{2,\
-    \ 4, 6}, {8, 10, 12}};\n        if (B.n != 2 || B.m != 3) ok = false;\n      \
-    \  if (!(A == B) || A != B) ok = false;\n        B[0][0] = 0;\n        if (A ==\
-    \ B || !(A != B)) ok = false;\n        Matrix<long long> Z(2, 3, 7);\n       \
-    \ if (Z[1][2] != 7) ok = false;\n    }\n\n    for (int rep = 0; rep < 300; rep++)\
-    \ {\n        int n = rng() % 5 + 1, m = rng() % 5 + 1;\n        VV a = random_vv(rng,\
-    \ n, m, -100, 100), b = random_vv(rng, n, m, -100, 100);\n        Matrix<long\
-    \ long> A(a), B(b);\n        // + \u3068 -\n        Matrix<long long> S = A +\
-    \ B, D = A - B, S2 = A, D2 = A;\n        S2 += B;\n        D2 -= B;\n        for\
-    \ (int i = 0; i < n; i++)\n            for (int j = 0; j < m; j++) {\n       \
-    \         if (S[i][j] != a[i][j] + b[i][j] || S2[i][j] != S[i][j]) ok = false;\n\
-    \                if (D[i][j] != a[i][j] - b[i][j] || D2[i][j] != D[i][j]) ok =\
-    \ false;\n            }\n        // shift: (i, j) \u3092 ((i + dy) mod n, (j +\
-    \ dx) mod m) \u306B\u79FB\u3059\n        int dy = static_cast<int>(rng() % 21)\
-    \ - 10, dx = static_cast<int>(rng() % 21) - 10;\n        Matrix<long long> T =\
-    \ A.shift(dy, dx);\n        for (int i = 0; i < n; i++)\n            for (int\
+    \ {\n    std::mt19937_64 rng(314);\n    bool ok = true;\n\n    // \u884C\u30D3\
+    \u30E5\u30FC\u3068\u884C\u30A4\u30C6\u30EC\u30FC\u30BF\u304B\u3089\u306E\u5909\
+    \u66F4\u306F\u5143\u306E\u884C\u5217\u306B\u53CD\u6620\u3055\u308C\u308B\n   \
+    \ {\n        Matrix<int> A({{1, 2}, {3, 4}});\n        auto row = A[0];\n    \
+    \    row[1] = 7;\n        auto it = A.begin();\n        if (it->size() != 2) ok\
+    \ = false;\n        if ((*it++).size() != 2) ok = false;\n        std::fill((*it).begin(),\
+    \ (*it).end(), 9);\n        if (A[0][1] != 7 || A[1][0] != 9 || A[1][1] != 9)\
+    \ ok = false;\n        const auto& C = A;\n        if (std::distance(C.begin(),\
+    \ C.end()) != 2 || C[0].empty()) ok = false;\n        Matrix<int> copy = A;\n\
+    \        copy[0][0] = 8;\n        if (A[0][0] != 1) ok = false;\n        Matrix<int>\
+    \ empty(0, 3), no_cols(2, 0);\n        if (empty.height() != 0 || empty.width()\
+    \ != 3 || empty.begin() != empty.end()) ok = false;\n        for (auto r : no_cols)\
+    \ {\n            if (!r.empty() || r.begin() != r.end()) ok = false;\n       \
+    \ }\n        Matrix<bool> bits({{true, false}});\n        for (auto r : bits)\n\
+    \            for (auto&& x : r) x = !x;\n        const auto& const_bits = bits;\n\
+    \        if (const_bits[0][0] || !const_bits[0][1]) ok = false;\n    }\n\n   \
+    \ // \u521D\u671F\u5316\u5B50\u30EA\u30B9\u30C8\u30FB\u4EE3\u5165\u30FB\u8D70\u67FB\
+    \u30FB==\n    {\n        Matrix<long long> A({{1, 2, 3}, {4, 5, 6}});\n      \
+    \  if (A.height() != 2 || A.width() != 3 || A[1][2] != 6 || A.size() != 2) ok\
+    \ = false;\n        long long s = 0;\n        for (auto row : A)\n           \
+    \ for (auto& x : row) s += x, x *= 2;  // \u66F8\u304D\u63DB\u3048\u3082\u3067\
+    \u304D\u308B\n        const Matrix<long long>& C = A;\n        long long s2 =\
+    \ 0;\n        for (const auto& row : C)\n            for (long long x : row) s2\
+    \ += x;\n        if (s != 21 || s2 != 42) ok = false;\n        Matrix<long long>\
+    \ B(1, 1);\n        B = VV{{2, 4, 6}, {8, 10, 12}};\n        if (B.height() !=\
+    \ 2 || B.width() != 3) ok = false;\n        if (!(A == B) || A != B) ok = false;\n\
+    \        B[0][0] = 0;\n        if (A == B || !(A != B)) ok = false;\n        Matrix<long\
+    \ long> Z(2, 3, 7);\n        if (Z[1][2] != 7) ok = false;\n    }\n\n    for (int\
+    \ rep = 0; rep < 300; rep++) {\n        int n = rng() % 5 + 1, m = rng() % 5 +\
+    \ 1;\n        VV a = random_vv(rng, n, m, -100, 100), b = random_vv(rng, n, m,\
+    \ -100, 100);\n        Matrix<long long> A(a), B(b);\n        // + \u3068 -\n\
+    \        Matrix<long long> S = A + B, D = A - B, S2 = A, D2 = A;\n        S2 +=\
+    \ B;\n        D2 -= B;\n        for (int i = 0; i < n; i++)\n            for (int\
+    \ j = 0; j < m; j++) {\n                if (S[i][j] != a[i][j] + b[i][j] || S2[i][j]\
+    \ != S[i][j]) ok = false;\n                if (D[i][j] != a[i][j] - b[i][j] ||\
+    \ D2[i][j] != D[i][j]) ok = false;\n            }\n        // shift: (i, j) \u3092\
+    \ ((i + dy) mod n, (j + dx) mod m) \u306B\u79FB\u3059\n        int dy = static_cast<int>(rng()\
+    \ % 21) - 10, dx = static_cast<int>(rng() % 21) - 10;\n        Matrix<long long>\
+    \ T = A.shift(dy, dx);\n        for (int i = 0; i < n; i++)\n            for (int\
     \ j = 0; j < m; j++)\n                if (T[((i + dy) % n + n) % n][((j + dx)\
     \ % m + m) % m] != a[i][j]) ok = false;\n        int k = rng() % 12;\n       \
     \ if (A.shift_r(k) != A.shift(0, k) || A.shift_l(k) != A.shift(0, -k)) ok = false;\n\
@@ -930,7 +984,7 @@ data:
     \   }\n    if (!ok) std::cerr << \"basic\" << std::endl;\n\n    // GF(2): \u884C\
     \u5217\u5F0F\u3068\u9006\u884C\u5217\n    for (int rep = 0; rep < 500; rep++)\
     \ {\n        int n = rng() % 7 + 1;\n        std::vector<std::vector<int>> a(n,\
-    \ std::vector<int>(n));\n        for (auto& row : a)\n            for (auto& x\
+    \ std::vector<int>(n));\n        for (auto row : a)\n            for (auto& x\
     \ : row) x = rng() % 2;\n        Matrix<int, GF2> A(a);\n        int d = A.det();\n\
     \        if (d != naive_det_gf2(a)) ok = false, std::cerr << \"gf2 det\" << std::endl;\n\
     \        auto Ai_opt = A.inv();\n        if (Ai_opt.has_value() != (d == 1)) ok\
@@ -948,7 +1002,7 @@ data:
     \u7D4C\u8DEF\u306E\u7D50\u679C\u304C\u4E00\u81F4\u3057\u3001\u4F59\u56E0\u5B50\
     \u5C55\u958B\u3068\u3082\u4E00\u81F4\u3059\u308B\n    for (int rep = 0; rep <\
     \ 300; rep++) {\n        int n = rng() % 6 + 1;\n        std::vector<std::vector<mint>>\
-    \ a(n, std::vector<mint>(n));\n        bool small = rng() % 2;\n        for (auto&\
+    \ a(n, std::vector<mint>(n));\n        bool small = rng() % 2;\n        for (auto\
     \ row : a)\n            for (auto& x : row) x = small ? static_cast<long long>(rng()\
     \ % 3) : static_cast<long long>(rng() % 998244353);\n        Matrix<mint> A(a);\n\
     \        Matrix<mint, ModProp> B(a);\n        mint e = naive_det(a);\n       \
@@ -1007,7 +1061,7 @@ data:
     \u308B\n    auto check_charpoly = [&](auto zero_mint, int mod_range, const char*\
     \ name) {\n        using M = decltype(zero_mint);\n        for (int rep = 0; rep\
     \ < 300 && ok; rep++) {\n            int n = rng() % 6;\n            std::vector<std::vector<M>>\
-    \ a(n, std::vector<M>(n));\n            for (auto& row : a)\n                for\
+    \ a(n, std::vector<M>(n));\n            for (auto row : a)\n                for\
     \ (auto& x : row) x = rng() % mod_range;\n            std::vector<M> expect(n\
     \ + 1, M(0));\n            std::vector<int> perm(n);\n            std::iota(perm.begin(),\
     \ perm.end(), 0);\n            do {\n                // \u7F6E\u63DB\u306E\u7B26\
@@ -1031,9 +1085,9 @@ data:
     \u3044\u3082\u306E\u3082\u3001\u8981\u7D20\u306F\u8CA0\u306E\u5024\u3082\u542B\
     \u3081\u308B\n    for (int rep = 0; rep < 2000 && ok; rep++) {\n        int n\
     \ = rng() % 6;\n        long long mod = rng() % 30 + 1;\n        std::vector<std::vector<long\
-    \ long>> a(n, std::vector<long long>(n));\n        for (auto& row : a)\n     \
-    \       for (auto& x : row) x = static_cast<long long>(rng() % 21) - 10;\n   \
-    \     std::vector<int> perm(n);\n        std::iota(perm.begin(), perm.end(), 0);\n\
+    \ long>> a(n, std::vector<long long>(n));\n        for (auto row : a)\n      \
+    \      for (auto& x : row) x = static_cast<long long>(rng() % 21) - 10;\n    \
+    \    std::vector<int> perm(n);\n        std::iota(perm.begin(), perm.end(), 0);\n\
     \        long long expect = 0;\n        do {\n            long long p = 1;\n \
     \           for (int i = 0; i < n; i++) p *= a[i][perm[i]];\n            for (int\
     \ i = 0; i < n; i++)\n                for (int j = i + 1; j < n; j++)\n      \
@@ -1056,28 +1110,28 @@ data:
     \ i = 0; i < static_cast<int>(a.size()); i++)\n                for (int j = 0;\
     \ j < cols; j++) A[i][j] = M(a[i][j]);\n            return A;\n        };\n  \
     \      auto same = [&](const Matrix<M>& A, const std::vector<std::vector<unsigned\
-    \ long long>>& c, int cols) {\n            if (A.n != static_cast<long long>(c.size())\
-    \ || A.m != cols) return false;\n            for (int i = 0; i < A.n; i++)\n \
-    \               for (int j = 0; j < cols; j++)\n                    if (A[i][j].val()\
-    \ != c[i][j]) return false;\n            return true;\n        };\n        auto\
-    \ random_mat = [&](int n, int m) {\n            std::vector<std::vector<unsigned\
-    \ long long>> a(n, std::vector<unsigned long long>(m));\n            for (auto&\
-    \ row : a)\n                for (auto& x : row) x = rng() % 4 == 0 ? mod - 1 :\
-    \ rng() % mod;  // \u6700\u5927\u306E\u5024\u3092\u591A\u3081\u306B\u5165\u308C\
-    \u3066\u3042\u3075\u308C\u3092\u8A66\u3059\n            return a;\n        };\n\
-    \        for (int rep = 0; rep < 300 && ok; rep++) {\n            int n = rng()\
-    \ % 8, m = rng() % 60, p = rng() % 8;\n            auto a = random_mat(n, m),\
-    \ b = random_mat(m, p);\n            if (!same(to_matrix(a, m) * to_matrix(b,\
-    \ p), naive(a, b, p), p)) ok = false, std::cerr << \"product \" << name << std::endl;\n\
-    \            auto c = random_mat(n, n);\n            Matrix<M> C = to_matrix(c,\
-    \ n);\n            C *= C;\n            if (!same(C, naive(c, c, n), n)) ok =\
-    \ false, std::cerr << \"product (A *= A) \" << name << std::endl;\n          \
-    \  long long e = rng() % 10;\n            auto expect = std::vector<std::vector<unsigned\
-    \ long long>>(n, std::vector<unsigned long long>(n));\n            for (int i\
-    \ = 0; i < n; i++) expect[i][i] = 1 % mod;\n            for (int t = 0; t < e;\
-    \ t++) expect = naive(expect, c, n);\n            if (!same(to_matrix(c, n).pow(e),\
-    \ expect, n)) ok = false, std::cerr << \"pow \" << name << std::endl;\n      \
-    \  }\n    };\n    check_product(mint(0), \"mod 998244353\");\n    check_product(static_modint<1000000007>(0),\
+    \ long long>>& c, int cols) {\n            if (A.height() != static_cast<long\
+    \ long>(c.size()) || A.width() != cols) return false;\n            for (int i\
+    \ = 0; i < A.height(); i++)\n                for (int j = 0; j < cols; j++)\n\
+    \                    if (A[i][j].val() != c[i][j]) return false;\n           \
+    \ return true;\n        };\n        auto random_mat = [&](int n, int m) {\n  \
+    \          std::vector<std::vector<unsigned long long>> a(n, std::vector<unsigned\
+    \ long long>(m));\n            for (auto row : a)\n                for (auto&\
+    \ x : row) x = rng() % 4 == 0 ? mod - 1 : rng() % mod;  // \u6700\u5927\u306E\u5024\
+    \u3092\u591A\u3081\u306B\u5165\u308C\u3066\u3042\u3075\u308C\u3092\u8A66\u3059\
+    \n            return a;\n        };\n        for (int rep = 0; rep < 300 && ok;\
+    \ rep++) {\n            int n = rng() % 8, m = rng() % 60, p = rng() % 8;\n  \
+    \          auto a = random_mat(n, m), b = random_mat(m, p);\n            if (!same(to_matrix(a,\
+    \ m) * to_matrix(b, p), naive(a, b, p), p)) ok = false, std::cerr << \"product\
+    \ \" << name << std::endl;\n            auto c = random_mat(n, n);\n         \
+    \   Matrix<M> C = to_matrix(c, n);\n            C *= C;\n            if (!same(C,\
+    \ naive(c, c, n), n)) ok = false, std::cerr << \"product (A *= A) \" << name <<\
+    \ std::endl;\n            long long e = rng() % 10;\n            auto expect =\
+    \ std::vector<std::vector<unsigned long long>>(n, std::vector<unsigned long long>(n));\n\
+    \            for (int i = 0; i < n; i++) expect[i][i] = 1 % mod;\n           \
+    \ for (int t = 0; t < e; t++) expect = naive(expect, c, n);\n            if (!same(to_matrix(c,\
+    \ n).pow(e), expect, n)) ok = false, std::cerr << \"pow \" << name << std::endl;\n\
+    \        }\n    };\n    check_product(mint(0), \"mod 998244353\");\n    check_product(static_modint<1000000007>(0),\
     \ \"mod 1000000007\");\n    check_product(static_modint<2147483647>(0), \"mod\
     \ 2147483647\");\n    check_product(static_modint<1>(0), \"mod 1\");\n    check_product(static_modint<2>(0),\
     \ \"mod 2\");\n    dynamic_modint<0>::set_mod(2000000011);\n    check_product(dynamic_modint<0>(0),\
@@ -1107,11 +1161,17 @@ data:
     \u984C\u306E\u5165\u529B\u306F\u4F7F\u308F\u305A\u3001\u3059\u3079\u3066\u4E00\
     \u81F4\u3057\u305F\u3089 Hello World \u3092\u51FA\u529B\u3059\u308B\n\n#include\
     \ \"../../../src/math/matrix.hpp\"\n\n#include <algorithm>\n#include <cmath>\n\
-    #include <iostream>\n#include <numeric>\n#include <random>\n#include <string>\n\
-    #include <type_traits>\n#include <vector>\n\n#include \"../../../src/math/modint.hpp\"\
-    \n\nusing mint = static_modint<998244353>;\n\n// \u63A8\u8AD6\u30AC\u30A4\u30C9\
-    : \u8981\u7D20\u306E\u578B\u306F\u5404\u884C\u306E value_type\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::vector<long\
-    \ long>>())), Matrix<long long>>);\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::string>())),\
+    #include <iostream>\n#include <numeric>\n#include <random>\n#if __cplusplus >=\
+    \ 202002L\n#include <ranges>\n#endif\n#include <string>\n#include <type_traits>\n\
+    #include <utility>\n#include <vector>\n\n#include \"../../../src/math/modint.hpp\"\
+    \n\nusing mint = static_modint<998244353>;\n\nstatic_assert(std::is_same_v<decltype(std::declval<Matrix<int>&>()[0][0]),\
+    \ int&>);\nstatic_assert(std::is_same_v<decltype(std::declval<const Matrix<int>&>()[0][0]),\
+    \ const int&>);\nstatic_assert(!std::is_assignable_v<Matrix<int>::RowView<false>&,\
+    \ Matrix<int>::RowView<false>>);\n#if __cplusplus >= 202002L\nstatic_assert(std::ranges::input_range<Matrix<int>>);\n\
+    static_assert(std::ranges::input_range<const Matrix<int>>);\n#endif\n\n// \u63A8\
+    \u8AD6\u30AC\u30A4\u30C9: \u8981\u7D20\u306E\u578B\u306F\u5404\u884C\u306E value_type\n\
+    static_assert(std::is_same_v<decltype(Matrix(std::vector<std::vector<long long>>())),\
+    \ Matrix<long long>>);\nstatic_assert(std::is_same_v<decltype(Matrix(std::vector<std::string>())),\
     \ Matrix<char>>);\nusing VV = std::vector<std::vector<long long>>;\n\n// xor \u3068\
     \ and \u306B\u3088\u308B\u4F53 GF(2)\nstruct GF2 {\n    static int zero() { return\
     \ 0; }\n    static int add(const int& a, const int& b) { return a ^ b; }\n   \
@@ -1123,7 +1183,7 @@ data:
     \u4F7F\u308F\u306A\u3044\u6C4E\u7528\u306E\u7D4C\u8DEF\u3092\u901A\u308B)\nstruct\
     \ ModProp : matrix::OperatorPropertyDefault<mint> {};\n\nVV random_vv(std::mt19937_64&\
     \ rng, int n, int m, int lo, int hi) {\n    VV a(n, std::vector<long long>(m));\n\
-    \    for (auto& row : a)\n        for (auto& x : row) x = lo + static_cast<long\
+    \    for (auto row : a)\n        for (auto& x : row) x = lo + static_cast<long\
     \ long>(rng() % (hi - lo + 1));\n    return a;\n}\n\n// GF(2) \u306E\u884C\u5217\
     \u5F0F (\u611A\u76F4\u306A\u30AC\u30A6\u30B9\u306E\u6D88\u53BB\u6CD5)\nint naive_det_gf2(std::vector<std::vector<int>>\
     \ a) {\n    int n = a.size();\n    for (int c = 0, r = 0; c < n; c++) {\n    \
@@ -1147,7 +1207,7 @@ data:
     \ P, typename ToT>\nbool check_linear(std::mt19937_64& rng, int p, ToT to_t) {\n\
     \    for (int rep = 0; rep < 500; rep++) {\n        int n = rng() % 5 + 1, m =\
     \ rng() % 5 + 1;\n        std::vector<std::vector<T>> a(n, std::vector<T>(m));\n\
-    \        for (auto& row : a)\n            for (auto& x : row) x = to_t(rng() %\
+    \        for (auto row : a)\n            for (auto& x : row) x = to_t(rng() %\
     \ p);\n        // \u30E9\u30F3\u30AF\u304C\u5C0F\u3055\u3044\u884C\u5217\u3082\
     \u4F5C\u308B (\u3042\u308B\u884C\u3092\u5225\u306E\u884C\u306E\u5B9A\u6570\u500D\
     \u306B\u3059\u308B)\n        if (n >= 2 && rng() % 2) {\n            int i = rng()\
@@ -1187,30 +1247,45 @@ data:
     \            if (i > 0 && piv[i] <= piv[i - 1]) return false;\n            for\
     \ (int k = 0; k < n; k++)\n                if (R[k][piv[i]] != (k == i ? P::one()\
     \ : P::zero())) return false;\n        }\n    }\n    return true;\n}\n\nint main()\
-    \ {\n    std::mt19937_64 rng(314);\n    bool ok = true;\n\n    // \u521D\u671F\
-    \u5316\u5B50\u30EA\u30B9\u30C8\u30FB\u4EE3\u5165\u30FB\u8D70\u67FB\u30FB==\n \
-    \   {\n        Matrix<long long> A({{1, 2, 3}, {4, 5, 6}});\n        if (A.n !=\
-    \ 2 || A.m != 3 || A[1][2] != 6 || A.size() != 2) ok = false;\n        long long\
-    \ s = 0;\n        for (auto& row : A)\n            for (auto& x : row) s += x,\
-    \ x *= 2;  // \u66F8\u304D\u63DB\u3048\u3082\u3067\u304D\u308B\n        const\
-    \ Matrix<long long>& C = A;\n        long long s2 = 0;\n        for (const auto&\
-    \ row : C)\n            for (long long x : row) s2 += x;\n        if (s != 21\
-    \ || s2 != 42) ok = false;\n        Matrix<long long> B(1, 1);\n        B = VV{{2,\
-    \ 4, 6}, {8, 10, 12}};\n        if (B.n != 2 || B.m != 3) ok = false;\n      \
-    \  if (!(A == B) || A != B) ok = false;\n        B[0][0] = 0;\n        if (A ==\
-    \ B || !(A != B)) ok = false;\n        Matrix<long long> Z(2, 3, 7);\n       \
-    \ if (Z[1][2] != 7) ok = false;\n    }\n\n    for (int rep = 0; rep < 300; rep++)\
-    \ {\n        int n = rng() % 5 + 1, m = rng() % 5 + 1;\n        VV a = random_vv(rng,\
-    \ n, m, -100, 100), b = random_vv(rng, n, m, -100, 100);\n        Matrix<long\
-    \ long> A(a), B(b);\n        // + \u3068 -\n        Matrix<long long> S = A +\
-    \ B, D = A - B, S2 = A, D2 = A;\n        S2 += B;\n        D2 -= B;\n        for\
-    \ (int i = 0; i < n; i++)\n            for (int j = 0; j < m; j++) {\n       \
-    \         if (S[i][j] != a[i][j] + b[i][j] || S2[i][j] != S[i][j]) ok = false;\n\
-    \                if (D[i][j] != a[i][j] - b[i][j] || D2[i][j] != D[i][j]) ok =\
-    \ false;\n            }\n        // shift: (i, j) \u3092 ((i + dy) mod n, (j +\
-    \ dx) mod m) \u306B\u79FB\u3059\n        int dy = static_cast<int>(rng() % 21)\
-    \ - 10, dx = static_cast<int>(rng() % 21) - 10;\n        Matrix<long long> T =\
-    \ A.shift(dy, dx);\n        for (int i = 0; i < n; i++)\n            for (int\
+    \ {\n    std::mt19937_64 rng(314);\n    bool ok = true;\n\n    // \u884C\u30D3\
+    \u30E5\u30FC\u3068\u884C\u30A4\u30C6\u30EC\u30FC\u30BF\u304B\u3089\u306E\u5909\
+    \u66F4\u306F\u5143\u306E\u884C\u5217\u306B\u53CD\u6620\u3055\u308C\u308B\n   \
+    \ {\n        Matrix<int> A({{1, 2}, {3, 4}});\n        auto row = A[0];\n    \
+    \    row[1] = 7;\n        auto it = A.begin();\n        if (it->size() != 2) ok\
+    \ = false;\n        if ((*it++).size() != 2) ok = false;\n        std::fill((*it).begin(),\
+    \ (*it).end(), 9);\n        if (A[0][1] != 7 || A[1][0] != 9 || A[1][1] != 9)\
+    \ ok = false;\n        const auto& C = A;\n        if (std::distance(C.begin(),\
+    \ C.end()) != 2 || C[0].empty()) ok = false;\n        Matrix<int> copy = A;\n\
+    \        copy[0][0] = 8;\n        if (A[0][0] != 1) ok = false;\n        Matrix<int>\
+    \ empty(0, 3), no_cols(2, 0);\n        if (empty.height() != 0 || empty.width()\
+    \ != 3 || empty.begin() != empty.end()) ok = false;\n        for (auto r : no_cols)\
+    \ {\n            if (!r.empty() || r.begin() != r.end()) ok = false;\n       \
+    \ }\n        Matrix<bool> bits({{true, false}});\n        for (auto r : bits)\n\
+    \            for (auto&& x : r) x = !x;\n        const auto& const_bits = bits;\n\
+    \        if (const_bits[0][0] || !const_bits[0][1]) ok = false;\n    }\n\n   \
+    \ // \u521D\u671F\u5316\u5B50\u30EA\u30B9\u30C8\u30FB\u4EE3\u5165\u30FB\u8D70\u67FB\
+    \u30FB==\n    {\n        Matrix<long long> A({{1, 2, 3}, {4, 5, 6}});\n      \
+    \  if (A.height() != 2 || A.width() != 3 || A[1][2] != 6 || A.size() != 2) ok\
+    \ = false;\n        long long s = 0;\n        for (auto row : A)\n           \
+    \ for (auto& x : row) s += x, x *= 2;  // \u66F8\u304D\u63DB\u3048\u3082\u3067\
+    \u304D\u308B\n        const Matrix<long long>& C = A;\n        long long s2 =\
+    \ 0;\n        for (const auto& row : C)\n            for (long long x : row) s2\
+    \ += x;\n        if (s != 21 || s2 != 42) ok = false;\n        Matrix<long long>\
+    \ B(1, 1);\n        B = VV{{2, 4, 6}, {8, 10, 12}};\n        if (B.height() !=\
+    \ 2 || B.width() != 3) ok = false;\n        if (!(A == B) || A != B) ok = false;\n\
+    \        B[0][0] = 0;\n        if (A == B || !(A != B)) ok = false;\n        Matrix<long\
+    \ long> Z(2, 3, 7);\n        if (Z[1][2] != 7) ok = false;\n    }\n\n    for (int\
+    \ rep = 0; rep < 300; rep++) {\n        int n = rng() % 5 + 1, m = rng() % 5 +\
+    \ 1;\n        VV a = random_vv(rng, n, m, -100, 100), b = random_vv(rng, n, m,\
+    \ -100, 100);\n        Matrix<long long> A(a), B(b);\n        // + \u3068 -\n\
+    \        Matrix<long long> S = A + B, D = A - B, S2 = A, D2 = A;\n        S2 +=\
+    \ B;\n        D2 -= B;\n        for (int i = 0; i < n; i++)\n            for (int\
+    \ j = 0; j < m; j++) {\n                if (S[i][j] != a[i][j] + b[i][j] || S2[i][j]\
+    \ != S[i][j]) ok = false;\n                if (D[i][j] != a[i][j] - b[i][j] ||\
+    \ D2[i][j] != D[i][j]) ok = false;\n            }\n        // shift: (i, j) \u3092\
+    \ ((i + dy) mod n, (j + dx) mod m) \u306B\u79FB\u3059\n        int dy = static_cast<int>(rng()\
+    \ % 21) - 10, dx = static_cast<int>(rng() % 21) - 10;\n        Matrix<long long>\
+    \ T = A.shift(dy, dx);\n        for (int i = 0; i < n; i++)\n            for (int\
     \ j = 0; j < m; j++)\n                if (T[((i + dy) % n + n) % n][((j + dx)\
     \ % m + m) % m] != a[i][j]) ok = false;\n        int k = rng() % 12;\n       \
     \ if (A.shift_r(k) != A.shift(0, k) || A.shift_l(k) != A.shift(0, -k)) ok = false;\n\
@@ -1229,7 +1304,7 @@ data:
     \   }\n    if (!ok) std::cerr << \"basic\" << std::endl;\n\n    // GF(2): \u884C\
     \u5217\u5F0F\u3068\u9006\u884C\u5217\n    for (int rep = 0; rep < 500; rep++)\
     \ {\n        int n = rng() % 7 + 1;\n        std::vector<std::vector<int>> a(n,\
-    \ std::vector<int>(n));\n        for (auto& row : a)\n            for (auto& x\
+    \ std::vector<int>(n));\n        for (auto row : a)\n            for (auto& x\
     \ : row) x = rng() % 2;\n        Matrix<int, GF2> A(a);\n        int d = A.det();\n\
     \        if (d != naive_det_gf2(a)) ok = false, std::cerr << \"gf2 det\" << std::endl;\n\
     \        auto Ai_opt = A.inv();\n        if (Ai_opt.has_value() != (d == 1)) ok\
@@ -1247,7 +1322,7 @@ data:
     \u7D4C\u8DEF\u306E\u7D50\u679C\u304C\u4E00\u81F4\u3057\u3001\u4F59\u56E0\u5B50\
     \u5C55\u958B\u3068\u3082\u4E00\u81F4\u3059\u308B\n    for (int rep = 0; rep <\
     \ 300; rep++) {\n        int n = rng() % 6 + 1;\n        std::vector<std::vector<mint>>\
-    \ a(n, std::vector<mint>(n));\n        bool small = rng() % 2;\n        for (auto&\
+    \ a(n, std::vector<mint>(n));\n        bool small = rng() % 2;\n        for (auto\
     \ row : a)\n            for (auto& x : row) x = small ? static_cast<long long>(rng()\
     \ % 3) : static_cast<long long>(rng() % 998244353);\n        Matrix<mint> A(a);\n\
     \        Matrix<mint, ModProp> B(a);\n        mint e = naive_det(a);\n       \
@@ -1306,7 +1381,7 @@ data:
     \u308B\n    auto check_charpoly = [&](auto zero_mint, int mod_range, const char*\
     \ name) {\n        using M = decltype(zero_mint);\n        for (int rep = 0; rep\
     \ < 300 && ok; rep++) {\n            int n = rng() % 6;\n            std::vector<std::vector<M>>\
-    \ a(n, std::vector<M>(n));\n            for (auto& row : a)\n                for\
+    \ a(n, std::vector<M>(n));\n            for (auto row : a)\n                for\
     \ (auto& x : row) x = rng() % mod_range;\n            std::vector<M> expect(n\
     \ + 1, M(0));\n            std::vector<int> perm(n);\n            std::iota(perm.begin(),\
     \ perm.end(), 0);\n            do {\n                // \u7F6E\u63DB\u306E\u7B26\
@@ -1330,9 +1405,9 @@ data:
     \u3044\u3082\u306E\u3082\u3001\u8981\u7D20\u306F\u8CA0\u306E\u5024\u3082\u542B\
     \u3081\u308B\n    for (int rep = 0; rep < 2000 && ok; rep++) {\n        int n\
     \ = rng() % 6;\n        long long mod = rng() % 30 + 1;\n        std::vector<std::vector<long\
-    \ long>> a(n, std::vector<long long>(n));\n        for (auto& row : a)\n     \
-    \       for (auto& x : row) x = static_cast<long long>(rng() % 21) - 10;\n   \
-    \     std::vector<int> perm(n);\n        std::iota(perm.begin(), perm.end(), 0);\n\
+    \ long>> a(n, std::vector<long long>(n));\n        for (auto row : a)\n      \
+    \      for (auto& x : row) x = static_cast<long long>(rng() % 21) - 10;\n    \
+    \    std::vector<int> perm(n);\n        std::iota(perm.begin(), perm.end(), 0);\n\
     \        long long expect = 0;\n        do {\n            long long p = 1;\n \
     \           for (int i = 0; i < n; i++) p *= a[i][perm[i]];\n            for (int\
     \ i = 0; i < n; i++)\n                for (int j = i + 1; j < n; j++)\n      \
@@ -1355,28 +1430,28 @@ data:
     \ i = 0; i < static_cast<int>(a.size()); i++)\n                for (int j = 0;\
     \ j < cols; j++) A[i][j] = M(a[i][j]);\n            return A;\n        };\n  \
     \      auto same = [&](const Matrix<M>& A, const std::vector<std::vector<unsigned\
-    \ long long>>& c, int cols) {\n            if (A.n != static_cast<long long>(c.size())\
-    \ || A.m != cols) return false;\n            for (int i = 0; i < A.n; i++)\n \
-    \               for (int j = 0; j < cols; j++)\n                    if (A[i][j].val()\
-    \ != c[i][j]) return false;\n            return true;\n        };\n        auto\
-    \ random_mat = [&](int n, int m) {\n            std::vector<std::vector<unsigned\
-    \ long long>> a(n, std::vector<unsigned long long>(m));\n            for (auto&\
-    \ row : a)\n                for (auto& x : row) x = rng() % 4 == 0 ? mod - 1 :\
-    \ rng() % mod;  // \u6700\u5927\u306E\u5024\u3092\u591A\u3081\u306B\u5165\u308C\
-    \u3066\u3042\u3075\u308C\u3092\u8A66\u3059\n            return a;\n        };\n\
-    \        for (int rep = 0; rep < 300 && ok; rep++) {\n            int n = rng()\
-    \ % 8, m = rng() % 60, p = rng() % 8;\n            auto a = random_mat(n, m),\
-    \ b = random_mat(m, p);\n            if (!same(to_matrix(a, m) * to_matrix(b,\
-    \ p), naive(a, b, p), p)) ok = false, std::cerr << \"product \" << name << std::endl;\n\
-    \            auto c = random_mat(n, n);\n            Matrix<M> C = to_matrix(c,\
-    \ n);\n            C *= C;\n            if (!same(C, naive(c, c, n), n)) ok =\
-    \ false, std::cerr << \"product (A *= A) \" << name << std::endl;\n          \
-    \  long long e = rng() % 10;\n            auto expect = std::vector<std::vector<unsigned\
-    \ long long>>(n, std::vector<unsigned long long>(n));\n            for (int i\
-    \ = 0; i < n; i++) expect[i][i] = 1 % mod;\n            for (int t = 0; t < e;\
-    \ t++) expect = naive(expect, c, n);\n            if (!same(to_matrix(c, n).pow(e),\
-    \ expect, n)) ok = false, std::cerr << \"pow \" << name << std::endl;\n      \
-    \  }\n    };\n    check_product(mint(0), \"mod 998244353\");\n    check_product(static_modint<1000000007>(0),\
+    \ long long>>& c, int cols) {\n            if (A.height() != static_cast<long\
+    \ long>(c.size()) || A.width() != cols) return false;\n            for (int i\
+    \ = 0; i < A.height(); i++)\n                for (int j = 0; j < cols; j++)\n\
+    \                    if (A[i][j].val() != c[i][j]) return false;\n           \
+    \ return true;\n        };\n        auto random_mat = [&](int n, int m) {\n  \
+    \          std::vector<std::vector<unsigned long long>> a(n, std::vector<unsigned\
+    \ long long>(m));\n            for (auto row : a)\n                for (auto&\
+    \ x : row) x = rng() % 4 == 0 ? mod - 1 : rng() % mod;  // \u6700\u5927\u306E\u5024\
+    \u3092\u591A\u3081\u306B\u5165\u308C\u3066\u3042\u3075\u308C\u3092\u8A66\u3059\
+    \n            return a;\n        };\n        for (int rep = 0; rep < 300 && ok;\
+    \ rep++) {\n            int n = rng() % 8, m = rng() % 60, p = rng() % 8;\n  \
+    \          auto a = random_mat(n, m), b = random_mat(m, p);\n            if (!same(to_matrix(a,\
+    \ m) * to_matrix(b, p), naive(a, b, p), p)) ok = false, std::cerr << \"product\
+    \ \" << name << std::endl;\n            auto c = random_mat(n, n);\n         \
+    \   Matrix<M> C = to_matrix(c, n);\n            C *= C;\n            if (!same(C,\
+    \ naive(c, c, n), n)) ok = false, std::cerr << \"product (A *= A) \" << name <<\
+    \ std::endl;\n            long long e = rng() % 10;\n            auto expect =\
+    \ std::vector<std::vector<unsigned long long>>(n, std::vector<unsigned long long>(n));\n\
+    \            for (int i = 0; i < n; i++) expect[i][i] = 1 % mod;\n           \
+    \ for (int t = 0; t < e; t++) expect = naive(expect, c, n);\n            if (!same(to_matrix(c,\
+    \ n).pow(e), expect, n)) ok = false, std::cerr << \"pow \" << name << std::endl;\n\
+    \        }\n    };\n    check_product(mint(0), \"mod 998244353\");\n    check_product(static_modint<1000000007>(0),\
     \ \"mod 1000000007\");\n    check_product(static_modint<2147483647>(0), \"mod\
     \ 2147483647\");\n    check_product(static_modint<1>(0), \"mod 1\");\n    check_product(static_modint<2>(0),\
     \ \"mod 2\");\n    dynamic_modint<0>::set_mod(2000000011);\n    check_product(dynamic_modint<0>(0),\
@@ -1389,7 +1464,7 @@ data:
   isVerificationFile: true
   path: test/unittest/math/matrix.test.cpp
   requiredBy: []
-  timestamp: '2026-11-08 20:13:03+09:00'
+  timestamp: '2026-11-09 06:22:11+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/math/matrix.test.cpp

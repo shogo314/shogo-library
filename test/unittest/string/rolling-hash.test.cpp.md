@@ -8,7 +8,7 @@ data:
     path: src/utility/range.hpp
     title: "Python \u306E range \u306E\u3088\u3046\u306A\u6574\u6570\u5217\u3068\u3001\
       \u305D\u306E\u76F4\u7A4D\u306E Grid"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
@@ -417,7 +417,7 @@ data:
     \ {};\n}  // namespace internal_traits\ntemplate <class T>\nstruct is_sorted_container\
     \ : internal_traits::is_sorted_container_impl<T>::type {};\ntemplate <class T>\n\
     inline constexpr bool is_sorted_container_v = is_sorted_container<T>::value;\n\
-    #line 19 \"src/string/rolling-hash.hpp\"\n\nstruct RHString;\nclass RollingHash2D;\n\
+    #line 19 \"src/string/rolling-hash.hpp\"\n\nclass RHString;\nclass RollingHash2D;\n\
     \n/**\n * @brief \u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5\n *\n\
     \ * \u30D3\u30C3\u30C8\u6F14\u7B97\u306B\u3088\u308B\u9AD8\u901F\u5316\u306E\u305F\
     \u3081\u30CF\u30C3\u30B7\u30E5\u306FMOD = 2^61-1\u3067\u8A08\u7B97\u3055\u308C\
@@ -433,13 +433,13 @@ data:
     \        __uint128_t c = static_cast<__uint128_t>(a) * b;\n        return add(static_cast<unsigned\
     \ long long>(c >> 61), static_cast<unsigned long long>(c & MOD));\n    }\n\n \
     \   void expand(long long n) {\n        while (static_cast<long long>(power.size())\
-    \ <= n) power.push_back(mul(power.back(), base));\n    }\n    // base \u306E\u9006\
+    \ <= n) power.push_back(mul(power.back(), _base));\n    }\n    // base \u306E\u9006\
     \u5143\u306E\u7D2F\u4E57\u3092 n \u4E57\u307E\u3067\u7528\u610F\u3059\u308B (RHString\
     \ \u306E\u7AEF\u3092\u524A\u308B\u3068\u304D\u3060\u3051\u4F7F\u3046)\n    void\
     \ expand_inv(long long n) {\n        if (inv_power.empty()) {\n            //\
     \ MOD \u306F\u7D20\u6570\u306A\u306E\u3067 base^(MOD - 2) \u304C\u9006\u5143\n\
-    \            unsigned long long inv = 1, b = base, e = MOD - 2;\n            for\
-    \ (; e > 0; e >>= 1, b = mul(b, b))\n                if (e & 1) inv = mul(inv,\
+    \            unsigned long long inv = 1, b = _base, e = MOD - 2;\n           \
+    \ for (; e > 0; e >>= 1, b = mul(b, b))\n                if (e & 1) inv = mul(inv,\
     \ b);\n            inv_base = inv;\n            inv_power = {1};\n        }\n\
     \        while (static_cast<long long>(inv_power.size()) <= n) inv_power.push_back(mul(inv_power.back(),\
     \ inv_base));\n    }\n    unsigned long long inv_base = 0;\n    std::vector<unsigned\
@@ -454,27 +454,27 @@ data:
     \ (std::is_integral_v<U> && std::is_signed_v<U>) {\n            long long v =\
     \ static_cast<long long>(x) % static_cast<long long>(MOD);\n            return\
     \ v < 0 ? v + MOD : v;\n        } else {\n            return static_cast<unsigned\
-    \ long long>(x) % MOD;\n        }\n    }\n\n    unsigned int base;           \
-    \           //!< \u30CF\u30C3\u30B7\u30E5\u306E\u57FA\u6570\n    std::vector<unsigned\
-    \ long long> power;  //!< base\u306E\u7D2F\u4E57\n\n    /**\n     * @brief \u30B3\
-    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     *\n     * @param base \u30CF\u30C3\u30B7\
-    \u30E5\u306E\u57FA\u6570 \u7701\u7565\u3059\u308B\u3068\u30E9\u30F3\u30C0\u30E0\
-    \n     */\n    explicit RollingHash(unsigned int base = 0) : base(base) {\n  \
-    \      if (base == 0) {\n            std::mt19937 mt(std::random_device{}());\n\
-    \            this->base = std::uniform_int_distribution<unsigned int>(129, ~0U)(mt);\n\
-    \        }\n        power = {1};\n    }\n\n    /**\n     * @brief \u914D\u5217\
-    /\u6587\u5B57\u5217\u306E\u30A4\u30C6\u30EC\u30FC\u30BF\u9593\u306E\u30CF\u30C3\
-    \u30B7\u30E5\u306E\u8A08\u7B97(O(N))\n     *\n     * @tparam It \u30A4\u30C6\u30EC\
-    \u30FC\u30BF\n     * @param first \u914D\u5217\u306E\u958B\u59CB\u30A4\u30C6\u30EC\
-    \u30FC\u30BF\n     * @param last \u914D\u5217\u306E\u7D42\u4E86\u30A4\u30C6\u30EC\
-    \u30FC\u30BF\n     * @return std::vector<unsigned long long> \u5148\u982D\u304B\
-    \u3089\u5404\u8981\u7D20\u6570\u5206\u306E\u30CF\u30C3\u30B7\u30E5\n     */\n\
-    \    template <typename It>\n    std::vector<unsigned long long> build(It first,\
-    \ It last) {\n        std::vector<unsigned long long> res;\n        if constexpr\
-    \ (std::is_convertible_v<typename std::iterator_traits<It>::iterator_category,\
+    \ long long>(x) % MOD;\n        }\n    }\n\n   private:\n    unsigned int _base;\n\
+    \    std::vector<unsigned long long> power;\n\n   public:\n    /**\n     * @brief\
+    \ \u30CF\u30C3\u30B7\u30E5\u306E\u57FA\u6570\n     */\n    unsigned int base()\
+    \ const { return _base; }\n\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\
+    \u30AF\u30BF\n     *\n     * @param base \u30CF\u30C3\u30B7\u30E5\u306E\u57FA\u6570\
+    \ \u7701\u7565\u3059\u308B\u3068\u30E9\u30F3\u30C0\u30E0\n     */\n    explicit\
+    \ RollingHash(unsigned int base = 0) : _base(base) {\n        if (base == 0) {\n\
+    \            std::mt19937 mt(std::random_device{}());\n            _base = std::uniform_int_distribution<unsigned\
+    \ int>(129, ~0U)(mt);\n        }\n        power = {1};\n    }\n\n    /**\n   \
+    \  * @brief \u914D\u5217/\u6587\u5B57\u5217\u306E\u30A4\u30C6\u30EC\u30FC\u30BF\
+    \u9593\u306E\u30CF\u30C3\u30B7\u30E5\u306E\u8A08\u7B97(O(N))\n     *\n     * @tparam\
+    \ It \u30A4\u30C6\u30EC\u30FC\u30BF\n     * @param first \u914D\u5217\u306E\u958B\
+    \u59CB\u30A4\u30C6\u30EC\u30FC\u30BF\n     * @param last \u914D\u5217\u306E\u7D42\
+    \u4E86\u30A4\u30C6\u30EC\u30FC\u30BF\n     * @return std::vector<unsigned long\
+    \ long> \u5148\u982D\u304B\u3089\u5404\u8981\u7D20\u6570\u5206\u306E\u30CF\u30C3\
+    \u30B7\u30E5\n     */\n    template <typename It>\n    std::vector<unsigned long\
+    \ long> build(It first, It last) {\n        std::vector<unsigned long long> res;\n\
+    \        if constexpr (std::is_convertible_v<typename std::iterator_traits<It>::iterator_category,\
     \ std::random_access_iterator_tag>) {\n            res.reserve(last - first +\
     \ 1);\n        }\n        res.push_back(0);\n        for (; first != last; ++first)\
-    \ {\n            res.push_back(add(mul(res.back(), base), to_value(*first)));\n\
+    \ {\n            res.push_back(add(mul(res.back(), _base), to_value(*first)));\n\
     \        }\n        return res;\n    }\n\n    /**\n     * @brief \u914D\u5217\
     /\u6587\u5B57\u5217\u5168\u4F53\u306E\u30CF\u30C3\u30B7\u30E5\u306E\u8A08\u7B97\
     (O(N))\n     *\n     * @param s \u914D\u5217/\u6587\u5B57\u5217\n     * @return\
@@ -491,23 +491,27 @@ data:
     \        expand(r - l);\n        return add(hash[r], MOD - mul(hash[l], power[r\
     \ - l]));\n    }\n\n    friend RHString;\n    friend RollingHash2D;\n};\n\n/**\n\
     \ * @brief \u30ED\u30FC\u30EA\u30F3\u30B0\u30CF\u30C3\u30B7\u30E5\u306B\u3088\u3063\
-    \u3066\u7BA1\u7406\u3055\u308C\u308B\u6587\u5B57\u5217\u578B\n */\nstruct RHString\
+    \u3066\u7BA1\u7406\u3055\u308C\u308B\u6587\u5B57\u5217\u578B\n */\nclass RHString\
     \ {\n    RollingHash& rh;\n    long long sz;              //!< \u9577\u3055\n\
     \    unsigned long long hash1;  //!< \u6B63\u9806\n    unsigned long long hash2;\
-    \  //!< \u9006\u9806\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\
-    \u30BF\n     * \u4E88\u3081RollingHash\u3092\u30A4\u30F3\u30B9\u30BF\u30F3\u30B9\
-    \u5316\u3057\u3066\u304A\u304F\u5FC5\u8981\u304C\u3042\u308B\n     */\n    explicit\
-    \ RHString(RollingHash& rh) : rh(rh), sz(0), hash1(0), hash2(0) {}\n    RHString(RollingHash&\
-    \ rh, long long sz, unsigned long long hash1, unsigned long long hash2) : rh(rh),\
-    \ sz(sz), hash1(hash1), hash2(hash2) {}\n    RHString(const RHString& o) : rh(o.rh),\
-    \ sz(o.sz), hash1(o.hash1), hash2(o.hash2) {}\n    /**\n     * @brief vector\u306A\
-    \u3069\u3067\u521D\u671F\u5316\u3059\u308B\n     */\n    template <class R, ENABLE_IF_T(is_range_v<R>\
-    \ && !std::is_convertible_v<R, std::string_view>)>\n    RHString(RollingHash&\
-    \ rh, R&& v) : rh(rh) {\n        using std::begin, std::end, std::rbegin, std::rend;\n\
-    \        sz = static_cast<long long>(std::distance(begin(v), end(v)));\n     \
-    \   hash1 = rh.build(begin(v), end(v)).back();\n        hash2 = rh.build(rbegin(v),\
-    \ rend(v)).back();\n    }\n    /**\n     * @brief char\u3084unsigned long long\u306A\
-    \u3069\u3067\u521D\u671F\u5316\u3059\u308B\n     */\n    template <class T, ENABLE_IF_T(std::is_convertible_v<T,\
+    \  //!< \u9006\u9806\n   public:\n    /** @brief \u6B63\u9806\u306E\u30CF\u30C3\
+    \u30B7\u30E5 */\n    unsigned long long val() const { return hash1; }\n    /**\
+    \ @brief \u9006\u9806\u306E\u30CF\u30C3\u30B7\u30E5 */\n    unsigned long long\
+    \ reverse_val() const { return hash2; }\n    /**\n     * @brief \u30B3\u30F3\u30B9\
+    \u30C8\u30E9\u30AF\u30BF\n     * \u4E88\u3081RollingHash\u3092\u30A4\u30F3\u30B9\
+    \u30BF\u30F3\u30B9\u5316\u3057\u3066\u304A\u304F\u5FC5\u8981\u304C\u3042\u308B\
+    \n     */\n    explicit RHString(RollingHash& rh) : rh(rh), sz(0), hash1(0), hash2(0)\
+    \ {}\n    RHString(RollingHash& rh, long long sz, unsigned long long hash1, unsigned\
+    \ long long hash2) : rh(rh), sz(sz), hash1(hash1), hash2(hash2) {}\n    RHString(const\
+    \ RHString& o) : rh(o.rh), sz(o.sz), hash1(o.hash1), hash2(o.hash2) {}\n    /**\n\
+    \     * @brief vector\u306A\u3069\u3067\u521D\u671F\u5316\u3059\u308B\n     */\n\
+    \    template <class R, ENABLE_IF_T(is_range_v<R> && !std::is_convertible_v<R,\
+    \ std::string_view>)>\n    RHString(RollingHash& rh, R&& v) : rh(rh) {\n     \
+    \   using std::begin, std::end, std::rbegin, std::rend;\n        sz = static_cast<long\
+    \ long>(std::distance(begin(v), end(v)));\n        hash1 = rh.build(begin(v),\
+    \ end(v)).back();\n        hash2 = rh.build(rbegin(v), rend(v)).back();\n    }\n\
+    \    /**\n     * @brief char\u3084unsigned long long\u306A\u3069\u3067\u521D\u671F\
+    \u5316\u3059\u308B\n     */\n    template <class T, ENABLE_IF_T(std::is_convertible_v<T,\
     \ unsigned long long> && !std::is_convertible_v<T, std::string_view>)>\n    RHString(RollingHash&\
     \ rh, T&& x) : rh(rh) {\n        sz = 1;\n        hash1 = RollingHash::to_value(x);\n\
     \        hash2 = hash1;\n    }\n    /**\n     * @brief \u6587\u5B57\u5217(string,\
@@ -613,10 +617,10 @@ data:
     \u30CF\u30C3\u30B7\u30E5\n     */\n    template <typename Grid>\n    std::vector<std::vector<ull>>\
     \ build(const Grid& grid) {\n        using std::size;\n        const long long\
     \ h = size(grid), w = h == 0 ? 0 : size(grid[0]);\n        std::vector<std::vector<ull>>\
-    \ res(h + 1, std::vector<ull>(w + 1, 0));\n        const ull b1 = rh1.base, b2\
-    \ = rh2.base, b12 = mul(b1, b2);\n        for (long long i = 0; i < h; i++) {\n\
-    \            assert(static_cast<long long>(size(grid[i])) == w);\n           \
-    \ for (long long j = 0; j < w; j++) {\n                ull v = add(mul(res[i][j\
+    \ res(h + 1, std::vector<ull>(w + 1, 0));\n        const ull b1 = rh1.base(),\
+    \ b2 = rh2.base(), b12 = mul(b1, b2);\n        for (long long i = 0; i < h; i++)\
+    \ {\n            assert(static_cast<long long>(size(grid[i])) == w);\n       \
+    \     for (long long j = 0; j < w; j++) {\n                ull v = add(mul(res[i][j\
     \ + 1], b1), mul(res[i + 1][j], b2));\n                res[i + 1][j + 1] = add(sub(v,\
     \ mul(res[i][j], b12)), RollingHash::to_value(grid[i][j]));\n            }\n \
     \       }\n        return res;\n    }\n\n    /**\n     * @brief region \u306E\u30CF\
@@ -651,42 +655,43 @@ data:
     \n\nint main() {\n    std::mt19937_64 rng(314);\n    RollingHash rh(1000003);\n\
     \    bool ok = true;\n    auto check = [&](bool cond, const char* what) {\n  \
     \      if (!cond) {\n            if (ok) std::cerr << \"failed: \" << what <<\
-    \ std::endl;\n            ok = false;\n        }\n    };\n    auto random_string\
-    \ = [&](int max_len) {\n        std::string s(rng() % (max_len + 1), 'a');\n \
-    \       for (char& c : s) c = 'a' + rng() % 3;  // \u56DE\u6587\u3084\u4E00\u81F4\
-    \u304C\u8D77\u304D\u3084\u3059\u3044\u3088\u3046\u6587\u5B57\u3092\u7D5E\u308B\
-    \n        return s;\n    };\n    auto is_palindrome = [](const std::string& s)\
-    \ { return std::equal(s.begin(), s.end(), s.rbegin()); };\n    // RHString \u306E\
-    \u4E2D\u8EAB\u304C s \u3068\u4E00\u81F4\u3059\u308B\u304B (\u9577\u3055\u30FB\u6B63\
-    \u9806\u306E\u30CF\u30C3\u30B7\u30E5\u30FB\u9006\u9806\u306E\u30CF\u30C3\u30B7\
-    \u30E5)\n    auto same = [&](const RHString& t, const std::string& s) {\n    \
-    \    std::string r(s.rbegin(), s.rend());\n        return t.size() == static_cast<long\
-    \ long>(s.size()) && t.hash1 == rh.build(s).back() && t.hash2 == rh.build(r).back();\n\
-    \    };\n\n    for (int rep = 0; rep < 3000 && ok; rep++) {\n        std::string\
-    \ s = random_string(8), t = random_string(8);\n\n        // \u30B3\u30F3\u30B9\
-    \u30C8\u30E9\u30AF\u30BF: \u6587\u5B57\u5217 (std::string / const char* / string_view)\u30FB\
-    vector\u30FB1 \u6587\u5B57\u30FB\u7A7A\u30FB\u30B3\u30D4\u30FC\u30FB\u30CF\u30C3\
-    \u30B7\u30E5\u5024\u304B\u3089\n        RHString a(rh, s), b(rh, t);\n       \
-    \ check(same(a, s) && same(b, t), \"string constructor\");\n        check(same(RHString(rh,\
-    \ s.c_str()), s), \"const char* constructor\");\n        check(same(RHString(rh,\
-    \ std::string_view(s)), s), \"string_view constructor\");\n        std::vector<char>\
-    \ sv(s.begin(), s.end());\n        check(same(RHString(rh, sv), s), \"vector constructor\"\
-    );\n        RHString empty(rh);\n        check(empty.empty() && empty.size() ==\
-    \ 0 && same(empty, \"\"), \"empty constructor\");\n        if (!s.empty()) check(same(RHString(rh,\
-    \ s[0]), s.substr(0, 1)), \"char constructor\");\n        RHString copy(a);\n\
-    \        check(copy == a && same(copy, s), \"copy constructor\");\n        RHString\
-    \ raw(rh, a.size(), a.hash1, a.hash2);\n        check(raw == a, \"hash constructor\"\
-    );\n\n        // \u9023\u7D50: +, +=\n        check(same(a + b, s + t), \"operator+\"\
-    );\n        RHString c = a;\n        c += b;\n        check(same(c, s + t), \"\
-    operator+=\");\n        RHString d(rh);\n        for (char ch : s) d += RHString(rh,\
-    \ ch);\n        check(same(d, s) && d == a, \"operator+= char by char\");\n\n\
-    \        // \u6BD4\u8F03: \u6587\u5B57\u5217\u304C\u7B49\u3057\u3044\u3068\u304D\
-    \u3060\u3051\u7B49\u3057\u3044\n        check((a == b) == (s == t), \"operator==\"\
-    );\n        check((a != b) == (s != t), \"operator!=\");\n        check(a + b\
-    \ == RHString(rh, s + t), \"concat equals whole\");\n\n        // \u56DE\u6587\
-    \u5224\u5B9A\n        check(a.is_palindrome() == is_palindrome(s), \"is_palindrome\"\
-    );\n        check((a + b).is_palindrome() == is_palindrome(s + t), \"is_palindrome\
-    \ concat\");\n\n        // size, empty, clear\n        check(a.size() == static_cast<long\
+    \ std::endl;\n            ok = false;\n        }\n    };\n    check(rh.base()\
+    \ == 1000003, \"base\");\n    auto random_string = [&](int max_len) {\n      \
+    \  std::string s(rng() % (max_len + 1), 'a');\n        for (char& c : s) c = 'a'\
+    \ + rng() % 3;  // \u56DE\u6587\u3084\u4E00\u81F4\u304C\u8D77\u304D\u3084\u3059\
+    \u3044\u3088\u3046\u6587\u5B57\u3092\u7D5E\u308B\n        return s;\n    };\n\
+    \    auto is_palindrome = [](const std::string& s) { return std::equal(s.begin(),\
+    \ s.end(), s.rbegin()); };\n    // RHString \u306E\u4E2D\u8EAB\u304C s \u3068\u4E00\
+    \u81F4\u3059\u308B\u304B (\u9577\u3055\u30FB\u6B63\u9806\u306E\u30CF\u30C3\u30B7\
+    \u30E5\u30FB\u9006\u9806\u306E\u30CF\u30C3\u30B7\u30E5)\n    auto same = [&](const\
+    \ RHString& t, const std::string& s) {\n        std::string r(s.rbegin(), s.rend());\n\
+    \        return t.size() == static_cast<long long>(s.size()) && t.val() == rh.build(s).back()\
+    \ && t.reverse_val() == rh.build(r).back();\n    };\n\n    for (int rep = 0; rep\
+    \ < 3000 && ok; rep++) {\n        std::string s = random_string(8), t = random_string(8);\n\
+    \n        // \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF: \u6587\u5B57\u5217 (std::string\
+    \ / const char* / string_view)\u30FBvector\u30FB1 \u6587\u5B57\u30FB\u7A7A\u30FB\
+    \u30B3\u30D4\u30FC\u30FB\u30CF\u30C3\u30B7\u30E5\u5024\u304B\u3089\n        RHString\
+    \ a(rh, s), b(rh, t);\n        check(same(a, s) && same(b, t), \"string constructor\"\
+    );\n        check(same(RHString(rh, s.c_str()), s), \"const char* constructor\"\
+    );\n        check(same(RHString(rh, std::string_view(s)), s), \"string_view constructor\"\
+    );\n        std::vector<char> sv(s.begin(), s.end());\n        check(same(RHString(rh,\
+    \ sv), s), \"vector constructor\");\n        RHString empty(rh);\n        check(empty.empty()\
+    \ && empty.size() == 0 && same(empty, \"\"), \"empty constructor\");\n       \
+    \ if (!s.empty()) check(same(RHString(rh, s[0]), s.substr(0, 1)), \"char constructor\"\
+    );\n        RHString copy(a);\n        check(copy == a && same(copy, s), \"copy\
+    \ constructor\");\n        RHString raw(rh, a.size(), a.val(), a.reverse_val());\n\
+    \        check(raw == a, \"hash constructor\");\n\n        // \u9023\u7D50: +,\
+    \ +=\n        check(same(a + b, s + t), \"operator+\");\n        RHString c =\
+    \ a;\n        c += b;\n        check(same(c, s + t), \"operator+=\");\n      \
+    \  RHString d(rh);\n        for (char ch : s) d += RHString(rh, ch);\n       \
+    \ check(same(d, s) && d == a, \"operator+= char by char\");\n\n        // \u6BD4\
+    \u8F03: \u6587\u5B57\u5217\u304C\u7B49\u3057\u3044\u3068\u304D\u3060\u3051\u7B49\
+    \u3057\u3044\n        check((a == b) == (s == t), \"operator==\");\n        check((a\
+    \ != b) == (s != t), \"operator!=\");\n        check(a + b == RHString(rh, s +\
+    \ t), \"concat equals whole\");\n\n        // \u56DE\u6587\u5224\u5B9A\n     \
+    \   check(a.is_palindrome() == is_palindrome(s), \"is_palindrome\");\n       \
+    \ check((a + b).is_palindrome() == is_palindrome(s + t), \"is_palindrome concat\"\
+    );\n\n        // size, empty, clear\n        check(a.size() == static_cast<long\
     \ long>(s.size()) && a.empty() == s.empty(), \"size/empty\");\n        RHString\
     \ e = a;\n        e.clear();\n        check(e.empty() && e.size() == 0 && e ==\
     \ empty, \"clear\");\n\n        // assign \u3068 operator= \u306E\u5404\u7248\n\
@@ -782,18 +787,19 @@ data:
     \    std::mt19937_64 rng(314);\n    RollingHash rh(1000003);\n    bool ok = true;\n\
     \    auto check = [&](bool cond, const char* what) {\n        if (!cond) {\n \
     \           if (ok) std::cerr << \"failed: \" << what << std::endl;\n        \
-    \    ok = false;\n        }\n    };\n    auto random_string = [&](int max_len)\
-    \ {\n        std::string s(rng() % (max_len + 1), 'a');\n        for (char& c\
-    \ : s) c = 'a' + rng() % 3;  // \u56DE\u6587\u3084\u4E00\u81F4\u304C\u8D77\u304D\
-    \u3084\u3059\u3044\u3088\u3046\u6587\u5B57\u3092\u7D5E\u308B\n        return s;\n\
-    \    };\n    auto is_palindrome = [](const std::string& s) { return std::equal(s.begin(),\
-    \ s.end(), s.rbegin()); };\n    // RHString \u306E\u4E2D\u8EAB\u304C s \u3068\u4E00\
-    \u81F4\u3059\u308B\u304B (\u9577\u3055\u30FB\u6B63\u9806\u306E\u30CF\u30C3\u30B7\
-    \u30E5\u30FB\u9006\u9806\u306E\u30CF\u30C3\u30B7\u30E5)\n    auto same = [&](const\
-    \ RHString& t, const std::string& s) {\n        std::string r(s.rbegin(), s.rend());\n\
-    \        return t.size() == static_cast<long long>(s.size()) && t.hash1 == rh.build(s).back()\
-    \ && t.hash2 == rh.build(r).back();\n    };\n\n    for (int rep = 0; rep < 3000\
-    \ && ok; rep++) {\n        std::string s = random_string(8), t = random_string(8);\n\
+    \    ok = false;\n        }\n    };\n    check(rh.base() == 1000003, \"base\"\
+    );\n    auto random_string = [&](int max_len) {\n        std::string s(rng() %\
+    \ (max_len + 1), 'a');\n        for (char& c : s) c = 'a' + rng() % 3;  // \u56DE\
+    \u6587\u3084\u4E00\u81F4\u304C\u8D77\u304D\u3084\u3059\u3044\u3088\u3046\u6587\
+    \u5B57\u3092\u7D5E\u308B\n        return s;\n    };\n    auto is_palindrome =\
+    \ [](const std::string& s) { return std::equal(s.begin(), s.end(), s.rbegin());\
+    \ };\n    // RHString \u306E\u4E2D\u8EAB\u304C s \u3068\u4E00\u81F4\u3059\u308B\
+    \u304B (\u9577\u3055\u30FB\u6B63\u9806\u306E\u30CF\u30C3\u30B7\u30E5\u30FB\u9006\
+    \u9806\u306E\u30CF\u30C3\u30B7\u30E5)\n    auto same = [&](const RHString& t,\
+    \ const std::string& s) {\n        std::string r(s.rbegin(), s.rend());\n    \
+    \    return t.size() == static_cast<long long>(s.size()) && t.val() == rh.build(s).back()\
+    \ && t.reverse_val() == rh.build(r).back();\n    };\n\n    for (int rep = 0; rep\
+    \ < 3000 && ok; rep++) {\n        std::string s = random_string(8), t = random_string(8);\n\
     \n        // \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF: \u6587\u5B57\u5217 (std::string\
     \ / const char* / string_view)\u30FBvector\u30FB1 \u6587\u5B57\u30FB\u7A7A\u30FB\
     \u30B3\u30D4\u30FC\u30FB\u30CF\u30C3\u30B7\u30E5\u5024\u304B\u3089\n        RHString\
@@ -805,42 +811,43 @@ data:
     \ && empty.size() == 0 && same(empty, \"\"), \"empty constructor\");\n       \
     \ if (!s.empty()) check(same(RHString(rh, s[0]), s.substr(0, 1)), \"char constructor\"\
     );\n        RHString copy(a);\n        check(copy == a && same(copy, s), \"copy\
-    \ constructor\");\n        RHString raw(rh, a.size(), a.hash1, a.hash2);\n   \
-    \     check(raw == a, \"hash constructor\");\n\n        // \u9023\u7D50: +, +=\n\
-    \        check(same(a + b, s + t), \"operator+\");\n        RHString c = a;\n\
-    \        c += b;\n        check(same(c, s + t), \"operator+=\");\n        RHString\
-    \ d(rh);\n        for (char ch : s) d += RHString(rh, ch);\n        check(same(d,\
-    \ s) && d == a, \"operator+= char by char\");\n\n        // \u6BD4\u8F03: \u6587\
-    \u5B57\u5217\u304C\u7B49\u3057\u3044\u3068\u304D\u3060\u3051\u7B49\u3057\u3044\
-    \n        check((a == b) == (s == t), \"operator==\");\n        check((a != b)\
-    \ == (s != t), \"operator!=\");\n        check(a + b == RHString(rh, s + t), \"\
-    concat equals whole\");\n\n        // \u56DE\u6587\u5224\u5B9A\n        check(a.is_palindrome()\
-    \ == is_palindrome(s), \"is_palindrome\");\n        check((a + b).is_palindrome()\
-    \ == is_palindrome(s + t), \"is_palindrome concat\");\n\n        // size, empty,\
-    \ clear\n        check(a.size() == static_cast<long long>(s.size()) && a.empty()\
-    \ == s.empty(), \"size/empty\");\n        RHString e = a;\n        e.clear();\n\
-    \        check(e.empty() && e.size() == 0 && e == empty, \"clear\");\n\n     \
-    \   // assign \u3068 operator= \u306E\u5404\u7248\n        RHString f(rh);\n \
-    \       f.assign(a);\n        check(f == a, \"assign(RHString)\");\n        f.assign(t);\n\
-    \        check(same(f, t), \"assign(string)\");\n        f.assign(std::string_view(s));\n\
-    \        check(same(f, s), \"assign(string_view)\");\n        std::vector<char>\
-    \ tv(t.begin(), t.end());\n        f.assign(tv);\n        check(same(f, t), \"\
-    assign(vector)\");\n        f.assign('b');\n        check(same(f, \"b\"), \"assign(char)\"\
-    );\n        f = b;\n        check(f == b, \"operator=(RHString)\");\n        f\
-    \ = s;\n        check(same(f, s), \"operator=(string)\");\n        f = std::string_view(t);\n\
-    \        check(same(f, t), \"operator=(string_view)\");\n        f = sv;\n   \
-    \     check(same(f, s), \"operator=(vector)\");\n        f = 'c';\n        check(same(f,\
-    \ \"c\"), \"operator=(char)\");\n    }\n\n    // \u6574\u6570\u306E\u5217 (\u8CA0\
-    \u306E\u5024\u3092\u542B\u3080) \u3067\u3082\u3001\u9023\u7D50\u3068\u6BD4\u8F03\
-    \u304C\u5217\u3068\u3057\u3066\u306E\u4E00\u81F4\u3068\u5BFE\u5FDC\u3059\u308B\
-    \n    for (int rep = 0; rep < 1000 && ok; rep++) {\n        std::vector<long long>\
-    \ x(rng() % 6), y(rng() % 6);\n        for (auto& v : x) v = static_cast<long\
-    \ long>(rng() % 5) - 2;\n        for (auto& v : y) v = static_cast<long long>(rng()\
-    \ % 5) - 2;\n        std::vector<long long> xy = x;\n        xy.insert(xy.end(),\
-    \ y.begin(), y.end());\n        RHString hx(rh, x), hy(rh, y), hxy(rh, xy);\n\
-    \        check(hx + hy == hxy, \"vector<long long> concat\");\n        check((hx\
-    \ == hy) == (x == y), \"vector<long long> equality\");\n        check(hx.is_palindrome()\
-    \ == std::equal(x.begin(), x.end(), x.rbegin()), \"vector<long long> palindrome\"\
+    \ constructor\");\n        RHString raw(rh, a.size(), a.val(), a.reverse_val());\n\
+    \        check(raw == a, \"hash constructor\");\n\n        // \u9023\u7D50: +,\
+    \ +=\n        check(same(a + b, s + t), \"operator+\");\n        RHString c =\
+    \ a;\n        c += b;\n        check(same(c, s + t), \"operator+=\");\n      \
+    \  RHString d(rh);\n        for (char ch : s) d += RHString(rh, ch);\n       \
+    \ check(same(d, s) && d == a, \"operator+= char by char\");\n\n        // \u6BD4\
+    \u8F03: \u6587\u5B57\u5217\u304C\u7B49\u3057\u3044\u3068\u304D\u3060\u3051\u7B49\
+    \u3057\u3044\n        check((a == b) == (s == t), \"operator==\");\n        check((a\
+    \ != b) == (s != t), \"operator!=\");\n        check(a + b == RHString(rh, s +\
+    \ t), \"concat equals whole\");\n\n        // \u56DE\u6587\u5224\u5B9A\n     \
+    \   check(a.is_palindrome() == is_palindrome(s), \"is_palindrome\");\n       \
+    \ check((a + b).is_palindrome() == is_palindrome(s + t), \"is_palindrome concat\"\
+    );\n\n        // size, empty, clear\n        check(a.size() == static_cast<long\
+    \ long>(s.size()) && a.empty() == s.empty(), \"size/empty\");\n        RHString\
+    \ e = a;\n        e.clear();\n        check(e.empty() && e.size() == 0 && e ==\
+    \ empty, \"clear\");\n\n        // assign \u3068 operator= \u306E\u5404\u7248\n\
+    \        RHString f(rh);\n        f.assign(a);\n        check(f == a, \"assign(RHString)\"\
+    );\n        f.assign(t);\n        check(same(f, t), \"assign(string)\");\n   \
+    \     f.assign(std::string_view(s));\n        check(same(f, s), \"assign(string_view)\"\
+    );\n        std::vector<char> tv(t.begin(), t.end());\n        f.assign(tv);\n\
+    \        check(same(f, t), \"assign(vector)\");\n        f.assign('b');\n    \
+    \    check(same(f, \"b\"), \"assign(char)\");\n        f = b;\n        check(f\
+    \ == b, \"operator=(RHString)\");\n        f = s;\n        check(same(f, s), \"\
+    operator=(string)\");\n        f = std::string_view(t);\n        check(same(f,\
+    \ t), \"operator=(string_view)\");\n        f = sv;\n        check(same(f, s),\
+    \ \"operator=(vector)\");\n        f = 'c';\n        check(same(f, \"c\"), \"\
+    operator=(char)\");\n    }\n\n    // \u6574\u6570\u306E\u5217 (\u8CA0\u306E\u5024\
+    \u3092\u542B\u3080) \u3067\u3082\u3001\u9023\u7D50\u3068\u6BD4\u8F03\u304C\u5217\
+    \u3068\u3057\u3066\u306E\u4E00\u81F4\u3068\u5BFE\u5FDC\u3059\u308B\n    for (int\
+    \ rep = 0; rep < 1000 && ok; rep++) {\n        std::vector<long long> x(rng()\
+    \ % 6), y(rng() % 6);\n        for (auto& v : x) v = static_cast<long long>(rng()\
+    \ % 5) - 2;\n        for (auto& v : y) v = static_cast<long long>(rng() % 5) -\
+    \ 2;\n        std::vector<long long> xy = x;\n        xy.insert(xy.end(), y.begin(),\
+    \ y.end());\n        RHString hx(rh, x), hy(rh, y), hxy(rh, xy);\n        check(hx\
+    \ + hy == hxy, \"vector<long long> concat\");\n        check((hx == hy) == (x\
+    \ == y), \"vector<long long> equality\");\n        check(hx.is_palindrome() ==\
+    \ std::equal(x.begin(), x.end(), x.rbegin()), \"vector<long long> palindrome\"\
     );\n    }\n\n    // remove_prefix / remove_suffix: s = t + u \u3084 s = u + t\
     \ \u304B\u3089 t \u3092\u53D6\u308A\u9664\u304F\u3068\u3001u \u304B\u3089\u4F5C\
     \u3063\u305F\u3082\u306E\u3068\u4E00\u81F4\u3059\u308B\n    // \u56DE\u6587\u306E\
@@ -904,7 +911,7 @@ data:
   isVerificationFile: true
   path: test/unittest/string/rolling-hash.test.cpp
   requiredBy: []
-  timestamp: '2026-11-08 20:13:03+09:00'
+  timestamp: '2026-11-09 05:12:43+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/unittest/string/rolling-hash.test.cpp

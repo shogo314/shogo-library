@@ -213,60 +213,62 @@ data:
     \u6570\u3067\u306A\u3044 mod M \u3067\u306F\u3001M = p1^q1 ... pk^qk \u3068\u7D20\
     \u56E0\u6570\u5206\u89E3\u3057\u3001\u5404 p^q \u3067 C \u3092\u6C42\u3081\u3066\
     \ crt (number-theory.hpp) \u3067\u307E\u3068\u3081\u308B\n * \u53C2\u8003: https://nyaannyaan.github.io/library/modulo/arbitrary-mod-binomial.hpp\
-    \ (\u4E00\u822C\u5316 Lucas \u306E\u5B9A\u7406)\n */\nstruct CombinationPQ {\n\
+    \ (\u4E00\u822C\u5316 Lucas \u306E\u5B9A\u7406)\n */\nclass CombinationPQ {\n\
     \    int p;                                //!< \u7D20\u6570\n    int q;     \
     \                           //!< \u6307\u6570\n    int pq;                   \
     \            //!< p^q (\u6CD5)\n    std::vector<int> fact_p, inv_fact_p;  // p\
     \ \u306E\u500D\u6570\u3092\u9664\u3044\u305F\u968E\u4E57 (mod p^q) \u3068\u305D\
     \u306E\u9006\u5143\n    int delta;                            // \u7B26\u53F7\u306E\
     \u88DC\u6B63\u3002p = 2 \u304B\u3064 q >= 3 \u306A\u3089 1\u3001\u305D\u3046\u3067\
-    \u306A\u3051\u308C\u3070 -1\n\n    /**\n     * @brief p^q \u672A\u6E80\u306E\u6570\
-    \u306B\u3064\u3044\u3066\u306E\u968E\u4E57\u3092\u524D\u8A08\u7B97\u3059\u308B\
-    \n     * @param p \u7D20\u6570\n     * @param q 1 \u4EE5\u4E0A\u3002p^q \u306F\
-    \ int \u306B\u53CE\u307E\u308A\u3001\u914D\u5217 2 \u672C\u3092\u6301\u3066\u308B\
-    \u5927\u304D\u3055 (10^7 \u7A0B\u5EA6\u307E\u3067) \u3067\u3042\u308B\u3053\u3068\
-    \n     * @note O(p^q)\n     */\n    CombinationPQ(int p, int q) : p(p), q(q) {\n\
-    \        assert(p >= 2 && q >= 1);\n        pq = 1;\n        for (int i = 0; i\
-    \ < q; i++) pq *= p;\n        fact_p.resize(pq);\n        fact_p[0] = 1;\n   \
-    \     for (int i = 1; i < pq; i++) {\n            if (i % p == 0)\n          \
-    \      fact_p[i] = fact_p[i - 1];\n            else\n                fact_p[i]\
-    \ = static_cast<long long>(fact_p[i - 1]) * i % pq;\n        }\n        inv_fact_p.resize(pq);\n\
-    \        inv_fact_p[pq - 1] = inv_mod(fact_p[pq - 1], pq);\n        for (int i\
-    \ = pq - 1; i > 0; i--) {\n            if (i % p == 0)\n                inv_fact_p[i\
-    \ - 1] = inv_fact_p[i];\n            else\n                inv_fact_p[i - 1] =\
-    \ static_cast<long long>(inv_fact_p[i]) * i % pq;\n        }\n        if (p ==\
-    \ 2 && q >= 3)\n            delta = 1;\n        else\n            delta = -1;\n\
-    \    }\n    /**\n     * @brief nCr mod p^q\n     * @param n 0 \u4EE5\u4E0A (\u5927\
-    \u304D\u304F\u3066\u3082\u3088\u3044)\n     * @param r\n     * @return nCr mod\
-    \ p^q \u3092 [0, p^q) \u306E int \u3067\u3002r < 0 \u304B n < r \u306A\u3089 0\n\
-    \     * @note O(log_p n)\n     */\n    int C(long long n, long long r) {\n   \
-    \     if (r < 0 || n < r) return 0;\n        long long m = n - r;\n        int\
-    \ ans = 1;\n        std::vector<int> epsilon;\n        while (n > 0) {\n     \
-    \       ans = static_cast<long long>(ans) * fact_p[n % pq] % pq;\n           \
-    \ ans = static_cast<long long>(ans) * inv_fact_p[m % pq] % pq;\n            ans\
-    \ = static_cast<long long>(ans) * inv_fact_p[r % pq] % pq;\n            n /= p;\n\
-    \            m /= p;\n            r /= p;\n            epsilon.push_back(n - m\
-    \ - r);\n        }\n        if (delta == -1 && static_cast<int>(epsilon.size())\
-    \ >= q && std::accumulate(epsilon.begin() + q - 1, epsilon.end(), 0) % 2 == 1)\
-    \ ans = pq - ans;\n        if (ans == pq) ans = 0;\n        int e = std::accumulate(epsilon.begin(),\
-    \ epsilon.end(), 0);\n        if (e >= q)\n            ans = 0;\n        else\
-    \ {\n            for (int i = 0; i < e; i++) {\n                ans = static_cast<long\
-    \ long>(ans) * p % pq;\n            }\n        }\n        return ans;\n    }\n\
-    };\n#line 2 \"src/math/number-theory.hpp\"\n\n/**\n * @file number-theory.hpp\n\
-    \ * @brief \u6570\u8AD6 (\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406)\n */\n\n#line 9\
-    \ \"src/math/number-theory.hpp\"\n#include <limits>\n#line 11 \"src/math/number-theory.hpp\"\
-    \n#include <optional>\n#line 13 \"src/math/number-theory.hpp\"\n\n#line 15 \"\
-    src/math/number-theory.hpp\"\n\nnamespace internal_number_theory {\ninline long\
-    \ long normalize_mod(long long r, long long m) {\n    r %= m;\n    if (r < 0)\
-    \ r += m;\n    return r;\n}\n}  // namespace internal_number_theory\n\n/**\n *\
-    \ @brief 2\u5F0F\u306E\u9023\u7ACB\u5408\u540C\u5F0F\u3092\u3001m\u304C\u4E92\u3044\
-    \u306B\u7D20\u306B\u306A\u308B\u3088\u3046\u306B\u5909\u5F62\u3059\u308B\n * @param\
-    \ r1 long long\n * @param m1 long long\n * @param r2 long long\n * @param m2 long\
-    \ long\n * @return \u77DB\u76FE\u3057\u306A\u3051\u308C\u3070 true\u3002\u77DB\
-    \u76FE\u3059\u308B\u5834\u5408\u306F false \u3092\u8FD4\u3057\u3001\u5F15\u6570\
-    \u306F\u5909\u3048\u306A\u3044\n */\ninline bool coprimize_simultaneous_congruence_equation(long\
-    \ long& r1, long long& m1, long long& r2, long long& m2) {\n    assert(m1 >= 1\
-    \ && m2 >= 1);\n    long long g = std::gcd(m1, m2);\n    if (internal_number_theory::normalize_mod(r1,\
+    \u306A\u3051\u308C\u3070 -1\n\n   public:\n    /**\n     * @brief p^q \u672A\u6E80\
+    \u306E\u6570\u306B\u3064\u3044\u3066\u306E\u968E\u4E57\u3092\u524D\u8A08\u7B97\
+    \u3059\u308B\n     * @param p \u7D20\u6570\n     * @param q 1 \u4EE5\u4E0A\u3002\
+    p^q \u306F int \u306B\u53CE\u307E\u308A\u3001\u914D\u5217 2 \u672C\u3092\u6301\
+    \u3066\u308B\u5927\u304D\u3055 (10^7 \u7A0B\u5EA6\u307E\u3067) \u3067\u3042\u308B\
+    \u3053\u3068\n     * @note O(p^q)\n     */\n    CombinationPQ(int p, int q) :\
+    \ p(p), q(q) {\n        assert(p >= 2 && q >= 1);\n        pq = 1;\n        for\
+    \ (int i = 0; i < q; i++) pq *= p;\n        fact_p.resize(pq);\n        fact_p[0]\
+    \ = 1;\n        for (int i = 1; i < pq; i++) {\n            if (i % p == 0)\n\
+    \                fact_p[i] = fact_p[i - 1];\n            else\n              \
+    \  fact_p[i] = static_cast<long long>(fact_p[i - 1]) * i % pq;\n        }\n  \
+    \      inv_fact_p.resize(pq);\n        inv_fact_p[pq - 1] = inv_mod(fact_p[pq\
+    \ - 1], pq);\n        for (int i = pq - 1; i > 0; i--) {\n            if (i %\
+    \ p == 0)\n                inv_fact_p[i - 1] = inv_fact_p[i];\n            else\n\
+    \                inv_fact_p[i - 1] = static_cast<long long>(inv_fact_p[i]) * i\
+    \ % pq;\n        }\n        if (p == 2 && q >= 3)\n            delta = 1;\n  \
+    \      else\n            delta = -1;\n    }\n    /**\n     * @brief \u6CD5 p^q\n\
+    \     */\n    int mod() const { return pq; }\n\n    /**\n     * @brief nCr mod\
+    \ p^q\n     * @param n 0 \u4EE5\u4E0A (\u5927\u304D\u304F\u3066\u3082\u3088\u3044\
+    )\n     * @param r\n     * @return nCr mod p^q \u3092 [0, p^q) \u306E int \u3067\
+    \u3002r < 0 \u304B n < r \u306A\u3089 0\n     * @note O(log_p n)\n     */\n  \
+    \  int C(long long n, long long r) {\n        if (r < 0 || n < r) return 0;\n\
+    \        long long m = n - r;\n        int ans = 1;\n        std::vector<int>\
+    \ epsilon;\n        while (n > 0) {\n            ans = static_cast<long long>(ans)\
+    \ * fact_p[n % pq] % pq;\n            ans = static_cast<long long>(ans) * inv_fact_p[m\
+    \ % pq] % pq;\n            ans = static_cast<long long>(ans) * inv_fact_p[r %\
+    \ pq] % pq;\n            n /= p;\n            m /= p;\n            r /= p;\n \
+    \           epsilon.push_back(n - m - r);\n        }\n        if (delta == -1\
+    \ && static_cast<int>(epsilon.size()) >= q && std::accumulate(epsilon.begin()\
+    \ + q - 1, epsilon.end(), 0) % 2 == 1) ans = pq - ans;\n        if (ans == pq)\
+    \ ans = 0;\n        int e = std::accumulate(epsilon.begin(), epsilon.end(), 0);\n\
+    \        if (e >= q)\n            ans = 0;\n        else {\n            for (int\
+    \ i = 0; i < e; i++) {\n                ans = static_cast<long long>(ans) * p\
+    \ % pq;\n            }\n        }\n        return ans;\n    }\n};\n#line 2 \"\
+    src/math/number-theory.hpp\"\n\n/**\n * @file number-theory.hpp\n * @brief \u6570\
+    \u8AD6 (\u4E2D\u56FD\u5270\u4F59\u5B9A\u7406)\n */\n\n#line 9 \"src/math/number-theory.hpp\"\
+    \n#include <limits>\n#line 11 \"src/math/number-theory.hpp\"\n#include <optional>\n\
+    #line 13 \"src/math/number-theory.hpp\"\n\n#line 15 \"src/math/number-theory.hpp\"\
+    \n\nnamespace internal_number_theory {\ninline long long normalize_mod(long long\
+    \ r, long long m) {\n    r %= m;\n    if (r < 0) r += m;\n    return r;\n}\n}\
+    \  // namespace internal_number_theory\n\n/**\n * @brief 2\u5F0F\u306E\u9023\u7ACB\
+    \u5408\u540C\u5F0F\u3092\u3001m\u304C\u4E92\u3044\u306B\u7D20\u306B\u306A\u308B\
+    \u3088\u3046\u306B\u5909\u5F62\u3059\u308B\n * @param r1 long long\n * @param\
+    \ m1 long long\n * @param r2 long long\n * @param m2 long long\n * @return \u77DB\
+    \u76FE\u3057\u306A\u3051\u308C\u3070 true\u3002\u77DB\u76FE\u3059\u308B\u5834\u5408\
+    \u306F false \u3092\u8FD4\u3057\u3001\u5F15\u6570\u306F\u5909\u3048\u306A\u3044\
+    \n */\ninline bool coprimize_simultaneous_congruence_equation(long long& r1, long\
+    \ long& m1, long long& r2, long long& m2) {\n    assert(m1 >= 1 && m2 >= 1);\n\
+    \    long long g = std::gcd(m1, m2);\n    if (internal_number_theory::normalize_mod(r1,\
     \ g) != internal_number_theory::normalize_mod(r2, g)) return false;\n    m1 /=\
     \ g, m2 /= g;\n    long long gi = std::gcd(g, m1);\n    long long gj = g / gi;\n\
     \    do {\n        g = std::gcd(gi, gj);\n        gi *= g, gj /= g;\n    } while\
@@ -322,7 +324,7 @@ data:
     \        combpq.emplace_back(p, e);\n    }\n    while (t--) {\n        long long\
     \ n, k;\n        std::cin >> n >> k;\n        std::vector<long long> x, y;\n \
     \       for (long long i = 0; i < static_cast<long long>(factors.size()); ++i)\
-    \ {\n            x.push_back(combpq[i].C(n, k));\n            y.push_back(combpq[i].pq);\n\
+    \ {\n            x.push_back(combpq[i].C(n, k));\n            y.push_back(combpq[i].mod());\n\
     \        }\n        std::cout << crt(x, y)->x << std::endl;\n    }\n}\n"
   code: "#define PROBLEM \"https://judge.yosupo.jp/problem/binomial_coefficient\"\n\
     \n#include <iostream>\n\n#include \"../../../src/math/combinatorics.hpp\"\n#include\
@@ -338,7 +340,7 @@ data:
     \    }\n    while (t--) {\n        long long n, k;\n        std::cin >> n >> k;\n\
     \        std::vector<long long> x, y;\n        for (long long i = 0; i < static_cast<long\
     \ long>(factors.size()); ++i) {\n            x.push_back(combpq[i].C(n, k));\n\
-    \            y.push_back(combpq[i].pq);\n        }\n        std::cout << crt(x,\
+    \            y.push_back(combpq[i].mod());\n        }\n        std::cout << crt(x,\
     \ y)->x << std::endl;\n    }\n}\n"
   dependsOn:
   - src/math/combinatorics.hpp
@@ -347,7 +349,7 @@ data:
   isVerificationFile: true
   path: test/yosupo/enumerative_combinatorics/binomial-coefficient.test.cpp
   requiredBy: []
-  timestamp: '2026-11-08 23:01:44+09:00'
+  timestamp: '2026-11-09 04:54:19+09:00'
   verificationStatus: TEST_ACCEPTED
   verifiedWith: []
 documentation_of: test/yosupo/enumerative_combinatorics/binomial-coefficient.test.cpp

@@ -414,10 +414,10 @@ data:
     - icon: ':heavy_check_mark:'
       path: src/math/linear-recurrence.hpp
       title: "\u7DDA\u5F62\u6F38\u5316\u5F0F (Bostan-Mori\u30FBBerlekamp-Massey)"
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: src/math/matrix.hpp
       title: "\u884C\u5217"
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: src/math/modint.hpp
       title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
         \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9"
@@ -548,7 +548,7 @@ data:
       path: src/utility/repr.hpp
       title: "\u51FA\u529B\u3092\u305D\u306E\u307E\u307E\u30B3\u30F3\u30B9\u30C8\u30E9\
         \u30AF\u30BF\u306B\u4F7F\u3048\u308B\u6587\u5B57\u5217\u5316 (repr)"
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: src/utility/traits.hpp
       title: "\u578B\u7279\u6027"
     - icon: ':heavy_check_mark:'
@@ -1808,28 +1808,28 @@ data:
       title: test/yosupo/graph/two-edge-connected-components.test.cpp
   - name: test/yosupo/linear_algebra
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/yosupo/linear_algebra/characteristic-polynomial.test.cpp
       title: test/yosupo/linear_algebra/characteristic-polynomial.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/linear_algebra/inverse-matrix-mod-2.test.cpp
       title: test/yosupo/linear_algebra/inverse-matrix-mod-2.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/yosupo/linear_algebra/inverse-matrix.test.cpp
       title: test/yosupo/linear_algebra/inverse-matrix.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/yosupo/linear_algebra/matrix-det-arbitrary-mod.test.cpp
       title: test/yosupo/linear_algebra/matrix-det-arbitrary-mod.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/linear_algebra/matrix-det-mod-2.test.cpp
       title: test/yosupo/linear_algebra/matrix-det-mod-2.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/yosupo/linear_algebra/matrix-det.test.cpp
       title: test/yosupo/linear_algebra/matrix-det.test.cpp
     - icon: ':heavy_check_mark:'
       path: test/yosupo/linear_algebra/matrix-product-mod-2.test.cpp
       title: test/yosupo/linear_algebra/matrix-product-mod-2.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/yosupo/linear_algebra/matrix-product.test.cpp
       title: test/yosupo/linear_algebra/matrix-product.test.cpp
     - icon: ':heavy_check_mark:'
@@ -1838,7 +1838,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/yosupo/linear_algebra/matrix-rank.test.cpp
       title: test/yosupo/linear_algebra/matrix-rank.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/yosupo/linear_algebra/pow-of-matrix.test.cpp
       title: test/yosupo/linear_algebra/pow-of-matrix.test.cpp
     - icon: ':heavy_check_mark:'

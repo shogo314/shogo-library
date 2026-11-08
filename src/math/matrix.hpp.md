@@ -18,25 +18,25 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
     title: test/yosupo/graph/counting-spanning-tree-undirected.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/yosupo/linear_algebra/characteristic-polynomial.test.cpp
     title: test/yosupo/linear_algebra/characteristic-polynomial.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/yosupo/linear_algebra/inverse-matrix.test.cpp
     title: test/yosupo/linear_algebra/inverse-matrix.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/yosupo/linear_algebra/matrix-det-arbitrary-mod.test.cpp
     title: test/yosupo/linear_algebra/matrix-det-arbitrary-mod.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/yosupo/linear_algebra/matrix-det.test.cpp
     title: test/yosupo/linear_algebra/matrix-det.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/yosupo/linear_algebra/matrix-product.test.cpp
     title: test/yosupo/linear_algebra/matrix-product.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/yosupo/linear_algebra/matrix-rank.test.cpp
     title: test/yosupo/linear_algebra/matrix-rank.test.cpp
-  - icon: ':heavy_check_mark:'
+  - icon: ':x:'
     path: test/yosupo/linear_algebra/pow-of-matrix.test.cpp
     title: test/yosupo/linear_algebra/pow-of-matrix.test.cpp
   - icon: ':heavy_check_mark:'
@@ -51,30 +51,31 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/yukicoder/565.2.test.cpp
     title: test/yukicoder/565.2.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     document_title: "\u884C\u5217"
     links: []
   bundledCode: "#line 2 \"src/math/matrix.hpp\"\n\n/**\n * @file matrix.hpp\n * @brief\
     \ \u884C\u5217\n */\n\n#include <algorithm>\n#include <cassert>\n#include <cmath>\n\
     #if __cplusplus >= 202002L\n#include <concepts>\n#endif\n#include <cstddef>\n\
-    #include <cstdint>\n#include <initializer_list>\n#include <optional>\n#include\
-    \ <string>\n#include <type_traits>\n#include <utility>\n#include <valarray>\n\
-    #include <vector>\n\nnamespace matrix {\ntemplate <typename T>\nstruct OperatorPropertyDefault\
-    \ {\n    constexpr static T zero() { return T(0); }\n    constexpr static T add(const\
-    \ T& a, const T& b) { return a + b; }\n    constexpr static T neg(const T& a)\
-    \ { return -a; }\n    constexpr static T one() { return T(1); }\n    constexpr\
-    \ static T mul(const T& a, const T& b) { return a * b; }\n    constexpr static\
-    \ T inv(const T& a) { return T(1) / a; }\n};\n}  // namespace matrix\n\nnamespace\
-    \ internal_matrix {\n// \u6CD5\u304C 2^31 \u672A\u6E80\u306E modint (mod() \u3068\
-    \ val() \u3092\u6301\u3064\u578B) \u304B\n#if __cplusplus >= 202002L\ntemplate\
-    \ <class T>\nconcept modint_like = requires(const T& x) {\n    { T::mod() } ->\
-    \ std::convertible_to<std::uint32_t>;\n    { x.val() } -> std::convertible_to<std::uint32_t>;\n\
-    };\ntemplate <class T>\ninline constexpr bool is_modint_like_v = modint_like<T>;\n\
-    #else\ntemplate <class T, class = void>\nstruct is_modint_like : std::false_type\
-    \ {};\ntemplate <class T>\nstruct is_modint_like<T, std::void_t<decltype(static_cast<std::uint32_t>(T::mod())),\n\
+    #include <cstdint>\n#include <initializer_list>\n#include <iterator>\n#include\
+    \ <optional>\n#include <string>\n#include <type_traits>\n#include <utility>\n\
+    #include <valarray>\n#include <vector>\n\nnamespace matrix {\ntemplate <typename\
+    \ T>\nstruct OperatorPropertyDefault {\n    constexpr static T zero() { return\
+    \ T(0); }\n    constexpr static T add(const T& a, const T& b) { return a + b;\
+    \ }\n    constexpr static T neg(const T& a) { return -a; }\n    constexpr static\
+    \ T one() { return T(1); }\n    constexpr static T mul(const T& a, const T& b)\
+    \ { return a * b; }\n    constexpr static T inv(const T& a) { return T(1) / a;\
+    \ }\n};\n}  // namespace matrix\n\nnamespace internal_matrix {\n// \u6CD5\u304C\
+    \ 2^31 \u672A\u6E80\u306E modint (mod() \u3068 val() \u3092\u6301\u3064\u578B\
+    ) \u304B\n#if __cplusplus >= 202002L\ntemplate <class T>\nconcept modint_like\
+    \ = requires(const T& x) {\n    { T::mod() } -> std::convertible_to<std::uint32_t>;\n\
+    \    { x.val() } -> std::convertible_to<std::uint32_t>;\n};\ntemplate <class T>\n\
+    inline constexpr bool is_modint_like_v = modint_like<T>;\n#else\ntemplate <class\
+    \ T, class = void>\nstruct is_modint_like : std::false_type {};\ntemplate <class\
+    \ T>\nstruct is_modint_like<T, std::void_t<decltype(static_cast<std::uint32_t>(T::mod())),\n\
     \                                     decltype(static_cast<std::uint32_t>(std::declval<const\
     \ T&>().val()))>>\n    : std::true_type {};\ntemplate <class T>\ninline constexpr\
     \ bool is_modint_like_v = is_modint_like<T>::value;\n#endif\n}  // namespace internal_matrix\n\
@@ -93,36 +94,68 @@ data:
     \u304F\u3066\u3082\u3088\u3044\uFF08\u5FC5\u8981\u306A\u3082\u306E\u304C\u306A\
     \u304B\u3063\u305F\u3089\u30B3\u30F3\u30D1\u30A4\u30EB\u30A8\u30E9\u30FC\u304C\
     \u767A\u751F\u3059\u308B\uFF09\n */\ntemplate <class T, class OperatorProperty\
-    \ = matrix::OperatorPropertyDefault<T>>\nclass Matrix {\n   public:\n    long\
-    \ long n, m;\n    std::vector<std::vector<T>> v;\n\n    /**\n     * @brief \u30B3\
-    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param v \u884C\u5217(\u30B0\u30EA\
-    \u30C3\u30C9)\u306E\u5143\u3068\u306A\u308B vector<string> \u3084 vector<vector<T>>\n\
-    \     * @return Matrix\n     */\n    template <typename Iterable>\n    Matrix(const\
-    \ std::vector<Iterable>& v_) noexcept : n(v_.size()), m(v_.size() == 0 ? 0 : v_[0].size())\
-    \ {\n        v.resize(n);\n        for (long long i = 0; i < n; i++) {\n     \
-    \       v[i].assign(v_[i].begin(), v_[i].end());\n        }\n    }\n\n    /**\n\
-    \     * @brief \u521D\u671F\u5316\u5B50\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\
-    \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * \u4F8B: Matrix<mint> A({{1,\
-    \ 1}, {1, 0}});\n     * @param il \u5404\u884C\u306E\u8981\u7D20\u306E\u30EA\u30B9\
-    \u30C8\n     */\n    Matrix(std::initializer_list<std::initializer_list<T>> il)\
-    \ : n(il.size()), m(il.size() == 0 ? 0 : il.begin()->size()) {\n        v.reserve(n);\n\
-    \        for (const auto& row : il) v.emplace_back(row);\n    }\n    /**\n   \
-    \  * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param _n \u884C\
-    \u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u884C\u6570\n     * @param _m \u884C\u5217\
-    (\u30B0\u30EA\u30C3\u30C9)\u306E\u5217\u6570\n     * @param _val \u884C\u5217\
-    (\u30B0\u30EA\u30C3\u30C9)\u306E\u8981\u7D20\u306E\u521D\u671F\u5024\n     * @return\
-    \ Matrix\n     */\n    Matrix(long long _n, long long _m, T _val = OperatorProperty::zero())\
-    \ : n(_n), m(_m), v(n, std::vector<T>(m, _val)) {}\n\n    auto begin() noexcept\
-    \ { return v.begin(); }\n    auto end() noexcept { return v.end(); }\n    auto\
-    \ begin() const noexcept { return v.begin(); }\n    auto end() const noexcept\
-    \ { return v.end(); }\n\n    /**\n     * @brief \u884C\u5217(\u30B0\u30EA\u30C3\
-    \u30C9)\u306E\u884C\u6570\n     * @return long long\n     */\n    [[nodiscard]]\n\
-    \    long long size() const { return v.size(); }\n\n    std::vector<T>& operator[](long\
-    \ long i) { return v[i]; }\n    const std::vector<T>& operator[](long long i)\
-    \ const { return v[i]; }\n    Matrix& operator=(const std::vector<std::vector<T>>&\
-    \ A) noexcept {\n        n = A.size();\n        m = (n == 0 ? 0 : A[0].size());\n\
-    \        v = A;\n        return *this;\n    }\n    bool operator==(const Matrix&\
-    \ A) const noexcept {\n        return this->v == A.v;\n    }\n    bool operator!=(const\
+    \ = matrix::OperatorPropertyDefault<T>>\nclass Matrix {\n    long long n, m;\n\
+    \    std::vector<std::vector<T>> v;\n\n   public:\n    template <bool IsConst>\n\
+    \    class RowView {\n        using Storage = std::conditional_t<IsConst, const\
+    \ std::vector<T>, std::vector<T>>;\n        Storage* row;\n        explicit RowView(Storage&\
+    \ row) : row(&row) {}\n        friend class Matrix;\n\n       public:\n      \
+    \  using value_type = T;\n\n        RowView(const RowView&) = default;\n     \
+    \   RowView& operator=(const RowView&) = delete;\n        long long size() const\
+    \ { return row->size(); }\n        bool empty() const { return row->empty(); }\n\
+    \        decltype(auto) operator[](long long j) const {\n            assert(0\
+    \ <= j && j < size());\n            return (*row)[j];\n        }\n        auto\
+    \ begin() const { return row->begin(); }\n        auto end() const { return row->end();\
+    \ }\n    };\n\n    template <bool IsConst>\n    class RowIterator {\n        using\
+    \ Owner = std::conditional_t<IsConst, const Matrix, Matrix>;\n        Owner* owner\
+    \ = nullptr;\n        long long index = 0;\n        RowIterator(Owner& owner,\
+    \ long long index) : owner(&owner), index(index) {}\n        friend class Matrix;\n\
+    \n       public:\n        using value_type = RowView<IsConst>;\n        using\
+    \ reference = value_type;\n        struct pointer {\n            value_type row;\n\
+    \            const value_type* operator->() const { return &row; }\n        };\n\
+    \        using difference_type = std::ptrdiff_t;\n        using iterator_category\
+    \ = std::input_iterator_tag;\n\n        RowIterator() = default;\n        reference\
+    \ operator*() const { return (*owner)[index]; }\n        pointer operator->()\
+    \ const { return {**this}; }\n        RowIterator& operator++() {\n          \
+    \  ++index;\n            return *this;\n        }\n        RowIterator operator++(int)\
+    \ {\n            auto old = *this;\n            ++*this;\n            return old;\n\
+    \        }\n        friend bool operator==(const RowIterator& a, const RowIterator&\
+    \ b) { return a.owner == b.owner && a.index == b.index; }\n        friend bool\
+    \ operator!=(const RowIterator& a, const RowIterator& b) { return !(a == b); }\n\
+    \    };\n\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n\
+    \     * @param v \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u5143\u3068\u306A\
+    \u308B vector<string> \u3084 vector<vector<T>>\n     * @return Matrix\n     */\n\
+    \    template <typename Iterable>\n    Matrix(const std::vector<Iterable>& v_)\
+    \ noexcept : n(v_.size()), m(v_.size() == 0 ? 0 : v_[0].size()) {\n        v.resize(n);\n\
+    \        for (long long i = 0; i < n; i++) {\n            assert(static_cast<long\
+    \ long>(v_[i].size()) == m);\n            v[i].assign(v_[i].begin(), v_[i].end());\n\
+    \        }\n    }\n\n    /**\n     * @brief \u521D\u671F\u5316\u5B50\u30EA\u30B9\
+    \u30C8\u304B\u3089\u4F5C\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n   \
+    \  * \u4F8B: Matrix<mint> A({{1, 1}, {1, 0}});\n     * @param il \u5404\u884C\u306E\
+    \u8981\u7D20\u306E\u30EA\u30B9\u30C8\n     */\n    Matrix(std::initializer_list<std::initializer_list<T>>\
+    \ il) : n(il.size()), m(il.size() == 0 ? 0 : il.begin()->size()) {\n        v.reserve(n);\n\
+    \        for (const auto& row : il) {\n            assert(static_cast<long long>(row.size())\
+    \ == m);\n            v.emplace_back(row);\n        }\n    }\n    /**\n     *\
+    \ @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param _n \u884C\u5217\
+    (\u30B0\u30EA\u30C3\u30C9)\u306E\u884C\u6570\n     * @param _m \u884C\u5217(\u30B0\
+    \u30EA\u30C3\u30C9)\u306E\u5217\u6570\n     * @param _val \u884C\u5217(\u30B0\u30EA\
+    \u30C3\u30C9)\u306E\u8981\u7D20\u306E\u521D\u671F\u5024\n     * @return Matrix\n\
+    \     */\n    Matrix(long long _n, long long _m, T _val = OperatorProperty::zero())\
+    \ : n(_n), m(_m), v(n, std::vector<T>(m, _val)) {}\n\n    RowIterator<false> begin()\
+    \ noexcept { return RowIterator<false>(*this, 0); }\n    RowIterator<false> end()\
+    \ noexcept { return RowIterator<false>(*this, n); }\n    RowIterator<true> begin()\
+    \ const noexcept { return RowIterator<true>(*this, 0); }\n    RowIterator<true>\
+    \ end() const noexcept { return RowIterator<true>(*this, n); }\n\n    /** @brief\
+    \ \u884C\u6570 */\n    long long size() const { return n; }\n    /** @brief \u884C\
+    \u6570 */\n    long long height() const { return n; }\n    /** @brief \u5217\u6570\
+    \ */\n    long long width() const { return m; }\n\n    RowView<false> operator[](long\
+    \ long i) {\n        assert(0 <= i && i < n);\n        return RowView<false>(v[i]);\n\
+    \    }\n    RowView<true> operator[](long long i) const {\n        assert(0 <=\
+    \ i && i < n);\n        return RowView<true>(v[i]);\n    }\n    Matrix& operator=(const\
+    \ std::vector<std::vector<T>>& A) noexcept {\n        const long long rows = A.size(),\
+    \ cols = (rows == 0 ? 0 : A[0].size());\n        for (const auto& row : A) assert(static_cast<long\
+    \ long>(row.size()) == cols);\n        n = rows;\n        m = cols;\n        v\
+    \ = A;\n        return *this;\n    }\n    bool operator==(const Matrix& A) const\
+    \ noexcept {\n        return this->v == A.v;\n    }\n    bool operator!=(const\
     \ Matrix& A) const noexcept {\n        return this->v != A.v;\n    }\n\n    /**\n\
     \     * @brief \u8EE2\u7F6E\n     * @return Matrix\n     */\n    [[nodiscard]]\n\
     \    Matrix transpose() const noexcept {\n        if (n == 0) return Matrix(v);\n\
@@ -518,10 +551,10 @@ data:
   code: "#pragma once\n\n/**\n * @file matrix.hpp\n * @brief \u884C\u5217\n */\n\n\
     #include <algorithm>\n#include <cassert>\n#include <cmath>\n#if __cplusplus >=\
     \ 202002L\n#include <concepts>\n#endif\n#include <cstddef>\n#include <cstdint>\n\
-    #include <initializer_list>\n#include <optional>\n#include <string>\n#include\
-    \ <type_traits>\n#include <utility>\n#include <valarray>\n#include <vector>\n\n\
-    namespace matrix {\ntemplate <typename T>\nstruct OperatorPropertyDefault {\n\
-    \    constexpr static T zero() { return T(0); }\n    constexpr static T add(const\
+    #include <initializer_list>\n#include <iterator>\n#include <optional>\n#include\
+    \ <string>\n#include <type_traits>\n#include <utility>\n#include <valarray>\n\
+    #include <vector>\n\nnamespace matrix {\ntemplate <typename T>\nstruct OperatorPropertyDefault\
+    \ {\n    constexpr static T zero() { return T(0); }\n    constexpr static T add(const\
     \ T& a, const T& b) { return a + b; }\n    constexpr static T neg(const T& a)\
     \ { return -a; }\n    constexpr static T one() { return T(1); }\n    constexpr\
     \ static T mul(const T& a, const T& b) { return a * b; }\n    constexpr static\
@@ -551,36 +584,68 @@ data:
     \u304F\u3066\u3082\u3088\u3044\uFF08\u5FC5\u8981\u306A\u3082\u306E\u304C\u306A\
     \u304B\u3063\u305F\u3089\u30B3\u30F3\u30D1\u30A4\u30EB\u30A8\u30E9\u30FC\u304C\
     \u767A\u751F\u3059\u308B\uFF09\n */\ntemplate <class T, class OperatorProperty\
-    \ = matrix::OperatorPropertyDefault<T>>\nclass Matrix {\n   public:\n    long\
-    \ long n, m;\n    std::vector<std::vector<T>> v;\n\n    /**\n     * @brief \u30B3\
-    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param v \u884C\u5217(\u30B0\u30EA\
-    \u30C3\u30C9)\u306E\u5143\u3068\u306A\u308B vector<string> \u3084 vector<vector<T>>\n\
-    \     * @return Matrix\n     */\n    template <typename Iterable>\n    Matrix(const\
-    \ std::vector<Iterable>& v_) noexcept : n(v_.size()), m(v_.size() == 0 ? 0 : v_[0].size())\
-    \ {\n        v.resize(n);\n        for (long long i = 0; i < n; i++) {\n     \
-    \       v[i].assign(v_[i].begin(), v_[i].end());\n        }\n    }\n\n    /**\n\
-    \     * @brief \u521D\u671F\u5316\u5B50\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\
-    \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * \u4F8B: Matrix<mint> A({{1,\
-    \ 1}, {1, 0}});\n     * @param il \u5404\u884C\u306E\u8981\u7D20\u306E\u30EA\u30B9\
-    \u30C8\n     */\n    Matrix(std::initializer_list<std::initializer_list<T>> il)\
-    \ : n(il.size()), m(il.size() == 0 ? 0 : il.begin()->size()) {\n        v.reserve(n);\n\
-    \        for (const auto& row : il) v.emplace_back(row);\n    }\n    /**\n   \
-    \  * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param _n \u884C\
-    \u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u884C\u6570\n     * @param _m \u884C\u5217\
-    (\u30B0\u30EA\u30C3\u30C9)\u306E\u5217\u6570\n     * @param _val \u884C\u5217\
-    (\u30B0\u30EA\u30C3\u30C9)\u306E\u8981\u7D20\u306E\u521D\u671F\u5024\n     * @return\
-    \ Matrix\n     */\n    Matrix(long long _n, long long _m, T _val = OperatorProperty::zero())\
-    \ : n(_n), m(_m), v(n, std::vector<T>(m, _val)) {}\n\n    auto begin() noexcept\
-    \ { return v.begin(); }\n    auto end() noexcept { return v.end(); }\n    auto\
-    \ begin() const noexcept { return v.begin(); }\n    auto end() const noexcept\
-    \ { return v.end(); }\n\n    /**\n     * @brief \u884C\u5217(\u30B0\u30EA\u30C3\
-    \u30C9)\u306E\u884C\u6570\n     * @return long long\n     */\n    [[nodiscard]]\n\
-    \    long long size() const { return v.size(); }\n\n    std::vector<T>& operator[](long\
-    \ long i) { return v[i]; }\n    const std::vector<T>& operator[](long long i)\
-    \ const { return v[i]; }\n    Matrix& operator=(const std::vector<std::vector<T>>&\
-    \ A) noexcept {\n        n = A.size();\n        m = (n == 0 ? 0 : A[0].size());\n\
-    \        v = A;\n        return *this;\n    }\n    bool operator==(const Matrix&\
-    \ A) const noexcept {\n        return this->v == A.v;\n    }\n    bool operator!=(const\
+    \ = matrix::OperatorPropertyDefault<T>>\nclass Matrix {\n    long long n, m;\n\
+    \    std::vector<std::vector<T>> v;\n\n   public:\n    template <bool IsConst>\n\
+    \    class RowView {\n        using Storage = std::conditional_t<IsConst, const\
+    \ std::vector<T>, std::vector<T>>;\n        Storage* row;\n        explicit RowView(Storage&\
+    \ row) : row(&row) {}\n        friend class Matrix;\n\n       public:\n      \
+    \  using value_type = T;\n\n        RowView(const RowView&) = default;\n     \
+    \   RowView& operator=(const RowView&) = delete;\n        long long size() const\
+    \ { return row->size(); }\n        bool empty() const { return row->empty(); }\n\
+    \        decltype(auto) operator[](long long j) const {\n            assert(0\
+    \ <= j && j < size());\n            return (*row)[j];\n        }\n        auto\
+    \ begin() const { return row->begin(); }\n        auto end() const { return row->end();\
+    \ }\n    };\n\n    template <bool IsConst>\n    class RowIterator {\n        using\
+    \ Owner = std::conditional_t<IsConst, const Matrix, Matrix>;\n        Owner* owner\
+    \ = nullptr;\n        long long index = 0;\n        RowIterator(Owner& owner,\
+    \ long long index) : owner(&owner), index(index) {}\n        friend class Matrix;\n\
+    \n       public:\n        using value_type = RowView<IsConst>;\n        using\
+    \ reference = value_type;\n        struct pointer {\n            value_type row;\n\
+    \            const value_type* operator->() const { return &row; }\n        };\n\
+    \        using difference_type = std::ptrdiff_t;\n        using iterator_category\
+    \ = std::input_iterator_tag;\n\n        RowIterator() = default;\n        reference\
+    \ operator*() const { return (*owner)[index]; }\n        pointer operator->()\
+    \ const { return {**this}; }\n        RowIterator& operator++() {\n          \
+    \  ++index;\n            return *this;\n        }\n        RowIterator operator++(int)\
+    \ {\n            auto old = *this;\n            ++*this;\n            return old;\n\
+    \        }\n        friend bool operator==(const RowIterator& a, const RowIterator&\
+    \ b) { return a.owner == b.owner && a.index == b.index; }\n        friend bool\
+    \ operator!=(const RowIterator& a, const RowIterator& b) { return !(a == b); }\n\
+    \    };\n\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n\
+    \     * @param v \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u5143\u3068\u306A\
+    \u308B vector<string> \u3084 vector<vector<T>>\n     * @return Matrix\n     */\n\
+    \    template <typename Iterable>\n    Matrix(const std::vector<Iterable>& v_)\
+    \ noexcept : n(v_.size()), m(v_.size() == 0 ? 0 : v_[0].size()) {\n        v.resize(n);\n\
+    \        for (long long i = 0; i < n; i++) {\n            assert(static_cast<long\
+    \ long>(v_[i].size()) == m);\n            v[i].assign(v_[i].begin(), v_[i].end());\n\
+    \        }\n    }\n\n    /**\n     * @brief \u521D\u671F\u5316\u5B50\u30EA\u30B9\
+    \u30C8\u304B\u3089\u4F5C\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n   \
+    \  * \u4F8B: Matrix<mint> A({{1, 1}, {1, 0}});\n     * @param il \u5404\u884C\u306E\
+    \u8981\u7D20\u306E\u30EA\u30B9\u30C8\n     */\n    Matrix(std::initializer_list<std::initializer_list<T>>\
+    \ il) : n(il.size()), m(il.size() == 0 ? 0 : il.begin()->size()) {\n        v.reserve(n);\n\
+    \        for (const auto& row : il) {\n            assert(static_cast<long long>(row.size())\
+    \ == m);\n            v.emplace_back(row);\n        }\n    }\n    /**\n     *\
+    \ @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param _n \u884C\u5217\
+    (\u30B0\u30EA\u30C3\u30C9)\u306E\u884C\u6570\n     * @param _m \u884C\u5217(\u30B0\
+    \u30EA\u30C3\u30C9)\u306E\u5217\u6570\n     * @param _val \u884C\u5217(\u30B0\u30EA\
+    \u30C3\u30C9)\u306E\u8981\u7D20\u306E\u521D\u671F\u5024\n     * @return Matrix\n\
+    \     */\n    Matrix(long long _n, long long _m, T _val = OperatorProperty::zero())\
+    \ : n(_n), m(_m), v(n, std::vector<T>(m, _val)) {}\n\n    RowIterator<false> begin()\
+    \ noexcept { return RowIterator<false>(*this, 0); }\n    RowIterator<false> end()\
+    \ noexcept { return RowIterator<false>(*this, n); }\n    RowIterator<true> begin()\
+    \ const noexcept { return RowIterator<true>(*this, 0); }\n    RowIterator<true>\
+    \ end() const noexcept { return RowIterator<true>(*this, n); }\n\n    /** @brief\
+    \ \u884C\u6570 */\n    long long size() const { return n; }\n    /** @brief \u884C\
+    \u6570 */\n    long long height() const { return n; }\n    /** @brief \u5217\u6570\
+    \ */\n    long long width() const { return m; }\n\n    RowView<false> operator[](long\
+    \ long i) {\n        assert(0 <= i && i < n);\n        return RowView<false>(v[i]);\n\
+    \    }\n    RowView<true> operator[](long long i) const {\n        assert(0 <=\
+    \ i && i < n);\n        return RowView<true>(v[i]);\n    }\n    Matrix& operator=(const\
+    \ std::vector<std::vector<T>>& A) noexcept {\n        const long long rows = A.size(),\
+    \ cols = (rows == 0 ? 0 : A[0].size());\n        for (const auto& row : A) assert(static_cast<long\
+    \ long>(row.size()) == cols);\n        n = rows;\n        m = cols;\n        v\
+    \ = A;\n        return *this;\n    }\n    bool operator==(const Matrix& A) const\
+    \ noexcept {\n        return this->v == A.v;\n    }\n    bool operator!=(const\
     \ Matrix& A) const noexcept {\n        return this->v != A.v;\n    }\n\n    /**\n\
     \     * @brief \u8EE2\u7F6E\n     * @return Matrix\n     */\n    [[nodiscard]]\n\
     \    Matrix transpose() const noexcept {\n        if (n == 0) return Matrix(v);\n\
@@ -977,8 +1042,8 @@ data:
   isVerificationFile: false
   path: src/math/matrix.hpp
   requiredBy: []
-  timestamp: '2026-11-03 08:22:07+09:00'
-  verificationStatus: LIBRARY_ALL_AC
+  timestamp: '2026-11-09 06:22:11+09:00'
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/yukicoder/565.2.test.cpp
   - test/yukicoder/565.1.test.cpp
@@ -1021,18 +1086,22 @@ auto t = g.rotate(1).vstr();          // 時計回りに 90 度回して vector<
 | `Matrix({ {a, b}, {c, d} })` | 初期化子リストから作る | $O(nm)$ |
 | `Matrix(v)` | `vector<vector<T>>` や `vector<string>` から作る。型を省くと、要素の型は各行の `value_type` になる (`vector<vector<int>>` なら `Matrix<int>`、`vector<string>` なら `Matrix<char>`) | $O(nm)$ |
 | `Matrix(n, m, val = 0)` | `n` 行 `m` 列で、要素はすべて `val` | $O(nm)$ |
-| `A.size()` | 行数 (`long long`) | $O(1)$ |
-| `A[i][j]` | 要素 | $O(1)$ |
-| `for (auto& row : A)` | 各行を走査 | $O(n)$ |
+| `A.size()` / `A.height()` | 行数 (`long long`) | $O(1)$ |
+| `A.width()` | 列数 (`long long`) | $O(1)$ |
+| `A[i]` | 行ビュー。添字アクセス・`size()`・`empty()`・`begin()`・`end()` が使える | $O(1)$ |
+| `A[i][j]` | 要素 (const な行列では読み取り専用) | $O(1)$ |
+| `for (auto row : A)` | 各行のビューを走査。`for (auto& x : row)` で要素を変更できる | $O(n)$ |
 | `A.col(j)` | `j` 列目 | $O(n)$ |
 | `A.str(i)` / `A.vstr()` | `i` 行目を `string` で / 全体を `vector<string>` で返す | $O(m)$ / $O(nm)$ |
 | `==`、`!=` | 比較 | $O(nm)$ |
 
-## メンバ変数
+行ビューから要素を変更できますが、行の長さを変えたり行を丸ごと代入したりはできません。ビューは元の行列の生存中に使い、行列への代入や `*=` などで格納領域が変わった後は取り直してください。`Matrix(v)`・初期化子リスト・`vector<vector<T>>` からの代入では、すべての行の長さが等しいことが前提です。
 
-| 変数 | 説明 |
-|---|---|
-| `n` / `m` | 行数 / 列数 (`long long`) |
+```cpp
+for (auto row : A) {
+    for (auto& x : row) std::cin >> x;
+}
+```
 
 ## 線形代数
 

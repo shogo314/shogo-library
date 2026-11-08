@@ -10,7 +10,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/utility/compress.hpp
     title: "\u5EA7\u6A19\u5727\u7E2E"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []

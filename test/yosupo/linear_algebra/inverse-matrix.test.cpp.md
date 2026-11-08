@@ -1,21 +1,21 @@
 ---
 data:
   _extendedDependsOn:
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: src/math/matrix.hpp
     title: "\u884C\u5217"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: src/math/modint.hpp
     title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
       \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
   _extendedVerifiedWith: []
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: cpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':x:'
   attributes:
     '*NOT_SPECIAL_COMMENTS*': ''
     PROBLEM: https://judge.yosupo.jp/problem/inverse_matrix
@@ -26,23 +26,23 @@ data:
     #include <vector>\n\n#line 2 \"src/math/matrix.hpp\"\n\n/**\n * @file matrix.hpp\n\
     \ * @brief \u884C\u5217\n */\n\n#include <algorithm>\n#include <cassert>\n#include\
     \ <cmath>\n#if __cplusplus >= 202002L\n#include <concepts>\n#endif\n#include <cstddef>\n\
-    #include <cstdint>\n#include <initializer_list>\n#include <optional>\n#include\
-    \ <string>\n#include <type_traits>\n#include <utility>\n#include <valarray>\n\
-    #line 23 \"src/math/matrix.hpp\"\n\nnamespace matrix {\ntemplate <typename T>\n\
-    struct OperatorPropertyDefault {\n    constexpr static T zero() { return T(0);\
-    \ }\n    constexpr static T add(const T& a, const T& b) { return a + b; }\n  \
-    \  constexpr static T neg(const T& a) { return -a; }\n    constexpr static T one()\
-    \ { return T(1); }\n    constexpr static T mul(const T& a, const T& b) { return\
-    \ a * b; }\n    constexpr static T inv(const T& a) { return T(1) / a; }\n};\n\
-    }  // namespace matrix\n\nnamespace internal_matrix {\n// \u6CD5\u304C 2^31 \u672A\
-    \u6E80\u306E modint (mod() \u3068 val() \u3092\u6301\u3064\u578B) \u304B\n#if\
-    \ __cplusplus >= 202002L\ntemplate <class T>\nconcept modint_like = requires(const\
-    \ T& x) {\n    { T::mod() } -> std::convertible_to<std::uint32_t>;\n    { x.val()\
-    \ } -> std::convertible_to<std::uint32_t>;\n};\ntemplate <class T>\ninline constexpr\
-    \ bool is_modint_like_v = modint_like<T>;\n#else\ntemplate <class T, class = void>\n\
-    struct is_modint_like : std::false_type {};\ntemplate <class T>\nstruct is_modint_like<T,\
-    \ std::void_t<decltype(static_cast<std::uint32_t>(T::mod())),\n              \
-    \                       decltype(static_cast<std::uint32_t>(std::declval<const\
+    #include <cstdint>\n#include <initializer_list>\n#include <iterator>\n#include\
+    \ <optional>\n#include <string>\n#include <type_traits>\n#include <utility>\n\
+    #include <valarray>\n#line 24 \"src/math/matrix.hpp\"\n\nnamespace matrix {\n\
+    template <typename T>\nstruct OperatorPropertyDefault {\n    constexpr static\
+    \ T zero() { return T(0); }\n    constexpr static T add(const T& a, const T& b)\
+    \ { return a + b; }\n    constexpr static T neg(const T& a) { return -a; }\n \
+    \   constexpr static T one() { return T(1); }\n    constexpr static T mul(const\
+    \ T& a, const T& b) { return a * b; }\n    constexpr static T inv(const T& a)\
+    \ { return T(1) / a; }\n};\n}  // namespace matrix\n\nnamespace internal_matrix\
+    \ {\n// \u6CD5\u304C 2^31 \u672A\u6E80\u306E modint (mod() \u3068 val() \u3092\
+    \u6301\u3064\u578B) \u304B\n#if __cplusplus >= 202002L\ntemplate <class T>\nconcept\
+    \ modint_like = requires(const T& x) {\n    { T::mod() } -> std::convertible_to<std::uint32_t>;\n\
+    \    { x.val() } -> std::convertible_to<std::uint32_t>;\n};\ntemplate <class T>\n\
+    inline constexpr bool is_modint_like_v = modint_like<T>;\n#else\ntemplate <class\
+    \ T, class = void>\nstruct is_modint_like : std::false_type {};\ntemplate <class\
+    \ T>\nstruct is_modint_like<T, std::void_t<decltype(static_cast<std::uint32_t>(T::mod())),\n\
+    \                                     decltype(static_cast<std::uint32_t>(std::declval<const\
     \ T&>().val()))>>\n    : std::true_type {};\ntemplate <class T>\ninline constexpr\
     \ bool is_modint_like_v = is_modint_like<T>::value;\n#endif\n}  // namespace internal_matrix\n\
     \n/**\n * @brief \u884C\u5217\n * @tparam T \u578B \u884C\u5217(\u30B0\u30EA\u30C3\
@@ -60,36 +60,68 @@ data:
     \u304F\u3066\u3082\u3088\u3044\uFF08\u5FC5\u8981\u306A\u3082\u306E\u304C\u306A\
     \u304B\u3063\u305F\u3089\u30B3\u30F3\u30D1\u30A4\u30EB\u30A8\u30E9\u30FC\u304C\
     \u767A\u751F\u3059\u308B\uFF09\n */\ntemplate <class T, class OperatorProperty\
-    \ = matrix::OperatorPropertyDefault<T>>\nclass Matrix {\n   public:\n    long\
-    \ long n, m;\n    std::vector<std::vector<T>> v;\n\n    /**\n     * @brief \u30B3\
-    \u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param v \u884C\u5217(\u30B0\u30EA\
-    \u30C3\u30C9)\u306E\u5143\u3068\u306A\u308B vector<string> \u3084 vector<vector<T>>\n\
-    \     * @return Matrix\n     */\n    template <typename Iterable>\n    Matrix(const\
-    \ std::vector<Iterable>& v_) noexcept : n(v_.size()), m(v_.size() == 0 ? 0 : v_[0].size())\
-    \ {\n        v.resize(n);\n        for (long long i = 0; i < n; i++) {\n     \
-    \       v[i].assign(v_[i].begin(), v_[i].end());\n        }\n    }\n\n    /**\n\
-    \     * @brief \u521D\u671F\u5316\u5B50\u30EA\u30B9\u30C8\u304B\u3089\u4F5C\u308B\
-    \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * \u4F8B: Matrix<mint> A({{1,\
-    \ 1}, {1, 0}});\n     * @param il \u5404\u884C\u306E\u8981\u7D20\u306E\u30EA\u30B9\
-    \u30C8\n     */\n    Matrix(std::initializer_list<std::initializer_list<T>> il)\
-    \ : n(il.size()), m(il.size() == 0 ? 0 : il.begin()->size()) {\n        v.reserve(n);\n\
-    \        for (const auto& row : il) v.emplace_back(row);\n    }\n    /**\n   \
-    \  * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param _n \u884C\
-    \u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u884C\u6570\n     * @param _m \u884C\u5217\
-    (\u30B0\u30EA\u30C3\u30C9)\u306E\u5217\u6570\n     * @param _val \u884C\u5217\
-    (\u30B0\u30EA\u30C3\u30C9)\u306E\u8981\u7D20\u306E\u521D\u671F\u5024\n     * @return\
-    \ Matrix\n     */\n    Matrix(long long _n, long long _m, T _val = OperatorProperty::zero())\
-    \ : n(_n), m(_m), v(n, std::vector<T>(m, _val)) {}\n\n    auto begin() noexcept\
-    \ { return v.begin(); }\n    auto end() noexcept { return v.end(); }\n    auto\
-    \ begin() const noexcept { return v.begin(); }\n    auto end() const noexcept\
-    \ { return v.end(); }\n\n    /**\n     * @brief \u884C\u5217(\u30B0\u30EA\u30C3\
-    \u30C9)\u306E\u884C\u6570\n     * @return long long\n     */\n    [[nodiscard]]\n\
-    \    long long size() const { return v.size(); }\n\n    std::vector<T>& operator[](long\
-    \ long i) { return v[i]; }\n    const std::vector<T>& operator[](long long i)\
-    \ const { return v[i]; }\n    Matrix& operator=(const std::vector<std::vector<T>>&\
-    \ A) noexcept {\n        n = A.size();\n        m = (n == 0 ? 0 : A[0].size());\n\
-    \        v = A;\n        return *this;\n    }\n    bool operator==(const Matrix&\
-    \ A) const noexcept {\n        return this->v == A.v;\n    }\n    bool operator!=(const\
+    \ = matrix::OperatorPropertyDefault<T>>\nclass Matrix {\n    long long n, m;\n\
+    \    std::vector<std::vector<T>> v;\n\n   public:\n    template <bool IsConst>\n\
+    \    class RowView {\n        using Storage = std::conditional_t<IsConst, const\
+    \ std::vector<T>, std::vector<T>>;\n        Storage* row;\n        explicit RowView(Storage&\
+    \ row) : row(&row) {}\n        friend class Matrix;\n\n       public:\n      \
+    \  using value_type = T;\n\n        RowView(const RowView&) = default;\n     \
+    \   RowView& operator=(const RowView&) = delete;\n        long long size() const\
+    \ { return row->size(); }\n        bool empty() const { return row->empty(); }\n\
+    \        decltype(auto) operator[](long long j) const {\n            assert(0\
+    \ <= j && j < size());\n            return (*row)[j];\n        }\n        auto\
+    \ begin() const { return row->begin(); }\n        auto end() const { return row->end();\
+    \ }\n    };\n\n    template <bool IsConst>\n    class RowIterator {\n        using\
+    \ Owner = std::conditional_t<IsConst, const Matrix, Matrix>;\n        Owner* owner\
+    \ = nullptr;\n        long long index = 0;\n        RowIterator(Owner& owner,\
+    \ long long index) : owner(&owner), index(index) {}\n        friend class Matrix;\n\
+    \n       public:\n        using value_type = RowView<IsConst>;\n        using\
+    \ reference = value_type;\n        struct pointer {\n            value_type row;\n\
+    \            const value_type* operator->() const { return &row; }\n        };\n\
+    \        using difference_type = std::ptrdiff_t;\n        using iterator_category\
+    \ = std::input_iterator_tag;\n\n        RowIterator() = default;\n        reference\
+    \ operator*() const { return (*owner)[index]; }\n        pointer operator->()\
+    \ const { return {**this}; }\n        RowIterator& operator++() {\n          \
+    \  ++index;\n            return *this;\n        }\n        RowIterator operator++(int)\
+    \ {\n            auto old = *this;\n            ++*this;\n            return old;\n\
+    \        }\n        friend bool operator==(const RowIterator& a, const RowIterator&\
+    \ b) { return a.owner == b.owner && a.index == b.index; }\n        friend bool\
+    \ operator!=(const RowIterator& a, const RowIterator& b) { return !(a == b); }\n\
+    \    };\n\n    /**\n     * @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n\
+    \     * @param v \u884C\u5217(\u30B0\u30EA\u30C3\u30C9)\u306E\u5143\u3068\u306A\
+    \u308B vector<string> \u3084 vector<vector<T>>\n     * @return Matrix\n     */\n\
+    \    template <typename Iterable>\n    Matrix(const std::vector<Iterable>& v_)\
+    \ noexcept : n(v_.size()), m(v_.size() == 0 ? 0 : v_[0].size()) {\n        v.resize(n);\n\
+    \        for (long long i = 0; i < n; i++) {\n            assert(static_cast<long\
+    \ long>(v_[i].size()) == m);\n            v[i].assign(v_[i].begin(), v_[i].end());\n\
+    \        }\n    }\n\n    /**\n     * @brief \u521D\u671F\u5316\u5B50\u30EA\u30B9\
+    \u30C8\u304B\u3089\u4F5C\u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n   \
+    \  * \u4F8B: Matrix<mint> A({{1, 1}, {1, 0}});\n     * @param il \u5404\u884C\u306E\
+    \u8981\u7D20\u306E\u30EA\u30B9\u30C8\n     */\n    Matrix(std::initializer_list<std::initializer_list<T>>\
+    \ il) : n(il.size()), m(il.size() == 0 ? 0 : il.begin()->size()) {\n        v.reserve(n);\n\
+    \        for (const auto& row : il) {\n            assert(static_cast<long long>(row.size())\
+    \ == m);\n            v.emplace_back(row);\n        }\n    }\n    /**\n     *\
+    \ @brief \u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\n     * @param _n \u884C\u5217\
+    (\u30B0\u30EA\u30C3\u30C9)\u306E\u884C\u6570\n     * @param _m \u884C\u5217(\u30B0\
+    \u30EA\u30C3\u30C9)\u306E\u5217\u6570\n     * @param _val \u884C\u5217(\u30B0\u30EA\
+    \u30C3\u30C9)\u306E\u8981\u7D20\u306E\u521D\u671F\u5024\n     * @return Matrix\n\
+    \     */\n    Matrix(long long _n, long long _m, T _val = OperatorProperty::zero())\
+    \ : n(_n), m(_m), v(n, std::vector<T>(m, _val)) {}\n\n    RowIterator<false> begin()\
+    \ noexcept { return RowIterator<false>(*this, 0); }\n    RowIterator<false> end()\
+    \ noexcept { return RowIterator<false>(*this, n); }\n    RowIterator<true> begin()\
+    \ const noexcept { return RowIterator<true>(*this, 0); }\n    RowIterator<true>\
+    \ end() const noexcept { return RowIterator<true>(*this, n); }\n\n    /** @brief\
+    \ \u884C\u6570 */\n    long long size() const { return n; }\n    /** @brief \u884C\
+    \u6570 */\n    long long height() const { return n; }\n    /** @brief \u5217\u6570\
+    \ */\n    long long width() const { return m; }\n\n    RowView<false> operator[](long\
+    \ long i) {\n        assert(0 <= i && i < n);\n        return RowView<false>(v[i]);\n\
+    \    }\n    RowView<true> operator[](long long i) const {\n        assert(0 <=\
+    \ i && i < n);\n        return RowView<true>(v[i]);\n    }\n    Matrix& operator=(const\
+    \ std::vector<std::vector<T>>& A) noexcept {\n        const long long rows = A.size(),\
+    \ cols = (rows == 0 ? 0 : A[0].size());\n        for (const auto& row : A) assert(static_cast<long\
+    \ long>(row.size()) == cols);\n        n = rows;\n        m = cols;\n        v\
+    \ = A;\n        return *this;\n    }\n    bool operator==(const Matrix& A) const\
+    \ noexcept {\n        return this->v == A.v;\n    }\n    bool operator!=(const\
     \ Matrix& A) const noexcept {\n        return this->v != A.v;\n    }\n\n    /**\n\
     \     * @brief \u8EE2\u7F6E\n     * @return Matrix\n     */\n    [[nodiscard]]\n\
     \    Matrix transpose() const noexcept {\n        if (n == 0) return Matrix(v);\n\
@@ -487,10 +519,11 @@ data:
     \u30E9\u30B9\n */\n\n#line 11 \"src/math/modint.hpp\"\n#include <limits>\n#line\
     \ 14 \"src/math/modint.hpp\"\n\n#line 2 \"src/utility/traits.hpp\"\n\n/**\n *\
     \ @file traits.hpp\n * @brief \u578B\u7279\u6027\n */\n\n#line 9 \"src/utility/traits.hpp\"\
-    \n#include <functional>\n#include <iterator>\n#include <set>\n#line 14 \"src/utility/traits.hpp\"\
-    \n\n#if __cplusplus >= 202002L\n#include <ranges>\n#endif\n\nnamespace internal_traits\
-    \ {\nusing std::begin, std::end;\n\ntemplate <class T, class = void>\nstruct is_range_impl\
-    \ : std::false_type {};\ntemplate <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
+    \n#include <functional>\n#line 11 \"src/utility/traits.hpp\"\n#include <set>\n\
+    #line 14 \"src/utility/traits.hpp\"\n\n#if __cplusplus >= 202002L\n#include <ranges>\n\
+    #endif\n\nnamespace internal_traits {\nusing std::begin, std::end;\n\ntemplate\
+    \ <class T, class = void>\nstruct is_range_impl : std::false_type {};\ntemplate\
+    \ <class T>\nstruct is_range_impl<T, std::void_t<decltype(begin(std::declval<T&>()),\
     \ end(std::declval<T&>()))>> : std::true_type {};\n\n// \u30B5\u30A4\u30BA\u4ED8\
     \u304D\u7BC4\u56F2\u304B\u3089\u8981\u7D20\u3092\u76F4\u63A5\u69CB\u7BC9\u3059\
     \u308B\u30B3\u30F3\u30B9\u30C8\u30E9\u30AF\u30BF\u3067\u5171\u6709\u3059\u308B\
@@ -789,7 +822,7 @@ data:
     using modint = dynamic_modint<-1>;\n#line 8 \"test/yosupo/linear_algebra/inverse-matrix.test.cpp\"\
     \n\nusing mint = modint998244353;\n\nint main() {\n    std::ios::sync_with_stdio(false);\n\
     \    std::cin.tie(nullptr);\n    int n;\n    std::cin >> n;\n    std::vector<std::vector<mint>>\
-    \ a(n, std::vector<mint>(n));\n    for (auto& row : a)\n        for (auto& x :\
+    \ a(n, std::vector<mint>(n));\n    for (auto row : a)\n        for (auto& x :\
     \ row) std::cin >> x;\n    Matrix<mint> A(a);\n    auto B = A.inv();\n    if (!B)\
     \ {\n        std::cout << -1 << '\\n';\n        return 0;\n    }\n    for (int\
     \ i = 0; i < n; i++) {\n        for (int j = 0; j < n; j++) std::cout << (*B)[i][j]\
@@ -799,7 +832,7 @@ data:
     #include \"../../../src/math/modint.hpp\"\n\nusing mint = modint998244353;\n\n\
     int main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n\
     \    int n;\n    std::cin >> n;\n    std::vector<std::vector<mint>> a(n, std::vector<mint>(n));\n\
-    \    for (auto& row : a)\n        for (auto& x : row) std::cin >> x;\n    Matrix<mint>\
+    \    for (auto row : a)\n        for (auto& x : row) std::cin >> x;\n    Matrix<mint>\
     \ A(a);\n    auto B = A.inv();\n    if (!B) {\n        std::cout << -1 << '\\\
     n';\n        return 0;\n    }\n    for (int i = 0; i < n; i++) {\n        for\
     \ (int j = 0; j < n; j++) std::cout << (*B)[i][j] << \" \\n\"[j == n - 1];\n \
@@ -811,8 +844,8 @@ data:
   isVerificationFile: true
   path: test/yosupo/linear_algebra/inverse-matrix.test.cpp
   requiredBy: []
-  timestamp: '2026-11-08 20:13:03+09:00'
-  verificationStatus: TEST_ACCEPTED
+  timestamp: '2026-11-09 06:22:11+09:00'
+  verificationStatus: TEST_WRONG_ANSWER
   verifiedWith: []
 documentation_of: test/yosupo/linear_algebra/inverse-matrix.test.cpp
 layout: document

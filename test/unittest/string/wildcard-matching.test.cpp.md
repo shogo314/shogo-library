@@ -4,7 +4,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: src/math/convolution.hpp
     title: "\u7573\u307F\u8FBC\u307F (NTT)"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: src/math/modint.hpp
     title: "\u56DB\u5247\u6F14\u7B97\u306B\u304A\u3044\u3066\u81EA\u52D5\u3067 mod\
       \ \u3092\u53D6\u308B\u30AF\u30E9\u30B9"
@@ -16,7 +16,7 @@ data:
     path: src/string/wildcard-matching.hpp
     title: "\u30EF\u30A4\u30EB\u30C9\u30AB\u30FC\u30C9\u3064\u304D\u306E\u30D1\u30BF\
       \u30FC\u30F3\u30DE\u30C3\u30C1\u30F3\u30B0"
-  - icon: ':heavy_check_mark:'
+  - icon: ':question:'
     path: src/utility/traits.hpp
     title: "\u578B\u7279\u6027"
   _extendedRequiredBy: []
